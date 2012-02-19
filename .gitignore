@@ -1,3 +1,7 @@
-/out
 /*.iml
+/*.jar
+/.classpath
 /.idea
+/.project
+/bin/
+/out/
