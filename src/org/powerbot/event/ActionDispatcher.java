@@ -20,6 +20,11 @@ public class ActionDispatcher extends SimpleTask implements ActionManager {
 	private List<Action> actions;
 	private State state;
 
+	/**
+	 * Initializes this action dispatcher with appropriate objects.
+	 *
+	 * @param processor The <code>TaskProcessor</code> to use as a medium for proccessing.
+	 */
 	public ActionDispatcher(TaskProcessor processor) {
 		this.processor = processor;
 		this.actions = new ArrayList<Action>();
@@ -125,6 +130,13 @@ public class ActionDispatcher extends SimpleTask implements ActionManager {
 		}
 	}
 
+	/**
+	 * Creates a <code>SimpleTask</code> that notifies a thread to awaken when all futures are completed.
+	 *
+	 * @param lockingFutures The <code>List</code> of Futures to wait for.
+	 * @param threadObject   The locking object to notify.
+	 * @return The <code>SimpleTask</code> to be submitted.
+	 */
 	private SimpleTask createWait(final List<Future<?>> lockingFutures, final Object threadObject) {
 		return new SimpleTask() {
 			public void run() {
