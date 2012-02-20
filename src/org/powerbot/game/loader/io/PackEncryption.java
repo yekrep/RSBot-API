@@ -1,4 +1,4 @@
-package org.powerbot.game.loader;
+package org.powerbot.game.loader.io;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;

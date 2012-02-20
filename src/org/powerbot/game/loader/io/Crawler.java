@@ -1,4 +1,4 @@
-package org.powerbot.game.loader;
+package org.powerbot.game.loader.io;
 
 import org.powerbot.util.io.HttpClient;
 

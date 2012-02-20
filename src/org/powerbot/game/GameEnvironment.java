@@ -1,7 +1,5 @@
 package org.powerbot.game;
 
-import java.util.concurrent.Future;
-
 /**
  * Represents an environment in which the game can be started and terminated.
  * These calls are normally done threaded.
@@ -14,7 +12,7 @@ public interface GameEnvironment {
 	 *
 	 * @return <tt>true</tt> if loading was successful; otherwise <tt>false</tt>.
 	 */
-	public Future<Object> initializeEnvironment();
+	public boolean initializeEnvironment();
 
 	/**
 	 * Kills this game and cleans up environment for re-initialization.

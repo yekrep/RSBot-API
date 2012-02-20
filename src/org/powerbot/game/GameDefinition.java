@@ -1,17 +1,18 @@
 package org.powerbot.game;
 
-import org.powerbot.concurrent.ContainedTask;
 import org.powerbot.concurrent.TaskContainer;
 import org.powerbot.concurrent.TaskProcessor;
-import org.powerbot.game.loader.Crawler;
-import org.powerbot.game.loader.PackEncryption;
+import org.powerbot.game.loader.ClientStub;
+import org.powerbot.game.loader.io.Crawler;
+import org.powerbot.game.loader.io.PackEncryption;
+import org.powerbot.game.loader.wrapper.Rs2Applet;
 import org.powerbot.util.io.HttpClient;
 
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.Future;
 
 /**
  * A definition of a <code>GameEnvironment</code> that manages all the data associated with this environment.
@@ -20,40 +21,48 @@ import java.util.concurrent.Future;
  */
 public class GameDefinition implements GameEnvironment {
 	protected TaskProcessor processor;
-	public Map<String, byte[]> classes;
+	private Map<String, byte[]> classes;
+
+	public Crawler crawler;
+	public Rs2Applet appletContainer;
+	public Runnable callback;
+	public ClientStub stub;
 
 	public GameDefinition() {
 		this.processor = new TaskContainer();
-		this.classes = null;
+		this.classes = new HashMap<String, byte[]>();
+
+		this.crawler = new Crawler();
+		this.appletContainer = null;
+		this.callback = null;
+		this.stub = null;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public Future<Object> initializeEnvironment() {
-		ContainedTask loader = new ContainedTask() {
-			public Object call() {
-				Crawler crawler = new Crawler();
-				if (!crawler.crawl()) {
-					return null;
-				}
-				byte[] loader = getLoader(crawler);
-				if (loader != null) {
-					String secretKeySpecKey = crawler.parameters.get("0");
-					String ivParameterSpecKey = crawler.parameters.get("-1");
-					if (secretKeySpecKey == null || ivParameterSpecKey == null) {
-						return null;
-					}
-					byte[] secretKeySpecBytes = PackEncryption.toByte(secretKeySpecKey);
-					byte[] ivParameterSpecBytes = PackEncryption.toByte(ivParameterSpecKey);
-					Map<String, byte[]> classes = PackEncryption.extract(secretKeySpecBytes, ivParameterSpecBytes, loader);
-					return classes == null || classes.size() == 0 ? null : classes;
-				}
-				return null;
+	public boolean initializeEnvironment() {
+		this.classes.clear();
+		if (!crawler.crawl()) {
+			return false;
+		}
+		byte[] loader = getLoader(crawler);
+		if (loader != null) {
+			String secretKeySpecKey = crawler.parameters.get("0");
+			String ivParameterSpecKey = crawler.parameters.get("-1");
+			if (secretKeySpecKey == null || ivParameterSpecKey == null) {
+				return false;
 			}
-		};
-		processor.submit(loader);
-		return loader.future;
+			byte[] secretKeySpecBytes = PackEncryption.toByte(secretKeySpecKey);
+			byte[] ivParameterSpecBytes = PackEncryption.toByte(ivParameterSpecKey);
+			Map<String, byte[]> classes = PackEncryption.extract(secretKeySpecBytes, ivParameterSpecBytes, loader);
+			if (classes != null && classes.size() > 0) {
+				this.classes.putAll(classes);
+				classes.clear();
+			}
+			return this.classes.size() > 0;
+		}
+		return false;
 	}
 
 	public static byte[] getLoader(Crawler crawler) {
@@ -70,5 +79,11 @@ public class GameDefinition implements GameEnvironment {
 	 * {@inheritDoc}
 	 */
 	public void killEnvironment() {
+	}
+
+	public Map<String, byte[]> classes() {
+		Map<String, byte[]> classes = new HashMap<String, byte[]>();
+		classes.putAll(this.classes);
+		return classes;
 	}
 }
