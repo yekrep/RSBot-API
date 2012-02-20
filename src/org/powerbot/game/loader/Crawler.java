@@ -1,6 +1,5 @@
 package org.powerbot.game.loader;
 
-import org.powerbot.lang.LoadingException;
 import org.powerbot.util.io.HttpClient;
 
 import java.io.IOException;
@@ -38,7 +37,7 @@ public class Crawler {
 		clazz = null;
 	}
 
-	public void crawl() throws LoadingException, MalformedURLException {
+	public boolean crawl() {
 		String frameHttpSource = download(frame, home);
 		if (frameHttpSource != null) {
 			Matcher gameURLMatcher = PATTERN_GAME.matcher(frameHttpSource);
@@ -53,8 +52,13 @@ public class Crawler {
 				Matcher archiveMatcher = PATTERN_ARCHIVE.matcher(gameHttpSource);
 				if (archiveMatcher.find()) {
 					String archiveLink = archiveMatcher.group(1);
-					URL gameURL;
-					gameURL = new URL(game);
+					URL gameURL = null;
+					try {
+						gameURL = new URL(game);
+					} catch (MalformedURLException e) {
+						e.printStackTrace();
+						return false;
+					}
 					archive = gameURL.getProtocol() + "://" + gameURL.getHost() + "/" + archiveLink;
 				}
 
@@ -73,11 +77,11 @@ public class Crawler {
 				}
 
 				if (parameters.size() > 0 && clazz != null && archive != null) {
-					return;
+					return true;
 				}
 			}
 		}
-		throw new LoadingException("unable to crawl for resources");
+		return false;
 	}
 
 	private String download(String url, String referer) {
