@@ -1,11 +1,13 @@
 package org.powerbot.game;
 
+import org.powerbot.asm.NodeProcessor;
 import org.powerbot.concurrent.TaskContainer;
 import org.powerbot.concurrent.TaskProcessor;
 import org.powerbot.game.loader.ClientStub;
 import org.powerbot.game.loader.io.Crawler;
 import org.powerbot.game.loader.io.PackEncryption;
 import org.powerbot.game.loader.wrapper.Rs2Applet;
+import org.powerbot.lang.AdaptException;
 import org.powerbot.util.io.HttpClient;
 
 import java.io.IOException;
@@ -19,7 +21,7 @@ import java.util.Map;
  *
  * @author Timer
  */
-public class GameDefinition implements GameEnvironment {
+public abstract class GameDefinition implements GameEnvironment {
 	protected TaskProcessor processor;
 	private Map<String, byte[]> classes;
 
@@ -60,7 +62,22 @@ public class GameDefinition implements GameEnvironment {
 				this.classes.putAll(classes);
 				classes.clear();
 			}
-			return this.classes.size() > 0;
+			if (this.classes.size() > 0) {
+				NodeProcessor nodeProcessor = getProcessor();
+				if (nodeProcessor != null) {
+					try {
+						nodeProcessor.adapt();
+					} catch (AdaptException e) {
+						e.printStackTrace();
+						return false;
+					}
+					for (Map.Entry<String, byte[]> clazz : this.classes.entrySet()) {
+						String name = clazz.getKey();
+						this.classes.put(name, nodeProcessor.process(name, clazz.getValue()));
+					}
+				}
+				return true;
+			}
 		}
 		return false;
 	}
