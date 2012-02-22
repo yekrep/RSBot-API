@@ -92,12 +92,6 @@ public abstract class GameDefinition implements GameEnvironment {
 		return null;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public void killEnvironment() {
-	}
-
 	public Map<String, byte[]> classes() {
 		Map<String, byte[]> classes = new HashMap<String, byte[]>();
 		classes.putAll(this.classes);

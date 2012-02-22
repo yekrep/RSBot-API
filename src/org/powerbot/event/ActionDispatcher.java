@@ -1,7 +1,7 @@
 package org.powerbot.event;
 
 import org.powerbot.concurrent.ContainedTask;
-import org.powerbot.concurrent.SimpleTask;
+import org.powerbot.concurrent.RunnableTask;
 import org.powerbot.concurrent.TaskProcessor;
 import org.powerbot.lang.Activator;
 
@@ -15,7 +15,7 @@ import java.util.concurrent.Future;
  *
  * @author Timer
  */
-public class ActionDispatcher extends SimpleTask implements ActionManager {
+public class ActionDispatcher extends RunnableTask implements ActionManager {
 	private TaskProcessor processor;
 	private List<Action> actions;
 	private State state;
@@ -137,8 +137,8 @@ public class ActionDispatcher extends SimpleTask implements ActionManager {
 	 * @param threadObject   The locking object to notify.
 	 * @return The <code>SimpleTask</code> to be submitted.
 	 */
-	private SimpleTask createWait(final List<Future<?>> lockingFutures, final Object threadObject) {
-		return new SimpleTask() {
+	private RunnableTask createWait(final List<Future<?>> lockingFutures, final Object threadObject) {
+		return new RunnableTask() {
 			public void run() {
 				while (lockingFutures.size() > 0) {
 					Future<?> future = lockingFutures.get(0);

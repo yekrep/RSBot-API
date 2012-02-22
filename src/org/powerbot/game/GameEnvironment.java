@@ -16,10 +16,12 @@ public interface GameEnvironment {
 	 */
 	public boolean initializeEnvironment();
 
+	NodeProcessor getProcessor();
+
+	public void startEnvironment();
+
 	/**
 	 * Kills this game and cleans up environment for re-initialization.
 	 */
 	public void killEnvironment();
-
-	NodeProcessor getProcessor();
 }
