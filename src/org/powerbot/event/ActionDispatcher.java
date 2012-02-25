@@ -92,10 +92,10 @@ public class ActionDispatcher extends RunnableTask implements ActionManager {
 				}
 			} else if (state == State.LISTENING) {
 				for (Action action : actions) {
-					Activator activator = action.getActivator();
+					Activator activator = action.activator;
 					if (activator != null && activator.dispatch()) {
 						final List<Future<?>> futures = Collections.synchronizedList(new ArrayList<Future<?>>());
-						ActionComposite[] actionComposites = action.constructComposites();
+						ActionComposite[] actionComposites = action.actionComposites;
 						if (actionComposites != null) {
 							for (ActionComposite actionComposite : actionComposites) {
 								if (actionComposite != null) {

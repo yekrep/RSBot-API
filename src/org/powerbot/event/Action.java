@@ -7,27 +7,33 @@ import org.powerbot.lang.Activator;
  *
  * @author Timer
  */
-public abstract class Action {
-	protected boolean requireLock;
+public class Action {
+	public boolean requireLock;
+	public Activator activator;
+	public ActionComposite[] actionComposites;
 
 	/**
-	 * Initializes an action's properties.
+	 * Initializes this <code>Action</code> with appropriate information required for processing.
+	 *
+	 * @param activator        The <code>Activator</code> associated with this <code>Action</code>.
+	 * @param actionComposites The <code>ActionComposite</code> array associated with this <code>Action</code>.
 	 */
-	public Action() {
-		requireLock = true;
+	public Action(Activator activator, ActionComposite[] actionComposites) {
+		this.activator = activator;
+		this.actionComposites = actionComposites;
+		this.requireLock = true;
 	}
 
 	/**
-	 * Returns the <code>Activator</code> associated with this initialized <code>Action</code>.
+	 * Initializes this <code>Action</code> with appropriate information required for processing.
 	 *
-	 * @return The <code>Activator</code> associated with this <code>Action</code>.
+	 * @param activator        The <code>Activator</code> associated with this <code>Action</code>.
+	 * @param actionComposites The <code>ActionComposite</code> array associated with this <code>Action</code>.
+	 * @param requireLock      <tt>true</tt> to require the ActionManager to lock while processing this action; otherwise <tt>false</tt>.
 	 */
-	public abstract Activator getActivator();
-
-	/**
-	 * Returns the array of action composites initialized with this <code>Action</code>.
-	 *
-	 * @return The <code>ActionComposite</code> array associated with this <code>Action</code>.
-	 */
-	public abstract ActionComposite[] constructComposites();
+	public Action(Activator activator, ActionComposite[] actionComposites, boolean requireLock) {
+		this.activator = activator;
+		this.actionComposites = actionComposites;
+		this.requireLock = requireLock;
+	}
 }
