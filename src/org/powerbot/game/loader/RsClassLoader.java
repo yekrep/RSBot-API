@@ -3,7 +3,6 @@ package org.powerbot.game.loader;
 import java.awt.*;
 import java.io.File;
 import java.io.FilePermission;
-import java.lang.ClassLoader;
 import java.net.SocketPermission;
 import java.net.URL;
 import java.security.CodeSigner;

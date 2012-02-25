@@ -23,7 +23,7 @@ public class ActionDispatcher extends RunnableTask implements ActionManager {
 	/**
 	 * Initializes this action dispatcher with appropriate objects.
 	 *
-	 * @param processor The <code>TaskProcessor</code> to use as a medium for proccessing.
+	 * @param processor The <code>TaskProcessor</code> to use as a medium for processing.
 	 */
 	public ActionDispatcher(TaskProcessor processor) {
 		this.processor = processor;

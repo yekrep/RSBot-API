@@ -1,14 +1,45 @@
 package org.powerbot.game.bot;
 
+import org.powerbot.Chrome;
 import org.powerbot.asm.NodeProcessor;
 import org.powerbot.game.GameDefinition;
+import org.powerbot.game.client.Client;
 import org.powerbot.game.loader.Loader;
+import org.powerbot.game.loader.script.ModScript;
+import org.powerbot.util.io.IOHelper;
+
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Bot extends GameDefinition {
+	private BufferedImage image;
+	private BufferedImage backBuffer;
+
+	private Client client;
+
+	private static final List<Bot> bots = new ArrayList<Bot>();
+
+	public Bot() {
+		Dimension d = new Dimension(Chrome.PANEL_WIDTH, Chrome.PANEL_HEIGHT);
+		image = new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_RGB);
+		backBuffer = new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_RGB);
+		client = null;
+	}
+
 	/**
 	 * {@inheritDoc}
 	 */
 	public void startEnvironment() {
+		bots.add(this);
+		this.callback = new Runnable() {
+			public void run() {
+				setClient((Client) appletContainer.clientInstance);
+				resize(Chrome.PANEL_WIDTH, Chrome.PANEL_HEIGHT);
+			}
+		};
 		processor.submit(new Loader(this));
 	}
 
@@ -16,7 +47,7 @@ public class Bot extends GameDefinition {
 	 * {@inheritDoc}
 	 */
 	public NodeProcessor getProcessor() {
-		return null;
+		return new ModScript(IOHelper.read(new File("rsbot-v4.ms")));
 	}
 
 	/**
@@ -32,5 +63,40 @@ public class Bot extends GameDefinition {
 			appletContainer = null;
 			stub = null;
 		}
+		bots.remove(this);
+	}
+
+	private void setClient(Client clientInstance) {
+		this.client = clientInstance;
+		//this.client.setCallback(new CallbackImpl(this));
+	}
+
+	public void resize(final int width, final int height) {
+		backBuffer = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+		image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+		appletContainer.setSize(width, height);
+		Graphics g = backBuffer.getGraphics();
+		appletContainer.update(g);
+		appletContainer.paint(g);
+	}
+
+	public Graphics getBufferGraphics() {
+		Graphics back = backBuffer.getGraphics();
+		back.drawString("Hi WeiSu", 10, 50);
+		back.dispose();
+		image.getGraphics().drawImage(backBuffer, 0, 0, null);
+		return backBuffer.getGraphics();
+	}
+
+	public static Bot getBot(Object o) {
+		ClassLoader cl = o.getClass().getClassLoader();
+		for (Bot bot : Bot.bots) {
+			Component c = bot.appletContainer.getComponent(0);
+			ClassLoader componentParent = c.getClass().getClassLoader();
+			if (cl == componentParent) {
+				return bot;
+			}
+		}
+		return null;
 	}
 }
