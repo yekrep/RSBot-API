@@ -2,7 +2,6 @@ package org.powerbot.game.client.input;
 
 import org.powerbot.game.bot.Bot;
 
-import java.applet.Applet;
 import java.awt.*;
 import java.awt.event.FocusEvent;
 import java.awt.image.*;
@@ -25,7 +24,8 @@ public class Canvas extends java.awt.Canvas {
 				loader_identified = true;
 			}
 		}
-		return bot.getBufferGraphics();
+		return super.getGraphics();
+		//return bot.getBufferGraphics();
 	}
 
 	@Override
@@ -51,7 +51,7 @@ public class Canvas extends java.awt.Canvas {
 	@Override
 	public final Dimension getSize() {
 		if (bot != null) {
-			return ((Applet) bot.appletContainer.clientInstance).getSize();
+			return bot.appletContainer.getSize();
 		}
 		return super.getSize();
 	}

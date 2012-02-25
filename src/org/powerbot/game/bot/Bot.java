@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Bot extends GameDefinition {
-	private BufferedImage image;
+	public BufferedImage image;
 	private BufferedImage backBuffer;
 
 	private Client client;
@@ -36,7 +36,8 @@ public class Bot extends GameDefinition {
 		bots.add(this);
 		this.callback = new Runnable() {
 			public void run() {
-				setClient((Client) appletContainer.clientInstance);
+				//setClient((Client) appletContainer.clientInstance);
+				appletContainer.paint(image.getGraphics());
 				resize(Chrome.PANEL_WIDTH, Chrome.PANEL_HEIGHT);
 			}
 		};
@@ -47,7 +48,7 @@ public class Bot extends GameDefinition {
 	 * {@inheritDoc}
 	 */
 	public NodeProcessor getProcessor() {
-		return new ModScript(IOHelper.read(new File("rsbot-v4.ms")));
+		return new ModScript(IOHelper.read(new File("C:\\Users\\Joe\\Desktop\\Bots\\Modscript_reparse\\out.ms")));
 	}
 
 	/**
@@ -68,20 +69,20 @@ public class Bot extends GameDefinition {
 
 	private void setClient(Client clientInstance) {
 		this.client = clientInstance;
-		//this.client.setCallback(new CallbackImpl(this));
+		this.client.setCallback(new CallbackImpl(this));
 	}
 
-	public void resize(final int width, final int height) {
+	public void resize(int width, int height) {
 		backBuffer = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 		image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 		appletContainer.setSize(width, height);
-		Graphics g = backBuffer.getGraphics();
-		appletContainer.update(g);
-		appletContainer.paint(g);
+		appletContainer.update(backBuffer.getGraphics());
+		appletContainer.paint(backBuffer.getGraphics());
 	}
 
 	public Graphics getBufferGraphics() {
 		Graphics back = backBuffer.getGraphics();
+		back.setColor(Color.white);
 		back.drawString("Hi WeiSu", 10, 50);
 		back.dispose();
 		image.getGraphics().drawImage(backBuffer, 0, 0, null);
