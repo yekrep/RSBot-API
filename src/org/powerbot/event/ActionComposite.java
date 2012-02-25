@@ -3,15 +3,19 @@ package org.powerbot.event;
 import org.powerbot.concurrent.ContainedTask;
 
 /**
- * A container for a task to be performed through.
+ * A container for [a] task[s] to be performed through.
  *
  * @author Timer
  */
-public interface ActionComposite {
+public class ActionComposite {
+	public ContainedTask[] tasks;
+
 	/**
-	 * Returns the task that is performed when this <code>ActionComposite</code> is executed.
+	 * Initializes this <code>ActionComposite</code> for response to Action activations.
 	 *
-	 * @return The <code>ContainedTask</code> associated with this <code>ActionComposite</code>.
+	 * @param tasks The <code>ContainedTask</code> associated with this <code>ActionComposite</code>.
 	 */
-	public ContainedTask createTask();
+	public ActionComposite(ContainedTask... tasks) {
+		this.tasks = tasks;
+	}
 }

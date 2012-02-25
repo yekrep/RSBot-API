@@ -95,11 +95,9 @@ public class ActionDispatcher extends RunnableTask implements ActionManager {
 					Activator activator = action.activator;
 					if (activator != null && activator.dispatch()) {
 						final List<Future<?>> futures = Collections.synchronizedList(new ArrayList<Future<?>>());
-						ActionComposite[] actionComposites = action.actionComposites;
-						if (actionComposites != null) {
-							for (ActionComposite actionComposite : actionComposites) {
-								if (actionComposite != null) {
-									ContainedTask task = actionComposite.createTask();
+						if (action.actionComposite != null) {
+							if (action.actionComposite.tasks != null) {
+								for (ContainedTask task : action.actionComposite.tasks) {
 									if (task != null) {
 										processor.submit(task);
 										if (task.future != null) {
@@ -109,6 +107,7 @@ public class ActionDispatcher extends RunnableTask implements ActionManager {
 								}
 							}
 						}
+						State previous = state;
 						if (action.requireLock) {
 							synchronized (this) {
 								processor.submit(createWait(futures, this));
@@ -120,7 +119,9 @@ public class ActionDispatcher extends RunnableTask implements ActionManager {
 									}
 								}
 							}
-							state = State.LISTENING;
+							if (state == State.LOCKED) {
+								state = previous;
+							}
 						}
 					}
 				}
@@ -137,6 +138,7 @@ public class ActionDispatcher extends RunnableTask implements ActionManager {
 	 * @param threadObject   The locking object to notify.
 	 * @return The <code>SimpleTask</code> to be submitted.
 	 */
+
 	private RunnableTask createWait(final List<Future<?>> lockingFutures, final Object threadObject) {
 		return new RunnableTask() {
 			public void run() {
