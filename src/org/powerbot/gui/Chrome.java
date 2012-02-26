@@ -1,6 +1,8 @@
 package org.powerbot.gui;
 
 import org.powerbot.game.bot.Bot;
+import org.powerbot.util.Configuration;
+import org.powerbot.util.io.Resources;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,9 +21,11 @@ public class Chrome extends JFrame implements WindowListener {
 	public Chrome() {
 		setSize(new Dimension(Chrome.PANEL_WIDTH, Chrome.PANEL_HEIGHT));
 		setLocationRelativeTo(getParent());
-		setVisible(true);
+		setTitle(Configuration.NAME);
+		setIconImage(Resources.getImage(Resources.Paths.ICON));
 		addWindowListener(this);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		setVisible(true);
 	}
 
 	public void addBot() {
