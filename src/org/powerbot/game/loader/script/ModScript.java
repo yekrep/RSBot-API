@@ -95,7 +95,7 @@ public class ModScript implements NodeProcessor {
 						f.name = scanner.readString();
 						f.desc = scanner.readString();
 						fieldsGet[ptr++] = f;
-						System.out.println(f.getter_access + " " + f.getter_name + " " + f.getter_desc + " " + f.owner + " " + f.name + " " + f.desc);
+						System.out.println(clazz + " " + f.getter_access + " " + f.getter_name + " " + f.getter_desc + " " + f.owner + " " + f.name + " " + f.desc);
 					}
 					adapters.put(clazz, new AddGetterAdapter(delegate(clazz), op == Headers.GET_FIELD, fieldsGet));
 					break;
