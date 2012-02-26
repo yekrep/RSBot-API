@@ -27,9 +27,17 @@ public class Chrome extends JFrame implements WindowListener {
 
 	public void addBot() {
 		final Bot bot = new Bot();
-		bot.initializeEnvironment();
-		bot.startEnvironment();
-		add(bot.appletContainer);
+		if (bot.initializeEnvironment()) {
+			bot.startEnvironment();
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException e) {
+			}
+			add(bot.appletContainer);
+		}
+		else {
+			log.severe("Could not start a bot instance");
+		}
 	}
 
 	@Override
