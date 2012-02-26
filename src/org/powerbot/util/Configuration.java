@@ -7,8 +7,8 @@ import org.powerbot.util.io.Resources;
 
 public class Configuration {
 	public static final String NAME = "RSBot";
+	private static final int VERSION = 4000;
 	public static final boolean FROMJAR;
-	public static final int VERSION;
 
 	public interface Paths {
 		public interface URLs {
@@ -22,11 +22,13 @@ public class Configuration {
 
 	static {
 		FROMJAR = Configuration.class.getClassLoader().getResource(Resources.Paths.VERSION) != null;
-		int v = 0;
-		try {
-			v = Integer.parseInt(IOHelper.readString(Resources.getResourceURL(Resources.Paths.VERSION)).trim());
-		} catch (final MalformedURLException e) {
-		}
-		VERSION = v;
+	}
+
+	public static int getVersion() {
+		return VERSION;
+	}
+
+	public static String getVersionFormatted() {
+		return StringUtil.formatVersion(getVersion());
 	}
 }

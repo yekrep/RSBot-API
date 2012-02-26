@@ -36,7 +36,7 @@ public class HttpClient {
 		s.setLength(0);
 		s.append(Configuration.NAME);
 		s.append('/');
-		s.append(Configuration.VERSION);
+		s.append(Configuration.getVersion());
 		s.append(" (");
 		s.append(System.getProperty("os.name"));
 		s.append("; Java/");
