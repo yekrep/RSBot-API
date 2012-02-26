@@ -41,7 +41,7 @@ public class Scanner {
 	}
 
 	public String readString() {
-		return new String(readSegment());
+		return normaliseString(new String(readSegment()));
 	}
 
 	public byte[] readSegment() {
@@ -57,5 +57,10 @@ public class Scanner {
 		for (int i = off; i < off + len; i++) {
 			data[i] = (byte) readByte();
 		}
+	}
+
+	private String normaliseString(String s) {
+		s = s.replace("org/rsbot", org.powerbot.game.GameDefinition.class.getPackage().getName().replace('.', '/'));
+		return s;
 	}
 }

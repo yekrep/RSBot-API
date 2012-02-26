@@ -80,7 +80,7 @@ public class Bot extends GameDefinition {
 
 	private void setClient(Client clientInstance) {
 		this.client = clientInstance;
-		//this.client.setCallback(new CallbackImpl(this));
+		this.client.setCallback(new CallbackImpl(this));
 	}
 
 	public void resize(int width, int height) {
