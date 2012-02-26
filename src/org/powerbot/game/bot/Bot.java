@@ -1,11 +1,11 @@
 package org.powerbot.game.bot;
 
-import org.powerbot.Chrome;
 import org.powerbot.asm.NodeProcessor;
 import org.powerbot.game.GameDefinition;
 import org.powerbot.game.client.Client;
 import org.powerbot.game.loader.Loader;
 import org.powerbot.game.loader.script.ModScript;
+import org.powerbot.gui.Chrome;
 import org.powerbot.util.Configuration;
 import org.powerbot.util.io.HttpClient;
 import org.powerbot.util.io.IOHelper;
