@@ -8,7 +8,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.TimeZone;
 import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
@@ -60,9 +62,24 @@ public class HttpClient {
 	}
 
 	private static HttpURLConnection getConnection(final URL url) throws IOException {
+		if (http301.containsKey(url)) {
+			return getConnection(http301.get(url));
+		}
 		final HttpURLConnection con = getHttpConnection(url);
 		con.setUseCaches(true);
-		return con;
+		switch (con.getResponseCode()) {
+		case 200:
+			return con;
+		default:
+			for (final Entry<String, List<String>> header : con.getHeaderFields().entrySet()) {
+				if (header.getKey() != null && header.getKey().equalsIgnoreCase("location")) {
+					final URL newUrl = new URL(header.getValue().get(0));
+					http301.put(url, newUrl);
+					return getConnection(newUrl);
+				}
+			}
+			return null;
+		}
 	}
 
 	public static long getLastModified(final URL url) throws IOException {
