@@ -5,6 +5,8 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.security.MessageDigest;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.jar.JarEntry;
@@ -14,32 +16,24 @@ import java.util.jar.Pack200;
 import java.util.zip.GZIPInputStream;
 
 public class PackEncryption {
+	public static byte[] inner_pack_hash;
+
 	public static Map<String, byte[]> extract(byte[] secretKeySpecKey, byte[] ivParameterSpecKey, byte[] loader) {
 		try {
 			byte[] inner_pack = null;
 			JarInputStream jarInputStream = new JarInputStream(new ByteArrayInputStream(loader));
 			JarEntry entry;
-			while (null != (entry = jarInputStream.getNextJarEntry())) {
-				String entryName = entry.getName();
-				if (!entryName.equals("inner.pack.gz")) {
-					continue;
+			while ((entry = jarInputStream.getNextJarEntry()) != null && inner_pack == null) {
+				if (entry.getName().equals("inner.pack.gz")) {
+					inner_pack = read(jarInputStream);
+					break;
 				}
-				ByteArrayOutputStream out = new ByteArrayOutputStream();
-				byte[] buffer = new byte[2048];
-				int read;
-				while (jarInputStream.available() > 0) {
-					read = jarInputStream.read(buffer, 0, buffer.length);
-					if (read < 0) {
-						break;
-					}
-					out.write(buffer, 0, read);
-				}
-				inner_pack = out.toByteArray();
-				break;
 			}
 			if (inner_pack == null) {
 				return null;
 			}
+			MessageDigest digest = MessageDigest.getInstance("SHA-1");
+			PackEncryption.inner_pack_hash = digest.digest(inner_pack);
 
 			Map<String, byte[]> classes = new HashMap<String, byte[]>();
 			SecretKeySpec secretKeySpec = new SecretKeySpec(secretKeySpecKey, "AES");
@@ -54,28 +48,33 @@ public class PackEncryption {
 			unpacker.unpack(gzipIS, jos);
 
 			jarInputStream = new JarInputStream(new ByteArrayInputStream(byteArrayOutputStream.toByteArray()));
-			while (null != (entry = jarInputStream.getNextJarEntry())) {
+			while ((entry = jarInputStream.getNextJarEntry()) != null) {
 				String entryName = entry.getName();
-				ByteArrayOutputStream out = new ByteArrayOutputStream();
-				byte[] buffer = new byte[2048];
-				int read;
-				while (jarInputStream.available() > 0) {
-					read = jarInputStream.read(buffer, 0, buffer.length);
-					if (read < 0) {
-						break;
-					}
-					out.write(buffer, 0, read);
-				}
 				if (entryName.endsWith(".class")) {
+					byte[] read = read(jarInputStream);
 					entryName = entryName.replace('/', '.');
 					String name = entryName.substring(0, entryName.length() - 6);
-					classes.put(name, out.toByteArray());
+					classes.put(name, read);
 				}
 			}
 			return classes;
 		} catch (Exception ignored) {
 		}
 		return null;
+	}
+
+	private static byte[] read(JarInputStream inputStream) throws IOException {
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		byte[] buffer = new byte[2048];
+		int read;
+		while (inputStream.available() > 0) {
+			read = inputStream.read(buffer, 0, buffer.length);
+			if (read < 0) {
+				break;
+			}
+			out.write(buffer, 0, read);
+		}
+		return out.toByteArray();
 	}
 
 	public static byte[] toByte(String key) {

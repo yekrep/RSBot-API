@@ -6,11 +6,13 @@ import org.powerbot.game.GameDefinition;
 import org.powerbot.game.client.Client;
 import org.powerbot.game.loader.Loader;
 import org.powerbot.game.loader.script.ModScript;
-import org.powerbot.util.io.IOHelper;
+import org.powerbot.util.Configuration;
+import org.powerbot.util.io.HttpClient;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
+import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,7 +38,7 @@ public class Bot extends GameDefinition {
 		bots.add(this);
 		this.callback = new Runnable() {
 			public void run() {
-				//setClient((Client) appletContainer.clientInstance);
+				setClient((Client) appletContainer.clientInstance);
 				appletContainer.paint(image.getGraphics());
 				resize(Chrome.PANEL_WIDTH, Chrome.PANEL_HEIGHT);
 			}
@@ -48,7 +50,13 @@ public class Bot extends GameDefinition {
 	 * {@inheritDoc}
 	 */
 	public NodeProcessor getProcessor() {
-		return new ModScript(IOHelper.read(new File("C:\\Users\\Joe\\Desktop\\Bots\\Modscript_reparse\\out.ms")));
+		byte[] modscript = null;
+		try {
+			modscript = HttpClient.downloadBinary(new URL(Configuration.Paths.URLs.CLIENT_PATCH + packHash));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return (modscript != null) ? new ModScript(modscript) : null;
 	}
 
 	/**
@@ -69,7 +77,7 @@ public class Bot extends GameDefinition {
 
 	private void setClient(Client clientInstance) {
 		this.client = clientInstance;
-		this.client.setCallback(new CallbackImpl(this));
+		//this.client.setCallback(new CallbackImpl(this));
 	}
 
 	public void resize(int width, int height) {

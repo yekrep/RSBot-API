@@ -6,7 +6,11 @@ public class Configuration {
 
 	public interface Paths {
 		public interface URLs {
+			public static final String BASE = "http://links.powerbot.org/";
+			public static final String SITE = "http://powerbot.org/";
+
 			public static final String GAME = "runescape.com";
+			public static final String CLIENT_PATCH = BASE + "/ms/";
 		}
 	}
 

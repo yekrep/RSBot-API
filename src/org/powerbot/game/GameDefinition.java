@@ -8,6 +8,7 @@ import org.powerbot.game.loader.io.Crawler;
 import org.powerbot.game.loader.io.PackEncryption;
 import org.powerbot.game.loader.wrapper.Rs2Applet;
 import org.powerbot.lang.AdaptException;
+import org.powerbot.util.StringUtil;
 import org.powerbot.util.io.HttpClient;
 
 import java.io.IOException;
@@ -29,6 +30,7 @@ public abstract class GameDefinition implements GameEnvironment {
 	public Rs2Applet appletContainer;
 	public Runnable callback;
 	public ClientStub stub;
+	protected String packHash;
 
 	public GameDefinition() {
 		this.processor = new TaskContainer();
@@ -38,6 +40,7 @@ public abstract class GameDefinition implements GameEnvironment {
 		this.appletContainer = null;
 		this.callback = null;
 		this.stub = null;
+		this.packHash = null;
 	}
 
 	/**
@@ -58,6 +61,7 @@ public abstract class GameDefinition implements GameEnvironment {
 			byte[] secretKeySpecBytes = PackEncryption.toByte(secretKeySpecKey);
 			byte[] ivParameterSpecBytes = PackEncryption.toByte(ivParameterSpecKey);
 			Map<String, byte[]> classes = PackEncryption.extract(secretKeySpecBytes, ivParameterSpecBytes, loader);
+			packHash = StringUtil.byteArrayToHexString(PackEncryption.inner_pack_hash);
 			if (classes != null && classes.size() > 0) {
 				this.classes.putAll(classes);
 				classes.clear();
