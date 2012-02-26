@@ -11,5 +11,6 @@ public class CallbackImpl implements Callback {
 	}
 
 	public void notifyMessage(int id, String sender, String message) {
+		System.out.println("[" + id + "] " + sender + ": " + message);
 	}
 }
