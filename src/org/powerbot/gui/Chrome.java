@@ -34,7 +34,7 @@ public class Chrome extends JFrame implements WindowListener {
 			bot.startEnvironment();
 			try {
 				Thread.sleep(500);
-			} catch (InterruptedException e) {
+			} catch (InterruptedException ignored) {
 			}
 			add(bot.appletContainer);
 		}

@@ -140,6 +140,7 @@ public class ModScript implements NodeProcessor {
 					clazz = scanner.readString();
 					String inter = scanner.readString();
 					adapters.put(clazz, new AddInterfaceAdapter(delegate(clazz), inter));
+					System.out.println(clazz + " -> " + inter);
 					break;
 				case Headers.SET_SUPER:
 					clazz = scanner.readString();

@@ -23,7 +23,7 @@ public class Configuration {
 		int v = 0;
 		try {
 			v = Integer.parseInt(IOHelper.readString(Resources.getResourceURL(Resources.Paths.VERSION)).trim());
-		} catch (final MalformedURLException e) {
+		} catch (final MalformedURLException ignored) {
 		}
 		VERSION = v;
 	}
