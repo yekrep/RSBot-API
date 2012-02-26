@@ -95,9 +95,9 @@ public class ModScript implements NodeProcessor {
 						f.name = scanner.readString();
 						f.desc = scanner.readString();
 						fieldsGet[ptr++] = f;
-						//System.out.println(f.getter_access + " " + f.getter_name + " " + f.getter_desc + " " + f.owner + " " + f.name + " " + f.desc);
+						System.out.println(f.getter_access + " " + f.getter_name + " " + f.getter_desc + " " + f.owner + " " + f.name + " " + f.desc);
 					}
-					//adapters.put(clazz, new AddGetterAdapter(delegate(clazz), op == Headers.GET_FIELD, fieldsGet));
+					adapters.put(clazz, new AddGetterAdapter(delegate(clazz), op == Headers.GET_FIELD, fieldsGet));
 					break;
 				case Headers.ADD_FIELD:
 					clazz = scanner.readString();
@@ -115,7 +115,7 @@ public class ModScript implements NodeProcessor {
 				case Headers.ADD_METHOD:
 					clazz = scanner.readString();
 					count = scanner.readShort();
-					AddMethodAdapter.Method[] methods = new AddMethodAdapter.Method[count];
+					AddMethodAdapter.Method[] methods = new AddMethodAdapter.Method[1];
 					while (ptr < count) {
 						AddMethodAdapter.Method m = new AddMethodAdapter.Method();
 						m.access = scanner.readInt();
@@ -126,9 +126,15 @@ public class ModScript implements NodeProcessor {
 						m.code = code;
 						m.max_locals = scanner.readByte();
 						m.max_stack = scanner.readByte();
-						methods[ptr++] = m;
+						if (m.name.equalsIgnoreCase("setcallback")) {
+							methods[0] = m;
+							ptr++;
+						} else {
+							ptr++;
+						}
+						System.out.println("new method in " + clazz + " total: " + count + " || " + m.access + " " + m.name + " " + m.desc + " " + m.max_locals + " " + m.max_stack);
 					}
-					//adapters.put(clazz, new AddMethodAdapter(delegate(clazz), methods));
+					adapters.put(clazz, new AddMethodAdapter(delegate(clazz), methods));
 					break;
 				case Headers.ADD_INTERFACE:
 					clazz = scanner.readString();
@@ -163,15 +169,14 @@ public class ModScript implements NodeProcessor {
 					Map<Integer, byte[]> fragments = new HashMap<Integer, byte[]>();
 					while (count-- > 0) {
 						int off = scanner.readShort();
-						//System.out.println("off: " + off);
+						if (off > 2) {
+							off++;
+						}
 						byte[] code = new byte[scanner.readInt()];
 						scanner.readSegment(code, code.length, 0);
 						fragments.put(off, code);
 					}
-					scanner.readByte();
-					scanner.readByte();
-					//System.out.println(clazz + " " + name + " " + desc);
-					//adapters.put(clazz, new InsertCodeAdapter(delegate(clazz), name, desc, fragments, scanner.readByte(), scanner.readByte()));
+					adapters.put(clazz, new InsertCodeAdapter(delegate(clazz), name, desc, fragments, scanner.readByte(), scanner.readByte()));
 					break;
 				case Headers.OVERRIDE_CLASS:
 					String old_clazz = scanner.readString();
@@ -179,7 +184,7 @@ public class ModScript implements NodeProcessor {
 					count = scanner.readByte();
 					while (count-- > 0) {
 						String current_clazz = scanner.readString();
-						//adapters.put(current_clazz, new OverrideClassAdapter(delegate(current_clazz), old_clazz, new_clazz));
+						adapters.put(current_clazz, new OverrideClassAdapter(delegate(current_clazz), old_clazz, new_clazz));
 					}
 					break;
 				case Headers.CONSTANT:

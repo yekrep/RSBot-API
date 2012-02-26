@@ -63,6 +63,10 @@ public class InsertCodeAdapter extends ClassVisitor {
 		private int idx = 0;
 
 		@Override
+		public void visitFrame(int type, int nLocal, Object[] local, int nStack, Object[] stack) {
+		}
+
+		@Override
 		public void visitInsn(int opcode) {
 			checkFragments();
 			super.visitInsn(opcode);
@@ -138,6 +142,10 @@ public class InsertCodeAdapter extends ClassVisitor {
 		public void visitMultiANewArrayInsn(String desc, int dims) {
 			checkFragments();
 			super.visitMultiANewArrayInsn(desc, dims);
+		}
+
+		@Override
+		public void visitLineNumber(int line, Label start) {
 		}
 
 		@Override

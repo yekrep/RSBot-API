@@ -18,8 +18,7 @@ public class Boot implements Runnable {
 		chrome.addBot();
 	}
 
-	@Override
 	public void run() {
-		main(new String[] { });
+		main(new String[]{});
 	}
 }

@@ -1,16 +1,13 @@
 package org.powerbot.asm.adapter;
 
-import org.objectweb.asm.ClassVisitor;
-import org.objectweb.asm.FieldVisitor;
-import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.*;
 
 /**
- * @author Qauters
+ * @author Huan
  */
 public class OverrideClassAdapter extends ClassVisitor {
-	private String old_clazz;
-	private String new_clazz;
+	private final String old_clazz;
+	private final String new_clazz;
 
 	public OverrideClassAdapter(ClassVisitor delegate, String old_clazz, String new_clazz) {
 		super(Opcodes.ASM4, delegate);
@@ -19,13 +16,11 @@ public class OverrideClassAdapter extends ClassVisitor {
 	}
 
 	@Override
-	public MethodVisitor visitMethod(
-			int access,
-			String name,
-			String desc,
-			String signature,
-			String[] exceptions) {
-		return new ClassAdapter(super.visitMethod(access, name, desc, signature, exceptions), old_clazz, new_clazz);
+	public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
+		if (desc.contains("L" + old_clazz + ";")) {
+			desc = desc.replace("L" + old_clazz + ";", "L" + new_clazz + ";");
+		}
+		return new MethodAdapter(super.visitMethod(access, name, desc, signature, exceptions), old_clazz, new_clazz);
 	}
 
 	@Override
@@ -33,20 +28,25 @@ public class OverrideClassAdapter extends ClassVisitor {
 		if (desc.equals("L" + old_clazz + ";")) {
 			desc = "L" + new_clazz + ";";
 		}
+
 		return super.visitField(access, name, desc, signature, value);
 	}
 
-	static class ClassAdapter extends MethodVisitor {
-		private String old_clazz;
-		private String new_clazz;
+	static class MethodAdapter extends MethodVisitor {
+		private final String old_clazz;
+		private final String new_clazz;
 
-		ClassAdapter(
+		MethodAdapter(
 				MethodVisitor delegate,
 				String old_clazz,
 				String new_clazz) {
 			super(Opcodes.ASM4, delegate);
 			this.old_clazz = old_clazz;
 			this.new_clazz = new_clazz;
+		}
+
+		@Override
+		public void visitFrame(int type, int nLocal, Object[] local, int nStack, Object[] stack) {
 		}
 
 		@Override
@@ -59,7 +59,7 @@ public class OverrideClassAdapter extends ClassVisitor {
 
 		@Override
 		public void visitFieldInsn(int opcode, String owner, String name, String desc) {
-			if (desc.contains(old_clazz)) {
+			if (desc.contains("L" + old_clazz + ";")) {
 				desc = desc.replace("L" + old_clazz + ";", "L" + new_clazz + ";");
 			}
 			super.visitFieldInsn(opcode, owner, name, desc);
@@ -69,9 +69,15 @@ public class OverrideClassAdapter extends ClassVisitor {
 		public void visitMethodInsn(int opcode, String owner, String name, String desc) {
 			if (owner.equals(old_clazz)) {
 				owner = new_clazz;
+			}
+			if (desc.contains("L" + old_clazz + ";")) {
 				desc = desc.replace("L" + old_clazz + ";", "L" + new_clazz + ";");
 			}
 			super.visitMethodInsn(opcode, owner, name, desc);
+		}
+
+		@Override
+		public void visitLineNumber(int line, Label start) {
 		}
 	}
 }
