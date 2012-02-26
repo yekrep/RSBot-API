@@ -8,15 +8,19 @@ import org.powerbot.game.loader.Loader;
 import org.powerbot.game.loader.script.ModScript;
 import org.powerbot.util.Configuration;
 import org.powerbot.util.io.HttpClient;
+import org.powerbot.util.io.IOHelper;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class Bot extends GameDefinition {
+	private Logger log = Logger.getLogger(Bot.class.getName());
 	public BufferedImage image;
 	private BufferedImage backBuffer;
 
@@ -50,13 +54,13 @@ public class Bot extends GameDefinition {
 	 * {@inheritDoc}
 	 */
 	public NodeProcessor getProcessor() {
-		byte[] modscript = null;
+		log.info("Client ID: " + packHash);
 		try {
-			modscript = HttpClient.downloadBinary(new URL(Configuration.Paths.URLs.CLIENT_PATCH + packHash));
-		} catch (IOException e) {
+			return new ModScript(IOHelper.read(HttpClient.openStream(new URL(Configuration.Paths.URLs.CLIENT_PATCH + packHash))));
+		} catch (final IOException e) {
 			e.printStackTrace();
+			return null;
 		}
-		return (modscript != null) ? new ModScript(modscript) : null;
 	}
 
 	/**
