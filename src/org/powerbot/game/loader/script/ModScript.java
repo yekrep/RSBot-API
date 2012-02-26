@@ -179,7 +179,7 @@ public class ModScript implements NodeProcessor {
 					count = scanner.readByte();
 					while (count-- > 0) {
 						String current_clazz = scanner.readString();
-						//adapters.put(current_clazz, new OverrideClassAdapter(delegate(current_clazz), old_clazz, new_clazz));
+						adapters.put(current_clazz, new OverrideClassAdapter(delegate(current_clazz), old_clazz, new_clazz));
 					}
 					break;
 				case Headers.CONSTANT:
