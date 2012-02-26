@@ -8,7 +8,7 @@ import java.awt.*;
 import java.util.logging.Handler;
 import java.util.logging.Logger;
 
-public class Boot {
+public class Boot implements Runnable {
 	public static void main(String[] params) {
 		final Logger logger = Logger.getLogger("");
 		for (final Handler handler : logger.getHandlers()) {
@@ -26,5 +26,10 @@ public class Boot {
 			frame.setLocationRelativeTo(frame.getParent());
 			frame.setVisible(true);
 		}
+	}
+
+	@Override
+	public void run() {
+		main(new String[] { });
 	}
 }
