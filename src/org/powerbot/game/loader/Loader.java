@@ -13,7 +13,7 @@ public class Loader extends RunnableTask {
 	}
 
 	public void run() {
-		definition.appletContainer = new Rs2Applet(definition.classes(), "http://" + Configuration.Paths.URLs.GAME + "/", definition.callback);
+		definition.appletContainer = new Rs2Applet(definition.classes(), "http://" + Configuration.URLs.GAME + "/", definition.callback);
 		try {
 			definition.stub = new ClientStub(definition.crawler.game, definition.crawler.archive, definition.crawler.parameters);
 		} catch (Exception e) {

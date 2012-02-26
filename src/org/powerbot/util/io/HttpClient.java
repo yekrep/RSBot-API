@@ -46,7 +46,7 @@ public class HttpClient {
 	}
 
 	public static String getHttpUserAgent(final URL url) {
-		return url.getHost().equalsIgnoreCase(Configuration.Paths.URLs.GAME) || url.getHost().toLowerCase().endsWith(Configuration.Paths.URLs.GAME) ? HTTP_USERAGENT_FAKE : HTTP_USERAGENT_REAL;
+		return url.getHost().equalsIgnoreCase(Configuration.URLs.GAME) || url.getHost().toLowerCase().endsWith(Configuration.URLs.GAME) ? HTTP_USERAGENT_FAKE : HTTP_USERAGENT_REAL;
 	}
 
 	public static HttpURLConnection getHttpConnection(final URL url) throws IOException {

@@ -10,14 +10,12 @@ public class Configuration {
 	public static final boolean FROMJAR;
 	public static final int VERSION;
 
-	public interface Paths {
-		public interface URLs {
-			public static final String BASE = "http://links.powerbot.org/";
-			public static final String SITE = BASE + "site";
+	public interface URLs {
+		public static final String BASE = "http://links.powerbot.org/";
+		public static final String SITE = BASE + "site";
 
-			public static final String GAME = "runescape.com";
-			public static final String CLIENT_PATCH = BASE + "/modscript/";
-		}
+		public static final String GAME = "runescape.com";
+		public static final String CLIENT_PATCH = BASE + "/modscript/";
 	}
 
 	static {

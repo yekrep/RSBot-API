@@ -55,7 +55,7 @@ public class Bot extends GameDefinition {
 	public NodeProcessor getProcessor() {
 		log.info("Client ID: " + packHash);
 		try {
-			return new ModScript(IOHelper.read(HttpClient.openStream(new URL(Configuration.Paths.URLs.CLIENT_PATCH + packHash))));
+			return new ModScript(IOHelper.read(HttpClient.openStream(new URL(Configuration.URLs.CLIENT_PATCH + packHash))));
 		} catch (final IOException e) {
 			e.printStackTrace();
 			return null;
