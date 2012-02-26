@@ -109,9 +109,8 @@ public class ModScript implements NodeProcessor {
 						f.name = scanner.readString();
 						f.desc = scanner.readString();
 						fieldsAdd[ptr++] = f;
-						//System.out.println("add field " + f.name + " " + f.desc);
 					}
-					//adapters.put(clazz, new AddFieldAdapter(delegate(clazz), fieldsAdd));
+					adapters.put(clazz, new AddFieldAdapter(delegate(clazz), fieldsAdd));
 					break;
 				case Headers.ADD_METHOD:
 					clazz = scanner.readString();
@@ -135,12 +134,10 @@ public class ModScript implements NodeProcessor {
 					clazz = scanner.readString();
 					String inter = scanner.readString();
 					adapters.put(clazz, new AddInterfaceAdapter(delegate(clazz), inter));
-					//System.out.println("add interface " + clazz + " -> " + inter);
 					break;
 				case Headers.SET_SUPER:
 					clazz = scanner.readString();
 					String superName = scanner.readString();
-					System.out.println(superName + " -> " + clazz);
 					adapters.put(clazz, new SetSuperAdapter(delegate(clazz), superName));
 					break;
 				case Headers.SET_SIGNATURE:
@@ -163,7 +160,6 @@ public class ModScript implements NodeProcessor {
 					String name = scanner.readString();
 					String desc = scanner.readString();
 					count = scanner.readByte();
-					//System.out.println(count);
 					Map<Integer, byte[]> fragments = new HashMap<Integer, byte[]>();
 					while (count-- > 0) {
 						int off = scanner.readShort();
@@ -172,8 +168,8 @@ public class ModScript implements NodeProcessor {
 						scanner.readSegment(code, code.length, 0);
 						fragments.put(off, code);
 					}
-					System.out.println(scanner.readByte());
-					System.out.println(scanner.readByte());
+					scanner.readByte();
+					scanner.readByte();
 					//System.out.println(clazz + " " + name + " " + desc);
 					//adapters.put(clazz, new InsertCodeAdapter(delegate(clazz), name, desc, fragments, scanner.readByte(), scanner.readByte()));
 					break;
@@ -188,11 +184,9 @@ public class ModScript implements NodeProcessor {
 					break;
 				case Headers.CONSTANT:
 					constants.put(scanner.readShort(), scanner.readShort());
-					//System.out.println("new constant");
 					break;
 				case Headers.MULTIPLIER:
 					multipliers.put(scanner.readShort(), scanner.readInt());
-					//System.out.println("new multiplier");
 					break;
 			}
 		}
