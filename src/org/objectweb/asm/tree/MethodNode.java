@@ -256,6 +256,8 @@ public class MethodNode extends MethodVisitor {
 	@Override
 	public AnnotationVisitor visitAnnotationDefault() {
 		return new AnnotationNode(new ArrayList<Object>(0) {
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public boolean add(final Object o) {
 				annotationDefault = o;
