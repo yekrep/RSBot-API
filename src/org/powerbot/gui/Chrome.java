@@ -1,14 +1,13 @@
 package org.powerbot.gui;
 
-import java.awt.Dimension;
+import org.powerbot.game.bot.Bot;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.ArrayList;
 import java.util.logging.Logger;
-
-import javax.swing.JFrame;
-
-import org.powerbot.game.bot.Bot;
 
 public class Chrome extends JFrame implements WindowListener {
 	private static final long serialVersionUID = 1L;
@@ -26,21 +25,23 @@ public class Chrome extends JFrame implements WindowListener {
 	}
 
 	public void addBot() {
-		final Bot bot = new Bot();
-		bot.initializeEnvironment();
-		bot.startEnvironment();
-		add(bot.appletContainer);
+		Bot bot = new Bot();
+		if (bot.initializeEnvironment()) {
+			bot.startEnvironment();
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException ignored) {
+			}
+			add(bot.appletContainer);
+		}
 	}
 
-	@Override
 	public void windowActivated(WindowEvent arg0) {
 	}
 
-	@Override
 	public void windowClosed(WindowEvent arg0) {
 	}
 
-	@Override
 	public void windowClosing(WindowEvent arg0) {
 		log.info("Shutting down");
 		setVisible(false);
@@ -51,19 +52,15 @@ public class Chrome extends JFrame implements WindowListener {
 		System.exit(0);
 	}
 
-	@Override
 	public void windowDeactivated(WindowEvent arg0) {
 	}
 
-	@Override
 	public void windowDeiconified(WindowEvent arg0) {
 	}
 
-	@Override
 	public void windowIconified(WindowEvent arg0) {
 	}
 
-	@Override
 	public void windowOpened(WindowEvent arg0) {
 	}
 }
