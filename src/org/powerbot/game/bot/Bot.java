@@ -6,6 +6,7 @@ import org.powerbot.game.client.Client;
 import org.powerbot.game.loader.Loader;
 import org.powerbot.game.loader.script.ModScript;
 import org.powerbot.gui.Chrome;
+import org.powerbot.gui.component.BotPanel;
 import org.powerbot.util.Configuration;
 import org.powerbot.util.io.HttpClient;
 import org.powerbot.util.io.IOHelper;
@@ -15,6 +16,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -22,16 +24,18 @@ public class Bot extends GameDefinition {
 	private Logger log = Logger.getLogger(Bot.class.getName());
 	public BufferedImage image;
 	private BufferedImage backBuffer;
+	private BotPanel panel;
 
 	private Client client;
 
-	private static final List<Bot> bots = new ArrayList<Bot>();
+	public static final LinkedList<Bot> bots = new LinkedList<Bot>();
 
 	public Bot() {
 		Dimension d = new Dimension(Chrome.PANEL_WIDTH, Chrome.PANEL_HEIGHT);
-		image = new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_RGB);
-		backBuffer = new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_RGB);
-		client = null;
+		this.image = new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_RGB);
+		this.backBuffer = new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_RGB);
+		this.client = null;
+		this.panel = null;
 	}
 
 	/**
@@ -78,9 +82,13 @@ public class Bot extends GameDefinition {
 		bots.remove(this);
 	}
 
-	private void setClient(Client clientInstance) {
-		this.client = clientInstance;
-		this.client.setCallback(new CallbackImpl(this));
+	private void setClient(Client client) {
+		this.client = client;
+		client.setCallback(new CallbackImpl(this));
+	}
+
+	public void setPanel(BotPanel panel) {
+		this.panel = panel;
 	}
 
 	public void resize(int width, int height) {
@@ -91,12 +99,19 @@ public class Bot extends GameDefinition {
 		appletContainer.paint(backBuffer.getGraphics());
 	}
 
+	public Canvas getCanvas() {
+		return client != null ? client.getCanvas() : null;
+	}
+
 	public Graphics getBufferGraphics() {
 		Graphics back = backBuffer.getGraphics();
 		back.setColor(Color.white);
-		back.drawString("Hi WeiSu", 10, 50);
+		back.drawString(" -- RSBot v4 | Canvas [hacked]", 10, 50);
 		back.dispose();
 		image.getGraphics().drawImage(backBuffer, 0, 0, null);
+		if (panel != null) {
+			panel.repaint();
+		}
 		return backBuffer.getGraphics();
 	}
 

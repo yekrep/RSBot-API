@@ -1,6 +1,7 @@
 package org.powerbot.game.client.input;
 
 import org.powerbot.game.bot.Bot;
+import org.powerbot.gui.Chrome;
 
 import java.awt.*;
 import java.awt.event.FocusEvent;
@@ -24,8 +25,7 @@ public class Canvas extends java.awt.Canvas {
 				loader_identified = true;
 			}
 		}
-		return super.getGraphics();
-		//return bot.getBufferGraphics();
+		return bot.getBufferGraphics();
 	}
 
 	@Override
@@ -53,7 +53,7 @@ public class Canvas extends java.awt.Canvas {
 		if (bot != null) {
 			return bot.appletContainer.getSize();
 		}
-		return super.getSize();
+		return Chrome.panel.getSize();
 	}
 
 	@Override
