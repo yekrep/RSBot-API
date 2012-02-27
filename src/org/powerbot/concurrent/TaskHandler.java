@@ -3,7 +3,7 @@ package org.powerbot.concurrent;
 import java.util.concurrent.*;
 
 /**
- * A simple container capable of deploying tasks within a cached thread environment.
+ * A simple handler capable of deploying tasks within a queued thread environment.
  *
  * @author Timer
  */

@@ -15,7 +15,7 @@ import java.util.concurrent.Future;
  *
  * @author Timer
  */
-public class ActionManager extends RunnableTask implements ActionContainer {
+public class ActionExecutor extends RunnableTask implements ActionContainer {
 	private TaskContainer processor;
 	private List<Action> actions;
 	private State state;
@@ -25,7 +25,7 @@ public class ActionManager extends RunnableTask implements ActionContainer {
 	 *
 	 * @param processor The <code>TaskProcessor</code> to use as a medium for processing.
 	 */
-	public ActionManager(TaskContainer processor) {
+	public ActionExecutor(TaskContainer processor) {
 		this.processor = processor;
 		this.actions = new ArrayList<Action>();
 		state = State.DESTROYED;
