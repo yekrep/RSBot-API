@@ -15,6 +15,11 @@ import java.util.jar.JarOutputStream;
 import java.util.jar.Pack200;
 import java.util.zip.GZIPInputStream;
 
+/**
+ * A static utility to decrypt and extract classes from the RuneScape loader.
+ *
+ * @author Timer
+ */
 public class PackEncryption {
 	public static byte[] inner_pack_hash;
 
