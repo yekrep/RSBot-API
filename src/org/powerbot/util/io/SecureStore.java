@@ -3,6 +3,9 @@ package org.powerbot.util.io;
 import org.powerbot.util.Configuration;
 import org.powerbot.util.StringUtil;
 
+import javax.crypto.Cipher;
+import javax.crypto.CipherInputStream;
+import javax.crypto.spec.SecretKeySpec;
 import java.io.*;
 import java.security.GeneralSecurityException;
 import java.security.MessageDigest;
@@ -10,10 +13,6 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.logging.Logger;
-
-import javax.crypto.Cipher;
-import javax.crypto.CipherInputStream;
-import javax.crypto.spec.SecretKeySpec;
 
 /**
  * @author Paris

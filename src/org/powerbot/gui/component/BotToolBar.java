@@ -1,12 +1,9 @@
 package org.powerbot.gui.component;
 
-import javax.swing.Box;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JToolBar;
-import javax.swing.border.EmptyBorder;
-
 import org.powerbot.util.io.Resources;
+
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 
 public final class BotToolBar extends JToolBar {
 	private static final long serialVersionUID = 1L;

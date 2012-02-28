@@ -160,10 +160,10 @@ public class BotPanel extends JPanel {
 
 		@Override
 		public void publish(final LogRecord record) {
-			Color c = Color.GRAY;
+			Color c = new Color(149, 156, 171);
 			if (record.getLevel() == Level.SEVERE || record.getLevel() == Level.WARNING) {
 				status.setText("  Unavailable");
-				c = new Color(255, 166, 201);
+				c = new Color(255, 87, 71);
 			} else {
 				status.setText("  Loading...");
 			}
