@@ -1,6 +1,7 @@
 package org.powerbot.game;
 
 import org.powerbot.asm.NodeProcessor;
+import org.powerbot.lang.AdaptException;
 
 /**
  * Represents an environment in which the game can be started and terminated.
@@ -16,7 +17,7 @@ public interface GameEnvironment {
 	 */
 	public boolean initializeEnvironment();
 
-	NodeProcessor getProcessor();
+	NodeProcessor getProcessor() throws AdaptException;
 
 	public void startEnvironment();
 
