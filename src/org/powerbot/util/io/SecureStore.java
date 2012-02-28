@@ -4,10 +4,16 @@ import org.powerbot.util.Configuration;
 import org.powerbot.util.StringUtil;
 
 import java.io.*;
+import java.security.GeneralSecurityException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.Arrays;
 import java.util.logging.Logger;
+
+import javax.crypto.Cipher;
+import javax.crypto.CipherInputStream;
+import javax.crypto.spec.SecretKeySpec;
 
 /**
  * @author Paris
@@ -15,7 +21,8 @@ import java.util.logging.Logger;
 public final class SecureStore {
 	private final static Logger log = Logger.getLogger(SecureStore.class.getName());
 	private final static SecureStore instance = new SecureStore();
-	private final static int MAGIC = 0x00525354, VERSION = 1, BLOCKSIZE = 512, MAXBLOCKS = 2048;
+	private final static int MAGIC = 0x00525354, VERSION = 1001, BLOCKSIZE = 512, MAXBLOCKS = 2048;
+	private final static String CIPHER_ALGORITHM = "RC4", KEY_ALGORITHM = "RC4";
 	private final File store;
 	private long offset;
 	private byte[] key;
@@ -47,7 +54,7 @@ public final class SecureStore {
 		return StringUtil.byteArrayToHexString(key);
 	}
 
-	private void create() throws IOException {
+	private synchronized void create() throws IOException {
 		final RandomAccessFile raf = new RandomAccessFile(store, "rw");
 		raf.writeInt(MAGIC);
 		raf.writeInt(VERSION);
@@ -64,7 +71,7 @@ public final class SecureStore {
 		raf.close();
 	}
 
-	private void read() throws IOException {
+	private synchronized void read() throws IOException {
 		MessageDigest md = null;
 		try {
 			md = MessageDigest.getInstance("SHA-1");
@@ -86,18 +93,19 @@ public final class SecureStore {
 		key = md.digest();
 	}
 
-	public InputStream read(final String name) throws IOException {
+	public synchronized InputStream read(final String name) throws IOException, GeneralSecurityException {
 		final RandomAccessFile raf = new RandomAccessFile(store, "r");
 		raf.seek(offset);
 		final byte[] header = new byte[TarEntry.BLOCKSIZE];
 		while (raf.read(header) != -1) {
-			final TarEntry entry = TarEntry.read(header);
+			final CipherInputStream cis = new CipherInputStream(new ByteArrayInputStream(header), getCipher(Cipher.DECRYPT_MODE));
+			final TarEntry entry = TarEntry.read(cis);
 			int l = (int) Math.ceil((double) entry.length / TarEntry.BLOCKSIZE) * TarEntry.BLOCKSIZE;
 			if (name.equals(entry.name)) {
 				final byte[] data = new byte[(int) entry.length];
 				raf.read(data);
 				raf.close();
-				return new ByteArrayInputStream(data);
+				return new CipherInputStream(new ByteArrayInputStream(data), getCipher(Cipher.DECRYPT_MODE));
 			} else {
 				raf.skipBytes(l);
 			}
@@ -106,7 +114,7 @@ public final class SecureStore {
 		return null;
 	}
 
-	public void write(final String name, final InputStream is) throws IOException {
+	public synchronized void write(final String name, InputStream is) throws IOException, GeneralSecurityException {
 		final RandomAccessFile raf = new RandomAccessFile(store, "rw");
 		raf.seek(offset);
 		final byte[] header = new byte[TarEntry.BLOCKSIZE];
@@ -114,7 +122,8 @@ public final class SecureStore {
 			if (header[0] == 0) {
 				continue;
 			}
-			final TarEntry entry = TarEntry.read(header);
+			final CipherInputStream cis = new CipherInputStream(new ByteArrayInputStream(header), getCipher(Cipher.DECRYPT_MODE));
+			final TarEntry entry = TarEntry.read(cis);
 			int l = (int) Math.ceil((double) entry.length / TarEntry.BLOCKSIZE) * TarEntry.BLOCKSIZE;
 			if (name.equals(entry.name)) {
 				// TODO: delete (replace) existing file
@@ -123,13 +132,15 @@ public final class SecureStore {
 			}
 		}
 		if (is != null) {
+			is = new CipherInputStream(is, getCipher(Cipher.ENCRYPT_MODE));
 			final byte[] empty = new byte[TarEntry.BLOCKSIZE];
 			final long z = raf.getFilePointer();
 			raf.write(empty);
 			int l = 0, b;
-			while ((b = is.read()) != -1) {
-				raf.write(b);
-				l++;
+			final byte[] data = new byte[IOHelper.BUFFER_SIZE];
+			while ((b = is.read(data)) != -1) {
+				raf.write(data, 0, b);
+				l += b;
 			}
 			final int p = l < TarEntry.BLOCKSIZE ? TarEntry.BLOCKSIZE - l : l % TarEntry.BLOCKSIZE;
 			for (int i = 0; i < p; i++) {
@@ -139,8 +150,20 @@ public final class SecureStore {
 			final TarEntry entry = new TarEntry();
 			entry.name = name;
 			entry.length = l;
-			raf.write(entry.getBytes());
+			final Cipher c = getCipher(Cipher.ENCRYPT_MODE);
+			final byte[] raw = entry.getBytes(), crypt = new byte[raw.length];
+			c.update(raw, 0, raw.length, crypt, 0);
+			c.doFinal();
+			raf.write(crypt);
 		}
 		raf.close();
+	}
+
+	private Cipher getCipher(final int opmode) throws GeneralSecurityException {
+		final Cipher c = Cipher.getInstance(CIPHER_ALGORITHM);
+		final byte[] key = Arrays.copyOf(this.key, 16);
+		final SecretKeySpec sks = new SecretKeySpec(key, KEY_ALGORITHM);
+		c.init(opmode, sks);
+		return c;
 	}
 }
