@@ -285,6 +285,7 @@ public class MethodNode extends MethodVisitor {
 		return an;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public AnnotationVisitor visitParameterAnnotation(
 			final int parameter,

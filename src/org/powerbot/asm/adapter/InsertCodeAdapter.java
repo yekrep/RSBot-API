@@ -127,7 +127,7 @@ public class InsertCodeAdapter extends ClassVisitor {
 		}
 
 		@Override
-		public void visitTableSwitchInsn(int min, int max, Label dflt, Label[] labels) {
+		public void visitTableSwitchInsn(int min, int max, Label dflt, Label... labels) {
 			checkFragments();
 			super.visitTableSwitchInsn(min, max, dflt, labels);
 		}

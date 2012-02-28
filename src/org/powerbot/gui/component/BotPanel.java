@@ -7,7 +7,6 @@ import org.powerbot.util.io.Resources;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.PrintStream;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
@@ -22,6 +21,7 @@ import java.util.logging.Logger;
  * @author Timer
  */
 public class BotPanel extends JPanel {
+	private static final long serialVersionUID = 1L;
 	private Bot bot;
 	private int xOff;
 	private final JLabel status = new JLabel(), info = new JLabel();
