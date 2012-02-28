@@ -2,6 +2,7 @@ package org.powerbot.gui.component;
 
 import org.powerbot.game.bot.Bot;
 import org.powerbot.gui.Chrome;
+import org.powerbot.util.io.Resources;
 
 import javax.swing.*;
 import java.awt.*;
@@ -25,6 +26,13 @@ public class BotPanel extends JPanel {
 		setPreferredSize(new Dimension(Chrome.PANEL_WIDTH, Chrome.PANEL_HEIGHT));
 		setBackground(Color.black);
 		xOff = 0;
+
+		setLayout(new GridBagLayout());
+		add(new JLabel(new ImageIcon(Resources.getImage(Resources.Paths.ARROWS))));
+		final JLabel info = new JLabel("  Loading...");
+		info.setFont(info.getFont().deriveFont(Font.BOLD, 24));
+		info.setForeground(Color.WHITE);
+		add(info);
 
 		addComponentListener(new ComponentAdapter() {
 			public void componentResized(ComponentEvent evt) {
