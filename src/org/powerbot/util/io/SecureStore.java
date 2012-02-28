@@ -129,7 +129,6 @@ public final class SecureStore {
 				final long z = raf.getFilePointer();
 				raf.skipBytes(l);
 				final byte[] trailing = new byte[(int) (raf.length() - raf.getFilePointer())];
-				log.info("Length: " + trailing.length + " (" + name + ")");
 				if (trailing.length != 0) {
 					raf.read(trailing);
 				}
