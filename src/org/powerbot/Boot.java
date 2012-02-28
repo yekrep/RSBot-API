@@ -6,6 +6,8 @@ import org.powerbot.log.SystemConsoleHandler;
 import java.util.logging.Handler;
 import java.util.logging.Logger;
 
+import javax.swing.UIManager;
+
 public class Boot implements Runnable {
 	public static void main(String[] params) {
 		final Logger logger = Logger.getLogger("");
@@ -13,6 +15,11 @@ public class Boot implements Runnable {
 			logger.removeHandler(handler);
 		}
 		logger.addHandler(new SystemConsoleHandler());
+
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (final Exception ignored) {
+		}
 
 		final Chrome chrome = new Chrome();
 		chrome.addBot();
