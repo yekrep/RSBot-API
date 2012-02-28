@@ -93,6 +93,25 @@ public final class SecureStore {
 		key = md.digest();
 	}
 
+	public synchronized TarEntry get(final String name) throws IOException, GeneralSecurityException {
+		final RandomAccessFile raf = new RandomAccessFile(store, "r");
+		raf.seek(offset);
+		final byte[] header = new byte[TarEntry.BLOCKSIZE];
+		while (raf.read(header) != -1) {
+			final CipherInputStream cis = new CipherInputStream(new ByteArrayInputStream(header), getCipher(Cipher.DECRYPT_MODE));
+			final TarEntry entry = TarEntry.read(cis);
+			int l = (int) Math.ceil((double) entry.length / TarEntry.BLOCKSIZE) * TarEntry.BLOCKSIZE;
+			if (name.equals(entry.name)) {
+				raf.close();
+				return entry;
+			} else {
+				raf.skipBytes(l);
+			}
+		}
+		raf.close();
+		return null;
+	}
+
 	public synchronized InputStream read(final String name) throws IOException, GeneralSecurityException {
 		final RandomAccessFile raf = new RandomAccessFile(store, "r");
 		raf.seek(offset);
