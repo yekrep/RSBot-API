@@ -5,7 +5,6 @@ import org.powerbot.game.GameDefinition;
 import org.powerbot.game.api.Constants;
 import org.powerbot.game.api.Multipliers;
 import org.powerbot.game.client.Client;
-import org.powerbot.game.client.input.Mouse;
 import org.powerbot.game.loader.Loader;
 import org.powerbot.game.loader.script.ModScript;
 import org.powerbot.gui.Chrome;
@@ -105,22 +104,6 @@ public class Bot extends GameDefinition {
 
 	public Graphics getBufferGraphics() {
 		Graphics back = backBuffer.getGraphics();
-		back.setColor(Color.white);
-		back.drawString(" -- RSBot v4 | Canvas [hacked]", 10, 50);
-		Mouse mouse = client.getMouse();
-		if (mouse != null) {
-			int mouse_x = mouse.getX(), mouse_y = mouse.getY();
-			int mouse_press_x = mouse.getPressX(), mouse_press_y = mouse.getPressY();
-			long mouse_press_time = mouse.getPressTime();
-			back.setColor(Color.YELLOW.darker());
-			back.drawLine(mouse_x - 5, mouse_y - 5, mouse_x + 5, mouse_y + 5);
-			back.drawLine(mouse_x + 5, mouse_y - 5, mouse_x - 5, mouse_y + 5);
-			if (System.currentTimeMillis() - mouse_press_time < 1000) {
-				back.setColor(Color.RED);
-				back.drawLine(mouse_press_x - 5, mouse_press_y - 5, mouse_press_x + 5, mouse_press_y + 5);
-				back.drawLine(mouse_press_x + 5, mouse_press_y - 5, mouse_press_x - 5, mouse_press_y + 5);
-			}
-		}
 		back.dispose();
 		image.getGraphics().drawImage(backBuffer, 0, 0, null);
 		if (panel != null) {
