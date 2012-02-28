@@ -3,7 +3,7 @@ package org.powerbot.game.api;
 import java.util.Map;
 
 public class Multipliers {
-	public int
+	public final int
 			BASEDATA_X, BASEDATA_Y, GLOBAL_CAMERAPITCH,
 			GLOBAL_CAMERAYAW, GLOBAL_CAMPOSX, GLOBAL_CAMPOSY,
 			GLOBAL_CAMPOSZ, CHARACTER_HEIGHT, CHARACTER_HPRATIO,
@@ -112,7 +112,8 @@ public class Multipliers {
 		GLOBAL_PLAYERCOUNT = multipliers.get(1606);
 		GLOBAL_SELECTEDITEMID = multipliers.get(1900);
 		SEQUENCE_ID = multipliers.get(1901);
-		SERVERDATA_WORLDID = multipliers.get(1902);
+		//SERVERDATA_WORLDID = multipliers.get(1902);
+		SERVERDATA_WORLDID = 1;
 		GLOBAL_SUBMENUWIDTH = multipliers.get(1903);
 		GLOBAL_SUBMENUX = multipliers.get(1904);
 		GLOBAL_SUBMENUY = multipliers.get(1905);

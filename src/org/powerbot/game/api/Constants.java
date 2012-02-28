@@ -3,7 +3,7 @@ package org.powerbot.game.api;
 import java.util.Map;
 
 public class Constants {
-	public int
+	public final int
 			CLIENTSTATE_3, CLIENTSTATE_6, CLIENTSTATE_7,
 			CLIENTSTATE_9, CLIENTSTATE_10, CLIENTSTATE_11,
 			CLIENTSTATE_12;
