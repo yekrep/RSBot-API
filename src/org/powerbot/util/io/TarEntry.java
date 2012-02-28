@@ -1,12 +1,8 @@
 package org.powerbot.util.io;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-
 import org.powerbot.util.StringUtil;
+
+import java.io.*;
 
 public final class TarEntry {
 	public static int BLOCKSIZE = 512;
@@ -92,7 +88,7 @@ public final class TarEntry {
 		b = new byte[p - l];
 		os.write(b);
 	}
-	
+
 	public byte[] getBytes() throws IOException {
 		final ByteArrayOutputStream bos = new ByteArrayOutputStream();
 		write(bos);

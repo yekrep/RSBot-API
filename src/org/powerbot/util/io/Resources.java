@@ -1,12 +1,11 @@
 package org.powerbot.util.io;
 
-import java.awt.Image;
-import java.awt.Toolkit;
+import org.powerbot.util.Configuration;
+
+import java.awt.*;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
-
-import org.powerbot.util.Configuration;
 
 public class Resources {
 	public static class Paths {

@@ -10,7 +10,7 @@ import java.awt.event.*;
 /**
  * A panel that re-dispatches human events to the game's applet.
  * Contains an image buffered from the applet.
- *
+ * <p/>
  * Missing vital event dispatching of certain events, not safe for prolonged use.
  *
  * @author Timer

@@ -1,10 +1,10 @@
 package org.powerbot.util;
 
-import java.io.File;
-import java.net.MalformedURLException;
-
 import org.powerbot.util.io.IOHelper;
 import org.powerbot.util.io.Resources;
+
+import java.io.File;
+import java.net.MalformedURLException;
 
 public class Configuration {
 	public static final String NAME = "RSBot";

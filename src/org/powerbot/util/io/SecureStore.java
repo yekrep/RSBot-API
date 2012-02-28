@@ -1,17 +1,13 @@
 package org.powerbot.util.io;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.RandomAccessFile;
+import org.powerbot.util.Configuration;
+import org.powerbot.util.StringUtil;
+
+import java.io.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.logging.Logger;
-
-import org.powerbot.util.Configuration;
-import org.powerbot.util.StringUtil;
 
 /**
  * @author Paris
@@ -50,7 +46,7 @@ public final class SecureStore {
 	public String getPrivateKey() {
 		return StringUtil.byteArrayToHexString(key);
 	}
-	
+
 	private void create() throws IOException {
 		final RandomAccessFile raf = new RandomAccessFile(store, "rw");
 		raf.writeInt(MAGIC);

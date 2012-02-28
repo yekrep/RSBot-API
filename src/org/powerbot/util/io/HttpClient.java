@@ -68,17 +68,17 @@ public class HttpClient {
 		final HttpURLConnection con = getHttpConnection(url);
 		con.setUseCaches(true);
 		switch (con.getResponseCode()) {
-		case 200:
-			return con;
-		default:
-			for (final Entry<String, List<String>> header : con.getHeaderFields().entrySet()) {
-				if (header.getKey() != null && header.getKey().equalsIgnoreCase("location")) {
-					final URL newUrl = new URL(header.getValue().get(0));
-					http301.put(url, newUrl);
-					return getConnection(newUrl);
+			case 200:
+				return con;
+			default:
+				for (final Entry<String, List<String>> header : con.getHeaderFields().entrySet()) {
+					if (header.getKey() != null && header.getKey().equalsIgnoreCase("location")) {
+						final URL newUrl = new URL(header.getValue().get(0));
+						http301.put(url, newUrl);
+						return getConnection(newUrl);
+					}
 				}
-			}
-			return null;
+				return null;
 		}
 	}
 
