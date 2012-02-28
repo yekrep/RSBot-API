@@ -80,7 +80,13 @@ public abstract class GameDefinition implements GameEnvironment {
 				classes.clear();
 			}
 			if (this.classes.size() > 0) {
-				NodeProcessor nodeProcessor = getProcessor();
+				NodeProcessor nodeProcessor;
+				try {
+					nodeProcessor = getProcessor();
+				} catch (Throwable e) {
+					log.log(Level.FINE, "Failed to load processor: ", e);
+					return false;
+				}
 				if (nodeProcessor != null) {
 					log.fine("Running node processor");
 					try {

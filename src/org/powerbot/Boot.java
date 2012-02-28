@@ -3,10 +3,9 @@ package org.powerbot;
 import org.powerbot.gui.Chrome;
 import org.powerbot.log.SystemConsoleHandler;
 
+import javax.swing.*;
 import java.util.logging.Handler;
 import java.util.logging.Logger;
-
-import javax.swing.UIManager;
 
 public class Boot implements Runnable {
 	public static void main(String[] params) {

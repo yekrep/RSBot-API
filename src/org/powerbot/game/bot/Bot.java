@@ -9,6 +9,7 @@ import org.powerbot.game.loader.Loader;
 import org.powerbot.game.loader.script.ModScript;
 import org.powerbot.gui.Chrome;
 import org.powerbot.gui.component.BotPanel;
+import org.powerbot.lang.AdaptException;
 import org.powerbot.util.Configuration;
 import org.powerbot.util.io.HttpClient;
 import org.powerbot.util.io.IOHelper;
@@ -66,7 +67,7 @@ public class Bot extends GameDefinition {
 	/**
 	 * {@inheritDoc}
 	 */
-	public NodeProcessor getProcessor() {
+	public NodeProcessor getProcessor() throws AdaptException {
 		final String id = "(" + packHash.substring(0, 6) + ")";
 		log.info("Loading client patch " + id);
 		try {
@@ -77,9 +78,9 @@ public class Bot extends GameDefinition {
 		} catch (NullPointerException ignored) {
 			log.severe("Please try again later " + id);
 		} catch (IOException e) {
-			e.printStackTrace();
+			log.log(Level.FINE, "Failed to get processor: ", e);
 		}
-		return null;
+		throw new AdaptException("Failed to load processor; unable to reach server or client unsupported");
 	}
 
 	/**

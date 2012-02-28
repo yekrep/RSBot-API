@@ -1,5 +1,7 @@
 package org.powerbot.gui.component;
 
+import org.powerbot.game.GameDefinition;
+import org.powerbot.game.GameEnvironment;
 import org.powerbot.game.bot.Bot;
 import org.powerbot.gui.Chrome;
 import org.powerbot.util.io.Resources;
@@ -7,7 +9,6 @@ import org.powerbot.util.io.Resources;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.PrintStream;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
@@ -25,7 +26,6 @@ public class BotPanel extends JPanel {
 	private Bot bot;
 	private int xOff;
 	private final JLabel status = new JLabel(), info = new JLabel();
-	private final BotPanelLogHandler handler = new BotPanelLogHandler();
 
 	public BotPanel() {
 		setSize(new Dimension(Chrome.PANEL_WIDTH, Chrome.PANEL_HEIGHT));
@@ -45,6 +45,8 @@ public class BotPanel extends JPanel {
 		c.ipady = 25;
 		c.gridwidth = 2;
 		add(info, c);
+		BotPanelLogHandler handler = new BotPanelLogHandler();
+		Logger.getLogger(GameDefinition.class.getName()).addHandler(handler);
 		Logger.getLogger(Bot.class.getName()).addHandler(handler);
 
 		addComponentListener(new ComponentAdapter() {
