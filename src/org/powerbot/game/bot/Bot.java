@@ -16,6 +16,7 @@ import org.powerbot.util.io.IOHelper;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -69,10 +70,12 @@ public class Bot extends GameDefinition {
 		try {
 			modScript = new ModScript(IOHelper.read(HttpClient.openStream(new URL(Configuration.URLs.CLIENT_PATCH + packHash))));
 			return modScript;
-		} catch (final IOException e) {
-			e.printStackTrace();
+		} catch (SocketTimeoutException ignored) {
+			log.severe("Please try again later " + id);
 		} catch (final NullPointerException ignored) {
 			log.severe("Please try again later " + id);
+		} catch (final IOException e) {
+			e.printStackTrace();
 		}
 		return null;
 	}
