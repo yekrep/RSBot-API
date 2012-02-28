@@ -2,6 +2,7 @@ package org.powerbot.gui;
 
 import org.powerbot.game.bot.Bot;
 import org.powerbot.gui.component.BotPanel;
+import org.powerbot.gui.component.BotToolBar;
 import org.powerbot.util.Configuration;
 import org.powerbot.util.io.Resources;
 
@@ -25,6 +26,7 @@ public class Chrome extends JFrame implements WindowListener {
 		addWindowListener(this);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
+		add(new BotToolBar(), BorderLayout.NORTH);
 		Chrome.panel = new BotPanel();
 		add(Chrome.panel);
 		setVisible(true);
