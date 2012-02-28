@@ -36,6 +36,7 @@ public class Bot extends GameDefinition {
 	private BufferedImage backBuffer;
 
 	public Bot() {
+		log.info("Initializing bot environment");
 		Dimension d = new Dimension(Chrome.PANEL_WIDTH, Chrome.PANEL_HEIGHT);
 		this.image = new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_RGB);
 		this.backBuffer = new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_RGB);
@@ -63,14 +64,17 @@ public class Bot extends GameDefinition {
 	 * {@inheritDoc}
 	 */
 	public NodeProcessor getProcessor() {
-		log.info("Client ID: " + packHash);
+		final String id = "(" + packHash.substring(0, 6) + ")";
+		log.info("Loading client patch " + id);
 		try {
 			modScript = new ModScript(IOHelper.read(HttpClient.openStream(new URL(Configuration.URLs.CLIENT_PATCH + packHash))));
 			return modScript;
 		} catch (final IOException e) {
 			e.printStackTrace();
-			return null;
+		} catch (final NullPointerException ignored) {
+			log.severe("Please try again later " + id);
 		}
+		return null;
 	}
 
 	/**
