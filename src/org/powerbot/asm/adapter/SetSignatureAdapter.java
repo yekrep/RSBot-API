@@ -29,7 +29,7 @@ public class SetSignatureAdapter extends ClassVisitor {
 			String[] exceptions) {
 		for (Signature s : signatures) {
 			if (s.name.equals(name) && (s.desc.equals("") || s.desc.equals(desc))) {
-				return cv.visitMethod(
+				return super.visitMethod(
 						s.new_access == -1 ? access : s.new_access,
 						s.new_name,
 						s.new_desc.equals("") ? desc : s.new_desc,

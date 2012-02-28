@@ -1,8 +1,8 @@
 package org.powerbot.game;
 
 import org.powerbot.asm.NodeProcessor;
+import org.powerbot.concurrent.TaskHandler;
 import org.powerbot.concurrent.TaskContainer;
-import org.powerbot.concurrent.TaskProcessor;
 import org.powerbot.game.loader.ClientStub;
 import org.powerbot.game.loader.io.Crawler;
 import org.powerbot.game.loader.io.PackEncryption;
@@ -23,7 +23,7 @@ import java.util.Map;
  * @author Timer
  */
 public abstract class GameDefinition implements GameEnvironment {
-	protected TaskProcessor processor;
+	protected TaskContainer processor;
 	private Map<String, byte[]> classes;
 
 	public Crawler crawler;
@@ -33,7 +33,7 @@ public abstract class GameDefinition implements GameEnvironment {
 	protected String packHash;
 
 	public GameDefinition() {
-		this.processor = new TaskContainer();
+		this.processor = new TaskHandler();
 		this.classes = new HashMap<String, byte[]>();
 
 		this.crawler = new Crawler();

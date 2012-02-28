@@ -2,7 +2,7 @@ package org.powerbot.event;
 
 import org.powerbot.concurrent.ContainedTask;
 import org.powerbot.concurrent.RunnableTask;
-import org.powerbot.concurrent.TaskProcessor;
+import org.powerbot.concurrent.TaskContainer;
 import org.powerbot.lang.Activator;
 
 import java.util.ArrayList;
@@ -15,17 +15,17 @@ import java.util.concurrent.Future;
  *
  * @author Timer
  */
-public class ActionDispatcher extends RunnableTask implements ActionManager {
-	private TaskProcessor processor;
+public class ActionExecutor extends RunnableTask implements ActionContainer {
+	private TaskContainer processor;
 	private List<Action> actions;
 	private State state;
 
 	/**
-	 * Initializes this action dispatcher with appropriate objects.
+	 * Initializes this action manager with appropriate objects.
 	 *
 	 * @param processor The <code>TaskProcessor</code> to use as a medium for processing.
 	 */
-	public ActionDispatcher(TaskProcessor processor) {
+	public ActionExecutor(TaskContainer processor) {
 		this.processor = processor;
 		this.actions = new ArrayList<Action>();
 		state = State.DESTROYED;
@@ -65,7 +65,7 @@ public class ActionDispatcher extends RunnableTask implements ActionManager {
 	/**
 	 * {@inheritDoc}
 	 */
-	public void handle(Action action) {
+	public void append(Action action) {
 		if (!this.actions.contains(action)) {
 			this.actions.add(action);
 		}
@@ -74,7 +74,7 @@ public class ActionDispatcher extends RunnableTask implements ActionManager {
 	/**
 	 * {@inheritDoc}
 	 */
-	public void lose(Action action) {
+	public void omit(Action action) {
 		this.actions.remove(action);
 	}
 
@@ -132,11 +132,11 @@ public class ActionDispatcher extends RunnableTask implements ActionManager {
 	}
 
 	/**
-	 * Creates a <code>SimpleTask</code> that notifies a thread to awaken when all futures are completed.
+	 * Creates a <code>RunnableTask</code> that notifies a thread to awaken when all futures are completed.
 	 *
 	 * @param lockingFutures The <code>List</code> of Futures to wait for.
 	 * @param threadObject   The locking object to notify.
-	 * @return The <code>SimpleTask</code> to be submitted.
+	 * @return The <code>RunnableTask</code> to be submitted.
 	 */
 
 	private RunnableTask createWait(final List<Future<?>> lockingFutures, final Object threadObject) {

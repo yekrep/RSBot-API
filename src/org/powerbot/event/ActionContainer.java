@@ -1,11 +1,11 @@
 package org.powerbot.event;
 
 /**
- * A action manager that is able to perform basic operations to a thread dispatching actions.
+ * A action container that is able to perform basic operations to a thread dispatching actions.
  *
  * @author Timer
  */
-public interface ActionManager {
+public interface ActionContainer {
 	/**
 	 * Begins listening to the actions associated with this <code>ActionManager</code>.
 	 */
@@ -26,12 +26,12 @@ public interface ActionManager {
 	 *
 	 * @param action The <code>Action</code> to handle.
 	 */
-	public void handle(Action action);
+	public void append(Action action);
 
 	/**
 	 * Terminates listening and dispatch of the specified <code>Action</code>.
 	 *
 	 * @param action The <code>Action</code> to lose handle of.
 	 */
-	public void lose(Action action);
+	public void omit(Action action);
 }
