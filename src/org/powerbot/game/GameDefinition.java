@@ -16,6 +16,8 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * A definition of a <code>GameEnvironment</code> that manages all the data associated with this environment.
@@ -23,6 +25,7 @@ import java.util.Map;
  * @author Timer
  */
 public abstract class GameDefinition implements GameEnvironment {
+	private static Logger log = Logger.getLogger(GameDefinition.class.getName());
 	protected TaskContainer processor;
 	private Map<String, byte[]> classes;
 
@@ -49,21 +52,29 @@ public abstract class GameDefinition implements GameEnvironment {
 	 * {@inheritDoc}
 	 */
 	public boolean initializeEnvironment() {
+		log.info("Initializing game environment");
 		this.classes.clear();
+		log.fine("Crawling (for) game information");
 		if (!crawler.crawl()) {
 			return false;
 		}
+		log.fine("Downloading loader");
 		byte[] loader = getLoader(crawler);
 		if (loader != null) {
 			String secretKeySpecKey = crawler.parameters.get("0");
 			String ivParameterSpecKey = crawler.parameters.get("-1");
 			if (secretKeySpecKey == null || ivParameterSpecKey == null) {
+				log.fine("Invalid secret spec key and/or iv parameter spec key");
 				return false;
 			}
+			log.fine("Removing key ciphering");
 			byte[] secretKeySpecBytes = PackEncryption.toByte(secretKeySpecKey);
 			byte[] ivParameterSpecBytes = PackEncryption.toByte(ivParameterSpecKey);
+			log.fine("Extracting classes from loader");
 			Map<String, byte[]> classes = PackEncryption.extract(secretKeySpecBytes, ivParameterSpecBytes, loader);
+			log.fine("Generating client hash");
 			packHash = StringUtil.byteArrayToHexString(PackEncryption.inner_pack_hash);
+			log.fine("Client hash (" + packHash + ")");
 			if (classes != null && classes.size() > 0) {
 				this.classes.putAll(classes);
 				classes.clear();
@@ -71,12 +82,14 @@ public abstract class GameDefinition implements GameEnvironment {
 			if (this.classes.size() > 0) {
 				NodeProcessor nodeProcessor = getProcessor();
 				if (nodeProcessor != null) {
+					log.fine("Running node processor");
 					try {
 						nodeProcessor.adapt();
 					} catch (AdaptException e) {
-						e.printStackTrace();
+						log.log(Level.FINE, "Node adaptation failed", e);
 						return false;
 					}
+					log.fine("Processing classes");
 					for (Map.Entry<String, byte[]> clazz : this.classes.entrySet()) {
 						String name = clazz.getKey();
 						this.classes.put(name, nodeProcessor.process(name, clazz.getValue()));

@@ -21,10 +21,11 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Bot extends GameDefinition {
-	private Logger log = Logger.getLogger(Bot.class.getName());
+	private static Logger log = Logger.getLogger(Bot.class.getName());
 	public static final LinkedList<Bot> bots = new LinkedList<Bot>();
 	private static final Map<ThreadGroup, Bot> context = new HashMap<ThreadGroup, Bot>();
 	private ModScript modScript;
@@ -37,7 +38,6 @@ public class Bot extends GameDefinition {
 	private BufferedImage backBuffer;
 
 	public Bot() {
-		log.info("Initializing bot environment");
 		Dimension d = new Dimension(Chrome.PANEL_WIDTH, Chrome.PANEL_HEIGHT);
 		this.image = new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_RGB);
 		this.backBuffer = new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_RGB);
@@ -49,6 +49,7 @@ public class Bot extends GameDefinition {
 	 * {@inheritDoc}
 	 */
 	public void startEnvironment() {
+		log.info("Starting bot");
 		bots.add(this);
 		context.put(threadGroup, this);
 		this.callback = new Runnable() {
@@ -58,6 +59,7 @@ public class Bot extends GameDefinition {
 				resize(Chrome.PANEL_WIDTH, Chrome.PANEL_HEIGHT);
 			}
 		};
+		log.fine("Submitting loader");
 		processor.submit(new Loader(this));
 	}
 
@@ -72,9 +74,9 @@ public class Bot extends GameDefinition {
 			return modScript;
 		} catch (SocketTimeoutException ignored) {
 			log.severe("Please try again later " + id);
-		} catch (final NullPointerException ignored) {
+		} catch (NullPointerException ignored) {
 			log.severe("Please try again later " + id);
-		} catch (final IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return null;
@@ -84,10 +86,13 @@ public class Bot extends GameDefinition {
 	 * {@inheritDoc}
 	 */
 	public void killEnvironment() {
+		log.info("Unloading environment");
 		if (stub != null) {
+			log.fine("Terminating stub activities");
 			stub.setActive(false);
 		}
 		if (appletContainer != null) {
+			log.fine("Shutting down applet");
 			appletContainer.stop();
 			appletContainer.destroy();
 			appletContainer = null;
@@ -133,7 +138,9 @@ public class Bot extends GameDefinition {
 	public static Bot resolve() {
 		Bot bot = Bot.context.get(Thread.currentThread().getThreadGroup());
 		if (bot == null) {
-			throw new RuntimeException("Client does not exist: " + Thread.currentThread() + "@" + Thread.currentThread().getThreadGroup());
+			RuntimeException exception = new RuntimeException(Thread.currentThread() + "@" + Thread.currentThread().getThreadGroup());
+			log.log(Level.SEVERE, "Client does not exist: ", exception);
+			throw exception;
 		}
 		return bot;
 	}

@@ -5,7 +5,11 @@ import org.powerbot.game.GameDefinition;
 import org.powerbot.game.loader.wrapper.Rs2Applet;
 import org.powerbot.util.Configuration;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public class Loader extends RunnableTask {
+	private static Logger log = Logger.getLogger(Loader.class.getName());
 	private GameDefinition definition;
 
 	public Loader(GameDefinition definition) {
@@ -13,16 +17,20 @@ public class Loader extends RunnableTask {
 	}
 
 	public void run() {
+		log.fine("Generating applet wrapper");
 		definition.appletContainer = new Rs2Applet(definition.classes(), "http://" + Configuration.URLs.GAME + "/", definition.callback);
 		try {
+			log.fine("Generating stub");
 			definition.stub = new ClientStub(definition.crawler.game, definition.crawler.archive, definition.crawler.parameters);
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.log(Level.SEVERE, "Error creating stub: ", e);
 			return;
 		}
+		log.fine("Setting stub");
 		definition.appletContainer.setStub(definition.stub);
 		definition.stub.setApplet(definition.appletContainer);
 		definition.stub.setActive(true);
+		log.fine("Initializing and starting applet wrapper");
 		definition.appletContainer.init();
 		definition.appletContainer.start();
 	}

@@ -9,6 +9,8 @@ import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * An applet for manipulation of the wrapped client class.
@@ -17,6 +19,7 @@ import java.util.Map;
  * @author Timer
  */
 public final class Rs2Applet extends Applet {
+	private static Logger log = Logger.getLogger(Rs2Applet.class.getName());
 	private static final long serialVersionUID = 1L;
 	private final Map<String, byte[]> classes = new HashMap<String, byte[]>();
 	private String game;
@@ -36,7 +39,7 @@ public final class Rs2Applet extends Applet {
 			RsClassLoader loader = new RsClassLoader(this.classes, new URL(game));
 			clientClass = loader.loadClass("client");
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.log(Level.SEVERE, "Failed to load classes: ", e);
 		}
 
 		if (clientClass == null) {
@@ -49,11 +52,15 @@ public final class Rs2Applet extends Applet {
 			constructor = this.clientClass.getConstructor((Class[]) null);
 			this.clientInstance = constructor.newInstance((Object[]) null);
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.log(Level.SEVERE, "Failed to construct client class: ", e);
 		}
 
 		if (callback != null) {
-			callback.run();
+			try {
+				callback.run();
+			} catch (Throwable t) {
+				log.log(Level.SEVERE, "Callback failed to execute: ", t);
+			}
 		}
 
 		invokeMethod(new Object[]{this}, new Class[]{Applet.class}, "supplyApplet");
@@ -95,13 +102,12 @@ public final class Rs2Applet extends Applet {
 			Method method = this.clientClass.getMethod(name, parameterTypes);
 			method.invoke(this.clientInstance, parameters);
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
-			e.getCause().printStackTrace();
+			log.log(Level.SEVERE, "Error invoking client method: ", e);
 		}
 	}
 
 
 	private final void throwException(Throwable throwable) {
-		throwable.printStackTrace();
+		log.log(Level.SEVERE, "Client exception: ", throwable);
 	}
 }
