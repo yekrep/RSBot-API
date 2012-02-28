@@ -1,7 +1,6 @@
 package org.powerbot.gui.component;
 
 import org.powerbot.game.GameDefinition;
-import org.powerbot.game.GameEnvironment;
 import org.powerbot.game.bot.Bot;
 import org.powerbot.gui.Chrome;
 import org.powerbot.util.io.Resources;
