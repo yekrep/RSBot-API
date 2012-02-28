@@ -2,6 +2,8 @@ package org.powerbot.game.bot;
 
 import org.powerbot.asm.NodeProcessor;
 import org.powerbot.game.GameDefinition;
+import org.powerbot.game.api.Constants;
+import org.powerbot.game.api.Multipliers;
 import org.powerbot.game.client.Client;
 import org.powerbot.game.client.input.Mouse;
 import org.powerbot.game.loader.Loader;
@@ -16,15 +18,21 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.logging.Logger;
 
 public class Bot extends GameDefinition {
 	private Logger log = Logger.getLogger(Bot.class.getName());
 	public static final LinkedList<Bot> bots = new LinkedList<Bot>();
+	private static final Map<ThreadGroup, Bot> context = new HashMap<ThreadGroup, Bot>();
+	private ModScript modScript;
 
 	private BotPanel panel;
-	private Client client;
+	public Client client;
+	public Constants constants;
+	public Multipliers multipliers;
 	public BufferedImage image;
 	private BufferedImage backBuffer;
 
@@ -41,6 +49,7 @@ public class Bot extends GameDefinition {
 	 */
 	public void startEnvironment() {
 		bots.add(this);
+		context.put(threadGroup, this);
 		this.callback = new Runnable() {
 			public void run() {
 				setClient((Client) appletContainer.clientInstance);
@@ -57,7 +66,8 @@ public class Bot extends GameDefinition {
 	public NodeProcessor getProcessor() {
 		log.info("Client ID: " + packHash);
 		try {
-			return new ModScript(IOHelper.read(HttpClient.openStream(new URL(Configuration.URLs.CLIENT_PATCH + packHash))));
+			modScript = new ModScript(IOHelper.read(HttpClient.openStream(new URL(Configuration.URLs.CLIENT_PATCH + packHash))));
+			return modScript;
 		} catch (final IOException e) {
 			e.printStackTrace();
 			return null;
@@ -78,11 +88,7 @@ public class Bot extends GameDefinition {
 			stub = null;
 		}
 		bots.remove(this);
-	}
-
-	private void setClient(Client client) {
-		this.client = client;
-		client.setCallback(new CallbackImpl(this));
+		context.remove(threadGroup);
 	}
 
 	public void setPanel(BotPanel panel) {
@@ -95,10 +101,6 @@ public class Bot extends GameDefinition {
 		appletContainer.setSize(width, height);
 		appletContainer.update(backBuffer.getGraphics());
 		appletContainer.paint(backBuffer.getGraphics());
-	}
-
-	public Canvas getCanvas() {
-		return client != null ? client.getCanvas() : null;
 	}
 
 	public Graphics getBufferGraphics() {
@@ -125,6 +127,25 @@ public class Bot extends GameDefinition {
 			panel.repaint();
 		}
 		return backBuffer.getGraphics();
+	}
+
+	private void setClient(Client client) {
+		this.client = client;
+		client.setCallback(new CallbackImpl(this));
+		this.constants = new Constants(modScript.constants);
+		this.multipliers = new Multipliers(modScript.multipliers);
+	}
+
+	public Canvas getCanvas() {
+		return client != null ? client.getCanvas() : null;
+	}
+
+	public static Bot resolve() {
+		Bot bot = Bot.context.get(Thread.currentThread().getThreadGroup());
+		if (bot == null) {
+			throw new RuntimeException("Client does not exist: " + Thread.currentThread() + "@" + Thread.currentThread().getThreadGroup());
+		}
+		return bot;
 	}
 
 	public static Bot getBot(Object o) {
