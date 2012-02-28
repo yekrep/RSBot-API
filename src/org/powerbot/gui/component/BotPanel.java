@@ -7,6 +7,11 @@ import org.powerbot.util.io.Resources;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.PrintStream;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.LogRecord;
+import java.util.logging.Logger;
 
 /**
  * A panel that re-dispatches human events to the game's applet.
@@ -19,6 +24,8 @@ import java.awt.event.*;
 public class BotPanel extends JPanel {
 	private Bot bot;
 	private int xOff;
+	private final JLabel status = new JLabel(), info = new JLabel();
+	private final BotPanelLogHandler handler = new BotPanelLogHandler();
 
 	public BotPanel() {
 		setSize(new Dimension(Chrome.PANEL_WIDTH, Chrome.PANEL_HEIGHT));
@@ -29,10 +36,16 @@ public class BotPanel extends JPanel {
 
 		setLayout(new GridBagLayout());
 		add(new JLabel(new ImageIcon(Resources.getImage(Resources.Paths.ARROWS))));
-		final JLabel info = new JLabel("  Loading...");
-		info.setFont(info.getFont().deriveFont(Font.BOLD, 24));
-		info.setForeground(Color.WHITE);
-		add(info);
+		status.setFont(status.getFont().deriveFont(Font.BOLD, 24));
+		status.setForeground(Color.WHITE);
+		add(status);
+		info.setFont(info.getFont().deriveFont(0, 14));
+		final GridBagConstraints c = new GridBagConstraints();
+		c.gridy = 1;
+		c.ipady = 25;
+		c.gridwidth = 2;
+		add(info, c);
+		Logger.getLogger(Bot.class.getName()).addHandler(handler);
 
 		addComponentListener(new ComponentAdapter() {
 			public void componentResized(ComponentEvent evt) {
@@ -131,6 +144,29 @@ public class BotPanel extends JPanel {
 		}
 		if (bot != null && bot.appletContainer != null && bot.appletContainer.getComponentCount() > 0) {
 			bot.appletContainer.getComponent(0).dispatchEvent(e);
+		}
+	}
+
+	public class BotPanelLogHandler extends Handler {
+		@Override
+		public void close() throws SecurityException {
+		}
+
+		@Override
+		public void flush() {
+		}
+
+		@Override
+		public void publish(final LogRecord record) {
+			Color c = Color.GRAY;
+			if (record.getLevel() == Level.SEVERE || record.getLevel() == Level.WARNING) {
+				status.setText("  Unavailable");
+				c = new Color(255, 166, 201);
+			} else {
+				status.setText("  Loading...");
+			}
+			info.setForeground(c);
+			info.setText(record.getMessage());
 		}
 	}
 }
