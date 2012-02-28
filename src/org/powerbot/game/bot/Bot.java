@@ -16,20 +16,17 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.logging.Logger;
 
 public class Bot extends GameDefinition {
 	private Logger log = Logger.getLogger(Bot.class.getName());
+	public static final LinkedList<Bot> bots = new LinkedList<Bot>();
+
+	private BotPanel panel;
+	private Client client;
 	public BufferedImage image;
 	private BufferedImage backBuffer;
-	private BotPanel panel;
-
-	private Client client;
-
-	public static final LinkedList<Bot> bots = new LinkedList<Bot>();
 
 	public Bot() {
 		Dimension d = new Dimension(Chrome.PANEL_WIDTH, Chrome.PANEL_HEIGHT);

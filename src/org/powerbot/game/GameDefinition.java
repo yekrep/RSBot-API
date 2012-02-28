@@ -31,9 +31,11 @@ public abstract class GameDefinition implements GameEnvironment {
 	public Runnable callback;
 	public ClientStub stub;
 	protected String packHash;
+	public ThreadGroup threadGroup;
 
 	public GameDefinition() {
-		this.processor = new TaskHandler();
+		this.threadGroup = new ThreadGroup("GameDefinition-" +hashCode());
+		this.processor = new TaskHandler(this.threadGroup);
 		this.classes = new HashMap<String, byte[]>();
 
 		this.crawler = new Crawler();
