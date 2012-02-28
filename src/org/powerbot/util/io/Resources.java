@@ -12,6 +12,7 @@ public class Resources {
 		public static final String ROOT = "resources";
 		public static final String ROOT_IMG = ROOT + "/images";
 		public static final String ICON = ROOT_IMG + "/icon.png";
+		public static final String ARROWS = ROOT_IMG + "/arrows.png";
 		public static final String VERSION = ROOT + "/version.txt";
 	}
 
