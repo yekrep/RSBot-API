@@ -126,7 +126,18 @@ public final class SecureStore {
 			final TarEntry entry = TarEntry.read(cis);
 			int l = (int) Math.ceil((double) entry.length / TarEntry.BLOCKSIZE) * TarEntry.BLOCKSIZE;
 			if (name.equals(entry.name)) {
-				// TODO: delete (replace) existing file
+				final long z = raf.getFilePointer();
+				raf.skipBytes(l);
+				final byte[] trailing = new byte[(int) (raf.length() - raf.getFilePointer())];
+				log.info("Length: " + trailing.length + " (" + name + ")");
+				if (trailing.length != 0) {
+					raf.read(trailing);
+				}
+				raf.seek(z - header.length);
+				if (trailing.length != 0) {
+					raf.write(trailing);
+				}
+				raf.setLength(z - header.length + trailing.length);
 			} else {
 				raf.skipBytes(l);
 			}
