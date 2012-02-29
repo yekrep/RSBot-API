@@ -3,6 +3,7 @@ package org.powerbot.gui;
 import org.powerbot.game.bot.Bot;
 import org.powerbot.gui.component.BotPanel;
 import org.powerbot.gui.component.BotToolBar;
+import org.powerbot.gui.component.DisplayPanel;
 import org.powerbot.util.Configuration;
 import org.powerbot.util.io.Resources;
 
@@ -16,7 +17,7 @@ public class Chrome extends JFrame implements WindowListener {
 	private static final long serialVersionUID = 1L;
 	private static Logger log = Logger.getLogger(Chrome.class.getName());
 	public static final int PANEL_WIDTH = 784, PANEL_HEIGHT = 562;
-	public static BotPanel panel;
+	public static DisplayPanel panel;
 
 	public Chrome() {
 		setSize(new Dimension(Chrome.PANEL_WIDTH, Chrome.PANEL_HEIGHT));
@@ -36,7 +37,9 @@ public class Chrome extends JFrame implements WindowListener {
 		Bot bot = new Bot();
 		if (bot.initializeEnvironment()) {
 			bot.startEnvironment();
-			panel.setBot(bot);
+			if (panel instanceof BotPanel) {
+				((BotPanel) panel).setBot(bot);
+			}
 		} else {
 			log.severe("Could not start a bot instance");
 		}

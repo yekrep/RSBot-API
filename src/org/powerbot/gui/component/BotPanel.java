@@ -1,17 +1,11 @@
 package org.powerbot.gui.component;
 
-import org.powerbot.game.GameDefinition;
 import org.powerbot.game.bot.Bot;
+import org.powerbot.game.client.input.Mouse;
 import org.powerbot.gui.Chrome;
-import org.powerbot.util.io.Resources;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.logging.Handler;
-import java.util.logging.Level;
-import java.util.logging.LogRecord;
-import java.util.logging.Logger;
 
 /**
  * A panel that re-dispatches human events to the game's applet.
@@ -21,35 +15,19 @@ import java.util.logging.Logger;
  *
  * @author Timer
  */
-public class BotPanel extends JPanel {
+public class BotPanel extends DisplayPanel {
 	private static final long serialVersionUID = 1L;
 	private Bot bot;
 	private int xOff;
-	private final JLabel status = new JLabel(), info = new JLabel();
 
 	public BotPanel() {
-		setSize(new Dimension(Chrome.PANEL_WIDTH, Chrome.PANEL_HEIGHT));
-		setMinimumSize(new Dimension(Chrome.PANEL_WIDTH, Chrome.PANEL_HEIGHT));
-		setPreferredSize(new Dimension(Chrome.PANEL_WIDTH, Chrome.PANEL_HEIGHT));
+		super(new Dimension(Chrome.PANEL_WIDTH, Chrome.PANEL_HEIGHT));
 		setBackground(Color.black);
-		xOff = 0;
-
-		setLayout(new GridBagLayout());
-		add(new JLabel(new ImageIcon(Resources.getImage(Resources.Paths.ARROWS))));
-		status.setFont(status.getFont().deriveFont(Font.BOLD, 24));
-		status.setForeground(Color.WHITE);
-		add(status);
-		info.setFont(info.getFont().deriveFont(0, 14));
-		final GridBagConstraints c = new GridBagConstraints();
-		c.gridy = 1;
-		c.ipady = 25;
-		c.gridwidth = 2;
-		add(info, c);
-		BotPanelLogHandler handler = new BotPanelLogHandler();
-		Logger.getLogger(GameDefinition.class.getName()).addHandler(handler);
-		Logger.getLogger(Bot.class.getName()).addHandler(handler);
+		this.bot = null;
+		this.xOff = 0;
 
 		addComponentListener(new ComponentAdapter() {
+			@Override
 			public void componentResized(ComponentEvent evt) {
 				if (bot != null) {
 					bot.resize(getWidth(), getHeight());
@@ -120,13 +98,13 @@ public class BotPanel extends JPanel {
 		}
 	}
 
-	public void setBot(Bot game) {
+	public void setBot(Bot bot) {
 		if (this.bot != null) {
 			this.bot.setPanel(null);
 		}
-		if (game != null) {
-			this.bot = game;
-			this.bot.setPanel(this);
+		if (bot != null) {
+			this.bot = bot;
+			bot.setPanel(this);
 			if (bot.getCanvas() != null) {
 				offset();
 			}
@@ -134,41 +112,80 @@ public class BotPanel extends JPanel {
 	}
 
 	public void offset() {
-		Canvas c = bot.getCanvas();
-		if (c != null) {
-			xOff = (getWidth() - c.getWidth()) / 2;
-		}
-	}
-
-	private void redispatch(AWTEvent e) {
-		if (e instanceof MouseEvent) {
-			((MouseEvent) e).translatePoint(-xOff, 0);
-		}
-		if (bot != null && bot.appletContainer != null && bot.appletContainer.getComponentCount() > 0) {
-			bot.appletContainer.getComponent(0).dispatchEvent(e);
-		}
-	}
-
-	public class BotPanelLogHandler extends Handler {
-		@Override
-		public void close() throws SecurityException {
-		}
-
-		@Override
-		public void flush() {
-		}
-
-		@Override
-		public void publish(final LogRecord record) {
-			Color c = new Color(149, 156, 171);
-			if (record.getLevel() == Level.SEVERE || record.getLevel() == Level.WARNING) {
-				status.setText("  Unavailable");
-				c = new Color(255, 87, 71);
-			} else {
-				status.setText("  Loading...");
+		if (bot != null) {
+			Canvas canvas = bot.getCanvas();
+			if (canvas != null) {
+				xOff = (getWidth() - canvas.getWidth()) / 2;
 			}
-			info.setForeground(c);
-			info.setText(record.getMessage());
+		}
+	}
+
+	private void redispatch(MouseEvent mouseEvent) {
+		if (mouseEvent == null || bot == null || bot.appletContainer == null || bot.appletContainer.getComponentCount() == 0 ||
+				bot.client == null) {
+			return;
+		}
+		mouseEvent.translatePoint(-xOff, 0);
+		Mouse mouse = bot.client.getMouse();
+		if (mouse == null) {
+			return;
+		}
+		boolean present = mouse.isPresent();
+		Component component = bot.appletContainer.getComponent(0);
+		dispatchEvent(component, mouseEvent);
+		int mouseX = mouseEvent.getX(), mouseY = mouseEvent.getY();
+		if (mouseEvent.getID() != MouseEvent.MOUSE_EXITED &&
+				mouseX > 0 && mouseX < component.getWidth() && mouseY > 0 && mouseY < component.getHeight()) {
+			if (present) {
+				if (mouseEvent instanceof MouseWheelEvent) {
+					MouseWheelEvent mouseWheelEvent = (MouseWheelEvent) mouseEvent;
+					component.dispatchEvent(new MouseWheelEvent(
+							component, mouseEvent.getID(),
+							System.currentTimeMillis(), 0,
+							mouseX, mouseY, 0, mouseEvent.isPopupTrigger(),
+							mouseWheelEvent.getScrollType(), mouseWheelEvent.getScrollAmount(), mouseWheelEvent.getWheelRotation()
+					));
+				} else {
+					component.dispatchEvent(new MouseEvent(
+							component, mouseEvent.getID(),
+							System.currentTimeMillis(), 0,
+							mouseX, mouseY, 0, mouseEvent.isPopupTrigger(),
+							mouseEvent.getButton()
+					));
+				}
+			} else {
+				component.dispatchEvent(new MouseEvent(
+						component, MouseEvent.MOUSE_ENTERED,
+						System.currentTimeMillis(), 0,
+						mouseX, mouseY, 0, false
+				));
+			}
+		} else if (present) {
+			component.dispatchEvent(new MouseEvent(
+					component, MouseEvent.MOUSE_EXITED,
+					System.currentTimeMillis(), 0,
+					mouseX, mouseY, 0, false
+			));
+		}
+	}
+
+	private void redispatch(KeyEvent keyEvent) {
+		if (keyEvent == null || bot == null || bot.appletContainer == null || bot.appletContainer.getComponentCount() == 0 ||
+				bot.client == null) {
+			return;
+		}
+		Component component = bot.appletContainer.getComponent(0);
+		dispatchEvent(component, keyEvent);
+		if (component != null) {
+			component.dispatchEvent(keyEvent);
+		}
+	}
+
+	private void dispatchEvent(Component component, AWTEvent event) {
+		if (component != null && event != null) {
+			if (event instanceof MouseEvent) {
+			} else if (event instanceof KeyEvent) {
+			}
 		}
 	}
 }
