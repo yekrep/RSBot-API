@@ -18,13 +18,13 @@ import java.awt.event.*;
 public class BotPanel extends DisplayPanel {
 	private static final long serialVersionUID = 1L;
 	private Bot bot;
-	private int xOff;
+	private int xOff, yOff;
 
 	public BotPanel() {
 		super(new Dimension(Chrome.PANEL_WIDTH, Chrome.PANEL_HEIGHT));
 		setBackground(Color.black);
 		this.bot = null;
-		this.xOff = 0;
+		this.xOff = this.yOff = 0;
 
 		addComponentListener(new ComponentAdapter() {
 			@Override
@@ -94,7 +94,7 @@ public class BotPanel extends DisplayPanel {
 		super.paintComponent(g);
 
 		if (bot != null) {
-			g.drawImage(bot.image, xOff, 0, null);
+			g.drawImage(bot.image, xOff, yOff, null);
 		}
 	}
 
@@ -116,6 +116,7 @@ public class BotPanel extends DisplayPanel {
 			Canvas canvas = bot.getCanvas();
 			if (canvas != null) {
 				xOff = (getWidth() - canvas.getWidth()) / 2;
+				yOff = (getHeight() - canvas.getHeight()) / 2;
 			}
 		}
 	}
@@ -125,7 +126,7 @@ public class BotPanel extends DisplayPanel {
 				bot.client == null) {
 			return;
 		}
-		mouseEvent.translatePoint(-xOff, 0);
+		mouseEvent.translatePoint(-xOff, -yOff);
 		Mouse mouse = bot.client.getMouse();
 		if (mouse == null) {
 			return;
