@@ -1,7 +1,5 @@
 package org.powerbot.gui.component;
 
-import org.powerbot.game.GameDefinition;
-import org.powerbot.game.bot.Bot;
 import org.powerbot.util.io.Resources;
 
 import javax.swing.*;
@@ -9,7 +7,6 @@ import java.awt.*;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
-import java.util.logging.Logger;
 
 /**
  * @author Paris
@@ -17,6 +14,7 @@ import java.util.logging.Logger;
 public class DisplayPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private JLabel status = new JLabel(), info = new JLabel();
+	protected DisplayPanelLogHandler handler = new DisplayPanelLogHandler();
 
 	public DisplayPanel(Dimension dimension) {
 		setSize(dimension);
@@ -34,9 +32,6 @@ public class DisplayPanel extends JPanel {
 		c.ipady = 25;
 		c.gridwidth = 2;
 		add(info, c);
-		DisplayPanelLogHandler handler = new DisplayPanelLogHandler();
-		Logger.getLogger(GameDefinition.class.getName()).addHandler(handler);
-		Logger.getLogger(Bot.class.getName()).addHandler(handler);
 	}
 
 	public DisplayPanel() {

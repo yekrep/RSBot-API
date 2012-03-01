@@ -1,11 +1,13 @@
 package org.powerbot.gui.component;
 
+import org.powerbot.game.GameDefinition;
 import org.powerbot.game.bot.Bot;
 import org.powerbot.game.client.input.Mouse;
 import org.powerbot.gui.Chrome;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.logging.Logger;
 
 /**
  * A panel that re-dispatches human events to the game's applet.
@@ -23,6 +25,8 @@ public class BotPanel extends DisplayPanel {
 	public BotPanel() {
 		super(new Dimension(Chrome.PANEL_WIDTH, Chrome.PANEL_HEIGHT));
 		setBackground(Color.black);
+		Logger.getLogger(GameDefinition.class.getName()).addHandler(handler);
+		Logger.getLogger(Bot.class.getName()).addHandler(handler);
 		this.bot = null;
 		this.xOff = this.yOff = 0;
 
