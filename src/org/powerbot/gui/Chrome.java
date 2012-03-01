@@ -20,8 +20,6 @@ public class Chrome extends JFrame implements WindowListener {
 	public static DisplayPanel panel;
 
 	public Chrome() {
-		setSize(new Dimension(Chrome.PANEL_WIDTH, Chrome.PANEL_HEIGHT));
-		setLocationRelativeTo(getParent());
 		setTitle(Configuration.NAME);
 		setIconImage(Resources.getImage(Resources.Paths.ICON));
 		addWindowListener(this);
@@ -29,7 +27,11 @@ public class Chrome extends JFrame implements WindowListener {
 
 		add(new BotToolBar(), BorderLayout.NORTH);
 		Chrome.panel = new BotPanel();
+
 		add(Chrome.panel);
+		pack();
+		setMinimumSize(getSize());
+		setLocationRelativeTo(getParent());
 		setVisible(true);
 	}
 
