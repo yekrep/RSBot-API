@@ -20,7 +20,6 @@ public final class BotMenu extends JPopupMenu implements ActionListener {
 		add(exit);
 	}
 
-	@Override
 	public void actionPerformed(final ActionEvent e) {
 		final String a = e.getActionCommand();
 		if (a.equals("Exit")) {
