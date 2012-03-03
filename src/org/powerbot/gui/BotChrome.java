@@ -3,7 +3,6 @@ package org.powerbot.gui;
 import org.powerbot.game.bot.Bot;
 import org.powerbot.gui.component.BotPanel;
 import org.powerbot.gui.component.BotToolBar;
-import org.powerbot.gui.component.DisplayPanel;
 import org.powerbot.util.Configuration;
 import org.powerbot.util.io.Resources;
 
@@ -16,8 +15,8 @@ import java.util.logging.Logger;
 public class BotChrome extends JFrame implements WindowListener {
 	private static final long serialVersionUID = 1L;
 	private static Logger log = Logger.getLogger(BotChrome.class.getName());
-	public static final int PANEL_WIDTH = 784, PANEL_HEIGHT = 562;
-	public static DisplayPanel panel;
+	public static final int PANEL_WIDTH = 784, PANEL_HEIGHT = 562, MAX_BOTS = 6;
+	public static BotPanel panel;
 
 	public BotChrome() {
 		setTitle(Configuration.NAME);
@@ -26,25 +25,14 @@ public class BotChrome extends JFrame implements WindowListener {
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
 		add(new BotToolBar(this), BorderLayout.NORTH);
-		BotChrome.panel = new BotPanel();
 
-		add(BotChrome.panel);
+		panel = new BotPanel();
+		add(panel);
+
 		pack();
 		setMinimumSize(getSize());
 		setLocationRelativeTo(getParent());
 		setVisible(true);
-	}
-
-	public void addBot() {
-		Bot bot = new Bot();
-		if (bot.initializeEnvironment()) {
-			bot.startEnvironment();
-			if (panel instanceof BotPanel) {
-				((BotPanel) panel).setBot(bot);
-			}
-		} else {
-			log.severe("Could not start a bot instance");
-		}
 	}
 
 	public void windowActivated(WindowEvent arg0) {

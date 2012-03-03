@@ -25,7 +25,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class Bot extends GameDefinition {
+public class Bot extends GameDefinition implements Runnable {
 	private static Logger log = Logger.getLogger(Bot.class.getName());
 	public static final LinkedList<Bot> bots = new LinkedList<Bot>();
 	private static final Map<ThreadGroup, Bot> context = new HashMap<ThreadGroup, Bot>();
@@ -46,12 +46,18 @@ public class Bot extends GameDefinition {
 		this.panel = null;
 	}
 
+	@Override
+	public void run() {
+		bots.add(this);
+		initializeEnvironment();
+		startEnvironment();
+	}
+
 	/**
 	 * {@inheritDoc}
 	 */
 	public void startEnvironment() {
 		log.info("Starting bot");
-		bots.add(this);
 		context.put(threadGroup, this);
 		this.callback = new Runnable() {
 			public void run() {

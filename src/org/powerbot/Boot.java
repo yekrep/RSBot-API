@@ -20,8 +20,7 @@ public class Boot implements Runnable {
 		} catch (final Exception ignored) {
 		}
 
-		final BotChrome chrome = new BotChrome();
-		chrome.addBot();
+		new BotChrome();
 	}
 
 	public void run() {
