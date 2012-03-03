@@ -4,16 +4,13 @@ import org.powerbot.game.bot.Bot;
 import org.powerbot.game.client.input.Mouse;
 import org.powerbot.gui.BotChrome;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-
-import javax.swing.JPanel;
 
 /**
  * A panel that re-dispatches human events to the game's applet.
  * Contains an image buffered from the applet.
- * <p/>
- * Missing vital event dispatching of certain events, not safe for prolonged use.
  *
  * @author Timer
  */

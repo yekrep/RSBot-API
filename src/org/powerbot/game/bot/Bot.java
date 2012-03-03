@@ -46,11 +46,11 @@ public class Bot extends GameDefinition implements Runnable {
 		this.panel = null;
 	}
 
-	@Override
 	public void run() {
-		bots.add(this);
-		initializeEnvironment();
-		startEnvironment();
+		Bot.bots.add(this);
+		if (initializeEnvironment()) {
+			startEnvironment();
+		}
 	}
 
 	/**
