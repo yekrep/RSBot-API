@@ -1,5 +1,7 @@
 package org.powerbot.gui.component;
 
+import java.awt.Component;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -14,6 +16,7 @@ public final class BotToolBar extends JToolBar {
 	private static final long serialVersionUID = 1L;
 	public final BotChrome parent;
 	private final BotMenu menu;
+	private final Bot[] bots = new Bot[BotChrome.MAX_BOTS];
 	private final JButton tabadd;
 
 	public BotToolBar(final BotChrome parent) {
@@ -49,18 +52,41 @@ public final class BotToolBar extends JToolBar {
 	private void addBot() {
 		final int n = Bot.bots.size();
 		add(new BotButton("Game " + (n + 1)), n);
+		setTab(n);
 		tabadd.setVisible(BotChrome.MAX_BOTS - Bot.bots.size() > 1);
 		final Bot bot = new Bot();
 		new Thread(bot).start();
+		bots[n] = bot;
 		BotChrome.panel.setBot(bot);
 	}
 
-	private final class BotButton extends JButton {
+	private void setTab(final int n) {
+		int i = 0;
+		for (final Component c : getComponents()) {
+			if (c instanceof BotButton) {
+				c.setFont(c.getFont().deriveFont(n == i ? Font.BOLD : 0));
+			}
+			i++;
+		}
+		for (i = 0; i < bots.length; i++) {
+			if (bots[i] != null) {
+				bots[i].setPanel(i == n ? BotChrome.panel : null);
+			}
+		}
+	}
+
+	private final class BotButton extends JButton implements ActionListener {
 		private static final long serialVersionUID = 1L;
 
 		public BotButton(final String name) {
 			super(name);
 			setFocusable(false);
+			addActionListener(this);
+		}
+
+		@Override
+		public void actionPerformed(final ActionEvent arg0) {
+			setTab(getComponentIndex(this));
 		}
 	}
 }
