@@ -3,7 +3,7 @@ package org.powerbot.gui.component;
 import org.powerbot.game.GameDefinition;
 import org.powerbot.game.bot.Bot;
 import org.powerbot.game.client.input.Mouse;
-import org.powerbot.gui.Chrome;
+import org.powerbot.gui.BotChrome;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -23,7 +23,7 @@ public class BotPanel extends DisplayPanel {
 	private int xOff, yOff;
 
 	public BotPanel() {
-		super(new Dimension(Chrome.PANEL_WIDTH, Chrome.PANEL_HEIGHT));
+		super(new Dimension(BotChrome.PANEL_WIDTH, BotChrome.PANEL_HEIGHT));
 		setBackground(Color.black);
 		Logger.getLogger(GameDefinition.class.getName()).addHandler(handler);
 		Logger.getLogger(Bot.class.getName()).addHandler(handler);

@@ -13,22 +13,22 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.logging.Logger;
 
-public class Chrome extends JFrame implements WindowListener {
+public class BotChrome extends JFrame implements WindowListener {
 	private static final long serialVersionUID = 1L;
-	private static Logger log = Logger.getLogger(Chrome.class.getName());
+	private static Logger log = Logger.getLogger(BotChrome.class.getName());
 	public static final int PANEL_WIDTH = 784, PANEL_HEIGHT = 562;
 	public static DisplayPanel panel;
 
-	public Chrome() {
+	public BotChrome() {
 		setTitle(Configuration.NAME);
 		setIconImage(Resources.getImage(Resources.Paths.ICON));
 		addWindowListener(this);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
 		add(new BotToolBar(this), BorderLayout.NORTH);
-		Chrome.panel = new BotPanel();
+		BotChrome.panel = new BotPanel();
 
-		add(Chrome.panel);
+		add(BotChrome.panel);
 		pack();
 		setMinimumSize(getSize());
 		setLocationRelativeTo(getParent());

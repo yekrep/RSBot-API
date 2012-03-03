@@ -1,6 +1,6 @@
 package org.powerbot;
 
-import org.powerbot.gui.Chrome;
+import org.powerbot.gui.BotChrome;
 import org.powerbot.log.SystemConsoleHandler;
 
 import javax.swing.*;
@@ -20,7 +20,7 @@ public class Boot implements Runnable {
 		} catch (final Exception ignored) {
 		}
 
-		final Chrome chrome = new Chrome();
+		final BotChrome chrome = new BotChrome();
 		chrome.addBot();
 	}
 

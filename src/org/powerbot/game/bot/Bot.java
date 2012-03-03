@@ -7,7 +7,7 @@ import org.powerbot.game.api.Multipliers;
 import org.powerbot.game.client.Client;
 import org.powerbot.game.loader.Loader;
 import org.powerbot.game.loader.script.ModScript;
-import org.powerbot.gui.Chrome;
+import org.powerbot.gui.BotChrome;
 import org.powerbot.gui.component.BotPanel;
 import org.powerbot.lang.AdaptException;
 import org.powerbot.util.Configuration;
@@ -39,7 +39,7 @@ public class Bot extends GameDefinition {
 	private BufferedImage backBuffer;
 
 	public Bot() {
-		Dimension d = new Dimension(Chrome.PANEL_WIDTH, Chrome.PANEL_HEIGHT);
+		Dimension d = new Dimension(BotChrome.PANEL_WIDTH, BotChrome.PANEL_HEIGHT);
 		this.image = new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_RGB);
 		this.backBuffer = new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_RGB);
 		this.client = null;
@@ -57,7 +57,7 @@ public class Bot extends GameDefinition {
 			public void run() {
 				setClient((Client) appletContainer.clientInstance);
 				appletContainer.paint(image.getGraphics());
-				resize(Chrome.PANEL_WIDTH, Chrome.PANEL_HEIGHT);
+				resize(BotChrome.PANEL_WIDTH, BotChrome.PANEL_HEIGHT);
 			}
 		};
 		log.fine("Submitting loader");
