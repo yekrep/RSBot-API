@@ -1,13 +1,13 @@
 package org.powerbot.gui.component;
 
-import org.powerbot.game.GameDefinition;
 import org.powerbot.game.bot.Bot;
 import org.powerbot.game.client.input.Mouse;
 import org.powerbot.gui.BotChrome;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.logging.Logger;
+
+import javax.swing.JPanel;
 
 /**
  * A panel that re-dispatches human events to the game's applet.
@@ -17,16 +17,17 @@ import java.util.logging.Logger;
  *
  * @author Timer
  */
-public class BotPanel extends DisplayPanel {
+public class BotPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private Bot bot;
 	private int xOff, yOff;
 
 	public BotPanel() {
-		super(new Dimension(BotChrome.PANEL_WIDTH, BotChrome.PANEL_HEIGHT));
+		final Dimension d = new Dimension(BotChrome.PANEL_WIDTH, BotChrome.PANEL_HEIGHT);
+		setSize(d);
+		setPreferredSize(d);
+		setMinimumSize(d);
 		setBackground(Color.black);
-		Logger.getLogger(GameDefinition.class.getName()).addHandler(handler);
-		Logger.getLogger(Bot.class.getName()).addHandler(handler);
 		this.bot = null;
 		this.xOff = this.yOff = 0;
 
