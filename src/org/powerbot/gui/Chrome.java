@@ -25,7 +25,7 @@ public class Chrome extends JFrame implements WindowListener {
 		addWindowListener(this);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
-		add(new BotToolBar(), BorderLayout.NORTH);
+		add(new BotToolBar(this), BorderLayout.NORTH);
 		Chrome.panel = new BotPanel();
 
 		add(Chrome.panel);
