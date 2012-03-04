@@ -31,7 +31,7 @@ public final class BotToolBar extends JToolBar {
 				closeTab(getOpenedTab());
 			}
 		});
-		tabdelete.setToolTipText("Remove tab");
+		tabdelete.setToolTipText(Locale.CLOSETAB);
 		tabdelete.setFocusable(false);
 		tabdelete.setVisible(false);
 		add(tabdelete);
@@ -45,7 +45,7 @@ public final class BotToolBar extends JToolBar {
 				}
 			}
 		});
-		tabadd.setToolTipText("New tab");
+		tabadd.setToolTipText(Locale.NEWTAB);
 		tabadd.setFocusable(false);
 		add(tabadd);
 

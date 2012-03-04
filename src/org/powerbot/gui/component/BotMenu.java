@@ -18,10 +18,10 @@ public final class BotMenu extends JPopupMenu implements ActionListener {
 
 		final int tabs = parent.getTabCount();
 
-		final JMenuItem newtab = new JMenuItem("New Tab");
+		final JMenuItem newtab = new JMenuItem(Locale.NEWTAB);
 		newtab.setEnabled(BotChrome.MAX_BOTS - tabs > 0);
 		newtab.addActionListener(this);
-		final JMenuItem closetab = new JMenuItem("Close Tab");
+		final JMenuItem closetab = new JMenuItem(Locale.CLOSETAB);
 		closetab.setEnabled(tabs > 0);
 		closetab.addActionListener(this);
 		add(newtab);
@@ -29,7 +29,7 @@ public final class BotMenu extends JPopupMenu implements ActionListener {
 
 		addSeparator();
 
-		final JMenuItem exit = new JMenuItem("Exit");
+		final JMenuItem exit = new JMenuItem(Locale.EXIT);
 		exit.addActionListener(this);
 		add(exit);
 	}
@@ -37,11 +37,11 @@ public final class BotMenu extends JPopupMenu implements ActionListener {
 	@Override
 	public void actionPerformed(final ActionEvent e) {
 		final String a = e.getActionCommand();
-		if (a.equals("New Tab")) {
+		if (a.equals(Locale.NEWTAB)) {
 			parent.addTab();
-		} else if (a.equals("Close Tab")) {
+		} else if (a.equals(Locale.CLOSETAB)) {
 			parent.closeTab(parent.getOpenedTab());
-		} else if (a.equals("Exit")) {
+		} else if (a.equals(Locale.EXIT)) {
 			parent.parent.dispatchEvent(new WindowEvent(parent.parent, WindowEvent.WINDOW_CLOSING));
 		}
 	}
