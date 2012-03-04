@@ -100,7 +100,7 @@ public class BotPanel extends JPanel {
 		}
 	}
 
-	public void setBot(Bot bot) {
+	public void setBot(final Bot bot) {
 		if (this.bot != null) {
 			this.bot.setPanel(null);
 		}

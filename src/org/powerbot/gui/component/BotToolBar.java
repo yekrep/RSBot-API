@@ -68,7 +68,7 @@ public final class BotToolBar extends JToolBar {
 			}
 			i++;
 		}
-		if (n > 0 && n < Bot.bots.size()) {
+		if (n >= 0 && n < Bot.bots.size()) {
 			BotChrome.panel.setBot(Bot.bots.get(n));
 		}
 	}
