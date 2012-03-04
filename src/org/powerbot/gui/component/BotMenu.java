@@ -30,7 +30,11 @@ public final class BotMenu extends JPopupMenu implements ActionListener {
 		closetab.addActionListener(this);
 		add(newtab);
 		add(closetab);
+		addSeparator();
 
+		final JMenuItem accounts = new JMenuItem(Locale.ACCOUNTS);
+		accounts.setIcon(new ImageIcon(Resources.getImage(Resources.Paths.REPORT_KEY)));
+		add(accounts);
 		addSeparator();
 
 		final JMenuItem exit = new JMenuItem(Locale.EXIT);
