@@ -1,4 +1,4 @@
-package org.powerbot.event;
+package org.powerbot.concurrent.action;
 
 import org.powerbot.concurrent.ContainedTask;
 
