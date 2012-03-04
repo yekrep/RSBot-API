@@ -7,5 +7,9 @@ public final class Locale {
 	public static String PAUSESCRIPT = "Pause Script";
 	public static String STOPSCRIPT = "Stop Script";
 	public static String ACCOUNTS = "Accounts";
+	public static String ABOUT = "About";
 	public static String EXIT = "Exit";
+
+	public static String POWERBOT = "powerbot.org";
+	public static String COPYRIGHT = "Copyright (c) 2011 - 2012 'Paris', licensed to J.P. Holdings Int'l Ltd.";
 }

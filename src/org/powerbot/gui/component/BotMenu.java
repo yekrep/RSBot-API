@@ -6,9 +6,11 @@ import java.awt.event.WindowEvent;
 
 import javax.swing.ImageIcon;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 
 import org.powerbot.gui.BotChrome;
+import org.powerbot.util.Configuration;
 import org.powerbot.util.io.Resources;
 
 public final class BotMenu extends JPopupMenu implements ActionListener {
@@ -35,6 +37,33 @@ public final class BotMenu extends JPopupMenu implements ActionListener {
 		final JMenuItem accounts = new JMenuItem(Locale.ACCOUNTS);
 		accounts.setIcon(new ImageIcon(Resources.getImage(Resources.Paths.REPORT_KEY)));
 		add(accounts);
+		addSeparator();
+
+		final JMenuItem site = new JMenuItem(Locale.POWERBOT);
+		site.setIcon(new ImageIcon(Resources.getImage(Resources.Paths.ICON_SMALL)));
+		site.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent arg0) {
+				BotChrome.openURL(Configuration.URLs.SITE);
+			}
+		});
+		add(site);
+		final JMenuItem about = new JMenuItem(Locale.ABOUT);
+		about.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent arg0) {
+				JOptionPane.showMessageDialog(parent.parent, new String[] {
+						Locale.COPYRIGHT,
+						"Unauthorised use of this application is prohibited.\n\n",
+						"RuneScape® is a trademark of Jagex © 1999 - 2011 Jagex, Ltd.",
+						"RuneScape content and materials are trademarks and copyrights of Jagex or its licensees.",
+						"This program is issued with no warranty and is not affiliated with Jagex Ltd., nor do they endorse usage of our software.\n\n",
+						"Visit " + Configuration.URLs.SITE + "/ for more information."},
+						Locale.ABOUT,
+						JOptionPane.INFORMATION_MESSAGE);
+			}
+		});
+		add(about);
 		addSeparator();
 
 		final JMenuItem exit = new JMenuItem(Locale.EXIT);
