@@ -62,18 +62,18 @@ public final class BotToolBar extends JToolBar {
 		add(settings);
 	}
 
-	private void addTab() {
+	public void addTab() {
 		final int n = Bot.bots.size(), x = n +1;
 		final Bot bot = new Bot();
 		add(new BotButton("Game", bot), x);
 		tabdelete.setVisible(true);
 		openTab(n);
-		tabadd.setVisible(BotChrome.MAX_BOTS - Bot.bots.size() > 1);
+		tabadd.setVisible(BotChrome.MAX_BOTS - Bot.bots.size() > 0);
 		new Thread(bot).start();
 		BotChrome.panel.setBot(bot);
 	}
 
-	private void closeTab(final int n) {
+	public void closeTab(final int n) {
 		final BotButton b = getTabButton(n);
 		if (b == null) {
 			return;
@@ -105,7 +105,7 @@ public final class BotToolBar extends JToolBar {
 		}
 	}
 
-	private int getOpenedTab() {
+	public int getOpenedTab() {
 		int i = 0;
 		for (final Component c : getComponents()) {
 			if (c instanceof BotButton) {
@@ -132,7 +132,7 @@ public final class BotToolBar extends JToolBar {
 		return null;
 	}
 
-	private int getTabCount() {
+	public int getTabCount() {
 		int i = 0;
 		for (final Component c : getComponents()) {
 			if (c instanceof BotButton) {
