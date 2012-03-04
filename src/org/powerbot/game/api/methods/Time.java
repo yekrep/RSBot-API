@@ -3,7 +3,7 @@ package org.powerbot.game.api.methods;
 public class Time {
 	public static void sleep(final int toSleep) {
 		try {
-			long start = System.currentTimeMillis();
+			final long start = System.currentTimeMillis();
 			Thread.sleep(toSleep);
 
 			long now;

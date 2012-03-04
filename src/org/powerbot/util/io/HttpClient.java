@@ -1,9 +1,10 @@
 package org.powerbot.util.io;
 
-import org.powerbot.util.Configuration;
-import org.powerbot.util.StringUtil;
-
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
@@ -15,6 +16,9 @@ import java.util.TimeZone;
 import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.InflaterInputStream;
+
+import org.powerbot.util.Configuration;
+import org.powerbot.util.StringUtil;
 
 /**
  * @author Paris
@@ -68,17 +72,17 @@ public class HttpClient {
 		final HttpURLConnection con = getHttpConnection(url);
 		con.setUseCaches(true);
 		switch (con.getResponseCode()) {
-			case 200:
-				return con;
-			default:
-				for (final Entry<String, List<String>> header : con.getHeaderFields().entrySet()) {
-					if (header.getKey() != null && header.getKey().equalsIgnoreCase("location")) {
-						final URL newUrl = new URL(header.getValue().get(0));
-						http301.put(url, newUrl);
-						return getConnection(newUrl);
-					}
+		case 200:
+			return con;
+		default:
+			for (final Entry<String, List<String>> header : con.getHeaderFields().entrySet()) {
+				if (header.getKey() != null && header.getKey().equalsIgnoreCase("location")) {
+					final URL newUrl = new URL(header.getValue().get(0));
+					http301.put(url, newUrl);
+					return getConnection(newUrl);
 				}
-				return null;
+			}
+			return null;
 		}
 	}
 

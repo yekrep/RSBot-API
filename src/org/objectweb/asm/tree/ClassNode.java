@@ -29,11 +29,16 @@
  */
 package org.objectweb.asm.tree;
 
-import org.objectweb.asm.*;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import org.objectweb.asm.AnnotationVisitor;
+import org.objectweb.asm.Attribute;
+import org.objectweb.asm.ClassVisitor;
+import org.objectweb.asm.FieldVisitor;
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
 
 /**
  * A node that represents a class.
@@ -175,10 +180,10 @@ public class ClassNode extends ClassVisitor {
 	 */
 	public ClassNode(final int api) {
 		super(api);
-		this.interfaces = new ArrayList<String>();
-		this.innerClasses = new ArrayList<InnerClassNode>();
-		this.fields = new ArrayList<FieldNode>();
-		this.methods = new ArrayList<MethodNode>();
+		interfaces = new ArrayList<String>();
+		innerClasses = new ArrayList<InnerClassNode>();
+		fields = new ArrayList<FieldNode>();
+		methods = new ArrayList<MethodNode>();
 	}
 
 	// ------------------------------------------------------------------------
@@ -223,7 +228,7 @@ public class ClassNode extends ClassVisitor {
 	public AnnotationVisitor visitAnnotation(
 			final String desc,
 			final boolean visible) {
-		AnnotationNode an = new AnnotationNode(desc);
+		final AnnotationNode an = new AnnotationNode(desc);
 		if (visible) {
 			if (visibleAnnotations == null) {
 				visibleAnnotations = new ArrayList<AnnotationNode>(1);
@@ -252,7 +257,7 @@ public class ClassNode extends ClassVisitor {
 			final String outerName,
 			final String innerName,
 			final int access) {
-		InnerClassNode icn = new InnerClassNode(name,
+		final InnerClassNode icn = new InnerClassNode(name,
 				outerName,
 				innerName,
 				access);
@@ -266,7 +271,7 @@ public class ClassNode extends ClassVisitor {
 			final String desc,
 			final String signature,
 			final Object value) {
-		FieldNode fn = new FieldNode(access, name, desc, signature, value);
+		final FieldNode fn = new FieldNode(access, name, desc, signature, value);
 		fields.add(fn);
 		return fn;
 	}
@@ -278,7 +283,7 @@ public class ClassNode extends ClassVisitor {
 			final String desc,
 			final String signature,
 			final String[] exceptions) {
-		MethodNode mn = new MethodNode(access,
+		final MethodNode mn = new MethodNode(access,
 				name,
 				desc,
 				signature,
@@ -314,7 +319,7 @@ public class ClassNode extends ClassVisitor {
 	 */
 	public void accept(final ClassVisitor cv) {
 		// visits header
-		String[] interfaces = new String[this.interfaces.size()];
+		final String[] interfaces = new String[this.interfaces.size()];
 		this.interfaces.toArray(interfaces);
 		cv.visit(version, access, name, signature, superName, interfaces);
 		// visits source
@@ -329,12 +334,12 @@ public class ClassNode extends ClassVisitor {
 		int i, n;
 		n = visibleAnnotations == null ? 0 : visibleAnnotations.size();
 		for (i = 0; i < n; ++i) {
-			AnnotationNode an = visibleAnnotations.get(i);
+			final AnnotationNode an = visibleAnnotations.get(i);
 			an.accept(cv.visitAnnotation(an.desc, true));
 		}
 		n = invisibleAnnotations == null ? 0 : invisibleAnnotations.size();
 		for (i = 0; i < n; ++i) {
-			AnnotationNode an = invisibleAnnotations.get(i);
+			final AnnotationNode an = invisibleAnnotations.get(i);
 			an.accept(cv.visitAnnotation(an.desc, false));
 		}
 		n = attrs == null ? 0 : attrs.size();

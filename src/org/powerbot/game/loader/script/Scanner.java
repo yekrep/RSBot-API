@@ -10,7 +10,7 @@ import java.io.InputStream;
  */
 public class Scanner {
 	private final static int EOL = 0xA;
-	private InputStream in;
+	private final InputStream in;
 
 	public Scanner(final byte[] data) {
 		this(new ByteArrayInputStream(data));
@@ -29,15 +29,15 @@ public class Scanner {
 	}
 
 	public int readShort() {
-		return (readByte() << 8) | readByte();
+		return readByte() << 8 | readByte();
 	}
 
 	public int readInt() {
-		return (readShort() << 16) | readShort();
+		return readShort() << 16 | readShort();
 	}
 
 	public long readLong() {
-		return (readInt() << 32) | readInt();
+		return readInt() << 32 | readInt();
 	}
 
 	public String readString() {

@@ -131,16 +131,16 @@ public class StringUtil {
 		}
 	}
 
-	public static String byteArrayToHexString(byte[] b) {
+	public static String byteArrayToHexString(final byte[] b) {
 		final StringBuilder s = new StringBuilder(b.length * 2);
-		for (byte aB : b) {
+		for (final byte aB : b) {
 			s.append(Integer.toString((aB & 0xff) + 0x100, 16).substring(1));
 		}
 		return s.toString();
 	}
 
 	public static byte[] hexStringToByteArray(final String s) {
-		byte[] data = new byte[s.length() / 2];
+		final byte[] data = new byte[s.length() / 2];
 		for (int i = 0; i < s.length(); i += 2) {
 			data[i / 2] = (byte) ((Character.digit(s.charAt(i), 16) << 4) + Character.digit(s.charAt(i + 1), 16));
 		}

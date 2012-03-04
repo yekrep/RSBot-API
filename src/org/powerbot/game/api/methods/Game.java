@@ -5,9 +5,9 @@ import org.powerbot.game.bot.Bot;
 
 public class Game {
 	public static int getClientState() {
-		Bot bot = Bot.resolve();
-		Constants constants = bot.constants;
-		int clientState = bot.client.getLoginIndex() * bot.multipliers.GLOBAL_LOGININDEX;
+		final Bot bot = Bot.resolve();
+		final Constants constants = bot.constants;
+		final int clientState = bot.client.getLoginIndex() * bot.multipliers.GLOBAL_LOGININDEX;
 		if (clientState == constants.CLIENTSTATE_3) {
 			return 3;
 		} else if (clientState == constants.CLIENTSTATE_6) {

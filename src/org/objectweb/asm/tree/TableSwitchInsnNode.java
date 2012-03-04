@@ -29,14 +29,14 @@
  */
 package org.objectweb.asm.tree;
 
-import org.objectweb.asm.Label;
-import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+
+import org.objectweb.asm.Label;
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
 
 /**
  * A node that represents a TABLESWITCH instruction.
@@ -96,7 +96,7 @@ public class TableSwitchInsnNode extends AbstractInsnNode {
 
 	@Override
 	public void accept(final MethodVisitor mv) {
-		Label[] labels = new Label[this.labels.size()];
+		final Label[] labels = new Label[this.labels.size()];
 		for (int i = 0; i < labels.length; ++i) {
 			labels[i] = this.labels.get(i).getLabel();
 		}

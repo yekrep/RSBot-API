@@ -1,7 +1,5 @@
 package org.powerbot.game.loader.wrapper;
 
-import org.powerbot.game.loader.RsClassLoader;
-
 import java.applet.Applet;
 import java.awt.Graphics;
 import java.lang.reflect.Constructor;
@@ -11,6 +9,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import org.powerbot.game.loader.RsClassLoader;
 
 /**
  * An applet for manipulation of the wrapped client class.
@@ -22,23 +22,24 @@ public final class Rs2Applet extends Applet {
 	private static Logger log = Logger.getLogger(Rs2Applet.class.getName());
 	private static final long serialVersionUID = 1L;
 	private final Map<String, byte[]> classes = new HashMap<String, byte[]>();
-	private String game;
+	private final String game;
 	public Runnable callback;
 
 	public Object clientInstance = null;
 	private Class<?> clientClass = null;
 
-	public Rs2Applet(Map<String, byte[]> classes, String game, Runnable callback) {
+	public Rs2Applet(final Map<String, byte[]> classes, final String game, final Runnable callback) {
 		this.classes.putAll(classes);
 		this.game = game;
 		this.callback = callback;
 	}
 
+	@Override
 	public final void init() {
 		try {
-			RsClassLoader loader = new RsClassLoader(this.classes, new URL(game));
+			final RsClassLoader loader = new RsClassLoader(classes, new URL(game));
 			clientClass = loader.loadClass("client");
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			log.log(Level.SEVERE, "Failed to load classes: ", e);
 		}
 
@@ -49,16 +50,16 @@ public final class Rs2Applet extends Applet {
 
 		Constructor<?> constructor;
 		try {
-			constructor = this.clientClass.getConstructor((Class[]) null);
-			this.clientInstance = constructor.newInstance((Object[]) null);
-		} catch (Exception e) {
+			constructor = clientClass.getConstructor((Class[]) null);
+			clientInstance = constructor.newInstance((Object[]) null);
+		} catch (final Exception e) {
 			log.log(Level.SEVERE, "Failed to construct client class: ", e);
 		}
 
 		if (callback != null) {
 			try {
 				callback.run();
-			} catch (Throwable t) {
+			} catch (final Throwable t) {
 				log.log(Level.SEVERE, "Callback failed to execute: ", t);
 			}
 		}
@@ -67,47 +68,52 @@ public final class Rs2Applet extends Applet {
 		invokeMethod(null, null, "init");
 	}
 
+	@Override
 	public final void start() {
-		if (this.clientInstance != null) {
+		if (clientInstance != null) {
 			invokeMethod(null, null, "start");
 		}
 	}
 
+	@Override
 	public final void stop() {
-		if (this.clientInstance != null) {
+		if (clientInstance != null) {
 			invokeMethod(null, null, "stop");
 		}
 	}
 
+	@Override
 	public final void destroy() {
-		if (this.clientInstance != null) {
+		if (clientInstance != null) {
 			invokeMethod(null, null, "destroy");
 		}
 	}
 
-	public final void paint(Graphics render) {
-		if (this.clientInstance != null) {
+	@Override
+	public final void paint(final Graphics render) {
+		if (clientInstance != null) {
 			invokeMethod(new Object[]{render}, new Class[]{Graphics.class}, "paint");
 		}
 	}
 
-	public final void update(Graphics render) {
-		if (this.clientInstance != null) {
+	@Override
+	public final void update(final Graphics render) {
+		if (clientInstance != null) {
 			invokeMethod(new Object[]{render}, new Class[]{Graphics.class}, "update");
 		}
 	}
 
-	private final void invokeMethod(Object[] parameters, Class<?>[] parameterTypes, String name) {
+	private final void invokeMethod(final Object[] parameters, final Class<?>[] parameterTypes, final String name) {
 		try {
-			Method method = this.clientClass.getMethod(name, parameterTypes);
-			method.invoke(this.clientInstance, parameters);
-		} catch (Exception e) {
+			final Method method = clientClass.getMethod(name, parameterTypes);
+			method.invoke(clientInstance, parameters);
+		} catch (final Exception e) {
 			log.log(Level.SEVERE, "Error invoking client method: ", e);
 		}
 	}
 
 
-	private final void throwException(Throwable throwable) {
+	private final void throwException(final Throwable throwable) {
 		log.log(Level.SEVERE, "Client exception: ", throwable);
 	}
 }

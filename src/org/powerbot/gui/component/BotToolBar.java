@@ -1,18 +1,19 @@
 package org.powerbot.gui.component;
 
-import org.powerbot.game.bot.Bot;
-import org.powerbot.gui.BotChrome;
-import org.powerbot.util.io.Resources;
+import java.awt.Component;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JToolBar;
 import javax.swing.border.EmptyBorder;
-import java.awt.Component;
-import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+
+import org.powerbot.game.bot.Bot;
+import org.powerbot.gui.BotChrome;
+import org.powerbot.util.io.Resources;
 
 public final class BotToolBar extends JToolBar {
 	private static final long serialVersionUID = 1L;
@@ -27,6 +28,7 @@ public final class BotToolBar extends JToolBar {
 
 		tabadd = new JButton(new ImageIcon(Resources.getImage(Resources.Paths.TAB_ADD)));
 		tabadd.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(final ActionEvent e) {
 				if (Bot.bots.size() < BotChrome.MAX_BOTS) {
 					addBot();
@@ -41,7 +43,8 @@ public final class BotToolBar extends JToolBar {
 		menu = new BotMenu(this);
 		final JButton settings = new JButton(new ImageIcon(Resources.getImage(Resources.Paths.COG)));
 		settings.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+			@Override
+			public void actionPerformed(final ActionEvent arg0) {
 				menu.show(settings, settings.getWidth() / 2, settings.getHeight() / 2);
 			}
 		});
@@ -82,6 +85,7 @@ public final class BotToolBar extends JToolBar {
 			addActionListener(this);
 		}
 
+		@Override
 		public void actionPerformed(final ActionEvent arg0) {
 			setTab(getComponentIndex(this));
 		}

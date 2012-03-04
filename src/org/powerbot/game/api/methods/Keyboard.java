@@ -1,28 +1,28 @@
 package org.powerbot.game.api.methods;
 
-import org.powerbot.game.bot.Bot;
-
 import java.awt.Component;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import org.powerbot.game.bot.Bot;
+
 public class Keyboard {
 	private static void pressKey(final char ch, final int delay, final int mask) {
 		getKeyboard().keyPressed(
 				new KeyEvent(getTarget(), KeyEvent.KEY_PRESSED, System.currentTimeMillis() + delay, mask, ch, getKeyChar(ch), getLocation(ch))
-		);
+				);
 		if ((ch < KeyEvent.VK_LEFT || ch > KeyEvent.VK_DOWN) && (ch < KeyEvent.VK_SHIFT || ch > KeyEvent.VK_CAPS_LOCK)) {
 			getKeyboard().keyTyped(
 					new KeyEvent(getTarget(), KeyEvent.KEY_TYPED, System.currentTimeMillis() + delay, mask, ch, getKeyChar(ch), getLocation(ch))
-			);
+					);
 		}
 	}
 
 	private static void releaseKey(final char ch, final int delay, final int mask) {
 		getKeyboard().keyReleased(
 				new KeyEvent(getTarget(), KeyEvent.KEY_RELEASED, System.currentTimeMillis() + delay, mask, ch, getKeyChar(ch), getLocation(ch))
-		);
+				);
 	}
 
 	private static int getLocation(final char ch) {
@@ -86,7 +86,7 @@ public class Keyboard {
 		if (bot.client == null || bot.client.getCanvas() == null) {
 			throw new RuntimeException("client not ready for events");
 		}
-		KeyListener[] listeners = bot.client.getCanvas().getKeyListeners();
+		final KeyListener[] listeners = bot.client.getCanvas().getKeyListeners();
 		if (listeners.length != 1) {
 			throw new RuntimeException("listener mismatch");
 		}

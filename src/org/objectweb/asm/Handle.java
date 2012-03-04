@@ -78,7 +78,7 @@ public final class Handle {
 	 * @param desc  the descriptor of the field or method designated by this
 	 *              handle.
 	 */
-	public Handle(int tag, String owner, String name, String desc) {
+	public Handle(final int tag, final String owner, final String name, final String desc) {
 		this.tag = tag;
 		this.owner = owner;
 		this.name = name;
@@ -129,14 +129,14 @@ public final class Handle {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (obj == this) {
 			return true;
 		}
 		if (!(obj instanceof Handle)) {
 			return false;
 		}
-		Handle h = (Handle) obj;
+		final Handle h = (Handle) obj;
 		return tag == h.tag && owner.equals(h.owner)
 				&& name.equals(h.name) && desc.equals(h.desc);
 	}

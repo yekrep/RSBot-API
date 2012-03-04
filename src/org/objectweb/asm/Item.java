@@ -143,9 +143,9 @@ final class Item {
 	 * @param intVal the value of this item.
 	 */
 	void set(final int intVal) {
-		this.type = ClassWriter.INT;
+		type = ClassWriter.INT;
 		this.intVal = intVal;
-		this.hashCode = 0x7FFFFFFF & (type + intVal);
+		hashCode = 0x7FFFFFFF & type + intVal;
 	}
 
 	/**
@@ -154,9 +154,9 @@ final class Item {
 	 * @param longVal the value of this item.
 	 */
 	void set(final long longVal) {
-		this.type = ClassWriter.LONG;
+		type = ClassWriter.LONG;
 		this.longVal = longVal;
-		this.hashCode = 0x7FFFFFFF & (type + (int) longVal);
+		hashCode = 0x7FFFFFFF & type + (int) longVal;
 	}
 
 	/**
@@ -165,9 +165,9 @@ final class Item {
 	 * @param floatVal the value of this item.
 	 */
 	void set(final float floatVal) {
-		this.type = ClassWriter.FLOAT;
-		this.intVal = Float.floatToRawIntBits(floatVal);
-		this.hashCode = 0x7FFFFFFF & (type + (int) floatVal);
+		type = ClassWriter.FLOAT;
+		intVal = Float.floatToRawIntBits(floatVal);
+		hashCode = 0x7FFFFFFF & type + (int) floatVal;
 	}
 
 	/**
@@ -176,9 +176,9 @@ final class Item {
 	 * @param doubleVal the value of this item.
 	 */
 	void set(final double doubleVal) {
-		this.type = ClassWriter.DOUBLE;
-		this.longVal = Double.doubleToRawLongBits(doubleVal);
-		this.hashCode = 0x7FFFFFFF & (type + (int) doubleVal);
+		type = ClassWriter.DOUBLE;
+		longVal = Double.doubleToRawLongBits(doubleVal);
+		hashCode = 0x7FFFFFFF & type + (int) doubleVal;
 	}
 
 	/**
@@ -199,24 +199,24 @@ final class Item {
 		this.strVal2 = strVal2;
 		this.strVal3 = strVal3;
 		switch (type) {
-			case ClassWriter.UTF8:
-			case ClassWriter.STR:
-			case ClassWriter.CLASS:
-			case ClassWriter.MTYPE:
-			case ClassWriter.TYPE_NORMAL:
-				hashCode = 0x7FFFFFFF & (type + strVal1.hashCode());
-				return;
-			case ClassWriter.NAME_TYPE:
-				hashCode = 0x7FFFFFFF & (type + strVal1.hashCode()
-						* strVal2.hashCode());
-				return;
+		case ClassWriter.UTF8:
+		case ClassWriter.STR:
+		case ClassWriter.CLASS:
+		case ClassWriter.MTYPE:
+		case ClassWriter.TYPE_NORMAL:
+			hashCode = 0x7FFFFFFF & type + strVal1.hashCode();
+			return;
+		case ClassWriter.NAME_TYPE:
+			hashCode = 0x7FFFFFFF & type + strVal1.hashCode()
+			* strVal2.hashCode();
+			return;
 			// ClassWriter.FIELD:
 			// ClassWriter.METH:
 			// ClassWriter.IMETH:
 			// ClassWriter.HANDLE_BASE + 1..9
-			default:
-				hashCode = 0x7FFFFFFF & (type + strVal1.hashCode()
-						* strVal2.hashCode() * strVal3.hashCode());
+		default:
+			hashCode = 0x7FFFFFFF & type + strVal1.hashCode()
+			* strVal2.hashCode() * strVal3.hashCode();
 		}
 	}
 
@@ -227,13 +227,13 @@ final class Item {
 	 * @param desc     invokedynamic's desc.
 	 * @param bsmIndex zero based index into the class attribute BootrapMethods.
 	 */
-	void set(String name, String desc, int bsmIndex) {
-		this.type = ClassWriter.INDY;
-		this.longVal = bsmIndex;
-		this.strVal1 = name;
-		this.strVal2 = desc;
-		this.hashCode = 0x7FFFFFFF & (ClassWriter.INDY + bsmIndex
-				* strVal1.hashCode() * strVal2.hashCode());
+	void set(final String name, final String desc, final int bsmIndex) {
+		type = ClassWriter.INDY;
+		longVal = bsmIndex;
+		strVal1 = name;
+		strVal2 = desc;
+		hashCode = 0x7FFFFFFF & ClassWriter.INDY + bsmIndex
+				* strVal1.hashCode() * strVal2.hashCode();
 	}
 
 	/**
@@ -244,9 +244,9 @@ final class Item {
 	 *                 the hashcode of the bootstrap method and the hashcode of
 	 *                 all bootstrap arguments.
 	 */
-	void set(int position, int hashCode) {
-		this.type = ClassWriter.BSM;
-		this.intVal = position;
+	void set(final int position, final int hashCode) {
+		type = ClassWriter.BSM;
+		intVal = position;
 		this.hashCode = hashCode;
 	}
 
@@ -261,34 +261,34 @@ final class Item {
 	 */
 	boolean isEqualTo(final Item i) {
 		switch (type) {
-			case ClassWriter.UTF8:
-			case ClassWriter.STR:
-			case ClassWriter.CLASS:
-			case ClassWriter.MTYPE:
-			case ClassWriter.TYPE_NORMAL:
-				return i.strVal1.equals(strVal1);
-			case ClassWriter.TYPE_MERGED:
-			case ClassWriter.LONG:
-			case ClassWriter.DOUBLE:
-				return i.longVal == longVal;
-			case ClassWriter.INT:
-			case ClassWriter.FLOAT:
-				return i.intVal == intVal;
-			case ClassWriter.TYPE_UNINIT:
-				return i.intVal == intVal && i.strVal1.equals(strVal1);
-			case ClassWriter.NAME_TYPE:
-				return i.strVal1.equals(strVal1) && i.strVal2.equals(strVal2);
-			case ClassWriter.INDY:
-				return i.longVal == longVal && i.strVal1.equals(strVal1)
-						&& i.strVal2.equals(strVal2);
+		case ClassWriter.UTF8:
+		case ClassWriter.STR:
+		case ClassWriter.CLASS:
+		case ClassWriter.MTYPE:
+		case ClassWriter.TYPE_NORMAL:
+			return i.strVal1.equals(strVal1);
+		case ClassWriter.TYPE_MERGED:
+		case ClassWriter.LONG:
+		case ClassWriter.DOUBLE:
+			return i.longVal == longVal;
+		case ClassWriter.INT:
+		case ClassWriter.FLOAT:
+			return i.intVal == intVal;
+		case ClassWriter.TYPE_UNINIT:
+			return i.intVal == intVal && i.strVal1.equals(strVal1);
+		case ClassWriter.NAME_TYPE:
+			return i.strVal1.equals(strVal1) && i.strVal2.equals(strVal2);
+		case ClassWriter.INDY:
+			return i.longVal == longVal && i.strVal1.equals(strVal1)
+			&& i.strVal2.equals(strVal2);
 
 			// case ClassWriter.FIELD:
 			// case ClassWriter.METH:
 			// case ClassWriter.IMETH:
 			// case ClassWriter.HANDLE_BASE + 1..9
-			default:
-				return i.strVal1.equals(strVal1) && i.strVal2.equals(strVal2)
-						&& i.strVal3.equals(strVal3);
+		default:
+			return i.strVal1.equals(strVal1) && i.strVal2.equals(strVal2)
+					&& i.strVal3.equals(strVal3);
 		}
 	}
 

@@ -29,14 +29,14 @@
  */
 package org.objectweb.asm.tree;
 
-import org.objectweb.asm.Label;
-import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+
+import org.objectweb.asm.Label;
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
 
 /**
  * A node that represents a LOOKUPSWITCH instruction.
@@ -93,11 +93,11 @@ public class LookupSwitchInsnNode extends AbstractInsnNode {
 
 	@Override
 	public void accept(final MethodVisitor mv) {
-		int[] keys = new int[this.keys.size()];
+		final int[] keys = new int[this.keys.size()];
 		for (int i = 0; i < keys.length; ++i) {
 			keys[i] = this.keys.get(i).intValue();
 		}
-		Label[] labels = new Label[this.labels.size()];
+		final Label[] labels = new Label[this.labels.size()];
 		for (int i = 0; i < labels.length; ++i) {
 			labels[i] = this.labels.get(i).getLabel();
 		}
@@ -106,7 +106,7 @@ public class LookupSwitchInsnNode extends AbstractInsnNode {
 
 	@Override
 	public AbstractInsnNode clone(final Map<LabelNode, LabelNode> labels) {
-		LookupSwitchInsnNode clone = new LookupSwitchInsnNode(clone(dflt,
+		final LookupSwitchInsnNode clone = new LookupSwitchInsnNode(clone(dflt,
 				labels), null, clone(this.labels, labels));
 		clone.keys.addAll(keys);
 		return clone;

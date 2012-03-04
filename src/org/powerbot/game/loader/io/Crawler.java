@@ -1,7 +1,5 @@
 package org.powerbot.game.loader.io;
 
-import org.powerbot.util.io.HttpClient;
-
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -10,6 +8,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.powerbot.util.io.HttpClient;
 
 /**
  * Crawls the game pages while faking HTTP header information to reduce detection rate.
@@ -38,9 +38,9 @@ public class Crawler {
 	}
 
 	public boolean crawl() {
-		String frameHttpSource = download(frame, home);
+		final String frameHttpSource = download(frame, home);
 		if (frameHttpSource != null) {
-			Matcher gameURLMatcher = PATTERN_GAME.matcher(frameHttpSource);
+			final Matcher gameURLMatcher = PATTERN_GAME.matcher(frameHttpSource);
 			if (gameURLMatcher.find()) {
 				game = gameURLMatcher.group(1);
 			}
@@ -49,28 +49,28 @@ public class Crawler {
 		}
 
 		if (game != null) {
-			String gameHttpSource = download(game, frame);
+			final String gameHttpSource = download(game, frame);
 			if (gameHttpSource != null) {
-				Matcher archiveMatcher = PATTERN_ARCHIVE.matcher(gameHttpSource);
+				final Matcher archiveMatcher = PATTERN_ARCHIVE.matcher(gameHttpSource);
 				if (archiveMatcher.find()) {
-					String archiveLink = archiveMatcher.group(1);
+					final String archiveLink = archiveMatcher.group(1);
 					URL gameURL;
 					try {
 						gameURL = new URL(game);
-					} catch (MalformedURLException e) {
+					} catch (final MalformedURLException e) {
 						e.printStackTrace();
 						return false;
 					}
 					archive = gameURL.getProtocol() + "://" + gameURL.getHost() + "/" + archiveLink;
 				}
 
-				Matcher classMatcher = PATTERN_CLASS.matcher(gameHttpSource);
+				final Matcher classMatcher = PATTERN_CLASS.matcher(gameHttpSource);
 				if (classMatcher.find()) {
 					clazz = classMatcher.group(1);
 					clazz = clazz.substring(0, clazz.indexOf("."));
 				}
 
-				Matcher parameterMatcher = PATTERN_PARAMETER.matcher(gameHttpSource);
+				final Matcher parameterMatcher = PATTERN_PARAMETER.matcher(gameHttpSource);
 				while (parameterMatcher.find()) {
 					parameters.put(parameterMatcher.group(1), parameterMatcher.group(2));
 				}
@@ -86,12 +86,12 @@ public class Crawler {
 		return false;
 	}
 
-	private String download(String url, String referer) {
+	private String download(final String url, final String referer) {
 		try {
-			HttpURLConnection con = HttpClient.getHttpConnection(new URL(url));
+			final HttpURLConnection con = HttpClient.getHttpConnection(new URL(url));
 			con.addRequestProperty("Referer", referer);
 			return HttpClient.downloadAsString(con);
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			e.printStackTrace();
 		}
 		return null;

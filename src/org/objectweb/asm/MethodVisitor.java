@@ -114,7 +114,7 @@ public abstract class MethodVisitor {
 	 * @return a visitor to visit the annotation values, or <tt>null</tt> if
 	 *         this visitor is not interested in visiting this annotation.
 	 */
-	public AnnotationVisitor visitAnnotation(String desc, boolean visible) {
+	public AnnotationVisitor visitAnnotation(final String desc, final boolean visible) {
 		if (mv != null) {
 			return mv.visitAnnotation(desc, visible);
 		}
@@ -131,9 +131,9 @@ public abstract class MethodVisitor {
 	 *         this visitor is not interested in visiting this annotation.
 	 */
 	public AnnotationVisitor visitParameterAnnotation(
-			int parameter,
-			String desc,
-			boolean visible) {
+			final int parameter,
+			final String desc,
+			final boolean visible) {
 		if (mv != null) {
 			return mv.visitParameterAnnotation(parameter, desc, visible);
 		}
@@ -145,7 +145,7 @@ public abstract class MethodVisitor {
 	 *
 	 * @param attr an attribute.
 	 */
-	public void visitAttribute(Attribute attr) {
+	public void visitAttribute(final Attribute attr) {
 		if (mv != null) {
 			mv.visitAttribute(attr);
 		}
@@ -212,11 +212,11 @@ public abstract class MethodVisitor {
 	 *                               is a Opcodes#F_SAME frame, in which case it is silently ignored).
 	 */
 	public void visitFrame(
-			int type,
-			int nLocal,
-			Object[] local,
-			int nStack,
-			Object[] stack) {
+			final int type,
+			final int nLocal,
+			final Object[] local,
+			final int nStack,
+			final Object[] stack) {
 		if (mv != null) {
 			mv.visitFrame(type, nLocal, local, nStack, stack);
 		}
@@ -244,7 +244,7 @@ public abstract class MethodVisitor {
 	 *               FRETURN, DRETURN, ARETURN, RETURN, ARRAYLENGTH, ATHROW,
 	 *               MONITORENTER, or MONITOREXIT.
 	 */
-	public void visitInsn(int opcode) {
+	public void visitInsn(final int opcode) {
 		if (mv != null) {
 			mv.visitInsn(opcode);
 		}
@@ -265,7 +265,7 @@ public abstract class MethodVisitor {
 	 *                {@link org.objectweb.asm.Opcodes#T_BYTE}, {@link org.objectweb.asm.Opcodes#T_SHORT},
 	 *                {@link org.objectweb.asm.Opcodes#T_INT} or {@link org.objectweb.asm.Opcodes#T_LONG}.
 	 */
-	public void visitIntInsn(int opcode, int operand) {
+	public void visitIntInsn(final int opcode, final int operand) {
 		if (mv != null) {
 			mv.visitIntInsn(opcode, operand);
 		}
@@ -281,7 +281,7 @@ public abstract class MethodVisitor {
 	 * @param var    the operand of the instruction to be visited. This operand is
 	 *               the index of a local variable.
 	 */
-	public void visitVarInsn(int opcode, int var) {
+	public void visitVarInsn(final int opcode, final int var) {
 		if (mv != null) {
 			mv.visitVarInsn(opcode, var);
 		}
@@ -297,7 +297,7 @@ public abstract class MethodVisitor {
 	 *               must be the internal name of an object or array class (see {@link
 	 *               Type#getInternalName() getInternalName}).
 	 */
-	public void visitTypeInsn(int opcode, String type) {
+	public void visitTypeInsn(final int opcode, final String type) {
 		if (mv != null) {
 			mv.visitTypeInsn(opcode, type);
 		}
@@ -314,7 +314,7 @@ public abstract class MethodVisitor {
 	 * @param name   the field's name.
 	 * @param desc   the field's descriptor (see {@link Type Type}).
 	 */
-	public void visitFieldInsn(int opcode, String owner, String name, String desc) {
+	public void visitFieldInsn(final int opcode, final String owner, final String name, final String desc) {
 		if (mv != null) {
 			mv.visitFieldInsn(opcode, owner, name, desc);
 		}
@@ -332,7 +332,7 @@ public abstract class MethodVisitor {
 	 * @param name   the method's name.
 	 * @param desc   the method's descriptor (see {@link Type Type}).
 	 */
-	public void visitMethodInsn(int opcode, String owner, String name, String desc) {
+	public void visitMethodInsn(final int opcode, final String owner, final String name, final String desc) {
 		if (mv != null) {
 			mv.visitMethodInsn(opcode, owner, name, desc);
 		}
@@ -350,7 +350,7 @@ public abstract class MethodVisitor {
 	 *                value. This method is allowed to modify the content of the array
 	 *                so a caller should expect that this array may change.
 	 */
-	public void visitInvokeDynamicInsn(String name, String desc, Handle bsm, Object... bsmArgs) {
+	public void visitInvokeDynamicInsn(final String name, final String desc, final Handle bsm, final Object... bsmArgs) {
 		if (mv != null) {
 			mv.visitInvokeDynamicInsn(name, desc, bsm, bsmArgs);
 		}
@@ -368,7 +368,7 @@ public abstract class MethodVisitor {
 	 *               is a label that designates the instruction to which the jump
 	 *               instruction may jump.
 	 */
-	public void visitJumpInsn(int opcode, Label label) {
+	public void visitJumpInsn(final int opcode, final Label label) {
 		if (mv != null) {
 			mv.visitJumpInsn(opcode, label);
 		}
@@ -380,7 +380,7 @@ public abstract class MethodVisitor {
 	 *
 	 * @param label a {@link Label Label} object.
 	 */
-	public void visitLabel(Label label) {
+	public void visitLabel(final Label label) {
 		if (mv != null) {
 			mv.visitLabel(label);
 		}
@@ -431,7 +431,7 @@ public abstract class MethodVisitor {
 	 *            MethodType and MethodHandle constants, for classes whose version
 	 *            is 51.0.
 	 */
-	public void visitLdcInsn(Object cst) {
+	public void visitLdcInsn(final Object cst) {
 		if (mv != null) {
 			mv.visitLdcInsn(cst);
 		}
@@ -443,7 +443,7 @@ public abstract class MethodVisitor {
 	 * @param var       index of the local variable to be incremented.
 	 * @param increment amount to increment the local variable by.
 	 */
-	public void visitIincInsn(int var, int increment) {
+	public void visitIincInsn(final int var, final int increment) {
 		if (mv != null) {
 			mv.visitIincInsn(var, increment);
 		}
@@ -458,7 +458,7 @@ public abstract class MethodVisitor {
 	 * @param labels beginnings of the handler blocks. <tt>labels[i]</tt> is
 	 *               the beginning of the handler block for the <tt>min + i</tt> key.
 	 */
-	public void visitTableSwitchInsn(int min, int max, Label dflt, Label... labels) {
+	public void visitTableSwitchInsn(final int min, final int max, final Label dflt, final Label... labels) {
 		if (mv != null) {
 			mv.visitTableSwitchInsn(min, max, dflt, labels);
 		}
@@ -472,7 +472,7 @@ public abstract class MethodVisitor {
 	 * @param labels beginnings of the handler blocks. <tt>labels[i]</tt> is
 	 *               the beginning of the handler block for the <tt>keys[i]</tt> key.
 	 */
-	public void visitLookupSwitchInsn(Label dflt, int[] keys, Label[] labels) {
+	public void visitLookupSwitchInsn(final Label dflt, final int[] keys, final Label[] labels) {
 		if (mv != null) {
 			mv.visitLookupSwitchInsn(dflt, keys, labels);
 		}
@@ -484,7 +484,7 @@ public abstract class MethodVisitor {
 	 * @param desc an array type descriptor (see {@link Type Type}).
 	 * @param dims number of dimensions of the array to allocate.
 	 */
-	public void visitMultiANewArrayInsn(String desc, int dims) {
+	public void visitMultiANewArrayInsn(final String desc, final int dims) {
 		if (mv != null) {
 			mv.visitMultiANewArrayInsn(desc, dims);
 		}
@@ -507,7 +507,7 @@ public abstract class MethodVisitor {
 	 *                                  visited by this visitor (by the {@link #visitLabel visitLabel}
 	 *                                  method).
 	 */
-	public void visitTryCatchBlock(Label start, Label end, Label handler, String type) {
+	public void visitTryCatchBlock(final Label start, final Label end, final Label handler, final String type) {
 		if (mv != null) {
 			mv.visitTryCatchBlock(start, end, handler, type);
 		}
@@ -531,12 +531,12 @@ public abstract class MethodVisitor {
 	 *                                  {@link #visitLabel visitLabel} method).
 	 */
 	public void visitLocalVariable(
-			String name,
-			String desc,
-			String signature,
-			Label start,
-			Label end,
-			int index) {
+			final String name,
+			final String desc,
+			final String signature,
+			final Label start,
+			final Label end,
+			final int index) {
 		if (mv != null) {
 			mv.visitLocalVariable(name, desc, signature, start, end, index);
 		}
@@ -552,7 +552,7 @@ public abstract class MethodVisitor {
 	 *                                  visited by this visitor (by the {@link #visitLabel visitLabel}
 	 *                                  method).
 	 */
-	public void visitLineNumber(int line, Label start) {
+	public void visitLineNumber(final int line, final Label start) {
 		if (mv != null) {
 			mv.visitLineNumber(line, start);
 		}
@@ -565,7 +565,7 @@ public abstract class MethodVisitor {
 	 * @param maxStack  maximum stack size of the method.
 	 * @param maxLocals maximum number of local variables for the method.
 	 */
-	public void visitMaxs(int maxStack, int maxLocals) {
+	public void visitMaxs(final int maxStack, final int maxLocals) {
 		if (mv != null) {
 			mv.visitMaxs(maxStack, maxLocals);
 		}

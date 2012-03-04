@@ -1,18 +1,23 @@
 package org.powerbot.util.io;
 
-import org.powerbot.util.Configuration;
-import org.powerbot.util.StringUtil;
-
-import javax.crypto.Cipher;
-import javax.crypto.CipherInputStream;
-import javax.crypto.spec.SecretKeySpec;
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.RandomAccessFile;
 import java.security.GeneralSecurityException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.logging.Logger;
+
+import javax.crypto.Cipher;
+import javax.crypto.CipherInputStream;
+import javax.crypto.spec.SecretKeySpec;
+
+import org.powerbot.util.Configuration;
+import org.powerbot.util.StringUtil;
 
 /**
  * @author Paris
@@ -99,7 +104,7 @@ public final class SecureStore {
 		while (raf.read(header) != -1) {
 			final CipherInputStream cis = new CipherInputStream(new ByteArrayInputStream(header), getCipher(Cipher.DECRYPT_MODE));
 			final TarEntry entry = TarEntry.read(cis);
-			int l = (int) Math.ceil((double) entry.length / TarEntry.BLOCKSIZE) * TarEntry.BLOCKSIZE;
+			final int l = (int) Math.ceil((double) entry.length / TarEntry.BLOCKSIZE) * TarEntry.BLOCKSIZE;
 			if (name.equals(entry.name)) {
 				raf.close();
 				return entry;
@@ -118,7 +123,7 @@ public final class SecureStore {
 		while (raf.read(header) != -1) {
 			final CipherInputStream cis = new CipherInputStream(new ByteArrayInputStream(header), getCipher(Cipher.DECRYPT_MODE));
 			final TarEntry entry = TarEntry.read(cis);
-			int l = (int) Math.ceil((double) entry.length / TarEntry.BLOCKSIZE) * TarEntry.BLOCKSIZE;
+			final int l = (int) Math.ceil((double) entry.length / TarEntry.BLOCKSIZE) * TarEntry.BLOCKSIZE;
 			if (name.equals(entry.name)) {
 				final byte[] data = new byte[(int) entry.length];
 				raf.read(data);
@@ -142,7 +147,7 @@ public final class SecureStore {
 			}
 			final CipherInputStream cis = new CipherInputStream(new ByteArrayInputStream(header), getCipher(Cipher.DECRYPT_MODE));
 			final TarEntry entry = TarEntry.read(cis);
-			int l = (int) Math.ceil((double) entry.length / TarEntry.BLOCKSIZE) * TarEntry.BLOCKSIZE;
+			final int l = (int) Math.ceil((double) entry.length / TarEntry.BLOCKSIZE) * TarEntry.BLOCKSIZE;
 			if (name.equals(entry.name)) {
 				final long z = raf.getFilePointer();
 				raf.skipBytes(l);

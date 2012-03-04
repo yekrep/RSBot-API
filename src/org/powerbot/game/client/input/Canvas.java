@@ -1,15 +1,19 @@
 package org.powerbot.game.client.input;
 
-import org.powerbot.game.bot.Bot;
-import org.powerbot.gui.BotChrome;
-
 import java.awt.AWTEvent;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.FocusEvent;
-import java.awt.image.*;
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferInt;
+import java.awt.image.DirectColorModel;
+import java.awt.image.Raster;
+import java.awt.image.WritableRaster;
 import java.util.Hashtable;
+
+import org.powerbot.game.bot.Bot;
+import org.powerbot.gui.BotChrome;
 
 public class Canvas extends java.awt.Canvas {
 	private static final long serialVersionUID = -2276037172265300477L;
@@ -60,12 +64,12 @@ public class Canvas extends java.awt.Canvas {
 	}
 
 	@Override
-	public final void setVisible(boolean visible) {
+	public final void setVisible(final boolean visible) {
 		super.setVisible(visible);
 		this.visible = visible;
 	}
 
-	public final void setFocused(boolean focused) {
+	public final void setFocused(final boolean focused) {
 		if (focused && !this.focused) {
 			super.processEvent(new FocusEvent(this, FocusEvent.FOCUS_GAINED, false, null));
 		} else if (this.focused) {
@@ -76,16 +80,16 @@ public class Canvas extends java.awt.Canvas {
 
 	@SuppressWarnings("rawtypes")
 	@Override
-	public Image createImage(int width, int height) {
-		int[] pixels = new int[height * width];
-		DataBufferInt databufferint = new DataBufferInt(pixels, pixels.length);
-		DirectColorModel directcolormodel = new DirectColorModel(32, 0xff0000, 0xff00, 255);
-		WritableRaster writableraster = Raster.createWritableRaster(directcolormodel.createCompatibleSampleModel(width, height), databufferint, null);
+	public Image createImage(final int width, final int height) {
+		final int[] pixels = new int[height * width];
+		final DataBufferInt databufferint = new DataBufferInt(pixels, pixels.length);
+		final DirectColorModel directcolormodel = new DirectColorModel(32, 0xff0000, 0xff00, 255);
+		final WritableRaster writableraster = Raster.createWritableRaster(directcolormodel.createCompatibleSampleModel(width, height), databufferint, null);
 		return new BufferedImage(directcolormodel, writableraster, false, new Hashtable());
 	}
 
 	@Override
-	protected final void processEvent(AWTEvent e) {
+	protected final void processEvent(final AWTEvent e) {
 		if (!(e instanceof FocusEvent)) {
 			super.processEvent(e);
 		}

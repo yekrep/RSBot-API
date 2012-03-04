@@ -15,7 +15,7 @@ public abstract class ContainedTask implements Task {
 	 *
 	 * @param future The <code>Future</code> associated with this task.
 	 */
-	public void setFuture(Future<Object> future) {
+	public void setFuture(final Future<Object> future) {
 		this.future = future;
 	}
 }

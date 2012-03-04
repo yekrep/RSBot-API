@@ -1,5 +1,13 @@
 package org.powerbot.game;
 
+import java.io.IOException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import org.powerbot.asm.NodeProcessor;
 import org.powerbot.concurrent.TaskContainer;
 import org.powerbot.concurrent.TaskProcessor;
@@ -11,14 +19,6 @@ import org.powerbot.lang.AdaptException;
 import org.powerbot.util.StringUtil;
 import org.powerbot.util.io.HttpClient;
 
-import java.io.IOException;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 /**
  * A definition of a <code>GameEnvironment</code> that manages all the data associated with this environment.
  *
@@ -27,7 +27,7 @@ import java.util.logging.Logger;
 public abstract class GameDefinition implements GameEnvironment {
 	private static Logger log = Logger.getLogger(GameDefinition.class.getName());
 	protected TaskContainer processor;
-	private Map<String, byte[]> classes;
+	private final Map<String, byte[]> classes;
 
 	public Crawler crawler;
 	public Rs2Applet appletContainer;
@@ -37,41 +37,42 @@ public abstract class GameDefinition implements GameEnvironment {
 	public ThreadGroup threadGroup;
 
 	public GameDefinition() {
-		this.threadGroup = new ThreadGroup("GameDefinition-" + hashCode());
-		this.processor = new TaskProcessor(this.threadGroup);
-		this.classes = new HashMap<String, byte[]>();
+		threadGroup = new ThreadGroup("GameDefinition-" + hashCode());
+		processor = new TaskProcessor(threadGroup);
+		classes = new HashMap<String, byte[]>();
 
-		this.crawler = new Crawler();
-		this.appletContainer = null;
-		this.callback = null;
-		this.stub = null;
-		this.packHash = null;
+		crawler = new Crawler();
+		appletContainer = null;
+		callback = null;
+		stub = null;
+		packHash = null;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public boolean initializeEnvironment() {
 		log.info("Initializing game environment");
-		this.classes.clear();
+		classes.clear();
 		log.fine("Crawling (for) game information");
 		if (!crawler.crawl()) {
 			return false;
 		}
 		log.fine("Downloading loader");
-		byte[] loader = getLoader(crawler);
+		final byte[] loader = getLoader(crawler);
 		if (loader != null) {
-			String secretKeySpecKey = crawler.parameters.get("0");
-			String ivParameterSpecKey = crawler.parameters.get("-1");
+			final String secretKeySpecKey = crawler.parameters.get("0");
+			final String ivParameterSpecKey = crawler.parameters.get("-1");
 			if (secretKeySpecKey == null || ivParameterSpecKey == null) {
 				log.fine("Invalid secret spec key and/or iv parameter spec key");
 				return false;
 			}
 			log.fine("Removing key ciphering");
-			byte[] secretKeySpecBytes = PackEncryption.toByte(secretKeySpecKey);
-			byte[] ivParameterSpecBytes = PackEncryption.toByte(ivParameterSpecKey);
+			final byte[] secretKeySpecBytes = PackEncryption.toByte(secretKeySpecKey);
+			final byte[] ivParameterSpecBytes = PackEncryption.toByte(ivParameterSpecKey);
 			log.fine("Extracting classes from loader");
-			Map<String, byte[]> classes = PackEncryption.extract(secretKeySpecBytes, ivParameterSpecBytes, loader);
+			final Map<String, byte[]> classes = PackEncryption.extract(secretKeySpecBytes, ivParameterSpecBytes, loader);
 			log.fine("Generating client hash");
 			packHash = StringUtil.byteArrayToHexString(PackEncryption.inner_pack_hash);
 			log.fine("Client hash (" + packHash + ")");
@@ -83,7 +84,7 @@ public abstract class GameDefinition implements GameEnvironment {
 				NodeProcessor nodeProcessor;
 				try {
 					nodeProcessor = getProcessor();
-				} catch (Throwable e) {
+				} catch (final Throwable e) {
 					log.log(Level.FINE, "Failed to load processor: ", e);
 					return false;
 				}
@@ -91,13 +92,13 @@ public abstract class GameDefinition implements GameEnvironment {
 					log.fine("Running node processor");
 					try {
 						nodeProcessor.adapt();
-					} catch (AdaptException e) {
+					} catch (final AdaptException e) {
 						log.log(Level.FINE, "Node adaptation failed", e);
 						return false;
 					}
 					log.fine("Processing classes");
-					for (Map.Entry<String, byte[]> clazz : this.classes.entrySet()) {
-						String name = clazz.getKey();
+					for (final Map.Entry<String, byte[]> clazz : this.classes.entrySet()) {
+						final String name = clazz.getKey();
 						this.classes.put(name, nodeProcessor.process(name, clazz.getValue()));
 					}
 				}
@@ -107,18 +108,18 @@ public abstract class GameDefinition implements GameEnvironment {
 		return false;
 	}
 
-	public static byte[] getLoader(Crawler crawler) {
+	public static byte[] getLoader(final Crawler crawler) {
 		try {
-			URLConnection clientConnection = HttpClient.getHttpConnection(new URL(crawler.archive));
+			final URLConnection clientConnection = HttpClient.getHttpConnection(new URL(crawler.archive));
 			clientConnection.addRequestProperty("Referer", crawler.game);
 			return HttpClient.downloadBinary(clientConnection);
-		} catch (IOException ignored) {
+		} catch (final IOException ignored) {
 		}
 		return null;
 	}
 
 	public Map<String, byte[]> classes() {
-		Map<String, byte[]> classes = new HashMap<String, byte[]>();
+		final Map<String, byte[]> classes = new HashMap<String, byte[]>();
 		classes.putAll(this.classes);
 		return classes;
 	}

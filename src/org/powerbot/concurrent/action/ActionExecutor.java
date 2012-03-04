@@ -1,14 +1,14 @@
 package org.powerbot.concurrent.action;
 
-import org.powerbot.concurrent.ContainedTask;
-import org.powerbot.concurrent.RunnableTask;
-import org.powerbot.concurrent.TaskContainer;
-import org.powerbot.lang.Activator;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Future;
+
+import org.powerbot.concurrent.ContainedTask;
+import org.powerbot.concurrent.RunnableTask;
+import org.powerbot.concurrent.TaskContainer;
+import org.powerbot.lang.Activator;
 
 /**
  * An action manager capable of dispatching actions when activated within the a concurrent environment.
@@ -16,8 +16,8 @@ import java.util.concurrent.Future;
  * @author Timer
  */
 public class ActionExecutor extends RunnableTask implements ActionContainer {
-	private TaskContainer processor;
-	private List<Action> actions;
+	private final TaskContainer processor;
+	private final List<Action> actions;
 	private State state;
 
 	/**
@@ -25,18 +25,19 @@ public class ActionExecutor extends RunnableTask implements ActionContainer {
 	 *
 	 * @param processor The <code>TaskProcessor</code> to use as a medium for processing.
 	 */
-	public ActionExecutor(TaskContainer processor) {
+	public ActionExecutor(final TaskContainer processor) {
 		this.processor = processor;
-		this.actions = new ArrayList<Action>();
+		actions = new ArrayList<Action>();
 		state = State.DESTROYED;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void listen() {
 		if (state != State.LISTENING) {
-			State previous = state;
+			final State previous = state;
 			state = State.LISTENING;
 			if (previous == State.LOCKED) {
 				synchronized (this) {
@@ -51,6 +52,7 @@ public class ActionExecutor extends RunnableTask implements ActionContainer {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void lock() {
 		state = State.LOCKED;
 	}
@@ -58,6 +60,7 @@ public class ActionExecutor extends RunnableTask implements ActionContainer {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void destroy() {
 		state = State.DESTROYED;
 	}
@@ -65,39 +68,42 @@ public class ActionExecutor extends RunnableTask implements ActionContainer {
 	/**
 	 * {@inheritDoc}
 	 */
-	public void append(Action action) {
-		if (!this.actions.contains(action)) {
-			this.actions.add(action);
+	@Override
+	public void append(final Action action) {
+		if (!actions.contains(action)) {
+			actions.add(action);
 		}
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public void omit(Action action) {
-		this.actions.remove(action);
+	@Override
+	public void omit(final Action action) {
+		actions.remove(action);
 	}
 
 	/**
 	 * Handles the dispatching of actions within the given container.
 	 */
+	@Override
 	public void run() {
 		while (state != State.DESTROYED) {
 			if (state == State.LOCKED) {
 				synchronized (this) {
 					try {
 						wait();
-					} catch (InterruptedException ignored) {
+					} catch (final InterruptedException ignored) {
 					}
 				}
 			} else if (state == State.LISTENING) {
-				for (Action action : actions) {
-					Activator activator = action.activator;
+				for (final Action action : actions) {
+					final Activator activator = action.activator;
 					if (activator != null && activator.dispatch()) {
 						final List<Future<?>> futures = Collections.synchronizedList(new ArrayList<Future<?>>());
 						if (action.actionComposite != null) {
 							if (action.actionComposite.tasks != null) {
-								for (ContainedTask task : action.actionComposite.tasks) {
+								for (final ContainedTask task : action.actionComposite.tasks) {
 									if (task != null) {
 										processor.submit(task);
 										if (task.future != null) {
@@ -107,7 +113,7 @@ public class ActionExecutor extends RunnableTask implements ActionContainer {
 								}
 							}
 						}
-						State previous = state;
+						final State previous = state;
 						if (action.requireLock) {
 							synchronized (this) {
 								processor.submit(createWait(futures, this));
@@ -115,7 +121,7 @@ public class ActionExecutor extends RunnableTask implements ActionContainer {
 								if (futures.size() > 0) {
 									try {
 										wait();
-									} catch (InterruptedException ignored) {
+									} catch (final InterruptedException ignored) {
 									}
 								}
 							}
@@ -141,9 +147,10 @@ public class ActionExecutor extends RunnableTask implements ActionContainer {
 
 	private RunnableTask createWait(final List<Future<?>> lockingFutures, final Object threadObject) {
 		return new RunnableTask() {
+			@Override
 			public void run() {
 				while (lockingFutures.size() > 0) {
-					Future<?> future = lockingFutures.get(0);
+					final Future<?> future = lockingFutures.get(0);
 					if (future.isDone()) {
 						lockingFutures.remove(0);
 					}

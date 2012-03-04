@@ -1,8 +1,12 @@
 package org.powerbot.util.io;
 
-import org.powerbot.util.StringUtil;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
-import java.io.*;
+import org.powerbot.util.StringUtil;
 
 public final class TarEntry {
 	public static int BLOCKSIZE = 512;

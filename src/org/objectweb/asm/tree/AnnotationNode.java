@@ -29,11 +29,11 @@
  */
 package org.objectweb.asm.tree;
 
-import org.objectweb.asm.AnnotationVisitor;
-import org.objectweb.asm.Opcodes;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import org.objectweb.asm.AnnotationVisitor;
+import org.objectweb.asm.Opcodes;
 
 /**
  * A node that represents an annotationn.
@@ -99,9 +99,9 @@ public class AnnotationNode extends AnnotationVisitor {
 	@Override
 	public void visit(final String name, final Object value) {
 		if (values == null) {
-			values = new ArrayList<Object>(this.desc != null ? 2 : 1);
+			values = new ArrayList<Object>(desc != null ? 2 : 1);
 		}
-		if (this.desc != null) {
+		if (desc != null) {
 			values.add(name);
 		}
 		values.add(value);
@@ -131,7 +131,7 @@ public class AnnotationNode extends AnnotationVisitor {
 		if (this.desc != null) {
 			values.add(name);
 		}
-		AnnotationNode annotation = new AnnotationNode(desc);
+		final AnnotationNode annotation = new AnnotationNode(desc);
 		values.add(annotation);
 		return annotation;
 	}
@@ -139,12 +139,12 @@ public class AnnotationNode extends AnnotationVisitor {
 	@Override
 	public AnnotationVisitor visitArray(final String name) {
 		if (values == null) {
-			values = new ArrayList<Object>(this.desc != null ? 2 : 1);
+			values = new ArrayList<Object>(desc != null ? 2 : 1);
 		}
-		if (this.desc != null) {
+		if (desc != null) {
 			values.add(name);
 		}
-		List<Object> array = new ArrayList<Object>();
+		final List<Object> array = new ArrayList<Object>();
 		values.add(array);
 		return new AnnotationNode(array);
 	}
@@ -178,8 +178,8 @@ public class AnnotationNode extends AnnotationVisitor {
 		if (av != null) {
 			if (values != null) {
 				for (int i = 0; i < values.size(); i += 2) {
-					String name = (String) values.get(i);
-					Object value = values.get(i + 1);
+					final String name = (String) values.get(i);
+					final Object value = values.get(i + 1);
 					accept(av, name, value);
 				}
 			}
@@ -200,14 +200,14 @@ public class AnnotationNode extends AnnotationVisitor {
 			final Object value) {
 		if (av != null) {
 			if (value instanceof String[]) {
-				String[] typeconst = (String[]) value;
+				final String[] typeconst = (String[]) value;
 				av.visitEnum(name, typeconst[0], typeconst[1]);
 			} else if (value instanceof AnnotationNode) {
-				AnnotationNode an = (AnnotationNode) value;
+				final AnnotationNode an = (AnnotationNode) value;
 				an.accept(av.visitAnnotation(name, an.desc));
 			} else if (value instanceof List) {
-				AnnotationVisitor v = av.visitArray(name);
-				List<?> array = (List<?>) value;
+				final AnnotationVisitor v = av.visitArray(name);
+				final List<?> array = (List<?>) value;
 				for (int j = 0; j < array.size(); ++j) {
 					accept(v, null, array.get(j));
 				}

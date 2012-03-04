@@ -21,16 +21,16 @@ import java.util.PropertyPermission;
  */
 public class RsClassLoader extends ClassLoader {
 	private final Map<String, byte[]> classes = new HashMap<String, byte[]>();
-	private ProtectionDomain domain;
+	private final ProtectionDomain domain;
 
-	public RsClassLoader(Map<String, byte[]> classes, URL source) {
-		CodeSource codeSource = new CodeSource(source, (CodeSigner[]) null);
+	public RsClassLoader(final Map<String, byte[]> classes, final URL source) {
+		final CodeSource codeSource = new CodeSource(source, (CodeSigner[]) null);
 		domain = new ProtectionDomain(codeSource, createPermissions());
 		this.classes.putAll(classes);
 	}
 
 	private Permissions createPermissions() {
-		Permissions instance = new Permissions();
+		final Permissions instance = new Permissions();
 		instance.add(new AWTPermission("accessEventQueue"));
 		instance.add(new PropertyPermission("user.home", "read"));
 		instance.add(new PropertyPermission("java.vendor", "read"));
@@ -45,16 +45,16 @@ public class RsClassLoader extends ClassLoader {
 		} else {
 			uDir = "~/";
 		}
-		String[] dirs = {"c:/rscache/", "/rscache/", "c:/windows/", "c:/winnt/", "c:/", uDir, "/tmp/", "."};
-		String[] rsDirs = {".jagex_cache_32", ".file_store_32"};
+		final String[] dirs = {"c:/rscache/", "/rscache/", "c:/windows/", "c:/winnt/", "c:/", uDir, "/tmp/", "."};
+		final String[] rsDirs = {".jagex_cache_32", ".file_store_32"};
 		for (String dir : dirs) {
-			File f = new File(dir);
+			final File f = new File(dir);
 			instance.add(new FilePermission(dir, "read"));
 			if (!f.exists()) {
 				continue;
 			}
 			dir = f.getPath();
-			for (String rsDir : rsDirs) {
+			for (final String rsDir : rsDirs) {
 				instance.add(new FilePermission(dir + File.separator + rsDir + File.separator + "-", "read"));
 				instance.add(new FilePermission(dir + File.separator + rsDir + File.separator + "-", "write"));
 			}
@@ -66,12 +66,12 @@ public class RsClassLoader extends ClassLoader {
 	}
 
 	@Override
-	public final Class<?> loadClass(String name) throws ClassNotFoundException {
+	public final Class<?> loadClass(final String name) throws ClassNotFoundException {
 		if (classes.containsKey(name)) {
-			byte buffer[] = classes.remove(name);
+			final byte buffer[] = classes.remove(name);
 			try {
 				return defineClass(name, buffer, 0, buffer.length, domain);
-			} catch (Throwable t) {
+			} catch (final Throwable t) {
 				t.printStackTrace();
 			}
 		}

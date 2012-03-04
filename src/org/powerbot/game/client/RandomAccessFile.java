@@ -4,11 +4,11 @@ import java.io.File;
 import java.io.FileNotFoundException;
 
 public class RandomAccessFile extends java.io.RandomAccessFile {
-	public RandomAccessFile(File file, String mode) throws FileNotFoundException {
+	public RandomAccessFile(final File file, final String mode) throws FileNotFoundException {
 		super(file, mode);
 	}
 
-	public RandomAccessFile(String name, String mode) throws FileNotFoundException {
+	public RandomAccessFile(final String name, final String mode) throws FileNotFoundException {
 		super(name, mode);
 	}
 }

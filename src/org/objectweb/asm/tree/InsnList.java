@@ -29,10 +29,10 @@
  */
 package org.objectweb.asm.tree;
 
-import org.objectweb.asm.MethodVisitor;
-
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
+
+import org.objectweb.asm.MethodVisitor;
 
 /**
  * A doubly linked list of {@link org.objectweb.asm.tree.AbstractInsnNode} objects. <i>This
@@ -173,7 +173,7 @@ public class InsnList {
 	 * @return an iterator over the instructions in this list.
 	 */
 	@SuppressWarnings("unchecked")
-	public ListIterator<AbstractInsnNode> iterator(int index) {
+	public ListIterator<AbstractInsnNode> iterator(final int index) {
 		return new InsnListIterator(index);
 	}
 
@@ -185,7 +185,7 @@ public class InsnList {
 	public AbstractInsnNode[] toArray() {
 		int i = 0;
 		AbstractInsnNode elem = first;
-		AbstractInsnNode[] insns = new AbstractInsnNode[size];
+		final AbstractInsnNode[] insns = new AbstractInsnNode[size];
 		while (elem != null) {
 			insns[i] = elem;
 			elem.index = i++;
@@ -202,14 +202,14 @@ public class InsnList {
 	 *                 {@link org.objectweb.asm.tree.InsnList}</i>.
 	 */
 	public void set(final AbstractInsnNode location, final AbstractInsnNode insn) {
-		AbstractInsnNode next = location.next;
+		final AbstractInsnNode next = location.next;
 		insn.next = next;
 		if (next != null) {
 			next.prev = insn;
 		} else {
 			last = insn;
 		}
-		AbstractInsnNode prev = location.prev;
+		final AbstractInsnNode prev = location.prev;
 		insn.prev = prev;
 		if (prev != null) {
 			prev.next = insn;
@@ -217,7 +217,7 @@ public class InsnList {
 			first = insn;
 		}
 		if (cache != null) {
-			int index = location.index;
+			final int index = location.index;
 			cache[index] = insn;
 			insn.index = index;
 		} else {
@@ -263,7 +263,7 @@ public class InsnList {
 			first = insns.first;
 			last = insns.last;
 		} else {
-			AbstractInsnNode elem = insns.first;
+			final AbstractInsnNode elem = insns.first;
 			last.next = elem;
 			elem.prev = last;
 			last = insns.last;
@@ -307,7 +307,7 @@ public class InsnList {
 			first = insns.first;
 			last = insns.last;
 		} else {
-			AbstractInsnNode elem = insns.last;
+			final AbstractInsnNode elem = insns.last;
 			first.prev = elem;
 			elem.next = first;
 			first = insns.first;
@@ -326,7 +326,7 @@ public class InsnList {
 	 */
 	public void insert(final AbstractInsnNode location, final AbstractInsnNode insn) {
 		++size;
-		AbstractInsnNode next = location.next;
+		final AbstractInsnNode next = location.next;
 		if (next == null) {
 			last = insn;
 		} else {
@@ -352,9 +352,9 @@ public class InsnList {
 			return;
 		}
 		size += insns.size;
-		AbstractInsnNode ifirst = insns.first;
-		AbstractInsnNode ilast = insns.last;
-		AbstractInsnNode next = location.next;
+		final AbstractInsnNode ifirst = insns.first;
+		final AbstractInsnNode ilast = insns.last;
+		final AbstractInsnNode next = location.next;
 		if (next == null) {
 			last = ilast;
 		} else {
@@ -377,7 +377,7 @@ public class InsnList {
 	 */
 	public void insertBefore(final AbstractInsnNode location, final AbstractInsnNode insn) {
 		++size;
-		AbstractInsnNode prev = location.prev;
+		final AbstractInsnNode prev = location.prev;
 		if (prev == null) {
 			first = insn;
 		} else {
@@ -403,9 +403,9 @@ public class InsnList {
 			return;
 		}
 		size += insns.size;
-		AbstractInsnNode ifirst = insns.first;
-		AbstractInsnNode ilast = insns.last;
-		AbstractInsnNode prev = location.prev;
+		final AbstractInsnNode ifirst = insns.first;
+		final AbstractInsnNode ilast = insns.last;
+		final AbstractInsnNode prev = location.prev;
 		if (prev == null) {
 			first = ifirst;
 		} else {
@@ -426,8 +426,8 @@ public class InsnList {
 	 */
 	public void remove(final AbstractInsnNode insn) {
 		--size;
-		AbstractInsnNode next = insn.next;
-		AbstractInsnNode prev = insn.prev;
+		final AbstractInsnNode next = insn.next;
+		final AbstractInsnNode prev = insn.prev;
 		if (next == null) {
 			if (prev == null) {
 				first = null;
@@ -461,7 +461,7 @@ public class InsnList {
 		if (mark) {
 			AbstractInsnNode insn = first;
 			while (insn != null) {
-				AbstractInsnNode next = insn.next;
+				final AbstractInsnNode next = insn.next;
 				insn.index = -1; // insn no longer belongs to an InsnList
 				insn.prev = null;
 				insn.next = null;
@@ -504,7 +504,7 @@ public class InsnList {
 
 		AbstractInsnNode prev;
 
-		InsnListIterator(int index) {
+		InsnListIterator(final int index) {
 			if (index == size()) {
 				next = null;
 				prev = getLast();
@@ -514,36 +514,42 @@ public class InsnList {
 			}
 		}
 
+		@Override
 		public boolean hasNext() {
 			return next != null;
 		}
 
+		@Override
 		public Object next() {
 			if (next == null) {
 				throw new NoSuchElementException();
 			}
-			AbstractInsnNode result = next;
+			final AbstractInsnNode result = next;
 			prev = result;
 			next = result.next;
 			return result;
 		}
 
+		@Override
 		public void remove() {
 			InsnList.this.remove(prev);
 			prev = prev.prev;
 		}
 
+		@Override
 		public boolean hasPrevious() {
 			return prev != null;
 		}
 
+		@Override
 		public Object previous() {
-			AbstractInsnNode result = prev;
+			final AbstractInsnNode result = prev;
 			next = result;
 			prev = result.prev;
 			return result;
 		}
 
+		@Override
 		public int nextIndex() {
 			if (next == null) {
 				return size();
@@ -554,6 +560,7 @@ public class InsnList {
 			return next.index;
 		}
 
+		@Override
 		public int previousIndex() {
 			if (prev == null) {
 				return -1;
@@ -564,12 +571,14 @@ public class InsnList {
 			return prev.index;
 		}
 
-		public void add(Object o) {
+		@Override
+		public void add(final Object o) {
 			InsnList.this.insertBefore(next, (AbstractInsnNode) o);
 			prev = (AbstractInsnNode) o;
 		}
 
-		public void set(Object o) {
+		@Override
+		public void set(final Object o) {
 			InsnList.this.set(next.prev, (AbstractInsnNode) o);
 			prev = (AbstractInsnNode) o;
 		}

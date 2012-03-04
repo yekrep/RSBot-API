@@ -15,17 +15,17 @@ public class AddMethodAdapter extends ClassVisitor {
 		public int max_locals;
 	}
 
-	private Method[] methods;
+	private final Method[] methods;
 
-	public AddMethodAdapter(ClassVisitor delegate, Method[] methods) {
+	public AddMethodAdapter(final ClassVisitor delegate, final Method[] methods) {
 		super(Opcodes.ASM4, delegate);
 		this.methods = methods;
 	}
 
 	@Override
 	public void visitEnd() {
-		for (Method m : methods) {
-			MethodVisitor mv = super.visitMethod(m.access, m.name, m.desc, null, null);
+		for (final Method m : methods) {
+			final MethodVisitor mv = super.visitMethod(m.access, m.name, m.desc, null, null);
 			mv.visitCode();
 			new CodeReader(m.code).accept(mv);
 			mv.visitMaxs(m.max_stack, m.max_locals);

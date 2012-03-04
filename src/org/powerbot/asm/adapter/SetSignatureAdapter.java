@@ -13,29 +13,29 @@ public class SetSignatureAdapter extends ClassVisitor {
 		public String new_desc;
 	}
 
-	private Signature[] signatures;
+	private final Signature[] signatures;
 
-	public SetSignatureAdapter(ClassVisitor delegate, Signature[] signatures) {
+	public SetSignatureAdapter(final ClassVisitor delegate, final Signature[] signatures) {
 		super(Opcodes.ASM4, delegate);
 		this.signatures = signatures;
 	}
 
 	@Override
 	public MethodVisitor visitMethod(
-			int access,
-			String name,
-			String desc,
-			String signature,
-			String[] exceptions) {
-		for (Signature s : signatures) {
+			final int access,
+			final String name,
+			final String desc,
+			final String signature,
+			final String[] exceptions) {
+		for (final Signature s : signatures) {
 			if (s.name.equals(name) && (s.desc.equals("") || s.desc.equals(desc))) {
 				return super.visitMethod(
 						s.new_access == -1 ? access : s.new_access,
-						s.new_name,
-						s.new_desc.equals("") ? desc : s.new_desc,
-						signature,
-						exceptions
-				);
+								s.new_name,
+								s.new_desc.equals("") ? desc : s.new_desc,
+										signature,
+										exceptions
+						);
 			}
 		}
 		return super.visitMethod(access, name, desc, signature, exceptions);

@@ -1,8 +1,5 @@
 package org.powerbot.game.loader.io;
 
-import javax.crypto.Cipher;
-import javax.crypto.spec.IvParameterSpec;
-import javax.crypto.spec.SecretKeySpec;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -15,6 +12,10 @@ import java.util.jar.JarOutputStream;
 import java.util.jar.Pack200;
 import java.util.zip.GZIPInputStream;
 
+import javax.crypto.Cipher;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
+
 /**
  * A static utility to decrypt and extract classes from the RuneScape loader.
  *
@@ -23,7 +24,7 @@ import java.util.zip.GZIPInputStream;
 public class PackEncryption {
 	public static byte[] inner_pack_hash;
 
-	public static Map<String, byte[]> extract(byte[] secretKeySpecKey, byte[] ivParameterSpecKey, byte[] loader) {
+	public static Map<String, byte[]> extract(final byte[] secretKeySpecKey, final byte[] ivParameterSpecKey, final byte[] loader) {
 		try {
 			byte[] inner_pack = null;
 			JarInputStream jarInputStream = new JarInputStream(new ByteArrayInputStream(loader));
@@ -37,40 +38,40 @@ public class PackEncryption {
 			if (inner_pack == null) {
 				return null;
 			}
-			MessageDigest digest = MessageDigest.getInstance("SHA-1");
+			final MessageDigest digest = MessageDigest.getInstance("SHA-1");
 			PackEncryption.inner_pack_hash = digest.digest(inner_pack);
 
-			Map<String, byte[]> classes = new HashMap<String, byte[]>();
-			SecretKeySpec secretKeySpec = new SecretKeySpec(secretKeySpecKey, "AES");
-			Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+			final Map<String, byte[]> classes = new HashMap<String, byte[]>();
+			final SecretKeySpec secretKeySpec = new SecretKeySpec(secretKeySpecKey, "AES");
+			final Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
 			cipher.init(2, secretKeySpec, new IvParameterSpec(ivParameterSpecKey));
-			byte[] unscrambled_inner_pack = cipher.doFinal(inner_pack);
+			final byte[] unscrambled_inner_pack = cipher.doFinal(inner_pack);
 
-			Pack200.Unpacker unpacker = Pack200.newUnpacker();
-			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(0x500000);
-			JarOutputStream jos = new JarOutputStream(byteArrayOutputStream);
-			GZIPInputStream gzipIS = new GZIPInputStream(new ByteArrayInputStream(unscrambled_inner_pack));
+			final Pack200.Unpacker unpacker = Pack200.newUnpacker();
+			final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(0x500000);
+			final JarOutputStream jos = new JarOutputStream(byteArrayOutputStream);
+			final GZIPInputStream gzipIS = new GZIPInputStream(new ByteArrayInputStream(unscrambled_inner_pack));
 			unpacker.unpack(gzipIS, jos);
 
 			jarInputStream = new JarInputStream(new ByteArrayInputStream(byteArrayOutputStream.toByteArray()));
 			while ((entry = jarInputStream.getNextJarEntry()) != null) {
 				String entryName = entry.getName();
 				if (entryName.endsWith(".class")) {
-					byte[] read = read(jarInputStream);
+					final byte[] read = read(jarInputStream);
 					entryName = entryName.replace('/', '.');
-					String name = entryName.substring(0, entryName.length() - 6);
+					final String name = entryName.substring(0, entryName.length() - 6);
 					classes.put(name, read);
 				}
 			}
 			return classes;
-		} catch (Exception ignored) {
+		} catch (final Exception ignored) {
 		}
 		return null;
 	}
 
-	private static byte[] read(JarInputStream inputStream) throws IOException {
-		ByteArrayOutputStream out = new ByteArrayOutputStream();
-		byte[] buffer = new byte[2048];
+	private static byte[] read(final JarInputStream inputStream) throws IOException {
+		final ByteArrayOutputStream out = new ByteArrayOutputStream();
+		final byte[] buffer = new byte[2048];
 		int read;
 		while (inputStream.available() > 0) {
 			read = inputStream.read(buffer, 0, buffer.length);
@@ -82,13 +83,13 @@ public class PackEncryption {
 		return out.toByteArray();
 	}
 
-	public static byte[] toByte(String key) {
-		int keyLength = key.length();
+	public static byte[] toByte(final String key) {
+		final int keyLength = key.length();
 		if (keyLength == 0) {
 			return new byte[0];
 		} else {
 			int unscrambledLength;
-			int lengthMod = -4 & keyLength + 3;
+			final int lengthMod = -4 & keyLength + 3;
 			unscrambledLength = lengthMod / 4 * 3;
 			if (keyLength <= lengthMod - 2 || charIndex(key.charAt(lengthMod - 2)) == -1) {
 				unscrambledLength -= 2;
@@ -96,30 +97,30 @@ public class PackEncryption {
 				--unscrambledLength;
 			}
 
-			byte[] keyBytes = new byte[unscrambledLength];
+			final byte[] keyBytes = new byte[unscrambledLength];
 			unscramble(keyBytes, 0, key);
 			return keyBytes;
 		}
 	}
 
-	private static int charIndex(char character) {
+	private static int charIndex(final char character) {
 		return character >= 0 && character < charSet.length ? charSet[character] : -1;
 	}
 
-	private static int unscramble(byte[] bytes, int offset, String key) {
-		int start = offset;
-		int keyLength = key.length();
+	private static int unscramble(final byte[] bytes, int offset, final String key) {
+		final int start = offset;
+		final int keyLength = key.length();
 		int pos = 0;
 
 		int readStart;
 		int readOffset;
 		while (true) {
 			if (keyLength > pos) {
-				int currentChar = charIndex(key.charAt(pos));
+				final int currentChar = charIndex(key.charAt(pos));
 
-				int pos_1 = keyLength > (pos + 1) ? charIndex(key.charAt(pos + 1)) : -1;
-				int pos_2 = pos + 2 < keyLength ? charIndex(key.charAt(2 + pos)) : -1;
-				int pos_3 = keyLength > (pos + 3) ? charIndex(key.charAt(3 + pos)) : -1;
+				final int pos_1 = keyLength > pos + 1 ? charIndex(key.charAt(pos + 1)) : -1;
+				final int pos_2 = pos + 2 < keyLength ? charIndex(key.charAt(2 + pos)) : -1;
+				final int pos_3 = keyLength > pos + 3 ? charIndex(key.charAt(3 + pos)) : -1;
 				bytes[offset++] = (byte) (pos_1 >>> 4 | currentChar << 2);
 				if (pos_2 != -1) {
 					bytes[offset++] = (byte) (pos_1 << 4 & 240 | pos_2 >>> 2);
@@ -156,10 +157,10 @@ public class PackEncryption {
 		for (index = 48; index <= 57; ++index) {
 			charSet[index] = 4 + index;
 		}
-		int[] var2 = charSet;
+		final int[] var2 = charSet;
 		charSet[43] = 62;
 		var2[42] = 62;
-		int[] var1 = charSet;
+		final int[] var1 = charSet;
 		charSet[47] = 63;
 		var1[45] = 63;
 	}

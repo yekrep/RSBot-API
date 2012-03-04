@@ -18,10 +18,10 @@ public class Action {
 	 * @param activator       The <code>Activator</code> associated with this <code>Action</code>.
 	 * @param actionComposite The <code>ActionComposite</code> associated with this <code>Action</code>.
 	 */
-	public Action(Activator activator, ActionComposite actionComposite) {
+	public Action(final Activator activator, final ActionComposite actionComposite) {
 		this.activator = activator;
 		this.actionComposite = actionComposite;
-		this.requireLock = true;
+		requireLock = true;
 	}
 
 	/**
@@ -31,7 +31,7 @@ public class Action {
 	 * @param actionComposite The <code>ActionComposite</code> array associated with this <code>Action</code>.
 	 * @param requireLock     <tt>true</tt> to require the ActionManager to lock while processing this action; otherwise <tt>false</tt>.
 	 */
-	public Action(Activator activator, ActionComposite actionComposite, boolean requireLock) {
+	public Action(final Activator activator, final ActionComposite actionComposite, final boolean requireLock) {
 		this.activator = activator;
 		this.actionComposite = actionComposite;
 		this.requireLock = requireLock;

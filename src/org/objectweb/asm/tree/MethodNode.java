@@ -30,11 +30,18 @@
  */
 package org.objectweb.asm.tree;
 
-import org.objectweb.asm.*;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import org.objectweb.asm.AnnotationVisitor;
+import org.objectweb.asm.Attribute;
+import org.objectweb.asm.ClassVisitor;
+import org.objectweb.asm.Handle;
+import org.objectweb.asm.Label;
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.Type;
 
 /**
  * A node that represents a method.
@@ -181,7 +188,7 @@ public class MethodNode extends MethodVisitor {
 	 */
 	public MethodNode(final int api) {
 		super(api);
-		this.instructions = new InsnList();
+		instructions = new InsnList();
 	}
 
 	/**
@@ -237,16 +244,16 @@ public class MethodNode extends MethodVisitor {
 		this.signature = signature;
 		this.exceptions = new ArrayList<String>(exceptions == null
 				? 0
-				: exceptions.length);
-		boolean isAbstract = (access & Opcodes.ACC_ABSTRACT) != 0;
+						: exceptions.length);
+		final boolean isAbstract = (access & Opcodes.ACC_ABSTRACT) != 0;
 		if (!isAbstract) {
-			this.localVariables = new ArrayList<LocalVariableNode>(5);
+			localVariables = new ArrayList<LocalVariableNode>(5);
 		}
-		this.tryCatchBlocks = new ArrayList<TryCatchBlockNode>();
+		tryCatchBlocks = new ArrayList<TryCatchBlockNode>();
 		if (exceptions != null) {
 			this.exceptions.addAll(Arrays.asList(exceptions));
 		}
-		this.instructions = new InsnList();
+		instructions = new InsnList();
 	}
 
 	// ------------------------------------------------------------------------
@@ -270,7 +277,7 @@ public class MethodNode extends MethodVisitor {
 	public AnnotationVisitor visitAnnotation(
 			final String desc,
 			final boolean visible) {
-		AnnotationNode an = new AnnotationNode(desc);
+		final AnnotationNode an = new AnnotationNode(desc);
 		if (visible) {
 			if (visibleAnnotations == null) {
 				visibleAnnotations = new ArrayList<AnnotationNode>(1);
@@ -291,10 +298,10 @@ public class MethodNode extends MethodVisitor {
 			final int parameter,
 			final String desc,
 			final boolean visible) {
-		AnnotationNode an = new AnnotationNode(desc);
+		final AnnotationNode an = new AnnotationNode(desc);
 		if (visible) {
 			if (visibleParameterAnnotations == null) {
-				int params = Type.getArgumentTypes(this.desc).length;
+				final int params = Type.getArgumentTypes(this.desc).length;
 				visibleParameterAnnotations = (List<AnnotationNode>[]) new List<?>[params];
 			}
 			if (visibleParameterAnnotations[parameter] == null) {
@@ -303,7 +310,7 @@ public class MethodNode extends MethodVisitor {
 			visibleParameterAnnotations[parameter].add(an);
 		} else {
 			if (invisibleParameterAnnotations == null) {
-				int params = Type.getArgumentTypes(this.desc).length;
+				final int params = Type.getArgumentTypes(this.desc).length;
 				invisibleParameterAnnotations = (List<AnnotationNode>[]) new List<?>[params];
 			}
 			if (invisibleParameterAnnotations[parameter] == null) {
@@ -335,9 +342,9 @@ public class MethodNode extends MethodVisitor {
 			final Object[] stack) {
 		instructions.add(new FrameNode(type, nLocal, local == null
 				? null
-				: getLabelNodes(local), nStack, stack == null
-				? null
-				: getLabelNodes(stack)));
+						: getLabelNodes(local), nStack, stack == null
+						? null
+								: getLabelNodes(stack)));
 	}
 
 	@Override
@@ -380,10 +387,10 @@ public class MethodNode extends MethodVisitor {
 
 	@Override
 	public void visitInvokeDynamicInsn(
-			String name,
-			String desc,
-			Handle bsm,
-			Object... bsmArgs) {
+			final String name,
+			final String desc,
+			final Handle bsm,
+			final Object... bsmArgs) {
 		instructions.add(new InvokeDynamicInsnNode(name, desc, bsm, bsmArgs));
 	}
 
@@ -494,7 +501,7 @@ public class MethodNode extends MethodVisitor {
 	}
 
 	private LabelNode[] getLabelNodes(final Label[] l) {
-		LabelNode[] nodes = new LabelNode[l.length];
+		final LabelNode[] nodes = new LabelNode[l.length];
 		for (int i = 0; i < l.length; ++i) {
 			nodes[i] = getLabelNode(l[i]);
 		}
@@ -502,7 +509,7 @@ public class MethodNode extends MethodVisitor {
 	}
 
 	private Object[] getLabelNodes(final Object[] objs) {
-		Object[] nodes = new Object[objs.length];
+		final Object[] nodes = new Object[objs.length];
 		for (int i = 0; i < objs.length; ++i) {
 			Object o = objs[i];
 			if (o instanceof Label) {
@@ -535,9 +542,9 @@ public class MethodNode extends MethodVisitor {
 	 * @param cv a class visitor.
 	 */
 	public void accept(final ClassVisitor cv) {
-		String[] exceptions = new String[this.exceptions.size()];
+		final String[] exceptions = new String[this.exceptions.size()];
 		this.exceptions.toArray(exceptions);
-		MethodVisitor mv = cv.visitMethod(access,
+		final MethodVisitor mv = cv.visitMethod(access,
 				name,
 				desc,
 				signature,
@@ -556,7 +563,7 @@ public class MethodNode extends MethodVisitor {
 		// visits the method attributes
 		int i, j, n;
 		if (annotationDefault != null) {
-			AnnotationVisitor av = mv.visitAnnotationDefault();
+			final AnnotationVisitor av = mv.visitAnnotationDefault();
 			AnnotationNode.accept(av, null, annotationDefault);
 			if (av != null) {
 				av.visitEnd();
@@ -564,37 +571,37 @@ public class MethodNode extends MethodVisitor {
 		}
 		n = visibleAnnotations == null ? 0 : visibleAnnotations.size();
 		for (i = 0; i < n; ++i) {
-			AnnotationNode an = visibleAnnotations.get(i);
+			final AnnotationNode an = visibleAnnotations.get(i);
 			an.accept(mv.visitAnnotation(an.desc, true));
 		}
 		n = invisibleAnnotations == null ? 0 : invisibleAnnotations.size();
 		for (i = 0; i < n; ++i) {
-			AnnotationNode an = invisibleAnnotations.get(i);
+			final AnnotationNode an = invisibleAnnotations.get(i);
 			an.accept(mv.visitAnnotation(an.desc, false));
 		}
 		n = visibleParameterAnnotations == null
 				? 0
-				: visibleParameterAnnotations.length;
+						: visibleParameterAnnotations.length;
 		for (i = 0; i < n; ++i) {
-			List<?> l = visibleParameterAnnotations[i];
+			final List<?> l = visibleParameterAnnotations[i];
 			if (l == null) {
 				continue;
 			}
 			for (j = 0; j < l.size(); ++j) {
-				AnnotationNode an = (AnnotationNode) l.get(j);
+				final AnnotationNode an = (AnnotationNode) l.get(j);
 				an.accept(mv.visitParameterAnnotation(i, an.desc, true));
 			}
 		}
 		n = invisibleParameterAnnotations == null
 				? 0
-				: invisibleParameterAnnotations.length;
+						: invisibleParameterAnnotations.length;
 		for (i = 0; i < n; ++i) {
-			List<?> l = invisibleParameterAnnotations[i];
+			final List<?> l = invisibleParameterAnnotations[i];
 			if (l == null) {
 				continue;
 			}
 			for (j = 0; j < l.size(); ++j) {
-				AnnotationNode an = (AnnotationNode) l.get(j);
+				final AnnotationNode an = (AnnotationNode) l.get(j);
 				an.accept(mv.visitParameterAnnotation(i, an.desc, false));
 			}
 		}

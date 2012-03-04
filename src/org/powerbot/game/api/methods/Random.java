@@ -7,14 +7,14 @@ public class Random {
 		return random.nextBoolean();
 	}
 
-	public static int nextInt(int min, int max) {
+	public static int nextInt(final int min, final int max) {
 		if (max < min) {
 			return max + random.nextInt(min - max);
 		}
 		return min + (max == min ? 0 : random.nextInt(max - min));
 	}
 
-	public static double nextDouble(double min, double max) {
+	public static double nextDouble(final double min, final double max) {
 		return min + random.nextDouble() * (max - min);
 	}
 
@@ -22,11 +22,11 @@ public class Random {
 		return random.nextDouble();
 	}
 
-	public static int nextGaussian(int min, int max, int sd) {
+	public static int nextGaussian(final int min, final int max, final int sd) {
 		return nextGaussian(min, max, min + (max - min) / 2, sd);
 	}
 
-	public static int nextGaussian(int min, int max, int mean, int sd) {
+	public static int nextGaussian(final int min, final int max, final int mean, final int sd) {
 		if (min == max) {
 			return min;
 		}

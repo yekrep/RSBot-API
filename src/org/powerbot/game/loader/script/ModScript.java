@@ -1,20 +1,27 @@
 package org.powerbot.game.loader.script;
 
-import org.objectweb.asm.ClassReader;
-import org.objectweb.asm.ClassVisitor;
-import org.objectweb.asm.ClassWriter;
-import org.powerbot.asm.NodeProcessor;
-import org.powerbot.asm.adapter.*;
-import org.powerbot.lang.AdaptException;
-
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.ClassVisitor;
+import org.objectweb.asm.ClassWriter;
+import org.powerbot.asm.NodeProcessor;
+import org.powerbot.asm.adapter.AddFieldAdapter;
+import org.powerbot.asm.adapter.AddGetterAdapter;
+import org.powerbot.asm.adapter.AddInterfaceAdapter;
+import org.powerbot.asm.adapter.AddMethodAdapter;
+import org.powerbot.asm.adapter.InsertCodeAdapter;
+import org.powerbot.asm.adapter.OverrideClassAdapter;
+import org.powerbot.asm.adapter.SetSignatureAdapter;
+import org.powerbot.asm.adapter.SetSuperAdapter;
+import org.powerbot.lang.AdaptException;
+
 public class ModScript implements NodeProcessor {
-	private Map<String, ClassVisitor> adapters;
-	private Map<String, ClassWriter> writers;
+	private final Map<String, ClassVisitor> adapters;
+	private final Map<String, ClassWriter> writers;
 	public Map<String, String> attributes;
 	public Map<Integer, Integer> constants;
 	public Map<Integer, Integer> multipliers;
@@ -39,21 +46,21 @@ public class ModScript implements NodeProcessor {
 
 	private static final int MAGIC = 0xFADFAD;
 
-	public ModScript(byte[] data) {
+	public ModScript(final byte[] data) {
 		this(new ByteArrayInputStream(data));
 	}
 
-	public ModScript(InputStream data) {
+	public ModScript(final InputStream data) {
 		this();
-		this.scanner = new Scanner(data);
+		scanner = new Scanner(data);
 	}
 
 	public ModScript() {
-		this.adapters = new HashMap<String, ClassVisitor>();
-		this.writers = new HashMap<String, ClassWriter>();
-		this.attributes = new HashMap<String, String>();
-		this.constants = new HashMap<Integer, Integer>();
-		this.multipliers = new HashMap<Integer, Integer>();
+		adapters = new HashMap<String, ClassVisitor>();
+		writers = new HashMap<String, ClassWriter>();
+		attributes = new HashMap<String, String>();
+		constants = new HashMap<Integer, Integer>();
+		multipliers = new HashMap<Integer, Integer>();
 	}
 
 	public String getName() {
@@ -64,6 +71,7 @@ public class ModScript implements NodeProcessor {
 		return version;
 	}
 
+	@Override
 	public void adapt() throws AdaptException {
 		if (scanner.readInt() != ModScript.MAGIC) {
 			throw new AdaptException("invalid patch format");
@@ -74,133 +82,134 @@ public class ModScript implements NodeProcessor {
 		while (num-- > 0) {
 			String clazz;
 			int count, ptr = 0;
-			int op = scanner.readByte();
+			final int op = scanner.readByte();
 			switch (op) {
-				case Headers.ATTRIBUTE:
-					String key = scanner.readString();
-					String value = scanner.readString();
-					attributes.put(key, new StringBuilder(value).reverse().toString());
-					break;
-				case Headers.GET_STATIC:
-				case Headers.GET_FIELD:
-					clazz = scanner.readString();
-					count = scanner.readShort();
-					AddGetterAdapter.Field[] fieldsGet = new AddGetterAdapter.Field[count];
-					while (ptr < count) {
-						AddGetterAdapter.Field f = new AddGetterAdapter.Field();
-						f.getter_access = scanner.readInt();
-						f.getter_name = scanner.readString();
-						f.getter_desc = scanner.readString();
-						f.owner = scanner.readString();
-						f.name = scanner.readString();
-						f.desc = scanner.readString();
-						fieldsGet[ptr++] = f;
-						System.out.println(clazz + " " + f.getter_access + " " + f.getter_name + " " + f.getter_desc + " " + f.owner + " " + f.name + " " + f.desc);
+			case Headers.ATTRIBUTE:
+				final String key = scanner.readString();
+				final String value = scanner.readString();
+				attributes.put(key, new StringBuilder(value).reverse().toString());
+				break;
+			case Headers.GET_STATIC:
+			case Headers.GET_FIELD:
+				clazz = scanner.readString();
+				count = scanner.readShort();
+				final AddGetterAdapter.Field[] fieldsGet = new AddGetterAdapter.Field[count];
+				while (ptr < count) {
+					final AddGetterAdapter.Field f = new AddGetterAdapter.Field();
+					f.getter_access = scanner.readInt();
+					f.getter_name = scanner.readString();
+					f.getter_desc = scanner.readString();
+					f.owner = scanner.readString();
+					f.name = scanner.readString();
+					f.desc = scanner.readString();
+					fieldsGet[ptr++] = f;
+					System.out.println(clazz + " " + f.getter_access + " " + f.getter_name + " " + f.getter_desc + " " + f.owner + " " + f.name + " " + f.desc);
+				}
+				adapters.put(clazz, new AddGetterAdapter(delegate(clazz), op == Headers.GET_FIELD, fieldsGet));
+				break;
+			case Headers.ADD_FIELD:
+				clazz = scanner.readString();
+				count = scanner.readShort();
+				final AddFieldAdapter.Field[] fieldsAdd = new AddFieldAdapter.Field[count];
+				while (ptr < count) {
+					final AddFieldAdapter.Field f = new AddFieldAdapter.Field();
+					f.access = scanner.readInt();
+					f.name = scanner.readString();
+					f.desc = scanner.readString();
+					fieldsAdd[ptr++] = f;
+				}
+				adapters.put(clazz, new AddFieldAdapter(delegate(clazz), fieldsAdd));
+				break;
+			case Headers.ADD_METHOD:
+				clazz = scanner.readString();
+				count = scanner.readShort();
+				final AddMethodAdapter.Method[] methods = new AddMethodAdapter.Method[1];
+				while (ptr < count) {
+					final AddMethodAdapter.Method m = new AddMethodAdapter.Method();
+					m.access = scanner.readInt();
+					m.name = scanner.readString();
+					m.desc = scanner.readString();
+					final byte[] code = new byte[scanner.readInt()];
+					scanner.readSegment(code, code.length, 0);
+					m.code = code;
+					m.max_locals = scanner.readByte();
+					m.max_stack = scanner.readByte();
+					if (m.name.equalsIgnoreCase("setcallback")) {
+						methods[0] = m;
+						ptr++;
+					} else {
+						ptr++;
 					}
-					adapters.put(clazz, new AddGetterAdapter(delegate(clazz), op == Headers.GET_FIELD, fieldsGet));
-					break;
-				case Headers.ADD_FIELD:
-					clazz = scanner.readString();
-					count = scanner.readShort();
-					AddFieldAdapter.Field[] fieldsAdd = new AddFieldAdapter.Field[count];
-					while (ptr < count) {
-						AddFieldAdapter.Field f = new AddFieldAdapter.Field();
-						f.access = scanner.readInt();
-						f.name = scanner.readString();
-						f.desc = scanner.readString();
-						fieldsAdd[ptr++] = f;
+					System.out.println("new method in " + clazz + " total: " + count + " || " + m.access + " " + m.name + " " + m.desc + " " + m.max_locals + " " + m.max_stack);
+				}
+				adapters.put(clazz, new AddMethodAdapter(delegate(clazz), methods));
+				break;
+			case Headers.ADD_INTERFACE:
+				clazz = scanner.readString();
+				final String inter = scanner.readString();
+				adapters.put(clazz, new AddInterfaceAdapter(delegate(clazz), inter));
+				System.out.println(clazz + " -> " + inter);
+				break;
+			case Headers.SET_SUPER:
+				clazz = scanner.readString();
+				final String superName = scanner.readString();
+				adapters.put(clazz, new SetSuperAdapter(delegate(clazz), superName));
+				break;
+			case Headers.SET_SIGNATURE:
+				clazz = scanner.readString();
+				count = scanner.readShort();
+				final SetSignatureAdapter.Signature[] signatures = new SetSignatureAdapter.Signature[count];
+				while (ptr < count) {
+					final SetSignatureAdapter.Signature s = new SetSignatureAdapter.Signature();
+					s.name = scanner.readString();
+					s.desc = scanner.readString();
+					s.new_access = scanner.readInt();
+					s.new_name = scanner.readString();
+					s.new_desc = scanner.readString();
+					signatures[ptr++] = s;
+				}
+				adapters.put(clazz, new SetSignatureAdapter(delegate(clazz), signatures));
+				break;
+			case Headers.INSERT_CODE:
+				clazz = scanner.readString();
+				final String name = scanner.readString();
+				final String desc = scanner.readString();
+				count = scanner.readByte();
+				final Map<Integer, byte[]> fragments = new HashMap<Integer, byte[]>();
+				while (count-- > 0) {
+					int off = scanner.readShort();
+					if (off > 2) {
+						off++;
 					}
-					adapters.put(clazz, new AddFieldAdapter(delegate(clazz), fieldsAdd));
-					break;
-				case Headers.ADD_METHOD:
-					clazz = scanner.readString();
-					count = scanner.readShort();
-					AddMethodAdapter.Method[] methods = new AddMethodAdapter.Method[1];
-					while (ptr < count) {
-						AddMethodAdapter.Method m = new AddMethodAdapter.Method();
-						m.access = scanner.readInt();
-						m.name = scanner.readString();
-						m.desc = scanner.readString();
-						byte[] code = new byte[scanner.readInt()];
-						scanner.readSegment(code, code.length, 0);
-						m.code = code;
-						m.max_locals = scanner.readByte();
-						m.max_stack = scanner.readByte();
-						if (m.name.equalsIgnoreCase("setcallback")) {
-							methods[0] = m;
-							ptr++;
-						} else {
-							ptr++;
-						}
-						System.out.println("new method in " + clazz + " total: " + count + " || " + m.access + " " + m.name + " " + m.desc + " " + m.max_locals + " " + m.max_stack);
-					}
-					adapters.put(clazz, new AddMethodAdapter(delegate(clazz), methods));
-					break;
-				case Headers.ADD_INTERFACE:
-					clazz = scanner.readString();
-					String inter = scanner.readString();
-					adapters.put(clazz, new AddInterfaceAdapter(delegate(clazz), inter));
-					System.out.println(clazz + " -> " + inter);
-					break;
-				case Headers.SET_SUPER:
-					clazz = scanner.readString();
-					String superName = scanner.readString();
-					adapters.put(clazz, new SetSuperAdapter(delegate(clazz), superName));
-					break;
-				case Headers.SET_SIGNATURE:
-					clazz = scanner.readString();
-					count = scanner.readShort();
-					SetSignatureAdapter.Signature[] signatures = new SetSignatureAdapter.Signature[count];
-					while (ptr < count) {
-						SetSignatureAdapter.Signature s = new SetSignatureAdapter.Signature();
-						s.name = scanner.readString();
-						s.desc = scanner.readString();
-						s.new_access = scanner.readInt();
-						s.new_name = scanner.readString();
-						s.new_desc = scanner.readString();
-						signatures[ptr++] = s;
-					}
-					adapters.put(clazz, new SetSignatureAdapter(delegate(clazz), signatures));
-					break;
-				case Headers.INSERT_CODE:
-					clazz = scanner.readString();
-					String name = scanner.readString();
-					String desc = scanner.readString();
-					count = scanner.readByte();
-					Map<Integer, byte[]> fragments = new HashMap<Integer, byte[]>();
-					while (count-- > 0) {
-						int off = scanner.readShort();
-						if (off > 2) {
-							off++;
-						}
-						byte[] code = new byte[scanner.readInt()];
-						scanner.readSegment(code, code.length, 0);
-						fragments.put(off, code);
-					}
-					adapters.put(clazz, new InsertCodeAdapter(delegate(clazz), name, desc, fragments, scanner.readByte(), scanner.readByte()));
-					break;
-				case Headers.OVERRIDE_CLASS:
-					String old_clazz = scanner.readString();
-					String new_clazz = scanner.readString();
-					count = scanner.readByte();
-					while (count-- > 0) {
-						String current_clazz = scanner.readString();
-						adapters.put(current_clazz, new OverrideClassAdapter(delegate(current_clazz), old_clazz, new_clazz));
-					}
-					break;
-				case Headers.CONSTANT:
-					constants.put(scanner.readShort(), scanner.readShort());
-					break;
-				case Headers.MULTIPLIER:
-					multipliers.put(scanner.readShort(), scanner.readInt());
-					break;
+					final byte[] code = new byte[scanner.readInt()];
+					scanner.readSegment(code, code.length, 0);
+					fragments.put(off, code);
+				}
+				adapters.put(clazz, new InsertCodeAdapter(delegate(clazz), name, desc, fragments, scanner.readByte(), scanner.readByte()));
+				break;
+			case Headers.OVERRIDE_CLASS:
+				final String old_clazz = scanner.readString();
+				final String new_clazz = scanner.readString();
+				count = scanner.readByte();
+				while (count-- > 0) {
+					final String current_clazz = scanner.readString();
+					adapters.put(current_clazz, new OverrideClassAdapter(delegate(current_clazz), old_clazz, new_clazz));
+				}
+				break;
+			case Headers.CONSTANT:
+				constants.put(scanner.readShort(), scanner.readShort());
+				break;
+			case Headers.MULTIPLIER:
+				multipliers.put(scanner.readShort(), scanner.readInt());
+				break;
 			}
 		}
 	}
 
-	public byte[] process(String name, byte[] data) {
-		ClassReader reader = new ClassReader(data);
-		ClassVisitor adapter = adapters.get(name);
+	@Override
+	public byte[] process(final String name, final byte[] data) {
+		final ClassReader reader = new ClassReader(data);
+		final ClassVisitor adapter = adapters.get(name);
 		if (adapter != null) {
 			reader.accept(adapter, ClassReader.SKIP_FRAMES);
 			return writers.get(name).toByteArray();
@@ -208,10 +217,10 @@ public class ModScript implements NodeProcessor {
 		return data;
 	}
 
-	private ClassVisitor delegate(String clazz) {
-		ClassVisitor delegate = adapters.get(clazz);
+	private ClassVisitor delegate(final String clazz) {
+		final ClassVisitor delegate = adapters.get(clazz);
 		if (delegate == null) {
-			ClassWriter writer = new ClassWriter(0);
+			final ClassWriter writer = new ClassWriter(0);
 			writers.put(clazz, writer);
 			return writer;
 		}

@@ -8,7 +8,7 @@ package org.powerbot.lang;
 public class LoadingException extends Exception {
 	private static final long serialVersionUID = 1L;
 
-	public LoadingException(String message) {
+	public LoadingException(final String message) {
 		super(message);
 	}
 

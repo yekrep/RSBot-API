@@ -9,15 +9,16 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author Timer
  */
 public class ThreadPool implements ThreadFactory {
-	private AtomicInteger threadNumber;
-	private ThreadGroup threadGroup;
+	private final AtomicInteger threadNumber;
+	private final ThreadGroup threadGroup;
 
-	public ThreadPool(ThreadGroup threadGroup) {
-		this.threadNumber = new AtomicInteger(1);
+	public ThreadPool(final ThreadGroup threadGroup) {
+		threadNumber = new AtomicInteger(1);
 		this.threadGroup = threadGroup;
 	}
 
-	public Thread newThread(Runnable r) {
+	@Override
+	public Thread newThread(final Runnable r) {
 		return new Thread(threadGroup, r, "TaskPool-" + threadNumber.getAndIncrement());
 	}
 }

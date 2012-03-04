@@ -29,10 +29,10 @@
  */
 package org.objectweb.asm.tree;
 
-import org.objectweb.asm.MethodVisitor;
-
 import java.util.List;
 import java.util.Map;
+
+import org.objectweb.asm.MethodVisitor;
 
 /**
  * A node that represents a bytecode instruction. <i>An instruction can appear
@@ -151,7 +151,7 @@ public abstract class AbstractInsnNode {
 	 */
 	protected AbstractInsnNode(final int opcode) {
 		this.opcode = opcode;
-		this.index = -1;
+		index = -1;
 	}
 
 	/**
@@ -228,7 +228,7 @@ public abstract class AbstractInsnNode {
 	 * @return the clones of the given labels.
 	 */
 	static LabelNode[] clone(final List<LabelNode> labels, final Map<LabelNode, LabelNode> map) {
-		LabelNode[] clones = new LabelNode[labels.size()];
+		final LabelNode[] clones = new LabelNode[labels.size()];
 		for (int i = 0; i < clones.length; ++i) {
 			clones[i] = map.get(labels.get(i));
 		}

@@ -10,17 +10,18 @@ import java.util.concurrent.Future;
  * @author Timer
  */
 public class TaskProcessor implements TaskContainer {
-	private ExecutorService executor;
+	private final ExecutorService executor;
 
-	public TaskProcessor(ThreadGroup threadGroup) {
-		this.executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() * 2, new ThreadPool(threadGroup));
+	public TaskProcessor(final ThreadGroup threadGroup) {
+		executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() * 2, new ThreadPool(threadGroup));
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public void submit(ContainedTask task) {
-		Future<Object> future = executor.submit(task);
+	@Override
+	public void submit(final ContainedTask task) {
+		final Future<Object> future = executor.submit(task);
 		task.setFuture(future);
 	}
 }

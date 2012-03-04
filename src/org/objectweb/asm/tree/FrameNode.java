@@ -29,13 +29,13 @@
  */
 package org.objectweb.asm.tree;
 
-import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
 
 /**
  * A node that represents a stack map frame. These nodes are pseudo instruction
@@ -107,22 +107,22 @@ public class FrameNode extends AbstractInsnNode {
 		super(-1);
 		this.type = type;
 		switch (type) {
-			case Opcodes.F_NEW:
-			case Opcodes.F_FULL:
-				this.local = asList(nLocal, local);
-				this.stack = asList(nStack, stack);
-				break;
-			case Opcodes.F_APPEND:
-				this.local = asList(nLocal, local);
-				break;
-			case Opcodes.F_CHOP:
-				this.local = Arrays.asList(new Object[nLocal]);
-				break;
-			case Opcodes.F_SAME:
-				break;
-			case Opcodes.F_SAME1:
-				this.stack = asList(1, stack);
-				break;
+		case Opcodes.F_NEW:
+		case Opcodes.F_FULL:
+			this.local = asList(nLocal, local);
+			this.stack = asList(nStack, stack);
+			break;
+		case Opcodes.F_APPEND:
+			this.local = asList(nLocal, local);
+			break;
+		case Opcodes.F_CHOP:
+			this.local = Arrays.asList(new Object[nLocal]);
+			break;
+		case Opcodes.F_SAME:
+			break;
+		case Opcodes.F_SAME1:
+			this.stack = asList(1, stack);
+			break;
 		}
 	}
 
@@ -139,32 +139,32 @@ public class FrameNode extends AbstractInsnNode {
 	@Override
 	public void accept(final MethodVisitor mv) {
 		switch (type) {
-			case Opcodes.F_NEW:
-			case Opcodes.F_FULL:
-				mv.visitFrame(type,
-						local.size(),
-						asArray(local),
-						stack.size(),
-						asArray(stack));
-				break;
-			case Opcodes.F_APPEND:
-				mv.visitFrame(type, local.size(), asArray(local), 0, null);
-				break;
-			case Opcodes.F_CHOP:
-				mv.visitFrame(type, local.size(), null, 0, null);
-				break;
-			case Opcodes.F_SAME:
-				mv.visitFrame(type, 0, null, 0, null);
-				break;
-			case Opcodes.F_SAME1:
-				mv.visitFrame(type, 0, null, 1, asArray(stack));
-				break;
+		case Opcodes.F_NEW:
+		case Opcodes.F_FULL:
+			mv.visitFrame(type,
+					local.size(),
+					asArray(local),
+					stack.size(),
+					asArray(stack));
+			break;
+		case Opcodes.F_APPEND:
+			mv.visitFrame(type, local.size(), asArray(local), 0, null);
+			break;
+		case Opcodes.F_CHOP:
+			mv.visitFrame(type, local.size(), null, 0, null);
+			break;
+		case Opcodes.F_SAME:
+			mv.visitFrame(type, 0, null, 0, null);
+			break;
+		case Opcodes.F_SAME1:
+			mv.visitFrame(type, 0, null, 1, asArray(stack));
+			break;
 		}
 	}
 
 	@Override
 	public AbstractInsnNode clone(final Map<LabelNode, LabelNode> labels) {
-		FrameNode clone = new FrameNode();
+		final FrameNode clone = new FrameNode();
 		clone.type = type;
 		if (local != null) {
 			clone.local = new ArrayList<Object>();
@@ -196,7 +196,7 @@ public class FrameNode extends AbstractInsnNode {
 	}
 
 	private static Object[] asArray(final List<Object> l) {
-		Object[] objs = new Object[l.size()];
+		final Object[] objs = new Object[l.size()];
 		for (int i = 0; i < objs.length; ++i) {
 			Object o = l.get(i);
 			if (o instanceof LabelNode) {

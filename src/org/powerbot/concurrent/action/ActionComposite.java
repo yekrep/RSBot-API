@@ -15,7 +15,7 @@ public class ActionComposite {
 	 *
 	 * @param tasks The <code>ContainedTask</code> associated with this <code>ActionComposite</code>.
 	 */
-	public ActionComposite(ContainedTask... tasks) {
+	public ActionComposite(final ContainedTask... tasks) {
 		this.tasks = tasks;
 	}
 }

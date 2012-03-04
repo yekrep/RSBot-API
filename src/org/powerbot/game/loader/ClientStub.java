@@ -1,7 +1,5 @@
 package org.powerbot.game.loader;
 
-import org.powerbot.game.loader.io.AudioClip;
-
 import java.applet.Applet;
 import java.applet.AppletContext;
 import java.applet.AppletStub;
@@ -13,7 +11,14 @@ import java.io.InputStream;
 import java.lang.ref.WeakReference;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.*;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Vector;
+
+import org.powerbot.game.loader.io.AudioClip;
 
 /**
  * Represents the applet stub and context provided to the applet for use.
@@ -25,9 +30,9 @@ public class ClientStub implements AppletStub, AppletContext {
 	private final Map<String, InputStream> INPUT_CACHE = Collections.synchronizedMap(new HashMap<String, InputStream>(2));
 
 	private boolean active = false;
-	private Map<String, String> parameters;
-	private URL documentBase;
-	private URL codeBase;
+	private final Map<String, String> parameters;
+	private final URL documentBase;
+	private final URL codeBase;
 	public Applet applet;
 
 	/**
@@ -38,7 +43,7 @@ public class ClientStub implements AppletStub, AppletContext {
 	 * @param parameters   The parameters to provide the applet.
 	 * @throws java.net.MalformedURLException Malformed or invalid URL.
 	 */
-	public ClientStub(String documentBase, String codeBase, Map<String, String> parameters) throws MalformedURLException {
+	public ClientStub(final String documentBase, final String codeBase, final Map<String, String> parameters) throws MalformedURLException {
 		this.parameters = parameters;
 		this.documentBase = new URL(documentBase);
 		this.codeBase = new URL(codeBase);
@@ -49,7 +54,7 @@ public class ClientStub implements AppletStub, AppletContext {
 	 *
 	 * @param active <tt>true</tt> if active; otherwise <tt>false</tt>.
 	 */
-	public void setActive(boolean active) {
+	public void setActive(final boolean active) {
 		this.active = active;
 	}
 
@@ -58,7 +63,7 @@ public class ClientStub implements AppletStub, AppletContext {
 	 *
 	 * @param applet The applet to reference when requested.
 	 */
-	public void setApplet(Applet applet) {
+	public void setApplet(final Applet applet) {
 		this.applet = applet;
 	}
 
@@ -67,8 +72,9 @@ public class ClientStub implements AppletStub, AppletContext {
 	 *
 	 * @return <tt>true</tt> if active; otherwise <tt>false</tt>.
 	 */
+	@Override
 	public boolean isActive() {
-		return this.active;
+		return active;
 	}
 
 	/**
@@ -76,8 +82,9 @@ public class ClientStub implements AppletStub, AppletContext {
 	 *
 	 * @return The <tt>URL</tt> of the document base.
 	 */
+	@Override
 	public URL getDocumentBase() {
-		return this.documentBase;
+		return documentBase;
 	}
 
 	/**
@@ -85,8 +92,9 @@ public class ClientStub implements AppletStub, AppletContext {
 	 *
 	 * @return The <tt>URL</tt> of the code base.
 	 */
+	@Override
 	public URL getCodeBase() {
-		return this.codeBase;
+		return codeBase;
 	}
 
 	/**
@@ -95,8 +103,9 @@ public class ClientStub implements AppletStub, AppletContext {
 	 * @param name The hash to search for.
 	 * @return The <tt>String</tt> associated with the hash.
 	 */
-	public String getParameter(String name) {
-		String value = this.parameters.get(name);
+	@Override
+	public String getParameter(final String name) {
+		final String value = parameters.get(name);
 		return value == null ? "" : value;
 	}
 
@@ -106,8 +115,9 @@ public class ClientStub implements AppletStub, AppletContext {
 	 * @param width  Pixel width
 	 * @param height Pixel height
 	 */
-	public void appletResize(int width, int height) {
-		Dimension size = new Dimension(width, height);
+	@Override
+	public void appletResize(final int width, final int height) {
+		final Dimension size = new Dimension(width, height);
 		applet.setSize(size);
 		applet.setPreferredSize(size);
 	}
@@ -117,6 +127,7 @@ public class ClientStub implements AppletStub, AppletContext {
 	 *
 	 * @return Returns the current instance of this class.
 	 */
+	@Override
 	public AppletContext getAppletContext() {
 		return this;
 	}
@@ -126,7 +137,8 @@ public class ClientStub implements AppletStub, AppletContext {
 	 *
 	 * @param status The status to show.
 	 */
-	public void showStatus(String status) {
+	@Override
+	public void showStatus(final String status) {
 		System.out.println("Status: " + status);
 	}
 
@@ -135,7 +147,8 @@ public class ClientStub implements AppletStub, AppletContext {
 	 *
 	 * @param url The <code>URL</code> of the document.
 	 */
-	public void showDocument(URL url) {
+	@Override
+	public void showDocument(final URL url) {
 		showDocument(url, "");
 	}
 
@@ -145,7 +158,8 @@ public class ClientStub implements AppletStub, AppletContext {
 	 * @param url    The <code>URL</code> of the document.
 	 * @param target The target.
 	 */
-	public void showDocument(URL url, String target) {
+	@Override
+	public void showDocument(final URL url, final String target) {
 		if (!target.equals("tbi")) {
 			System.out.println("Attempting to show: " + url.toString() + " [" + target + "]");
 		}
@@ -158,7 +172,8 @@ public class ClientStub implements AppletStub, AppletContext {
 	 * @param stream The input stream.
 	 * @throws java.io.IOException
 	 */
-	public void setStream(String key, InputStream stream) throws IOException {
+	@Override
+	public void setStream(final String key, final InputStream stream) throws IOException {
 		INPUT_CACHE.put(key, stream);
 	}
 
@@ -168,7 +183,8 @@ public class ClientStub implements AppletStub, AppletContext {
 	 * @param key The hash to look up.
 	 * @return The <code>InputStream</code> associated with the given hash.
 	 */
-	public InputStream getStream(String key) {
+	@Override
+	public InputStream getStream(final String key) {
 		return INPUT_CACHE.get(key);
 	}
 
@@ -177,6 +193,7 @@ public class ClientStub implements AppletStub, AppletContext {
 	 *
 	 * @return An Iterator of String.
 	 */
+	@Override
 	public Iterator<String> getStreamKeys() {
 		return Collections.unmodifiableSet(INPUT_CACHE.keySet()).iterator();
 	}
@@ -187,7 +204,8 @@ public class ClientStub implements AppletStub, AppletContext {
 	 * @param url The URL location of the image on the local computer.
 	 * @return The <code>Image</code> requested from the cache.
 	 */
-	public Image getImage(URL url) {
+	@Override
+	public Image getImage(final URL url) {
 		synchronized (IMAGE_CACHE) {
 			WeakReference<Image> ref = IMAGE_CACHE.get(url);
 			Image img;
@@ -206,8 +224,9 @@ public class ClientStub implements AppletStub, AppletContext {
 	 * @param name The name of the applet.
 	 * @return The <code>Applet</code> for the given name.
 	 */
-	public Applet getApplet(String name) {
-		String thisName = parameters.get("name");
+	@Override
+	public Applet getApplet(final String name) {
+		final String thisName = parameters.get("name");
 		if (thisName == null) {
 			return null;
 		}
@@ -219,8 +238,9 @@ public class ClientStub implements AppletStub, AppletContext {
 	 *
 	 * @return An enumeration containing the loaded applet.
 	 */
+	@Override
 	public Enumeration<Applet> getApplets() {
-		Vector<Applet> apps = new Vector<Applet>();
+		final Vector<Applet> apps = new Vector<Applet>();
 		apps.add(applet);
 		return apps.elements();
 	}
@@ -231,7 +251,8 @@ public class ClientStub implements AppletStub, AppletContext {
 	 * @param url The location of this audio clip.
 	 * @return An instance of an <code>AudioClip</code>.
 	 */
-	public java.applet.AudioClip getAudioClip(URL url) {
+	@Override
+	public java.applet.AudioClip getAudioClip(final URL url) {
 		return new AudioClip(url);
 	}
 }

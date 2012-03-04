@@ -1,10 +1,10 @@
 package org.powerbot.game.event;
 
+import java.util.EventListener;
+
 import org.powerbot.event.EventDispatcher;
 import org.powerbot.event.GameEvent;
 import org.powerbot.game.event.listener.MessageListener;
-
-import java.util.EventListener;
 
 public class MessageEvent extends GameEvent {
 	private static final long serialVersionUID = 7110162473010460326L;
@@ -19,7 +19,7 @@ public class MessageEvent extends GameEvent {
 	}
 
 	@Override
-	public void dispatch(EventListener eventListener) {
+	public void dispatch(final EventListener eventListener) {
 		((MessageListener) eventListener).messageReceived(this);
 	}
 

@@ -1,16 +1,18 @@
 package org.powerbot.gui;
 
+import java.awt.BorderLayout;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.util.logging.Logger;
+
+import javax.swing.JFrame;
+import javax.swing.WindowConstants;
+
 import org.powerbot.game.bot.Bot;
 import org.powerbot.gui.component.BotPanel;
 import org.powerbot.gui.component.BotToolBar;
 import org.powerbot.util.Configuration;
 import org.powerbot.util.io.Resources;
-
-import javax.swing.JFrame;
-import java.awt.BorderLayout;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
-import java.util.logging.Logger;
 
 public class BotChrome extends JFrame implements WindowListener {
 	private static final long serialVersionUID = 1L;
@@ -22,7 +24,7 @@ public class BotChrome extends JFrame implements WindowListener {
 		setTitle(Configuration.NAME);
 		setIconImage(Resources.getImage(Resources.Paths.ICON));
 		addWindowListener(this);
-		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 
 		add(new BotToolBar(this), BorderLayout.NORTH);
 
@@ -35,13 +37,16 @@ public class BotChrome extends JFrame implements WindowListener {
 		setVisible(true);
 	}
 
-	public void windowActivated(WindowEvent arg0) {
+	@Override
+	public void windowActivated(final WindowEvent arg0) {
 	}
 
-	public void windowClosed(WindowEvent arg0) {
+	@Override
+	public void windowClosed(final WindowEvent arg0) {
 	}
 
-	public void windowClosing(WindowEvent arg0) {
+	@Override
+	public void windowClosing(final WindowEvent arg0) {
 		log.info("Shutting down");
 		setVisible(false);
 		int bots = Bot.bots.size();
@@ -52,15 +57,19 @@ public class BotChrome extends JFrame implements WindowListener {
 		System.exit(0);
 	}
 
-	public void windowDeactivated(WindowEvent arg0) {
+	@Override
+	public void windowDeactivated(final WindowEvent arg0) {
 	}
 
-	public void windowDeiconified(WindowEvent arg0) {
+	@Override
+	public void windowDeiconified(final WindowEvent arg0) {
 	}
 
-	public void windowIconified(WindowEvent arg0) {
+	@Override
+	public void windowIconified(final WindowEvent arg0) {
 	}
 
-	public void windowOpened(WindowEvent arg0) {
+	@Override
+	public void windowOpened(final WindowEvent arg0) {
 	}
 }

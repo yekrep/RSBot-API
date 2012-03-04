@@ -103,56 +103,56 @@ public class Type {
 	/**
 	 * The <tt>void</tt> type.
 	 */
-	public static final Type VOID_TYPE = new Type(VOID, null, ('V' << 24)
-			| (5 << 16) | (0 << 8) | 0, 1);
+	public static final Type VOID_TYPE = new Type(VOID, null, 'V' << 24
+			| 5 << 16 | 0 << 8 | 0, 1);
 
 	/**
 	 * The <tt>boolean</tt> type.
 	 */
-	public static final Type BOOLEAN_TYPE = new Type(BOOLEAN, null, ('Z' << 24)
-			| (0 << 16) | (5 << 8) | 1, 1);
+	public static final Type BOOLEAN_TYPE = new Type(BOOLEAN, null, 'Z' << 24
+			| 0 << 16 | 5 << 8 | 1, 1);
 
 	/**
 	 * The <tt>char</tt> type.
 	 */
-	public static final Type CHAR_TYPE = new Type(CHAR, null, ('C' << 24)
-			| (0 << 16) | (6 << 8) | 1, 1);
+	public static final Type CHAR_TYPE = new Type(CHAR, null, 'C' << 24
+			| 0 << 16 | 6 << 8 | 1, 1);
 
 	/**
 	 * The <tt>byte</tt> type.
 	 */
-	public static final Type BYTE_TYPE = new Type(BYTE, null, ('B' << 24)
-			| (0 << 16) | (5 << 8) | 1, 1);
+	public static final Type BYTE_TYPE = new Type(BYTE, null, 'B' << 24
+			| 0 << 16 | 5 << 8 | 1, 1);
 
 	/**
 	 * The <tt>short</tt> type.
 	 */
-	public static final Type SHORT_TYPE = new Type(SHORT, null, ('S' << 24)
-			| (0 << 16) | (7 << 8) | 1, 1);
+	public static final Type SHORT_TYPE = new Type(SHORT, null, 'S' << 24
+			| 0 << 16 | 7 << 8 | 1, 1);
 
 	/**
 	 * The <tt>int</tt> type.
 	 */
-	public static final Type INT_TYPE = new Type(INT, null, ('I' << 24)
-			| (0 << 16) | (0 << 8) | 1, 1);
+	public static final Type INT_TYPE = new Type(INT, null, 'I' << 24
+			| 0 << 16 | 0 << 8 | 1, 1);
 
 	/**
 	 * The <tt>float</tt> type.
 	 */
-	public static final Type FLOAT_TYPE = new Type(FLOAT, null, ('F' << 24)
-			| (2 << 16) | (2 << 8) | 1, 1);
+	public static final Type FLOAT_TYPE = new Type(FLOAT, null, 'F' << 24
+			| 2 << 16 | 2 << 8 | 1, 1);
 
 	/**
 	 * The <tt>long</tt> type.
 	 */
-	public static final Type LONG_TYPE = new Type(LONG, null, ('J' << 24)
-			| (1 << 16) | (1 << 8) | 2, 1);
+	public static final Type LONG_TYPE = new Type(LONG, null, 'J' << 24
+			| 1 << 16 | 1 << 8 | 2, 1);
 
 	/**
 	 * The <tt>double</tt> type.
 	 */
-	public static final Type DOUBLE_TYPE = new Type(DOUBLE, null, ('D' << 24)
-			| (3 << 16) | (3 << 8) | 2, 1);
+	public static final Type DOUBLE_TYPE = new Type(DOUBLE, null, 'D' << 24
+			| 3 << 16 | 3 << 8 | 2, 1);
 
 	// ------------------------------------------------------------------------
 	// Fields
@@ -218,7 +218,7 @@ public class Type {
 	 * @return the Java type corresponding to the given internal name.
 	 */
 	public static Type getObjectType(final String internalName) {
-		char[] buf = internalName.toCharArray();
+		final char[] buf = internalName.toCharArray();
 		return new Type(buf[0] == '[' ? ARRAY : OBJECT, buf, 0, buf.length);
 	}
 
@@ -306,11 +306,11 @@ public class Type {
 	 *         method descriptor.
 	 */
 	public static Type[] getArgumentTypes(final String methodDescriptor) {
-		char[] buf = methodDescriptor.toCharArray();
+		final char[] buf = methodDescriptor.toCharArray();
 		int off = 1;
 		int size = 0;
 		while (true) {
-			char car = buf[off++];
+			final char car = buf[off++];
 			if (car == ')') {
 				break;
 			} else if (car == 'L') {
@@ -321,7 +321,7 @@ public class Type {
 				++size;
 			}
 		}
-		Type[] args = new Type[size];
+		final Type[] args = new Type[size];
 		off = 1;
 		size = 0;
 		while (buf[off] != ')') {
@@ -341,8 +341,8 @@ public class Type {
 	 *         method.
 	 */
 	public static Type[] getArgumentTypes(final Method method) {
-		Class<?>[] classes = method.getParameterTypes();
-		Type[] types = new Type[classes.length];
+		final Class<?>[] classes = method.getParameterTypes();
+		final Type[] types = new Type[classes.length];
 		for (int i = classes.length - 1; i >= 0; --i) {
 			types[i] = getType(classes[i]);
 		}
@@ -358,7 +358,7 @@ public class Type {
 	 *         method descriptor.
 	 */
 	public static Type getReturnType(final String methodDescriptor) {
-		char[] buf = methodDescriptor.toCharArray();
+		final char[] buf = methodDescriptor.toCharArray();
 		return getType(buf, methodDescriptor.indexOf(')') + 1);
 	}
 
@@ -392,7 +392,7 @@ public class Type {
 			if (car == ')') {
 				car = desc.charAt(c);
 				return n << 2
-						| (car == 'V' ? 0 : (car == 'D' || car == 'J' ? 2 : 1));
+						| (car == 'V' ? 0 : car == 'D' || car == 'J' ? 2 : 1);
 			} else if (car == 'L') {
 				while (desc.charAt(c++) != ';') {
 				}
@@ -424,45 +424,45 @@ public class Type {
 	private static Type getType(final char[] buf, final int off) {
 		int len;
 		switch (buf[off]) {
-			case 'V':
-				return VOID_TYPE;
-			case 'Z':
-				return BOOLEAN_TYPE;
-			case 'C':
-				return CHAR_TYPE;
-			case 'B':
-				return BYTE_TYPE;
-			case 'S':
-				return SHORT_TYPE;
-			case 'I':
-				return INT_TYPE;
-			case 'F':
-				return FLOAT_TYPE;
-			case 'J':
-				return LONG_TYPE;
-			case 'D':
-				return DOUBLE_TYPE;
-			case '[':
-				len = 1;
-				while (buf[off + len] == '[') {
-					++len;
-				}
-				if (buf[off + len] == 'L') {
-					++len;
-					while (buf[off + len] != ';') {
-						++len;
-					}
-				}
-				return new Type(ARRAY, buf, off, len + 1);
-			case 'L':
-				len = 1;
+		case 'V':
+			return VOID_TYPE;
+		case 'Z':
+			return BOOLEAN_TYPE;
+		case 'C':
+			return CHAR_TYPE;
+		case 'B':
+			return BYTE_TYPE;
+		case 'S':
+			return SHORT_TYPE;
+		case 'I':
+			return INT_TYPE;
+		case 'F':
+			return FLOAT_TYPE;
+		case 'J':
+			return LONG_TYPE;
+		case 'D':
+			return DOUBLE_TYPE;
+		case '[':
+			len = 1;
+			while (buf[off + len] == '[') {
+				++len;
+			}
+			if (buf[off + len] == 'L') {
+				++len;
 				while (buf[off + len] != ';') {
 					++len;
 				}
-				return new Type(OBJECT, buf, off + 1, len - 1);
+			}
+			return new Type(ARRAY, buf, off, len + 1);
+		case 'L':
+			len = 1;
+			while (buf[off + len] != ';') {
+				++len;
+			}
+			return new Type(OBJECT, buf, off + 1, len - 1);
 			// case '(':
-			default:
-				return new Type(METHOD, buf, 0, buf.length);
+		default:
+			return new Type(METHOD, buf, 0, buf.length);
 		}
 	}
 
@@ -515,34 +515,34 @@ public class Type {
 	 */
 	public String getClassName() {
 		switch (sort) {
-			case VOID:
-				return "void";
-			case BOOLEAN:
-				return "boolean";
-			case CHAR:
-				return "char";
-			case BYTE:
-				return "byte";
-			case SHORT:
-				return "short";
-			case INT:
-				return "int";
-			case FLOAT:
-				return "float";
-			case LONG:
-				return "long";
-			case DOUBLE:
-				return "double";
-			case ARRAY:
-				StringBuffer b = new StringBuffer(getElementType().getClassName());
-				for (int i = getDimensions(); i > 0; --i) {
-					b.append("[]");
-				}
-				return b.toString();
-			case OBJECT:
-				return new String(buf, off, len).replace('/', '.');
-			default:
-				return null;
+		case VOID:
+			return "void";
+		case BOOLEAN:
+			return "boolean";
+		case CHAR:
+			return "char";
+		case BYTE:
+			return "byte";
+		case SHORT:
+			return "short";
+		case INT:
+			return "int";
+		case FLOAT:
+			return "float";
+		case LONG:
+			return "long";
+		case DOUBLE:
+			return "double";
+		case ARRAY:
+			final StringBuffer b = new StringBuffer(getElementType().getClassName());
+			for (int i = getDimensions(); i > 0; --i) {
+				b.append("[]");
+			}
+			return b.toString();
+		case OBJECT:
+			return new String(buf, off, len).replace('/', '.');
+		default:
+			return null;
 		}
 	}
 
@@ -602,7 +602,7 @@ public class Type {
 	 * @return the descriptor corresponding to this Java type.
 	 */
 	public String getDescriptor() {
-		StringBuffer buf = new StringBuffer();
+		final StringBuffer buf = new StringBuffer();
 		getDescriptor(buf);
 		return buf.toString();
 	}
@@ -619,7 +619,7 @@ public class Type {
 	public static String getMethodDescriptor(
 			final Type returnType,
 			final Type... argumentTypes) {
-		StringBuffer buf = new StringBuffer();
+		final StringBuffer buf = new StringBuffer();
 		buf.append('(');
 		for (int i = 0; i < argumentTypes.length; ++i) {
 			argumentTypes[i].getDescriptor(buf);
@@ -672,7 +672,7 @@ public class Type {
 	 * @return the descriptor corresponding to the given class.
 	 */
 	public static String getDescriptor(final Class<?> c) {
-		StringBuffer buf = new StringBuffer();
+		final StringBuffer buf = new StringBuffer();
 		getDescriptor(buf, c);
 		return buf.toString();
 	}
@@ -684,8 +684,8 @@ public class Type {
 	 * @return the descriptor of the given constructor.
 	 */
 	public static String getConstructorDescriptor(final Constructor<?> c) {
-		Class<?>[] parameters = c.getParameterTypes();
-		StringBuffer buf = new StringBuffer();
+		final Class<?>[] parameters = c.getParameterTypes();
+		final StringBuffer buf = new StringBuffer();
 		buf.append('(');
 		for (int i = 0; i < parameters.length; ++i) {
 			getDescriptor(buf, parameters[i]);
@@ -700,8 +700,8 @@ public class Type {
 	 * @return the descriptor of the given method.
 	 */
 	public static String getMethodDescriptor(final Method m) {
-		Class<?>[] parameters = m.getParameterTypes();
-		StringBuffer buf = new StringBuffer();
+		final Class<?>[] parameters = m.getParameterTypes();
+		final StringBuffer buf = new StringBuffer();
 		buf.append('(');
 		for (int i = 0; i < parameters.length; ++i) {
 			getDescriptor(buf, parameters[i]);
@@ -748,10 +748,10 @@ public class Type {
 				d = d.getComponentType();
 			} else {
 				buf.append('L');
-				String name = d.getName();
-				int len = name.length();
+				final String name = d.getName();
+				final int len = name.length();
 				for (int i = 0; i < len; ++i) {
-					char car = name.charAt(i);
+					final char car = name.charAt(i);
 					buf.append(car == '.' ? '/' : car);
 				}
 				buf.append(';');
@@ -773,7 +773,7 @@ public class Type {
 	 */
 	public int getSize() {
 		// the size is in byte 0 of 'off' for primitive types (buf == null)
-		return buf == null ? (off & 0xFF) : 1;
+		return buf == null ? off & 0xFF : 1;
 	}
 
 	/**
@@ -817,7 +817,7 @@ public class Type {
 		if (!(o instanceof Type)) {
 			return false;
 		}
-		Type t = (Type) o;
+		final Type t = (Type) o;
 		if (sort != t.sort) {
 			return false;
 		}

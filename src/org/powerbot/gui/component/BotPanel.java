@@ -1,12 +1,25 @@
 package org.powerbot.gui.component;
 
+import java.awt.Canvas;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
+
+import javax.swing.JPanel;
+
 import org.powerbot.game.bot.Bot;
 import org.powerbot.game.client.input.Mouse;
 import org.powerbot.gui.BotChrome;
-
-import javax.swing.JPanel;
-import java.awt.*;
-import java.awt.event.*;
 
 /**
  * A panel that re-dispatches human events to the game's applet.
@@ -25,8 +38,8 @@ public class BotPanel extends JPanel {
 		setPreferredSize(d);
 		setMinimumSize(d);
 		setBackground(Color.black);
-		this.bot = null;
-		this.xOff = this.yOff = 0;
+		bot = null;
+		xOff = yOff = 0;
 
 		addComponentListener(new ComponentAdapter() {
 			@Override
@@ -39,6 +52,7 @@ public class BotPanel extends JPanel {
 			}
 		});
 		addMouseListener(new MouseListener() {
+			@Override
 			public void mouseClicked(final MouseEvent e) {
 				redispatch(e);
 				if (!hasFocus()) {
@@ -46,45 +60,55 @@ public class BotPanel extends JPanel {
 				}
 			}
 
+			@Override
 			public void mouseEntered(final MouseEvent e) {
 				redispatch(e);
 			}
 
+			@Override
 			public void mouseExited(final MouseEvent e) {
 				redispatch(e);
 			}
 
+			@Override
 			public void mousePressed(final MouseEvent e) {
 				redispatch(e);
 			}
 
+			@Override
 			public void mouseReleased(final MouseEvent e) {
 				redispatch(e);
 			}
 		});
 		addMouseMotionListener(new MouseMotionListener() {
+			@Override
 			public void mouseDragged(final MouseEvent e) {
 				redispatch(e);
 			}
 
+			@Override
 			public void mouseMoved(final MouseEvent e) {
 				redispatch(e);
 			}
 		});
 		addMouseWheelListener(new MouseWheelListener() {
+			@Override
 			public void mouseWheelMoved(final MouseWheelEvent e) {
 				redispatch(e);
 			}
 		});
 		addKeyListener(new KeyListener() {
+			@Override
 			public void keyPressed(final KeyEvent e) {
 				redispatch(e);
 			}
 
+			@Override
 			public void keyReleased(final KeyEvent e) {
 				redispatch(e);
 			}
 
+			@Override
 			public void keyTyped(final KeyEvent e) {
 				redispatch(e);
 			}
@@ -147,28 +171,28 @@ public class BotPanel extends JPanel {
 							System.currentTimeMillis(), 0,
 							mouseX, mouseY, 0, mouseEvent.isPopupTrigger(),
 							mouseWheelEvent.getScrollType(), mouseWheelEvent.getScrollAmount(), mouseWheelEvent.getWheelRotation()
-					));
+							));
 				} else {
 					component.dispatchEvent(new MouseEvent(
 							component, mouseEvent.getID(),
 							System.currentTimeMillis(), 0,
 							mouseX, mouseY, 0, mouseEvent.isPopupTrigger(),
 							mouseEvent.getButton()
-					));
+							));
 				}
 			} else {
 				component.dispatchEvent(new MouseEvent(
 						component, MouseEvent.MOUSE_ENTERED,
 						System.currentTimeMillis(), 0,
 						mouseX, mouseY, 0, false
-				));
+						));
 			}
 		} else if (present) {
 			component.dispatchEvent(new MouseEvent(
 					component, MouseEvent.MOUSE_EXITED,
 					System.currentTimeMillis(), 0,
 					mouseX, mouseY, 0, false
-			));
+					));
 		}
 	}
 

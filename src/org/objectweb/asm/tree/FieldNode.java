@@ -29,10 +29,14 @@
  */
 package org.objectweb.asm.tree;
 
-import org.objectweb.asm.*;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import org.objectweb.asm.AnnotationVisitor;
+import org.objectweb.asm.Attribute;
+import org.objectweb.asm.ClassVisitor;
+import org.objectweb.asm.FieldVisitor;
+import org.objectweb.asm.Opcodes;
 
 /**
  * A node that represents a field.
@@ -162,7 +166,7 @@ public class FieldNode extends FieldVisitor {
 	public AnnotationVisitor visitAnnotation(
 			final String desc,
 			final boolean visible) {
-		AnnotationNode an = new AnnotationNode(desc);
+		final AnnotationNode an = new AnnotationNode(desc);
 		if (visible) {
 			if (visibleAnnotations == null) {
 				visibleAnnotations = new ArrayList<AnnotationNode>(1);
@@ -211,19 +215,19 @@ public class FieldNode extends FieldVisitor {
 	 * @param cv a class visitor.
 	 */
 	public void accept(final ClassVisitor cv) {
-		FieldVisitor fv = cv.visitField(access, name, desc, signature, value);
+		final FieldVisitor fv = cv.visitField(access, name, desc, signature, value);
 		if (fv == null) {
 			return;
 		}
 		int i, n;
 		n = visibleAnnotations == null ? 0 : visibleAnnotations.size();
 		for (i = 0; i < n; ++i) {
-			AnnotationNode an = visibleAnnotations.get(i);
+			final AnnotationNode an = visibleAnnotations.get(i);
 			an.accept(fv.visitAnnotation(an.desc, true));
 		}
 		n = invisibleAnnotations == null ? 0 : invisibleAnnotations.size();
 		for (i = 0; i < n; ++i) {
-			AnnotationNode an = invisibleAnnotations.get(i);
+			final AnnotationNode an = invisibleAnnotations.get(i);
 			an.accept(fv.visitAnnotation(an.desc, false));
 		}
 		n = attrs == null ? 0 : attrs.size();

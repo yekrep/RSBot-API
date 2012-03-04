@@ -6,23 +6,24 @@ public class AudioClip implements java.applet.AudioClip {
 	public static final short STATE_STOPPED = 0;
 	public static final short STATE_PLAYING = 1;
 	public static final short STATE_LOOPING = 2;
-	private URL sourceURL;
+	private final URL sourceURL;
 	private short audioClipState;
 
-	public AudioClip(URL sourceURL) {
+	public AudioClip(final URL sourceURL) {
 		this.sourceURL = sourceURL;
-		this.audioClipState = 0;
+		audioClipState = 0;
 	}
 
 	public short getAudioClipState() {
-		return this.audioClipState;
+		return audioClipState;
 	}
 
 	public URL getURL() {
-		return this.sourceURL;
+		return sourceURL;
 	}
 
-	public boolean equals(Object obj) {
+	@Override
+	public boolean equals(final Object obj) {
 		if (obj == null) {
 			return false;
 		}
@@ -32,19 +33,22 @@ public class AudioClip implements java.applet.AudioClip {
 		if (!(obj instanceof AudioClip)) {
 			return false;
 		}
-		AudioClip ac = (AudioClip) obj;
-		return (ac.getAudioClipState() == this.audioClipState) && (ac.getURL().equals(this.sourceURL));
+		final AudioClip ac = (AudioClip) obj;
+		return ac.getAudioClipState() == audioClipState && ac.getURL().equals(sourceURL);
 	}
 
+	@Override
 	public void play() {
-		this.audioClipState = STATE_PLAYING;
+		audioClipState = STATE_PLAYING;
 	}
 
+	@Override
 	public void loop() {
-		this.audioClipState = STATE_LOOPING;
+		audioClipState = STATE_LOOPING;
 	}
 
+	@Override
 	public void stop() {
-		this.audioClipState = STATE_STOPPED;
+		audioClipState = STATE_STOPPED;
 	}
 }
