@@ -19,7 +19,6 @@ public final class BotToolBar extends JToolBar {
 	private static final long serialVersionUID = 1L;
 	public final BotChrome parent;
 	private final BotMenu menu;
-	private final Bot[] bots = new Bot[BotChrome.MAX_BOTS];
 	private final JButton tabadd;
 
 	public BotToolBar(final BotChrome parent) {
@@ -54,12 +53,11 @@ public final class BotToolBar extends JToolBar {
 
 	private void addBot() {
 		final int n = Bot.bots.size();
-		add(new BotButton("Game " + (n + 1)), n);
+		final Bot bot = new Bot();
+		add(new BotButton("Game " + (n + 1), bot), n);
 		setTab(n);
 		tabadd.setVisible(BotChrome.MAX_BOTS - Bot.bots.size() > 1);
-		final Bot bot = new Bot();
 		new Thread(bot).start();
-		bots[n] = bot;
 		BotChrome.panel.setBot(bot);
 	}
 
@@ -68,19 +66,19 @@ public final class BotToolBar extends JToolBar {
 		for (final Component c : getComponents()) {
 			if (c instanceof BotButton) {
 				c.setFont(c.getFont().deriveFont(n == i ? Font.BOLD : 0));
+				BotChrome.panel.setBot(((BotButton) c).getBot());
 			}
 			i++;
-		}
-		if (n >= 0 && n < Bot.bots.size()) {
-			BotChrome.panel.setBot(Bot.bots.get(n));
 		}
 	}
 
 	private final class BotButton extends JButton implements ActionListener {
 		private static final long serialVersionUID = 1L;
+		private final Bot bot;
 
-		public BotButton(final String name) {
+		public BotButton(final String name, final Bot bot) {
 			super(name);
+			this.bot = bot;
 			setFocusable(false);
 			addActionListener(this);
 		}
@@ -88,6 +86,10 @@ public final class BotToolBar extends JToolBar {
 		@Override
 		public void actionPerformed(final ActionEvent arg0) {
 			setTab(getComponentIndex(this));
+		}
+
+		public Bot getBot() {
+			return bot;
 		}
 	}
 }
