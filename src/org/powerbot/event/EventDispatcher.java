@@ -39,14 +39,12 @@ public class EventDispatcher extends RunnableTask implements EventManager {
 		active = false;
 	}
 
-	@Override
 	public void dispatch(final EventObject event) {
 		synchronized (queue) {
 			queue.add(event);
 		}
 	}
 
-	@Override
 	public void fire(final EventObject eventObject) {
 		fire(eventObject, getType(eventObject));
 	}
@@ -118,7 +116,6 @@ public class EventDispatcher extends RunnableTask implements EventManager {
 		}
 	}
 
-	@Override
 	public void accept(final EventListener eventListener) {
 		synchronized (treeLock) {
 			if (!listeners.contains(eventListener)) {
@@ -128,7 +125,6 @@ public class EventDispatcher extends RunnableTask implements EventManager {
 		}
 	}
 
-	@Override
 	public void remove(final EventListener eventListener) {
 		synchronized (treeLock) {
 			final int id = listeners.indexOf(eventListener);
@@ -139,7 +135,6 @@ public class EventDispatcher extends RunnableTask implements EventManager {
 		}
 	}
 
-	@Override
 	public void setActive(final boolean active) {
 		this.active = active;
 	}
@@ -207,7 +202,6 @@ public class EventDispatcher extends RunnableTask implements EventManager {
 		throw new RuntimeException("bad event");
 	}
 
-	@Override
 	public void run() {
 		active = true;
 		while (active) {

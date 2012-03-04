@@ -51,7 +51,6 @@ public abstract class GameDefinition implements GameEnvironment {
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override
 	public boolean initializeEnvironment() {
 		log.info("Initializing game environment");
 		classes.clear();

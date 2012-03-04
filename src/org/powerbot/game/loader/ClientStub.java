@@ -72,7 +72,6 @@ public class ClientStub implements AppletStub, AppletContext {
 	 *
 	 * @return <tt>true</tt> if active; otherwise <tt>false</tt>.
 	 */
-	@Override
 	public boolean isActive() {
 		return active;
 	}
@@ -82,7 +81,6 @@ public class ClientStub implements AppletStub, AppletContext {
 	 *
 	 * @return The <tt>URL</tt> of the document base.
 	 */
-	@Override
 	public URL getDocumentBase() {
 		return documentBase;
 	}
@@ -92,7 +90,6 @@ public class ClientStub implements AppletStub, AppletContext {
 	 *
 	 * @return The <tt>URL</tt> of the code base.
 	 */
-	@Override
 	public URL getCodeBase() {
 		return codeBase;
 	}
@@ -103,7 +100,6 @@ public class ClientStub implements AppletStub, AppletContext {
 	 * @param name The hash to search for.
 	 * @return The <tt>String</tt> associated with the hash.
 	 */
-	@Override
 	public String getParameter(final String name) {
 		final String value = parameters.get(name);
 		return value == null ? "" : value;
@@ -115,7 +111,6 @@ public class ClientStub implements AppletStub, AppletContext {
 	 * @param width  Pixel width
 	 * @param height Pixel height
 	 */
-	@Override
 	public void appletResize(final int width, final int height) {
 		final Dimension size = new Dimension(width, height);
 		applet.setSize(size);
@@ -127,7 +122,6 @@ public class ClientStub implements AppletStub, AppletContext {
 	 *
 	 * @return Returns the current instance of this class.
 	 */
-	@Override
 	public AppletContext getAppletContext() {
 		return this;
 	}
@@ -137,7 +131,6 @@ public class ClientStub implements AppletStub, AppletContext {
 	 *
 	 * @param status The status to show.
 	 */
-	@Override
 	public void showStatus(final String status) {
 		System.out.println("Status: " + status);
 	}
@@ -147,7 +140,6 @@ public class ClientStub implements AppletStub, AppletContext {
 	 *
 	 * @param url The <code>URL</code> of the document.
 	 */
-	@Override
 	public void showDocument(final URL url) {
 		showDocument(url, "");
 	}
@@ -158,7 +150,6 @@ public class ClientStub implements AppletStub, AppletContext {
 	 * @param url    The <code>URL</code> of the document.
 	 * @param target The target.
 	 */
-	@Override
 	public void showDocument(final URL url, final String target) {
 		if (!target.equals("tbi")) {
 			System.out.println("Attempting to show: " + url.toString() + " [" + target + "]");
@@ -172,7 +163,6 @@ public class ClientStub implements AppletStub, AppletContext {
 	 * @param stream The input stream.
 	 * @throws java.io.IOException
 	 */
-	@Override
 	public void setStream(final String key, final InputStream stream) throws IOException {
 		INPUT_CACHE.put(key, stream);
 	}
@@ -183,7 +173,6 @@ public class ClientStub implements AppletStub, AppletContext {
 	 * @param key The hash to look up.
 	 * @return The <code>InputStream</code> associated with the given hash.
 	 */
-	@Override
 	public InputStream getStream(final String key) {
 		return INPUT_CACHE.get(key);
 	}
@@ -193,7 +182,6 @@ public class ClientStub implements AppletStub, AppletContext {
 	 *
 	 * @return An Iterator of String.
 	 */
-	@Override
 	public Iterator<String> getStreamKeys() {
 		return Collections.unmodifiableSet(INPUT_CACHE.keySet()).iterator();
 	}
@@ -204,7 +192,6 @@ public class ClientStub implements AppletStub, AppletContext {
 	 * @param url The URL location of the image on the local computer.
 	 * @return The <code>Image</code> requested from the cache.
 	 */
-	@Override
 	public Image getImage(final URL url) {
 		synchronized (IMAGE_CACHE) {
 			WeakReference<Image> ref = IMAGE_CACHE.get(url);
@@ -224,7 +211,6 @@ public class ClientStub implements AppletStub, AppletContext {
 	 * @param name The name of the applet.
 	 * @return The <code>Applet</code> for the given name.
 	 */
-	@Override
 	public Applet getApplet(final String name) {
 		final String thisName = parameters.get("name");
 		if (thisName == null) {
@@ -238,7 +224,6 @@ public class ClientStub implements AppletStub, AppletContext {
 	 *
 	 * @return An enumeration containing the loaded applet.
 	 */
-	@Override
 	public Enumeration<Applet> getApplets() {
 		final Vector<Applet> apps = new Vector<Applet>();
 		apps.add(applet);
@@ -251,7 +236,6 @@ public class ClientStub implements AppletStub, AppletContext {
 	 * @param url The location of this audio clip.
 	 * @return An instance of an <code>AudioClip</code>.
 	 */
-	@Override
 	public java.applet.AudioClip getAudioClip(final URL url) {
 		return new AudioClip(url);
 	}

@@ -55,7 +55,6 @@ public class Bot extends GameDefinition implements Runnable {
 		processor.submit(eventDispatcher);
 	}
 
-	@Override
 	public void run() {
 		Bot.bots.add(this);
 		if (initializeEnvironment()) {
@@ -66,12 +65,10 @@ public class Bot extends GameDefinition implements Runnable {
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override
 	public void startEnvironment() {
 		log.info("Starting bot");
 		context.put(threadGroup, this);
 		callback = new Runnable() {
-			@Override
 			public void run() {
 				setClient((Client) appletContainer.clientInstance);
 				appletContainer.paint(image.getGraphics());
@@ -85,7 +82,6 @@ public class Bot extends GameDefinition implements Runnable {
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override
 	public NodeProcessor getProcessor() throws AdaptException {
 		final String id = "(" + packHash.substring(0, 6) + ")";
 		log.info("Loading client patch " + id);
@@ -105,7 +101,6 @@ public class Bot extends GameDefinition implements Runnable {
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override
 	public void killEnvironment() {
 		log.info("Unloading environment");
 		if (stub != null) {
@@ -116,7 +111,6 @@ public class Bot extends GameDefinition implements Runnable {
 		if (appletContainer != null) {
 			log.fine("Shutting down applet");
 			t = new Thread(new Runnable() {
-				@Override
 				public void run() {
 					appletContainer.stop();
 					appletContainer.destroy();

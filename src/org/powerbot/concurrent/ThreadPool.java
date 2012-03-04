@@ -17,7 +17,6 @@ public class ThreadPool implements ThreadFactory {
 		this.threadGroup = threadGroup;
 	}
 
-	@Override
 	public Thread newThread(final Runnable r) {
 		return new Thread(threadGroup, r, "TaskPool-" + threadNumber.getAndIncrement());
 	}

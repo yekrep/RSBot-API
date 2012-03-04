@@ -26,7 +26,6 @@ public final class BotToolBar extends JToolBar {
 
 		tabdelete = new JButton(new ImageIcon(Resources.getImage(Resources.Paths.TAB_DELETE)));
 		tabdelete.addActionListener(new ActionListener() {
-			@Override
 			public void actionPerformed(final ActionEvent arg0) {
 				closeTab(getOpenedTab());
 			}
@@ -38,7 +37,6 @@ public final class BotToolBar extends JToolBar {
 
 		tabadd = new JButton(new ImageIcon(Resources.getImage(Resources.Paths.TAB_ADD)));
 		tabadd.addActionListener(new ActionListener() {
-			@Override
 			public void actionPerformed(final ActionEvent e) {
 				if (Bot.bots.size() < BotChrome.MAX_BOTS) {
 					addTab();
@@ -66,7 +64,6 @@ public final class BotToolBar extends JToolBar {
 		final BotToolBar t = this;
 		final JButton settings = new JButton(new ImageIcon(Resources.getImage(Resources.Paths.COG)));
 		settings.addActionListener(new ActionListener() {
-			@Override
 			public void actionPerformed(final ActionEvent arg0) {
 				new BotMenu(t).show(settings, settings.getWidth() / 2, settings.getHeight() / 2);
 			}
@@ -166,7 +163,6 @@ public final class BotToolBar extends JToolBar {
 			addActionListener(this);
 		}
 
-		@Override
 		public void actionPerformed(final ActionEvent arg0) {
 			openTab(getComponentIndex(this) - 1);
 		}

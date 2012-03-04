@@ -71,7 +71,6 @@ public class ModScript implements NodeProcessor {
 		return version;
 	}
 
-	@Override
 	public void adapt() throws AdaptException {
 		if (scanner.readInt() != ModScript.MAGIC) {
 			throw new AdaptException("invalid patch format");
@@ -206,7 +205,6 @@ public class ModScript implements NodeProcessor {
 		}
 	}
 
-	@Override
 	public byte[] process(final String name, final byte[] data) {
 		final ClassReader reader = new ClassReader(data);
 		final ClassVisitor adapter = adapters.get(name);

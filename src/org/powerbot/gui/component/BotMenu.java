@@ -42,7 +42,6 @@ public final class BotMenu extends JPopupMenu implements ActionListener {
 		final JMenuItem site = new JMenuItem(Locale.POWERBOT);
 		site.setIcon(new ImageIcon(Resources.getImage(Resources.Paths.ICON_SMALL)));
 		site.addActionListener(new ActionListener() {
-			@Override
 			public void actionPerformed(final ActionEvent arg0) {
 				BotChrome.openURL(Configuration.URLs.SITE);
 			}
@@ -50,12 +49,11 @@ public final class BotMenu extends JPopupMenu implements ActionListener {
 		add(site);
 		final JMenuItem about = new JMenuItem(Locale.ABOUT);
 		about.addActionListener(new ActionListener() {
-			@Override
 			public void actionPerformed(final ActionEvent arg0) {
 				JOptionPane.showMessageDialog(parent.parent, new String[] {
 						Locale.COPYRIGHT,
 						"Unauthorised use of this application is prohibited.\n\n",
-						"RuneScape® is a trademark of Jagex © 1999 - 2011 Jagex, Ltd.",
+						"RuneScape\u00ae is a trademark of Jagex \u00a9 1999 - 2011 Jagex, Ltd.",
 						"RuneScape content and materials are trademarks and copyrights of Jagex or its licensees.",
 						"This program is issued with no warranty and is not affiliated with Jagex Ltd., nor do they endorse usage of our software.\n\n",
 						"Visit " + Configuration.URLs.SITE + "/ for more information."},
@@ -71,7 +69,6 @@ public final class BotMenu extends JPopupMenu implements ActionListener {
 		add(exit);
 	}
 
-	@Override
 	public void actionPerformed(final ActionEvent e) {
 		final String a = e.getActionCommand();
 		if (a.equals(Locale.NEWTAB)) {

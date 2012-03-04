@@ -24,7 +24,6 @@ public class Boot implements Runnable {
 		new BotChrome();
 	}
 
-	@Override
 	public void run() {
 		main(new String[]{});
 	}

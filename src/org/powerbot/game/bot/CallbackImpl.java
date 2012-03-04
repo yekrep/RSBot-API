@@ -11,11 +11,9 @@ public class CallbackImpl implements Callback {
 		this.bot = bot;
 	}
 
-	@Override
 	public void updateRenderInfo(final Render render) {
 	}
 
-	@Override
 	public void notifyMessage(final int id, final String sender, final String message) {
 		bot.eventDispatcher.dispatch(new MessageEvent(id, sender, message));
 		System.out.println("[" + id + "] " + sender + ": " + message);

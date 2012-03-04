@@ -9,7 +9,6 @@ public abstract class RunnableTask extends ContainedTask implements Runnable {
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override
 	public Object call() throws Exception {
 		run();
 		return null;
@@ -17,7 +16,6 @@ public abstract class RunnableTask extends ContainedTask implements Runnable {
 
 	public static ContainedTask create(final Runnable runnable) {
 		return new RunnableTask() {
-			@Override
 			public void run() {
 				runnable.run();
 			}

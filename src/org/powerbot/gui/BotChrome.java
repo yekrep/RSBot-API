@@ -1,5 +1,13 @@
 package org.powerbot.gui;
 
+import org.powerbot.game.bot.Bot;
+import org.powerbot.gui.component.BotPanel;
+import org.powerbot.gui.component.BotToolBar;
+import org.powerbot.util.Configuration;
+import org.powerbot.util.io.Resources;
+
+import javax.swing.JFrame;
+import javax.swing.WindowConstants;
 import java.awt.BorderLayout;
 import java.awt.Desktop;
 import java.awt.event.WindowEvent;
@@ -8,15 +16,6 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.logging.Logger;
-
-import javax.swing.JFrame;
-import javax.swing.WindowConstants;
-
-import org.powerbot.game.bot.Bot;
-import org.powerbot.gui.component.BotPanel;
-import org.powerbot.gui.component.BotToolBar;
-import org.powerbot.util.Configuration;
-import org.powerbot.util.io.Resources;
 
 public class BotChrome extends JFrame implements WindowListener {
 	private static final long serialVersionUID = 1L;
@@ -57,15 +56,12 @@ public class BotChrome extends JFrame implements WindowListener {
 		}
 	}
 
-	@Override
 	public void windowActivated(final WindowEvent arg0) {
 	}
 
-	@Override
 	public void windowClosed(final WindowEvent arg0) {
 	}
 
-	@Override
 	public void windowClosing(final WindowEvent arg0) {
 		log.info("Shutting down");
 		setVisible(false);
@@ -77,19 +73,15 @@ public class BotChrome extends JFrame implements WindowListener {
 		System.exit(0);
 	}
 
-	@Override
 	public void windowDeactivated(final WindowEvent arg0) {
 	}
 
-	@Override
 	public void windowDeiconified(final WindowEvent arg0) {
 	}
 
-	@Override
 	public void windowIconified(final WindowEvent arg0) {
 	}
 
-	@Override
 	public void windowOpened(final WindowEvent arg0) {
 	}
 }

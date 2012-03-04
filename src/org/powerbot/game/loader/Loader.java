@@ -16,7 +16,6 @@ public class Loader extends RunnableTask {
 		this.definition = definition;
 	}
 
-	@Override
 	public void run() {
 		log.fine("Generating applet wrapper");
 		definition.appletContainer = new Rs2Applet(definition.classes(), "http://" + Configuration.URLs.GAME + "/", definition.callback);

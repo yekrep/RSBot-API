@@ -34,7 +34,6 @@ public class ActionExecutor extends RunnableTask implements ActionContainer {
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override
 	public void listen() {
 		if (state != State.LISTENING) {
 			final State previous = state;
@@ -52,7 +51,6 @@ public class ActionExecutor extends RunnableTask implements ActionContainer {
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override
 	public void lock() {
 		state = State.LOCKED;
 	}
@@ -60,7 +58,6 @@ public class ActionExecutor extends RunnableTask implements ActionContainer {
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override
 	public void destroy() {
 		state = State.DESTROYED;
 	}
@@ -68,7 +65,6 @@ public class ActionExecutor extends RunnableTask implements ActionContainer {
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override
 	public void append(final Action action) {
 		if (!actions.contains(action)) {
 			actions.add(action);
@@ -78,7 +74,6 @@ public class ActionExecutor extends RunnableTask implements ActionContainer {
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override
 	public void omit(final Action action) {
 		actions.remove(action);
 	}
@@ -86,7 +81,6 @@ public class ActionExecutor extends RunnableTask implements ActionContainer {
 	/**
 	 * Handles the dispatching of actions within the given container.
 	 */
-	@Override
 	public void run() {
 		while (state != State.DESTROYED) {
 			if (state == State.LOCKED) {
@@ -147,7 +141,6 @@ public class ActionExecutor extends RunnableTask implements ActionContainer {
 
 	private RunnableTask createWait(final List<Future<?>> lockingFutures, final Object threadObject) {
 		return new RunnableTask() {
-			@Override
 			public void run() {
 				while (lockingFutures.size() > 0) {
 					final Future<?> future = lockingFutures.get(0);

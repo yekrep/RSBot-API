@@ -37,17 +37,14 @@ public class AudioClip implements java.applet.AudioClip {
 		return ac.getAudioClipState() == audioClipState && ac.getURL().equals(sourceURL);
 	}
 
-	@Override
 	public void play() {
 		audioClipState = STATE_PLAYING;
 	}
 
-	@Override
 	public void loop() {
 		audioClipState = STATE_LOOPING;
 	}
 
-	@Override
 	public void stop() {
 		audioClipState = STATE_STOPPED;
 	}
