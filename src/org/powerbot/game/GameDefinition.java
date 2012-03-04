@@ -2,7 +2,7 @@ package org.powerbot.game;
 
 import org.powerbot.asm.NodeProcessor;
 import org.powerbot.concurrent.TaskContainer;
-import org.powerbot.concurrent.TaskHandler;
+import org.powerbot.concurrent.TaskProcessor;
 import org.powerbot.game.loader.ClientStub;
 import org.powerbot.game.loader.io.Crawler;
 import org.powerbot.game.loader.io.PackEncryption;
@@ -38,7 +38,7 @@ public abstract class GameDefinition implements GameEnvironment {
 
 	public GameDefinition() {
 		this.threadGroup = new ThreadGroup("GameDefinition-" + hashCode());
-		this.processor = new TaskHandler(this.threadGroup);
+		this.processor = new TaskProcessor(this.threadGroup);
 		this.classes = new HashMap<String, byte[]>();
 
 		this.crawler = new Crawler();
