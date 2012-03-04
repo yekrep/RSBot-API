@@ -112,15 +112,24 @@ public class Bot extends GameDefinition implements Runnable {
 			log.fine("Terminating stub activities");
 			stub.setActive(false);
 		}
+		Thread t = null;
 		if (appletContainer != null) {
 			log.fine("Shutting down applet");
-			appletContainer.stop();
-			appletContainer.destroy();
-			appletContainer = null;
-			stub = null;
+			t = new Thread(new Runnable() {
+				@Override
+				public void run() {
+					appletContainer.stop();
+					appletContainer.destroy();
+					appletContainer = null;
+					stub = null;
+				}
+			});
 		}
 		bots.remove(this);
 		context.remove(threadGroup);
+		if (t != null) {
+			t.start();
+		}
 	}
 
 	public void setPanel(final BotPanel panel) {

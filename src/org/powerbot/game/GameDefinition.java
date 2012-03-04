@@ -30,9 +30,9 @@ public abstract class GameDefinition implements GameEnvironment {
 	private final Map<String, byte[]> classes;
 
 	public Crawler crawler;
-	public Rs2Applet appletContainer;
+	public volatile Rs2Applet appletContainer;
 	public Runnable callback;
-	public ClientStub stub;
+	public volatile ClientStub stub;
 	protected String packHash;
 	public ThreadGroup threadGroup;
 
