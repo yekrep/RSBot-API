@@ -128,8 +128,8 @@ public class BotPanel extends JPanel {
 		if (this.bot != null) {
 			this.bot.setPanel(null);
 		}
+		this.bot = bot;
 		if (bot != null) {
-			this.bot = bot;
 			bot.setPanel(this);
 			if (bot.getCanvas() != null) {
 				offset();
