@@ -18,51 +18,51 @@ import org.powerbot.util.io.Resources;
 public final class BotToolBar extends JToolBar {
 	private static final long serialVersionUID = 1L;
 	public final BotChrome parent;
-	private final JButton tabadd, tabdelete, scriptplay, scriptstop;
+	private final JButton tabAdd, tabDelete, scriptPlay, scriptStop;
 
 	public BotToolBar(final BotChrome parent) {
 		this.parent = parent;
 		setBorder(new EmptyBorder(1, 3, 1, 3));
 
-		tabdelete = new JButton(new ImageIcon(Resources.getImage(Resources.Paths.TAB_DELETE)));
-		tabdelete.addActionListener(new ActionListener() {
+		tabDelete = new JButton(new ImageIcon(Resources.getImage(Resources.Paths.TAB_DELETE)));
+		tabDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(final ActionEvent arg0) {
 				closeTab(getOpenedTab());
 			}
 		});
-		tabdelete.setToolTipText(Locale.CLOSETAB);
-		tabdelete.setFocusable(false);
-		tabdelete.setVisible(false);
-		add(tabdelete);
+		tabDelete.setToolTipText(Locale.CLOSETAB);
+		tabDelete.setFocusable(false);
+		tabDelete.setVisible(false);
+		add(tabDelete);
 
-		tabadd = new JButton(new ImageIcon(Resources.getImage(Resources.Paths.TAB_ADD)));
-		tabadd.addActionListener(new ActionListener() {
+		tabAdd = new JButton(new ImageIcon(Resources.getImage(Resources.Paths.TAB_ADD)));
+		tabAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(final ActionEvent e) {
 				if (Bot.bots.size() < BotChrome.MAX_BOTS) {
 					addTab();
 				}
 			}
 		});
-		tabadd.setToolTipText(Locale.NEWTAB);
-		tabadd.setFocusable(false);
-		add(tabadd);
+		tabAdd.setToolTipText(Locale.NEWTAB);
+		tabAdd.setFocusable(false);
+		add(tabAdd);
 
 		add(Box.createHorizontalGlue());
 
-		scriptplay = new JButton(new ImageIcon(Resources.getImage(Resources.Paths.CONTROL_PLAY)));
-		scriptplay.setToolTipText(Locale.PLAYSCRIPT);
-		scriptplay.setFocusable(false);
-		scriptplay.setVisible(false);
-		add(scriptplay);
-		scriptstop = new JButton(new ImageIcon(Resources.getImage(Resources.Paths.CONTROL_STOP)));
-		scriptstop.setToolTipText(Locale.STOPSCRIPT);
-		scriptstop.setFocusable(false);
-		scriptstop.setVisible(false);
-		add(scriptstop);
+		scriptPlay = new JButton(new ImageIcon(Resources.getImage(Resources.Paths.CONTROL_PLAY)));
+		scriptPlay.setToolTipText(Locale.PLAYSCRIPT);
+		scriptPlay.setFocusable(false);
+		scriptPlay.setVisible(false);
+		add(scriptPlay);
+		scriptStop = new JButton(new ImageIcon(Resources.getImage(Resources.Paths.CONTROL_STOP)));
+		scriptStop.setToolTipText(Locale.STOPSCRIPT);
+		scriptStop.setFocusable(false);
+		scriptStop.setVisible(false);
+		add(scriptStop);
 		add(Box.createHorizontalStrut(16));
 
 		final BotToolBar t = this;
-		final JButton settings = new JButton(new ImageIcon(Resources.getImage(Resources.Paths.COG)));
+		final JButton settings = new JButton(new ImageIcon(Resources.getImage(Resources.Paths.WRENCH)));
 		settings.addActionListener(new ActionListener() {
 			public void actionPerformed(final ActionEvent arg0) {
 				new BotMenu(t).show(settings, settings.getWidth() / 2, settings.getHeight() / 2);
@@ -76,9 +76,9 @@ public final class BotToolBar extends JToolBar {
 		final int n = Bot.bots.size(), x = n + 1;
 		final Bot bot = new Bot();
 		add(new BotButton("Game", bot), x);
-		tabdelete.setVisible(true);
+		tabDelete.setVisible(true);
 		openTab(n);
-		tabadd.setVisible(BotChrome.MAX_BOTS - Bot.bots.size() > 0);
+		tabAdd.setVisible(BotChrome.MAX_BOTS - Bot.bots.size() > 0);
 		new Thread(bot).start();
 		BotChrome.panel.setBot(bot);
 	}
@@ -90,7 +90,7 @@ public final class BotToolBar extends JToolBar {
 		}
 		remove(n + 1);
 		final boolean a = getTabCount() > 0;
-		tabdelete.setVisible(a);
+		tabDelete.setVisible(a);
 		if (a) {
 			final int x = n == 0 ? 1 : n - 1;
 			openTab(x);
