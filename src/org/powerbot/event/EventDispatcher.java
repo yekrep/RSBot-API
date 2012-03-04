@@ -19,13 +19,13 @@ public class EventDispatcher extends RunnableTask implements EventManager {
 	private final List<Integer> listenerMasks = new ArrayList<Integer>();
 	private final Object treeLock = new Object();
 
-	public static final int MOUSE_EVENT = 1;
-	public static final int MOUSE_MOTION_EVENT = 2;
-	public static final int MOUSE_WHEEL_EVENT = 3;
-	public static final int FOCUS_EVENT = 4;
-	public static final int KEY_EVENT = 5;
+	public static final int MOUSE_EVENT = 0x1;
+	public static final int MOUSE_MOTION_EVENT = 0x2;
+	public static final int MOUSE_WHEEL_EVENT = 0x3;
+	public static final int FOCUS_EVENT = 0x4;
+	public static final int KEY_EVENT = 0x5;
 
-	public static final int MESSAGE_EVENT = 6;
+	public static final int MESSAGE_EVENT = 0x6;
 
 	public EventDispatcher() {
 		this.active = false;
