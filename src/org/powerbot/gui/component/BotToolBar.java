@@ -4,9 +4,13 @@ import org.powerbot.game.bot.Bot;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.util.io.Resources;
 
-import javax.swing.*;
+import javax.swing.Box;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JToolBar;
 import javax.swing.border.EmptyBorder;
-import java.awt.*;
+import java.awt.Component;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 

@@ -3,7 +3,7 @@ package org.powerbot;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.log.SystemConsoleHandler;
 
-import javax.swing.*;
+import javax.swing.UIManager;
 import java.util.logging.Handler;
 import java.util.logging.Logger;
 

@@ -1,4 +1,4 @@
-package org.powerbot.event;
+package org.powerbot.concurrent.action;
 
 /**
  * A action container that is able to perform basic operations to a thread dispatching actions.

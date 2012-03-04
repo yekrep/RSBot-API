@@ -5,14 +5,14 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 /**
- * A simple handler capable of deploying tasks within a queued thread environment.
+ * A simple processor capable of deploying tasks within a queued thread environment.
  *
  * @author Timer
  */
-public class TaskHandler implements TaskContainer {
+public class TaskProcessor implements TaskContainer {
 	private ExecutorService executor;
 
-	public TaskHandler(ThreadGroup threadGroup) {
+	public TaskProcessor(ThreadGroup threadGroup) {
 		this.executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() * 2, new ThreadPool(threadGroup));
 	}
 
