@@ -48,6 +48,7 @@ public final class BotMenu extends JPopupMenu implements ActionListener {
 		});
 		add(site);
 		final JMenuItem about = new JMenuItem(Locale.ABOUT);
+		about.setIcon(new ImageIcon(Resources.getImage(Resources.Paths.INFORMATION)));
 		about.addActionListener(new ActionListener() {
 			public void actionPerformed(final ActionEvent arg0) {
 				JOptionPane.showMessageDialog(parent.parent, new String[]{

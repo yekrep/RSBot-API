@@ -14,6 +14,7 @@ public class Resources {
 		public static final String ROOT_IMG = ROOT + "/images";
 		public static final String ICON = ROOT_IMG + "/icon.png";
 		public static final String ICON_SMALL = ROOT_IMG + "/icon_small.png";
+		public static final String INFORMATION = ROOT_IMG + "/information.png";
 		public static final String ARROWS = ROOT_IMG + "/arrows.png";
 		public static final String CONTROL_PAUSE = ROOT_IMG + "/control_pause.png";
 		public static final String CONTROL_PLAY = ROOT_IMG + "/control_play.png";
