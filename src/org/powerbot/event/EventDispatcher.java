@@ -1,7 +1,7 @@
 package org.powerbot.event;
 
 import org.powerbot.concurrent.RunnableTask;
-import org.powerbot.concurrent.TaskContainer;
+import org.powerbot.game.event.listener.MessageListener;
 
 import java.awt.event.*;
 import java.util.ArrayList;
@@ -14,7 +14,6 @@ import java.util.logging.Logger;
 public class EventDispatcher extends RunnableTask implements EventManager {
 	private static final Logger log = Logger.getLogger(EventDispatcher.class.getName());
 	private volatile boolean active;
-	private TaskContainer container;
 	private final List<EventObject> queue = new ArrayList<EventObject>();
 	private final List<EventListener> listeners = new ArrayList<EventListener>();
 	private final List<Integer> listenerMasks = new ArrayList<Integer>();
@@ -26,12 +25,13 @@ public class EventDispatcher extends RunnableTask implements EventManager {
 	public static final int FOCUS_EVENT = 4;
 	public static final int KEY_EVENT = 5;
 
-	public EventDispatcher(final TaskContainer container) {
+	public static final int MESSAGE_EVENT = 6;
+
+	public EventDispatcher() {
 		this.active = false;
-		this.container = container;
 	}
 
-	public void dispatch(final GameEvent event) {
+	public void dispatch(final EventObject event) {
 		synchronized (queue) {
 			queue.add(event);
 		}
@@ -147,8 +147,11 @@ public class EventDispatcher extends RunnableTask implements EventManager {
 		if (el instanceof FocusListener) {
 			return EventDispatcher.FOCUS_EVENT;
 		}
+		if (el instanceof MessageListener) {
+			return EventDispatcher.MESSAGE_EVENT;
+		}
 
-		return -1;
+		throw new RuntimeException("bad listener");
 	}
 
 	public static int getType(final EventObject e) {
@@ -187,10 +190,12 @@ public class EventDispatcher extends RunnableTask implements EventManager {
 		} else if (e instanceof GameEvent) {
 			return ((GameEvent) e).type;
 		}
-		return -1;
+
+		throw new RuntimeException("bad event");
 	}
 
 	public void run() {
+		this.active = true;
 		while (active) {
 			EventObject event = null;
 			synchronized (queue) {

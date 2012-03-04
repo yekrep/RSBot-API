@@ -1,6 +1,7 @@
 package org.powerbot.game.bot;
 
 import org.powerbot.asm.NodeProcessor;
+import org.powerbot.event.EventDispatcher;
 import org.powerbot.game.GameDefinition;
 import org.powerbot.game.api.Constants;
 import org.powerbot.game.api.Multipliers;
@@ -32,12 +33,15 @@ public class Bot extends GameDefinition implements Runnable {
 	private static Logger log = Logger.getLogger(Bot.class.getName());
 	public static final LinkedList<Bot> bots = new LinkedList<Bot>();
 	private static final Map<ThreadGroup, Bot> context = new HashMap<ThreadGroup, Bot>();
-	private ModScript modScript;
 
+	private ModScript modScript;
 	private BotPanel panel;
 	public Client client;
 	public Constants constants;
 	public Multipliers multipliers;
+
+	public EventDispatcher eventDispatcher;
+
 	public BufferedImage image;
 	private BufferedImage backBuffer;
 
@@ -47,6 +51,8 @@ public class Bot extends GameDefinition implements Runnable {
 		this.backBuffer = new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_RGB);
 		this.client = null;
 		this.panel = null;
+		this.eventDispatcher = new EventDispatcher();
+		this.processor.submit(this.eventDispatcher);
 	}
 
 	public void run() {

@@ -4,7 +4,7 @@ import java.util.EventListener;
 import java.util.EventObject;
 
 public interface EventManager {
-	public void dispatch(GameEvent event);
+	public void dispatch(EventObject event);
 
 	public abstract void fire(EventObject eventObject);
 

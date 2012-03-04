@@ -4,12 +4,16 @@ import java.util.EventListener;
 import java.util.EventObject;
 
 public abstract class GameEvent extends EventObject {
-	public final int type;
+	private static final Object SOURCE = new Object();
+	public int type = -1;
 
-	public GameEvent(final Object source, final int type) {
-		super(source);
-		this.type = type;
+	public GameEvent() {
+		super(SOURCE);
 	}
 
 	public abstract void dispatch(final EventListener eventListener);
+
+	protected void setType(final int type) {
+		this.type = type;
+	}
 }
