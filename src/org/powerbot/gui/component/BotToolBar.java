@@ -18,7 +18,6 @@ import org.powerbot.util.io.Resources;
 public final class BotToolBar extends JToolBar {
 	private static final long serialVersionUID = 1L;
 	public final BotChrome parent;
-	private final BotMenu menu;
 	private final JButton tabadd, tabdelete;
 
 	public BotToolBar(final BotChrome parent) {
@@ -51,12 +50,12 @@ public final class BotToolBar extends JToolBar {
 		add(tabadd);
 
 		add(Box.createHorizontalGlue());
-		menu = new BotMenu(this);
+		final BotToolBar t = this;
 		final JButton settings = new JButton(new ImageIcon(Resources.getImage(Resources.Paths.COG)));
 		settings.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent arg0) {
-				menu.show(settings, settings.getWidth() / 2, settings.getHeight() / 2);
+				new BotMenu(t).show(settings, settings.getWidth() / 2, settings.getHeight() / 2);
 			}
 		});
 		settings.setFocusable(false);
