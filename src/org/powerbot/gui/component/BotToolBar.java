@@ -18,7 +18,7 @@ import org.powerbot.util.io.Resources;
 public final class BotToolBar extends JToolBar {
 	private static final long serialVersionUID = 1L;
 	public final BotChrome parent;
-	private final JButton tabadd, tabdelete;
+	private final JButton tabadd, tabdelete, scriptplay, scriptstop;
 
 	public BotToolBar(final BotChrome parent) {
 		this.parent = parent;
@@ -50,6 +50,19 @@ public final class BotToolBar extends JToolBar {
 		add(tabadd);
 
 		add(Box.createHorizontalGlue());
+
+		scriptplay = new JButton(new ImageIcon(Resources.getImage(Resources.Paths.CONTROL_PLAY)));
+		scriptplay.setToolTipText(Locale.PLAYSCRIPT);
+		scriptplay.setFocusable(false);
+		scriptplay.setVisible(false);
+		add(scriptplay);
+		scriptstop = new JButton(new ImageIcon(Resources.getImage(Resources.Paths.CONTROL_STOP)));
+		scriptstop.setToolTipText(Locale.STOPSCRIPT);
+		scriptstop.setFocusable(false);
+		scriptstop.setVisible(false);
+		add(scriptstop);
+		add(Box.createHorizontalStrut(16));
+
 		final BotToolBar t = this;
 		final JButton settings = new JButton(new ImageIcon(Resources.getImage(Resources.Paths.COG)));
 		settings.addActionListener(new ActionListener() {
