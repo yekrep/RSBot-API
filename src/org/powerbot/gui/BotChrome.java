@@ -1,8 +1,12 @@
 package org.powerbot.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Desktop;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.logging.Logger;
 
 import javax.swing.JFrame;
@@ -35,6 +39,22 @@ public class BotChrome extends JFrame implements WindowListener {
 		setMinimumSize(getSize());
 		setLocationRelativeTo(getParent());
 		setVisible(true);
+	}
+
+	public static void openURL(final String url) {
+		if (!Desktop.isDesktopSupported() || !Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
+			return;
+		}
+		final URI uri;
+		try {
+			uri = new URI(url);
+		} catch (final URISyntaxException ignored) {
+			return;
+		}
+		try {
+			Desktop.getDesktop().browse(uri);
+		} catch (final IOException ignored) {
+		}
 	}
 
 	@Override
