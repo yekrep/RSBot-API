@@ -44,6 +44,8 @@ public class Crawler {
 			if (gameURLMatcher.find()) {
 				game = gameURLMatcher.group(1);
 			}
+		} else {
+			return false;
 		}
 
 		if (game != null) {
@@ -52,7 +54,7 @@ public class Crawler {
 				Matcher archiveMatcher = PATTERN_ARCHIVE.matcher(gameHttpSource);
 				if (archiveMatcher.find()) {
 					String archiveLink = archiveMatcher.group(1);
-					URL gameURL = null;
+					URL gameURL;
 					try {
 						gameURL = new URL(game);
 					} catch (MalformedURLException e) {
