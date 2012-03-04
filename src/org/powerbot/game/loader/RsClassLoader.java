@@ -1,6 +1,6 @@
 package org.powerbot.game.loader;
 
-import java.awt.*;
+import java.awt.AWTPermission;
 import java.io.File;
 import java.io.FilePermission;
 import java.net.SocketPermission;

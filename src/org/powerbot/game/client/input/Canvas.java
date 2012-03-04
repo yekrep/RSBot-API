@@ -3,7 +3,10 @@ package org.powerbot.game.client.input;
 import org.powerbot.game.bot.Bot;
 import org.powerbot.gui.BotChrome;
 
-import java.awt.*;
+import java.awt.AWTEvent;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.FocusEvent;
 import java.awt.image.*;
 import java.util.Hashtable;

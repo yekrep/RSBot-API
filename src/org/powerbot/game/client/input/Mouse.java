@@ -1,6 +1,6 @@
 package org.powerbot.game.client.input;
 
-import java.awt.*;
+import java.awt.Component;
 import java.awt.event.*;
 
 public abstract class Mouse extends Focus implements MouseListener, MouseMotionListener, MouseWheelListener {

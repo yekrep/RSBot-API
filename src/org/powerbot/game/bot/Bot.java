@@ -14,7 +14,10 @@ import org.powerbot.util.Configuration;
 import org.powerbot.util.io.HttpClient;
 import org.powerbot.util.io.IOHelper;
 
-import java.awt.*;
+import java.awt.Canvas;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.SocketTimeoutException;

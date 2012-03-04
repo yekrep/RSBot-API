@@ -4,7 +4,7 @@ import org.powerbot.game.bot.Bot;
 import org.powerbot.game.client.input.Mouse;
 import org.powerbot.gui.BotChrome;
 
-import javax.swing.*;
+import javax.swing.JPanel;
 import java.awt.*;
 import java.awt.event.*;
 

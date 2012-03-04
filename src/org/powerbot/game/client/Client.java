@@ -2,7 +2,8 @@ package org.powerbot.game.client;
 
 import org.powerbot.game.client.input.Mouse;
 
-import java.awt.*;
+import java.awt.Canvas;
+import java.awt.Rectangle;
 
 public interface Client {
 	public void setCallback(Callback cb);

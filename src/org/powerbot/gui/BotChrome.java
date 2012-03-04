@@ -6,8 +6,11 @@ import org.powerbot.gui.component.BotToolBar;
 import org.powerbot.util.Configuration;
 import org.powerbot.util.io.Resources;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.logging.Handler;

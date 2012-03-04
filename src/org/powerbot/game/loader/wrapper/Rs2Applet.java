@@ -3,7 +3,7 @@ package org.powerbot.game.loader.wrapper;
 import org.powerbot.game.loader.RsClassLoader;
 
 import java.applet.Applet;
-import java.awt.*;
+import java.awt.Graphics;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.net.URL;
