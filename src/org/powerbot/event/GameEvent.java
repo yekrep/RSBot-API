@@ -4,6 +4,7 @@ import java.util.EventListener;
 import java.util.EventObject;
 
 public abstract class GameEvent extends EventObject {
+	private static final long serialVersionUID = 1L;
 	private static final Object SOURCE = new Object();
 	public int type = -1;
 

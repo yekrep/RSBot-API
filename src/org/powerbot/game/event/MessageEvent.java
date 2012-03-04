@@ -7,6 +7,7 @@ import org.powerbot.game.event.listener.MessageListener;
 import java.util.EventListener;
 
 public class MessageEvent extends GameEvent {
+	private static final long serialVersionUID = 7110162473010460326L;
 	private final int id;
 	private final String sender, message;
 
