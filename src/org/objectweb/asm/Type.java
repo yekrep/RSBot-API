@@ -460,7 +460,7 @@ public class Type {
 				++len;
 			}
 			return new Type(OBJECT, buf, off + 1, len - 1);
-			// case '(':
+		// case '(':
 		default:
 			return new Type(METHOD, buf, 0, buf.length);
 		}

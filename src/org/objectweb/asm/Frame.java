@@ -634,7 +634,7 @@ final class Frame {
 			// stores the internal name, not the descriptor!
 			t = desc.substring(index + 1, desc.length() - 1);
 			return OBJECT | cw.addType(t);
-			// case '[':
+		// case '[':
 		default:
 			// extracts the dimensions and the element type
 			int data;
@@ -667,7 +667,7 @@ final class Frame {
 			case 'D':
 				data = DOUBLE;
 				break;
-				// case 'L':
+			// case 'L':
 			default:
 				// stores the internal name, not the descriptor
 				t = desc.substring(dims + 1, desc.length() - 1);
@@ -902,7 +902,7 @@ final class Frame {
 			case ClassWriter.MTYPE:
 				push(OBJECT | cw.addType("java/lang/invoke/MethodType"));
 				break;
-				// case ClassWriter.HANDLE_BASE + [1..9]:
+			// case ClassWriter.HANDLE_BASE + [1..9]:
 			default:
 				push(OBJECT | cw.addType("java/lang/invoke/MethodHandle"));
 			}
@@ -1219,10 +1219,10 @@ final class Frame {
 			case Opcodes.T_DOUBLE:
 				push(ARRAY_OF | DOUBLE);
 				break;
-				// case Opcodes.T_LONG:
-				default:
-					push(ARRAY_OF | LONG);
-					break;
+			// case Opcodes.T_LONG:
+			default:
+				push(ARRAY_OF | LONG);
+				break;
 			}
 			break;
 		case Opcodes.ANEWARRAY:
@@ -1243,7 +1243,7 @@ final class Frame {
 				push(OBJECT | cw.addType(s));
 			}
 			break;
-			// case Opcodes.MULTIANEWARRAY:
+		// case Opcodes.MULTIANEWARRAY:
 		default:
 			pop(arg);
 			push(cw, item.strVal1);

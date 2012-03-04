@@ -563,7 +563,7 @@ class MethodWriter extends MethodVisitor {
 				} else {
 					frame[frameIndex++] = Frame.UNINITIALIZED
 							| cw.addUninitializedType("",
-									((Label) local[i]).position);
+							((Label) local[i]).position);
 				}
 			}
 			for (int i = 0; i < nStack; ++i) {
@@ -575,7 +575,7 @@ class MethodWriter extends MethodVisitor {
 				} else {
 					frame[frameIndex++] = Frame.UNINITIALIZED
 							| cw.addUninitializedType("",
-									((Label) stack[i]).position);
+							((Label) stack[i]).position);
 				}
 			}
 			endFrame();
@@ -599,8 +599,8 @@ class MethodWriter extends MethodVisitor {
 			case Opcodes.F_FULL:
 				currentLocals = nLocal;
 				stackMap.putByte(FULL_FRAME)
-				.putShort(delta)
-				.putShort(nLocal);
+						.putShort(delta)
+						.putShort(nLocal);
 				for (int i = 0; i < nLocal; ++i) {
 					writeFrameType(local[i]);
 				}
@@ -612,7 +612,7 @@ class MethodWriter extends MethodVisitor {
 			case Opcodes.F_APPEND:
 				currentLocals += nLocal;
 				stackMap.putByte(SAME_FRAME_EXTENDED + nLocal)
-				.putShort(delta);
+						.putShort(delta);
 				for (int i = 0; i < nLocal; ++i) {
 					writeFrameType(local[i]);
 				}
@@ -620,7 +620,7 @@ class MethodWriter extends MethodVisitor {
 			case Opcodes.F_CHOP:
 				currentLocals -= nLocal;
 				stackMap.putByte(SAME_FRAME_EXTENDED - nLocal)
-				.putShort(delta);
+						.putShort(delta);
 				break;
 			case Opcodes.F_SAME:
 				if (delta < 64) {
@@ -634,7 +634,7 @@ class MethodWriter extends MethodVisitor {
 					stackMap.putByte(SAME_LOCALS_1_STACK_ITEM_FRAME + delta);
 				} else {
 					stackMap.putByte(SAME_LOCALS_1_STACK_ITEM_FRAME_EXTENDED)
-					.putShort(delta);
+							.putShort(delta);
 				}
 				writeFrameType(stack[0]);
 				break;
@@ -801,7 +801,7 @@ class MethodWriter extends MethodVisitor {
 				case Opcodes.GETFIELD:
 					size = stackSize + (c == 'D' || c == 'J' ? 1 : 0);
 					break;
-					// case Constants.PUTFIELD:
+				// case Constants.PUTFIELD:
 				default:
 					size = stackSize + (c == 'D' || c == 'J' ? -3 : -2);
 					break;
@@ -977,7 +977,7 @@ class MethodWriter extends MethodVisitor {
 				}
 				code.putByte(opcode <= 166
 						? (opcode + 1 ^ 1) - 1
-								: opcode ^ 1);
+						: opcode ^ 1);
 				code.putShort(8); // jump offset
 				code.putByte(200); // GOTO_W
 			}
@@ -1111,8 +1111,8 @@ class MethodWriter extends MethodVisitor {
 		// adds the instruction to the bytecode of the method
 		if (var > 255 || increment > 127 || increment < -128) {
 			code.putByte(196 /* WIDE */)
-			.put12(Opcodes.IINC, var)
-			.putShort(increment);
+					.put12(Opcodes.IINC, var)
+					.putShort(increment);
 		} else {
 			code.putByte(Opcodes.IINC).put11(var, increment);
 		}
@@ -1234,20 +1234,20 @@ class MethodWriter extends MethodVisitor {
 			}
 			++localVarTypeCount;
 			localVarType.putShort(start.position)
-			.putShort(end.position - start.position)
-			.putShort(cw.newUTF8(name))
-			.putShort(cw.newUTF8(signature))
-			.putShort(index);
+					.putShort(end.position - start.position)
+					.putShort(cw.newUTF8(name))
+					.putShort(cw.newUTF8(signature))
+					.putShort(index);
 		}
 		if (localVar == null) {
 			localVar = new ByteVector();
 		}
 		++localVarCount;
 		localVar.putShort(start.position)
-		.putShort(end.position - start.position)
-		.putShort(cw.newUTF8(name))
-		.putShort(cw.newUTF8(desc))
-		.putShort(index);
+				.putShort(end.position - start.position)
+				.putShort(cw.newUTF8(name))
+				.putShort(cw.newUTF8(desc))
+				.putShort(index);
 		if (compute != NOTHING) {
 			// updates max locals
 			final char c = desc.charAt(0);
@@ -1280,7 +1280,7 @@ class MethodWriter extends MethodVisitor {
 				// computes the kind of the edges to 'h'
 				final String t = handler.desc == null
 						? "java/lang/Throwable"
-								: handler.desc;
+						: handler.desc;
 				final int kind = Frame.OBJECT | cw.addType(t);
 				// h is an exception handler
 				h.status |= Label.TARGET;
@@ -1687,7 +1687,7 @@ class MethodWriter extends MethodVisitor {
 		} else if (clocalsSize == localsSize && cstackSize == 1) {
 			type = delta < 63
 					? SAME_LOCALS_1_STACK_ITEM_FRAME
-							: SAME_LOCALS_1_STACK_ITEM_FRAME_EXTENDED;
+					: SAME_LOCALS_1_STACK_ITEM_FRAME_EXTENDED;
 		}
 		if (type != FULL_FRAME) {
 			// verify if locals are the same
@@ -1710,7 +1710,7 @@ class MethodWriter extends MethodVisitor {
 			break;
 		case SAME_LOCALS_1_STACK_ITEM_FRAME_EXTENDED:
 			stackMap.putByte(SAME_LOCALS_1_STACK_ITEM_FRAME_EXTENDED)
-			.putShort(delta);
+					.putShort(delta);
 			writeFrameTypes(3 + clocalsSize, 4 + clocalsSize);
 			break;
 		case SAME_FRAME_EXTENDED:
@@ -1723,11 +1723,11 @@ class MethodWriter extends MethodVisitor {
 			stackMap.putByte(SAME_FRAME_EXTENDED + k).putShort(delta);
 			writeFrameTypes(3 + localsSize, 3 + clocalsSize);
 			break;
-			// case FULL_FRAME:
+		// case FULL_FRAME:
 		default:
 			stackMap.putByte(FULL_FRAME)
-			.putShort(delta)
-			.putShort(clocalsSize);
+					.putShort(delta)
+					.putShort(clocalsSize);
 			writeFrameTypes(3, 3 + clocalsSize);
 			stackMap.putShort(cstackSize);
 			writeFrameTypes(3 + clocalsSize, 3 + clocalsSize + cstackSize);
@@ -1752,7 +1752,7 @@ class MethodWriter extends MethodVisitor {
 				switch (t & Frame.BASE_KIND) {
 				case Frame.OBJECT:
 					stackMap.putByte(7)
-					.putShort(cw.newClass(cw.typeTable[v].strVal1));
+							.putShort(cw.newClass(cw.typeTable[v].strVal1));
 					break;
 				case Frame.UNINITIALIZED:
 					stackMap.putByte(8).putShort(cw.typeTable[v].intVal);
@@ -1763,41 +1763,41 @@ class MethodWriter extends MethodVisitor {
 			} else {
 				final StringBuffer buf = new StringBuffer();
 				d >>= 28;
-		while (d-- > 0) {
-			buf.append('[');
-		}
-		if ((t & Frame.BASE_KIND) == Frame.OBJECT) {
-			buf.append('L');
-			buf.append(cw.typeTable[t & Frame.BASE_VALUE].strVal1);
-			buf.append(';');
-		} else {
-			switch (t & 0xF) {
-			case 1:
-				buf.append('I');
-				break;
-			case 2:
-				buf.append('F');
-				break;
-			case 3:
-				buf.append('D');
-				break;
-			case 9:
-				buf.append('Z');
-				break;
-			case 10:
-				buf.append('B');
-				break;
-			case 11:
-				buf.append('C');
-				break;
-			case 12:
-				buf.append('S');
-				break;
-			default:
-				buf.append('J');
-			}
-		}
-		stackMap.putByte(7).putShort(cw.newClass(buf.toString()));
+				while (d-- > 0) {
+					buf.append('[');
+				}
+				if ((t & Frame.BASE_KIND) == Frame.OBJECT) {
+					buf.append('L');
+					buf.append(cw.typeTable[t & Frame.BASE_VALUE].strVal1);
+					buf.append(';');
+				} else {
+					switch (t & 0xF) {
+					case 1:
+						buf.append('I');
+						break;
+					case 2:
+						buf.append('F');
+						break;
+					case 3:
+						buf.append('D');
+						break;
+					case 9:
+						buf.append('Z');
+						break;
+					case 10:
+						buf.append('B');
+						break;
+					case 11:
+						buf.append('C');
+						break;
+					case 12:
+						buf.append('S');
+						break;
+					default:
+						buf.append('J');
+					}
+				}
+				stackMap.putByte(7).putShort(cw.newClass(buf.toString()));
 			}
 		}
 	}
@@ -1995,9 +1995,9 @@ class MethodWriter extends MethodVisitor {
 				Handler h = firstHandler;
 				while (h != null) {
 					out.putShort(h.start.position)
-					.putShort(h.end.position)
-					.putShort(h.handler.position)
-					.putShort(h.type);
+							.putShort(h.end.position)
+							.putShort(h.handler.position)
+							.putShort(h.type);
 					h = h.next;
 				}
 			}
@@ -2045,7 +2045,7 @@ class MethodWriter extends MethodVisitor {
 		}
 		if (exceptionCount > 0) {
 			out.putShort(cw.newUTF8("Exceptions"))
-			.putInt(2 * exceptionCount + 2);
+					.putInt(2 * exceptionCount + 2);
 			out.putShort(exceptionCount);
 			for (int i = 0; i < exceptionCount; ++i) {
 				out.putShort(exceptions[i]);
@@ -2060,8 +2060,8 @@ class MethodWriter extends MethodVisitor {
 		}
 		if (ClassReader.SIGNATURES && signature != null) {
 			out.putShort(cw.newUTF8("Signature"))
-			.putInt(2)
-			.putShort(cw.newUTF8(signature));
+					.putInt(2)
+					.putShort(cw.newUTF8(signature));
 		}
 		if (ClassReader.ANNOTATIONS && annd != null) {
 			out.putShort(cw.newUTF8("AnnotationDefault"));
@@ -2257,7 +2257,7 @@ class MethodWriter extends MethodVisitor {
 				case ClassWriter.INDYMETH_INSN:
 					u += 5;
 					break;
-					// case ClassWriter.MANA_INSN:
+				// case ClassWriter.MANA_INSN:
 				default:
 					u += 4;
 					break;
@@ -2326,7 +2326,7 @@ class MethodWriter extends MethodVisitor {
 					} else {
 						newCode.putByte(opcode <= 166
 								? (opcode + 1 ^ 1) - 1
-										: opcode ^ 1);
+								: opcode ^ 1);
 						newCode.putShort(8); // jump offset
 						newCode.putByte(200); // GOTO_W
 						// newOffset now computed from start of GOTO_W
@@ -2422,7 +2422,7 @@ class MethodWriter extends MethodVisitor {
 				newCode.putByteArray(b, u, 5);
 				u += 5;
 				break;
-				// case MANA_INSN:
+			// case MANA_INSN:
 			default:
 				newCode.putByteArray(b, u, 4);
 				u += 4;

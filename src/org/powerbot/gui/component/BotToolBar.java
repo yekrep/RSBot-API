@@ -73,7 +73,7 @@ public final class BotToolBar extends JToolBar {
 	}
 
 	public void addTab() {
-		final int n = Bot.bots.size(), x = n +1;
+		final int n = Bot.bots.size(), x = n + 1;
 		final Bot bot = new Bot();
 		add(new BotButton("Game", bot), x);
 		tabdelete.setVisible(true);

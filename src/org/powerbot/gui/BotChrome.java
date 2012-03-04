@@ -1,13 +1,5 @@
 package org.powerbot.gui;
 
-import org.powerbot.game.bot.Bot;
-import org.powerbot.gui.component.BotPanel;
-import org.powerbot.gui.component.BotToolBar;
-import org.powerbot.util.Configuration;
-import org.powerbot.util.io.Resources;
-
-import javax.swing.JFrame;
-import javax.swing.WindowConstants;
 import java.awt.BorderLayout;
 import java.awt.Desktop;
 import java.awt.event.WindowEvent;
@@ -16,6 +8,15 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.logging.Logger;
+
+import javax.swing.JFrame;
+import javax.swing.WindowConstants;
+
+import org.powerbot.game.bot.Bot;
+import org.powerbot.gui.component.BotPanel;
+import org.powerbot.gui.component.BotToolBar;
+import org.powerbot.util.Configuration;
+import org.powerbot.util.io.Resources;
 
 public class BotChrome extends JFrame implements WindowListener {
 	private static final long serialVersionUID = 1L;

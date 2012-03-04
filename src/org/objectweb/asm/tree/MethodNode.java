@@ -244,7 +244,7 @@ public class MethodNode extends MethodVisitor {
 		this.signature = signature;
 		this.exceptions = new ArrayList<String>(exceptions == null
 				? 0
-						: exceptions.length);
+				: exceptions.length);
 		final boolean isAbstract = (access & Opcodes.ACC_ABSTRACT) != 0;
 		if (!isAbstract) {
 			localVariables = new ArrayList<LocalVariableNode>(5);
@@ -342,9 +342,9 @@ public class MethodNode extends MethodVisitor {
 			final Object[] stack) {
 		instructions.add(new FrameNode(type, nLocal, local == null
 				? null
-						: getLabelNodes(local), nStack, stack == null
-						? null
-								: getLabelNodes(stack)));
+				: getLabelNodes(local), nStack, stack == null
+				? null
+				: getLabelNodes(stack)));
 	}
 
 	@Override
@@ -581,7 +581,7 @@ public class MethodNode extends MethodVisitor {
 		}
 		n = visibleParameterAnnotations == null
 				? 0
-						: visibleParameterAnnotations.length;
+				: visibleParameterAnnotations.length;
 		for (i = 0; i < n; ++i) {
 			final List<?> l = visibleParameterAnnotations[i];
 			if (l == null) {
@@ -594,7 +594,7 @@ public class MethodNode extends MethodVisitor {
 		}
 		n = invisibleParameterAnnotations == null
 				? 0
-						: invisibleParameterAnnotations.length;
+				: invisibleParameterAnnotations.length;
 		for (i = 0; i < n; ++i) {
 			final List<?> l = invisibleParameterAnnotations[i];
 			if (l == null) {

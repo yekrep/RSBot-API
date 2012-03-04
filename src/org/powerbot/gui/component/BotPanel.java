@@ -160,28 +160,28 @@ public class BotPanel extends JPanel {
 							System.currentTimeMillis(), 0,
 							mouseX, mouseY, 0, mouseEvent.isPopupTrigger(),
 							mouseWheelEvent.getScrollType(), mouseWheelEvent.getScrollAmount(), mouseWheelEvent.getWheelRotation()
-							));
+					));
 				} else {
 					component.dispatchEvent(new MouseEvent(
 							component, mouseEvent.getID(),
 							System.currentTimeMillis(), 0,
 							mouseX, mouseY, 0, mouseEvent.isPopupTrigger(),
 							mouseEvent.getButton()
-							));
+					));
 				}
 			} else {
 				component.dispatchEvent(new MouseEvent(
 						component, MouseEvent.MOUSE_ENTERED,
 						System.currentTimeMillis(), 0,
 						mouseX, mouseY, 0, false
-						));
+				));
 			}
 		} else if (present) {
 			component.dispatchEvent(new MouseEvent(
 					component, MouseEvent.MOUSE_EXITED,
 					System.currentTimeMillis(), 0,
 					mouseX, mouseY, 0, false
-					));
+			));
 		}
 	}
 

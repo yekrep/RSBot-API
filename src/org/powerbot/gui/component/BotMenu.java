@@ -50,7 +50,7 @@ public final class BotMenu extends JPopupMenu implements ActionListener {
 		final JMenuItem about = new JMenuItem(Locale.ABOUT);
 		about.addActionListener(new ActionListener() {
 			public void actionPerformed(final ActionEvent arg0) {
-				JOptionPane.showMessageDialog(parent.parent, new String[] {
+				JOptionPane.showMessageDialog(parent.parent, new String[]{
 						Locale.COPYRIGHT,
 						"Unauthorised use of this application is prohibited.\n\n",
 						"RuneScape\u00ae is a trademark of Jagex \u00a9 1999 - 2011 Jagex, Ltd.",

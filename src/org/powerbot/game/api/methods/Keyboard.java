@@ -11,18 +11,18 @@ public class Keyboard {
 	private static void pressKey(final char ch, final int delay, final int mask) {
 		getKeyboard().keyPressed(
 				new KeyEvent(getTarget(), KeyEvent.KEY_PRESSED, System.currentTimeMillis() + delay, mask, ch, getKeyChar(ch), getLocation(ch))
-				);
+		);
 		if ((ch < KeyEvent.VK_LEFT || ch > KeyEvent.VK_DOWN) && (ch < KeyEvent.VK_SHIFT || ch > KeyEvent.VK_CAPS_LOCK)) {
 			getKeyboard().keyTyped(
 					new KeyEvent(getTarget(), KeyEvent.KEY_TYPED, System.currentTimeMillis() + delay, mask, ch, getKeyChar(ch), getLocation(ch))
-					);
+			);
 		}
 	}
 
 	private static void releaseKey(final char ch, final int delay, final int mask) {
 		getKeyboard().keyReleased(
 				new KeyEvent(getTarget(), KeyEvent.KEY_RELEASED, System.currentTimeMillis() + delay, mask, ch, getKeyChar(ch), getLocation(ch))
-				);
+		);
 	}
 
 	private static int getLocation(final char ch) {

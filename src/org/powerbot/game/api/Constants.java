@@ -4,9 +4,9 @@ import java.util.Map;
 
 public class Constants {
 	public final int
-	CLIENTSTATE_3, CLIENTSTATE_6, CLIENTSTATE_7,
-	CLIENTSTATE_9, CLIENTSTATE_10, CLIENTSTATE_11,
-	CLIENTSTATE_12;
+			CLIENTSTATE_3, CLIENTSTATE_6, CLIENTSTATE_7,
+			CLIENTSTATE_9, CLIENTSTATE_10, CLIENTSTATE_11,
+			CLIENTSTATE_12;
 
 	public Constants(final Map<Integer, Integer> constants) {
 		CLIENTSTATE_3 = constants.get(3);

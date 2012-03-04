@@ -198,9 +198,9 @@ public class ClassReader {
 			case ClassWriter.HANDLE:
 				size = 4;
 				break;
-				// case ClassWriter.CLASS:
-				// case ClassWriter.STR:
-				// case ClassWriter.MTYPE
+			// case ClassWriter.CLASS:
+			// case ClassWriter.STR:
+			// case ClassWriter.MTYPE
 			default:
 				size = 3;
 				break;
@@ -357,9 +357,9 @@ public class ClassReader {
 				break;
 
 
-				// case ClassWriter.STR:
-					// case ClassWriter.CLASS:
-				// case ClassWriter.MTYPE
+			// case ClassWriter.STR:
+			// case ClassWriter.CLASS:
+			// case ClassWriter.MTYPE
 			default:
 				item.set(tag, readUTF8(index, buf), null, null);
 				break;
@@ -716,11 +716,11 @@ public class ClassReader {
 			for (; i > 0; --i) {
 				classVisitor.visitInnerClass(readUnsignedShort(w) == 0
 						? null
-								: readClass(w, c), readUnsignedShort(w + 2) == 0
-								? null
-										: readClass(w + 2, c), readUnsignedShort(w + 4) == 0
-										? null
-												: readUTF8(w + 4, c), readUnsignedShort(w + 6));
+						: readClass(w, c), readUnsignedShort(w + 2) == 0
+						? null
+						: readClass(w + 2, c), readUnsignedShort(w + 4) == 0
+						? null
+						: readUTF8(w + 4, c), readUnsignedShort(w + 6));
 				w += 8;
 			}
 		}
@@ -1051,7 +1051,7 @@ public class ClassReader {
 					case ClassWriter.INDYMETH_INSN:
 						v += 5;
 						break;
-						// case MANA_INSN:
+					// case MANA_INSN:
 					default:
 						v += 4;
 						break;
@@ -1200,48 +1200,48 @@ public class ClassReader {
 						}
 						j = 1;
 						loop:
-							while (true) {
-								k = j;
-								switch (desc.charAt(j++)) {
-								case 'Z':
-								case 'C':
-								case 'B':
-								case 'S':
-								case 'I':
-									frameLocal[local++] = Opcodes.INTEGER;
-									break;
-								case 'F':
-									frameLocal[local++] = Opcodes.FLOAT;
-									break;
-								case 'J':
-									frameLocal[local++] = Opcodes.LONG;
-									break;
-								case 'D':
-									frameLocal[local++] = Opcodes.DOUBLE;
-									break;
-								case '[':
-									while (desc.charAt(j) == '[') {
-										++j;
-									}
-									if (desc.charAt(j) == 'L') {
-										++j;
-										while (desc.charAt(j) != ';') {
-											++j;
-										}
-									}
-									frameLocal[local++] = desc.substring(k, ++j);
-									break;
-								case 'L':
+						while (true) {
+							k = j;
+							switch (desc.charAt(j++)) {
+							case 'Z':
+							case 'C':
+							case 'B':
+							case 'S':
+							case 'I':
+								frameLocal[local++] = Opcodes.INTEGER;
+								break;
+							case 'F':
+								frameLocal[local++] = Opcodes.FLOAT;
+								break;
+							case 'J':
+								frameLocal[local++] = Opcodes.LONG;
+								break;
+							case 'D':
+								frameLocal[local++] = Opcodes.DOUBLE;
+								break;
+							case '[':
+								while (desc.charAt(j) == '[') {
+									++j;
+								}
+								if (desc.charAt(j) == 'L') {
+									++j;
 									while (desc.charAt(j) != ';') {
 										++j;
 									}
-									frameLocal[local++] = desc.substring(k + 1,
-											j++);
-									break;
-								default:
-									break loop;
 								}
+								frameLocal[local++] = desc.substring(k, ++j);
+								break;
+							case 'L':
+								while (desc.charAt(j) != ';') {
+									++j;
+								}
+								frameLocal[local++] = desc.substring(k + 1,
+										j++);
+								break;
+							default:
+								break loop;
 							}
+						}
 						frameLocalCount = local;
 					}
 					/*
@@ -1416,12 +1416,12 @@ public class ClassReader {
 						break;
 					case ClassWriter.LABEL_INSN:
 						mv.visitJumpInsn(opcode, labels[w
-						                                + readShort(v + 1)]);
+								+ readShort(v + 1)]);
 						v += 3;
 						break;
 					case ClassWriter.LABELW_INSN:
 						mv.visitJumpInsn(opcode - 33, labels[w
-						                                     + readInt(v + 1)]);
+								+ readInt(v + 1)]);
 						v += 5;
 						break;
 					case ClassWriter.WIDE_INSN:
@@ -1542,12 +1542,12 @@ public class ClassReader {
 						mv.visitIincInsn(b[v + 1] & 0xFF, b[v + 2]);
 						v += 3;
 						break;
-						// case MANA_INSN:
-						default:
-							mv.visitMultiANewArrayInsn(readClass(v + 1, c),
-									b[v + 3] & 0xFF);
-							v += 4;
-							break;
+					// case MANA_INSN:
+					default:
+						mv.visitMultiANewArrayInsn(readClass(v + 1, c),
+								b[v + 3] & 0xFF);
+						v += 4;
+						break;
 					}
 				}
 				l = labels[codeEnd - codeStart];
@@ -1737,7 +1737,7 @@ public class ClassReader {
 			break;
 		case 'Z': // pointer to CONSTANT_Boolean
 			av.visit(name, readInt(items[readUnsignedShort(v)]) == 0
-			? Boolean.FALSE
+					? Boolean.FALSE
 					: Boolean.TRUE);
 			v += 2;
 			break;
@@ -1891,9 +1891,9 @@ public class ClassReader {
 			frame[index] = Opcodes.UNINITIALIZED_THIS;
 			break;
 		case 7: // Object
-		frame[index] = readClass(v, buf);
-		v += 2;
-		break;
+			frame[index] = readClass(v, buf);
+			v += 2;
+			break;
 		default: // Uninitialized
 			frame[index] = readLabel(readUnsignedShort(v), labels);
 			v += 2;
@@ -2178,7 +2178,7 @@ public class ClassReader {
 		case ClassWriter.MTYPE:
 			return Type.getMethodType(readUTF8(index, buf));
 
-			//case ClassWriter.HANDLE_BASE + [1..9]:
+		//case ClassWriter.HANDLE_BASE + [1..9]:
 		default: {
 			final int tag = readByte(index);
 			final int[] items = this.items;

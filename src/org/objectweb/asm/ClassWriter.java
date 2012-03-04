@@ -1192,23 +1192,23 @@ public class ClassWriter extends ClassVisitor {
 		hashCode &= 0x7FFFFFFF;
 		Item result = items[hashCode % items.length];
 		loop:
-			while (result != null) {
-				if (result.type != BSM || result.hashCode != hashCode) {
-					result = result.next;
-					continue;
-				}
-
-				// because the data encode the size of the argument
-				// we don't need to test if these size are equals
-				final int resultPosition = result.intVal;
-				for (int p = 0; p < length; p++) {
-					if (data[position + p] != data[resultPosition + p]) {
-						result = result.next;
-						continue loop;
-					}
-				}
-				break;
+		while (result != null) {
+			if (result.type != BSM || result.hashCode != hashCode) {
+				result = result.next;
+				continue;
 			}
+
+			// because the data encode the size of the argument
+			// we don't need to test if these size are equals
+			final int resultPosition = result.intVal;
+			for (int p = 0; p < length; p++) {
+				if (data[position + p] != data[resultPosition + p]) {
+					result = result.next;
+					continue loop;
+				}
+			}
+			break;
+		}
 
 		int bootstrapMethodIndex;
 		if (result != null) {

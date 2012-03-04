@@ -87,6 +87,6 @@ public class TryCatchBlockNode {
 	public void accept(final MethodVisitor mv) {
 		mv.visitTryCatchBlock(start.getLabel(), end.getLabel(), handler == null
 				? null
-						: handler.getLabel(), type);
+				: handler.getLabel(), type);
 	}
 }
