@@ -41,27 +41,11 @@ public final class BotMenu extends JPopupMenu implements ActionListener {
 
 		final JMenuItem site = new JMenuItem(Locale.POWERBOT);
 		site.setIcon(new ImageIcon(Resources.getImage(Resources.Paths.ICON_SMALL)));
-		site.addActionListener(new ActionListener() {
-			public void actionPerformed(final ActionEvent arg0) {
-				BotChrome.openURL(Configuration.URLs.SITE);
-			}
-		});
+		site.addActionListener(this);
 		add(site);
 		final JMenuItem about = new JMenuItem(Locale.ABOUT);
 		about.setIcon(new ImageIcon(Resources.getImage(Resources.Paths.INFORMATION)));
-		about.addActionListener(new ActionListener() {
-			public void actionPerformed(final ActionEvent arg0) {
-				JOptionPane.showMessageDialog(parent.parent, new String[]{
-						Locale.COPYRIGHT,
-						"Unauthorised use of this application is prohibited.\n\n",
-						"RuneScape\u00ae is a trademark of Jagex \u00a9 1999 - 2011 Jagex, Ltd.",
-						"RuneScape content and materials are trademarks and copyrights of Jagex or its licensees.",
-						"This program is issued with no warranty and is not affiliated with Jagex Ltd., nor do they endorse usage of our software.\n\n",
-						"Visit " + Configuration.URLs.SITE + "/ for more information."},
-						Locale.ABOUT,
-						JOptionPane.INFORMATION_MESSAGE);
-			}
-		});
+		about.addActionListener(this);
 		add(about);
 		addSeparator();
 
@@ -76,6 +60,18 @@ public final class BotMenu extends JPopupMenu implements ActionListener {
 			parent.addTab();
 		} else if (a.equals(Locale.CLOSETAB)) {
 			parent.closeTab(parent.getOpenedTab());
+		} else if (a.equals(Locale.POWERBOT)) {
+			BotChrome.openURL(Configuration.URLs.SITE);
+		} else if (a.equals(Locale.ABOUT)) {
+			JOptionPane.showMessageDialog(parent.parent, new String[]{
+				Locale.COPYRIGHT,
+				"Unauthorised use of this application is prohibited.\n\n",
+				"RuneScape\u00ae is a trademark of Jagex \u00a9 1999 - 2011 Jagex, Ltd.",
+				"RuneScape content and materials are trademarks and copyrights of Jagex or its licensees.",
+				"This program is issued with no warranty and is not affiliated with Jagex Ltd., nor do they endorse usage of our software.\n\n",
+				"Visit " + Configuration.URLs.SITE + "/ for more information."},
+				Locale.ABOUT,
+				JOptionPane.INFORMATION_MESSAGE);
 		} else if (a.equals(Locale.EXIT)) {
 			parent.parent.dispatchEvent(new WindowEvent(parent.parent, WindowEvent.WINDOW_CLOSING));
 		}
