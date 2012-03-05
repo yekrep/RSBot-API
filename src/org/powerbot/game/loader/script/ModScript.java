@@ -102,7 +102,6 @@ public class ModScript implements NodeProcessor {
 					f.name = scanner.readString();
 					f.desc = scanner.readString();
 					fieldsGet[ptr++] = f;
-					System.out.println(clazz + " " + f.getter_access + " " + f.getter_name + " " + f.getter_desc + " " + f.owner + " " + f.name + " " + f.desc);
 				}
 				adapters.put(clazz, new AddGetterAdapter(delegate(clazz), op == Headers.GET_FIELD, fieldsGet));
 				break;
@@ -147,7 +146,6 @@ public class ModScript implements NodeProcessor {
 				clazz = scanner.readString();
 				final String inter = scanner.readString();
 				adapters.put(clazz, new AddInterfaceAdapter(delegate(clazz), inter));
-				System.out.println(clazz + " -> " + inter);
 				break;
 			case Headers.SET_SUPER:
 				clazz = scanner.readString();
@@ -176,10 +174,7 @@ public class ModScript implements NodeProcessor {
 				count = scanner.readByte();
 				final Map<Integer, byte[]> fragments = new HashMap<Integer, byte[]>();
 				while (count-- > 0) {
-					int off = scanner.readShort();
-					if (off > 2) {
-						off++;
-					}
+					final int off = scanner.readShort();
 					final byte[] code = new byte[scanner.readInt()];
 					scanner.readSegment(code, code.length, 0);
 					fragments.put(off, code);
