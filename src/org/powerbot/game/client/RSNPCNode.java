@@ -1,4 +1,5 @@
 package org.powerbot.game.client;
 
-public interface RSNPCNode {
+public interface RSNPCNode extends Node {
+	public Object getData();
 }

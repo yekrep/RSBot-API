@@ -1,4 +1,5 @@
 package org.powerbot.game.client;
 
 public interface RSNPCHolder {
+	public Object getRSNPC();
 }

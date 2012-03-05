@@ -1,4 +1,5 @@
 package org.powerbot.game.client;
 
-public interface NodeListCache {
+public interface NodeListCache extends Node {
+	public Object getData();
 }
