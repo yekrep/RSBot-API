@@ -35,23 +35,26 @@ public abstract class GameDefinition implements GameEnvironment {
 	public volatile ClientStub stub;
 	protected String packHash;
 	public ThreadGroup threadGroup;
+	protected volatile boolean killed;
 
 	public GameDefinition() {
-		threadGroup = new ThreadGroup("GameDefinition-" + hashCode());
-		processor = new TaskProcessor(threadGroup);
-		classes = new HashMap<String, byte[]>();
+		this.threadGroup = new ThreadGroup("GameDefinition-" + hashCode());
+		this.processor = new TaskProcessor(threadGroup);
+		this.classes = new HashMap<String, byte[]>();
 
-		crawler = new Crawler();
-		appletContainer = null;
-		callback = null;
-		stub = null;
-		packHash = null;
+		this.crawler = new Crawler();
+		this.appletContainer = null;
+		this.callback = null;
+		this.stub = null;
+		this.packHash = null;
+		this.killed = false;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	public boolean initializeEnvironment() {
+		this.killed = false;
 		log.info("Initializing game environment");
 		classes.clear();
 		log.fine("Crawling (for) game information");

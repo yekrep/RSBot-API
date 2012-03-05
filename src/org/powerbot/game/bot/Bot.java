@@ -15,6 +15,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.powerbot.asm.NodeProcessor;
+import org.powerbot.concurrent.RunnableTask;
 import org.powerbot.event.EventDispatcher;
 import org.powerbot.game.GameDefinition;
 import org.powerbot.game.api.Constants;
@@ -66,6 +67,9 @@ public class Bot extends GameDefinition implements Runnable {
 	 * {@inheritDoc}
 	 */
 	public void startEnvironment() {
+		if (killed) {
+			return;
+		}
 		log.info("Starting bot");
 		context.put(threadGroup, this);
 		callback = new Runnable() {
@@ -102,27 +106,28 @@ public class Bot extends GameDefinition implements Runnable {
 	 * {@inheritDoc}
 	 */
 	public void killEnvironment() {
+		this.killed = true;
 		log.info("Unloading environment");
 		if (stub != null) {
 			log.fine("Terminating stub activities");
 			stub.setActive(false);
 		}
-		Thread t = null;
+		Runnable r = null;
 		if (appletContainer != null) {
 			log.fine("Shutting down applet");
-			t = new Thread(new Runnable() {
+			r = new Runnable() {
 				public void run() {
 					appletContainer.stop();
 					appletContainer.destroy();
 					appletContainer = null;
 					stub = null;
 				}
-			});
+			};
 		}
 		bots.remove(this);
 		context.remove(threadGroup);
-		if (t != null) {
-			t.start();
+		if (r != null) {
+			processor.submit(RunnableTask.create(r));
 		}
 	}
 
