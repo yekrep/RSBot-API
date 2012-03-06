@@ -9,6 +9,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 
+import org.powerbot.gui.BotAccounts;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.util.Configuration;
 import org.powerbot.util.io.Resources;
@@ -36,6 +37,7 @@ public final class BotMenu extends JPopupMenu implements ActionListener {
 
 		final JMenuItem accounts = new JMenuItem(Locale.ACCOUNTS);
 		accounts.setIcon(new ImageIcon(Resources.getImage(Resources.Paths.REPORT_KEY)));
+		accounts.addActionListener(this);
 		add(accounts);
 		addSeparator();
 
@@ -60,6 +62,8 @@ public final class BotMenu extends JPopupMenu implements ActionListener {
 			parent.addTab();
 		} else if (a.equals(Locale.CLOSETAB)) {
 			parent.closeTab(parent.getOpenedTab());
+		} else if (a.equals(Locale.ACCOUNTS)) {
+			new BotAccounts(parent.parent);
 		} else if (a.equals(Locale.POWERBOT)) {
 			BotChrome.openURL(Configuration.URLs.SITE);
 		} else if (a.equals(Locale.ABOUT)) {

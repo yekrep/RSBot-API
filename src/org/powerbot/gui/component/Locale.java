@@ -10,6 +10,12 @@ public final class Locale {
 	public static String ABOUT = "About";
 	public static String EXIT = "Exit";
 
+	public static String USERNAME = "Username";
+	public static String PASSWORD = "Password";
+	public static String PIN = "PIN";
+	public static String MEMBER = "Member";
+	public static String REWARD = "Reward";
+
 	public static String POWERBOT = "powerbot.org";
 	public static String COPYRIGHT = "Copyright \u00a9 2011 - 2012 'Paris', licensed to J.P. Holdings Int'l Ltd.";
 }
