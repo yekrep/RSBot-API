@@ -1,6 +1,7 @@
 package org.powerbot.game.bot;
 
 import java.awt.Canvas;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -20,7 +21,10 @@ import org.powerbot.event.EventDispatcher;
 import org.powerbot.game.GameDefinition;
 import org.powerbot.game.api.Constants;
 import org.powerbot.game.api.Multipliers;
+import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.client.Client;
+import org.powerbot.game.event.PaintEvent;
+import org.powerbot.game.event.listener.PaintListener;
 import org.powerbot.game.loader.Loader;
 import org.powerbot.game.loader.script.ModScript;
 import org.powerbot.gui.BotChrome;
@@ -45,6 +49,7 @@ public class Bot extends GameDefinition implements Runnable {
 
 	public BufferedImage image;
 	private BufferedImage backBuffer;
+	private final PaintEvent paintEvent;
 
 	public Bot() {
 		final Dimension d = new Dimension(BotChrome.PANEL_WIDTH, BotChrome.PANEL_HEIGHT);
@@ -52,8 +57,10 @@ public class Bot extends GameDefinition implements Runnable {
 		backBuffer = new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_RGB);
 		client = null;
 		panel = null;
+		paintEvent = new PaintEvent();
 		eventDispatcher = new EventDispatcher();
 		processor.submit(eventDispatcher);
+		eventDispatcher.accept(new BasicDebug());
 	}
 
 	public void run() {
@@ -145,6 +152,8 @@ public class Bot extends GameDefinition implements Runnable {
 
 	public Graphics getBufferGraphics() {
 		final Graphics back = backBuffer.getGraphics();
+		paintEvent.graphics = back;
+		eventDispatcher.fire(paintEvent);
 		back.dispose();
 		image.getGraphics().drawImage(backBuffer, 0, 0, null);
 		if (panel != null) {
@@ -184,5 +193,13 @@ public class Bot extends GameDefinition implements Runnable {
 			}
 		}
 		return null;
+	}
+
+	private final class BasicDebug implements PaintListener {
+		public void onRepaint(final Graphics render) {
+			render.setColor(Color.white);
+			render.drawString("Client state: " + Game.getClientState(), 10, 20);
+			render.drawString("Floor  " + Game.getPlane(), 10, 32);
+		}
 	}
 }

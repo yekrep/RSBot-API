@@ -1,4 +1,4 @@
-package org.powerbot.game.api.methods;
+package org.powerbot.game.api.util;
 
 public class Random {
 	public static final java.util.Random random = new java.util.Random();

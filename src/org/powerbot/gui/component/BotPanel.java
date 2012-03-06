@@ -150,6 +150,7 @@ public class BotPanel extends JPanel {
 		final Component component = bot.appletContainer.getComponent(0);
 		notifyListeners(component, mouseEvent, present);
 		final int mouseX = mouseEvent.getX(), mouseY = mouseEvent.getY();
+		final int modifiers = mouseEvent.getModifiers(), clickCount = mouseEvent.getClickCount();
 		if (mouseEvent.getID() != MouseEvent.MOUSE_EXITED &&
 				mouseX > 0 && mouseX < component.getWidth() && mouseY > 0 && mouseY < component.getHeight()) {
 			if (present) {
@@ -157,30 +158,30 @@ public class BotPanel extends JPanel {
 					final MouseWheelEvent mouseWheelEvent = (MouseWheelEvent) mouseEvent;
 					component.dispatchEvent(new MouseWheelEvent(
 							component, mouseEvent.getID(),
-							System.currentTimeMillis(), 0,
-							mouseX, mouseY, 0, mouseEvent.isPopupTrigger(),
+							System.currentTimeMillis(), modifiers,
+							mouseX, mouseY, clickCount, mouseEvent.isPopupTrigger(),
 							mouseWheelEvent.getScrollType(), mouseWheelEvent.getScrollAmount(), mouseWheelEvent.getWheelRotation()
 					));
 				} else {
 					component.dispatchEvent(new MouseEvent(
 							component, mouseEvent.getID(),
-							System.currentTimeMillis(), 0,
-							mouseX, mouseY, 0, mouseEvent.isPopupTrigger(),
+							System.currentTimeMillis(), modifiers,
+							mouseX, mouseY, clickCount, mouseEvent.isPopupTrigger(),
 							mouseEvent.getButton()
 					));
 				}
 			} else {
 				component.dispatchEvent(new MouseEvent(
 						component, MouseEvent.MOUSE_ENTERED,
-						System.currentTimeMillis(), 0,
-						mouseX, mouseY, 0, false
+						System.currentTimeMillis(), modifiers,
+						mouseX, mouseY, clickCount, false
 				));
 			}
 		} else if (present) {
 			component.dispatchEvent(new MouseEvent(
 					component, MouseEvent.MOUSE_EXITED,
-					System.currentTimeMillis(), 0,
-					mouseX, mouseY, 0, false
+					System.currentTimeMillis(), modifiers,
+					mouseX, mouseY, clickCount, false
 			));
 		}
 	}

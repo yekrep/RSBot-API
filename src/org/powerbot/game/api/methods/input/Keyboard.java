@@ -1,10 +1,12 @@
-package org.powerbot.game.api.methods;
+package org.powerbot.game.api.methods.input;
 
 import java.awt.Component;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import org.powerbot.game.api.util.Random;
+import org.powerbot.game.api.util.Time;
 import org.powerbot.game.bot.Bot;
 
 public class Keyboard {

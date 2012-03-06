@@ -18,22 +18,24 @@ import java.util.logging.Logger;
 
 import org.powerbot.concurrent.RunnableTask;
 import org.powerbot.game.event.listener.MessageListener;
+import org.powerbot.game.event.listener.PaintListener;
 
 public class EventDispatcher extends RunnableTask implements EventManager {
 	private static final Logger log = Logger.getLogger(EventDispatcher.class.getName());
 	private volatile boolean active;
 	private final List<EventObject> queue = new ArrayList<EventObject>();
 	private final List<EventListener> listeners = new ArrayList<EventListener>();
-	private final List<Integer> listenerMasks = new ArrayList<Integer>();
+	private final List<Long> listenerMasks = new ArrayList<Long>();
 	private final Object treeLock = new Object();
 
-	public static final int MOUSE_EVENT = 0x1;
-	public static final int MOUSE_MOTION_EVENT = 0x2;
-	public static final int MOUSE_WHEEL_EVENT = 0x3;
-	public static final int FOCUS_EVENT = 0x4;
-	public static final int KEY_EVENT = 0x5;
+	public static final int MOUSE_EVENT = 0x10;
+	public static final int MOUSE_MOTION_EVENT = 0x20;
+	public static final int MOUSE_WHEEL_EVENT = 0x40;
+	public static final int FOCUS_EVENT = 0x80;
+	public static final int KEY_EVENT = 0x160;
 
-	public static final int MESSAGE_EVENT = 0x6;
+	public static final int PAINT_EVENT = 0x320;
+	public static final int MESSAGE_EVENT = 0x640;
 
 	public EventDispatcher() {
 		active = false;
@@ -52,8 +54,8 @@ public class EventDispatcher extends RunnableTask implements EventManager {
 	public void fire(final EventObject eventObject, final int type) {
 		final int size = listeners.size();
 		for (int index = 0; index < size; index++) {
-			final int listenerType = listenerMasks.get(index);
-			if (listenerType != type) {
+			final long listenerType = listenerMasks.get(index);
+			if ((listenerType & type) == 0) {
 				continue;
 			}
 			final EventListener listener = listeners.get(index);
@@ -139,27 +141,32 @@ public class EventDispatcher extends RunnableTask implements EventManager {
 		this.active = active;
 	}
 
-	public static int getType(final EventListener el) {
+	public static long getType(final EventListener el) {
+		long mask = 0;
 		if (el instanceof MouseListener) {
-			return EventDispatcher.MOUSE_EVENT;
+			mask |= EventDispatcher.MOUSE_EVENT;
 		}
 		if (el instanceof MouseMotionListener) {
-			return EventDispatcher.MOUSE_MOTION_EVENT;
+			mask |= EventDispatcher.MOUSE_MOTION_EVENT;
 		}
 		if (el instanceof MouseWheelListener) {
-			return EventDispatcher.MOUSE_WHEEL_EVENT;
+			mask |= EventDispatcher.MOUSE_WHEEL_EVENT;
 		}
 		if (el instanceof KeyListener) {
-			return EventDispatcher.KEY_EVENT;
+			mask |= EventDispatcher.KEY_EVENT;
 		}
 		if (el instanceof FocusListener) {
-			return EventDispatcher.FOCUS_EVENT;
-		}
-		if (el instanceof MessageListener) {
-			return EventDispatcher.MESSAGE_EVENT;
+			mask |= EventDispatcher.FOCUS_EVENT;
 		}
 
-		throw new RuntimeException("bad listener");
+		if (el instanceof MessageListener) {
+			mask |= EventDispatcher.MESSAGE_EVENT;
+		}
+		if (el instanceof PaintListener) {
+			mask |= EventDispatcher.PAINT_EVENT;
+		}
+
+		return mask;
 	}
 
 	public static int getType(final EventObject e) {
