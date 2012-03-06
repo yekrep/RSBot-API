@@ -175,6 +175,7 @@ public final class SecureStore {
 				raf.write(data, 0, b);
 				l += b;
 			}
+			is.close();
 			final int p = l < TarEntry.BLOCKSIZE ? TarEntry.BLOCKSIZE - l : (int) Math.ceil((double) l / TarEntry.BLOCKSIZE) * TarEntry.BLOCKSIZE - l;
 			raf.write(empty, 0, p);
 			raf.seek(z);
