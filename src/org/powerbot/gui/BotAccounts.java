@@ -33,6 +33,9 @@ import org.powerbot.service.GameAccounts;
 import org.powerbot.service.GameAccounts.Account;
 import org.powerbot.util.io.Resources;
 
+/**
+ * @author Paris
+ */
 public final class BotAccounts extends JDialog implements WindowListener {
 	private final Logger log = Logger.getLogger(BotAccounts.class.getName());
 	private static final long serialVersionUID = 1L;

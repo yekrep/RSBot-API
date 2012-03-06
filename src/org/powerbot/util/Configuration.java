@@ -6,6 +6,9 @@ import java.net.MalformedURLException;
 import org.powerbot.util.io.IOHelper;
 import org.powerbot.util.io.Resources;
 
+/**
+ * @author Paris
+ */
 public class Configuration {
 	public static final String NAME = "RSBot";
 	public static final boolean FROMJAR;

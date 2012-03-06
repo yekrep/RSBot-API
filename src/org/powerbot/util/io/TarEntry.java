@@ -8,6 +8,9 @@ import java.io.OutputStream;
 
 import org.powerbot.util.StringUtil;
 
+/**
+ * @author Paris
+ */
 public final class TarEntry {
 	public static int BLOCKSIZE = 512;
 

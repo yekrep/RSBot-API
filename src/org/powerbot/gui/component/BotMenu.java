@@ -14,6 +14,9 @@ import org.powerbot.gui.BotChrome;
 import org.powerbot.util.Configuration;
 import org.powerbot.util.io.Resources;
 
+/**
+ * @author Paris
+ */
 public final class BotMenu extends JPopupMenu implements ActionListener {
 	private static final long serialVersionUID = 1L;
 	public final BotToolBar parent;

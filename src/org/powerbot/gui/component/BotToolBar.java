@@ -15,6 +15,9 @@ import org.powerbot.game.bot.Bot;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.util.io.Resources;
 
+/**
+ * @author Paris
+ */
 public final class BotToolBar extends JToolBar {
 	private static final long serialVersionUID = 1L;
 	public final BotChrome parent;

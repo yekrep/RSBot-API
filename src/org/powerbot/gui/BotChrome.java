@@ -18,6 +18,9 @@ import org.powerbot.gui.component.BotToolBar;
 import org.powerbot.util.Configuration;
 import org.powerbot.util.io.Resources;
 
+/**
+ * @author Paris
+ */
 public class BotChrome extends JFrame implements WindowListener {
 	private static final long serialVersionUID = 1L;
 	private static Logger log = Logger.getLogger(BotChrome.class.getName());

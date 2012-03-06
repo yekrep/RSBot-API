@@ -1,5 +1,8 @@
 package org.powerbot.gui.component;
 
+/**
+ * @author Paris
+ */
 public final class BotLocale {
 	public static String NEWTAB = "New Tab";
 	public static String CLOSETAB = "Close Tab";
@@ -7,6 +10,7 @@ public final class BotLocale {
 	public static String PAUSESCRIPT = "Pause Script";
 	public static String STOPSCRIPT = "Stop Script";
 	public static String ACCOUNTS = "Accounts";
+	public static String SIGNIN = "Sign in...";
 	public static String ABOUT = "About";
 	public static String EXIT = "Exit";
 
