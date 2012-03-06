@@ -60,7 +60,10 @@ public class IniParser {
 		for (final Entry<String, String> entry : map.entrySet()) {
 			out.write(entry.getKey());
 			out.write(KEYBOUND);
-			out.write(entry.getValue());
+			final String value = entry.getValue();
+			if (value != null) {
+				out.write(value);
+			}
 			out.write(NEWLINE);
 		}
 	}
