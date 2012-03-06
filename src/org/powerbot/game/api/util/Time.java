@@ -1,4 +1,4 @@
-package org.powerbot.game.api.methods;
+package org.powerbot.game.api.util;
 
 public class Time {
 	public static void sleep(final int toSleep) {
