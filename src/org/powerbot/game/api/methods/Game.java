@@ -25,4 +25,9 @@ public class Game {
 		}
 		return -1;
 	}
+
+	public static int getPlane() {
+		final Bot bot = Bot.resolve();
+		return bot.client.getPlane() * bot.multipliers.GLOBAL_PLANE;
+	}
 }
