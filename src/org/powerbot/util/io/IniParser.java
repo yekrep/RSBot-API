@@ -6,6 +6,10 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
@@ -27,6 +31,12 @@ public class IniParser {
 
 	public static void serialise(final Map<String, Map<String, String>> data, final File out) throws IOException {
 		final BufferedWriter bw = new BufferedWriter(new FileWriter(out));
+		serialise(data, bw);
+		bw.close();
+	}
+
+	public static void serialise(final Map<String, Map<String, String>> data, final OutputStream os) throws IOException {
+		final BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(os));
 		serialise(data, bw);
 		bw.close();
 	}
@@ -73,6 +83,10 @@ public class IniParser {
 		final Map<String, Map<String, String>> data = deserialise(reader);
 		reader.close();
 		return data;
+	}
+
+	public static Map<String, Map<String, String>> deserialise(final InputStream is) throws IOException {
+		return deserialise(new BufferedReader(new InputStreamReader(is)));
 	}
 
 	public static Map<String, Map<String, String>> deserialise(final BufferedReader input) throws IOException {
