@@ -15,10 +15,12 @@ public class Resources {
 		public static final String ICON = ROOT_IMG + "/icon.png";
 		public static final String ICON_SMALL = ROOT_IMG + "/icon_small.png";
 		public static final String INFORMATION = ROOT_IMG + "/information.png";
+		public static final String ADD = ROOT_IMG + "/add.png";
 		public static final String ARROWS = ROOT_IMG + "/arrows.png";
 		public static final String CONTROL_PAUSE = ROOT_IMG + "/control_pause.png";
 		public static final String CONTROL_PLAY = ROOT_IMG + "/control_play.png";
 		public static final String CONTROL_STOP = ROOT_IMG + "/control_stop.png";
+		public static final String DELETE = ROOT_IMG + "/delete.png";
 		public static final String REPORT_KEY = ROOT_IMG + "/report_key.png";
 		public static final String TAB_ADD = ROOT_IMG + "/tab_add.png";
 		public static final String TAB_DELETE = ROOT_IMG + "/tab_delete.png";
