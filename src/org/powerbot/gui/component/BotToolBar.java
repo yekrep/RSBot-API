@@ -30,7 +30,7 @@ public final class BotToolBar extends JToolBar {
 				closeTab(getOpenedTab());
 			}
 		});
-		tabDelete.setToolTipText(Locale.CLOSETAB);
+		tabDelete.setToolTipText(BotLocale.CLOSETAB);
 		tabDelete.setFocusable(false);
 		tabDelete.setVisible(false);
 		add(tabDelete);
@@ -43,19 +43,19 @@ public final class BotToolBar extends JToolBar {
 				}
 			}
 		});
-		tabAdd.setToolTipText(Locale.NEWTAB);
+		tabAdd.setToolTipText(BotLocale.NEWTAB);
 		tabAdd.setFocusable(false);
 		add(tabAdd);
 
 		add(Box.createHorizontalGlue());
 
 		scriptPlay = new JButton(new ImageIcon(Resources.getImage(Resources.Paths.CONTROL_PLAY)));
-		scriptPlay.setToolTipText(Locale.PLAYSCRIPT);
+		scriptPlay.setToolTipText(BotLocale.PLAYSCRIPT);
 		scriptPlay.setFocusable(false);
 		scriptPlay.setVisible(false);
 		add(scriptPlay);
 		scriptStop = new JButton(new ImageIcon(Resources.getImage(Resources.Paths.CONTROL_STOP)));
-		scriptStop.setToolTipText(Locale.STOPSCRIPT);
+		scriptStop.setToolTipText(BotLocale.STOPSCRIPT);
 		scriptStop.setFocusable(false);
 		scriptStop.setVisible(false);
 		add(scriptStop);

@@ -28,7 +28,7 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumnModel;
 
-import org.powerbot.gui.component.Locale;
+import org.powerbot.gui.component.BotLocale;
 import org.powerbot.service.GameAccounts;
 import org.powerbot.service.GameAccounts.Account;
 import org.powerbot.util.io.Resources;
@@ -48,7 +48,7 @@ public final class BotAccounts extends JDialog implements WindowListener {
 		"Summoning", "Dungeoneering"};
 
 	public BotAccounts(final BotChrome parent) {
-		super((Frame) parent, Locale.ACCOUNTS, true);
+		super((Frame) parent, BotLocale.ACCOUNTS, true);
 		setIconImage(Resources.getImage(Resources.Paths.REPORT_KEY));
 
 		try {
@@ -228,11 +228,11 @@ public final class BotAccounts extends JDialog implements WindowListener {
 		@Override
 		public String getColumnName(final int column) {
 			switch (column) {
-			case 0: return Locale.USERNAME;
-			case 1: return Locale.PASSWORD;
-			case 2: return Locale.PIN;
-			case 3: return Locale.MEMBER;
-			case 4: return Locale.REWARD;
+			case 0: return BotLocale.USERNAME;
+			case 1: return BotLocale.PASSWORD;
+			case 2: return BotLocale.PIN;
+			case 3: return BotLocale.MEMBER;
+			case 4: return BotLocale.REWARD;
 			}
 			return null;
 		}

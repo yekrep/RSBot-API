@@ -23,11 +23,11 @@ public final class BotMenu extends JPopupMenu implements ActionListener {
 
 		final int tabs = parent.getTabCount();
 
-		final JMenuItem newtab = new JMenuItem(Locale.NEWTAB);
+		final JMenuItem newtab = new JMenuItem(BotLocale.NEWTAB);
 		newtab.setIcon(new ImageIcon(Resources.getImage(Resources.Paths.TAB_ADD)));
 		newtab.setEnabled(BotChrome.MAX_BOTS - tabs > 0);
 		newtab.addActionListener(this);
-		final JMenuItem closetab = new JMenuItem(Locale.CLOSETAB);
+		final JMenuItem closetab = new JMenuItem(BotLocale.CLOSETAB);
 		closetab.setIcon(new ImageIcon(Resources.getImage(Resources.Paths.TAB_DELETE)));
 		closetab.setEnabled(tabs > 0);
 		closetab.addActionListener(this);
@@ -35,48 +35,48 @@ public final class BotMenu extends JPopupMenu implements ActionListener {
 		add(closetab);
 		addSeparator();
 
-		final JMenuItem accounts = new JMenuItem(Locale.ACCOUNTS);
+		final JMenuItem accounts = new JMenuItem(BotLocale.ACCOUNTS);
 		accounts.setIcon(new ImageIcon(Resources.getImage(Resources.Paths.REPORT_KEY)));
 		accounts.addActionListener(this);
 		add(accounts);
 		addSeparator();
 
-		final JMenuItem site = new JMenuItem(Locale.POWERBOT);
+		final JMenuItem site = new JMenuItem(BotLocale.POWERBOT);
 		site.setIcon(new ImageIcon(Resources.getImage(Resources.Paths.ICON_SMALL)));
 		site.addActionListener(this);
 		add(site);
-		final JMenuItem about = new JMenuItem(Locale.ABOUT);
+		final JMenuItem about = new JMenuItem(BotLocale.ABOUT);
 		about.setIcon(new ImageIcon(Resources.getImage(Resources.Paths.INFORMATION)));
 		about.addActionListener(this);
 		add(about);
 		addSeparator();
 
-		final JMenuItem exit = new JMenuItem(Locale.EXIT);
+		final JMenuItem exit = new JMenuItem(BotLocale.EXIT);
 		exit.addActionListener(this);
 		add(exit);
 	}
 
 	public void actionPerformed(final ActionEvent e) {
 		final String a = e.getActionCommand();
-		if (a.equals(Locale.NEWTAB)) {
+		if (a.equals(BotLocale.NEWTAB)) {
 			parent.addTab();
-		} else if (a.equals(Locale.CLOSETAB)) {
+		} else if (a.equals(BotLocale.CLOSETAB)) {
 			parent.closeTab(parent.getOpenedTab());
-		} else if (a.equals(Locale.ACCOUNTS)) {
+		} else if (a.equals(BotLocale.ACCOUNTS)) {
 			new BotAccounts(parent.parent);
-		} else if (a.equals(Locale.POWERBOT)) {
+		} else if (a.equals(BotLocale.POWERBOT)) {
 			BotChrome.openURL(Configuration.URLs.SITE);
-		} else if (a.equals(Locale.ABOUT)) {
+		} else if (a.equals(BotLocale.ABOUT)) {
 			JOptionPane.showMessageDialog(parent.parent, new String[]{
-				Locale.COPYRIGHT,
+				BotLocale.COPYRIGHT,
 				"Unauthorised use of this application is prohibited.\n\n",
 				"RuneScape\u00ae is a trademark of Jagex \u00a9 1999 - 2011 Jagex, Ltd.",
 				"RuneScape content and materials are trademarks and copyrights of Jagex or its licensees.",
 				"This program is issued with no warranty and is not affiliated with Jagex Ltd., nor do they endorse usage of our software.\n\n",
 				"Visit " + Configuration.URLs.SITE + "/ for more information."},
-				Locale.ABOUT,
+				BotLocale.ABOUT,
 				JOptionPane.INFORMATION_MESSAGE);
-		} else if (a.equals(Locale.EXIT)) {
+		} else if (a.equals(BotLocale.EXIT)) {
 			parent.parent.dispatchEvent(new WindowEvent(parent.parent, WindowEvent.WINDOW_CLOSING));
 		}
 	}

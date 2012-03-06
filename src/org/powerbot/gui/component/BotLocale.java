@@ -1,6 +1,6 @@
 package org.powerbot.gui.component;
 
-public final class Locale {
+public final class BotLocale {
 	public static String NEWTAB = "New Tab";
 	public static String CLOSETAB = "Close Tab";
 	public static String PLAYSCRIPT = "Play Script";
