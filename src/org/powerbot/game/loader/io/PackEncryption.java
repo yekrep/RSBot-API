@@ -44,7 +44,7 @@ public class PackEncryption {
 			final Map<String, byte[]> classes = new HashMap<String, byte[]>();
 			final SecretKeySpec secretKeySpec = new SecretKeySpec(secretKeySpecKey, "AES");
 			final Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-			cipher.init(2, secretKeySpec, new IvParameterSpec(ivParameterSpecKey));
+			cipher.init(Cipher.DECRYPT_MODE, secretKeySpec, new IvParameterSpec(ivParameterSpecKey));
 			final byte[] unscrambled_inner_pack = cipher.doFinal(inner_pack);
 
 			final Pack200.Unpacker unpacker = Pack200.newUnpacker();
