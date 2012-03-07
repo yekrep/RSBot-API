@@ -34,6 +34,11 @@ import org.powerbot.util.Configuration;
 import org.powerbot.util.io.HttpClient;
 import org.powerbot.util.io.IOHelper;
 
+/**
+ * An environment of the game that is automated.
+ *
+ * @author Timer
+ */
 public class Bot extends GameDefinition implements Runnable {
 	private static Logger log = Logger.getLogger(Bot.class.getName());
 	public static final LinkedList<Bot> bots = new LinkedList<Bot>();
@@ -63,6 +68,9 @@ public class Bot extends GameDefinition implements Runnable {
 		eventDispatcher.accept(new BasicDebug());
 	}
 
+	/**
+	 * Initializes this bot and adds it to reference.
+	 */
 	public void run() {
 		Bot.bots.add(this);
 		if (initializeEnvironment()) {
@@ -138,10 +146,21 @@ public class Bot extends GameDefinition implements Runnable {
 		}
 	}
 
+	/**
+	 * Sets the panel currently associated with this bot to relay events to.
+	 *
+	 * @param panel The <code>BotPanel</code> responsible for displaying this bot.
+	 */
 	public void setPanel(final BotPanel panel) {
 		this.panel = panel;
 	}
 
+	/**
+	 * Resizes this bot's back buffer and container.
+	 *
+	 * @param width  Width of the component.
+	 * @param height Height of the component.
+	 */
 	public void resize(final int width, final int height) {
 		backBuffer = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 		image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
@@ -150,6 +169,11 @@ public class Bot extends GameDefinition implements Runnable {
 		appletContainer.paint(backBuffer.getGraphics());
 	}
 
+	/**
+	 * Returns the buffered graphics associated with this bot's client after painting information provided by events.
+	 *
+	 * @return The <code>Graphics</code> to be displayed in the <code>Canvas</code>.
+	 */
 	public Graphics getBufferGraphics() {
 		final Graphics back = backBuffer.getGraphics();
 		paintEvent.graphics = back;
@@ -162,6 +186,11 @@ public class Bot extends GameDefinition implements Runnable {
 		return backBuffer.getGraphics();
 	}
 
+	/**
+	 * Sets the client of this bot to the provided <code>Client</code>, while initializing it to be associated with this bot via callback.
+	 *
+	 * @param client The <code>Client</code> to associate with this bot.
+	 */
 	private void setClient(final Client client) {
 		this.client = client;
 		client.setCallback(new CallbackImpl(this));
@@ -169,10 +198,16 @@ public class Bot extends GameDefinition implements Runnable {
 		multipliers = new Multipliers(modScript.multipliers);
 	}
 
+	/**
+	 * @return The <code>Canvas</code> of this bot's client.
+	 */
 	public Canvas getCanvas() {
 		return client != null ? client.getCanvas() : null;
 	}
 
+	/**
+	 * @return The bot belonging to the invoking thread-group.
+	 */
 	public static Bot resolve() {
 		final Bot bot = Bot.context.get(Thread.currentThread().getThreadGroup());
 		if (bot == null) {
@@ -183,6 +218,10 @@ public class Bot extends GameDefinition implements Runnable {
 		return bot;
 	}
 
+	/**
+	 * @param o The class loader to compare against loaded bot instances.
+	 * @return The bot belonging to the provided class loader.
+	 */
 	public static Bot getBot(final Object o) {
 		final ClassLoader cl = o.getClass().getClassLoader();
 		for (final Bot bot : Bot.bots) {

@@ -43,12 +43,12 @@ public final class BotAccounts extends JDialog implements WindowListener {
 	private final JButton delete;
 
 	private static final String[] RANDOM_REWARDS = {"Cash", "Runes", "Coal", "Essence", "Ore", "Bars", "Gems", "Herbs",
-		"Seeds", "Charms", "Surprise", "Emote", "Costume", "Attack",
-		"Defence", "Strength", "Constitution", "Range", "Prayer", "Magic",
-		"Cooking", "Woodcutting", "Fletching", "Fishing", "Firemaking",
-		"Crafting", "Smithing", "Mining", "Herblore", "Agility", "Thieving",
-		"Slayer", "Farming", "Runecrafting", "Hunter", "Construction",
-		"Summoning", "Dungeoneering"};
+			"Seeds", "Charms", "Surprise", "Emote", "Costume", "Attack",
+			"Defence", "Strength", "Constitution", "Range", "Prayer", "Magic",
+			"Cooking", "Woodcutting", "Fletching", "Fishing", "Firemaking",
+			"Crafting", "Smithing", "Mining", "Herblore", "Agility", "Thieving",
+			"Slayer", "Farming", "Runecrafting", "Hunter", "Construction",
+			"Summoning", "Dungeoneering"};
 
 	public BotAccounts(final BotChrome parent) {
 		super((Frame) parent, BotLocale.ACCOUNTS, true);
@@ -65,14 +65,14 @@ public final class BotAccounts extends JDialog implements WindowListener {
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.getSelectionModel().addListSelectionListener(new TableSelectionListener());
 		table.setShowGrid(false);
-		
+
 		final TableColumnModel cm = table.getColumnModel();
 		for (int i = 1; i < 3; i++) {
 			cm.getColumn(i).setCellRenderer(new PasswordCellRenderer());
 			cm.getColumn(i).setCellEditor(new PasswordCellEditor());
 		}
 		cm.getColumn(4).setCellEditor(new RandomRewardEditor());
-		
+
 		scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		scroll.setViewportView(table);
 		scroll.setPreferredSize(new Dimension(400, 150));
@@ -83,7 +83,6 @@ public final class BotAccounts extends JDialog implements WindowListener {
 		final JButton add = new JButton(new ImageIcon(Resources.getImage(Resources.Paths.ADD)));
 		add.setFocusable(false);
 		add.addActionListener(new ActionListener() {
-			@Override
 			public void actionPerformed(final ActionEvent arg0) {
 				final String str = JOptionPane.showInputDialog(getParent(), "Enter the account username:", "New Account", JOptionPane.QUESTION_MESSAGE);
 				if (str == null || str.length() == 0) {
@@ -102,7 +101,6 @@ public final class BotAccounts extends JDialog implements WindowListener {
 		delete = new JButton(new ImageIcon(Resources.getImage(Resources.Paths.DELETE)));
 		delete.setFocusable(false);
 		delete.addActionListener(new ActionListener() {
-			@Override
 			public void actionPerformed(final ActionEvent arg0) {
 				final int row = table.getSelectedRow();
 				final String user = ((AccountTableModel) table.getModel()).userForRow(row);
@@ -127,15 +125,12 @@ public final class BotAccounts extends JDialog implements WindowListener {
 		setVisible(true);
 	}
 
-	@Override
 	public void windowActivated(final WindowEvent arg0) {
 	}
 
-	@Override
 	public void windowClosed(final WindowEvent arg0) {
 	}
 
-	@Override
 	public void windowClosing(final WindowEvent arg0) {
 		setVisible(false);
 		try {
@@ -146,19 +141,15 @@ public final class BotAccounts extends JDialog implements WindowListener {
 		}
 	}
 
-	@Override
 	public void windowDeactivated(final WindowEvent arg0) {
 	}
 
-	@Override
 	public void windowDeiconified(final WindowEvent arg0) {
 	}
 
-	@Override
 	public void windowIconified(final WindowEvent arg0) {
 	}
 
-	@Override
 	public void windowOpened(final WindowEvent arg0) {
 	}
 
@@ -219,11 +210,16 @@ public final class BotAccounts extends JDialog implements WindowListener {
 		public Object getValueAt(final int row, final int column) {
 			final Account account = GameAccounts.getInstance().get(userForRow(row));
 			switch (column) {
-			case 0: return account.toString();
-			case 1: return account.getPassword();
-			case 2: return account.pin == -1 ? "" : account.getPIN();
-			case 3: return account.member;
-			case 4: return account.reward;
+			case 0:
+				return account.toString();
+			case 1:
+				return account.getPassword();
+			case 2:
+				return account.pin == -1 ? "" : account.getPIN();
+			case 3:
+				return account.member;
+			case 4:
+				return account.reward;
 			}
 			return null;
 		}
@@ -231,11 +227,16 @@ public final class BotAccounts extends JDialog implements WindowListener {
 		@Override
 		public String getColumnName(final int column) {
 			switch (column) {
-			case 0: return BotLocale.USERNAME;
-			case 1: return BotLocale.PASSWORD;
-			case 2: return BotLocale.PIN;
-			case 3: return BotLocale.MEMBER;
-			case 4: return BotLocale.REWARD;
+			case 0:
+				return BotLocale.USERNAME;
+			case 1:
+				return BotLocale.PASSWORD;
+			case 2:
+				return BotLocale.PIN;
+			case 3:
+				return BotLocale.MEMBER;
+			case 4:
+				return BotLocale.REWARD;
 			}
 			return null;
 		}

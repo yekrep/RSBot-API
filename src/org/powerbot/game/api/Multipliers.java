@@ -2,6 +2,11 @@ package org.powerbot.game.api;
 
 import java.util.Map;
 
+/**
+ * Holds the values of multipliers for normalized integer values from accessed client fields.
+ *
+ * @author Timer
+ */
 public class Multipliers {
 	public final int
 			BASEDATA_X, BASEDATA_Y, GLOBAL_CAMERAPITCH,

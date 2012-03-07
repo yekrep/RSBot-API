@@ -2,6 +2,11 @@ package org.powerbot.game.api;
 
 import java.util.Map;
 
+/**
+ * Represents constants of states or possibilities.
+ *
+ * @author Timer
+ */
 public class Constants {
 	public final int
 			CLIENTSTATE_3, CLIENTSTATE_6, CLIENTSTATE_7,

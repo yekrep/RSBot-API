@@ -17,6 +17,9 @@ public class ThreadPool implements ThreadFactory {
 		this.threadGroup = threadGroup;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public Thread newThread(final Runnable r) {
 		return new Thread(threadGroup, r, "TaskPool-" + threadNumber.getAndIncrement());
 	}

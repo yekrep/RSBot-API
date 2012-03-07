@@ -6,6 +6,11 @@ import org.powerbot.event.EventDispatcher;
 import org.powerbot.event.GameEvent;
 import org.powerbot.game.event.listener.MessageListener;
 
+/**
+ * A message event that is dispatched when a new message is dispatched in the game.
+ *
+ * @author Timer
+ */
 public class MessageEvent extends GameEvent {
 	private static final long serialVersionUID = 1L;
 	private final int id;
@@ -18,19 +23,31 @@ public class MessageEvent extends GameEvent {
 		this.message = message;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void dispatch(final EventListener eventListener) {
 		((MessageListener) eventListener).messageReceived(this);
 	}
 
+	/**
+	 * @return The Id of this message (type).
+	 */
 	public int getId() {
 		return id;
 	}
 
+	/**
+	 * @return The name of the sender of this message.
+	 */
 	public String getSender() {
 		return sender;
 	}
 
+	/**
+	 * @return The contents of this message.
+	 */
 	public String getMessage() {
 		return message;
 	}

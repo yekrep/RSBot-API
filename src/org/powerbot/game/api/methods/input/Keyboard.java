@@ -9,7 +9,19 @@ import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Time;
 import org.powerbot.game.bot.Bot;
 
+/**
+ * A utility that handles the dispatching of fake key events.
+ *
+ * @author Timer
+ */
 public class Keyboard {
+	/**
+	 * 'Presses' the given char for the given delay and with the given mask.
+	 *
+	 * @param ch    The char to press.
+	 * @param delay The time until the key is held down.
+	 * @param mask  The mask to press this key with.
+	 */
 	private static void pressKey(final char ch, final int delay, final int mask) {
 		getKeyboard().keyPressed(
 				new KeyEvent(getTarget(), KeyEvent.KEY_PRESSED, System.currentTimeMillis() + delay, mask, ch, getKeyChar(ch), getLocation(ch))
@@ -21,12 +33,25 @@ public class Keyboard {
 		}
 	}
 
+	/**
+	 * Releases a key after the given delay and with the given mask.
+	 *
+	 * @param ch    The char to release.
+	 * @param delay The time to wait until this key is released.
+	 * @param mask  The mask to release the given char with.
+	 */
 	private static void releaseKey(final char ch, final int delay, final int mask) {
 		getKeyboard().keyReleased(
 				new KeyEvent(getTarget(), KeyEvent.KEY_RELEASED, System.currentTimeMillis() + delay, mask, ch, getKeyChar(ch), getLocation(ch))
 		);
 	}
 
+	/**
+	 * Returns the standard location of the character on the keyboard for masks.
+	 *
+	 * @param ch The character to determine the position of.
+	 * @return The key location value.
+	 */
 	private static int getLocation(final char ch) {
 		if (ch >= KeyEvent.VK_SHIFT && ch <= KeyEvent.VK_ALT) {
 			return KeyEvent.KEY_LOCATION_LEFT;
@@ -34,10 +59,21 @@ public class Keyboard {
 		return KeyEvent.KEY_LOCATION_STANDARD;
 	}
 
+	/**
+	 * Types a single character.
+	 *
+	 * @param ch The key to type.
+	 */
 	public static void sendKey(final char ch) {
 		sendKey(ch, 0);
 	}
 
+	/**
+	 * Presses and holds the given character for the delay, then releases.
+	 *
+	 * @param ch    The character to type.
+	 * @param delay The time to hold the key for.
+	 */
 	public static void sendKey(char ch, final int delay) {
 		boolean shift = false;
 		if (ch >= 'a' && ch <= 'z') {
@@ -65,10 +101,24 @@ public class Keyboard {
 		}
 	}
 
+	/**
+	 * Types an array of characters.
+	 *
+	 * @param text       The text to send.
+	 * @param pressEnter <tt>true</tt> to press enter; otherwise <tt>false</tt>.
+	 */
 	public static void sendText(final String text, final boolean pressEnter) {
 		sendText(text, pressEnter, 100, 200);
 	}
 
+	/**
+	 * Types an array of characters with the given delay between keys.
+	 *
+	 * @param text       The text to enter into the game.
+	 * @param pressEnter <tt>true</tt> to press enter; otherwise <tt>false</tt>.
+	 * @param minDelay   The lowest possible wait (inclusive).
+	 * @param maxDelay   The largest possible wait (exclusive).
+	 */
 	public static void sendText(final String text, final boolean pressEnter, final int minDelay, final int maxDelay) {
 		final char[] chars = text.toCharArray();
 		for (final char element : chars) {
@@ -83,6 +133,11 @@ public class Keyboard {
 		}
 	}
 
+	/**
+	 * Returns the keyboard associated with this thread-group to relay events to.
+	 *
+	 * @return The <code>org.powerbot.game.client.input.Keyboard</code> to relay events to.
+	 */
 	private static org.powerbot.game.client.input.Keyboard getKeyboard() {
 		final Bot bot = Bot.resolve();
 		if (bot.client == null || bot.client.getCanvas() == null) {
@@ -95,6 +150,11 @@ public class Keyboard {
 		return (org.powerbot.game.client.input.Keyboard) listeners[0];
 	}
 
+	/**
+	 * The component associated with this thread-group to dispatch events onto.
+	 *
+	 * @return The <code>Component</code> to dispatch events to.
+	 */
 	private static Component getTarget() {
 		final Bot bot = Bot.resolve();
 		if (bot.appletContainer == null || bot.appletContainer.getComponentCount() == 0) {
@@ -103,6 +163,12 @@ public class Keyboard {
 		return bot.appletContainer.getComponent(0);
 	}
 
+	/**
+	 * Returns the key char for this character, excluding non-letters.
+	 *
+	 * @param c The character to verify.
+	 * @return The verified character.
+	 */
 	private static char getKeyChar(final char c) {
 		if (c >= 36 && c <= 40) {
 			return KeyEvent.VK_UNDEFINED;

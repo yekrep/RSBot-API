@@ -2,6 +2,9 @@ package org.powerbot.game.loader.io;
 
 import java.net.URL;
 
+/**
+ * @author Timer
+ */
 public class AudioClip implements java.applet.AudioClip {
 	public static final short STATE_STOPPED = 0;
 	public static final short STATE_PLAYING = 1;

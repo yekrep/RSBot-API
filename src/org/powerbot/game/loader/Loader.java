@@ -8,6 +8,11 @@ import org.powerbot.game.GameDefinition;
 import org.powerbot.game.loader.wrapper.Rs2Applet;
 import org.powerbot.util.Configuration;
 
+/**
+ * A runnable loader that loads the game of a game environment.
+ *
+ * @author Timer
+ */
 public class Loader extends RunnableTask {
 	private static Logger log = Logger.getLogger(Loader.class.getName());
 	private final GameDefinition definition;
@@ -16,6 +21,9 @@ public class Loader extends RunnableTask {
 		this.definition = definition;
 	}
 
+	/**
+	 * Creates the wrapping applet of the game, generates an appropriate stub, and initializes client activities.
+	 */
 	public void run() {
 		log.fine("Generating applet wrapper");
 		definition.appletContainer = new Rs2Applet(definition.classes(), "http://" + Configuration.URLs.GAME + "/", definition.callback);

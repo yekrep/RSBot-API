@@ -16,6 +16,11 @@ import org.powerbot.event.EventDispatcher;
 import org.powerbot.event.GameEvent;
 import org.powerbot.game.event.listener.PaintListener;
 
+/**
+ * An event that is dispatched when the game requests the graphic buffer.
+ *
+ * @author Timer
+ */
 public class PaintEvent extends GameEvent {
 	private static final long serialVersionUID = 1L;
 	public Graphics graphics;
@@ -25,6 +30,9 @@ public class PaintEvent extends GameEvent {
 		this.graphics = null;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void dispatch(final EventListener eventListener) {
 		if (graphics == null) {
