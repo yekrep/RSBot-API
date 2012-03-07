@@ -33,14 +33,14 @@ public class EventDispatcher extends RunnableTask implements EventManager {
 	private final List<Long> listenerMasks = new ArrayList<Long>();
 	private final Object treeLock = new Object();
 
-	public static final int MOUSE_EVENT = 0x10;
-	public static final int MOUSE_MOTION_EVENT = 0x20;
-	public static final int MOUSE_WHEEL_EVENT = 0x40;
-	public static final int FOCUS_EVENT = 0x80;
-	public static final int KEY_EVENT = 0x160;
+	public static final int MOUSE_EVENT = 0x1;
+	public static final int MOUSE_MOTION_EVENT = 0x2;
+	public static final int MOUSE_WHEEL_EVENT = 0x4;
+	public static final int FOCUS_EVENT = 0x8;
+	public static final int KEY_EVENT = 0x10;
 
-	public static final int PAINT_EVENT = 0x320;
-	public static final int MESSAGE_EVENT = 0x640;
+	public static final int PAINT_EVENT = 0x400;
+	public static final int MESSAGE_EVENT = 0x800;
 
 	public EventDispatcher() {
 		active = false;
@@ -70,71 +70,73 @@ public class EventDispatcher extends RunnableTask implements EventManager {
 	 * @param type        The type of event to check for within the mask.
 	 */
 	public void fire(final EventObject eventObject, final int type) {
-		if (!active) {
-			return;
-		}
-		final int size = listeners.size();
-		for (int index = 0; index < size; index++) {
-			final long listenerType = listenerMasks.get(index);
-			if ((listenerType & type) == 0) {
-				continue;
+		synchronized (treeLock) {
+			if (!active) {
+				return;
 			}
-			final EventListener listener = listeners.get(index);
-			if (eventObject instanceof MouseEvent) {
-				final MouseEvent me = (MouseEvent) eventObject;
-				switch (me.getID()) {
-				case MouseEvent.MOUSE_PRESSED:
-					((MouseListener) listener).mousePressed(me);
-					break;
-				case MouseEvent.MOUSE_RELEASED:
-					((MouseListener) listener).mouseReleased(me);
-					break;
-				case MouseEvent.MOUSE_CLICKED:
-					((MouseListener) listener).mouseClicked(me);
-					break;
-				case MouseEvent.MOUSE_ENTERED:
-					((MouseListener) listener).mouseEntered(me);
-					break;
-				case MouseEvent.MOUSE_EXITED:
-					((MouseListener) listener).mouseExited(me);
-					break;
-				case MouseEvent.MOUSE_MOVED:
-					((MouseMotionListener) listener).mouseMoved(me);
-					break;
-				case MouseEvent.MOUSE_DRAGGED:
-					((MouseMotionListener) listener).mouseDragged(me);
-					break;
-				case MouseEvent.MOUSE_WHEEL:
-					((MouseWheelListener) listener).mouseWheelMoved((MouseWheelEvent) me);
-					break;
+			final int size = listeners.size();
+			for (int index = 0; index < size; index++) {
+				final long listenerType = listenerMasks.get(index);
+				if ((listenerType & type) == 0) {
+					continue;
 				}
-				break;
-			} else if (eventObject instanceof FocusEvent) {
-				final FocusEvent focusEvent = (FocusEvent) listener;
-				switch (focusEvent.getID()) {
-				case FocusEvent.FOCUS_GAINED:
-					((FocusListener) listener).focusGained(focusEvent);
+				final EventListener listener = listeners.get(index);
+				if (eventObject instanceof MouseEvent) {
+					final MouseEvent me = (MouseEvent) eventObject;
+					switch (me.getID()) {
+					case MouseEvent.MOUSE_PRESSED:
+						((MouseListener) listener).mousePressed(me);
+						break;
+					case MouseEvent.MOUSE_RELEASED:
+						((MouseListener) listener).mouseReleased(me);
+						break;
+					case MouseEvent.MOUSE_CLICKED:
+						((MouseListener) listener).mouseClicked(me);
+						break;
+					case MouseEvent.MOUSE_ENTERED:
+						((MouseListener) listener).mouseEntered(me);
+						break;
+					case MouseEvent.MOUSE_EXITED:
+						((MouseListener) listener).mouseExited(me);
+						break;
+					case MouseEvent.MOUSE_MOVED:
+						((MouseMotionListener) listener).mouseMoved(me);
+						break;
+					case MouseEvent.MOUSE_DRAGGED:
+						((MouseMotionListener) listener).mouseDragged(me);
+						break;
+					case MouseEvent.MOUSE_WHEEL:
+						((MouseWheelListener) listener).mouseWheelMoved((MouseWheelEvent) me);
+						break;
+					}
 					break;
-				case FocusEvent.FOCUS_LOST:
-					((FocusListener) listener).focusLost(focusEvent);
-					break;
+				} else if (eventObject instanceof FocusEvent) {
+					final FocusEvent focusEvent = (FocusEvent) listener;
+					switch (focusEvent.getID()) {
+					case FocusEvent.FOCUS_GAINED:
+						((FocusListener) listener).focusGained(focusEvent);
+						break;
+					case FocusEvent.FOCUS_LOST:
+						((FocusListener) listener).focusLost(focusEvent);
+						break;
+					}
+				} else if (eventObject instanceof KeyEvent) {
+					final KeyEvent ke = (KeyEvent) eventObject;
+					switch (ke.getID()) {
+					case KeyEvent.KEY_TYPED:
+						((KeyListener) listener).keyTyped(ke);
+						break;
+					case KeyEvent.KEY_PRESSED:
+						((KeyListener) listener).keyPressed(ke);
+						break;
+					case KeyEvent.KEY_RELEASED:
+						((KeyListener) listener).keyReleased(ke);
+						break;
+					}
+				} else if (eventObject instanceof GameEvent) {
+					final GameEvent gameEvent = (GameEvent) eventObject;
+					gameEvent.dispatch(listener);
 				}
-			} else if (eventObject instanceof KeyEvent) {
-				final KeyEvent ke = (KeyEvent) eventObject;
-				switch (ke.getID()) {
-				case KeyEvent.KEY_TYPED:
-					((KeyListener) listener).keyTyped(ke);
-					break;
-				case KeyEvent.KEY_PRESSED:
-					((KeyListener) listener).keyPressed(ke);
-					break;
-				case KeyEvent.KEY_RELEASED:
-					((KeyListener) listener).keyReleased(ke);
-					break;
-				}
-			} else if (eventObject instanceof GameEvent) {
-				final GameEvent gameEvent = (GameEvent) eventObject;
-				gameEvent.dispatch(listener);
 			}
 		}
 	}
@@ -269,12 +271,16 @@ public class EventDispatcher extends RunnableTask implements EventManager {
 						log.log(Level.SEVERE, "Event dispatcher: ", e);
 					}
 				}
-				if (queue.size() > 0) {
+				if (!queue.isEmpty()) {
 					event = queue.remove(0);
 				}
 			}
 			if (event != null) {
-				fire(event);
+				try {
+					fire(event);
+				} catch (final Throwable t) {
+					log.log(Level.SEVERE, "Event dispatcher: ", t);
+				}
 			}
 		}
 	}
