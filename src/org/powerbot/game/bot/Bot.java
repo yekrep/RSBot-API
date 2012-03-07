@@ -23,7 +23,9 @@ import org.powerbot.game.api.Constants;
 import org.powerbot.game.api.Multipliers;
 import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.client.Client;
+import org.powerbot.game.event.MessageEvent;
 import org.powerbot.game.event.PaintEvent;
+import org.powerbot.game.event.listener.MessageListener;
 import org.powerbot.game.event.listener.PaintListener;
 import org.powerbot.game.loader.Loader;
 import org.powerbot.game.loader.script.ModScript;
@@ -237,11 +239,15 @@ public class Bot extends GameDefinition implements Runnable {
 		return null;
 	}
 
-	private final class BasicDebug implements PaintListener {
+	private final class BasicDebug implements PaintListener, MessageListener {
 		public void onRepaint(final Graphics render) {
 			render.setColor(Color.white);
 			render.drawString("Client state: " + Game.getClientState(), 10, 20);
 			render.drawString("Floor  " + Game.getPlane(), 10, 32);
+		}
+
+		public void messageReceived(MessageEvent e) {
+			System.out.println("[" + e.getId() + "] " + e.getSender() + ": " + e.getMessage());
 		}
 	}
 }
