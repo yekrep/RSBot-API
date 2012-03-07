@@ -70,6 +70,9 @@ public class EventDispatcher extends RunnableTask implements EventManager {
 	 * @param type        The type of event to check for within the mask.
 	 */
 	public void fire(final EventObject eventObject, final int type) {
+		if (!active) {
+			return;
+		}
 		final int size = listeners.size();
 		for (int index = 0; index < size; index++) {
 			final long listenerType = listenerMasks.get(index);

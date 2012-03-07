@@ -123,6 +123,9 @@ public class Bot extends GameDefinition implements Runnable {
 	public void killEnvironment() {
 		this.killed = true;
 		log.info("Unloading environment");
+		if (eventDispatcher != null) {
+			eventDispatcher.setActive(false);
+		}
 		if (stub != null) {
 			log.fine("Terminating stub activities");
 			stub.setActive(false);

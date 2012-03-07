@@ -19,7 +19,7 @@ public class CallbackImpl implements Callback {
 	/**
 	 * Updates this bot's render information used to calculate screen vectors.
 	 *
-	 * @param render
+	 * @param render The render provided from the game.
 	 */
 	public void updateRenderInfo(final Render render) {
 	}
