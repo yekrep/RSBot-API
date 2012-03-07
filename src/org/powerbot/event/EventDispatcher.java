@@ -20,6 +20,11 @@ import org.powerbot.concurrent.RunnableTask;
 import org.powerbot.game.event.listener.MessageListener;
 import org.powerbot.game.event.listener.PaintListener;
 
+/**
+ * An event manager responsible for dispatching events to listeners associated with this dispatcher.
+ *
+ * @author Timer
+ */
 public class EventDispatcher extends RunnableTask implements EventManager {
 	private static final Logger log = Logger.getLogger(EventDispatcher.class.getName());
 	private volatile boolean active;
@@ -41,16 +46,29 @@ public class EventDispatcher extends RunnableTask implements EventManager {
 		active = false;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public void dispatch(final EventObject event) {
 		synchronized (queue) {
 			queue.add(event);
+			queue.notify();
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public void fire(final EventObject eventObject) {
 		fire(eventObject, getType(eventObject));
 	}
 
+	/**
+	 * Fires this event by matching masks of interfaces and the event type.
+	 *
+	 * @param eventObject The event to fire.
+	 * @param type        The type of event to check for within the mask.
+	 */
 	public void fire(final EventObject eventObject, final int type) {
 		final int size = listeners.size();
 		for (int index = 0; index < size; index++) {
@@ -118,6 +136,9 @@ public class EventDispatcher extends RunnableTask implements EventManager {
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public void accept(final EventListener eventListener) {
 		synchronized (treeLock) {
 			if (!listeners.contains(eventListener)) {
@@ -127,6 +148,9 @@ public class EventDispatcher extends RunnableTask implements EventManager {
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public void remove(final EventListener eventListener) {
 		synchronized (treeLock) {
 			final int id = listeners.indexOf(eventListener);
@@ -137,10 +161,22 @@ public class EventDispatcher extends RunnableTask implements EventManager {
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public void setActive(final boolean active) {
 		this.active = active;
+		synchronized (queue) {
+			queue.notify();
+		}
 	}
 
+	/**
+	 * Returns the mask associated with this event listener.
+	 *
+	 * @param el The <code>EventListener</code> to analyze.
+	 * @return The mask of this [these] listener[s].
+	 */
 	public static long getType(final EventListener el) {
 		long mask = 0;
 		if (el instanceof MouseListener) {
@@ -169,6 +205,12 @@ public class EventDispatcher extends RunnableTask implements EventManager {
 		return mask;
 	}
 
+	/**
+	 * Returns the type of event this object is.
+	 *
+	 * @param e The event to identify.
+	 * @return The type of the event provided associative with listener masks.
+	 */
 	public static int getType(final EventObject e) {
 		if (e instanceof MouseEvent) {
 			final MouseEvent me = (MouseEvent) e;
@@ -209,12 +251,15 @@ public class EventDispatcher extends RunnableTask implements EventManager {
 		throw new RuntimeException("bad event");
 	}
 
+	/**
+	 * Handles the firing of events within the dispatch queue.
+	 */
 	public void run() {
 		active = true;
 		while (active) {
 			EventObject event = null;
 			synchronized (queue) {
-				while (queue.isEmpty()) {
+				while (active && queue.isEmpty()) {
 					try {
 						queue.wait();
 					} catch (final InterruptedException e) {
