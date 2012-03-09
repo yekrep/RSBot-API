@@ -121,4 +121,6 @@ public interface Client {
 	public boolean[] getValidRSInterfaceArray();
 
 	public Object getCollapsedMenuItems();
+
+	public Object getRSGroundInfo();
 }
