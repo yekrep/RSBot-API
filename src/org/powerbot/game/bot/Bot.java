@@ -21,8 +21,12 @@ import org.powerbot.event.EventDispatcher;
 import org.powerbot.game.GameDefinition;
 import org.powerbot.game.api.Constants;
 import org.powerbot.game.api.Multipliers;
+import org.powerbot.game.api.methods.Calculations;
 import org.powerbot.game.api.methods.Game;
+import org.powerbot.game.api.methods.input.Keyboard;
+import org.powerbot.game.api.util.Time;
 import org.powerbot.game.client.Client;
+import org.powerbot.game.client.Render;
 import org.powerbot.game.event.MessageEvent;
 import org.powerbot.game.event.PaintEvent;
 import org.powerbot.game.event.listener.MessageListener;
@@ -51,6 +55,8 @@ public class Bot extends GameDefinition implements Runnable {
 	public Client client;
 	public Constants constants;
 	public Multipliers multipliers;
+	public final Calculations.Render render;
+	public final Calculations.RenderData renderData;
 
 	public EventDispatcher eventDispatcher;
 
@@ -68,6 +74,8 @@ public class Bot extends GameDefinition implements Runnable {
 		eventDispatcher = new EventDispatcher();
 		processor.submit(eventDispatcher);
 		eventDispatcher.accept(new BasicDebug());
+		render = new Calculations.Render();
+		renderData = new Calculations.RenderData();
 	}
 
 	/**
@@ -201,6 +209,7 @@ public class Bot extends GameDefinition implements Runnable {
 		client.setCallback(new CallbackImpl(this));
 		constants = new Constants(modScript.constants);
 		multipliers = new Multipliers(modScript.multipliers);
+		processor.submit(RunnableTask.create(new SafeMode(this)));
 	}
 
 	/**
@@ -208,6 +217,9 @@ public class Bot extends GameDefinition implements Runnable {
 	 */
 	public Canvas getCanvas() {
 		return client != null ? client.getCanvas() : null;
+	}
+
+	public void updateToolkit(final Render render) {
 	}
 
 	/**
@@ -244,10 +256,34 @@ public class Bot extends GameDefinition implements Runnable {
 			render.setColor(Color.white);
 			render.drawString("Client state: " + Game.getClientState(), 10, 20);
 			render.drawString("Floor  " + Game.getPlane(), 10, 32);
+			render.drawString("Base X, Y: (" + Game.getBaseX() + ", " + Game.getBaseY() + ")", 10, 44);
 		}
 
 		public void messageReceived(MessageEvent e) {
 			System.out.println("[" + e.getId() + "] " + e.getSender() + ": " + e.getMessage());
+		}
+	}
+
+	/**
+	 * @author Timer
+	 */
+	private static final class SafeMode implements Runnable {
+		private final Bot bot;
+
+		public SafeMode(final Bot bot) {
+			this.bot = bot;
+		}
+
+		/**
+		 * Enters the game into SafeMode by pressing 's'.
+		 */
+		public void run() {
+			if (bot != null && !bot.killed && bot.client != null && !Keyboard.isReady()) {
+				while (!bot.killed && !Keyboard.isReady()) {
+					Time.sleep(150);
+				}
+				Keyboard.sendKey('s');
+			}
 		}
 	}
 }
