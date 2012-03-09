@@ -18,6 +18,7 @@ public class Configuration {
 	public interface URLs {
 		public static final String BASE = "http://links.powerbot.org/";
 		public static final String SITE = BASE + "site";
+		public static final String REGISTER = BASE + "register";
 
 		public static final String GAME = "runescape.com";
 		public static final String CLIENT_PATCH = BASE + "/modscript/";

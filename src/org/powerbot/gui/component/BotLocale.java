@@ -10,7 +10,7 @@ public final class BotLocale {
 	public static String PAUSESCRIPT = "Pause Script";
 	public static String STOPSCRIPT = "Stop Script";
 	public static String ACCOUNTS = "Accounts";
-	public static String SIGNIN = "Sign in...";
+	public static String SIGNIN = "Sign in";
 	public static String ABOUT = "About";
 	public static String EXIT = "Exit";
 
@@ -19,6 +19,8 @@ public final class BotLocale {
 	public static String PIN = "PIN";
 	public static String MEMBER = "Member";
 	public static String REWARD = "Reward";
+
+	public static String REGISTER = "Register";
 
 	public static String POWERBOT = "powerbot.org";
 	public static String COPYRIGHT = "Copyright \u00a9 2011 - 2012 'Paris', licensed to J.P. Holdings Int'l Ltd.";
