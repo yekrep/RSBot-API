@@ -2,6 +2,10 @@ package org.powerbot.game.api.methods;
 
 import org.powerbot.game.api.Constants;
 import org.powerbot.game.bot.Bot;
+import org.powerbot.game.client.BaseInfoInts;
+import org.powerbot.game.client.BaseInfoX;
+import org.powerbot.game.client.BaseInfoY;
+import org.powerbot.game.client.RSInfoBaseInfo;
 
 /**
  * A utility that provides information about the game.
@@ -40,5 +44,15 @@ public class Game {
 	public static int getPlane() {
 		final Bot bot = Bot.resolve();
 		return bot.client.getPlane() * bot.multipliers.GLOBAL_PLANE;
+	}
+
+	public static int getBaseX() {
+		final Bot bot = Bot.resolve();
+		return (((BaseInfoX) ((BaseInfoInts) ((RSInfoBaseInfo) bot.client.getRSGroundInfo()).getRSInfoBaseInfo()).getBaseInfoInts()).getBaseInfoX() * bot.multipliers.BASEDATA_X) >> 8;
+	}
+
+	public static int getBaseY() {
+		final Bot bot = Bot.resolve();
+		return (((BaseInfoY) ((BaseInfoInts) ((RSInfoBaseInfo) bot.client.getRSGroundInfo()).getRSInfoBaseInfo()).getBaseInfoInts()).getBaseInfoY() * bot.multipliers.BASEDATA_Y) >> 8;
 	}
 }
