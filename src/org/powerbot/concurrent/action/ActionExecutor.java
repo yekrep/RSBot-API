@@ -103,7 +103,7 @@ public class ActionExecutor extends RunnableTask implements ActionContainer {
 								for (final ContainedTask task : action.actionComposite.tasks) {
 									if (task != null) {
 										processor.submit(task);
-										if (task.future != null) {
+										if (action.requireLock && task.future != null) {
 											futures.add(task.future);
 										}
 									}
