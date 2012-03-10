@@ -1,5 +1,7 @@
 package org.powerbot.gui.component;
 
+import org.powerbot.util.Configuration;
+
 /**
  * @author Paris
  */
@@ -22,6 +24,6 @@ public final class BotLocale {
 
 	public static String REGISTER = "Register";
 
-	public static String POWERBOT = "powerbot.org";
+	public static String POWERBOT = Configuration.URLs.DOMAIN;
 	public static String COPYRIGHT = "Copyright \u00a9 2011 - 2012 'Paris', licensed to J.P. Holdings Int'l Ltd.";
 }
