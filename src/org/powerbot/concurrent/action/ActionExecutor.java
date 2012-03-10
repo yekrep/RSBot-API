@@ -127,6 +127,9 @@ public class ActionExecutor extends RunnableTask implements ActionContainer {
 							}
 						}
 					}
+					if (action.resetExecutionQueue) {
+						break;
+					}
 				}
 			} else {
 				throw new RuntimeException("bad action-dispatch state");
