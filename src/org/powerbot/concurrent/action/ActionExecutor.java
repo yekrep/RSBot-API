@@ -92,6 +92,9 @@ public class ActionExecutor extends RunnableTask implements ActionContainer {
 				}
 			} else if (state == State.LISTENING) {
 				for (final Action action : actions) {
+					if (state != State.LISTENING) {
+						break;
+					}
 					final Activator activator = action.activator;
 					if (activator != null && activator.dispatch()) {
 						final List<Future<?>> futures = Collections.synchronizedList(new ArrayList<Future<?>>());
