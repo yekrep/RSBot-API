@@ -10,6 +10,9 @@ import org.powerbot.game.client.RSInfoGroundBytes;
 import org.powerbot.game.client.RSInfoRSGroundInfo;
 import org.powerbot.game.client.TileData;
 
+/**
+ * @author Timer
+ */
 public class Calculations {
 	public static class Toolkit {
 		public float absoluteX, absoluteY;
@@ -54,17 +57,17 @@ public class Calculations {
 		return worldToScreen(x, y, z);
 	}
 
-	public static Point worldToScreen(final int x, final int y, final int z) {
+	public static Point worldToScreen(final int x, final int z, final int y) {
 		final Bot bot = Bot.resolve();
 		final Toolkit toolkit = bot.toolkit;
 		final Viewport viewport = bot.viewport;
-		final float _z = (viewport.zOff + (viewport.zX * x + viewport.zY * z + viewport.zZ * y));
-		final float _x = (viewport.xOff + (viewport.xX * x + viewport.xY * z + viewport.xZ * y));
-		final float _y = (viewport.yOff + (viewport.yX * x + viewport.yY * z + viewport.yX * y));
+		final float _z = (viewport.zOff + (viewport.zX * x + viewport.zY * y + viewport.zZ * z));
+		final float _x = (viewport.xOff + (viewport.xX * x + viewport.xY * y + viewport.xZ * z));
+		final float _y = (viewport.yOff + (viewport.yX * x + viewport.yY * y + viewport.yX * z));
 		if (_x >= -_z && _x <= _z && _y >= -_z && _y <= _z) {
 			return new Point(
-					Math.round((toolkit.xMultiplier * _x) / _z - toolkit.absoluteX),
-					Math.round((toolkit.yMultiplier * _y) / _z - toolkit.absoluteY)
+					Math.round(toolkit.absoluteX + (toolkit.xMultiplier * _x) / _z),
+					Math.round(toolkit.absoluteY + (toolkit.yMultiplier * _y) / _z)
 			);
 		}
 		return new Point(-1, -1);
