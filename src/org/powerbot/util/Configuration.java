@@ -22,6 +22,7 @@ public class Configuration {
 
 		public static final String SITE = BASE_LINKS + "site";
 		public static final String REGISTER = BASE_LINKS + "register";
+		public static final String SIGNIN = BASE + "api/login/";
 
 		public static final String GAME = "runescape.com";
 		public static final String CLIENT_PATCH = BASE_LINKS + "modscript/";

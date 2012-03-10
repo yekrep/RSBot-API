@@ -11,16 +11,18 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.logging.Logger;
+import java.io.IOException;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 
 import org.powerbot.gui.component.BotLocale;
+import org.powerbot.service.NetworkAccount;
 import org.powerbot.util.Configuration;
 
 /**
@@ -28,7 +30,6 @@ import org.powerbot.util.Configuration;
  */
 public final class BotSignin extends JDialog implements ActionListener {
 	private static final long serialVersionUID = 1L;
-	private static final Logger log = Logger.getLogger(BotSignin.class.getName());
 	private final CredentialTextField username, password;
 	private final JButton signin;
 	private final JLabel register;
@@ -40,7 +41,7 @@ public final class BotSignin extends JDialog implements ActionListener {
 		gridCredentials.setVgap(5);
 		final JPanel panelCredentials = new JPanel(gridCredentials);
 
-		username = new CredentialTextField(BotLocale.USERNAME, false);
+		username = new CredentialTextField(BotLocale.USERNAME_OR_EMAIL, false);
 		panelCredentials.add(username);
 		password = new CredentialTextField(BotLocale.PASSWORD, true);
 		panelCredentials.add(password);
@@ -61,6 +62,7 @@ public final class BotSignin extends JDialog implements ActionListener {
 		panelAction.add(register);
 
 		signin = new JButton(BotLocale.SIGNIN);
+		signin.setFocusable(false);
 		signin.setPreferredSize(new Dimension((int) (signin.getPreferredSize().width * 1.2), (int) (signin.getPreferredSize().height * 1.2)));
 		signin.addActionListener(this);
 		panelAction.add(signin);
@@ -71,6 +73,10 @@ public final class BotSignin extends JDialog implements ActionListener {
 
 		add(panel);
 		add(panelAction, BorderLayout.SOUTH);
+
+		updateState();
+		getRootPane().setDefaultButton(signin);
+		register.requestFocusInWindow();
 
 		pack();
 		setMinimumSize(getSize());
@@ -83,9 +89,44 @@ public final class BotSignin extends JDialog implements ActionListener {
 	public void actionPerformed(final ActionEvent arg0) {
 		final Object s = arg0.getSource();
 		if (s == signin) {
-			if (username.getText().length() != 0 && password.getText().length() != 0) {
-				log.info("Logging in with " + username.getText() + ":" + password.getText());
+			signin.setEnabled(false);
+			if (signin.getText().equals(BotLocale.SIGNIN)) {
+				if (username.getText().length() != 0 && password.getText().length() != 0) {
+					boolean success = false;
+					try {
+						success = NetworkAccount.getInstance().login(username.getText(), password.getText());
+					} catch (final IOException ignored) {
+					}
+					updateState();
+					if (success) {
+						dispose();
+					} else {
+						JOptionPane.showMessageDialog(this, BotLocale.INVALIDCREDENTIALS, BotLocale.ERROR, JOptionPane.ERROR_MESSAGE);
+					}
+					signin.setEnabled(true);
+				}
+			} else if (signin.getText().equals(BotLocale.SIGNOUT)) {
+				NetworkAccount.getInstance().logout();
+				updateState();
 			}
+		}
+	}
+
+	private void updateState() {
+		if (NetworkAccount.getInstance().isLoggedIn()) {
+			username.setText(NetworkAccount.getInstance().getAccount().getDisplayName());
+			username.setEnabled(false);
+			password.setText("********");
+			password.setEnabled(false);
+			signin.setText(BotLocale.SIGNOUT);
+			register.setVisible(false);
+		} else {
+			signin.setText(BotLocale.SIGNIN);
+			username.setText(null);
+			username.setEnabled(true);
+			password.setText(null);
+			password.setEnabled(true);
+			register.setVisible(true);
 		}
 	}
 
@@ -111,7 +152,7 @@ public final class BotSignin extends JDialog implements ActionListener {
 		@Override
 		public void focusGained(final FocusEvent arg0) {
 			if (getForeground() == altColor) {
-				setText("");
+				super.setText("");
 				if (password) {
 					setEchoChar(defaultEchoChar);
 				}
@@ -127,13 +168,27 @@ public final class BotSignin extends JDialog implements ActionListener {
 				if (password) {
 					setEchoChar((char) 0);
 				}
-				setText(initText);
+				super.setText(initText);
 			}
 		}
 
 		@Override
 		public String getText() {
 			return getForeground() == altColor ? "" : new String(getPassword());
+		}
+
+		@Override
+		public void setText(final String t) {
+			if (t == null || t.length() == 0) {
+				super.setText("");
+				focusLost(null);
+			} else {
+				setForeground(initColor);
+				if (password) {
+					setEchoChar(defaultEchoChar);
+				}
+				super.setText(t);
+			}
 		}
 	}
 }

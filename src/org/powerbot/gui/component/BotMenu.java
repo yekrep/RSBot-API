@@ -12,6 +12,7 @@ import javax.swing.JPopupMenu;
 import org.powerbot.gui.BotAccounts;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.gui.BotSignin;
+import org.powerbot.service.NetworkAccount;
 import org.powerbot.util.Configuration;
 import org.powerbot.util.io.Resources;
 
@@ -46,6 +47,9 @@ public final class BotMenu extends JPopupMenu implements ActionListener {
 		addSeparator();
 
 		final JMenuItem signin = new JMenuItem(BotLocale.SIGNIN + "...");
+		if (NetworkAccount.getInstance().isLoggedIn()) {
+			signin.setText(BotLocale.SIGNEDINAS + " " + NetworkAccount.getInstance().getAccount().getDisplayName());
+		}
 		add(signin);
 		signin.addActionListener(this);
 		addSeparator();
@@ -73,7 +77,7 @@ public final class BotMenu extends JPopupMenu implements ActionListener {
 			parent.closeTab(parent.getOpenedTab());
 		} else if (a.equals(BotLocale.ACCOUNTS)) {
 			new BotAccounts(parent.parent);
-		} else if (a.equals(BotLocale.SIGNIN + "...")) {
+		} else if (a.startsWith(BotLocale.SIGNIN) || a.startsWith(BotLocale.SIGNEDINAS)) {
 			new BotSignin(parent.parent);
 		} else if (a.equals(BotLocale.POWERBOT)) {
 			BotChrome.openURL(Configuration.URLs.SITE);

@@ -13,16 +13,21 @@ public final class BotLocale {
 	public static String STOPSCRIPT = "Stop Script";
 	public static String ACCOUNTS = "Accounts";
 	public static String SIGNIN = "Sign in";
+	public static String SIGNEDINAS = "Signed in as";
+	public static String SIGNOUT = "Sign out";
 	public static String ABOUT = "About";
 	public static String EXIT = "Exit";
 
 	public static String USERNAME = "Username";
+	public static String USERNAME_OR_EMAIL = USERNAME + " / Email";
 	public static String PASSWORD = "Password";
 	public static String PIN = "PIN";
 	public static String MEMBER = "Member";
 	public static String REWARD = "Reward";
 
 	public static String REGISTER = "Register";
+	public static String ERROR = "Error";
+	public static String INVALIDCREDENTIALS = "Invalid username or password.";
 
 	public static String POWERBOT = Configuration.URLs.DOMAIN;
 	public static String COPYRIGHT = "Copyright \u00a9 2011 - 2012 'Paris', licensed to J.P. Holdings Int'l Ltd.";
