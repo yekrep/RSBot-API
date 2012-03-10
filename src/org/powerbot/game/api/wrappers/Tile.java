@@ -24,14 +24,14 @@ public class Tile implements Locatable {
 	}
 
 	public Point getCenterPoint() {
-		return getPoint(0.5d, 0.5d);
+		return getPoint(0.5d, 0.5d, 0);
 	}
 
 	public Point getNextPoint() {
-		return getPoint(Random.nextDouble(), Random.nextDouble());
+		return getPoint(Random.nextDouble(), Random.nextDouble(), 0);
 	}
 
-	private Point getPoint(final double offX, final double offY) {
-		return Calculations.groundToScreen((int) ((x - Game.getBaseX() + offX) * 512d), (int) ((y - Game.getBaseY() + offY) * 512d), plane, 0);
+	public Point getPoint(final double xOff, final double yOff, final int height) {
+		return Calculations.groundToScreen((int) ((x - Game.getBaseX() + xOff) * 512), (int) ((y - Game.getBaseY() + yOff) * 512), plane, height);
 	}
 }
