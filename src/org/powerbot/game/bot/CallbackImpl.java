@@ -22,6 +22,7 @@ public class CallbackImpl implements Callback {
 	 * @param render The render provided from the game.
 	 */
 	public void updateRenderInfo(final Render render) {
+		bot.updateToolkit(render);
 	}
 
 	/**

@@ -5,10 +5,12 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.SocketTimeoutException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -21,8 +23,21 @@ import org.powerbot.event.EventDispatcher;
 import org.powerbot.game.GameDefinition;
 import org.powerbot.game.api.Constants;
 import org.powerbot.game.api.Multipliers;
+import org.powerbot.game.api.methods.Calculations;
 import org.powerbot.game.api.methods.Game;
+import org.powerbot.game.api.methods.Skills;
+import org.powerbot.game.api.methods.input.Keyboard;
+import org.powerbot.game.api.util.Time;
+import org.powerbot.game.api.wrappers.Tile;
 import org.powerbot.game.client.Client;
+import org.powerbot.game.client.Render;
+import org.powerbot.game.client.RenderAbsoluteX;
+import org.powerbot.game.client.RenderAbsoluteY;
+import org.powerbot.game.client.RenderData;
+import org.powerbot.game.client.RenderFloats;
+import org.powerbot.game.client.RenderRenderData;
+import org.powerbot.game.client.RenderXMultiplier;
+import org.powerbot.game.client.RenderYMultiplier;
 import org.powerbot.game.event.MessageEvent;
 import org.powerbot.game.event.PaintEvent;
 import org.powerbot.game.event.listener.MessageListener;
@@ -51,6 +66,8 @@ public class Bot extends GameDefinition implements Runnable {
 	public Client client;
 	public Constants constants;
 	public Multipliers multipliers;
+	public final Calculations.Toolkit toolkit;
+	public final Calculations.Viewport viewport;
 
 	public EventDispatcher eventDispatcher;
 
@@ -68,6 +85,8 @@ public class Bot extends GameDefinition implements Runnable {
 		eventDispatcher = new EventDispatcher();
 		processor.submit(eventDispatcher);
 		eventDispatcher.accept(new BasicDebug());
+		toolkit = new Calculations.Toolkit();
+		viewport = new Calculations.Viewport();
 	}
 
 	/**
@@ -201,6 +220,7 @@ public class Bot extends GameDefinition implements Runnable {
 		client.setCallback(new CallbackImpl(this));
 		constants = new Constants(modScript.constants);
 		multipliers = new Multipliers(modScript.multipliers);
+		processor.submit(RunnableTask.create(new SafeMode(this)));
 	}
 
 	/**
@@ -208,6 +228,28 @@ public class Bot extends GameDefinition implements Runnable {
 	 */
 	public Canvas getCanvas() {
 		return client != null ? client.getCanvas() : null;
+	}
+
+	public void updateToolkit(final Render render) {
+		final Object renderData = render.getData();
+		final Object toolkit = ((RenderFloats) renderData).getRenderFloats();
+		this.toolkit.absoluteX = ((RenderAbsoluteX) toolkit).getRenderAbsoluteX();
+		this.toolkit.absoluteY = ((RenderAbsoluteY) toolkit).getRenderAbsoluteY();
+		this.toolkit.xMultiplier = ((RenderXMultiplier) toolkit).getRenderXMultiplier();
+		this.toolkit.yMultiplier = ((RenderYMultiplier) toolkit).getRenderYMultiplier();
+		final float[] viewport = ((RenderData) ((RenderRenderData) renderData).getRenderRenderData()).getFloats();
+		this.viewport.xOff = viewport[constants.VIEWPORT_XOFF];
+		this.viewport.xX = viewport[constants.VIEWPORT_XX];
+		this.viewport.xY = viewport[constants.VIEWPORT_XY];
+		this.viewport.xZ = viewport[constants.VIEWPORT_XZ];
+		this.viewport.yOff = viewport[constants.VIEWPORT_YOFF];
+		this.viewport.yX = viewport[constants.VIEWPORT_YX];
+		this.viewport.yY = viewport[constants.VIEWPORT_YY];
+		this.viewport.yZ = viewport[constants.VIEWPORT_YZ];
+		this.viewport.zOff = viewport[constants.VIEWPORT_ZOFF];
+		this.viewport.zX = viewport[constants.VIEWPORT_ZX];
+		this.viewport.zY = viewport[constants.VIEWPORT_ZY];
+		this.viewport.zZ = viewport[constants.VIEWPORT_ZZ];
 	}
 
 	/**
@@ -244,10 +286,51 @@ public class Bot extends GameDefinition implements Runnable {
 			render.setColor(Color.white);
 			render.drawString("Client state: " + Game.getClientState(), 10, 20);
 			render.drawString("Floor  " + Game.getPlane(), 10, 32);
+			render.drawString("Base X, Y: (" + Game.getBaseX() + ", " + Game.getBaseY() + ")", 10, 44);
+			render.drawString("Levels: " + Arrays.toString(Skills.getLevels()), 10, 56);
+
+			if (Game.getClientState() == 11) {
+				try {
+					for (int x = 0; x < 104; x++) {
+						for (int y = 0; y < 104; y++) {
+							final Point p = new Tile(Game.getBaseX() + x, Game.getBaseY() + y).getCenterPoint();
+							if (p.x == -1) {
+								continue;
+							}
+							render.drawString("tile", p.x - 6, p.y + 8);
+						}
+					}
+				} catch (final Exception e) {
+					e.printStackTrace();
+				}
+			}
 		}
 
 		public void messageReceived(MessageEvent e) {
 			System.out.println("[" + e.getId() + "] " + e.getSender() + ": " + e.getMessage());
+		}
+	}
+
+	/**
+	 * @author Timer
+	 */
+	private static final class SafeMode implements Runnable {
+		private final Bot bot;
+
+		public SafeMode(final Bot bot) {
+			this.bot = bot;
+		}
+
+		/**
+		 * Enters the game into SafeMode by pressing 's'.
+		 */
+		public void run() {
+			if (bot != null && !bot.killed && bot.client != null && !Keyboard.isReady()) {
+				while (!bot.killed && !Keyboard.isReady()) {
+					Time.sleep(150);
+				}
+				Keyboard.sendKey('s');
+			}
 		}
 	}
 }

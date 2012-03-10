@@ -60,6 +60,9 @@ public class ActionExecutor extends RunnableTask implements ActionContainer {
 	 */
 	public void destroy() {
 		state = State.DESTROYED;
+		synchronized (this) {
+			notify();
+		}
 	}
 
 	/**
@@ -82,6 +85,8 @@ public class ActionExecutor extends RunnableTask implements ActionContainer {
 	 * Handles the dispatching of actions within the given container.
 	 */
 	public void run() {
+		final List<Future<?>> futures = Collections.synchronizedList(new ArrayList<Future<?>>());
+		State heldState;
 		while (state != State.DESTROYED) {
 			if (state == State.LOCKED) {
 				synchronized (this) {
@@ -92,37 +97,41 @@ public class ActionExecutor extends RunnableTask implements ActionContainer {
 				}
 			} else if (state == State.LISTENING) {
 				for (final Action action : actions) {
+					if (state != State.LISTENING) {
+						break;
+					}
 					final Activator activator = action.activator;
-					if (activator != null && activator.dispatch()) {
-						final List<Future<?>> futures = Collections.synchronizedList(new ArrayList<Future<?>>());
-						if (action.actionComposite != null) {
-							if (action.actionComposite.tasks != null) {
-								for (final ContainedTask task : action.actionComposite.tasks) {
-									if (task != null) {
-										processor.submit(task);
-										if (task.future != null) {
-											futures.add(task.future);
-										}
-									}
+					if (activator == null || !activator.dispatch()) {
+						continue;
+					}
+					if (action.actionComposite == null || action.actionComposite.tasks == null) {
+						continue;
+					}
+					for (final ContainedTask task : action.actionComposite.tasks) {
+						processor.submit(task);
+						if (action.requireLock && task.future != null) {
+							futures.add(task.future);
+						}
+					}
+					heldState = state;
+					if (action.requireLock) {
+						synchronized (this) {
+							processor.submit(createWait(futures, this));
+							state = State.LOCKED;
+							if (futures.size() > 0) {
+								try {
+									wait();
+								} catch (final InterruptedException ignored) {
 								}
 							}
 						}
-						final State previous = state;
-						if (action.requireLock) {
-							synchronized (this) {
-								processor.submit(createWait(futures, this));
-								state = State.LOCKED;
-								if (futures.size() > 0) {
-									try {
-										wait();
-									} catch (final InterruptedException ignored) {
-									}
-								}
-							}
-							if (state == State.LOCKED) {
-								state = previous;
-							}
+						if (state == State.LOCKED) {
+							state = heldState;
 						}
+					}
+					futures.clear();
+					if (action.resetExecutionQueue) {
+						break;
 					}
 				}
 			} else {

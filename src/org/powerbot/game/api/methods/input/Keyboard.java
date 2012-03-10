@@ -28,7 +28,7 @@ public class Keyboard {
 		);
 		if ((ch < KeyEvent.VK_LEFT || ch > KeyEvent.VK_DOWN) && (ch < KeyEvent.VK_SHIFT || ch > KeyEvent.VK_CAPS_LOCK)) {
 			getKeyboard().keyTyped(
-					new KeyEvent(getTarget(), KeyEvent.KEY_TYPED, System.currentTimeMillis() + delay, mask, ch, getKeyChar(ch), getLocation(ch))
+					new KeyEvent(getTarget(), KeyEvent.KEY_TYPED, System.currentTimeMillis() + delay, mask, KeyEvent.VK_UNDEFINED, getKeyChar(ch), 0)
 			);
 		}
 	}
@@ -76,10 +76,9 @@ public class Keyboard {
 	 */
 	public static void sendKey(char ch, final int delay) {
 		boolean shift = false;
-		if (ch >= 'a' && ch <= 'z') {
-			ch -= 32;
-		} else if (ch >= 'A' && ch <= 'Z') {
+		if (ch >= 'A' && ch <= 'Z') {
 			shift = true;
+			ch -= 32;
 		}
 		int wait = 0;
 		if (shift) {
@@ -131,6 +130,14 @@ public class Keyboard {
 		if (pressEnter) {
 			sendKey((char) KeyEvent.VK_ENTER, Random.nextInt(minDelay, maxDelay));
 		}
+	}
+
+	public static boolean isReady() {
+		try {
+			return getKeyboard() != null;
+		} catch (RuntimeException ignored) {
+		}
+		return false;
 	}
 
 	/**
