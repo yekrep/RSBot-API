@@ -9,6 +9,7 @@ import org.powerbot.lang.Activator;
  */
 public class Action {
 	public boolean requireLock;
+	public boolean resetExecutionQueue;
 	public Activator activator;
 	public ActionComposite actionComposite;
 
@@ -19,9 +20,7 @@ public class Action {
 	 * @param actionComposite The <code>ActionComposite</code> associated with this <code>Action</code>.
 	 */
 	public Action(final Activator activator, final ActionComposite actionComposite) {
-		this.activator = activator;
-		this.actionComposite = actionComposite;
-		requireLock = true;
+		this(activator, actionComposite, true);
 	}
 
 	/**
@@ -35,5 +34,6 @@ public class Action {
 		this.activator = activator;
 		this.actionComposite = actionComposite;
 		this.requireLock = requireLock;
+		this.resetExecutionQueue = false;
 	}
 }
