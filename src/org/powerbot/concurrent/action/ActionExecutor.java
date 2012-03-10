@@ -82,6 +82,7 @@ public class ActionExecutor extends RunnableTask implements ActionContainer {
 	 * Handles the dispatching of actions within the given container.
 	 */
 	public void run() {
+		final List<Future<?>> futures = Collections.synchronizedList(new ArrayList<Future<?>>());
 		while (state != State.DESTROYED) {
 			if (state == State.LOCKED) {
 				synchronized (this) {
@@ -99,7 +100,6 @@ public class ActionExecutor extends RunnableTask implements ActionContainer {
 					if (activator == null || !activator.dispatch()) {
 						continue;
 					}
-					final List<Future<?>> futures = Collections.synchronizedList(new ArrayList<Future<?>>());
 					if (action.actionComposite == null || action.actionComposite.tasks == null) {
 						continue;
 					}
@@ -125,6 +125,7 @@ public class ActionExecutor extends RunnableTask implements ActionContainer {
 							state = previous;
 						}
 					}
+					futures.clear();
 					if (action.resetExecutionQueue) {
 						break;
 					}
