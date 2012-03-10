@@ -96,35 +96,35 @@ public class ActionExecutor extends RunnableTask implements ActionContainer {
 						break;
 					}
 					final Activator activator = action.activator;
-					if (activator != null && activator.dispatch()) {
-						final List<Future<?>> futures = Collections.synchronizedList(new ArrayList<Future<?>>());
-						if (action.actionComposite != null) {
-							if (action.actionComposite.tasks != null) {
-								for (final ContainedTask task : action.actionComposite.tasks) {
-									if (task != null) {
-										processor.submit(task);
-										if (action.requireLock && task.future != null) {
-											futures.add(task.future);
-										}
-									}
+					if (activator == null || !activator.dispatch()) {
+						continue;
+					}
+					final List<Future<?>> futures = Collections.synchronizedList(new ArrayList<Future<?>>());
+					if (action.actionComposite == null || action.actionComposite.tasks == null) {
+						continue;
+					}
+					for (final ContainedTask task : action.actionComposite.tasks) {
+						if (task != null) {
+							processor.submit(task);
+							if (action.requireLock && task.future != null) {
+								futures.add(task.future);
+							}
+						}
+					}
+					final State previous = state;
+					if (action.requireLock) {
+						synchronized (this) {
+							processor.submit(createWait(futures, this));
+							state = State.LOCKED;
+							if (futures.size() > 0) {
+								try {
+									wait();
+								} catch (final InterruptedException ignored) {
 								}
 							}
 						}
-						final State previous = state;
-						if (action.requireLock) {
-							synchronized (this) {
-								processor.submit(createWait(futures, this));
-								state = State.LOCKED;
-								if (futures.size() > 0) {
-									try {
-										wait();
-									} catch (final InterruptedException ignored) {
-									}
-								}
-							}
-							if (state == State.LOCKED) {
-								state = previous;
-							}
+						if (state == State.LOCKED) {
+							state = previous;
 						}
 					}
 					if (action.resetExecutionQueue) {
