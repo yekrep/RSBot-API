@@ -60,6 +60,9 @@ public class ActionExecutor extends RunnableTask implements ActionContainer {
 	 */
 	public void destroy() {
 		state = State.DESTROYED;
+		synchronized (this) {
+			notify();
+		}
 	}
 
 	/**
@@ -83,6 +86,7 @@ public class ActionExecutor extends RunnableTask implements ActionContainer {
 	 */
 	public void run() {
 		final List<Future<?>> futures = Collections.synchronizedList(new ArrayList<Future<?>>());
+		State heldState;
 		while (state != State.DESTROYED) {
 			if (state == State.LOCKED) {
 				synchronized (this) {
@@ -109,7 +113,7 @@ public class ActionExecutor extends RunnableTask implements ActionContainer {
 							futures.add(task.future);
 						}
 					}
-					final State previous = state;
+					heldState = state;
 					if (action.requireLock) {
 						synchronized (this) {
 							processor.submit(createWait(futures, this));
@@ -122,7 +126,7 @@ public class ActionExecutor extends RunnableTask implements ActionContainer {
 							}
 						}
 						if (state == State.LOCKED) {
-							state = previous;
+							state = heldState;
 						}
 					}
 					futures.clear();
