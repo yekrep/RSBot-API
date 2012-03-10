@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.SocketTimeoutException;
@@ -27,6 +28,7 @@ import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.api.methods.Skills;
 import org.powerbot.game.api.methods.input.Keyboard;
 import org.powerbot.game.api.util.Time;
+import org.powerbot.game.api.wrappers.Tile;
 import org.powerbot.game.client.Client;
 import org.powerbot.game.client.Render;
 import org.powerbot.game.client.RenderAbsoluteX;
@@ -229,24 +231,25 @@ public class Bot extends GameDefinition implements Runnable {
 	}
 
 	public void updateToolkit(final Render render) {
-		final RenderFloats toolkit = (RenderFloats) render;
+		final Object renderData = render.getData();
+		final Object toolkit = ((RenderFloats) renderData).getRenderFloats();
 		this.toolkit.absoluteX = ((RenderAbsoluteX) toolkit).getRenderAbsoluteX();
 		this.toolkit.absoluteY = ((RenderAbsoluteY) toolkit).getRenderAbsoluteY();
 		this.toolkit.xMultiplier = ((RenderXMultiplier) toolkit).getRenderXMultiplier();
 		this.toolkit.yMultiplier = ((RenderYMultiplier) toolkit).getRenderYMultiplier();
-		final float[] viewport = ((RenderData) ((RenderRenderData) render).getRenderRenderData()).getFloats();
+		final float[] viewport = ((RenderData) ((RenderRenderData) renderData).getRenderRenderData()).getFloats();
 		this.viewport.xOff = viewport[constants.VIEWPORT_XOFF];
 		this.viewport.xX = viewport[constants.VIEWPORT_XX];
 		this.viewport.xY = viewport[constants.VIEWPORT_XY];
 		this.viewport.xZ = viewport[constants.VIEWPORT_XZ];
 		this.viewport.yOff = viewport[constants.VIEWPORT_YOFF];
-		this.viewport.yX = viewport[constants.VIEWPORT_XX];
-		this.viewport.yY = viewport[constants.VIEWPORT_XY];
-		this.viewport.yZ = viewport[constants.VIEWPORT_XZ];
+		this.viewport.yX = viewport[constants.VIEWPORT_YX];
+		this.viewport.yY = viewport[constants.VIEWPORT_YY];
+		this.viewport.yZ = viewport[constants.VIEWPORT_YZ];
 		this.viewport.zOff = viewport[constants.VIEWPORT_ZOFF];
-		this.viewport.zX = viewport[constants.VIEWPORT_XX];
-		this.viewport.zY = viewport[constants.VIEWPORT_XY];
-		this.viewport.zZ = viewport[constants.VIEWPORT_XZ];
+		this.viewport.zX = viewport[constants.VIEWPORT_ZX];
+		this.viewport.zY = viewport[constants.VIEWPORT_ZY];
+		this.viewport.zZ = viewport[constants.VIEWPORT_ZZ];
 	}
 
 	/**
@@ -285,6 +288,22 @@ public class Bot extends GameDefinition implements Runnable {
 			render.drawString("Floor  " + Game.getPlane(), 10, 32);
 			render.drawString("Base X, Y: (" + Game.getBaseX() + ", " + Game.getBaseY() + ")", 10, 44);
 			render.drawString("Levels: " + Arrays.toString(Skills.getLevels()), 10, 56);
+
+			if (Game.getClientState() == 11) {
+				try {
+					for (int x = 0; x < 104; x++) {
+						for (int y = 0; y < 104; y++) {
+							final Point p = new Tile(Game.getBaseX() + x, Game.getBaseY() + y).getCenterPoint();
+							if (p.x == -1) {
+								continue;
+							}
+							render.drawString("tile", p.x - 6, p.y + 8);
+						}
+					}
+				} catch (final Exception e) {
+					e.printStackTrace();
+				}
+			}
 		}
 
 		public void messageReceived(MessageEvent e) {
