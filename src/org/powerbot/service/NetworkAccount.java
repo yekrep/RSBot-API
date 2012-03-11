@@ -94,8 +94,7 @@ public final class NetworkAccount {
 		}
 	}
 
-	public final class Account
-	{
+	public final class Account {
 		private final int id;
 		private final String name, display, email;
 		private final int[] groups;

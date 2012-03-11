@@ -3,6 +3,9 @@ package org.powerbot.game.api.methods;
 import org.powerbot.game.bot.Bot;
 import org.powerbot.game.client.Client;
 
+/**
+ * @author Timer
+ */
 public class Skills {
 	public static int[] getLevels() {
 		final Client client = Bot.resolve().client;
