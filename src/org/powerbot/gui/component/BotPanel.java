@@ -20,6 +20,7 @@ import java.util.logging.Logger;
 
 import javax.swing.JPanel;
 
+import org.powerbot.concurrent.RunnableTask;
 import org.powerbot.game.bot.Bot;
 import org.powerbot.game.client.input.Mouse;
 import org.powerbot.gui.BotChrome;
@@ -34,7 +35,7 @@ public class BotPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private Bot bot;
 	private int xOff, yOff;
-	private final BotLoadingPanel panel;
+	private final BotLoadingPanel loadingPanel;
 
 	public BotPanel() {
 		final Dimension d = new Dimension(BotChrome.PANEL_WIDTH, BotChrome.PANEL_HEIGHT);
@@ -46,7 +47,7 @@ public class BotPanel extends JPanel {
 		xOff = yOff = 0;
 
 		setLayout(new GridBagLayout());
-		add(panel = new BotLoadingPanel());
+		add(loadingPanel = new BotLoadingPanel());
 		Logger.getLogger(Bot.class.getName()).log(Level.INFO, "Add a tab to start a new bot", "Welcome");
 
 		addComponentListener(new ComponentAdapter() {
@@ -117,7 +118,7 @@ public class BotPanel extends JPanel {
 		super.paintComponent(g);
 
 		if (bot != null) {
-			panel.setVisible(false);
+			loadingPanel.setVisible(false);
 			g.drawImage(bot.image, xOff, yOff, null);
 		}
 	}
@@ -127,12 +128,15 @@ public class BotPanel extends JPanel {
 			this.bot.setPanel(null);
 		}
 		this.bot = bot;
-		panel.setVisible(true);
+		loadingPanel.setVisible(true);
 		if (bot != null) {
+			bot.processor.submit(RunnableTask.create(new BotSet(bot.threadGroup)));
 			bot.setPanel(this);
 			if (bot.getCanvas() != null) {
 				offset();
 			}
+		} else {
+			loadingPanel.set(null);
 		}
 	}
 
@@ -220,6 +224,18 @@ public class BotPanel extends JPanel {
 			} else if (present) {
 				bot.eventDispatcher.dispatch(new MouseEvent(component, MouseEvent.MOUSE_EXITED, System.currentTimeMillis(), 0, mouseX, mouseY, 0, false));
 			}
+		}
+	}
+
+	private final class BotSet implements Runnable {
+		private final ThreadGroup threadGroup;
+
+		private BotSet(final ThreadGroup threadGroup) {
+			this.threadGroup = threadGroup;
+		}
+
+		public void run() {
+			loadingPanel.set(threadGroup);
 		}
 	}
 }

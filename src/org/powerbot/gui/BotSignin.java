@@ -85,7 +85,6 @@ public final class BotSignin extends JDialog implements ActionListener {
 		setVisible(true);
 	}
 
-	@Override
 	public void actionPerformed(final ActionEvent arg0) {
 		final Object s = arg0.getSource();
 		if (s == signin) {
@@ -149,7 +148,6 @@ public final class BotSignin extends JDialog implements ActionListener {
 			addFocusListener(this);
 		}
 
-		@Override
 		public void focusGained(final FocusEvent arg0) {
 			if (getForeground() == altColor) {
 				super.setText("");
@@ -160,7 +158,6 @@ public final class BotSignin extends JDialog implements ActionListener {
 			}
 		}
 
-		@Override
 		public void focusLost(final FocusEvent arg0) {
 			final String text = new String(getPassword());
 			if (text.length() == 0) {

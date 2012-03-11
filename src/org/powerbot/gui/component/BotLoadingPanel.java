@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
@@ -21,6 +23,9 @@ import org.powerbot.util.io.Resources;
 public final class BotLoadingPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	public final JLabel status = new JLabel(), info = new JLabel();
+	private static final Map<ThreadGroup, LogRecord> logRecord = new HashMap<ThreadGroup, LogRecord>();
+	private ThreadGroup listeningGroup = null;
+	private final BotLoadingPanelLogHandler handler;
 
 	public BotLoadingPanel() {
 		setBackground(Color.BLACK);
@@ -36,9 +41,17 @@ public final class BotLoadingPanel extends JPanel {
 		c.ipady = 25;
 		c.gridwidth = 2;
 		add(info, c);
-		final BotLoadingPanelLogHandler handler = new BotLoadingPanelLogHandler(this);
+		handler = new BotLoadingPanelLogHandler(this);
 		Logger.getLogger(GameDefinition.class.getName()).addHandler(handler);
 		Logger.getLogger(Bot.class.getName()).addHandler(handler);
+	}
+
+	public void set(final ThreadGroup threadGroup) {
+		this.listeningGroup = threadGroup;
+		final LogRecord record;
+		if (threadGroup != null && (record = logRecord.get(threadGroup)) != null) {
+			handler.publish(record);
+		}
 	}
 
 	private final class BotLoadingPanelLogHandler extends Handler {
@@ -58,6 +71,10 @@ public final class BotLoadingPanel extends JPanel {
 
 		@Override
 		public void publish(final LogRecord record) {
+			logRecord.put(Thread.currentThread().getThreadGroup(), record);
+			if (listeningGroup != null && Thread.currentThread().getThreadGroup() != listeningGroup) {
+				return;
+			}
 			Color c = new Color(149, 156, 171);
 			final String title = record.getParameters() != null && record.getParameters().length == 1 ? (String) record.getParameters()[0] : null;
 			if (record.getLevel() == Level.SEVERE || record.getLevel() == Level.WARNING) {
