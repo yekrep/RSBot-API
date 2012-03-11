@@ -1,5 +1,6 @@
 package org.powerbot.game.api.methods;
 
+import org.powerbot.game.api.Multipliers;
 import org.powerbot.game.bot.Bot;
 import org.powerbot.game.client.HashTable2Buckets;
 import org.powerbot.game.client.HashTableBuckets;
@@ -9,26 +10,28 @@ import org.powerbot.game.client.Node;
  * @author Timer
  */
 public class Nodes {
-	public Node lookup(final Object nc, final long id) {
+	public static Node lookup(final Object nc, final long id) {
 		try {
 			if (nc == null || id < 0l) {
 				return null;
 			}
-			Node[] nodes;
-			Object object = null;
-			if (nc instanceof HashTableBuckets) {
-				object = ((HashTableBuckets) nc).getHashTableBuckets();
-			} else if (nc instanceof HashTable2Buckets) {
-				object = ((HashTable2Buckets) nc).getHashTable2Buckets();
+			Node[] buckets;
+			Object o;
+			if (nc instanceof HashTableBuckets && ((o = ((HashTableBuckets) nc).getHashTableBuckets()) instanceof Node[])) {
+				buckets = (Node[]) o;
+			} else if (nc instanceof HashTable2Buckets && ((o = ((HashTable2Buckets) nc).getHashTable2Buckets()) instanceof Node[])) {
+				buckets = (Node[]) o;
+			} else {
+				buckets = null;
 			}
-			if (object == null) {
+			if (buckets == null) {
 				return null;
 			}
-			nodes = (Node[]) object;
-			final int idMultiplier = Bot.resolve().multipliers.NODE_ID;
-			final Node n = nodes[(int) (id & (long) (nodes.length - 1))].getPrevious();
+			final Multipliers multipliers = Bot.resolve().multipliers;
+			final long multiplier = (((long) multipliers.NODE_ID) << 32) + ((multipliers.NODE_ID_p2 & 0xFFFFFFFFL));
+			final Node n = buckets[(int) (id & buckets.length - 1)];
 			for (Node node = n.getPrevious(); node != n; node = node.getPrevious()) {
-				if (node.getID() * idMultiplier == id) {
+				if (node.getID() * multiplier == id) {
 					return node;
 				}
 			}
