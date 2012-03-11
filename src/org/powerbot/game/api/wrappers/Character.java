@@ -1,6 +1,9 @@
 package org.powerbot.game.api.wrappers;
 
+import java.awt.Point;
+
 import org.powerbot.game.api.Multipliers;
+import org.powerbot.game.api.methods.Calculations;
 import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.api.methods.Nodes;
 import org.powerbot.game.bot.Bot;
@@ -28,7 +31,7 @@ import org.powerbot.game.client.SequenceInts;
 /**
  * @author Timer
  */
-public abstract class Character {
+public abstract class Character implements Locatable {
 	private final Client client;
 	private final Multipliers multipliers;
 
@@ -49,6 +52,9 @@ public abstract class Character {
 
 	public Character getInteracting() {
 		final int index = ((RSCharacterInteracting) ((RSInteractableInts) get()).getRSInteractableInts()).getRSCharacterInteracting() * multipliers.CHARACTER_INTERACTING;
+		if (index == -1) {
+			return null;
+		}
 		if (index < 0x8000) {
 			return new Npc(((RSNPCHolder) ((RSNPCNodeHolder) ((RSNPCNode) Nodes.lookup(client.getRSNPCNC(), index)).getData()).getRSNPCNodeHolder()).getRSNPC());
 		} else {
@@ -57,11 +63,25 @@ public abstract class Character {
 	}
 
 	public int getAnimation() {
-		return ((SequenceID) ((SequenceInts) ((RSAnimatorSequence) ((RSCharacterAnimation) get()).getRSCharacterAnimation()).getRSAnimatorSequence()).getSequenceInts()).getSequenceID() * multipliers.SEQUENCE_ID;
+		final Object animation = ((RSCharacterAnimation) get()).getRSCharacterAnimation();
+		if (animation != null) {
+			final Object sequence = ((RSAnimatorSequence) animation).getRSAnimatorSequence();
+			if (sequence != null) {
+				return ((SequenceID) ((SequenceInts) sequence).getSequenceInts()).getSequenceID() * multipliers.SEQUENCE_ID;
+			}
+		}
+		return -1;
 	}
 
 	public int getPassiveAnimation() {
-		return ((SequenceID) ((SequenceInts) ((RSAnimatorSequence) ((RSCharacterPassiveAnimation) get()).getRSCharacterPassiveAnimation()).getRSAnimatorSequence()).getSequenceInts()).getSequenceID() * multipliers.SEQUENCE_ID;
+		final Object animation = ((RSCharacterPassiveAnimation) get()).getRSCharacterPassiveAnimation();
+		if (animation != null) {
+			final Object sequence = ((RSAnimatorSequence) animation).getRSAnimatorSequence();
+			if (sequence != null) {
+				return ((SequenceID) ((SequenceInts) sequence).getSequenceInts()).getSequenceID() * multipliers.SEQUENCE_ID;
+			}
+		}
+		return -1;
 	}
 
 	public int getHeight() {
@@ -91,6 +111,15 @@ public abstract class Character {
 
 	public boolean isMoving() {
 		return getSpeed() != 0;
+	}
+
+	public Point getCenterPoint() {
+		final RSInteractableLocation location = ((RSInteractableManager) ((RSInteractableRSInteractableManager) get()).getRSInteractableManager()).getData().getLocation();
+		return Calculations.groundToScreen((int) location.getX(), (int) location.getY(), Game.getPlane(), -getHeight());
+	}
+
+	public Point getNextPoint() {
+		return getCenterPoint();
 	}
 
 	protected abstract Object get();
