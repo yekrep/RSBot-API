@@ -84,7 +84,7 @@ public final class BotToolBar extends JToolBar {
 		tabDelete.setVisible(true);
 		openTab(n);
 		tabAdd.setVisible(BotChrome.MAX_BOTS - Bot.bots.size() > 0);
-		new Thread(bot).start();
+		new Thread(bot.threadGroup, bot).start();
 		BotChrome.panel.setBot(bot);
 	}
 
