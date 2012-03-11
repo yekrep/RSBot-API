@@ -27,11 +27,15 @@ import org.powerbot.game.api.methods.Calculations;
 import org.powerbot.game.api.methods.Camera;
 import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.api.methods.Menu;
+import org.powerbot.game.api.methods.Npcs;
+import org.powerbot.game.api.methods.Players;
 import org.powerbot.game.api.methods.Settings;
 import org.powerbot.game.api.methods.Skills;
 import org.powerbot.game.api.methods.Walking;
 import org.powerbot.game.api.methods.input.Keyboard;
 import org.powerbot.game.api.util.Time;
+import org.powerbot.game.api.wrappers.Npc;
+import org.powerbot.game.api.wrappers.Player;
 import org.powerbot.game.api.wrappers.Tile;
 import org.powerbot.game.client.Client;
 import org.powerbot.game.client.Render;
@@ -298,6 +302,7 @@ public class Bot extends GameDefinition implements Runnable {
 			render.drawString("Settings: " + Arrays.toString(Settings.get()), 10, 104);
 			render.drawString("Skill levels: " + Arrays.toString(Skills.getLevels()), 10, 116);
 
+			render.setColor(Color.white);
 			if (Game.getClientState() == 11) {
 				try {
 					for (int x = 0; x < 104; x++) {
@@ -306,7 +311,7 @@ public class Bot extends GameDefinition implements Runnable {
 							if (p.x == -1) {
 								continue;
 							}
-							render.drawString("tile", p.x - 6, p.y + 8);
+							render.drawString(".", p.x - 1, p.y + 1);
 						}
 					}
 				} catch (final Exception e) {

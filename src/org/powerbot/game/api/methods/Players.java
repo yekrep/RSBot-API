@@ -18,11 +18,11 @@ public class Players {
 		}
 	};
 
-	public Player[] getLoaded() {
+	public static Player[] getLoaded() {
 		return getLoaded(ALL_FILTER);
 	}
 
-	public Player[] getLoaded(final Filter<Player> filter) {
+	public static Player[] getLoaded(final Filter<Player> filter) {
 		final Client client = Bot.resolve().client;
 		final int[] indices = client.getRSPlayerIndexArray();
 		final Object[] playerArray = client.getRSPlayerArray();
