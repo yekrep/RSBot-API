@@ -6,6 +6,9 @@ import org.powerbot.game.api.methods.Calculations;
 import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.api.util.Random;
 
+/**
+ * @author Timer
+ */
 public class Tile implements Locatable {
 	public final int x, y, plane;
 
