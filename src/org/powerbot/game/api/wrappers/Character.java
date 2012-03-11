@@ -2,6 +2,7 @@ package org.powerbot.game.api.wrappers;
 
 import org.powerbot.game.api.Multipliers;
 import org.powerbot.game.api.methods.Game;
+import org.powerbot.game.api.methods.Nodes;
 import org.powerbot.game.bot.Bot;
 import org.powerbot.game.client.Client;
 import org.powerbot.game.client.RSAnimatorSequence;
@@ -18,6 +19,9 @@ import org.powerbot.game.client.RSInteractableLocation;
 import org.powerbot.game.client.RSInteractableManager;
 import org.powerbot.game.client.RSInteractableRSInteractableManager;
 import org.powerbot.game.client.RSMessageDataMessage;
+import org.powerbot.game.client.RSNPCHolder;
+import org.powerbot.game.client.RSNPCNode;
+import org.powerbot.game.client.RSNPCNodeHolder;
 import org.powerbot.game.client.SequenceID;
 import org.powerbot.game.client.SequenceInts;
 
@@ -46,11 +50,10 @@ public abstract class Character {
 	public Character getInteracting() {
 		final int index = ((RSCharacterInteracting) ((RSInteractableInts) get()).getRSInteractableInts()).getRSCharacterInteracting() * multipliers.CHARACTER_INTERACTING;
 		if (index < 0x8000) {
-			//TODO NPC
+			return new Npc(((RSNPCHolder) ((RSNPCNodeHolder) ((RSNPCNode) Nodes.lookup(client.getRSNPCNC(), index)).getData()).getRSNPCNodeHolder()).getRSNPC());
 		} else {
 			return new Player(client.getRSPlayerArray()[index - 0x8000]);
 		}
-		return null;
 	}
 
 	public int getAnimation() {
