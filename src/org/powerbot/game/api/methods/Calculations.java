@@ -49,11 +49,11 @@ public class Calculations {
 		return 0;
 	}
 
-	public static Point groundToScreen(final int x, final int y, final int plane, final int height) {
-		if (x < 512 || y < 512 || x > 52224 || y > 52224) {
+	public static Point groundToScreen(final int x, final int z, final int plane, final int height) {
+		if (x < 512 || z < 512 || x > 52224 || z > 52224) {
 			return new Point(-1, -1);
 		}
-		final int z = calculateTileHeight(x, y, plane) + height;
+		final int y = calculateTileHeight(x, z, plane) - height;
 		return worldToScreen(x, y, z);
 	}
 
