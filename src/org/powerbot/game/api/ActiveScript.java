@@ -48,15 +48,26 @@ public abstract class ActiveScript implements EventListener {
 	public final Runnable start() {
 		return new Runnable() {
 			public void run() {
-				eventManager.accept(ActiveScript.this);
 				registerWorkers();
-				executor.listen();
+				resume();
 			}
 		};
 	}
 
+	public final void resume() {
+		eventManager.accept(ActiveScript.this);
+		executor.listen();
+	}
+
 	public final void pause() {
+		pause(false);
+	}
+
+	public final void pause(final boolean removeListener) {
 		executor.lock();
+		if (removeListener) {
+			eventManager.remove(ActiveScript.this);
+		}
 	}
 
 	public final Runnable stop() {
