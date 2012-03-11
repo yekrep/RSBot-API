@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.GridBagLayout;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
@@ -14,6 +15,8 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.JPanel;
 
@@ -31,6 +34,7 @@ public class BotPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private Bot bot;
 	private int xOff, yOff;
+	private final BotLoadingPanel panel;
 
 	public BotPanel() {
 		final Dimension d = new Dimension(BotChrome.PANEL_WIDTH, BotChrome.PANEL_HEIGHT);
@@ -40,6 +44,10 @@ public class BotPanel extends JPanel {
 		setBackground(Color.black);
 		bot = null;
 		xOff = yOff = 0;
+
+		setLayout(new GridBagLayout());
+		add(panel = new BotLoadingPanel());
+		Logger.getLogger(Bot.class.getName()).log(Level.INFO, "Add a tab to start a new bot", "Welcome");
 
 		addComponentListener(new ComponentAdapter() {
 			@Override
@@ -109,6 +117,7 @@ public class BotPanel extends JPanel {
 		super.paintComponent(g);
 
 		if (bot != null) {
+			panel.setVisible(false);
 			g.drawImage(bot.image, xOff, yOff, null);
 		}
 	}
@@ -118,6 +127,7 @@ public class BotPanel extends JPanel {
 			this.bot.setPanel(null);
 		}
 		this.bot = bot;
+		panel.setVisible(true);
 		if (bot != null) {
 			bot.setPanel(this);
 			if (bot.getCanvas() != null) {

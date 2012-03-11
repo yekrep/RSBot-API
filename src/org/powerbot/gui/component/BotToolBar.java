@@ -4,6 +4,8 @@ import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.Box;
 import javax.swing.ImageIcon;
@@ -102,6 +104,9 @@ public final class BotToolBar extends JToolBar {
 		}
 		b.getBot().killEnvironment();
 		BotChrome.panel.repaint();
+		if (getTabCount() == 0) {
+			Logger.getLogger(Bot.class.getName()).log(Level.INFO, "Add a tab to start another bot", "Closed");
+		}
 	}
 
 	private void openTab(final int n) {
