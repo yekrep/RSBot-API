@@ -2,6 +2,7 @@ package org.powerbot.game.api.wrappers;
 
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.Arrays;
 
 import org.powerbot.game.api.Multipliers;
 import org.powerbot.game.bot.Bot;
@@ -15,6 +16,9 @@ import org.powerbot.game.client.RSInterfaceText;
  * @author Timer
  */
 public class Widget {
+	private WidgetChild[] childCache = new WidgetChild[0];
+	private final Object CACHE_LOCK = new Object();
+
 	private final int index;
 
 	public Widget(final int index) {
@@ -94,16 +98,37 @@ public class Widget {
 		return new Point(-1, -1);
 	}
 
-	public String[] getActions() {
-		return null;
-	}
-
 	public WidgetChild[] getChildren() {
-		return null;
+		synchronized (CACHE_LOCK) {
+			final Object[] children = getChildrenInternal();
+			if (children == null) {
+				return childCache.clone();
+			} else {
+				if (childCache.length < children.length) {
+					final int prevLen = childCache.length;
+					childCache = Arrays.copyOf(childCache, children.length);
+					for (int i = prevLen; i < childCache.length; i++) {
+						childCache[i] = new WidgetChild(this, i);
+					}
+				}
+				return childCache.clone();
+			}
+		}
 	}
 
 	public WidgetChild getChild(final int index) {
-		return null;
+		synchronized (CACHE_LOCK) {
+			final Object[] children = getChildrenInternal();
+			final int ensureLen = Math.max(children != null ? children.length : 0, index + 1);
+			if (childCache.length < ensureLen) {
+				final int prevLen = childCache.length;
+				childCache = Arrays.copyOf(childCache, ensureLen);
+				for (int i = prevLen; i < ensureLen; i++) {
+					childCache[i] = new WidgetChild(this, i);
+				}
+			}
+			return childCache[index];
+		}
 	}
 
 	@Override
