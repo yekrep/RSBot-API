@@ -38,7 +38,7 @@ public abstract class GameDefinition implements GameEnvironment {
 	protected volatile boolean killed;
 
 	public GameDefinition() {
-		this.threadGroup = new ThreadGroup("GameDefinition-" + hashCode());
+		this.threadGroup = new ThreadGroup(GameDefinition.class.getName() + "-" + hashCode());
 		this.processor = new TaskProcessor(threadGroup);
 		this.classes = new HashMap<String, byte[]>();
 
