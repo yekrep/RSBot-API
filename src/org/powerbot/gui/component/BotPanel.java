@@ -53,7 +53,7 @@ public class BotPanel extends JPanel {
 		addComponentListener(new ComponentAdapter() {
 			@Override
 			public void componentResized(final ComponentEvent evt) {
-				if (bot != null) {
+				if (bot != null && bot.appletContainer != null) {
 					bot.resize(getWidth(), getHeight());
 					offset();
 				}
