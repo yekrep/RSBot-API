@@ -46,7 +46,7 @@ public abstract class Character implements Locatable {
 	public abstract String getName();
 
 	public Tile getLocation() {
-		final RSInteractableLocation location = ((RSInteractableManager) ((RSInteractableRSInteractableManager) get()).getRSInteractableManager()).getData().getLocation();
+		final RSInteractableLocation location = ((RSInteractableManager) ((RSInteractableRSInteractableManager) get()).getRSInteractableRSInteractableManager()).getData().getLocation();
 		return new Tile(Game.getBaseX() + (int) location.getX() >> 9, Game.getBaseY() + (int) location.getY() >> 9);
 	}
 
@@ -114,8 +114,8 @@ public abstract class Character implements Locatable {
 	}
 
 	public Point getCenterPoint() {
-		final RSInteractableLocation location = ((RSInteractableManager) ((RSInteractableRSInteractableManager) get()).getRSInteractableManager()).getData().getLocation();
-		return Calculations.groundToScreen((int) location.getX(), (int) location.getY(), Game.getPlane(), -getHeight());
+		final RSInteractableLocation location = ((RSInteractableManager) ((RSInteractableRSInteractableManager) get()).getRSInteractableRSInteractableManager()).getData().getLocation();
+		return Calculations.groundToScreen((int) location.getX(), (int) location.getY(), Game.getPlane(), -getHeight() / 2);
 	}
 
 	public Point getNextPoint() {
