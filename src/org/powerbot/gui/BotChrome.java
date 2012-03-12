@@ -1,20 +1,31 @@
 package org.powerbot.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Desktop;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
 import org.powerbot.game.bot.Bot;
 import org.powerbot.gui.component.BotPanel;
 import org.powerbot.gui.component.BotToolBar;
+import org.powerbot.service.NetworkAccount;
 import org.powerbot.util.Configuration;
 import org.powerbot.util.io.Resources;
 
@@ -26,6 +37,8 @@ public class BotChrome extends JFrame implements WindowListener {
 	private static Logger log = Logger.getLogger(BotChrome.class.getName());
 	public static final int PANEL_WIDTH = 765, PANEL_HEIGHT = 503, MAX_BOTS = 3;
 	public static BotPanel panel;
+	public BotToolBar toolbar;
+	public JPanel header;
 
 	public BotChrome() {
 		setTitle(Configuration.NAME);
@@ -33,10 +46,21 @@ public class BotChrome extends JFrame implements WindowListener {
 		addWindowListener(this);
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 
-		add(new BotToolBar(this), BorderLayout.NORTH);
-
 		panel = new BotPanel();
 		add(panel);
+
+		toolbar = new BotToolBar(this);
+		header = new JPanel();
+		header.setBackground(Color.BLACK);
+		header.setPreferredSize(toolbar.getPreferredSize());
+		add(header, BorderLayout.NORTH);
+
+		log.log(Level.INFO, "Loading prerequisite components", "Starting...");
+		final ExecutorService exec = Executors.newFixedThreadPool(1);
+		final List<Future<Boolean>> tasks = new ArrayList<Future<Boolean>>();
+		tasks.add(exec.submit(new LoadSecureData()));
+		exec.execute(new LoadComplete(this, tasks));
+		exec.shutdown();
 
 		pack();
 		setMinimumSize(getSize());
@@ -87,5 +111,44 @@ public class BotChrome extends JFrame implements WindowListener {
 	}
 
 	public void windowOpened(final WindowEvent arg0) {
+	}
+
+	private final class LoadSecureData implements Callable<Boolean> {
+		@Override
+		public Boolean call() throws Exception {
+			NetworkAccount.getInstance().isLoggedIn();
+			return true;
+		}
+	}
+
+	private final class LoadComplete implements Runnable {
+		private final BotChrome parent;
+		private final List<Future<Boolean>> tasks;
+
+		public LoadComplete(final BotChrome parent, final List<Future<Boolean>> tasks) {
+			this.parent = parent;
+			this.tasks = tasks;
+		}
+
+		@Override
+		public void run() {
+			boolean pass = true;
+			for (final Future<Boolean> task : tasks) {
+				try {
+					if (!task.get()) {
+						pass = false;
+					}
+				} catch (final InterruptedException ignored) {
+				} catch (final ExecutionException ignored) {
+				}
+			}
+			if (pass) {
+				parent.remove(parent.header);
+				parent.add(parent.toolbar, BorderLayout.NORTH);
+				parent.validate();
+				parent.repaint();
+				Logger.getLogger(BotChrome.class.getName()).log(Level.INFO, "Add a tab to start a new bot", "Welcome");
+			}
+		}
 	}
 }
