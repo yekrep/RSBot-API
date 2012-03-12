@@ -79,7 +79,7 @@ public final class BotLoadingPanel extends JPanel {
 			if (listeningGroup != null && currentGroup != listeningGroup) {
 				return;
 			}
-			Color c = new Color(149, 156, 171);
+			Color c = new Color(200, 200, 200);
 			final String title = record.getParameters() != null && record.getParameters().length == 1 ? (String) record.getParameters()[0] : null;
 			if (record.getLevel() == Level.SEVERE || record.getLevel() == Level.WARNING) {
 				if (title == null) {

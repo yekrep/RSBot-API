@@ -56,7 +56,7 @@ public final class GameAccounts extends ArrayList<GameAccounts.Account> {
 
 	public synchronized void save() throws IOException, GeneralSecurityException {
 		final Map<String, Map<String, String>> entries = new HashMap<String, Map<String, String>>();
-		for (Iterator<Account> i = iterator(); i.hasNext();) {
+		for (Iterator<Account> i = iterator(); i.hasNext(); ) {
 			final Account a = i.next();
 			final Map<String, String> e = new HashMap<String, String>();
 			e.put("password", a.password);
@@ -73,7 +73,7 @@ public final class GameAccounts extends ArrayList<GameAccounts.Account> {
 
 	public Account get(String username) {
 		username = normaliseUsername(username);
-		for (Iterator<Account> i = iterator(); i.hasNext();) {
+		for (Iterator<Account> i = iterator(); i.hasNext(); ) {
 			final Account a = i.next();
 			if (a.username.equalsIgnoreCase(username)) {
 				return a;
