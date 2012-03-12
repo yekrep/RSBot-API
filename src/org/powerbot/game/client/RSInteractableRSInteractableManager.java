@@ -1,5 +1,5 @@
 package org.powerbot.game.client;
 
 public interface RSInteractableRSInteractableManager {
-	public Object getRSInteractableManager();
+	public Object getRSInteractableRSInteractableManager();
 }
