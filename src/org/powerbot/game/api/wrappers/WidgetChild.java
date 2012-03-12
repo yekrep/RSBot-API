@@ -1,5 +1,6 @@
 package org.powerbot.game.api.wrappers;
 
+import org.powerbot.game.api.methods.Widgets;
 import org.powerbot.game.api.util.internal.HashTable;
 import org.powerbot.game.bot.Bot;
 import org.powerbot.game.client.RSInterfaceActions;
@@ -17,9 +18,11 @@ import org.powerbot.game.client.RSInterfaceHorizontalScrollbarSize;
 import org.powerbot.game.client.RSInterfaceHorizontalScrollbarThumbSize;
 import org.powerbot.game.client.RSInterfaceID;
 import org.powerbot.game.client.RSInterfaceInts;
+import org.powerbot.game.client.RSInterfaceIsHidden;
 import org.powerbot.game.client.RSInterfaceIsHorizontallyFlipped;
 import org.powerbot.game.client.RSInterfaceIsInventoryInterface;
 import org.powerbot.game.client.RSInterfaceIsVerticallyFlipped;
+import org.powerbot.game.client.RSInterfaceIsVisible;
 import org.powerbot.game.client.RSInterfaceModelID;
 import org.powerbot.game.client.RSInterfaceModelType;
 import org.powerbot.game.client.RSInterfaceModelZoom;
@@ -295,7 +298,23 @@ public class WidgetChild {
 	}
 
 	public WidgetChild[] getChildren() {
-		return null;
+		final Object inter = getInternal();
+		if (inter != null) {
+			final Object[] interfaceComponents = (Object[]) ((RSInterfaceComponents) inter).getRSInterfaceComponents();
+			if (interfaceComponents != null) {
+				final WidgetChild[] components = new WidgetChild[interfaceComponents.length];
+				for (int i = 0; i < components.length; i++) {
+					components[i] = new WidgetChild(parentWidget, this, i);
+				}
+				return components;
+			}
+		}
+		return new WidgetChild[0];
+	}
+
+	public boolean isVisible() {
+		final Object inter = getInternal();
+		return !(inter == null || ((RSInterfaceIsHidden) ((RSInterfaceBooleans) inter).getRSInterfaceBooleans()).getRSInterfaceIsHidden()) && (((RSInterfaceIsVisible) ((RSInterfaceBooleans) inter).getRSInterfaceBooleans()).getRSInterfaceIsVisible() || getParentId() == -1 || Widgets.get(getParentId()).isValid());
 	}
 
 	@Override
