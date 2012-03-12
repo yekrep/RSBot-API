@@ -102,12 +102,12 @@ public final class BotSignin extends JDialog implements ActionListener {
 					} else {
 						JOptionPane.showMessageDialog(this, BotLocale.INVALIDCREDENTIALS, BotLocale.ERROR, JOptionPane.ERROR_MESSAGE);
 					}
-					signin.setEnabled(true);
 				}
 			} else if (signin.getText().equals(BotLocale.SIGNOUT)) {
 				NetworkAccount.getInstance().logout();
 				updateState();
 			}
+			signin.setEnabled(true);
 		}
 	}
 
