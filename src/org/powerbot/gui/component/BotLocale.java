@@ -30,5 +30,5 @@ public final class BotLocale {
 	public static String INVALIDCREDENTIALS = "Invalid username or password.";
 
 	public static String POWERBOT = Configuration.URLs.DOMAIN;
-	public static String COPYRIGHT = "Copyright \u00a9 2011 - 2012 'Paris', licensed to J.P. Holdings Int'l Ltd.";
+	public static String COPYRIGHT = "Copyright \u00a9 2011 - 2012 J.P. Holdings Int'l Ltd.";
 }
