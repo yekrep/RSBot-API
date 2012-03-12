@@ -71,8 +71,12 @@ public final class BotLoadingPanel extends JPanel {
 
 		@Override
 		public void publish(final LogRecord record) {
-			logRecord.put(Thread.currentThread().getThreadGroup(), record);
-			if (listeningGroup != null && Thread.currentThread().getThreadGroup() != listeningGroup) {
+			final ThreadGroup currentGroup = Thread.currentThread().getThreadGroup();
+			if (listeningGroup == null && currentGroup.getName().startsWith(GameDefinition.class.getName())) {
+				return;
+			}
+			logRecord.put(currentGroup, record);
+			if (listeningGroup != null && currentGroup != listeningGroup) {
 				return;
 			}
 			Color c = new Color(149, 156, 171);
