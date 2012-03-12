@@ -120,7 +120,7 @@ public class Bot extends GameDefinition implements Runnable {
 		final String id = "(" + packHash.substring(0, 6) + ")";
 		log.info("Loading client patch " + id);
 		try {
-			modScript = new ModScript(IOHelper.read(HttpClient.openStream(new URL(Resources.getServerLinks().get("clientpatch") + packHash))));
+			modScript = new ModScript(IOHelper.read(HttpClient.openStream(new URL(String.format(Resources.getServerLinks().get("clientpatch"), packHash)))));
 			return modScript;
 		} catch (final SocketTimeoutException ignored) {
 			log.severe("Please try again later " + id);
