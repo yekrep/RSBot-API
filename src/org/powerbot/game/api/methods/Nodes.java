@@ -15,7 +15,7 @@ public class Nodes {
 			if (nc == null || id < 0l) {
 				return null;
 			}
-			Node[] buckets;
+			final Node[] buckets;
 			Object o;
 			if (nc instanceof HashTableBuckets && ((o = ((HashTableBuckets) nc).getHashTableBuckets()) instanceof Node[])) {
 				buckets = (Node[]) o;
