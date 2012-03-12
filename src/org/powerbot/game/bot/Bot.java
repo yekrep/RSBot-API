@@ -1,16 +1,13 @@
 package org.powerbot.game.bot;
 
 import java.awt.Canvas;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.SocketTimeoutException;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -24,19 +21,8 @@ import org.powerbot.game.GameDefinition;
 import org.powerbot.game.api.Constants;
 import org.powerbot.game.api.Multipliers;
 import org.powerbot.game.api.methods.Calculations;
-import org.powerbot.game.api.methods.Camera;
-import org.powerbot.game.api.methods.Game;
-import org.powerbot.game.api.methods.Menu;
-import org.powerbot.game.api.methods.Npcs;
-import org.powerbot.game.api.methods.Players;
-import org.powerbot.game.api.methods.Settings;
-import org.powerbot.game.api.methods.Skills;
-import org.powerbot.game.api.methods.Walking;
 import org.powerbot.game.api.methods.input.Keyboard;
 import org.powerbot.game.api.util.Time;
-import org.powerbot.game.api.wrappers.Npc;
-import org.powerbot.game.api.wrappers.Player;
-import org.powerbot.game.api.wrappers.Tile;
 import org.powerbot.game.client.Client;
 import org.powerbot.game.client.Render;
 import org.powerbot.game.client.RenderAbsoluteX;
@@ -291,33 +277,6 @@ public class Bot extends GameDefinition implements Runnable {
 
 	private final class BasicDebug implements PaintListener, MessageListener {
 		public void onRepaint(final Graphics render) {
-			render.setColor(Color.green);
-			render.drawString("Client state: " + Game.getClientState(), 10, 20);
-			render.drawString("Floor  " + Game.getPlane(), 10, 32);
-			render.drawString("Base X, Y: (" + Game.getBaseX() + ", " + Game.getBaseY() + ")", 10, 44);
-			render.drawString("Destination X, Y: (" + Walking.getDestinationX() + "," + Walking.getDestinationY() + ")", 10, 56);
-			render.drawString("Camera X, Y, Z [P, Y]: " + Camera.getX() + ", " + Camera.getY() + ", " + Camera.getZ() + " [" + Camera.getPitch() + "," + Camera.getYaw() + "]", 10, 68);
-			render.drawString("Menu open: " + Menu.isOpen(), 10, 80);
-			render.drawString("Menu X,Y W,H: " + Menu.getX() + ", " + Menu.getY() + " " + Menu.getWidth() + ", " + Menu.getHeight(), 10, 92);
-			render.drawString("Settings: " + Arrays.toString(Settings.get()), 10, 104);
-			render.drawString("Skill levels: " + Arrays.toString(Skills.getLevels()), 10, 116);
-
-			render.setColor(Color.white);
-			if (Game.getClientState() == 11) {
-				try {
-					for (int x = 0; x < 104; x++) {
-						for (int y = 0; y < 104; y++) {
-							final Point p = new Tile(Game.getBaseX() + x, Game.getBaseY() + y).getCenterPoint();
-							if (p.x == -1) {
-								continue;
-							}
-							render.drawString(".", p.x - 1, p.y + 1);
-						}
-					}
-				} catch (final Exception e) {
-					e.printStackTrace();
-				}
-			}
 		}
 
 		public void messageReceived(MessageEvent e) {
