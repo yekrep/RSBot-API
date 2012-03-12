@@ -23,7 +23,7 @@ import javax.swing.JPasswordField;
 
 import org.powerbot.gui.component.BotLocale;
 import org.powerbot.service.NetworkAccount;
-import org.powerbot.util.Configuration;
+import org.powerbot.util.io.Resources;
 
 /**
  * @author Paris
@@ -56,7 +56,7 @@ public final class BotSignin extends JDialog implements ActionListener {
 		register.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(final MouseEvent arg0) {
-				BotChrome.openURL(Configuration.URLs.REGISTER);
+				BotChrome.openURL(Resources.getServerLinks().get("register"));
 			}
 		});
 		panelAction.add(register);

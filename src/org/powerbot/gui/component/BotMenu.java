@@ -13,7 +13,6 @@ import org.powerbot.gui.BotAccounts;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.gui.BotSignin;
 import org.powerbot.service.NetworkAccount;
-import org.powerbot.util.Configuration;
 import org.powerbot.util.io.Resources;
 
 /**
@@ -80,7 +79,7 @@ public final class BotMenu extends JPopupMenu implements ActionListener {
 		} else if (a.startsWith(BotLocale.SIGNIN) || a.startsWith(BotLocale.SIGNEDINAS)) {
 			new BotSignin(parent.parent);
 		} else if (a.equals(BotLocale.POWERBOT)) {
-			BotChrome.openURL(Configuration.URLs.SITE);
+			BotChrome.openURL(Resources.getServerLinks().get("site"));
 		} else if (a.equals(BotLocale.ABOUT)) {
 			JOptionPane.showMessageDialog(parent.parent, new String[]{
 					BotLocale.COPYRIGHT,
@@ -88,7 +87,7 @@ public final class BotMenu extends JPopupMenu implements ActionListener {
 					"RuneScape\u00ae is a trademark of Jagex \u00a9 1999 - 2011 Jagex, Ltd.",
 					"RuneScape content and materials are trademarks and copyrights of Jagex or its licensees.",
 					"This program is issued with no warranty and is not affiliated with Jagex Ltd., nor do they endorse usage of our software.\n\n",
-					"Visit " + Configuration.URLs.SITE + "/ for more information."},
+					"Visit " + Resources.getServerLinks().get("site") + "/ for more information."},
 					BotLocale.ABOUT,
 					JOptionPane.INFORMATION_MESSAGE);
 		} else if (a.equals(BotLocale.EXIT)) {

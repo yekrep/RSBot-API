@@ -17,15 +17,9 @@ public class Configuration {
 
 	public interface URLs {
 		public static final String DOMAIN = "powerbot.org";
-		public static final String BASE_LINKS = "http://links." + DOMAIN + "/";
-		public static final String BASE = "https://www." + DOMAIN + "/";
-
-		public static final String SITE = BASE_LINKS + "site";
-		public static final String REGISTER = BASE_LINKS + "register";
-		public static final String SIGNIN = BASE + "api/login/";
+		public static final String CONTROL = "http://links." + DOMAIN + "/control";
 
 		public static final String GAME = "runescape.com";
-		public static final String CLIENT_PATCH = BASE_LINKS + "modscript/";
 	}
 
 	static {
