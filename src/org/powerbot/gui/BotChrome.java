@@ -58,6 +58,7 @@ public class BotChrome extends JFrame implements WindowListener {
 		log.log(Level.INFO, "Loading prerequisite components", "Starting...");
 		final ExecutorService exec = Executors.newFixedThreadPool(1);
 		final List<Future<Boolean>> tasks = new ArrayList<Future<Boolean>>();
+		tasks.add(exec.submit(new LoadUpdates()));
 		tasks.add(exec.submit(new LoadSecureData()));
 		exec.execute(new LoadComplete(this, tasks));
 		exec.shutdown();
@@ -111,6 +112,19 @@ public class BotChrome extends JFrame implements WindowListener {
 	}
 
 	public void windowOpened(final WindowEvent arg0) {
+	}
+
+	private final class LoadUpdates implements Callable<Boolean> {
+		@Override
+		public Boolean call() throws Exception {
+			final int version = Integer.parseInt(Resources.getServerData().get("manifest").get("version"));
+			if (version > Configuration.VERSION) {
+				// TODO: automatic updating
+				Logger.getLogger(BotChrome.class.getName()).log(Level.SEVERE, "A newer version of " + Configuration.NAME + " is available", "Update");
+				return false;
+			}
+			return true;
+		}
 	}
 
 	private final class LoadSecureData implements Callable<Boolean> {
