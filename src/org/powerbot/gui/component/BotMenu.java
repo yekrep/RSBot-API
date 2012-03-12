@@ -83,14 +83,14 @@ public final class BotMenu extends JPopupMenu implements ActionListener {
 			BotChrome.openURL(Configuration.URLs.SITE);
 		} else if (a.equals(BotLocale.ABOUT)) {
 			JOptionPane.showMessageDialog(parent.parent, new String[]{
-				BotLocale.COPYRIGHT,
-				"Unauthorised use of this application is prohibited.\n\n",
-				"RuneScape\u00ae is a trademark of Jagex \u00a9 1999 - 2011 Jagex, Ltd.",
-				"RuneScape content and materials are trademarks and copyrights of Jagex or its licensees.",
-				"This program is issued with no warranty and is not affiliated with Jagex Ltd., nor do they endorse usage of our software.\n\n",
-				"Visit " + Configuration.URLs.SITE + "/ for more information."},
-				BotLocale.ABOUT,
-				JOptionPane.INFORMATION_MESSAGE);
+					BotLocale.COPYRIGHT,
+					"Unauthorised use of this application is prohibited.\n\n",
+					"RuneScape\u00ae is a trademark of Jagex \u00a9 1999 - 2011 Jagex, Ltd.",
+					"RuneScape content and materials are trademarks and copyrights of Jagex or its licensees.",
+					"This program is issued with no warranty and is not affiliated with Jagex Ltd., nor do they endorse usage of our software.\n\n",
+					"Visit " + Configuration.URLs.SITE + "/ for more information."},
+					BotLocale.ABOUT,
+					JOptionPane.INFORMATION_MESSAGE);
 		} else if (a.equals(BotLocale.EXIT)) {
 			parent.parent.dispatchEvent(new WindowEvent(parent.parent, WindowEvent.WINDOW_CLOSING));
 		}
