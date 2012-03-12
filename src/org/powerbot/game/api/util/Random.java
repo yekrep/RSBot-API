@@ -62,10 +62,10 @@ public class Random {
 	/**
 	 * Generates a pseudo-random number between the two given values with standard deviation about a provided mean.
 	 *
-	 * @param min The minimum value (inclusive).
-	 * @param max The maximum value (exclusive).
+	 * @param min  The minimum value (inclusive).
+	 * @param max  The maximum value (exclusive).
 	 * @param mean The mean (>= min & < max).
-	 * @param sd  Standard deviation.
+	 * @param sd   Standard deviation.
 	 * @return The generated pseudo-random integer.
 	 */
 	public static int nextGaussian(final int min, final int max, final int mean, final int sd) {

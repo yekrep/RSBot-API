@@ -5,7 +5,6 @@ import java.util.Set;
 
 import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.wrappers.Npc;
-import org.powerbot.game.api.wrappers.Player;
 import org.powerbot.game.bot.Bot;
 import org.powerbot.game.client.Client;
 import org.powerbot.game.client.Node;
