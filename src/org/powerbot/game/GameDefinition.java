@@ -28,6 +28,7 @@ public abstract class GameDefinition implements GameEnvironment {
 	private static final Logger log = Logger.getLogger(GameDefinition.class.getName());
 	public TaskContainer processor;
 	private final Map<String, byte[]> classes;
+	public static final String THREADGROUPNAMEPREFIX = "GameDefinition-";
 
 	public Crawler crawler;
 	public volatile Rs2Applet appletContainer;
@@ -38,7 +39,7 @@ public abstract class GameDefinition implements GameEnvironment {
 	protected volatile boolean killed;
 
 	public GameDefinition() {
-		this.threadGroup = new ThreadGroup(GameDefinition.class.getName() + "-" + hashCode());
+		this.threadGroup = new ThreadGroup(THREADGROUPNAMEPREFIX + hashCode());
 		this.processor = new TaskProcessor(threadGroup);
 		this.classes = new HashMap<String, byte[]>();
 
