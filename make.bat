@@ -1,9 +1,11 @@
 @ECHO OFF
 
-SETLOCAL
-CALL :setvars
 SET cmd=%1
-IF "%cmd%"=="" SET cmd=all
+IF "%cmd%"=="" (
+	SETLOCAL
+	CALL :setvars
+	SET cmd=all
+)
 CALL :%cmd%
 GOTO :eof
 
