@@ -36,11 +36,11 @@ public abstract class ActiveScript implements EventListener {
 		this.executor = new ActionExecutor(this.container);
 	}
 
-	protected final void registerWorker(final Action action) {
+	protected final void registerAction(final Action action) {
 		executor.append(action);
 	}
 
-	protected final void destroyWorker(final Action action) {
+	protected final void removeAction(final Action action) {
 		executor.omit(action);
 	}
 
@@ -48,12 +48,12 @@ public abstract class ActiveScript implements EventListener {
 		this.stop_execution = activator;
 	}
 
-	protected abstract void registerWorkers();
+	protected abstract void setupJobs();
 
 	public final Runnable start() {
 		return new Runnable() {
 			public void run() {
-				registerWorkers();
+				setupJobs();
 				resume();
 			}
 		};

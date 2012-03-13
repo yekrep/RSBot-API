@@ -7,7 +7,7 @@ import org.powerbot.concurrent.Task;
  *
  * @author Timer
  */
-public class ActionComposite {
+public class TaskHolder {
 	public Task[] tasks;
 
 	/**
@@ -15,7 +15,7 @@ public class ActionComposite {
 	 *
 	 * @param tasks The <code>ContainedTask</code> associated with this <code>ActionComposite</code>.
 	 */
-	public ActionComposite(final Task... tasks) {
+	public TaskHolder(final Task... tasks) {
 		this.tasks = tasks;
 	}
 }

@@ -11,28 +11,28 @@ public class Action {
 	public boolean requireLock;
 	public boolean resetExecutionQueue;
 	public Activator activator;
-	public ActionComposite actionComposite;
+	public TaskHolder taskHolder;
 
 	/**
 	 * Initializes this <code>Action</code> with appropriate information required for processing.
 	 *
 	 * @param activator       The <code>Activator</code> associated with this <code>Action</code>.
-	 * @param actionComposite The <code>ActionComposite</code> associated with this <code>Action</code>.
+	 * @param taskHolder The <code>TaskHolder</code> associated with this <code>Action</code>.
 	 */
-	public Action(final Activator activator, final ActionComposite actionComposite) {
-		this(activator, actionComposite, true);
+	public Action(final Activator activator, final TaskHolder taskHolder) {
+		this(activator, taskHolder, true);
 	}
 
 	/**
 	 * Initializes this <code>Action</code> with appropriate information required for processing.
 	 *
 	 * @param activator       The <code>Activator</code> associated with this <code>Action</code>.
-	 * @param actionComposite The <code>ActionComposite</code> array associated with this <code>Action</code>.
+	 * @param taskHolder The <code>TaskHolder</code> associated with this <code>Action</code>.
 	 * @param requireLock     <tt>true</tt> to require the ActionManager to lock while processing this action; otherwise <tt>false</tt>.
 	 */
-	public Action(final Activator activator, final ActionComposite actionComposite, final boolean requireLock) {
+	public Action(final Activator activator, final TaskHolder taskHolder, final boolean requireLock) {
 		this.activator = activator;
-		this.actionComposite = actionComposite;
+		this.taskHolder = taskHolder;
 		this.requireLock = requireLock;
 		this.resetExecutionQueue = false;
 	}
