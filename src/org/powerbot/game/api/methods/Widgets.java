@@ -36,6 +36,10 @@ public class Widgets {
 	}
 
 	public static Widget get(final int index) {
+		if (index < 0) {
+			throw new RuntimeException("index < 0 (" + index + ")");
+		}
+
 		final Client client = Bot.resolve().client;
 		Widget[] cachedInterfaces = caches.get(client);
 		if (cachedInterfaces == null) {

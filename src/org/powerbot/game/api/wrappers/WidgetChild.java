@@ -365,6 +365,7 @@ public class WidgetChild {
 		final Bot bot = Bot.resolve();
 
 		final int parentId = ((RSInterfaceParentID) ((RSInterfaceInts) inter).getRSInterfaceInts()).getRSInterfaceParentID() * bot.multipliers.INTERFACE_PARENTID;
+
 		if (parentId != -1) {
 			return parentId;
 		}
@@ -374,8 +375,9 @@ public class WidgetChild {
 
 		for (RSInterfaceNode node = (RSInterfaceNode) ncI.getFirst(); node != null;
 		     node = (RSInterfaceNode) ncI.getNext()) {
-			if (mainID == ((RSInterfaceNodeMainID) ((RSInterfaceNodeInts) node).getRSInterfaceNodeInts()).getRSInterfaceNodeMainID() * bot.multipliers.INTERFACENODE_MAINID) {
-				return (int) node.getID();
+			if (mainID == ((RSInterfaceNodeMainID) ((RSInterfaceNodeInts) node.getData()).getRSInterfaceNodeInts()).getRSInterfaceNodeMainID() * bot.multipliers.INTERFACENODE_MAINID) {
+				final long multiplier = (((long) bot.multipliers.NODE_ID) << 32) + ((bot.multipliers.NODE_ID_p2 & 0xFFFFFFFFL));
+				return (int) (node.getID() * multiplier);
 			}
 		}
 
