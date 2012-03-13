@@ -18,7 +18,7 @@ import org.powerbot.lang.Activator;
 public class ActionExecutor extends RunnableTask implements ActionContainer {
 	private final TaskContainer processor;
 	private final List<Action> actions;
-	private State state;
+	public State state;
 
 	/**
 	 * Initializes this action manager with appropriate objects.
@@ -169,7 +169,7 @@ public class ActionExecutor extends RunnableTask implements ActionContainer {
 	 *
 	 * @author Timer
 	 */
-	private enum State {
+	public enum State {
 		LISTENING, LOCKED, DESTROYED
 	}
 }
