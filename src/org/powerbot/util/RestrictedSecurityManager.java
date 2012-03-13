@@ -18,6 +18,7 @@ import org.powerbot.util.io.SecureStore;
  */
 public class RestrictedSecurityManager extends SecurityManager {
 	private static final Logger log = Logger.getLogger("Security");
+	public static final String DNS1 = "8.8.8.8", DNS2 = "8.8.4.4";
 
 	private String getCallingClass() {
 		for (final Class<?> clazz : getClassContext()) {
@@ -34,6 +35,9 @@ public class RestrictedSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkAccept(final String host, final int port) {
+		if (port == 53 && (host.equals(DNS1) || host.equals(DNS2))) {
+			return;
+		}
 		throw new SecurityException();
 	}
 
