@@ -87,7 +87,7 @@ public final class BotMenu extends JPopupMenu implements ActionListener {
 					"RuneScape\u00ae is a trademark of Jagex \u00a9 1999 - 2011 Jagex, Ltd.",
 					"RuneScape content and materials are trademarks and copyrights of Jagex or its licensees.",
 					"This program is issued with no warranty and is not affiliated with Jagex Ltd., nor do they endorse usage of our software.\n\n",
-					"Visit " + Resources.getServerLinks().get("site") + "/ for more information."},
+					"Visit " + Resources.getServerLinks().get("site") + " for more information."},
 					BotLocale.ABOUT,
 					JOptionPane.INFORMATION_MESSAGE);
 		} else if (a.equals(BotLocale.EXIT)) {
