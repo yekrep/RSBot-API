@@ -57,7 +57,7 @@ public final class BotLoadingPanel extends JPanel {
 	}
 
 	private final class BotLoadingPanelLogHandler extends Handler {
-		final BotLoadingPanel panel;
+		private final BotLoadingPanel panel;
 
 		public BotLoadingPanelLogHandler(final BotLoadingPanel panel) {
 			this.panel = panel;

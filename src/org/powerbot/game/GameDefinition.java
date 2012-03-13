@@ -25,7 +25,7 @@ import org.powerbot.util.io.HttpClient;
  * @author Timer
  */
 public abstract class GameDefinition implements GameEnvironment {
-	private static Logger log = Logger.getLogger(GameDefinition.class.getName());
+	private static final Logger log = Logger.getLogger(GameDefinition.class.getName());
 	public TaskContainer processor;
 	private final Map<String, byte[]> classes;
 

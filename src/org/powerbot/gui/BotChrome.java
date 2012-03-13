@@ -55,7 +55,7 @@ public class BotChrome extends JFrame implements WindowListener {
 		header.setPreferredSize(toolbar.getPreferredSize());
 		add(header, BorderLayout.NORTH);
 
-		log.log(Level.INFO, "Loading prerequisite components", "Starting...");
+		log.log(Level.INFO, "Optimizing your experience", "Starting...");
 		final ExecutorService exec = Executors.newFixedThreadPool(1);
 		final List<Future<Boolean>> tasks = new ArrayList<Future<Boolean>>();
 		tasks.add(exec.submit(new LoadUpdates()));
@@ -115,12 +115,11 @@ public class BotChrome extends JFrame implements WindowListener {
 	}
 
 	private final class LoadUpdates implements Callable<Boolean> {
-		@Override
 		public Boolean call() throws Exception {
 			final int version = Integer.parseInt(Resources.getServerData().get("manifest").get("version"));
 			if (version > Configuration.VERSION) {
 				// TODO: automatic updating
-				Logger.getLogger(BotChrome.class.getName()).log(Level.SEVERE, "A newer version of " + Configuration.NAME + " is available", "Update");
+				log.log(Level.SEVERE, "A newer version of " + Configuration.NAME + " is available", "Update");
 				return false;
 			}
 			return true;
@@ -128,7 +127,6 @@ public class BotChrome extends JFrame implements WindowListener {
 	}
 
 	private final class LoadSecureData implements Callable<Boolean> {
-		@Override
 		public Boolean call() throws Exception {
 			NetworkAccount.getInstance().isLoggedIn();
 			return true;
@@ -144,7 +142,6 @@ public class BotChrome extends JFrame implements WindowListener {
 			this.tasks = tasks;
 		}
 
-		@Override
 		public void run() {
 			boolean pass = true;
 			for (final Future<Boolean> task : tasks) {
