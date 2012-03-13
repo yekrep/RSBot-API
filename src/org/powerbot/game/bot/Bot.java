@@ -1,9 +1,11 @@
 package org.powerbot.game.bot;
 
 import java.awt.Canvas;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.SocketTimeoutException;
@@ -15,14 +17,17 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.powerbot.asm.NodeProcessor;
-import org.powerbot.concurrent.RunnableTask;
+import org.powerbot.concurrent.Task;
 import org.powerbot.event.EventDispatcher;
 import org.powerbot.game.GameDefinition;
 import org.powerbot.game.api.Constants;
 import org.powerbot.game.api.Multipliers;
 import org.powerbot.game.api.methods.Calculations;
+import org.powerbot.game.api.methods.Widgets;
 import org.powerbot.game.api.methods.input.Keyboard;
 import org.powerbot.game.api.util.Time;
+import org.powerbot.game.api.wrappers.Widget;
+import org.powerbot.game.api.wrappers.WidgetChild;
 import org.powerbot.game.client.Client;
 import org.powerbot.game.client.Render;
 import org.powerbot.game.client.RenderAbsoluteX;
@@ -145,10 +150,10 @@ public class Bot extends GameDefinition implements Runnable {
 			log.fine("Terminating stub activities");
 			stub.setActive(false);
 		}
-		Runnable r = null;
+		Task task = null;
 		if (appletContainer != null) {
 			log.fine("Shutting down applet");
-			r = new Runnable() {
+			task = new Task() {
 				public void run() {
 					appletContainer.stop();
 					appletContainer.destroy();
@@ -159,8 +164,8 @@ public class Bot extends GameDefinition implements Runnable {
 		}
 		bots.remove(this);
 		context.remove(threadGroup);
-		if (r != null) {
-			processor.submit(RunnableTask.create(r));
+		if (task != null) {
+			processor.submit(task);
 		}
 	}
 
@@ -214,7 +219,7 @@ public class Bot extends GameDefinition implements Runnable {
 		client.setCallback(new CallbackImpl(this));
 		constants = new Constants(modScript.constants);
 		multipliers = new Multipliers(modScript.multipliers);
-		processor.submit(RunnableTask.create(new SafeMode(this)));
+		processor.submit(new SafeMode(this));
 	}
 
 	/**
@@ -277,6 +282,20 @@ public class Bot extends GameDefinition implements Runnable {
 
 	private final class BasicDebug implements PaintListener, MessageListener {
 		public void onRepaint(final Graphics render) {
+			final Widget[] widgets = Widgets.getLoaded();
+			Point p;
+			for (final Widget widget : widgets) {
+				for (final WidgetChild widgetChild : widget.getChildren()) {
+					p = widgetChild.getAbsoluteLocation();
+					render.setColor(Color.green);
+					render.drawRect(p.x - 2, p.y - 2, 4, 4);
+					for (final WidgetChild widgetChildSub : widgetChild.getChildren()) {
+						render.setColor(Color.red);
+						p = widgetChildSub.getAbsoluteLocation();
+						render.drawRect(p.x - 2, p.y - 2, 4, 4);
+					}
+				}
+			}
 		}
 
 		public void messageReceived(MessageEvent e) {
@@ -287,7 +306,7 @@ public class Bot extends GameDefinition implements Runnable {
 	/**
 	 * @author Timer
 	 */
-	private static final class SafeMode implements Runnable {
+	private static final class SafeMode extends Task {
 		private final Bot bot;
 
 		public SafeMode(final Bot bot) {

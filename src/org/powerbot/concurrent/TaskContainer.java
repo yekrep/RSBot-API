@@ -11,5 +11,5 @@ public interface TaskContainer {
 	 *
 	 * @param task The task to be deployed.
 	 */
-	public void submit(ContainedTask task);
+	public void submit(Task task);
 }

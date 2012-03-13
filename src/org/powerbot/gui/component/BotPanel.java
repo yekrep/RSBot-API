@@ -20,7 +20,7 @@ import java.util.logging.Logger;
 
 import javax.swing.JPanel;
 
-import org.powerbot.concurrent.RunnableTask;
+import org.powerbot.concurrent.Task;
 import org.powerbot.game.bot.Bot;
 import org.powerbot.game.client.input.Mouse;
 import org.powerbot.gui.BotChrome;
@@ -130,7 +130,7 @@ public class BotPanel extends JPanel {
 		this.bot = bot;
 		loadingPanel.setVisible(true);
 		if (bot != null) {
-			bot.processor.submit(RunnableTask.create(new BotSet(bot.threadGroup)));
+			bot.processor.submit(new BotSet(bot.threadGroup));
 			bot.setPanel(this);
 			if (bot.getCanvas() != null) {
 				offset();
@@ -227,7 +227,7 @@ public class BotPanel extends JPanel {
 		}
 	}
 
-	private final class BotSet implements Runnable {
+	private final class BotSet extends Task {
 		private final ThreadGroup threadGroup;
 
 		private BotSet(final ThreadGroup threadGroup) {

@@ -5,8 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Future;
 
-import org.powerbot.concurrent.ContainedTask;
-import org.powerbot.concurrent.RunnableTask;
+import org.powerbot.concurrent.Task;
 import org.powerbot.concurrent.TaskContainer;
 import org.powerbot.lang.Activator;
 
@@ -15,7 +14,7 @@ import org.powerbot.lang.Activator;
  *
  * @author Timer
  */
-public class ActionExecutor extends RunnableTask implements ActionContainer {
+public class ActionExecutor extends Task implements ActionContainer {
 	private final TaskContainer processor;
 	private final List<Action> actions;
 	public State state;
@@ -107,7 +106,7 @@ public class ActionExecutor extends RunnableTask implements ActionContainer {
 					if (action.actionComposite == null || action.actionComposite.tasks == null) {
 						continue;
 					}
-					for (final ContainedTask task : action.actionComposite.tasks) {
+					for (final Task task : action.actionComposite.tasks) {
 						processor.submit(task);
 						if (action.requireLock && task.future != null) {
 							futures.add(task.future);
@@ -148,8 +147,8 @@ public class ActionExecutor extends RunnableTask implements ActionContainer {
 	 * @return The <code>RunnableTask</code> to be submitted.
 	 */
 
-	private RunnableTask createWait(final List<Future<?>> lockingFutures, final Object threadObject) {
-		return new RunnableTask() {
+	private Task createWait(final List<Future<?>> lockingFutures, final Object threadObject) {
+		return new Task() {
 			public void run() {
 				while (lockingFutures.size() > 0) {
 					final Future<?> future = lockingFutures.get(0);
