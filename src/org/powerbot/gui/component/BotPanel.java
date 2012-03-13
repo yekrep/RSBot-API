@@ -15,8 +15,6 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.swing.JPanel;
 
@@ -48,7 +46,6 @@ public class BotPanel extends JPanel {
 
 		setLayout(new GridBagLayout());
 		add(loadingPanel = new BotLoadingPanel());
-		Logger.getLogger(Bot.class.getName()).log(Level.INFO, "Add a tab to start a new bot", "Welcome");
 
 		addComponentListener(new ComponentAdapter() {
 			@Override

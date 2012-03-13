@@ -18,6 +18,7 @@ import javax.swing.JPanel;
 
 import org.powerbot.game.GameDefinition;
 import org.powerbot.game.bot.Bot;
+import org.powerbot.gui.BotChrome;
 import org.powerbot.util.io.Resources;
 
 public final class BotLoadingPanel extends JPanel {
@@ -42,6 +43,7 @@ public final class BotLoadingPanel extends JPanel {
 		c.gridwidth = 2;
 		add(info, c);
 		handler = new BotLoadingPanelLogHandler(this);
+		Logger.getLogger(BotChrome.class.getName()).addHandler(handler);
 		Logger.getLogger(GameDefinition.class.getName()).addHandler(handler);
 		Logger.getLogger(Bot.class.getName()).addHandler(handler);
 	}

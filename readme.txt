@@ -1,1 +1,1 @@
-Copyright (c) 2012 
+Copyright (c) 2011 - 2012 J.P. Holdings Int'l Ltd.

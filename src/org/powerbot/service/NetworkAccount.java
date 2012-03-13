@@ -10,9 +10,9 @@ import java.security.GeneralSecurityException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.powerbot.util.Configuration;
 import org.powerbot.util.io.HttpClient;
 import org.powerbot.util.io.IniParser;
+import org.powerbot.util.io.Resources;
 import org.powerbot.util.io.SecureStore;
 
 /**
@@ -47,7 +47,7 @@ public final class NetworkAccount {
 	}
 
 	public boolean login(final String username, final String password) throws IOException {
-		final URL url = new URL(Configuration.URLs.SIGNIN + "?u=" + URLEncoder.encode(username, "UTF-8") + "&p=" + URLEncoder.encode(password, "UTF-8"));
+		final URL url = new URL(String.format(Resources.getServerLinks().get("signin"), URLEncoder.encode(username, "UTF-8"), URLEncoder.encode(password, "UTF-8")));
 		InputStream is;
 		try {
 			is = HttpClient.openStream(url);
