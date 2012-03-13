@@ -10,7 +10,7 @@ MANIFEST=$(RES)/Manifest.txt
 VERSIONFILE=$(RES)/version.txt
 VERSION=`cat $(VERSIONFILE)`
 NAME=RSBot
-DIST=$(NAME).jar
+DIST=$(LIB)/$(NAME).jar
 
 .PHONY: all Bot Bundle clean
 
