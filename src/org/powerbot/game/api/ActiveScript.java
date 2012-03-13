@@ -1,6 +1,7 @@
 package org.powerbot.game.api;
 
 import java.util.EventListener;
+import java.util.logging.Logger;
 
 import org.powerbot.concurrent.TaskContainer;
 import org.powerbot.concurrent.action.Action;
@@ -9,10 +10,14 @@ import org.powerbot.event.EventManager;
 import org.powerbot.game.bot.Bot;
 import org.powerbot.lang.Activator;
 
+import static org.powerbot.concurrent.action.ActionExecutor.State;
+
 /**
  * @author Timer
  */
 public abstract class ActiveScript implements EventListener {
+	public final Logger log = Logger.getLogger(getClass().getName());
+
 	private Activator stop_execution;
 	private EventManager eventManager;
 	private TaskContainer container;
@@ -77,5 +82,9 @@ public abstract class ActiveScript implements EventListener {
 				executor.destroy();
 			}
 		};
+	}
+
+	protected State getState() {
+		return executor.state;
 	}
 }
