@@ -7,6 +7,7 @@ import javax.swing.UIManager;
 
 import org.powerbot.gui.BotChrome;
 import org.powerbot.log.SystemConsoleHandler;
+import org.powerbot.util.RestrictedSecurityManager;
 
 public class Boot implements Runnable {
 	public static void main(final String[] params) {
@@ -20,6 +21,8 @@ public class Boot implements Runnable {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (final Exception ignored) {
 		}
+
+		System.setSecurityManager(new RestrictedSecurityManager());
 
 		new BotChrome();
 	}
