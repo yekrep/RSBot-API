@@ -26,7 +26,7 @@ Bundle: Bot
 	@echo "Specification-Version: \"$(VERSION)\"" >> "$(LSTF)"
 	@echo "Implementation-Version: \"$(VERSION)\"" >> "$(LSTF)"
 	@if [ -e "$(DIST)" ]; then rm -fv "$(DIST)"; fi
-	jar cfm "$(DIST)" "$(LSTF)" -C "$(BINDIR)" . "$(VERSIONFILE)" "$(IMGDIR)"/*
+	jar cfm "$(DIST)" "$(LSTF)" -C "$(BINDIR)" . "$(VERSIONFILE)" "$(IMGDIR)"/*.png
 	@rm -f "$(LSTF)"
 
 clean:
