@@ -1,8 +1,12 @@
 package org.powerbot.game.api.wrappers;
 
+import java.awt.Point;
+import java.awt.Rectangle;
+
 import org.powerbot.game.api.methods.Widgets;
 import org.powerbot.game.api.util.internal.HashTable;
 import org.powerbot.game.bot.Bot;
+import org.powerbot.game.client.Client;
 import org.powerbot.game.client.RSInterfaceActions;
 import org.powerbot.game.client.RSInterfaceBooleans;
 import org.powerbot.game.client.RSInterfaceBorderThinkness;
@@ -115,11 +119,42 @@ public class WidgetChild {
 	}
 
 	public int getAbsoluteX() {
-		return -1;//TODO
+		return getAbsoluteLocation().x;
 	}
 
 	public int getAbsoluteY() {
-		return -1;//TODO
+		return getAbsoluteLocation().y;
+	}
+
+	public Point getAbsoluteLocation() {
+		if (getInternal() == null) {
+			return new Point(-1, -1);
+		}
+		final Client client = Bot.resolve().client;
+		final int parentId = getParentId();
+		int x = 0, y = 0;
+		if (parentId != -1) {
+			final Point point = Widgets.get(parentId >> 16, parentId & 0xFFFF).getAbsoluteLocation();
+			x = point.x;
+			y = point.y;
+		} else {
+			final Rectangle[] bounds = client.getRSInterfaceBoundsArray();
+			final int index = getBoundsArrayIndex();
+			if (bounds != null && index > 0 && index < bounds.length && bounds[index] != null) {
+				return new Point(bounds[index].x, bounds[index].y);
+			}
+		}
+		if (parentId != -1) {
+			final WidgetChild child = Widgets.get(parentId >> 16, parentId & 0xFFFF);
+			final int horizontalScrollSize = child.getHorizontalScrollSize(), verticalScrollSize = child.getVerticalScrollSize();
+			if (horizontalScrollSize > 0 || verticalScrollSize > 0) {
+				x -= horizontalScrollSize;
+				y -= verticalScrollSize;
+			}
+		}
+		x += getRelativeX();
+		y += getRelativeY();
+		return new Point(x, y);
 	}
 
 	public int getRelativeX() {

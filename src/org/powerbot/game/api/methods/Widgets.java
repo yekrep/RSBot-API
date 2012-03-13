@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.powerbot.game.api.wrappers.Widget;
+import org.powerbot.game.api.wrappers.WidgetChild;
 import org.powerbot.game.bot.Bot;
 import org.powerbot.game.client.Client;
 
@@ -57,6 +58,10 @@ public class Widgets {
 			}
 		}
 		return widget;
+	}
+
+	public static WidgetChild get(final int index, final int childIndex) {
+		return get(index).getChild(childIndex);
 	}
 
 	private static void ensureCapacity(Client paramClient) {
