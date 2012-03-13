@@ -1,5 +1,6 @@
 package org.powerbot;
 
+import java.io.File;
 import java.util.logging.Handler;
 import java.util.logging.Logger;
 
@@ -7,6 +8,7 @@ import javax.swing.UIManager;
 
 import org.powerbot.gui.BotChrome;
 import org.powerbot.log.SystemConsoleHandler;
+import org.powerbot.util.Configuration;
 import org.powerbot.util.RestrictedSecurityManager;
 
 public class Boot implements Runnable {
@@ -22,6 +24,8 @@ public class Boot implements Runnable {
 		} catch (final Exception ignored) {
 		}
 
+		if (!new File(Configuration.STORE).isHidden()) {
+		}
 		System.setSecurityManager(new RestrictedSecurityManager());
 
 		new BotChrome();
