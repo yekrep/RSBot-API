@@ -17,7 +17,9 @@ MOVE /Y "%name%.jar" "%name%-%version%.jar"
 
 ECHO Packing
 SET l4j=launch4j.xml
-SET vx=1.0.0.0
+SET vx=%version%
+FOR /F "delims=" %%G in ('ECHO %version%^| sed -e "s/\(.\)/\1./g"') DO SET vx=%%G
+SET vx=%vx:~0,-1%
 ECHO ^<launch4jConfig^> > "%l4j%"
 ECHO ^<dontWrapJar^>false^</dontWrapJar^> >> "%l4j%"
 ECHO ^<headerType^>gui^</headerType^> >> "%l4j%"
