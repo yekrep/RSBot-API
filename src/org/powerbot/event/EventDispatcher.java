@@ -17,8 +17,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.powerbot.concurrent.Task;
-import org.powerbot.game.event.listener.MessageListener;
-import org.powerbot.game.event.listener.PaintListener;
+import org.powerbot.game.bot.event.listener.MessageListener;
+import org.powerbot.game.bot.event.listener.PaintListener;
 
 /**
  * An event manager responsible for dispatching events to listeners associated with this dispatcher.

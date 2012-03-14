@@ -1,10 +1,10 @@
-package org.powerbot.game.event;
+package org.powerbot.game.bot.event;
 
 import java.util.EventListener;
 
 import org.powerbot.event.EventDispatcher;
 import org.powerbot.event.GameEvent;
-import org.powerbot.game.event.listener.MessageListener;
+import org.powerbot.game.bot.event.listener.MessageListener;
 
 /**
  * A message event that is dispatched when a new message is dispatched in the game.
