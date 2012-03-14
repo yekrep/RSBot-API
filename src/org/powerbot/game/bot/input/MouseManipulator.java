@@ -204,7 +204,6 @@ public class MouseManipulator extends Task {
 					if (adjustmentFactor < 1D) {
 						force = force.multiply(adjustmentFactor);
 					}
-					System.out.println(targetMagnitude);
 					if (targetMagnitude < 10D) {
 						force = force.multiply(0.5D);
 					}
