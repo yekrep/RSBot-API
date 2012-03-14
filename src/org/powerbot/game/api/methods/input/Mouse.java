@@ -60,7 +60,7 @@ public class Mouse {
 
 	public static void hopMouse(int x, int y, final int randomX, final int randomY) {
 		if (isOnCanvas(x, y)) {
-			moveMouse(x, y);
+			moveMouse(x + Random.nextGaussian(-randomX, randomX, randomX), Random.nextGaussian(-randomY, randomY, randomY));
 		}
 	}
 
