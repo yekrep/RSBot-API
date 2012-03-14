@@ -1,6 +1,8 @@
 package org.powerbot.game.api.wrappers;
 
+import java.awt.Graphics;
 import java.awt.Point;
+import java.awt.Polygon;
 
 import org.powerbot.game.api.Multipliers;
 import org.powerbot.game.api.methods.Calculations;
@@ -31,7 +33,7 @@ import org.powerbot.game.client.SequenceInts;
 /**
  * @author Timer
  */
-public abstract class Character implements Locatable {
+public abstract class Character implements Entity {
 	private final Client client;
 	private final Multipliers multipliers;
 
@@ -117,14 +119,50 @@ public abstract class Character implements Locatable {
 		return null;//TODO
 	}
 
-	public Point getCenterPoint() {
+	protected abstract Object get();
+
+	public boolean verify() {
+		return false;//TODO
+	}
+
+	public Point getCentralPoint() {//TODO
 		final RSInteractableLocation location = ((RSInteractableManager) ((RSInteractableRSInteractableManager) get()).getRSInteractableRSInteractableManager()).getData().getLocation();
 		return Calculations.groundToScreen((int) location.getX(), (int) location.getY(), Game.getPlane(), -getHeight() / 2);
 	}
 
-	public Point getNextPoint() {
-		return getCenterPoint();
+	public Point getNextViewportPoint() {
+		return getCentralPoint();//TODO
 	}
 
-	protected abstract Object get();
+	public boolean contains(Point point) {
+		return false;//TODO
+	}
+
+	public boolean isOnScreen() {
+		return false;//TODO
+	}
+
+	public Polygon[] getBounds() {
+		return new Polygon[0];//TODO
+	}
+
+	public boolean hover() {
+		return false;//TODO
+	}
+
+	public boolean click(final boolean left) {
+		return false;//TODO
+	}
+
+	public boolean interact(final String action) {
+		return false;//TODO
+	}
+
+	public boolean interact(final String action, final String option) {
+		return false;//TODO
+	}
+
+	public void draw(final Graphics render) {
+		//TODO
+	}
 }
