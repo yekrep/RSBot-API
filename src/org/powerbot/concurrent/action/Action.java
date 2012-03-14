@@ -16,7 +16,7 @@ public class Action {
 	/**
 	 * Initializes this <code>Action</code> with appropriate information required for processing.
 	 *
-	 * @param activator       The <code>Activator</code> associated with this <code>Action</code>.
+	 * @param activator  The <code>Activator</code> associated with this <code>Action</code>.
 	 * @param taskHolder The <code>TaskHolder</code> associated with this <code>Action</code>.
 	 */
 	public Action(final Activator activator, final TaskHolder taskHolder) {
@@ -26,9 +26,9 @@ public class Action {
 	/**
 	 * Initializes this <code>Action</code> with appropriate information required for processing.
 	 *
-	 * @param activator       The <code>Activator</code> associated with this <code>Action</code>.
-	 * @param taskHolder The <code>TaskHolder</code> associated with this <code>Action</code>.
-	 * @param requireLock     <tt>true</tt> to require the ActionManager to lock while processing this action; otherwise <tt>false</tt>.
+	 * @param activator   The <code>Activator</code> associated with this <code>Action</code>.
+	 * @param taskHolder  The <code>TaskHolder</code> associated with this <code>Action</code>.
+	 * @param requireLock <tt>true</tt> to require the ActionManager to lock while processing this action; otherwise <tt>false</tt>.
 	 */
 	public Action(final Activator activator, final TaskHolder taskHolder, final boolean requireLock) {
 		this.activator = activator;

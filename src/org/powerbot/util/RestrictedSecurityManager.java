@@ -170,7 +170,8 @@ public class RestrictedSecurityManager extends SecurityManager {
 		}
 
 		// allow read access to local classes
-		if (!Configuration.FROMJAR && (path.endsWith(".class") || (path + File.separator).startsWith(new File("bin").getAbsolutePath()))) {
+		if (!Configuration.FROMJAR && (path.endsWith(".class") || (path + File.separator).startsWith(new File("bin").getAbsolutePath()) ||
+				(path + File.separator).startsWith(new File("out").getAbsolutePath()))) {
 			return;
 		}
 
