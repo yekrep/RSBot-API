@@ -1,0 +1,22 @@
+classpath   "ZKM.jar";
+
+open        "%ZKM_OPEN%";
+
+trimExclude org.powerbot.Boot^ public static main(java.lang.String[]);
+
+trim        deleteSourceFileAttributes=true
+            deleteDeprecatedAttributes=true
+            deleteAnnotationAttributes=false
+            deleteExceptionAttributes=true
+            deleteUnknownAttributes=true;
+
+obfuscate   changeLogFileIn=""
+            changeLogFileOut=""
+            aggressiveMethodRenaming=true
+            obfuscateFlow=aggressive
+            encryptStringLiterals=flowObfuscate
+            collapsePackagesWithDefault=""
+            lineNumbers=delete
+            exceptionObfuscation=heavy;
+
+saveAll     archiveCompression=all "%ZKM_SAVE%";

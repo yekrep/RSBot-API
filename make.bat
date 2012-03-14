@@ -1,9 +1,11 @@
 @ECHO OFF
 
-SETLOCAL
-CALL :setvars
 SET cmd=%1
-IF "%cmd%"=="" SET cmd=all
+IF "%cmd%"=="" (
+	SETLOCAL
+	CALL :setvars
+	SET cmd=all
+)
 CALL :%cmd%
 GOTO :eof
 
@@ -15,7 +17,7 @@ SET src=src
 SET lib=lib
 SET res=resources
 SET out=bin
-SET dist=%name%.jar
+SET dist=%lib%\%name%.jar
 SET lstf=temp.txt
 SET imgdir=%res%\images
 SET manifest=%res%\Manifest.txt
@@ -48,7 +50,7 @@ IF EXIST "%lstf%" DEL /F /Q "%lstf%"
 COPY "%manifest%" "%lstf%" > NUL
 ECHO Specification-Version: "%version%" >> "%lstf%"
 ECHO Implementation-Version: "%version%" >> "%lstf%"
-jar cfm "%dist%" "%lstf%" -C "%out%" . %versionfile% %imgdir%\*
+jar cfm "%dist%" "%lstf%" -C "%out%" . %versionfile% %imgdir%\*.png
 DEL /F /Q "%lstf%"
 GOTO :eof
 

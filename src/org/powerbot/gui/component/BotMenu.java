@@ -13,6 +13,7 @@ import org.powerbot.gui.BotAccounts;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.gui.BotSignin;
 import org.powerbot.service.NetworkAccount;
+import org.powerbot.util.Configuration;
 import org.powerbot.util.io.Resources;
 
 /**
@@ -82,6 +83,7 @@ public final class BotMenu extends JPopupMenu implements ActionListener {
 			BotChrome.openURL(Resources.getServerLinks().get("site"));
 		} else if (a.equals(BotLocale.ABOUT)) {
 			JOptionPane.showMessageDialog(parent.parent, new String[]{
+					Configuration.NAME + " (build " + Integer.toString(Configuration.VERSION) + ")\n",
 					BotLocale.COPYRIGHT,
 					"Unauthorised use of this application is prohibited.\n\n",
 					"RuneScape\u00ae is a trademark of Jagex \u00a9 1999 - 2011 Jagex, Ltd.",
