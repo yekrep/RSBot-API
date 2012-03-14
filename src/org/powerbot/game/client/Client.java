@@ -123,4 +123,8 @@ public interface Client {
 	public Object getCollapsedMenuItems();
 
 	public Object getRSGroundInfo();
+
+	public int getRSObjectID(Object obj);
+
+	public Model getRSObjectModel(Object obj);
 }

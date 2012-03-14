@@ -113,6 +113,10 @@ public abstract class Character implements Locatable {
 		return getSpeed() != 0;
 	}
 
+	public InteractiveModel getModel() {
+		return null;//TODO
+	}
+
 	public Point getCenterPoint() {
 		final RSInteractableLocation location = ((RSInteractableManager) ((RSInteractableRSInteractableManager) get()).getRSInteractableRSInteractableManager()).getData().getLocation();
 		return Calculations.groundToScreen((int) location.getX(), (int) location.getY(), Game.getPlane(), -getHeight() / 2);

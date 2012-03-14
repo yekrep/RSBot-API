@@ -50,6 +50,10 @@ public class Player extends Character {
 		return ((RSPlayerCompositeNPCID) ((RSPlayerCompositeInts) ((RSPlayerComposite) get()).getRSPlayerComposite()).getRSPlayerCompositeInts()).getRSPlayerCompositeNPCID() * multipliers.PLAYERCOMPOSITE_NPCID;
 	}
 
+	public int[] getEquipment() {
+		return new int[0];//TODO
+	}
+
 	protected Object get() {
 		return p.get();
 	}

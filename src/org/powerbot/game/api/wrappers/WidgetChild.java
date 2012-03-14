@@ -134,7 +134,7 @@ public class WidgetChild {
 		final int parentId = getParentId();
 		int x = 0, y = 0;
 		if (parentId != -1) {
-			final Point point = Widgets.get(parentId >> 16, parentId & 0xFFFF).getAbsoluteLocation();
+			final Point point = Widgets.get(parentId >> 0x10, parentId & 0xffff).getAbsoluteLocation();
 			x = point.x;
 			y = point.y;
 		} else {
@@ -143,9 +143,11 @@ public class WidgetChild {
 			if (bounds != null && index > 0 && index < bounds.length && bounds[index] != null) {
 				return new Point(bounds[index].x, bounds[index].y);
 			}
+			//x = getMasterX();
+			//y = getMasterY();
 		}
 		if (parentId != -1) {
-			final WidgetChild child = Widgets.get(parentId >> 16, parentId & 0xFFFF);
+			final WidgetChild child = Widgets.get(parentId >> 0x10, parentId & 0xffff);
 			final int horizontalScrollSize = child.getHorizontalScrollSize(), verticalScrollSize = child.getVerticalScrollSize();
 			if (horizontalScrollSize > 0 || verticalScrollSize > 0) {
 				x -= horizontalScrollSize;
@@ -354,7 +356,7 @@ public class WidgetChild {
 
 	@Override
 	public int hashCode() {
-		return parentWidget.getIndex() * 31 + index;
+		return parentWidget.getIndex() * 0x1f + index;
 	}
 
 	public int getParentId() {
@@ -370,13 +372,11 @@ public class WidgetChild {
 			return parentId;
 		}
 
-		final int mainID = getId() >>> 16;
+		final int mainID = getId() >>> 0x10;
 		final HashTable ncI = new HashTable(bot.client.getRSInterfaceNC());
-
-		for (RSInterfaceNode node = (RSInterfaceNode) ncI.getFirst(); node != null;
-		     node = (RSInterfaceNode) ncI.getNext()) {
+		for (RSInterfaceNode node = (RSInterfaceNode) ncI.getFirst(); node != null; node = (RSInterfaceNode) ncI.getNext()) {
 			if (mainID == ((RSInterfaceNodeMainID) ((RSInterfaceNodeInts) node.getData()).getRSInterfaceNodeInts()).getRSInterfaceNodeMainID() * bot.multipliers.INTERFACENODE_MAINID) {
-				final long multiplier = (((long) bot.multipliers.NODE_ID) << 32) + ((bot.multipliers.NODE_ID_p2 & 0xFFFFFFFFL));
+				final long multiplier = (((long) bot.multipliers.NODE_ID) << 0x20) + ((bot.multipliers.NODE_ID_p2 & 0xffffffffL));
 				return (int) (node.getID() * multiplier);
 			}
 		}

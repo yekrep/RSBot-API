@@ -35,6 +35,6 @@ public class Tile implements Locatable {
 	}
 
 	public Point getPoint(final double xOff, final double yOff, final int height) {
-		return Calculations.groundToScreen((int) ((x - Game.getBaseX() + xOff) * 512), (int) ((y - Game.getBaseY() + yOff) * 512), plane, height);
+		return Calculations.groundToScreen((int) ((x - Game.getBaseX() + xOff) * 0x200), (int) ((y - Game.getBaseY() + yOff) * 0x200), plane, height);
 	}
 }
