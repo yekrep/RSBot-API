@@ -41,7 +41,7 @@ public class BotChrome extends JFrame implements WindowListener {
 	public JPanel header;
 
 	public BotChrome() {
-		setTitle(Configuration.TITLE);
+		setTitle(Configuration.NAME);
 		setIconImage(Resources.getImage(Resources.Paths.ICON));
 		addWindowListener(this);
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);

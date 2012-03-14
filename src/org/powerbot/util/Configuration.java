@@ -11,7 +11,6 @@ import org.powerbot.util.io.Resources;
  */
 public class Configuration {
 	public static final String NAME = "RSBot";
-	public static final String TITLE = NAME + " 4S";
 	public static final boolean FROMJAR;
 	public static final int VERSION;
 	public static final String STORE;
