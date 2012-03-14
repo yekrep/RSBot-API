@@ -6,14 +6,13 @@ import java.awt.event.WindowEvent;
 
 import javax.swing.ImageIcon;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 
+import org.powerbot.gui.BotAbout;
 import org.powerbot.gui.BotAccounts;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.gui.BotSignin;
 import org.powerbot.service.NetworkAccount;
-import org.powerbot.util.Configuration;
 import org.powerbot.util.io.Resources;
 
 /**
@@ -82,16 +81,7 @@ public final class BotMenu extends JPopupMenu implements ActionListener {
 		} else if (a.equals(BotLocale.POWERBOT)) {
 			BotChrome.openURL(Resources.getServerLinks().get("site"));
 		} else if (a.equals(BotLocale.ABOUT)) {
-			JOptionPane.showMessageDialog(parent.parent, new String[]{
-					Configuration.NAME + " (build " + Integer.toString(Configuration.VERSION) + ")\n",
-					BotLocale.COPYRIGHT,
-					"Unauthorised use of this application is prohibited.\n\n",
-					"RuneScape\u00ae is a trademark of Jagex \u00a9 1999 - 2011 Jagex, Ltd.",
-					"RuneScape content and materials are trademarks and copyrights of Jagex or its licensees.",
-					"This program is issued with no warranty and is not affiliated with Jagex Ltd., nor do they endorse usage of our software.\n\n",
-					"Visit " + Resources.getServerLinks().get("site") + " for more information."},
-					BotLocale.ABOUT,
-					JOptionPane.INFORMATION_MESSAGE);
+			new BotAbout(parent.parent);
 		} else if (a.equals(BotLocale.EXIT)) {
 			parent.parent.dispatchEvent(new WindowEvent(parent.parent, WindowEvent.WINDOW_CLOSING));
 		}
