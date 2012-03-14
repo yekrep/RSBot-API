@@ -32,6 +32,6 @@ public final class BotLocale {
 	public static String VISITSITE = "Visit Site";
 	public static String OK = "OK";
 
-	public static String POWERBOT = Configuration.URLs.DOMAIN;
+	public static String WEBSITE = Configuration.URLs.DOMAIN;
 	public static String COPYRIGHT = "Copyright \u00a9 2011 - 2012 J.P. Holdings Int'l Ltd.";
 }

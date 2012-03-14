@@ -63,7 +63,7 @@ public final class BotAbout extends JDialog {
 		final int pad = gridAction.getHgap();
 		panelAction.setBorder(BorderFactory.createEmptyBorder(pad, pad, pad, pad));
 
-		visit = new JLabel("<html><a href='#'>" + BotLocale.POWERBOT + "</a></html>");
+		visit = new JLabel("<html><a href='#'>" + BotLocale.WEBSITE + "</a></html>");
 		visit.setPreferredSize(new Dimension((int) (visit.getPreferredSize().width * 1.2), (int) (visit.getPreferredSize().height * 1.2)));
 		visit.addMouseListener(new MouseAdapter() {
 			@Override

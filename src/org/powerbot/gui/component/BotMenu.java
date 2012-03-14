@@ -53,7 +53,7 @@ public final class BotMenu extends JPopupMenu implements ActionListener {
 		signin.addActionListener(this);
 		addSeparator();
 
-		final JMenuItem site = new JMenuItem(BotLocale.POWERBOT);
+		final JMenuItem site = new JMenuItem(BotLocale.WEBSITE);
 		site.setIcon(new ImageIcon(Resources.getImage(Resources.Paths.ICON_SMALL)));
 		site.addActionListener(this);
 		add(site);
@@ -78,7 +78,7 @@ public final class BotMenu extends JPopupMenu implements ActionListener {
 			new BotAccounts(parent.parent);
 		} else if (a.startsWith(BotLocale.SIGNIN) || a.startsWith(BotLocale.SIGNEDINAS)) {
 			new BotSignin(parent.parent);
-		} else if (a.equals(BotLocale.POWERBOT)) {
+		} else if (a.equals(BotLocale.WEBSITE)) {
 			BotChrome.openURL(Resources.getServerLinks().get("site"));
 		} else if (a.equals(BotLocale.ABOUT)) {
 			new BotAbout(parent.parent);
