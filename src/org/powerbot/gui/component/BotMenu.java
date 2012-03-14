@@ -46,6 +46,7 @@ public final class BotMenu extends JPopupMenu implements ActionListener {
 		addSeparator();
 
 		final JMenuItem signin = new JMenuItem(BotLocale.SIGNIN + "...");
+		signin.setIcon(new ImageIcon(Resources.getImage(Resources.Paths.KEY)));
 		if (NetworkAccount.getInstance().isLoggedIn()) {
 			signin.setText(BotLocale.SIGNEDINAS + " " + NetworkAccount.getInstance().getAccount().getDisplayName());
 		}
