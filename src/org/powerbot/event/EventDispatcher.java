@@ -19,6 +19,7 @@ import java.util.logging.Logger;
 import org.powerbot.concurrent.Task;
 import org.powerbot.game.bot.event.listener.MessageListener;
 import org.powerbot.game.bot.event.listener.PaintListener;
+import org.powerbot.game.bot.event.listener.internal.TextPaintListener;
 
 /**
  * An event manager responsible for dispatching events to listeners associated with this dispatcher.
@@ -39,8 +40,9 @@ public class EventDispatcher extends Task implements EventManager {
 	public static final int FOCUS_EVENT = 0x8;
 	public static final int KEY_EVENT = 0x10;
 
-	public static final int PAINT_EVENT = 0x400;
-	public static final int MESSAGE_EVENT = 0x800;
+	public static final int MESSAGE_EVENT = 0x400;
+	public static final int PAINT_EVENT = 0x1000;
+	public static final int TEXT_PAINT_EVENT = 0x2000;
 
 	public EventDispatcher() {
 		active = false;
@@ -205,6 +207,9 @@ public class EventDispatcher extends Task implements EventManager {
 		}
 		if (el instanceof PaintListener) {
 			mask |= EventDispatcher.PAINT_EVENT;
+		}
+		if (el instanceof TextPaintListener) {
+			mask |= EventDispatcher.TEXT_PAINT_EVENT;
 		}
 
 		return mask;

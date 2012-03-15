@@ -30,6 +30,7 @@ import org.powerbot.game.bot.event.MessageEvent;
 import org.powerbot.game.bot.event.PaintEvent;
 import org.powerbot.game.bot.event.listener.MessageListener;
 import org.powerbot.game.bot.event.listener.PaintListener;
+import org.powerbot.game.bot.event.listener.internal.TextPaintEvent;
 import org.powerbot.game.client.Client;
 import org.powerbot.game.client.Render;
 import org.powerbot.game.client.RenderAbsoluteX;
@@ -71,6 +72,7 @@ public class Bot extends GameDefinition implements Runnable {
 	public BufferedImage image;
 	private BufferedImage backBuffer;
 	private final PaintEvent paintEvent;
+	private final TextPaintEvent textPaintEvent;
 
 	public Bot() {
 		final Dimension d = new Dimension(BotChrome.PANEL_WIDTH, BotChrome.PANEL_HEIGHT);
@@ -79,6 +81,7 @@ public class Bot extends GameDefinition implements Runnable {
 		client = null;
 		panel = null;
 		paintEvent = new PaintEvent();
+		textPaintEvent = new TextPaintEvent();
 		eventDispatcher = new EventDispatcher();
 		processor.submit(eventDispatcher);
 		eventDispatcher.accept(new BasicDebug());
@@ -198,7 +201,10 @@ public class Bot extends GameDefinition implements Runnable {
 	public Graphics getBufferGraphics() {
 		final Graphics back = backBuffer.getGraphics();
 		paintEvent.graphics = back;
+		textPaintEvent.graphics = back;
+		textPaintEvent.id = 0;
 		eventDispatcher.fire(paintEvent);
+		eventDispatcher.fire(textPaintEvent);
 		back.dispose();
 		image.getGraphics().drawImage(backBuffer, 0, 0, null);
 		if (panel != null) {

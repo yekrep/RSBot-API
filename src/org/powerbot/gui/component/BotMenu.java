@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 
 import javax.swing.ImageIcon;
+import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
@@ -54,7 +55,14 @@ public final class BotMenu extends JPopupMenu implements ActionListener {
 		signin.addActionListener(this);
 		addSeparator();
 
-		add(new BotMenuView());
+		final JMenu view;
+		if (parent.getOpenedTab() == -1) {
+			view = new JMenu(BotLocale.VIEW);
+			view.setEnabled(false);
+		} else {
+			view = new BotMenuView(this);
+		}
+		add(view);
 		addSeparator();
 
 		final JMenuItem site = new JMenuItem(BotLocale.WEBSITE);
