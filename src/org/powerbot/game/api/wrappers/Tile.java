@@ -75,4 +75,9 @@ public class Tile implements Entity {
 	public void draw(Graphics render) {
 		//TODO
 	}
+
+	@Override
+	public String toString() {
+		return new StringBuilder("(").append(x).append(", ").append(y).append(')').toString();
+	}
 }
