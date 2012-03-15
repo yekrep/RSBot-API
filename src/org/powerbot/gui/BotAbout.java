@@ -77,7 +77,6 @@ public final class BotAbout extends JDialog {
 		ok.setPreferredSize(new Dimension((int) (ok.getPreferredSize().width * 1.2), (int) (ok.getPreferredSize().height * 1.2)));
 		ok.setFocusable(false);
 		ok.addActionListener(new ActionListener() {
-			@Override
 			public void actionPerformed(final ActionEvent e) {
 				dispose();
 			}
