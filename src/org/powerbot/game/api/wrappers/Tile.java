@@ -33,11 +33,11 @@ public class Tile implements Entity {
 	}
 
 	public Point getCentralPoint() {
-		return getPoint(0.5d, 0.5d, 0);//TODO
+		return getPoint(0.5d, 0.5d, 0);
 	}
 
 	public Point getNextViewportPoint() {
-		return getPoint(Random.nextDouble(), Random.nextDouble(), 0);//TODO
+		return getPoint(Random.nextDouble(), Random.nextDouble(), 0);
 	}
 
 	public boolean contains(Point point) {
