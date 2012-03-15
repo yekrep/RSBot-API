@@ -13,7 +13,7 @@ import javax.swing.JMenu;
 
 import org.powerbot.game.bot.Bot;
 import org.powerbot.game.bot.event.impl.TClientState;
-import org.powerbot.game.bot.event.impl.TPlane;
+import org.powerbot.game.bot.event.impl.TFloor;
 
 /**
  * @author Paris
@@ -40,7 +40,7 @@ public final class BotMenuView extends JMenu implements ActionListener {
 		}
 		map = new TreeMap<String, Class<? extends EventListener>>();
 		map.put("Client State", TClientState.class);
-		map.put("Plane", TPlane.class);
+		map.put("Floor", TFloor.class);
 
 		final Bot bot = Bot.bots.get(parent.parent.getOpenedTab());
 		Map<String, EventListener> listeners = BotMenuView.listeners.get(bot);

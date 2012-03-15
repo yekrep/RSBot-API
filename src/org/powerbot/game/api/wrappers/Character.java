@@ -127,7 +127,7 @@ public abstract class Character implements Entity {
 
 	public Point getCentralPoint() {//TODO
 		final RSInteractableLocation location = ((RSInteractableManager) ((RSInteractableRSInteractableManager) get()).getRSInteractableRSInteractableManager()).getData().getLocation();
-		return Calculations.groundToScreen((int) location.getX(), (int) location.getY(), Game.getPlane(), -getHeight() / 2);
+		return Calculations.groundToScreen((int) location.getX(), (int) location.getY(), Game.getFloor(), -getHeight() / 2);
 	}
 
 	public Point getNextViewportPoint() {

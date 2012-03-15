@@ -33,7 +33,7 @@ public class StringUtil {
 	public static void drawLine(final Graphics render, final int row, final String text) {
 		final FontMetrics metrics = render.getFontMetrics();
 		final int height = metrics.getHeight() + 4; // height + gap
-		final int y = row * height + 15 + 19;
+		final int y = row * height + height + 19;
 		final String[] texts = text.split("\\[");
 		int xIdx = 7;
 		Color cur = Color.GREEN;

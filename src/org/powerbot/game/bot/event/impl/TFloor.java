@@ -9,9 +9,9 @@ import org.powerbot.util.StringUtil;
 /**
  * @author Timer
  */
-public class TPlane implements TextPaintListener {
+public class TFloor implements TextPaintListener {
 	public int draw(int idx, final Graphics render) {
-		StringUtil.drawLine(render, idx++, "[green]Plane: " + Game.getPlane());
+		StringUtil.drawLine(render, idx++, "[green]Floor: " + Game.getFloor());
 		return idx;
 	}
 }
