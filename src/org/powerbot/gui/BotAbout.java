@@ -2,6 +2,7 @@ package org.powerbot.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Frame;
@@ -65,6 +66,7 @@ public final class BotAbout extends JDialog {
 
 		visit = new JLabel("<html><a href='#'>" + BotLocale.WEBSITE + "</a></html>");
 		visit.setPreferredSize(new Dimension((int) (visit.getPreferredSize().width * 1.2), (int) (visit.getPreferredSize().height * 1.2)));
+		visit.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		visit.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(final MouseEvent arg0) {

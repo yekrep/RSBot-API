@@ -2,6 +2,7 @@ package org.powerbot.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.GridLayout;
@@ -53,6 +54,7 @@ public final class BotSignin extends JDialog implements ActionListener {
 		panelAction.setBorder(BorderFactory.createEmptyBorder(pad, pad, pad, pad));
 
 		register = new JLabel("<html><a href='#'>" + BotLocale.REGISTER + "</a></html>");
+		register.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		register.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(final MouseEvent arg0) {
