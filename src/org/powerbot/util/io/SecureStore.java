@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.RandomAccessFile;
+import java.net.URL;
 import java.security.GeneralSecurityException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -197,5 +198,15 @@ public final class SecureStore {
 		final SecretKeySpec sks = new SecretKeySpec(key, KEY_ALGORITHM);
 		c.init(opmode, sks);
 		return c;
+	}
+
+	public void download(final String name, final URL url) throws IOException, GeneralSecurityException {
+		final TarEntry entry = get(name);
+		if (entry != null) {
+			if (entry.modified >= HttpClient.getLastModified(url)) {
+				return;
+			}
+		}
+		write(name, HttpClient.openStream(url));
 	}
 }
