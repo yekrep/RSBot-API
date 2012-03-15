@@ -37,4 +37,8 @@ public class Players {
 		}
 		return players.toArray(new Player[players.size()]);
 	}
+
+	public static Player getLocal() {
+		return new Player(Bot.resolve().client.getMyRSPlayer());
+	}
 }
