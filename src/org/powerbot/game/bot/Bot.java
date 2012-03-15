@@ -4,6 +4,7 @@ import java.awt.Canvas;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.SocketTimeoutException;
@@ -21,11 +22,14 @@ import org.powerbot.game.GameDefinition;
 import org.powerbot.game.api.Constants;
 import org.powerbot.game.api.Multipliers;
 import org.powerbot.game.api.methods.Calculations;
+import org.powerbot.game.api.methods.GroundItems;
 import org.powerbot.game.api.methods.input.Keyboard;
 import org.powerbot.game.api.util.Time;
+import org.powerbot.game.api.wrappers.GroundItem;
 import org.powerbot.game.bot.event.MessageEvent;
 import org.powerbot.game.bot.event.PaintEvent;
 import org.powerbot.game.bot.event.listener.MessageListener;
+import org.powerbot.game.bot.event.listener.PaintListener;
 import org.powerbot.game.client.Client;
 import org.powerbot.game.client.Render;
 import org.powerbot.game.client.RenderAbsoluteX;
@@ -274,9 +278,20 @@ public class Bot extends GameDefinition implements Runnable {
 		return null;
 	}
 
-	private final class BasicDebug implements MessageListener {
+	private final class BasicDebug implements PaintListener, MessageListener {
 		public void messageReceived(MessageEvent e) {
 			System.out.println("[" + e.getId() + "] " + e.getSender() + ": " + e.getMessage());
+		}
+
+		public void onRepaint(final Graphics render) {
+			final GroundItem[] groundItems = GroundItems.getLoaded();
+			for (final GroundItem groundItem : groundItems) {
+				final Point tP = groundItem.getLocation().getCentralPoint();
+				if (tP.x != -1 && tP.y != -1) {
+					System.out.println(groundItem.getGroundItem().getId());
+					render.drawString("" + groundItem.getGroundItem().getId(), tP.x, tP.y);
+				}
+			}
 		}
 	}
 
