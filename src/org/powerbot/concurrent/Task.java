@@ -19,4 +19,12 @@ public abstract class Task implements Runnable {
 	public void setFuture(final Future<?> future) {
 		this.future = future;
 	}
+
+	public static Task wrap(final Runnable runnable) {
+		return new Task() {
+			public void run() {
+				runnable.run();
+			}
+		};
+	}
 }
