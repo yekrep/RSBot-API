@@ -12,6 +12,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.security.GeneralSecurityException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Handler;
@@ -31,6 +32,7 @@ import org.powerbot.game.bot.Bot;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.util.io.HttpClient;
 import org.powerbot.util.io.Resources;
+import org.powerbot.util.io.SecureStore;
 
 public final class BotLoadingPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -47,9 +49,16 @@ public final class BotLoadingPanel extends JPanel {
 		try {
 			if (Resources.getServerData().containsKey("ads")) {
 				final String src = Resources.getServerData().get("ads").get("image"), link = Resources.getServerData().get("ads").get("link");
-				final File cache = new File(System.getProperty("java.io.tmpdir"), "rbsp01.dat");
-				HttpClient.download(new URL(src), cache);
-				BufferedImage image = ImageIO.read(cache);
+				final String filename = "ad.png";
+				final File cache = new File(System.getProperty("java.io.tmpdir"), filename);
+				final URL url = new URL(src);
+				final boolean secure = false;
+				if (secure) {
+					SecureStore.getInstance().download(filename, url);
+				} else {
+					HttpClient.download(url, cache);
+				}
+				BufferedImage image = secure ? ImageIO.read(SecureStore.getInstance().read(filename)) : ImageIO.read(cache);
 				final float MAX_WIDTH = 728, MAX_HEIGHT = 120;
 				if (image.getWidth() > MAX_WIDTH || image.getHeight() > MAX_HEIGHT) {
 					final float factor = Math.min(MAX_WIDTH / image.getWidth(), MAX_HEIGHT / image.getHeight());
@@ -73,6 +82,7 @@ public final class BotLoadingPanel extends JPanel {
 				imageLabel[1].setBorder(BorderFactory.createEmptyBorder(0, 0, d, 0));
 			}
 		} catch (final IOException ignored) {
+		} catch (final GeneralSecurityException ignored) {
 		}
 
 		final JPanel panel = new JPanel(new BorderLayout()), panelText = new JPanel(new GridLayout(0, 1)), panelTitle = new JPanel(new GridLayout(1, 0));
