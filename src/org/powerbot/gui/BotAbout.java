@@ -29,7 +29,6 @@ public final class BotAbout extends JDialog {
 
 	public BotAbout(final Frame parent) {
 		super(parent, BotLocale.ABOUT, true);
-		setIconImage(Resources.getImage(Resources.Paths.INFORMATION));
 
 		final int f = 5;
 		final GridLayout gridText = new GridLayout(0, 1);
@@ -49,7 +48,7 @@ public final class BotAbout extends JDialog {
 		final String[] jagex = {
 				"RuneScape\u00ae is a trademark of Jagex \u00a9 1999 - 2012 Jagex Ltd.",
 				"RuneScape content and materials are trademarks and copyrights of Jagex or its licensees.",
-				"This program is issued with no warranty and is not affiliated with Jagex Ltd., nor do they endorse usage of our software."};
+				"This program is issued with no warranty and is not affiliated with Jagex Ltd., nor do they endorse usage of our software." };
 
 		for (final String line : jagex) {
 			final JLabel item = new JLabel(line);
@@ -76,6 +75,7 @@ public final class BotAbout extends JDialog {
 		ok.setPreferredSize(new Dimension((int) (ok.getPreferredSize().width * 1.2), (int) (ok.getPreferredSize().height * 1.2)));
 		ok.setFocusable(false);
 		ok.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(final ActionEvent e) {
 				dispose();
 			}
