@@ -158,7 +158,7 @@ public class BotPanel extends JPanel {
 			return;
 		}
 		final boolean present = mouse.isPresent();
-		final Component component = bot.appletContainer.getComponent(0);
+		final Component component = mouse.getComponent();
 		notifyListeners(component, mouseEvent, present);
 		final int mouseX = mouseEvent.getX(), mouseY = mouseEvent.getY();
 		final int modifiers = mouseEvent.getModifiers(), clickCount = mouseEvent.getClickCount();
