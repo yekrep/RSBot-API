@@ -1,7 +1,6 @@
 package org.powerbot.game.bot;
 
 import java.awt.Canvas;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Point;
@@ -266,22 +265,6 @@ public class Bot extends GameDefinition implements Runnable {
 			throw exception;
 		}
 		return bot;
-	}
-
-	/**
-	 * @param o The class loader to compare against loaded bot instances.
-	 * @return The bot belonging to the provided class loader.
-	 */
-	public static Bot getBot(final Object o) {
-		final ClassLoader cl = o.getClass().getClassLoader();
-		for (final Bot bot : Bot.bots) {
-			final Component c = bot.appletContainer.getComponent(0);
-			final ClassLoader componentParent = c.getClass().getClassLoader();
-			if (cl == componentParent) {
-				return bot;
-			}
-		}
-		return null;
 	}
 
 	private final class BasicDebug implements PaintListener, MessageListener {

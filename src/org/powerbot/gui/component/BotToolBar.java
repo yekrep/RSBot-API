@@ -14,6 +14,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JToolBar;
 import javax.swing.border.EmptyBorder;
 
+import org.powerbot.concurrent.Task;
 import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.bot.Bot;
 import org.powerbot.gui.BotChrome;
@@ -34,7 +35,14 @@ public final class BotToolBar extends JToolBar {
 		tabDelete = new JButton(new ImageIcon(Resources.getImage(Resources.Paths.TAB_DELETE)));
 		tabDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(final ActionEvent arg0) {
-				closeTab(getOpenedTab());
+				final int tab = getOpenedTab();
+				if (tab != -1) {
+					Bot.bots.get(tab).processor.submit(new Task() {
+						public void run() {
+							closeTab(getOpenedTab());
+						}
+					});
+				}
 			}
 		});
 		tabDelete.setToolTipText(BotLocale.CLOSETAB);
@@ -95,11 +103,15 @@ public final class BotToolBar extends JToolBar {
 		if (b == null) {
 			return;
 		}
-		if (Game.isLoggedIn()) {
-			if (JOptionPane.showConfirmDialog(parent, "Are you sure you want to close this tab?", BotLocale.CLOSETAB, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) != JOptionPane.YES_OPTION) {
-				return;
+		try {
+			if (Game.isLoggedIn()) {
+				if (JOptionPane.showConfirmDialog(parent, "Are you sure you want to close this tab?", BotLocale.CLOSETAB, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) != JOptionPane.YES_OPTION) {
+					return;
+				}
 			}
+		} catch (final RuntimeException ignored) {
 		}
+
 		remove(n + 1);
 		final boolean a = getTabCount() > 0;
 		tabDelete.setVisible(a);
