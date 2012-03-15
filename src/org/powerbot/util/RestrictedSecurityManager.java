@@ -150,7 +150,7 @@ public class RestrictedSecurityManager extends SecurityManager {
 		}
 
 		// allow read access to temporary directory
-		if (tmp != null && !tmp.isEmpty() && (path + File.separator).startsWith(tmp) && readOnly) {
+		if (tmp != null && !tmp.isEmpty() && (path + File.separator).startsWith(tmp)) {
 			return;
 		}
 
