@@ -1,6 +1,5 @@
 package org.powerbot.game.client.input;
 
-import java.awt.Component;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -31,8 +30,6 @@ public abstract class Mouse extends Focus implements MouseListener, MouseMotionL
 	public abstract void _mouseReleased(MouseEvent e);
 
 	public abstract void _mouseWheelMoved(MouseWheelEvent e);
-
-	public abstract Component getComponent();
 
 	public int getX() {
 		if (clientX == -1) {
