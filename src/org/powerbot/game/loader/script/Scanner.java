@@ -60,6 +60,7 @@ public class Scanner {
 	}
 
 	private String normaliseString(String s) {
+		s = s.replace("org/powerbot", org.powerbot.game.GameDefinition.class.getPackage().getName().replace('.', '/'));
 		s = s.replace("org/rsbot", org.powerbot.game.GameDefinition.class.getPackage().getName().replace('.', '/'));
 		return s;
 	}
