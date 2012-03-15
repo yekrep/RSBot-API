@@ -163,11 +163,11 @@ public class Mouse {
 	 * @return The <code>Component</code> to dispatch events to.
 	 */
 	private static Component getTarget() {
-		final org.powerbot.game.client.input.Mouse mouse = getMouse();
-		if (mouse != null) {
-			return mouse.getComponent();
+		final Bot bot = Bot.resolve();
+		if (bot.appletContainer == null || bot.appletContainer.getComponentCount() == 0) {
+			return null;
 		}
-		return null;
+		return bot.appletContainer.getComponent(0);
 	}
 
 	private static int getDragLength() {
