@@ -38,6 +38,11 @@ public class Game {
 		return -1;
 	}
 
+	public static boolean isLoggedIn() {
+		final int state = getClientState();
+		return state == 11 || state == 12;
+	}
+
 	/**
 	 * @return The floor level, or plane, you are currently located on.
 	 */
