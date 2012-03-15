@@ -10,9 +10,11 @@ import java.util.logging.Logger;
 import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JToolBar;
 import javax.swing.border.EmptyBorder;
 
+import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.bot.Bot;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.util.io.Resources;
@@ -92,6 +94,11 @@ public final class BotToolBar extends JToolBar {
 		final BotButton b = getTabButton(n);
 		if (b == null) {
 			return;
+		}
+		if (Game.isLoggedIn()) {
+			if (JOptionPane.showConfirmDialog(parent, "Are you sure you want to close this tab?", BotLocale.CLOSETAB, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) != JOptionPane.YES_OPTION) {
+				return;
+			}
 		}
 		remove(n + 1);
 		final boolean a = getTabCount() > 0;
