@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.powerbot.game.api.util.Random;
+import org.powerbot.game.api.util.Time;
 import org.powerbot.game.bot.Bot;
 
 public class Mouse {
@@ -52,6 +53,28 @@ public class Mouse {
 	public static boolean isPressed() {
 		final org.powerbot.game.client.input.Mouse mouse = getMouse();
 		return mouse != null && mouse.isPressed();
+	}
+
+	public static void clickMouse(final boolean left) {
+		if (!isPresent()) {
+			return;
+		}
+		final int x = getX(), y = getY();
+		pressMouse(x, y, left);
+		Time.sleep(Random.nextInt(50, 150));
+		releaseMouse(x, y, left);
+		Time.sleep(Random.nextInt(50, 80));
+	}
+
+	public static void holdMouse(final int time, final boolean left) {
+		if (!isPresent()) {
+			return;
+		}
+		final int x = getX(), y = getY();
+		pressMouse(x, y, left);
+		Time.sleep(time);
+		releaseMouse(x, y, left);
+		Time.sleep(Random.nextInt(50, 80));
 	}
 
 	public static void hopMouse(final int x, final int y) {
