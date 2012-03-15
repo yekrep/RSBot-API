@@ -22,8 +22,9 @@ public class Item {
 
 	public Item(final RSItem item) {
 		final Multipliers multipliers = Bot.resolve().multipliers;
-		id = ((RSItemID) ((RSItemInts) item.getData()).getRSItemInts()).getRSItemID() * multipliers.ITEM_ID;
-		stack = ((RSItemStackSize) ((RSItemInts) item.getData()).getRSItemInts()).getRSItemStackSize() * multipliers.ITEM_STACKSIZE;
+		final Object data = item.getData();
+		id = ((RSItemID) ((RSItemInts) data).getRSItemInts()).getRSItemID() * multipliers.ITEM_ID;
+		stack = ((RSItemStackSize) ((RSItemInts) data).getRSItemInts()).getRSItemStackSize() * multipliers.ITEM_STACKSIZE;
 	}
 
 	public Item(final WidgetChild widgetChild) {

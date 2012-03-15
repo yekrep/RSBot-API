@@ -7,7 +7,7 @@ import java.awt.Polygon;
 import org.powerbot.game.api.Multipliers;
 import org.powerbot.game.api.methods.Calculations;
 import org.powerbot.game.api.methods.Game;
-import org.powerbot.game.api.methods.Nodes;
+import org.powerbot.game.api.util.internal.Nodes;
 import org.powerbot.game.bot.Bot;
 import org.powerbot.game.client.Client;
 import org.powerbot.game.client.RSAnimatorSequence;

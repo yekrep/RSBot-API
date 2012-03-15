@@ -1,4 +1,4 @@
-package org.powerbot.game.api.methods;
+package org.powerbot.game.api.util.internal;
 
 import org.powerbot.game.api.Multipliers;
 import org.powerbot.game.bot.Bot;
@@ -12,7 +12,7 @@ import org.powerbot.game.client.Node;
 public class Nodes {
 	public static Node lookup(final Object nc, final long id) {
 		try {
-			if (nc == null || id < 0l) {
+			if (nc == null || id < 0L) {
 				return null;
 			}
 			final Node[] buckets;
