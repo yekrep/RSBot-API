@@ -16,14 +16,12 @@ import org.powerbot.game.client.RSCharacterHPRatio;
 import org.powerbot.game.client.RSCharacterHeight;
 import org.powerbot.game.client.RSCharacterInteracting;
 import org.powerbot.game.client.RSCharacterIsMoving;
-import org.powerbot.game.client.RSCharacterMessageData;
 import org.powerbot.game.client.RSCharacterOrientation;
 import org.powerbot.game.client.RSCharacterPassiveAnimation;
 import org.powerbot.game.client.RSInteractableInts;
 import org.powerbot.game.client.RSInteractableLocation;
 import org.powerbot.game.client.RSInteractableManager;
 import org.powerbot.game.client.RSInteractableRSInteractableManager;
-import org.powerbot.game.client.RSMessageDataMessage;
 import org.powerbot.game.client.RSNPCHolder;
 import org.powerbot.game.client.RSNPCNode;
 import org.powerbot.game.client.RSNPCNodeHolder;
@@ -49,7 +47,7 @@ public abstract class Character implements Entity {
 
 	public Tile getLocation() {
 		final RSInteractableLocation location = ((RSInteractableManager) ((RSInteractableRSInteractableManager) get()).getRSInteractableRSInteractableManager()).getData().getLocation();
-		return new Tile(Game.getBaseX() + (int) location.getX() >> 9, Game.getBaseY() + (int) location.getY() >> 9);
+		return new Tile(Game.getBaseX() + ((int) location.getX() >> 9), Game.getBaseY() + ((int) location.getY() >> 9));
 	}
 
 	public Character getInteracting() {
@@ -99,7 +97,7 @@ public abstract class Character implements Entity {
 	}
 
 	public String getMessage() {
-		return (String) ((RSMessageDataMessage) ((RSCharacterMessageData) get()).getRSCharacterMessageData()).getRSMessageDataMessage();
+		return null;
 	}
 
 	public int getHpPercent() {
