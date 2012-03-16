@@ -4,6 +4,8 @@ import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Collections;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -14,8 +16,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JToolBar;
 import javax.swing.border.EmptyBorder;
 
-import org.powerbot.concurrent.Task;
-import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.bot.Bot;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.util.io.Resources;
@@ -37,11 +37,7 @@ public final class BotToolBar extends JToolBar {
 			public void actionPerformed(final ActionEvent arg0) {
 				final int tab = getOpenedTab();
 				if (tab != -1) {
-					Bot.bots.get(tab).processor.submit(new Task() {
-						public void run() {
-							closeTab(getOpenedTab());
-						}
-					});
+					closeTab(tab);
 				}
 			}
 		});
@@ -99,12 +95,19 @@ public final class BotToolBar extends JToolBar {
 	}
 
 	public void closeTab(final int n) {
+		final List<Bot> bots = Collections.unmodifiableList(Bot.bots);
+		boolean loggedIn = false;
+		if (n > 0 && n < bots.size()) {
+			final Bot bot = bots.get(n);
+			final int state = bot.client.getLoginIndex() * bot.multipliers.GLOBAL_LOGININDEX;
+			loggedIn = state == bot.constants.CLIENTSTATE_11 || state == bot.constants.CLIENTSTATE_12;
+		}
 		final BotButton b = getTabButton(n);
 		if (b == null) {
 			return;
 		}
 		try {
-			if (Game.isLoggedIn()) {
+			if (loggedIn) {
 				if (JOptionPane.showConfirmDialog(parent, "Are you sure you want to close this tab?", BotLocale.CLOSETAB, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) != JOptionPane.YES_OPTION) {
 					return;
 				}
