@@ -54,7 +54,7 @@ public class Resources {
 	public static Map<String, Map<String, String>> getServerData() throws IOException {
 		if (serverData == null) {
 			final File local = new File(Paths.SERVER);
-			if (local.exists()) {
+			if (!Configuration.FROMJAR && local.exists()) {
 				serverData = IniParser.deserialise(local);
 			} else {
 				final HttpURLConnection con = HttpClient.getHttpConnection(new URL(Configuration.URLs.CONTROL));
