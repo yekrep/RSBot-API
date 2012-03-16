@@ -222,6 +222,11 @@ public class RestrictedSecurityManager extends SecurityManager {
 			}
 		}
 
+		// allow reading of font .ttf files for Windows XP (odd quirk)
+		if (Configuration.OS == OperatingSystem.WINDOWS && path.endsWith(".ttf") && readOnly) {
+			return;
+		}
+
 		log.severe((readOnly ? "Read" : "Write") + " denied: " + path + " (" + calling + ") on " + Thread.currentThread().getName() + "/" + Thread.currentThread().getThreadGroup().getName());
 		throw new SecurityException();
 	}
