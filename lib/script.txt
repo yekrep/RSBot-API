@@ -11,7 +11,7 @@ trim        deleteSourceFileAttributes=true
             deleteUnknownAttributes=true;
 
 obfuscate   changeLogFileIn=""
-            changeLogFileOut=""
+            changeLogFileOut="ZKM_ChangeLog.txt"
             aggressiveMethodRenaming=true
             obfuscateFlow=aggressive
             encryptStringLiterals=flowObfuscate
