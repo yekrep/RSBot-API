@@ -39,6 +39,7 @@ public class BotChrome extends JFrame implements WindowListener {
 	public static BotPanel panel;
 	public BotToolBar toolbar;
 	public JPanel header;
+	public static volatile boolean loaded = false;
 
 	public BotChrome() {
 		setTitle(Configuration.NAME);
@@ -160,6 +161,7 @@ public class BotChrome extends JFrame implements WindowListener {
 				parent.repaint();
 				Logger.getLogger(BotChrome.class.getName()).log(Level.INFO, "Add a tab to start a new bot", "Welcome");
 			}
+			BotChrome.loaded = true;
 		}
 	}
 }
