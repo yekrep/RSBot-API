@@ -9,6 +9,7 @@ import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.api.methods.GroundItems;
 import org.powerbot.game.api.methods.Players;
 import org.powerbot.game.api.wrappers.GroundItem;
+import org.powerbot.game.api.wrappers.ItemDefinition;
 import org.powerbot.game.api.wrappers.Player;
 import org.powerbot.game.api.wrappers.Tile;
 import org.powerbot.game.bot.event.listener.PaintListener;
@@ -39,7 +40,13 @@ public class DrawGroundItems implements PaintListener {
 						}
 						render.setColor(Color.red);
 						render.fillRect((int) screen.getX() - 1, (int) screen.getY() - 1, 2, 2);
-						final String s = "" + groundItem.getGroundItem().getId();
+						final ItemDefinition itemDefinition = groundItem.getGroundItem().getDefinition();
+						final StringBuilder sB = new StringBuilder(itemDefinition != null ? itemDefinition.getName() : "");
+						if (itemDefinition != null) {
+							sB.append(' ');
+						}
+						sB.append(groundItem.getGroundItem().getId()).append(" (").append(groundItem.getGroundItem().getStackSize()).append(')');
+						final String s = sB.toString();
 						final int ty = screen.y - tHeight * (++i) + tHeight / 2;
 						final int tx = screen.x - metrics.stringWidth(s) / 2;
 						render.setColor(Color.green);
