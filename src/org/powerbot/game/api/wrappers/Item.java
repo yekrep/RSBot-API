@@ -7,7 +7,6 @@ import org.powerbot.game.client.CacheTable;
 import org.powerbot.game.client.HardReferenceGet;
 import org.powerbot.game.client.Node;
 import org.powerbot.game.client.RSItem;
-import org.powerbot.game.client.RSItemDefLoader;
 import org.powerbot.game.client.RSItemDefLoaderCache;
 import org.powerbot.game.client.RSItemID;
 import org.powerbot.game.client.RSItemInts;
@@ -53,19 +52,15 @@ public class Item {
 		final Object itemDefLoaderTable = Bot.resolve().client.getRSItemDefLoader();
 		final Object itemDefLoaderCache = ((RSItemDefLoaderCache) itemDefLoaderTable).getRSItemDefLoaderCache();
 		final Object itemDefLoader = ((CacheTable) itemDefLoaderCache).getCacheTable();
-		try {
-			final Node ref = Nodes.lookup(itemDefLoader, id);
-			if (ref != null && ref instanceof Reference) {
-				final Object reference = ((Reference) ref).getData();
-				if (reference instanceof SoftReferenceGet) {
-					return new ItemDefinition(((SoftReferenceGet) reference).getSoftReferenceGet());
-				} else if (reference instanceof HardReferenceGet) {
-					return new ItemDefinition(((HardReferenceGet) reference).getHardReferenceGet());
-				}
+		final Node ref = Nodes.lookup(itemDefLoader, id);
+		if (ref != null && ref instanceof Reference) {
+			final Object reference = ((Reference) ref).getData();
+			if (reference instanceof SoftReferenceGet) {
+				return new ItemDefinition(((SoftReferenceGet) reference).getSoftReferenceGet());
+			} else if (reference instanceof HardReferenceGet) {
+				return new ItemDefinition(((HardReferenceGet) reference).getHardReferenceGet());
 			}
-			return null;
-		} catch (final ClassCastException e) {
-			return null;
 		}
+		return null;
 	}
 }
