@@ -19,6 +19,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
@@ -68,6 +69,18 @@ public class BotChrome extends JFrame implements WindowListener {
 		setMinimumSize(getSize());
 		setLocationRelativeTo(getParent());
 		setVisible(true);
+
+		try {
+			if (Resources.getServerData().containsKey("messages")) {
+				if (Resources.getServerData().get("messages").containsKey("title")) {
+					setTitle(getTitle() + " " + Resources.getServerData().get("messages").get("title"));
+				}
+				if (Resources.getServerData().get("messages").containsKey("start")) {
+					JOptionPane.showMessageDialog(this, Resources.getServerData().get("messages").get("start").replace("\\n", "\n"));
+				}
+			}
+		} catch (final IOException ignored) {
+		}
 	}
 
 	public static void openURL(final String url) {
