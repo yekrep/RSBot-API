@@ -45,7 +45,11 @@ public class DrawGroundItems implements PaintListener {
 						if (itemDefinition != null) {
 							sB.append(' ');
 						}
-						sB.append(groundItem.getGroundItem().getId()).append(" (").append(groundItem.getGroundItem().getStackSize()).append(')');
+						sB.append(groundItem.getGroundItem().getId());
+						final int ss = groundItem.getGroundItem().getStackSize();
+						if (ss > 1) {
+							sB.append(" (").append(ss).append(')');
+						}
 						final String s = sB.toString();
 						final int ty = screen.y - tHeight * (++i) + tHeight / 2;
 						final int tx = screen.x - metrics.stringWidth(s) / 2;
