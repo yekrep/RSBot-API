@@ -9,10 +9,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenu;
 
 import org.powerbot.game.bot.Bot;
+import org.powerbot.game.bot.event.impl.DrawGroundItems;
 import org.powerbot.game.bot.event.impl.DrawMouse;
 import org.powerbot.game.bot.event.impl.DrawNpcs;
 import org.powerbot.game.bot.event.impl.DrawPlayers;
@@ -36,6 +38,7 @@ public final class BotMenuView extends JMenu implements ActionListener {
 	private static final String MOUSE = "Mouse";
 	private static final String PLAYERS = "Players";
 	private static final String NPCS = "NPCs";
+	private static final String GROUND_ITEMS = "Ground Items";
 	private static final String CLIENTSTATE = "Client State";
 	private static final String FLOOR = "Floor";
 	private static final String MAPBASE = "Map Base";
@@ -55,6 +58,7 @@ public final class BotMenuView extends JMenu implements ActionListener {
 		map.put(MOUSE, DrawMouse.class);
 		map.put(PLAYERS, DrawPlayers.class);
 		map.put(NPCS, DrawNpcs.class);
+		map.put(GROUND_ITEMS, DrawGroundItems.class);
 		map.put(CLIENTSTATE, TClientState.class);
 		map.put(FLOOR, TFloor.class);
 		map.put(MAPBASE, TMapBase.class);
@@ -65,6 +69,7 @@ public final class BotMenuView extends JMenu implements ActionListener {
 		items.add(MOUSE);
 		items.add(PLAYERS);
 		items.add(NPCS);
+		items.add(GROUND_ITEMS);
 		items.add(SEPERATOR);
 		items.add(CLIENTSTATE);
 		items.add(FLOOR);
