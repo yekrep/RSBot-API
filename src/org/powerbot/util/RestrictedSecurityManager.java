@@ -10,6 +10,7 @@ import java.util.logging.Logger;
 
 import org.powerbot.game.GameDefinition;
 import org.powerbot.gui.BotChrome;
+import org.powerbot.util.Configuration.OperatingSystem;
 import org.powerbot.util.io.Resources;
 import org.powerbot.util.io.SecureStore;
 
@@ -140,7 +141,7 @@ public class RestrictedSecurityManager extends SecurityManager {
 	}
 
 	private void checkFilePath(final String pathRaw, final boolean readOnly) {
-		final String path = new File(pathRaw).getAbsolutePath();
+		final String path = StringUtil.urlDecode(new File(pathRaw).getAbsolutePath());
 		final String calling = getCallingClass();
 		final String sysroot = System.getenv("SystemRoot"), home = System.getenv("HOME"), jre = System.getProperty("java.home"), tmp = System.getProperty("java.io.tmpdir");
 
@@ -192,16 +193,26 @@ public class RestrictedSecurityManager extends SecurityManager {
 
 		// allow read access to any font directory
 		final List<String> fonts = new ArrayList<String>(3);
-		if (sysroot != null && !sysroot.isEmpty()) {
-			fonts.add(sysroot + "\\Fonts");
-		}
-		fonts.add("/Library/Fonts");
-		fonts.add("/System/Library/Fonts");
-		fonts.add("/usr/share/fonts/");
-		fonts.add("/usr/local/share/fonts");
-		if (home != null && !home.isEmpty()) {
-			fonts.add(home + "/Library/Fonts");
-			fonts.add(home + "/.fonts");
+		switch (Configuration.OS) {
+		case WINDOWS:
+			if (sysroot != null && !sysroot.isEmpty()) {
+				fonts.add(sysroot + "\\Fonts");
+			}
+			break;
+		case MAC:
+			fonts.add("/Library/Fonts");
+			fonts.add("/System/Library/Fonts");
+			if (home != null && !home.isEmpty()) {
+				fonts.add(home + "/Library/Fonts");
+			}
+			break;
+		case LINUX:
+			fonts.add("/usr/share/fonts/");
+			fonts.add("/usr/local/share/fonts");
+			if (home != null && !home.isEmpty()) {
+				fonts.add(home + "/Library/Fonts");
+			}
+			break;
 		}
 		for (final String font : fonts) {
 			if (path.startsWith(font)) {
@@ -209,6 +220,11 @@ public class RestrictedSecurityManager extends SecurityManager {
 					return;
 				}
 			}
+		}
+
+		// allow reading of font .ttf files for Windows XP (odd quirk)
+		if (Configuration.OS == OperatingSystem.WINDOWS && path.endsWith(".ttf") && readOnly) {
+			return;
 		}
 
 		log.severe((readOnly ? "Read" : "Write") + " denied: " + path + " (" + calling + ") on " + Thread.currentThread().getName() + "/" + Thread.currentThread().getThreadGroup().getName());
