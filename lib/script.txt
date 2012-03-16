@@ -2,7 +2,16 @@ classpath   "ZKM.jar";
 
 open        "%ZKM_OPEN%";
 
-trimExclude org.powerbot.Boot^ public static main(java.lang.String[]);
+trimExclude org.powerbot.Boot^ public static main(java.lang.String[]) and
+            org.powerbot.game.bot.event.impl.^* and
+            org.powerbot.game.bot.event.impl.* *(*) and
+            org.powerbot.game.bot.event.impl.^*^ * and
+            org.powerbot.game.client.^* and
+            org.powerbot.game.client.^*^ * and
+            org.powerbot.game.client.* *(*) and
+            org.powerbot.game.client.input.^* and
+            org.powerbot.game.client.input.* *(*) and
+            org.powerbot.game.client.input.^*^ *;
 
 trim        deleteSourceFileAttributes=true
             deleteDeprecatedAttributes=true
@@ -10,9 +19,16 @@ trim        deleteSourceFileAttributes=true
             deleteExceptionAttributes=true
             deleteUnknownAttributes=true;
 
-exclude     org.powerbot.game.*^* *(*) and
-            org.powerbot.game.* * and
-            org.powerbot.game.*;
+exclude     org.powerbot.^Boot^ public static main(java.lang.String[]) and
+            org.powerbot.game.bot.event.impl.^* and
+            org.powerbot.game.bot.event.impl.* *(*) and
+            org.powerbot.game.bot.event.impl.^*^ * and
+            org.powerbot.game.client.^* and
+            org.powerbot.game.client.* *(*) and
+            org.powerbot.game.client.^*^ * and
+            org.powerbot.game.client.input.^* and
+            org.powerbot.game.client.input.* *(*) and
+            org.powerbot.game.client.input.^*^ *;
 
 obfuscate   changeLogFileIn=""
             changeLogFileOut="ZKM_ChangeLog.txt"
