@@ -10,6 +10,10 @@ trim        deleteSourceFileAttributes=true
             deleteExceptionAttributes=true
             deleteUnknownAttributes=true;
 
+exclude     org.powerbot.game.*^* *(*) and
+            org.powerbot.game.* * and
+            org.powerbot.game.*;
+
 obfuscate   changeLogFileIn=""
             changeLogFileOut="ZKM_ChangeLog.txt"
             aggressiveMethodRenaming=true
