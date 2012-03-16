@@ -5,6 +5,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.powerbot.game.GameDefinition;
+
 /**
  * @author Paris
  */
@@ -60,8 +62,10 @@ public class Scanner {
 	}
 
 	private String normaliseString(String s) {
-		s = s.replace("org/powerbot", org.powerbot.game.GameDefinition.class.getPackage().getName().replace('.', '/'));
-		s = s.replace("org/rsbot", org.powerbot.game.GameDefinition.class.getPackage().getName().replace('.', '/'));
+		final Package pack = GameDefinition.class.getPackage();
+		final String prefix = pack == null ? "" : pack.getName().replace('.', '/');
+		s = s.replace("org/powerbot", prefix);
+		s = s.replace("org/rsbot", prefix);
 		return s;
 	}
 }
