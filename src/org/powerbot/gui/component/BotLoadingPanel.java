@@ -2,10 +2,13 @@ package org.powerbot.gui.component;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -26,6 +29,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import javax.swing.Timer;
 
 import org.powerbot.game.GameDefinition;
 import org.powerbot.game.bot.Bot;
@@ -41,49 +45,9 @@ public final class BotLoadingPanel extends JPanel {
 	private ThreadGroup listeningGroup = null;
 	private final BotLoadingPanelLogHandler handler;
 
-	public BotLoadingPanel() {
+	public BotLoadingPanel(final Component parent) {
 		setBackground(Color.BLACK);
 		setLayout(new GridLayout(0, 1));
-
-		JLabel[] imageLabel = null;
-		try {
-			if (Resources.getServerData().containsKey("ads")) {
-				final String src = Resources.getServerData().get("ads").get("image"), link = Resources.getServerData().get("ads").get("link");
-				final String filename = "ad.png";
-				final File cache = new File(System.getProperty("java.io.tmpdir"), filename);
-				final URL url = new URL(src);
-				final boolean secure = false;
-				if (secure) {
-					SecureStore.getInstance().download(filename, url);
-				} else {
-					HttpClient.download(url, cache);
-				}
-				BufferedImage image = secure ? ImageIO.read(SecureStore.getInstance().read(filename)) : ImageIO.read(cache);
-				final float MAX_WIDTH = 728, MAX_HEIGHT = 120;
-				if (image.getWidth() > MAX_WIDTH || image.getHeight() > MAX_HEIGHT) {
-					final float factor = Math.min(MAX_WIDTH / image.getWidth(), MAX_HEIGHT / image.getHeight());
-					final BufferedImage resized = new BufferedImage((int) (image.getWidth() * factor), (int) (image.getHeight() * factor), BufferedImage.TYPE_INT_ARGB);
-					final Graphics2D g = resized.createGraphics();
-					g.drawImage(image, 0, 0, resized.getWidth(), resized.getHeight(), null);
-					g.dispose();
-					image = resized;
-				}
-				final BufferedImage shadow = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
-				imageLabel = new JLabel[] { new JLabel(new ImageIcon(image)), new JLabel(new ImageIcon(shadow)) };
-				imageLabel[0].setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-				imageLabel[0].addMouseListener(new MouseAdapter() {
-					@Override
-					public void mouseClicked(final MouseEvent arg0) {
-						BotChrome.openURL(link);
-					}
-				});
-				final int d = 50;
-				imageLabel[0].setBorder(BorderFactory.createEmptyBorder(d, 0, 0, 0));
-				imageLabel[1].setBorder(BorderFactory.createEmptyBorder(0, 0, d, 0));
-			}
-		} catch (final IOException ignored) {
-		} catch (final GeneralSecurityException ignored) {
-		}
 
 		final JPanel panel = new JPanel(new BorderLayout()), panelText = new JPanel(new GridLayout(0, 1)), panelTitle = new JPanel(new GridLayout(1, 0));
 		panel.setBackground(getBackground());
@@ -108,15 +72,7 @@ public final class BotLoadingPanel extends JPanel {
 		info.setFont(info.getFont().deriveFont(0, 14));
 		panelText.add(info);
 
-		if (imageLabel != null) {
-			panel.add(imageLabel[1], BorderLayout.NORTH);
-		}
-
 		panel.add(panelText);
-
-		if (imageLabel != null) {
-			panel.add(imageLabel[0], BorderLayout.SOUTH);
-		}
 
 		add(panel);
 
@@ -124,6 +80,91 @@ public final class BotLoadingPanel extends JPanel {
 		Logger.getLogger(BotChrome.class.getName()).addHandler(handler);
 		Logger.getLogger(GameDefinition.class.getName()).addHandler(handler);
 		Logger.getLogger(Bot.class.getName()).addHandler(handler);
+
+		final int delay = 100;
+
+		final Timer t = new Timer(delay, new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent arg0) {
+				final Timer t = (Timer) arg0.getSource();
+				if (!BotChrome.loaded) {
+					return;
+				}
+				new DisplayAd(parent, panel).run();
+				t.stop();
+			}
+		});
+		t.setCoalesce(false);
+		t.start();
+	}
+
+	private final class DisplayAd implements Runnable {
+		private final Component parent;
+		private final JPanel panel;
+
+		public DisplayAd(final Component parent, final JPanel panel) {
+			this.parent = parent;
+			this.panel = panel;
+		}
+
+		@Override
+		public void run() {
+			JLabel[] imageLabel = null;
+			try {
+				if (Resources.getServerData().containsKey("ads")) {
+					final String src = Resources.getServerData().get("ads").get("image"), link = Resources.getServerData().get("ads").get("link");
+					final String filename = "ad.png";
+					final File cache = new File(System.getProperty("java.io.tmpdir"), filename);
+					final URL url = new URL(src);
+					final boolean secure = false;
+					if (secure) {
+						SecureStore.getInstance().download(filename, url);
+					} else {
+						HttpClient.download(url, cache);
+					}
+					BufferedImage image = secure ? ImageIO.read(SecureStore.getInstance().read(filename)) : ImageIO.read(cache);
+					final float MAX_WIDTH = 728, MAX_HEIGHT = 120;
+					if (image.getWidth() > MAX_WIDTH || image.getHeight() > MAX_HEIGHT) {
+						final float factor = Math.min(MAX_WIDTH / image.getWidth(), MAX_HEIGHT / image.getHeight());
+						final BufferedImage resized = new BufferedImage((int) (image.getWidth() * factor), (int) (image.getHeight() * factor), BufferedImage.TYPE_INT_ARGB);
+						final Graphics2D g = resized.createGraphics();
+						g.drawImage(image, 0, 0, resized.getWidth(), resized.getHeight(), null);
+						g.dispose();
+						image = resized;
+					}
+					final BufferedImage shadow = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
+					imageLabel = new JLabel[] { new JLabel(new ImageIcon(image)), new JLabel(new ImageIcon(shadow)) };
+					imageLabel[0].setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+					imageLabel[0].addMouseListener(new MouseAdapter() {
+						@Override
+						public void mouseClicked(final MouseEvent arg0) {
+							BotChrome.openURL(link);
+						}
+					});
+					final int d = 50;
+					imageLabel[0].setBorder(BorderFactory.createEmptyBorder(d, 0, 0, 0));
+					imageLabel[1].setBorder(BorderFactory.createEmptyBorder(0, 0, d, 0));
+				}
+			} catch (final IOException ignored) {
+			} catch (final GeneralSecurityException ignored) {
+			}
+
+			final Component c = panel.getComponent(0);
+			panel.removeAll();
+
+			if (imageLabel != null) {
+				panel.add(imageLabel[1], BorderLayout.NORTH);
+			}
+
+			panel.add(c);
+
+			if (imageLabel != null) {
+				panel.add(imageLabel[0], BorderLayout.SOUTH);
+			}
+
+			parent.validate();
+			parent.repaint();
+		}
 	}
 
 	public void set(final ThreadGroup threadGroup) {

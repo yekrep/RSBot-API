@@ -35,7 +35,7 @@ public class BotPanel extends JPanel {
 	private int xOff, yOff;
 	private final BotLoadingPanel loadingPanel;
 
-	public BotPanel() {
+	public BotPanel(final Component parent) {
 		final Dimension d = new Dimension(BotChrome.PANEL_WIDTH, BotChrome.PANEL_HEIGHT);
 		setSize(d);
 		setPreferredSize(d);
@@ -45,7 +45,7 @@ public class BotPanel extends JPanel {
 		xOff = yOff = 0;
 
 		setLayout(new GridBagLayout());
-		add(loadingPanel = new BotLoadingPanel());
+		add(loadingPanel = new BotLoadingPanel(parent));
 
 		addComponentListener(new ComponentAdapter() {
 			@Override

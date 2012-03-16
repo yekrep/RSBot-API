@@ -47,7 +47,7 @@ public class BotChrome extends JFrame implements WindowListener {
 		addWindowListener(this);
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 
-		panel = new BotPanel();
+		panel = new BotPanel(this);
 		add(panel);
 
 		toolbar = new BotToolBar(this);
