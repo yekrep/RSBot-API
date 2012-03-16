@@ -2,8 +2,6 @@ package org.powerbot;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.util.logging.Handler;
 import java.util.logging.Logger;
 
@@ -13,6 +11,7 @@ import org.powerbot.gui.BotChrome;
 import org.powerbot.log.SystemConsoleHandler;
 import org.powerbot.util.Configuration;
 import org.powerbot.util.RestrictedSecurityManager;
+import org.powerbot.util.StringUtil;
 import org.powerbot.util.Configuration.OperatingSystem;
 
 public class Boot implements Runnable {
@@ -48,10 +47,7 @@ public class Boot implements Runnable {
 			Logger.getLogger(Boot.class.getName()).severe(String.format("Default heap size of %sm too small, restarting with %sm", mem, req));
 			String cmd = Configuration.OS == OperatingSystem.WINDOWS ? "javaw" : "java";
 			String location = Boot.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-			try {
-				location = URLDecoder.decode(location, "UTF-8").replaceAll("\\\\", "/");
-			} catch (final UnsupportedEncodingException ignored) {
-			}
+			location = StringUtil.urlDecode(location).replaceAll("\\\\", "/");
 			cmd += " -Xmx" + req + "m -classpath \"" + location + "\" \"" + Boot.class.getCanonicalName() + "\" " + SWITCH_RESTARTED;
 			final Runtime run = Runtime.getRuntime();
 			try {
