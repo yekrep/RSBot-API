@@ -11,7 +11,7 @@ import org.powerbot.util.StringUtil;
  */
 public class TClientState implements TextPaintListener {
 	public int draw(int idx, final Graphics render) {
-		StringUtil.drawLine(render, idx++, "[green]Client state: " + Game.getClientState());
+		StringUtil.drawLine(render, idx++, "Client state: " + Game.getClientState());
 		return idx;
 	}
 }

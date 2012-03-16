@@ -9,7 +9,7 @@ import org.powerbot.util.StringUtil;
 
 public class TMapBase implements TextPaintListener {
 	public int draw(int idx, final Graphics render) {
-		StringUtil.drawLine(render, idx++, new StringBuilder("[green]Map base: ").append(new Tile(Game.getBaseX(), Game.getBaseY()).toString()).toString());
+		StringUtil.drawLine(render, idx++, new StringBuilder("Map base: ").append(new Tile(Game.getBaseX(), Game.getBaseY()).toString()).toString());
 		return idx;
 	}
 }
