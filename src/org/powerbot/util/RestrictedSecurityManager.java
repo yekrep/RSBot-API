@@ -141,7 +141,7 @@ public class RestrictedSecurityManager extends SecurityManager {
 	}
 
 	private void checkFilePath(final String pathRaw, final boolean readOnly) {
-		final String path = new File(pathRaw).getAbsolutePath();
+		final String path = StringUtil.urlDecode(new File(pathRaw).getAbsolutePath());
 		final String calling = getCallingClass();
 		final String sysroot = System.getenv("SystemRoot"), home = System.getenv("HOME"), jre = System.getProperty("java.home"), tmp = System.getProperty("java.io.tmpdir");
 
