@@ -12,12 +12,20 @@ import org.powerbot.util.Configuration;
 import org.powerbot.util.RestrictedSecurityManager;
 
 public class Boot implements Runnable {
-	public static void main(final String[] params) {
+	public static void main(final String[] args) {
 		final Logger logger = Logger.getLogger("");
 		for (final Handler handler : logger.getHandlers()) {
 			logger.removeHandler(handler);
 		}
 		logger.addHandler(new SystemConsoleHandler());
+
+
+		final String SWITCH_DEV = "-dev";
+		for (final String arg : args) {
+			if (arg.equals(SWITCH_DEV)) {
+				Configuration.DEVMODE = true;
+			}
+		}
 
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
