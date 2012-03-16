@@ -144,6 +144,11 @@ public class RestrictedSecurityManager extends SecurityManager {
 		final String calling = getCallingClass();
 		final String sysroot = System.getenv("SystemRoot"), home = System.getenv("HOME"), jre = System.getProperty("java.home"), tmp = System.getProperty("java.io.tmpdir");
 
+		// allow read access to running jar
+		if (Configuration.FROMJAR && path.equals(new File(RestrictedSecurityManager.class.getProtectionDomain().getCodeSource().getLocation().getPath()).getAbsolutePath()) && readOnly) {
+			return;
+		}
+
 		// allow access for privileged thread groups
 		if (Thread.currentThread().getThreadGroup().getName().startsWith(GameDefinition.THREADGROUPNAMEPREFIX)) {
 			return;
