@@ -9,6 +9,7 @@ import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
@@ -81,6 +82,14 @@ public class StringUtil {
 	public static String urlEncode(final String text) {
 		try {
 			return URLEncoder.encode(text, "UTF-8");
+		} catch (final UnsupportedEncodingException ignored) {
+			return text;
+		}
+	}
+
+	public static String urlDecode(final String text) {
+		try {
+			return URLDecoder.decode(text, "UTF-8");
 		} catch (final UnsupportedEncodingException ignored) {
 			return text;
 		}
