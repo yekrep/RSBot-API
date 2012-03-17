@@ -138,7 +138,6 @@ public class ModScript implements NodeProcessor {
 					} else {
 						ptr++;
 					}
-					System.out.println("new method in " + clazz + " total: " + count + " || " + m.access + " " + m.name + " " + m.desc + " " + m.max_locals + " " + m.max_stack);
 				}
 				adapters.put(clazz, new AddMethodAdapter(delegate(clazz), methods));
 				break;
