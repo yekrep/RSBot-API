@@ -76,7 +76,12 @@ public class BotChrome extends JFrame implements WindowListener {
 					setTitle(getTitle() + " " + Resources.getServerData().get("messages").get("title"));
 				}
 				if (Resources.getServerData().get("messages").containsKey("start")) {
-					JOptionPane.showMessageDialog(this, Resources.getServerData().get("messages").get("start").replace("\\n", "\n"));
+					final String msg = Resources.getServerData().get("messages").get("start").replace("\\n", "\n");
+					if (Configuration.DEVMODE) {
+						Logger.getLogger(log.getName() + "/Messages").info(msg);
+					} else {
+						JOptionPane.showMessageDialog(this, msg);
+					}
 				}
 			}
 		} catch (final IOException ignored) {
