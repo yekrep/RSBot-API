@@ -63,6 +63,9 @@ public abstract class GameDefinition implements GameEnvironment {
 			log.severe("Please try again");
 			return false;
 		}
+		if (killed) {
+			return false;
+		}
 		log.fine("Downloading loader");
 		final byte[] loader = getLoader(crawler);
 		if (loader != null) {
@@ -70,6 +73,9 @@ public abstract class GameDefinition implements GameEnvironment {
 			final String ivParameterSpecKey = crawler.parameters.get("-1");
 			if (secretKeySpecKey == null || ivParameterSpecKey == null) {
 				log.fine("Invalid secret spec key and/or iv parameter spec key");
+				return false;
+			}
+			if (killed) {
 				return false;
 			}
 			log.fine("Removing key ciphering");
@@ -83,6 +89,9 @@ public abstract class GameDefinition implements GameEnvironment {
 			if (classes != null && classes.size() > 0) {
 				this.classes.putAll(classes);
 				classes.clear();
+			}
+			if (killed) {
+				return false;
 			}
 			if (this.classes.size() > 0) {
 				NodeProcessor nodeProcessor;
