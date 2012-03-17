@@ -23,6 +23,7 @@ public class Deque<N> {
 		return size;
 	}
 
+	@SuppressWarnings("unchecked")
 	public N getHead() {
 		final Node node = ((Node) ((NodeDequeTail) nl).getNodeDequeTail()).getNext();
 
@@ -35,6 +36,7 @@ public class Deque<N> {
 		return (N) node;
 	}
 
+	@SuppressWarnings("unchecked")
 	public N getTail() {
 		final Node node = ((Node) ((NodeDequeTail) nl).getNodeDequeTail()).getPrevious();
 
@@ -47,6 +49,7 @@ public class Deque<N> {
 		return (N) node;
 	}
 
+	@SuppressWarnings("unchecked")
 	public N getNext() {
 		Node node = current;
 

@@ -3,6 +3,8 @@ package org.powerbot.game.api.wrappers;
 import java.awt.Polygon;
 
 public class Area extends Polygon {
+	private static final long serialVersionUID = 1L;
+
 	public Area(final Tile t1, final Tile t2) {
 		this(new Tile[]{
 				new Tile(Math.min(t1.x, t2.x), Math.min(t1.y, t2.y), t1.plane),
