@@ -1,4 +1,4 @@
-package org.powerbot.log;
+package org.powerbot.util.io;
 
 import java.io.PrintStream;
 import java.util.logging.Handler;
