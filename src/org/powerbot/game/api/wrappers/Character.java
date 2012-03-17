@@ -97,7 +97,7 @@ public abstract class Character implements Entity {
 	}
 
 	public String getMessage() {
-		return null;
+		return null;//TODO
 	}
 
 	public int getHpPercent() {
@@ -120,7 +120,7 @@ public abstract class Character implements Entity {
 	protected abstract Object get();
 
 	public boolean verify() {
-		return false;//TODO
+		return get() != null;
 	}
 
 	public Point getCentralPoint() {//TODO
