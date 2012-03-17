@@ -91,8 +91,7 @@ public class Crawler {
 			final HttpURLConnection con = HttpClient.getHttpConnection(new URL(url));
 			con.addRequestProperty("Referer", referer);
 			return HttpClient.downloadAsString(con);
-		} catch (final IOException e) {
-			e.printStackTrace();
+		} catch (final IOException ignored) {
 		}
 		return null;
 	}

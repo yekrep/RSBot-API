@@ -60,6 +60,7 @@ public abstract class GameDefinition implements GameEnvironment {
 		classes.clear();
 		log.fine("Crawling (for) game information");
 		if (!crawler.crawl()) {
+			log.severe("Please try again");
 			return false;
 		}
 		log.fine("Downloading loader");

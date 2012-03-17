@@ -60,7 +60,7 @@ public class DrawGroundItems implements PaintListener {
 					}
 				}
 			}
-		} catch (Throwable t) {
+		} catch (final Throwable t) {
 			t.printStackTrace();
 		}
 	}
