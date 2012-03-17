@@ -20,22 +20,42 @@ public class ItemDefinition {
 	}
 
 	public String getName() {
-		return (String) ((RSItemDefName) definition).getRSItemDefName();
+		try {
+			return (String) ((RSItemDefName) definition).getRSItemDefName();
+		} catch (final ClassCastException ignored) {
+		}
+		return null;
 	}
 
 	public int getId() {
-		return ((RSItemDefID) ((RSItemDefInts) definition).getRSItemDefInts()).getRSItemDefID() * Bot.resolve().multipliers.ITEMDEF_ID;
+		try {
+			return ((RSItemDefID) ((RSItemDefInts) definition).getRSItemDefInts()).getRSItemDefID() * Bot.resolve().multipliers.ITEMDEF_ID;
+		} catch (final ClassCastException ignored) {
+		}
+		return -1;
 	}
 
 	public boolean isMembers() {
-		return ((RSItemDefIsMembersObject) ((RSItemDefBooleans) definition).getRSItemDefBooleans()).getRSItemDefIsMembersObject();
+		try {
+			return ((RSItemDefIsMembersObject) ((RSItemDefBooleans) definition).getRSItemDefBooleans()).getRSItemDefIsMembersObject();
+		} catch (final ClassCastException ignored) {
+		}
+		return false;
 	}
 
 	public String[] getActions() {
-		return (String[]) ((RSItemDefActions) definition).getRSItemDefActions();
+		try {
+			return (String[]) ((RSItemDefActions) definition).getRSItemDefActions();
+		} catch (final ClassCastException ignored) {
+		}
+		return null;
 	}
 
 	public String[] getGroundActions() {
-		return (String[]) ((RSItemDefGroundActions) definition).getRSItemDefGroundActions();
+		try {
+			return (String[]) ((RSItemDefGroundActions) definition).getRSItemDefGroundActions();
+		} catch (final ClassCastException ignored) {
+		}
+		return null;
 	}
 }
