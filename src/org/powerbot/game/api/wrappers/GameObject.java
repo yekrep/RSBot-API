@@ -34,11 +34,13 @@ public class GameObject {
 				final int bX = Game.getBaseX(), bY = Game.getBaseY();
 				final Tile tile1 = new Tile(
 						bX + (int) ((RSAnimableX1) shorts).getRSAnimableX1(),
-						bY + (int) ((RSAnimableY1) shorts).getRSAnimableY1()
+						bY + (int) ((RSAnimableY1) shorts).getRSAnimableY1(),
+						plane
 				);
 				final Tile tile2 = new Tile(
 						bX + (int) ((RSAnimableX2) shorts).getRSAnimableX2(),
-						bY + (int) ((RSAnimableY2) shorts).getRSAnimableY2()
+						bY + (int) ((RSAnimableY2) shorts).getRSAnimableY2(),
+						plane
 				);
 				return new Area(tile1, tile2);
 			}

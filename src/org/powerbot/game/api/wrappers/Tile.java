@@ -22,11 +22,6 @@ public class Tile implements Entity {
 		this.plane = plane;
 	}
 
-	public Tile(final int x, final int y) {
-		this(x, y, 0);
-		log.warning("new tile created (" + x + ", " + y + ") without plane");
-	}
-
 	public Tile derive(final int x, final int y) {
 		return new Tile(this.x + x, this.y + y, this.plane);
 	}
