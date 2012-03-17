@@ -101,7 +101,7 @@ public class HttpClient {
 
 		if (file.exists() && modified != 0L) {
 			modified -= TimeZone.getDefault().getOffset(modified);
-			if (file.lastModified() < modified) {
+			if (file.lastModified() <= modified) {
 				log.fine("Using " + file.getName() + " from cache");
 				return con;
 			}

@@ -203,7 +203,7 @@ public final class SecureStore {
 	public void download(final String name, final URL url) throws IOException, GeneralSecurityException {
 		final TarEntry entry = get(name);
 		if (entry != null) {
-			if (entry.modified >= HttpClient.getLastModified(url)) {
+			if (entry.modified <= HttpClient.getLastModified(url)) {
 				return;
 			}
 		}
