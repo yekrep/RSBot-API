@@ -1,70 +1,27 @@
 package org.powerbot.util;
 
 import java.awt.Color;
-import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
-import java.util.HashMap;
-import java.util.Map;
 
 public class StringUtil {
-	private static final String[] COLOURS_STR = new String[]{"red", "green", "cyan", "purple", "white"};
-	private static final Map<String, Color> COLOR_MAP = new HashMap<String, Color>();
-
 	public static String stripHtml(final String s) {
 		return s.replaceAll("\\<.*?\\>", "");
 	}
 
 	/**
-	 * Draws a line on the screen at the specified index. Default is green.
-	 * <p/>
-	 * Available colours: red, green, cyan, purple, white.
-	 *
-	 * @param render The Graphics object to be used.
-	 * @param row    The index where you want the text.
-	 * @param text   The text you want to render. Colours can be set like [red].
+	 * Draws a line on the screen at the specified index.
 	 */
 	public static void drawLine(final Graphics render, final int row, final String text) {
-		final FontMetrics metrics = render.getFontMetrics();
-		final int height = metrics.getHeight() + 4;
-		final int y = row * height + height + 19;
-		final String[] texts = text.split("\\[");
-		int xIdx = 7;
-		Color cur = Color.GREEN;
-		for (String t : texts) {
-			for (final String element : COLOURS_STR) {
-				final int endIdx = t.indexOf(']');
-				if (endIdx != -1) {
-					final String colorName = t.substring(0, endIdx);
-					if (COLOR_MAP.containsKey(colorName)) {
-						cur = COLOR_MAP.get(colorName);
-					} else {
-						try {
-							final Field f = Color.class.getField(colorName);
-							final int mods = f.getModifiers();
-							if (Modifier.isPublic(mods) && Modifier.isStatic(mods) && Modifier.isFinal(mods)) {
-								cur = (Color) f.get(null);
-								COLOR_MAP.put(colorName, cur);
-							}
-						} catch (final Exception ignored) {
-						}
-					}
-					t = t.replace(colorName + "]", "");
-				}
-			}
-			render.setColor(Color.BLACK);
-			render.drawString(t, xIdx, y + 1);
-			render.setColor(cur);
-			render.drawString(t, xIdx, y);
-			xIdx += metrics.stringWidth(t);
-		}
+		final int height = render.getFontMetrics().getHeight() + 4;
+		final int x = 7, y = row * height + height + 19;
+		render.setColor(Color.GREEN);
+		render.drawString(text, x, y);
 	}
 
 	public static String unescapeXmlEntities(String text) {
