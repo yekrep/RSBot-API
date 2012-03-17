@@ -30,6 +30,8 @@ public class Resources {
 		public static final String CONTROL_PAUSE = ROOT_IMG + "/control_pause.png";
 		public static final String CONTROL_PLAY = ROOT_IMG + "/control_play.png";
 		public static final String CONTROL_STOP = ROOT_IMG + "/control_stop.png";
+		public static final String CROSS_SMALL = ROOT_IMG + "/cross_small.png";
+		public static final String CROSS_SMALL_GRAY = ROOT_IMG + "/cross_small_gray.png";
 		public static final String DELETE = ROOT_IMG + "/delete.png";
 		public static final String KEY = ROOT_IMG + "/key.png";
 		public static final String REPORT_KEY = ROOT_IMG + "/report_key.png";

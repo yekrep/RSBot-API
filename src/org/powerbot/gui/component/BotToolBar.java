@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
@@ -179,8 +180,18 @@ public final class BotToolBar extends JToolBar {
 			super(name);
 			this.bot = bot;
 			setFocusable(false);
-			setIcon(new ImageIcon(Resources.getImage(Resources.Paths.TAB_DELETE)));
+			setIcon(new ImageIcon(Resources.getImage(Resources.Paths.CROSS_SMALL_GRAY)));
 			final Component c = this;
+			addMouseMotionListener(new MouseMotionAdapter() {
+				@Override
+				public void mouseMoved(final MouseEvent e) {
+					if (e.getX() < getIcon().getIconWidth() + getIconTextGap()) {
+						setIcon(new ImageIcon(Resources.getImage(Resources.Paths.CROSS_SMALL)));
+					} else {
+						setIcon(new ImageIcon(Resources.getImage(Resources.Paths.CROSS_SMALL_GRAY)));
+					}
+				}
+			});
 			addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(final MouseEvent e) {
@@ -190,6 +201,11 @@ public final class BotToolBar extends JToolBar {
 					} else {
 						activateTab(n);
 					}
+				}
+
+				@Override
+				public void mouseExited(final MouseEvent e) {
+					setIcon(new ImageIcon(Resources.getImage(Resources.Paths.CROSS_SMALL_GRAY)));
 				}
 			});
 		}
