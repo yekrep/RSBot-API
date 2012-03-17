@@ -174,6 +174,7 @@ public class BotChrome extends JFrame implements WindowListener {
 				parent.repaint();
 				Logger.getLogger(BotChrome.class.getName()).log(Level.INFO, "Add a tab to start a new bot", "Welcome");
 			}
+			System.gc();
 			BotChrome.loaded = true;
 		}
 	}

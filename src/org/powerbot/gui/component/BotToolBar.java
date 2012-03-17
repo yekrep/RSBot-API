@@ -130,6 +130,7 @@ public final class BotToolBar extends JToolBar {
 		if (getTabCount() == 0) {
 			Logger.getLogger(Bot.class.getName()).log(Level.INFO, "Add a tab to start another bot", "Closed");
 		}
+		System.gc();
 	}
 
 	private void openTab(final int n) {
