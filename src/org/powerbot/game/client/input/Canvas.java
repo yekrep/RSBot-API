@@ -1,7 +1,6 @@
 package org.powerbot.game.client.input;
 
 import java.awt.AWTEvent;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -43,11 +42,10 @@ public class Canvas extends java.awt.Canvas {
 	 * @return The bot belonging to this canvas.
 	 */
 	private Bot getBot() {
-		final ClassLoader cl = this.getClass().getClassLoader();
+		final ClassLoader cl = getClass().getClassLoader();
 		for (final Bot bot : Bot.bots) {
-			final Component c = bot.appletContainer.getComponent(0);
-			final ClassLoader componentParent = c.getClass().getClassLoader();
-			if (cl == componentParent) {
+			if (cl == bot.client.getClass().getClassLoader()) {
+				BotChrome.panel.offset();
 				return bot;
 			}
 		}
