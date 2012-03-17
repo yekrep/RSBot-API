@@ -1,5 +1,6 @@
 package org.powerbot.game.api.wrappers;
 
+import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Polygon;
 
@@ -8,13 +9,7 @@ import java.awt.Polygon;
  *
  * @author Timer
  */
-public interface Entity extends Renderable {
-	/**
-	 * Verify that this entity exists.
-	 *
-	 * @return <tt>true</tt> if this entity is still valid; otherwise <tt>false</tt>.
-	 */
-	public boolean verify();
+public interface Entity extends Verifiable {
 
 	/**
 	 * Determines the central point of the entity.
@@ -83,4 +78,11 @@ public interface Entity extends Renderable {
 	 * @return <tt>true</tt> if interacted; otherwise <tt>false</tt>.
 	 */
 	public boolean interact(final String action, final String option);
+
+	/**
+	 * Draws the entity in detail.
+	 *
+	 * @param render The render to paint onto.
+	 */
+	public void draw(final Graphics render);
 }

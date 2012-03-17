@@ -10,6 +10,8 @@ import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.api.util.internal.Nodes;
 import org.powerbot.game.bot.Bot;
 import org.powerbot.game.client.Client;
+import org.powerbot.game.client.Model;
+import org.powerbot.game.client.ModelCapture;
 import org.powerbot.game.client.RSAnimatorSequence;
 import org.powerbot.game.client.RSCharacterAnimation;
 import org.powerbot.game.client.RSCharacterHPRatio;
@@ -48,6 +50,10 @@ public abstract class Character implements Entity {
 	public Tile getLocation() {
 		final RSInteractableLocation location = ((RSInteractableManager) ((RSInteractableRSInteractableManager) get()).getRSInteractableRSInteractableManager()).getData().getLocation();
 		return new Tile(Game.getBaseX() + ((int) location.getX() >> 9), Game.getBaseY() + ((int) location.getY() >> 9), Game.getFloor());//TODO plane
+	}
+
+	public int getPlane() {
+		return Game.getFloor();//TODO plane
 	}
 
 	public Character getInteracting() {
@@ -113,8 +119,13 @@ public abstract class Character implements Entity {
 		return getSpeed() != 0;
 	}
 
-	public InteractiveModel getModel() {
-		return null;//TODO
+	public GameModel getModel() {
+		final Object ref = get();
+		if (ref != null) {
+			final Model model = ModelCapture.modelCache.get(ref);
+			return new CharacterModel(model, this);
+		}
+		return null;
 	}
 
 	protected abstract Object get();
