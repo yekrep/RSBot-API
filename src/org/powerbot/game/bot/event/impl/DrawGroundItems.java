@@ -41,8 +41,10 @@ public class DrawGroundItems implements PaintListener {
 						render.setColor(Color.red);
 						render.fillRect((int) screen.getX() - 1, (int) screen.getY() - 1, 2, 2);
 						final ItemDefinition itemDefinition = groundItem.getGroundItem().getDefinition();
-						final StringBuilder sB = new StringBuilder(itemDefinition != null ? itemDefinition.getName() : "");
-						if (itemDefinition != null) {
+						final StringBuilder sB = new StringBuilder();
+						String name;
+						if (itemDefinition != null && (name = itemDefinition.getName()) != null) {
+							sB.append(name);
 							sB.append(' ');
 						}
 						sB.append(groundItem.getGroundItem().getId());
@@ -55,7 +57,6 @@ public class DrawGroundItems implements PaintListener {
 						final int tx = screen.x - metrics.stringWidth(s) / 2;
 						render.setColor(Color.green);
 						render.drawString(s, tx, ty);
-
 					}
 				}
 			}
