@@ -5,8 +5,6 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
-import org.powerbot.util.StringUtil;
-
 /**
  * @author Paris
  */
@@ -27,11 +25,13 @@ public class SystemConsoleHandler extends Handler {
 		if (text.length() == 0) {
 			return;
 		}
-		final StringBuilder result = new StringBuilder().append("[").append(record.getLevel().getName()).append("] ").
-				append(": ").append(record.getLoggerName()).append(": ").append(text).
-				append(StringUtil.throwableToString(record.getThrown()));
 		final int level = record.getLevel().intValue();
 		final PrintStream out = level >= Level.WARNING.intValue() ? System.err : System.out;
-		out.println(result.toString());
+		out.print('[');
+		out.print(record.getLevel().getName());
+		out.print("] ");
+		out.print(record.getLoggerName());
+		out.print(": ");
+		out.println(text);
 	}
 }
