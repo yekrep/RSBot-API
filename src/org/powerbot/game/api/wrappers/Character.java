@@ -47,7 +47,7 @@ public abstract class Character implements Entity {
 
 	public Tile getLocation() {
 		final RSInteractableLocation location = ((RSInteractableManager) ((RSInteractableRSInteractableManager) get()).getRSInteractableRSInteractableManager()).getData().getLocation();
-		return new Tile(Game.getBaseX() + ((int) location.getX() >> 9), Game.getBaseY() + ((int) location.getY() >> 9));
+		return new Tile(Game.getBaseX() + ((int) location.getX() >> 9), Game.getBaseY() + ((int) location.getY() >> 9), Game.getFloor());//TODO plane
 	}
 
 	public Character getInteracting() {

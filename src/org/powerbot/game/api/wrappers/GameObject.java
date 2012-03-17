@@ -37,7 +37,7 @@ public class GameObject {
 
 	public Tile getLocation() {
 		final RSInteractableLocation location = ((RSInteractableManager) ((RSInteractableRSInteractableManager) object).getRSInteractableRSInteractableManager()).getData().getLocation();
-		return new Tile(Game.getBaseX() + (int) location.getX() / 512, Game.getBaseY() + (int) location.getY() / 512);
+		return new Tile(Game.getBaseX() + (int) location.getX() / 512, Game.getBaseY() + (int) location.getY() / 512, plane);
 	}
 
 	public GameObjectDefinition getDefinition() {

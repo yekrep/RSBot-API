@@ -71,7 +71,8 @@ public class GroundItems {
 		final List<GroundItem> groundItems = new ArrayList<GroundItem>();
 		final Client client = Bot.resolve().client;
 		final Object itemHashTable = client.getRSItemHashTable();
-		final int index = x | y << 14 | Game.getFloor() << 28;
+		final int floor = Game.getFloor();
+		final int index = x | y << 14 | floor << 28;
 
 		final NodeListCache itemNodeListCache = (NodeListCache) Nodes.lookup(itemHashTable, index);
 
@@ -81,7 +82,7 @@ public class GroundItems {
 
 		final Deque<RSItem> itemDeque = new Deque<RSItem>(((NodeListCacheNodeList) itemNodeListCache.getData()).getNodeListCacheNodeList());
 		for (RSItem item = itemDeque.getHead(); item != null; item = itemDeque.getNext()) {
-			groundItems.add(new GroundItem(new Tile(x, y), new Item(item)));
+			groundItems.add(new GroundItem(new Tile(x, y, floor), new Item(item)));
 		}
 		return groundItems.toArray(new GroundItem[groundItems.size()]);
 	}

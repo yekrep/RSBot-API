@@ -3,6 +3,7 @@ package org.powerbot.game.api.wrappers;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Polygon;
+import java.util.logging.Logger;
 
 import org.powerbot.game.api.methods.Calculations;
 import org.powerbot.game.api.methods.Game;
@@ -13,6 +14,7 @@ import org.powerbot.game.api.util.Random;
  */
 public class Tile implements Entity {
 	public final int x, y, plane;
+	private static final Logger log = Logger.getLogger(Tile.class.getName());
 
 	public Tile(final int x, final int y, final int plane) {
 		this.x = x;
@@ -22,6 +24,7 @@ public class Tile implements Entity {
 
 	public Tile(final int x, final int y) {
 		this(x, y, 0);
+		log.warning("new tile created (" + x + ", " + y + ") without plane");
 	}
 
 	public Tile derive(final int x, final int y) {
