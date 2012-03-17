@@ -56,7 +56,7 @@ public final class BotMenu extends JPopupMenu implements ActionListener {
 		addSeparator();
 
 		final JMenu view;
-		if (parent.getOpenedTab() == -1) {
+		if (parent.getActiveTab() == -1) {
 			view = new JMenu(BotLocale.VIEW);
 			view.setEnabled(false);
 		} else {
@@ -85,7 +85,7 @@ public final class BotMenu extends JPopupMenu implements ActionListener {
 		if (a.equals(BotLocale.NEWTAB)) {
 			parent.addTab();
 		} else if (a.equals(BotLocale.CLOSETAB)) {
-			parent.closeTab(parent.getOpenedTab());
+			parent.closeTab(parent.getActiveTab());
 		} else if (a.equals(BotLocale.ACCOUNTS)) {
 			new BotAccounts(parent.parent);
 		} else if (a.startsWith(BotLocale.SIGNIN) || a.startsWith(BotLocale.SIGNEDINAS)) {

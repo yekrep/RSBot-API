@@ -78,7 +78,7 @@ public final class BotMenuView extends JMenu implements ActionListener {
 		items.add(SEPERATOR);
 		items.add(MESSAGES);
 
-		final Bot bot = Bot.bots.get(parent.parent.getOpenedTab());
+		final Bot bot = Bot.bots.get(parent.parent.getActiveTab());
 		Map<String, EventListener> listeners = BotMenuView.listeners.get(bot);
 		if (listeners == null) {
 			listeners = new HashMap<String, EventListener>();
@@ -128,7 +128,7 @@ public final class BotMenuView extends JMenu implements ActionListener {
 	}
 
 	private void setView(final Class<? extends EventListener> eventListener, final boolean selected) {
-		final Bot bot = Bot.bots.get(parent.parent.getOpenedTab());
+		final Bot bot = Bot.bots.get(parent.parent.getActiveTab());
 		final String name = eventListener.getName();
 		Map<String, EventListener> listeners = BotMenuView.listeners.get(bot);
 		if (listeners == null) {
