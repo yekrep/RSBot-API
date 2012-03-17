@@ -1,5 +1,6 @@
 package org.powerbot.game.api.methods;
 
+import java.awt.Canvas;
 import java.awt.Point;
 
 import org.powerbot.game.bot.Bot;
@@ -25,7 +26,18 @@ public class Calculations {
 		public float zOff, zX, zY, zZ;
 	}
 
-	private static int calculateTileHeight(final int x, final int y, int plane) {
+	public static final int[] SIN_TABLE = new int[16384];
+	public static final int[] COS_TABLE = new int[16384];
+
+	static {
+		final double d = 0.00038349519697141029D;
+		for (int i = 0; i < 16384; i++) {
+			Calculations.SIN_TABLE[i] = (int) (32768D * Math.sin(i * d));
+			Calculations.COS_TABLE[i] = (int) (32768D * Math.cos(i * d));
+		}
+	}
+
+	public static int calculateTileHeight(final int x, final int y, int plane) {
 		final Client client = Bot.resolve().client;
 		final int x1 = x >> 9;
 		final int y1 = y >> 9;
@@ -71,5 +83,10 @@ public class Calculations {
 			);
 		}
 		return new Point(-1, -1);
+	}
+
+	public static boolean isPointOnScreen(final Point point) {
+		final Canvas canvas = Bot.resolve().getCanvas();
+		return point.x > 0 && point.y > 0 && point.x < canvas.getWidth() && point.y < canvas.getHeight();
 	}
 }
