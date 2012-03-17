@@ -11,7 +11,7 @@ import org.powerbot.util.StringUtil;
  */
 public class TFloor implements TextPaintListener {
 	public int draw(int idx, final Graphics render) {
-		StringUtil.drawLine(render, idx++, "[green]Floor: " + Game.getFloor());
+		StringUtil.drawLine(render, idx++, "Floor: " + Game.getFloor());
 		return idx;
 	}
 }

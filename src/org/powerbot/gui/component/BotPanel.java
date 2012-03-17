@@ -40,6 +40,8 @@ public class BotPanel extends JPanel {
 		setSize(d);
 		setPreferredSize(d);
 		setMinimumSize(d);
+		setFocusable(true);
+		setFocusTraversalKeysEnabled(false);
 		setBackground(Color.black);
 		bot = null;
 		xOff = yOff = 0;

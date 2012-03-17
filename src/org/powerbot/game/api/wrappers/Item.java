@@ -1,11 +1,18 @@
 package org.powerbot.game.api.wrappers;
 
 import org.powerbot.game.api.Multipliers;
+import org.powerbot.game.api.util.internal.Nodes;
 import org.powerbot.game.bot.Bot;
+import org.powerbot.game.client.CacheTable;
+import org.powerbot.game.client.HardReferenceGet;
+import org.powerbot.game.client.Node;
 import org.powerbot.game.client.RSItem;
+import org.powerbot.game.client.RSItemDefLoaderCache;
 import org.powerbot.game.client.RSItemID;
 import org.powerbot.game.client.RSItemInts;
 import org.powerbot.game.client.RSItemStackSize;
+import org.powerbot.game.client.Reference;
+import org.powerbot.game.client.SoftReferenceGet;
 
 /**
  * @author Timer
@@ -39,5 +46,21 @@ public class Item {
 
 	public int getStackSize() {
 		return stack;
+	}
+
+	public ItemDefinition getDefinition() {
+		final Object itemDefLoaderTable = Bot.resolve().client.getRSItemDefLoader();
+		final Object itemDefLoaderCache = ((RSItemDefLoaderCache) itemDefLoaderTable).getRSItemDefLoaderCache();
+		final Object itemDefLoader = ((CacheTable) itemDefLoaderCache).getCacheTable();
+		final Node ref = Nodes.lookup(itemDefLoader, id);
+		if (ref != null && ref instanceof Reference) {
+			final Object reference = ((Reference) ref).getData();
+			if (reference instanceof SoftReferenceGet) {
+				return new ItemDefinition(((SoftReferenceGet) reference).getSoftReferenceGet());
+			} else if (reference instanceof HardReferenceGet) {
+				return new ItemDefinition(((HardReferenceGet) reference).getHardReferenceGet());
+			}
+		}
+		return null;
 	}
 }

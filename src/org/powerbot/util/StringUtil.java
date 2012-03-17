@@ -33,16 +33,13 @@ public class StringUtil {
 	 */
 	public static void drawLine(final Graphics render, final int row, final String text) {
 		final FontMetrics metrics = render.getFontMetrics();
-		final int height = metrics.getHeight() + 4; // height + gap
+		final int height = metrics.getHeight() + 4;
 		final int y = row * height + height + 19;
 		final String[] texts = text.split("\\[");
 		int xIdx = 7;
 		Color cur = Color.GREEN;
 		for (String t : texts) {
-			for (@SuppressWarnings("unused") final String element : COLOURS_STR) {
-				// String element = COLOURS_STR[i];
-				// Don't search for a starting '[' cause it they don't exists.
-				// we split on that.
+			for (final String element : COLOURS_STR) {
 				final int endIdx = t.indexOf(']');
 				if (endIdx != -1) {
 					final String colorName = t.substring(0, endIdx);

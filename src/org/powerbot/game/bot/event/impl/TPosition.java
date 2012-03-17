@@ -13,7 +13,7 @@ public class TPosition implements TextPaintListener {
 		final Player player = Players.getLocal();
 		if (player != null) {
 			final Tile tile = player.getLocation();
-			StringUtil.drawLine(render, idx++, new StringBuilder("[green]Position: ").append(new Tile(tile.x, tile.y).toString()).toString());
+			StringUtil.drawLine(render, idx++, new StringBuilder("Position: ").append(new Tile(tile.x, tile.y).toString()).toString());
 		}
 		return idx;
 	}

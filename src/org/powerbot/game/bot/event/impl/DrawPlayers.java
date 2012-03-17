@@ -54,9 +54,6 @@ public class DrawPlayers implements PaintListener {
 			if (msg != null) {
 				render.setColor(Color.ORANGE);
 				render.drawString(msg, location.x - metrics.stringWidth(msg) / 2, location.y - metrics.getHeight() * (raised ? 5 : 3) / 2);
-			} else {
-				final String loc = player.getLocation().toString();
-				render.drawString(loc, location.x - metrics.stringWidth(loc) / 2, location.y - metrics.getHeight() * (raised ? 5 : 3) / 2);
 			}
 		}
 	}

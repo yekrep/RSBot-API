@@ -84,7 +84,6 @@ public final class BotLoadingPanel extends JPanel {
 		final int delay = 100;
 
 		final Timer t = new Timer(delay, new ActionListener() {
-			@Override
 			public void actionPerformed(final ActionEvent arg0) {
 				final Timer t = (Timer) arg0.getSource();
 				if (!BotChrome.loaded) {
@@ -107,7 +106,6 @@ public final class BotLoadingPanel extends JPanel {
 			this.panel = panel;
 		}
 
-		@Override
 		public void run() {
 			JLabel[] imageLabel = null;
 			try {
@@ -133,7 +131,7 @@ public final class BotLoadingPanel extends JPanel {
 						image = resized;
 					}
 					final BufferedImage shadow = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
-					imageLabel = new JLabel[] { new JLabel(new ImageIcon(image)), new JLabel(new ImageIcon(shadow)) };
+					imageLabel = new JLabel[]{new JLabel(new ImageIcon(image)), new JLabel(new ImageIcon(shadow))};
 					imageLabel[0].setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 					imageLabel[0].addMouseListener(new MouseAdapter() {
 						@Override
