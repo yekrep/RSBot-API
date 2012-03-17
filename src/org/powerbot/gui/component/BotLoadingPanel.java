@@ -34,7 +34,6 @@ import javax.swing.SwingConstants;
 import javax.swing.Timer;
 
 import org.powerbot.game.GameDefinition;
-import org.powerbot.game.bot.Bot;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.util.StringUtil;
 import org.powerbot.util.io.HttpClient;
@@ -81,9 +80,7 @@ public final class BotLoadingPanel extends JPanel {
 		add(panel);
 
 		handler = new BotLoadingPanelLogHandler(this);
-		Logger.getLogger(BotChrome.class.getName()).addHandler(handler);
-		Logger.getLogger(GameDefinition.class.getName()).addHandler(handler);
-		Logger.getLogger(Bot.class.getName()).addHandler(handler);
+		Logger.getLogger("").addHandler(handler);
 
 		final int delay = 100;
 
