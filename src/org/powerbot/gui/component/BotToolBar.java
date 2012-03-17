@@ -30,6 +30,7 @@ public final class BotToolBar extends JToolBar {
 
 	public BotToolBar(final BotChrome parent) {
 		this.parent = parent;
+		setFloatable(false);
 		setBorder(new EmptyBorder(1, 3, 1, 3));
 
 		tabDelete = new JButton(new ImageIcon(Resources.getImage(Resources.Paths.TAB_DELETE)));
