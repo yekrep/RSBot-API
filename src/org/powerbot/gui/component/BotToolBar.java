@@ -134,6 +134,9 @@ public final class BotToolBar extends JToolBar {
 	}
 
 	private void openTab(final int n) {
+		if (getOpenedTab() == n) {
+			return;
+		}
 		int i = 0;
 		for (final Component c : getComponents()) {
 			if (c instanceof BotButton) {
