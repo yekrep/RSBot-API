@@ -13,14 +13,16 @@ import java.awt.image.Raster;
 import java.awt.image.WritableRaster;
 import java.util.Hashtable;
 
+import org.powerbot.game.api.util.Time;
 import org.powerbot.game.bot.Bot;
 import org.powerbot.gui.BotChrome;
 
 public class Canvas extends java.awt.Canvas {
 	private static final long serialVersionUID = -2276037172265300477L;
 
-	private boolean visible, focused, loader_identified;
+	private static final int GRAPHICS_DELAY = 6;
 
+	private boolean visible, focused, loader_identified;
 	private Bot bot;
 
 	@Override
@@ -33,6 +35,7 @@ public class Canvas extends java.awt.Canvas {
 				loader_identified = true;
 			}
 		}
+		Time.sleep(GRAPHICS_DELAY);
 		return bot.getBufferGraphics();
 	}
 
