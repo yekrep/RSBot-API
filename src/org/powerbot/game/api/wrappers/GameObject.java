@@ -2,6 +2,11 @@ package org.powerbot.game.api.wrappers;
 
 import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.bot.Bot;
+import org.powerbot.game.client.RSAnimableShorts;
+import org.powerbot.game.client.RSAnimableX1;
+import org.powerbot.game.client.RSAnimableX2;
+import org.powerbot.game.client.RSAnimableY1;
+import org.powerbot.game.client.RSAnimableY2;
 import org.powerbot.game.client.RSInteractableLocation;
 import org.powerbot.game.client.RSInteractableManager;
 import org.powerbot.game.client.RSInteractableRSInteractableManager;
@@ -19,8 +24,26 @@ public class GameObject {
 		this.plane = plane;
 	}
 
-	public Object getArea() {
-		return null;//TODO
+	public Area getArea() {
+		if (object instanceof RSAnimableShorts) {
+			final Object shorts = ((RSAnimableShorts) object).getRSAnimableShorts();
+			if (shorts instanceof RSAnimableX1 &&
+					shorts instanceof RSAnimableY1 &&
+					shorts instanceof RSAnimableX2 &&
+					shorts instanceof RSAnimableY2) {
+				final int bX = Game.getBaseX(), bY = Game.getBaseY();
+				final Tile tile1 = new Tile(
+						bX + (int) ((RSAnimableX1) shorts).getRSAnimableX1(),
+						bY + (int) ((RSAnimableY1) shorts).getRSAnimableY1()
+				);
+				final Tile tile2 = new Tile(
+						bX + (int) ((RSAnimableX2) shorts).getRSAnimableX2(),
+						bY + (int) ((RSAnimableY2) shorts).getRSAnimableY2()
+				);
+				return new Area(tile1, tile2);
+			}
+		}
+		return null;
 	}
 
 	public int getId() {
