@@ -36,6 +36,7 @@ import javax.swing.Timer;
 import org.powerbot.game.GameDefinition;
 import org.powerbot.game.bot.Bot;
 import org.powerbot.gui.BotChrome;
+import org.powerbot.util.Configuration;
 import org.powerbot.util.StringUtil;
 import org.powerbot.util.io.HttpClient;
 import org.powerbot.util.io.IOHelper;
@@ -96,7 +97,11 @@ public final class BotLoadingPanel extends JPanel {
 			}
 		});
 		t.setCoalesce(false);
-		t.start();
+		if (Configuration.DEVMODE) {
+			t.stop();
+		} else {
+			t.start();
+		}
 	}
 
 	private final class DisplayAd implements Runnable {
