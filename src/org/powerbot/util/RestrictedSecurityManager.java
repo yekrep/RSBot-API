@@ -175,6 +175,11 @@ public class RestrictedSecurityManager extends SecurityManager {
 			return;
 		}
 
+		// allow read access to additional Java directories on Unix
+		if (Configuration.OS != OperatingSystem.WINDOWS && (path.startsWith("/usr/share") || path.startsWith("/usr/java")) && readOnly) {
+			return;
+		}
+
 		// allow read access to system library on Mac
 		if (Configuration.OS == OperatingSystem.MAC && path.startsWith("/System/Library/") && readOnly) {
 			return;
