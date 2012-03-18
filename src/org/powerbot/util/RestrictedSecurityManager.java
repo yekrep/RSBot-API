@@ -180,6 +180,11 @@ public class RestrictedSecurityManager extends SecurityManager {
 			return;
 		}
 
+		// allow read access to profile file
+		if (Configuration.OS != OperatingSystem.WINDOWS && path.endsWith("PYCC.pf") && readOnly) {
+			return;
+		}
+
 		// allow read access to system library on Mac
 		if (Configuration.OS == OperatingSystem.MAC && path.startsWith("/System/Library/") && readOnly) {
 			return;
