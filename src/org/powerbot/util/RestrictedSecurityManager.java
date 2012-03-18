@@ -4,14 +4,10 @@ import java.io.File;
 import java.io.FileDescriptor;
 import java.net.InetAddress;
 import java.security.Permission;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Logger;
 
 import org.powerbot.game.GameDefinition;
 import org.powerbot.gui.BotChrome;
-import org.powerbot.util.Configuration.OperatingSystem;
-import org.powerbot.util.io.Resources;
 import org.powerbot.util.io.SecureStore;
 
 /**
@@ -143,10 +139,10 @@ public class RestrictedSecurityManager extends SecurityManager {
 	private void checkFilePath(final String pathRaw, final boolean readOnly) {
 		final String path = StringUtil.urlDecode(new File(pathRaw).getAbsolutePath());
 		final String calling = getCallingClass();
-		final String sysroot = System.getenv("SystemRoot"), home = System.getenv("HOME"), jre = System.getProperty("java.home"), tmp = System.getProperty("java.io.tmpdir");
+		final String tmp = System.getProperty("java.io.tmpdir");
 
-		// allow read access to running jar
-		if (Configuration.FROMJAR && path.equals(new File(RestrictedSecurityManager.class.getProtectionDomain().getCodeSource().getLocation().getPath()).getAbsolutePath()) && readOnly) {
+		// allow access to secure store file for that specific class
+		if (path.equals(new File(Configuration.STORE).getAbsolutePath()) && calling.equals(SecureStore.class.getName())) {
 			return;
 		}
 
@@ -155,95 +151,13 @@ public class RestrictedSecurityManager extends SecurityManager {
 			return;
 		}
 
-		// allow read access to temporary directory
-		if (tmp != null && !tmp.isEmpty() && (path + File.separator).startsWith(tmp)) {
+		// allow read permissions to all files
+		if (readOnly) {
 			return;
 		}
 
-		// allow access to secure store file for that specific class
-		if (path.equals(new File(Configuration.STORE).getAbsolutePath()) && calling.equals(SecureStore.class.getName())) {
-			return;
-		}
-
-		// allow read access to anything inside the JRE directory
-		if (jre != null && !jre.isEmpty() && path.startsWith(jre)) {
-			return;
-		}
-
-		// allow read access to /dev/ for Unix
-		if (Configuration.OS != OperatingSystem.WINDOWS && path.startsWith("/dev/") && readOnly) {
-			return;
-		}
-
-		// allow read access to additional Java directories on Unix
-		if (Configuration.OS != OperatingSystem.WINDOWS && (path.startsWith("/usr/share") || path.startsWith("/usr/java")) && readOnly) {
-			return;
-		}
-
-		// allow read access to profile file
-		if (Configuration.OS != OperatingSystem.WINDOWS && path.endsWith("PYCC.pf") && readOnly) {
-			return;
-		}
-
-		// allow read access to system library on Mac
-		if (Configuration.OS == OperatingSystem.MAC && path.startsWith("/System/Library/") && readOnly) {
-			return;
-		}
-
-		// allow read access to local resources
-		if (!Configuration.FROMJAR && path.startsWith(new File(Resources.Paths.VERSION).getParentFile().getAbsolutePath()) && readOnly) {
-			return;
-		}
-
-		// allow read access to local classes
-		if (!Configuration.FROMJAR && (path.endsWith(".class") || (path + File.separator).startsWith(new File("bin").getAbsolutePath()) ||
-				(path + File.separator).startsWith(new File("out").getAbsolutePath()))) {
-			return;
-		}
-
-		// allow read access to hosts resolve file
-		if (path.equals("/etc/resolv.conf") && readOnly) {
-			return;
-		}
-
-		// allow read access to Windows system root directory
-		if (sysroot != null && !sysroot.isEmpty() && path.startsWith(sysroot) && readOnly) {
-			return;
-		}
-
-		// allow read access to any font directory
-		final List<String> fonts = new ArrayList<String>(3);
-		switch (Configuration.OS) {
-		case WINDOWS:
-			if (sysroot != null && !sysroot.isEmpty()) {
-				fonts.add(sysroot + "\\Fonts");
-			}
-			break;
-		case MAC:
-			fonts.add("/Library/Fonts");
-			fonts.add("/System/Library/Fonts");
-			if (home != null && !home.isEmpty()) {
-				fonts.add(home + "/Library/Fonts");
-			}
-			break;
-		case LINUX:
-			fonts.add("/usr/share/fonts/");
-			fonts.add("/usr/local/share/fonts");
-			if (home != null && !home.isEmpty()) {
-				fonts.add(home + "/Library/Fonts");
-			}
-			break;
-		}
-		for (final String font : fonts) {
-			if (path.startsWith(font)) {
-				if (readOnly) {
-					return;
-				}
-			}
-		}
-
-		// allow reading of font .ttf files for Windows XP (odd quirk)
-		if (Configuration.OS == OperatingSystem.WINDOWS && path.endsWith(".ttf") && readOnly) {
+		// allow write access to temp directory
+		if (path.startsWith(tmp)) {
 			return;
 		}
 
