@@ -17,6 +17,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JToolBar;
+import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import org.powerbot.game.bot.Bot;
@@ -180,12 +181,14 @@ public final class BotToolBar extends JToolBar {
 			super(name);
 			this.bot = bot;
 			setFocusable(false);
+			setHorizontalTextPosition(SwingConstants.LEFT);
 			setIcon(new ImageIcon(Resources.getImage(Resources.Paths.CROSS_SMALL_GRAY)));
 			final Component c = this;
 			addMouseMotionListener(new MouseMotionAdapter() {
 				@Override
 				public void mouseMoved(final MouseEvent e) {
-					if (e.getX() < getIcon().getIconWidth() + getIconTextGap()) {
+					if (e.getX() > getWidth() - getIcon().getIconWidth()
+							&& e.getX() < getWidth() - getIconTextGap()) {
 						setIcon(new ImageIcon(Resources.getImage(Resources.Paths.CROSS_SMALL)));
 					} else {
 						setIcon(new ImageIcon(Resources.getImage(Resources.Paths.CROSS_SMALL_GRAY)));
@@ -196,7 +199,8 @@ public final class BotToolBar extends JToolBar {
 				@Override
 				public void mouseClicked(final MouseEvent e) {
 					final int n = getComponentIndex(c);
-					if (e.getX() < getIcon().getIconWidth() + getIconTextGap()) {
+					if (e.getX() > getWidth() - getIcon().getIconWidth()
+							&& e.getX() < getWidth() - getIconTextGap()) {
 						closeTab(n);
 					} else {
 						activateTab(n);
