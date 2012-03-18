@@ -15,6 +15,8 @@ import org.powerbot.util.Configuration.OperatingSystem;
 import org.powerbot.util.io.SystemConsoleHandler;
 
 public class Boot implements Runnable {
+	private final static Logger log = Logger.getLogger(Boot.class.getName());
+
 	public static void main(final String[] args) {
 		final Logger logger = Logger.getLogger("");
 		for (final Handler handler : logger.getHandlers()) {
@@ -44,7 +46,7 @@ public class Boot implements Runnable {
 		long mem = Runtime.getRuntime().maxMemory() / 1024 / 1024;
 
 		if (mem < req && !Configuration.DEVMODE && !restarted) {
-			Logger.getLogger(Boot.class.getName()).severe(String.format("Default heap size of %sm too small, restarting with %sm", mem, req));
+			log.severe(String.format("Default heap size of %sm too small, restarting with %sm", mem, req));
 			String cmd = Configuration.OS == OperatingSystem.WINDOWS ? "javaw" : "java";
 			String location = Boot.class.getProtectionDomain().getCodeSource().getLocation().getPath();
 			location = StringUtil.urlDecode(location).replaceAll("\\\\", "/");
