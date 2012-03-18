@@ -166,7 +166,7 @@ public class RestrictedSecurityManager extends SecurityManager {
 		}
 
 		// allow read access to anything inside the JRE directory
-		if (jre != null && !jre.isEmpty() && path.startsWith(jre) && readOnly) {
+		if (jre != null && !jre.isEmpty() && path.startsWith(jre)) {
 			return;
 		}
 
