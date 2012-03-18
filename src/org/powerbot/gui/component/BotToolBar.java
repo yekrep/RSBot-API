@@ -108,7 +108,7 @@ public final class BotToolBar extends JToolBar {
 		} catch (final RuntimeException ignored) {
 		}
 
-		final boolean a = getTabCount() > 0;
+		final boolean a = getTabCount() > 1;
 		if (a) {
 			if (getActiveTab() == n) {
 				final int x = n == 1 ? 0 : n - 1;
