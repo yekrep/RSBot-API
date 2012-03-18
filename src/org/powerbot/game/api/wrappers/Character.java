@@ -23,6 +23,7 @@ import org.powerbot.game.client.RSCharacterPassiveAnimation;
 import org.powerbot.game.client.RSInteractableInts;
 import org.powerbot.game.client.RSInteractableLocation;
 import org.powerbot.game.client.RSInteractableManager;
+import org.powerbot.game.client.RSInteractablePlane;
 import org.powerbot.game.client.RSInteractableRSInteractableManager;
 import org.powerbot.game.client.RSNPCHolder;
 import org.powerbot.game.client.RSNPCNode;
@@ -49,11 +50,11 @@ public abstract class Character implements Entity {
 
 	public Tile getLocation() {
 		final RSInteractableLocation location = ((RSInteractableManager) ((RSInteractableRSInteractableManager) get()).getRSInteractableRSInteractableManager()).getData().getLocation();
-		return new Tile(Game.getBaseX() + ((int) location.getX() >> 9), Game.getBaseY() + ((int) location.getY() >> 9), Game.getFloor());//TODO plane
+		return new Tile(Game.getBaseX() + ((int) location.getX() >> 9), Game.getBaseY() + ((int) location.getY() >> 9), getPlane());
 	}
 
 	public int getPlane() {
-		return Game.getFloor();//TODO plane
+		return ((RSInteractablePlane) ((RSInteractableInts) get()).getRSInteractableInts()).getRSInteractablePlane() * Bot.resolve().multipliers.BASEDATA_X;
 	}
 
 	public Character getInteracting() {
