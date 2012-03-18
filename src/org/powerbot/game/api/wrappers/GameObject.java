@@ -1,5 +1,9 @@
 package org.powerbot.game.api.wrappers;
 
+import java.awt.Graphics;
+import java.awt.Point;
+import java.awt.Polygon;
+
 import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.bot.Bot;
 import org.powerbot.game.client.RSAnimableShorts;
@@ -14,7 +18,7 @@ import org.powerbot.game.client.RSInteractableRSInteractableManager;
 /**
  * @author Timer
  */
-public class GameObject {
+public class GameObject implements Entity {
 	private final Object object;
 	private final int type, plane;
 
@@ -67,5 +71,49 @@ public class GameObject {
 
 	public GameObjectDefinition getDefinition() {
 		return null;//TODO
+	}
+
+	public boolean verify() {
+		return false;//TODO
+	}
+
+	public Point getCentralPoint() {
+		return null;//TODO
+	}
+
+	public Point getNextViewportPoint() {
+		return null;//TODO
+	}
+
+	public boolean contains(Point point) {
+		return false;//TODO
+	}
+
+	public boolean isOnScreen() {
+		return false;//TODO
+	}
+
+	public Polygon[] getBounds() {
+		return new Polygon[0];//TODO
+	}
+
+	public boolean hover() {
+		return false;//TODO
+	}
+
+	public boolean click(boolean left) {
+		return false;//TODO
+	}
+
+	public boolean interact(String action) {
+		return false;//TODO
+	}
+
+	public boolean interact(String action, String option) {
+		return false;//TODO
+	}
+
+	public void draw(Graphics render) {
+		//TODO
 	}
 }

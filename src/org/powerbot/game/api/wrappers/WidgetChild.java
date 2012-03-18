@@ -55,7 +55,7 @@ import org.powerbot.game.client.RSInterfaceZRotation;
 /**
  * @author Timer
  */
-public class WidgetChild {
+public class WidgetChild {//TODO implement entity
 	/**
 	 * The index of this interface in the parent. If this
 	 * component does not have a parent component, this

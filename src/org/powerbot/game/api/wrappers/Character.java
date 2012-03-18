@@ -135,40 +135,72 @@ public abstract class Character implements Entity {
 		return get() != null;
 	}
 
-	public Point getCentralPoint() {//TODO
+	public Point getCentralPoint() {
+		final GameModel model = getModel();
+		if (model != null) {
+			return model.getCentralPoint();
+		}
 		final RSInteractableLocation location = ((RSInteractableManager) ((RSInteractableRSInteractableManager) get()).getRSInteractableRSInteractableManager()).getData().getLocation();
 		return Calculations.groundToScreen((int) location.getX(), (int) location.getY(), Game.getFloor(), -getHeight() / 2);
 	}
 
 	public Point getNextViewportPoint() {
-		return getCentralPoint();//TODO
+		final GameModel model = getModel();
+		if (model != null) {
+			return model.getNextViewportPoint();
+		}
+		return getCentralPoint();
 	}
 
-	public boolean contains(Point point) {
+	public boolean contains(final Point point) {
+		final GameModel model = getModel();
+		if (model != null) {
+			return model.contains(point);
+		}
 		return false;//TODO
 	}
 
 	public boolean isOnScreen() {
-		return false;//TODO
+		return Calculations.isPointOnScreen(getNextViewportPoint());
 	}
 
 	public Polygon[] getBounds() {
+		final GameModel model = getModel();
+		if (model != null) {
+			return model.getBounds();
+		}
 		return new Polygon[0];//TODO
 	}
 
 	public boolean hover() {
+		final GameModel model = getModel();
+		if (model != null) {
+			return model.hover();
+		}
 		return false;//TODO
 	}
 
 	public boolean click(final boolean left) {
+		final GameModel model = getModel();
+		if (model != null) {
+			return model.click(left);
+		}
 		return false;//TODO
 	}
 
 	public boolean interact(final String action) {
+		final GameModel model = getModel();
+		if (model != null) {
+			return model.interact(action);
+		}
 		return false;//TODO
 	}
 
 	public boolean interact(final String action, final String option) {
+		final GameModel model = getModel();
+		if (model != null) {
+			return model.interact(action, option);
+		}
 		return false;//TODO
 	}
 

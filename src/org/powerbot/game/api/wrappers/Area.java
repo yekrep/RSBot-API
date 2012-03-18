@@ -2,6 +2,9 @@ package org.powerbot.game.api.wrappers;
 
 import java.awt.Polygon;
 
+/**
+ * @author Timer
+ */
 public class Area extends Polygon {
 	private static final long serialVersionUID = 1L;
 
