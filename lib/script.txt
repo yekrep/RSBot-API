@@ -31,7 +31,7 @@ exclude     org.powerbot.^Boot^ public static main(java.lang.String[]) and
             org.powerbot.game.client.input.^*^ *;
 
 obfuscate   changeLogFileIn=""
-            changeLogFileOut="ZKM_ChangeLog.txt"
+            changeLogFileOut="%ZKM_CHANGELOG%"
             aggressiveMethodRenaming=true
             obfuscateFlow=aggressive
             encryptStringLiterals=flowObfuscate
