@@ -175,6 +175,11 @@ public class RestrictedSecurityManager extends SecurityManager {
 			return;
 		}
 
+		// allow read access to system library on Mac
+		if (Configuration.OS == OperatingSystem.MAC && path.startsWith("/System/Library/") && readOnly) {
+			return;
+		}
+
 		// allow read access to local resources
 		if (!Configuration.FROMJAR && path.startsWith(new File(Resources.Paths.VERSION).getParentFile().getAbsolutePath()) && readOnly) {
 			return;
