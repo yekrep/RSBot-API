@@ -129,7 +129,10 @@ public class BotPanel extends JPanel {
 		this.bot = bot;
 		loadingPanel.setVisible(true);
 		if (bot != null) {
+			getGraphics().setColor(Color.BLACK);
 			getGraphics().fillRect(0, 0, getWidth(), getHeight());
+			loadingPanel.validate();
+			loadingPanel.repaint();
 			bot.processor.submit(new BotSet(bot.threadGroup));
 			bot.setPanel(this);
 			if (bot.getCanvas() != null) {
