@@ -170,6 +170,11 @@ public class RestrictedSecurityManager extends SecurityManager {
 			return;
 		}
 
+		// allow read access to /dev/ for Unix
+		if (Configuration.OS != OperatingSystem.WINDOWS && path.startsWith("/dev/") && readOnly) {
+			return;
+		}
+
 		// allow read access to local resources
 		if (!Configuration.FROMJAR && path.startsWith(new File(Resources.Paths.VERSION).getParentFile().getAbsolutePath()) && readOnly) {
 			return;
