@@ -46,7 +46,7 @@ public class Game {
 	/**
 	 * @return The floor level, or plane, you are currently located on.
 	 */
-	public static int getFloor() {
+	public static int getPlane() {
 		final Bot bot = Bot.resolve();
 		return bot.client.getPlane() * bot.multipliers.GLOBAL_PLANE;
 	}

@@ -27,7 +27,6 @@ import org.powerbot.game.client.RSCharacterPassiveAnimation;
 import org.powerbot.game.client.RSInteractableInts;
 import org.powerbot.game.client.RSInteractableLocation;
 import org.powerbot.game.client.RSInteractableManager;
-import org.powerbot.game.client.RSInteractablePlane;
 import org.powerbot.game.client.RSInteractableRSInteractableManager;
 import org.powerbot.game.client.RSNPCHolder;
 import org.powerbot.game.client.RSNPCNode;
@@ -58,7 +57,7 @@ public abstract class Character implements Entity {
 	}
 
 	public int getPlane() {
-		return ((RSInteractablePlane) ((RSInteractableInts) get()).getRSInteractableInts()).getRSInteractablePlane() * Bot.resolve().multipliers.BASEDATA_X;
+		return Game.getPlane();//TODO
 	}
 
 	public Character getInteracting() {
@@ -145,7 +144,7 @@ public abstract class Character implements Entity {
 			return model.getCentralPoint();
 		}
 		final RSInteractableLocation location = ((RSInteractableManager) ((RSInteractableRSInteractableManager) get()).getRSInteractableRSInteractableManager()).getData().getLocation();
-		return Calculations.groundToScreen((int) location.getX(), (int) location.getY(), Game.getFloor(), -getHeight() / 2);
+		return Calculations.groundToScreen((int) location.getX(), (int) location.getY(), Game.getPlane(), -getHeight() / 2);
 	}
 
 	public Point getNextViewportPoint() {
