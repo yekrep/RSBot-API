@@ -82,8 +82,8 @@ public abstract class CapturedModel implements Entity {
 
 		final Point averagePoint = Calculations.worldToScreen(
 				x + totalXAverage / numFaces,
-				y + totalYAverage / numFaces,
-				height + totalHeightAverage / numFaces
+				height + totalHeightAverage / numFaces,
+				y + totalYAverage / numFaces
 		);
 
 		if (Calculations.isPointOnScreen(averagePoint)) {
