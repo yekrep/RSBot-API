@@ -100,7 +100,7 @@ public class ActionExecutor extends Task implements ActionContainer {
 						break;
 					}
 					final Activator activator = action.activator;
-					if (activator == null || !activator.dispatch()) {
+					if (activator == null || !activator.applicable()) {
 						continue;
 					}
 					if (action.taskHolder == null || action.taskHolder.tasks == null) {

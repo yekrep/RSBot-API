@@ -7,9 +7,9 @@ package org.powerbot.lang;
  */
 public interface Activator {
 	/**
-	 * Determines whether or not to dispatch the desired object after the activation interface is invoked.
+	 * Determines whether or not to act upon the desired object after the activation interface is invoked.
 	 *
 	 * @return <tt>true</tt> if dispatching should proceed; otherwise <tt>false</tt>, causing denial of object processing.
 	 */
-	public boolean dispatch();
+	public boolean applicable();
 }
