@@ -9,14 +9,14 @@ import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
 import org.powerbot.asm.NodeProcessor;
-import org.powerbot.asm.adapter.AddFieldAdapter;
-import org.powerbot.asm.adapter.AddGetterAdapter;
-import org.powerbot.asm.adapter.AddInterfaceAdapter;
-import org.powerbot.asm.adapter.AddMethodAdapter;
-import org.powerbot.asm.adapter.InsertCodeAdapter;
-import org.powerbot.asm.adapter.OverrideClassAdapter;
-import org.powerbot.asm.adapter.SetSignatureAdapter;
-import org.powerbot.asm.adapter.SetSuperAdapter;
+import org.powerbot.asm.visitor.AddFieldAdapter;
+import org.powerbot.asm.visitor.AddGetterAdapter;
+import org.powerbot.asm.visitor.AddInterfaceAdapter;
+import org.powerbot.asm.visitor.AddMethodAdapter;
+import org.powerbot.asm.visitor.InsertCodeAdapter;
+import org.powerbot.asm.visitor.OverrideClassAdapter;
+import org.powerbot.asm.visitor.SetSignatureAdapter;
+import org.powerbot.asm.visitor.SetSuperAdapter;
 import org.powerbot.lang.AdaptException;
 
 public class ModScript implements NodeProcessor {

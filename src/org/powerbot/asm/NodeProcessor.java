@@ -2,6 +2,11 @@ package org.powerbot.asm;
 
 import org.powerbot.lang.AdaptException;
 
+/**
+ * Represents a processor of ClassNodes and basic manipulative methods.
+ *
+ * @author Timer
+ */
 public interface NodeProcessor {
 	public void adapt() throws AdaptException;
 
