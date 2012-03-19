@@ -1,4 +1,4 @@
-package org.powerbot.game.bot.input;
+package org.powerbot.game.api.internal.input;
 
 import java.awt.MouseInfo;
 import java.awt.Point;

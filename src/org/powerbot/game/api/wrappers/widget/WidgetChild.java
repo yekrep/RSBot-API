@@ -3,8 +3,8 @@ package org.powerbot.game.api.wrappers.widget;
 import java.awt.Point;
 import java.awt.Rectangle;
 
+import org.powerbot.game.api.internal.util.HashTable;
 import org.powerbot.game.api.methods.Widgets;
-import org.powerbot.game.api.util.internal.HashTable;
 import org.powerbot.game.bot.Bot;
 import org.powerbot.game.client.Client;
 import org.powerbot.game.client.RSInterfaceActions;

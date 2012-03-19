@@ -6,12 +6,12 @@ import java.awt.Graphics;
 import java.awt.Point;
 
 import org.powerbot.game.api.methods.Game;
-import org.powerbot.game.api.methods.node.GroundItems;
 import org.powerbot.game.api.methods.interactive.Players;
+import org.powerbot.game.api.methods.node.GroundItems;
+import org.powerbot.game.api.wrappers.Tile;
+import org.powerbot.game.api.wrappers.interactive.Player;
 import org.powerbot.game.api.wrappers.node.GroundItem;
 import org.powerbot.game.api.wrappers.node.ItemDefinition;
-import org.powerbot.game.api.wrappers.interactive.Player;
-import org.powerbot.game.api.wrappers.Tile;
 import org.powerbot.game.bot.event.listener.PaintListener;
 
 public class DrawGroundItems implements PaintListener {

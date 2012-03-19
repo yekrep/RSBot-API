@@ -11,9 +11,9 @@ import javax.swing.UIManager;
 
 import org.powerbot.gui.BotChrome;
 import org.powerbot.util.Configuration;
+import org.powerbot.util.Configuration.OperatingSystem;
 import org.powerbot.util.RestrictedSecurityManager;
 import org.powerbot.util.StringUtil;
-import org.powerbot.util.Configuration.OperatingSystem;
 import org.powerbot.util.io.SystemConsoleHandler;
 
 public class Boot implements Runnable {

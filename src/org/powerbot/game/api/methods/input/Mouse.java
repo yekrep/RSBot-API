@@ -9,12 +9,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.powerbot.concurrent.TaskContainer;
+import org.powerbot.game.api.internal.input.MouseManipulator;
 import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Time;
 import org.powerbot.game.api.wrappers.Locatable;
 import org.powerbot.game.bot.Bot;
-import org.powerbot.game.bot.input.MouseManipulator;
 
 public class Mouse {
 	private static final Map<ThreadGroup, Integer> dragLengths = new HashMap<ThreadGroup, Integer>();

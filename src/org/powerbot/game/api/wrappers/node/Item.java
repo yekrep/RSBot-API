@@ -1,7 +1,7 @@
 package org.powerbot.game.api.wrappers.node;
 
 import org.powerbot.game.api.Multipliers;
-import org.powerbot.game.api.util.internal.Nodes;
+import org.powerbot.game.api.internal.util.Nodes;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
 import org.powerbot.game.bot.Bot;
 import org.powerbot.game.client.CacheTable;

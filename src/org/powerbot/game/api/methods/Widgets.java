@@ -7,8 +7,6 @@ import java.util.Map;
 
 import org.powerbot.game.api.wrappers.widget.Widget;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
-import org.powerbot.game.api.wrappers.widget.Widget;
-import org.powerbot.game.api.wrappers.widget.WidgetChild;
 import org.powerbot.game.bot.Bot;
 import org.powerbot.game.client.Client;
 
