@@ -17,6 +17,7 @@ import org.powerbot.asm.NodeProcessor;
 import org.powerbot.concurrent.Task;
 import org.powerbot.event.EventDispatcher;
 import org.powerbot.game.GameDefinition;
+import org.powerbot.game.api.ActiveScript;
 import org.powerbot.game.api.Constants;
 import org.powerbot.game.api.Multipliers;
 import org.powerbot.game.api.methods.Calculations;
@@ -61,6 +62,7 @@ public class Bot extends GameDefinition implements Runnable {
 	public final Calculations.Viewport viewport;
 
 	public EventDispatcher eventDispatcher;
+	public ActiveScript activeScript;
 
 	public BufferedImage image;
 	private BufferedImage backBuffer;
@@ -79,6 +81,7 @@ public class Bot extends GameDefinition implements Runnable {
 		processor.submit(eventDispatcher);
 		toolkit = new Calculations.Toolkit();
 		viewport = new Calculations.Viewport();
+		activeScript = null;
 	}
 
 	/**
