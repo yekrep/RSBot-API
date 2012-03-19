@@ -1,4 +1,4 @@
-package org.powerbot.game.bot.event.listener.internal;
+package org.powerbot.game.bot.event;
 
 import java.awt.Color;
 import java.awt.Composite;
@@ -15,6 +15,7 @@ import java.util.EventListener;
 import org.powerbot.event.EventDispatcher;
 import org.powerbot.event.GeneralEvent;
 import org.powerbot.game.bot.event.listener.PaintListener;
+import org.powerbot.game.bot.event.listener.TextPaintListener;
 
 /**
  * An event that is dispatched when the game requests the graphic buffer.

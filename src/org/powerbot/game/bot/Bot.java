@@ -23,7 +23,7 @@ import org.powerbot.game.api.methods.Calculations;
 import org.powerbot.game.api.methods.input.Keyboard;
 import org.powerbot.game.api.util.Time;
 import org.powerbot.game.bot.event.PaintEvent;
-import org.powerbot.game.bot.event.listener.internal.TextPaintEvent;
+import org.powerbot.game.bot.event.TextPaintEvent;
 import org.powerbot.game.client.Client;
 import org.powerbot.game.client.Render;
 import org.powerbot.game.client.RenderAbsoluteX;
