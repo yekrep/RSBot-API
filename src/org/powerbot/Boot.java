@@ -2,6 +2,8 @@ package org.powerbot;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.nio.channels.FileLock;
 import java.util.logging.Handler;
 import java.util.logging.Logger;
 
@@ -15,12 +17,19 @@ import org.powerbot.util.Configuration.OperatingSystem;
 import org.powerbot.util.io.SystemConsoleHandler;
 
 public class Boot implements Runnable {
+	private final static Logger log = Logger.getLogger(Boot.class.getName());
+
 	public static void main(final String[] args) {
 		final Logger logger = Logger.getLogger("");
 		for (final Handler handler : logger.getHandlers()) {
 			logger.removeHandler(handler);
 		}
 		logger.addHandler(new SystemConsoleHandler());
+
+		if (!getLock()) {
+			log.severe("An instance of " + Configuration.NAME + " is already running");
+			return;
+		}
 
 		boolean restarted = false;
 
@@ -44,7 +53,7 @@ public class Boot implements Runnable {
 		long mem = Runtime.getRuntime().maxMemory() / 1024 / 1024;
 
 		if (mem < req && !Configuration.DEVMODE && !restarted) {
-			Logger.getLogger(Boot.class.getName()).severe(String.format("Default heap size of %sm too small, restarting with %sm", mem, req));
+			log.severe(String.format("Default heap size of %sm too small, restarting with %sm", mem, req));
 			String cmd = Configuration.OS == OperatingSystem.WINDOWS ? "javaw" : "java";
 			String location = Boot.class.getProtectionDomain().getCodeSource().getLocation().getPath();
 			location = StringUtil.urlDecode(location).replaceAll("\\\\", "/");
@@ -74,5 +83,31 @@ public class Boot implements Runnable {
 
 	public void run() {
 		main(new String[]{});
+	}
+
+	private static boolean getLock() {
+		final File tmpfile = new File(System.getProperty("java.io.tmpdir"), Configuration.NAME + ".lck");
+		try {
+			final RandomAccessFile tmpraf = new RandomAccessFile(tmpfile, "rw");
+			final FileLock tmplock = tmpraf.getChannel().tryLock();
+			Runtime.getRuntime().addShutdownHook(new Thread() {
+				@Override
+				public void run() {
+					try {
+						if (tmplock != null) {
+							tmplock.release();
+						}
+						if (tmpraf != null) {
+							tmpraf.close();
+						}
+					} catch (final IOException ignored) {
+					}
+					tmpfile.delete();
+				}
+			});
+			return tmplock != null;
+		} catch (final IOException ignored) {
+		}
+		return false;
 	}
 }
