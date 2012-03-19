@@ -203,7 +203,7 @@ public class ModScript implements NodeProcessor {
 		final ClassReader reader = new ClassReader(data);
 		final ClassVisitor adapter = adapters.get(name);
 		if (adapter != null) {
-			reader.accept(adapter, ClassReader.SKIP_FRAMES);
+			reader.accept(adapter, ClassReader.SKIP_FRAMES | ClassReader.SKIP_DEBUG);
 			return writers.get(name).toByteArray();
 		}
 		return data;
