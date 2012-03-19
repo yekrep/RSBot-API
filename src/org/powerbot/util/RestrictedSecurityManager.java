@@ -157,7 +157,7 @@ public class RestrictedSecurityManager extends SecurityManager {
 		}
 
 		// allow write access to temp directory
-		if (path.startsWith(tmp)) {
+		if ((path + File.separator).startsWith(tmp)) {
 			return;
 		}
 
