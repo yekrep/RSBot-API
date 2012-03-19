@@ -13,7 +13,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -38,7 +37,6 @@ import org.powerbot.game.bot.Bot;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.util.Configuration;
 import org.powerbot.util.StringUtil;
-import org.powerbot.util.io.HttpClient;
 import org.powerbot.util.io.IOHelper;
 import org.powerbot.util.io.Resources;
 import org.powerbot.util.io.SecureStore;
@@ -119,24 +117,18 @@ public final class BotLoadingPanel extends JPanel {
 				if (Resources.getServerData().containsKey("ads")) {
 					final String src = Resources.getServerData().get("ads").get("image"), link = Resources.getServerData().get("ads").get("link");
 					final String filename = "ad.png";
-					final File cache = new File(System.getProperty("java.io.tmpdir"), filename);
 					final URL url = new URL(src);
-					final boolean secure = true;
-					if (secure) {
-						final String fileid = "ad-image.txt";
-						final InputStream is = SecureStore.getInstance().read(fileid);
-						if (is != null) {
-							final String cached = StringUtil.newStringUtf8(IOHelper.read(is));
-							if (!cached.equals(src)) {
-								SecureStore.getInstance().write(filename, null);
-							}
+					final String fileid = "ad-image.txt";
+					final InputStream is = SecureStore.getInstance().read(fileid);
+					if (is != null) {
+						final String cached = StringUtil.newStringUtf8(IOHelper.read(is));
+						if (!cached.equals(src)) {
+							SecureStore.getInstance().write(filename, null);
 						}
-						SecureStore.getInstance().download(filename, url);
-						SecureStore.getInstance().write(fileid, new ByteArrayInputStream(StringUtil.getBytesUtf8(src)));
-					} else {
-						HttpClient.download(url, cache);
 					}
-					BufferedImage image = secure ? ImageIO.read(SecureStore.getInstance().read(filename)) : ImageIO.read(cache);
+					SecureStore.getInstance().download(filename, url);
+					SecureStore.getInstance().write(fileid, new ByteArrayInputStream(StringUtil.getBytesUtf8(src)));
+					BufferedImage image = ImageIO.read(SecureStore.getInstance().read(filename));
 					final float MAX_WIDTH = 728, MAX_HEIGHT = 120;
 					if (image.getWidth() > MAX_WIDTH || image.getHeight() > MAX_HEIGHT) {
 						final float factor = Math.min(MAX_WIDTH / image.getWidth(), MAX_HEIGHT / image.getHeight());
