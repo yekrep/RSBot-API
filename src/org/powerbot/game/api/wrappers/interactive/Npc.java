@@ -1,5 +1,6 @@
-package org.powerbot.game.api.wrappers;
+package org.powerbot.game.api.wrappers.interactive;
 
+import java.lang.*;
 import java.lang.ref.SoftReference;
 
 import org.powerbot.game.api.Multipliers;
@@ -40,7 +41,7 @@ public class Npc extends Character {
 		return (String[]) ((RSNPCDefActions) ((RSNPCRSNPCDef) get()).getRSNPCRSNPCDef()).getRSNPCDefActions();
 	}
 
-	protected Object get() {
+	public Object get() {
 		return n.get();
 	}
 }

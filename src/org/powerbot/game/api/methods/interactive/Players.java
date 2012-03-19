@@ -1,10 +1,10 @@
-package org.powerbot.game.api.methods;
+package org.powerbot.game.api.methods.interactive;
 
 import java.util.HashSet;
 import java.util.Set;
 
 import org.powerbot.game.api.util.Filter;
-import org.powerbot.game.api.wrappers.Player;
+import org.powerbot.game.api.wrappers.interactive.Player;
 import org.powerbot.game.bot.Bot;
 import org.powerbot.game.client.Client;
 

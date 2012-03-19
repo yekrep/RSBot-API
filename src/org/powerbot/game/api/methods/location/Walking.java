@@ -1,4 +1,4 @@
-package org.powerbot.game.api.methods;
+package org.powerbot.game.api.methods.location;
 
 import org.powerbot.game.api.wrappers.Tile;
 import org.powerbot.game.bot.Bot;

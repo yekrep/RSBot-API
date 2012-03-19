@@ -1,4 +1,4 @@
-package org.powerbot.game.api.wrappers;
+package org.powerbot.game.api.wrappers.location;
 
 /**
  * @author Timer

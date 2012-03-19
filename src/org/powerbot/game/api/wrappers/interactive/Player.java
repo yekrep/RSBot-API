@@ -1,5 +1,6 @@
-package org.powerbot.game.api.wrappers;
+package org.powerbot.game.api.wrappers.interactive;
 
+import java.lang.*;
 import java.lang.ref.SoftReference;
 
 import org.powerbot.game.api.Multipliers;
@@ -54,7 +55,7 @@ public class Player extends Character {
 		return new int[0];//TODO
 	}
 
-	protected Object get() {
+	public Object get() {
 		return p.get();
 	}
 }

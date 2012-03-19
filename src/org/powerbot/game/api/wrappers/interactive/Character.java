@@ -1,4 +1,4 @@
-package org.powerbot.game.api.wrappers;
+package org.powerbot.game.api.wrappers.interactive;
 
 import java.awt.Graphics;
 import java.awt.Point;
@@ -8,6 +8,10 @@ import org.powerbot.game.api.Multipliers;
 import org.powerbot.game.api.methods.Calculations;
 import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.api.util.internal.Nodes;
+import org.powerbot.game.api.wrappers.graphics.model.CharacterModel;
+import org.powerbot.game.api.wrappers.Entity;
+import org.powerbot.game.api.wrappers.graphics.CapturedModel;
+import org.powerbot.game.api.wrappers.Tile;
 import org.powerbot.game.bot.Bot;
 import org.powerbot.game.client.Client;
 import org.powerbot.game.client.Model;
@@ -120,7 +124,7 @@ public abstract class Character implements Entity {
 		return getSpeed() != 0;
 	}
 
-	public GameModel getModel() {
+	public CapturedModel getModel() {
 		final Object ref = get();
 		if (ref != null) {
 			final Model model = ModelCapture.modelCache.get(ref);
@@ -129,14 +133,14 @@ public abstract class Character implements Entity {
 		return null;
 	}
 
-	protected abstract Object get();
+	public abstract Object get();
 
 	public boolean verify() {
 		return get() != null;
 	}
 
 	public Point getCentralPoint() {
-		final GameModel model = getModel();
+		final CapturedModel model = getModel();
 		if (model != null) {
 			return model.getCentralPoint();
 		}
@@ -145,7 +149,7 @@ public abstract class Character implements Entity {
 	}
 
 	public Point getNextViewportPoint() {
-		final GameModel model = getModel();
+		final CapturedModel model = getModel();
 		if (model != null) {
 			return model.getNextViewportPoint();
 		}
@@ -153,7 +157,7 @@ public abstract class Character implements Entity {
 	}
 
 	public boolean contains(final Point point) {
-		final GameModel model = getModel();
+		final CapturedModel model = getModel();
 		if (model != null) {
 			return model.contains(point);
 		}
@@ -165,7 +169,7 @@ public abstract class Character implements Entity {
 	}
 
 	public Polygon[] getBounds() {
-		final GameModel model = getModel();
+		final CapturedModel model = getModel();
 		if (model != null) {
 			return model.getBounds();
 		}
@@ -173,7 +177,7 @@ public abstract class Character implements Entity {
 	}
 
 	public boolean hover() {
-		final GameModel model = getModel();
+		final CapturedModel model = getModel();
 		if (model != null) {
 			return model.hover();
 		}
@@ -181,7 +185,7 @@ public abstract class Character implements Entity {
 	}
 
 	public boolean click(final boolean left) {
-		final GameModel model = getModel();
+		final CapturedModel model = getModel();
 		if (model != null) {
 			return model.click(left);
 		}
@@ -189,7 +193,7 @@ public abstract class Character implements Entity {
 	}
 
 	public boolean interact(final String action) {
-		final GameModel model = getModel();
+		final CapturedModel model = getModel();
 		if (model != null) {
 			return model.interact(action);
 		}
@@ -197,7 +201,7 @@ public abstract class Character implements Entity {
 	}
 
 	public boolean interact(final String action, final String option) {
-		final GameModel model = getModel();
+		final CapturedModel model = getModel();
 		if (model != null) {
 			return model.interact(action, option);
 		}

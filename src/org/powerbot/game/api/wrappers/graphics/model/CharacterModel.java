@@ -1,16 +1,18 @@
-package org.powerbot.game.api.wrappers;
+package org.powerbot.game.api.wrappers.graphics.model;
 
 import org.powerbot.game.api.methods.Calculations;
+import org.powerbot.game.api.wrappers.graphics.CapturedModel;
+import org.powerbot.game.api.wrappers.interactive.Character;
 import org.powerbot.game.client.Model;
 import org.powerbot.game.client.RSInteractableLocation;
 import org.powerbot.game.client.RSInteractableManager;
 import org.powerbot.game.client.RSInteractableRSInteractableManager;
 
-public class CharacterModel extends GameModel {
+public class CharacterModel extends CapturedModel {
 	private final Character character;
 	private final int[] x_base, z_base;
 
-	public CharacterModel(final Model model, final Character character) {
+	public CharacterModel(final Model model, final org.powerbot.game.api.wrappers.interactive.Character character) {
 		super(model, character);
 		this.character = character;
 		x_base = xPoints;

@@ -1,4 +1,4 @@
-package org.powerbot.game.api.wrappers;
+package org.powerbot.game.api.wrappers.widget;
 
 import java.awt.Point;
 import java.awt.Rectangle;

@@ -1,10 +1,10 @@
-package org.powerbot.game.api.methods;
+package org.powerbot.game.api.methods.location;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.powerbot.game.api.util.Filter;
-import org.powerbot.game.api.wrappers.GameObject;
+import org.powerbot.game.api.wrappers.location.GameObject;
 import org.powerbot.game.bot.Bot;
 import org.powerbot.game.client.Client;
 import org.powerbot.game.client.RSAnimableNode;

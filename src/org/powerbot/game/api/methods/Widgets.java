@@ -5,8 +5,10 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.powerbot.game.api.wrappers.Widget;
-import org.powerbot.game.api.wrappers.WidgetChild;
+import org.powerbot.game.api.wrappers.widget.Widget;
+import org.powerbot.game.api.wrappers.widget.WidgetChild;
+import org.powerbot.game.api.wrappers.widget.Widget;
+import org.powerbot.game.api.wrappers.widget.WidgetChild;
 import org.powerbot.game.bot.Bot;
 import org.powerbot.game.client.Client;
 

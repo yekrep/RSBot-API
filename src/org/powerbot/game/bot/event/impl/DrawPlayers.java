@@ -6,8 +6,8 @@ import java.awt.Graphics;
 import java.awt.Point;
 
 import org.powerbot.game.api.methods.Game;
-import org.powerbot.game.api.methods.Players;
-import org.powerbot.game.api.wrappers.Player;
+import org.powerbot.game.api.methods.interactive.Players;
+import org.powerbot.game.api.wrappers.interactive.Player;
 import org.powerbot.game.bot.event.listener.PaintListener;
 
 public class DrawPlayers implements PaintListener {

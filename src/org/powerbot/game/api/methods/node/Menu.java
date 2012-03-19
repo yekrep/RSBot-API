@@ -1,4 +1,4 @@
-package org.powerbot.game.api.methods;
+package org.powerbot.game.api.methods.node;
 
 import java.awt.Point;
 import java.util.Collections;

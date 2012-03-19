@@ -2,8 +2,8 @@ package org.powerbot.game.bot.event.impl;
 
 import java.awt.Graphics;
 
-import org.powerbot.game.api.methods.Players;
-import org.powerbot.game.api.wrappers.Player;
+import org.powerbot.game.api.methods.interactive.Players;
+import org.powerbot.game.api.wrappers.interactive.Player;
 import org.powerbot.game.api.wrappers.Tile;
 import org.powerbot.game.bot.event.listener.internal.TextPaintListener;
 import org.powerbot.util.StringUtil;

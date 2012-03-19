@@ -1,4 +1,4 @@
-package org.powerbot.game.api.wrappers;
+package org.powerbot.game.api.wrappers.graphics;
 
 import java.awt.Graphics;
 import java.awt.Point;
@@ -7,11 +7,13 @@ import java.util.ArrayList;
 
 import org.powerbot.game.api.methods.Calculations;
 import org.powerbot.game.api.util.Random;
+import org.powerbot.game.api.wrappers.Entity;
+import org.powerbot.game.api.wrappers.Verifiable;
 import org.powerbot.game.bot.Bot;
 import org.powerbot.game.client.Model;
 import org.powerbot.game.client.ModelCapture;
 
-public abstract class GameModel implements Entity {
+public abstract class CapturedModel implements Entity {
 	private final Verifiable verifiable;
 
 	protected int[] xPoints;
@@ -25,7 +27,7 @@ public abstract class GameModel implements Entity {
 	protected final int numVertices;
 	protected final int numFaces;
 
-	public GameModel(final Model model, final Verifiable verifiable) {
+	public CapturedModel(final Model model, final Verifiable verifiable) {
 		this.verifiable = verifiable;
 		xPoints = model.getXPoints();
 		yPoints = model.getYPoints();

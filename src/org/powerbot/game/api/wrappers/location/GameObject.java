@@ -1,10 +1,13 @@
-package org.powerbot.game.api.wrappers;
+package org.powerbot.game.api.wrappers.location;
 
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Polygon;
 
 import org.powerbot.game.api.methods.Game;
+import org.powerbot.game.api.wrappers.Area;
+import org.powerbot.game.api.wrappers.Entity;
+import org.powerbot.game.api.wrappers.Tile;
 import org.powerbot.game.bot.Bot;
 import org.powerbot.game.client.RSAnimableShorts;
 import org.powerbot.game.client.RSAnimableX1;

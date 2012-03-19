@@ -1,13 +1,15 @@
-package org.powerbot.game.api.methods;
+package org.powerbot.game.api.methods.node;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import org.powerbot.game.api.methods.Game;
+import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.util.internal.Deque;
 import org.powerbot.game.api.util.internal.Nodes;
-import org.powerbot.game.api.wrappers.GroundItem;
-import org.powerbot.game.api.wrappers.Item;
+import org.powerbot.game.api.wrappers.node.GroundItem;
+import org.powerbot.game.api.wrappers.node.Item;
 import org.powerbot.game.api.wrappers.Tile;
 import org.powerbot.game.bot.Bot;
 import org.powerbot.game.client.Client;

@@ -1,8 +1,12 @@
-package org.powerbot.game.api.wrappers;
+package org.powerbot.game.api.wrappers.node;
 
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Polygon;
+
+import org.powerbot.game.api.wrappers.Entity;
+import org.powerbot.game.api.wrappers.Tile;
+import org.powerbot.game.api.wrappers.node.Item;
 
 /**
  * @author Timer

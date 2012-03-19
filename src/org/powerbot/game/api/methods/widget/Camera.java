@@ -1,4 +1,4 @@
-package org.powerbot.game.api.methods;
+package org.powerbot.game.api.methods.widget;
 
 import org.powerbot.game.bot.Bot;
 

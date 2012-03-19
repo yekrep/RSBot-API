@@ -5,9 +5,9 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 
-import org.powerbot.game.api.methods.Players;
-import org.powerbot.game.api.wrappers.GameModel;
-import org.powerbot.game.api.wrappers.Player;
+import org.powerbot.game.api.methods.interactive.Players;
+import org.powerbot.game.api.wrappers.graphics.CapturedModel;
+import org.powerbot.game.api.wrappers.interactive.Player;
 import org.powerbot.game.bot.event.listener.PaintListener;
 
 public class DrawModels implements PaintListener {
@@ -18,7 +18,7 @@ public class DrawModels implements PaintListener {
 		render.setColor(Color.green);
 		final Player[] players = Players.getLoaded();
 		for (final Player player : players) {
-			final GameModel model = player.getModel();
+			final CapturedModel model = player.getModel();
 			if (model != null) {
 				model.draw(render);
 			}
