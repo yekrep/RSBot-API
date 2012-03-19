@@ -46,6 +46,10 @@ public abstract class ActiveScript implements EventListener {
 		executor.omit(action);
 	}
 
+	protected final void submit(final Task task) {
+		container.submit(task);
+	}
+
 	protected final void setStoppableExecution(final Activator activator) {
 		this.stop_execution = activator;
 	}
