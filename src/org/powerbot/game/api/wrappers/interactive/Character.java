@@ -24,9 +24,11 @@ import org.powerbot.game.client.RSCharacterInteracting;
 import org.powerbot.game.client.RSCharacterIsMoving;
 import org.powerbot.game.client.RSCharacterOrientation;
 import org.powerbot.game.client.RSCharacterPassiveAnimation;
+import org.powerbot.game.client.RSInteractableBytes;
 import org.powerbot.game.client.RSInteractableInts;
 import org.powerbot.game.client.RSInteractableLocation;
 import org.powerbot.game.client.RSInteractableManager;
+import org.powerbot.game.client.RSInteractablePlane;
 import org.powerbot.game.client.RSInteractableRSInteractableManager;
 import org.powerbot.game.client.RSNPCHolder;
 import org.powerbot.game.client.RSNPCNode;
@@ -57,7 +59,7 @@ public abstract class Character implements Entity {
 	}
 
 	public int getPlane() {
-		return Game.getPlane();//TODO
+		return ((RSInteractablePlane) ((RSInteractableBytes) get()).getRSInteractableBytes()).getRSInteractablePlane();
 	}
 
 	public Character getInteracting() {
@@ -127,7 +129,9 @@ public abstract class Character implements Entity {
 		final Object ref = get();
 		if (ref != null) {
 			final Model model = ModelCapture.modelCache.get(ref);
-			return new CharacterModel(model, this);
+			if (model != null) {
+				return new CharacterModel(model, this);
+			}
 		}
 		return null;
 	}
