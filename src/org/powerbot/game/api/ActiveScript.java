@@ -38,11 +38,11 @@ public abstract class ActiveScript implements EventListener {
 		executor = new ActionExecutor(this.container);
 	}
 
-	protected final void registerAction(final Action action) {
+	protected final void provide(final Action action) {
 		executor.append(action);
 	}
 
-	protected final void removeAction(final Action action) {
+	protected final void revoke(final Action action) {
 		executor.omit(action);
 	}
 
