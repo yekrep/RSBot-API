@@ -3,6 +3,7 @@ package org.powerbot.game.api;
 import java.util.EventListener;
 import java.util.logging.Logger;
 
+import org.powerbot.concurrent.Task;
 import org.powerbot.concurrent.TaskContainer;
 import org.powerbot.concurrent.TaskProcessor;
 import org.powerbot.concurrent.action.Action;
@@ -51,8 +52,8 @@ public abstract class ActiveScript implements EventListener {
 
 	protected abstract void setupJobs();
 
-	public final Runnable start() {
-		return new Runnable() {
+	public final Task start() {
+		return new Task() {
 			public void run() {
 				setupJobs();
 				resume();
@@ -76,8 +77,8 @@ public abstract class ActiveScript implements EventListener {
 		}
 	}
 
-	public final Runnable stop() {
-		return new Runnable() {
+	public final Task stop() {
+		return new Task() {
 			public void run() {
 				eventManager.remove(ActiveScript.this);
 				executor.destroy();
@@ -87,5 +88,13 @@ public abstract class ActiveScript implements EventListener {
 
 	protected State getState() {
 		return executor.state;
+	}
+
+	public boolean isRunning() {
+		return getState() != State.DESTROYED;
+	}
+
+	public boolean isPaused() {
+		return getState() == State.LOCKED;
 	}
 }
