@@ -28,7 +28,7 @@ public abstract class GameDefinition implements GameEnvironment {
 	private static final Logger log = Logger.getLogger(GameDefinition.class.getName());
 	public TaskContainer processor;
 	private final Map<String, byte[]> classes;
-	public static final String THREADGROUPNAMEPREFIX = GameDefinition.class.getSimpleName() + "-";
+	public static final String THREADGROUPNAMEPREFIX = "GameDefinition-";
 
 	public Crawler crawler;
 	public volatile Rs2Applet appletContainer;
