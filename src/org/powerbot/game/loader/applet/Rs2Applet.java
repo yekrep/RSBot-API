@@ -1,4 +1,4 @@
-package org.powerbot.game.loader.wrapper;
+package org.powerbot.game.loader.applet;
 
 import java.applet.Applet;
 import java.awt.Graphics;
@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.powerbot.game.loader.RsClassLoader;
+import org.powerbot.game.loader.RSClassLoader;
 
 /**
  * An applet for manipulation of the wrapped client class.
@@ -37,7 +37,7 @@ public final class Rs2Applet extends Applet {
 	@Override
 	public final void init() {
 		try {
-			final RsClassLoader loader = new RsClassLoader(classes, new URL(game));
+			final RSClassLoader loader = new RSClassLoader(classes, new URL(game));
 			clientClass = loader.loadClass("client");
 		} catch (final Exception e) {
 			log.log(Level.SEVERE, "Failed to load classes: ", e);

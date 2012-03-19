@@ -19,11 +19,11 @@ import java.util.PropertyPermission;
  *
  * @author Alex
  */
-public class RsClassLoader extends ClassLoader {
+public class RSClassLoader extends ClassLoader {
 	private final Map<String, byte[]> classes = new HashMap<String, byte[]>();
 	private final ProtectionDomain domain;
 
-	public RsClassLoader(final Map<String, byte[]> classes, final URL source) {
+	public RSClassLoader(final Map<String, byte[]> classes, final URL source) {
 		final CodeSource codeSource = new CodeSource(source, (CodeSigner[]) null);
 		domain = new ProtectionDomain(codeSource, createPermissions());
 		this.classes.putAll(classes);

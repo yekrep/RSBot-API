@@ -1,4 +1,4 @@
-package org.powerbot.game.loader;
+package org.powerbot.game.loader.applet;
 
 import java.applet.Applet;
 import java.applet.AppletContext;
@@ -18,7 +18,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Vector;
 
-import org.powerbot.game.loader.io.AudioClip;
+import org.powerbot.game.loader.applet.AudioClip;
 
 /**
  * Represents the applet stub and context provided to the applet for use.

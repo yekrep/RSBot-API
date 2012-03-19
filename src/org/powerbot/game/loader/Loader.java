@@ -5,7 +5,8 @@ import java.util.logging.Logger;
 
 import org.powerbot.concurrent.Task;
 import org.powerbot.game.GameDefinition;
-import org.powerbot.game.loader.wrapper.Rs2Applet;
+import org.powerbot.game.loader.applet.ClientStub;
+import org.powerbot.game.loader.applet.Rs2Applet;
 import org.powerbot.util.Configuration;
 
 /**
