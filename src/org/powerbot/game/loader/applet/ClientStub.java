@@ -18,8 +18,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Vector;
 
-import org.powerbot.game.loader.applet.AudioClip;
-
 /**
  * Represents the applet stub and context provided to the applet for use.
  *
