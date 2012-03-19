@@ -135,8 +135,8 @@ public class EventDispatcher extends Task implements EventManager {
 						((KeyListener) listener).keyReleased(ke);
 						break;
 					}
-				} else if (eventObject instanceof GameEvent) {
-					final GameEvent gameEvent = (GameEvent) eventObject;
+				} else if (eventObject instanceof GeneralEvent) {
+					final GeneralEvent gameEvent = (GeneralEvent) eventObject;
 					gameEvent.dispatch(listener);
 				}
 			}
@@ -254,8 +254,8 @@ public class EventDispatcher extends Task implements EventManager {
 			case KeyEvent.KEY_RELEASED:
 				return EventDispatcher.KEY_EVENT;
 			}
-		} else if (e instanceof GameEvent) {
-			return ((GameEvent) e).type;
+		} else if (e instanceof GeneralEvent) {
+			return ((GeneralEvent) e).type;
 		}
 
 		throw new RuntimeException("bad event");

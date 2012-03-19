@@ -4,16 +4,16 @@ import java.util.EventListener;
 import java.util.EventObject;
 
 /**
- * An event that can by fired by this game.
+ * A custom event that can by fired by this framework.
  *
  * @author Timer
  */
-public abstract class GameEvent extends EventObject {
+public abstract class GeneralEvent extends EventObject {
 	private static final long serialVersionUID = 1L;
 	private static final Object SOURCE = new Object();
 	public int type = -1;
 
-	public GameEvent() {
+	public GeneralEvent() {
 		super(SOURCE);
 	}
 

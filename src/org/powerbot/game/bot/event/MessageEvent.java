@@ -3,7 +3,7 @@ package org.powerbot.game.bot.event;
 import java.util.EventListener;
 
 import org.powerbot.event.EventDispatcher;
-import org.powerbot.event.GameEvent;
+import org.powerbot.event.GeneralEvent;
 import org.powerbot.game.bot.event.listener.MessageListener;
 
 /**
@@ -11,7 +11,7 @@ import org.powerbot.game.bot.event.listener.MessageListener;
  *
  * @author Timer
  */
-public class MessageEvent extends GameEvent {
+public class MessageEvent extends GeneralEvent {
 	private static final long serialVersionUID = 1L;
 	private final int id;
 	private final String sender, message;

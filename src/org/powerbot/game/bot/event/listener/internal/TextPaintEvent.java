@@ -13,7 +13,7 @@ import java.awt.geom.AffineTransform;
 import java.util.EventListener;
 
 import org.powerbot.event.EventDispatcher;
-import org.powerbot.event.GameEvent;
+import org.powerbot.event.GeneralEvent;
 import org.powerbot.game.bot.event.listener.PaintListener;
 
 /**
@@ -21,7 +21,7 @@ import org.powerbot.game.bot.event.listener.PaintListener;
  *
  * @author Timer
  */
-public class TextPaintEvent extends GameEvent {
+public class TextPaintEvent extends GeneralEvent {
 	private static final long serialVersionUID = 1L;
 	public Graphics graphics;
 	public int id = 0;
