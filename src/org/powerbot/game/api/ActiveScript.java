@@ -4,6 +4,7 @@ import java.util.EventListener;
 import java.util.logging.Logger;
 
 import org.powerbot.concurrent.TaskContainer;
+import org.powerbot.concurrent.TaskProcessor;
 import org.powerbot.concurrent.action.Action;
 import org.powerbot.concurrent.action.ActionExecutor;
 import org.powerbot.event.EventManager;
@@ -24,16 +25,16 @@ public abstract class ActiveScript implements EventListener {
 	private ActionExecutor executor;
 
 	public ActiveScript() {
-		this.stop_execution = null;
-		this.eventManager = null;
-		this.container = null;
-		this.executor = null;
+		stop_execution = null;
+		eventManager = null;
+		container = null;
+		executor = null;
 	}
 
 	public final void init(final Bot bot) {
-		this.eventManager = bot.eventDispatcher;
-		this.container = bot.processor;
-		this.executor = new ActionExecutor(this.container);
+		eventManager = bot.eventDispatcher;
+		container = new TaskProcessor(bot.threadGroup);
+		executor = new ActionExecutor(this.container);
 	}
 
 	protected final void registerAction(final Action action) {
