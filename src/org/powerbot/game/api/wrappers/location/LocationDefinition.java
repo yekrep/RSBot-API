@@ -3,7 +3,7 @@ package org.powerbot.game.api.wrappers.location;
 /**
  * @author Timer
  */
-public class GameObjectDefinition {
+public class LocationDefinition {
 	public String getName() {
 		return null;//TODO
 	}

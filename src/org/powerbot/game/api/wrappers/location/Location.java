@@ -21,11 +21,11 @@ import org.powerbot.game.client.RSInteractableRSInteractableManager;
 /**
  * @author Timer
  */
-public class GameObject implements Entity {
+public class Location implements Entity {
 	private final Object object;
 	private final int type, plane;
 
-	public GameObject(final Object obj, final int type, final int plane) {
+	public Location(final Object obj, final int type, final int plane) {
 		this.object = obj;
 		this.type = type;
 		this.plane = plane;
@@ -72,7 +72,7 @@ public class GameObject implements Entity {
 		return new Tile(Game.getBaseX() + (int) location.getX() / 512, Game.getBaseY() + (int) location.getY() / 512, plane);
 	}
 
-	public GameObjectDefinition getDefinition() {
+	public LocationDefinition getDefinition() {
 		return null;//TODO
 	}
 
