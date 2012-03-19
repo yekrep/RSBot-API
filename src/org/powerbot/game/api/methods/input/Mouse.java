@@ -3,13 +3,18 @@ package org.powerbot.game.api.methods.input;
 import java.awt.Canvas;
 import java.awt.Component;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.powerbot.concurrent.TaskContainer;
+import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Time;
+import org.powerbot.game.api.wrappers.Locatable;
 import org.powerbot.game.bot.Bot;
+import org.powerbot.game.bot.input.MouseManipulator;
 
 public class Mouse {
 	private static final Map<ThreadGroup, Integer> dragLengths = new HashMap<ThreadGroup, Integer>();
@@ -55,7 +60,7 @@ public class Mouse {
 		return mouse != null && mouse.isPressed();
 	}
 
-	public static void clickMouse(final boolean left) {
+	public static void click(final boolean left) {
 		if (!isPresent()) {
 			return;
 		}
@@ -66,7 +71,7 @@ public class Mouse {
 		Time.sleep(Random.nextInt(50, 80));
 	}
 
-	public static void holdMouse(final int time, final boolean left) {
+	public static void hold(final int time, final boolean left) {
 		if (!isPresent()) {
 			return;
 		}
@@ -77,14 +82,38 @@ public class Mouse {
 		Time.sleep(Random.nextInt(50, 80));
 	}
 
-	public static void hopMouse(final int x, final int y) {
-		hopMouse(x, y, 0, 0);
+	public static void hop(final int x, final int y) {
+		hop(x, y, 0, 0);
 	}
 
-	public static void hopMouse(int x, int y, final int randomX, final int randomY) {
+	public static void hop(int x, int y, final int randomX, final int randomY) {
 		if (isOnCanvas(x, y)) {
-			moveMouse(x + Random.nextGaussian(-randomX, randomX, randomX), Random.nextGaussian(-randomY, randomY, randomY));
+			moveMouse(x + Random.nextGaussian(-randomX, randomX, randomX), y + Random.nextGaussian(-randomY, randomY, randomY));
 		}
+	}
+
+	public static boolean move(final int x, final int y) {
+		final TaskContainer container = Bot.resolve().processor;
+		final MouseManipulator task = create(x, y, 0, 0, false, false);
+		container.submit(task);
+		if (task.future != null) {
+			while (!task.future.isDone()) {
+				Time.sleep(50);
+			}
+		}
+		return task.isAccepted();
+	}
+
+	public static boolean move(int x, int y, final int randomX, final int randomY) {
+		final TaskContainer container = Bot.resolve().processor;
+		final MouseManipulator task = create(x, y, randomX, randomY, false, false);
+		container.submit(task);
+		if (task.future != null) {
+			while (!task.future.isDone()) {
+				Time.sleep(50);
+			}
+		}
+		return task.isAccepted();
 	}
 
 	private static void pressMouse(final int x, final int y, final boolean left) {
@@ -222,6 +251,38 @@ public class Mouse {
 	public static boolean isOnCanvas(final int x, final int y) {
 		final Bot bot = Bot.resolve();
 		final Canvas canvas;
-		return !(bot == null || (canvas = bot.getCanvas()) == null) && x > 0 && x < canvas.getWidth() && y > 0 && y < canvas.getHeight();
+		return !(bot == null || (canvas = bot.getCanvas()) == null) && x >= 0 && x < canvas.getWidth() && y >= 0 && y < canvas.getHeight();
+	}
+
+	private static MouseManipulator create(final int x, final int y, final int randomX, final int randomY, final boolean click, final boolean left) {
+		return new MouseManipulator(
+				new Locatable() {
+					private final Rectangle area = new Rectangle(x, y, randomX, randomY);
+
+					public Point getCentralPoint() {
+						return new Point(x, y);
+					}
+
+					public Point getNextViewportPoint() {
+						return new Point(x + Random.nextGaussian(-randomX, randomX, randomX), y + Random.nextGaussian(-randomY, randomY, randomY));
+					}
+
+					public boolean contains(final Point point) {
+						return area.contains(point);
+					}
+
+					public boolean verify() {
+						return Mouse.isOnCanvas(x, y);
+					}
+				},
+				new Filter<Point>() {
+					public boolean accept(final Point point) {
+						if (click) {
+							Mouse.click(left);
+						}
+						return true;
+					}
+				}
+		);
 	}
 }

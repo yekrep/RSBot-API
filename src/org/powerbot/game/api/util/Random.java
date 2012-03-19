@@ -6,7 +6,7 @@ package org.powerbot.game.api.util;
  * @author Timer
  */
 public class Random {
-	public static final java.util.Random random = new java.util.Random();
+	private static final java.util.Random random = new java.util.Random();
 
 	/**
 	 * @return The next random boolean value.

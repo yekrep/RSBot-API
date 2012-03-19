@@ -10,7 +10,7 @@ import org.powerbot.game.api.methods.input.Mouse;
 import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Time;
-import org.powerbot.game.api.wrappers.Entity;
+import org.powerbot.game.api.wrappers.Locatable;
 
 /**
  * @author Timer
@@ -20,14 +20,14 @@ public class MouseManipulator extends Task {
 	private final Vector velocity = new Vector();
 	private final long timeout;
 	private boolean running;
-	private final Entity entity;
+	private final Locatable locatable;
 	private final Filter<Point> filter;
 	private boolean accepted = false;
 
-	public MouseManipulator(final Entity entity, final Filter<Point> filter) {
+	public MouseManipulator(final Locatable locatable, final Filter<Point> filter) {
 		this.timeout = Random.nextInt(4000, 7000);
 		this.running = false;
-		this.entity = entity;
+		this.locatable = locatable;
 		this.filter = filter;
 	}
 
@@ -38,14 +38,14 @@ public class MouseManipulator extends Task {
 		Point lastCentral = null;
 		Point lastTargetPoint = null;
 		while (running && System.currentTimeMillis() - start < timeout) {
-			final Point centralPoint = entity.getCentralPoint();
+			final Point centralPoint = locatable.getCentralPoint();
 			final Point targetPoint = new Point(-1, -1);
 			if (lastTargetPoint != null) {
 				targetPoint.x = lastTargetPoint.x;
 				targetPoint.y = lastTargetPoint.y;
 			}
 			if (lastCentral == null || lastTargetPoint == null || !lastCentral.equals(centralPoint)) {
-				final Point viewPortPoint = entity.getNextViewportPoint();
+				final Point viewPortPoint = locatable.getNextViewportPoint();
 				if (viewPortPoint.x == -1 || viewPortPoint.y == -1) {
 					Time.sleep(Random.nextInt(25, 51));
 					continue;
@@ -55,13 +55,13 @@ public class MouseManipulator extends Task {
 				}
 				lastCentral = centralPoint;
 			}
-			if (!entity.contains(targetPoint)) {
+			if (!locatable.contains(targetPoint)) {
 				lastTargetPoint = null;
 				continue;
 			}
 			lastTargetPoint = targetPoint;
 			final Point currentPoint = Mouse.getLocation();
-			if (targetPoint.distance(currentPoint) < 3 && entity.contains(currentPoint) && filter.accept(currentPoint)) {
+			if (targetPoint.distance(currentPoint) < 3 && locatable.contains(currentPoint) && filter.accept(currentPoint)) {
 				accepted = true;
 				break;
 			}
@@ -85,7 +85,7 @@ public class MouseManipulator extends Task {
 				int x = (int) currentPoint.getX() + (int) deltaPosition.xUnits;
 				int y = (int) currentPoint.getY() + (int) deltaPosition.yUnits;
 				if (Mouse.isOnCanvas(x, y)) {
-					Mouse.hopMouse(x, y);
+					Mouse.hop(x, y);
 				}
 			}
 			try {
