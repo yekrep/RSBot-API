@@ -11,11 +11,16 @@ import org.powerbot.game.bot.Bot;
 import org.powerbot.game.client.Client;
 
 /**
+ * A utility for the manipulation of widgets.
+ *
  * @author Timer
  */
 public class Widgets {
 	private static final Map<Client, Widget[]> caches = new HashMap<Client, Widget[]>();
 
+	/**
+	 * @return An <code>Widget[]</code> of the latest cached widgets.
+	 */
 	public static Widget[] getLoaded() {
 		final Client client = Bot.resolve().client;
 		ensureCapacity(client);
@@ -35,6 +40,10 @@ public class Widgets {
 		return validInterfaces.toArray(new Widget[validInterfaces.size()]);
 	}
 
+	/**
+	 * @param index The position in the widget cache.
+	 * @return The <code>Widget</code> retrieved from the cache.
+	 */
 	public static Widget get(final int index) {
 		if (index < 0) {
 			throw new RuntimeException("index < 0 (" + index + ")");
@@ -64,11 +73,19 @@ public class Widgets {
 		return widget;
 	}
 
+	/**
+	 * @param index      The position in the widget cache.
+	 * @param childIndex The position of the widget child in the children array of the cached widget.
+	 * @return The <code>WidgetChild</code> retrieved from the children of the cached widget.
+	 */
 	public static WidgetChild get(final int index, final int childIndex) {
 		return get(index).getChild(childIndex);
 	}
 
-	private static void ensureCapacity(Client paramClient) {
+	/**
+	 * @param paramClient The <code>Client</code> to ensure caching capacity of.
+	 */
+	private static void ensureCapacity(final Client paramClient) {
 		Object[] clientInterfaceCache = paramClient.getRSInterfaceCache();
 		Widget[] cachedInterfaces = caches.get(paramClient);
 		if (cachedInterfaces == null) {
