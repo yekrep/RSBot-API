@@ -8,7 +8,11 @@ import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.api.wrappers.Area;
 import org.powerbot.game.api.wrappers.Entity;
 import org.powerbot.game.api.wrappers.Tile;
+import org.powerbot.game.api.wrappers.graphics.CapturedModel;
+import org.powerbot.game.api.wrappers.graphics.model.LocationModel;
 import org.powerbot.game.bot.Bot;
+import org.powerbot.game.client.Model;
+import org.powerbot.game.client.ModelCapture;
 import org.powerbot.game.client.RSAnimableShorts;
 import org.powerbot.game.client.RSAnimableX1;
 import org.powerbot.game.client.RSAnimableX2;
@@ -23,9 +27,14 @@ import org.powerbot.game.client.RSInteractableRSInteractableManager;
  */
 public class Location implements Entity {
 	private final Object object;
-	private final int type, plane;
+	private final Type type;
+	private final int plane;
 
-	public Location(final Object obj, final int type, final int plane) {
+	public static enum Type {
+		INTERACTIVE, FLOOR_DECORATION, BOUNDARY, WALL_DECORATION
+	}
+
+	public Location(final Object obj, final Type type, final int plane) {
 		this.object = obj;
 		this.type = type;
 		this.plane = plane;
@@ -59,12 +68,16 @@ public class Location implements Entity {
 		return Bot.resolve().client.getRSObjectID(object);
 	}
 
-	public int getType() {
+	public Type getType() {
 		return type;
 	}
 
 	public int getPlane() {
 		return plane;
+	}
+
+	public Object getInstance() {
+		return object;
 	}
 
 	public Tile getLocation() {
@@ -76,12 +89,26 @@ public class Location implements Entity {
 		return null;//TODO
 	}
 
+	public CapturedModel getModel() {
+		if (object != null) {
+			Model model = Bot.resolve().client.getRSObjectModel(object);
+			if (model == null) {
+				model = ModelCapture.modelCache.get(object);
+			}
+			if (model != null) {
+				return new LocationModel(model, this);
+			}
+		}
+		return null;
+	}
+
 	public boolean verify() {
 		return false;//TODO
 	}
 
 	public Point getCentralPoint() {
-		return null;//TODO
+		final CapturedModel model = getModel();
+		return model != null ? model.getCentralPoint() : getLocation().getCentralPoint();
 	}
 
 	public Point getNextViewportPoint() {
@@ -93,7 +120,8 @@ public class Location implements Entity {
 	}
 
 	public boolean isOnScreen() {
-		return false;//TODO
+		final CapturedModel model = getModel();
+		return model != null ? model.isOnScreen() : getLocation().isOnScreen();//TODO
 	}
 
 	public Polygon[] getBounds() {
