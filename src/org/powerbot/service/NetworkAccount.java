@@ -127,6 +127,29 @@ public final class NetworkAccount {
 			return groups;
 		}
 
+		public boolean isVIP() {
+			final String groups;
+			try {
+				groups = Resources.getServerData().get("access").get("vip");
+			} catch (final Exception ignored) {
+				return false;
+			}
+			for (final String group : groups.split(",")) {
+				final int g;
+				try {
+					g = Integer.parseInt(group);
+				} catch (final NumberFormatException ignored) {
+					continue;
+				}
+				for (final int check : this.groups) {
+					if (check == g) {
+						return true;
+					}
+				}
+			}
+			return false;
+		}
+
 		public Map<String, Map<String, String>> getMap() {
 			final Map<String, String> auth = new HashMap<String, String>();
 			auth.put("member_id", Integer.toString(id));
