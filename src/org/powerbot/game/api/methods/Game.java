@@ -8,7 +8,7 @@ import org.powerbot.game.client.BaseInfoY;
 import org.powerbot.game.client.RSInfoBaseInfo;
 
 /**
- * A utility that provides information about the game.
+ * A utility for the manipulation of the game.
  *
  * @author Timer
  */
@@ -38,6 +38,9 @@ public class Game {
 		return -1;
 	}
 
+	/**
+	 * @return <tt>true</tt> if this client instance is logged in; otherwise <tt>false</tt>.
+	 */
 	public static boolean isLoggedIn() {
 		final int state = getClientState();
 		return state == 11 || state == 12;
@@ -51,11 +54,17 @@ public class Game {
 		return bot.client.getPlane() * bot.multipliers.GLOBAL_PLANE;
 	}
 
+	/**
+	 * @return The x location of the currently loaded map base.
+	 */
 	public static int getBaseX() {
 		final Bot bot = Bot.resolve();
 		return (((BaseInfoX) ((BaseInfoInts) ((RSInfoBaseInfo) bot.client.getRSGroundInfo()).getRSInfoBaseInfo()).getBaseInfoInts()).getBaseInfoX() * bot.multipliers.BASEDATA_X) >> 8;
 	}
 
+	/**
+	 * @return The y location of the currently loaded map base.
+	 */
 	public static int getBaseY() {
 		final Bot bot = Bot.resolve();
 		return (((BaseInfoY) ((BaseInfoInts) ((RSInfoBaseInfo) bot.client.getRSGroundInfo()).getRSInfoBaseInfo()).getBaseInfoInts()).getBaseInfoY() * bot.multipliers.BASEDATA_Y) >> 8;
