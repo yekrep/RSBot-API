@@ -26,11 +26,6 @@ public class Boot implements Runnable {
 		}
 		logger.addHandler(new SystemConsoleHandler());
 
-		if (!getLock()) {
-			log.severe("An instance of " + Configuration.NAME + " is already running");
-			return;
-		}
-
 		boolean restarted = false;
 
 		final String SWITCH_DEV = "-dev";
@@ -68,6 +63,11 @@ public class Boot implements Runnable {
 				return;
 			} catch (final IOException ignored) {
 			}
+			return;
+		}
+
+		if (!getLock()) {
+			log.severe("An instance of " + Configuration.NAME + " is already running");
 			return;
 		}
 
