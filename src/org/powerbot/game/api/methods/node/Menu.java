@@ -25,6 +25,9 @@ import org.powerbot.game.client.MenuItemNodeOption;
 public class Menu {
 	private static final Pattern HTML_TAG = Pattern.compile("(^[^<]+>|<[^>]+>|<[^>]+$)");
 
+	/**
+	 * @return The position of the latest opened menu.
+	 */
 	public static Point getLocation() {
 		final Bot bot = Bot.resolve();
 		return new Point(
@@ -33,6 +36,9 @@ public class Menu {
 		);
 	}
 
+	/**
+	 * @return The position of the opened sub (collapsed) menu.
+	 */
 	public static Point getSubLocation() {
 		final Bot bot = Bot.resolve();
 		return new Point(
@@ -41,16 +47,25 @@ public class Menu {
 		);
 	}
 
+	/**
+	 * @return The width of the opened menu.
+	 */
 	public static int getWidth() {
 		final Bot bot = Bot.resolve();
 		return bot.client.getMenuWidth() * bot.multipliers.GLOBAL_MENUWIDTH;
 	}
 
+	/**
+	 * @return The height of the opened menu.
+	 */
 	public static int getHeight() {
 		final Bot bot = Bot.resolve();
 		return bot.client.getMenuHeight() * bot.multipliers.GLOBAL_MENUHEIGHT;
 	}
 
+	/**
+	 * @return The width of the opened sub (collapsed) menu.
+	 */
 	public static int getSubWidth() {
 		final Bot bot = Bot.resolve();
 		return bot.client.getSubMenuWidth() * bot.multipliers.GLOBAL_SUBMENUWIDTH;
