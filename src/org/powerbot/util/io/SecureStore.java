@@ -61,6 +61,7 @@ public final class SecureStore {
 
 	private synchronized void create() throws IOException {
 		final RandomAccessFile raf = new RandomAccessFile(store, "rw");
+		raf.setLength(0);
 		raf.writeInt(MAGIC);
 		raf.writeInt(VERSION);
 		final SecureRandom s = new SecureRandom();
