@@ -12,14 +12,26 @@ import org.powerbot.game.client.RSInfoRSGroundInfo;
 import org.powerbot.game.client.TileData;
 
 /**
+ * A utility for the manipulation of different calculations for the game.
+ *
  * @author Timer
  */
 public class Calculations {
+	/**
+	 * A representation of the game's (Java) Toolkit.
+	 *
+	 * @author Timer
+	 */
 	public static class Toolkit {
 		public float absoluteX, absoluteY;
 		public float xMultiplier, yMultiplier;
 	}
 
+	/**
+	 * A representation of the game's Viewport, or Matrix.
+	 *
+	 * @author Timer
+	 */
 	public static class Viewport {
 		public float xOff, xX, xY, xZ;
 		public float yOff, yX, yY, yZ;
@@ -37,6 +49,12 @@ public class Calculations {
 		}
 	}
 
+	/**
+	 * @param x     The local x position of the tile of which you desire to get the height for.
+	 * @param y     The local y position of the tile of which you desire to get the height for.
+	 * @param plane The plane to access this tile's information on.
+	 * @return The height of the given tile on the provided plane.
+	 */
 	public static int calculateTileHeight(final int x, final int y, int plane) {
 		final Client client = Bot.resolve().client;
 		final int x1 = x >> 9;
@@ -61,14 +79,27 @@ public class Calculations {
 		return 0;
 	}
 
-	public static Point groundToScreen(final int x, final int z, final int plane, final int height) {
-		if (x < 512 || z < 512 || x > 52224 || z > 52224) {
+	/**
+	 * @param x      The absolute x ground position.
+	 * @param y      The absolute x ground position.
+	 * @param plane  The plane to calculation this tile's position on.
+	 * @param height The height offset.
+	 * @return The <code>Point</code> of the given tile on the screen.
+	 */
+	public static Point groundToScreen(final int x, final int y, final int plane, final int height) {
+		if (x < 512 || y < 512 || x > 52224 || y > 52224) {
 			return new Point(-1, -1);
 		}
-		final int y = calculateTileHeight(x, z, plane) - height;
-		return worldToScreen(x, y, z);
+		final int z = calculateTileHeight(x, y, plane) - height;
+		return worldToScreen(x, z, y);
 	}
 
+	/**
+	 * @param x Absolute x position of the calculation.
+	 * @param y Depth of the requested calculation.
+	 * @param z Absolute y position of the calculation.
+	 * @return The <code>Point</code> of the given coordinates on screen.
+	 */
 	public static Point worldToScreen(final int x, final int y, final int z) {
 		final Bot bot = Bot.resolve();
 		final Toolkit toolkit = bot.toolkit;
@@ -85,8 +116,12 @@ public class Calculations {
 		return new Point(-1, -1);
 	}
 
+	/**
+	 * @param point The <code>Point</code> to determine if it's on screen or not.
+	 * @return <tt>true</tt> if the point is on the screen; otherwise <tt>false</tt>.
+	 */
 	public static boolean isPointOnScreen(final Point point) {
-		final Canvas canvas = Bot.resolve().getCanvas();
+		final Canvas canvas = Bot.resolve().getCanvas();//TODO
 		return point.x > 0 && point.y > 0 && point.x < canvas.getWidth() && point.y < canvas.getHeight();
 	}
 }
