@@ -3,7 +3,9 @@ package org.powerbot.game.api.methods.location;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.api.util.Filter;
+import org.powerbot.game.api.wrappers.Tile;
 import org.powerbot.game.api.wrappers.location.Location;
 import org.powerbot.game.bot.Bot;
 import org.powerbot.game.client.Client;
@@ -15,13 +17,13 @@ import org.powerbot.game.client.RSGroundInfoRSGroundArray;
 import org.powerbot.game.client.RSGroundRSAnimableList;
 import org.powerbot.game.client.RSGroundWallDecoration1;
 import org.powerbot.game.client.RSGroundWallDecoration2;
-import org.powerbot.game.client.RSInfoGroundData;
+import org.powerbot.game.client.RSInfoRSGroundInfo;
 
 /**
  * @author Timer
  */
 public class Locations {
-	public static final int TYPE_INTERACTABLE = 0x1;
+	public static final int TYPE_INTERACTIVE = 0x1;
 	public static final int TYPE_FLOOR_DECORATION = 0x2;
 	public static final int TYPE_BOUNDARY = 0x4;
 	public static final int TYPE_WALL_DECORATION = 0x8;
@@ -35,6 +37,11 @@ public class Locations {
 
 	public static Location[] getLoaded() {
 		return getLoaded(ALL_FILTER);
+	}
+
+	public static Location[] getLoaded(final Tile tile) {
+		final Set<Location> locations = getAtLocal(tile.x - Game.getBaseX(), tile.y - Game.getBaseY(), -1);
+		return locations.toArray(new Location[locations.size()]);
 	}
 
 	public static Location[] getLoaded(final Filter<Location> filter) {
@@ -56,7 +63,7 @@ public class Locations {
 		if ((obj = client.getRSGroundInfo()) == null) {
 			return null;
 		}
-		if ((obj = ((RSInfoGroundData) obj).getRSInfoGroundData()) == null) {
+		if ((obj = ((RSInfoRSGroundInfo) obj).getRSInfoRSGroundInfo()) == null) {
 			return null;
 		}
 		return (Object[][][]) ((RSGroundInfoRSGroundArray) obj).getRSGroundInfoRSGroundArray();
@@ -78,12 +85,12 @@ public class Locations {
 			if (rsGround != null) {
 				Object obj;
 
-				if ((mask & TYPE_INTERACTABLE) != 0) {
+				if ((mask & TYPE_INTERACTIVE) != 0) {
 					for (RSAnimableNode node = (RSAnimableNode) ((RSGroundRSAnimableList) rsGround).getRSGroundRSAnimableList(); node != null; node = node.getNext()) {
 						obj = node.getRSAnimable();
 						if (obj != null) {
 							if (client.getRSObjectID(obj) != -1) {
-								objects.add(new Location(obj, TYPE_INTERACTABLE, plane));
+								objects.add(new Location(obj, Location.Type.INTERACTIVE, plane));
 							}
 						}
 					}
@@ -94,7 +101,7 @@ public class Locations {
 					obj = ((RSGroundFloorDecoration) rsGround).getRSGroundFloorDecoration();
 					if (obj != null) {
 						if (client.getRSObjectID(obj) != -1) {
-							objects.add(new Location(obj, TYPE_FLOOR_DECORATION, plane));
+							objects.add(new Location(obj, Location.Type.FLOOR_DECORATION, plane));
 						}
 					}
 				}
@@ -103,14 +110,14 @@ public class Locations {
 					obj = ((RSGroundBoundary1) rsGround).getRSGroundBoundary1();
 					if (obj != null) {
 						if (client.getRSObjectID(obj) != -1) {
-							objects.add(new Location(obj, TYPE_BOUNDARY, plane));
+							objects.add(new Location(obj, Location.Type.BOUNDARY, plane));
 						}
 					}
 
 					obj = ((RSGroundBoundary2) rsGround).getRSGroundBoundary2();
 					if (obj != null) {
 						if (client.getRSObjectID(obj) != -1) {
-							objects.add(new Location(obj, TYPE_BOUNDARY, plane));
+							objects.add(new Location(obj, Location.Type.BOUNDARY, plane));
 						}
 					}
 				}
@@ -119,14 +126,14 @@ public class Locations {
 					obj = ((RSGroundWallDecoration1) rsGround).getRSGroundWallDecoration1();
 					if (obj != null) {
 						if (client.getRSObjectID(obj) != -1) {
-							objects.add(new Location(obj, TYPE_WALL_DECORATION, plane));
+							objects.add(new Location(obj, Location.Type.WALL_DECORATION, plane));
 						}
 					}
 
 					obj = ((RSGroundWallDecoration2) rsGround).getRSGroundWallDecoration2();
 					if (obj != null) {
 						if (client.getRSObjectID(obj) != -1) {
-							objects.add(new Location(obj, TYPE_WALL_DECORATION, plane));
+							objects.add(new Location(obj, Location.Type.WALL_DECORATION, plane));
 						}
 					}
 				}
