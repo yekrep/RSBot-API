@@ -14,6 +14,8 @@ import org.powerbot.game.client.RSNPCNode;
 import org.powerbot.game.client.RSNPCNodeHolder;
 
 /**
+ * A utility for the access of Npcs.
+ *
  * @author Timer
  */
 public class Npcs {
@@ -23,10 +25,17 @@ public class Npcs {
 		}
 	};
 
+	/**
+	 * @return An array of the currently loaded Npcs in the game.
+	 */
 	public static Npc[] getLoaded() {
 		return getLoaded(ALL_FILTER);
 	}
 
+	/**
+	 * @param filter The filtering <code>Filter</code> to accept all the Npcs through.
+	 * @return An array of the currently loaded Npcs in the game that are accepted by the provided filter.
+	 */
 	public static Npc[] getLoaded(final Filter<Npc> filter) {
 		final Client client = Bot.resolve().client;
 		final int[] indices = client.getRSNPCIndexArray();
