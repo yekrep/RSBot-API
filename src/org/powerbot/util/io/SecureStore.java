@@ -34,19 +34,11 @@ public final class SecureStore {
 
 	private SecureStore() {
 		store = new File(Configuration.STORE);
-		if (!store.exists()) {
+		if (!exists()) {
+			log.warning("Creating new secure store");
 			try {
 				create();
 			} catch (final IOException ignored) {
-			}
-		}
-		try {
-			read();
-		} catch (final IOException ignored) {
-			log.severe("Store corrupt, attempting to recreate");
-			try {
-				create();
-			} catch (final IOException ignored2) {
 			}
 		}
 	}
@@ -57,6 +49,18 @@ public final class SecureStore {
 
 	public String getPrivateKey() {
 		return StringUtil.byteArrayToHexString(key);
+	}
+
+	private boolean exists() {
+		if (!store.exists()) {
+			return false;
+		}
+		try {
+			read();
+			return true;
+		} catch (final IOException ignored) {
+		}
+		return false;
 	}
 
 	private synchronized void create() throws IOException {
