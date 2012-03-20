@@ -121,7 +121,7 @@ public class ModScript implements NodeProcessor {
 			case Headers.ADD_METHOD:
 				clazz = scanner.readString();
 				count = scanner.readShort();
-				final AddMethodAdapter.Method[] methods = new AddMethodAdapter.Method[1];
+				final AddMethodAdapter.Method[] methods = new AddMethodAdapter.Method[count];
 				while (ptr < count) {
 					final AddMethodAdapter.Method m = new AddMethodAdapter.Method();
 					m.access = scanner.readInt();
@@ -132,12 +132,7 @@ public class ModScript implements NodeProcessor {
 					m.code = code;
 					m.max_locals = scanner.readByte();
 					m.max_stack = scanner.readByte();
-					if (m.name.equalsIgnoreCase("setcallback")) {
-						methods[0] = m;
-						ptr++;
-					} else {
-						ptr++;
-					}
+					methods[ptr++] = m;
 				}
 				adapters.put(clazz, new AddMethodAdapter(delegate(clazz), methods));
 				break;
