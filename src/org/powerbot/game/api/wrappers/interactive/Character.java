@@ -168,7 +168,8 @@ public abstract class Character implements Entity {
 	}
 
 	public boolean isOnScreen() {
-		return Calculations.isPointOnScreen(getNextViewportPoint());
+		final CapturedModel model = getModel();
+		return model != null ? model.isOnScreen() : Calculations.isPointOnScreen(getCentralPoint());
 	}
 
 	public Polygon[] getBounds() {
