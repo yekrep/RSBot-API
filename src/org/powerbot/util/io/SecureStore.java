@@ -60,6 +60,11 @@ public final class SecureStore {
 	}
 
 	private synchronized void create() throws IOException {
+		MessageDigest md = null;
+		try {
+			md = MessageDigest.getInstance("SHA-1");
+		} catch (final NoSuchAlgorithmException ignored) {
+		}
 		final RandomAccessFile raf = new RandomAccessFile(store, "rw");
 		raf.setLength(0);
 		raf.writeInt(MAGIC);
@@ -69,12 +74,15 @@ public final class SecureStore {
 		raf.writeInt(blocks);
 		for (int i = 0; i < blocks; i++) {
 			final byte[] payload = new byte[BLOCKSIZE];
-			for (int j = 0; j < 2; j++) {
-				s.nextBytes(payload);
-				raf.write(payload);
-			}
+			s.nextBytes(payload);
+			md.update(payload);
+			raf.write(payload);
+			s.nextBytes(payload);
+			raf.write(payload);
 		}
+		offset = raf.getFilePointer();
 		raf.close();
+		key = md.digest();
 	}
 
 	private synchronized void read() throws IOException {
