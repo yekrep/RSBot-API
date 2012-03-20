@@ -22,10 +22,6 @@ public class DrawNpcs implements PaintListener {
 			if (location.x == -1 || location.y == -1) {
 				continue;
 			}
-			render.setColor(Color.pink);
-			if (npc.getModel() != null) {
-				npc.getModel().draw(render);
-			}
 			render.setColor(Color.red);
 			render.fillRect((int) location.getX() - 1, (int) location.getY() - 1, 2, 2);
 			String s = npc.getName() + " (" + npc.getLevel() + ") - " + npc.getId();

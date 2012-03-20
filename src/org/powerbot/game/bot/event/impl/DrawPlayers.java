@@ -22,10 +22,6 @@ public class DrawPlayers implements PaintListener {
 			if (location.x == -1 || location.y == -1) {
 				continue;
 			}
-			render.setColor(Color.magenta);
-			if (player.getModel() != null) {
-				player.getModel().draw(render);
-			}
 			render.setColor(Color.RED);
 			render.fillRect((int) location.getX() - 1, (int) location.getY() - 1, 2, 2);
 			String s = player.getName() + " (" + player.getLevel() + ")";
