@@ -10,9 +10,9 @@ import java.awt.Polygon;
  */
 public interface Entity extends Locatable {
 	/**
-	 * Determines if this entity is onscreen.
+	 * Determines if this entity is on screen.
 	 *
-	 * @return <tt>true</tt> if this entity is onscreen; otherwise <tt>false</tt>.
+	 * @return <tt>true</tt> if this entity is on screen; otherwise <tt>false</tt>.
 	 */
 	public boolean isOnScreen();
 
