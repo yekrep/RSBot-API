@@ -30,6 +30,9 @@ public final class BotLocale {
 	public static String ERROR = "Error";
 	public static String INVALIDCREDENTIALS = "Invalid username or password.";
 
+	public static String NEEDVIP = "VIP Access";
+	public static String NEEDVIPMULTITAB = "Only VIPs can open multiple tabs.";
+
 	public static String VISITSITE = "Visit Site";
 	public static String OK = "OK";
 

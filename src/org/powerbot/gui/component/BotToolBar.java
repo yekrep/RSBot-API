@@ -22,6 +22,7 @@ import javax.swing.border.EmptyBorder;
 
 import org.powerbot.game.bot.Bot;
 import org.powerbot.gui.BotChrome;
+import org.powerbot.service.NetworkAccount;
 import org.powerbot.util.io.Resources;
 
 /**
@@ -77,6 +78,10 @@ public final class BotToolBar extends JToolBar {
 
 	public void addTab() {
 		final int n = Bot.bots.size();
+		if (n > 0 && (!NetworkAccount.getInstance().isLoggedIn() || !NetworkAccount.getInstance().getAccount().isVIP())) {
+			JOptionPane.showMessageDialog(parent, BotLocale.NEEDVIPMULTITAB, BotLocale.NEEDVIP, JOptionPane.INFORMATION_MESSAGE);
+			return;
+		}
 		final Bot bot = new Bot();
 		add(new BotButton("Game", bot), n);
 		activateTab(n);
