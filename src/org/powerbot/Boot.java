@@ -52,7 +52,7 @@ public class Boot implements Runnable {
 			String cmd = Configuration.OS == OperatingSystem.WINDOWS ? "javaw" : "java";
 			String location = Boot.class.getProtectionDomain().getCodeSource().getLocation().getPath();
 			location = StringUtil.urlDecode(location).replaceAll("\\\\", "/");
-			cmd += " -Xmx" + req + "m -classpath \"" + location + "\" \"" + Boot.class.getCanonicalName() + "\" " + SWITCH_RESTARTED;
+			cmd += " -Xss6m -Xmx" + req + "m -classpath \"" + location + "\" \"" + Boot.class.getCanonicalName() + "\" " + SWITCH_RESTARTED;
 			final Runtime run = Runtime.getRuntime();
 			try {
 				if (Configuration.OS == OperatingSystem.MAC || Configuration.OS == OperatingSystem.LINUX) {
