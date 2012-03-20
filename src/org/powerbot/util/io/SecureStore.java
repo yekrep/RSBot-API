@@ -26,7 +26,7 @@ import org.powerbot.util.StringUtil;
 public final class SecureStore {
 	private final static Logger log = Logger.getLogger(SecureStore.class.getName());
 	private final static SecureStore instance = new SecureStore();
-	private final static int MAGIC = 0x00525354, VERSION = 1001, BLOCKSIZE = 512, MAXBLOCKS = 2048;
+	private final static int MAGIC = 0x00525354, VERSION = 1002, BLOCKSIZE = 512, MAXBLOCKS = 2048;
 	private final static String CIPHER_ALGORITHM = "RC4", KEY_ALGORITHM = "RC4";
 	private final File store;
 	private long offset;
