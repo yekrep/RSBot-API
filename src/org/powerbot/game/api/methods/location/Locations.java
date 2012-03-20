@@ -20,6 +20,8 @@ import org.powerbot.game.client.RSGroundWallDecoration2;
 import org.powerbot.game.client.RSInfoRSGroundInfo;
 
 /**
+ * A utility for the gathering of locations on the game plane's mesh.
+ *
  * @author Timer
  */
 public class Locations {
@@ -35,15 +37,26 @@ public class Locations {
 		}
 	};
 
+	/**
+	 * @return An array of all of the loaded Locations within the currently loaded region.
+	 */
 	public static Location[] getLoaded() {
 		return getLoaded(ALL_FILTER);
 	}
 
+	/**
+	 * @param tile The <code>Tile</code> desired to have its Locations listed.
+	 * @return An array of all of the loaded Locations positioned on the given tile.
+	 */
 	public static Location[] getLoaded(final Tile tile) {
 		final Set<Location> locations = getAtLocal(tile.x - Game.getBaseX(), tile.y - Game.getBaseY(), -1);
 		return locations.toArray(new Location[locations.size()]);
 	}
 
+	/**
+	 * @param filter The filtering <code>Filter</code> to accept all the Locations through.
+	 * @return An array of all of the loaded Locations within the currently loaded region that are accepted by the provided filter.
+	 */
 	public static Location[] getLoaded(final Filter<Location> filter) {
 		final Set<Location> objects = new LinkedHashSet<Location>();
 		for (int x = 0; x < 104; x++) {
