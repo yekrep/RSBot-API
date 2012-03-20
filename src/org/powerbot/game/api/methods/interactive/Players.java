@@ -9,6 +9,8 @@ import org.powerbot.game.bot.Bot;
 import org.powerbot.game.client.Client;
 
 /**
+ * A utility for the access of Players.
+ *
  * @author Timer
  */
 public class Players {
@@ -18,10 +20,17 @@ public class Players {
 		}
 	};
 
+	/**
+	 * @return An array of the currently loaded Players in the game.
+	 */
 	public static Player[] getLoaded() {
 		return getLoaded(ALL_FILTER);
 	}
 
+	/**
+	 * @param filter The filtering <code>Filter</code> to accept all the Players through.
+	 * @return An array of the currently loaded Players in the game that are accepted by the provided filter.
+	 */
 	public static Player[] getLoaded(final Filter<Player> filter) {
 		final Client client = Bot.resolve().client;
 		final int[] indices = client.getRSPlayerIndexArray();
@@ -38,6 +47,9 @@ public class Players {
 		return players.toArray(new Player[players.size()]);
 	}
 
+	/**
+	 * @return The client's local <code>Player</code>.
+	 */
 	public static Player getLocal() {
 		return new Player(Bot.resolve().client.getMyRSPlayer());
 	}
