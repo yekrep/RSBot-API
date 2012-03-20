@@ -6,6 +6,7 @@ import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.EventListener;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -15,6 +16,8 @@ import javax.swing.JMenu;
 
 import org.powerbot.game.bot.Bot;
 import org.powerbot.game.bot.event.impl.DrawGroundItems;
+import org.powerbot.game.bot.event.impl.DrawLocations;
+import org.powerbot.game.bot.event.impl.DrawModels;
 import org.powerbot.game.bot.event.impl.DrawMouse;
 import org.powerbot.game.bot.event.impl.DrawNpcs;
 import org.powerbot.game.bot.event.impl.DrawPlayers;
@@ -37,8 +40,10 @@ public final class BotMenuView extends JMenu implements ActionListener {
 	private static final String ALL = "All";
 	private static final String MOUSE = "Mouse";
 	private static final String PLAYERS = "Players";
-	private static final String NPCS = "NPCs";
+	private static final String NPCS = "Npcs";
 	private static final String GROUND_ITEMS = "Ground Items";
+	private static final String LOCATIONS = "Locations";
+	private static final String MODELS = "Models";
 	private static final String CLIENTSTATE = "Client State";
 	private static final String FLOOR = "Floor";
 	private static final String MAPBASE = "Map Base";
@@ -54,8 +59,9 @@ public final class BotMenuView extends JMenu implements ActionListener {
 			listeners = new HashMap<Bot, Map<String, EventListener>>();
 		}
 
-		map = new HashMap<String, Class<? extends EventListener>>();
-		map.put(MOUSE, DrawMouse.class);
+		map = new LinkedHashMap<String, Class<? extends EventListener>>();
+		map.put(MODELS, DrawModels.class);
+		map.put(LOCATIONS, DrawLocations.class);
 		map.put(PLAYERS, DrawPlayers.class);
 		map.put(NPCS, DrawNpcs.class);
 		map.put(GROUND_ITEMS, DrawGroundItems.class);
@@ -63,6 +69,7 @@ public final class BotMenuView extends JMenu implements ActionListener {
 		map.put(FLOOR, TPlane.class);
 		map.put(MAPBASE, TMapBase.class);
 		map.put(POSITION, TPosition.class);
+		map.put(MOUSE, DrawMouse.class);
 		map.put(MESSAGES, MessageLogger.class);
 
 		items = new ArrayList<String>(map.size());
@@ -70,6 +77,8 @@ public final class BotMenuView extends JMenu implements ActionListener {
 		items.add(PLAYERS);
 		items.add(NPCS);
 		items.add(GROUND_ITEMS);
+		items.add(LOCATIONS);
+		items.add(MODELS);
 		items.add(SEPERATOR);
 		items.add(CLIENTSTATE);
 		items.add(FLOOR);
