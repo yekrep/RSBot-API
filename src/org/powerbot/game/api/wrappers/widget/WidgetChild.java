@@ -118,6 +118,10 @@ public class WidgetChild {//TODO implement entity
 		return parent;
 	}
 
+	public int getIndex() {
+		return index;
+	}
+
 	public int getAbsoluteX() {
 		return getAbsoluteLocation().x;
 	}
