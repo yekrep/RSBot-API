@@ -7,6 +7,8 @@ import java.awt.Polygon;
 import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.api.wrappers.Area;
 import org.powerbot.game.api.wrappers.Entity;
+import org.powerbot.game.api.wrappers.LocalTile;
+import org.powerbot.game.api.wrappers.Mobile;
 import org.powerbot.game.api.wrappers.Tile;
 import org.powerbot.game.api.wrappers.graphics.CapturedModel;
 import org.powerbot.game.api.wrappers.graphics.model.LocationModel;
@@ -25,7 +27,7 @@ import org.powerbot.game.client.RSInteractableRSInteractableManager;
 /**
  * @author Timer
  */
-public class Location implements Entity {
+public class Location implements Entity, Mobile {
 	private final Object object;
 	private final Type type;
 	private final int plane;
@@ -80,9 +82,14 @@ public class Location implements Entity {
 		return object;
 	}
 
-	public Tile getLocation() {
+	public LocalTile getLocalPosition() {
 		final RSInteractableLocation location = ((RSInteractableManager) ((RSInteractableRSInteractableManager) object).getRSInteractableRSInteractableManager()).getData().getLocation();
-		return new Tile(Game.getBaseX() + (int) location.getX() / 512, Game.getBaseY() + (int) location.getY() / 512, plane);
+		return new LocalTile((int) location.getX() / 512, (int) location.getY() / 512, plane);
+	}
+
+	public Tile getPosition() {
+		final LocalTile localTile = getLocalPosition();
+		return new Tile(Game.getBaseX() + localTile.x, Game.getBaseY() + localTile.y, localTile.plane);
 	}
 
 	public LocationDefinition getDefinition() {
@@ -108,7 +115,7 @@ public class Location implements Entity {
 
 	public Point getCentralPoint() {
 		final CapturedModel model = getModel();
-		return model != null ? model.getCentralPoint() : getLocation().getCentralPoint();
+		return model != null ? model.getCentralPoint() : getPosition().getCentralPoint();
 	}
 
 	public Point getNextViewportPoint() {
@@ -121,7 +128,7 @@ public class Location implements Entity {
 
 	public boolean isOnScreen() {
 		final CapturedModel model = getModel();
-		return model != null ? model.isOnScreen() : getLocation().isOnScreen();//TODO
+		return model != null ? model.isOnScreen() : getPosition().isOnScreen();//TODO
 	}
 
 	public Polygon[] getBounds() {

@@ -24,7 +24,7 @@ public class DrawGroundItems implements PaintListener {
 			if (player == null) {
 				return;
 			}
-			final Tile location = player.getLocation();
+			final Tile location = player.getPosition();
 			final FontMetrics metrics = render.getFontMetrics();
 			final int tHeight = metrics.getHeight();
 			final int lX = location.x, lY = location.y;
@@ -33,7 +33,7 @@ public class DrawGroundItems implements PaintListener {
 					final GroundItem[] groundItems = GroundItems.getLoadedAt(x, y);
 					int i = 0;
 					for (final GroundItem groundItem : groundItems) {
-						final Tile itemLocation = groundItem.getLocation();
+						final Tile itemLocation = groundItem.getPosition();
 						final Point screen = itemLocation.getCentralPoint();
 						if (screen.x == -1 || screen.y == -1) {
 							continue;

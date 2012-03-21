@@ -42,8 +42,8 @@ public class GroundItems {
 	 */
 	public static GroundItem[] getLoaded(final int range, final Filter<GroundItem> filter) {
 		final ArrayList<GroundItem> temp = new ArrayList<GroundItem>();
-		final int pX = Players.getLocal().getLocation().x;
-		final int pY = Players.getLocal().getLocation().y;
+		final int pX = Players.getLocal().getPosition().x;
+		final int pY = Players.getLocal().getPosition().y;
 		final int minX = Math.max(0, pX - range), minY = Math.max(0, pY - range);
 		final int maxX = Math.min(104, pX + range), maxY = Math.min(104, pY + range);
 		for (int x = minX; x < maxX; x++) {

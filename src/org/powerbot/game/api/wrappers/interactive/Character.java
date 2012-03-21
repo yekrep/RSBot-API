@@ -9,6 +9,8 @@ import org.powerbot.game.api.internal.util.Nodes;
 import org.powerbot.game.api.methods.Calculations;
 import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.api.wrappers.Entity;
+import org.powerbot.game.api.wrappers.LocalTile;
+import org.powerbot.game.api.wrappers.Mobile;
 import org.powerbot.game.api.wrappers.Tile;
 import org.powerbot.game.api.wrappers.graphics.CapturedModel;
 import org.powerbot.game.api.wrappers.graphics.model.CharacterModel;
@@ -39,7 +41,7 @@ import org.powerbot.game.client.SequenceInts;
 /**
  * @author Timer
  */
-public abstract class Character implements Entity {
+public abstract class Character implements Entity, Mobile {
 	private final Client client;
 	private final Multipliers multipliers;
 
@@ -53,9 +55,14 @@ public abstract class Character implements Entity {
 
 	public abstract String getName();
 
-	public Tile getLocation() {
+	public LocalTile getLocalPosition() {
 		final RSInteractableLocation location = ((RSInteractableManager) ((RSInteractableRSInteractableManager) get()).getRSInteractableRSInteractableManager()).getData().getLocation();
-		return new Tile(Game.getBaseX() + ((int) location.getX() >> 9), Game.getBaseY() + ((int) location.getY() >> 9), getPlane());
+		return new LocalTile((int) location.getX() >> 9, (int) location.getY() >> 9, getPlane());
+	}
+
+	public Tile getPosition() {
+		final LocalTile localTile = getLocalPosition();
+		return new Tile(Game.getBaseX() + localTile.x, Game.getBaseY() + localTile.y, localTile.plane);
 	}
 
 	public int getPlane() {
