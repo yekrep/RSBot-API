@@ -3,7 +3,12 @@ package org.powerbot.game.api.methods;
 import java.awt.Canvas;
 import java.awt.Point;
 
+import org.powerbot.game.api.methods.interactive.Players;
+import org.powerbot.game.api.methods.widget.WidgetComposite;
+import org.powerbot.game.api.wrappers.LocalTile;
 import org.powerbot.game.api.wrappers.Tile;
+import org.powerbot.game.api.wrappers.interactive.Player;
+import org.powerbot.game.api.wrappers.widget.WidgetChild;
 import org.powerbot.game.bot.Bot;
 import org.powerbot.game.client.Client;
 import org.powerbot.game.client.RSGroundBytes_Bytes;
@@ -114,6 +119,60 @@ public class Calculations {
 					Math.round(toolkit.absoluteY + (toolkit.yMultiplier * _y) / _z)
 			);
 		}
+		return new Point(-1, -1);
+	}
+
+	/**
+	 * Returns the <code>Point</code> of given x and y values in the game's 2D plane.
+	 *
+	 * @param x x value based on the game plane.
+	 * @param y y value based on the game plane.
+	 * @return <code>Point</code> within map; otherwise <tt>new Point(-1, -1)</tt>.
+	 */
+	public Point worldToMap(double x, double y) {
+		final Bot bot = Bot.resolve();
+		final Player local = Players.getLocal();
+		if (distance(local.getPosition(), new Tile((int) x, (int) y, 0)) > 17) {
+			return new Point(-1, -1);
+		}
+		x -= Game.getBaseX();
+		y -= Game.getBaseY();
+
+		final LocalTile localTile = local.getLocalPosition();
+		final int calculatedX = (int) (x * 4 + 2) - localTile.x / 128;
+		final int calculatedY = (int) (y * 4 + 2) - localTile.y / 128;
+
+		final WidgetChild mm2 = WidgetComposite.getMap();
+		if (mm2 == null) {
+			return new Point(-1, -1);
+		}
+		final int actDistSq = calculatedX * calculatedX + calculatedY * calculatedY;
+		final int mmDist = 10 + Math.max(mm2.getWidth() / 2, mm2.getHeight() / 2);
+
+		if (mmDist * mmDist >= actDistSq) {
+			int angle = 0x3fff & (int) bot.client.getMinimapAngle();
+			final boolean setting4 = bot.client.getMinimapSetting() * bot.multipliers.GLOBAL_MINIMAPSETTING == 4;
+
+			if (!setting4) {
+				angle = 0x3fff & (bot.client.getMinimapOffset() * bot.multipliers.GLOBAL_MINIMAPOFFSET) + (int) bot.client.getMinimapAngle();
+			}
+
+			int cs = Calculations.SIN_TABLE[angle];
+			int cc = Calculations.COS_TABLE[angle];
+
+			if (!setting4) {
+				final int fact = 256 + (bot.client.getMinimapScale() * bot.multipliers.GLOBAL_MINIMAPSCALE);
+				cs = 256 * cs / fact;
+				cc = 256 * cc / fact;
+			}
+
+			final int calcCenterX = cc * calculatedX + cs * calculatedY >> 15;
+			final int calcCenterY = cc * calculatedY - cs * calculatedX >> 15;
+			final int screenx = calcCenterX + mm2.getAbsoluteX() + mm2.getWidth() / 2;
+			final int screeny = -calcCenterY + mm2.getAbsoluteY() + mm2.getHeight() / 2;
+			return new Point(screenx, screeny);
+		}
+
 		return new Point(-1, -1);
 	}
 
