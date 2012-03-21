@@ -82,6 +82,12 @@ public class Widgets {
 		return get(index).getChild(childIndex);
 	}
 
+	public static WidgetChild getChild(final int id) {
+		final int x = id >> 16;
+		final int y = id & 0xFFFF;
+		return get(x).getChild(y);
+	}
+
 	/**
 	 * @param paramClient The <code>Client</code> to ensure caching capacity of.
 	 */
