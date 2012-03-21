@@ -78,7 +78,7 @@ public final class BotToolBar extends JToolBar {
 
 	public void addTab() {
 		final int n = Bot.bots.size();
-		if (n > 0 && (!NetworkAccount.getInstance().isLoggedIn() || !NetworkAccount.getInstance().getAccount().isVIP())) {
+		if (n > 0 && !NetworkAccount.getInstance().isVIP()) {
 			JOptionPane.showMessageDialog(parent, BotLocale.NEEDVIPMULTITAB, BotLocale.NEEDVIP, JOptionPane.INFORMATION_MESSAGE);
 			return;
 		}
