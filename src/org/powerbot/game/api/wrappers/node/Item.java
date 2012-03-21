@@ -16,6 +16,9 @@ import org.powerbot.game.client.Reference;
 import org.powerbot.game.client.SoftReferenceGet;
 
 /**
+ * Represents an item (with an id and stack size).
+ * May or may not wrap a component.
+ *
  * @author Timer
  */
 public class Item {
@@ -49,6 +52,18 @@ public class Item {
 		return stack;
 	}
 
+	public String getName() {
+		if (widgetChild != null) {
+			return widgetChild.getChildName().replaceAll("\\<.*?>", "");
+		} else {
+			final ItemDefinition definition = getDefinition();
+			if (definition != null) {
+				return definition.getName().replaceAll("\\<.*?>", "");
+			}
+		}
+		return null;
+	}
+
 	public ItemDefinition getDefinition() {
 		final Object itemDefLoaderTable = Bot.resolve().client.getRSItemDefLoader();
 		final Object itemDefLoaderCache = ((RSItemDefLoaderCache) itemDefLoaderTable).getRSItemDefLoaderCache();
@@ -63,5 +78,9 @@ public class Item {
 			}
 		}
 		return null;
+	}
+
+	public WidgetChild getWidgetChild() {
+		return widgetChild;
 	}
 }
