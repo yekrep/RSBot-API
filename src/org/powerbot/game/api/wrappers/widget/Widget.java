@@ -142,7 +142,7 @@ public class Widget {
 			return null;
 		}
 		final Object[] inters = client.getRSInterfaceCache();
-		if (inters != null && index < inters.length) {
+		if (inters != null && index < inters.length && inters[index] != null) {
 			return (Object[]) ((RSInterfaceBaseComponents) inters[index]).getRSInterfaceBaseComponents();
 		}
 		return null;
