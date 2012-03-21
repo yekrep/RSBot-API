@@ -139,8 +139,8 @@ public class Calculations {
 		y -= Game.getBaseY();
 
 		final LocalTile localTile = local.getLocalPosition();
-		final int calculatedX = (int) (x * 4 + 2) - localTile.x / 128;
-		final int calculatedY = (int) (y * 4 + 2) - localTile.y / 128;
+		final int calculatedX = (int) (x * 4 + 2) - localTile.x / 0x80;
+		final int calculatedY = (int) (y * 4 + 2) - localTile.y / 0x80;
 
 		final WidgetChild mm2 = WidgetComposite.getMap();
 		if (mm2 == null) {
@@ -161,16 +161,16 @@ public class Calculations {
 			int cc = Calculations.COS_TABLE[angle];
 
 			if (!setting4) {
-				final int fact = 256 + (bot.client.getMinimapScale() * bot.multipliers.GLOBAL_MINIMAPSCALE);
-				cs = 256 * cs / fact;
-				cc = 256 * cc / fact;
+				final int fact = 0x100 + (bot.client.getMinimapScale() * bot.multipliers.GLOBAL_MINIMAPSCALE);
+				cs = 0x100 * cs / fact;
+				cc = 0x100 * cc / fact;
 			}
 
-			final int calcCenterX = cc * calculatedX + cs * calculatedY >> 15;
-			final int calcCenterY = cc * calculatedY - cs * calculatedX >> 15;
-			final int screenx = calcCenterX + mm2.getAbsoluteX() + mm2.getWidth() / 2;
-			final int screeny = -calcCenterY + mm2.getAbsoluteY() + mm2.getHeight() / 2;
-			return new Point(screenx, screeny);
+			final int calcCenterX = cc * calculatedX + cs * calculatedY >> 0xf;
+			final int calcCenterY = cc * calculatedY - cs * calculatedX >> 0xf;
+			final int screen_x = calcCenterX + mm2.getAbsoluteX() + mm2.getWidth() / 2;
+			final int screen_y = -calcCenterY + mm2.getAbsoluteY() + mm2.getHeight() / 2;
+			return new Point(screen_x, screen_y);
 		}
 
 		return new Point(-1, -1);

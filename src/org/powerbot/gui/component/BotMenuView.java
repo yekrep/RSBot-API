@@ -16,6 +16,7 @@ import javax.swing.JMenu;
 
 import org.powerbot.game.bot.Bot;
 import org.powerbot.game.bot.event.impl.DrawGroundItems;
+import org.powerbot.game.bot.event.impl.DrawInventory;
 import org.powerbot.game.bot.event.impl.DrawLocations;
 import org.powerbot.game.bot.event.impl.DrawModels;
 import org.powerbot.game.bot.event.impl.DrawMouse;
@@ -44,6 +45,7 @@ public final class BotMenuView extends JMenu implements ActionListener {
 	private static final String GROUND_ITEMS = "Ground Items";
 	private static final String LOCATIONS = "Locations";
 	private static final String MODELS = "Models";
+	private static final String INVENTORY = "Inventory";
 	private static final String CLIENTSTATE = "Client State";
 	private static final String FLOOR = "Floor";
 	private static final String MAPBASE = "Map Base";
@@ -70,6 +72,7 @@ public final class BotMenuView extends JMenu implements ActionListener {
 		map.put(MAPBASE, TMapBase.class);
 		map.put(POSITION, TPosition.class);
 		map.put(MOUSE, DrawMouse.class);
+		map.put(INVENTORY, DrawInventory.class);
 		map.put(MESSAGES, MessageLogger.class);
 
 		items = new ArrayList<String>(map.size());
@@ -79,6 +82,7 @@ public final class BotMenuView extends JMenu implements ActionListener {
 		items.add(GROUND_ITEMS);
 		items.add(LOCATIONS);
 		items.add(MODELS);
+		items.add(INVENTORY);
 		items.add(SEPERATOR);
 		items.add(CLIENTSTATE);
 		items.add(FLOOR);

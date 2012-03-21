@@ -2,10 +2,15 @@ package org.powerbot.game.api.methods;
 
 import java.awt.event.KeyEvent;
 
+import org.powerbot.game.api.methods.widget.WidgetComposite;
+import org.powerbot.game.api.wrappers.widget.Widget;
+import org.powerbot.game.api.wrappers.widget.WidgetChild;
+
 /**
  * @author Timer
  */
 public enum Tabs {
+	NONE(-1, null, -1),
 	ATTACK(0, "Combat Styles", KeyEvent.VK_F5),
 	TASK_LIST(1, "Task List", -1),
 	STATS(2, "Stats", -1),
@@ -47,5 +52,20 @@ public enum Tabs {
 
 	public int getIndex() {
 		return index;
+	}
+
+	public boolean open() {
+		return false;//TODO
+	}
+
+	public static Tabs getCurrent() {
+		for (final Tabs t : Tabs.values()) {
+			final WidgetChild tab = WidgetComposite.getTab(t);
+			if (tab != null && tab.getTextureId() != -1) {
+				return t;
+			}
+		}
+		final Widget logout = Widgets.get(182);//TODO static var | not number
+		return logout != null && logout.isValid() ? Tabs.LOGOUT : Tabs.NONE;
 	}
 }
