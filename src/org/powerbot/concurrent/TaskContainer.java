@@ -12,4 +12,14 @@ public interface TaskContainer {
 	 * @param task The task to be deployed.
 	 */
 	public void submit(Task task);
+
+	/**
+	 * Shuts down this container from accepting any more tasks.
+	 */
+	public void shutdown();
+
+	/**
+	 * Stops this container entirely.
+	 */
+	public void stop();
 }

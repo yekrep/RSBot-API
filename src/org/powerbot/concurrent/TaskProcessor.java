@@ -23,4 +23,18 @@ public class TaskProcessor implements TaskContainer {
 		final Future<?> future = executor.submit(task);
 		task.setFuture(future);
 	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public void shutdown() {
+		executor.shutdown();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public void stop() {
+		executor.shutdownNow();
+	}
 }
