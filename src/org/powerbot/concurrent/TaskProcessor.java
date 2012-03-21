@@ -1,8 +1,9 @@
 package org.powerbot.concurrent;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * A simple processor capable of deploying tasks within a queued thread environment.
@@ -10,10 +11,13 @@ import java.util.concurrent.Future;
  * @author Timer
  */
 public class TaskProcessor implements TaskContainer {
-	private final ExecutorService executor;
+	private final ThreadPoolExecutor executor;
 
 	public TaskProcessor(final ThreadGroup threadGroup) {
-		executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() * 2, new ThreadPool(threadGroup));
+		final int nThreads = Runtime.getRuntime().availableProcessors() * 2;
+		executor = new ThreadPoolExecutor(nThreads, nThreads,
+				0L, TimeUnit.MILLISECONDS,
+				new LinkedBlockingQueue<Runnable>(), new ThreadPool(threadGroup));
 	}
 
 	/**
