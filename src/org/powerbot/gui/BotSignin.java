@@ -100,6 +100,7 @@ public final class BotSignin extends JDialog implements ActionListener {
 					}
 					updateState();
 					if (success) {
+						setVisible(false);
 						dispose();
 					} else {
 						JOptionPane.showMessageDialog(this, BotLocale.INVALIDCREDENTIALS, BotLocale.ERROR, JOptionPane.ERROR_MESSAGE);
