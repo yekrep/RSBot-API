@@ -31,6 +31,13 @@ public class TaskProcessor implements TaskContainer {
 	/**
 	 * {@inheritDoc}
 	 */
+	public boolean isActive() {
+		return executor.getActiveCount() > 0 && executor.getTaskCount() > 0L;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
 	public boolean isLocked() {
 		return executor.isShutdown() && executor.isTerminated();
 	}

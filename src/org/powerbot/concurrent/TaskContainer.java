@@ -14,6 +14,13 @@ public interface TaskContainer {
 	public void submit(Task task);
 
 	/**
+	 * Determines if this container is currently processing tasks.
+	 *
+	 * @return <tt>true</tt> if it is active; otherwise <tt>false</tt>.
+	 */
+	public boolean isActive();
+
+	/**
 	 * Determines if this container is locked from use.
 	 *
 	 * @return <tt>true</tt> if it is locked; otherwise <tt>false</tt>.
