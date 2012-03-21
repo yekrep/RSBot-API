@@ -42,6 +42,10 @@ public final class NetworkAccount {
 		return account != null && account.getID() != 0;
 	}
 
+	public boolean isVIP() {
+		return account != null && account.isVIP();
+	}
+
 	public Account getAccount() {
 		return account;
 	}

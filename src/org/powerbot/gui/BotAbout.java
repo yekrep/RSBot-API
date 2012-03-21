@@ -18,6 +18,7 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 import org.powerbot.gui.component.BotLocale;
 import org.powerbot.util.Configuration;
@@ -37,10 +38,19 @@ public final class BotAbout extends JDialog {
 		panelText.setBorder(BorderFactory.createEmptyBorder(f * 2, f * 3, f, f));
 		panelText.setBackground(Color.WHITE);
 
+		final JPanel panelTitle = new JPanel(new GridLayout(0, 2));
+		panelTitle.setBackground(panelText.getBackground());
 		final JLabel name = new JLabel(Configuration.NAME + " " + Integer.toString(Configuration.VERSION));
 		name.setFont(name.getFont().deriveFont(Font.BOLD));
 		name.setForeground(Color.DARK_GRAY);
-		panelText.add(name);
+		panelTitle.add(name);
+		final JLabel info = new JLabel("", SwingConstants.RIGHT);
+		info.setText(Configuration.DEVMODE ? "D " : "");
+		final long[] stat = {Runtime.getRuntime().maxMemory() / 1024 / 1024, Runtime.getRuntime().totalMemory() / 1024 / 1024, Runtime.getRuntime().availableProcessors()};
+		info.setText(String.format("%s%sm (%s%%) %sx", Configuration.DEVMODE ? "D " : "", stat[0], Math.round((double) stat[1] / stat[0] * 100), stat[2]));
+		info.setForeground(Color.GRAY);
+		panelTitle.add(info);
+		panelText.add(panelTitle);
 		panelText.add(Box.createVerticalStrut(1));
 		panelText.add(new JLabel(BotLocale.COPYRIGHT));
 		panelText.add(new JLabel("Unauthorised use of this application is prohibited."));

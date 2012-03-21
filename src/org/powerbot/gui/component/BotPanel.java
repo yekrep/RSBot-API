@@ -33,7 +33,7 @@ public class BotPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private Bot bot;
 	private int xOff, yOff;
-	private final BotLoadingPanel loadingPanel;
+	public final BotLoadingPanel loadingPanel;
 
 	public BotPanel(final Component parent) {
 		final Dimension d = new Dimension(BotChrome.PANEL_WIDTH, BotChrome.PANEL_HEIGHT);

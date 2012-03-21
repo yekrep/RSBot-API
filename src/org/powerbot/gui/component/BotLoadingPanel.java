@@ -35,6 +35,7 @@ import javax.swing.Timer;
 import org.powerbot.game.GameDefinition;
 import org.powerbot.game.bot.Bot;
 import org.powerbot.gui.BotChrome;
+import org.powerbot.service.NetworkAccount;
 import org.powerbot.util.Configuration;
 import org.powerbot.util.StringUtil;
 import org.powerbot.util.io.IOHelper;
@@ -46,6 +47,8 @@ public final class BotLoadingPanel extends JPanel {
 	public final JLabel status, info;
 	private static final Map<ThreadGroup, LogRecord> logRecord = new HashMap<ThreadGroup, LogRecord>();
 	private ThreadGroup listeningGroup = null;
+	private final JLabel[] adImage = new JLabel[3];
+	private final JPanel[] adPanel = new JPanel[2];
 	private final BotLoadingPanelLogHandler handler;
 
 	public BotLoadingPanel(final Component parent) {
@@ -102,6 +105,18 @@ public final class BotLoadingPanel extends JPanel {
 		}
 	}
 
+	public void setAdVisible(final boolean visible) {
+		if (adPanel[0] == null || adImage[0] == null) {
+			return;
+		}
+		if (adPanel[0].getComponentCount() != 0) {
+			adPanel[0].remove(0);
+		}
+		adPanel[0].add(adImage[visible ? 0 : 2]);
+		validate();
+		repaint();
+	}
+
 	private final class DisplayAd implements Runnable {
 		private final Component parent;
 		private final JPanel panel;
@@ -112,7 +127,6 @@ public final class BotLoadingPanel extends JPanel {
 		}
 
 		public void run() {
-			JLabel[] imageLabel = null;
 			try {
 				if (Resources.getServerData().containsKey("ads")) {
 					final String src = Resources.getServerData().get("ads").get("image"), link = Resources.getServerData().get("ads").get("link");
@@ -139,17 +153,20 @@ public final class BotLoadingPanel extends JPanel {
 						image = resized;
 					}
 					final BufferedImage shadow = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
-					imageLabel = new JLabel[]{new JLabel(new ImageIcon(image)), new JLabel(new ImageIcon(shadow))};
-					imageLabel[0].setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-					imageLabel[0].addMouseListener(new MouseAdapter() {
+					adImage[0] = new JLabel(new ImageIcon(image));
+					adImage[1] = new JLabel(new ImageIcon(shadow));
+					adImage[2] = new JLabel(new ImageIcon(shadow));
+					adImage[0].setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+					adImage[0].addMouseListener(new MouseAdapter() {
 						@Override
 						public void mouseClicked(final MouseEvent arg0) {
 							BotChrome.openURL(link);
 						}
 					});
 					final int d = 50;
-					imageLabel[0].setBorder(BorderFactory.createEmptyBorder(d, 0, 0, 0));
-					imageLabel[1].setBorder(BorderFactory.createEmptyBorder(0, 0, d, 0));
+					adImage[0].setBorder(BorderFactory.createEmptyBorder(d, 0, 0, 0));
+					adImage[2].setBorder(BorderFactory.createEmptyBorder(d, 0, 0, 0));
+					adImage[1].setBorder(BorderFactory.createEmptyBorder(0, 0, d, 0));
 				}
 			} catch (final IOException ignored) {
 			} catch (final GeneralSecurityException ignored) {
@@ -158,14 +175,20 @@ public final class BotLoadingPanel extends JPanel {
 			final Component c = panel.getComponent(0);
 			panel.removeAll();
 
-			if (imageLabel != null) {
-				panel.add(imageLabel[1], BorderLayout.NORTH);
+			if (adImage[1] != null) {
+				adPanel[1] = new JPanel();
+				adPanel[1].setBackground(getBackground());
+				adPanel[1].add(adImage[1]);
+				panel.add(adPanel[1], BorderLayout.NORTH);
 			}
 
 			panel.add(c);
 
-			if (imageLabel != null) {
-				panel.add(imageLabel[0], BorderLayout.SOUTH);
+			if (adImage[0] != null) {
+				adPanel[0] = new JPanel();
+				adPanel[0].setBackground(getBackground());
+				setAdVisible(!NetworkAccount.getInstance().isVIP());
+				panel.add(adPanel[0], BorderLayout.SOUTH);
 			}
 
 			parent.validate();
