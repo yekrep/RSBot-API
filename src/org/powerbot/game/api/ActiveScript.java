@@ -22,7 +22,7 @@ public abstract class ActiveScript implements EventListener {
 
 	private Activator stop_execution;
 	private EventManager eventManager;
-	private TaskContainer container;
+	public TaskContainer container;
 	private ActionExecutor executor;
 
 	public ActiveScript() {
@@ -86,6 +86,7 @@ public abstract class ActiveScript implements EventListener {
 			public void run() {
 				eventManager.remove(ActiveScript.this);
 				executor.destroy();
+				container.shutdown();
 			}
 		};
 	}
