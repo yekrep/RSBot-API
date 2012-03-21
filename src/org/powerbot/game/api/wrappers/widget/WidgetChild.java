@@ -1,10 +1,14 @@
 package org.powerbot.game.api.wrappers.widget;
 
+import java.awt.Graphics;
 import java.awt.Point;
+import java.awt.Polygon;
 import java.awt.Rectangle;
 
 import org.powerbot.game.api.internal.util.HashTable;
 import org.powerbot.game.api.methods.Widgets;
+import org.powerbot.game.api.util.Random;
+import org.powerbot.game.api.wrappers.Entity;
 import org.powerbot.game.bot.Bot;
 import org.powerbot.game.client.Client;
 import org.powerbot.game.client.RSInterfaceActions;
@@ -55,7 +59,7 @@ import org.powerbot.game.client.RSInterfaceZRotation;
 /**
  * @author Timer
  */
-public class WidgetChild {//TODO implement entity
+public class WidgetChild implements Entity {
 	/**
 	 * The index of this interface in the parent. If this
 	 * component does not have a parent component, this
@@ -152,7 +156,7 @@ public class WidgetChild {//TODO implement entity
 		}
 		if (parentId != -1) {
 			final WidgetChild child = Widgets.get(parentId >> 0x10, parentId & 0xffff);
-			final int horizontalScrollSize = child.getHorizontalScrollSize(), verticalScrollSize = child.getVerticalScrollSize();
+			final int horizontalScrollSize = child.getScrollableContentWidth(), verticalScrollSize = child.getScrollableContentHeight();
 			if (horizontalScrollSize > 0 || verticalScrollSize > 0) {
 				x -= horizontalScrollSize;
 				y -= verticalScrollSize;
@@ -174,13 +178,19 @@ public class WidgetChild {//TODO implement entity
 	}
 
 	public int getWidth() {
+		if (!isInScrollableArea()) {
+			return getHorizontalScrollThumbSize();
+		}
 		final Object widget = getInternal();
-		return widget != null ? ((RSInterfaceWidth) ((RSInterfaceInts) widget).getRSInterfaceInts()).getRSInterfaceWidth() * Bot.resolve().multipliers.INTERFACE_WIDTH : -1;
+		return widget != null ? (((RSInterfaceWidth) ((RSInterfaceInts) widget).getRSInterfaceInts()).getRSInterfaceWidth() * Bot.resolve().multipliers.INTERFACE_WIDTH) - 4 : -1;
 	}
 
 	public int getHeight() {
+		if (!isInScrollableArea()) {
+			return getVerticalScrollThumbSize();
+		}
 		final Object widget = getInternal();
-		return widget != null ? ((RSInterfaceHeight) ((RSInterfaceInts) widget).getRSInterfaceInts()).getRSInterfaceHeight() * Bot.resolve().multipliers.INTERFACE_HEIGHT : -1;
+		return widget != null ? (((RSInterfaceHeight) ((RSInterfaceInts) widget).getRSInterfaceInts()).getRSInterfaceHeight() * Bot.resolve().multipliers.INTERFACE_HEIGHT) - 4 : -1;
 	}
 
 	public int getId() {
@@ -308,7 +318,7 @@ public class WidgetChild {//TODO implement entity
 		return widget != null ? ((RSInterfaceHorizontalScrollbarPosition) ((RSInterfaceInts) widget).getRSInterfaceInts()).getRSInterfaceHorizontalScrollbarPosition() * Bot.resolve().multipliers.INTERFACE_HORIZONTALSCROLLBARSIZE : -1;
 	}
 
-	public int getHorizontalScrollSize() {
+	public int getScrollableContentWidth() {
 		final Object widget = getInternal();
 		return widget != null ? ((RSInterfaceHorizontalScrollbarSize) ((RSInterfaceInts) widget).getRSInterfaceInts()).getRSInterfaceHorizontalScrollbarSize() * Bot.resolve().multipliers.INTERFACE_HORIZONTALSCROLLBARSIZE : -1;
 	}
@@ -323,7 +333,7 @@ public class WidgetChild {//TODO implement entity
 		return widget != null ? ((RSInterfaceVerticalScrollbarPosition) ((RSInterfaceInts) widget).getRSInterfaceInts()).getRSInterfaceVerticalScrollbarPosition() * Bot.resolve().multipliers.INTERFACE_VERTICALSCROLLBARSIZE : -1;
 	}
 
-	public int getVerticalScrollSize() {
+	public int getScrollableContentHeight() {
 		final Object widget = getInternal();
 		return widget != null ? ((RSInterfaceVerticalScrollbarSize) ((RSInterfaceInts) widget).getRSInterfaceInts()).getRSInterfaceVerticalScrollbarSize() * Bot.resolve().multipliers.INTERFACE_VERTICALSCROLLBARSIZE : -1;
 	}
@@ -388,6 +398,20 @@ public class WidgetChild {//TODO implement entity
 		return -1;
 	}
 
+	public boolean isInScrollableArea() {
+		if (getParentId() == -1) {
+			return false;
+		}
+
+		WidgetChild scrollableArea = Widgets.getChild(getParentId());
+		while (scrollableArea.getScrollableContentHeight() == 0 && scrollableArea.getParentId() != -1) {
+			scrollableArea = Widgets.getChild(scrollableArea.getParentId());
+		}
+
+		return scrollableArea.getScrollableContentHeight() != 0;
+	}
+
+
 	private Object getInternal() {
 		if (parent != null) {
 			final Object p = parent.getInternal();
@@ -404,5 +428,80 @@ public class WidgetChild {//TODO implement entity
 			}
 		}
 		return null;
+	}
+
+	public boolean isOnScreen() {
+		return verify() && isVisible();
+	}
+
+	public Polygon[] getBounds() {
+		if (verify()) {
+			final Point p = getAbsoluteLocation();
+			final int w = getWidth();
+			final int h = getHeight();
+			final Polygon poly = new Polygon();
+			poly.addPoint(p.x, p.y);
+			poly.addPoint(p.x + w, p.y);
+			poly.addPoint(p.x + w, p.y + h);
+			poly.addPoint(p.x, p.y + h);
+			return new Polygon[]{poly};
+		}
+		return new Polygon[0];
+	}
+
+	public Rectangle getBoundingRectangle() {
+		final Polygon[] polygons = getBounds();
+		return polygons.length != 0 ? polygons[0].getBounds() : new Rectangle(-1, -1);
+	}
+
+	public boolean hover() {
+		return false;//TODO
+	}
+
+	public boolean click(final boolean left) {
+		return false;//TODO
+	}
+
+	public boolean interact(final String action) {
+		return false;//TODO
+	}
+
+	public boolean interact(final String action, final String option) {
+		return false;//TODO
+	}
+
+	public void draw(Graphics render) {
+		//TODO
+	}
+
+	public Point getCentralPoint() {
+		final Point p = getAbsoluteLocation();
+		final int w = getWidth();
+		final int h = getHeight();
+		return verify() ? new Point((p.x * 2 + w) / 2, (p.y * 2 + h) / 2) : new Point(-1, -1);
+	}
+
+	public Point getNextViewportPoint() {
+		final Rectangle rect = getBoundingRectangle();
+		if (rect.x == -1 || rect.y == -1 || rect.width == -1 || rect.height == -1) {
+			return new Point(-1, -1);
+		}
+		final int min_x = rect.x + 1, min_y = rect.y + 1;
+		final int max_x = min_x + rect.width - 2, max_y = min_y + rect.height - 2;
+		return new Point(Random.nextGaussian(min_x, max_x, rect.width / 3), Random.nextGaussian(min_y, max_y, rect.height / 3));
+	}
+
+	public boolean contains(final Point point) {
+		final Rectangle rect = getBoundingRectangle();
+		if (rect.x == -1 || rect.y == -1 || rect.width == -1 || rect.height == -1) {
+			return false;
+		}
+		final int min_x = rect.x + 1, min_y = rect.y + 1;
+		final int max_x = min_x + rect.width - 2, max_y = min_y + rect.height - 2;
+		return (point.x >= min_x) && (point.x <= max_x) && (point.y >= min_y) && (point.y <= max_y);
+	}
+
+	public boolean verify() {
+		return parentWidget.isValid() && getBoundsArrayIndex() != -1;
 	}
 }
