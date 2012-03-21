@@ -3,6 +3,7 @@ package org.powerbot.game.api.methods;
 import java.awt.Canvas;
 import java.awt.Point;
 
+import org.powerbot.game.api.wrappers.Tile;
 import org.powerbot.game.bot.Bot;
 import org.powerbot.game.client.Client;
 import org.powerbot.game.client.RSGroundBytes_Bytes;
@@ -123,5 +124,9 @@ public class Calculations {
 	public static boolean isPointOnScreen(final Point point) {
 		final Canvas canvas = Bot.resolve().getCanvas();//TODO
 		return point.x > 0 && point.y > 0 && point.x < canvas.getWidth() && point.y < canvas.getHeight();
+	}
+
+	public double distance(final Tile tile1, final Tile tile2) {
+		return Math.sqrt((tile1.x - tile2.x) * (tile1.x - tile2.x) + (tile1.y - tile2.y) * (tile1.y - tile2.y));
 	}
 }

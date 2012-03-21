@@ -2,6 +2,9 @@ package org.powerbot.game.api.methods;
 
 import java.awt.event.KeyEvent;
 
+/**
+ * @author Timer
+ */
 public enum Tabs {
 	ATTACK(0, "Combat Styles", KeyEvent.VK_F5),
 	TASK_LIST(1, "Task List", -1),

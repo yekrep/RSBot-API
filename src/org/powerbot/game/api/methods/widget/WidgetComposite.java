@@ -9,6 +9,9 @@ import org.powerbot.game.api.wrappers.widget.Widget;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
 import org.powerbot.game.bot.Bot;
 
+/**
+ * @author Timer
+ */
 public class WidgetComposite {
 	private static final Map<ThreadGroup, Record> cache = new HashMap<ThreadGroup, Record>();
 
