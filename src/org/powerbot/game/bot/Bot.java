@@ -22,6 +22,7 @@ import org.powerbot.game.api.Constants;
 import org.powerbot.game.api.Multipliers;
 import org.powerbot.game.api.methods.Calculations;
 import org.powerbot.game.api.methods.input.Keyboard;
+import org.powerbot.game.api.methods.input.Mouse;
 import org.powerbot.game.api.util.Time;
 import org.powerbot.game.bot.event.PaintEvent;
 import org.powerbot.game.bot.event.TextPaintEvent;
@@ -279,7 +280,7 @@ public class Bot extends GameDefinition implements Runnable {
 		 */
 		public void run() {
 			if (bot != null && !bot.killed && bot.client != null && !Keyboard.isReady()) {
-				while (!bot.killed && !Keyboard.isReady()) {
+				while (!bot.killed && !Keyboard.isReady() && !Mouse.isReady()) {
 					Time.sleep(150);
 				}
 				Keyboard.sendKey('s');

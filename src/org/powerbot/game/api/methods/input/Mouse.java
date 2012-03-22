@@ -280,6 +280,10 @@ public class Mouse {
 		return bot.client.getMouse();
 	}
 
+	public static boolean isReady() {
+		return getMouse() != null;
+	}
+
 	/**
 	 * The component associated with this thread-group to dispatch events onto.
 	 *
