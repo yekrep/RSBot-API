@@ -71,6 +71,9 @@ public class WidgetComposite {
 		final Widget widget = Widgets.get(record.index_widget);
 		if (widget != null) {
 			final int index = tab.getIndex();
+			if (index < 0 || index > 16) {
+				return null;
+			}
 			if (record.indices_tabs[index] == -1) {
 				for (final WidgetChild widgetChild : widget.getChildren()) {
 					final String[] actions = widgetChild.getActions();
@@ -116,6 +119,12 @@ public class WidgetComposite {
 
 		private Record() {
 			bot = Bot.resolve();
+			index_widget = -1;
+			index_map = -1;
+			index_compass = -1;
+			for (int i = 0; i < 17; i++) {
+				indices_tabs[i] = -1;
+			}
 		}
 	}
 }
