@@ -22,7 +22,7 @@ public abstract class ActiveScript implements EventListener {
 
 	private Activator stop_execution;
 	private EventManager eventManager;
-	public TaskContainer container;
+	private TaskContainer container;
 	private ActionExecutor executor;
 
 	public ActiveScript() {
@@ -54,12 +54,12 @@ public abstract class ActiveScript implements EventListener {
 		this.stop_execution = activator;
 	}
 
-	protected abstract void setupJobs();
+	protected abstract void setup();
 
 	public final Task start() {
 		return new Task() {
 			public void run() {
-				setupJobs();
+				setup();
 				resume();
 			}
 		};
