@@ -14,7 +14,7 @@ import org.powerbot.game.bot.event.listener.PaintListener;
 
 public class DrawInventory implements PaintListener {
 	public void onRepaint(final Graphics render) {
-		if (!Game.isLoggedIn() || Tabs.getCurrent() == Tabs.INVENTORY) {
+		if (!Game.isLoggedIn() || Tabs.getCurrent() != Tabs.INVENTORY) {
 			return;
 		}
 		render.setColor(Color.green);
