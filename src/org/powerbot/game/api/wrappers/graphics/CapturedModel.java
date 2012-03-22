@@ -57,6 +57,9 @@ public abstract class CapturedModel implements Entity {
 	}
 
 	public Point getCentralPoint() {
+		if (numFaces < 1) {
+			return new Point(-1, -1);
+		}
 		int totalXAverage = 0;
 		int totalYAverage = 0;
 		int totalHeightAverage = 0;
