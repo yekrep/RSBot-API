@@ -70,15 +70,18 @@ public class Calculations {
 			if (plane <= 3 && (settings[1][x1][y1] & 2) != 0) {
 				++plane;
 			}
-			final TileData[] planes = (TileData[]) ((RSGroundInfoTileData) ((RSInfoRSGroundInfo) client.getRSGroundInfo()).getRSInfoRSGroundInfo()).getRSGroundInfoTileData();
-			if (planes != null && plane < planes.length && planes[plane] != null) {
-				final int[][] heights = planes[plane].getHeights();
-				if (heights != null) {
-					final int x2 = x & 512 - 1;
-					final int y2 = y & 512 - 1;
-					final int start_h = heights[x1][y1] * (512 - x2) + heights[x1 + 1][y1] * x2 >> 9;
-					final int end_h = heights[x1][1 + y1] * (512 - x2) + heights[x1 + 1][y1 + 1] * x2 >> 9;
-					return start_h * (512 - y2) + end_h * y2 >> 9;
+			final Object rsInfoGroundInfo = ((RSInfoRSGroundInfo) client.getRSGroundInfo()).getRSInfoRSGroundInfo();
+			if (rsInfoGroundInfo != null) {
+				final TileData[] planes = (TileData[]) ((RSGroundInfoTileData) rsInfoGroundInfo).getRSGroundInfoTileData();
+				if (planes != null && plane < planes.length && planes[plane] != null) {
+					final int[][] heights = planes[plane].getHeights();
+					if (heights != null) {
+						final int x2 = x & 512 - 1;
+						final int y2 = y & 512 - 1;
+						final int start_h = heights[x1][y1] * (512 - x2) + heights[x1 + 1][y1] * x2 >> 9;
+						final int end_h = heights[x1][1 + y1] * (512 - x2) + heights[x1 + 1][y1 + 1] * x2 >> 9;
+						return start_h * (512 - y2) + end_h * y2 >> 9;
+					}
 				}
 			}
 		}
