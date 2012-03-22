@@ -26,7 +26,7 @@ import org.powerbot.util.io.HttpClient;
  */
 public abstract class GameDefinition implements GameEnvironment {
 	private static final Logger log = Logger.getLogger(GameDefinition.class.getName());
-	public TaskContainer processor;
+	protected TaskContainer container;
 	private final Map<String, byte[]> classes;
 	public static final String THREADGROUPNAMEPREFIX = "GameDefinition-";
 
@@ -39,16 +39,16 @@ public abstract class GameDefinition implements GameEnvironment {
 	protected volatile boolean killed;
 
 	public GameDefinition() {
-		this.threadGroup = new ThreadGroup(THREADGROUPNAMEPREFIX + hashCode());
-		this.processor = new TaskProcessor(threadGroup);
-		this.classes = new HashMap<String, byte[]>();
+		threadGroup = new ThreadGroup(THREADGROUPNAMEPREFIX + hashCode());
+		container = new TaskProcessor(threadGroup);
+		classes = new HashMap<String, byte[]>();
 
-		this.crawler = new Crawler();
-		this.appletContainer = null;
-		this.callback = null;
-		this.stub = null;
-		this.packHash = null;
-		this.killed = false;
+		crawler = new Crawler();
+		appletContainer = null;
+		callback = null;
+		stub = null;
+		packHash = null;
+		killed = false;
 	}
 
 	/**
@@ -119,6 +119,10 @@ public abstract class GameDefinition implements GameEnvironment {
 			}
 		}
 		return false;
+	}
+
+	public TaskContainer getContainer() {
+		return container;
 	}
 
 	public static byte[] getLoader(final Crawler crawler) {

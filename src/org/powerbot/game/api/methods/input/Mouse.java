@@ -155,7 +155,7 @@ public class Mouse {
 	 * @return <tt>true</tt> if we reached this position; otherwise <tt>false</tt>.
 	 */
 	public static boolean move(final int x, final int y) {
-		final TaskContainer container = Bot.resolve().processor;
+		final TaskContainer container = Bot.resolve().getContainer();
 		final MouseManipulator task = create(x, y, 0, 0, false, false);
 		container.submit(task);
 		if (task.future != null) {
@@ -176,7 +176,7 @@ public class Mouse {
 	 * @return <tt>true</tt> if we reached this position; otherwise <tt>false</tt>.
 	 */
 	public static boolean move(int x, int y, final int randomX, final int randomY) {
-		final TaskContainer container = Bot.resolve().processor;
+		final TaskContainer container = Bot.resolve().getContainer();
 		final MouseManipulator task = create(x, y, randomX, randomY, false, false);
 		container.submit(task);
 		if (task.future != null) {

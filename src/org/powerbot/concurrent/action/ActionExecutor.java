@@ -16,16 +16,19 @@ import org.powerbot.lang.Activator;
  */
 public class ActionExecutor extends Task implements ActionContainer {
 	private final TaskContainer processor;
+	private final TaskContainer owner;
 	private final List<Action> actions;
 	public State state;
 
 	/**
 	 * Initializes this action manager with appropriate objects.
 	 *
-	 * @param processor The <code>TaskProcessor</code> to use as a medium for processing.
+	 * @param processor The <code>TaskContainer</code> to use as a medium for processing.
+	 * @param owner     The <code>TaskContainer</code> that owns this executor.
 	 */
-	public ActionExecutor(final TaskContainer processor) {
+	public ActionExecutor(final TaskContainer processor, final TaskContainer owner) {
 		this.processor = processor;
+		this.owner = owner;
 		actions = new ArrayList<Action>();
 		state = State.DESTROYED;
 	}
@@ -43,7 +46,7 @@ public class ActionExecutor extends Task implements ActionContainer {
 				}
 				return;
 			}
-			processor.submit(this);
+			owner.submit(this);
 		}
 	}
 
@@ -116,7 +119,7 @@ public class ActionExecutor extends Task implements ActionContainer {
 					if (action.requireLock) {
 						synchronized (this) {
 							processor.submit(createWait(futures, this));
-							state = State.LOCKED;
+							state = State.PROCESSING;
 							if (futures.size() > 0) {
 								try {
 									wait();
@@ -124,7 +127,7 @@ public class ActionExecutor extends Task implements ActionContainer {
 								}
 							}
 						}
-						if (state == State.LOCKED) {
+						if (state == State.PROCESSING) {
 							state = heldState;
 						}
 					}
@@ -169,6 +172,6 @@ public class ActionExecutor extends Task implements ActionContainer {
 	 * @author Timer
 	 */
 	public enum State {
-		LISTENING, LOCKED, DESTROYED
+		LISTENING, LOCKED, DESTROYED, PROCESSING
 	}
 }

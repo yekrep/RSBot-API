@@ -81,7 +81,7 @@ public class Bot extends GameDefinition implements Runnable {
 		paintEvent = new PaintEvent();
 		textPaintEvent = new TextPaintEvent();
 		eventDispatcher = new EventDispatcher();
-		processor.submit(eventDispatcher);
+		container.submit(eventDispatcher);
 		toolkit = new Calculations.Toolkit();
 		viewport = new Calculations.Viewport();
 		activeScript = null;
@@ -115,7 +115,7 @@ public class Bot extends GameDefinition implements Runnable {
 			}
 		};
 		log.fine("Submitting loader");
-		processor.submit(new Loader(this));
+		container.submit(new Loader(this));
 	}
 
 	/**
@@ -165,9 +165,9 @@ public class Bot extends GameDefinition implements Runnable {
 		bots.remove(this);
 		context.remove(threadGroup);
 		if (task != null) {
-			processor.submit(task);
+			container.submit(task);
 		}
-		processor.stop();
+		container.stop();
 	}
 
 	/**
@@ -223,7 +223,7 @@ public class Bot extends GameDefinition implements Runnable {
 		client.setCallback(new CallbackImpl(this));
 		constants = new Constants(modScript.constants);
 		multipliers = new Multipliers(modScript.multipliers);
-		processor.submit(new SafeMode(this));
+		container.submit(new SafeMode(this));
 	}
 
 	/**

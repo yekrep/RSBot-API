@@ -28,6 +28,10 @@ public class RandomHandler extends Task {
 	public void run() {
 		ActiveScript activeScript;
 		while ((activeScript = bot.getActiveScript()) != null) {
+			if (!activeScript.isRunning()) {
+				Time.sleep(1000);
+				continue;
+			}
 			Future<?> submittedRandom = null;
 			for (final AntiRandom antiRandom : antiRandoms) {
 				if (antiRandom.applicable()) {
@@ -35,8 +39,7 @@ public class RandomHandler extends Task {
 					while (activeScript.getContainer().isActive()) {
 						Time.sleep(Random.nextInt(500, 1200));
 					}
-
-					bot.processor.submit(antiRandom);
+					bot.getContainer().submit(antiRandom);
 					if (antiRandom.future != null) {
 						submittedRandom = antiRandom.future;
 						break;
