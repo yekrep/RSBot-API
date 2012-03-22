@@ -30,7 +30,7 @@ public class DrawModels implements PaintListener {
 				RenderingHints.VALUE_ANTIALIAS_ON);
 		for (final Location e : Locations.getLoaded()) {
 			final CapturedModel model = e.getModel();
-			if (model != null && e.isOnScreen()) {
+			if (model != null && e.getPosition().isOnScreen()) {
 				render.setColor(color_map.get(e.getType()));
 				model.draw(render);
 				render.setColor(Color.green);
@@ -40,7 +40,7 @@ public class DrawModels implements PaintListener {
 		}
 		for (final org.powerbot.game.api.wrappers.interactive.Character e : Players.getLoaded()) {
 			final CapturedModel model = e.getModel();
-			if (model != null && e.isOnScreen()) {
+			if (model != null && e.getPosition().isOnScreen()) {
 				render.setColor(Color.red);
 				model.draw(render);
 				render.setColor(Color.green);
@@ -50,7 +50,7 @@ public class DrawModels implements PaintListener {
 		}
 		for (final org.powerbot.game.api.wrappers.interactive.Character e : Npcs.getLoaded()) {
 			final CapturedModel model = e.getModel();
-			if (model != null && e.isOnScreen()) {
+			if (model != null && e.getPosition().isOnScreen()) {
 				render.setColor(Color.magenta);
 				model.draw(render);
 				render.setColor(Color.green);
