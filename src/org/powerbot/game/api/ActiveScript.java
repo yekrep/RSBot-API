@@ -102,4 +102,8 @@ public abstract class ActiveScript implements EventListener {
 	public boolean isPaused() {
 		return getState() == State.LOCKED;
 	}
+
+	public TaskContainer getContainer() {
+		return container;
+	}
 }
