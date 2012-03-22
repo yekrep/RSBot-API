@@ -1,7 +1,7 @@
 package org.powerbot.concurrent;
 
 /**
- * A processor in which is able to perform basic, mandatory invocations in regards to tasks.
+ * A container in which is able to perform basic, mandatory invocations in regards to tasks.
  *
  * @author Timer
  */

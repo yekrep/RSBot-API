@@ -3,7 +3,7 @@ package org.powerbot.asm;
 import org.powerbot.lang.AdaptException;
 
 /**
- * Represents a processor of ClassNodes and basic manipulative methods.
+ * Represents a container of ClassNodes and basic manipulative methods.
  *
  * @author Timer
  */

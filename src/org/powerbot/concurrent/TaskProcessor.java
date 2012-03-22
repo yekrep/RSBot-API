@@ -6,7 +6,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 /**
- * A simple processor capable of deploying tasks within a queued thread environment.
+ * A simple container capable of deploying tasks within a queued thread environment.
  *
  * @author Timer
  */
@@ -32,7 +32,7 @@ public class TaskProcessor implements TaskContainer {
 	 * {@inheritDoc}
 	 */
 	public boolean isActive() {
-		return executor.getActiveCount() > 0 && executor.getTaskCount() > 0L;
+		return executor.getActiveCount() > 0;
 	}
 
 	/**
