@@ -163,6 +163,7 @@ public class Bot extends GameDefinition implements Runnable {
 		if (task != null) {
 			processor.submit(task);
 		}
+		processor.stop();
 	}
 
 	/**
