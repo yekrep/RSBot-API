@@ -46,7 +46,7 @@ public class DrawLocations implements PaintListener {
 				final Location[] locations = Locations.getLoaded(accessPosition);
 				int i = 0;
 				for (final Location location : locations) {
-					final Point locationPoint = location.getCentralPoint();
+					final Point locationPoint = location.getPosition().getCentralPoint();
 					if (!Calculations.isPointOnScreen(locationPoint)) {
 						continue;
 					}
