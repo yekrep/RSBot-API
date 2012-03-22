@@ -33,7 +33,7 @@ public abstract class ActiveScript implements EventListener {
 	}
 
 	public final void init(final Bot bot) {
-		eventManager = bot.eventDispatcher;
+		eventManager = bot.getEventDispatcher();
 		container = new TaskProcessor(bot.threadGroup);
 		executor = new ActionExecutor(this.container);
 	}

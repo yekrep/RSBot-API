@@ -26,6 +26,7 @@ import org.powerbot.game.api.methods.input.Mouse;
 import org.powerbot.game.api.util.Time;
 import org.powerbot.game.bot.event.PaintEvent;
 import org.powerbot.game.bot.event.TextPaintEvent;
+import org.powerbot.game.bot.handler.RandomHandler;
 import org.powerbot.game.client.Client;
 import org.powerbot.game.client.Render;
 import org.powerbot.game.client.RenderAbsoluteX;
@@ -62,8 +63,9 @@ public class Bot extends GameDefinition implements Runnable {
 	public final Calculations.Toolkit toolkit;
 	public final Calculations.Viewport viewport;
 
-	public EventDispatcher eventDispatcher;
-	public ActiveScript activeScript;
+	private EventDispatcher eventDispatcher;
+	private ActiveScript activeScript;
+	private RandomHandler randomHandler;
 
 	public BufferedImage image;
 	private BufferedImage backBuffer;
@@ -83,6 +85,7 @@ public class Bot extends GameDefinition implements Runnable {
 		toolkit = new Calculations.Toolkit();
 		viewport = new Calculations.Viewport();
 		activeScript = null;
+		randomHandler = new RandomHandler(this);
 	}
 
 	/**
@@ -228,6 +231,14 @@ public class Bot extends GameDefinition implements Runnable {
 	 */
 	public Canvas getCanvas() {
 		return client != null ? client.getCanvas() : null;
+	}
+
+	public EventDispatcher getEventDispatcher() {
+		return eventDispatcher;
+	}
+
+	public ActiveScript getActiveScript() {
+		return activeScript;
 	}
 
 	public void updateToolkit(final Render render) {

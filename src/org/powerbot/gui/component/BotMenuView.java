@@ -161,14 +161,14 @@ public final class BotMenuView extends JMenu implements ActionListener {
 					listener = eventListener.asSubclass(EventListener.class).newInstance();
 				}
 				listeners.put(name, listener);
-				bot.eventDispatcher.accept(listener);
+				bot.getEventDispatcher().accept(listener);
 			} catch (final Exception ignored) {
 			}
 		} else {
 			final EventListener listener = listeners.get(name);
 			if (listener != null) {
 				listeners.remove(name);
-				bot.eventDispatcher.remove(listener);
+				bot.getEventDispatcher().remove(listener);
 			}
 		}
 	}

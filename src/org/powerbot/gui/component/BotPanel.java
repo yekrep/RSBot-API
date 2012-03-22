@@ -208,7 +208,7 @@ public class BotPanel extends JPanel {
 				bot.client == null) {
 			return;
 		}
-		bot.eventDispatcher.dispatch(keyEvent);
+		bot.getEventDispatcher().dispatch(keyEvent);
 		final Component component = bot.appletContainer.getComponent(0);
 		if (component != null) {
 			component.dispatchEvent(keyEvent);
@@ -220,12 +220,12 @@ public class BotPanel extends JPanel {
 			final int mouseX = mouseEvent.getX(), mouseY = mouseEvent.getY();
 			if (mouseX > 0 && mouseX < component.getWidth() && mouseY > 0 && mouseY < component.getHeight() && mouseEvent.getID() != MouseEvent.MOUSE_EXITED) {
 				if (present) {
-					bot.eventDispatcher.dispatch(mouseEvent);
+					bot.getEventDispatcher().dispatch(mouseEvent);
 				} else {
-					bot.eventDispatcher.dispatch(new MouseEvent(component, MouseEvent.MOUSE_ENTERED, System.currentTimeMillis(), 0, mouseX, mouseY, 0, false));
+					bot.getEventDispatcher().dispatch(new MouseEvent(component, MouseEvent.MOUSE_ENTERED, System.currentTimeMillis(), 0, mouseX, mouseY, 0, false));
 				}
 			} else if (present) {
-				bot.eventDispatcher.dispatch(new MouseEvent(component, MouseEvent.MOUSE_EXITED, System.currentTimeMillis(), 0, mouseX, mouseY, 0, false));
+				bot.getEventDispatcher().dispatch(new MouseEvent(component, MouseEvent.MOUSE_EXITED, System.currentTimeMillis(), 0, mouseX, mouseY, 0, false));
 			}
 		}
 	}

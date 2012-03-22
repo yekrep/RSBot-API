@@ -33,6 +33,6 @@ public class CallbackImpl implements Callback {
 	 * @param message The message contents the sender sent.
 	 */
 	public void notifyMessage(final int id, final String sender, final String message) {
-		bot.eventDispatcher.dispatch(new MessageEvent(id, sender, message));
+		bot.getEventDispatcher().dispatch(new MessageEvent(id, sender, message));
 	}
 }
