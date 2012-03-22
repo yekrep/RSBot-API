@@ -40,7 +40,11 @@ public class LocalTile implements Entity {
 	}
 
 	public boolean isOnScreen() {
-		return false;//TODO
+		final Point nw = getPoint(0.0d, 0.0d, 0);
+		final Point ne = getPoint(1.0d, 0.0d, 0);
+		final Point sw = getPoint(0.0d, 1.0d, 0);
+		final Point se = getPoint(1.0d, 1.0d, 0);
+		return nw.x != -1 || ne.x != -1 || sw.x != -1 || se.x != -1;
 	}
 
 	public Polygon[] getBounds() {
