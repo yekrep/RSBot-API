@@ -13,6 +13,10 @@ import org.powerbot.game.client.RSInfoBaseInfo;
  * @author Timer
  */
 public class Game {
+	public static final int[] INDEX_LOGGED_IN = {11, 12};
+	public static final int INDEX_LOGIN_SCREEN = 3;
+	public static final int INDEX_LOBBY_SCREEN = 7;
+
 	/**
 	 * @return The current state of the game client.
 	 */
@@ -43,7 +47,12 @@ public class Game {
 	 */
 	public static boolean isLoggedIn() {
 		final int state = getClientState();
-		return state == 11 || state == 12;
+		for (final int p_state : INDEX_LOGGED_IN) {
+			if (state == p_state) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**
