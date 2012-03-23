@@ -42,6 +42,10 @@ public class Inventory {
 		return new Item[0];
 	}
 
+	public static int getCount() {
+		return getItems().length;
+	}
+
 	public static WidgetChild getWidget() {
 		for (final int widget : ALT_WIDGETS) {
 			WidgetChild inventory = Widgets.get(widget, 0);

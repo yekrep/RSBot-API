@@ -189,7 +189,11 @@ public class Calculations {
 		return point.x > 0 && point.y > 0 && point.x < canvas.getWidth() && point.y < canvas.getHeight();
 	}
 
-	public double distance(final Tile tile1, final Tile tile2) {
+	public static double distance(final LocalTile tile1, final LocalTile tile2) {
 		return Math.sqrt((tile1.x - tile2.x) * (tile1.x - tile2.x) + (tile1.y - tile2.y) * (tile1.y - tile2.y));
+	}
+
+	public static double distance(final int x1, final int y1, final int x2, final int y2) {
+		return Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
 	}
 }
