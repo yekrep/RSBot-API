@@ -37,13 +37,13 @@ public class RandomHandler extends Task {
 			Future<?> submittedRandom = null;
 			for (final AntiRandom antiRandom : antiRandoms) {
 				if (antiRandom.applicable()) {
-					if (!activeScript.isPaused()) {
+					if (!activeScript.isPaused() || activeScript.getContainer().isActive()) {
 						activeScript.pause(false);
 						while (activeScript.getContainer().isActive()) {
 							Time.sleep(Random.nextInt(500, 1200));
 						}
-						activeScript.pause(true);
 					}
+					activeScript.pause(true);
 					bot.getEventDispatcher().accept(antiRandom);
 					listeners.put(antiRandom.getClass().getName(), antiRandom);
 					bot.getContainer().submit(antiRandom);
