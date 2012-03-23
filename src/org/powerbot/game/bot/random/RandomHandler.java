@@ -1,5 +1,8 @@
 package org.powerbot.game.bot.random;
 
+import java.util.EventListener;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
@@ -15,6 +18,7 @@ import org.powerbot.game.bot.Bot;
 public class RandomHandler extends Task {
 	private final Bot bot;
 	private final AntiRandom[] antiRandoms;
+	private final Map<String, EventListener> listeners = new HashMap<String, EventListener>();
 
 	public RandomHandler(final Bot bot) {
 		this.bot = bot;
@@ -40,10 +44,17 @@ public class RandomHandler extends Task {
 						}
 						activeScript.pause(true);
 					}
+					bot.getEventDispatcher().accept(antiRandom);
+					listeners.put(antiRandom.getClass().getName(), antiRandom);
 					bot.getContainer().submit(antiRandom);
 					if (antiRandom.future != null) {
 						submittedRandom = antiRandom.future;
 						break;
+					}
+				} else {
+					final EventListener listener = listeners.remove(antiRandom.getClass().getName());
+					if (listener != null) {
+						bot.getEventDispatcher().remove(listener);
 					}
 				}
 			}
