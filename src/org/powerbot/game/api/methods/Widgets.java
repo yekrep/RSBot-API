@@ -22,7 +22,7 @@ public class Widgets {
 	 * @return An <code>Widget[]</code> of the latest cached widgets.
 	 */
 	public static Widget[] getLoaded() {
-		final Client client = Bot.resolve().client;
+		final Client client = Bot.resolve().getClient();
 		ensureCapacity(client);
 		final Object[] clientInterfaceCache = client.getRSInterfaceCache();
 		if (clientInterfaceCache == null) {
@@ -49,7 +49,7 @@ public class Widgets {
 			throw new RuntimeException("index < 0 (" + index + ")");
 		}
 
-		final Client client = Bot.resolve().client;
+		final Client client = Bot.resolve().getClient();
 		Widget[] cachedInterfaces = caches.get(client);
 		if (cachedInterfaces == null) {
 			cachedInterfaces = new Widget[100];

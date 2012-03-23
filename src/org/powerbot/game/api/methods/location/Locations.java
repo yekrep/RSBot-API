@@ -84,7 +84,7 @@ public class Locations {
 
 	private static Set<Location> getAtLocal(int x, int y, final int mask) {
 		final Bot bot = Bot.resolve();
-		final Client client = bot.client;
+		final Client client = bot.getClient();
 		final Set<Location> objects = new LinkedHashSet<Location>();
 		final Object[][][] groundArray = getRSGroundArray(client);
 		if (groundArray == null) {

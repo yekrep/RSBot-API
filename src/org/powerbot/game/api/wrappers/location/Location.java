@@ -67,7 +67,7 @@ public class Location implements Entity, Mobile {
 	}
 
 	public int getId() {
-		return Bot.resolve().client.getRSObjectID(object);
+		return Bot.resolve().getClient().getRSObjectID(object);
 	}
 
 	public Type getType() {
@@ -98,7 +98,7 @@ public class Location implements Entity, Mobile {
 
 	public CapturedModel getModel() {
 		if (object != null) {
-			Model model = Bot.resolve().client.getRSObjectModel(object);
+			Model model = Bot.resolve().getClient().getRSObjectModel(object);
 			if (model == null) {
 				model = ModelCapture.modelCache.get(object);
 			}

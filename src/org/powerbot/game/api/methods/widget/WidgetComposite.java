@@ -91,7 +91,7 @@ public class WidgetComposite {
 	}
 
 	private synchronized static void update(final Record record) {
-		final int master_index = record.bot.client.getGUIRSInterfaceIndex() * record.bot.multipliers.GLOBAL_GUIINTERFACEINDEX;
+		final int master_index = record.bot.getClient().getGUIRSInterfaceIndex() * record.bot.multipliers.GLOBAL_GUIINTERFACEINDEX;
 		if (master_index != record.index_widget) {
 			record.index_map = -1;
 			record.index_compass = -1;

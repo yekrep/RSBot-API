@@ -8,22 +8,22 @@ import org.powerbot.game.client.Client;
  */
 public class Skills {
 	public static int[] getLevels() {
-		final Client client = Bot.resolve().client;
+		final Client client = Bot.resolve().getClient();
 		return client.getSkillLevels();
 	}
 
 	public static int[] getMaxLevels() {
-		final Client client = Bot.resolve().client;
+		final Client client = Bot.resolve().getClient();
 		return client.getSkillLevelMaxes();
 	}
 
 	public static int[] getExperiences() {
-		final Client client = Bot.resolve().client;
+		final Client client = Bot.resolve().getClient();
 		return client.getSkillExperiences();
 	}
 
 	public static int[] getMaxExperiences() {
-		final Client client = Bot.resolve().client;
+		final Client client = Bot.resolve().getClient();
 		return client.getSkillExperienceMaxes();
 	}
 }

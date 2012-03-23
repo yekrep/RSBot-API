@@ -65,7 +65,7 @@ public class Item {
 	}
 
 	public ItemDefinition getDefinition() {
-		final Object itemDefLoaderTable = Bot.resolve().client.getRSItemDefLoader();
+		final Object itemDefLoaderTable = Bot.resolve().getClient().getRSItemDefLoader();
 		final Object itemDefLoaderCache = ((RSItemDefLoaderCache) itemDefLoaderTable).getRSItemDefLoaderCache();
 		final Object itemDefLoader = ((CacheTable) itemDefLoaderCache).getCacheTable();
 		final Node ref = Nodes.lookup(itemDefLoader, id);

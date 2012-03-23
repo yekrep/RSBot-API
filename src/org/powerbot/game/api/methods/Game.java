@@ -23,7 +23,7 @@ public class Game {
 	public static int getClientState() {
 		final Bot bot = Bot.resolve();
 		final Constants constants = bot.constants;
-		final int clientState = bot.client.getLoginIndex() * bot.multipliers.GLOBAL_LOGININDEX;
+		final int clientState = bot.getClient().getLoginIndex() * bot.multipliers.GLOBAL_LOGININDEX;
 		if (clientState == constants.CLIENTSTATE_3) {
 			return 3;
 		} else if (clientState == constants.CLIENTSTATE_6) {
@@ -60,7 +60,7 @@ public class Game {
 	 */
 	public static int getPlane() {
 		final Bot bot = Bot.resolve();
-		return bot.client.getPlane() * bot.multipliers.GLOBAL_PLANE;
+		return bot.getClient().getPlane() * bot.multipliers.GLOBAL_PLANE;
 	}
 
 	/**
@@ -68,7 +68,7 @@ public class Game {
 	 */
 	public static int getBaseX() {
 		final Bot bot = Bot.resolve();
-		return (((BaseInfoX) ((BaseInfoInts) ((RSInfoBaseInfo) bot.client.getRSGroundInfo()).getRSInfoBaseInfo()).getBaseInfoInts()).getBaseInfoX() * bot.multipliers.BASEDATA_X) >> 8;
+		return (((BaseInfoX) ((BaseInfoInts) ((RSInfoBaseInfo) bot.getClient().getRSGroundInfo()).getRSInfoBaseInfo()).getBaseInfoInts()).getBaseInfoX() * bot.multipliers.BASEDATA_X) >> 8;
 	}
 
 	/**
@@ -76,6 +76,6 @@ public class Game {
 	 */
 	public static int getBaseY() {
 		final Bot bot = Bot.resolve();
-		return (((BaseInfoY) ((BaseInfoInts) ((RSInfoBaseInfo) bot.client.getRSGroundInfo()).getRSInfoBaseInfo()).getBaseInfoInts()).getBaseInfoY() * bot.multipliers.BASEDATA_Y) >> 8;
+		return (((BaseInfoY) ((BaseInfoInts) ((RSInfoBaseInfo) bot.getClient().getRSGroundInfo()).getRSInfoBaseInfo()).getBaseInfoInts()).getBaseInfoY() * bot.multipliers.BASEDATA_Y) >> 8;
 	}
 }

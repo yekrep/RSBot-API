@@ -32,7 +32,7 @@ public class Players {
 	 * @return An array of the currently loaded Players in the game that are accepted by the provided filter.
 	 */
 	public static Player[] getLoaded(final Filter<Player> filter) {
-		final Client client = Bot.resolve().client;
+		final Client client = Bot.resolve().getClient();
 		final int[] indices = client.getRSPlayerIndexArray();
 		final Object[] playerArray = client.getRSPlayerArray();
 		final Set<Player> players = new HashSet<Player>();
@@ -51,6 +51,6 @@ public class Players {
 	 * @return The client's local <code>Player</code>.
 	 */
 	public static Player getLocal() {
-		return new Player(Bot.resolve().client.getMyRSPlayer());
+		return new Player(Bot.resolve().getClient().getMyRSPlayer());
 	}
 }

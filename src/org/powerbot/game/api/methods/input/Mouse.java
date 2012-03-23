@@ -15,6 +15,7 @@ import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Time;
 import org.powerbot.game.api.wrappers.Locatable;
 import org.powerbot.game.bot.Bot;
+import org.powerbot.game.client.Client;
 
 /**
  * A utility for the manipulation of the game's mouse.
@@ -273,11 +274,8 @@ public class Mouse {
 	 * @return The <code>org.powerbot.game.client.input.Mouse</code> to relay events to.
 	 */
 	private static org.powerbot.game.client.input.Mouse getMouse() {
-		final Bot bot = Bot.resolve();
-		if (bot.client == null) {
-			return null;
-		}
-		return bot.client.getMouse();
+		final Client client = Bot.resolve().getClient();
+		return client == null ? null : client.getMouse();
 	}
 
 	public static boolean isReady() {

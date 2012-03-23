@@ -71,7 +71,7 @@ public class GroundItems {
 			return new GroundItem[0];
 		}
 		final List<GroundItem> groundItems = new ArrayList<GroundItem>();
-		final Client client = Bot.resolve().client;
+		final Client client = Bot.resolve().getClient();
 		final Object itemHashTable = client.getRSItemHashTable();
 		final int floor = Game.getPlane();
 		final int index = x | y << 14 | floor << 28;

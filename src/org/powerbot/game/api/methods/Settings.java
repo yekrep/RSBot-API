@@ -13,7 +13,7 @@ public class Settings {
 	 * @return The <code>int[]</code> of all the game's settings in their respective positioning.
 	 */
 	public static int[] get() {
-		return ((int[]) ((SettingsData) Bot.resolve().client.getSettingArray()).getSettingsData()).clone();
+		return ((int[]) ((SettingsData) Bot.resolve().getClient().getSettingArray()).getSettingsData()).clone();
 	}
 
 	/**

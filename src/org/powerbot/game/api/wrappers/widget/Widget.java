@@ -31,7 +31,7 @@ public class Widget {
 			return false;
 		}
 		final int idx = getIndex();
-		final Client client = Bot.resolve().client;
+		final Client client = Bot.resolve().getClient();
 		final boolean[] validArray = client.getValidRSInterfaceArray();
 		if (idx >= 0 && validArray != null && idx < validArray.length && validArray[idx]) {
 			final Object[] inters = client.getRSInterfaceCache();
@@ -81,7 +81,7 @@ public class Widget {
 
 	public Point getLocation() {
 		final Bot bot = Bot.resolve();
-		final Client client = bot.client;
+		final Client client = bot.getClient();
 		final Multipliers multipliers = bot.multipliers;
 		final Object[] children = getChildrenInternal();
 		if (children != null) {
@@ -137,7 +137,7 @@ public class Widget {
 	}
 
 	Object[] getChildrenInternal() {
-		final Client client = Bot.resolve().client;
+		final Client client = Bot.resolve().getClient();
 		if (client == null) {
 			return null;
 		}

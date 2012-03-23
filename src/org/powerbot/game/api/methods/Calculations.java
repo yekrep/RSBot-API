@@ -62,7 +62,7 @@ public class Calculations {
 	 * @return The height of the given tile on the provided plane.
 	 */
 	public static int calculateTileHeight(final int x, final int y, int plane) {
-		final Client client = Bot.resolve().client;
+		final Client client = Bot.resolve().getClient();
 		final int x1 = x >> 9;
 		final int y1 = y >> 9;
 		final byte[][][] settings = (byte[][][]) ((RSGroundBytes_Bytes) (((RSInfoGroundBytes) client.getRSGroundInfo()).getRSInfoGroundBytes())).getRSGroundBytes_Bytes();
@@ -134,6 +134,7 @@ public class Calculations {
 	 */
 	public Point worldToMap(double x, double y) {
 		final Bot bot = Bot.resolve();
+		final Client client = bot.getClient();
 		final Player local = Players.getLocal();
 		if (distance(local.getPosition(), new Tile((int) x, (int) y, 0)) > 17) {
 			return new Point(-1, -1);
@@ -153,18 +154,18 @@ public class Calculations {
 		final int mmDist = 10 + Math.max(mm2.getWidth() / 2, mm2.getHeight() / 2);
 
 		if (mmDist * mmDist >= actDistSq) {
-			int angle = 0x3fff & (int) bot.client.getMinimapAngle();
-			final boolean setting4 = bot.client.getMinimapSetting() * bot.multipliers.GLOBAL_MINIMAPSETTING == 4;
+			int angle = 0x3fff & (int) client.getMinimapAngle();
+			final boolean setting4 = client.getMinimapSetting() * bot.multipliers.GLOBAL_MINIMAPSETTING == 4;
 
 			if (!setting4) {
-				angle = 0x3fff & (bot.client.getMinimapOffset() * bot.multipliers.GLOBAL_MINIMAPOFFSET) + (int) bot.client.getMinimapAngle();
+				angle = 0x3fff & (client.getMinimapOffset() * bot.multipliers.GLOBAL_MINIMAPOFFSET) + (int) client.getMinimapAngle();
 			}
 
 			int cs = Calculations.SIN_TABLE[angle];
 			int cc = Calculations.COS_TABLE[angle];
 
 			if (!setting4) {
-				final int fact = 0x100 + (bot.client.getMinimapScale() * bot.multipliers.GLOBAL_MINIMAPSCALE);
+				final int fact = 0x100 + (client.getMinimapScale() * bot.multipliers.GLOBAL_MINIMAPSCALE);
 				cs = 0x100 * cs / fact;
 				cc = 0x100 * cc / fact;
 			}

@@ -147,10 +147,10 @@ public class Keyboard {
 	 */
 	private static org.powerbot.game.client.input.Keyboard getKeyboard() {
 		final Bot bot = Bot.resolve();
-		if (bot.client == null || bot.client.getCanvas() == null) {
+		if (bot.getClient() == null || bot.getClient().getCanvas() == null) {
 			throw new RuntimeException("client not ready for events");
 		}
-		final KeyListener[] listeners = bot.client.getCanvas().getKeyListeners();
+		final KeyListener[] listeners = bot.getClient().getCanvas().getKeyListeners();
 		if (listeners.length != 1) {
 			throw new RuntimeException("listener mismatch");
 		}

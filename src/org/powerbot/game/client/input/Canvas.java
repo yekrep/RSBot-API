@@ -44,7 +44,7 @@ public class Canvas extends java.awt.Canvas {
 	private Bot getBot() {
 		final ClassLoader cl = getClass().getClassLoader();
 		for (final Bot bot : Bot.bots) {
-			if (cl == bot.client.getClass().getClassLoader()) {
+			if (cl == bot.getClient().getClass().getClassLoader()) {
 				BotChrome.panel.offset();
 				return bot;
 			}

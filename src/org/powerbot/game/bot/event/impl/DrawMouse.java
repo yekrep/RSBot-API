@@ -5,18 +5,20 @@ import java.awt.Graphics;
 
 import org.powerbot.game.bot.Bot;
 import org.powerbot.game.bot.event.listener.PaintListener;
-import org.powerbot.game.client.Client;
 import org.powerbot.game.client.input.Mouse;
 
 public class DrawMouse implements PaintListener {
-	private final Client client;
+	private final Bot bot;
 
 	public DrawMouse(final Bot bot) {
-		client = bot.client;
+		this.bot = bot;
 	}
 
 	public void onRepaint(final Graphics render) {
-		final Mouse mouse = client.getMouse();
+		if (bot.getClient() == null) {
+			return;
+		}
+		final Mouse mouse = bot.getClient().getMouse();
 		if (mouse != null) {
 			final int mouse_x = mouse.getX(), mouse_y = mouse.getY();
 			final int mouse_press_x = mouse.getPressX(), mouse_press_y = mouse.getPressY();

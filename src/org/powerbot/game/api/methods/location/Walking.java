@@ -20,7 +20,7 @@ public class Walking {
 	 */
 	public static int getDestinationX() {
 		final Bot bot = Bot.resolve();
-		return Game.getBaseX() + bot.client.getDestX() * bot.multipliers.GLOBAL_DESTX;
+		return Game.getBaseX() + bot.getClient().getDestX() * bot.multipliers.GLOBAL_DESTX;
 	}
 
 	/**
@@ -28,7 +28,7 @@ public class Walking {
 	 */
 	public static int getDestinationY() {
 		final Bot bot = Bot.resolve();
-		return Game.getBaseY() + bot.client.getDestY() * bot.multipliers.GLOBAL_DESTY;
+		return Game.getBaseY() + bot.getClient().getDestY() * bot.multipliers.GLOBAL_DESTY;
 	}
 
 	/**
@@ -37,7 +37,7 @@ public class Walking {
 	 */
 	public static Tile getCollisionOffset(final int plane) {
 		final Bot bot = Bot.resolve();
-		final Object groundDataInts = ((RSGroundDataInts) ((Object[]) ((RSGroundInfoRSGroundArray) bot.client.getRSGroundInfo()).getRSGroundInfoRSGroundArray())[plane]).getRSGroundDataInts();
+		final Object groundDataInts = ((RSGroundDataInts) ((Object[]) ((RSGroundInfoRSGroundArray) bot.getClient().getRSGroundInfo()).getRSGroundInfoRSGroundArray())[plane]).getRSGroundDataInts();
 		return new Tile(((RSGroundDataX) groundDataInts).getRSGroundDataX() * bot.multipliers.GROUNDDATA_X, ((RSGroundDataY) groundDataInts).getRSGroundDataY() * bot.multipliers.GROUNDDATA_Y, plane);
 	}
 
@@ -46,6 +46,6 @@ public class Walking {
 	 * @return The collision flags of the current map block.
 	 */
 	public static int[][] getCollisionFlags(final int plane) {
-		return (int[][]) ((RSGroundDataBlocks) ((Object[]) ((RSGroundInfoRSGroundArray) Bot.resolve().client.getRSGroundInfo()).getRSGroundInfoRSGroundArray())[plane]).getRSGroundDataBlocks();
+		return (int[][]) ((RSGroundDataBlocks) ((Object[]) ((RSGroundInfoRSGroundArray) Bot.resolve().getClient().getRSGroundInfo()).getRSGroundInfoRSGroundArray())[plane]).getRSGroundDataBlocks();
 	}
 }

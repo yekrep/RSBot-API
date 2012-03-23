@@ -7,6 +7,6 @@ import org.powerbot.game.bot.Bot;
  */
 public class Magic {
 	public static boolean isSpellSelected() {
-		return Bot.resolve().client.isSpellSelected();
+		return Bot.resolve().getClient().isSpellSelected();
 	}
 }

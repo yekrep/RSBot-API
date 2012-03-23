@@ -138,7 +138,7 @@ public class WidgetChild implements Entity {
 		if (getInternal() == null) {
 			return new Point(-1, -1);
 		}
-		final Client client = Bot.resolve().client;
+		final Client client = Bot.resolve().getClient();
 		final int parentId = getParentId();
 		int x = 0, y = 0;
 		if (parentId != -1) {
@@ -387,7 +387,7 @@ public class WidgetChild implements Entity {
 		}
 
 		final int mainID = getId() >>> 0x10;
-		final HashTable ncI = new HashTable(bot.client.getRSInterfaceNC());
+		final HashTable ncI = new HashTable(bot.getClient().getRSInterfaceNC());
 		for (RSInterfaceNode node = (RSInterfaceNode) ncI.getFirst(); node != null; node = (RSInterfaceNode) ncI.getNext()) {
 			if (mainID == ((RSInterfaceNodeMainID) ((RSInterfaceNodeInts) node.getData()).getRSInterfaceNodeInts()).getRSInterfaceNodeMainID() * bot.multipliers.INTERFACENODE_MAINID) {
 				final long multiplier = (((long) bot.multipliers.NODE_ID) << 0x20) + ((bot.multipliers.NODE_ID_p2 & 0xffffffffL));

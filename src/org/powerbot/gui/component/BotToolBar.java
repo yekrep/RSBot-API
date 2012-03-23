@@ -95,8 +95,8 @@ public final class BotToolBar extends JToolBar {
 		boolean loggedIn = false;
 		if (n > 0 && n < bots.size()) {
 			final Bot bot = bots.get(n);
-			if (bot != null && bot.client != null && bot.multipliers != null && bot.constants != null) {
-				final int state = bot.client.getLoginIndex() * bot.multipliers.GLOBAL_LOGININDEX;
+			if (bot != null && bot.getClient() != null && bot.multipliers != null && bot.constants != null) {
+				final int state = bot.getClient().getLoginIndex() * bot.multipliers.GLOBAL_LOGININDEX;
 				loggedIn = state == bot.constants.CLIENTSTATE_11 || state == bot.constants.CLIENTSTATE_12;
 			}
 		}

@@ -47,7 +47,7 @@ public abstract class Character implements Entity, Mobile {
 
 	public Character() {
 		final Bot bot = Bot.resolve();
-		this.client = bot.client;
+		this.client = bot.getClient();
 		this.multipliers = bot.multipliers;
 	}
 

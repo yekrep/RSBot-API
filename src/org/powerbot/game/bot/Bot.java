@@ -57,7 +57,7 @@ public class Bot extends GameDefinition implements Runnable {
 
 	private ModScript modScript;
 	private BotPanel panel;
-	public Client client;
+	private Client client;
 	public Constants constants;
 	public Multipliers multipliers;
 	public final Calculations.Toolkit toolkit;
@@ -200,11 +200,13 @@ public class Bot extends GameDefinition implements Runnable {
 	 */
 	public Graphics getBufferGraphics() {
 		final Graphics back = backBuffer.getGraphics();
-		paintEvent.graphics = back;
-		textPaintEvent.graphics = back;
-		textPaintEvent.id = 0;
-		eventDispatcher.fire(paintEvent);
-		eventDispatcher.fire(textPaintEvent);
+		if (client != null) {
+			paintEvent.graphics = back;
+			textPaintEvent.graphics = back;
+			textPaintEvent.id = 0;
+			eventDispatcher.fire(paintEvent);
+			eventDispatcher.fire(textPaintEvent);
+		}
 		back.dispose();
 		image.getGraphics().drawImage(backBuffer, 0, 0, null);
 		if (panel != null) {
@@ -224,6 +226,10 @@ public class Bot extends GameDefinition implements Runnable {
 		constants = new Constants(modScript.constants);
 		multipliers = new Multipliers(modScript.multipliers);
 		container.submit(new SafeMode(this));
+	}
+
+	public Client getClient() {
+		return client;
 	}
 
 	/**
@@ -290,7 +296,7 @@ public class Bot extends GameDefinition implements Runnable {
 		 * Enters the game into SafeMode by pressing 's'.
 		 */
 		public void run() {
-			if (bot != null && !bot.killed && bot.client != null && !Keyboard.isReady()) {
+			if (bot != null && !bot.killed && bot.getClient() != null && !Keyboard.isReady()) {
 				while (!bot.killed && !Keyboard.isReady() && !Mouse.isReady()) {
 					Time.sleep(150);
 				}

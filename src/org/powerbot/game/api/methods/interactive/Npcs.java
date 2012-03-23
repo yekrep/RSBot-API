@@ -37,7 +37,7 @@ public class Npcs {
 	 * @return An array of the currently loaded Npcs in the game that are accepted by the provided filter.
 	 */
 	public static Npc[] getLoaded(final Filter<Npc> filter) {
-		final Client client = Bot.resolve().client;
+		final Client client = Bot.resolve().getClient();
 		final int[] indices = client.getRSNPCIndexArray();
 		final Set<Npc> npcs = new HashSet<Npc>();
 		for (final int index : indices) {

@@ -31,8 +31,8 @@ public class Menu {
 	public static Point getLocation() {
 		final Bot bot = Bot.resolve();
 		return new Point(
-				bot.client.getMenuX() * bot.multipliers.GLOBAL_MENUX,
-				bot.client.getMenuY() * bot.multipliers.GLOBAL_MENUY
+				bot.getClient().getMenuX() * bot.multipliers.GLOBAL_MENUX,
+				bot.getClient().getMenuY() * bot.multipliers.GLOBAL_MENUY
 		);
 	}
 
@@ -42,8 +42,8 @@ public class Menu {
 	public static Point getSubLocation() {
 		final Bot bot = Bot.resolve();
 		return new Point(
-				bot.client.getSubMenuX() * bot.multipliers.GLOBAL_SUBMENUX,
-				bot.client.getSubMenuY() * bot.multipliers.GLOBAL_SUBMENUY
+				bot.getClient().getSubMenuX() * bot.multipliers.GLOBAL_SUBMENUX,
+				bot.getClient().getSubMenuY() * bot.multipliers.GLOBAL_SUBMENUY
 		);
 	}
 
@@ -52,7 +52,7 @@ public class Menu {
 	 */
 	public static int getWidth() {
 		final Bot bot = Bot.resolve();
-		return bot.client.getMenuWidth() * bot.multipliers.GLOBAL_MENUWIDTH;
+		return bot.getClient().getMenuWidth() * bot.multipliers.GLOBAL_MENUWIDTH;
 	}
 
 	/**
@@ -60,7 +60,7 @@ public class Menu {
 	 */
 	public static int getHeight() {
 		final Bot bot = Bot.resolve();
-		return bot.client.getMenuHeight() * bot.multipliers.GLOBAL_MENUHEIGHT;
+		return bot.getClient().getMenuHeight() * bot.multipliers.GLOBAL_MENUHEIGHT;
 	}
 
 	/**
@@ -68,15 +68,15 @@ public class Menu {
 	 */
 	public static int getSubWidth() {
 		final Bot bot = Bot.resolve();
-		return bot.client.getSubMenuWidth() * bot.multipliers.GLOBAL_SUBMENUWIDTH;
+		return bot.getClient().getSubMenuWidth() * bot.multipliers.GLOBAL_SUBMENUWIDTH;
 	}
 
 	public static boolean isOpen() {
-		return Bot.resolve().client.isMenuOpen();
+		return Bot.resolve().getClient().isMenuOpen();
 	}
 
 	public static boolean isCollapsed() {
-		return Bot.resolve().client.isMenuCollapsed();
+		return Bot.resolve().getClient().isMenuCollapsed();
 	}
 
 	public static boolean select(final String action) {
@@ -120,7 +120,7 @@ public class Menu {
 			return false;
 		}
 		if (isCollapsed()) {
-			final Queue<MenuGroupNode> groups = new Queue<MenuGroupNode>(Bot.resolve().client.getCollapsedMenuItems());
+			final Queue<MenuGroupNode> groups = new Queue<MenuGroupNode>(Bot.resolve().getClient().getCollapsedMenuItems());
 			int idx = 0, mainIdx = 0;
 			for (MenuGroupNode g = groups.getHead(); g != null; g = groups.getNext(), ++mainIdx) {
 				final Queue<MenuItemNode> subItems = new Queue<MenuItemNode>(((MenuGroupNodeItems) g.getData()).getMenuGroupNodeItems());
@@ -243,7 +243,7 @@ public class Menu {
 
 	private static String[] getMenuItemPart(final boolean firstPart) {
 		final LinkedList<String> itemsList = new LinkedList<String>();
-		final Client client = Bot.resolve().client;
+		final Client client = Bot.resolve().getClient();
 		if (isCollapsed()) {
 			final Queue<MenuGroupNode> menu = new Queue<MenuGroupNode>(client.getCollapsedMenuItems());
 			try {
