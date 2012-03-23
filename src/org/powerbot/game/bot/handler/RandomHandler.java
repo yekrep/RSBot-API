@@ -35,9 +35,11 @@ public class RandomHandler extends Task {
 			Future<?> submittedRandom = null;
 			for (final AntiRandom antiRandom : antiRandoms) {
 				if (antiRandom.applicable()) {
-					activeScript.pause(true);
-					while (activeScript.getContainer().isActive()) {
-						Time.sleep(Random.nextInt(500, 1200));
+					if (!activeScript.isPaused()) {
+						activeScript.pause(true);
+						while (activeScript.getContainer().isActive()) {
+							Time.sleep(Random.nextInt(500, 1200));
+						}
 					}
 					bot.getContainer().submit(antiRandom);
 					if (antiRandom.future != null) {
@@ -52,8 +54,10 @@ public class RandomHandler extends Task {
 				} catch (final InterruptedException ignored) {
 				} catch (final ExecutionException ignored) {
 				}
-				activeScript.resume();
 			} else {
+				if (activeScript.isPaused()) {
+					activeScript.resume();
+				}
 				Time.sleep(Random.nextInt(1000, 5000));
 			}
 		}
