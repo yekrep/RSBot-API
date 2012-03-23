@@ -5,9 +5,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
+import java.util.logging.Logger;
 
 import org.powerbot.concurrent.Task;
 import org.powerbot.game.api.ActiveScript;
+import org.powerbot.game.api.Manifest;
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Time;
 import org.powerbot.game.bot.Bot;
@@ -16,6 +18,8 @@ import org.powerbot.game.bot.Bot;
  * @author Timer
  */
 public class RandomHandler extends Task {
+	private static final Logger log = Logger.getLogger(RandomHandler.class.getName());
+
 	private final Bot bot;
 	private final AntiRandom[] antiRandoms;
 	private final Map<String, EventListener> listeners = new HashMap<String, EventListener>();
@@ -38,12 +42,14 @@ public class RandomHandler extends Task {
 			for (final AntiRandom antiRandom : antiRandoms) {
 				if (antiRandom.applicable()) {
 					if (!activeScript.isPaused() || activeScript.getContainer().isActive()) {
+						log.info("Locking script");
 						activeScript.pause(false);
 						while (activeScript.getContainer().isActive()) {
 							Time.sleep(Random.nextInt(500, 1200));
 						}
 					}
 					if (!listeners.containsKey(antiRandom.getClass().getName())) {
+						log.info("Activating random: " + antiRandom.getClass().getAnnotation(Manifest.class).name());
 						activeScript.pause(true);
 						bot.getEventDispatcher().accept(antiRandom);
 						listeners.put(antiRandom.getClass().getName(), antiRandom);
@@ -56,6 +62,7 @@ public class RandomHandler extends Task {
 				} else {
 					final EventListener listener = listeners.remove(antiRandom.getClass().getName());
 					if (listener != null) {
+						log.info("Deactivating random: " + antiRandom.getClass().getAnnotation(Manifest.class).name());
 						bot.getEventDispatcher().remove(listener);
 					}
 				}
@@ -68,6 +75,7 @@ public class RandomHandler extends Task {
 				}
 			} else {
 				if (activeScript.isPaused()) {
+					log.info("Resuming active script processing");
 					activeScript.resume();
 				}
 				Time.sleep(Random.nextInt(1000, 5000));
