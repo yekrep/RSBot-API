@@ -1,4 +1,4 @@
-package org.powerbot.game.bot.random;
+package org.powerbot.game.api;
 
 import java.awt.Graphics;
 

@@ -1,4 +1,4 @@
-package org.powerbot.game.bot.random;
+package org.powerbot.game.bot.concurrent;
 
 import java.util.EventListener;
 import java.util.HashMap;
@@ -9,7 +9,9 @@ import java.util.logging.Logger;
 
 import org.powerbot.concurrent.Task;
 import org.powerbot.game.api.ActiveScript;
+import org.powerbot.game.api.AntiRandom;
 import org.powerbot.game.api.Manifest;
+import org.powerbot.game.api.randoms.Login;
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Time;
 import org.powerbot.game.bot.Bot;
