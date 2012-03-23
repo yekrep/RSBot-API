@@ -3,8 +3,11 @@ package org.powerbot.game.api.methods.location;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import org.powerbot.game.api.methods.Calculations;
 import org.powerbot.game.api.methods.Game;
+import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.util.Filter;
+import org.powerbot.game.api.wrappers.LocalTile;
 import org.powerbot.game.api.wrappers.Tile;
 import org.powerbot.game.api.wrappers.location.Location;
 import org.powerbot.game.bot.Bot;
@@ -61,14 +64,35 @@ public class Locations {
 		final Set<Location> objects = new LinkedHashSet<Location>();
 		for (int x = 0; x < 104; x++) {
 			for (int y = 0; y < 104; y++) {
-				for (final Location o : getAtLocal(x, y, -1)) {
-					if (o != null && filter.accept(o)) {
-						objects.add(o);
+				for (final Location l : getAtLocal(x, y, -1)) {
+					if (l != null && filter.accept(l)) {
+						objects.add(l);
 					}
 				}
 			}
 		}
 		return objects.toArray(new Location[objects.size()]);
+	}
+
+	public static Location getNearest(final Filter<Location> filter) {
+		Location location = null;
+		double distance = Double.MAX_VALUE;
+		final LocalTile position = Players.getLocal().getLocalPosition();
+		final Set<Location> objects = new LinkedHashSet<Location>();
+		for (int x = 0; x < 104; x++) {
+			for (int y = 0; y < 104; y++) {
+				for (final Location l : getAtLocal(x, y, -1)) {
+					if (l != null && filter.accept(l)) {
+						final double dist = Calculations.distance(position.x, position.y, x, y);
+						if (dist < distance) {
+							distance = dist;
+							location = l;
+						}
+					}
+				}
+			}
+		}
+		return location;
 	}
 
 	private static Object[][][] getRSGroundArray(final Client client) {
