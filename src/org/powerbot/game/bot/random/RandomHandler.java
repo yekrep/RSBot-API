@@ -1,4 +1,4 @@
-package org.powerbot.game.bot.handler;
+package org.powerbot.game.bot.random;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -8,8 +8,6 @@ import org.powerbot.game.api.ActiveScript;
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Time;
 import org.powerbot.game.bot.Bot;
-import org.powerbot.game.bot.random.AntiRandom;
-import org.powerbot.game.bot.random.Login;
 
 /**
  * @author Timer
@@ -36,10 +34,11 @@ public class RandomHandler extends Task {
 			for (final AntiRandom antiRandom : antiRandoms) {
 				if (antiRandom.applicable()) {
 					if (!activeScript.isPaused()) {
-						activeScript.pause(true);
+						activeScript.pause(false);
 						while (activeScript.getContainer().isActive()) {
 							Time.sleep(Random.nextInt(500, 1200));
 						}
+						activeScript.pause(true);
 					}
 					bot.getContainer().submit(antiRandom);
 					if (antiRandom.future != null) {
