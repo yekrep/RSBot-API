@@ -106,10 +106,10 @@ public class ActionExecutor extends Task implements ActionContainer {
 					if (activator == null || !activator.applicable()) {
 						continue;
 					}
-					if (action.taskHolder == null || action.taskHolder.tasks == null) {
+					if (action.tasks == null) {
 						continue;
 					}
-					for (final Task task : action.taskHolder.tasks) {
+					for (final Task task : action.tasks) {
 						processor.submit(task);
 						if (action.requireLock && task.future != null) {
 							futures.add(task.future);

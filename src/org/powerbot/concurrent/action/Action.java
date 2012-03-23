@@ -1,5 +1,6 @@
 package org.powerbot.concurrent.action;
 
+import org.powerbot.concurrent.Task;
 import org.powerbot.lang.Activator;
 
 /**
@@ -11,28 +12,28 @@ public class Action {
 	public boolean requireLock;
 	public boolean resetExecutionQueue;
 	public Activator activator;
-	public TaskHolder taskHolder;
+	public Task[] tasks;
 
 	/**
 	 * Initializes this <code>Action</code> with appropriate information required for processing.
 	 *
-	 * @param activator  The <code>Activator</code> associated with this <code>Action</code>.
-	 * @param taskHolder The <code>TaskHolder</code> associated with this <code>Action</code>.
+	 * @param activator The <code>Activator</code> associated with this <code>Action</code>.
+	 * @param tasks     The tasks associated with this <code>Action</code>.
 	 */
-	public Action(final Activator activator, final TaskHolder taskHolder) {
-		this(activator, taskHolder, true);
+	public Action(final Activator activator, final Task... tasks) {
+		this(true, activator, tasks);
 	}
 
 	/**
 	 * Initializes this <code>Action</code> with appropriate information required for processing.
 	 *
 	 * @param activator   The <code>Activator</code> associated with this <code>Action</code>.
-	 * @param taskHolder  The <code>TaskHolder</code> associated with this <code>Action</code>.
+	 * @param tasks       The tasks associated with this <code>Action</code>.
 	 * @param requireLock <tt>true</tt> to require the ActionManager to lock while processing this action; otherwise <tt>false</tt>.
 	 */
-	public Action(final Activator activator, final TaskHolder taskHolder, final boolean requireLock) {
+	public Action(final boolean requireLock, final Activator activator, final Task... tasks) {
 		this.activator = activator;
-		this.taskHolder = taskHolder;
+		this.tasks = tasks;
 		this.requireLock = requireLock;
 		this.resetExecutionQueue = false;
 	}
