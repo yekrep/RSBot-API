@@ -7,7 +7,7 @@ import java.util.concurrent.Future;
 
 import org.powerbot.concurrent.Task;
 import org.powerbot.concurrent.TaskContainer;
-import org.powerbot.lang.Activator;
+import org.powerbot.lang.Activatable;
 
 /**
  * An action manager capable of dispatching actions when activated within the a concurrent environment.
@@ -102,7 +102,7 @@ public class ActionExecutor extends Task implements ActionContainer {
 					if (state != State.LISTENING) {
 						break;
 					}
-					final Activator activator = action.activator;
+					final Activatable activator = action.activator;
 					if (activator == null || !activator.applicable()) {
 						continue;
 					}

@@ -10,7 +10,7 @@ import org.powerbot.concurrent.action.Action;
 import org.powerbot.concurrent.action.ActionExecutor;
 import org.powerbot.event.EventManager;
 import org.powerbot.game.bot.Bot;
-import org.powerbot.lang.Activator;
+import org.powerbot.lang.Activatable;
 
 import static org.powerbot.concurrent.action.ActionExecutor.State;
 
@@ -20,7 +20,7 @@ import static org.powerbot.concurrent.action.ActionExecutor.State;
 public abstract class ActiveScript implements EventListener {
 	public final Logger log = Logger.getLogger(getClass().getName());
 
-	private Activator stop_execution;
+	private Activatable stop_execution;
 	private EventManager eventManager;
 	private TaskContainer container;
 	private ActionExecutor executor;
@@ -50,7 +50,7 @@ public abstract class ActiveScript implements EventListener {
 		container.submit(task);
 	}
 
-	protected final void setStoppableExecution(final Activator activator) {
+	protected final void setStoppableExecution(final Activatable activator) {
 		this.stop_execution = activator;
 	}
 

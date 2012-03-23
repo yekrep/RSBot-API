@@ -1,7 +1,7 @@
 package org.powerbot.concurrent.action;
 
 import org.powerbot.concurrent.Task;
-import org.powerbot.lang.Activator;
+import org.powerbot.lang.Activatable;
 
 /**
  * An action that is performed when it can be activated.
@@ -11,7 +11,7 @@ import org.powerbot.lang.Activator;
 public class Action {
 	public boolean requireLock;
 	public boolean resetExecutionQueue;
-	public Activator activator;
+	public Activatable activator;
 	public Task[] tasks;
 
 	/**
@@ -20,7 +20,7 @@ public class Action {
 	 * @param activator The <code>Activator</code> associated with this <code>Action</code>.
 	 * @param tasks     The tasks associated with this <code>Action</code>.
 	 */
-	public Action(final Activator activator, final Task... tasks) {
+	public Action(final Activatable activator, final Task... tasks) {
 		this(true, activator, tasks);
 	}
 
@@ -31,7 +31,7 @@ public class Action {
 	 * @param tasks       The tasks associated with this <code>Action</code>.
 	 * @param requireLock <tt>true</tt> to require the ActionManager to lock while processing this action; otherwise <tt>false</tt>.
 	 */
-	public Action(final boolean requireLock, final Activator activator, final Task... tasks) {
+	public Action(final boolean requireLock, final Activatable activator, final Task... tasks) {
 		this.activator = activator;
 		this.tasks = tasks;
 		this.requireLock = requireLock;

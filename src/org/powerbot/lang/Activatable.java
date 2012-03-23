@@ -5,7 +5,7 @@ package org.powerbot.lang;
  *
  * @author Timer
  */
-public interface Activator {
+public interface Activatable {
 	/**
 	 * Determines whether or not to act upon the desired object after the activation interface is invoked.
 	 *
