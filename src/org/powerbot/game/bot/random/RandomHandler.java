@@ -43,9 +43,11 @@ public class RandomHandler extends Task {
 							Time.sleep(Random.nextInt(500, 1200));
 						}
 					}
-					activeScript.pause(true);
-					bot.getEventDispatcher().accept(antiRandom);
-					listeners.put(antiRandom.getClass().getName(), antiRandom);
+					if (!listeners.containsKey(antiRandom.getClass().getName())) {
+						activeScript.pause(true);
+						bot.getEventDispatcher().accept(antiRandom);
+						listeners.put(antiRandom.getClass().getName(), antiRandom);
+					}
 					bot.getContainer().submit(antiRandom);
 					if (antiRandom.future != null) {
 						submittedRandom = antiRandom.future;
