@@ -22,13 +22,14 @@ import javax.swing.border.EmptyBorder;
 
 import org.powerbot.game.bot.Bot;
 import org.powerbot.gui.BotChrome;
+import org.powerbot.gui.BotScripts;
 import org.powerbot.service.NetworkAccount;
 import org.powerbot.util.io.Resources;
 
 /**
  * @author Paris
  */
-public final class BotToolBar extends JToolBar {
+public final class BotToolBar extends JToolBar implements ActionListener {
 	private static final long serialVersionUID = 1L;
 	public final BotChrome parent;
 	private final JButton tabAdd, scriptPlay, scriptStop;
@@ -54,11 +55,13 @@ public final class BotToolBar extends JToolBar {
 		add(Box.createHorizontalGlue());
 
 		scriptPlay = new JButton(new ImageIcon(Resources.getImage(Resources.Paths.CONTROL_PLAY)));
+		scriptPlay.addActionListener(this);
 		scriptPlay.setToolTipText(BotLocale.PLAYSCRIPT);
 		scriptPlay.setFocusable(false);
-		scriptPlay.setVisible(false);
+		scriptPlay.setVisible(true);
 		add(scriptPlay);
 		scriptStop = new JButton(new ImageIcon(Resources.getImage(Resources.Paths.CONTROL_STOP)));
+		scriptStop.addActionListener(this);
 		scriptStop.setToolTipText(BotLocale.STOPSCRIPT);
 		scriptStop.setFocusable(false);
 		scriptStop.setVisible(false);
@@ -74,6 +77,16 @@ public final class BotToolBar extends JToolBar {
 		});
 		settings.setFocusable(false);
 		add(settings);
+	}
+
+	@Override
+	public void actionPerformed(final ActionEvent e) {
+		final Component c = (Component) e.getSource();
+		if (c == scriptPlay) {
+			new BotScripts(this);
+		} else if (c == scriptStop) {
+			
+		}
 	}
 
 	public void addTab() {
