@@ -4,7 +4,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.powerbot.game.api.internal.util.Nodes;
+import org.powerbot.game.api.methods.Calculations;
 import org.powerbot.game.api.util.Filter;
+import org.powerbot.game.api.wrappers.LocalTile;
 import org.powerbot.game.api.wrappers.interactive.Npc;
 import org.powerbot.game.bot.Bot;
 import org.powerbot.game.client.Client;
@@ -50,5 +52,27 @@ public class Npcs {
 			}
 		}
 		return npcs.toArray(new Npc[npcs.size()]);
+	}
+
+	public static Npc getNearest(final Filter<Npc> filter) {
+		final Client client = Bot.resolve().getClient();
+		final int[] indices = client.getRSNPCIndexArray();
+		Npc npc = null;
+		double distance = Double.MAX_VALUE;
+		final LocalTile position = Players.getLocal().getLocalPosition();
+		for (final int index : indices) {
+			final Node node = Nodes.lookup(client.getRSNPCNC(), index);
+			if (node != null && node instanceof RSNPCNode) {
+				final Npc t_npc = new Npc(((RSNPCHolder) ((RSNPCNodeHolder) ((RSNPCNode) node).getData()).getRSNPCNodeHolder()).getRSNPC());
+				if (filter.accept(t_npc)) {
+					final double dist = Calculations.distance(position, t_npc.getLocalPosition());
+					if (dist < distance) {
+						distance = dist;
+						npc = t_npc;
+					}
+				}
+			}
+		}
+		return npc;
 	}
 }

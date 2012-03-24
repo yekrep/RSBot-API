@@ -78,7 +78,6 @@ public class Locations {
 		Location location = null;
 		double distance = Double.MAX_VALUE;
 		final LocalTile position = Players.getLocal().getLocalPosition();
-		final Set<Location> objects = new LinkedHashSet<Location>();
 		for (int x = 0; x < 104; x++) {
 			for (int y = 0; y < 104; y++) {
 				for (final Location l : getAtLocal(x, y, -1)) {

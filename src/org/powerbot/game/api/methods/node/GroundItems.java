@@ -5,9 +5,11 @@ import java.util.List;
 
 import org.powerbot.game.api.internal.util.Deque;
 import org.powerbot.game.api.internal.util.Nodes;
+import org.powerbot.game.api.methods.Calculations;
 import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.util.Filter;
+import org.powerbot.game.api.wrappers.LocalTile;
 import org.powerbot.game.api.wrappers.Tile;
 import org.powerbot.game.api.wrappers.node.GroundItem;
 import org.powerbot.game.api.wrappers.node.Item;
@@ -31,6 +33,10 @@ public class GroundItems {
 	 */
 	public static GroundItem[] getLoaded() {
 		return getLoaded(104, ALL_FILTER);
+	}
+
+	public static GroundItem[] getLoaded(final Filter<GroundItem> filter) {
+		return getLoaded(104, filter);
 	}
 
 	/**
@@ -57,6 +63,35 @@ public class GroundItems {
 			}
 		}
 		return temp.toArray(new GroundItem[temp.size()]);
+	}
+
+	public static GroundItem getNearest(final Filter<GroundItem> filter) {
+		return getNearest(104, filter);
+	}
+
+	public static GroundItem getNearest(final int range, final Filter<GroundItem> filter) {
+		GroundItem groundItem = null;
+		double distance = Double.MAX_VALUE;
+		final LocalTile position = Players.getLocal().getLocalPosition();
+		final int pX = Players.getLocal().getPosition().x;
+		final int pY = Players.getLocal().getPosition().y;
+		final int minX = Math.max(0, pX - range), minY = Math.max(0, pY - range);
+		final int maxX = Math.min(104, pX + range), maxY = Math.min(104, pY + range);
+		for (int x = minX; x < maxX; x++) {
+			for (int y = minY; y < maxY; y++) {
+				final GroundItem[] items = getLoadedAt(x, y);
+				for (final GroundItem item : items) {
+					if (item != null && filter.accept(item)) {
+						final double dist = Calculations.distance(position, item.getLocalPosition());
+						if (dist < distance) {
+							distance = dist;
+							groundItem = item;
+						}
+					}
+				}
+			}
+		}
+		return groundItem;
 	}
 
 	/**
