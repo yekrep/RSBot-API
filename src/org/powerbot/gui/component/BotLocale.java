@@ -29,9 +29,13 @@ public final class BotLocale {
 	public static String REGISTER = "Register";
 	public static String ERROR = "Error";
 	public static String INVALIDCREDENTIALS = "Invalid username or password.";
+	public static String SCRIPTS = "Scripts";
 
 	public static String NEEDVIP = "VIP Access";
 	public static String NEEDVIPMULTITAB = "Only VIPs can open multiple tabs.";
+
+	public static String ADDTOFAVS = "Add to favourites";
+	public static String REMOVEFROMFAVS = "Remove from favourites";
 
 	public static String VISITSITE = "Visit Site";
 	public static String OK = "OK";

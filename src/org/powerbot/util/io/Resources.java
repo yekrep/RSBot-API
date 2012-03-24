@@ -34,11 +34,17 @@ public class Resources {
 		public static final String CROSS_SMALL_GRAY = ROOT_IMG + "/cross_small_gray.png";
 		public static final String DELETE = ROOT_IMG + "/delete.png";
 		public static final String KEY = ROOT_IMG + "/key.png";
+		public static final String MONEY_DOLLAR = ROOT_IMG + "/money_dollar.png";
 		public static final String REPORT_KEY = ROOT_IMG + "/report_key.png";
+		public static final String SCRIPT = ROOT_IMG + "/script.png";
+		public static final String STAR = ROOT_IMG + "/star.png";
+		public static final String STAR_GRAY = ROOT_IMG + "/star_gray.png";
 		public static final String TAB_ADD = ROOT_IMG + "/tab_add.png";
 		public static final String TAB_DELETE = ROOT_IMG + "/tab_delete.png";
 		public static final String VERSION = ROOT + "/version.txt";
+		public static final String WORLD_LINK = ROOT_IMG + "/world_link.png";
 		public static final String WRENCH = ROOT_IMG + "/wrench.png";
+		public static final String SKILLS = ROOT_IMG + "/skills.png";
 	}
 
 	public static URL getResourceURL(final String path) throws MalformedURLException {

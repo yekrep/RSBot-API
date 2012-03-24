@@ -12,4 +12,8 @@ public @interface Manifest {
 	double version() default 1.0;
 
 	String[] authors();
+
+	String website() default "";
+
+	boolean premium() default false;
 }
