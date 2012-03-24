@@ -98,15 +98,15 @@ public abstract class GameDefinition implements GameEnvironment {
 				try {
 					nodeManipulator = getNodeManipulator();
 				} catch (final Throwable e) {
-					log.log(Level.FINE, "Failed to load processor: ", e);
+					log.log(Level.FINE, "Failed to load manipulator: ", e);
 					return false;
 				}
 				if (nodeManipulator != null) {
-					log.fine("Running node processor");
+					log.fine("Running node manipulator");
 					try {
 						nodeManipulator.adapt();
 					} catch (final AdaptException e) {
-						log.log(Level.FINE, "Node adaptation failed", e);
+						log.log(Level.FINE, "Node manipulation failed", e);
 						return false;
 					}
 					log.fine("Processing classes");

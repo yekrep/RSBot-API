@@ -110,7 +110,7 @@ public class Location implements Entity, Mobile {
 	}
 
 	public boolean verify() {
-		return false;//TODO
+		return getId() != -1;
 	}
 
 	public Point getCentralPoint() {
@@ -119,39 +119,52 @@ public class Location implements Entity, Mobile {
 	}
 
 	public Point getNextViewportPoint() {
-		return null;//TODO
+		final CapturedModel model = getModel();
+		return model != null ? model.getNextViewportPoint() : getPosition().getNextViewportPoint();
 	}
 
-	public boolean contains(Point point) {
-		return false;//TODO
+	public boolean contains(final Point point) {
+		final CapturedModel model = getModel();
+		return model != null ? model.contains(point) : getPosition().contains(point);
 	}
 
 	public boolean isOnScreen() {
 		final CapturedModel model = getModel();
-		return model != null ? model.isOnScreen() : getPosition().isOnScreen();//TODO
+		return model != null ? model.isOnScreen() : getPosition().isOnScreen();
 	}
 
 	public Polygon[] getBounds() {
-		return new Polygon[0];//TODO
+		final CapturedModel model = getModel();
+		return model != null ? model.getBounds() : getPosition().getBounds();
 	}
 
 	public boolean hover() {
-		return false;//TODO
+		final CapturedModel model = getModel();
+		return model != null ? model.hover() : getPosition().hover();
 	}
 
-	public boolean click(boolean left) {
-		return false;//TODO
+	public boolean click(final boolean left) {
+		final CapturedModel model = getModel();
+		return model != null ? model.click(left) : getPosition().click(left);
 	}
 
-	public boolean interact(String action) {
-		return false;//TODO
+	public boolean interact(final String action) {
+		final CapturedModel model = getModel();
+		return model != null ? model.interact(action) : getPosition().interact(action);
 	}
 
-	public boolean interact(String action, String option) {
-		return false;//TODO
+	public boolean interact(final String action, final String option) {
+		final CapturedModel model = getModel();
+		return model != null ? model.interact(action, option) : getPosition().interact(action, option);
 	}
 
-	public void draw(Graphics render) {
-		//TODO
+	public void draw(final Graphics render) {
+		//TODO color
+		final CapturedModel model = getModel();
+		if (model != null) {
+			model.draw(render);
+		} else {
+			getPosition().draw(render);
+		}
 	}
 }
