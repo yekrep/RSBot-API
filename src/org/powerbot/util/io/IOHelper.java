@@ -63,6 +63,10 @@ public class IOHelper {
 		}
 	}
 
+	public static String readString(final InputStream is) {
+		return StringUtil.newStringUtf8(read(is));
+	}
+
 	public static String readString(final URL in) {
 		return StringUtil.newStringUtf8(read(in));
 	}
