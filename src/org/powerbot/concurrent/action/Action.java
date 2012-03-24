@@ -1,5 +1,7 @@
 package org.powerbot.concurrent.action;
 
+import java.util.concurrent.Future;
+
 import org.powerbot.concurrent.Task;
 import org.powerbot.lang.Activatable;
 
@@ -9,10 +11,13 @@ import org.powerbot.lang.Activatable;
  * @author Timer
  */
 public class Action {
-	public boolean requireLock;
-	public boolean resetExecutionQueue;
 	public Activatable activator;
 	public Task[] tasks;
+
+	public boolean requireLock;
+	public boolean resetExecutionQueue;
+	public boolean synchronizeInstances;
+	public Future<?> future;
 
 	/**
 	 * Initializes this <code>Action</code> with appropriate information required for processing.
@@ -23,7 +28,14 @@ public class Action {
 	public Action(final Activatable activator, final Task... tasks) {
 		this.activator = activator;
 		this.tasks = tasks;
+
 		requireLock = true;
 		resetExecutionQueue = false;
+		synchronizeInstances = true;
+		future = null;
+	}
+
+	boolean isIdle() {
+		return future == null || future.isDone();
 	}
 }

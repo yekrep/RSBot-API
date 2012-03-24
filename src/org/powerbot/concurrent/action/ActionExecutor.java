@@ -88,7 +88,7 @@ public class ActionExecutor implements ActionContainer, Task {
 	 */
 	public void run() {
 		final List<Future<?>> futures = Collections.synchronizedList(new ArrayList<Future<?>>());
-		State heldState;
+		State cached_state;
 		while (state != State.DESTROYED) {
 			if (state == State.LOCKED) {
 				synchronized (this) {
@@ -103,32 +103,25 @@ public class ActionExecutor implements ActionContainer, Task {
 						break;
 					}
 					final Activatable activator = action.activator;
-					if (activator == null || !activator.applicable()) {
+					if (activator == null || action.tasks == null || !activator.applicable()) {
 						continue;
 					}
-					if (action.tasks == null) {
+					if (action.synchronizeInstances && !action.isIdle()) {
 						continue;
 					}
 					for (final Task task : action.tasks) {
 						final Future<?> future = processor.submit(task);
-						if (action.requireLock && future != null) {
+						if (future != null) {
 							futures.add(future);
 						}
 					}
-					heldState = state;
+					cached_state = state;
+					final Task running_action = createFutureDisposer(futures, this);
+					action.future = processor.submit(running_action);
 					if (action.requireLock) {
-						synchronized (this) {
-							processor.submit(createWait(futures, this));
-							state = State.PROCESSING;
-							if (futures.size() > 0) {
-								try {
-									wait();
-								} catch (final InterruptedException ignored) {
-								}
-							}
-						}
+						awaitNotify(futures);
 						if (state == State.PROCESSING) {
-							state = heldState;
+							state = cached_state;
 						}
 					}
 					futures.clear();
@@ -142,6 +135,18 @@ public class ActionExecutor implements ActionContainer, Task {
 		}
 	}
 
+	public void awaitNotify(final List<Future<?>> futures) {
+		synchronized (this) {
+			state = State.PROCESSING;
+			if (futures.size() > 0) {
+				try {
+					wait();
+				} catch (final InterruptedException ignored) {
+				}
+			}
+		}
+	}
+
 	/**
 	 * Creates a <code>RunnableTask</code> that notifies a thread to awaken when all futures are completed.
 	 *
@@ -150,7 +155,7 @@ public class ActionExecutor implements ActionContainer, Task {
 	 * @return The <code>RunnableTask</code> to be submitted.
 	 */
 
-	private Task createWait(final List<Future<?>> lockingFutures, final Object threadObject) {
+	private Task createFutureDisposer(final List<Future<?>> lockingFutures, final Object threadObject) {
 		return new Task() {
 			public void run() {
 				while (lockingFutures.size() > 0) {
