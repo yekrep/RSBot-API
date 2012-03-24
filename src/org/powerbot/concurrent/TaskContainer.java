@@ -12,6 +12,7 @@ public interface TaskContainer {
 	 * Submits a task for processing and execution.
 	 *
 	 * @param task The task to be deployed.
+	 * @return The <code>Future</code> of this <code>Task</code>.
 	 */
 	public Future<?> submit(Task task);
 

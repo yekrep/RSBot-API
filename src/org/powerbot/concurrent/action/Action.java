@@ -22,7 +22,7 @@ public class Action {
 	/**
 	 * Initializes this <code>Action</code> with appropriate information required for processing.
 	 *
-	 * @param activator The <code>Activator</code> associated with this <code>Action</code>.
+	 * @param activator The <code>Activatable</code> associated with this <code>Action</code>.
 	 * @param tasks     The tasks associated with this <code>Action</code>.
 	 */
 	public Action(final Activatable activator, final Task... tasks) {

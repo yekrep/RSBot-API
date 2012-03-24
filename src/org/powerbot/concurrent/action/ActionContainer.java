@@ -7,17 +7,17 @@ package org.powerbot.concurrent.action;
  */
 public interface ActionContainer {
 	/**
-	 * Begins listening to the actions associated with this <code>ActionManager</code>.
+	 * Begins listening to the actions associated with this <code>ActionContainer</code>.
 	 */
 	public void listen();
 
 	/**
-	 * Locks this manager from processing and dispatching of actions.
+	 * Locks this container from processing and dispatching of actions.
 	 */
 	public void lock();
 
 	/**
-	 * Destroys this <code>ActionManager</code> and cleans up.
+	 * Destroys this <code>ActionContainer</code> and cleans up.
 	 */
 	public void destroy();
 
