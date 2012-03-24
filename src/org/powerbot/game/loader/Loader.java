@@ -14,7 +14,7 @@ import org.powerbot.util.Configuration;
  *
  * @author Timer
  */
-public class Loader extends Task {
+public class Loader implements Task {
 	private static Logger log = Logger.getLogger(Loader.class.getName());
 	private final GameDefinition definition;
 

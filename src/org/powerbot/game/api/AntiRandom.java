@@ -15,7 +15,7 @@ import org.powerbot.lang.Activatable;
 /**
  * @author Timer
  */
-public abstract class AntiRandom extends Task implements Activatable, PaintListener {
+public abstract class AntiRandom implements Activatable, Task, PaintListener {
 	public void onRepaint(final Graphics render) {
 		final Point p = Mouse.getLocation();
 		final Canvas canvas = Bot.resolve().getCanvas();

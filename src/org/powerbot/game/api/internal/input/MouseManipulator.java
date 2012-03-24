@@ -15,7 +15,7 @@ import org.powerbot.game.api.wrappers.Locatable;
 /**
  * @author Timer
  */
-public class MouseManipulator extends Task {
+public class MouseManipulator implements Task {
 	private final List<ForceModifier> forceModifiers = new ArrayList<ForceModifier>(5);
 	private final Vector velocity = new Vector();
 	private final long timeout;

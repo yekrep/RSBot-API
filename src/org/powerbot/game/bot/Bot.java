@@ -285,7 +285,7 @@ public class Bot extends GameDefinition implements Runnable {
 	/**
 	 * @author Timer
 	 */
-	private static final class SafeMode extends Task {
+	private static final class SafeMode implements Task {
 		private final Bot bot;
 
 		public SafeMode(final Bot bot) {

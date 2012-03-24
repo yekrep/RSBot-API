@@ -230,7 +230,7 @@ public class BotPanel extends JPanel {
 		}
 	}
 
-	private final class BotSet extends Task {
+	private final class BotSet implements Task {
 		private final ThreadGroup threadGroup;
 
 		private BotSet(final ThreadGroup threadGroup) {

@@ -23,9 +23,8 @@ public class TaskProcessor implements TaskContainer {
 	/**
 	 * {@inheritDoc}
 	 */
-	public void submit(final Task task) {
-		final Future<?> future = executor.submit(task);
-		task.setFuture(future);
+	public Future<?> submit(final Task task) {
+		return executor.submit(task);
 	}
 
 	/**

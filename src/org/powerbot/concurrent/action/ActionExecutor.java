@@ -14,7 +14,7 @@ import org.powerbot.lang.Activatable;
  *
  * @author Timer
  */
-public class ActionExecutor extends Task implements ActionContainer {
+public class ActionExecutor implements ActionContainer, Task {
 	private final TaskContainer processor;
 	private final TaskContainer owner;
 	private final List<Action> actions;
@@ -110,9 +110,9 @@ public class ActionExecutor extends Task implements ActionContainer {
 						continue;
 					}
 					for (final Task task : action.tasks) {
-						processor.submit(task);
-						if (action.requireLock && task.future != null) {
-							futures.add(task.future);
+						final Future<?> future = processor.submit(task);
+						if (action.requireLock && future != null) {
+							futures.add(future);
 						}
 					}
 					heldState = state;

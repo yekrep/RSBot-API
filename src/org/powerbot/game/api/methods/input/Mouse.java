@@ -7,6 +7,7 @@ import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.Future;
 
 import org.powerbot.concurrent.TaskContainer;
 import org.powerbot.game.api.internal.input.MouseManipulator;
@@ -158,9 +159,9 @@ public class Mouse {
 	public static boolean move(final int x, final int y) {
 		final TaskContainer container = Bot.resolve().getContainer();
 		final MouseManipulator task = create(x, y, 0, 0, false, false);
-		container.submit(task);
-		if (task.future != null) {
-			while (!task.future.isDone()) {
+		final Future<?> future = container.submit(task);
+		if (future != null) {
+			while (!future.isDone()) {
 				Time.sleep(50);
 			}
 		}
@@ -179,9 +180,9 @@ public class Mouse {
 	public static boolean move(int x, int y, final int randomX, final int randomY) {
 		final TaskContainer container = Bot.resolve().getContainer();
 		final MouseManipulator task = create(x, y, randomX, randomY, false, false);
-		container.submit(task);
-		if (task.future != null) {
-			while (!task.future.isDone()) {
+		final Future<?> future = container.submit(task);
+		if (future != null) {
+			while (!future.isDone()) {
 				Time.sleep(50);
 			}
 		}

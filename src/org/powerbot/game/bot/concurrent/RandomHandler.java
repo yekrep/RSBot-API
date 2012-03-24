@@ -19,7 +19,7 @@ import org.powerbot.game.bot.Bot;
 /**
  * @author Timer
  */
-public class RandomHandler extends Task {
+public class RandomHandler implements Task {
 	private static final Logger log = Logger.getLogger(RandomHandler.class.getName());
 
 	private final Bot bot;
@@ -56,9 +56,8 @@ public class RandomHandler extends Task {
 						bot.getEventDispatcher().accept(antiRandom);
 						listeners.put(antiRandom.getClass().getName(), antiRandom);
 					}
-					bot.getContainer().submit(antiRandom);
-					if (antiRandom.future != null) {
-						submittedRandom = antiRandom.future;
+					submittedRandom = bot.getContainer().submit(antiRandom);
+					if (submittedRandom != null) {
 						break;
 					}
 				} else {

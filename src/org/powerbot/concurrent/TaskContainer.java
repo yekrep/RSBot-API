@@ -1,5 +1,7 @@
 package org.powerbot.concurrent;
 
+import java.util.concurrent.Future;
+
 /**
  * A container in which is able to perform basic, mandatory invocations in regards to tasks.
  *
@@ -11,7 +13,7 @@ public interface TaskContainer {
 	 *
 	 * @param task The task to be deployed.
 	 */
-	public void submit(Task task);
+	public Future<?> submit(Task task);
 
 	/**
 	 * Determines if this container is currently processing tasks.
