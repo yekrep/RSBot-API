@@ -1,6 +1,6 @@
 package org.powerbot.game;
 
-import org.powerbot.asm.NodeProcessor;
+import org.powerbot.asm.NodeManipulator;
 import org.powerbot.lang.AdaptException;
 
 /**
@@ -17,7 +17,7 @@ public interface GameEnvironment {
 	 */
 	public boolean initializeEnvironment();
 
-	NodeProcessor getProcessor() throws AdaptException;
+	NodeManipulator getNodeManipulator() throws AdaptException;
 
 	public void startEnvironment();
 

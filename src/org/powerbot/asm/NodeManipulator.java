@@ -7,7 +7,7 @@ import org.powerbot.lang.AdaptException;
  *
  * @author Timer
  */
-public interface NodeProcessor {
+public interface NodeManipulator {
 	public void adapt() throws AdaptException;
 
 	public byte[] process(String name, byte[] data);

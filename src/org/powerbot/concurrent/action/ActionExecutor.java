@@ -15,7 +15,7 @@ import org.powerbot.lang.Activatable;
  * @author Timer
  */
 public class ActionExecutor implements ActionContainer, Task {
-	private final TaskContainer processor;
+	private final TaskContainer container;
 	private final TaskContainer owner;
 	private final List<Action> actions;
 	public State state;
@@ -23,11 +23,11 @@ public class ActionExecutor implements ActionContainer, Task {
 	/**
 	 * Initializes this action manager with appropriate objects.
 	 *
-	 * @param processor The <code>TaskContainer</code> to use as a medium for processing.
+	 * @param container The <code>TaskContainer</code> to use as a medium for processing.
 	 * @param owner     The <code>TaskContainer</code> that owns this executor.
 	 */
-	public ActionExecutor(final TaskContainer processor, final TaskContainer owner) {
-		this.processor = processor;
+	public ActionExecutor(final TaskContainer container, final TaskContainer owner) {
+		this.container = container;
 		this.owner = owner;
 		actions = new ArrayList<Action>();
 		state = State.DESTROYED;
@@ -110,14 +110,14 @@ public class ActionExecutor implements ActionContainer, Task {
 						continue;
 					}
 					for (final Task task : action.tasks) {
-						final Future<?> future = processor.submit(task);
+						final Future<?> future = container.submit(task);
 						if (future != null) {
 							futures.add(future);
 						}
 					}
 					cached_state = state;
 					final Task running_action = createFutureDisposer(futures, this);
-					action.future = processor.submit(running_action);
+					action.future = container.submit(running_action);
 					if (action.requireLock) {
 						awaitNotify(futures);
 						if (state == State.PROCESSING) {

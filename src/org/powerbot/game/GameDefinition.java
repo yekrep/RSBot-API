@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.powerbot.asm.NodeProcessor;
+import org.powerbot.asm.NodeManipulator;
 import org.powerbot.concurrent.TaskContainer;
 import org.powerbot.concurrent.TaskProcessor;
 import org.powerbot.game.loader.Crawler;
@@ -94,17 +94,17 @@ public abstract class GameDefinition implements GameEnvironment {
 				return false;
 			}
 			if (this.classes.size() > 0) {
-				NodeProcessor nodeProcessor;
+				NodeManipulator nodeManipulator;
 				try {
-					nodeProcessor = getProcessor();
+					nodeManipulator = getNodeManipulator();
 				} catch (final Throwable e) {
 					log.log(Level.FINE, "Failed to load processor: ", e);
 					return false;
 				}
-				if (nodeProcessor != null) {
+				if (nodeManipulator != null) {
 					log.fine("Running node processor");
 					try {
-						nodeProcessor.adapt();
+						nodeManipulator.adapt();
 					} catch (final AdaptException e) {
 						log.log(Level.FINE, "Node adaptation failed", e);
 						return false;
@@ -112,7 +112,7 @@ public abstract class GameDefinition implements GameEnvironment {
 					log.fine("Processing classes");
 					for (final Map.Entry<String, byte[]> clazz : this.classes.entrySet()) {
 						final String name = clazz.getKey();
-						this.classes.put(name, nodeProcessor.process(name, clazz.getValue()));
+						this.classes.put(name, nodeManipulator.process(name, clazz.getValue()));
 					}
 				}
 				return true;

@@ -8,7 +8,7 @@ import java.util.Map;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
-import org.powerbot.asm.NodeProcessor;
+import org.powerbot.asm.NodeManipulator;
 import org.powerbot.asm.visitor.AddFieldAdapter;
 import org.powerbot.asm.visitor.AddGetterAdapter;
 import org.powerbot.asm.visitor.AddInterfaceAdapter;
@@ -19,7 +19,7 @@ import org.powerbot.asm.visitor.SetSignatureAdapter;
 import org.powerbot.asm.visitor.SetSuperAdapter;
 import org.powerbot.lang.AdaptException;
 
-public class ModScript implements NodeProcessor {
+public class ModScript implements NodeManipulator {
 	private final Map<String, ClassVisitor> adapters;
 	private final Map<String, ClassWriter> writers;
 	public Map<String, String> attributes;

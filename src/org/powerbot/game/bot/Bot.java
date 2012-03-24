@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.powerbot.asm.NodeProcessor;
+import org.powerbot.asm.NodeManipulator;
 import org.powerbot.concurrent.Task;
 import org.powerbot.event.EventDispatcher;
 import org.powerbot.game.GameDefinition;
@@ -121,7 +121,7 @@ public class Bot extends GameDefinition implements Runnable {
 	/**
 	 * {@inheritDoc}
 	 */
-	public NodeProcessor getProcessor() throws AdaptException {
+	public NodeManipulator getNodeManipulator() throws AdaptException {
 		final String id = "(" + packHash.substring(0, 6) + ")";
 		log.info("Loading client patch " + id);
 		try {
@@ -132,9 +132,9 @@ public class Bot extends GameDefinition implements Runnable {
 		} catch (final NullPointerException ignored) {
 			log.severe("Please try again later " + id);
 		} catch (final IOException e) {
-			log.log(Level.FINE, "Failed to get processor: ", e);
+			log.log(Level.FINE, "Failed to get node manipulator: ", e);
 		}
-		throw new AdaptException("Failed to load processor; unable to reach server or client unsupported");
+		throw new AdaptException("Failed to load node manipulator; unable to reach server or client unsupported");
 	}
 
 	/**
