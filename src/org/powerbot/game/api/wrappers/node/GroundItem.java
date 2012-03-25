@@ -5,6 +5,9 @@ import java.awt.Point;
 import java.awt.Polygon;
 
 import org.powerbot.game.api.methods.Game;
+import org.powerbot.game.api.methods.input.Mouse;
+import org.powerbot.game.api.methods.node.Menu;
+import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.wrappers.Entity;
 import org.powerbot.game.api.wrappers.LocalTile;
 import org.powerbot.game.api.wrappers.Mobile;
@@ -37,43 +40,60 @@ public class GroundItem implements Entity, Mobile {
 	}
 
 	public boolean verify() {
-		return false;//TODO
+		return tile.verify() && groundItem.getId() != -1;
 	}
 
 	public Point getCentralPoint() {
-		return null;//TODO
+		return tile.getCentralPoint();
 	}
 
 	public Point getNextViewportPoint() {
-		return null;//TODO
+		return tile.getCentralPoint();
 	}
 
 	public boolean contains(final Point point) {
-		return false;//TODO
+		return getCentralPoint().distance(point) < 3;
 	}
 
 	public boolean isOnScreen() {
-		return false;//TODO
+		return tile.isOnScreen();
 	}
 
 	public Polygon[] getBounds() {
-		return new Polygon[0];//TODO
+		return tile.getBounds();
 	}
 
 	public boolean hover() {
-		return false;//TODO
+		return Mouse.apply(this, new Filter<Point>() {
+			public boolean accept(final Point point) {
+				return true;
+			}
+		});
 	}
 
 	public boolean click(final boolean left) {
-		return false;//TODO
+		return Mouse.apply(this, new Filter<Point>() {
+			public boolean accept(final Point point) {
+				Mouse.click(true);
+				return true;
+			}
+		});
 	}
 
 	public boolean interact(final String action) {
-		return false;//TODO
+		return Mouse.apply(this, new Filter<Point>() {
+			public boolean accept(final Point point) {
+				return Menu.select(action);
+			}
+		});
 	}
 
 	public boolean interact(final String action, final String option) {
-		return false;//TODO
+		return Mouse.apply(this, new Filter<Point>() {
+			public boolean accept(final Point point) {
+				return Menu.select(action, option);
+			}
+		});
 	}
 
 	public void draw(final Graphics render) {
