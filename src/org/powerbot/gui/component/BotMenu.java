@@ -16,6 +16,7 @@ import org.powerbot.gui.BotChrome;
 import org.powerbot.gui.BotSignin;
 import org.powerbot.gui.BotWidgetExplorer;
 import org.powerbot.service.NetworkAccount;
+import org.powerbot.util.Configuration;
 import org.powerbot.util.io.Resources;
 
 /**
@@ -67,11 +68,13 @@ public final class BotMenu extends JPopupMenu implements ActionListener {
 		add(view);
 		addSeparator();
 
-		final JMenuItem widgetExplorer = new JMenuItem(BotLocale.WIDGETEXPLORER);
-		widgetExplorer.setEnabled(parent.getActiveTab() != -1);
-		widgetExplorer.addActionListener(this);
-		add(widgetExplorer);
-		addSeparator();
+		if (Configuration.DEVMODE) {
+			final JMenuItem widgetExplorer = new JMenuItem(BotLocale.WIDGETEXPLORER);
+			widgetExplorer.setEnabled(parent.getActiveTab() != -1);
+			widgetExplorer.addActionListener(this);
+			add(widgetExplorer);
+			addSeparator();
+		}
 
 		final JMenuItem site = new JMenuItem(BotLocale.WEBSITE);
 		site.setIcon(new ImageIcon(Resources.getImage(Resources.Paths.ICON_SMALL)));
