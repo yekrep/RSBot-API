@@ -8,6 +8,9 @@ import java.awt.Rectangle;
 import org.powerbot.game.api.Multipliers;
 import org.powerbot.game.api.internal.util.HashTable;
 import org.powerbot.game.api.methods.Widgets;
+import org.powerbot.game.api.methods.input.Mouse;
+import org.powerbot.game.api.methods.node.Menu;
+import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.wrappers.Entity;
 import org.powerbot.game.bot.Bot;
@@ -469,19 +472,36 @@ public class WidgetChild implements Entity {
 	}
 
 	public boolean hover() {
-		return false;//TODO
+		return Mouse.apply(this, new Filter<Point>() {
+			public boolean accept(final Point point) {
+				return true;
+			}
+		});
 	}
 
 	public boolean click(final boolean left) {
-		return false;//TODO
+		return Mouse.apply(this, new Filter<Point>() {
+			public boolean accept(final Point point) {
+				Mouse.click(left);
+				return true;
+			}
+		});
 	}
 
 	public boolean interact(final String action) {
-		return false;//TODO
+		return Mouse.apply(this, new Filter<Point>() {
+			public boolean accept(final Point point) {
+				return Menu.select(action);
+			}
+		});
 	}
 
 	public boolean interact(final String action, final String option) {
-		return false;//TODO
+		return Mouse.apply(this, new Filter<Point>() {
+			public boolean accept(final Point point) {
+				return Menu.select(action, option);
+			}
+		});
 	}
 
 	public void draw(Graphics render) {
