@@ -1,6 +1,5 @@
 package org.powerbot.game.api.internal.input;
 
-import java.awt.MouseInfo;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +10,7 @@ import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Time;
 import org.powerbot.game.api.wrappers.Locatable;
+import org.powerbot.game.bot.Bot;
 
 /**
  * @author Timer
@@ -23,44 +23,31 @@ public class MouseManipulator implements Task {
 	private final Locatable locatable;
 	private final Filter<Point> filter;
 	private boolean accepted = false;
+	private final org.powerbot.game.client.input.Mouse clientMouse;
 
 	public MouseManipulator(final Locatable locatable, final Filter<Point> filter) {
 		this.timeout = Random.nextInt(4000, 7000);
 		this.running = false;
 		this.locatable = locatable;
 		this.filter = filter;
+		this.clientMouse = Bot.resolve().getClient().getMouse();
 	}
 
 	public void run() {
 		this.running = true;
 		configureModifiers();
 		final long start = System.currentTimeMillis();
-		Point lastCentral = null;
-		Point lastTargetPoint = null;
-		while (running && System.currentTimeMillis() - start < timeout) {
-			final Point centralPoint = locatable.getCentralPoint();
-			final Point targetPoint = new Point(-1, -1);
-			if (lastTargetPoint != null) {
-				targetPoint.x = lastTargetPoint.x;
-				targetPoint.y = lastTargetPoint.y;
-			}
-			if (lastCentral == null || lastTargetPoint == null || !lastCentral.equals(centralPoint)) {
+		Point targetPoint = new Point(-1, -1);
+		while (running && System.currentTimeMillis() - start < timeout && locatable.verify()) {
+			if (!locatable.contains(targetPoint)) {
 				final Point viewPortPoint = locatable.getNextViewportPoint();
 				if (viewPortPoint.x == -1 || viewPortPoint.y == -1) {
 					Time.sleep(Random.nextInt(25, 51));
 					continue;
 				}
-				if (centralPoint.x == -1 || centralPoint.y == -1) {
-					centralPoint.setLocation(viewPortPoint);
-				}
-				lastCentral = centralPoint;
+				targetPoint.setLocation(viewPortPoint);
 			}
-			if (!locatable.contains(targetPoint)) {
-				lastTargetPoint = null;
-				continue;
-			}
-			lastTargetPoint = targetPoint;
-			final Point currentPoint = Mouse.getLocation();
+			final Point currentPoint = clientMouse.getLocation();
 			if (targetPoint.distance(currentPoint) < 3 && locatable.contains(currentPoint) && filter.accept(currentPoint)) {
 				accepted = true;
 				break;
@@ -113,7 +100,7 @@ public class MouseManipulator implements Task {
 		forceModifiers.add(new ForceModifier() {
 			//Target tracking
 			public Vector apply(final double deltaTime, final Point pTarget) {
-				final Point currentLocation = MouseInfo.getPointerInfo().getLocation();
+				final Point currentLocation = clientMouse.getLocation();
 				final Vector targetVector = new Vector();
 				targetVector.xUnits = pTarget.x - currentLocation.getX();
 				targetVector.yUnits = pTarget.y - currentLocation.getY();
@@ -139,7 +126,7 @@ public class MouseManipulator implements Task {
 		forceModifiers.add(new ForceModifier() {
 			//Velocity killer on destination (prevent loop-back)
 			public Vector apply(final double deltaTime, final Point pTarget) {
-				final Point currentLocation = MouseInfo.getPointerInfo().getLocation();
+				final Point currentLocation = clientMouse.getLocation();
 				final Vector targetVector = new Vector();
 				targetVector.xUnits = pTarget.x - currentLocation.getX();
 				targetVector.yUnits = pTarget.y - currentLocation.getY();
@@ -155,7 +142,7 @@ public class MouseManipulator implements Task {
 		forceModifiers.add(new ForceModifier() {
 			//Target noise
 			public Vector apply(final double deltaTime, final Point pTarget) {
-				final Point currentLocation = MouseInfo.getPointerInfo().getLocation();
+				final Point currentLocation = clientMouse.getLocation();
 				final Vector targetVector = new Vector();
 				targetVector.xUnits = pTarget.x - currentLocation.getX();
 				targetVector.yUnits = pTarget.y - currentLocation.getY();
@@ -181,7 +168,7 @@ public class MouseManipulator implements Task {
 		forceModifiers.add(new ForceModifier() {
 			//Pass near-target fix (high-velocity curve)
 			public Vector apply(final double deltaTime, final Point pTarget) {
-				final Point currentLocation = MouseInfo.getPointerInfo().getLocation();
+				final Point currentLocation = clientMouse.getLocation();
 				final Vector targetVector = new Vector();
 				targetVector.xUnits = pTarget.x - currentLocation.getX();
 				targetVector.yUnits = pTarget.y - currentLocation.getY();
