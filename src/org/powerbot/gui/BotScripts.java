@@ -205,12 +205,14 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 
 	private final class ScriptCell extends JPanel {
 		private static final long serialVersionUID = 1L;
+		private final Component parent;
 		private final ScriptDefinition def;
 		final int index;
 		private final Color[] c = new Color[] {null, null};
 		
 		public ScriptCell(final Component parent, final ScriptDefinition def) {
 			super();
+			this.parent = parent;
 			this.def = def;
 
 			index = ((JPanel) parent).getComponentCount();
