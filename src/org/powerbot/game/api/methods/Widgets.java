@@ -23,6 +23,9 @@ public class Widgets {
 	 */
 	public static Widget[] getLoaded() {
 		final Client client = Bot.resolve().getClient();
+		if (client == null) {
+			return new Widget[0];
+		}
 		ensureCapacity(client);
 		final Object[] clientInterfaceCache = client.getRSInterfaceCache();
 		if (clientInterfaceCache == null) {
@@ -89,17 +92,20 @@ public class Widgets {
 	}
 
 	/**
-	 * @param paramClient The <code>Client</code> to ensure caching capacity of.
+	 * @param client The <code>Client</code> to ensure caching capacity of.
 	 */
-	private static void ensureCapacity(final Client paramClient) {
-		Object[] clientInterfaceCache = paramClient.getRSInterfaceCache();
-		Widget[] cachedInterfaces = caches.get(paramClient);
+	private static void ensureCapacity(final Client client) {
+		if (client == null) {
+			return;
+		}
+		final Object[] clientInterfaceCache = client.getRSInterfaceCache();
+		Widget[] cachedInterfaces = caches.get(client);
 		if (cachedInterfaces == null) {
 			cachedInterfaces = new Widget[100];
-			caches.put(paramClient, cachedInterfaces);
+			caches.put(client, cachedInterfaces);
 		}
 		if ((clientInterfaceCache != null) && (cachedInterfaces.length < clientInterfaceCache.length)) {
-			caches.put(paramClient, Arrays.copyOf(cachedInterfaces, clientInterfaceCache.length));
+			caches.put(client, Arrays.copyOf(cachedInterfaces, clientInterfaceCache.length));
 		}
 	}
 }
