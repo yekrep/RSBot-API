@@ -16,6 +16,7 @@ public final class BotLocale {
 	public static String SIGNEDINAS = "Signed in as";
 	public static String SIGNOUT = "Sign out";
 	public static String VIEW = "View";
+	public static String WIDGETEXPLORER = "Widget Explorer";
 	public static String ABOUT = "About";
 	public static String EXIT = "Exit";
 
