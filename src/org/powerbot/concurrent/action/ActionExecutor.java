@@ -7,6 +7,7 @@ import java.util.concurrent.Future;
 
 import org.powerbot.concurrent.Task;
 import org.powerbot.concurrent.TaskContainer;
+import org.powerbot.game.api.util.Time;
 import org.powerbot.lang.Activatable;
 
 /**
@@ -163,6 +164,7 @@ public class ActionExecutor implements ActionContainer, Task {
 					if (future.isDone()) {
 						lockingFutures.remove(0);
 					}
+					Time.sleep(15);
 				}
 				synchronized (threadObject) {
 					threadObject.notify();
