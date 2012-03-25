@@ -73,10 +73,13 @@ public class GroundItems {
 		GroundItem groundItem = null;
 		double distance = Double.MAX_VALUE;
 		final LocalTile position = Players.getLocal().getLocalPosition();
-		final int pX = Players.getLocal().getPosition().x;
-		final int pY = Players.getLocal().getPosition().y;
-		final int minX = Math.max(0, pX - range), minY = Math.max(0, pY - range);
-		final int maxX = Math.min(104, pX + range), maxY = Math.min(104, pY + range);
+		final Tile tile = Players.getLocal().getPosition();
+		final int pX = tile.x;
+		final int pY = tile.y;
+		final int baseX = Game.getBaseX();
+		final int baseY = Game.getBaseY();
+		final int minX = Math.max(baseX, pX - range), minY = Math.max(baseY, pY - range);
+		final int maxX = Math.min(baseX + 104, pX + range), maxY = Math.min(baseY + 104, pY + range);
 		for (int x = minX; x < maxX; x++) {
 			for (int y = minY; y < maxY; y++) {
 				final GroundItem[] items = getLoadedAt(x, y);

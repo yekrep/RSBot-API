@@ -187,7 +187,7 @@ public abstract class CapturedModel implements Entity {
 
 	public boolean interact(final String action, final String option) {
 		return Mouse.apply(this, new Filter<Point>() {
-			public boolean accept(Point point) {
+			public boolean accept(final Point point) {
 				return Menu.select(action, option);
 			}
 		});
