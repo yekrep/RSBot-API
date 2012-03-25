@@ -108,11 +108,13 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 		add(toolbar, BorderLayout.NORTH);
 
 		star = new JToggleButton(new ImageIcon(Resources.getImage(Resources.Paths.STAR)));
+		star.setToolTipText(BotLocale.FAVSONLY);
 		star.addActionListener(this);
 		star.setFocusable(false);
 		toolbar.add(star);
 		toolbar.add(Box.createHorizontalStrut(d));
 		paid = new JToggleButton(new ImageIcon(Resources.getImage(Resources.Paths.MONEY_DOLLAR)));
+		paid.setToolTipText(BotLocale.PAIDONLY);
 		paid.addActionListener(this);
 		paid.setFocusable(false);
 		toolbar.add(paid);
