@@ -3,11 +3,11 @@ package org.powerbot.concurrent.action;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 import org.powerbot.concurrent.Task;
 import org.powerbot.concurrent.TaskContainer;
-import org.powerbot.game.api.util.Time;
 import org.powerbot.lang.Activatable;
 
 /**
@@ -117,9 +117,9 @@ public class ActionExecutor implements ActionContainer, Task {
 						}
 					}
 					cached_state = state;
-					final Task running_action = createFutureDisposer(futures, this);
-					action.future = container.submit(running_action);
+					action.futures = futures.toArray(new Future<?>[futures.size()]);
 					if (action.requireLock) {
+						container.submit(createFutureDisposer(futures, this));
 						awaitNotify(futures);
 						if (state == State.PROCESSING) {
 							state = cached_state;
@@ -161,10 +161,14 @@ public class ActionExecutor implements ActionContainer, Task {
 			public void run() {
 				while (lockingFutures.size() > 0) {
 					final Future<?> future = lockingFutures.get(0);
+					try {
+						future.get();
+					} catch (final InterruptedException ignored) {
+					} catch (final ExecutionException ignored) {
+					}
 					if (future.isDone()) {
 						lockingFutures.remove(0);
 					}
-					Time.sleep(15);
 				}
 				synchronized (threadObject) {
 					threadObject.notify();
