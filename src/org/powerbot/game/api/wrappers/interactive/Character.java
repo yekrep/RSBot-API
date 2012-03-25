@@ -8,6 +8,9 @@ import org.powerbot.game.api.Multipliers;
 import org.powerbot.game.api.internal.util.Nodes;
 import org.powerbot.game.api.methods.Calculations;
 import org.powerbot.game.api.methods.Game;
+import org.powerbot.game.api.methods.input.Mouse;
+import org.powerbot.game.api.methods.node.Menu;
+import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.wrappers.Entity;
 import org.powerbot.game.api.wrappers.LocalTile;
 import org.powerbot.game.api.wrappers.Mobile;
@@ -171,7 +174,7 @@ public abstract class Character implements Entity, Mobile {
 		if (model != null) {
 			return model.contains(point);
 		}
-		return false;//TODO
+		return getPosition().contains(point);
 	}
 
 	public boolean isOnScreen() {
@@ -184,7 +187,7 @@ public abstract class Character implements Entity, Mobile {
 		if (model != null) {
 			return model.getBounds();
 		}
-		return new Polygon[0];//TODO
+		return getPosition().getBounds();
 	}
 
 	public boolean hover() {
@@ -192,7 +195,11 @@ public abstract class Character implements Entity, Mobile {
 		if (model != null) {
 			return model.hover();
 		}
-		return false;//TODO
+		return Mouse.apply(this, new Filter<Point>() {
+			public boolean accept(final Point point) {
+				return true;
+			}
+		});
 	}
 
 	public boolean click(final boolean left) {
@@ -200,7 +207,12 @@ public abstract class Character implements Entity, Mobile {
 		if (model != null) {
 			return model.click(left);
 		}
-		return false;//TODO
+		return Mouse.apply(this, new Filter<Point>() {
+			public boolean accept(final Point point) {
+				Mouse.click(true);
+				return true;
+			}
+		});
 	}
 
 	public boolean interact(final String action) {
@@ -208,7 +220,11 @@ public abstract class Character implements Entity, Mobile {
 		if (model != null) {
 			return model.interact(action);
 		}
-		return false;//TODO
+		return Mouse.apply(this, new Filter<Point>() {
+			public boolean accept(final Point point) {
+				return Menu.select(action);
+			}
+		});
 	}
 
 	public boolean interact(final String action, final String option) {
@@ -216,7 +232,11 @@ public abstract class Character implements Entity, Mobile {
 		if (model != null) {
 			return model.interact(action, option);
 		}
-		return false;//TODO
+		return Mouse.apply(this, new Filter<Point>() {
+			public boolean accept(final Point point) {
+				return Menu.select(action, option);
+			}
+		});
 	}
 
 	public void draw(final Graphics render) {
