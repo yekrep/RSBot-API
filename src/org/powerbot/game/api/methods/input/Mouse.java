@@ -7,6 +7,7 @@ import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 import org.powerbot.concurrent.TaskContainer;
@@ -194,8 +195,10 @@ public class Mouse {
 		final MouseManipulator task = new MouseManipulator(locatable, filter);
 		final Future<?> future = container.submit(task);
 		if (future != null) {
-			while (!future.isDone()) {
-				Time.sleep(50);
+			try {
+				future.get();
+			} catch (final InterruptedException ignored) {
+			} catch (final ExecutionException ignored) {
 			}
 		}
 		return task.isAccepted();
