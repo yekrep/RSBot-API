@@ -189,6 +189,18 @@ public class Mouse {
 		return task.isAccepted();
 	}
 
+	public static boolean apply(final Locatable locatable, final Filter<Point> filter) {
+		final TaskContainer container = Bot.resolve().getContainer();
+		final MouseManipulator task = new MouseManipulator(locatable, filter);
+		final Future<?> future = container.submit(task);
+		if (future != null) {
+			while (!future.isDone()) {
+				Time.sleep(50);
+			}
+		}
+		return task.isAccepted();
+	}
+
 	private static void pressMouse(final int x, final int y, final boolean left) {
 		final org.powerbot.game.client.input.Mouse mouse = getMouse();
 		final Component target = getTarget();
