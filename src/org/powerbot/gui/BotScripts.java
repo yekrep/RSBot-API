@@ -15,6 +15,8 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
@@ -148,11 +150,13 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 		tableFlow.setVgap(0);
 		table = new JPanel(tableFlow);
 		table.setBorder(new EmptyBorder(0, 0, 0, 0));
-		table.setPreferredSize(new Dimension(getPreferredCellSize().width * 2, getPreferredCellSize().height * 4));
+		table.setPreferredSize(new Dimension(getPreferredCellSize().width, getPreferredCellSize().height));
 
 		for (final ScriptDefinition def : loadScripts()) {
 			table.add(new ScriptCell(table, def));
 		}
+
+		table.setPreferredSize(new Dimension(getPreferredCellSize().width * 2, getPreferredCellSize().height * table.getComponentCount() / 2));
 
 		final JScrollPane scroll = new JScrollPane(table, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		scroll.setPreferredSize(new Dimension(scroll.getPreferredSize().width, getPreferredCellSize().height * 3));
@@ -162,6 +166,12 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 		panel.add(scroll);
 		add(panel);
 
+		addComponentListener(new ComponentAdapter() {
+			public void componentResized(final ComponentEvent e) {
+				final int w = table.getWidth() / getPreferredCellSize().width;
+				scroll.setPreferredSize(new Dimension(scroll.getPreferredSize().width, getPreferredCellSize().height * table.getComponentCount() / w));
+			}
+		});
 		addWindowListener(this);
 		pack();
 		setMinimumSize(getSize());
