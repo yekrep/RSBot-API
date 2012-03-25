@@ -285,7 +285,7 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 			c[1] = new Color(c[0].getRed() - s, c[0].getGreen() - s, c[0].getBlue() - s);
 			setBackground(alt ? c[1] : c[0]);
 	
-			final JLabel skill = new JLabel(new ImageIcon(getSkillImage(index)));
+			final JLabel skill = new JLabel(new ImageIcon(getSkillImage(26)));
 			skill.setBounds(1, (getPreferredCellSize().height - skill.getPreferredSize().height) / 2, skill.getPreferredSize().width, skill.getPreferredSize().height);
 			add(skill);
 	
