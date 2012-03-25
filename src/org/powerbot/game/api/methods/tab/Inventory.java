@@ -48,11 +48,19 @@ public class Inventory {
 	}
 
 	public static int getCount(final Filter<Item> itemFilter) {
+		return getCount(false, itemFilter);
+	}
+
+	public static int getCount(final boolean countStack, final Filter<Item> itemFilter) {
 		final Item[] items = getItems();
 		int count = 0;
 		for (final Item item : items) {
 			if (item != null && itemFilter.accept(item)) {
-				++count;
+				if (countStack) {
+					count += item.getStackSize();
+				} else {
+					++count;
+				}
 			}
 		}
 		return count;
