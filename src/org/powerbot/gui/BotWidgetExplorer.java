@@ -60,8 +60,13 @@ public class BotWidgetExplorer extends JFrame implements PaintListener {
 
 	public static void display(final Bot bot) {
 		final BotWidgetExplorer botWidgetExplorer = getInstance(bot);
+		if (botWidgetExplorer.isVisible()) {
+			botWidgetExplorer.bot.getEventDispatcher().remove(botWidgetExplorer);
+			botWidgetExplorer.highlightArea = null;
+		}
 		botWidgetExplorer.bot = bot;
 		botWidgetExplorer.treeModel.update("");
+		botWidgetExplorer.bot.getEventDispatcher().accept(botWidgetExplorer);
 		botWidgetExplorer.setVisible(true);
 	}
 
@@ -72,6 +77,8 @@ public class BotWidgetExplorer extends JFrame implements PaintListener {
 			@Override
 			public void windowClosing(final WindowEvent e) {
 				setVisible(false);
+				bot.getEventDispatcher().remove(this);
+				highlightArea = null;
 			}
 		});
 		this.bot = bot;
@@ -174,6 +181,7 @@ public class BotWidgetExplorer extends JFrame implements PaintListener {
 		add(toolArea, BorderLayout.NORTH);
 
 		pack();
+		setVisible(false);
 	}
 
 	private final class WidgetTreeModel implements TreeModel {
