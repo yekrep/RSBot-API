@@ -8,6 +8,7 @@ import java.util.concurrent.Future;
 
 import org.powerbot.concurrent.Task;
 import org.powerbot.concurrent.TaskContainer;
+import org.powerbot.game.api.util.Time;
 import org.powerbot.lang.Activatable;
 
 /**
@@ -130,6 +131,7 @@ public class ActionExecutor implements ActionContainer, Task {
 						break;
 					}
 				}
+				Time.sleep(5);
 			} else {
 				throw new RuntimeException("bad action-dispatch state");
 			}
