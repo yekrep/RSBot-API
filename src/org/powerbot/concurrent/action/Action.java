@@ -17,7 +17,7 @@ public class Action {
 	public boolean requireLock;
 	public boolean resetExecutionQueue;
 	public boolean synchronizeInstances;
-	public Future<?> future;
+	public Future<?>[] futures;
 
 	/**
 	 * Initializes this <code>Action</code> with appropriate information required for processing.
@@ -32,10 +32,17 @@ public class Action {
 		requireLock = true;
 		resetExecutionQueue = false;
 		synchronizeInstances = true;
-		future = null;
+		futures = null;
 	}
 
 	boolean isIdle() {
-		return future == null || future.isDone();
+		if (futures != null) {
+			for (final Future<?> future : futures) {
+				if (!future.isDone()) {
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 }
