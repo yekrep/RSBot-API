@@ -29,6 +29,7 @@ import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -86,29 +87,24 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 		}
 
 		final JToolBar toolbar = new JToolBar();
-		final GridLayout grid = new GridLayout(1, 2);
-		grid.setHgap(0);
-		grid.setVgap(0);
-		toolbar.setLayout(grid);
+		final int d = 2;
+		toolbar.setBorder(new EmptyBorder(d, d, d, d));
 		toolbar.setFloatable(false);
-		final FlowLayout[] flow = {new FlowLayout(FlowLayout.LEFT), new FlowLayout(FlowLayout.RIGHT)};
-		flow[0].setHgap(5);
-		flow[0].setVgap(1);
-		flow[1].setHgap(flow[0].getHgap());
-		flow[1].setVgap(flow[0].getVgap() + 1);
-		final JPanel panelLeft = new JPanel(flow[0]), panelRight = new JPanel(flow[1]);
-		toolbar.add(panelLeft);
-		toolbar.add(panelRight);
+		final FlowLayout flow = new FlowLayout(FlowLayout.RIGHT);
+		flow.setHgap(0);
+		flow.setVgap(0);
+		final JPanel panelRight = new JPanel(flow);
 		add(toolbar, BorderLayout.NORTH);
 
 		star = new JToggleButton(new ImageIcon(Resources.getImage(Resources.Paths.STAR)));
 		star.addActionListener(this);
 		star.setFocusable(false);
-		panelLeft.add(star);
+		toolbar.add(star);
+		toolbar.add(Box.createHorizontalStrut(d));
 		paid = new JToggleButton(new ImageIcon(Resources.getImage(Resources.Paths.MONEY_DOLLAR)));
 		paid.addActionListener(this);
 		paid.setFocusable(false);
-		panelLeft.add(paid);
+		toolbar.add(paid);
 
 		search = new JTextField();
 		search.addKeyListener(new KeyAdapter() {
@@ -119,6 +115,7 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 		});
 		search.setPreferredSize(new Dimension(250, search.getPreferredSize().height));
 		panelRight.add(search);
+		toolbar.add(panelRight);
 
 		final FlowLayout tableFlow = new FlowLayout(FlowLayout.LEFT);
 		tableFlow.setHgap(0);
