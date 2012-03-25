@@ -15,6 +15,10 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -29,6 +33,8 @@ import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -43,6 +49,7 @@ import javax.swing.JToolBar;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.AbstractBorder;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 
 import org.powerbot.gui.component.BotLocale;
 import org.powerbot.gui.component.BotToolBar;
@@ -86,50 +93,70 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 		}
 
 		final JToolBar toolbar = new JToolBar();
-		final GridLayout grid = new GridLayout(1, 2);
-		grid.setHgap(0);
-		grid.setVgap(0);
-		toolbar.setLayout(grid);
+		final int d = 2;
+		toolbar.setBorder(new EmptyBorder(d, d, d, d));
 		toolbar.setFloatable(false);
-		final FlowLayout[] flow = {new FlowLayout(FlowLayout.LEFT), new FlowLayout(FlowLayout.RIGHT)};
-		flow[0].setHgap(5);
-		flow[0].setVgap(1);
-		flow[1].setHgap(flow[0].getHgap());
-		flow[1].setVgap(flow[0].getVgap() + 1);
-		final JPanel panelLeft = new JPanel(flow[0]), panelRight = new JPanel(flow[1]);
-		toolbar.add(panelLeft);
-		toolbar.add(panelRight);
+		final FlowLayout flow = new FlowLayout(FlowLayout.RIGHT);
+		flow.setHgap(0);
+		flow.setVgap(0);
+		final JPanel panelRight = new JPanel(flow);
 		add(toolbar, BorderLayout.NORTH);
 
 		star = new JToggleButton(new ImageIcon(Resources.getImage(Resources.Paths.STAR)));
 		star.addActionListener(this);
 		star.setFocusable(false);
-		panelLeft.add(star);
+		toolbar.add(star);
+		toolbar.add(Box.createHorizontalStrut(d));
 		paid = new JToggleButton(new ImageIcon(Resources.getImage(Resources.Paths.MONEY_DOLLAR)));
 		paid.addActionListener(this);
 		paid.setFocusable(false);
-		panelLeft.add(paid);
+		toolbar.add(paid);
 
-		search = new JTextField();
+		search = new JTextField(BotLocale.SEARCH);
+		final Color searchColor[] = {search.getForeground(), Color.GRAY};
+		search.setForeground(searchColor[1]);
 		search.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(final KeyEvent e) {
 				actionPerformed(null);
 			}
 		});
-		search.setPreferredSize(new Dimension(250, search.getPreferredSize().height));
+		search.addFocusListener(new FocusListener() {
+			@Override
+			public void focusGained(final FocusEvent e) {
+				final JTextField f = (JTextField) e.getSource();
+				if (f.getForeground().equals(searchColor[1])) {
+					f.setText("");
+					f.setForeground(searchColor[0]);
+				}
+			}
+
+			@Override
+			public void focusLost(final FocusEvent e) {
+				final JTextField f = (JTextField) e.getSource();
+				if (f.getText().length() == 0) {
+					f.setForeground(searchColor[1]);
+					f.setText(BotLocale.SEARCH);
+				}
+			}
+		});
+		search.setPreferredSize(new Dimension(150, search.getPreferredSize().height));
+		search.setBorder(BorderFactory.createCompoundBorder(new LineBorder(Color.LIGHT_GRAY, d, true), BorderFactory.createEmptyBorder(0, d + d, 0, d + d)));
 		panelRight.add(search);
+		toolbar.add(panelRight);
 
 		final FlowLayout tableFlow = new FlowLayout(FlowLayout.LEFT);
 		tableFlow.setHgap(0);
 		tableFlow.setVgap(0);
 		table = new JPanel(tableFlow);
 		table.setBorder(new EmptyBorder(0, 0, 0, 0));
-		table.setPreferredSize(new Dimension(getPreferredCellSize().width * 2, getPreferredCellSize().height * 4));
+		table.setPreferredSize(new Dimension(getPreferredCellSize().width, getPreferredCellSize().height));
 
 		for (final ScriptDefinition def : loadScripts()) {
 			table.add(new ScriptCell(table, def));
 		}
+
+		table.setPreferredSize(new Dimension(getPreferredCellSize().width * 2, getPreferredCellSize().height * table.getComponentCount() / 2));
 
 		final JScrollPane scroll = new JScrollPane(table, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		scroll.setPreferredSize(new Dimension(scroll.getPreferredSize().width, getPreferredCellSize().height * 3));
@@ -139,6 +166,12 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 		panel.add(scroll);
 		add(panel);
 
+		addComponentListener(new ComponentAdapter() {
+			public void componentResized(final ComponentEvent e) {
+				final int w = table.getWidth() / getPreferredCellSize().width;
+				scroll.setPreferredSize(new Dimension(scroll.getPreferredSize().width, getPreferredCellSize().height * table.getComponentCount() / w));
+			}
+		});
 		addWindowListener(this);
 		pack();
 		setMinimumSize(getSize());
@@ -169,7 +202,7 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 			if (paid.isSelected() && !d.isPremium()) {
 				v = false;
 			}
-			if (!search.getText().isEmpty() && !d.matches(search.getText())) {
+			if (!search.getText().isEmpty() && !search.getText().equals(BotLocale.SEARCH) && !d.matches(search.getText())) {
 				v = false;
 			}
 			c.setVisible(v);
@@ -182,12 +215,14 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 
 	private final class ScriptCell extends JPanel {
 		private static final long serialVersionUID = 1L;
+		private final Component parent;
 		private final ScriptDefinition def;
 		final int index;
 		private final Color[] c = new Color[] {null, null};
 		
 		public ScriptCell(final Component parent, final ScriptDefinition def) {
 			super();
+			this.parent = parent;
 			this.def = def;
 
 			index = ((JPanel) parent).getComponentCount();

@@ -26,7 +26,7 @@ import org.powerbot.util.StringUtil;
 public final class SecureStore {
 	private final static Logger log = Logger.getLogger(SecureStore.class.getName());
 	private final static SecureStore instance = new SecureStore();
-	private final static int MAGIC = 0x00525354, VERSION = 1003, BLOCKSIZE = 512, MAXBLOCKS = 2048;
+	private final static int MAGIC = 0x00525354, VERSION = 1004, BLOCKSIZE = 512, MAXBLOCKS = 2048;
 	private final static String CIPHER_ALGORITHM = "RC4", KEY_ALGORITHM = "RC4";
 	private final File store;
 	private long offset;
@@ -178,7 +178,7 @@ public final class SecureStore {
 				raf.skipBytes(l);
 			}
 		}
-		if (is != null) {
+		if (is != null && is.available() > 0) {
 			is = new CipherInputStream(is, getCipher(Cipher.ENCRYPT_MODE));
 			final byte[] empty = new byte[TarEntry.BLOCKSIZE];
 			final long z = raf.getFilePointer();
