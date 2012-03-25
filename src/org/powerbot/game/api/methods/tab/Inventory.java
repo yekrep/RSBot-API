@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.powerbot.game.api.methods.Tabs;
 import org.powerbot.game.api.methods.Widgets;
+import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.wrappers.node.Item;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
 
@@ -44,6 +45,17 @@ public class Inventory {
 
 	public static int getCount() {
 		return getItems().length;
+	}
+
+	public static int getCount(final Filter<Item> itemFilter) {
+		final Item[] items = getItems();
+		int count = 0;
+		for (final Item item : items) {
+			if (item != null && itemFilter.accept(item)) {
+				++count;
+			}
+		}
+		return count;
 	}
 
 	public static WidgetChild getWidget() {
