@@ -15,6 +15,8 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -29,6 +31,7 @@ import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -44,6 +47,7 @@ import javax.swing.JToolBar;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.AbstractBorder;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 
 import org.powerbot.gui.component.BotLocale;
 import org.powerbot.gui.component.BotToolBar;
@@ -106,14 +110,36 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 		paid.setFocusable(false);
 		toolbar.add(paid);
 
-		search = new JTextField();
+		search = new JTextField(BotLocale.SEARCH);
+		final Color searchColor[] = {search.getForeground(), Color.GRAY};
+		search.setForeground(searchColor[1]);
 		search.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(final KeyEvent e) {
 				actionPerformed(null);
 			}
 		});
-		search.setPreferredSize(new Dimension(250, search.getPreferredSize().height));
+		search.addFocusListener(new FocusListener() {
+			@Override
+			public void focusGained(final FocusEvent e) {
+				final JTextField f = (JTextField) e.getSource();
+				if (f.getForeground().equals(searchColor[1])) {
+					f.setText("");
+					f.setForeground(searchColor[0]);
+				}
+			}
+
+			@Override
+			public void focusLost(final FocusEvent e) {
+				final JTextField f = (JTextField) e.getSource();
+				if (f.getText().length() == 0) {
+					f.setForeground(searchColor[1]);
+					f.setText(BotLocale.SEARCH);
+				}
+			}
+		});
+		search.setPreferredSize(new Dimension(150, search.getPreferredSize().height));
+		search.setBorder(BorderFactory.createCompoundBorder(new LineBorder(Color.LIGHT_GRAY, d, true), BorderFactory.createEmptyBorder(0, d + d, 0, d + d)));
 		panelRight.add(search);
 		toolbar.add(panelRight);
 
@@ -166,7 +192,7 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 			if (paid.isSelected() && !d.isPremium()) {
 				v = false;
 			}
-			if (!search.getText().isEmpty() && !d.matches(search.getText())) {
+			if (!search.getText().isEmpty() && !search.getText().equals(BotLocale.SEARCH) && !d.matches(search.getText())) {
 				v = false;
 			}
 			c.setVisible(v);
