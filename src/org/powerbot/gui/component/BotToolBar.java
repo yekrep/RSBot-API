@@ -137,6 +137,7 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 			activeTab = -1;
 		}
 		remove(n);
+		tabAdd.setVisible(true);
 		b.getBot().killEnvironment();
 		BotChrome.panel.repaint();
 		if (getTabCount() == 0) {
