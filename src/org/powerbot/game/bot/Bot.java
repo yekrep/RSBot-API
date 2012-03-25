@@ -2,6 +2,7 @@ package org.powerbot.game.bot;
 
 import java.awt.Canvas;
 import java.awt.Dimension;
+import java.awt.EventQueue;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -303,5 +304,16 @@ public class Bot extends GameDefinition implements Runnable {
 				Keyboard.sendKey('s');
 			}
 		}
+	}
+
+	public void associate(final ThreadGroup threadGroup) {
+		if (!EventQueue.isDispatchThread() && Bot.context.containsKey(threadGroup)) {
+			throw new RuntimeException("overlapping thread groups!");
+		}
+		Bot.context.put(threadGroup, this);
+	}
+
+	public void disregard(final ThreadGroup threadGroup) {
+		Bot.context.remove(threadGroup);
 	}
 }

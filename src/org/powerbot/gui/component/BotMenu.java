@@ -9,11 +9,14 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
+import org.powerbot.game.bot.Bot;
 import org.powerbot.gui.BotAbout;
 import org.powerbot.gui.BotAccounts;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.gui.BotSignin;
+import org.powerbot.gui.BotWidgetExplorer;
 import org.powerbot.service.NetworkAccount;
+import org.powerbot.util.Configuration;
 import org.powerbot.util.io.Resources;
 
 /**
@@ -65,6 +68,14 @@ public final class BotMenu extends JPopupMenu implements ActionListener {
 		add(view);
 		addSeparator();
 
+		if (Configuration.DEVMODE) {
+			final JMenuItem widgetExplorer = new JMenuItem(BotLocale.WIDGETEXPLORER);
+			widgetExplorer.setEnabled(parent.getActiveTab() != -1);
+			widgetExplorer.addActionListener(this);
+			add(widgetExplorer);
+			addSeparator();
+		}
+
 		final JMenuItem site = new JMenuItem(BotLocale.WEBSITE);
 		site.setIcon(new ImageIcon(Resources.getImage(Resources.Paths.ICON_SMALL)));
 		site.addActionListener(this);
@@ -90,6 +101,8 @@ public final class BotMenu extends JPopupMenu implements ActionListener {
 			new BotAccounts(parent.parent);
 		} else if (a.startsWith(BotLocale.SIGNIN) || a.startsWith(BotLocale.SIGNEDINAS)) {
 			new BotSignin(parent.parent);
+		} else if (a.equals(BotLocale.WIDGETEXPLORER)) {
+			BotWidgetExplorer.display(Bot.bots.get(parent.getActiveTab()));
 		} else if (a.equals(BotLocale.WEBSITE)) {
 			BotChrome.openURL(Resources.getServerLinks().get("site"));
 		} else if (a.equals(BotLocale.ABOUT)) {

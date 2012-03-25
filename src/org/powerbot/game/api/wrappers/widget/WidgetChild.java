@@ -5,6 +5,7 @@ import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 
+import org.powerbot.game.api.Multipliers;
 import org.powerbot.game.api.internal.util.HashTable;
 import org.powerbot.game.api.methods.Widgets;
 import org.powerbot.game.api.util.Random;
@@ -175,6 +176,19 @@ public class WidgetChild implements Entity {
 	public int getRelativeY() {
 		final Object widget = getInternal();
 		return widget != null ? ((RSInterfaceY) ((RSInterfaceInts) widget).getRSInterfaceInts()).getRSInterfaceY() * Bot.resolve().multipliers.INTERFACE_Y : -1;
+	}
+
+	public Point getRelativeLocation() {
+		final Object widget = getInternal();
+		if (widget == null) {
+			return new Point(-1, -1);
+		}
+		final Object rsInterfaceInts = ((RSInterfaceInts) widget).getRSInterfaceInts();
+		final Multipliers multipliers = Bot.resolve().multipliers;
+		return new Point(
+				((RSInterfaceX) rsInterfaceInts).getRSInterfaceX() * multipliers.INTERFACE_X,
+				((RSInterfaceY) rsInterfaceInts).getRSInterfaceY() * multipliers.INTERFACE_Y
+		);
 	}
 
 	public int getWidth() {
