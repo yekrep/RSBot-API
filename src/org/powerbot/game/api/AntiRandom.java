@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Point;
+import java.util.logging.Logger;
 
 import org.powerbot.concurrent.Task;
 import org.powerbot.game.api.methods.input.Mouse;
@@ -16,6 +17,13 @@ import org.powerbot.lang.Activatable;
  * @author Timer
  */
 public abstract class AntiRandom implements Activatable, Task, PaintListener {
+	public final Logger log = Logger.getLogger(getClass().getName());
+	protected final Bot bot;
+
+	public AntiRandom() {
+		this.bot = Bot.resolve();
+	}
+
 	public void onRepaint(final Graphics render) {
 		final Point p = Mouse.getLocation();
 		final Canvas canvas = Bot.resolve().getCanvas();
