@@ -8,7 +8,6 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
@@ -53,6 +52,7 @@ import javax.swing.border.AbstractBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
+import org.powerbot.game.bot.Bot;
 import org.powerbot.gui.component.BotLocale;
 import org.powerbot.gui.component.BotToolBar;
 import org.powerbot.service.GameAccounts;
@@ -77,7 +77,7 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 	private final JTextField search;
 
 	public BotScripts(final BotToolBar parent) {
-		super((Frame) parent.parent, BotLocale.SCRIPTS, true);
+		super(parent.parent, BotLocale.SCRIPTS, true);
 		setIconImage(Resources.getImage(Resources.Paths.SCRIPT));
 		this.parent = parent;
 
@@ -136,7 +136,6 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 			}
 		});
 		search.addFocusListener(new FocusListener() {
-			@Override
 			public void focusGained(final FocusEvent e) {
 				final JTextField f = (JTextField) e.getSource();
 				if (f.getForeground().equals(searchColor[1])) {
@@ -145,7 +144,6 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 				}
 			}
 
-			@Override
 			public void focusLost(final FocusEvent e) {
 				final JTextField f = (JTextField) e.getSource();
 				if (f.getText().length() == 0) {
@@ -174,7 +172,7 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 
 		final JScrollPane scroll = new JScrollPane(table, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		scroll.setPreferredSize(new Dimension(scroll.getPreferredSize().width, getPreferredCellSize().height * 3));
-		
+
 		final JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
 		panel.add(scroll);
@@ -196,16 +194,15 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 
 	public List<ScriptDefinition> loadScripts() {
 		final List<ScriptDefinition> list = new ArrayList<ScriptDefinition>();
-		list.add(new ScriptDefinition("Test fisher", "A fishing script", 1.0d, new String[] {"Paris"}, null, false));
-		list.add(new ScriptDefinition("Super Miner", "An advanced powerminer with banking options", 1.0d, new String[] {"Paris"}, null, true));
-		list.add(new ScriptDefinition("Pro Cooker", "Cooks everywhere!", 1.0d, new String[] {"Paris"}, null, true));
-		list.add(new ScriptDefinition("Autofighter", "Autofighter returns with avengeance", 1.0d, new String[] {"Paris"}, null, true));
-		list.add(new ScriptDefinition("godHunter", "Multi-variety hunter", 1.0d, new String[] {"Paris"}, null, true));
-		list.add(new ScriptDefinition("Chicken Slayer", "Massacres chicken", 1.0d, new String[] {"Paris"}, null, false));
+		list.add(new ScriptDefinition("Test fisher", "A fishing script", 1.0d, new String[]{"Paris"}, null, false));
+		list.add(new ScriptDefinition("Super Miner", "An advanced powerminer with banking options", 1.0d, new String[]{"Paris"}, null, true));
+		list.add(new ScriptDefinition("Pro Cooker", "Cooks everywhere!", 1.0d, new String[]{"Paris"}, null, true));
+		list.add(new ScriptDefinition("Autofighter", "Autofighter returns with avengeance", 1.0d, new String[]{"Paris"}, null, true));
+		list.add(new ScriptDefinition("godHunter", "Multi-variety hunter", 1.0d, new String[]{"Paris"}, null, true));
+		list.add(new ScriptDefinition("Chicken Slayer", "Massacres chicken", 1.0d, new String[]{"Paris"}, null, false));
 		return list;
 	}
 
-	@Override
 	public void actionPerformed(final ActionEvent e) {
 		if (e == null) {
 			return;
@@ -213,7 +210,6 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 		if (e.getSource().equals(username)) {
 			final JPopupMenu accounts = new JPopupMenu();
 			final ActionListener l = new ActionListener() {
-				@Override
 				public void actionPerformed(final ActionEvent e1) {
 					username.setText(((JCheckBoxMenuItem) e1.getSource()).getText());
 				}
@@ -265,8 +261,8 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 		private final Component parent;
 		private final ScriptDefinition def;
 		final int index;
-		private final Color[] c = new Color[] {null, null};
-		
+		private final Color[] c = new Color[]{null, null};
+
 		public ScriptCell(final Component parent, final ScriptDefinition def) {
 			super();
 			this.parent = parent;
@@ -275,7 +271,7 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 			index = ((JPanel) parent).getComponentCount();
 			final int w = parent.getPreferredSize().width / getPreferredCellSize().width;
 			final int row = index / w;
-	
+
 			setLayout(null);
 			setBorder(new InsetBorder());
 			setPreferredSize(getPreferredCellSize());
@@ -284,21 +280,21 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 			final int s = 24;
 			c[1] = new Color(c[0].getRed() - s, c[0].getGreen() - s, c[0].getBlue() - s);
 			setBackground(alt ? c[1] : c[0]);
-	
+
 			final JLabel skill = new JLabel(new ImageIcon(getSkillImage(26)));
 			skill.setBounds(1, (getPreferredCellSize().height - skill.getPreferredSize().height) / 2, skill.getPreferredSize().width, skill.getPreferredSize().height);
 			add(skill);
-	
+
 			final JPanel panelInfo = new JPanel(new GridLayout(0, 1));
 			panelInfo.setBackground(null);
 			final int dx = skill.getLocation().x + skill.getPreferredSize().width + 8;
 			panelInfo.setBounds(dx, skill.getLocation().y, getPreferredCellSize().width - dx - 1, skill.getPreferredSize().height);
 			add(panelInfo);
-	
+
 			final JLabel name = new JLabel(def.getName());
 			name.setFont(name.getFont().deriveFont(Font.BOLD));
 			panelInfo.add(name, BorderLayout.NORTH);
-	
+
 			final JTextArea desc = new JTextArea(def.getDescription());
 			desc.setBackground(null);
 			desc.setEditable(false);
@@ -308,7 +304,7 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 			desc.setFocusable(false);
 			desc.setFont(name.getFont().deriveFont(0, name.getFont().getSize2D() - 2f));
 			panelInfo.add(desc);
-	
+
 			final JPanel panelIcons = new JPanel(new GridLayout(0, 2));
 			panelInfo.add(panelIcons, BorderLayout.SOUTH);
 			panelIcons.setBackground(null);
@@ -319,7 +315,7 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 			final JPanel panelIconsRight = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 			panelIconsRight.setBackground(null);
 			panelIcons.add(panelIconsRight);
-	
+
 			if (def.getWebsite() != null && !def.getWebsite().isEmpty()) {
 				final JLabel link = new JLabel(new ImageIcon(Resources.getImage(Resources.Paths.WORLD_LINK)));
 				link.addMouseListener(new MouseAdapter() {
@@ -331,7 +327,7 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 				link.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 				panelIconsLeft.add(link, BorderLayout.WEST);
 			}
-	
+
 			final boolean isFav = favourites.contains(def.toString());
 			final JLabel fav = new JLabel(new ImageIcon(Resources.getImage(isFav ? Resources.Paths.STAR : Resources.Paths.STAR_GRAY)));
 			fav.setToolTipText(isFav ? BotLocale.REMOVEFROMFAVS : BotLocale.ADDTOFAVS);
@@ -356,14 +352,16 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 			});
 			fav.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 			panelIconsLeft.add(fav);
-	
+
 			final JButton act = new JButton("Play");
 			act.addActionListener(new ActionListener() {
-				@Override
 				public void actionPerformed(final ActionEvent e) {
 					setVisible(false);
-					System.out.println("Running script: " + def.getName());
 					dispose();
+					final Bot bot = Bot.bots.get(BotScripts.this.parent.getActiveTab());
+					System.out.println("Running script: " + def.getName());
+					//TODO start script
+					//bot.startScript(null);
 				}
 			});
 			act.setFont(act.getFont().deriveFont(Font.BOLD, act.getFont().getSize2D() - 1f));
@@ -392,7 +390,7 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 			final int d = 4;
 			final BufferedImage img = new BufferedImage(103, 94, BufferedImage.TYPE_INT_ARGB);
 			final Graphics2D g = img.createGraphics();
-			final int y = (int) (img.getHeight() * index + d);
+			final int y = img.getHeight() * index + d;
 			g.drawImage(src, 0, 0, img.getWidth(), img.getHeight(), 0, y, img.getWidth(), y + img.getHeight(), null);
 			g.dispose();
 			final int h = getPreferredCellSize().height - d * 2;
@@ -413,15 +411,12 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 		}
 	}
 
-	@Override
 	public void windowActivated(final WindowEvent e) {
 	}
 
-	@Override
 	public void windowClosed(final WindowEvent e) {
 	}
 
-	@Override
 	public void windowClosing(final WindowEvent e) {
 		final StringBuilder sb = new StringBuilder();
 		for (final String entry : favourites) {
@@ -435,19 +430,15 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 		}
 	}
 
-	@Override
 	public void windowDeactivated(final WindowEvent e) {
 	}
 
-	@Override
 	public void windowDeiconified(final WindowEvent e) {
 	}
 
-	@Override
 	public void windowIconified(final WindowEvent e) {
 	}
 
-	@Override
 	public void windowOpened(final WindowEvent e) {
 	}
 }
