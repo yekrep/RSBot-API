@@ -37,8 +37,8 @@ public class RandomHandler implements Task {
 
 	public void run() {
 		ActiveScript activeScript;
-		while ((activeScript = bot.getActiveScript()) != null) {
-			if (!activeScript.isRunning()) {
+		while ((activeScript = bot.getActiveScript()) != null && activeScript.isRunning()) {
+			if (activeScript.isPaused()) {
 				Time.sleep(1000);
 				continue;
 			}
