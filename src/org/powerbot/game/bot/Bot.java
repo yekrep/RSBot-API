@@ -143,6 +143,10 @@ public class Bot extends GameDefinition implements Runnable {
 	 */
 	public void killEnvironment() {
 		this.killed = true;
+		if (activeScript != null) {
+			activeScript.stop();
+			activeScript.getContainer().stop();
+		}
 		log.info("Unloading environment");
 		if (eventDispatcher != null) {
 			eventDispatcher.setActive(false);
@@ -163,12 +167,12 @@ public class Bot extends GameDefinition implements Runnable {
 				}
 			};
 		}
-		bots.remove(this);
-		context.remove(threadGroup);
 		if (task != null) {
 			container.submit(task);
 		}
-		container.stop();
+		bots.remove(this);
+		context.remove(threadGroup);
+		container.shutdown();
 	}
 
 	/**
@@ -280,7 +284,7 @@ public class Bot extends GameDefinition implements Runnable {
 			throw new RuntimeException("script is non existent!");
 		}
 
-		container.submit(activeScript.stop());
+		activeScript.stop();
 		activeScript = null;
 	}
 

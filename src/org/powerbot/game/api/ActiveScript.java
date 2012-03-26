@@ -81,14 +81,10 @@ public abstract class ActiveScript implements EventListener {
 		}
 	}
 
-	public final Task stop() {
-		return new Task() {
-			public void run() {
-				eventManager.remove(ActiveScript.this);
-				executor.destroy();
-				container.shutdown();
-			}
-		};
+	public final void stop() {
+		eventManager.remove(ActiveScript.this);
+		executor.destroy();
+		container.shutdown();
 	}
 
 	protected State getState() {
