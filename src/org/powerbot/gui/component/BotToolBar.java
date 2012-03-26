@@ -58,7 +58,7 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 		scriptPlay.addActionListener(this);
 		scriptPlay.setToolTipText(BotLocale.PLAYSCRIPT);
 		scriptPlay.setFocusable(false);
-		scriptPlay.setVisible(true);
+		scriptPlay.setVisible(false);
 		scriptPlay.setEnabled(false);
 		add(scriptPlay);
 		scriptStop = new JButton(new ImageIcon(Resources.getImage(Resources.Paths.CONTROL_STOP)));
@@ -135,7 +135,7 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 		} else {
 			BotChrome.panel.setBot(null);
 			activeTab = -1;
-			scriptPlay.setEnabled(false);
+			updateScriptControls();
 		}
 		remove(n);
 		tabAdd.setVisible(true);
@@ -165,6 +165,7 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 			}
 		}
 		activeTab = n;
+		updateScriptControls();
 	}
 
 	public int getActiveTab() {
@@ -192,6 +193,17 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 			}
 		}
 		return i;
+	}
+
+	public void updateScriptControls() {
+		if (activeTab == -1) {
+			scriptPlay.setVisible(false);
+			scriptStop.setVisible(false);
+		} else {
+			scriptPlay.setVisible(true);
+			scriptStop.setVisible(true);
+			scriptStop.setEnabled(false);
+		}
 	}
 
 	private final class BotButton extends JButton {
