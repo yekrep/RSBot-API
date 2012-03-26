@@ -11,7 +11,11 @@ trimExclude org.powerbot.Boot^ public static main(java.lang.String[]) and
             org.powerbot.game.client.* *(*) and
             org.powerbot.game.client.input.^* and
             org.powerbot.game.client.input.* *(*) and
-            org.powerbot.game.client.input.^*^ *;
+            org.powerbot.game.client.input.^*^ * and
+            public org.powerbot.game.bot.event.*.^* and
+            org.powerbot.game.game.bot.event.*.^* public *(*) and
+            public org.powerbot.game.api.*.^* and
+            org.powerbot.game.api.*.^* public *(*);
 
 trim        deleteSourceFileAttributes=true
             deleteDeprecatedAttributes=true
@@ -19,16 +23,27 @@ trim        deleteSourceFileAttributes=true
             deleteExceptionAttributes=true
             deleteUnknownAttributes=true;
 
-exclude     org.powerbot.^Boot^ public static main(java.lang.String[]) and
+exclude     org.powerbot.Boot^ public static main(java.lang.String[]) and
             org.powerbot.game.bot.event.impl.^* and
             org.powerbot.game.bot.event.impl.* *(*) and
             org.powerbot.game.bot.event.impl.^*^ * and
             org.powerbot.game.client.^* and
-            org.powerbot.game.client.* *(*) and
             org.powerbot.game.client.^*^ * and
+            org.powerbot.game.client.* *(*) and
             org.powerbot.game.client.input.^* and
             org.powerbot.game.client.input.* *(*) and
-            org.powerbot.game.client.input.^*^ *;
+            org.powerbot.game.client.input.^*^ * and
+            public org.powerbot.game.bot.event.*.^* and
+            org.powerbot.game.game.bot.event.*.^* public *(*) and
+            public org.powerbot.game.api.*.^* and
+            org.powerbot.game.api.*.^* public *(*);
+
+unexclude   org.powerbot.game.api.internal.*.^* and
+            org.powerbot.game.api.internal.*.^* public *(*) and
+            org.powerbot.game.api.internal.*^ and
+            org.powerbot.game.api.randoms.*.^* and
+            org.powerbot.game.api.randoms.*.^* public *(*) and
+            org.powerbot.game.api.randoms.*^;
 
 obfuscate   changeLogFileIn=""
             changeLogFileOut="%ZKM_CHANGELOG%"
