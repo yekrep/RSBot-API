@@ -29,6 +29,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.net.URLClassLoader;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.List;
@@ -55,6 +56,7 @@ import javax.swing.border.AbstractBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
+import org.powerbot.game.api.ActiveScript;
 import org.powerbot.game.bot.Bot;
 import org.powerbot.gui.component.BotLocale;
 import org.powerbot.gui.component.BotToolBar;
@@ -370,10 +372,19 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 				public void actionPerformed(final ActionEvent e) {
 					setVisible(false);
 					dispose();
+					String name = def.source.getFile();
+					name = name.substring(name.lastIndexOf('/') + 1);
+					name = name.substring(0, name.lastIndexOf('.'));
+					final ClassLoader cl = new URLClassLoader(new URL[] {def.source});
+					final ActiveScript script;
+					try {
+						script = cl.loadClass(name).asSubclass(ActiveScript.class).newInstance();
+					} catch (final Exception ignored) {
+						return;
+					}
 					final Bot bot = Bot.bots.get(BotScripts.this.parent.getActiveTab());
-					System.out.println("Running script: " + def.getName());
-					//TODO start script
-					//bot.startScript(null);
+					script.log.info("Starting"); // debug to show script has loaded
+					bot.startScript(script);
 				}
 			});
 			act.setFont(act.getFont().deriveFont(Font.BOLD, act.getFont().getSize2D() - 1f));
