@@ -281,6 +281,7 @@ public class Bot extends GameDefinition implements Runnable {
 		}
 
 		container.submit(activeScript.stop());
+		activeScript = null;
 	}
 
 	public void updateToolkit(final Render render) {
