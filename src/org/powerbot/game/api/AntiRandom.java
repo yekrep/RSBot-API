@@ -18,11 +18,7 @@ import org.powerbot.lang.Activatable;
  */
 public abstract class AntiRandom implements Activatable, Task, PaintListener {
 	public final Logger log = Logger.getLogger(getClass().getName());
-	protected final Bot bot;
-
-	public AntiRandom() {
-		this.bot = Bot.resolve();
-	}
+	public Bot bot = null;
 
 	public void onRepaint(final Graphics render) {
 		final Point p = Mouse.getLocation();

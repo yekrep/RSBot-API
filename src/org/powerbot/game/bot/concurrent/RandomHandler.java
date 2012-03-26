@@ -33,6 +33,9 @@ public class RandomHandler implements Task {
 				new Login(),
 				new WidgetCloser()
 		};
+		for (final AntiRandom antiRandom : antiRandoms) {
+			antiRandom.bot = bot;
+		}
 	}
 
 	public void run() {
