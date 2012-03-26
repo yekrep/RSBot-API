@@ -109,6 +109,14 @@ public class Mouse {
 		Time.sleep(Random.nextInt(50, 80));
 	}
 
+	public static boolean click(final int x, final int y, final boolean left) {
+		if (move(x, y)) {
+			click(left);
+			return true;
+		}
+		return false;
+	}
+
 	/**
 	 * Holds the mouse at it's current position.
 	 *
@@ -158,21 +166,13 @@ public class Mouse {
 	 * @return <tt>true</tt> if we reached this position; otherwise <tt>false</tt>.
 	 */
 	public static boolean move(final int x, final int y) {
-		final TaskContainer container = Bot.resolve().getContainer();
-		final MouseManipulator task = create(x, y, 0, 0, false, false);
-		final Future<?> future = container.submit(task);
-		if (future != null) {
-			while (!future.isDone()) {
-				Time.sleep(50);
-			}
-		}
-		return task.isAccepted();
+		return move(x, y, 1, 1);
 	}
 
 	/**
 	 * Moves the mouse to the desired destination.
 	 *
-	 * @param x       THe desired x location.
+	 * @param x       The desired x location.
 	 * @param y       The desired y location.
 	 * @param randomX The random x gaussian distribution.
 	 * @param randomY The random y gaussian distribution.
@@ -183,8 +183,10 @@ public class Mouse {
 		final MouseManipulator task = create(x, y, randomX, randomY, false, false);
 		final Future<?> future = container.submit(task);
 		if (future != null) {
-			while (!future.isDone()) {
-				Time.sleep(50);
+			try {
+				future.get();
+			} catch (final InterruptedException ignored) {
+			} catch (final ExecutionException ignored) {
 			}
 		}
 		return task.isAccepted();
@@ -351,7 +353,7 @@ public class Mouse {
 	private static MouseManipulator create(final int x, final int y, final int randomX, final int randomY, final boolean click, final boolean left) {
 		return new MouseManipulator(
 				new Locatable() {
-					private final Rectangle area = new Rectangle(x, y, randomX, randomY);
+					private final Rectangle area = new Rectangle(x - randomX, y - randomY, randomX * 2, randomY * 2);
 
 					public Point getCentralPoint() {
 						return new Point(x, y);
