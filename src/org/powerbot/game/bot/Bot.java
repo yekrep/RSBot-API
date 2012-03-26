@@ -248,6 +248,41 @@ public class Bot extends GameDefinition implements Runnable {
 		return activeScript;
 	}
 
+	public void startScript(final ActiveScript script) {
+		if (activeScript != null && activeScript.isRunning()) {
+			throw new RuntimeException("cannot run multiple scripts at once!");
+		}
+
+		this.activeScript = script;
+		script.init(this);
+		container.submit(script.start());
+		container.submit(randomHandler);
+	}
+
+	public void resumeScript() {
+		if (activeScript == null || !activeScript.isRunning()) {
+			throw new RuntimeException("script not running (1)");
+		}
+
+		activeScript.resume();
+	}
+
+	public void pauseScript() {
+		if (activeScript == null || !activeScript.isRunning()) {
+			throw new RuntimeException("script not running (2)");
+		}
+
+		activeScript.pause();
+	}
+
+	public void stopScript() {
+		if (activeScript == null) {
+			throw new RuntimeException("script is non existent!");
+		}
+
+		container.submit(activeScript.stop());
+	}
+
 	public void updateToolkit(final Render render) {
 		final Object renderData = render.getData();
 		final Object toolkit = ((RenderFloats) renderData).getRenderFloats();
