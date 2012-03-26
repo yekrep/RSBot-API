@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.powerbot.game.api.ActiveScript;
 import org.powerbot.game.api.Manifest;
+import org.powerbot.util.StringUtil;
 
 /**
  * @author Paris
@@ -41,11 +42,15 @@ public final class ScriptDefinition {
 	}
 
 	public String getName() {
-		return name;
+		return StringUtil.stripHtml(name.trim());
 	}
 
 	public String getDescription() {
-		return description;
+		String s = StringUtil.stripHtml(description.trim());
+		if (s.length() > 2 && s.substring(s.length() - 1).equals(".") && !s.substring(0, s.length() - 1).contains(".")) {
+			s = s.substring(0, s.length() - 1);
+		}
+		return s;
 	}
 
 	public double getVersion() {
@@ -63,7 +68,7 @@ public final class ScriptDefinition {
 			if (i != 0) {
 				sb.append(", ");
 			}
-			sb.append(authors[i]);
+			sb.append(StringUtil.stripHtml(authors[i].trim()));
 		}
 		return sb.toString();
 	}
