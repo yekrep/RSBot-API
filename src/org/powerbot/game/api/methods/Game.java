@@ -16,6 +16,7 @@ public class Game {
 	public static final int[] INDEX_LOGGED_IN = {11, 12};
 	public static final int INDEX_LOGIN_SCREEN = 3;
 	public static final int INDEX_LOBBY_SCREEN = 7;
+	public static final int INDEX_LOGGING_IN = 9;
 
 	/**
 	 * @return The current state of the game client.
