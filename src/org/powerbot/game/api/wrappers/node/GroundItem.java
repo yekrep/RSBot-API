@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Polygon;
 
+import org.powerbot.game.api.methods.Calculations;
 import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.api.methods.input.Mouse;
 import org.powerbot.game.api.methods.node.Menu;
@@ -56,7 +57,7 @@ public class GroundItem implements Entity, Mobile {
 	}
 
 	public boolean isOnScreen() {
-		return tile.isOnScreen();
+		return Calculations.isPointOnScreen(tile.getCentralPoint());
 	}
 
 	public Polygon[] getBounds() {
