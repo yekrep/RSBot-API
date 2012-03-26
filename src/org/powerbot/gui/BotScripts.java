@@ -38,9 +38,11 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -53,6 +55,8 @@ import javax.swing.border.LineBorder;
 
 import org.powerbot.gui.component.BotLocale;
 import org.powerbot.gui.component.BotToolBar;
+import org.powerbot.service.GameAccounts;
+import org.powerbot.service.GameAccounts.Account;
 import org.powerbot.service.scripts.ScriptDefinition;
 import org.powerbot.util.StringUtil;
 import org.powerbot.util.io.IOHelper;
@@ -69,6 +73,7 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 	private final List<String> favourites;
 	private final JPanel table;
 	private final JToggleButton star, paid;
+	private final JButton username;
 	private final JTextField search;
 
 	public BotScripts(final BotToolBar parent) {
@@ -103,14 +108,23 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 		add(toolbar, BorderLayout.NORTH);
 
 		star = new JToggleButton(new ImageIcon(Resources.getImage(Resources.Paths.STAR)));
+		star.setToolTipText(BotLocale.FAVSONLY);
 		star.addActionListener(this);
 		star.setFocusable(false);
 		toolbar.add(star);
 		toolbar.add(Box.createHorizontalStrut(d));
 		paid = new JToggleButton(new ImageIcon(Resources.getImage(Resources.Paths.MONEY_DOLLAR)));
+		paid.setToolTipText(BotLocale.PAIDONLY);
 		paid.addActionListener(this);
 		paid.setFocusable(false);
 		toolbar.add(paid);
+		toolbar.add(Box.createHorizontalStrut(d));
+
+		username = new JButton(BotLocale.NOACCOUNT);
+		username.addActionListener(this);
+		username.setFocusable(false);
+		username.setIcon(new ImageIcon(Resources.getImage(Resources.Paths.KEY)));
+		toolbar.add(username);
 
 		search = new JTextField(BotLocale.SEARCH);
 		final Color searchColor[] = {search.getForeground(), Color.GRAY};
@@ -193,6 +207,39 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 
 	@Override
 	public void actionPerformed(final ActionEvent e) {
+		if (e == null) {
+			return;
+		}
+		if (e.getSource().equals(username)) {
+			final JPopupMenu accounts = new JPopupMenu();
+			final ActionListener l = new ActionListener() {
+				@Override
+				public void actionPerformed(final ActionEvent e1) {
+					username.setText(((JCheckBoxMenuItem) e1.getSource()).getText());
+				}
+			};
+			boolean hit = false;
+			try {
+				GameAccounts.getInstance().load();
+			} catch (IOException ignored) {
+			} catch (GeneralSecurityException ignored) {
+			}
+			if (GameAccounts.getInstance().size() == 0) {
+				return;
+			}
+			for (final Account a : GameAccounts.getInstance()) {
+				hit = username.getText().equalsIgnoreCase(a.toString());
+				final JCheckBoxMenuItem item = new JCheckBoxMenuItem(a.toString(), hit);
+				item.addActionListener(l);
+				accounts.add(item);
+			}
+			accounts.addSeparator();
+			final JCheckBoxMenuItem item = new JCheckBoxMenuItem(BotLocale.NOACCOUNT, !hit);
+			item.addActionListener(l);
+			accounts.add(item);
+			accounts.show(username, 0, username.getHeight());
+			return;
+		}
 		for (final Component c : table.getComponents()) {
 			final ScriptDefinition d = ((ScriptCell) c).getScriptDefinition();
 			boolean v = true;
@@ -238,7 +285,7 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 			c[1] = new Color(c[0].getRed() - s, c[0].getGreen() - s, c[0].getBlue() - s);
 			setBackground(alt ? c[1] : c[0]);
 	
-			final JLabel skill = new JLabel(new ImageIcon(getSkillImage(index)));
+			final JLabel skill = new JLabel(new ImageIcon(getSkillImage(26)));
 			skill.setBounds(1, (getPreferredCellSize().height - skill.getPreferredSize().height) / 2, skill.getPreferredSize().width, skill.getPreferredSize().height);
 			add(skill);
 	

@@ -38,6 +38,9 @@ public final class BotLocale {
 	public static String SEARCH = "Search";
 	public static String ADDTOFAVS = "Add to favourites";
 	public static String REMOVEFROMFAVS = "Remove from favourites";
+	public static String NOACCOUNT = "No account";
+	public static String FAVSONLY = "Show only favourite scripts";
+	public static String PAIDONLY = "Show only premium scripts";
 
 	public static String VISITSITE = "Visit Site";
 	public static String OK = "OK";

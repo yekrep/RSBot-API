@@ -36,11 +36,15 @@ import org.powerbot.util.io.Resources;
 public class BotChrome extends JFrame implements WindowListener {
 	private static final long serialVersionUID = 1L;
 	private static Logger log = Logger.getLogger(BotChrome.class.getName());
-	public static final int PANEL_WIDTH = 765, PANEL_HEIGHT = 503, MAX_BOTS = 3;
+	public static final int PANEL_WIDTH = 765, PANEL_HEIGHT = 503, MAX_BOTS;
 	public static BotPanel panel;
 	public BotToolBar toolbar;
 	public JPanel header;
 	public static volatile boolean loaded = false;
+
+	static {
+		MAX_BOTS = (int) Math.max(1, Math.min(6, Runtime.getRuntime().maxMemory() / 1024 / 1024 / 256));
+	}
 
 	public BotChrome() {
 		setTitle(Configuration.NAME);
