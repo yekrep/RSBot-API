@@ -28,9 +28,12 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -59,7 +62,9 @@ import org.powerbot.service.GameAccounts;
 import org.powerbot.service.GameAccounts.Account;
 import org.powerbot.service.scripts.ScriptDefinition;
 import org.powerbot.util.StringUtil;
+import org.powerbot.util.io.HttpClient;
 import org.powerbot.util.io.IOHelper;
+import org.powerbot.util.io.IniParser;
 import org.powerbot.util.io.Resources;
 import org.powerbot.util.io.SecureStore;
 
@@ -164,8 +169,11 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 		table.setBorder(new EmptyBorder(0, 0, 0, 0));
 		table.setPreferredSize(new Dimension(getPreferredCellSize().width, getPreferredCellSize().height));
 
-		for (final ScriptDefinition def : loadScripts()) {
-			table.add(new ScriptCell(table, def));
+		try {
+			for (final ScriptDefinition def : loadScripts()) {
+				table.add(new ScriptCell(table, def));
+			}
+		} catch (final IOException ignored) {
 		}
 
 		table.setPreferredSize(new Dimension(getPreferredCellSize().width * 2, getPreferredCellSize().height * table.getComponentCount() / 2));
@@ -192,14 +200,17 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 		setVisible(true);
 	}
 
-	public List<ScriptDefinition> loadScripts() {
-		final List<ScriptDefinition> list = new ArrayList<ScriptDefinition>();
-		list.add(new ScriptDefinition("Test fisher", "A fishing script", 1.0d, new String[]{"Paris"}, null, false));
-		list.add(new ScriptDefinition("Super Miner", "An advanced powerminer with banking options", 1.0d, new String[]{"Paris"}, null, true));
-		list.add(new ScriptDefinition("Pro Cooker", "Cooks everywhere!", 1.0d, new String[]{"Paris"}, null, true));
-		list.add(new ScriptDefinition("Autofighter", "Autofighter returns with avengeance", 1.0d, new String[]{"Paris"}, null, true));
-		list.add(new ScriptDefinition("godHunter", "Multi-variety hunter", 1.0d, new String[]{"Paris"}, null, true));
-		list.add(new ScriptDefinition("Chicken Slayer", "Massacres chicken", 1.0d, new String[]{"Paris"}, null, false));
+	public List<ScriptDefinition> loadScripts() throws IOException {
+		final URL src = new URL(Resources.getServerLinks().get("scripts"));
+		final Map<String, Map<String, String>> manifests = IniParser.deserialise(HttpClient.openStream(src));
+		final List<ScriptDefinition> list = new ArrayList<ScriptDefinition>(manifests.size());
+		for (final Entry<String, Map<String, String>> entry : manifests.entrySet()) {
+			final ScriptDefinition def = ScriptDefinition.fromMap(entry.getValue());
+			if (def != null) {
+				def.source = new URL(src, entry.getKey());
+				list.add(def);
+			}
+		}
 		return list;
 	}
 
