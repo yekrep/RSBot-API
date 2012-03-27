@@ -84,7 +84,6 @@ public final class GameAccounts extends ArrayList<GameAccounts.Account> {
 
 	private static String normaliseUsername(String username) {
 		username = username.toLowerCase().trim().replaceAll("\\s", "_");
-		username = username.substring(0, 1).toUpperCase() + username.substring(1);
 		return username;
 	}
 
