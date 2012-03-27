@@ -22,7 +22,7 @@ public class Keyboard {
 	 * @param delay The time until the key is held down.
 	 * @param mask  The mask to press this key with.
 	 */
-	private static void pressKey(final char ch, final int delay, final int mask) {
+	public static void pressKey(final char ch, final int delay, final int mask) {
 		getKeyboard().keyPressed(
 				new KeyEvent(getTarget(), KeyEvent.KEY_PRESSED, System.currentTimeMillis() + delay, mask, ch, getKeyChar(ch), getLocation(ch))
 		);
@@ -40,7 +40,7 @@ public class Keyboard {
 	 * @param delay The time to wait until this key is released.
 	 * @param mask  The mask to release the given char with.
 	 */
-	private static void releaseKey(final char ch, final int delay, final int mask) {
+	public static void releaseKey(final char ch, final int delay, final int mask) {
 		getKeyboard().keyReleased(
 				new KeyEvent(getTarget(), KeyEvent.KEY_RELEASED, System.currentTimeMillis() + delay, mask, ch, getKeyChar(ch), getLocation(ch))
 		);
