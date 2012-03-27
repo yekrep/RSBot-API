@@ -17,8 +17,15 @@ public interface GameEnvironment {
 	 */
 	public boolean initializeEnvironment();
 
+	/**
+	 * @return The <code>NodeManipulator</code> for this environment.
+	 * @throws AdaptException Thrown when the node manipulation fails.
+	 */
 	NodeManipulator getNodeManipulator() throws AdaptException;
 
+	/**
+	 * Starts the loaded game environment.
+	 */
 	public void startEnvironment();
 
 	/**

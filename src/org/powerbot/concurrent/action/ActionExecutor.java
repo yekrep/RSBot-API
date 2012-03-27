@@ -138,7 +138,7 @@ public class ActionExecutor implements ActionContainer, Task {
 		}
 	}
 
-	public void awaitNotify(final List<Future<?>> futures) {
+	private void awaitNotify(final List<Future<?>> futures) {
 		synchronized (this) {
 			state = State.PROCESSING;
 			if (futures.size() > 0) {

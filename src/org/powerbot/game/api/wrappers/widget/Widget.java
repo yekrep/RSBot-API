@@ -4,7 +4,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.Arrays;
 
-import org.powerbot.game.api.Multipliers;
+import org.powerbot.game.api.internal.Multipliers;
 import org.powerbot.game.bot.Bot;
 import org.powerbot.game.client.Client;
 import org.powerbot.game.client.RSInterfaceBaseComponents;

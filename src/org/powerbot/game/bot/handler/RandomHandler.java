@@ -1,4 +1,4 @@
-package org.powerbot.game.bot.concurrent;
+package org.powerbot.game.bot.handler;
 
 import java.util.EventListener;
 import java.util.HashMap;
