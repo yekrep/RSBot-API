@@ -20,7 +20,9 @@ import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
+import org.powerbot.concurrent.Task;
 import org.powerbot.game.api.ActiveScript;
+import org.powerbot.game.api.util.Time;
 import org.powerbot.game.bot.Bot;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.gui.BotScripts;
@@ -92,8 +94,23 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 			final Bot bot = Bot.bots.get(activeTab);
 			final ActiveScript activeScript = bot.getActiveScript();
 			if (activeScript != null) {
-				bot.stopScript();
-				parent.updateScriptStatus();
+				if (activeScript.isRunning()) {
+					bot.stopScript();
+					bot.getContainer().submit(new Task() {
+						public void run() {
+							while (!activeScript.getContainer().isLocked()) {
+								Time.sleep(150);
+							}
+							parent.updateScriptStatus();
+						}
+					});
+				} else {
+					if (!activeScript.getContainer().isLocked()) {
+						activeScript.log.info("Forcing script stop");
+						activeScript.kill();
+						parent.updateScriptStatus();
+					}
+				}
 			}
 		}
 	}

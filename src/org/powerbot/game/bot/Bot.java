@@ -312,7 +312,6 @@ public class Bot extends GameDefinition implements Runnable {
 
 		log.info("Stopping script");
 		activeScript.stop();
-		activeScript = null;
 	}
 
 	public void updateToolkit(final Render render) {
