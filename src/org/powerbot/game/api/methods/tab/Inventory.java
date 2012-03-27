@@ -27,7 +27,11 @@ public class Inventory {
 	};
 
 	public static Item[] getItems() {
-		final WidgetChild inventoryWidget = getWidget();
+		return getItems(true);
+	}
+
+	public static Item[] getItems(final boolean cached) {
+		final WidgetChild inventoryWidget = getWidget(cached);
 		if (inventoryWidget != null) {
 			final WidgetChild[] inventoryChildren = inventoryWidget.getChildren();
 			if (inventoryChildren.length > 27) {
@@ -66,14 +70,16 @@ public class Inventory {
 		return count;
 	}
 
-	public static WidgetChild getWidget() {
+	public static WidgetChild getWidget(final boolean cached) {
 		for (final int widget : ALT_WIDGETS) {
 			WidgetChild inventory = Widgets.get(widget, 0);
 			if (inventory != null && inventory.getAbsoluteX() > 50) {
 				return inventory;
 			}
 		}
-		Tabs.INVENTORY.open();
+		if (!cached) {
+			Tabs.INVENTORY.open(true);
+		}
 		return Widgets.get(WIDGET, 0);
 	}
 }
