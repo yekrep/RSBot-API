@@ -3,6 +3,17 @@ classpath   "ZKM.jar";
 open        "%ZKM_OPEN%";
 
 trimExclude org.powerbot.Boot^ public static main(java.lang.String[]) and
+            org.powerbot.lang.^* and
+            org.powerbot.lang.^*^ * and
+            org.powerbot.lang.* *(*) and
+            org.powerbot.concurrent. and
+            org.powerbot.concurrent.Task and
+            org.powerbot.concurrent.Task * and
+            org.powerbot.concurrent.Task *(*) and
+            org.powerbot.concurrent.action. and
+            org.powerbot.concurrent.action.Action and
+            org.powerbot.concurrent.action.Action * and
+            org.powerbot.concurrent.action.Action *(*) and
             org.powerbot.game.bot.event.impl.^* and
             org.powerbot.game.bot.event.impl.* *(*) and
             org.powerbot.game.bot.event.impl.^*^ * and
@@ -15,7 +26,13 @@ trimExclude org.powerbot.Boot^ public static main(java.lang.String[]) and
             public org.powerbot.game.bot.event.*.^* and
             org.powerbot.game.game.bot.event.*.^* public *(*) and
             public org.powerbot.game.api.*.^* and
-            org.powerbot.game.api.*.^* public *(*);
+            org.powerbot.game.api.*.^* public *(*) and
+            org.powerbot.game.api.ActiveScript and
+            org.powerbot.game.api.ActiveScript * and
+            org.powerbot.game.api.ActiveScript *(*) and
+            org.powerbot.game.api.Manifest and
+            org.powerbot.game.api.Manifest * and
+            org.powerbot.game.api.Manifest *(*);
 
 trim        deleteSourceFileAttributes=true
             deleteDeprecatedAttributes=true
@@ -24,6 +41,17 @@ trim        deleteSourceFileAttributes=true
             deleteUnknownAttributes=true;
 
 exclude     org.powerbot.Boot^ public static main(java.lang.String[]) and
+            org.powerbot.lang.^* and
+            org.powerbot.lang.* *(*) and
+            org.powerbot.lang.^*^ * and
+            org.powerbot.concurrent. and
+            org.powerbot.concurrent.Task and
+            org.powerbot.concurrent.Task * and
+            org.powerbot.concurrent.Task *(*) and
+            org.powerbot.concurrent.action. and
+            org.powerbot.concurrent.action.Action and
+            org.powerbot.concurrent.action.Action * and
+            org.powerbot.concurrent.action.Action *(*) and
             org.powerbot.game.bot.event.impl.^* and
             org.powerbot.game.bot.event.impl.* *(*) and
             org.powerbot.game.bot.event.impl.^*^ * and
@@ -36,7 +64,13 @@ exclude     org.powerbot.Boot^ public static main(java.lang.String[]) and
             public org.powerbot.game.bot.event.*.^* and
             org.powerbot.game.game.bot.event.*.^* public *(*) and
             public org.powerbot.game.api.*.^* and
-            org.powerbot.game.api.*.^* public *(*);
+            org.powerbot.game.api.*.^* public *(*) and
+            org.powerbot.game.api.ActiveScript and
+            org.powerbot.game.api.ActiveScript * and
+            org.powerbot.game.api.ActiveScript *(*) and
+            org.powerbot.game.api.Manifest and
+            org.powerbot.game.api.Manifest * and
+            org.powerbot.game.api.Manifest *(*);
 
 unexclude   org.powerbot.game.api.internal.*.^* and
             org.powerbot.game.api.internal.*.^* public *(*) and
