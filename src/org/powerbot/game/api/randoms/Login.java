@@ -33,8 +33,9 @@ public class Login extends AntiRandom {
 	}
 
 	private enum LoginEvent {
-		TOKEN_FAILURE(WIDGET_LOGIN_TOKEN, "token failure", 0, new Task() {
+		TOKEN_FAILURE(WIDGET_LOGIN_TOKEN, "token failure", -1, new Task() {
 			public void run() {
+				//TODO restart game & script
 			}
 		});
 
