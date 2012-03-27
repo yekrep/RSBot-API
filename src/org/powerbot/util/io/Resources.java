@@ -35,6 +35,7 @@ public class Resources {
 		public static final String CROSS_SMALL_GRAY = ROOT_IMG + "/cross_small_gray.png";
 		public static final String DELETE = ROOT_IMG + "/delete.png";
 		public static final String KEY = ROOT_IMG + "/key.png";
+		public static final String KEYBOARD = ROOT_IMG + "/keyboard.png";
 		public static final String MONEY_DOLLAR = ROOT_IMG + "/money_dollar.png";
 		public static final String REPORT_KEY = ROOT_IMG + "/report_key.png";
 		public static final String SCRIPT = ROOT_IMG + "/script.png";

@@ -15,7 +15,9 @@ import java.util.logging.Logger;
 import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPopupMenu;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
@@ -35,8 +37,10 @@ import org.powerbot.util.io.Resources;
 public final class BotToolBar extends JToolBar implements ActionListener {
 	private static final long serialVersionUID = 1L;
 	public final BotChrome parent;
-	private final JButton tabAdd, scriptPlay, scriptStop;
+	private final JButton tabAdd, scriptPlay, scriptStop, scriptInput;
 	private int activeTab = -1;
+
+	public enum InputMask { NONE, KEYBOARD, ALL };
 
 	public BotToolBar(final BotChrome parent) {
 		this.parent = parent;
@@ -70,6 +74,10 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 		scriptStop.setFocusable(false);
 		scriptStop.setVisible(false);
 		add(scriptStop);
+		scriptInput = new JButton(new ImageIcon(Resources.getImage(Resources.Paths.KEYBOARD)));
+		scriptInput.addActionListener(this);
+		scriptInput.setFocusable(false);
+		add(scriptInput);
 		add(Box.createHorizontalStrut(16));
 
 		final BotToolBar t = this;
@@ -127,6 +135,14 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 					}
 				}
 			}
+		} else if (c == scriptInput) {
+			// TODO: get bot input masks
+			final InputMask input = InputMask.ALL;
+			final JPopupMenu menu = new JPopupMenu();
+			menu.add(new JCheckBoxMenuItem("On", input == InputMask.ALL));
+			menu.add(new JCheckBoxMenuItem("Keyboard only", input == InputMask.KEYBOARD));
+			menu.add(new JCheckBoxMenuItem("Off", input == InputMask.NONE));
+			menu.show(c, c.getWidth() / 2, c.getHeight() / 2);
 		}
 	}
 
