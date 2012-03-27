@@ -9,6 +9,7 @@ public final class BotLocale {
 	public static String NEWTAB = "New Tab";
 	public static String CLOSETAB = "Close Tab";
 	public static String PLAYSCRIPT = "Play Script";
+	public static String RESUMESCRIPT = "Resume Script";
 	public static String PAUSESCRIPT = "Pause Script";
 	public static String STOPSCRIPT = "Stop Script";
 	public static String ACCOUNTS = "Accounts";

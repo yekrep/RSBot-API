@@ -249,10 +249,11 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 			final Bot bot = Bot.bots.get(activeTab);
 			final ActiveScript script = bot.getActiveScript();
 			final boolean script_processing = script != null && script.isRunning() && !script.isPaused();
+			final boolean script_stopped = script == null || !script.isRunning();
 			scriptPlay.setIcon(script_processing ?
 					new ImageIcon(Resources.getImage(Resources.Paths.CONTROL_PAUSE)) :
 					new ImageIcon(Resources.getImage(Resources.Paths.CONTROL_PLAY)));
-			scriptPlay.setToolTipText(script_processing ? BotLocale.PAUSESCRIPT : BotLocale.PLAYSCRIPT);
+			scriptPlay.setToolTipText(script_processing ? BotLocale.PAUSESCRIPT : script_stopped ? BotLocale.PLAYSCRIPT : BotLocale.RESUMESCRIPT);
 			scriptStop.setEnabled(script != null && script.isRunning());
 		}
 	}
