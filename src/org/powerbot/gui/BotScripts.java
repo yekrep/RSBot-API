@@ -383,7 +383,14 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 						return;
 					}
 					final Bot bot = Bot.bots.get(BotScripts.this.parent.getActiveTab());
-					script.log.info("Starting"); //debug to show script has loaded
+					bot.setAccount(null);
+					for (final Account a : GameAccounts.getInstance()) {
+						if (username.getText().equalsIgnoreCase(a.toString())) {
+							bot.setAccount(a);
+							break;
+						}
+					}
+					script.log.info("Starting");//debug to show script has loaded
 					bot.startScript(script);
 				}
 			});

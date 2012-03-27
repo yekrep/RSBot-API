@@ -43,6 +43,7 @@ import org.powerbot.game.loader.script.ModScript;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.gui.component.BotPanel;
 import org.powerbot.lang.AdaptException;
+import org.powerbot.service.GameAccounts;
 import org.powerbot.util.io.HttpClient;
 import org.powerbot.util.io.IOHelper;
 import org.powerbot.util.io.Resources;
@@ -70,6 +71,8 @@ public class Bot extends GameDefinition implements Runnable {
 	private RandomHandler randomHandler;
 	private Future<?> antiRandomFuture;
 
+	private GameAccounts.Account account;
+
 	public BufferedImage image;
 	private BufferedImage backBuffer;
 	private final PaintEvent paintEvent;
@@ -90,6 +93,7 @@ public class Bot extends GameDefinition implements Runnable {
 		activeScript = null;
 		randomHandler = new RandomHandler(this);
 		antiRandomFuture = null;
+		account = null;
 	}
 
 	/**
@@ -249,6 +253,14 @@ public class Bot extends GameDefinition implements Runnable {
 
 	public EventDispatcher getEventDispatcher() {
 		return eventDispatcher;
+	}
+
+	public void setAccount(final GameAccounts.Account account) {
+		this.account = account;
+	}
+
+	public GameAccounts.Account getAccount() {
+		return account;
 	}
 
 	public ActiveScript getActiveScript() {
