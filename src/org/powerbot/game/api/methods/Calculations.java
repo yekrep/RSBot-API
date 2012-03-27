@@ -132,7 +132,7 @@ public class Calculations {
 	 * @param y y value based on the game plane.
 	 * @return <code>Point</code> within map; otherwise <tt>new Point(-1, -1)</tt>.
 	 */
-	public Point worldToMap(double x, double y) {
+	public static Point worldToMap(double x, double y) {
 		final Bot bot = Bot.resolve();
 		final Client client = bot.getClient();
 		final Player local = Players.getLocal();

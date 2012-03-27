@@ -1,6 +1,13 @@
 package org.powerbot.game.api.methods.location;
 
+import java.awt.Point;
+
+import org.powerbot.game.api.methods.Calculations;
 import org.powerbot.game.api.methods.Game;
+import org.powerbot.game.api.methods.input.Mouse;
+import org.powerbot.game.api.methods.interactive.Players;
+import org.powerbot.game.api.util.Filter;
+import org.powerbot.game.api.wrappers.Locatable;
 import org.powerbot.game.api.wrappers.Tile;
 import org.powerbot.game.bot.Bot;
 import org.powerbot.game.client.RSGroundDataBlocks;
@@ -47,5 +54,33 @@ public class Walking {
 	 */
 	public static int[][] getCollisionFlags(final int plane) {
 		return (int[][]) ((RSGroundDataBlocks) ((Object[]) ((RSGroundInfoRSGroundArray) Bot.resolve().getClient().getRSGroundInfo()).getRSGroundInfoRSGroundArray())[plane]).getRSGroundDataBlocks();
+	}
+
+	public static boolean clickTile(final Tile tile) {
+		return Mouse.apply(
+				new Locatable() {
+					public Point getCentralPoint() {
+						return Calculations.worldToMap(tile.x + 0.5, tile.y + 0.5);
+					}
+
+					public Point getNextViewportPoint() {
+						return getCentralPoint();
+					}
+
+					public boolean contains(final Point point) {
+						return getCentralPoint().distance(point) <= 2;
+					}
+
+					public boolean verify() {
+						return Calculations.distance(tile, Players.getLocal().getPosition()) <= 17;
+					}
+				},
+				new Filter<Point>() {
+					public boolean accept(final Point point) {
+						Mouse.click(true);
+						return true;
+					}
+				}
+		);
 	}
 }
