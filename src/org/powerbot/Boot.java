@@ -7,6 +7,7 @@ import java.nio.channels.FileLock;
 import java.util.logging.Handler;
 import java.util.logging.Logger;
 
+import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
 import org.powerbot.gui.BotChrome;
@@ -67,7 +68,11 @@ public class Boot implements Runnable {
 		}
 
 		if (!getLock()) {
-			log.severe("An instance of " + Configuration.NAME + " is already running");
+			final String msg = "An instance of " + Configuration.NAME + " is already running";
+			log.severe(msg);
+			if (!Configuration.DEVMODE) {
+				JOptionPane.showMessageDialog(null, msg, "Error", JOptionPane.ERROR_MESSAGE);
+			}
 			return;
 		}
 
