@@ -21,6 +21,10 @@ public class ThreadPool implements ThreadFactory {
 	 * {@inheritDoc}
 	 */
 	public Thread newThread(final Runnable r) {
-		return new Thread(threadGroup, r, ThreadPool.class.getName() + "-" + threadNumber.getAndIncrement() + "/" + Thread.currentThread() + "@" + Thread.currentThread().getThreadGroup());
+		return new Thread(
+				threadGroup, r,
+				new StringBuilder(ThreadPool.class.getName()).append("-").append(threadNumber.getAndIncrement()).append('/').
+						append(Thread.currentThread().getName()).append("@").append(Thread.currentThread().getThreadGroup()).toString()
+		);
 	}
 }
