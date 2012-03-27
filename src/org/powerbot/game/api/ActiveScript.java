@@ -26,12 +26,14 @@ public abstract class ActiveScript implements EventListener {
 	private ActionExecutor executor;
 
 	private Bot bot;
+	private boolean silent;
 
 	public ActiveScript() {
 		stop_execution = null;
 		eventManager = null;
 		container = null;
 		executor = null;
+		silent = false;
 	}
 
 	public final void init(final Bot bot) {
@@ -72,6 +74,7 @@ public abstract class ActiveScript implements EventListener {
 	}
 
 	public final void resume() {
+		silent = false;
 		eventManager.accept(ActiveScript.this);
 		executor.listen();
 	}
@@ -85,6 +88,11 @@ public abstract class ActiveScript implements EventListener {
 		if (removeListener) {
 			eventManager.remove(ActiveScript.this);
 		}
+	}
+
+	public final void silentLock(final boolean removeListener) {
+		silent = true;
+		pause(removeListener);
 	}
 
 	public final void stop() {
@@ -106,7 +114,15 @@ public abstract class ActiveScript implements EventListener {
 	}
 
 	public boolean isPaused() {
+		return isLocked() && !silent;
+	}
+
+	public boolean isLocked() {
 		return getState() == State.LOCKED;
+	}
+
+	public boolean isSilentlyLocked() {
+		return silent;
 	}
 
 	public TaskContainer getContainer() {

@@ -89,12 +89,14 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 			final Bot bot = Bot.bots.get(activeTab);
 			final ActiveScript script = bot.getActiveScript();
 			if (script != null && script.isRunning()) {
-				if (script.isPaused()) {
-					script.resume();
-					parent.updateScriptStatus();
-				} else {
-					script.pause();
-					parent.updateScriptStatus();
+				if (!script.isSilentlyLocked()) {
+					if (script.isPaused()) {
+						script.resume();
+						parent.updateScriptStatus();
+					} else {
+						script.pause();
+						parent.updateScriptStatus();
+					}
 				}
 				return;
 			}

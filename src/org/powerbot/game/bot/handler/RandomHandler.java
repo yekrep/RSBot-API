@@ -44,9 +44,9 @@ public class RandomHandler implements Task {
 			Future<?> submittedRandom = null;
 			for (final AntiRandom antiRandom : antiRandoms) {
 				if (antiRandom.applicable()) {
-					if (!activeScript.isPaused() || activeScript.getContainer().isActive()) {
+					if (!activeScript.isLocked() || activeScript.getContainer().isActive()) {
 						log.info("Locking script");
-						activeScript.pause(false);
+						activeScript.silentLock(false);
 						while (activeScript.getContainer().isActive()) {
 							Time.sleep(Random.nextInt(500, 1200));
 						}
@@ -55,9 +55,10 @@ public class RandomHandler implements Task {
 						for (final EventListener listener : listeners.values()) {
 							bot.getEventDispatcher().remove(listener);
 						}
+						listeners.clear();
 
 						log.info("Activating random: " + antiRandom.getClass().getAnnotation(Manifest.class).name());
-						activeScript.pause(true);
+						activeScript.silentLock(true);
 						bot.getEventDispatcher().accept(antiRandom);
 						listeners.put(antiRandom.getClass().getName(), antiRandom);
 					}
@@ -70,6 +71,11 @@ public class RandomHandler implements Task {
 					if (listener != null) {
 						log.info("Deactivating random: " + antiRandom.getClass().getAnnotation(Manifest.class).name());
 						bot.getEventDispatcher().remove(listener);
+
+						if (activeScript.isLocked()) {
+							log.info("Resuming active script processing");
+							activeScript.resume();
+						}
 					}
 				}
 			}
@@ -80,10 +86,6 @@ public class RandomHandler implements Task {
 				} catch (final ExecutionException ignored) {
 				}
 			} else {
-				if (activeScript.isPaused()) {
-					log.info("Resuming active script processing");
-					activeScript.resume();
-				}
 				Time.sleep(Random.nextInt(1000, 5000));
 			}
 		}
