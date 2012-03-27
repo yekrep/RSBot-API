@@ -11,6 +11,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.concurrent.Future;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -67,6 +68,7 @@ public class Bot extends GameDefinition implements Runnable {
 	private EventDispatcher eventDispatcher;
 	private ActiveScript activeScript;
 	private RandomHandler randomHandler;
+	private Future<?> antiRandomFuture;
 
 	public BufferedImage image;
 	private BufferedImage backBuffer;
@@ -87,6 +89,7 @@ public class Bot extends GameDefinition implements Runnable {
 		viewport = new Calculations.Viewport();
 		activeScript = null;
 		randomHandler = new RandomHandler(this);
+		antiRandomFuture = null;
 	}
 
 	/**
@@ -252,6 +255,12 @@ public class Bot extends GameDefinition implements Runnable {
 		return activeScript;
 	}
 
+	public void ensureAntiRandoms() {
+		if (antiRandomFuture == null || antiRandomFuture.isDone()) {
+			antiRandomFuture = container.submit(randomHandler);
+		}
+	}
+
 	public void startScript(final ActiveScript script) {
 		if (activeScript != null && activeScript.isRunning()) {
 			throw new RuntimeException("cannot run multiple scripts at once!");
@@ -260,7 +269,6 @@ public class Bot extends GameDefinition implements Runnable {
 		this.activeScript = script;
 		script.init(this);
 		container.submit(script.start());
-		container.submit(randomHandler);
 	}
 
 	public void resumeScript() {

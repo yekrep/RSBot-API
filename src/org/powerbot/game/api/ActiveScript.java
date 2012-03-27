@@ -25,6 +25,8 @@ public abstract class ActiveScript implements EventListener {
 	private TaskContainer container;
 	private ActionExecutor executor;
 
+	private Bot bot;
+
 	public ActiveScript() {
 		stop_execution = null;
 		eventManager = null;
@@ -33,6 +35,7 @@ public abstract class ActiveScript implements EventListener {
 	}
 
 	public final void init(final Bot bot) {
+		this.bot = bot;
 		eventManager = bot.getEventDispatcher();
 		container = new TaskProcessor(bot.threadGroup);
 		executor = new ActionExecutor(container, bot.getContainer());
@@ -61,6 +64,9 @@ public abstract class ActiveScript implements EventListener {
 			public void run() {
 				setup();
 				resume();
+				if (bot != null) {
+					bot.ensureAntiRandoms();
+				}
 			}
 		};
 	}

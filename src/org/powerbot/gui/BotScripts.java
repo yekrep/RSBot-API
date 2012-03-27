@@ -375,7 +375,7 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 					String name = def.source.getFile();
 					name = name.substring(name.lastIndexOf('/') + 1);
 					name = name.substring(0, name.lastIndexOf('.'));
-					final ClassLoader cl = new URLClassLoader(new URL[] {def.source});
+					final ClassLoader cl = new URLClassLoader(new URL[]{def.source});
 					final ActiveScript script;
 					try {
 						script = cl.loadClass(name).asSubclass(ActiveScript.class).newInstance();
@@ -383,7 +383,7 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 						return;
 					}
 					final Bot bot = Bot.bots.get(BotScripts.this.parent.getActiveTab());
-					script.log.info("Starting"); // debug to show script has loaded
+					script.log.info("Starting"); //debug to show script has loaded
 					bot.startScript(script);
 				}
 			});
