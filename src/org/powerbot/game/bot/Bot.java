@@ -11,6 +11,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -280,7 +281,12 @@ public class Bot extends GameDefinition implements Runnable {
 
 		this.activeScript = script;
 		script.init(this);
-		container.submit(script.start());
+		final Future<?> future = container.submit(script.start());
+		try {
+			future.get();
+		} catch (InterruptedException ignored) {
+		} catch (ExecutionException ignored) {
+		}
 	}
 
 	public void resumeScript() {
@@ -304,6 +310,7 @@ public class Bot extends GameDefinition implements Runnable {
 			throw new RuntimeException("script is non existent!");
 		}
 
+		log.info("Stopping script");
 		activeScript.stop();
 		activeScript = null;
 	}

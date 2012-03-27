@@ -504,7 +504,7 @@ public class WidgetChild implements Entity {
 		});
 	}
 
-	public void draw(Graphics render) {
+	public void draw(final Graphics render) {
 		//TODO
 	}
 

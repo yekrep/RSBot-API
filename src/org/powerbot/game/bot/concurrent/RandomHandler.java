@@ -83,5 +83,9 @@ public class RandomHandler implements Task {
 				Time.sleep(Random.nextInt(1000, 5000));
 			}
 		}
+		for (final EventListener listener : listeners.values()) {
+			bot.getEventDispatcher().remove(listener);
+		}
+		listeners.clear();
 	}
 }

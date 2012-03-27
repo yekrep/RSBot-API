@@ -20,6 +20,7 @@ import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
+import org.powerbot.game.api.ActiveScript;
 import org.powerbot.game.bot.Bot;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.gui.BotScripts;
@@ -85,7 +86,15 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 		if (c == scriptPlay) {
 			new BotScripts(this);
 		} else if (c == scriptStop) {
-
+			if (activeTab == -1 || activeTab >= Bot.bots.size()) {
+				return;
+			}
+			final Bot bot = Bot.bots.get(activeTab);
+			final ActiveScript activeScript = bot.getActiveScript();
+			if (activeScript != null) {
+				bot.stopScript();
+				parent.updateScriptStatus();
+			}
 		}
 	}
 
@@ -202,7 +211,15 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 		} else {
 			scriptPlay.setVisible(true);
 			scriptStop.setVisible(true);
-			scriptStop.setEnabled(false);
+			if (activeTab >= Bot.bots.size()) {
+				scriptPlay.setEnabled(true);
+				scriptStop.setEnabled(false);
+				return;
+			}
+			final Bot bot = Bot.bots.get(activeTab);
+			final ActiveScript script = bot.getActiveScript();
+			scriptPlay.setEnabled(script == null || !script.isRunning());
+			scriptStop.setEnabled(script != null && script.isRunning());
 		}
 	}
 
