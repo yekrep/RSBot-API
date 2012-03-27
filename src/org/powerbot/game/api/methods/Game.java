@@ -13,10 +13,12 @@ import org.powerbot.game.client.RSInfoBaseInfo;
  * @author Timer
  */
 public class Game {
-	public static final int[] INDEX_LOGGED_IN = {11, 12};
 	public static final int INDEX_LOGIN_SCREEN = 3;
 	public static final int INDEX_LOBBY_SCREEN = 7;
 	public static final int INDEX_LOGGING_IN = 9;
+	public static final int INDEX_MAP_LOADED = 11;
+	public static final int INDEX_MAP_LOADING = 12;
+	public static final int[] INDEX_LOGGED_IN = {INDEX_MAP_LOADED, INDEX_MAP_LOADING};
 
 	/**
 	 * @return The current state of the game client.
