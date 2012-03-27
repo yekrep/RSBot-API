@@ -4,6 +4,8 @@ import java.awt.Point;
 
 import org.powerbot.game.api.methods.Calculations;
 import org.powerbot.game.api.methods.Game;
+import org.powerbot.game.api.methods.Settings;
+import org.powerbot.game.api.methods.Widgets;
 import org.powerbot.game.api.methods.input.Mouse;
 import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.util.Filter;
@@ -22,6 +24,10 @@ import org.powerbot.game.client.RSGroundInfoRSGroundArray;
  * @author Timer
  */
 public class Walking {
+	private static final int WIDGET = 750;
+	private static final int WIDGET_RUN = 2;
+	private static final int WIDGET_RUN_ENERGY = 6;
+
 	/**
 	 * @return The x destination your character is headed for.
 	 */
@@ -56,6 +62,30 @@ public class Walking {
 		return (int[][]) ((RSGroundDataBlocks) ((Object[]) ((RSGroundInfoRSGroundArray) Bot.resolve().getClient().getRSGroundInfo()).getRSGroundInfoRSGroundArray())[plane]).getRSGroundDataBlocks();
 	}
 
+	public static void setRun(final boolean enabled) {
+		if (isRunEnabled() != enabled) {
+			Widgets.get(WIDGET, WIDGET_RUN).click(true);
+		}
+	}
+
+	public static boolean isRunEnabled() {
+		return Settings.get(Settings.BOOLEAN_RUN_ENABLED) == 1;
+	}
+
+	public static int getEnergy() {
+		try {
+			return Integer.parseInt(Widgets.get(WIDGET, WIDGET_RUN_ENERGY).getText());
+		} catch (final NumberFormatException ignored) {
+			return -1;
+		}
+	}
+
+	/**
+	 * Clicks a tile on the minimap.
+	 *
+	 * @param tile The tile to click (global).
+	 * @return <tt>true</tt> if the tile was clicked; otherwise <tt>false</tt>.
+	 */
 	public static boolean clickTile(final Tile tile) {
 		return Mouse.apply(
 				new Locatable() {

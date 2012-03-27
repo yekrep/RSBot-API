@@ -9,6 +9,8 @@ import org.powerbot.game.client.SettingsData;
  * @author Timer
  */
 public class Settings {
+	public static final int BOOLEAN_RUN_ENABLED = 173;
+
 	/**
 	 * @return The <code>int[]</code> of all the game's settings in their respective positioning.
 	 */
