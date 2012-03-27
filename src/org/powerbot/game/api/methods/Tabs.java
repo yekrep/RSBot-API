@@ -2,7 +2,11 @@ package org.powerbot.game.api.methods;
 
 import java.awt.event.KeyEvent;
 
+import org.powerbot.game.api.methods.input.Keyboard;
 import org.powerbot.game.api.methods.widget.WidgetComposite;
+import org.powerbot.game.api.util.Random;
+import org.powerbot.game.api.util.Time;
+import org.powerbot.game.api.util.Timer;
 import org.powerbot.game.api.wrappers.widget.Widget;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
 
@@ -27,6 +31,8 @@ public enum Tabs {
 	MUSIC(14, "Music Player", -1),
 	NOTES(15, "Notes", -1),
 	LOGOUT(16, "Exit", -1);
+
+	private static final int WIDGET_LOGOUT_X = 182;
 
 	private final String description;
 	private final int functionKey;
@@ -55,7 +61,29 @@ public enum Tabs {
 	}
 
 	public boolean open() {
-		return false;//TODO
+		return open(false);
+	}
+
+	public boolean open(final boolean fast) {
+		if (this == Tabs.NONE) {
+			return false;
+		} else if (this == getCurrent()) {
+			return true;
+		}
+		if (fast && hasFunctionKey()) {
+			Keyboard.sendKey((char) getFunctionKey(), Random.nextInt(100, 300));
+		} else {
+			final WidgetChild widgetChild = WidgetComposite.getTab(this);
+			if (widgetChild != null && widgetChild.verify()) {
+				if (widgetChild.click(true)) {
+					final Timer timer = new Timer(800);
+					while (timer.isRunning() && getCurrent() != this) {
+						Time.sleep(15);
+					}
+				}
+			}
+		}
+		return getCurrent() == this;
 	}
 
 	public static Tabs getCurrent() {
@@ -65,7 +93,7 @@ public enum Tabs {
 				return t;
 			}
 		}
-		final Widget logout = Widgets.get(182);//TODO static var | not number
+		final Widget logout = Widgets.get(WIDGET_LOGOUT_X);
 		return logout != null && logout.isValid() ? Tabs.LOGOUT : Tabs.NONE;
 	}
 }
