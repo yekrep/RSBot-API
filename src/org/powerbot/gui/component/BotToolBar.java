@@ -86,6 +86,19 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 	public void actionPerformed(final ActionEvent e) {
 		final Component c = (Component) e.getSource();
 		if (c == scriptPlay) {
+			final Bot bot = Bot.bots.get(activeTab);
+			final ActiveScript script = bot.getActiveScript();
+			if (script != null && script.isRunning()) {
+				if (script.isPaused()) {
+					script.resume();
+					parent.updateScriptStatus();
+				} else {
+					script.pause();
+					parent.updateScriptStatus();
+				}
+				return;
+			}
+
 			new BotScripts(this);
 		} else if (c == scriptStop) {
 			if (activeTab == -1 || activeTab >= Bot.bots.size()) {
@@ -235,7 +248,9 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 			}
 			final Bot bot = Bot.bots.get(activeTab);
 			final ActiveScript script = bot.getActiveScript();
-			scriptPlay.setEnabled(script == null || !script.isRunning());
+			scriptPlay.setIcon(script != null && script.isRunning() && !script.isPaused() ?
+					new ImageIcon(Resources.getImage(Resources.Paths.CONTROL_PAUSE)) :
+					new ImageIcon(Resources.getImage(Resources.Paths.CONTROL_PLAY)));
 			scriptStop.setEnabled(script != null && script.isRunning());
 		}
 	}
