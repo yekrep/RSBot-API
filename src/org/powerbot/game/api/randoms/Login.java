@@ -29,7 +29,7 @@ public class Login extends AntiRandom {
 
 	public boolean applicable() {
 		final int state = Game.getClientState();
-		return state == Game.INDEX_LOGIN_SCREEN || state == Game.INDEX_LOBBY_SCREEN || state == Game.INDEX_LOGGING_IN;
+		return (state == Game.INDEX_LOGIN_SCREEN || state == Game.INDEX_LOBBY_SCREEN || state == Game.INDEX_LOGGING_IN) && bot.getAccount() != null;
 	}
 
 	private enum LoginEvent {
@@ -92,7 +92,8 @@ public class Login extends AntiRandom {
 						if (loginEvent.wait > 0) {
 							Time.sleep(loginEvent.wait);
 						} else if (loginEvent.wait == -1) {
-							//TODO stop script
+							bot.stopScript();
+							return;
 						}
 
 						if (loginEvent.task != null) {
@@ -107,7 +108,7 @@ public class Login extends AntiRandom {
 				attemptLogin();
 				Time.sleep(Random.nextInt(1200, 2000));
 			} else if (!isUsernameCorrect()) {
-				final String username = "";//TODO
+				final String username = bot.getAccount().toString();
 				final WidgetChild usernameTextBox = Widgets.get(WIDGET, WIDGET_LOGIN_USERNAME_TEXT);
 				if (!clickLoginInterface(usernameTextBox)) {
 					return;
@@ -121,7 +122,7 @@ public class Login extends AntiRandom {
 				Keyboard.sendText(username, false);
 				Time.sleep(Random.nextInt(500, 700));
 			} else if (!isPasswordValid()) {
-				final String password = "";//TODO
+				final String password = bot.getAccount().getPassword();
 				final WidgetChild passwordTextBox = Widgets.get(WIDGET, WIDGET_LOGIN_PASSWORD_TEXT);
 				if (!clickLoginInterface(passwordTextBox)) {
 					return;
@@ -175,12 +176,12 @@ public class Login extends AntiRandom {
 	}
 
 	private boolean isUsernameCorrect() {
-		final String userName = "";//TODO
+		final String userName = bot.getAccount().toString();
 		return Widgets.get(WIDGET, WIDGET_LOGIN_USERNAME_TEXT).getText().toLowerCase().equalsIgnoreCase(userName);
 	}
 
 	private boolean isPasswordValid() {
-		String passWord = "";//TODO
+		String passWord = bot.getAccount().getPassword();
 		return Widgets.get(WIDGET, WIDGET_LOGIN_PASSWORD_TEXT).getText().length() == (passWord == null ? 0 : passWord.length());
 	}
 
