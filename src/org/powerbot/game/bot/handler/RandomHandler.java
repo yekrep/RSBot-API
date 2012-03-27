@@ -52,6 +52,10 @@ public class RandomHandler implements Task {
 						}
 					}
 					if (!listeners.containsKey(antiRandom.getClass().getName())) {
+						for (final EventListener listener : listeners.values()) {
+							bot.getEventDispatcher().remove(listener);
+						}
+
 						log.info("Activating random: " + antiRandom.getClass().getAnnotation(Manifest.class).name());
 						activeScript.pause(true);
 						bot.getEventDispatcher().accept(antiRandom);
