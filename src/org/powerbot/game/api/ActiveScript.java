@@ -93,6 +93,10 @@ public abstract class ActiveScript implements EventListener {
 		container.shutdown();
 	}
 
+	public final void kill() {
+		container.stop();
+	}
+
 	protected State getState() {
 		return executor.state;
 	}
