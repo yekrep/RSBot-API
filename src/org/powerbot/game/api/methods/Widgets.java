@@ -91,6 +91,23 @@ public class Widgets {
 		return get(x).getChild(y);
 	}
 
+	public static WidgetChild getContinue() {
+		final WidgetChild button = get(1184, 18);
+		if (button != null && button.verify()) {
+			return button;
+		}
+		return null;
+	}
+
+	public static boolean canContinue() {
+		return getContinue() != null;
+	}
+
+	public static boolean clickContinue() {
+		final WidgetChild widgetChild = getContinue();
+		return widgetChild != null && widgetChild.click(true);
+	}
+
 	/**
 	 * @param client The <code>Client</code> to ensure caching capacity of.
 	 */
