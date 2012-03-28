@@ -91,7 +91,7 @@ public class Mime extends AntiRandom {
 		} else {
 			animation = -1;
 			PERFORMANCE_TILE.interact("Walk here");
-			Time.sleep(Random.nextInt(800, 1200));
+			Time.sleep(Random.nextInt(2500, 3800));
 		}
 	}
 }
