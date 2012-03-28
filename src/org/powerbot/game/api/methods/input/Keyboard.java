@@ -23,8 +23,20 @@ public class Keyboard {
 	 * @param mask  The mask to press this key with.
 	 */
 	public static void pressKey(final char ch, final int delay, final int mask) {
+		pressKey(ch, ch, delay, mask);
+	}
+
+	/**
+	 * 'Presses' the given char for the given delay and with the given mask.
+	 *
+	 * @param ch    The char to press.
+	 * @param code  The code of the char to press.
+	 * @param delay The time until the key is held down.
+	 * @param mask  The mask to press this key with.
+	 */
+	private static void pressKey(final char ch, final int code, final int delay, final int mask) {
 		getKeyboard().keyPressed(
-				new KeyEvent(getTarget(), KeyEvent.KEY_PRESSED, System.currentTimeMillis() + delay, mask, ch, getKeyChar(ch), getLocation(ch))
+				new KeyEvent(getTarget(), KeyEvent.KEY_PRESSED, System.currentTimeMillis() + delay, mask, code, getKeyChar(ch), getLocation(ch))
 		);
 		if ((ch < KeyEvent.VK_LEFT || ch > KeyEvent.VK_DOWN) && (ch < KeyEvent.VK_SHIFT || ch > KeyEvent.VK_CAPS_LOCK)) {
 			getKeyboard().keyTyped(
@@ -41,8 +53,20 @@ public class Keyboard {
 	 * @param mask  The mask to release the given char with.
 	 */
 	public static void releaseKey(final char ch, final int delay, final int mask) {
+		releaseKey(ch, ch, delay, mask);
+	}
+
+	/**
+	 * Releases a key after the given delay and with the given mask.
+	 *
+	 * @param ch    The char to release.
+	 * @param code  The code of the char to release.
+	 * @param delay The time to wait until this key is released.
+	 * @param mask  The mask to release the given char with.
+	 */
+	private static void releaseKey(final char ch, final int code, final int delay, final int mask) {
 		getKeyboard().keyReleased(
-				new KeyEvent(getTarget(), KeyEvent.KEY_RELEASED, System.currentTimeMillis() + delay, mask, ch, getKeyChar(ch), getLocation(ch))
+				new KeyEvent(getTarget(), KeyEvent.KEY_RELEASED, System.currentTimeMillis() + delay, mask, code, getKeyChar(ch), getLocation(ch))
 		);
 	}
 
@@ -76,25 +100,27 @@ public class Keyboard {
 	 */
 	public static void sendKey(char ch, final int delay) {
 		boolean shift = false;
+		int code = ch;
 		if (ch >= 'A' && ch <= 'Z') {
 			shift = true;
-			ch -= 32;
+		} else if (ch >= 'a' && ch <= 'z') {
+			code -= 32;
 		}
 		int wait = 0;
 		if (shift) {
 			pressKey((char) KeyEvent.VK_SHIFT, 0, InputEvent.SHIFT_DOWN_MASK);
 			wait = Random.nextInt(100, 200);
 		}
-		pressKey(ch, wait, shift ? InputEvent.SHIFT_DOWN_MASK : 0);
+		pressKey(ch, code, wait, shift ? InputEvent.SHIFT_DOWN_MASK : 0);
 		if (delay > 500) {
-			pressKey(ch, 500 + wait, shift ? InputEvent.SHIFT_DOWN_MASK : 0);
+			pressKey(ch, code, 500 + wait, shift ? InputEvent.SHIFT_DOWN_MASK : 0);
 			final int iterationWait = delay - 500;
 			for (int i = 37; i < iterationWait; i += Random.nextInt(20, 40)) {
-				pressKey(ch, 500 + i + wait, shift ? InputEvent.SHIFT_DOWN_MASK : 0);
+				pressKey(ch, code, 500 + i + wait, shift ? InputEvent.SHIFT_DOWN_MASK : 0);
 			}
 		}
 		final int releasedDelay = delay + Random.nextInt(-30, 30);
-		releaseKey(ch, releasedDelay + wait, shift ? InputEvent.SHIFT_DOWN_MASK : 0);
+		releaseKey(ch, code, releasedDelay + wait, shift ? InputEvent.SHIFT_DOWN_MASK : 0);
 		if (shift) {
 			releaseKey((char) KeyEvent.VK_SHIFT, releasedDelay + wait + Random.nextInt(50, 120), InputEvent.SHIFT_DOWN_MASK);
 		}
