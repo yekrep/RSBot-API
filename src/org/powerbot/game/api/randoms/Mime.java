@@ -80,7 +80,9 @@ public class Mime extends AntiRandom {
 					if (text != null) {
 						for (final WidgetChild widgetChild : widget.getChildren()) {
 							if (widgetChild.getText().equalsIgnoreCase(text)) {
-								widgetChild.interact(text);
+								if (widgetChild.interact(text)) {
+									Time.sleep(Random.nextInt(1200, 2000));
+								}
 							}
 						}
 					}
