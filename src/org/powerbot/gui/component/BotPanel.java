@@ -30,6 +30,9 @@ import org.powerbot.gui.BotChrome;
  * @author Timer
  */
 public class BotPanel extends JPanel {
+	public static final int INPUT_MOUSE = 1, INPUT_KEYBOARD = 2;
+	private int inputMask;
+
 	private static final long serialVersionUID = 1L;
 	private Bot bot;
 	private int xOff, yOff;
@@ -45,6 +48,7 @@ public class BotPanel extends JPanel {
 		setBackground(Color.black);
 		bot = null;
 		xOff = yOff = 0;
+		inputMask = 0;
 
 		setLayout(new GridBagLayout());
 		add(loadingPanel = new BotLoadingPanel(parent));
@@ -143,6 +147,14 @@ public class BotPanel extends JPanel {
 		}
 	}
 
+	public void setInputMask(final int inputMask) {
+		this.inputMask = inputMask;
+	}
+
+	public int getInputMask() {
+		return inputMask;
+	}
+
 	public void offset() {
 		if (bot != null) {
 			final Canvas canvas = bot.getCanvas();
@@ -154,6 +166,9 @@ public class BotPanel extends JPanel {
 	}
 
 	private void redispatch(final MouseEvent mouseEvent) {
+		if ((inputMask & INPUT_MOUSE) == 0) {
+			return;
+		}
 		if (mouseEvent == null || bot == null || bot.appletContainer == null || bot.appletContainer.getComponentCount() == 0 ||
 				bot.getClient() == null) {
 			return;
@@ -204,6 +219,9 @@ public class BotPanel extends JPanel {
 	}
 
 	private void redispatch(final KeyEvent keyEvent) {
+		if ((inputMask & INPUT_KEYBOARD) == 0) {
+			return;
+		}
 		if (keyEvent == null || bot == null || bot.appletContainer == null || bot.appletContainer.getComponentCount() == 0 ||
 				bot.getClient() == null) {
 			return;

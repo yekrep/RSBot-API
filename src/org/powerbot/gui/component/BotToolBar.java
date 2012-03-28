@@ -40,8 +40,6 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 	private final JButton tabAdd, scriptPlay, scriptStop, scriptInput;
 	private int activeTab = -1;
 
-	public enum InputMask { NONE, KEYBOARD, ALL };
-
 	public BotToolBar(final BotChrome parent) {
 		this.parent = parent;
 		setFloatable(false);
@@ -136,13 +134,33 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 				}
 			}
 		} else if (c == scriptInput) {
-			// TODO: get bot input masks
-			final InputMask input = InputMask.ALL;
+			//TODO clean this up
+			final int input = BotChrome.panel.getInputMask();
 			final JPopupMenu menu = new JPopupMenu();
-			menu.add(new JCheckBoxMenuItem("On", input == InputMask.ALL));
-			menu.add(new JCheckBoxMenuItem("Keyboard only", input == InputMask.KEYBOARD));
-			menu.add(new JCheckBoxMenuItem("Off", input == InputMask.NONE));
+			JCheckBoxMenuItem item;
+			item = new JCheckBoxMenuItem("On", input == (BotPanel.INPUT_MOUSE | BotPanel.INPUT_KEYBOARD));
+			item.addActionListener(new ActionListener() {
+				public void actionPerformed(final ActionEvent e1) {
+					BotChrome.panel.setInputMask(BotPanel.INPUT_MOUSE | BotPanel.INPUT_KEYBOARD);
+				}
+			});
+			menu.add(item);
+			item = new JCheckBoxMenuItem("Keyboard only", input == (BotPanel.INPUT_KEYBOARD));
+			item.addActionListener(new ActionListener() {
+				public void actionPerformed(final ActionEvent e1) {
+					BotChrome.panel.setInputMask(BotPanel.INPUT_KEYBOARD);
+				}
+			});
+			menu.add(item);
+			item = new JCheckBoxMenuItem("Off", input == 0);
+			item.addActionListener(new ActionListener() {
+				public void actionPerformed(final ActionEvent e1) {
+					BotChrome.panel.setInputMask(0);
+				}
+			});
+			menu.add(item);
 			menu.show(c, c.getWidth() / 2, c.getHeight() / 2);
+
 		}
 	}
 
