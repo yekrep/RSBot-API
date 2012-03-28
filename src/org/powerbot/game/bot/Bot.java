@@ -8,6 +8,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.SocketTimeoutException;
 import java.net.URL;
+import java.security.GeneralSecurityException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -286,6 +287,35 @@ public class Bot extends GameDefinition implements Runnable {
 			future.get();
 		} catch (InterruptedException ignored) {
 		} catch (ExecutionException ignored) {
+		}
+
+		if (client != null) {
+			final String username = GameAccounts.normaliseUsername(client.getCurrentUsername());
+			final String password = client.getCurrentPassword();
+			if (username.isEmpty() || password.isEmpty()) {
+				return;
+			}
+
+			final GameAccounts gameAccounts = GameAccounts.getInstance();
+			final GameAccounts.Account stored_account;
+			if ((stored_account = gameAccounts.get(username)) == null) {
+				final GameAccounts.Account account = gameAccounts.add(username);
+				account.setPassword(password);
+				try {
+					gameAccounts.save();
+				} catch (final IOException ignored) {
+				} catch (final GeneralSecurityException ignored) {
+				}
+			} else {
+				if (!stored_account.getPassword().equals(password)) {
+					stored_account.setPassword(password);
+					try {
+						gameAccounts.save();
+					} catch (final IOException ignored) {
+					} catch (final GeneralSecurityException ignored) {
+					}
+				}
+			}
 		}
 	}
 

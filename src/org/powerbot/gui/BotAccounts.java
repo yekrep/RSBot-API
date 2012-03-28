@@ -136,8 +136,8 @@ public final class BotAccounts extends JDialog implements WindowListener {
 		try {
 			log.info("Saving " + GameAccounts.getInstance().size() + " accounts");
 			GameAccounts.getInstance().save();
-		} catch (final Exception ignored) {
-			ignored.printStackTrace();
+		} catch (final Exception e) {
+			e.printStackTrace();
 		}
 	}
 
