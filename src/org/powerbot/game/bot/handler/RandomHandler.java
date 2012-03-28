@@ -12,6 +12,7 @@ import org.powerbot.game.api.ActiveScript;
 import org.powerbot.game.api.AntiRandom;
 import org.powerbot.game.api.Manifest;
 import org.powerbot.game.api.randoms.Login;
+import org.powerbot.game.api.randoms.Mime;
 import org.powerbot.game.api.randoms.WidgetCloser;
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Time;
@@ -31,6 +32,7 @@ public class RandomHandler implements Task {
 		this.bot = bot;
 		antiRandoms = new AntiRandom[]{
 				new Login(),
+				new Mime(),
 				new WidgetCloser()
 		};
 		for (final AntiRandom antiRandom : antiRandoms) {
