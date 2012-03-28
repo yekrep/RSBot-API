@@ -16,7 +16,7 @@ import org.powerbot.game.api.wrappers.widget.WidgetChild;
 /**
  * @author Timer
  */
-@Manifest(name = "Login", description = "Logs into the game and handles errors.", version = 0.1, authors = {"Timer"})
+@Manifest(name = "Login", description = "Logs into the game and handles errors", version = 0.1, authors = {"Timer"})
 public class Login extends AntiRandom {
 	private static final int WIDGET = 596;
 	private static final int WIDGET_LOGIN_TOKEN = 13;

@@ -113,4 +113,13 @@ public class LocalTile implements Entity {
 	public String toString() {
 		return new StringBuilder("(").append(x).append(", ").append(y).append(')').toString();
 	}
+
+	@Override
+	public boolean equals(final Object o) {
+		if (o != null && o instanceof LocalTile) {
+			final LocalTile tile = (LocalTile) o;
+			return x == tile.x && y == tile.y && plane == tile.plane;
+		}
+		return false;
+	}
 }
