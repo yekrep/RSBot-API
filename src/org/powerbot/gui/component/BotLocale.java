@@ -44,6 +44,11 @@ public final class BotLocale {
 	public static String FAVSONLY = "Show only favourite scripts";
 	public static String PAIDONLY = "Show only premium scripts";
 
+	public static String ALLOW = "Allow";
+	public static String KEYBOARD = "Keyboard";
+	public static String MOUSE = "Mouse";
+	public static String BLOCK = "Block";
+
 	public static String VISITSITE = "Visit Site";
 	public static String OK = "OK";
 

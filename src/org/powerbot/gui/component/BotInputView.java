@@ -15,8 +15,9 @@ import org.powerbot.util.io.Resources;
 /**
  * @author Paris
  */
-public final class BotInputView extends JMenu {
+public final class BotInputView extends JMenu implements ActionListener {
 	private static final long serialVersionUID = 1L;
+	final Map<String, Integer> map;
 
 	public BotInputView(final BotMenu parent) {
 		super(BotLocale.INPUT);
@@ -24,27 +25,31 @@ public final class BotInputView extends JMenu {
 
 		if (parent.parent.getActiveTab() == -1) {
 			setEnabled(false);
+			map = null;
 			return;
 		}
 
-		final int panelInputMask = BotChrome.panel.getInputMask();
+		final int currentMask = BotChrome.panel.getInputMask();
 
-		final Map<String, Integer> inputMap = new LinkedHashMap<String, Integer>();
-		inputMap.put("Allow", BotPanel.INPUT_MOUSE | BotPanel.INPUT_KEYBOARD);
-		inputMap.put("Keyboard only", BotPanel.INPUT_KEYBOARD);
-		inputMap.put("Mouse only", BotPanel.INPUT_MOUSE);
-		inputMap.put("Block", 0);
+		map = new LinkedHashMap<String, Integer>();
+		map.put(BotLocale.ALLOW, BotPanel.INPUT_MOUSE | BotPanel.INPUT_KEYBOARD);
+		map.put(BotLocale.KEYBOARD, BotPanel.INPUT_KEYBOARD);
+		map.put(BotLocale.MOUSE, BotPanel.INPUT_MOUSE);
+		map.put(BotLocale.BLOCK, 0);
 
-		for (final Map.Entry<String, Integer> inputMask : inputMap.entrySet()) {
-			final int mask = inputMask.getValue();
-			final JCheckBoxMenuItem item = new JCheckBoxMenuItem(inputMask.getKey(), panelInputMask == mask);
-			item.addActionListener(new ActionListener() {
-				public void actionPerformed(final ActionEvent e) {
-					BotChrome.panel.setInputMask(mask);
-				}
-			});
-
+		for (final Map.Entry<String, Integer> entry : map.entrySet()) {
+			final int mask = entry.getValue();
+			final JCheckBoxMenuItem item = new JCheckBoxMenuItem(entry.getKey(), currentMask == mask);
+			item.addActionListener(this);
 			add(item);
 		}
+	}
+
+	@Override
+	public void actionPerformed(final ActionEvent e) {
+		if (map == null) {
+			return;
+		}
+		BotChrome.panel.setInputMask(map.get(e.getActionCommand()));
 	}
 }
