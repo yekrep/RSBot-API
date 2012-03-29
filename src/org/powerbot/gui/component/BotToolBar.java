@@ -8,7 +8,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -134,33 +136,30 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 				}
 			}
 		} else if (c == scriptInput) {
-			//TODO clean this up
-			final int input = BotChrome.panel.getInputMask();
 			final JPopupMenu menu = new JPopupMenu();
-			JCheckBoxMenuItem item;
-			item = new JCheckBoxMenuItem("On", input == (BotPanel.INPUT_MOUSE | BotPanel.INPUT_KEYBOARD));
-			item.addActionListener(new ActionListener() {
-				public void actionPerformed(final ActionEvent e1) {
-					BotChrome.panel.setInputMask(BotPanel.INPUT_MOUSE | BotPanel.INPUT_KEYBOARD);
-				}
-			});
-			menu.add(item);
-			item = new JCheckBoxMenuItem("Keyboard only", input == (BotPanel.INPUT_KEYBOARD));
-			item.addActionListener(new ActionListener() {
-				public void actionPerformed(final ActionEvent e1) {
-					BotChrome.panel.setInputMask(BotPanel.INPUT_KEYBOARD);
-				}
-			});
-			menu.add(item);
-			item = new JCheckBoxMenuItem("Off", input == 0);
-			item.addActionListener(new ActionListener() {
-				public void actionPerformed(final ActionEvent e1) {
-					BotChrome.panel.setInputMask(0);
-				}
-			});
-			menu.add(item);
-			menu.show(c, c.getWidth() / 2, c.getHeight() / 2);
 
+			JCheckBoxMenuItem item;
+			final int panelInputMask = BotChrome.panel.getInputMask();
+
+			final Map<String, Integer> inputMap = new LinkedHashMap<String, Integer>();
+			inputMap.put("Allow", BotPanel.INPUT_MOUSE | BotPanel.INPUT_KEYBOARD);
+			inputMap.put("Keyboard only", BotPanel.INPUT_KEYBOARD);
+			inputMap.put("Mouse only", BotPanel.INPUT_MOUSE);
+			inputMap.put("Block", 0);
+
+			for (final Map.Entry<String, Integer> inputMask : inputMap.entrySet()) {
+				final int mask = inputMask.getValue();
+				item = new JCheckBoxMenuItem(inputMask.getKey(), panelInputMask == mask);
+				item.addActionListener(new ActionListener() {
+					public void actionPerformed(final ActionEvent e1) {
+						BotChrome.panel.setInputMask(mask);
+					}
+				});
+
+				menu.add(item);
+			}
+
+			menu.show(c, c.getWidth() / 2, c.getHeight() / 2);
 		}
 	}
 
@@ -286,11 +285,12 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 			final ActiveScript script = bot.getActiveScript();
 			final boolean script_processing = script != null && script.isRunning() && !script.isPaused();
 			final boolean script_stopped = script == null || !script.isRunning();
+			final boolean script_running = script != null && script.isRunning();
 			scriptPlay.setIcon(script_processing ?
 					new ImageIcon(Resources.getImage(Resources.Paths.CONTROL_PAUSE)) :
 					new ImageIcon(Resources.getImage(Resources.Paths.CONTROL_PLAY)));
 			scriptPlay.setToolTipText(script_processing ? BotLocale.PAUSESCRIPT : script_stopped ? BotLocale.PLAYSCRIPT : BotLocale.RESUMESCRIPT);
-			scriptStop.setEnabled(script != null && script.isRunning());
+			scriptStop.setEnabled(script_running);
 		}
 	}
 

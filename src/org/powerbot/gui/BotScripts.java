@@ -213,6 +213,7 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 				list.add(def);
 			}
 		}
+		//TODO load local scripts
 		return list;
 	}
 

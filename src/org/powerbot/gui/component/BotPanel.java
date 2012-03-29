@@ -48,7 +48,7 @@ public class BotPanel extends JPanel {
 		setBackground(Color.black);
 		bot = null;
 		xOff = yOff = 0;
-		inputMask = 0;
+		inputMask = INPUT_MOUSE | INPUT_KEYBOARD;
 
 		setLayout(new GridBagLayout());
 		add(loadingPanel = new BotLoadingPanel(parent));
