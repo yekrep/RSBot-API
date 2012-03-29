@@ -26,6 +26,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -58,6 +59,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
 import org.powerbot.game.api.ActiveScript;
+import org.powerbot.game.api.Manifest;
 import org.powerbot.game.bot.Bot;
 import org.powerbot.gui.component.BotLocale;
 import org.powerbot.gui.component.BotToolBar;
@@ -269,8 +271,43 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 				list.add(def);
 			}
 		}
-		//TODO load local scripts
+		if (Configuration.DEVMODE) {
+			for (final String path : new String[] {"bin", "out"}) {
+				loadLocalScripts(list, new File(path));
+			}
+		}
 		return list;
+	}
+
+	public void loadLocalScripts(final List<ScriptDefinition> list, final File dir) {
+		if (!dir.isDirectory()) {
+			return;
+		}
+		for (final File file : dir.listFiles()) {
+			if (file.isDirectory()) {
+				loadLocalScripts(list, file);
+			} else if (file.isFile()) {
+				final String name = file.getName();
+					try {
+					if (name.endsWith(".class") && name.indexOf('$') == -1) {
+						final URL src = file.getParentFile().toURI().toURL();
+						final ClassLoader cl = new URLClassLoader(new URL[] {src});
+						final String className = name.substring(0, name.length() - 6);
+						final Class<? extends ActiveScript> clazz = cl.loadClass(name).asSubclass(ActiveScript.class);
+						if (clazz.isAnnotationPresent(Manifest.class)) {
+							final Manifest m = clazz.getAnnotation(Manifest.class);
+							final ScriptDefinition def = new ScriptDefinition(m);
+							def.source = src;
+							def.className = className;
+							list.add(def);
+						}
+					} else if (file.getName().endsWith(".jar")) {
+						// TODO: load local scripts from a jar
+					}
+				} catch (final Exception ignored) {
+				}
+			}
+		}
 	}
 
 	public void actionPerformed(final ActionEvent e) {
