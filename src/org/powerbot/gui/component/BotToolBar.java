@@ -8,18 +8,14 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.util.Collections;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JOptionPane;
-import javax.swing.JPopupMenu;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
@@ -39,7 +35,7 @@ import org.powerbot.util.io.Resources;
 public final class BotToolBar extends JToolBar implements ActionListener {
 	private static final long serialVersionUID = 1L;
 	public final BotChrome parent;
-	private final JButton tabAdd, scriptPlay, scriptStop, scriptInput;
+	private final JButton tabAdd, scriptPlay, scriptStop;
 	private int activeTab = -1;
 
 	public BotToolBar(final BotChrome parent) {
@@ -74,10 +70,6 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 		scriptStop.setFocusable(false);
 		scriptStop.setVisible(false);
 		add(scriptStop);
-		scriptInput = new JButton(new ImageIcon(Resources.getImage(Resources.Paths.KEYBOARD)));
-		scriptInput.addActionListener(this);
-		scriptInput.setFocusable(false);
-		add(scriptInput);
 		add(Box.createHorizontalStrut(16));
 
 		final BotToolBar t = this;
@@ -135,31 +127,6 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 					}
 				}
 			}
-		} else if (c == scriptInput) {
-			final JPopupMenu menu = new JPopupMenu();
-
-			JCheckBoxMenuItem item;
-			final int panelInputMask = BotChrome.panel.getInputMask();
-
-			final Map<String, Integer> inputMap = new LinkedHashMap<String, Integer>();
-			inputMap.put("Allow", BotPanel.INPUT_MOUSE | BotPanel.INPUT_KEYBOARD);
-			inputMap.put("Keyboard only", BotPanel.INPUT_KEYBOARD);
-			inputMap.put("Mouse only", BotPanel.INPUT_MOUSE);
-			inputMap.put("Block", 0);
-
-			for (final Map.Entry<String, Integer> inputMask : inputMap.entrySet()) {
-				final int mask = inputMask.getValue();
-				item = new JCheckBoxMenuItem(inputMask.getKey(), panelInputMask == mask);
-				item.addActionListener(new ActionListener() {
-					public void actionPerformed(final ActionEvent e1) {
-						BotChrome.panel.setInputMask(mask);
-					}
-				});
-
-				menu.add(item);
-			}
-
-			menu.show(c, c.getWidth() / 2, c.getHeight() / 2);
 		}
 	}
 
