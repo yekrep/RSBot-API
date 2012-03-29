@@ -9,6 +9,8 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author Timer
  */
 public class ThreadPool implements ThreadFactory {
+	public static final String THREADGROUPNAMEPREFIX = "ThreadPool@";
+
 	private final AtomicInteger threadNumber;
 	private final ThreadGroup threadGroup;
 
@@ -23,7 +25,7 @@ public class ThreadPool implements ThreadFactory {
 	public Thread newThread(final Runnable r) {
 		return new Thread(
 				threadGroup, r,
-				new StringBuilder(ThreadPool.class.getName()).append('@').append(hashCode()).append("-").append(threadNumber.getAndIncrement()).append('/').
+				new StringBuilder(THREADGROUPNAMEPREFIX).append(hashCode()).append("-").append(threadNumber.getAndIncrement()).append('/').
 						append(Thread.currentThread().getName()).append("@").append(Thread.currentThread().getThreadGroup()).toString()
 		);
 	}

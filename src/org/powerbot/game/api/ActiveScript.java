@@ -6,10 +6,13 @@ import java.util.logging.Logger;
 import org.powerbot.concurrent.Task;
 import org.powerbot.concurrent.TaskContainer;
 import org.powerbot.concurrent.TaskProcessor;
+import org.powerbot.concurrent.ThreadPool;
 import org.powerbot.concurrent.action.Action;
 import org.powerbot.concurrent.action.ActionExecutor;
 import org.powerbot.event.EventManager;
+import org.powerbot.game.GameDefinition;
 import org.powerbot.game.bot.Bot;
+import org.powerbot.gui.BotChrome;
 import org.powerbot.lang.Activatable;
 
 import static org.powerbot.concurrent.action.ActionExecutor.State;
@@ -99,6 +102,12 @@ public abstract class ActiveScript implements EventListener {
 		eventManager.remove(ActiveScript.this);
 		executor.destroy();
 		container.shutdown();
+
+		final String name = Thread.currentThread().getThreadGroup().getName();
+		if (name.startsWith(GameDefinition.THREADGROUPNAMEPREFIX) ||
+				name.startsWith(ThreadPool.THREADGROUPNAMEPREFIX)) {
+			BotChrome.getInstance().toolbar.updateScriptControls();
+		}
 	}
 
 	public final void kill() {

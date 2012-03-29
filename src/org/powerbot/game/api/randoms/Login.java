@@ -19,7 +19,8 @@ import org.powerbot.game.api.wrappers.widget.WidgetChild;
 @Manifest(name = "Login", description = "Logs into the game and handles errors", version = 0.1, authors = {"Timer"})
 public class Login extends AntiRandom {
 	private static final int WIDGET = 596;
-	private static final int WIDGET_LOGIN_TOKEN = 13;
+	private static final int WIDGET_LOGIN_ERROR = 13;
+	private static final int WIDGET_LOGIN_TRY_AGAIN = 65;
 	private static final int WIDGET_LOGIN_USERNAME_TEXT = 70;
 	private static final int WIDGET_LOGIN_PASSWORD_TEXT = 76;
 	private static final int WIDGET_LOGIN_ENTER_GAME = 44;
@@ -33,11 +34,12 @@ public class Login extends AntiRandom {
 	}
 
 	private enum LoginEvent {
-		TOKEN_FAILURE(WIDGET_LOGIN_TOKEN, "token failure", -1, new Task() {
+		TOKEN_FAILURE(WIDGET_LOGIN_ERROR, "token failure", -1, new Task() {
 			public void run() {
 				//TODO restart game & script
 			}
-		});
+		}),
+		INVALID_PASSWORD(WIDGET_LOGIN_ERROR, "Invalid username or password", -1);
 
 		private final String message;
 		private final int child, wait;
@@ -87,8 +89,9 @@ public class Login extends AntiRandom {
 				if (widgetChild != null && widgetChild.verify()) {
 					final String text = widgetChild.getText().toLowerCase().trim();
 
-					if (text.contains(loginEvent.message)) {
+					if (text.contains(loginEvent.message.toLowerCase())) {
 						log.info("Handling login event: " + loginEvent.name());
+						Widgets.get(WIDGET, WIDGET_LOGIN_TRY_AGAIN).click(true);
 
 						if (loginEvent.wait > 0) {
 							Time.sleep(loginEvent.wait);

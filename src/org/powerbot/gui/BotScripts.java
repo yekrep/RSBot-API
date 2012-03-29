@@ -122,7 +122,6 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 			final JButton refresh = new JButton(new ImageIcon(Resources.getImage(Resources.Paths.ARROW_REFRESH)));
 			refresh.setToolTipText(BotLocale.REFRESH);
 			refresh.addActionListener(new ActionListener() {
-				@Override
 				public void actionPerformed(final ActionEvent e) {
 					refresh();
 				}
@@ -210,7 +209,6 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 		setLocationRelativeTo(getParent());
 
 		SwingUtilities.invokeLater(new Runnable() {
-			@Override
 			public void run() {
 				refresh();
 			}
@@ -229,7 +227,6 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 		table.validate();
 		table.repaint();
 		new Thread(new Runnable() {
-			@Override
 			public void run() {
 				final List<ScriptDefinition> scripts;
 				try {
@@ -237,7 +234,6 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 				} catch (final IOException ignored) {
 					status.setText("Could not load scripts, please try again later");
 					SwingUtilities.invokeLater(new Runnable() {
-						@Override
 						public void run() {
 							table.validate();
 							table.repaint();
@@ -246,7 +242,6 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 					return;
 				}
 				SwingUtilities.invokeLater(new Runnable() {
-					@Override
 					public void run() {
 						table.removeAll();
 						for (final ScriptDefinition def : scripts) {
