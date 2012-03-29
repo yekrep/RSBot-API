@@ -23,7 +23,7 @@ public class ThreadPool implements ThreadFactory {
 	public Thread newThread(final Runnable r) {
 		return new Thread(
 				threadGroup, r,
-				new StringBuilder(ThreadPool.class.getName()).append("-").append(threadNumber.getAndIncrement()).append('/').
+				new StringBuilder(ThreadPool.class.getName()).append('@').append(hashCode()).append("-").append(threadNumber.getAndIncrement()).append('/').
 						append(Thread.currentThread().getName()).append("@").append(Thread.currentThread().getThreadGroup()).toString()
 		);
 	}

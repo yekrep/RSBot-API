@@ -5,7 +5,6 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FilePermission;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.SocketPermission;
 import java.net.URL;
 import java.security.CodeSigner;
@@ -36,12 +35,9 @@ public class RSClassLoader extends ClassLoader {
 		try {
 			String s = getClass().getResource("RSClassLoader.class").toString();
 			s = s.replace("loader/RSClassLoader.class", "client/RandomAccessFile.class");
-			final URL url = new URL(s);
-			final InputStream is = new BufferedInputStream(url.openStream());
-			final byte[] data = IOHelper.read(is);
+			final byte[] data = IOHelper.read(new BufferedInputStream(new URL(s).openStream()));
 			this.classes.put("org.powerbot.game.client.RandomAccessFile", data);
-		} catch (final IOException e) {
-			e.printStackTrace();
+		} catch (final IOException ignored) {
 		}
 	}
 
