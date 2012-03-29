@@ -23,7 +23,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
-import org.powerbot.event.ScriptListener;
 import org.powerbot.game.bot.Bot;
 import org.powerbot.gui.component.BotPanel;
 import org.powerbot.gui.component.BotToolBar;
@@ -34,7 +33,7 @@ import org.powerbot.util.io.Resources;
 /**
  * @author Paris
  */
-public class BotChrome extends JFrame implements WindowListener, ScriptListener {
+public class BotChrome extends JFrame implements WindowListener {
 	private static final long serialVersionUID = 1L;
 	private static Logger log = Logger.getLogger(BotChrome.class.getName());
 	public static final int PANEL_WIDTH = 765, PANEL_HEIGHT = 503, MAX_BOTS;
@@ -136,10 +135,6 @@ public class BotChrome extends JFrame implements WindowListener, ScriptListener 
 	}
 
 	public void windowOpened(final WindowEvent arg0) {
-	}
-
-	public void updateScriptStatus() {
-		toolbar.updateScriptControls();
 	}
 
 	private final class LoadUpdates implements Callable<Boolean> {

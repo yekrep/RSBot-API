@@ -393,7 +393,7 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 					}
 					script.log.info("Starting");//debug to show script has loaded
 					bot.startScript(script);
-					BotScripts.this.parent.parent.updateScriptStatus();
+					BotScripts.this.parent.updateScriptControls();
 				}
 			});
 			act.setFont(act.getFont().deriveFont(Font.BOLD, act.getFont().getSize2D() - 1f));

@@ -100,10 +100,10 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 				if (!script.isSilentlyLocked()) {
 					if (script.isPaused()) {
 						script.resume();
-						parent.updateScriptStatus();
+						updateScriptControls();
 					} else {
 						script.pause();
-						parent.updateScriptStatus();
+						updateScriptControls();
 					}
 				}
 				return;
@@ -124,14 +124,14 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 							while (!activeScript.getContainer().isLocked()) {
 								Time.sleep(150);
 							}
-							parent.updateScriptStatus();
+							updateScriptControls();
 						}
 					});
 				} else {
 					if (!activeScript.getContainer().isLocked()) {
 						activeScript.log.info("Forcing script stop");
 						activeScript.kill();
-						parent.updateScriptStatus();
+						updateScriptControls();
 					}
 				}
 			}
