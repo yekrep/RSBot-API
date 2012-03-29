@@ -35,6 +35,7 @@ import org.powerbot.util.io.Resources;
  */
 public class BotChrome extends JFrame implements WindowListener {
 	private static final long serialVersionUID = 1L;
+	private static BotChrome instance;
 	private static Logger log = Logger.getLogger(BotChrome.class.getName());
 	public static final int PANEL_WIDTH = 765, PANEL_HEIGHT = 503, MAX_BOTS;
 	public static BotPanel panel;
@@ -46,7 +47,7 @@ public class BotChrome extends JFrame implements WindowListener {
 		MAX_BOTS = (int) Math.max(1, Math.min(6, Runtime.getRuntime().maxMemory() / 1024 / 1024 / 256));
 	}
 
-	public BotChrome() {
+	private BotChrome() {
 		setTitle(Configuration.NAME);
 		setIconImage(Resources.getImage(Resources.Paths.ICON));
 		addWindowListener(this);
@@ -90,6 +91,13 @@ public class BotChrome extends JFrame implements WindowListener {
 			}
 		} catch (final IOException ignored) {
 		}
+	}
+
+	public static BotChrome getInstance() {
+		if (instance == null) {
+			instance = new BotChrome();
+		}
+		return instance;
 	}
 
 	public static void openURL(final String url) {
