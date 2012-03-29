@@ -5,13 +5,13 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import org.powerbot.game.bot.Bot;
-import org.powerbot.game.bot.handler.UIDData;
+import org.powerbot.game.bot.handler.UIDHandler;
 
 /**
  * @author Timer
  */
 public class RandomAccessFile {
-	private UIDData uidData = null;
+	private UIDHandler uidData = null;
 	private java.io.RandomAccessFile raf = null;
 	private Client client = null;
 
@@ -32,7 +32,7 @@ public class RandomAccessFile {
 
 	private boolean shouldOverride(final String filename) throws FileNotFoundException {
 		if (filename.equals("random.dat")) {
-			uidData = new UIDData();
+			uidData = new UIDHandler();
 			return true;
 		}
 		return false;

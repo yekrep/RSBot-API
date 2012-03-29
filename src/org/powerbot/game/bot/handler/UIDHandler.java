@@ -13,15 +13,15 @@ import org.powerbot.util.io.SecureStore;
 /**
  * @author Timer
  */
-public class UIDData {
-	private static final String FILE_NAME = "uiddata.txt";
+public class UIDHandler {
+	private static final String FILE_NAME = "gameuids.txt";
 	private static String newline = System.getProperty("line.separator");
 	private static String separator = "#";
 
 	private HashMap<String, byte[]> uids = new HashMap<String, byte[]>();
 	private String lastUsed = "";
 
-	public UIDData() {
+	public UIDHandler() {
 		final InputStream inputStream;
 		try {
 			inputStream = SecureStore.getInstance().read(FILE_NAME);
@@ -40,7 +40,7 @@ public class UIDData {
 	}
 
 	public String getLastUsed() {
-		return this.lastUsed;
+		return lastUsed;
 	}
 
 	public byte[] getUID(String name) {
@@ -49,7 +49,7 @@ public class UIDData {
 		}
 		lastUsed = name;
 
-		byte[] data = uids.get(name);
+		final byte[] data = uids.get(name);
 		if (data == null) {
 			return new byte[0];
 		}
@@ -76,7 +76,7 @@ public class UIDData {
 		try {
 			SecureStore.getInstance().write(FILE_NAME, new ByteArrayInputStream(out.toByteArray()));
 		} catch (GeneralSecurityException ignored) {
-			throw new IOException("");
+			throw new IOException("failed to write data");
 		}
 	}
 }
