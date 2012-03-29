@@ -38,6 +38,7 @@ public final class BotLocale {
 	public static String NEEDVIPMULTITAB = "Only VIPs can open multiple tabs.";
 
 	public static String SEARCH = "Search";
+	public static String REFRESH = "Refresh";
 	public static String ADDTOFAVS = "Add to favourites";
 	public static String REMOVEFROMFAVS = "Remove from favourites";
 	public static String NOACCOUNT = "No account";

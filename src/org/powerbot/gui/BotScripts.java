@@ -64,6 +64,7 @@ import org.powerbot.gui.component.BotToolBar;
 import org.powerbot.service.GameAccounts;
 import org.powerbot.service.GameAccounts.Account;
 import org.powerbot.service.scripts.ScriptDefinition;
+import org.powerbot.util.Configuration;
 import org.powerbot.util.StringUtil;
 import org.powerbot.util.io.HttpClient;
 import org.powerbot.util.io.IOHelper;
@@ -115,6 +116,18 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 		final JPanel panelRight = new JPanel(flow);
 		add(toolbar, BorderLayout.NORTH);
 
+		if (Configuration.DEVMODE) {
+			final JButton refresh = new JButton(new ImageIcon(Resources.getImage(Resources.Paths.ARROW_REFRESH)));
+			refresh.setToolTipText(BotLocale.REFRESH);
+			refresh.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(final ActionEvent e) {
+					refresh();
+				}
+			});
+			refresh.setFocusable(false);
+			toolbar.add(refresh);
+		}
 		star = new JToggleButton(new ImageIcon(Resources.getImage(Resources.Paths.STAR)));
 		star.setToolTipText(BotLocale.FAVSONLY);
 		star.addActionListener(this);
