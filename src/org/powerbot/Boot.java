@@ -83,7 +83,7 @@ public class Boot implements Runnable {
 		System.setProperty("sun.net.spi.nameservice.nameservers", RestrictedSecurityManager.DNS1 + "," + RestrictedSecurityManager.DNS2);
 		System.setProperty("sun.net.spi.nameservice.provider.1", "dns,sun");
 
-		new BotChrome();
+		BotChrome.getInstance();
 	}
 
 	public void run() {
