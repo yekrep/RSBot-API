@@ -52,6 +52,7 @@ import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.border.AbstractBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
@@ -171,13 +172,6 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 		table.setBorder(new EmptyBorder(0, 0, 0, 0));
 		table.setPreferredSize(new Dimension(getPreferredCellSize().width, getPreferredCellSize().height));
 
-		try {
-			for (final ScriptDefinition def : loadScripts()) {
-				table.add(new ScriptCell(table, def));
-			}
-		} catch (final IOException ignored) {
-		}
-
 		table.setPreferredSize(new Dimension(getPreferredCellSize().width * 2, getPreferredCellSize().height * table.getComponentCount() / 2));
 
 		final JScrollPane scroll = new JScrollPane(table, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -199,7 +193,56 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 		setMinimumSize(getSize());
 		//setResizable(false);
 		setLocationRelativeTo(getParent());
+
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				refresh();
+			}
+		});
+
 		setVisible(true);
+	}
+
+	public void refresh() {
+		table.removeAll();
+		final JLabel status = new JLabel("Loading...");
+		status.setFont(status.getFont().deriveFont(status.getFont().getSize2D() * 1.75f));
+		status.setForeground(Color.GRAY);
+		status.setBorder(new EmptyBorder(15, 15, 15, 15));
+		table.add(status);
+		table.validate();
+		table.repaint();
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				final List<ScriptDefinition> scripts;
+				try {
+					scripts = loadScripts();
+				} catch (final IOException ignored) {
+					status.setText("Could not load scripts, please try again later");
+					SwingUtilities.invokeLater(new Runnable() {
+						@Override
+						public void run() {
+							table.validate();
+							table.repaint();
+						}
+					});
+					return;
+				}
+				SwingUtilities.invokeLater(new Runnable() {
+					@Override
+					public void run() {
+						table.removeAll();
+						for (final ScriptDefinition def : scripts) {
+							table.add(new ScriptCell(table, def));
+						}
+						table.validate();
+						table.repaint();
+					}
+				});
+			}
+		}).start();
 	}
 
 	public List<ScriptDefinition> loadScripts() throws IOException {
