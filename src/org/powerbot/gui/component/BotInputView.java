@@ -17,10 +17,12 @@ import org.powerbot.util.io.Resources;
  */
 public final class BotInputView extends JMenu implements ActionListener {
 	private static final long serialVersionUID = 1L;
+	private final BotChrome parent;
 	final Map<String, Integer> map;
 
 	public BotInputView(final BotMenu parent) {
 		super(BotLocale.INPUT);
+		this.parent = parent.parent.parent;
 		setIcon(new ImageIcon(Resources.getImage(Resources.Paths.KEYBOARD)));
 
 		if (parent.parent.getActiveTab() == -1) {
@@ -29,7 +31,7 @@ public final class BotInputView extends JMenu implements ActionListener {
 			return;
 		}
 
-		final int currentMask = BotChrome.panel.getInputMask();
+		final int currentMask = this.parent.panel.getInputMask();
 
 		map = new LinkedHashMap<String, Integer>();
 		map.put(BotLocale.ALLOW, BotPanel.INPUT_MOUSE | BotPanel.INPUT_KEYBOARD);
@@ -50,6 +52,6 @@ public final class BotInputView extends JMenu implements ActionListener {
 		if (map == null) {
 			return;
 		}
-		BotChrome.panel.setInputMask(map.get(e.getActionCommand()));
+		parent.panel.setInputMask(map.get(e.getActionCommand()));
 	}
 }

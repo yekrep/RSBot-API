@@ -31,7 +31,7 @@ public class Canvas extends java.awt.Canvas {
 				return super.getGraphics();
 			} else {
 				bot = Bot.resolve(this);
-				BotChrome.panel.offset();
+				BotChrome.getInstance().panel.offset();
 				loader_identified = true;
 			}
 		}
@@ -64,7 +64,7 @@ public class Canvas extends java.awt.Canvas {
 		if (bot != null) {
 			return bot.appletContainer.getSize();
 		}
-		return BotChrome.panel.getSize();
+		return BotChrome.getInstance().panel.getSize();
 	}
 
 	@Override
