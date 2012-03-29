@@ -32,7 +32,9 @@ trimExclude org.powerbot.Boot^ public static main(java.lang.String[]) and
             org.powerbot.game.api.ActiveScript *(*) and
             org.powerbot.game.api.Manifest and
             org.powerbot.game.api.Manifest * and
-            org.powerbot.game.api.Manifest *(*);
+            org.powerbot.game.api.Manifest *(*) and
+            org.powerbot.game.loader. and
+            org.powerbot.game.loader.RSClassLoader;
 
 trim        deleteSourceFileAttributes=true
             deleteDeprecatedAttributes=true
@@ -70,7 +72,9 @@ exclude     org.powerbot.Boot^ public static main(java.lang.String[]) and
             org.powerbot.game.api.ActiveScript *(*) and
             org.powerbot.game.api.Manifest and
             org.powerbot.game.api.Manifest * and
-            org.powerbot.game.api.Manifest *(*);
+            org.powerbot.game.api.Manifest *(*) and
+            org.powerbot.game.loader. and
+            org.powerbot.game.loader.RSClassLoader;
 
 unexclude   org.powerbot.game.api.internal.*.^* and
             org.powerbot.game.api.internal.*.^* public *(*) and
