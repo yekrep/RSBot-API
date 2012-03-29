@@ -17,6 +17,7 @@ public final class ScriptDefinition {
 	private final boolean premium;
 	private String price = null;
 
+	public String className;
 	public URL source;
 
 	public ScriptDefinition(final Class<? extends ActiveScript> clazz) {

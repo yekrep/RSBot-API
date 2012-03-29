@@ -26,6 +26,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -52,17 +53,20 @@ import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.border.AbstractBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
 import org.powerbot.game.api.ActiveScript;
+import org.powerbot.game.api.Manifest;
 import org.powerbot.game.bot.Bot;
 import org.powerbot.gui.component.BotLocale;
 import org.powerbot.gui.component.BotToolBar;
 import org.powerbot.service.GameAccounts;
 import org.powerbot.service.GameAccounts.Account;
 import org.powerbot.service.scripts.ScriptDefinition;
+import org.powerbot.util.Configuration;
 import org.powerbot.util.StringUtil;
 import org.powerbot.util.io.HttpClient;
 import org.powerbot.util.io.IOHelper;
@@ -114,6 +118,18 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 		final JPanel panelRight = new JPanel(flow);
 		add(toolbar, BorderLayout.NORTH);
 
+		if (Configuration.DEVMODE) {
+			final JButton refresh = new JButton(new ImageIcon(Resources.getImage(Resources.Paths.ARROW_REFRESH)));
+			refresh.setToolTipText(BotLocale.REFRESH);
+			refresh.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(final ActionEvent e) {
+					refresh();
+				}
+			});
+			refresh.setFocusable(false);
+			toolbar.add(refresh);
+		}
 		star = new JToggleButton(new ImageIcon(Resources.getImage(Resources.Paths.STAR)));
 		star.setToolTipText(BotLocale.FAVSONLY);
 		star.addActionListener(this);
@@ -171,13 +187,6 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 		table.setBorder(new EmptyBorder(0, 0, 0, 0));
 		table.setPreferredSize(new Dimension(getPreferredCellSize().width, getPreferredCellSize().height));
 
-		try {
-			for (final ScriptDefinition def : loadScripts()) {
-				table.add(new ScriptCell(table, def));
-			}
-		} catch (final IOException ignored) {
-		}
-
 		table.setPreferredSize(new Dimension(getPreferredCellSize().width * 2, getPreferredCellSize().height * table.getComponentCount() / 2));
 
 		final JScrollPane scroll = new JScrollPane(table, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -199,7 +208,56 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 		setMinimumSize(getSize());
 		//setResizable(false);
 		setLocationRelativeTo(getParent());
+
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				refresh();
+			}
+		});
+
 		setVisible(true);
+	}
+
+	public void refresh() {
+		table.removeAll();
+		final JLabel status = new JLabel("Loading...");
+		status.setFont(status.getFont().deriveFont(status.getFont().getSize2D() * 1.75f));
+		status.setForeground(Color.GRAY);
+		status.setBorder(new EmptyBorder(15, 15, 15, 15));
+		table.add(status);
+		table.validate();
+		table.repaint();
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				final List<ScriptDefinition> scripts;
+				try {
+					scripts = loadScripts();
+				} catch (final IOException ignored) {
+					status.setText("Could not load scripts, please try again later");
+					SwingUtilities.invokeLater(new Runnable() {
+						@Override
+						public void run() {
+							table.validate();
+							table.repaint();
+						}
+					});
+					return;
+				}
+				SwingUtilities.invokeLater(new Runnable() {
+					@Override
+					public void run() {
+						table.removeAll();
+						for (final ScriptDefinition def : scripts) {
+							table.add(new ScriptCell(table, def));
+						}
+						table.validate();
+						table.repaint();
+					}
+				});
+			}
+		}).start();
 	}
 
 	public List<ScriptDefinition> loadScripts() throws IOException {
@@ -213,8 +271,43 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 				list.add(def);
 			}
 		}
-		//TODO load local scripts
+		if (Configuration.DEVMODE) {
+			for (final String path : new String[] {"bin", "out"}) {
+				loadLocalScripts(list, new File(path));
+			}
+		}
 		return list;
+	}
+
+	public void loadLocalScripts(final List<ScriptDefinition> list, final File dir) {
+		if (!dir.isDirectory()) {
+			return;
+		}
+		for (final File file : dir.listFiles()) {
+			if (file.isDirectory()) {
+				loadLocalScripts(list, file);
+			} else if (file.isFile()) {
+				final String name = file.getName();
+					try {
+					if (name.endsWith(".class") && name.indexOf('$') == -1) {
+						final URL src = file.getParentFile().toURI().toURL();
+						final ClassLoader cl = new URLClassLoader(new URL[] {src});
+						final String className = name.substring(0, name.length() - 6);
+						final Class<? extends ActiveScript> clazz = cl.loadClass(name).asSubclass(ActiveScript.class);
+						if (clazz.isAnnotationPresent(Manifest.class)) {
+							final Manifest m = clazz.getAnnotation(Manifest.class);
+							final ScriptDefinition def = new ScriptDefinition(m);
+							def.source = src;
+							def.className = className;
+							list.add(def);
+						}
+					} else if (file.getName().endsWith(".jar")) {
+						// TODO: load local scripts from a jar
+					}
+				} catch (final Exception ignored) {
+				}
+			}
+		}
 	}
 
 	public void actionPerformed(final ActionEvent e) {
@@ -373,9 +466,14 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 				public void actionPerformed(final ActionEvent e) {
 					setVisible(false);
 					dispose();
-					String name = def.source.getFile();
-					name = name.substring(name.lastIndexOf('/') + 1);
-					name = name.substring(0, name.lastIndexOf('.'));
+					String name;
+					if (def.className != null && !def.className.isEmpty()) {
+						name = def.className;
+					} else {
+						name = def.source.getFile();
+						name = name.substring(name.lastIndexOf('/') + 1);
+						name = name.substring(0, name.lastIndexOf('.'));
+					}
 					final ClassLoader cl = new URLClassLoader(new URL[]{def.source});
 					final ActiveScript script;
 					try {

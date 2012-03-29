@@ -17,6 +17,7 @@ public final class BotLocale {
 	public static String SIGNEDINAS = "Signed in as";
 	public static String SIGNOUT = "Sign out";
 	public static String VIEW = "View";
+	public static String INPUT = "Input";
 	public static String WIDGETEXPLORER = "Widget Explorer";
 	public static String ABOUT = "About";
 	public static String EXIT = "Exit";
@@ -37,11 +38,17 @@ public final class BotLocale {
 	public static String NEEDVIPMULTITAB = "Only VIPs can open multiple tabs.";
 
 	public static String SEARCH = "Search";
+	public static String REFRESH = "Refresh";
 	public static String ADDTOFAVS = "Add to favourites";
 	public static String REMOVEFROMFAVS = "Remove from favourites";
 	public static String NOACCOUNT = "No account";
 	public static String FAVSONLY = "Show only favourite scripts";
 	public static String PAIDONLY = "Show only premium scripts";
+
+	public static String ALLOW = "Allow";
+	public static String KEYBOARD = "Keyboard";
+	public static String MOUSE = "Mouse";
+	public static String BLOCK = "Block";
 
 	public static String VISITSITE = "Visit Site";
 	public static String OK = "OK";

@@ -56,6 +56,14 @@ public final class BotMenuView extends JMenu implements ActionListener {
 	public BotMenuView(final BotMenu parent) {
 		super(BotLocale.VIEW);
 		this.parent = parent;
+		final int tab = parent.parent.getActiveTab();
+
+		if (tab == -1) {
+			setEnabled(false);
+			map = null;
+			items = null;
+			return;
+		}
 
 		if (listeners == null) {
 			listeners = new HashMap<Bot, Map<String, EventListener>>();
@@ -91,7 +99,7 @@ public final class BotMenuView extends JMenu implements ActionListener {
 		items.add(SEPERATOR);
 		items.add(MESSAGES);
 
-		final Bot bot = Bot.bots.get(parent.parent.getActiveTab());
+		final Bot bot = Bot.bots.get(tab);
 		Map<String, EventListener> listeners = BotMenuView.listeners.get(bot);
 		if (listeners == null) {
 			listeners = new HashMap<String, EventListener>();
