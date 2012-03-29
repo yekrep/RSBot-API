@@ -267,7 +267,7 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 			}
 		}
 		if (Configuration.DEVMODE) {
-			for (final String path : new String[] {"bin", "out"}) {
+			for (final String path : new String[]{"bin", "out"}) {
 				loadLocalScripts(list, new File(path));
 			}
 		}
@@ -283,19 +283,19 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 				loadLocalScripts(list, file);
 			} else if (file.isFile()) {
 				final String name = file.getName();
-					try {
-						if (name.endsWith(".class") && name.indexOf('$') == -1) {
-							final URL src = file.getParentFile().toURI().toURL();
-							final ClassLoader cl = new URLClassLoader(new URL[] {src});
-							final String className = name.substring(0, name.length() - 6);
-							final Class<? extends ActiveScript> clazz = cl.loadClass(className).asSubclass(ActiveScript.class);
-							if (clazz.isAnnotationPresent(Manifest.class)) {
-								final Manifest m = clazz.getAnnotation(Manifest.class);
-								final ScriptDefinition def = new ScriptDefinition(m);
-								def.source = src;
-								def.className = className;
-								list.add(def);
-							}
+				try {
+					if (name.endsWith(".class") && name.indexOf('$') == -1) {
+						final URL src = file.getParentFile().toURI().toURL();
+						final ClassLoader cl = new URLClassLoader(new URL[]{src});
+						final String className = name.substring(name.lastIndexOf('/'), name.length() - 6);
+						final Class<? extends ActiveScript> clazz = cl.loadClass(className).asSubclass(ActiveScript.class);
+						if (clazz.isAnnotationPresent(Manifest.class)) {
+							final Manifest m = clazz.getAnnotation(Manifest.class);
+							final ScriptDefinition def = new ScriptDefinition(m);
+							def.source = src;
+							def.className = className;
+							list.add(def);
+						}
 					} else if (file.getName().endsWith(".jar")) {
 						// TODO: load local scripts from a jar
 					}
