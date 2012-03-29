@@ -30,26 +30,13 @@ public class Canvas extends java.awt.Canvas {
 			if (loader_identified) {
 				return super.getGraphics();
 			} else {
-				bot = getBot();
+				bot = Bot.resolve(this);
+				BotChrome.panel.offset();
 				loader_identified = true;
 			}
 		}
 		Time.sleep(GRAPHICS_DELAY);
 		return bot.getBufferGraphics();
-	}
-
-	/**
-	 * @return The bot belonging to this canvas.
-	 */
-	private Bot getBot() {
-		final ClassLoader cl = getClass().getClassLoader();
-		for (final Bot bot : Bot.bots) {
-			if (cl == bot.getClient().getClass().getClassLoader()) {
-				BotChrome.panel.offset();
-				return bot;
-			}
-		}
-		return null;
 	}
 
 	@Override

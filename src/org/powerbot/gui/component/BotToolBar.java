@@ -180,7 +180,7 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 	public void closeTab(final int n) {
 		final List<Bot> bots = Collections.unmodifiableList(Bot.bots);
 		boolean loggedIn = false;
-		if (n > 0 && n < bots.size()) {
+		if (n >= 0 && n < bots.size()) {
 			final Bot bot = bots.get(n);
 			if (bot != null && bot.getClient() != null && bot.multipliers != null && bot.constants != null) {
 				final int state = bot.getClient().getLoginIndex() * bot.multipliers.GLOBAL_LOGININDEX;
@@ -192,10 +192,8 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 			return;
 		}
 		try {
-			if (loggedIn) {
-				if (JOptionPane.showConfirmDialog(parent, "Are you sure you want to close this tab?", BotLocale.CLOSETAB, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) != JOptionPane.YES_OPTION) {
-					return;
-				}
+			if (loggedIn && JOptionPane.showConfirmDialog(parent, "Are you sure you want to close this tab?", BotLocale.CLOSETAB, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) != JOptionPane.YES_OPTION) {
+				return;
 			}
 		} catch (final RuntimeException ignored) {
 		}

@@ -1,8 +1,11 @@
 package org.powerbot.game.loader;
 
 import java.awt.AWTPermission;
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FilePermission;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.SocketPermission;
 import java.net.URL;
 import java.security.CodeSigner;
@@ -13,6 +16,8 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.PropertyPermission;
+
+import org.powerbot.util.io.IOHelper;
 
 /**
  * Loads the game classes with restrictions.
@@ -27,6 +32,17 @@ public class RSClassLoader extends ClassLoader {
 		final CodeSource codeSource = new CodeSource(source, (CodeSigner[]) null);
 		domain = new ProtectionDomain(codeSource, createPermissions());
 		this.classes.putAll(classes);
+
+		try {
+			String s = getClass().getResource("RSClassLoader.class").toString();
+			s = s.replace("loader/RSClassLoader.class", "client/RandomAccessFile.class");
+			final URL url = new URL(s);
+			final InputStream is = new BufferedInputStream(url.openStream());
+			final byte[] data = IOHelper.read(is);
+			this.classes.put("org.powerbot.game.client.RandomAccessFile", data);
+		} catch (final IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	private Permissions createPermissions() {
@@ -60,7 +76,6 @@ public class RSClassLoader extends ClassLoader {
 			}
 		}
 		Calendar.getInstance();
-		//TimeZone.getDefault(); //set by Calendar
 		instance.setReadOnly();
 		return instance;
 	}

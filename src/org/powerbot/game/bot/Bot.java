@@ -379,6 +379,16 @@ public class Bot extends GameDefinition implements Runnable {
 		return bot;
 	}
 
+	public static Bot resolve(final Object o) {
+		final ClassLoader cl = o.getClass().getClassLoader();
+		for (final Bot bot : Bot.bots) {
+			if (cl == bot.getClient().getClass().getClassLoader()) {
+				return bot;
+			}
+		}
+		return null;
+	}
+
 	/**
 	 * @author Timer
 	 */
