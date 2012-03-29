@@ -38,7 +38,7 @@ public class BotChrome extends JFrame implements WindowListener {
 	private static BotChrome instance;
 	private static Logger log = Logger.getLogger(BotChrome.class.getName());
 	public static final int PANEL_WIDTH = 765, PANEL_HEIGHT = 503, MAX_BOTS;
-	public static BotPanel panel;
+	public BotPanel panel;
 	public BotToolBar toolbar;
 	public JPanel header;
 	public static volatile boolean loaded = false;

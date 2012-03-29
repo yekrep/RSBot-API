@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
-import java.awt.Frame;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -31,12 +30,14 @@ import org.powerbot.util.io.Resources;
  */
 public final class BotSignin extends JDialog implements ActionListener {
 	private static final long serialVersionUID = 1L;
+	private final BotChrome parent;
 	private final CredentialTextField username, password;
 	private final JButton signin;
 	private final JLabel register;
 
-	public BotSignin(final Frame parent) {
+	public BotSignin(final BotChrome parent) {
 		super(parent, BotLocale.SIGNIN, true);
+		this.parent = parent;
 
 		final GridLayout gridCredentials = new GridLayout(2, 1);
 		gridCredentials.setVgap(5);
@@ -111,7 +112,7 @@ public final class BotSignin extends JDialog implements ActionListener {
 				updateState();
 			}
 			signin.setEnabled(true);
-			BotChrome.panel.loadingPanel.setAdVisible(!NetworkAccount.getInstance().isVIP());
+			parent.panel.loadingPanel.setAdVisible(!NetworkAccount.getInstance().isVIP());
 		}
 	}
 
