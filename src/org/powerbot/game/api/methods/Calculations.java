@@ -44,8 +44,8 @@ public class Calculations {
 		public float zOff, zX, zY, zZ;
 	}
 
-	public static final int[] SIN_TABLE = new int[16384];
-	public static final int[] COS_TABLE = new int[16384];
+	public static final int[] SIN_TABLE = new int[0x4000];
+	public static final int[] COS_TABLE = new int[0x4000];
 
 	static {
 		final double d = 0.00038349519697141029D;
@@ -76,10 +76,10 @@ public class Calculations {
 				if (planes != null && plane < planes.length && planes[plane] != null) {
 					final int[][] heights = planes[plane].getHeights();
 					if (heights != null) {
-						final int x2 = x & 512 - 1;
-						final int y2 = y & 512 - 1;
-						final int start_h = heights[x1][y1] * (512 - x2) + heights[x1 + 1][y1] * x2 >> 9;
-						final int end_h = heights[x1][1 + y1] * (512 - x2) + heights[x1 + 1][y1 + 1] * x2 >> 9;
+						final int x2 = x & 0x200 - 1;
+						final int y2 = y & 0x200 - 1;
+						final int start_h = heights[x1][y1] * (0x200 - x2) + heights[x1 + 1][y1] * x2 >> 9;
+						final int end_h = heights[x1][1 + y1] * (0x200 - x2) + heights[x1 + 1][y1 + 1] * x2 >> 9;
 						return start_h * (512 - y2) + end_h * y2 >> 9;
 					}
 				}

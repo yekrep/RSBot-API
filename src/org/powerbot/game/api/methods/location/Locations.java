@@ -115,7 +115,7 @@ public class Locations {
 		}
 
 		try {
-			final int plane = client.getPlane();
+			final int plane = client.getPlane() * bot.multipliers.GLOBAL_PLANE;
 			final Object rsGround = groundArray[plane][x][y];
 
 			if (rsGround != null) {
