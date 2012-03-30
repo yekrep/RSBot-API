@@ -58,7 +58,6 @@ import javax.swing.border.AbstractBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
-import org.objectweb.asm.ClassReader;
 import org.powerbot.game.api.ActiveScript;
 import org.powerbot.game.api.Manifest;
 import org.powerbot.game.bot.Bot;
@@ -288,7 +287,7 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 					if (name.endsWith(".class") && name.indexOf('$') == -1) {
 						final URL src = file.getParentFile().toURI().toURL();
 						final ClassLoader cl = new URLClassLoader(new URL[]{src});
-						final String className = getClassName(file);
+						final String className = name.substring(0, name.lastIndexOf('.'));
 						final Class<?> baseClass = cl.loadClass(className);
 						if (!ActiveScript.class.isAssignableFrom(baseClass)) {
 							continue;
@@ -308,11 +307,6 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 				}
 			}
 		}
-	}
-
-	private String getClassName(final File file) throws IOException {
-		final ClassReader reader = new ClassReader(IOHelper.read(file));
-		return reader.getClassName().replace('/', '.');
 	}
 
 	public void actionPerformed(final ActionEvent e) {
