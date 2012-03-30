@@ -62,6 +62,10 @@ public abstract class ActiveScript implements EventListener {
 		this.stop_execution = activator;
 	}
 
+	protected final void setIterationSleep(final int milliseconds) {
+		executor.setIterationSleep(milliseconds);
+	}
+
 	protected abstract void setup();
 
 	public final Task start() {

@@ -21,6 +21,7 @@ public class ActionExecutor implements ActionContainer, Task {
 	private final TaskContainer owner;
 	private final List<Action> actions;
 	public State state;
+	private int iterationSleep = 200;
 
 	/**
 	 * Initializes this action manager with appropriate objects.
@@ -131,16 +132,21 @@ public class ActionExecutor implements ActionContainer, Task {
 						break;
 					}
 				}
-				Time.sleep(5);
+				Time.sleep(iterationSleep);
 			} else {
 				throw new RuntimeException("bad action-dispatch state");
 			}
 		}
 	}
 
+	public void setIterationSleep(final int milliseconds) {
+		iterationSleep = milliseconds;
+	}
+
 	private void awaitNotify(final List<Future<?>> futures) {
 		synchronized (this) {
 			state = State.PROCESSING;
+
 			if (futures.size() > 0) {
 				try {
 					wait();
@@ -168,6 +174,7 @@ public class ActionExecutor implements ActionContainer, Task {
 					} catch (final InterruptedException ignored) {
 					} catch (final ExecutionException ignored) {
 					}
+
 					if (future.isDone()) {
 						lockingFutures.remove(0);
 					}

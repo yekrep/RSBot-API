@@ -276,10 +276,12 @@ public class EventDispatcher implements EventManager, Task {
 						log.log(Level.SEVERE, "Event dispatcher: ", e);
 					}
 				}
+
 				if (!queue.isEmpty()) {
 					event = queue.remove(0);
 				}
 			}
+
 			if (event != null) {
 				try {
 					fire(event);

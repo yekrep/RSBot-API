@@ -3,6 +3,10 @@ package org.powerbot.game.api.internal.util;
 import org.powerbot.game.client.NodeSub;
 import org.powerbot.game.client.NodeSubQueueTail;
 
+/**
+ * @param <N> Node type.
+ * @author Timer
+ */
 public class Queue<N extends NodeSub> {
 	private final Object nl;
 	private NodeSub current;

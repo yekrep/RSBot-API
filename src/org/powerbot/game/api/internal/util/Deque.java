@@ -3,6 +3,10 @@ package org.powerbot.game.api.internal.util;
 import org.powerbot.game.client.Node;
 import org.powerbot.game.client.NodeDequeTail;
 
+/**
+ * @param <N> Node type.
+ * @author Timer
+ */
 public class Deque<N> {
 	private final Object nl;
 	private Node current;
