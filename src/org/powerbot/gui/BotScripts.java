@@ -288,7 +288,7 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 						final URL src = file.getParentFile().toURI().toURL();
 						final ClassLoader cl = new URLClassLoader(new URL[]{src});
 						String className = name.substring(name.lastIndexOf(File.pathSeparator) + 1);
-						className = name.substring(0, name.lastIndexOf('.'));
+						className = className.substring(0, className.lastIndexOf('.'));
 						final Class<? extends ActiveScript> clazz = cl.loadClass(className).asSubclass(ActiveScript.class);
 						if (clazz.isAnnotationPresent(Manifest.class)) {
 							final Manifest m = clazz.getAnnotation(Manifest.class);
