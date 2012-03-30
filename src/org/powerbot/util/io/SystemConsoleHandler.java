@@ -32,6 +32,13 @@ public class SystemConsoleHandler extends Handler {
 		out.print("] ");
 		out.print(record.getLoggerName());
 		out.print(": ");
-		out.println(text);
+		out.print(text);
+
+		final Throwable throwable = record.getThrown();
+		if (throwable != null) {
+			throwable.printStackTrace(out);
+		} else {
+			out.println();
+		}
 	}
 }
