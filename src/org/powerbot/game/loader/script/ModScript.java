@@ -17,7 +17,7 @@ import org.powerbot.asm.visitor.InsertCodeAdapter;
 import org.powerbot.asm.visitor.OverrideClassAdapter;
 import org.powerbot.asm.visitor.SetSignatureAdapter;
 import org.powerbot.asm.visitor.SetSuperAdapter;
-import org.powerbot.lang.AdaptException;
+import org.powerbot.game.loader.AdaptException;
 
 public class ModScript implements NodeManipulator {
 	private final Map<String, ClassVisitor> adapters;

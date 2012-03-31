@@ -45,7 +45,7 @@ public class RandomHandler implements Task {
 		while ((activeScript = bot.getActiveScript()) != null && activeScript.isRunning()) {
 			Future<?> submittedRandom = null;
 			for (final AntiRandom antiRandom : antiRandoms) {
-				if (antiRandom.applicable()) {
+				if (antiRandom.validate()) {
 					if (!activeScript.isLocked() || activeScript.getContainer().isActive()) {
 						log.info("Locking script");
 						activeScript.silentLock(false);

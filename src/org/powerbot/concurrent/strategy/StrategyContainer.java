@@ -1,11 +1,11 @@
-package org.powerbot.concurrent.action;
+package org.powerbot.concurrent.strategy;
 
 /**
- * A action container that is able to perform basic operations to a thread dispatching actions.
+ * A strategy container that is able to perform basic operations to a thread dispatching strategies based on policies.
  *
  * @author Timer
  */
-public interface ActionContainer {
+public interface StrategyContainer {
 	/**
 	 * Begins listening to the actions associated with this <code>ActionContainer</code>.
 	 */
@@ -26,12 +26,12 @@ public interface ActionContainer {
 	 *
 	 * @param action The <code>Action</code> to handle.
 	 */
-	public void append(Action action);
+	public void append(Strategy action);
 
 	/**
 	 * Terminates listening and dispatch of the specified <code>Action</code>.
 	 *
 	 * @param action The <code>Action</code> to lose handle of.
 	 */
-	public void omit(Action action);
+	public void omit(Strategy action);
 }

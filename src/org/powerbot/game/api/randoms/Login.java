@@ -28,7 +28,7 @@ public class Login extends AntiRandom {
 	private static final int WIDGET_LOBBY = 906;
 	private static final int WIDGET_LOBBY_PLAY = 184;
 
-	public boolean applicable() {
+	public boolean validate() {
 		final int state = Game.getClientState();
 		return (state == Game.INDEX_LOGIN_SCREEN || state == Game.INDEX_LOBBY_SCREEN || state == Game.INDEX_LOGGING_IN) && bot.getAccount() != null;
 	}

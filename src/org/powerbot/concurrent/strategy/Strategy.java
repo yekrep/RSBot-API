@@ -1,0 +1,99 @@
+package org.powerbot.concurrent.strategy;
+
+import java.util.concurrent.Future;
+
+import org.powerbot.concurrent.Task;
+
+/**
+ * A policy that is performed when it is valid.
+ *
+ * @author Timer
+ */
+public class Strategy implements Policy {
+	boolean lock;
+	boolean reset;
+	boolean sync;
+
+	Task[] tasks;
+	Future<?>[] executingFutures;
+
+	private Policy policy;
+
+	public Strategy() {
+		this((Task) null);
+	}
+
+	/**
+	 * Initializes this <code>Strategy</code> with appropriate information required for processing.
+	 *
+	 * @param task The task associated with this <code>Strategy</code>.
+	 */
+	public Strategy(final Task task) {
+		this(null, new Task[]{task});
+	}
+
+	/**
+	 * Initializes this <code>Strategy</code> with appropriate information required for processing.
+	 *
+	 * @param tasks The tasks associated with this <code>Strategy</code>.
+	 */
+	public Strategy(final Task[] tasks) {
+		this(null, tasks);
+	}
+
+	/**
+	 * Initializes this <code>Strategy</code> with appropriate information required for processing.
+	 *
+	 * @param policy The policy associated with this <code>Strategy</code>.
+	 * @param task   The task associated with this <code>Strategy</code>.
+	 */
+	public Strategy(final Policy policy, final Task task) {
+		this(policy, new Task[]{task});
+	}
+
+	/**
+	 * Initializes this <code>Strategy</code> with appropriate information required for processing.
+	 *
+	 * @param policy The policy associated with this <code>Strategy</code>.
+	 * @param tasks  The tasks associated with this <code>Strategy</code>.
+	 */
+	public Strategy(final Policy policy, final Task[] tasks) {
+		this.policy = policy;
+		this.tasks = tasks;
+
+		lock = true;
+		reset = false;
+		sync = true;
+		executingFutures = null;
+	}
+
+	public boolean validate() {
+		if (policy != null) {
+			return policy.validate();
+		}
+		throw new RuntimeException("unable to validate this strategy (missing policy)");
+	}
+
+	boolean isIdle() {
+		if (executingFutures != null) {
+			for (final Future<?> future : executingFutures) {
+				if (!future.isDone()) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
+	public void setLock(final boolean lock) {
+		this.lock = lock;
+	}
+
+	public void setReset(final boolean reset) {
+		this.reset = reset;
+	}
+
+	public void setSync(final boolean sync) {
+		this.sync = sync;
+	}
+}

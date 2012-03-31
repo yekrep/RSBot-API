@@ -11,11 +11,11 @@ import java.util.logging.Logger;
 import org.powerbot.asm.NodeManipulator;
 import org.powerbot.concurrent.TaskContainer;
 import org.powerbot.concurrent.TaskProcessor;
+import org.powerbot.game.loader.AdaptException;
 import org.powerbot.game.loader.Crawler;
 import org.powerbot.game.loader.PackEncryption;
 import org.powerbot.game.loader.applet.ClientStub;
 import org.powerbot.game.loader.applet.Rs2Applet;
-import org.powerbot.lang.AdaptException;
 import org.powerbot.util.StringUtil;
 import org.powerbot.util.io.HttpClient;
 

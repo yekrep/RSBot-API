@@ -19,7 +19,7 @@ public class WidgetCloser extends AntiRandom {
 		children.put(1252, 6);//Squeal of Fortune
 	}
 
-	public boolean applicable() {
+	public boolean validate() {
 		if (Game.isLoggedIn()) {
 			for (final Map.Entry<Integer, Integer> child : children.entrySet()) {
 				final WidgetChild widgetChild = Widgets.get(child.getKey(), child.getValue());

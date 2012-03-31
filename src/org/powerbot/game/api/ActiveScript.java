@@ -7,15 +7,15 @@ import org.powerbot.concurrent.Task;
 import org.powerbot.concurrent.TaskContainer;
 import org.powerbot.concurrent.TaskProcessor;
 import org.powerbot.concurrent.ThreadPool;
-import org.powerbot.concurrent.action.Action;
-import org.powerbot.concurrent.action.ActionExecutor;
+import org.powerbot.concurrent.strategy.Policy;
+import org.powerbot.concurrent.strategy.Strategy;
+import org.powerbot.concurrent.strategy.StrategyDaemon;
 import org.powerbot.event.EventManager;
 import org.powerbot.game.GameDefinition;
 import org.powerbot.game.bot.Bot;
 import org.powerbot.gui.BotChrome;
-import org.powerbot.lang.Activatable;
 
-import static org.powerbot.concurrent.action.ActionExecutor.State;
+import static org.powerbot.concurrent.strategy.StrategyDaemon.State;
 
 /**
  * @author Timer
@@ -23,10 +23,10 @@ import static org.powerbot.concurrent.action.ActionExecutor.State;
 public abstract class ActiveScript implements EventListener {
 	public final Logger log = Logger.getLogger(getClass().getName());
 
-	private Activatable stop_execution;
+	private Policy stop_execution;
 	private EventManager eventManager;
 	private TaskContainer container;
-	private ActionExecutor executor;
+	private StrategyDaemon executor;
 
 	private Bot bot;
 	private boolean silent;
@@ -43,14 +43,14 @@ public abstract class ActiveScript implements EventListener {
 		this.bot = bot;
 		eventManager = bot.getEventDispatcher();
 		container = new TaskProcessor(bot.threadGroup);
-		executor = new ActionExecutor(container, bot.getContainer());
+		executor = new StrategyDaemon(container, bot.getContainer());
 	}
 
-	protected final void provide(final Action action) {
+	protected final void provide(final Strategy action) {
 		executor.append(action);
 	}
 
-	protected final void revoke(final Action action) {
+	protected final void revoke(final Strategy action) {
 		executor.omit(action);
 	}
 
@@ -58,8 +58,8 @@ public abstract class ActiveScript implements EventListener {
 		container.submit(task);
 	}
 
-	protected final void setStoppableExecution(final Activatable activator) {
-		this.stop_execution = activator;
+	protected final void setStoppableExecution(final Policy policy) {
+		this.stop_execution = policy;
 	}
 
 	protected final void setIterationSleep(final int milliseconds) {

@@ -48,7 +48,7 @@ public class Mime extends AntiRandom {
 		emotes.put(1131, "Glass Box");
 	}
 
-	public boolean applicable() {
+	public boolean validate() {
 		return Npcs.getNearest(new Filter<Npc>() {
 			public boolean accept(final Npc npc) {
 				return npc.getId() == NPC_MIME_ID;

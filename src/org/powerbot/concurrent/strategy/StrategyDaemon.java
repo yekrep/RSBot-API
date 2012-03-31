@@ -1,4 +1,4 @@
-package org.powerbot.concurrent.action;
+package org.powerbot.concurrent.strategy;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -9,17 +9,16 @@ import java.util.concurrent.Future;
 import org.powerbot.concurrent.Task;
 import org.powerbot.concurrent.TaskContainer;
 import org.powerbot.game.api.util.Time;
-import org.powerbot.lang.Activatable;
 
 /**
- * An action manager capable of dispatching actions when activated within the a concurrent environment.
+ * An action manager capable of dispatching strategies when activated within the a concurrent environment.
  *
  * @author Timer
  */
-public class ActionExecutor implements ActionContainer, Task {
+public class StrategyDaemon implements StrategyContainer, Task {
 	private final TaskContainer container;
 	private final TaskContainer owner;
-	private final List<Action> actions;
+	private final List<Strategy> strategies;
 	public State state;
 	private int iterationSleep = 200;
 
@@ -29,10 +28,10 @@ public class ActionExecutor implements ActionContainer, Task {
 	 * @param container The <code>TaskContainer</code> to use as a medium for processing.
 	 * @param owner     The <code>TaskContainer</code> that owns this executor.
 	 */
-	public ActionExecutor(final TaskContainer container, final TaskContainer owner) {
+	public StrategyDaemon(final TaskContainer container, final TaskContainer owner) {
 		this.container = container;
 		this.owner = owner;
-		actions = new ArrayList<Action>();
+		strategies = new ArrayList<Strategy>();
 		state = State.DESTROYED;
 	}
 
@@ -73,21 +72,21 @@ public class ActionExecutor implements ActionContainer, Task {
 	/**
 	 * {@inheritDoc}
 	 */
-	public void append(final Action action) {
-		if (!actions.contains(action)) {
-			actions.add(action);
+	public void append(final Strategy action) {
+		if (!strategies.contains(action)) {
+			strategies.add(action);
 		}
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public void omit(final Action action) {
-		actions.remove(action);
+	public void omit(final Strategy action) {
+		strategies.remove(action);
 	}
 
 	/**
-	 * Handles the dispatching of actions within the given container.
+	 * Handles the dispatching of strategies within the given container.
 	 */
 	public void run() {
 		final List<Future<?>> futures = Collections.synchronizedList(new ArrayList<Future<?>>());
@@ -101,26 +100,23 @@ public class ActionExecutor implements ActionContainer, Task {
 					}
 				}
 			} else if (state == State.LISTENING) {
-				for (final Action action : actions) {
+				for (final Strategy strategy : strategies) {
 					if (state != State.LISTENING) {
 						break;
 					}
-					final Activatable activator = action.activator;
-					if (activator == null || action.tasks == null || !activator.applicable()) {
+					if (strategy.tasks == null || !strategy.validate() ||
+							(strategy.sync && !strategy.isIdle())) {
 						continue;
 					}
-					if (action.synchronizeInstances && !action.isIdle()) {
-						continue;
-					}
-					for (final Task task : action.tasks) {
+					for (final Task task : strategy.tasks) {
 						final Future<?> future = container.submit(task);
 						if (future != null) {
 							futures.add(future);
 						}
 					}
 					cached_state = state;
-					action.futures = futures.toArray(new Future<?>[futures.size()]);
-					if (action.requireLock) {
+					strategy.executingFutures = futures.toArray(new Future<?>[futures.size()]);
+					if (strategy.lock) {
 						container.submit(createFutureDisposer(futures, this));
 						awaitNotify(futures);
 						if (state == State.PROCESSING) {
@@ -128,7 +124,7 @@ public class ActionExecutor implements ActionContainer, Task {
 						}
 					}
 					futures.clear();
-					if (action.resetExecutionQueue) {
+					if (strategy.reset) {
 						break;
 					}
 				}

@@ -1,7 +1,7 @@
 package org.powerbot.game;
 
 import org.powerbot.asm.NodeManipulator;
-import org.powerbot.lang.AdaptException;
+import org.powerbot.game.loader.AdaptException;
 
 /**
  * Represents an environment in which the game can be started and terminated.
@@ -19,7 +19,7 @@ public interface GameEnvironment {
 
 	/**
 	 * @return The <code>NodeManipulator</code> for this environment.
-	 * @throws AdaptException Thrown when the node manipulation fails.
+	 * @throws org.powerbot.game.loader.AdaptException Thrown when the node manipulation fails.
 	 */
 	NodeManipulator getNodeManipulator() throws AdaptException;
 

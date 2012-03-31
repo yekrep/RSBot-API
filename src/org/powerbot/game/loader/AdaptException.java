@@ -1,4 +1,4 @@
-package org.powerbot.lang;
+package org.powerbot.game.loader;
 
 /**
  * @author Timer
