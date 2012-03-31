@@ -1,18 +1,32 @@
 package org.powerbot.game.api.wrappers.location;
 
+import org.powerbot.game.bot.Bot;
+import org.powerbot.game.client.RSObjectDefActions;
+import org.powerbot.game.client.RSObjectDefID;
+import org.powerbot.game.client.RSObjectDefInts;
+import org.powerbot.game.client.RSObjectDefName;
+
 /**
  * @author Timer
  */
 public class LocationDefinition {
+	private final Object def;
+	private final int id_multiplier;
+
+	public LocationDefinition(final Object def) {
+		this.def = def;
+		this.id_multiplier = Bot.resolve().multipliers.OBJECTDEF_ID;
+	}
+
 	public String getName() {
-		return null;//TODO
+		return (String) ((RSObjectDefName) def).getRSObjectDefName();
 	}
 
 	public String[] getActions() {
-		return null;//TODO
+		return (String[]) ((RSObjectDefActions) def).getRSObjectDefActions();
 	}
 
 	public int getId() {
-		return -1;//TODO
+		return ((RSObjectDefID) ((RSObjectDefInts) def).getRSObjectDefInts()).getRSObjectDefID() * id_multiplier;
 	}
 }

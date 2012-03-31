@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Polygon;
 
+import org.powerbot.game.api.internal.util.Nodes;
 import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.api.wrappers.Area;
 import org.powerbot.game.api.wrappers.Entity;
@@ -13,8 +14,11 @@ import org.powerbot.game.api.wrappers.Tile;
 import org.powerbot.game.api.wrappers.graphics.CapturedModel;
 import org.powerbot.game.api.wrappers.graphics.model.LocationModel;
 import org.powerbot.game.bot.Bot;
+import org.powerbot.game.client.CacheTable;
+import org.powerbot.game.client.HardReferenceGet;
 import org.powerbot.game.client.Model;
 import org.powerbot.game.client.ModelCapture;
+import org.powerbot.game.client.Node;
 import org.powerbot.game.client.RSAnimableShorts;
 import org.powerbot.game.client.RSAnimableX1;
 import org.powerbot.game.client.RSAnimableX2;
@@ -23,6 +27,9 @@ import org.powerbot.game.client.RSAnimableY2;
 import org.powerbot.game.client.RSInteractableLocation;
 import org.powerbot.game.client.RSInteractableManager;
 import org.powerbot.game.client.RSInteractableRSInteractableManager;
+import org.powerbot.game.client.RSObjectDefLoaderCache;
+import org.powerbot.game.client.Reference;
+import org.powerbot.game.client.SoftReferenceGet;
 
 /**
  * @author Timer
@@ -93,7 +100,17 @@ public class Location implements Entity, Mobile {
 	}
 
 	public LocationDefinition getDefinition() {
-		return null;//TODO
+		final Object objectDefLoader = ((CacheTable) ((RSObjectDefLoaderCache) object).getRSObjectDefLoaderCache()).getCacheTable();
+		final Node ref = Nodes.lookup(objectDefLoader, getId());
+		if (ref != null && ref instanceof Reference) {
+			final Object reference = ((Reference) ref).getData();
+			if (reference instanceof SoftReferenceGet) {
+				return new LocationDefinition(((SoftReferenceGet) reference).getSoftReferenceGet());
+			} else if (reference instanceof HardReferenceGet) {
+				return new LocationDefinition(((HardReferenceGet) reference).getHardReferenceGet());
+			}
+		}
+		return null;
 	}
 
 	public CapturedModel getModel() {
