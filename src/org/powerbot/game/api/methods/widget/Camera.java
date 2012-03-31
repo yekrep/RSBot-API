@@ -96,6 +96,14 @@ public class Camera {
 		}
 	}
 
+	public static boolean setNorth() {
+		return WidgetComposite.getCompass().click(true);
+	}
+
+	public static boolean setNorth(final int up) {
+		return WidgetComposite.getCompass().click(true) && setPitch(up);
+	}
+
 	public static void setAngle(final int degrees) {
 		if (getAngleTo(degrees) > 5) {
 			Keyboard.pressKey((char) KeyEvent.VK_LEFT, 0, 0);
