@@ -4,11 +4,11 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Polygon;
 
+import org.powerbot.game.api.RegionTile;
 import org.powerbot.game.api.internal.util.Nodes;
 import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.api.wrappers.Area;
 import org.powerbot.game.api.wrappers.Entity;
-import org.powerbot.game.api.wrappers.LocalTile;
 import org.powerbot.game.api.wrappers.Mobile;
 import org.powerbot.game.api.wrappers.Tile;
 import org.powerbot.game.api.wrappers.graphics.CapturedModel;
@@ -89,13 +89,13 @@ public class Location implements Entity, Mobile {
 		return object;
 	}
 
-	public LocalTile getLocalPosition() {
+	public RegionTile getRegionPosition() {
 		final RSInteractableLocation location = ((RSInteractableManager) ((RSInteractableRSInteractableManager) object).getRSInteractableRSInteractableManager()).getData().getLocation();
-		return new LocalTile((int) location.getX() / 512, (int) location.getY() / 512, plane);
+		return new RegionTile((int) location.getX() / 512, (int) location.getY() / 512, plane);
 	}
 
 	public Tile getPosition() {
-		final LocalTile localTile = getLocalPosition();
+		final RegionTile localTile = getRegionPosition();
 		return new Tile(Game.getBaseX() + localTile.getX(), Game.getBaseY() + localTile.getY(), localTile.getPlane());
 	}
 

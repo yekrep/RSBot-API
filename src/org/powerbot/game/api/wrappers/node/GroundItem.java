@@ -4,13 +4,13 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Polygon;
 
+import org.powerbot.game.api.RegionTile;
 import org.powerbot.game.api.methods.Calculations;
 import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.api.methods.input.Mouse;
 import org.powerbot.game.api.methods.node.Menu;
 import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.wrappers.Entity;
-import org.powerbot.game.api.wrappers.LocalTile;
 import org.powerbot.game.api.wrappers.Mobile;
 import org.powerbot.game.api.wrappers.Tile;
 
@@ -19,16 +19,16 @@ import org.powerbot.game.api.wrappers.Tile;
  */
 public class GroundItem implements Entity, Mobile {
 	private final Tile tile;
-	private final LocalTile localTile;
+	private final RegionTile localTile;
 	private final Item groundItem;
 
 	public GroundItem(final Tile tile, final Item groundItem) {
 		this.tile = tile;
-		this.localTile = new LocalTile(tile.getX() - Game.getBaseX(), tile.getY() - Game.getBaseY(), tile.getPlane());
+		this.localTile = new RegionTile(tile.getX() - Game.getBaseX(), tile.getY() - Game.getBaseY(), tile.getPlane());
 		this.groundItem = groundItem;
 	}
 
-	public LocalTile getLocalPosition() {
+	public RegionTile getRegionPosition() {
 		return localTile;
 	}
 

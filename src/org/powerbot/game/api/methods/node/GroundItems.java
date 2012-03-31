@@ -3,13 +3,13 @@ package org.powerbot.game.api.methods.node;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.powerbot.game.api.RegionTile;
 import org.powerbot.game.api.internal.util.Deque;
 import org.powerbot.game.api.internal.util.Nodes;
 import org.powerbot.game.api.methods.Calculations;
 import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.util.Filter;
-import org.powerbot.game.api.wrappers.LocalTile;
 import org.powerbot.game.api.wrappers.Tile;
 import org.powerbot.game.api.wrappers.node.GroundItem;
 import org.powerbot.game.api.wrappers.node.Item;
@@ -75,7 +75,7 @@ public class GroundItems {
 	public static GroundItem getNearest(final int range, final Filter<GroundItem> filter) {
 		GroundItem groundItem = null;
 		double distance = Double.MAX_VALUE;
-		final LocalTile position = Players.getLocal().getLocalPosition();
+		final RegionTile position = Players.getLocal().getRegionPosition();
 		final Tile tile = Players.getLocal().getPosition();
 		final int pX = tile.getX();
 		final int pY = tile.getY();
@@ -88,7 +88,7 @@ public class GroundItems {
 				final GroundItem[] items = getLoadedAt(x, y);
 				for (final GroundItem item : items) {
 					if (item != null && filter.accept(item)) {
-						final double dist = Calculations.distance(position, item.getLocalPosition());
+						final double dist = Calculations.distance(position, item.getRegionPosition());
 						if (dist < distance) {
 							distance = dist;
 							groundItem = item;

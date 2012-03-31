@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Polygon;
 
+import org.powerbot.game.api.RegionTile;
 import org.powerbot.game.api.internal.Multipliers;
 import org.powerbot.game.api.internal.util.Nodes;
 import org.powerbot.game.api.methods.Calculations;
@@ -12,7 +13,6 @@ import org.powerbot.game.api.methods.input.Mouse;
 import org.powerbot.game.api.methods.node.Menu;
 import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.wrappers.Entity;
-import org.powerbot.game.api.wrappers.LocalTile;
 import org.powerbot.game.api.wrappers.Mobile;
 import org.powerbot.game.api.wrappers.Tile;
 import org.powerbot.game.api.wrappers.graphics.CapturedModel;
@@ -59,14 +59,14 @@ public abstract class Character implements Entity, Mobile {
 
 	public abstract String getName();
 
-	public LocalTile getLocalPosition() {
+	public RegionTile getRegionPosition() {
 		final RSInteractableLocation location = ((RSInteractableManager) ((RSInteractableRSInteractableManager) get()).getRSInteractableRSInteractableManager()).getData().getLocation();
-		return new LocalTile((int) location.getX() >> 9, (int) location.getY() >> 9, getPlane());
+		return new RegionTile((int) location.getX() >> 9, (int) location.getY() >> 9, getPlane());
 	}
 
 	public Tile getPosition() {
-		final LocalTile localTile = getLocalPosition();
-		return new Tile(Game.getBaseX() + localTile.getX(), Game.getBaseY() + localTile.getY(), localTile.getPlane());
+		final RegionTile regionTile = getRegionPosition();
+		return new Tile(Game.getBaseX() + regionTile.getX(), Game.getBaseY() + regionTile.getY(), regionTile.getPlane());
 	}
 
 	public int getPlane() {

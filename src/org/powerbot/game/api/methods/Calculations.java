@@ -3,9 +3,9 @@ package org.powerbot.game.api.methods;
 import java.awt.Canvas;
 import java.awt.Point;
 
+import org.powerbot.game.api.RegionTile;
 import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.methods.widget.WidgetComposite;
-import org.powerbot.game.api.wrappers.LocalTile;
 import org.powerbot.game.api.wrappers.Tile;
 import org.powerbot.game.api.wrappers.interactive.Player;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
@@ -142,7 +142,7 @@ public class Calculations {
 		x -= Game.getBaseX();
 		y -= Game.getBaseY();
 
-		final LocalTile localTile = local.getLocalPosition();
+		final RegionTile localTile = local.getRegionPosition();
 		final int calculatedX = (int) (x * 4 + 2) - localTile.getX() / 0x80;
 		final int calculatedY = (int) (y * 4 + 2) - localTile.getY() / 0x80;
 
@@ -189,7 +189,11 @@ public class Calculations {
 		return point.x > 0 && point.y > 0 && point.x < canvas.getWidth() && point.y < canvas.getHeight();
 	}
 
-	public static double distance(final LocalTile tile1, final LocalTile tile2) {
+	public static double distance(final Tile tile1, final Tile tile2) {
+		return Math.sqrt((tile1.getX() - tile2.getX()) * (tile1.getX() - tile2.getX()) + (tile1.getY() - tile2.getY()) * (tile1.getY() - tile2.getY()));
+	}
+
+	public static double distance(final RegionTile tile1, final RegionTile tile2) {
 		return Math.sqrt((tile1.getX() - tile2.getX()) * (tile1.getX() - tile2.getX()) + (tile1.getY() - tile2.getY()) * (tile1.getY() - tile2.getY()));
 	}
 
