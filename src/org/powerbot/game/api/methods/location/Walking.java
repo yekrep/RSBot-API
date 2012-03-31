@@ -28,20 +28,13 @@ public class Walking {
 	private static final int WIDGET_RUN = 2;
 	private static final int WIDGET_RUN_ENERGY = 6;
 
-	/**
-	 * @return The x destination your character is headed for.
-	 */
-	public static int getDestinationX() {
+	public static Tile getDestination() {
 		final Bot bot = Bot.resolve();
-		return Game.getBaseX() + bot.getClient().getDestX() * bot.multipliers.GLOBAL_DESTX;
-	}
-
-	/**
-	 * @return The y destination your character is headed for.
-	 */
-	public static int getDestinationY() {
-		final Bot bot = Bot.resolve();
-		return Game.getBaseY() + bot.getClient().getDestY() * bot.multipliers.GLOBAL_DESTY;
+		return new Tile(
+				Game.getBaseX() + bot.getClient().getDestX() * bot.multipliers.GLOBAL_DESTX,
+				Game.getBaseY() + bot.getClient().getDestY() * bot.multipliers.GLOBAL_DESTY,
+				Game.getPlane()
+		);
 	}
 
 	/**
@@ -86,7 +79,7 @@ public class Walking {
 	 * @param tile The tile to click (global).
 	 * @return <tt>true</tt> if the tile was clicked; otherwise <tt>false</tt>.
 	 */
-	public static boolean clickTile(final Tile tile) {
+	public static boolean walk(final Tile tile) {
 		return Mouse.apply(
 				new Locatable() {
 					public Point getCentralPoint() {

@@ -51,8 +51,24 @@ public class Inventory {
 		return getItems().length;
 	}
 
+	public static int getCount(final int id) {
+		return getCount(false, new Filter<Item>() {
+			public boolean accept(final Item item) {
+				return item.getId() == id;
+			}
+		});
+	}
+
 	public static int getCount(final Filter<Item> itemFilter) {
 		return getCount(false, itemFilter);
+	}
+
+	public static int getCount(final boolean countStack, final int id) {
+		return getCount(countStack, new Filter<Item>() {
+			public boolean accept(final Item item) {
+				return item.getId() == id;
+			}
+		});
 	}
 
 	public static int getCount(final boolean countStack, final Filter<Item> itemFilter) {

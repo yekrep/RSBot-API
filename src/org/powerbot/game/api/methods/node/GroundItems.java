@@ -35,8 +35,25 @@ public class GroundItems {
 		return getLoaded(104, ALL_FILTER);
 	}
 
+
+	public static GroundItem[] getLoaded(final int id) {
+		return getLoaded(new Filter<GroundItem>() {
+			public boolean accept(final GroundItem groundItem) {
+				return groundItem.getGroundItem().getId() == id;
+			}
+		});
+	}
+
 	public static GroundItem[] getLoaded(final Filter<GroundItem> filter) {
 		return getLoaded(104, filter);
+	}
+
+	public static GroundItem[] getLoaded(final int range, final int id) {
+		return getLoaded(range, new Filter<GroundItem>() {
+			public boolean accept(final GroundItem groundItem) {
+				return groundItem.getGroundItem().getId() == id;
+			}
+		});
 	}
 
 	/**
@@ -68,8 +85,24 @@ public class GroundItems {
 		return temp.toArray(new GroundItem[temp.size()]);
 	}
 
+	public static GroundItem getNearest(final int id) {
+		return getNearest(new Filter<GroundItem>() {
+			public boolean accept(final GroundItem groundItem) {
+				return groundItem.getGroundItem().getId() == id;
+			}
+		});
+	}
+
 	public static GroundItem getNearest(final Filter<GroundItem> filter) {
 		return getNearest(104, filter);
+	}
+
+	public static GroundItem getNearest(final int range, final int id) {
+		return getNearest(range, new Filter<GroundItem>() {
+			public boolean accept(final GroundItem groundItem) {
+				return groundItem.getGroundItem().getId() == id;
+			}
+		});
 	}
 
 	public static GroundItem getNearest(final int range, final Filter<GroundItem> filter) {

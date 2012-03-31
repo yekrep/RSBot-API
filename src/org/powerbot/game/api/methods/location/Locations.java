@@ -56,6 +56,14 @@ public class Locations {
 		return locations.toArray(new Location[locations.size()]);
 	}
 
+	public static Location[] getLoaded(final int id) {
+		return getLoaded(new Filter<Location>() {
+			public boolean accept(final Location location) {
+				return location.getId() == id;
+			}
+		});
+	}
+
 	/**
 	 * @param filter The filtering <code>Filter</code> to accept all the Locations through.
 	 * @return An array of all of the loaded Locations within the currently loaded region that are accepted by the provided filter.
@@ -72,6 +80,14 @@ public class Locations {
 			}
 		}
 		return objects.toArray(new Location[objects.size()]);
+	}
+
+	public static Location getNearest(final int id) {
+		return getNearest(new Filter<Location>() {
+			public boolean accept(final Location location) {
+				return location.getId() == id;
+			}
+		});
 	}
 
 	public static Location getNearest(final Filter<Location> filter) {

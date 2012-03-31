@@ -34,6 +34,14 @@ public class Npcs {
 		return getLoaded(ALL_FILTER);
 	}
 
+	public static Npc[] getLoaded(final int id) {
+		return getLoaded(new Filter<Npc>() {
+			public boolean accept(final Npc npc) {
+				return npc.getId() == id;
+			}
+		});
+	}
+
 	/**
 	 * @param filter The filtering <code>Filter</code> to accept all the Npcs through.
 	 * @return An array of the currently loaded Npcs in the game that are accepted by the provided filter.
@@ -52,6 +60,14 @@ public class Npcs {
 			}
 		}
 		return npcs.toArray(new Npc[npcs.size()]);
+	}
+
+	public static Npc getNearest(final int id) {
+		return getNearest(new Filter<Npc>() {
+			public boolean accept(final Npc npc) {
+				return npc.getId() == id;
+			}
+		});
 	}
 
 	public static Npc getNearest(final Filter<Npc> filter) {
