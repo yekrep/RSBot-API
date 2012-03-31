@@ -7,31 +7,31 @@ package org.powerbot.concurrent.strategy;
  */
 public interface StrategyContainer {
 	/**
-	 * Begins listening to the actions associated with this <code>ActionContainer</code>.
+	 * Begins listening to the policies associated with this <code>StrategyContainer</code>.
 	 */
 	public void listen();
 
 	/**
-	 * Locks this container from processing and dispatching of actions.
+	 * Locks this container from processing and dispatching of strategies.
 	 */
 	public void lock();
 
 	/**
-	 * Destroys this <code>ActionContainer</code> and cleans up.
+	 * Destroys this <code>StrategyContainer</code> and cleans up.
 	 */
 	public void destroy();
 
 	/**
-	 * Begins listening on an action for appropriate dispatching.
+	 * Begins listening on a policy for appropriate dispatching.
 	 *
-	 * @param action The <code>Action</code> to handle.
+	 * @param strategy The <code>Strategy</code> to handle.
 	 */
-	public void append(Strategy action);
+	public void append(Strategy strategy);
 
 	/**
-	 * Terminates listening and dispatch of the specified <code>Action</code>.
+	 * Terminates listening and dispatch of the specified <code>Strategy</code>.
 	 *
-	 * @param action The <code>Action</code> to lose handle of.
+	 * @param strategy The <code>Strategy</code> to lose handle of.
 	 */
-	public void omit(Strategy action);
+	public void omit(Strategy strategy);
 }

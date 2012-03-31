@@ -11,7 +11,7 @@ import org.powerbot.concurrent.TaskContainer;
 import org.powerbot.game.api.util.Time;
 
 /**
- * An action manager capable of dispatching strategies when activated within the a concurrent environment.
+ * A strategy daemon capable of dispatching strategies when activated within the a concurrent environment.
  *
  * @author Timer
  */
@@ -23,7 +23,7 @@ public class StrategyDaemon implements StrategyContainer, Task {
 	private int iterationSleep = 200;
 
 	/**
-	 * Initializes this action manager with appropriate objects.
+	 * Initializes this strategy daemon with appropriate objects.
 	 *
 	 * @param container The <code>TaskContainer</code> to use as a medium for processing.
 	 * @param owner     The <code>TaskContainer</code> that owns this executor.
@@ -72,17 +72,17 @@ public class StrategyDaemon implements StrategyContainer, Task {
 	/**
 	 * {@inheritDoc}
 	 */
-	public void append(final Strategy action) {
-		if (!strategies.contains(action)) {
-			strategies.add(action);
+	public void append(final Strategy strategy) {
+		if (!strategies.contains(strategy)) {
+			strategies.add(strategy);
 		}
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public void omit(final Strategy action) {
-		strategies.remove(action);
+	public void omit(final Strategy strategy) {
+		strategies.remove(strategy);
 	}
 
 	/**
@@ -130,7 +130,7 @@ public class StrategyDaemon implements StrategyContainer, Task {
 				}
 				Time.sleep(iterationSleep);
 			} else {
-				throw new RuntimeException("bad action-dispatch state");
+				throw new RuntimeException("bad daemon-dispatch state");
 			}
 		}
 	}

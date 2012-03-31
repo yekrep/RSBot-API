@@ -46,12 +46,12 @@ public abstract class ActiveScript implements EventListener {
 		executor = new StrategyDaemon(container, bot.getContainer());
 	}
 
-	protected final void provide(final Strategy action) {
-		executor.append(action);
+	protected final void provide(final Strategy strategy) {
+		executor.append(strategy);
 	}
 
-	protected final void revoke(final Strategy action) {
-		executor.omit(action);
+	protected final void revoke(final Strategy strategy) {
+		executor.omit(strategy);
 	}
 
 	protected final void submit(final Task task) {
