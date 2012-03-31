@@ -85,6 +85,14 @@ public class Strategy implements Policy {
 		return true;
 	}
 
+	public void setTasks(final Task[] tasks) {
+		this.tasks = tasks;
+	}
+
+	public void setTask(final Task task) {
+		setTasks(new Task[]{task});
+	}
+
 	public void setLock(final boolean lock) {
 		this.lock = lock;
 	}
