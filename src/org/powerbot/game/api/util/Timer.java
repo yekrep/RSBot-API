@@ -83,7 +83,7 @@ public class Timer {
 	 * @return The elapsed time formatted hh:mm:ss.
 	 */
 	public String toElapsedString() {
-		return format(getElapsed());
+		return Time.format(getElapsed());
 	}
 
 	/**
@@ -92,38 +92,6 @@ public class Timer {
 	 * @return The remaining time formatted hh:mm:ss.
 	 */
 	public String toRemainingString() {
-		return format(getRemaining());
-	}
-
-	/**
-	 * Converts milliseconds to a String in the format
-	 * hh:mm:ss.
-	 *
-	 * @param time The number of milliseconds.
-	 * @return The formatted String.
-	 */
-	private static String format(final long time) {
-		final StringBuilder t = new StringBuilder();
-		final long total_secs = time / 1000;
-		final long total_mins = total_secs / 60;
-		final long total_hrs = total_mins / 60;
-		final int secs = (int) total_secs % 60;
-		final int mins = (int) total_mins % 60;
-		final int hrs = (int) total_hrs % 60;
-		if (hrs < 10) {
-			t.append("0");
-		}
-		t.append(hrs);
-		t.append(":");
-		if (mins < 10) {
-			t.append("0");
-		}
-		t.append(mins);
-		t.append(":");
-		if (secs < 10) {
-			t.append("0");
-		}
-		t.append(secs);
-		return t.toString();
+		return Time.format(getRemaining());
 	}
 }
