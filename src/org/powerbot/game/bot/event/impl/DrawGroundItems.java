@@ -27,7 +27,7 @@ public class DrawGroundItems implements PaintListener {
 			final Tile location = player.getPosition();
 			final FontMetrics metrics = render.getFontMetrics();
 			final int tHeight = metrics.getHeight();
-			final int lX = location.x, lY = location.y;
+			final int lX = location.getX(), lY = location.getY();
 			for (int x = lX - 25; x < lX + 25; x++) {
 				for (int y = lY - 25; y < lY + 25; y++) {
 					final GroundItem[] groundItems = GroundItems.getLoadedAt(x, y);

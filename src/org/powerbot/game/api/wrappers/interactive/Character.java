@@ -66,7 +66,7 @@ public abstract class Character implements Entity, Mobile {
 
 	public Tile getPosition() {
 		final LocalTile localTile = getLocalPosition();
-		return new Tile(Game.getBaseX() + localTile.x, Game.getBaseY() + localTile.y, localTile.plane);
+		return new Tile(Game.getBaseX() + localTile.getX(), Game.getBaseY() + localTile.getY(), localTile.getPlane());
 	}
 
 	public int getPlane() {

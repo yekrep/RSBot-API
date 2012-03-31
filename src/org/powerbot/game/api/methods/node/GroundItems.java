@@ -48,8 +48,9 @@ public class GroundItems {
 	 */
 	public static GroundItem[] getLoaded(final int range, final Filter<GroundItem> filter) {
 		final ArrayList<GroundItem> temp = new ArrayList<GroundItem>();
-		final int pX = Players.getLocal().getPosition().x;
-		final int pY = Players.getLocal().getPosition().y;
+		final Tile tile = Players.getLocal().getPosition();
+		final int pX = tile.getX();
+		final int pY = tile.getY();
 		final int baseX = Game.getBaseX();
 		final int baseY = Game.getBaseY();
 		final int minX = Math.max(baseX, pX - range), minY = Math.max(baseY, pY - range);
@@ -76,8 +77,8 @@ public class GroundItems {
 		double distance = Double.MAX_VALUE;
 		final LocalTile position = Players.getLocal().getLocalPosition();
 		final Tile tile = Players.getLocal().getPosition();
-		final int pX = tile.x;
-		final int pY = tile.y;
+		final int pX = tile.getX();
+		final int pY = tile.getY();
 		final int baseX = Game.getBaseX();
 		final int baseY = Game.getBaseY();
 		final int minX = Math.max(baseX, pX - range), minY = Math.max(baseY, pY - range);

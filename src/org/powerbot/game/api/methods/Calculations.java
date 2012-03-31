@@ -143,8 +143,8 @@ public class Calculations {
 		y -= Game.getBaseY();
 
 		final LocalTile localTile = local.getLocalPosition();
-		final int calculatedX = (int) (x * 4 + 2) - localTile.x / 0x80;
-		final int calculatedY = (int) (y * 4 + 2) - localTile.y / 0x80;
+		final int calculatedX = (int) (x * 4 + 2) - localTile.getX() / 0x80;
+		final int calculatedY = (int) (y * 4 + 2) - localTile.getY() / 0x80;
 
 		final WidgetChild mm2 = WidgetComposite.getMap();
 		if (mm2 == null) {
@@ -190,7 +190,7 @@ public class Calculations {
 	}
 
 	public static double distance(final LocalTile tile1, final LocalTile tile2) {
-		return Math.sqrt((tile1.x - tile2.x) * (tile1.x - tile2.x) + (tile1.y - tile2.y) * (tile1.y - tile2.y));
+		return Math.sqrt((tile1.getX() - tile2.getX()) * (tile1.getX() - tile2.getX()) + (tile1.getY() - tile2.getY()) * (tile1.getY() - tile2.getY()));
 	}
 
 	public static double distance(final int x1, final int y1, final int x2, final int y2) {

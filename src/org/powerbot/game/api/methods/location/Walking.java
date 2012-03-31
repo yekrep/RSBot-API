@@ -90,7 +90,7 @@ public class Walking {
 		return Mouse.apply(
 				new Locatable() {
 					public Point getCentralPoint() {
-						return Calculations.worldToMap(tile.x + 0.5, tile.y + 0.5);
+						return Calculations.worldToMap(tile.getX() + 0.5, tile.getY() + 0.5);
 					}
 
 					public Point getNextViewportPoint() {

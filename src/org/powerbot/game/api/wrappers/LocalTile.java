@@ -14,12 +14,24 @@ import org.powerbot.game.api.util.Random;
  * @author Timer
  */
 public class LocalTile implements Entity {
-	public final int x, y, plane;
+	protected final int x, y, plane;
 
 	public LocalTile(final int x, final int y, final int plane) {
 		this.x = x;
 		this.y = y;
 		this.plane = plane;
+	}
+
+	public int getX() {
+		return x;
+	}
+
+	public int getY() {
+		return y;
+	}
+
+	public int getPlane() {
+		return plane;
 	}
 
 	public LocalTile derive(final int x, final int y) {

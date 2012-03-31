@@ -24,7 +24,7 @@ public class GroundItem implements Entity, Mobile {
 
 	public GroundItem(final Tile tile, final Item groundItem) {
 		this.tile = tile;
-		this.localTile = new LocalTile(tile.x - Game.getBaseX(), tile.y - Game.getBaseY(), tile.plane);
+		this.localTile = new LocalTile(tile.getX() - Game.getBaseX(), tile.getY() - Game.getBaseY(), tile.getPlane());
 		this.groundItem = groundItem;
 	}
 

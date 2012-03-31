@@ -52,7 +52,7 @@ public class Locations {
 	 * @return An array of all of the loaded Locations positioned on the given tile.
 	 */
 	public static Location[] getLoaded(final Tile tile) {
-		final Set<Location> locations = getAtLocal(tile.x - Game.getBaseX(), tile.y - Game.getBaseY(), -1);
+		final Set<Location> locations = getAtLocal(tile.getX() - Game.getBaseX(), tile.getY() - Game.getBaseY(), -1);
 		return locations.toArray(new Location[locations.size()]);
 	}
 
@@ -82,7 +82,7 @@ public class Locations {
 			for (int y = 0; y < 104; y++) {
 				for (final Location l : getAtLocal(x, y, -1)) {
 					if (l != null && filter.accept(l)) {
-						final double dist = Calculations.distance(position.x, position.y, x, y);
+						final double dist = Calculations.distance(position.getX(), position.getY(), x, y);
 						if (dist < distance) {
 							distance = dist;
 							location = l;

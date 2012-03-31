@@ -36,8 +36,8 @@ public class DrawLocations implements PaintListener {
 		final FontMetrics metrics = render.getFontMetrics();
 		final Tile position = player.getPosition();
 		final int textHeight = metrics.getHeight();
-		for (int x = position.x - 25; x < position.x + 25; x++) {
-			for (int y = position.y - 25; y < position.y + 25; y++) {
+		for (int x = position.getX() - 25; x < position.getX() + 25; x++) {
+			for (int y = position.getY() - 25; y < position.getY() + 25; y++) {
 				final Tile accessPosition = new Tile(x, y, Game.getPlane());
 				final Point accessPoint = accessPosition.getCentralPoint();
 				if (!Calculations.isPointOnScreen(accessPoint)) {
