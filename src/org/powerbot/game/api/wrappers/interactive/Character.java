@@ -27,6 +27,7 @@ import org.powerbot.game.client.RSCharacterHPRatio;
 import org.powerbot.game.client.RSCharacterHeight;
 import org.powerbot.game.client.RSCharacterInteracting;
 import org.powerbot.game.client.RSCharacterIsMoving;
+import org.powerbot.game.client.RSCharacterLoopCycleStatus;
 import org.powerbot.game.client.RSCharacterOrientation;
 import org.powerbot.game.client.RSCharacterPassiveAnimation;
 import org.powerbot.game.client.RSInteractableBytes;
@@ -115,7 +116,7 @@ public abstract class Character implements Entity, Mobile {
 	}
 
 	public boolean isInCombat() {
-		return false;//TODO combat
+		return Game.isLoggedIn() && Game.getLoopCycle() < ((RSCharacterLoopCycleStatus) ((RSInteractableInts) get()).getRSInteractableInts()).getRSCharacterLoopCycleStatus() * multipliers.CHARACTER_LOOPCYCLESTATUS;
 	}
 
 	public String getMessage() {

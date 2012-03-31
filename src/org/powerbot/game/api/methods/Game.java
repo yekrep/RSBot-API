@@ -81,4 +81,9 @@ public class Game {
 		final Bot bot = Bot.resolve();
 		return (((BaseInfoY) ((BaseInfoInts) ((RSInfoBaseInfo) bot.getClient().getRSGroundInfo()).getRSInfoBaseInfo()).getBaseInfoInts()).getBaseInfoY() * bot.multipliers.BASEDATA_Y) >> 8;
 	}
+
+	public static int getLoopCycle() {
+		final Bot bot = Bot.resolve();
+		return bot.getClient().getLoopCycle() * bot.multipliers.GLOBAL_LOOPCYCLE;
+	}
 }
