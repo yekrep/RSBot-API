@@ -103,6 +103,11 @@ public abstract class ActiveScript implements EventListener {
 	}
 
 	public final void stop() {
+		container.submit(new Task() {
+			public void run() {
+				onStop();
+			}
+		});
 		eventManager.remove(ActiveScript.this);
 		executor.destroy();
 		container.shutdown();
@@ -112,6 +117,9 @@ public abstract class ActiveScript implements EventListener {
 				name.startsWith(ThreadPool.THREADGROUPNAMEPREFIX)) {
 			BotChrome.getInstance().toolbar.updateScriptControls();
 		}
+	}
+
+	public void onStop() {
 	}
 
 	public final void kill() {
