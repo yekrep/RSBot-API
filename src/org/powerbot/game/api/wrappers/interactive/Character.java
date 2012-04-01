@@ -112,7 +112,7 @@ public abstract class Character implements Entity, Mobile {
 	}
 
 	public int getOrientation() {
-		return ((RSCharacterOrientation) ((RSInteractableInts) get()).getRSInteractableInts()).getRSCharacterOrientation() * multipliers.CHARACTER_ORIENTATION;
+		return (180 + ((RSCharacterOrientation) ((RSInteractableInts) get()).getRSInteractableInts()).getRSCharacterOrientation() * multipliers.CHARACTER_ORIENTATION * 45 / 2048) % 360;
 	}
 
 	public boolean isInCombat() {
