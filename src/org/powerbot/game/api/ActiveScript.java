@@ -9,7 +9,7 @@ import org.powerbot.concurrent.Task;
 import org.powerbot.concurrent.TaskContainer;
 import org.powerbot.concurrent.TaskProcessor;
 import org.powerbot.concurrent.ThreadPool;
-import org.powerbot.concurrent.strategy.Policy;
+import org.powerbot.concurrent.strategy.Condition;
 import org.powerbot.concurrent.strategy.Strategy;
 import org.powerbot.concurrent.strategy.StrategyDaemon;
 import org.powerbot.event.EventManager;
@@ -25,7 +25,7 @@ import static org.powerbot.concurrent.strategy.StrategyDaemon.State;
 public abstract class ActiveScript implements EventListener, Processor {
 	public final Logger log = Logger.getLogger(getClass().getName());
 
-	private Policy stop_execution;
+	private Condition stop_execution;
 	private EventManager eventManager;
 	private TaskContainer container;
 	private StrategyDaemon executor;
@@ -60,7 +60,7 @@ public abstract class ActiveScript implements EventListener, Processor {
 		return container.submit(task);
 	}
 
-	protected final void setStoppableExecution(final Policy policy) {
+	protected final void setStoppableExecution(final Condition policy) {
 		this.stop_execution = policy;
 	}
 

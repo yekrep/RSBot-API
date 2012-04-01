@@ -4,7 +4,6 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Polygon;
 
-import org.powerbot.game.api.RegionTile;
 import org.powerbot.game.api.methods.Calculations;
 import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.api.methods.input.Mouse;
@@ -12,6 +11,7 @@ import org.powerbot.game.api.methods.node.Menu;
 import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.wrappers.Entity;
 import org.powerbot.game.api.wrappers.Mobile;
+import org.powerbot.game.api.wrappers.RegionTile;
 import org.powerbot.game.api.wrappers.Tile;
 
 /**

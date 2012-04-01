@@ -151,6 +151,11 @@ public class Bot extends GameDefinition implements Runnable {
 			appletContainer = null;
 			stub = null;
 		}
+		final Dimension d = new Dimension(BotChrome.PANEL_WIDTH, BotChrome.PANEL_HEIGHT);
+		image = new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_RGB);
+		backBuffer = new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_RGB);
+		client = null;
+		BotChrome.getInstance().panel.setBot(this);
 
 		if (initializeEnvironment()) {
 			final Future<?> future = startEnvironment();

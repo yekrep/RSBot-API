@@ -1,4 +1,4 @@
-package org.powerbot.game.api;
+package org.powerbot.game.api.wrappers;
 
 public class RegionTile {
 	protected final int x, y, plane;

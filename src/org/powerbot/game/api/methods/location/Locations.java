@@ -3,11 +3,11 @@ package org.powerbot.game.api.methods.location;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import org.powerbot.game.api.RegionTile;
 import org.powerbot.game.api.methods.Calculations;
 import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.util.Filter;
+import org.powerbot.game.api.wrappers.RegionTile;
 import org.powerbot.game.api.wrappers.Tile;
 import org.powerbot.game.api.wrappers.location.Location;
 import org.powerbot.game.bot.Bot;

@@ -1,5 +1,5 @@
 package org.powerbot.concurrent.strategy;
 
-public interface Policy {
+public interface Condition {
 	public boolean validate();
 }

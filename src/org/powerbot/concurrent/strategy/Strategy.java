@@ -5,11 +5,11 @@ import java.util.concurrent.Future;
 import org.powerbot.concurrent.Task;
 
 /**
- * A policy that is performed when it is valid.
+ * A strategy that is performed when its policy allows so.
  *
  * @author Timer
  */
-public class Strategy implements Policy {
+public class Strategy implements Condition {
 	boolean lock;
 	boolean reset;
 	boolean sync;
@@ -17,7 +17,7 @@ public class Strategy implements Policy {
 	Task[] tasks;
 	Future<?>[] executingFutures;
 
-	private Policy policy;
+	private Condition policy;
 
 	public Strategy() {
 		this((Task) null);
@@ -47,7 +47,7 @@ public class Strategy implements Policy {
 	 * @param policy The policy associated with this <code>Strategy</code>.
 	 * @param task   The task associated with this <code>Strategy</code>.
 	 */
-	public Strategy(final Policy policy, final Task task) {
+	public Strategy(final Condition policy, final Task task) {
 		this(policy, new Task[]{task});
 	}
 
@@ -57,7 +57,7 @@ public class Strategy implements Policy {
 	 * @param policy The policy associated with this <code>Strategy</code>.
 	 * @param tasks  The tasks associated with this <code>Strategy</code>.
 	 */
-	public Strategy(final Policy policy, final Task[] tasks) {
+	public Strategy(final Condition policy, final Task[] tasks) {
 		this.policy = policy;
 		this.tasks = tasks;
 
