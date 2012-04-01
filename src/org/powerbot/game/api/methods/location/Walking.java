@@ -94,7 +94,7 @@ public class Walking {
 						return getCentralPoint().distance(point) <= 2;
 					}
 
-					public boolean verify() {
+					public boolean validate() {
 						return Calculations.distance(tile, Players.getLocal().getPosition()) <= 17;
 					}
 				},

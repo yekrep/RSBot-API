@@ -87,7 +87,7 @@ public class Login extends AntiRandom {
 		if (Game.getClientState() == Game.INDEX_LOGIN_SCREEN) {
 			for (final LoginEvent loginEvent : LoginEvent.values()) {
 				final WidgetChild widgetChild = Widgets.get(WIDGET, loginEvent.child);
-				if (widgetChild != null && widgetChild.verify()) {
+				if (widgetChild != null && widgetChild.validate()) {
 					final String text = widgetChild.getText().toLowerCase().trim();
 
 					if (text.contains(loginEvent.message.toLowerCase())) {
@@ -145,7 +145,7 @@ public class Login extends AntiRandom {
 	}
 
 	private boolean clickLoginInterface(final WidgetChild i) {
-		if (!i.verify()) {
+		if (!i.validate()) {
 			return false;
 		}
 		final Rectangle pos = i.getBoundingRectangle();

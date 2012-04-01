@@ -35,7 +35,7 @@ public class Widgets {
 		for (int index = 0; index < clientInterfaceCache.length; index++) {
 			if (clientInterfaceCache[index] != null) {
 				final Widget widget = get(index);
-				if (widget.isValid()) {
+				if (widget.validate()) {
 					validInterfaces.add(widget);
 				}
 			}
@@ -93,7 +93,7 @@ public class Widgets {
 
 	public static WidgetChild getContinue() {
 		final WidgetChild button = get(1184, 18);
-		if (button != null && button.verify()) {
+		if (button != null && button.validate()) {
 			return button;
 		}
 		return null;

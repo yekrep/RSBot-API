@@ -55,8 +55,8 @@ public abstract class CapturedModel implements Entity {
 
 	protected abstract void update();
 
-	public boolean verify() {
-		return verifiable == null || verifiable.verify();
+	public boolean validate() {
+		return verifiable == null || verifiable.validate();
 	}
 
 	public Point getCentralPoint() {

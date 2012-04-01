@@ -149,7 +149,7 @@ public abstract class Character implements Entity, Mobile {
 
 	public abstract Object get();
 
-	public boolean verify() {
+	public boolean validate() {
 		return get() != null;
 	}
 

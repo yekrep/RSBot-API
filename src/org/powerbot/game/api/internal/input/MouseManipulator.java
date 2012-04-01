@@ -38,7 +38,7 @@ public class MouseManipulator implements Task {
 		configureModifiers();
 		final long start = System.currentTimeMillis();
 		Point targetPoint = new Point(-1, -1);
-		while (running && System.currentTimeMillis() - start < timeout && locatable.verify()) {
+		while (running && System.currentTimeMillis() - start < timeout && locatable.validate()) {
 			if (!locatable.contains(targetPoint)) {
 				final Point viewPortPoint = locatable.getNextViewportPoint();
 				if (viewPortPoint.x == -1 || viewPortPoint.y == -1) {

@@ -6,5 +6,5 @@ public interface Verifiable {
 	 *
 	 * @return <tt>true</tt> if this entity is still valid; otherwise <tt>false</tt>.
 	 */
-	public boolean verify();
+	public boolean validate();
 }

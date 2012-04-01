@@ -23,7 +23,7 @@ public class WidgetCloser extends AntiRandom {
 		if (Game.isLoggedIn()) {
 			for (final Map.Entry<Integer, Integer> child : children.entrySet()) {
 				final WidgetChild widgetChild = Widgets.get(child.getKey(), child.getValue());
-				if (widgetChild.verify()) {
+				if (widgetChild.validate()) {
 					return true;
 				}
 			}
@@ -35,7 +35,7 @@ public class WidgetCloser extends AntiRandom {
 		try {
 			for (final Map.Entry<Integer, Integer> child : children.entrySet()) {
 				final WidgetChild widgetChild = Widgets.get(child.getKey(), child.getValue());
-				if (widgetChild.verify()) {
+				if (widgetChild.validate()) {
 					widgetChild.click(true);
 					Time.sleep(Random.nextInt(1200, 2400));
 				}

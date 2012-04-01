@@ -24,7 +24,7 @@ public class DrawInventory implements PaintListener {
 			for (final Item item : items) {
 				if (item != null) {
 					final WidgetChild child = item.getWidgetChild();
-					if (child != null && child.verify()) {
+					if (child != null && child.validate()) {
 						final Point center = child.getAbsoluteLocation();
 						final String id = item.getId() + "";
 						render.drawString(id, center.x, center.y + fontMetrics.getHeight());

@@ -40,8 +40,8 @@ public class GroundItem implements Entity, Mobile {
 		return groundItem;
 	}
 
-	public boolean verify() {
-		return tile.verify() && groundItem.getId() != -1;
+	public boolean validate() {
+		return tile.validate() && groundItem.getId() != -1;
 	}
 
 	public Point getCentralPoint() {

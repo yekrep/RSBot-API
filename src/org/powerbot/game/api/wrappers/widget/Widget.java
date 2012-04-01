@@ -26,7 +26,7 @@ public class Widget {
 	}
 
 
-	public boolean isValid() {
+	public boolean validate() {
 		if (getChildrenInternal() == null) {
 			return false;
 		}

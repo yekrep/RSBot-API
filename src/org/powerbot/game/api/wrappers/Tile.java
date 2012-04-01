@@ -39,7 +39,7 @@ public class Tile implements Entity {
 		return new Tile(this.x + x, this.y + y, this.plane);
 	}
 
-	public boolean verify() {
+	public boolean validate() {
 		final int x = this.x - Game.getBaseX();
 		final int y = this.y - Game.getBaseY();
 		return x > 0 && x < 104 && y > 0 && y < 104;

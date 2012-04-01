@@ -126,7 +126,7 @@ public class Location implements Entity, Mobile {
 		return null;
 	}
 
-	public boolean verify() {
+	public boolean validate() {
 		return getId() != -1;
 	}
 

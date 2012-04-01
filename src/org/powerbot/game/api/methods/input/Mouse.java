@@ -367,7 +367,7 @@ public class Mouse {
 						return area.contains(point);
 					}
 
-					public boolean verify() {
+					public boolean validate() {
 						return Mouse.isOnCanvas(x, y);
 					}
 				},

@@ -74,7 +74,7 @@ public enum Tabs {
 			Keyboard.sendKey((char) getFunctionKey(), Random.nextInt(100, 300));
 		} else {
 			final WidgetChild widgetChild = WidgetComposite.getTab(this);
-			if (widgetChild != null && widgetChild.verify()) {
+			if (widgetChild != null && widgetChild.validate()) {
 				if (widgetChild.click(true)) {
 					final Timer timer = new Timer(800);
 					while (timer.isRunning() && getCurrent() != this) {
@@ -94,6 +94,6 @@ public enum Tabs {
 			}
 		}
 		final Widget logout = Widgets.get(WIDGET_LOGOUT_X);
-		return logout != null && logout.isValid() ? Tabs.LOGOUT : Tabs.NONE;
+		return logout != null && logout.validate() ? Tabs.LOGOUT : Tabs.NONE;
 	}
 }

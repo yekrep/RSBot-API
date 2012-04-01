@@ -75,7 +75,7 @@ public class Mime extends AntiRandom {
 				}
 
 				final Widget widget = Widgets.get(WIDGET);
-				if (widget.isValid()) {
+				if (widget.validate()) {
 					final String text = emotes.get(animation);
 					if (text != null) {
 						for (final WidgetChild widgetChild : widget.getChildren()) {

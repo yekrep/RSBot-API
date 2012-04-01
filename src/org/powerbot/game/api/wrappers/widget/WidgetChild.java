@@ -447,11 +447,11 @@ public class WidgetChild implements Entity {
 	}
 
 	public boolean isOnScreen() {
-		return verify() && isVisible();
+		return validate() && isVisible();
 	}
 
 	public Polygon[] getBounds() {
-		if (verify()) {
+		if (validate()) {
 			final Point p = getAbsoluteLocation();
 			final int w = getWidth();
 			final int h = getHeight();
@@ -466,8 +466,13 @@ public class WidgetChild implements Entity {
 	}
 
 	public Rectangle getBoundingRectangle() {
-		final Polygon[] polygons = getBounds();
-		return polygons.length != 0 ? polygons[0].getBounds() : new Rectangle(-1, -1);
+		if (validate()) {
+			final Point p = getAbsoluteLocation();
+			final int w = getWidth();
+			final int h = getHeight();
+			return new Rectangle(p.x, p.y, w, h);
+		}
+		return new Rectangle(-1, -1);
 	}
 
 	public boolean hover() {
@@ -511,7 +516,7 @@ public class WidgetChild implements Entity {
 		final Point p = getAbsoluteLocation();
 		final int w = getWidth();
 		final int h = getHeight();
-		return verify() ? new Point((p.x * 2 + w) / 2, (p.y * 2 + h) / 2) : new Point(-1, -1);
+		return validate() ? new Point((p.x * 2 + w) / 2, (p.y * 2 + h) / 2) : new Point(-1, -1);
 	}
 
 	public Point getNextViewportPoint() {
@@ -534,7 +539,7 @@ public class WidgetChild implements Entity {
 		return (point.x >= min_x) && (point.x <= max_x) && (point.y >= min_y) && (point.y <= max_y);
 	}
 
-	public boolean verify() {
-		return parentWidget.isValid() && getBoundsArrayIndex() != -1;
+	public boolean validate() {
+		return parentWidget.validate() && getBoundsArrayIndex() != -1;
 	}
 }
