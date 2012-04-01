@@ -80,6 +80,8 @@ public class Bot extends GameDefinition implements Runnable {
 	private final PaintEvent paintEvent;
 	private final TextPaintEvent textPaintEvent;
 
+	public volatile boolean refreshing;
+
 	public Bot() {
 		final Dimension d = new Dimension(BotChrome.PANEL_WIDTH, BotChrome.PANEL_HEIGHT);
 		image = new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_RGB);
@@ -96,6 +98,7 @@ public class Bot extends GameDefinition implements Runnable {
 		randomHandler = new RandomHandler(this);
 		antiRandomFuture = null;
 		account = null;
+		refreshing = false;
 	}
 
 	/**
@@ -111,9 +114,9 @@ public class Bot extends GameDefinition implements Runnable {
 	/**
 	 * {@inheritDoc}
 	 */
-	public void startEnvironment() {
+	public Future<?> startEnvironment() {
 		if (killed) {
-			return;
+			return null;
 		}
 		log.info("Starting bot");
 		context.put(threadGroup, this);
@@ -125,7 +128,47 @@ public class Bot extends GameDefinition implements Runnable {
 			}
 		};
 		log.fine("Submitting loader");
-		container.submit(new Loader(this));
+		return container.submit(new Loader(this));
+	}
+
+	public void refreshEnvironment() {
+		log.info("Refreshing environment");
+		if (activeScript != null && activeScript.isRunning()) {
+			activeScript.pause(true);
+			while (activeScript.getContainer().isActive()) {
+				Time.sleep(150);
+			}
+		}
+
+		if (stub != null) {
+			log.fine("Terminating stub activities");
+			stub.setActive(false);
+		}
+		if (appletContainer != null) {
+			log.fine("Shutting down applet");
+			appletContainer.stop();
+			appletContainer.destroy();
+			appletContainer = null;
+			stub = null;
+		}
+
+		if (initializeEnvironment()) {
+			final Future<?> future = startEnvironment();
+			if (future == null) {
+				return;
+			}
+			try {
+				future.get();
+			} catch (final InterruptedException ignored) {
+			} catch (final ExecutionException ignored) {
+			}
+
+			if (activeScript != null && activeScript.isRunning()) {
+				activeScript.resume();
+			}
+		}
+
+		refreshing = false;
 	}
 
 	/**
@@ -318,22 +361,6 @@ public class Bot extends GameDefinition implements Runnable {
 		}
 	}
 
-	public void resumeScript() {
-		if (activeScript == null || !activeScript.isRunning()) {
-			throw new RuntimeException("script not running (1)");
-		}
-
-		activeScript.resume();
-	}
-
-	public void pauseScript() {
-		if (activeScript == null || !activeScript.isRunning()) {
-			throw new RuntimeException("script not running (2)");
-		}
-
-		activeScript.pause();
-	}
-
 	public void stopScript() {
 		if (activeScript == null) {
 			throw new RuntimeException("script is non existent!");
@@ -341,6 +368,15 @@ public class Bot extends GameDefinition implements Runnable {
 
 		log.info("Stopping script");
 		activeScript.stop();
+	}
+
+	public void refresh() {
+		refreshing = true;
+		container.submit(new Task() {
+			public void run() {
+				refreshEnvironment();
+			}
+		});
 	}
 
 	public void updateToolkit(final Render render) {

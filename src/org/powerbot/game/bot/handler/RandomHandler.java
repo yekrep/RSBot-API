@@ -43,6 +43,10 @@ public class RandomHandler implements Task {
 	public void run() {
 		ActiveScript activeScript;
 		while ((activeScript = bot.getActiveScript()) != null && activeScript.isRunning()) {
+			if (bot.refreshing) {
+				Time.sleep(500);
+				continue;
+			}
 			Future<?> submittedRandom = null;
 			for (final AntiRandom antiRandom : antiRandoms) {
 				if (antiRandom.validate()) {

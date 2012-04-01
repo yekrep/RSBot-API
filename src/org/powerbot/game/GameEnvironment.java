@@ -1,5 +1,7 @@
 package org.powerbot.game;
 
+import java.util.concurrent.Future;
+
 import org.powerbot.asm.NodeManipulator;
 import org.powerbot.game.loader.AdaptException;
 
@@ -19,14 +21,20 @@ public interface GameEnvironment {
 
 	/**
 	 * @return The <code>NodeManipulator</code> for this environment.
-	 * @throws org.powerbot.game.loader.AdaptException Thrown when the node manipulation fails.
+	 * @throws org.powerbot.game.loader.AdaptException
+	 *          Thrown when the node manipulation fails.
 	 */
 	NodeManipulator getNodeManipulator() throws AdaptException;
 
 	/**
 	 * Starts the loaded game environment.
 	 */
-	public void startEnvironment();
+	public Future<?> startEnvironment();
+
+	/**
+	 * Refreshes the gave environment.
+	 */
+	public void refreshEnvironment();
 
 	/**
 	 * Kills this game and cleans up environment for re-initialization.

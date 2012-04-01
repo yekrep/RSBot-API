@@ -12,6 +12,7 @@ import org.powerbot.game.api.methods.input.Mouse;
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Time;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
+import org.powerbot.game.bot.Bot;
 
 /**
  * @author Timer
@@ -34,9 +35,9 @@ public class Login extends AntiRandom {
 	}
 
 	private enum LoginEvent {
-		TOKEN_FAILURE(WIDGET_LOGIN_ERROR, "token failure", -1, new Task() {
+		TOKEN_FAILURE(WIDGET_LOGIN_ERROR, "token failure", 0, new Task() {
 			public void run() {
-				//TODO restart game & script
+				Bot.resolve().refresh();
 			}
 		}),
 		INVALID_PASSWORD(WIDGET_LOGIN_ERROR, "Invalid username or password", -1);
