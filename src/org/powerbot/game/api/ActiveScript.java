@@ -1,8 +1,10 @@
 package org.powerbot.game.api;
 
 import java.util.EventListener;
+import java.util.concurrent.Future;
 import java.util.logging.Logger;
 
+import org.powerbot.concurrent.Processor;
 import org.powerbot.concurrent.Task;
 import org.powerbot.concurrent.TaskContainer;
 import org.powerbot.concurrent.TaskProcessor;
@@ -20,7 +22,7 @@ import static org.powerbot.concurrent.strategy.StrategyDaemon.State;
 /**
  * @author Timer
  */
-public abstract class ActiveScript implements EventListener {
+public abstract class ActiveScript implements EventListener, Processor {
 	public final Logger log = Logger.getLogger(getClass().getName());
 
 	private Policy stop_execution;
@@ -54,8 +56,8 @@ public abstract class ActiveScript implements EventListener {
 		executor.omit(strategy);
 	}
 
-	protected final void submit(final Task task) {
-		container.submit(task);
+	public final Future<?> submit(final Task task) {
+		return container.submit(task);
 	}
 
 	protected final void setStoppableExecution(final Policy policy) {
@@ -126,27 +128,27 @@ public abstract class ActiveScript implements EventListener {
 		container.stop();
 	}
 
-	protected State getState() {
+	protected final State getState() {
 		return executor.state;
 	}
 
-	public boolean isRunning() {
+	public final boolean isRunning() {
 		return getState() != State.DESTROYED;
 	}
 
-	public boolean isPaused() {
+	public final boolean isPaused() {
 		return isLocked() && !silent;
 	}
 
-	public boolean isLocked() {
+	public final boolean isLocked() {
 		return getState() == State.LOCKED;
 	}
 
-	public boolean isSilentlyLocked() {
+	public final boolean isSilentlyLocked() {
 		return silent;
 	}
 
-	public TaskContainer getContainer() {
+	public final TaskContainer getContainer() {
 		return container;
 	}
 }
