@@ -13,10 +13,13 @@ trimExclude org.powerbot.Boot^ public static main(java.lang.String[]) and
             org.powerbot.concurrent.Processor and
             org.powerbot.concurrent.Processor * and
             org.powerbot.concurrent.Processor *(*) and
-            org.powerbot.concurrent.action. and
-            org.powerbot.concurrent.action.Action and
-            org.powerbot.concurrent.action.Action * and
-            org.powerbot.concurrent.action.Action *(*) and
+            org.powerbot.concurrent.strategy. and
+            org.powerbot.concurrent.strategy.Strategy and
+            org.powerbot.concurrent.strategy.Strategy * and
+            org.powerbot.concurrent.strategy.Strategy *(*) and
+            org.powerbot.concurrent.strategy.Condition and
+            org.powerbot.concurrent.strategy.Condition * and
+            org.powerbot.concurrent.strategy.Condition *(*) and
             org.powerbot.game.bot.event.impl.^* and
             org.powerbot.game.bot.event.impl.* *(*) and
             org.powerbot.game.bot.event.impl.^*^ * and
@@ -59,10 +62,13 @@ exclude     org.powerbot.Boot^ public static main(java.lang.String[]) and
 			org.powerbot.concurrent.Processor and
             org.powerbot.concurrent.Processor * and
             org.powerbot.concurrent.Processor *(*) and
-            org.powerbot.concurrent.action. and
-            org.powerbot.concurrent.action.Action and
-            org.powerbot.concurrent.action.Action * and
-            org.powerbot.concurrent.action.Action *(*) and
+            org.powerbot.concurrent.strategy. and
+            org.powerbot.concurrent.strategy.Strategy and
+            org.powerbot.concurrent.strategy.Strategy * and
+            org.powerbot.concurrent.strategy.Strategy *(*) and
+            org.powerbot.concurrent.strategy.Condition and
+            org.powerbot.concurrent.strategy.Condition * and
+            org.powerbot.concurrent.strategy.Condition *(*) and
             org.powerbot.game.bot.event.impl.^* and
             org.powerbot.game.bot.event.impl.* *(*) and
             org.powerbot.game.bot.event.impl.^*^ * and

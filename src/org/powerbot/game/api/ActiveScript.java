@@ -1,6 +1,8 @@
 package org.powerbot.game.api;
 
+import java.util.ArrayList;
 import java.util.EventListener;
+import java.util.List;
 import java.util.concurrent.Future;
 import java.util.logging.Logger;
 
@@ -29,6 +31,7 @@ public abstract class ActiveScript implements EventListener, Processor {
 	private EventManager eventManager;
 	private TaskContainer container;
 	private StrategyDaemon executor;
+	private final List<EventListener> listeners;
 
 	private Bot bot;
 	private boolean silent;
@@ -38,6 +41,7 @@ public abstract class ActiveScript implements EventListener, Processor {
 		eventManager = null;
 		container = null;
 		executor = null;
+		listeners = new ArrayList<EventListener>();
 		silent = false;
 	}
 
@@ -50,10 +54,20 @@ public abstract class ActiveScript implements EventListener, Processor {
 
 	protected final void provide(final Strategy strategy) {
 		executor.append(strategy);
+
+		if (!listeners.contains(strategy)) {
+			listeners.add(strategy);
+			if (!isLocked()) {
+				eventManager.accept(strategy);
+			}
+		}
 	}
 
 	protected final void revoke(final Strategy strategy) {
 		executor.omit(strategy);
+
+		listeners.remove(strategy);
+		eventManager.remove(strategy);
 	}
 
 	public final Future<?> submit(final Task task) {
@@ -85,6 +99,9 @@ public abstract class ActiveScript implements EventListener, Processor {
 	public final void resume() {
 		silent = false;
 		eventManager.accept(ActiveScript.this);
+		for (final EventListener eventListener : listeners) {
+			eventManager.accept(eventListener);
+		}
 		executor.listen();
 	}
 
@@ -96,6 +113,9 @@ public abstract class ActiveScript implements EventListener, Processor {
 		executor.lock();
 		if (removeListener) {
 			eventManager.remove(ActiveScript.this);
+			for (final EventListener eventListener : listeners) {
+				eventManager.remove(eventListener);
+			}
 		}
 	}
 

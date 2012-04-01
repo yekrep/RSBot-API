@@ -1,5 +1,6 @@
 package org.powerbot.concurrent.strategy;
 
+import java.util.EventListener;
 import java.util.concurrent.Future;
 
 import org.powerbot.concurrent.Task;
@@ -9,7 +10,7 @@ import org.powerbot.concurrent.Task;
  *
  * @author Timer
  */
-public class Strategy implements Condition {
+public class Strategy implements Condition, EventListener {
 	boolean lock;
 	boolean reset;
 	boolean sync;
