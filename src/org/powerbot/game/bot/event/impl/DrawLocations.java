@@ -9,7 +9,7 @@ import java.util.HashMap;
 import org.powerbot.game.api.methods.Calculations;
 import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.api.methods.interactive.Players;
-import org.powerbot.game.api.methods.location.Locations;
+import org.powerbot.game.api.methods.node.Locations;
 import org.powerbot.game.api.wrappers.Tile;
 import org.powerbot.game.api.wrappers.interactive.Player;
 import org.powerbot.game.api.wrappers.location.Location;

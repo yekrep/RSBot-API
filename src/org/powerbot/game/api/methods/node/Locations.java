@@ -1,4 +1,4 @@
-package org.powerbot.game.api.methods.location;
+package org.powerbot.game.api.methods.node;
 
 import java.util.LinkedHashSet;
 import java.util.Set;

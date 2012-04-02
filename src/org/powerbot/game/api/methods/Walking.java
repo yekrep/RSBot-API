@@ -1,11 +1,7 @@
-package org.powerbot.game.api.methods.location;
+package org.powerbot.game.api.methods;
 
 import java.awt.Point;
 
-import org.powerbot.game.api.methods.Calculations;
-import org.powerbot.game.api.methods.Game;
-import org.powerbot.game.api.methods.Settings;
-import org.powerbot.game.api.methods.Widgets;
 import org.powerbot.game.api.methods.input.Mouse;
 import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.util.Filter;
@@ -30,9 +26,14 @@ public class Walking {
 
 	public static Tile getDestination() {
 		final Bot bot = Bot.resolve();
+		final int lx = (bot.getClient().getDestX() * bot.multipliers.GLOBAL_DESTX) / 4;
+		final int ly = (bot.getClient().getDestY() * bot.multipliers.GLOBAL_DESTY) / 4;
+		if (lx == -1 || ly == -1) {
+			return new Tile(-1, -1, -1);
+		}
 		return new Tile(
-				Game.getBaseX() + bot.getClient().getDestX() * bot.multipliers.GLOBAL_DESTX,
-				Game.getBaseY() + bot.getClient().getDestY() * bot.multipliers.GLOBAL_DESTY,
+				Game.getBaseX() + lx,
+				Game.getBaseY() + ly,
 				Game.getPlane()
 		);
 	}

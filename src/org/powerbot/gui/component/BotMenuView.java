@@ -24,6 +24,7 @@ import org.powerbot.game.bot.event.impl.DrawNpcs;
 import org.powerbot.game.bot.event.impl.DrawPlayers;
 import org.powerbot.game.bot.event.impl.MessageLogger;
 import org.powerbot.game.bot.event.impl.TClientState;
+import org.powerbot.game.bot.event.impl.TDestination;
 import org.powerbot.game.bot.event.impl.TMapBase;
 import org.powerbot.game.bot.event.impl.TPlane;
 import org.powerbot.game.bot.event.impl.TPosition;
@@ -50,6 +51,7 @@ public final class BotMenuView extends JMenu implements ActionListener {
 	private static final String FLOOR = "Floor";
 	private static final String MAPBASE = "Map Base";
 	private static final String POSITION = "Position";
+	private static final String DESTINATION = "Destination";
 	private static final String MESSAGES = "Messages";
 	private static final String SEPERATOR = "-";
 
@@ -79,6 +81,7 @@ public final class BotMenuView extends JMenu implements ActionListener {
 		map.put(FLOOR, TPlane.class);
 		map.put(MAPBASE, TMapBase.class);
 		map.put(POSITION, TPosition.class);
+		map.put(DESTINATION, TDestination.class);
 		map.put(MOUSE, DrawMouse.class);
 		map.put(INVENTORY, DrawInventory.class);
 		map.put(MESSAGES, MessageLogger.class);
@@ -96,6 +99,7 @@ public final class BotMenuView extends JMenu implements ActionListener {
 		items.add(FLOOR);
 		items.add(MAPBASE);
 		items.add(POSITION);
+		items.add(DESTINATION);
 		items.add(SEPERATOR);
 		items.add(MESSAGES);
 
