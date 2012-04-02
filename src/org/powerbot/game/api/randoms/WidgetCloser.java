@@ -9,18 +9,34 @@ import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.api.methods.Widgets;
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Time;
+import org.powerbot.game.api.util.Timer;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
 
 @Manifest(name = "WidgetCloser", description = "Closes widgets that interrupt scripts", version = 0.1, authors = {"Timer"})
 public class WidgetCloser extends AntiRandom {
 	private static final Map<Integer, Integer> children = new HashMap<Integer, Integer>();
+	private int failure = 0;
+	private Timer timer;
 
 	static {
-		children.put(1252, 6);//Squeal of Fortune
+		children.put(1252, 6);//Squeal of Fortune notification
+		children.put(1253, 76);//Squeal of Fortune window
 	}
 
 	public boolean validate() {
 		if (Game.isLoggedIn()) {
+			if (timer != null) {
+				if (timer.isRunning()) {
+					return false;
+				}
+				timer = null;
+				failure = 0;
+			}
+			if (failure >= 3) {
+				timer = new Timer(300000);
+				return false;
+			}
+
 			for (final Map.Entry<Integer, Integer> child : children.entrySet()) {
 				final WidgetChild widgetChild = Widgets.get(child.getKey(), child.getValue());
 				if (widgetChild.validate()) {
@@ -38,6 +54,9 @@ public class WidgetCloser extends AntiRandom {
 				if (widgetChild.validate()) {
 					widgetChild.click(true);
 					Time.sleep(Random.nextInt(1200, 2400));
+					if (widgetChild.validate()) {
+						failure++;
+					}
 				}
 			}
 		} catch (Throwable t) {
