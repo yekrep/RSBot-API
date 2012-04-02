@@ -130,8 +130,8 @@ public class MouseManipulator implements Task {
 				final Vector targetVector = new Vector();
 				targetVector.xUnits = pTarget.x - currentLocation.getX();
 				targetVector.yUnits = pTarget.y - currentLocation.getY();
-				if (targetVector.xUnits > -2 && targetVector.xUnits < 2 &&
-						targetVector.yUnits > -2 && targetVector.yUnits < -2) {
+				if (targetVector.xUnits > -3 && targetVector.xUnits < 3 &&
+						targetVector.yUnits > -3 && targetVector.yUnits < -3) {
 					velocity.xUnits = 0;
 					velocity.yUnits = 0;
 				}
@@ -155,12 +155,6 @@ public class MouseManipulator implements Task {
 					force.yUnits = Math.sin(angle) * acceleration;
 					return force;
 				}
-				return null;
-			}
-		});
-
-		forceModifiers.add(new ForceModifier() {
-			public Vector apply(final double deltaTime, final Point pTarget) {
 				return null;
 			}
 		});
