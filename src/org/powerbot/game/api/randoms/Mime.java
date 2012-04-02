@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.powerbot.game.api.AntiRandom;
 import org.powerbot.game.api.Manifest;
+import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.api.methods.Widgets;
 import org.powerbot.game.api.methods.interactive.Npcs;
 import org.powerbot.game.api.methods.interactive.Players;
@@ -49,7 +50,7 @@ public class Mime extends AntiRandom {
 	}
 
 	public boolean validate() {
-		return Npcs.getNearest(new Filter<Npc>() {
+		return Game.isLoggedIn() && Npcs.getNearest(new Filter<Npc>() {
 			public boolean accept(final Npc npc) {
 				return npc.getId() == NPC_MIME_ID;
 			}

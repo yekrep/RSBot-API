@@ -13,7 +13,7 @@ import org.powerbot.util.io.SecureStore;
 /**
  * @author Timer
  */
-public class UIDHandler {
+public class UIDManager {
 	private static final String FILE_NAME = "gameuids.txt";
 	private static String newline = System.getProperty("line.separator");
 	private static String separator = "#";
@@ -21,7 +21,7 @@ public class UIDHandler {
 	private HashMap<String, byte[]> uids = new HashMap<String, byte[]>();
 	private String lastUsed = "";
 
-	public UIDHandler() {
+	public UIDManager() {
 		final InputStream inputStream;
 		try {
 			inputStream = SecureStore.getInstance().read(FILE_NAME);

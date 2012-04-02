@@ -158,6 +158,9 @@ public class Keyboard {
 		}
 	}
 
+	/**
+	 * @return <tt>true</tt> if the keyboard is ready to accept events; otherwise <tt>false</tt>.
+	 */
 	public static boolean isReady() {
 		try {
 			return getKeyboard() != null;

@@ -100,35 +100,38 @@ public class StrategyDaemon implements StrategyContainer, Task {
 					}
 				}
 			} else if (state == State.LISTENING) {
-				for (final Strategy strategy : strategies) {
-					if (state != State.LISTENING) {
-						break;
-					}
-					if (strategy.tasks == null || !strategy.validate() ||
-							(strategy.sync && !strategy.isIdle())) {
-						continue;
-					}
-					for (final Task task : strategy.tasks) {
-						final Future<?> future = container.submit(task);
-						if (future != null) {
-							futures.add(future);
+				try {
+					for (final Strategy strategy : strategies) {
+						if (state != State.LISTENING) {
+							break;
+						}
+						if (strategy.tasks == null || !strategy.validate() ||
+								(strategy.sync && !strategy.isIdle())) {
+							continue;
+						}
+						for (final Task task : strategy.tasks) {
+							final Future<?> future = container.submit(task);
+							if (future != null) {
+								futures.add(future);
+							}
+						}
+						cached_state = state;
+						strategy.executingFutures = futures.toArray(new Future<?>[futures.size()]);
+						if (strategy.lock) {
+							container.submit(createFutureDisposer(futures, this));
+							awaitNotify(futures);
+							if (state == State.PROCESSING) {
+								state = cached_state;
+							}
+						}
+						futures.clear();
+						if (strategy.reset) {
+							break;
 						}
 					}
-					cached_state = state;
-					strategy.executingFutures = futures.toArray(new Future<?>[futures.size()]);
-					if (strategy.lock) {
-						container.submit(createFutureDisposer(futures, this));
-						awaitNotify(futures);
-						if (state == State.PROCESSING) {
-							state = cached_state;
-						}
-					}
-					futures.clear();
-					if (strategy.reset) {
-						break;
-					}
+					Time.sleep(iterationSleep);
+				} catch (final Throwable ignored) {
 				}
-				Time.sleep(iterationSleep);
 			} else {
 				throw new RuntimeException("bad daemon-dispatch state");
 			}

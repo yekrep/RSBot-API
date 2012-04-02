@@ -56,10 +56,16 @@ public class Locations {
 		return locations.toArray(new Location[locations.size()]);
 	}
 
-	public static Location[] getLoaded(final int id) {
+	public static Location[] getLoaded(final int... ids) {
 		return getLoaded(new Filter<Location>() {
 			public boolean accept(final Location location) {
-				return location.getId() == id;
+				final int id = location.getId();
+				for (final int i : ids) {
+					if (id == i) {
+						return true;
+					}
+				}
+				return false;
 			}
 		});
 	}
@@ -82,10 +88,16 @@ public class Locations {
 		return objects.toArray(new Location[objects.size()]);
 	}
 
-	public static Location getNearest(final int id) {
+	public static Location getNearest(final int... ids) {
 		return getNearest(new Filter<Location>() {
 			public boolean accept(final Location location) {
-				return location.getId() == id;
+				final int id = location.getId();
+				for (final int i : ids) {
+					if (id == i) {
+						return true;
+					}
+				}
+				return false;
 			}
 		});
 	}
