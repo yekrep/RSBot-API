@@ -33,7 +33,7 @@ public class WidgetCloser extends AntiRandom {
 				failure = 0;
 			}
 			if (failure >= 3) {
-				timer = new Timer(300000);
+				timer = new Timer(60000);
 				return false;
 			}
 
