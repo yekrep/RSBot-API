@@ -107,13 +107,25 @@ public class Camera {
 	public static void setAngle(final int degrees) {
 		if (getAngleTo(degrees) > 5) {
 			Keyboard.pressKey((char) KeyEvent.VK_LEFT, 0, 0);
-			while (getAngleTo(degrees) > 5 && Game.getClientState() == 11) {
+			final Timer timer = new Timer(500);
+			int ang, prev = -1;
+			while ((ang = getAngleTo(degrees)) > 5 && Game.getClientState() == 11 && timer.isRunning()) {
+				if (ang != prev) {
+					timer.reset();
+				}
+				prev = ang;
 				Time.sleep(10);
 			}
 			Keyboard.releaseKey((char) KeyEvent.VK_LEFT, 0, 0);
 		} else if (getAngleTo(degrees) < -5) {
 			Keyboard.pressKey((char) KeyEvent.VK_RIGHT, 0, 0);
-			while (getAngleTo(degrees) < -5 && Game.getClientState() == 11) {
+			final Timer timer = new Timer(500);
+			int ang, prev = -1;
+			while ((ang = getAngleTo(degrees)) < -5 && Game.getClientState() == 11 && timer.isRunning()) {
+				if (ang != prev) {
+					timer.reset();
+				}
+				prev = ang;
 				Time.sleep(10);
 			}
 			Keyboard.releaseKey((char) KeyEvent.VK_RIGHT, 0, 0);

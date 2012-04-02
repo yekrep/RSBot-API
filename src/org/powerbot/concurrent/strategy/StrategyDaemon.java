@@ -9,6 +9,7 @@ import java.util.concurrent.Future;
 import org.powerbot.concurrent.Task;
 import org.powerbot.concurrent.TaskContainer;
 import org.powerbot.game.api.util.Time;
+import org.powerbot.util.Configuration;
 
 /**
  * A strategy daemon capable of dispatching strategies when activated within the a concurrent environment.
@@ -130,7 +131,10 @@ public class StrategyDaemon implements StrategyContainer, Task {
 						}
 					}
 					Time.sleep(iterationSleep);
-				} catch (final Throwable ignored) {
+				} catch (final Throwable t) {
+					if (Configuration.DEVMODE) {
+						t.printStackTrace();
+					}
 				}
 			} else {
 				throw new RuntimeException("bad daemon-dispatch state");
