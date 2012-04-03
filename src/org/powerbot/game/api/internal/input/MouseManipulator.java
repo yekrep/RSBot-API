@@ -71,9 +71,7 @@ public class MouseManipulator implements Task {
 			if (deltaPosition.xUnits != 0 && deltaPosition.yUnits != 0) {
 				int x = (int) currentPoint.getX() + (int) deltaPosition.xUnits;
 				int y = (int) currentPoint.getY() + (int) deltaPosition.yUnits;
-				if (Mouse.isOnCanvas(x, y)) {
-					Mouse.hop(x, y);
-				}
+				Mouse.hop(x, y);
 			}
 			try {
 				Thread.sleep((long) (deltaTime * 1000));
