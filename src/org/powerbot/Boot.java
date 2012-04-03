@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.channels.FileLock;
+import java.util.Map;
 import java.util.logging.Handler;
 import java.util.logging.Logger;
 
@@ -15,6 +16,7 @@ import org.powerbot.util.Configuration;
 import org.powerbot.util.Configuration.OperatingSystem;
 import org.powerbot.util.RestrictedSecurityManager;
 import org.powerbot.util.StringUtil;
+import org.powerbot.util.io.IniParser;
 import org.powerbot.util.io.SystemConsoleHandler;
 
 public class Boot implements Runnable {
@@ -45,10 +47,37 @@ public class Boot implements Runnable {
 		} catch (final Exception ignored) {
 		}
 
-		final int req = 768;
+		int req = -1;
+
+		final File settingsFile = new File(Configuration.BOOTSETTINGS);
+		if (settingsFile.exists()) {
+			Map<String, Map<String, String>> settings = null;
+			try {
+				settings = IniParser.deserialise(settingsFile);
+			} catch (final IOException ignored) {
+			}
+			if (settings != null && settings.containsKey(IniParser.EMPTYSECTION)) {
+				final Map<String, String> conf = settings.get(IniParser.EMPTYSECTION);
+				if (conf.containsKey("memory")) {
+					try {
+						req = Math.max(256, Integer.parseInt(conf.get("memory")));
+					} catch (final NumberFormatException ignored) {
+						req = -1;
+					}
+				}
+				if (conf.containsKey("developer")) {
+					Configuration.DEVMODE = IniParser.parseBool(conf.get("developer"));
+				}
+			}
+		}
+
+		if (req == -1 && !Configuration.DEVMODE) {
+			req = 768;
+		}
+
 		long mem = Runtime.getRuntime().maxMemory() / 1024 / 1024;
 
-		if (mem < req && !Configuration.DEVMODE && !restarted) {
+		if (mem < req && !restarted) {
 			log.severe(String.format("Default heap size of %sm too small, restarting with %sm", mem, req));
 			String cmd = Configuration.OS == OperatingSystem.WINDOWS ? "javaw" : "java";
 			String location = Boot.class.getProtectionDomain().getCodeSource().getLocation().getPath();
