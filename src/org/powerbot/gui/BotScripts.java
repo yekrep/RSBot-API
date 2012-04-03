@@ -277,32 +277,30 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 			}
 			for (final File path : paths) {
 				if (path.isDirectory()) {
-					loadLocalScripts(list, path);
+					loadLocalScripts(list, path, null);
 				}
 			}
 		}
 		return list;
 	}
 
-	public void loadLocalScripts(final List<ScriptDefinition> list, final File dir) {
-		if (!dir.isDirectory()) {
-			return;
-		}
-		for (final File file : dir.listFiles()) {
+	public void loadLocalScripts(final List<ScriptDefinition> list, final File parent, final File dir) {
+		for (final File file : (dir == null ? parent : dir).listFiles()) {
 			if (file.isDirectory()) {
-				loadLocalScripts(list, file);
+				loadLocalScripts(list, parent, file);
 			} else if (file.isFile()) {
 				final String name = file.getName();
 				try {
 					if (name.endsWith(".class") && name.indexOf('$') == -1) {
-						// TODO: support classes with package names
-						final URL src = file.getParentFile().toURI().toURL();
+						final URL src = parent.getCanonicalFile().toURI().toURL();
 						final ClassLoader cl = new URLClassLoader(new URL[]{src});
-						String className = name.substring(name.lastIndexOf(File.pathSeparator) + 1);
+						String className = file.getCanonicalPath().substring(parent.getCanonicalPath().length() + 1);
 						className = className.substring(0, className.lastIndexOf('.'));
-						final Class<? extends ActiveScript> clazz = cl.loadClass(className).asSubclass(ActiveScript.class);
-						if (clazz.isAnnotationPresent(Manifest.class)) {
-							final Manifest m = clazz.getAnnotation(Manifest.class);
+						className = className.replace(File.separatorChar, '.');
+						final Class<?> clazz = cl.loadClass(className);
+						final Class<? extends ActiveScript> script = clazz.asSubclass(ActiveScript.class);
+						if (script.isAnnotationPresent(Manifest.class)) {
+							final Manifest m = script.getAnnotation(Manifest.class);
 							final ScriptDefinition def = new ScriptDefinition(m);
 							def.source = src;
 							def.className = className;
