@@ -27,7 +27,6 @@ import static org.powerbot.concurrent.strategy.StrategyDaemon.State;
 public abstract class ActiveScript implements EventListener, Processor {
 	public final Logger log = Logger.getLogger(getClass().getName());
 
-	private Condition stop_execution;
 	private EventManager eventManager;
 	private TaskContainer container;
 	private StrategyDaemon executor;
@@ -37,7 +36,6 @@ public abstract class ActiveScript implements EventListener, Processor {
 	private boolean silent;
 
 	public ActiveScript() {
-		stop_execution = null;
 		eventManager = null;
 		container = null;
 		executor = null;
@@ -75,7 +73,6 @@ public abstract class ActiveScript implements EventListener, Processor {
 	}
 
 	protected final void setStoppableExecution(final Condition policy) {
-		this.stop_execution = policy;
 	}
 
 	protected final void setIterationSleep(final int milliseconds) {

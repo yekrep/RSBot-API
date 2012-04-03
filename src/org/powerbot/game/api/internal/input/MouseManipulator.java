@@ -208,13 +208,6 @@ public class MouseManipulator implements Task {
 			yUnits += vector.yUnits;
 		}
 
-		public Vector sum(final Vector vector) {
-			final Vector out = new Vector();
-			out.xUnits = xUnits + vector.xUnits;
-			out.yUnits = xUnits + vector.yUnits;
-			return out;
-		}
-
 		public Vector multiply(final double factor) {
 			final Vector out = new Vector();
 			out.xUnits = xUnits * factor;
