@@ -217,6 +217,7 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 	}
 
 	public void refresh() {
+		refresh.setEnabled(false);
 		table.removeAll();
 		final JLabel status = new JLabel("Loading...");
 		status.setFont(status.getFont().deriveFont(status.getFont().getSize2D() * 1.75f));
@@ -248,6 +249,7 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 						}
 						table.validate();
 						table.repaint();
+						refresh.setEnabled(true);
 					}
 				});
 			}
