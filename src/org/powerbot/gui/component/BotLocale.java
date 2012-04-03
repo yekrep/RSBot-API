@@ -35,7 +35,7 @@ public final class BotLocale {
 	public static String SCRIPTS = "Scripts";
 
 	public static String NEEDVIP = "VIP Access";
-	public static String NEEDVIPMULTITAB = "Only VIPs can open multiple tabs.";
+	public static String NEEDVIPMULTITAB = "Only VIPs can open more tabs.";
 
 	public static String SEARCH = "Search";
 	public static String REFRESH = "Refresh";
