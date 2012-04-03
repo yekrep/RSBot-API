@@ -84,7 +84,7 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 	private final List<String> favourites;
 	private final JPanel table;
 	private final JToggleButton star, paid;
-	private final JButton username;
+	private final JButton username, refresh;
 	private final JTextField search;
 
 	public BotScripts(final BotToolBar parent) {
@@ -118,17 +118,16 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 		final JPanel panelRight = new JPanel(flow);
 		add(toolbar, BorderLayout.NORTH);
 
-		if (Configuration.DEVMODE) {
-			final JButton refresh = new JButton(new ImageIcon(Resources.getImage(Resources.Paths.ARROW_REFRESH)));
-			refresh.setToolTipText(BotLocale.REFRESH);
-			refresh.addActionListener(new ActionListener() {
-				public void actionPerformed(final ActionEvent e) {
-					refresh();
-				}
-			});
-			refresh.setFocusable(false);
-			toolbar.add(refresh);
-		}
+		refresh = new JButton(new ImageIcon(Resources.getImage(Resources.Paths.ARROW_REFRESH)));
+		refresh.setVisible(Configuration.DEVMODE);
+		refresh.setToolTipText(BotLocale.REFRESH);
+		refresh.addActionListener(new ActionListener() {
+			public void actionPerformed(final ActionEvent e) {
+				refresh();
+			}
+		});
+		refresh.setFocusable(false);
+		toolbar.add(refresh);
 		star = new JToggleButton(new ImageIcon(Resources.getImage(Resources.Paths.STAR)));
 		star.setToolTipText(BotLocale.FAVSONLY);
 		star.addActionListener(this);
