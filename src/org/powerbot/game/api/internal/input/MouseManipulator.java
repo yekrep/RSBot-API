@@ -88,6 +88,7 @@ public class MouseManipulator implements Task {
 						y = Random.nextInt(0, canvas.getHeight());
 						break;
 					case 4:
+					default:
 						x = Random.nextInt(0, canvas.getWidth());
 						y = 1;
 						break;

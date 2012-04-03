@@ -143,8 +143,8 @@ public class Calculations {
 		y -= Game.getBaseY();
 
 		final RegionTile localTile = local.getRegionPosition();
-		final int calculatedX = (int) (x * 4 + 2) - localTile.getX() / 0x80;
-		final int calculatedY = (int) (y * 4 + 2) - localTile.getY() / 0x80;
+		final int calculatedX = (int) (x * 4 + 2) - (localTile.getX() << 9) / 0x80;
+		final int calculatedY = (int) (y * 4 + 2) - (localTile.getY() << 9) / 0x80;
 
 		final WidgetChild mm2 = WidgetComposite.getMap();
 		if (mm2 == null) {
