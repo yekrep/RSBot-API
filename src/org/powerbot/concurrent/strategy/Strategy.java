@@ -22,6 +22,9 @@ public class Strategy implements Condition, EventListener {
 
 	public Strategy() {
 		this((Task) null);
+		if (this instanceof Task) {
+			setTask((Task) this);
+		}
 	}
 
 	/**

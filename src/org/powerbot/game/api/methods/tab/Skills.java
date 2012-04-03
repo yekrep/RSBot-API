@@ -73,7 +73,7 @@ public class Skills {
 		return 1;
 	}
 
-	public static int getCurrentLevel(final int index) {
+	public static int getLevel(final int index) {
 		return getLevels()[index];
 	}
 
@@ -81,7 +81,7 @@ public class Skills {
 		return Skills.getLevelAt(getExperiences()[index]);
 	}
 
-	public static int getCurrentExp(final int index) {
+	public static int getExperience(final int index) {
 		return getExperiences()[index];
 	}
 
@@ -107,6 +107,6 @@ public class Skills {
 		} else if (lvl == 99 || endLvl > 99) {
 			return 0;
 		}
-		return Skills.XP_TABLE[endLvl] - getCurrentExp(index);
+		return Skills.XP_TABLE[endLvl] - getExperience(index);
 	}
 }

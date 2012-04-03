@@ -6,6 +6,7 @@ import org.powerbot.game.api.internal.Multipliers;
 import org.powerbot.game.bot.Bot;
 import org.powerbot.game.client.RSInteractableInts;
 import org.powerbot.game.client.RSPlayerComposite;
+import org.powerbot.game.client.RSPlayerCompositeEquipment;
 import org.powerbot.game.client.RSPlayerCompositeInts;
 import org.powerbot.game.client.RSPlayerCompositeNPCID;
 import org.powerbot.game.client.RSPlayerLevel;
@@ -51,7 +52,19 @@ public class Player extends Character {
 	}
 
 	public int[] getAppearance() {
-		return new int[0];//TODO
+		final Object composite = ((RSPlayerComposite) get()).getRSPlayerComposite();
+		if (composite != null) {
+			final int[] appearance = (int[]) ((RSPlayerCompositeEquipment) composite).getRSPlayerCompositeEquipment();
+			for (int i = 0; i < appearance.length; i++) {
+				if ((appearance[i] & 0x40000000) != 0) {
+					appearance[i] &= 0x3fffffff;
+				} else {
+					appearance[i] = -1;
+				}
+			}
+			return appearance;
+		}
+		return null;
 	}
 
 	public Object get() {

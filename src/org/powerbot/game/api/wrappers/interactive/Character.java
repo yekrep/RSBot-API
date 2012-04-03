@@ -28,6 +28,7 @@ import org.powerbot.game.client.RSCharacterHeight;
 import org.powerbot.game.client.RSCharacterInteracting;
 import org.powerbot.game.client.RSCharacterIsMoving;
 import org.powerbot.game.client.RSCharacterLoopCycleStatus;
+import org.powerbot.game.client.RSCharacterMessageData;
 import org.powerbot.game.client.RSCharacterOrientation;
 import org.powerbot.game.client.RSCharacterPassiveAnimation;
 import org.powerbot.game.client.RSInteractableBytes;
@@ -36,6 +37,7 @@ import org.powerbot.game.client.RSInteractableLocation;
 import org.powerbot.game.client.RSInteractableManager;
 import org.powerbot.game.client.RSInteractablePlane;
 import org.powerbot.game.client.RSInteractableRSInteractableManager;
+import org.powerbot.game.client.RSMessageDataMessage;
 import org.powerbot.game.client.RSNPCHolder;
 import org.powerbot.game.client.RSNPCNode;
 import org.powerbot.game.client.RSNPCNodeHolder;
@@ -120,7 +122,11 @@ public abstract class Character implements Entity, Mobile {
 	}
 
 	public String getMessage() {
-		return null;//TODO
+		final Object message_data = ((RSCharacterMessageData) get()).getRSCharacterMessageData();
+		if (message_data != null) {
+			return (String) ((RSMessageDataMessage) message_data).getRSMessageDataMessage();
+		}
+		return null;
 	}
 
 	public int getHpPercent() {
