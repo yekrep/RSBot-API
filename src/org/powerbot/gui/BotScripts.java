@@ -267,8 +267,18 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 			}
 		}
 		if (Configuration.DEVMODE) {
-			for (final String path : new String[]{"bin", "out"}) {
-				loadLocalScripts(list, new File(path));
+			final List<File> paths = new ArrayList<File>(2);
+			paths.add(new File("bin"));
+			paths.add(new File("out"));
+			if (Configuration.SCRIPTPATH != null && !Configuration.SCRIPTPATH.isEmpty()) {
+				for (final String path : Configuration.SCRIPTPATH.split(String.format("\\Q%s\\E", File.pathSeparator))) {
+					paths.add(new File(path));
+				}
+			}
+			for (final File path : paths) {
+				if (path.isDirectory()) {
+					loadLocalScripts(list, path);
+				}
 			}
 		}
 		return list;

@@ -16,6 +16,7 @@ public class Configuration {
 	public static final int VERSION;
 	public static final String STORE, BOOTSETTINGS;
 	public static final OperatingSystem OS;
+	public static String SCRIPTPATH;
 
 	public enum OperatingSystem {
 		MAC, WINDOWS, LINUX, UNKNOWN

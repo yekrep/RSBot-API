@@ -63,6 +63,9 @@ public class Boot implements Runnable {
 				if (conf.containsKey("developer")) {
 					Configuration.DEVMODE = IniParser.parseBool(conf.get("developer"));
 				}
+				if (conf.containsKey("scripts")) {
+					Configuration.SCRIPTPATH = conf.get("scripts");
+				}
 			}
 		}
 
