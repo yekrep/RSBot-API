@@ -1,7 +1,7 @@
 package org.powerbot.game.api.wrappers.graphics.model;
 
 import org.powerbot.game.api.wrappers.graphics.CapturedModel;
-import org.powerbot.game.api.wrappers.location.Location;
+import org.powerbot.game.api.wrappers.node.Location;
 import org.powerbot.game.client.Model;
 import org.powerbot.game.client.RSInteractableManager;
 import org.powerbot.game.client.RSInteractableRSInteractableManager;

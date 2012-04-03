@@ -9,7 +9,7 @@ import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.wrappers.RegionTile;
 import org.powerbot.game.api.wrappers.Tile;
-import org.powerbot.game.api.wrappers.location.Location;
+import org.powerbot.game.api.wrappers.node.Location;
 import org.powerbot.game.bot.Bot;
 import org.powerbot.game.client.Client;
 import org.powerbot.game.client.RSAnimableNode;
