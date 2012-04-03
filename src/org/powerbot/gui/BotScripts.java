@@ -298,13 +298,15 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 						className = className.substring(0, className.lastIndexOf('.'));
 						className = className.replace(File.separatorChar, '.');
 						final Class<?> clazz = cl.loadClass(className);
-						final Class<? extends ActiveScript> script = clazz.asSubclass(ActiveScript.class);
-						if (script.isAnnotationPresent(Manifest.class)) {
-							final Manifest m = script.getAnnotation(Manifest.class);
-							final ScriptDefinition def = new ScriptDefinition(m);
-							def.source = src;
-							def.className = className;
-							list.add(def);
+						if (ActiveScript.class.isAssignableFrom(clazz)) {
+							final Class<? extends ActiveScript> script = clazz.asSubclass(ActiveScript.class);
+							if (script.isAnnotationPresent(Manifest.class)) {
+								final Manifest m = script.getAnnotation(Manifest.class);
+								final ScriptDefinition def = new ScriptDefinition(m);
+								def.source = src;
+								def.className = className;
+								list.add(def);
+							}
 						}
 					} else if (file.getName().endsWith(".jar")) {
 						// TODO: load local scripts from a jar
