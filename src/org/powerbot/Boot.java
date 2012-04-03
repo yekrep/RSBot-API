@@ -105,8 +105,6 @@ public class Boot implements Runnable {
 			return;
 		}
 
-		if (!new File(Configuration.STORE).isHidden()) {
-		}
 		System.setSecurityManager(new RestrictedSecurityManager());
 		System.setProperty("java.net.preferIPv4Stack", "true");
 		System.setProperty("sun.net.spi.nameservice.nameservers", RestrictedSecurityManager.DNS1 + "," + RestrictedSecurityManager.DNS2);
