@@ -1,4 +1,4 @@
-package org.powerbot.game.api.wrappers.location;
+package org.powerbot.game.api.wrappers.node;
 
 import java.awt.Graphics;
 import java.awt.Point;

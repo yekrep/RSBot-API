@@ -10,7 +10,7 @@ import org.powerbot.game.api.methods.node.Locations;
 import org.powerbot.game.api.methods.widget.Camera;
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Time;
-import org.powerbot.game.api.wrappers.location.Location;
+import org.powerbot.game.api.wrappers.node.Location;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
 
 /**

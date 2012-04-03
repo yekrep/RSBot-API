@@ -1,4 +1,4 @@
-package org.powerbot.game.api.wrappers.location;
+package org.powerbot.game.api.wrappers.node;
 
 import org.powerbot.game.bot.Bot;
 import org.powerbot.game.client.RSObjectDefActions;

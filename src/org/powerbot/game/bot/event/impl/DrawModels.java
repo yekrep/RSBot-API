@@ -11,7 +11,7 @@ import org.powerbot.game.api.methods.interactive.Npcs;
 import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.methods.node.Locations;
 import org.powerbot.game.api.wrappers.graphics.CapturedModel;
-import org.powerbot.game.api.wrappers.location.Location;
+import org.powerbot.game.api.wrappers.node.Location;
 import org.powerbot.game.bot.event.listener.PaintListener;
 
 public class DrawModels implements PaintListener {
