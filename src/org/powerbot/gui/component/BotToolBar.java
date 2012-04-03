@@ -132,6 +132,10 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 
 	public void addTab() {
 		final int n = Bot.bots.size();
+		if (n > 0 && !NetworkAccount.getInstance().isLoggedIn()) {
+			JOptionPane.showMessageDialog(parent, BotLocale.NEEDSIGNINMULTITAB, BotLocale.NEEDSIGNIN, JOptionPane.INFORMATION_MESSAGE);
+			return;
+		}
 		if (n > 1 && !NetworkAccount.getInstance().isVIP()) {
 			JOptionPane.showMessageDialog(parent, BotLocale.NEEDVIPMULTITAB, BotLocale.NEEDVIP, JOptionPane.INFORMATION_MESSAGE);
 			return;
