@@ -42,6 +42,7 @@ import org.powerbot.game.bot.event.listener.PaintListener;
  * @author Timer
  */
 public class BotWidgetExplorer extends JFrame implements PaintListener {
+	private static final long serialVersionUID = 1L;
 	private JTree tree;
 	private WidgetTreeModel treeModel;
 	private JPanel infoArea;

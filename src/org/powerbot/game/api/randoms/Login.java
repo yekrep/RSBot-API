@@ -58,25 +58,6 @@ public class Login extends AntiRandom {
 		}
 	}
 
-	private enum LobbyEvent {
-		;
-
-		private final String message;
-		private final int child, wait;
-		private final Task task;
-
-		LobbyEvent(final int child, final String message, final int wait, final Task task) {
-			this.child = child;
-			this.message = message;
-			this.wait = wait;
-			this.task = task;
-		}
-
-		LobbyEvent(final int child, final String message, final int wait) {
-			this(child, message, wait, null);
-		}
-	}
-
 	public void run() {
 		if (Game.getClientState() == Game.INDEX_LOBBY_SCREEN) {
 			Widgets.get(WIDGET_LOBBY, WIDGET_LOBBY_PLAY).click(true);

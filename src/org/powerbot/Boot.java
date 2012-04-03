@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.channels.FileLock;
+import java.util.Map;
 import java.util.logging.Handler;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.JOptionPane;
@@ -15,6 +17,8 @@ import org.powerbot.util.Configuration;
 import org.powerbot.util.Configuration.OperatingSystem;
 import org.powerbot.util.RestrictedSecurityManager;
 import org.powerbot.util.StringUtil;
+import org.powerbot.util.io.IniParser;
+import org.powerbot.util.io.Resources;
 import org.powerbot.util.io.SystemConsoleHandler;
 
 public class Boot implements Runnable {
@@ -26,6 +30,13 @@ public class Boot implements Runnable {
 			logger.removeHandler(handler);
 		}
 		logger.addHandler(new SystemConsoleHandler());
+
+		Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
+			@Override
+			public void uncaughtException(Thread t, Throwable e) {
+				log.logp(Level.SEVERE, t.getStackTrace()[1].getClassName(), t.getStackTrace()[1].getMethodName(), e.getMessage(), e);
+			}
+		});
 
 		boolean restarted = false;
 
@@ -40,15 +51,29 @@ public class Boot implements Runnable {
 			}
 		}
 
-		try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (final Exception ignored) {
+		int req = -1;
+
+		final Map<String, String> settings = Resources.getSettings();
+		if (settings != null) {
+			if (settings.containsKey("memory")) {
+				try {
+					req = Math.max(256, Integer.parseInt(settings.get("memory")));
+				} catch (final NumberFormatException ignored) {
+					req = -1;
+				}
+			}
+			if (settings.containsKey("developer")) {
+				Configuration.DEVMODE = IniParser.parseBool(settings.get("developer"));
+			}
 		}
 
-		final int req = 768;
+		if (req == -1 && !Configuration.DEVMODE) {
+			req = 768;
+		}
+
 		long mem = Runtime.getRuntime().maxMemory() / 1024 / 1024;
 
-		if (mem < req && !Configuration.DEVMODE && !restarted) {
+		if (mem < req && !restarted) {
 			log.severe(String.format("Default heap size of %sm too small, restarting with %sm", mem, req));
 			String cmd = Configuration.OS == OperatingSystem.WINDOWS ? "javaw" : "java";
 			String location = Boot.class.getProtectionDomain().getCodeSource().getLocation().getPath();
@@ -76,12 +101,15 @@ public class Boot implements Runnable {
 			return;
 		}
 
-		if (!new File(Configuration.STORE).isHidden()) {
-		}
 		System.setSecurityManager(new RestrictedSecurityManager());
 		System.setProperty("java.net.preferIPv4Stack", "true");
 		System.setProperty("sun.net.spi.nameservice.nameservers", RestrictedSecurityManager.DNS1 + "," + RestrictedSecurityManager.DNS2);
 		System.setProperty("sun.net.spi.nameservice.provider.1", "dns,sun");
+
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (final Exception ignored) {
+		}
 
 		BotChrome.getInstance();
 	}

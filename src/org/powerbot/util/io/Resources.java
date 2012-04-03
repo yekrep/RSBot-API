@@ -62,6 +62,19 @@ public class Resources {
 		return null;
 	}
 
+	public static Map<String, String> getSettings() {
+		final File file = new File(Configuration.BOOTSETTINGS);
+		if (!file.exists()) {
+			return null;
+		}
+		try {
+			final Map<String, Map<String, String>> settings = IniParser.deserialise(file);
+			return settings.containsKey(IniParser.EMPTYSECTION) ? settings.get(IniParser.EMPTYSECTION) : null;
+		} catch (final IOException ignored) {
+		}
+		return null;
+	}
+
 	public static Map<String, Map<String, String>> getServerData() throws IOException {
 		if (serverData == null) {
 			final File local = new File(Paths.SERVER);
