@@ -14,7 +14,7 @@ public class Configuration {
 	public static final boolean FROMJAR;
 	public static boolean DEVMODE = false;
 	public static final int VERSION;
-	public static final String STORE;
+	public static final String STORE, BOOTSETTINGS;
 	public static final OperatingSystem OS;
 
 	public enum OperatingSystem {
@@ -41,6 +41,7 @@ public class Configuration {
 		final String appdata = System.getenv("APPDATA"), home = System.getProperty("user.home");
 		final String root = appdata != null && new File(appdata).isDirectory() ? appdata : home == null ? "~" : home;
 		STORE = root + File.separator + NAME + ".db";
+		BOOTSETTINGS = root + File.separator + NAME + ".ini";
 
 		final String os = System.getProperty("os.name");
 		if (os.contains("Mac")) {
