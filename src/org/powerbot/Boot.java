@@ -18,6 +18,7 @@ import org.powerbot.util.Configuration.OperatingSystem;
 import org.powerbot.util.RestrictedSecurityManager;
 import org.powerbot.util.StringUtil;
 import org.powerbot.util.io.IniParser;
+import org.powerbot.util.io.Resources;
 import org.powerbot.util.io.SystemConsoleHandler;
 
 public class Boot implements Runnable {
@@ -52,28 +53,20 @@ public class Boot implements Runnable {
 
 		int req = -1;
 
-		final File settingsFile = new File(Configuration.BOOTSETTINGS);
-		if (settingsFile.exists()) {
-			Map<String, Map<String, String>> settings = null;
-			try {
-				settings = IniParser.deserialise(settingsFile);
-			} catch (final IOException ignored) {
+		final Map<String, String> settings = Resources.getSettings();
+		if (settings != null) {
+			if (settings.containsKey("memory")) {
+				try {
+					req = Math.max(256, Integer.parseInt(settings.get("memory")));
+				} catch (final NumberFormatException ignored) {
+					req = -1;
+				}
 			}
-			if (settings != null && settings.containsKey(IniParser.EMPTYSECTION)) {
-				final Map<String, String> conf = settings.get(IniParser.EMPTYSECTION);
-				if (conf.containsKey("memory")) {
-					try {
-						req = Math.max(256, Integer.parseInt(conf.get("memory")));
-					} catch (final NumberFormatException ignored) {
-						req = -1;
-					}
-				}
-				if (conf.containsKey("developer")) {
-					Configuration.DEVMODE = IniParser.parseBool(conf.get("developer"));
-				}
-				if (conf.containsKey("scripts")) {
-					Configuration.SCRIPTPATH = conf.get("scripts");
-				}
+			if (settings.containsKey("developer")) {
+				Configuration.DEVMODE = IniParser.parseBool(settings.get("developer"));
+			}
+			if (settings.containsKey("scripts")) {
+				Configuration.SCRIPTPATH = settings.get("scripts");
 			}
 		}
 
