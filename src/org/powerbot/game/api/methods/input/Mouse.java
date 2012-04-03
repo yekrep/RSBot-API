@@ -326,7 +326,7 @@ public class Mouse {
 		dragLengths.put(Thread.currentThread().getThreadGroup(), length);
 	}
 
-	private static int getSide() {
+	public static int getSide() {
 		Integer integer = sides.get(Thread.currentThread().getThreadGroup());
 		if (integer == null) {
 			integer = 0;
@@ -335,7 +335,7 @@ public class Mouse {
 		return integer;
 	}
 
-	private static void putSide(final int length) {
+	public static void putSide(final int length) {
 		sides.put(Thread.currentThread().getThreadGroup(), length);
 	}
 

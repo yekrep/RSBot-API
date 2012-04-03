@@ -1,5 +1,6 @@
 package org.powerbot.game.api.internal.input;
 
+import java.awt.Canvas;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
@@ -71,6 +72,27 @@ public class MouseManipulator implements Task {
 			if (deltaPosition.xUnits != 0 && deltaPosition.yUnits != 0) {
 				int x = (int) currentPoint.getX() + (int) deltaPosition.xUnits;
 				int y = (int) currentPoint.getY() + (int) deltaPosition.yUnits;
+				if (!Mouse.isOnCanvas(x, y)) {
+					final Canvas canvas = Bot.resolve().getCanvas();
+					switch (Mouse.getSide()) {
+					case 1:
+						x = 1;
+						y = Random.nextInt(0, canvas.getHeight());
+						break;
+					case 2:
+						x = Random.nextInt(0, canvas.getWidth());
+						y = canvas.getHeight() + 1;
+						break;
+					case 3:
+						x = canvas.getWidth() + 1;
+						y = Random.nextInt(0, canvas.getHeight());
+						break;
+					case 4:
+						x = Random.nextInt(0, canvas.getWidth());
+						y = 1;
+						break;
+					}
+				}
 				Mouse.hop(x, y);
 			}
 			try {
