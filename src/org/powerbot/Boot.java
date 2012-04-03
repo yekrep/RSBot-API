@@ -42,11 +42,6 @@ public class Boot implements Runnable {
 			}
 		}
 
-		try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (final Exception ignored) {
-		}
-
 		int req = -1;
 
 		final File settingsFile = new File(Configuration.BOOTSETTINGS);
@@ -109,6 +104,11 @@ public class Boot implements Runnable {
 		System.setProperty("java.net.preferIPv4Stack", "true");
 		System.setProperty("sun.net.spi.nameservice.nameservers", RestrictedSecurityManager.DNS1 + "," + RestrictedSecurityManager.DNS2);
 		System.setProperty("sun.net.spi.nameservice.provider.1", "dns,sun");
+
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (final Exception ignored) {
+		}
 
 		BotChrome.getInstance();
 	}
