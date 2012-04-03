@@ -6,6 +6,7 @@ import java.io.RandomAccessFile;
 import java.nio.channels.FileLock;
 import java.util.Map;
 import java.util.logging.Handler;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.JOptionPane;
@@ -28,6 +29,13 @@ public class Boot implements Runnable {
 			logger.removeHandler(handler);
 		}
 		logger.addHandler(new SystemConsoleHandler());
+
+		Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
+			@Override
+			public void uncaughtException(Thread t, Throwable e) {
+				log.logp(Level.SEVERE, t.getStackTrace()[1].getClassName(), t.getStackTrace()[1].getMethodName(), e.getMessage(), e);
+			}
+		});
 
 		boolean restarted = false;
 
