@@ -10,6 +10,7 @@ import org.powerbot.game.client.SettingsData;
  */
 public class Settings {
 	public static final int BOOLEAN_RUN_ENABLED = 173;
+	public static final int VALUE_RANDOMEVENT_DRILLDEMON_MAT = 531;
 
 	/**
 	 * @return The <code>int[]</code> of all the game's settings in their respective positioning.
