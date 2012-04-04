@@ -5,6 +5,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.powerbot.game.api.methods.input.Mouse;
+import org.powerbot.game.api.util.Random;
+import org.powerbot.game.api.util.Time;
 import org.powerbot.game.api.wrappers.widget.Widget;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
 import org.powerbot.game.bot.Bot;
@@ -106,6 +109,51 @@ public class Widgets {
 	public static boolean clickContinue() {
 		final WidgetChild widgetChild = getContinue();
 		return widgetChild != null && widgetChild.click(true);
+	}
+
+	public static boolean scroll(final WidgetChild component, final WidgetChild scrollBar) {
+		if (component == null || scrollBar == null || !component.validate() || scrollBar.getChildren().length != 6) {
+			return true;
+		}
+
+		WidgetChild scrollableArea = component;
+		while (scrollableArea.getScrollableContentHeight() == 0 && scrollableArea.getParentId() != -1) {
+			scrollableArea = getChild(scrollableArea.getParentId());
+		}
+
+		if (scrollableArea.getScrollableContentHeight() == 0) {
+			return false;
+		}
+
+		final int areaY = scrollableArea.getAbsoluteY();
+		final int areaHeight = scrollableArea.getHeight();
+
+		if (component.getAbsoluteY() >= areaY && component.getAbsoluteY() <= areaY + areaHeight - component.getHeight()) {
+			return true;
+		}
+
+		final WidgetChild scrollBarArea = scrollBar.getChildren()[0];
+		final int contentHeight = scrollableArea.getScrollableContentHeight();
+
+		int pos = (int) ((float) scrollBarArea.getHeight() / contentHeight * (component.getRelativeY() + Random.nextInt(-areaHeight / 2, areaHeight / 2 - component.getHeight())));
+		if (pos < 0) {
+			pos = 0;
+		} else if (pos >= scrollBarArea.getHeight()) {
+			pos = scrollBarArea.getHeight() - 1;
+		}
+
+		Mouse.click(scrollBarArea.getAbsoluteX() + Random.nextInt(0, scrollBarArea.getWidth()), scrollBarArea.getAbsoluteY() + pos, true);
+
+		Time.sleep(Random.nextInt(200, 400));
+
+		while (component.getAbsoluteY() < areaY || component.getAbsoluteY() > areaY + areaHeight - component.getHeight()) {
+			final boolean scrollUp = component.getAbsoluteY() < areaY;
+			scrollBar.getChildren()[scrollUp ? 4 : 5].click(true);
+
+			Time.sleep(Random.nextInt(100, 200));
+		}
+
+		return component.getAbsoluteY() >= areaY && component.getAbsoluteY() <= areaY + areaHeight - component.getHeight();
 	}
 
 	/**

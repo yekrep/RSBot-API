@@ -107,7 +107,8 @@ public class Camera {
 		return WidgetComposite.getCompass().click(true) && setPitch(up);
 	}
 
-	public static void setAngle(final int degrees) {
+	public static void setAngle(int degrees) {
+		degrees %= 360;
 		if (getAngleTo(degrees) > 5) {
 			Keyboard.pressKey((char) KeyEvent.VK_LEFT, 0, 0);
 			final Timer timer = new Timer(500);
