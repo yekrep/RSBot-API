@@ -4,9 +4,12 @@ import java.awt.event.KeyEvent;
 
 import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.api.methods.input.Keyboard;
+import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Time;
 import org.powerbot.game.api.util.Timer;
+import org.powerbot.game.api.wrappers.Mobile;
+import org.powerbot.game.api.wrappers.Tile;
 import org.powerbot.game.bot.Bot;
 
 /**
@@ -142,5 +145,25 @@ public class Camera {
 			da -= 360;
 		}
 		return da;
+	}
+
+	public static void turnTo(final Mobile l) {
+		turnTo(l, 0);
+	}
+
+	public static void turnTo(final Mobile l, final int dev) {
+		int angle = getMobileAngle(l);
+		angle = Random.nextInt(angle - dev, angle + dev + 1);
+		setAngle(angle);
+	}
+
+	public static int getMobileAngle(final Mobile mobile) {
+		final Tile t = mobile.getPosition();
+		final Tile me = Players.getLocal().getPosition();
+		int angle = ((int) Math.toDegrees(Math.atan2(t.getY() - me.getY(), t.getX() - me.getX()))) - 90;
+		if (angle < 0) {
+			angle = 360 + angle;
+		}
+		return angle % 360;
 	}
 }
