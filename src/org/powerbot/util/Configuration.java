@@ -41,7 +41,6 @@ public class Configuration {
 		final String appdata = System.getenv("APPDATA"), home = System.getProperty("user.home");
 		final String root = appdata != null && new File(appdata).isDirectory() ? appdata : home == null ? "~" : home;
 		STORE = root + File.separator + NAME + ".db";
-		BOOTSETTINGS = root + File.separator + NAME + ".ini";
 
 		final String os = System.getProperty("os.name");
 		if (os.contains("Mac")) {
@@ -53,5 +52,7 @@ public class Configuration {
 		} else {
 			OS = OperatingSystem.UNKNOWN;
 		}
+
+		BOOTSETTINGS = OS == OperatingSystem.WINDOWS ? root + File.separator + NAME + ".ini" : home + File.separator + "." + NAME.toLowerCase();
 	}
 }
