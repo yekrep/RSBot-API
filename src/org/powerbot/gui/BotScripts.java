@@ -264,6 +264,9 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 			final ScriptDefinition def = ScriptDefinition.fromMap(entry.getValue());
 			if (def != null) {
 				def.source = new URL(src, entry.getKey());
+				if (entry.getValue().containsKey("className")) {
+					def.className = entry.getValue().get("className");
+				}
 				list.add(def);
 			}
 		}
