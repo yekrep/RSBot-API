@@ -34,6 +34,7 @@ trimExclude org.powerbot.Boot^ public static main(java.lang.String[]) and
             org.powerbot.game.bot.event.^* and
             org.powerbot.game.bot.event.^*^ * and
             org.powerbot.game.bot.event.* *(*) and
+            org.powerbot.game.api.*.^* public * and
             public org.powerbot.game.api.*.^* and
             org.powerbot.game.api.*.^* public *(*) and
             org.powerbot.game.api.ActiveScript and
@@ -59,7 +60,7 @@ exclude     org.powerbot.Boot^ public static main(java.lang.String[]) and
             org.powerbot.concurrent.Task and
             org.powerbot.concurrent.Task * and
             org.powerbot.concurrent.Task *(*) and
-			org.powerbot.concurrent.Processor and
+            org.powerbot.concurrent.Processor and
             org.powerbot.concurrent.Processor * and
             org.powerbot.concurrent.Processor *(*) and
             org.powerbot.concurrent.strategy. and
@@ -80,9 +81,10 @@ exclude     org.powerbot.Boot^ public static main(java.lang.String[]) and
             org.powerbot.game.client.input.^*^ * and
             public org.powerbot.game.bot.event.*.^* and
             org.powerbot.game.game.bot.event.*.^* public *(*) and
-			org.powerbot.game.bot.event.^* and
+            org.powerbot.game.bot.event.^* and
             org.powerbot.game.bot.event.^*^ * and
             org.powerbot.game.bot.event.* *(*) and
+            org.powerbot.game.api.*.^* public * and
             public org.powerbot.game.api.*.^* and
             org.powerbot.game.api.*.^* public *(*) and
             org.powerbot.game.api.ActiveScript and

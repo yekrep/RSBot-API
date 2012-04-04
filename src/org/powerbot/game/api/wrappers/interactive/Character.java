@@ -249,4 +249,18 @@ public abstract class Character implements Entity, Mobile {
 	public void draw(final Graphics render) {
 		//TODO
 	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		if (obj instanceof Character) {
+			final Character cha = (Character) obj;
+			return cha.get() == get();
+		}
+		return false;
+	}
+
+	@Override
+	public int hashCode() {
+		return System.identityHashCode(get());
+	}
 }
