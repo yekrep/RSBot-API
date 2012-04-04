@@ -50,13 +50,13 @@ public class BotWidgetExplorer extends JFrame implements PaintListener {
 	private Rectangle highlightArea = null;
 
 	private Bot bot;
-	private static BotWidgetExplorer widgetExplorer;
+	private static BotWidgetExplorer instance;
 
 	private static BotWidgetExplorer getInstance(final Bot bot) {
-		if (widgetExplorer == null) {
-			widgetExplorer = new BotWidgetExplorer(bot);
+		if (instance == null) {
+			instance = new BotWidgetExplorer(bot);
 		}
-		return widgetExplorer;
+		return instance;
 	}
 
 	public static void display(final Bot bot) {
@@ -184,6 +184,7 @@ public class BotWidgetExplorer extends JFrame implements PaintListener {
 		add(toolArea, BorderLayout.NORTH);
 
 		pack();
+		setLocationRelativeTo(getOwner());
 		setVisible(false);
 	}
 

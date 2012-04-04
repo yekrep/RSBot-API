@@ -12,6 +12,7 @@ import org.powerbot.game.bot.Bot;
 import org.powerbot.gui.BotAbout;
 import org.powerbot.gui.BotAccounts;
 import org.powerbot.gui.BotChrome;
+import org.powerbot.gui.BotSettingExplorer;
 import org.powerbot.gui.BotSignin;
 import org.powerbot.gui.BotWidgetExplorer;
 import org.powerbot.service.NetworkAccount;
@@ -66,6 +67,10 @@ public final class BotMenu extends JPopupMenu implements ActionListener {
 			widgetExplorer.setEnabled(parent.getActiveTab() != -1);
 			widgetExplorer.addActionListener(this);
 			add(widgetExplorer);
+			final JMenuItem settingExplorer = new JMenuItem(BotLocale.SETTINGEXPLORER);
+			settingExplorer.setEnabled(parent.getActiveTab() != -1);
+			settingExplorer.addActionListener(this);
+			add(settingExplorer);
 			addSeparator();
 		}
 
@@ -96,6 +101,8 @@ public final class BotMenu extends JPopupMenu implements ActionListener {
 			new BotSignin(parent.parent);
 		} else if (a.equals(BotLocale.WIDGETEXPLORER)) {
 			BotWidgetExplorer.display(Bot.bots.get(parent.getActiveTab()));
+		} else if (a.equals(BotLocale.SETTINGEXPLORER)) {
+			BotSettingExplorer.display(Bot.bots.get(parent.getActiveTab()));
 		} else if (a.equals(BotLocale.WEBSITE)) {
 			BotChrome.openURL(Resources.getServerLinks().get("site"));
 		} else if (a.equals(BotLocale.ABOUT)) {

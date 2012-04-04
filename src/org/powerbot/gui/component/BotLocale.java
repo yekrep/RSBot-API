@@ -19,6 +19,7 @@ public final class BotLocale {
 	public static String VIEW = "View";
 	public static String INPUT = "Input";
 	public static String WIDGETEXPLORER = "Widget Explorer";
+	public static String SETTINGEXPLORER = "Setting Explorer";
 	public static String ABOUT = "About";
 	public static String EXIT = "Exit";
 
