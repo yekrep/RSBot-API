@@ -19,6 +19,8 @@ public abstract class AntiRandom implements Condition, Task, PaintListener {
 	public final Logger log = Logger.getLogger(getClass().getName());
 	public Bot bot = null;
 
+	private static final boolean VERBOSE = true;
+
 	public void onRepaint(final Graphics render) {
 		final Point p = Mouse.getLocation();
 		final Canvas canvas = Bot.resolve().getCanvas();
@@ -28,5 +30,11 @@ public abstract class AntiRandom implements Condition, Task, PaintListener {
 		render.fillRect(p.x + 1, 0, w - (p.x + 1), p.y - 1);
 		render.fillRect(0, p.y + 1, p.x - 1, h - (p.y - 1));
 		render.fillRect(p.x + 1, p.y + 1, w - (p.x + 1), h - (p.y - 1));
+	}
+
+	protected void verbose(final String info) {
+		if (VERBOSE) {
+			log.info(info);
+		}
 	}
 }

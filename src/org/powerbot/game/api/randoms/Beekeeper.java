@@ -38,6 +38,7 @@ public class Beekeeper extends AntiRandom {
 			{LOWERMID, -1, LOW_MID},
 			{BOTTOM, -1, LEGS}
 	};
+	private static final String[] WIDGET_HIVE_NAMES = {"Top", "Upper mid", "Entry", "Bottom"};
 
 	@Override
 	public boolean validate() {
@@ -48,27 +49,33 @@ public class Beekeeper extends AntiRandom {
 	public void run() {
 		final Player player = Players.getLocal();
 
-		if (Widgets.get(WIDGET_CHAT, WIDGET_CHAT_TEXT_INDEX_2).validate()) {//try again!
+		if (Widgets.get(WIDGET_CHAT, WIDGET_CHAT_TEXT_INDEX_2).validate()) {
+			verbose("WIDGET VALIDATED: Let's try again!");
 			Widgets.get(WIDGET_CHAT, WIDGET_CHAT_TEXT_INDEX_2).click(true);
 			Time.sleep(Random.nextInt(1800, 2500));
 			return;
 		}
-		if (Widgets.get(WIDGET_CHAT_TRY_AGAIN, WIDGET_CHAT_CONTINUE).validate()) {//try again continue
+		if (Widgets.get(WIDGET_CHAT_TRY_AGAIN, WIDGET_CHAT_CONTINUE).validate()) {
+			verbose("WIDGET VALIDATED: Try again - continue.");
 			Widgets.get(WIDGET_CHAT_TRY_AGAIN, WIDGET_CHAT_CONTINUE).click(true);
 			Time.sleep(Random.nextInt(1800, 2500));
 			return;
 		}
 		if (Widgets.clickContinue()) {
+			verbose("Following through with dialogue... man this guy is boring.");
 			Time.sleep(Random.nextInt(1800, 2500));
 			return;
 		}
 
 		final Widget widget = Widgets.get(WIDGET_HIVE);
 		if (widget.validate()) {
+			verbose("WIDGET VALIDATED: Hive construction imminent");
 			for (WidgetChild child : widget.getChildren()) {
 				if (child.getIndex() < 30) {
 					for (int i = 0; i < WIDGET_HIVE_MODEL_IDS.length; i++) {
+						verbose("VALIDATE: " + child.getModelId() + " (" + child.getIndex() + ") == " + WIDGET_HIVE_MODEL_IDS[i][0] + " (" + WIDGET_HIVE_NAMES[i] + ") ???");
 						if (child.getModelId() == WIDGET_HIVE_MODEL_IDS[i][0]) {
+							verbose("MODEL_MATCH: " + WIDGET_HIVE_NAMES[i] + " == " + child.getModelId());
 							WIDGET_HIVE_MODEL_IDS[i][1] = child.getIndex();
 							break;
 						}
@@ -76,22 +83,29 @@ public class Beekeeper extends AntiRandom {
 				}
 			}
 
+			verbose("Constructing hive");
 			for (int i = 0; i < 4; i++) {
+				verbose("MERGE " + WIDGET_HIVE_MODEL_IDS[i][1] + " | " + WIDGET_HIVE_MODEL_IDS[i][2]);
 				merge(widget.getChild(WIDGET_HIVE_MODEL_IDS[i][1]), widget.getChild(WIDGET_HIVE_MODEL_IDS[i][2]));
 				Time.sleep(Random.nextInt(300, 800));
 			}
 			Time.sleep(Random.nextInt(1800, 2800));
+			verbose("Checking solution (0x68d1000)");
 			if (Settings.get(805) == 0x68d1000) {
+				verbose("Constructed hive successfully!");
 				widget.getChild(WIDGET_HIVE_BUILD).click(true);
 				Time.sleep(Random.nextInt(1800, 2800));
 				return;
 			}
 
+			verbose("We messed up the construction... let's try this bastard again...");
 			widget.getChild(WIDGET_HIVE_CLOSE).interact("Close");
 			return;
 		}
 
 		if (player.getInteracting() == null) {
+			verbose("INTERACTION = NULL");
+			verbose("Engaging communication !!!");
 			Npcs.getNearest(NPC_ID_BEE_KEEPER).interact("Talk-to");
 			Time.sleep(Random.nextInt(800, 1200));
 		}
