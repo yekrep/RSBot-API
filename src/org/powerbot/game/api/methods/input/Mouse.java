@@ -169,6 +169,21 @@ public class Mouse {
 		return move(x, y, 1, 1);
 	}
 
+	public static void drag(final int dx, final int dy) {
+		drag(dx, dy, 1, 1);
+	}
+
+	public static void drag(final int dx, final int dy, final int rx, final int ry) {
+		if (!isPresent()) {
+			return;
+		}
+		pressMouse(getX(), getY(), true);
+		Time.sleep(Random.nextInt(10, 400));
+		move(dx, dy, rx, ry);
+		Time.sleep(Random.nextInt(10, 400));
+		releaseMouse(getX(), getY(), true);
+	}
+
 	/**
 	 * Moves the mouse to the desired destination.
 	 *
