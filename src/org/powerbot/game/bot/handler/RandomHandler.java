@@ -15,6 +15,7 @@ import org.powerbot.game.api.randoms.DrillDemon;
 import org.powerbot.game.api.randoms.Login;
 import org.powerbot.game.api.randoms.Mime;
 import org.powerbot.game.api.randoms.Pinball;
+import org.powerbot.game.api.randoms.SandwichLady;
 import org.powerbot.game.api.randoms.WidgetCloser;
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Time;
@@ -37,7 +38,8 @@ public class RandomHandler implements Task {
 				new WidgetCloser(),
 				new DrillDemon(),
 				new Mime(),
-				new Pinball()
+				new Pinball(),
+				new SandwichLady()
 		};
 		for (final AntiRandom antiRandom : antiRandoms) {
 			antiRandom.bot = bot;
