@@ -35,6 +35,11 @@ public class Pinball extends AntiRandom {
 	}
 
 	public void run() {
+		if (Widgets.clickContinue()) {
+			Time.sleep(Random.nextInt(300, 500));
+			return;
+		}
+
 		if (Players.getLocal().isMoving() || Players.getLocal().getAnimation() != -1) {
 			Time.sleep(Random.nextInt(300, 500));
 			return;
