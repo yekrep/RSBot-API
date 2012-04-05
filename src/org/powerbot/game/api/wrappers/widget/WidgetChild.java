@@ -379,6 +379,14 @@ public class WidgetChild implements Entity {
 		return new WidgetChild[0];
 	}
 
+	public WidgetChild getChild(final int index) {
+		final WidgetChild[] children = getChildren();
+		if (index > 0 && index < children.length) {
+			return children[index];
+		}
+		return null;
+	}
+
 	public boolean isVisible() {
 		final Object inter = getInternal();
 		return inter != null && !((RSInterfaceIsHidden) ((RSInterfaceBooleans) inter).getRSInterfaceBooleans()).getRSInterfaceIsHidden();
