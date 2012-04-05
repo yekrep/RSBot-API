@@ -45,7 +45,7 @@ public class GroundItem implements Entity, Mobile {
 	}
 
 	public Point getCentralPoint() {
-		return tile.getPoint(0.5d, 0.5d, Calculations.calculateTileHeight(tile.getX(), tile.getY(), tile.getPlane()));
+		return tile.getCentralPoint();
 	}
 
 	public Point getNextViewportPoint() {

@@ -46,11 +46,11 @@ public class Tile implements Entity {
 	}
 
 	public Point getCentralPoint() {
-		return getPoint(0.5d, 0.5d, 0);
+		return getPoint(0.5d, 0.5d, Calculations.calculateTileHeight(x, y, plane));
 	}
 
 	public Point getNextViewportPoint() {
-		return getPoint(Random.nextDouble(), Random.nextDouble(), 0);
+		return getPoint(Random.nextDouble(), Random.nextDouble(), Calculations.calculateTileHeight(x, y, plane));
 	}
 
 	public boolean contains(final Point point) {
