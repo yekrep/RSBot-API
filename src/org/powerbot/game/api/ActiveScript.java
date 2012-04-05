@@ -128,6 +128,9 @@ public abstract class ActiveScript implements EventListener, Processor {
 			}
 		});
 		eventManager.remove(ActiveScript.this);
+		for (final EventListener eventListener : listeners) {
+			eventManager.remove(eventListener);
+		}
 		executor.destroy();
 		container.shutdown();
 
