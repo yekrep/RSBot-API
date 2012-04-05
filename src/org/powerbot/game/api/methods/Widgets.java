@@ -95,7 +95,11 @@ public class Widgets {
 	}
 
 	public static WidgetChild getContinue() {
-		final WidgetChild button = get(1184, 18);
+		WidgetChild button = get(1184, 18);
+		if (button != null && button.validate()) {
+			return button;
+		}
+		button = get(1191, 18);
 		if (button != null && button.validate()) {
 			return button;
 		}
