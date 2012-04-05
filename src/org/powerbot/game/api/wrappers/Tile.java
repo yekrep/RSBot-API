@@ -59,18 +59,14 @@ public class Tile implements Entity {
 	}
 
 	public boolean isOnScreen() {
-		final Point nw = getPoint(0.0d, 0.0d, 0);
-		final Point ne = getPoint(1.0d, 0.0d, 0);
-		final Point sw = getPoint(0.0d, 1.0d, 0);
-		final Point se = getPoint(1.0d, 1.0d, 0);
-		return nw.x != -1 || ne.x != -1 || sw.x != -1 || se.x != -1;
+		return getBounds().length == 1;
 	}
 
 	public Polygon[] getBounds() {
-		final Point localPoint1 = getPoint(0.0D, 0.0D, 0);
-		final Point localPoint2 = getPoint(1.0D, 0.0D, 0);
-		final Point localPoint3 = getPoint(0.0D, 1.0D, 0);
-		final Point localPoint4 = getPoint(1.0D, 1.0D, 0);
+		final Point localPoint1 = getPoint(0.0D, 0.0D, Calculations.calculateTileHeight(x, y, plane));
+		final Point localPoint2 = getPoint(1.0D, 0.0D, Calculations.calculateTileHeight(x + 1, y, plane));
+		final Point localPoint3 = getPoint(0.0D, 1.0D, Calculations.calculateTileHeight(x, y + 1, plane));
+		final Point localPoint4 = getPoint(1.0D, 1.0D, Calculations.calculateTileHeight(x + 1, y + 1, plane));
 		if (Calculations.isPointOnScreen(localPoint1) && Calculations.isPointOnScreen(localPoint2) &&
 				Calculations.isPointOnScreen(localPoint3) && Calculations.isPointOnScreen(localPoint4)) {
 			final Polygon localPolygon = new Polygon();
