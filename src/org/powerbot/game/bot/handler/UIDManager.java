@@ -32,8 +32,11 @@ public class UIDManager {
 		if (inputStream != null) {
 			for (final String line : IOHelper.readString(inputStream).split("\n")) {
 				if (!line.isEmpty()) {
-					final String[] data = line.split(separator, 2);
-					uids.put(data[0], data[1].getBytes());
+					try {
+						final String[] data = line.split(separator, 2);
+						uids.put(data[0], data[1].getBytes());
+					} catch (final Exception ignored) {
+					}
 				}
 			}
 		}
