@@ -445,8 +445,9 @@ public class Bot extends GameDefinition implements Runnable {
 		public void run() {
 			if (bot != null && !bot.killed && bot.getClient() != null && !Keyboard.isReady()) {
 				while (!bot.killed && !Keyboard.isReady() && !Mouse.isReady()) {
-					Time.sleep(150);
+					Time.sleep(1000);
 				}
+				Time.sleep(800);
 				Keyboard.sendKey('s');
 			}
 		}
