@@ -36,6 +36,11 @@ public class MouseManipulator implements Task {
 
 	public void run() {
 		this.running = true;
+		if (locatable.contains(clientMouse.getLocation()) && filter.accept(clientMouse.getLocation())) {
+			accepted = true;
+			running = false;
+			return;
+		}
 		configureModifiers();
 		final long start = System.currentTimeMillis();
 		Point targetPoint = new Point(-1, -1);
