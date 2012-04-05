@@ -237,7 +237,7 @@ public class BotPanel extends JPanel {
 		if (component != null && mouseEvent != null) {
 			final int mouseX = mouseEvent.getX(), mouseY = mouseEvent.getY();
 			if (mouseX > 0 && mouseX < component.getWidth() && mouseY > 0 && mouseY < component.getHeight() && mouseEvent.getID() != MouseEvent.MOUSE_EXITED) {
-				if (present) {
+				if (present || ((inputMask & INPUT_MOUSE) == 0)) {
 					bot.getEventDispatcher().dispatch(mouseEvent);
 				} else {
 					bot.getEventDispatcher().dispatch(new MouseEvent(component, MouseEvent.MOUSE_ENTERED, System.currentTimeMillis(), 0, mouseX, mouseY, 0, false));
