@@ -166,9 +166,6 @@ public class BotPanel extends JPanel {
 	}
 
 	private void redispatch(final MouseEvent mouseEvent) {
-		if ((inputMask & INPUT_MOUSE) == 0) {
-			return;
-		}
 		if (mouseEvent == null || bot == null || bot.appletContainer == null || bot.appletContainer.getComponentCount() == 0 ||
 				bot.getClient() == null) {
 			return;
@@ -181,6 +178,9 @@ public class BotPanel extends JPanel {
 		final boolean present = mouse.isPresent();
 		final Component component = bot.appletContainer.getComponent(0);
 		notifyListeners(component, mouseEvent, present);
+		if ((inputMask & INPUT_MOUSE) == 0) {
+			return;
+		}
 		final int mouseX = mouseEvent.getX(), mouseY = mouseEvent.getY();
 		final int modifiers = mouseEvent.getModifiers(), clickCount = mouseEvent.getClickCount();
 		if (mouseEvent.getID() != MouseEvent.MOUSE_EXITED &&
@@ -219,14 +219,14 @@ public class BotPanel extends JPanel {
 	}
 
 	private void redispatch(final KeyEvent keyEvent) {
-		if ((inputMask & INPUT_KEYBOARD) == 0) {
-			return;
-		}
 		if (keyEvent == null || bot == null || bot.appletContainer == null || bot.appletContainer.getComponentCount() == 0 ||
 				bot.getClient() == null) {
 			return;
 		}
 		bot.getEventDispatcher().dispatch(keyEvent);
+		if ((inputMask & INPUT_KEYBOARD) == 0) {
+			return;
+		}
 		final Component component = bot.appletContainer.getComponent(0);
 		if (component != null) {
 			component.dispatchEvent(keyEvent);
