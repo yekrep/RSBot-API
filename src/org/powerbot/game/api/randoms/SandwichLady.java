@@ -44,6 +44,7 @@ public class SandwichLady extends AntiRandom {
 				if (portal != null) {
 					if (portal.isOnScreen()) {
 						portal.interact("Enter", "Exit portal");
+						Time.sleep(Random.nextInt(3000, 5000));
 					} else {
 						Walking.walk(portal.getPosition());
 						final Timer timer = new Timer(3000);
