@@ -1,5 +1,6 @@
 package org.powerbot.game.api.randoms;
 
+import java.util.Arrays;
 import java.util.HashMap;
 
 import org.powerbot.game.api.AntiRandom;
@@ -70,12 +71,14 @@ public class DrillDemon extends AntiRandom {
 	@Override
 	public void run() {
 		if (Camera.getPitch() < 90) {
+			verbose("Increasing pitch ...");
 			Camera.setPitch(true);
 		}
 		Camera.setAngle('n');
 		final Player localPlayer = Players.getLocal();
 
 		if (localPlayer.isMoving()) {
+			verbose("Character is moving");
 			for (int i = 0; i < 50; i++) {
 				if (!localPlayer.isMoving()) {
 					break;
@@ -87,6 +90,7 @@ public class DrillDemon extends AntiRandom {
 		}
 
 		if (localPlayer.getAnimation() != -1) {
+			verbose("ANIMATION != -1");
 			for (int i = 0; i < 50; i++) {
 				if (localPlayer.getAnimation() == -1) {
 					break;
@@ -104,10 +108,14 @@ public class DrillDemon extends AntiRandom {
 		}
 
 		if (Widgets.get(WIDGET_MAT).validate()) {
+			verbose("WIDGET VALIDATED: Mat objective");
 			final int setting_value = Settings.get(Settings.VALUE_RANDOMEVENT_DRILLDEMON_MAT);
+			verbose("Mat mask: " + setting_value);
 			final int child_id = Widgets.get(WIDGET_MAT, WIDGET_MAT_ICON).getChildId();
+			verbose("Child id: " + child_id);
 			for (int i = 0; i < setting_arrays.get(setting_value).length; i++) {
 				if (setting_arrays.get(setting_value)[i] == mat_indices.get(child_id)) {
+					verbose("MATCH " + Arrays.toString(setting_arrays.get(setting_value)) + " (" + i + ") & " + mat_indices.get(child_id));
 					if (findAndUseMat(i)) {
 						Time.sleep(800);
 						return;
@@ -117,11 +125,13 @@ public class DrillDemon extends AntiRandom {
 		}
 
 		if (Widgets.clickContinue()) {
+			verbose("Conversing ...");
 			Time.sleep(Random.nextInt(2000, 3000));
 			return;
 		}
 
 		if (!Widgets.clickContinue() && localPlayer.getAnimation() == -1) {
+			verbose("Engaging in communication!");
 			final Npc demon = Npcs.getNearest(NPC_ID_DEMON);
 			demon.interact("Talk-to");
 		}
@@ -137,15 +147,20 @@ public class DrillDemon extends AntiRandom {
 		};
 		if (game_mats[sign_id] != null) {
 			if (!game_mats[sign_id].isOnScreen()) {
+				verbose("MAT OFF SCREEN!");
 				if (Walking.walk(game_mats[sign_id].getPosition())) {
+					verbose("Walking...");
 					Time.sleep(500);
 				}
 			} else {
 				if (Players.getLocal().getAnimation() == -1) {
+					verbose("PERFORMING OBJECTIVE");
 					if (game_mats[sign_id].interact("Use")) {
 						Time.sleep(900);
 						return true;
 					}
+				} else {
+					verbose("INTERACTION (OBJECTIVE): Already performing...");
 				}
 			}
 		}
