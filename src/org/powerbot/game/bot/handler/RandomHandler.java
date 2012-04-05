@@ -11,6 +11,7 @@ import org.powerbot.concurrent.Task;
 import org.powerbot.game.api.ActiveScript;
 import org.powerbot.game.api.AntiRandom;
 import org.powerbot.game.api.Manifest;
+import org.powerbot.game.api.randoms.Beekeeper;
 import org.powerbot.game.api.randoms.DrillDemon;
 import org.powerbot.game.api.randoms.Login;
 import org.powerbot.game.api.randoms.Mime;
@@ -39,7 +40,8 @@ public class RandomHandler implements Task {
 				new DrillDemon(),
 				new Mime(),
 				new Pinball(),
-				new SandwichLady()
+				new SandwichLady(),
+				new Beekeeper()
 		};
 		for (final AntiRandom antiRandom : antiRandoms) {
 			antiRandom.bot = bot;
