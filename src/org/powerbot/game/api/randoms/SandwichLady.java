@@ -17,7 +17,7 @@ import org.powerbot.game.api.wrappers.node.Location;
 import org.powerbot.game.api.wrappers.widget.Widget;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
 
-@Manifest(name = "SandwichLady", description = "Eats the bitch's food.", authors = {"Timer"}, version = 1.0)
+@Manifest(name = "Sandwich Lady", description = "Eats the bitch's food.", authors = {"Timer"}, version = 1.0)
 public class SandwichLady extends AntiRandom {
 	private final static int WIDGET_ID_SANDWICH_SELECTION = 297;
 	private final static int WIDGET_ID_SANDWICH_SELECTION_HINT = 48;

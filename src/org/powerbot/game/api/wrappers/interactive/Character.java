@@ -14,6 +14,7 @@ import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.wrappers.Entity;
 import org.powerbot.game.api.wrappers.Mobile;
 import org.powerbot.game.api.wrappers.RegionTile;
+import org.powerbot.game.api.wrappers.Rotatable;
 import org.powerbot.game.api.wrappers.Tile;
 import org.powerbot.game.api.wrappers.graphics.CapturedModel;
 import org.powerbot.game.api.wrappers.graphics.model.CharacterModel;
@@ -47,7 +48,7 @@ import org.powerbot.game.client.SequenceInts;
 /**
  * @author Timer
  */
-public abstract class Character implements Entity, Mobile {
+public abstract class Character implements Entity, Mobile, Rotatable {
 	private final Client client;
 	private final Multipliers multipliers;
 
@@ -113,8 +114,12 @@ public abstract class Character implements Entity, Mobile {
 		return ((RSCharacterHeight) ((RSInteractableInts) get()).getRSInteractableInts()).getRSCharacterHeight() * multipliers.CHARACTER_HEIGHT;
 	}
 
+	public int getRotation() {
+		return ((RSCharacterOrientation) ((RSInteractableInts) get()).getRSInteractableInts()).getRSCharacterOrientation() * multipliers.CHARACTER_ORIENTATION;
+	}
+
 	public int getOrientation() {
-		return (180 + ((RSCharacterOrientation) ((RSInteractableInts) get()).getRSInteractableInts()).getRSCharacterOrientation() * multipliers.CHARACTER_ORIENTATION * 45 / 2048) % 360;
+		return (180 + getRotation() * 45 / 2048) % 360;
 	}
 
 	public boolean isInCombat() {

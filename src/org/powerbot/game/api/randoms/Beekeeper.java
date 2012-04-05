@@ -17,7 +17,7 @@ import org.powerbot.game.api.wrappers.interactive.Player;
 import org.powerbot.game.api.wrappers.widget.Widget;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
 
-@Manifest(name = "Beekeeper", description = "Assembles a bee house for those stinging nuisances", authors = {"Timer"}, version = 1.0)
+@Manifest(name = "Bee-keeper", description = "Assembles a bee house for those stinging nuisances", authors = {"Timer"}, version = 1.0)
 public class Beekeeper extends AntiRandom {
 	private static final int NPC_ID_BEE_KEEPER = 8649;
 	private static final int LOCATION_ID_BEE_HOUSE = 16168;

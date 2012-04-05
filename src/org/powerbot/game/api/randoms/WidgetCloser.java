@@ -12,7 +12,7 @@ import org.powerbot.game.api.util.Time;
 import org.powerbot.game.api.util.Timer;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
 
-@Manifest(name = "WidgetCloser", description = "Closes widgets that interrupt scripts", version = 0.1, authors = {"Timer"})
+@Manifest(name = "Widget Closer", description = "Closes widgets that interrupt scripts", version = 0.1, authors = {"Timer"})
 public class WidgetCloser extends AntiRandom {
 	private static final Map<Integer, Integer> children = new HashMap<Integer, Integer>();
 	private int failure = 0;

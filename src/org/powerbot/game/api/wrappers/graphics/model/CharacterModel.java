@@ -48,7 +48,7 @@ public class CharacterModel extends CapturedModel {
 
 	@Override
 	protected void update() {
-		final int theta = character.getOrientation() & 0x3fff;
+		final int theta = character.getRotation() & 0x3fff;
 		final int sin = Calculations.SIN_TABLE[theta];
 		final int cos = Calculations.COS_TABLE[theta];
 		for (int i = 0; i < numVertices; ++i) {
