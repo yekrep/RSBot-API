@@ -45,7 +45,7 @@ public class GroundItem implements Entity, Mobile {
 	}
 
 	public Point getCentralPoint() {
-		return tile.getCentralPoint();
+		return tile.getPoint(0.5d, 0.5d, Calculations.calculateTileHeight(tile.getX(), tile.getY(), tile.getPlane()));
 	}
 
 	public Point getNextViewportPoint() {
@@ -57,7 +57,7 @@ public class GroundItem implements Entity, Mobile {
 	}
 
 	public boolean isOnScreen() {
-		return Calculations.isPointOnScreen(tile.getCentralPoint());
+		return Calculations.isPointOnScreen(getCentralPoint());
 	}
 
 	public Polygon[] getBounds() {
