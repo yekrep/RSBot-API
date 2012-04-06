@@ -347,7 +347,13 @@ public class Bot extends GameDefinition implements Runnable {
 				return;
 			}
 
+
 			final GameAccounts gameAccounts = GameAccounts.getInstance();
+			try {
+				gameAccounts.load();
+			} catch (final IOException ignored) {
+			} catch (final GeneralSecurityException ignored) {
+			}
 			final GameAccounts.Account stored_account;
 			if ((stored_account = gameAccounts.get(username)) == null) {
 				final GameAccounts.Account account = gameAccounts.add(username);
