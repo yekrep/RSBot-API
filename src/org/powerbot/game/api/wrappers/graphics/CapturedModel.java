@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Polygon;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.powerbot.game.api.methods.Calculations;
 import org.powerbot.game.api.methods.input.Mouse;
@@ -18,6 +19,21 @@ import org.powerbot.game.client.ModelCapture;
 
 public abstract class CapturedModel implements Entity {
 	private final Verifiable verifiable;
+
+	/**
+	 * Returns a filter that matches against the array of point indices for the
+	 * A vertices of each triangle. Use in scripts is discouraged.
+	 *
+	 * @param vertex_a The array of indices for A vertices.
+	 * @return The vertex point index based model filter.
+	 */
+	public static Filter<CapturedModel> newVertexFilter(final short[] vertex_a) {
+		return new Filter<CapturedModel>() {
+			public boolean accept(final CapturedModel m) {
+				return Arrays.equals(m.indices1, vertex_a);
+			}
+		};
+	}
 
 	protected int[] xPoints;
 	protected final int[] yPoints;
