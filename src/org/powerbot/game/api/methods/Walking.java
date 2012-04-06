@@ -6,6 +6,7 @@ import org.powerbot.game.api.methods.input.Mouse;
 import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.wrappers.Locatable;
+import org.powerbot.game.api.wrappers.Mobile;
 import org.powerbot.game.api.wrappers.Tile;
 import org.powerbot.game.bot.Bot;
 import org.powerbot.game.client.RSGroundDataBlocks;
@@ -72,6 +73,10 @@ public class Walking {
 		} catch (final NumberFormatException ignored) {
 			return -1;
 		}
+	}
+
+	public static boolean walk(final Mobile mobile) {
+		return walk(mobile.getPosition());
 	}
 
 	/**
