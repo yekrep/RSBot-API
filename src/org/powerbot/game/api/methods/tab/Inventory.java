@@ -133,7 +133,7 @@ public class Inventory {
 
 	public static Item getItemAt(final int index) {
 		final WidgetChild child = getWidget(false).getChild(index);
-		return 0 <= index && index < 28 && child != null ? new Item(child) : null;
+		return index >= 0 && index < 28 && child != null ? new Item(child) : null;
 	}
 
 
@@ -149,7 +149,7 @@ public class Inventory {
 	 */
 	public static int getSelectedItemIndex() {
 		final WidgetChild[] children = getWidget(false).getChildren();
-		for (int i = 0; i < Math.min(28, children.length); ++i) {
+		for (int i = 0; i < Math.min(28, children.length); i++) {
 			if (children[i].getBorderThickness() == 2) {
 				return i;
 			}
