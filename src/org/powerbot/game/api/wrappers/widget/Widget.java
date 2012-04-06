@@ -132,6 +132,18 @@ public class Widget {
 	}
 
 	@Override
+	public boolean equals(final Object obj) {
+		if (obj == this) {
+			return true;
+		}
+		if (obj instanceof Widget) {
+			final Widget inter = (Widget) obj;
+			return inter.index == index;
+		}
+		return false;
+	}
+
+	@Override
 	public int hashCode() {
 		return getIndex();
 	}
