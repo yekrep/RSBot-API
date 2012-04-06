@@ -16,9 +16,11 @@ import org.powerbot.game.api.randoms.Chest;
 import org.powerbot.game.api.randoms.DrillDemon;
 import org.powerbot.game.api.randoms.FirstTimeDeath;
 import org.powerbot.game.api.randoms.Frog;
+import org.powerbot.game.api.randoms.GraveDigger;
 import org.powerbot.game.api.randoms.Login;
 import org.powerbot.game.api.randoms.LostAndFound;
 import org.powerbot.game.api.randoms.Mime;
+import org.powerbot.game.api.randoms.Pillory;
 import org.powerbot.game.api.randoms.Pinball;
 import org.powerbot.game.api.randoms.Quiz;
 import org.powerbot.game.api.randoms.SandwichLady;
@@ -51,7 +53,9 @@ public class RandomHandler implements Task {
 				new FirstTimeDeath(),
 				new Quiz(),
 				new Frog(),
-				new Chest()
+				new Chest(),
+				new GraveDigger(),
+				new Pillory()
 		};
 		for (final AntiRandom antiRandom : antiRandoms) {
 			antiRandom.bot = bot;
