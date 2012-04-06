@@ -46,11 +46,11 @@ public class Tile implements Entity {
 	}
 
 	public Point getCentralPoint() {
-		return getPoint(0.5d, 0.5d, Calculations.calculateTileHeight(x, y, plane));
+		return getPoint(0.5d, 0.5d, 0);
 	}
 
 	public Point getNextViewportPoint() {
-		return getPoint(Random.nextDouble(), Random.nextDouble(), Calculations.calculateTileHeight(x, y, plane));
+		return getPoint(Random.nextDouble(), Random.nextDouble(), 0);
 	}
 
 	public boolean contains(final Point point) {
@@ -63,10 +63,10 @@ public class Tile implements Entity {
 	}
 
 	public Polygon[] getBounds() {
-		final Point localPoint1 = getPoint(0.0D, 0.0D, Calculations.calculateTileHeight(x, y, plane));
-		final Point localPoint2 = getPoint(1.0D, 0.0D, Calculations.calculateTileHeight(x + 1, y, plane));
-		final Point localPoint3 = getPoint(0.0D, 1.0D, Calculations.calculateTileHeight(x, y + 1, plane));
-		final Point localPoint4 = getPoint(1.0D, 1.0D, Calculations.calculateTileHeight(x + 1, y + 1, plane));
+		final Point localPoint1 = getPoint(0.0D, 0.0D, 0);
+		final Point localPoint2 = getPoint(1.0D, 0.0D, 0);
+		final Point localPoint3 = getPoint(0.0D, 1.0D, 0);
+		final Point localPoint4 = getPoint(1.0D, 1.0D, 0);
 		if (Calculations.isPointOnScreen(localPoint1) && Calculations.isPointOnScreen(localPoint2) &&
 				Calculations.isPointOnScreen(localPoint3) && Calculations.isPointOnScreen(localPoint4)) {
 			final Polygon localPolygon = new Polygon();
@@ -113,7 +113,7 @@ public class Tile implements Entity {
 	}
 
 	public Point getPoint(final double xOff, final double yOff, final int height) {
-		return Calculations.groundToScreen((int) ((x - Game.getBaseX() + xOff) * 0x200), (int) ((y - Game.getBaseY() + yOff) * 0x200), plane, height);
+		return Calculations.groundToScreen((int) ((x - Game.getBaseX() + xOff) * 0x200), (int) ((y - Game.getBaseY() + yOff) * 0x200), plane, -height);
 	}
 
 	public void draw(final Graphics render) {
