@@ -6,6 +6,8 @@ import java.util.List;
 import org.powerbot.game.api.methods.Tabs;
 import org.powerbot.game.api.methods.Widgets;
 import org.powerbot.game.api.util.Filter;
+import org.powerbot.game.api.util.Random;
+import org.powerbot.game.api.util.Time;
 import org.powerbot.game.api.wrappers.node.Item;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
 
@@ -25,6 +27,19 @@ public class Inventory {
 			WIDGET_EXCHANGE, WIDGET_SHOP, WIDGET_DUNGEONEERING_SHOP,
 			WIDGET_BEAST_OF_BURDEN_STORAGE
 	};
+
+	public static Item getItem(final int... ids) {
+		final Item[] items = getItems(false);
+		for (final Item item : items) {
+			final int item_id = item.getId();
+			for (final int id : ids) {
+				if (item_id == id) {
+					return item;
+				}
+			}
+		}
+		return null;
+	}
 
 	public static Item[] getItems() {
 		return getItems(true);
@@ -84,6 +99,62 @@ public class Inventory {
 			}
 		}
 		return count;
+	}
+
+	public static boolean selectItem(final int itemId) {
+		final Item item = getItem(itemId);
+		return item != null && selectItem(item);
+	}
+
+	/**
+	 * Selects the specified item in the inventory
+	 *
+	 * @param item The item to select.
+	 * @return <tt>true</tt> if the item was selected; otherwise <tt>false</tt>.
+	 */
+	public static boolean selectItem(final Item item) {
+		final int itemID = item.getId();
+		Item selItem = getSelectedItem();
+		if (selItem != null && selItem.getId() == itemID) {
+			return true;
+		}
+		if (selItem != null) {
+			selItem.getWidgetChild().interact("Use");
+			Time.sleep(Random.nextInt(500, 700));
+		}
+		if (!item.getWidgetChild().interact("Use")) {
+			return false;
+		}
+		for (int c = 0; c < 5 && (selItem = getSelectedItem()) == null; c++) {
+			Time.sleep(Random.nextInt(500, 700));
+		}
+		return selItem != null && selItem.getId() == itemID;
+	}
+
+	public static Item getItemAt(final int index) {
+		final WidgetChild child = getWidget(false).getChild(index);
+		return 0 <= index && index < 28 && child != null ? new Item(child) : null;
+	}
+
+
+	public static Item getSelectedItem() {
+		final int index = getSelectedItemIndex();
+		return index == -1 ? null : getItemAt(index);
+	}
+
+	/**
+	 * Gets the selected item index.
+	 *
+	 * @return The index of current selected item, or -1 if none is selected.
+	 */
+	public static int getSelectedItemIndex() {
+		final WidgetChild[] children = getWidget(false).getChildren();
+		for (int i = 0; i < Math.min(28, children.length); ++i) {
+			if (children[i].getBorderThickness() == 2) {
+				return i;
+			}
+		}
+		return -1;
 	}
 
 	public static WidgetChild getWidget(final boolean cached) {
