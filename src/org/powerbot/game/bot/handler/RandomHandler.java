@@ -18,6 +18,7 @@ import org.powerbot.game.api.randoms.Login;
 import org.powerbot.game.api.randoms.LostAndFound;
 import org.powerbot.game.api.randoms.Mime;
 import org.powerbot.game.api.randoms.Pinball;
+import org.powerbot.game.api.randoms.Quiz;
 import org.powerbot.game.api.randoms.SandwichLady;
 import org.powerbot.game.api.randoms.WidgetCloser;
 import org.powerbot.game.api.util.Random;
@@ -45,7 +46,8 @@ public class RandomHandler implements Task {
 				new SandwichLady(),
 				new Beekeeper(),
 				new LostAndFound(),
-				new FirstTimeDeath()
+				new FirstTimeDeath(),
+				new Quiz()
 		};
 		for (final AntiRandom antiRandom : antiRandoms) {
 			antiRandom.bot = bot;
