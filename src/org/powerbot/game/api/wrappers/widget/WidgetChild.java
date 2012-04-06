@@ -397,6 +397,19 @@ public class WidgetChild implements Entity {
 		return parentWidget.getIndex() * 0x1f + index;
 	}
 
+	@Override
+	public boolean equals(final Object obj) {
+		if (obj == this) {
+			return true;
+		}
+		if (obj instanceof WidgetChild) {
+			final WidgetChild child = (WidgetChild) obj;
+			return index == child.index && child.parentWidget.equals(parentWidget);
+		}
+		return false;
+	}
+
+
 	public int getParentId() {
 		final Object inter = getInternal();
 		if (inter == null) {
