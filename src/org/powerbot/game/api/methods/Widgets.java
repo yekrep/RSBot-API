@@ -95,7 +95,11 @@ public class Widgets {
 	}
 
 	public static WidgetChild getContinue() {
-		WidgetChild button = get(1184, 18);
+		WidgetChild button = get(752, 5);
+		if (button != null && button.validate() && button.getTextColor() == 128) {
+			return button;
+		}
+		button = get(1184, 18);
 		if (button != null && button.validate()) {
 			return button;
 		}
