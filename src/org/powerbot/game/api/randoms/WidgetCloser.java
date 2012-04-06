@@ -21,6 +21,7 @@ public class WidgetCloser extends AntiRandom {
 	static {
 		children.put(1186, 7);//Abyssal service
 		children.put(1234, 15);//membership offers
+		children.put(906, 354);//membership offers
 		children.put(1252, 6);//Squeal of Fortune notification
 		children.put(1253, 76);//Squeal of Fortune window
 	}
