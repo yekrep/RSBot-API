@@ -14,6 +14,7 @@ import org.powerbot.game.api.Manifest;
 import org.powerbot.game.api.randoms.Beekeeper;
 import org.powerbot.game.api.randoms.DrillDemon;
 import org.powerbot.game.api.randoms.FirstTimeDeath;
+import org.powerbot.game.api.randoms.Frog;
 import org.powerbot.game.api.randoms.Login;
 import org.powerbot.game.api.randoms.LostAndFound;
 import org.powerbot.game.api.randoms.Mime;
@@ -47,7 +48,8 @@ public class RandomHandler implements Task {
 				new Beekeeper(),
 				new LostAndFound(),
 				new FirstTimeDeath(),
-				new Quiz()
+				new Quiz(),
+				new Frog()
 		};
 		for (final AntiRandom antiRandom : antiRandoms) {
 			antiRandom.bot = bot;
