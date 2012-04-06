@@ -52,10 +52,7 @@ public class Pinball extends AntiRandom {
 					Time.sleep(exit.interact("Exit") ? Random.nextInt(4000, 4200) : 0);
 					return;
 				} else {
-					Camera.setAngle('s');
-					if (!exit.isOnScreen()) {
-						Camera.turnTo(exit);
-					}
+					Camera.turnTo(exit);
 					exit.getPosition().interact("Walk here");
 					Time.sleep(Random.nextInt(1400, 1500));
 					return;
