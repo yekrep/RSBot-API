@@ -34,10 +34,15 @@ public class Npcs {
 		return getLoaded(ALL_FILTER);
 	}
 
-	public static Npc[] getLoaded(final int id) {
+	public static Npc[] getLoaded(final int... ids) {
 		return getLoaded(new Filter<Npc>() {
 			public boolean accept(final Npc npc) {
-				return npc.getId() == id;
+				for (final int id : ids) {
+					if (npc.getId() == id) {
+						return true;
+					}
+				}
+				return false;
 			}
 		});
 	}
@@ -62,10 +67,15 @@ public class Npcs {
 		return npcs.toArray(new Npc[npcs.size()]);
 	}
 
-	public static Npc getNearest(final int id) {
+	public static Npc getNearest(final int... ids) {
 		return getNearest(new Filter<Npc>() {
 			public boolean accept(final Npc npc) {
-				return npc.getId() == id;
+				for (final int id : ids) {
+					if (id == npc.getId()) {
+						return true;
+					}
+				}
+				return false;
 			}
 		});
 	}
