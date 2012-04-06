@@ -12,6 +12,7 @@ import org.powerbot.game.api.ActiveScript;
 import org.powerbot.game.api.AntiRandom;
 import org.powerbot.game.api.Manifest;
 import org.powerbot.game.api.randoms.Beekeeper;
+import org.powerbot.game.api.randoms.Certer;
 import org.powerbot.game.api.randoms.Chest;
 import org.powerbot.game.api.randoms.DrillDemon;
 import org.powerbot.game.api.randoms.FirstTimeDeath;
@@ -55,7 +56,8 @@ public class RandomHandler implements Task {
 				new Frog(),
 				new Chest(),
 				new GraveDigger(),
-				new Pillory()
+				new Pillory(),
+				new Certer()
 		};
 		for (final AntiRandom antiRandom : antiRandoms) {
 			antiRandom.bot = bot;
