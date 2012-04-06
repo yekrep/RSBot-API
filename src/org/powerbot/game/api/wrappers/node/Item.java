@@ -83,4 +83,15 @@ public class Item {
 	public WidgetChild getWidgetChild() {
 		return widgetChild;
 	}
+
+	@Override
+	public boolean equals(final Object o) {
+		if (o instanceof Item) {
+			final Item item = (Item) o;
+			if (item.getId() == id && item.getStackSize() == stack) {
+				return !(widgetChild != null && item.getWidgetChild() != null) || widgetChild.equals(item.getWidgetChild());
+			}
+		}
+		return false;
+	}
 }
