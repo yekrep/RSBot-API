@@ -42,11 +42,15 @@ public class MouseManipulator implements Task {
 		while (running && System.currentTimeMillis() - start < timeout && locatable.validate()) {
 			if (!locatable.contains(targetPoint)) {
 				final Point viewPortPoint = locatable.getNextViewportPoint();
-				if (viewPortPoint.x == -1 || viewPortPoint.y == -1) {
+				if (!Mouse.isOnCanvas(viewPortPoint.x, viewPortPoint.y)) {
 					Time.sleep(Random.nextInt(25, 51));
 					continue;
 				}
 				targetPoint.setLocation(viewPortPoint);
+			} else if (!Mouse.isOnCanvas(targetPoint.x, targetPoint.y)) {
+				targetPoint.setLocation(-1, -1);
+				Time.sleep(Random.nextInt(100, 200));
+				continue;
 			}
 			final Point currentPoint = clientMouse.getLocation();
 			if (targetPoint.distance(currentPoint) < 3 && locatable.contains(currentPoint) && filter.accept(currentPoint)) {
