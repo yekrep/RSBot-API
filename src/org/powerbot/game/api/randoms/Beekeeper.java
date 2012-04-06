@@ -26,9 +26,7 @@ public class Beekeeper extends AntiRandom {
 	private static final int WIDGET_HIVE_BUILD = 40;
 	private static final int WIDGET_HIVE_CLOSE = 38;
 	private static final int WIDGET_CHAT = 1188;
-	private static final int WIDGET_CHAT_TRY_AGAIN = 1191;
 	private static final int WIDGET_CHAT_TEXT_INDEX_2 = 24;
-	private static final int WIDGET_CHAT_CONTINUE = 18;
 
 	private static final int LID = 8, UP_MID = 9, LOW_MID = 10, LEGS = 11;
 	private static final int LOWERMID = 16022, UPPERMID = 16025, BOTTOM = 16034, TOP = 16036;
@@ -52,12 +50,6 @@ public class Beekeeper extends AntiRandom {
 		if (Widgets.get(WIDGET_CHAT, WIDGET_CHAT_TEXT_INDEX_2).validate()) {
 			verbose("WIDGET VALIDATED: Let's try again!");
 			Widgets.get(WIDGET_CHAT, WIDGET_CHAT_TEXT_INDEX_2).click(true);
-			Time.sleep(Random.nextInt(1800, 2500));
-			return;
-		}
-		if (Widgets.get(WIDGET_CHAT_TRY_AGAIN, WIDGET_CHAT_CONTINUE).validate()) {
-			verbose("WIDGET VALIDATED: Try again - continue.");
-			Widgets.get(WIDGET_CHAT_TRY_AGAIN, WIDGET_CHAT_CONTINUE).click(true);
 			Time.sleep(Random.nextInt(1800, 2500));
 			return;
 		}
