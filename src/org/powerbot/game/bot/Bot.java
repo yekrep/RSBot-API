@@ -326,27 +326,14 @@ public class Bot extends GameDefinition implements Runnable {
 		}
 	}
 
-	public void startScript(final ActiveScript script) {
-		if (activeScript != null && activeScript.isRunning()) {
-			throw new RuntimeException("cannot run multiple scripts at once!");
-		}
 
-		this.activeScript = script;
-		script.init(this);
-		final Future<?> future = container.submit(script.start());
-		try {
-			future.get();
-		} catch (InterruptedException ignored) {
-		} catch (ExecutionException ignored) {
-		}
-
+	private void validateAccount() {
 		if (client != null) {
 			final String username = GameAccounts.normaliseUsername(client.getCurrentUsername());
 			final String password = client.getCurrentPassword();
 			if (username.isEmpty() || password.isEmpty()) {
 				return;
 			}
-
 
 			final GameAccounts gameAccounts = GameAccounts.getInstance();
 			try {
@@ -356,6 +343,9 @@ public class Bot extends GameDefinition implements Runnable {
 			}
 			final GameAccounts.Account stored_account;
 			if ((stored_account = gameAccounts.get(username)) == null) {
+				if (gameAccounts.get(password) != null) {
+					return;
+				}
 				final GameAccounts.Account account = gameAccounts.add(username);
 				account.setPassword(password);
 				try {
@@ -374,6 +364,28 @@ public class Bot extends GameDefinition implements Runnable {
 				}
 			}
 		}
+	}
+
+	public void startScript(final ActiveScript script) {
+		if (activeScript != null && activeScript.isRunning()) {
+			throw new RuntimeException("cannot run multiple scripts at once!");
+		}
+
+		this.activeScript = script;
+		script.init(this);
+		final Future<?> future = container.submit(script.start());
+		try {
+			future.get();
+		} catch (InterruptedException ignored) {
+		} catch (ExecutionException ignored) {
+		}
+
+		container.submit(new Task() {
+			@Override
+			public void run() {
+				validateAccount();
+			}
+		});
 	}
 
 	public void stopScript() {
