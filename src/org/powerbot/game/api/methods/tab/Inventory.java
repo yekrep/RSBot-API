@@ -42,7 +42,7 @@ public class Inventory {
 	}
 
 	public static Item[] getItems() {
-		return getItems(true);
+		return getItems(false);
 	}
 
 	public static Item[] getItems(final boolean cached) {
