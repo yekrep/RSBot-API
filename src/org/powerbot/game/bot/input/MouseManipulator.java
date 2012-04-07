@@ -40,7 +40,7 @@ public class MouseManipulator implements Task {
 		final long start = System.currentTimeMillis();
 		Point targetPoint = new Point(-1, -1);
 		while (running && System.currentTimeMillis() - start < timeout && locatable.validate()) {
-			if (!locatable.contains(targetPoint)) {
+			if (targetPoint.x == -1 || targetPoint.y == -1 || !locatable.contains(targetPoint)) {
 				final Point viewPortPoint = locatable.getNextViewportPoint();
 				if (!Mouse.isOnCanvas(viewPortPoint.x, viewPortPoint.y)) {
 					Time.sleep(Random.nextInt(25, 51));
@@ -56,6 +56,9 @@ public class MouseManipulator implements Task {
 			if (targetPoint.distance(currentPoint) < 3 && locatable.contains(currentPoint) && filter.accept(currentPoint)) {
 				accepted = true;
 				break;
+			} else if (targetPoint.distance(currentPoint) < 3) {
+				targetPoint.setLocation(-1, -1);
+				continue;
 			}
 			final double deltaTime = Random.nextDouble(8D, 10D) / 1000D;
 			final Vector forceVector = new Vector();
