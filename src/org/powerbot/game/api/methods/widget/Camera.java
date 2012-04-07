@@ -41,14 +41,14 @@ public class Camera {
 		return (int) (((bot.getClient().getCameraPitch() * bot.multipliers.GLOBAL_CAMERAPITCH) - 1024) / 20.48);
 	}
 
-	public static boolean setPitch(final boolean up) {
+	public synchronized static boolean setPitch(final boolean up) {
 		if (up) {
 			return setPitch(100);
 		}
 		return setPitch(0);
 	}
 
-	public static boolean setPitch(final int percent) {
+	public synchronized static boolean setPitch(final int percent) {
 		int curAlt = getPitch();
 		int lastAlt = 0;
 		if (curAlt == percent) {
@@ -79,7 +79,7 @@ public class Camera {
 		return curAlt == percent;
 	}
 
-	public static void setAngle(final char direction) {
+	public synchronized static void setAngle(final char direction) {
 		switch (direction) {
 		case 'n':
 			setAngle(0);
@@ -99,15 +99,15 @@ public class Camera {
 		}
 	}
 
-	public static boolean setNorth() {
+	public synchronized static boolean setNorth() {
 		return WidgetComposite.getCompass().click(true);
 	}
 
-	public static boolean setNorth(final int up) {
+	public synchronized static boolean setNorth(final int up) {
 		return WidgetComposite.getCompass().click(true) && setPitch(up);
 	}
 
-	public static void setAngle(int degrees) {
+	public synchronized static void setAngle(int degrees) {
 		degrees %= 360;
 		if (getAngleTo(degrees) > 5) {
 			Keyboard.pressKey((char) KeyEvent.VK_LEFT, 0, 0);
@@ -148,11 +148,11 @@ public class Camera {
 		return da;
 	}
 
-	public static void turnTo(final Mobile l) {
+	public synchronized static void turnTo(final Mobile l) {
 		turnTo(l, 0);
 	}
 
-	public static void turnTo(final Mobile l, final int dev) {
+	public synchronized static void turnTo(final Mobile l, final int dev) {
 		int angle = getMobileAngle(l);
 		angle = Random.nextInt(angle - dev, angle + dev + 1);
 		setAngle(angle);
