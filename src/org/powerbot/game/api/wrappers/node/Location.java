@@ -3,6 +3,7 @@ package org.powerbot.game.api.wrappers.node;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Polygon;
+import java.lang.ref.SoftReference;
 
 import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.api.wrappers.Area;
@@ -24,6 +25,7 @@ import org.powerbot.game.client.RSAnimableX1;
 import org.powerbot.game.client.RSAnimableX2;
 import org.powerbot.game.client.RSAnimableY1;
 import org.powerbot.game.client.RSAnimableY2;
+import org.powerbot.game.client.RSInfoRSObjectDefLoaders;
 import org.powerbot.game.client.RSInteractableLocation;
 import org.powerbot.game.client.RSInteractableManager;
 import org.powerbot.game.client.RSInteractableRSInteractableManager;
@@ -100,12 +102,16 @@ public class Location implements Entity, Mobile {
 	}
 
 	public LocationDefinition getDefinition() {
+		final Object object = ((RSInfoRSObjectDefLoaders) Bot.resolve().getClient().getRSGroundInfo()).getRSInfoRSObjectDefLoaders();
 		final Object objectDefLoader = ((CacheTable) ((RSObjectDefLoaderCache) object).getRSObjectDefLoaderCache()).getCacheTable();
 		final Node ref = Nodes.lookup(objectDefLoader, getId());
 		if (ref != null && ref instanceof Reference) {
 			final Object reference = ((Reference) ref).getData();
 			if (reference instanceof SoftReferenceGet) {
-				return new LocationDefinition(((SoftReferenceGet) reference).getSoftReferenceGet());
+				final Object soft = ((SoftReferenceGet) reference).getSoftReferenceGet();
+				if (soft != null) {
+					return new LocationDefinition(soft instanceof SoftReference ? ((SoftReference) soft).get() : soft);
+				}
 			} else if (reference instanceof HardReferenceGet) {
 				return new LocationDefinition(((HardReferenceGet) reference).getHardReferenceGet());
 			}
