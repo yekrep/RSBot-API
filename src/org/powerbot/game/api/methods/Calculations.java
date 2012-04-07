@@ -148,7 +148,7 @@ public class Calculations {
 			return new Point(-1, -1);
 		}
 		final int actDistSq = calculatedX * calculatedX + calculatedY * calculatedY;
-		final int mmDist =  Math.max(mm2.getWidth() / 2, mm2.getHeight() / 2) - 6;
+		final int mmDist = Math.max(mm2.getWidth() / 2, mm2.getHeight() / 2) - 6;
 
 		if (mmDist * mmDist >= actDistSq) {
 			int angle = 0x3fff & (int) client.getMinimapAngle();
@@ -196,5 +196,18 @@ public class Calculations {
 
 	public static double distance(final int x1, final int y1, final int x2, final int y2) {
 		return Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
+	}
+
+	public static double distanceTo(final Tile tile) {
+		return distance(tile, Players.getLocal().getPosition());
+	}
+
+	public static double distanceTo(final RegionTile tile) {
+		return distance(tile, Players.getLocal().getRegionPosition());
+	}
+
+	public static double distanceTo(final int x, final int y) {
+		final Tile pos = Players.getLocal().getPosition();
+		return distance(x, y, pos.getX(), pos.getY());
 	}
 }
