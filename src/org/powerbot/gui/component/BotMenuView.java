@@ -15,6 +15,7 @@ import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenu;
 
 import org.powerbot.game.bot.Bot;
+import org.powerbot.game.bot.event.impl.DrawBoundaries;
 import org.powerbot.game.bot.event.impl.DrawGroundItems;
 import org.powerbot.game.bot.event.impl.DrawInventory;
 import org.powerbot.game.bot.event.impl.DrawLocations;
@@ -46,6 +47,7 @@ public final class BotMenuView extends JMenu implements ActionListener {
 	private static final String GROUND_ITEMS = "Ground Items";
 	private static final String LOCATIONS = "Locations";
 	private static final String MODELS = "Models";
+	private static final String BOUNDARIES = "Boundaries";
 	private static final String INVENTORY = "Inventory";
 	private static final String CLIENTSTATE = "Client State";
 	private static final String FLOOR = "Floor";
@@ -76,6 +78,7 @@ public final class BotMenuView extends JMenu implements ActionListener {
 		}
 
 		map = new LinkedHashMap<String, Class<? extends EventListener>>();
+		map.put(BOUNDARIES, DrawBoundaries.class);
 		map.put(MODELS, DrawModels.class);
 		map.put(LOCATIONS, DrawLocations.class);
 		map.put(PLAYERS, DrawPlayers.class);
@@ -97,6 +100,7 @@ public final class BotMenuView extends JMenu implements ActionListener {
 		items.add(GROUND_ITEMS);
 		items.add(LOCATIONS);
 		items.add(MODELS);
+		items.add(BOUNDARIES);
 		items.add(INVENTORY);
 		items.add(SEPERATOR);
 		items.add(CLIENTSTATE);
