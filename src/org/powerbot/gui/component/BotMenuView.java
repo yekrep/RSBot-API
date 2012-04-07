@@ -35,7 +35,7 @@ import org.powerbot.game.bot.event.impl.TPosition;
  */
 public final class BotMenuView extends JMenu implements ActionListener {
 	private static final long serialVersionUID = 1L;
-	private final BotToolBar parent;
+	private final BotMenu parent;
 	private final Map<String, Class<? extends EventListener>> map;
 	private final List<String> items;
 	private static Map<Bot, Map<String, EventListener>> listeners;
@@ -58,13 +58,9 @@ public final class BotMenuView extends JMenu implements ActionListener {
 	private static final String SEPERATOR = "-";
 
 	public BotMenuView(final BotMenu parent) {
-		this(parent.parent);
-	}
-
-	public BotMenuView(final BotToolBar parent) {
 		super(BotLocale.VIEW);
 		this.parent = parent;
-		final int tab = parent.getActiveTab();
+		final int tab = parent.parent.getActiveTab();
 
 		if (tab == -1) {
 			setEnabled(false);
@@ -161,7 +157,7 @@ public final class BotMenuView extends JMenu implements ActionListener {
 	}
 
 	private void setView(final Class<? extends EventListener> eventListener, final boolean selected) {
-		final Bot bot = Bot.bots.get(parent.getActiveTab());
+		final Bot bot = Bot.bots.get(parent.parent.getActiveTab());
 		final String name = eventListener.getName();
 		Map<String, EventListener> listeners = BotMenuView.listeners.get(bot);
 		if (listeners == null) {
