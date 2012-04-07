@@ -264,4 +264,14 @@ public abstract class CapturedModel implements Entity {
 		}
 		return screen;
 	}
+
+	@Override
+	public boolean equals(final Object o) {
+		return o != null && o instanceof CapturedModel && Arrays.equals(((CapturedModel) o).indices1, indices1);
+	}
+
+	@Override
+	public String toString() {
+		return "[faces=" + numFaces + "vertices=" + numVertices + "] " + Arrays.toString(indices1);
+	}
 }

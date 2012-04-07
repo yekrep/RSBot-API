@@ -18,6 +18,7 @@ import org.powerbot.game.bot.api.randoms.Beekeeper;
 import org.powerbot.game.bot.api.randoms.Certer;
 import org.powerbot.game.bot.api.randoms.Chest;
 import org.powerbot.game.bot.api.randoms.DrillDemon;
+import org.powerbot.game.bot.api.randoms.EvilTwin;
 import org.powerbot.game.bot.api.randoms.FirstTimeDeath;
 import org.powerbot.game.bot.api.randoms.FreakyForester;
 import org.powerbot.game.bot.api.randoms.Frog;
@@ -59,7 +60,8 @@ public class RandomHandler implements Task {
 				new GraveDigger(),
 				new Pillory(),
 				new Certer(),
-				new FreakyForester()
+				new FreakyForester(),
+				new EvilTwin()
 		};
 		for (final AntiRandom antiRandom : antiRandoms) {
 			antiRandom.bot = bot;

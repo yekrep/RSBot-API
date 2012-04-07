@@ -1,0 +1,193 @@
+package org.powerbot.game.bot.api.randoms;
+
+import java.util.ArrayList;
+
+import org.powerbot.game.api.AntiRandom;
+import org.powerbot.game.api.Manifest;
+import org.powerbot.game.api.methods.Widgets;
+import org.powerbot.game.api.methods.interactive.Npcs;
+import org.powerbot.game.api.methods.interactive.Players;
+import org.powerbot.game.api.methods.node.Locations;
+import org.powerbot.game.api.methods.widget.Camera;
+import org.powerbot.game.api.util.Filter;
+import org.powerbot.game.api.util.Random;
+import org.powerbot.game.api.util.Time;
+import org.powerbot.game.api.util.Timer;
+import org.powerbot.game.api.wrappers.Tile;
+import org.powerbot.game.api.wrappers.graphics.CapturedModel;
+import org.powerbot.game.api.wrappers.interactive.Npc;
+import org.powerbot.game.api.wrappers.interactive.Player;
+import org.powerbot.game.api.wrappers.node.Location;
+import org.powerbot.game.api.wrappers.widget.Widget;
+
+@Manifest(name = "Evil Twin", authors = {"Timer"}, version = 1.0)
+public class EvilTwin extends AntiRandom {
+	private static final int LOCATION_ID_DOOR = 14982;
+	private static final int LOCATION_ID_CLAW = 14976;
+	private static final int WIDGET_CONTROLS = 240;
+	private static final int WIDGET_CONTROLS_UP = 29;
+	private static final int WIDGET_CONTROLS_DOWN = 30;
+	private static final int WIDGET_CONTROLS_LEFT = 31;
+	private static final int WIDGET_CONTROLS_RIGHT = 32;
+	private static final int WIDGET_CONTROLS_GRAB = 28;
+	private CapturedModel model;
+	private int xCheck = 0;
+
+	@Override
+	public boolean validate() {
+		return Npcs.getNearest(new Filter<Npc>() {
+			@Override
+			public boolean accept(final Npc npc) {
+				return npc.getName().equalsIgnoreCase("Molly");
+			}
+		}) != null || Locations.getLoaded(14978) != null;
+	}
+
+	@Override
+	public void run() {
+		final Npc molly = Npcs.getNearest(new Filter<Npc>() {
+			@Override
+			public boolean accept(final Npc npc) {
+				return npc.getName().equalsIgnoreCase("Molly");
+			}
+		});
+		if (molly != null) {
+			xCheck = molly.getPosition().getX() + 4;
+		}
+
+
+		if (Widgets.get(1188, 3).validate()) {
+			verbose("Selecting first chat option ...");
+			Widgets.get(1188, 3).interact("Continue");
+			Time.sleep(Random.nextInt(1000, 2000));
+			return;
+		}
+		if (Widgets.clickContinue()) {
+			verbose("Following conversation ...");
+			Time.sleep(Random.nextInt(100, 500));
+			return;
+		}
+
+		final Player player = Players.getLocal();
+
+		if (molly != null && player.getPosition().getX() <= xCheck) {
+			verbose("We have to leave the room.");
+			verbose(molly.getModel().toString());
+			model = molly.getModel();
+			verbose("Molly: " + model.toString());
+			final Location location = Locations.getNearest(LOCATION_ID_DOOR);
+			if (location != null && location.interact("Open")) {
+				final Timer t = new Timer(2000);
+				while (t.isRunning()) {
+					if (player.isMoving()) {
+						t.reset();
+					}
+					Time.sleep(150);
+				}
+			}
+			return;
+		}
+
+		if (molly == null && player.getPosition().getX() > xCheck) {
+			verbose("Operate the claw!  Molly is not back yet...");
+			final Widget widget = Widgets.get(WIDGET_CONTROLS);
+			if (widget.validate()) {
+				verbose("WIDGET VALIDATED");
+				navigateClaw();
+				final Timer t = new Timer(12000);
+				while (!Widgets.canContinue() && t.isRunning()) {
+					Time.sleep(150);
+				}
+				return;
+			}
+
+			verbose("We must interact with the control panel!");
+			final Location control = Locations.getNearest(14978);
+			if (control != null) {
+				if (!control.isOnScreen()) {
+					Camera.turnTo(control);
+				} else {
+					if (control.interact("Use")) {
+						final Timer t = new Timer(5000);
+						while (t.isRunning()) {
+							if (Widgets.get(WIDGET_CONTROLS).validate()) {
+								break;
+							}
+						}
+					}
+				}
+			}
+			return;
+		}
+
+		if (molly != null && player.getPosition().getX() > xCheck) {
+			verbose("Molly is back, go through the door...");
+			final Location location = Locations.getNearest(LOCATION_ID_DOOR);
+			if (location != null) {
+				if (!location.isOnScreen()) {
+					Camera.setPitch(false);
+					Camera.turnTo(location);
+				} else if (location.interact("Open")) {
+					final Timer t = new Timer(2000);
+					while (t.isRunning()) {
+						if (player.isMoving()) {
+							t.reset();
+						}
+						Time.sleep(150);
+					}
+				}
+			}
+		}
+	}
+
+	private void navigateClaw() {
+		Location claw;
+		Npc suspect;
+		verbose("NAVIGATION: BEGIN");
+		while ((claw = Locations.getNearest(LOCATION_ID_CLAW)) != null && (suspect = Npcs.getNearest(new Filter<Npc>() {
+			@Override
+			public boolean accept(final Npc npc) {
+				return npc.getModel().equals(model);
+			}
+		})) != null) {
+			verbose("Claw: " + claw.getPosition().toString());
+			verbose("Molly's twin: " + suspect.getPosition().toString());
+			final Tile clawLoc = claw.getPosition();
+			final Tile susLoc = suspect.getPosition();
+			final ArrayList<Integer> options = new ArrayList<Integer>();
+			if (susLoc.getX() > clawLoc.getX()) {
+				options.add(WIDGET_CONTROLS_LEFT);
+			}
+			if (susLoc.getX() < clawLoc.getX()) {
+				options.add(WIDGET_CONTROLS_RIGHT);
+			}
+			if (susLoc.getY() > clawLoc.getY()) {
+				options.add(WIDGET_CONTROLS_DOWN);
+			}
+			if (susLoc.getY() < clawLoc.getY()) {
+				options.add(WIDGET_CONTROLS_UP);
+			}
+			if (options.isEmpty()) {
+				options.add(WIDGET_CONTROLS_GRAB);
+			}
+			final Widget i = Widgets.get(WIDGET_CONTROLS);
+			if (i != null && i.validate()) {
+				i.getChild(options.get(Random.nextInt(0, options.size()))).click(true);
+			}
+			final long delayTime = System.currentTimeMillis();
+			while (!hasClawMoved(clawLoc) && System.currentTimeMillis() - delayTime < 3500) {
+				Time.sleep(10);
+			}
+		}
+		verbose("NAVIGATION: END");
+	}
+
+	private boolean hasClawMoved(final Tile prevClawLoc) {
+		final Location claw = Locations.getNearest(LOCATION_ID_CLAW);
+		if (claw == null) {
+			return false;
+		}
+		final Tile currentClawLoc = claw.getPosition();
+		return !prevClawLoc.equals(currentClawLoc);
+	}
+}
