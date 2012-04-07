@@ -4,8 +4,6 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Polygon;
 
-import org.powerbot.game.api.internal.Multipliers;
-import org.powerbot.game.api.internal.util.Nodes;
 import org.powerbot.game.api.methods.Calculations;
 import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.api.methods.input.Mouse;
@@ -19,6 +17,8 @@ import org.powerbot.game.api.wrappers.Tile;
 import org.powerbot.game.api.wrappers.graphics.CapturedModel;
 import org.powerbot.game.api.wrappers.graphics.model.CharacterModel;
 import org.powerbot.game.bot.Bot;
+import org.powerbot.game.bot.api.Multipliers;
+import org.powerbot.game.bot.api.node.Nodes;
 import org.powerbot.game.client.Client;
 import org.powerbot.game.client.Model;
 import org.powerbot.game.client.ModelCapture;

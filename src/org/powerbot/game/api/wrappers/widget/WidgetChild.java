@@ -5,8 +5,6 @@ import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 
-import org.powerbot.game.api.internal.Multipliers;
-import org.powerbot.game.api.internal.util.HashTable;
 import org.powerbot.game.api.methods.Widgets;
 import org.powerbot.game.api.methods.input.Mouse;
 import org.powerbot.game.api.methods.node.Menu;
@@ -14,6 +12,8 @@ import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.wrappers.Entity;
 import org.powerbot.game.bot.Bot;
+import org.powerbot.game.bot.api.Multipliers;
+import org.powerbot.game.bot.api.node.HashTable;
 import org.powerbot.game.client.Client;
 import org.powerbot.game.client.RSInterfaceActions;
 import org.powerbot.game.client.RSInterfaceBooleans;

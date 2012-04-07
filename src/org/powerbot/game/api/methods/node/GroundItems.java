@@ -3,8 +3,6 @@ package org.powerbot.game.api.methods.node;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.powerbot.game.api.internal.util.Deque;
-import org.powerbot.game.api.internal.util.Nodes;
 import org.powerbot.game.api.methods.Calculations;
 import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.api.methods.interactive.Players;
@@ -14,6 +12,8 @@ import org.powerbot.game.api.wrappers.Tile;
 import org.powerbot.game.api.wrappers.node.GroundItem;
 import org.powerbot.game.api.wrappers.node.Item;
 import org.powerbot.game.bot.Bot;
+import org.powerbot.game.bot.api.node.Deque;
+import org.powerbot.game.bot.api.node.Nodes;
 import org.powerbot.game.client.Client;
 import org.powerbot.game.client.NodeListCache;
 import org.powerbot.game.client.NodeListCacheNodeList;

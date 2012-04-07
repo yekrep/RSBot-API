@@ -1,4 +1,4 @@
-package org.powerbot.game.api.randoms;
+package org.powerbot.game.bot.api.randoms;
 
 import java.util.HashMap;
 import java.util.Map;

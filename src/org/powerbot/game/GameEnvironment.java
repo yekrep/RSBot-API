@@ -28,6 +28,8 @@ public interface GameEnvironment {
 
 	/**
 	 * Starts the loaded game environment.
+	 *
+	 * @return The future of this environment's starting task.
 	 */
 	public Future<?> startEnvironment();
 

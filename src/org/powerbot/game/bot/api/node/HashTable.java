@@ -1,4 +1,4 @@
-package org.powerbot.game.api.internal.util;
+package org.powerbot.game.bot.api.node;
 
 import org.powerbot.game.client.HashTable2Buckets;
 import org.powerbot.game.client.HashTableBuckets;

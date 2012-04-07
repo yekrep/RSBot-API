@@ -1,4 +1,4 @@
-package org.powerbot.game.api.internal.util;
+package org.powerbot.game.bot.api.node;
 
 import org.powerbot.game.client.NodeSub;
 import org.powerbot.game.client.NodeSubQueueTail;

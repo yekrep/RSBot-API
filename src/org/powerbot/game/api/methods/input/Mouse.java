@@ -11,12 +11,12 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 import org.powerbot.concurrent.TaskContainer;
-import org.powerbot.game.api.internal.input.MouseManipulator;
 import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Time;
 import org.powerbot.game.api.wrappers.Locatable;
 import org.powerbot.game.bot.Bot;
+import org.powerbot.game.bot.input.MouseManipulator;
 import org.powerbot.game.client.Client;
 
 /**

@@ -49,7 +49,7 @@ public class Calculations {
 
 	static {
 		final double d = 0.00038349519697141029D;
-		for (int i = 0; i < 16384; i++) {
+		for (int i = 0; i < 0x4000; i++) {
 			Calculations.SIN_TABLE[i] = (int) (32768D * Math.sin(i * d));
 			Calculations.COS_TABLE[i] = (int) (32768D * Math.cos(i * d));
 		}

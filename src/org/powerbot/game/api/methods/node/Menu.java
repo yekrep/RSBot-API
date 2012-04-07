@@ -5,13 +5,13 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.regex.Pattern;
 
-import org.powerbot.game.api.internal.util.Deque;
-import org.powerbot.game.api.internal.util.Queue;
 import org.powerbot.game.api.methods.input.Mouse;
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Time;
 import org.powerbot.game.api.util.Timer;
 import org.powerbot.game.bot.Bot;
+import org.powerbot.game.bot.api.node.Deque;
+import org.powerbot.game.bot.api.node.Queue;
 import org.powerbot.game.client.Client;
 import org.powerbot.game.client.MenuGroupNode;
 import org.powerbot.game.client.MenuGroupNodeItems;

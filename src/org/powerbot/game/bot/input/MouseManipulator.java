@@ -1,4 +1,4 @@
-package org.powerbot.game.api.internal.input;
+package org.powerbot.game.bot.input;
 
 import java.awt.Canvas;
 import java.awt.Point;

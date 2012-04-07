@@ -1,4 +1,4 @@
-package org.powerbot.game.api.randoms;
+package org.powerbot.game.bot.api.randoms;
 
 import org.powerbot.game.api.AntiRandom;
 import org.powerbot.game.api.Manifest;
@@ -25,7 +25,6 @@ public class FreakyForester extends AntiRandom {
 	private static final int WIDGET_TALK = 1184;
 	private static final int WIDGET_TALK_TEXT = 13;
 	private static final String[] WIDGET_TALK_NUMBERS_TEXT = {" one", " two", " three", " four"};
-	private static final String WIDGET_TALK_TALK_TEXT = "bring";
 	private static final String WIDGET_TALK_DONE_TEXT = "portal";
 	private short[] phe = {};
 	private final Filter<Npc> pheasantFilter = new Filter<Npc>() {
@@ -43,26 +42,34 @@ public class FreakyForester extends AntiRandom {
 	@Override
 	public void run() {
 		if (Widgets.canContinue()) {
+			verbose("WIDGET VALIDATED: Continue");
 			final WidgetChild textChild = Widgets.get(WIDGET_TALK, WIDGET_TALK_TEXT);
 			if (textChild.validate()) {
+				verbose("WIDGET VALIDATED: TEXT ???");
 				final String text = textChild.getText().toLowerCase();
-				if (text.contains(WIDGET_TALK_TALK_TEXT) || text.contains(WIDGET_TALK_DONE_TEXT)) {
+				if (text.contains(WIDGET_TALK_DONE_TEXT)) {
+					verbose("WIDGET: Continuing due the fact we're done...");
 					Widgets.clickContinue();
 					Time.sleep(Random.nextInt(1800, 2500));
 					return;
 				}
+				verbose("What is he saying???");
 				for (int i = 0; i < WIDGET_TALK_NUMBERS_TEXT.length; i++) {
 					if (text.contains(WIDGET_TALK_NUMBERS_TEXT[i])) {
+						verbose("Found the text '" + WIDGET_TALK_NUMBERS_TEXT[i] + "'!  Setting model (" + Models.all[i].hashCode() + ").");
 						phe = Models.all[i];
 					}
 				}
 			}
+			verbose("Nothing validated -- CONTINUE!");
 			Widgets.clickContinue();
 			Time.sleep(Random.nextInt(1800, 2500));
 			return;
 		}
 
+		verbose("SETTING 334: " + Settings.get(334));
 		if (Settings.get(334) == 0x2) {
+			verbose("SETTING VALIDATED: Depart.");
 			final Location portal = Locations.getNearest(LOCATION_ID_PORTAL);
 			if (portal != null) {
 				if (!portal.isOnScreen()) {
@@ -77,18 +84,18 @@ public class FreakyForester extends AntiRandom {
 			return;
 		}
 
-		if (Settings.get(334) == 0x1) {
-			if (phe.length == 0) {
-				return;
-			}
-
+		if (Settings.get(334) == 0x1 && phe.length != 0) {
+			verbose("SETTING VALIDATED: Kill!");
 			final Npc pheasant = Npcs.getNearest(pheasantFilter);
 			if (pheasant != null) {
+				verbose("Found pheasant...");
 				if (!pheasant.isOnScreen()) {
+					verbose("NPC: Not on screen!  Walking...");
 					walk(pheasant);
 					return;
 				}
 
+				verbose("NPC: Attempting attack");
 				if (pheasant.interact("Attack")) {
 					final Timer timer = new Timer(5000);
 					while (timer.isRunning() && !Widgets.canContinue()) {
@@ -102,11 +109,14 @@ public class FreakyForester extends AntiRandom {
 						}
 						Time.sleep(150);
 					}
+					phe = new short[0];
+					verbose("CAN CONTINUE: " + Widgets.canContinue());
 				}
 			}
 			return;
 		}
 
+		verbose("Require conversation with forester!");
 		final Npc forester = Npcs.getNearest(NPC_ID_FORESTER);
 		if (forester != null) {
 			if (!forester.isOnScreen()) {
