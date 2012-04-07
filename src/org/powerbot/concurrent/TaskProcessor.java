@@ -14,7 +14,7 @@ public class TaskProcessor implements TaskContainer {
 	private final ThreadPoolExecutor executor;
 
 	public TaskProcessor(final ThreadGroup threadGroup) {
-		executor = new ThreadPoolExecutor(Runtime.getRuntime().availableProcessors() * 3, Integer.MAX_VALUE,
+		executor = new ThreadPoolExecutor(Runtime.getRuntime().availableProcessors() * 4, Integer.MAX_VALUE,
 				0L, TimeUnit.MILLISECONDS,
 				new LinkedBlockingQueue<Runnable>(), new ThreadPool(threadGroup));
 	}
