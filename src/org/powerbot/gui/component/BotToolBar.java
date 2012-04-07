@@ -31,7 +31,6 @@ import org.powerbot.game.bot.Bot;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.gui.BotScripts;
 import org.powerbot.service.NetworkAccount;
-import org.powerbot.util.Configuration;
 import org.powerbot.util.io.Resources;
 
 /**
@@ -40,7 +39,7 @@ import org.powerbot.util.io.Resources;
 public final class BotToolBar extends JToolBar implements ActionListener {
 	private static final long serialVersionUID = 1L;
 	public final BotChrome parent;
-	private final JButton tabAdd, scriptPlay, scriptStop, panelInput, botView;
+	private final JButton tabAdd, scriptPlay, scriptStop, panelInput;
 	private int activeTab = -1;
 
 	public BotToolBar(final BotChrome parent) {
@@ -80,12 +79,6 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 		panelInput.setToolTipText(BotLocale.INPUT);
 		panelInput.setFocusable(false);
 		add(panelInput);
-		botView = new JButton(new ImageIcon(Resources.getImage(Resources.Paths.BRICKS)));
-		botView.addActionListener(this);
-		botView.setToolTipText(BotLocale.VIEW);
-		botView.setFocusable(false);
-		botView.setVisible(Configuration.DEVMODE);
-		add(botView);
 		add(Box.createHorizontalStrut(16));
 
 		final BotToolBar t = this;
@@ -167,8 +160,6 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 			}
 
 			menu.show(c, c.getWidth() / 2, c.getHeight() / 2);
-		} else if (c == botView) {
-			new BotMenuView(this).getPopupMenu().show(c, c.getWidth() / 2, c.getHeight() / 2);
 		}
 	}
 
