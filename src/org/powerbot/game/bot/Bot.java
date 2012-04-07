@@ -201,6 +201,7 @@ public class Bot extends GameDefinition implements Runnable {
 	public void killEnvironment() {
 		this.killed = true;
 		if (activeScript != null) {
+			activeScript.stop();
 			activeScript.kill();
 		}
 		log.info("Unloading environment");
