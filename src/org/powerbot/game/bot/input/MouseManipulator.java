@@ -57,10 +57,9 @@ public class MouseManipulator implements Task {
 				if (filter.accept(currentPoint)) {
 					accepted = true;
 					break;
-				} else {
-					targetPoint.setLocation(-1, -1);
-					continue;
 				}
+				targetPoint.setLocation(-1, -1);
+				continue;
 			}
 			final double deltaTime = Random.nextDouble(8D, 10D) / 1000D;
 			final Vector forceVector = new Vector();
