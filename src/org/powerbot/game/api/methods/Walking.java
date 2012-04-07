@@ -13,7 +13,7 @@ import org.powerbot.game.client.RSGroundDataBlocks;
 import org.powerbot.game.client.RSGroundDataInts;
 import org.powerbot.game.client.RSGroundDataX;
 import org.powerbot.game.client.RSGroundDataY;
-import org.powerbot.game.client.RSGroundInfoRSGroundArray;
+import org.powerbot.game.client.RSInfoGroundData;
 
 /**
  * A utility for the manipulation of information required for waking.
@@ -45,7 +45,7 @@ public class Walking {
 	 */
 	public static Tile getCollisionOffset(final int plane) {
 		final Bot bot = Bot.resolve();
-		final Object groundDataInts = ((RSGroundDataInts) ((Object[]) ((RSGroundInfoRSGroundArray) bot.getClient().getRSGroundInfo()).getRSGroundInfoRSGroundArray())[plane]).getRSGroundDataInts();
+		final Object groundDataInts = ((RSGroundDataInts) ((Object[]) ((RSInfoGroundData) bot.getClient().getRSGroundInfo()).getRSInfoGroundData())[plane]).getRSGroundDataInts();
 		return new Tile(((RSGroundDataX) groundDataInts).getRSGroundDataX() * bot.multipliers.GROUNDDATA_X, ((RSGroundDataY) groundDataInts).getRSGroundDataY() * bot.multipliers.GROUNDDATA_Y, plane);
 	}
 
@@ -54,7 +54,7 @@ public class Walking {
 	 * @return The collision flags of the current map block.
 	 */
 	public static int[][] getCollisionFlags(final int plane) {
-		return (int[][]) ((RSGroundDataBlocks) ((Object[]) ((RSGroundInfoRSGroundArray) Bot.resolve().getClient().getRSGroundInfo()).getRSGroundInfoRSGroundArray())[plane]).getRSGroundDataBlocks();
+		return (int[][]) ((RSGroundDataBlocks) ((Object[]) ((RSInfoGroundData) Bot.resolve().getClient().getRSGroundInfo()).getRSInfoGroundData())[plane]).getRSGroundDataBlocks();
 	}
 
 	public static void setRun(final boolean enabled) {
