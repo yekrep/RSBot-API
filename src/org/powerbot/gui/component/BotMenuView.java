@@ -24,6 +24,7 @@ import org.powerbot.game.bot.event.impl.DrawMouse;
 import org.powerbot.game.bot.event.impl.DrawNpcs;
 import org.powerbot.game.bot.event.impl.DrawPlayers;
 import org.powerbot.game.bot.event.impl.MessageLogger;
+import org.powerbot.game.bot.event.impl.TCamera;
 import org.powerbot.game.bot.event.impl.TClientState;
 import org.powerbot.game.bot.event.impl.TDestination;
 import org.powerbot.game.bot.event.impl.TMapBase;
@@ -50,7 +51,8 @@ public final class BotMenuView extends JMenu implements ActionListener {
 	private static final String BOUNDARIES = "Boundaries";
 	private static final String INVENTORY = "Inventory";
 	private static final String CLIENTSTATE = "Client State";
-	private static final String FLOOR = "Floor";
+	private static final String PLANE = "Plane";
+	private static final String CAMERA = "Camera";
 	private static final String MAPBASE = "Map Base";
 	private static final String POSITION = "Position";
 	private static final String DESTINATION = "Destination";
@@ -81,7 +83,8 @@ public final class BotMenuView extends JMenu implements ActionListener {
 		map.put(NPCS, DrawNpcs.class);
 		map.put(GROUND_ITEMS, DrawGroundItems.class);
 		map.put(CLIENTSTATE, TClientState.class);
-		map.put(FLOOR, TPlane.class);
+		map.put(PLANE, TPlane.class);
+		map.put(CAMERA, TCamera.class);
 		map.put(MAPBASE, TMapBase.class);
 		map.put(POSITION, TPosition.class);
 		map.put(DESTINATION, TDestination.class);
@@ -100,7 +103,8 @@ public final class BotMenuView extends JMenu implements ActionListener {
 		items.add(INVENTORY);
 		items.add(SEPERATOR);
 		items.add(CLIENTSTATE);
-		items.add(FLOOR);
+		items.add(PLANE);
+		items.add(CAMERA);
 		items.add(MAPBASE);
 		items.add(POSITION);
 		items.add(DESTINATION);
