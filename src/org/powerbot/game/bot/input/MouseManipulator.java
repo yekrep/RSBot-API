@@ -53,12 +53,14 @@ public class MouseManipulator implements Task {
 				continue;
 			}
 			final Point currentPoint = clientMouse.getLocation();
-			if (targetPoint.distance(currentPoint) < 3 && locatable.contains(currentPoint) && filter.accept(currentPoint)) {
-				accepted = true;
-				break;
-			} else if (targetPoint.distance(currentPoint) < 3) {
-				targetPoint.setLocation(-1, -1);
-				continue;
+			if (targetPoint.equals(currentPoint) && locatable.contains(currentPoint)) {
+				if (filter.accept(currentPoint)) {
+					accepted = true;
+					break;
+				} else {
+					targetPoint.setLocation(-1, -1);
+					continue;
+				}
 			}
 			final double deltaTime = Random.nextDouble(8D, 10D) / 1000D;
 			final Vector forceVector = new Vector();
