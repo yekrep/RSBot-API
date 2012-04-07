@@ -136,9 +136,6 @@ public class Calculations {
 		final Bot bot = Bot.resolve();
 		final Client client = bot.getClient();
 		final Player local = Players.getLocal();
-		if (distance(local.getPosition(), new Tile((int) x, (int) y, 0)) > 17) {
-			return new Point(-1, -1);
-		}
 		x -= Game.getBaseX();
 		y -= Game.getBaseY();
 
@@ -151,7 +148,7 @@ public class Calculations {
 			return new Point(-1, -1);
 		}
 		final int actDistSq = calculatedX * calculatedX + calculatedY * calculatedY;
-		final int mmDist = 10 + Math.max(mm2.getWidth() / 2, mm2.getHeight() / 2);
+		final int mmDist =  Math.max(mm2.getWidth() / 2, mm2.getHeight() / 2) - 6;
 
 		if (mmDist * mmDist >= actDistSq) {
 			int angle = 0x3fff & (int) client.getMinimapAngle();
