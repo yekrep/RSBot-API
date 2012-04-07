@@ -381,7 +381,7 @@ public class WidgetChild implements Entity {
 
 	public WidgetChild getChild(final int index) {
 		final WidgetChild[] children = getChildren();
-		if (index > 0 && index < children.length) {
+		if (index >= 0 && index < children.length) {
 			return children[index];
 		}
 		return null;
