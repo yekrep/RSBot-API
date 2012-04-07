@@ -190,4 +190,9 @@ public class Location implements Entity, Mobile {
 			getPosition().draw(render);
 		}
 	}
+
+	@Override
+	public String toString() {
+		return "location[ref=" + System.identityHashCode(object) + ",id=" + getId() + ",plane=" + plane + ",type=" + type.toString() + "]";
+	}
 }

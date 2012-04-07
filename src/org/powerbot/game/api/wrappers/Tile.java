@@ -14,7 +14,7 @@ import org.powerbot.game.api.util.Random;
 /**
  * @author Timer
  */
-public class Tile implements Entity {
+public class Tile implements Entity, Mobile {
 	protected final int x, y, plane;
 
 	public Tile(final int x, final int y, final int plane) {
@@ -118,6 +118,14 @@ public class Tile implements Entity {
 
 	public void draw(final Graphics render) {
 		//TODO
+	}
+
+	public Tile getPosition() {
+		return this;
+	}
+
+	public RegionTile getRegionPosition() {
+		return new RegionTile(x - Game.getBaseX(), y - Game.getBaseY(), plane);
 	}
 
 	@Override

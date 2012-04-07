@@ -17,6 +17,7 @@ import org.powerbot.game.api.methods.widget.Camera;
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Time;
 import org.powerbot.game.api.util.Timer;
+import org.powerbot.game.api.wrappers.Entity;
 import org.powerbot.game.api.wrappers.Mobile;
 import org.powerbot.game.api.wrappers.interactive.Npc;
 import org.powerbot.game.api.wrappers.node.Item;
@@ -379,7 +380,7 @@ public class GraveDigger extends AntiRandom {
 		}
 	}
 
-	private static boolean useItem(final Item item, final Location location) {
+	private static boolean useItem(final Item item, final Entity location) {
 		Tabs.INVENTORY.open();
 		return Inventory.selectItem(item) && location.interact("Use", "Coffin -> Grave");
 	}

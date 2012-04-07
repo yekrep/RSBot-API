@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.powerbot.game.api.AntiRandom;
 import org.powerbot.game.api.Manifest;
+import org.powerbot.game.api.methods.Settings;
 import org.powerbot.game.api.methods.Widgets;
 import org.powerbot.game.api.methods.interactive.Npcs;
 import org.powerbot.game.api.methods.interactive.Players;
@@ -32,6 +33,7 @@ public class EvilTwin extends AntiRandom {
 	private static final int WIDGET_CONTROLS_GRAB = 28;
 	private CapturedModel model;
 	private int xCheck = 0;
+	private boolean finished = false;
 
 	@Override
 	public boolean validate() {
@@ -40,7 +42,7 @@ public class EvilTwin extends AntiRandom {
 			public boolean accept(final Npc npc) {
 				return npc.getName().equalsIgnoreCase("Molly");
 			}
-		}) != null || Locations.getLoaded(14978) != null;
+		}) != null || Locations.getNearest(14978) != null;
 	}
 
 	@Override
@@ -64,13 +66,17 @@ public class EvilTwin extends AntiRandom {
 		}
 		if (Widgets.clickContinue()) {
 			verbose("Following conversation ...");
-			Time.sleep(Random.nextInt(100, 500));
+			Time.sleep(Random.nextInt(1500, 2200));
+			final Timer timer = new Timer(2000);
+			while (timer.isRunning() && !Widgets.canContinue()) {
+				Time.sleep(150);
+			}
 			return;
 		}
 
 		final Player player = Players.getLocal();
 
-		if (molly != null && player.getPosition().getX() <= xCheck) {
+		if (molly != null && player.getPosition().getX() <= xCheck && Settings.get(334) != 0x2 && !finished) {
 			verbose("We have to leave the room.");
 			verbose(molly.getModel().toString());
 			model = molly.getModel();
@@ -122,6 +128,7 @@ public class EvilTwin extends AntiRandom {
 
 		if (molly != null && player.getPosition().getX() > xCheck) {
 			verbose("Molly is back, go through the door...");
+			finished = true;
 			final Location location = Locations.getNearest(LOCATION_ID_DOOR);
 			if (location != null) {
 				if (!location.isOnScreen()) {
@@ -135,6 +142,23 @@ public class EvilTwin extends AntiRandom {
 						}
 						Time.sleep(150);
 					}
+				}
+			}
+		}
+
+		if (molly != null) {
+			if (!molly.isOnScreen()) {
+				Camera.turnTo(molly);
+				return;
+			}
+
+			if (molly.interact("Talk-to")) {
+				final Timer timer = new Timer(5000);
+				while (timer.isRunning() && !Widgets.canContinue()) {
+					Time.sleep(150);
+				}
+				if (Widgets.canContinue()) {
+					finished = false;
 				}
 			}
 		}
