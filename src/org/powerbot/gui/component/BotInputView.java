@@ -36,7 +36,6 @@ public final class BotInputView extends JMenu implements ActionListener {
 		map = new LinkedHashMap<String, Integer>();
 		map.put(BotLocale.ALLOW, BotPanel.INPUT_MOUSE | BotPanel.INPUT_KEYBOARD);
 		map.put(BotLocale.KEYBOARD, BotPanel.INPUT_KEYBOARD);
-		map.put(BotLocale.MOUSE, BotPanel.INPUT_MOUSE);
 		map.put(BotLocale.BLOCK, 0);
 
 		for (final Map.Entry<String, Integer> entry : map.entrySet()) {
