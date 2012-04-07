@@ -12,12 +12,12 @@ public final class BotLocale {
 	public static String RESUMESCRIPT = "Resume Script";
 	public static String PAUSESCRIPT = "Pause Script";
 	public static String STOPSCRIPT = "Stop Script";
+	public static String INPUT = "Input";
 	public static String ACCOUNTS = "Accounts";
 	public static String SIGNIN = "Sign in";
 	public static String SIGNEDINAS = "Signed in as";
 	public static String SIGNOUT = "Sign out";
 	public static String VIEW = "View";
-	public static String INPUT = "Input";
 	public static String WIDGETEXPLORER = "Widget Explorer";
 	public static String SETTINGEXPLORER = "Setting Explorer";
 	public static String ABOUT = "About";

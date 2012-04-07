@@ -59,7 +59,6 @@ public final class BotMenu extends JPopupMenu implements ActionListener {
 		addSeparator();
 
 		add(new BotMenuView(this));
-		add(new BotInputView(this));
 		addSeparator();
 
 		if (Configuration.DEVMODE) {
