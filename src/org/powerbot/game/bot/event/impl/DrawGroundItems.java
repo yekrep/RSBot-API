@@ -28,8 +28,8 @@ public class DrawGroundItems implements PaintListener {
 			final FontMetrics metrics = render.getFontMetrics();
 			final int tHeight = metrics.getHeight();
 			final int lX = location.getX(), lY = location.getY();
-			for (int x = lX - 25; x < lX + 25; x++) {
-				for (int y = lY - 25; y < lY + 25; y++) {
+			for (int x = lX - 10; x < lX + 10; x++) {
+				for (int y = lY - 10; y < lY + 10; y++) {
 					final GroundItem[] groundItems = GroundItems.getLoadedAt(x, y);
 					int i = 0;
 					for (final GroundItem groundItem : groundItems) {
