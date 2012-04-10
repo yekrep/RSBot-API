@@ -23,6 +23,9 @@ public interface TaskContainer {
 	 */
 	public boolean isActive();
 
+
+	public boolean isShutdown();
+
 	/**
 	 * Determines if this container is locked from use.
 	 *
