@@ -8,6 +8,8 @@ import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.wrappers.Locatable;
 import org.powerbot.game.api.wrappers.Mobile;
 import org.powerbot.game.api.wrappers.Tile;
+import org.powerbot.game.api.wrappers.map.LocalPath;
+import org.powerbot.game.api.wrappers.map.TilePath;
 import org.powerbot.game.bot.Bot;
 import org.powerbot.game.client.RSGroundDataBlocks;
 import org.powerbot.game.client.RSGroundDataInts;
@@ -73,6 +75,14 @@ public class Walking {
 		} catch (final NumberFormatException ignored) {
 			return -1;
 		}
+	}
+
+	public static TilePath newTilePath(final Tile[] path) {
+		return new TilePath(path);
+	}
+
+	public static LocalPath findPath(final Tile end) {
+		return new LocalPath(end);
 	}
 
 	public static boolean walk(final Mobile mobile) {

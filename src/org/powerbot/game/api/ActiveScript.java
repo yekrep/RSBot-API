@@ -75,7 +75,7 @@ public abstract class ActiveScript implements EventListener, Processor {
 	protected final void setStoppableExecution(final Condition policy) {
 	}
 
-	protected final void setIterationSleep(final int milliseconds) {
+	protected final void setIterationDelay(final int milliseconds) {
 		executor.setIterationSleep(milliseconds);
 	}
 

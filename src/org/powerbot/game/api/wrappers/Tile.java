@@ -17,6 +17,44 @@ import org.powerbot.game.api.util.Random;
 public class Tile implements Entity, Mobile {
 	protected final int x, y, plane;
 
+	public static interface Flag {
+		static final int WALL_NORTHWEST = 0x1;
+		static final int WALL_NORTH = 0x2;
+		static final int WALL_NORTHEAST = 0x4;
+		static final int WALL_EAST = 0x8;
+		static final int WALL_SOUTHEAST = 0x10;
+		static final int WALL_SOUTH = 0x20;
+		static final int WALL_SOUTHWEST = 0x40;
+		static final int WALL_WEST = 0x80;
+
+		static final int OBJECT_TILE = 0x100;
+
+		static final int WALL_BLOCK_NORTHWEST = 0x200;
+		static final int WALL_BLOCK_NORTH = 0x400;
+		static final int WALL_BLOCK_NORTHEAST = 0x800;
+		static final int WALL_BLOCK_EAST = 0x1000;
+		static final int WALL_BLOCK_SOUTHEAST = 0x2000;
+		static final int WALL_BLOCK_SOUTH = 0x4000;
+		static final int WALL_BLOCK_SOUTHWEST = 0x8000;
+		static final int WALL_BLOCK_WEST = 0x10000;
+
+		static final int OBJECT_BLOCK = 0x20000;
+		static final int DECORATION_BLOCK = 0x40000;
+
+		static final int WALL_ALLOW_RANGE_NORTHWEST = 0x400000;
+		static final int WALL_ALLOW_RANGE_NORTH = 0x800000;
+		static final int WALL_ALLOW_RANGE_NORTHEAST = 0x1000000;
+		static final int WALL_ALLOW_RANGE_EAST = 0x2000000;
+		static final int WALL_ALLOW_RANGE_SOUTHEAST = 0x4000000;
+		static final int WALL_ALLOW_RANGE_SOUTH = 0x8000000;
+		static final int WALL_ALLOW_RANGE_SOUTHWEST = 0x10000000;
+		static final int WALL_ALLOW_RANGE_WEST = 0x20000000;
+
+		static final int OBJECT_ALLOW_RANGE = 0x40000000;
+
+		static final int BLOCKED = 0x1280100;
+	}
+
 	public Tile(final int x, final int y, final int plane) {
 		this.x = x;
 		this.y = y;
@@ -43,6 +81,15 @@ public class Tile implements Entity, Mobile {
 		final int x = this.x - Game.getBaseX();
 		final int y = this.y - Game.getBaseY();
 		return x > 0 && x < 104 && y > 0 && y < 104;
+	}
+
+	public Point getMapPoint() {
+		return Calculations.worldToMap(x, y);
+	}
+
+	public boolean isOnMap() {
+		final Point p = getMapPoint();
+		return p.x != -1 && p.y != -1;
 	}
 
 	public Point getCentralPoint() {
@@ -112,12 +159,19 @@ public class Tile implements Entity, Mobile {
 		});
 	}
 
+	public boolean canReach() {
+		return false;//TODO IMPORTANT WALKING
+	}
+
 	public Point getPoint(final double xOff, final double yOff, final int height) {
 		return Calculations.groundToScreen((int) ((x - Game.getBaseX() + xOff) * 0x200), (int) ((y - Game.getBaseY() + yOff) * 0x200), plane, -height);
 	}
 
 	public void draw(final Graphics render) {
-		//TODO
+		final Polygon[] polygons = getBounds();
+		if (polygons.length == 1) {
+			render.drawPolygon(polygons[0]);
+		}
 	}
 
 	public Tile getPosition() {

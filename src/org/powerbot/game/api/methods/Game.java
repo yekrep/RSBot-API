@@ -1,5 +1,6 @@
 package org.powerbot.game.api.methods;
 
+import org.powerbot.game.api.wrappers.Tile;
 import org.powerbot.game.bot.Bot;
 import org.powerbot.game.bot.api.Constants;
 import org.powerbot.game.client.BaseInfoInts;
@@ -80,6 +81,16 @@ public class Game {
 	public static int getBaseY() {
 		final Bot bot = Bot.resolve();
 		return (((BaseInfoY) ((BaseInfoInts) ((RSInfoBaseInfo) bot.getClient().getRSGroundInfo()).getRSInfoBaseInfo()).getBaseInfoInts()).getBaseInfoY() * bot.multipliers.BASEDATA_Y) >> 8;
+	}
+
+	public static Tile getMapBase() {
+		final Bot bot = Bot.resolve();
+		final Object infoInts = ((BaseInfoInts) ((RSInfoBaseInfo) bot.getClient().getRSGroundInfo()).getRSInfoBaseInfo()).getBaseInfoInts();
+		return new Tile(
+				(((BaseInfoX) infoInts).getBaseInfoX() * bot.multipliers.BASEDATA_X) >> 8,
+				(((BaseInfoY) infoInts).getBaseInfoY() * bot.multipliers.BASEDATA_Y) >> 8,
+				Game.getPlane()
+		);
 	}
 
 	public static int getLoopCycle() {
