@@ -123,6 +123,13 @@ public class EvilBob extends AntiRandom {
 		final int setting = Settings.get(SETTING_STAGE);
 		if (setting == 2 || forceLeave) {
 			verbose("SETTING: Stage 2 - EXIT");
+			final WidgetChild child = Widgets.get(566, 16);//no i left no items valuable
+			if (child != null && child.validate()) {
+				child.click(true);
+				Time.sleep(Random.nextInt(1000, 2000));
+				return;
+			}
+
 			final Location portal = Locations.getNearest(LOCATION_ID_PORTAL);
 			if (portal != null) {
 				if (!portal.isOnScreen()) {
