@@ -127,7 +127,11 @@ public class BotChrome extends JFrame implements WindowListener {
 		setVisible(false);
 		int bots = Bot.bots.size();
 		while (bots-- > 0) {
-			Bot.bots.peekLast().killEnvironment();
+			try {
+				Bot.bots.peekLast().killEnvironment();
+			} catch (final Throwable e) {
+				e.printStackTrace();
+			}
 		}
 		dispose();
 		System.exit(0);
