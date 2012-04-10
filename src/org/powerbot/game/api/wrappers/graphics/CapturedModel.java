@@ -108,7 +108,7 @@ public abstract class CapturedModel implements Entity {
 				y + totalYAverage / numFaces
 		);
 
-		if (Calculations.isPointOnScreen(averagePoint)) {
+		if (Calculations.isOnScreen(averagePoint)) {
 			return averagePoint;
 		}
 		return new Point(-1, -1);

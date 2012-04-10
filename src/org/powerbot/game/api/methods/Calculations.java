@@ -181,9 +181,18 @@ public class Calculations {
 	 * @param point The <code>Point</code> to determine if it's on screen or not.
 	 * @return <tt>true</tt> if the point is on the screen; otherwise <tt>false</tt>.
 	 */
-	public static boolean isPointOnScreen(final Point point) {
-		final Canvas canvas = Bot.resolve().getCanvas();//TODO
-		return point.x > 0 && point.y > 0 && point.x < canvas.getWidth() && point.y < canvas.getHeight();
+	public static boolean isOnScreen(final Point point) {
+		return isOnScreen(point.x, point.y);
+	}
+
+	/**
+	 * @param x The x pixel relative to the game.
+	 * @param y The y pixel relative to the game.
+	 * @return <tt>true</tt> if the point is on the screen; otherwise <tt>false</tt>.
+	 */
+	public static boolean isOnScreen(final int x, final int y) {
+		final Canvas canvas = Bot.resolve().getCanvas();
+		return x >= 0 && y >= 0 && x < canvas.getWidth() && y < canvas.getHeight();
 	}
 
 	public static double distance(final Tile tile1, final Tile tile2) {

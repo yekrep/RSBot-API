@@ -57,7 +57,7 @@ public class GroundItem implements Entity, Mobile {
 	}
 
 	public boolean isOnScreen() {
-		return Calculations.isPointOnScreen(getCentralPoint());
+		return Calculations.isOnScreen(getCentralPoint());
 	}
 
 	public Polygon[] getBounds() {

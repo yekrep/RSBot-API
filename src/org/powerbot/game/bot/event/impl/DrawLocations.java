@@ -40,14 +40,14 @@ public class DrawLocations implements PaintListener {
 			for (int y = position.getY() - 25; y < position.getY() + 25; y++) {
 				final Tile accessPosition = new Tile(x, y, Game.getPlane());
 				final Point accessPoint = accessPosition.getCentralPoint();
-				if (!Calculations.isPointOnScreen(accessPoint)) {
+				if (!Calculations.isOnScreen(accessPoint)) {
 					continue;
 				}
 				final Location[] locations = Locations.getLoaded(accessPosition);
 				int i = 0;
 				for (final Location location : locations) {
 					final Point locationPoint = location.getPosition().getCentralPoint();
-					if (!Calculations.isPointOnScreen(locationPoint)) {
+					if (!Calculations.isOnScreen(locationPoint)) {
 						continue;
 					}
 					if (accessPoint.x > -1) {

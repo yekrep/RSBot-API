@@ -67,8 +67,8 @@ public class Tile implements Entity, Mobile {
 		final Point localPoint2 = getPoint(1.0D, 0.0D, 0);
 		final Point localPoint3 = getPoint(0.0D, 1.0D, 0);
 		final Point localPoint4 = getPoint(1.0D, 1.0D, 0);
-		if (Calculations.isPointOnScreen(localPoint1) && Calculations.isPointOnScreen(localPoint2) &&
-				Calculations.isPointOnScreen(localPoint3) && Calculations.isPointOnScreen(localPoint4)) {
+		if (Calculations.isOnScreen(localPoint1) && Calculations.isOnScreen(localPoint2) &&
+				Calculations.isOnScreen(localPoint3) && Calculations.isOnScreen(localPoint4)) {
 			final Polygon localPolygon = new Polygon();
 			localPolygon.addPoint(localPoint1.x, localPoint1.y);
 			localPolygon.addPoint(localPoint2.x, localPoint2.y);

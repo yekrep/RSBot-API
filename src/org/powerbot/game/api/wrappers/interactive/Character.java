@@ -191,7 +191,7 @@ public abstract class Character implements Entity, Mobile, Rotatable {
 
 	public boolean isOnScreen() {
 		final CapturedModel model = getModel();
-		return model != null ? model.isOnScreen() : Calculations.isPointOnScreen(getCentralPoint());
+		return model != null ? model.isOnScreen() : Calculations.isOnScreen(getCentralPoint());
 	}
 
 	public Polygon[] getBounds() {
