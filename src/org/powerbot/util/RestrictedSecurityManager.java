@@ -55,13 +55,18 @@ public class RestrictedSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkExec(final String cmd) {
-		throw new SecurityException();
+		final String calling = getCallingClass();
+		if (calling.startsWith(BotChrome.class.getName())) {
+			super.checkExec(cmd);
+		} else {
+			throw new SecurityException();
+		}
 	}
 
 	@Override
 	public void checkExit(final int status) {
 		final String calling = getCallingClass();
-		if (calling.equals(BotChrome.class.getName())) {
+		if (calling.startsWith(BotChrome.class.getName())) {
 			super.checkExit(status);
 		} else {
 			throw new SecurityException();
