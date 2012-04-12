@@ -13,6 +13,7 @@ import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
 import org.powerbot.gui.BotChrome;
+import org.powerbot.gui.component.BotLocale;
 import org.powerbot.util.Configuration;
 import org.powerbot.util.Configuration.OperatingSystem;
 import org.powerbot.util.RestrictedSecurityManager;
@@ -98,7 +99,7 @@ public class Boot implements Runnable {
 			final String msg = "An instance of " + Configuration.NAME + " is already running";
 			log.severe(msg);
 			if (!Configuration.DEVMODE && Configuration.OS == OperatingSystem.WINDOWS) {
-				JOptionPane.showMessageDialog(null, msg, "Error", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, msg, BotLocale.ERROR, JOptionPane.ERROR_MESSAGE);
 			}
 			return;
 		}
