@@ -23,6 +23,8 @@ import org.powerbot.util.io.SystemConsoleHandler;
 
 public class Boot implements Runnable {
 	private final static Logger log = Logger.getLogger(Boot.class.getName());
+	private static volatile boolean released = false;
+	private static Runnable releaseLock;
 
 	public static void main(final String[] args) {
 		final Logger logger = Logger.getLogger("");
@@ -123,10 +125,13 @@ public class Boot implements Runnable {
 		try {
 			final RandomAccessFile tmpraf = new RandomAccessFile(tmpfile, "rw");
 			final FileLock tmplock = tmpraf.getChannel().tryLock();
-			Runtime.getRuntime().addShutdownHook(new Thread() {
+			releaseLock = new Runnable() {
 				@Override
 				public void run() {
 					try {
+						if (released) {
+							return;
+						}
 						if (tmplock != null) {
 							tmplock.release();
 						}
@@ -136,11 +141,17 @@ public class Boot implements Runnable {
 					} catch (final IOException ignored) {
 					}
 					tmpfile.delete();
+					released = true;
 				}
-			});
+			};
+			Runtime.getRuntime().addShutdownHook(new Thread(releaseLock));
 			return tmplock != null;
 		} catch (final IOException ignored) {
 		}
 		return false;
+	}
+
+	public static void releaseLock() {
+		releaseLock.run();
 	}
 }
