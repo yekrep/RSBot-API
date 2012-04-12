@@ -82,6 +82,7 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 	private final BotToolBar parent;
 	private final static String FAVOURITES_FILENAME = "script-favourites.txt";
 	private final List<String> favourites;
+	private final JScrollPane scroll;
 	private final JPanel table;
 	private final JToggleButton locals, star, paid;
 	private final JButton username, refresh;
@@ -192,7 +193,7 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 
 		table.setPreferredSize(new Dimension(getPreferredCellSize().width * 2, getPreferredCellSize().height * table.getComponentCount() / 2));
 
-		final JScrollPane scroll = new JScrollPane(table, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		scroll = new JScrollPane(table, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		scroll.setPreferredSize(new Dimension(scroll.getPreferredSize().width, getPreferredCellSize().height * 3));
 
 		final JPanel panel = new JPanel();
