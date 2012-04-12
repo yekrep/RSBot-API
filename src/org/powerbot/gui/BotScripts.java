@@ -469,6 +469,11 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 			});
 			fav.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 			panelIconsLeft.add(fav);
+			final JLabel authors = new JLabel(String.format(BotLocale.BY, def.getAuthors()));
+			authors.setBorder(new EmptyBorder(3, 0, 0, 0));
+			authors.setForeground(Color.GRAY);
+			authors.setFont(desc.getFont());
+			panelIconsLeft.add(authors);
 
 			final JButton act = new JButton("Play");
 			act.addActionListener(new ActionListener() {
