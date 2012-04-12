@@ -14,6 +14,7 @@ import org.powerbot.concurrent.ThreadPool;
 import org.powerbot.concurrent.strategy.Condition;
 import org.powerbot.concurrent.strategy.Strategy;
 import org.powerbot.concurrent.strategy.StrategyDaemon;
+import org.powerbot.concurrent.strategy.StrategyGroup;
 import org.powerbot.event.EventManager;
 import org.powerbot.game.GameDefinition;
 import org.powerbot.game.bot.Bot;
@@ -61,11 +62,23 @@ public abstract class ActiveScript implements EventListener, Processor {
 		}
 	}
 
+	protected final void provide(final StrategyGroup group) {
+		for (final Strategy strategy : group) {
+			provide(strategy);
+		}
+	}
+
 	protected final void revoke(final Strategy strategy) {
 		executor.omit(strategy);
 
 		listeners.remove(strategy);
 		eventManager.remove(strategy);
+	}
+
+	protected final void revoke(final StrategyGroup group) {
+		for (final Strategy strategy : group) {
+			revoke(strategy);
+		}
 	}
 
 	public final Future<?> submit(final Task task) {

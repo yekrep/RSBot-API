@@ -17,6 +17,9 @@ trimExclude org.powerbot.Boot^ public static main(java.lang.String[]) and
             org.powerbot.concurrent.strategy.Strategy and
             org.powerbot.concurrent.strategy.Strategy * and
             org.powerbot.concurrent.strategy.Strategy *(*) and
+            org.powerbot.concurrent.strategy.StrategyGroup and
+            org.powerbot.concurrent.strategy.StrategyGroup * and
+            org.powerbot.concurrent.strategy.StrategyGroup *(*) and
             org.powerbot.concurrent.strategy.Condition and
             org.powerbot.concurrent.strategy.Condition * and
             org.powerbot.concurrent.strategy.Condition *(*) and
@@ -67,6 +70,9 @@ exclude     org.powerbot.Boot^ public static main(java.lang.String[]) and
             org.powerbot.concurrent.strategy.Strategy and
             org.powerbot.concurrent.strategy.Strategy * and
             org.powerbot.concurrent.strategy.Strategy *(*) and
+            org.powerbot.concurrent.strategy.StrategyGroup and
+            org.powerbot.concurrent.strategy.StrategyGroup * and
+            org.powerbot.concurrent.strategy.StrategyGroup *(*) and
             org.powerbot.concurrent.strategy.Condition and
             org.powerbot.concurrent.strategy.Condition * and
             org.powerbot.concurrent.strategy.Condition *(*) and
