@@ -97,7 +97,7 @@ public class Boot implements Runnable {
 		if (!getLock()) {
 			final String msg = "An instance of " + Configuration.NAME + " is already running";
 			log.severe(msg);
-			if (!Configuration.DEVMODE) {
+			if (!Configuration.DEVMODE && Configuration.OS == OperatingSystem.WINDOWS) {
 				JOptionPane.showMessageDialog(null, msg, "Error", JOptionPane.ERROR_MESSAGE);
 			}
 			return;
