@@ -1,9 +1,10 @@
 package org.powerbot.game.api.wrappers.node;
 
+import org.powerbot.game.api.util.internal.Multipliers;
+import org.powerbot.game.api.util.node.Nodes;
+import org.powerbot.game.api.wrappers.Identifiable;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
 import org.powerbot.game.bot.Bot;
-import org.powerbot.game.bot.api.Multipliers;
-import org.powerbot.game.bot.api.node.Nodes;
 import org.powerbot.game.client.CacheTable;
 import org.powerbot.game.client.HardReferenceGet;
 import org.powerbot.game.client.Node;
@@ -21,7 +22,7 @@ import org.powerbot.game.client.SoftReferenceGet;
  *
  * @author Timer
  */
-public class Item {
+public class Item implements Identifiable {
 	private final int id;
 	private final int stack;
 	private WidgetChild widgetChild;

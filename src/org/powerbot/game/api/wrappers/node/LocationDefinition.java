@@ -1,5 +1,6 @@
 package org.powerbot.game.api.wrappers.node;
 
+import org.powerbot.game.api.wrappers.Identifiable;
 import org.powerbot.game.bot.Bot;
 import org.powerbot.game.client.RSObjectDefActions;
 import org.powerbot.game.client.RSObjectDefID;
@@ -9,7 +10,7 @@ import org.powerbot.game.client.RSObjectDefName;
 /**
  * @author Timer
  */
-public class LocationDefinition {
+public class LocationDefinition implements Identifiable {
 	private final Object def;
 	private final int id_multiplier;
 

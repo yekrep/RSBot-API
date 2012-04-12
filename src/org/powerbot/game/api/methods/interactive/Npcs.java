@@ -5,10 +5,10 @@ import java.util.Set;
 
 import org.powerbot.game.api.methods.Calculations;
 import org.powerbot.game.api.util.Filter;
+import org.powerbot.game.api.util.node.Nodes;
 import org.powerbot.game.api.wrappers.RegionTile;
 import org.powerbot.game.api.wrappers.interactive.Npc;
 import org.powerbot.game.bot.Bot;
-import org.powerbot.game.bot.api.node.Nodes;
 import org.powerbot.game.client.Client;
 import org.powerbot.game.client.Node;
 import org.powerbot.game.client.RSNPCHolder;

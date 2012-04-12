@@ -6,15 +6,16 @@ import java.awt.Polygon;
 import java.lang.ref.SoftReference;
 
 import org.powerbot.game.api.methods.Game;
+import org.powerbot.game.api.util.node.Nodes;
 import org.powerbot.game.api.wrappers.Area;
 import org.powerbot.game.api.wrappers.Entity;
+import org.powerbot.game.api.wrappers.Identifiable;
 import org.powerbot.game.api.wrappers.Mobile;
 import org.powerbot.game.api.wrappers.RegionTile;
 import org.powerbot.game.api.wrappers.Tile;
 import org.powerbot.game.api.wrappers.graphics.CapturedModel;
 import org.powerbot.game.api.wrappers.graphics.model.LocationModel;
 import org.powerbot.game.bot.Bot;
-import org.powerbot.game.bot.api.node.Nodes;
 import org.powerbot.game.client.CacheTable;
 import org.powerbot.game.client.HardReferenceGet;
 import org.powerbot.game.client.Model;
@@ -36,7 +37,7 @@ import org.powerbot.game.client.SoftReferenceGet;
 /**
  * @author Timer
  */
-public class Location implements Entity, Mobile {
+public class Location implements Entity, Mobile, Identifiable {
 	private final Object object;
 	private final Type type;
 	private final int plane;

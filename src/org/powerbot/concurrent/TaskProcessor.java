@@ -33,7 +33,7 @@ public class TaskProcessor implements TaskContainer {
 		return executor.getActiveCount() > 0;
 	}
 
-	public boolean isShutdown(){
+	public boolean isShutdown() {
 		return executor.isShutdown();
 	}
 

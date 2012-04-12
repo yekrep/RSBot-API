@@ -1,4 +1,4 @@
-package org.powerbot.game.bot.api.node;
+package org.powerbot.game.api.util.node;
 
 import org.powerbot.game.client.Node;
 import org.powerbot.game.client.NodeDequeTail;

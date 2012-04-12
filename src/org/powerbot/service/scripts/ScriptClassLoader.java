@@ -3,6 +3,7 @@ package org.powerbot.service.scripts;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+
 import org.powerbot.util.io.IOHelper;
 
 /**

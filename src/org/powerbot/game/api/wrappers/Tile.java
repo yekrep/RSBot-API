@@ -6,6 +6,7 @@ import java.awt.Polygon;
 
 import org.powerbot.game.api.methods.Calculations;
 import org.powerbot.game.api.methods.Game;
+import org.powerbot.game.api.methods.Walking;
 import org.powerbot.game.api.methods.input.Mouse;
 import org.powerbot.game.api.methods.node.Menu;
 import org.powerbot.game.api.util.Filter;
@@ -14,7 +15,7 @@ import org.powerbot.game.api.util.Random;
 /**
  * @author Timer
  */
-public class Tile implements Entity, Mobile {
+public class Tile implements Entity, Mobile, Identifiable {
 	protected final int x, y, plane;
 
 	public static interface Flag {
@@ -143,6 +144,10 @@ public class Tile implements Entity, Mobile {
 		});
 	}
 
+	public boolean clickOnMap() {
+		return Walking.walk(this);
+	}
+
 	public boolean interact(final String action) {
 		return Mouse.apply(this, new Filter<Point>() {
 			public boolean accept(final Point point) {
@@ -160,7 +165,7 @@ public class Tile implements Entity, Mobile {
 	}
 
 	public boolean canReach() {
-		return false;//TODO IMPORTANT WALKING
+		return Walking.findPath(this).validate();
 	}
 
 	public Point getPoint(final double xOff, final double yOff, final int height) {
@@ -180,6 +185,15 @@ public class Tile implements Entity, Mobile {
 
 	public RegionTile getRegionPosition() {
 		return new RegionTile(x - Game.getBaseX(), y - Game.getBaseY(), plane);
+	}
+
+	public int getId() {
+		return x * 31 + y;
+	}
+
+	@Override
+	public int hashCode() {
+		return getId();
 	}
 
 	@Override

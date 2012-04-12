@@ -2,8 +2,9 @@ package org.powerbot.game.api.wrappers.interactive;
 
 import java.lang.ref.SoftReference;
 
+import org.powerbot.game.api.util.internal.Multipliers;
+import org.powerbot.game.api.wrappers.Identifiable;
 import org.powerbot.game.bot.Bot;
-import org.powerbot.game.bot.api.Multipliers;
 import org.powerbot.game.client.RSNPCDefActions;
 import org.powerbot.game.client.RSNPCDefID;
 import org.powerbot.game.client.RSNPCDefInts;
@@ -15,7 +16,7 @@ import org.powerbot.game.client.RSNPCRSNPCDef;
 /**
  * @author Timer
  */
-public class Npc extends Character {
+public class Npc extends Character implements Identifiable {
 	private final SoftReference<Object> n;
 	private final Multipliers multipliers;
 

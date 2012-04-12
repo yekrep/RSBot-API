@@ -1,5 +1,6 @@
 package org.powerbot.game.api.wrappers.node;
 
+import org.powerbot.game.api.wrappers.Identifiable;
 import org.powerbot.game.bot.Bot;
 import org.powerbot.game.client.RSItemDefActions;
 import org.powerbot.game.client.RSItemDefBooleans;
@@ -12,7 +13,7 @@ import org.powerbot.game.client.RSItemDefName;
 /**
  * @author Timer
  */
-public class ItemDefinition {
+public class ItemDefinition implements Identifiable {
 	private final Object definition;
 
 	public ItemDefinition(final Object definition) {

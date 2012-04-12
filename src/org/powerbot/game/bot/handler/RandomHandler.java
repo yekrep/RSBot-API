@@ -14,24 +14,25 @@ import org.powerbot.game.api.Manifest;
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Time;
 import org.powerbot.game.bot.Bot;
-import org.powerbot.game.bot.api.randoms.Beekeeper;
-import org.powerbot.game.bot.api.randoms.Certer;
-import org.powerbot.game.bot.api.randoms.Chest;
-import org.powerbot.game.bot.api.randoms.DrillDemon;
-import org.powerbot.game.bot.api.randoms.EvilBob;
-import org.powerbot.game.bot.api.randoms.EvilTwin;
-import org.powerbot.game.bot.api.randoms.FirstTimeDeath;
-import org.powerbot.game.bot.api.randoms.FreakyForester;
-import org.powerbot.game.bot.api.randoms.Frog;
-import org.powerbot.game.bot.api.randoms.GraveDigger;
-import org.powerbot.game.bot.api.randoms.Login;
-import org.powerbot.game.bot.api.randoms.LostAndFound;
-import org.powerbot.game.bot.api.randoms.Mime;
-import org.powerbot.game.bot.api.randoms.Pillory;
-import org.powerbot.game.bot.api.randoms.Pinball;
-import org.powerbot.game.bot.api.randoms.Quiz;
-import org.powerbot.game.bot.api.randoms.SandwichLady;
-import org.powerbot.game.bot.api.randoms.WidgetCloser;
+import org.powerbot.game.bot.randoms.Beekeeper;
+import org.powerbot.game.bot.randoms.Certer;
+import org.powerbot.game.bot.randoms.Chest;
+import org.powerbot.game.bot.randoms.DrillDemon;
+import org.powerbot.game.bot.randoms.EvilBob;
+import org.powerbot.game.bot.randoms.EvilTwin;
+import org.powerbot.game.bot.randoms.FirstTimeDeath;
+import org.powerbot.game.bot.randoms.FreakyForester;
+import org.powerbot.game.bot.randoms.Frog;
+import org.powerbot.game.bot.randoms.GraveDigger;
+import org.powerbot.game.bot.randoms.Login;
+import org.powerbot.game.bot.randoms.LostAndFound;
+import org.powerbot.game.bot.randoms.Maze;
+import org.powerbot.game.bot.randoms.Mime;
+import org.powerbot.game.bot.randoms.Pillory;
+import org.powerbot.game.bot.randoms.Pinball;
+import org.powerbot.game.bot.randoms.Quiz;
+import org.powerbot.game.bot.randoms.SandwichLady;
+import org.powerbot.game.bot.randoms.WidgetCloser;
 
 /**
  * @author Timer
@@ -63,7 +64,8 @@ public class RandomHandler implements Task {
 				new Certer(),
 				new FreakyForester(),
 				new EvilTwin(),
-				new EvilBob()
+				new EvilBob(),
+				new Maze()
 		};
 		for (final AntiRandom antiRandom : antiRandoms) {
 			antiRandom.bot = bot;

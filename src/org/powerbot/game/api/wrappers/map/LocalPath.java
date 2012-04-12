@@ -145,19 +145,15 @@ public class LocalPath extends Path {
 		return null;
 	}
 
-	private double heuristic(final Vertex start, final Vertex end) {
-		double dx = start.x - end.x;
-		double dy = start.y - end.y;
-		if (dx < 0) {
-			dx = -dx;
-		}
-		if (dy < 0) {
-			dy = -dy;
-		}
-		return 4 * Math.max(dx, dy);
+	public static double heuristic(final Vertex start, final Vertex end) {
+		final double dx = Math.abs(start.x - end.x);
+		final double dy = Math.abs(start.y - end.y);
+		final double diag = Math.min(dx, dy);
+		final double straight = dx + dy;
+		return Math.sqrt(2.0) * diag + straight - 2 * diag;
 	}
 
-	private double dist(final Vertex start, final Vertex end) {
+	public static double dist(final Vertex start, final Vertex end) {
 		if (start.x != end.x && start.y != end.y) {
 			return 1.41421356;
 		} else {
@@ -165,7 +161,7 @@ public class LocalPath extends Path {
 		}
 	}
 
-	private Vertex lowest_f(final Set<Vertex> open) {
+	public static Vertex lowest_f(final Set<Vertex> open) {
 		Vertex best = null;
 		for (final Vertex t : open) {
 			if (best == null || t.f < best.f) {
@@ -220,7 +216,7 @@ public class LocalPath extends Path {
 		return tiles;
 	}
 
-	private Tile[] path(final Vertex end, final int base_x, final int base_y) {
+	public static Tile[] path(final Vertex end, final int base_x, final int base_y) {
 		final LinkedList<Tile> path = new LinkedList<Tile>();
 		Vertex p = end;
 		while (p != null) {
@@ -230,15 +226,21 @@ public class LocalPath extends Path {
 		return path.toArray(new Tile[path.size()]);
 	}
 
-	private class Vertex {
+	public static final class Vertex {
 		public final int x, y, z;
 		public Vertex prev;
 		public double g, f;
+		public boolean special;
 
-		private Vertex(final int x, final int y, final int z) {
+		public Vertex(final int x, final int y, final int z) {
+			this(x, y, z, false);
+		}
+
+		public Vertex(final int x, final int y, final int z, final boolean special) {
 			this.x = x;
 			this.y = y;
 			this.z = z;
+			this.special = special;
 			g = f = 0;
 		}
 

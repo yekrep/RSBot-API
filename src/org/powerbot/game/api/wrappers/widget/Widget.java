@@ -4,8 +4,9 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.Arrays;
 
+import org.powerbot.game.api.util.internal.Multipliers;
+import org.powerbot.game.api.wrappers.Identifiable;
 import org.powerbot.game.bot.Bot;
-import org.powerbot.game.bot.api.Multipliers;
 import org.powerbot.game.client.Client;
 import org.powerbot.game.client.RSInterfaceBaseComponents;
 import org.powerbot.game.client.RSInterfaceBoundsArrayIndex;
@@ -15,7 +16,7 @@ import org.powerbot.game.client.RSInterfaceText;
 /**
  * @author Timer
  */
-public class Widget {
+public class Widget implements Identifiable {
 	private WidgetChild[] childCache = new WidgetChild[0];
 	private final Object CACHE_LOCK = new Object();
 
@@ -76,6 +77,10 @@ public class Widget {
 	}
 
 	public int getIndex() {
+		return index;
+	}
+
+	public int getId() {
 		return index;
 	}
 

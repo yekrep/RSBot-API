@@ -1,8 +1,8 @@
 package org.powerbot.game.api.methods;
 
+import org.powerbot.game.api.util.internal.Constants;
 import org.powerbot.game.api.wrappers.Tile;
 import org.powerbot.game.bot.Bot;
-import org.powerbot.game.bot.api.Constants;
 import org.powerbot.game.client.BaseInfoInts;
 import org.powerbot.game.client.BaseInfoX;
 import org.powerbot.game.client.BaseInfoY;

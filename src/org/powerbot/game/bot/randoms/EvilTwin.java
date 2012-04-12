@@ -1,4 +1,4 @@
-package org.powerbot.game.bot.api.randoms;
+package org.powerbot.game.bot.randoms;
 
 import java.util.ArrayList;
 

@@ -10,6 +10,7 @@ import org.powerbot.game.api.methods.input.Mouse;
 import org.powerbot.game.api.methods.node.Menu;
 import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.wrappers.Entity;
+import org.powerbot.game.api.wrappers.Identifiable;
 import org.powerbot.game.api.wrappers.Mobile;
 import org.powerbot.game.api.wrappers.RegionTile;
 import org.powerbot.game.api.wrappers.Tile;
@@ -17,7 +18,7 @@ import org.powerbot.game.api.wrappers.Tile;
 /**
  * @author Timer
  */
-public class GroundItem implements Entity, Mobile {
+public class GroundItem implements Entity, Mobile, Identifiable {
 	private final Tile tile;
 	private final RegionTile localTile;
 	private final Item groundItem;
@@ -38,6 +39,10 @@ public class GroundItem implements Entity, Mobile {
 
 	public Item getGroundItem() {
 		return groundItem;
+	}
+
+	public int getId() {
+		return groundItem.getId();
 	}
 
 	public boolean validate() {

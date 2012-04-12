@@ -1,7 +1,7 @@
-package org.powerbot.game.bot.api.node;
+package org.powerbot.game.api.util.node;
 
+import org.powerbot.game.api.util.internal.Multipliers;
 import org.powerbot.game.bot.Bot;
-import org.powerbot.game.bot.api.Multipliers;
 import org.powerbot.game.client.HashTable2Buckets;
 import org.powerbot.game.client.HashTableBuckets;
 import org.powerbot.game.client.Node;

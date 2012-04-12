@@ -1,4 +1,4 @@
-package org.powerbot.game.bot.api;
+package org.powerbot.game.api.util.internal;
 
 import java.util.Map;
 
