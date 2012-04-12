@@ -65,6 +65,7 @@ import org.powerbot.gui.component.BotLocale;
 import org.powerbot.gui.component.BotToolBar;
 import org.powerbot.service.GameAccounts;
 import org.powerbot.service.GameAccounts.Account;
+import org.powerbot.service.scripts.ScriptClassLoader;
 import org.powerbot.service.scripts.ScriptDefinition;
 import org.powerbot.util.Configuration;
 import org.powerbot.util.StringUtil;
@@ -529,7 +530,7 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 						name = name.substring(name.lastIndexOf('/') + 1);
 						name = name.substring(0, name.lastIndexOf('.'));
 					}
-					final ClassLoader cl = new URLClassLoader(new URL[]{def.source});
+					final ClassLoader cl = def.local ? new ScriptClassLoader(def.source) : new URLClassLoader(new URL[]{def.source});
 					final ActiveScript script;
 					try {
 						script = cl.loadClass(name).asSubclass(ActiveScript.class).newInstance();
