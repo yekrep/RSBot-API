@@ -330,6 +330,9 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 	}
 
 	public void actionPerformed(final ActionEvent e) {
+		if (e == null || table.getComponentCount() == 0 || !(table.getComponent(0) instanceof ScriptCell)) {
+			return;
+		}
 		if (e.getSource().equals(username)) {
 			final JPopupMenu accounts = new JPopupMenu();
 			final ActionListener l = new ActionListener() {
