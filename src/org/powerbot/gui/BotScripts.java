@@ -190,7 +190,6 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 		table = new JPanel(tableFlow);
 		table.setBorder(new EmptyBorder(0, 0, 0, 0));
 		table.setPreferredSize(new Dimension(getPreferredCellSize().width, getPreferredCellSize().height));
-
 		table.setPreferredSize(new Dimension(getPreferredCellSize().width * 2, getPreferredCellSize().height * table.getComponentCount() / 2));
 
 		scroll = new JScrollPane(table, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -203,8 +202,7 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 
 		addComponentListener(new ComponentAdapter() {
 			public void componentResized(final ComponentEvent e) {
-				final int w = table.getWidth() / getPreferredCellSize().width;
-				scroll.setPreferredSize(new Dimension(scroll.getPreferredSize().width, getPreferredCellSize().height * table.getComponentCount() / w));
+				adjustViewport();
 			}
 		});
 		addWindowListener(this);
@@ -220,6 +218,19 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 		});
 
 		setVisible(true);
+	}
+
+	public void adjustViewport() {
+		int n = 0;
+		for (final Component c : table.getComponents()) {
+			if (c.isVisible()) {
+				n++;
+			}
+		}
+		final double w = Math.ceil(table.getWidth() / getPreferredCellSize().width);
+		final int f = (int) Math.ceil(n / w) * getPreferredCellSize().height;
+		scroll.setPreferredSize(new Dimension(scroll.getPreferredSize().width, f));
+		table.setPreferredSize(new Dimension(table.getPreferredSize().width, f));
 	}
 
 	public void refresh() {
@@ -255,6 +266,7 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 						}
 						table.validate();
 						table.repaint();
+						adjustViewport();
 						refresh.setEnabled(true);
 					}
 				});
@@ -379,6 +391,7 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 			}
 			c.setVisible(v);
 		}
+		adjustViewport();
 	}
 
 	public Dimension getPreferredCellSize() {
