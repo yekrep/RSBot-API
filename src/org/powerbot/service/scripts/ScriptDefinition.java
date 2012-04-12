@@ -52,7 +52,10 @@ public final class ScriptDefinition {
 		if (s.length() > 2 && s.substring(s.length() - 1).equals(".") && !s.substring(0, s.length() - 1).contains(".")) {
 			s = s.substring(0, s.length() - 1);
 		}
-		s = s.replaceFirst("\\s*(?:-\\s*)[Bb][Yy]\\s.*$", "");
+		s = s.replaceFirst("\\s*[Vv]\\s*[\\d\\.]+\\s*", "");
+		s = s.replaceFirst("\\s*[-~]+\\s*[Bb][Yy]\\s+.*$", "");
+		s = s.replaceFirst("\\s+[-~]+\\s*.*$", "");
+		s = s.replaceFirst("\\s*[Bb][Yy]\\s+.*$", "");
 		return s;
 	}
 
