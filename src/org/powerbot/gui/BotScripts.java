@@ -385,7 +385,6 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 		private static final long serialVersionUID = 1L;
 		private final Component parent;
 		private final ScriptDefinition def;
-		final int index;
 		private final Color[] c = new Color[]{null, null};
 
 		public ScriptCell(final Component parent, final ScriptDefinition def) {
@@ -393,9 +392,8 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 			this.parent = parent;
 			this.def = def;
 
-			index = ((JPanel) parent).getComponentCount();
 			final int w = parent.getPreferredSize().width / getPreferredCellSize().width;
-			final int row = index / w;
+			final int row = getIndex() / w;
 
 			setLayout(null);
 			setBorder(new InsetBorder());
@@ -527,11 +525,24 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 		public void paintComponent(final Graphics g) {
 			if (c[0] != null && c[1] != null) {
 				final int w = parent.getWidth() / getPreferredCellSize().width;
-				final int row = index / w;
+				final int row = getIndex() / w;
 				final boolean alt = row % 2 == 1;
 				setBackground(alt ? c[1] : c[0]);
 			}
 			super.paintComponent(g);
+		}
+
+		private int getIndex() {
+			int index = 0;
+			for (final Component c : ((JPanel) parent).getComponents()) {
+				if (c == this) {
+					break;
+				}
+				if (c.isVisible()) {
+					index++;
+				}
+			}
+			return index;
 		}
 
 		public ScriptDefinition getScriptDefinition() {
