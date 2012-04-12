@@ -109,6 +109,10 @@ public class Mouse {
 		Time.sleep(Random.nextInt(50, 80));
 	}
 
+	public static boolean click(final Point p, final boolean left) {
+		return click(p.x, p.y, left);
+	}
+
 	public static boolean click(final int x, final int y, final boolean left) {
 		if (move(x, y)) {
 			click(left);
@@ -169,8 +173,20 @@ public class Mouse {
 		return move(x, y, 1, 1);
 	}
 
+	public static boolean move(final Point p) {
+		return move(p.x, p.y, 1, 1);
+	}
+
+	public static void drag(final Point p) {
+		drag(p.x, p.y);
+	}
+
 	public static void drag(final int dx, final int dy) {
 		drag(dx, dy, 1, 1);
+	}
+
+	public static void drag(final Point p, final int rx, final int ry) {
+		drag(p.x, p.y, rx, ry);
 	}
 
 	public static void drag(final int dx, final int dy, final int rx, final int ry) {
@@ -205,6 +221,10 @@ public class Mouse {
 			}
 		}
 		return task.isAccepted();
+	}
+
+	public static boolean move(final Point p, final int randomX, final int randomY) {
+		return move(p.x, p.y, randomX, randomY);
 	}
 
 	public static boolean apply(final Locatable locatable, final Filter<Point> filter) {
