@@ -195,7 +195,15 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 		scroll = new JScrollPane(table, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		scroll.setPreferredSize(new Dimension(scroll.getPreferredSize().width, getPreferredCellSize().height * 3));
 
-		final JPanel panel = new JPanel();
+		final JPanel panel = new JPanel() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void paintComponent(final Graphics g) {
+				adjustViewport();
+				super.paintComponent(g);
+			}
+		};
 		panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
 		panel.add(scroll);
 		add(panel);
@@ -553,6 +561,7 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 				setBackground(alt ? c[1] : c[0]);
 			}
 			super.paintComponent(g);
+			adjustViewport();
 		}
 
 		private int getIndex() {
