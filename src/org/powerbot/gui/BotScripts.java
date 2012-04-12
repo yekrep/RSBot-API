@@ -87,6 +87,7 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 	private final JToggleButton locals, star, paid;
 	private final JButton username, refresh;
 	private final JTextField search;
+	private volatile boolean init;
 
 	public BotScripts(final BotToolBar parent) {
 		super(parent.parent, BotLocale.SCRIPTS, true);
@@ -281,6 +282,8 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 						table.repaint();
 						adjustViewport();
 						refresh.setEnabled(true);
+						scroll.getVerticalScrollBar().setValue(0);
+						init = true;
 					}
 				});
 			}
@@ -562,6 +565,10 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 			}
 			super.paintComponent(g);
 			adjustViewport();
+			if (init) {
+				scroll.getVerticalScrollBar().setValue(0);
+				init = false;
+			}
 		}
 
 		private int getIndex() {
