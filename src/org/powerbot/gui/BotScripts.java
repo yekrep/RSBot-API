@@ -153,7 +153,7 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 		search.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(final KeyEvent e) {
-				actionPerformed(null);
+				actionPerformed(new ActionEvent(search, search.hashCode(), search.getText()));
 			}
 		});
 		search.addFocusListener(new FocusListener() {
@@ -323,9 +323,6 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		if (e == null) {
-			return;
-		}
 		if (e.getSource().equals(username)) {
 			final JPopupMenu accounts = new JPopupMenu();
 			final ActionListener l = new ActionListener() {
