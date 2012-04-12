@@ -231,6 +231,9 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 		final int f = (int) Math.ceil(n / w) * getPreferredCellSize().height;
 		scroll.setPreferredSize(new Dimension(scroll.getPreferredSize().width, f));
 		table.setPreferredSize(new Dimension(table.getPreferredSize().width, f));
+		if (scroll.getVerticalScrollBar().getValue() > f) {
+			scroll.getVerticalScrollBar().setValue(f);
+		}
 		scroll.validate();
 		scroll.repaint();
 	}
