@@ -392,6 +392,7 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 			c.setVisible(v);
 		}
 		adjustViewport();
+		scroll.getVerticalScrollBar().setValue(0);
 	}
 
 	public Dimension getPreferredCellSize() {
