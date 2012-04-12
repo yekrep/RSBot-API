@@ -135,6 +135,7 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 		locals.setToolTipText(BotLocale.LOCALONLY);
 		locals.addActionListener(this);
 		locals.setFocusable(false);
+		locals.setVisible(Configuration.DEVMODE);
 		toolbar.add(locals);
 		star = new JToggleButton(new ImageIcon(Resources.getImage(Resources.Paths.STAR)));
 		star.setToolTipText(BotLocale.FAVSONLY);
