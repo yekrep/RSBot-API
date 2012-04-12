@@ -83,7 +83,7 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 	private final static String FAVOURITES_FILENAME = "script-favourites.txt";
 	private final List<String> favourites;
 	private final JPanel table;
-	private final JToggleButton star, paid;
+	private final JToggleButton locals, star, paid;
 	private final JButton username, refresh;
 	private final JTextField search;
 
@@ -128,6 +128,11 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 		});
 		refresh.setFocusable(false);
 		toolbar.add(refresh);
+		locals = new JToggleButton(new ImageIcon(Resources.getImage(Resources.Paths.SCRIPT_EDIT)));
+		locals.setToolTipText(BotLocale.LOCALONLY);
+		locals.addActionListener(this);
+		locals.setFocusable(false);
+		toolbar.add(locals);
 		star = new JToggleButton(new ImageIcon(Resources.getImage(Resources.Paths.STAR)));
 		star.setToolTipText(BotLocale.FAVSONLY);
 		star.addActionListener(this);
@@ -310,6 +315,7 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 								final ScriptDefinition def = new ScriptDefinition(m);
 								def.source = src;
 								def.className = className;
+								def.local = true;
 								list.add(def);
 							}
 						}
@@ -362,6 +368,9 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 				v = false;
 			}
 			if (!search.getText().isEmpty() && !search.getText().equals(BotLocale.SEARCH) && !d.matches(search.getText())) {
+				v = false;
+			}
+			if (locals.isSelected() && !d.local) {
 				v = false;
 			}
 			c.setVisible(v);

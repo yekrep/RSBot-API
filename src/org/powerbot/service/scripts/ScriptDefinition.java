@@ -19,6 +19,7 @@ public final class ScriptDefinition {
 
 	public String className;
 	public URL source;
+	public boolean local = false;
 
 	public ScriptDefinition(final Class<? extends ActiveScript> clazz) {
 		this(clazz.getAnnotation(Manifest.class));
