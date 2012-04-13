@@ -8,7 +8,7 @@ import org.powerbot.game.api.methods.Settings;
 import org.powerbot.game.api.methods.Widgets;
 import org.powerbot.game.api.methods.interactive.NPCs;
 import org.powerbot.game.api.methods.interactive.Players;
-import org.powerbot.game.api.methods.node.Locations;
+import org.powerbot.game.api.methods.node.SceneEntities;
 import org.powerbot.game.api.methods.widget.Camera;
 import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.util.Random;
@@ -18,7 +18,7 @@ import org.powerbot.game.api.wrappers.Tile;
 import org.powerbot.game.api.wrappers.graphics.CapturedModel;
 import org.powerbot.game.api.wrappers.interactive.NPC;
 import org.powerbot.game.api.wrappers.interactive.Player;
-import org.powerbot.game.api.wrappers.node.Location;
+import org.powerbot.game.api.wrappers.node.SceneObject;
 import org.powerbot.game.api.wrappers.widget.Widget;
 
 @Manifest(name = "Evil Twin", authors = {"Timer"}, version = 1.0)
@@ -42,7 +42,7 @@ public class EvilTwin extends AntiRandom {
 			public boolean accept(final NPC npc) {
 				return npc.getName().equalsIgnoreCase("Molly");
 			}
-		}) != null || Locations.getNearest(14978) != null;
+		}) != null || SceneEntities.getNearest(14978) != null;
 	}
 
 	@Override
@@ -81,7 +81,7 @@ public class EvilTwin extends AntiRandom {
 			verbose(molly.getModel().toString());
 			model = molly.getModel();
 			verbose("Molly: " + model.toString());
-			final Location location = Locations.getNearest(LOCATION_ID_DOOR);
+			final SceneObject location = SceneEntities.getNearest(LOCATION_ID_DOOR);
 			if (location != null && location.interact("Open")) {
 				final Timer t = new Timer(2000);
 				while (t.isRunning()) {
@@ -108,7 +108,7 @@ public class EvilTwin extends AntiRandom {
 			}
 
 			verbose("We must interact with the control panel!");
-			final Location control = Locations.getNearest(14978);
+			final SceneObject control = SceneEntities.getNearest(14978);
 			if (control != null) {
 				if (!control.isOnScreen()) {
 					Camera.turnTo(control);
@@ -129,7 +129,7 @@ public class EvilTwin extends AntiRandom {
 		if (molly != null && player.getLocation().getX() > xCheck) {
 			verbose("Molly is back, go through the door...");
 			finished = true;
-			final Location location = Locations.getNearest(LOCATION_ID_DOOR);
+			final SceneObject location = SceneEntities.getNearest(LOCATION_ID_DOOR);
 			if (location != null) {
 				if (!location.isOnScreen()) {
 					Camera.setPitch(false);
@@ -165,10 +165,10 @@ public class EvilTwin extends AntiRandom {
 	}
 
 	private void navigateClaw() {
-		Location claw;
+		SceneObject claw;
 		NPC suspect;
 		verbose("NAVIGATION: BEGIN");
-		while ((claw = Locations.getNearest(LOCATION_ID_CLAW)) != null && (suspect = NPCs.getNearest(new Filter<NPC>() {
+		while ((claw = SceneEntities.getNearest(LOCATION_ID_CLAW)) != null && (suspect = NPCs.getNearest(new Filter<NPC>() {
 			@Override
 			public boolean accept(final NPC npc) {
 				return npc.getModel().equals(model);
@@ -207,7 +207,7 @@ public class EvilTwin extends AntiRandom {
 	}
 
 	private boolean hasClawMoved(final Tile prevClawLoc) {
-		final Location claw = Locations.getNearest(LOCATION_ID_CLAW);
+		final SceneObject claw = SceneEntities.getNearest(LOCATION_ID_CLAW);
 		if (claw == null) {
 			return false;
 		}

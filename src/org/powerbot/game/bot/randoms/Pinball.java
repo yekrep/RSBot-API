@@ -6,11 +6,11 @@ import org.powerbot.game.api.methods.Calculations;
 import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.api.methods.Widgets;
 import org.powerbot.game.api.methods.interactive.Players;
-import org.powerbot.game.api.methods.node.Locations;
+import org.powerbot.game.api.methods.node.SceneEntities;
 import org.powerbot.game.api.methods.widget.Camera;
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Time;
-import org.powerbot.game.api.wrappers.node.Location;
+import org.powerbot.game.api.wrappers.node.SceneObject;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
 
 /**
@@ -31,7 +31,7 @@ public class Pinball extends AntiRandom {
 	private static final int INTERFACE_PINBALL_SCORE = 263;
 
 	public boolean validate() {
-		return Game.isLoggedIn() && Locations.getNearest(INACTIVE_PILLARS) != null;
+		return Game.isLoggedIn() && SceneEntities.getNearest(INACTIVE_PILLARS) != null;
 	}
 
 	public void run() {
@@ -46,7 +46,7 @@ public class Pinball extends AntiRandom {
 		}
 
 		if (getScore() >= 10) {
-			final Location exit = Locations.getNearest(15010);
+			final SceneObject exit = SceneEntities.getNearest(15010);
 			if (exit != null) {
 				if (exit.getLocation().isOnScreen()) {
 					Time.sleep(exit.interact("Exit") ? Random.nextInt(4000, 4200) : 0);
@@ -60,7 +60,7 @@ public class Pinball extends AntiRandom {
 			}
 		}
 
-		final Location pillar = Locations.getNearest(ACTIVE_PILLARS);
+		final SceneObject pillar = SceneEntities.getNearest(ACTIVE_PILLARS);
 		if (pillar != null) {
 			if (Calculations.distance(Players.getLocal().getLocation(), pillar.getLocation()) > 2 && !pillar.isOnScreen()) {
 				pillar.getLocation().interact("Walk here");

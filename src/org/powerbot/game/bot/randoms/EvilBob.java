@@ -11,7 +11,7 @@ import org.powerbot.game.api.methods.Widgets;
 import org.powerbot.game.api.methods.interactive.NPCs;
 import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.methods.node.GroundItems;
-import org.powerbot.game.api.methods.node.Locations;
+import org.powerbot.game.api.methods.node.SceneEntities;
 import org.powerbot.game.api.methods.tab.Inventory;
 import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.util.Random;
@@ -23,7 +23,7 @@ import org.powerbot.game.api.wrappers.Tile;
 import org.powerbot.game.api.wrappers.interactive.NPC;
 import org.powerbot.game.api.wrappers.node.GroundItem;
 import org.powerbot.game.api.wrappers.node.Item;
-import org.powerbot.game.api.wrappers.node.Location;
+import org.powerbot.game.api.wrappers.node.SceneObject;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
 
 @Manifest(name = "Evil Bob", authors = {"Timer"}, version = 1.0)
@@ -97,7 +97,7 @@ public class EvilBob extends AntiRandom {
 
 		if (Inventory.getItem(ITEM_ID_COOKED_FISH) != null) {
 			verbose("We have a cooked fish...");
-			final Location pot = Locations.getNearest(LOCATION_ID_POT_OF_MAGIC_UN_COOKING_POWERS_RULER_WAS_HERE);
+			final SceneObject pot = SceneEntities.getNearest(LOCATION_ID_POT_OF_MAGIC_UN_COOKING_POWERS_RULER_WAS_HERE);
 			if (pot != null) {
 				if (!pot.isOnScreen()) {
 					walk(pot);
@@ -130,7 +130,7 @@ public class EvilBob extends AntiRandom {
 				return;
 			}
 
-			final Location portal = Locations.getNearest(LOCATION_ID_PORTAL);
+			final SceneObject portal = SceneEntities.getNearest(LOCATION_ID_PORTAL);
 			if (portal != null) {
 				if (!portal.isOnScreen()) {
 					walk(portal);
@@ -166,12 +166,12 @@ public class EvilBob extends AntiRandom {
 			}
 
 			verbose("Location statue");
-			final Location statue = Locations.getNearest(statueId);
+			final SceneObject statue = SceneEntities.getNearest(statueId);
 			if (statue != null) {
 				verbose("Statue location: " + statue.getLocation());
-				final Location fishingSpot = Locations.getNearest(new Filter<Location>() {
+				final SceneObject fishingSpot = SceneEntities.getNearest(new Filter<SceneObject>() {
 					@Override
-					public boolean accept(final Location location) {
+					public boolean accept(final SceneObject location) {
 						return location.getId() == LOCATION_ID_FISH && Calculations.distance(location.getLocation(), statue.getLocation()) < 10;
 					}
 				});
@@ -205,7 +205,7 @@ public class EvilBob extends AntiRandom {
 			Time.sleep(5000);
 
 			verbose("Iterating locations...");
-			for (final Location location : Locations.getLoaded(LOCATION_STATUE_IDS)) {
+			for (final SceneObject location : SceneEntities.getLoaded(LOCATION_STATUE_IDS)) {
 				if (location.isOnScreen()) {
 					statueId = location.getId();
 					verbose("Found statue: " + statueId);

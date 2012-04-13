@@ -11,7 +11,7 @@ import org.powerbot.game.api.methods.Walking;
 import org.powerbot.game.api.methods.Widgets;
 import org.powerbot.game.api.methods.interactive.NPCs;
 import org.powerbot.game.api.methods.interactive.Players;
-import org.powerbot.game.api.methods.node.Locations;
+import org.powerbot.game.api.methods.node.SceneEntities;
 import org.powerbot.game.api.methods.tab.Inventory;
 import org.powerbot.game.api.methods.widget.Camera;
 import org.powerbot.game.api.util.Random;
@@ -21,7 +21,7 @@ import org.powerbot.game.api.wrappers.Entity;
 import org.powerbot.game.api.wrappers.Locatable;
 import org.powerbot.game.api.wrappers.interactive.NPC;
 import org.powerbot.game.api.wrappers.node.Item;
-import org.powerbot.game.api.wrappers.node.Location;
+import org.powerbot.game.api.wrappers.node.SceneObject;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
 
 /**
@@ -67,9 +67,9 @@ public class GraveDigger extends AntiRandom {
 
 	@Override
 	public boolean validate() {
-		Location depositBox = null;
+		SceneObject depositBox = null;
 		if (Game.isLoggedIn()) {
-			depositBox = Locations.getNearest(LOCATION_ID_DEPOSIT_BOX);
+			depositBox = SceneEntities.getNearest(LOCATION_ID_DEPOSIT_BOX);
 			if (depositBox == null) {
 				clean();
 			}
@@ -120,8 +120,8 @@ public class GraveDigger extends AntiRandom {
 		if (Settings.get(698) == 0x80000000 || Settings.get(699) != 0) {
 			verbose("Grave unscrambling commencing");
 
-			Location coffinLocation;
-			if (!gatheredGraves && (coffinLocation = Locations.getNearest(LOCATION_ID_FILLED_GRAVES)) != null) {
+			SceneObject coffinLocation;
+			if (!gatheredGraves && (coffinLocation = SceneEntities.getNearest(LOCATION_ID_FILLED_GRAVES)) != null) {
 				if (!coffinLocation.isOnScreen()) {
 					walk(coffinLocation);
 					return;
@@ -136,7 +136,7 @@ public class GraveDigger extends AntiRandom {
 			int undecidedId;
 			verbose("Checking for undetermined information");
 			if ((undecidedId = getUndecidedGrave()) != -1) {
-				final Location grave = Locations.getNearest(undecidedId);
+				final SceneObject grave = SceneEntities.getNearest(undecidedId);
 				if (grave != null) {
 					if (!grave.isOnScreen()) {
 						walk(grave);
@@ -208,7 +208,7 @@ public class GraveDigger extends AntiRandom {
 
 			for (final Coffin coffin : coffins) {
 				final int grave_id = getEmptyGraveId(coffin.getStoneId());
-				final Location grave = Locations.getNearest(grave_id);
+				final SceneObject grave = SceneEntities.getNearest(grave_id);
 				if (grave != null) {
 					if (!grave.isOnScreen() || !grave.getLocation().isOnScreen()) {
 						walk(grave);

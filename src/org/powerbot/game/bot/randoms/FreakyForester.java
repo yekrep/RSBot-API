@@ -7,7 +7,7 @@ import org.powerbot.game.api.methods.Walking;
 import org.powerbot.game.api.methods.Widgets;
 import org.powerbot.game.api.methods.interactive.NPCs;
 import org.powerbot.game.api.methods.interactive.Players;
-import org.powerbot.game.api.methods.node.Locations;
+import org.powerbot.game.api.methods.node.SceneEntities;
 import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Time;
@@ -15,7 +15,7 @@ import org.powerbot.game.api.util.Timer;
 import org.powerbot.game.api.wrappers.Locatable;
 import org.powerbot.game.api.wrappers.graphics.CapturedModel;
 import org.powerbot.game.api.wrappers.interactive.NPC;
-import org.powerbot.game.api.wrappers.node.Location;
+import org.powerbot.game.api.wrappers.node.SceneObject;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
 
 @Manifest(name = "Freaky Forester", authors = {"Timer"}, version = 1.0)
@@ -36,7 +36,7 @@ public class FreakyForester extends AntiRandom {
 
 	@Override
 	public boolean validate() {
-		return NPCs.getNearest(NPC_ID_FORESTER) != null && Locations.getNearest(LOCATION_ID_PORTAL) != null;
+		return NPCs.getNearest(NPC_ID_FORESTER) != null && SceneEntities.getNearest(LOCATION_ID_PORTAL) != null;
 	}
 
 	@Override
@@ -70,7 +70,7 @@ public class FreakyForester extends AntiRandom {
 		verbose("SETTING 334: " + Settings.get(334));
 		if (Settings.get(334) == 0x2) {
 			verbose("SETTING VALIDATED: Depart.");
-			final Location portal = Locations.getNearest(LOCATION_ID_PORTAL);
+			final SceneObject portal = SceneEntities.getNearest(LOCATION_ID_PORTAL);
 			if (portal != null) {
 				if (!portal.isOnScreen()) {
 					walk(portal);

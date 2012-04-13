@@ -6,14 +6,14 @@ import org.powerbot.game.api.methods.Walking;
 import org.powerbot.game.api.methods.Widgets;
 import org.powerbot.game.api.methods.interactive.NPCs;
 import org.powerbot.game.api.methods.interactive.Players;
-import org.powerbot.game.api.methods.node.Locations;
+import org.powerbot.game.api.methods.node.SceneEntities;
 import org.powerbot.game.api.methods.widget.Camera;
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Time;
 import org.powerbot.game.api.util.Timer;
 import org.powerbot.game.api.wrappers.interactive.NPC;
 import org.powerbot.game.api.wrappers.interactive.Player;
-import org.powerbot.game.api.wrappers.node.Location;
+import org.powerbot.game.api.wrappers.node.SceneObject;
 import org.powerbot.game.api.wrappers.widget.Widget;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
 
@@ -40,7 +40,7 @@ public class SandwichLady extends AntiRandom {
 		final NPC lady = NPCs.getNearest(NPC_ID_SANDWICH_LADY);
 		if (Widgets.get(WIDGET_ID_CHAT).validate()) {
 			if (Widgets.get(WIDGET_ID_CHAT, WIDGET_ID_CHAT_TEXT).getText().contains("exit portal's")) {
-				final Location portal = Locations.getNearest(12731, 11373);
+				final SceneObject portal = SceneEntities.getNearest(12731, 11373);
 				if (portal != null) {
 					if (portal.isOnScreen()) {
 						portal.interact("Enter", "Exit portal");

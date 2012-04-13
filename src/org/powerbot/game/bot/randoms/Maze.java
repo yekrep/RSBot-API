@@ -12,7 +12,7 @@ import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.api.methods.Walking;
 import org.powerbot.game.api.methods.Widgets;
 import org.powerbot.game.api.methods.interactive.Players;
-import org.powerbot.game.api.methods.node.Locations;
+import org.powerbot.game.api.methods.node.SceneEntities;
 import org.powerbot.game.api.methods.widget.Camera;
 import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.util.Random;
@@ -21,7 +21,7 @@ import org.powerbot.game.api.util.Timer;
 import org.powerbot.game.api.wrappers.Tile;
 import org.powerbot.game.api.wrappers.map.LocalPath;
 import org.powerbot.game.api.wrappers.map.Path;
-import org.powerbot.game.api.wrappers.node.Location;
+import org.powerbot.game.api.wrappers.node.SceneObject;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
 
 @Manifest(name = "Maze", authors = {"Timer"}, version = 1.0)
@@ -57,7 +57,7 @@ public class Maze extends AntiRandom {
 
 	@Override
 	public boolean validate() {
-		final boolean validated = Calculations.distanceTo(TILE_CENTER) < 100 && Locations.getNearest(3626, 3649) != null;
+		final boolean validated = Calculations.distanceTo(TILE_CENTER) < 100 && SceneEntities.getNearest(3626, 3649) != null;
 		if (!validated) {
 			clean();
 		}
@@ -81,7 +81,7 @@ public class Maze extends AntiRandom {
 		}
 
 		if (Players.getLocal().getLocation().equals(TILE_CENTER)) {
-			final Location shrine = Locations.getNearest(LOCATION_ID_STRANGE_OBJECT);
+			final SceneObject shrine = SceneEntities.getNearest(LOCATION_ID_STRANGE_OBJECT);
 			if (shrine != null && Players.getLocal().getAnimation() == -1 && shrine.interact("Touch")) {
 				for (int i = 0; i < 3000; i += 20) {
 					if (Players.getLocal().getAnimation() != -1) {
@@ -129,7 +129,7 @@ public class Maze extends AntiRandom {
 					}
 				}
 
-				final Location door = getDoor(nearestDoor);
+				final SceneObject door = getDoor(nearestDoor);
 				if (door != null && door.isOnScreen()) {
 					if (door.interact("Open", "Door")) {
 						Time.sleep(Random.nextInt(1800, 3500));
@@ -152,9 +152,9 @@ public class Maze extends AntiRandom {
 		timeout.reset();
 	}
 
-	private Location getDoor(final Door door) {
-		return Locations.getNearest(new Filter<Location>() {
-			public boolean accept(final Location location) {
+	private SceneObject getDoor(final Door door) {
+		return SceneEntities.getNearest(new Filter<SceneObject>() {
+			public boolean accept(final SceneObject location) {
 				return location.getId() >= 3628 && location.getId() <= 3632 && (location.getLocation().equals(door.main));
 			}
 		});

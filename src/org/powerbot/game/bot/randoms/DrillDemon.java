@@ -11,7 +11,7 @@ import org.powerbot.game.api.methods.Walking;
 import org.powerbot.game.api.methods.Widgets;
 import org.powerbot.game.api.methods.interactive.NPCs;
 import org.powerbot.game.api.methods.interactive.Players;
-import org.powerbot.game.api.methods.node.Locations;
+import org.powerbot.game.api.methods.node.SceneEntities;
 import org.powerbot.game.api.methods.widget.Camera;
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Time;
@@ -19,7 +19,7 @@ import org.powerbot.game.api.wrappers.Area;
 import org.powerbot.game.api.wrappers.Tile;
 import org.powerbot.game.api.wrappers.interactive.NPC;
 import org.powerbot.game.api.wrappers.interactive.Player;
-import org.powerbot.game.api.wrappers.node.Location;
+import org.powerbot.game.api.wrappers.node.SceneObject;
 
 @Manifest(name = "Drill Demon", description = "Exercises.", version = 1.0, authors = {"Timer"})
 public class DrillDemon extends AntiRandom {
@@ -139,11 +139,11 @@ public class DrillDemon extends AntiRandom {
 	}
 
 	private boolean findAndUseMat(final int sign_id) {
-		final Location[] game_mats = {
-				Locations.getNearest(10076),
-				Locations.getNearest(10077),
-				Locations.getNearest(10078),
-				Locations.getNearest(10079)
+		final SceneObject[] game_mats = {
+				SceneEntities.getNearest(10076),
+				SceneEntities.getNearest(10077),
+				SceneEntities.getNearest(10078),
+				SceneEntities.getNearest(10079)
 		};
 		if (game_mats[sign_id] != null) {
 			if (!game_mats[sign_id].isOnScreen()) {

@@ -9,26 +9,26 @@ import java.util.HashMap;
 
 import org.powerbot.game.api.methods.interactive.NPCs;
 import org.powerbot.game.api.methods.interactive.Players;
-import org.powerbot.game.api.methods.node.Locations;
+import org.powerbot.game.api.methods.node.SceneEntities;
 import org.powerbot.game.api.wrappers.graphics.CapturedModel;
-import org.powerbot.game.api.wrappers.node.Location;
+import org.powerbot.game.api.wrappers.node.SceneObject;
 import org.powerbot.game.bot.event.listener.PaintListener;
 
 public class DrawModels implements PaintListener {
-	private static final HashMap<Location.Type, Color> color_map = new HashMap<Location.Type, Color>();
+	private static final HashMap<SceneObject.Type, Color> color_map = new HashMap<SceneObject.Type, Color>();
 
 	static {
-		color_map.put(Location.Type.BOUNDARY, Color.BLACK);
-		color_map.put(Location.Type.FLOOR_DECORATION, Color.YELLOW);
-		color_map.put(Location.Type.INTERACTIVE, Color.WHITE);
-		color_map.put(Location.Type.WALL_DECORATION, Color.GRAY);
+		color_map.put(SceneObject.Type.BOUNDARY, Color.BLACK);
+		color_map.put(SceneObject.Type.FLOOR_DECORATION, Color.YELLOW);
+		color_map.put(SceneObject.Type.INTERACTIVE, Color.WHITE);
+		color_map.put(SceneObject.Type.WALL_DECORATION, Color.GRAY);
 	}
 
 	public void onRepaint(final Graphics graphics) {
 		final Graphics2D render = (Graphics2D) graphics;
 		render.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 				RenderingHints.VALUE_ANTIALIAS_ON);
-		for (final Location e : Locations.getLoaded()) {
+		for (final SceneObject e : SceneEntities.getLoaded()) {
 			final CapturedModel model = e.getModel();
 			if (model != null && e.getLocation().isOnScreen()) {
 				render.setColor(color_map.get(e.getType()));

@@ -8,14 +8,14 @@ import org.powerbot.game.api.methods.Walking;
 import org.powerbot.game.api.methods.Widgets;
 import org.powerbot.game.api.methods.interactive.NPCs;
 import org.powerbot.game.api.methods.interactive.Players;
-import org.powerbot.game.api.methods.node.Locations;
+import org.powerbot.game.api.methods.node.SceneEntities;
 import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Time;
 import org.powerbot.game.api.util.Timer;
 import org.powerbot.game.api.wrappers.Locatable;
 import org.powerbot.game.api.wrappers.interactive.NPC;
-import org.powerbot.game.api.wrappers.node.Location;
+import org.powerbot.game.api.wrappers.node.SceneObject;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
 
 @Manifest(name = "Certer", authors = {"Timer"}, version = 1.0)
@@ -35,7 +35,7 @@ public class Certer extends AntiRandom {
 
 	@Override
 	public boolean validate() {
-		return Game.isLoggedIn() && Locations.getNearest(LOCATION_ID_BOOKS) != null;
+		return Game.isLoggedIn() && SceneEntities.getNearest(LOCATION_ID_BOOKS) != null;
 	}
 
 	@Override
@@ -51,7 +51,7 @@ public class Certer extends AntiRandom {
 		}
 		if (Settings.get(SETTING_SOLVED) > settingValue) {
 			verbose("SOLVED: Attempt exit");
-			final Location portal = Locations.getNearest(LOCATION_ID_PORTAL);
+			final SceneObject portal = SceneEntities.getNearest(LOCATION_ID_PORTAL);
 			if (portal != null) {
 				if (!portal.isOnScreen()) {
 					walk(portal);

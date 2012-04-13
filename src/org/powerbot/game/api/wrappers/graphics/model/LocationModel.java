@@ -1,16 +1,16 @@
 package org.powerbot.game.api.wrappers.graphics.model;
 
 import org.powerbot.game.api.wrappers.graphics.CapturedModel;
-import org.powerbot.game.api.wrappers.node.Location;
+import org.powerbot.game.api.wrappers.node.SceneObject;
 import org.powerbot.game.client.Model;
 import org.powerbot.game.client.RSInteractableManager;
 import org.powerbot.game.client.RSInteractableRSInteractableManager;
 
 public class LocationModel extends CapturedModel {
-	private final Location location;
+	private final SceneObject location;
 	private final Object instance;
 
-	public LocationModel(final Model model, final Location location) {
+	public LocationModel(final Model model, final SceneObject location) {
 		super(model, location);
 		this.location = location;
 		this.instance = location.getInstance();

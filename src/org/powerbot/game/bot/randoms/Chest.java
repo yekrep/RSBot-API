@@ -9,13 +9,13 @@ import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.api.methods.Widgets;
 import org.powerbot.game.api.methods.interactive.NPCs;
 import org.powerbot.game.api.methods.interactive.Players;
-import org.powerbot.game.api.methods.node.Locations;
+import org.powerbot.game.api.methods.node.SceneEntities;
 import org.powerbot.game.api.methods.widget.Camera;
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Time;
 import org.powerbot.game.api.util.Timer;
 import org.powerbot.game.api.wrappers.interactive.NPC;
-import org.powerbot.game.api.wrappers.node.Location;
+import org.powerbot.game.api.wrappers.node.SceneObject;
 import org.powerbot.game.api.wrappers.widget.Widget;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
 
@@ -109,9 +109,9 @@ public class Chest extends AntiRandom {
 			return;
 		}
 
-		final Location chestSolved = Locations.getNearest(LOCATION_ID_CHEST_SOLVED);
+		final SceneObject chestSolved = SceneEntities.getNearest(LOCATION_ID_CHEST_SOLVED);
 		if (chestSolved != null) {
-			final Location portal = Locations.getNearest(LOCATION_ID_PORTAL);
+			final SceneObject portal = SceneEntities.getNearest(LOCATION_ID_PORTAL);
 			if (portal != null && portal.interact("Enter")) {
 				final Timer timer = new Timer(3000);
 				while (timer.isRunning()) {

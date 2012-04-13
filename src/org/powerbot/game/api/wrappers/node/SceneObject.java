@@ -37,7 +37,7 @@ import org.powerbot.game.client.SoftReferenceGet;
 /**
  * @author Timer
  */
-public class Location implements Entity, Locatable, Identifiable {
+public class SceneObject implements Entity, Locatable, Identifiable {
 	private final Object object;
 	private final Type type;
 	private final int plane;
@@ -46,7 +46,7 @@ public class Location implements Entity, Locatable, Identifiable {
 		INTERACTIVE, FLOOR_DECORATION, BOUNDARY, WALL_DECORATION
 	}
 
-	public Location(final Object obj, final Type type, final int plane) {
+	public SceneObject(final Object obj, final Type type, final int plane) {
 		this.object = obj;
 		this.type = type;
 		this.plane = plane;

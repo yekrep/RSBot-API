@@ -9,20 +9,20 @@ import java.util.HashMap;
 import org.powerbot.game.api.methods.Calculations;
 import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.api.methods.interactive.Players;
-import org.powerbot.game.api.methods.node.Locations;
+import org.powerbot.game.api.methods.node.SceneEntities;
 import org.powerbot.game.api.wrappers.Tile;
 import org.powerbot.game.api.wrappers.interactive.Player;
-import org.powerbot.game.api.wrappers.node.Location;
+import org.powerbot.game.api.wrappers.node.SceneObject;
 import org.powerbot.game.bot.event.listener.PaintListener;
 
 public class DrawLocations implements PaintListener {
-	private static final HashMap<Location.Type, Color> color_map = new HashMap<Location.Type, Color>();
+	private static final HashMap<SceneObject.Type, Color> color_map = new HashMap<SceneObject.Type, Color>();
 
 	static {
-		color_map.put(Location.Type.BOUNDARY, Color.BLACK);
-		color_map.put(Location.Type.FLOOR_DECORATION, Color.YELLOW);
-		color_map.put(Location.Type.INTERACTIVE, Color.WHITE);
-		color_map.put(Location.Type.WALL_DECORATION, Color.GRAY);
+		color_map.put(SceneObject.Type.BOUNDARY, Color.BLACK);
+		color_map.put(SceneObject.Type.FLOOR_DECORATION, Color.YELLOW);
+		color_map.put(SceneObject.Type.INTERACTIVE, Color.WHITE);
+		color_map.put(SceneObject.Type.WALL_DECORATION, Color.GRAY);
 	}
 
 	public void onRepaint(final Graphics render) {
@@ -43,9 +43,9 @@ public class DrawLocations implements PaintListener {
 				if (!Calculations.isOnScreen(accessPoint)) {
 					continue;
 				}
-				final Location[] locations = Locations.getLoaded(accessPosition);
+				final SceneObject[] locations = SceneEntities.getLoaded(accessPosition);
 				int i = 0;
-				for (final Location location : locations) {
+				for (final SceneObject location : locations) {
 					final Point locationPoint = location.getLocation().getCentralPoint();
 					if (!Calculations.isOnScreen(locationPoint)) {
 						continue;

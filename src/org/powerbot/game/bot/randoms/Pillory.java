@@ -8,12 +8,12 @@ import org.powerbot.game.api.Manifest;
 import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.api.methods.Widgets;
 import org.powerbot.game.api.methods.interactive.Players;
-import org.powerbot.game.api.methods.node.Locations;
+import org.powerbot.game.api.methods.node.SceneEntities;
 import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Time;
 import org.powerbot.game.api.wrappers.Tile;
-import org.powerbot.game.api.wrappers.node.Location;
+import org.powerbot.game.api.wrappers.node.SceneObject;
 
 @Manifest(name = "Pillory", authors = {"Timer"}, version = 1.0)
 public class Pillory extends AntiRandom {
@@ -49,10 +49,10 @@ public class Pillory extends AntiRandom {
 	public void run() {
 		if (!Widgets.get(WIDGET_LOCK).validate()) {
 			final Tile cageTile = Players.getLocal().getLocation().derive(0, 1);
-			final Location location = Locations.getNearest(new Filter<Location>() {
+			final SceneObject location = SceneEntities.getNearest(new Filter<SceneObject>() {
 				@Override
-				public boolean accept(final Location location) {
-					return location.getLocation().equals(cageTile) && location.getType() == Location.Type.BOUNDARY;
+				public boolean accept(final SceneObject location) {
+					return location.getLocation().equals(cageTile) && location.getType() == SceneObject.Type.BOUNDARY;
 				}
 			});
 			if (location != null && location.interact("unlock")) {

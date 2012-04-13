@@ -6,26 +6,26 @@ import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.api.methods.Walking;
 import org.powerbot.game.api.methods.Widgets;
 import org.powerbot.game.api.methods.interactive.Players;
-import org.powerbot.game.api.methods.node.Locations;
+import org.powerbot.game.api.methods.node.SceneEntities;
 import org.powerbot.game.api.methods.widget.Camera;
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Time;
 import org.powerbot.game.api.util.Timer;
 import org.powerbot.game.api.wrappers.Locatable;
-import org.powerbot.game.api.wrappers.node.Location;
+import org.powerbot.game.api.wrappers.node.SceneObject;
 
 @Manifest(name = "First Time Death", authors = {"Timer"}, version = 1.1)
 public class FirstTimeDeath extends AntiRandom {
 	@Override
 	public boolean validate() {
-		return Game.isLoggedIn() && Locations.getNearest(45802) != null;
+		return Game.isLoggedIn() && SceneEntities.getNearest(45802) != null;
 	}
 
 	@Override
 	public void run() {
 		if (Widgets.get(1184, 13).validate() && Widgets.get(1184, 13).getText().contains("over here")) {
 			if (Widgets.clickContinue()) {
-				final Location reaper = Locations.getNearest(45802);
+				final SceneObject reaper = SceneEntities.getNearest(45802);
 				if (reaper != null) {
 					if (!reaper.isOnScreen()) {
 						walk(reaper);
@@ -59,7 +59,7 @@ public class FirstTimeDeath extends AntiRandom {
 			return;
 		}
 
-		final Location portal = Locations.getNearest(45803);
+		final SceneObject portal = SceneEntities.getNearest(45803);
 		if (portal.isOnScreen()) {
 			portal.interact("Enter");
 

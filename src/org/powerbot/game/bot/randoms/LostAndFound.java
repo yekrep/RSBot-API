@@ -6,13 +6,13 @@ import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.api.methods.Settings;
 import org.powerbot.game.api.methods.Walking;
 import org.powerbot.game.api.methods.interactive.Players;
-import org.powerbot.game.api.methods.node.Locations;
+import org.powerbot.game.api.methods.node.SceneEntities;
 import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Time;
 import org.powerbot.game.api.util.Timer;
 import org.powerbot.game.api.wrappers.interactive.Player;
-import org.powerbot.game.api.wrappers.node.Location;
+import org.powerbot.game.api.wrappers.node.SceneObject;
 
 @Manifest(name = "Lost and Found", authors = {"Timer"}, version = 1.0d)
 public class LostAndFound extends AntiRandom {
@@ -34,8 +34,8 @@ public class LostAndFound extends AntiRandom {
 	private final static int[][] ANSWERS = {APPENDAGE_AN, APPENDAGE_AE, APPENDAGE_AS, APPENDAGE_AW};
 
 	public boolean validate() {
-		return Game.isLoggedIn() && Locations.getNearest(new Filter<Location>() {
-			public boolean accept(final Location location) {
+		return Game.isLoggedIn() && SceneEntities.getNearest(new Filter<SceneObject>() {
+			public boolean accept(final SceneObject location) {
 				final int id = location.getId();
 				for (final int appendageId : APPENDAGES) {
 					if (id == appendageId) {
@@ -55,8 +55,8 @@ public class LostAndFound extends AntiRandom {
 		}
 
 		final int appendageId = getOdd();
-		final Location appendage = Locations.getNearest(new Filter<Location>() {
-			public boolean accept(final Location location) {
+		final SceneObject appendage = SceneEntities.getNearest(new Filter<SceneObject>() {
+			public boolean accept(final SceneObject location) {
 				return location.getId() == appendageId;
 			}
 		});

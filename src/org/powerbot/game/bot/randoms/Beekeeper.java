@@ -10,7 +10,7 @@ import org.powerbot.game.api.methods.Widgets;
 import org.powerbot.game.api.methods.input.Mouse;
 import org.powerbot.game.api.methods.interactive.NPCs;
 import org.powerbot.game.api.methods.interactive.Players;
-import org.powerbot.game.api.methods.node.Locations;
+import org.powerbot.game.api.methods.node.SceneEntities;
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Time;
 import org.powerbot.game.api.wrappers.interactive.Player;
@@ -40,7 +40,7 @@ public class Beekeeper extends AntiRandom {
 
 	@Override
 	public boolean validate() {
-		return Game.isLoggedIn() && NPCs.getNearest(NPC_ID_BEE_KEEPER) != null && Locations.getNearest(LOCATION_ID_BEE_HOUSE) != null;
+		return Game.isLoggedIn() && NPCs.getNearest(NPC_ID_BEE_KEEPER) != null && SceneEntities.getNearest(LOCATION_ID_BEE_HOUSE) != null;
 	}
 
 	@Override

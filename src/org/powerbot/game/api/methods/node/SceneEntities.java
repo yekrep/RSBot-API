@@ -9,7 +9,7 @@ import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.wrappers.RegionOffset;
 import org.powerbot.game.api.wrappers.Tile;
-import org.powerbot.game.api.wrappers.node.Location;
+import org.powerbot.game.api.wrappers.node.SceneObject;
 import org.powerbot.game.bot.Bot;
 import org.powerbot.game.client.Client;
 import org.powerbot.game.client.RSAnimableNode;
@@ -27,15 +27,15 @@ import org.powerbot.game.client.RSInfoRSGroundInfo;
  *
  * @author Timer
  */
-public class Locations {
+public class SceneEntities {
 	public static final int TYPE_INTERACTIVE = 0x1;
 	public static final int TYPE_FLOOR_DECORATION = 0x2;
 	public static final int TYPE_BOUNDARY = 0x4;
 	public static final int TYPE_WALL_DECORATION = 0x8;
 	public static final int TYPE_UNKNOWN = 0x10;
 
-	public static final Filter<Location> ALL_FILTER = new Filter<Location>() {
-		public boolean accept(final Location obj) {
+	public static final Filter<SceneObject> ALL_FILTER = new Filter<SceneObject>() {
+		public boolean accept(final SceneObject obj) {
 			return true;
 		}
 	};
@@ -43,7 +43,7 @@ public class Locations {
 	/**
 	 * @return An array of all of the loaded Locations within the currently loaded region.
 	 */
-	public static Location[] getLoaded() {
+	public static SceneObject[] getLoaded() {
 		return getLoaded(ALL_FILTER);
 	}
 
@@ -51,14 +51,14 @@ public class Locations {
 	 * @param tile The <code>Tile</code> desired to have its Locations listed.
 	 * @return An array of all of the loaded Locations positioned on the given tile.
 	 */
-	public static Location[] getLoaded(final Tile tile) {
-		final Set<Location> locations = getAtLocal(tile.getX() - Game.getBaseX(), tile.getY() - Game.getBaseY(), -1);
-		return locations.toArray(new Location[locations.size()]);
+	public static SceneObject[] getLoaded(final Tile tile) {
+		final Set<SceneObject> locations = getAtLocal(tile.getX() - Game.getBaseX(), tile.getY() - Game.getBaseY(), -1);
+		return locations.toArray(new SceneObject[locations.size()]);
 	}
 
-	public static Location[] getLoaded(final int... ids) {
-		return getLoaded(new Filter<Location>() {
-			public boolean accept(final Location location) {
+	public static SceneObject[] getLoaded(final int... ids) {
+		return getLoaded(new Filter<SceneObject>() {
+			public boolean accept(final SceneObject location) {
 				final int id = location.getId();
 				for (final int i : ids) {
 					if (id == i) {
@@ -74,23 +74,23 @@ public class Locations {
 	 * @param filter The filtering <code>Filter</code> to accept all the Locations through.
 	 * @return An array of all of the loaded Locations within the currently loaded region that are accepted by the provided filter.
 	 */
-	public static Location[] getLoaded(final Filter<Location> filter) {
-		final Set<Location> objects = new LinkedHashSet<Location>();
+	public static SceneObject[] getLoaded(final Filter<SceneObject> filter) {
+		final Set<SceneObject> objects = new LinkedHashSet<SceneObject>();
 		for (int x = 0; x < 104; x++) {
 			for (int y = 0; y < 104; y++) {
-				for (final Location l : getAtLocal(x, y, -1)) {
+				for (final SceneObject l : getAtLocal(x, y, -1)) {
 					if (l != null && filter.accept(l)) {
 						objects.add(l);
 					}
 				}
 			}
 		}
-		return objects.toArray(new Location[objects.size()]);
+		return objects.toArray(new SceneObject[objects.size()]);
 	}
 
-	public static Location getNearest(final int... ids) {
-		return getNearest(new Filter<Location>() {
-			public boolean accept(final Location location) {
+	public static SceneObject getNearest(final int... ids) {
+		return getNearest(new Filter<SceneObject>() {
+			public boolean accept(final SceneObject location) {
 				final int id = location.getId();
 				for (final int i : ids) {
 					if (id == i) {
@@ -102,13 +102,13 @@ public class Locations {
 		});
 	}
 
-	public static Location getNearest(final Filter<Location> filter) {
-		Location location = null;
+	public static SceneObject getNearest(final Filter<SceneObject> filter) {
+		SceneObject location = null;
 		double distance = Double.MAX_VALUE;
 		final RegionOffset position = Players.getLocal().getRegionOffset();
 		for (int x = 0; x < 104; x++) {
 			for (int y = 0; y < 104; y++) {
-				for (final Location l : getAtLocal(x, y, -1)) {
+				for (final SceneObject l : getAtLocal(x, y, -1)) {
 					if (l != null && filter.accept(l)) {
 						final double dist = Calculations.distance(position.getX(), position.getY(), x, y);
 						if (dist < distance) {
@@ -133,10 +133,10 @@ public class Locations {
 		return (Object[][][]) ((RSGroundInfoRSGroundArray) obj).getRSGroundInfoRSGroundArray();
 	}
 
-	private static Set<Location> getAtLocal(int x, int y, final int mask) {
+	private static Set<SceneObject> getAtLocal(int x, int y, final int mask) {
 		final Bot bot = Bot.resolve();
 		final Client client = bot.getClient();
-		final Set<Location> objects = new LinkedHashSet<Location>();
+		final Set<SceneObject> objects = new LinkedHashSet<SceneObject>();
 		final Object[][][] groundArray = getRSGroundArray(client);
 		if (groundArray == null) {
 			return objects;
@@ -154,7 +154,7 @@ public class Locations {
 						obj = node.getRSAnimable();
 						if (obj != null) {
 							if (client.getRSObjectID(obj) != -1) {
-								objects.add(new Location(obj, Location.Type.INTERACTIVE, plane));
+								objects.add(new SceneObject(obj, SceneObject.Type.INTERACTIVE, plane));
 							}
 						}
 					}
@@ -165,7 +165,7 @@ public class Locations {
 					obj = ((RSGroundFloorDecoration) rsGround).getRSGroundFloorDecoration();
 					if (obj != null) {
 						if (client.getRSObjectID(obj) != -1) {
-							objects.add(new Location(obj, Location.Type.FLOOR_DECORATION, plane));
+							objects.add(new SceneObject(obj, SceneObject.Type.FLOOR_DECORATION, plane));
 						}
 					}
 				}
@@ -174,14 +174,14 @@ public class Locations {
 					obj = ((RSGroundBoundary1) rsGround).getRSGroundBoundary1();
 					if (obj != null) {
 						if (client.getRSObjectID(obj) != -1) {
-							objects.add(new Location(obj, Location.Type.BOUNDARY, plane));
+							objects.add(new SceneObject(obj, SceneObject.Type.BOUNDARY, plane));
 						}
 					}
 
 					obj = ((RSGroundBoundary2) rsGround).getRSGroundBoundary2();
 					if (obj != null) {
 						if (client.getRSObjectID(obj) != -1) {
-							objects.add(new Location(obj, Location.Type.BOUNDARY, plane));
+							objects.add(new SceneObject(obj, SceneObject.Type.BOUNDARY, plane));
 						}
 					}
 				}
@@ -190,14 +190,14 @@ public class Locations {
 					obj = ((RSGroundWallDecoration1) rsGround).getRSGroundWallDecoration1();
 					if (obj != null) {
 						if (client.getRSObjectID(obj) != -1) {
-							objects.add(new Location(obj, Location.Type.WALL_DECORATION, plane));
+							objects.add(new SceneObject(obj, SceneObject.Type.WALL_DECORATION, plane));
 						}
 					}
 
 					obj = ((RSGroundWallDecoration2) rsGround).getRSGroundWallDecoration2();
 					if (obj != null) {
 						if (client.getRSObjectID(obj) != -1) {
-							objects.add(new Location(obj, Location.Type.WALL_DECORATION, plane));
+							objects.add(new SceneObject(obj, SceneObject.Type.WALL_DECORATION, plane));
 						}
 					}
 				}
