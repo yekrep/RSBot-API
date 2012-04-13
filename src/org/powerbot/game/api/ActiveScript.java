@@ -1,5 +1,6 @@
 package org.powerbot.game.api;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.EventListener;
 import java.util.List;
@@ -183,5 +184,18 @@ public abstract class ActiveScript implements EventListener, Processor {
 
 	public final TaskContainer getContainer() {
 		return container;
+	}
+
+	/**
+	 * Get an accessible and isolated directory for reading and writing files.
+	 *
+	 * @return A unique per-script directory path with file IO permissions.
+	 */
+	public File getStorageDirectory() {
+		final File dir = new File(System.getProperty("java.io.tmpdir"), getClass().getName());
+		if (!dir.isDirectory()) {
+			dir.mkdirs();
+		}
+		return dir;
 	}
 }
