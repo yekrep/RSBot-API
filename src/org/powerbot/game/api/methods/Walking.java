@@ -122,4 +122,18 @@ public class Walking {
 				}
 		);
 	}
+
+	public static Tile getClosestOnMap(final Tile tile) {
+		if (tile.isOnMap()) {
+			return tile;
+		}
+
+		final Tile location = Players.getLocal().getLocation();
+		final double angle = Math.atan2(tile.getY(), tile.getX());
+		return new Tile(
+				location.getX() + (int) (16d * Math.cos(angle)),
+				location.getY() + (int) (16d * Math.sin(angle)),
+				tile.getPlane()
+		);
+	}
 }
