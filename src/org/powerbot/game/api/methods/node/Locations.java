@@ -7,7 +7,7 @@ import org.powerbot.game.api.methods.Calculations;
 import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.util.Filter;
-import org.powerbot.game.api.wrappers.RegionTile;
+import org.powerbot.game.api.wrappers.RegionOffset;
 import org.powerbot.game.api.wrappers.Tile;
 import org.powerbot.game.api.wrappers.node.Location;
 import org.powerbot.game.bot.Bot;
@@ -105,7 +105,7 @@ public class Locations {
 	public static Location getNearest(final Filter<Location> filter) {
 		Location location = null;
 		double distance = Double.MAX_VALUE;
-		final RegionTile position = Players.getLocal().getRegionPosition();
+		final RegionOffset position = Players.getLocal().getRegionOffset();
 		for (int x = 0; x < 104; x++) {
 			for (int y = 0; y < 104; y++) {
 				for (final Location l : getAtLocal(x, y, -1)) {

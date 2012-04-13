@@ -14,7 +14,7 @@ import org.powerbot.concurrent.TaskContainer;
 import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Time;
-import org.powerbot.game.api.wrappers.Locatable;
+import org.powerbot.game.api.wrappers.ViewportEntity;
 import org.powerbot.game.bot.Bot;
 import org.powerbot.game.bot.input.MouseManipulator;
 import org.powerbot.game.client.Client;
@@ -227,7 +227,7 @@ public class Mouse {
 		return move(p.x, p.y, randomX, randomY);
 	}
 
-	public static boolean apply(final Locatable locatable, final Filter<Point> filter) {
+	public static boolean apply(final ViewportEntity locatable, final Filter<Point> filter) {
 		final TaskContainer container = Bot.resolve().getContainer();
 		final MouseManipulator task = new MouseManipulator(locatable, filter);
 		final Future<?> future = container.submit(task);
@@ -387,7 +387,7 @@ public class Mouse {
 
 	private static MouseManipulator create(final int x, final int y, final int randomX, final int randomY, final boolean click, final boolean left) {
 		return new MouseManipulator(
-				new Locatable() {
+				new ViewportEntity() {
 					private final Rectangle area = new Rectangle(x - randomX, y - randomY, randomX * 2, randomY * 2);
 
 					public Point getCentralPoint() {

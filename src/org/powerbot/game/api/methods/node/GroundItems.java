@@ -9,7 +9,7 @@ import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.util.node.Deque;
 import org.powerbot.game.api.util.node.Nodes;
-import org.powerbot.game.api.wrappers.RegionTile;
+import org.powerbot.game.api.wrappers.RegionOffset;
 import org.powerbot.game.api.wrappers.Tile;
 import org.powerbot.game.api.wrappers.node.GroundItem;
 import org.powerbot.game.api.wrappers.node.Item;
@@ -65,7 +65,7 @@ public class GroundItems {
 	 */
 	public static GroundItem[] getLoaded(final int range, final Filter<GroundItem> filter) {
 		final ArrayList<GroundItem> temp = new ArrayList<GroundItem>();
-		final Tile tile = Players.getLocal().getPosition();
+		final Tile tile = Players.getLocal().getLocation();
 		final int pX = tile.getX();
 		final int pY = tile.getY();
 		final int baseX = Game.getBaseX();
@@ -108,8 +108,8 @@ public class GroundItems {
 	public static GroundItem getNearest(final int range, final Filter<GroundItem> filter) {
 		GroundItem groundItem = null;
 		double distance = Double.MAX_VALUE;
-		final RegionTile position = Players.getLocal().getRegionPosition();
-		final Tile tile = Players.getLocal().getPosition();
+		final RegionOffset position = Players.getLocal().getRegionOffset();
+		final Tile tile = Players.getLocal().getLocation();
 		final int pX = tile.getX();
 		final int pY = tile.getY();
 		final int baseX = Game.getBaseX();
@@ -121,7 +121,7 @@ public class GroundItems {
 				final GroundItem[] items = getLoadedAt(x, y);
 				for (final GroundItem item : items) {
 					if (item != null && filter.accept(item)) {
-						final double dist = Calculations.distance(position, item.getRegionPosition());
+						final double dist = Calculations.distance(position, item.getRegionOffset());
 						if (dist < distance) {
 							distance = dist;
 							groundItem = item;

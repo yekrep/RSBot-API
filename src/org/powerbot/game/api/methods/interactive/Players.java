@@ -5,7 +5,7 @@ import java.util.Set;
 
 import org.powerbot.game.api.methods.Calculations;
 import org.powerbot.game.api.util.Filter;
-import org.powerbot.game.api.wrappers.RegionTile;
+import org.powerbot.game.api.wrappers.RegionOffset;
 import org.powerbot.game.api.wrappers.interactive.Player;
 import org.powerbot.game.bot.Bot;
 import org.powerbot.game.client.Client;
@@ -55,12 +55,12 @@ public class Players {
 		final Object[] playerArray = client.getRSPlayerArray();
 		Player player = null;
 		double distance = Double.MAX_VALUE;
-		final RegionTile position = Players.getLocal().getRegionPosition();
+		final RegionOffset position = Players.getLocal().getRegionOffset();
 		for (final int index : indices) {
 			if (index != 0 && playerArray[index] != null) {
 				final Player t_player = new Player(playerArray[index]);
 				if (filter.accept(t_player)) {
-					final double dist = Calculations.distance(position, t_player.getRegionPosition());
+					final double dist = Calculations.distance(position, t_player.getRegionOffset());
 					if (dist < distance) {
 						distance = dist;
 						player = t_player;

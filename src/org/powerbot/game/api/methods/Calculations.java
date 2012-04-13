@@ -5,7 +5,7 @@ import java.awt.Point;
 
 import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.methods.widget.WidgetComposite;
-import org.powerbot.game.api.wrappers.RegionTile;
+import org.powerbot.game.api.wrappers.RegionOffset;
 import org.powerbot.game.api.wrappers.Tile;
 import org.powerbot.game.api.wrappers.interactive.Player;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
@@ -139,7 +139,7 @@ public class Calculations {
 		x -= Game.getBaseX();
 		y -= Game.getBaseY();
 
-		final RegionTile localTile = local.getRegionPosition();
+		final RegionOffset localTile = local.getRegionOffset();
 		final int calculatedX = (int) (x * 4 + 2) - (localTile.getX() << 9) / 0x80;
 		final int calculatedY = (int) (y * 4 + 2) - (localTile.getY() << 9) / 0x80;
 
@@ -199,7 +199,7 @@ public class Calculations {
 		return Math.sqrt((tile1.getX() - tile2.getX()) * (tile1.getX() - tile2.getX()) + (tile1.getY() - tile2.getY()) * (tile1.getY() - tile2.getY()));
 	}
 
-	public static double distance(final RegionTile tile1, final RegionTile tile2) {
+	public static double distance(final RegionOffset tile1, final RegionOffset tile2) {
 		return Math.sqrt((tile1.getX() - tile2.getX()) * (tile1.getX() - tile2.getX()) + (tile1.getY() - tile2.getY()) * (tile1.getY() - tile2.getY()));
 	}
 
@@ -208,15 +208,15 @@ public class Calculations {
 	}
 
 	public static double distanceTo(final Tile tile) {
-		return distance(tile, Players.getLocal().getPosition());
+		return distance(tile, Players.getLocal().getLocation());
 	}
 
-	public static double distanceTo(final RegionTile tile) {
-		return distance(tile, Players.getLocal().getRegionPosition());
+	public static double distanceTo(final RegionOffset tile) {
+		return distance(tile, Players.getLocal().getRegionOffset());
 	}
 
 	public static double distanceTo(final int x, final int y) {
-		final Tile pos = Players.getLocal().getPosition();
+		final Tile pos = Players.getLocal().getLocation();
 		return distance(x, y, pos.getX(), pos.getY());
 	}
 }

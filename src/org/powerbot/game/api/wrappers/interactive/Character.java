@@ -12,8 +12,8 @@ import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.util.internal.Multipliers;
 import org.powerbot.game.api.util.node.Nodes;
 import org.powerbot.game.api.wrappers.Entity;
-import org.powerbot.game.api.wrappers.Mobile;
-import org.powerbot.game.api.wrappers.RegionTile;
+import org.powerbot.game.api.wrappers.Locatable;
+import org.powerbot.game.api.wrappers.RegionOffset;
 import org.powerbot.game.api.wrappers.Rotatable;
 import org.powerbot.game.api.wrappers.Tile;
 import org.powerbot.game.api.wrappers.graphics.CapturedModel;
@@ -48,7 +48,7 @@ import org.powerbot.game.client.SequenceInts;
 /**
  * @author Timer
  */
-public abstract class Character implements Entity, Mobile, Rotatable {
+public abstract class Character implements Entity, Locatable, Rotatable {
 	private final Client client;
 	private final Multipliers multipliers;
 
@@ -62,13 +62,13 @@ public abstract class Character implements Entity, Mobile, Rotatable {
 
 	public abstract String getName();
 
-	public RegionTile getRegionPosition() {
+	public RegionOffset getRegionOffset() {
 		final RSInteractableLocation location = ((RSInteractableManager) ((RSInteractableRSInteractableManager) get()).getRSInteractableRSInteractableManager()).getData().getLocation();
-		return new RegionTile((int) location.getX() >> 9, (int) location.getY() >> 9, getPlane());
+		return new RegionOffset((int) location.getX() >> 9, (int) location.getY() >> 9, getPlane());
 	}
 
-	public Tile getPosition() {
-		final RegionTile regionTile = getRegionPosition();
+	public Tile getLocation() {
+		final RegionOffset regionTile = getRegionOffset();
 		return new Tile(Game.getBaseX() + regionTile.getX(), Game.getBaseY() + regionTile.getY(), regionTile.getPlane());
 	}
 
@@ -186,7 +186,7 @@ public abstract class Character implements Entity, Mobile, Rotatable {
 		if (model != null) {
 			return model.contains(point);
 		}
-		return getPosition().contains(point);
+		return getLocation().contains(point);
 	}
 
 	public boolean isOnScreen() {
@@ -199,7 +199,7 @@ public abstract class Character implements Entity, Mobile, Rotatable {
 		if (model != null) {
 			return model.getBounds();
 		}
-		return getPosition().getBounds();
+		return getLocation().getBounds();
 	}
 
 	public boolean hover() {

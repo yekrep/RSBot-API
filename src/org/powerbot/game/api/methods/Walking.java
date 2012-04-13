@@ -6,8 +6,8 @@ import org.powerbot.game.api.methods.input.Mouse;
 import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.wrappers.Locatable;
-import org.powerbot.game.api.wrappers.Mobile;
 import org.powerbot.game.api.wrappers.Tile;
+import org.powerbot.game.api.wrappers.ViewportEntity;
 import org.powerbot.game.api.wrappers.map.LocalPath;
 import org.powerbot.game.api.wrappers.map.TilePath;
 import org.powerbot.game.bot.Bot;
@@ -85,8 +85,8 @@ public class Walking {
 		return new LocalPath(end);
 	}
 
-	public static boolean walk(final Mobile mobile) {
-		return walk(mobile.getPosition());
+	public static boolean walk(final Locatable mobile) {
+		return walk(mobile.getLocation());
 	}
 
 	/**
@@ -97,7 +97,7 @@ public class Walking {
 	 */
 	public static boolean walk(final Tile tile) {
 		return Mouse.apply(
-				new Locatable() {
+				new ViewportEntity() {
 					public Point getCentralPoint() {
 						return Calculations.worldToMap(tile.getX(), tile.getY());
 					}
@@ -111,7 +111,7 @@ public class Walking {
 					}
 
 					public boolean validate() {
-						return Calculations.distance(tile, Players.getLocal().getPosition()) <= 17;
+						return Calculations.distance(tile, Players.getLocal().getLocation()) <= 17;
 					}
 				},
 				new Filter<Point>() {

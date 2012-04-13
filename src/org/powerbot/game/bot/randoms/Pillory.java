@@ -35,7 +35,7 @@ public class Pillory extends AntiRandom {
 	@Override
 	public boolean validate() {
 		if (Game.getClientState() == Game.INDEX_MAP_LOADED) {
-			final Tile pos = Players.getLocal().getPosition();
+			final Tile pos = Players.getLocal().getLocation();
 			for (final Tile t : CAGE_TILES) {
 				if (t.equals(pos)) {
 					return true;
@@ -48,11 +48,11 @@ public class Pillory extends AntiRandom {
 	@Override
 	public void run() {
 		if (!Widgets.get(WIDGET_LOCK).validate()) {
-			final Tile cageTile = Players.getLocal().getPosition().derive(0, 1);
+			final Tile cageTile = Players.getLocal().getLocation().derive(0, 1);
 			final Location location = Locations.getNearest(new Filter<Location>() {
 				@Override
 				public boolean accept(final Location location) {
-					return location.getPosition().equals(cageTile) && location.getType() == Location.Type.BOUNDARY;
+					return location.getLocation().equals(cageTile) && location.getType() == Location.Type.BOUNDARY;
 				}
 			});
 			if (location != null && location.interact("unlock")) {

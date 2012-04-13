@@ -8,7 +8,7 @@ import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Time;
 import org.powerbot.game.api.util.Timer;
-import org.powerbot.game.api.wrappers.Mobile;
+import org.powerbot.game.api.wrappers.Locatable;
 import org.powerbot.game.api.wrappers.Tile;
 import org.powerbot.game.bot.Bot;
 
@@ -148,19 +148,19 @@ public class Camera {
 		return da;
 	}
 
-	public synchronized static void turnTo(final Mobile l) {
+	public synchronized static void turnTo(final Locatable l) {
 		turnTo(l, 0);
 	}
 
-	public synchronized static void turnTo(final Mobile l, final int dev) {
+	public synchronized static void turnTo(final Locatable l, final int dev) {
 		int angle = getMobileAngle(l);
 		angle = Random.nextInt(angle - dev, angle + dev + 1);
 		setAngle(angle);
 	}
 
-	public static int getMobileAngle(final Mobile mobile) {
-		final Tile t = mobile.getPosition();
-		final Tile me = Players.getLocal().getPosition();
+	public static int getMobileAngle(final Locatable mobile) {
+		final Tile t = mobile.getLocation();
+		final Tile me = Players.getLocal().getLocation();
 		int angle = ((int) Math.toDegrees(Math.atan2(t.getY() - me.getY(), t.getX() - me.getX()))) - 90;
 		if (angle < 0) {
 			angle = 360 + angle;

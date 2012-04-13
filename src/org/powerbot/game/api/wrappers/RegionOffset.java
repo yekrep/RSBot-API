@@ -1,9 +1,9 @@
 package org.powerbot.game.api.wrappers;
 
-public class RegionTile {
+public class RegionOffset {
 	protected final int x, y, plane;
 
-	public RegionTile(final int x, final int y, final int plane) {
+	public RegionOffset(final int x, final int y, final int plane) {
 		this.x = x;
 		this.y = y;
 		this.plane = plane;

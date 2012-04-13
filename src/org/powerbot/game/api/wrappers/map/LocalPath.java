@@ -40,7 +40,7 @@ public class LocalPath extends Path {
 
 	@Override
 	public boolean validate() {
-		return getNext() != null && !Players.getLocal().getPosition().equals(getEnd());
+		return getNext() != null && !Players.getLocal().getLocation().equals(getEnd());
 	}
 
 	@Override
@@ -49,7 +49,7 @@ public class LocalPath extends Path {
 			final int[][] flags = Walking.getCollisionFlags(Game.getPlane());
 			if (flags != null) {
 				base = Game.getMapBase();
-				final Tile start = Players.getLocal().getPosition();
+				final Tile start = Players.getLocal().getLocation();
 				final Tile[] tiles = findPath(start, end);
 				if (tiles == null) {
 					base = null;

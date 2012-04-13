@@ -34,7 +34,7 @@ public class DrawLocations implements PaintListener {
 			return;
 		}
 		final FontMetrics metrics = render.getFontMetrics();
-		final Tile position = player.getPosition();
+		final Tile position = player.getLocation();
 		final int textHeight = metrics.getHeight();
 		for (int x = position.getX() - 25; x < position.getX() + 25; x++) {
 			for (int y = position.getY() - 25; y < position.getY() + 25; y++) {
@@ -46,7 +46,7 @@ public class DrawLocations implements PaintListener {
 				final Location[] locations = Locations.getLoaded(accessPosition);
 				int i = 0;
 				for (final Location location : locations) {
-					final Point locationPoint = location.getPosition().getCentralPoint();
+					final Point locationPoint = location.getLocation().getCentralPoint();
 					if (!Calculations.isOnScreen(locationPoint)) {
 						continue;
 					}

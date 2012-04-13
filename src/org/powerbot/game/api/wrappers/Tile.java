@@ -15,7 +15,7 @@ import org.powerbot.game.api.util.Random;
 /**
  * @author Timer
  */
-public class Tile implements Entity, Mobile, Identifiable {
+public class Tile implements Entity, Locatable, Identifiable {
 	protected final int x, y, plane;
 
 	public static interface Flag {
@@ -179,12 +179,12 @@ public class Tile implements Entity, Mobile, Identifiable {
 		}
 	}
 
-	public Tile getPosition() {
+	public Tile getLocation() {
 		return this;
 	}
 
-	public RegionTile getRegionPosition() {
-		return new RegionTile(x - Game.getBaseX(), y - Game.getBaseY(), plane);
+	public RegionOffset getRegionOffset() {
+		return new RegionOffset(x - Game.getBaseX(), y - Game.getBaseY(), plane);
 	}
 
 	public int getId() {

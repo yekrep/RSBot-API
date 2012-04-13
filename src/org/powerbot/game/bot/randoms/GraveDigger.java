@@ -18,7 +18,7 @@ import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Time;
 import org.powerbot.game.api.util.Timer;
 import org.powerbot.game.api.wrappers.Entity;
-import org.powerbot.game.api.wrappers.Mobile;
+import org.powerbot.game.api.wrappers.Locatable;
 import org.powerbot.game.api.wrappers.interactive.Npc;
 import org.powerbot.game.api.wrappers.node.Item;
 import org.powerbot.game.api.wrappers.node.Location;
@@ -210,7 +210,7 @@ public class GraveDigger extends AntiRandom {
 				final int grave_id = getEmptyGraveId(coffin.getStoneId());
 				final Location grave = Locations.getNearest(grave_id);
 				if (grave != null) {
-					if (!grave.isOnScreen() || !grave.getPosition().isOnScreen()) {
+					if (!grave.isOnScreen() || !grave.getLocation().isOnScreen()) {
 						walk(grave);
 						return;
 					}
@@ -280,11 +280,11 @@ public class GraveDigger extends AntiRandom {
 		}
 	}
 
-	private void walk(final Mobile mobile) {
+	private void walk(final Locatable mobile) {
 		Walking.walk(mobile);
 		final Timer timer = new Timer(2000);
 		while (timer.isRunning()) {
-			if (mobile.getPosition().isOnScreen()) {
+			if (mobile.getLocation().isOnScreen()) {
 				break;
 			}
 			if (Players.getLocal().isMoving()) {

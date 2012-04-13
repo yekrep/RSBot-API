@@ -54,7 +54,7 @@ public class EvilTwin extends AntiRandom {
 			}
 		});
 		if (molly != null) {
-			xCheck = molly.getPosition().getX() + 4;
+			xCheck = molly.getLocation().getX() + 4;
 		}
 
 
@@ -76,7 +76,7 @@ public class EvilTwin extends AntiRandom {
 
 		final Player player = Players.getLocal();
 
-		if (molly != null && player.getPosition().getX() <= xCheck && Settings.get(334) != 0x2 && !finished) {
+		if (molly != null && player.getLocation().getX() <= xCheck && Settings.get(334) != 0x2 && !finished) {
 			verbose("We have to leave the room.");
 			verbose(molly.getModel().toString());
 			model = molly.getModel();
@@ -94,7 +94,7 @@ public class EvilTwin extends AntiRandom {
 			return;
 		}
 
-		if (molly == null && player.getPosition().getX() > xCheck) {
+		if (molly == null && player.getLocation().getX() > xCheck) {
 			verbose("Operate the claw!  Molly is not back yet...");
 			final Widget widget = Widgets.get(WIDGET_CONTROLS);
 			if (widget.validate()) {
@@ -126,7 +126,7 @@ public class EvilTwin extends AntiRandom {
 			return;
 		}
 
-		if (molly != null && player.getPosition().getX() > xCheck) {
+		if (molly != null && player.getLocation().getX() > xCheck) {
 			verbose("Molly is back, go through the door...");
 			finished = true;
 			final Location location = Locations.getNearest(LOCATION_ID_DOOR);
@@ -174,10 +174,10 @@ public class EvilTwin extends AntiRandom {
 				return npc.getModel().equals(model);
 			}
 		})) != null) {
-			verbose("Claw: " + claw.getPosition().toString());
-			verbose("Molly's twin: " + suspect.getPosition().toString());
-			final Tile clawLoc = claw.getPosition();
-			final Tile susLoc = suspect.getPosition();
+			verbose("Claw: " + claw.getLocation().toString());
+			verbose("Molly's twin: " + suspect.getLocation().toString());
+			final Tile clawLoc = claw.getLocation();
+			final Tile susLoc = suspect.getLocation();
 			final ArrayList<Integer> options = new ArrayList<Integer>();
 			if (susLoc.getX() > clawLoc.getX()) {
 				options.add(WIDGET_CONTROLS_LEFT);
@@ -211,7 +211,7 @@ public class EvilTwin extends AntiRandom {
 		if (claw == null) {
 			return false;
 		}
-		final Tile currentClawLoc = claw.getPosition();
+		final Tile currentClawLoc = claw.getLocation();
 		return !prevClawLoc.equals(currentClawLoc);
 	}
 }

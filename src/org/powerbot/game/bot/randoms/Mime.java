@@ -63,7 +63,7 @@ public class Mime extends AntiRandom {
 		}
 		Widgets.clickContinue();
 
-		if (Players.getLocal().getPosition().equals(PERFORMANCE_TILE)) {
+		if (Players.getLocal().getLocation().equals(PERFORMANCE_TILE)) {
 			final Npc mime = Npcs.getNearest(new Filter<Npc>() {
 				public boolean accept(final Npc npc) {
 					return npc.getId() == NPC_MIME_ID;

@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-public class StrategyGroup extends ArrayList<Strategy>{
+public class StrategyGroup {
 	private final List<Strategy> group;
 
 	public StrategyGroup() {

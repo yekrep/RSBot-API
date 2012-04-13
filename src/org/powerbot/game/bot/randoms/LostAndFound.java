@@ -71,7 +71,7 @@ public class LostAndFound extends AntiRandom {
 					Time.sleep(500);
 				}
 			} else {
-				Walking.walk(appendage.getPosition());
+				Walking.walk(appendage.getLocation());
 				final Timer timer = new Timer(5000);
 				while (timer.isRunning()) {
 					if (localPlayer.isMoving()) {

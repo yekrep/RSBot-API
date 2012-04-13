@@ -11,29 +11,29 @@ import org.powerbot.game.api.methods.node.Menu;
 import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.wrappers.Entity;
 import org.powerbot.game.api.wrappers.Identifiable;
-import org.powerbot.game.api.wrappers.Mobile;
-import org.powerbot.game.api.wrappers.RegionTile;
+import org.powerbot.game.api.wrappers.Locatable;
+import org.powerbot.game.api.wrappers.RegionOffset;
 import org.powerbot.game.api.wrappers.Tile;
 
 /**
  * @author Timer
  */
-public class GroundItem implements Entity, Mobile, Identifiable {
+public class GroundItem implements Entity, Locatable, Identifiable {
 	private final Tile tile;
-	private final RegionTile localTile;
+	private final RegionOffset localTile;
 	private final Item groundItem;
 
 	public GroundItem(final Tile tile, final Item groundItem) {
 		this.tile = tile;
-		this.localTile = new RegionTile(tile.getX() - Game.getBaseX(), tile.getY() - Game.getBaseY(), tile.getPlane());
+		this.localTile = new RegionOffset(tile.getX() - Game.getBaseX(), tile.getY() - Game.getBaseY(), tile.getPlane());
 		this.groundItem = groundItem;
 	}
 
-	public RegionTile getRegionPosition() {
+	public RegionOffset getRegionOffset() {
 		return localTile;
 	}
 
-	public Tile getPosition() {
+	public Tile getLocation() {
 		return tile;
 	}
 

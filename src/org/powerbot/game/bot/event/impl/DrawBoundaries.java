@@ -94,7 +94,7 @@ public class DrawBoundaries implements PaintListener {
 				}
 			}
 		}
-		final Tile pos = Players.getLocal().getPosition();
+		final Tile pos = Players.getLocal().getLocation();
 		final Point mini = Calculations.worldToMap(pos.getX(), pos.getY());
 		render.setColor(Color.red);
 		render.fillRect((int) mini.getX() - 1, (int) mini.getY() - 1, 2, 2);

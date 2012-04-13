@@ -11,7 +11,7 @@ import org.powerbot.game.api.methods.widget.Camera;
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Time;
 import org.powerbot.game.api.util.Timer;
-import org.powerbot.game.api.wrappers.Mobile;
+import org.powerbot.game.api.wrappers.Locatable;
 import org.powerbot.game.api.wrappers.node.Location;
 
 @Manifest(name = "First Time Death", authors = {"Timer"}, version = 1.1)
@@ -75,11 +75,11 @@ public class FirstTimeDeath extends AntiRandom {
 		}
 	}
 
-	private void walk(final Mobile mobile) {
+	private void walk(final Locatable mobile) {
 		Walking.walk(mobile);
 		final Timer timer = new Timer(2000);
 		while (timer.isRunning()) {
-			if (mobile.getPosition().isOnScreen()) {
+			if (mobile.getLocation().isOnScreen()) {
 				break;
 			}
 			if (Players.getLocal().isMoving()) {

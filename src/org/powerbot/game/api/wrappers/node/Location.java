@@ -10,8 +10,8 @@ import org.powerbot.game.api.util.node.Nodes;
 import org.powerbot.game.api.wrappers.Area;
 import org.powerbot.game.api.wrappers.Entity;
 import org.powerbot.game.api.wrappers.Identifiable;
-import org.powerbot.game.api.wrappers.Mobile;
-import org.powerbot.game.api.wrappers.RegionTile;
+import org.powerbot.game.api.wrappers.Locatable;
+import org.powerbot.game.api.wrappers.RegionOffset;
 import org.powerbot.game.api.wrappers.Tile;
 import org.powerbot.game.api.wrappers.graphics.CapturedModel;
 import org.powerbot.game.api.wrappers.graphics.model.LocationModel;
@@ -37,7 +37,7 @@ import org.powerbot.game.client.SoftReferenceGet;
 /**
  * @author Timer
  */
-public class Location implements Entity, Mobile, Identifiable {
+public class Location implements Entity, Locatable, Identifiable {
 	private final Object object;
 	private final Type type;
 	private final int plane;
@@ -92,13 +92,13 @@ public class Location implements Entity, Mobile, Identifiable {
 		return object;
 	}
 
-	public RegionTile getRegionPosition() {
+	public RegionOffset getRegionOffset() {
 		final RSInteractableLocation location = ((RSInteractableManager) ((RSInteractableRSInteractableManager) object).getRSInteractableRSInteractableManager()).getData().getLocation();
-		return new RegionTile((int) location.getX() / 512, (int) location.getY() / 512, plane);
+		return new RegionOffset((int) location.getX() / 512, (int) location.getY() / 512, plane);
 	}
 
-	public Tile getPosition() {
-		final RegionTile localTile = getRegionPosition();
+	public Tile getLocation() {
+		final RegionOffset localTile = getRegionOffset();
 		return new Tile(Game.getBaseX() + localTile.getX(), Game.getBaseY() + localTile.getY(), localTile.getPlane());
 	}
 
@@ -139,47 +139,47 @@ public class Location implements Entity, Mobile, Identifiable {
 
 	public Point getCentralPoint() {
 		final CapturedModel model = getModel();
-		return model != null ? model.getCentralPoint() : getPosition().getCentralPoint();
+		return model != null ? model.getCentralPoint() : getLocation().getCentralPoint();
 	}
 
 	public Point getNextViewportPoint() {
 		final CapturedModel model = getModel();
-		return model != null ? model.getNextViewportPoint() : getPosition().getNextViewportPoint();
+		return model != null ? model.getNextViewportPoint() : getLocation().getNextViewportPoint();
 	}
 
 	public boolean contains(final Point point) {
 		final CapturedModel model = getModel();
-		return model != null ? model.contains(point) : getPosition().contains(point);
+		return model != null ? model.contains(point) : getLocation().contains(point);
 	}
 
 	public boolean isOnScreen() {
 		final CapturedModel model = getModel();
-		return model != null ? model.isOnScreen() : getPosition().isOnScreen();
+		return model != null ? model.isOnScreen() : getLocation().isOnScreen();
 	}
 
 	public Polygon[] getBounds() {
 		final CapturedModel model = getModel();
-		return model != null ? model.getBounds() : getPosition().getBounds();
+		return model != null ? model.getBounds() : getLocation().getBounds();
 	}
 
 	public boolean hover() {
 		final CapturedModel model = getModel();
-		return model != null ? model.hover() : getPosition().hover();
+		return model != null ? model.hover() : getLocation().hover();
 	}
 
 	public boolean click(final boolean left) {
 		final CapturedModel model = getModel();
-		return model != null ? model.click(left) : getPosition().click(left);
+		return model != null ? model.click(left) : getLocation().click(left);
 	}
 
 	public boolean interact(final String action) {
 		final CapturedModel model = getModel();
-		return model != null ? model.interact(action) : getPosition().interact(action);
+		return model != null ? model.interact(action) : getLocation().interact(action);
 	}
 
 	public boolean interact(final String action, final String option) {
 		final CapturedModel model = getModel();
-		return model != null ? model.interact(action, option) : getPosition().interact(action, option);
+		return model != null ? model.interact(action, option) : getLocation().interact(action, option);
 	}
 
 	public void draw(final Graphics render) {
@@ -188,7 +188,7 @@ public class Location implements Entity, Mobile, Identifiable {
 		if (model != null) {
 			model.draw(render);
 		} else {
-			getPosition().draw(render);
+			getLocation().draw(render);
 		}
 	}
 

@@ -10,7 +10,7 @@ import org.powerbot.game.api.methods.input.Mouse;
 import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Time;
-import org.powerbot.game.api.wrappers.Locatable;
+import org.powerbot.game.api.wrappers.ViewportEntity;
 import org.powerbot.game.bot.Bot;
 
 /**
@@ -21,12 +21,12 @@ public class MouseManipulator implements Task {
 	private final Vector velocity = new Vector();
 	private final long timeout;
 	private boolean running;
-	private final Locatable locatable;
+	private final ViewportEntity locatable;
 	private final Filter<Point> filter;
 	private boolean accepted = false;
 	private final org.powerbot.game.client.input.Mouse clientMouse;
 
-	public MouseManipulator(final Locatable locatable, final Filter<Point> filter) {
+	public MouseManipulator(final ViewportEntity locatable, final Filter<Point> filter) {
 		this.timeout = Random.nextInt(4000, 7000);
 		this.running = false;
 		this.locatable = locatable;

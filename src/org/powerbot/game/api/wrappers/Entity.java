@@ -8,7 +8,7 @@ import java.awt.Polygon;
  *
  * @author Timer
  */
-public interface Entity extends Locatable {
+public interface Entity extends ViewportEntity {
 	/**
 	 * Determines if this entity is on screen.
 	 *

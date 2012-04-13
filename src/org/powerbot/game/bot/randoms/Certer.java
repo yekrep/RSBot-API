@@ -13,7 +13,7 @@ import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Time;
 import org.powerbot.game.api.util.Timer;
-import org.powerbot.game.api.wrappers.Mobile;
+import org.powerbot.game.api.wrappers.Locatable;
 import org.powerbot.game.api.wrappers.interactive.Npc;
 import org.powerbot.game.api.wrappers.node.Location;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
@@ -127,11 +127,11 @@ public class Certer extends AntiRandom {
 		}
 	}
 
-	private void walk(final Mobile mobile) {
+	private void walk(final Locatable mobile) {
 		Walking.walk(mobile);
 		final Timer timer = new Timer(2000);
 		while (timer.isRunning()) {
-			if (mobile.getPosition().isOnScreen()) {
+			if (mobile.getLocation().isOnScreen()) {
 				break;
 			}
 			if (Players.getLocal().isMoving()) {

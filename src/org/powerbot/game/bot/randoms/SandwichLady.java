@@ -46,7 +46,7 @@ public class SandwichLady extends AntiRandom {
 						portal.interact("Enter", "Exit portal");
 						Time.sleep(Random.nextInt(3000, 5000));
 					} else {
-						Walking.walk(portal.getPosition());
+						Walking.walk(portal.getLocation());
 						final Timer timer = new Timer(3000);
 						while (timer.isRunning() && !portal.isOnScreen()) {
 							Time.sleep(150);
@@ -100,7 +100,7 @@ public class SandwichLady extends AntiRandom {
 		}
 
 		if (lady != null && lady.getAnimation() == -1) {
-			if (!lady.getPosition().isOnScreen()) {
+			if (!lady.getLocation().isOnScreen()) {
 				Camera.turnTo(lady);
 				Camera.setPitch(false);
 			} else {

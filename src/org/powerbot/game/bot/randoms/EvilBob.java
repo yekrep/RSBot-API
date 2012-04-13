@@ -18,7 +18,7 @@ import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Time;
 import org.powerbot.game.api.util.Timer;
 import org.powerbot.game.api.wrappers.Entity;
-import org.powerbot.game.api.wrappers.Mobile;
+import org.powerbot.game.api.wrappers.Locatable;
 import org.powerbot.game.api.wrappers.Tile;
 import org.powerbot.game.api.wrappers.interactive.Npc;
 import org.powerbot.game.api.wrappers.node.GroundItem;
@@ -52,7 +52,7 @@ public class EvilBob extends AntiRandom {
 
 	@Override
 	public boolean validate() {
-		return Game.isLoggedIn() && Calculations.distance(CENTER_TILE, Players.getLocal().getPosition()) < 50;
+		return Game.isLoggedIn() && Calculations.distance(CENTER_TILE, Players.getLocal().getLocation()) < 50;
 	}
 
 	@Override
@@ -168,11 +168,11 @@ public class EvilBob extends AntiRandom {
 			verbose("Location statue");
 			final Location statue = Locations.getNearest(statueId);
 			if (statue != null) {
-				verbose("Statue location: " + statue.getPosition());
+				verbose("Statue location: " + statue.getLocation());
 				final Location fishingSpot = Locations.getNearest(new Filter<Location>() {
 					@Override
 					public boolean accept(final Location location) {
-						return location.getId() == LOCATION_ID_FISH && Calculations.distance(location.getPosition(), statue.getPosition()) < 10;
+						return location.getId() == LOCATION_ID_FISH && Calculations.distance(location.getLocation(), statue.getLocation()) < 10;
 					}
 				});
 				verbose("Nearest fishing spot: " + fishingSpot);
@@ -247,11 +247,11 @@ public class EvilBob extends AntiRandom {
 		}
 	}
 
-	private void walk(final Mobile mobile) {
+	private void walk(final Locatable mobile) {
 		Walking.walk(mobile);
 		final Timer timer = new Timer(2000);
 		while (timer.isRunning()) {
-			if (mobile.getPosition().isOnScreen()) {
+			if (mobile.getLocation().isOnScreen()) {
 				break;
 			}
 			if (Players.getLocal().isMoving()) {

@@ -52,7 +52,7 @@ public class Frog extends AntiRandom {
 						}
 					}
 				} else {
-					Walking.walk(princess.getPosition());
+					Walking.walk(princess.getLocation());
 					final Timer timer = new Timer(2000);
 					while (timer.isRunning()) {
 						Time.sleep(150);
@@ -75,7 +75,7 @@ public class Frog extends AntiRandom {
 					}
 				}
 			} else {
-				Walking.walk(herald.getPosition());
+				Walking.walk(herald.getLocation());
 				final Timer timer = new Timer(2000);
 				while (timer.isRunning()) {
 					Time.sleep(150);

@@ -48,12 +48,12 @@ public class Pinball extends AntiRandom {
 		if (getScore() >= 10) {
 			final Location exit = Locations.getNearest(15010);
 			if (exit != null) {
-				if (exit.getPosition().isOnScreen()) {
+				if (exit.getLocation().isOnScreen()) {
 					Time.sleep(exit.interact("Exit") ? Random.nextInt(4000, 4200) : 0);
 					return;
 				} else {
 					Camera.turnTo(exit);
-					exit.getPosition().interact("Walk here");
+					exit.getLocation().interact("Walk here");
 					Time.sleep(Random.nextInt(1400, 1500));
 					return;
 				}
@@ -62,8 +62,8 @@ public class Pinball extends AntiRandom {
 
 		final Location pillar = Locations.getNearest(ACTIVE_PILLARS);
 		if (pillar != null) {
-			if (Calculations.distance(Players.getLocal().getPosition(), pillar.getPosition()) > 2 && !pillar.isOnScreen()) {
-				pillar.getPosition().interact("Walk here");
+			if (Calculations.distance(Players.getLocal().getLocation(), pillar.getLocation()) > 2 && !pillar.isOnScreen()) {
+				pillar.getLocation().interact("Walk here");
 				Time.sleep(Random.nextInt(500, 600));
 				return;
 			}

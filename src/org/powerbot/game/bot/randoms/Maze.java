@@ -80,7 +80,7 @@ public class Maze extends AntiRandom {
 			return;
 		}
 
-		if (Players.getLocal().getPosition().equals(TILE_CENTER)) {
+		if (Players.getLocal().getLocation().equals(TILE_CENTER)) {
 			final Location shrine = Locations.getNearest(LOCATION_ID_STRANGE_OBJECT);
 			if (shrine != null && Players.getLocal().getAnimation() == -1 && shrine.interact("Touch")) {
 				for (int i = 0; i < 3000; i += 20) {
@@ -155,13 +155,13 @@ public class Maze extends AntiRandom {
 	private Location getDoor(final Door door) {
 		return Locations.getNearest(new Filter<Location>() {
 			public boolean accept(final Location location) {
-				return location.getId() >= 3628 && location.getId() <= 3632 && (location.getPosition().equals(door.main));
+				return location.getId() >= 3628 && location.getId() <= 3632 && (location.getLocation().equals(door.main));
 			}
 		});
 	}
 
 	private LinkedList<Tile> findCentre() {
-		final Tile start = Players.getLocal().getPosition();
+		final Tile start = Players.getLocal().getLocation();
 		final Tile end = TILE_CENTER;
 		if (start.getPlane() != end.getPlane()) {
 			return null;

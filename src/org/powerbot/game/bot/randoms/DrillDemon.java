@@ -65,7 +65,7 @@ public class DrillDemon extends AntiRandom {
 
 	@Override
 	public boolean validate() {
-		return Game.isLoggedIn() && AREA.contains(Players.getLocal().getPosition());
+		return Game.isLoggedIn() && AREA.contains(Players.getLocal().getLocation());
 	}
 
 	@Override
@@ -148,7 +148,7 @@ public class DrillDemon extends AntiRandom {
 		if (game_mats[sign_id] != null) {
 			if (!game_mats[sign_id].isOnScreen()) {
 				verbose("MAT OFF SCREEN!");
-				if (Walking.walk(game_mats[sign_id].getPosition())) {
+				if (Walking.walk(game_mats[sign_id].getLocation())) {
 					verbose("Walking...");
 					Time.sleep(500);
 				}
