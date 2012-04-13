@@ -51,6 +51,10 @@ public class Player extends Character {
 		return ((RSPlayerCompositeNPCID) ((RSPlayerCompositeInts) ((RSPlayerComposite) get()).getRSPlayerComposite()).getRSPlayerCompositeInts()).getRSPlayerCompositeNPCID() * multipliers.PLAYERCOMPOSITE_NPCID;
 	}
 
+	public int getId() {
+		return getName().hashCode();
+	}
+
 	public int[] getAppearance() {
 		final Object composite = ((RSPlayerComposite) get()).getRSPlayerComposite();
 		if (composite != null) {

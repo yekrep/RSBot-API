@@ -12,6 +12,7 @@ import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.util.internal.Multipliers;
 import org.powerbot.game.api.util.node.Nodes;
 import org.powerbot.game.api.wrappers.Entity;
+import org.powerbot.game.api.wrappers.Identifiable;
 import org.powerbot.game.api.wrappers.Locatable;
 import org.powerbot.game.api.wrappers.RegionOffset;
 import org.powerbot.game.api.wrappers.Rotatable;
@@ -48,7 +49,7 @@ import org.powerbot.game.client.SequenceInts;
 /**
  * @author Timer
  */
-public abstract class Character implements Entity, Locatable, Rotatable {
+public abstract class Character implements Entity, Locatable, Rotatable, Identifiable {
 	private final Client client;
 	private final Multipliers multipliers;
 
