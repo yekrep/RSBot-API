@@ -92,10 +92,14 @@ public class Walking {
 	/**
 	 * Clicks a tile on the minimap.
 	 *
-	 * @param tile The tile to click (global).
+	 * @param stepDirection The tile to click (global).
 	 * @return <tt>true</tt> if the tile was clicked; otherwise <tt>false</tt>.
 	 */
-	public static boolean walk(final Tile tile) {
+	public static boolean walk(Tile stepDirection) {
+		if (!stepDirection.isOnMap()) {
+			stepDirection = getClosestOnMap(stepDirection);
+		}
+		final Tile tile = stepDirection;
 		return Mouse.apply(
 				new ViewportEntity() {
 					public Point getCentralPoint() {
