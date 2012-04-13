@@ -1,5 +1,8 @@
 package org.powerbot.game.api.methods;
 
+import java.awt.Canvas;
+import java.awt.Dimension;
+
 import org.powerbot.game.api.util.internal.Constants;
 import org.powerbot.game.api.wrappers.Tile;
 import org.powerbot.game.bot.Bot;
@@ -96,5 +99,10 @@ public class Game {
 	public static int getLoopCycle() {
 		final Bot bot = Bot.resolve();
 		return bot.getClient().getLoopCycle() * bot.multipliers.GLOBAL_LOOPCYCLE;
+	}
+
+	public static Dimension getDimensions() {
+		final Canvas canvas = Bot.resolve().getCanvas();
+		return new Dimension(canvas.getWidth(), canvas.getHeight());
 	}
 }
