@@ -6,7 +6,7 @@ import org.powerbot.game.api.AntiRandom;
 import org.powerbot.game.api.Manifest;
 import org.powerbot.game.api.methods.Settings;
 import org.powerbot.game.api.methods.Widgets;
-import org.powerbot.game.api.methods.interactive.Npcs;
+import org.powerbot.game.api.methods.interactive.NPCs;
 import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.methods.node.Locations;
 import org.powerbot.game.api.methods.widget.Camera;
@@ -16,7 +16,7 @@ import org.powerbot.game.api.util.Time;
 import org.powerbot.game.api.util.Timer;
 import org.powerbot.game.api.wrappers.Tile;
 import org.powerbot.game.api.wrappers.graphics.CapturedModel;
-import org.powerbot.game.api.wrappers.interactive.Npc;
+import org.powerbot.game.api.wrappers.interactive.NPC;
 import org.powerbot.game.api.wrappers.interactive.Player;
 import org.powerbot.game.api.wrappers.node.Location;
 import org.powerbot.game.api.wrappers.widget.Widget;
@@ -37,9 +37,9 @@ public class EvilTwin extends AntiRandom {
 
 	@Override
 	public boolean validate() {
-		return Npcs.getNearest(new Filter<Npc>() {
+		return NPCs.getNearest(new Filter<NPC>() {
 			@Override
-			public boolean accept(final Npc npc) {
+			public boolean accept(final NPC npc) {
 				return npc.getName().equalsIgnoreCase("Molly");
 			}
 		}) != null || Locations.getNearest(14978) != null;
@@ -47,9 +47,9 @@ public class EvilTwin extends AntiRandom {
 
 	@Override
 	public void run() {
-		final Npc molly = Npcs.getNearest(new Filter<Npc>() {
+		final NPC molly = NPCs.getNearest(new Filter<NPC>() {
 			@Override
-			public boolean accept(final Npc npc) {
+			public boolean accept(final NPC npc) {
 				return npc.getName().equalsIgnoreCase("Molly");
 			}
 		});
@@ -166,11 +166,11 @@ public class EvilTwin extends AntiRandom {
 
 	private void navigateClaw() {
 		Location claw;
-		Npc suspect;
+		NPC suspect;
 		verbose("NAVIGATION: BEGIN");
-		while ((claw = Locations.getNearest(LOCATION_ID_CLAW)) != null && (suspect = Npcs.getNearest(new Filter<Npc>() {
+		while ((claw = Locations.getNearest(LOCATION_ID_CLAW)) != null && (suspect = NPCs.getNearest(new Filter<NPC>() {
 			@Override
-			public boolean accept(final Npc npc) {
+			public boolean accept(final NPC npc) {
 				return npc.getModel().equals(model);
 			}
 		})) != null) {

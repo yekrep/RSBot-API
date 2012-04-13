@@ -6,8 +6,8 @@ import java.awt.Graphics;
 import java.awt.Point;
 
 import org.powerbot.game.api.methods.Game;
-import org.powerbot.game.api.methods.interactive.Npcs;
-import org.powerbot.game.api.wrappers.interactive.Npc;
+import org.powerbot.game.api.methods.interactive.NPCs;
+import org.powerbot.game.api.wrappers.interactive.NPC;
 import org.powerbot.game.bot.event.listener.PaintListener;
 
 public class DrawNpcs implements PaintListener {
@@ -15,9 +15,9 @@ public class DrawNpcs implements PaintListener {
 		if (!Game.isLoggedIn()) {
 			return;
 		}
-		final Npc[] npcs = Npcs.getLoaded();
+		final NPC[] npcs = NPCs.getLoaded();
 		final FontMetrics metrics = render.getFontMetrics();
-		for (final Npc npc : npcs) {
+		for (final NPC npc : npcs) {
 			final Point location = npc.getCentralPoint();
 			if (location.x == -1 || location.y == -1) {
 				continue;

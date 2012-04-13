@@ -9,7 +9,7 @@ import org.powerbot.game.api.methods.Settings;
 import org.powerbot.game.api.methods.Tabs;
 import org.powerbot.game.api.methods.Walking;
 import org.powerbot.game.api.methods.Widgets;
-import org.powerbot.game.api.methods.interactive.Npcs;
+import org.powerbot.game.api.methods.interactive.NPCs;
 import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.methods.node.Locations;
 import org.powerbot.game.api.methods.tab.Inventory;
@@ -19,7 +19,7 @@ import org.powerbot.game.api.util.Time;
 import org.powerbot.game.api.util.Timer;
 import org.powerbot.game.api.wrappers.Entity;
 import org.powerbot.game.api.wrappers.Locatable;
-import org.powerbot.game.api.wrappers.interactive.Npc;
+import org.powerbot.game.api.wrappers.interactive.NPC;
 import org.powerbot.game.api.wrappers.node.Item;
 import org.powerbot.game.api.wrappers.node.Location;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
@@ -237,7 +237,7 @@ public class GraveDigger extends AntiRandom {
 				}
 			}
 
-			final Npc leo = Npcs.getNearest(NPC_ID_LEO);
+			final NPC leo = NPCs.getNearest(NPC_ID_LEO);
 			if (leo != null) {
 				if (!leo.isOnScreen()) {
 					walk(leo);
@@ -259,7 +259,7 @@ public class GraveDigger extends AntiRandom {
 		}
 
 
-		final Npc npc = Npcs.getNearest(NPC_ID_LEO);
+		final NPC npc = NPCs.getNearest(NPC_ID_LEO);
 		if (npc != null) {
 			if (!npc.isOnScreen()) {
 				walk(npc);

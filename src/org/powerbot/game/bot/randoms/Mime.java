@@ -7,14 +7,14 @@ import org.powerbot.game.api.AntiRandom;
 import org.powerbot.game.api.Manifest;
 import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.api.methods.Widgets;
-import org.powerbot.game.api.methods.interactive.Npcs;
+import org.powerbot.game.api.methods.interactive.NPCs;
 import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.methods.widget.Camera;
 import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Time;
 import org.powerbot.game.api.wrappers.Tile;
-import org.powerbot.game.api.wrappers.interactive.Npc;
+import org.powerbot.game.api.wrappers.interactive.NPC;
 import org.powerbot.game.api.wrappers.widget.Widget;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
 
@@ -50,8 +50,8 @@ public class Mime extends AntiRandom {
 	}
 
 	public boolean validate() {
-		return Game.isLoggedIn() && Npcs.getNearest(new Filter<Npc>() {
-			public boolean accept(final Npc npc) {
+		return Game.isLoggedIn() && NPCs.getNearest(new Filter<NPC>() {
+			public boolean accept(final NPC npc) {
 				return npc.getId() == NPC_MIME_ID;
 			}
 		}) != null;
@@ -64,8 +64,8 @@ public class Mime extends AntiRandom {
 		Widgets.clickContinue();
 
 		if (Players.getLocal().getLocation().equals(PERFORMANCE_TILE)) {
-			final Npc mime = Npcs.getNearest(new Filter<Npc>() {
-				public boolean accept(final Npc npc) {
+			final NPC mime = NPCs.getNearest(new Filter<NPC>() {
+				public boolean accept(final NPC npc) {
 					return npc.getId() == NPC_MIME_ID;
 				}
 			});

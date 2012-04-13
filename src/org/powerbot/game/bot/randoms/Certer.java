@@ -6,7 +6,7 @@ import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.api.methods.Settings;
 import org.powerbot.game.api.methods.Walking;
 import org.powerbot.game.api.methods.Widgets;
-import org.powerbot.game.api.methods.interactive.Npcs;
+import org.powerbot.game.api.methods.interactive.NPCs;
 import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.methods.node.Locations;
 import org.powerbot.game.api.util.Filter;
@@ -14,7 +14,7 @@ import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Time;
 import org.powerbot.game.api.util.Timer;
 import org.powerbot.game.api.wrappers.Locatable;
-import org.powerbot.game.api.wrappers.interactive.Npc;
+import org.powerbot.game.api.wrappers.interactive.NPC;
 import org.powerbot.game.api.wrappers.node.Location;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
 
@@ -102,9 +102,9 @@ public class Certer extends AntiRandom {
 		}
 
 		verbose("We need to speak with ?iles!");
-		final Npc man = Npcs.getNearest(new Filter<Npc>() {
+		final NPC man = NPCs.getNearest(new Filter<NPC>() {
 			@Override
-			public boolean accept(final Npc npc) {
+			public boolean accept(final NPC npc) {
 				final String name = npc.getName().toLowerCase();
 				return name.equals("giles") || name.equals("miles") || name.equals("niles");
 			}

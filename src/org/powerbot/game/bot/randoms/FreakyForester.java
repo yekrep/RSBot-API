@@ -5,7 +5,7 @@ import org.powerbot.game.api.Manifest;
 import org.powerbot.game.api.methods.Settings;
 import org.powerbot.game.api.methods.Walking;
 import org.powerbot.game.api.methods.Widgets;
-import org.powerbot.game.api.methods.interactive.Npcs;
+import org.powerbot.game.api.methods.interactive.NPCs;
 import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.methods.node.Locations;
 import org.powerbot.game.api.util.Filter;
@@ -14,7 +14,7 @@ import org.powerbot.game.api.util.Time;
 import org.powerbot.game.api.util.Timer;
 import org.powerbot.game.api.wrappers.Locatable;
 import org.powerbot.game.api.wrappers.graphics.CapturedModel;
-import org.powerbot.game.api.wrappers.interactive.Npc;
+import org.powerbot.game.api.wrappers.interactive.NPC;
 import org.powerbot.game.api.wrappers.node.Location;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
 
@@ -27,8 +27,8 @@ public class FreakyForester extends AntiRandom {
 	private static final String[] WIDGET_TALK_NUMBERS_TEXT = {" one", " two", " three", " four"};
 	private static final String WIDGET_TALK_DONE_TEXT = "portal";
 	private short[] phe = {};
-	private final Filter<Npc> pheasantFilter = new Filter<Npc>() {
-		public boolean accept(final Npc npc) {
+	private final Filter<NPC> pheasantFilter = new Filter<NPC>() {
+		public boolean accept(final NPC npc) {
 			final Filter<CapturedModel> modelFilter = CapturedModel.newVertexFilter(phe);
 			return modelFilter.accept(npc.getModel());
 		}
@@ -36,7 +36,7 @@ public class FreakyForester extends AntiRandom {
 
 	@Override
 	public boolean validate() {
-		return Npcs.getNearest(NPC_ID_FORESTER) != null && Locations.getNearest(LOCATION_ID_PORTAL) != null;
+		return NPCs.getNearest(NPC_ID_FORESTER) != null && Locations.getNearest(LOCATION_ID_PORTAL) != null;
 	}
 
 	@Override
@@ -86,7 +86,7 @@ public class FreakyForester extends AntiRandom {
 
 		if (Settings.get(334) == 0x1 && phe.length != 0) {
 			verbose("SETTING VALIDATED: Kill!");
-			final Npc pheasant = Npcs.getNearest(pheasantFilter);
+			final NPC pheasant = NPCs.getNearest(pheasantFilter);
 			if (pheasant != null) {
 				verbose("Found pheasant...");
 				if (!pheasant.isOnScreen()) {
@@ -117,7 +117,7 @@ public class FreakyForester extends AntiRandom {
 		}
 
 		verbose("Require conversation with forester!");
-		final Npc forester = Npcs.getNearest(NPC_ID_FORESTER);
+		final NPC forester = NPCs.getNearest(NPC_ID_FORESTER);
 		if (forester != null) {
 			if (!forester.isOnScreen()) {
 				walk(forester);

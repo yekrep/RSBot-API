@@ -7,7 +7,7 @@ import java.awt.Point;
 import java.awt.RenderingHints;
 import java.util.HashMap;
 
-import org.powerbot.game.api.methods.interactive.Npcs;
+import org.powerbot.game.api.methods.interactive.NPCs;
 import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.methods.node.Locations;
 import org.powerbot.game.api.wrappers.graphics.CapturedModel;
@@ -48,7 +48,7 @@ public class DrawModels implements PaintListener {
 				render.fillOval(p.x - 2, p.y - 2, 4, 4);
 			}
 		}
-		for (final org.powerbot.game.api.wrappers.interactive.Character e : Npcs.getLoaded()) {
+		for (final org.powerbot.game.api.wrappers.interactive.Character e : NPCs.getLoaded()) {
 			final CapturedModel model = e.getModel();
 			if (model != null && e.getLocation().isOnScreen()) {
 				render.setColor(Color.magenta);

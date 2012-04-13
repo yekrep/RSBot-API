@@ -4,14 +4,14 @@ import org.powerbot.game.api.AntiRandom;
 import org.powerbot.game.api.Manifest;
 import org.powerbot.game.api.methods.Walking;
 import org.powerbot.game.api.methods.Widgets;
-import org.powerbot.game.api.methods.interactive.Npcs;
+import org.powerbot.game.api.methods.interactive.NPCs;
 import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.methods.node.Locations;
 import org.powerbot.game.api.methods.widget.Camera;
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Time;
 import org.powerbot.game.api.util.Timer;
-import org.powerbot.game.api.wrappers.interactive.Npc;
+import org.powerbot.game.api.wrappers.interactive.NPC;
 import org.powerbot.game.api.wrappers.interactive.Player;
 import org.powerbot.game.api.wrappers.node.Location;
 import org.powerbot.game.api.wrappers.widget.Widget;
@@ -32,12 +32,12 @@ public class SandwichLady extends AntiRandom {
 
 	@Override
 	public boolean validate() {
-		return Npcs.getNearest(NPC_ID_SANDWICH_LADY) != null;
+		return NPCs.getNearest(NPC_ID_SANDWICH_LADY) != null;
 	}
 
 	@Override
 	public void run() {
-		final Npc lady = Npcs.getNearest(NPC_ID_SANDWICH_LADY);
+		final NPC lady = NPCs.getNearest(NPC_ID_SANDWICH_LADY);
 		if (Widgets.get(WIDGET_ID_CHAT).validate()) {
 			if (Widgets.get(WIDGET_ID_CHAT, WIDGET_ID_CHAT_TEXT).getText().contains("exit portal's")) {
 				final Location portal = Locations.getNearest(12731, 11373);

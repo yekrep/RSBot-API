@@ -6,32 +6,32 @@ import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.api.methods.Settings;
 import org.powerbot.game.api.methods.Walking;
 import org.powerbot.game.api.methods.Widgets;
-import org.powerbot.game.api.methods.interactive.Npcs;
+import org.powerbot.game.api.methods.interactive.NPCs;
 import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Time;
 import org.powerbot.game.api.util.Timer;
-import org.powerbot.game.api.wrappers.interactive.Npc;
+import org.powerbot.game.api.wrappers.interactive.NPC;
 
 @Manifest(name = "Kiss the Frog", authors = {"Timer"}, version = 1.0)
 public class Frog extends AntiRandom {
-	private static final Filter<Npc> NPC_FILTER_HERALD = new Filter<Npc>() {
+	private static final Filter<NPC> NPC_FILTER_HERALD = new Filter<NPC>() {
 		@Override
-		public boolean accept(final Npc npc) {
+		public boolean accept(final NPC npc) {
 			return npc.getName().equalsIgnoreCase("Frog Herald");
 		}
 	};
-	private static final Filter<Npc> NPC_FILTER_PRINCESS = new Filter<Npc>() {
+	private static final Filter<NPC> NPC_FILTER_PRINCESS = new Filter<NPC>() {
 		@Override
-		public boolean accept(final Npc npc) {
+		public boolean accept(final NPC npc) {
 			return !npc.isMoving() && npc.getHeight() == -278;
 		}
 	};
 
 	@Override
 	public boolean validate() {
-		return Game.isLoggedIn() && Npcs.getNearest(NPC_FILTER_HERALD) != null;
+		return Game.isLoggedIn() && NPCs.getNearest(NPC_FILTER_HERALD) != null;
 	}
 
 	@Override
@@ -42,7 +42,7 @@ public class Frog extends AntiRandom {
 		}
 
 		if (Settings.get(334) == 0x1) {
-			final Npc princess = Npcs.getNearest(NPC_FILTER_PRINCESS);
+			final NPC princess = NPCs.getNearest(NPC_FILTER_PRINCESS);
 			if (princess != null) {
 				if (princess.isOnScreen()) {
 					if (princess.interact("Talk-to", "Frog")) {
@@ -65,7 +65,7 @@ public class Frog extends AntiRandom {
 			return;
 		}
 
-		final Npc herald = Npcs.getNearest(NPC_FILTER_HERALD);
+		final NPC herald = NPCs.getNearest(NPC_FILTER_HERALD);
 		if (herald != null) {
 			if (herald.isOnScreen()) {
 				if (herald.interact("Talk-to", "Frog Herald")) {

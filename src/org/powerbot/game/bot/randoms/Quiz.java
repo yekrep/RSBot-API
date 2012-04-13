@@ -5,7 +5,7 @@ import java.util.Arrays;
 import org.powerbot.game.api.AntiRandom;
 import org.powerbot.game.api.Manifest;
 import org.powerbot.game.api.methods.Widgets;
-import org.powerbot.game.api.methods.interactive.Npcs;
+import org.powerbot.game.api.methods.interactive.NPCs;
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Time;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
@@ -31,7 +31,7 @@ public class Quiz extends AntiRandom {
 
 	@Override
 	public boolean validate() {
-		return Npcs.getNearest(2477) != null;
+		return NPCs.getNearest(2477) != null;
 	}
 
 	@Override

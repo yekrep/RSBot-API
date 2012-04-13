@@ -82,7 +82,7 @@ public abstract class Character implements Entity, Locatable, Rotatable {
 			return null;
 		}
 		if (index < 0x8000) {
-			return new Npc(((RSNPCHolder) ((RSNPCNodeHolder) ((RSNPCNode) Nodes.lookup(client.getRSNPCNC(), index)).getData()).getRSNPCNodeHolder()).getRSNPC());
+			return new NPC(((RSNPCHolder) ((RSNPCNodeHolder) ((RSNPCNode) Nodes.lookup(client.getRSNPCNC(), index)).getData()).getRSNPCNodeHolder()).getRSNPC());
 		} else {
 			return new Player(client.getRSPlayerArray()[index - 0x8000]);
 		}

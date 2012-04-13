@@ -7,14 +7,14 @@ import org.powerbot.game.api.AntiRandom;
 import org.powerbot.game.api.Manifest;
 import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.api.methods.Widgets;
-import org.powerbot.game.api.methods.interactive.Npcs;
+import org.powerbot.game.api.methods.interactive.NPCs;
 import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.methods.node.Locations;
 import org.powerbot.game.api.methods.widget.Camera;
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Time;
 import org.powerbot.game.api.util.Timer;
-import org.powerbot.game.api.wrappers.interactive.Npc;
+import org.powerbot.game.api.wrappers.interactive.NPC;
 import org.powerbot.game.api.wrappers.node.Location;
 import org.powerbot.game.api.wrappers.widget.Widget;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
@@ -38,7 +38,7 @@ public class Chest extends AntiRandom {
 
 	@Override
 	public boolean validate() {
-		return Game.isLoggedIn() && Npcs.getNearest(NPC_ID_CAPTAIN) != null;
+		return Game.isLoggedIn() && NPCs.getNearest(NPC_ID_CAPTAIN) != null;
 	}
 
 	@Override
@@ -124,7 +124,7 @@ public class Chest extends AntiRandom {
 			return;
 		}
 
-		final Npc captain = Npcs.getNearest(NPC_ID_CAPTAIN);
+		final NPC captain = NPCs.getNearest(NPC_ID_CAPTAIN);
 		if (captain != null) {
 			final Timer walkingCheck = new Timer(1200);
 			while (walkingCheck.isRunning()) {

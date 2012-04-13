@@ -16,11 +16,11 @@ import org.powerbot.game.client.RSNPCRSNPCDef;
 /**
  * @author Timer
  */
-public class Npc extends Character implements Identifiable {
+public class NPC extends Character implements Identifiable {
 	private final SoftReference<Object> n;
 	private final Multipliers multipliers;
 
-	public Npc(final Object n) {
+	public NPC(final Object n) {
 		this.n = new SoftReference<Object>(n);
 		this.multipliers = Bot.resolve().multipliers;
 	}

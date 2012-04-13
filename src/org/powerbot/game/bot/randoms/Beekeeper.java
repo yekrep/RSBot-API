@@ -8,7 +8,7 @@ import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.api.methods.Settings;
 import org.powerbot.game.api.methods.Widgets;
 import org.powerbot.game.api.methods.input.Mouse;
-import org.powerbot.game.api.methods.interactive.Npcs;
+import org.powerbot.game.api.methods.interactive.NPCs;
 import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.methods.node.Locations;
 import org.powerbot.game.api.util.Random;
@@ -40,7 +40,7 @@ public class Beekeeper extends AntiRandom {
 
 	@Override
 	public boolean validate() {
-		return Game.isLoggedIn() && Npcs.getNearest(NPC_ID_BEE_KEEPER) != null && Locations.getNearest(LOCATION_ID_BEE_HOUSE) != null;
+		return Game.isLoggedIn() && NPCs.getNearest(NPC_ID_BEE_KEEPER) != null && Locations.getNearest(LOCATION_ID_BEE_HOUSE) != null;
 	}
 
 	@Override
@@ -98,7 +98,7 @@ public class Beekeeper extends AntiRandom {
 		if (player.getInteracting() == null) {
 			verbose("INTERACTION = NULL");
 			verbose("Engaging communication !!!");
-			Npcs.getNearest(NPC_ID_BEE_KEEPER).interact("Talk-to");
+			NPCs.getNearest(NPC_ID_BEE_KEEPER).interact("Talk-to");
 			Time.sleep(Random.nextInt(800, 1200));
 		}
 	}

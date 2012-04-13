@@ -9,7 +9,7 @@ import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.api.methods.Settings;
 import org.powerbot.game.api.methods.Walking;
 import org.powerbot.game.api.methods.Widgets;
-import org.powerbot.game.api.methods.interactive.Npcs;
+import org.powerbot.game.api.methods.interactive.NPCs;
 import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.methods.node.Locations;
 import org.powerbot.game.api.methods.widget.Camera;
@@ -17,7 +17,7 @@ import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Time;
 import org.powerbot.game.api.wrappers.Area;
 import org.powerbot.game.api.wrappers.Tile;
-import org.powerbot.game.api.wrappers.interactive.Npc;
+import org.powerbot.game.api.wrappers.interactive.NPC;
 import org.powerbot.game.api.wrappers.interactive.Player;
 import org.powerbot.game.api.wrappers.node.Location;
 
@@ -132,7 +132,7 @@ public class DrillDemon extends AntiRandom {
 
 		if (!Widgets.clickContinue() && localPlayer.getAnimation() == -1) {
 			verbose("Engaging in communication!");
-			final Npc demon = Npcs.getNearest(NPC_ID_DEMON);
+			final NPC demon = NPCs.getNearest(NPC_ID_DEMON);
 			demon.interact("Talk-to");
 		}
 		Time.sleep(Random.nextInt(2000, 2500));

@@ -8,7 +8,7 @@ import org.powerbot.game.api.methods.Settings;
 import org.powerbot.game.api.methods.Tabs;
 import org.powerbot.game.api.methods.Walking;
 import org.powerbot.game.api.methods.Widgets;
-import org.powerbot.game.api.methods.interactive.Npcs;
+import org.powerbot.game.api.methods.interactive.NPCs;
 import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.methods.node.GroundItems;
 import org.powerbot.game.api.methods.node.Locations;
@@ -20,7 +20,7 @@ import org.powerbot.game.api.util.Timer;
 import org.powerbot.game.api.wrappers.Entity;
 import org.powerbot.game.api.wrappers.Locatable;
 import org.powerbot.game.api.wrappers.Tile;
-import org.powerbot.game.api.wrappers.interactive.Npc;
+import org.powerbot.game.api.wrappers.interactive.NPC;
 import org.powerbot.game.api.wrappers.node.GroundItem;
 import org.powerbot.game.api.wrappers.node.Item;
 import org.powerbot.game.api.wrappers.node.Location;
@@ -68,7 +68,7 @@ public class EvilBob extends AntiRandom {
 
 		if (Inventory.getItem(ITEM_ID_UNCOOKED_FISH) != null) {
 			verbose("We have the uncooked fish!");
-			final Npc bob = Npcs.getNearest(NPC_ID_EVIL_BOB);
+			final NPC bob = NPCs.getNearest(NPC_ID_EVIL_BOB);
 			if (!bob.isOnScreen()) {
 				walk(bob);
 				return;
@@ -229,7 +229,7 @@ public class EvilBob extends AntiRandom {
 		}
 
 		verbose("Fall onto servant communication...");
-		final Npc servant = Npcs.getNearest(NPC_ID_SERVANT);
+		final NPC servant = NPCs.getNearest(NPC_ID_SERVANT);
 		if (servant != null) {
 			if (!servant.isOnScreen()) {
 				walk(servant);
