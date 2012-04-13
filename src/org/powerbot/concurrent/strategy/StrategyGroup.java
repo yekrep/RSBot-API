@@ -3,9 +3,10 @@ package org.powerbot.concurrent.strategy;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
-public class StrategyGroup {
+public class StrategyGroup implements Iterable<Strategy> {
 	private final List<Strategy> group;
 
 	public StrategyGroup() {
@@ -28,5 +29,10 @@ public class StrategyGroup {
 
 	public boolean split(final Strategy strategy) {
 		return group.remove(strategy);
+	}
+
+	@Override
+	public Iterator<Strategy> iterator() {
+		return group.iterator();
 	}
 }
