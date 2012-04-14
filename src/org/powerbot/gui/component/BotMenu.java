@@ -99,9 +99,9 @@ public final class BotMenu extends JPopupMenu implements ActionListener {
 		} else if (a.startsWith(BotLocale.SIGNIN) || a.startsWith(BotLocale.SIGNEDINAS)) {
 			new BotSignin(parent.parent);
 		} else if (a.equals(BotLocale.WIDGETEXPLORER)) {
-			BotWidgetExplorer.display(Bot.bots.get(parent.getActiveTab()));
+			BotWidgetExplorer.display(Bot.bots.get(parent.getActiveTab()).getContext());
 		} else if (a.equals(BotLocale.SETTINGEXPLORER)) {
-			BotSettingExplorer.display(Bot.bots.get(parent.getActiveTab()));
+			BotSettingExplorer.display(Bot.bots.get(parent.getActiveTab()).getContext());
 		} else if (a.equals(BotLocale.WEBSITE)) {
 			BotChrome.openURL(Resources.getServerLinks().get("site"));
 		} else if (a.equals(BotLocale.ABOUT)) {

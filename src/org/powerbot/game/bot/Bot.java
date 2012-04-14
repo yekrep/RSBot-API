@@ -2,16 +2,13 @@ package org.powerbot.game.bot;
 
 import java.awt.Canvas;
 import java.awt.Dimension;
-import java.awt.EventQueue;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.security.GeneralSecurityException;
-import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.logging.Level;
@@ -58,7 +55,6 @@ import org.powerbot.util.io.Resources;
 public class Bot extends GameDefinition implements Runnable {
 	private static Logger log = Logger.getLogger(Bot.class.getName());
 	public static final LinkedList<Bot> bots = new LinkedList<Bot>();
-	private static final Map<ThreadGroup, Bot> context = new HashMap<ThreadGroup, Bot>();
 
 	private ModScript modScript;
 	private BotPanel panel;
@@ -72,6 +68,7 @@ public class Bot extends GameDefinition implements Runnable {
 	private ActiveScript activeScript;
 	private RandomHandler randomHandler;
 	private Future<?> antiRandomFuture;
+	private Context context;
 
 	private GameAccounts.Account account;
 
@@ -119,7 +116,8 @@ public class Bot extends GameDefinition implements Runnable {
 			return null;
 		}
 		log.info("Starting bot");
-		context.put(threadGroup, this);
+		context = new Context(this);
+		Context.context.put(threadGroup, context);
 		callback = new Runnable() {
 			public void run() {
 				setClient((Client) appletContainer.clientInstance);
@@ -228,7 +226,7 @@ public class Bot extends GameDefinition implements Runnable {
 			container.submit(task);
 		}
 		bots.remove(this);
-		context.remove(threadGroup);
+		Context.context.remove(threadGroup);
 		container.shutdown();
 	}
 
@@ -296,6 +294,10 @@ public class Bot extends GameDefinition implements Runnable {
 
 	public Client getClient() {
 		return client;
+	}
+
+	public Context getContext() {
+		return context;
 	}
 
 	/**
@@ -429,19 +431,6 @@ public class Bot extends GameDefinition implements Runnable {
 		this.viewport.zZ = viewport[constants.VIEWPORT_ZZ];
 	}
 
-	/**
-	 * @return The bot belonging to the invoking thread-group.
-	 */
-	public static Bot resolve() {
-		final Bot bot = Bot.context.get(Thread.currentThread().getThreadGroup());
-		if (bot == null) {
-			final RuntimeException exception = new RuntimeException(Thread.currentThread() + "@" + Thread.currentThread().getThreadGroup());
-			log.log(Level.SEVERE, "Client does not exist: ", exception);
-			throw exception;
-		}
-		return bot;
-	}
-
 	public static Bot resolve(final Object o) {
 		final ClassLoader cl = o.getClass().getClassLoader();
 		for (final Bot bot : Bot.bots) {
@@ -474,16 +463,5 @@ public class Bot extends GameDefinition implements Runnable {
 				Keyboard.sendKey('s');
 			}
 		}
-	}
-
-	public void associate(final ThreadGroup threadGroup) {
-		if (!EventQueue.isDispatchThread() && Bot.context.containsKey(threadGroup)) {
-			throw new RuntimeException("overlapping thread groups!");
-		}
-		Bot.context.put(threadGroup, this);
-	}
-
-	public void disregard(final ThreadGroup threadGroup) {
-		Bot.context.remove(threadGroup);
 	}
 }

@@ -7,7 +7,7 @@ import org.powerbot.game.api.methods.Calculations;
 import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.wrappers.RegionOffset;
 import org.powerbot.game.api.wrappers.interactive.Player;
-import org.powerbot.game.bot.Bot;
+import org.powerbot.game.bot.Context;
 import org.powerbot.game.client.Client;
 
 /**
@@ -34,7 +34,7 @@ public class Players {
 	 * @return An array of the currently loaded Players in the game that are accepted by the provided filter.
 	 */
 	public static Player[] getLoaded(final Filter<Player> filter) {
-		final Client client = Bot.resolve().getClient();
+		final Client client = Context.resolve().getClient();
 		final int[] indices = client.getRSPlayerIndexArray();
 		final Object[] playerArray = client.getRSPlayerArray();
 		final Set<Player> players = new HashSet<Player>();
@@ -50,7 +50,7 @@ public class Players {
 	}
 
 	public static Player getNearest(final Filter<Player> filter) {
-		final Client client = Bot.resolve().getClient();
+		final Client client = Context.resolve().getClient();
 		final int[] indices = client.getRSPlayerIndexArray();
 		final Object[] playerArray = client.getRSPlayerArray();
 		Player player = null;
@@ -75,6 +75,6 @@ public class Players {
 	 * @return The client's local <code>Player</code>.
 	 */
 	public static Player getLocal() {
-		return new Player(Bot.resolve().getClient().getMyRSPlayer());
+		return new Player(Context.resolve().getClient().getMyRSPlayer());
 	}
 }

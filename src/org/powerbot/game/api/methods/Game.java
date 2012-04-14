@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import org.powerbot.game.api.util.internal.Constants;
 import org.powerbot.game.api.wrappers.Tile;
 import org.powerbot.game.bot.Bot;
+import org.powerbot.game.bot.Context;
 import org.powerbot.game.client.BaseInfoInts;
 import org.powerbot.game.client.BaseInfoX;
 import org.powerbot.game.client.BaseInfoY;
@@ -28,7 +29,7 @@ public class Game {
 	 * @return The current state of the game client.
 	 */
 	public static int getClientState() {
-		final Bot bot = Bot.resolve();
+		final Bot bot = Context.resolve();
 		final Constants constants = bot.constants;
 		final int clientState = bot.getClient().getLoginIndex() * bot.multipliers.GLOBAL_LOGININDEX;
 		if (clientState == constants.CLIENTSTATE_3) {
@@ -66,7 +67,7 @@ public class Game {
 	 * @return The floor level, or plane, you are currently located on.
 	 */
 	public static int getPlane() {
-		final Bot bot = Bot.resolve();
+		final Bot bot = Context.resolve();
 		return bot.getClient().getPlane() * bot.multipliers.GLOBAL_PLANE;
 	}
 
@@ -74,7 +75,7 @@ public class Game {
 	 * @return The x location of the currently loaded map base.
 	 */
 	public static int getBaseX() {
-		final Bot bot = Bot.resolve();
+		final Bot bot = Context.resolve();
 		return (((BaseInfoX) ((BaseInfoInts) ((RSInfoBaseInfo) bot.getClient().getRSGroundInfo()).getRSInfoBaseInfo()).getBaseInfoInts()).getBaseInfoX() * bot.multipliers.BASEDATA_X) >> 8;
 	}
 
@@ -82,12 +83,12 @@ public class Game {
 	 * @return The y location of the currently loaded map base.
 	 */
 	public static int getBaseY() {
-		final Bot bot = Bot.resolve();
+		final Bot bot = Context.resolve();
 		return (((BaseInfoY) ((BaseInfoInts) ((RSInfoBaseInfo) bot.getClient().getRSGroundInfo()).getRSInfoBaseInfo()).getBaseInfoInts()).getBaseInfoY() * bot.multipliers.BASEDATA_Y) >> 8;
 	}
 
 	public static Tile getMapBase() {
-		final Bot bot = Bot.resolve();
+		final Bot bot = Context.resolve();
 		final Object infoInts = ((BaseInfoInts) ((RSInfoBaseInfo) bot.getClient().getRSGroundInfo()).getRSInfoBaseInfo()).getBaseInfoInts();
 		return new Tile(
 				(((BaseInfoX) infoInts).getBaseInfoX() * bot.multipliers.BASEDATA_X) >> 8,
@@ -97,12 +98,12 @@ public class Game {
 	}
 
 	public static int getLoopCycle() {
-		final Bot bot = Bot.resolve();
+		final Bot bot = Context.resolve();
 		return bot.getClient().getLoopCycle() * bot.multipliers.GLOBAL_LOOPCYCLE;
 	}
 
 	public static Dimension getDimensions() {
-		final Canvas canvas = Bot.resolve().getCanvas();
+		final Canvas canvas = Context.resolve().getCanvas();
 		return new Dimension(canvas.getWidth(), canvas.getHeight());
 	}
 }

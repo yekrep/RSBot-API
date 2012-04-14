@@ -35,7 +35,7 @@ import javax.swing.tree.TreeSelectionModel;
 import org.powerbot.game.api.methods.Widgets;
 import org.powerbot.game.api.wrappers.widget.Widget;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
-import org.powerbot.game.bot.Bot;
+import org.powerbot.game.bot.Context;
 import org.powerbot.game.bot.event.listener.PaintListener;
 
 /**
@@ -49,40 +49,40 @@ public class BotWidgetExplorer extends JFrame implements PaintListener {
 	private JTextField searchBox;
 	private Rectangle highlightArea = null;
 
-	private Bot bot;
+	private Context context;
 	private static BotWidgetExplorer instance;
 
-	private static BotWidgetExplorer getInstance(final Bot bot) {
+	private static BotWidgetExplorer getInstance(final Context context) {
 		if (instance == null) {
-			instance = new BotWidgetExplorer(bot);
+			instance = new BotWidgetExplorer(context);
 		}
 		return instance;
 	}
 
-	public static void display(final Bot bot) {
-		final BotWidgetExplorer botWidgetExplorer = getInstance(bot);
+	public static void display(final Context context) {
+		final BotWidgetExplorer botWidgetExplorer = getInstance(context);
 		if (botWidgetExplorer.isVisible()) {
-			botWidgetExplorer.bot.getEventDispatcher().remove(botWidgetExplorer);
+			botWidgetExplorer.context.bot().getEventDispatcher().remove(botWidgetExplorer);
 			botWidgetExplorer.highlightArea = null;
 		}
-		botWidgetExplorer.bot = bot;
+		botWidgetExplorer.context = context;
 		botWidgetExplorer.treeModel.update("");
-		botWidgetExplorer.bot.getEventDispatcher().accept(botWidgetExplorer);
+		botWidgetExplorer.context.bot().getEventDispatcher().accept(botWidgetExplorer);
 		botWidgetExplorer.setVisible(true);
 	}
 
-	public BotWidgetExplorer(final Bot bot) {
+	public BotWidgetExplorer(final Context context) {
 		super("Widget Explorer");
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(final WindowEvent e) {
 				setVisible(false);
-				bot.getEventDispatcher().remove(this);
+				context.bot().getEventDispatcher().remove(this);
 				highlightArea = null;
 			}
 		});
-		this.bot = bot;
+		this.context = context;
 		treeModel = new WidgetTreeModel();
 		treeModel.update("");
 		tree = new JTree(treeModel);
@@ -91,7 +91,7 @@ public class BotWidgetExplorer extends JFrame implements PaintListener {
 		tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 		tree.addTreeSelectionListener(new TreeSelectionListener() {
 			public void valueChanged(final TreeSelectionEvent e) {
-				bot.associate(Thread.currentThread().getThreadGroup());
+				context.associate(Thread.currentThread().getThreadGroup());
 				try {
 					final Object node = tree.getLastSelectedPathComponent();
 					if (node == null || node instanceof WidgetWrapper) {
@@ -135,7 +135,7 @@ public class BotWidgetExplorer extends JFrame implements PaintListener {
 					infoArea.validate();
 					infoArea.repaint();
 				} finally {
-					bot.disregard(Thread.currentThread().getThreadGroup());
+					context.disregard(Thread.currentThread().getThreadGroup());
 				}
 			}
 
@@ -198,7 +198,7 @@ public class BotWidgetExplorer extends JFrame implements PaintListener {
 		}
 
 		public Object getChild(final Object parent, final int index) {
-			bot.associate(Thread.currentThread().getThreadGroup());
+			context.associate(Thread.currentThread().getThreadGroup());
 			try {
 				if (parent == root) {
 					return widgetWrappers.get(index);
@@ -209,12 +209,12 @@ public class BotWidgetExplorer extends JFrame implements PaintListener {
 				}
 				return null;
 			} finally {
-				bot.disregard(Thread.currentThread().getThreadGroup());
+				context.disregard(Thread.currentThread().getThreadGroup());
 			}
 		}
 
 		public int getChildCount(final Object parent) {
-			bot.associate(Thread.currentThread().getThreadGroup());
+			context.associate(Thread.currentThread().getThreadGroup());
 			try {
 				if (parent == root) {
 					return widgetWrappers.size();
@@ -225,16 +225,16 @@ public class BotWidgetExplorer extends JFrame implements PaintListener {
 				}
 				return 0;
 			} finally {
-				bot.disregard(Thread.currentThread().getThreadGroup());
+				context.disregard(Thread.currentThread().getThreadGroup());
 			}
 		}
 
 		public boolean isLeaf(final Object node) {
-			bot.associate(Thread.currentThread().getThreadGroup());
+			context.associate(Thread.currentThread().getThreadGroup());
 			try {
 				return node instanceof WidgetChildWrapper && ((WidgetChildWrapper) node).get().getChildren().length == 0;
 			} finally {
-				bot.disregard(Thread.currentThread().getThreadGroup());
+				context.disregard(Thread.currentThread().getThreadGroup());
 			}
 		}
 
@@ -242,7 +242,7 @@ public class BotWidgetExplorer extends JFrame implements PaintListener {
 		}
 
 		public int getIndexOfChild(final Object parent, final Object child) {
-			bot.associate(Thread.currentThread().getThreadGroup());
+			context.associate(Thread.currentThread().getThreadGroup());
 			try {
 				if (parent == root) {
 					return widgetWrappers.indexOf(child);
@@ -253,7 +253,7 @@ public class BotWidgetExplorer extends JFrame implements PaintListener {
 				}
 				return -1;
 			} finally {
-				bot.disregard(Thread.currentThread().getThreadGroup());
+				context.disregard(Thread.currentThread().getThreadGroup());
 			}
 		}
 
@@ -274,7 +274,7 @@ public class BotWidgetExplorer extends JFrame implements PaintListener {
 
 		public void update(final String search) {
 			widgetWrappers.clear();
-			bot.associate(Thread.currentThread().getThreadGroup());
+			context.associate(Thread.currentThread().getThreadGroup());
 			for (final Widget widget : Widgets.getLoaded()) {
 				children:
 				for (final WidgetChild widgetChild : widget.getChildren()) {
@@ -291,7 +291,7 @@ public class BotWidgetExplorer extends JFrame implements PaintListener {
 				}
 			}
 			fireTreeStructureChanged(root);
-			bot.disregard(Thread.currentThread().getThreadGroup());
+			context.disregard(Thread.currentThread().getThreadGroup());
 		}
 
 		private boolean search(final WidgetChild child, final String string) {

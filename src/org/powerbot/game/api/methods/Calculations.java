@@ -10,6 +10,7 @@ import org.powerbot.game.api.wrappers.Tile;
 import org.powerbot.game.api.wrappers.interactive.Player;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
 import org.powerbot.game.bot.Bot;
+import org.powerbot.game.bot.Context;
 import org.powerbot.game.client.Client;
 import org.powerbot.game.client.RSGroundBytes_Bytes;
 import org.powerbot.game.client.RSGroundInfoTileData;
@@ -62,7 +63,7 @@ public class Calculations {
 	 * @return The height of the given tile on the provided plane.
 	 */
 	public static int calculateTileHeight(final int x, final int y, int plane) {
-		final Client client = Bot.resolve().getClient();
+		final Client client = Context.resolve().getClient();
 		final int x1 = x >> 9;
 		final int y1 = y >> 9;
 		final byte[][][] settings = (byte[][][]) ((RSGroundBytes_Bytes) (((RSInfoGroundBytes) client.getRSGroundInfo()).getRSInfoGroundBytes())).getRSGroundBytes_Bytes();
@@ -110,7 +111,7 @@ public class Calculations {
 	 * @return The <code>Point</code> of the given coordinates on screen.
 	 */
 	public static Point worldToScreen(final int x, final int y, final int z) {
-		final Bot bot = Bot.resolve();
+		final Bot bot = Context.resolve();
 		final Toolkit toolkit = bot.toolkit;
 		final Viewport viewport = bot.viewport;
 		final float _z = (viewport.zOff + (viewport.zX * x + viewport.zY * y + viewport.zZ * z));
@@ -133,7 +134,7 @@ public class Calculations {
 	 * @return <code>Point</code> within map; otherwise <tt>new Point(-1, -1)</tt>.
 	 */
 	public static Point worldToMap(double x, double y) {
-		final Bot bot = Bot.resolve();
+		final Bot bot = Context.resolve();
 		final Client client = bot.getClient();
 		final Player local = Players.getLocal();
 		x -= Game.getBaseX();
@@ -191,7 +192,7 @@ public class Calculations {
 	 * @return <tt>true</tt> if the point is on the screen; otherwise <tt>false</tt>.
 	 */
 	public static boolean isOnScreen(final int x, final int y) {
-		final Canvas canvas = Bot.resolve().getCanvas();
+		final Canvas canvas = Context.resolve().getCanvas();
 		return x >= 0 && y >= 0 && x < canvas.getWidth() && y < canvas.getHeight();
 	}
 

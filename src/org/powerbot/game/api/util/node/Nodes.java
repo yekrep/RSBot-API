@@ -1,7 +1,7 @@
 package org.powerbot.game.api.util.node;
 
 import org.powerbot.game.api.util.internal.Multipliers;
-import org.powerbot.game.bot.Bot;
+import org.powerbot.game.bot.Context;
 import org.powerbot.game.client.HashTable2Buckets;
 import org.powerbot.game.client.HashTableBuckets;
 import org.powerbot.game.client.Node;
@@ -27,7 +27,7 @@ public class Nodes {
 			if (buckets == null) {
 				return null;
 			}
-			final Multipliers multipliers = Bot.resolve().multipliers;
+			final Multipliers multipliers = Context.resolve().multipliers;
 			final long multiplier = (((long) multipliers.NODE_ID) << 32) + ((multipliers.NODE_ID_p2 & 0xFFFFFFFFL));
 			final Node n = buckets[(int) (id & buckets.length - 1)];
 			for (Node node = n.getPrevious(); node != n; node = node.getPrevious()) {

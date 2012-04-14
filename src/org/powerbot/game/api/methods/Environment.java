@@ -3,7 +3,7 @@ package org.powerbot.game.api.methods;
 import java.awt.image.BufferedImage;
 
 import org.powerbot.game.api.util.ScreenCapture;
-import org.powerbot.game.bot.Bot;
+import org.powerbot.game.bot.Context;
 import org.powerbot.service.NetworkAccount;
 
 public class Environment {
@@ -22,14 +22,14 @@ public class Environment {
 	}
 
 	public static BufferedImage captureScreen() {
-		return ScreenCapture.capture(Bot.resolve());
+		return ScreenCapture.capture(Context.resolve());
 	}
 
 	public static void saveScreenCapture() {
-		ScreenCapture.save(Bot.resolve());
+		ScreenCapture.save(Context.resolve());
 	}
 
 	public static void saveScreenCapture(final String fileName) {
-		ScreenCapture.save(Bot.resolve(), fileName);
+		ScreenCapture.save(Context.resolve(), fileName);
 	}
 }

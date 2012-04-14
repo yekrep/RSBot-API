@@ -13,7 +13,7 @@ import org.powerbot.game.api.wrappers.RegionOffset;
 import org.powerbot.game.api.wrappers.Tile;
 import org.powerbot.game.api.wrappers.node.GroundItem;
 import org.powerbot.game.api.wrappers.node.Item;
-import org.powerbot.game.bot.Bot;
+import org.powerbot.game.bot.Context;
 import org.powerbot.game.client.Client;
 import org.powerbot.game.client.NodeListCache;
 import org.powerbot.game.client.NodeListCacheNodeList;
@@ -145,7 +145,7 @@ public class GroundItems {
 			return new GroundItem[0];
 		}
 		final List<GroundItem> groundItems = new ArrayList<GroundItem>();
-		final Client client = Bot.resolve().getClient();
+		final Client client = Context.resolve().getClient();
 		final Object itemHashTable = client.getRSItemHashTable();
 		final int floor = Game.getPlane();
 		final int index = x | y << 14 | floor << 28;
