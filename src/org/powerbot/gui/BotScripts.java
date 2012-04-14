@@ -252,11 +252,18 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 	public void refresh() {
 		refresh.setEnabled(false);
 		table.removeAll();
+		final JPanel panel = new JPanel();
+		panel.setBorder(new EmptyBorder(15, 15, 15, 15));
 		final JLabel status = new JLabel("Loading...");
 		status.setFont(status.getFont().deriveFont(status.getFont().getSize2D() * 1.75f));
 		status.setForeground(Color.GRAY);
-		status.setBorder(new EmptyBorder(15, 15, 15, 15));
-		table.add(status);
+		status.setBorder(new EmptyBorder(0, 0, 0, 10));
+		panel.add(status);
+		final JProgressBar progress = new JProgressBar();
+		progress.setIndeterminate(true);
+		progress.setPreferredSize(new Dimension(progress.getPreferredSize().width * 3 / 2, status.getPreferredSize().height / 2));
+		panel.add(progress);
+		table.add(panel);
 		table.validate();
 		table.repaint();
 		new Thread(new Runnable() {
