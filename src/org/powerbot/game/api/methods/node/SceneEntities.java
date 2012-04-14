@@ -11,6 +11,7 @@ import org.powerbot.game.api.wrappers.RegionOffset;
 import org.powerbot.game.api.wrappers.Tile;
 import org.powerbot.game.api.wrappers.node.SceneObject;
 import org.powerbot.game.bot.Bot;
+import org.powerbot.game.bot.Context;
 import org.powerbot.game.client.Client;
 import org.powerbot.game.client.RSAnimableNode;
 import org.powerbot.game.client.RSGroundBoundary1;
@@ -134,7 +135,7 @@ public class SceneEntities {
 	}
 
 	private static Set<SceneObject> getAtLocal(int x, int y, final int mask) {
-		final Bot bot = Bot.resolve();
+		final Bot bot = Context.resolve();
 		final Client client = bot.getClient();
 		final Set<SceneObject> objects = new LinkedHashSet<SceneObject>();
 		final Object[][][] groundArray = getRSGroundArray(client);

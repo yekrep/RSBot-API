@@ -1,7 +1,7 @@
 package org.powerbot.game.api.wrappers.node;
 
 import org.powerbot.game.api.wrappers.Identifiable;
-import org.powerbot.game.bot.Bot;
+import org.powerbot.game.bot.Context;
 import org.powerbot.game.client.RSItemDefActions;
 import org.powerbot.game.client.RSItemDefBooleans;
 import org.powerbot.game.client.RSItemDefGroundActions;
@@ -30,7 +30,7 @@ public class ItemDefinition implements Identifiable {
 
 	public int getId() {
 		try {
-			return ((RSItemDefID) ((RSItemDefInts) definition).getRSItemDefInts()).getRSItemDefID() * Bot.resolve().multipliers.ITEMDEF_ID;
+			return ((RSItemDefID) ((RSItemDefInts) definition).getRSItemDefInts()).getRSItemDefID() * Context.resolve().multipliers.ITEMDEF_ID;
 		} catch (final ClassCastException ignored) {
 		}
 		return -1;

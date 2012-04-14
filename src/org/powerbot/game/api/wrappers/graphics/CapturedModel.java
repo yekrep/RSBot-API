@@ -14,6 +14,7 @@ import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.wrappers.Entity;
 import org.powerbot.game.api.wrappers.Verifiable;
 import org.powerbot.game.bot.Bot;
+import org.powerbot.game.bot.Context;
 import org.powerbot.game.client.Model;
 import org.powerbot.game.client.ModelCapture;
 
@@ -233,7 +234,7 @@ public abstract class CapturedModel implements Entity {
 	}
 
 	private int[][] projectVertices() {
-		final Bot bot = Bot.resolve();
+		final Bot bot = Context.resolve();
 		final Calculations.Toolkit toolkit = bot.toolkit;
 		final Calculations.Viewport viewport = bot.viewport;
 

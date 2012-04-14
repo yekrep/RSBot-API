@@ -33,7 +33,7 @@ import javax.swing.event.ListSelectionListener;
 import org.powerbot.concurrent.Task;
 import org.powerbot.game.api.methods.Settings;
 import org.powerbot.game.api.util.Time;
-import org.powerbot.game.bot.Bot;
+import org.powerbot.game.bot.Context;
 
 public class BotSettingExplorer extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -54,30 +54,30 @@ public class BotSettingExplorer extends JFrame {
 	private JScrollPane changesPane = null;
 	private JList settingsList = null;
 
-	private BotSettingExplorer(final Bot bot) {
+	private BotSettingExplorer() {
 		create();
 	}
 
-	private static BotSettingExplorer getInstance(final Bot bot) {
+	private static BotSettingExplorer getInstance() {
 		if (instance == null) {
-			instance = new BotSettingExplorer(bot);
+			instance = new BotSettingExplorer();
 		}
 		return instance;
 	}
 
-	public static void display(final Bot bot) {
-		final BotSettingExplorer settingExplorer = getInstance(bot);
+	public static void display(final Context context) {
+		final BotSettingExplorer settingExplorer = getInstance();
 		if (settingExplorer.isVisible()) {
 			settingExplorer.clean();
 		}
 		settingExplorer.setVisible(true);
 		try {
-			bot.associate(Thread.currentThread().getThreadGroup());
+			context.associate(Thread.currentThread().getThreadGroup());
 			settingExplorer.settings_cache = Settings.get();
-			bot.disregard(Thread.currentThread().getThreadGroup());
+			context.disregard(Thread.currentThread().getThreadGroup());
 		} catch (final NullPointerException ignored) {
 		}
-		bot.getContainer().submit(new Task() {
+		context.bot().getContainer().submit(new Task() {
 			@Override
 			public void run() {
 				while (settingExplorer.isVisible()) {

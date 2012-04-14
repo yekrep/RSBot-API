@@ -10,7 +10,7 @@ import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Time;
 import org.powerbot.game.api.wrappers.widget.Widget;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
-import org.powerbot.game.bot.Bot;
+import org.powerbot.game.bot.Context;
 import org.powerbot.game.client.Client;
 
 /**
@@ -25,7 +25,7 @@ public class Widgets {
 	 * @return An <code>Widget[]</code> of the latest cached widgets.
 	 */
 	public static Widget[] getLoaded() {
-		final Client client = Bot.resolve().getClient();
+		final Client client = Context.resolve().getClient();
 		if (client == null) {
 			return new Widget[0];
 		}
@@ -55,7 +55,7 @@ public class Widgets {
 			throw new RuntimeException("index < 0 (" + index + ")");
 		}
 
-		final Client client = Bot.resolve().getClient();
+		final Client client = Context.resolve().getClient();
 		Widget[] cachedInterfaces = caches.get(client);
 		if (cachedInterfaces == null) {
 			cachedInterfaces = new Widget[100];

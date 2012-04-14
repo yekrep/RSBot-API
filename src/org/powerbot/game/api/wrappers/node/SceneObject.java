@@ -15,7 +15,7 @@ import org.powerbot.game.api.wrappers.RegionOffset;
 import org.powerbot.game.api.wrappers.Tile;
 import org.powerbot.game.api.wrappers.graphics.CapturedModel;
 import org.powerbot.game.api.wrappers.graphics.model.LocationModel;
-import org.powerbot.game.bot.Bot;
+import org.powerbot.game.bot.Context;
 import org.powerbot.game.client.CacheTable;
 import org.powerbot.game.client.HardReferenceGet;
 import org.powerbot.game.client.Model;
@@ -77,7 +77,7 @@ public class SceneObject implements Entity, Locatable, Identifiable {
 	}
 
 	public int getId() {
-		return Bot.resolve().getClient().getRSObjectID(object);
+		return Context.resolve().getClient().getRSObjectID(object);
 	}
 
 	public Type getType() {
@@ -103,7 +103,7 @@ public class SceneObject implements Entity, Locatable, Identifiable {
 	}
 
 	public LocationDefinition getDefinition() {
-		final Object object = ((RSInfoRSObjectDefLoaders) Bot.resolve().getClient().getRSGroundInfo()).getRSInfoRSObjectDefLoaders();
+		final Object object = ((RSInfoRSObjectDefLoaders) Context.resolve().getClient().getRSGroundInfo()).getRSInfoRSObjectDefLoaders();
 		final Object objectDefLoader = ((CacheTable) ((RSObjectDefLoaderCache) object).getRSObjectDefLoaderCache()).getCacheTable();
 		final Node ref = Nodes.lookup(objectDefLoader, getId());
 		if (ref != null && ref instanceof Reference) {
@@ -122,7 +122,7 @@ public class SceneObject implements Entity, Locatable, Identifiable {
 
 	public CapturedModel getModel() {
 		if (object != null) {
-			Model model = Bot.resolve().getClient().getRSObjectModel(object);
+			Model model = Context.resolve().getClient().getRSObjectModel(object);
 			if (model == null) {
 				model = ModelCapture.modelCache.get(object);
 			}

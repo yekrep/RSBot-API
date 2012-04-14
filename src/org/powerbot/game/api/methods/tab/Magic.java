@@ -1,12 +1,12 @@
 package org.powerbot.game.api.methods.tab;
 
-import org.powerbot.game.bot.Bot;
+import org.powerbot.game.bot.Context;
 
 /**
  * @author Timer
  */
 public class Magic {
 	public static boolean isSpellSelected() {
-		return Bot.resolve().getClient().isSpellSelected();
+		return Context.resolve().getClient().isSpellSelected();
 	}
 }

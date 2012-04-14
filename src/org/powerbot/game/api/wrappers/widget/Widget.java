@@ -7,6 +7,7 @@ import java.util.Arrays;
 import org.powerbot.game.api.util.internal.Multipliers;
 import org.powerbot.game.api.wrappers.Identifiable;
 import org.powerbot.game.bot.Bot;
+import org.powerbot.game.bot.Context;
 import org.powerbot.game.client.Client;
 import org.powerbot.game.client.RSInterfaceBaseComponents;
 import org.powerbot.game.client.RSInterfaceBoundsArrayIndex;
@@ -32,7 +33,7 @@ public class Widget implements Identifiable {
 			return false;
 		}
 		final int idx = getIndex();
-		final Client client = Bot.resolve().getClient();
+		final Client client = Context.resolve().getClient();
 		final boolean[] validArray = client.getValidRSInterfaceArray();
 		if (idx >= 0 && validArray != null && idx < validArray.length && validArray[idx]) {
 			final Object[] inters = client.getRSInterfaceCache();
@@ -85,7 +86,7 @@ public class Widget implements Identifiable {
 	}
 
 	public Point getLocation() {
-		final Bot bot = Bot.resolve();
+		final Bot bot = Context.resolve();
 		final Client client = bot.getClient();
 		final Multipliers multipliers = bot.multipliers;
 		final Object[] children = getChildrenInternal();
@@ -154,7 +155,7 @@ public class Widget implements Identifiable {
 	}
 
 	Object[] getChildrenInternal() {
-		final Client client = Bot.resolve().getClient();
+		final Client client = Context.resolve().getClient();
 		if (client == null) {
 			return null;
 		}

@@ -10,6 +10,7 @@ import org.powerbot.concurrent.Task;
 import org.powerbot.concurrent.strategy.Condition;
 import org.powerbot.game.api.methods.input.Mouse;
 import org.powerbot.game.bot.Bot;
+import org.powerbot.game.bot.Context;
 import org.powerbot.game.bot.event.listener.PaintListener;
 
 /**
@@ -23,7 +24,7 @@ public abstract class AntiRandom implements Condition, Task, PaintListener {
 
 	public void onRepaint(final Graphics render) {
 		final Point p = Mouse.getLocation();
-		final Canvas canvas = Bot.resolve().getCanvas();
+		final Canvas canvas = Context.resolve().getCanvas();
 		final int w = canvas.getWidth(), h = canvas.getHeight();
 		render.setColor(new Color(51, 153, 255, 30));
 		render.fillRect(0, 0, p.x - 1, p.y - 1);

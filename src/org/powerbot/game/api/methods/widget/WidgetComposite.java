@@ -8,6 +8,7 @@ import org.powerbot.game.api.methods.Widgets;
 import org.powerbot.game.api.wrappers.widget.Widget;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
 import org.powerbot.game.bot.Bot;
+import org.powerbot.game.bot.Context;
 
 /**
  * @author Timer
@@ -118,7 +119,7 @@ public class WidgetComposite {
 		private final Bot bot;
 
 		private Record() {
-			bot = Bot.resolve();
+			bot = Context.resolve();
 			index_widget = -1;
 			index_map = -1;
 			index_compass = -1;

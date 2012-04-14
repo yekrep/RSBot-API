@@ -3,7 +3,7 @@ package org.powerbot.game.api.wrappers.interactive;
 import java.lang.ref.SoftReference;
 
 import org.powerbot.game.api.util.internal.Multipliers;
-import org.powerbot.game.bot.Bot;
+import org.powerbot.game.bot.Context;
 import org.powerbot.game.client.RSNPCDefActions;
 import org.powerbot.game.client.RSNPCDefID;
 import org.powerbot.game.client.RSNPCDefInts;
@@ -21,7 +21,7 @@ public class NPC extends Character {
 
 	public NPC(final Object n) {
 		this.n = new SoftReference<Object>(n);
-		this.multipliers = Bot.resolve().multipliers;
+		this.multipliers = Context.resolve().multipliers;
 	}
 
 	public int getLevel() {

@@ -11,7 +11,7 @@ import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Time;
 import org.powerbot.game.api.wrappers.ViewportEntity;
-import org.powerbot.game.bot.Bot;
+import org.powerbot.game.bot.Context;
 
 /**
  * @author Timer
@@ -31,7 +31,7 @@ public class MouseManipulator implements Task {
 		this.running = false;
 		this.locatable = locatable;
 		this.filter = filter;
-		this.clientMouse = Bot.resolve().getClient().getMouse();
+		this.clientMouse = Context.resolve().getClient().getMouse();
 	}
 
 	public void run() {
@@ -81,7 +81,7 @@ public class MouseManipulator implements Task {
 				int x = (int) currentPoint.getX() + (int) deltaPosition.xUnits;
 				int y = (int) currentPoint.getY() + (int) deltaPosition.yUnits;
 				if (!Mouse.isOnCanvas(x, y)) {
-					final Canvas canvas = Bot.resolve().getCanvas();
+					final Canvas canvas = Context.resolve().getCanvas();
 					switch (Mouse.getSide()) {
 					case 1:
 						x = 1;

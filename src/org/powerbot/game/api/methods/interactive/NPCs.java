@@ -8,7 +8,7 @@ import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.util.node.Nodes;
 import org.powerbot.game.api.wrappers.RegionOffset;
 import org.powerbot.game.api.wrappers.interactive.NPC;
-import org.powerbot.game.bot.Bot;
+import org.powerbot.game.bot.Context;
 import org.powerbot.game.client.Client;
 import org.powerbot.game.client.Node;
 import org.powerbot.game.client.RSNPCHolder;
@@ -52,7 +52,7 @@ public class NPCs {
 	 * @return An array of the currently loaded Npcs in the game that are accepted by the provided filter.
 	 */
 	public static NPC[] getLoaded(final Filter<NPC> filter) {
-		final Client client = Bot.resolve().getClient();
+		final Client client = Context.resolve().getClient();
 		final int[] indices = client.getRSNPCIndexArray();
 		final Set<NPC> npcs = new HashSet<NPC>();
 		for (final int index : indices) {
@@ -81,7 +81,7 @@ public class NPCs {
 	}
 
 	public static NPC getNearest(final Filter<NPC> filter) {
-		final Client client = Bot.resolve().getClient();
+		final Client client = Context.resolve().getClient();
 		final int[] indices = client.getRSNPCIndexArray();
 		NPC npc = null;
 		double distance = Double.MAX_VALUE;

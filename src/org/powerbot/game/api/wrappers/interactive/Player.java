@@ -3,7 +3,7 @@ package org.powerbot.game.api.wrappers.interactive;
 import java.lang.ref.SoftReference;
 
 import org.powerbot.game.api.util.internal.Multipliers;
-import org.powerbot.game.bot.Bot;
+import org.powerbot.game.bot.Context;
 import org.powerbot.game.client.RSInteractableInts;
 import org.powerbot.game.client.RSPlayerComposite;
 import org.powerbot.game.client.RSPlayerCompositeEquipment;
@@ -24,7 +24,7 @@ public class Player extends Character {
 
 	public Player(final Object p) {
 		this.p = new SoftReference<Object>(p);
-		this.multipliers = Bot.resolve().multipliers;
+		this.multipliers = Context.resolve().multipliers;
 	}
 
 	public int getLevel() {
