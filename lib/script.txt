@@ -37,6 +37,9 @@ trimExclude org.powerbot.Boot^ public static main(java.lang.String[]) and
             org.powerbot.game.bot.event.^* and
             org.powerbot.game.bot.event.^*^ * and
             org.powerbot.game.bot.event.* *(*) and
+            org.powerbot.game.bot.Context and
+            org.powerbot.game.bot.Context * and
+            org.powerbot.game.bot.Context *(*) and
             org.powerbot.game.api.*.^* public * and
             public org.powerbot.game.api.*.^* and
             org.powerbot.game.api.*.^* public *(*) and
@@ -90,6 +93,10 @@ exclude     org.powerbot.Boot^ public static main(java.lang.String[]) and
             org.powerbot.game.bot.event.^* and
             org.powerbot.game.bot.event.^*^ * and
             org.powerbot.game.bot.event.* *(*) and
+            org.powerbot.game.bot.Bot and
+            org.powerbot.game.bot.Context and
+            org.powerbot.game.bot.Context * and
+            org.powerbot.game.bot.Context *(*) and
             org.powerbot.game.api.*.^* public * and
             public org.powerbot.game.api.*.^* and
             org.powerbot.game.api.*.^* public *(*) and
