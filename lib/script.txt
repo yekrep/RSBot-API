@@ -40,17 +40,11 @@ trimExclude org.powerbot.Boot^ public static main(java.lang.String[]) and
             org.powerbot.game.bot.Context and
             org.powerbot.game.bot.Context * and
             org.powerbot.game.bot.Context *(*) and
-            org.powerbot.game.api.*.^* public * and
-            public org.powerbot.game.api.*.^* and
-            org.powerbot.game.api.*.^* public *(*) and
-            org.powerbot.game.api.ActiveScript and
-            org.powerbot.game.api.ActiveScript * and
-            org.powerbot.game.api.ActiveScript *(*) and
-            org.powerbot.game.api.Manifest and
-            org.powerbot.game.api.Manifest * and
-            org.powerbot.game.api.Manifest *(*) and
             org.powerbot.game.loader. and
-            org.powerbot.game.loader.RSClassLoader;
+            org.powerbot.game.loader.RSClassLoader and
+            org.powerbot.game.api.* and
+            org.powerbot.game.api.* * and
+            org.powerbot.game.api.* *(*);
 
 trim        deleteSourceFileAttributes=true
             deleteDeprecatedAttributes=true
@@ -97,24 +91,16 @@ exclude     org.powerbot.Boot^ public static main(java.lang.String[]) and
             org.powerbot.game.bot.Context and
             org.powerbot.game.bot.Context * and
             org.powerbot.game.bot.Context *(*) and
-            org.powerbot.game.api.*.^* public * and
-            public org.powerbot.game.api.*.^* and
-            org.powerbot.game.api.*.^* public *(*) and
-            org.powerbot.game.api.ActiveScript and
-            org.powerbot.game.api.ActiveScript * and
-            org.powerbot.game.api.ActiveScript *(*) and
-            org.powerbot.game.api.Manifest and
-            org.powerbot.game.api.Manifest * and
-            org.powerbot.game.api.Manifest *(*) and
             org.powerbot.game.loader. and
-            org.powerbot.game.loader.RSClassLoader;
-
-unexclude   org.powerbot.game.api.internal.*.^* and
-            org.powerbot.game.api.internal.*.^* public *(*) and
-            org.powerbot.game.api.internal.*^ and
-            org.powerbot.game.api.randoms.*.^* and
-            org.powerbot.game.api.randoms.*.^* public *(*) and
-            org.powerbot.game.api.randoms.*^;
+            org.powerbot.game.loader.RSClassLoader and
+            org.powerbot.game.api. and
+            org.powerbot.game.api.^* and
+            org.powerbot.game.api.^* * and
+            org.powerbot.game.api.^* *(*) and
+            org.powerbot.game.api.*. and
+            org.powerbot.game.api.*.^* and
+            org.powerbot.game.api.*.^* * and
+            org.powerbot.game.api.*.^* *(*);
 
 obfuscate   changeLogFileIn=""
             changeLogFileOut="%ZKM_CHANGELOG%"
