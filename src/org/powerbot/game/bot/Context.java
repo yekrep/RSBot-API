@@ -7,11 +7,15 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.powerbot.concurrent.TaskContainer;
+import org.powerbot.event.EventManager;
 import org.powerbot.game.api.methods.Calculations;
 import org.powerbot.game.api.util.internal.Constants;
 import org.powerbot.game.api.util.internal.Multipliers;
 import org.powerbot.game.client.Client;
 import org.powerbot.game.loader.applet.Rs2Applet;
+import org.powerbot.gui.BotChrome;
+import org.powerbot.service.NetworkAccount;
 
 public class Context {
 	private static Logger log = Logger.getLogger(Context.class.getName());
@@ -61,6 +65,18 @@ public class Context {
 		return bot.getImage();
 	}
 
+	public TaskContainer getContainer() {
+		return bot.getContainer();
+	}
+
+	public EventManager getEventManager() {
+		return bot.getEventDispatcher();
+	}
+
+	public ThreadGroup getThreadGroup() {
+		return bot.threadGroup;
+	}
+
 	public Rs2Applet getApplet() {
 		return bot.appletContainer;
 	}
@@ -71,6 +87,28 @@ public class Context {
 
 	public Calculations.Viewport getViewport() {
 		return bot.viewport;
+	}
+
+	public void ensureAntiRandoms() {
+		bot.ensureAntiRandoms();
+	}
+
+	public void updateControls() {
+		BotChrome.getInstance().toolbar.updateScriptControls();
+	}
+
+	public String getDisplayName() {
+		if (NetworkAccount.getInstance().isLoggedIn()) {
+			return NetworkAccount.getInstance().getAccount().getDisplayName();
+		}
+		return null;
+	}
+
+	public int getUserId() {
+		if (NetworkAccount.getInstance().isLoggedIn()) {
+			return NetworkAccount.getInstance().getAccount().getID();
+		}
+		return -1;
 	}
 
 	public void associate(final ThreadGroup threadGroup) {
