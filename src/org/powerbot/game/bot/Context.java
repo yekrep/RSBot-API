@@ -1,10 +1,17 @@
 package org.powerbot.game.bot;
 
 import java.awt.EventQueue;
+import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import org.powerbot.game.api.methods.Calculations;
+import org.powerbot.game.api.util.internal.Constants;
+import org.powerbot.game.api.util.internal.Multipliers;
+import org.powerbot.game.client.Client;
+import org.powerbot.game.loader.applet.Rs2Applet;
 
 public class Context {
 	private static Logger log = Logger.getLogger(Context.class.getName());
@@ -30,8 +37,40 @@ public class Context {
 		return get().bot;
 	}
 
-	public Bot bot() {
+	public static Client client() {
+		return get().getClient();
+	}
+
+	public static Multipliers multipliers() {
+		return get().bot.multipliers;
+	}
+
+	public static Constants constants() {
+		return get().bot.constants;
+	}
+
+	public Bot getBot() {
 		return bot;
+	}
+
+	public Client getClient() {
+		return bot.getClient();
+	}
+
+	public BufferedImage getImage() {
+		return bot.getImage();
+	}
+
+	public Rs2Applet getApplet() {
+		return bot.appletContainer;
+	}
+
+	public Calculations.Toolkit getToolkit() {
+		return bot.toolkit;
+	}
+
+	public Calculations.Viewport getViewport() {
+		return bot.viewport;
 	}
 
 	public void associate(final ThreadGroup threadGroup) {
