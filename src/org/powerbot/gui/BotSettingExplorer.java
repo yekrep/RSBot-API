@@ -277,6 +277,7 @@ public class BotSettingExplorer extends JFrame {
 	}
 
 	private static class JNumberField extends JTextField {
+		private static final long serialVersionUID = 1L;
 		private static final int[] VALID_KEYS = {KeyEvent.VK_ENTER, KeyEvent.VK_BACK_SPACE, KeyEvent.VK_DELETE};
 
 		private JNumberField(final String text) {
