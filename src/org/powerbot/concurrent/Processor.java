@@ -10,4 +10,6 @@ public interface Processor {
 	 * @return The <code>Future</code> of this <code>Task</code>.
 	 */
 	public Future<?> submit(Task task);
+
+	public void terminated(Task task);
 }
