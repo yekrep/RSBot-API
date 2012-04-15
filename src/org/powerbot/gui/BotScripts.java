@@ -531,18 +531,10 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 				public void actionPerformed(final ActionEvent e) {
 					setVisible(false);
 					dispose();
-					String name;
-					if (def.className != null && !def.className.isEmpty()) {
-						name = def.className;
-					} else {
-						name = def.source.getFile();
-						name = name.substring(name.lastIndexOf('/') + 1);
-						name = name.substring(0, name.lastIndexOf('.'));
-					}
 					final ClassLoader cl = def.local ? new ScriptClassLoader(def.source) : new URLClassLoader(new URL[]{def.source});
 					final ActiveScript script;
 					try {
-						script = cl.loadClass(name).asSubclass(ActiveScript.class).newInstance();
+						script = cl.loadClass(def.className).asSubclass(ActiveScript.class).newInstance();
 					} catch (final Exception ignored) {
 						return;
 					}
