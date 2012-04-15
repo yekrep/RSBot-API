@@ -2,77 +2,77 @@ classpath   "ZKM.jar";
 
 open        "%ZKM_OPEN%";
 
-trimExclude org.powerbot.Boot^ public static main(java.lang.String[]) and
-            org.powerbot.lang.^* and
-            org.powerbot.lang.^*^ * and
-            org.powerbot.lang.* *(*) and
-            org.powerbot.concurrent. and
-            org.powerbot.concurrent.Task and
-            org.powerbot.concurrent.Task * and
-            org.powerbot.concurrent.Task *(*) and
-            org.powerbot.concurrent.Processor and
-            org.powerbot.concurrent.Processor * and
-            org.powerbot.concurrent.Processor *(*) and
-            org.powerbot.concurrent.strategy. and
-            org.powerbot.concurrent.strategy.Strategy and
-            org.powerbot.concurrent.strategy.Strategy * and
-            org.powerbot.concurrent.strategy.Strategy *(*) and
-            org.powerbot.concurrent.strategy.StrategyGroup and
-            org.powerbot.concurrent.strategy.StrategyGroup * and
-            org.powerbot.concurrent.strategy.StrategyGroup *(*) and
-            org.powerbot.concurrent.strategy.Condition and
-            org.powerbot.concurrent.strategy.Condition * and
-            org.powerbot.concurrent.strategy.Condition *(*) and
-            org.powerbot.game.bot.event.impl.^* and
-            org.powerbot.game.bot.event.impl.* *(*) and
-            org.powerbot.game.bot.event.impl.^*^ * and
+trimExclude org.powerbot.game.api. and
+            org.powerbot.game.api.^* and
+            org.powerbot.game.api.^* * and
+            org.powerbot.game.api.^* *(*) and
+            org.powerbot.game.api.*. and
+            org.powerbot.game.api.*.^* and
+            org.powerbot.game.api.*.^* * and
+            org.powerbot.game.api.*.^* *(*) and
+            org.powerbot.game.bot. and
+            org.powerbot.game.bot.^* and
+            org.powerbot.game.bot.^* * and
+            org.powerbot.game.bot.^* *(*) and
+            org.powerbot.game.bot.*. and
+            org.powerbot.game.bot.*.^* and
+            org.powerbot.game.bot.*.^* * and
+            org.powerbot.game.bot.*.^* *(*) and
             org.powerbot.game.client.^* and
             org.powerbot.game.client.^*^ * and
             org.powerbot.game.client.* *(*) and
             org.powerbot.game.client.input.^* and
             org.powerbot.game.client.input.* *(*) and
             org.powerbot.game.client.input.^*^ * and
-            public org.powerbot.game.bot.event.*.^* and
-            org.powerbot.game.game.bot.event.*.^* public *(*) and
-            org.powerbot.game.bot.event.^* and
-            org.powerbot.game.bot.event.^*^ * and
-            org.powerbot.game.bot.event.* *(*) and
-            org.powerbot.game.bot.Context and
-            org.powerbot.game.bot.Context * and
-            org.powerbot.game.bot.Context *(*) and
-            org.powerbot.game.loader. and
-            org.powerbot.game.loader.RSClassLoader and
-            org.powerbot.game.api.* and
-            org.powerbot.game.api.* * and
-            org.powerbot.game.api.* *(*);
+            org.powerbot.concurrent. and
+            org.powerbot.concurrent.^* and
+            org.powerbot.concurrent.^* * and
+            org.powerbot.concurrent.^* *(*) and
+            org.powerbot.concurrent.*. and
+            org.powerbot.concurrent.*.^* and
+            org.powerbot.concurrent.*.^* * and
+            org.powerbot.concurrent.*.^* *(*) and
+            org.powerbot.concurrent.strategy. and
+            org.powerbot.concurrent.strategy.^* and
+            org.powerbot.concurrent.strategy.^* * and
+            org.powerbot.concurrent.strategy.^* *(*) and
+            org.powerbot.concurrent.strategy.*. and
+            org.powerbot.concurrent.strategy.*.^* and
+            org.powerbot.concurrent.strategy.*.^* * and
+            org.powerbot.concurrent.strategy.*.^* *(*);
 
 trim        deleteSourceFileAttributes=true
-            deleteDeprecatedAttributes=true
+            deleteDeprecatedAttributes=false
             deleteAnnotationAttributes=false
             deleteExceptionAttributes=true
-            deleteUnknownAttributes=true;
+            deleteUnknownAttributes=false;
 
 exclude     org.powerbot.Boot^ public static main(java.lang.String[]) and
             org.powerbot.lang.^* and
             org.powerbot.lang.* *(*) and
             org.powerbot.lang.^*^ * and
             org.powerbot.concurrent. and
-            org.powerbot.concurrent.Task and
-            org.powerbot.concurrent.Task * and
-            org.powerbot.concurrent.Task *(*) and
-            org.powerbot.concurrent.Processor and
-            org.powerbot.concurrent.Processor * and
-            org.powerbot.concurrent.Processor *(*) and
+            org.powerbot.concurrent.^* and
+            org.powerbot.concurrent.^* * and
+            org.powerbot.concurrent.^* *(*) and
+            org.powerbot.concurrent.*. and
+            org.powerbot.concurrent.api.*.^* and
+            org.powerbot.concurrent.*.^* * and
+            org.powerbot.concurrent.*.^* *(*) and
             org.powerbot.concurrent.strategy. and
-            org.powerbot.concurrent.strategy.Strategy and
-            org.powerbot.concurrent.strategy.Strategy * and
-            org.powerbot.concurrent.strategy.Strategy *(*) and
-            org.powerbot.concurrent.strategy.StrategyGroup and
-            org.powerbot.concurrent.strategy.StrategyGroup * and
-            org.powerbot.concurrent.strategy.StrategyGroup *(*) and
-            org.powerbot.concurrent.strategy.Condition and
-            org.powerbot.concurrent.strategy.Condition * and
-            org.powerbot.concurrent.strategy.Condition *(*) and
+            org.powerbot.concurrent.strategy.^* and
+            org.powerbot.concurrent.strategy.^* * and
+            org.powerbot.concurrent.strategy.^* *(*) and
+            org.powerbot.concurrent.strategy.*. and
+            org.powerbot.concurrent.strategy.*.^* and
+            org.powerbot.concurrent.strategy.*.^* * and
+            org.powerbot.concurrent.strategy.*.^* *(*) and
+            org.powerbot.event. and
+            org.powerbot.event.EventManager and
+            org.powerbot.event.EventManager *(*) and
+            org.powerbot.game.bot.input. and
+            org.powerbot.game.bot.input.MouseManipulator and
+            org.powerbot.game.bot.input.MouseManipulator *(*) and
             org.powerbot.game.bot.event.impl.^* and
             org.powerbot.game.bot.event.impl.* *(*) and
             org.powerbot.game.bot.event.impl.^*^ * and

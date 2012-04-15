@@ -77,7 +77,7 @@ public class BotSettingExplorer extends JFrame {
 			context.disregard(Thread.currentThread().getThreadGroup());
 		} catch (final NullPointerException ignored) {
 		}
-		context.bot().getContainer().submit(new Task() {
+		context.getBot().getContainer().submit(new Task() {
 			@Override
 			public void run() {
 				while (settingExplorer.isVisible()) {

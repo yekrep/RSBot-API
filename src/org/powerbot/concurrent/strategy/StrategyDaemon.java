@@ -20,7 +20,7 @@ public class StrategyDaemon implements StrategyContainer, Task {
 	private final TaskContainer container;
 	private final TaskContainer owner;
 	private final List<Strategy> strategies;
-	public State state;
+	public DaemonState state;
 	private int iterationSleep = 200;
 
 	/**
@@ -33,17 +33,17 @@ public class StrategyDaemon implements StrategyContainer, Task {
 		this.container = container;
 		this.owner = owner;
 		strategies = new ArrayList<Strategy>();
-		state = State.DESTROYED;
+		state = DaemonState.DESTROYED;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	public void listen() {
-		if (state != State.LISTENING) {
-			final State previous = state;
-			state = State.LISTENING;
-			if (previous == State.LOCKED) {
+		if (state != DaemonState.LISTENING) {
+			final DaemonState previous = state;
+			state = DaemonState.LISTENING;
+			if (previous == DaemonState.LOCKED) {
 				synchronized (this) {
 					notify();
 				}
@@ -57,14 +57,14 @@ public class StrategyDaemon implements StrategyContainer, Task {
 	 * {@inheritDoc}
 	 */
 	public void lock() {
-		state = State.LOCKED;
+		state = DaemonState.LOCKED;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	public void destroy() {
-		state = State.DESTROYED;
+		state = DaemonState.DESTROYED;
 		synchronized (this) {
 			notify();
 		}
@@ -91,19 +91,19 @@ public class StrategyDaemon implements StrategyContainer, Task {
 	 */
 	public void run() {
 		final List<Future<?>> futures = Collections.synchronizedList(new ArrayList<Future<?>>());
-		State cached_state;
-		while (state != State.DESTROYED) {
-			if (state == State.LOCKED) {
+		DaemonState cached_state;
+		while (state != DaemonState.DESTROYED) {
+			if (state == DaemonState.LOCKED) {
 				synchronized (this) {
 					try {
 						wait();
 					} catch (final InterruptedException ignored) {
 					}
 				}
-			} else if (state == State.LISTENING) {
+			} else if (state == DaemonState.LISTENING) {
 				try {
 					for (final Strategy strategy : strategies) {
-						if (state != State.LISTENING) {
+						if (state != DaemonState.LISTENING) {
 							break;
 						}
 						if (strategy.tasks == null || !strategy.validate() ||
@@ -121,7 +121,7 @@ public class StrategyDaemon implements StrategyContainer, Task {
 						if (strategy.lock) {
 							container.submit(createFutureDisposer(futures, this));
 							awaitNotify(futures);
-							if (state == State.PROCESSING) {
+							if (state == DaemonState.PROCESSING) {
 								state = cached_state;
 							}
 						}
@@ -148,7 +148,7 @@ public class StrategyDaemon implements StrategyContainer, Task {
 
 	private void awaitNotify(final List<Future<?>> futures) {
 		synchronized (this) {
-			state = State.PROCESSING;
+			state = DaemonState.PROCESSING;
 
 			if (futures.size() > 0) {
 				try {
@@ -189,12 +189,4 @@ public class StrategyDaemon implements StrategyContainer, Task {
 		};
 	}
 
-	/**
-	 * An enumeration of different states this <code>ActionDispatcher</code> can be in.
-	 *
-	 * @author Timer
-	 */
-	public enum State {
-		LISTENING, LOCKED, DESTROYED, PROCESSING
-	}
 }

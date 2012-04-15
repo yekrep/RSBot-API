@@ -375,7 +375,7 @@ public class Bot extends GameDefinition implements Runnable {
 		}
 
 		this.activeScript = script;
-		script.init(this);
+		script.init(context);
 		final Future<?> future = container.submit(script.start());
 		try {
 			future.get();

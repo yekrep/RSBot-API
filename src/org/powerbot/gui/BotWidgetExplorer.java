@@ -62,12 +62,12 @@ public class BotWidgetExplorer extends JFrame implements PaintListener {
 	public static void display(final Context context) {
 		final BotWidgetExplorer botWidgetExplorer = getInstance(context);
 		if (botWidgetExplorer.isVisible()) {
-			botWidgetExplorer.context.bot().getEventDispatcher().remove(botWidgetExplorer);
+			botWidgetExplorer.context.getBot().getEventDispatcher().remove(botWidgetExplorer);
 			botWidgetExplorer.highlightArea = null;
 		}
 		botWidgetExplorer.context = context;
 		botWidgetExplorer.treeModel.update("");
-		botWidgetExplorer.context.bot().getEventDispatcher().accept(botWidgetExplorer);
+		botWidgetExplorer.context.getBot().getEventDispatcher().accept(botWidgetExplorer);
 		botWidgetExplorer.setVisible(true);
 	}
 
@@ -78,7 +78,7 @@ public class BotWidgetExplorer extends JFrame implements PaintListener {
 			@Override
 			public void windowClosing(final WindowEvent e) {
 				setVisible(false);
-				context.bot().getEventDispatcher().remove(this);
+				context.getBot().getEventDispatcher().remove(this);
 				highlightArea = null;
 			}
 		});
