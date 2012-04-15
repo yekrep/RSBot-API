@@ -13,6 +13,7 @@ import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.methods.node.GroundItems;
 import org.powerbot.game.api.methods.node.SceneEntities;
 import org.powerbot.game.api.methods.tab.Inventory;
+import org.powerbot.game.api.methods.widget.Camera;
 import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Time;
@@ -57,6 +58,9 @@ public class EvilBob extends AntiRandom {
 
 	@Override
 	public void run() {
+		if (Camera.getPitch() < 70) {
+			Camera.setPitch(true);
+		}
 		final WidgetChild chat = Widgets.get(WIDGET_CHAT, WIDGET_CHAT_TEXT);
 		if (chat.validate() && chat.getText().contains("tell you")) {
 			statueId = -1;
