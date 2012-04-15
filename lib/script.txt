@@ -18,6 +18,12 @@ trimExclude org.powerbot.game.api. and
             org.powerbot.game.bot.*.^* and
             org.powerbot.game.bot.*.^* * and
             org.powerbot.game.bot.*.^* *(*) and
+            org.powerbot.game.client.^* and
+            org.powerbot.game.client.^*^ * and
+            org.powerbot.game.client.* *(*) and
+            org.powerbot.game.client.input.^* and
+            org.powerbot.game.client.input.* *(*) and
+            org.powerbot.game.client.input.^*^ * and
             org.powerbot.concurrent. and
             org.powerbot.concurrent.^* and
             org.powerbot.concurrent.^* * and
