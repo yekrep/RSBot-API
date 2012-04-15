@@ -10,7 +10,7 @@ import org.powerbot.game.api.methods.interactive.NPCs;
 import org.powerbot.game.api.wrappers.interactive.NPC;
 import org.powerbot.game.bot.event.listener.PaintListener;
 
-public class DrawNpcs implements PaintListener {
+public class Draw2NPCs implements PaintListener {
 	public void onRepaint(final Graphics render) {
 		if (!Game.isLoggedIn()) {
 			return;

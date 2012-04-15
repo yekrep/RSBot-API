@@ -52,7 +52,7 @@ public class Pillory extends AntiRandom {
 			final SceneObject location = SceneEntities.getNearest(new Filter<SceneObject>() {
 				@Override
 				public boolean accept(final SceneObject location) {
-					return location.getLocation().equals(cageTile) && location.getType() == SceneObject.Type.BOUNDARY;
+					return location.getLocation().equals(cageTile) && location.getType() == SceneEntities.TYPE_BOUNDARY;
 				}
 			});
 			if (location != null && location.interact("unlock")) {

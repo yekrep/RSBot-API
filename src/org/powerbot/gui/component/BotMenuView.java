@@ -18,10 +18,10 @@ import org.powerbot.game.bot.Bot;
 import org.powerbot.game.bot.event.impl.DrawBoundaries;
 import org.powerbot.game.bot.event.impl.DrawGroundItems;
 import org.powerbot.game.bot.event.impl.DrawInventory;
-import org.powerbot.game.bot.event.impl.DrawLocations;
+import org.powerbot.game.bot.event.impl.DrawScene;
 import org.powerbot.game.bot.event.impl.DrawModels;
 import org.powerbot.game.bot.event.impl.DrawMouse;
-import org.powerbot.game.bot.event.impl.DrawNpcs;
+import org.powerbot.game.bot.event.impl.Draw2NPCs;
 import org.powerbot.game.bot.event.impl.DrawPlayers;
 import org.powerbot.game.bot.event.impl.MessageLogger;
 import org.powerbot.game.bot.event.impl.TCamera;
@@ -29,7 +29,7 @@ import org.powerbot.game.bot.event.impl.TClientState;
 import org.powerbot.game.bot.event.impl.TDestination;
 import org.powerbot.game.bot.event.impl.TMapBase;
 import org.powerbot.game.bot.event.impl.TPlane;
-import org.powerbot.game.bot.event.impl.TPosition;
+import org.powerbot.game.bot.event.impl.TLocation;
 
 /**
  * @author Paris
@@ -44,9 +44,9 @@ public final class BotMenuView extends JMenu implements ActionListener {
 	private static final String ALL = "All";
 	private static final String MOUSE = "Mouse";
 	private static final String PLAYERS = "Players";
-	private static final String NPCS = "Npcs";
+	private static final String NPCS = "NPCs";
 	private static final String GROUND_ITEMS = "Ground Items";
-	private static final String LOCATIONS = "Locations";
+	private static final String SCENEENTITIES = "Scene Entities";
 	private static final String MODELS = "Models";
 	private static final String BOUNDARIES = "Boundaries";
 	private static final String INVENTORY = "Inventory";
@@ -54,7 +54,7 @@ public final class BotMenuView extends JMenu implements ActionListener {
 	private static final String PLANE = "Plane";
 	private static final String CAMERA = "Camera";
 	private static final String MAPBASE = "Map Base";
-	private static final String POSITION = "Position";
+	private static final String LOCATION = "Location";
 	private static final String DESTINATION = "Destination";
 	private static final String MESSAGES = "Messages";
 	private static final String SEPERATOR = "-";
@@ -78,15 +78,15 @@ public final class BotMenuView extends JMenu implements ActionListener {
 		map = new LinkedHashMap<String, Class<? extends EventListener>>();
 		map.put(BOUNDARIES, DrawBoundaries.class);
 		map.put(MODELS, DrawModels.class);
-		map.put(LOCATIONS, DrawLocations.class);
+		map.put(SCENEENTITIES, DrawScene.class);
 		map.put(PLAYERS, DrawPlayers.class);
-		map.put(NPCS, DrawNpcs.class);
+		map.put(NPCS, Draw2NPCs.class);
 		map.put(GROUND_ITEMS, DrawGroundItems.class);
 		map.put(CLIENTSTATE, TClientState.class);
 		map.put(PLANE, TPlane.class);
 		map.put(CAMERA, TCamera.class);
 		map.put(MAPBASE, TMapBase.class);
-		map.put(POSITION, TPosition.class);
+		map.put(LOCATION, TLocation.class);
 		map.put(DESTINATION, TDestination.class);
 		map.put(MOUSE, DrawMouse.class);
 		map.put(INVENTORY, DrawInventory.class);
@@ -97,7 +97,7 @@ public final class BotMenuView extends JMenu implements ActionListener {
 		items.add(PLAYERS);
 		items.add(NPCS);
 		items.add(GROUND_ITEMS);
-		items.add(LOCATIONS);
+		items.add(SCENEENTITIES);
 		items.add(MODELS);
 		items.add(BOUNDARIES);
 		items.add(INVENTORY);
@@ -106,7 +106,7 @@ public final class BotMenuView extends JMenu implements ActionListener {
 		items.add(PLANE);
 		items.add(CAMERA);
 		items.add(MAPBASE);
-		items.add(POSITION);
+		items.add(LOCATION);
 		items.add(DESTINATION);
 		items.add(SEPERATOR);
 		items.add(MESSAGES);

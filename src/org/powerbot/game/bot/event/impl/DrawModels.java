@@ -15,13 +15,13 @@ import org.powerbot.game.api.wrappers.node.SceneObject;
 import org.powerbot.game.bot.event.listener.PaintListener;
 
 public class DrawModels implements PaintListener {
-	private static final HashMap<SceneObject.Type, Color> color_map = new HashMap<SceneObject.Type, Color>();
+	private static final HashMap<Integer, Color> color_map = new HashMap<Integer, Color>();
 
 	static {
-		color_map.put(SceneObject.Type.BOUNDARY, Color.BLACK);
-		color_map.put(SceneObject.Type.FLOOR_DECORATION, Color.YELLOW);
-		color_map.put(SceneObject.Type.INTERACTIVE, Color.WHITE);
-		color_map.put(SceneObject.Type.WALL_DECORATION, Color.GRAY);
+		color_map.put(SceneEntities.TYPE_BOUNDARY, Color.BLACK);
+		color_map.put(SceneEntities.TYPE_FLOOR_DECORATION, Color.YELLOW);
+		color_map.put(SceneEntities.TYPE_INTERACTIVE, Color.WHITE);
+		color_map.put(SceneEntities.TYPE_WALL_DECORATION, Color.GRAY);
 	}
 
 	public void onRepaint(final Graphics graphics) {

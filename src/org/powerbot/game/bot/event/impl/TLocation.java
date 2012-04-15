@@ -8,7 +8,7 @@ import org.powerbot.game.api.wrappers.interactive.Player;
 import org.powerbot.game.bot.event.listener.TextPaintListener;
 import org.powerbot.util.StringUtil;
 
-public class TPosition implements TextPaintListener {
+public class TLocation implements TextPaintListener {
 	public int draw(int idx, final Graphics render) {
 		final Player player = Players.getLocal();
 		if (player != null) {
