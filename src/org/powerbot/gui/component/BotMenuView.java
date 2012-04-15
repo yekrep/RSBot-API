@@ -21,7 +21,7 @@ import org.powerbot.game.bot.event.impl.DrawInventory;
 import org.powerbot.game.bot.event.impl.DrawScene;
 import org.powerbot.game.bot.event.impl.DrawModels;
 import org.powerbot.game.bot.event.impl.DrawMouse;
-import org.powerbot.game.bot.event.impl.Draw2NPCs;
+import org.powerbot.game.bot.event.impl.DrawNPCs;
 import org.powerbot.game.bot.event.impl.DrawPlayers;
 import org.powerbot.game.bot.event.impl.MessageLogger;
 import org.powerbot.game.bot.event.impl.TCamera;
@@ -80,7 +80,7 @@ public final class BotMenuView extends JMenu implements ActionListener {
 		map.put(MODELS, DrawModels.class);
 		map.put(SCENEENTITIES, DrawScene.class);
 		map.put(PLAYERS, DrawPlayers.class);
-		map.put(NPCS, Draw2NPCs.class);
+		map.put(NPCS, DrawNPCs.class);
 		map.put(GROUND_ITEMS, DrawGroundItems.class);
 		map.put(CLIENTSTATE, TClientState.class);
 		map.put(PLANE, TPlane.class);
