@@ -11,7 +11,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author Timer
  */
 public class ThreadPool implements ThreadFactory {
-	public static final String THREADGROUPNAMEPREFIX = "ThreadPool@";
+	public static final String THREADGROUPNAMEPREFIX = "ThreadPool-";
 	public static final Map<Runnable, String> suffix = new HashMap<Runnable, String>();
 
 	private final AtomicInteger threadNumber;
@@ -26,24 +26,20 @@ public class ThreadPool implements ThreadFactory {
 	 * {@inheritDoc}
 	 */
 	public Thread newThread(final Runnable r) {
-		String addition = suffix.get(r);
-		if (addition == null) {
-			addition = "";
-
-			final String threadName = Thread.currentThread().getName();
-			if (threadName.contains(" /NAME/ ")) {
-				final String[] threadData = threadName.split(" /NAME/ ");
-				if (threadData.length == 2) {
-					addition = threadData[1];
-				}
+		final Thread current = Thread.currentThread();
+		String suffix = ThreadPool.suffix.get(r);
+		final StringBuilder builder = new StringBuilder(THREADGROUPNAMEPREFIX);
+		builder.append(hashCode()).append("@").append(current.getName()).append("/").append(current.getThreadGroup().toString());
+		builder.append("#").append(threadNumber.getAndIncrement());
+		if (suffix == null) {
+			suffix = "";
+			if (current instanceof GroupedThread) {
+				suffix = ((GroupedThread) current).getGroup();
 			}
 		}
-		final StringBuilder builder = new StringBuilder(THREADGROUPNAMEPREFIX).append(hashCode()).append("-").append(threadNumber.getAndIncrement()).append('/').
-				append(Thread.currentThread().getName()).append("@").append(Thread.currentThread().getThreadGroup());
-		if (!addition.isEmpty()) {
-			builder.append(" /NAME/ ");
-			builder.append(addition);
-		}
-		return new Thread(threadGroup, r, builder.toString());
+
+		return suffix.isEmpty() ?
+				new Thread(threadGroup, r, builder.toString()) :
+				new GroupedThread(threadGroup, r, builder.toString(), suffix);
 	}
 }
