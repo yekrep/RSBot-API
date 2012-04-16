@@ -174,10 +174,10 @@ public class EvilTwin extends AntiRandom {
 				return npc.getModel().equals(model);
 			}
 		})) != null) {
-			verbose("Claw: " + claw.getLocation().toString());
-			verbose("Molly's twin: " + suspect.getLocation().toString());
 			final Tile clawLoc = claw.getLocation();
 			final Tile susLoc = suspect.getLocation();
+			verbose("Claw: " + clawLoc.toString());
+			verbose("Molly's twin: " + susLoc.toString());
 			final ArrayList<Integer> options = new ArrayList<Integer>();
 			if (susLoc.getX() > clawLoc.getX()) {
 				options.add(WIDGET_CONTROLS_LEFT);
@@ -198,8 +198,8 @@ public class EvilTwin extends AntiRandom {
 			if (i != null && i.validate()) {
 				i.getChild(options.get(Random.nextInt(0, options.size()))).click(true);
 			}
-			final long delayTime = System.currentTimeMillis();
-			while (!hasClawMoved(clawLoc) && System.currentTimeMillis() - delayTime < 3500) {
+			final Timer timer = new Timer(3500);
+			while (!hasClawMoved(clawLoc) && timer.isRunning()) {
 				Time.sleep(10);
 			}
 		}
@@ -208,10 +208,6 @@ public class EvilTwin extends AntiRandom {
 
 	private boolean hasClawMoved(final Tile prevClawLoc) {
 		final SceneObject claw = SceneEntities.getNearest(LOCATION_ID_CLAW);
-		if (claw == null) {
-			return false;
-		}
-		final Tile currentClawLoc = claw.getLocation();
-		return !prevClawLoc.equals(currentClawLoc);
+		return claw != null && !prevClawLoc.equals(claw.getLocation());
 	}
 }
