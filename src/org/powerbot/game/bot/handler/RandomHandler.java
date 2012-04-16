@@ -20,6 +20,7 @@ import org.powerbot.game.bot.randoms.Chest;
 import org.powerbot.game.bot.randoms.DrillDemon;
 import org.powerbot.game.bot.randoms.EvilBob;
 import org.powerbot.game.bot.randoms.EvilTwin;
+import org.powerbot.game.bot.randoms.Exam;
 import org.powerbot.game.bot.randoms.FirstTimeDeath;
 import org.powerbot.game.bot.randoms.FreakyForester;
 import org.powerbot.game.bot.randoms.Frog;
@@ -65,7 +66,8 @@ public class RandomHandler implements Task {
 				new FreakyForester(),
 				new EvilTwin(),
 				new EvilBob(),
-				new Maze()
+				new Maze(),
+				new Exam()
 		};
 		for (final AntiRandom antiRandom : antiRandoms) {
 			antiRandom.bot = bot;
