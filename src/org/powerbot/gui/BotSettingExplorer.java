@@ -282,6 +282,7 @@ public class BotSettingExplorer extends JFrame {
 
 		private JNumberField(final String text) {
 			super(text);
+			Arrays.sort(VALID_KEYS);
 		}
 
 		@Override
