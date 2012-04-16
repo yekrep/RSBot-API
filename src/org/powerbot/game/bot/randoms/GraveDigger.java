@@ -74,7 +74,7 @@ public class GraveDigger extends AntiRandom {
 				clean();
 			}
 		}
-		return depositBox != null;
+		return depositBox != null && Settings.get(696) != 0;
 	}
 
 	@Override
