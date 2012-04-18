@@ -116,6 +116,8 @@ public class MouseExecutor {
 				int x = (int) currentPoint.getX() + (int) deltaPosition.xUnits;
 				int y = (int) currentPoint.getY() + (int) deltaPosition.yUnits;
 				if (!Calculations.isOnScreen(x, y)) {
+					velocity.xUnits = 0;
+					velocity.yUnits = 0;
 					final Canvas canvas = Context.resolve().getCanvas();
 					switch (Mouse.getSide()) {
 					case 1:

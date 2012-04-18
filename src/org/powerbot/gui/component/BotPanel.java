@@ -208,6 +208,7 @@ public class BotPanel extends JPanel {
 			}
 			final MouseNode prevNode = mouseNode;
 			final int button = mouseEvent.getButton();
+			//TODO dragging
 			mouseNode = new MouseNode(
 					MouseNode.PRIORITY_HUMAN,
 					new ViewportEntity() {
