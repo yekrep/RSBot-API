@@ -1,7 +1,5 @@
 package org.powerbot.concurrent;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -12,7 +10,6 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class ThreadPool implements ThreadFactory {
 	public static final String THREADGROUPNAMEPREFIX = "ThreadPool-";
-	public static final Map<Runnable, String> suffix = new HashMap<Runnable, String>();
 
 	private final AtomicInteger threadNumber;
 	private final ThreadGroup threadGroup;
@@ -27,19 +24,9 @@ public class ThreadPool implements ThreadFactory {
 	 */
 	public Thread newThread(final Runnable r) {
 		final Thread current = Thread.currentThread();
-		String suffix = ThreadPool.suffix.get(r);
 		final StringBuilder builder = new StringBuilder(THREADGROUPNAMEPREFIX);
 		builder.append(hashCode()).append("@").append(current.getName()).append("/").append(current.getThreadGroup().toString());
 		builder.append("#").append(threadNumber.getAndIncrement());
-		if (suffix == null) {
-			suffix = "";
-			if (current instanceof GroupedThread) {
-				suffix = ((GroupedThread) current).getGroup();
-			}
-		}
-
-		return suffix.isEmpty() ?
-				new Thread(threadGroup, r, builder.toString()) :
-				new GroupedThread(threadGroup, r, builder.toString(), suffix);
+		return new Thread(threadGroup, r, builder.toString());
 	}
 }
