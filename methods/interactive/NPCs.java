@@ -35,8 +35,8 @@ public class NPCs {
 	}
 
 	/**
-	 * @param ids NPC will be accepted if having one of these ID's.
-	 * @return An array of the currently loaded NPC's in the game that have one of the provided ID's.
+	 * @param ids Npc will be accepted if having one of these Ids.
+	 * @return An array of the currently loaded NPCs in the game that have one of the provided Ids.
 	 */
 	public static NPC[] getLoaded(final int... ids) {
 		return getLoaded(new Filter<NPC>() {
@@ -72,8 +72,8 @@ public class NPCs {
 	}
 
 	/**
-	 * @param ids NPC will be accepted if having one of these ID's.
-	 * @return The nearest NPC with one of these ID's if any present, else <i>null</i>.
+	 * @param ids Npc will be accepted if having one of these Ids.
+	 * @return The nearest Npc with one of these Ids if any present, else <i>null</i>.
 	 */
 	public static NPC getNearest(final int... ids) {
 		return getNearest(new Filter<NPC>() {
@@ -89,8 +89,8 @@ public class NPCs {
 	}
 
 	/**
-	 * @param names NPC will be accepted if having one of these names.
-	 * @return The nearest NPC with one of these names if any present, else <i>null</i>.
+	 * @param names Npc will be accepted if having one of these names.
+	 * @return The nearest Npc with one of these names if any present, else <i>null</i>.
 	 */
 	public static NPC getNearest(final String... names) {
 		return getNearest(new Filter<NPC>() {
@@ -110,8 +110,8 @@ public class NPCs {
 	}
 
 	/**
-	 * @param filter The filtering <code>Filter</code> NPC's have to pass.
-	 * @return The nearest NPC passing the filter if any present, else <i>null</i>.
+	 * @param filter The filtering <code>Filter</code> NPCs have to pass.
+	 * @return The nearest Npc passing the filter if any present, else <i>null</i>.
 	 */
 	public static NPC getNearest(final Filter<NPC> filter) {
 		final Client client = Context.client();
