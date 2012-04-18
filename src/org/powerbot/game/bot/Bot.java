@@ -28,6 +28,7 @@ import org.powerbot.game.api.util.internal.Multipliers;
 import org.powerbot.game.bot.event.PaintEvent;
 import org.powerbot.game.bot.event.TextPaintEvent;
 import org.powerbot.game.bot.handler.RandomHandler;
+import org.powerbot.game.bot.handler.input.MouseReactor;
 import org.powerbot.game.client.Client;
 import org.powerbot.game.client.Render;
 import org.powerbot.game.client.RenderAbsoluteX;
@@ -64,6 +65,7 @@ public class Bot extends GameDefinition implements Runnable {
 	public final Calculations.Toolkit toolkit;
 	public final Calculations.Viewport viewport;
 
+	private MouseReactor reactor;
 	private EventDispatcher eventDispatcher;
 	private ActiveScript activeScript;
 	private RandomHandler randomHandler;
@@ -87,6 +89,7 @@ public class Bot extends GameDefinition implements Runnable {
 		panel = null;
 		paintEvent = new PaintEvent();
 		textPaintEvent = new TextPaintEvent();
+		reactor = null;
 		eventDispatcher = new EventDispatcher();
 		container.submit(eventDispatcher);
 		toolkit = new Calculations.Toolkit();
@@ -201,6 +204,7 @@ public class Bot extends GameDefinition implements Runnable {
 		if (activeScript != null) {
 			activeScript.stop();
 			activeScript.kill();
+			activeScript = null;
 		}
 		log.info("Unloading environment");
 		if (eventDispatcher != null) {
@@ -290,6 +294,7 @@ public class Bot extends GameDefinition implements Runnable {
 		constants = new Constants(modScript.constants);
 		multipliers = new Multipliers(modScript.multipliers);
 		container.submit(new SafeMode(this));
+		container.submit(reactor = new MouseReactor(this));
 	}
 
 	public Client getClient() {
@@ -305,6 +310,10 @@ public class Bot extends GameDefinition implements Runnable {
 	 */
 	public Canvas getCanvas() {
 		return client != null ? client.getCanvas() : null;
+	}
+
+	public MouseReactor getReactor() {
+		return reactor;
 	}
 
 	public EventDispatcher getEventDispatcher() {
@@ -328,7 +337,6 @@ public class Bot extends GameDefinition implements Runnable {
 			antiRandomFuture = container.submit(randomHandler);
 		}
 	}
-
 
 	private void validateAccount() {
 		if (client != null) {
