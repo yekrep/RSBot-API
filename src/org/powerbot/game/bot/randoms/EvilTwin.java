@@ -40,7 +40,7 @@ public class EvilTwin extends AntiRandom {
 		return NPCs.getNearest(new Filter<NPC>() {
 			@Override
 			public boolean accept(final NPC npc) {
-				return npc.getName().equalsIgnoreCase("Molly");
+				return npc.getName().equalsIgnoreCase("Molly") && npc.getInteracting() != null && npc.getInteracting().equals(Players.getLocal());
 			}
 		}) != null || SceneEntities.getNearest(14978) != null;
 	}
