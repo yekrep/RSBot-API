@@ -8,6 +8,7 @@ import org.powerbot.game.api.methods.Walking;
 import org.powerbot.game.api.methods.Widgets;
 import org.powerbot.game.api.methods.interactive.NPCs;
 import org.powerbot.game.api.methods.interactive.Players;
+import org.powerbot.game.api.methods.node.SceneEntities;
 import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Time;
@@ -16,12 +17,7 @@ import org.powerbot.game.api.wrappers.interactive.NPC;
 
 @Manifest(name = "Kiss the Frog", authors = {"Timer"}, version = 1.0)
 public class Frog extends AntiRandom {
-	private static final Filter<NPC> NPC_FILTER_HERALD = new Filter<NPC>() {
-		@Override
-		public boolean accept(final NPC npc) {
-			return npc.getName().equalsIgnoreCase("Frog Herald");
-		}
-	};
+	private static final String NPC_NAME_HERALD = "Frog Herald";
 	private static final Filter<NPC> NPC_FILTER_PRINCESS = new Filter<NPC>() {
 		@Override
 		public boolean accept(final NPC npc) {
@@ -31,7 +27,9 @@ public class Frog extends AntiRandom {
 
 	@Override
 	public boolean validate() {
-		return Game.isLoggedIn() && NPCs.getNearest(NPC_FILTER_HERALD) != null;
+		final NPC npc;
+		return Game.isLoggedIn() && (npc = NPCs.getNearest(NPC_NAME_HERALD)) != null &&
+				SceneEntities.getNearest(5917) != null && npc.getLocation().canReach();
 	}
 
 	@Override
@@ -65,7 +63,7 @@ public class Frog extends AntiRandom {
 			return;
 		}
 
-		final NPC herald = NPCs.getNearest(NPC_FILTER_HERALD);
+		final NPC herald = NPCs.getNearest(NPC_NAME_HERALD);
 		if (herald != null) {
 			if (herald.isOnScreen()) {
 				if (herald.interact("Talk-to", "Frog Herald")) {
