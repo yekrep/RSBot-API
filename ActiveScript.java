@@ -174,11 +174,13 @@ public abstract class ActiveScript implements EventListener, Processor {
 	}
 
 	public final void stop() {
-		container.submit(new Task() {
-			public void run() {
-				onStop();
-			}
-		});
+		if (!container.isShutdown()) {
+			container.submit(new Task() {
+				public void run() {
+					onStop();
+				}
+			});
+		}
 		eventManager.remove(ActiveScript.this);
 		for (final LoopTask task : loopTasks) {
 			task.stop();
