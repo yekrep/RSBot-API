@@ -116,7 +116,7 @@ public final class SecureStore {
 		raf.seek(offset);
 		final byte[] header = new byte[TarEntry.BLOCKSIZE];
 		while (raf.read(header) != -1) {
-			final CipherInputStream cis = new CipherInputStream(new ByteArrayInputStream(header), getCipher(Cipher.DECRYPT_MODE));
+			final CipherInputStream cis = getCipherInputStream(new ByteArrayInputStream(header), Cipher.DECRYPT_MODE);
 			final TarEntry entry = TarEntry.read(cis);
 			final int l = (int) Math.ceil((double) entry.length / TarEntry.BLOCKSIZE) * TarEntry.BLOCKSIZE;
 			if (name.equals(entry.name)) {
@@ -135,14 +135,14 @@ public final class SecureStore {
 		raf.seek(offset);
 		final byte[] header = new byte[TarEntry.BLOCKSIZE];
 		while (raf.read(header) != -1) {
-			final CipherInputStream cis = new CipherInputStream(new ByteArrayInputStream(header), getCipher(Cipher.DECRYPT_MODE));
+			final CipherInputStream cis = getCipherInputStream(new ByteArrayInputStream(header), Cipher.DECRYPT_MODE);
 			final TarEntry entry = TarEntry.read(cis);
 			final int l = (int) Math.ceil((double) entry.length / TarEntry.BLOCKSIZE) * TarEntry.BLOCKSIZE;
 			if (name.equals(entry.name)) {
 				final byte[] data = new byte[(int) entry.length];
 				raf.read(data);
 				raf.close();
-				return new CipherInputStream(new ByteArrayInputStream(data), getCipher(Cipher.DECRYPT_MODE));
+				return getCipherInputStream(new ByteArrayInputStream(data), Cipher.DECRYPT_MODE);
 			} else {
 				raf.skipBytes(l);
 			}
@@ -159,7 +159,7 @@ public final class SecureStore {
 			if (header[0] == 0) {
 				continue;
 			}
-			final CipherInputStream cis = new CipherInputStream(new ByteArrayInputStream(header), getCipher(Cipher.DECRYPT_MODE));
+			final CipherInputStream cis = getCipherInputStream(new ByteArrayInputStream(header), Cipher.DECRYPT_MODE);
 			final TarEntry entry = TarEntry.read(cis);
 			final int l = (int) Math.ceil((double) entry.length / TarEntry.BLOCKSIZE) * TarEntry.BLOCKSIZE;
 			if (name.equals(entry.name)) {
@@ -179,7 +179,7 @@ public final class SecureStore {
 			}
 		}
 		if (is != null && is.available() > 0) {
-			is = new CipherInputStream(is, getCipher(Cipher.ENCRYPT_MODE));
+			is = getCipherInputStream(is, Cipher.ENCRYPT_MODE);
 			final byte[] empty = new byte[TarEntry.BLOCKSIZE];
 			final long z = raf.getFilePointer();
 			raf.write(empty);
@@ -196,21 +196,25 @@ public final class SecureStore {
 			final TarEntry entry = new TarEntry();
 			entry.name = name;
 			entry.length = l;
-			final Cipher c = getCipher(Cipher.ENCRYPT_MODE);
-			final byte[] raw = entry.getBytes(), crypt = new byte[raw.length];
-			c.update(raw, 0, raw.length, crypt, 0);
-			c.doFinal();
-			raf.write(crypt);
+			raf.write(cryptBlock(entry.getBytes(), Cipher.ENCRYPT_MODE));
 		}
 		raf.close();
 	}
 
-	private Cipher getCipher(final int opmode) throws GeneralSecurityException {
+	private byte[] cryptBlock(final byte[] in, final int opmode) throws GeneralSecurityException, IOException {
+		final CipherInputStream is = getCipherInputStream(new ByteArrayInputStream(in), opmode);
+		final byte[] out = new byte[in.length];
+		is.read(out);
+		is.close();
+		return out;
+	}
+
+	private CipherInputStream getCipherInputStream(final InputStream is, final int opmode) throws GeneralSecurityException {
 		final Cipher c = Cipher.getInstance(CIPHER_ALGORITHM);
 		final byte[] key = Arrays.copyOf(this.key, 16);
 		final SecretKeySpec sks = new SecretKeySpec(key, KEY_ALGORITHM);
 		c.init(opmode, sks);
-		return c;
+		return new CipherInputStream(is, c);
 	}
 
 	public void download(final String name, final URL url) throws IOException, GeneralSecurityException {
