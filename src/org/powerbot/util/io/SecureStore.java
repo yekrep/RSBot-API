@@ -116,7 +116,7 @@ public final class SecureStore {
 		raf.seek(offset);
 		final byte[] header = new byte[TarEntry.BLOCKSIZE];
 		while (raf.read(header) != -1) {
-			final CipherInputStream cis = getCipherInputStream(new ByteArrayInputStream(header), Cipher.DECRYPT_MODE);
+			final InputStream cis = getCipherInputStream(new ByteArrayInputStream(header), Cipher.DECRYPT_MODE);
 			final TarEntry entry = TarEntry.read(cis);
 			final int l = (int) Math.ceil((double) entry.length / TarEntry.BLOCKSIZE) * TarEntry.BLOCKSIZE;
 			if (name.equals(entry.name)) {
@@ -135,7 +135,7 @@ public final class SecureStore {
 		raf.seek(offset);
 		final byte[] header = new byte[TarEntry.BLOCKSIZE];
 		while (raf.read(header) != -1) {
-			final CipherInputStream cis = getCipherInputStream(new ByteArrayInputStream(header), Cipher.DECRYPT_MODE);
+			final InputStream cis = getCipherInputStream(new ByteArrayInputStream(header), Cipher.DECRYPT_MODE);
 			final TarEntry entry = TarEntry.read(cis);
 			final int l = (int) Math.ceil((double) entry.length / TarEntry.BLOCKSIZE) * TarEntry.BLOCKSIZE;
 			if (name.equals(entry.name)) {
@@ -159,7 +159,7 @@ public final class SecureStore {
 			if (header[0] == 0) {
 				continue;
 			}
-			final CipherInputStream cis = getCipherInputStream(new ByteArrayInputStream(header), Cipher.DECRYPT_MODE);
+			final InputStream cis = getCipherInputStream(new ByteArrayInputStream(header), Cipher.DECRYPT_MODE);
 			final TarEntry entry = TarEntry.read(cis);
 			final int l = (int) Math.ceil((double) entry.length / TarEntry.BLOCKSIZE) * TarEntry.BLOCKSIZE;
 			if (name.equals(entry.name)) {
@@ -202,7 +202,7 @@ public final class SecureStore {
 	}
 
 	private byte[] cryptBlock(final byte[] in, final int opmode) throws GeneralSecurityException, IOException {
-		final CipherInputStream is = getCipherInputStream(new ByteArrayInputStream(in), opmode);
+		final InputStream is = getCipherInputStream(new ByteArrayInputStream(in), opmode);
 		final byte[] out = new byte[in.length];
 		is.read(out);
 		is.close();
