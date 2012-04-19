@@ -49,6 +49,9 @@ public class Resources {
 		public static final String WORLD_LINK = ROOT_IMG + "/world_link.png";
 		public static final String WRENCH = ROOT_IMG + "/wrench.png";
 		public static final String SKILLS = ROOT_IMG + "/skills.png";
+		public static final String TWITTER = ROOT_IMG + "/twitter.png";
+		public static final String FACEBOOK = ROOT_IMG + "/facebook.png";
+		public static final String YOUTUBE = ROOT_IMG + "/youtube.png";
 	}
 
 	public static URL getResourceURL(final String path) throws MalformedURLException {

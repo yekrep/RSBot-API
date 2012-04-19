@@ -112,7 +112,12 @@ public final class BotSignin extends JDialog implements ActionListener {
 				updateState();
 			}
 			signin.setEnabled(true);
-			parent.panel.loadingPanel.setAdVisible(!NetworkAccount.getInstance().isVIP());
+			new Thread(new Runnable() {
+				@Override
+				public void run() {
+					parent.panel.loadingPanel.setAdVisible(!NetworkAccount.getInstance().isVIP());
+				}
+			}).start();
 		}
 	}
 
