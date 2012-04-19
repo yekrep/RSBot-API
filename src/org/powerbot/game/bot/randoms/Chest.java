@@ -38,7 +38,7 @@ public class Chest extends AntiRandom {
 
 	@Override
 	public boolean validate() {
-		return Game.isLoggedIn() && NPCs.getNearest(NPC_ID_CAPTAIN) != null;
+		return Game.isLoggedIn() && NPCs.getNearest(NPC_ID_CAPTAIN) != null && SceneEntities.getNearest(LOCATION_ID_PORTAL) != null;
 	}
 
 	@Override
