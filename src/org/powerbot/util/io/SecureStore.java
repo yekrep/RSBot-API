@@ -168,6 +168,7 @@ public final class SecureStore {
 		if (is != null && is.available() > 0) {
 			is = getCipherInputStream(is, Cipher.ENCRYPT_MODE);
 			final byte[] empty = new byte[TarEntry.BLOCKSIZE];
+			new SecureRandom().nextBytes(empty);
 			final long z = raf.getFilePointer();
 			raf.write(empty);
 			int l = 0, b;
