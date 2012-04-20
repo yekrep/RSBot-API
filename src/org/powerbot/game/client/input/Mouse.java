@@ -135,6 +135,15 @@ public abstract class Mouse extends Focus implements MouseListener, MouseMotionL
 		e.consume();
 	}
 
+	public final void move(final Point point) {
+		update(point.x, point.y);
+	}
+
+	public final void update(final int x, final int y) {
+		clientX = x;
+		clientY = y;
+	}
+
 	public final void sendEvent(final MouseEvent e) {
 		clientX = e.getX();
 		clientY = e.getY();

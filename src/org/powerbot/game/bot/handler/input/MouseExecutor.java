@@ -1,6 +1,5 @@
 package org.powerbot.game.bot.handler.input;
 
-import java.awt.Canvas;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +13,6 @@ import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Time;
 import org.powerbot.game.api.wrappers.ViewportEntity;
 import org.powerbot.game.bot.Bot;
-import org.powerbot.game.bot.Context;
 import org.powerbot.game.bot.handler.input.util.MouseNode;
 import org.powerbot.game.bot.handler.input.util.MouseQueue;
 import org.powerbot.game.client.Client;
@@ -115,30 +113,6 @@ public class MouseExecutor {
 			if (deltaPosition.xUnits != 0 && deltaPosition.yUnits != 0) {
 				int x = (int) currentPoint.getX() + (int) deltaPosition.xUnits;
 				int y = (int) currentPoint.getY() + (int) deltaPosition.yUnits;
-				if (!Calculations.isOnScreen(x, y)) {
-					velocity.xUnits = 0;
-					velocity.yUnits = 0;
-					final Canvas canvas = Context.resolve().getCanvas();
-					switch (Mouse.getSide()) {
-					case 1:
-						x = 1;
-						y = Random.nextInt(0, canvas.getHeight());
-						break;
-					case 2:
-						x = Random.nextInt(0, canvas.getWidth());
-						y = canvas.getHeight() + 1;
-						break;
-					case 3:
-						x = canvas.getWidth() + 1;
-						y = Random.nextInt(0, canvas.getHeight());
-						break;
-					case 4:
-					default:
-						x = Random.nextInt(0, canvas.getWidth());
-						y = 1;
-						break;
-					}
-				}
 				Mouse.hop(x, y);
 			}
 			try {
