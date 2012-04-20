@@ -156,9 +156,7 @@ public class Mouse {
 	 * @param randomY The random y gaussian distribution.
 	 */
 	public static void hop(int x, int y, final int randomX, final int randomY) {
-		if (Calculations.isOnScreen(x, y)) {
-			moveMouse(x + Random.nextGaussian(-randomX, randomX, randomX), y + Random.nextGaussian(-randomY, randomY, randomY));
-		}
+		moveMouse(x + Random.nextGaussian(-randomX, randomX, randomX), y + Random.nextGaussian(-randomY, randomY, randomY));
 	}
 
 	/**
@@ -254,6 +252,8 @@ public class Mouse {
 				mouse.sendEvent(
 						new MouseEvent(target, MouseEvent.MOUSE_ENTERED, System.currentTimeMillis(), 0, x, y, 0, false)
 				);
+			} else {
+				mouse.update(x, y);
 			}
 		} else if (!Calculations.isOnScreen(x, y)) {
 			mouse.sendEvent(
@@ -263,18 +263,16 @@ public class Mouse {
 			final Canvas canvas;
 			if (client != null && (canvas = client.getCanvas()) != null) {
 				final int w = canvas.getWidth(), h = canvas.getHeight(), d = 50;
-				if (x < d) {
-					if (y < d) {
-						putSide(4);
-					} else if (y > h + d) {
-						putSide(2);
-					} else {
-						putSide(1);
-					}
-				} else if (x > w) {
-					putSide(3);
+				if (x <= 0) {
+					Mouse.putSide(1);
+				} else if (x >= w) {
+					Mouse.putSide(3);
+				} else if (y <= 0) {
+					Mouse.putSide(4);
+				} else if (y >= h) {
+					Mouse.putSide(2);
 				} else {
-					putSide(Random.nextInt(1, 5));
+					Mouse.putSide(Random.nextInt(0, 5));
 				}
 			}
 		} else if (!mouse.isPressed()) {
@@ -351,8 +349,8 @@ public class Mouse {
 		return integer;
 	}
 
-	public static void putSide(final int length) {
-		sides.put(Thread.currentThread().getThreadGroup(), length);
+	public static void putSide(final int side) {
+		sides.put(Thread.currentThread().getThreadGroup(), side);
 	}
 
 	private static MouseNode create(final int x, final int y, final int randomX, final int randomY, final boolean click, final boolean left) {
