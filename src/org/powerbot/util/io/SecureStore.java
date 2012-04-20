@@ -185,7 +185,7 @@ public final class SecureStore {
 			entry.name = name;
 			entry.length = l;
 			entry.position = z;
-			raf.write(cryptBlock(entry.getBytes(), Cipher.ENCRYPT_MODE));
+			raf.write(cryptBlock(Arrays.copyOf(entry.getBytes(), TarEntry.BLOCKSIZE), Cipher.ENCRYPT_MODE));
 			entries.put(entry.name, entry);
 		} else if (cache != null) {
 			entries.remove(name);
