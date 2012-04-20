@@ -95,7 +95,7 @@ public class MouseExecutor {
 				});
 				return;
 			}
-			final double deltaTime = Random.nextDouble(8D, 10D) / 1000D;
+			final double deltaTime = Random.nextDouble(7D, 10D) / 1000D;
 			final Vector forceVector = new Vector();
 			for (ForceModifier modifier : forceModifiers) {
 				final Vector f = modifier.apply(deltaTime, target);
