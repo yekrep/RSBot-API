@@ -262,7 +262,7 @@ public class Mouse {
 			final Client client = Context.client();
 			final Canvas canvas;
 			if (client != null && (canvas = client.getCanvas()) != null) {
-				final int w = canvas.getWidth(), h = canvas.getHeight(), d = 50;
+				final int w = canvas.getWidth(), h = canvas.getHeight();
 				if (x <= 0) {
 					Mouse.putSide(1);
 				} else if (x >= w) {
