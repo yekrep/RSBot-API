@@ -12,7 +12,7 @@ import javax.crypto.Cipher;
 public final class XORInputStream extends FilterInputStream {
 	private final byte[] key;
 	private final int opmode, l;
-	private int n;
+	private int n, d;
 
 	public XORInputStream(final InputStream in, final byte[] key, final int opmode) {
 		super(in);
@@ -23,11 +23,14 @@ public final class XORInputStream extends FilterInputStream {
 		this.opmode = opmode;
 		l = this.key.length;
 		n = 0;
+		d = 0x9e3779b9;
 	}
 
 	private void rotate(final byte[] b, final int off, final int len) {
 		for (int i = off; i < off + len; i++) {
-			final int z = n++ % l, d = key[l - z - 1], x = key[z];
+			final int z = n++ % l, x = key[z];
+			this.d += key[l - z - 1];
+			final int d = this.d & 0x7f;
 			b[i] = (byte) (opmode == Cipher.DECRYPT_MODE ? (b[i] + d) % 0xff ^ x : (b[i] ^ x) - d % 0xff);
 		}
 	}
