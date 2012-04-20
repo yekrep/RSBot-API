@@ -122,7 +122,6 @@ public final class SecureStore {
 			final TarEntry entry = TarEntry.read(cis);
 			entry.position = position;
 			entries.put(entry.name, entry);
-			System.out.println(entry.name + ": " + entry.position);
 			final int l = (int) Math.ceil((double) entry.length / TarEntry.BLOCKSIZE) * TarEntry.BLOCKSIZE;
 			raf.skipBytes(l);
 		}
@@ -187,7 +186,6 @@ public final class SecureStore {
 			entry.position = z;
 			raf.write(cryptBlock(entry.getBytes(), Cipher.ENCRYPT_MODE));
 			entries.put(entry.name, entry);
-			System.out.println(entry.name + ": " + entry.position);
 		} else if (cache != null) {
 			entries.remove(name);
 		}
