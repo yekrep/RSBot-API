@@ -18,6 +18,7 @@ public final class TarEntry {
 	public int mode = 100777, owner = 0, group = 0, checksum = 0;
 	public long length, modified = System.currentTimeMillis();
 	public byte type = 1;
+	public long position = -1;
 
 	public TarEntry() {
 	}
