@@ -177,7 +177,7 @@ public final class BotLoadingPanel extends JPanel {
 					SecureStore.getInstance().write(fileid, new ByteArrayInputStream(StringUtil.getBytesUtf8(src)));
 					BufferedImage image = ImageIO.read(SecureStore.getInstance().read(filename));
 					if (image.getWidth() > PANEL_WIDTH || image.getHeight() > PANEL_HEIGHT) {
-						final float factor = Math.min(PANEL_WIDTH / image.getWidth(), PANEL_HEIGHT / image.getHeight());
+						final float factor = (float) Math.min((double) PANEL_WIDTH / image.getWidth(), (double) PANEL_HEIGHT / image.getHeight());
 						final BufferedImage resized = new BufferedImage((int) (image.getWidth() * factor), (int) (image.getHeight() * factor), BufferedImage.TYPE_INT_ARGB);
 						final Graphics2D g = resized.createGraphics();
 						g.drawImage(image, 0, 0, resized.getWidth(), resized.getHeight(), null);
