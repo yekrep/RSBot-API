@@ -224,6 +224,8 @@ public final class SecureStore {
 				return;
 			}
 		}
-		write(name, HttpClient.openStream(url));
+		final ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		IOHelper.write(HttpClient.openStream(url), bos);
+		write(name, new ByteArrayInputStream(bos.toByteArray()));
 	}
 }
