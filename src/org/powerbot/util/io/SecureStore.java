@@ -1,7 +1,9 @@
 package org.powerbot.util.io;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.RandomAccessFile;
@@ -26,8 +28,8 @@ import org.powerbot.util.StringUtil;
 public final class SecureStore {
 	private final static Logger log = Logger.getLogger(SecureStore.class.getName());
 	private final static SecureStore instance = new SecureStore();
-	private final static int MAGIC = 0x00525354, VERSION = 1004, BLOCKSIZE = 512, MAXBLOCKS = 2048;
-	private final static String CIPHER_ALGORITHM = "RC4", KEY_ALGORITHM = "RC4";
+	private final static int MAGIC = 0x00525354, VERSION = 1005, BLOCKSIZE = 512, MAXBLOCKS = 2048;
+	private final static String CIPHER_ALGORITHM = "XOR", KEY_ALGORITHM = "RC4";
 	private final File store;
 	private long offset;
 	private byte[] key;
@@ -209,12 +211,16 @@ public final class SecureStore {
 		return out;
 	}
 
-	private CipherInputStream getCipherInputStream(final InputStream is, final int opmode) throws GeneralSecurityException {
-		final Cipher c = Cipher.getInstance(CIPHER_ALGORITHM);
-		final byte[] key = Arrays.copyOf(this.key, 16);
-		final SecretKeySpec sks = new SecretKeySpec(key, KEY_ALGORITHM);
-		c.init(opmode, sks);
-		return new CipherInputStream(is, c);
+	private FilterInputStream getCipherInputStream(final InputStream is, final int opmode) throws GeneralSecurityException {
+		if (CIPHER_ALGORITHM.equals("XOR")) {
+			return new XORInputStream(is, this.key);
+		} else {
+			final Cipher c = Cipher.getInstance(CIPHER_ALGORITHM);
+			final byte[] key = Arrays.copyOf(this.key, 16);
+			final SecretKeySpec sks = new SecretKeySpec(key, KEY_ALGORITHM);
+			c.init(opmode, sks);
+			return new CipherInputStream(is, c);
+		}
 	}
 
 	public void download(final String name, final URL url) throws IOException, GeneralSecurityException {
