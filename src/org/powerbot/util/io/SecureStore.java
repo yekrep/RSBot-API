@@ -202,7 +202,7 @@ public final class SecureStore {
 
 	private FilterInputStream getCipherInputStream(final InputStream is, final int opmode) throws GeneralSecurityException {
 		if (CIPHER_ALGORITHM.equals("XOR")) {
-			return new XORInputStream(is, this.key);
+			return new XORInputStream(is, this.key, opmode);
 		} else {
 			final Cipher c = Cipher.getInstance(CIPHER_ALGORITHM);
 			final byte[] key = Arrays.copyOf(this.key, 16);
