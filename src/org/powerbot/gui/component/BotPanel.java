@@ -47,7 +47,6 @@ public class BotPanel extends JPanel {
 	private int xOff, yOff;
 	public final BotLoadingPanel loadingPanel;
 
-
 	public BotPanel(final Component parent) {
 		final Dimension d = new Dimension(BotChrome.PANEL_WIDTH, BotChrome.PANEL_HEIGHT);
 		setSize(d);
@@ -230,24 +229,10 @@ public class BotPanel extends JPanel {
 							return Calculations.isOnScreen(mouseX, mouseY);
 						}
 					},
-					new Filter<Point>() {
-						@Override
-						public boolean accept(final Point point) {
-							switch (mouseEvent.getID()) {
-							case MouseEvent.MOUSE_CLICKED:
-								if (button == MouseEvent.BUTTON1) {
-									org.powerbot.game.api.methods.input.Mouse.click(true);
-								} else if (button == MouseEvent.BUTTON3) {
-									org.powerbot.game.api.methods.input.Mouse.click(false);
-								}
-								break;
-							}
-							return true;
-						}
-					}
+					mouseEvent.getID() == MouseEvent.MOUSE_CLICKED ? new FilterClick(mouseEvent.getButton()) : FILTER_MOVE
 			);
 			if ((inputMask & INPUT_MOUSE) != 0 || button == MouseEvent.BUTTON1 || button == MouseEvent.BUTTON3) {
-				if (prevNode != null) {
+				if (prevNode != null && !(prevNode.getFilter() instanceof FilterClick) && !(mouseNode.getFilter() instanceof FilterClick)) {
 					prevNode.cancel();
 				}
 				reactor.process(mouseNode);
@@ -285,6 +270,31 @@ public class BotPanel extends JPanel {
 
 		public void run() {
 			loadingPanel.set(threadGroup);
+		}
+	}
+
+	private static final Filter<Point> FILTER_MOVE = new Filter<Point>() {
+		@Override
+		public boolean accept(final Point point) {
+			return true;
+		}
+	};
+
+	private final class FilterClick implements Filter<Point> {
+		private final int button;
+
+		public FilterClick(final int button) {
+			this.button = button;
+		}
+
+		@Override
+		public boolean accept(final Point point) {
+			if (button == MouseEvent.BUTTON1) {
+				org.powerbot.game.api.methods.input.Mouse.click(true);
+			} else if (button == MouseEvent.BUTTON3) {
+				org.powerbot.game.api.methods.input.Mouse.click(false);
+			}
+			return true;
 		}
 	}
 }
