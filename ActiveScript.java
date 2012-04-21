@@ -242,7 +242,7 @@ public abstract class ActiveScript implements EventListener, Processor {
 	 * @return A unique per-script directory path with file IO permissions.
 	 */
 	public File getStorageDirectory() {
-		final File dir = new File(System.getProperty("java.io.tmpdir"), getClass().getName());
+		final File dir = new File(System.getProperty("java.io.tmpdir"), getClass().getName().replace('.', File.pathSeparatorChar));
 		if (!dir.isDirectory()) {
 			dir.mkdirs();
 		}
