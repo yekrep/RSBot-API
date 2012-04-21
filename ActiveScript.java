@@ -168,6 +168,10 @@ public abstract class ActiveScript implements EventListener, Processor {
 		}
 	}
 
+	public final void setSilent(final boolean silent) {
+		this.silent = silent;
+	}
+
 	public final void silentLock(final boolean removeListener) {
 		silent = true;
 		pause(removeListener);
