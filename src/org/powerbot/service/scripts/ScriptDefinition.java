@@ -15,7 +15,6 @@ public final class ScriptDefinition {
 	private final double version;
 	private final String[] authors;
 	private final boolean premium;
-	private String price = null;
 
 	public String className;
 	public URL source;
@@ -91,14 +90,6 @@ public final class ScriptDefinition {
 
 	public boolean isPremium() {
 		return premium;
-	}
-
-	public void setPrice(final String price) {
-		this.price = price;
-	}
-
-	public String getPrice() {
-		return price;
 	}
 
 	public boolean matches(final String query) {
