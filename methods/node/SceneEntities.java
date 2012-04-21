@@ -135,7 +135,7 @@ public class SceneEntities {
 	}
 
 	public static SceneObject getAt(int x, int y, final int mask) {
-		if (x > 104 || y > 104) {
+		if (x > 103 || y > 103) {
 			x -= Game.getBaseX();
 			y -= Game.getBaseY();
 		}
