@@ -145,6 +145,18 @@ public class SceneEntities {
 		}
 		return null;
 	}
+	
+	public static SceneObject getAt(final int x, final int y) {
+		return getAt(x, y, -1);
+	}
+
+	public static SceneObject getAt(final Tile t, final int mask) {
+		return getAt(t.getX(), t.getY(), mask);
+	}
+
+	public static SceneObject getAt(final Tile t) {
+		return getAt(t, -1);
+	}
 
 	public static Set<SceneObject> getLocalAt(int x, int y, final int mask) {
 		final Client client = Context.client();
