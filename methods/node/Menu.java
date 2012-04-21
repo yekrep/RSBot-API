@@ -252,12 +252,16 @@ public class Menu {
 	private static String[] getMenuItemPart(final boolean firstPart) {
 		final LinkedList<String> itemsList = new LinkedList<String>();
 		final Client client = Context.client();
+		String firstAction = "";
 		if (isCollapsed()) {
 			final Queue<MenuGroupNode> menu = new Queue<MenuGroupNode>(client.getCollapsedMenuItems());
 			try {
 				for (MenuGroupNode mgn = menu.getHead(); mgn != null; mgn = menu.getNext()) {
 					final Queue<MenuItemNode> submenu = new Queue<MenuItemNode>(((MenuGroupNodeItems) mgn.getData()).getMenuGroupNodeItems());
 					for (MenuItemNode min = submenu.getHead(); min != null; min = submenu.getNext()) {
+						if (firstAction != null) {
+							firstAction = (String) ((MenuItemNodeAction) min.getData()).getMenuItemNodeAction();
+						}
 						itemsList.addLast(firstPart ?
 								(String) ((MenuItemNodeAction) min.getData()).getMenuItemNodeAction() :
 								(String) ((MenuItemNodeOption) min.getData()).getMenuItemNodeOption());
@@ -269,6 +273,9 @@ public class Menu {
 			try {
 				final Deque<MenuItemNode> menu = new Deque<MenuItemNode>(client.getMenuItems());
 				for (MenuItemNode min = menu.getHead(); min != null; min = menu.getNext()) {
+					if (firstAction != null) {
+						firstAction = (String) ((MenuItemNodeAction) min.getData()).getMenuItemNodeAction();
+					}
 					itemsList.addLast(firstPart ?
 							(String) ((MenuItemNodeAction) min.getData()).getMenuItemNodeAction() :
 							(String) ((MenuItemNodeOption) min.getData()).getMenuItemNodeOption());
@@ -282,7 +289,7 @@ public class Menu {
 			final String item = items[i];
 			output.add(item == null ? "" : stripFormatting(item));
 		}
-		if (output.size() > 1 && (isCollapsed() ? output.getLast() : output.getFirst()).equals(firstPart ? "Cancel" : "")) {
+		if (output.size() > 1 && firstAction.equals(isCollapsed() ? "Walk here" : "Cancel")) {
 			Collections.reverse(output);
 		}
 		return output.toArray(new String[output.size()]);
