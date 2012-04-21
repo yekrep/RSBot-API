@@ -44,6 +44,7 @@ public class RandomHandler implements Task {
 	private final Bot bot;
 	private final AntiRandom[] antiRandoms;
 	private final Map<String, EventListener> listeners = new HashMap<String, EventListener>();
+	private boolean paused = false;
 
 	public RandomHandler(final Bot bot) {
 		this.bot = bot;
@@ -91,6 +92,9 @@ public class RandomHandler implements Task {
 						continue;
 					}
 					if (valid) {
+						if (!paused) {
+							paused = activeScript.isPaused();
+						}
 						if (!activeScript.isSilentlyLocked() || activeScript.getContainer().isActive()) {
 							log.info("Locking script");
 							activeScript.silentLock(false);
@@ -119,10 +123,12 @@ public class RandomHandler implements Task {
 							log.info("Deactivating random: " + antiRandom.getClass().getAnnotation(Manifest.class).name());
 							bot.getEventDispatcher().remove(listener);
 
-							if (activeScript.isSilentlyLocked()) {
+							if (activeScript.isSilentlyLocked() && !paused) {
 								log.info("Resuming active script processing");
 								activeScript.resume();
 							}
+							activeScript.setSilent(false);
+							paused = false;
 						}
 					}
 				}
