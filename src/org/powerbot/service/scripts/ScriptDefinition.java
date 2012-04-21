@@ -51,7 +51,11 @@ public final class ScriptDefinition {
 	public String getID() {
 		return id;
 	}
+
 	public String getDescription() {
+		if (description == null || description.isEmpty()) {
+			return "";
+		}
 		String s = StringUtil.stripHtml(description.trim());
 		if (s.length() > 2 && s.substring(s.length() - 1).equals(".") && !s.substring(0, s.length() - 1).contains(".")) {
 			s = s.substring(0, s.length() - 1);
@@ -72,6 +76,9 @@ public final class ScriptDefinition {
 	}
 
 	public String getAuthors() {
+		if (authors == null || authors.length == 0) {
+			return "";
+		}
 		final StringBuilder sb = new StringBuilder();
 		final String[] authors = getAllAuthors();
 		for (int i = 0; i < authors.length; i++) {
