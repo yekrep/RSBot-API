@@ -9,9 +9,11 @@ import java.util.logging.Logger;
 
 import org.powerbot.concurrent.TaskContainer;
 import org.powerbot.event.EventManager;
+import org.powerbot.game.api.ActiveScript;
 import org.powerbot.game.api.methods.Calculations;
 import org.powerbot.game.api.util.internal.Constants;
 import org.powerbot.game.api.util.internal.Multipliers;
+import org.powerbot.game.bot.util.ScreenCapture;
 import org.powerbot.game.client.Client;
 import org.powerbot.game.loader.applet.Rs2Applet;
 import org.powerbot.gui.BotChrome;
@@ -53,8 +55,20 @@ public class Context {
 		return get().bot.constants;
 	}
 
+	public static void saveScreenCapture() {
+		ScreenCapture.save(Context.get());
+	}
+
+	public static void saveScreenCapture(final String fileName) {
+		ScreenCapture.save(Context.get(), fileName);
+	}
+
 	public Bot getBot() {
 		return bot;
+	}
+
+	public ActiveScript getActiveScript() {
+		return bot.getActiveScript();
 	}
 
 	public Client getClient() {
