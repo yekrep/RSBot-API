@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 
+import org.powerbot.game.api.methods.Environment;
 import org.powerbot.game.bot.Context;
 
 public class ScreenCapture {
@@ -28,7 +29,7 @@ public class ScreenCapture {
 			fileName = fileName.concat(".png");
 		}
 
-		final File dir = new File(".");
+		final File dir = Environment.getStorageDirectory();
 		if (dir.isDirectory() || dir.mkdirs()) {
 			ScreenCapture.save(context, new File(dir, fileName), "png");
 		}
