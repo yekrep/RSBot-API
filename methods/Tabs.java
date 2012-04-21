@@ -71,7 +71,7 @@ public enum Tabs {
 			return true;
 		}
 		if (fast && hasFunctionKey()) {
-			Keyboard.sendKey((char) getFunctionKey(), Random.nextInt(100, 300));//TODO fix this ('p' error)
+			Keyboard.sendKey(KeyEvent.CHAR_UNDEFINED, getFunctionKey(), Random.nextInt(100, 300));
 		} else {
 			final WidgetChild widgetChild = WidgetComposite.getTab(this);
 			if (widgetChild != null && widgetChild.validate()) {
