@@ -6,6 +6,7 @@ import java.util.Map;
 import org.powerbot.game.api.ActiveScript;
 import org.powerbot.game.api.Manifest;
 import org.powerbot.util.StringUtil;
+import org.powerbot.util.io.IniParser;
 
 /**
  * @author Paris
@@ -110,47 +111,21 @@ public final class ScriptDefinition {
 	}
 
 	public static ScriptDefinition fromMap(final Map<String, String> data) {
-		String name, description, website;
+		final String name = data.containsKey("name") ? data.get("name") : null;
+		final String id = data.containsKey("id") ? data.get("id") : null;
+		final String description = data.containsKey("description") ? data.get("description") : null;
+		final String website = data.containsKey("website") ? data.get("website") : null;
+		final boolean premium = data.containsKey("premium") ? IniParser.parseBool(data.get("premium")) : false;
+		final String[] authors = data.containsKey("authors") ? data.get("authors").split(",") : new String[] {};
 		double version = 1d;
-		boolean premium = false;
-		String[] authors;
 
-		if (data.containsKey("name")) {
-			name = data.get("name");
-		} else {
-			return null;
-		}
-		if (data.containsKey("description")) {
-			description = data.get("description");
-		} else {
-			return null;
-		}
-		if (data.containsKey("website")) {
-			website = data.get("website");
-		} else {
-			return null;
-		}
 		if (data.containsKey("version")) {
 			try {
 				version = Double.parseDouble(data.get("version"));
 			} catch (final NumberFormatException ignored) {
-				return null;
 			}
-		} else {
-			return null;
-		}
-		if (data.containsKey("premium")) {
-			final String s = data.get("premium");
-			premium = s.equals("1") || s.equalsIgnoreCase("true");
-		} else {
-			return null;
-		}
-		if (data.containsKey("authors")) {
-			authors = data.get("authors").split(",");
-		} else {
-			return null;
 		}
 
-		return new ScriptDefinition(name, description, version, authors, website, premium);
+		return name == null || name.isEmpty() ? null : new ScriptDefinition(name, id, description, version, authors, website, premium);
 	}
 }
