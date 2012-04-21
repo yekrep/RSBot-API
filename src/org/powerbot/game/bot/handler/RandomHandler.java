@@ -91,7 +91,7 @@ public class RandomHandler implements Task {
 						continue;
 					}
 					if (valid) {
-						if (!activeScript.isLocked() || activeScript.getContainer().isActive()) {
+						if (!activeScript.isSilentlyLocked() || activeScript.getContainer().isActive()) {
 							log.info("Locking script");
 							activeScript.silentLock(false);
 							while (activeScript.getContainer().isActive()) {
@@ -119,7 +119,7 @@ public class RandomHandler implements Task {
 							log.info("Deactivating random: " + antiRandom.getClass().getAnnotation(Manifest.class).name());
 							bot.getEventDispatcher().remove(listener);
 
-							if (activeScript.isLocked()) {
+							if (activeScript.isSilentlyLocked()) {
 								log.info("Resuming active script processing");
 								activeScript.resume();
 							}
