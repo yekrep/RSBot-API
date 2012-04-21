@@ -19,6 +19,7 @@ import org.powerbot.concurrent.strategy.Strategy;
 import org.powerbot.concurrent.strategy.StrategyDaemon;
 import org.powerbot.concurrent.strategy.StrategyGroup;
 import org.powerbot.event.EventManager;
+import org.powerbot.game.api.methods.Environment;
 import org.powerbot.game.bot.Context;
 
 /**
@@ -236,16 +237,8 @@ public abstract class ActiveScript implements EventListener, Processor {
 		return container;
 	}
 
-	/**
-	 * Get an accessible and isolated directory for reading and writing files.
-	 *
-	 * @return A unique per-script directory path with file IO permissions.
-	 */
+	@Deprecated
 	public File getStorageDirectory() {
-		final File dir = new File(System.getProperty("java.io.tmpdir"), getClass().getName().replace('.', File.pathSeparatorChar));
-		if (!dir.isDirectory()) {
-			dir.mkdirs();
-		}
-		return dir;
+		return Environment.getStorageDirectory();
 	}
 }
