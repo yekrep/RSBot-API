@@ -13,6 +13,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -126,6 +127,12 @@ public final class SecureStore {
 			raf.skipBytes(l);
 		}
 		raf.close();
+	}
+
+	public Collection<TarEntry> listEntries() {
+		synchronized (entries) {
+			return entries.values();
+		}
 	}
 
 	public TarEntry get(final String name) {
