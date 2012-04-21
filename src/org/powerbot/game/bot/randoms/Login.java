@@ -27,6 +27,8 @@ public class Login extends AntiRandom {
 	private static final int WIDGET_LOGIN_ENTER_GAME = 44;
 
 	private static final int WIDGET_LOBBY = 906;
+	private static final int WIDGET_LOBBY_ERROR = 249;
+	private static final int WIDGET_LOBBY_TRY_AGAIN = 259;
 	private static final int WIDGET_LOBBY_PLAY = 184;
 
 	public boolean validate() {
@@ -58,8 +60,51 @@ public class Login extends AntiRandom {
 		}
 	}
 
+	private enum LobbyEvent {
+		LOGGED_IN(WIDGET_LOBBY_ERROR, "last session", Random.nextInt(1000, 4000));
+		private final String message;
+		private final int child, wait;
+		private final Task task;
+
+		LobbyEvent(final int child, final String message, final int wait, final Task task) {
+			this.child = child;
+			this.message = message;
+			this.wait = wait;
+			this.task = task;
+		}
+
+		LobbyEvent(final int child, final String message, final int wait) {
+			this(child, message, wait, null);
+		}
+	}
+
+
 	public void run() {
 		if (Game.getClientState() == Game.INDEX_LOBBY_SCREEN) {
+			for (final LoginEvent loginEvent : LoginEvent.values()) {
+				final WidgetChild widgetChild = Widgets.get(WIDGET_LOBBY, loginEvent.child);
+				if (widgetChild != null && widgetChild.validate()) {
+					final String text = widgetChild.getText().toLowerCase().trim();
+
+					if (text.contains(loginEvent.message.toLowerCase())) {
+						log.info("Handling lobby event: " + loginEvent.name());
+						Widgets.get(WIDGET_LOBBY, WIDGET_LOBBY_TRY_AGAIN).click(true);
+
+						if (loginEvent.wait > 0) {
+							Time.sleep(loginEvent.wait);
+						} else if (loginEvent.wait == -1) {
+							bot.stopScript();
+							return;
+						}
+
+						if (loginEvent.task != null) {
+							bot.getContainer().submit(loginEvent.task);
+						}
+						return;
+					}
+				}
+			}
+
 			Widgets.get(WIDGET_LOBBY, WIDGET_LOBBY_PLAY).click(true);
 			Time.sleep(Random.nextInt(200, 500));
 			return;
