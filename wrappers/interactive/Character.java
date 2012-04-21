@@ -119,7 +119,7 @@ public abstract class Character implements Entity, Locatable, Rotatable, Identif
 	}
 
 	public int getOrientation() {
-		return (180 + getRotation() * 45 / 2048) % 360;
+		return (630 - getRotation() * 45 / 0x800) % 360;
 	}
 
 	public boolean isInCombat() {
