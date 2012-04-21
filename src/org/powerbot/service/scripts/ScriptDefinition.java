@@ -11,7 +11,7 @@ import org.powerbot.util.StringUtil;
  * @author Paris
  */
 public final class ScriptDefinition {
-	private final String name, description, website;
+	private final String name, id, description, website;
 	private final double version;
 	private final String[] authors;
 	private final boolean premium;
@@ -27,6 +27,7 @@ public final class ScriptDefinition {
 
 	public ScriptDefinition(final Manifest manifest) {
 		name = manifest.name();
+		id = null;
 		description = manifest.description();
 		version = manifest.version();
 		authors = manifest.authors();
@@ -34,8 +35,9 @@ public final class ScriptDefinition {
 		premium = manifest.premium();
 	}
 
-	public ScriptDefinition(final String name, final String description, final double version, final String[] authors, final String website, final boolean premium) {
+	public ScriptDefinition(final String name, final String id, final String description, final double version, final String[] authors, final String website, final boolean premium) {
 		this.name = name;
+		this.id = id;
 		this.description = description;
 		this.version = version;
 		this.authors = authors;
@@ -47,6 +49,9 @@ public final class ScriptDefinition {
 		return StringUtil.stripHtml(name.trim());
 	}
 
+	public String getID() {
+		return id;
+	}
 	public String getDescription() {
 		String s = StringUtil.stripHtml(description.trim());
 		if (s.length() > 2 && s.substring(s.length() - 1).equals(".") && !s.substring(0, s.length() - 1).contains(".")) {
