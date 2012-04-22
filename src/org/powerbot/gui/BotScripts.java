@@ -25,6 +25,7 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.security.GeneralSecurityException;
@@ -45,6 +46,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JProgressBar;
@@ -65,6 +67,7 @@ import org.powerbot.game.bot.Bot;
 import org.powerbot.gui.component.BotLocale;
 import org.powerbot.gui.component.BotToolBar;
 import org.powerbot.service.GameAccounts;
+import org.powerbot.service.NetworkAccount;
 import org.powerbot.service.GameAccounts.Account;
 import org.powerbot.service.scripts.ScriptClassLoader;
 import org.powerbot.service.scripts.ScriptDefinition;
@@ -522,6 +525,33 @@ public final class BotScripts extends JDialog implements ActionListener {
 				public void actionPerformed(final ActionEvent e) {
 					setVisible(false);
 					dispose();
+					final URL url;
+					try {
+						url = new URL(String.format(Resources.getServerLinks().get("scriptsauth"),
+								NetworkAccount.getInstance().isLoggedIn() ? NetworkAccount.getInstance().getAccount().getAuth() : "-",
+								def.getID()));
+					} catch (final MalformedURLException ignored) {
+						log.severe("Could not call auth server");
+						return;
+					}
+					final Map<String, Map<String, String>> data;
+					try {
+						data = IniParser.deserialise(HttpClient.openStream(url));
+					} catch (final IOException ignored) {
+						log.severe("Unalbe to obtain auth response");
+						return;
+					}
+					if (data == null || !data.containsKey("auth")) {
+						log.severe("Error reading auth response");
+						return;
+					}
+					if (!data.get("auth").containsKey("access") || !IniParser.parseBool(data.get("auth").get("access"))) {
+						if (data.get("auth").containsKey("message")) {
+							JOptionPane.showMessageDialog(BotScripts.this, data.get("auth").get("message"));
+						}
+						log.severe("You are not authorised to run this script");
+						return;
+					}
 					final ClassLoader cl;
 					if (def.local) {
 						cl = new ScriptClassLoader(def.source);
