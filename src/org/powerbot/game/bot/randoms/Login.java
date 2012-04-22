@@ -37,7 +37,7 @@ public class Login extends AntiRandom {
 	}
 
 	private enum LoginEvent {
-		TOKEN_FAILURE(WIDGET_LOGIN_ERROR, "token failure", 0, new Task() {
+		TOKEN_FAILURE(WIDGET_LOGIN_ERROR, "game session has ended", 0, new Task() {
 			public void run() {
 				Context.resolve().refresh();
 			}
