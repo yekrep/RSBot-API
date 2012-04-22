@@ -167,7 +167,7 @@ public final class BotScripts extends JDialog implements ActionListener {
 		more.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent e) {
-				BotChrome.openURL(Resources.getServerLinks().get("scriptlist"));
+				BotChrome.openURL(Resources.getServerLinks().get("scriptslist"));
 			}
 		});
 		panelRight.add(more);
