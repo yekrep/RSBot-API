@@ -85,7 +85,7 @@ public final class NetworkAccount {
 		for (int i = 0; i < groups.length; i++) {
 			groupIDs[i] = Integer.parseInt(groups[i]);
 		}
-		account = new Account(id, auth.get("name"), auth.get("display"), auth.get("email"), groupIDs);
+		account = new Account(id, auth.get("auth"), auth.get("name"), auth.get("display"), auth.get("email"), groupIDs);
 		return true;
 	}
 
@@ -100,11 +100,12 @@ public final class NetworkAccount {
 
 	public final class Account {
 		private final int id;
-		private final String name, display, email;
+		private final String auth, name, display, email;
 		private final int[] groups;
 
-		public Account(final int id, final String name, final String display, final String email, final int[] groups) {
+		public Account(final int id, final String auth, final String name, final String display, final String email, final int[] groups) {
 			this.id = id;
+			this.auth = auth;
 			this.name = name;
 			this.display = display;
 			this.email = email;
@@ -113,6 +114,10 @@ public final class NetworkAccount {
 
 		public int getID() {
 			return id;
+		}
+
+		public String getAuth() {
+			return auth;
 		}
 
 		public String getName() {
