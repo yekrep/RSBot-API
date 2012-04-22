@@ -5,6 +5,7 @@ import java.awt.Component;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -94,39 +95,28 @@ public class Mouse {
 
 	/**
 	 * Scrolls the mouse up or down by 1 unit.
-	 * 
+	 *
 	 * @param down <tt>true</tt> to scroll down, <tt>false</tt> to scroll up.
 	 */
 	public static void scroll(final boolean down) {
-		scroll(down, 1)
-	}
-
-	/**
-	 * Scrolls the mouse up or down.
-	 * 
-	 * @param down <tt>true</tt> to scroll down, <tt>false</tt> to scroll up.
-	 * @param units amount of 'scrolls' to do.
-	 */
-	public static void scroll(final boolean down, final int units) {
-		scroll(down, units, 0);
+		scroll(down, 0);
 	}
 
 	/**
 	 * Scrolls the mouse up or down with delay.
-	 * 
-	 * @param down <tt>true</tt> to scroll down, <tt>false</tt> to scroll up.
-	 * @param units amount of 'scrolls' to do.
+	 *
+	 * @param down  <tt>true</tt> to scroll down, <tt>false</tt> to scroll up.
 	 * @param delay Amount of milliseconds to wait with scrolling
 	 */
-	public static void scroll(final boolean down, final int units, final int delay) {
+	public static void scroll(final boolean down, final int delay) {
 		final org.powerbot.game.client.input.Mouse mouse = getMouse();
 		final Component target = getTarget();
 		if (mouse == null || target == null) {
 			return;
 		}
-		
+
 		mouse.sendEvent(
-				new MouseWheelEvent(target, MouseWheelEvent.MOUSE_WHEEL, System.currentTimeMillis() + delay, 0, getX(), getY(), 0, false, MouseWheelEvent.WHEEL_UNIT_SCROLL, down ? units : -(units), 1)
+				new MouseWheelEvent(target, MouseWheelEvent.MOUSE_WHEEL, System.currentTimeMillis() + delay, 0, getX(), getY(), 0, false, MouseWheelEvent.WHEEL_UNIT_SCROLL, down ? 3 : -3, 3)
 		);
 	}
 
