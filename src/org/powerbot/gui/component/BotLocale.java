@@ -42,6 +42,8 @@ public final class BotLocale {
 
 	public static String SEARCH = "Search";
 	public static String REFRESH = "Refresh";
+	public static String BROWSE = "Browse";
+	public static String BROWSETIP = "Browse the full list of scripts";
 	public static String NOACCOUNT = "No account";
 	public static String LOCALONLY = "Show only local scripts";
 	public static String BY = "By %s";

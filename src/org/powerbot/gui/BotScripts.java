@@ -159,6 +159,18 @@ public final class BotScripts extends JDialog implements ActionListener {
 		search.setPreferredSize(new Dimension(150, search.getPreferredSize().height));
 		search.setBorder(BorderFactory.createCompoundBorder(new LineBorder(Color.LIGHT_GRAY, d, true), BorderFactory.createEmptyBorder(0, d + d, 0, d + d)));
 		panelRight.add(search);
+		panelRight.add(Box.createHorizontalStrut(d));
+		final JButton more = new JButton(BotLocale.BROWSE, new ImageIcon(Resources.getImage(Resources.Paths.SCRIPT_GO)));
+		more.setToolTipText(BotLocale.BROWSETIP);
+		more.setFont(username.getFont());
+		more.setFocusable(false);
+		more.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				BotChrome.openURL(Resources.getServerLinks().get("scriptlist"));
+			}
+		});
+		panelRight.add(more);
 		toolbar.add(panelRight);
 
 		final FlowLayout tableFlow = new FlowLayout(FlowLayout.LEFT);
