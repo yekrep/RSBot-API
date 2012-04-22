@@ -207,7 +207,7 @@ public class Mouse {
 	 * @return <tt>true</tt> if we reached this position; otherwise <tt>false</tt>.
 	 */
 	public static boolean move(int x, int y, final int randomX, final int randomY) {
-		final MouseReactor reactor = Context.resolve().getReactor();
+		final MouseReactor reactor = Context.get().getReactor();
 		return reactor.process(create(x, y, randomX, randomY, false, false));
 	}
 
@@ -216,7 +216,7 @@ public class Mouse {
 	}
 
 	public static boolean apply(final ViewportEntity viewportEntity, final Filter<Point> filter) {
-		final MouseReactor reactor = Context.resolve().getReactor();
+		final MouseReactor reactor = Context.get().getReactor();
 		return reactor.process(new MouseNode(viewportEntity, filter));
 	}
 
