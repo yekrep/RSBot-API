@@ -93,6 +93,44 @@ public class Mouse {
 	}
 
 	/**
+	 * Scrolls the mouse up or down by 1 unit.
+	 * 
+	 * @param down <tt>true</tt> to scroll down, <tt>false</tt> to scroll up.
+	 */
+	public static void scroll(final boolean down) {
+		scroll(down, 1)
+	}
+
+	/**
+	 * Scrolls the mouse up or down.
+	 * 
+	 * @param down <tt>true</tt> to scroll down, <tt>false</tt> to scroll up.
+	 * @param units amount of 'scrolls' to do.
+	 */
+	public static void scroll(final boolean down, final int units) {
+		scroll(down, units, 0);
+	}
+
+	/**
+	 * Scrolls the mouse up or down with delay.
+	 * 
+	 * @param down <tt>true</tt> to scroll down, <tt>false</tt> to scroll up.
+	 * @param units amount of 'scrolls' to do.
+	 * @param delay Amount of milliseconds to wait with scrolling
+	 */
+	public static void scroll(final boolean down, final int units, final int delay) {
+		final org.powerbot.game.client.input.Mouse mouse = getMouse();
+		final Component target = getTarget();
+		if (mouse == null || target == null) {
+			return;
+		}
+		
+		mouse.sendEvent(
+				new MouseWheelEvent(target, MouseWheelEvent.MOUSE_WHEEL, System.currentTimeMillis() + delay, 0, getX(), getY(), 0, false, MouseWheelEvent.WHEEL_UNIT_SCROLL, down ? units : -(units), 1)
+		);
+	}
+
+	/**
 	 * Clicks the mouse at it's current position.
 	 *
 	 * @param left <tt>true</tt> to click left; otherwise <tt>false</tt> to click right.
