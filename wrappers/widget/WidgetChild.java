@@ -35,6 +35,7 @@ import org.powerbot.game.client.RSInterfaceIsHidden;
 import org.powerbot.game.client.RSInterfaceIsHorizontallyFlipped;
 import org.powerbot.game.client.RSInterfaceIsInventoryInterface;
 import org.powerbot.game.client.RSInterfaceIsVerticallyFlipped;
+import org.powerbot.game.client.RSInterfaceIsVisible;
 import org.powerbot.game.client.RSInterfaceModelID;
 import org.powerbot.game.client.RSInterfaceModelType;
 import org.powerbot.game.client.RSInterfaceModelZoom;
@@ -393,7 +394,9 @@ public class WidgetChild implements Entity, Identifiable {
 
 	public boolean isVisible() {
 		final Object inter = getInternal();
-		return inter != null && !((RSInterfaceIsHidden) ((RSInterfaceBooleans) inter).getRSInterfaceBooleans()).getRSInterfaceIsHidden();
+		return inter != null &&
+				!((RSInterfaceIsHidden) ((RSInterfaceBooleans) inter).getRSInterfaceBooleans()).getRSInterfaceIsHidden() &&
+				((RSInterfaceIsVisible) ((RSInterfaceBooleans) inter).getRSInterfaceBooleans()).getRSInterfaceIsVisible();
 	}
 
 	@Override
