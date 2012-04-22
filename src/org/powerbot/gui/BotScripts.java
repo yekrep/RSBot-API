@@ -91,12 +91,14 @@ public final class BotScripts extends JDialog implements ActionListener {
 	private final JToggleButton locals;
 	private final JButton username, refresh;
 	private final JTextField search;
+	private final List<String> collection;
 	private volatile boolean init;
 
 	public BotScripts(final BotToolBar parent) {
 		super(parent.parent, BotLocale.SCRIPTS, true);
 		setIconImage(Resources.getImage(Resources.Paths.SCRIPT));
 		this.parent = parent;
+		collection = new ArrayList<String>();
 
 		final JToolBar toolbar = new JToolBar();
 		final int d = 2;
@@ -283,9 +285,8 @@ public final class BotScripts extends JDialog implements ActionListener {
 						}
 						table.validate();
 						table.repaint();
-						adjustViewport();
+						filter();
 						refresh.setEnabled(true);
-						scroll.getVerticalScrollBar().setValue(0);
 						init = true;
 					}
 				});
@@ -324,7 +325,34 @@ public final class BotScripts extends JDialog implements ActionListener {
 			}
 		}
 		updateCache(list);
+		filterList(list);
 		return list;
+	}
+
+	private void filterList(final List<ScriptDefinition> scripts) {
+		collection.clear();
+		if (!NetworkAccount.getInstance().isLoggedIn()) {
+			return;
+		}
+		final URL url;
+		try {
+			url = new URL(String.format(Resources.getServerLinks().get("scriptscollection"), NetworkAccount.getInstance().getAccount().getAuth()));
+		} catch (final MalformedURLException ignored) {
+			return;
+		}
+		final String data;
+		try {
+			data = HttpClient.downloadAsString(url);
+		} catch (final IOException ignored) {
+			return;
+		}
+		if (data == null || data.isEmpty()) {
+			return;
+		}
+		if (data.trim().equals("*")) {
+			return;
+		}
+		Collections.addAll(collection, data.split("\n"));
 	}
 
 	private void updateCache(final List<ScriptDefinition> scripts) {
@@ -424,6 +452,10 @@ public final class BotScripts extends JDialog implements ActionListener {
 			accounts.show(username, 0, username.getHeight());
 			return;
 		}
+		filter();
+	}
+
+	private void filter() {
 		for (final Component c : table.getComponents()) {
 			final ScriptDefinition d = ((ScriptCell) c).getScriptDefinition();
 			boolean v = true;
@@ -431,6 +463,9 @@ public final class BotScripts extends JDialog implements ActionListener {
 				v = false;
 			}
 			if (locals.isSelected() && !d.local) {
+				v = false;
+			}
+			if (!collection.isEmpty() && !collection.contains(d.getID())) {
 				v = false;
 			}
 			c.setVisible(v);
