@@ -26,6 +26,7 @@ import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.wrappers.ViewportEntity;
 import org.powerbot.game.bot.Bot;
+import org.powerbot.game.bot.event.MouseRequestEvent;
 import org.powerbot.game.bot.handler.input.MouseReactor;
 import org.powerbot.game.bot.handler.input.util.MouseNode;
 import org.powerbot.game.client.input.Mouse;
@@ -41,6 +42,7 @@ public class BotPanel extends JPanel {
 	public static final int INPUT_MOUSE = 1, INPUT_KEYBOARD = 2;
 	private int inputMask;
 	private MouseNode mouseNode;
+	private final MouseRequestEvent mouseRequest;
 
 	private static final long serialVersionUID = 1L;
 	private Bot bot;
@@ -59,6 +61,7 @@ public class BotPanel extends JPanel {
 		xOff = yOff = 0;
 		inputMask = INPUT_MOUSE | INPUT_KEYBOARD;
 		mouseNode = null;
+		mouseRequest = new MouseRequestEvent();
 
 		setLayout(new GridBagLayout());
 		add(loadingPanel = new BotLoadingPanel(parent));
@@ -231,11 +234,18 @@ public class BotPanel extends JPanel {
 					},
 					mouseEvent.getID() == MouseEvent.MOUSE_CLICKED ? new FilterClick(mouseEvent.getButton()) : FILTER_MOVE
 			);
-			if ((inputMask & INPUT_MOUSE) != 0 || button == MouseEvent.BUTTON1 || button == MouseEvent.BUTTON3) {
+			final boolean input_enabled = (inputMask & INPUT_MOUSE) != 0;
+			if (input_enabled || button == MouseEvent.BUTTON1 || button == MouseEvent.BUTTON3) {
 				if (prevNode != null && !(prevNode.getFilter() instanceof FilterClick) && !(mouseNode.getFilter() instanceof FilterClick)) {
 					prevNode.cancel();
 				}
-				reactor.process(mouseNode);
+				if (!input_enabled) {
+					mouseRequest.init(mouseNode);
+					bot.getEventDispatcher().fire(mouseRequest);
+				}
+				if (input_enabled || mouseRequest.accepted()) {
+					reactor.process(mouseNode);
+				}
 			}
 		}
 	}
