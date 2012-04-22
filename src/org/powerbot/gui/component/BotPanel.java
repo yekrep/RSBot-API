@@ -69,10 +69,7 @@ public class BotPanel extends JPanel {
 		addComponentListener(new ComponentAdapter() {
 			@Override
 			public void componentResized(final ComponentEvent evt) {
-				if (bot != null && bot.appletContainer != null) {
-					bot.resize(getWidth(), getHeight());
-					offset();
-				}
+				resize();
 				requestFocus();
 			}
 		});
@@ -166,6 +163,13 @@ public class BotPanel extends JPanel {
 
 	public int getInputMask() {
 		return inputMask;
+	}
+
+	public void resize() {
+		if (bot != null && bot.appletContainer != null) {
+			bot.resize(getWidth(), getHeight());
+			offset();
+		}
 	}
 
 	public void offset() {
