@@ -31,6 +31,8 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -240,6 +242,12 @@ public final class BotScripts extends JDialog implements ActionListener {
 				final List<ScriptDefinition> scripts;
 				try {
 					scripts = loadScripts();
+					Collections.sort(scripts, new Comparator<ScriptDefinition>() {
+						@Override
+						public int compare(final ScriptDefinition a, final ScriptDefinition b) {
+							return a.getName().compareToIgnoreCase(b.getName());
+						}
+					});
 				} catch (final IOException ignored) {
 					status.setText("Could not load scripts, please try again later");
 					SwingUtilities.invokeLater(new Runnable() {
