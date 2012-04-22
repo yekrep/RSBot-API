@@ -33,6 +33,7 @@ import org.powerbot.game.bot.randoms.Pillory;
 import org.powerbot.game.bot.randoms.Pinball;
 import org.powerbot.game.bot.randoms.Quiz;
 import org.powerbot.game.bot.randoms.SandwichLady;
+import org.powerbot.game.bot.randoms.SpinTickets;
 import org.powerbot.game.bot.randoms.WidgetCloser;
 
 /**
@@ -44,6 +45,7 @@ public class RandomHandler implements Task {
 	private final Bot bot;
 	private final AntiRandom[] antiRandoms;
 	private final Map<String, EventListener> listeners = new HashMap<String, EventListener>();
+	private boolean paused = false;
 
 	public RandomHandler(final Bot bot) {
 		this.bot = bot;
@@ -67,7 +69,8 @@ public class RandomHandler implements Task {
 				new EvilTwin(),
 				new EvilBob(),
 				new Maze(),
-				new Exam()
+				new Exam(),
+				new SpinTickets()
 		};
 		for (final AntiRandom antiRandom : antiRandoms) {
 			antiRandom.bot = bot;
@@ -91,7 +94,10 @@ public class RandomHandler implements Task {
 						continue;
 					}
 					if (valid) {
-						if (!activeScript.isLocked() || activeScript.getContainer().isActive()) {
+						if (!paused) {
+							paused = activeScript.isPaused();
+						}
+						if (!activeScript.isSilentlyLocked() || activeScript.getContainer().isActive()) {
 							log.info("Locking script");
 							activeScript.silentLock(false);
 							while (activeScript.getContainer().isActive()) {
@@ -119,10 +125,12 @@ public class RandomHandler implements Task {
 							log.info("Deactivating random: " + antiRandom.getClass().getAnnotation(Manifest.class).name());
 							bot.getEventDispatcher().remove(listener);
 
-							if (activeScript.isLocked()) {
+							if (activeScript.isSilentlyLocked() && !paused) {
 								log.info("Resuming active script processing");
 								activeScript.resume();
 							}
+							activeScript.setSilent(false);
+							paused = false;
 						}
 					}
 				}

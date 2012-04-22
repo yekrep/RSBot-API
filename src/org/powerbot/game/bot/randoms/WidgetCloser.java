@@ -19,6 +19,7 @@ public class WidgetCloser extends AntiRandom {
 	private Timer timer;
 
 	static {
+		children.put(21, 43);//beholding a player's statuette (duellist's cap)
 		children.put(1234, 15);//membership offers
 		children.put(906, 354);//membership offers
 		children.put(1252, 6);//Squeal of Fortune notification

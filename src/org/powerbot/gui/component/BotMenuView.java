@@ -18,18 +18,19 @@ import org.powerbot.game.bot.Bot;
 import org.powerbot.game.bot.event.impl.DrawBoundaries;
 import org.powerbot.game.bot.event.impl.DrawGroundItems;
 import org.powerbot.game.bot.event.impl.DrawInventory;
-import org.powerbot.game.bot.event.impl.DrawScene;
 import org.powerbot.game.bot.event.impl.DrawModels;
 import org.powerbot.game.bot.event.impl.DrawMouse;
 import org.powerbot.game.bot.event.impl.DrawNPCs;
 import org.powerbot.game.bot.event.impl.DrawPlayers;
+import org.powerbot.game.bot.event.impl.DrawScene;
 import org.powerbot.game.bot.event.impl.MessageLogger;
 import org.powerbot.game.bot.event.impl.TCamera;
 import org.powerbot.game.bot.event.impl.TClientState;
 import org.powerbot.game.bot.event.impl.TDestination;
-import org.powerbot.game.bot.event.impl.TMapBase;
-import org.powerbot.game.bot.event.impl.TPlane;
 import org.powerbot.game.bot.event.impl.TLocation;
+import org.powerbot.game.bot.event.impl.TMapBase;
+import org.powerbot.game.bot.event.impl.TMenu;
+import org.powerbot.game.bot.event.impl.TPlane;
 
 /**
  * @author Paris
@@ -51,6 +52,7 @@ public final class BotMenuView extends JMenu implements ActionListener {
 	private static final String BOUNDARIES = "Boundaries";
 	private static final String INVENTORY = "Inventory";
 	private static final String CLIENTSTATE = "Client State";
+	private static final String MENU = "Menu";
 	private static final String PLANE = "Plane";
 	private static final String CAMERA = "Camera";
 	private static final String MAPBASE = "Map Base";
@@ -83,6 +85,7 @@ public final class BotMenuView extends JMenu implements ActionListener {
 		map.put(NPCS, DrawNPCs.class);
 		map.put(GROUND_ITEMS, DrawGroundItems.class);
 		map.put(CLIENTSTATE, TClientState.class);
+		map.put(MENU, TMenu.class);
 		map.put(PLANE, TPlane.class);
 		map.put(CAMERA, TCamera.class);
 		map.put(MAPBASE, TMapBase.class);
@@ -103,6 +106,7 @@ public final class BotMenuView extends JMenu implements ActionListener {
 		items.add(INVENTORY);
 		items.add(SEPERATOR);
 		items.add(CLIENTSTATE);
+		items.add(MENU);
 		items.add(PLANE);
 		items.add(CAMERA);
 		items.add(MAPBASE);
