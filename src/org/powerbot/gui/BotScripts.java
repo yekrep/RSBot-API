@@ -23,10 +23,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.security.GeneralSecurityException;
@@ -37,6 +35,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.logging.Logger;
+import java.util.zip.ZipInputStream;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -70,12 +69,11 @@ import org.powerbot.service.GameAccounts.Account;
 import org.powerbot.service.scripts.ScriptClassLoader;
 import org.powerbot.service.scripts.ScriptDefinition;
 import org.powerbot.util.Configuration;
-import org.powerbot.util.StringUtil;
 import org.powerbot.util.io.HttpClient;
-import org.powerbot.util.io.IOHelper;
 import org.powerbot.util.io.IniParser;
 import org.powerbot.util.io.Resources;
 import org.powerbot.util.io.SecureStore;
+import org.powerbot.util.io.TarEntry;
 
 /**
  * @author Paris
@@ -83,6 +81,7 @@ import org.powerbot.util.io.SecureStore;
 public final class BotScripts extends JDialog implements ActionListener {
 	private static final Logger log = Logger.getLogger(BotScripts.class.getName());
 	private static final long serialVersionUID = 1L;
+	private static final String SCRIPTSPREFIX = "scripts/";
 	private final BotToolBar parent;
 	private final JScrollPane scroll;
 	private final JPanel table;
@@ -308,7 +307,43 @@ public final class BotScripts extends JDialog implements ActionListener {
 				}
 			}
 		}
+		updateCache(list);
 		return list;
+	}
+
+	private void updateCache(final List<ScriptDefinition> scripts) {
+		for (final TarEntry entry : SecureStore.getInstance().listEntries()) {
+			if (!entry.name.startsWith(SCRIPTSPREFIX)) {
+				continue;
+			}
+			boolean contains = false;
+			for (final ScriptDefinition def : scripts) {
+				final String name = getSecureFileName(def);
+				if (name == null) {
+					continue;
+				}
+				if (name.equals(entry.name)) {
+					contains = true;
+					break;
+				}
+			}
+			if (!contains) {
+				try {
+					System.out.println("Deleting: " + entry.name);
+					SecureStore.getInstance().delete(entry.name);
+				} catch (final IOException ignored) {
+				} catch (GeneralSecurityException ignored) {
+				}
+			}
+		}
+	}
+
+	private String getSecureFileName(final ScriptDefinition def) {
+		final String id = def.getID();
+		if (id == null || id.isEmpty()) {
+			return null;
+		}
+		return String.format("%s%s.jar", SCRIPTSPREFIX, id.replace('/', '-'));
 	}
 
 	public void loadLocalScripts(final List<ScriptDefinition> list, final File parent, final File dir) {
@@ -479,7 +514,24 @@ public final class BotScripts extends JDialog implements ActionListener {
 				public void actionPerformed(final ActionEvent e) {
 					setVisible(false);
 					dispose();
-					final ClassLoader cl = def.local ? new ScriptClassLoader(def.source) : new URLClassLoader(new URL[]{def.source});
+					final ClassLoader cl;
+					if (def.local) {
+						cl = new ScriptClassLoader(def.source);
+					} else {
+						final String name = getSecureFileName(def);
+						if (name == null) {
+							cl = new URLClassLoader(new URL[]{def.source});
+						} else {
+							try {
+								SecureStore.getInstance().download(name, def.source);
+								cl = new ScriptClassLoader(new ZipInputStream(SecureStore.getInstance().read(name)));
+							} catch (final Exception ignored) {
+								log.severe("Could not download script");
+								ignored.printStackTrace();
+								return;
+							}
+						}
+					}
 					final ActiveScript script;
 					try {
 						script = cl.loadClass(def.className).asSubclass(ActiveScript.class).newInstance();
@@ -496,7 +548,11 @@ public final class BotScripts extends JDialog implements ActionListener {
 						}
 					}
 					log.info("Starting script");
-					bot.startScript(script);
+					try {
+						bot.startScript(script);
+					} catch (final NullPointerException ignored) {
+						log.severe("Bot not ready to load scripts");
+					}
 					BotScripts.this.parent.updateScriptControls();
 				}
 			});
