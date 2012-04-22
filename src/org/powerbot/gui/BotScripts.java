@@ -316,23 +316,18 @@ public final class BotScripts extends JDialog implements ActionListener {
 			if (!entry.name.startsWith(SCRIPTSPREFIX)) {
 				continue;
 			}
-			boolean contains = false;
 			for (final ScriptDefinition def : scripts) {
 				final String name = getSecureFileName(def);
 				if (name == null) {
 					continue;
 				}
 				if (name.equals(entry.name)) {
-					contains = true;
+					try {
+						SecureStore.getInstance().delete(entry.name);
+					} catch (final IOException ignored) {
+					} catch (final GeneralSecurityException ignored) {
+					}
 					break;
-				}
-			}
-			if (!contains) {
-				try {
-					System.out.println("Deleting: " + entry.name);
-					SecureStore.getInstance().delete(entry.name);
-				} catch (final IOException ignored) {
-				} catch (GeneralSecurityException ignored) {
 				}
 			}
 		}
