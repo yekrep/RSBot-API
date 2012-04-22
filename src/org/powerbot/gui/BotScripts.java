@@ -82,7 +82,7 @@ public final class BotScripts extends JDialog implements ActionListener {
 	private final BotToolBar parent;
 	private final JScrollPane scroll;
 	private final JPanel table;
-	private final JToggleButton locals, paid;
+	private final JToggleButton locals;
 	private final JButton username, refresh;
 	private final JTextField search;
 	private volatile boolean init;
@@ -118,12 +118,6 @@ public final class BotScripts extends JDialog implements ActionListener {
 		locals.setFocusable(false);
 		locals.setVisible(Configuration.DEVMODE);
 		toolbar.add(locals);
-		toolbar.add(Box.createHorizontalStrut(d));
-		paid = new JToggleButton(new ImageIcon(Resources.getImage(Resources.Paths.MONEY_DOLLAR)));
-		paid.setToolTipText(BotLocale.PAIDONLY);
-		paid.addActionListener(this);
-		paid.setFocusable(false);
-		toolbar.add(paid);
 		toolbar.add(Box.createHorizontalStrut(d));
 
 		username = new JButton(BotLocale.NOACCOUNT);
@@ -377,9 +371,6 @@ public final class BotScripts extends JDialog implements ActionListener {
 		for (final Component c : table.getComponents()) {
 			final ScriptDefinition d = ((ScriptCell) c).getScriptDefinition();
 			boolean v = true;
-			if (paid.isSelected() && !d.isPremium()) {
-				v = false;
-			}
 			if (!search.getText().isEmpty() && !search.getText().equals(BotLocale.SEARCH) && !d.matches(search.getText())) {
 				v = false;
 			}
