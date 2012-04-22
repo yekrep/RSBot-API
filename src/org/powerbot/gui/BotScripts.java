@@ -36,6 +36,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -80,6 +81,7 @@ import org.powerbot.util.io.SecureStore;
  * @author Paris
  */
 public final class BotScripts extends JDialog implements ActionListener {
+	private static final Logger log = Logger.getLogger(BotScripts.class.getName());
 	private static final long serialVersionUID = 1L;
 	private final BotToolBar parent;
 	private final JScrollPane scroll;
@@ -482,6 +484,7 @@ public final class BotScripts extends JDialog implements ActionListener {
 					try {
 						script = cl.loadClass(def.className).asSubclass(ActiveScript.class).newInstance();
 					} catch (final Exception ignored) {
+						log.severe("Error loading script");
 						return;
 					}
 					final Bot bot = Bot.bots.get(BotScripts.this.parent.getActiveTab());
@@ -492,6 +495,7 @@ public final class BotScripts extends JDialog implements ActionListener {
 							break;
 						}
 					}
+					log.info("Starting script");
 					bot.startScript(script);
 					BotScripts.this.parent.updateScriptControls();
 				}
