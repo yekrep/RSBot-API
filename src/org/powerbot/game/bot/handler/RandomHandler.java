@@ -33,6 +33,7 @@ import org.powerbot.game.bot.randoms.Pillory;
 import org.powerbot.game.bot.randoms.Pinball;
 import org.powerbot.game.bot.randoms.Quiz;
 import org.powerbot.game.bot.randoms.SandwichLady;
+import org.powerbot.game.bot.randoms.SpinTickets;
 import org.powerbot.game.bot.randoms.WidgetCloser;
 
 /**
@@ -68,7 +69,8 @@ public class RandomHandler implements Task {
 				new EvilTwin(),
 				new EvilBob(),
 				new Maze(),
-				new Exam()
+				new Exam(),
+				new SpinTickets()
 		};
 		for (final AntiRandom antiRandom : antiRandoms) {
 			antiRandom.bot = bot;
