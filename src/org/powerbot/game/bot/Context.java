@@ -55,6 +55,10 @@ public class Context {
 		return get().bot.constants;
 	}
 
+	public static BufferedImage captureScreen() {
+		return ScreenCapture.capture(Context.get());
+	}
+
 	public static void saveScreenCapture() {
 		ScreenCapture.save(Context.get());
 	}

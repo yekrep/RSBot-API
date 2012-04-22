@@ -70,9 +70,12 @@ exclude     org.powerbot.Boot^ public static main(java.lang.String[]) and
             org.powerbot.event. and
             org.powerbot.event.EventManager and
             org.powerbot.event.EventManager *(*) and
-            org.powerbot.game.bot.input. and
-            org.powerbot.game.bot.input.MouseManipulator and
-            org.powerbot.game.bot.input.MouseManipulator *(*) and
+            org.powerbot.game.bot.handler.input. and
+            org.powerbot.game.bot.handler.input.MouseReactor and
+            org.powerbot.game.bot.handler.input.MouseReactor *(*) and
+            org.powerbot.game.bot.handler.input.util. and
+            org.powerbot.game.bot.handler.input.util.MouseNode and
+            org.powerbot.game.bot.handler.input.util.MouseNode *(*) and
             org.powerbot.game.bot.event.impl.^* and
             org.powerbot.game.bot.event.impl.* *(*) and
             org.powerbot.game.bot.event.impl.^*^ * and
