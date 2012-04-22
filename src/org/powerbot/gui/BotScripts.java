@@ -22,20 +22,20 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.logging.Logger;
+import java.util.zip.ZipInputStream;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -69,24 +69,23 @@ import org.powerbot.service.GameAccounts.Account;
 import org.powerbot.service.scripts.ScriptClassLoader;
 import org.powerbot.service.scripts.ScriptDefinition;
 import org.powerbot.util.Configuration;
-import org.powerbot.util.StringUtil;
 import org.powerbot.util.io.HttpClient;
-import org.powerbot.util.io.IOHelper;
 import org.powerbot.util.io.IniParser;
 import org.powerbot.util.io.Resources;
 import org.powerbot.util.io.SecureStore;
+import org.powerbot.util.io.TarEntry;
 
 /**
  * @author Paris
  */
-public final class BotScripts extends JDialog implements ActionListener, WindowListener {
+public final class BotScripts extends JDialog implements ActionListener {
+	private static final Logger log = Logger.getLogger(BotScripts.class.getName());
 	private static final long serialVersionUID = 1L;
+	private static final String SCRIPTSPREFIX = "scripts/";
 	private final BotToolBar parent;
-	private final static String FAVOURITES_FILENAME = "script-favourites.txt";
-	private final List<String> favourites;
 	private final JScrollPane scroll;
 	private final JPanel table;
-	private final JToggleButton locals, star, paid;
+	private final JToggleButton locals;
 	private final JButton username, refresh;
 	private final JTextField search;
 	private volatile boolean init;
@@ -95,22 +94,6 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 		super(parent.parent, BotLocale.SCRIPTS, true);
 		setIconImage(Resources.getImage(Resources.Paths.SCRIPT));
 		this.parent = parent;
-
-		favourites = new ArrayList<String>();
-		InputStream favouritesSource = null;
-		try {
-			favouritesSource = SecureStore.getInstance().read(FAVOURITES_FILENAME);
-		} catch (final IOException ignored) {
-		} catch (final GeneralSecurityException ignored) {
-		}
-		if (favouritesSource != null) {
-			for (String entry : IOHelper.readString(favouritesSource).split("\n")) {
-				entry = entry.trim();
-				if (!entry.isEmpty()) {
-					favourites.add(entry.toLowerCase());
-				}
-			}
-		}
 
 		final JToolBar toolbar = new JToolBar();
 		final int d = 2;
@@ -138,20 +121,10 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 		locals.setFocusable(false);
 		locals.setVisible(Configuration.DEVMODE);
 		toolbar.add(locals);
-		star = new JToggleButton(new ImageIcon(Resources.getImage(Resources.Paths.STAR)));
-		star.setToolTipText(BotLocale.FAVSONLY);
-		star.addActionListener(this);
-		star.setFocusable(false);
-		toolbar.add(star);
-		toolbar.add(Box.createHorizontalStrut(d));
-		paid = new JToggleButton(new ImageIcon(Resources.getImage(Resources.Paths.MONEY_DOLLAR)));
-		paid.setToolTipText(BotLocale.PAIDONLY);
-		paid.addActionListener(this);
-		paid.setFocusable(false);
-		toolbar.add(paid);
 		toolbar.add(Box.createHorizontalStrut(d));
 
 		username = new JButton(BotLocale.NOACCOUNT);
+		username.setFont(username.getFont().deriveFont(username.getFont().getSize2D() - 2f));
 		username.addActionListener(this);
 		username.setFocusable(false);
 		username.setIcon(new ImageIcon(Resources.getImage(Resources.Paths.KEY)));
@@ -186,6 +159,18 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 		search.setPreferredSize(new Dimension(150, search.getPreferredSize().height));
 		search.setBorder(BorderFactory.createCompoundBorder(new LineBorder(Color.LIGHT_GRAY, d, true), BorderFactory.createEmptyBorder(0, d + d, 0, d + d)));
 		panelRight.add(search);
+		panelRight.add(Box.createHorizontalStrut(d));
+		final JButton more = new JButton(BotLocale.BROWSE, new ImageIcon(Resources.getImage(Resources.Paths.SCRIPT_GO)));
+		more.setToolTipText(BotLocale.BROWSETIP);
+		more.setFont(username.getFont());
+		more.setFocusable(false);
+		more.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				BotChrome.openURL(Resources.getServerLinks().get("scriptlist"));
+			}
+		});
+		panelRight.add(more);
 		toolbar.add(panelRight);
 
 		final FlowLayout tableFlow = new FlowLayout(FlowLayout.LEFT);
@@ -217,7 +202,6 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 				adjustViewport();
 			}
 		});
-		addWindowListener(this);
 		pack();
 		setMinimumSize(getSize());
 		//setResizable(false);
@@ -272,6 +256,12 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 				final List<ScriptDefinition> scripts;
 				try {
 					scripts = loadScripts();
+					Collections.sort(scripts, new Comparator<ScriptDefinition>() {
+						@Override
+						public int compare(final ScriptDefinition a, final ScriptDefinition b) {
+							return a.getName().compareToIgnoreCase(b.getName());
+						}
+					});
 				} catch (final IOException ignored) {
 					status.setText("Could not load scripts, please try again later");
 					SwingUtilities.invokeLater(new Runnable() {
@@ -330,7 +320,38 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 				}
 			}
 		}
+		updateCache(list);
 		return list;
+	}
+
+	private void updateCache(final List<ScriptDefinition> scripts) {
+		for (final TarEntry entry : SecureStore.getInstance().listEntries()) {
+			if (!entry.name.startsWith(SCRIPTSPREFIX)) {
+				continue;
+			}
+			for (final ScriptDefinition def : scripts) {
+				final String name = getSecureFileName(def);
+				if (name == null) {
+					continue;
+				}
+				if (name.equals(entry.name)) {
+					try {
+						SecureStore.getInstance().delete(entry.name);
+					} catch (final IOException ignored) {
+					} catch (final GeneralSecurityException ignored) {
+					}
+					break;
+				}
+			}
+		}
+	}
+
+	private String getSecureFileName(final ScriptDefinition def) {
+		final String id = def.getID();
+		if (id == null || id.isEmpty()) {
+			return null;
+		}
+		return String.format("%s%s.jar", SCRIPTSPREFIX, id.replace('/', '-'));
 	}
 
 	public void loadLocalScripts(final List<ScriptDefinition> list, final File parent, final File dir) {
@@ -403,12 +424,6 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 		for (final Component c : table.getComponents()) {
 			final ScriptDefinition d = ((ScriptCell) c).getScriptDefinition();
 			boolean v = true;
-			if (star.isSelected() && !favourites.contains(d.toString())) {
-				v = false;
-			}
-			if (paid.isSelected() && !d.isPremium()) {
-				v = false;
-			}
 			if (!search.getText().isEmpty() && !search.getText().equals(BotLocale.SEARCH) && !d.matches(search.getText())) {
 				v = false;
 			}
@@ -496,30 +511,6 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 				panelIconsLeft.add(link, BorderLayout.WEST);
 			}
 
-			final boolean isFav = favourites.contains(def.toString());
-			final JLabel fav = new JLabel(new ImageIcon(Resources.getImage(isFav ? Resources.Paths.STAR : Resources.Paths.STAR_GRAY)));
-			fav.setToolTipText(isFav ? BotLocale.REMOVEFROMFAVS : BotLocale.ADDTOFAVS);
-			fav.addMouseListener(new MouseAdapter() {
-				@Override
-				public void mouseClicked(final MouseEvent e) {
-					final JLabel src = (JLabel) e.getSource();
-					final String entry = def.toString();
-					final String img, tip;
-					if (favourites.contains(def.toString())) {
-						favourites.remove(entry);
-						img = Resources.Paths.STAR_GRAY;
-						tip = BotLocale.ADDTOFAVS;
-					} else {
-						favourites.add(entry);
-						img = Resources.Paths.STAR;
-						tip = BotLocale.REMOVEFROMFAVS;
-					}
-					src.setIcon(new ImageIcon(Resources.getImage(img)));
-					src.setToolTipText(tip);
-				}
-			});
-			fav.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-			panelIconsLeft.add(fav);
 			final JLabel authors = new JLabel(String.format(BotLocale.BY, def.getAuthors()));
 			authors.setBorder(new EmptyBorder(3, 0, 0, 0));
 			authors.setForeground(Color.GRAY);
@@ -531,11 +522,29 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 				public void actionPerformed(final ActionEvent e) {
 					setVisible(false);
 					dispose();
-					final ClassLoader cl = def.local ? new ScriptClassLoader(def.source) : new URLClassLoader(new URL[]{def.source});
+					final ClassLoader cl;
+					if (def.local) {
+						cl = new ScriptClassLoader(def.source);
+					} else {
+						final String name = getSecureFileName(def);
+						if (name == null) {
+							cl = new URLClassLoader(new URL[]{def.source});
+						} else {
+							try {
+								SecureStore.getInstance().download(name, def.source);
+								cl = new ScriptClassLoader(new ZipInputStream(SecureStore.getInstance().read(name)));
+							} catch (final Exception ignored) {
+								log.severe("Could not download script");
+								ignored.printStackTrace();
+								return;
+							}
+						}
+					}
 					final ActiveScript script;
 					try {
 						script = cl.loadClass(def.className).asSubclass(ActiveScript.class).newInstance();
 					} catch (final Exception ignored) {
+						log.severe("Error loading script");
 						return;
 					}
 					final Bot bot = Bot.bots.get(BotScripts.this.parent.getActiveTab());
@@ -546,8 +555,12 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 							break;
 						}
 					}
-					script.log.info("Starting");//debug to show script has loaded
-					bot.startScript(script);
+					log.info("Starting script");
+					try {
+						bot.startScript(script);
+					} catch (final NullPointerException ignored) {
+						log.severe("Bot not ready to load scripts");
+					}
 					BotScripts.this.parent.updateScriptControls();
 				}
 			});
@@ -614,36 +627,5 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 				g.drawLine(x, y + height - 1, x + width, y + height - 1);
 			}
 		}
-	}
-
-	public void windowActivated(final WindowEvent e) {
-	}
-
-	public void windowClosed(final WindowEvent e) {
-	}
-
-	public void windowClosing(final WindowEvent e) {
-		final StringBuilder sb = new StringBuilder();
-		for (final String entry : favourites) {
-			sb.append(entry);
-			sb.append('\n');
-		}
-		try {
-			SecureStore.getInstance().write(FAVOURITES_FILENAME, new ByteArrayInputStream(StringUtil.getBytesUtf8(sb.toString())));
-		} catch (final IOException ignored) {
-		} catch (final GeneralSecurityException ignored) {
-		}
-	}
-
-	public void windowDeactivated(final WindowEvent e) {
-	}
-
-	public void windowDeiconified(final WindowEvent e) {
-	}
-
-	public void windowIconified(final WindowEvent e) {
-	}
-
-	public void windowOpened(final WindowEvent e) {
 	}
 }

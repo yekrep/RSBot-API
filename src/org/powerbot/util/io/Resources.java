@@ -37,11 +37,10 @@ public class Resources {
 		public static final String DELETE = ROOT_IMG + "/delete.png";
 		public static final String KEY = ROOT_IMG + "/key.png";
 		public static final String KEYBOARD = ROOT_IMG + "/keyboard.png";
-		public static final String MONEY_DOLLAR = ROOT_IMG + "/money_dollar.png";
 		public static final String REPORT_KEY = ROOT_IMG + "/report_key.png";
 		public static final String SCRIPT = ROOT_IMG + "/script.png";
 		public static final String SCRIPT_EDIT = ROOT_IMG + "/script_edit.png";
-		public static final String STAR = ROOT_IMG + "/star.png";
+		public static final String SCRIPT_GO = ROOT_IMG + "/script_go.png";
 		public static final String STAR_GRAY = ROOT_IMG + "/star_gray.png";
 		public static final String TAB_ADD = ROOT_IMG + "/tab_add.png";
 		public static final String TAB_DELETE = ROOT_IMG + "/tab_delete.png";

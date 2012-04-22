@@ -12,8 +12,10 @@ import java.security.GeneralSecurityException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -128,10 +130,22 @@ public final class SecureStore {
 		raf.close();
 	}
 
-	public TarEntry get(final String name) {
+	public List<TarEntry> listEntries() {
+		final List<TarEntry> list = new ArrayList<TarEntry>();
 		synchronized (entries) {
-			return entries.containsKey(name) ? entries.get(name) : null;
+			for (final TarEntry entry : entries.values()) {
+				list.add(entry);
+			}
 		}
+		return list;
+	}
+
+	public TarEntry get(final String name) {
+		final TarEntry entry;
+		synchronized (entries) {
+			entry = entries.containsKey(name) ? entries.get(name) : null;
+		}
+		return entry;
 	}
 
 	public synchronized InputStream read(final String name) throws IOException, GeneralSecurityException {
@@ -191,6 +205,10 @@ public final class SecureStore {
 			entries.remove(name);
 		}
 		raf.close();
+	}
+
+	public void delete(final String name) throws IOException, GeneralSecurityException {
+		write(name, null);
 	}
 
 	private byte[] cryptBlock(final byte[] in, final int opmode) throws GeneralSecurityException, IOException {

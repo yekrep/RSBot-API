@@ -170,7 +170,7 @@ public final class BotLoadingPanel extends JPanel {
 					if (is != null) {
 						final String cached = StringUtil.newStringUtf8(IOHelper.read(is));
 						if (!cached.equals(src)) {
-							SecureStore.getInstance().write(filename, null);
+							SecureStore.getInstance().delete(filename);
 						}
 					}
 					SecureStore.getInstance().download(filename, url);
