@@ -4,7 +4,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 
 import org.powerbot.game.bot.Context;
-import org.powerbot.game.bot.util.ScreenCapture;
 
 public class Environment {
 	public static String getDisplayName() {
@@ -16,7 +15,7 @@ public class Environment {
 	}
 
 	public static BufferedImage captureScreen() {
-		return ScreenCapture.capture(Context.get());
+		return Context.captureScreen();
 	}
 
 	public static void saveScreenCapture() {
