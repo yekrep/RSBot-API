@@ -47,7 +47,7 @@ public final class ScriptDefinition {
 
 	public String getName() {
 		String name = StringUtil.stripHtml(this.name.trim());
-		name = name.replaceAll("\\s*[~-]\\s*(?:[Vv]\\s*)?[\\d\\.]+\\s*$", "");
+		name = name.replaceAll("\\s*(?:[~-]\\s*)?(?:[Vv]\\s*)?[\\d\\.]+\\s*$", "");
 		name = name.replaceAll("\\s*\\(\\s*[\\d\\.]+\\s*\\)\\s*$", "");
 		return name;
 	}
