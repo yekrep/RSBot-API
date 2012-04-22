@@ -22,8 +22,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -79,14 +77,12 @@ import org.powerbot.util.io.SecureStore;
 /**
  * @author Paris
  */
-public final class BotScripts extends JDialog implements ActionListener, WindowListener {
+public final class BotScripts extends JDialog implements ActionListener {
 	private static final long serialVersionUID = 1L;
 	private final BotToolBar parent;
-	private final static String FAVOURITES_FILENAME = "script-favourites.txt";
-	private final List<String> favourites;
 	private final JScrollPane scroll;
 	private final JPanel table;
-	private final JToggleButton locals, star, paid;
+	private final JToggleButton locals, paid;
 	private final JButton username, refresh;
 	private final JTextField search;
 	private volatile boolean init;
@@ -95,22 +91,6 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 		super(parent.parent, BotLocale.SCRIPTS, true);
 		setIconImage(Resources.getImage(Resources.Paths.SCRIPT));
 		this.parent = parent;
-
-		favourites = new ArrayList<String>();
-		InputStream favouritesSource = null;
-		try {
-			favouritesSource = SecureStore.getInstance().read(FAVOURITES_FILENAME);
-		} catch (final IOException ignored) {
-		} catch (final GeneralSecurityException ignored) {
-		}
-		if (favouritesSource != null) {
-			for (String entry : IOHelper.readString(favouritesSource).split("\n")) {
-				entry = entry.trim();
-				if (!entry.isEmpty()) {
-					favourites.add(entry.toLowerCase());
-				}
-			}
-		}
 
 		final JToolBar toolbar = new JToolBar();
 		final int d = 2;
@@ -138,11 +118,6 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 		locals.setFocusable(false);
 		locals.setVisible(Configuration.DEVMODE);
 		toolbar.add(locals);
-		star = new JToggleButton(new ImageIcon(Resources.getImage(Resources.Paths.STAR)));
-		star.setToolTipText(BotLocale.FAVSONLY);
-		star.addActionListener(this);
-		star.setFocusable(false);
-		toolbar.add(star);
 		toolbar.add(Box.createHorizontalStrut(d));
 		paid = new JToggleButton(new ImageIcon(Resources.getImage(Resources.Paths.MONEY_DOLLAR)));
 		paid.setToolTipText(BotLocale.PAIDONLY);
@@ -217,7 +192,6 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 				adjustViewport();
 			}
 		});
-		addWindowListener(this);
 		pack();
 		setMinimumSize(getSize());
 		//setResizable(false);
@@ -403,9 +377,6 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 		for (final Component c : table.getComponents()) {
 			final ScriptDefinition d = ((ScriptCell) c).getScriptDefinition();
 			boolean v = true;
-			if (star.isSelected() && !favourites.contains(d.toString())) {
-				v = false;
-			}
 			if (paid.isSelected() && !d.isPremium()) {
 				v = false;
 			}
@@ -496,30 +467,6 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 				panelIconsLeft.add(link, BorderLayout.WEST);
 			}
 
-			final boolean isFav = favourites.contains(def.toString());
-			final JLabel fav = new JLabel(new ImageIcon(Resources.getImage(isFav ? Resources.Paths.STAR : Resources.Paths.STAR_GRAY)));
-			fav.setToolTipText(isFav ? BotLocale.REMOVEFROMFAVS : BotLocale.ADDTOFAVS);
-			fav.addMouseListener(new MouseAdapter() {
-				@Override
-				public void mouseClicked(final MouseEvent e) {
-					final JLabel src = (JLabel) e.getSource();
-					final String entry = def.toString();
-					final String img, tip;
-					if (favourites.contains(def.toString())) {
-						favourites.remove(entry);
-						img = Resources.Paths.STAR_GRAY;
-						tip = BotLocale.ADDTOFAVS;
-					} else {
-						favourites.add(entry);
-						img = Resources.Paths.STAR;
-						tip = BotLocale.REMOVEFROMFAVS;
-					}
-					src.setIcon(new ImageIcon(Resources.getImage(img)));
-					src.setToolTipText(tip);
-				}
-			});
-			fav.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-			panelIconsLeft.add(fav);
 			final JLabel authors = new JLabel(String.format(BotLocale.BY, def.getAuthors()));
 			authors.setBorder(new EmptyBorder(3, 0, 0, 0));
 			authors.setForeground(Color.GRAY);
@@ -614,36 +561,5 @@ public final class BotScripts extends JDialog implements ActionListener, WindowL
 				g.drawLine(x, y + height - 1, x + width, y + height - 1);
 			}
 		}
-	}
-
-	public void windowActivated(final WindowEvent e) {
-	}
-
-	public void windowClosed(final WindowEvent e) {
-	}
-
-	public void windowClosing(final WindowEvent e) {
-		final StringBuilder sb = new StringBuilder();
-		for (final String entry : favourites) {
-			sb.append(entry);
-			sb.append('\n');
-		}
-		try {
-			SecureStore.getInstance().write(FAVOURITES_FILENAME, new ByteArrayInputStream(StringUtil.getBytesUtf8(sb.toString())));
-		} catch (final IOException ignored) {
-		} catch (final GeneralSecurityException ignored) {
-		}
-	}
-
-	public void windowDeactivated(final WindowEvent e) {
-	}
-
-	public void windowDeiconified(final WindowEvent e) {
-	}
-
-	public void windowIconified(final WindowEvent e) {
-	}
-
-	public void windowOpened(final WindowEvent e) {
 	}
 }

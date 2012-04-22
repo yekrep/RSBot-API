@@ -41,7 +41,6 @@ public class Resources {
 		public static final String REPORT_KEY = ROOT_IMG + "/report_key.png";
 		public static final String SCRIPT = ROOT_IMG + "/script.png";
 		public static final String SCRIPT_EDIT = ROOT_IMG + "/script_edit.png";
-		public static final String STAR = ROOT_IMG + "/star.png";
 		public static final String STAR_GRAY = ROOT_IMG + "/star_gray.png";
 		public static final String TAB_ADD = ROOT_IMG + "/tab_add.png";
 		public static final String TAB_DELETE = ROOT_IMG + "/tab_delete.png";
