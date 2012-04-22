@@ -92,7 +92,7 @@ public final class NetworkAccount {
 	public void logout() {
 		account = null;
 		try {
-			SecureStore.getInstance().write(FILENAME, null);
+			SecureStore.getInstance().delete(FILENAME);
 		} catch (final IOException ignored) {
 		} catch (final GeneralSecurityException ignored) {
 		}

@@ -200,6 +200,10 @@ public final class SecureStore {
 		raf.close();
 	}
 
+	public void delete(final String name) throws IOException, GeneralSecurityException {
+		write(name, null);
+	}
+
 	private byte[] cryptBlock(final byte[] in, final int opmode) throws GeneralSecurityException, IOException {
 		final InputStream is = getCipherInputStream(new ByteArrayInputStream(in), opmode);
 		final byte[] out = new byte[in.length];
