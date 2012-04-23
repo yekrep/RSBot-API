@@ -199,19 +199,19 @@ public class Calculations {
 
 	public static double distance(final Locatable locatable1, final Locatable locatable2) {
 		final Tile tile1 = locatable1.getLocation(), tile2 = locatable2.getLocation();
-		return Math.sqrt((tile1.getX() - tile2.getX()) * (tile1.getX() - tile2.getX()) + (tile1.getY() - tile2.getY()) * (tile1.getY() - tile2.getY()));
+		return Math.sqrt(Math.pow(tile1.getX() - tile2.getX(), 2) + Math.pow(tile1.getY() - tile2.getY(), 2));
 	}
 
 	public static double distance(final RegionOffset tile1, final RegionOffset tile2) {
-		return Math.sqrt((tile1.getX() - tile2.getX()) * (tile1.getX() - tile2.getX()) + (tile1.getY() - tile2.getY()) * (tile1.getY() - tile2.getY()));
+		return Math.sqrt(Math.pow(tile1.getX() - tile2.getX(), 2) + Math.pow(tile1.getY() - tile2.getY(), 2));
 	}
 
 	public static double distance(final int x1, final int y1, final int x2, final int y2) {
-		return Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
+		return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
 	}
 
 	public static double distanceTo(final Locatable locatable) {
-		return distance(locatable.getLocation(), Players.getLocal().getLocation());
+		return distance(locatable, Players.getLocal());
 	}
 
 	public static double distanceTo(final RegionOffset offset) {
