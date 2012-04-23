@@ -197,7 +197,8 @@ public class Calculations {
 		return x >= 0 && y >= 0 && x < canvas.getWidth() && y < canvas.getHeight();
 	}
 
-	public static double distance(final Tile tile1, final Tile tile2) {
+	public static double distance(final Locatable locatable1, final Locatable locatable2) {
+		final Tile tile1 = locatable1.getLocation(), tile2 = locatable2.getLocation();
 		return Math.sqrt((tile1.getX() - tile2.getX()) * (tile1.getX() - tile2.getX()) + (tile1.getY() - tile2.getY()) * (tile1.getY() - tile2.getY()));
 	}
 
