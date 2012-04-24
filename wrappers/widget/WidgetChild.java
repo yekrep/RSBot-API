@@ -196,19 +196,16 @@ public class WidgetChild implements Entity, Identifiable {
 	}
 
 	public int getWidth() {
-		final int w = getHorizontalScrollThumbSize();
-		if (w > -1) {
-			return w;
+		if (!isInScrollableArea()) {
+			return getHorizontalScrollThumbSize();
 		}
-
 		final Object widget = getInternal();
 		return widget != null ? (((RSInterfaceWidth) ((RSInterfaceInts) widget).getRSInterfaceInts()).getRSInterfaceWidth() * Context.multipliers().INTERFACE_WIDTH) - 4 : -1;
 	}
 
 	public int getHeight() {
-		final int h = getVerticalScrollThumbSize();
-		if (h > -1) {
-			return h;
+		if (!isInScrollableArea()) {
+			return getVerticalScrollThumbSize();
 		}
 		final Object widget = getInternal();
 		return widget != null ? (((RSInterfaceHeight) ((RSInterfaceInts) widget).getRSInterfaceInts()).getRSInterfaceHeight() * Context.multipliers().INTERFACE_HEIGHT) - 4 : -1;
