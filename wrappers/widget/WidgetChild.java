@@ -391,9 +391,16 @@ public class WidgetChild implements Entity, Identifiable {
 
 	public boolean isVisible() {
 		final Object inter = getInternal();
-		return inter != null &&
-				!((RSInterfaceIsHidden) ((RSInterfaceBooleans) inter).getRSInterfaceBooleans()).getRSInterfaceIsHidden() &&
-				((RSInterfaceIsVisible) ((RSInterfaceBooleans) inter).getRSInterfaceBooleans()).getRSInterfaceIsVisible();
+		if (inter == null || ((RSInterfaceIsHidden) ((RSInterfaceBooleans) inter).getRSInterfaceBooleans()).getRSInterfaceIsHidden()) {
+			return false;
+		}
+		if (((RSInterfaceIsVisible) ((RSInterfaceBooleans) inter).getRSInterfaceBooleans()).getRSInterfaceIsVisible()) {
+			return true;
+		}
+		if (getParentId() != -1) {
+			return Widgets.getChild(getParentId()).isVisible();
+		}
+		return validate();
 	}
 
 	@Override
