@@ -161,23 +161,38 @@ public final class SecureStore {
 		return getCipherInputStream(new ByteArrayInputStream(data), Cipher.DECRYPT_MODE);
 	}
 
-	public synchronized void write(final String name, InputStream is) throws IOException, GeneralSecurityException {
-		final RandomAccessFile raf = new RandomAccessFile(store, "rw");
-		final TarEntry cache = get(name);
-		if (cache != null) {
-			raf.seek(cache.position);
-			final int l = (int) Math.ceil((double) cache.length / TarEntry.BLOCKSIZE) * TarEntry.BLOCKSIZE;
-			raf.skipBytes(TarEntry.BLOCKSIZE + l);
-			final byte[] trailing = new byte[(int) (raf.length() - raf.getFilePointer())];
-			if (trailing.length != 0) {
-				raf.read(trailing);
-			}
-			raf.seek(cache.position);
-			if (trailing.length != 0) {
-				raf.write(trailing);
-			}
-			raf.setLength(cache.position + trailing.length);
+	private synchronized void remove(final TarEntry cache) throws IOException, GeneralSecurityException {
+		if (cache == null) {
+			return;
 		}
+		final RandomAccessFile raf = new RandomAccessFile(store, "rw");
+		raf.seek(cache.position);
+		raf.skipBytes(TarEntry.BLOCKSIZE + (int) Math.ceil((double) cache.length / TarEntry.BLOCKSIZE) * TarEntry.BLOCKSIZE);
+		final long s = raf.length() - raf.getFilePointer();
+		if (s == 0) {
+			return;
+		}
+		final byte[] trailing = new byte[(int) s];
+		final long z = cache.position;
+		raf.seek(z);
+		raf.setLength(cache.position + trailing.length);
+		raf.seek(z);
+		final byte[] header = new byte[TarEntry.BLOCKSIZE];
+		while (raf.read(header) != -1) {
+			final long position = raf.getFilePointer() - header.length;
+			final InputStream cis = getCipherInputStream(new ByteArrayInputStream(header), Cipher.DECRYPT_MODE);
+			final TarEntry entry = TarEntry.read(cis);
+			entry.position = position;
+			entries.put(entry.name, entry);
+			final int l = (int) Math.ceil((double) entry.length / TarEntry.BLOCKSIZE) * TarEntry.BLOCKSIZE;
+			raf.skipBytes(l);
+		}
+	}
+
+	public synchronized void write(final String name, InputStream is) throws IOException, GeneralSecurityException {
+		final TarEntry cache = get(name);
+		remove(cache);
+		final RandomAccessFile raf = new RandomAccessFile(store, "rw");
 		raf.seek(raf.length());
 		if (is != null && is.available() > 0) {
 			is = getCipherInputStream(is, Cipher.ENCRYPT_MODE);
