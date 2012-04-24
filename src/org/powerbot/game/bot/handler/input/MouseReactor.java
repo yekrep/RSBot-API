@@ -32,7 +32,11 @@ public class MouseReactor implements Task {
 				final Timer timer = node.getTimer();
 				/* Step until timeout or consumes itself. */
 				while (timer.isRunning() && node.processable()) {
-					executor.step(node);
+					try {
+						executor.step(node);
+					} catch (final Throwable ignored) {
+						break;
+					}
 				}
 				/* If the node timed out, cancel it and keep it removed. */
 				if (!timer.isRunning()) {

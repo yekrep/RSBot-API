@@ -4,7 +4,6 @@ import java.awt.EventQueue;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.powerbot.concurrent.TaskContainer;
@@ -33,9 +32,7 @@ public class Context {
 	public static Context get() {
 		final Context context = Context.context.get(Thread.currentThread().getThreadGroup());
 		if (context == null) {
-			final RuntimeException exception = new RuntimeException(Thread.currentThread() + "@" + Thread.currentThread().getThreadGroup());
-			log.log(Level.SEVERE, "Client does not exist: ", exception);
-			throw exception;
+			throw new RuntimeException(Thread.currentThread() + "@" + Thread.currentThread().getThreadGroup());
 		}
 		return context;
 	}
