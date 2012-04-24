@@ -573,7 +573,7 @@ public final class BotScripts extends JDialog implements ActionListener {
 					try {
 						data = IniParser.deserialise(HttpClient.openStream(url));
 					} catch (final IOException ignored) {
-						log.severe("Unalbe to obtain auth response");
+						log.severe("Unable to obtain auth response");
 						return;
 					}
 					if (data == null || !data.containsKey("auth")) {
