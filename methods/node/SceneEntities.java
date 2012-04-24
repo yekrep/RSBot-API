@@ -8,6 +8,7 @@ import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.util.internal.Multipliers;
+import org.powerbot.game.api.wrappers.Locatable;
 import org.powerbot.game.api.wrappers.RegionOffset;
 import org.powerbot.game.api.wrappers.Tile;
 import org.powerbot.game.api.wrappers.node.SceneObject;
@@ -145,16 +146,18 @@ public class SceneEntities {
 		}
 		return null;
 	}
-	
+
 	public static SceneObject getAt(final int x, final int y) {
 		return getAt(x, y, -1);
 	}
 
-	public static SceneObject getAt(final Tile t, final int mask) {
+	public static SceneObject getAt(final Locatable l, final int mask) {
+		final Tile t = l.getLocation();
 		return getAt(t.getX(), t.getY(), mask);
 	}
 
-	public static SceneObject getAt(final Tile t) {
+	public static SceneObject getAt(final Locatable l) {
+		final Tile t = l.getLocation();
 		return getAt(t, -1);
 	}
 
