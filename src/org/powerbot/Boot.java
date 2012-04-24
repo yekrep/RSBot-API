@@ -38,6 +38,7 @@ public class Boot implements Runnable {
 			@Override
 			public void uncaughtException(Thread t, Throwable e) {
 				log.logp(Level.SEVERE, t.getStackTrace()[1].getClassName(), t.getStackTrace()[1].getMethodName(), e.getMessage(), e);
+				e.printStackTrace();
 			}
 		});
 
