@@ -56,6 +56,7 @@ public final class Rs2Applet extends Applet {
 			log.log(Level.SEVERE, "Failed to construct client class: ", e);
 		}
 
+		invokeMethod(new Object[]{this}, new Class[]{Applet.class}, "supplyApplet");
 		if (callback != null) {
 			try {
 				callback.run();
@@ -63,8 +64,6 @@ public final class Rs2Applet extends Applet {
 				log.log(Level.SEVERE, "Callback failed to execute: ", t);
 			}
 		}
-
-		invokeMethod(new Object[]{this}, new Class[]{Applet.class}, "supplyApplet");
 		invokeMethod(null, null, "init");
 	}
 

@@ -22,23 +22,19 @@ public class UIDManager {
 	private String lastUsed = "";
 
 	public UIDManager() {
-		final InputStream inputStream;
 		try {
-			inputStream = SecureStore.getInstance().read(FILE_NAME);
-		} catch (Exception ignored) {
-			return;
-		}
-
-		if (inputStream != null) {
-			for (final String line : IOHelper.readString(inputStream).split("\n")) {
-				if (!line.isEmpty()) {
-					try {
+			final InputStream inputStream = SecureStore.getInstance().read(FILE_NAME);
+			if (inputStream != null) {
+				for (final String line : IOHelper.readString(inputStream).split("\n")) {
+					if (!line.isEmpty()) {
 						final String[] data = line.split(separator, 2);
-						uids.put(data[0], data[1].getBytes());
-					} catch (final Exception ignored) {
+						if (data.length == 2) {
+							uids.put(data[0], data[1].getBytes());
+						}
 					}
 				}
 			}
+		} catch (final Throwable ignored) {
 		}
 	}
 

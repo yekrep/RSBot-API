@@ -10,9 +10,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
+import java.util.Map;
 import java.util.zip.CRC32;
 import java.util.zip.CheckedInputStream;
 import java.util.zip.GZIPInputStream;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import org.powerbot.util.StringUtil;
 
@@ -106,6 +109,24 @@ public class IOHelper {
 	public static void write(final String s, final File out) {
 		final ByteArrayInputStream in = new ByteArrayInputStream(StringUtil.getBytesUtf8(s));
 		write(in, out);
+	}
+
+	public static void write(final Map<String, byte[]> entries, final File out) throws IOException {
+		final ZipOutputStream zip = new ZipOutputStream(new FileOutputStream(out));
+		zip.setMethod(ZipOutputStream.STORED);
+		zip.setLevel(0);
+		for (final Map.Entry<String, byte[]> item : entries.entrySet()) {
+			final ZipEntry entry = new ZipEntry(item.getKey() + ".class");
+			entry.setMethod(ZipEntry.STORED);
+			final byte[] data = item.getValue();
+			entry.setSize(data.length);
+			entry.setCompressedSize(data.length);
+			entry.setCrc(IOHelper.crc32(data));
+			zip.putNextEntry(entry);
+			zip.write(item.getValue());
+			zip.closeEntry();
+		}
+		zip.close();
 	}
 
 	public static long crc32(final InputStream in) throws IOException {

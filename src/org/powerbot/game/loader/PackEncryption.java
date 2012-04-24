@@ -2,6 +2,7 @@ package org.powerbot.game.loader;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.util.HashMap;
@@ -16,12 +17,16 @@ import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
+import org.powerbot.util.StringUtil;
+import org.powerbot.util.io.IOHelper;
+
 /**
  * A static utility to decrypt and extract classes from the RuneScape loader.
  *
  * @author Timer
  */
 public class PackEncryption {
+	private static final boolean CACHE = false;
 	public static byte[] inner_pack_hash;
 
 	public static Map<String, byte[]> extract(final byte[] secretKeySpecKey, final byte[] ivParameterSpecKey, final byte[] loader) {
@@ -62,6 +67,9 @@ public class PackEncryption {
 					final String name = entryName.substring(0, entryName.length() - 6);
 					classes.put(name, read);
 				}
+			}
+			if (CACHE) {
+				IOHelper.write(classes, new File(StringUtil.byteArrayToHexString(PackEncryption.inner_pack_hash).substring(0, 6) + ".jar"));
 			}
 			return classes;
 		} catch (final Exception ignored) {

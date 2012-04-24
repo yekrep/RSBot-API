@@ -43,6 +43,7 @@ public class BotPanel extends JPanel {
 	private int inputMask;
 	private MouseNode mouseNode;
 	private final MouseRequestEvent mouseRequest;
+	private final Point pressLocation, releaseLocation;
 
 	private static final long serialVersionUID = 1L;
 	private Bot bot;
@@ -62,6 +63,8 @@ public class BotPanel extends JPanel {
 		inputMask = INPUT_MOUSE | INPUT_KEYBOARD;
 		mouseNode = null;
 		mouseRequest = new MouseRequestEvent();
+		pressLocation = new Point(-1, -1);
+		releaseLocation = new Point(-1, -1);
 
 		setLayout(new GridBagLayout());
 		add(loadingPanel = new BotLoadingPanel(parent));
@@ -197,7 +200,7 @@ public class BotPanel extends JPanel {
 		notifyListeners(component, mouseEvent, present);
 		final MouseReactor reactor = bot.getReactor();
 		if (reactor != null) {
-			final int mouseX = mouseEvent.getX(), mouseY = mouseEvent.getY();
+			int mouseX = mouseEvent.getX(), mouseY = mouseEvent.getY();
 			final int modifiers = mouseEvent.getModifiers(), clickCount = mouseEvent.getClickCount();
 			if (mouseX <= 2 || mouseX >= component.getWidth() - 2 || mouseY <= 2 || mouseY >= component.getHeight() - 2) {
 				return;
@@ -212,20 +215,35 @@ public class BotPanel extends JPanel {
 				));
 				return;
 			}
+			if (mouseEvent.getID() != MouseEvent.MOUSE_MOVED && mouseEvent.getID() != MouseEvent.MOUSE_CLICKED) {
+				if (mouseEvent.getID() == MouseEvent.MOUSE_PRESSED) {
+					pressLocation.setLocation(mouseEvent.getPoint());
+					releaseLocation.setLocation(-1, -1);
+				} else if (mouseEvent.getID() == MouseEvent.MOUSE_RELEASED) {
+					releaseLocation.setLocation(mouseEvent.getPoint());
+				}
+				if (pressLocation.getX() == -1 || releaseLocation.getX() == -1 || pressLocation.distance(releaseLocation) <= Math.sqrt(2)) {
+					return;
+				}
+			}
 			final MouseNode prevNode = mouseNode;
 			final int button = mouseEvent.getButton();
-			//TODO dragging
+			if (mouseEvent.getID() == MouseEvent.MOUSE_RELEASED) {
+				mouseX = (int) pressLocation.getX();
+				mouseY = (int) pressLocation.getY();
+			}
+			final int f_mouseX = mouseX, f_mouseY = mouseY;
 			mouseNode = new MouseNode(
 					MouseNode.PRIORITY_HUMAN,
 					new ViewportEntity() {
-						private final Rectangle area = new Rectangle(mouseX - 1, mouseY - 1, 2, 2);
+						private final Rectangle area = new Rectangle(f_mouseX - 1, f_mouseY - 1, 2, 2);
 
 						public Point getCentralPoint() {
-							return new Point(mouseX, mouseY);
+							return new Point(f_mouseX, f_mouseY);
 						}
 
 						public Point getNextViewportPoint() {
-							return new Point(mouseX + Random.nextInt(-1, 2), mouseY + Random.nextInt(-1, 2));
+							return new Point(f_mouseX + Random.nextInt(-1, 2), f_mouseY + Random.nextInt(-1, 2));
 						}
 
 						public boolean contains(final Point point) {
@@ -233,10 +251,10 @@ public class BotPanel extends JPanel {
 						}
 
 						public boolean validate() {
-							return Calculations.isOnScreen(mouseX, mouseY);
+							return Calculations.isOnScreen(f_mouseX, f_mouseY);
 						}
 					},
-					mouseEvent.getID() == MouseEvent.MOUSE_CLICKED ? new FilterClick(mouseEvent.getButton()) : FILTER_MOVE
+					mouseEvent.getID() == MouseEvent.MOUSE_CLICKED || mouseEvent.getID() == MouseEvent.MOUSE_RELEASED ? new FilterClick(mouseEvent.getButton(), pressLocation, releaseLocation) : FILTER_MOVE
 			);
 			final boolean input_enabled = (inputMask & INPUT_MOUSE) != 0;
 			if (input_enabled || button == MouseEvent.BUTTON1 || button == MouseEvent.BUTTON3) {
@@ -296,13 +314,22 @@ public class BotPanel extends JPanel {
 
 	private final class FilterClick implements Filter<Point> {
 		private final int button;
+		private final Point start, end;
 
-		public FilterClick(final int button) {
+		public FilterClick(final int button, final Point start, final Point end) {
 			this.button = button;
+			this.start = start;
+			this.end = end;
 		}
 
 		@Override
 		public boolean accept(final Point point) {
+			if (!start.equals(end)) {
+				org.powerbot.game.api.methods.input.Mouse.move(start);
+				org.powerbot.game.api.methods.input.Mouse.drag(end);
+				return true;
+			}
+
 			if (button == MouseEvent.BUTTON1) {
 				org.powerbot.game.api.methods.input.Mouse.click(true);
 			} else if (button == MouseEvent.BUTTON3) {

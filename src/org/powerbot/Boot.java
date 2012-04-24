@@ -38,6 +38,7 @@ public class Boot implements Runnable {
 			@Override
 			public void uncaughtException(Thread t, Throwable e) {
 				log.logp(Level.SEVERE, t.getStackTrace()[1].getClassName(), t.getStackTrace()[1].getMethodName(), e.getMessage(), e);
+				e.printStackTrace();
 			}
 		});
 
@@ -78,10 +79,9 @@ public class Boot implements Runnable {
 
 		if (mem < req && !restarted) {
 			log.severe(String.format("Default heap size of %sm too small, restarting with %sm", mem, req));
-			String cmd = Configuration.OS == OperatingSystem.WINDOWS ? "javaw" : "java";
 			String location = Boot.class.getProtectionDomain().getCodeSource().getLocation().getPath();
 			location = StringUtil.urlDecode(location).replaceAll("\\\\", "/");
-			cmd += " -Xss6m -Xmx" + req + "m -classpath \"" + location + "\" \"" + Boot.class.getCanonicalName() + "\" " + SWITCH_RESTARTED;
+			final String cmd = "java -Xss6m -Xmx" + req + "m -classpath \"" + location + "\" \"" + Boot.class.getCanonicalName() + "\" " + SWITCH_RESTARTED;
 			final Runtime run = Runtime.getRuntime();
 			try {
 				if (Configuration.OS == OperatingSystem.MAC || Configuration.OS == OperatingSystem.LINUX) {
