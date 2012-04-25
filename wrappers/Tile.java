@@ -173,7 +173,7 @@ public class Tile implements Entity, Locatable, Identifiable {
 	}
 
 	public boolean canReach() {
-		return Walking.findPath(this).validate();
+		return Walking.findPath(this).init();
 	}
 
 	public Point getPoint(final double xOff, final double yOff, final int height) {

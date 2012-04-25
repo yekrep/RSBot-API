@@ -44,8 +44,11 @@ public class LocalPath extends Path {
 		return getNext() != null && Calculations.distanceTo(getEnd()) > Math.sqrt(2);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public Tile getNext() {
+	public boolean init() {
 		if (!Game.getMapBase().equals(base)) {
 			final int[][] flags = Walking.getCollisionFlags(Game.getPlane());
 			if (flags != null) {
@@ -54,10 +57,18 @@ public class LocalPath extends Path {
 				final Tile[] tiles = findPath(start, end);
 				if (tiles == null) {
 					base = null;
-					return null;
+					return false;
 				}
 				tilePath = new TilePath(tiles);
 			}
+		}
+		return true;
+	}
+
+	@Override
+	public Tile getNext() {
+		if (!init()) {
+			return null;
 		}
 		return tilePath.getNext();
 	}
