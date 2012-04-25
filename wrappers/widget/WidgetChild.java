@@ -389,7 +389,7 @@ public class WidgetChild implements Entity, Identifiable {
 		return null;
 	}
 
-	public boolean isVisible() {
+	public boolean visible() {
 		final Object inter = getInternal();
 		if (inter == null || ((RSInterfaceIsHidden) ((RSInterfaceBooleans) inter).getRSInterfaceBooleans()).getRSInterfaceIsHidden()) {
 			return false;
@@ -398,7 +398,7 @@ public class WidgetChild implements Entity, Identifiable {
 			return true;
 		}
 		if (getParentId() != -1) {
-			return Widgets.getChild(getParentId()).isVisible();
+			return Widgets.getChild(getParentId()).visible();
 		}
 		return validate();
 	}
@@ -480,7 +480,7 @@ public class WidgetChild implements Entity, Identifiable {
 	}
 
 	public boolean isOnScreen() {
-		return validate() && isVisible();
+		return validate() && visible();
 	}
 
 	public Polygon[] getBounds() {
