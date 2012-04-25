@@ -106,12 +106,31 @@ public class Inventory {
 		return getCount(false, itemFilter);
 	}
 
+	public int getCount(final int... ids) {
+		return getCount(false, ids);
+	}
+
 	public static int getCount(final boolean countStack, final int id) {
 		return getCount(countStack, new Filter<Item>() {
 			public boolean accept(final Item item) {
 				return item.getId() == id;
 			}
 		});
+	}
+
+	public static int getCount(final boolean countStacks, final int... ids) {
+		int total = 0;
+		for (final Item item : getItems()) {
+			if (item == null) {
+				continue;
+			}
+			for (final int ID : ids) {
+				if (item.getId() == ID) {
+					total += includeStacks ? item.getStackSize() : 1;
+				}
+			}
+		}
+		return total;
 	}
 
 	/**
