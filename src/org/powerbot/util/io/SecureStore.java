@@ -166,16 +166,19 @@ public final class SecureStore {
 			return;
 		}
 		final RandomAccessFile raf = new RandomAccessFile(store, "rw");
-		raf.seek(cache.position);
+		final long z = cache.position;
+		raf.seek(z);
 		raf.skipBytes(TarEntry.BLOCKSIZE + (int) Math.ceil((double) cache.length / TarEntry.BLOCKSIZE) * TarEntry.BLOCKSIZE);
 		final long s = raf.length() - raf.getFilePointer();
 		if (s == 0) {
+			raf.setLength(z);
 			return;
 		}
 		final byte[] trailing = new byte[(int) s];
-		final long z = cache.position;
+		raf.read(trailing);
 		raf.seek(z);
-		raf.setLength(cache.position + trailing.length);
+		raf.write(trailing);
+		raf.setLength(z + trailing.length);
 		raf.seek(z);
 		final byte[] header = new byte[TarEntry.BLOCKSIZE];
 		while (raf.read(header) != -1) {
