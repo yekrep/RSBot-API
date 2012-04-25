@@ -9,9 +9,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.GridLayout;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
@@ -22,7 +20,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -38,7 +35,6 @@ import java.util.Map.Entry;
 import java.util.logging.Logger;
 import java.util.zip.ZipInputStream;
 
-import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -502,14 +498,10 @@ public final class BotScripts extends JDialog implements ActionListener {
 			c[1] = new Color(c[0].getRed() - s, c[0].getGreen() - s, c[0].getBlue() - s);
 			setBackground(alt ? c[1] : c[0]);
 
-			final JLabel skill = new JLabel(new ImageIcon(getSkillImage(26)));
-			skill.setBounds(1, (getPreferredCellSize().height - skill.getPreferredSize().height) / 2, skill.getPreferredSize().width, skill.getPreferredSize().height);
-			add(skill);
-
 			final JPanel panelInfo = new JPanel(new GridLayout(0, 1));
 			panelInfo.setBackground(null);
-			final int dx = skill.getLocation().x + skill.getPreferredSize().width + 8;
-			panelInfo.setBounds(dx, skill.getLocation().y, getPreferredCellSize().width - dx - 1, skill.getPreferredSize().height);
+			final int dx = 8, dy = 4;
+			panelInfo.setBounds(dx * 2, dy, getPreferredCellSize().width - dx * 3, getPreferredCellSize().height - dy * 2);
 			add(panelInfo);
 
 			final JLabel name = new JLabel(def.getName());
@@ -667,23 +659,6 @@ public final class BotScripts extends JDialog implements ActionListener {
 
 		public ScriptDefinition getScriptDefinition() {
 			return def;
-		}
-
-		private Image getSkillImage(final int index) {
-			final Image src;
-			try {
-				src = ImageIO.read(Resources.getResourceURL(Resources.Paths.SKILLS));
-			} catch (final IOException ignored) {
-				return null;
-			}
-			final int d = 4;
-			final BufferedImage img = new BufferedImage(103, 94, BufferedImage.TYPE_INT_ARGB);
-			final Graphics2D g = img.createGraphics();
-			final int y = img.getHeight() * index + d;
-			g.drawImage(src, 0, 0, img.getWidth(), img.getHeight(), 0, y, img.getWidth(), y + img.getHeight(), null);
-			g.dispose();
-			final int h = getPreferredCellSize().height - d * 2;
-			return img.getScaledInstance((int) ((double) img.getWidth() / img.getHeight() * h), h, Image.SCALE_SMOOTH);
 		}
 
 		private final class InsetBorder extends AbstractBorder {
