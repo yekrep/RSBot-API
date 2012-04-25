@@ -126,8 +126,7 @@ public final class SecureStore {
 			synchronized (entries) {
 				entries.put(entry.name, entry);
 			}
-			final int l = (int) Math.ceil((double) entry.length / TarEntry.BLOCKSIZE) * TarEntry.BLOCKSIZE;
-			raf.skipBytes(l);
+			raf.skipBytes(getBlockSize(entry.length));
 		}
 		raf.close();
 	}
@@ -173,7 +172,7 @@ public final class SecureStore {
 		final RandomAccessFile raf = new RandomAccessFile(store, "rw");
 		final long z = cache.position;
 		raf.seek(z);
-		raf.skipBytes(TarEntry.BLOCKSIZE + (int) Math.ceil((double) cache.length / TarEntry.BLOCKSIZE) * TarEntry.BLOCKSIZE);
+		raf.skipBytes(TarEntry.BLOCKSIZE + getBlockSize(cache.length));
 		final long s = raf.length() - raf.getFilePointer();
 		if (s == 0) {
 			raf.setLength(z);
@@ -193,8 +192,7 @@ public final class SecureStore {
 			synchronized (entries) {
 				entries.get(entry.name).position = position;
 			}
-			final int l = (int) Math.ceil((double) entry.length / TarEntry.BLOCKSIZE) * TarEntry.BLOCKSIZE;
-			raf.skipBytes(l);
+			raf.skipBytes(getBlockSize(entry.length));
 		}
 	}
 
@@ -216,7 +214,7 @@ public final class SecureStore {
 				l += b;
 			}
 			is.close();
-			final int p = l < TarEntry.BLOCKSIZE ? TarEntry.BLOCKSIZE - l : (int) Math.ceil((double) l / TarEntry.BLOCKSIZE) * TarEntry.BLOCKSIZE - l;
+			final int p = l < TarEntry.BLOCKSIZE ? TarEntry.BLOCKSIZE - l : getBlockSize(l) - l;
 			raf.write(empty, 0, p);
 			raf.seek(z);
 			final TarEntry entry = new TarEntry();
@@ -257,6 +255,10 @@ public final class SecureStore {
 			c.init(opmode, sks);
 			return new CipherInputStream(is, c);
 		}
+	}
+
+	private int getBlockSize(final long len) {
+		return (int) Math.ceil((double) len / TarEntry.BLOCKSIZE) * TarEntry.BLOCKSIZE;
 	}
 
 	public void download(final String name, final URL url) throws IOException, GeneralSecurityException {
