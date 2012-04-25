@@ -123,7 +123,9 @@ public final class SecureStore {
 			final InputStream cis = getCipherInputStream(new ByteArrayInputStream(header), Cipher.DECRYPT_MODE);
 			final TarEntry entry = TarEntry.read(cis);
 			entry.position = position;
-			entries.put(entry.name, entry);
+			synchronized (entries) {
+				entries.put(entry.name, entry);
+			}
 			final int l = (int) Math.ceil((double) entry.length / TarEntry.BLOCKSIZE) * TarEntry.BLOCKSIZE;
 			raf.skipBytes(l);
 		}
@@ -165,6 +167,9 @@ public final class SecureStore {
 		if (cache == null) {
 			return;
 		}
+		synchronized (entries) {
+			entries.remove(cache);
+		}
 		final RandomAccessFile raf = new RandomAccessFile(store, "rw");
 		final long z = cache.position;
 		raf.seek(z);
@@ -185,8 +190,9 @@ public final class SecureStore {
 			final long position = raf.getFilePointer() - header.length;
 			final InputStream cis = getCipherInputStream(new ByteArrayInputStream(header), Cipher.DECRYPT_MODE);
 			final TarEntry entry = TarEntry.read(cis);
-			entry.position = position;
-			entries.put(entry.name, entry);
+			synchronized (entries) {
+				entries.get(entry.name).position = position;
+			}
 			final int l = (int) Math.ceil((double) entry.length / TarEntry.BLOCKSIZE) * TarEntry.BLOCKSIZE;
 			raf.skipBytes(l);
 		}
