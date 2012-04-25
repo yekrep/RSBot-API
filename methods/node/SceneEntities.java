@@ -157,8 +157,7 @@ public class SceneEntities {
 	}
 
 	public static SceneObject getAt(final Locatable l) {
-		final Tile t = l.getLocation();
-		return getAt(t, -1);
+		return getAt(l, -1);
 	}
 
 	public static Set<SceneObject> getLocalAt(int x, int y, final int mask) {
