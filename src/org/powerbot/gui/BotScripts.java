@@ -38,6 +38,7 @@ import java.util.Map.Entry;
 import java.util.logging.Logger;
 import java.util.zip.ZipInputStream;
 
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -669,7 +670,12 @@ public final class BotScripts extends JDialog implements ActionListener {
 		}
 
 		private Image getSkillImage(final int index) {
-			final Image src = Resources.getImage(Resources.Paths.SKILLS);
+			final Image src;
+			try {
+				src = ImageIO.read(Resources.getResourceURL(Resources.Paths.SKILLS));
+			} catch (final IOException ignored) {
+				return null;
+			}
 			final int d = 4;
 			final BufferedImage img = new BufferedImage(103, 94, BufferedImage.TYPE_INT_ARGB);
 			final Graphics2D g = img.createGraphics();
