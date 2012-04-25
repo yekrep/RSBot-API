@@ -68,17 +68,17 @@ public class BotChrome extends JFrame implements WindowListener {
 		add(header, BorderLayout.NORTH);
 
 		log.log(Level.INFO, "Optimizing your experience", "Starting...");
+		pack();
+		setMinimumSize(getSize());
+		setLocationRelativeTo(getParent());
+		setVisible(true);
+
 		final ExecutorService exec = Executors.newFixedThreadPool(1);
 		final List<Future<Boolean>> tasks = new ArrayList<Future<Boolean>>();
 		tasks.add(exec.submit(new LoadUpdates()));
 		tasks.add(exec.submit(new LoadSecureData()));
 		exec.execute(new LoadComplete(this, tasks));
 		exec.shutdown();
-
-		pack();
-		setMinimumSize(getSize());
-		setLocationRelativeTo(getParent());
-		setVisible(true);
 
 		try {
 			if (Resources.getServerData().containsKey("messages")) {
