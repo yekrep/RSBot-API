@@ -108,7 +108,7 @@ public class BotWidgetExplorer extends JFrame implements PaintListener {
 					}
 					addInfo("Index: ", Integer.toString(widgetChild.getIndex()));
 					addInfo("Validated: ", Boolean.toString(widgetChild.validate()));
-					addInfo("Visible: ", Boolean.toString(widgetChild.isVisible()));
+					addInfo("Visible: ", Boolean.toString(widgetChild.visible()));
 					addInfo("Absolute location: ", widgetChild.getAbsoluteLocation().toString());
 					addInfo("Relative location: ", widgetChild.getRelativeLocation().toString());
 					addInfo("Width: ", Integer.toString(widgetChild.getWidth()));
