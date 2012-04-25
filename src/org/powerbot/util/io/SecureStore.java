@@ -218,9 +218,13 @@ public final class SecureStore {
 			entry.length = l;
 			entry.position = z;
 			raf.write(cryptBlock(Arrays.copyOf(entry.getBytes(), TarEntry.BLOCKSIZE), Cipher.ENCRYPT_MODE));
-			entries.put(entry.name, entry);
-		} else if (cache != null) {
-			entries.remove(name);
+			synchronized (entries) {
+				if (entries.containsKey(entry.name)) {
+					entries.get(entry.name).position = z;
+				} else {
+					entries.put(entry.name, entry);
+				}
+			}
 		}
 		raf.close();
 	}
