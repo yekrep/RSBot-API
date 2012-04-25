@@ -126,7 +126,7 @@ public class Inventory {
 			}
 			for (final int ID : ids) {
 				if (item.getId() == ID) {
-					total += includeStacks ? item.getStackSize() : 1;
+					total += countStacks ? item.getStackSize() : 1;
 				}
 			}
 		}
