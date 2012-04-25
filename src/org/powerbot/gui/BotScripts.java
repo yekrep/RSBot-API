@@ -163,6 +163,7 @@ public final class BotScripts extends JDialog implements ActionListener {
 		panelRight.add(search);
 		panelRight.add(Box.createHorizontalStrut(d));
 		final JButton more = new JButton(BotLocale.BROWSE, new ImageIcon(Resources.getImage(Resources.Paths.SCRIPT_GO)));
+		more.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		more.setToolTipText(BotLocale.BROWSETIP);
 		more.setFont(username.getFont());
 		more.setFocusable(false);
