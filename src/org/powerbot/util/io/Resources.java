@@ -1,14 +1,13 @@
 package org.powerbot.util.io;
 
 import java.awt.Image;
+import java.awt.Toolkit;
 import java.io.File;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
-
-import javax.imageio.ImageIO;
 
 import org.powerbot.util.Configuration;
 
@@ -59,7 +58,7 @@ public class Resources {
 
 	public static Image getImage(final String resource) {
 		try {
-			return ImageIO.read(getResourceURL(resource));
+			return Toolkit.getDefaultToolkit().getImage(getResourceURL(resource));
 		} catch (final Exception ignored) {
 		}
 		return null;
