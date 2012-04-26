@@ -1,6 +1,7 @@
 package org.powerbot;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.channels.FileLock;
@@ -102,6 +103,11 @@ public class Boot implements Runnable {
 				JOptionPane.showMessageDialog(null, msg, BotLocale.ERROR, JOptionPane.ERROR_MESSAGE);
 			}
 			return;
+		}
+
+		try {
+			logger.addHandler(new PrintStreamHandler(new File(new File(System.getProperty("java.io.tmpdir")), Configuration.NAME + ".log")));
+		} catch (final FileNotFoundException ignored) {
 		}
 
 		try {
