@@ -196,6 +196,30 @@ public final class SecureStore {
 		}
 	}
 
+	public synchronized void write(final String name, final byte[] data) throws IOException, GeneralSecurityException {
+		final TarEntry cache = get(name);
+		final int[] l = {getBlockSize(data.length), cache == null ? -1 : getBlockSize(cache.length)};
+		if (l[0] > l[1]) {
+			write(name, new ByteArrayInputStream(data));
+			return;
+		}
+		final RandomAccessFile raf = new RandomAccessFile(store, "rw");
+		raf.seek(cache.position + TarEntry.BLOCKSIZE);
+		final InputStream is = getCipherInputStream(new ByteArrayInputStream(data), Cipher.ENCRYPT_MODE);
+		final byte[] encrypted = new byte[data.length];
+		is.read(encrypted);
+		is.close();
+		raf.write(encrypted);
+		final int z = l[1] - data.length;
+		if (z != 0) {
+			final byte[] empty = new byte[z];
+			new SecureRandom().nextBytes(empty);
+			raf.write(empty);
+		}
+		raf.close();
+		cache.length = data.length;
+	}
+
 	public synchronized void write(final String name, InputStream is) throws IOException, GeneralSecurityException {
 		final TarEntry cache = get(name);
 		remove(cache);
