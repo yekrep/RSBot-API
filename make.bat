@@ -30,6 +30,8 @@ ECHO Compiling bot
 CALL :Bot
 ECHO Packing JAR
 CALL :pack
+ECHO Obfuscating
+CALL :obfuscate
 CALL :end
 GOTO :eof
 
@@ -48,6 +50,13 @@ IF EXIST "%lstf%" DEL /F /Q "%lstf%"
 COPY "%manifest%" "%lstf%" > NUL
 jar cfm "%dist%" "%lstf%" -C "%out%" . %imgdir%\*.png
 DEL /F /Q "%lstf%"
+GOTO :eof
+
+:obfuscate
+CD "%lib%"
+CALL java -D"ZKM_OPEN=%name%.jar" -D"ZKM_SAVE=.\\" -D"ZKM_CHANGELOG=ZKM_ChangeLog.txt" -jar ZKM.jar script.txt
+DEL /F "%name%.jar.BACKUP"
+CD ..
 GOTO :eof
 
 :end
