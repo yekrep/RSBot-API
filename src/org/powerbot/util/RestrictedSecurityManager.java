@@ -18,13 +18,12 @@ public class RestrictedSecurityManager extends SecurityManager {
 	public static final String DNS1 = "8.8.8.8", DNS2 = "8.8.4.4";
 
 	private String getCallingClass() {
-		for (final Class<?> clazz : getClassContext()) {
+		final Class<?>[] context = getClassContext();
+		for (int i = 1; i < context.length; i++) {
+			final Class<?> clazz = context[i];
 			final String name = clazz.getName();
 			if (name.startsWith("java.") || name.startsWith("javax.") || name.startsWith("com.sun.") || name.startsWith("sun.")) {
 				continue;
-			}
-			if (!name.equals(RestrictedSecurityManager.class.getName())) {
-				return name;
 			}
 		}
 		return null;
