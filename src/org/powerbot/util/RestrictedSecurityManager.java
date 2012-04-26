@@ -121,6 +121,13 @@ public class RestrictedSecurityManager extends SecurityManager {
 	}
 
 	@Override
+	public void checkSetFactory() {
+		if (getCallingClass() != null) {
+			throw new SecurityException();
+		}
+	}
+
+	@Override
 	public void checkSystemClipboardAccess() {
 		throw new SecurityException();
 	}
