@@ -64,11 +64,3 @@ GOTO :eof
 :clean
 RMDIR /S /Q "%out%" 2>NUL
 GOTO :eof
-
-:remove
-IF EXIST "%APPDATA%\%name%_Accounts.ini" DEL "%APPDATA%\%name%_Accounts.ini"
-IF EXIST "%APPDATA%\%name% Accounts.ini" DEL "%APPDATA%\%name% Accounts.ini"
-IF EXIST "%RSBOT_HOME%" RMDIR /S /Q "%RSBOT_HOME%"
-FOR /F "tokens=3" %%G IN ('REG QUERY "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders" /v "Personal"') DO (SET docs=%%G)
-IF EXIST "%docs%\%name%" RMDIR /S /Q "%docs%\%name%"
-GOTO :eof
