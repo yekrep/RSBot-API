@@ -1,6 +1,5 @@
 package org.powerbot.service;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -68,7 +67,7 @@ public final class GameAccounts extends ArrayList<GameAccounts.Account> {
 		final ByteArrayOutputStream bos = new ByteArrayOutputStream();
 		IniParser.serialise(entries, bos);
 		bos.close();
-		SecureStore.getInstance().write(FILENAME, new ByteArrayInputStream(bos.toByteArray()));
+		SecureStore.getInstance().write(FILENAME, bos.toByteArray());
 	}
 
 	public Account get(String username) {

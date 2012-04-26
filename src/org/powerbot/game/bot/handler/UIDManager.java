@@ -1,6 +1,5 @@
 package org.powerbot.game.bot.handler;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -69,11 +68,10 @@ public class UIDManager {
 			out.write(key.getBytes());
 			out.write(separator.getBytes());
 			out.write(uids.get(key));
-
 			out.write(newline.getBytes());
 		}
 		try {
-			SecureStore.getInstance().write(FILE_NAME, new ByteArrayInputStream(out.toByteArray()));
+			SecureStore.getInstance().write(FILE_NAME, out.toByteArray());
 		} catch (GeneralSecurityException ignored) {
 			throw new IOException("failed to write data");
 		}

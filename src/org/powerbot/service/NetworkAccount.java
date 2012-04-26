@@ -1,6 +1,5 @@
 package org.powerbot.service;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -59,16 +58,14 @@ public final class NetworkAccount {
 			return false;
 		}
 		final boolean success = parseResponse(is) && isLoggedIn();
-		is = null;
 		if (success) {
 			final ByteArrayOutputStream bos = new ByteArrayOutputStream();
 			IniParser.serialise(account.getMap(), bos);
 			bos.close();
-			is = new ByteArrayInputStream(bos.toByteArray());
-		}
-		try {
-			SecureStore.getInstance().write(FILENAME, is);
-		} catch (final GeneralSecurityException ignored) {
+			try {
+				SecureStore.getInstance().write(FILENAME, bos.toByteArray());
+			} catch (final GeneralSecurityException ignored) {
+			}
 		}
 		return success;
 	}

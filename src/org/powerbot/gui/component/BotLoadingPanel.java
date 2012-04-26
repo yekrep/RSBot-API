@@ -13,7 +13,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -174,7 +173,7 @@ public final class BotLoadingPanel extends JPanel {
 						}
 					}
 					SecureStore.getInstance().download(filename, url);
-					SecureStore.getInstance().write(fileid, new ByteArrayInputStream(StringUtil.getBytesUtf8(src)));
+					SecureStore.getInstance().write(fileid, StringUtil.getBytesUtf8(src));
 					BufferedImage image = ImageIO.read(SecureStore.getInstance().read(filename));
 					if (image.getWidth() > PANEL_WIDTH || image.getHeight() > PANEL_HEIGHT) {
 						final float factor = (float) Math.min((double) PANEL_WIDTH / image.getWidth(), (double) PANEL_HEIGHT / image.getHeight());
