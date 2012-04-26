@@ -7,8 +7,6 @@ BINDIR=sbin
 LSTF=temp.txt
 IMGDIR=$(RES)/images
 MANIFEST=$(RES)/Manifest.txt
-VERSIONFILE=$(RES)/version.txt
-VERSION=`cat $(VERSIONFILE)`
 NAME=RSBot
 DIST=$(LIB)/$(NAME).jar
 
@@ -23,10 +21,8 @@ Bot:
 Bundle: Bot
 	@rm -fv "$(LSTF)"
 	@cp "$(MANIFEST)" "$(LSTF)"
-	@echo "Specification-Version: \"$(VERSION)\"" >> "$(LSTF)"
-	@echo "Implementation-Version: \"$(VERSION)\"" >> "$(LSTF)"
 	@if [ -e "$(DIST)" ]; then rm -fv "$(DIST)"; fi
-	jar cfm "$(DIST)" "$(LSTF)" -C "$(BINDIR)" . "$(VERSIONFILE)" "$(IMGDIR)"/*.png
+	jar cfm "$(DIST)" "$(LSTF)" -C "$(BINDIR)" . "$(IMGDIR)"/*.png
 	@rm -f "$(LSTF)"
 
 clean:

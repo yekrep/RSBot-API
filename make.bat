@@ -21,8 +21,6 @@ SET dist=%lib%\%name%.jar
 SET lstf=temp.txt
 SET imgdir=%res%\images
 SET manifest=%res%\Manifest.txt
-SET versionfile=%res%\version.txt
-FOR /F %%G IN (%versionfile%) DO SET version=%%G
 CALL "jdk.bat"
 GOTO :eof
 
@@ -48,9 +46,7 @@ GOTO :eof
 IF EXIST "%dist%" DEL /F /Q "%dist%"
 IF EXIST "%lstf%" DEL /F /Q "%lstf%"
 COPY "%manifest%" "%lstf%" > NUL
-ECHO Specification-Version: "%version%" >> "%lstf%"
-ECHO Implementation-Version: "%version%" >> "%lstf%"
-jar cfm "%dist%" "%lstf%" -C "%out%" . %versionfile% %imgdir%\*.png
+jar cfm "%dist%" "%lstf%" -C "%out%" . %imgdir%\*.png
 DEL /F /Q "%lstf%"
 GOTO :eof
 
