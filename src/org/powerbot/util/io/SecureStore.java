@@ -88,12 +88,10 @@ public final class SecureStore {
 			final byte[] payload = new byte[BLOCKSIZE];
 			s.nextBytes(payload);
 			md.update(payload);
-
 			raf.write(payload);
 			s.nextBytes(payload);
 			raf.write(payload);
 		}
-		raf.getFilePointer();
 		raf.close();
 		key = md.digest();
 	}
@@ -115,7 +113,6 @@ public final class SecureStore {
 			md.update(payload);
 			raf.skipBytes(payload.length);
 		}
-		raf.getFilePointer();
 		key = md.digest();
 		final byte[] header = new byte[TarEntry.BLOCKSIZE];
 		while (raf.read(header) != -1) {
@@ -196,6 +193,10 @@ public final class SecureStore {
 		}
 	}
 
+	public void delete(final String name) throws IOException, GeneralSecurityException {
+		write(name, (InputStream) null);
+	}
+
 	public synchronized void write(final String name, final byte[] data) throws IOException, GeneralSecurityException {
 		final TarEntry cache = get(name);
 		final int[] l = {getBlockSize(data.length), cache == null ? -1 : getBlockSize(cache.length)};
@@ -223,42 +224,50 @@ public final class SecureStore {
 	public synchronized void write(final String name, InputStream is) throws IOException, GeneralSecurityException {
 		final TarEntry cache = get(name);
 		remove(cache);
+		if (is == null || is.available() < 1) {
+			return;
+		}
 		final RandomAccessFile raf = new RandomAccessFile(store, "rw");
 		raf.seek(raf.length());
-		if (is != null && is.available() > 0) {
-			is = getCipherInputStream(is, Cipher.ENCRYPT_MODE);
-			final byte[] empty = new byte[TarEntry.BLOCKSIZE];
-			new SecureRandom().nextBytes(empty);
-			final long z = raf.getFilePointer();
-			raf.write(empty);
-			int l = 0, b;
-			final byte[] data = new byte[IOHelper.BUFFER_SIZE];
-			while ((b = is.read(data)) != -1) {
-				raf.write(data, 0, b);
-				l += b;
-			}
-			is.close();
-			final int p = l < TarEntry.BLOCKSIZE ? TarEntry.BLOCKSIZE - l : getBlockSize(l) - l;
-			raf.write(empty, 0, p);
-			raf.seek(z);
-			final TarEntry entry = new TarEntry();
-			entry.name = name;
-			entry.length = l;
-			entry.position = z;
-			raf.write(cryptBlock(Arrays.copyOf(entry.getBytes(), TarEntry.BLOCKSIZE), Cipher.ENCRYPT_MODE));
-			synchronized (entries) {
-				if (entries.containsKey(entry.name)) {
-					entries.get(entry.name).position = z;
-				} else {
-					entries.put(entry.name, entry);
-				}
+		final byte[] empty = new byte[TarEntry.BLOCKSIZE];
+		new SecureRandom().nextBytes(empty);
+		final long z = raf.getFilePointer();
+		raf.write(empty);
+		is = getCipherInputStream(is, Cipher.ENCRYPT_MODE);
+		int l = 0, b;
+		final byte[] data = new byte[IOHelper.BUFFER_SIZE];
+		while ((b = is.read(data)) != -1) {
+			raf.write(data, 0, b);
+			l += b;
+		}
+		is.close();
+		raf.write(empty, 0, l < TarEntry.BLOCKSIZE ? TarEntry.BLOCKSIZE - l : getBlockSize(l) - l);
+		raf.seek(z);
+		final TarEntry entry = new TarEntry();
+		entry.name = name;
+		entry.length = l;
+		entry.position = z;
+		raf.write(cryptBlock(Arrays.copyOf(entry.getBytes(), TarEntry.BLOCKSIZE), Cipher.ENCRYPT_MODE));
+		synchronized (entries) {
+			if (entries.containsKey(entry.name)) {
+				entries.get(entry.name).position = z;
+			} else {
+				entries.put(entry.name, entry);
 			}
 		}
 		raf.close();
 	}
 
-	public void delete(final String name) throws IOException, GeneralSecurityException {
-		write(name, null);
+	public void download(final String name, final URL url) throws IOException, GeneralSecurityException {
+		final TarEntry entry = get(name);
+		if (entry != null) {
+			if (entry.modified <= HttpClient.getLastModified(url)) {
+				return;
+			}
+		}
+		final ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		IOHelper.write(HttpClient.openStream(url), bos);
+		write(name, bos.toByteArray());
 	}
 
 	private byte[] cryptBlock(final byte[] in, final int opmode) throws GeneralSecurityException, IOException {
@@ -283,17 +292,5 @@ public final class SecureStore {
 
 	private int getBlockSize(final long len) {
 		return (int) Math.ceil((double) len / TarEntry.BLOCKSIZE) * TarEntry.BLOCKSIZE;
-	}
-
-	public void download(final String name, final URL url) throws IOException, GeneralSecurityException {
-		final TarEntry entry = get(name);
-		if (entry != null) {
-			if (entry.modified <= HttpClient.getLastModified(url)) {
-				return;
-			}
-		}
-		final ByteArrayOutputStream bos = new ByteArrayOutputStream();
-		IOHelper.write(HttpClient.openStream(url), bos);
-		write(name, new ByteArrayInputStream(bos.toByteArray()));
 	}
 }
