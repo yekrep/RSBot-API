@@ -20,7 +20,7 @@ import org.powerbot.util.RestrictedSecurityManager;
 import org.powerbot.util.StringUtil;
 import org.powerbot.util.io.IniParser;
 import org.powerbot.util.io.Resources;
-import org.powerbot.util.io.SystemConsoleHandler;
+import org.powerbot.util.io.PrintStreamHandler;
 
 public class Boot implements Runnable {
 	private final static Logger log = Logger.getLogger(Boot.class.getName());
@@ -32,7 +32,7 @@ public class Boot implements Runnable {
 		for (final Handler handler : logger.getHandlers()) {
 			logger.removeHandler(handler);
 		}
-		logger.addHandler(new SystemConsoleHandler());
+		logger.addHandler(new PrintStreamHandler());
 
 		Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
 			@Override
