@@ -621,6 +621,7 @@ public final class BotScripts extends JDialog implements ActionListener {
 						bot.startScript(script);
 					} catch (final NullPointerException ignored) {
 						log.severe("Bot not ready to load scripts");
+						return;
 					}
 					BotScripts.this.parent.updateScriptControls();
 				}
