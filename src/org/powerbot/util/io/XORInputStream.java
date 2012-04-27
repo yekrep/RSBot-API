@@ -13,6 +13,7 @@ public final class XORInputStream extends FilterInputStream {
 	private final byte[] key;
 	private final int opmode, l;
 	private int n, d;
+	public static final int DELTA = 0x9e3779b9;
 
 	public XORInputStream(final InputStream in, final byte[] key, final int opmode) {
 		super(in);
@@ -23,7 +24,7 @@ public final class XORInputStream extends FilterInputStream {
 		this.opmode = opmode;
 		l = this.key.length;
 		n = 0;
-		d = 0x9e3779b9;
+		d = DELTA;
 	}
 
 	private void rotate(final byte[] b, final int off, final int len) {
