@@ -298,7 +298,7 @@ public final class SecureStore {
 
 	public static FilterOutputStream getCipherOutputStream(final OutputStream out, final int opmode, final byte[] key, final String cipherAlgorithm, final String keyAlgorithm) throws GeneralSecurityException {
 		if (cipherAlgorithm.equals("XOR")) {
-			throw new IllegalArgumentException(); // TODO: support XOR output stream
+			return new XOROutputStream(out, key, opmode);
 		}
 		final Cipher c = Cipher.getInstance(cipherAlgorithm);
 		final SecretKeySpec sks = new SecretKeySpec(Arrays.copyOf(key, 16), keyAlgorithm);
