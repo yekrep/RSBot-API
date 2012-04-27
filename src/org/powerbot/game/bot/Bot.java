@@ -155,12 +155,12 @@ public class Bot extends GameDefinition implements Runnable {
 		Context.context.put(threadGroup, context);
 		callback = new Runnable() {
 			public void run() {
+				modelCleaner.schedule(cleanModels, 60000, 30000);
 				setClient((Client) appletContainer.clientInstance);
 				appletContainer.paint(image.getGraphics());
 				resize(BotChrome.PANEL_WIDTH, BotChrome.PANEL_HEIGHT);
 			}
 		};
-		modelCleaner.schedule(cleanModels, 60000, 30000);
 		log.fine("Submitting loader");
 		return container.submit(new Loader(this));
 	}
