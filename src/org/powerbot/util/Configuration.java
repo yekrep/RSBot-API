@@ -27,7 +27,7 @@ public class Configuration {
 	}
 
 	static {
-		FROMJAR = Configuration.class.getClassLoader().getResource(Resources.Paths.VERSION) != null;
+		FROMJAR = Configuration.class.getClassLoader().getResource(Resources.Paths.ICON) != null;
 
 		final String appdata = System.getenv("APPDATA"), home = System.getProperty("user.home");
 		final String root = appdata != null && new File(appdata).isDirectory() ? appdata : home == null ? "~" : home;

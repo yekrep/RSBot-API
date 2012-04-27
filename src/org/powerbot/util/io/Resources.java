@@ -43,7 +43,6 @@ public class Resources {
 		public static final String STAR_GRAY = ROOT_IMG + "/star_gray.png";
 		public static final String TAB_ADD = ROOT_IMG + "/tab_add.png";
 		public static final String TAB_DELETE = ROOT_IMG + "/tab_delete.png";
-		public static final String VERSION = ROOT + "/version.txt";
 		public static final String WORLD_LINK = ROOT_IMG + "/world_link.png";
 		public static final String WRENCH = ROOT_IMG + "/wrench.png";
 		public static final String TWITTER = ROOT_IMG + "/twitter.png";
