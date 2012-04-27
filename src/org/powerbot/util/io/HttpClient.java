@@ -5,9 +5,11 @@ import java.io.DataInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
+import java.security.GeneralSecurityException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,7 +17,11 @@ import java.util.Map.Entry;
 import java.util.TimeZone;
 import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 import java.util.zip.InflaterInputStream;
+import java.util.zip.InflaterOutputStream;
+
+import javax.crypto.Cipher;
 
 import org.powerbot.util.Configuration;
 import org.powerbot.util.StringUtil;
@@ -156,15 +162,54 @@ public class HttpClient {
 	}
 
 	private static InputStream getInputStream(final URLConnection con) throws IOException {
-		final InputStream in = con.getInputStream();
-		final String encoding = con.getHeaderField("Content-Encoding");
-		if (encoding != null) {
-			if (encoding.equalsIgnoreCase("gzip")) {
-				return new GZIPInputStream(in);
-			} else if (encoding.equalsIgnoreCase("deflate")) {
-				return new InflaterInputStream(in);
+		return getInputStream(con.getInputStream(), con.getHeaderField("Content-Encoding"));
+	}
+
+	public static InputStream getInputStream(InputStream in, String encoding) throws IOException {
+		if (encoding == null || encoding.isEmpty()) {
+			return in;
+		}
+		if (encoding.startsWith("\"") && encoding.endsWith("\"")) {
+			encoding = encoding.substring(1, encoding.length() - 2);
+		}
+		for (final String mode : encoding.split(",")) {
+			if (mode.equalsIgnoreCase("gzip")) {
+				in = new GZIPInputStream(in);
+			} else if (mode.equalsIgnoreCase("deflate")) {
+				in = new InflaterInputStream(in);
+			} else if (mode.startsWith("CIS:") || mode.startsWith("cis:")) {
+				final String[] args = mode.split(":");
+				try {
+					in = SecureStore.getCipherInputStream(in, Cipher.DECRYPT_MODE, SecureStore.getSharedKey(StringUtil.getBytesUtf8(args[3])), args[1], args[2]);
+				} catch (final GeneralSecurityException e) {
+					throw new IOException(e);
+				}
 			}
 		}
 		return in;
+	}
+
+	public static OutputStream getOutputStream(OutputStream out, String encoding) throws IOException {
+		if (encoding == null || encoding.isEmpty()) {
+			return out;
+		}
+		if (encoding.startsWith("\"") && encoding.endsWith("\"")) {
+			encoding = encoding.substring(1, encoding.length() - 2);
+		}
+		for (final String mode : encoding.split(",")) {
+			if (mode.equalsIgnoreCase("gzip")) {
+				out = new GZIPOutputStream(out);
+			} else if (mode.equalsIgnoreCase("deflate")) {
+				out = new InflaterOutputStream(out);
+			} else if (mode.startsWith("CIS:") || mode.startsWith("cis:")) {
+				final String[] args = mode.split(":");
+				try {
+					out = SecureStore.getCipherOutputStream(out, Cipher.ENCRYPT_MODE, SecureStore.getSharedKey(StringUtil.getBytesUtf8(args[3])), args[1], args[2]);
+				} catch (final GeneralSecurityException e) {
+					throw new IOException(e);
+				}
+			}
+		}
+		return out;
 	}
 }
