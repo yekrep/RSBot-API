@@ -41,12 +41,12 @@ public final class XORInputStream extends FilterInputStream {
 	}
 
 	@Override
-	public int read(byte[] b) throws IOException {
+	public int read(final byte[] b) throws IOException {
 		return read(b, 0, b.length);
 	}
 
 	@Override
-	public int read(byte[] b, int off, int len) throws IOException {
+	public int read(final byte[] b, final int off, final int len) throws IOException {
 		final int result = super.read(b, off, len);
 		rotate(b, off, len);
 		return result;
