@@ -60,7 +60,7 @@ public class Player extends Character {
 		if (composite != null) {
 			final int[] appearance = (int[]) ((RSPlayerCompositeEquipment) composite).getRSPlayerCompositeEquipment();
 			for (int i = 0; i < appearance.length; i++) {
-				if ((appearance[i] & 0x40000000) != 0) {
+				if ((appearance[i] & 0x40000000) > 0) {
 					appearance[i] &= 0x3fffffff;
 				} else {
 					appearance[i] = -1;
