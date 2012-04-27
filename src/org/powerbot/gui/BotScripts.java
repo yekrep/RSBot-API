@@ -267,12 +267,14 @@ public final class BotScripts extends JDialog implements ActionListener {
 					});
 				} catch (final IOException ignored) {
 					status.setText("Could not load scripts, please try again later");
+					progress.setVisible(false);
 					SwingUtilities.invokeLater(new Runnable() {
 						public void run() {
 							table.validate();
 							table.repaint();
 						}
 					});
+					ignored.printStackTrace();
 					return;
 				}
 				SwingUtilities.invokeLater(new Runnable() {
