@@ -52,8 +52,12 @@ public class ModelCapture implements Model {
 
 	public static void clean() {
 		final Bot bot = Context.resolve();
-		if (!Game.isLoggedIn()) {
-			bot.modelCache.clear();
+		if (bot != null) {
+			if (!Game.isLoggedIn()) {
+				bot.modelCache.clear();
+				return;
+			}
+		} else {
 			return;
 		}
 		final List<Object> invalid_owners = new ArrayList<Object>();

@@ -266,6 +266,7 @@ public class Bot extends GameDefinition implements Runnable {
 		bots.remove(this);
 		Context.context.remove(threadGroup);
 		container.shutdown();
+		modelCache.clear();
 	}
 
 	/**
