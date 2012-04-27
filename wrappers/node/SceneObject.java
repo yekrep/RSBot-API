@@ -19,7 +19,6 @@ import org.powerbot.game.bot.Context;
 import org.powerbot.game.client.CacheTable;
 import org.powerbot.game.client.HardReferenceGet;
 import org.powerbot.game.client.Model;
-import org.powerbot.game.client.ModelCapture;
 import org.powerbot.game.client.Node;
 import org.powerbot.game.client.RSAnimableShorts;
 import org.powerbot.game.client.RSAnimableX1;
@@ -120,7 +119,7 @@ public class SceneObject implements Entity, Locatable, Identifiable {
 		if (object != null) {
 			Model model = Context.client().getRSObjectModel(object);
 			if (model == null) {
-				model = ModelCapture.modelCache.get(object);
+				model = Context.getModelCache().get(object);
 			}
 			if (model != null) {
 				return new SceneObjectModel(model, this);

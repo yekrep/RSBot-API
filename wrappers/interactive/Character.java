@@ -19,6 +19,7 @@ import org.powerbot.game.api.wrappers.Rotatable;
 import org.powerbot.game.api.wrappers.Tile;
 import org.powerbot.game.api.wrappers.graphics.CapturedModel;
 import org.powerbot.game.api.wrappers.graphics.model.CharacterModel;
+import org.powerbot.game.bot.Bot;
 import org.powerbot.game.bot.Context;
 import org.powerbot.game.client.Client;
 import org.powerbot.game.client.Model;
@@ -154,7 +155,7 @@ public abstract class Character implements Entity, Locatable, Rotatable, Identif
 	public CapturedModel getModel() {
 		final Object ref = get();
 		if (ref != null) {
-			final Model model = ModelCapture.modelCache.get(ref);
+			final Model model = Context.getModelCache().get(ref);
 			if (model != null) {
 				return new CharacterModel(model, this);
 			}
