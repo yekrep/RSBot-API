@@ -22,9 +22,11 @@ public class RestrictedSecurityManager extends SecurityManager {
 		for (int i = 1; i < context.length; i++) {
 			final Class<?> clazz = context[i];
 			final String name = clazz.getName();
-			if (name.startsWith("java.") || name.startsWith("javax.") || name.startsWith("com.sun.") || name.startsWith("sun.")) {
+			if (name.startsWith("java.") || name.startsWith("javax.") || name.startsWith("com.sun.") || name.startsWith("sun.") ||
+					name.equals(RestrictedSecurityManager.class.getName())) {
 				continue;
 			}
+			return name;
 		}
 		return null;
 	}
