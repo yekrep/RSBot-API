@@ -17,7 +17,6 @@ public final class XOROutputStream extends FilterOutputStream {
 
 	@Override
 	public void write(final int b) throws IOException {
-		System.out.println(b);
 		write(new byte[] {(byte) b}, 0, 1);
 	}
 
