@@ -78,7 +78,7 @@ public final class BotAbout extends JDialog {
 		visit.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		visit.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(final MouseEvent arg0) {
+			public void mouseClicked(final MouseEvent e) {
 				BotChrome.openURL(Resources.getServerLinks().get("site"));
 			}
 		});
