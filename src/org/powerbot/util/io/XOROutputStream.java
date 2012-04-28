@@ -23,7 +23,7 @@ public final class XOROutputStream extends FilterOutputStream {
 	@Override
 	public void write(final byte[] b, final int off, final int len) throws IOException {
 		xor.rotate(b, off, len);
-		super.out.write(b, off, len);
+		out.write(b, off, len);
 	}
 
 	@Override
