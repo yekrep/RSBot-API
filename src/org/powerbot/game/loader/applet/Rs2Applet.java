@@ -102,7 +102,7 @@ public final class Rs2Applet extends Applet {
 		}
 	}
 
-	private final void invokeMethod(final Object[] parameters, final Class<?>[] parameterTypes, final String name) {
+	private void invokeMethod(final Object[] parameters, final Class<?>[] parameterTypes, final String name) {
 		try {
 			final Method method = clientClass.getMethod(name, parameterTypes);
 			method.invoke(clientInstance, parameters);
@@ -112,7 +112,7 @@ public final class Rs2Applet extends Applet {
 	}
 
 
-	private final void throwException(final Throwable throwable) {
+	private void throwException(final Throwable throwable) {
 		log.log(Level.SEVERE, "Client exception: ", throwable);
 	}
 }
