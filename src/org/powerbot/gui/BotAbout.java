@@ -82,6 +82,15 @@ public final class BotAbout extends JDialog {
 				BotChrome.openURL(Resources.getServerLinks().get("site"));
 			}
 		});
+		final JLabel license = new JLabel("<html><a href='#'>" + BotLocale.LICENSE + "</a></html>");
+		license.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		license.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(final MouseEvent e) {
+				dispose();
+				new BotLicense(parent, false);
+			}
+		});
 		final JButton ok = new JButton(BotLocale.OK);
 		ok.setPreferredSize(new Dimension((int) (ok.getPreferredSize().width * 1.2), (int) (ok.getPreferredSize().height * 1.2)));
 		ok.setFocusable(false);
@@ -91,6 +100,7 @@ public final class BotAbout extends JDialog {
 			}
 		});
 		panelAction.add(visit);
+		panelAction.add(license);
 		for (int i = 0; i < 3; i++) {
 			panelAction.add(Box.createHorizontalGlue());
 		}
