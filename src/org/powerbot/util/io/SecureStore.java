@@ -4,10 +4,8 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FilterInputStream;
-import java.io.FilterOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.RandomAccessFile;
 import java.net.URL;
 import java.security.GeneralSecurityException;
@@ -22,10 +20,6 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import javax.crypto.Cipher;
-import javax.crypto.CipherInputStream;
-import javax.crypto.CipherOutputStream;
-import javax.crypto.spec.SecretKeySpec;
-
 import org.powerbot.util.Configuration;
 import org.powerbot.util.StringUtil;
 
@@ -36,8 +30,7 @@ public final class SecureStore {
 	private final static Logger log = Logger.getLogger(SecureStore.class.getName());
 	private final static SecureStore instance = new SecureStore();
 	private final static int MAGIC = 0x00525354, VERSION = 1005, BLOCKSIZE = 512, MAXBLOCKS = 2048;
-	private final static String CIPHER_ALGORITHM = "XOR", KEY_ALGORITHM = "RC4";
-	private final static byte[] SHAREDKEY = { 0, 0x32, 0x4f, 0x2a, 0x7f, 0x01, 0x5a, 0x69 };
+	private final static String CIPHER_ALGORITHM = "XOR", KEY_ALGORITHM = "";
 	private final File store;
 	private final Map<String, TarEntry> entries;
 	private byte[] key;
@@ -283,38 +276,7 @@ public final class SecureStore {
 	}
 
 	private FilterInputStream getCipherInputStream(final InputStream is, final int opmode) throws GeneralSecurityException {
-		return getCipherInputStream(is, opmode, key, CIPHER_ALGORITHM, KEY_ALGORITHM);
-	}
-
-	public static FilterInputStream getCipherInputStream(final InputStream in, final int opmode, final byte[] key, final String cipherAlgorithm, final String keyAlgorithm) throws GeneralSecurityException {
-		if (cipherAlgorithm.equals("XOR")) {
-			return new XORInputStream(in, key, opmode);
-		}
-		final Cipher c = Cipher.getInstance(cipherAlgorithm);
-		final SecretKeySpec sks = new SecretKeySpec(Arrays.copyOf(key, 16), keyAlgorithm);
-		c.init(opmode, sks);
-		return new CipherInputStream(in, c);
-	}
-
-	public static FilterOutputStream getCipherOutputStream(final OutputStream out, final int opmode, final byte[] key, final String cipherAlgorithm, final String keyAlgorithm) throws GeneralSecurityException {
-		if (cipherAlgorithm.equals("XOR")) {
-			return new XOROutputStream(out, key, opmode);
-		}
-		final Cipher c = Cipher.getInstance(cipherAlgorithm);
-		final SecretKeySpec sks = new SecretKeySpec(Arrays.copyOf(key, 16), keyAlgorithm);
-		c.init(opmode, sks);
-		return new CipherOutputStream(out, c);
-	}
-
-	public static byte[] getSharedKey(final byte[] salt) {
-		MessageDigest md = null;
-		try {
-			md = MessageDigest.getInstance("SHA-1");
-		} catch (final NoSuchAlgorithmException ignored) {
-		}
-		md.update(SHAREDKEY);
-		md.update(salt);
-		return md.digest();
+		return CipherStreams.getCipherInputStream(is, opmode, key, CIPHER_ALGORITHM, KEY_ALGORITHM);
 	}
 
 	private int getBlockSize(final long len) {

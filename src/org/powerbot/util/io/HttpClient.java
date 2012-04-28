@@ -177,7 +177,7 @@ public class HttpClient {
 			} else if (mode.startsWith("CIS:") || mode.startsWith("cis:")) {
 				final String[] args = mode.split(":");
 				try {
-					in = SecureStore.getCipherInputStream(in, Cipher.DECRYPT_MODE, SecureStore.getSharedKey(StringUtil.getBytesUtf8(args[3])), args[1], args[2]);
+					in = CipherStreams.getCipherInputStream(in, Cipher.DECRYPT_MODE, CipherStreams.getSharedKey(StringUtil.getBytesUtf8(args[3])), args[1], args[2]);
 				} catch (final GeneralSecurityException e) {
 					throw new IOException(e);
 				}
@@ -198,7 +198,7 @@ public class HttpClient {
 			} else if (mode.startsWith("CIS:") || mode.startsWith("cis:")) {
 				final String[] args = mode.split(":");
 				try {
-					out = SecureStore.getCipherOutputStream(out, Cipher.ENCRYPT_MODE, SecureStore.getSharedKey(StringUtil.getBytesUtf8(args[3])), args[1], args[2]);
+					out = CipherStreams.getCipherOutputStream(out, Cipher.ENCRYPT_MODE, CipherStreams.getSharedKey(StringUtil.getBytesUtf8(args[3])), args[1], args[2]);
 				} catch (final GeneralSecurityException e) {
 					throw new IOException(e);
 				}
