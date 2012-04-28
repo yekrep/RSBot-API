@@ -16,6 +16,12 @@ public final class XOROutputStream extends FilterOutputStream {
 	}
 
 	@Override
+	public void write(final int b) throws IOException {
+		System.out.println(b);
+		write(new byte[] {(byte) b}, 0, 1);
+	}
+
+	@Override
 	public void write(final byte[] b, final int off, final int len) throws IOException {
 		xor.rotate(b, off, len);
 		super.out.write(b, off, len);
