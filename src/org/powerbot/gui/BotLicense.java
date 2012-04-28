@@ -46,6 +46,9 @@ public final class BotLicense extends JDialog {
 
 		final JPanel panel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		final JButton accept = new JButton(confirm ? BotLocale.ACCEPT : BotLocale.OK), decline = new JButton(BotLocale.DECLINE);
+		if (!confirm) {
+			accept.setPreferredSize(new Dimension((int) (accept.getPreferredSize().width * 1.75d), accept.getPreferredSize().height));
+		}
 		accept.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent e) {
