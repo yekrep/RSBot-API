@@ -16,10 +16,10 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TimeZone;
 import java.util.logging.Logger;
+import java.util.zip.DeflaterOutputStream;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 import java.util.zip.InflaterInputStream;
-import java.util.zip.InflaterOutputStream;
 
 import javax.crypto.Cipher;
 
@@ -194,7 +194,7 @@ public class HttpClient {
 			if (mode.equalsIgnoreCase("gzip")) {
 				out = new GZIPOutputStream(out);
 			} else if (mode.equalsIgnoreCase("deflate")) {
-				out = new InflaterOutputStream(out);
+				out = new DeflaterOutputStream(out);
 			} else if (mode.startsWith("CIS:") || mode.startsWith("cis:")) {
 				final String[] args = mode.split(":");
 				try {
