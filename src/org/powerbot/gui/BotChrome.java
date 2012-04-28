@@ -7,6 +7,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -29,11 +30,14 @@ import org.powerbot.Boot;
 import org.powerbot.game.bot.Bot;
 import org.powerbot.gui.component.BotPanel;
 import org.powerbot.gui.component.BotToolBar;
-import org.powerbot.service.NetworkAccount;
 import org.powerbot.util.Configuration;
+import org.powerbot.util.StringUtil;
 import org.powerbot.util.Configuration.OperatingSystem;
 import org.powerbot.util.io.HttpClient;
+import org.powerbot.util.io.IOHelper;
+import org.powerbot.util.io.IniParser;
 import org.powerbot.util.io.Resources;
+import org.powerbot.util.io.SecureStore;
 
 /**
  * @author Paris
@@ -75,8 +79,8 @@ public class BotChrome extends JFrame implements WindowListener {
 
 		final ExecutorService exec = Executors.newFixedThreadPool(1);
 		final List<Future<Boolean>> tasks = new ArrayList<Future<Boolean>>();
+		tasks.add(exec.submit(new LoadLicense()));
 		tasks.add(exec.submit(new LoadUpdates()));
-		tasks.add(exec.submit(new LoadSecureData()));
 		exec.execute(new LoadComplete(this, tasks));
 		exec.shutdown();
 
@@ -154,6 +158,24 @@ public class BotChrome extends JFrame implements WindowListener {
 	public void windowOpened(final WindowEvent arg0) {
 	}
 
+	private final class LoadLicense implements Callable<Boolean> {
+		public Boolean call() throws Exception {
+			final String name = "license-accept.txt";
+			try {
+				if (new File(Configuration.STORE).isFile()) {
+					final InputStream in = SecureStore.getInstance().read(name);
+					if (in != null && IniParser.parseBool(IOHelper.readString(in))) {
+						return true;
+					}
+				}
+			} catch (final Exception ignored) {
+			}
+			new BotLicense(BotChrome.this, true);
+			SecureStore.getInstance().write(name, StringUtil.getBytesUtf8("true"));
+			return true;
+		}
+	}
+
 	private final class LoadUpdates implements Callable<Boolean> {
 		public Boolean call() throws Exception {
 			final int version = Integer.parseInt(Resources.getServerData().get("manifest").get("version"));
@@ -181,13 +203,6 @@ public class BotChrome extends JFrame implements WindowListener {
 				}
 				return false;
 			}
-			return true;
-		}
-	}
-
-	private final class LoadSecureData implements Callable<Boolean> {
-		public Boolean call() throws Exception {
-			NetworkAccount.getInstance().isLoggedIn();
 			return true;
 		}
 	}

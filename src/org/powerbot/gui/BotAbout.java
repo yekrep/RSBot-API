@@ -53,6 +53,7 @@ public final class BotAbout extends JDialog {
 		panelText.add(panelTitle);
 		panelText.add(Box.createVerticalStrut(1));
 		panelText.add(new JLabel(BotLocale.COPYRIGHT));
+		panelText.add(new JLabel(BotLocale.LICENSEMSG));
 		panelText.add(new JLabel("Unauthorised use of this application is prohibited."));
 		panelText.add(Box.createVerticalStrut(1));
 

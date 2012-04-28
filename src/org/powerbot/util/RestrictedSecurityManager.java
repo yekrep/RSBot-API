@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 
 import org.powerbot.game.GameDefinition;
 import org.powerbot.gui.BotChrome;
+import org.powerbot.gui.BotLicense;
 import org.powerbot.util.io.SecureStore;
 
 /**
@@ -67,7 +68,7 @@ public class RestrictedSecurityManager extends SecurityManager {
 	@Override
 	public void checkExit(final int status) {
 		final String calling = getCallingClass();
-		if (calling.startsWith(BotChrome.class.getName())) {
+		if (calling.startsWith(BotChrome.class.getName()) || calling.startsWith(BotLicense.class.getName())) {
 			super.checkExit(status);
 		} else {
 			throw new SecurityException();
