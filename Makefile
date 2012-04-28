@@ -22,7 +22,7 @@ Bundle: Bot
 	@rm -fv "$(LSTF)"
 	@cp "$(MANIFEST)" "$(LSTF)"
 	@if [ -e "$(DIST)" ]; then rm -fv "$(DIST)"; fi
-	jar cfm "$(DIST)" "$(LSTF)" -C "$(BINDIR)" . "$(IMGDIR)"/*.png
+	jar cfm "$(DIST)" "$(LSTF)" -C "$(BINDIR)" . "license.txt" "$(IMGDIR)"/*.png
 	@rm -f "$(LSTF)"
 
 clean:
