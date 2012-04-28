@@ -1,7 +1,6 @@
 package org.powerbot.gui;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Frame;
@@ -14,8 +13,6 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.SwingConstants;
-
 import org.powerbot.gui.component.BotLocale;
 import org.powerbot.util.Configuration;
 import org.powerbot.util.io.IOHelper;
