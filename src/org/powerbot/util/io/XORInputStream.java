@@ -16,9 +16,9 @@ public final class XORInputStream extends FilterInputStream {
 	}
 
 	@Override
-		final byte[] b = new byte[1];
-		read(b, 0, 1);
 	public synchronized int read() throws IOException {
+		final byte[] b = {(byte) super.read()};
+		xor.rotate(b, 0, b.length);
 		return (b[0] & 0xff);
 	}
 
