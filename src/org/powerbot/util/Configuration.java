@@ -11,7 +11,7 @@ public class Configuration {
 	public static final String NAME = "RSBot";
 	public static final boolean FROMJAR;
 	public static boolean DEVMODE = false;
-	public static final int VERSION = 4006;
+	public static final int VERSION = 4007;
 	public static final String STORE, BOOTSETTINGS;
 	public static final OperatingSystem OS;
 
