@@ -165,12 +165,9 @@ public class HttpClient {
 		return getInputStream(con.getInputStream(), con.getHeaderField("Content-Encoding"));
 	}
 
-	public static InputStream getInputStream(InputStream in, String encoding) throws IOException {
+	public static InputStream getInputStream(InputStream in, final String encoding) throws IOException {
 		if (encoding == null || encoding.isEmpty()) {
 			return in;
-		}
-		if (encoding.startsWith("\"") && encoding.endsWith("\"")) {
-			encoding = encoding.substring(1, encoding.length() - 2);
 		}
 		for (final String mode : encoding.split(",")) {
 			if (mode.equalsIgnoreCase("gzip")) {
@@ -189,12 +186,9 @@ public class HttpClient {
 		return in;
 	}
 
-	public static OutputStream getOutputStream(OutputStream out, String encoding) throws IOException {
+	public static OutputStream getOutputStream(OutputStream out, final String encoding) throws IOException {
 		if (encoding == null || encoding.isEmpty()) {
 			return out;
-		}
-		if (encoding.startsWith("\"") && encoding.endsWith("\"")) {
-			encoding = encoding.substring(1, encoding.length() - 2);
 		}
 		for (final String mode : encoding.split(",")) {
 			if (mode.equalsIgnoreCase("gzip")) {
