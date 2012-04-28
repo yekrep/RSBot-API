@@ -13,7 +13,7 @@ public class ChatOption {
 	private WidgetChild child;
 
 	/**
-	 * Constructs a new WidgetOption.
+	 * Constructs a new ChatOption.
 	 *
 	 * @param number The number this option is bound to.
 	 * @param child  An instance of the WidgetChild this option is bound to.
