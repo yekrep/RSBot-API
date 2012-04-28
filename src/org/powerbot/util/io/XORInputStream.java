@@ -24,7 +24,7 @@ public final class XORInputStream extends FilterInputStream {
 
 	@Override
 	public synchronized int read(final byte[] b, final int off, final int len) throws IOException {
-		final int result = super.in.read(b, off, len);
+		final int result = super.read(b, off, len);
 		xor.rotate(b, off, len);
 		return result;
 	}
