@@ -110,7 +110,9 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 				return;
 			}
 
-			new BotScripts(this);
+			if (bot.getClient() != null) {
+				new BotScripts(this);
+			}
 		} else if (c == scriptStop) {
 			if (activeTab == -1 || activeTab >= Bot.bots.size()) {
 				return;

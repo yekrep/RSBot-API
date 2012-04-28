@@ -138,6 +138,7 @@ public class Bot extends GameDefinition implements Runnable {
 	 */
 	public void run() {
 		Bot.bots.add(this);
+		BotChrome.getInstance().toolbar.updateScriptControls();
 		if (initializeEnvironment()) {
 			startEnvironment();
 		}

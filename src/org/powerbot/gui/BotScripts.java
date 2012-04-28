@@ -64,8 +64,8 @@ import org.powerbot.game.bot.Bot;
 import org.powerbot.gui.component.BotLocale;
 import org.powerbot.gui.component.BotToolBar;
 import org.powerbot.service.GameAccounts;
-import org.powerbot.service.NetworkAccount;
 import org.powerbot.service.GameAccounts.Account;
+import org.powerbot.service.NetworkAccount;
 import org.powerbot.service.scripts.ScriptClassLoader;
 import org.powerbot.service.scripts.ScriptDefinition;
 import org.powerbot.util.Configuration;
@@ -617,12 +617,7 @@ public final class BotScripts extends JDialog implements ActionListener {
 						}
 					}
 					log.info("Starting script");
-					try {
-						bot.startScript(script);
-					} catch (final NullPointerException ignored) {
-						log.severe("Bot not ready to load scripts");
-						return;
-					}
+					bot.startScript(script);
 					BotScripts.this.parent.updateScriptControls();
 				}
 			});
