@@ -20,4 +20,18 @@ public final class XOROutputStream extends FilterOutputStream {
 		xor.rotate(b, off, len);
 		super.out.write(b, off, len);
 	}
+
+	@Override
+	public void flush() throws IOException {
+		super.flush();
+	}
+
+	@Override
+	public void close() throws IOException {
+		try {
+			super.flush();
+		} catch (final IOException ignored) {
+		}
+		super.close();
+	}
 }
