@@ -36,18 +36,8 @@ public final class XOROutputStream extends FilterOutputStream {
 	}
 
 	@Override
-	public void write(final byte[] b) throws IOException {
-		write(b, 0, b.length);
-	}
-
-	@Override
 	public void write(final byte[] b, final int off, final int len) throws IOException {
 		rotate(b, off, len);
 		super.write(b, off, len);
-	}
-
-	@Override
-	public void write(int b) throws IOException {
-		super.write(b);
 	}
 }
