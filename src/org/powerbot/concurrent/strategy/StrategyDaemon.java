@@ -33,7 +33,7 @@ public class StrategyDaemon implements StrategyContainer, Task {
 	public StrategyDaemon(final TaskContainer container, final TaskContainer owner) {
 		this.container = container;
 		this.owner = owner;
-		strategies = new ArrayList<Strategy>();
+		strategies = Collections.synchronizedList(new ArrayList<Strategy>());
 		state = DaemonState.DESTROYED;
 	}
 

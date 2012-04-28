@@ -1,10 +1,20 @@
 package org.powerbot.game.client;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import org.powerbot.game.api.methods.Game;
+import org.powerbot.game.api.methods.interactive.NPCs;
+import org.powerbot.game.api.methods.interactive.Players;
+import org.powerbot.game.api.methods.node.SceneEntities;
+import org.powerbot.game.api.wrappers.interactive.NPC;
+import org.powerbot.game.api.wrappers.interactive.Player;
+import org.powerbot.game.api.wrappers.node.SceneObject;
+import org.powerbot.game.bot.Bot;
+import org.powerbot.game.bot.Context;
 
 public class ModelCapture implements Model {
-	public static final Map<Object, Model> modelCache = new HashMap<Object, Model>();
 	private int[] vertex_x;
 	private int[] vertex_y;
 	private int[] vertex_z;
@@ -31,12 +41,50 @@ public class ModelCapture implements Model {
 	}
 
 	public static void updateModel(final Model model, final Object owner) {
-		final Model container = modelCache.get(owner);
+		final Bot bot = Bot.resolve(owner);
+		final Model container = bot.modelCache.get(owner);
 		if (container == null) {
-			modelCache.put(owner, new ModelCapture(model));
+			bot.modelCache.put(owner, new ModelCapture(model));
 			return;
 		}
 		((ModelCapture) container).update(model);
+	}
+
+	public static void clean() {
+		final Bot bot = Context.resolve();
+		if (bot != null) {
+			if (!Game.isLoggedIn()) {
+				bot.modelCache.clear();
+				return;
+			}
+		} else {
+			return;
+		}
+		final List<Object> invalid_owners = new ArrayList<Object>();
+		final Player[] players = Players.getLoaded();
+		final NPC[] nonPlayerCharacters = NPCs.getLoaded();
+		final SceneObject[] objects = SceneEntities.getLoaded();
+		final List<Object> existing_owners = new ArrayList<Object>();
+		for (final Player player : players) {
+			existing_owners.add(player.get());
+		}
+		for (final NPC npc : nonPlayerCharacters) {
+			existing_owners.add(npc.get());
+		}
+		for (final SceneObject object : objects) {
+			existing_owners.add(object.getInstance());
+		}
+		final Iterator<Object> parents = bot.modelCache.keySet().iterator();
+		Object child;
+		while (parents.hasNext()) {
+			child = parents.next();
+			if (!existing_owners.contains(child)) {
+				invalid_owners.add(child);
+			}
+		}
+		for (final Object invalid_owner : invalid_owners) {
+			bot.modelCache.remove(invalid_owner);
+		}
 	}
 
 	private void update(final Model model) {

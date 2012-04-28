@@ -8,7 +8,12 @@ import java.io.IOException;
 import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.security.GeneralSecurityException;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.logging.Level;
@@ -30,6 +35,8 @@ import org.powerbot.game.bot.event.TextPaintEvent;
 import org.powerbot.game.bot.handler.RandomHandler;
 import org.powerbot.game.bot.handler.input.MouseReactor;
 import org.powerbot.game.client.Client;
+import org.powerbot.game.client.Model;
+import org.powerbot.game.client.ModelCapture;
 import org.powerbot.game.client.Render;
 import org.powerbot.game.client.RenderAbsoluteX;
 import org.powerbot.game.client.RenderAbsoluteY;
@@ -64,6 +71,9 @@ public class Bot extends GameDefinition implements Runnable {
 	public Multipliers multipliers;
 	public final Calculations.Toolkit toolkit;
 	public final Calculations.Viewport viewport;
+	public final Map<Object, Model> modelCache;
+	private final Timer modelCleaner;
+	private final TimerTask cleanModels;
 
 	private MouseReactor reactor;
 	private EventDispatcher eventDispatcher;
@@ -94,11 +104,33 @@ public class Bot extends GameDefinition implements Runnable {
 		container.submit(eventDispatcher);
 		toolkit = new Calculations.Toolkit();
 		viewport = new Calculations.Viewport();
+		modelCache = Collections.synchronizedMap(new HashMap<Object, Model>());
 		activeScript = null;
 		randomHandler = new RandomHandler(this);
 		antiRandomFuture = null;
 		account = null;
 		refreshing = false;
+
+		modelCleaner = new Timer("model-cleanser " + threadGroup.getName(), true);
+		cleanModels = new TimerTask() {
+			@Override
+			public void run() {
+				container.submit(new Task() {
+					@Override
+					public void run() {
+						try {
+							final int size_1 = modelCache.size();
+							final long mark_1 = System.currentTimeMillis();
+							ModelCapture.clean();
+							final long mark_2 = System.currentTimeMillis();
+							final int size_2 = modelCache.size();
+							log.fine("Cleansed models in " + (mark_2 - mark_1) + "ms (count " + size_1 + " -> " + size_2 + ")");
+						} catch (final Throwable ignored) {
+						}
+					}
+				});
+			}
+		};
 	}
 
 	/**
@@ -123,6 +155,7 @@ public class Bot extends GameDefinition implements Runnable {
 		Context.context.put(threadGroup, context);
 		callback = new Runnable() {
 			public void run() {
+				modelCleaner.schedule(cleanModels, 60000, 30000);
 				setClient((Client) appletContainer.clientInstance);
 				appletContainer.paint(image.getGraphics());
 				resize(BotChrome.PANEL_WIDTH, BotChrome.PANEL_HEIGHT);
@@ -201,6 +234,7 @@ public class Bot extends GameDefinition implements Runnable {
 	 */
 	public void killEnvironment() {
 		this.killed = true;
+		modelCleaner.cancel();
 		if (activeScript != null) {
 			activeScript.stop();
 			activeScript.kill();
@@ -232,6 +266,7 @@ public class Bot extends GameDefinition implements Runnable {
 		bots.remove(this);
 		Context.context.remove(threadGroup);
 		container.shutdown();
+		modelCache.clear();
 	}
 
 	/**
