@@ -11,9 +11,11 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.TreeMap;
 
 /**
  * @author Paris
@@ -78,22 +80,25 @@ public class IniParser {
 		}
 	}
 
-	public static Map<String, Map<String, String>> deserialise(final File input) throws IOException {
-		final BufferedReader reader = new BufferedReader(new FileReader(input));
-		final Map<String, Map<String, String>> data = deserialise(reader);
-		reader.close();
-		return data;
+	public static Map<String, Map<String, String>> deserialise(final File file) throws IOException {
+		return deserialise(new BufferedReader(new FileReader(file)));
 	}
 
 	public static Map<String, Map<String, String>> deserialise(final InputStream is) throws IOException {
 		return deserialise(new BufferedReader(new InputStreamReader(is)));
 	}
 
-	public static Map<String, Map<String, String>> deserialise(final BufferedReader input) throws IOException {
+	public static Map<String, Map<String, String>> deserialise(final BufferedReader br) throws IOException {
 		final Map<String, Map<String, String>> data = new HashMap<String, Map<String, String>>();
+		deserialise(br, data, new TreeMap<String, String>());
+		return data;
+	}
+
+	@SuppressWarnings("unchecked")
+	public static void deserialise(final BufferedReader br, final Map<String, Map<String, String>> data, final Map<String, String> keys) throws IOException {
 		String line, section = EMPTYSECTION;
 
-		while ((line = input.readLine()) != null) {
+		while ((line = br.readLine()) != null) {
 			line = line.trim();
 			if (line.isEmpty()) {
 				continue;
@@ -124,13 +129,25 @@ public class IniParser {
 					value = line.substring(z).trim();
 				}
 				if (!data.containsKey(section)) {
-					data.put(section, new HashMap<String, String>());
+					Map<String, String> map = null;
+					try {
+						final Method method = keys.getClass().getMethod("clone", new Class<?>[] {});
+						if (method != null) {
+							map = (Map<String, String>) method.invoke(data, new Object[] {});
+							map.clear();
+						}
+					} catch (final Exception ignored) {
+					}
+					if (map == null) {
+						map = new HashMap<String, String>();
+					}
+					data.put(section, map);
 				}
 				data.get(section).put(key, value);
 			}
 		}
 
-		return data;
+		br.close();
 	}
 
 	public static boolean parseBool(final String mode) {
