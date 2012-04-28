@@ -34,7 +34,7 @@ public final class XOROutputStream extends FilterOutputStream {
 	@Override
 	public void close() throws IOException {
 		try {
-			super.flush();
+			flush();
 		} catch (final IOException ignored) {
 		}
 		super.close();
