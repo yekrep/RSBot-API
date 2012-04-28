@@ -8,7 +8,7 @@ import org.powerbot.game.api.util.Time;
  * @author Stephan J. Bijzitter (Salvation)
  * @since 26-04-2012
  */
-public class WidgetOption {
+public class ChatOption {
 	private int number;
 	private WidgetChild child;
 
@@ -18,7 +18,7 @@ public class WidgetOption {
 	 * @param number The number this option is bound to.
 	 * @param child  An instance of the WidgetChild this option is bound to.
 	 */
-	public WidgetOption(final int number, final WidgetChild child) {
+	public ChatOption(final int number, final WidgetChild child) {
 		this.number = number;
 		this.child = child;
 	}
@@ -37,19 +37,14 @@ public class WidgetOption {
 		return child;
 	}
 
-	@Override
-	public String toString() {
-		return "com.salvation.api.wrappers.widgets.WidgetOption(" + number + ", " + this.child.getText() + ")";
-	}
-
 	/**
-	 * @param isValid   <tt>true</tt> if the result must valid.
-	 * @param isVisible <tt>true</tt> if the result must be visible.
+	 * @param valid   <tt>true</tt> if the result must valid.
+	 * @param visible <tt>true</tt> if the result must be visible.
 	 * @return <tt>true</tt> if and only if the Widget including all its children match the criteria, otherwise <tt>false</tt>.
 	 */
-	public boolean revalidate(final boolean isValid, final boolean isVisible) {
-		final WidgetChild w = Widgets.get(this.child.getParent().getIndex(), this.child.getIndex());
-		return !(w == null || (isValid && !w.validate()) || (isVisible && !w.visible()));
+	public boolean revalidate(final boolean valid, final boolean visible) {
+		final WidgetChild w = Widgets.get(child.getParent().getIndex(), child.getIndex());
+		return !(w == null || (valid && !w.validate()) || (visible && !w.visible()));
 	}
 
 	/**
@@ -58,12 +53,12 @@ public class WidgetOption {
 	 * @param key <tt>true</tt> if and only if the keyboard should be used, <tt>false</tt> otherwise.
 	 * @return -1 if the mouse failed to interact, 0 is the keyboard was used (regardless of success!) or +1 if the mouse successfully interacted.
 	 */
-	public int selectOption(final boolean key) {
+	public int select(final boolean key) {
 		if (key) {
-			Keyboard.sendText(this.number == -1 ? " " : Integer.toString(this.number), false);
+			Keyboard.sendText(number == -1 ? " " : Integer.toString(number), false);
 			return 0;
 		} else {
-			return this.child.click(true) ? 1 : -1;
+			return child.click(true) ? 1 : -1;
 		}
 	}
 
@@ -74,16 +69,21 @@ public class WidgetOption {
 	 * @param maxSleep The amount of milliseconds the method may wait for the game to respond.
 	 * @return <tt>true</tt> if and only if the option was selected successfully
 	 */
-	public boolean selectOption(final boolean key, final int maxSleep) {
-		if (this.selectOption(key) > -1) {
+	public boolean select(final boolean key, final int maxSleep) {
+		if (select(key) > -1) {
 			final long timeout = System.currentTimeMillis() + maxSleep;
 			while (System.currentTimeMillis() < timeout) {
-				if (!this.revalidate(this.child.validate(), this.child.visible())) {
+				if (!revalidate(child.validate(), child.visible())) {
 					return true;
 				}
 				Time.sleep(50, 100);
 			}
 		}
 		return false;
+	}
+
+	@Override
+	public String toString() {
+		return getClass().getName() + "(" + number + ", " + child.getText() + ")";
 	}
 }
