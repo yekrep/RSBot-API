@@ -2,6 +2,7 @@ package org.powerbot.game.api;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.EventListener;
 import java.util.Iterator;
 import java.util.List;
@@ -41,8 +42,8 @@ public abstract class ActiveScript implements EventListener, Processor {
 		eventManager = null;
 		container = null;
 		executor = null;
-		loopTasks = new ArrayList<LoopTask>();
-		listeners = new ArrayList<EventListener>();
+		loopTasks = Collections.synchronizedList(new ArrayList<LoopTask>());
+		listeners = Collections.synchronizedList(new ArrayList<EventListener>());
 		silent = false;
 	}
 
