@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -26,14 +25,12 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
-import org.powerbot.Boot;
 import org.powerbot.game.bot.Bot;
 import org.powerbot.gui.component.BotPanel;
 import org.powerbot.gui.component.BotToolBar;
 import org.powerbot.util.Configuration;
+import org.powerbot.util.LoadUpdates;
 import org.powerbot.util.StringUtil;
-import org.powerbot.util.Configuration.OperatingSystem;
-import org.powerbot.util.io.HttpClient;
 import org.powerbot.util.io.IOHelper;
 import org.powerbot.util.io.IniParser;
 import org.powerbot.util.io.Resources;
@@ -172,37 +169,6 @@ public class BotChrome extends JFrame implements WindowListener {
 			}
 			new BotLicense(BotChrome.this, true);
 			SecureStore.getInstance().write(name, StringUtil.getBytesUtf8("true"));
-			return true;
-		}
-	}
-
-	private final class LoadUpdates implements Callable<Boolean> {
-		public Boolean call() throws Exception {
-			final int version = Integer.parseInt(Resources.getServerData().get("manifest").get("version"));
-			if (version > Configuration.VERSION) {
-				// TODO: automatic updating
-				if (!Configuration.DEVMODE && Configuration.OS == OperatingSystem.WINDOWS) {
-					log.log(Level.INFO, "Downloading update", "Update");
-					final File file = new File(System.getProperty("java.io.tmpdir"), String.format("%s-%s.jar", Configuration.NAME, Integer.toString(version)));
-					try {
-						final URL url = new URL(String.format(Resources.getServerLinks().get("download"), Integer.toString(version)));
-						HttpClient.download(url, file);
-						if (file.isFile() && file.canRead()) {
-							log.log(Level.INFO, "Launching update", "Update");
-							Boot.releaseLock();
-							Runtime.getRuntime().exec(new String[]{"javaw", "-jar", file.getCanonicalPath()});
-							System.exit(0);
-							return false;
-						}
-					} catch (final IOException ignored) {
-						ignored.printStackTrace();
-						log.log(Level.SEVERE, "A newer version of " + Configuration.NAME + " is available, please visit the website to download", "Update");
-					}
-				} else {
-					log.log(Level.SEVERE, "A newer version of " + Configuration.NAME + " is available", "Update");
-				}
-				return false;
-			}
 			return true;
 		}
 	}
