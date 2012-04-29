@@ -3,7 +3,6 @@ package org.powerbot.util.io;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.RandomAccessFile;
@@ -278,7 +277,10 @@ public final class SecureStore {
 		return out;
 	}
 
-	private FilterInputStream getCipherInputStream(final InputStream is, final int opmode) throws GeneralSecurityException {
+	private InputStream getCipherInputStream(final InputStream is, final int opmode) throws GeneralSecurityException {
+		if (CIPHER_ALGORITHM == null || CIPHER_ALGORITHM.isEmpty()) {
+			return is;
+		}
 		return CipherStreams.getCipherInputStream(is, opmode, key, CIPHER_ALGORITHM, KEY_ALGORITHM);
 	}
 
