@@ -26,7 +26,7 @@ import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.wrappers.ViewportEntity;
 import org.powerbot.game.bot.Bot;
-import org.powerbot.game.bot.event.MouseRequestEvent;
+import org.powerbot.game.bot.event.HumanInputEvent;
 import org.powerbot.game.bot.handler.input.MouseReactor;
 import org.powerbot.game.bot.handler.input.util.MouseNode;
 import org.powerbot.game.client.input.Mouse;
@@ -42,7 +42,7 @@ public class BotPanel extends JPanel {
 	public static final int INPUT_MOUSE = 1, INPUT_KEYBOARD = 2;
 	private int inputMask;
 	private MouseNode mouseNode;
-	private final MouseRequestEvent mouseRequest;
+	private final HumanInputEvent mouseRequest;
 	private final Point pressLocation, releaseLocation;
 
 	private static final long serialVersionUID = 1L;
@@ -62,7 +62,7 @@ public class BotPanel extends JPanel {
 		xOff = yOff = 0;
 		inputMask = INPUT_MOUSE | INPUT_KEYBOARD;
 		mouseNode = null;
-		mouseRequest = new MouseRequestEvent();
+		mouseRequest = new HumanInputEvent();
 		pressLocation = new Point(-1, -1);
 		releaseLocation = new Point(-1, -1);
 
@@ -262,7 +262,7 @@ public class BotPanel extends JPanel {
 					prevNode.cancel();
 				}
 				if (!input_enabled) {
-					mouseRequest.init(mouseNode);
+					mouseRequest.init(new Point(f_mouseX, f_mouseY));
 					bot.getEventDispatcher().fire(mouseRequest);
 				}
 				if (input_enabled || mouseRequest.accepted()) {

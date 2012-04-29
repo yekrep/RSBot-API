@@ -17,7 +17,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.powerbot.concurrent.Task;
-import org.powerbot.game.bot.event.MouseRequestEvent;
+import org.powerbot.game.bot.event.HumanInputEvent;
 import org.powerbot.game.bot.event.listener.MessageListener;
 import org.powerbot.game.bot.event.listener.PaintListener;
 import org.powerbot.game.bot.event.listener.TextPaintListener;
@@ -213,7 +213,7 @@ public class EventDispatcher implements EventManager, Task {
 		if (el instanceof TextPaintListener) {
 			mask |= EventDispatcher.TEXT_PAINT_EVENT;
 		}
-		if (el instanceof MouseRequestEvent) {
+		if (el instanceof HumanInputEvent) {
 			mask |= EventDispatcher.MOUSE_REQUEST_EVENT;
 		}
 
