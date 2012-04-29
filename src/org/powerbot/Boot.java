@@ -4,6 +4,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.net.URL;
+import java.net.URLStreamHandler;
+import java.net.URLStreamHandlerFactory;
 import java.nio.channels.FileLock;
 import java.util.logging.Handler;
 import java.util.logging.Level;
@@ -91,6 +94,30 @@ public class Boot implements Runnable {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (final Exception ignored) {
+		}
+
+		try {
+			URL.setURLStreamHandlerFactory(new URLStreamHandlerFactory() {
+				@Override
+				public URLStreamHandler createURLStreamHandler(final String protocol) {
+					if (protocol.equals("http")) {
+						return new sun.net.www.protocol.http.Handler();
+					} else if (protocol.equals("https")) {
+						return new sun.net.www.protocol.https.Handler();
+					} else if (protocol.equals("file")) {
+						return new sun.net.www.protocol.file.Handler();
+					} else if (protocol.equals("jar")) {
+						return new sun.net.www.protocol.jar.Handler();
+					} else if (protocol.equals("ftp")) {
+						return new sun.net.www.protocol.ftp.Handler();
+					}
+					return null;
+				}
+			});
+		} catch (final Throwable ignored) {
+			log.severe("Could not set URL stream handler factory");
+			System.exit(1);
+			return;
 		}
 
 		StringUtil.newStringUtf8(null); // prevents ClassCircularityError exceptions
