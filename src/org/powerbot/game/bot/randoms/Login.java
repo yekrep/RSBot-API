@@ -81,24 +81,24 @@ public class Login extends AntiRandom {
 
 	public void run() {
 		if (Game.getClientState() == Game.INDEX_LOBBY_SCREEN) {
-			for (final LoginEvent loginEvent : LoginEvent.values()) {
-				final WidgetChild widgetChild = Widgets.get(WIDGET_LOBBY, loginEvent.child);
+			for (final LobbyEvent lobbyEvent : LobbyEvent.values()) {
+				final WidgetChild widgetChild = Widgets.get(WIDGET_LOBBY, lobbyEvent.child);
 				if (widgetChild != null && widgetChild.validate()) {
 					final String text = widgetChild.getText().toLowerCase().trim();
 
-					if (text.contains(loginEvent.message.toLowerCase())) {
-						log.info("Handling lobby event: " + loginEvent.name());
+					if (text.contains(lobbyEvent.message.toLowerCase())) {
+						log.info("Handling lobby event: " + lobbyEvent.name());
 						Widgets.get(WIDGET_LOBBY, WIDGET_LOBBY_TRY_AGAIN).click(true);
 
-						if (loginEvent.wait > 0) {
-							Time.sleep(loginEvent.wait);
-						} else if (loginEvent.wait == -1) {
+						if (lobbyEvent.wait > 0) {
+							Time.sleep(lobbyEvent.wait);
+						} else if (lobbyEvent.wait == -1) {
 							bot.stopScript();
 							return;
 						}
 
-						if (loginEvent.task != null) {
-							bot.getContainer().submit(loginEvent.task);
+						if (lobbyEvent.task != null) {
+							bot.getContainer().submit(lobbyEvent.task);
 						}
 						return;
 					}
@@ -115,10 +115,10 @@ public class Login extends AntiRandom {
 				final WidgetChild widgetChild = Widgets.get(WIDGET, loginEvent.child);
 				if (widgetChild != null && widgetChild.validate()) {
 					final String text = widgetChild.getText().toLowerCase().trim();
+					Widgets.get(WIDGET, WIDGET_LOGIN_TRY_AGAIN).click(true);
 
 					if (text.contains(loginEvent.message.toLowerCase())) {
 						log.info("Handling login event: " + loginEvent.name());
-						Widgets.get(WIDGET, WIDGET_LOGIN_TRY_AGAIN).click(true);
 
 						if (loginEvent.wait > 0) {
 							Time.sleep(loginEvent.wait);
