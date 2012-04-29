@@ -21,7 +21,6 @@ import java.awt.event.MouseWheelListener;
 import javax.swing.JPanel;
 
 import org.powerbot.concurrent.Task;
-import org.powerbot.game.api.methods.Calculations;
 import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.wrappers.ViewportEntity;
@@ -236,7 +235,7 @@ public class BotPanel extends JPanel {
 			mouseNode = new MouseNode(
 					MouseNode.PRIORITY_HUMAN,
 					new ViewportEntity() {
-						private final Rectangle area = new Rectangle(f_mouseX - 1, f_mouseY - 1, 2, 2);
+						private final Rectangle area = new Rectangle(f_mouseX - 1, f_mouseY - 1, 3, 3);
 
 						public Point getCentralPoint() {
 							return new Point(f_mouseX, f_mouseY);
@@ -251,7 +250,7 @@ public class BotPanel extends JPanel {
 						}
 
 						public boolean validate() {
-							return Calculations.isOnScreen(f_mouseX, f_mouseY);
+							return true;
 						}
 					},
 					mouseEvent.getID() == MouseEvent.MOUSE_CLICKED || mouseEvent.getID() == MouseEvent.MOUSE_RELEASED ? new FilterClick(mouseEvent.getButton(), pressLocation, releaseLocation) : FILTER_MOVE
@@ -324,7 +323,7 @@ public class BotPanel extends JPanel {
 
 		@Override
 		public boolean accept(final Point point) {
-			if (!start.equals(end)) {
+			if (start.distance(end) >= 2d) {
 				org.powerbot.game.api.methods.input.Mouse.move(start);
 				org.powerbot.game.api.methods.input.Mouse.drag(end);
 				return true;
