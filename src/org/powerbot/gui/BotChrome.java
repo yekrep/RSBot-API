@@ -76,8 +76,8 @@ public class BotChrome extends JFrame implements WindowListener {
 
 		final ExecutorService exec = Executors.newFixedThreadPool(1);
 		final List<Future<Boolean>> tasks = new ArrayList<Future<Boolean>>();
-		tasks.add(exec.submit(new LoadLicense()));
 		tasks.add(exec.submit(new LoadUpdates()));
+		tasks.add(exec.submit(new LoadLicense()));
 		exec.execute(new LoadComplete(this, tasks));
 		exec.shutdown();
 
