@@ -28,6 +28,7 @@ import javax.swing.WindowConstants;
 import org.powerbot.game.bot.Bot;
 import org.powerbot.gui.component.BotPanel;
 import org.powerbot.gui.component.BotToolBar;
+import org.powerbot.service.NetworkAccount;
 import org.powerbot.util.Configuration;
 import org.powerbot.util.LoadUpdates;
 import org.powerbot.util.StringUtil;
@@ -78,6 +79,7 @@ public class BotChrome extends JFrame implements WindowListener {
 		final List<Future<Boolean>> tasks = new ArrayList<Future<Boolean>>();
 		tasks.add(exec.submit(new LoadUpdates()));
 		tasks.add(exec.submit(new LoadLicense()));
+		tasks.add(exec.submit(new LoadAccount()));
 		exec.execute(new LoadComplete(this, tasks));
 		exec.shutdown();
 
@@ -169,6 +171,13 @@ public class BotChrome extends JFrame implements WindowListener {
 			}
 			new BotLicense(BotChrome.this, true);
 			SecureStore.getInstance().write(name, StringUtil.getBytesUtf8("true"));
+			return true;
+		}
+	}
+
+	private final class LoadAccount implements Callable<Boolean> {
+		public Boolean call() throws Exception {
+			NetworkAccount.getInstance().isLoggedIn();
 			return true;
 		}
 	}
