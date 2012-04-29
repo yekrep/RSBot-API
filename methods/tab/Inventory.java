@@ -106,7 +106,7 @@ public class Inventory {
 		return getCount(false, itemFilter);
 	}
 
-	public int getCount(final int... ids) {
+	public static int getCount(final int... ids) {
 		return getCount(false, ids);
 	}
 
