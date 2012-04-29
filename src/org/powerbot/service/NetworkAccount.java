@@ -18,7 +18,7 @@ import org.powerbot.util.io.SecureStore;
  * @author Paris
  */
 public final class NetworkAccount {
-	private final static NetworkAccount instance = new NetworkAccount();
+	private static NetworkAccount instance = null;
 	private final static String FILENAME = "signin.ini";
 	private Account account;
 
@@ -34,6 +34,9 @@ public final class NetworkAccount {
 	}
 
 	public static NetworkAccount getInstance() {
+		if (instance == null) {
+			instance = new NetworkAccount();
+		}
 		return instance;
 	}
 
