@@ -57,8 +57,7 @@ public class RestrictedSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkExec(final String cmd) {
-		final String calling = getCallingClass();
-		if (calling.startsWith(BotChrome.class.getName())) {
+		if (isCallingClass(BotChrome.class, LoadUpdates.class)) {
 			super.checkExec(cmd);
 		} else {
 			throw new SecurityException();
@@ -67,8 +66,7 @@ public class RestrictedSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkExit(final int status) {
-		final String calling = getCallingClass();
-		if (calling.startsWith(BotChrome.class.getName()) || calling.startsWith(BotLicense.class.getName())) {
+		if (isCallingClass(BotChrome.class, LoadUpdates.class, BotLicense.class)) {
 			super.checkExit(status);
 		} else {
 			throw new SecurityException();
@@ -177,5 +175,16 @@ public class RestrictedSecurityManager extends SecurityManager {
 
 		log.severe((readOnly ? "Read" : "Write") + " denied: " + path + " (" + calling + ") on " + Thread.currentThread().getName() + "/" + Thread.currentThread().getThreadGroup().getName());
 		throw new SecurityException();
+	}
+
+	private boolean isCallingClass(final Class<?>... classes) {
+		final String calling = getCallingClass();
+		for (final Class<?> clazz : classes) {
+			final String name = clazz.getName();
+			if (calling.equals(name) || calling.startsWith(name + "$")) {
+				return true;
+			}
+		}
+		return false;
 	}
 }
