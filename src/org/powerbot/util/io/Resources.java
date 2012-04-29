@@ -4,9 +4,12 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.Map;
 
 import org.powerbot.util.Configuration;
@@ -84,5 +87,32 @@ public class Resources {
 		} catch (final IOException ignored) {
 			return null;
 		}
+	}
+
+	public static InputStream openHttpStream(String link, final Object... args) throws IOException {
+		link = getServerLinks().get(link);
+		if (link == null || link.isEmpty()) {
+			return null;
+		}
+		URL url = new URL(String.format(link, args));
+		final String query = url.getFile(), marker = "{POST}";
+		final int z = query.indexOf(marker);
+		if (z == -1) {
+			return HttpClient.openStream(url);
+		}
+		String pre = z == 0 ? "" : query.substring(0, z), post = z + marker.length() >= query.length() ? null : query.substring(z + marker.length());
+		if (post == null || post.isEmpty()) {
+			return HttpClient.openStream(url);
+		}
+		if (pre.length() > 0 && pre.charAt(pre.length() - 1) == '?') {
+			pre = pre.substring(0, pre.length() - 1);
+		}
+		url = new URL(url.getProtocol(), url.getHost(), url.getPort(), pre);
+		final URLConnection con = HttpClient.getHttpConnection(url);
+		con.setDoOutput(true);
+		final OutputStreamWriter out = new OutputStreamWriter(con.getOutputStream());
+		out.write(post);
+		out.flush();
+		return HttpClient.getInputStream(con);
 	}
 }
