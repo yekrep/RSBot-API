@@ -92,7 +92,7 @@ public class Keyboard {
 	public static void sendKey(final char ch) {
 		sendKey(ch, 0);
 	}
-	
+
 	/**
 	 * Presses and holds the given character for the delay, then releases.
 	 *
@@ -104,10 +104,10 @@ public class Keyboard {
 		if (ch >= 'a' && ch <= 'z') {
 			code -= 32;
 		}
-		
+
 		sendKey(ch, code, delay);
 	}
-	
+
 	/**
 	 * Presses and holds the given character for the delay, then releases.
 	 *
