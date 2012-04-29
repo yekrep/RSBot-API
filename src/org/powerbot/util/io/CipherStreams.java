@@ -26,13 +26,19 @@ public final class CipherStreams {
 	private static Cipher getCipher(final int opmode, final byte[] key, final String cipherAlgorithm, String keyAlgorithm) throws GeneralSecurityException {
 		final Cipher c = Cipher.getInstance(cipherAlgorithm);
 		byte[] iv = null;
-		final int z = keyAlgorithm.indexOf('/');
-		if (z != -1) {
-			final String ive = z == keyAlgorithm.length() ? null : keyAlgorithm.substring(z + 1);
-			iv = ive == null || ive.isEmpty() ? null : Base64.decode(StringUtil.getBytesUtf8(ive));
-			keyAlgorithm = keyAlgorithm.substring(0, z);
+		int len = 16;
+		final String[] keyArgs = keyAlgorithm.split("/");
+		if (keyArgs.length > 1 && !keyArgs[1].isEmpty()) {
+			iv = Base64.decode(StringUtil.getBytesUtf8(keyArgs[1]));
 		}
-		final SecretKeySpec sks = new SecretKeySpec(Arrays.copyOf(key, Cipher.getMaxAllowedKeyLength(keyAlgorithm) / 8), keyAlgorithm);
+		if (keyArgs.length > 2) {
+			try {
+				len = Integer.parseInt(keyArgs[2]);
+			} catch (final NumberFormatException ignored) {
+				len = 16;
+			}
+		}
+		final SecretKeySpec sks = new SecretKeySpec(Arrays.copyOf(key, len), keyArgs[0]);
 		if (iv == null) {
 			c.init(opmode, sks);
 		} else {
