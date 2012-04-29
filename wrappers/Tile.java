@@ -75,7 +75,7 @@ public class Tile implements Entity, Locatable, Identifiable {
 	}
 
 	public Tile randomize(final int left, final int right, final int down, final int up) {
-		return new Tile(this.x + Random.nextInt(left, right + 1), this.y + Random.nextInt(down, up + 1), plane);
+		return derive(Random.nextInt(left, right + 1), Random.nextInt(down, up + 1));
 	}
 
 	public Tile randomize(final int x, final int y) {
