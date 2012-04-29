@@ -1,7 +1,5 @@
 package org.powerbot.util.io;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -128,40 +126,11 @@ public class HttpClient {
 		return con;
 	}
 
-	public static String downloadAsString(final URL url) throws IOException {
-		return downloadAsString(getConnection(url));
-	}
-
-	public static String downloadAsString(final HttpURLConnection con) throws IOException {
-		final byte[] buffer = downloadBinary(con);
-		return StringUtil.newStringUtf8(buffer);
-	}
-
-	public static byte[] downloadBinary(final URL url) throws IOException {
-		return downloadBinary(getConnection(url));
-	}
-
-	public static byte[] downloadBinary(final URLConnection con) throws IOException {
-		final DataInputStream in = new DataInputStream(getInputStream(con));
-		final byte[] buffer;
-		final int len = con.getContentLength();
-		if (len == -1) {
-			final ByteArrayOutputStream out = new ByteArrayOutputStream();
-			IOHelper.write(in, out);
-			buffer = out.toByteArray();
-		} else {
-			buffer = new byte[len];
-			in.readFully(buffer);
-		}
-		in.close();
-		return buffer;
-	}
-
 	public static InputStream openStream(final URL url) throws IOException {
 		return getInputStream(getConnection(url));
 	}
 
-	private static InputStream getInputStream(final URLConnection con) throws IOException {
+	public static InputStream getInputStream(final URLConnection con) throws IOException {
 		return getInputStream(con.getInputStream(), con.getHeaderField("Content-Encoding"));
 	}
 

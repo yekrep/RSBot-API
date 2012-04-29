@@ -70,6 +70,7 @@ import org.powerbot.service.scripts.ScriptClassLoader;
 import org.powerbot.service.scripts.ScriptDefinition;
 import org.powerbot.util.Configuration;
 import org.powerbot.util.io.HttpClient;
+import org.powerbot.util.io.IOHelper;
 import org.powerbot.util.io.IniParser;
 import org.powerbot.util.io.Resources;
 import org.powerbot.util.io.SecureStore;
@@ -342,7 +343,7 @@ public final class BotScripts extends JDialog implements ActionListener {
 		}
 		final String data;
 		try {
-			data = HttpClient.downloadAsString(url);
+			data = IOHelper.readString(HttpClient.openStream(url));
 		} catch (final IOException ignored) {
 			return;
 		}

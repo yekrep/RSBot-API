@@ -18,6 +18,7 @@ import org.powerbot.game.loader.applet.ClientStub;
 import org.powerbot.game.loader.applet.Rs2Applet;
 import org.powerbot.util.StringUtil;
 import org.powerbot.util.io.HttpClient;
+import org.powerbot.util.io.IOHelper;
 
 /**
  * A definition of a <code>GameEnvironment</code> that manages all the data associated with this environment.
@@ -129,7 +130,7 @@ public abstract class GameDefinition implements GameEnvironment {
 		try {
 			final URLConnection clientConnection = HttpClient.getHttpConnection(new URL(crawler.archive));
 			clientConnection.addRequestProperty("Referer", crawler.game);
-			return HttpClient.downloadBinary(clientConnection);
+			return IOHelper.read(HttpClient.getInputStream(clientConnection));
 		} catch (final IOException ignored) {
 		}
 		return null;

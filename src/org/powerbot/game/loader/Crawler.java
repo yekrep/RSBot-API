@@ -10,6 +10,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.powerbot.util.io.HttpClient;
+import org.powerbot.util.io.IOHelper;
 
 /**
  * Crawls the game pages while faking HTTP header information to reduce detection rate.
@@ -90,7 +91,7 @@ public class Crawler {
 		try {
 			final HttpURLConnection con = HttpClient.getHttpConnection(new URL(url));
 			con.addRequestProperty("Referer", referer);
-			return HttpClient.downloadAsString(con);
+			return IOHelper.readString(HttpClient.getInputStream(con));
 		} catch (final IOException ignored) {
 		}
 		return null;
