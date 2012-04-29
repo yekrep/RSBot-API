@@ -57,7 +57,7 @@ public class GroundItem implements Entity, Locatable, Identifiable {
 	}
 
 	public Point getCentralPoint() {
-		return tile.getCentralPoint();
+		return tile.getPoint(0.5d, 0.5d, 0);
 	}
 
 	public Point getNextViewportPoint() {
