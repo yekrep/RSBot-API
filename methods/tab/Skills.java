@@ -2,6 +2,9 @@ package org.powerbot.game.api.methods.tab;
 
 import org.powerbot.game.bot.Context;
 import org.powerbot.game.client.Client;
+import org.powerbot.game.api.methods.Widgets;
+import org.powerbot.game.api.wrappers.widget.Widget;
+import org.powerbot.game.api.wrappers.widget.WidgetChild;
 
 /**
  * @author Timer
@@ -43,6 +46,34 @@ public class Skills {
 	public static final int CONSTRUCTION = 22;
 	public static final int SUMMONING = 23;
 	public static final int DUNGEONEERING = 24;
+	
+	public static final int WIDGET = 320;
+	// All widget childs are of type 0
+	public static final int WIDGET_ATTACK = 1;
+	public static final int WIDGET_DEFENSE = 18;
+	public static final int WIDGET_STRENGTH = 4;
+	public static final int WIDGET_CONSTITUTION = 2;
+	public static final int WIDGET_RANGE = 35;
+	public static final int WIDGET_PRAYER = 53;
+	public static final int WIDGET_MAGIC = 66;
+	public static final int WIDGET_COOKING = 47;
+	public static final int WIDGET_WOODCUTTING = 78;
+	public static final int WIDGET_FLETCHING = 72;
+	public static final int WIDGET_FISHING = 29;
+	public static final int WIDGET_FIREMAKING = 65;
+	public static final int WIDGET_CRAFTING = 59;
+	public static final int WIDGET_SMITHING = 16;
+	public static final int WIDGET_MINING = 3;
+	public static final int WIDGET_HERBLORE = 23;
+	public static final int WIDGET_AGILITY = 10;
+	public static final int WIDGET_THIEVING = 41;
+	public static final int WIDGET_SLAYER = 85;
+	public static final int WIDGET_FARMING = 91;
+	public static final int WIDGET_RUNECRAFTING = 79;
+	public static final int WIDGET_HUNTER = 103;
+	public static final int WIDGET_CONSTRUCTION = 97;
+	public static final int WIDGET_SUMMONING = 109;
+	public static final int WIDGET_DUNGEONEERING = 115;
 
 	public static int[] getLevels() {
 		final Client client = Context.client();
@@ -107,4 +138,21 @@ public class Skills {
 		}
 		return Skills.XP_TABLE[endLvl] - getExperience(index);
 	}
+	
+	/**
+	 * The Widget of the Skills tab.
+	 */
+	public static Widget getWidget() {
+		return Widgets.get(WIDGET);
+	}
+	
+	/**
+	 * Gets the skill widget child at given index.
+	 * @param widgetIndex The index of the widget child.
+	 * @return the WidgetChild of the skill at the given index.
+	 */
+	public static WidgetChild getWidget(final int widgetIndex) {
+		return Widgets.get(WIDGET, widgetIndex);
+	}
+	
 }
