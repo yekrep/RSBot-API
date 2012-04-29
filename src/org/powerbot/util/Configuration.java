@@ -12,7 +12,7 @@ public class Configuration {
 	public static final boolean FROMJAR;
 	public static boolean DEVMODE = false;
 	public static final int VERSION = 4007;
-	public static final String STORE, BOOTSETTINGS;
+	public static final String STORE;
 	public static final OperatingSystem OS;
 
 	public enum OperatingSystem {
@@ -43,7 +43,5 @@ public class Configuration {
 		} else {
 			OS = OperatingSystem.UNKNOWN;
 		}
-
-		BOOTSETTINGS = OS == OperatingSystem.WINDOWS ? root + File.separator + NAME + ".ini" : home + File.separator + "." + NAME.toLowerCase();
 	}
 }

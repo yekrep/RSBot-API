@@ -313,12 +313,6 @@ public final class BotScripts extends JDialog implements ActionListener {
 			final List<File> paths = new ArrayList<File>(2);
 			paths.add(new File("bin"));
 			paths.add(new File("out"));
-			final String key = "scripts";
-			if (Resources.getSettings() != null && Resources.getSettings().containsKey(key) && !Resources.getSettings().get(key).isEmpty()) {
-				for (final String path : Resources.getSettings().get(key).split(String.format("\\Q%s\\E", File.pathSeparator))) {
-					paths.add(new File(path));
-				}
-			}
 			for (final File path : paths) {
 				if (path.isDirectory()) {
 					loadLocalScripts(list, path, null);

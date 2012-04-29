@@ -5,7 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.channels.FileLock;
-import java.util.Map;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -19,8 +18,6 @@ import org.powerbot.util.Configuration;
 import org.powerbot.util.Configuration.OperatingSystem;
 import org.powerbot.util.RestrictedSecurityManager;
 import org.powerbot.util.StringUtil;
-import org.powerbot.util.io.IniParser;
-import org.powerbot.util.io.Resources;
 import org.powerbot.util.io.PrintStreamHandler;
 
 public class Boot implements Runnable {
@@ -56,26 +53,7 @@ public class Boot implements Runnable {
 			}
 		}
 
-		int req = -1;
-
-		final Map<String, String> settings = Resources.getSettings();
-		if (settings != null) {
-			if (settings.containsKey("memory")) {
-				try {
-					req = Math.max(256, Integer.parseInt(settings.get("memory")));
-				} catch (final NumberFormatException ignored) {
-					req = -1;
-				}
-			}
-			if (settings.containsKey("developer")) {
-				Configuration.DEVMODE = IniParser.parseBool(settings.get("developer"));
-			}
-		}
-
-		if (req == -1 && !Configuration.DEVMODE) {
-			req = 768;
-		}
-
+		final int req = Configuration.DEVMODE ? -1 : 768;
 		long mem = Runtime.getRuntime().maxMemory() / 1024 / 1024;
 
 		if (mem < req && !restarted) {
