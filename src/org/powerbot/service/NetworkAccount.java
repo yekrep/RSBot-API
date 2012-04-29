@@ -3,13 +3,11 @@ package org.powerbot.service;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.security.GeneralSecurityException;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.powerbot.util.StringUtil;
-import org.powerbot.util.io.HttpClient;
 import org.powerbot.util.io.IniParser;
 import org.powerbot.util.io.Resources;
 import org.powerbot.util.io.SecureStore;
@@ -53,10 +51,9 @@ public final class NetworkAccount {
 	}
 
 	public boolean login(final String username, final String password) throws IOException {
-		final URL url = new URL(String.format(Resources.getServerLinks().get("signin"), StringUtil.urlEncode(username), StringUtil.urlEncode(password)));
 		InputStream is;
 		try {
-			is = HttpClient.openStream(url);
+			is = Resources.openHttpStream("signin", StringUtil.urlEncode(username), StringUtil.urlEncode(password));
 		} catch (final NullPointerException ignored) {
 			return false;
 		}
