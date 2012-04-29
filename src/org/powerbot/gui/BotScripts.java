@@ -589,7 +589,8 @@ public final class BotScripts extends JDialog implements ActionListener {
 					} else {
 						final String name = getSecureFileName(def);
 						if (name == null) {
-							cl = new URLClassLoader(new URL[]{def.source});
+							log.severe("Could not save script");
+							return;
 						} else {
 							try {
 								SecureStore.getInstance().download(name, def.source);
