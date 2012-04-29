@@ -94,14 +94,6 @@ public class Inventory {
 		return getCount(countStack, ALL_ITEMS_FILTER);
 	}
 
-	public static int getCount(final int id) {
-		return getCount(false, new Filter<Item>() {
-			public boolean accept(final Item item) {
-				return item.getId() == id;
-			}
-		});
-	}
-
 	public static int getCount(final Filter<Item> itemFilter) {
 		return getCount(false, itemFilter);
 	}
@@ -119,18 +111,16 @@ public class Inventory {
 	}
 
 	public static int getCount(final boolean countStacks, final int... ids) {
-		int total = 0;
-		for (final Item item : getItems()) {
-			if (item == null) {
-				continue;
-			}
-			for (final int ID : ids) {
-				if (item.getId() == ID) {
-					total += countStacks ? item.getStackSize() : 1;
+		return getCount(countStacks, new Filter<Item>() {
+			public boolean accept(final Item item) {
+				for (final int ID : ids) {
+					if (item.getId() == ID) {
+						return true;
+					}
 				}
+				return false;
 			}
-		}
-		return total;
+		});
 	}
 
 	/**
@@ -145,11 +135,7 @@ public class Inventory {
 		int count = 0;
 		for (final Item item : items) {
 			if (item != null && itemFilter.accept(item)) {
-				if (countStack) {
-					count += item.getStackSize();
-				} else {
-					++count;
-				}
+				count += countStack ? item.getStackSize() : 1;
 			}
 		}
 		return count;
