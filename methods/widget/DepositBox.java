@@ -1,5 +1,8 @@
 package org.powerbot.game.api.methods.widget;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import org.powerbot.game.api.methods.Calculations;
 import org.powerbot.game.api.methods.Walking;
 import org.powerbot.game.api.methods.Widgets;
@@ -14,16 +17,13 @@ import org.powerbot.game.api.wrappers.node.SceneObject;
 import org.powerbot.game.api.wrappers.widget.Widget;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 /**
  * Deposit box related methods.
  *
  * @author HelBorn
  */
 public class DepositBox {
-	public static final int[] DEPOSIT_BOX_IDS = new int[] {
+	public static final int[] DEPOSIT_BOX_IDS = new int[]{
 			2045, 2133, 6836, 9398, 20228, 24995, 25937, 26969, 32930, 32924, 32931, 34755, 36788, 39830, 66668
 	};
 
@@ -43,21 +43,21 @@ public class DepositBox {
 	/**
 	 * Navigates to and opens the nearest deposit box.
 	 *
-	 * @return	<tt>true</tt> if the deposit box was opened; otherwise <tt>false</tt>.
+	 * @return <tt>true</tt> if the deposit box was opened; otherwise <tt>false</tt>.
 	 */
 	public static boolean open() {
-		final SceneObject depositBox = getNearestDepositBox();
-		if(depositBox == null) {
+		final SceneObject depositBox = getNearest();
+		if (depositBox == null) {
 			return false;
 		}
-		if(!depositBox.isOnScreen() && (!Players.getLocal().isMoving()
+		if (!depositBox.isOnScreen() && (!Players.getLocal().isMoving()
 				|| Calculations.distance(Walking.getDestination(), depositBox.getLocation()) > 4)) {
 			Walking.walk(depositBox);
 			Time.sleep(200, 400);
 		}
-		if(depositBox.isOnScreen() && depositBox.interact("Deposit")) {
+		if (depositBox.isOnScreen() && depositBox.interact("Deposit")) {
 			final Timer t = new Timer(4000);
-			while(t.isRunning() && !isOpen()) {
+			while (t.isRunning() && !isOpen()) {
 				Time.sleep(10);
 			}
 		}
@@ -72,7 +72,7 @@ public class DepositBox {
 		return closeButton != null && closeButton.interact("Close");
 	}
 
-	public static SceneObject getNearestDepositBox() {
+	public static SceneObject getNearest() {
 		Arrays.sort(DEPOSIT_BOX_IDS);
 		return SceneEntities.getNearest(new Filter<SceneObject>() {
 			@Override
@@ -82,11 +82,11 @@ public class DepositBox {
 		});
 	}
 
-	public static boolean depositItem(final int id, final Bank.Amount amount) {
-		return depositItem(id, amount.getValue());
+	public static boolean deposit(final int id, final Bank.Amount amount) {
+		return deposit(id, amount.getValue());
 	}
 
-	public static boolean depositItem(final int id, final int amount) {
+	public static boolean deposit(final int id, final int amount) {
 		final Item item = getItem(id);
 		if (!isOpen() || item == null || amount < 0) {
 			return false;
@@ -96,11 +96,11 @@ public class DepositBox {
 			action = "Deposit-All";
 		}
 		final int invCount = getItemCount(true);
-		if(Bank.slotContainsAction(item.getWidgetChild(), action)) {
-			if(!item.getWidgetChild().interact(action)) {
+		if (Bank.slotContainsAction(item.getWidgetChild(), action)) {
+			if (!item.getWidgetChild().interact(action)) {
 				return false;
 			}
-		} else if(item.getWidgetChild().interact("Deposit-X") && Bank.waitForInputWidget(true)) {
+		} else if (item.getWidgetChild().interact("Deposit-X") && Bank.waitForInputWidget(true)) {
 			Time.sleep(200, 800);
 			Keyboard.sendText(String.valueOf(amount), true);
 		}
@@ -115,7 +115,7 @@ public class DepositBox {
 	 * Deposits the players inventory using the provided "deposit items" button. For efficiency, this method will
 	 * automatically return <tt>true</tt> without clicking the button if the players inventory is already empty.
 	 *
-	 * @return	<tt>true</tt> if inventory becomes empty; otherwise <tt>false</tt>.
+	 * @return <tt>true</tt> if inventory becomes empty; otherwise <tt>false</tt>.
 	 */
 	public static boolean depositInventory() {
 		if (!isOpen()) {
@@ -163,9 +163,8 @@ public class DepositBox {
 	 * Finds an item in the deposit box viewport. Note that the deposit box viewport displays items from the players
 	 * inventory, not items from the players bank. The inventory tab will be unavailable while the deposit box is open.
 	 *
-	 * @param	id	The id of the item to look for.
-	 *
-	 * @return	The found item, or <tt>null</tt> if not found.
+	 * @param id The id of the item to look for.
+	 * @return The found item, or <tt>null</tt> if not found.
 	 */
 	public static Item getItem(final int id) {
 		for (final Item item : getItems()) {
@@ -181,7 +180,7 @@ public class DepositBox {
 	 * the players inventory, not items from the players bank. The inventory tab will be unavailable while the
 	 * deposit box is open.
 	 *
-	 * @return	An array of items in the deposit box view. The array will be empty if deposit box is not open.
+	 * @return An array of items in the deposit box view. The array will be empty if deposit box is not open.
 	 */
 	public static Item[] getItems() {
 		if (!isOpen()) {
@@ -190,7 +189,7 @@ public class DepositBox {
 		final WidgetChild[] slots = Widgets.get(WIDGET_DEPOSIT_BOX, WIDGET_SLOTS_CONTAINER).getChildren();
 		final ArrayList<Item> items = new ArrayList<Item>();
 		for (final WidgetChild slot : slots) {
-			if(slot.getChildId() != -1) {
+			if (slot.getChildId() != -1) {
 				items.add(new Item(slot));
 			}
 		}
@@ -204,8 +203,8 @@ public class DepositBox {
 	public static int getItemCount(final boolean countStack, final int... ids) {
 		int count = 0;
 		for (final Item item : getItems()) {
-			for(final int id : ids) {
-				if(item.getId() == id) {
+			for (final int id : ids) {
+				if (item.getId() == id) {
 					count += countStack ? item.getStackSize() : 1;
 				}
 			}
