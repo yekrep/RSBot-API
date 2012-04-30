@@ -82,12 +82,12 @@ public class MouseExecutor {
 						} else {
 							/* Reset the consumed status to false and insert again. */
 							node.reset();
-							queue.insert(node);
-							/* Notify the reactor to wake up. */
-							synchronized (reactor) {
-								reactor.notify();
-							}
 							/* Will be removed it timeout reached by reactor. */
+							queue.insert(node);
+						}
+						/* Notify the reactor to wake up. */
+						synchronized (reactor) {
+							reactor.notify();
 						}
 					}
 				});
