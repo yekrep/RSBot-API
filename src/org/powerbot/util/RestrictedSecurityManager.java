@@ -45,10 +45,12 @@ public class RestrictedSecurityManager extends SecurityManager {
 	@Override
 	public void checkAccess(final Thread t) {
 		checkAccess(t.getThreadGroup());
+		super.checkAccess(t);
 	}
 
 	@Override
 	public void checkAccess(final ThreadGroup g) {
+		super.checkAccess(g);
 	}
 
 	@Override
