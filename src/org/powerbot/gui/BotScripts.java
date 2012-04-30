@@ -295,19 +295,7 @@ public final class BotScripts extends JDialog implements ActionListener {
 	}
 
 	public List<ScriptDefinition> loadScripts() throws IOException {
-		final URL src = new URL(Resources.getServerLinks().get("scripts"));
-		final Map<String, Map<String, String>> manifests = IniParser.deserialise(HttpClient.openStream(src));
-		final List<ScriptDefinition> list = new ArrayList<ScriptDefinition>(manifests.size());
-		for (final Entry<String, Map<String, String>> entry : manifests.entrySet()) {
-			final ScriptDefinition def = ScriptDefinition.fromMap(entry.getValue());
-			if (def != null) {
-				def.source = new URL(src, entry.getKey());
-				if (entry.getValue().containsKey("className")) {
-					def.className = entry.getValue().get("className");
-					list.add(def);
-				}
-			}
-		}
+		final List<ScriptDefinition> list = new ArrayList<ScriptDefinition>();
 		if (Configuration.DEVMODE) {
 			final List<File> paths = new ArrayList<File>(2);
 			paths.add(new File("bin"));
@@ -315,6 +303,19 @@ public final class BotScripts extends JDialog implements ActionListener {
 			for (final File path : paths) {
 				if (path.isDirectory()) {
 					loadLocalScripts(list, path, null);
+				}
+			}
+			return list;
+		}
+		final URL src = new URL(Resources.getServerLinks().get("scripts"));
+		final Map<String, Map<String, String>> manifests = IniParser.deserialise(HttpClient.openStream(src));
+		for (final Entry<String, Map<String, String>> entry : manifests.entrySet()) {
+			final ScriptDefinition def = ScriptDefinition.fromMap(entry.getValue());
+			if (def != null) {
+				def.source = new URL(src, entry.getKey());
+				if (entry.getValue().containsKey("className")) {
+					def.className = entry.getValue().get("className");
+					list.add(def);
 				}
 			}
 		}
