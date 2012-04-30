@@ -86,7 +86,7 @@ exclude     org.powerbot.Boot^ public static main(java.lang.String[]) and
             org.powerbot.game.client.input.* *(*) and
             org.powerbot.game.client.input.^*^ * and
             public org.powerbot.game.bot.event.*.^* and
-            org.powerbot.game.game.bot.event.*.^* public *(*) and
+            org.powerbot.game.bot.event.*.^* public *(*) and
             org.powerbot.game.bot.event.^* and
             org.powerbot.game.bot.event.^*^ * and
             org.powerbot.game.bot.event.* *(*) and
