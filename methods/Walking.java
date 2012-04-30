@@ -5,6 +5,8 @@ import java.awt.Point;
 import org.powerbot.game.api.methods.input.Mouse;
 import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.util.Filter;
+import org.powerbot.game.api.util.Time;
+import org.powerbot.game.api.util.Timer;
 import org.powerbot.game.api.util.internal.Multipliers;
 import org.powerbot.game.api.wrappers.Locatable;
 import org.powerbot.game.api.wrappers.Tile;
@@ -64,8 +66,11 @@ public class Walking {
 	}
 
 	public static void setRun(final boolean enabled) {
-		if (isRunEnabled() != enabled) {
-			Widgets.get(WIDGET, WIDGET_RUN).click(true);
+		if (isRunEnabled() != enabled && Widgets.get(WIDGET, WIDGET_RUN).click(true)) {
+			final Timer t = new Timer(500);
+			while(t.isRunning() && isRunEnabled() != enabled) {
+				Time.sleep(5);
+			}
 		}
 	}
 
