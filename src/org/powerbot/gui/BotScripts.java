@@ -97,6 +97,10 @@ public final class BotScripts extends JDialog implements ActionListener {
 		this.parent = parent;
 		collection = new ArrayList<String>();
 
+		if (Configuration.DEVMODE) {
+			setTitle(getTitle() + " (showing only local scripts)");
+		}
+
 		final JToolBar toolbar = new JToolBar();
 		final int d = 2;
 		toolbar.setBorder(new EmptyBorder(d, d, d, d));
