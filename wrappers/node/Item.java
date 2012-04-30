@@ -1,6 +1,5 @@
 package org.powerbot.game.api.wrappers.node;
 
-import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.util.internal.Multipliers;
 import org.powerbot.game.api.util.node.Nodes;
 import org.powerbot.game.api.wrappers.Identifiable;
@@ -24,12 +23,6 @@ import org.powerbot.game.client.SoftReferenceGet;
  * @author Timer
  */
 public class Item implements Identifiable {
-	public static final Filter<Item> ALL_FILTER = new Filter<Item>() {
-		public boolean accept(Item i) {
-			return true;
-		}
-	};
-	
 	private final int id;
 	private final int stack;
 	private WidgetChild widgetChild;

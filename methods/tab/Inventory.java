@@ -28,8 +28,8 @@ public class Inventory {
 			WIDGET_BEAST_OF_BURDEN_STORAGE
 	};
 
-	public static final Filter<Item> ALL_ITEMS_FILTER = new Filter<Item>() {
-		public boolean accept(Item item) {
+	public static final Filter<Item> ALL_FILTER = new Filter<Item>() {
+		public boolean accept(final Item item) {
 			return true;
 		}
 	};
@@ -52,7 +52,7 @@ public class Inventory {
 	}
 
 	public static Item[] getItems(final boolean cached) {
-		return getItems(cached, ALL_ITEMS_FILTER);
+		return getItems(cached, ALL_FILTER);
 	}
 
 	public static Item[] getItems(final Filter<Item> itemFilter) {
@@ -91,7 +91,7 @@ public class Inventory {
 	}
 
 	public static int getCount(final boolean countStack) {
-		return getCount(countStack, ALL_ITEMS_FILTER);
+		return getCount(countStack, ALL_FILTER);
 	}
 
 	public static int getCount(final Filter<Item> itemFilter) {
