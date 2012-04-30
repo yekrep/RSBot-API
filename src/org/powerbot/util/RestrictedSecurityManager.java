@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 
 import org.powerbot.concurrent.ThreadPool;
 import org.powerbot.game.GameDefinition;
+import org.powerbot.game.loader.RSClassLoader;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.gui.BotLicense;
 import org.powerbot.util.io.SecureStore;
@@ -69,6 +70,14 @@ public class RestrictedSecurityManager extends SecurityManager {
 			super.checkConnect(host, port);
 		} else {
 			super.checkConnect(host, port, context);
+		}
+	}
+
+	@Override
+	public void checkCreateClassLoader() {
+		if (isScriptThread() && !isCallingClass(RSClassLoader.class)) {
+			log.severe("Creating class loader denied to " + getCallingClass());
+			throw new SecurityException();
 		}
 	}
 
@@ -212,6 +221,6 @@ public class RestrictedSecurityManager extends SecurityManager {
 	}
 
 	private boolean isScriptThread() {
-		return Thread.currentThread().getThreadGroup().getName().startsWith(ThreadPool.THREADGROUPNAMEPREFIX);
+		return Thread.currentThread().getName().startsWith(ThreadPool.THREADGROUPNAMEPREFIX);
 	}
 }
