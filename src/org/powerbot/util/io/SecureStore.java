@@ -246,6 +246,11 @@ public final class SecureStore {
 		entry.name = name;
 		entry.length = l;
 		entry.position = z;
+		final byte[] content = entry.getBytes(), header = Arrays.copyOf(content, TarEntry.BLOCKSIZE), pad = new byte[header.length - content.length];
+		new SecureRandom().nextBytes(pad);
+		for (int i = 0; i < pad.length; i++) {
+			header[pad.length + i] = pad[i];
+		}
 		raf.write(cryptBlock(Arrays.copyOf(entry.getBytes(), TarEntry.BLOCKSIZE), Cipher.ENCRYPT_MODE));
 		synchronized (entries) {
 			if (entries.containsKey(entry.name)) {
