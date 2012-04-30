@@ -551,20 +551,14 @@ public final class BotScripts extends JDialog implements ActionListener {
 				public void actionPerformed(final ActionEvent e) {
 					setVisible(false);
 					dispose();
-					final URL url;
-					try {
-						url = new URL(String.format(Resources.getServerLinks().get("scriptsauth"),
-								NetworkAccount.getInstance().isLoggedIn() ? NetworkAccount.getInstance().getAccount().getAuth() : "-",
-								def.getID()));
-					} catch (final MalformedURLException ignored) {
-						log.severe("Could not call auth server");
-						return;
-					}
 					final Map<String, Map<String, String>> data;
 					try {
-						data = IniParser.deserialise(HttpClient.openStream(url));
+						data = IniParser.deserialise(Resources.openHttpStream("scriptsauth", NetworkAccount.getInstance().isLoggedIn() ? NetworkAccount.getInstance().getAccount().getAuth() : "", def.getID()));
 					} catch (final IOException ignored) {
 						log.severe("Unable to obtain auth response");
+						return;
+					} catch (final NullPointerException ignored) {
+						log.severe("Could not identify auth server");
 						return;
 					}
 					if (data == null || !data.containsKey("auth")) {
