@@ -6,6 +6,7 @@ import java.net.InetAddress;
 import java.security.Permission;
 import java.util.logging.Logger;
 
+import org.powerbot.concurrent.ThreadPool;
 import org.powerbot.game.GameDefinition;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.gui.BotLicense;
@@ -208,5 +209,9 @@ public class RestrictedSecurityManager extends SecurityManager {
 			}
 		}
 		return false;
+	}
+
+	private boolean isScriptThread() {
+		return Thread.currentThread().getThreadGroup().getName().startsWith(ThreadPool.THREADGROUPNAMEPREFIX);
 	}
 }
