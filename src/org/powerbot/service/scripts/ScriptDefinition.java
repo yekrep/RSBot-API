@@ -53,7 +53,7 @@ public final class ScriptDefinition {
 	}
 
 	public String getID() {
-		return id;
+		return id == null ? "" : id;
 	}
 
 	public String getDescription() {
