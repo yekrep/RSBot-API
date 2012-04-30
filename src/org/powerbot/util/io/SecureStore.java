@@ -46,7 +46,7 @@ public final class SecureStore {
 		}
 	}
 
-	public static SecureStore getInstance() {
+	public synchronized static SecureStore getInstance() {
 		if (instance == null) {
 			instance = new SecureStore();
 		}
