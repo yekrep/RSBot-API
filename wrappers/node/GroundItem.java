@@ -48,7 +48,7 @@ public class GroundItem implements Entity, Locatable, Identifiable {
 	}
 
 	public boolean validate() {
-		return tile.validate() && groundItem.getId() != -1 && GroundItems.getNearest(new Filter<GroundItem>() {
+		return tile.validate() && getId() != -1 && GroundItems.getNearest(new Filter<GroundItem>() {
 			@Override
 			public boolean accept(final GroundItem groundItem) {
 				return groundItem.getId() == getId() && groundItem.getLocation().equals(getLocation());
