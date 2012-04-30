@@ -113,4 +113,26 @@ public class Game {
 		final Canvas canvas = Context.client().getCanvas();
 		return new Dimension(canvas.getWidth(), canvas.getHeight());
 	}
+
+	/**
+	 * @param lobby <tt>true</tt> if the method should log out to the lobby, <tt>false</tt> if the method should fully log out.
+	 * @return <tt>true</tt> if and only if the client's state equals the state you want it to be in.
+	 */
+	public static boolean logout(boolean lobby) {
+		if ((Game.getClientState() == Game.INDEX_LOBBY_SCREEN && lobby) || (Game.getClientState() == Game.INDEX_LOGIN_SCREEN && !lobby)) {
+			return true;
+		} else if (Tabs.getCurrent().equals(Tabs.LOGOUT)) {
+			final WidgetChild w = Widgets.get(182, lobby ? 6 : 13);
+			if (w != null && !w.validate() && w.interact("Exit to " + (lobby ? "Lobby" : "Login"))) {
+				for (int i = 0; i < 10; i++, Time.sleep(100, 200)) {
+					if ((Game.getClientState() == Game.INDEX_LOBBY_SCREEN && lobby) || (Game.getClientState() == Game.INDEX_LOGIN_SCREEN && !lobby)) {
+						return true;
+					}
+				}
+			}
+		} else {
+			Tabs.LOGOUT.open(true);
+		}
+		return false;
+	}
 }
