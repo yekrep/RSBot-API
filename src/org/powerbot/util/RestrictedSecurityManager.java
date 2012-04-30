@@ -50,6 +50,28 @@ public class RestrictedSecurityManager extends SecurityManager {
 	}
 
 	@Override
+	public void checkConnect(final String host, final int port) {
+		checkConnect(host, port, null);
+	}
+
+	@Override
+	public void checkConnect(final String host, final int port, final Object context) {
+		if (!(port == 80 || port == 443 || port == 53 || port == 43594 || port == -1)) {
+			log.severe("Connection denied to port " + port);
+			throw new SecurityException();
+		}
+		if (host.equals("localhost") || host.endsWith(".localdomain") || host.startsWith("127.") || host.startsWith("192.168.") || host.startsWith("10.") || host.endsWith("::1")) {
+			log.severe("Connection denied to localhost");
+			throw new SecurityException();
+		}
+		if (context == null) {
+			super.checkConnect(host, port);
+		} else {
+			super.checkConnect(host, port, context);
+		}
+	}
+
+	@Override
 	public void checkDelete(final String file) {
 		checkFilePath(file, false);
 		super.checkDelete(file);
