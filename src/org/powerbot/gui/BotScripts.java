@@ -22,7 +22,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.security.GeneralSecurityException;
@@ -329,16 +328,12 @@ public final class BotScripts extends JDialog implements ActionListener {
 		if (!NetworkAccount.getInstance().isLoggedIn()) {
 			return;
 		}
-		final URL url;
-		try {
-			url = new URL(String.format(Resources.getServerLinks().get("scriptscollection"), NetworkAccount.getInstance().getAccount().getAuth()));
-		} catch (final MalformedURLException ignored) {
-			return;
-		}
 		final String data;
 		try {
-			data = IOHelper.readString(HttpClient.openStream(url));
+			data = IOHelper.readString(Resources.openHttpStream("scriptscollection", NetworkAccount.getInstance().getAccount().getAuth()));
 		} catch (final IOException ignored) {
+			return;
+		} catch (final NullPointerException ignored) {
 			return;
 		}
 		if (data == null || data.isEmpty()) {
