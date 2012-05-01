@@ -359,15 +359,17 @@ public class Bank {
 		return items.toArray(new Item[items.size()]);
 	}
 
-    public static Item getItem(final int... ids) {
-        for (final int id : ids) {
-            for (final Item item : getItems())
-                if (item.getId() == id)
-                    return item;
-        }
-        return null;
-    }
-    
+	public static Item getItem(final int... ids) {
+		for (final Item item : getItems()) {
+			for (final int id : ids) {
+				if (item.getId() == id) {
+					return item;
+				}
+			}
+		}
+		return null;
+	}
+
 	public static int getItemCount(final int... ids) {
 		return getItemCount(false, ids);
 	}
