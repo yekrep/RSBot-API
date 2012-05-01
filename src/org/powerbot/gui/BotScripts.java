@@ -22,7 +22,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.security.GeneralSecurityException;
@@ -97,6 +96,10 @@ public final class BotScripts extends JDialog implements ActionListener {
 		setIconImage(Resources.getImage(Resources.Paths.SCRIPT));
 		this.parent = parent;
 		collection = new ArrayList<String>();
+
+		if (Configuration.DEVMODE) {
+			setTitle(getTitle() + " (showing only local scripts)");
+		}
 
 		final JToolBar toolbar = new JToolBar();
 		final int d = 2;
@@ -296,19 +299,7 @@ public final class BotScripts extends JDialog implements ActionListener {
 	}
 
 	public List<ScriptDefinition> loadScripts() throws IOException {
-		final URL src = new URL(Resources.getServerLinks().get("scripts"));
-		final Map<String, Map<String, String>> manifests = IniParser.deserialise(HttpClient.openStream(src));
-		final List<ScriptDefinition> list = new ArrayList<ScriptDefinition>(manifests.size());
-		for (final Entry<String, Map<String, String>> entry : manifests.entrySet()) {
-			final ScriptDefinition def = ScriptDefinition.fromMap(entry.getValue());
-			if (def != null) {
-				def.source = new URL(src, entry.getKey());
-				if (entry.getValue().containsKey("className")) {
-					def.className = entry.getValue().get("className");
-					list.add(def);
-				}
-			}
-		}
+		final List<ScriptDefinition> list = new ArrayList<ScriptDefinition>();
 		if (Configuration.DEVMODE) {
 			final List<File> paths = new ArrayList<File>(2);
 			paths.add(new File("bin"));
@@ -316,6 +307,19 @@ public final class BotScripts extends JDialog implements ActionListener {
 			for (final File path : paths) {
 				if (path.isDirectory()) {
 					loadLocalScripts(list, path, null);
+				}
+			}
+			return list;
+		}
+		final URL src = new URL(Resources.getServerLinks().get("scripts"));
+		final Map<String, Map<String, String>> manifests = IniParser.deserialise(HttpClient.openStream(src));
+		for (final Entry<String, Map<String, String>> entry : manifests.entrySet()) {
+			final ScriptDefinition def = ScriptDefinition.fromMap(entry.getValue());
+			if (def != null) {
+				def.source = new URL(src, entry.getKey());
+				if (entry.getValue().containsKey("className")) {
+					def.className = entry.getValue().get("className");
+					list.add(def);
 				}
 			}
 		}
@@ -329,16 +333,12 @@ public final class BotScripts extends JDialog implements ActionListener {
 		if (!NetworkAccount.getInstance().isLoggedIn()) {
 			return;
 		}
-		final URL url;
-		try {
-			url = new URL(String.format(Resources.getServerLinks().get("scriptscollection"), NetworkAccount.getInstance().getAccount().getAuth()));
-		} catch (final MalformedURLException ignored) {
-			return;
-		}
 		final String data;
 		try {
-			data = IOHelper.readString(HttpClient.openStream(url));
+			data = IOHelper.readString(Resources.openHttpStream("scriptscollection", NetworkAccount.getInstance().getAccount().getAuth()));
 		} catch (final IOException ignored) {
+			return;
+		} catch (final NullPointerException ignored) {
 			return;
 		}
 		if (data == null || data.isEmpty()) {
@@ -551,20 +551,14 @@ public final class BotScripts extends JDialog implements ActionListener {
 				public void actionPerformed(final ActionEvent e) {
 					setVisible(false);
 					dispose();
-					final URL url;
-					try {
-						url = new URL(String.format(Resources.getServerLinks().get("scriptsauth"),
-								NetworkAccount.getInstance().isLoggedIn() ? NetworkAccount.getInstance().getAccount().getAuth() : "-",
-								def.getID()));
-					} catch (final MalformedURLException ignored) {
-						log.severe("Could not call auth server");
-						return;
-					}
 					final Map<String, Map<String, String>> data;
 					try {
-						data = IniParser.deserialise(HttpClient.openStream(url));
+						data = IniParser.deserialise(Resources.openHttpStream("scriptsauth", NetworkAccount.getInstance().isLoggedIn() ? NetworkAccount.getInstance().getAccount().getAuth() : "", def.getID()));
 					} catch (final IOException ignored) {
 						log.severe("Unable to obtain auth response");
+						return;
+					} catch (final NullPointerException ignored) {
+						log.severe("Could not identify auth server");
 						return;
 					}
 					if (data == null || !data.containsKey("auth")) {

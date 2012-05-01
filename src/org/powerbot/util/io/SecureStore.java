@@ -3,7 +3,6 @@ package org.powerbot.util.io;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.RandomAccessFile;
@@ -47,7 +46,7 @@ public final class SecureStore {
 		}
 	}
 
-	public static SecureStore getInstance() {
+	public synchronized static SecureStore getInstance() {
 		if (instance == null) {
 			instance = new SecureStore();
 		}
@@ -247,6 +246,11 @@ public final class SecureStore {
 		entry.name = name;
 		entry.length = l;
 		entry.position = z;
+		final byte[] content = entry.getBytes(), header = Arrays.copyOf(content, TarEntry.BLOCKSIZE), pad = new byte[header.length - content.length];
+		new SecureRandom().nextBytes(pad);
+		for (int i = 0; i < pad.length; i++) {
+			header[pad.length + i] = pad[i];
+		}
 		raf.write(cryptBlock(Arrays.copyOf(entry.getBytes(), TarEntry.BLOCKSIZE), Cipher.ENCRYPT_MODE));
 		synchronized (entries) {
 			if (entries.containsKey(entry.name)) {
@@ -278,7 +282,10 @@ public final class SecureStore {
 		return out;
 	}
 
-	private FilterInputStream getCipherInputStream(final InputStream is, final int opmode) throws GeneralSecurityException {
+	private InputStream getCipherInputStream(final InputStream is, final int opmode) throws GeneralSecurityException {
+		if (CIPHER_ALGORITHM == null || CIPHER_ALGORITHM.isEmpty()) {
+			return is;
+		}
 		return CipherStreams.getCipherInputStream(is, opmode, key, CIPHER_ALGORITHM, KEY_ALGORITHM);
 	}
 
