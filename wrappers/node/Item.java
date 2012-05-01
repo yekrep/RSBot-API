@@ -42,7 +42,7 @@ public class Item implements Identifiable {
 	public Item(final WidgetChild widgetChild) {
 		id = widgetChild.getChildId();
 		stack = widgetChild.getChildStackSize();
-		this.widgetChild = widgetChild;
+		this.widgetChild = new WidgetChild_Item(widgetChild);
 	}
 
 	public int getId() {
@@ -94,5 +94,16 @@ public class Item implements Identifiable {
 			}
 		}
 		return false;
+	}
+
+	private final class WidgetChild_Item extends WidgetChild {
+		public WidgetChild_Item(final WidgetChild original) {
+			super(original.getWidget(), original.getParent(), original.getIndex());
+		}
+
+		@Override
+		public boolean validate() {
+			return super.validate() && widgetChild.getChildId() != -1;
+		}
 	}
 }
