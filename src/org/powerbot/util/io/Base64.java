@@ -54,8 +54,8 @@ public class Base64 {
 	public static byte[] decode(final byte[] encodedBytes) {
 		final int inputLength = encodedBytes.length;
 		int separatorCount = 0;
-		for (int i = 0; i < inputLength; i++) {
-			if (INT_ARRAY[encodedBytes[i] & 0xff] < 0) {
+		for (final byte encodedByte : encodedBytes) {
+			if (INT_ARRAY[encodedByte & 0xff] < 0) {
 				separatorCount++;
 			}
 		}
