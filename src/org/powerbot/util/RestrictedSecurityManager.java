@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 
 import org.powerbot.game.GameDefinition;
 import org.powerbot.service.scripts.ScriptClassLoader;
+import org.powerbot.util.Configuration.OperatingSystem;
 import org.powerbot.util.io.SecureStore;
 
 /**
@@ -183,6 +184,11 @@ public class RestrictedSecurityManager extends SecurityManager {
 
 		// allow read permissions to all files
 		if (readOnly) {
+			return;
+		}
+
+		// hack fix for odd occurance on OS X
+		if (Configuration.OS == OperatingSystem.MAC && path.startsWith("/var/folders/") && Thread.currentThread().getName().equals("main")) {
 			return;
 		}
 
