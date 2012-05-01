@@ -5,9 +5,7 @@ import java.awt.Color;
 import java.awt.Desktop;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -30,12 +28,9 @@ import org.powerbot.gui.component.BotPanel;
 import org.powerbot.gui.component.BotToolBar;
 import org.powerbot.service.NetworkAccount;
 import org.powerbot.util.Configuration;
+import org.powerbot.util.LoadLicense;
 import org.powerbot.util.LoadUpdates;
-import org.powerbot.util.StringUtil;
-import org.powerbot.util.io.IOHelper;
-import org.powerbot.util.io.IniParser;
 import org.powerbot.util.io.Resources;
-import org.powerbot.util.io.SecureStore;
 
 /**
  * @author Paris
@@ -159,24 +154,6 @@ public class BotChrome extends JFrame implements WindowListener {
 	}
 
 	public void windowOpened(final WindowEvent arg0) {
-	}
-
-	private final class LoadLicense implements Callable<Boolean> {
-		public Boolean call() throws Exception {
-			final String name = "license-accept.txt";
-			try {
-				if (new File(Configuration.STORE).isFile()) {
-					final InputStream in = SecureStore.getInstance().read(name);
-					if (in != null && IniParser.parseBool(IOHelper.readString(in))) {
-						return true;
-					}
-				}
-			} catch (final Exception ignored) {
-			}
-			new BotLicense(BotChrome.this, true);
-			SecureStore.getInstance().write(name, StringUtil.getBytesUtf8("true"));
-			return true;
-		}
 	}
 
 	private final class LoadAccount implements Callable<Boolean> {
