@@ -1,14 +1,11 @@
 package org.powerbot.util;
 
 import java.io.File;
-import java.io.FileDescriptor;
 import java.net.InetAddress;
 import java.security.Permission;
 import java.util.logging.Logger;
 
 import org.powerbot.game.GameDefinition;
-import org.powerbot.gui.BotChrome;
-import org.powerbot.gui.BotLicense;
 import org.powerbot.service.scripts.ScriptClassLoader;
 import org.powerbot.util.io.SecureStore;
 
@@ -19,23 +16,10 @@ public class RestrictedSecurityManager extends SecurityManager {
 	private static final Logger log = Logger.getLogger("Security");
 	public static final String DNS1 = "8.8.8.8", DNS2 = "8.8.4.4";
 
-	private String getCallingClass() {
-		final Class<?>[] context = getClassContext();
-		for (int i = 1; i < context.length; i++) {
-			final Class<?> clazz = context[i];
-			final String name = clazz.getName();
-			if (name.startsWith("java.") || name.startsWith("javax.") || name.startsWith("com.sun.") || name.startsWith("sun.") ||
-					name.equals(RestrictedSecurityManager.class.getName())) {
-				continue;
-			}
-			return name;
-		}
-		return null;
-	}
-
 	@Override
 	public void checkAccept(final String host, final int port) {
 		if (port == 53 && (host.equals(DNS1) || host.equals(DNS2))) {
+			super.checkAccept(host, port);
 			return;
 		}
 		throw new SecurityException();
@@ -44,7 +28,7 @@ public class RestrictedSecurityManager extends SecurityManager {
 	@Override
 	public void checkAccess(final Thread t) {
 		if (isScriptThread()) {
-			log.severe("Thread access denied to: " + getCallingClass());
+			log.severe("Thread access denied");
 			throw new SecurityException();
 		}
 		super.checkAccess(t);
@@ -53,7 +37,7 @@ public class RestrictedSecurityManager extends SecurityManager {
 	@Override
 	public void checkAccess(final ThreadGroup g) {
 		if (isScriptThread()) {
-			log.severe("Thread access denied to: " + getCallingClass());
+			log.severe("Thread group access denied");
 			throw new SecurityException();
 		}
 		super.checkAccess(g);
@@ -84,9 +68,10 @@ public class RestrictedSecurityManager extends SecurityManager {
 	@Override
 	public void checkCreateClassLoader() {
 		if (isScriptThread()) {
-			log.severe("Creating class loader denied to " + getCallingClass());
+			log.severe("Creating class loader denied");
 			throw new SecurityException();
 		}
+		super.checkCreateClassLoader();
 	}
 
 	@Override
@@ -97,20 +82,18 @@ public class RestrictedSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkExec(final String cmd) {
-		if (isCallingClass(BotChrome.class, LoadUpdates.class)) {
-			super.checkExec(cmd);
-		} else {
+		if (isScriptThread()) {
 			throw new SecurityException();
 		}
+		super.checkExec(cmd);
 	}
 
 	@Override
 	public void checkExit(final int status) {
-		if (isCallingClass(BotChrome.class, LoadUpdates.class, BotLicense.class)) {
-			super.checkExit(status);
-		} else {
+		if (isScriptThread()) {
 			throw new SecurityException();
 		}
+		super.checkExit(status);
 	}
 
 	@Override
@@ -118,6 +101,7 @@ public class RestrictedSecurityManager extends SecurityManager {
 		if (port != 0) {
 			throw new SecurityException();
 		}
+		super.checkListen(port);
 	}
 
 	@Override
@@ -158,28 +142,20 @@ public class RestrictedSecurityManager extends SecurityManager {
 	@Override
 	public void checkRead(final String file, final Object context) {
 		checkRead(file);
+		super.checkRead(file, context);
 	}
 
 	@Override
 	public void checkSetFactory() {
-		if (getCallingClass() != null) {
+		if (isScriptThread()) {
 			throw new SecurityException();
 		}
+		super.checkSetFactory();
 	}
 
 	@Override
 	public void checkSystemClipboardAccess() {
 		throw new SecurityException();
-	}
-
-	@Override
-	public boolean checkTopLevelWindow(final Object window) {
-		return super.checkTopLevelWindow(window);
-	}
-
-	@Override
-	public void checkWrite(final FileDescriptor fd) {
-		super.checkWrite(fd);
 	}
 
 	@Override
@@ -190,11 +166,13 @@ public class RestrictedSecurityManager extends SecurityManager {
 
 	private void checkFilePath(final String pathRaw, final boolean readOnly) {
 		final String path = StringUtil.urlDecode(new File(pathRaw).getAbsolutePath());
-		final String calling = getCallingClass();
 		final String tmp = System.getProperty("java.io.tmpdir");
 
 		// allow access to secure store file for that specific class
-		if (path.equals(new File(Configuration.STORE).getAbsolutePath()) && calling.equals(SecureStore.class.getName())) {
+		if (path.equals(new File(Configuration.STORE).getAbsolutePath())) {
+			if (!isCallingClass(SecureStore.class, LoadLicense.class)) {
+				throw new SecurityException("Access to secure store denied");
+			}
 			return;
 		}
 
@@ -213,16 +191,16 @@ public class RestrictedSecurityManager extends SecurityManager {
 			return;
 		}
 
-		log.severe((readOnly ? "Read" : "Write") + " denied: " + path + " (" + calling + ") on " + Thread.currentThread().getName() + "/" + Thread.currentThread().getThreadGroup().getName());
+		log.severe((readOnly ? "Read" : "Write") + " denied: " + path + " on " + Thread.currentThread().getName() + "/" + Thread.currentThread().getThreadGroup().getName());
 		throw new SecurityException();
 	}
 
 	private boolean isCallingClass(final Class<?>... classes) {
-		final String calling = getCallingClass();
-		for (final Class<?> clazz : classes) {
-			final String name = clazz.getName();
-			if (calling.equals(name) || calling.startsWith(name + "$")) {
-				return true;
+		for (final Class<?> context : getClassContext()) {
+			for (final Class<?> clazz : classes) {
+				if (clazz.isAssignableFrom(context)) {
+					return true;
+				}
 			}
 		}
 		return false;
