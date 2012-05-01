@@ -6,11 +6,10 @@ import java.net.InetAddress;
 import java.security.Permission;
 import java.util.logging.Logger;
 
-import org.powerbot.concurrent.ThreadPool;
 import org.powerbot.game.GameDefinition;
-import org.powerbot.game.loader.RSClassLoader;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.gui.BotLicense;
+import org.powerbot.service.scripts.ScriptClassLoader;
 import org.powerbot.util.io.SecureStore;
 
 /**
@@ -44,12 +43,19 @@ public class RestrictedSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkAccess(final Thread t) {
-		checkAccess(t.getThreadGroup());
+		if (isScriptThread()) {
+			log.severe("Thread access denied to: " + getCallingClass());
+			throw new SecurityException();
+		}
 		super.checkAccess(t);
 	}
 
 	@Override
 	public void checkAccess(final ThreadGroup g) {
+		if (isScriptThread()) {
+			log.severe("Thread access denied to: " + getCallingClass());
+			throw new SecurityException();
+		}
 		super.checkAccess(g);
 	}
 
@@ -77,7 +83,7 @@ public class RestrictedSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkCreateClassLoader() {
-		if (isScriptThread() && !isCallingClass(RSClassLoader.class)) {
+		if (isScriptThread()) {
 			log.severe("Creating class loader denied to " + getCallingClass());
 			throw new SecurityException();
 		}
@@ -223,6 +229,13 @@ public class RestrictedSecurityManager extends SecurityManager {
 	}
 
 	private boolean isScriptThread() {
-		return Thread.currentThread().getName().startsWith(ThreadPool.THREADGROUPNAMEPREFIX);
+		final Class<?>[] context = getClassContext();
+		for (int i = 1; i < context.length; i++) {
+			final ClassLoader loader = context[i].getClassLoader();
+			if (loader != null && loader.getClass().isAssignableFrom(ScriptClassLoader.class)) {
+				return true;
+			}
+		}
+		return false;
 	}
 }
