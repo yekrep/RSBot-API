@@ -68,7 +68,7 @@ public class Walking {
 	public static void setRun(final boolean enabled) {
 		if (isRunEnabled() != enabled && Widgets.get(WIDGET, WIDGET_RUN).click(true)) {
 			final Timer t = new Timer(500);
-			while(t.isRunning() && isRunEnabled() != enabled) {
+			while (t.isRunning() && isRunEnabled() != enabled) {
 				Time.sleep(5);
 			}
 		}
@@ -124,7 +124,7 @@ public class Walking {
 					}
 
 					public boolean validate() {
-						return Calculations.distance(tile, Players.getLocal().getLocation()) <= 17;
+						return tile.isOnMap();
 					}
 				},
 				new Filter<Point>() {
