@@ -121,14 +121,14 @@ public class Game {
 	 * @return <tt>true</tt> if and only if the client's state equals the state you want it to be in.
 	 */
 	public static boolean logout(final boolean lobby) {
-		if ((Game.getClientState() == Game.INDEX_LOBBY_SCREEN && lobby) || (Game.getClientState() == Game.INDEX_LOGIN_SCREEN && !lobby)) {
+		if (Game.getClientState() == Game.INDEX_LOBBY_SCREEN && lobby || Game.getClientState() == Game.INDEX_LOGIN_SCREEN && !lobby) {
 			return true;
 		}
 		if (Tabs.LOGOUT.open()) {
 			final WidgetChild w = Widgets.get(182, lobby ? 6 : 13);
 			if (w != null && w.validate() && w.interact("Exit to " + (lobby ? "Lobby" : "Login"))) {
 				for (int i = 0; i < 10; i++, Time.sleep(100, 200)) {
-					if ((Game.getClientState() == Game.INDEX_LOBBY_SCREEN && lobby) || (Game.getClientState() == Game.INDEX_LOGIN_SCREEN && !lobby)) {
+					if (Game.getClientState() == Game.INDEX_LOBBY_SCREEN && lobby || Game.getClientState() == Game.INDEX_LOGIN_SCREEN && !lobby) {
 						return true;
 					}
 				}
