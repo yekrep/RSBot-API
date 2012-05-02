@@ -25,6 +25,13 @@ import org.powerbot.game.client.Client;
  * @author Timer
  */
 public class Mouse {
+	public static final int PRIORITY_VERY_LOW = 125;
+	public static final int PRIORITY_LOW = 250;
+	public static final int PRIORITY_DEFAULT = 500;
+	public static final int PRIORITY_HIGH = 750;
+	public static final int PRIORITY_VERY_HIGH = 1000;
+	public static final int PRIORITY_REAL_TIME = Integer.MAX_VALUE;
+
 	private static final Map<ThreadGroup, Integer> dragLengths = new HashMap<ThreadGroup, Integer>();
 	private static final Map<ThreadGroup, Integer> sides = new HashMap<ThreadGroup, Integer>();
 
