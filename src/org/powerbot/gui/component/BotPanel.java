@@ -233,7 +233,7 @@ public class BotPanel extends JPanel {
 			}
 			final int f_mouseX = mouseX, f_mouseY = mouseY;
 			mouseNode = new MouseNode(
-					MouseNode.PRIORITY_HUMAN,
+					org.powerbot.game.api.methods.input.Mouse.PRIORITY_REAL_TIME,
 					new ViewportEntity() {
 						private final Rectangle area = new Rectangle(f_mouseX - 1, f_mouseY - 1, 3, 3);
 

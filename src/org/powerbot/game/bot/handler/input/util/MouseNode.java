@@ -2,15 +2,13 @@ package org.powerbot.game.bot.handler.input.util;
 
 import java.awt.Point;
 
+import org.powerbot.game.api.methods.input.Mouse;
 import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Timer;
 import org.powerbot.game.api.wrappers.ViewportEntity;
 
 public class MouseNode {
-	public static final int PRIORITY_DEFAULT = 1;
-	public static final int PRIORITY_HUMAN = Integer.MAX_VALUE;
-
 	private final int priority;
 	private final ViewportEntity viewportEntity;
 	private final Filter<Point> filter;
@@ -23,7 +21,7 @@ public class MouseNode {
 	private boolean consumed;
 
 	public MouseNode(final ViewportEntity viewportEntity, final Filter<Point> filter) {
-		this(PRIORITY_DEFAULT, viewportEntity, filter);
+		this(Mouse.PRIORITY_DEFAULT, viewportEntity, filter);
 	}
 
 	public MouseNode(final int priority, final ViewportEntity viewportEntity, final Filter<Point> filter) {
