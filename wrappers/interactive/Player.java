@@ -58,7 +58,7 @@ public class Player extends Character {
 	public int[] getAppearance() {
 		final Object composite = ((RSPlayerComposite) get()).getRSPlayerComposite();
 		if (composite != null) {
-			final int[] appearance = (int[]) ((RSPlayerCompositeEquipment) composite).getRSPlayerCompositeEquipment();
+			final int[] appearance = ((int[]) ((RSPlayerCompositeEquipment) composite).getRSPlayerCompositeEquipment()).clone();
 			for (int i = 0; i < appearance.length; i++) {
 				if ((appearance[i] & 0x40000000) > 0) {
 					appearance[i] &= 0x3fffffff;
