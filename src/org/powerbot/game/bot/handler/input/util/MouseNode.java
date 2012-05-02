@@ -65,9 +65,7 @@ public class MouseNode {
 	}
 
 	public void complete() {
-		if (!completed) {
-			completed = true;
-		}
+		completed = true;
 	}
 
 	public boolean isCanceled() {
@@ -75,9 +73,7 @@ public class MouseNode {
 	}
 
 	public void cancel() {
-		if (!canceled) {
-			canceled = true;
-		}
+		canceled = true;
 	}
 
 	public void consume() {
