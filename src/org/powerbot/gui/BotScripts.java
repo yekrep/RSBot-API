@@ -89,6 +89,7 @@ public final class BotScripts extends JDialog implements ActionListener {
 	private final JButton username, refresh;
 	private final JTextField search;
 	private final List<String> collection;
+	private final boolean localOnly;
 	private volatile boolean init;
 
 	public BotScripts(final BotToolBar parent) {
@@ -97,7 +98,8 @@ public final class BotScripts extends JDialog implements ActionListener {
 		this.parent = parent;
 		collection = new ArrayList<String>();
 
-		if (Configuration.DEVMODE) {
+		localOnly = Configuration.DEVMODE && !Configuration.SUPERDEV;
+		if (localOnly) {
 			setTitle(getTitle() + " (showing only local scripts)");
 		}
 
@@ -300,15 +302,15 @@ public final class BotScripts extends JDialog implements ActionListener {
 
 	public List<ScriptDefinition> loadScripts() throws IOException {
 		final List<ScriptDefinition> list = new ArrayList<ScriptDefinition>();
-		if (Configuration.DEVMODE) {
-			final List<File> paths = new ArrayList<File>(2);
-			paths.add(new File("bin"));
-			paths.add(new File("out"));
-			for (final File path : paths) {
-				if (path.isDirectory()) {
-					loadLocalScripts(list, path, null);
-				}
+		final List<File> paths = new ArrayList<File>(2);
+		paths.add(new File("bin"));
+		paths.add(new File("out"));
+		for (final File path : paths) {
+			if (path.isDirectory()) {
+				loadLocalScripts(list, path, null);
 			}
+		}
+		if (localOnly) {
 			return list;
 		}
 		final URL src = new URL(Resources.getServerLinks().get("scripts"));
