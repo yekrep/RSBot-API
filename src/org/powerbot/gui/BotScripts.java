@@ -551,31 +551,31 @@ public final class BotScripts extends JDialog implements ActionListener {
 				public void actionPerformed(final ActionEvent e) {
 					setVisible(false);
 					dispose();
-					final Map<String, Map<String, String>> data;
-					try {
-						data = IniParser.deserialise(Resources.openHttpStream("scriptsauth", NetworkAccount.getInstance().isLoggedIn() ? NetworkAccount.getInstance().getAccount().getAuth() : "", def.getID()));
-					} catch (final IOException ignored) {
-						log.severe("Unable to obtain auth response");
-						return;
-					} catch (final NullPointerException ignored) {
-						log.severe("Could not identify auth server");
-						return;
-					}
-					if (data == null || !data.containsKey("auth")) {
-						log.severe("Error reading auth response");
-						return;
-					}
-					if (!data.get("auth").containsKey("access") || !IniParser.parseBool(data.get("auth").get("access"))) {
-						if (data.get("auth").containsKey("message")) {
-							JOptionPane.showMessageDialog(BotScripts.this, data.get("auth").get("message"));
-						}
-						log.severe("You are not authorised to run this script");
-						return;
-					}
 					final ClassLoader cl;
 					if (def.local) {
 						cl = new ScriptClassLoader(def.source);
 					} else {
+						final Map<String, Map<String, String>> data;
+						try {
+							data = IniParser.deserialise(Resources.openHttpStream("scriptsauth", NetworkAccount.getInstance().isLoggedIn() ? NetworkAccount.getInstance().getAccount().getAuth() : "", def.getID()));
+						} catch (final IOException ignored) {
+							log.severe("Unable to obtain auth response");
+							return;
+						} catch (final NullPointerException ignored) {
+							log.severe("Could not identify auth server");
+							return;
+						}
+						if (data == null || !data.containsKey("auth")) {
+							log.severe("Error reading auth response");
+							return;
+						}
+						if (!data.get("auth").containsKey("access") || !IniParser.parseBool(data.get("auth").get("access"))) {
+							if (data.get("auth").containsKey("message")) {
+								JOptionPane.showMessageDialog(BotScripts.this, data.get("auth").get("message"));
+							}
+							log.severe("You are not authorised to run this script");
+							return;
+						}
 						final String name = getSecureFileName(def);
 						if (name == null) {
 							log.severe("Could not save script");

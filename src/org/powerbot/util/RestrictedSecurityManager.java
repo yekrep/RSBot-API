@@ -27,6 +27,24 @@ public class RestrictedSecurityManager extends SecurityManager {
 	}
 
 	@Override
+	public void checkAccess(final Thread t) {
+		if (isScriptThread()) {
+			log.severe("Thread access denied");
+			throw new SecurityException();
+		}
+		super.checkAccess(t);
+	}
+
+	@Override
+	public void checkAccess(final ThreadGroup g) {
+		if (isScriptThread()) {
+			log.severe("Thread group access denied");
+			throw new SecurityException();
+		}
+		super.checkAccess(g);
+	}
+
+	@Override
 	public void checkConnect(final String host, final int port) {
 		checkConnect(host, port, null);
 	}
