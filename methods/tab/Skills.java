@@ -126,7 +126,7 @@ public class Skills {
 		if (endLvl >= Skills.XP_TABLE.length) {
 			return -1;
 		}
-		return Skills.XP_TABLE[endLvl] - getExperience(index);
+		return getExperienceRequired(endLvl) - getExperience(index);
 	}
 
 	/**
