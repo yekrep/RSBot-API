@@ -68,9 +68,8 @@ public class Resources {
 
 	public static Map<String, Map<String, String>> getServerData() throws IOException {
 		if (serverData == null) {
-			final File local = new File(Paths.SERVER);
-			if (!Configuration.FROMJAR && local.exists()) {
-				serverData = IniParser.deserialise(local);
+			if (Configuration.SUPERDEV) {
+				serverData = IniParser.deserialise(new File(Paths.SERVER));
 			} else {
 				final HttpURLConnection con = HttpClient.getHttpConnection(new URL(Configuration.URLs.CONTROL));
 				final URL base = new URL(con.getHeaderField("Location"));

@@ -11,6 +11,7 @@ public class Configuration {
 	public static final String NAME = "RSBot";
 	public static final boolean FROMJAR;
 	public static boolean DEVMODE = false;
+	public static final boolean SUPERDEV;
 	public static final int VERSION = 4009;
 	public static final String STORE;
 	public static final OperatingSystem OS;
@@ -28,6 +29,7 @@ public class Configuration {
 
 	static {
 		FROMJAR = Configuration.class.getClassLoader().getResource(Resources.Paths.ICON) != null;
+		SUPERDEV = !Configuration.FROMJAR && new File(Resources.Paths.SERVER).exists();
 
 		final String appdata = System.getenv("APPDATA"), home = System.getProperty("user.home");
 		final String root = appdata != null && new File(appdata).isDirectory() ? appdata : home == null ? "~" : home;
