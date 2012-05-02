@@ -358,6 +358,9 @@ public final class BotScripts extends JDialog implements ActionListener {
 				continue;
 			}
 			for (final ScriptDefinition def : scripts) {
+				if (def.local) {
+					continue;
+				}
 				final String name = getSecureFileName(def);
 				if (name == null) {
 					continue;
