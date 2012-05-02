@@ -150,9 +150,13 @@ public class Bank {
 			return NONE;
 		}
 	}
+	
+	public static Widget getWidget() {
+		return Widgets.get(WIDGET_BANK);
+	}
 
 	public static boolean isOpen() {
-		final Widget bank = Widgets.get(WIDGET_BANK);
+		final Widget bank = getWidget();
 		return bank != null && bank.validate();
 	}
 
@@ -192,7 +196,7 @@ public class Bank {
 
 	public static boolean close() {
 		if (!isOpen()) {
-			return false;
+			return true;
 		}
 		final WidgetChild closeButton = Widgets.get(WIDGET_BANK, WIDGET_BUTTON_CLOSE_BANK);
 		return closeButton != null && closeButton.interact("Close");
@@ -346,25 +350,44 @@ public class Bank {
 	}
 
 	public static Item[] getItems(final boolean currentTabOnly) {
+		return getItems(currentTabOnly, Inventory.ALL_FILTER);
+	}
+	
+	public static Item[] getItems(final boolean currentTabOnly, final Filter<Item> itemFilter) {
 		if (!isOpen()) {
 			return new Item[0];
 		}
 		final WidgetChild[] slots = Widgets.get(WIDGET_BANK, WIDGET_SLOTS_CONTAINER).getChildren();
 		final ArrayList<Item> items = new ArrayList<Item>();
 		for (final WidgetChild slot : slots) {
-			if (slot.getChildId() != -1 && (!currentTabOnly || slot.getRelativeY() != 0)) {
-				items.add(new Item(slot));
+			if (slot != null && slot.getChildId() != -1 && (!currentTabOnly || slot.getRelativeY() != 0)) {
+				Item item = new Item(slot);
+				if (itemFilter.accept(item)) {
+					items.add(item);	
+				}
 			}
 		}
 		return items.toArray(new Item[items.size()]);
 	}
 
 	public static Item getItem(final int... ids) {
-		for (final Item item : getItems()) {
-			for (final int id : ids) {
-				if (item.getId() == id) {
-					return item;
+		return getItem(new Filter<Item>() {
+			public boolean accept(Item item) {
+				int itemId = item.getId();
+				for (int id : ids) {
+					if (itemId == id) {
+						return true;
+					}
 				}
+				return false;
+			}
+		});
+	}
+	
+	public static Item getItem(final Filter<Item> itemFilter) {
+		for (final Item item : getItems()) {
+			if (item != null && itemFilter.accept(item)) {
+				return item;
 			}
 		}
 		return null;
@@ -375,21 +398,29 @@ public class Bank {
 	}
 
 	public static int getItemCount(final boolean countStack, final int... ids) {
-		int count = 0;
-		for (final Item item : getItems()) {
-			for (final int id : ids) {
-				if (item.getId() == id) {
-					count += countStack ? item.getStackSize() : 1;
+		return getItemCount(countStack, new Filter<Item>() {
+			public boolean accept(Item item) {
+				int itemId = item.getId();
+				for (int id : ids) {
+					if (itemId == id) {
+						return true;
+					}
 				}
+				return false;
 			}
-		}
-		return count;
+		});
 	}
 
 	public static int getItemCount(final boolean countStack) {
+		return getItemCount(countStack, Inventory.ALL_FILTER);
+	}
+	
+	public static int getItemCount(final boolean countStack, final Filter<Item> itemFilter) {
 		int count = 0;
 		for (final Item item : getItems()) {
-			count += countStack ? item.getStackSize() : 1;
+			if (item != null && itemFilter.accept(item)) {
+				count += countStack ? item.getStackSize() : 1;	
+			}
 		}
 		return count;
 	}
