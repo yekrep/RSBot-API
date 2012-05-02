@@ -28,6 +28,7 @@ import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -350,6 +351,11 @@ public final class BotScripts extends JDialog implements ActionListener {
 			return;
 		}
 		Collections.addAll(collection, data.split("\n"));
+		final Iterator<ScriptDefinition> i = scripts.iterator();
+		while (i.hasNext()) {
+			if (!collection.contains(i.next().getName()))
+			i.remove();
+		}
 	}
 
 	private void updateCache(final List<ScriptDefinition> scripts) {
