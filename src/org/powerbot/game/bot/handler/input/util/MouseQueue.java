@@ -17,7 +17,7 @@ public class MouseQueue {
 		return size;
 	}
 
-	public void offer(final MouseNode e) {
+	public synchronized void offer(final MouseNode e) {
 		synchronized (lock) {
 			if (e == null) {
 				throw new NullPointerException();
@@ -29,7 +29,7 @@ public class MouseQueue {
 		}
 	}
 
-	public void insert(final MouseNode e) {
+	public synchronized void insert(final MouseNode e) {
 		synchronized (lock) {
 			if (e == null) {
 				throw new NullPointerException();
@@ -42,11 +42,11 @@ public class MouseQueue {
 		}
 	}
 
-	public MouseNode poll() {
+	public synchronized MouseNode poll() {
 		return poll(-1);
 	}
 
-	public MouseNode poll(int highestPriority) {
+	public synchronized MouseNode poll(int highestPriority) {
 		synchronized (lock) {
 			if (size == 0) {
 				return null;
@@ -69,7 +69,7 @@ public class MouseQueue {
 		}
 	}
 
-	public void condense() {
+	public synchronized void condense() {
 		synchronized (lock) {
 			for (int i = 0; i < size; i++) {
 				if (queue[i] == null || queue[i].isCanceled()) {

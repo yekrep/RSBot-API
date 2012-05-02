@@ -13,6 +13,7 @@ public class MouseReactor implements Task {
 	private final TaskContainer container;
 	private final MouseQueue mouseQueue;
 	private final MouseExecutor executor;
+	private volatile int current_priority = -1;
 
 	public MouseReactor(final Bot bot) {
 		this.container = bot.getContainer();
@@ -29,9 +30,13 @@ public class MouseReactor implements Task {
 			/* Poll the next highest priority mouse task. */
 			final MouseNode node = mouseQueue.poll();
 			if (node != null) {
+				final int node_priority = node.getPriority();
+				if (node_priority > current_priority) {
+					current_priority = node_priority;
+				}
 				final Timer timer = node.getTimer();
 				/* Step until timeout or consumes itself. */
-				while (timer.isRunning() && node.processable()) {
+				while (timer.isRunning() && node.processable() && node_priority >= current_priority) {
 					try {
 						executor.step(node);
 					} catch (final Throwable ignored) {
@@ -45,7 +50,10 @@ public class MouseReactor implements Task {
 					synchronized (node.getLock()) {
 						node.getLock().notify();
 					}
+				} else if (node.processable()) {
+					mouseQueue.insert(node);
 				}
+				current_priority = -1;
 				continue;
 			}
 
@@ -60,6 +68,11 @@ public class MouseReactor implements Task {
 	}
 
 	public boolean process(final MouseNode node) {
+		final int node_priority = node.getPriority();
+		if (node_priority > current_priority) {
+			current_priority = node_priority;
+		}
+
 		/* Offer the node to the queue for processing by the reactor. */
 		mouseQueue.offer(node);
 		/* Notify the reactor to wake up. */
