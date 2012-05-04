@@ -42,7 +42,7 @@ public class Settings {
     }
 
     /**
-     * Gets the value at a given index, bit shifts it right by a given number of bits and applys a mask
+     * Gets the value at a given index, bit shifts it right by a given number of bits and applies a mask
      * @param index the index in the settings array
      * @param shift the number of bits to right shift
      * @param mask the bitmask
