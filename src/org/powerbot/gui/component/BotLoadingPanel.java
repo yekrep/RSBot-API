@@ -118,9 +118,9 @@ public final class BotLoadingPanel extends JPanel {
 					if (!BotChrome.loaded) {
 						return;
 					}
+					t.stop();
 					ad.run();
 					setAdVisible(visible);
-					t.stop();
 				}
 			});
 			t.setCoalesce(false);
