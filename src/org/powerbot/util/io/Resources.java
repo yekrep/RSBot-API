@@ -93,6 +93,10 @@ public class Resources {
 		if (link == null || link.isEmpty()) {
 			return null;
 		}
+		return openHttpStreamFromLink(link, args);
+	}
+
+	public static InputStream openHttpStreamFromLink(String link, final Object... args) throws IOException {
 		URL url = new URL(String.format(link, args));
 		final String query = url.getFile(), marker = "{POST}";
 		final int z = query.indexOf(marker);
