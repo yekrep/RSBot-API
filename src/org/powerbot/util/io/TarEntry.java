@@ -16,7 +16,7 @@ public final class TarEntry {
 
 	public String name = "", linked = "";
 	public int mode = 100777, owner = 0, group = 0, checksum = 0;
-	public long length, modified = System.currentTimeMillis();
+	public long length, modified = System.currentTimeMillis() / 1000;
 	public byte type = 1;
 	public long position = -1;
 
