@@ -14,7 +14,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.security.GeneralSecurityException;
 import java.util.HashMap;
@@ -38,8 +37,6 @@ import org.powerbot.game.GameDefinition;
 import org.powerbot.game.bot.Bot;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.service.NetworkAccount;
-import org.powerbot.util.StringUtil;
-import org.powerbot.util.io.IOHelper;
 import org.powerbot.util.io.Resources;
 import org.powerbot.util.io.SecureStore;
 
@@ -164,16 +161,7 @@ public final class BotLoadingPanel extends JPanel {
 					final String src = Resources.getServerData().get("ads").get("image"), link = Resources.getServerData().get("ads").get("link");
 					final String filename = "ad.png";
 					final URL url = new URL(src);
-					final String fileid = "ad-image.txt";
-					final InputStream is = SecureStore.getInstance().read(fileid);
-					if (is != null) {
-						final String cached = StringUtil.newStringUtf8(IOHelper.read(is));
-						if (!cached.equals(src)) {
-							SecureStore.getInstance().delete(filename);
-						}
-					}
 					SecureStore.getInstance().download(filename, url);
-					SecureStore.getInstance().write(fileid, StringUtil.getBytesUtf8(src));
 					BufferedImage image = ImageIO.read(SecureStore.getInstance().read(filename));
 					if (image.getWidth() > PANEL_WIDTH || image.getHeight() > PANEL_HEIGHT) {
 						final float factor = (float) Math.min((double) PANEL_WIDTH / image.getWidth(), (double) PANEL_HEIGHT / image.getHeight());
