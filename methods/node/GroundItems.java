@@ -15,8 +15,9 @@ import org.powerbot.game.api.wrappers.node.GroundItem;
 import org.powerbot.game.api.wrappers.node.Item;
 import org.powerbot.game.bot.Context;
 import org.powerbot.game.client.Client;
+import org.powerbot.game.client.HashTable;
+import org.powerbot.game.client.NodeDeque;
 import org.powerbot.game.client.NodeListCache;
-import org.powerbot.game.client.NodeListCacheNodeList;
 import org.powerbot.game.client.RSItem;
 
 public class GroundItems {
@@ -146,17 +147,17 @@ public class GroundItems {
 		}
 		final List<GroundItem> groundItems = new ArrayList<GroundItem>();
 		final Client client = Context.client();
-		final Object itemHashTable = client.getRSItemHashTable();
+		final HashTable itemHashTable = (HashTable) client.getRSItemHashTable();
 		final int floor = Game.getPlane();
 		final int index = x | y << 14 | floor << 28;
 
 		final NodeListCache itemNodeListCache = (NodeListCache) Nodes.lookup(itemHashTable, index);
 
-		if (itemNodeListCache == null || itemNodeListCache.getData() == null) {
+		if (itemNodeListCache == null || itemNodeListCache.getNodeList() == null) {
 			return new GroundItem[0];
 		}
 
-		final Deque<RSItem> itemDeque = new Deque<RSItem>(((NodeListCacheNodeList) itemNodeListCache.getData()).getNodeListCacheNodeList());
+		final Deque<RSItem> itemDeque = new Deque<RSItem>((NodeDeque) itemNodeListCache.getNodeList());
 		for (RSItem item = itemDeque.getHead(); item != null; item = itemDeque.getNext()) {
 			groundItems.add(new GroundItem(new Tile(x, y, floor), new Item(item)));
 		}

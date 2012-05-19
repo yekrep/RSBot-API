@@ -9,11 +9,9 @@ import org.powerbot.game.api.util.internal.Multipliers;
 import org.powerbot.game.api.wrappers.Tile;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
 import org.powerbot.game.bot.Context;
-import org.powerbot.game.client.BaseInfoInts;
-import org.powerbot.game.client.BaseInfoX;
-import org.powerbot.game.client.BaseInfoY;
+import org.powerbot.game.client.BaseInfo;
 import org.powerbot.game.client.Client;
-import org.powerbot.game.client.RSInfoBaseInfo;
+import org.powerbot.game.client.RSInfo;
 
 /**
  * A utility for the manipulation of the game.
@@ -82,7 +80,7 @@ public class Game {
 	public static int getBaseX() {
 		final Client client = Context.client();
 		final Multipliers multipliers = Context.multipliers();
-		return (((BaseInfoX) ((BaseInfoInts) ((RSInfoBaseInfo) client.getRSGroundInfo()).getRSInfoBaseInfo()).getBaseInfoInts()).getBaseInfoX() * multipliers.BASEDATA_X) >> 8;
+		return ((BaseInfo) ((RSInfo) client.getRSGroundInfo()).getBaseInfo()).getX() * multipliers.BASEDATA_X >> 8;
 	}
 
 	/**
@@ -91,16 +89,16 @@ public class Game {
 	public static int getBaseY() {
 		final Client client = Context.client();
 		final Multipliers multipliers = Context.multipliers();
-		return (((BaseInfoY) ((BaseInfoInts) ((RSInfoBaseInfo) client.getRSGroundInfo()).getRSInfoBaseInfo()).getBaseInfoInts()).getBaseInfoY() * multipliers.BASEDATA_Y) >> 8;
+		return ((BaseInfo) ((RSInfo) client.getRSGroundInfo()).getBaseInfo()).getY() * multipliers.BASEDATA_Y >> 8;
 	}
 
 	public static Tile getMapBase() {
 		final Client client = Context.client();
 		final Multipliers multipliers = Context.multipliers();
-		final Object infoInts = ((BaseInfoInts) ((RSInfoBaseInfo) client.getRSGroundInfo()).getRSInfoBaseInfo()).getBaseInfoInts();
+		final BaseInfo infoInts = (BaseInfo) ((RSInfo) client.getRSGroundInfo()).getBaseInfo();
 		return new Tile(
-				(((BaseInfoX) infoInts).getBaseInfoX() * multipliers.BASEDATA_X) >> 8,
-				(((BaseInfoY) infoInts).getBaseInfoY() * multipliers.BASEDATA_Y) >> 8,
+				(infoInts.getX() * multipliers.BASEDATA_X) >> 8,
+				(infoInts.getY() * multipliers.BASEDATA_Y) >> 8,
 				Game.getPlane()
 		);
 	}

@@ -10,10 +10,10 @@ import org.powerbot.game.api.wrappers.RegionOffset;
 import org.powerbot.game.api.wrappers.interactive.NPC;
 import org.powerbot.game.bot.Context;
 import org.powerbot.game.client.Client;
+import org.powerbot.game.client.HashTable;
 import org.powerbot.game.client.Node;
-import org.powerbot.game.client.RSNPCHolder;
+import org.powerbot.game.client.RSNPC;
 import org.powerbot.game.client.RSNPCNode;
-import org.powerbot.game.client.RSNPCNodeHolder;
 
 /**
  * A utility for the access of Npcs.
@@ -60,9 +60,9 @@ public class NPCs {
 		final int[] indices = client.getRSNPCIndexArray();
 		final Set<NPC> npcs = new HashSet<NPC>();
 		for (final int index : indices) {
-			final Node node = Nodes.lookup(client.getRSNPCNC(), index);
+			final Node node = Nodes.lookup((HashTable) client.getRSNPCNC(), index);
 			if (node != null && node instanceof RSNPCNode) {
-				final NPC npc = new NPC(((RSNPCHolder) ((RSNPCNodeHolder) ((RSNPCNode) node).getData()).getRSNPCNodeHolder()).getRSNPC());
+				final NPC npc = new NPC((RSNPC) ((RSNPCNode) node).getRSNPC());
 				if (filter.accept(npc)) {
 					npcs.add(npc);
 				}
@@ -120,9 +120,9 @@ public class NPCs {
 		double distance = Double.MAX_VALUE;
 		final RegionOffset position = Players.getLocal().getRegionOffset();
 		for (final int index : indices) {
-			final Node node = Nodes.lookup(client.getRSNPCNC(), index);
+			final Node node = Nodes.lookup((HashTable) client.getRSNPCNC(), index);
 			if (node != null && node instanceof RSNPCNode) {
-				final NPC t_npc = new NPC(((RSNPCHolder) ((RSNPCNodeHolder) ((RSNPCNode) node).getData()).getRSNPCNodeHolder()).getRSNPC());
+				final NPC t_npc = new NPC((RSNPC) ((RSNPCNode) node).getRSNPC());
 				if (filter.accept(t_npc)) {
 					final double dist = Calculations.distance(position, t_npc.getRegionOffset());
 					if (dist < distance) {

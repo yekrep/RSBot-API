@@ -15,11 +15,8 @@ import org.powerbot.game.api.wrappers.map.LocalPath;
 import org.powerbot.game.api.wrappers.map.TilePath;
 import org.powerbot.game.bot.Context;
 import org.powerbot.game.client.Client;
-import org.powerbot.game.client.RSGroundDataBlocks;
-import org.powerbot.game.client.RSGroundDataInts;
-import org.powerbot.game.client.RSGroundDataX;
-import org.powerbot.game.client.RSGroundDataY;
-import org.powerbot.game.client.RSInfoGroundData;
+import org.powerbot.game.client.RSGroundData;
+import org.powerbot.game.client.RSInfo;
 
 /**
  * A utility for the manipulation of information required for waking.
@@ -51,10 +48,9 @@ public class Walking {
 	 * @return The <code>Tile</code> of the offset location (different than map base!).
 	 */
 	public static Tile getCollisionOffset(final int plane) {
-		final Client client = Context.client();
-		final Multipliers multipliers = Context.multipliers();
-		final Object groundDataInts = ((RSGroundDataInts) ((Object[]) ((RSInfoGroundData) client.getRSGroundInfo()).getRSInfoGroundData())[plane]).getRSGroundDataInts();
-		return new Tile(((RSGroundDataX) groundDataInts).getRSGroundDataX() * multipliers.GROUNDDATA_X, ((RSGroundDataY) groundDataInts).getRSGroundDataY() * multipliers.GROUNDDATA_Y, plane);
+		final RSInfo info = (RSInfo) Context.client().getRSGroundInfo();
+		final RSGroundData data = ((RSGroundData[]) info.getGroundData())[plane];
+		return new Tile(data.getX(), data.getY(), plane);
 	}
 
 	/**
@@ -62,7 +58,9 @@ public class Walking {
 	 * @return The collision flags of the current map block.
 	 */
 	public static int[][] getCollisionFlags(final int plane) {
-		return (int[][]) ((RSGroundDataBlocks) ((Object[]) ((RSInfoGroundData) Context.client().getRSGroundInfo()).getRSInfoGroundData())[plane]).getRSGroundDataBlocks();
+		final RSInfo info = (RSInfo) Context.client().getRSGroundInfo();
+		final RSGroundData data = ((RSGroundData[]) info.getGroundData())[plane];
+		return (int[][]) data.getBlocks();
 	}
 
 	public static void setRun(final boolean enabled) {

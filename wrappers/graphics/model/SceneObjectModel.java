@@ -3,12 +3,13 @@ package org.powerbot.game.api.wrappers.graphics.model;
 import org.powerbot.game.api.wrappers.graphics.CapturedModel;
 import org.powerbot.game.api.wrappers.node.SceneObject;
 import org.powerbot.game.client.Model;
-import org.powerbot.game.client.RSInteractableManager;
-import org.powerbot.game.client.RSInteractableRSInteractableManager;
+import org.powerbot.game.client.RSInteractable;
+import org.powerbot.game.client.RSInteractableData;
+import org.powerbot.game.client.RSObject;
 
 public class SceneObjectModel extends CapturedModel {
 	private final SceneObject location;
-	private final Object instance;
+	private final RSObject instance;
 
 	public SceneObjectModel(final Model model, final SceneObject location) {
 		super(model, location);
@@ -18,12 +19,14 @@ public class SceneObjectModel extends CapturedModel {
 
 	@Override
 	protected int getLocalX() {
-		return (int) ((RSInteractableManager) ((RSInteractableRSInteractableManager) instance).getRSInteractableRSInteractableManager()).getData().getLocation().getX();
+		final RSInteractableData data = (RSInteractableData) ((RSInteractable) instance).getData();
+		return (int) data.getLocation().getX();
 	}
 
 	@Override
 	protected int getLocalY() {
-		return (int) ((RSInteractableManager) ((RSInteractableRSInteractableManager) instance).getRSInteractableRSInteractableManager()).getData().getLocation().getY();
+		final RSInteractableData data = (RSInteractableData) ((RSInteractable) instance).getData();
+		return (int) data.getLocation().getY();
 	}
 
 	@Override

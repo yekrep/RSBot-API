@@ -21,29 +21,17 @@ import org.powerbot.game.api.wrappers.graphics.CapturedModel;
 import org.powerbot.game.api.wrappers.graphics.model.CharacterModel;
 import org.powerbot.game.bot.Context;
 import org.powerbot.game.client.Client;
+import org.powerbot.game.client.HashTable;
 import org.powerbot.game.client.Model;
-import org.powerbot.game.client.RSAnimatorSequence;
-import org.powerbot.game.client.RSCharacterAnimation;
-import org.powerbot.game.client.RSCharacterHPRatio;
-import org.powerbot.game.client.RSCharacterHeight;
-import org.powerbot.game.client.RSCharacterInteracting;
-import org.powerbot.game.client.RSCharacterIsMoving;
-import org.powerbot.game.client.RSCharacterLoopCycleStatus;
-import org.powerbot.game.client.RSCharacterMessageData;
-import org.powerbot.game.client.RSCharacterOrientation;
-import org.powerbot.game.client.RSCharacterPassiveAnimation;
-import org.powerbot.game.client.RSInteractableBytes;
-import org.powerbot.game.client.RSInteractableInts;
-import org.powerbot.game.client.RSInteractableLocation;
-import org.powerbot.game.client.RSInteractableManager;
-import org.powerbot.game.client.RSInteractablePlane;
-import org.powerbot.game.client.RSInteractableRSInteractableManager;
-import org.powerbot.game.client.RSMessageDataMessage;
-import org.powerbot.game.client.RSNPCHolder;
+import org.powerbot.game.client.RSAnimator;
+import org.powerbot.game.client.RSCharacter;
+import org.powerbot.game.client.RSInteractable;
+import org.powerbot.game.client.RSInteractableData;
+import org.powerbot.game.client.RSMessageData;
+import org.powerbot.game.client.RSNPC;
 import org.powerbot.game.client.RSNPCNode;
-import org.powerbot.game.client.RSNPCNodeHolder;
-import org.powerbot.game.client.SequenceID;
-import org.powerbot.game.client.SequenceInts;
+import org.powerbot.game.client.RSPlayer;
+import org.powerbot.game.client.Sequence;
 
 /**
  * @author Timer
@@ -62,8 +50,9 @@ public abstract class Character implements Entity, Locatable, Rotatable, Identif
 	public abstract String getName();
 
 	public RegionOffset getRegionOffset() {
-		final RSInteractableLocation location = ((RSInteractableManager) ((RSInteractableRSInteractableManager) get()).getRSInteractableRSInteractableManager()).getData().getLocation();
-		return new RegionOffset((int) location.getX() >> 9, (int) location.getY() >> 9, getPlane());
+		final RSInteractable location = get();
+		final RSInteractableData data = (RSInteractableData) location.getData();
+		return new RegionOffset((int) data.getLocation().getX() >> 9, (int) data.getLocation().getY() >> 9, getPlane());
 	}
 
 	public Tile getLocation() {
@@ -72,49 +61,53 @@ public abstract class Character implements Entity, Locatable, Rotatable, Identif
 	}
 
 	public int getPlane() {
-		return ((RSInteractablePlane) ((RSInteractableBytes) get()).getRSInteractableBytes()).getRSInteractablePlane();
+		return get().getPlane();
 	}
 
 	public Character getInteracting() {
-		final int index = ((RSCharacterInteracting) ((RSInteractableInts) get()).getRSInteractableInts()).getRSCharacterInteracting() * multipliers.CHARACTER_INTERACTING;
+		final int index = get().getInteracting() * multipliers.CHARACTER_INTERACTING;
 		if (index == -1) {
 			return null;
 		}
 		if (index < 0x8000) {
-			return new NPC(((RSNPCHolder) ((RSNPCNodeHolder) ((RSNPCNode) Nodes.lookup(client.getRSNPCNC(), index)).getData()).getRSNPCNodeHolder()).getRSNPC());
+			return new NPC((RSNPC) ((RSNPCNode) Nodes.lookup((HashTable) client.getRSNPCNC(), index)).getRSNPC());
 		} else {
-			return new Player(client.getRSPlayerArray()[index - 0x8000]);
+			return new Player((RSPlayer) client.getRSPlayerArray()[index - 0x8000]);
 		}
 	}
 
 	public int getAnimation() {
-		final Object animation = ((RSCharacterAnimation) get()).getRSCharacterAnimation();
+		final RSAnimator animation = (RSAnimator) get().getAnimation();
 		if (animation != null) {
-			final Object sequence = ((RSAnimatorSequence) animation).getRSAnimatorSequence();
+			final Sequence sequence = (Sequence) animation.getSequence();
 			if (sequence != null) {
-				return ((SequenceID) ((SequenceInts) sequence).getSequenceInts()).getSequenceID() * multipliers.SEQUENCE_ID;
+				return sequence.getID() * multipliers.SEQUENCE_ID;
 			}
 		}
 		return -1;
 	}
 
 	public int getPassiveAnimation() {
-		final Object animation = ((RSCharacterPassiveAnimation) get()).getRSCharacterPassiveAnimation();
-		if (animation != null) {
-			final Object sequence = ((RSAnimatorSequence) animation).getRSAnimatorSequence();
-			if (sequence != null) {
-				return ((SequenceID) ((SequenceInts) sequence).getSequenceInts()).getSequenceID() * multipliers.SEQUENCE_ID;
+		try {
+			final RSAnimator animation = (RSAnimator) get().getPassiveAnimation();
+			if (animation != null) {
+				final Sequence sequence = (Sequence) animation.getSequence();
+				if (sequence != null) {
+					return sequence.getID() * multipliers.SEQUENCE_ID;
+				}
 			}
+		} catch (final AbstractMethodError ignored) {
+		} catch (final ClassCastException ignored) {
 		}
 		return -1;
 	}
 
 	public int getHeight() {
-		return ((RSCharacterHeight) ((RSInteractableInts) get()).getRSInteractableInts()).getRSCharacterHeight() * multipliers.CHARACTER_HEIGHT;
+		return get().getHeight() * multipliers.CHARACTER_HEIGHT;
 	}
 
 	public int getRotation() {
-		return ((RSCharacterOrientation) ((RSInteractableInts) get()).getRSInteractableInts()).getRSCharacterOrientation() * multipliers.CHARACTER_ORIENTATION;
+		return get().getOrientation() * multipliers.CHARACTER_ORIENTATION;
 	}
 
 	public int getOrientation() {
@@ -122,14 +115,14 @@ public abstract class Character implements Entity, Locatable, Rotatable, Identif
 	}
 
 	public boolean isInCombat() {
-		return Game.isLoggedIn() && Game.getLoopCycle() < ((RSCharacterLoopCycleStatus) ((RSInteractableInts) get()).getRSInteractableInts()).getRSCharacterLoopCycleStatus() * multipliers.CHARACTER_LOOPCYCLESTATUS;
+		return Game.isLoggedIn() && Game.getLoopCycle() < get().getLoopCycleStatus() * multipliers.CHARACTER_LOOPCYCLESTATUS;
 	}
 
 	public String getMessage() {
 		try {
-			final Object message_data = ((RSCharacterMessageData) get()).getRSCharacterMessageData();
+			final RSMessageData message_data = (RSMessageData) get().getMessageData();
 			if (message_data != null) {
-				return (String) ((RSMessageDataMessage) message_data).getRSMessageDataMessage();
+				return message_data.getMessage();
 			}
 		} catch (final AbstractMethodError ignored) {
 		} catch (final ClassCastException ignored) {
@@ -138,12 +131,12 @@ public abstract class Character implements Entity, Locatable, Rotatable, Identif
 	}
 
 	public int getHpPercent() {
-		final int ratio = ((RSCharacterHPRatio) ((RSInteractableInts) get()).getRSInteractableInts()).getRSCharacterHPRatio() * multipliers.CHARACTER_HPRATIO;
+		final int ratio = get().getHPRatio() * multipliers.CHARACTER_HPRATIO;
 		return (int) Math.ceil(isInCombat() ? (ratio * 100) / 0xff : 100);
 	}
 
 	public int getSpeed() {
-		return ((RSCharacterIsMoving) ((RSInteractableInts) get()).getRSInteractableInts()).getRSCharacterIsMoving() * multipliers.CHARACTER_ISMOVING;
+		return get().isMoving() * multipliers.CHARACTER_ISMOVING;
 	}
 
 	public boolean isMoving() {
@@ -151,9 +144,9 @@ public abstract class Character implements Entity, Locatable, Rotatable, Identif
 	}
 
 	public CapturedModel getModel() {
-		final Object ref = get();
+		final RSCharacter ref = get();
 		if (ref != null) {
-			final Model model = Context.getModelCache().get(ref);
+			final Model model = ref.getModel();
 			if (model != null) {
 				return new CharacterModel(model, this);
 			}
@@ -161,7 +154,7 @@ public abstract class Character implements Entity, Locatable, Rotatable, Identif
 		return null;
 	}
 
-	public abstract Object get();
+	public abstract RSCharacter get();
 
 	public boolean validate() {
 		return get() != null;
@@ -172,8 +165,9 @@ public abstract class Character implements Entity, Locatable, Rotatable, Identif
 		if (model != null) {
 			return model.getCentralPoint();
 		}
-		final RSInteractableLocation location = ((RSInteractableManager) ((RSInteractableRSInteractableManager) get()).getRSInteractableRSInteractableManager()).getData().getLocation();
-		return Calculations.groundToScreen((int) location.getX(), (int) location.getY(), Game.getPlane(), -getHeight() / 2);
+		final RSCharacter character = get();
+		final RSInteractableData data = (RSInteractableData) character.getData();
+		return Calculations.groundToScreen((int) data.getLocation().getX(), (int) data.getLocation().getY(), character.getPlane(), -getHeight() / 2);
 	}
 
 	public Point getNextViewportPoint() {

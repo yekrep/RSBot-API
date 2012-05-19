@@ -1,7 +1,6 @@
 package org.powerbot.game.api.methods;
 
 import org.powerbot.game.bot.Context;
-import org.powerbot.game.client.SettingsData;
 
 /**
  * A utility for the manipulation of game settings.
@@ -16,7 +15,7 @@ public class Settings {
 	 * @return The <code>int[]</code> of all the game's settings in their respective positioning.
 	 */
 	public static int[] get() {
-		return ((int[]) ((SettingsData) Context.client().getSettingArray()).getSettingsData()).clone();
+		return ((org.powerbot.game.client.Settings) Context.client().getSettingArray()).getData().clone();
 	}
 
 	/**
@@ -31,24 +30,26 @@ public class Settings {
 		return -1;
 	}
 
-    /**
-     * Gets the value at a given index and applies a given mask to the value
-     * @param index the index in the settings array
-     * @param mask the bitmask
-     * @return the masked value
-     */
-    public static int get(final int index, final int mask) {
-        return get(index, 0, mask);
-    }
+	/**
+	 * Gets the value at a given index and applies a given mask to the value
+	 *
+	 * @param index the index in the settings array
+	 * @param mask  the bitmask
+	 * @return the masked value
+	 */
+	public static int get(final int index, final int mask) {
+		return get(index, 0, mask);
+	}
 
-    /**
-     * Gets the value at a given index, bit shifts it right by a given number of bits and applies a mask
-     * @param index the index in the settings array
-     * @param shift the number of bits to right shift
-     * @param mask the bitmask
-     * @return the masked value
-     */
-    public static int get(final int index, final int shift, final int mask) {
-        return (get(index) >>> shift) & mask;
-    }
+	/**
+	 * Gets the value at a given index, bit shifts it right by a given number of bits and applies a mask
+	 *
+	 * @param index the index in the settings array
+	 * @param shift the number of bits to right shift
+	 * @param mask  the bitmask
+	 * @return the masked value
+	 */
+	public static int get(final int index, final int shift, final int mask) {
+		return (get(index) >>> shift) & mask;
+	}
 }

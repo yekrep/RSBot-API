@@ -15,14 +15,10 @@ import org.powerbot.game.api.wrappers.node.SceneObject;
 import org.powerbot.game.bot.Context;
 import org.powerbot.game.client.Client;
 import org.powerbot.game.client.RSAnimableNode;
-import org.powerbot.game.client.RSGroundBoundary1;
-import org.powerbot.game.client.RSGroundBoundary2;
-import org.powerbot.game.client.RSGroundFloorDecoration;
-import org.powerbot.game.client.RSGroundInfoRSGroundArray;
-import org.powerbot.game.client.RSGroundRSAnimableList;
-import org.powerbot.game.client.RSGroundWallDecoration1;
-import org.powerbot.game.client.RSGroundWallDecoration2;
-import org.powerbot.game.client.RSInfoRSGroundInfo;
+import org.powerbot.game.client.RSGround;
+import org.powerbot.game.client.RSGroundInfo;
+import org.powerbot.game.client.RSInfo;
+import org.powerbot.game.client.RSObject;
 
 /**
  * A utility for the gathering of locations on the game plane's mesh.
@@ -124,15 +120,18 @@ public class SceneEntities {
 		return location;
 	}
 
-	private static Object[][][] getRSGroundArray(final Client client) {
+	private static RSGround[][][] getRSGroundArray(final Client client) {
 		Object obj;
 		if ((obj = client.getRSGroundInfo()) == null) {
 			return null;
 		}
-		if ((obj = ((RSInfoRSGroundInfo) obj).getRSInfoRSGroundInfo()) == null) {
+		if ((obj = ((RSInfo) obj).getRSGroundInfo()) == null) {
 			return null;
 		}
-		return (Object[][][]) ((RSGroundInfoRSGroundArray) obj).getRSGroundInfoRSGroundArray();
+		if ((obj = ((RSGroundInfo) obj).getRSGroundArray()) == null) {
+			return null;
+		}
+		return (RSGround[][][]) obj;
 	}
 
 	public static SceneObject getAt(int x, int y, final int mask) {
@@ -164,68 +163,56 @@ public class SceneEntities {
 		final Client client = Context.client();
 		final Multipliers multipliers = Context.multipliers();
 		final Set<SceneObject> objects = new LinkedHashSet<SceneObject>();
-		final Object[][][] groundArray = getRSGroundArray(client);
+		final RSGround[][][] groundArray = getRSGroundArray(client);
 		if (groundArray == null) {
 			return objects;
 		}
 
 		try {
 			final int plane = client.getPlane() * multipliers.GLOBAL_PLANE;
-			final Object rsGround = groundArray[plane][x][y];
+			final RSGround rsGround = groundArray[plane][x][y];
 
 			if (rsGround != null) {
 				Object obj;
 
 				if ((mask & TYPE_INTERACTIVE) != 0) {
-					for (RSAnimableNode node = (RSAnimableNode) ((RSGroundRSAnimableList) rsGround).getRSGroundRSAnimableList(); node != null; node = node.getNext()) {
+					for (RSAnimableNode node = (RSAnimableNode) rsGround.getRSAnimableList(); node != null; node = node.getNext()) {
 						obj = node.getRSAnimable();
 						if (obj != null) {
-							if (client.getRSObjectID(obj) != -1) {
-								objects.add(new SceneObject(obj, TYPE_INTERACTIVE, plane));
-							}
+							objects.add(new SceneObject((RSObject) obj, TYPE_INTERACTIVE, plane));
 						}
 					}
 				}
 
 
 				if ((mask & TYPE_FLOOR_DECORATION) != 0) {
-					obj = ((RSGroundFloorDecoration) rsGround).getRSGroundFloorDecoration();
+					obj = rsGround.getFloorDecoration();
 					if (obj != null) {
-						if (client.getRSObjectID(obj) != -1) {
-							objects.add(new SceneObject(obj, TYPE_FLOOR_DECORATION, plane));
-						}
+						objects.add(new SceneObject((RSObject) obj, TYPE_FLOOR_DECORATION, plane));
 					}
 				}
 
 				if ((mask & TYPE_BOUNDARY) != 0) {
-					obj = ((RSGroundBoundary1) rsGround).getRSGroundBoundary1();
+					obj = rsGround.getBoundary1();
 					if (obj != null) {
-						if (client.getRSObjectID(obj) != -1) {
-							objects.add(new SceneObject(obj, TYPE_BOUNDARY, plane));
-						}
+						objects.add(new SceneObject((RSObject) obj, TYPE_BOUNDARY, plane));
 					}
 
-					obj = ((RSGroundBoundary2) rsGround).getRSGroundBoundary2();
+					obj = rsGround.getBoundary2();
 					if (obj != null) {
-						if (client.getRSObjectID(obj) != -1) {
-							objects.add(new SceneObject(obj, TYPE_BOUNDARY, plane));
-						}
+						objects.add(new SceneObject((RSObject) obj, TYPE_BOUNDARY, plane));
 					}
 				}
 
 				if ((mask & TYPE_WALL_DECORATION) != 0) {
-					obj = ((RSGroundWallDecoration1) rsGround).getRSGroundWallDecoration1();
+					obj = rsGround.getWallDecoration1();
 					if (obj != null) {
-						if (client.getRSObjectID(obj) != -1) {
-							objects.add(new SceneObject(obj, TYPE_WALL_DECORATION, plane));
-						}
+						objects.add(new SceneObject((RSObject) obj, TYPE_WALL_DECORATION, plane));
 					}
 
-					obj = ((RSGroundWallDecoration2) rsGround).getRSGroundWallDecoration2();
+					obj = rsGround.getWallDecoration2();
 					if (obj != null) {
-						if (client.getRSObjectID(obj) != -1) {
-							objects.add(new SceneObject(obj, TYPE_WALL_DECORATION, plane));
-						}
+						objects.add(new SceneObject((RSObject) obj, TYPE_WALL_DECORATION, plane));
 					}
 				}
 			}

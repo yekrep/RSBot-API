@@ -16,10 +16,9 @@ import org.powerbot.game.bot.Bot;
 import org.powerbot.game.bot.Context;
 import org.powerbot.game.client.Client;
 import org.powerbot.game.client.MenuGroupNode;
-import org.powerbot.game.client.MenuGroupNodeItems;
 import org.powerbot.game.client.MenuItemNode;
-import org.powerbot.game.client.MenuItemNodeAction;
-import org.powerbot.game.client.MenuItemNodeOption;
+import org.powerbot.game.client.NodeDeque;
+import org.powerbot.game.client.NodeSubQueue;
 
 /**
  * @author Timer
@@ -128,10 +127,10 @@ public class Menu {
 			return false;
 		}
 		if (isCollapsed()) {
-			final Queue<MenuGroupNode> groups = new Queue<MenuGroupNode>(Context.client().getCollapsedMenuItems());
+			final Queue<MenuGroupNode> groups = new Queue<MenuGroupNode>((NodeSubQueue) Context.client().getCollapsedMenuItems());
 			int idx = 0, mainIdx = 0;
 			for (MenuGroupNode g = groups.getHead(); g != null; g = groups.getNext(), ++mainIdx) {
-				final Queue<MenuItemNode> subItems = new Queue<MenuItemNode>(((MenuGroupNodeItems) g.getData()).getMenuGroupNodeItems());
+				final Queue<MenuItemNode> subItems = new Queue<MenuItemNode>((NodeSubQueue) g.getItems());
 				int subIdx = 0;
 				for (MenuItemNode item = subItems.getHead(); item != null; item = subItems.getNext(), ++subIdx) {
 					if (idx++ == i) {
@@ -254,31 +253,31 @@ public class Menu {
 		final Client client = Context.client();
 		String firstAction = "";
 		if (isCollapsed()) {
-			final Queue<MenuGroupNode> menu = new Queue<MenuGroupNode>(client.getCollapsedMenuItems());
+			final Queue<MenuGroupNode> menu = new Queue<MenuGroupNode>((NodeSubQueue) client.getCollapsedMenuItems());
 			try {
 				for (MenuGroupNode mgn = menu.getHead(); mgn != null; mgn = menu.getNext()) {
-					final Queue<MenuItemNode> submenu = new Queue<MenuItemNode>(((MenuGroupNodeItems) mgn.getData()).getMenuGroupNodeItems());
+					final Queue<MenuItemNode> submenu = new Queue<MenuItemNode>((NodeSubQueue) mgn.getItems());
 					for (MenuItemNode min = submenu.getHead(); min != null; min = submenu.getNext()) {
 						if (firstAction != null) {
-							firstAction = (String) ((MenuItemNodeAction) min.getData()).getMenuItemNodeAction();
+							firstAction = (String) min.getAction();
 						}
 						itemsList.addLast(firstPart ?
-								(String) ((MenuItemNodeAction) min.getData()).getMenuItemNodeAction() :
-								(String) ((MenuItemNodeOption) min.getData()).getMenuItemNodeOption());
+								(String) min.getAction() :
+								(String) min.getOption());
 					}
 				}
 			} catch (final NullPointerException ignored) {
 			}
 		} else {
 			try {
-				final Deque<MenuItemNode> menu = new Deque<MenuItemNode>(client.getMenuItems());
+				final Deque<MenuItemNode> menu = new Deque<MenuItemNode>((NodeDeque) client.getMenuItems());
 				for (MenuItemNode min = menu.getHead(); min != null; min = menu.getNext()) {
 					if (firstAction != null) {
-						firstAction = (String) ((MenuItemNodeAction) min.getData()).getMenuItemNodeAction();
+						firstAction = (String) min.getAction();
 					}
 					itemsList.addLast(firstPart ?
-							(String) ((MenuItemNodeAction) min.getData()).getMenuItemNodeAction() :
-							(String) ((MenuItemNodeOption) min.getData()).getMenuItemNodeOption());
+							(String) min.getAction() :
+							(String) min.getOption());
 				}
 			} catch (final Throwable ignored) {
 			}

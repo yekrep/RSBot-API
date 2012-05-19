@@ -13,10 +13,9 @@ import org.powerbot.game.api.wrappers.interactive.Player;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
 import org.powerbot.game.bot.Context;
 import org.powerbot.game.client.Client;
-import org.powerbot.game.client.RSGroundBytes_Bytes;
-import org.powerbot.game.client.RSGroundInfoTileData;
-import org.powerbot.game.client.RSInfoGroundBytes;
-import org.powerbot.game.client.RSInfoRSGroundInfo;
+import org.powerbot.game.client.RSGroundByts;
+import org.powerbot.game.client.RSGroundInfo;
+import org.powerbot.game.client.RSInfo;
 import org.powerbot.game.client.TileData;
 
 /**
@@ -67,14 +66,13 @@ public class Calculations {
 		final Client client = Context.client();
 		final int x1 = x >> 9;
 		final int y1 = y >> 9;
-		final byte[][][] settings = (byte[][][]) ((RSGroundBytes_Bytes) (((RSInfoGroundBytes) client.getRSGroundInfo()).getRSInfoGroundBytes())).getRSGroundBytes_Bytes();
-		if (settings != null && x1 >= 0 && x1 < 104 && y1 >= 0 && y1 < 104) {
-			if (plane <= 3 && (settings[1][x1][y1] & 2) != 0) {
-				++plane;
-			}
-			final Object rsInfoGroundInfo = ((RSInfoRSGroundInfo) client.getRSGroundInfo()).getRSInfoRSGroundInfo();
-			if (rsInfoGroundInfo != null) {
-				final TileData[] planes = (TileData[]) ((RSGroundInfoTileData) rsInfoGroundInfo).getRSGroundInfoTileData();
+		try {
+			final byte[][][] settings = (byte[][][]) ((RSGroundByts) ((RSInfo) client.getRSGroundInfo()).getGroundBytes()).getBytes();
+			if (settings != null && x1 >= 0 && x1 < 104 && y1 >= 0 && y1 < 104) {
+				if (plane <= 3 && (settings[1][x1][y1] & 2) != 0) {
+					++plane;
+				}
+				final TileData[] planes = (TileData[]) ((RSGroundInfo) ((RSInfo) client.getRSGroundInfo()).getRSGroundInfo()).getTileData();
 				if (planes != null && plane < planes.length && planes[plane] != null) {
 					final int[][] heights = planes[plane].getHeights();
 					if (heights != null) {
@@ -86,6 +84,7 @@ public class Calculations {
 					}
 				}
 			}
+		} catch (final NullPointerException ignored) {
 		}
 		return 0;
 	}
