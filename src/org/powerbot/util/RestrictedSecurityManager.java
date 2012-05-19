@@ -5,6 +5,7 @@ import java.net.InetAddress;
 import java.security.Permission;
 import java.util.logging.Logger;
 
+import org.powerbot.concurrent.TaskContainer;
 import org.powerbot.game.GameDefinition;
 import org.powerbot.service.scripts.ScriptClassLoader;
 import org.powerbot.util.Configuration.OperatingSystem;
@@ -28,7 +29,7 @@ public class RestrictedSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkAccess(final Thread t) {
-		if (isScriptThread()) {
+		if (isScriptThread() && !isCallingClass(TaskContainer.class)) {
 			log.severe("Thread access denied");
 			throw new SecurityException();
 		}
@@ -37,7 +38,7 @@ public class RestrictedSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkAccess(final ThreadGroup g) {
-		if (isScriptThread()) {
+		if (isScriptThread() && !isCallingClass(TaskContainer.class)) {
 			log.severe("Thread group access denied");
 			throw new SecurityException();
 		}

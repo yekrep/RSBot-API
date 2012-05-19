@@ -353,8 +353,9 @@ public final class BotScripts extends JDialog implements ActionListener {
 		Collections.addAll(collection, data.split("\n"));
 		final Iterator<ScriptDefinition> i = scripts.iterator();
 		while (i.hasNext()) {
-			if (!collection.contains(i.next().getName()))
-			i.remove();
+			if (!collection.contains(i.next().getName())) {
+				i.remove();
+			}
 		}
 	}
 

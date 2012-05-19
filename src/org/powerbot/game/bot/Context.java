@@ -15,7 +15,6 @@ import org.powerbot.game.api.util.internal.Multipliers;
 import org.powerbot.game.bot.handler.input.MouseReactor;
 import org.powerbot.game.bot.util.ScreenCapture;
 import org.powerbot.game.client.Client;
-import org.powerbot.game.client.Model;
 import org.powerbot.game.loader.applet.Rs2Applet;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.service.NetworkAccount;

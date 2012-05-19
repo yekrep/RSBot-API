@@ -19,6 +19,7 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import javax.crypto.Cipher;
+
 import org.powerbot.util.Configuration;
 import org.powerbot.util.StringUtil;
 

@@ -131,9 +131,9 @@ public class IniParser {
 				if (!data.containsKey(section)) {
 					Map<String, String> map = null;
 					try {
-						final Method method = keys.getClass().getMethod("clone", new Class<?>[] {});
+						final Method method = keys.getClass().getMethod("clone", new Class<?>[]{});
 						if (method != null) {
-							map = (Map<String, String>) method.invoke(data, new Object[] {});
+							map = (Map<String, String>) method.invoke(data, new Object[]{});
 							map.clear();
 						}
 					} catch (final Exception ignored) {

@@ -119,7 +119,7 @@ public final class ScriptDefinition {
 		final String description = data.containsKey("description") ? data.get("description") : null;
 		final String website = data.containsKey("website") ? data.get("website") : null;
 		final boolean premium = data.containsKey("premium") ? IniParser.parseBool(data.get("premium")) : false;
-		final String[] authors = data.containsKey("authors") ? data.get("authors").split(",") : new String[] {};
+		final String[] authors = data.containsKey("authors") ? data.get("authors").split(",") : new String[]{};
 		double version = 1d;
 
 		if (data.containsKey("version")) {

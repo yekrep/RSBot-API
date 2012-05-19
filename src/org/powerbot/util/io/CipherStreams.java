@@ -21,7 +21,7 @@ import org.powerbot.util.StringUtil;
  * @author Paris
  */
 public final class CipherStreams {
-	private final static byte[] SHAREDKEY = { 0, 0x32, 0x4f, 0x2a, 0x7f, 0x01, 0x5a, 0x69 };
+	private final static byte[] SHAREDKEY = {0, 0x32, 0x4f, 0x2a, 0x7f, 0x01, 0x5a, 0x69};
 
 	private static Cipher getCipher(final int opmode, final byte[] key, final String cipherAlgorithm, String keyAlgorithm) throws GeneralSecurityException {
 		final Cipher c = Cipher.getInstance(cipherAlgorithm);
