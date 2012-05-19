@@ -54,10 +54,6 @@ public class Context {
 		return get().bot.constants;
 	}
 
-	public static Map<Object, Model> getModelCache() {
-		return get().bot.modelCache;
-	}
-
 	public static BufferedImage captureScreen() {
 		return ScreenCapture.capture(Context.get());
 	}

@@ -1,7 +1,7 @@
 package org.powerbot.game.client;
 
 public interface Callback {
-	public void updateRenderInfo(Render render);
+	public void updateRenderInfo(final Render render);
 
-	public void notifyMessage(int id, String sender, String message);
+	public void notifyMessage(final int id, final String sender, final String message);
 }

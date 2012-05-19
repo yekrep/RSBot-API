@@ -3,128 +3,127 @@ package org.powerbot.game.client;
 import java.awt.Canvas;
 import java.awt.Rectangle;
 
+import org.powerbot.game.client.input.Keyboard;
 import org.powerbot.game.client.input.Mouse;
 
 public interface Client {
-	public void setCallback(Callback cb);
-
-	public int getMenuOptionsCount();
-
-	public int getMinimapScale();
-
-	public Object getMenuItems();
-
-	public int getRSPlayerCount();
-
-	public int getSubMenuWidth();
-
-	public Object getMyRSPlayer();
-
-	public Object getCurrentMenuGroupNode();
-
-	public String getSelectedItemName();
-
-	public int[] getSkillExperiences();
-
-	public int getPlane();
-
-	public int[] getSkillLevelMaxes();
-
 	public int getDestX();
-
-	public boolean isMenuOpen();
-
-	public Object getRSItemDefLoader();
-
-	public int getCamPosZ();
-
-	public int getGUIRSInterfaceIndex();
-
-	public int getMenuX();
-
-	public String getCurrentPassword();
-
-	public int getCameraPitch();
-
-	public int getMinimapOffset();
-
-	public int getSubMenuX();
-
-	public int getMenuWidth();
-
-	public int getLoginIndex();
-
-	public Object getSettingArray();
-
-	public Object getDetailInfoNode();
-
-	public int isItemSelected();
-
-	public int getLoopCycle();
-
-	public int[] getSkillLevels();
-
-	public int getMenuOptionsCountCollapsed();
-
-	public Object getRSInterfaceNC();
-
-	public int getPlayerCount();
-
-	public float getMinimapAngle();
-
-	public Object[] getRSPlayerArray();
-
-	public int getCameraYaw();
-
-	public Object getRSItemHashTable();
-
-	public int getMenuHeight();
-
-	public boolean isSpellSelected();
-
-	public Rectangle[] getRSInterfaceBoundsArray();
-
-	public Object[] getRSInterfaceCache();
-
-	public int getMinimapSetting();
-
-	public int getMenuY();
-
-	public int[] getRSPlayerIndexArray();
-
-	public boolean isMenuCollapsed();
-
-	public int getRSNPCCount();
-
-	public Object getRSNPCNC();
-
-	public int getCamPosY();
-
-	public String getCurrentUsername();
-
-	public Mouse getMouse();
-
-	public int[] getRSNPCIndexArray();
-
-	public Callback getCallback();
 
 	public int getCamPosX();
 
+	public int getSubMenuY();
+
 	public int getDestY();
 
-	public int getSubMenuY();
+	public int getMinimapSetting();
+
+	public int isItemSelected();
 
 	public Canvas getCanvas();
 
-	public int[] getSkillExperienceMaxes();
+	public int getPlayerCount();
 
 	public boolean[] getValidRSInterfaceArray();
 
-	public Object getCollapsedMenuItems();
+	public boolean isMenuCollapsed();
+
+	public int getMenuY();
+
+	public int getCamPosZ();
+
+	public int getCameraYaw();
+
+	public boolean isMenuOpen();
+
+	public float getMinimapAngle();
+
+	public Mouse getMouse();
+
+	public int getLoginIndex();
+
+	public int[] getSkillLevelMaxes();
 
 	public Object getRSGroundInfo();
 
-	public int getRSObjectID(Object obj);
+	public String getCurrentPassword();
 
-	public Model getRSObjectModel(Object obj);
+	public Object getCollapsedMenuItems();
+
+	public int[] getSkillExperienceMaxes();
+
+	public int getMinimapScale();
+
+	public int[] getRSPlayerIndexArray();
+
+	public int getMenuWidth();
+
+	public int getSubMenuWidth();
+
+	public int getRSPlayerCount();
+
+	public int getMenuOptionsCountCollapsed();
+
+	public Object getMyRSPlayer();
+
+	public Rectangle[] getRSInterfaceBoundsArray();
+
+	public Object getMenuItems();
+
+	public String getCurrentUsername();
+
+	public Object getRSItemHashTable();
+
+	public Object getRSInterfaceNC();
+
+	public int getRSNPCCount();
+
+	public int getMenuX();
+
+	public int getCameraPitch();
+
+	public int getGUIRSInterfaceIndex();
+
+	public Keyboard getKeyboard();
+
+	public String getSelectedItemName();
+
+	public int[] getSkillLevels();
+
+	public Object getRSNPCNC();
+
+	public int getPlane();
+
+	public int getSubMenuX();
+
+	public int getMenuHeight();
+
+	public Callback getCallback();
+
+	public Object getDetailInfoNode();
+
+	public Object getCurrentMenuGroupNode();
+
+	public Object getSettingArray();
+
+	public int getCamPosY();
+
+	public Object[] getRSPlayerArray();
+
+	public boolean isSpellSelected();
+
+	public int[] getRSNPCIndexArray();
+
+	public int getLoopCycle();
+
+	public int getMenuOptionsCount();
+
+	public int[] getSkillExperiences();
+
+	public Object getRSItemDefLoader();
+
+	public int getMinimapOffset();
+
+	public Object[] getRSInterfaceCache();
+
+	public void setCallback(Callback callback);
 }

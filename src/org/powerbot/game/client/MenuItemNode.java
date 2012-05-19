@@ -1,5 +1,7 @@
 package org.powerbot.game.client;
 
 public interface MenuItemNode extends NodeSub {
-	public Object getData();
+	public Object getAction();
+
+	public Object getOption();
 }

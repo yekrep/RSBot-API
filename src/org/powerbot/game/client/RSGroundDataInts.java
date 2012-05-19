@@ -1,5 +1,0 @@
-package org.powerbot.game.client;
-
-public interface RSGroundDataInts {
-	public Object getRSGroundDataInts();
-}

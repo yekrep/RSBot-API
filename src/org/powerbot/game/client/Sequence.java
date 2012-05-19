@@ -1,7 +1,5 @@
 package org.powerbot.game.client;
 
-public interface RSItem {
+public interface Sequence {
 	public int getID();
-
-	public int getStackSize();
 }
