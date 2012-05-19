@@ -12,7 +12,7 @@ public class Configuration {
 	public static final boolean FROMJAR;
 	public static boolean DEVMODE = false;
 	public static final boolean SUPERDEV;
-	public static final int VERSION = 4009;
+	public static final int VERSION = 4010;
 	public static final String STORE;
 	public static final OperatingSystem OS;
 
