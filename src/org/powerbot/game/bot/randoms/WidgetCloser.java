@@ -22,6 +22,7 @@ public class WidgetCloser extends AntiRandom {
 		children.put(21, 43);//beholding a player's statuette (duellist's cap)
 		children.put(1234, 15);//membership offers
 		children.put(906, 354);//membership offers
+		children.put(906, 493);//email register
 		children.put(1252, 6);//Squeal of Fortune notification
 		children.put(1253, 76);//Squeal of Fortune window
 		children.put(1218, 77);//Advanced skill guide
