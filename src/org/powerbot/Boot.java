@@ -77,7 +77,36 @@ public class Boot implements Runnable {
 			return;
 		}
 
-		if (!getLock()) {
+		boolean locked = false;
+
+		try {
+			final RandomAccessFile tmpraf = new RandomAccessFile(Configuration.LOCK, "rw");
+			final FileLock tmplock = tmpraf.getChannel().tryLock();
+			locked = tmplock != null;
+			releaseLock = new Runnable() {
+				@Override
+				public void run() {
+					try {
+						if (released) {
+							return;
+						}
+						if (tmplock != null) {
+							tmplock.release();
+						}
+						if (tmpraf != null) {
+							tmpraf.close();
+						}
+					} catch (final IOException ignored) {
+					}
+					Configuration.LOCK.delete();
+					released = true;
+				}
+			};
+			Runtime.getRuntime().addShutdownHook(new Thread(releaseLock));
+		} catch (final IOException ignored) {
+		}
+
+		if (!locked) {
 			final String msg = "An instance of " + Configuration.NAME + " is already running";
 			log.severe(msg);
 			if (!Configuration.DEVMODE && Configuration.OS == OperatingSystem.WINDOWS) {
@@ -131,37 +160,6 @@ public class Boot implements Runnable {
 
 	public void run() {
 		main(new String[]{});
-	}
-
-	private static boolean getLock() {
-		final File tmpfile = new File(System.getProperty("java.io.tmpdir"), Configuration.NAME + ".lck");
-		try {
-			final RandomAccessFile tmpraf = new RandomAccessFile(tmpfile, "rw");
-			final FileLock tmplock = tmpraf.getChannel().tryLock();
-			releaseLock = new Runnable() {
-				@Override
-				public void run() {
-					try {
-						if (released) {
-							return;
-						}
-						if (tmplock != null) {
-							tmplock.release();
-						}
-						if (tmpraf != null) {
-							tmpraf.close();
-						}
-					} catch (final IOException ignored) {
-					}
-					tmpfile.delete();
-					released = true;
-				}
-			};
-			Runtime.getRuntime().addShutdownHook(new Thread(releaseLock));
-			return tmplock != null;
-		} catch (final IOException ignored) {
-		}
-		return false;
 	}
 
 	public static void releaseLock() {

@@ -1,6 +1,10 @@
 package org.powerbot.util;
 
 import java.io.File;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.util.Enumeration;
+import java.util.zip.Adler32;
 
 import org.powerbot.util.io.Resources;
 
@@ -14,6 +18,7 @@ public class Configuration {
 	public static final boolean SUPERDEV;
 	public static final int VERSION = 4010;
 	public static final String STORE;
+	public static final File LOCK;
 	public static final OperatingSystem OS;
 
 	public enum OperatingSystem {
@@ -45,5 +50,25 @@ public class Configuration {
 		} else {
 			OS = OperatingSystem.UNKNOWN;
 		}
+
+		LOCK = new File(System.getProperty("java.io.tmpdir"), String.format("%s.tmp", Long.toHexString(getUID())));
+	}
+
+	public static long getUID() {
+		final Adler32 c = new Adler32();
+		c.update(StringUtil.getBytesUtf8(Configuration.NAME));
+		try {
+			final Enumeration<NetworkInterface> e = NetworkInterface.getNetworkInterfaces();
+			while (e.hasMoreElements()) {
+				final byte[] a = e.nextElement().getHardwareAddress();
+				if (a == null || a.length == 0) {
+					c.update(0x7f);
+				} else {
+					c.update(a);
+				}
+			}
+		} catch (final SocketException ignored) {
+		}
+		return c.getValue();
 	}
 }
