@@ -48,9 +48,10 @@ public class Walking {
 	 * @return The <code>Tile</code> of the offset location (different than map base!).
 	 */
 	public static Tile getCollisionOffset(final int plane) {
+		final Multipliers multipliers = Context.multipliers();
 		final RSInfo info = (RSInfo) Context.client().getRSGroundInfo();
 		final RSGroundData data = ((RSGroundData[]) info.getGroundData())[plane];
-		return new Tile(data.getX(), data.getY(), plane);
+		return new Tile(data.getX() * multipliers.GROUNDDATA_X, data.getY() * multipliers.GROUNDDATA_Y, plane);
 	}
 
 	/**
