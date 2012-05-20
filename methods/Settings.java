@@ -15,7 +15,7 @@ public class Settings {
 	 * @return The <code>int[]</code> of all the game's settings in their respective positioning.
 	 */
 	public static int[] get() {
-		return ((org.powerbot.game.client.Settings) Context.client().getSettingArray()).getData().clone();
+		return ((int[]) ((org.powerbot.game.client.Settings) Context.client().getSettingArray()).getData()).clone();
 	}
 
 	/**
