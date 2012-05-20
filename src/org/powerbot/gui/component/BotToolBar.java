@@ -22,6 +22,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
 import org.powerbot.concurrent.Task;
@@ -50,9 +51,14 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 		tabAdd = new JButton(new ImageIcon(Resources.getImage(Resources.Paths.TAB_ADD)));
 		tabAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(final ActionEvent e) {
-				if (Bot.bots.size() < BotChrome.MAX_BOTS) {
-					addTab();
-				}
+				SwingUtilities.invokeLater(new Runnable() {
+					@Override
+					public void run() {
+						if (Bot.bots.size() < BotChrome.MAX_BOTS) {
+							addTab();
+						}
+					}
+				});
 			}
 		});
 		tabAdd.setToolTipText(BotLocale.NEWTAB);
@@ -178,9 +184,9 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 		final Bot bot = new Bot();
 		add(new BotButton("Game", bot), n);
 		activateTab(n);
-		tabAdd.setVisible(BotChrome.MAX_BOTS - Bot.bots.size() > 1);
-		parent.panel.setBot(bot);
+		tabAdd.setVisible(BotChrome.MAX_BOTS - n > 1);
 		new Thread(bot.threadGroup, bot).start();
+		parent.panel.setBot(bot);
 	}
 
 	public void closeTab(final int n) {
