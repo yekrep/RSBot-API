@@ -94,7 +94,7 @@ public class SceneObject implements Entity, Locatable, Identifiable {
 			if (ref instanceof HardReference) {
 				return new SceneObjectDefinition((RSObjectDef) ((HardReference) ref).get());
 			} else if (ref instanceof SoftReference) {
-				final Object def = ((SoftReference) ref).get();
+				final Object def = ((SoftReference<?>) ref).get();
 				if (def != null) {
 					return new SceneObjectDefinition((RSObjectDef) def);
 				}

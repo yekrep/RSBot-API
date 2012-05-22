@@ -7,6 +7,7 @@ import org.powerbot.game.client.NodeDeque;
  * @param <N> Node type.
  * @author Timer
  */
+@SuppressWarnings("unchecked")
 public class Deque<N> {
 	private final NodeDeque nl;
 	private Node current;
