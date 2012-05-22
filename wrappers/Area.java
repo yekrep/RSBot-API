@@ -99,8 +99,12 @@ public class Area {
 	 * @param tiles The tiles to verify.
 	 * @return <tt>true</tt> if at least one of the tiles is contained, otherwise <tt>false</tt>.
 	 */
-	public boolean contains(final Tile... tiles) {
-		for (final Tile tile : tiles) {
+	public boolean contains(final Locatable... locs) {
+		for (final Locatable loc : locs) {
+			if (loc == null) {
+				continue;
+			}
+			final Tile tile = loc.getLocation();
 			if (tile != null && plane == tile.getPlane() && contains(tile.getX(), tile.getY())) {
 				return true;
 			}
@@ -109,14 +113,14 @@ public class Area {
 	}
 
 	/**
-	 * Determines whether all the given tiles are contained in this area.
+	 * Determines whether all the given Locatables are contained in this area.
 	 *
-	 * @param tiles The tiles to verify.
-	 * @return <tt>true</tt> if all tiles are contained, otherwise <tt>false</tt>.
+	 * @param tiles The Locatables to verify.
+	 * @return <tt>true</tt> if all Locatables are contained, otherwise <tt>false</tt>.
 	 */
-	public boolean containsAll(final Tile... tiles) {
-		for (final Tile tile : tiles) {
-			if (tile == null || !contains(tile)) {
+	public boolean containsAll(final Locatable... locs) {
+		for (final Locatable loc : locs) {
+			if (loc == null || !contains(loc)) {
 				return false;
 			}
 		}
@@ -136,21 +140,21 @@ public class Area {
 	 * @return the nearest tile contained in this area closest to the local player.
 	 */
 	public Tile getNearest() {
-		return getNearest(Players.getLocal().getLocation());
+		return getNearest(Players.getLocal();
 	}
 
 	/**
-	 * Finds the nearest tile in this area to the base tile.
+	 * Finds the nearest tile in this area to the base Locatable.
 	 *
-	 * @param base The base tile to measure the closest tile to.
+	 * @param base The Locatable to measure the closest tile to.
 	 * @return the nearest tile contained in this area closest to the base tile.
 	 */
-	public Tile getNearest(final Tile base) {
+	public Tile getNearest(final Locatable base) {
 		final Tile[] tiles = getTileArray();
 		Tile tile = null;
 		long dist = Long.MAX_VALUE, temp;
 		for (final Tile t : tiles) {
-			temp = (long) Calculations.distanceTo(base);
+			temp = (long) Calculations.distance(base, t);
 			if (t == null || temp < dist) {
 				dist = temp;
 				tile = t;
