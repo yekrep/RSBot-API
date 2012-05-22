@@ -3,17 +3,13 @@ package org.powerbot.gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Desktop;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -25,7 +21,6 @@ import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.Timer;
 import javax.swing.WindowConstants;
 
 import org.powerbot.game.bot.Bot;
@@ -35,7 +30,6 @@ import org.powerbot.service.NetworkAccount;
 import org.powerbot.util.Configuration;
 import org.powerbot.util.LoadLicense;
 import org.powerbot.util.LoadUpdates;
-import org.powerbot.util.io.IOHelper;
 import org.powerbot.util.io.Resources;
 
 /**
@@ -85,7 +79,6 @@ public class BotChrome extends JFrame implements WindowListener {
 		tasks.add(exec.submit(new LoadUpdates()));
 		tasks.add(exec.submit(new LoadLicense()));
 		tasks.add(exec.submit(new LoadAccount()));
-		tasks.add(exec.submit(new LoadTracking()));
 		exec.execute(new LoadComplete(this, tasks));
 		exec.shutdown();
 
@@ -169,48 +162,6 @@ public class BotChrome extends JFrame implements WindowListener {
 	private final class LoadAccount implements Callable<Boolean> {
 		public Boolean call() throws Exception {
 			NetworkAccount.getInstance().isLoggedIn();
-			return true;
-		}
-	}
-
-	private final class LoadTracking implements Callable<Boolean> {
-		public Boolean call() throws Exception {
-			if (Resources.getServerData().containsKey("tracking")) {
-				final Map<String, String> map = Resources.getServerData().get("tracking");
-				if (map.containsKey("link") && map.containsKey("interval")) {
-					final String link = map.get("link");
-					final int interval;
-					try {
-						interval = Integer.parseInt(map.get("interval"));
-					} catch (final NumberFormatException ignored) {
-						return true;
-					}
-					if (interval < 1) {
-						return true;
-					}
-					final Timer t = new Timer(interval * 60 * 1000, new ActionListener() {
-						@Override
-						public void actionPerformed(final ActionEvent e) {
-							final Timer t = (Timer) e.getSource();
-							final String hash = "";
-							final InputStream in;
-							try {
-								in = Resources.openHttpStreamFromLink(link, hash);
-							} catch (final IOException ignored) {
-								t.stop();
-								return;
-							}
-							final String result = IOHelper.readString(in);
-							if (result == null || result.isEmpty() || result.trim().equals("-1")) {
-								t.stop();
-							}
-						}
-					});
-					t.setInitialDelay(30 * 1000);
-					t.setCoalesce(false);
-					t.start();
-				}
-			}
 			return true;
 		}
 	}
