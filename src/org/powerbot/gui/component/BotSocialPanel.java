@@ -11,6 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import org.powerbot.gui.BotChrome;
+import org.powerbot.util.Configuration;
 import org.powerbot.util.io.Resources;
 
 /**
@@ -24,11 +25,11 @@ public final class BotSocialPanel extends JPanel {
 		setBackground(Color.BLACK);
 
 		final int d = 40;
-		add(new ImageButton(Resources.Paths.TWITTER, Resources.getServerLinks().get("twitter"), "@rsbotorg"));
+		add(new ImageButton(Resources.Paths.TWITTER, "twitter", "@rsbotorg"));
 		add(Box.createHorizontalStrut(d));
-		add(new ImageButton(Resources.Paths.FACEBOOK, Resources.getServerLinks().get("facebook"), "powerbot"));
+		add(new ImageButton(Resources.Paths.FACEBOOK, "facebook", "powerbot"));
 		add(Box.createHorizontalStrut(d));
-		add(new ImageButton(Resources.Paths.YOUTUBE, Resources.getServerLinks().get("youtube"), "OfficialPowerbot"));
+		add(new ImageButton(Resources.Paths.YOUTUBE, "youtube", "OfficialPowerbot"));
 	}
 
 	private class ImageButton extends JPanel {
@@ -46,7 +47,8 @@ public final class BotSocialPanel extends JPanel {
 			label.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(final MouseEvent arg0) {
-					BotChrome.openURL(url);
+					BotChrome.openURL(Resources.getServerLinks().get(url));
+					Configuration.trackPageView("social/" + url, text);
 				}
 			});
 

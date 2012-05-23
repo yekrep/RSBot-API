@@ -120,5 +120,7 @@ public final class BotAbout extends JDialog {
 		setResizable(false);
 		setLocationRelativeTo(getParent());
 		setVisible(true);
+
+		Configuration.trackPageView("about", getTitle());
 	}
 }

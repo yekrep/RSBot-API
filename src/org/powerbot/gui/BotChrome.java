@@ -98,6 +98,8 @@ public class BotChrome extends JFrame implements WindowListener {
 			}
 		} catch (final IOException ignored) {
 		}
+
+		Configuration.trackPageView("", getTitle());
 	}
 
 	public static BotChrome getInstance() {

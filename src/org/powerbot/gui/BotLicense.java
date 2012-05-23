@@ -70,5 +70,9 @@ public final class BotLicense extends JDialog {
 		setLocationRelativeTo(getParent());
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		setVisible(true);
+
+		if (!confirm) {
+			Configuration.trackPageView("license", getTitle());
+		}
 	}
 }
