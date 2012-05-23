@@ -5,6 +5,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Paris
@@ -22,6 +23,18 @@ public final class Tracker {
 		exec = Executors.newSingleThreadExecutor();
 		builder = new Analytics(config);
 		enabled = true;
+		Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
+			@Override
+			public void run() {
+				if (!exec.isShutdown()) {
+					exec.shutdown();
+					try {
+						exec.awaitTermination(5, TimeUnit.SECONDS);
+					} catch (InterruptedException ignored) {
+					}
+				}
+			}
+		}));
 	}
 
 	public void resetSession() {
