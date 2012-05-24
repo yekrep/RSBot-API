@@ -92,7 +92,7 @@ public class DepositBox {
 			return false;
 		}
 		String action = "Deposit-" + amount;
-		if (getItemCount(true, id) < amount || amount == 0) {
+		if (getItemCount(true, id) <= amount || amount == 0) {
 			action = "Deposit-All";
 		}
 		final int invCount = getItemCount(true);
