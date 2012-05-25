@@ -4,7 +4,6 @@ import java.awt.EventQueue;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Logger;
 
 import org.powerbot.concurrent.TaskContainer;
 import org.powerbot.event.EventManager;
@@ -20,7 +19,6 @@ import org.powerbot.gui.BotChrome;
 import org.powerbot.service.NetworkAccount;
 
 public class Context {
-	private static Logger log = Logger.getLogger(Context.class.getName());
 	protected static final Map<ThreadGroup, Context> context = new HashMap<ThreadGroup, Context>();
 
 	private final Bot bot;
