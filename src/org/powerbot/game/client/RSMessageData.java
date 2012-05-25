@@ -1,5 +1,5 @@
 package org.powerbot.game.client;
 
 public interface RSMessageData {
-	public String getMessage();
+	public Object getMessage();
 }

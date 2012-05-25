@@ -1,11 +1,11 @@
 package org.powerbot.game.client;
 
 public interface RSObjectDef {
-	public String getName();
+	public Object getName();
 
-	public String[] getActions();
+	public Object getActions();
 
-	public RSObjectDefLoader getLoader();
+	public Object getLoader();
 
 	public int getID();
 }
