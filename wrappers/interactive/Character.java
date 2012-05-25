@@ -122,7 +122,7 @@ public abstract class Character implements Entity, Locatable, Rotatable, Identif
 		try {
 			final RSMessageData message_data = (RSMessageData) get().getMessageData();
 			if (message_data != null) {
-				return message_data.getMessage();
+				return (String) message_data.getMessage();
 			}
 		} catch (final AbstractMethodError ignored) {
 		} catch (final ClassCastException ignored) {

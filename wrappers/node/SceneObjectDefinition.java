@@ -17,11 +17,11 @@ public class SceneObjectDefinition implements Identifiable {
 	}
 
 	public String getName() {
-		return def.getName();
+		return (String) def.getName();
 	}
 
 	public String[] getActions() {
-		return def.getActions();
+		return (String[]) def.getActions();
 	}
 
 	public int getId() {
