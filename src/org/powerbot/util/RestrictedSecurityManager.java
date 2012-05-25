@@ -29,7 +29,7 @@ public class RestrictedSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkAccess(final Thread t) {
-		if (isScriptThread() && !isCallingClass(TaskContainer.class)) {
+		if (isScriptThread() && !isCallingClass(TaskContainer.class, sun.net.www.http.KeepAliveCache.class)) {
 			log.severe("Thread access denied");
 			throw new SecurityException();
 		}
@@ -38,7 +38,7 @@ public class RestrictedSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkAccess(final ThreadGroup g) {
-		if (isScriptThread() && !isCallingClass(TaskContainer.class)) {
+		if (isScriptThread() && !isCallingClass(TaskContainer.class, sun.net.www.http.KeepAliveCache.class)) {
 			log.severe("Thread group access denied");
 			throw new SecurityException();
 		}
