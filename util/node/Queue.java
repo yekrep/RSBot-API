@@ -7,6 +7,7 @@ import org.powerbot.game.client.NodeSubQueue;
  * @param <N> Node type.
  * @author Timer
  */
+@SuppressWarnings("unchecked")
 public class Queue<N extends org.powerbot.game.client.NodeSub> {
 	private final NodeSubQueue nl;
 	private org.powerbot.game.client.NodeSub current;

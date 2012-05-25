@@ -12,7 +12,6 @@ import org.powerbot.game.api.util.Timer;
 import org.powerbot.game.api.util.internal.Multipliers;
 import org.powerbot.game.api.util.node.Deque;
 import org.powerbot.game.api.util.node.Queue;
-import org.powerbot.game.bot.Bot;
 import org.powerbot.game.bot.Context;
 import org.powerbot.game.client.Client;
 import org.powerbot.game.client.MenuGroupNode;
@@ -56,7 +55,7 @@ public class Menu {
 	public static int getWidth() {
 		final Client client = Context.client();
 		final Multipliers multipliers = Context.multipliers();
-		final Bot bot = Context.resolve();
+		Context.resolve();
 		return client.getMenuWidth() * multipliers.GLOBAL_MENUWIDTH;
 	}
 
