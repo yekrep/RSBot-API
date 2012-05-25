@@ -34,6 +34,9 @@ public class StringUtil {
 	}
 
 	public static String urlEncode(final String text) {
+		if (text == null) {
+			return null;
+		}
 		try {
 			return URLEncoder.encode(text, "UTF-8");
 		} catch (final UnsupportedEncodingException ignored) {
