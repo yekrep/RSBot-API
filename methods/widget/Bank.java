@@ -271,7 +271,7 @@ public class Bank {
 			return false;
 		}
 		String action = "Deposit-" + amount;
-		if (Inventory.getCount(true, id) < amount || amount == 0) {
+		if (Inventory.getCount(true, id) <= amount || amount == 0) {
 			action = "Deposit-All";
 		}
 		if (item.getStackSize() == 1) {
