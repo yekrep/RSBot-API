@@ -87,7 +87,7 @@ public class GroundItem implements Entity, Locatable, Identifiable {
 	public boolean click(final boolean left) {
 		return Mouse.apply(this, new Filter<Point>() {
 			public boolean accept(final Point point) {
-				Mouse.click(true);
+				Mouse.click(left);
 				return true;
 			}
 		});
