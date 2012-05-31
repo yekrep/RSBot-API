@@ -15,7 +15,7 @@ import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Time;
 import org.powerbot.game.api.wrappers.ViewportEntity;
 import org.powerbot.game.bot.Context;
-import org.powerbot.game.bot.handler.input.MouseReactor;
+import org.powerbot.game.bot.handler.input.MouseExecutor;
 import org.powerbot.game.bot.handler.input.util.MouseNode;
 import org.powerbot.game.client.Client;
 
@@ -242,8 +242,12 @@ public class Mouse {
 	 * @return <tt>true</tt> if we reached this position; otherwise <tt>false</tt>.
 	 */
 	public static boolean move(int x, int y, final int randomX, final int randomY) {
-		final MouseReactor reactor = Context.get().getReactor();
-		return reactor.process(create(x, y, randomX, randomY, false, false));
+		final MouseExecutor executor = Context.get().getExecutor();
+		final MouseNode node = create(x, y, randomX, randomY, false, false);
+		while (node.getTimer().isRunning() && node.processable()) {
+			executor.step(node);
+		}
+		return node.isCompleted();
 	}
 
 	public static boolean move(final Point p, final int randomX, final int randomY) {
@@ -251,8 +255,12 @@ public class Mouse {
 	}
 
 	public static boolean apply(final ViewportEntity viewportEntity, final Filter<Point> filter) {
-		final MouseReactor reactor = Context.get().getReactor();
-		return reactor.process(new MouseNode(viewportEntity, filter));
+		final MouseExecutor executor = Context.get().getExecutor();
+		final MouseNode node = new MouseNode(viewportEntity, filter);
+		while (node.getTimer().isRunning() && node.processable()) {
+			executor.step(node);
+		}
+		return node.isCompleted();
 	}
 
 	private static void pressMouse(final int x, final int y, final boolean left) {
