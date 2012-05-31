@@ -62,6 +62,10 @@ public class Tile implements Entity, Locatable, Identifiable {
 		this.plane = plane;
 	}
 
+	public Tile(final int x, final int y) {
+		this(x, y, 0);
+	}
+
 	public int getX() {
 		return x;
 	}
@@ -175,7 +179,15 @@ public class Tile implements Entity, Locatable, Identifiable {
 	public boolean canReach() {
 		return Walking.findPath(this).init();
 	}
+	
+	public double distanceTo() {
+		return Calculations.distanceTo(this);
+	}
 
+	public double distance(final Locatable loc) {
+		return Calculations.distance(this, loc);
+	}
+    
 	public Point getPoint(final double xOff, final double yOff, final int height) {
 		return Calculations.groundToScreen((int) ((x - Game.getBaseX() + xOff) * 0x200), (int) ((y - Game.getBaseY() + yOff) * 0x200), plane, -height);
 	}
