@@ -184,8 +184,8 @@ public class Tile implements Entity, Locatable, Identifiable {
 		return Calculations.distanceTo(this);
 	}
 
-	public double distance(final Locatable loc) {
-		return Calculations.distance(this, loc);
+	public double distance(final Locatable locatable) {
+		return Calculations.distance(this, locatable);
 	}
     
 	public Point getPoint(final double xOff, final double yOff, final int height) {
