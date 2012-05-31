@@ -86,10 +86,16 @@ public class GroundItems {
 		return temp.toArray(new GroundItem[temp.size()]);
 	}
 
-	public static GroundItem getNearest(final int id) {
+	public static GroundItem getNearest(final int... ids) {
 		return getNearest(new Filter<GroundItem>() {
 			public boolean accept(final GroundItem groundItem) {
-				return groundItem.getGroundItem().getId() == id;
+				final int itemID = groundItem.getId();
+				for (final int id : ids) {
+					if (itemID == id) {
+						return true;
+					}
+				}
+				return false;
 			}
 		});
 	}
