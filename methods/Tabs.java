@@ -85,6 +85,10 @@ public enum Tabs {
 		}
 		return getCurrent() == this;
 	}
+	
+	public boolean isOpen() {
+		return getCurrent() == this;
+	}
 
 	public static Tabs getCurrent() {
 		for (final Tabs t : Tabs.values()) {
