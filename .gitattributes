@@ -1,3 +1,0 @@
-*.bat	eol=crlf
-*.sh	eol=lf
-/Makefile		eol=lf
