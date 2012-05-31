@@ -45,11 +45,22 @@ public final class ScriptDefinition {
 		this.premium = premium;
 	}
 
+	private String getCleanText(String s) {
+		s = StringUtil.stripHtml(s.trim());
+		s = s.replaceFirst("\\s*(?:\\(\\s*)?[Vv]?\\s*[\\d\\.]+\\s*(?:\\s*(?:[Aa]lpha|[Bb]eta|[AaBb]))?(?:\\)\\s*)?\\.?$", "");
+		s = s.replaceFirst("\\s*[-~]+\\s*[Bb][Yy]\\s+.*$", "");
+		s = s.replaceFirst("\\s+[-~]+\\s*.*$", "");
+		s = s.replaceFirst("\\s*[Bb][Yy]\\s+.*$", "");
+		return s;
+	}
+
 	public String getName() {
-		String name = StringUtil.stripHtml(this.name.trim());
-		name = name.replaceAll("\\s*(?:[~-]\\s*)?(?:[Vv]\\s*)?[\\d\\.]+\\s*$", "");
-		name = name.replaceAll("\\s*\\(\\s*[\\d\\.]+\\s*\\)\\s*$", "");
-		return name;
+		String s = getCleanText(name);
+		s = s.replaceFirst("^\\w+'[Ss]\\s+", "");
+		s = s.replaceAll("^\\{[^\\}]*\\}|\\{[^\\}]*\\}$", "");
+		s = s.replaceAll("\\s*(?:[~-]\\s*)?(?:[Vv]\\s*)?[\\d\\.]+\\s*$", "");
+		s = s.replaceAll("\\s*\\(\\s*[\\d\\.]+\\s*\\)\\s*$", "");
+		return s;
 	}
 
 	public String getID() {
@@ -60,14 +71,13 @@ public final class ScriptDefinition {
 		if (description == null || description.isEmpty()) {
 			return "";
 		}
-		String s = StringUtil.stripHtml(description.trim());
+		String s = getCleanText(description);
 		if (s.length() > 2 && s.substring(s.length() - 1).equals(".") && !s.substring(0, s.length() - 1).contains(".")) {
 			s = s.substring(0, s.length() - 1);
 		}
-		s = s.replaceFirst("\\s*[Vv]\\s*[\\d\\.]+\\s*", "");
-		s = s.replaceFirst("\\s*[-~]+\\s*[Bb][Yy]\\s+.*$", "");
-		s = s.replaceFirst("\\s+[-~]+\\s*.*$", "");
-		s = s.replaceFirst("\\s*[Bb][Yy]\\s+.*$", "");
+		if (s.length() > 1 && s.substring(s.length() - 1).equals("!")) {
+			s = s.substring(0, s.length() - 1);
+		}
 		return s;
 	}
 
