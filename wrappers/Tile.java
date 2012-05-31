@@ -62,10 +62,6 @@ public class Tile implements Entity, Locatable, Identifiable {
 		this.plane = plane;
 	}
 
-	public Tile(final int x, final int y) {
-		this(x, y, 0);
-	}
-
 	public int getX() {
 		return x;
 	}
