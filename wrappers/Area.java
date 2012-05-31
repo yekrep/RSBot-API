@@ -96,11 +96,11 @@ public class Area {
 	/**
 	 * Determines whether at least one of the given tiles is contained in this area.
 	 *
-	 * @param tiles The tiles to verify.
+	 * @param locatables The tiles to verify.
 	 * @return <tt>true</tt> if at least one of the tiles is contained, otherwise <tt>false</tt>.
 	 */
-	public boolean contains(final Locatable... locs) {
-		for (final Locatable loc : locs) {
+	public boolean contains(final Locatable... locatables) {
+		for (final Locatable loc : locatables) {
 			if (loc == null) {
 				continue;
 			}
@@ -115,11 +115,11 @@ public class Area {
 	/**
 	 * Determines whether all the given Locatables are contained in this area.
 	 *
-	 * @param tiles The Locatables to verify.
+	 * @param locatables The Locatables to verify.
 	 * @return <tt>true</tt> if all Locatables are contained, otherwise <tt>false</tt>.
 	 */
-	public boolean containsAll(final Locatable... locs) {
-		for (final Locatable loc : locs) {
+	public boolean containsAll(final Locatable... locatables) {
+		for (final Locatable loc : locatables) {
 			if (loc == null || !contains(loc)) {
 				return false;
 			}
@@ -140,7 +140,7 @@ public class Area {
 	 * @return the nearest tile contained in this area closest to the local player.
 	 */
 	public Tile getNearest() {
-		return getNearest(Players.getLocal();
+		return getNearest(Players.getLocal());
 	}
 
 	/**

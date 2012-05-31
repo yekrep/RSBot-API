@@ -89,12 +89,8 @@ public class Walking {
 		return new TilePath(path);
 	}
 
-	public static LocalPath findPath(final Tile end) {
-		return new LocalPath(end);
-	}
-	
 	public static LocalPath findPath(final Locatable mobile) {
-		return findPath(mobile.getLocation());
+		return new LocalPath(mobile.getLocation());
 	}
 
 	public static boolean walk(final Locatable mobile) {
