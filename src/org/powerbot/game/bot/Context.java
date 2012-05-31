@@ -11,7 +11,7 @@ import org.powerbot.game.api.ActiveScript;
 import org.powerbot.game.api.methods.Calculations;
 import org.powerbot.game.api.util.internal.Constants;
 import org.powerbot.game.api.util.internal.Multipliers;
-import org.powerbot.game.bot.handler.input.MouseReactor;
+import org.powerbot.game.bot.handler.input.MouseExecutor;
 import org.powerbot.game.bot.util.ScreenCapture;
 import org.powerbot.game.client.Client;
 import org.powerbot.game.loader.applet.Rs2Applet;
@@ -75,8 +75,8 @@ public class Context {
 		return bot.getClient();
 	}
 
-	public MouseReactor getReactor() {
-		return bot.getReactor();
+	public MouseExecutor getExecutor() {
+		return bot.getExecutor();
 	}
 
 	public BufferedImage getImage() {

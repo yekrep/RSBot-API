@@ -4,8 +4,6 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.powerbot.concurrent.Task;
-import org.powerbot.concurrent.TaskContainer;
 import org.powerbot.game.api.methods.Calculations;
 import org.powerbot.game.api.methods.input.Mouse;
 import org.powerbot.game.api.util.Filter;
@@ -14,23 +12,16 @@ import org.powerbot.game.api.util.Time;
 import org.powerbot.game.api.wrappers.ViewportEntity;
 import org.powerbot.game.bot.Bot;
 import org.powerbot.game.bot.handler.input.util.MouseNode;
-import org.powerbot.game.bot.handler.input.util.MouseQueue;
 import org.powerbot.game.client.Client;
 
 public class MouseExecutor {
-	private final Object reactor;
-	private final MouseQueue queue;
-	private final TaskContainer container;
 	private final Client client;
 	private final List<ForceModifier> forceModifiers;
 	private final Vector velocity;
 	private int prev_hash;
 	private final Point target;
 
-	public MouseExecutor(final Bot bot, final MouseReactor reactor) {
-		this.reactor = reactor;
-		this.queue = reactor.getQueue();
-		this.container = bot.getContainer();
+	public MouseExecutor(final Bot bot) {
 		this.client = bot.getClient();
 		forceModifiers = new ArrayList<ForceModifier>(5);
 		velocity = new Vector();
@@ -68,29 +59,15 @@ public class MouseExecutor {
 				/* Load the filter onto stack. */
 				final Filter<Point> filter = node.getFilter();
 				/* Submit new thread for further processing of this node (i.e. menu call). */
-				container.submit(new Task() {
-					@Override
-					public void run() {
-						/* Check if the filter accepts it. */
-						if (filter.accept(currentPoint)) {
-							/* Complete it for returning later. */
-							node.complete();
-							/* Notify this node's thread on completion. */
-							synchronized (node.getLock()) {
-								node.getLock().notify();
-							}
-						} else {
-							/* Reset the consumed status to false and insert again. */
-							node.reset();
-							/* Will be removed it timeout reached by reactor. */
-							queue.insert(node);
-						}
-						/* Notify the reactor to wake up. */
-						synchronized (reactor) {
-							reactor.notify();
-						}
-					}
-				});
+				/* Check if the filter accepts it. */
+				if (filter.accept(currentPoint)) {
+					/* Complete it for returning later. */
+					node.complete();
+				} else {
+					/* Reset the consumed status to false and insert again. */
+					node.reset();
+				}
+				/* Notify the reactor to wake up. */
 				return;
 			}
 			final double deltaTime = Random.nextDouble(7D, 10D) / 1000D;

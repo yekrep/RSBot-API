@@ -7,7 +7,6 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GridBagLayout;
 import java.awt.Point;
-import java.awt.Rectangle;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
@@ -22,11 +21,8 @@ import javax.swing.JPanel;
 
 import org.powerbot.concurrent.Task;
 import org.powerbot.game.api.util.Filter;
-import org.powerbot.game.api.util.Random;
-import org.powerbot.game.api.wrappers.ViewportEntity;
 import org.powerbot.game.bot.Bot;
 import org.powerbot.game.bot.event.HumanInputEvent;
-import org.powerbot.game.bot.handler.input.MouseReactor;
 import org.powerbot.game.bot.handler.input.util.MouseNode;
 import org.powerbot.game.client.input.Mouse;
 import org.powerbot.gui.BotChrome;
@@ -196,78 +192,44 @@ public class BotPanel extends JPanel {
 		}
 		final boolean present = mouse.isPresent();
 		final Component component = bot.appletContainer.getComponent(0);
-		notifyListeners(component, mouseEvent, present);
-		final MouseReactor reactor = bot.getReactor();
-		if (reactor != null) {
-			int mouseX = mouseEvent.getX(), mouseY = mouseEvent.getY();
-			final int modifiers = mouseEvent.getModifiers(), clickCount = mouseEvent.getClickCount();
-			if (mouseX <= 2 || mouseX >= component.getWidth() - 2 || mouseY <= 2 || mouseY >= component.getHeight() - 2) {
-				return;
-			}
-			if (mouseEvent instanceof MouseWheelEvent && present) {
-				final MouseWheelEvent mouseWheelEvent = (MouseWheelEvent) mouseEvent;
-				component.dispatchEvent(new MouseWheelEvent(
-						component, mouseEvent.getID(),
+		notifyListeners(component, mouseEvent);
+		if ((inputMask & INPUT_MOUSE) == 0) {
+			return;
+		}
+		int mouseX = mouseEvent.getX(), mouseY = mouseEvent.getY();
+		final int modifiers = mouseEvent.getModifiers(), clickCount = mouseEvent.getClickCount();
+		if (mouseEvent.getID() != MouseEvent.MOUSE_EXITED &&
+				mouseX > 0 && mouseX < component.getWidth() && mouseY > 0 && mouseY < component.getHeight()) {
+			if (present) {
+				if (mouseEvent instanceof MouseWheelEvent) {
+					final MouseWheelEvent mouseWheelEvent = (MouseWheelEvent) mouseEvent;
+					component.dispatchEvent(new MouseWheelEvent(
+							component, mouseEvent.getID(),
+							System.currentTimeMillis(), modifiers,
+							mouseX, mouseY, clickCount, mouseEvent.isPopupTrigger(),
+							mouseWheelEvent.getScrollType(), mouseWheelEvent.getScrollAmount(), mouseWheelEvent.getWheelRotation()
+					));
+				} else {
+					component.dispatchEvent(new MouseEvent(
+							component, mouseEvent.getID(),
+							System.currentTimeMillis(), modifiers,
+							mouseX, mouseY, clickCount, mouseEvent.isPopupTrigger(),
+							mouseEvent.getButton()
+					));
+				}
+			} else {
+				component.dispatchEvent(new MouseEvent(
+						component, MouseEvent.MOUSE_ENTERED,
 						System.currentTimeMillis(), modifiers,
-						mouseX, mouseY, clickCount, mouseEvent.isPopupTrigger(),
-						mouseWheelEvent.getScrollType(), mouseWheelEvent.getScrollAmount(), mouseWheelEvent.getWheelRotation()
+						mouseX, mouseY, clickCount, false
 				));
-				return;
 			}
-			if (mouseEvent.getID() != MouseEvent.MOUSE_MOVED && mouseEvent.getID() != MouseEvent.MOUSE_CLICKED) {
-				if (mouseEvent.getID() == MouseEvent.MOUSE_PRESSED) {
-					pressLocation.setLocation(mouseEvent.getPoint());
-					releaseLocation.setLocation(-1, -1);
-				} else if (mouseEvent.getID() == MouseEvent.MOUSE_RELEASED) {
-					releaseLocation.setLocation(mouseEvent.getPoint());
-				}
-				if (pressLocation.getX() == -1 || releaseLocation.getX() == -1 || pressLocation.distance(releaseLocation) <= Math.sqrt(2)) {
-					return;
-				}
-			}
-			final MouseNode prevNode = mouseNode;
-			final int button = mouseEvent.getButton();
-			if (mouseEvent.getID() == MouseEvent.MOUSE_RELEASED) {
-				mouseX = (int) pressLocation.getX();
-				mouseY = (int) pressLocation.getY();
-			}
-			final int f_mouseX = mouseX, f_mouseY = mouseY;
-			mouseNode = new MouseNode(
-					org.powerbot.game.api.methods.input.Mouse.PRIORITY_REAL_TIME,
-					new ViewportEntity() {
-						private final Rectangle area = new Rectangle(f_mouseX - 1, f_mouseY - 1, 3, 3);
-
-						public Point getCentralPoint() {
-							return new Point(f_mouseX, f_mouseY);
-						}
-
-						public Point getNextViewportPoint() {
-							return new Point(f_mouseX + Random.nextInt(-1, 2), f_mouseY + Random.nextInt(-1, 2));
-						}
-
-						public boolean contains(final Point point) {
-							return area.contains(point);
-						}
-
-						public boolean validate() {
-							return true;
-						}
-					},
-					mouseEvent.getID() == MouseEvent.MOUSE_CLICKED || mouseEvent.getID() == MouseEvent.MOUSE_RELEASED ? new FilterClick(mouseEvent.getButton(), pressLocation, releaseLocation) : FILTER_MOVE
-			);
-			final boolean input_enabled = (inputMask & INPUT_MOUSE) != 0;
-			if (input_enabled || button == MouseEvent.BUTTON1 || button == MouseEvent.BUTTON3) {
-				if (prevNode != null && !(prevNode.getFilter() instanceof FilterClick) && !(mouseNode.getFilter() instanceof FilterClick)) {
-					prevNode.cancel();
-				}
-				if (!input_enabled) {
-					mouseRequest.init(new Point(f_mouseX, f_mouseY));
-					bot.getEventDispatcher().fire(mouseRequest);
-				}
-				if (input_enabled || mouseRequest.accepted()) {
-					reactor.process(mouseNode);
-				}
-			}
+		} else if (present) {
+			component.dispatchEvent(new MouseEvent(
+					component, MouseEvent.MOUSE_EXITED,
+					System.currentTimeMillis(), modifiers,
+					mouseX, mouseY, clickCount, false
+			));
 		}
 	}
 
@@ -286,7 +248,7 @@ public class BotPanel extends JPanel {
 		}
 	}
 
-	private void notifyListeners(final Component component, final MouseEvent mouseEvent, final boolean present) {
+	private void notifyListeners(final Component component, final MouseEvent mouseEvent) {
 		if (component != null && mouseEvent != null) {
 			bot.getEventDispatcher().dispatch(mouseEvent);
 		}
