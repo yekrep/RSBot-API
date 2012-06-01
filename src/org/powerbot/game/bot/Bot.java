@@ -386,12 +386,12 @@ public class Bot extends GameDefinition implements Runnable {
 		} catch (ExecutionException ignored) {
 		}
 
-		container.submit(new Task() {
+		/*container.submit(new Task() {
 			@Override
 			public void run() {
 				validateAccount();
 			}
-		});
+		});*/
 	}
 
 	public void stopScript() {
