@@ -5,10 +5,12 @@ import org.powerbot.game.api.util.node.Nodes;
 import org.powerbot.game.api.wrappers.Identifiable;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
 import org.powerbot.game.bot.Context;
+import org.powerbot.game.client.Cache;
 import org.powerbot.game.client.HardReference;
 import org.powerbot.game.client.HashTable;
 import org.powerbot.game.client.Node;
 import org.powerbot.game.client.RSItem;
+import org.powerbot.game.client.RSItemDefLoader;
 import org.powerbot.game.client.SoftReference;
 
 /**
@@ -61,7 +63,7 @@ public class Item implements Identifiable {
 
 	public ItemDefinition getDefinition() {
 		try {
-			final Node ref = Nodes.lookup((HashTable) Context.client().getRSItemDefLoader(), id);
+			final Node ref = Nodes.lookup((HashTable) ((Cache) ((RSItemDefLoader) Context.client().getRSItemDefLoader()).getCache()).getTable(), id);
 			if (ref != null) {
 				if (ref instanceof HardReference) {
 					return new ItemDefinition((org.powerbot.game.client.RSItemDef) ((HardReference) ref).get());

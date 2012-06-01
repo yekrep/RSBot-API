@@ -16,6 +16,7 @@ import org.powerbot.game.api.wrappers.Tile;
 import org.powerbot.game.api.wrappers.graphics.CapturedModel;
 import org.powerbot.game.api.wrappers.graphics.model.SceneObjectModel;
 import org.powerbot.game.bot.Context;
+import org.powerbot.game.client.Cache;
 import org.powerbot.game.client.HardReference;
 import org.powerbot.game.client.HashTable;
 import org.powerbot.game.client.Model;
@@ -26,6 +27,7 @@ import org.powerbot.game.client.RSInteractable;
 import org.powerbot.game.client.RSInteractableData;
 import org.powerbot.game.client.RSObject;
 import org.powerbot.game.client.RSObjectDef;
+import org.powerbot.game.client.RSObjectDefLoader;
 
 /**
  * @author Timer
@@ -88,7 +90,7 @@ public class SceneObject implements Entity, Locatable, Identifiable {
 	}
 
 	public SceneObjectDefinition getDefinition() {
-		final HashTable rsObjectDefLoaders = (HashTable) ((RSInfo) Context.client().getRSGroundInfo()).getRSObjectDefLoaders();
+		final HashTable rsObjectDefLoaders = (HashTable) ((Cache) ((RSObjectDefLoader) ((RSInfo) Context.client().getRSGroundInfo()).getRSObjectDefLoaders()).getCache()).getTable();
 		final Node ref = Nodes.lookup(rsObjectDefLoaders, getId());
 		if (ref != null) {
 			if (ref instanceof HardReference) {
@@ -171,7 +173,7 @@ public class SceneObject implements Entity, Locatable, Identifiable {
 			getLocation().draw(render);
 		}
 	}
-	
+
 	@Override
 	public boolean equals(final Object o) {
 		if (o instanceof SceneObject) {
