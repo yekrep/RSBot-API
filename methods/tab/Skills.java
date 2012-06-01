@@ -108,7 +108,11 @@ public class Skills {
 	}
 
 	public static int getRealLevel(final int index) {
-		return Skills.getLevelAt(getExperience(index));
+		final int level = Skills.getLevelAt(getExperience(index));
+		if (index != DUNGEONEERING && level > 99) {
+			return 99;
+		}
+		return level;
 	}
 
 	public static int getExperience(final int index) {
