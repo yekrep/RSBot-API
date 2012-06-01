@@ -171,6 +171,15 @@ public class SceneObject implements Entity, Locatable, Identifiable {
 			getLocation().draw(render);
 		}
 	}
+	
+	@Override
+	public boolean equals(final Object o) {
+		if (o instanceof SceneObject) {
+			final SceneObject object = (SceneObject) o;
+			return getId() == object.getId() && getLocation().equals(object.getLocation());
+		}
+		return false;
+	}
 
 	@Override
 	public String toString() {
