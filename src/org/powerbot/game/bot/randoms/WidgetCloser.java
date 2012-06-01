@@ -27,6 +27,7 @@ public class WidgetCloser extends AntiRandom {
 		children.put(1253, 76);//Squeal of Fortune window
 		children.put(1218, 77);//Advanced skill guide
 		children.put(1107, 157);//clan thingys
+		children.put(755, 44);//world map
 	}
 
 	public boolean validate() {
