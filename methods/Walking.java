@@ -93,17 +93,14 @@ public class Walking {
 		return new LocalPath(mobile.getLocation());
 	}
 
-	public static boolean walk(final Locatable mobile) {
-		return walk(mobile.getLocation());
-	}
-
 	/**
 	 * Clicks a tile on the minimap.
 	 *
-	 * @param stepDirection The tile to click (global).
-	 * @return <tt>true</tt> if the tile was clicked; otherwise <tt>false</tt>.
+	 * @param mobile The mobile to click (global).
+	 * @return <tt>true</tt> if the mobile was clicked; otherwise <tt>false</tt>.
 	 */
-	public static boolean walk(Tile stepDirection) {
+	public static boolean walk(final Locatable mobile) {
+		Tile stepDirection = mobile.getlocation();
 		if (!stepDirection.isOnMap()) {
 			stepDirection = getClosestOnMap(stepDirection);
 		}
