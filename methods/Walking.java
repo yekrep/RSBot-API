@@ -19,7 +19,7 @@ import org.powerbot.game.client.RSGroundData;
 import org.powerbot.game.client.RSInfo;
 
 /**
- * A utility for the manipulation of information required for waking.
+ * A utility for the manipulation of information required for walking.
  *
  * @author Timer
  */
