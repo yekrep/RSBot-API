@@ -561,12 +561,6 @@ public final class BotScripts extends JDialog implements ActionListener {
 			panelIconsRight.setBackground(null);
 			panelIcons.add(panelIconsRight);
 
-			final JLabel authors = new JLabel(String.format(BotLocale.BY, def.getAuthors()));
-			authors.setBorder(new EmptyBorder(3, 0, 0, 0));
-			authors.setForeground(Color.GRAY);
-			authors.setFont(desc.getFont());
-			panelIconsLeft.add(authors);
-
 			final JButton act = new JButton("Play");
 			act.addActionListener(new ActionListener() {
 				public void actionPerformed(final ActionEvent e) {
