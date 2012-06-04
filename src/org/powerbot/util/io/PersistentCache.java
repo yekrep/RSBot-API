@@ -62,7 +62,6 @@ public final class PersistentCache extends ConcurrentHashMap<String, String> {
 					putAll(data);
 				}
 			} catch (final Exception ignored) {
-				ignored.printStackTrace();
 			} finally {
 				if (fis != null) {
 					try {
@@ -83,7 +82,6 @@ public final class PersistentCache extends ConcurrentHashMap<String, String> {
 			data.put(IniParser.EMPTYSECTION, this);
 			IniParser.serialise(data, os);
 		} catch (final Exception ignored) {
-			ignored.printStackTrace();
 		} finally {
 			if (fos != null) {
 				try {
