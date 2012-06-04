@@ -186,7 +186,7 @@ public final class BotSignin extends JDialog implements ActionListener {
 				if (username.getText().length() != 0 && new String(password.getPassword()).length() != 0) {
 					boolean success = false;
 					try {
-						success = NetworkAccount.getInstance().login(username.getText(), new String(password.getPassword()));
+						success = NetworkAccount.getInstance().login(username.getText(), new String(password.getPassword()), "");
 					} catch (final IOException ignored) {
 					}
 					updateState();

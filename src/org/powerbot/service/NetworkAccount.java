@@ -1,37 +1,33 @@
 package org.powerbot.service;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.security.GeneralSecurityException;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.powerbot.util.StringUtil;
 import org.powerbot.util.io.IniParser;
+import org.powerbot.util.io.PersistentCache;
 import org.powerbot.util.io.Resources;
-import org.powerbot.util.io.SecureStore;
 
 /**
  * @author Paris
  */
 public final class NetworkAccount {
 	private static NetworkAccount instance = null;
-	private final static String FILENAME = "signin.ini";
+	public final static String CACHEKEY = "netacct";
 	private Account account;
 
 	private NetworkAccount() {
-		try {
-			final InputStream is = SecureStore.getInstance().read(FILENAME);
-			if (is != null) {
-				parseResponse(is);
+		if (PersistentCache.getInstance().containsKey(NetworkAccount.CACHEKEY)) {
+			try {
+				login("", "", StringUtil.urlEncode(PersistentCache.getInstance().get(NetworkAccount.CACHEKEY)));
+			} catch (final IOException ignored) {
 			}
-		} catch (final IOException ignored) {
-		} catch (final GeneralSecurityException ignored) {
 		}
 	}
 
-	public static NetworkAccount getInstance() {
+	public synchronized static NetworkAccount getInstance() {
 		if (instance == null) {
 			instance = new NetworkAccount();
 		}
@@ -50,23 +46,20 @@ public final class NetworkAccount {
 		return account;
 	}
 
-	public boolean login(final String username, final String password) throws IOException {
+	public synchronized boolean login(final String username, final String password, final String auth) throws IOException {
 		InputStream is;
 		try {
-			is = Resources.openHttpStream("signin", StringUtil.urlEncode(username), StringUtil.urlEncode(password));
+			is = Resources.openHttpStream("signin", StringUtil.urlEncode(username), StringUtil.urlEncode(password), StringUtil.urlEncode(auth));
 		} catch (final NullPointerException ignored) {
 			return false;
 		}
 		final boolean success = parseResponse(is) && isLoggedIn();
 		if (success) {
-			final ByteArrayOutputStream bos = new ByteArrayOutputStream();
-			IniParser.serialise(account.getMap(), bos);
-			bos.close();
-			try {
-				SecureStore.getInstance().write(FILENAME, bos.toByteArray());
-			} catch (final GeneralSecurityException ignored) {
-			}
+			PersistentCache.getInstance().put(CACHEKEY, account.auth);
+		} else {
+			PersistentCache.getInstance().remove(CACHEKEY);
 		}
+		PersistentCache.getInstance().save();
 		return success;
 	}
 
@@ -86,13 +79,10 @@ public final class NetworkAccount {
 		return true;
 	}
 
-	public void logout() {
+	public synchronized void logout() {
 		account = null;
-		try {
-			SecureStore.getInstance().delete(FILENAME);
-		} catch (final IOException ignored) {
-		} catch (final GeneralSecurityException ignored) {
-		}
+		PersistentCache.getInstance().remove(CACHEKEY);
+		PersistentCache.getInstance().save();
 	}
 
 	public final class Account {
