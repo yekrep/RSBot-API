@@ -166,14 +166,16 @@ public final class Tracker {
 	}
 
 	private void dispatchRequest(final String url) {
-		exec.submit(new Runnable() {
+		exec.execute(new Runnable() {
 			@Override
 			public void run() {
 				try {
-					final HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
-					connection.setRequestMethod("GET");
-					connection.setInstanceFollowRedirects(true);
-					connection.connect();
+					final HttpURLConnection con = (HttpURLConnection) new URL(url).openConnection();
+					con.setRequestMethod("GET");
+					con.setInstanceFollowRedirects(true);
+					con.connect();
+					con.getInputStream().read();
+					con.disconnect();
 				} catch (final IOException ignored) {
 				}
 			}
