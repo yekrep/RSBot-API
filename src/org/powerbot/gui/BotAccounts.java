@@ -55,11 +55,6 @@ public final class BotAccounts extends JDialog implements WindowListener {
 		super((Frame) parent, BotLocale.ACCOUNTS, true);
 		setIconImage(Resources.getImage(Resources.Paths.ADDRESS));
 
-		try {
-			GameAccounts.getInstance().load();
-		} catch (final Exception ignored) {
-		}
-
 		final JScrollPane scroll = new JScrollPane();
 
 		table = new JTable(new AccountTableModel());

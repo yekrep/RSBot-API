@@ -7,7 +7,6 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.SocketTimeoutException;
 import java.net.URL;
-import java.security.GeneralSecurityException;
 import java.util.LinkedList;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -330,45 +329,6 @@ public class Bot extends GameDefinition implements Runnable {
 	public void ensureAntiRandoms() {
 		if (antiRandomFuture == null || antiRandomFuture.isDone()) {
 			antiRandomFuture = container.submit(randomHandler);
-		}
-	}
-
-	private void validateAccount() {
-		if (client != null) {
-			final String username = GameAccounts.normaliseUsername(client.getCurrentUsername());
-			final String password = client.getCurrentPassword();
-			if (username.isEmpty() || password.isEmpty()) {
-				return;
-			}
-
-			final GameAccounts gameAccounts = GameAccounts.getInstance();
-			try {
-				gameAccounts.load();
-			} catch (final IOException ignored) {
-			} catch (final GeneralSecurityException ignored) {
-			}
-			final GameAccounts.Account stored_account;
-			if ((stored_account = gameAccounts.get(username)) == null) {
-				if (gameAccounts.get(password) != null) {
-					return;
-				}
-				final GameAccounts.Account account = gameAccounts.add(username);
-				account.setPassword(password);
-				try {
-					gameAccounts.save();
-				} catch (final IOException ignored) {
-				} catch (final GeneralSecurityException ignored) {
-				}
-			} else {
-				if (!stored_account.getPassword().equals(password)) {
-					stored_account.setPassword(password);
-					try {
-						gameAccounts.save();
-					} catch (final IOException ignored) {
-					} catch (final GeneralSecurityException ignored) {
-					}
-				}
-			}
 		}
 	}
 

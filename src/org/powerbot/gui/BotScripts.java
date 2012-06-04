@@ -453,11 +453,6 @@ public final class BotScripts extends JDialog implements ActionListener {
 				}
 			};
 			boolean hit = false;
-			try {
-				GameAccounts.getInstance().load();
-			} catch (IOException ignored) {
-			} catch (GeneralSecurityException ignored) {
-			}
 			if (GameAccounts.getInstance().size() == 0) {
 				return;
 			}
