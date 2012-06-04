@@ -21,6 +21,7 @@ import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 import org.powerbot.game.bot.Bot;
@@ -161,7 +162,6 @@ public class BotChrome extends JFrame implements WindowListener {
 
 	private final class LoadAccount implements Callable<Boolean> {
 		public Boolean call() throws Exception {
-			NetworkAccount.getInstance().isLoggedIn();
 			return true;
 		}
 	}
@@ -187,11 +187,17 @@ public class BotChrome extends JFrame implements WindowListener {
 				}
 			}
 			if (pass) {
-				parent.remove(parent.header);
-				parent.add(parent.toolbar, BorderLayout.NORTH);
-				parent.validate();
-				parent.repaint();
-				Logger.getLogger(BotChrome.class.getName()).log(Level.INFO, "Add a tab to start a new bot", "Welcome");
+				SwingUtilities.invokeLater(new Runnable() {
+					@Override
+					public void run() {
+						parent.remove(parent.header);
+						parent.add(parent.toolbar, BorderLayout.NORTH);
+						parent.validate();
+						parent.repaint();
+						Logger.getLogger(BotChrome.class.getName()).log(Level.INFO, "Add a tab to start a new bot", "Welcome");
+						BotChrome.getInstance().panel.loadingPanel.setAdVisible(!NetworkAccount.getInstance().isVIP());
+					}
+				});
 			}
 			System.gc();
 			BotChrome.loaded = true;

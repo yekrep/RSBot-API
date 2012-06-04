@@ -36,7 +36,6 @@ import javax.swing.border.EmptyBorder;
 import org.powerbot.game.GameDefinition;
 import org.powerbot.game.bot.Bot;
 import org.powerbot.gui.BotChrome;
-import org.powerbot.service.NetworkAccount;
 import org.powerbot.util.Configuration;
 import org.powerbot.util.io.Resources;
 import org.powerbot.util.io.SecureStore;
@@ -94,13 +93,6 @@ public final class BotLoadingPanel extends JPanel {
 
 		handler = new BotLoadingPanelLogHandler(this);
 		Logger.getLogger("").addHandler(handler);
-
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				setAdVisible(!NetworkAccount.getInstance().isVIP());
-			}
-		});
 	}
 
 	public synchronized void setAdVisible(final boolean visible) {
