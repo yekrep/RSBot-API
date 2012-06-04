@@ -21,6 +21,7 @@ import org.powerbot.util.Configuration;
 import org.powerbot.util.Configuration.OperatingSystem;
 import org.powerbot.util.RestrictedSecurityManager;
 import org.powerbot.util.StringUtil;
+import org.powerbot.util.io.CryptFile;
 import org.powerbot.util.io.PrintStreamHandler;
 
 public class Boot implements Runnable {
@@ -150,6 +151,7 @@ public class Boot implements Runnable {
 		}
 
 		StringUtil.newStringUtf8(null); // prevents ClassCircularityError exceptions
+		CryptFile.PERMISSIONS.clear();
 		System.setSecurityManager(new RestrictedSecurityManager());
 		System.setProperty("java.net.preferIPv4Stack", "true");
 		System.setProperty("sun.net.spi.nameservice.nameservers", RestrictedSecurityManager.DNS1 + "," + RestrictedSecurityManager.DNS2);

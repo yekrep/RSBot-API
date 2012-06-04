@@ -3,12 +3,14 @@ package org.powerbot.util;
 import java.io.File;
 import java.net.InetAddress;
 import java.security.Permission;
+import java.util.Map.Entry;
 import java.util.logging.Logger;
 
 import org.powerbot.concurrent.TaskContainer;
 import org.powerbot.game.GameDefinition;
 import org.powerbot.service.scripts.ScriptClassLoader;
 import org.powerbot.util.Configuration.OperatingSystem;
+import org.powerbot.util.io.CryptFile;
 
 /**
  * @author Paris
@@ -170,6 +172,15 @@ public class RestrictedSecurityManager extends SecurityManager {
 	private void checkFilePath(final String pathRaw, final boolean readOnly) {
 		final String path = StringUtil.urlDecode(new File(pathRaw).getAbsolutePath());
 		final String tmp = System.getProperty("java.io.tmpdir");
+
+		// permission controls for crypt files
+		for (final Entry<File, Class<?>[]> entry : CryptFile.PERMISSIONS.entrySet()) {
+			if (entry.getKey().equals(pathRaw)) {
+				if (!isCallingClass(entry.getValue())) {
+					throw new SecurityException();
+				}
+			}
+		}
 
 		// allow access for privileged thread groups
 		if (Thread.currentThread().getThreadGroup().getName().startsWith(GameDefinition.THREADGROUPNAMEPREFIX)) {
