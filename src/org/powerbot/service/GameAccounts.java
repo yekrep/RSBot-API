@@ -1,8 +1,5 @@
 package org.powerbot.service;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -11,13 +8,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.zip.Adler32;
 
-import javax.crypto.Cipher;
-
-import org.powerbot.util.Configuration;
-import org.powerbot.util.StringUtil;
-import org.powerbot.util.io.CipherStreams;
+import org.powerbot.util.io.CryptFile;
 import org.powerbot.util.io.IniParser;
 
 /**
@@ -26,24 +18,11 @@ import org.powerbot.util.io.IniParser;
 public final class GameAccounts extends ArrayList<GameAccounts.Account> {
 	private static final long serialVersionUID = 1L;
 	private static final GameAccounts instance = new GameAccounts();
-	private final String name;
-	private final File store;
-	private final byte[] key;
-	private final static String CIPHER_ALGORITHM = "RC4", KEY_ALGORITHM = "RC4";
+	private final CryptFile store;
 
 	private GameAccounts() {
 		super();
-
-		final Adler32 c = new Adler32();
-		c.update(new byte[] {0x21, 0x70, 0x1, 0xf, 0x6e});
-		final long uid = Configuration.getUID();
-		c.update((int) (uid & 0xffffffff));
-		c.update((int) (uid >> 32));
-		final long l = c.getValue();
-		name = String.format("%s.tmp", Long.toHexString(l));
-		store = new File(System.getProperty("java.io.tmpdir"), name);
-		key = CipherStreams.getSharedKey(StringUtil.getBytesUtf8(name));
-
+		store = new CryptFile("gameaccts", GameAccounts.class);
 		load();
 	}
 
@@ -52,22 +31,21 @@ public final class GameAccounts extends ArrayList<GameAccounts.Account> {
 	}
 
 	private synchronized void load() {
-		InputStream fis = null;
-		Map<String, Map<String, String>> data = null;
-		if (store.isFile()) {
+		InputStream is;
+		try {
+			is = store.getInputStream();
+		} catch (IOException ignored) {
+			return;
+		}
+		final Map<String, Map<String, String>> data;
+		try {
+			data = IniParser.deserialise(is);
+		} catch (IOException ignored) {
+			return;
+		} finally {
 			try {
-				fis = new FileInputStream(store);
-				final InputStream is = CipherStreams.getCipherInputStream(fis, Cipher.ENCRYPT_MODE, key, CIPHER_ALGORITHM, KEY_ALGORITHM);
-				clear();
-				data = IniParser.deserialise(is);
-			} catch (final Exception ignored) {
-			} finally {
-				if (fis != null) {
-					try {
-						fis.close();
-					} catch (final IOException ignored2) {
-					}
-				}
+				is.close();
+			} catch (final IOException ignored2) {
 			}
 		}
 		if (data == null) {
@@ -102,17 +80,15 @@ public final class GameAccounts extends ArrayList<GameAccounts.Account> {
 			e.put("reward", a.reward);
 			data.put(a.toString(), e);
 		}
-		OutputStream fos = null;
+		OutputStream os = null;
 		try {
-			fos = new FileOutputStream(store);
-			final OutputStream os = CipherStreams.getCipherOutputStream(fos, Cipher.DECRYPT_MODE, key, CIPHER_ALGORITHM, KEY_ALGORITHM);
+			os = store.getOutputStream();
 			IniParser.serialise(data, os);
 		} catch (final Exception ignored) {
-			ignored.printStackTrace();
 		} finally {
-			if (fos != null) {
+			if (os != null) {
 				try {
-					fos.close();
+					os.close();
 				} catch (final IOException ignored2) {
 				}
 			}
