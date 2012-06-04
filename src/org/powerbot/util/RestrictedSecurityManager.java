@@ -9,7 +9,6 @@ import org.powerbot.concurrent.TaskContainer;
 import org.powerbot.game.GameDefinition;
 import org.powerbot.service.scripts.ScriptClassLoader;
 import org.powerbot.util.Configuration.OperatingSystem;
-import org.powerbot.util.io.SecureStore;
 
 /**
  * @author Paris
@@ -171,14 +170,6 @@ public class RestrictedSecurityManager extends SecurityManager {
 	private void checkFilePath(final String pathRaw, final boolean readOnly) {
 		final String path = StringUtil.urlDecode(new File(pathRaw).getAbsolutePath());
 		final String tmp = System.getProperty("java.io.tmpdir");
-
-		// allow access to secure store file for that specific class
-		if (path.equals(new File(Configuration.STORE).getAbsolutePath())) {
-			if (!isCallingClass(SecureStore.class)) {
-				throw new SecurityException("Access to secure store denied");
-			}
-			return;
-		}
 
 		// allow access for privileged thread groups
 		if (Thread.currentThread().getThreadGroup().getName().startsWith(GameDefinition.THREADGROUPNAMEPREFIX)) {
