@@ -45,7 +45,7 @@ public class Time {
 		final long total_hrs = total_mins / 60;
 		final int secs = (int) total_secs % 60;
 		final int mins = (int) total_mins % 60;
-		final int hrs = (int) total_hrs % 60;
+		final int hrs = (int) total_hrs % 24;
 		if (hrs < 10) {
 			t.append("0");
 		}
