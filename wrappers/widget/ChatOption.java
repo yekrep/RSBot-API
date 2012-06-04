@@ -42,9 +42,12 @@ public class ChatOption {
 	 * @param visible <tt>true</tt> if the result must be visible.
 	 * @return <tt>true</tt> if and only if the Widget including all its children match the criteria, otherwise <tt>false</tt>.
 	 */
-	public boolean revalidate(final boolean valid, final boolean visible) {
-		final WidgetChild w = Widgets.get(child.getParent().getIndex(), child.getIndex());
-		return !(w == null || (valid && !w.validate()) || (visible && !w.visible()));
+	public boolean revalidate(final boolean isValid, final boolean isVisible) {
+		WidgetChild w = this.child.getParent();
+		if (w != null) {
+			w = Widgets.get(w.getIndex(), this.child.getIndex());
+		}
+		return !(w == null || (isValid && !w.validate()) || (isVisible && !w.visible()));
 	}
 
 	/**
