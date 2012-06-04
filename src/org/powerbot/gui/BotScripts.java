@@ -27,7 +27,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -77,8 +76,6 @@ import org.powerbot.util.io.HttpClient;
 import org.powerbot.util.io.IOHelper;
 import org.powerbot.util.io.IniParser;
 import org.powerbot.util.io.Resources;
-import org.powerbot.util.io.SecureStore;
-import org.powerbot.util.io.TarEntry;
 
 /**
  * @author Paris
@@ -341,7 +338,6 @@ public final class BotScripts extends JDialog implements ActionListener {
 				}
 			}
 		}
-		updateCache(list);
 		filterList(list);
 		return list;
 	}
@@ -370,31 +366,6 @@ public final class BotScripts extends JDialog implements ActionListener {
 		while (i.hasNext()) {
 			if (!collection.contains(i.next().getName())) {
 				i.remove();
-			}
-		}
-	}
-
-	private void updateCache(final List<ScriptDefinition> scripts) {
-		for (final TarEntry entry : SecureStore.getInstance().listEntries()) {
-			if (!entry.name.startsWith(SCRIPTSPREFIX)) {
-				continue;
-			}
-			for (final ScriptDefinition def : scripts) {
-				if (def.local) {
-					continue;
-				}
-				final String name = getSecureFileName(def);
-				if (name == null) {
-					continue;
-				}
-				if (name.equals(entry.name)) {
-					try {
-						SecureStore.getInstance().delete(entry.name);
-					} catch (final IOException ignored) {
-					} catch (final GeneralSecurityException ignored) {
-					}
-					break;
-				}
 			}
 		}
 	}
@@ -601,8 +572,7 @@ public final class BotScripts extends JDialog implements ActionListener {
 							return;
 						} else {
 							try {
-								SecureStore.getInstance().download(name, def.source);
-								cl = new ScriptClassLoader(new ZipInputStream(SecureStore.getInstance().read(name)));
+								cl = new ScriptClassLoader(new ZipInputStream(HttpClient.openStream(def.source)));
 							} catch (final Exception ignored) {
 								log.severe("Could not download script");
 								ignored.printStackTrace();
