@@ -2,6 +2,8 @@ package org.powerbot.service.scripts;
 
 import java.net.URL;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.powerbot.game.api.ActiveScript;
 import org.powerbot.game.api.Manifest;
@@ -20,6 +22,43 @@ public final class ScriptDefinition {
 	public String className;
 	public URL source;
 	public boolean local = false;
+	private Category category = null;
+
+	public enum Category {
+		AGILITY(0, "course"),
+		AIO(1, ""),
+		COMBAT(2, "fight|kill|duel|soul"),
+		CONSTRUCTION(3, "constr"),
+		COOKING(4, "cook"),
+		CRAFTING(5, "craft|spin|crush|grind|flax|vial"),
+		DUNGEONEERING(6, "dung"),
+		FARMING(7, "farm"),
+		FIREMAKING(8, "fire"),
+		FISHING(9, "fish"),
+		FLETCHING(10, "fletch"),
+		HERBLORE(11, "herb"),
+		HUNTER(12, "hunt|catch"),
+		MAGIC(13, "mage"),
+		MINIGAME(14, "sorc|puzzle"),
+		MINING(15, "mine|ore"),
+		MONEY(16, "gp|gold"),
+		PRAYER(17, "pray|bones"),
+		QUEST(18, "quest"),
+		RANGED(19, "range|arrow"),
+		RUNECRAFTING(20, "rune|ess"),
+		SMITHING(21, "smith|bars"),
+		SUMMONING(22, "summ"),
+		THIEVING(23, "thief|steal|thiev"),
+		WOODCUTTING(24, "wood|chop");
+
+		public final int index;
+		public final String regex;
+
+		private Category(final int index, final String regex) {
+			this.index = index;
+			this.regex = regex;
+		}
+	}
 
 	public ScriptDefinition(final Class<? extends ActiveScript> clazz) {
 		this(clazz.getAnnotation(Manifest.class));
@@ -111,6 +150,37 @@ public final class ScriptDefinition {
 
 	public boolean isPremium() {
 		return premium;
+	}
+
+	public Category getCategory() {
+		if (category != null) {
+			return category;
+		}
+
+		category = Category.AIO;
+		final String sig = (getName() + " " + getDescription()).toLowerCase();
+		int x = 0xfff;
+
+		for (final Category c : Category.class.getEnumConstants()) {
+			int z = sig.indexOf(c.name().toLowerCase());
+			if (z != -1 && z < x) {
+				x = z;
+				category = c;
+			}
+			if (c.regex.length() == 0) {
+				continue;
+			}
+			final Matcher m = Pattern.compile(c.regex).matcher(sig);
+			if (m.find(0)) {
+				z = m.start();
+				if (z != -1 && z < x) {
+					x = z;
+					category = c;
+				}
+			}
+		}
+
+		return category;
 	}
 
 	public boolean matches(final String query) {
