@@ -99,6 +99,11 @@ public final class BotScripts extends JDialog implements ActionListener {
 
 	public BotScripts(final BotToolBar parent) {
 		super(parent.parent, BotLocale.SCRIPTS, true);
+
+		if (!NetworkAccount.getInstance().isLoggedIn()) {
+			new BotSignin(parent.parent);
+		}
+
 		setIconImage(Resources.getImage(Resources.Paths.FILE));
 		this.parent = parent;
 		collection = new ArrayList<String>();
@@ -227,7 +232,11 @@ public final class BotScripts extends JDialog implements ActionListener {
 			}
 		});
 
-		setVisible(true);
+		if (NetworkAccount.getInstance().isLoggedIn()) {
+			setVisible(true);
+		} else {
+			dispose();
+		}
 
 		Configuration.trackPageView("scripts", getTitle());
 	}
