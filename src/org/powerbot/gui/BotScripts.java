@@ -529,6 +529,17 @@ public final class BotScripts extends JDialog implements ActionListener {
 			name.setFont(name.getFont().deriveFont(Font.BOLD));
 			panelInfo.add(name, BorderLayout.NORTH);
 
+			if (def.getWebsite() != null && !def.getWebsite().isEmpty()) {
+				name.setForeground(new Color(0x23, 0x23, 0x8e));
+				name.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseClicked(final MouseEvent arg0) {
+						BotChrome.openURL(def.getWebsite());
+					}
+				});
+				name.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+			}
+
 			final JTextArea desc = new JTextArea(def.getDescription());
 			desc.setBackground(null);
 			desc.setEditable(false);
@@ -549,18 +560,6 @@ public final class BotScripts extends JDialog implements ActionListener {
 			final JPanel panelIconsRight = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 			panelIconsRight.setBackground(null);
 			panelIcons.add(panelIconsRight);
-
-			if (def.getWebsite() != null && !def.getWebsite().isEmpty()) {
-				final JLabel link = new JLabel(new ImageIcon(Resources.getImage(Resources.Paths.WORLD_LINK)));
-				link.addMouseListener(new MouseAdapter() {
-					@Override
-					public void mouseClicked(final MouseEvent arg0) {
-						BotChrome.openURL(def.getWebsite());
-					}
-				});
-				link.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-				panelIconsLeft.add(link, BorderLayout.WEST);
-			}
 
 			final JLabel authors = new JLabel(String.format(BotLocale.BY, def.getAuthors()));
 			authors.setBorder(new EmptyBorder(3, 0, 0, 0));
