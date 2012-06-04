@@ -172,7 +172,7 @@ public class RestrictedSecurityManager extends SecurityManager {
 
 		// allow access to secure store file for that specific class
 		if (path.equals(new File(Configuration.STORE).getAbsolutePath())) {
-			if (!isCallingClass(SecureStore.class, LoadLicense.class)) {
+			if (!isCallingClass(SecureStore.class)) {
 				throw new SecurityException("Access to secure store denied");
 			}
 			return;
