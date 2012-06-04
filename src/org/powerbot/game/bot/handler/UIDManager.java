@@ -20,7 +20,6 @@ import org.powerbot.util.io.IOHelper;
  * @author Timer
  */
 public class UIDManager {
-	private static final String FILE_NAME = "gameuids.txt";
 	private static String newline = System.getProperty("line.separator");
 	private static String separator = "#";
 	private final String name;
