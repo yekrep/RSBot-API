@@ -32,11 +32,11 @@ public final class BotMenu extends JPopupMenu implements ActionListener {
 		final int tabs = parent.getTabCount();
 
 		final JMenuItem newtab = new JMenuItem(BotLocale.NEWTAB);
-		newtab.setIcon(new ImageIcon(Resources.getImage(Resources.Paths.TAB_ADD)));
+		newtab.setIcon(new ImageIcon(Resources.getImage(Resources.Paths.ADD)));
 		newtab.setEnabled(BotChrome.MAX_BOTS - tabs > 0);
 		newtab.addActionListener(this);
 		final JMenuItem closetab = new JMenuItem(BotLocale.CLOSETAB);
-		closetab.setIcon(new ImageIcon(Resources.getImage(Resources.Paths.TAB_DELETE)));
+		closetab.setIcon(new ImageIcon(Resources.getImage(Resources.Paths.REMOVE)));
 		closetab.setEnabled(tabs > 0);
 		closetab.addActionListener(this);
 		add(newtab);
@@ -44,13 +44,13 @@ public final class BotMenu extends JPopupMenu implements ActionListener {
 		addSeparator();
 
 		final JMenuItem accounts = new JMenuItem(BotLocale.ACCOUNTS);
-		accounts.setIcon(new ImageIcon(Resources.getImage(Resources.Paths.REPORT_KEY)));
+		accounts.setIcon(new ImageIcon(Resources.getImage(Resources.Paths.ADDRESS)));
 		accounts.addActionListener(this);
 		add(accounts);
 		addSeparator();
 
 		final JMenuItem signin = new JMenuItem(BotLocale.SIGNIN + "...");
-		signin.setIcon(new ImageIcon(Resources.getImage(Resources.Paths.KEY)));
+		signin.setIcon(new ImageIcon(Resources.getImage(Resources.Paths.KEYS)));
 		if (NetworkAccount.getInstance().isLoggedIn()) {
 			signin.setText(BotLocale.SIGNEDINAS + " " + NetworkAccount.getInstance().getAccount().getDisplayName());
 		}
@@ -78,7 +78,7 @@ public final class BotMenu extends JPopupMenu implements ActionListener {
 		site.addActionListener(this);
 		add(site);
 		final JMenuItem about = new JMenuItem(BotLocale.ABOUT);
-		about.setIcon(new ImageIcon(Resources.getImage(Resources.Paths.INFORMATION)));
+		about.setIcon(new ImageIcon(Resources.getImage(Resources.Paths.INFO)));
 		about.addActionListener(this);
 		add(about);
 		addSeparator();

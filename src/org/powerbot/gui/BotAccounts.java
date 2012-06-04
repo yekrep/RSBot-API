@@ -53,7 +53,7 @@ public final class BotAccounts extends JDialog implements WindowListener {
 
 	public BotAccounts(final BotChrome parent) {
 		super((Frame) parent, BotLocale.ACCOUNTS, true);
-		setIconImage(Resources.getImage(Resources.Paths.REPORT_KEY));
+		setIconImage(Resources.getImage(Resources.Paths.ADDRESS));
 
 		try {
 			GameAccounts.getInstance().load();
@@ -99,7 +99,7 @@ public final class BotAccounts extends JDialog implements WindowListener {
 				((AccountTableModel) table.getModel()).fireTableRowsInserted(row, row);
 			}
 		});
-		delete = new JButton(new ImageIcon(Resources.getImage(Resources.Paths.DELETE)));
+		delete = new JButton(new ImageIcon(Resources.getImage(Resources.Paths.REMOVE)));
 		delete.setFocusable(false);
 		delete.addActionListener(new ActionListener() {
 			public void actionPerformed(final ActionEvent arg0) {

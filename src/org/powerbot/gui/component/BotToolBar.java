@@ -48,7 +48,7 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 		setFloatable(false);
 		setBorder(new EmptyBorder(1, 3, 1, 3));
 
-		tabAdd = new JButton(new ImageIcon(Resources.getImage(Resources.Paths.TAB_ADD)));
+		tabAdd = new JButton(new ImageIcon(Resources.getImage(Resources.Paths.ADD)));
 		tabAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(final ActionEvent e) {
 				SwingUtilities.invokeLater(new Runnable() {
@@ -67,14 +67,14 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 
 		add(Box.createHorizontalGlue());
 
-		scriptPlay = new JButton(new ImageIcon(Resources.getImage(Resources.Paths.CONTROL_PLAY)));
+		scriptPlay = new JButton(new ImageIcon(Resources.getImage(Resources.Paths.PLAY)));
 		scriptPlay.addActionListener(this);
 		scriptPlay.setToolTipText(BotLocale.PLAYSCRIPT);
 		scriptPlay.setFocusable(false);
 		scriptPlay.setVisible(false);
 		scriptPlay.setEnabled(false);
 		add(scriptPlay);
-		scriptStop = new JButton(new ImageIcon(Resources.getImage(Resources.Paths.CONTROL_STOP)));
+		scriptStop = new JButton(new ImageIcon(Resources.getImage(Resources.Paths.STOP)));
 		scriptStop.addActionListener(this);
 		scriptStop.setToolTipText(BotLocale.STOPSCRIPT);
 		scriptStop.setFocusable(false);
@@ -88,7 +88,7 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 		add(Box.createHorizontalStrut(16));
 
 		final BotToolBar t = this;
-		final JButton settings = new JButton(new ImageIcon(Resources.getImage(Resources.Paths.WRENCH)));
+		final JButton settings = new JButton(new ImageIcon(Resources.getImage(Resources.Paths.SETTINGS)));
 		settings.addActionListener(new ActionListener() {
 			public void actionPerformed(final ActionEvent arg0) {
 				new BotMenu(t).show(settings, settings.getWidth() / 2, settings.getHeight() / 2);
@@ -295,7 +295,7 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 			final ActiveScript script = bot.getActiveScript();
 			final boolean running = script != null && script.isRunning();
 			final boolean processing = running && !script.isPaused();
-			scriptPlay.setIcon(new ImageIcon(Resources.getImage(processing ? Resources.Paths.CONTROL_PAUSE : Resources.Paths.CONTROL_PLAY)));
+			scriptPlay.setIcon(new ImageIcon(Resources.getImage(processing ? Resources.Paths.PAUSE : Resources.Paths.PLAY)));
 			scriptPlay.setToolTipText(processing ? BotLocale.PAUSESCRIPT : running ? BotLocale.RESUMESCRIPT : BotLocale.PLAYSCRIPT);
 			scriptStop.setEnabled(running);
 		}

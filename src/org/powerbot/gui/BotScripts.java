@@ -99,7 +99,7 @@ public final class BotScripts extends JDialog implements ActionListener {
 
 	public BotScripts(final BotToolBar parent) {
 		super(parent.parent, BotLocale.SCRIPTS, true);
-		setIconImage(Resources.getImage(Resources.Paths.SCRIPT));
+		setIconImage(Resources.getImage(Resources.Paths.FILE));
 		this.parent = parent;
 		collection = new ArrayList<String>();
 
@@ -118,7 +118,7 @@ public final class BotScripts extends JDialog implements ActionListener {
 		final JPanel panelRight = new JPanel(flow);
 		add(toolbar, BorderLayout.NORTH);
 
-		refresh = new JButton(new ImageIcon(Resources.getImage(Resources.Paths.ARROW_REFRESH)));
+		refresh = new JButton(new ImageIcon(Resources.getImage(Resources.Paths.REFRESH)));
 		refresh.setVisible(Configuration.DEVMODE);
 		refresh.setToolTipText(BotLocale.REFRESH);
 		refresh.addActionListener(new ActionListener() {
@@ -128,7 +128,7 @@ public final class BotScripts extends JDialog implements ActionListener {
 		});
 		refresh.setFocusable(false);
 		toolbar.add(refresh);
-		locals = new JToggleButton(new ImageIcon(Resources.getImage(Resources.Paths.SCRIPT_EDIT)));
+		locals = new JToggleButton(new ImageIcon(Resources.getImage(Resources.Paths.PENCIL)));
 		locals.setToolTipText(BotLocale.LOCALONLY);
 		locals.addActionListener(this);
 		locals.setFocusable(false);
@@ -140,7 +140,7 @@ public final class BotScripts extends JDialog implements ActionListener {
 		username.setFont(username.getFont().deriveFont(username.getFont().getSize2D() - 1f));
 		username.addActionListener(this);
 		username.setFocusable(false);
-		username.setIcon(new ImageIcon(Resources.getImage(Resources.Paths.KEY)));
+		username.setIcon(new ImageIcon(Resources.getImage(Resources.Paths.KEYS)));
 		toolbar.add(username);
 
 		search = new JTextField(BotLocale.SEARCH);
@@ -173,7 +173,7 @@ public final class BotScripts extends JDialog implements ActionListener {
 		search.setBorder(BorderFactory.createCompoundBorder(new LineBorder(Color.LIGHT_GRAY, d, true), BorderFactory.createEmptyBorder(0, d + d, 0, d + d)));
 		panelRight.add(search);
 		panelRight.add(Box.createHorizontalStrut(d));
-		final JButton more = new JButton(BotLocale.BROWSE, new ImageIcon(Resources.getImage(Resources.Paths.SCRIPT_GO)));
+		final JButton more = new JButton(BotLocale.BROWSE, new ImageIcon(Resources.getImage(Resources.Paths.SEARCH)));
 		more.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		more.setToolTipText(BotLocale.BROWSETIP);
 		more.setFont(username.getFont());
