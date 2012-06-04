@@ -1,25 +1,25 @@
 package org.powerbot.gui;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
-import java.awt.Dimension;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 
 import javax.swing.BorderFactory;
+import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+import javax.swing.LayoutStyle;
+import javax.swing.SwingConstants;
+import javax.swing.WindowConstants;
 
 import org.powerbot.gui.component.BotLocale;
 import org.powerbot.service.NetworkAccount;
@@ -31,56 +31,143 @@ import org.powerbot.util.io.Resources;
  */
 public final class BotSignin extends JDialog implements ActionListener {
 	private static final long serialVersionUID = 1L;
+
 	private final BotChrome parent;
-	private final CredentialTextField username, password;
 	private final JButton signin;
+	private final JLabel labelUsername;
+	private final JLabel labelPassword;
+	private final JLabel lostPass;
 	private final JLabel register;
+	private final JLabel info;
+	private final JPanel panelSide;
+	private final JTextField username;
+	private final JPasswordField password;
 
 	public BotSignin(final BotChrome parent) {
 		super(parent, BotLocale.SIGNIN, true);
 		this.parent = parent;
 
-		final GridLayout gridCredentials = new GridLayout(2, 1);
-		gridCredentials.setVgap(5);
-		final JPanel panelCredentials = new JPanel(gridCredentials);
+		labelUsername = new JLabel();
+		username = new JTextField();
+		labelPassword = new JLabel();
+		password = new JPasswordField();
+		signin = new JButton();
+		lostPass = new JLabel();
+		register = new JLabel();
+		panelSide = new JPanel();
+		info = new JLabel();
 
-		username = new CredentialTextField(BotLocale.USERNAME_OR_EMAIL, false);
-		panelCredentials.add(username);
-		password = new CredentialTextField(BotLocale.PASSWORD, true);
-		panelCredentials.add(password);
+		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
-		final GridLayout gridAction = new GridLayout(1, 2);
-		gridAction.setHgap(gridCredentials.getVgap());
-		final JPanel panelAction = new JPanel(gridAction);
-		final int pad = gridAction.getHgap();
-		panelAction.setBorder(BorderFactory.createEmptyBorder(pad, pad, pad, pad));
+		labelUsername.setHorizontalAlignment(SwingConstants.RIGHT);
+		labelUsername.setText(BotLocale.USERNAME_OR_EMAIL);
 
-		register = new JLabel("<html><a href='#'>" + BotLocale.REGISTER + "</a></html>");
+		labelPassword.setHorizontalAlignment(SwingConstants.RIGHT);
+		labelPassword.setText(BotLocale.PASSWORD);
+
+		signin.setText(BotLocale.SIGNIN);
+		signin.addActionListener(this);
+		signin.setFocusable(false);
+
+		lostPass.setFont(lostPass.getFont().deriveFont(lostPass.getFont().getSize2D() - 3f));
+		lostPass.setText(BotLocale.FORGOTPASS);
+		lostPass.setForeground(new Color(0, 0, 0xcc));
+		lostPass.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		lostPass.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(final MouseEvent e) {
+				BotChrome.openURL(Resources.getServerLinks().get("lostpass"));
+			}
+		});
+		lostPass.setVisible(false);
+
+		register.setFont(register.getFont().deriveFont(register.getFont().getSize2D() - 2f));
+		register.setText(BotLocale.REGISTER);
+		register.setForeground(lostPass.getForeground());
 		register.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		register.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(final MouseEvent arg0) {
+			public void mouseClicked(final MouseEvent e) {
 				BotChrome.openURL(Resources.getServerLinks().get("register"));
 			}
 		});
-		panelAction.add(register);
 
-		signin = new JButton(BotLocale.SIGNIN);
-		signin.setFocusable(false);
-		signin.setPreferredSize(new Dimension((int) (signin.getPreferredSize().width * 1.2), (int) (signin.getPreferredSize().height * 1.2)));
-		signin.addActionListener(this);
-		panelAction.add(signin);
+		info.setHorizontalAlignment(SwingConstants.CENTER);
+		info.setText("<html><center>Sign in to your " + BotLocale.WEBSITE +
+				" account to access your script collection and synchronise your accounts securely on the " + BotLocale.THECLOUD + "</center></html>");
+		info.setHorizontalAlignment(SwingConstants.CENTER);
+		info.setOpaque(true);
+		info.setBackground(null);
+		panelSide.setBackground(new Color(0xdd, 0xdd, 0xdd));
+		panelSide.setBorder(BorderFactory.createEtchedBorder());
 
-		final JPanel panel = new JPanel(new GridLayout(0, 1));
-		panel.setBorder(panelAction.getBorder());
-		panel.add(panelCredentials);
+		final GroupLayout panelInfoLayout = new GroupLayout(panelSide);
+		panelSide.setLayout(panelInfoLayout);
+		panelInfoLayout.setHorizontalGroup(
+				panelInfoLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+				.addGroup(panelInfoLayout.createSequentialGroup()
+						.addContainerGap()
+						.addComponent(info, GroupLayout.DEFAULT_SIZE, 173, Short.MAX_VALUE)
+						.addContainerGap())
+				);
+		panelInfoLayout.setVerticalGroup(
+				panelInfoLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+				.addGroup(panelInfoLayout.createSequentialGroup()
+						.addContainerGap()
+						.addComponent(info)
+						.addContainerGap())
+				);
 
-		add(panel);
-		add(panelAction, BorderLayout.SOUTH);
+		final GroupLayout layout = new GroupLayout(getContentPane());
+		getContentPane().setLayout(layout);
+		layout.setHorizontalGroup(
+				layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+				.addGroup(layout.createSequentialGroup()
+						.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING, false)
+								.addGroup(layout.createSequentialGroup()
+										.addComponent(register)
+										.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+										.addComponent(signin))
+										.addComponent(lostPass)
+										.addGroup(layout.createSequentialGroup()
+												.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
+														.addComponent(labelUsername, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+														.addComponent(labelPassword, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+														.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+														.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
+																.addComponent(username)
+																.addComponent(password, GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE))))
+																.addGap(18, 18, 18)
+																.addComponent(panelSide, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+																.addContainerGap())
+				);
+		layout.setVerticalGroup(
+				layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+				.addGroup(layout.createSequentialGroup()
+						.addContainerGap()
+						.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+								.addComponent(panelSide, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+								.addGroup(layout.createSequentialGroup()
+										.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+												.addComponent(labelUsername)
+												.addComponent(username, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+												.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+												.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+														.addComponent(labelPassword)
+														.addComponent(password, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+														.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+														.addComponent(lostPass)
+														.addGap(18, 18, 18)
+														.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+																.addComponent(signin)
+																.addComponent(register))
+																.addGap(0, 0, Short.MAX_VALUE)))
+																.addContainerGap())
+				);
 
 		updateState();
 		getRootPane().setDefaultButton(signin);
-		register.requestFocusInWindow();
 
 		pack();
 		setMinimumSize(getSize());
@@ -96,10 +183,10 @@ public final class BotSignin extends JDialog implements ActionListener {
 		if (s == signin) {
 			signin.setEnabled(false);
 			if (signin.getText().equals(BotLocale.SIGNIN)) {
-				if (username.getText().length() != 0 && password.getText().length() != 0) {
+				if (username.getText().length() != 0 && new String(password.getPassword()).length() != 0) {
 					boolean success = false;
 					try {
-						success = NetworkAccount.getInstance().login(username.getText(), password.getText());
+						success = NetworkAccount.getInstance().login(username.getText(), new String(password.getPassword()));
 					} catch (final IOException ignored) {
 					}
 					updateState();
@@ -139,66 +226,6 @@ public final class BotSignin extends JDialog implements ActionListener {
 			password.setText(null);
 			password.setEnabled(true);
 			register.setVisible(true);
-		}
-	}
-
-	private class CredentialTextField extends JPasswordField implements FocusListener {
-		private static final long serialVersionUID = 1L;
-		final boolean password;
-		final char defaultEchoChar;
-		final String initText;
-		final Color initColor, altColor = Color.GRAY;
-
-		public CredentialTextField(final String text, final boolean password) {
-			super(text);
-			setFont(getFont().deriveFont((float) (getFont().getSize() * 1.3)));
-			initColor = getForeground();
-			setForeground(altColor);
-			this.password = password;
-			defaultEchoChar = getEchoChar();
-			setEchoChar((char) 0);
-			initText = text;
-			addFocusListener(this);
-		}
-
-		public void focusGained(final FocusEvent arg0) {
-			if (getForeground() == altColor) {
-				super.setText("");
-				if (password) {
-					setEchoChar(defaultEchoChar);
-				}
-				setForeground(initColor);
-			}
-		}
-
-		public void focusLost(final FocusEvent arg0) {
-			final String text = new String(getPassword());
-			if (text.length() == 0) {
-				setForeground(altColor);
-				if (password) {
-					setEchoChar((char) 0);
-				}
-				super.setText(initText);
-			}
-		}
-
-		@Override
-		public String getText() {
-			return getForeground() == altColor ? "" : new String(getPassword());
-		}
-
-		@Override
-		public void setText(final String t) {
-			if (t == null || t.length() == 0) {
-				super.setText("");
-				focusLost(null);
-			} else {
-				setForeground(initColor);
-				if (password) {
-					setEchoChar(defaultEchoChar);
-				}
-				super.setText(t);
-			}
 		}
 	}
 }
