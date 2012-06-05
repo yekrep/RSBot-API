@@ -15,5 +15,5 @@ public @interface Manifest {
 
 	String website() default "";
 
-	boolean premium() default false;
+	boolean hidden() default false;
 }
