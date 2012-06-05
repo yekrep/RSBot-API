@@ -163,16 +163,24 @@ public class DepositBox {
 	 * Finds an item in the deposit box viewport. Note that the deposit box viewport displays items from the players
 	 * inventory, not items from the players bank. The inventory tab will be unavailable while the deposit box is open.
 	 *
-	 * @param id The id of the item to look for.
+	 * @param filter The filter to look for the item.
 	 * @return The found item, or <tt>null</tt> if not found.
 	 */
-	public static Item getItem(final int id) {
+	public static Item getItem(final Filter<Item> filter) {
 		for (final Item item : getItems()) {
-			if (item.getId() == id) {
+			if (filter.accept(item)) {
 				return item;
 			}
 		}
 		return null;
+	}
+	
+	public static Item getItem(final int id) {
+		return getItem(new Filter<Item>() {
+			public boolean accept(final Item item) {
+				return item.getId() == id;
+			}
+		});
 	}
 
 	/**
@@ -195,18 +203,38 @@ public class DepositBox {
 		}
 		return items.toArray(new Item[items.size()]);
 	}
-
-	public static int getItemCount(final int... ids) {
-		return getItemCount(false, ids);
+	
+	public static int getItemCount(final int...ids) {
+		return getItemCount(false, new Filter<Item>() {
+		    public boolean accept(final Item item) {
+		    	final int id = item.getId();
+		    	for (final int i : ids) {
+		    		if (i == id) {
+		    		       return true;
+		    	        }
+		    	}
+		    }
+		});
+	}
+	
+	public static int getItemCount(final boolean countStack, final int...ids) {
+		return getItemCount(countStack, new Filter<Item>() {
+		    public boolean accept(final Item item) {
+		    	final int id = item.getId();
+		    	for (final int i : ids) {
+		    		if (i == id) {
+		    		       return true;
+		    	        }
+		    	}
+		    }
+		});
 	}
 
-	public static int getItemCount(final boolean countStack, final int... ids) {
+	public static int getItemCount(final boolean countStack, final Filter<Item> filter) {
 		int count = 0;
 		for (final Item item : getItems()) {
-			for (final int id : ids) {
-				if (item.getId() == id) {
-					count += countStack ? item.getStackSize() : 1;
-				}
+			if (filter.accept(item)) {
+				count += countStack ? item.getStackSize() : 1;
 			}
 		}
 		return count;
