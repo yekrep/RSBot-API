@@ -39,7 +39,7 @@ public final class ScriptDefinition {
 		HERBLORE(11, "herb"),
 		HUNTER(12, "hunt|catch"),
 		MAGIC(13, "mage"),
-		MINIGAME(14, "sorc|puzzle"),
+		MINIGAME(14, "sorc|puzzle|minigame|pest"),
 		MINING(15, "mine|ore"),
 		MONEY(16, "gp|gold"),
 		PRAYER(17, "pray|bones"),
