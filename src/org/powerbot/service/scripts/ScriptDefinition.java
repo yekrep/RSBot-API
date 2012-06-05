@@ -17,7 +17,7 @@ public final class ScriptDefinition {
 	private final String name, id, description, website;
 	private final double version;
 	private final String[] authors;
-	private final boolean premium;
+	private final boolean hidden;
 
 	public String className;
 	public URL source;
@@ -71,17 +71,17 @@ public final class ScriptDefinition {
 		version = manifest.version();
 		authors = manifest.authors();
 		website = manifest.website();
-		premium = manifest.premium();
+		hidden = manifest.hidden();
 	}
 
-	public ScriptDefinition(final String name, final String id, final String description, final double version, final String[] authors, final String website, final boolean premium) {
+	public ScriptDefinition(final String name, final String id, final String description, final double version, final String[] authors, final String website, final boolean hidden) {
 		this.name = name;
 		this.id = id;
 		this.description = description;
 		this.version = version;
 		this.authors = authors;
 		this.website = website;
-		this.premium = premium;
+		this.hidden = hidden;
 	}
 
 	private String getCleanText(String s) {
@@ -148,8 +148,8 @@ public final class ScriptDefinition {
 		return url != null && !url.isEmpty() && (url.startsWith("http://") || url.startsWith("https://")) ? url : null;
 	}
 
-	public boolean isPremium() {
-		return premium;
+	public boolean isHidden() {
+		return hidden;
 	}
 
 	public Category getCategory() {
@@ -198,7 +198,7 @@ public final class ScriptDefinition {
 		final String id = data.containsKey("id") ? data.get("id") : null;
 		final String description = data.containsKey("description") ? data.get("description") : null;
 		final String website = data.containsKey("website") ? data.get("website") : null;
-		final boolean premium = data.containsKey("premium") ? IniParser.parseBool(data.get("premium")) : false;
+		final boolean hidden = data.containsKey("hidden") ? IniParser.parseBool(data.get("hidden")) : false;
 		final String[] authors = data.containsKey("authors") ? data.get("authors").split(",") : new String[]{};
 		double version = 1d;
 
@@ -209,6 +209,6 @@ public final class ScriptDefinition {
 			}
 		}
 
-		return name == null || name.isEmpty() ? null : new ScriptDefinition(name, id, description, version, authors, website, premium);
+		return name == null || name.isEmpty() ? null : new ScriptDefinition(name, id, description, version, authors, website, hidden);
 	}
 }
