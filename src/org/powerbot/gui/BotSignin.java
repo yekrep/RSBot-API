@@ -94,6 +94,7 @@ public final class BotSignin extends JDialog implements ActionListener {
 		info.setHorizontalAlignment(SwingConstants.CENTER);
 		info.setText("<html><center>Sign in to your " + BotLocale.WEBSITE +
 				" account to access your script collection and (soon) synchronise your accounts securely on the " + BotLocale.THECLOUD + "</center></html>");
+		info.setFont(info.getFont().deriveFont(info.getFont().getSize2D() - 2f));
 		info.setHorizontalAlignment(SwingConstants.CENTER);
 		info.setOpaque(true);
 		info.setBackground(null);
