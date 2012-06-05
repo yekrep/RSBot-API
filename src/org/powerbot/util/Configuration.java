@@ -58,9 +58,7 @@ public class Configuration {
 			final Enumeration<NetworkInterface> e = NetworkInterface.getNetworkInterfaces();
 			while (e.hasMoreElements()) {
 				final byte[] a = e.nextElement().getHardwareAddress();
-				if (a == null || a.length == 0) {
-					c.update(0x7f);
-				} else {
+				if (a != null) {
 					c.update(a);
 				}
 			}
