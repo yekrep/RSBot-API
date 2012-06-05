@@ -16,7 +16,7 @@ public class Configuration {
 	public static final boolean FROMJAR;
 	public static boolean DEVMODE = false;
 	public static final boolean SUPERDEV;
-	public static final int VERSION = 4013;
+	public static final int VERSION = 4014;
 	public static final File LOCK;
 	public static final OperatingSystem OS;
 
