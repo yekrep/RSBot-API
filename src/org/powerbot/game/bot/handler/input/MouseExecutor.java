@@ -18,7 +18,7 @@ public class MouseExecutor {
 	private final Client client;
 	private final List<ForceModifier> forceModifiers;
 	private final Vector velocity;
-	private MouseNode stepping_node;
+	private volatile MouseNode stepping_node;
 	private final Point target;
 
 	public MouseExecutor(final Bot bot) {
