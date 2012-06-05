@@ -81,8 +81,7 @@ public final class BotSignin extends JDialog implements ActionListener {
 		lostPass.setVisible(false);
 
 		register.setFont(register.getFont().deriveFont(register.getFont().getSize2D() - 2f));
-		register.setText(BotLocale.REGISTER);
-		register.setForeground(lostPass.getForeground());
+		register.setText("<html><a href='#'>" + BotLocale.REGISTER + "</a></html>");
 		register.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		register.addMouseListener(new MouseAdapter() {
 			@Override
