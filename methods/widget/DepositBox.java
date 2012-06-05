@@ -174,7 +174,7 @@ public class DepositBox {
 		}
 		return null;
 	}
-	
+
 	public static Item getItem(final int id) {
 		return getItem(new Filter<Item>() {
 			public boolean accept(final Item item) {
@@ -203,30 +203,32 @@ public class DepositBox {
 		}
 		return items.toArray(new Item[items.size()]);
 	}
-	
-	public static int getItemCount(final int...ids) {
+
+	public static int getItemCount(final int... ids) {
 		return getItemCount(false, new Filter<Item>() {
-		    public boolean accept(final Item item) {
-		    	final int id = item.getId();
-		    	for (final int i : ids) {
-		    		if (i == id) {
-		    		       return true;
-		    	        }
-		    	}
-		    }
+			public boolean accept(final Item item) {
+				final int id = item.getId();
+				for (final int i : ids) {
+					if (i == id) {
+						return true;
+					}
+				}
+				return false;
+			}
 		});
 	}
-	
-	public static int getItemCount(final boolean countStack, final int...ids) {
+
+	public static int getItemCount(final boolean countStack, final int... ids) {
 		return getItemCount(countStack, new Filter<Item>() {
-		    public boolean accept(final Item item) {
-		    	final int id = item.getId();
-		    	for (final int i : ids) {
-		    		if (i == id) {
-		    		       return true;
-		    	        }
-		    	}
-		    }
+			public boolean accept(final Item item) {
+				final int id = item.getId();
+				for (final int i : ids) {
+					if (i == id) {
+						return true;
+					}
+				}
+				return false;
+			}
 		});
 	}
 
