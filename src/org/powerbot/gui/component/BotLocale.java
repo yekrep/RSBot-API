@@ -60,7 +60,7 @@ public final class BotLocale {
 	public static String DECLINE = "Decline";
 
 	public static String WEBSITE = Configuration.URLs.DOMAIN;
-	public static String THECLOUD = Configuration.NAME + " Cloud™";
+	public static String THECLOUD = Configuration.NAME + " Cloud";
 	public static String LICENSE = "License";
 	public static String LICENSETCS = "License Terms and Conditions";
 	public static String LICENSEMSG = "By using this software you agree to be bound by the terms of the license agreement.";
