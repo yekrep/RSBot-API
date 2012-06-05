@@ -150,6 +150,13 @@ public class Boot implements Runnable {
 			return;
 		}
 
+		final String appdata = System.getenv("APPDATA"), home = System.getProperty("user.home");
+		final String root = appdata != null && new File(appdata).isDirectory() ? appdata : home == null ? "~" : home;
+		final File store = new File(root + File.separator + Configuration.NAME + ".db");
+		if (store.isFile()) {
+			store.delete();
+		}
+
 		StringUtil.newStringUtf8(null); // prevents ClassCircularityError exceptions
 		CryptFile.PERMISSIONS.clear();
 		System.setSecurityManager(new RestrictedSecurityManager());

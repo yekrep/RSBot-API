@@ -18,7 +18,6 @@ public class Configuration {
 	public static boolean DEVMODE = false;
 	public static final boolean SUPERDEV;
 	public static final int VERSION = 4013;
-	public static final String STORE;
 	public static final File LOCK;
 	public static final OperatingSystem OS;
 	private static volatile Tracker tracker;
@@ -37,10 +36,6 @@ public class Configuration {
 	static {
 		FROMJAR = Configuration.class.getClassLoader().getResource(Resources.Paths.ICON) != null;
 		SUPERDEV = !Configuration.FROMJAR && new File(Resources.Paths.SERVER).exists();
-
-		final String appdata = System.getenv("APPDATA"), home = System.getProperty("user.home");
-		final String root = appdata != null && new File(appdata).isDirectory() ? appdata : home == null ? "~" : home;
-		STORE = root + File.separator + NAME + ".db";
 
 		final String os = System.getProperty("os.name");
 		if (os.contains("Mac")) {
