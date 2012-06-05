@@ -132,15 +132,16 @@ public class Mouse {
 	 *
 	 * @param left <tt>true</tt> to click left; otherwise <tt>false</tt> to click right.
 	 */
-	public static void click(final boolean left) {
+	public static boolean click(final boolean left) {
 		if (!isPresent()) {
-			return;
+			return false;
 		}
 		final int x = getX(), y = getY();
 		pressMouse(x, y, left);
 		Time.sleep(Random.nextInt(50, 150));
 		releaseMouse(x, y, left);
 		Time.sleep(Random.nextInt(50, 80));
+		return true;
 	}
 
 	public static boolean click(final Point p, final boolean left) {

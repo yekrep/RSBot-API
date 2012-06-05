@@ -4,8 +4,10 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Polygon;
 import java.lang.ref.SoftReference;
+import java.util.Set;
 
 import org.powerbot.game.api.methods.Game;
+import org.powerbot.game.api.methods.node.SceneEntities;
 import org.powerbot.game.api.util.node.Nodes;
 import org.powerbot.game.api.wrappers.Area;
 import org.powerbot.game.api.wrappers.Entity;
@@ -116,7 +118,14 @@ public class SceneObject implements Entity, Locatable, Identifiable {
 	}
 
 	public boolean validate() {
-		return getId() != -1;
+		final RegionOffset offset = getRegionOffset();
+		final Set<SceneObject> v_objects = SceneEntities.getLocalAt(offset.getX(), offset.getY(), -1);
+		for (final SceneObject object : v_objects) {
+			if (object.object == this.object) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public Point getCentralPoint() {
@@ -178,7 +187,7 @@ public class SceneObject implements Entity, Locatable, Identifiable {
 	public boolean equals(final Object o) {
 		if (o instanceof SceneObject) {
 			final SceneObject object = (SceneObject) o;
-			return getId() == object.getId() && getLocation().equals(object.getLocation());
+			return object.object == this.object;
 		}
 		return false;
 	}

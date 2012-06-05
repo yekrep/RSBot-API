@@ -103,6 +103,10 @@ public class Widgets {
 		if (button != null && button.validate()) {
 			return button;
 		}
+		button = get(1186, 8);
+		if (button != null && button.validate()) {
+			return button;
+		}
 		button = get(1191, 18);
 		if (button != null && button.validate()) {
 			return button;

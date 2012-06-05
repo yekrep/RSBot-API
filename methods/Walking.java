@@ -100,7 +100,7 @@ public class Walking {
 	 * @return <tt>true</tt> if the mobile was clicked; otherwise <tt>false</tt>.
 	 */
 	public static boolean walk(final Locatable mobile) {
-		Tile stepDirection = mobile.getlocation();
+		Tile stepDirection = mobile.getLocation();
 		if (!stepDirection.isOnMap()) {
 			stepDirection = getClosestOnMap(stepDirection);
 		}

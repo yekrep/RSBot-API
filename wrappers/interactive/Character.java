@@ -7,6 +7,8 @@ import java.awt.Polygon;
 import org.powerbot.game.api.methods.Calculations;
 import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.api.methods.input.Mouse;
+import org.powerbot.game.api.methods.interactive.NPCs;
+import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.methods.node.Menu;
 import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.util.internal.Multipliers;
@@ -157,7 +159,26 @@ public abstract class Character implements Entity, Locatable, Rotatable, Identif
 	public abstract RSCharacter get();
 
 	public boolean validate() {
-		return get() != null;
+		final RSCharacter this_ref;
+		if ((this_ref = get()) != null) {
+			if (this instanceof Player) {
+				return Players.getNearest(new Filter<Player>() {
+					@Override
+					public boolean accept(final Player character) {
+						return character.get() == this_ref;
+					}
+				}) != null;
+			} else if (this instanceof NPC) {
+				return NPCs.getNearest(new Filter<NPC>() {
+					@Override
+					public boolean accept(final NPC character) {
+						return character.get() == this_ref;
+					}
+				}) != null;
+			}
+			return true;
+		}
+		return false;
 	}
 
 	public Point getCentralPoint() {
