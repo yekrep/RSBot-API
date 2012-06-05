@@ -59,6 +59,10 @@ public class Context {
 		ScreenCapture.save(Context.get());
 	}
 
+	public static void cancelMouse() {
+		get().bot.getExecutor().cancel();
+	}
+
 	public static void saveScreenCapture(final String fileName) {
 		ScreenCapture.save(Context.get(), fileName);
 	}

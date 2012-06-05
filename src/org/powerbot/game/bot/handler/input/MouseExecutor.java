@@ -18,7 +18,7 @@ public class MouseExecutor {
 	private final Client client;
 	private final List<ForceModifier> forceModifiers;
 	private final Vector velocity;
-	private int prev_hash;
+	private MouseNode stepping_node;
 	private final Point target;
 
 	public MouseExecutor(final Bot bot) {
@@ -30,10 +30,9 @@ public class MouseExecutor {
 	}
 
 	public void step(final MouseNode node) {
-		final int hash;
-		if ((hash = node.hashCode()) != prev_hash) {
+		if (stepping_node != node) {
 			target.setLocation(-1, -1);
-			prev_hash = hash;
+			stepping_node = node;
 		}
 		final org.powerbot.game.client.input.Mouse mouse = client.getMouse();
 		final ViewportEntity viewportEntity = node.getViewportEntity();
@@ -228,6 +227,12 @@ public class MouseExecutor {
 
 		public double getAngle() {
 			return Math.atan2(yUnits, xUnits);
+		}
+	}
+
+	public void cancel() {
+		if (stepping_node != null) {
+			stepping_node.cancel();
 		}
 	}
 }
