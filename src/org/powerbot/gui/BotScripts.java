@@ -30,7 +30,6 @@ import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -121,7 +120,6 @@ public final class BotScripts extends JDialog implements ActionListener {
 		add(toolbar, BorderLayout.NORTH);
 
 		refresh = new JButton(new ImageIcon(Resources.getImage(Resources.Paths.REFRESH)));
-		refresh.setVisible(Configuration.DEVMODE);
 		refresh.setToolTipText(BotLocale.REFRESH);
 		refresh.addActionListener(new ActionListener() {
 			public void actionPerformed(final ActionEvent e) {
@@ -282,6 +280,18 @@ public final class BotScripts extends JDialog implements ActionListener {
 							return a.getName().compareToIgnoreCase(b.getName());
 						}
 					});
+					if (scripts.size() == 0) {
+						status.setText("Click browse to add some scripts to your collection");
+						progress.setVisible(false);
+						SwingUtilities.invokeLater(new Runnable() {
+							public void run() {
+								table.validate();
+								table.repaint();
+								refresh.setEnabled(true);
+							}
+						});
+						return;
+					}
 				} catch (final IOException ignored) {
 					status.setText("Could not load scripts, please try again later");
 					progress.setVisible(false);
@@ -324,6 +334,7 @@ public final class BotScripts extends JDialog implements ActionListener {
 		if (localOnly) {
 			return list;
 		}
+		final List<String> collection = getCollection();
 		final URL src = new URL(Resources.getServerLinks().get("scripts"));
 		final Map<String, Map<String, String>> manifests = IniParser.deserialise(HttpClient.openStream(src));
 		for (final Entry<String, Map<String, String>> entry : manifests.entrySet()) {
@@ -332,40 +343,36 @@ public final class BotScripts extends JDialog implements ActionListener {
 				def.source = new URL(src, entry.getKey());
 				if (entry.getValue().containsKey("className")) {
 					def.className = entry.getValue().get("className");
-					list.add(def);
+					if (def.isHidden()) {
+						if (collection.contains(def.getID())) {
+							list.add(def);
+						}
+					} else if (collection.contains(def.getID()) || collection.contains("*")) {
+						list.add(def);
+					}
 				}
 			}
 		}
-		filterList(list);
 		return list;
 	}
 
-	private void filterList(final List<ScriptDefinition> scripts) {
-		collection.clear();
-		if (!NetworkAccount.getInstance().isLoggedIn()) {
-			return;
-		}
-		final String data;
+	private List<String> getCollection() {
+		final List<String> collection = new ArrayList<String>();
+		String data = null;
 		try {
 			data = IOHelper.readString(Resources.openHttpStream("scriptscollection", NetworkAccount.getInstance().getAccount().getAuth()));
 		} catch (final IOException ignored) {
-			return;
 		} catch (final NullPointerException ignored) {
-			return;
 		}
 		if (data == null || data.isEmpty()) {
-			return;
+			return collection;
 		}
-		if (data.trim().equals("*")) {
-			return;
-		}
-		Collections.addAll(collection, data.split("\n"));
-		final Iterator<ScriptDefinition> i = scripts.iterator();
-		while (i.hasNext()) {
-			if (!collection.contains(i.next().getName())) {
-				i.remove();
+		for (final String e : data.trim().split("\n")) {
+			if (!collection.contains(e)) {
+				collection.add(e);
 			}
 		}
+		return collection;
 	}
 
 	private String getSecureFileName(final ScriptDefinition def) {
