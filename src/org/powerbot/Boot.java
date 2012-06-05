@@ -8,6 +8,7 @@ import java.net.URL;
 import java.net.URLStreamHandler;
 import java.net.URLStreamHandlerFactory;
 import java.nio.channels.FileLock;
+import java.security.SecureRandom;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -82,6 +83,10 @@ public class Boot implements Runnable {
 
 		try {
 			final RandomAccessFile tmpraf = new RandomAccessFile(Configuration.LOCK, "rw");
+			final SecureRandom r = new SecureRandom();
+			final byte[] b = new byte[r.nextInt(512) + r.nextInt(32) + 8];
+			r.nextBytes(b);
+			tmpraf.write(b);
 			final FileLock tmplock = tmpraf.getChannel().tryLock();
 			locked = tmplock != null;
 			releaseLock = new Runnable() {
