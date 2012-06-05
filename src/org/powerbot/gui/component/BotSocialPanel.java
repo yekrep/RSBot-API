@@ -11,7 +11,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import org.powerbot.gui.BotChrome;
-import org.powerbot.util.Configuration;
 import org.powerbot.util.io.Resources;
 
 /**
@@ -48,7 +47,6 @@ public final class BotSocialPanel extends JPanel {
 				@Override
 				public void mouseClicked(final MouseEvent arg0) {
 					BotChrome.openURL(Resources.getServerLinks().get(url));
-					Configuration.trackPageView("social/" + url, text);
 				}
 			});
 

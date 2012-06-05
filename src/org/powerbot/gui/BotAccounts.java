@@ -31,7 +31,6 @@ import javax.swing.table.TableColumnModel;
 import org.powerbot.gui.component.BotLocale;
 import org.powerbot.service.GameAccounts;
 import org.powerbot.service.GameAccounts.Account;
-import org.powerbot.util.Configuration;
 import org.powerbot.util.io.Resources;
 
 /**
@@ -119,8 +118,6 @@ public final class BotAccounts extends JDialog implements WindowListener {
 		setResizable(false);
 		setLocationRelativeTo(getParent());
 		setVisible(true);
-
-		Configuration.trackPageView("accounts", getTitle());
 	}
 
 	public void windowActivated(final WindowEvent arg0) {

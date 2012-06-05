@@ -23,7 +23,6 @@ import javax.swing.WindowConstants;
 
 import org.powerbot.gui.component.BotLocale;
 import org.powerbot.service.NetworkAccount;
-import org.powerbot.util.Configuration;
 import org.powerbot.util.io.Resources;
 
 /**
@@ -174,8 +173,6 @@ public final class BotSignin extends JDialog implements ActionListener {
 		setResizable(false);
 		setLocationRelativeTo(getParent());
 		setVisible(true);
-
-		Configuration.trackPageView("signin", getTitle());
 	}
 
 	public void actionPerformed(final ActionEvent arg0) {

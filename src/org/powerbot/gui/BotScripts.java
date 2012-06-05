@@ -234,8 +234,6 @@ public final class BotScripts extends JDialog implements ActionListener {
 		} else {
 			dispose();
 		}
-
-		Configuration.trackPageView("scripts", getTitle());
 	}
 
 	public void adjustViewport() {

@@ -6,7 +6,6 @@ import java.net.SocketException;
 import java.util.Enumeration;
 import java.util.zip.Adler32;
 
-import org.powerbot.util.google.analytics.Tracker;
 import org.powerbot.util.io.Resources;
 
 /**
@@ -20,7 +19,6 @@ public class Configuration {
 	public static final int VERSION = 4013;
 	public static final File LOCK;
 	public static final OperatingSystem OS;
-	private static volatile Tracker tracker;
 
 	public enum OperatingSystem {
 		MAC, WINDOWS, LINUX, UNKNOWN
@@ -65,12 +63,5 @@ public class Configuration {
 		} catch (final SocketException ignored) {
 		}
 		return c.getValue();
-	}
-
-	public static void trackPageView(final String page, final String title) {
-		if (tracker == null) {
-			tracker = new Tracker("UA-5170375-18");
-		}
-		tracker.trackPageView("/" + page, title, "");
 	}
 }

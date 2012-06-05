@@ -35,7 +35,6 @@ import javax.swing.border.EmptyBorder;
 import org.powerbot.game.GameDefinition;
 import org.powerbot.game.bot.Bot;
 import org.powerbot.gui.BotChrome;
-import org.powerbot.util.Configuration;
 import org.powerbot.util.io.HttpClient;
 import org.powerbot.util.io.Resources;
 
@@ -168,7 +167,6 @@ public final class BotLoadingPanel extends JPanel {
 						@Override
 						public void mouseClicked(final MouseEvent e) {
 							BotChrome.openURL(link);
-							Configuration.trackPageView("go/ad", "");
 						}
 					});
 				}
