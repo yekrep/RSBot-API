@@ -10,7 +10,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -77,7 +76,6 @@ public class BotChrome extends JFrame implements WindowListener {
 		final ExecutorService exec = Executors.newFixedThreadPool(1);
 		final List<Future<Boolean>> tasks = new ArrayList<Future<Boolean>>();
 		tasks.add(exec.submit(new LoadUpdates()));
-		tasks.add(exec.submit(new LoadAccount()));
 		exec.execute(new LoadComplete(this, tasks));
 		exec.shutdown();
 
@@ -158,12 +156,6 @@ public class BotChrome extends JFrame implements WindowListener {
 	}
 
 	public void windowOpened(final WindowEvent arg0) {
-	}
-
-	private final class LoadAccount implements Callable<Boolean> {
-		public Boolean call() throws Exception {
-			return true;
-		}
 	}
 
 	private final class LoadComplete implements Runnable {
