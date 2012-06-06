@@ -16,6 +16,8 @@ public interface TaskContainer {
 	 */
 	public Future<?> submit(Task task);
 
+	public <T> Future<T> submit(CallableTask<T> task);
+
 	/**
 	 * Determines if this container is currently processing tasks.
 	 *

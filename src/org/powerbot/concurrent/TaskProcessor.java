@@ -30,6 +30,14 @@ public class TaskProcessor implements TaskContainer {
 		return executor.submit(task);
 	}
 
+	public <T> Future<T> submit(final CallableTask<T> task) {
+		int pool_size = executor.getCorePoolSize();
+		if (executor.getActiveCount() >= pool_size) {
+			executor.setCorePoolSize(++pool_size);
+		}
+		return executor.submit(task);
+	}
+
 	/**
 	 * {@inheritDoc}
 	 */
