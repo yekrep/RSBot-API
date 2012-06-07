@@ -14,6 +14,7 @@ import org.powerbot.game.client.HashTable;
 import org.powerbot.game.client.Node;
 import org.powerbot.game.client.RSNPC;
 import org.powerbot.game.client.RSNPCNode;
+import org.powerbot.game.client.SoftReference;
 
 /**
  * A utility for the access of Npcs.
@@ -61,8 +62,13 @@ public class NPCs {
 		final Set<NPC> npcs = new HashSet<NPC>();
 		for (final int index : indices) {
 			final Node node = Nodes.lookup((HashTable) client.getRSNPCNC(), index);
-			if (node != null && node instanceof RSNPCNode) {
-				final NPC npc = new NPC((RSNPC) ((RSNPCNode) node).getRSNPC());
+			if (node != null) {
+				NPC npc = null;
+				if (node instanceof RSNPCNode) {
+					npc = new NPC((RSNPC) ((RSNPCNode) node).getRSNPC());
+				} else if (node instanceof SoftReference) {
+					npc = new NPC((RSNPC) ((SoftReference) node).get().get());
+				}
 				if (filter.accept(npc)) {
 					npcs.add(npc);
 				}
