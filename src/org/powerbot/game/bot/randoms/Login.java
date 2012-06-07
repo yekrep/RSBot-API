@@ -1,5 +1,7 @@
 package org.powerbot.game.bot.randoms;
 
+import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.Rectangle;
 
 import org.powerbot.concurrent.Task;
@@ -11,6 +13,7 @@ import org.powerbot.game.api.methods.input.Keyboard;
 import org.powerbot.game.api.methods.input.Mouse;
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Time;
+import org.powerbot.game.api.util.Timer;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
 import org.powerbot.game.bot.Context;
 
@@ -31,13 +34,15 @@ public class Login extends AntiRandom {
 	private static final int WIDGET_LOBBY_TRY_AGAIN = 259;
 	private static final int WIDGET_LOBBY_PLAY = 184;
 
+	private volatile Timer re_load_timer = null;
+
 	public boolean validate() {
 		final int state = Game.getClientState();
 		return (state == Game.INDEX_LOGIN_SCREEN || state == Game.INDEX_LOBBY_SCREEN || state == Game.INDEX_LOGGING_IN) && bot.getAccount() != null;
 	}
 
 	private enum LoginEvent {
-		TOKEN_FAILURE(WIDGET_LOGIN_ERROR, "game session has ended", 0, new Task() {
+		TOKEN_FAILURE(WIDGET_LOGIN_ERROR, "game session", 1000 * 5 * 60, new Task() {
 			public void run() {
 				Context.resolve().refresh();
 			}
@@ -77,7 +82,6 @@ public class Login extends AntiRandom {
 			this(child, message, wait, null);
 		}
 	}
-
 
 	public void run() {
 		if (Game.getClientState() == Game.INDEX_LOBBY_SCREEN) {
@@ -119,7 +123,11 @@ public class Login extends AntiRandom {
 
 					if (text.contains(loginEvent.message.toLowerCase())) {
 						log.info("Handling login event: " + loginEvent.name());
+						boolean set_timer = loginEvent.equals(LoginEvent.TOKEN_FAILURE);
 
+						if (set_timer && loginEvent.wait > 0) {
+							re_load_timer = new Timer(loginEvent.wait);
+						}
 						if (loginEvent.wait > 0) {
 							Time.sleep(loginEvent.wait);
 						} else if (loginEvent.wait == -1) {
@@ -127,6 +135,7 @@ public class Login extends AntiRandom {
 							return;
 						}
 
+						re_load_timer = null;
 						if (loginEvent.task != null) {
 							bot.getContainer().submit(loginEvent.task);
 						}
@@ -230,6 +239,15 @@ public class Login extends AntiRandom {
 			if (Random.nextInt(0, 2) == 1) {
 				Time.sleep(Random.nextInt(25, 100));
 			}
+		}
+	}
+
+	@Override
+	public void onRepaint(final Graphics render) {
+		super.onRepaint(render);
+		if (re_load_timer != null) {
+			render.setColor(Color.white);
+			render.drawString("Reloading game in: " + re_load_timer.toRemainingString(), 8, 30);
 		}
 	}
 }

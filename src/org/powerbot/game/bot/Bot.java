@@ -364,6 +364,9 @@ public class Bot extends GameDefinition implements Runnable {
 	}
 
 	public void refresh() {
+		if (refreshing) {
+			return;
+		}
 		refreshing = true;
 		container.submit(new Task() {
 			public void run() {
