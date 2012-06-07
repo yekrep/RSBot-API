@@ -32,7 +32,7 @@ public class Login extends AntiRandom {
 	private static final int WIDGET_LOBBY = 906;
 	private static final int WIDGET_LOBBY_ERROR = 249;
 	private static final int WIDGET_LOBBY_TRY_AGAIN = 259;
-	private static final int WIDGET_LOBBY_PLAY = 184;
+	private static final int WIDGET_LOBBY_PLAY = 196;
 
 	private volatile Timer re_load_timer = null;
 
