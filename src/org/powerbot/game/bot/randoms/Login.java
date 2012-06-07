@@ -11,6 +11,7 @@ import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.api.methods.Widgets;
 import org.powerbot.game.api.methods.input.Keyboard;
 import org.powerbot.game.api.methods.input.Mouse;
+import org.powerbot.game.api.methods.widget.Lobby;
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Time;
 import org.powerbot.game.api.util.Timer;
@@ -32,7 +33,6 @@ public class Login extends AntiRandom {
 	private static final int WIDGET_LOBBY = 906;
 	private static final int WIDGET_LOBBY_ERROR = 249;
 	private static final int WIDGET_LOBBY_TRY_AGAIN = 259;
-	private static final int WIDGET_LOBBY_PLAY = 196;
 
 	private volatile Timer re_load_timer = null;
 
@@ -109,7 +109,16 @@ public class Login extends AntiRandom {
 				}
 			}
 
-			Widgets.get(WIDGET_LOBBY, WIDGET_LOBBY_PLAY).click(true);
+			final int world = Context.get().world;
+			if (world > 0) {
+				final Lobby.World world_wrapper;
+				if ((world_wrapper = Lobby.getWorld(world)) != null) {
+					Lobby.enterGame(world_wrapper);
+					Time.sleep(Random.nextInt(200, 500));
+					return;
+				}
+			}
+			Lobby.enterGame();
 			Time.sleep(Random.nextInt(200, 500));
 			return;
 		}

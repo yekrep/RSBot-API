@@ -22,6 +22,7 @@ public class Context {
 	protected static final Map<ThreadGroup, Context> context = new HashMap<ThreadGroup, Context>();
 
 	private final Bot bot;
+	public int world = -1;
 
 	public Context(final Bot bot) {
 		this.bot = bot;
@@ -57,6 +58,10 @@ public class Context {
 
 	public static void saveScreenCapture() {
 		ScreenCapture.save(Context.get());
+	}
+
+	public static void setLoginWorld(final int world) {
+		get().world = world;
 	}
 
 	public static void cancelMouse() {
