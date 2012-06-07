@@ -118,8 +118,9 @@ public class SceneObject implements Entity, Locatable, Identifiable {
 	public boolean validate() {
 		final RegionOffset offset = getRegionOffset();
 		final Set<SceneObject> v_objects = SceneEntities.getLocalAt(offset.getX(), offset.getY(), -1);
+		final int id = this.getId();
 		for (final SceneObject object : v_objects) {
-			if (object.object == this.object) {
+			if (object.object == this.object && object.getId() == id) {
 				return true;
 			}
 		}
