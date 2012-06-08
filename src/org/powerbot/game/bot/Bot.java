@@ -113,7 +113,11 @@ public class Bot extends GameDefinition implements Runnable {
 			return null;
 		}
 		log.info("Starting bot");
+		final Context previous = context;
 		context = new Context(this);
+		if (previous != null) {
+			context.world = previous.world;
+		}
 		Context.context.put(threadGroup, context);
 		callback = new Runnable() {
 			public void run() {
