@@ -132,6 +132,7 @@ public class BotWidgetExplorer extends JFrame implements PaintListener {
 					addInfo("Child stack size: ", Integer.toString(widgetChild.getChildStackSize()));
 					addInfo("Bound array index: ", Integer.toString(widgetChild.getBoundsArrayIndex()));
 					addInfo("Scrollable area: ", Boolean.toString(widgetChild.isInScrollableArea()));
+					addInfo("Parent id: ", Integer.toString(widgetChild.getParentId()));
 					infoArea.validate();
 					infoArea.repaint();
 				} finally {
