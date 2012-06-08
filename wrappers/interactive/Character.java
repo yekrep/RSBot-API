@@ -142,7 +142,7 @@ public abstract class Character implements Entity, Locatable, Rotatable, Identif
 	}
 
 	public boolean isMoving() {
-		return getSpeed() != 0;
+		return getSpeed() > 0;
 	}
 
 	public CapturedModel getModel() {
