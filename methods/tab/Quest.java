@@ -1,6 +1,5 @@
 package org.powerbot.game.api.methods.tab;
 
-import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.api.methods.Tabs;
 import org.powerbot.game.api.methods.Widgets;
 import org.powerbot.game.api.methods.interactive.Players;
@@ -126,9 +125,9 @@ public class Quest {
     public static STATUS getStatus(final QUEST quest) {
         STATUS statusFromCache = getStatusFromCache(quest);
         if (statusFromCache == null) {
-            return buildCacheWithGoal(quest);
+            statusFromCache = buildCacheWithGoal(quest);
         }
-        return null;
+        return statusFromCache;
     }
 
     /**
@@ -184,15 +183,15 @@ public class Quest {
     }
 
     private static STATUS buildCacheWithGoal(final QUEST goal) {
-        if (Game.isLoggedIn()) {
-            String playerName = Players.getLocal().getName();
+        Player p = Players.getLocal();
+        String playerName = (p != null) ? p.getName() : null;
+        if (playerName != null) {
             STATUS goalStatus;
             EnumMap<QUEST, STATUS> cacheBuild = buildStatusMapForCurrentUser();
-            if (cacheBuild != null) {
-                goalStatus = cacheBuild.get(goal);
-            } else {
+            if (cacheBuild == null) {
                 return null;
             }
+            goalStatus = cacheBuild.get(goal);
             cacheLock.writeLock().lock();
             questStatusCache.put(playerName, cacheBuild);
             cacheLock.writeLock().unlock();
