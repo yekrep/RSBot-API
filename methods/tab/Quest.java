@@ -119,6 +119,10 @@ public class Quest {
             new HashMap<String, EnumMap<QUEST, STATUS>>();
     private static final ReentrantReadWriteLock cacheLock = new ReentrantReadWriteLock();
 
+    /**
+     * @param quest The quest you are checking
+     * @return Returns the STATUS of the QUEST or NULL if the status is currently unavailable.
+     */
     public static STATUS getStatus(final QUEST quest) {
         STATUS statusFromCache = getStatusFromCache(quest);
         if (statusFromCache == null) {
@@ -127,14 +131,38 @@ public class Quest {
         return null;
     }
 
+    /**
+     * Will RETURN true if and only if the STATUS is available and it equals {@link org.powerbot.game.api.methods.tab.Quest.STATUS DONE}.
+     * <p/>
+     * {See @see org.powerbot.game.api.methods.tab.Quest#getStatus(org.powerbot.game.api.methods.tab.Quest.QUEST) getStatus}
+     *
+     * @param quest The quest you are checking
+     * @return See description.
+     */
     public static boolean isDoneWithQuest(final QUEST quest) {
         return STATUS.DONE.equals(getStatus(quest));
     }
 
+    /**
+     * Will RETURN true if and only if the STATUS is available and it equals {@link org.powerbot.game.api.methods.tab.Quest.STATUS IN_PROGRESS}.
+     * <p/>
+     * {See @see org.powerbot.game.api.methods.tab.Quest#getStatus(org.powerbot.game.api.methods.tab.Quest.QUEST) getStatus}
+     *
+     * @param quest The quest you are checking
+     * @return See description.
+     */
     public static boolean isWorkingOnQuest(final QUEST quest) {
         return STATUS.IN_PROGRESS.equals(getStatus(quest));
     }
 
+    /**
+     * Will RETURN true if and only if the STATUS is available and it equals {@link org.powerbot.game.api.methods.tab.Quest.STATUS NOT_STARTED}.
+     * <p/>
+     * {See @see org.powerbot.game.api.methods.tab.Quest#getStatus(org.powerbot.game.api.methods.tab.Quest.QUEST) getStatus}
+     *
+     * @param quest The quest you are checking
+     * @return See description.
+     */
     public static boolean isNotStartedWithQuest(final QUEST quest) {
         return STATUS.NOT_STARTED.equals(getStatus(quest));
     }
