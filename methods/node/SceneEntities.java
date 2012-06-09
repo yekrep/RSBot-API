@@ -100,10 +100,14 @@ public class SceneEntities {
 		});
 	}
 
-	public static SceneObject getNearest(final Filter<SceneObject> filter) {
+    public static SceneObject getNearest(final Filter<SceneObject> filter) {
+        return getNearestTo(Players.getLocal(), filter);
+    }
+
+	public static SceneObject getNearestTo(final Locatable locatable, final Filter<SceneObject> filter) {
 		SceneObject location = null;
 		double distance = Double.MAX_VALUE;
-		final RegionOffset position = Players.getLocal().getRegionOffset();
+		final RegionOffset position = locatable.getRegionOffset();
 		for (int x = 0; x < 104; x++) {
 			for (int y = 0; y < 104; y++) {
 				for (final SceneObject l : getLocalAt(x, y, -1)) {
