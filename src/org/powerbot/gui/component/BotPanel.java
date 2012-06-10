@@ -20,10 +20,8 @@ import java.awt.event.MouseWheelListener;
 import javax.swing.JPanel;
 
 import org.powerbot.concurrent.Task;
-import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.bot.Bot;
 import org.powerbot.game.bot.event.HumanInputEvent;
-import org.powerbot.game.bot.handler.input.util.MouseNode;
 import org.powerbot.game.client.input.Mouse;
 import org.powerbot.gui.BotChrome;
 
@@ -36,10 +34,6 @@ import org.powerbot.gui.BotChrome;
 public class BotPanel extends JPanel {
 	public static final int INPUT_MOUSE = 1, INPUT_KEYBOARD = 2;
 	private int inputMask;
-	private MouseNode mouseNode;
-	private final HumanInputEvent mouseRequest;
-	private final Point pressLocation, releaseLocation;
-
 	private static final long serialVersionUID = 1L;
 	private Bot bot;
 	private int xOff, yOff;
@@ -56,10 +50,9 @@ public class BotPanel extends JPanel {
 		bot = null;
 		xOff = yOff = 0;
 		inputMask = INPUT_MOUSE | INPUT_KEYBOARD;
-		mouseNode = null;
-		mouseRequest = new HumanInputEvent();
-		pressLocation = new Point(-1, -1);
-		releaseLocation = new Point(-1, -1);
+		new HumanInputEvent();
+		new Point(-1, -1);
+		new Point(-1, -1);
 
 		setLayout(new GridBagLayout());
 		add(loadingPanel = new BotLoadingPanel(parent));
@@ -263,40 +256,6 @@ public class BotPanel extends JPanel {
 
 		public void run() {
 			loadingPanel.set(threadGroup);
-		}
-	}
-
-	private static final Filter<Point> FILTER_MOVE = new Filter<Point>() {
-		@Override
-		public boolean accept(final Point point) {
-			return true;
-		}
-	};
-
-	private final class FilterClick implements Filter<Point> {
-		private final int button;
-		private final Point start, end;
-
-		public FilterClick(final int button, final Point start, final Point end) {
-			this.button = button;
-			this.start = start;
-			this.end = end;
-		}
-
-		@Override
-		public boolean accept(final Point point) {
-			if (start.distance(end) >= 2d) {
-				org.powerbot.game.api.methods.input.Mouse.move(start);
-				org.powerbot.game.api.methods.input.Mouse.drag(end);
-				return true;
-			}
-
-			if (button == MouseEvent.BUTTON1) {
-				org.powerbot.game.api.methods.input.Mouse.click(true);
-			} else if (button == MouseEvent.BUTTON3) {
-				org.powerbot.game.api.methods.input.Mouse.click(false);
-			}
-			return true;
 		}
 	}
 }
