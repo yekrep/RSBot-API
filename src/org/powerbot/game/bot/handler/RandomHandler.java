@@ -14,6 +14,7 @@ import org.powerbot.game.api.Manifest;
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Time;
 import org.powerbot.game.bot.Bot;
+import org.powerbot.game.bot.randoms.BankPin;
 import org.powerbot.game.bot.randoms.Beekeeper;
 import org.powerbot.game.bot.randoms.Certer;
 import org.powerbot.game.bot.randoms.Chest;
@@ -70,7 +71,8 @@ public class RandomHandler implements Task {
 				new EvilBob(),
 				new Maze(),
 				new Exam(),
-				new SpinTickets()
+				new SpinTickets(),
+				new BankPin()
 		};
 		for (final AntiRandom antiRandom : antiRandoms) {
 			antiRandom.bot = bot;
