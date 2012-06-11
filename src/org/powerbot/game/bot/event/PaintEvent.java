@@ -38,7 +38,7 @@ public class PaintEvent extends GeneralEvent {
 		if (graphics == null) {
 			try {
 				((PaintListener) eventListener).onRepaint(null);
-			} catch (NullPointerException ignored) {
+			} catch (final Exception ignored) {
 			}
 			return;
 		}
@@ -54,7 +54,11 @@ public class PaintEvent extends GeneralEvent {
 		final Stroke s_stroke = graphics2D.getStroke();
 		final AffineTransform s_transform = graphics2D.getTransform();
 
-		((PaintListener) eventListener).onRepaint(graphics);
+		try {
+			((PaintListener) eventListener).onRepaint(graphics);
+		} catch (final Exception e) {
+			e.printStackTrace();
+		}
 
 		graphics2D.setBackground(s_background);
 		graphics2D.setClip(s_clip);
