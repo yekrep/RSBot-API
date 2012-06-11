@@ -51,7 +51,7 @@ public class Prayer {
 
 		private final int id, shift, level;
 
-		CURSES(int id, int shift, int level) {
+		CURSES(final int id, final int shift, final int level) {
 			this.id= id;
 			this.shift = shift;
 			this.level = level;
@@ -113,7 +113,7 @@ public class Prayer {
 
 		private final int id, shift, level;
 
-		private NORMAL(int id, int shift, int level) {
+		private NORMAL(final int id, final int shift, final int level) {
 			this.id= id;
 			this.shift = shift;
 			this.level = level;
@@ -185,7 +185,7 @@ public class Prayer {
 	/**
 	 * @param active  <tt>true</tt> to turn quick prayers/curses on, <tt>false</tt> to turn quick prayers/curses off.
 	 **/
-	public static boolean toggleQuick(boolean activate) {
+	public static boolean toggleQuick(final boolean activate) {
 		if(isQuickOn() == activate)
 			return true;
 		return Widgets.get(WIDGET_PRAYER_ORB, 2).interact("Turn");
@@ -194,7 +194,7 @@ public class Prayer {
 	/**
 	 * @param prayers Prayers/Curses to set to quick use
 	 **/
-	public static boolean setQuick(PrayerBook... prayers) {
+	public static boolean setQuick(final PrayerBook... prayers) {
 		for(PrayerBook p : prayers) {
 			if(p.getBook() != (isCursesOn() ? PRAYER_BOOK_CURSES : PRAYER_BOOK_NORMAL) 
 					|| p.getRequiredLevel() > Skills.getRealLevel(Skills.PRAYER))
@@ -225,7 +225,7 @@ public class Prayer {
 	 * @param prayer Desired prayer/curse
 	 * @param active <tt>true</tt> to activate, <tt>false</tt> to deactivate
 	 **/
-	public static boolean togglePrayer(PrayerBook prayer, boolean active) {
+	public static boolean togglePrayer(final PrayerBook prayer, final boolean active) {
 		if(prayer.getBook() != (isCursesOn() ? PRAYER_BOOK_CURSES : PRAYER_BOOK_NORMAL)
 				|| prayer.getRequiredLevel() > Skills.getRealLevel(Skills.PRAYER))
 			return false;
