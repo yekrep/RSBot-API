@@ -21,6 +21,7 @@ import org.powerbot.game.api.ActiveScript;
 import org.powerbot.game.api.methods.Calculations;
 import org.powerbot.game.api.methods.input.Keyboard;
 import org.powerbot.game.api.methods.input.Mouse;
+import org.powerbot.game.api.methods.widget.WidgetComposite;
 import org.powerbot.game.api.util.Time;
 import org.powerbot.game.api.util.internal.Constants;
 import org.powerbot.game.api.util.internal.Multipliers;
@@ -116,6 +117,7 @@ public class Bot extends GameDefinition implements Runnable {
 		final Context previous = context;
 		context = new Context(this);
 		if (previous != null) {
+			WidgetComposite.clear(threadGroup);
 			context.world = previous.world;
 		}
 		Context.context.put(threadGroup, context);
