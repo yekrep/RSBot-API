@@ -201,5 +201,4 @@ public class Area {
 		}
 		return (double) total / (double) nums.length;
 	}
-
 }
