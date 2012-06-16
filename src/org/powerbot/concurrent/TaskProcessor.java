@@ -16,7 +16,7 @@ public class TaskProcessor implements TaskContainer {
 	public TaskProcessor(final ThreadGroup threadGroup) {
 		executor = new ThreadPoolExecutor(Runtime.getRuntime().availableProcessors() * 2, Integer.MAX_VALUE,
 				0L, TimeUnit.MILLISECONDS,
-				new LinkedBlockingQueue<Runnable>(), new ThreadPool(threadGroup));
+				new LinkedNonBlockingQueue<Runnable>(), new ThreadPool(threadGroup));
 	}
 
 	/**
@@ -24,7 +24,7 @@ public class TaskProcessor implements TaskContainer {
 	 */
 	public Future<?> submit(final Task task) {
 		int pool_size = executor.getCorePoolSize();
-		if (executor.getActiveCount() >= pool_size) {
+		if (executor.getPoolSize() >= pool_size) {
 			executor.setCorePoolSize(++pool_size);
 		}
 		return executor.submit(task);
@@ -32,7 +32,7 @@ public class TaskProcessor implements TaskContainer {
 
 	public <T> Future<T> submit(final CallableTask<T> task) {
 		int pool_size = executor.getCorePoolSize();
-		if (executor.getActiveCount() >= pool_size) {
+		if (executor.getPoolSize() >= pool_size) {
 			executor.setCorePoolSize(++pool_size);
 		}
 		return executor.submit(task);
