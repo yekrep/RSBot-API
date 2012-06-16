@@ -265,7 +265,23 @@ public abstract class CapturedModel implements Entity {
 		return screen;
 	}
 
-	@Override
+    public int getNumFaces() {
+        return numFaces;
+    }
+
+    public short[] getIndices1() {
+        return indices1;
+    }
+
+    public short[] getIndices2() {
+        return indices2;
+    }
+
+    public short[] getIndices3() {
+        return indices3;
+    }
+
+    @Override
 	public boolean equals(final Object o) {
 		return o != null && o instanceof CapturedModel && Arrays.equals(((CapturedModel) o).indices1, indices1);
 	}
