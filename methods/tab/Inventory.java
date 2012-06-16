@@ -85,6 +85,28 @@ public class Inventory {
 		}
 		return new Item[0];
 	}
+	
+	/**
+	 * Returns an array representing the state of the inventory.<br>
+	 * This function will always return an array of length 28.
+	 *
+	 * @param cached if true opens the inventory tab, if false it uses the last seen representation of the inventory.
+	 * @return an array representing the inventory.
+	 */
+	public static Item[] getAllItems(final boolean cached) {
+		final Item[] items = new Item[28];
+		final WidgetChild inventoryWidget = getWidget(cached);
+		if (inventoryWidget != null) {
+			final WidgetChild[] inventoryChildren = inventoryWidget.getChildren();
+			if (inventoryChildren.length >= items.length) {
+				for (int i = 0; i < items.length; i++) {
+					final WidgetChild wc = inventoryChildren[i];
+					items[i] = (wc == null || wc.getChildId() == -1) ? null : new Item(wc);
+				}
+			}
+		}
+		return items;
+	}
 
 	public static int getCount() {
 		return getItems().length;
@@ -142,7 +164,7 @@ public class Inventory {
 	}
 	
 	public static boolean isFull() {
-		return getItems().length == 28;
+		return getCount() == 28;
 	}
 
 	public static boolean selectItem(final int itemId) {
