@@ -96,7 +96,7 @@ public final class BotScripts extends JDialog implements ActionListener {
 	public BotScripts(final BotToolBar parent) {
 		super(parent.parent, BotLocale.SCRIPTS, true);
 
-		if (!NetworkAccount.getInstance().isLoggedIn()) {
+		if (!NetworkAccount.getInstance().isLoggedIn() && !Configuration.SUPERDEV) {
 			new BotSignin(parent.parent);
 		}
 
@@ -227,7 +227,7 @@ public final class BotScripts extends JDialog implements ActionListener {
 			}
 		});
 
-		if (NetworkAccount.getInstance().isLoggedIn()) {
+		if (NetworkAccount.getInstance().isLoggedIn() || Configuration.SUPERDEV) {
 			setVisible(true);
 		} else {
 			dispose();
