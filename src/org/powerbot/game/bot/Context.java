@@ -60,6 +60,10 @@ public class Context {
 		ScreenCapture.save(Context.get());
 	}
 
+	public static void mult(final double mult) {
+		get().bot.getExecutor().setMultiplier(mult);
+	}
+
 	public static void setLoginWorld(final int world) {
 		get().world = world;
 	}

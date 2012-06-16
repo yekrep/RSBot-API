@@ -20,6 +20,7 @@ public class MouseExecutor {
 	private final Vector velocity;
 	private volatile MouseNode stepping_node;
 	private final Point target;
+	private double multiplier;
 
 	public MouseExecutor(final Bot bot) {
 		this.client = bot.getClient();
@@ -27,6 +28,11 @@ public class MouseExecutor {
 		velocity = new Vector();
 		target = new Point(-1, -1);
 		setup();
+		multiplier = 1.0d;
+	}
+
+	public void setMultiplier(final double multiplier) {
+		this.multiplier = multiplier;
 	}
 
 	public void step(final MouseNode node) {
@@ -92,7 +98,7 @@ public class MouseExecutor {
 				Mouse.hop(x, y);
 			}
 			try {
-				Thread.sleep((long) (deltaTime * 1000));
+				Thread.sleep((long) (deltaTime * 1000 / multiplier));
 			} catch (final InterruptedException ignored) {
 			}
 		}
