@@ -14,17 +14,17 @@ import org.powerbot.game.api.util.Time;
 public class Prayer {
 
 	public interface PrayerBook {
-		
+
 		public int getId();
-		
+
 		public int getBook();
 
 		public int getRequiredLevel();
-		
+
 		public boolean isActive();
-		
+
 		public boolean isSetQuick();
-		
+
 	}
 
 	public enum CURSES implements PrayerBook {
@@ -52,19 +52,19 @@ public class Prayer {
 		private final int id, shift, level;
 
 		CURSES(final int id, final int shift, final int level) {
-			this.id= id;
+			this.id = id;
 			this.shift = shift;
 			this.level = level;
 		}
-		
+
 		public int getId() {
 			return this.id;
 		}
-		
+
 		public int getBook() {
 			return PRAYER_BOOK_CURSES;
 		}
-		
+
 		public int getRequiredLevel() {
 			return this.level;
 		}
@@ -114,15 +114,15 @@ public class Prayer {
 		private final int id, shift, level;
 
 		private NORMAL(final int id, final int shift, final int level) {
-			this.id= id;
+			this.id = id;
 			this.shift = shift;
 			this.level = level;
 		}
-		
+
 		public int getId() {
 			return this.id;
 		}
-		
+
 		public int getBook() {
 			return PRAYER_BOOK_NORMAL;
 		}
@@ -130,11 +130,11 @@ public class Prayer {
 		public int getRequiredLevel() {
 			return this.level;
 		}
-		
+
 		public boolean isActive() {
 			return Settings.get(1395, this.shift, 0x1) == 1;
 		}
-		
+
 		public boolean isSetQuick() {
 			return Settings.get(1397, this.shift, 0x1) == 1;
 		}
@@ -149,69 +149,75 @@ public class Prayer {
 	public static int getPoints() {
 		return Settings.get(2382, 0x3ff);
 	}
-	
+
 	public static boolean isCursesOn() {
 		return Settings.get(1584) == 0x17;
-	} 
+	}
 
 	public static boolean isQuickOn() {
 		return Settings.get(1396) == 0x2;
 	}
-	
+
 	/**
 	 * @return An array of currently active prayers/curses.
-	 **/
+	 */
 	public static PrayerBook[] getActive() {
 		Set<PrayerBook> active = new LinkedHashSet<PrayerBook>();
-		for(PrayerBook p : isCursesOn() ? CURSES.values() : NORMAL.values()) {
-			if(p.isActive())
+		for (PrayerBook p : isCursesOn() ? CURSES.values() : NORMAL.values()) {
+			if (p.isActive()) {
 				active.add(p);
+			}
 		}
 		return active.toArray(new PrayerBook[active.size()]);
 	}
-	
+
 	/**
 	 * @return An array of currently set prayers/curses to quick use.
-	 **/
+	 */
 	public static PrayerBook[] getQuick() {
 		Set<PrayerBook> setquick = new LinkedHashSet<PrayerBook>();
-		for(PrayerBook p : isCursesOn() ? CURSES.values() : NORMAL.values()) {
-			if(p.isSetQuick())
+		for (PrayerBook p : isCursesOn() ? CURSES.values() : NORMAL.values()) {
+			if (p.isSetQuick()) {
 				setquick.add(p);
+			}
 		}
 		return setquick.toArray(new PrayerBook[setquick.size()]);
 	}
-	
+
 	/**
-	 * @param active  <tt>true</tt> to turn quick prayers/curses on, <tt>false</tt> to turn quick prayers/curses off.
-	 **/
+	 * @param active <tt>true</tt> to turn quick prayers/curses on, <tt>false</tt> to turn quick prayers/curses off.
+	 */
 	public static boolean toggleQuick(final boolean activate) {
-		if(isQuickOn() == activate)
+		if (isQuickOn() == activate) {
 			return true;
+		}
 		return Widgets.get(WIDGET_PRAYER_ORB, 2).interact("Turn");
 	}
 
 	/**
 	 * @param prayers Prayers/Curses to set to quick use
-	 **/
+	 */
 	public static boolean setQuick(final PrayerBook... prayers) {
-		for(PrayerBook p : prayers) {
-			if(p.getBook() != (isCursesOn() ? PRAYER_BOOK_CURSES : PRAYER_BOOK_NORMAL) 
-					|| p.getRequiredLevel() > Skills.getRealLevel(Skills.PRAYER))
+		for (PrayerBook p : prayers) {
+			if (p.getBook() != (isCursesOn() ? PRAYER_BOOK_CURSES : PRAYER_BOOK_NORMAL)
+					|| p.getRequiredLevel() > Skills.getRealLevel(Skills.PRAYER)) {
 				return false;
+			}
 		}
 		if (Widgets.get(WIDGET_PRAYER_ORB, 2).interact("Select quick")) {
-			for(int i = 0; i < 20 && Settings.get(1396) != 0x1; i++)
+			for (int i = 0; i < 20 && Settings.get(1396) != 0x1; i++) {
 				Time.sleep(50);
+			}
 			Time.sleep(200);
-			for(PrayerBook p : prayers) {
-				if(p.isSetQuick())
+			for (PrayerBook p : prayers) {
+				if (p.isSetQuick()) {
 					continue;
-				if(Widgets.get(WIDGET_PRAYER, 42).getChild(p.getId()).interact("Select")) {
-						for(int i = 0; i < 10 && !p.isSetQuick(); i++)
-							Time.sleep(50);
 				}
-				else {
+				if (Widgets.get(WIDGET_PRAYER, 42).getChild(p.getId()).interact("Select")) {
+					for (int i = 0; i < 10 && !p.isSetQuick(); i++) {
+						Time.sleep(50);
+					}
+				} else {
 					Widgets.get(WIDGET_PRAYER, 43).interact("Confirm");
 					return false;
 				}
@@ -224,28 +230,34 @@ public class Prayer {
 	/**
 	 * @param prayer Desired prayer/curse
 	 * @param active <tt>true</tt> to activate, <tt>false</tt> to deactivate
-	 **/
+	 */
 	public static boolean togglePrayer(final PrayerBook prayer, final boolean active) {
-		if(prayer.getBook() != (isCursesOn() ? PRAYER_BOOK_CURSES : PRAYER_BOOK_NORMAL)
-				|| prayer.getRequiredLevel() > Skills.getRealLevel(Skills.PRAYER))
+		if (prayer.getBook() != (isCursesOn() ? PRAYER_BOOK_CURSES : PRAYER_BOOK_NORMAL)
+				|| prayer.getRequiredLevel() > Skills.getRealLevel(Skills.PRAYER)) {
 			return false;
-		if(prayer.isActive() == active)
+		}
+		if (prayer.isActive() == active) {
 			return true;
-		if(!Tabs.getCurrent().equals(Tabs.PRAYER)) {
+		}
+		if (!Tabs.getCurrent().equals(Tabs.PRAYER)) {
 			Tabs.PRAYER.open(false);
-			for(int i = 0; i < 20 && !Tabs.getCurrent().equals(Tabs.PRAYER); i ++)
+			for (int i = 0; i < 20 && !Tabs.getCurrent().equals(Tabs.PRAYER); i++) {
 				Time.sleep(50);
+			}
 		}
 		return Widgets.get(WIDGET_PRAYER, 8).getChild(prayer.getId()).interact(active ? "Activate" : "Deactivate");
 	}
-	
+
 	public static boolean deactivateAll() {
-		if(getActive().length == 0)
+		if (getActive().length == 0) {
 			return true;
-		for(PrayerBook p : getActive()) {
-			if(togglePrayer(p, false))
-				for(int i = 0; i < 10 && p.isActive(); i++)
+		}
+		for (PrayerBook p : getActive()) {
+			if (togglePrayer(p, false)) {
+				for (int i = 0; i < 10 && p.isActive(); i++) {
 					Time.sleep(50);
+				}
+			}
 		}
 		return getActive().length == 0;
 	}

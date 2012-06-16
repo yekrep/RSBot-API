@@ -100,9 +100,9 @@ public class SceneEntities {
 		});
 	}
 
-    public static SceneObject getNearest(final Filter<SceneObject> filter) {
-        return getNearestTo(Players.getLocal(), filter);
-    }
+	public static SceneObject getNearest(final Filter<SceneObject> filter) {
+		return getNearestTo(Players.getLocal(), filter);
+	}
 
 	public static SceneObject getNearestTo(final Locatable locatable, final Filter<SceneObject> filter) {
 		SceneObject location = null;

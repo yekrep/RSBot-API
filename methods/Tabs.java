@@ -85,7 +85,7 @@ public enum Tabs {
 		}
 		return getCurrent() == this;
 	}
-	
+
 	public boolean isOpen() {
 		return getCurrent() == this;
 	}

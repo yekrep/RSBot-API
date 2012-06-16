@@ -175,7 +175,7 @@ public class Tile implements Entity, Locatable, Identifiable {
 	public boolean canReach() {
 		return Walking.findPath(this).init();
 	}
-	
+
 	public double distanceTo() {
 		return Calculations.distanceTo(this);
 	}
@@ -183,7 +183,7 @@ public class Tile implements Entity, Locatable, Identifiable {
 	public double distance(final Locatable locatable) {
 		return Calculations.distance(this, locatable);
 	}
-    
+
 	public Point getPoint(final double xOff, final double yOff, final int height) {
 		return Calculations.groundToScreen((int) ((x - Game.getBaseX() + xOff) * 0x200), (int) ((y - Game.getBaseY() + yOff) * 0x200), plane, -height);
 	}

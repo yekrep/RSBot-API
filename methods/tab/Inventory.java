@@ -85,7 +85,7 @@ public class Inventory {
 		}
 		return new Item[0];
 	}
-	
+
 	/**
 	 * Returns an array representing the state of the inventory.<br>
 	 * This function will always return an array of length 28.
@@ -162,7 +162,7 @@ public class Inventory {
 		}
 		return count;
 	}
-	
+
 	public static boolean isFull() {
 		return getCount() == 28;
 	}
