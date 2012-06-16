@@ -240,7 +240,7 @@ public class Bank {
 			}
 		}
 		String action = "Withdraw-" + amount;
-		if (amount >= item.getStackSize() || amount == 0) {
+		if (amount >= item.getStackSize() && amount != 1 && amount != 5 && amount != 10 || amount == 0) {
 			action = "Withdraw-All";
 		} else if (amount == (item.getStackSize() - 1) || amount == -1) {
 			action = "Withdraw-All but one";
