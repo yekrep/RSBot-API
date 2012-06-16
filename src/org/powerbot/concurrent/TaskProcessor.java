@@ -1,7 +1,6 @@
 package org.powerbot.concurrent;
 
 import java.util.concurrent.Future;
-import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
@@ -14,7 +13,7 @@ public class TaskProcessor implements TaskContainer {
 	private final ThreadPoolExecutor executor;
 
 	public TaskProcessor(final ThreadGroup threadGroup) {
-		executor = new ThreadPoolExecutor(Runtime.getRuntime().availableProcessors() * 2, Integer.MAX_VALUE,
+		executor = new ThreadPoolExecutor(Integer.MAX_VALUE, Integer.MAX_VALUE,
 				0L, TimeUnit.MILLISECONDS,
 				new LinkedNonBlockingQueue<Runnable>(), new ThreadPool(threadGroup));
 	}
@@ -23,18 +22,10 @@ public class TaskProcessor implements TaskContainer {
 	 * {@inheritDoc}
 	 */
 	public Future<?> submit(final Task task) {
-		int pool_size = executor.getCorePoolSize();
-		if (executor.getPoolSize() >= pool_size) {
-			executor.setCorePoolSize(++pool_size);
-		}
 		return executor.submit(task);
 	}
 
 	public <T> Future<T> submit(final CallableTask<T> task) {
-		int pool_size = executor.getCorePoolSize();
-		if (executor.getPoolSize() >= pool_size) {
-			executor.setCorePoolSize(++pool_size);
-		}
 		return executor.submit(task);
 	}
 
