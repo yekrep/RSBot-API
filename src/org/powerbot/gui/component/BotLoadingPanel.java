@@ -118,6 +118,9 @@ public final class BotLoadingPanel extends JPanel {
 		final Runnable act = new Runnable() {
 			@Override
 			public void run() {
+				if (ad == null) {
+					return;
+				}
 				if (visible) {
 					final Dimension d1 = panelTop.getPreferredSize(), d2 = ad.getAd().getPreferredSize();
 					final int dw = (d1.width - d2.width) / 2, dh = d1.height - d2.height;
