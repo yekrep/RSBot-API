@@ -12,6 +12,7 @@ import org.powerbot.game.api.methods.Widgets;
 import org.powerbot.game.api.methods.input.Keyboard;
 import org.powerbot.game.api.methods.interactive.NPCs;
 import org.powerbot.game.api.methods.interactive.Players;
+import org.powerbot.game.api.methods.node.Menu;
 import org.powerbot.game.api.methods.node.SceneEntities;
 import org.powerbot.game.api.methods.tab.Inventory;
 import org.powerbot.game.api.util.Filter;
@@ -48,7 +49,7 @@ public class Bank {
 			42217, 42377, 42378
 	};
 	public static final int[] BANK_CHEST_IDS = new int[]{
-			4483, 8981, 12308, 14382, 20607, 21301, 27663, 42192, 57437, 62691
+			2693, 4483, 8981, 12308, 14382, 20607, 21301, 27663, 42192, 57437, 62691
 	};
 	public static final int[] UNDEPOSITABLE_ITEM_IDS = new int[]{2528, 6796, 23713, 23714, 23715, 23716, 23717, 23718,
 			23719, 23720, 23721, 23722, 23723, 23724, 23725, 23726, 23727, 23728, 23729, 23730, 23731, 23732, 23733,
@@ -183,7 +184,8 @@ public class Bank {
 			} else if (isBankBooth((Identifiable) bank)) {
 				interacted = bank.interact("Bank", "Bank booth");
 			} else if (isBankChest((Identifiable) bank)) {
-				interacted = bank.interact("Use");
+				bank.hover();
+				interacted = Menu.contains("Open") ? bank.interact("Open") : bank.interact("Use");
 			} else if (isBankCounter((Identifiable) bank)) {
 				interacted = bank.interact("Bank", "Counter");
 			}

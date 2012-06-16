@@ -97,8 +97,9 @@ public abstract class ActiveScript implements EventListener, Processor {
 		loopTask.start();
 		loopTasks.add(loopTask);
 		listeners.add(loopTask);
-		if (!isLocked()) {
+		if (getState() == DaemonState.LISTENING) {
 			eventManager.accept(loopTask);
+			submit(loopTask);
 		}
 
 		return true;
