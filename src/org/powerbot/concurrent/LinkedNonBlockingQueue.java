@@ -6,6 +6,8 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.TimeUnit;
 
 public class LinkedNonBlockingQueue<E> extends ConcurrentLinkedQueue<E> implements BlockingQueue<E> {
+	private static final long serialVersionUID = 1L;
+
 	@Override
 	public void put(final E e) throws InterruptedException {
 		offer(e);
