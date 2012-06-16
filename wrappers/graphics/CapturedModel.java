@@ -232,7 +232,7 @@ public abstract class CapturedModel implements Entity {
 		}
 	}
 
-	private int[][] projectVertices() {
+	public int[][] projectVertices() {
 		final Context context = Context.get();
 		final Calculations.Toolkit toolkit = context.getToolkit();
 		final Calculations.Viewport viewport = context.getViewport();
