@@ -97,11 +97,8 @@ public abstract class ActiveScript implements EventListener, Processor {
 		loopTask.start();
 		loopTasks.add(loopTask);
 		listeners.add(loopTask);
-		if (getState() == DaemonState.LISTENING) {
-			eventManager.accept(loopTask);
-			submit(loopTask);
-		}
-
+		eventManager.accept(loopTask);
+		container.submit(loopTask);
 		return true;
 	}
 
@@ -145,8 +142,10 @@ public abstract class ActiveScript implements EventListener, Processor {
 				continue;
 			}
 
-			task.start();
-			container.submit(task);
+			if (!task.isRunning()) {
+				task.start();
+				container.submit(task);
+			}
 		}
 		for (final EventListener eventListener : listeners) {
 			eventManager.accept(eventListener);
