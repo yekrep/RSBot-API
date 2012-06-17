@@ -66,7 +66,7 @@ public class Walking {
 
 	public static void setRun(final boolean enabled) {
 		if (isRunEnabled() != enabled && Widgets.get(WIDGET, WIDGET_RUN).click(true)) {
-			final Timer t = new Timer(500);
+			final Timer t = new Timer(1800);
 			while (t.isRunning() && isRunEnabled() != enabled) {
 				Time.sleep(5);
 			}
