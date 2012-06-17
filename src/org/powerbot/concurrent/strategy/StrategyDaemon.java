@@ -2,7 +2,6 @@ package org.powerbot.concurrent.strategy;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -104,9 +103,9 @@ public class StrategyDaemon implements StrategyContainer, Task {
 				}
 			} else if (state == DaemonState.LISTENING) {
 				try {
-					final Iterator<Strategy> strategyIterator = strategies.iterator();
-					while (strategyIterator.hasNext()) {
-						final Strategy strategy = strategyIterator.next();
+					final List<Strategy> strategies_clone = new ArrayList<Strategy>();
+					strategies_clone.addAll(strategies);
+					for (final Strategy strategy : strategies_clone) {
 						if (state != DaemonState.LISTENING) {
 							break;
 						}
