@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EventListener;
-import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.Future;
 import java.util.logging.Logger;
@@ -134,9 +133,9 @@ public abstract class ActiveScript implements EventListener, Processor {
 	public final void resume() {
 		silent = false;
 		eventManager.accept(ActiveScript.this);
-		final Iterator<LoopTask> taskIterator = loopTasks.iterator();
-		while (taskIterator.hasNext()) {
-			final LoopTask task = taskIterator.next();
+		final List<LoopTask> cache_list = new ArrayList<LoopTask>();
+		cache_list.addAll(loopTasks);
+		for (final LoopTask task : cache_list) {
 			if (task.isKilled()) {
 				loopTasks.remove(task);
 				continue;
