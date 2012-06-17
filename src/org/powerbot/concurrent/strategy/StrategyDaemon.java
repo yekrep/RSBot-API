@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
+import java.util.concurrent.RejectedExecutionException;
 
 import org.powerbot.concurrent.Task;
 import org.powerbot.concurrent.TaskContainer;
@@ -114,9 +115,14 @@ public class StrategyDaemon implements StrategyContainer, Task {
 							continue;
 						}
 						for (final Task task : strategy.tasks) {
-							final Future<?> future = container.submit(task);
-							if (future != null) {
-								futures.add(future);
+							try {
+								final Future<?> future = container.submit(task);
+								if (future != null) {
+									futures.add(future);
+								}
+							} catch (final RejectedExecutionException ignored) {
+								state = DaemonState.DESTROYED;
+								break;
 							}
 						}
 						cached_state = state;
