@@ -247,7 +247,7 @@ public class Bank {
 			}
 		}
 		String action = "Withdraw-" + amount;
-		if (amount >= item.getStackSize() && amount != 1 && amount != 5 && amount != 10 || amount == 0) {
+		if ((amount >= item.getStackSize() && amount != 1 && amount != 5 && amount != 10) || amount == 0) {
 			action = "Withdraw-All";
 		} else if (amount == (item.getStackSize() - 1) || amount == -1) {
 			action = "Withdraw-All but one";
@@ -364,7 +364,7 @@ public class Bank {
 		final ArrayList<Item> items = new ArrayList<Item>();
 		for (final WidgetChild slot : slots) {
 			if (slot != null && slot.getChildId() != -1 && (!currentTabOnly || slot.getRelativeY() != 0)) {
-				Item item = new Item(slot);
+				final Item item = new Item(slot);
 				if (itemFilter.accept(item)) {
 					items.add(item);
 				}
@@ -375,10 +375,9 @@ public class Bank {
 
 	public static Item getItem(final int... ids) {
 		return getItem(new Filter<Item>() {
-			public boolean accept(Item item) {
-				int itemId = item.getId();
-				for (int id : ids) {
-					if (itemId == id) {
+			public boolean accept(final Item item) {
+				for (final int id : ids) {
+					if (id == item.getId()) {
 						return true;
 					}
 				}
@@ -402,10 +401,9 @@ public class Bank {
 
 	public static int getItemCount(final boolean countStack, final int... ids) {
 		return getItemCount(countStack, new Filter<Item>() {
-			public boolean accept(Item item) {
-				int itemId = item.getId();
-				for (int id : ids) {
-					if (itemId == id) {
+			public boolean accept(final Item item) {
+				for (final int id : ids) {
+					if (item.getId() == id) {
 						return true;
 					}
 				}
