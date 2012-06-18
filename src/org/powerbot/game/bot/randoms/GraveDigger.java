@@ -79,7 +79,9 @@ public class GraveDigger extends AntiRandom {
 
 	@Override
 	public void run() {
-		Camera.setPitch(true);
+		if (Camera.getPitch() < 50) {
+			Camera.setPitch(true);
+		}
 
 		if (Widgets.clickContinue()) {
 			verbose("Following conversation");
