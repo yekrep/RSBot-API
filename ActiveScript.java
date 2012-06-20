@@ -1,6 +1,5 @@
 package org.powerbot.game.api;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EventListener;
@@ -13,13 +12,11 @@ import org.powerbot.concurrent.Processor;
 import org.powerbot.concurrent.Task;
 import org.powerbot.concurrent.TaskContainer;
 import org.powerbot.concurrent.TaskProcessor;
-import org.powerbot.concurrent.strategy.Condition;
 import org.powerbot.concurrent.strategy.DaemonState;
 import org.powerbot.concurrent.strategy.Strategy;
 import org.powerbot.concurrent.strategy.StrategyDaemon;
 import org.powerbot.concurrent.strategy.StrategyGroup;
 import org.powerbot.event.EventManager;
-import org.powerbot.game.api.methods.Environment;
 import org.powerbot.game.bot.Context;
 
 /**
@@ -107,9 +104,6 @@ public abstract class ActiveScript implements EventListener, Processor {
 			listeners.remove(loopTask);
 			eventManager.remove(loopTask);
 		}
-	}
-
-	protected final void setInterruptionPolicy(final Condition policy) {
 	}
 
 	protected final void setIterationDelay(final int milliseconds) {
@@ -235,10 +229,5 @@ public abstract class ActiveScript implements EventListener, Processor {
 
 	public final TaskContainer getContainer() {
 		return container;
-	}
-
-	@Deprecated
-	public File getStorageDirectory() {
-		return Environment.getStorageDirectory();
 	}
 }
