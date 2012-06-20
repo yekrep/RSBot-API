@@ -231,7 +231,7 @@ public class Inventory {
 			}
 		}
 		if (!cached) {
-			Tabs.INVENTORY.open(true);
+			Tabs.INVENTORY.open(false);
 		}
 		return Widgets.get(WIDGET, 0);
 	}
