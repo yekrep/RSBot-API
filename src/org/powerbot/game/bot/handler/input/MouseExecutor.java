@@ -20,7 +20,6 @@ public class MouseExecutor {
 	private final Vector velocity;
 	private volatile MouseNode stepping_node;
 	private final Point target;
-	private double multiplier;
 
 	public MouseExecutor(final Bot bot) {
 		this.client = bot.getClient();
@@ -28,11 +27,6 @@ public class MouseExecutor {
 		velocity = new Vector();
 		target = new Point(-1, -1);
 		setup();
-		multiplier = 1.0d;
-	}
-
-	public void setMultiplier(final double multiplier) {
-		this.multiplier = multiplier;
 	}
 
 	public void step(final MouseNode node) {
@@ -40,6 +34,7 @@ public class MouseExecutor {
 			target.setLocation(-1, -1);
 			stepping_node = node;
 		}
+		final double multiplier = node.getSpeed();
 		final org.powerbot.game.client.input.Mouse mouse = client.getMouse();
 		final ViewportEntity viewportEntity = node.getViewportEntity();
 		if (viewportEntity.validate()) {

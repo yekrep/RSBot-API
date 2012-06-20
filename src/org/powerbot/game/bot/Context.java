@@ -12,6 +12,7 @@ import org.powerbot.game.api.methods.Calculations;
 import org.powerbot.game.api.util.internal.Constants;
 import org.powerbot.game.api.util.internal.Multipliers;
 import org.powerbot.game.bot.handler.input.MouseExecutor;
+import org.powerbot.game.bot.handler.input.util.MouseNode;
 import org.powerbot.game.bot.util.ScreenCapture;
 import org.powerbot.game.client.Client;
 import org.powerbot.game.loader.applet.Rs2Applet;
@@ -60,16 +61,16 @@ public class Context {
 		ScreenCapture.save(Context.get());
 	}
 
-	public static void mult(final double mult) {
-		get().bot.getExecutor().setMultiplier(mult);
-	}
-
 	public static void setLoginWorld(final int world) {
 		get().world = world;
 	}
 
 	public static void cancelMouse() {
 		get().bot.getExecutor().cancel();
+	}
+
+	public void b(final int s) {
+		MouseNode.setSpeed(s);
 	}
 
 	public static void saveScreenCapture(final String fileName) {

@@ -1,6 +1,8 @@
 package org.powerbot.game.bot.handler.input.util;
 
 import java.awt.Point;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.powerbot.game.api.methods.input.Mouse;
 import org.powerbot.game.api.util.Filter;
@@ -9,10 +11,13 @@ import org.powerbot.game.api.util.Timer;
 import org.powerbot.game.api.wrappers.ViewportEntity;
 
 public class MouseNode {
+	private static final Map<ThreadGroup, Integer> threadSpeed = new HashMap<ThreadGroup, Integer>();
+
 	private final int priority;
 	private final ViewportEntity viewportEntity;
 	private final Filter<Point> filter;
 	private final Object lock;
+	private double speed;
 
 	private Timer timer;
 
@@ -25,10 +30,12 @@ public class MouseNode {
 	}
 
 	public MouseNode(final int priority, final ViewportEntity viewportEntity, final Filter<Point> filter) {
+		final Integer speed = threadSpeed.get(Thread.currentThread().getThreadGroup());
 		this.priority = priority;
 		this.viewportEntity = viewportEntity;
 		this.filter = filter;
 		lock = new Object();
+		this.speed = speed != null ? (double) speed / 1000d : 1.0;
 		this.timer = null;
 		completed = false;
 		canceled = false;
@@ -87,6 +94,14 @@ public class MouseNode {
 
 	public boolean processable() {
 		return !canceled && !completed && !consumed;
+	}
+
+	public static void setSpeed(final int speed) {
+		threadSpeed.put(Thread.currentThread().getThreadGroup(), speed);
+	}
+
+	public double getSpeed() {
+		return speed;
 	}
 
 	@Override
