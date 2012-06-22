@@ -235,11 +235,7 @@ public class Login extends AntiRandom {
 	}
 
 	private void attemptLogin() {
-		if (Random.nextInt(0, 6) == 0) {
-			Widgets.get(WIDGET, WIDGET_LOGIN_ENTER_GAME).click(true);
-		} else {
-			Keyboard.sendKey('\n', Random.nextInt(100, 200));
-		}
+		Keyboard.sendKey('\n', Random.nextInt(100, 200));
 	}
 
 	private void erase(final int count) {
