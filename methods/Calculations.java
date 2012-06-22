@@ -149,7 +149,7 @@ public class Calculations {
 			return new Point(-1, -1);
 		}
 		final int actDistSq = calculatedX * calculatedX + calculatedY * calculatedY;
-		final int mmDist = Math.max(mm2.getWidth() / 2, mm2.getHeight() / 2) - 6;
+		final int mmDist = Math.max(mm2.getWidth() / 2, mm2.getHeight() / 2) - 8;
 
 		if (mmDist * mmDist >= actDistSq) {
 			int angle = 0x3fff & (int) client.getMinimapAngle();
