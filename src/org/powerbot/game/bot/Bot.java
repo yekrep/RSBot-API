@@ -38,6 +38,7 @@ import org.powerbot.game.loader.script.ModScript;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.gui.component.BotPanel;
 import org.powerbot.service.GameAccounts;
+import org.powerbot.util.RestrictedSecurityManager;
 import org.powerbot.util.io.HttpClient;
 import org.powerbot.util.io.IOHelper;
 import org.powerbot.util.io.Resources;
@@ -333,12 +334,14 @@ public class Bot extends GameDefinition implements Runnable {
 	}
 
 	public void ensureAntiRandoms() {
+		RestrictedSecurityManager.assertNonScript();
 		if (antiRandomFuture == null || antiRandomFuture.isDone()) {
 			antiRandomFuture = container.submit(randomHandler);
 		}
 	}
 
 	public void startScript(final ActiveScript script) {
+		RestrictedSecurityManager.assertNonScript();
 		if (activeScript != null && activeScript.isRunning()) {
 			throw new RuntimeException("cannot run multiple scripts at once!");
 		}
@@ -351,13 +354,6 @@ public class Bot extends GameDefinition implements Runnable {
 		} catch (InterruptedException ignored) {
 		} catch (ExecutionException ignored) {
 		}
-
-		/*container.submit(new Task() {
-			@Override
-			public void run() {
-				validateAccount();
-			}
-		});*/
 	}
 
 	public void stopScript() {

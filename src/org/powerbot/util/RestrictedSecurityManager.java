@@ -192,7 +192,7 @@ public class RestrictedSecurityManager extends SecurityManager {
 			return;
 		}
 
-		// hack fix for odd occurance on OS X
+		// hack fix for odd occurrence on OS X
 		if (Configuration.OS == OperatingSystem.MAC && path.startsWith("/var/folders/") && Thread.currentThread().getName().equals("main")) {
 			return;
 		}
@@ -226,5 +226,12 @@ public class RestrictedSecurityManager extends SecurityManager {
 			}
 		}
 		return false;
+	}
+
+	public static void assertNonScript() {
+		final SecurityManager sm = System.getSecurityManager();
+		if (sm == null || !(sm instanceof RestrictedSecurityManager) || ((RestrictedSecurityManager) sm).isScriptThread()) {
+			throw new SecurityException();
+		}
 	}
 }
