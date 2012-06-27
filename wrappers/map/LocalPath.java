@@ -50,7 +50,7 @@ public class LocalPath extends Path {
 	@Override
 	public boolean init() {
 		if (!Game.getMapBase().equals(base)) {
-			final int[][] flags = Walking.getCollisionFlags(Game.getPlane());
+			final int[][] flags = adjustCollisionFlags(Walking.getCollisionFlags(Game.getPlane()));
 			if (flags != null) {
 				base = Game.getMapBase();
 				final Tile start = Players.getLocal().getLocation();
@@ -278,5 +278,17 @@ public class LocalPath extends Path {
 		public Tile get(final int baseX, final int baseY) {
 			return new Tile(x + baseX, y + baseY, z);
 		}
+	}
+
+	private int[][] adjustCollisionFlags(final int[][] flags) {
+		for (int x = 0; x < flags.length; x++) {
+			for (int y = 0; y < flags[x].length; y++) {
+				if (x == 1 || y == 1 || x == 104 || y == 104) {
+					flags[x][y] = -1;
+				}
+			}
+		}
+
+		return flags;
 	}
 }
