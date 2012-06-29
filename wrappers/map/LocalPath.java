@@ -281,11 +281,11 @@ public class LocalPath extends Path {
 	}
 
 	private int[][] adjustCollisionFlags(final int[][] flags) {
-		final int lx = flags.length;
-		for (int x = 0; x < lx; x++) {
-			final int ly = flags[x].length;
-			for (int y = 0; y < ly; y++) {
-				if (x == 0 || y == 0 || x == lx - 1 || y == ly - 1) {
+		final int lx = flags.length - 1;
+		for (int x = 0; x <= lx; x++) {
+			final int ly = flags[x].length - 1;
+			for (int y = 0; y <= ly; y++) {
+				if (x == 0 || y == 0 || x == lx || y == ly) {
 					flags[x][y] = -1;
 				}
 			}
