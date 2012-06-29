@@ -74,6 +74,8 @@ public class Bank {
 	public static final int WIDGET_BUTTON_DEPOSIT_POUCH = 36;
 	public static final int WIDGET_BUTTON_SEARCH = 18;
 	public static final int WIDGET_BUTTON_WITHDRAW_NOTED = 20;
+	
+	public static final int WIDGET_BANKPIN = 13;
 
 	public static final int SETTING_WITHDRAWAL_MODE = 115;
 	public static final int SETTING_BANK_TAB = 1248;
@@ -189,8 +191,9 @@ public class Bank {
 			} else if (isBankCounter((Identifiable) bank)) {
 				interacted = bank.interact("Bank", "Counter");
 			}
+			final Widget bankpin = Widgets.get(WIDGET_BANKPIN);
 			final Timer t = new Timer(4000);
-			while (t.isRunning() && interacted && !isOpen()) {
+			while (t.isRunning() && interacted && !isOpen() && (bankpin == null || !bankpin.validate())) {
 				Time.sleep(10);
 			}
 		}
