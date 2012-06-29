@@ -96,6 +96,8 @@ public class MouseExecutor {
 				Thread.sleep((long) (deltaTime * 1000 / multiplier));
 			} catch (final InterruptedException ignored) {
 			}
+		} else {
+			node.cancel();
 		}
 	}
 
