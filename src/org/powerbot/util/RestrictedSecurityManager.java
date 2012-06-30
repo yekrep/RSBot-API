@@ -30,10 +30,6 @@ public class RestrictedSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkAccess(final Thread t) {
-		if (isScriptThread() && !isCallingClass(TaskContainer.class, sun.net.www.http.KeepAliveCache.class)) {
-			log.severe("Thread access denied");
-			throw new SecurityException();
-		}
 		super.checkAccess(t);
 	}
 
