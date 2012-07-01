@@ -12,7 +12,6 @@ import org.powerbot.game.api.methods.Calculations;
 import org.powerbot.game.api.util.internal.Constants;
 import org.powerbot.game.api.util.internal.Multipliers;
 import org.powerbot.game.bot.handler.input.MouseExecutor;
-import org.powerbot.game.bot.handler.input.util.MouseNode;
 import org.powerbot.game.bot.util.ScreenCapture;
 import org.powerbot.game.client.Client;
 import org.powerbot.game.loader.applet.Rs2Applet;
@@ -70,7 +69,7 @@ public class Context {
 	}
 
 	public void b(final int s) {
-		MouseNode.setSpeed(s);
+		Bot.setSpeed(s);
 	}
 
 	public static void saveScreenCapture(final String fileName) {

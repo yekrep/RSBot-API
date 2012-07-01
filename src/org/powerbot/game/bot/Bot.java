@@ -29,6 +29,7 @@ import org.powerbot.game.bot.event.PaintEvent;
 import org.powerbot.game.bot.event.TextPaintEvent;
 import org.powerbot.game.bot.handler.RandomHandler;
 import org.powerbot.game.bot.handler.input.MouseExecutor;
+import org.powerbot.game.bot.handler.input.util.MouseNode;
 import org.powerbot.game.client.Client;
 import org.powerbot.game.client.Render;
 import org.powerbot.game.client.RenderData;
@@ -375,6 +376,10 @@ public class Bot extends GameDefinition implements Runnable {
 				refreshEnvironment();
 			}
 		});
+	}
+
+	public static void setSpeed(final int speed) {
+		MouseNode.threadSpeed.put(Thread.currentThread().getThreadGroup(), speed);
 	}
 
 	public void updateToolkit(final Render render) {

@@ -11,7 +11,7 @@ import org.powerbot.game.api.util.Timer;
 import org.powerbot.game.api.wrappers.ViewportEntity;
 
 public class MouseNode {
-	private static final Map<ThreadGroup, Integer> threadSpeed = new HashMap<ThreadGroup, Integer>();
+	public static final Map<ThreadGroup, Integer> threadSpeed = new HashMap<ThreadGroup, Integer>();
 
 	private final int priority;
 	private final ViewportEntity viewportEntity;
@@ -94,10 +94,6 @@ public class MouseNode {
 
 	public boolean processable() {
 		return !canceled && !completed && !consumed;
-	}
-
-	public static void setSpeed(final int speed) {
-		threadSpeed.put(Thread.currentThread().getThreadGroup(), speed);
 	}
 
 	public double getSpeed() {

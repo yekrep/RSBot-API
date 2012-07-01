@@ -6,7 +6,6 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GridBagLayout;
-import java.awt.Point;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
@@ -21,7 +20,6 @@ import javax.swing.JPanel;
 
 import org.powerbot.concurrent.Task;
 import org.powerbot.game.bot.Bot;
-import org.powerbot.game.bot.event.HumanInputEvent;
 import org.powerbot.game.client.input.Mouse;
 import org.powerbot.gui.BotChrome;
 
@@ -50,9 +48,6 @@ public class BotPanel extends JPanel {
 		bot = null;
 		xOff = yOff = 0;
 		inputMask = INPUT_MOUSE | INPUT_KEYBOARD;
-		new HumanInputEvent();
-		new Point(-1, -1);
-		new Point(-1, -1);
 
 		setLayout(new GridBagLayout());
 		add(loadingPanel = new BotLoadingPanel(parent));
