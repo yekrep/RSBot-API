@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 import org.powerbot.game.api.AntiRandom;
 import org.powerbot.game.api.Manifest;
+import org.powerbot.game.api.methods.Calculations;
 import org.powerbot.game.api.methods.Walking;
 import org.powerbot.game.api.methods.Widgets;
 import org.powerbot.game.api.methods.interactive.NPCs;
@@ -129,7 +130,8 @@ public class Exam extends AntiRandom {
 
 	@Override
 	public boolean validate() {
-		return NPCs.getNearest("Mr. Mordaut") != null && SceneEntities.getNearest(OBJECT_ID_DOORS) != null;
+		final NPC mordaut;
+		return (mordaut = NPCs.getNearest("Mr. Mordaut")) != null && Calculations.distanceTo(mordaut) < 15;
 	}
 
 	@Override
