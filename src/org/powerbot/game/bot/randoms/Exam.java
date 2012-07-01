@@ -129,7 +129,7 @@ public class Exam extends AntiRandom {
 
 	@Override
 	public boolean validate() {
-		return NPCs.getNearest("Mr. Mordaut") != null;
+		return NPCs.getNearest("Mr. Mordaut") != null && SceneEntities.getNearest(OBJECT_ID_DOORS) != null;
 	}
 
 	@Override
