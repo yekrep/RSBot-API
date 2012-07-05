@@ -11,9 +11,7 @@ public interface RSCharacter extends RSAnimable {
 
 	public int getHeight();
 
-	public int getLoopCycleStatus();
-
-	public int getHPRatio();
+	public Object getCombatStatusList();
 
 	public int getOrientation();
 
