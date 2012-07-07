@@ -1,6 +1,7 @@
 package org.powerbot.gui;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -43,8 +44,9 @@ public final class BotSignin extends JDialog implements ActionListener {
 	private final JPasswordField password;
 
 	public BotSignin(final BotChrome parent) {
-		super(parent, BotLocale.SIGNIN, true);
+		super(parent, BotLocale.SIGNIN + " to " + BotLocale.WEBSITE, true);
 		this.parent = parent;
+		setFont(getFont().deriveFont(getFont().getSize2D() * 1.5f));
 
 		labelUsername = new JLabel();
 		username = new JTextField();
@@ -55,6 +57,10 @@ public final class BotSignin extends JDialog implements ActionListener {
 		register = new JLabel();
 		panelSide = new JPanel();
 		info = new JLabel();
+
+		for (final Component c : new Component[] {labelUsername, username, labelPassword, password, signin, lostPass, register, panelSide, info}) {
+			c.setFont(getFont());
+		}
 
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -91,14 +97,14 @@ public final class BotSignin extends JDialog implements ActionListener {
 		});
 
 		info.setHorizontalAlignment(SwingConstants.CENTER);
-		info.setText("<html><center>Sign in to your " + BotLocale.WEBSITE +
-				" account to access your script collection and (soon) synchronise your accounts securely on the " + BotLocale.THECLOUD + "</center></html>");
-		info.setFont(info.getFont().deriveFont(info.getFont().getSize2D() - 2f));
+		info.setText("<html><center>Sign in to your " + BotLocale.WEBSITE + " account to access your script collection</center></html>");
+		info.setFont(info.getFont().deriveFont(info.getFont().getSize2D() * 0.7f));
 		info.setHorizontalAlignment(SwingConstants.CENTER);
 		info.setOpaque(true);
 		info.setBackground(null);
 		panelSide.setBackground(new Color(0xdd, 0xdd, 0xdd));
 		panelSide.setBorder(BorderFactory.createEtchedBorder());
+		panelSide.setVisible(false);
 
 		final GroupLayout panelInfoLayout = new GroupLayout(panelSide);
 		panelSide.setLayout(panelInfoLayout);
@@ -136,7 +142,7 @@ public final class BotSignin extends JDialog implements ActionListener {
 														.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
 														.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
 																.addComponent(username)
-																.addComponent(password, GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE))))
+																.addComponent(password, GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE))))
 																.addGap(18, 18, 18)
 																.addComponent(panelSide, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 																.addContainerGap())
