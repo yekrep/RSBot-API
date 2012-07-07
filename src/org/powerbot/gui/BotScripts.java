@@ -71,6 +71,7 @@ import org.powerbot.service.NetworkAccount;
 import org.powerbot.service.scripts.ScriptClassLoader;
 import org.powerbot.service.scripts.ScriptDefinition;
 import org.powerbot.util.Configuration;
+import org.powerbot.util.io.CryptFile;
 import org.powerbot.util.io.HttpClient;
 import org.powerbot.util.io.IOHelper;
 import org.powerbot.util.io.IniParser;
@@ -335,8 +336,9 @@ public final class BotScripts extends JDialog implements ActionListener {
 			return list;
 		}
 		final List<String> collection = getCollection();
+		final CryptFile cf = new CryptFile("links/scripts.dat", BotScripts.class);
 		final URL src = new URL(Resources.getServerLinks().get("scripts"));
-		final Map<String, Map<String, String>> manifests = IniParser.deserialise(HttpClient.openStream(src));
+		final Map<String, Map<String, String>> manifests = IniParser.deserialise(cf.download(src));
 		for (final Entry<String, Map<String, String>> entry : manifests.entrySet()) {
 			final ScriptDefinition def = ScriptDefinition.fromMap(entry.getValue());
 			if (def != null) {
