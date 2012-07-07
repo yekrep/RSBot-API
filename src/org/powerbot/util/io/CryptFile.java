@@ -61,6 +61,14 @@ public final class CryptFile {
 		PERMISSIONS.put(store, parents);
 	}
 
+	public boolean exists() {
+		return store.isFile() && store.canRead() && store.canWrite();
+	}
+
+	public void delete() {
+		store.delete();
+	}
+
 	public InputStream getInputStream() throws IOException {
 		if (!store.isFile()) {
 			throw new FileNotFoundException(store.toString());
