@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.security.GeneralSecurityException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.zip.Adler32;
@@ -29,13 +31,31 @@ public final class CryptFile {
 	private final static String CIPHER_ALGORITHM = "RC4", KEY_ALGORITHM = "RC4";
 
 	public CryptFile(final String id, final Class<?>... parents) {
-		final Adler32 c = new Adler32();
-		c.update(StringUtil.getBytesUtf8(id));
 		final long uid = Configuration.getUID();
-		c.update((int) (uid & 0xffffffff));
-		c.update((int) (uid >> 32));
-		final long l = c.getValue();
-		name = String.format("%s.tmp", Long.toHexString(l));
+		String hash = null;
+
+		final MessageDigest md;
+		try {
+			md = MessageDigest.getInstance("SHA-1");
+			md.update(StringUtil.getBytesUtf8(id));
+			for (int i = 0; i < 8; i++) {
+				md.update((byte) ((uid >> (i << 3)) & 0xff));
+			}
+			hash = StringUtil.byteArrayToHexString(md.digest()).substring(0, 6);
+		} catch (final NoSuchAlgorithmException ignored) {
+			final Adler32 c = new Adler32();
+			c.update(StringUtil.getBytesUtf8(id));
+			c.update((int) (uid & 0xffffffff));
+			c.update((int) (uid >> 32));
+			final long l = c.getValue();
+			hash = Long.toHexString(l);
+		}
+
+		if (hash == null) {
+			hash = Integer.toHexString(id.hashCode());
+		}
+
+		name = hash + ".tmp";
 		store = new File(System.getProperty("java.io.tmpdir"), name);
 		key = CipherStreams.getSharedKey(StringUtil.getBytesUtf8(name));
 		PERMISSIONS.put(store, parents);
