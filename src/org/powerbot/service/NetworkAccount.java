@@ -28,6 +28,8 @@ public final class NetworkAccount {
 				final Map<String, String> data = IniParser.deserialise(store.getInputStream()).get(IniParser.EMPTYSECTION);
 				if (data.containsKey(CREATEDKEY) && Long.parseLong(data.get(CREATEDKEY)) + CACHETTL > System.currentTimeMillis()) {
 					account = Account.fromMap(data);
+				} else {
+					login("", "", data.get(AUTHKEY));
 				}
 			} catch (final IOException ignored) {
 			}
