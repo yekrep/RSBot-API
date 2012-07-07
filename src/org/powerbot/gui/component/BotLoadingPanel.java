@@ -35,7 +35,7 @@ import javax.swing.border.EmptyBorder;
 import org.powerbot.game.GameDefinition;
 import org.powerbot.game.bot.Bot;
 import org.powerbot.gui.BotChrome;
-import org.powerbot.util.io.HttpClient;
+import org.powerbot.util.io.CryptFile;
 import org.powerbot.util.io.Resources;
 
 public final class BotLoadingPanel extends JPanel {
@@ -152,9 +152,9 @@ public final class BotLoadingPanel extends JPanel {
 		public void run() {
 			try {
 				if (Resources.getServerData().containsKey("ads")) {
+					final CryptFile cf = new CryptFile("ads/image.png");
 					final String src = Resources.getServerData().get("ads").get("image"), link = Resources.getServerData().get("ads").get("link");
-					final URL url = new URL(src);
-					BufferedImage image = ImageIO.read(HttpClient.openStream(url));
+					BufferedImage image = ImageIO.read(cf.download(new URL(src)));
 					if (image.getWidth() > PANEL_WIDTH || image.getHeight() > PANEL_HEIGHT) {
 						final float factor = (float) Math.min((double) PANEL_WIDTH / image.getWidth(), (double) PANEL_HEIGHT / image.getHeight());
 						final BufferedImage resized = new BufferedImage((int) (image.getWidth() * factor), (int) (image.getHeight() * factor), BufferedImage.TYPE_INT_ARGB);
