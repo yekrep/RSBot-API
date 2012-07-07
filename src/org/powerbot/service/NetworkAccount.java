@@ -6,8 +6,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.powerbot.util.StringUtil;
+import org.powerbot.util.io.CryptFile;
 import org.powerbot.util.io.IniParser;
-import org.powerbot.util.io.PersistentCache;
 import org.powerbot.util.io.Resources;
 
 /**
@@ -15,14 +15,25 @@ import org.powerbot.util.io.Resources;
  */
 public final class NetworkAccount {
 	private static NetworkAccount instance = null;
-	public final static String CACHEKEY = "netacct";
+	private final static String STORENAME = "netacct", AUTHKEY = "auth", CREATEDKEY = "created";
+	private final static int CACHETTL = 24 * 60 * 60 * 1000;
+	private final CryptFile store;
 	private Account account;
 
 	private NetworkAccount() {
-		if (PersistentCache.getInstance().containsKey(NetworkAccount.CACHEKEY)) {
+		store = new CryptFile(STORENAME, NetworkAccount.class);
+
+		if (store.exists()) {
 			try {
-				login("", "", StringUtil.urlEncode(PersistentCache.getInstance().get(NetworkAccount.CACHEKEY)));
+				final Map<String, String> data = IniParser.deserialise(store.getInputStream()).get(IniParser.EMPTYSECTION);
+				if (data.containsKey(CREATEDKEY) && Long.parseLong(data.get(CREATEDKEY)) + CACHETTL > System.currentTimeMillis()) {
+					account = Account.fromMap(data);
+				}
 			} catch (final IOException ignored) {
+			}
+
+			if (!isLoggedIn()) {
+				store.delete();
 			}
 		}
 	}
@@ -51,41 +62,38 @@ public final class NetworkAccount {
 		try {
 			is = Resources.openHttpStream("signin", StringUtil.urlEncode(username), StringUtil.urlEncode(password), StringUtil.urlEncode(auth));
 		} catch (final NullPointerException ignored) {
+			ignored.printStackTrace();
 			return false;
 		}
 		final boolean success = parseResponse(is) && isLoggedIn();
 		if (success) {
-			PersistentCache.getInstance().put(CACHEKEY, account.auth);
+			final Map<String, String> data = account.getMap();
+			data.put(CREATEDKEY, Long.toString(System.currentTimeMillis()));
+			final Map<String, Map<String, String>> map = new HashMap<String, Map<String, String>>();
+			map.put(IniParser.EMPTYSECTION, data);
+			IniParser.serialise(map, store.getOutputStream());
 		} else {
-			PersistentCache.getInstance().remove(CACHEKEY);
+			store.delete();
 		}
-		PersistentCache.getInstance().save();
 		return success;
 	}
 
 	private boolean parseResponse(final InputStream is) throws IOException {
 		final Map<String, Map<String, String>> data = IniParser.deserialise(is);
-		if (data == null || data.size() == 0 || !data.containsKey("auth")) {
+		if (data == null || data.size() == 0 || !data.containsKey(AUTHKEY)) {
 			return false;
 		}
-		final Map<String, String> auth = data.get("auth");
-		final int id = Integer.parseInt(auth.get("member_id"));
-		final String[] groups = auth.get("groups").split(",");
-		final int[] groupIDs = new int[groups.length];
-		for (int i = 0; i < groups.length; i++) {
-			groupIDs[i] = Integer.parseInt(groups[i]);
-		}
-		account = new Account(id, auth.get("auth"), auth.get("name"), auth.get("display"), auth.get("email"), groupIDs);
+		final Map<String, String> auth = data.get(AUTHKEY);
+		account = Account.fromMap(auth);
 		return true;
 	}
 
 	public synchronized void logout() {
 		account = null;
-		PersistentCache.getInstance().remove(CACHEKEY);
-		PersistentCache.getInstance().save();
+		store.delete();
 	}
 
-	public final class Account {
+	public final static class Account {
 		private final int id;
 		private final String auth, name, display, email;
 		private final int[] groups;
@@ -146,22 +154,31 @@ public final class NetworkAccount {
 			return false;
 		}
 
-		public Map<String, Map<String, String>> getMap() {
-			final Map<String, String> auth = new HashMap<String, String>();
-			auth.put("member_id", Integer.toString(id));
-			auth.put("name", name);
-			auth.put("display", display);
-			auth.put("email", email);
+		public Map<String, String> getMap() {
+			final Map<String, String> data = new HashMap<String, String>();
+			data.put("member_id", Integer.toString(id));
+			data.put("auth", auth);
+			data.put("name", name);
+			data.put("display", display);
+			data.put("email", email);
 			final StringBuilder groups = new StringBuilder(this.groups.length * 2);
 			for (final int group : this.groups) {
 				groups.append(',');
 				groups.append(Integer.toString(group));
 			}
 			groups.deleteCharAt(0);
-			auth.put("groups", groups.toString());
-			final Map<String, Map<String, String>> data = new HashMap<String, Map<String, String>>();
-			data.put("auth", auth);
+			data.put("groups", groups.toString());
 			return data;
+		}
+
+		public static Account fromMap(final Map<String, String> auth) {
+			final int id = Integer.parseInt(auth.get("member_id"));
+			final String[] groups = auth.get("groups").split(",");
+			final int[] groupIDs = new int[groups.length];
+			for (int i = 0; i < groups.length; i++) {
+				groupIDs[i] = Integer.parseInt(groups[i]);
+			}
+			return new Account(id, auth.get("auth"), auth.get("name"), auth.get("display"), auth.get("email"), groupIDs);
 		}
 	}
 }
