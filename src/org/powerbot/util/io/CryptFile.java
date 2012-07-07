@@ -7,6 +7,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.security.GeneralSecurityException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -67,6 +69,21 @@ public final class CryptFile {
 
 	public void delete() {
 		store.delete();
+	}
+
+	public InputStream download(final URL url) throws IOException {
+		final HttpURLConnection con = HttpClient.getHttpConnection(url);
+
+		if (exists()) {
+			con.setIfModifiedSince(store.lastModified());
+		}
+
+		if (con.getResponseCode() != HttpURLConnection.HTTP_NOT_MODIFIED) {
+			IOHelper.write(HttpClient.getInputStream(con), getOutputStream());
+		}
+
+		con.disconnect();
+		return getInputStream();
 	}
 
 	public InputStream getInputStream() throws IOException {
