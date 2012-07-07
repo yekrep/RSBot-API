@@ -8,12 +8,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.security.GeneralSecurityException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.TimeZone;
-import java.util.logging.Logger;
 import java.util.zip.DeflaterOutputStream;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
@@ -28,9 +22,7 @@ import org.powerbot.util.StringUtil;
  * @author Paris
  */
 public class HttpClient {
-	private static final Logger log = Logger.getLogger(HttpClient.class.getName());
 	public static final String HTTP_USERAGENT_FAKE, HTTP_USERAGENT_REAL;
-	public static final Map<URL, URL> http301 = new HashMap<URL, URL>();
 
 	static {
 		final boolean x64 = System.getProperty("sun.arch.data.model").equals("64");
@@ -77,57 +69,23 @@ public class HttpClient {
 		return con;
 	}
 
-	private static HttpURLConnection getConnection(final URL url) throws IOException {
-		if (http301.containsKey(url)) {
-			return getConnection(http301.get(url));
-		}
-		final HttpURLConnection con = getHttpConnection(url);
-		con.setUseCaches(true);
-		switch (con.getResponseCode()) {
-		case 200:
-			return con;
-		default:
-			for (final Entry<String, List<String>> header : con.getHeaderFields().entrySet()) {
-				if (header.getKey() != null && header.getKey().equalsIgnoreCase("location")) {
-					final URL newUrl = new URL(header.getValue().get(0));
-					http301.put(url, newUrl);
-					return getConnection(newUrl);
-				}
-			}
-			return null;
-		}
-	}
-
-	public static long getLastModified(final URL url) throws IOException {
-		final HttpURLConnection con = getConnection(url);
-		long modified = con.getLastModified();
-		if (modified != 0L) {
-			modified -= TimeZone.getDefault().getOffset(modified);
-		}
-		return modified;
-	}
-
 	public static HttpURLConnection download(final URL url, final File file) throws IOException {
-		final HttpURLConnection con = getConnection(url);
-		long modified = con.getLastModified();
+		final HttpURLConnection con = getHttpConnection(url);
 
-		if (file.exists() && modified != 0L) {
-			modified -= TimeZone.getDefault().getOffset(modified);
-			if (file.lastModified() <= modified) {
-				log.fine("Using " + file.getName() + " from cache");
-				return con;
-			}
+		if (file.exists()) {
+			con.setIfModifiedSince(file.lastModified());
 		}
 
-		log.fine("Downloading new " + file.getName());
-		IOHelper.write(getInputStream(con), file);
+		if (con.getResponseCode() != HttpURLConnection.HTTP_NOT_MODIFIED) {
+			IOHelper.write(getInputStream(con), file);
+		}
 
 		con.disconnect();
 		return con;
 	}
 
 	public static InputStream openStream(final URL url) throws IOException {
-		return getInputStream(getConnection(url));
+		return getInputStream(getHttpConnection(url));
 	}
 
 	public static InputStream getInputStream(final URLConnection con) throws IOException {
