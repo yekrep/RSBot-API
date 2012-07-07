@@ -335,7 +335,16 @@ public final class BotScripts extends JDialog implements ActionListener {
 		if (localOnly) {
 			return list;
 		}
-		final List<String> collection = getCollection();
+
+		final List<String> collection = new ArrayList<String>();
+		for (int i = 0; i < 3; i++) {
+			final List<String> c = getCollection();
+			if (!c.isEmpty()) {
+				collection.addAll(c);
+				break;
+			}
+		}
+
 		final CryptFile cf = new CryptFile("links/scripts.dat", BotScripts.class);
 		final URL src = new URL(Resources.getServerLinks().get("scripts"));
 		final Map<String, Map<String, String>> manifests = IniParser.deserialise(cf.download(src));
