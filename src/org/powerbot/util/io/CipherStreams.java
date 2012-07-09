@@ -48,10 +48,16 @@ public final class CipherStreams {
 	}
 
 	public static FilterInputStream getCipherInputStream(final InputStream in, final int opmode, final byte[] key, final String cipherAlgorithm, final String keyAlgorithm) throws GeneralSecurityException {
+		if (cipherAlgorithm.equals("XOR")) {
+			return new XORInputStream(in, getSharedKey(key), opmode);
+		}
 		return new CipherInputStream(in, getCipher(opmode, key, cipherAlgorithm, keyAlgorithm));
 	}
 
 	public static FilterOutputStream getCipherOutputStream(final OutputStream out, final int opmode, final byte[] key, final String cipherAlgorithm, final String keyAlgorithm) throws GeneralSecurityException {
+		if (cipherAlgorithm.equals("XOR")) {
+			return new XOROutputStream(out, getSharedKey(key), opmode);
+		}
 		return new CipherOutputStream(out, getCipher(opmode, key, cipherAlgorithm, keyAlgorithm));
 	}
 
