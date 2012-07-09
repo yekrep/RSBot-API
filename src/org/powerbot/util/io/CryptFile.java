@@ -9,7 +9,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.security.GeneralSecurityException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
@@ -30,7 +29,6 @@ public final class CryptFile {
 	private final String name;
 	private final File store;
 	private final byte[] key;
-	private final static String CIPHER_ALGORITHM = "RC4", KEY_ALGORITHM = "RC4";
 
 	public CryptFile(final String id, final Class<?>... parents) {
 		final long uid = Configuration.getUID();
@@ -90,18 +88,10 @@ public final class CryptFile {
 		if (!store.isFile()) {
 			throw new FileNotFoundException(store.toString());
 		}
-		try {
-			return CipherStreams.getCipherInputStream(new FileInputStream(store), Cipher.ENCRYPT_MODE, key, CIPHER_ALGORITHM, KEY_ALGORITHM);
-		} catch (final GeneralSecurityException e) {
-			throw new IOException(e);
-		}
+		return new XORInputStream(new FileInputStream(store), key, Cipher.ENCRYPT_MODE);
 	}
 
 	public OutputStream getOutputStream() throws IOException {
-		try {
-			return CipherStreams.getCipherOutputStream(new FileOutputStream(store), Cipher.DECRYPT_MODE, key, CIPHER_ALGORITHM, KEY_ALGORITHM);
-		} catch (final GeneralSecurityException e) {
-			throw new IOException(e);
-		}
+		return new XOROutputStream(new FileOutputStream(store), key, Cipher.DECRYPT_MODE);
 	}
 }
