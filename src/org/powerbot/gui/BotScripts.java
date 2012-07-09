@@ -525,7 +525,11 @@ public final class BotScripts extends JDialog implements ActionListener {
 				name.addMouseListener(new MouseAdapter() {
 					@Override
 					public void mouseClicked(final MouseEvent arg0) {
-						BotChrome.openURL(def.getWebsite());
+						String url = def.getWebsite();
+						if (Resources.getServerLinks().containsKey("linkfilter")) {
+							url = String.format(Resources.getServerLinks().get("linkfilter"), url.replace("&", "%26"));
+						}
+						BotChrome.openURL(url);
 					}
 				});
 				name.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
