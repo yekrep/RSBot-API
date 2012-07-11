@@ -1,0 +1,28 @@
+<config>
+	<jars>
+		<jar in="RSBot.jar" out="RSBot.jar" />
+	</jars>
+	<keep-names>
+		<class template="class org.powerbot.Boot" />
+		<class template="class org.powerbot.concurrent.*">
+			<field access="public" />
+			<method access="public" />
+		</class>
+		<class template="class org.powerbot.event.*">
+			<field access="public" />
+			<method access="public" />
+		</class>
+		<class template="class org.powerbot.game.*">
+			<field access="public" />
+			<method access="public" />
+		</class>
+	</keep-names>
+	<property name="log-file" value="allatori-log.xml" />
+	<property name="string-encryption" value="enable" />
+	<property name="string-encryption-type" value="strong" />
+	<property name="extensive-flow-obfuscation" value="maximum" />
+	<property name="default-package" value="" />
+	<property name="skip-renaming" value="enable" />
+	<property name="line-numbers" value="remove" />
+	<property name="member-reorder" value="enable" />
+</config>
