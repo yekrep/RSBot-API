@@ -68,7 +68,8 @@ public class RestrictedSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkCreateClassLoader() {
-		if (isScriptThread() && !isCallingClass(javax.swing.UIDefaults.class, java.io.ObjectOutputStream.class, java.io.ObjectInputStream.class)) {
+		if (isScriptThread() && !isCallingClass(javax.swing.UIDefaults.class, java.io.ObjectOutputStream.class, java.io.ObjectInputStream.class,
+				java.lang.reflect.Proxy.class)) {
 			log.severe("Creating class loader denied");
 			throw new SecurityException();
 		}
