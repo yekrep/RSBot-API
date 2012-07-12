@@ -8,6 +8,9 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
+import org.powerbot.util.Configuration;
+import org.powerbot.util.RestrictedSecurityManager;
+
 /**
  * @author Paris
  */
@@ -51,10 +54,11 @@ public class PrintStreamHandler extends Handler {
 		std.print('[');
 		std.print(record.getLevel().getName());
 		std.print("] ");
-		std.print(record.getLoggerName());
-		std.print(": ");
+		if (Configuration.SUPERDEV || (Configuration.DEVMODE && RestrictedSecurityManager.isScriptThread(Thread.currentThread()))) {
+			std.print(record.getLoggerName());
+			std.print(": ");
+		}
 		std.print(text);
-
 		final Throwable throwable = record.getThrown();
 		if (throwable != null) {
 			throwable.printStackTrace(std);

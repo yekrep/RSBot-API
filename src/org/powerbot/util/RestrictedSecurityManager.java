@@ -225,6 +225,11 @@ public class RestrictedSecurityManager extends SecurityManager {
 		return false;
 	}
 
+	public static boolean isScriptThread(final Thread t) {
+		final ClassLoader loader = t.getContextClassLoader();
+		return loader != null && loader.getClass().isAssignableFrom(ScriptClassLoader.class);
+	}
+
 	public static void assertNonScript() {
 		final SecurityManager sm = System.getSecurityManager();
 		if (sm == null || !(sm instanceof RestrictedSecurityManager) || ((RestrictedSecurityManager) sm).isScriptThread()) {
