@@ -26,6 +26,7 @@ import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
@@ -35,6 +36,7 @@ import javax.swing.border.EmptyBorder;
 import org.powerbot.game.GameDefinition;
 import org.powerbot.game.bot.Bot;
 import org.powerbot.gui.BotChrome;
+import org.powerbot.util.Configuration;
 import org.powerbot.util.io.CryptFile;
 import org.powerbot.util.io.Resources;
 
@@ -239,6 +241,15 @@ public final class BotLoadingPanel extends JPanel {
 			}
 			panel.info.setForeground(c);
 			panel.info.setText(record.getMessage());
+
+			if (title != null && title.equals("Outdated")) {
+				final String msg = Configuration.NAME + " needs to be repaired after a recent game update.\nThis usually takes 1-5 days so please wait patiently.\n\n" +
+						"You do not need to do anything, an update will be automatically downloaded for you.\n" +
+						"All your scripts will work normally afterwards.\n\n" +
+						"Please do not post or send in support messages about this as we are already aware.\n" +
+						"Check our website forums and twitter for the latest info.";
+				JOptionPane.showMessageDialog(BotChrome.getInstance(), msg, title, JOptionPane.INFORMATION_MESSAGE);
+			}
 		}
 	}
 }

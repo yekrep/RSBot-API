@@ -189,11 +189,11 @@ public class Bot extends GameDefinition implements Runnable {
 			modScript = new ModScript(IOHelper.read(HttpClient.openStream(new URL(String.format(Resources.getServerLinks().get("clientpatch"), packHash)))));
 			return modScript;
 		} catch (final SocketTimeoutException ignored) {
-			log.severe("Please try again later " + id);
+			log.severe("Cannot connect to update server " + id);
 		} catch (final NullPointerException ignored) {
-			log.severe("Please try again later " + id);
+			log.severe("Error parsing client patch " + id);
 		} catch (final IOException e) {
-			log.log(Level.FINE, "Failed to get node manipulator: ", e);
+			log.log(Level.SEVERE, "Client patch " + id + " unavailable", "Outdated");
 		}
 		throw new AdaptException("Failed to load node manipulator; unable to reach server or client unsupported");
 	}
