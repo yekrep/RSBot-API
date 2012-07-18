@@ -19,8 +19,11 @@ public final class Message implements Serializable {
 		RUNNING,
 		LISTENING,
 		SIGNIN,
-		SIGNOUT,
 		SCRIPT,
+	}
+
+	public Message(final MessageType type) {
+		this(false, type);
 	}
 
 	public Message(final boolean response, final MessageType type) {

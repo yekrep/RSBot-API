@@ -5,6 +5,10 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.powerbot.ipc.Controller;
+import org.powerbot.ipc.Message;
+import org.powerbot.ipc.Message.MessageType;
+import org.powerbot.util.Configuration;
 import org.powerbot.util.StringUtil;
 import org.powerbot.util.io.CryptFile;
 import org.powerbot.util.io.IniParser;
@@ -22,22 +26,7 @@ public final class NetworkAccount {
 
 	private NetworkAccount() {
 		store = new CryptFile(STORENAME, NetworkAccount.class);
-
-		if (store.exists()) {
-			try {
-				final Map<String, String> data = IniParser.deserialise(store.getInputStream()).get(IniParser.EMPTYSECTION);
-				if (data.containsKey(CREATEDKEY) && Long.parseLong(data.get(CREATEDKEY)) + CACHETTL > System.currentTimeMillis()) {
-					account = Account.fromMap(data);
-				} else {
-					login("", "", data.get(AUTHKEY));
-				}
-			} catch (final IOException ignored) {
-			}
-
-			if (!isLoggedIn()) {
-				store.delete();
-			}
-		}
+		revalidate();
 	}
 
 	public synchronized static NetworkAccount getInstance() {
@@ -59,6 +48,26 @@ public final class NetworkAccount {
 		return account;
 	}
 
+	public synchronized void revalidate() {
+		account = null;
+
+		if (store.exists()) {
+			try {
+				final Map<String, String> data = IniParser.deserialise(store.getInputStream()).get(IniParser.EMPTYSECTION);
+				if (data.containsKey(CREATEDKEY) && Long.parseLong(data.get(CREATEDKEY)) + CACHETTL > System.currentTimeMillis()) {
+					account = Account.fromMap(data);
+				} else {
+					login("", "", data.get(AUTHKEY));
+				}
+			} catch (final IOException ignored) {
+			}
+
+			if (!isLoggedIn()) {
+				store.delete();
+			}
+		}
+	}
+
 	public synchronized boolean login(final String username, final String password, final String auth) throws IOException {
 		InputStream is;
 		try {
@@ -77,6 +86,7 @@ public final class NetworkAccount {
 		} else {
 			store.delete();
 		}
+		broadcast();
 		return success;
 	}
 
@@ -93,6 +103,14 @@ public final class NetworkAccount {
 	public synchronized void logout() {
 		account = null;
 		store.delete();
+		broadcast();
+	}
+
+	private synchronized void broadcast() {
+		if (!Configuration.MULTIPROCESS) {
+			return;
+		}
+		Controller.getInstance().broadcast(new Message(false, MessageType.SIGNIN));
 	}
 
 	public final static class Account {

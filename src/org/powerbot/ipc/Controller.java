@@ -17,7 +17,9 @@ import java.util.logging.Logger;
 
 import javax.crypto.Cipher;
 
+import org.powerbot.gui.BotChrome;
 import org.powerbot.ipc.Message.MessageType;
+import org.powerbot.service.NetworkAccount;
 import org.powerbot.util.Configuration;
 import org.powerbot.util.StringUtil;
 import org.powerbot.util.io.XORInputStream;
@@ -98,16 +100,31 @@ public final class Controller implements Runnable {
 				Message reply = new Message(true, msg.getMessageType());
 
 				switch (msg.getMessageType()) {
+				case NONE:
+					reply = null;
+					break;
+
 				case ALIVE:
 					reply.setArgs(true);
 					break;
 
 				case DIE:
 					stop = true;
+					BotChrome.getInstance().windowClosing(null);
 					break;
 
 				case MODE:
 					reply.setArgs(Configuration.SUPERDEV ? 2 : Configuration.DEVMODE ? 1 : 0);
+					break;
+
+				case LISTENING:
+					reply.setArgs(sock.getLocalPort());
+					break;
+
+				case SIGNIN:
+					reply = null;
+					NetworkAccount.getInstance().revalidate();
+					BotChrome.getInstance().panel.loadingPanel.setAdVisible(!NetworkAccount.getInstance().isVIP());
 					break;
 
 				default:
@@ -150,7 +167,7 @@ public final class Controller implements Runnable {
 		sock.send(new DatagramPacket(buf, buf.length, addr, port));
 	}
 
-	private void broadcast(final Message msg) {
+	public void broadcast(final Message msg) {
 		for (final int port : ports) {
 			if (port != sock.getLocalPort()) {
 				try {
