@@ -10,9 +10,11 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
 import org.powerbot.gui.BotChrome;
+import org.powerbot.gui.component.BotLocale;
 import org.powerbot.ipc.Controller;
 import org.powerbot.util.Configuration;
 import org.powerbot.util.Configuration.OperatingSystem;
@@ -118,6 +120,15 @@ public class Boot implements Runnable {
 			System.out.println("could not bind to port");
 			log.severe("Could not bind to local port");
 			System.exit(1);
+			return;
+		}
+
+		if (Controller.getInstance().getRunningInstances() > 9) {
+			final String msg = "Too many instances of " + Configuration.NAME + " already running";
+			log.severe(msg);
+			if (!Configuration.DEVMODE && Configuration.OS == OperatingSystem.WINDOWS) {
+				JOptionPane.showMessageDialog(null, msg, BotLocale.ERROR, JOptionPane.ERROR_MESSAGE);
+			}
 			return;
 		}
 
