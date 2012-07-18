@@ -59,19 +59,7 @@ public class Boot implements Runnable {
 
 		if (mem < req && !restarted) {
 			log.severe(String.format("Default heap size of %sm too small, restarting with %sm", mem, req));
-			String location = Boot.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-			location = StringUtil.urlDecode(location).replaceAll("\\\\", "/");
-			final String cmd = "java -Xss6m -Xmx" + req + "m -classpath \"" + location + "\" \"" + Boot.class.getCanonicalName() + "\" " + SWITCH_RESTARTED;
-			final Runtime run = Runtime.getRuntime();
-			try {
-				if (Configuration.OS == OperatingSystem.MAC || Configuration.OS == OperatingSystem.LINUX) {
-					run.exec(new String[]{"/bin/sh", "-c", cmd});
-				} else {
-					run.exec(cmd);
-				}
-				return;
-			} catch (final IOException ignored) {
-			}
+			fork("-Xmx" + req + "m " + SWITCH_RESTARTED);
 			return;
 		}
 
@@ -123,8 +111,8 @@ public class Boot implements Runnable {
 			return;
 		}
 
-		if (Controller.getInstance().getRunningInstances() > 9) {
-			final String msg = "Too many instances of " + Configuration.NAME + " already running";
+		if (Controller.getInstance().getRunningInstances() > (Configuration.MULTIPROCESS ? 9 : 1)) {
+			final String msg = String.format(Configuration.MULTIPROCESS ? "An instance of %s is already running" : "Many instances of % already running", Configuration.NAME);
 			log.severe(msg);
 			if (!Configuration.DEVMODE && Configuration.OS == OperatingSystem.WINDOWS) {
 				JOptionPane.showMessageDialog(null, msg, BotLocale.ERROR, JOptionPane.ERROR_MESSAGE);
@@ -144,5 +132,21 @@ public class Boot implements Runnable {
 
 	public void run() {
 		main(new String[]{});
+	}
+
+	public static void fork(final String args) {
+		String location = Boot.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+		location = StringUtil.urlDecode(location).replaceAll("\\\\", "/");
+		final String cmd = "java -Xss6m -classpath \"" + location + "\" \"" + Boot.class.getCanonicalName() + "\" " + args;
+		final Runtime run = Runtime.getRuntime();
+		try {
+			if (Configuration.OS == OperatingSystem.MAC || Configuration.OS == OperatingSystem.LINUX) {
+				run.exec(new String[]{"/bin/sh", "-c", cmd});
+			} else {
+				run.exec(cmd);
+			}
+			return;
+		} catch (final IOException ignored) {
+		}
 	}
 }

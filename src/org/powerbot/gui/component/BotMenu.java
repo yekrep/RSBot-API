@@ -15,6 +15,7 @@ import org.powerbot.gui.BotChrome;
 import org.powerbot.gui.BotSettingExplorer;
 import org.powerbot.gui.BotSignin;
 import org.powerbot.gui.BotWidgetExplorer;
+import org.powerbot.ipc.Controller;
 import org.powerbot.service.NetworkAccount;
 import org.powerbot.util.Configuration;
 import org.powerbot.util.io.Resources;
@@ -29,7 +30,7 @@ public final class BotMenu extends JPopupMenu implements ActionListener {
 	public BotMenu(final BotToolBar parent) {
 		this.parent = parent;
 
-		final int tabs = parent.getTabCount();
+		final int tabs = parent.getTabCount(), inst = Controller.getInstance().getRunningInstances();
 
 		final JMenuItem newtab = new JMenuItem(BotLocale.NEWTAB);
 		newtab.setIcon(new ImageIcon(Resources.getImage(Resources.Paths.ADD)));
@@ -37,7 +38,7 @@ public final class BotMenu extends JPopupMenu implements ActionListener {
 		newtab.addActionListener(this);
 		final JMenuItem closetab = new JMenuItem(BotLocale.CLOSETAB);
 		closetab.setIcon(new ImageIcon(Resources.getImage(Resources.Paths.REMOVE)));
-		closetab.setEnabled(tabs > 0);
+		closetab.setEnabled(Configuration.MULTIPROCESS ? tabs > 0 || inst > 1 : tabs > 0);
 		closetab.addActionListener(this);
 		add(newtab);
 		add(closetab);
@@ -93,7 +94,11 @@ public final class BotMenu extends JPopupMenu implements ActionListener {
 		if (a.equals(BotLocale.NEWTAB)) {
 			parent.addTab();
 		} else if (a.equals(BotLocale.CLOSETAB)) {
-			parent.closeTab(parent.getActiveTab());
+			if (parent.getTabCount() > 0) {
+				parent.closeTab(parent.getActiveTab());
+			} else if (Configuration.MULTIPROCESS && Controller.getInstance().getRunningInstances() > 1) {
+				parent.parent.windowClosing(null);
+			}
 		} else if (a.equals(BotLocale.ACCOUNTS)) {
 			new BotAccounts(parent.parent);
 		} else if (a.startsWith(BotLocale.SIGNIN) || a.startsWith(BotLocale.SIGNEDINAS)) {

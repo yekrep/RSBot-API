@@ -25,13 +25,16 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
+import org.powerbot.Boot;
 import org.powerbot.concurrent.Task;
 import org.powerbot.game.api.ActiveScript;
 import org.powerbot.game.api.util.Time;
 import org.powerbot.game.bot.Bot;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.gui.BotScripts;
+import org.powerbot.ipc.Controller;
 import org.powerbot.service.NetworkAccount;
+import org.powerbot.util.Configuration;
 import org.powerbot.util.io.Resources;
 
 /**
@@ -172,7 +175,8 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 	}
 
 	public void addTab() {
-		final int n = Bot.bots.size();
+		final int s = Bot.bots.size();
+		final int n = Configuration.MULTIPROCESS ? Controller.getInstance().getRunningInstances() : s;
 		if (n > 0 && !NetworkAccount.getInstance().isLoggedIn()) {
 			JOptionPane.showMessageDialog(parent, BotLocale.NEEDSIGNINMULTITAB, BotLocale.NEEDSIGNIN, JOptionPane.INFORMATION_MESSAGE);
 			return;
@@ -181,12 +185,16 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 			JOptionPane.showMessageDialog(parent, BotLocale.NEEDVIPMULTITAB, BotLocale.NEEDVIP, JOptionPane.INFORMATION_MESSAGE);
 			return;
 		}
-		final Bot bot = new Bot();
-		add(new BotButton("Game", bot), n);
-		activateTab(n);
-		tabAdd.setVisible(BotChrome.MAX_BOTS - n > 1);
-		new Thread(bot.threadGroup, bot).start();
-		parent.panel.setBot(bot);
+		if (Configuration.MULTIPROCESS && s > 0) {
+			Boot.fork("");
+		} else {
+			final Bot bot = new Bot();
+			add(new BotButton("Game", bot), s);
+			activateTab(s);
+			tabAdd.setVisible(BotChrome.MAX_BOTS - s > 1);
+			new Thread(bot.threadGroup, bot).start();
+			parent.panel.setBot(bot);
+		}
 	}
 
 	public void closeTab(final int n) {
