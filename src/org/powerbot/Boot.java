@@ -110,12 +110,15 @@ public class Boot implements Runnable {
 			return;
 		}
 
+		if (Configuration.MULTIPROCESS && Controller.getInstance().isAnotherInstanceLoading()) {
+			message(String.format("Another instance of %s is loading", Configuration.NAME));
+			System.exit(1);
+			return;
+		}
+
 		if (Controller.getInstance().getRunningInstances() > (Configuration.MULTIPROCESS ? 9 : 1)) {
-			final String msg = String.format(Configuration.MULTIPROCESS ? "An instance of %s is already running" : "Many instances of % already running", Configuration.NAME);
-			log.severe(msg);
-			if (!Configuration.DEVMODE && Configuration.OS == OperatingSystem.WINDOWS) {
-				JOptionPane.showMessageDialog(null, msg, BotLocale.ERROR, JOptionPane.ERROR_MESSAGE);
-			}
+			message(String.format(Configuration.MULTIPROCESS ? "An instance of %s is already running" : "Many instances of % already running", Configuration.NAME));
+			System.exit(1);
 			return;
 		}
 
@@ -146,6 +149,13 @@ public class Boot implements Runnable {
 			}
 			return;
 		} catch (final IOException ignored) {
+		}
+	}
+
+	public static void message(final String txt) {
+		log.severe(txt);
+		if (!Configuration.DEVMODE && Configuration.OS == OperatingSystem.WINDOWS) {
+			JOptionPane.showMessageDialog(null, txt, BotLocale.ERROR, JOptionPane.ERROR_MESSAGE);
 		}
 	}
 }

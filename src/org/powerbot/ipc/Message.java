@@ -18,6 +18,7 @@ public final class Message implements Serializable {
 		MODE,
 		RUNNING,
 		LISTENING,
+		LOADED,
 		SIGNIN,
 		SCRIPT,
 	}

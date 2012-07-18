@@ -13,6 +13,7 @@ import java.net.InetAddress;
 import java.net.SocketAddress;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
 
@@ -122,6 +123,10 @@ public final class Controller implements Runnable {
 					reply.setArgs(sock.getLocalPort());
 					break;
 
+				case LOADED:
+					reply.setArgs(BotChrome.loaded.get() ? 1 : 2);
+					break;
+
 				case SIGNIN:
 					reply = null;
 					NetworkAccount.getInstance().revalidate();
@@ -196,5 +201,23 @@ public final class Controller implements Runnable {
 		broadcast(new Message(MessageType.RUNNING));
 		callbacks.remove(c);
 		return i.get();
+	}
+
+	public boolean isAnotherInstanceLoading() {
+		final AtomicBoolean n = new AtomicBoolean(false);
+		final Event c = new Event() {
+			@Override
+			public boolean call(Message msg, final SocketAddress sender) {
+				if (msg.getMessageType() == MessageType.LOADED && msg.getIntArg() == 2) {
+					n.set(true);
+					return false;
+				}
+				return true;
+			}
+		};
+		callbacks.add(c);
+		broadcast(new Message(MessageType.LOADED));
+		callbacks.remove(c);
+		return n.get();
 	}
 }
