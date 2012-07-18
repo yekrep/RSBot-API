@@ -10,6 +10,7 @@ import java.io.ObjectOutputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.SocketAddress;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -32,7 +33,7 @@ public final class Controller implements Runnable {
 	private final static Logger log = Logger.getLogger(Controller.class.getName());
 	private static Controller instance;
 	private final DatagramSocket sock;
-	private final List<Event<Message>> callbacks;
+	private final List<Event> callbacks;
 	private final int[] ports = new int[12];
 	private final byte[] key;
 
@@ -53,7 +54,7 @@ public final class Controller implements Runnable {
 			throw new IOException();
 		}
 
-		callbacks = new ArrayList<Event<Message>>();
+		callbacks = new ArrayList<Event>();
 		key = StringUtil.getBytesUtf8(Long.toBinaryString(Configuration.getUID()) + Integer.toHexString(Configuration.VERSION));
 	}
 
@@ -126,22 +127,19 @@ public final class Controller implements Runnable {
 					NetworkAccount.getInstance().revalidate();
 					BotChrome.getInstance().panel.loadingPanel.setAdVisible(!NetworkAccount.getInstance().isVIP());
 					break;
+				}
 
-				default:
-					for (final Event<Message> task : callbacks) {
-						Message result = null;
+				if (msg.isResponse()) {
+					for (final Event task : callbacks) {
 						try {
-							if (!task.call(msg, result)) {
+							if (!task.call(reply, packet.getSocketAddress())) {
 								break;
 							}
 						} catch (final Exception ignored) {
 							continue;
 						}
 					}
-					break;
-				}
-				
-				if (reply != null & !msg.isResponse()) {
+				} else if (reply != null) {
 					reply(reply, packet.getAddress(), packet.getPort());
 				}
 
@@ -184,10 +182,10 @@ public final class Controller implements Runnable {
 
 	public int getRunningInstances() {
 		final AtomicInteger i = new AtomicInteger(1);
-		final Event<Message> c = new Event<Message>() {
+		final Event c = new Event() {
 			@Override
-			public boolean call(final Message r, final Message s) {
-				if (r.getMessageType() == MessageType.RUNNING) {
+			public boolean call(final Message msg, final SocketAddress sender) {
+				if (msg.getMessageType() == MessageType.RUNNING) {
 					i.incrementAndGet();
 					return false;
 				}
