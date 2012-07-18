@@ -193,7 +193,7 @@ public final class Controller implements Runnable {
 			}
 		};
 		callbacks.add(c);
-		broadcast(new Message(false, MessageType.RUNNING));
+		broadcast(new Message(MessageType.RUNNING));
 		callbacks.remove(c);
 		return i.get();
 	}
