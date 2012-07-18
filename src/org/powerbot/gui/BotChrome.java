@@ -15,6 +15,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -43,7 +44,7 @@ public class BotChrome extends JFrame implements WindowListener {
 	public BotPanel panel;
 	public BotToolBar toolbar;
 	public JPanel header;
-	public static volatile boolean loaded = false;
+	public static AtomicBoolean loaded = new AtomicBoolean(false);
 
 	static {
 		MAX_BOTS = (int) Math.max(1, Math.min(6, Runtime.getRuntime().maxMemory() / 1024 / 1024 / 256));
@@ -196,7 +197,7 @@ public class BotChrome extends JFrame implements WindowListener {
 				});
 			}
 			System.gc();
-			BotChrome.loaded = true;
+			loaded.set(true);
 		}
 	}
 }
