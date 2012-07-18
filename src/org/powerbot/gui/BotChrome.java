@@ -101,9 +101,6 @@ public class BotChrome extends JFrame implements WindowListener {
 
 	public static BotChrome getInstance() {
 		if (instance == null) {
-			if (!Configuration.LOCK.exists()) {
-				System.exit(1);
-			}
 			instance = new BotChrome();
 		}
 		return instance;

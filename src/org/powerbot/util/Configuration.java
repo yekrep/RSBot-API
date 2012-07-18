@@ -17,7 +17,6 @@ public class Configuration {
 	public static boolean DEVMODE = false;
 	public static final boolean SUPERDEV;
 	public static final int VERSION = 4023;
-	public static final File LOCK;
 	public static final OperatingSystem OS;
 
 	public enum OperatingSystem {
@@ -45,8 +44,6 @@ public class Configuration {
 		} else {
 			OS = OperatingSystem.UNKNOWN;
 		}
-
-		LOCK = new File(System.getProperty("java.io.tmpdir"), String.format("%s.tmp", Long.toHexString(getUID())));
 	}
 
 	public static long getUID() {

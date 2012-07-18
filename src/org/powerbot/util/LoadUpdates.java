@@ -10,7 +10,6 @@ import java.util.concurrent.Callable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.powerbot.Boot;
 import org.powerbot.gui.component.BotLocale;
 import org.powerbot.util.Configuration.OperatingSystem;
 import org.powerbot.util.io.HttpClient;
@@ -41,7 +40,6 @@ public final class LoadUpdates implements Callable<Boolean> {
 					HttpClient.download(url, file);
 					if (file.isFile() && file.canRead()) {
 						log.log(Level.INFO, "Launching update", "Update");
-						Boot.releaseLock();
 						Runtime.getRuntime().exec(new String[]{"java", "-jar", file.getCanonicalPath()});
 						System.exit(0);
 						return false;

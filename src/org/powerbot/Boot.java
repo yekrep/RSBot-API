@@ -3,21 +3,16 @@ package org.powerbot;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.RandomAccessFile;
 import java.net.URL;
 import java.net.URLStreamHandler;
 import java.net.URLStreamHandlerFactory;
-import java.nio.channels.FileLock;
-import java.security.SecureRandom;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
 import org.powerbot.gui.BotChrome;
-import org.powerbot.gui.component.BotLocale;
 import org.powerbot.util.Configuration;
 import org.powerbot.util.Configuration.OperatingSystem;
 import org.powerbot.util.RestrictedSecurityManager;
@@ -27,8 +22,6 @@ import org.powerbot.util.io.PrintStreamHandler;
 
 public class Boot implements Runnable {
 	private final static Logger log = Logger.getLogger(Boot.class.getName());
-	private static volatile boolean released = false;
-	private static Runnable releaseLock;
 
 	public static void main(final String[] args) {
 		final Logger logger = Logger.getLogger("");
@@ -75,48 +68,6 @@ public class Boot implements Runnable {
 				}
 				return;
 			} catch (final IOException ignored) {
-			}
-			return;
-		}
-
-		boolean locked = false;
-
-		try {
-			final RandomAccessFile tmpraf = new RandomAccessFile(Configuration.LOCK, "rw");
-			final SecureRandom r = new SecureRandom();
-			final byte[] b = new byte[r.nextInt(512) + r.nextInt(32) + 8];
-			r.nextBytes(b);
-			tmpraf.write(b);
-			final FileLock tmplock = tmpraf.getChannel().tryLock();
-			locked = tmplock != null;
-			releaseLock = new Runnable() {
-				@Override
-				public void run() {
-					try {
-						if (released) {
-							return;
-						}
-						if (tmplock != null) {
-							tmplock.release();
-						}
-						if (tmpraf != null) {
-							tmpraf.close();
-						}
-					} catch (final IOException ignored) {
-					}
-					Configuration.LOCK.delete();
-					released = true;
-				}
-			};
-			Runtime.getRuntime().addShutdownHook(new Thread(releaseLock));
-		} catch (final IOException ignored) {
-		}
-
-		if (!locked) {
-			final String msg = "An instance of " + Configuration.NAME + " is already running";
-			log.severe(msg);
-			if (!Configuration.DEVMODE && Configuration.OS == OperatingSystem.WINDOWS) {
-				JOptionPane.showMessageDialog(null, msg, BotLocale.ERROR, JOptionPane.ERROR_MESSAGE);
 			}
 			return;
 		}
@@ -174,9 +125,5 @@ public class Boot implements Runnable {
 
 	public void run() {
 		main(new String[]{});
-	}
-
-	public static void releaseLock() {
-		releaseLock.run();
 	}
 }
