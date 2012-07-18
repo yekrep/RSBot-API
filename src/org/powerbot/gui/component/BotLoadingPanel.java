@@ -120,7 +120,7 @@ public final class BotLoadingPanel extends JPanel {
 		final Runnable act = new Runnable() {
 			@Override
 			public void run() {
-				if (ad == null) {
+				if (ad == null || ad.getAd() == null) {
 					return;
 				}
 				if (visible) {
