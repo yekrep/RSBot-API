@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 
 import org.powerbot.concurrent.TaskContainer;
 import org.powerbot.game.GameDefinition;
+import org.powerbot.ipc.Controller;
 import org.powerbot.service.scripts.ScriptClassLoader;
 import org.powerbot.util.Configuration.OperatingSystem;
 import org.powerbot.util.io.CryptFile;
@@ -21,6 +22,9 @@ public class RestrictedSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkAccept(final String host, final int port) {
+		if (isCallingClass(Controller.class)) {
+			return;
+		}
 		if (port == 53 && (host.equals(DNS1) || host.equals(DNS2))) {
 			super.checkAccept(host, port);
 			return;
@@ -50,11 +54,13 @@ public class RestrictedSecurityManager extends SecurityManager {
 	@Override
 	public void checkConnect(final String host, final int port, final Object context) {
 		if (!(port == 80 || port == 443 || port == 53 || port == 43594 || port == -1)) {
-			log.severe("Connection denied to port " + port);
-			throw new SecurityException();
+			if (!isCallingClass(Controller.class)) {
+				log.severe("Connection denied to port " + port);
+				throw new SecurityException();
+			}
 		}
 		if (host.equals("localhost") || host.endsWith(".localdomain") || host.startsWith("127.") || host.startsWith("192.168.") || host.startsWith("10.") || host.endsWith("::1")) {
-			if (!isCallingClass(Configuration.class)) {
+			if (!isCallingClass(Configuration.class, Controller.class)) {
 				log.severe("Connection denied to localhost");
 				throw new SecurityException();
 			}

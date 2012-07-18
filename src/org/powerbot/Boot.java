@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 import javax.swing.UIManager;
 
 import org.powerbot.gui.BotChrome;
+import org.powerbot.ipc.Controller;
 import org.powerbot.util.Configuration;
 import org.powerbot.util.Configuration.OperatingSystem;
 import org.powerbot.util.RestrictedSecurityManager;
@@ -111,6 +112,13 @@ public class Boot implements Runnable {
 		final File store = new File(root + File.separator + Configuration.NAME + ".db");
 		if (store.isFile()) {
 			store.delete();
+		}
+
+		if (!Controller.getInstance().isBound()) {
+			System.out.println("could not bind to port");
+			log.severe("Could not bind to local port");
+			System.exit(1);
+			return;
 		}
 
 		StringUtil.newStringUtf8(null); // prevents ClassCircularityError exceptions
