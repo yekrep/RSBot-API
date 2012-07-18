@@ -105,7 +105,6 @@ public class Boot implements Runnable {
 		}
 
 		if (!Controller.getInstance().isBound()) {
-			System.out.println("could not bind to port");
 			log.severe("Could not bind to local port");
 			System.exit(1);
 			return;
