@@ -82,11 +82,18 @@ public class TaskExecutor {
 			@Override
 			public void run() {
 				final Thread thread = Thread.currentThread();
-				threads.add(thread);
+				synchronized (threads) {
+					threads.add(thread);
+				}
 				try {
 					runnable.run();
 				} finally {
-					threads.remove(thread);
+					synchronized (threads) {
+						threads.remove(thread);
+						if (threads.size() == 0 && shutdown) {
+							terminated = true;
+						}
+					}
 				}
 			}
 		});
