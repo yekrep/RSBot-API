@@ -35,6 +35,7 @@ import org.powerbot.gui.BotScripts;
 import org.powerbot.ipc.Controller;
 import org.powerbot.service.NetworkAccount;
 import org.powerbot.util.Configuration;
+import org.powerbot.util.Configuration.OperatingSystem;
 import org.powerbot.util.io.Resources;
 
 /**
@@ -175,6 +176,10 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 	}
 
 	public void addTab() {
+		if (!NetworkAccount.getInstance().isVIP() && Configuration.OS == OperatingSystem.LINUX) {
+			JOptionPane.showMessageDialog(parent, BotLocale.NEEDVIPLINUX, BotLocale.NEEDVIP, JOptionPane.INFORMATION_MESSAGE);
+			return;
+		}
 		final int s = Bot.bots.size();
 		final int n = Configuration.MULTIPROCESS ? Controller.getInstance().getRunningInstances() : s;
 		if (n > 0 && !NetworkAccount.getInstance().isLoggedIn()) {
