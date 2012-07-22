@@ -44,6 +44,10 @@ public final class NetworkAccount {
 		return account != null && account.isVIP();
 	}
 
+	public boolean isDeveloper() {
+		return account != null && account.isDeveloper();
+	}
+
 	public Account getAccount() {
 		return account;
 	}
@@ -152,9 +156,17 @@ public final class NetworkAccount {
 		}
 
 		public boolean isVIP() {
+			return isInGroup("vip");
+		}
+
+		public boolean isDeveloper() {
+			return isInGroup("developer");
+		}
+
+		private boolean isInGroup(final String name) {
 			final String groups;
 			try {
-				groups = Resources.getServerData().get("access").get("vip");
+				groups = Resources.getServerData().get("access").get(name);
 			} catch (final Exception ignored) {
 				return false;
 			}
