@@ -46,6 +46,10 @@ public class Configuration {
 		}
 	}
 
+	public static boolean isServerOS() {
+		return System.getProperty("os.name").indexOf("erver") != -1;
+	}
+
 	public static long getUID() {
 		final Adler32 c = new Adler32();
 		c.update(StringUtil.getBytesUtf8(Configuration.NAME));
