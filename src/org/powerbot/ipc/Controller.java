@@ -124,7 +124,7 @@ public final class Controller implements Runnable {
 					break;
 
 				case LOADED:
-					reply.setArgs(BotChrome.loaded.get() ? 1 : 2);
+					reply.setArgs(BotChrome.loaded ? 1 : 2);
 					break;
 
 				case SIGNIN:

@@ -105,7 +105,7 @@ public final class BotLoadingPanel extends JPanel {
 			final Timer t = new Timer(delay, new ActionListener() {
 				public void actionPerformed(final ActionEvent e) {
 					final Timer t = (Timer) e.getSource();
-					if (!BotChrome.loaded.get()) {
+					if (!BotChrome.loaded) {
 						return;
 					}
 					t.stop();
