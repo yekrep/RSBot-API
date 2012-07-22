@@ -186,7 +186,7 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 			JOptionPane.showMessageDialog(parent, BotLocale.NEEDSIGNINMULTITAB, BotLocale.NEEDSIGNIN, JOptionPane.INFORMATION_MESSAGE);
 			return;
 		}
-		if (n > 1 && !NetworkAccount.getInstance().isVIP()) {
+		if (n > (Configuration.MULTIPROCESS ? 2 : 1) && !NetworkAccount.getInstance().isVIP()) {
 			JOptionPane.showMessageDialog(parent, BotLocale.NEEDVIPMULTITAB, BotLocale.NEEDVIP, JOptionPane.INFORMATION_MESSAGE);
 			return;
 		}
