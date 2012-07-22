@@ -1,7 +1,6 @@
 package org.powerbot;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLStreamHandler;
@@ -61,11 +60,6 @@ public class Boot implements Runnable {
 			log.severe(String.format("Default heap size of %sm too small, restarting with %sm", mem, req));
 			fork("-Xmx" + req + "m " + SWITCH_RESTARTED);
 			return;
-		}
-
-		try {
-			logger.addHandler(new PrintStreamHandler(new File(new File(System.getProperty("java.io.tmpdir")), Configuration.NAME + ".log")));
-		} catch (final FileNotFoundException ignored) {
 		}
 
 		try {
