@@ -1,11 +1,13 @@
 package org.powerbot.util;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.Enumeration;
 import java.util.zip.Adler32;
 
+import org.powerbot.util.io.IOHelper;
 import org.powerbot.util.io.Resources;
 
 /**
@@ -47,7 +49,42 @@ public class Configuration {
 	}
 
 	public static boolean isServerOS() {
-		return System.getProperty("os.name").indexOf("erver") != -1;
+		// Windows Server
+		if (System.getProperty("os.name").indexOf("erver") != -1) {
+			return true;
+		} else if (OS == OperatingSystem.LINUX) {
+			File f;
+			String s;
+
+			// OpenVZ
+			f = new File("/etc/sysconfig/network");
+			if (f.exists() && f.canRead()) {
+				s = IOHelper.readString(f);
+				if (s != null && s.indexOf("venet") != -1) {
+					return true;
+				}
+			}
+
+			// Linode
+			try {
+				s = IOHelper.readString(Runtime.getRuntime().exec("/bin/sh uname -r").getInputStream());
+				if (s != null && s.indexOf("linode") != -1) {
+					return true;
+				}
+			} catch (final IOException ignored) {
+			}
+
+			// Xen
+			try {
+				s = IOHelper.readString(Runtime.getRuntime().exec("/bin/sh dmesg | egrep -i 'xen|front'| wc -l").getInputStream());
+				if (s != null && !s.isEmpty() && !s.trim().equals("0")) {
+					return true;
+				}
+			} catch (final IOException ignored) {
+			}
+		}
+
+		return false;
 	}
 
 	public static long getUID() {
