@@ -18,7 +18,7 @@ public class Configuration {
 	public static final boolean FROMJAR;
 	public static boolean DEVMODE = false;
 	public static final boolean SUPERDEV, MULTIPROCESS = true;
-	public static final int VERSION = 4024;
+	public static final int VERSION = 4025;
 	public static final OperatingSystem OS;
 
 	public enum OperatingSystem {
