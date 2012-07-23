@@ -25,6 +25,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 import org.powerbot.game.bot.Bot;
+import org.powerbot.gui.component.BotLocale;
 import org.powerbot.gui.component.BotPanel;
 import org.powerbot.gui.component.BotToolBar;
 import org.powerbot.service.NetworkAccount;
@@ -96,6 +97,10 @@ public class BotChrome extends JFrame implements WindowListener {
 				}
 			}
 		} catch (final IOException ignored) {
+		}
+
+		if (System.getProperty("java.version").indexOf("1.6.") == 0) {
+			JOptionPane.showMessageDialog(this, BotLocale.UPDATEJAVA, "Java", JOptionPane.WARNING_MESSAGE);
 		}
 	}
 

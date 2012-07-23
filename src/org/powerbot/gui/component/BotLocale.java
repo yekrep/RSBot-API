@@ -41,6 +41,7 @@ public final class BotLocale {
 	public static String NEEDVIPVPS = "Only VIPs can run the bot on a VPS/Server.";
 	public static String NEEDSIGNIN = "Member Access";
 	public static String NEEDSIGNINMULTITAB = "Please sign in to open more tabs.";
+	public static String UPDATEJAVA = "You are running an old version of Java, some things may not work correctly.\nPlease update your Java runtime at java.com/download";
 
 	public static String SEARCH = "Search";
 	public static String REFRESH = "Refresh";
