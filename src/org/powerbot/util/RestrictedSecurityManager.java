@@ -39,10 +39,6 @@ public class RestrictedSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkAccess(final ThreadGroup g) {
-		if (isScriptThread() && !isCallingClass(TaskContainer.class, sun.net.www.http.KeepAliveCache.class, sun.net.www.protocol.http.HttpURLConnection.class)) {
-			log.severe("Thread group access denied");
-			throw new SecurityException();
-		}
 		super.checkAccess(g);
 	}
 
