@@ -65,6 +65,7 @@ public class MouseExecutor {
 					node.complete();
 				} else {
 					/* Reset the consumed status to false and insert again. */
+					target.setLocation(-1, -1);
 					node.reset();
 				}
 				/* Notify the reactor to wake up. */
