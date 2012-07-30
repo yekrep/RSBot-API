@@ -5,8 +5,8 @@ import java.util.EventListener;
 import org.powerbot.game.api.util.Time;
 
 public abstract class LoopTask implements Task, EventListener {
-	private boolean running;
-	private boolean killed;
+	protected boolean running;
+	protected boolean killed;
 	private Processor processor;
 
 	public LoopTask() {
