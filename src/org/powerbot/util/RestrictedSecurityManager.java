@@ -175,7 +175,8 @@ public class RestrictedSecurityManager extends SecurityManager {
 
 		// permission controls for crypt files
 		for (final Entry<File, Class<?>[]> entry : CryptFile.PERMISSIONS.entrySet()) {
-			if (entry.getKey().equals(pathRaw)) {
+			final String protected_path = StringUtil.urlDecode(entry.getKey().getAbsolutePath());
+			if (protected_path.equals(pathRaw)) {
 				if (!isCallingClass(entry.getValue())) {
 					throw new SecurityException();
 				}
