@@ -1,5 +1,6 @@
 package org.powerbot.gui.component;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -50,8 +51,10 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 		this.parent = parent;
 		setFloatable(false);
 		setBorder(new EmptyBorder(1, 3, 1, 3));
+		setBackground(Color.BLACK);
 
-		tabAdd = new JButton(new ImageIcon(Resources.getImage(Resources.Paths.ADD)));
+		tabAdd = new JButton(new ImageIcon(Resources.getImage(Resources.Paths.ADD_WHITE)));
+		tabAdd.setBackground(getBackground());
 		tabAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(final ActionEvent e) {
 				SwingUtilities.invokeLater(new Runnable() {
@@ -71,6 +74,7 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 		add(Box.createHorizontalGlue());
 
 		scriptPlay = new JButton(new ImageIcon(Resources.getImage(Resources.Paths.PLAY)));
+		scriptPlay.setBackground(getBackground());
 		scriptPlay.addActionListener(this);
 		scriptPlay.setToolTipText(BotLocale.PLAYSCRIPT);
 		scriptPlay.setFocusable(false);
@@ -78,12 +82,14 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 		scriptPlay.setEnabled(false);
 		add(scriptPlay);
 		scriptStop = new JButton(new ImageIcon(Resources.getImage(Resources.Paths.STOP)));
+		scriptStop.setBackground(getBackground());
 		scriptStop.addActionListener(this);
 		scriptStop.setToolTipText(BotLocale.STOPSCRIPT);
 		scriptStop.setFocusable(false);
 		scriptStop.setVisible(false);
 		add(scriptStop);
-		panelInput = new JButton(new ImageIcon(Resources.getImage(Resources.Paths.KEYBOARD)));
+		panelInput = new JButton(new ImageIcon(Resources.getImage(Resources.Paths.KEYBOARD_WHITE)));
+		panelInput.setBackground(getBackground());
 		panelInput.addActionListener(this);
 		panelInput.setToolTipText(BotLocale.INPUT);
 		panelInput.setFocusable(false);
@@ -91,7 +97,8 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 		add(Box.createHorizontalStrut(16));
 
 		final BotToolBar t = this;
-		final JButton settings = new JButton(new ImageIcon(Resources.getImage(Resources.Paths.SETTINGS)));
+		final JButton settings = new JButton(new ImageIcon(Resources.getImage(Resources.Paths.SETTINGS_WHITE)));
+		settings.setBackground(getBackground());
 		settings.addActionListener(new ActionListener() {
 			public void actionPerformed(final ActionEvent arg0) {
 				new BotMenu(t).show(settings, settings.getWidth() / 2, settings.getHeight() / 2);
@@ -320,6 +327,8 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 		public BotButton(final String name, final Bot bot) {
 			super(name);
 			this.bot = bot;
+			setBackground(Color.BLACK);
+			setForeground(Color.WHITE);
 			setFocusable(false);
 			setHorizontalTextPosition(SwingConstants.LEFT);
 			setIcon(new ImageIcon(Resources.getImage(Resources.Paths.CROSS_SMALL_GRAY)));

@@ -30,6 +30,7 @@ public class Resources {
 		public static final String ICON_SMALL = ROOT_IMG + "/icon_small.png";
 		public static final String INFO = ROOT_IMG + "/glyphicons_195_circle_info.png";
 		public static final String ADD = ROOT_IMG + "/glyphicons_190_circle_plus.png";
+		public static final String ADD_WHITE = ROOT_IMG + "/glyphicons_190_circle_plus_white.png";
 		public static final String ARROWS = ROOT_IMG + "/arrows.png";
 		public static final String REFRESH = ROOT_IMG + "/glyphicons_081_refresh.png";
 		public static final String PAUSE = ROOT_IMG + "/control_pause.png";
@@ -40,11 +41,13 @@ public class Resources {
 		public static final String REMOVE = ROOT_IMG + "/glyphicons_197_remove.png";
 		public static final String KEYS = ROOT_IMG + "/glyphicons_044_keys.png";
 		public static final String KEYBOARD = ROOT_IMG + "/glyphicons_269_keyboard_wired.png";
+		public static final String KEYBOARD_WHITE = ROOT_IMG + "/glyphicons_269_keyboard_wired_white.png";
 		public static final String ADDRESS = ROOT_IMG + "/glyphicons_088_adress_book.png";
 		public static final String FILE = ROOT_IMG + "/glyphicons_036_file.png";
 		public static final String SEARCH = ROOT_IMG + "/glyphicons_027_search.png";
 		public static final String PENCIL = ROOT_IMG + "/glyphicons_030_pencil.png";
 		public static final String SETTINGS = ROOT_IMG + "/glyphicons_280_settings.png";
+		public static final String SETTINGS_WHITE = ROOT_IMG + "/glyphicons_280_settings_white.png";
 		public static final String TWITTER = ROOT_IMG + "/twitter.png";
 		public static final String FACEBOOK = ROOT_IMG + "/facebook.png";
 		public static final String YOUTUBE = ROOT_IMG + "/youtube.png";
