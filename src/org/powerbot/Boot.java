@@ -57,7 +57,7 @@ public class Boot implements Runnable {
 
 		if (mem < 768 && !restarted && !Configuration.DEVMODE) {
 			log.severe(String.format("Default heap size of %sm too small, restarting with %sm", mem, req));
-			fork("-Xmx" + req + "m " + SWITCH_RESTARTED);
+			fork("-Xmx" + req + "m ", SWITCH_RESTARTED);
 			return;
 		}
 
@@ -129,16 +129,26 @@ public class Boot implements Runnable {
 		main(new String[]{});
 	}
 
-	public static void fork(String args) {
-		if (args == null || args.isEmpty()) {
-			args = "-Xmx" + (Runtime.getRuntime().maxMemory() / 1024 / 1024) + "m";
-			if (Configuration.DEVMODE) {
-				args += " " + SWITCH_DEV;
-			}
+	public static void fork() {
+		fork("", "");
+	}
+
+	private static void fork(String options, String args) {
+		if (!options.contains("-Xss")) {
+			options += " -Xss6m";
+		}
+		if (!options.contains("-Xmx")) {
+			options += " -Xmx" + (Runtime.getRuntime().maxMemory() / 1024 / 1024) + "m";
+		}
+		if (!args.contains(SWITCH_RESTARTED)) {
+			args += " " + SWITCH_RESTARTED;
+		}
+		if (Configuration.DEVMODE && !args.contains(SWITCH_DEV)) {
+			args += " " + SWITCH_DEV;
 		}
 		String location = Boot.class.getProtectionDomain().getCodeSource().getLocation().getPath();
 		location = StringUtil.urlDecode(location).replaceAll("\\\\", "/");
-		final String cmd = "java -Xss6m -classpath \"" + location + "\" \"" + Boot.class.getCanonicalName() + "\" " + args + " " + SWITCH_RESTARTED;
+		final String cmd = "java " + options.trim() + " -classpath \"" + location + "\" \"" + Boot.class.getCanonicalName() + "\" " + args.trim();
 		final Runtime run = Runtime.getRuntime();
 		try {
 			if (Configuration.OS == OperatingSystem.MAC || Configuration.OS == OperatingSystem.LINUX) {

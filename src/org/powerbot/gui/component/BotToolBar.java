@@ -190,7 +190,7 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 			return;
 		}
 		if (Configuration.MULTIPROCESS && s > 0) {
-			Boot.fork("");
+			Boot.fork();
 		} else {
 			final Bot bot = new Bot();
 			add(new BotButton("Game", bot), s);
