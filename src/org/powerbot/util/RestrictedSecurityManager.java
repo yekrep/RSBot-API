@@ -106,9 +106,6 @@ public class RestrictedSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkListen(final int port) {
-		if (port != 0) {
-			throw new SecurityException();
-		}
 		super.checkListen(port);
 	}
 
