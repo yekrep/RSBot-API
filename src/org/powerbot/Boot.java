@@ -24,6 +24,8 @@ import org.powerbot.util.io.PrintStreamHandler;
 
 public class Boot implements Runnable {
 	private final static Logger log = Logger.getLogger(Boot.class.getName());
+	private final static String SWITCH_DEV = "-dev";
+	private final static String SWITCH_RESTARTED = "-restarted";
 
 	public static void main(final String[] args) {
 		final Logger logger = Logger.getLogger("");
@@ -41,9 +43,6 @@ public class Boot implements Runnable {
 		});
 
 		boolean restarted = false;
-
-		final String SWITCH_DEV = "-dev";
-		final String SWITCH_RESTARTED = "-restarted";
 
 		for (final String arg : args) {
 			if (arg.equals(SWITCH_DEV)) {
@@ -130,10 +129,16 @@ public class Boot implements Runnable {
 		main(new String[]{});
 	}
 
-	public static void fork(final String args) {
+	public static void fork(String args) {
+		if (args == null || args.isEmpty()) {
+			args = "-Xmx" + (Runtime.getRuntime().maxMemory() / 1024 / 1024) + "m";
+			if (Configuration.DEVMODE) {
+				args += " " + SWITCH_DEV;
+			}
+		}
 		String location = Boot.class.getProtectionDomain().getCodeSource().getLocation().getPath();
 		location = StringUtil.urlDecode(location).replaceAll("\\\\", "/");
-		final String cmd = "java -Xss6m -classpath \"" + location + "\" \"" + Boot.class.getCanonicalName() + "\" " + args;
+		final String cmd = "java -Xss6m -classpath \"" + location + "\" \"" + Boot.class.getCanonicalName() + "\" " + args + " " + SWITCH_RESTARTED;
 		final Runtime run = Runtime.getRuntime();
 		try {
 			if (Configuration.OS == OperatingSystem.MAC || Configuration.OS == OperatingSystem.LINUX) {
