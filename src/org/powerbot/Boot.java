@@ -52,10 +52,10 @@ public class Boot implements Runnable {
 			}
 		}
 
-		final int req = Configuration.DEVMODE ? -1 : 768;
+		final int req = 768;
 		long mem = Runtime.getRuntime().maxMemory() / 1024 / 1024;
 
-		if (mem < req && !restarted) {
+		if (mem < 768 && !restarted && !Configuration.DEVMODE) {
 			log.severe(String.format("Default heap size of %sm too small, restarting with %sm", mem, req));
 			fork("-Xmx" + req + "m " + SWITCH_RESTARTED);
 			return;
