@@ -29,7 +29,12 @@ public class Context {
 	}
 
 	public static Context get() {
-		final Context context = Context.context.get(Thread.currentThread().getThreadGroup());
+		ThreadGroup check = Thread.currentThread().getThreadGroup();
+		Context context = null;
+		while (context == null && check != null) {
+			context = Context.context.get(check);
+			check = check.getParent();
+		}
 		if (context == null) {
 			throw new RuntimeException(Thread.currentThread() + "@" + Thread.currentThread().getThreadGroup());
 		}
