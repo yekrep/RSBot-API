@@ -1,6 +1,8 @@
 [submodule "src/org/powerbot/game/api"]
 	path = src/org/powerbot/game/api
 	url = git@github.com:powerbot/RSBot-API.git
+	update = rebase
 [submodule "src/org/powerbot/beta"]
 	path = src/org/powerbot/beta
 	url = git@github.com:powerbot/RSBot.git
+	update = rebase
