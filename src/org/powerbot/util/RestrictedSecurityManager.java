@@ -6,7 +6,6 @@ import java.security.Permission;
 import java.util.Map.Entry;
 import java.util.logging.Logger;
 
-import org.powerbot.concurrent.TaskContainer;
 import org.powerbot.game.GameDefinition;
 import org.powerbot.ipc.Controller;
 import org.powerbot.service.scripts.ScriptClassLoader;
