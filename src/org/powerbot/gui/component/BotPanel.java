@@ -118,13 +118,7 @@ public class BotPanel extends JPanel {
 
 		if (bot != null) {
 			loadingPanel.setVisible(false);
-			if (new java.text.SimpleDateFormat("MM-dd").format(new java.util.Date()).equals("08-01")) {
-				final java.awt.image.BufferedImage gray = new java.awt.image.BufferedImage(bot.image.getWidth(), bot.image.getHeight(), java.awt.image.BufferedImage.TYPE_BYTE_GRAY);
-				new java.awt.image.ColorConvertOp(bot.image.getColorModel().getColorSpace(), gray.getColorModel().getColorSpace(), null).filter(bot.image, gray);
-				g.drawImage(gray, xOff, yOff, null);
-			} else {
-				g.drawImage(bot.image, xOff, yOff, null);
-			}
+			g.drawImage(bot.image, xOff, yOff, null);
 		}
 	}
 

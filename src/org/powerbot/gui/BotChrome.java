@@ -61,10 +61,6 @@ public class BotChrome extends JFrame implements WindowListener {
 			setTitle(getTitle() + " (developer mode)");
 		}
 
-		if (new java.text.SimpleDateFormat("MM-dd").format(new java.util.Date()).equals("08-01")) {
-			setTitle(getTitle() + " (vintage mode)");
-		}
-
 		panel = new BotPanel(this);
 		add(panel);
 
