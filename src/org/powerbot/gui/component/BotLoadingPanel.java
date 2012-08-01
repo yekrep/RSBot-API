@@ -154,7 +154,7 @@ public final class BotLoadingPanel extends JPanel {
 		public void run() {
 			try {
 				if (Resources.getServerData().containsKey("ads")) {
-					final CryptFile cf = new CryptFile("ads/image.png");
+					final CryptFile cf = new CryptFile("ads/image.png", BotLoadingPanel.class);
 					final String src = Resources.getServerData().get("ads").get("image"), link = Resources.getServerData().get("ads").get("link");
 					BufferedImage image = ImageIO.read(cf.download(new URL(src)));
 					if (image.getWidth() > PANEL_WIDTH || image.getHeight() > PANEL_HEIGHT) {
