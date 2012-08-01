@@ -37,6 +37,7 @@ public final class Controller implements Runnable {
 	private final List<Event> callbacks;
 	private final int[] ports = new int[12];
 	private final byte[] key;
+	public final int instanceID;
 
 	private Controller() throws IOException {
 		for (int i = 0; i < ports.length; i++) {
@@ -44,12 +45,15 @@ public final class Controller implements Runnable {
 		}
 
 		DatagramSocket sock = null;
-		for (final int port : ports) {
-			if ((sock = getIfAvailable(port)) != null) {
+		int instanceID = -1;
+		for (int i = 0; i < ports.length; i++) {
+			if ((sock = getIfAvailable(ports[i])) != null) {
+				instanceID = i;
 				break;
 			}
 		}
 		this.sock = sock;
+		this.instanceID = instanceID;
 
 		if (this.sock == null) {
 			throw new IOException();

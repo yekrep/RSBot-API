@@ -7,6 +7,7 @@ import java.net.SocketException;
 import java.util.Enumeration;
 import java.util.zip.Adler32;
 
+import org.powerbot.ipc.Controller;
 import org.powerbot.util.io.IOHelper;
 import org.powerbot.util.io.Resources;
 
@@ -101,5 +102,9 @@ public class Configuration {
 		} catch (final SocketException ignored) {
 		}
 		return c.getValue();
+	}
+
+	public static long getUIDInstance() {
+		return getUID() + (Configuration.MULTIPROCESS ? Controller.getInstance().instanceID : 0);
 	}
 }
