@@ -31,6 +31,7 @@ import org.powerbot.gui.component.BotToolBar;
 import org.powerbot.service.NetworkAccount;
 import org.powerbot.util.Configuration;
 import org.powerbot.util.LoadUpdates;
+import org.powerbot.util.Tracker;
 import org.powerbot.util.io.Resources;
 
 /**
@@ -78,6 +79,8 @@ public class BotChrome extends JFrame implements WindowListener {
 		setMinimumSize(getSize());
 		setLocationRelativeTo(getParent());
 		setVisible(true);
+
+		Tracker.getInstance().trackPage("", getTitle());
 
 		final ExecutorService exec = Executors.newFixedThreadPool(1);
 		final List<Future<Boolean>> tasks = new ArrayList<Future<Boolean>>();

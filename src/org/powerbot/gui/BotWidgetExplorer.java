@@ -37,6 +37,7 @@ import org.powerbot.game.api.wrappers.widget.Widget;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
 import org.powerbot.game.bot.Context;
 import org.powerbot.game.bot.event.listener.PaintListener;
+import org.powerbot.util.Tracker;
 
 /**
  * @author Timer
@@ -187,6 +188,8 @@ public class BotWidgetExplorer extends JFrame implements PaintListener {
 		pack();
 		setLocationRelativeTo(getOwner());
 		setVisible(false);
+
+		Tracker.getInstance().trackPage("widgetexplorer/", getTitle());
 	}
 
 	private final class WidgetTreeModel implements TreeModel {

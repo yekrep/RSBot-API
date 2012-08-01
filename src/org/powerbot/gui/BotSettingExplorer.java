@@ -34,6 +34,7 @@ import org.powerbot.concurrent.Task;
 import org.powerbot.game.api.methods.Settings;
 import org.powerbot.game.api.util.Time;
 import org.powerbot.game.bot.Context;
+import org.powerbot.util.Tracker;
 
 public class BotSettingExplorer extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -274,6 +275,8 @@ public class BotSettingExplorer extends JFrame {
 		pack();
 		setLocationRelativeTo(getOwner());
 		setVisible(false);
+
+		Tracker.getInstance().trackPage("settingsexplorer/", getTitle());
 	}
 
 	private static class JNumberField extends JTextField {

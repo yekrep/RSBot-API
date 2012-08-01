@@ -24,6 +24,7 @@ import javax.swing.WindowConstants;
 
 import org.powerbot.gui.component.BotLocale;
 import org.powerbot.service.NetworkAccount;
+import org.powerbot.util.Tracker;
 import org.powerbot.util.io.Resources;
 
 /**
@@ -179,6 +180,8 @@ public final class BotSignin extends JDialog implements ActionListener {
 		setResizable(false);
 		setLocationRelativeTo(getParent());
 		setVisible(true);
+
+		Tracker.getInstance().trackPage("signin/", getTitle());
 	}
 
 	public void actionPerformed(final ActionEvent arg0) {
@@ -200,9 +203,11 @@ public final class BotSignin extends JDialog implements ActionListener {
 						JOptionPane.showMessageDialog(this, BotLocale.INVALIDCREDENTIALS, BotLocale.ERROR, JOptionPane.ERROR_MESSAGE);
 					}
 				}
+				Tracker.getInstance().trackPage("signin/login", getTitle());
 			} else if (signin.getText().equals(BotLocale.SIGNOUT)) {
 				NetworkAccount.getInstance().logout();
 				updateState();
+				Tracker.getInstance().trackPage("signin/logout", getTitle());
 			}
 			signin.setEnabled(true);
 			new Thread(new Runnable() {
