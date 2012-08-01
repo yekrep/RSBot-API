@@ -19,12 +19,14 @@ public final class ScriptCacheManager {
 	private static ScriptCacheManager instance;
 	private final static int MAX_ENTRIES = 10;
 	private final static String DELIMITER = "\n";
+	private final Class<?>[] permissions;
 	private final CryptFile manifest;
 	private final Queue<String> list;
 
 	private ScriptCacheManager() {
 		manifest = new CryptFile("scripts-list.txt", ScriptCacheManager.class);
 		list = new LinkedList<String>();
+		permissions = new Class<?>[] { ScriptCacheManager.class, ScriptClassLoader.class };
 
 		final InputStream in;
 		try {
@@ -52,7 +54,7 @@ public final class ScriptCacheManager {
 		if (def.local) {
 			return new ScriptClassLoader(def.source);
 		}
-		final CryptFile cache = new CryptFile(getID(def));
+		final CryptFile cache = new CryptFile(getID(def), permissions);
 		cache.download(def.source);
 		push(def);
 		return new ScriptClassLoader(new ZipInputStream(cache.getInputStream()));
@@ -64,7 +66,7 @@ public final class ScriptCacheManager {
 			list.add(id);
 		}
 		while (list.size() > MAX_ENTRIES) {
-			new CryptFile(list.poll()).delete();
+			new CryptFile(list.poll(), permissions).delete();
 		}
 		flush();
 	}
