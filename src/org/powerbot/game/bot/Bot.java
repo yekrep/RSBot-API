@@ -74,6 +74,7 @@ public class Bot extends GameDefinition implements Runnable {
 	private BufferedImage backBuffer;
 	private final PaintEvent paintEvent;
 	private final TextPaintEvent textPaintEvent;
+	private final Graphics blank;
 
 	public volatile boolean refreshing;
 
@@ -95,6 +96,7 @@ public class Bot extends GameDefinition implements Runnable {
 		antiRandomFuture = null;
 		account = null;
 		refreshing = false;
+		blank = new BufferedImage(1, 1, BufferedImage.TYPE_BYTE_BINARY).createGraphics();
 	}
 
 	/**
@@ -265,6 +267,9 @@ public class Bot extends GameDefinition implements Runnable {
 	 * @return The <code>Graphics</code> to be displayed in the <code>Canvas</code>.
 	 */
 	public Graphics getBufferGraphics() {
+		if (BotChrome.minimised) {
+			return blank;
+		}
 		final Graphics back = backBuffer.getGraphics();
 		if (client != null) {
 			paintEvent.graphics = back;
