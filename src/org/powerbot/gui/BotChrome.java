@@ -46,7 +46,6 @@ public class BotChrome extends JFrame implements WindowListener {
 	public BotToolBar toolbar;
 	public JPanel header;
 	public static volatile boolean loaded = false;
-	public static volatile boolean minimised = false;
 
 	static {
 		MAX_BOTS = (int) Math.max(1, Math.min(6, Runtime.getRuntime().maxMemory() / 1024 / 1024 / 256));
@@ -156,11 +155,9 @@ public class BotChrome extends JFrame implements WindowListener {
 	}
 
 	public void windowDeiconified(final WindowEvent arg0) {
-		minimised = false;
 	}
 
 	public void windowIconified(final WindowEvent arg0) {
-		minimised = true;
 	}
 
 	public void windowOpened(final WindowEvent arg0) {

@@ -114,10 +114,6 @@ public class BotPanel extends JPanel {
 
 	@Override
 	public void paintComponent(final Graphics g) {
-		if (BotChrome.minimised) {
-			return;
-		}
-
 		super.paintComponent(g);
 
 		if (bot != null) {
