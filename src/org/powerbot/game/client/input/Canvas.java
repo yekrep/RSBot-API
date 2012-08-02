@@ -19,7 +19,7 @@ import org.powerbot.gui.BotChrome;
 public class Canvas extends java.awt.Canvas {
 	private static final long serialVersionUID = -2276037172265300477L;
 
-	private static final int GRAPHICS_DELAY = 6;
+	private static final int GRAPHICS_DELAY = 6, MINIMISED_GRAPHICS_DELAY = 50;
 
 	private boolean visible, focused, loader_identified;
 	private Bot bot;
@@ -35,7 +35,7 @@ public class Canvas extends java.awt.Canvas {
 				loader_identified = true;
 			}
 		}
-		Time.sleep(GRAPHICS_DELAY);
+		Time.sleep(BotChrome.minimised ? MINIMISED_GRAPHICS_DELAY : GRAPHICS_DELAY);
 		return bot.getBufferGraphics();
 	}
 
