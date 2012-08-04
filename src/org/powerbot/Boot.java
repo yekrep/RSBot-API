@@ -140,6 +140,14 @@ public class Boot implements Runnable {
 		if (!options.contains("-Xmx")) {
 			options += " -Xmx" + (Runtime.getRuntime().maxMemory() / 1024 / 1024) + "m";
 		}
+		if (!options.contains("-XX:MaxPermSize=")) {
+			options += " -XX:MaxPermSize=" + Math.max(256, Runtime.getRuntime().maxMemory() / 1024 / 1024 / 4) + "m";
+		}
+		for (final String flag : new String[] {"-XX:+UseConcMarkSweepGC", "-XX:+CMSPermGenSweepingEnabled", "-XX:+CMSClassUnloadingEnabled"}) {
+			if (!options.contains(flag)) {
+				options += " " + flag;
+			}
+		}
 		if (!args.contains(SWITCH_RESTARTED)) {
 			args += " " + SWITCH_RESTARTED;
 		}
