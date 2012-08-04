@@ -10,6 +10,14 @@ trimExclude org.powerbot.game.api. and
             org.powerbot.game.api.*.^* and
             org.powerbot.game.api.*.^* * and
             org.powerbot.game.api.*.^* *(*) and
+			org.powerbot.beta. and
+            org.powerbot.beta.^* and
+            org.powerbot.beta.^* * and
+            org.powerbot.beta.^* *(*) and
+            org.powerbot.beta.*. and
+            org.powerbot.beta.*.^* and
+            org.powerbot.beta.*.^* * and
+            org.powerbot.beta.*.^* *(*) and
             org.powerbot.game.bot. and
             org.powerbot.game.bot.^* and
             org.powerbot.game.bot.^* * and
@@ -102,7 +110,15 @@ exclude     org.powerbot.Boot^ public static main(java.lang.String[]) and
             org.powerbot.game.api.*. and
             org.powerbot.game.api.*.^* and
             org.powerbot.game.api.*.^* * and
-            org.powerbot.game.api.*.^* *(*);
+            org.powerbot.game.api.*.^* *(*)
+            org.powerbot.beta. and
+            org.powerbot.beta.^* and
+            org.powerbot.beta.^* * and
+            org.powerbot.beta.^* *(*) and
+            org.powerbot.beta.*. and
+            org.powerbot.beta.*.^* and
+            org.powerbot.beta.*.^* * and
+            org.powerbot.beta.*.^* *(*);
 
 obfuscate   changeLogFileIn=""
             changeLogFileOut="%ZKM_CHANGELOG%"
