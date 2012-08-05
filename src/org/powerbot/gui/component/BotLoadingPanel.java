@@ -37,6 +37,7 @@ import org.powerbot.game.GameDefinition;
 import org.powerbot.game.bot.Bot;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.util.Configuration;
+import org.powerbot.util.LoadUpdates;
 import org.powerbot.util.io.CryptFile;
 import org.powerbot.util.io.Resources;
 
@@ -213,7 +214,7 @@ public final class BotLoadingPanel extends JPanel {
 			if (x > 0) {
 				src = src.substring(0, x);
 			}
-			if (!(src.equals(BotChrome.class.getName()) || src.equals(GameDefinition.class.getName()) || src.equals(Bot.class.getName()))) {
+			if (!(src.equals(BotChrome.class.getName()) || src.equals(LoadUpdates.class.getName()) || src.equals(GameDefinition.class.getName()) || src.equals(Bot.class.getName()))) {
 				return;
 			}
 			final ThreadGroup currentGroup = Thread.currentThread().getThreadGroup();
