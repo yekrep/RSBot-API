@@ -109,7 +109,7 @@ public class DrillDemon extends AntiRandom {
 
 		if (Widgets.get(WIDGET_MAT).validate()) {
 			verbose("WIDGET VALIDATED: Mat objective");
-			final int setting_value = Settings.get(Settings.VALUE_RANDOMEVENT_DRILLDEMON_MAT);
+			final int setting_value = Settings.get(Settings.SETTING_RANDOMEVENT_DRILLDEMON_MAT);
 			verbose("Mat mask: " + setting_value);
 			final int child_id = Widgets.get(WIDGET_MAT, WIDGET_MAT_ICON).getChildId();
 			verbose("Child id: " + child_id);
