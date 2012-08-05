@@ -266,7 +266,7 @@ public class Bot extends GameDefinition implements Runnable {
 	 */
 	public Graphics getBufferGraphics() {
 		final Graphics back = backBuffer.getGraphics();
-		if (client != null && !BotChrome.minimised) {
+		if (client != null && panel != null && !BotChrome.minimised) {
 			paintEvent.graphics = back;
 			textPaintEvent.graphics = back;
 			textPaintEvent.id = 0;
