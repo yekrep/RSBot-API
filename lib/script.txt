@@ -110,7 +110,7 @@ exclude     org.powerbot.Boot^ public static main(java.lang.String[]) and
             org.powerbot.game.api.*. and
             org.powerbot.game.api.*.^* and
             org.powerbot.game.api.*.^* * and
-            org.powerbot.game.api.*.^* *(*)
+            org.powerbot.game.api.*.^* *(*) and
             org.powerbot.beta. and
             org.powerbot.beta.^* and
             org.powerbot.beta.^* * and
