@@ -398,6 +398,9 @@ public final class BotScripts extends JDialog implements ActionListener {
 	}
 
 	public void loadLocalScripts(final List<ScriptDefinition> list, final File parent, final File dir) {
+		if (!NetworkAccount.getInstance().isDeveloper()) {
+			return;
+		}
 		for (final File file : (dir == null ? parent : dir).listFiles()) {
 			if (file.isDirectory()) {
 				loadLocalScripts(list, parent, file);
