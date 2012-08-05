@@ -104,7 +104,7 @@ public final class BotScripts extends JDialog implements ActionListener {
 		this.parent = parent;
 		collection = new ArrayList<String>();
 
-		localOnly = (Configuration.DEVMODE && NetworkAccount.getInstance().isDeveloper()) && !Configuration.SUPERDEV;
+		localOnly = Configuration.DEVMODE && NetworkAccount.getInstance().isDeveloper();
 		if (localOnly) {
 			setTitle(getTitle() + " (showing only local scripts)");
 		}
@@ -323,16 +323,20 @@ public final class BotScripts extends JDialog implements ActionListener {
 
 	public List<ScriptDefinition> loadScripts() throws IOException {
 		final List<ScriptDefinition> list = new ArrayList<ScriptDefinition>();
-		final List<File> paths = new ArrayList<File>(2);
-		paths.add(new File("bin"));
-		paths.add(new File("out"));
-		for (final File path : paths) {
-			if (path.isDirectory()) {
-				loadLocalScripts(list, path, null);
-			}
-		}
+
 		if (localOnly) {
-			return list;
+			final List<File> paths = new ArrayList<File>(2);
+			paths.add(new File("bin"));
+			paths.add(new File("out"));
+			for (final File path : paths) {
+				if (path.isDirectory()) {
+					loadLocalScripts(list, path, null);
+				}
+			}
+
+			if (!Configuration.SUPERDEV) {
+				return list;
+			}
 		}
 
 		final List<String> collection = new ArrayList<String>();
