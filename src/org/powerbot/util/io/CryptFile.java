@@ -25,6 +25,7 @@ import org.powerbot.util.StringUtil;
  */
 public final class CryptFile {
 	public static final Map<File, Class<?>[]> PERMISSIONS = new HashMap<File, Class<?>[]>();
+	private static final long TIMESTAMP = 1344202317299L;
 
 	private final String name;
 	private final File store;
@@ -59,6 +60,10 @@ public final class CryptFile {
 		store = new File(System.getProperty("java.io.tmpdir"), name);
 		key = CipherStreams.getSharedKey(StringUtil.getBytesUtf8(name));
 		PERMISSIONS.put(store, parents);
+
+		if (exists() && store.lastModified() < TIMESTAMP) {
+			delete();
+		}
 	}
 
 	public boolean exists() {
