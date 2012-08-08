@@ -50,4 +50,10 @@ public class ScreenCapture {
 		final WritableRaster raster = source.copyData(null);
 		return new BufferedImage(source.getColorModel(), raster, source.isAlphaPremultiplied(), null);
 	}
+
+	public static BufferedImage getScreenBuffer(final Context context) {
+		final BufferedImage source = context.getBuffer();
+		final WritableRaster raster = source.copyData(null);
+		return new BufferedImage(source.getColorModel(), raster, source.isAlphaPremultiplied(), null);
+	}
 }

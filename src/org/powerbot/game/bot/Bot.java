@@ -285,6 +285,10 @@ public class Bot extends GameDefinition implements Runnable {
 		return image;
 	}
 
+	public BufferedImage getBuffer() {
+		return backBuffer;
+	}
+
 	/**
 	 * Sets the client of this bot to the provided <code>Client</code>, while initializing it to be associated with this bot via callback.
 	 *

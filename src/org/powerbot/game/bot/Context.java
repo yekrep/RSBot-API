@@ -61,6 +61,10 @@ public class Context {
 		return ScreenCapture.capture(Context.get());
 	}
 
+	public static BufferedImage getScreenBuffer() {
+		return ScreenCapture.getScreenBuffer(Context.get());
+	}
+
 	public static void saveScreenCapture() {
 		ScreenCapture.save(Context.get());
 	}
@@ -99,6 +103,10 @@ public class Context {
 
 	public BufferedImage getImage() {
 		return bot.getImage();
+	}
+
+	public BufferedImage getBuffer() {
+		return bot.getBuffer();
 	}
 
 	public TaskContainer getContainer() {
