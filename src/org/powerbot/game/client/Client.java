@@ -45,8 +45,6 @@ public interface Client {
 
 	public Object getRSGroundInfo();
 
-	public String getCurrentPassword();
-
 	public Object getCollapsedMenuItems();
 
 	public int[] getSkillExperienceMaxes();
