@@ -155,7 +155,7 @@ public final class BotAccounts extends JDialog implements WindowListener {
 		private static final long serialVersionUID = 1L;
 
 		public RandomRewardEditor() {
-			super(new JComboBox(RANDOM_REWARDS));
+			super(new JComboBox<String>(RANDOM_REWARDS));
 		}
 	}
 
