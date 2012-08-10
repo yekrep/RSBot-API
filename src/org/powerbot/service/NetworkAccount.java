@@ -11,6 +11,7 @@ import org.powerbot.ipc.Message.MessageType;
 import org.powerbot.util.Configuration;
 import org.powerbot.util.StringUtil;
 import org.powerbot.util.io.CryptFile;
+import org.powerbot.util.io.IOHelper;
 import org.powerbot.util.io.IniParser;
 import org.powerbot.util.io.Resources;
 
@@ -23,6 +24,10 @@ public final class NetworkAccount {
 	private final static int CACHETTL = 24 * 60 * 60 * 1000;
 	private final CryptFile store;
 	private Account account;
+
+	public static final class Permissions {
+		public static final int VIP = 1, DEVELOPER = 2, ADMIN = 4, LOCALSCRIPTS = 8, ORDER = 8;
+	}
 
 	private NetworkAccount() {
 		store = new CryptFile(STORENAME, NetworkAccount.class);
@@ -66,7 +71,7 @@ public final class NetworkAccount {
 			} catch (final IOException ignored) {
 			}
 
-			if (!isLoggedIn()) {
+			if (!isLoggedIn() || !account.validate()) {
 				store.delete();
 			}
 		}
@@ -119,16 +124,29 @@ public final class NetworkAccount {
 
 	public final static class Account {
 		private final int id;
+		private final long permissions;
 		private final String auth, name, display, email;
 		private final int[] groups;
 
-		public Account(final int id, final String auth, final String name, final String display, final String email, final int[] groups) {
+		public Account(final int id, final String auth, final String name, final String display, final String email, final long permissions, final int[] groups) {
 			this.id = id;
 			this.auth = auth;
 			this.name = name;
 			this.display = display;
 			this.email = email;
+			this.permissions = permissions;
 			this.groups = groups;
+		}
+
+		public boolean validate() {
+			final String salt = (getName() + getEmail()).toUpperCase();
+			final long hash;
+			try {
+				hash = IOHelper.crc32(StringUtil.getBytesUtf8(salt));
+			} catch (final IOException ignored) {
+				return false;
+			}
+			return getPermissions() >> Permissions.ORDER == hash >> Permissions.ORDER;
 		}
 
 		public int getID() {
@@ -151,39 +169,20 @@ public final class NetworkAccount {
 			return email;
 		}
 
+		public long getPermissions()  {
+			return permissions;
+		}
+
 		public int[] getGroupIDs() {
 			return groups;
 		}
 
 		public boolean isVIP() {
-			return isInGroup("vip");
+			return (permissions & Permissions.VIP) == Permissions.VIP;
 		}
 
 		public boolean isDeveloper() {
-			return isInGroup("developer");
-		}
-
-		private boolean isInGroup(final String name) {
-			final String groups;
-			try {
-				groups = Resources.getServerData().get("access").get(name);
-			} catch (final Exception ignored) {
-				return false;
-			}
-			for (final String group : groups.split(",")) {
-				final int g;
-				try {
-					g = Integer.parseInt(group);
-				} catch (final NumberFormatException ignored) {
-					continue;
-				}
-				for (final int check : this.groups) {
-					if (check == g) {
-						return true;
-					}
-				}
-			}
-			return false;
+			return (permissions & Permissions.DEVELOPER) == Permissions.DEVELOPER;
 		}
 
 		public Map<String, String> getMap() {
@@ -193,6 +192,7 @@ public final class NetworkAccount {
 			data.put("name", name);
 			data.put("display", display);
 			data.put("email", email);
+			data.put("permissions", Long.toString(permissions));
 			final StringBuilder groups = new StringBuilder(this.groups.length * 2);
 			for (final int group : this.groups) {
 				groups.append(',');
@@ -210,7 +210,7 @@ public final class NetworkAccount {
 			for (int i = 0; i < groups.length; i++) {
 				groupIDs[i] = Integer.parseInt(groups[i]);
 			}
-			return new Account(id, auth.get("auth"), auth.get("name"), auth.get("display"), auth.get("email"), groupIDs);
+			return new Account(id, auth.get("auth"), auth.get("name"), auth.get("display"), auth.get("email"), Long.parseLong(auth.get("permissions")), groupIDs);
 		}
 	}
 }
