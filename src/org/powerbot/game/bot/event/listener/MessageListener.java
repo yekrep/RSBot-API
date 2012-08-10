@@ -10,5 +10,5 @@ import org.powerbot.game.bot.event.MessageEvent;
  * @author Timer
  */
 public interface MessageListener extends EventListener {
-	public void messageReceived(final MessageEvent e);
+	public void messageReceived(MessageEvent e);
 }
