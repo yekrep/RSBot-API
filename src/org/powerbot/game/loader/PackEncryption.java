@@ -96,9 +96,8 @@ public class PackEncryption {
 		if (keyLength == 0) {
 			return new byte[0];
 		} else {
-			int unscrambledLength;
 			final int lengthMod = -4 & keyLength + 3;
-			unscrambledLength = lengthMod / 4 * 3;
+			int unscrambledLength = lengthMod / 4 * 3;
 			if (keyLength <= lengthMod - 2 || charIndex(key.charAt(lengthMod - 2)) == -1) {
 				unscrambledLength -= 2;
 			} else if (keyLength <= lengthMod - 1 || -1 == charIndex(key.charAt(lengthMod - 1))) {
@@ -129,6 +128,7 @@ public class PackEncryption {
 				final int pos_1 = keyLength > pos + 1 ? charIndex(key.charAt(pos + 1)) : -1;
 				final int pos_2 = pos + 2 < keyLength ? charIndex(key.charAt(2 + pos)) : -1;
 				final int pos_3 = keyLength > pos + 3 ? charIndex(key.charAt(3 + pos)) : -1;
+
 				bytes[offset++] = (byte) (pos_1 >>> 4 | currentChar << 2);
 				if (pos_2 != -1) {
 					bytes[offset++] = (byte) (pos_1 << 4 & 240 | pos_2 >>> 2);
