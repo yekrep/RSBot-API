@@ -71,7 +71,7 @@ public class RandomHandler implements Task {
 				new EvilBob(),
 				new Maze(),
 				new Exam(),
-				new SpinTickets(),
+				//new SpinTickets(),
 				new BankPin()
 		};
 		for (final AntiRandom antiRandom : antiRandoms) {
