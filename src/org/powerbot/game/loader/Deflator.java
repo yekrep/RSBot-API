@@ -21,11 +21,9 @@ import org.powerbot.util.StringUtil;
 import org.powerbot.util.io.IOHelper;
 
 /**
- * A static utility to decrypt and extract classes from the RuneScape loader.
- *
  * @author Timer
  */
-public class PackEncryption {
+public class Deflator {
 	private static final boolean CACHE = false;
 	public static byte[] inner_pack_hash;
 
@@ -44,9 +42,9 @@ public class PackEncryption {
 				return null;
 			}
 			final MessageDigest digest = MessageDigest.getInstance("SHA-1");
-			PackEncryption.inner_pack_hash = digest.digest(inner_pack);
+			inner_pack_hash = digest.digest(inner_pack);
 
-			final Map<String, byte[]> classes = new HashMap<String, byte[]>();
+			final Map<String, byte[]> classes = new HashMap<>();
 			final SecretKeySpec secretKeySpec = new SecretKeySpec(secretKeySpecKey, "AES");
 			final Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
 			cipher.init(Cipher.DECRYPT_MODE, secretKeySpec, new IvParameterSpec(ivParameterSpecKey));
@@ -69,7 +67,7 @@ public class PackEncryption {
 				}
 			}
 			if (CACHE) {
-				IOHelper.write(classes, new File(StringUtil.byteArrayToHexString(PackEncryption.inner_pack_hash).substring(0, 6) + ".jar"));
+				IOHelper.write(classes, new File(StringUtil.byteArrayToHexString(inner_pack_hash).substring(0, 6) + ".jar"));
 			}
 			return classes;
 		} catch (final Exception ignored) {
@@ -89,87 +87,5 @@ public class PackEncryption {
 			out.write(buffer, 0, read);
 		}
 		return out.toByteArray();
-	}
-
-	public static byte[] toByte(final String key) {
-		final int keyLength = key.length();
-		if (keyLength == 0) {
-			return new byte[0];
-		} else {
-			final int lengthMod = -4 & keyLength + 3;
-			int unscrambledLength = lengthMod / 4 * 3;
-			if (keyLength <= lengthMod - 2 || charIndex(key.charAt(lengthMod - 2)) == -1) {
-				unscrambledLength -= 2;
-			} else if (keyLength <= lengthMod - 1 || -1 == charIndex(key.charAt(lengthMod - 1))) {
-				--unscrambledLength;
-			}
-
-			final byte[] keyBytes = new byte[unscrambledLength];
-			unscramble(keyBytes, 0, key);
-			return keyBytes;
-		}
-	}
-
-	private static int charIndex(final char character) {
-		return character >= 0 && character < charSet.length ? charSet[character] : -1;
-	}
-
-	private static int unscramble(final byte[] bytes, int offset, final String key) {
-		final int start = offset;
-		final int keyLength = key.length();
-		int pos = 0;
-
-		int readStart;
-		int readOffset;
-		while (true) {
-			if (keyLength > pos) {
-				final int currentChar = charIndex(key.charAt(pos));
-
-				final int pos_1 = keyLength > pos + 1 ? charIndex(key.charAt(pos + 1)) : -1;
-				final int pos_2 = pos + 2 < keyLength ? charIndex(key.charAt(2 + pos)) : -1;
-				final int pos_3 = keyLength > pos + 3 ? charIndex(key.charAt(3 + pos)) : -1;
-
-				bytes[offset++] = (byte) (pos_1 >>> 4 | currentChar << 2);
-				if (pos_2 != -1) {
-					bytes[offset++] = (byte) (pos_1 << 4 & 240 | pos_2 >>> 2);
-					if (pos_3 != -1) {
-						bytes[offset++] = (byte) (192 & pos_2 << 6 | pos_3);
-						pos += 4;
-						continue;
-					}
-				}
-			}
-
-			readOffset = offset;
-			readStart = start;
-			break;
-		}
-
-		return readOffset - readStart;
-	}
-
-	private static int[] charSet;
-
-	static {
-		int index;
-		charSet = new int[128];
-		for (index = 0; charSet.length > index; ++index) {
-			charSet[index] = -1;
-		}
-		for (index = 65; index <= 90; ++index) {
-			charSet[index] = index - 65;
-		}
-		for (index = 97; 122 >= index; ++index) {
-			charSet[index] = index + 26 - 97;
-		}
-		for (index = 48; index <= 57; ++index) {
-			charSet[index] = 4 + index;
-		}
-		final int[] var2 = charSet;
-		charSet[43] = 62;
-		var2[42] = 62;
-		final int[] var1 = charSet;
-		charSet[47] = 63;
-		var1[45] = 63;
 	}
 }

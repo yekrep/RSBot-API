@@ -13,7 +13,8 @@ import org.powerbot.concurrent.TaskContainer;
 import org.powerbot.concurrent.TaskProcessor;
 import org.powerbot.game.loader.AdaptException;
 import org.powerbot.game.loader.Crawler;
-import org.powerbot.game.loader.PackEncryption;
+import org.powerbot.game.loader.Crypt;
+import org.powerbot.game.loader.Deflator;
 import org.powerbot.game.loader.applet.ClientStub;
 import org.powerbot.game.loader.applet.Rs2Applet;
 import org.powerbot.util.StringUtil;
@@ -80,12 +81,12 @@ public abstract class GameDefinition implements GameEnvironment {
 				return false;
 			}
 			log.fine("Removing key ciphering");
-			final byte[] secretKeySpecBytes = PackEncryption.toByte(secretKeySpecKey);
-			final byte[] ivParameterSpecBytes = PackEncryption.toByte(ivParameterSpecKey);
+			final byte[] secretKeySpecBytes = Crypt.decode(secretKeySpecKey);
+			final byte[] ivParameterSpecBytes = Crypt.decode(ivParameterSpecKey);
 			log.fine("Extracting classes from loader");
-			final Map<String, byte[]> classes = PackEncryption.extract(secretKeySpecBytes, ivParameterSpecBytes, loader);
+			final Map<String, byte[]> classes = Deflator.extract(secretKeySpecBytes, ivParameterSpecBytes, loader);
 			log.fine("Generating client hash");
-			packHash = StringUtil.byteArrayToHexString(PackEncryption.inner_pack_hash);
+			packHash = StringUtil.byteArrayToHexString(Deflator.inner_pack_hash);
 			log.fine("Client hash (" + packHash + ")");
 			if (classes != null && classes.size() > 0) {
 				this.classes.putAll(classes);
