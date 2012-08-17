@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.logging.Logger;
+import java.util.zip.ZipInputStream;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
@@ -71,10 +72,10 @@ import org.powerbot.service.scripts.ScriptClassLoader;
 import org.powerbot.service.scripts.ScriptDefinition;
 import org.powerbot.util.Configuration;
 import org.powerbot.util.io.CryptFile;
+import org.powerbot.util.io.HttpClient;
 import org.powerbot.util.io.IOHelper;
 import org.powerbot.util.io.IniParser;
 import org.powerbot.util.io.Resources;
-import org.powerbot.util.io.ScriptCacheManager;
 
 /**
  * @author Paris
@@ -598,7 +599,7 @@ public final class BotScripts extends JDialog implements ActionListener {
 							return;
 						} else {
 							try {
-								cl = ScriptCacheManager.getInstance().load(def);
+								cl = new ScriptClassLoader(new ZipInputStream(HttpClient.openStream(def.source)));
 							} catch (final Exception ignored) {
 								log.severe("Could not download script");
 								ignored.printStackTrace();
