@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.logging.Logger;
 
 import javax.crypto.Cipher;
@@ -132,6 +133,10 @@ public final class Controller implements Runnable {
 					reply.setArgs(BotChrome.loaded ? 1 : 2);
 					break;
 
+				case SESSION:
+					reply.setArgs(ScheduledChecks.SESSION_TIME);
+					break;
+
 				case SIGNIN:
 					reply = null;
 					NetworkAccount.getInstance().revalidate();
@@ -224,5 +229,28 @@ public final class Controller implements Runnable {
 		broadcast(new Message(MessageType.LOADED));
 		callbacks.remove(c);
 		return n.get();
+	}
+
+	public long getLastSessionUpdateTime() {
+		final AtomicLong l = new AtomicLong(0);
+		final Event c = new Event() {
+			@Override
+			public boolean call(Message msg, final SocketAddress sender) {
+				if (msg.getMessageType() == MessageType.SESSION) {
+					synchronized (l) {
+						final long a = msg.getLongArg();
+						if (a > l.get()) {
+							l.set(a);
+						}
+					}
+					return false;
+				}
+				return true;
+			}
+		};
+		callbacks.add(c);
+		broadcast(new Message(MessageType.LOADED));
+		callbacks.remove(c);
+		return l.get();
 	}
 }

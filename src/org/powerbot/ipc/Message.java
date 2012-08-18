@@ -19,6 +19,7 @@ public final class Message implements Serializable {
 		RUNNING,
 		LISTENING,
 		LOADED,
+		SESSION,
 		SIGNIN,
 		SCRIPT,
 	}
@@ -59,6 +60,10 @@ public final class Message implements Serializable {
 
 	public int getIntArg() {
 		return args.length > 0 && args[0] instanceof Integer ? (Integer) args[0] : -1;
+	}
+
+	public long getLongArg() {
+		return args.length > 0 && args[0] instanceof Long ? (Long) args[0] : -1;
 	}
 
 	public String getStringArg() {
