@@ -98,10 +98,6 @@ public class BotChrome extends JFrame implements WindowListener {
 			}
 		} catch (final IOException ignored) {
 		}
-
-		if (System.getProperty("java.version").indexOf("1.6.") == 0) {
-			JOptionPane.showMessageDialog(this, BotLocale.UPDATEJAVA, "Java", JOptionPane.WARNING_MESSAGE);
-		}
 	}
 
 	public static BotChrome getInstance() {
