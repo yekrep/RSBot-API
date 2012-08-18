@@ -60,9 +60,7 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 				SwingUtilities.invokeLater(new Runnable() {
 					@Override
 					public void run() {
-						if (Bot.bots.size() < BotChrome.MAX_BOTS) {
-							addTab();
-						}
+						addTab();
 					}
 				});
 			}
@@ -202,7 +200,6 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 			final Bot bot = new Bot();
 			add(new BotButton("Game", bot), s);
 			activateTab(s);
-			tabAdd.setVisible(BotChrome.MAX_BOTS - s > 1);
 			new Thread(bot.threadGroup, bot).start();
 			parent.panel.setBot(bot);
 		}
@@ -241,7 +238,6 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 			updateScriptControls();
 		}
 		remove(n);
-		tabAdd.setVisible(true);
 		b.getBot().killEnvironment();
 		parent.panel.repaint();
 		if (getTabCount() == 0) {

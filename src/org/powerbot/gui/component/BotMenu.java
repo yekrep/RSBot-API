@@ -34,7 +34,6 @@ public final class BotMenu extends JPopupMenu implements ActionListener {
 
 		final JMenuItem newtab = new JMenuItem(BotLocale.NEWTAB);
 		newtab.setIcon(new ImageIcon(Resources.getImage(Resources.Paths.ADD)));
-		newtab.setEnabled(BotChrome.MAX_BOTS - tabs > 0);
 		newtab.addActionListener(this);
 		final JMenuItem closetab = new JMenuItem(BotLocale.CLOSETAB);
 		closetab.setIcon(new ImageIcon(Resources.getImage(Resources.Paths.REMOVE)));
