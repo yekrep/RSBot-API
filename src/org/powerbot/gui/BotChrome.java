@@ -19,13 +19,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 import org.powerbot.game.bot.Bot;
-import org.powerbot.gui.component.BotLocale;
 import org.powerbot.gui.component.BotPanel;
 import org.powerbot.gui.component.BotToolBar;
 import org.powerbot.service.NetworkAccount;
@@ -81,23 +79,6 @@ public class BotChrome extends JFrame implements WindowListener {
 		tasks.add(exec.submit(new LoadAccount()));
 		exec.execute(new LoadComplete(this, tasks));
 		exec.shutdown();
-
-		try {
-			if (Resources.getServerData().containsKey("messages")) {
-				if (Resources.getServerData().get("messages").containsKey("title")) {
-					setTitle(getTitle() + " " + Resources.getServerData().get("messages").get("title"));
-				}
-				if (Resources.getServerData().get("messages").containsKey("start")) {
-					final String msg = Resources.getServerData().get("messages").get("start").replace("\\n", "\n");
-					if (Configuration.DEVMODE) {
-						Logger.getLogger(log.getName() + "/Messages").info(msg);
-					} else {
-						JOptionPane.showMessageDialog(this, msg);
-					}
-				}
-			}
-		} catch (final IOException ignored) {
-		}
 	}
 
 	public static BotChrome getInstance() {
