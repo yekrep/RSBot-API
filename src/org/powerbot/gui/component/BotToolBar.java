@@ -195,7 +195,7 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 			return;
 		}
 		if (s > 0) {
-			Boot.fork();
+			Boot.fork(Boot.SWITCH_NEWTAB);
 		} else {
 			final Bot bot = new Bot();
 			add(new BotButton("Game", bot), s);

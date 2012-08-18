@@ -26,6 +26,7 @@ public class Boot implements Runnable {
 	private final static Logger log = Logger.getLogger(Boot.class.getName());
 	private final static String SWITCH_DEV = "-dev";
 	private final static String SWITCH_RESTARTED = "-restarted";
+	public final static String SWITCH_NEWTAB = "-newtab";
 
 	public static void main(final String[] args) {
 		final Logger logger = Logger.getLogger("");
@@ -42,13 +43,15 @@ public class Boot implements Runnable {
 			}
 		});
 
-		boolean restarted = false;
+		boolean restarted = false, newtab = false;
 
 		for (final String arg : args) {
 			if (arg.equals(SWITCH_DEV)) {
 				Configuration.DEVMODE = true;
 			} else if (arg.equals(SWITCH_RESTARTED)) {
 				restarted = true;
+			} else if (arg.equals(SWITCH_NEWTAB)) {
+				newtab = true;
 			}
 		}
 
@@ -122,15 +125,18 @@ public class Boot implements Runnable {
 		System.setProperty("sun.net.spi.nameservice.nameservers", RestrictedSecurityManager.DNS1 + "," + RestrictedSecurityManager.DNS2);
 		System.setProperty("sun.net.spi.nameservice.provider.1", "dns,sun");
 
-		BotChrome.getInstance();
+		final BotChrome chrome = BotChrome.getInstance();
+		if (newtab) {
+			chrome.toolbar.addTab();
+		}
 	}
 
 	public void run() {
 		main(new String[]{});
 	}
 
-	public static void fork() {
-		fork("", "");
+	public static void fork(final String args) {
+		fork("", args);
 	}
 
 	private static void fork(String options, String args) {
