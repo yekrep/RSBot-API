@@ -38,7 +38,7 @@ public final class BotMenu extends JPopupMenu implements ActionListener {
 		newtab.addActionListener(this);
 		final JMenuItem closetab = new JMenuItem(BotLocale.CLOSETAB);
 		closetab.setIcon(new ImageIcon(Resources.getImage(Resources.Paths.REMOVE)));
-		closetab.setEnabled(Configuration.MULTIPROCESS ? tabs > 0 || inst > 1 : tabs > 0);
+		closetab.setEnabled(tabs > 0 || inst > 1);
 		closetab.addActionListener(this);
 		add(newtab);
 		add(closetab);
@@ -96,7 +96,7 @@ public final class BotMenu extends JPopupMenu implements ActionListener {
 		} else if (a.equals(BotLocale.CLOSETAB)) {
 			if (parent.getTabCount() > 0) {
 				parent.closeTab(parent.getActiveTab());
-			} else if (Configuration.MULTIPROCESS && Controller.getInstance().getRunningInstances() > 1) {
+			} else if (Controller.getInstance().getRunningInstances() > 1) {
 				parent.parent.windowClosing(null);
 			}
 		} else if (a.equals(BotLocale.ACCOUNTS)) {

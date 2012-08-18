@@ -18,7 +18,7 @@ public class Configuration {
 	public static final String NAME = "RSBot";
 	public static final boolean FROMJAR;
 	public static boolean DEVMODE = false;
-	public static final boolean SUPERDEV, MULTIPROCESS = true;
+	public static final boolean SUPERDEV;
 	public static final int VERSION = 4030;
 	public static final OperatingSystem OS;
 
@@ -105,6 +105,6 @@ public class Configuration {
 	}
 
 	public static long getUIDInstance() {
-		return getUID() + (Configuration.MULTIPROCESS ? Controller.getInstance().instanceID : 0);
+		return getUID() + Controller.getInstance().instanceID;
 	}
 }

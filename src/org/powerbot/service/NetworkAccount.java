@@ -116,9 +116,6 @@ public final class NetworkAccount {
 	}
 
 	private synchronized void broadcast() {
-		if (!Configuration.MULTIPROCESS) {
-			return;
-		}
 		Controller.getInstance().broadcast(new Message(false, MessageType.SIGNIN));
 	}
 

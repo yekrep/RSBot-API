@@ -103,14 +103,14 @@ public class Boot implements Runnable {
 			return;
 		}
 
-		if (Configuration.MULTIPROCESS && Controller.getInstance().isAnotherInstanceLoading()) {
+		if (Controller.getInstance().isAnotherInstanceLoading()) {
 			message(String.format("Another instance of %s is loading", Configuration.NAME));
 			System.exit(1);
 			return;
 		}
 
-		if (Controller.getInstance().getRunningInstances() > (Configuration.MULTIPROCESS ? 9 : 1)) {
-			message(String.format(Configuration.MULTIPROCESS ? "An instance of %s is already running" : "Many instances of % already running", Configuration.NAME));
+		if (Controller.getInstance().getRunningInstances() > Controller.MAX_INSTANCES - 1) {
+			message(String.format("An instance of %s is already running", Configuration.NAME));
 			System.exit(1);
 			return;
 		}
