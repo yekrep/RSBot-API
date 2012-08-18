@@ -36,6 +36,7 @@ public final class BotLocale {
 	public static String INVALIDCREDENTIALS = "Invalid username or password.";
 	public static String SCRIPTS = "Scripts";
 
+	public static String LOADINGTAB = "Loading a new bot";
 	public static String NEEDVIP = "VIP Access";
 	public static String NEEDVIPMULTITAB = "Only VIPs can open more tabs.";
 	public static String NEEDVIPVPS = "Only VIPs can run the bot on a VPS/Server.";

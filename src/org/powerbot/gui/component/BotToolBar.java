@@ -182,16 +182,20 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 	public void addTab() {
 		final int s = Bot.bots.size();
 		final int n = Controller.getInstance().getRunningInstances();
+		final Logger log = Logger.getLogger(BotChrome.class.getName());
+		log.info(BotLocale.LOADINGTAB);
 		if (!NetworkAccount.getInstance().isVIP() && Configuration.isServerOS()) {
-			JOptionPane.showMessageDialog(parent, BotLocale.NEEDVIPVPS, BotLocale.NEEDVIP, JOptionPane.INFORMATION_MESSAGE);
+			log.info(BotLocale.NEEDVIPVPS);
 			return;
 		}
 		if (n > 0 && !NetworkAccount.getInstance().isLoggedIn()) {
-			JOptionPane.showMessageDialog(parent, BotLocale.NEEDSIGNINMULTITAB, BotLocale.NEEDSIGNIN, JOptionPane.INFORMATION_MESSAGE);
-		if (n > 2 && !NetworkAccount.getInstance().isVIP()) {
+			log.severe(BotLocale.NEEDSIGNINMULTITAB);
 			return;
 		}
-			JOptionPane.showMessageDialog(parent, BotLocale.NEEDVIPMULTITAB, BotLocale.NEEDVIP, JOptionPane.INFORMATION_MESSAGE);
+		if (n > 2 && !NetworkAccount.getInstance().isVIP()) {
+			log.severe(BotLocale.NEEDVIPMULTITAB);
+			return;
+		}
 			return;
 		}
 		if (s > 0) {
