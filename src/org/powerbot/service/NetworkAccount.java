@@ -77,6 +77,31 @@ public final class NetworkAccount {
 		}
 	}
 
+	public synchronized Map<String, String> session(final int mode) {
+		if (!isLoggedIn()) {
+			return null;
+		}
+		final Account a = getAccount();
+		final int instances = Controller.getInstance().getRunningInstances() + mode;
+		final Map<String, String> response;
+		InputStream is = null;
+		try {
+			is = Resources.openHttpStream("session", StringUtil.urlEncode(a.getAuth()), Configuration.getUID(), instances);
+			response = IniParser.deserialise(is).get("response");
+		} catch (final IOException ignored) {
+			ignored.printStackTrace();
+			return null;
+		} finally {
+			if (is != null) {
+				try {
+					is.close();
+				} catch (final IOException ignored) {
+				}
+			}
+		}
+		return response;
+	}
+
 	public synchronized boolean login(final String username, final String password, final String auth) throws IOException {
 		InputStream is;
 		try {

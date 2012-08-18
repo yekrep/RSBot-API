@@ -36,6 +36,7 @@ import org.powerbot.gui.BotScripts;
 import org.powerbot.ipc.Controller;
 import org.powerbot.service.NetworkAccount;
 import org.powerbot.util.Configuration;
+import org.powerbot.util.io.IniParser;
 import org.powerbot.util.io.Resources;
 
 /**
@@ -196,6 +197,10 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 			log.severe(BotLocale.NEEDVIPMULTITAB);
 			return;
 		}
+		final Map<String, String> info = NetworkAccount.getInstance().session(0);
+		if (info == null || !info.containsKey("success") || !IniParser.parseBool(info.get("success"))) {
+			final String msg = info != null && info.containsKey("message") ? info.get("message") : BotLocale.CANTOPENTAB;
+			log.severe(msg);
 			return;
 		}
 		if (s > 0) {
@@ -247,7 +252,13 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 		if (getTabCount() == 0) {
 			Logger.getLogger(Bot.class.getName()).log(Level.INFO, "Add a tab to start another bot", "Closed");
 		}
-		System.gc();
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				NetworkAccount.getInstance().session(-1);
+				System.gc();
+			}
+		});
 	}
 
 	private void activateTab(final int n) {
