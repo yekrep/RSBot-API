@@ -35,7 +35,8 @@ public final class Controller implements Runnable {
 	private static Controller instance;
 	private final DatagramSocket sock;
 	private final List<Event> callbacks;
-	private final int[] ports = new int[12];
+	public static final int MAX_INSTANCES = 8;
+	private final int[] ports = new int[MAX_INSTANCES];
 	private final byte[] key;
 	public final int instanceID;
 
