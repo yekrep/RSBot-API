@@ -55,7 +55,7 @@ public class RestrictedSecurityManager extends SecurityManager {
 			}
 		}
 		if (host.equals("localhost") || host.endsWith(".localdomain") || host.startsWith("127.") || host.startsWith("192.168.") || host.startsWith("10.") || host.endsWith("::1")) {
-			if (!isCallingClass(Configuration.class, Controller.class)) {
+			if (!isCallingClass(Configuration.class, Controller.class) && !Configuration.SUPERDEV) {
 				log.severe("Connection denied to localhost");
 				throw new SecurityException();
 			}
