@@ -21,6 +21,7 @@ public abstract class Task implements Job {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public final void work() {
 		synchronized (init_lock) {
 			if (alive) {
@@ -49,6 +50,7 @@ public abstract class Task implements Job {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public final void join() {
 		join(0);
 	}
@@ -56,6 +58,7 @@ public abstract class Task implements Job {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public final boolean join(final int timeout) {
 		if (!alive || current_thread == null) {
 			return true;
@@ -71,6 +74,7 @@ public abstract class Task implements Job {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public final boolean isAlive() {
 		return alive;
 	}
@@ -78,6 +82,7 @@ public abstract class Task implements Job {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public final void interrupt() {
 		interrupted = true;
 
@@ -94,6 +99,7 @@ public abstract class Task implements Job {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public final boolean isInterrupted() {
 		return interrupted;
 	}
@@ -101,6 +107,7 @@ public abstract class Task implements Job {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void setContainer(final Container container) {
 		this.container = container;
 	}
@@ -108,6 +115,7 @@ public abstract class Task implements Job {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public Container getContainer() {
 		return container;
 	}

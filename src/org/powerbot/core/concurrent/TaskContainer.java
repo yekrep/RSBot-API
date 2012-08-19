@@ -48,6 +48,7 @@ public class TaskContainer implements Container {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public final void submit(final Job job) {
 		if (shutdown) {
 			throw new RejectedJobException(job.getClass().getName() + "/" + job.hashCode() + " rejected from " + getClass().getName() + "/" + hashCode() + " because the container is shutdown");
@@ -64,7 +65,8 @@ public class TaskContainer implements Container {
 	/**
 	 * {@inheritDoc}
 	 */
-	public void setPaused(final boolean paused) {
+	@Override
+	public final void setPaused(final boolean paused) {
 		if (this.paused != paused) {
 			this.paused = paused;
 		}
@@ -77,13 +79,15 @@ public class TaskContainer implements Container {
 	/**
 	 * {@inheritDoc}
 	 */
-	public boolean isPaused() {
+	@Override
+	public final boolean isPaused() {
 		return paused;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public final Job[] enumerate() {
 		synchronized (job_lock) {
 			final int size;
@@ -98,6 +102,7 @@ public class TaskContainer implements Container {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public final int getActiveCount() {
 		synchronized (job_lock) {
 			return jobs.size();
@@ -107,6 +112,7 @@ public class TaskContainer implements Container {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public final Container branch() {
 		final Container container = new TaskContainer(group, this);
 		synchronized (children_lock) {
@@ -118,6 +124,7 @@ public class TaskContainer implements Container {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public final Container[] getChildren() {
 		synchronized (children_lock) {
 			final int size;
@@ -132,6 +139,7 @@ public class TaskContainer implements Container {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public final void shutdown() {
 		if (!isShutdown()) {
 			shutdown = true;
@@ -145,6 +153,7 @@ public class TaskContainer implements Container {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public final boolean isShutdown() {
 		return shutdown;
 	}
@@ -152,6 +161,7 @@ public class TaskContainer implements Container {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public final void interrupt() {
 		shutdown();
 
@@ -169,6 +179,7 @@ public class TaskContainer implements Container {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public final boolean isTerminated() {
 		return (shutdown || interrupted) && getActiveCount() == 0;
 	}
@@ -176,6 +187,7 @@ public class TaskContainer implements Container {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public final void addListener(final JobListener listener) {
 		synchronized (listeners_lock) {
 			if (!listeners.contains(listener)) {
@@ -187,6 +199,7 @@ public class TaskContainer implements Container {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public final void removeListener(final JobListener listener) {
 		synchronized (listeners_lock) {
 			listeners.remove(listener);
