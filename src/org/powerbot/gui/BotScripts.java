@@ -83,7 +83,6 @@ import org.powerbot.util.io.Resources;
 public final class BotScripts extends JDialog implements ActionListener {
 	private static final Logger log = Logger.getLogger(BotScripts.class.getName());
 	private static final long serialVersionUID = 1L;
-	private static final String SCRIPTSPREFIX = "scripts/";
 	private final BotToolBar parent;
 	private final JScrollPane scroll;
 	private final JPanel table;
@@ -390,14 +389,6 @@ public final class BotScripts extends JDialog implements ActionListener {
 		return collection;
 	}
 
-	private String getSecureFileName(final ScriptDefinition def) {
-		final String id = def.getID();
-		if (id == null || id.isEmpty()) {
-			return null;
-		}
-		return String.format("%s%s.jar", SCRIPTSPREFIX, id.replace('/', '-'));
-	}
-
 	public void loadLocalScripts(final List<ScriptDefinition> list, final File parent, final File dir) {
 		if (!NetworkAccount.getInstance().isLoggedIn() || !((NetworkAccount.getInstance().getAccount().getPermissions() & NetworkAccount.Permissions.LOCALSCRIPTS) == NetworkAccount.Permissions.LOCALSCRIPTS)) {
 			return;
@@ -591,18 +582,12 @@ public final class BotScripts extends JDialog implements ActionListener {
 							log.severe("You are not authorised to run this script");
 							return;
 						}
-						final String name = getSecureFileName(def);
-						if (name == null) {
-							log.severe("Could not save script");
+						try {
+							cl = new ScriptClassLoader(new ZipInputStream(HttpClient.openStream(def.source)));
+						} catch (final Exception ignored) {
+							log.severe("Could not download script");
+							ignored.printStackTrace();
 							return;
-						} else {
-							try {
-								cl = new ScriptClassLoader(new ZipInputStream(HttpClient.openStream(def.source)));
-							} catch (final Exception ignored) {
-								log.severe("Could not download script");
-								ignored.printStackTrace();
-								return;
-							}
 						}
 					}
 					final ActiveScript script;
