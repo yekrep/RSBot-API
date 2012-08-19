@@ -161,6 +161,7 @@ public final class Controller implements Runnable {
 					reply = null;
 					NetworkAccount.getInstance().revalidate();
 					BotChrome.getInstance().panel.loadingPanel.setAdVisible(!NetworkAccount.getInstance().isVIP());
+					BotChrome.getInstance().toolbar.closeInactiveTabs();
 					break;
 				}
 

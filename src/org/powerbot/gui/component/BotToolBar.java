@@ -220,6 +220,10 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 	}
 
 	public void closeTab(final int n) {
+		closeTab(n, false);
+	}
+
+	public void closeTab(final int n, final boolean silent) {
 		final List<Bot> bots = Collections.unmodifiableList(Bot.bots);
 		boolean loggedIn = false;
 		if (n >= 0 && n < bots.size()) {
@@ -233,11 +237,13 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 		if (b == null) {
 			return;
 		}
-		try {
-			if (loggedIn && JOptionPane.showConfirmDialog(parent, "Are you sure you want to close this tab?", BotLocale.CLOSETAB, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) != JOptionPane.YES_OPTION) {
-				return;
+		if (!silent) {
+			try {
+				if (loggedIn && JOptionPane.showConfirmDialog(parent, "Are you sure you want to close this tab?", BotLocale.CLOSETAB, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) != JOptionPane.YES_OPTION) {
+					return;
+				}
+			} catch (final RuntimeException ignored) {
 			}
-		} catch (final RuntimeException ignored) {
 		}
 
 		final boolean a = getTabCount() > 1;
@@ -306,6 +312,12 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 			}
 		}
 		return i;
+	}
+
+	public void closeInactiveTabs() {
+		for (int i = getTabCount() - 1; i > -1; i--) {
+			closeTab(i, true);
+		}
 	}
 
 	public void updateScriptControls() {
