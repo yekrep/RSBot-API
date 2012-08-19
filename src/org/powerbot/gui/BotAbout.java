@@ -23,7 +23,6 @@ import javax.swing.SwingConstants;
 import org.powerbot.gui.component.BotLocale;
 import org.powerbot.util.Configuration;
 import org.powerbot.util.Tracker;
-import org.powerbot.util.io.Resources;
 
 public final class BotAbout extends JDialog {
 	private static final long serialVersionUID = 1L;
@@ -80,7 +79,7 @@ public final class BotAbout extends JDialog {
 		visit.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(final MouseEvent e) {
-				BotChrome.openURL(Resources.getServerLinks().get("site"));
+				BotChrome.openURL(Configuration.URLs.SITE);
 			}
 		});
 		final JLabel license = new JLabel("<html><a href='#'>" + BotLocale.LICENSE + "</a></html>");

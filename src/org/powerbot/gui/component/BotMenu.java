@@ -107,7 +107,7 @@ public final class BotMenu extends JPopupMenu implements ActionListener {
 		} else if (a.equals(BotLocale.SETTINGEXPLORER)) {
 			BotSettingExplorer.display(Bot.bots.get(parent.getActiveTab()).getContext());
 		} else if (a.equals(BotLocale.WEBSITE)) {
-			BotChrome.openURL(Resources.getServerLinks().get("site"));
+			BotChrome.openURL(Configuration.URLs.SITE);
 		} else if (a.equals(BotLocale.ABOUT)) {
 			new BotAbout(parent.parent);
 		} else if (a.equals(BotLocale.EXIT)) {

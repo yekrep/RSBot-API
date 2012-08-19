@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.net.URL;
-import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -13,15 +12,15 @@ import java.util.logging.Logger;
 import org.powerbot.gui.component.BotLocale;
 import org.powerbot.util.Configuration.OperatingSystem;
 import org.powerbot.util.io.HttpClient;
-import org.powerbot.util.io.Resources;
+import org.powerbot.util.io.IOHelper;
 
 public final class LoadUpdates implements Callable<Boolean> {
 	private static final Logger log = Logger.getLogger(LoadUpdates.class.getName());
 
 	public Boolean call() throws Exception {
-		final Map<String, Map<String, String>> data;
+		final int version;
 		try {
-			data = Resources.getServerData();
+			version = Integer.parseInt(IOHelper.readString(HttpClient.openStream(new URL(Configuration.URLs.VERSION))).trim());
 		} catch (final Exception e) {
 			String msg = "Error reading server data";
 			if (SocketException.class.isAssignableFrom(e.getClass()) || SocketTimeoutException.class.isAssignableFrom(e.getClass())) {
@@ -30,13 +29,12 @@ public final class LoadUpdates implements Callable<Boolean> {
 			log.log(Level.SEVERE, msg, BotLocale.ERROR);
 			return false;
 		}
-		final int version = Integer.parseInt(data.get("manifest").get("version"));
 		if (version > Configuration.VERSION) {
 			if (!Configuration.DEVMODE && Configuration.OS == OperatingSystem.WINDOWS) {
 				log.log(Level.INFO, "Downloading update", "Update");
 				final File file = new File(System.getProperty("java.io.tmpdir"), String.format("%s-%s.jar", Configuration.NAME, Integer.toString(version)));
 				try {
-					final URL url = new URL(String.format(Resources.getServerLinks().get("download"), Integer.toString(version)));
+					final URL url = new URL(String.format(Configuration.URLs.DOWNLOAD, Integer.toString(version)));
 					HttpClient.download(url, file);
 					if (file.isFile() && file.canRead()) {
 						log.log(Level.INFO, "Launching update", "Update");

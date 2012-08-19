@@ -24,8 +24,8 @@ import javax.swing.WindowConstants;
 
 import org.powerbot.gui.component.BotLocale;
 import org.powerbot.service.NetworkAccount;
+import org.powerbot.util.Configuration;
 import org.powerbot.util.Tracker;
-import org.powerbot.util.io.Resources;
 
 /**
  * @author Paris
@@ -82,7 +82,7 @@ public final class BotSignin extends JDialog implements ActionListener {
 		lostPass.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(final MouseEvent e) {
-				BotChrome.openURL(Resources.getServerLinks().get("lostpass"));
+				BotChrome.openURL(Configuration.URLs.LOSTPASS);
 			}
 		});
 		lostPass.setVisible(false);
@@ -93,7 +93,7 @@ public final class BotSignin extends JDialog implements ActionListener {
 		register.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(final MouseEvent e) {
-				BotChrome.openURL(Resources.getServerLinks().get("register"));
+				BotChrome.openURL(Configuration.URLs.REGISTER);
 			}
 		});
 

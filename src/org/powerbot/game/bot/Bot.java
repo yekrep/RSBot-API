@@ -39,10 +39,10 @@ import org.powerbot.game.loader.script.ModScript;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.gui.component.BotPanel;
 import org.powerbot.service.GameAccounts;
+import org.powerbot.util.Configuration;
 import org.powerbot.util.RestrictedSecurityManager;
 import org.powerbot.util.io.HttpClient;
 import org.powerbot.util.io.IOHelper;
-import org.powerbot.util.io.Resources;
 
 /**
  * An environment of the game that is automated.
@@ -186,7 +186,7 @@ public class Bot extends GameDefinition implements Runnable {
 		final String id = "(" + packHash.substring(0, 6) + ")";
 		log.info("Loading client patch " + id);
 		try {
-			modScript = new ModScript(IOHelper.read(HttpClient.openStream(new URL(String.format(Resources.getServerLinks().get("clientpatch"), packHash)))));
+			modScript = new ModScript(IOHelper.read(HttpClient.openStream(new URL(String.format(Configuration.URLs.CLIENTPATCH, packHash)))));
 			return modScript;
 		} catch (final SocketTimeoutException ignored) {
 			log.severe("Cannot connect to update server " + id);

@@ -11,9 +11,9 @@ import org.powerbot.ipc.Message.MessageType;
 import org.powerbot.util.Configuration;
 import org.powerbot.util.StringUtil;
 import org.powerbot.util.io.CryptFile;
+import org.powerbot.util.io.HttpClient;
 import org.powerbot.util.io.IOHelper;
 import org.powerbot.util.io.IniParser;
-import org.powerbot.util.io.Resources;
 
 /**
  * @author Paris
@@ -86,7 +86,7 @@ public final class NetworkAccount {
 		final Map<String, String> response;
 		InputStream is = null;
 		try {
-			is = Resources.openHttpStream("session", StringUtil.urlEncode(a.getAuth()), Configuration.getUID(), instances);
+			is = HttpClient.openStream(Configuration.URLs.SESSION, StringUtil.urlEncode(a.getAuth()), Configuration.getUID(), instances);
 			response = IniParser.deserialise(is).get("response");
 		} catch (final IOException ignored) {
 			ignored.printStackTrace();
@@ -105,7 +105,7 @@ public final class NetworkAccount {
 	public synchronized boolean login(final String username, final String password, final String auth) throws IOException {
 		InputStream is;
 		try {
-			is = Resources.openHttpStream("signin", StringUtil.urlEncode(username), StringUtil.urlEncode(password), StringUtil.urlEncode(auth));
+			is = HttpClient.openStream(Configuration.URLs.SIGNIN, StringUtil.urlEncode(username), StringUtil.urlEncode(password), StringUtil.urlEncode(auth));
 		} catch (final NullPointerException ignored) {
 			ignored.printStackTrace();
 			return false;

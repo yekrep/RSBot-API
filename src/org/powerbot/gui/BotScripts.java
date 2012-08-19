@@ -182,7 +182,7 @@ public final class BotScripts extends JDialog implements ActionListener {
 		more.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent e) {
-				BotChrome.openURL(Resources.getServerLinks().get("scriptslist"));
+				BotChrome.openURL(Configuration.URLs.SCRIPTSLIST);
 			}
 		});
 		panelRight.add(more);
@@ -350,7 +350,7 @@ public final class BotScripts extends JDialog implements ActionListener {
 		}
 
 		final CryptFile cf = new CryptFile("links/scripts.dat", BotScripts.class);
-		final URL src = new URL(Resources.getServerLinks().get("scripts"));
+		final URL src = new URL(Configuration.URLs.SCRIPTS);
 		final Map<String, Map<String, String>> manifests = IniParser.deserialise(cf.download(src));
 		for (final Entry<String, Map<String, String>> entry : manifests.entrySet()) {
 			final ScriptDefinition def = ScriptDefinition.fromMap(entry.getValue());
@@ -375,7 +375,7 @@ public final class BotScripts extends JDialog implements ActionListener {
 		final List<String> collection = new ArrayList<String>();
 		String data = null;
 		try {
-			data = IOHelper.readString(Resources.openHttpStream("scriptscollection", NetworkAccount.getInstance().getAccount().getAuth()));
+			data = IOHelper.readString(HttpClient.openStream(Configuration.URLs.SCRIPTSCOLLECTION, NetworkAccount.getInstance().getAccount().getAuth()));
 		} catch (final IOException ignored) {
 		} catch (final NullPointerException ignored) {
 		}
@@ -533,9 +533,7 @@ public final class BotScripts extends JDialog implements ActionListener {
 					@Override
 					public void mouseClicked(final MouseEvent arg0) {
 						String url = def.getWebsite();
-						if (Resources.getServerLinks().containsKey("linkfilter")) {
-							url = String.format(Resources.getServerLinks().get("linkfilter"), url.replace("&", "%26"));
-						}
+						url = String.format(Configuration.URLs.LINKFILTER, url.replace("&", "%26"));
 						BotChrome.openURL(url);
 					}
 				});
@@ -574,7 +572,7 @@ public final class BotScripts extends JDialog implements ActionListener {
 					} else {
 						final Map<String, Map<String, String>> data;
 						try {
-							data = IniParser.deserialise(Resources.openHttpStream("scriptsauth", NetworkAccount.getInstance().isLoggedIn() ? NetworkAccount.getInstance().getAccount().getAuth() : "", def.getID()));
+							data = IniParser.deserialise(HttpClient.openStream(Configuration.URLs.SCRIPTSAUTH, NetworkAccount.getInstance().isLoggedIn() ? NetworkAccount.getInstance().getAccount().getAuth() : "", def.getID()));
 						} catch (final IOException ignored) {
 							log.severe("Unable to obtain auth response");
 							return;

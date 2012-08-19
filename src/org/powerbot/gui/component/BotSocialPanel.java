@@ -11,6 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import org.powerbot.gui.BotChrome;
+import org.powerbot.util.Configuration;
 import org.powerbot.util.io.Resources;
 
 /**
@@ -45,8 +46,16 @@ public final class BotSocialPanel extends JPanel {
 			label.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 			label.addMouseListener(new MouseAdapter() {
 				@Override
-				public void mouseClicked(final MouseEvent arg0) {
-					BotChrome.openURL(Resources.getServerLinks().get(url));
+				public void mouseClicked(final MouseEvent e) {
+					String link = null;
+					switch (url) {
+					case "twitter": link = Configuration.URLs.TWITTER; break;
+					case "facebook": link = Configuration.URLs.FACEBOOK; break;
+					case "youtube": link = Configuration.URLs.YOUTUBE; break;
+					}
+					if (link != null) {
+						BotChrome.openURL(link);
+					}
 				}
 			});
 

@@ -39,6 +39,8 @@ import org.powerbot.gui.BotChrome;
 import org.powerbot.util.Configuration;
 import org.powerbot.util.LoadUpdates;
 import org.powerbot.util.io.CryptFile;
+import org.powerbot.util.io.HttpClient;
+import org.powerbot.util.io.IniParser;
 import org.powerbot.util.io.Resources;
 
 public final class BotLoadingPanel extends JPanel {
@@ -154,9 +156,10 @@ public final class BotLoadingPanel extends JPanel {
 
 		public void run() {
 			try {
-				if (Resources.getServerData().containsKey("ads")) {
+				final Map<String, String> data = IniParser.deserialise(HttpClient.openStream(new URL(Configuration.URLs.ADS))).get(IniParser.EMPTYSECTION);
+				if (data.containsKey("image") && data.containsKey("link")) {
 					final CryptFile cf = new CryptFile("ads/image.png", BotLoadingPanel.class);
-					final String src = Resources.getServerData().get("ads").get("image"), link = Resources.getServerData().get("ads").get("link");
+					final String src = data.get("image"), link = data.get("link");
 					BufferedImage image = ImageIO.read(cf.download(new URL(src)));
 					if (image.getWidth() > PANEL_WIDTH || image.getHeight() > PANEL_HEIGHT) {
 						final float factor = (float) Math.min((double) PANEL_WIDTH / image.getWidth(), (double) PANEL_HEIGHT / image.getHeight());

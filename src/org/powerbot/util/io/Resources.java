@@ -3,14 +3,8 @@ package org.powerbot.util.io;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
-import java.util.Map;
 
 import org.powerbot.util.Configuration;
 
@@ -18,9 +12,6 @@ import org.powerbot.util.Configuration;
  * @author Paris
  */
 public class Resources {
-	private final static String SERVERDATAPATH = "/" + Configuration.NAME.toLowerCase() + "/server.ini";
-	private static Map<String, Map<String, String>> serverData;
-
 	public static class Paths {
 		public static final String ROOT = "resources";
 		public static final String LICENSE = "license.txt";
@@ -64,58 +55,5 @@ public class Resources {
 		} catch (final Exception ignored) {
 		}
 		return null;
-	}
-
-	public static Map<String, Map<String, String>> getServerData() throws IOException {
-		if (serverData == null) {
-			if (Configuration.SUPERDEV) {
-				serverData = IniParser.deserialise(new File(Paths.SERVER));
-			} else {
-				final HttpURLConnection con = HttpClient.getHttpConnection(new URL(Configuration.URLs.CONTROL));
-				final URL base = new URL(con.getHeaderField("Location"));
-				final URL location = new URL(base, SERVERDATAPATH);
-				serverData = IniParser.deserialise(HttpClient.openStream(location));
-			}
-		}
-		return serverData;
-	}
-
-	public static Map<String, String> getServerLinks() {
-		try {
-			return getServerData().get("links");
-		} catch (final IOException ignored) {
-			return null;
-		}
-	}
-
-	public static InputStream openHttpStream(String link, final Object... args) throws IOException {
-		link = getServerLinks().get(link);
-		if (link == null || link.isEmpty()) {
-			return null;
-		}
-		return openHttpStreamFromLink(link, args);
-	}
-
-	public static InputStream openHttpStreamFromLink(String link, final Object... args) throws IOException {
-		URL url = new URL(String.format(link, args));
-		final String query = url.getFile(), marker = "{POST}";
-		final int z = query.indexOf(marker);
-		if (z == -1) {
-			return HttpClient.openStream(url);
-		}
-		String pre = z == 0 ? "" : query.substring(0, z), post = z + marker.length() >= query.length() ? null : query.substring(z + marker.length());
-		if (post == null || post.isEmpty()) {
-			return HttpClient.openStream(url);
-		}
-		if (pre.length() > 0 && pre.charAt(pre.length() - 1) == '?') {
-			pre = pre.substring(0, pre.length() - 1);
-		}
-		url = new URL(url.getProtocol(), url.getHost(), url.getPort(), pre);
-		final URLConnection con = HttpClient.getHttpConnection(url);
-		con.setDoOutput(true);
-		final OutputStreamWriter out = new OutputStreamWriter(con.getOutputStream());
-		out.write(post);
-		out.flush();
-		return HttpClient.getInputStream(con);
 	}
 }
