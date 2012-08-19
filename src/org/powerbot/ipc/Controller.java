@@ -216,11 +216,12 @@ public final class Controller implements Runnable {
 	}
 
 	public int getRunningInstances() {
+		final MessageType type = MessageType.RUNNING;
 		final AtomicInteger i = new AtomicInteger(1);
 		final Event c = new Event() {
 			@Override
 			public boolean call(final Message msg, final SocketAddress sender) {
-				if (msg.getMessageType() == MessageType.RUNNING) {
+				if (msg.getMessageType() == type) {
 					i.incrementAndGet();
 					return false;
 				}
@@ -228,17 +229,18 @@ public final class Controller implements Runnable {
 			}
 		};
 		callbacks.add(c);
-		broadcast(new Message(MessageType.RUNNING));
+		broadcast(new Message(type));
 		callbacks.remove(c);
 		return i.get();
 	}
 
 	public boolean isAnotherInstanceLoading() {
+		final MessageType type = MessageType.LOADED;
 		final AtomicBoolean n = new AtomicBoolean(false);
 		final Event c = new Event() {
 			@Override
 			public boolean call(Message msg, final SocketAddress sender) {
-				if (msg.getMessageType() == MessageType.LOADED && msg.getIntArg() == 2) {
+				if (msg.getMessageType() == type && msg.getIntArg() == 2) {
 					n.set(true);
 					return false;
 				}
@@ -246,17 +248,18 @@ public final class Controller implements Runnable {
 			}
 		};
 		callbacks.add(c);
-		broadcast(new Message(MessageType.LOADED));
+		broadcast(new Message(type));
 		callbacks.remove(c);
 		return n.get();
 	}
 
 	public long getLastSessionUpdateTime() {
+		final MessageType type = MessageType.SESSION;
 		final AtomicLong l = new AtomicLong(0);
 		final Event c = new Event() {
 			@Override
 			public boolean call(Message msg, final SocketAddress sender) {
-				if (msg.getMessageType() == MessageType.SESSION) {
+				if (msg.getMessageType() == type) {
 					synchronized (l) {
 						final long a = msg.getLongArg();
 						if (a > l.get()) {
@@ -269,17 +272,18 @@ public final class Controller implements Runnable {
 			}
 		};
 		callbacks.add(c);
-		broadcast(new Message(MessageType.SESSION));
+		broadcast(new Message(type));
 		callbacks.remove(c);
 		return l.get();
 	}
 
 	public Collection<String> getRunningScripts() {
+		final MessageType type = MessageType.SCRIPT;
 		final ConcurrentLinkedQueue<String> list = new ConcurrentLinkedQueue<String>();
 		final Event c = new Event() {
 			@Override
 			public boolean call(Message msg, final SocketAddress sender) {
-				if (msg.getMessageType() == MessageType.SCRIPT) {
+				if (msg.getMessageType() == type) {
 					for (final Object def : msg.getArgs()) {
 						list.add((String) def);
 					}
@@ -289,7 +293,7 @@ public final class Controller implements Runnable {
 			}
 		};
 		callbacks.add(c);
-		broadcast(new Message(MessageType.SCRIPT));
+		broadcast(new Message(type));
 		callbacks.remove(c);
 		return list;
 	}
