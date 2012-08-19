@@ -47,8 +47,8 @@ public final class Tracker {
 		hostname = h;
 
 		r = new Random();
-		cookie = (int) (Configuration.getUIDInstance() & Integer.MAX_VALUE);
 		visitor = (int) (Configuration.getUID() & Integer.MAX_VALUE);
+		cookie = visitor;
 	}
 
 	public synchronized static Tracker getInstance() {
