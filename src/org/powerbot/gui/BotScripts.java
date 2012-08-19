@@ -65,6 +65,7 @@ import org.powerbot.game.api.Manifest;
 import org.powerbot.game.bot.Bot;
 import org.powerbot.gui.component.BotLocale;
 import org.powerbot.gui.component.BotToolBar;
+import org.powerbot.ipc.Controller;
 import org.powerbot.service.GameAccounts;
 import org.powerbot.service.GameAccounts.Account;
 import org.powerbot.service.NetworkAccount;
@@ -561,6 +562,12 @@ public final class BotScripts extends JDialog implements ActionListener {
 					if (def.local) {
 						cl = new ScriptClassLoader(def.source);
 					} else {
+						for (final String running : Controller.getInstance().getRunningScripts()) {
+							if (def.getID().equals(running)) {
+								JOptionPane.showMessageDialog(BotScripts.this, BotLocale.SCRIPTRUNNING);
+								return;
+							}
+						}
 						final Map<String, Map<String, String>> data;
 						try {
 							data = IniParser.deserialise(HttpClient.openStream(Configuration.URLs.SCRIPTSAUTH, NetworkAccount.getInstance().isLoggedIn() ? NetworkAccount.getInstance().getAccount().getAuth() : "", def.getID()));

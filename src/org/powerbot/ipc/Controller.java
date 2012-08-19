@@ -12,7 +12,10 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketAddress;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
@@ -20,9 +23,12 @@ import java.util.logging.Logger;
 
 import javax.crypto.Cipher;
 
+import org.powerbot.game.api.ActiveScript;
+import org.powerbot.game.bot.Bot;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.ipc.Message.MessageType;
 import org.powerbot.service.NetworkAccount;
+import org.powerbot.service.scripts.ScriptDefinition;
 import org.powerbot.util.Configuration;
 import org.powerbot.util.StringUtil;
 import org.powerbot.util.io.XORInputStream;
@@ -135,6 +141,20 @@ public final class Controller implements Runnable {
 
 				case SESSION:
 					reply.setArgs(ScheduledChecks.SESSION_TIME);
+					break;
+
+				case SCRIPT:
+					final ConcurrentLinkedQueue<String> list = new ConcurrentLinkedQueue<String>();
+					for (final Bot bot : Collections.unmodifiableList(Bot.bots)) {
+						final ActiveScript script = bot.getActiveScript();
+						if (script != null && script.isRunning()) {
+							final ScriptDefinition def = script.getDefinition();
+							if (def != null) {
+								list.add(def.getID());
+							}
+						}
+					}
+					reply.setArgs(list.toArray());
 					break;
 
 				case SIGNIN:
@@ -252,5 +272,25 @@ public final class Controller implements Runnable {
 		broadcast(new Message(MessageType.SESSION));
 		callbacks.remove(c);
 		return l.get();
+	}
+
+	public Collection<String> getRunningScripts() {
+		final ConcurrentLinkedQueue<String> list = new ConcurrentLinkedQueue<String>();
+		final Event c = new Event() {
+			@Override
+			public boolean call(Message msg, final SocketAddress sender) {
+				if (msg.getMessageType() == MessageType.SCRIPT) {
+					for (final Object def : msg.getArgs()) {
+						list.add((String) def);
+					}
+					return false;
+				}
+				return true;
+			}
+		};
+		callbacks.add(c);
+		broadcast(new Message(MessageType.SCRIPT));
+		callbacks.remove(c);
+		return list;
 	}
 }

@@ -51,6 +51,7 @@ public final class BotLocale {
 	public static final String BROWSETIP = "Browse the full list of scripts";
 	public static final String NOACCOUNT = "No account";
 	public static final String LOCALONLY = "Show only local scripts";
+	public static final String SCRIPTRUNNING = "You are already running this script on another bot.";
 	public static final String BY = "By %s";
 
 	public static final String ALLOW = "Allow";
