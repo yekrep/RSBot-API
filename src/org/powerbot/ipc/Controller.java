@@ -147,7 +147,7 @@ public final class Controller implements Runnable {
 					final ConcurrentLinkedQueue<String> list = new ConcurrentLinkedQueue<String>();
 					for (final Bot bot : Collections.unmodifiableList(Bot.bots)) {
 						final ActiveScript script = bot.getActiveScript();
-						if (script != null && script.isRunning()) {
+						if (script != null && !script.getContainer().isShutdown()) {
 							final ScriptDefinition def = script.getDefinition();
 							if (def != null) {
 								list.add(def.getID());
