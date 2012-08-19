@@ -31,13 +31,11 @@ public class Resources {
 		public static final String CROSS_SMALL_GRAY = ROOT_IMG + "/cross_small_gray.png";
 		public static final String REMOVE = ROOT_IMG + "/glyphicons_197_remove.png";
 		public static final String KEYS = ROOT_IMG + "/glyphicons_044_keys.png";
-		public static final String KEYBOARD = ROOT_IMG + "/glyphicons_269_keyboard_wired.png";
 		public static final String KEYBOARD_WHITE = ROOT_IMG + "/glyphicons_269_keyboard_wired_white.png";
 		public static final String ADDRESS = ROOT_IMG + "/glyphicons_088_adress_book.png";
 		public static final String FILE = ROOT_IMG + "/glyphicons_036_file.png";
 		public static final String SEARCH = ROOT_IMG + "/glyphicons_027_search.png";
 		public static final String PENCIL = ROOT_IMG + "/glyphicons_030_pencil.png";
-		public static final String SETTINGS = ROOT_IMG + "/glyphicons_280_settings.png";
 		public static final String SETTINGS_WHITE = ROOT_IMG + "/glyphicons_280_settings_white.png";
 		public static final String TWITTER = ROOT_IMG + "/twitter.png";
 		public static final String FACEBOOK = ROOT_IMG + "/facebook.png";
