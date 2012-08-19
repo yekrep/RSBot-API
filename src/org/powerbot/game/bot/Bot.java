@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.logging.Level;
@@ -48,10 +49,11 @@ import org.powerbot.util.io.IOHelper;
  * An environment of the game that is automated.
  *
  * @author Timer
+ * @author Paris
  */
-public class Bot extends GameDefinition implements Runnable {
-	private static Logger log = Logger.getLogger(Bot.class.getName());
-	public static final LinkedList<Bot> bots = new LinkedList<Bot>();
+public final class Bot extends GameDefinition {
+	private static final Logger log = Logger.getLogger(Bot.class.getName());
+	public static final List<Bot> bots = new LinkedList<Bot>();
 
 	private ModScript modScript;
 	private BotPanel panel;
@@ -103,15 +105,15 @@ public class Bot extends GameDefinition implements Runnable {
 	public void run() {
 		Bot.bots.add(this);
 		BotChrome.getInstance().toolbar.updateScriptControls();
-		if (initializeEnvironment()) {
-			startEnvironment();
+		if (call()) {
+			start();
 		}
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public Future<?> startEnvironment() {
+	public Future<?> start() {
 		if (killed) {
 			return null;
 		}
@@ -134,7 +136,7 @@ public class Bot extends GameDefinition implements Runnable {
 		return container.submit(new Loader(this));
 	}
 
-	public void refreshEnvironment() {
+	public void reload() {
 		log.info("Refreshing environment");
 		if (activeScript != null && activeScript.isRunning()) {
 			activeScript.pause(true);
@@ -160,8 +162,8 @@ public class Bot extends GameDefinition implements Runnable {
 		client = null;
 		BotChrome.getInstance().panel.setBot(this);
 
-		if (initializeEnvironment()) {
-			final Future<?> future = startEnvironment();
+		if (call()) {
+			final Future<?> future = start();
 			if (future == null) {
 				return;
 			}
@@ -201,7 +203,7 @@ public class Bot extends GameDefinition implements Runnable {
 	/**
 	 * {@inheritDoc}
 	 */
-	public void killEnvironment() {
+	public void close() {
 		this.killed = true;
 		if (activeScript != null) {
 			activeScript.stop();
@@ -377,7 +379,7 @@ public class Bot extends GameDefinition implements Runnable {
 		refreshing = true;
 		container.submit(new Task() {
 			public void run() {
-				refreshEnvironment();
+				reload();
 			}
 		});
 	}

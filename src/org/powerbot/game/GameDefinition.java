@@ -25,8 +25,9 @@ import org.powerbot.util.io.IOHelper;
  * A definition of a <code>GameEnvironment</code> that manages all the data associated with this environment.
  *
  * @author Timer
+ * @author Paris
  */
-public abstract class GameDefinition implements GameEnvironment {
+public abstract class GameDefinition implements GameEnvironment, Runnable {
 	private static final Logger log = Logger.getLogger(GameDefinition.class.getName());
 	protected TaskContainer container;
 	private final Map<String, byte[]> classes;
@@ -56,7 +57,7 @@ public abstract class GameDefinition implements GameEnvironment {
 	/**
 	 * {@inheritDoc}
 	 */
-	public boolean initializeEnvironment() {
+	public Boolean call() {
 		this.killed = false;
 		log.info("Initializing game environment");
 		classes.clear();

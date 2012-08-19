@@ -116,7 +116,7 @@ public class BotChrome extends JFrame implements WindowListener {
 		setVisible(false);
 		for (final Bot bot : Collections.unmodifiableCollection(Bot.bots)) {
 			try {
-				bot.killEnvironment();
+				bot.close();
 			} catch (final Throwable ignored) {
 			}
 		}
