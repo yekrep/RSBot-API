@@ -121,6 +121,7 @@ public class BotChrome extends JFrame implements WindowListener {
 				e.printStackTrace();
 			}
 		}
+		NetworkAccount.getInstance().session(-1);
 		dispose();
 		System.exit(0);
 	}

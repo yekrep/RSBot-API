@@ -257,13 +257,7 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 		if (getTabCount() == 0) {
 			Logger.getLogger(Bot.class.getName()).log(Level.INFO, "Add a tab to start another bot", "Closed");
 		}
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				NetworkAccount.getInstance().session(-1);
-				System.gc();
-			}
-		});
+		System.gc();
 	}
 
 	private void activateTab(final int n) {
