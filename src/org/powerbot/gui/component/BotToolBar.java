@@ -198,6 +198,10 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 			log.severe(BotLocale.NEEDVIPMULTITAB);
 			return;
 		}
+		if (Controller.getInstance().getRunningModes().contains(1)) {
+			log.severe(BotLocale.DEVMODERUNNING);
+			return;
+		}
 		final Map<String, String> info = NetworkAccount.getInstance().session(0);
 		if (info == null || !info.containsKey("success") || !IniParser.parseBool(info.get("success"))) {
 			final String msg = info != null && info.containsKey("message") ? info.get("message") : BotLocale.CANTOPENTAB;

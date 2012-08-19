@@ -233,6 +233,25 @@ public final class Controller implements Runnable {
 		return i.get();
 	}
 
+	public Collection<Integer> getRunningModes() {
+		final MessageType type = MessageType.MODE;
+		final ConcurrentLinkedQueue<Integer> list = new ConcurrentLinkedQueue<Integer>();
+		final Event c = new Event() {
+			@Override
+			public boolean call(final Message msg, final SocketAddress sender) {
+				if (msg.getMessageType() == type) {
+					list.add(msg.getIntArg());
+					return false;
+				}
+				return true;
+			}
+		};
+		callbacks.add(c);
+		broadcast(new Message(type));
+		callbacks.remove(c);
+		return list;
+	}
+
 	public boolean isAnotherInstanceLoading() {
 		final MessageType type = MessageType.LOADED;
 		final AtomicBoolean n = new AtomicBoolean(false);
