@@ -209,9 +209,8 @@ public final class Controller implements Runnable {
 				}
 			}
 		}
-		try {
-			Thread.sleep(0);
-		} catch (final InterruptedException ignored) {
+		for (int i = 0; i < 32; i++) {
+			Thread.yield();
 		}
 	}
 
