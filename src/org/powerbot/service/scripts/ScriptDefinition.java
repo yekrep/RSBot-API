@@ -1,5 +1,6 @@
 package org.powerbot.service.scripts;
 
+import java.io.Serializable;
 import java.net.URL;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -13,7 +14,8 @@ import org.powerbot.util.io.IniParser;
 /**
  * @author Paris
  */
-public final class ScriptDefinition implements Comparable<ScriptDefinition> {
+public final class ScriptDefinition implements Comparable<ScriptDefinition>, Serializable {
+	private static final long serialVersionUID = 7424073911663414957L;
 	private final String name, id, description, website;
 	private final double version;
 	private final String[] authors;

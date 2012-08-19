@@ -562,8 +562,8 @@ public final class BotScripts extends JDialog implements ActionListener {
 					if (def.local) {
 						cl = new ScriptClassLoader(def.source);
 					} else {
-						for (final String running : Controller.getInstance().getRunningScripts()) {
-							if (def.getID().equals(running)) {
+						for (final ScriptDefinition running : Controller.getInstance().getRunningScripts()) {
+							if (def.compareTo(running) == 0) {
 								JOptionPane.showMessageDialog(BotScripts.this, BotLocale.SCRIPTRUNNING);
 								return;
 							}

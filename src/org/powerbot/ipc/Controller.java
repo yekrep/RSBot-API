@@ -144,13 +144,13 @@ public final class Controller implements Runnable {
 					break;
 
 				case SCRIPT:
-					final ConcurrentLinkedQueue<String> list = new ConcurrentLinkedQueue<String>();
+					final ConcurrentLinkedQueue<ScriptDefinition> list = new ConcurrentLinkedQueue<ScriptDefinition>();
 					for (final Bot bot : Collections.unmodifiableList(Bot.bots)) {
 						final ActiveScript script = bot.getActiveScript();
 						if (script != null && !script.getContainer().isShutdown()) {
 							final ScriptDefinition def = script.getDefinition();
 							if (def != null) {
-								list.add(def.getID());
+								list.add(def);
 							}
 						}
 					}
@@ -276,15 +276,15 @@ public final class Controller implements Runnable {
 		return l.get();
 	}
 
-	public Collection<String> getRunningScripts() {
+	public Collection<ScriptDefinition> getRunningScripts() {
 		final MessageType type = MessageType.SCRIPT;
-		final ConcurrentLinkedQueue<String> list = new ConcurrentLinkedQueue<String>();
+		final ConcurrentLinkedQueue<ScriptDefinition> list = new ConcurrentLinkedQueue<ScriptDefinition>();
 		final Event c = new Event() {
 			@Override
 			public boolean call(Message msg, final SocketAddress sender) {
 				if (msg.getMessageType() == type) {
 					for (final Object def : msg.getArgs()) {
-						list.add((String) def);
+						list.add((ScriptDefinition) def);
 					}
 					return false;
 				}
