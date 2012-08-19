@@ -62,7 +62,8 @@ public class Configuration {
 
 		long hash = 0;
 		try {
-			hash = IOHelper.crc32(new File("lib", "control.txt"));
+			final File control = new File("lib", "control.txt");
+			hash = control.isFile() ? IOHelper.crc32(control) : -1;
 		} catch (final IOException ignored) {
 		}
 		SUPERDEV = !Configuration.FROMJAR && hash == 3286621395L;
