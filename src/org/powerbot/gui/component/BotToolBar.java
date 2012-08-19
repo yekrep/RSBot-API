@@ -45,7 +45,7 @@ import org.powerbot.util.io.Resources;
 public final class BotToolBar extends JToolBar implements ActionListener {
 	private static final long serialVersionUID = 1L;
 	public final BotChrome parent;
-	private final JButton tabAdd, scriptPlay, scriptStop, panelInput;
+	public final JButton tabAdd, scriptPlay, scriptStop, panelInput;
 	private int activeTab = -1;
 
 	public BotToolBar(final BotChrome parent) {
@@ -55,6 +55,7 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 		setBackground(Color.BLACK);
 
 		tabAdd = new JButton(new ImageIcon(Resources.getImage(Resources.Paths.ADD_WHITE)));
+		tabAdd.setEnabled(false);
 		tabAdd.setBackground(getBackground());
 		tabAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(final ActionEvent e) {

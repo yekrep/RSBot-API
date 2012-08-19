@@ -91,7 +91,9 @@ public final class BotMenu extends JPopupMenu implements ActionListener {
 	public void actionPerformed(final ActionEvent e) {
 		final String a = e.getActionCommand();
 		if (a.equals(BotLocale.NEWTAB)) {
-			parent.addTab();
+			if (parent.tabAdd.isEnabled()) {
+				parent.addTab();
+			}
 		} else if (a.equals(BotLocale.CLOSETAB)) {
 			if (parent.getTabCount() > 0) {
 				parent.closeTab(parent.getActiveTab());

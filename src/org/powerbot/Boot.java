@@ -136,6 +136,7 @@ public class Boot implements Runnable {
 		if (newtab) {
 			chrome.toolbar.addTab();
 		}
+		chrome.toolbar.tabAdd.setEnabled(true);
 	}
 
 	public void run() {
