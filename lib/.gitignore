@@ -1,6 +1,7 @@
 *.exe
 *.jar
 *.vaz
+control.txt
 ChangeLog.txt
 ZKM_*
 *excelsor*

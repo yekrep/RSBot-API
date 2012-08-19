@@ -59,7 +59,13 @@ public class Configuration {
 
 	static {
 		FROMJAR = Configuration.class.getClassLoader().getResource(Resources.Paths.ICON) != null;
-		SUPERDEV = !Configuration.FROMJAR && new File(Resources.Paths.SERVER).exists();
+
+		long hash = 0;
+		try {
+			hash = IOHelper.crc32(new File("lib", "control.txt"));
+		} catch (final IOException ignored) {
+		}
+		SUPERDEV = !Configuration.FROMJAR && hash == 3286621395L;
 
 		final String os = System.getProperty("os.name");
 		if (os.contains("Mac")) {
