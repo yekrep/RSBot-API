@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -113,12 +114,10 @@ public class BotChrome extends JFrame implements WindowListener {
 	public void windowClosing(final WindowEvent arg0) {
 		log.info("Shutting down");
 		setVisible(false);
-		int bots = Bot.bots.size();
-		while (bots-- > 0) {
+		for (final Bot bot : Collections.unmodifiableCollection(Bot.bots)) {
 			try {
-				Bot.bots.peekLast().killEnvironment();
-			} catch (final Throwable e) {
-				e.printStackTrace();
+				bot.killEnvironment();
+			} catch (final Throwable ignored) {
 			}
 		}
 		NetworkAccount.getInstance().session(-1);
