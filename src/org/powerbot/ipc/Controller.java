@@ -249,7 +249,7 @@ public final class Controller implements Runnable {
 			}
 		};
 		callbacks.add(c);
-		broadcast(new Message(MessageType.LOADED));
+		broadcast(new Message(MessageType.SESSION));
 		callbacks.remove(c);
 		return l.get();
 	}
