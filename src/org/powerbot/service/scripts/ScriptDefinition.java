@@ -13,7 +13,7 @@ import org.powerbot.util.io.IniParser;
 /**
  * @author Paris
  */
-public final class ScriptDefinition {
+public final class ScriptDefinition implements Comparable<ScriptDefinition> {
 	private final String name, id, description, website;
 	private final double version;
 	private final String[] authors;
@@ -210,5 +210,11 @@ public final class ScriptDefinition {
 		}
 
 		return name == null || name.isEmpty() ? null : new ScriptDefinition(name, id, description, version, authors, website, hidden);
+	}
+
+	@Override
+	public int compareTo(final ScriptDefinition o) {
+		final String a = getID(), b = o.getID();
+		return a == null || b == null ? 0 : a.compareTo(b);
 	}
 }
