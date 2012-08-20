@@ -46,6 +46,7 @@ public final class Controller implements Runnable {
 	private final int[] ports = new int[MAX_INSTANCES];
 	private final byte[] key;
 	public final int instanceID;
+	private static final int RESPONSE_TIMEOUT = 1000;
 
 	private Controller() throws IOException {
 		for (int i = 0; i < ports.length; i++) {
@@ -202,6 +203,14 @@ public final class Controller implements Runnable {
 	}
 
 	public void broadcast(final Message msg) {
+		final AtomicInteger n = new AtomicInteger(0);
+		for (int i = 0; i < ports.length; i++) {
+			try {
+				new DatagramSocket(ports[i], InetAddress.getLocalHost()).close();
+			} catch (final Exception ignored) {
+				n.incrementAndGet();
+			}
+		}
 		for (final int port : ports) {
 			if (port != sock.getLocalPort()) {
 				try {
@@ -210,9 +219,24 @@ public final class Controller implements Runnable {
 				}
 			}
 		}
-		for (int i = 0; i < 32; i++) {
-			Thread.yield();
+		final Event e = new Event() {
+			@Override
+			public boolean call(final Message rmsg, SocketAddress sender) {
+				if (msg == rmsg) {
+					n.decrementAndGet();
+				}
+				return true;
+			}
+		};
+		callbacks.add(e);
+		final long mark = System.currentTimeMillis() + RESPONSE_TIMEOUT;
+		while (n.get() > 0 && System.currentTimeMillis() < mark) {
+			try {
+				Thread.sleep(0);
+			} catch (final InterruptedException ignored) {
+			}
 		}
+		callbacks.remove(e);
 	}
 
 	public int getRunningInstances() {
