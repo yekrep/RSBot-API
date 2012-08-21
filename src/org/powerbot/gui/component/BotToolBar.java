@@ -181,7 +181,7 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 		}
 	}
 
-	public void addTab() {
+	public synchronized void addTab() {
 		final int s = Bot.bots.size();
 		final int n = Controller.getInstance().getRunningInstances();
 		final Logger log = Logger.getLogger(BotChrome.class.getName());
@@ -219,7 +219,7 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 		}
 	}
 
-	public void closeTab(final int n) {
+	public synchronized void closeTab(final int n) {
 		closeTab(n, false);
 	}
 
