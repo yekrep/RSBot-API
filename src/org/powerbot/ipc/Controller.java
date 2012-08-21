@@ -16,6 +16,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
@@ -42,6 +44,7 @@ public final class Controller implements Runnable {
 	private static Controller instance;
 	private final DatagramSocket sock;
 	private final List<Event> callbacks;
+	private final ExecutorService executor;
 	public static final int MAX_INSTANCES = 8;
 	private final int[] ports = new int[MAX_INSTANCES];
 	private final byte[] key;
@@ -69,6 +72,7 @@ public final class Controller implements Runnable {
 		}
 
 		callbacks = new ArrayList<Event>();
+		executor = Executors.newCachedThreadPool();
 		key = StringUtil.getBytesUtf8(Long.toBinaryString(Configuration.getUID()) + Integer.toHexString(Configuration.VERSION));
 	}
 
@@ -99,6 +103,10 @@ public final class Controller implements Runnable {
 
 	@Override
 	public void run() {
+		if (executor.isShutdown()) {
+			return;
+		}
+
 		while (true) {
 			boolean stop = false;
 			byte[] buf = new byte[4096];
@@ -106,11 +114,17 @@ public final class Controller implements Runnable {
 
 			try {
 				sock.receive(packet);
+				packet.setLength(buf.length);
 				final ObjectInput in = new ObjectInputStream(new XORInputStream(new ByteArrayInputStream(packet.getData()), key, Cipher.DECRYPT_MODE));
 				final Message msg = (Message) in.readObject();
 				in.close();
 
 				log.fine("[" + sock.getLocalPort() + "] received from: " + packet.getSocketAddress().toString() + " " + (msg.isResponse() ? "response" : "broadcast") + " " + msg.getMessageType());
+
+				if (msg.isResponse()) {
+					executor.execute(new Callbacks(msg, packet.getSocketAddress(), callbacks));
+					continue;
+				}
 
 				Message reply = new Message(true, msg.getMessageType());
 
@@ -145,13 +159,13 @@ public final class Controller implements Runnable {
 					break;
 
 				case SCRIPT:
-					final ConcurrentLinkedQueue<ScriptDefinition> list = new ConcurrentLinkedQueue<ScriptDefinition>();
+					final ConcurrentLinkedQueue<String> list = new ConcurrentLinkedQueue<String>();
 					for (final Bot bot : Collections.unmodifiableList(Bot.bots)) {
 						final ActiveScript script = bot.getActiveScript();
 						if (script != null && !script.getContainer().isShutdown()) {
 							final ScriptDefinition def = script.getDefinition();
-							if (def != null) {
-								list.add(def);
+							if (def != null && def.getID() != null && !def.getID().isEmpty()) {
+								list.add(def.getID());
 							}
 						}
 					}
@@ -166,21 +180,9 @@ public final class Controller implements Runnable {
 					break;
 				}
 
-				if (msg.isResponse()) {
-					for (final Event task : callbacks) {
-						try {
-							if (!task.call(reply, packet.getSocketAddress())) {
-								break;
-							}
-						} catch (final Exception ignored) {
-							continue;
-						}
-					}
-				} else if (reply != null) {
-					reply(reply, packet.getAddress(), packet.getPort());
+				if (reply != null) {
+					send(reply, packet.getAddress(), packet.getPort());
 				}
-
-				packet.setLength(buf.length);
 			} catch (final IOException ignored) {
 				continue;
 			} catch (final ClassNotFoundException ignored) {
@@ -191,9 +193,11 @@ public final class Controller implements Runnable {
 				break;
 			}
 		}
+
+		executor.shutdown();
 	}
 
-	private void reply(final Message msg, final InetAddress addr, final int port) throws IOException {
+	private void send(final Message msg, final InetAddress addr, final int port) throws IOException {
 		final ByteArrayOutputStream bos = new ByteArrayOutputStream();
 		final ObjectOutput out = new ObjectOutputStream(new XOROutputStream(bos, key, Cipher.ENCRYPT_MODE));
 		out.writeObject(msg);
@@ -203,32 +207,38 @@ public final class Controller implements Runnable {
 	}
 
 	public void broadcast(final Message msg) {
-		final AtomicInteger n = new AtomicInteger(0);
+		final List<Integer> list = new ArrayList<Integer>();
 		for (int i = 0; i < ports.length; i++) {
+			if (ports[i] == sock.getLocalPort()) {
+				continue;
+			}
 			try {
 				new DatagramSocket(ports[i], InetAddress.getLocalHost()).close();
-			} catch (final Exception ignored) {
-				n.incrementAndGet();
+			} catch (final IOException ignored) {
+				list.add(ports[i]);
 			}
 		}
-		for (final int port : ports) {
-			if (port != sock.getLocalPort()) {
-				try {
-					reply(msg, InetAddress.getLocalHost(), port);
-				} catch (final IOException ignored) {
-				}
-			}
+		if (list.isEmpty()) {
+			return;
 		}
+		final AtomicInteger n = new AtomicInteger(list.size());
 		final Event e = new Event() {
 			@Override
 			public boolean call(final Message rmsg, SocketAddress sender) {
-				if (msg == rmsg) {
+				if (msg.getMessageType() == rmsg.getMessageType()) {
 					n.decrementAndGet();
 				}
-				return true;
+				return false;
 			}
 		};
 		callbacks.add(e);
+		for (final int port : list) {
+			try {
+				send(msg, InetAddress.getLocalHost(), port);
+			} catch (final IOException ignored) {
+			}
+		}
+		Thread.yield();
 		final long mark = System.currentTimeMillis() + RESPONSE_TIMEOUT;
 		while (n.get() > 0 && System.currentTimeMillis() < mark) {
 			try {
@@ -283,7 +293,7 @@ public final class Controller implements Runnable {
 		final Event c = new Event() {
 			@Override
 			public boolean call(Message msg, final SocketAddress sender) {
-				if (msg.getMessageType() == type && msg.getIntArg() == 2) {
+				if (msg.getMessageType() == type && msg.getIntArg() != 1) {
 					n.set(true);
 					return false;
 				}
@@ -320,15 +330,15 @@ public final class Controller implements Runnable {
 		return l.get();
 	}
 
-	public Collection<ScriptDefinition> getRunningScripts() {
+	public Collection<String> getRunningScripts() {
 		final MessageType type = MessageType.SCRIPT;
-		final ConcurrentLinkedQueue<ScriptDefinition> list = new ConcurrentLinkedQueue<ScriptDefinition>();
+		final ConcurrentLinkedQueue<String> list = new ConcurrentLinkedQueue<String>();
 		final Event c = new Event() {
 			@Override
 			public boolean call(Message msg, final SocketAddress sender) {
 				if (msg.getMessageType() == type) {
 					for (final Object def : msg.getArgs()) {
-						list.add((ScriptDefinition) def);
+						list.add((String) def);
 					}
 					return false;
 				}
@@ -339,5 +349,28 @@ public final class Controller implements Runnable {
 		broadcast(new Message(type));
 		callbacks.remove(c);
 		return list;
+	}
+
+	private final class Callbacks implements Runnable {
+		private final Message msg;
+		private final SocketAddress sender;
+		private final Iterable<Event> tasks;
+
+		public Callbacks(final Message msg, final SocketAddress sender, final Iterable<Event> tasks) {
+			this.msg = msg;
+			this.sender = sender;
+			this.tasks = tasks;
+		}
+
+		public void run() {
+			for (final Event task : tasks) {
+				try {
+					if (!task.call(msg, sender)) {
+						break;
+					}
+				} catch (final Exception ignored) {
+				}
+			}
+		}
 	}
 }
