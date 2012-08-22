@@ -562,12 +562,6 @@ public final class BotScripts extends JDialog implements ActionListener {
 					if (def.local) {
 						cl = new ScriptClassLoader(def.source);
 					} else {
-						for (final String running : Controller.getInstance().getRunningScripts()) {
-							if (def.getID().equals(running)) {
-								JOptionPane.showMessageDialog(BotScripts.this, BotLocale.SCRIPTRUNNING);
-								return;
-							}
-						}
 						final Map<String, Map<String, String>> data;
 						try {
 							data = IniParser.deserialise(HttpClient.openStream(Configuration.URLs.SCRIPTSAUTH, NetworkAccount.getInstance().isLoggedIn() ? NetworkAccount.getInstance().getAccount().getAuth() : "", def.getID()));
@@ -594,6 +588,12 @@ public final class BotScripts extends JDialog implements ActionListener {
 						} catch (final Exception ignored) {
 							log.severe("Could not download script");
 							ignored.printStackTrace();
+							return;
+						}
+					}
+					for (final String running : Controller.getInstance().getRunningScripts()) {
+						if (def.getID().equals(running)) {
+							JOptionPane.showMessageDialog(BotScripts.this, BotLocale.SCRIPTRUNNING);
 							return;
 						}
 					}
