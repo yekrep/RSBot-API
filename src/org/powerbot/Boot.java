@@ -48,12 +48,16 @@ public class Boot implements Runnable {
 		boolean restarted = false, newtab = false;
 
 		for (final String arg : args) {
-			if (arg.equals(SWITCH_DEV)) {
+			switch (arg) {
+			case SWITCH_DEV:
 				Configuration.DEVMODE = true;
-			} else if (arg.equals(SWITCH_RESTARTED)) {
+				break;
+			case SWITCH_RESTARTED:
 				restarted = true;
-			} else if (arg.equals(SWITCH_NEWTAB)) {
+				break;
+			case SWITCH_NEWTAB:
 				newtab = true;
+				break;
 			}
 		}
 
