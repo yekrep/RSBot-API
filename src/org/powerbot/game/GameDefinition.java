@@ -5,12 +5,14 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.powerbot.asm.NodeManipulator;
-import org.powerbot.concurrent.TaskContainer;
-import org.powerbot.concurrent.TaskProcessor;
 import org.powerbot.game.loader.AdaptException;
 import org.powerbot.game.loader.Crawler;
 import org.powerbot.game.loader.Crypt;
@@ -29,7 +31,7 @@ import org.powerbot.util.io.IOHelper;
  */
 public abstract class GameDefinition implements GameEnvironment, Runnable {
 	private static final Logger log = Logger.getLogger(GameDefinition.class.getName());
-	protected TaskContainer container;
+	protected ThreadPoolExecutor container;
 	private final Map<String, byte[]> classes;
 	public static final String THREADGROUPNAMEPREFIX = "GameDefinition-";
 
@@ -43,7 +45,8 @@ public abstract class GameDefinition implements GameEnvironment, Runnable {
 
 	public GameDefinition() {
 		threadGroup = new ThreadGroup(THREADGROUPNAMEPREFIX + hashCode());
-		container = new TaskProcessor(threadGroup);
+		final BlockingQueue<Runnable> workQueue = new LinkedBlockingQueue<Runnable>();
+		container = new ThreadPoolExecutor(1, Runtime.getRuntime().availableProcessors(), 60, TimeUnit.HOURS, workQueue);
 		classes = new HashMap<String, byte[]>();
 
 		crawler = new Crawler();
@@ -124,7 +127,7 @@ public abstract class GameDefinition implements GameEnvironment, Runnable {
 		return false;
 	}
 
-	public TaskContainer getContainer() {
+	public ThreadPoolExecutor getContainer() {
 		return container;
 	}
 

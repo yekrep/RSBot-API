@@ -97,10 +97,10 @@ public class RandomHandler implements Runnable {
 						if (!paused) {
 							paused = activeScript.isPaused();
 						}
-						if (!activeScript.isSilentlyLocked() || activeScript.getContainer().isActive()) {
+						if (!activeScript.isSilentlyLocked() || activeScript.getContainer().getActiveCount() > 0) {
 							log.info("Locking script");
 							activeScript.silentLock(false);
-							while (activeScript.getContainer().isActive()) {
+							while (activeScript.getContainer().getActiveCount() > 0) {
 								Time.sleep(Random.nextInt(500, 1200));
 							}
 						}

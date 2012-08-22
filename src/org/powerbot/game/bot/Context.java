@@ -4,8 +4,8 @@ import java.awt.EventQueue;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ThreadPoolExecutor;
 
-import org.powerbot.concurrent.TaskContainer;
 import org.powerbot.event.EventManager;
 import org.powerbot.game.api.ActiveScript;
 import org.powerbot.game.api.methods.Calculations;
@@ -109,7 +109,7 @@ public class Context {
 		return bot.getBuffer();
 	}
 
-	public TaskContainer getContainer() {
+	public ThreadPoolExecutor getContainer() {
 		return bot.getContainer();
 	}
 

@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.RejectedExecutionException;
+import java.util.concurrent.ThreadPoolExecutor;
 
-import org.powerbot.concurrent.TaskContainer;
 import org.powerbot.game.api.util.Time;
 import org.powerbot.util.Configuration;
 
@@ -17,8 +17,7 @@ import org.powerbot.util.Configuration;
  * @author Timer
  */
 public class StrategyDaemon implements StrategyContainer, Runnable {
-	private final TaskContainer container;
-	private final TaskContainer owner;
+	private final ThreadPoolExecutor container, owner;
 	private final List<Strategy> strategies;
 	public DaemonState state;
 	private int iterationSleep = 200;
@@ -26,10 +25,10 @@ public class StrategyDaemon implements StrategyContainer, Runnable {
 	/**
 	 * Initializes this strategy daemon with appropriate objects.
 	 *
-	 * @param container The <code>TaskContainer</code> to use as a medium for processing.
+	 * @param container The <code>ThreadPoolExecutor</code> to use as a medium for processing.
 	 * @param owner     The <code>TaskContainer</code> that owns this executor.
 	 */
-	public StrategyDaemon(final TaskContainer container, final TaskContainer owner) {
+	public StrategyDaemon(final ThreadPoolExecutor container, final ThreadPoolExecutor owner) {
 		this.container = container;
 		this.owner = owner;
 		strategies = Collections.synchronizedList(new ArrayList<Strategy>());

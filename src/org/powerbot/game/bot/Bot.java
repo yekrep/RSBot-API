@@ -147,7 +147,7 @@ public final class Bot extends GameDefinition {
 		log.info("Refreshing environment");
 		if (activeScript != null && activeScript.isRunning()) {
 			activeScript.pause(true);
-			while (activeScript.getContainer().isActive()) {
+			while (activeScript.getContainer().getActiveCount() > 0) {
 				Time.sleep(150);
 			}
 		}

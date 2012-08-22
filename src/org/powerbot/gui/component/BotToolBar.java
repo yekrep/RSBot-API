@@ -146,14 +146,14 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 					bot.stopScript();
 					bot.getContainer().submit(new Runnable() {
 						public void run() {
-							while (!activeScript.getContainer().isLocked()) {
+							while (!activeScript.getContainer().isTerminated()) {
 								Time.sleep(150);
 							}
 							updateScriptControls();
 						}
 					});
 				} else {
-					if (!activeScript.getContainer().isLocked()) {
+					if (!activeScript.getContainer().isTerminated()) {
 						activeScript.log.info("Forcing script stop");
 						activeScript.kill();
 						updateScriptControls();
