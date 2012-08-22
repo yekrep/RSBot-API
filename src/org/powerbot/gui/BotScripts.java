@@ -605,7 +605,7 @@ public final class BotScripts extends JDialog implements ActionListener {
 						return;
 					}
 					script.setDefinition(def);
-					final Bot bot = Bot.bots.get(BotScripts.this.parent.getActiveTab());
+					final Bot bot = Bot.getInstance();
 					bot.setAccount(null);
 					for (final Account a : GameAccounts.getInstance()) {
 						if (username.getText().equalsIgnoreCase(a.toString())) {

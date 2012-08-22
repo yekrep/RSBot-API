@@ -40,8 +40,8 @@ public class RandomAccessFile {
 
 	private void checkData() {
 		if (uidData != null) {
-			if (client == null) {
-				client = Bot.resolve(this).getClient();
+			if (client == null && Bot.isInstantiated()) {
+				client = Bot.getInstance().getClient();
 			}
 			final String accountName = client != null ? client.getCurrentUsername() : "";
 

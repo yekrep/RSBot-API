@@ -38,7 +38,6 @@ import org.powerbot.game.bot.event.impl.TPlane;
  */
 public final class BotMenuView extends JMenu implements ActionListener {
 	private static final long serialVersionUID = 1L;
-	private final BotMenu parent;
 	private final Map<String, Class<? extends EventListener>> map;
 	private final List<String> items;
 	private static Map<Bot, Map<String, EventListener>> listeners;
@@ -65,10 +64,8 @@ public final class BotMenuView extends JMenu implements ActionListener {
 
 	public BotMenuView(final BotMenu parent) {
 		super(BotLocale.VIEW);
-		this.parent = parent;
-		final int tab = parent.parent.getActiveTab();
 
-		if (tab == -1) {
+		if (!Bot.isInstantiated()) {
 			setEnabled(false);
 			map = null;
 			items = null;
@@ -119,7 +116,7 @@ public final class BotMenuView extends JMenu implements ActionListener {
 		items.add(SEPERATOR);
 		items.add(MESSAGES);
 
-		final Bot bot = Bot.bots.get(tab);
+		final Bot bot = Bot.getInstance();
 		Map<String, EventListener> listeners = BotMenuView.listeners.get(bot);
 		if (listeners == null) {
 			listeners = new HashMap<String, EventListener>();
@@ -169,7 +166,7 @@ public final class BotMenuView extends JMenu implements ActionListener {
 	}
 
 	private void setView(final Class<? extends EventListener> eventListener, final boolean selected) {
-		final Bot bot = Bot.bots.get(parent.parent.getActiveTab());
+		final Bot bot = Bot.getInstance();
 		final String name = eventListener.getName();
 		Map<String, EventListener> listeners = BotMenuView.listeners.get(bot);
 		if (listeners == null) {

@@ -7,8 +7,6 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.SocketTimeoutException;
 import java.net.URL;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.logging.Level;
@@ -53,7 +51,7 @@ import org.powerbot.util.io.IOHelper;
  */
 public final class Bot extends GameDefinition {
 	private static final Logger log = Logger.getLogger(Bot.class.getName());
-	public static final List<Bot> bots = new LinkedList<Bot>();
+	private static Bot instance;
 
 	private ModScript modScript;
 	private BotPanel panel;
@@ -79,7 +77,7 @@ public final class Bot extends GameDefinition {
 
 	public volatile boolean refreshing;
 
-	public Bot() {
+	private Bot() {
 		final Dimension d = new Dimension(BotChrome.PANEL_WIDTH, BotChrome.PANEL_HEIGHT);
 		image = new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_RGB);
 		backBuffer = new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_RGB);
@@ -99,11 +97,21 @@ public final class Bot extends GameDefinition {
 		refreshing = false;
 	}
 
+	public synchronized static Bot getInstance() {
+		if (instance == null) {
+			instance = new Bot();
+		}
+		return instance;
+	}
+
+	public synchronized static boolean isInstantiated() {
+		return instance != null;
+	}
+
 	/**
 	 * Initializes this bot and adds it to reference.
 	 */
 	public void run() {
-		Bot.bots.add(this);
 		BotChrome.getInstance().toolbar.updateScriptControls();
 		if (call()) {
 			start();
@@ -233,9 +241,9 @@ public final class Bot extends GameDefinition {
 		if (task != null) {
 			container.submit(task);
 		}
-		bots.remove(this);
 		Context.context.remove(threadGroup);
 		container.shutdown();
+		instance = null;
 	}
 
 	/**
@@ -407,16 +415,6 @@ public final class Bot extends GameDefinition {
 		this.viewport.zX = viewport[constants.VIEWPORT_ZX];
 		this.viewport.zY = viewport[constants.VIEWPORT_ZY];
 		this.viewport.zZ = viewport[constants.VIEWPORT_ZZ];
-	}
-
-	public static Bot resolve(final Object o) {
-		final ClassLoader cl = o.getClass().getClassLoader();
-		for (final Bot bot : Bot.bots) {
-			if (cl == bot.getClient().getClass().getClassLoader()) {
-				return bot;
-			}
-		}
-		return null;
 	}
 
 	/**

@@ -8,9 +8,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
-import java.util.Collections;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -45,14 +43,17 @@ import org.powerbot.util.io.Resources;
 public final class BotToolBar extends JToolBar implements ActionListener {
 	private static final long serialVersionUID = 1L;
 	public final BotChrome parent;
-	public final JButton tabAdd, scriptPlay, scriptStop, panelInput;
-	private int activeTab = -1;
+	public final JButton botButton, tabAdd, scriptPlay, scriptStop, panelInput;
 
 	public BotToolBar(final BotChrome parent) {
 		this.parent = parent;
 		setFloatable(false);
 		setBorder(new EmptyBorder(1, 3, 1, 3));
 		setBackground(Color.BLACK);
+
+		botButton = new BotButton("Game");
+		botButton.setVisible(false);
+		add(botButton);
 
 		tabAdd = new JButton(new ImageIcon(Resources.getImage(Resources.Paths.ADD_WHITE)));
 		tabAdd.setEnabled(false);
@@ -117,7 +118,7 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 	public void actionPerformed(final ActionEvent e) {
 		final Component c = (Component) e.getSource();
 		if (c == scriptPlay) {
-			final Bot bot = Bot.bots.get(activeTab);
+			final Bot bot = Bot.getInstance();
 			final ActiveScript script = bot.getActiveScript();
 			if (script != null && script.isRunning()) {
 				if (!script.isSilentlyLocked()) {
@@ -136,10 +137,10 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 				new BotScripts(this);
 			}
 		} else if (c == scriptStop) {
-			if (activeTab == -1 || activeTab >= Bot.bots.size()) {
+			if (!Bot.isInstantiated()) {
 				return;
 			}
-			final Bot bot = Bot.bots.get(activeTab);
+			final Bot bot = Bot.getInstance();
 			final ActiveScript activeScript = bot.getActiveScript();
 			if (activeScript != null) {
 				if (activeScript.isRunning()) {
@@ -188,7 +189,7 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 	}
 
 	public synchronized void addTab() {
-		final int s = Bot.bots.size();
+		final int s = Bot.isInstantiated() ? 1 : 0;
 		final int n = Controller.getInstance().getRunningInstances();
 		final Logger log = Logger.getLogger(BotChrome.class.getName());
 		log.info(BotLocale.LOADINGTAB);
@@ -210,9 +211,8 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 				if (s > 0) {
 					Boot.fork(Boot.SWITCH_NEWTAB);
 				} else {
-					final Bot bot = new Bot();
-					add(new BotButton("Game", bot), s);
-					activateTab(s);
+					final Bot bot = Bot.getInstance();
+					botButton.setVisible(true);
 					new Thread(bot.threadGroup, bot).start();
 					parent.panel.setBot(bot);
 				}
@@ -221,23 +221,16 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 		tabAdd.setEnabled(true);
 	}
 
-	public synchronized void closeTab(final int n) {
-		closeTab(n, false);
-	}
-
-	public void closeTab(final int n, final boolean silent) {
-		final List<Bot> bots = Collections.unmodifiableList(Bot.bots);
-		boolean loggedIn = false;
-		if (n >= 0 && n < bots.size()) {
-			final Bot bot = bots.get(n);
-			if (bot != null && bot.getClient() != null && bot.multipliers != null && bot.constants != null) {
-				final int state = bot.getClient().getLoginIndex() * bot.multipliers.GLOBAL_LOGININDEX;
-				loggedIn = state == bot.constants.CLIENTSTATE_11 || state == bot.constants.CLIENTSTATE_12;
-			}
-		}
-		final BotButton b = getTabButton(n);
-		if (b == null) {
+	public void closeTab(final boolean silent) {
+		if (!Bot.isInstantiated()) {
+			parent.panel.setBot(null);
 			return;
+		}
+		boolean loggedIn = false;
+		final Bot bot = Bot.getInstance();
+		if (bot != null && bot.getClient() != null && bot.multipliers != null && bot.constants != null) {
+			final int state = bot.getClient().getLoginIndex() * bot.multipliers.GLOBAL_LOGININDEX;
+			loggedIn = state == bot.constants.CLIENTSTATE_11 || state == bot.constants.CLIENTSTATE_12;
 		}
 		if (!silent) {
 			try {
@@ -247,94 +240,31 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 			} catch (final RuntimeException ignored) {
 			}
 		}
-
-		final boolean a = getTabCount() > 1;
-		if (a) {
-			if (getActiveTab() == n) {
-				final int x = n == 1 ? 0 : n - 1;
-				activateTab(x);
-			}
-		} else {
-			parent.panel.setBot(null);
-			activeTab = -1;
-			updateScriptControls();
-		}
-		remove(n);
-		b.getBot().close();
+		botButton.setVisible(false);
+		parent.panel.setBot(null);
+		updateScriptControls();
+		Bot.getInstance().close();
 		parent.panel.repaint();
-		if (getTabCount() == 0) {
-			Logger.getLogger(Bot.class.getName()).log(Level.INFO, "Add a tab to start another bot", "Closed");
-		}
+		Logger.getLogger(Bot.class.getName()).log(Level.INFO, "Add a tab to start another bot", "Closed");
 		System.gc();
 	}
 
-	private void activateTab(final int n) {
-		if (getActiveTab() == n) {
-			return;
-		}
-		scriptPlay.setEnabled(true);
-		int i = 0;
-		for (final Component c : getComponents()) {
-			if (c instanceof BotButton) {
-				final boolean a = n == i;
-				final BotButton b = (BotButton) c;
-				b.setActive(a);
-				if (a) {
-					parent.panel.setBot(b.getBot());
-				}
-				i++;
-			}
-		}
-		activeTab = n;
-		updateScriptControls();
-	}
-
-	public int getActiveTab() {
-		return activeTab;
-	}
-
-	private BotButton getTabButton(final int n) {
-		int i = 0;
-		for (final Component c : getComponents()) {
-			if (c instanceof BotButton) {
-				if (i == n) {
-					return (BotButton) c;
-				}
-				i++;
-			}
-		}
-		return null;
-	}
-
-	public int getTabCount() {
-		int i = 0;
-		for (final Component c : getComponents()) {
-			if (c instanceof BotButton) {
-				i++;
-			}
-		}
-		return i;
-	}
-
-	public void closeInactiveTabs() {
-		for (int i = getTabCount() - 1; i > -1; i--) {
-			closeTab(i, true);
-		}
+	public void closeTabIfInactive() {
+		closeTab(true);
 	}
 
 	public void updateScriptControls() {
-		if (activeTab == -1) {
-			scriptPlay.setVisible(false);
-			scriptStop.setVisible(false);
-		} else {
+		final boolean b = Bot.isInstantiated();
+		scriptPlay.setVisible(b);
+		scriptStop.setVisible(b);
+		scriptPlay.setEnabled(b);
+		scriptStop.setEnabled(b);
+		if (b) {
 			scriptPlay.setVisible(true);
 			scriptStop.setVisible(true);
-			if (activeTab >= Bot.bots.size()) {
-				scriptPlay.setEnabled(true);
-				scriptStop.setEnabled(false);
-				return;
-			}
-			final Bot bot = Bot.bots.get(activeTab);
+			scriptPlay.setEnabled(true);
+			scriptStop.setEnabled(true);
+			final Bot bot = Bot.getInstance();
 			final ActiveScript script = bot.getActiveScript();
 			final boolean running = script != null && script.isRunning();
 			final boolean processing = running && !script.isPaused();
@@ -346,17 +276,15 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 
 	private final class BotButton extends JButton {
 		private static final long serialVersionUID = 1L;
-		private final Bot bot;
 
-		public BotButton(final String name, final Bot bot) {
+		public BotButton(final String name) {
 			super(name);
-			this.bot = bot;
 			setBackground(Color.BLACK);
 			setForeground(Color.WHITE);
+			setFont(getFont().deriveFont(Font.BOLD));
 			setFocusable(false);
 			setHorizontalTextPosition(SwingConstants.LEFT);
 			setIcon(new ImageIcon(Resources.getImage(Resources.Paths.CROSS_SMALL_GRAY)));
-			final Component c = this;
 			addMouseMotionListener(new MouseMotionAdapter() {
 				@Override
 				public void mouseMoved(final MouseEvent e) {
@@ -371,12 +299,9 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 			addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(final MouseEvent e) {
-					final int n = getComponentIndex(c);
 					if (e.getX() > getWidth() - getIcon().getIconWidth()
 							&& e.getX() < getWidth() - getIconTextGap()) {
-						closeTab(n);
-					} else {
-						activateTab(n);
+						closeTab(false);
 					}
 				}
 
@@ -385,14 +310,6 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 					setIcon(new ImageIcon(Resources.getImage(Resources.Paths.CROSS_SMALL_GRAY)));
 				}
 			});
-		}
-
-		public void setActive(final boolean active) {
-			setFont(getFont().deriveFont(active ? Font.BOLD : 0));
-		}
-
-		public Bot getBot() {
-			return bot;
 		}
 	}
 }

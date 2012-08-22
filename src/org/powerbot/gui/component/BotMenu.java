@@ -30,7 +30,7 @@ public final class BotMenu extends JPopupMenu implements ActionListener {
 	public BotMenu(final BotToolBar parent) {
 		this.parent = parent;
 
-		final int tabs = parent.getTabCount(), inst = Controller.getInstance().getRunningInstances();
+		final int tabs = Bot.isInstantiated() ? 1 : 0, inst = Controller.getInstance().getRunningInstances();
 
 		final JMenuItem newtab = new JMenuItem(BotLocale.NEWTAB);
 		newtab.setIcon(new ImageIcon(Resources.getImage(Resources.Paths.ADD)));
@@ -63,11 +63,11 @@ public final class BotMenu extends JPopupMenu implements ActionListener {
 
 		if (Configuration.DEVMODE) {
 			final JMenuItem widgetExplorer = new JMenuItem(BotLocale.WIDGETEXPLORER);
-			widgetExplorer.setEnabled(parent.getActiveTab() != -1);
+			widgetExplorer.setEnabled(Bot.isInstantiated());
 			widgetExplorer.addActionListener(this);
 			add(widgetExplorer);
 			final JMenuItem settingExplorer = new JMenuItem(BotLocale.SETTINGEXPLORER);
-			settingExplorer.setEnabled(parent.getActiveTab() != -1);
+			settingExplorer.setEnabled(Bot.isInstantiated());
 			settingExplorer.addActionListener(this);
 			add(settingExplorer);
 			addSeparator();
@@ -95,8 +95,8 @@ public final class BotMenu extends JPopupMenu implements ActionListener {
 				parent.addTab();
 			}
 		} else if (a.equals(BotLocale.CLOSETAB)) {
-			if (parent.getTabCount() > 0) {
-				parent.closeTab(parent.getActiveTab());
+			if (Bot.isInstantiated()) {
+				parent.closeTab(false);
 			} else if (Controller.getInstance().getRunningInstances() > 1) {
 				parent.parent.windowClosing(null);
 			}
@@ -105,9 +105,9 @@ public final class BotMenu extends JPopupMenu implements ActionListener {
 		} else if (a.startsWith(BotLocale.SIGNIN) || a.startsWith(BotLocale.SIGNEDINAS)) {
 			new BotSignin(parent.parent);
 		} else if (a.equals(BotLocale.WIDGETEXPLORER)) {
-			BotWidgetExplorer.display(Bot.bots.get(parent.getActiveTab()).getContext());
+			BotWidgetExplorer.display(Bot.getInstance().getContext());
 		} else if (a.equals(BotLocale.SETTINGEXPLORER)) {
-			BotSettingExplorer.display(Bot.bots.get(parent.getActiveTab()).getContext());
+			BotSettingExplorer.display(Bot.getInstance().getContext());
 		} else if (a.equals(BotLocale.WEBSITE)) {
 			BotChrome.openURL(Configuration.URLs.SITE);
 		} else if (a.equals(BotLocale.ABOUT)) {

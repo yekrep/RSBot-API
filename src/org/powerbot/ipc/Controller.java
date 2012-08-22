@@ -13,7 +13,6 @@ import java.net.InetAddress;
 import java.net.SocketAddress;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
@@ -160,8 +159,8 @@ public final class Controller implements Runnable {
 
 				case SCRIPT:
 					final ConcurrentLinkedQueue<String> list = new ConcurrentLinkedQueue<String>();
-					for (final Bot bot : Collections.unmodifiableList(Bot.bots)) {
-						final ActiveScript script = bot.getActiveScript();
+					if (Bot.isInstantiated()) {
+						final ActiveScript script = Bot.getInstance().getActiveScript();
 						if (script != null && !script.getContainer().isShutdown()) {
 							final ScriptDefinition def = script.getDefinition();
 							if (def != null && def.getID() != null && !def.getID().isEmpty()) {
@@ -176,7 +175,7 @@ public final class Controller implements Runnable {
 					reply = null;
 					NetworkAccount.getInstance().revalidate();
 					BotChrome.getInstance().panel.loadingPanel.setAdVisible(!NetworkAccount.getInstance().isVIP());
-					BotChrome.getInstance().toolbar.closeInactiveTabs();
+					BotChrome.getInstance().toolbar.closeTabIfInactive();
 					break;
 				}
 

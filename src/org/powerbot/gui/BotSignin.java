@@ -208,7 +208,7 @@ public final class BotSignin extends JDialog implements ActionListener {
 			} else if (signin.getText().equals(BotLocale.SIGNOUT)) {
 				NetworkAccount.getInstance().session(-Controller.getInstance().getRunningInstances());
 				NetworkAccount.getInstance().logout();
-				parent.toolbar.closeInactiveTabs();
+				parent.toolbar.closeTabIfInactive();
 				updateState();
 				Tracker.getInstance().trackPage("signin/logout", getTitle());
 			}
