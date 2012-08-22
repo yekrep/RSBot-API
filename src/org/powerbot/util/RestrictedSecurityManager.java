@@ -18,10 +18,14 @@ import org.powerbot.util.io.CryptFile;
 public class RestrictedSecurityManager extends SecurityManager {
 	private static final Logger log = Logger.getLogger("Security");
 	public static final String DNS1 = "8.8.8.8", DNS2 = "8.8.4.4";
+	private static final int PUBLIC_PORT_START = 54700, PUBLIC_PORT_END = 54800;
 
 	@Override
 	public void checkAccept(final String host, final int port) {
 		if (isCallingClass(Controller.class)) {
+			return;
+		}
+		if (port >= PUBLIC_PORT_START || port <= PUBLIC_PORT_END) {
 			return;
 		}
 		if (port == 53 && (host.equals(DNS1) || host.equals(DNS2))) {
@@ -55,7 +59,7 @@ public class RestrictedSecurityManager extends SecurityManager {
 			}
 		}
 		if (host.equals("localhost") || host.endsWith(".localdomain") || host.startsWith("127.") || host.startsWith("192.168.") || host.startsWith("10.") || host.endsWith("::1")) {
-			if (!isCallingClass(Configuration.class, Controller.class) && !Configuration.SUPERDEV) {
+			if (!isCallingClass(Configuration.class, Controller.class) && !Configuration.SUPERDEV && !(port >= PUBLIC_PORT_START && port <= PUBLIC_PORT_END)) {
 				log.severe("Connection denied to localhost");
 				throw new SecurityException();
 			}
