@@ -352,8 +352,13 @@ public final class BotScripts extends JDialog implements ActionListener {
 		final CryptFile cf = new CryptFile("links/scripts.dat", BotScripts.class);
 		final URL src = new URL(Configuration.URLs.SCRIPTS);
 		final Map<String, Map<String, String>> manifests = IniParser.deserialise(cf.download(src));
+		final boolean vip = NetworkAccount.getInstance().isVIP();
 		for (final Entry<String, Map<String, String>> entry : manifests.entrySet()) {
-			final ScriptDefinition def = ScriptDefinition.fromMap(entry.getValue());
+			final Map<String, String> params = entry.getValue();
+			if (params.containsKey("vip") && IniParser.parseBool(params.get("vip")) && !vip) {
+				continue;
+			}
+			final ScriptDefinition def = ScriptDefinition.fromMap(params);
 			if (def != null) {
 				def.source = new URL(src, entry.getKey());
 				if (entry.getValue().containsKey("className")) {
