@@ -23,7 +23,7 @@ public class TaskExecutor {
 		this.threads = Collections.synchronizedList(new LinkedList<Thread>());
 	}
 
-	public Future<?> submit(final Task task) {
+	public Future<?> submit(final Runnable task) {
 		if (task == null) {
 			throw new NullPointerException();
 		}
@@ -32,7 +32,7 @@ public class TaskExecutor {
 		return ftask;
 	}
 
-	public <T> Future<T> submit(final CallableTask<T> task) {
+	public <T> Future<T> submit(final Callable<T> task) {
 		if (task == null) {
 			throw new NullPointerException();
 		}

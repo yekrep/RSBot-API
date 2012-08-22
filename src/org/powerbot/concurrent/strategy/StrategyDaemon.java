@@ -7,7 +7,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.RejectedExecutionException;
 
-import org.powerbot.concurrent.Task;
 import org.powerbot.concurrent.TaskContainer;
 import org.powerbot.game.api.util.Time;
 import org.powerbot.util.Configuration;
@@ -17,7 +16,7 @@ import org.powerbot.util.Configuration;
  *
  * @author Timer
  */
-public class StrategyDaemon implements StrategyContainer, Task {
+public class StrategyDaemon implements StrategyContainer, Runnable {
 	private final TaskContainer container;
 	private final TaskContainer owner;
 	private final List<Strategy> strategies;
@@ -113,7 +112,7 @@ public class StrategyDaemon implements StrategyContainer, Task {
 								(strategy.sync && !strategy.isIdle())) {
 							continue;
 						}
-						for (final Task task : strategy.tasks) {
+						for (final Runnable task : strategy.tasks) {
 							try {
 								final Future<?> future = container.submit(task);
 								if (future != null) {
@@ -175,8 +174,8 @@ public class StrategyDaemon implements StrategyContainer, Task {
 	 * @return The <code>RunnableTask</code> to be submitted.
 	 */
 
-	private Task createFutureDisposer(final List<Future<?>> lockingFutures, final Object threadObject) {
-		return new Task() {
+	private Runnable createFutureDisposer(final List<Future<?>> lockingFutures, final Object threadObject) {
+		return new Runnable() {
 			public void run() {
 				while (lockingFutures.size() > 0) {
 					final Future<?> future = lockingFutures.get(0);

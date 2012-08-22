@@ -25,7 +25,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
 import org.powerbot.Boot;
-import org.powerbot.concurrent.Task;
 import org.powerbot.game.api.ActiveScript;
 import org.powerbot.game.api.util.Time;
 import org.powerbot.game.bot.Bot;
@@ -145,7 +144,7 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 			if (activeScript != null) {
 				if (activeScript.isRunning()) {
 					bot.stopScript();
-					bot.getContainer().submit(new Task() {
+					bot.getContainer().submit(new Runnable() {
 						public void run() {
 							while (!activeScript.getContainer().isLocked()) {
 								Time.sleep(150);

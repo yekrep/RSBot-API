@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
-import org.powerbot.concurrent.Task;
 import org.powerbot.game.api.AntiRandom;
 import org.powerbot.game.api.Manifest;
 import org.powerbot.game.api.methods.Game;
@@ -28,7 +27,6 @@ public class Login extends AntiRandom {
 	private static final int WIDGET_LOGIN_TRY_AGAIN = 65;
 	private static final int WIDGET_LOGIN_USERNAME_TEXT = 70;
 	private static final int WIDGET_LOGIN_PASSWORD_TEXT = 76;
-	private static final int WIDGET_LOGIN_ENTER_GAME = 44;
 
 	private static final int WIDGET_LOBBY = 906;
 	private static final int WIDGET_LOBBY_ERROR = 249;
@@ -42,7 +40,7 @@ public class Login extends AntiRandom {
 	}
 
 	private enum LoginEvent {
-		TOKEN_FAILURE(WIDGET_LOGIN_ERROR, "game session", 1000 * 5 * 60, new Task() {
+		TOKEN_FAILURE(WIDGET_LOGIN_ERROR, "game session", 1000 * 5 * 60, new Runnable() {
 			public void run() {
 				Context.resolve().refresh();
 			}
@@ -51,9 +49,9 @@ public class Login extends AntiRandom {
 
 		private final String message;
 		private final int child, wait;
-		private final Task task;
+		private final Runnable task;
 
-		LoginEvent(final int child, final String message, final int wait, final Task task) {
+		LoginEvent(final int child, final String message, final int wait, final Runnable task) {
 			this.child = child;
 			this.message = message;
 			this.wait = wait;
@@ -69,9 +67,9 @@ public class Login extends AntiRandom {
 		LOGGED_IN(WIDGET_LOBBY_ERROR, "last session", Random.nextInt(1000, 4000));
 		private final String message;
 		private final int child, wait;
-		private final Task task;
+		private final Runnable task;
 
-		LobbyEvent(final int child, final String message, final int wait, final Task task) {
+		LobbyEvent(final int child, final String message, final int wait, final Runnable task) {
 			this.child = child;
 			this.message = message;
 			this.wait = wait;

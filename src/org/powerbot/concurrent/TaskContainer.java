@@ -1,5 +1,6 @@
 package org.powerbot.concurrent;
 
+import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 
 /**
@@ -14,9 +15,9 @@ public interface TaskContainer {
 	 * @param task The task to be deployed.
 	 * @return The <code>Future</code> of this <code>Task</code>.
 	 */
-	public Future<?> submit(Task task);
+	public Future<?> submit(Runnable task);
 
-	public <T> Future<T> submit(CallableTask<T> task);
+	public <T> Future<T> submit(Callable<T> task);
 
 	/**
 	 * Determines if this container is currently processing tasks.

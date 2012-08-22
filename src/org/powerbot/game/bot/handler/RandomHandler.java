@@ -7,7 +7,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.logging.Logger;
 
-import org.powerbot.concurrent.Task;
 import org.powerbot.game.api.ActiveScript;
 import org.powerbot.game.api.AntiRandom;
 import org.powerbot.game.api.Manifest;
@@ -34,13 +33,12 @@ import org.powerbot.game.bot.randoms.Pillory;
 import org.powerbot.game.bot.randoms.Pinball;
 import org.powerbot.game.bot.randoms.Quiz;
 import org.powerbot.game.bot.randoms.SandwichLady;
-import org.powerbot.game.bot.randoms.SpinTickets;
 import org.powerbot.game.bot.randoms.WidgetCloser;
 
 /**
  * @author Timer
  */
-public class RandomHandler implements Task {
+public class RandomHandler implements Runnable {
 	private static final Logger log = Logger.getLogger(RandomHandler.class.getName());
 
 	private final Bot bot;

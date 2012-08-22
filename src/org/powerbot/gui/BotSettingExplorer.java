@@ -30,7 +30,6 @@ import javax.swing.WindowConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import org.powerbot.concurrent.Task;
 import org.powerbot.game.api.methods.Settings;
 import org.powerbot.game.api.util.Time;
 import org.powerbot.game.bot.Context;
@@ -78,7 +77,7 @@ public class BotSettingExplorer extends JFrame {
 			context.disregard(Thread.currentThread().getThreadGroup());
 		} catch (final NullPointerException ignored) {
 		}
-		context.getBot().getContainer().submit(new Task() {
+		context.getBot().getContainer().submit(new Runnable() {
 			@Override
 			public void run() {
 				while (settingExplorer.isVisible()) {

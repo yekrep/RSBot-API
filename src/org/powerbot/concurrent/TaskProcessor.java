@@ -1,5 +1,6 @@
 package org.powerbot.concurrent;
 
+import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 
 /**
@@ -17,11 +18,11 @@ public class TaskProcessor implements TaskContainer {
 	/**
 	 * {@inheritDoc}
 	 */
-	public Future<?> submit(final Task task) {
+	public Future<?> submit(final Runnable task) {
 		return executor.submit(task);
 	}
 
-	public <T> Future<T> submit(final CallableTask<T> task) {
+	public <T> Future<T> submit(final Callable<T> task) {
 		return executor.submit(task);
 	}
 

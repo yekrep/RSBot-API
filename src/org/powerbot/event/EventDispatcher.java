@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.powerbot.concurrent.Task;
 import org.powerbot.game.bot.event.listener.MessageListener;
 import org.powerbot.game.bot.event.listener.PaintListener;
 import org.powerbot.game.bot.event.listener.TextPaintListener;
@@ -26,7 +25,7 @@ import org.powerbot.game.bot.event.listener.TextPaintListener;
  *
  * @author Timer
  */
-public class EventDispatcher implements EventManager, Task {
+public class EventDispatcher implements EventManager, Runnable {
 	private static final Logger log = Logger.getLogger(EventDispatcher.class.getName());
 	private volatile boolean active;
 	private final List<EventObject> queue = new ArrayList<EventObject>();

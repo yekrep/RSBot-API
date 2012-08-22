@@ -18,7 +18,6 @@ import java.awt.event.MouseWheelListener;
 
 import javax.swing.JPanel;
 
-import org.powerbot.concurrent.Task;
 import org.powerbot.game.bot.Bot;
 import org.powerbot.game.client.input.Mouse;
 import org.powerbot.gui.BotChrome;
@@ -246,7 +245,7 @@ public class BotPanel extends JPanel {
 		}
 	}
 
-	private final class BotSet implements Task {
+	private final class BotSet implements Runnable {
 		private final ThreadGroup threadGroup;
 
 		private BotSet(final ThreadGroup threadGroup) {

@@ -3,8 +3,6 @@ package org.powerbot.concurrent.strategy;
 import java.util.EventListener;
 import java.util.concurrent.Future;
 
-import org.powerbot.concurrent.Task;
-
 /**
  * A strategy that is performed when its policy allows so.
  *
@@ -15,15 +13,15 @@ public class Strategy implements Condition, EventListener {
 	boolean reset;
 	boolean sync;
 
-	Task[] tasks;
+	Runnable[] tasks;
 	Future<?>[] executingFutures;
 
 	private Condition policy;
 
 	public Strategy() {
-		this((Task) null);
-		if (this instanceof Task) {
-			setTask((Task) this);
+		this((Runnable) null);
+		if (this instanceof Runnable) {
+			setTask((Runnable) this);
 		}
 	}
 
@@ -32,8 +30,8 @@ public class Strategy implements Condition, EventListener {
 	 *
 	 * @param task The task associated with this <code>Strategy</code>.
 	 */
-	public Strategy(final Task task) {
-		this(null, new Task[]{task});
+	public Strategy(final Runnable task) {
+		this(null, new Runnable[]{task});
 	}
 
 	/**
@@ -41,7 +39,7 @@ public class Strategy implements Condition, EventListener {
 	 *
 	 * @param tasks The tasks associated with this <code>Strategy</code>.
 	 */
-	public Strategy(final Task[] tasks) {
+	public Strategy(final Runnable[] tasks) {
 		this(null, tasks);
 	}
 
@@ -51,8 +49,8 @@ public class Strategy implements Condition, EventListener {
 	 * @param policy The policy associated with this <code>Strategy</code>.
 	 * @param task   The task associated with this <code>Strategy</code>.
 	 */
-	public Strategy(final Condition policy, final Task task) {
-		this(policy, new Task[]{task});
+	public Strategy(final Condition policy, final Runnable task) {
+		this(policy, new Runnable[]{task});
 	}
 
 	/**
@@ -61,7 +59,7 @@ public class Strategy implements Condition, EventListener {
 	 * @param policy The policy associated with this <code>Strategy</code>.
 	 * @param tasks  The tasks associated with this <code>Strategy</code>.
 	 */
-	public Strategy(final Condition policy, final Task[] tasks) {
+	public Strategy(final Condition policy, final Runnable[] tasks) {
 		this.policy = policy;
 		this.tasks = tasks;
 
@@ -89,12 +87,12 @@ public class Strategy implements Condition, EventListener {
 		return true;
 	}
 
-	public void setTasks(final Task[] tasks) {
+	public void setTasks(final Runnable[] tasks) {
 		this.tasks = tasks;
 	}
 
-	public void setTask(final Task task) {
-		setTasks(new Task[]{task});
+	public void setTask(final Runnable task) {
+		setTasks(new Runnable[]{task});
 	}
 
 	public void setLock(final boolean lock) {

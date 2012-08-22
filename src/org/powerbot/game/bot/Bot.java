@@ -13,7 +13,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.powerbot.asm.NodeManipulator;
-import org.powerbot.concurrent.Task;
 import org.powerbot.event.EventDispatcher;
 import org.powerbot.game.GameDefinition;
 import org.powerbot.game.api.ActiveScript;
@@ -226,10 +225,10 @@ public final class Bot extends GameDefinition {
 			log.fine("Terminating stub activities");
 			stub.setActive(false);
 		}
-		Task task = null;
+		Runnable task = null;
 		if (appletContainer != null) {
 			log.fine("Shutting down applet");
-			task = new Task() {
+			task = new Runnable() {
 				public void run() {
 					appletContainer.stop();
 					appletContainer.destroy();
@@ -385,7 +384,7 @@ public final class Bot extends GameDefinition {
 			return;
 		}
 		refreshing = true;
-		container.submit(new Task() {
+		container.submit(new Runnable() {
 			public void run() {
 				reload();
 			}
@@ -420,7 +419,7 @@ public final class Bot extends GameDefinition {
 	/**
 	 * @author Timer
 	 */
-	private static final class SafeMode implements Task {
+	private static final class SafeMode implements Runnable {
 		private final Bot bot;
 
 		public SafeMode(final Bot bot) {
