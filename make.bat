@@ -32,6 +32,7 @@ ECHO Packing JAR
 CALL :pack
 ECHO Obfuscating
 CALL :obfuscate
+CALL :rename
 CALL :end
 GOTO :eof
 
@@ -57,6 +58,11 @@ CD "%lib%"
 CALL java -D"ZKM_OPEN=%name%.jar" -D"ZKM_SAVE=.\\" -D"ZKM_CHANGELOG=ZKM_ChangeLog.txt" -jar ZKM.jar script.txt
 DEL /F "%name%.jar.BACKUP"
 CD ..
+GOTO :eof
+
+:rename
+FOR /F "delims=" %%G in ('java -jar "%dist%" -v') DO @SET version=%%G
+MOVE /Y "%dist%" "%lib%\%name%-%version%.jar"
 GOTO :eof
 
 :end
