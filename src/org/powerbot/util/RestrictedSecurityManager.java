@@ -6,7 +6,7 @@ import java.security.Permission;
 import java.util.Map.Entry;
 import java.util.logging.Logger;
 
-import org.powerbot.game.GameDefinition;
+import org.powerbot.game.loader.RSClassLoader;
 import org.powerbot.ipc.Controller;
 import org.powerbot.service.scripts.ScriptClassLoader;
 import org.powerbot.util.Configuration.OperatingSystem;
@@ -182,7 +182,7 @@ public class RestrictedSecurityManager extends SecurityManager {
 		}
 
 		// allow access for privileged thread groups
-		if (Thread.currentThread().getThreadGroup().getName().startsWith(GameDefinition.THREADGROUPNAMEPREFIX)) {
+		if (isGameThread()) {
 			return;
 		}
 
@@ -221,6 +221,20 @@ public class RestrictedSecurityManager extends SecurityManager {
 		for (int i = 1; i < context.length; i++) {
 			final ClassLoader loader = context[i].getClassLoader();
 			if (loader != null && loader.getClass().isAssignableFrom(ScriptClassLoader.class)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private boolean isGameThread() {
+		final Class<?>[] context = getClassContext();
+		for (int i = 1; i < 5; i++) {
+			if (context[i].isAssignableFrom(RestrictedSecurityManager.class)) {
+				continue;
+			}
+			final ClassLoader loader = context[i].getClassLoader();
+			if (loader != null && loader.getClass().isAssignableFrom(RSClassLoader.class)) {
 				return true;
 			}
 		}
