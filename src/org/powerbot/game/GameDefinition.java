@@ -5,14 +5,14 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.powerbot.asm.NodeManipulator;
+import org.powerbot.concurrent.ThreadPool;
 import org.powerbot.game.loader.AdaptException;
 import org.powerbot.game.loader.Crawler;
 import org.powerbot.game.loader.Crypt;
@@ -45,8 +45,7 @@ public abstract class GameDefinition implements GameEnvironment, Runnable {
 
 	public GameDefinition() {
 		threadGroup = new ThreadGroup(THREADGROUPNAMEPREFIX + hashCode());
-		final BlockingQueue<Runnable> workQueue = new LinkedBlockingQueue<Runnable>();
-		container = new ThreadPoolExecutor(1, Runtime.getRuntime().availableProcessors(), 60, TimeUnit.HOURS, workQueue);
+		container = new ThreadPoolExecutor(1, Runtime.getRuntime().availableProcessors() * 2, 60, TimeUnit.HOURS, new SynchronousQueue<Runnable>(), new ThreadPool(threadGroup), new ThreadPoolExecutor.CallerRunsPolicy());
 		classes = new HashMap<String, byte[]>();
 
 		crawler = new Crawler();
