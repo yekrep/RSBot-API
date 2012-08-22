@@ -26,8 +26,7 @@ import org.powerbot.util.io.PrintStreamHandler;
 
 public class Boot implements Runnable {
 	private final static Logger log = Logger.getLogger(Boot.class.getName());
-	private final static String SWITCH_DEV = "-dev";
-	private final static String SWITCH_RESTARTED = "-restarted";
+	private final static String SWITCH_DEV = "-dev", SWITCH_RESTARTED = "-restarted", SWITCH_VERSION_SHORT = "-v";
 	public final static String SWITCH_NEWTAB = "-newtab";
 
 	public static void main(final String[] args) {
@@ -58,6 +57,9 @@ public class Boot implements Runnable {
 			case SWITCH_NEWTAB:
 				newtab = true;
 				break;
+			case SWITCH_VERSION_SHORT:
+				System.out.println(Configuration.VERSION);
+				return;
 			}
 		}
 
