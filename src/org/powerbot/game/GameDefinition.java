@@ -46,7 +46,7 @@ public abstract class GameDefinition implements GameEnvironment, Runnable {
 	public GameDefinition() {
 		threadGroup = new ThreadGroup(THREADGROUPNAMEPREFIX + hashCode());
 		container = new ThreadPoolExecutor(1, Runtime.getRuntime().availableProcessors() * 2, 60, TimeUnit.HOURS, new SynchronousQueue<Runnable>(), new ThreadPool(threadGroup), new ThreadPoolExecutor.CallerRunsPolicy());
-		classes = new HashMap<String, byte[]>();
+		classes = new HashMap<>();
 
 		crawler = new Crawler();
 		appletContainer = null;
@@ -141,7 +141,7 @@ public abstract class GameDefinition implements GameEnvironment, Runnable {
 	}
 
 	public Map<String, byte[]> classes() {
-		final Map<String, byte[]> classes = new HashMap<String, byte[]>();
+		final Map<String, byte[]> classes = new HashMap<>();
 		classes.putAll(this.classes);
 		return classes;
 	}
