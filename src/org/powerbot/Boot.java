@@ -34,15 +34,6 @@ public class Boot implements Runnable {
 		for (final Handler handler : logger.getHandlers()) {
 			logger.removeHandler(handler);
 		}
-		logger.addHandler(new PrintStreamHandler());
-
-		Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
-			@Override
-			public void uncaughtException(Thread t, Throwable e) {
-				log.logp(Level.SEVERE, t.getStackTrace()[1].getClassName(), t.getStackTrace()[1].getMethodName(), e.getMessage(), e);
-				e.printStackTrace();
-			}
-		});
 
 		boolean restarted = false, newtab = false;
 
@@ -62,6 +53,16 @@ public class Boot implements Runnable {
 				return;
 			}
 		}
+
+		logger.addHandler(new PrintStreamHandler());
+
+		Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
+			@Override
+			public void uncaughtException(Thread t, Throwable e) {
+				log.logp(Level.SEVERE, t.getStackTrace()[1].getClassName(), t.getStackTrace()[1].getMethodName(), e.getMessage(), e);
+				e.printStackTrace();
+			}
+		});
 
 		final int req = 768;
 		long mem = Runtime.getRuntime().maxMemory() / 1024 / 1024;
