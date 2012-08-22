@@ -423,8 +423,6 @@ public final class BotScripts extends JDialog implements ActionListener {
 								list.add(def);
 							}
 						}
-					} else if (file.getName().endsWith(".jar")) {
-						// TODO: load local scripts from a jar
 					}
 				} catch (final Exception ignored) {
 				}
