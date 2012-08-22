@@ -62,7 +62,13 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 				SwingUtilities.invokeLater(new Runnable() {
 					@Override
 					public void run() {
-						addTab();
+						tabAdd.setEnabled(false);
+						SwingUtilities.invokeLater(new Runnable() {
+							@Override
+							public void run() {
+								addTab();
+							}
+						});
 					}
 				});
 			}
@@ -188,35 +194,31 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 		log.info(BotLocale.LOADINGTAB);
 		if (!NetworkAccount.getInstance().isVIP() && Configuration.isServerOS()) {
 			log.info(BotLocale.NEEDVIPVPS);
-			return;
-		}
-		if (n > 0 && !NetworkAccount.getInstance().isLoggedIn()) {
+		} else if (n > 0 && !NetworkAccount.getInstance().isLoggedIn()) {
 			log.severe(BotLocale.NEEDSIGNINMULTITAB);
-			return;
-		}
-		if (n > 1 && !NetworkAccount.getInstance().isVIP()) {
+		} else if (n > 1 && !NetworkAccount.getInstance().isVIP()) {
 			log.severe(BotLocale.NEEDVIPMULTITAB);
-			return;
-		}
-		if (Controller.getInstance().getRunningModes().contains(1)) {
+		} else if (Controller.getInstance().getRunningModes().contains(1)) {
 			log.severe(BotLocale.DEVMODERUNNING);
-			return;
-		}
-		final Map<String, String> info = NetworkAccount.getInstance().session(0);
-		if (info == null || !info.containsKey("success") || !IniParser.parseBool(info.get("success"))) {
-			final String msg = info != null && info.containsKey("message") ? info.get("message") : BotLocale.CANTOPENTAB;
-			log.severe(msg);
-			return;
-		}
-		if (s > 0) {
-			Boot.fork(Boot.SWITCH_NEWTAB);
 		} else {
-			final Bot bot = new Bot();
-			add(new BotButton("Game", bot), s);
-			activateTab(s);
-			new Thread(bot.threadGroup, bot).start();
-			parent.panel.setBot(bot);
+			final Map<String, String> info = NetworkAccount.getInstance().session(0);
+			if (info == null || !info.containsKey("success") || !IniParser.parseBool(info.get("success"))) {
+				final String msg = info != null && info.containsKey("message") ? info.get("message") : BotLocale.CANTOPENTAB;
+				log.severe(msg);
+			}
+			else {
+				if (s > 0) {
+					Boot.fork(Boot.SWITCH_NEWTAB);
+				} else {
+					final Bot bot = new Bot();
+					add(new BotButton("Game", bot), s);
+					activateTab(s);
+					new Thread(bot.threadGroup, bot).start();
+					parent.panel.setBot(bot);
+				}
+			}
 		}
+		tabAdd.setEnabled(true);
 	}
 
 	public synchronized void closeTab(final int n) {
