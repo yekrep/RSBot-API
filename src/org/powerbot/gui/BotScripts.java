@@ -24,6 +24,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -407,6 +408,26 @@ public final class BotScripts extends JDialog implements ActionListener {
 				try {
 					if (name.endsWith(".class") && name.indexOf('$') == -1) {
 						if (name.length() < 9) {
+							continue;
+						}
+						final FileInputStream fis = new FileInputStream(file);
+						final byte[] data = new byte[512];
+						fis.read(data);
+						fis.close();
+						if (data == null || data.length < 12) {
+							continue;
+						}
+						if (data[7] != 0x33 || !(data[0] == 0xca && data[1] == 0xfe && data[2] == 0xba && data[3] == 0xbe)) {
+							continue;
+						}
+						boolean skip = false;
+						for (int i = 11; i < data.length - 2;) {
+							if (data[i++] == 0x5a && data[i++] == 0x4b && data[i++] == 0x4d) {
+								skip = true;
+								break;
+							}
+						}
+						if (skip) {
 							continue;
 						}
 						final URL src = parent.getCanonicalFile().toURI().toURL();
