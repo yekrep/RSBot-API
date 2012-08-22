@@ -38,7 +38,7 @@ public class Configuration {
 
 		public static final String CLIENTPATCH = "https://" + DOMAIN_SERVICES + "/aux/%s.ms";
 		public static final String SCRIPTSLIST = "http://" + DOMAIN_SITE + "/scripts/";
-		public static final String SCRIPTSAUTH = "https://" + DOMAIN_SITE + "/scripts/api/auth/?{POST}a=%s&id=%s";
+		public static final String SCRIPTSAUTH = "https://" + DOMAIN_SITE + "/scripts/api/auth/?{POST}a=%s&id=%s&n=%s";
 		public static final String SCRIPTSCOLLECTION = "https://" + DOMAIN_SITE + "/scripts/api/collection/?{POST}a=%s";
 		public static final String SIGNIN = "https://" + DOMAIN_SITE + "/api/login/?{POST}u=%s&p=%s&a=%s";
 		public static final String SESSION = "https://" + DOMAIN_SITE + "/api/login/session/?{POST}a=%s&uid=%s&n=%s";

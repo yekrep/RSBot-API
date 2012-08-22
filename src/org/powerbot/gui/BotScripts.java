@@ -565,9 +565,22 @@ public final class BotScripts extends JDialog implements ActionListener {
 					if (def.local) {
 						cl = new ScriptClassLoader(def.source);
 					} else {
+						try {
+							cl = new ScriptClassLoader(new ZipInputStream(HttpClient.openStream(def.source)));
+						} catch (final Exception ignored) {
+							log.severe("Could not download script");
+							ignored.printStackTrace();
+							return;
+						}
+						int n = 0;
+						for (final String running : Controller.getInstance().getRunningScripts()) {
+							if (def.getID().equals(running)) {
+								n++;
+							}
+						}
 						final Map<String, Map<String, String>> data;
 						try {
-							data = IniParser.deserialise(HttpClient.openStream(Configuration.URLs.SCRIPTSAUTH, NetworkAccount.getInstance().isLoggedIn() ? NetworkAccount.getInstance().getAccount().getAuth() : "", def.getID()));
+							data = IniParser.deserialise(HttpClient.openStream(Configuration.URLs.SCRIPTSAUTH, NetworkAccount.getInstance().isLoggedIn() ? NetworkAccount.getInstance().getAccount().getAuth() : "", def.getID(), Integer.toString(n)));
 						} catch (final IOException ignored) {
 							log.severe("Unable to obtain auth response");
 							return;
@@ -584,19 +597,6 @@ public final class BotScripts extends JDialog implements ActionListener {
 								JOptionPane.showMessageDialog(BotScripts.this, data.get("auth").get("message"));
 							}
 							log.severe("You are not authorised to run this script");
-							return;
-						}
-						try {
-							cl = new ScriptClassLoader(new ZipInputStream(HttpClient.openStream(def.source)));
-						} catch (final Exception ignored) {
-							log.severe("Could not download script");
-							ignored.printStackTrace();
-							return;
-						}
-					}
-					for (final String running : Controller.getInstance().getRunningScripts()) {
-						if (def.getID().equals(running)) {
-							JOptionPane.showMessageDialog(BotScripts.this, BotLocale.SCRIPTRUNNING);
 							return;
 						}
 					}
