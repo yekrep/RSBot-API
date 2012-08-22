@@ -62,6 +62,7 @@ GOTO :eof
 
 :rename
 FOR /F "delims=" %%G in ('java -jar "%dist%" -v') DO @SET version=%%G
+SET version=%version: =%
 MOVE /Y "%dist%" "%lib%\%name%-%version%.jar"
 GOTO :eof
 
