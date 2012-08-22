@@ -106,7 +106,7 @@ public final class BotScripts extends JDialog implements ActionListener {
 		this.parent = parent;
 		collection = new ArrayList<String>();
 
-		localOnly = Configuration.DEVMODE && NetworkAccount.getInstance().isDeveloper();
+		localOnly = Configuration.DEVMODE;
 		if (localOnly) {
 			setTitle(getTitle() + " (showing only local scripts)");
 		}
