@@ -417,7 +417,7 @@ public final class BotScripts extends JDialog implements ActionListener {
 						if (data == null || data.length < 12) {
 							continue;
 						}
-						if (data[7] != 0x33 || !(data[0] == 0xca && data[1] == 0xfe && data[2] == 0xba && data[3] == 0xbe)) {
+						if (data[7] != 0x33) {
 							continue;
 						}
 						boolean skip = false;
