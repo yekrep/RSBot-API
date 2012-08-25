@@ -386,7 +386,6 @@ public final class Bot implements Runnable {
 		image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 		appletContainer.setSize(width, height);
 		appletContainer.update(backBuffer.getGraphics());
-		appletContainer.paint(backBuffer.getGraphics());
 	}
 
 	/**
