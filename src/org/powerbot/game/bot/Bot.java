@@ -139,10 +139,6 @@ public final class Bot implements Runnable {
 		return container.submit(new Loader(this));
 	}
 
-	public ThreadPoolExecutor getContainer() {
-		return container;
-	}
-
 	/**
 	 * {@inheritDoc}
 	 */
@@ -184,21 +180,42 @@ public final class Bot implements Runnable {
 		}
 	}
 
-	/**
-	 * Sets the panel currently associated with this bot to relay events to.
-	 *
-	 * @param panel The <code>BotPanel</code> responsible for displaying this bot.
-	 */
-	public void setPanel(final BotPanel panel) {
-		this.panel = panel;
+	public ThreadPoolExecutor getContainer() {
+		return container;
 	}
 
-	/**
-	 * Resizes this bot's back buffer and container.
-	 *
-	 * @param width  Width of the component.
-	 * @param height Height of the component.
-	 */
+	public void startScript(final ActiveScript script) {
+		RestrictedSecurityManager.assertNonScript();
+		if (composite.activeScript != null && composite.activeScript.isRunning()) {
+			throw new RuntimeException("cannot run multiple scripts at once!");
+		}
+
+		this.composite.activeScript = script;
+		script.init(composite.context);
+		final Future<?> future = container.submit(script.start());
+		try {
+			future.get();
+		} catch (final InterruptedException | ExecutionException ignored) {
+		}
+	}
+
+	public void stopScript() {
+		if (composite.activeScript == null) {
+			throw new RuntimeException("script is non existent!");
+		}
+
+		log.info("Stopping script");
+		composite.activeScript.stop();
+	}
+
+	public BufferedImage getImage() {
+		return image;
+	}
+
+	public BufferedImage getBuffer() {
+		return backBuffer;
+	}
+
 	public void resize(final int width, final int height) {
 		backBuffer = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 		image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
@@ -211,11 +228,6 @@ public final class Bot implements Runnable {
 		}
 	}
 
-	/**
-	 * Returns the buffered graphics associated with this bot's client after painting information provided by events.
-	 *
-	 * @return The <code>Graphics</code> to be displayed in the <code>Canvas</code>.
-	 */
 	public Graphics getBufferGraphics() {
 		final Graphics back = backBuffer.getGraphics();
 		if (composite.client != null && panel != null && !BotChrome.minimised) {
@@ -235,19 +247,10 @@ public final class Bot implements Runnable {
 		return backBuffer.getGraphics();
 	}
 
-	public BufferedImage getImage() {
-		return image;
+	public void setPanel(final BotPanel panel) {
+		this.panel = panel;
 	}
 
-	public BufferedImage getBuffer() {
-		return backBuffer;
-	}
-
-	/**
-	 * Sets the client of this bot to the provided <code>Client</code>, while initializing it to be associated with this bot via callback.
-	 *
-	 * @param client The <code>Client</code> to associate with this bot.
-	 */
 	private void setClient(final Client client) {
 		this.composite.client = client;
 		client.setCallback(new CallbackImpl(this));
@@ -271,9 +274,6 @@ public final class Bot implements Runnable {
 		return clientLoader;
 	}
 
-	/**
-	 * @return The <code>Canvas</code> of this bot's client.
-	 */
 	public Canvas getCanvas() {
 		return composite.client != null ? composite.client.getCanvas() : null;
 	}
@@ -305,34 +305,11 @@ public final class Bot implements Runnable {
 		}
 	}
 
-	public void startScript(final ActiveScript script) {
-		RestrictedSecurityManager.assertNonScript();
-		if (composite.activeScript != null && composite.activeScript.isRunning()) {
-			throw new RuntimeException("cannot run multiple scripts at once!");
-		}
-
-		this.composite.activeScript = script;
-		script.init(composite.context);
-		final Future<?> future = container.submit(script.start());
-		try {
-			future.get();
-		} catch (final InterruptedException | ExecutionException ignored) {
-		}
-	}
-
-	public void stopScript() {
-		if (composite.activeScript == null) {
-			throw new RuntimeException("script is non existent!");
-		}
-
-		log.info("Stopping script");
-		composite.activeScript.stop();
-	}
-
 	public void refresh() {
 		if (refreshing) {
 			return;
 		}
+
 		refreshing = true;
 		container.submit(new Runnable() {
 			public void run() {
@@ -345,9 +322,6 @@ public final class Bot implements Runnable {
 		MouseNode.threadSpeed.put(Thread.currentThread().getThreadGroup(), speed);
 	}
 
-	/**
-	 * @author Timer
-	 */
 	private static final class SafeMode implements Runnable {
 		private final Bot bot;
 
@@ -355,9 +329,6 @@ public final class Bot implements Runnable {
 			this.bot = bot;
 		}
 
-		/**
-		 * Enters the game into SafeMode by pressing 's'.
-		 */
 		public void run() {
 			if (bot != null && !bot.clientLoader.isCancelled() && bot.getClient() != null && !Keyboard.isReady()) {
 				while (!bot.clientLoader.isCancelled() && !Keyboard.isReady() && !Mouse.isReady()) {
