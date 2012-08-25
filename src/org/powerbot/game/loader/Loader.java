@@ -15,10 +15,12 @@ import org.powerbot.util.Configuration;
  */
 public class Loader implements Runnable {
 	private static Logger log = Logger.getLogger(Loader.class.getName());
-	private final Bot definition;
+	private final Bot bot;
+	private final ClientLoader clientLoader;
 
-	public Loader(final Bot definition) {
-		this.definition = definition;
+	public Loader(final Bot bot) {
+		this.bot = bot;
+		clientLoader = bot.getClientLoader();
 	}
 
 	/**
@@ -26,20 +28,20 @@ public class Loader implements Runnable {
 	 */
 	public void run() {
 		log.fine("Generating applet wrapper");
-		definition.appletContainer = new Rs2Applet(definition.classes(), "http://" + Configuration.URLs.GAME + "/", definition.callback);
+		bot.appletContainer = new Rs2Applet(clientLoader.getClasses(), "http://" + Configuration.URLs.GAME + "/", bot.callback);
 		try {
 			log.fine("Generating stub");
-			definition.stub = new ClientStub(definition.crawler.game, definition.crawler.archive, definition.crawler.parameters);
+			bot.stub = new ClientStub(clientLoader.crawler.game, clientLoader.crawler.archive, clientLoader.crawler.parameters);
 		} catch (final Exception e) {
 			log.log(Level.SEVERE, "Error creating stub: ", e);
 			return;
 		}
 		log.fine("Setting stub");
-		definition.appletContainer.setStub(definition.stub);
-		definition.stub.setApplet(definition.appletContainer);
-		definition.stub.setActive(true);
+		bot.appletContainer.setStub(bot.stub);
+		bot.stub.setApplet(bot.appletContainer);
+		bot.stub.setActive(true);
 		log.fine("Initializing and starting applet wrapper");
-		definition.appletContainer.init();
-		definition.appletContainer.start();
+		bot.appletContainer.init();
+		bot.appletContainer.start();
 	}
 }

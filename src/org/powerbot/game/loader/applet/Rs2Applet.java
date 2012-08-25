@@ -21,7 +21,7 @@ import org.powerbot.game.loader.RSClassLoader;
 public final class Rs2Applet extends Applet {
 	private static Logger log = Logger.getLogger(Rs2Applet.class.getName());
 	private static final long serialVersionUID = 1L;
-	private final Map<String, byte[]> classes = new HashMap<String, byte[]>();
+	private final Map<String, byte[]> classes = new HashMap<>();
 	private final String game;
 	public Runnable callback;
 

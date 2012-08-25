@@ -34,6 +34,7 @@ import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
 
 import org.powerbot.game.bot.Bot;
+import org.powerbot.game.loader.ClientLoader;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.util.Configuration;
 import org.powerbot.util.LoadUpdates;
@@ -216,11 +217,11 @@ public final class BotLoadingPanel extends JPanel {
 			if (x > 0) {
 				src = src.substring(0, x);
 			}
-			if (!(src.equals(BotChrome.class.getName()) || src.equals(LoadUpdates.class.getName()) || src.equals(Bot.class.getName()) || src.equals(Bot.class.getName()))) {
+			if (!(src.equals(BotChrome.class.getName()) || src.equals(LoadUpdates.class.getName()) || src.equals(Bot.class.getName()) || src.equals(ClientLoader.class.getName()))) {
 				return;
 			}
 			final ThreadGroup currentGroup = Thread.currentThread().getThreadGroup();
-			if (listeningGroup == null && currentGroup.getName().startsWith(Bot.class.getName())) {
+			if (listeningGroup == null && (currentGroup.getName().startsWith(Bot.class.getName()) || currentGroup.getName().startsWith(ClientLoader.class.getName()))) {
 				return;
 			}
 			logRecord.put(currentGroup, record);
