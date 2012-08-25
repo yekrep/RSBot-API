@@ -242,7 +242,7 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 		botButton.setVisible(false);
 		parent.panel.setBot(null);
 		updateScriptControls();
-		Bot.getInstance().close();
+		Bot.getInstance().stop();
 		parent.panel.repaint();
 		Logger.getLogger(Bot.class.getName()).log(Level.INFO, "Add a tab to start another bot", "Closed");
 		System.gc();

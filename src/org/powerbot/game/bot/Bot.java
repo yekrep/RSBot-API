@@ -43,7 +43,6 @@ import org.powerbot.util.RestrictedSecurityManager;
  * An environment of the game that is automated.
  *
  * @author Timer
- * @author Paris
  */
 public final class Bot implements Runnable {
 	private static final Logger log = Logger.getLogger(Bot.class.getName());
@@ -210,7 +209,7 @@ public final class Bot implements Runnable {
 	/**
 	 * {@inheritDoc}
 	 */
-	public void close() {
+	public void stop() {
 		clientLoader.cancel();
 
 		if (activeScript != null) {
@@ -324,6 +323,10 @@ public final class Bot implements Runnable {
 		return context;
 	}
 
+	public ClientLoader getClientLoader() {
+		return clientLoader;
+	}
+
 	/**
 	 * @return The <code>Canvas</code> of this bot's client.
 	 */
@@ -417,10 +420,6 @@ public final class Bot implements Runnable {
 		this.viewport.zX = viewport[constants.VIEWPORT_ZX];
 		this.viewport.zY = viewport[constants.VIEWPORT_ZY];
 		this.viewport.zZ = viewport[constants.VIEWPORT_ZZ];
-	}
-
-	public ClientLoader getClientLoader() {
-		return clientLoader;
 	}
 
 	/**
