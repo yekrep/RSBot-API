@@ -1,10 +1,12 @@
 package org.powerbot.game.bot;
 
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 import org.powerbot.event.EventDispatcher;
 import org.powerbot.game.api.ActiveScript;
 import org.powerbot.game.api.methods.Calculations;
+import org.powerbot.game.api.util.Time;
 import org.powerbot.game.api.util.internal.Constants;
 import org.powerbot.game.api.util.internal.Multipliers;
 import org.powerbot.game.bot.handler.RandomHandler;
@@ -12,8 +14,12 @@ import org.powerbot.game.bot.handler.input.MouseExecutor;
 import org.powerbot.game.client.Client;
 import org.powerbot.game.client.Render;
 import org.powerbot.game.client.RenderData;
+import org.powerbot.game.loader.ClientLoader;
+import org.powerbot.gui.BotChrome;
 
 public class BotComposite {
+	private final Bot bot;
+
 	MouseExecutor executor;
 	EventDispatcher eventDispatcher;
 	ActiveScript activeScript;
@@ -29,6 +35,8 @@ public class BotComposite {
 	public Multipliers multipliers;
 
 	public BotComposite(final Bot bot) {
+		this.bot = bot;
+
 		executor = null;
 		eventDispatcher = new EventDispatcher();
 		activeScript = null;
@@ -67,5 +75,38 @@ public class BotComposite {
 		this.viewport.zX = viewport[constants.VIEWPORT_ZX];
 		this.viewport.zY = viewport[constants.VIEWPORT_ZY];
 		this.viewport.zZ = viewport[constants.VIEWPORT_ZZ];
+	}
+
+	public void reload() {
+		Bot.log.info("Refreshing environment");
+		if (activeScript != null && activeScript.isRunning()) {
+			activeScript.pause(true);
+			while (activeScript.getContainer().getActiveCount() > 0) {
+				Time.sleep(150);
+			}
+		}
+
+		bot.terminateApplet();
+		bot.resize(BotChrome.PANEL_WIDTH, BotChrome.PANEL_HEIGHT);
+
+		BotChrome.getInstance().panel.setBot(bot);
+
+		bot.clientLoader = new ClientLoader();
+		if (bot.clientLoader.call()) {
+			final Future<?> future = bot.start();
+			if (future == null) {
+				return;
+			}
+			try {
+				future.get();
+			} catch (final InterruptedException | ExecutionException ignored) {
+			}
+
+			if (activeScript != null && activeScript.isRunning()) {
+				activeScript.resume();
+			}
+		}
+
+		bot.refreshing = false;
 	}
 }

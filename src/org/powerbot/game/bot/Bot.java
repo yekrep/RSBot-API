@@ -41,7 +41,7 @@ import org.powerbot.util.RestrictedSecurityManager;
  * @author Timer
  */
 public final class Bot implements Runnable {
-	private static final Logger log = Logger.getLogger(Bot.class.getName());
+	static final Logger log = Logger.getLogger(Bot.class.getName());
 	private static Bot instance;
 
 	public volatile Rs2Applet appletContainer;
@@ -51,7 +51,7 @@ public final class Bot implements Runnable {
 	public ThreadGroup threadGroup;
 	protected ThreadPoolExecutor container;
 
-	private ClientLoader clientLoader;
+	ClientLoader clientLoader;
 	public final BotComposite composite;
 
 	public ModScript modScript;
@@ -143,51 +143,6 @@ public final class Bot implements Runnable {
 		return container;
 	}
 
-	public void reload() {
-		log.info("Refreshing environment");
-		if (composite.activeScript != null && composite.activeScript.isRunning()) {
-			composite.activeScript.pause(true);
-			while (composite.activeScript.getContainer().getActiveCount() > 0) {
-				Time.sleep(150);
-			}
-		}
-
-		if (stub != null) {
-			log.fine("Terminating stub activities");
-			stub.setActive(false);
-		}
-		if (appletContainer != null) {
-			log.fine("Shutting down applet");
-			appletContainer.stop();
-			appletContainer.destroy();
-			appletContainer = null;
-			stub = null;
-		}
-		final Dimension d = new Dimension(BotChrome.PANEL_WIDTH, BotChrome.PANEL_HEIGHT);
-		image = new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_RGB);
-		backBuffer = new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_RGB);
-		composite.client = null;
-		BotChrome.getInstance().panel.setBot(this);
-
-		clientLoader = new ClientLoader();
-		if (clientLoader.call()) {
-			final Future<?> future = start();
-			if (future == null) {
-				return;
-			}
-			try {
-				future.get();
-			} catch (final InterruptedException | ExecutionException ignored) {
-			}
-
-			if (composite.activeScript != null && composite.activeScript.isRunning()) {
-				composite.activeScript.resume();
-			}
-		}
-
-		refreshing = false;
-	}
-
 	/**
 	 * {@inheritDoc}
 	 */
@@ -203,28 +158,30 @@ public final class Bot implements Runnable {
 		if (composite.eventDispatcher != null) {
 			composite.eventDispatcher.setActive(false);
 		}
+		container.submit(new Runnable() {
+			@Override
+			public void run() {
+				terminateApplet();
+			}
+		});
+		Context.context.remove(threadGroup);
+		container.shutdown();
+		instance = null;
+	}
+
+	void terminateApplet() {
 		if (stub != null) {
 			log.fine("Terminating stub activities");
 			stub.setActive(false);
 		}
-		Runnable task = null;
 		if (appletContainer != null) {
 			log.fine("Shutting down applet");
-			task = new Runnable() {
-				public void run() {
-					appletContainer.stop();
-					appletContainer.destroy();
-					appletContainer = null;
-					stub = null;
-				}
-			};
+			appletContainer.stop();
+			appletContainer.destroy();
+			appletContainer = null;
+			stub = null;
+			composite.client = null;
 		}
-		if (task != null) {
-			container.submit(task);
-		}
-		Context.context.remove(threadGroup);
-		container.shutdown();
-		instance = null;
 	}
 
 	/**
@@ -245,10 +202,13 @@ public final class Bot implements Runnable {
 	public void resize(final int width, final int height) {
 		backBuffer = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 		image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-		appletContainer.setSize(width, height);
-		final Graphics buffer = backBuffer.getGraphics();
-		appletContainer.update(buffer);
-		buffer.dispose();
+
+		if (appletContainer != null) {
+			appletContainer.setSize(width, height);
+			final Graphics buffer = backBuffer.getGraphics();
+			appletContainer.update(buffer);
+			buffer.dispose();
+		}
 	}
 
 	/**
@@ -376,7 +336,7 @@ public final class Bot implements Runnable {
 		refreshing = true;
 		container.submit(new Runnable() {
 			public void run() {
-				reload();
+				composite.reload();
 			}
 		});
 	}
