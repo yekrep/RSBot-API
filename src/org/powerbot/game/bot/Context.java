@@ -41,11 +41,11 @@ public class Context {
 	}
 
 	public static Multipliers multipliers() {
-		return get().bot.multipliers;
+		return get().bot.composite.multipliers;
 	}
 
 	public static Constants constants() {
-		return get().bot.constants;
+		return get().bot.composite.constants;
 	}
 
 	public static BufferedImage captureScreen() {
@@ -117,11 +117,11 @@ public class Context {
 	}
 
 	public Calculations.Toolkit getToolkit() {
-		return bot.toolkit;
+		return bot.composite.toolkit;
 	}
 
 	public Calculations.Viewport getViewport() {
-		return bot.viewport;
+		return bot.composite.viewport;
 	}
 
 	public void ensureAntiRandoms() {

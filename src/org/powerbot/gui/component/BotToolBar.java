@@ -205,8 +205,7 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 			if (info == null || !info.containsKey("success") || !IniParser.parseBool(info.get("success"))) {
 				final String msg = info != null && info.containsKey("message") ? info.get("message") : BotLocale.CANTOPENTAB;
 				log.severe(msg);
-			}
-			else {
+			} else {
 				if (s > 0) {
 					Boot.fork(Boot.SWITCH_NEWTAB);
 				} else {
@@ -227,9 +226,9 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 		}
 		boolean loggedIn = false;
 		final Bot bot = Bot.getInstance();
-		if (bot != null && bot.getClient() != null && bot.multipliers != null && bot.constants != null) {
-			final int state = bot.getClient().getLoginIndex() * bot.multipliers.GLOBAL_LOGININDEX;
-			loggedIn = state == bot.constants.CLIENTSTATE_11 || state == bot.constants.CLIENTSTATE_12;
+		if (bot != null && bot.getClient() != null && bot.composite.multipliers != null && bot.composite.constants != null) {
+			final int state = bot.getClient().getLoginIndex() * bot.composite.multipliers.GLOBAL_LOGININDEX;
+			loggedIn = state == bot.composite.constants.CLIENTSTATE_11 || state == bot.composite.constants.CLIENTSTATE_12;
 		}
 		if (!silent) {
 			try {
