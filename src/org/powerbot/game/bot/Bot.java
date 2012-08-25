@@ -238,7 +238,7 @@ public final class Bot implements Runnable {
 			public void run() {
 				setClient((Client) appletContainer.clientInstance);
 				final Graphics graphics = image.getGraphics();
-				appletContainer.paint(graphics);
+				appletContainer.update(graphics);
 				graphics.dispose();
 				resize(BotChrome.PANEL_WIDTH, BotChrome.PANEL_HEIGHT);
 			}
