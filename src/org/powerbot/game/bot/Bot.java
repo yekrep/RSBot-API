@@ -237,7 +237,9 @@ public final class Bot implements Runnable {
 		callback = new Runnable() {
 			public void run() {
 				setClient((Client) appletContainer.clientInstance);
-				appletContainer.paint(image.getGraphics());
+				final Graphics graphics = image.getGraphics();
+				appletContainer.paint(graphics);
+				graphics.dispose();
 				resize(BotChrome.PANEL_WIDTH, BotChrome.PANEL_HEIGHT);
 			}
 		};
@@ -385,7 +387,9 @@ public final class Bot implements Runnable {
 		backBuffer = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 		image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 		appletContainer.setSize(width, height);
-		appletContainer.update(backBuffer.getGraphics());
+		final Graphics buffer = backBuffer.getGraphics();
+		appletContainer.update(buffer);
+		buffer.dispose();
 	}
 
 	/**
@@ -403,7 +407,9 @@ public final class Bot implements Runnable {
 			eventDispatcher.fire(textPaintEvent);
 		}
 		back.dispose();
-		image.getGraphics().drawImage(backBuffer, 0, 0, null);
+		final Graphics imageGraphics = image.getGraphics();
+		imageGraphics.drawImage(backBuffer, 0, 0, null);
+		imageGraphics.dispose();
 		if (panel != null) {
 			panel.repaint();
 		}
