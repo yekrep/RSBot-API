@@ -196,7 +196,7 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 			log.info(BotLocale.NEEDVIPVPS);
 		} else if (n > 0 && !NetworkAccount.getInstance().isLoggedIn()) {
 			log.severe(BotLocale.NEEDSIGNINMULTITAB);
-		} else if (n > 1 && !NetworkAccount.getInstance().isVIP()) {
+		} else if (n > 2 && !NetworkAccount.getInstance().isVIP()) {
 			log.severe(BotLocale.NEEDVIPMULTITAB);
 		} else {
 			final Map<String, String> info = NetworkAccount.getInstance().session(0);
