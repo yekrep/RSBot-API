@@ -45,7 +45,7 @@ public final class Controller implements Runnable {
 	private final List<Event> callbacks;
 	private final ExecutorService executor;
 	public static final int MAX_INSTANCES = 8;
-	private final int[] ports = new int[MAX_INSTANCES];
+	private final int[] ports = new int[MAX_INSTANCES + 1];
 	private final byte[] key;
 	public final int instanceID;
 	private static final int RESPONSE_TIMEOUT = 1000;

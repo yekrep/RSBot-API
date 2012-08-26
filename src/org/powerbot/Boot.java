@@ -121,8 +121,8 @@ public class Boot implements Runnable {
 			return;
 		}
 
-		if (Controller.getInstance().getRunningInstances() > Controller.MAX_INSTANCES - 1) {
-			message(String.format("An instance of %s is already running", Configuration.NAME));
+		if (Controller.getInstance().getRunningInstances() >= Controller.MAX_INSTANCES) {
+			message("Maximum number of bots are running");
 			System.exit(1);
 			return;
 		}
