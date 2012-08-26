@@ -72,7 +72,7 @@ public final class Bot implements Runnable {
 		stub = null;
 
 		threadGroup = new ThreadGroup(Bot.class.getName() + "@" + hashCode());
-		container = new ThreadPoolExecutor(1, Runtime.getRuntime().availableProcessors() * 2, 60, TimeUnit.HOURS, new SynchronousQueue<Runnable>(), new ThreadPool(threadGroup), new ThreadPoolExecutor.CallerRunsPolicy());
+		container = new ThreadPoolExecutor(1, Integer.MAX_VALUE, 60, TimeUnit.HOURS, new SynchronousQueue<Runnable>(), new ThreadPool(threadGroup), new ThreadPoolExecutor.CallerRunsPolicy());
 
 		composite = new BotComposite(this);
 		panel = null;
