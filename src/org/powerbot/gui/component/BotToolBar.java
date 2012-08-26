@@ -198,8 +198,6 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 			log.severe(BotLocale.NEEDSIGNINMULTITAB);
 		} else if (n > 1 && !NetworkAccount.getInstance().isVIP()) {
 			log.severe(BotLocale.NEEDVIPMULTITAB);
-		} else if (Controller.getInstance().getRunningModes().contains(1)) {
-			log.severe(BotLocale.DEVMODERUNNING);
 		} else {
 			final Map<String, String> info = NetworkAccount.getInstance().session(0);
 			if (info == null || !info.containsKey("success") || !IniParser.parseBool(info.get("success"))) {
