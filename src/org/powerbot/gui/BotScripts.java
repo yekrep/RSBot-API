@@ -57,6 +57,7 @@ import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 import javax.swing.border.AbstractBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
@@ -222,6 +223,19 @@ public final class BotScripts extends JDialog implements ActionListener {
 		setMinimumSize(getSize());
 		//setResizable(false);
 		setLocationRelativeTo(getParent());
+
+		final Timer t = new Timer(1000 * 60 * 2, new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				((Timer) e.getSource()).stop();
+				if (isVisible()) {
+					setVisible(false);
+					dispose();
+				}
+			}
+		});
+		t.setCoalesce(false);
+		t.start();
 
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
