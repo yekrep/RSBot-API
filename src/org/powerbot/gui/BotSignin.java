@@ -173,7 +173,7 @@ public final class BotSignin extends JDialog implements ActionListener {
 																.addContainerGap())
 				);
 
-		updateState();
+		updateState(NetworkAccount.getInstance().isLoggedIn());
 		getRootPane().setDefaultButton(signin);
 
 		pack();
@@ -196,7 +196,7 @@ public final class BotSignin extends JDialog implements ActionListener {
 						success = NetworkAccount.getInstance().login(username.getText(), new String(password.getPassword()), "");
 					} catch (final IOException ignored) {
 					}
-					updateState();
+					updateState(success);
 					if (success) {
 						setVisible(false);
 						dispose();
@@ -209,7 +209,7 @@ public final class BotSignin extends JDialog implements ActionListener {
 				NetworkAccount.getInstance().session(-Controller.getInstance().getRunningInstances());
 				NetworkAccount.getInstance().logout();
 				parent.toolbar.closeTabIfInactive();
-				updateState();
+				updateState(false);
 				Tracker.getInstance().trackPage("signin/logout", getTitle());
 			}
 			signin.setEnabled(true);
@@ -222,8 +222,8 @@ public final class BotSignin extends JDialog implements ActionListener {
 		}
 	}
 
-	private void updateState() {
-		if (NetworkAccount.getInstance().isLoggedIn()) {
+	private void updateState(final boolean signedin) {
+		if (signedin) {
 			username.setText(NetworkAccount.getInstance().getAccount().getDisplayName());
 			username.setEnabled(false);
 			password.setText("********");
