@@ -21,8 +21,10 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.logging.Logger;
-
-import javax.crypto.Cipher;
+import java.util.zip.Deflater;
+import java.util.zip.DeflaterOutputStream;
+import java.util.zip.Inflater;
+import java.util.zip.InflaterInputStream;
 
 import org.powerbot.game.api.ActiveScript;
 import org.powerbot.game.bot.Bot;
@@ -32,8 +34,6 @@ import org.powerbot.service.NetworkAccount;
 import org.powerbot.service.scripts.ScriptDefinition;
 import org.powerbot.util.Configuration;
 import org.powerbot.util.StringUtil;
-import org.powerbot.util.io.XORInputStream;
-import org.powerbot.util.io.XOROutputStream;
 
 /**
  * @author Paris
@@ -46,7 +46,6 @@ public final class Controller implements Runnable {
 	private final ExecutorService executor;
 	public static final int MAX_INSTANCES = 8;
 	private final int[] ports = new int[MAX_INSTANCES + 1];
-	private final byte[] key;
 	public final int instanceID;
 	private static final int RESPONSE_TIMEOUT = 1000;
 
@@ -72,7 +71,7 @@ public final class Controller implements Runnable {
 
 		callbacks = new ArrayList<Event>();
 		executor = Executors.newCachedThreadPool();
-		key = StringUtil.getBytesUtf8(Long.toBinaryString(Configuration.getUID()) + Integer.toHexString(Configuration.VERSION));
+		StringUtil.getBytesUtf8(Long.toBinaryString(Configuration.getUID()) + Integer.toHexString(Configuration.VERSION));
 	}
 
 	public static Controller getInstance() {
@@ -114,7 +113,7 @@ public final class Controller implements Runnable {
 			try {
 				sock.receive(packet);
 				packet.setLength(buf.length);
-				final ObjectInput in = new ObjectInputStream(new XORInputStream(new ByteArrayInputStream(packet.getData()), key, Cipher.DECRYPT_MODE));
+				final ObjectInput in = new ObjectInputStream(new InflaterInputStream(new ByteArrayInputStream(packet.getData()), new Inflater(true)));
 				final Message msg = (Message) in.readObject();
 				in.close();
 
@@ -198,10 +197,12 @@ public final class Controller implements Runnable {
 
 	private void send(final Message msg, final InetAddress addr, final int port) throws IOException {
 		final ByteArrayOutputStream bos = new ByteArrayOutputStream();
-		final ObjectOutput out = new ObjectOutputStream(new XOROutputStream(bos, key, Cipher.ENCRYPT_MODE));
+		final DeflaterOutputStream dos = new DeflaterOutputStream(bos, new Deflater(1, true));
+		final ObjectOutput out = new ObjectOutputStream(dos);
 		out.writeObject(msg);
+		dos.finish();
+		out.close();
 		final byte[] buf = bos.toByteArray();
-		bos.close();
 		sock.send(new DatagramPacket(buf, buf.length, addr, port));
 	}
 

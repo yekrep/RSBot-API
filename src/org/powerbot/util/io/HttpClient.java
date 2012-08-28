@@ -8,16 +8,14 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
-import java.security.GeneralSecurityException;
+import java.util.zip.Deflater;
 import java.util.zip.DeflaterOutputStream;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
+import java.util.zip.Inflater;
 import java.util.zip.InflaterInputStream;
 
-import javax.crypto.Cipher;
-
 import org.powerbot.util.Configuration;
-import org.powerbot.util.StringUtil;
 
 /**
  * @author Paris
@@ -116,44 +114,26 @@ public class HttpClient {
 		return getInputStream(con.getInputStream(), con.getHeaderField("Content-Encoding"));
 	}
 
-	public static InputStream getInputStream(InputStream in, final String encoding) throws IOException {
+	public static InputStream getInputStream(final InputStream in, final String encoding) throws IOException {
 		if (encoding == null || encoding.isEmpty()) {
 			return in;
 		}
-		for (final String mode : encoding.split(",")) {
-			if (mode.equalsIgnoreCase("gzip")) {
-				in = new GZIPInputStream(in);
-			} else if (mode.equalsIgnoreCase("deflate")) {
-				in = new InflaterInputStream(in);
-			} else if (mode.startsWith("CIS:") || mode.startsWith("cis:")) {
-				final String[] args = mode.split(":");
-				try {
-					in = CipherStreams.getCipherInputStream(in, Cipher.DECRYPT_MODE, CipherStreams.getSharedKey(StringUtil.getBytesUtf8(args[3])), args[1], args[2]);
-				} catch (final GeneralSecurityException e) {
-					throw new IOException(e);
-				}
-			}
+		if (encoding.equalsIgnoreCase("gzip")) {
+			return new GZIPInputStream(in);
+		} else if (encoding.equalsIgnoreCase("deflate")) {
+			return new InflaterInputStream(in, new Inflater(true));
 		}
 		return in;
 	}
 
-	public static OutputStream getOutputStream(OutputStream out, final String encoding) throws IOException {
+	public static OutputStream getOutputStream(final OutputStream out, final String encoding) throws IOException {
 		if (encoding == null || encoding.isEmpty()) {
 			return out;
 		}
-		for (final String mode : encoding.split(",")) {
-			if (mode.equalsIgnoreCase("gzip")) {
-				out = new GZIPOutputStream(out);
-			} else if (mode.equalsIgnoreCase("deflate")) {
-				out = new DeflaterOutputStream(out);
-			} else if (mode.startsWith("CIS:") || mode.startsWith("cis:")) {
-				final String[] args = mode.split(":");
-				try {
-					out = CipherStreams.getCipherOutputStream(out, Cipher.ENCRYPT_MODE, CipherStreams.getSharedKey(StringUtil.getBytesUtf8(args[3])), args[1], args[2]);
-				} catch (final GeneralSecurityException e) {
-					throw new IOException(e);
-				}
-			}
+		if (encoding.equalsIgnoreCase("gzip")) {
+			return new GZIPOutputStream(out);
+		} else if (encoding.equals("deflate")) {
+			return new DeflaterOutputStream(out, new Deflater(4, true));
 		}
 		return out;
 	}
