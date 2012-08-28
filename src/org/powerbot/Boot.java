@@ -131,8 +131,10 @@ public class Boot implements Runnable {
 		CryptFile.PERMISSIONS.clear();
 		System.setSecurityManager(new RestrictedSecurityManager());
 		System.setProperty("java.net.preferIPv4Stack", "true");
-		System.setProperty("sun.net.spi.nameservice.nameservers", RestrictedSecurityManager.DNS1 + "," + RestrictedSecurityManager.DNS2);
-		System.setProperty("sun.net.spi.nameservice.provider.1", "dns,sun");
+		if (!Configuration.URLs.TESTING) {
+			System.setProperty("sun.net.spi.nameservice.nameservers", RestrictedSecurityManager.DNS1 + "," + RestrictedSecurityManager.DNS2);
+			System.setProperty("sun.net.spi.nameservice.provider.1", "dns,sun");
+		}
 
 		final Timer timer = new Timer(1000 * 60 * 10, new ScheduledChecks());
 		timer.setCoalesce(false);

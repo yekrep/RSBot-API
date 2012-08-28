@@ -27,26 +27,30 @@ public class Configuration {
 	}
 
 	public interface URLs {
+		static final boolean TESTING = false;
+
 		public static final String DOMAIN = "powerbot.org";
-		static final String DOMAIN_SITE = "www." + DOMAIN;
+		static final String DOMAIN_SITE_LIVE = "www." + DOMAIN;
+		static final String DOMAIN_SITE_TESTING = DOMAIN + ".localdomain";
+		static final String DOMAIN_SITE =  TESTING ? DOMAIN_SITE_TESTING : DOMAIN_SITE_LIVE;
+		static final String PROTOCOL = TESTING ? "http://" : "https://";
 		static final String DOMAIN_SERVICES = "services." + DOMAIN;
 		static final String DOMAIN_LINKS = "links." + DOMAIN;
 
 		public static final String DOWNLOAD = "http://" + DOMAIN_SERVICES + "/rsbot/releases/RSBot-%s.jar";
-		public static final String SCRIPTS = "https://" + DOMAIN_SERVICES + "/rsbot/scripts/manifest.dat";
 		public static final String VERSION = "http://" + DOMAIN_LINKS + "/version.txt";
 
 		public static final String CLIENTPATCH = "https://" + DOMAIN_SERVICES + "/aux/%s.ms";
-		public static final String SCRIPTSLIST = "http://" + DOMAIN_SITE + "/scripts/";
-		public static final String SCRIPTSAUTH = "https://" + DOMAIN_SITE + "/scripts/api/auth/?{POST}a=%s&id=%s&n=%s";
-		public static final String SCRIPTSCOLLECTION = "https://" + DOMAIN_SITE + "/scripts/api/collection/?{POST}a=%s";
-		public static final String SIGNIN = "https://" + DOMAIN_SITE + "/api/login/?{POST}u=%s&p=%s&a=%s";
-		public static final String SESSION = "https://" + DOMAIN_SITE + "/api/login/session/?{POST}a=%s&uid=%s&n=%s";
+		public static final String SCRIPTSAUTH = PROTOCOL + DOMAIN_SITE + "/scripts/api/auth/?{POST}a=%s&id=%s&n=%s";
+		public static final String SCRIPTSCOLLECTION = PROTOCOL + DOMAIN_SITE + "/scripts/api/collection/?{POST}a=%s";
+		public static final String SIGNIN = PROTOCOL + DOMAIN_SITE + "/api/login/?{POST}u=%s&p=%s&a=%s";
+		public static final String SESSION = PROTOCOL + DOMAIN_SITE + "/api/login/session/?{POST}a=%s&uid=%s&n=%s";
 		public static final String LINKFILTER = "http://" + DOMAIN_SITE + "/api/safelink/?u=%s";
 
 		public static final String SITE = "http://" + DOMAIN_SITE + "/";
 		public static final String REGISTER = "http://" + DOMAIN_LINKS + "/register";
 		public static final String LOSTPASS = "http://" + DOMAIN_LINKS + "/lostpass";
+		public static final String SCRIPTSLIST = "http://" + DOMAIN_LINKS + "/scripts";
 
 		public static final String TWITTER = "http://" + DOMAIN_LINKS + "/twitter";
 		public static final String FACEBOOK = "http://" + DOMAIN_LINKS + "/facebook";
