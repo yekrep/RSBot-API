@@ -74,9 +74,7 @@ import org.powerbot.service.NetworkAccount;
 import org.powerbot.service.scripts.ScriptClassLoader;
 import org.powerbot.service.scripts.ScriptDefinition;
 import org.powerbot.util.Configuration;
-import org.powerbot.util.io.CryptFile;
 import org.powerbot.util.io.HttpClient;
-import org.powerbot.util.io.IOHelper;
 import org.powerbot.util.io.IniParser;
 import org.powerbot.util.io.Resources;
 
@@ -92,7 +90,6 @@ public final class BotScripts extends JDialog implements ActionListener {
 	private final JToggleButton locals;
 	private final JButton username, refresh;
 	private final JTextField search;
-	private final List<String> collection;
 	private final boolean localOnly;
 	private volatile boolean init;
 
@@ -105,7 +102,6 @@ public final class BotScripts extends JDialog implements ActionListener {
 
 		setIconImage(Resources.getImage(Resources.Paths.FILE));
 		this.parent = parent;
-		collection = new ArrayList<String>();
 
 		localOnly = Configuration.DEVMODE;
 		if (localOnly) {
@@ -355,18 +351,7 @@ public final class BotScripts extends JDialog implements ActionListener {
 			}
 		}
 
-		final List<String> collection = new ArrayList<String>();
-		for (int i = 0; i < 3; i++) {
-			final List<String> c = getCollection();
-			if (!c.isEmpty()) {
-				collection.addAll(c);
-				break;
-			}
-		}
-
-		final CryptFile cf = new CryptFile("links/scripts.dat", BotScripts.class);
-		final URL src = new URL(Configuration.URLs.SCRIPTS);
-		final Map<String, Map<String, String>> manifests = IniParser.deserialise(cf.download(src));
+		final Map<String, Map<String, String>> manifests = IniParser.deserialise(HttpClient.openStream(Configuration.URLs.SCRIPTSCOLLECTION, NetworkAccount.getInstance().getAccount().getAuth()));
 		final boolean vip = NetworkAccount.getInstance().isVIP();
 		for (final Entry<String, Map<String, String>> entry : manifests.entrySet()) {
 			final Map<String, String> params = entry.getValue();
@@ -375,39 +360,14 @@ public final class BotScripts extends JDialog implements ActionListener {
 			}
 			final ScriptDefinition def = ScriptDefinition.fromMap(params);
 			if (def != null) {
-				def.source = new URL(src, entry.getKey());
+				def.source = entry.getKey();
 				if (entry.getValue().containsKey("className")) {
 					def.className = entry.getValue().get("className");
-					if (def.isHidden()) {
-						if (collection.contains(def.getID())) {
-							list.add(def);
-						}
-					} else if (collection.contains(def.getID()) || collection.contains("*")) {
-						list.add(def);
-					}
+					list.add(def);
 				}
 			}
 		}
 		return list;
-	}
-
-	private List<String> getCollection() {
-		final List<String> collection = new ArrayList<String>();
-		String data = null;
-		try {
-			data = IOHelper.readString(HttpClient.openStream(Configuration.URLs.SCRIPTSCOLLECTION, NetworkAccount.getInstance().getAccount().getAuth()));
-		} catch (final IOException ignored) {
-		} catch (final NullPointerException ignored) {
-		}
-		if (data == null || data.isEmpty()) {
-			return collection;
-		}
-		for (final String e : data.trim().split("\n")) {
-			if (!collection.contains(e)) {
-				collection.add(e);
-			}
-		}
-		return collection;
 	}
 
 	public void loadLocalScripts(final List<ScriptDefinition> list, final File parent, final File dir) {
@@ -455,7 +415,7 @@ public final class BotScripts extends JDialog implements ActionListener {
 							if (script.isAnnotationPresent(Manifest.class)) {
 								final Manifest m = script.getAnnotation(Manifest.class);
 								final ScriptDefinition def = new ScriptDefinition(m);
-								def.source = src;
+								def.source = parent.getCanonicalFile().toString();
 								def.className = className;
 								def.local = true;
 								list.add(def);
@@ -507,9 +467,6 @@ public final class BotScripts extends JDialog implements ActionListener {
 				v = false;
 			}
 			if (locals.isSelected() && !d.local) {
-				v = false;
-			}
-			if (!collection.isEmpty() && !collection.contains(d.getID())) {
 				v = false;
 			}
 			c.setVisible(v);
@@ -599,12 +556,19 @@ public final class BotScripts extends JDialog implements ActionListener {
 				public void actionPerformed(final ActionEvent e) {
 					setVisible(false);
 					dispose();
+					if (!NetworkAccount.getInstance().isLoggedIn()) {
+						return;
+					}
 					final ClassLoader cl;
 					if (def.local) {
-						cl = new ScriptClassLoader(def.source);
+						try {
+							cl = new ScriptClassLoader(new File(def.source).toURI().toURL());
+						} catch (final IOException ignored) {
+							return;
+						}
 					} else {
 						try {
-							cl = new ScriptClassLoader(new ZipInputStream(HttpClient.openStream(def.source)));
+							cl = new ScriptClassLoader(new ZipInputStream(HttpClient.openStream(Configuration.URLs.SCRIPTSDOWNLOAD, NetworkAccount.getInstance().getAccount().getAuth(), def.source.toString())));
 						} catch (final Exception ignored) {
 							log.severe("Could not download script");
 							ignored.printStackTrace();
@@ -618,7 +582,7 @@ public final class BotScripts extends JDialog implements ActionListener {
 						}
 						final Map<String, Map<String, String>> data;
 						try {
-							data = IniParser.deserialise(HttpClient.openStream(Configuration.URLs.SCRIPTSAUTH, NetworkAccount.getInstance().isLoggedIn() ? NetworkAccount.getInstance().getAccount().getAuth() : "", def.getID(), Integer.toString(n)));
+							data = IniParser.deserialise(HttpClient.openStream(Configuration.URLs.SCRIPTSAUTH, NetworkAccount.getInstance().getAccount().getAuth(), def.getID(), Integer.toString(n)));
 						} catch (final IOException ignored) {
 							log.severe("Unable to obtain auth response");
 							return;
