@@ -159,7 +159,7 @@ public final class BotLoadingPanel extends JPanel {
 			try {
 				final Map<String, String> data = IniParser.deserialise(HttpClient.openStream(new URL(Configuration.URLs.ADS))).get(IniParser.EMPTYSECTION);
 				if (data.containsKey("image") && data.containsKey("link")) {
-					final CryptFile cf = new CryptFile("ads/image.png", BotLoadingPanel.class);
+					final CryptFile cf = new CryptFile("ads/image.png", getClass());
 					final String src = data.get("image"), link = data.get("link");
 					BufferedImage image = ImageIO.read(cf.download(new URL(src)));
 					if (image.getWidth() > PANEL_WIDTH || image.getHeight() > PANEL_HEIGHT) {
