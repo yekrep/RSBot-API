@@ -13,7 +13,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -180,7 +179,7 @@ public final class BotLoadingPanel extends JPanel {
 						}
 					});
 				}
-			} catch (final IOException ignored) {
+			} catch (final Exception ignored) {
 			}
 		}
 	}
