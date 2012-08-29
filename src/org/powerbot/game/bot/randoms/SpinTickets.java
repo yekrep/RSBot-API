@@ -7,7 +7,9 @@ import org.powerbot.game.api.methods.Tabs;
 import org.powerbot.game.api.methods.tab.Inventory;
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Time;
+import org.powerbot.game.api.util.Timer;
 import org.powerbot.game.api.wrappers.node.Item;
+import org.powerbot.game.api.wrappers.widget.WidgetChild;
 
 @Manifest(name = "Squeal of Fortune Ticket Claim", authors = {"Timer"})
 public class SpinTickets extends AntiRandom {
@@ -28,8 +30,12 @@ public class SpinTickets extends AntiRandom {
 		}
 
 		if (ticket != null) {
-			if (ticket.getWidgetChild().interact("Claim")) {
-				Time.sleep(Random.nextInt(2000, 3500));
+			final WidgetChild item = ticket.getWidgetChild();
+			if (item.interact("Destroy")) {
+				final Timer timer = new Timer(Random.nextInt(2000, 3500));
+				while (timer.isRunning() && item.validate()) {
+					Time.sleep(Random.nextInt(100, 300));
+				}
 			}
 		}
 	}
