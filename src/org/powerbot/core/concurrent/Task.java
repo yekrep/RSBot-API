@@ -25,7 +25,7 @@ public abstract class Task implements Job {
 	public final void work() {
 		synchronized (init_lock) {
 			if (alive) {
-				throw new DuplicateJobException(getClass().getName() + "/" + hashCode() + " is already running");
+				return;//TODO duplicate task submission
 			}
 			alive = true;
 		}

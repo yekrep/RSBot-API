@@ -4,7 +4,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.powerbot.core.concurrent.Container;
-import org.powerbot.core.concurrent.DuplicateJobException;
 import org.powerbot.core.concurrent.Job;
 import org.powerbot.core.concurrent.JobListener;
 import org.powerbot.core.concurrent.Task;
@@ -68,10 +67,7 @@ public abstract class ActiveScript extends LoopTask implements Script {
 		container.addListener(stop_listener);
 
 		for (final Job job : startup_jobs) {
-			try {
-				container.submit(job);
-			} catch (final DuplicateJobException ignored) {
-			}
+			container.submit(job);
 		}
 	}
 

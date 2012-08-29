@@ -51,7 +51,7 @@ public class TaskContainer implements Container {
 	@Override
 	public final void submit(final Job job) {
 		if (shutdown) {
-			throw new RejectedJobException(job.getClass().getName() + "/" + job.hashCode() + " rejected from " + getClass().getName() + "/" + hashCode() + " because the container is shutdown");
+			return;//TODO already shutdown
 		}
 
 		job.setContainer(this);
