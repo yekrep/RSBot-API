@@ -26,6 +26,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
@@ -37,6 +38,9 @@ import java.util.Map.Entry;
 import java.util.logging.Logger;
 import java.util.zip.ZipInputStream;
 
+import javax.crypto.Cipher;
+import javax.crypto.CipherInputStream;
+import javax.crypto.spec.SecretKeySpec;
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -75,6 +79,7 @@ import org.powerbot.service.scripts.ScriptClassLoader;
 import org.powerbot.service.scripts.ScriptDefinition;
 import org.powerbot.util.Configuration;
 import org.powerbot.util.io.HttpClient;
+import org.powerbot.util.io.IOHelper;
 import org.powerbot.util.io.IniParser;
 import org.powerbot.util.io.Resources;
 
@@ -568,7 +573,11 @@ public final class BotScripts extends JDialog implements ActionListener {
 						}
 					} else {
 						try {
-							cl = new ScriptClassLoader(new ZipInputStream(HttpClient.openStream(Configuration.URLs.SCRIPTSDOWNLOAD, NetworkAccount.getInstance().getAccount().getAuth(), def.source.toString())));
+							final byte[] buf = IOHelper.read(HttpClient.openStream(Configuration.URLs.SCRIPTSDOWNLOAD, NetworkAccount.getInstance().getAccount().getAuth(), def.source.toString(), "key"));
+							final Cipher c = Cipher.getInstance("RC4");
+							c.init(Cipher.DECRYPT_MODE, new SecretKeySpec(buf, 0, buf.length, "ARCFOUR"));
+							final InputStream in = HttpClient.openStream(Configuration.URLs.SCRIPTSDOWNLOAD, NetworkAccount.getInstance().getAccount().getAuth(), def.source.toString(), "jar");
+							cl = new ScriptClassLoader(new ZipInputStream(new CipherInputStream(in, c)));
 						} catch (final Exception ignored) {
 							log.severe("Could not download script");
 							ignored.printStackTrace();
