@@ -42,7 +42,6 @@ import javax.crypto.Cipher;
 import javax.crypto.CipherInputStream;
 import javax.crypto.spec.SecretKeySpec;
 import javax.imageio.ImageIO;
-import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -64,8 +63,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.border.AbstractBorder;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
-
 import org.powerbot.game.api.ActiveScript;
 import org.powerbot.game.api.Manifest;
 import org.powerbot.game.bot.Bot;
@@ -174,7 +171,6 @@ public final class BotScripts extends JDialog implements ActionListener {
 			}
 		});
 		search.setPreferredSize(new Dimension(150, search.getPreferredSize().height));
-		search.setBorder(BorderFactory.createCompoundBorder(new LineBorder(Color.LIGHT_GRAY, d, true), BorderFactory.createEmptyBorder(0, d + d, 0, d + d)));
 		panelRight.add(search);
 		panelRight.add(Box.createHorizontalStrut(d));
 		final JButton more = new JButton(BotLocale.BROWSE, new ImageIcon(Resources.getImage(Resources.Paths.SEARCH)));
