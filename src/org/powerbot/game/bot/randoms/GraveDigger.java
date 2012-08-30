@@ -14,6 +14,8 @@ import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.methods.node.SceneEntities;
 import org.powerbot.game.api.methods.tab.Inventory;
 import org.powerbot.game.api.methods.widget.Camera;
+import org.powerbot.game.api.methods.widget.DepositBox;
+import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Time;
 import org.powerbot.game.api.util.Timer;
@@ -55,6 +57,10 @@ public class GraveDigger extends AntiRandom {
 	private static final int[] LOCATION_ID_FILLED_GRAVES = {12721, 12722, 12723, 12724, 12725};
 	private static final int[] LOCATION_ID_EMPTY_GRAVES = {12726, 12727, 12728, 12729, 12730};
 	private static final int[] ITEM_ID_COFFINS = {7587, 7588, 7589, 7590, 7591};
+
+	static {
+		Arrays.sort(ITEM_ID_COFFINS);
+	}
 
 	private Coffin[] coffins = {
 			new Coffin(7614, new int[]{7603, 7605, 7612}),//Woodcutter
@@ -131,6 +137,36 @@ public class GraveDigger extends AntiRandom {
 		}
 		if (Players.getLocal().isMoving() || Players.getLocal().getAnimation() != -1) {
 			Time.sleep(Random.nextInt(1000, 1300));
+			return;
+		}
+		if (DepositBox.isOpen()) {
+			final Item[] items = DepositBox.getItems();
+			int deposited = 0;
+			for (int i = items.length - 1; i >= 0 && deposited < 5; i--) {
+				if (Arrays.binarySearch(ITEM_ID_COFFINS, items[i].getId()) < 0) {
+					if (DepositBox.deposit(items[i].getId(), 1)) {
+						++deposited;
+					}
+				}
+			}
+		}
+		if (Inventory.getItems(new Filter<Item>() {
+			@Override
+			public boolean accept(final Item item) {
+				return item != null && Arrays.binarySearch(ITEM_ID_COFFINS, item.getId()) < 0;
+			}
+		}).length > 23) {
+			final SceneObject deposit = SceneEntities.getNearest(LOCATION_ID_DEPOSIT_BOX);
+			if (deposit != null) {
+				if (!deposit.isOnScreen() || !deposit.interact("Deposit")) {
+					walk(deposit);
+				} else {
+					final Timer timer = new Timer(2000);
+					while (timer.isRunning() && !Players.getLocal().isMoving() && !Widgets.canContinue()) {
+						Time.sleep(100);
+					}
+				}
+			}
 			return;
 		}
 
