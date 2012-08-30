@@ -33,6 +33,7 @@ import org.powerbot.game.bot.randoms.Pillory;
 import org.powerbot.game.bot.randoms.Pinball;
 import org.powerbot.game.bot.randoms.Quiz;
 import org.powerbot.game.bot.randoms.SandwichLady;
+import org.powerbot.game.bot.randoms.ScapeRune;
 import org.powerbot.game.bot.randoms.SpinTickets;
 import org.powerbot.game.bot.randoms.WidgetCloser;
 
@@ -70,6 +71,7 @@ public class RandomHandler implements Runnable {
 				new EvilBob(),
 				new Maze(),
 				new Exam(),
+				new ScapeRune(),
 				new SpinTickets(),
 				new BankPin()
 		};
