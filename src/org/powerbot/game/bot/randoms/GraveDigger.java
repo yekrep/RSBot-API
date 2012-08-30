@@ -141,14 +141,20 @@ public class GraveDigger extends AntiRandom {
 		}
 		if (DepositBox.isOpen()) {
 			final Item[] items = DepositBox.getItems();
-			int deposited = 0;
-			for (int i = items.length - 1; i >= 0 && deposited < 5; i--) {
+			int d = DepositBox.getItems(new Filter<Item>() {
+				@Override
+				public boolean accept(final Item item) {
+					return item != null && Arrays.binarySearch(ITEM_ID_COFFINS, item.getId()) < 0;
+				}
+			}).length - 23;
+			for (int i = items.length - 1; i >= 0 && d > 0; i--) {
 				if (Arrays.binarySearch(ITEM_ID_COFFINS, items[i].getId()) < 0) {
 					if (DepositBox.deposit(items[i].getId(), 1)) {
-						++deposited;
+						--d;
 					}
 				}
 			}
+			return;
 		}
 		if (Inventory.getItems(new Filter<Item>() {
 			@Override
