@@ -154,6 +154,7 @@ public class GraveDigger extends AntiRandom {
 					}
 				}
 			}
+			DepositBox.close();
 			return;
 		}
 		if (Inventory.getItems(new Filter<Item>() {
