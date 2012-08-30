@@ -1,5 +1,7 @@
 package org.powerbot.game.bot.randoms;
 
+import java.util.Arrays;
+
 import org.powerbot.game.api.AntiRandom;
 import org.powerbot.game.api.Manifest;
 import org.powerbot.game.api.methods.Calculations;
@@ -14,6 +16,7 @@ import org.powerbot.game.api.methods.node.GroundItems;
 import org.powerbot.game.api.methods.node.SceneEntities;
 import org.powerbot.game.api.methods.tab.Inventory;
 import org.powerbot.game.api.methods.widget.Camera;
+import org.powerbot.game.api.methods.widget.DepositBox;
 import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Time;
@@ -35,6 +38,7 @@ public class EvilBob extends AntiRandom {
 	private static final int LOCATION_ID_FISH = 8986;
 	private static final int LOCATION_ID_PORTAL = 8987;
 	private static final int LOCATION_ID_POT_OF_MAGIC_UN_COOKING_POWERS_RULER_WAS_HERE = 8985;
+	private static final int LOCATION_ID_DEPOSIT_BOX = 32930;
 
 	private static final int NPC_ID_EVIL_BOB = 2479;
 	private static final int NPC_ID_SERVANT = 2481;
@@ -47,6 +51,7 @@ public class EvilBob extends AntiRandom {
 	private static final int[] ITEM_ID_UNCOOKED_FISH = {6200, 6204};
 	private static final int[] ITEM_ID_COOKED_FISH = {6202, 6206};
 	private static final int ITEM_ID_NET = 6209;
+	private static final int[] ITEMS_GAME = {6200, 6202, 6204, 6206, 6209};
 
 	private int statueId = -1;
 	private boolean forceLeave = false;
@@ -68,6 +73,47 @@ public class EvilBob extends AntiRandom {
 			forceLeave = true;
 		} else if (chat.validate() && chat.getText().contains("human")) {
 			forceLeave = false;
+		}
+
+		if (DepositBox.isOpen()) {
+			final Item[] items = DepositBox.getItems();
+			int d = DepositBox.getItems(new Filter<Item>() {
+				@Override
+				public boolean accept(final Item item) {
+					return item != null && Arrays.binarySearch(ITEMS_GAME, item.getId()) < 0;
+				}
+			}).length - 26;
+			for (int i = items.length - 1; i >= 0 && d > 0; i--) {
+				if (Arrays.binarySearch(ITEMS_GAME, items[i].getId()) < 0) {
+					if (DepositBox.deposit(items[i].getId(), 1)) {
+						--d;
+					}
+				}
+			}
+			DepositBox.close();
+			return;
+		}
+		if (Inventory.getItems(new Filter<Item>() {
+			@Override
+			public boolean accept(final Item item) {
+				return item != null && Arrays.binarySearch(ITEMS_GAME, item.getId()) < 0;
+			}
+		}).length > 26) {
+			final SceneObject deposit = SceneEntities.getNearest(LOCATION_ID_DEPOSIT_BOX);
+			if (deposit != null) {
+				if (!deposit.isOnScreen() || !deposit.interact("Deposit")) {
+					walk(deposit);
+				} else {
+					final Timer timer = new Timer(2000);
+					while (timer.isRunning() && !DepositBox.isOpen()) {
+						if (Players.getLocal().isMoving()) {
+							timer.reset();
+						}
+						Time.sleep(100);
+					}
+				}
+			}
+			return;
 		}
 
 		if (Inventory.getItem(ITEM_ID_UNCOOKED_FISH) != null) {
