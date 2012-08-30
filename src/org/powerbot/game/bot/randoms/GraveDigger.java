@@ -100,18 +100,33 @@ public class GraveDigger extends AntiRandom {
 			}
 		}
 
-		if (Widgets.get(WIDGET_INSTRUCTIONS, WIDGET_INSTRUCTIONS_CLOSE).validate()) {
+		final WidgetChild instructionsClose = Widgets.get(WIDGET_INSTRUCTIONS, WIDGET_INSTRUCTIONS_CLOSE);
+		if (instructionsClose.validate()) {
 			verbose("Closing given instructions");
-			Widgets.get(WIDGET_INSTRUCTIONS, WIDGET_INSTRUCTIONS_CLOSE).interact("Close");
-			Time.sleep(Random.nextInt(2000, 3000));
+			if (instructionsClose.interact("Close")) {
+				final Timer timer = new Timer(Random.nextInt(2000, 3000));
+				while (timer.isRunning() && instructionsClose.validate()) {
+					Time.sleep(Random.nextInt(50, 150));
+				}
+				Time.sleep(Random.nextInt(200, 500));
+			}
 			return;
 		}
-		if (Widgets.get(WIDGET_GRAVE, WIDGET_GRAVE_CLOSE).interact("Close")) {
-			Time.sleep(Random.nextInt(1800, 2500));
+		WidgetChild child;
+		if ((child = Widgets.get(WIDGET_GRAVE, WIDGET_GRAVE_CLOSE)).interact("Close")) {
+			final Timer timer = new Timer(Random.nextInt(1800, 2500));
+			while (timer.isRunning() && child.validate()) {
+				Time.sleep(Random.nextInt(50, 150));
+			}
+			Time.sleep(Random.nextInt(200, 500));
 			return;
 		}
-		if (Widgets.get(WIDGET_COFFIN, WIDGET_COFFIN_CLOSE).interact("Close")) {
-			Time.sleep(Random.nextInt(1800, 2500));
+		if ((child = Widgets.get(WIDGET_COFFIN, WIDGET_COFFIN_CLOSE)).interact("Close")) {
+			final Timer timer = new Timer(Random.nextInt(1800, 2500));
+			while (timer.isRunning() && child.validate()) {
+				Time.sleep(Random.nextInt(50, 150));
+			}
+			Time.sleep(Random.nextInt(200, 500));
 			return;
 		}
 		if (Players.getLocal().isMoving() || Players.getLocal().getAnimation() != -1) {
@@ -128,8 +143,9 @@ public class GraveDigger extends AntiRandom {
 					walk(coffinLocation);
 					return;
 				}
-				coffinLocation.interact("Take-coffin");
-				Time.sleep(Random.nextInt(1200, 2000));
+				if (coffinLocation.interact("Take-coffin")) {
+					Time.sleep(Random.nextInt(1200, 2000));
+				}
 				return;
 			} else {
 				gatheredGraves = true;
@@ -169,8 +185,12 @@ public class GraveDigger extends AntiRandom {
 								}
 							}
 
-							if (Widgets.get(WIDGET_GRAVE, WIDGET_GRAVE_CLOSE).interact("Close")) {
-								Time.sleep(Random.nextInt(1800, 2500));
+							if ((child = Widgets.get(WIDGET_GRAVE, WIDGET_GRAVE_CLOSE)).interact("Close")) {
+								final Timer timer = new Timer(Random.nextInt(1800, 2500));
+								while (timer.isRunning() && child.validate()) {
+									Time.sleep(Random.nextInt(50, 150));
+								}
+								Time.sleep(Random.nextInt(200, 500));
 							}
 						}
 					}
@@ -198,8 +218,12 @@ public class GraveDigger extends AntiRandom {
 								}
 							}
 
-							if (Widgets.get(WIDGET_COFFIN, WIDGET_COFFIN_CLOSE).interact("Close")) {
-								Time.sleep(Random.nextInt(1800, 2500));
+							if ((child = Widgets.get(WIDGET_COFFIN, WIDGET_COFFIN_CLOSE)).interact("Close")) {
+								final Timer timer = new Timer(Random.nextInt(1800, 2500));
+								while (timer.isRunning() && child.validate()) {
+									Time.sleep(Random.nextInt(50, 150));
+								}
+								Time.sleep(Random.nextInt(200, 500));
 							}
 							return;
 						}
@@ -231,7 +255,11 @@ public class GraveDigger extends AntiRandom {
 								Time.sleep(100);
 							}
 							if (Players.getLocal().getAnimation() == 827) {
-								Time.sleep(Random.nextInt(3000, 5500));
+								final Timer plant = new Timer(5000);
+								while (plant.isRunning() && Players.getLocal().getAnimation() == 827) {
+									Time.sleep(Random.nextInt(50, 150));
+								}
+								Time.sleep(Random.nextInt(500, 800));
 							}
 						}
 					}
