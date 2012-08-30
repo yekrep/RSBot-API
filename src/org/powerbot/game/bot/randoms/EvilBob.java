@@ -222,7 +222,8 @@ public class EvilBob extends AntiRandom {
 				final SceneObject fishingSpot = SceneEntities.getNearest(new Filter<SceneObject>() {
 					@Override
 					public boolean accept(final SceneObject location) {
-						return location.getId() == LOCATION_ID_FISH && Calculations.distance(location.getLocation(), statue.getLocation()) < 10;
+						return location != null && location.getId() == LOCATION_ID_FISH &&
+								Calculations.distance(location.getLocation(), statue.getLocation()) < 10;
 					}
 				});
 				verbose("Nearest fishing spot: " + fishingSpot);
