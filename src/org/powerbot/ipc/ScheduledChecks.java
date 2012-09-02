@@ -14,7 +14,7 @@ import org.powerbot.service.NetworkAccount;
 public final class ScheduledChecks implements ActionListener {
 	private final static Logger log = Logger.getLogger(ScheduledChecks.class.getName());
 	public static volatile long SESSION_TIME = 0;
-	public static final int LOCALSCRIPT_TIMEOUT = 60;
+	public static final int LOCALSCRIPT_TIMEOUT = 60 * 3;
 
 	@Override
 	public void actionPerformed(final ActionEvent e) {
