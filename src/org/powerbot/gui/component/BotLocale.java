@@ -43,7 +43,6 @@ public final class BotLocale {
 	public static final String NEEDSIGNIN = "Member Access";
 	public static final String NEEDSIGNINMULTITAB = "Please sign in to open more tabs.";
 	public static final String CANTOPENTAB = "Unable to open a new tab.";
-	public static final String UPDATEJAVA = "You are running an old version of Java, some things may not work correctly.\nPlease update your Java runtime at java.com/download";
 
 	public static final String SEARCH = "Search";
 	public static final String REFRESH = "Refresh";
