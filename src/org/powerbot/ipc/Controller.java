@@ -44,7 +44,7 @@ public final class Controller implements Runnable {
 	private final DatagramSocket sock;
 	private final List<Event> callbacks;
 	private final ExecutorService executor;
-	public static final int MAX_INSTANCES = 8;
+	public static final int MAX_INSTANCES = 24;
 	private final int[] ports = new int[MAX_INSTANCES + 1];
 	public final int instanceID;
 	private static final int RESPONSE_TIMEOUT = 1000;
