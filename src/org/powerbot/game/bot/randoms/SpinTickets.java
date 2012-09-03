@@ -5,6 +5,7 @@ import org.powerbot.game.api.Manifest;
 import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.api.methods.Tabs;
 import org.powerbot.game.api.methods.Widgets;
+import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.methods.tab.Inventory;
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Time;
@@ -21,7 +22,8 @@ public class SpinTickets extends AntiRandom {
 	@Override
 	public boolean validate() {
 		return Game.isLoggedIn() && Tabs.getCurrent() == Tabs.INVENTORY &&
-				(Inventory.getItem(ITEM_ID_SPIN_TICKET) != null || Inventory.getItem(ITEM_ID_SPIN_TICKET_X2) != null);
+				(Inventory.getItem(ITEM_ID_SPIN_TICKET) != null || Inventory.getItem(ITEM_ID_SPIN_TICKET_X2) != null) &&
+				Players.getLocal().isIdle();
 	}
 
 	@Override

@@ -7,6 +7,7 @@ import org.powerbot.game.api.AntiRandom;
 import org.powerbot.game.api.Manifest;
 import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.api.methods.Widgets;
+import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Time;
 import org.powerbot.game.api.util.Timer;
@@ -31,7 +32,7 @@ public class WidgetCloser extends AntiRandom {
 	}
 
 	public boolean validate() {
-		if (Game.isLoggedIn()) {
+		if (Game.isLoggedIn() && Players.getLocal().isIdle()) {
 			if (timer != null) {
 				if (timer.isRunning()) {
 					return false;
