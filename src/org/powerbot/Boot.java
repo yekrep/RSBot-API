@@ -166,7 +166,7 @@ public class Boot implements Runnable {
 		if (!options.contains("-XX:MaxPermSize=")) {
 			options += " -XX:MaxPermSize=" + Math.max(256, Runtime.getRuntime().maxMemory() / 1024 / 1024 / 4) + "m";
 		}
-		for (final String flag : new String[] {"-XX:+UseConcMarkSweepGC", "-XX:+CMSClassUnloadingEnabled", "-XX:+UseCodeCacheFlushing"}) {
+		for (final String flag : new String[] {"-XX:+UseConcMarkSweepGC", "-XX:+CMSClassUnloadingEnabled", "-XX:+UseCodeCacheFlushing", "-XX:-UseSplitVerifier"}) {
 			if (!options.contains(flag)) {
 				options += " " + flag;
 			}
