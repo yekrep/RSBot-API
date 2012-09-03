@@ -1,4 +1,4 @@
-package org.powerbot.game.api.methods.tab.Summoning;
+package org.powerbot.game.api.methods.tab;
 
 import org.powerbot.game.api.methods.Settings;
 import org.powerbot.game.api.methods.Widgets;
