@@ -19,7 +19,7 @@ public class Configuration {
 	public static final boolean FROMJAR;
 	public static boolean DEVMODE = false;
 	public static final boolean SUPERDEV;
-	public static final int VERSION = 4034;
+	public static final int VERSION = 4035;
 	public static final OperatingSystem OS;
 
 	public enum OperatingSystem {
