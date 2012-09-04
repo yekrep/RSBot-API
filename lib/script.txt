@@ -123,10 +123,13 @@ exclude     org.powerbot.Boot^ public static main(java.lang.String[]) and
 obfuscate   changeLogFileIn=""
             changeLogFileOut="%ZKM_CHANGELOG%"
             aggressiveMethodRenaming=true
+            keepInnerClassInfo=true
+            keepGenericsInfo=true
             obfuscateFlow=aggressive
             encryptStringLiterals=flowObfuscate
             collapsePackagesWithDefault=""
             lineNumbers=delete
-            exceptionObfuscation=heavy;
+            exceptionObfuscation=heavy
+            autoReflectionHandling=normal;
 
 saveAll     archiveCompression=all "%ZKM_SAVE%";
