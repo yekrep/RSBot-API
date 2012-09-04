@@ -129,7 +129,6 @@ obfuscate   changeLogFileIn=""
             encryptStringLiterals=flowObfuscate
             collapsePackagesWithDefault=""
             lineNumbers=delete
-            exceptionObfuscation=heavy
-            autoReflectionHandling=normal;
+            exceptionObfuscation=heavy;
 
 saveAll     archiveCompression=all "%ZKM_SAVE%";
