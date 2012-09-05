@@ -1,5 +1,7 @@
 package org.powerbot.game.bot.randoms;
 
+import java.util.Arrays;
+
 import org.powerbot.game.api.AntiRandom;
 import org.powerbot.game.api.Manifest;
 import org.powerbot.game.api.methods.Settings;
@@ -8,6 +10,8 @@ import org.powerbot.game.api.methods.Widgets;
 import org.powerbot.game.api.methods.interactive.NPCs;
 import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.methods.node.SceneEntities;
+import org.powerbot.game.api.methods.tab.Inventory;
+import org.powerbot.game.api.methods.widget.DepositBox;
 import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Time;
@@ -15,11 +19,13 @@ import org.powerbot.game.api.util.Timer;
 import org.powerbot.game.api.wrappers.Locatable;
 import org.powerbot.game.api.wrappers.graphics.CapturedModel;
 import org.powerbot.game.api.wrappers.interactive.NPC;
+import org.powerbot.game.api.wrappers.node.Item;
 import org.powerbot.game.api.wrappers.node.SceneObject;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
 
 @Manifest(name = "Freaky Forester", authors = {"Timer"}, version = 1.0)
 public class FreakyForester extends AntiRandom {
+	protected static final int LOCATION_ID_DEPOSIT_BOX = 32931;
 	private static final int LOCATION_ID_PORTAL = 15645;
 	private static final int[] NPC_ID_FORESTER = {100, 2458};
 	private static final int WIDGET_TALK = 1184;
@@ -79,6 +85,50 @@ public class FreakyForester extends AntiRandom {
 
 				if (portal.interact("Enter")) {
 					Time.sleep(Random.nextInt(2500, 4000));
+				}
+			}
+			return;
+		}
+
+		if (DepositBox.isOpen()) {
+			final Item[] items = DepositBox.getItems();
+			int d = DepositBox.getItems(new Filter<Item>() {
+				@Override
+				public boolean accept(final Item item) {
+					final String name;
+					return item != null && ((name = item.getName()) == null || !name.contains("pheasant"));
+				}
+			}).length - 27;
+			for (int i = items.length - 1; i >= 0 && d > 0; i--) {
+				final String name = items[i].getName();
+				if (name == null || !name.contains("pheasant")) {
+					if (DepositBox.deposit(items[i].getId(), 1)) {
+						--d;
+					}
+				}
+			}
+			DepositBox.close();
+			return;
+		}
+		if (Inventory.getItems(new Filter<Item>() {
+			@Override
+			public boolean accept(final Item item) {
+				final String name;
+				return item != null && ((name = item.getName()) == null || !name.contains("pheasant"));
+			}
+		}).length > 27) {
+			final SceneObject deposit = SceneEntities.getNearest(LOCATION_ID_DEPOSIT_BOX);
+			if (deposit != null) {
+				if (!deposit.isOnScreen() || !deposit.interact("Deposit")) {
+					walk(deposit);
+				} else {
+					final Timer timer = new Timer(2000);
+					while (timer.isRunning() && !DepositBox.isOpen()) {
+						if (Players.getLocal().isMoving()) {
+							timer.reset();
+						}
+						Time.sleep(100);
+					}
 				}
 			}
 			return;
