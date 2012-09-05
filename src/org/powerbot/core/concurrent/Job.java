@@ -13,14 +13,14 @@ public interface Job {
 	public void work();
 
 	/**
-	 * Joins this worker with the invoking thread.
+	 * Makes an attempt to wait for this thread to complete by pausing (suspending) the calling thread.
 	 */
 	public void join();
 
 	/**
-	 * Attempts to join this worker with the invoking thread for span of time provided.
+	 * Makes an attempt to wait for this thread to complete by pausing (suspending) the calling thread within a certain time limit.
 	 *
-	 * @param timeout The maximum amount of time to allot for this worker to join with the invoking thread.
+	 * @param timeout The maximum amount of time to allot for this worker to join with the calling thread.
 	 * @return <tt>true</tt> when successfully joined; otherwise <tt>false</tt>.
 	 */
 	public boolean join(int timeout);
