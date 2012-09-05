@@ -39,10 +39,11 @@ public class FreakyForester extends AntiRandom {
 			return modelFilter.accept(npc.getModel());
 		}
 	};
+	public boolean done = false;
 
 	@Override
 	public boolean validate() {
-		return NPCs.getNearest(NPC_ID_FORESTER) != null && SceneEntities.getNearest(LOCATION_ID_PORTAL) != null;
+		return NPCs.getNearest(NPC_ID_FORESTER) != null && SceneEntities.getNearest(LOCATION_ID_PORTAL) != null || (done = false);
 	}
 
 	@Override
@@ -74,7 +75,7 @@ public class FreakyForester extends AntiRandom {
 		}
 
 		verbose("SETTING 334: " + Settings.get(334));
-		if (Settings.get(334) == 0x2) {
+		if (Settings.get(334) == 0x2 || done) {
 			verbose("SETTING VALIDATED: Depart.");
 			final SceneObject portal = SceneEntities.getNearest(LOCATION_ID_PORTAL);
 			if (portal != null) {
