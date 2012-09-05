@@ -63,7 +63,7 @@ public class FreakyForester extends AntiRandom {
 				verbose("What is he saying???");
 				for (int i = 0; i < WIDGET_TALK_NUMBERS_TEXT.length; i++) {
 					if (text.contains(WIDGET_TALK_NUMBERS_TEXT[i])) {
-						verbose("Found the text '" + WIDGET_TALK_NUMBERS_TEXT[i] + "'!  Setting model (" + Models.all[i].hashCode() + ").");
+						verbose("Found the text '" + WIDGET_TALK_NUMBERS_TEXT[i] + "'!  Setting model (" + Arrays.hashCode(Models.all[i]) + ").");
 						phe = Models.all[i];
 					}
 				}
