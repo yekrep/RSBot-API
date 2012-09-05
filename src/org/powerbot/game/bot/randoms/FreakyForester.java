@@ -57,6 +57,7 @@ public class FreakyForester extends AntiRandom {
 				if (text.contains(WIDGET_TALK_DONE_TEXT)) {
 					verbose("WIDGET: Continuing due the fact we're done...");
 					Widgets.clickContinue();
+					done = true;
 					Time.sleep(Random.nextInt(1800, 2500));
 					return;
 				}
