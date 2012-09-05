@@ -24,7 +24,7 @@ import org.powerbot.game.api.wrappers.widget.WidgetChild;
  */
 public class DepositBox {
 	public static final int[] DEPOSIT_BOX_IDS = new int[]{
-			2045, 2133, 6836, 9398, 20228, 24995, 25937, 26969, 32930, 32924, 32931, 34755, 36788, 39830, 66668
+			2045, 2133, 6836, 9398, 20228, 24995, 25937, 26969, 32930, 32924, 32931, 34755, 36788, 39830, 45079, 66668,
 	};
 
 	public static final int WIDGET_DEPOSIT_BOX = 11;
