@@ -50,7 +50,7 @@ public class TaskContainer implements Container {
 	 */
 	@Override
 	public final void submit(final Job job) {
-		if (shutdown) {
+		if (isShutdown()) {
 			return;//TODO already shutdown
 		}
 
@@ -67,6 +67,10 @@ public class TaskContainer implements Container {
 	 */
 	@Override
 	public final void setPaused(final boolean paused) {
+		if (isShutdown()) {
+			return;
+		}
+
 		if (this.paused != paused) {
 			this.paused = paused;
 		}
@@ -165,7 +169,9 @@ public class TaskContainer implements Container {
 	public final void interrupt() {
 		shutdown();
 
-		interrupted = true;
+		if (!interrupted) {
+			interrupted = true;
+		}
 		for (final Container container : getChildren()) {
 			container.interrupt();
 		}
