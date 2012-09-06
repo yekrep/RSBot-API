@@ -1,14 +1,15 @@
-package org.powerbot.core.script;
+package org.powerbot.script;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.powerbot.core.concurrent.Container;
-import org.powerbot.core.concurrent.Job;
-import org.powerbot.core.concurrent.JobListener;
-import org.powerbot.core.concurrent.Task;
-import org.powerbot.core.concurrent.TaskContainer;
-import org.powerbot.core.script.job.LoopTask;
+import org.powerbot.script.job.Container;
+import org.powerbot.script.job.Job;
+import org.powerbot.script.job.JobListener;
+import org.powerbot.script.job.LoopTask;
+import org.powerbot.script.job.Task;
+import org.powerbot.script.job.TaskContainer;
 
 /**
  * @author Timer
@@ -54,15 +55,15 @@ public abstract class ActiveScript extends LoopTask implements Script {
 			return;
 		}
 
-		final List<Job> startup_jobs = getStartupJobs();
+		final List<Job> startup_jobs = Collections.unmodifiableList(getStartupJobs());
 		if (!startup_jobs.contains(this)) {
-			startup_jobs.add(this);
 			startup_jobs.add(new Task() {
 				@Override
 				public void execute() {
 					onStart();
 				}
 			});
+			startup_jobs.add(this);
 		}
 		container.addListener(stop_listener);
 

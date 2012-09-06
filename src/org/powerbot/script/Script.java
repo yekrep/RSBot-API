@@ -1,16 +1,16 @@
-package org.powerbot.core.script;
+package org.powerbot.script;
 
 import java.util.List;
 
-import org.powerbot.core.concurrent.Container;
-import org.powerbot.core.concurrent.Job;
+import org.powerbot.script.job.Container;
+import org.powerbot.script.job.Job;
 
 /**
  * @author Timer
  */
 public interface Script {
 	/**
-	 * @return {@link Job}s to be ran upon invocation of {@link org.powerbot.core.script.Script#start()}.
+	 * @return {@link Job}s to be ran upon invocation of {@link org.powerbot.script.Script#start()}.
 	 */
 	public List<Job> getStartupJobs();
 

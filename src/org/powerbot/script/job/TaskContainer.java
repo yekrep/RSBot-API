@@ -1,4 +1,4 @@
-package org.powerbot.core.concurrent;
+package org.powerbot.script.job;
 
 import java.util.LinkedList;
 import java.util.List;

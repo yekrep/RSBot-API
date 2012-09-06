@@ -1,4 +1,4 @@
-package org.powerbot.core.script.job.state;
+package org.powerbot.script.job.state;
 
 import java.util.Arrays;
 import java.util.Queue;
@@ -6,8 +6,8 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * A {@link Branch} is a {@link Node} which activates multiple children node when submitted, typically after activation ({@link org.powerbot.core.script.job.state.Branch#branch()}).
- * Activation of this {@link Branch} requires one {@link Node} to be considered active ({@link org.powerbot.core.script.job.state.Node#activate()}) in addition to {@link org.powerbot.core.script.job.state.Branch#branch()}.
+ * A {@link Branch} is a {@link Node} which activates multiple children node when submitted, typically after activation ({@link org.powerbot.script.job.state.Branch#branch()}).
+ * Activation of this {@link Branch} requires one {@link Node} to be considered active ({@link org.powerbot.script.job.state.Node#activate()}) in addition to {@link org.powerbot.script.job.state.Branch#branch()}.
  *
  * @author Timer
  */
@@ -17,9 +17,9 @@ public abstract class Branch extends Node {
 	private final AtomicReference<Node> current_node = new AtomicReference<>();
 
 	/**
-	 * Constructs a {@link Branch}, which is a {@link Node} which activates a series of {@link Node}s when activated via {@link org.powerbot.core.script.job.state.Branch#branch()}.
+	 * Constructs a {@link Branch}, which is a {@link Node} which activates a series of {@link Node}s when activated via {@link org.powerbot.script.job.state.Branch#branch()}.
 	 *
-	 * @param nodes The children {@link Node}s to activate when this {@link Branch} activates ({@link org.powerbot.core.script.job.state.Branch#branch()}).
+	 * @param nodes The children {@link Node}s to activate when this {@link Branch} activates ({@link org.powerbot.script.job.state.Branch#branch()}).
 	 */
 	public Branch(final Node[] nodes) {
 		this.nodes = new ConcurrentLinkedQueue<>();

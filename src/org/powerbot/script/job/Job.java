@@ -1,4 +1,6 @@
-package org.powerbot.core.concurrent;
+package org.powerbot.script.job;
+
+import java.util.EventListener;
 
 /**
  * A {@link Job} is generally deployed in an asynchronous or concurrent environment.
@@ -6,7 +8,7 @@ package org.powerbot.core.concurrent;
  *
  * @author Timer
  */
-public interface Job {
+public interface Job extends EventListener {
 	/**
 	 * Executes the job or task of this worker.
 	 */

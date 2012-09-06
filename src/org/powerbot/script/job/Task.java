@@ -1,4 +1,4 @@
-package org.powerbot.core.concurrent;
+package org.powerbot.script.job;
 
 /**
  * The most basic implementation of a {@link Job}.

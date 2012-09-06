@@ -1,8 +1,8 @@
-package org.powerbot.core.util;
+package org.powerbot.script.job.util;
 
-import org.powerbot.core.concurrent.Container;
-import org.powerbot.core.concurrent.Job;
-import org.powerbot.core.concurrent.JobListener;
+import org.powerbot.script.job.Container;
+import org.powerbot.script.job.Job;
+import org.powerbot.script.job.JobListener;
 
 /**
  * A utility designed to aid in the manipulation of {@link Container}s.

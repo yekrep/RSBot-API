@@ -1,4 +1,4 @@
-package org.powerbot.core.concurrent;
+package org.powerbot.script.job;
 
 /**
  * A listener interface for manipulation around {@link Job}s.
