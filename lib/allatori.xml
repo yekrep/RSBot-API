@@ -1,0 +1,18 @@
+<config>
+	<jars>
+		<jar in="RSBot.jar" out="RSBot.jar" />
+	</jars>
+	<keep-names>
+		<class template="class *">
+			<field access="private+" template="private+ *" />
+			<method access="private+" template="private+ *(**)" />
+		</class>
+	</keep-names>
+	<property name="log-file" value="allatori-log.xml" />
+	<property name="string-encryption" value="maximum" />
+	<property name="string-encryption-type" value="fast" />
+	<property name="control-flow-obfuscation" value="disable" />
+	<property name="extensive-flow-obfuscation" value="disable" />
+	<property name="line-numbers" value="keep" />
+	<property name="member-reorder" value="disable" />
+</config>
