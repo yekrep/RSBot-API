@@ -1,9 +1,9 @@
-package org.powerbot.script.job.state;
+package org.powerbot.core.script.job.state;
 
-import org.powerbot.script.job.Task;
+import org.powerbot.core.script.job.Task;
 
 /**
- * A {@link Node} is an {@link Task} in which has an activation method ({@link org.powerbot.script.job.state.Node#activate()}).
+ * A {@link Node} is an {@link Task} in which has an activation method ({@link org.powerbot.core.script.job.state.Node#activate()}).
  * A {@link Node} is generally deployed within a state environment (see {@link Tree}).
  * <p/>
  * The {@link Node} is not checked for activation when submitted.

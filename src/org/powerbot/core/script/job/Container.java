@@ -1,4 +1,4 @@
-package org.powerbot.script.job;
+package org.powerbot.core.script.job;
 
 /**
  * A controllable application interface used for containing a number of {@link Job}s.

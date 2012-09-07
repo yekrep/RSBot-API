@@ -1,4 +1,4 @@
-package org.powerbot.script.job;
+package org.powerbot.core.script.job;
 
 /**
  * The most basic implementation of a {@link Job}.
