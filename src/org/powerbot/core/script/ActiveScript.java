@@ -1,15 +1,15 @@
-package org.powerbot.script;
+package org.powerbot.core.script;
 
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.powerbot.script.job.Container;
-import org.powerbot.script.job.Job;
-import org.powerbot.script.job.JobListener;
-import org.powerbot.script.job.LoopTask;
-import org.powerbot.script.job.Task;
-import org.powerbot.script.job.TaskContainer;
+import org.powerbot.core.script.job.Container;
+import org.powerbot.core.script.job.Job;
+import org.powerbot.core.script.job.JobListener;
+import org.powerbot.core.script.job.LoopTask;
+import org.powerbot.core.script.job.Task;
+import org.powerbot.core.script.job.TaskContainer;
 
 /**
  * @author Timer

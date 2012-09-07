@@ -1,6 +1,6 @@
-package org.powerbot.script.internal;
+package org.powerbot.core.script.internal;
 
-import org.powerbot.script.Script;
+import org.powerbot.core.script.Script;
 
 /**
  * @author Timer

@@ -1,4 +1,4 @@
-package org.powerbot.script.job.state;
+package org.powerbot.core.script.job.state;
 
 import java.util.Arrays;
 import java.util.Queue;
@@ -8,7 +8,7 @@ import java.util.concurrent.atomic.AtomicReference;
 /**
  * A {@link Tree} in which provides states when polled.
  * <p/>
- * A {@link Tree} is designed for concurrency and will return a null state when polled ({@link org.powerbot.script.job.state.Tree#state()}), provided that you set the state ({@link org.powerbot.script.job.state.Tree#set(org.powerbot.script.job.state.Node)}).
+ * A {@link Tree} is designed for concurrency and will return a null state when polled ({@link org.powerbot.core.script.job.state.Tree#state()}), provided that you set the state ({@link org.powerbot.core.script.job.state.Tree#set(org.powerbot.core.script.job.state.Node)}).
  *
  * @author Timer
  */
@@ -53,7 +53,7 @@ public class Tree {
 	}
 
 	/**
-	 * Sets the current node to the running state provided by this {@link Tree} ({@link org.powerbot.script.job.state.Tree#state()}).
+	 * Sets the current node to the running state provided by this {@link Tree} ({@link org.powerbot.core.script.job.state.Tree#state()}).
 	 *
 	 * @param node The {@link Node} which is being processed as this {@link Tree}'s state.
 	 */

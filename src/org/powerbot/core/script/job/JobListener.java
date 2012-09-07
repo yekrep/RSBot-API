@@ -1,4 +1,4 @@
-package org.powerbot.script.job;
+package org.powerbot.core.script.job;
 
 /**
  * A listener interface for manipulation around {@link Job}s.
