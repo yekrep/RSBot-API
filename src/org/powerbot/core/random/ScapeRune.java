@@ -1,6 +1,6 @@
-package org.powerbot.game.bot.randoms;
+package org.powerbot.core.random;
 
-import org.powerbot.game.api.AntiRandom;
+import org.powerbot.core.random.AntiRandom;
 import org.powerbot.game.api.Manifest;
 import org.powerbot.game.api.methods.interactive.NPCs;
 import org.powerbot.game.api.methods.node.SceneEntities;

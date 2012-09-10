@@ -1,8 +1,7 @@
-package org.powerbot.game.bot.randoms;
+package org.powerbot.core.random;
 
 import java.util.Arrays;
 
-import org.powerbot.game.api.AntiRandom;
 import org.powerbot.game.api.Manifest;
 import org.powerbot.game.api.methods.Calculations;
 import org.powerbot.game.api.methods.Walking;

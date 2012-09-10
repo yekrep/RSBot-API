@@ -3,13 +3,12 @@ package org.powerbot.game.bot;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
+import org.powerbot.core.bot.handler.RandomHandler;
+import org.powerbot.core.bot.handler.ScriptHandler;
 import org.powerbot.event.EventDispatcher;
-import org.powerbot.game.api.ActiveScript;
 import org.powerbot.game.api.methods.Calculations;
-import org.powerbot.game.api.util.Time;
 import org.powerbot.game.api.util.internal.Constants;
 import org.powerbot.game.api.util.internal.Multipliers;
-import org.powerbot.game.bot.handler.RandomHandler;
 import org.powerbot.game.bot.handler.input.MouseExecutor;
 import org.powerbot.game.client.Client;
 import org.powerbot.game.client.Render;
@@ -22,9 +21,8 @@ public class BotComposite {
 
 	MouseExecutor executor;
 	EventDispatcher eventDispatcher;
-	ActiveScript activeScript;
+	ScriptHandler scriptHandler;
 	RandomHandler randomHandler;
-	Future<?> antiRandomFuture;
 	Context context;
 
 	Client client;
@@ -39,9 +37,8 @@ public class BotComposite {
 
 		executor = null;
 		eventDispatcher = new EventDispatcher();
-		activeScript = null;
+		scriptHandler = null;
 		randomHandler = new RandomHandler(bot);
-		antiRandomFuture = null;
 
 		client = null;
 		toolkit = new Calculations.Toolkit();
@@ -79,11 +76,8 @@ public class BotComposite {
 
 	public void reload() {
 		Bot.log.info("Refreshing environment");
-		if (activeScript != null && activeScript.isRunning()) {
-			activeScript.pause(true);
-			while (activeScript.getContainer().getActiveCount() > 0) {
-				Time.sleep(150);
-			}
+		if (scriptHandler != null && scriptHandler.isActive()) {
+			scriptHandler.pause();
 		}
 
 		bot.terminateApplet();
@@ -102,8 +96,8 @@ public class BotComposite {
 			} catch (final InterruptedException | ExecutionException ignored) {
 			}
 
-			if (activeScript != null && activeScript.isRunning()) {
-				activeScript.resume();
+			if (scriptHandler != null && scriptHandler.isActive()) {
+				scriptHandler.resume();
 			}
 		}
 

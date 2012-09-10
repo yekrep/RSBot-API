@@ -6,8 +6,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ThreadPoolExecutor;
 
+import org.powerbot.core.bot.handler.ScriptHandler;
 import org.powerbot.event.EventManager;
-import org.powerbot.game.api.ActiveScript;
 import org.powerbot.game.api.methods.Calculations;
 import org.powerbot.game.api.util.internal.Constants;
 import org.powerbot.game.api.util.internal.Multipliers;
@@ -65,7 +65,7 @@ public class Context {
 	}
 
 	public static void cancelMouse() {
-		get().bot.getExecutor().cancel();
+		get().bot.getMouseExecutor().cancel();
 	}
 
 	public void b(final int s) {
@@ -80,8 +80,8 @@ public class Context {
 		return bot;
 	}
 
-	public ActiveScript getActiveScript() {
-		return bot.getActiveScript();
+	public ScriptHandler getScriptHandler() {
+		return bot.getScriptHandler();
 	}
 
 	public Client getClient() {
@@ -89,7 +89,7 @@ public class Context {
 	}
 
 	public MouseExecutor getExecutor() {
-		return bot.getExecutor();
+		return bot.getMouseExecutor();
 	}
 
 	public BufferedImage getImage() {
@@ -101,7 +101,7 @@ public class Context {
 	}
 
 	public ThreadPoolExecutor getContainer() {
-		return bot.getContainer();
+		return bot.getExecutor();
 	}
 
 	public EventManager getEventManager() {

@@ -26,7 +26,7 @@ import java.util.zip.DeflaterOutputStream;
 import java.util.zip.Inflater;
 import java.util.zip.InflaterInputStream;
 
-import org.powerbot.game.api.ActiveScript;
+import org.powerbot.core.bot.handler.ScriptHandler;
 import org.powerbot.game.bot.Bot;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.ipc.Message.MessageType;
@@ -87,12 +87,12 @@ public final class Controller implements Runnable {
 	}
 
 	private static DatagramSocket getIfAvailable(int port) {
-	    DatagramSocket sock = null;
-	    try {
-	        sock = new DatagramSocket(port, InetAddress.getLocalHost());
-	    } catch (IOException ignored) {
-	    }
-	    return sock;
+		DatagramSocket sock = null;
+		try {
+			sock = new DatagramSocket(port, InetAddress.getLocalHost());
+		} catch (IOException ignored) {
+		}
+		return sock;
 	}
 
 	public boolean isBound() {
@@ -159,8 +159,8 @@ public final class Controller implements Runnable {
 				case SCRIPT:
 					final ConcurrentLinkedQueue<String> list = new ConcurrentLinkedQueue<String>();
 					if (Bot.isInstantiated()) {
-						final ActiveScript script = Bot.getInstance().getActiveScript();
-						if (script != null && !script.getContainer().isShutdown()) {
+						final ScriptHandler script = Bot.getInstance().getScriptHandler();
+						if (script != null && script.isActive()) {
 							final ScriptDefinition def = script.getDefinition();
 							if (def != null && def.getID() != null && !def.getID().isEmpty()) {
 								list.add(def.getID());

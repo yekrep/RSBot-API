@@ -12,6 +12,9 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 import org.powerbot.concurrent.ThreadPool;
+import org.powerbot.core.bot.handler.ScriptHandler;
+import org.powerbot.core.script.job.Container;
+import org.powerbot.core.script.job.TaskContainer;
 import org.powerbot.event.EventDispatcher;
 import org.powerbot.game.api.ActiveScript;
 import org.powerbot.game.api.methods.input.Keyboard;
@@ -33,6 +36,7 @@ import org.powerbot.game.loader.script.ModScript;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.gui.component.BotPanel;
 import org.powerbot.service.GameAccounts;
+import org.powerbot.service.scripts.ScriptDefinition;
 import org.powerbot.util.RestrictedSecurityManager;
 
 /**
@@ -49,7 +53,8 @@ public final class Bot implements Runnable {
 	public Runnable callback;
 
 	public ThreadGroup threadGroup;
-	protected ThreadPoolExecutor container;
+	protected ThreadPoolExecutor executor;
+	private Container container;
 
 	ClientLoader clientLoader;
 	public final BotComposite composite;
@@ -72,7 +77,8 @@ public final class Bot implements Runnable {
 		stub = null;
 
 		threadGroup = new ThreadGroup(Bot.class.getName() + "@" + hashCode());
-		container = new ThreadPoolExecutor(1, Integer.MAX_VALUE, 60, TimeUnit.HOURS, new SynchronousQueue<Runnable>(), new ThreadPool(threadGroup), new ThreadPoolExecutor.CallerRunsPolicy());
+		executor = new ThreadPoolExecutor(1, Integer.MAX_VALUE, 60, TimeUnit.HOURS, new SynchronousQueue<Runnable>(), new ThreadPool(threadGroup), new ThreadPoolExecutor.CallerRunsPolicy());
+		container = new TaskContainer();
 
 		composite = new BotComposite(this);
 		panel = null;
@@ -85,7 +91,7 @@ public final class Bot implements Runnable {
 		paintEvent = new PaintEvent();
 		textPaintEvent = new TextPaintEvent();
 
-		container.submit(composite.eventDispatcher);
+		executor.submit(composite.eventDispatcher);
 		refreshing = false;
 	}
 
@@ -136,7 +142,7 @@ public final class Bot implements Runnable {
 			}
 		};
 		log.fine("Submitting loader");
-		return container.submit(new Loader(this));
+		return executor.submit(new Loader(this));
 	}
 
 	/**
@@ -145,23 +151,22 @@ public final class Bot implements Runnable {
 	public void stop() {
 		clientLoader.cancel();
 
-		if (composite.activeScript != null) {
-			composite.activeScript.stop();
-			composite.activeScript.kill();
-			composite.activeScript = null;
+		if (composite.scriptHandler != null) {
+			composite.scriptHandler.stop();
+			composite.scriptHandler = null;
 		}
 		log.info("Unloading environment");
 		if (composite.eventDispatcher != null) {
 			composite.eventDispatcher.setActive(false);
 		}
-		container.submit(new Runnable() {
+		executor.submit(new Runnable() {
 			@Override
 			public void run() {
 				terminateApplet();
 			}
 		});
 		Context.context.remove(threadGroup);
-		container.shutdown();
+		executor.shutdown();
 		instance = null;
 	}
 
@@ -180,19 +185,19 @@ public final class Bot implements Runnable {
 		}
 	}
 
-	public ThreadPoolExecutor getContainer() {
-		return container;
+	public ThreadPoolExecutor getExecutor() {
+		return executor;
 	}
 
-	public void startScript(final ActiveScript script) {
+	public void startScript(final ActiveScript script, final ScriptDefinition definition) {
 		RestrictedSecurityManager.assertNonScript();
-		if (composite.activeScript != null && composite.activeScript.isRunning()) {
+		if (composite.scriptHandler != null && composite.scriptHandler.isActive()) {
 			throw new RuntimeException("cannot run multiple scripts at once!");
 		}
 
-		this.composite.activeScript = script;
+		this.composite.scriptHandler.start(script, definition);
 		script.init(composite.context);
-		final Future<?> future = container.submit(script.start());
+		final Future<?> future = executor.submit(script.getStart());
 		try {
 			future.get();
 		} catch (final InterruptedException | ExecutionException ignored) {
@@ -200,12 +205,12 @@ public final class Bot implements Runnable {
 	}
 
 	public void stopScript() {
-		if (composite.activeScript == null) {
+		if (composite.scriptHandler == null) {
 			throw new RuntimeException("script is non existent!");
 		}
 
 		log.info("Stopping script");
-		composite.activeScript.stop();
+		composite.scriptHandler.shutdown();
 	}
 
 	public BufferedImage getImage() {
@@ -256,7 +261,7 @@ public final class Bot implements Runnable {
 		client.setCallback(new CallbackImpl(this));
 		composite.constants = new Constants(modScript.constants);
 		composite.multipliers = new Multipliers(modScript.multipliers);
-		container.submit(new SafeMode(this));
+		executor.submit(new SafeMode(this));
 		composite.executor = new MouseExecutor(this);
 
 		composite.setup(composite.constants);
@@ -278,7 +283,7 @@ public final class Bot implements Runnable {
 		return composite.client != null ? composite.client.getCanvas() : null;
 	}
 
-	public MouseExecutor getExecutor() {
+	public MouseExecutor getMouseExecutor() {
 		return composite.executor;
 	}
 
@@ -294,14 +299,14 @@ public final class Bot implements Runnable {
 		return account;
 	}
 
-	public ActiveScript getActiveScript() {
-		return composite.activeScript;
+	public ScriptHandler getScriptHandler() {
+		return composite.scriptHandler;
 	}
 
 	public void ensureAntiRandoms() {
 		RestrictedSecurityManager.assertNonScript();
-		if (composite.antiRandomFuture == null || composite.antiRandomFuture.isDone()) {
-			composite.antiRandomFuture = container.submit(composite.randomHandler);
+		if (!composite.randomHandler.isAlive()) {
+			container.submit(composite.randomHandler);
 		}
 	}
 
@@ -311,7 +316,7 @@ public final class Bot implements Runnable {
 		}
 
 		refreshing = true;
-		container.submit(new Runnable() {
+		executor.submit(new Runnable() {
 			public void run() {
 				composite.reload();
 			}

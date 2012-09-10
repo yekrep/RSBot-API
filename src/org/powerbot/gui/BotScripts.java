@@ -63,6 +63,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.border.AbstractBorder;
 import javax.swing.border.EmptyBorder;
+
 import org.powerbot.game.api.ActiveScript;
 import org.powerbot.game.api.Manifest;
 import org.powerbot.game.bot.Bot;
@@ -396,7 +397,7 @@ public final class BotScripts extends JDialog implements ActionListener {
 							continue;
 						}
 						boolean skip = false;
-						for (int i = 11; i < data.length - 2;) {
+						for (int i = 11; i < data.length - 2; ) {
 							if (data[i++] == 0x5a && data[i++] == 0x4b && data[i++] == 0x4d) {
 								skip = true;
 								break;
@@ -614,7 +615,6 @@ public final class BotScripts extends JDialog implements ActionListener {
 						log.severe("Error loading script");
 						return;
 					}
-					script.setDefinition(def);
 					final Bot bot = Bot.getInstance();
 					bot.setAccount(null);
 					for (final Account a : GameAccounts.getInstance()) {
@@ -624,7 +624,7 @@ public final class BotScripts extends JDialog implements ActionListener {
 						}
 					}
 					log.info("Starting script");
-					bot.startScript(script);
+					bot.startScript(script, def);
 					BotScripts.this.parent.updateScriptControls();
 				}
 			});

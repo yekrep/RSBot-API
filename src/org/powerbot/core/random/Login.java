@@ -1,10 +1,9 @@
-package org.powerbot.game.bot.randoms;
+package org.powerbot.core.random;
 
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
-import org.powerbot.game.api.AntiRandom;
 import org.powerbot.game.api.Manifest;
 import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.api.methods.Widgets;
@@ -100,7 +99,7 @@ public class Login extends AntiRandom {
 						}
 
 						if (lobbyEvent.task != null) {
-							bot.getContainer().submit(lobbyEvent.task);
+							bot.getExecutor().submit(lobbyEvent.task);
 						}
 						return;
 					}
@@ -144,7 +143,7 @@ public class Login extends AntiRandom {
 
 						re_load_timer = null;
 						if (loginEvent.task != null) {
-							bot.getContainer().submit(loginEvent.task);
+							bot.getExecutor().submit(loginEvent.task);
 						}
 						return;
 					}

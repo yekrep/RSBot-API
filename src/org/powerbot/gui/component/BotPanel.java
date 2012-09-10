@@ -136,7 +136,7 @@ public class BotPanel extends JPanel {
 			getGraphics().fillRect(0, 0, getWidth(), getHeight());
 			loadingPanel.validate();
 			loadingPanel.repaint();
-			bot.getContainer().submit(new BotSet(bot.threadGroup));
+			bot.getExecutor().submit(new BotSet(bot.threadGroup));
 			bot.setPanel(this);
 			if (bot.getCanvas() != null) {
 				offset();

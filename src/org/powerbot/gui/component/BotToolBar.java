@@ -25,7 +25,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
 import org.powerbot.Boot;
-import org.powerbot.game.api.ActiveScript;
+import org.powerbot.core.bot.handler.ScriptHandler;
 import org.powerbot.game.api.util.Time;
 import org.powerbot.game.bot.Bot;
 import org.powerbot.gui.BotChrome;
@@ -118,16 +118,14 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 		final Component c = (Component) e.getSource();
 		if (c == scriptPlay) {
 			final Bot bot = Bot.getInstance();
-			final ActiveScript script = bot.getActiveScript();
-			if (script != null && script.isRunning()) {
-				if (!script.isSilentlyLocked()) {
-					if (script.isPaused()) {
-						script.resume();
-						updateScriptControls();
-					} else {
-						script.pause();
-						updateScriptControls();
-					}
+			final ScriptHandler script = bot.getScriptHandler();
+			if (script != null && script.isActive()) {
+				if (script.isPaused()) {
+					script.resume();
+					updateScriptControls();
+				} else {
+					script.pause();
+					updateScriptControls();
 				}
 				return;
 			}
@@ -140,22 +138,22 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 				return;
 			}
 			final Bot bot = Bot.getInstance();
-			final ActiveScript activeScript = bot.getActiveScript();
+			final ScriptHandler activeScript = bot.getScriptHandler();
 			if (activeScript != null) {
-				if (activeScript.isRunning()) {
+				if (activeScript.isActive()) {
 					bot.stopScript();
-					bot.getContainer().submit(new Runnable() {
+					bot.getExecutor().submit(new Runnable() {
 						public void run() {
-							while (!activeScript.getContainer().isTerminated()) {
+							while (activeScript.isActive()) {
 								Time.sleep(150);
 							}
 							updateScriptControls();
 						}
 					});
 				} else {
-					if (!activeScript.getContainer().isTerminated()) {
+					if (activeScript.isActive()) {
 						activeScript.log.info("Forcing script stop");
-						activeScript.kill();
+						activeScript.stop();
 						updateScriptControls();
 					}
 				}
@@ -261,8 +259,8 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 			scriptPlay.setEnabled(true);
 			scriptStop.setEnabled(true);
 			final Bot bot = Bot.getInstance();
-			final ActiveScript script = bot.getActiveScript();
-			final boolean running = script != null && script.isRunning();
+			final ScriptHandler script = bot.getScriptHandler();
+			final boolean running = script != null && script.isActive();
 			final boolean processing = running && !script.isPaused();
 			scriptPlay.setIcon(new ImageIcon(Resources.getImage(processing ? Resources.Paths.PAUSE : Resources.Paths.PLAY)));
 			scriptPlay.setToolTipText(processing ? BotLocale.PAUSESCRIPT : running ? BotLocale.RESUMESCRIPT : BotLocale.PLAYSCRIPT);

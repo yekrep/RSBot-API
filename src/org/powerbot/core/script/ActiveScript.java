@@ -3,6 +3,7 @@ package org.powerbot.core.script;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.powerbot.core.script.job.Container;
 import org.powerbot.core.script.job.Job;
@@ -15,6 +16,8 @@ import org.powerbot.core.script.job.TaskContainer;
  * @author Timer
  */
 public abstract class ActiveScript extends LoopTask implements Script {
+	public final Logger log = Logger.getLogger(getClass().getName());
+
 	private final Container container;
 	private final List<Job> startup_jobs;
 
