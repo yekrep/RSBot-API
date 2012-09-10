@@ -28,22 +28,20 @@ public abstract class ActiveScript extends org.powerbot.core.script.ActiveScript
 	public final long started;
 
 	private EventManager eventManager;
-	private ThreadPoolExecutor container;
-	private StrategyDaemon executor;
+	private ThreadPoolExecutor executor;
+	private StrategyDaemon strategyDaemon;
 	private final List<LoopTask> loopTasks;
 	private final List<EventListener> listeners;
 
 	private Context context;
-	private boolean silent;
 
 	public ActiveScript() {
 		started = System.currentTimeMillis();
 		eventManager = null;
-		container = null;
 		executor = null;
+		strategyDaemon = null;
 		loopTasks = Collections.synchronizedList(new ArrayList<LoopTask>());
 		listeners = Collections.synchronizedList(new ArrayList<EventListener>());
-		silent = false;
 
 		getStartupJobs().add(new Task() {
 			@Override
@@ -60,12 +58,12 @@ public abstract class ActiveScript extends org.powerbot.core.script.ActiveScript
 	public final void init(final Context context) {
 		this.context = context;
 		eventManager = context.getEventManager();
-		container = new ThreadPoolExecutor(1, Integer.MAX_VALUE, 60, TimeUnit.HOURS, new SynchronousQueue<Runnable>(), new ThreadPool(context.getThreadGroup()), new ThreadPoolExecutor.CallerRunsPolicy());
-		executor = new StrategyDaemon(container, context.getContainer());
+		executor = new ThreadPoolExecutor(1, Integer.MAX_VALUE, 60, TimeUnit.HOURS, new SynchronousQueue<Runnable>(), new ThreadPool(context.getThreadGroup()), new ThreadPoolExecutor.CallerRunsPolicy());
+		strategyDaemon = new StrategyDaemon(executor, context.getContainer());
 	}
 
 	public final void provide(final Strategy strategy) {
-		executor.append(strategy);
+		strategyDaemon.append(strategy);
 
 		if (!listeners.contains(strategy)) {
 			listeners.add(strategy);
@@ -82,7 +80,7 @@ public abstract class ActiveScript extends org.powerbot.core.script.ActiveScript
 	}
 
 	public final void revoke(final Strategy strategy) {
-		executor.omit(strategy);
+		strategyDaemon.omit(strategy);
 
 		listeners.remove(strategy);
 		eventManager.remove(strategy);
@@ -95,7 +93,7 @@ public abstract class ActiveScript extends org.powerbot.core.script.ActiveScript
 	}
 
 	public final Future<?> submit(final Runnable task) {
-		return container.submit(task);
+		return executor.submit(task);
 	}
 
 	public final boolean submit(final LoopTask loopTask) {
@@ -108,7 +106,7 @@ public abstract class ActiveScript extends org.powerbot.core.script.ActiveScript
 		loopTasks.add(loopTask);
 		listeners.add(loopTask);
 		eventManager.accept(loopTask);
-		container.submit(loopTask);
+		executor.submit(loopTask);
 		return true;
 	}
 
@@ -121,7 +119,7 @@ public abstract class ActiveScript extends org.powerbot.core.script.ActiveScript
 	}
 
 	public final void setIterationDelay(final int milliseconds) {
-		executor.setIterationSleep(milliseconds);
+		strategyDaemon.setIterationSleep(milliseconds);
 	}
 
 	protected abstract void setup();
@@ -132,7 +130,6 @@ public abstract class ActiveScript extends org.powerbot.core.script.ActiveScript
 	}
 
 	public final void resume() {
-		silent = false;
 		eventManager.accept(ActiveScript.this);
 		final List<LoopTask> cache_list = new ArrayList<>();
 		cache_list.addAll(loopTasks);
@@ -144,13 +141,13 @@ public abstract class ActiveScript extends org.powerbot.core.script.ActiveScript
 
 			if (!task.isRunning()) {
 				task.start();
-				container.submit(task);
+				executor.submit(task);
 			}
 		}
 		for (final EventListener eventListener : listeners) {
 			eventManager.accept(eventListener);
 		}
-		executor.listen();
+		strategyDaemon.listen();
 	}
 
 	public final void pause() {
@@ -158,7 +155,7 @@ public abstract class ActiveScript extends org.powerbot.core.script.ActiveScript
 	}
 
 	public final void pause(final boolean removeListener) {
-		executor.lock();
+		strategyDaemon.lock();
 		for (final LoopTask task : loopTasks) {
 			task.stop();
 		}
@@ -170,18 +167,9 @@ public abstract class ActiveScript extends org.powerbot.core.script.ActiveScript
 		}
 	}
 
-	public final void setSilent(final boolean silent) {
-		this.silent = silent;
-	}
-
-	public final void silentLock(final boolean removeListener) {
-		silent = true;
-		pause(removeListener);
-	}
-
 	public final void askStop() {
-		if (!container.isShutdown()) {
-			container.submit(new Runnable() {
+		if (!executor.isShutdown()) {
+			executor.submit(new Runnable() {
 				public void run() {
 					onStop();
 				}
@@ -197,8 +185,8 @@ public abstract class ActiveScript extends org.powerbot.core.script.ActiveScript
 			eventManager.remove(eventListener);
 		}
 		listeners.clear();
-		executor.destroy();
-		container.shutdown();
+		strategyDaemon.destroy();
+		executor.shutdown();
 
 		final String name = Thread.currentThread().getThreadGroup().getName();
 		if (name.startsWith("GameDefinition-") ||
@@ -211,30 +199,22 @@ public abstract class ActiveScript extends org.powerbot.core.script.ActiveScript
 	}
 
 	public final void kill() {
-		container.shutdownNow();
+		executor.shutdownNow();
 	}
 
 	public final DaemonState getState() {
-		return executor.state;
+		return strategyDaemon.state;
 	}
 
 	public final boolean isRunning() {
 		return getState() != DaemonState.DESTROYED;
 	}
 
-	public final boolean isScriptPaused() {
-		return isLocked() && !silent;
-	}
-
 	public final boolean isLocked() {
 		return getState() == DaemonState.LOCKED;
 	}
 
-	public final boolean isSilentlyLocked() {
-		return silent;
-	}
-
-	public final ThreadPoolExecutor getExecutor() {
-		return container;
+	public final ThreadPoolExecutor getStrategyDaemon() {
+		return executor;
 	}
 }
