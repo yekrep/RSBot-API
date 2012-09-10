@@ -16,6 +16,7 @@ import org.powerbot.concurrent.strategy.DaemonState;
 import org.powerbot.concurrent.strategy.Strategy;
 import org.powerbot.concurrent.strategy.StrategyDaemon;
 import org.powerbot.concurrent.strategy.StrategyGroup;
+import org.powerbot.core.script.job.Task;
 import org.powerbot.event.EventManager;
 import org.powerbot.game.bot.Context;
 
@@ -42,6 +43,17 @@ public class ActiveScript extends org.powerbot.core.script.ActiveScript implemen
 		loopTasks = Collections.synchronizedList(new ArrayList<LoopTask>());
 		listeners = Collections.synchronizedList(new ArrayList<EventListener>());
 		silent = false;
+
+		getStartupJobs().add(new Task() {
+			@Override
+			public void execute() {
+				setup();
+				resume();
+				if (context != null) {
+					context.ensureAntiRandoms();
+				}
+			}
+		});
 	}
 
 	public final void init(final Context context) {
@@ -117,18 +129,6 @@ public class ActiveScript extends org.powerbot.core.script.ActiveScript implemen
 	@Override
 	public int loop() {
 		return 2000;
-	}
-
-	public final Runnable getStart() {
-		return new Runnable() {
-			public void run() {
-				setup();
-				resume();
-				if (context != null) {
-					context.ensureAntiRandoms();
-				}
-			}
-		};
 	}
 
 	public final void resume() {
