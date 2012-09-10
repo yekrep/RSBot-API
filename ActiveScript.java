@@ -23,7 +23,8 @@ import org.powerbot.game.bot.Context;
 /**
  * @author Timer
  */
-public class ActiveScript extends org.powerbot.core.script.ActiveScript implements Processor {
+@Deprecated
+public abstract class ActiveScript extends org.powerbot.core.script.ActiveScript implements Processor {
 	public final long started;
 
 	private EventManager eventManager;
@@ -123,8 +124,7 @@ public class ActiveScript extends org.powerbot.core.script.ActiveScript implemen
 		executor.setIterationSleep(milliseconds);
 	}
 
-	protected void setup() {
-	}
+	protected abstract void setup();
 
 	@Override
 	public int loop() {
