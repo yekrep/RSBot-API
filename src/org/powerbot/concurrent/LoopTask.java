@@ -8,19 +8,13 @@ import org.powerbot.game.api.util.Time;
 public abstract class LoopTask implements Runnable, EventListener {
 	protected boolean running;
 	protected boolean killed;
-	private Processor processor;
 
 	public LoopTask() {
 		running = true;
 		killed = false;
-		processor = null;
 	}
 
 	public abstract int loop();
-
-	public void init(final Processor processor) {
-		this.processor = processor;
-	}
 
 	@Override
 	public void run() {
@@ -41,16 +35,10 @@ public abstract class LoopTask implements Runnable, EventListener {
 
 	public void stop() {
 		running = false;
-		if (processor != null) {
-			processor.terminated(this);
-		}
 	}
 
 	public void kill() {
 		killed = true;
-		if (processor != null) {
-			processor.terminated(this);
-		}
 	}
 
 	public boolean isRunning() {

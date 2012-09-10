@@ -16,7 +16,6 @@ import org.powerbot.core.script.Script;
 import org.powerbot.core.script.job.Container;
 import org.powerbot.core.script.job.TaskContainer;
 import org.powerbot.event.EventDispatcher;
-import org.powerbot.game.api.ActiveScript;
 import org.powerbot.game.api.methods.input.Keyboard;
 import org.powerbot.game.api.methods.input.Mouse;
 import org.powerbot.game.api.methods.widget.WidgetComposite;
@@ -194,9 +193,6 @@ public final class Bot implements Runnable {
 			throw new RuntimeException("cannot run multiple scripts at once!");
 		}
 
-		if (script instanceof ActiveScript) {
-			((ActiveScript) script).init(composite.context);
-		}
 		this.composite.scriptHandler.start(script, definition);
 		ensureAntiRandoms();
 	}

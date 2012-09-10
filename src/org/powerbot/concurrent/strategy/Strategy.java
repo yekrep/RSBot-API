@@ -1,7 +1,8 @@
 package org.powerbot.concurrent.strategy;
 
 import java.util.EventListener;
-import java.util.concurrent.Future;
+
+import org.powerbot.core.script.job.Job;
 
 /**
  * A strategy that is performed when its policy allows so.
@@ -10,12 +11,12 @@ import java.util.concurrent.Future;
  */
 @Deprecated
 public class Strategy implements Condition, EventListener {
-	boolean lock;
-	boolean reset;
-	boolean sync;
+	public boolean lock;
+	public boolean reset;
+	public boolean sync;
 
-	Runnable[] tasks;
-	Future<?>[] executingFutures;
+	public Runnable[] tasks;
+	public Job[] executingJobs;
 
 	private Condition policy;
 
@@ -67,7 +68,7 @@ public class Strategy implements Condition, EventListener {
 		lock = true;
 		reset = false;
 		sync = true;
-		executingFutures = null;
+		executingJobs = null;
 	}
 
 	public boolean validate() {
@@ -77,10 +78,10 @@ public class Strategy implements Condition, EventListener {
 		throw new RuntimeException("unable to validate this strategy (missing policy)");
 	}
 
-	boolean isIdle() {
-		if (executingFutures != null) {
-			for (final Future<?> future : executingFutures) {
-				if (!future.isDone()) {
+	public boolean isIdle() {
+		if (executingJobs != null) {
+			for (final Job job : executingJobs) {
+				if (!job.isAlive()) {
 					return false;
 				}
 			}
