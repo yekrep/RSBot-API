@@ -5,6 +5,7 @@ package org.powerbot.concurrent.strategy;
  *
  * @author Timer
  */
+@Deprecated
 public enum DaemonState {
 	LISTENING, LOCKED, DESTROYED, PROCESSING
 }

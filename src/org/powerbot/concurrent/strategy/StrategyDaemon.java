@@ -16,6 +16,7 @@ import org.powerbot.util.Configuration;
  *
  * @author Timer
  */
+@Deprecated
 public class StrategyDaemon implements StrategyContainer, Runnable {
 	private final ThreadPoolExecutor container, owner;
 	private final List<Strategy> strategies;

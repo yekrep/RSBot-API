@@ -2,6 +2,7 @@ package org.powerbot.concurrent;
 
 import java.util.concurrent.Future;
 
+@Deprecated
 public interface Processor {
 	/**
 	 * Submits a task for processing and execution.

@@ -5,6 +5,7 @@ package org.powerbot.concurrent.strategy;
  *
  * @author Timer
  */
+@Deprecated
 public interface StrategyContainer {
 	/**
 	 * Begins listening to the policies associated with this <code>StrategyContainer</code>.

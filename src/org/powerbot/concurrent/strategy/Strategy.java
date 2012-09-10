@@ -8,6 +8,7 @@ import java.util.concurrent.Future;
  *
  * @author Timer
  */
+@Deprecated
 public class Strategy implements Condition, EventListener {
 	boolean lock;
 	boolean reset;

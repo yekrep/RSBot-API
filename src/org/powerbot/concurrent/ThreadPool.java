@@ -8,6 +8,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  *
  * @author Timer
  */
+@Deprecated
 public class ThreadPool implements ThreadFactory {
 	public static final String THREADGROUPNAMEPREFIX = "ThreadPool-";
 

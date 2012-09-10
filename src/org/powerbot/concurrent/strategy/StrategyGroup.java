@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+@Deprecated
 public class StrategyGroup implements Iterable<Strategy> {
 	private final List<Strategy> group;
 
