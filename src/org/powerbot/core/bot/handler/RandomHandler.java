@@ -69,22 +69,21 @@ public class RandomHandler extends LoopTask {
 	public int loop() {
 		if (running != null && !running.validate()) {
 			running = null;
+			handler.resume();
 		}
 		if (running == null) {
 			for (final AntiRandom random : antiRandoms) {
 				if (random.validate()) {
 					running = random;
+					handler.pause();
 					break;
 				}
 			}
 		}
 
 		if (running != null) {
-			handler.pause();
 			running.run();
 			return 0;
-		} else {
-			handler.resume();
 		}
 
 		return handler.isActive() ? 2000 : -1;
