@@ -58,7 +58,7 @@ public abstract class ActiveScript extends LoopTask implements Script {
 			return;
 		}
 
-		final List<Job> startup_jobs = Collections.unmodifiableList(getStartupJobs());
+		final List<Job> startup_jobs = getStartupJobs();
 		if (!startup_jobs.contains(this)) {
 			startup_jobs.add(new Task() {
 				@Override
@@ -70,7 +70,7 @@ public abstract class ActiveScript extends LoopTask implements Script {
 		}
 		container.addListener(stop_listener);
 
-		for (final Job job : startup_jobs) {
+		for (final Job job : Collections.unmodifiableList(startup_jobs)) {
 			container.submit(job);
 		}
 	}
