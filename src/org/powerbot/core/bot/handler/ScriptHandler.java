@@ -61,7 +61,7 @@ public class ScriptHandler {
 	}
 
 	public boolean isPaused() {
-		return script.isPaused();
+		return script != null && script.isPaused();
 	}
 
 	public boolean isActive() {
