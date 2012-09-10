@@ -33,7 +33,7 @@ public class Environment {
 	public static File getStorageDirectory() {
 		final File dir = new File(
 				System.getProperty("java.io.tmpdir"),
-				Context.get().getActiveScript().getClass().getName().replace('.', File.pathSeparatorChar)
+				Context.get().getScriptHandler().getDefinition().getName().replace('.', File.pathSeparatorChar)
 		);
 		if (!dir.isDirectory()) {
 			dir.mkdirs();

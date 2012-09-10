@@ -8,7 +8,6 @@ import java.util.concurrent.Future;
 import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Logger;
 
 import org.powerbot.concurrent.LoopTask;
 import org.powerbot.concurrent.Processor;
@@ -19,14 +18,11 @@ import org.powerbot.concurrent.strategy.StrategyDaemon;
 import org.powerbot.concurrent.strategy.StrategyGroup;
 import org.powerbot.event.EventManager;
 import org.powerbot.game.bot.Context;
-import org.powerbot.service.scripts.ScriptDefinition;
-import org.powerbot.util.Tracker;
 
 /**
  * @author Timer
  */
-public abstract class ActiveScript implements EventListener, Processor {
-	public final Logger log = Logger.getLogger(getClass().getName());
+public class ActiveScript extends org.powerbot.core.script.ActiveScript implements Processor {
 	public final long started;
 
 	private EventManager eventManager;
@@ -38,8 +34,6 @@ public abstract class ActiveScript implements EventListener, Processor {
 	private Context context;
 	private boolean silent;
 
-	private ScriptDefinition def;
-
 	public ActiveScript() {
 		started = System.currentTimeMillis();
 		eventManager = null;
@@ -50,31 +44,11 @@ public abstract class ActiveScript implements EventListener, Processor {
 		silent = false;
 	}
 
-	public void setDefinition(final ScriptDefinition def) {
-		if (this.def != null) {
-			return;
-		}
-		this.def = def;
-	}
-
-	public ScriptDefinition getDefinition() {
-		return def;
-	}
-
-	private void track(final String action) {
-		if (def == null || def.local || def.getID() == null || def.getID().isEmpty() || def.getName() == null) {
-			return;
-		}
-		final String page = String.format("scripts/%s/%s", def.getID(), action);
-		Tracker.getInstance().trackPage(page, def.getName());
-	}
-
 	public final void init(final Context context) {
 		this.context = context;
 		eventManager = context.getEventManager();
 		container = new ThreadPoolExecutor(1, Integer.MAX_VALUE, 60, TimeUnit.HOURS, new SynchronousQueue<Runnable>(), new ThreadPool(context.getThreadGroup()), new ThreadPoolExecutor.CallerRunsPolicy());
 		executor = new StrategyDaemon(container, context.getContainer());
-		track("");
 	}
 
 	public final void provide(final Strategy strategy) {
@@ -137,9 +111,15 @@ public abstract class ActiveScript implements EventListener, Processor {
 		executor.setIterationSleep(milliseconds);
 	}
 
-	protected abstract void setup();
+	protected void setup() {
+	}
 
-	public final Runnable start() {
+	@Override
+	public int loop() {
+		return 2000;
+	}
+
+	public final Runnable getStart() {
 		return new Runnable() {
 			public void run() {
 				setup();
@@ -154,7 +134,7 @@ public abstract class ActiveScript implements EventListener, Processor {
 	public final void resume() {
 		silent = false;
 		eventManager.accept(ActiveScript.this);
-		final List<LoopTask> cache_list = new ArrayList<LoopTask>();
+		final List<LoopTask> cache_list = new ArrayList<>();
 		cache_list.addAll(loopTasks);
 		for (final LoopTask task : cache_list) {
 			if (task.isKilled()) {
@@ -171,7 +151,6 @@ public abstract class ActiveScript implements EventListener, Processor {
 			eventManager.accept(eventListener);
 		}
 		executor.listen();
-		track("resume");
 	}
 
 	public final void pause() {
@@ -189,7 +168,6 @@ public abstract class ActiveScript implements EventListener, Processor {
 				eventManager.remove(eventListener);
 			}
 		}
-		track("pause");
 	}
 
 	public final void setSilent(final boolean silent) {
@@ -201,7 +179,7 @@ public abstract class ActiveScript implements EventListener, Processor {
 		pause(removeListener);
 	}
 
-	public final void stop() {
+	public final void askStop() {
 		if (!container.isShutdown()) {
 			container.submit(new Runnable() {
 				public void run() {
@@ -227,8 +205,6 @@ public abstract class ActiveScript implements EventListener, Processor {
 				name.startsWith("ThreadPool-")) {
 			context.updateControls();
 		}
-
-		track("stop");
 	}
 
 	public void onStop() {
@@ -236,7 +212,6 @@ public abstract class ActiveScript implements EventListener, Processor {
 
 	public final void kill() {
 		container.shutdownNow();
-		track("kill");
 	}
 
 	public final DaemonState getState() {
@@ -247,7 +222,7 @@ public abstract class ActiveScript implements EventListener, Processor {
 		return getState() != DaemonState.DESTROYED;
 	}
 
-	public final boolean isPaused() {
+	public final boolean isScriptPaused() {
 		return isLocked() && !silent;
 	}
 
@@ -259,7 +234,7 @@ public abstract class ActiveScript implements EventListener, Processor {
 		return silent;
 	}
 
-	public final ThreadPoolExecutor getContainer() {
+	public final ThreadPoolExecutor getExecutor() {
 		return container;
 	}
 }
