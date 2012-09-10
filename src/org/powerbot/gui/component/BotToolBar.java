@@ -140,7 +140,7 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 			final Bot bot = Bot.getInstance();
 			final ScriptHandler activeScript = bot.getScriptHandler();
 			if (activeScript != null) {
-				if (activeScript.isActive()) {
+				if (!activeScript.isShutdown()) {
 					bot.stopScript();
 					bot.getExecutor().submit(new Runnable() {
 						public void run() {
