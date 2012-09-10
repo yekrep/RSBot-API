@@ -64,7 +64,7 @@ import javax.swing.Timer;
 import javax.swing.border.AbstractBorder;
 import javax.swing.border.EmptyBorder;
 
-import org.powerbot.game.api.ActiveScript;
+import org.powerbot.core.script.Script;
 import org.powerbot.game.api.Manifest;
 import org.powerbot.game.bot.Bot;
 import org.powerbot.gui.component.BotLocale;
@@ -412,8 +412,8 @@ public final class BotScripts extends JDialog implements ActionListener {
 						className = className.substring(0, className.lastIndexOf('.'));
 						className = className.replace(File.separatorChar, '.');
 						final Class<?> clazz = cl.loadClass(className);
-						if (ActiveScript.class.isAssignableFrom(clazz)) {
-							final Class<? extends ActiveScript> script = clazz.asSubclass(ActiveScript.class);
+						if (Script.class.isAssignableFrom(clazz)) {
+							final Class<? extends Script> script = clazz.asSubclass(Script.class);
 							if (script.isAnnotationPresent(Manifest.class)) {
 								final Manifest m = script.getAnnotation(Manifest.class);
 								final ScriptDefinition def = new ScriptDefinition(m);
@@ -608,9 +608,9 @@ public final class BotScripts extends JDialog implements ActionListener {
 							return;
 						}
 					}
-					final ActiveScript script;
+					final Script script;
 					try {
-						script = cl.loadClass(def.className).asSubclass(ActiveScript.class).newInstance();
+						script = cl.loadClass(def.className).asSubclass(Script.class).newInstance();
 					} catch (final Exception ignored) {
 						log.severe("Error loading script");
 						return;

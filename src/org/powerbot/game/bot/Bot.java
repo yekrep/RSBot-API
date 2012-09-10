@@ -4,7 +4,6 @@ import java.awt.Canvas;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -13,6 +12,7 @@ import java.util.logging.Logger;
 
 import org.powerbot.concurrent.ThreadPool;
 import org.powerbot.core.bot.handler.ScriptHandler;
+import org.powerbot.core.script.Script;
 import org.powerbot.core.script.job.Container;
 import org.powerbot.core.script.job.TaskContainer;
 import org.powerbot.event.EventDispatcher;
@@ -188,19 +188,17 @@ public final class Bot implements Runnable {
 		return executor;
 	}
 
-	public void startScript(final ActiveScript script, final ScriptDefinition definition) {
+	public void startScript(final Script script, final ScriptDefinition definition) {
 		RestrictedSecurityManager.assertNonScript();
 		if (composite.scriptHandler != null && composite.scriptHandler.isActive()) {
 			throw new RuntimeException("cannot run multiple scripts at once!");
 		}
 
-		this.composite.scriptHandler.start(script, definition);
-		script.init(composite.context);
-		final Future<?> future = executor.submit(script.getStart());
-		try {
-			future.get();
-		} catch (final InterruptedException | ExecutionException ignored) {
+		if (script instanceof ActiveScript) {
+			((ActiveScript) script).init(composite.context);
 		}
+		this.composite.scriptHandler.start(script, definition);
+		ensureAntiRandoms();
 	}
 
 	public void stopScript() {
