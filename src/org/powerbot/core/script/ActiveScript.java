@@ -104,6 +104,12 @@ public abstract class ActiveScript extends LoopTask implements Script {
 	 */
 	@Override
 	public final void shutdown() {
+		container.submit(new Task() {
+			@Override
+			public void execute() {
+				onStop();
+			}
+		});
 		container.shutdown();
 	}
 
@@ -132,5 +138,8 @@ public abstract class ActiveScript extends LoopTask implements Script {
 	}
 
 	public void onStart() {
+	}
+
+	public void onStop() {
 	}
 }
