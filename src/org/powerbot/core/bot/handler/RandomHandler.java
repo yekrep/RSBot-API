@@ -80,8 +80,11 @@ public class RandomHandler extends LoopTask {
 		}
 
 		if (running != null) {
+			handler.pause();
 			running.run();
 			return 0;
+		} else {
+			handler.resume();
 		}
 
 		return handler.isActive() ? 2000 : -1;
