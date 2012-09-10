@@ -32,7 +32,7 @@ public class RandomHandler extends LoopTask {
 	private final ScriptHandler handler;
 	private AntiRandom running;
 
-	public RandomHandler(final Bot bot) {
+	public RandomHandler(final Bot bot, final ScriptHandler scriptHandler) {
 		antiRandoms = new AntiRandom[]{
 				new Login(),
 				new WidgetCloser(),
@@ -61,7 +61,7 @@ public class RandomHandler extends LoopTask {
 		for (final AntiRandom antiRandom : antiRandoms) {
 			antiRandom.bot = bot;
 		}
-		handler = bot.getScriptHandler();
+		handler = scriptHandler;
 		running = null;
 	}
 

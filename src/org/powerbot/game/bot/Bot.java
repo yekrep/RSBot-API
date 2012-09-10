@@ -153,7 +153,6 @@ public final class Bot implements Runnable {
 
 		if (composite.scriptHandler != null) {
 			composite.scriptHandler.stop();
-			composite.scriptHandler = null;
 		}
 		log.info("Unloading environment");
 		if (composite.eventDispatcher != null) {
