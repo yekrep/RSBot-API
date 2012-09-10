@@ -8,7 +8,10 @@ package org.powerbot.game.api.util;
 public class Time {
 	/**
 	 * @param time The number of milliseconds to ensure sleeping for.
+	 * @see org.powerbot.core.script.job.Task#sleep(int)
+	 * @deprecated
 	 */
+	@Deprecated
 	public static void sleep(final int time) {
 		try {
 			final long start = System.currentTimeMillis();
