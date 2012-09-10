@@ -25,6 +25,7 @@ public class ScriptHandler {
 			return false;
 		}
 		setDefinition(definition);
+		this.script = script;
 		script.start();
 		started = System.currentTimeMillis();
 		track("");
@@ -69,10 +70,6 @@ public class ScriptHandler {
 
 	public boolean isShutdown() {
 		return script != null && script.isShutdown();
-	}
-
-	public void reset() {
-		script = null;
 	}
 
 	public void setDefinition(final ScriptDefinition def) {
