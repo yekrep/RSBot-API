@@ -30,6 +30,7 @@ public class Time {
 	 * @param min the minimum sleep time.
 	 * @param max the maximum sleep time.
 	 */
+	@Deprecated
 	public static void sleep(final int min, final int max) {
 		sleep(Random.nextInt(min, max));
 	}
