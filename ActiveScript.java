@@ -10,7 +10,6 @@ import org.powerbot.concurrent.strategy.Strategy;
 import org.powerbot.concurrent.strategy.StrategyGroup;
 import org.powerbot.core.script.job.Job;
 import org.powerbot.core.script.job.Task;
-import org.powerbot.game.api.util.Time;
 import org.powerbot.util.Configuration;
 
 /**
@@ -117,16 +116,17 @@ public abstract class ActiveScript extends org.powerbot.core.script.ActiveScript
 				}
 				strategy.executingJobs = jobs.toArray(new Job[jobs.size()]);
 				if (strategy.lock) {
-					final Object lock = new Object();
-					getContainer().submit(createFutureDisposer(jobs, lock));
-					awaitNotify(jobs, lock);
+					getContainer().submit(createFutureDisposer(jobs, this));
+					awaitNotify(jobs, this);
 				}
 				if (strategy.reset) {
 					break;
 				}
 			}
 			Task.sleep(iterationSleep);
-		} catch (final Throwable t) {
+		} catch (final ThreadDeath death) {
+			return -1;
+		} catch (final Exception t) {
 			if (Configuration.DEVMODE) {
 				t.printStackTrace();
 			}
