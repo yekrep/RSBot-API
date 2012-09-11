@@ -12,14 +12,11 @@ import java.util.logging.Logger;
 
 import org.powerbot.concurrent.ThreadPool;
 import org.powerbot.core.bot.handler.ScriptHandler;
-import org.powerbot.core.script.Script;
-import org.powerbot.core.script.job.Container;
-import org.powerbot.core.script.job.TaskContainer;
+import org.powerbot.core.script.job.Task;
 import org.powerbot.event.EventDispatcher;
 import org.powerbot.game.api.methods.input.Keyboard;
 import org.powerbot.game.api.methods.input.Mouse;
 import org.powerbot.game.api.methods.widget.WidgetComposite;
-import org.powerbot.game.api.util.Time;
 import org.powerbot.game.api.util.internal.Constants;
 import org.powerbot.game.api.util.internal.Multipliers;
 import org.powerbot.game.bot.event.PaintEvent;
@@ -35,8 +32,6 @@ import org.powerbot.game.loader.script.ModScript;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.gui.component.BotPanel;
 import org.powerbot.service.GameAccounts;
-import org.powerbot.service.scripts.ScriptDefinition;
-import org.powerbot.util.RestrictedSecurityManager;
 
 /**
  * An environment of the game that is automated.
@@ -53,7 +48,6 @@ public final class Bot implements Runnable {
 
 	public ThreadGroup threadGroup;
 	protected ThreadPoolExecutor executor;
-	private Container container;
 
 	ClientLoader clientLoader;
 	public final BotComposite composite;
@@ -77,7 +71,6 @@ public final class Bot implements Runnable {
 
 		threadGroup = new ThreadGroup(Bot.class.getName() + "@" + hashCode());
 		executor = new ThreadPoolExecutor(1, Integer.MAX_VALUE, 60, TimeUnit.HOURS, new SynchronousQueue<Runnable>(), new ThreadPool(threadGroup), new ThreadPoolExecutor.CallerRunsPolicy());
-		container = new TaskContainer();
 
 		composite = new BotComposite(this);
 		panel = null;
@@ -187,16 +180,6 @@ public final class Bot implements Runnable {
 		return executor;
 	}
 
-	public void startScript(final Script script, final ScriptDefinition definition) {
-		RestrictedSecurityManager.assertNonScript();
-		if (composite.scriptHandler != null && composite.scriptHandler.isActive()) {
-			throw new RuntimeException("cannot run multiple scripts at once!");
-		}
-
-		this.composite.scriptHandler.start(script, definition);
-		ensureAntiRandoms();
-	}
-
 	public void stopScript() {
 		if (composite.scriptHandler == null) {
 			throw new RuntimeException("script is non existent!");
@@ -296,13 +279,6 @@ public final class Bot implements Runnable {
 		return composite.scriptHandler;
 	}
 
-	public void ensureAntiRandoms() {
-		RestrictedSecurityManager.assertNonScript();
-		if (!composite.randomHandler.isAlive()) {
-			container.submit(composite.randomHandler);
-		}
-	}
-
 	public void refresh() {
 		if (refreshing) {
 			return;
@@ -330,9 +306,9 @@ public final class Bot implements Runnable {
 		public void run() {
 			if (bot != null && !bot.clientLoader.isCancelled() && bot.getClient() != null && !Keyboard.isReady()) {
 				while (!bot.clientLoader.isCancelled() && !Keyboard.isReady() && !Mouse.isReady()) {
-					Time.sleep(1000);
+					Task.sleep(1000);
 				}
-				Time.sleep(800);
+				Task.sleep(800);
 				Keyboard.sendKey('s');
 			}
 		}

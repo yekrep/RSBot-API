@@ -3,7 +3,6 @@ package org.powerbot.game.bot;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-import org.powerbot.core.bot.handler.RandomHandler;
 import org.powerbot.core.bot.handler.ScriptHandler;
 import org.powerbot.event.EventDispatcher;
 import org.powerbot.game.api.methods.Calculations;
@@ -22,7 +21,6 @@ public class BotComposite {
 	MouseExecutor executor;
 	EventDispatcher eventDispatcher;
 	ScriptHandler scriptHandler;
-	RandomHandler randomHandler;
 	Context context;
 
 	Client client;
@@ -37,8 +35,7 @@ public class BotComposite {
 
 		executor = null;
 		eventDispatcher = new EventDispatcher();
-		scriptHandler = new ScriptHandler();
-		randomHandler = new RandomHandler(bot, scriptHandler);
+		scriptHandler = new ScriptHandler(bot);
 
 		client = null;
 		toolkit = new Calculations.Toolkit();

@@ -124,10 +124,6 @@ public class Context {
 		return bot.composite.viewport;
 	}
 
-	public void ensureAntiRandoms() {
-		bot.ensureAntiRandoms();
-	}
-
 	public void updateControls() {
 		BotChrome.getInstance().toolbar.updateScriptControls();
 	}

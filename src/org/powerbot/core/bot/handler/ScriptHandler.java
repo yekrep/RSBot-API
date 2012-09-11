@@ -3,6 +3,9 @@ package org.powerbot.core.bot.handler;
 import java.util.logging.Logger;
 
 import org.powerbot.core.script.Script;
+import org.powerbot.core.script.job.Container;
+import org.powerbot.core.script.job.TaskContainer;
+import org.powerbot.game.bot.Bot;
 import org.powerbot.service.scripts.ScriptDefinition;
 import org.powerbot.util.Tracker;
 
@@ -12,11 +15,17 @@ import org.powerbot.util.Tracker;
 public class ScriptHandler {
 	public final Logger log = Logger.getLogger(ScriptHandler.class.getName());
 
+	private final Bot bot;
+	private final Container container;
+
 	private Script script;
 	private ScriptDefinition def;
 	public long started;
 
-	public ScriptHandler() {
+	public ScriptHandler(final Bot bot) {
+		this.bot = bot;
+		this.container = new TaskContainer();
+
 		this.script = null;
 	}
 
@@ -28,6 +37,7 @@ public class ScriptHandler {
 		this.script = script;
 		script.start();
 		started = System.currentTimeMillis();
+		container.submit(new RandomHandler(bot, this));
 		track("");
 		return true;
 	}
