@@ -3,6 +3,7 @@ package org.powerbot.game.api.methods.widget;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import org.powerbot.core.script.job.Task;
 import org.powerbot.game.api.methods.Calculations;
 import org.powerbot.game.api.methods.Walking;
 import org.powerbot.game.api.methods.Widgets;
@@ -24,7 +25,7 @@ import org.powerbot.game.api.wrappers.widget.WidgetChild;
  */
 public class DepositBox {
 	public static final int[] DEPOSIT_BOX_IDS = new int[]{
-			2045, 2133, 6396, 6402, 6404, 6417, 6418, 6453, 6457, 6478, 6836, 9398, 15985, 20228, 24995, 25937, 26969, 
+			2045, 2133, 6396, 6402, 6404, 6417, 6418, 6453, 6457, 6478, 6836, 9398, 15985, 20228, 24995, 25937, 26969,
 			32924, 32930, 32931, 34755, 36788, 39830, 45079, 66668, 70512, 73268
 	};
 
@@ -54,12 +55,12 @@ public class DepositBox {
 		if (!depositBox.isOnScreen() && (!Players.getLocal().isMoving()
 				|| Calculations.distance(Walking.getDestination(), depositBox.getLocation()) > 4)) {
 			Walking.walk(depositBox);
-			Time.sleep(200, 400);
+			Task.sleep(200, 400);
 		}
 		if (depositBox.isOnScreen() && depositBox.interact("Deposit")) {
 			final Timer t = new Timer(4000);
 			while (t.isRunning() && !isOpen()) {
-				Time.sleep(10);
+				Task.sleep(10);
 			}
 		}
 		return isOpen();
@@ -102,12 +103,12 @@ public class DepositBox {
 				return false;
 			}
 		} else if (item.getWidgetChild().interact("Deposit-X") && Bank.waitForInputWidget(true)) {
-			Time.sleep(200, 800);
+			Task.sleep(200, 800);
 			Keyboard.sendText(String.valueOf(amount), true);
 		}
 		final Timer t = new Timer(2000);
 		while (t.isRunning() && getItemCount(true) == invCount) {
-			Time.sleep(5);
+			Task.sleep(5);
 		}
 		return getItemCount(true) != invCount;
 	}
@@ -130,7 +131,7 @@ public class DepositBox {
 		if (child != null && child.click(true)) {
 			final Timer t = new Timer(2000);
 			while (t.isRunning() && getItems().length == invCount) {
-				Time.sleep(5);
+				Task.sleep(5);
 			}
 		}
 		return invCount != getItems().length;
