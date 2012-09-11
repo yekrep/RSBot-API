@@ -1,5 +1,7 @@
 package org.powerbot.core.script.job;
 
+import org.powerbot.game.api.util.Random;
+
 /**
  * The most basic implementation of a {@link Job}.
  *
@@ -130,5 +132,9 @@ public abstract class Task implements Job {
 		} catch (final InterruptedException ignored) {
 			throw new ThreadDeath();
 		}
+	}
+
+	public static void sleep(final int min, final int max) {
+		sleep(Random.nextInt(min, max));
 	}
 }

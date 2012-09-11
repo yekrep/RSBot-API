@@ -27,6 +27,9 @@ import org.powerbot.core.random.WidgetCloser;
 import org.powerbot.core.script.job.LoopTask;
 import org.powerbot.game.bot.Bot;
 
+/**
+ * @author Timer
+ */
 public class RandomHandler extends LoopTask {
 	private final AntiRandom[] antiRandoms;
 	private final ScriptHandler handler;
