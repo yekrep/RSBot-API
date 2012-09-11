@@ -262,7 +262,6 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 			final ScriptHandler script = bot.getScriptHandler();
 			final boolean active = script != null && script.isActive();
 			final boolean running = active && !script.isPaused();
-			System.out.println(active + " " + running);
 			scriptPlay.setIcon(new ImageIcon(Resources.getImage(running ? Resources.Paths.PAUSE : Resources.Paths.PLAY)));
 			scriptPlay.setToolTipText(running ? BotLocale.PAUSESCRIPT : active ? BotLocale.RESUMESCRIPT : BotLocale.PLAYSCRIPT);
 			scriptStop.setEnabled(active);
