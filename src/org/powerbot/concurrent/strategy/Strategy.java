@@ -81,7 +81,7 @@ public class Strategy implements Condition, EventListener {
 	public boolean isIdle() {
 		if (executingJobs != null) {
 			for (final Job job : executingJobs) {
-				if (!job.isAlive()) {
+				if (job.isAlive()) {
 					return false;
 				}
 			}
