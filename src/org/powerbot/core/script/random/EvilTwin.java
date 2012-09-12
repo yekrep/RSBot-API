@@ -2,6 +2,7 @@ package org.powerbot.core.script.random;
 
 import java.util.ArrayList;
 
+import org.powerbot.core.script.AntiRandom;
 import org.powerbot.game.api.Manifest;
 import org.powerbot.game.api.methods.Settings;
 import org.powerbot.game.api.methods.Widgets;
@@ -11,7 +12,6 @@ import org.powerbot.game.api.methods.node.SceneEntities;
 import org.powerbot.game.api.methods.widget.Camera;
 import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.util.Random;
-import org.powerbot.game.api.util.Time;
 import org.powerbot.game.api.util.Timer;
 import org.powerbot.game.api.wrappers.Tile;
 import org.powerbot.game.api.wrappers.graphics.CapturedModel;
@@ -35,7 +35,7 @@ public class EvilTwin extends AntiRandom {
 	private boolean finished = false;
 
 	@Override
-	public boolean validate() {
+	public boolean activate() {
 		return NPCs.getNearest(new Filter<NPC>() {
 			@Override
 			public boolean accept(final NPC npc) {
@@ -45,7 +45,7 @@ public class EvilTwin extends AntiRandom {
 	}
 
 	@Override
-	public void run() {
+	public void execute() {
 		final NPC molly = NPCs.getNearest(new Filter<NPC>() {
 			@Override
 			public boolean accept(final NPC npc) {
@@ -60,15 +60,15 @@ public class EvilTwin extends AntiRandom {
 		if (Widgets.get(1188, 3).validate()) {
 			verbose("Selecting first chat option ...");
 			Widgets.get(1188, 3).interact("Continue");
-			Time.sleep(Random.nextInt(1000, 2000));
+			sleep(Random.nextInt(1000, 2000));
 			return;
 		}
 		if (Widgets.clickContinue()) {
 			verbose("Following conversation ...");
-			Time.sleep(Random.nextInt(1500, 2200));
+			sleep(Random.nextInt(1500, 2200));
 			final Timer timer = new Timer(2000);
 			while (timer.isRunning() && !Widgets.canContinue()) {
-				Time.sleep(150);
+				sleep(150);
 			}
 			return;
 		}
@@ -87,7 +87,7 @@ public class EvilTwin extends AntiRandom {
 					if (player.isMoving()) {
 						t.reset();
 					}
-					Time.sleep(150);
+					sleep(150);
 				}
 			}
 			return;
@@ -101,7 +101,7 @@ public class EvilTwin extends AntiRandom {
 				navigateClaw();
 				final Timer t = new Timer(12000);
 				while (!Widgets.canContinue() && t.isRunning()) {
-					Time.sleep(150);
+					sleep(150);
 				}
 				return;
 			}
@@ -139,7 +139,7 @@ public class EvilTwin extends AntiRandom {
 						if (player.isMoving()) {
 							t.reset();
 						}
-						Time.sleep(150);
+						sleep(150);
 					}
 				}
 			}
@@ -154,7 +154,7 @@ public class EvilTwin extends AntiRandom {
 			if (molly.interact("Talk-to")) {
 				final Timer timer = new Timer(5000);
 				while (timer.isRunning() && !Widgets.canContinue()) {
-					Time.sleep(150);
+					sleep(150);
 				}
 				if (Widgets.canContinue()) {
 					finished = false;
@@ -199,7 +199,7 @@ public class EvilTwin extends AntiRandom {
 			}
 			final Timer timer = new Timer(3500);
 			while (!hasClawMoved(clawLoc) && timer.isRunning()) {
-				Time.sleep(10);
+				sleep(10);
 			}
 		}
 		verbose("NAVIGATION: END");

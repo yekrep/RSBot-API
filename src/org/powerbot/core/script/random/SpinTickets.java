@@ -1,5 +1,6 @@
 package org.powerbot.core.script.random;
 
+import org.powerbot.core.script.AntiRandom;
 import org.powerbot.game.api.Manifest;
 import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.api.methods.Tabs;
@@ -7,7 +8,6 @@ import org.powerbot.game.api.methods.Widgets;
 import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.methods.tab.Inventory;
 import org.powerbot.game.api.util.Random;
-import org.powerbot.game.api.util.Time;
 import org.powerbot.game.api.util.Timer;
 import org.powerbot.game.api.wrappers.node.Item;
 import org.powerbot.game.api.wrappers.widget.Widget;
@@ -19,14 +19,14 @@ public class SpinTickets extends AntiRandom {
 	public static final int ITEM_ID_SPIN_TICKET_X2 = 24155;
 
 	@Override
-	public boolean validate() {
+	public boolean activate() {
 		return Game.isLoggedIn() && Tabs.getCurrent() == Tabs.INVENTORY &&
 				(Inventory.getItem(ITEM_ID_SPIN_TICKET) != null || Inventory.getItem(ITEM_ID_SPIN_TICKET_X2) != null) &&
 				Players.getLocal().isIdle();
 	}
 
 	@Override
-	public void run() {
+	public void execute() {
 		Item ticket = Inventory.getItem(ITEM_ID_SPIN_TICKET);
 		if (ticket == null) {
 			ticket = Inventory.getItem(ITEM_ID_SPIN_TICKET_X2);
@@ -37,7 +37,7 @@ public class SpinTickets extends AntiRandom {
 			if (item.interact("Destroy")) {
 				final Timer timer = new Timer(Random.nextInt(2000, 3500));
 				while (timer.isRunning() && !Widgets.get(1183).validate()) {
-					Time.sleep(150);
+					sleep(150);
 				}
 				final Widget chat = Widgets.get(1183);
 				if (chat.validate()) {
@@ -55,7 +55,7 @@ public class SpinTickets extends AntiRandom {
 					if (destroy.interact("Destroy")) {
 						timer.reset();
 						while (timer.isRunning() && item.validate()) {
-							Time.sleep(Random.nextInt(100, 300));
+							sleep(Random.nextInt(100, 300));
 						}
 					}
 				}

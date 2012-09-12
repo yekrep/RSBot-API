@@ -2,6 +2,7 @@ package org.powerbot.core.script.random;
 
 import java.util.Arrays;
 
+import org.powerbot.core.script.AntiRandom;
 import org.powerbot.game.api.Manifest;
 import org.powerbot.game.api.methods.Calculations;
 import org.powerbot.game.api.methods.Walking;
@@ -11,7 +12,6 @@ import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.methods.node.SceneEntities;
 import org.powerbot.game.api.methods.widget.Camera;
 import org.powerbot.game.api.util.Random;
-import org.powerbot.game.api.util.Time;
 import org.powerbot.game.api.util.Timer;
 import org.powerbot.game.api.wrappers.interactive.NPC;
 import org.powerbot.game.api.wrappers.interactive.Player;
@@ -128,17 +128,17 @@ public class Exam extends AntiRandom {
 	}
 
 	@Override
-	public boolean validate() {
+	public boolean activate() {
 		final NPC mordaut;
 		return (mordaut = NPCs.getNearest("Mr. Mordaut")) != null && Calculations.distanceTo(mordaut) < 15;
 	}
 
 	@Override
-	public void run() {
+	public void execute() {
 		final Player local = Players.getLocal();
 
 		if (local.isMoving() || local.getAnimation() != -1) {
-			Time.sleep(150);
+			sleep(150);
 			return;
 		}
 
@@ -184,7 +184,7 @@ public class Exam extends AntiRandom {
 					if (Arrays.binarySearch(item_arr, choice) >= 0) {
 						verbose("Found choice at index " + index + ".");
 						next.getChild(index).interact("Select");
-						Time.sleep(Random.nextInt(1500, 2000));
+						sleep(Random.nextInt(1500, 2000));
 						return;
 					}
 					++index;
@@ -197,7 +197,7 @@ public class Exam extends AntiRandom {
 					if (Arrays.binarySearch(item_arr_o, choice) >= 0) {
 						verbose("Found choice at index " + index + ".");
 						next.getChild(index).interact("Select");
-						Time.sleep(Random.nextInt(1500, 2000));
+						sleep(Random.nextInt(1500, 2000));
 						return;
 					}
 					++index;
@@ -206,7 +206,7 @@ public class Exam extends AntiRandom {
 				verbose("Just going to guess...");
 				final int randomIndex = Random.nextInt(10, 14);
 				next.getChild(randomIndex).interact("Select");
-				Time.sleep(Random.nextInt(1500, 2000));
+				sleep(Random.nextInt(1500, 2000));
 			}
 			return;
 		}
@@ -227,18 +227,18 @@ public class Exam extends AntiRandom {
 						if (Arrays.binarySearch(question.items, related.getChild(childIndex).getChildId()) >= 0) {
 							verbose("Found relation for this index (" + childIndex + "), selecting.");
 							related.getChild(childIndex).interact("Select");
-							Time.sleep(Random.nextInt(1200, 2000));
+							sleep(Random.nextInt(1200, 2000));
 						}
 					}
 					break;
 				}
 			}
 
-			Time.sleep(Random.nextInt(1200, 2000));
+			sleep(Random.nextInt(1200, 2000));
 
 			verbose("Confirming attempt");
 			if (related.getChild(26).interact("Confirm")) {
-				Time.sleep(Random.nextInt(1200, 2000));
+				sleep(Random.nextInt(1200, 2000));
 			}
 			return;
 		}
@@ -261,13 +261,13 @@ public class Exam extends AntiRandom {
 						if (Players.getLocal().isMoving()) {
 							timer.reset();
 						}
-						Time.sleep(150);
+						sleep(150);
 					}
 					Camera.turnTo(door);
 				}
 
 				if (door.isOnScreen() && door.interact("Open")) {
-					Time.sleep(Random.nextInt(4500, 7800));
+					sleep(Random.nextInt(4500, 7800));
 				}
 				return;
 			}
@@ -275,7 +275,7 @@ public class Exam extends AntiRandom {
 
 		if (Widgets.clickContinue()) {
 			verbose("Following conversation");
-			Time.sleep(Random.nextInt(1200, 1800));
+			sleep(Random.nextInt(1200, 1800));
 			return;
 		}
 
@@ -285,7 +285,7 @@ public class Exam extends AntiRandom {
 			Camera.turnTo(dude);
 			if (!dude.isOnScreen()) {
 				Walking.walk(dude);
-				Time.sleep(1500);
+				sleep(1500);
 				Camera.turnTo(dude);
 			}
 		}
@@ -293,7 +293,7 @@ public class Exam extends AntiRandom {
 		if (dude.isOnScreen() && dude.interact("Talk-to")) {
 			final Timer timer = new Timer(3000);
 			while (timer.isRunning() && !Widgets.canContinue()) {
-				Time.sleep(150);
+				sleep(150);
 			}
 		}
 	}

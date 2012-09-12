@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
+import org.powerbot.core.script.AntiRandom;
 import org.powerbot.game.api.Manifest;
 import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.api.methods.Widgets;
@@ -11,7 +12,6 @@ import org.powerbot.game.api.methods.input.Keyboard;
 import org.powerbot.game.api.methods.input.Mouse;
 import org.powerbot.game.api.methods.widget.Lobby;
 import org.powerbot.game.api.util.Random;
-import org.powerbot.game.api.util.Time;
 import org.powerbot.game.api.util.Timer;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
 import org.powerbot.game.bot.Context;
@@ -33,7 +33,7 @@ public class Login extends AntiRandom {
 
 	private volatile Timer re_load_timer = null;
 
-	public boolean validate() {
+	public boolean activate() {
 		final int state = Game.getClientState();
 		return (state == Game.INDEX_LOGIN_SCREEN || state == Game.INDEX_LOBBY_SCREEN || state == Game.INDEX_LOGGING_IN) && bot.getAccount() != null;
 	}
@@ -80,7 +80,7 @@ public class Login extends AntiRandom {
 		}
 	}
 
-	public void run() {
+	public void execute() {
 		if (Game.getClientState() == Game.INDEX_LOBBY_SCREEN) {
 			for (final LobbyEvent lobbyEvent : LobbyEvent.values()) {
 				final WidgetChild widgetChild = Widgets.get(WIDGET_LOBBY, lobbyEvent.child);
@@ -92,7 +92,7 @@ public class Login extends AntiRandom {
 						Widgets.get(WIDGET_LOBBY, WIDGET_LOBBY_TRY_AGAIN).click(true);
 
 						if (lobbyEvent.wait > 0) {
-							Time.sleep(lobbyEvent.wait);
+							sleep(lobbyEvent.wait);
 						} else if (lobbyEvent.wait == -1) {
 							bot.stopScript();
 							return;
@@ -111,12 +111,12 @@ public class Login extends AntiRandom {
 				final Lobby.World world_wrapper;
 				if ((world_wrapper = Lobby.getWorld(world)) != null) {
 					Lobby.enterGame(world_wrapper);
-					Time.sleep(Random.nextInt(200, 500));
+					sleep(Random.nextInt(200, 500));
 					return;
 				}
 			}
 			Lobby.enterGame();
-			Time.sleep(Random.nextInt(200, 500));
+			sleep(Random.nextInt(200, 500));
 			return;
 		}
 
@@ -135,7 +135,7 @@ public class Login extends AntiRandom {
 							re_load_timer = new Timer(loginEvent.wait);
 						}
 						if (loginEvent.wait > 0) {
-							Time.sleep(loginEvent.wait);
+							sleep(loginEvent.wait);
 						} else if (loginEvent.wait == -1) {
 							bot.stopScript();
 							return;
@@ -152,35 +152,35 @@ public class Login extends AntiRandom {
 
 			if (isUsernameCorrect() && isPasswordValid()) {
 				attemptLogin();
-				Time.sleep(Random.nextInt(1200, 2000));
+				sleep(Random.nextInt(1200, 2000));
 			} else if (!isUsernameCorrect()) {
 				final String username = bot.getAccount().toString();
 				final WidgetChild usernameTextBox = Widgets.get(WIDGET, WIDGET_LOGIN_USERNAME_TEXT);
 				if (!clickLoginInterface(usernameTextBox)) {
 					return;
 				}
-				Time.sleep(Random.nextInt(500, 700));
+				sleep(Random.nextInt(500, 700));
 				final int textLength = usernameTextBox.getText().length();
 				if (textLength > 0) {
 					erase(textLength);
 					return;
 				}
 				Keyboard.sendText(username, false);
-				Time.sleep(Random.nextInt(500, 700));
+				sleep(Random.nextInt(500, 700));
 			} else if (!isPasswordValid()) {
 				final String password = bot.getAccount().getPassword();
 				final WidgetChild passwordTextBox = Widgets.get(WIDGET, WIDGET_LOGIN_PASSWORD_TEXT);
 				if (!clickLoginInterface(passwordTextBox)) {
 					return;
 				}
-				Time.sleep(Random.nextInt(500, 700));
+				sleep(Random.nextInt(500, 700));
 				final int textLength = passwordTextBox.getText().length();
 				if (textLength > 0) {
 					erase(textLength);
 					return;
 				}
 				Keyboard.sendText(password, false);
-				Time.sleep(Random.nextInt(500, 700));
+				sleep(Random.nextInt(500, 700));
 			}
 		}
 	}
@@ -239,7 +239,7 @@ public class Login extends AntiRandom {
 		for (int i = 0; i <= count + Random.nextInt(1, 5); i++) {
 			Keyboard.sendKey('\b', Random.nextInt(50, 150));
 			if (Random.nextInt(0, 2) == 1) {
-				Time.sleep(Random.nextInt(25, 100));
+				sleep(Random.nextInt(25, 100));
 			}
 		}
 	}

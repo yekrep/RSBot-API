@@ -1,5 +1,6 @@
 package org.powerbot.core.script.random;
 
+import org.powerbot.core.script.AntiRandom;
 import org.powerbot.game.api.Manifest;
 import org.powerbot.game.api.methods.Calculations;
 import org.powerbot.game.api.methods.Game;
@@ -8,7 +9,6 @@ import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.methods.node.SceneEntities;
 import org.powerbot.game.api.methods.widget.Camera;
 import org.powerbot.game.api.util.Random;
-import org.powerbot.game.api.util.Time;
 import org.powerbot.game.api.wrappers.node.SceneObject;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
 
@@ -29,18 +29,18 @@ public class Pinball extends AntiRandom {
 	private static final int[] ACTIVE_PILLARS = {15000, 15002, 15004, 15006, 15008};
 	private static final int INTERFACE_PINBALL_SCORE = 263;
 
-	public boolean validate() {
+	public boolean activate() {
 		return Game.isLoggedIn() && SceneEntities.getNearest(INACTIVE_PILLARS) != null;
 	}
 
-	public void run() {
+	public void execute() {
 		if (Widgets.clickContinue()) {
-			Time.sleep(Random.nextInt(300, 500));
+			sleep(Random.nextInt(300, 500));
 			return;
 		}
 
 		if (Players.getLocal().isMoving() || Players.getLocal().getAnimation() != -1) {
-			Time.sleep(Random.nextInt(300, 500));
+			sleep(Random.nextInt(300, 500));
 			return;
 		}
 
@@ -48,13 +48,13 @@ public class Pinball extends AntiRandom {
 			final SceneObject exit = SceneEntities.getNearest(15010);
 			if (exit != null) {
 				if (exit.getLocation().isOnScreen()) {
-					Time.sleep(exit.interact("Exit") ? Random.nextInt(4000, 4200) : 0);
+					sleep(exit.interact("Exit") ? Random.nextInt(4000, 4200) : 0);
 					return;
 				} else {
 					Camera.setPitch(false);
 					Camera.turnTo(exit);
 					if (exit.getLocation().interact("Walk here")) {
-						Time.sleep(Random.nextInt(1400, 1500));
+						sleep(Random.nextInt(1400, 1500));
 					}
 					return;
 				}
@@ -65,7 +65,7 @@ public class Pinball extends AntiRandom {
 		if (pillar != null) {
 			if (Calculations.distance(Players.getLocal().getLocation(), pillar.getLocation()) > 2 && !pillar.isOnScreen()) {
 				pillar.getLocation().interact("Walk here");
-				Time.sleep(Random.nextInt(500, 600));
+				sleep(Random.nextInt(500, 600));
 				return;
 			}
 
@@ -73,14 +73,14 @@ public class Pinball extends AntiRandom {
 				final int before = getScore();
 				for (int i = 0; i < 50; i++) {
 					if (getScore() > before) {
-						Time.sleep(Random.nextInt(50, 100));
+						sleep(Random.nextInt(50, 100));
 						return;
 					}
-					Time.sleep(Random.nextInt(70, 100));
+					sleep(Random.nextInt(70, 100));
 				}
 			}
 		}
-		Time.sleep(Random.nextInt(50, 100));
+		sleep(Random.nextInt(50, 100));
 	}
 
 	private int getScore() {

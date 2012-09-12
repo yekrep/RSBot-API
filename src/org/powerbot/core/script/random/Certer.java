@@ -1,5 +1,6 @@
 package org.powerbot.core.script.random;
 
+import org.powerbot.core.script.AntiRandom;
 import org.powerbot.game.api.Manifest;
 import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.api.methods.Settings;
@@ -10,7 +11,6 @@ import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.methods.node.SceneEntities;
 import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.util.Random;
-import org.powerbot.game.api.util.Time;
 import org.powerbot.game.api.util.Timer;
 import org.powerbot.game.api.wrappers.Locatable;
 import org.powerbot.game.api.wrappers.interactive.NPC;
@@ -33,15 +33,15 @@ public class Certer extends AntiRandom {
 	private int settingValue = 0;
 
 	@Override
-	public boolean validate() {
+	public boolean activate() {
 		return Game.isLoggedIn() && SceneEntities.getNearest(LOCATION_ID_BOOKS) != null;
 	}
 
 	@Override
-	public void run() {
+	public void execute() {
 		if (Players.getLocal().getAnimation() != -1 || Players.getLocal().isMoving()) {
 			verbose("SLEEP: Walking or animating ...");
-			Time.sleep(Random.nextInt(500, 1000));
+			sleep(Random.nextInt(500, 1000));
 			return;
 		}
 		verbose("SETTING_SOLVED: " + Settings.get(SETTING_SOLVED));
@@ -57,7 +57,7 @@ public class Certer extends AntiRandom {
 					return;
 				}
 				if (portal.interact("Enter", "Exit")) {
-					Time.sleep(Random.nextInt(3000, 5000));
+					sleep(Random.nextInt(3000, 5000));
 				}
 			}
 			return;
@@ -68,7 +68,7 @@ public class Certer extends AntiRandom {
 		}
 		if (Widgets.clickContinue()) {
 			verbose("Conversation ...");
-			Time.sleep(Random.nextInt(500, 1000));
+			sleep(Random.nextInt(500, 1000));
 			return;
 		}
 		if (Widgets.get(WIDGET_IDENTIFY, WIDGET_IDENTIFY_ITEM).validate()) {
@@ -91,7 +91,7 @@ public class Certer extends AntiRandom {
 					if (child.getText().toLowerCase().contains(itemName.toLowerCase())) {
 						verbose("FOUND!  Attempt click...");
 						if (child.click(true)) {
-							Time.sleep(Random.nextInt(1000, 1200));
+							sleep(Random.nextInt(1000, 1200));
 						}
 						break;
 					}
@@ -117,7 +117,7 @@ public class Certer extends AntiRandom {
 			if (man.interact("Talk-to")) {
 				final Timer timer = new Timer(2000);
 				while (timer.isRunning() && !Widgets.canContinue()) {
-					Time.sleep(150);
+					sleep(150);
 					if (Players.getLocal().isMoving()) {
 						timer.reset();
 					}
@@ -136,7 +136,7 @@ public class Certer extends AntiRandom {
 			if (Players.getLocal().isMoving()) {
 				timer.reset();
 			}
-			Time.sleep(150);
+			sleep(150);
 		}
 	}
 }

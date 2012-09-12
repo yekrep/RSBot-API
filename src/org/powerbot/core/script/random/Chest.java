@@ -3,6 +3,7 @@ package org.powerbot.core.script.random;
 import java.awt.Point;
 import java.awt.Rectangle;
 
+import org.powerbot.core.script.AntiRandom;
 import org.powerbot.game.api.Manifest;
 import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.api.methods.Widgets;
@@ -11,7 +12,6 @@ import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.methods.node.SceneEntities;
 import org.powerbot.game.api.methods.widget.Camera;
 import org.powerbot.game.api.util.Random;
-import org.powerbot.game.api.util.Time;
 import org.powerbot.game.api.util.Timer;
 import org.powerbot.game.api.wrappers.interactive.NPC;
 import org.powerbot.game.api.wrappers.node.SceneObject;
@@ -36,12 +36,12 @@ public class Chest extends AntiRandom {
 	private static final int[][] WIDGET_CHEST_ARROWS = {{2, 3}, {9, 10}, {16, 17}};
 
 	@Override
-	public boolean validate() {
+	public boolean activate() {
 		return Game.isLoggedIn() && NPCs.getNearest(NPC_ID_CAPTAIN) != null && SceneEntities.getNearest(LOCATION_ID_PORTAL) != null;
 	}
 
 	@Override
-	public void run() {
+	public void execute() {
 		Camera.setPitch(true);
 		if (Players.getLocal().isMoving()) {
 			final Timer timer = new Timer(3000);
@@ -49,17 +49,17 @@ public class Chest extends AntiRandom {
 				if (Players.getLocal().isMoving()) {
 					timer.reset();
 				}
-				Time.sleep(150);
+				sleep(150);
 			}
 			return;
 		}
 		if (Widgets.clickContinue()) {
-			Time.sleep(150);
+			sleep(150);
 			return;
 		}
 		if (Widgets.get(1188, 24).validate() && Widgets.get(1188, 24).getText().contains("ready")) {
 			Widgets.get(1188, 24).interact("Continue");
-			Time.sleep(Random.nextInt(2000, 3000));
+			sleep(Random.nextInt(2000, 3000));
 			return;
 		}
 
@@ -79,7 +79,7 @@ public class Chest extends AntiRandom {
 			}
 			if (solved(index)) {
 				if (chestWidget.getChild(WIDGET_CHEST_UNLOCK).click(true)) {
-					Time.sleep(Random.nextInt(600, 900));
+					sleep(Random.nextInt(600, 900));
 				}
 				return;
 			}
@@ -99,7 +99,7 @@ public class Chest extends AntiRandom {
 					while (container.validate() && target.validate() && arrow.validate() &&
 							!container.getBoundingRectangle().contains(target.getCentralPoint()) && new Timer(10000).isRunning()) {
 						if (arrow.click(true)) {
-							Time.sleep(Random.nextInt(800, 1200));
+							sleep(Random.nextInt(800, 1200));
 						}
 					}
 				}
@@ -117,7 +117,7 @@ public class Chest extends AntiRandom {
 					if (Players.getLocal().isMoving()) {
 						timer.reset();
 					}
-					Time.sleep(150);
+					sleep(150);
 				}
 			}
 			return;
@@ -130,12 +130,12 @@ public class Chest extends AntiRandom {
 				if (Players.getLocal().isMoving()) {
 					return;
 				}
-				Time.sleep(100);
+				sleep(100);
 			}
 			if (captain.interact("Talk-to")) {
 				final Timer timer = new Timer(2000);
 				while (timer.isRunning() && !Widgets.canContinue()) {
-					Time.sleep(150);
+					sleep(150);
 				}
 			}
 		}

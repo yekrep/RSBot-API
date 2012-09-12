@@ -3,12 +3,12 @@ package org.powerbot.core.script.random;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.powerbot.core.script.AntiRandom;
 import org.powerbot.game.api.Manifest;
 import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.api.methods.Widgets;
 import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.util.Random;
-import org.powerbot.game.api.util.Time;
 import org.powerbot.game.api.util.Timer;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
 
@@ -30,7 +30,7 @@ public class WidgetCloser extends AntiRandom {
 		children.put(755, 44);//world map
 	}
 
-	public boolean validate() {
+	public boolean activate() {
 		if (Game.isLoggedIn() && Players.getLocal().isIdle()) {
 			if (timer != null) {
 				if (timer.isRunning()) {
@@ -54,13 +54,13 @@ public class WidgetCloser extends AntiRandom {
 		return false;
 	}
 
-	public void run() {
+	public void execute() {
 		try {
 			for (final Map.Entry<Integer, Integer> child : children.entrySet()) {
 				final WidgetChild widgetChild = Widgets.get(child.getKey(), child.getValue());
 				if (widgetChild.validate()) {
 					widgetChild.click(true);
-					Time.sleep(Random.nextInt(1200, 2400));
+					sleep(Random.nextInt(1200, 2400));
 					if (widgetChild.validate()) {
 						failure++;
 					}

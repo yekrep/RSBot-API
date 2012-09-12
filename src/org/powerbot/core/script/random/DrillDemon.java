@@ -3,6 +3,7 @@ package org.powerbot.core.script.random;
 import java.util.Arrays;
 import java.util.HashMap;
 
+import org.powerbot.core.script.AntiRandom;
 import org.powerbot.game.api.Manifest;
 import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.api.methods.Settings;
@@ -13,7 +14,6 @@ import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.methods.node.SceneEntities;
 import org.powerbot.game.api.methods.widget.Camera;
 import org.powerbot.game.api.util.Random;
-import org.powerbot.game.api.util.Time;
 import org.powerbot.game.api.wrappers.Area;
 import org.powerbot.game.api.wrappers.Tile;
 import org.powerbot.game.api.wrappers.interactive.NPC;
@@ -63,12 +63,12 @@ public class DrillDemon extends AntiRandom {
 	}
 
 	@Override
-	public boolean validate() {
+	public boolean activate() {
 		return Game.isLoggedIn() && AREA.contains(Players.getLocal().getLocation());
 	}
 
 	@Override
-	public void run() {
+	public void execute() {
 		if (Camera.getPitch() < 90) {
 			verbose("Increasing pitch ...");
 			Camera.setPitch(true);
@@ -82,9 +82,9 @@ public class DrillDemon extends AntiRandom {
 				if (!localPlayer.isMoving()) {
 					break;
 				}
-				Time.sleep(Random.nextInt(75, 80));
+				sleep(Random.nextInt(75, 80));
 			}
-			Time.sleep(Random.nextInt(1800, 2000));
+			sleep(Random.nextInt(1800, 2000));
 			return;
 		}
 
@@ -94,15 +94,15 @@ public class DrillDemon extends AntiRandom {
 				if (localPlayer.getAnimation() == -1) {
 					break;
 				}
-				Time.sleep(Random.nextInt(60, 90));
+				sleep(Random.nextInt(60, 90));
 			}
 			for (int i = 0; i < 50; i++) {
 				if (Widgets.get(241, 0).validate()) {
 					break;
 				}
-				Time.sleep(Random.nextInt(30, 40));
+				sleep(Random.nextInt(30, 40));
 			}
-			Time.sleep(Random.nextInt(400, 700));
+			sleep(Random.nextInt(400, 700));
 			return;
 		}
 
@@ -116,7 +116,7 @@ public class DrillDemon extends AntiRandom {
 				if (setting_arrays.get(setting_value)[i] == mat_indices.get(child_id)) {
 					verbose("MATCH " + Arrays.toString(setting_arrays.get(setting_value)) + " (" + i + ") & " + mat_indices.get(child_id));
 					if (findAndUseMat(i)) {
-						Time.sleep(800);
+						sleep(800);
 						return;
 					}
 				}
@@ -125,7 +125,7 @@ public class DrillDemon extends AntiRandom {
 
 		if (Widgets.clickContinue()) {
 			verbose("Conversing ...");
-			Time.sleep(Random.nextInt(2000, 3000));
+			sleep(Random.nextInt(2000, 3000));
 			return;
 		}
 
@@ -134,7 +134,7 @@ public class DrillDemon extends AntiRandom {
 			final NPC demon = NPCs.getNearest(NPC_ID_DEMON);
 			demon.interact("Talk-to");
 		}
-		Time.sleep(Random.nextInt(2000, 2500));
+		sleep(Random.nextInt(2000, 2500));
 	}
 
 	private boolean findAndUseMat(final int sign_id) {
@@ -149,13 +149,13 @@ public class DrillDemon extends AntiRandom {
 				verbose("MAT OFF SCREEN!");
 				if (Walking.walk(game_mats[sign_id].getLocation())) {
 					verbose("Walking...");
-					Time.sleep(500);
+					sleep(500);
 				}
 			} else {
 				if (Players.getLocal().getAnimation() == -1) {
 					verbose("PERFORMING OBJECTIVE");
 					if (game_mats[sign_id].interact("Use")) {
-						Time.sleep(900);
+						sleep(900);
 						return true;
 					}
 				} else {

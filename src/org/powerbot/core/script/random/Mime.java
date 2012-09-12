@@ -3,6 +3,7 @@ package org.powerbot.core.script.random;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.powerbot.core.script.AntiRandom;
 import org.powerbot.game.api.Manifest;
 import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.api.methods.Widgets;
@@ -11,7 +12,6 @@ import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.methods.widget.Camera;
 import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.util.Random;
-import org.powerbot.game.api.util.Time;
 import org.powerbot.game.api.wrappers.Tile;
 import org.powerbot.game.api.wrappers.interactive.NPC;
 import org.powerbot.game.api.wrappers.widget.Widget;
@@ -48,7 +48,7 @@ public class Mime extends AntiRandom {
 		emotes.put(1131, "Glass Box");
 	}
 
-	public boolean validate() {
+	public boolean activate() {
 		return Game.isLoggedIn() && NPCs.getNearest(new Filter<NPC>() {
 			public boolean accept(final NPC npc) {
 				return npc.getId() == NPC_MIME_ID;
@@ -56,7 +56,7 @@ public class Mime extends AntiRandom {
 		}) != null;
 	}
 
-	public void run() {
+	public void execute() {
 		if (Camera.getPitch() < 80) {
 			Camera.setPitch(true);
 		}
@@ -81,7 +81,7 @@ public class Mime extends AntiRandom {
 						for (final WidgetChild widgetChild : widget.getChildren()) {
 							if (widgetChild.getText().equalsIgnoreCase(text)) {
 								if (widgetChild.interact(text)) {
-									Time.sleep(Random.nextInt(1200, 2000));
+									sleep(Random.nextInt(1200, 2000));
 								}
 							}
 						}
@@ -91,7 +91,7 @@ public class Mime extends AntiRandom {
 		} else {
 			animation = -1;
 			PERFORMANCE_TILE.interact("Walk here");
-			Time.sleep(Random.nextInt(2500, 3800));
+			sleep(Random.nextInt(2500, 3800));
 		}
 	}
 }

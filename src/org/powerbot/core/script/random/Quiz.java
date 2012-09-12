@@ -2,11 +2,11 @@ package org.powerbot.core.script.random;
 
 import java.util.Arrays;
 
+import org.powerbot.core.script.AntiRandom;
 import org.powerbot.game.api.Manifest;
 import org.powerbot.game.api.methods.Widgets;
 import org.powerbot.game.api.methods.interactive.NPCs;
 import org.powerbot.game.api.util.Random;
-import org.powerbot.game.api.util.Time;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
 
 @Manifest(name = "Quiz Master", authors = {"Timer"}, version = 1.0)
@@ -29,15 +29,15 @@ public class Quiz extends AntiRandom {
 	};
 
 	@Override
-	public boolean validate() {
+	public boolean activate() {
 		return NPCs.getNearest(2477) != null;
 	}
 
 	@Override
-	public void run() {
+	public void execute() {
 		if (Widgets.clickContinue()) {
 			verbose("Listening to his energetic shouting in this black hole...");
-			Time.sleep(Random.nextInt(2000, 3500));
+			sleep(Random.nextInt(2000, 3500));
 			return;
 		}
 
@@ -88,7 +88,7 @@ public class Quiz extends AntiRandom {
 						verbose("Attempting click.");
 						if (widgetChild != null && widgetChild.validate()) {
 							verbose("WIDGET INTERACT: \"Continue\": " + Boolean.toString(widgetChild.interact("Continue")));
-							Time.sleep(Random.nextInt(800, 1200));
+							sleep(Random.nextInt(800, 1200));
 						}
 						return;
 					}

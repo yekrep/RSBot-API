@@ -2,7 +2,7 @@ package org.powerbot.concurrent;
 
 import java.util.EventListener;
 
-import org.powerbot.game.api.util.Time;
+import org.powerbot.core.script.job.Task;
 
 @Deprecated
 public abstract class LoopTask implements Runnable, EventListener {
@@ -21,7 +21,7 @@ public abstract class LoopTask implements Runnable, EventListener {
 		while (running) {
 			final int wait = loop();
 			if (wait > 0) {
-				Time.sleep(wait);
+				Task.sleep(wait);
 			} else if (wait == -1) {
 				running = false;
 				kill();

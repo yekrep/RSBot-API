@@ -1,5 +1,6 @@
 package org.powerbot.core.script.random;
 
+import org.powerbot.core.script.AntiRandom;
 import org.powerbot.game.api.Manifest;
 import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.api.methods.Settings;
@@ -10,7 +11,6 @@ import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.methods.node.SceneEntities;
 import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.util.Random;
-import org.powerbot.game.api.util.Time;
 import org.powerbot.game.api.util.Timer;
 import org.powerbot.game.api.wrappers.interactive.NPC;
 
@@ -25,16 +25,16 @@ public class Frog extends AntiRandom {
 	};
 
 	@Override
-	public boolean validate() {
+	public boolean activate() {
 		final NPC npc;
 		return Game.isLoggedIn() && (npc = NPCs.getNearest(NPC_NAME_HERALD)) != null &&
 				SceneEntities.getNearest(5917) != null && npc.getLocation().canReach();
 	}
 
 	@Override
-	public void run() {
+	public void execute() {
 		if (Widgets.clickContinue()) {
-			Time.sleep(Random.nextInt(2000, 3000));
+			sleep(Random.nextInt(2000, 3000));
 			return;
 		}
 
@@ -45,14 +45,14 @@ public class Frog extends AntiRandom {
 					if (princess.interact("Talk-to", "Frog")) {
 						final Timer timer = new Timer(2000);
 						while (timer.isRunning() && !Widgets.canContinue()) {
-							Time.sleep(150);
+							sleep(150);
 						}
 					}
 				} else {
 					Walking.walk(princess.getLocation());
 					final Timer timer = new Timer(2000);
 					while (timer.isRunning()) {
-						Time.sleep(150);
+						sleep(150);
 						if (Players.getLocal().isMoving()) {
 							timer.reset();
 						}
@@ -68,14 +68,14 @@ public class Frog extends AntiRandom {
 				if (herald.interact("Talk-to", "Frog Herald")) {
 					final Timer timer = new Timer(2000);
 					while (timer.isRunning() && !Widgets.canContinue()) {
-						Time.sleep(150);
+						sleep(150);
 					}
 				}
 			} else {
 				Walking.walk(herald.getLocation());
 				final Timer timer = new Timer(2000);
 				while (timer.isRunning()) {
-					Time.sleep(150);
+					sleep(150);
 					if (Players.getLocal().isMoving()) {
 						timer.reset();
 					}

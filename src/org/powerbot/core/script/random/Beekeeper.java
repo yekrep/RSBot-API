@@ -2,6 +2,7 @@ package org.powerbot.core.script.random;
 
 import java.awt.Point;
 
+import org.powerbot.core.script.AntiRandom;
 import org.powerbot.game.api.Manifest;
 import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.api.methods.Settings;
@@ -11,7 +12,6 @@ import org.powerbot.game.api.methods.interactive.NPCs;
 import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.methods.node.SceneEntities;
 import org.powerbot.game.api.util.Random;
-import org.powerbot.game.api.util.Time;
 import org.powerbot.game.api.wrappers.interactive.Player;
 import org.powerbot.game.api.wrappers.widget.Widget;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
@@ -38,23 +38,23 @@ public class Beekeeper extends AntiRandom {
 	private static final String[] WIDGET_HIVE_NAMES = {"Top", "Upper mid", "Entry", "Bottom"};
 
 	@Override
-	public boolean validate() {
+	public boolean activate() {
 		return Game.isLoggedIn() && NPCs.getNearest(NPC_ID_BEE_KEEPER) != null && SceneEntities.getNearest(LOCATION_ID_BEE_HOUSE) != null;
 	}
 
 	@Override
-	public void run() {
+	public void execute() {
 		final Player player = Players.getLocal();
 
 		if (Widgets.get(WIDGET_CHAT, WIDGET_CHAT_TEXT_INDEX_2).validate()) {
 			verbose("WIDGET VALIDATED: Let's try again!");
 			Widgets.get(WIDGET_CHAT, WIDGET_CHAT_TEXT_INDEX_2).click(true);
-			Time.sleep(Random.nextInt(1800, 2500));
+			sleep(Random.nextInt(1800, 2500));
 			return;
 		}
 		if (Widgets.clickContinue()) {
 			verbose("Following through with dialogue... man this guy is boring.");
-			Time.sleep(Random.nextInt(1800, 2500));
+			sleep(Random.nextInt(1800, 2500));
 			return;
 		}
 
@@ -78,14 +78,14 @@ public class Beekeeper extends AntiRandom {
 			for (int i = 0; i < 4; i++) {
 				verbose("MERGE " + WIDGET_HIVE_MODEL_IDS[i][1] + " | " + WIDGET_HIVE_MODEL_IDS[i][2]);
 				merge(widget.getChild(WIDGET_HIVE_MODEL_IDS[i][1]), widget.getChild(WIDGET_HIVE_MODEL_IDS[i][2]));
-				Time.sleep(Random.nextInt(300, 800));
+				sleep(Random.nextInt(300, 800));
 			}
-			Time.sleep(Random.nextInt(1800, 2800));
+			sleep(Random.nextInt(1800, 2800));
 			verbose("Checking solution (0x68d1000)");
 			if (Settings.get(805) == 0x68d1000) {
 				verbose("Constructed hive successfully!");
 				widget.getChild(WIDGET_HIVE_BUILD).click(true);
-				Time.sleep(Random.nextInt(1800, 2800));
+				sleep(Random.nextInt(1800, 2800));
 				return;
 			}
 
@@ -98,7 +98,7 @@ public class Beekeeper extends AntiRandom {
 			verbose("INTERACTION = NULL");
 			verbose("Engaging communication !!!");
 			NPCs.getNearest(NPC_ID_BEE_KEEPER).interact("Talk-to");
-			Time.sleep(Random.nextInt(800, 1200));
+			sleep(Random.nextInt(800, 1200));
 		}
 	}
 

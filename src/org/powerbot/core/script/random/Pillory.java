@@ -3,6 +3,7 @@ package org.powerbot.core.script.random;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.powerbot.core.script.AntiRandom;
 import org.powerbot.game.api.Manifest;
 import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.api.methods.Widgets;
@@ -10,7 +11,6 @@ import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.methods.node.SceneEntities;
 import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.util.Random;
-import org.powerbot.game.api.util.Time;
 import org.powerbot.game.api.wrappers.Tile;
 import org.powerbot.game.api.wrappers.node.SceneObject;
 
@@ -32,7 +32,7 @@ public class Pillory extends AntiRandom {
 	}
 
 	@Override
-	public boolean validate() {
+	public boolean activate() {
 		if (Game.getClientState() == Game.INDEX_MAP_LOADED) {
 			final Tile pos = Players.getLocal().getLocation();
 			for (final Tile t : CAGE_TILES) {
@@ -45,7 +45,7 @@ public class Pillory extends AntiRandom {
 	}
 
 	@Override
-	public void run() {
+	public void execute() {
 		if (!Widgets.get(WIDGET_LOCK).validate()) {
 			final Tile cageTile = Players.getLocal().getLocation().derive(0, 1);
 			final SceneObject location = SceneEntities.getNearest(new Filter<SceneObject>() {
@@ -55,7 +55,7 @@ public class Pillory extends AntiRandom {
 				}
 			});
 			if (location != null && location.interact("unlock")) {
-				Time.sleep(Random.nextInt(1000, 1500));
+				sleep(Random.nextInt(1000, 1500));
 			}
 			return;
 		}
@@ -63,16 +63,16 @@ public class Pillory extends AntiRandom {
 		final int key = getKey();
 		if (key > 4 && key < 8) {
 			if (Widgets.get(WIDGET_LOCK, (key + 3)).interact("Select")) {
-				Time.sleep(Random.nextInt(1300, 2500));
+				sleep(Random.nextInt(1300, 2500));
 			} else {
-				Time.sleep(200);
+				sleep(200);
 			}
 		} else {
 			verbose("We couldn't find correct the key.  Going to guess... (" + key + ").");
 			if (Widgets.get(WIDGET_LOCK, Random.nextInt(5, 8)).interact("Select")) {
-				Time.sleep(Random.nextInt(1300, 2500));
+				sleep(Random.nextInt(1300, 2500));
 			} else {
-				Time.sleep(Random.nextInt(500, 900));
+				sleep(Random.nextInt(500, 900));
 			}
 		}
 	}

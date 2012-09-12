@@ -2,6 +2,7 @@ package org.powerbot.core.script.random;
 
 import java.util.Arrays;
 
+import org.powerbot.core.script.AntiRandom;
 import org.powerbot.game.api.Manifest;
 import org.powerbot.game.api.methods.Calculations;
 import org.powerbot.game.api.methods.Game;
@@ -18,7 +19,6 @@ import org.powerbot.game.api.methods.widget.Camera;
 import org.powerbot.game.api.methods.widget.DepositBox;
 import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.util.Random;
-import org.powerbot.game.api.util.Time;
 import org.powerbot.game.api.util.Timer;
 import org.powerbot.game.api.wrappers.Entity;
 import org.powerbot.game.api.wrappers.Locatable;
@@ -56,12 +56,12 @@ public class EvilBob extends AntiRandom {
 	private boolean forceLeave = false;
 
 	@Override
-	public boolean validate() {
+	public boolean activate() {
 		return Game.isLoggedIn() && Calculations.distance(CENTER_TILE, Players.getLocal().getLocation()) < 50;
 	}
 
 	@Override
-	public void run() {
+	public void execute() {
 		if (Camera.getPitch() < 70) {
 			Camera.setPitch(true);
 		}
@@ -108,7 +108,7 @@ public class EvilBob extends AntiRandom {
 						if (Players.getLocal().isMoving()) {
 							timer.reset();
 						}
-						Time.sleep(100);
+						sleep(100);
 					}
 				}
 			}
@@ -132,13 +132,13 @@ public class EvilBob extends AntiRandom {
 						timer.reset();
 					}
 					if (chat.validate() && (chat.getText().contains("catnap") || chat.getText().contains("fallen asleep"))) {
-						Time.sleep(Random.nextInt(1200, 2000));
+						sleep(Random.nextInt(1200, 2000));
 						if (Widgets.clickContinue()) {
-							Time.sleep(Random.nextInt(1200, 2000));
+							sleep(Random.nextInt(1200, 2000));
 						}
 						return;
 					}
-					Time.sleep(150);
+					sleep(150);
 				}
 			}
 			return;
@@ -160,7 +160,7 @@ public class EvilBob extends AntiRandom {
 						} else if (Players.getLocal().getAnimation() > 0) {
 							timer.reset();
 						}
-						Time.sleep(150);
+						sleep(150);
 					}
 				}
 			} else {
@@ -175,7 +175,7 @@ public class EvilBob extends AntiRandom {
 			final WidgetChild child = Widgets.get(566, 16);//no i left no items valuable
 			if (child != null && child.validate()) {
 				child.click(true);
-				Time.sleep(Random.nextInt(1000, 2000));
+				sleep(Random.nextInt(1000, 2000));
 				return;
 			}
 
@@ -188,7 +188,7 @@ public class EvilBob extends AntiRandom {
 
 				if (portal.interact("Enter", "Portal")) {
 					forceLeave = false;
-					Time.sleep(Random.nextInt(7000, 10000));
+					sleep(Random.nextInt(7000, 10000));
 					return;
 				}
 			}
@@ -208,7 +208,7 @@ public class EvilBob extends AntiRandom {
 						if (Players.getLocal().isMoving()) {
 							timer.reset();
 						}
-						Time.sleep(150);
+						sleep(150);
 					}
 				}
 				return;
@@ -241,7 +241,7 @@ public class EvilBob extends AntiRandom {
 							} else if (Players.getLocal().getAnimation() > 0) {
 								timer.reset();
 							}
-							Time.sleep(150);
+							sleep(150);
 						}
 						return;
 					}
@@ -252,7 +252,7 @@ public class EvilBob extends AntiRandom {
 
 		if (chat.validate() && chat.getText().contains("contains")) {
 			verbose("Found contains text... waiting for location.");
-			Time.sleep(5000);
+			sleep(5000);
 
 			verbose("Iterating locations...");
 			for (final SceneObject location : SceneEntities.getLoaded(LOCATION_STATUE_IDS)) {
@@ -261,11 +261,11 @@ public class EvilBob extends AntiRandom {
 					verbose("Found statue: " + statueId);
 					final Timer timer = new Timer(7000);
 					while (timer.isRunning() && !Widgets.getContinue().interact("Continue")) {
-						Time.sleep(Random.nextInt(800, 1200));
+						sleep(Random.nextInt(800, 1200));
 					}
 					timer.reset();
 					while (timer.isRunning() && chat.validate() && chat.getText().contains("contains")) {
-						Time.sleep(Random.nextInt(100, 300));
+						sleep(Random.nextInt(100, 300));
 					}
 					return;
 				}
@@ -274,7 +274,7 @@ public class EvilBob extends AntiRandom {
 		}
 		if (Widgets.clickContinue()) {
 			verbose("Continuing with text!");
-			Time.sleep(Random.nextInt(2000, 3200));
+			sleep(Random.nextInt(2000, 3200));
 			return;
 		}
 
@@ -291,7 +291,7 @@ public class EvilBob extends AntiRandom {
 					if (Players.getLocal().isMoving()) {
 						timer.reset();
 					}
-					Time.sleep(150);
+					sleep(150);
 				}
 			}
 		}
@@ -307,7 +307,7 @@ public class EvilBob extends AntiRandom {
 			if (Players.getLocal().isMoving()) {
 				timer.reset();
 			}
-			Time.sleep(150);
+			sleep(150);
 		}
 	}
 

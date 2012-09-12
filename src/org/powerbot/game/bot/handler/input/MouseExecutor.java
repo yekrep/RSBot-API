@@ -4,11 +4,11 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.powerbot.core.script.job.Task;
 import org.powerbot.game.api.methods.Calculations;
 import org.powerbot.game.api.methods.input.Mouse;
 import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.util.Random;
-import org.powerbot.game.api.util.Time;
 import org.powerbot.game.api.wrappers.ViewportEntity;
 import org.powerbot.game.bot.Bot;
 import org.powerbot.game.bot.handler.input.util.MouseNode;
@@ -41,13 +41,13 @@ public class MouseExecutor {
 			if (target.x == -1 || target.y == -1 || !viewportEntity.contains(target)) {
 				final Point viewPortPoint = viewportEntity.getNextViewportPoint();
 				if (!Calculations.isOnScreen(viewPortPoint.x, viewPortPoint.y)) {
-					Time.sleep(Random.nextInt(25, 51));
+					Task.sleep(Random.nextInt(25, 51));
 					return;
 				}
 				target.setLocation(viewPortPoint);
 			} else if (!Calculations.isOnScreen(target.x, target.y)) {
 				target.setLocation(-1, -1);
-				Time.sleep(Random.nextInt(100, 200));
+				Task.sleep(Random.nextInt(100, 200));
 				return;
 			}
 			final Point currentPoint = mouse.getLocation();

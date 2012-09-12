@@ -1,5 +1,6 @@
 package org.powerbot.core.script.random;
 
+import org.powerbot.core.script.AntiRandom;
 import org.powerbot.game.api.Manifest;
 import org.powerbot.game.api.methods.interactive.NPCs;
 import org.powerbot.game.api.methods.node.SceneEntities;
@@ -12,12 +13,12 @@ public class ScapeRune extends AntiRandom {
 	private static final int OBJECT_ID_LEVER = 10817;
 
 	@Override
-	public boolean validate() {
+	public boolean activate() {
 		return NPCs.getNearest(NPC_NAME_PRISON) != null && SceneEntities.getNearest(OBJECT_ID_LEVER) != null;
 	}
 
 	@Override
-	public void run() {
+	public void execute() {
 	}
 
 	private static class Balloons {

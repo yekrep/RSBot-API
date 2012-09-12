@@ -1,5 +1,6 @@
 package org.powerbot.core.script.random;
 
+import org.powerbot.core.script.AntiRandom;
 import org.powerbot.game.api.Manifest;
 import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.api.methods.Walking;
@@ -8,7 +9,6 @@ import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.methods.node.SceneEntities;
 import org.powerbot.game.api.methods.widget.Camera;
 import org.powerbot.game.api.util.Random;
-import org.powerbot.game.api.util.Time;
 import org.powerbot.game.api.util.Timer;
 import org.powerbot.game.api.wrappers.Locatable;
 import org.powerbot.game.api.wrappers.node.SceneObject;
@@ -16,12 +16,12 @@ import org.powerbot.game.api.wrappers.node.SceneObject;
 @Manifest(name = "First Time Death", authors = {"Timer"}, version = 1.1)
 public class FirstTimeDeath extends AntiRandom {
 	@Override
-	public boolean validate() {
+	public boolean activate() {
 		return Game.isLoggedIn() && SceneEntities.getNearest(45802) != null;
 	}
 
 	@Override
-	public void run() {
+	public void execute() {
 		if (Widgets.get(1184, 13).validate() && Widgets.get(1184, 13).getText().contains("over here")) {
 			if (Widgets.clickContinue()) {
 				final SceneObject reaper = SceneEntities.getNearest(45802);
@@ -33,7 +33,7 @@ public class FirstTimeDeath extends AntiRandom {
 					reaper.interact("Talk-to");
 					final Timer timer = new Timer(2000);
 					while (timer.isRunning() && !Widgets.canContinue()) {
-						Time.sleep(150);
+						sleep(150);
 						if (Players.getLocal().isMoving()) {
 							timer.reset();
 						}
@@ -44,17 +44,17 @@ public class FirstTimeDeath extends AntiRandom {
 		}
 
 		if (Widgets.clickContinue()) {
-			Time.sleep(Random.nextInt(2000, 3800));
+			sleep(Random.nextInt(2000, 3800));
 			return;
 		}
 		if (Widgets.get(1188, 3).validate() && (Widgets.get(1188, 3).getText().contains("How do I") || Widgets.get(1188, 3).getText().contains("bye"))) {
 			Widgets.get(1188, 3).interact("Continue");
-			Time.sleep(Random.nextInt(2000, 3800));
+			sleep(Random.nextInt(2000, 3800));
 			return;
 		}
 		if (Widgets.get(1188, 24).validate()) {
 			Widgets.get(1188, 24).interact("Continue");
-			Time.sleep(Random.nextInt(2000, 3800));
+			sleep(Random.nextInt(2000, 3800));
 			return;
 		}
 
@@ -84,7 +84,7 @@ public class FirstTimeDeath extends AntiRandom {
 			if (Players.getLocal().isMoving()) {
 				timer.reset();
 			}
-			Time.sleep(150);
+			sleep(150);
 		}
 	}
 }

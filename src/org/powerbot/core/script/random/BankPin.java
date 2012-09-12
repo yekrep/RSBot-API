@@ -1,10 +1,10 @@
 package org.powerbot.core.script.random;
 
+import org.powerbot.core.script.AntiRandom;
 import org.powerbot.game.api.Manifest;
 import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.api.methods.Settings;
 import org.powerbot.game.api.methods.Widgets;
-import org.powerbot.game.api.util.Time;
 import org.powerbot.game.bot.Context;
 
 @Manifest(name = "Bank Pin", authors = {"Andy"}, version = 1.0)
@@ -12,12 +12,12 @@ public class BankPin extends AntiRandom {
 	private final int[] PIN_COMPONENTS = {6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
 
 	@Override
-	public boolean validate() {
+	public boolean activate() {
 		return Game.isLoggedIn() && Widgets.get(13).validate() && getPin() != null;
 	}
 
 	@Override
-	public void run() {
+	public void execute() {
 		final String pin = String.format(getPin());
 
 		enterPin(pin);
@@ -25,7 +25,7 @@ public class BankPin extends AntiRandom {
 		if (Widgets.get(211).validate()) {
 			Widgets.get(211, 3).click(true);
 		} else if (Widgets.get(217).validate()) {
-			Time.sleep(1000, 1300);
+			sleep(1000, 1300);
 		}
 	}
 
@@ -44,7 +44,7 @@ public class BankPin extends AntiRandom {
 		}
 		final String pin_number = String.valueOf(pin.charAt(state));
 		if (Widgets.get(13, PIN_COMPONENTS[Integer.valueOf(pin_number)]).click(true)) {
-			Time.sleep(700, 1000);
+			sleep(700, 1000);
 		}
 	}
 }

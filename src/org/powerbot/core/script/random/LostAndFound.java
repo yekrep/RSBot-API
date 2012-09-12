@@ -1,5 +1,6 @@
 package org.powerbot.core.script.random;
 
+import org.powerbot.core.script.AntiRandom;
 import org.powerbot.game.api.Manifest;
 import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.api.methods.Settings;
@@ -8,7 +9,6 @@ import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.methods.node.SceneEntities;
 import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.util.Random;
-import org.powerbot.game.api.util.Time;
 import org.powerbot.game.api.util.Timer;
 import org.powerbot.game.api.wrappers.interactive.Player;
 import org.powerbot.game.api.wrappers.node.SceneObject;
@@ -32,7 +32,7 @@ public class LostAndFound extends AntiRandom {
 			39969, 69698, 32801, 136324};
 	private final static int[][] ANSWERS = {APPENDAGE_AN, APPENDAGE_AE, APPENDAGE_AS, APPENDAGE_AW};
 
-	public boolean validate() {
+	public boolean activate() {
 		return Game.isLoggedIn() && SceneEntities.getNearest(new Filter<SceneObject>() {
 			public boolean accept(final SceneObject location) {
 				final int id = location.getId();
@@ -46,10 +46,10 @@ public class LostAndFound extends AntiRandom {
 		}) != null;
 	}
 
-	public void run() {
+	public void execute() {
 		final Player localPlayer = Players.getLocal();
 		if (localPlayer.getSpeed() > 0) {
-			Time.sleep(Random.nextInt(200, 300));
+			sleep(Random.nextInt(200, 300));
 			return;
 		}
 
@@ -67,7 +67,7 @@ public class LostAndFound extends AntiRandom {
 					if (localPlayer.isMoving()) {
 						break;
 					}
-					Time.sleep(500);
+					sleep(500);
 				}
 			} else {
 				Walking.walk(appendage.getLocation());
@@ -76,7 +76,7 @@ public class LostAndFound extends AntiRandom {
 					if (localPlayer.isMoving()) {
 						break;
 					}
-					Time.sleep(500);
+					sleep(500);
 				}
 			}
 		}

@@ -2,6 +2,7 @@ package org.powerbot.core.script.random;
 
 import java.util.Arrays;
 
+import org.powerbot.core.script.AntiRandom;
 import org.powerbot.game.api.Manifest;
 import org.powerbot.game.api.methods.Settings;
 import org.powerbot.game.api.methods.Walking;
@@ -13,7 +14,6 @@ import org.powerbot.game.api.methods.tab.Inventory;
 import org.powerbot.game.api.methods.widget.DepositBox;
 import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.util.Random;
-import org.powerbot.game.api.util.Time;
 import org.powerbot.game.api.util.Timer;
 import org.powerbot.game.api.wrappers.Locatable;
 import org.powerbot.game.api.wrappers.graphics.CapturedModel;
@@ -41,12 +41,12 @@ public class FreakyForester extends AntiRandom {
 	public boolean done = false;
 
 	@Override
-	public boolean validate() {
+	public boolean activate() {
 		return NPCs.getNearest(NPC_ID_FORESTER) != null && SceneEntities.getNearest(LOCATION_ID_PORTAL) != null || (done = false);
 	}
 
 	@Override
-	public void run() {
+	public void execute() {
 		if (Widgets.canContinue()) {
 			verbose("WIDGET VALIDATED: Continue");
 			final WidgetChild textChild = Widgets.get(WIDGET_TALK, WIDGET_TALK_TEXT);
@@ -57,7 +57,7 @@ public class FreakyForester extends AntiRandom {
 					verbose("WIDGET: Continuing due the fact we're done...");
 					Widgets.clickContinue();
 					done = true;
-					Time.sleep(Random.nextInt(1800, 2500));
+					sleep(Random.nextInt(1800, 2500));
 					return;
 				}
 				verbose("What is he saying???");
@@ -70,7 +70,7 @@ public class FreakyForester extends AntiRandom {
 			}
 			verbose("Nothing validated -- CONTINUE!");
 			Widgets.clickContinue();
-			Time.sleep(Random.nextInt(1800, 2500));
+			sleep(Random.nextInt(1800, 2500));
 			return;
 		}
 
@@ -85,7 +85,7 @@ public class FreakyForester extends AntiRandom {
 				}
 
 				if (portal.interact("Enter")) {
-					Time.sleep(Random.nextInt(2500, 4000));
+					sleep(Random.nextInt(2500, 4000));
 				}
 			}
 			return;
@@ -128,7 +128,7 @@ public class FreakyForester extends AntiRandom {
 						if (Players.getLocal().isMoving()) {
 							timer.reset();
 						}
-						Time.sleep(100);
+						sleep(100);
 					}
 				}
 			}
@@ -158,7 +158,7 @@ public class FreakyForester extends AntiRandom {
 						} else if (pheasant.isInCombat()) {
 							timer.reset();
 						}
-						Time.sleep(150);
+						sleep(150);
 					}
 					phe = new short[0];
 					verbose("CAN CONTINUE: " + Widgets.canContinue());
@@ -181,7 +181,7 @@ public class FreakyForester extends AntiRandom {
 					if (Players.getLocal().isMoving()) {
 						timer.reset();
 					}
-					Time.sleep(150);
+					sleep(150);
 				}
 			}
 		}
@@ -197,7 +197,7 @@ public class FreakyForester extends AntiRandom {
 			if (Players.getLocal().isMoving()) {
 				timer.reset();
 			}
-			Time.sleep(150);
+			sleep(150);
 		}
 	}
 

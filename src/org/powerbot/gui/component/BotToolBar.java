@@ -26,7 +26,7 @@ import javax.swing.border.EmptyBorder;
 
 import org.powerbot.Boot;
 import org.powerbot.core.bot.handler.ScriptHandler;
-import org.powerbot.game.api.util.Time;
+import org.powerbot.core.script.job.Task;
 import org.powerbot.game.bot.Bot;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.gui.BotScripts;
@@ -145,7 +145,7 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 					bot.getExecutor().submit(new Runnable() {
 						public void run() {
 							while (activeScript.isActive()) {
-								Time.sleep(150);
+								Task.sleep(150);
 							}
 							updateScriptControls();
 						}

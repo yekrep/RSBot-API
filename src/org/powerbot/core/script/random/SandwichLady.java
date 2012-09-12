@@ -1,5 +1,6 @@
 package org.powerbot.core.script.random;
 
+import org.powerbot.core.script.AntiRandom;
 import org.powerbot.game.api.Manifest;
 import org.powerbot.game.api.methods.Walking;
 import org.powerbot.game.api.methods.Widgets;
@@ -8,7 +9,6 @@ import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.methods.node.SceneEntities;
 import org.powerbot.game.api.methods.widget.Camera;
 import org.powerbot.game.api.util.Random;
-import org.powerbot.game.api.util.Time;
 import org.powerbot.game.api.util.Timer;
 import org.powerbot.game.api.wrappers.interactive.NPC;
 import org.powerbot.game.api.wrappers.interactive.Player;
@@ -30,12 +30,12 @@ public class SandwichLady extends AntiRandom {
 	private final static String[] FOOD_ITEM_NAMES = {"chocolate", "triangle", "roll", "pie", "baguette", "doughnut", "square"};
 
 	@Override
-	public boolean validate() {
+	public boolean activate() {
 		return NPCs.getNearest(NPC_ID_SANDWICH_LADY) != null;
 	}
 
 	@Override
-	public void run() {
+	public void execute() {
 		final NPC lady = NPCs.getNearest(NPC_ID_SANDWICH_LADY);
 		if (Widgets.get(WIDGET_ID_CHAT).validate()) {
 			if (Widgets.get(WIDGET_ID_CHAT, WIDGET_ID_CHAT_TEXT).getText().contains("exit portal's")) {
@@ -43,12 +43,12 @@ public class SandwichLady extends AntiRandom {
 				if (portal != null) {
 					if (portal.isOnScreen()) {
 						portal.interact("Enter", "Exit portal");
-						Time.sleep(Random.nextInt(3000, 5000));
+						sleep(Random.nextInt(3000, 5000));
 					} else {
 						Walking.walk(portal.getLocation());
 						final Timer timer = new Timer(3000);
 						while (timer.isRunning() && !portal.isOnScreen()) {
-							Time.sleep(150);
+							sleep(150);
 						}
 					}
 				}
@@ -56,17 +56,17 @@ public class SandwichLady extends AntiRandom {
 			}
 
 			Widgets.get(WIDGET_ID_CHAT, WIDGET_ID_CHAT_CONTINUE).click(true);
-			Time.sleep(Random.nextInt(900, 1200));
+			sleep(Random.nextInt(900, 1200));
 			return;
 		}
 		if (Widgets.get(WIDGET_ID_CHAT_2).validate()) {
 			Widgets.get(WIDGET_ID_CHAT_2, WIDGET_ID_CHAT_CONTINUE_2).click(true);
-			Time.sleep(Random.nextInt(900, 1200));
+			sleep(Random.nextInt(900, 1200));
 			return;
 		}
 		final Player player = Players.getLocal();
 		if (player.getAnimation() != -1) {
-			Time.sleep(Random.nextInt(500, 1000));
+			sleep(Random.nextInt(500, 1000));
 			return;
 		}
 
@@ -87,14 +87,14 @@ public class SandwichLady extends AntiRandom {
 					if (possible_foot.click(true)) {
 						final Timer timer = new Timer(5000);
 						while (timer.isRunning() && Widgets.get(WIDGET_ID_SANDWICH_SELECTION).validate()) {
-							Time.sleep(150);
+							sleep(150);
 						}
-						Time.sleep(Random.nextInt(2000, 3000));
+						sleep(Random.nextInt(2000, 3000));
 						return;
 					}
 				}
 			}
-			Time.sleep(Random.nextInt(900, 1200));
+			sleep(Random.nextInt(900, 1200));
 			return;
 		}
 
@@ -104,11 +104,11 @@ public class SandwichLady extends AntiRandom {
 				Camera.setPitch(false);
 			} else {
 				if (lady.interact("Talk-to")) {
-					Time.sleep(Random.nextInt(1000, 1500));
+					sleep(Random.nextInt(1000, 1500));
 					return;
 				}
 			}
 		}
-		Time.sleep(Random.nextInt(900, 1200));
+		sleep(Random.nextInt(900, 1200));
 	}
 }
