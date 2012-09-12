@@ -18,13 +18,11 @@ import org.powerbot.util.Configuration;
 @Deprecated
 public abstract class ActiveScript extends org.powerbot.core.script.ActiveScript {
 	public final long started;
-	private final List<LoopTask> loopTasks;
 	private final List<Strategy> strategies;
 	private int iterationSleep = 200;
 
 	public ActiveScript() {
 		started = System.currentTimeMillis();
-		loopTasks = Collections.synchronizedList(new ArrayList<LoopTask>());
 		strategies = Collections.synchronizedList(new ArrayList<Strategy>());
 
 		getStartupJobs().add(new Task() {
@@ -75,14 +73,10 @@ public abstract class ActiveScript extends org.powerbot.core.script.ActiveScript
 
 	@Deprecated
 	public final org.powerbot.core.script.job.LoopTask submit(final LoopTask loopTask) {
-		if (loopTasks.contains(loopTask)) {
-			return null;
-		}
-
 		final org.powerbot.core.script.job.LoopTask task = new org.powerbot.core.script.job.LoopTask() {
 			@Override
 			public int loop() {
-				return loopTask.loop();//TODO remove from loopTasks when completed
+				return loopTask.loop();
 			}
 		};
 		getContainer().submit(task);
