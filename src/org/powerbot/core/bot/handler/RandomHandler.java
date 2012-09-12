@@ -1,6 +1,7 @@
 package org.powerbot.core.bot.handler;
 
 import org.powerbot.core.script.AntiRandom;
+import org.powerbot.core.script.job.LoopTask;
 import org.powerbot.core.script.random.BankPin;
 import org.powerbot.core.script.random.Beekeeper;
 import org.powerbot.core.script.random.Certer;
@@ -24,7 +25,6 @@ import org.powerbot.core.script.random.SandwichLady;
 import org.powerbot.core.script.random.ScapeRune;
 import org.powerbot.core.script.random.SpinTickets;
 import org.powerbot.core.script.random.WidgetCloser;
-import org.powerbot.core.script.job.LoopTask;
 import org.powerbot.game.bot.Bot;
 
 /**
