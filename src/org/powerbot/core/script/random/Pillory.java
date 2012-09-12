@@ -1,9 +1,8 @@
-package org.powerbot.core.random;
+package org.powerbot.core.script.random;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import org.powerbot.core.random.AntiRandom;
 import org.powerbot.game.api.Manifest;
 import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.api.methods.Widgets;

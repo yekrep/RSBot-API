@@ -1,4 +1,4 @@
-package org.powerbot.core.random;
+package org.powerbot.core.script.random;
 
 import java.awt.Color;
 import java.awt.Graphics;
