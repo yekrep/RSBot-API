@@ -24,7 +24,11 @@ public class TaskContainer implements Container {
 	private final TaskContainer parent_container;
 
 	public TaskContainer() {
-		this(Thread.currentThread().getThreadGroup(), null);
+		this(Thread.currentThread().getThreadGroup());
+	}
+
+	public TaskContainer(final ThreadGroup parent) {
+		this(parent, null);
 	}
 
 	private TaskContainer(final ThreadGroup parent, final TaskContainer parent_container) {
