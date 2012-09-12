@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 import org.powerbot.concurrent.ThreadPool;
 import org.powerbot.core.bot.handler.ScriptHandler;
 import org.powerbot.core.script.job.Task;
-import org.powerbot.event.EventDispatcher;
+import org.powerbot.core.event.EventDispatcher;
 import org.powerbot.game.api.methods.input.Keyboard;
 import org.powerbot.game.api.methods.input.Mouse;
 import org.powerbot.game.api.methods.widget.WidgetComposite;

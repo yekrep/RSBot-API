@@ -12,8 +12,8 @@ import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
 import java.util.EventListener;
 
-import org.powerbot.event.EventDispatcher;
-import org.powerbot.event.GeneralEvent;
+import org.powerbot.core.event.EventDispatcher;
+import org.powerbot.core.event.GeneralEvent;
 import org.powerbot.game.bot.event.listener.PaintListener;
 
 /**
