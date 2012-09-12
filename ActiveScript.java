@@ -35,28 +35,33 @@ public abstract class ActiveScript extends org.powerbot.core.script.ActiveScript
 		});
 	}
 
+	@Deprecated
 	public final void provide(final Strategy strategy) {
 		if (!strategies.contains(strategy)) {
 			strategies.add(strategy);
 		}
 	}
 
+	@Deprecated
 	public final void provide(final StrategyGroup group) {
 		for (final Strategy strategy : group) {
 			provide(strategy);
 		}
 	}
 
+	@Deprecated
 	public final void revoke(final Strategy strategy) {
 		strategies.remove(strategy);
 	}
 
+	@Deprecated
 	public final void revoke(final StrategyGroup group) {
 		for (final Strategy strategy : group) {
 			revoke(strategy);
 		}
 	}
 
+	@Deprecated
 	public final Job submit(final Runnable task) {
 		final Task job = new Task() {
 			@Override
@@ -68,6 +73,7 @@ public abstract class ActiveScript extends org.powerbot.core.script.ActiveScript
 		return job;
 	}
 
+	@Deprecated
 	public final org.powerbot.core.script.job.LoopTask submit(final LoopTask loopTask) {
 		if (loopTasks.contains(loopTask)) {
 			return null;
@@ -83,10 +89,12 @@ public abstract class ActiveScript extends org.powerbot.core.script.ActiveScript
 		return task;
 	}
 
+	@Deprecated
 	public final void setIterationDelay(final int milliseconds) {
 		iterationSleep = milliseconds;
 	}
 
+	@Deprecated
 	protected abstract void setup();
 
 	@Override
