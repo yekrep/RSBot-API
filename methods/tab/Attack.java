@@ -1,9 +1,9 @@
 package org.powerbot.game.api.methods.tab;
 
+import org.powerbot.core.script.job.Task;
 import org.powerbot.game.api.methods.Settings;
 import org.powerbot.game.api.methods.Tabs;
 import org.powerbot.game.api.methods.Widgets;
-import org.powerbot.game.api.util.Time;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
 
 public class Attack {
@@ -81,7 +81,7 @@ public class Attack {
 		if (Tabs.ATTACK.isOpen() || Tabs.ATTACK.open(true)) {
 			final WidgetChild styleButton = Widgets.get(WIDGET, fightMode + 7);
 			if (styleButton.validate() && styleButton.click(true)) {
-				for (byte b = 0; b < 20 && getFightMode() != fightMode; b++, Time.sleep(100)) {
+				for (byte b = 0; b < 20 && getFightMode() != fightMode; b++, Task.sleep(100)) {
 					;
 				}
 			}
@@ -98,7 +98,7 @@ public class Attack {
 		if (isSpecialEnabled() != enable && (Tabs.ATTACK.isOpen() || Tabs.ATTACK.open())) {
 			final WidgetChild w = Widgets.get(WIDGET, WIDGET_BUTTON_SPECIAL_ATTACK);
 			if (w.isOnScreen() && w.interact("Toggle Special Attack")) {
-				for (byte i = 0; i < 10 && isSpecialEnabled() != enable; i++, Time.sleep(100)) {
+				for (byte i = 0; i < 10 && isSpecialEnabled() != enable; i++, Task.sleep(100)) {
 					;
 				}
 			}

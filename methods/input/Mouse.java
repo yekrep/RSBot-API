@@ -9,10 +9,10 @@ import java.awt.event.MouseWheelEvent;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.powerbot.core.script.job.Task;
 import org.powerbot.game.api.methods.Calculations;
 import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.util.Random;
-import org.powerbot.game.api.util.Time;
 import org.powerbot.game.api.wrappers.ViewportEntity;
 import org.powerbot.game.bot.Context;
 import org.powerbot.game.bot.handler.input.MouseExecutor;
@@ -138,9 +138,9 @@ public class Mouse {
 		}
 		final int x = getX(), y = getY();
 		pressMouse(x, y, left);
-		Time.sleep(Random.nextInt(50, 150));
+		Task.sleep(Random.nextInt(50, 150));
 		releaseMouse(x, y, left);
-		Time.sleep(Random.nextInt(50, 80));
+		Task.sleep(Random.nextInt(50, 80));
 		return true;
 	}
 
@@ -168,9 +168,9 @@ public class Mouse {
 		}
 		final int x = getX(), y = getY();
 		pressMouse(x, y, left);
-		Time.sleep(time);
+		Task.sleep(time);
 		releaseMouse(x, y, left);
-		Time.sleep(Random.nextInt(50, 80));
+		Task.sleep(Random.nextInt(50, 80));
 	}
 
 	/**
@@ -227,9 +227,9 @@ public class Mouse {
 			return;
 		}
 		pressMouse(getX(), getY(), true);
-		Time.sleep(Random.nextInt(10, 400));
+		Task.sleep(Random.nextInt(10, 400));
 		move(dx, dy, rx, ry);
-		Time.sleep(Random.nextInt(10, 400));
+		Task.sleep(Random.nextInt(10, 400));
 		releaseMouse(getX(), getY(), true);
 	}
 

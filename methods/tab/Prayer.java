@@ -5,11 +5,11 @@ import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import org.powerbot.core.script.job.Task;
 import org.powerbot.game.api.methods.Settings;
 import org.powerbot.game.api.methods.Tabs;
 import org.powerbot.game.api.methods.Widgets;
 import org.powerbot.game.api.methods.input.Mouse;
-import org.powerbot.game.api.util.Time;
 import org.powerbot.game.api.util.Timer;
 
 /**
@@ -144,7 +144,7 @@ public class Prayer {
 	public static final int WIDGET_PRAYER_ORB = 749;
 	public static final int PRAYER_BOOK_CURSES = 0x17;
 	public static final int PRAYER_BOOK_NORMAL = 0x16;
-	
+
 	public static final int ICON_PROTECT_FROM_MELEE = 0;
 	public static final int ICON_PROTECT_FROM_MISSILES = 1;
 	public static final int ICON_PROTECT_FROM_MAGIC = 2;
@@ -248,9 +248,9 @@ public class Prayer {
 		if (Widgets.get(WIDGET_PRAYER_ORB, 2).interact("Select quick")) {
 			final Timer timer = new Timer(1000);
 			while (timer.isRunning() && Settings.get(1396) != 0x1) {
-				Time.sleep(15);
+				Task.sleep(15);
 			}
-			Time.sleep(100);
+			Task.sleep(100);
 			for (PrayerBook p : prayers) {
 				if (p.isSetQuick()) {
 					continue;
@@ -258,7 +258,7 @@ public class Prayer {
 				if (Widgets.get(WIDGET_PRAYER, 42).getChild(p.getId()).interact("Select")) {
 					final Timer t = new Timer(500);
 					while (t.isRunning() && !p.isSetQuick()) {
-						Time.sleep(15);
+						Task.sleep(15);
 					}
 				} else {
 					Widgets.get(WIDGET_PRAYER, 43).interact("Confirm");
@@ -271,7 +271,7 @@ public class Prayer {
 					if (Widgets.get(WIDGET_PRAYER, 42).getChild(p.getId()).interact("Deselect")) {
 						final Timer t = new Timer(500);
 						while (t.isRunning() && !p.isSetQuick()) {
-							Time.sleep(15);
+							Task.sleep(15);
 						}
 					} else {
 						Widgets.get(WIDGET_PRAYER, 43).interact("Confirm");
@@ -292,7 +292,7 @@ public class Prayer {
 	public static boolean flashQuick() {
 		final Point point = Widgets.get(WIDGET_PRAYER_ORB, 2).getNextViewportPoint();
 		if (Mouse.click(point, true)) {
-			Time.sleep(250, 350);
+			Task.sleep(250, 350);
 			return Mouse.click(point, true);
 		}
 		return false;
@@ -301,7 +301,7 @@ public class Prayer {
 	/**
 	 * Activates or deactivates given prayer.
 	 *
-	 * @param prayer Desired prayer/curse.
+	 * @param prayer   Desired prayer/curse.
 	 * @param activate <tt>true</tt> to activate, <tt>false</tt> to deactivate.
 	 * @return <tt>true</tt> if prayer/curse successfully activated/deactivated, <tt>false</tt> if failed to
 	 *         activate/deactivate or player does not meet requirements for given prayer/curse.
@@ -330,7 +330,7 @@ public class Prayer {
 		if (Tabs.PRAYER.open(false)) {
 			final Point point = Widgets.get(WIDGET_PRAYER, 8).getChild(prayer.getId()).getNextViewportPoint();
 			if (Mouse.click(point, true)) {
-				Time.sleep(250, 350);
+				Task.sleep(250, 350);
 				return Mouse.click(point, true);
 			}
 		}
@@ -350,7 +350,7 @@ public class Prayer {
 			if (togglePrayer(p, false)) {
 				final Timer timer = new Timer(500);
 				while (timer.isRunning() && p.isActive()) {
-					Time.sleep(15);
+					Task.sleep(15);
 				}
 			}
 		}

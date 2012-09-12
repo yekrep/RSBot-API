@@ -3,11 +3,11 @@ package org.powerbot.game.api.methods.tab;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.powerbot.core.script.job.Task;
 import org.powerbot.game.api.methods.Tabs;
 import org.powerbot.game.api.methods.Widgets;
 import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.util.Random;
-import org.powerbot.game.api.util.Time;
 import org.powerbot.game.api.wrappers.node.Item;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
 
@@ -215,13 +215,13 @@ public class Inventory {
 		}
 		if (selItem != null) {
 			selItem.getWidgetChild().interact("Use");
-			Time.sleep(Random.nextInt(500, 700));
+			Task.sleep(Random.nextInt(500, 700));
 		}
 		if (!item.getWidgetChild().interact("Use")) {
 			return false;
 		}
 		for (int c = 0; c < 5 && (selItem = getSelectedItem()) == null; c++) {
-			Time.sleep(Random.nextInt(500, 700));
+			Task.sleep(Random.nextInt(500, 700));
 		}
 		return selItem != null && selItem.getId() == itemID;
 	}

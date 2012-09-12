@@ -3,7 +3,7 @@ package org.powerbot.game.api.methods;
 import java.awt.Canvas;
 import java.awt.Dimension;
 
-import org.powerbot.game.api.util.Time;
+import org.powerbot.core.script.job.Task;
 import org.powerbot.game.api.util.internal.Constants;
 import org.powerbot.game.api.util.internal.Multipliers;
 import org.powerbot.game.api.wrappers.Tile;
@@ -125,7 +125,7 @@ public class Game {
 		if (Tabs.LOGOUT.open()) {
 			final WidgetChild w = Widgets.get(182, lobby ? 6 : 13);
 			if (w != null && w.validate() && w.interact("Exit to " + (lobby ? "Lobby" : "Login"))) {
-				for (int i = 0; i < 10; i++, Time.sleep(100, 200)) {
+				for (int i = 0; i < 10; i++, Task.sleep(100, 200)) {
 					if (Game.getClientState() == Game.INDEX_LOBBY_SCREEN && lobby || Game.getClientState() == Game.INDEX_LOGIN_SCREEN && !lobby) {
 						return true;
 					}

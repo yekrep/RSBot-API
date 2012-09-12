@@ -3,11 +3,11 @@ package org.powerbot.game.api.wrappers.map;
 import java.util.Arrays;
 import java.util.EnumSet;
 
+import org.powerbot.core.script.job.Task;
 import org.powerbot.game.api.methods.Calculations;
 import org.powerbot.game.api.methods.Walking;
 import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.util.Random;
-import org.powerbot.game.api.util.Time;
 import org.powerbot.game.api.wrappers.Tile;
 
 public class TilePath extends Path {
@@ -40,7 +40,7 @@ public class TilePath extends Path {
 		}
 		if (options != null && options.contains(TraversalOption.HANDLE_RUN) && !Walking.isRunEnabled() && Walking.getEnergy() > 50) {
 			Walking.setRun(true);
-			Time.sleep(300);
+			Task.sleep(300);
 		}
 		if (options != null && options.contains(TraversalOption.SPACE_ACTIONS)) {
 			final Tile dest = Walking.getDestination();

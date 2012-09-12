@@ -6,11 +6,11 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.powerbot.core.script.job.Task;
 import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.api.methods.Widgets;
 import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.util.Random;
-import org.powerbot.game.api.util.Time;
 import org.powerbot.game.api.util.Timer;
 import org.powerbot.game.api.wrappers.widget.Widget;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
@@ -88,7 +88,7 @@ public class Lobby {
 				return true;
 			}
 			if (child != null && child.validate() && child.click(true)) {
-				Time.sleep(Random.nextInt(1200, 2000));
+				Task.sleep(Random.nextInt(1200, 2000));
 				return true;
 			}
 			return false;
@@ -347,10 +347,10 @@ public class Lobby {
 			if (dialog == Dialog.TRANSFER_COUNTDOWN || (dialog != null && dialog.clickContinue())) {
 				t.reset();
 			} else if (dialog != null) {
-				Time.sleep(500, 1000);
+				Task.sleep(500, 1000);
 				break;
 			}
-			Time.sleep(5);
+			Task.sleep(5);
 		}
 		return Game.isLoggedIn();
 	}

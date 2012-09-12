@@ -5,6 +5,7 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import org.powerbot.core.script.job.Task;
 import org.powerbot.game.api.methods.Calculations;
 import org.powerbot.game.api.methods.Settings;
 import org.powerbot.game.api.methods.Walking;
@@ -16,7 +17,6 @@ import org.powerbot.game.api.methods.node.Menu;
 import org.powerbot.game.api.methods.node.SceneEntities;
 import org.powerbot.game.api.methods.tab.Inventory;
 import org.powerbot.game.api.util.Filter;
-import org.powerbot.game.api.util.Time;
 import org.powerbot.game.api.util.Timer;
 import org.powerbot.game.api.wrappers.Entity;
 import org.powerbot.game.api.wrappers.Identifiable;
@@ -180,7 +180,7 @@ public class Bank {
 		if (!bank.isOnScreen() && (!Players.getLocal().isMoving()
 				|| Calculations.distance(Walking.getDestination(), ((Locatable) bank).getLocation()) > 4)) {
 			Walking.walk((Locatable) bank);
-			Time.sleep(200, 400);
+			Task.sleep(200, 400);
 		}
 		if (bank.isOnScreen()) {
 			boolean interacted = false;
@@ -197,7 +197,7 @@ public class Bank {
 			final Widget bankpin = Widgets.get(WIDGET_BANKPIN);
 			final Timer t = new Timer(4000);
 			while (t.isRunning() && interacted && !isOpen() && (bankpin == null || !bankpin.validate())) {
-				Time.sleep(10);
+				Task.sleep(10);
 			}
 		}
 		return isOpen();
@@ -244,7 +244,7 @@ public class Bank {
 		final Timer t = new Timer(500);
 		while (t.isRunning() && item.getWidgetChild().getRelativeY() == 0 && getCurrentTab() != Tab.ALL) {
 			setCurrentTab(Tab.ALL);
-			Time.sleep(50, 70);
+			Task.sleep(50, 70);
 		}
 		if (!isSlotVisible(item.getWidgetChild())) {
 			final WidgetChild scrollBar = Widgets.get(WIDGET_BANK, WIDGET_SCROLLBAR);
@@ -264,12 +264,12 @@ public class Bank {
 				return false;
 			}
 		} else if (item.getWidgetChild().interact("Withdraw-X") && waitForInputWidget(true)) {
-			Time.sleep(200, 800);
+			Task.sleep(200, 800);
 			Keyboard.sendText(String.valueOf(amount), true);
 		}
 		t.setEndIn(2000);
 		while (t.isRunning() && Inventory.getCount(true) == invCount) {
-			Time.sleep(5);
+			Task.sleep(5);
 		}
 		return Inventory.getCount(true) != invCount;
 	}
@@ -296,12 +296,12 @@ public class Bank {
 				return false;
 			}
 		} else if (item.getWidgetChild().interact("Deposit-X") && waitForInputWidget(true)) {
-			Time.sleep(200, 800);
+			Task.sleep(200, 800);
 			Keyboard.sendText(String.valueOf(amount), true);
 		}
 		final Timer t = new Timer(2000);
 		while (t.isRunning() && Inventory.getCount(true) == invCount) {
-			Time.sleep(5);
+			Task.sleep(5);
 		}
 		return Inventory.getCount(true) != invCount;
 	}
@@ -324,7 +324,7 @@ public class Bank {
 		if (child != null && child.click(true)) {
 			final Timer t = new Timer(2000);
 			while (t.isRunning() && Inventory.getCount() == invCount) {
-				Time.sleep(5);
+				Task.sleep(5);
 			}
 		}
 		return invCount != Inventory.getCount();
@@ -361,10 +361,10 @@ public class Bank {
 	public static Item[] getItems(final boolean currentTabOnly) {
 		return getItems(currentTabOnly, Inventory.ALL_FILTER);
 	}
-	
+
 	public static Item[] getItems(final Filter<Item> itemFilter) {
 		return getItems(false, itemFilter);
-	} 
+	}
 
 	public static Item[] getItems(final boolean currentTabOnly, final Filter<Item> itemFilter) {
 		if (!isOpen()) {
@@ -448,7 +448,7 @@ public class Bank {
 		if (isWithdrawNotedEnabled() != noted && child != null && child.click(true)) {
 			final Timer t = new Timer(500);
 			while (t.isRunning() && isWithdrawNotedEnabled() != noted) {
-				Time.sleep(5);
+				Task.sleep(5);
 			}
 		}
 		return isWithdrawNotedEnabled() == noted;
@@ -466,7 +466,7 @@ public class Bank {
 		if (isSearchEnabled() != enable && child != null && child.click(true)) {
 			final Timer t = new Timer(500);
 			while (t.isRunning() && isSearchEnabled() != enable) {
-				Time.sleep(5);
+				Task.sleep(5);
 			}
 		}
 		return isSearchEnabled() == enable;
@@ -487,11 +487,11 @@ public class Bank {
 		}
 		if (isSearchEnabled() && !isInputWidgetOpen()) {
 			setSearchMode(false);
-			Time.sleep(1000, 2000);
+			Task.sleep(1000, 2000);
 			setSearchMode(true);
 		}
 		if ((isSearchEnabled() || setSearchMode(true)) && waitForInputWidget(true)) {
-			Time.sleep(200, 400);
+			Task.sleep(200, 400);
 			Keyboard.sendText(itemName, true);
 			if (waitForInputWidget(false)) {
 				return getItems(true);
@@ -558,7 +558,7 @@ public class Bank {
 	protected static boolean waitForInputWidget(final boolean open) {
 		final Timer t = new Timer(3000);
 		while (t.isRunning() && isInputWidgetOpen() != open) {
-			Time.sleep(5);
+			Task.sleep(5);
 		}
 		return isInputWidgetOpen() == open;
 	}

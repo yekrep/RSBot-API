@@ -5,8 +5,8 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import org.powerbot.core.script.job.Task;
 import org.powerbot.game.api.util.Random;
-import org.powerbot.game.api.util.Time;
 import org.powerbot.game.bot.Context;
 import org.powerbot.game.client.Client;
 
@@ -164,7 +164,7 @@ public class Keyboard {
 			final int wait = Random.nextInt(minDelay, maxDelay);
 			sendKey(element, wait);
 			if (wait > 0) {
-				Time.sleep(wait);
+				Task.sleep(wait);
 			}
 		}
 		if (pressEnter) {

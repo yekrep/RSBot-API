@@ -2,10 +2,10 @@ package org.powerbot.game.api.methods;
 
 import java.awt.event.KeyEvent;
 
+import org.powerbot.core.script.job.Task;
 import org.powerbot.game.api.methods.input.Keyboard;
 import org.powerbot.game.api.methods.widget.WidgetComposite;
 import org.powerbot.game.api.util.Random;
-import org.powerbot.game.api.util.Time;
 import org.powerbot.game.api.util.Timer;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
 
@@ -75,7 +75,7 @@ public enum Tabs {
 				if (widgetChild.click(true)) {
 					final Timer timer = new Timer(800);
 					while (timer.isRunning() && getCurrent() != this) {
-						Time.sleep(15);
+						Task.sleep(15);
 					}
 				}
 			}

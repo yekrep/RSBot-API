@@ -1,21 +1,19 @@
 package org.powerbot.game.api.methods.tab;
 
+import org.powerbot.core.script.job.Task;
 import org.powerbot.game.api.methods.Settings;
 import org.powerbot.game.api.methods.Widgets;
 import org.powerbot.game.api.methods.interactive.NPCs;
 import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.methods.node.Menu;
-import org.powerbot.game.api.methods.tab.Inventory;
-import org.powerbot.game.api.methods.tab.Skills;
 import org.powerbot.game.api.util.Filter;
-import org.powerbot.game.api.util.Time;
 import org.powerbot.game.api.util.Timer;
 import org.powerbot.game.api.wrappers.interactive.NPC;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
 
 /**
  * Summoning related operations.
- * 
+ *
  * @author ArcaneSanity
  */
 public class Summoning {
@@ -23,11 +21,11 @@ public class Summoning {
 	public static final int WIDGET_SUMMONING_ORB = 747;
 	public static final int WIDGET_SET_LEFT = 880;
 	public static final int WIDGET_INTERACT = 1188;
-	
+
 	public static enum Familiar {
 		SPIRIT_WOLF(12047, 1, 0, 1, 12533, 3),
 		DREADFOWL(12043, 4, 0, 1, 12445, 3),
-		MEERKATS(19622, 4, 0, 1, 19621, 12), 
+		MEERKATS(19622, 4, 0, 1, 19621, 12),
 		SPIRIT_SPIDER(12059, 10, 0, 2, 12428, 6),
 		THORNY_SNAIL(12019, 13, 0, 2, 12459, 3),
 		GRANITE_CRAB(12009, 16, 0, 2, 12533, 12),
@@ -63,7 +61,7 @@ public class Summoning {
 		BLOATED_LEECH(12061, 49, 0, 5, 12444, 6),
 		SPIRIT_TERRORBIRD(12007, 52, 12, 6, 12441, 8),
 		ABYSSAL_PARASITE(12035, 54, 7, 6, 12454, 6),
-		SPIRIT_JELLY(12027, 55 , 0, 6, 12453, 6),
+		SPIRIT_JELLY(12027, 55, 0, 6, 12453, 6),
 		STEEL_MINOTAUR(12077, 56, 0, 9, 12464, 6),
 		IBIS(12531, 56, 0, 6, 12424, 12),
 		SPIRIT_GRAAHK(12810, 57, 0, 6, 12835, 3),
@@ -85,7 +83,7 @@ public class Summoning {
 		OBSIDIAN_GOLEM(12792, 73, 0, 8, 12826, 12),
 		GRANITE_LOBSTER(12069, 74, 0, 8, 12449, 6),
 		PRAYING_MANTRIS(12011, 75, 0, 8, 12450, 6),
-		ADAMANT_MINOTAUR(12081, 76 , 0, 9, 12466, 6),
+		ADAMANT_MINOTAUR(12081, 76, 0, 9, 12466, 6),
 		FORGE_REGENT(12782, 76, 0, 9, 12841, 6),
 		TALON_BEAST(12794, 77, 0, 9, 12831, 6),
 		GIANT_ENT(12013, 78, 0, 8, 12457, 6),
@@ -105,9 +103,9 @@ public class Summoning {
 		IRON_TITAN(12822, 95, 0, 10, 12828, 12),
 		PACK_YAK(12093, 96, 30, 10, 12435, 12),
 		STEEL_TITAN(12790, 99, 0, 10, 12825, 12);
-		
+
 		private final int pouch, level, space, points, scroll, special;
-		
+
 		Familiar(final int pouch, final int level, final int space, final int points, final int scroll, final int special) {
 			this.pouch = pouch;
 			this.level = level;
@@ -116,33 +114,33 @@ public class Summoning {
 			this.special = special;
 			this.scroll = scroll;
 		}
-		
+
 		public int getPouchId() {
 			return this.pouch;
 		}
-		
+
 		public int getRequiredLevel() {
 			return this.level;
 		}
-		
+
 		public int getBoBSpace() {
 			return this.space;
 		}
-		
+
 		public int getRequiredPoints() {
 			return this.points;
 		}
-		
+
 		public int getScrollId() {
 			return this.scroll;
 		}
-		
+
 		public int getRequiredSpecialPoints() {
 			return this.special;
 		}
-		
+
 	}
-	
+
 	public static enum Option {
 		FOLLOWER_DETAILS("Follower Details", 7, 0x10, 0x0),
 		CAST("Cast", 9, 0x11, 0x1),
@@ -152,78 +150,78 @@ public class Summoning {
 		TAKE_BOB("Take BoB", 17, 0x15, 0x5),
 		RENEW_FAMILIAR("Renew Familiar", 19, 0x16, 0x6),
 		INTERACT("Interact", 25, 0x17, 0x7);
-		
+
 		private final String text;
 		private final int id, setting, set;
-		
+
 		Option(final String text, final int id, final int setting, final int set) {
 			this.text = text;
 			this.id = id;
 			this.setting = setting;
 			this.set = set;
 		}
-		
+
 		public String getText() {
 			return this.text;
 		}
-		
+
 		public WidgetChild getWidgetChild() {
 			return Widgets.get(WIDGET_SET_LEFT, this.id);
 		}
-		
+
 		public boolean isSetLeft() {
 			return Settings.get(1493) == this.setting;
 		}
-		
+
 		public boolean isSelected() {
 			return Settings.get(1494) == this.set;
 		}
 	}
-	
+
 	/**
 	 * Retrieves the current summoning points.
-	 * 
+	 *
 	 * @return Current summoning points.
 	 */
 	public static int getPoints() {
 		return Skills.getLevel(Skills.SUMMONING);
 	}
-	
+
 	/**
 	 * Retrieves the current summoning special points.
-	 * 
+	 *
 	 * @return Current summoning special points.
 	 */
 	public static int getSpecialPoints() {
 		return Settings.get(1177);
 	}
-	
+
 	/**
 	 * Selects given option from summoning orb.
-	 * 
+	 *
 	 * @param option Desired option to select from summoning orb.
 	 * @return <tt>true</tt> if the option is selected, otherwise <tt>false</tt>.
 	 */
 	public static boolean select(final Option option) {
 		return select(option.getText());
 	}
-	
+
 	/**
 	 * Selects given option from summoning orb.
-	 * 
+	 *
 	 * @param action Desired action to select from summoning orb.
 	 * @return<tt>true</tt> if the option is selected, otherwise <tt>false</tt>.
 	 */
 	public static boolean select(final String action) {
 		if ("renew familiar".contains(action.toLowerCase())) {
 			final Familiar familiar = getEnum();
-			return familiar != null && familiar.getRequiredPoints() <= getPoints() && Inventory.getCount(Settings.get(448)) > 0 
+			return familiar != null && familiar.getRequiredPoints() <= getPoints() && Inventory.getCount(Settings.get(448)) > 0
 					&& Widgets.get(WIDGET_SUMMONING_ORB, 2).interact(action);
 		}
 		if ("dismiss".contains(action.toLowerCase())) {
 			if (Widgets.get(WIDGET_SUMMONING_ORB, 2).interact(action)) {
 				for (int i = 0; i < 50 && !Widgets.get(WIDGET_INTERACT).validate(); i++) {
-					Time.sleep(20);
+					Task.sleep(20);
 				}
 				return Widgets.get(WIDGET_INTERACT, 3).click(true);
 			}
@@ -231,15 +229,15 @@ public class Summoning {
 		}
 		if ("cast".contains(action.toLowerCase())) {
 			final Familiar familiar = getEnum();
-			return familiar != null && familiar.getRequiredSpecialPoints() <= getSpecialPoints() 
+			return familiar != null && familiar.getRequiredSpecialPoints() <= getSpecialPoints()
 					&& Widgets.get(WIDGET_SUMMONING_ORB, 2).interact(action);
 		}
 		return Widgets.get(WIDGET_SUMMONING_ORB, 2).interact(action);
 	}
-	
+
 	/**
 	 * Retrieves left-click option that is currently set to left-click.
-	 * 
+	 *
 	 * @return Currently set left-click option.
 	 */
 	public static Option getLeftClickOption() {
@@ -250,10 +248,10 @@ public class Summoning {
 		}
 		return Option.FOLLOWER_DETAILS;
 	}
-	
+
 	/**
 	 * Sets given option to left-click.
-	 * 
+	 *
 	 * @param option Desired option to set to left-click.
 	 * @return <tt>true</tt> if the option is successfully set to left-click, otherwise <tt>false</tt>.
 	 */
@@ -262,10 +260,10 @@ public class Summoning {
 			return true;
 		}
 		if (Widgets.get(WIDGET_SUMMONING_ORB, 2).interact("Select")) {
-			if(!isFamiliarSummoned()) {
+			if (!isFamiliarSummoned()) {
 				final Timer timer = new Timer(800);
 				while (timer.isRunning() && !Menu.isOpen()) {
-					Time.sleep(15);
+					Task.sleep(15);
 				}
 				if (!Menu.select("Select")) {
 					return false;
@@ -273,16 +271,15 @@ public class Summoning {
 			}
 			final Timer timer = new Timer(2000);
 			while (timer.isRunning() && !Widgets.get(WIDGET_SET_LEFT).validate()) {
-				Time.sleep(15);
-			}	
-			Time.sleep(200);
+				Task.sleep(15);
+			}
+			Task.sleep(200);
 			if (option.getWidgetChild().interact("Select")) {
 				final Timer t = new Timer(800);
 				while (t.isRunning() && !option.isSelected()) {
-					Time.sleep(15);
+					Task.sleep(15);
 				}
-			}
-			else {
+			} else {
 				Widgets.get(WIDGET_SET_LEFT, 5).interact("Confirm");
 				return false;
 			}
@@ -290,37 +287,37 @@ public class Summoning {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Determines whether cast or attack is selected.
-	 * 
+	 *
 	 * @return <tt>true</tt> if familiar special move/cast or attack is selected, otherwise <tt>false</tt>.
 	 */
 	public static boolean isCastOrAttackSelected() {
 		return Widgets.get(WIDGET_SUMMONING_ORB, 2).getBorderThickness() == 2;
 	}
-	
+
 	/**
 	 * Retrieves summoned familiar remaining time.
-	 * 
+	 *
 	 * @return Familiar remaining time in seconds.
 	 */
 	public static int getTimeLeft() {
 		return Math.round((Settings.get(1176) / (float) 2.13333333333));
 	}
-	
+
 	/**
 	 * Determines whether the player have summoned familiar.
-	 * 
+	 *
 	 * @return <tt>true</tt> if player have summoned familiar, otherwise <tt>false</tt>.
 	 */
 	public static boolean isFamiliarSummoned() {
 		return getTimeLeft() > 0 && Settings.get(1174) > 0;
 	}
-	
+
 	/**
 	 * Summons given familiar.
-	 * 
+	 *
 	 * @param familiar Desired familiar to summon.
 	 * @return <tt>true</tt> if familiar is successfully summoned, otherwise <tt>false</tt>.
 	 */
@@ -328,10 +325,10 @@ public class Summoning {
 		return Inventory.getCount(familiar.getPouchId()) > 0 && Skills.getRealLevel(Skills.SUMMONING) >= familiar.getRequiredLevel() &&
 				getPoints() >= familiar.getRequiredPoints() && Inventory.getItem(familiar.getPouchId()).getWidgetChild().interact("Summon");
 	}
-	
+
 	/**
 	 * Retrieves currently summoned familiar.
-	 * 
+	 *
 	 * @return NPC type of currently summoned familiar.
 	 */
 	public static final NPC getFamiliar() {
@@ -341,15 +338,15 @@ public class Summoning {
 		return NPCs.getNearest(new Filter<NPC>() {
 			@Override
 			public boolean accept(NPC npc) {
-				return npc.getId() == Settings.get(1174) && npc.getInteracting() != null 
+				return npc.getId() == Settings.get(1174) && npc.getInteracting() != null
 						&& npc.getInteracting().equals(Players.getLocal());
 			}
 		});
 	}
-	
+
 	/**
 	 * Retrieves currently summoned familiar enum.
-	 * 
+	 *
 	 * @return {@link Familiar} type of currently summoned familiar.
 	 */
 	public static final Familiar getEnum() {
@@ -363,22 +360,22 @@ public class Summoning {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Selects call familiar button from follower details tab.
 	 * Note: Does nothing if follower details tab is not open.
-	 * 
+	 *
 	 * @return <tt>true</tt> if familiar is called, otherwise <tt>false</tt>.
 	 */
 	public static boolean callFamiliar() {
-		return isFamiliarSummoned() && Widgets.get(WIDGET_FOLLOWER_DETAILS, 49).visible() && 
+		return isFamiliarSummoned() && Widgets.get(WIDGET_FOLLOWER_DETAILS, 49).visible() &&
 				Widgets.get(WIDGET_FOLLOWER_DETAILS, 49).interact("Call");
 	}
-	
+
 	/**
 	 * Selects dismiss button from follower details tab.
 	 * Note: Does nothing if follower details tab is not open.
-	 * 
+	 *
 	 * @return <tt>true</tt> if familiar is dismissed, otherwise <tt>false</tt>.
 	 */
 	public static boolean dismissFamiliar() {
@@ -388,54 +385,54 @@ public class Summoning {
 		if (Widgets.get(WIDGET_FOLLOWER_DETAILS, 51).interact("Dismiss")) {
 			final Timer timer = new Timer(1500);
 			while (timer.isRunning() && !Widgets.get(WIDGET_INTERACT, 20).validate()) {
-				Time.sleep(15);
+				Task.sleep(15);
 			}
 			return Widgets.get(WIDGET_INTERACT, 3).click(true);
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Selects Take BoB button from follower details tab.
 	 * Note: Does nothing if follower details tab is not open.
-	 * 
+	 *
 	 * @return <tt>true</tt> if Take BoB is selected, otherwise <tt>false</tt>.
 	 */
 	public static boolean takeBoB() {
-		return isFamiliarSummoned() && Widgets.get(WIDGET_FOLLOWER_DETAILS, 67).visible() && 
+		return isFamiliarSummoned() && Widgets.get(WIDGET_FOLLOWER_DETAILS, 67).visible() &&
 				Widgets.get(WIDGET_FOLLOWER_DETAILS, 67).interact("Take");
 	}
-	
+
 	/**
 	 * Selects Renew Familiar button from follower details tab.
 	 * Note: Does nothing if follower details tab is not open.
-	 * 
+	 *
 	 * @return <tt>true</tt> if familiar is renewed, otherwise <tt>false</tt>.
 	 */
 	public static boolean renewFamiliar() {
-		return isFamiliarSummoned() && Widgets.get(WIDGET_FOLLOWER_DETAILS, 69).visible() && 
+		return isFamiliarSummoned() && Widgets.get(WIDGET_FOLLOWER_DETAILS, 69).visible() &&
 				Widgets.get(WIDGET_FOLLOWER_DETAILS, 69).interact("Renew");
 	}
-	
+
 	/**
 	 * Selects Cast button from follower details tab.
 	 * Note: Does nothing if follower details tab is not open.
-	 * 
+	 *
 	 * @return <tt>true</tt> if special move is cast/selected, otherwise <tt>false</tt>.
 	 */
 	public static boolean cast() {
-		return isFamiliarSummoned() && Widgets.get(WIDGET_FOLLOWER_DETAILS, 5).visible() && 
+		return isFamiliarSummoned() && Widgets.get(WIDGET_FOLLOWER_DETAILS, 5).visible() &&
 				Widgets.get(WIDGET_FOLLOWER_DETAILS, 5).interact("Cast");
 	}
-	
+
 	/**
 	 * Selects Attack button from follower details tab.
 	 * Note: Does nothing if follower details tab is not open.
-	 * 
+	 *
 	 * @return <tt>true</tt> if attack is selected, otherwise <tt>false</tt>.
 	 */
 	public static boolean attack() {
-		return isFamiliarSummoned() && Widgets.get(WIDGET_FOLLOWER_DETAILS, 65).visible() && 
+		return isFamiliarSummoned() && Widgets.get(WIDGET_FOLLOWER_DETAILS, 65).visible() &&
 				Widgets.get(WIDGET_FOLLOWER_DETAILS, 65).interact("Attack");
 	}
 }
