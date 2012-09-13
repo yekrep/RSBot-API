@@ -159,6 +159,9 @@ public class RestrictedSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkSystemClipboardAccess() {
+		if (isCallingClass(java.awt.event.InputEvent.class)) {
+			return;
+		}
 		throw new SecurityException();
 	}
 
