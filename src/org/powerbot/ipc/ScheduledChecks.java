@@ -32,7 +32,9 @@ public final class ScheduledChecks implements ActionListener {
 
 		if (Bot.isInstantiated() && Bot.getInstance().getScriptHandler() != null) {
 			final ScriptHandler script = Bot.getInstance().getScriptHandler();
-			if (script.getDefinition().local && !NetworkAccount.getInstance().isDeveloper() && script.started < System.currentTimeMillis() - 1000 * LOCALSCRIPT_TIMEOUT && !script.isActive()) {
+			if (script.getDefinition() != null && script.getDefinition().local &&
+					script.started < System.currentTimeMillis() - 1000 * LOCALSCRIPT_TIMEOUT && !script.isActive() &&
+					!NetworkAccount.getInstance().isDeveloper()) {
 				log.info("Local script stopped after timeout for unauthorised developer");
 				script.stop();
 			}
