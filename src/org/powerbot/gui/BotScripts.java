@@ -64,6 +64,7 @@ import javax.swing.Timer;
 import javax.swing.border.AbstractBorder;
 import javax.swing.border.EmptyBorder;
 
+import org.powerbot.core.script.ActiveScript;
 import org.powerbot.core.script.Script;
 import org.powerbot.game.api.Manifest;
 import org.powerbot.game.bot.Bot;
@@ -624,6 +625,9 @@ public final class BotScripts extends JDialog implements ActionListener {
 						}
 					}
 					log.info("Starting script");
+					if (script instanceof ActiveScript) {
+						((ActiveScript) script).setDefinition(def);
+					}
 					if (bot.getScriptHandler().start(script)) {
 						BotScripts.this.parent.updateScriptControls();
 					} else {

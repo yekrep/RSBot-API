@@ -2,6 +2,7 @@ package org.powerbot.core.bot.handler;
 
 import java.util.logging.Logger;
 
+import org.powerbot.core.script.ActiveScript;
 import org.powerbot.core.script.Script;
 import org.powerbot.core.script.job.Container;
 import org.powerbot.core.script.job.TaskContainer;
@@ -36,6 +37,9 @@ public class ScriptHandler {
 
 		this.definition = null;
 		this.script = script;
+		if (script instanceof ActiveScript) {
+			this.definition = ((ActiveScript) script).getDefinition();
+		}
 
 		script.start();
 		container.submit(new RandomHandler(bot, this));

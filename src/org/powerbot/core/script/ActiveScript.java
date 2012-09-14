@@ -11,12 +11,14 @@ import org.powerbot.core.script.job.JobListener;
 import org.powerbot.core.script.job.LoopTask;
 import org.powerbot.core.script.job.Task;
 import org.powerbot.core.script.job.TaskContainer;
+import org.powerbot.service.scripts.ScriptDefinition;
 
 /**
  * @author Timer
  */
 public abstract class ActiveScript extends LoopTask implements Script {
 	public final Logger log = Logger.getLogger(getClass().getName());
+	private ScriptDefinition def;
 
 	private final Container container;
 	private final List<Job> startup_jobs;
@@ -141,5 +143,16 @@ public abstract class ActiveScript extends LoopTask implements Script {
 	}
 
 	public void onStop() {
+	}
+
+	public void setDefinition(final ScriptDefinition def) {
+		if (this.def != null) {
+			return;
+		}
+		this.def = def;
+	}
+
+	public ScriptDefinition getDefinition() {
+		return def;
 	}
 }
