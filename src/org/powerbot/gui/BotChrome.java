@@ -158,8 +158,7 @@ public class BotChrome extends JFrame implements WindowListener {
 					if (!task.get()) {
 						pass = false;
 					}
-				} catch (final InterruptedException ignored) {
-				} catch (final ExecutionException ignored) {
+				} catch (final InterruptedException | ExecutionException ignored) {
 				}
 			}
 			if (pass) {

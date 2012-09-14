@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 import org.powerbot.core.bot.handler.ScriptHandler;
 import org.powerbot.game.bot.Bot;
 import org.powerbot.service.NetworkAccount;
+import org.powerbot.service.scripts.ScriptDefinition;
 
 /**
  * @author Paris
@@ -32,8 +33,9 @@ public final class ScheduledChecks implements ActionListener {
 
 		if (Bot.isInstantiated() && Bot.getInstance().getScriptHandler() != null) {
 			final ScriptHandler script = Bot.getInstance().getScriptHandler();
-			if (script.getDefinition() != null && script.getDefinition().local &&
-					script.started < System.currentTimeMillis() - 1000 * LOCALSCRIPT_TIMEOUT && !script.isActive() &&
+			final ScriptDefinition definition;
+			if ((definition = script.getDefinition()) != null && definition.local &&
+					script.started < System.currentTimeMillis() - 1000 * LOCALSCRIPT_TIMEOUT && script.isActive() &&
 					!NetworkAccount.getInstance().isDeveloper()) {
 				log.info("Local script stopped after timeout for unauthorised developer");
 				script.stop();
