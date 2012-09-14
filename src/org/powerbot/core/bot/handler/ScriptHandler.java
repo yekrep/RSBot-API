@@ -19,7 +19,7 @@ public class ScriptHandler {
 	private final Container container;
 
 	private Script script;
-	private ScriptDefinition def;
+	private ScriptDefinition definition;
 	public long started;
 
 	public ScriptHandler(final Bot bot) {
@@ -29,15 +29,17 @@ public class ScriptHandler {
 		this.script = null;
 	}
 
-	public boolean start(final Script script, final ScriptDefinition definition) {
+	public boolean start(final Script script) {
 		if (isActive()) {
 			return false;
 		}
-		setDefinition(definition);
+
+		this.definition = null;
 		this.script = script;
+
 		script.start();
-		started = System.currentTimeMillis();
 		container.submit(new RandomHandler(bot, this));
+		started = System.currentTimeMillis();
 		track("");
 		return true;
 	}
@@ -58,6 +60,7 @@ public class ScriptHandler {
 
 	public void shutdown() {
 		if (script != null) {
+			container.shutdown();
 			script.shutdown();
 			track("stop");
 		}
@@ -65,6 +68,7 @@ public class ScriptHandler {
 
 	public void stop() {
 		if (script != null) {
+			container.shutdown();
 			script.stop();
 			track("kill");
 		}
@@ -82,22 +86,15 @@ public class ScriptHandler {
 		return script != null && script.isShutdown();
 	}
 
-	public void setDefinition(final ScriptDefinition def) {
-		if (this.def != null) {
-			return;
-		}
-		this.def = def;
-	}
-
 	public ScriptDefinition getDefinition() {
-		return def;
+		return definition;
 	}
 
 	private void track(final String action) {
-		if (def == null || def.local || def.getID() == null || def.getID().isEmpty() || def.getName() == null) {
+		if (definition == null || definition.local || definition.getID() == null || definition.getID().isEmpty() || definition.getName() == null) {
 			return;
 		}
-		final String page = String.format("scripts/%s/%s", def.getID(), action);
-		Tracker.getInstance().trackPage(page, def.getName());
+		final String page = String.format("scripts/%s/%s", definition.getID(), action);
+		Tracker.getInstance().trackPage(page, definition.getName());
 	}
 }

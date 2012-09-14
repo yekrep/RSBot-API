@@ -624,7 +624,7 @@ public final class BotScripts extends JDialog implements ActionListener {
 						}
 					}
 					log.info("Starting script");
-					if (bot.getScriptHandler().start(script, def)) {
+					if (bot.getScriptHandler().start(script)) {
 						BotScripts.this.parent.updateScriptControls();
 					} else {
 						log.severe("There is a script running");
