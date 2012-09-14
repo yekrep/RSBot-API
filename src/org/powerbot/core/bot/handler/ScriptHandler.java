@@ -16,7 +16,7 @@ public class ScriptHandler {
 	public final Logger log = Logger.getLogger(ScriptHandler.class.getName());
 
 	private final Bot bot;
-	private final Container container;
+	private Container container;
 
 	private Script script;
 	private ScriptDefinition def;
@@ -24,8 +24,6 @@ public class ScriptHandler {
 
 	public ScriptHandler(final Bot bot) {
 		this.bot = bot;
-		this.container = new TaskContainer();
-
 		this.script = null;
 	}
 
@@ -38,7 +36,7 @@ public class ScriptHandler {
 		this.script = script;
 
 		script.start();
-		container.submit(new RandomHandler(bot, this));
+		(container = new TaskContainer()).submit(new RandomHandler(bot, this));
 		started = System.currentTimeMillis();
 		track("");
 		return true;
@@ -94,6 +92,7 @@ public class ScriptHandler {
 		if (def == null || def.local || def.getID() == null || def.getID().isEmpty() || def.getName() == null) {
 			return;
 		}
+
 		final String page = String.format("scripts/%s/%s", def.getID(), action);
 		Tracker.getInstance().trackPage(page, def.getName());
 	}

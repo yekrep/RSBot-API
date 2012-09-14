@@ -1,5 +1,7 @@
 package org.powerbot.core.bot.handler;
 
+import java.util.logging.Logger;
+
 import org.powerbot.core.script.AntiRandom;
 import org.powerbot.core.script.job.LoopTask;
 import org.powerbot.core.script.random.BankPin;
@@ -31,6 +33,8 @@ import org.powerbot.game.bot.Bot;
  * @author Timer
  */
 public class RandomHandler extends LoopTask {
+	private static final Logger log = Logger.getLogger(RandomHandler.class.getName());
+
 	private final AntiRandom[] antiRandoms;
 	private final ScriptHandler handler;
 	private AntiRandom running;
