@@ -2,7 +2,6 @@ package org.powerbot.core.bot.handler;
 
 import java.util.logging.Logger;
 
-import org.powerbot.core.script.ActiveScript;
 import org.powerbot.core.script.Script;
 import org.powerbot.core.script.job.Container;
 import org.powerbot.core.script.job.TaskContainer;
@@ -20,7 +19,7 @@ public class ScriptHandler {
 	private final Container container;
 
 	private Script script;
-	private ScriptDefinition definition;
+	private ScriptDefinition def;
 	public long started;
 
 	public ScriptHandler(final Bot bot) {
@@ -30,16 +29,13 @@ public class ScriptHandler {
 		this.script = null;
 	}
 
-	public boolean start(final Script script) {
+	public boolean start(final Script script, final ScriptDefinition def) {
 		if (isActive()) {
 			return false;
 		}
 
-		this.definition = null;
+		this.def = def;
 		this.script = script;
-		if (script instanceof ActiveScript) {
-			this.definition = ((ActiveScript) script).getDefinition();
-		}
 
 		script.start();
 		container.submit(new RandomHandler(bot, this));
@@ -91,14 +87,14 @@ public class ScriptHandler {
 	}
 
 	public ScriptDefinition getDefinition() {
-		return definition;
+		return def;
 	}
 
 	private void track(final String action) {
-		if (definition == null || definition.local || definition.getID() == null || definition.getID().isEmpty() || definition.getName() == null) {
+		if (def == null || def.local || def.getID() == null || def.getID().isEmpty() || def.getName() == null) {
 			return;
 		}
-		final String page = String.format("scripts/%s/%s", definition.getID(), action);
-		Tracker.getInstance().trackPage(page, definition.getName());
+		final String page = String.format("scripts/%s/%s", def.getID(), action);
+		Tracker.getInstance().trackPage(page, def.getName());
 	}
 }
