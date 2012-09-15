@@ -27,9 +27,9 @@ public class ScriptHandler {
 	private ScriptDefinition def;
 	public long started;
 
-	public ScriptHandler(final Bot bot) {
+	public ScriptHandler(final Bot bot, final EventManager eventManager) {
 		this.bot = bot;
-		this.eventManager = bot.getEventDispatcher();
+		this.eventManager = eventManager;
 		this.jobEventListener = new JobListener() {
 			@Override
 			public void jobStarted(final Job job) {

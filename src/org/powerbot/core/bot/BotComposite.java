@@ -36,7 +36,7 @@ public class BotComposite {
 
 		executor = null;
 		eventDispatcher = new EventDispatcher();
-		scriptHandler = new ScriptHandler(bot);
+		scriptHandler = new ScriptHandler(bot, eventDispatcher);
 
 		client = null;
 		toolkit = new Calculations.Toolkit();
