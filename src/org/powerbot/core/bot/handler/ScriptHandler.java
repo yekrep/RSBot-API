@@ -3,8 +3,11 @@ package org.powerbot.core.bot.handler;
 import java.util.logging.Logger;
 
 import org.powerbot.core.bot.Bot;
+import org.powerbot.core.event.EventManager;
 import org.powerbot.core.script.Script;
 import org.powerbot.core.script.job.Container;
+import org.powerbot.core.script.job.Job;
+import org.powerbot.core.script.job.JobListener;
 import org.powerbot.core.script.job.TaskContainer;
 import org.powerbot.service.scripts.ScriptDefinition;
 import org.powerbot.util.Tracker;
@@ -16,6 +19,8 @@ public class ScriptHandler {
 	public final Logger log = Logger.getLogger(ScriptHandler.class.getName());
 
 	private final Bot bot;
+	private final EventManager eventManager;
+	private final JobListener jobEventListener;
 	private Container container;
 
 	private Script script;
@@ -24,6 +29,19 @@ public class ScriptHandler {
 
 	public ScriptHandler(final Bot bot) {
 		this.bot = bot;
+		this.eventManager = bot.getEventDispatcher();
+		this.jobEventListener = new JobListener() {
+			@Override
+			public void jobStarted(final Job job) {
+				eventManager.accept(job);
+			}
+
+			@Override
+			public void jobStopped(final Job job) {
+				eventManager.remove(job);
+			}
+		};
+
 		this.script = null;
 	}
 
@@ -36,7 +54,9 @@ public class ScriptHandler {
 		this.script = script;
 
 		script.start();
+		script.getContainer().addListener(jobEventListener);
 		(container = new TaskContainer()).submit(new RandomHandler(bot, this));
+		container.addListener(jobEventListener);
 		started = System.currentTimeMillis();
 		track("");
 		return true;
