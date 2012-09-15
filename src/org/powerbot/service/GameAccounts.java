@@ -71,7 +71,7 @@ public final class GameAccounts extends ArrayList<GameAccounts.Account> {
 
 	public synchronized void save() {
 		final Map<String, Map<String, String>> data = new HashMap<String, Map<String, String>>();
-		for (Iterator<Account> i = iterator(); i.hasNext();) {
+		for (Iterator<Account> i = iterator(); i.hasNext(); ) {
 			final Account a = i.next();
 			final Map<String, String> e = new HashMap<String, String>();
 			e.put("password", a.password);

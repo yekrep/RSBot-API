@@ -60,7 +60,7 @@ public final class BotSignin extends JDialog implements ActionListener {
 		panelSide = new JPanel();
 		info = new JLabel();
 
-		for (final Component c : new Component[] {labelUsername, username, labelPassword, password, signin, lostPass, register, panelSide, info}) {
+		for (final Component c : new Component[]{labelUsername, username, labelPassword, password, signin, lostPass, register, panelSide, info}) {
 			c.setFont(getFont());
 		}
 
@@ -112,66 +112,66 @@ public final class BotSignin extends JDialog implements ActionListener {
 		panelSide.setLayout(panelInfoLayout);
 		panelInfoLayout.setHorizontalGroup(
 				panelInfoLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-				.addGroup(panelInfoLayout.createSequentialGroup()
-						.addContainerGap()
-						.addComponent(info, GroupLayout.DEFAULT_SIZE, 173, Short.MAX_VALUE)
-						.addContainerGap())
-				);
+						.addGroup(panelInfoLayout.createSequentialGroup()
+								.addContainerGap()
+								.addComponent(info, GroupLayout.DEFAULT_SIZE, 173, Short.MAX_VALUE)
+								.addContainerGap())
+		);
 		panelInfoLayout.setVerticalGroup(
 				panelInfoLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-				.addGroup(panelInfoLayout.createSequentialGroup()
-						.addContainerGap()
-						.addComponent(info)
-						.addContainerGap())
-				);
+						.addGroup(panelInfoLayout.createSequentialGroup()
+								.addContainerGap()
+								.addComponent(info)
+								.addContainerGap())
+		);
 
 		final GroupLayout layout = new GroupLayout(getContentPane());
 		getContentPane().setLayout(layout);
 		layout.setHorizontalGroup(
 				layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-				.addGroup(layout.createSequentialGroup()
-						.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING, false)
-								.addGroup(layout.createSequentialGroup()
-										.addComponent(register)
-										.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-										.addComponent(signin))
+						.addGroup(layout.createSequentialGroup()
+								.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+								.addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING, false)
+										.addGroup(layout.createSequentialGroup()
+												.addComponent(register)
+												.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+												.addComponent(signin))
 										.addComponent(lostPass)
 										.addGroup(layout.createSequentialGroup()
 												.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
 														.addComponent(labelUsername, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 														.addComponent(labelPassword, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-														.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-														.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
-																.addComponent(username)
-																.addComponent(password, GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE))))
-																.addGap(18, 18, 18)
-																.addComponent(panelSide, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-																.addContainerGap())
-				);
+												.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+												.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
+														.addComponent(username)
+														.addComponent(password, GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE))))
+								.addGap(18, 18, 18)
+								.addComponent(panelSide, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addContainerGap())
+		);
 		layout.setVerticalGroup(
 				layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-				.addGroup(layout.createSequentialGroup()
-						.addContainerGap()
-						.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-								.addComponent(panelSide, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-								.addGroup(layout.createSequentialGroup()
-										.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-												.addComponent(labelUsername)
-												.addComponent(username, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addGroup(layout.createSequentialGroup()
+								.addContainerGap()
+								.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+										.addComponent(panelSide, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+										.addGroup(layout.createSequentialGroup()
+												.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+														.addComponent(labelUsername)
+														.addComponent(username, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 												.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
 												.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
 														.addComponent(labelPassword)
 														.addComponent(password, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-														.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-														.addComponent(lostPass)
-														.addGap(18, 18, 18)
-														.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-																.addComponent(signin)
-																.addComponent(register))
-																.addGap(0, 0, Short.MAX_VALUE)))
-																.addContainerGap())
-				);
+												.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+												.addComponent(lostPass)
+												.addGap(18, 18, 18)
+												.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+														.addComponent(signin)
+														.addComponent(register))
+												.addGap(0, 0, Short.MAX_VALUE)))
+								.addContainerGap())
+		);
 
 		updateState(NetworkAccount.getInstance().isLoggedIn());
 		getRootPane().setDefaultButton(signin);

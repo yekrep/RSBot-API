@@ -75,7 +75,7 @@ public final class CryptFile {
 			throw new FileNotFoundException(store.toString());
 		}
 		if (store.length() == 0L) {
-			return new ByteArrayInputStream(new byte[] {});
+			return new ByteArrayInputStream(new byte[]{});
 		}
 		Cipher c;
 		try {

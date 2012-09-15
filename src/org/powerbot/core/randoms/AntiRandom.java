@@ -1,4 +1,4 @@
-package org.powerbot.core.script;
+package org.powerbot.core.randoms;
 
 import java.awt.Canvas;
 import java.awt.Color;

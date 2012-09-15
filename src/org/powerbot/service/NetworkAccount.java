@@ -191,7 +191,7 @@ public final class NetworkAccount {
 			return email;
 		}
 
-		public long getPermissions()  {
+		public long getPermissions() {
 			return permissions;
 		}
 

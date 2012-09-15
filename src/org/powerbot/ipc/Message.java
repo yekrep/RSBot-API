@@ -29,7 +29,7 @@ public final class Message implements Serializable {
 	}
 
 	public Message(final boolean response, final MessageType type) {
-		this(response, type, new Object[] {});
+		this(response, type, new Object[]{});
 	}
 
 	public Message(final boolean response, final MessageType type, final Object... args) {

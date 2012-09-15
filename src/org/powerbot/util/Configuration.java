@@ -32,7 +32,7 @@ public class Configuration {
 		public static final String DOMAIN = "powerbot.org";
 		static final String DOMAIN_SITE_LIVE = "www." + DOMAIN;
 		static final String DOMAIN_SITE_TESTING = DOMAIN + ".localdomain";
-		static final String DOMAIN_SITE =  TESTING ? DOMAIN_SITE_TESTING : DOMAIN_SITE_LIVE;
+		static final String DOMAIN_SITE = TESTING ? DOMAIN_SITE_TESTING : DOMAIN_SITE_LIVE;
 		static final String PROTOCOL = TESTING ? "http://" : "https://";
 		static final String DOMAIN_SERVICES = "services." + DOMAIN;
 		static final String DOMAIN_LINKS = "links." + DOMAIN;

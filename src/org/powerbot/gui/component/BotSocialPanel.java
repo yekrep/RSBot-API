@@ -49,9 +49,15 @@ public final class BotSocialPanel extends JPanel {
 				public void mouseClicked(final MouseEvent e) {
 					String link = null;
 					switch (url) {
-					case "twitter": link = Configuration.URLs.TWITTER; break;
-					case "facebook": link = Configuration.URLs.FACEBOOK; break;
-					case "youtube": link = Configuration.URLs.YOUTUBE; break;
+					case "twitter":
+						link = Configuration.URLs.TWITTER;
+						break;
+					case "facebook":
+						link = Configuration.URLs.FACEBOOK;
+						break;
+					case "youtube":
+						link = Configuration.URLs.YOUTUBE;
+						break;
 					}
 					if (link != null) {
 						BotChrome.openURL(link);
