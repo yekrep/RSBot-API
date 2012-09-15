@@ -3,7 +3,7 @@ package org.powerbot.game.loader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.powerbot.game.bot.Bot;
+import org.powerbot.core.bot.Bot;
 import org.powerbot.game.loader.applet.ClientStub;
 import org.powerbot.game.loader.applet.Rs2Applet;
 import org.powerbot.util.Configuration;

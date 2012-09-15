@@ -2,6 +2,7 @@ package org.powerbot.core.bot.handler;
 
 import java.util.logging.Logger;
 
+import org.powerbot.core.bot.Bot;
 import org.powerbot.core.script.AntiRandom;
 import org.powerbot.core.script.job.LoopTask;
 import org.powerbot.core.script.random.BankPin;
@@ -30,7 +31,6 @@ import org.powerbot.core.script.random.WidgetCloser;
 import org.powerbot.game.api.Manifest;
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Timer;
-import org.powerbot.game.bot.Bot;
 
 /**
  * @author Timer

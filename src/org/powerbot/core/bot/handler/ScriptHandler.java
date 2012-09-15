@@ -2,10 +2,10 @@ package org.powerbot.core.bot.handler;
 
 import java.util.logging.Logger;
 
+import org.powerbot.core.bot.Bot;
 import org.powerbot.core.script.Script;
 import org.powerbot.core.script.job.Container;
 import org.powerbot.core.script.job.TaskContainer;
-import org.powerbot.game.bot.Bot;
 import org.powerbot.service.scripts.ScriptDefinition;
 import org.powerbot.util.Tracker;
 

@@ -1,4 +1,4 @@
-package org.powerbot.game.bot;
+package org.powerbot.core.bot;
 
 import java.awt.Canvas;
 import java.awt.Dimension;
@@ -12,13 +12,15 @@ import java.util.logging.Logger;
 
 import org.powerbot.concurrent.ThreadPool;
 import org.powerbot.core.bot.handler.ScriptHandler;
-import org.powerbot.core.script.job.Task;
 import org.powerbot.core.event.EventDispatcher;
+import org.powerbot.core.script.job.Task;
 import org.powerbot.game.api.methods.input.Keyboard;
 import org.powerbot.game.api.methods.input.Mouse;
 import org.powerbot.game.api.methods.widget.WidgetComposite;
 import org.powerbot.game.api.util.internal.Constants;
 import org.powerbot.game.api.util.internal.Multipliers;
+import org.powerbot.game.bot.CallbackImpl;
+import org.powerbot.game.bot.Context;
 import org.powerbot.game.bot.event.PaintEvent;
 import org.powerbot.game.bot.event.TextPaintEvent;
 import org.powerbot.game.bot.handler.input.MouseExecutor;

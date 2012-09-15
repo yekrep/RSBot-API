@@ -14,7 +14,7 @@ import java.util.Map.Entry;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenu;
 
-import org.powerbot.game.bot.Bot;
+import org.powerbot.core.bot.Bot;
 import org.powerbot.game.bot.event.impl.DrawBoundaries;
 import org.powerbot.game.bot.event.impl.DrawGroundItems;
 import org.powerbot.game.bot.event.impl.DrawInventory;

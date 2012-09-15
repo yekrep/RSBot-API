@@ -12,8 +12,8 @@ import java.awt.image.Raster;
 import java.awt.image.WritableRaster;
 import java.util.Hashtable;
 
+import org.powerbot.core.bot.Bot;
 import org.powerbot.core.script.job.Task;
-import org.powerbot.game.bot.Bot;
 import org.powerbot.gui.BotChrome;
 
 public class Canvas extends java.awt.Canvas {

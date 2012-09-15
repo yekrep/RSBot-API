@@ -6,9 +6,9 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.util.logging.Logger;
 
+import org.powerbot.core.bot.Bot;
 import org.powerbot.core.script.job.state.Node;
 import org.powerbot.game.api.methods.input.Mouse;
-import org.powerbot.game.bot.Bot;
 import org.powerbot.game.bot.Context;
 import org.powerbot.game.bot.event.listener.PaintListener;
 

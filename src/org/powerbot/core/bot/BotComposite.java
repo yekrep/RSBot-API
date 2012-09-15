@@ -1,13 +1,15 @@
-package org.powerbot.game.bot;
+package org.powerbot.core.bot;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
+import org.powerbot.core.bot.Bot;
 import org.powerbot.core.bot.handler.ScriptHandler;
 import org.powerbot.core.event.EventDispatcher;
 import org.powerbot.game.api.methods.Calculations;
 import org.powerbot.game.api.util.internal.Constants;
 import org.powerbot.game.api.util.internal.Multipliers;
+import org.powerbot.game.bot.Context;
 import org.powerbot.game.bot.handler.input.MouseExecutor;
 import org.powerbot.game.client.Client;
 import org.powerbot.game.client.Render;

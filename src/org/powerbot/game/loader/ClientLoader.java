@@ -11,7 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.powerbot.asm.NodeManipulator;
-import org.powerbot.game.bot.Bot;
+import org.powerbot.core.bot.Bot;
 import org.powerbot.game.loader.script.ModScript;
 import org.powerbot.util.Configuration;
 import org.powerbot.util.StringUtil;

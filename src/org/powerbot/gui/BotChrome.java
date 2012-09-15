@@ -23,7 +23,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
-import org.powerbot.game.bot.Bot;
+import org.powerbot.core.bot.Bot;
 import org.powerbot.gui.component.BotPanel;
 import org.powerbot.gui.component.BotToolBar;
 import org.powerbot.service.NetworkAccount;

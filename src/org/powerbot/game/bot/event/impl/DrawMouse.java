@@ -3,7 +3,7 @@ package org.powerbot.game.bot.event.impl;
 import java.awt.Color;
 import java.awt.Graphics;
 
-import org.powerbot.game.bot.Bot;
+import org.powerbot.core.bot.Bot;
 import org.powerbot.game.bot.event.listener.PaintListener;
 import org.powerbot.game.client.input.Mouse;
 

@@ -4,13 +4,13 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.powerbot.core.bot.Bot;
 import org.powerbot.core.script.job.Task;
 import org.powerbot.game.api.methods.Calculations;
 import org.powerbot.game.api.methods.input.Mouse;
 import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.wrappers.ViewportEntity;
-import org.powerbot.game.bot.Bot;
 import org.powerbot.game.bot.handler.input.util.MouseNode;
 import org.powerbot.game.client.Client;
 

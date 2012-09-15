@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ThreadPoolExecutor;
 
+import org.powerbot.core.bot.Bot;
 import org.powerbot.core.bot.handler.ScriptHandler;
 import org.powerbot.core.event.EventManager;
 import org.powerbot.game.api.methods.Calculations;
@@ -19,7 +20,7 @@ import org.powerbot.gui.BotChrome;
 import org.powerbot.service.NetworkAccount;
 
 public class Context {
-	protected static final Map<ThreadGroup, Context> context = new HashMap<ThreadGroup, Context>();
+	public static final Map<ThreadGroup, Context> context = new HashMap<ThreadGroup, Context>();
 
 	private final Bot bot;
 	public int world = -1;

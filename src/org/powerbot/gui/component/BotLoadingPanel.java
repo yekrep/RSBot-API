@@ -32,8 +32,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
 
-import org.powerbot.game.bot.Bot;
-import org.powerbot.game.bot.BotComposite;
+import org.powerbot.core.bot.Bot;
+import org.powerbot.core.bot.BotComposite;
 import org.powerbot.game.loader.ClientLoader;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.util.Configuration;
