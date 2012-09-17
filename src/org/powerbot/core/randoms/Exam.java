@@ -143,11 +143,11 @@ public class Exam extends AntiRandom {
 
 		final Widget next = Widgets.get(WIDGET_NEXT);
 		if (next.validate()) {
-			verbose("WIDGET_VALIDATED: Next item");
+			log("WIDGET_VALIDATED: Next item");
 			final int item_1 = next.getChild(6).getChildId();
 			final int item_2 = next.getChild(7).getChildId();
 			final int item_3 = next.getChild(8).getChildId();
-			verbose("Items: " + item_1 + ", " + item_2 + ", " + item_3);
+			log("Items: " + item_1 + ", " + item_2 + ", " + item_3);
 
 			final int[] item_arr_1 = getItemArray(item_1);
 			final int[] item_arr_2 = getItemArray(item_2);
@@ -165,9 +165,9 @@ public class Exam extends AntiRandom {
 					item_arr_o = item_arr_2;
 				}
 			}
-			verbose("Matched 1: " + Arrays.toString(item_arr_1));
-			verbose("Matched 2: " + Arrays.toString(item_arr_2));
-			verbose("Matched 3: " + Arrays.toString(item_arr_3));
+			log("Matched 1: " + Arrays.toString(item_arr_1));
+			log("Matched 2: " + Arrays.toString(item_arr_2));
+			log("Matched 3: " + Arrays.toString(item_arr_3));
 			if (item_arr_1 != null && item_arr_2 != null && item_arr_3 != null) {
 				final int[] choices = {
 						next.getChild(10).getChildId(),
@@ -175,13 +175,13 @@ public class Exam extends AntiRandom {
 						next.getChild(12).getChildId(),
 						next.getChild(13).getChildId()
 				};
-				verbose("Possible choices: " + Arrays.toString(choices));
+				log("Possible choices: " + Arrays.toString(choices));
 
 				int index = 10;
 				for (final int choice : choices) {
 					Arrays.sort(item_arr);
 					if (Arrays.binarySearch(item_arr, choice) >= 0) {
-						verbose("Found choice at index " + index + ".");
+						log("Found choice at index " + index + ".");
 						next.getChild(index).interact("Select");
 						sleep(Random.nextInt(1500, 2000));
 						return;
@@ -190,11 +190,11 @@ public class Exam extends AntiRandom {
 				}
 
 				index = 10;
-				verbose("Unknown, making an educated guess.");
+				log("Unknown, making an educated guess.");
 				for (final int choice : choices) {
 					Arrays.sort(item_arr_o);
 					if (Arrays.binarySearch(item_arr_o, choice) >= 0) {
-						verbose("Found choice at index " + index + ".");
+						log("Found choice at index " + index + ".");
 						next.getChild(index).interact("Select");
 						sleep(Random.nextInt(1500, 2000));
 						return;
@@ -202,7 +202,7 @@ public class Exam extends AntiRandom {
 					++index;
 				}
 
-				verbose("Just going to guess...");
+				log("Just going to guess...");
 				final int randomIndex = Random.nextInt(10, 14);
 				next.getChild(randomIndex).interact("Select");
 				sleep(Random.nextInt(1500, 2000));
@@ -212,19 +212,19 @@ public class Exam extends AntiRandom {
 
 		final Widget related = Widgets.get(WIDGET_RELATED);
 		if (related.validate()) {
-			verbose("WIDGET_VALIDATED: Related items");
+			log("WIDGET_VALIDATED: Related items");
 			final String text = related.getChild(25).getText();
-			verbose("HINT: " + text);
+			log("HINT: " + text);
 
 			for (final ObjectRelations question : WIDGET_ITEM_RELATIONS) {
 				if (text.toLowerCase().contains(question.text.toLowerCase())) {
-					verbose("Relation validated: " + question.text);
-					verbose("Searching children");
+					log("Relation validated: " + question.text);
+					log("Searching children");
 					for (int childIndex = 42; childIndex <= 56; childIndex++) {
-						verbose("[" + childIndex + "] Searching for " + related.getChild(childIndex).getChildId() + " in " + Arrays.toString(question.items) + ".");
+						log("[" + childIndex + "] Searching for " + related.getChild(childIndex).getChildId() + " in " + Arrays.toString(question.items) + ".");
 						Arrays.sort(question.items);
 						if (Arrays.binarySearch(question.items, related.getChild(childIndex).getChildId()) >= 0) {
-							verbose("Found relation for this index (" + childIndex + "), selecting.");
+							log("Found relation for this index (" + childIndex + "), selecting.");
 							related.getChild(childIndex).interact("Select");
 							sleep(Random.nextInt(1200, 2000));
 						}
@@ -235,7 +235,7 @@ public class Exam extends AntiRandom {
 
 			sleep(Random.nextInt(1200, 2000));
 
-			verbose("Confirming attempt");
+			log("Confirming attempt");
 			if (related.getChild(26).interact("Confirm")) {
 				sleep(Random.nextInt(1200, 2000));
 			}
@@ -273,12 +273,12 @@ public class Exam extends AntiRandom {
 		}
 
 		if (Widgets.clickContinue()) {
-			verbose("Following conversation");
+			log("Following conversation");
 			sleep(Random.nextInt(1200, 1800));
 			return;
 		}
 
-		verbose("Unknown position - talking");
+		log("Unknown position - talking");
 		final NPC dude = NPCs.getNearest("Mr. Mordaut");
 		if (!dude.isOnScreen()) {
 			Camera.turnTo(dude);

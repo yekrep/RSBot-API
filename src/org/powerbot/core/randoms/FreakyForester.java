@@ -47,35 +47,35 @@ public class FreakyForester extends AntiRandom {
 	@Override
 	public void execute() {
 		if (Widgets.canContinue()) {
-			verbose("WIDGET VALIDATED: Continue");
+			log("WIDGET VALIDATED: Continue");
 			final WidgetChild textChild = Widgets.get(WIDGET_TALK, WIDGET_TALK_TEXT);
 			if (textChild.validate()) {
-				verbose("WIDGET VALIDATED: TEXT ???");
+				log("WIDGET VALIDATED: TEXT ???");
 				final String text = textChild.getText().toLowerCase();
 				if (text.contains(WIDGET_TALK_DONE_TEXT)) {
-					verbose("WIDGET: Continuing due the fact we're done...");
+					log("WIDGET: Continuing due the fact we're done...");
 					Widgets.clickContinue();
 					done = true;
 					sleep(Random.nextInt(1800, 2500));
 					return;
 				}
-				verbose("What is he saying???");
+				log("What is he saying???");
 				for (int i = 0; i < WIDGET_TALK_NUMBERS_TEXT.length; i++) {
 					if (text.contains(WIDGET_TALK_NUMBERS_TEXT[i])) {
-						verbose("Found the text '" + WIDGET_TALK_NUMBERS_TEXT[i] + "'!  Setting model (" + Arrays.hashCode(Models.all[i]) + ").");
+						log("Found the text '" + WIDGET_TALK_NUMBERS_TEXT[i] + "'!  Setting model (" + Arrays.hashCode(Models.all[i]) + ").");
 						phe = Models.all[i];
 					}
 				}
 			}
-			verbose("Nothing validated -- CONTINUE!");
+			log("Nothing validated -- CONTINUE!");
 			Widgets.clickContinue();
 			sleep(Random.nextInt(1800, 2500));
 			return;
 		}
 
-		verbose("SETTING 334: " + Settings.get(334));
+		log("SETTING 334: " + Settings.get(334));
 		if (Settings.get(334) == 0x2 || done) {
-			verbose("SETTING VALIDATED: Depart.");
+			log("SETTING VALIDATED: Depart.");
 			final SceneObject portal = SceneEntities.getNearest(LOCATION_ID_PORTAL);
 			if (portal != null) {
 				if (!portal.isOnScreen()) {
@@ -135,17 +135,17 @@ public class FreakyForester extends AntiRandom {
 		}
 
 		if (Settings.get(334) == 0x1 && phe.length != 0) {
-			verbose("SETTING VALIDATED: Kill!");
+			log("SETTING VALIDATED: Kill!");
 			final NPC pheasant = NPCs.getNearest(pheasantFilter);
 			if (pheasant != null) {
-				verbose("Found pheasant...");
+				log("Found pheasant...");
 				if (!pheasant.isOnScreen()) {
-					verbose("NPC: Not on screen!  Walking...");
+					log("NPC: Not on screen!  Walking...");
 					walk(pheasant);
 					return;
 				}
 
-				verbose("NPC: Attempting attack");
+				log("NPC: Attempting attack");
 				if (pheasant.interact("Attack")) {
 					final Timer timer = new Timer(5000);
 					while (timer.isRunning() && !Widgets.canContinue()) {
@@ -160,13 +160,13 @@ public class FreakyForester extends AntiRandom {
 						sleep(150);
 					}
 					phe = new short[0];
-					verbose("CAN CONTINUE: " + Widgets.canContinue());
+					log("CAN CONTINUE: " + Widgets.canContinue());
 				}
 			}
 			return;
 		}
 
-		verbose("Require conversation with forester!");
+		log("Require conversation with forester!");
 		final NPC forester = NPCs.getNearest(NPC_ID_FORESTER);
 		if (forester != null) {
 			if (!forester.isOnScreen()) {

@@ -6,7 +6,6 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.util.logging.Logger;
 
-import org.powerbot.core.bot.Bot;
 import org.powerbot.core.script.job.state.Node;
 import org.powerbot.game.api.methods.input.Mouse;
 import org.powerbot.game.bot.Context;
@@ -17,24 +16,23 @@ import org.powerbot.game.bot.event.listener.PaintListener;
  */
 public abstract class AntiRandom extends Node implements PaintListener {
 	public final Logger log = Logger.getLogger(getClass().getName());
-	public Bot bot = null;
+	private static final boolean DEBUG = false;
 
-	private static final boolean VERBOSE = true;
+	protected void log(final String info) {
+		if (DEBUG) {
+			log.info(info);
+		}
+	}
 
 	public void onRepaint(final Graphics render) {
 		final Point p = Mouse.getLocation();
 		final Canvas canvas = Context.client().getCanvas();
 		final int w = canvas.getWidth(), h = canvas.getHeight();
+
 		render.setColor(new Color(51, 153, 255, 30));
 		render.fillRect(0, 0, p.x - 1, p.y - 1);
 		render.fillRect(p.x + 1, 0, w - (p.x + 1), p.y - 1);
 		render.fillRect(0, p.y + 1, p.x - 1, h - (p.y - 1));
 		render.fillRect(p.x + 1, p.y + 1, w - (p.x + 1), h - (p.y - 1));
-	}
-
-	protected void verbose(final String info) {
-		if (VERBOSE) {
-			log.info(info);
-		}
 	}
 }

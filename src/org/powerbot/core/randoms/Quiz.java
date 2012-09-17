@@ -35,35 +35,35 @@ public class Quiz extends AntiRandom {
 	@Override
 	public void execute() {
 		if (Widgets.clickContinue()) {
-			verbose("Listening to his energetic shouting in this black hole...");
+			log("Listening to his energetic shouting in this black hole...");
 			sleep(Random.nextInt(2000, 3500));
 			return;
 		}
 
 		if (getSlotId(0) != -1) {
-			verbose("WIDGET VALIDATED: Quiz question");
+			log("WIDGET VALIDATED: Quiz question");
 			final int[] slots = {getSlotId(0), getSlotId(1), getSlotId(2)};
-			verbose("WIDGET DEBUG: Slots " + Arrays.toString(slots));
+			log("WIDGET DEBUG: Slots " + Arrays.toString(slots));
 
 			int[] valid = null;
-			verbose("Attempting matches");
+			log("Attempting matches");
 			int name_index = 0;
 			for (final int[] QUIZ_ITEMS : WIDGET_QUIZ_ITEMS) {
-				verbose("Checking " + WIDGET_QUIZ_NAMES[name_index] + " " + Arrays.toString(QUIZ_ITEMS));
+				log("Checking " + WIDGET_QUIZ_NAMES[name_index] + " " + Arrays.toString(QUIZ_ITEMS));
 				int count = 0;
 				for (final int ITEM : QUIZ_ITEMS) {
-					verbose("SEARCH: " + ITEM + " in " + Arrays.toString(QUIZ_ITEMS));
+					log("SEARCH: " + ITEM + " in " + Arrays.toString(QUIZ_ITEMS));
 					for (final int slot : slots) {
 						if (slot == ITEM) {
 							count++;
 						}
 					}
-					verbose("NEW COUNT: " + count);
+					log("NEW COUNT: " + count);
 				}
-				verbose("FINAL COUNT: " + count);
+				log("FINAL COUNT: " + count);
 
 				if (count == 2) {
-					verbose("Generalized type: " + WIDGET_QUIZ_NAMES[name_index] + " " + Arrays.toString(QUIZ_ITEMS) + ".");
+					log("Generalized type: " + WIDGET_QUIZ_NAMES[name_index] + " " + Arrays.toString(QUIZ_ITEMS) + ".");
 					valid = QUIZ_ITEMS;
 					break;
 				}
@@ -72,7 +72,7 @@ public class Quiz extends AntiRandom {
 			}
 
 			if (valid != null) {
-				verbose("== ENTER SEARCH ==");
+				log("== ENTER SEARCH ==");
 				for (int index = 0; index < slots.length; index++) {
 					int count = 0;
 					for (final int id : valid) {
@@ -80,13 +80,13 @@ public class Quiz extends AntiRandom {
 							count++;
 						}
 					}
-					verbose("SEARCH " + index + " (" + slots[index] + ") IN " + Arrays.toString(valid) + " RETURNED " + count);
+					log("SEARCH " + index + " (" + slots[index] + ") IN " + Arrays.toString(valid) + " RETURNED " + count);
 					if (count == 0) {
-						verbose("NO MATCH == FOUND INVALID CHILD");
+						log("NO MATCH == FOUND INVALID CHILD");
 						final WidgetChild widgetChild = getSlot(index);
-						verbose("Attempting click.");
+						log("Attempting click.");
 						if (widgetChild != null && widgetChild.validate()) {
-							verbose("WIDGET INTERACT: \"Continue\": " + Boolean.toString(widgetChild.interact("Continue")));
+							log("WIDGET INTERACT: \"Continue\": " + Boolean.toString(widgetChild.interact("Continue")));
 							sleep(Random.nextInt(800, 1200));
 						}
 						return;

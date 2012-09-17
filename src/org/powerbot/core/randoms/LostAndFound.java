@@ -92,7 +92,7 @@ public class LostAndFound extends AntiRandom {
 			}
 			++index;
 		}
-		verbose("UNKNOWN APPENDAGE: " + answer_appendage);
+		log("UNKNOWN APPENDAGE: " + answer_appendage);
 		return APPENDAGES[Random.nextInt(0, APPENDAGES.length)];
 	}
 }

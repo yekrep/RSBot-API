@@ -69,14 +69,14 @@ public class DrillDemon extends AntiRandom {
 	@Override
 	public void execute() {
 		if (Camera.getPitch() < 90) {
-			verbose("Increasing pitch ...");
+			log("Increasing pitch ...");
 			Camera.setPitch(true);
 		}
 		Camera.setAngle('n');
 		final Player localPlayer = Players.getLocal();
 
 		if (localPlayer.isMoving()) {
-			verbose("Character is moving");
+			log("Character is moving");
 			for (int i = 0; i < 50; i++) {
 				if (!localPlayer.isMoving()) {
 					break;
@@ -88,7 +88,7 @@ public class DrillDemon extends AntiRandom {
 		}
 
 		if (localPlayer.getAnimation() != -1) {
-			verbose("ANIMATION != -1");
+			log("ANIMATION != -1");
 			for (int i = 0; i < 50; i++) {
 				if (localPlayer.getAnimation() == -1) {
 					break;
@@ -106,14 +106,14 @@ public class DrillDemon extends AntiRandom {
 		}
 
 		if (Widgets.get(WIDGET_MAT).validate()) {
-			verbose("WIDGET VALIDATED: Mat objective");
+			log("WIDGET VALIDATED: Mat objective");
 			final int setting_value = Settings.get(Settings.SETTING_RANDOMEVENT_DRILLDEMON_MAT);
-			verbose("Mat mask: " + setting_value);
+			log("Mat mask: " + setting_value);
 			final int child_id = Widgets.get(WIDGET_MAT, WIDGET_MAT_ICON).getChildId();
-			verbose("Child id: " + child_id);
+			log("Child id: " + child_id);
 			for (int i = 0; i < setting_arrays.get(setting_value).length; i++) {
 				if (setting_arrays.get(setting_value)[i] == mat_indices.get(child_id)) {
-					verbose("MATCH " + Arrays.toString(setting_arrays.get(setting_value)) + " (" + i + ") & " + mat_indices.get(child_id));
+					log("MATCH " + Arrays.toString(setting_arrays.get(setting_value)) + " (" + i + ") & " + mat_indices.get(child_id));
 					if (findAndUseMat(i)) {
 						sleep(800);
 						return;
@@ -123,13 +123,13 @@ public class DrillDemon extends AntiRandom {
 		}
 
 		if (Widgets.clickContinue()) {
-			verbose("Conversing ...");
+			log("Conversing ...");
 			sleep(Random.nextInt(2000, 3000));
 			return;
 		}
 
 		if (!Widgets.clickContinue() && localPlayer.getAnimation() == -1) {
-			verbose("Engaging in communication!");
+			log("Engaging in communication!");
 			final NPC demon = NPCs.getNearest(NPC_ID_DEMON);
 			demon.interact("Talk-to");
 		}
@@ -145,20 +145,20 @@ public class DrillDemon extends AntiRandom {
 		};
 		if (game_mats[sign_id] != null) {
 			if (!game_mats[sign_id].isOnScreen()) {
-				verbose("MAT OFF SCREEN!");
+				log("MAT OFF SCREEN!");
 				if (Walking.walk(game_mats[sign_id].getLocation())) {
-					verbose("Walking...");
+					log("Walking...");
 					sleep(500);
 				}
 			} else {
 				if (Players.getLocal().getAnimation() == -1) {
-					verbose("PERFORMING OBJECTIVE");
+					log("PERFORMING OBJECTIVE");
 					if (game_mats[sign_id].interact("Use")) {
 						sleep(900);
 						return true;
 					}
 				} else {
-					verbose("INTERACTION (OBJECTIVE): Already performing...");
+					log("INTERACTION (OBJECTIVE): Already performing...");
 				}
 			}
 		}

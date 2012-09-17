@@ -39,16 +39,16 @@ public class Certer extends AntiRandom {
 	@Override
 	public void execute() {
 		if (Players.getLocal().getAnimation() != -1 || Players.getLocal().isMoving()) {
-			verbose("SLEEP: Walking or animating ...");
+			log("SLEEP: Walking or animating ...");
 			sleep(Random.nextInt(500, 1000));
 			return;
 		}
-		verbose("SETTING_SOLVED: " + Settings.get(SETTING_SOLVED));
+		log("SETTING_SOLVED: " + Settings.get(SETTING_SOLVED));
 		if (settingValue == 0) {
 			settingValue = Settings.get(SETTING_SOLVED);
 		}
 		if (Settings.get(SETTING_SOLVED) > settingValue) {
-			verbose("SOLVED: Attempt exit");
+			log("SOLVED: Attempt exit");
 			final SceneObject portal = SceneEntities.getNearest(LOCATION_ID_PORTAL);
 			if (portal != null) {
 				if (!portal.isOnScreen()) {
@@ -66,29 +66,29 @@ public class Certer extends AntiRandom {
 			settingValue--;
 		}
 		if (Widgets.clickContinue()) {
-			verbose("Conversation ...");
+			log("Conversation ...");
 			sleep(Random.nextInt(500, 1000));
 			return;
 		}
 		if (Widgets.get(WIDGET_IDENTIFY, WIDGET_IDENTIFY_ITEM).validate()) {
-			verbose("WIDGET VALIDATED: Quiz window");
+			log("WIDGET VALIDATED: Quiz window");
 			final int model = Widgets.get(WIDGET_IDENTIFY, WIDGET_IDENTIFY_ITEM).getChild(WIDGET_IDENTIFY_ITEM_MODEL).getModelId();
 			String itemName = null;
-			verbose("Model id: " + model);
+			log("Model id: " + model);
 			for (int i = 0; i < WIDGET_MODEL_IDS.length; i++) {
 				if (WIDGET_MODEL_IDS[i] == model) {
 					itemName = ITEM_NAMES[i];
-					verbose("Identified: " + itemName);
+					log("Identified: " + itemName);
 					break;
 				}
 			}
 			if (itemName != null) {
-				verbose("Crawling widgets");
+				log("Crawling widgets");
 				for (int j = 0; j < 3; j++) {
 					final WidgetChild child = Widgets.get(WIDGET_IDENTIFY, WIDGET_IDENTIFY_ITEM).getChild(j);
-					verbose("TEXT: " + child.getText().toLowerCase());
+					log("TEXT: " + child.getText().toLowerCase());
 					if (child.getText().toLowerCase().contains(itemName.toLowerCase())) {
-						verbose("FOUND!  Attempt click...");
+						log("FOUND!  Attempt click...");
 						if (child.click(true)) {
 							sleep(Random.nextInt(1000, 1200));
 						}
@@ -99,7 +99,7 @@ public class Certer extends AntiRandom {
 			return;
 		}
 
-		verbose("We need to speak with ?iles!");
+		log("We need to speak with ?iles!");
 		final NPC man = NPCs.getNearest(new Filter<NPC>() {
 			@Override
 			public boolean accept(final NPC npc) {

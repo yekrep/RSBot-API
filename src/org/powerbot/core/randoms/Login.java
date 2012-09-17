@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
+import org.powerbot.core.bot.Bot;
 import org.powerbot.game.api.Manifest;
 import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.api.methods.Widgets;
@@ -31,6 +32,11 @@ public class Login extends AntiRandom {
 	private static final int WIDGET_LOBBY_TRY_AGAIN = 259;
 
 	private volatile Timer re_load_timer = null;
+	private final Bot bot;
+
+	public Login() {
+		this.bot = Bot.getInstance();
+	}
 
 	public boolean activate() {
 		final int state = Game.getClientState();

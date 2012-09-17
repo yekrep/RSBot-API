@@ -67,7 +67,7 @@ public class Pillory extends AntiRandom {
 				sleep(200);
 			}
 		} else {
-			verbose("We couldn't find correct the key.  Going to guess... (" + key + ").");
+			log("We couldn't find correct the key.  Going to guess... (" + key + ").");
 			if (Widgets.get(WIDGET_LOCK, Random.nextInt(5, 8)).interact("Select")) {
 				sleep(Random.nextInt(1300, 2500));
 			} else {
@@ -82,7 +82,7 @@ public class Pillory extends AntiRandom {
 				log.info("Key needed: " + key.getValue());
 				for (int i = 5; i < 8; i++) {
 					if (Widgets.get(WIDGET_LOCK, i).getModelId() == key.getKey() - 4) {
-						verbose("KEY FOUND: " + (i - 4));
+						log("KEY FOUND: " + (i - 4));
 						return i;
 					}
 				}

@@ -57,13 +57,13 @@ public class EvilTwin extends AntiRandom {
 
 
 		if (Widgets.get(1188, 3).validate()) {
-			verbose("Selecting first chat option ...");
+			log("Selecting first chat option ...");
 			Widgets.get(1188, 3).interact("Continue");
 			sleep(Random.nextInt(1000, 2000));
 			return;
 		}
 		if (Widgets.clickContinue()) {
-			verbose("Following conversation ...");
+			log("Following conversation ...");
 			sleep(Random.nextInt(1500, 2200));
 			final Timer timer = new Timer(2000);
 			while (timer.isRunning() && !Widgets.canContinue()) {
@@ -75,10 +75,10 @@ public class EvilTwin extends AntiRandom {
 		final Player player = Players.getLocal();
 
 		if (molly != null && player.getLocation().getX() <= xCheck && Settings.get(334) != 0x2 && !finished) {
-			verbose("We have to leave the room.");
-			verbose(molly.getModel().toString());
+			log("We have to leave the room.");
+			log(molly.getModel().toString());
 			model = molly.getModel();
-			verbose("Molly: " + model.toString());
+			log("Molly: " + model.toString());
 			final SceneObject location = SceneEntities.getNearest(LOCATION_ID_DOOR);
 			if (location != null && location.interact("Open")) {
 				final Timer t = new Timer(2000);
@@ -93,10 +93,10 @@ public class EvilTwin extends AntiRandom {
 		}
 
 		if (molly == null && player.getLocation().getX() > xCheck) {
-			verbose("Operate the claw!  Molly is not back yet...");
+			log("Operate the claw!  Molly is not back yet...");
 			final Widget widget = Widgets.get(WIDGET_CONTROLS);
 			if (widget.validate()) {
-				verbose("WIDGET VALIDATED");
+				log("WIDGET VALIDATED");
 				navigateClaw();
 				final Timer t = new Timer(12000);
 				while (!Widgets.canContinue() && t.isRunning()) {
@@ -105,7 +105,7 @@ public class EvilTwin extends AntiRandom {
 				return;
 			}
 
-			verbose("We must interact with the control panel!");
+			log("We must interact with the control panel!");
 			final SceneObject control = SceneEntities.getNearest(14978);
 			if (control != null) {
 				if (!control.isOnScreen()) {
@@ -125,7 +125,7 @@ public class EvilTwin extends AntiRandom {
 		}
 
 		if (molly != null && player.getLocation().getX() > xCheck) {
-			verbose("Molly is back, go through the door...");
+			log("Molly is back, go through the door...");
 			finished = true;
 			final SceneObject location = SceneEntities.getNearest(LOCATION_ID_DOOR);
 			if (location != null) {
@@ -165,7 +165,7 @@ public class EvilTwin extends AntiRandom {
 	private void navigateClaw() {
 		SceneObject claw;
 		NPC suspect;
-		verbose("NAVIGATION: BEGIN");
+		log("NAVIGATION: BEGIN");
 		while ((claw = SceneEntities.getNearest(LOCATION_ID_CLAW)) != null && (suspect = NPCs.getNearest(new Filter<NPC>() {
 			@Override
 			public boolean accept(final NPC npc) {
@@ -174,8 +174,8 @@ public class EvilTwin extends AntiRandom {
 		})) != null) {
 			final Tile clawLoc = claw.getLocation();
 			final Tile susLoc = suspect.getLocation();
-			verbose("Claw: " + clawLoc.toString());
-			verbose("Molly's twin: " + susLoc.toString());
+			log("Claw: " + clawLoc.toString());
+			log("Molly's twin: " + susLoc.toString());
 			final ArrayList<Integer> options = new ArrayList<Integer>();
 			if (susLoc.getX() > clawLoc.getX()) {
 				options.add(WIDGET_CONTROLS_LEFT);
@@ -201,7 +201,7 @@ public class EvilTwin extends AntiRandom {
 				sleep(10);
 			}
 		}
-		verbose("NAVIGATION: END");
+		log("NAVIGATION: END");
 	}
 
 	private boolean hasClawMoved(final Tile prevClawLoc) {

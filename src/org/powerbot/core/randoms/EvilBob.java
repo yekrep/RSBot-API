@@ -115,7 +115,7 @@ public class EvilBob extends AntiRandom {
 		}
 
 		if (Inventory.getItem(ITEM_ID_UNCOOKED_FISH) != null) {
-			verbose("We have the uncooked fish!");
+			log("We have the uncooked fish!");
 			final NPC bob = NPCs.getNearest(NPC_ID_EVIL_BOB);
 			if (!bob.isOnScreen()) {
 				walk(bob);
@@ -144,7 +144,7 @@ public class EvilBob extends AntiRandom {
 		}
 
 		if (Inventory.getItem(ITEM_ID_COOKED_FISH) != null) {
-			verbose("We have a cooked fish...");
+			log("We have a cooked fish...");
 			final SceneObject pot = SceneEntities.getNearest(LOCATION_ID_POT_OF_MAGIC_UN_COOKING_POWERS_RULER_WAS_HERE);
 			if (pot != null) {
 				if (!pot.isOnScreen()) {
@@ -170,7 +170,7 @@ public class EvilBob extends AntiRandom {
 
 		final int setting = Settings.get(SETTING_STAGE);
 		if (setting == 2 || forceLeave) {
-			verbose("SETTING: Stage 2 - EXIT");
+			log("SETTING: Stage 2 - EXIT");
 			final WidgetChild child = Widgets.get(566, 16);//no i left no items valuable
 			if (child != null && child.validate()) {
 				child.click(true);
@@ -193,7 +193,7 @@ public class EvilBob extends AntiRandom {
 			}
 			return;
 		} else if (setting == 1 && statueId != -1) {
-			verbose("Settings: Stage 1 - FISH");
+			log("Settings: Stage 1 - FISH");
 			if (Inventory.getItem(ITEM_ID_NET) == null) {
 				final GroundItem groundItem = GroundItems.getNearest(ITEM_ID_NET);
 				if (!groundItem.isOnScreen()) {
@@ -213,10 +213,10 @@ public class EvilBob extends AntiRandom {
 				return;
 			}
 
-			verbose("Location statue");
+			log("Location statue");
 			final SceneObject statue = SceneEntities.getNearest(statueId);
 			if (statue != null) {
-				verbose("Statue location: " + statue.getLocation());
+				log("Statue location: " + statue.getLocation());
 				final SceneObject fishingSpot = SceneEntities.getNearest(new Filter<SceneObject>() {
 					@Override
 					public boolean accept(final SceneObject location) {
@@ -224,7 +224,7 @@ public class EvilBob extends AntiRandom {
 								Calculations.distance(location.getLocation(), statue.getLocation()) < 10;
 					}
 				});
-				verbose("Nearest fishing spot: " + fishingSpot);
+				log("Nearest fishing spot: " + fishingSpot);
 
 				if (fishingSpot != null) {
 					if (!fishingSpot.isOnScreen()) {
@@ -250,14 +250,14 @@ public class EvilBob extends AntiRandom {
 		}
 
 		if (chat.validate() && chat.getText().contains("contains")) {
-			verbose("Found contains text... waiting for location.");
+			log("Found contains text... waiting for location.");
 			sleep(5000);
 
-			verbose("Iterating locations...");
+			log("Iterating locations...");
 			for (final SceneObject location : SceneEntities.getLoaded(LOCATION_STATUE_IDS)) {
 				if (location.isOnScreen()) {
 					statueId = location.getId();
-					verbose("Found statue: " + statueId);
+					log("Found statue: " + statueId);
 					final Timer timer = new Timer(7000);
 					while (timer.isRunning() && !Widgets.getContinue().interact("Continue")) {
 						sleep(Random.nextInt(800, 1200));
@@ -272,12 +272,12 @@ public class EvilBob extends AntiRandom {
 			return;
 		}
 		if (Widgets.clickContinue()) {
-			verbose("Continuing with text!");
+			log("Continuing with text!");
 			sleep(Random.nextInt(2000, 3200));
 			return;
 		}
 
-		verbose("Fall onto servant communication...");
+		log("Fall onto servant communication...");
 		final NPC servant = NPCs.getNearest(NPC_ID_SERVANT);
 		if (servant != null) {
 			if (!servant.isOnScreen()) {

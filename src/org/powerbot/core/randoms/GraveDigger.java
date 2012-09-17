@@ -88,7 +88,7 @@ public class GraveDigger extends AntiRandom {
 		}
 
 		if (Widgets.clickContinue()) {
-			verbose("Following conversation");
+			log("Following conversation");
 			sleep(Random.nextInt(1000, 2000));
 			final Timer timer = new Timer(Random.nextInt(1300, 2000));
 			while (timer.isRunning() && !Widgets.canContinue()) {
@@ -106,7 +106,7 @@ public class GraveDigger extends AntiRandom {
 
 		final WidgetChild instructionsClose = Widgets.get(WIDGET_INSTRUCTIONS, WIDGET_INSTRUCTIONS_CLOSE);
 		if (instructionsClose.validate()) {
-			verbose("Closing given instructions");
+			log("Closing given instructions");
 			if (instructionsClose.interact("Close")) {
 				final Timer timer = new Timer(Random.nextInt(2000, 3000));
 				while (timer.isRunning() && instructionsClose.validate()) {
@@ -176,7 +176,7 @@ public class GraveDigger extends AntiRandom {
 		}
 
 		if (Settings.get(698) == 0x80000000 || Settings.get(699) != 0) {
-			verbose("Grave unscrambling commencing");
+			log("Grave unscrambling commencing");
 
 			SceneObject coffinLocation;
 			if (!gatheredGraves && (coffinLocation = SceneEntities.getNearest(LOCATION_ID_FILLED_GRAVES)) != null) {
@@ -193,7 +193,7 @@ public class GraveDigger extends AntiRandom {
 			}
 
 			int undecidedId;
-			verbose("Checking for undetermined information");
+			log("Checking for undetermined information");
 			if ((undecidedId = getUndecidedGrave()) != -1) {
 				final SceneObject grave = SceneEntities.getNearest(undecidedId);
 				if (grave != null) {

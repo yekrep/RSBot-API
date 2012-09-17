@@ -41,11 +41,11 @@ public class RandomHandler extends LoopTask {
 	private final AntiRandom[] antiRandoms;
 	private final ScriptHandler handler;
 
-	private AntiRandom running;
+	private AntiRandom random;
 	private Manifest manifest;
 	private final Timer timeout;
 
-	public RandomHandler(final Bot bot, final ScriptHandler scriptHandler) {
+	public RandomHandler(final ScriptHandler scriptHandler) {
 		antiRandoms = new AntiRandom[]{
 				new Login(),
 				new WidgetCloser(),
@@ -71,56 +71,67 @@ public class RandomHandler extends LoopTask {
 				new SpinTickets(),
 				new BankPin()
 		};
-		for (final AntiRandom antiRandom : antiRandoms) {
-			antiRandom.bot = bot;
-		}
+
 		handler = scriptHandler;
-		running = null;
+		random = null;
 		timeout = new Timer(0);
 	}
 
 	@Override
 	public int loop() {
-		if (running != null && !running.activate()) {
-			running = null;
-			if (manifest != null) {
-				log.info("Random solver completed: " + manifest.name());
+		if (random != null) {
+			if (!random.activate()) {
+				process(false);
+				return 0;
 			}
 
-			handler.resume();
-		}
-		if (running == null) {
-			for (final AntiRandom random : antiRandoms) {
-				if (random.activate()) {
-					running = random;
-					timeout.setEndIn(Random.nextInt(240, 300) * 1000);
-
-					final Class<?> clazz = running.getClass();
-					manifest = clazz.isAnnotationPresent(Manifest.class) ? clazz.getAnnotation(Manifest.class) : null;
-					if (manifest != null) {
-						log.info("Random solver started: " + manifest.name());
-					}
-
-					handler.pause();
-					break;
-				}
-			}
-		}
-
-		if (running != null) {
 			if (!timeout.isRunning()) {
-				handler.stop();
-
-				if (manifest != null) {
-					log.info("Random solver failed: " + manifest.name());
-				}
+				terminate();
 				return -1;
 			}
 
-			running.execute();
+			random.execute();
+			return 0;
+		}
+
+		if ((random = next()) != null) {
+			final Class<?> clazz = random.getClass();
+			manifest = clazz.isAnnotationPresent(Manifest.class) ? clazz.getAnnotation(Manifest.class) : null;
+			process(true);
 			return 0;
 		}
 
 		return handler.isActive() ? 2000 : -1;
+	}
+
+	private AntiRandom next() {
+		for (final AntiRandom random : antiRandoms) {
+			if (random.activate()) {
+				return random;
+			}
+		}
+		return null;
+	}
+
+	private void process(final boolean start) {
+		if (manifest != null) {
+			log.info("Random solver " + (start ? "started" : "completed") + ": " + manifest.name());
+		}
+
+		if (start) {
+			timeout.setEndIn(Random.nextInt(240, 300) * 1000);
+			handler.pause();
+		} else {
+			random = null;
+			manifest = null;
+			handler.resume();
+		}
+	}
+
+	private void terminate() {
+		handler.stop();
+		if (manifest != null) {
+			log.warning("Random solver failed: " + manifest.name());
+		}
 	}
 }
