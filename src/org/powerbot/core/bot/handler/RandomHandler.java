@@ -2,7 +2,6 @@ package org.powerbot.core.bot.handler;
 
 import java.util.logging.Logger;
 
-import org.powerbot.core.bot.Bot;
 import org.powerbot.core.randoms.AntiRandom;
 import org.powerbot.core.randoms.BankPin;
 import org.powerbot.core.randoms.Beekeeper;

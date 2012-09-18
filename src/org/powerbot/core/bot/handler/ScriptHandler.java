@@ -2,7 +2,6 @@ package org.powerbot.core.bot.handler;
 
 import java.util.logging.Logger;
 
-import org.powerbot.core.bot.Bot;
 import org.powerbot.core.event.EventManager;
 import org.powerbot.core.script.Script;
 import org.powerbot.core.script.job.Container;
@@ -18,8 +17,6 @@ import org.powerbot.util.Tracker;
 public class ScriptHandler {
 	public final Logger log = Logger.getLogger(ScriptHandler.class.getName());
 
-	private final Bot bot;
-	private final EventManager eventManager;
 	private final JobListener jobEventListener;
 	private Container container;
 
@@ -27,9 +24,7 @@ public class ScriptHandler {
 	private ScriptDefinition def;
 	public long started;
 
-	public ScriptHandler(final Bot bot, final EventManager eventManager) {
-		this.bot = bot;
-		this.eventManager = eventManager;
+	public ScriptHandler(final EventManager eventManager) {
 		this.jobEventListener = new JobListener() {
 			@Override
 			public void jobStarted(final Job job) {
