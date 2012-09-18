@@ -281,7 +281,7 @@ public final class Bot implements Runnable {
 		return composite.scriptHandler;
 	}
 
-	public void refresh() {
+	public synchronized void refresh() {
 		if (refreshing) {
 			return;
 		}
