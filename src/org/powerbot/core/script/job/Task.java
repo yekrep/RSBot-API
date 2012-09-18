@@ -53,22 +53,22 @@ public abstract class Task implements Job {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public final void join() {
-		join(0);
+	public final boolean join() {
+		return join(0);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public final boolean join(final int timeout) {
+	public final boolean join(final long timeout) {
 		if (!alive || current_thread == null) {
 			return true;
 		}
 		try {
 			current_thread.join(timeout);
 			return !current_thread.isAlive();
-		} catch (final Throwable ignored) {
+		} catch (final Exception | Error ignored) {
 		}
 		return false;
 	}
@@ -127,10 +127,12 @@ public abstract class Task implements Job {
 			throw new ThreadDeath();
 		}
 
-		try {
-			Thread.sleep(time);
-		} catch (final InterruptedException ignored) {
-			throw new ThreadDeath();
+		if (time > 0) {
+			try {
+				Thread.sleep(time);
+			} catch (final InterruptedException ignored) {
+				throw new ThreadDeath();
+			}
 		}
 	}
 
