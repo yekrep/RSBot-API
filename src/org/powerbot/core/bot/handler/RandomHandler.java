@@ -94,7 +94,7 @@ public class RandomHandler extends LoopTask {
 				return -1;
 			}
 
-			random.execute();
+			random.work();
 			return 0;
 		}
 
