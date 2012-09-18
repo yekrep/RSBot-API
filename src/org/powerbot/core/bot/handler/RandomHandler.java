@@ -79,8 +79,13 @@ public class RandomHandler extends LoopTask {
 	@Override
 	public int loop() {
 		if (random != null) {
-			if (!random.activate()) {
-				process(false);
+			try {
+				if (!random.activate()) {
+					process(false);
+					return 0;
+				}
+			} catch (final Exception ignored) {
+				random = null;
 				return 0;
 			}
 
@@ -105,8 +110,11 @@ public class RandomHandler extends LoopTask {
 
 	private AntiRandom next() {
 		for (final AntiRandom random : antiRandoms) {
-			if (random.activate()) {
-				return random;
+			try {
+				if (random.activate()) {
+					return random;
+				}
+			} catch (final Exception ignored) {
 			}
 		}
 		return null;
