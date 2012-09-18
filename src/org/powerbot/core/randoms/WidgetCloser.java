@@ -7,6 +7,7 @@ import org.powerbot.game.api.Manifest;
 import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.api.methods.Widgets;
 import org.powerbot.game.api.methods.interactive.Players;
+import org.powerbot.game.api.methods.widget.Bank;
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Timer;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
@@ -43,10 +44,12 @@ public class WidgetCloser extends AntiRandom {
 				return false;
 			}
 
-			for (final Map.Entry<Integer, Integer> child : children.entrySet()) {
-				final WidgetChild widgetChild = Widgets.get(child.getKey(), child.getValue());
-				if (widgetChild.validate()) {
-					return true;
+			if (!Widgets.canContinue() && !Bank.isOpen()) {
+				for (final Map.Entry<Integer, Integer> child : children.entrySet()) {
+					final WidgetChild widgetChild = Widgets.get(child.getKey(), child.getValue());
+					if (widgetChild.validate()) {
+						return true;
+					}
 				}
 			}
 		}
