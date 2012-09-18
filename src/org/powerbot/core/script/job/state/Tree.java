@@ -14,7 +14,6 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 public class Tree {
 	private final Queue<Node> nodes;
-	private final Object lock = new Object();
 
 	private final AtomicReference<Node> current_node = new AtomicReference<>();
 
@@ -36,20 +35,18 @@ public class Tree {
 	 *
 	 * @return The state ({@link Node}) of this {@link Tree}.
 	 */
-	public final Node state() {
-		synchronized (lock) {
-			final Node stateNode = this.current_node.get();
-			if (stateNode != null && stateNode.isAlive()) {
-				return null;
-			} else {
-				for (final Node state : nodes) {
-					if (state != null && state.activate()) {
-						return state;
-					}
+	public synchronized final Node state() {
+		final Node stateNode = this.current_node.get();
+		if (stateNode != null && stateNode.isAlive()) {
+			return null;
+		} else {
+			for (final Node state : nodes) {
+				if (state != null && state.activate()) {
+					return state;
 				}
 			}
-			return null;
 		}
+		return null;
 	}
 
 	/**
