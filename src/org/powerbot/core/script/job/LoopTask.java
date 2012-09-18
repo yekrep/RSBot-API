@@ -29,7 +29,7 @@ public abstract class LoopTask extends Task {
 				time = -1;
 			}
 
-			if (time > 0) {
+			if (time >= 0) {
 				Task.sleep(time);
 			} else if (time == -1) {
 				break;
