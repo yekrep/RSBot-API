@@ -39,9 +39,9 @@ public class EventDispatcher implements EventManager {
 	public static final int FOCUS_EVENT = 0x8;
 	public static final int KEY_EVENT = 0x10;
 
-	public static final int MESSAGE_EVENT = 0x400;
-	public static final int PAINT_EVENT = 0x1000;
-	public static final int TEXT_PAINT_EVENT = 0x2000;
+	public static final int MESSAGE_EVENT = 0x20;
+	public static final int PAINT_EVENT = 0x40;
+	public static final int TEXT_PAINT_EVENT = 0x80;
 
 	public EventDispatcher() {
 		active = false;
