@@ -106,7 +106,7 @@ public class Context {
 	}
 
 	public EventManager getEventManager() {
-		return bot.getEventDispatcher();
+		return bot.getEventManager();
 	}
 
 	public ThreadGroup getThreadGroup() {

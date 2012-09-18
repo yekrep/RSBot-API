@@ -229,7 +229,7 @@ public class BotPanel extends JPanel {
 				bot.getClient() == null) {
 			return;
 		}
-		bot.getEventDispatcher().dispatch(keyEvent);
+		bot.getEventManager().dispatch(keyEvent);
 		if ((inputMask & INPUT_KEYBOARD) == 0) {
 			return;
 		}
@@ -241,7 +241,7 @@ public class BotPanel extends JPanel {
 
 	private void notifyListeners(final Component component, final MouseEvent mouseEvent) {
 		if (component != null && mouseEvent != null) {
-			bot.getEventDispatcher().dispatch(mouseEvent);
+			bot.getEventManager().dispatch(mouseEvent);
 		}
 	}
 

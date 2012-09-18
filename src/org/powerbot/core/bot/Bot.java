@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 
 import org.powerbot.concurrent.ThreadPool;
 import org.powerbot.core.bot.handler.ScriptHandler;
-import org.powerbot.core.event.EventDispatcher;
+import org.powerbot.core.event.EventManager;
 import org.powerbot.core.script.job.Task;
 import org.powerbot.game.api.methods.input.Keyboard;
 import org.powerbot.game.api.methods.input.Mouse;
@@ -85,7 +85,7 @@ public final class Bot implements Runnable {
 		paintEvent = new PaintEvent();
 		textPaintEvent = new TextPaintEvent();
 
-		executor.submit(composite.eventDispatcher);
+		executor.submit(composite.eventManager);
 		refreshing = false;
 	}
 
@@ -149,8 +149,8 @@ public final class Bot implements Runnable {
 			composite.scriptHandler.stop();
 		}
 		log.info("Unloading environment");
-		if (composite.eventDispatcher != null) {
-			composite.eventDispatcher.setActive(false);
+		if (composite.eventManager != null) {
+			composite.eventManager.setActive(false);
 		}
 		executor.submit(new Runnable() {
 			@Override
@@ -217,8 +217,8 @@ public final class Bot implements Runnable {
 			paintEvent.graphics = back;
 			textPaintEvent.graphics = back;
 			textPaintEvent.id = 0;
-			composite.eventDispatcher.fire(paintEvent);
-			composite.eventDispatcher.fire(textPaintEvent);
+			composite.eventManager.fire(paintEvent);
+			composite.eventManager.fire(textPaintEvent);
 		}
 		back.dispose();
 		final Graphics imageGraphics = image.getGraphics();
@@ -265,8 +265,8 @@ public final class Bot implements Runnable {
 		return composite.executor;
 	}
 
-	public EventDispatcher getEventDispatcher() {
-		return composite.eventDispatcher;
+	public EventManager getEventManager() {
+		return composite.eventManager;
 	}
 
 	public void setAccount(final GameAccounts.Account account) {

@@ -5,6 +5,7 @@ import java.util.concurrent.Future;
 
 import org.powerbot.core.bot.handler.ScriptHandler;
 import org.powerbot.core.event.EventDispatcher;
+import org.powerbot.core.event.EventManager;
 import org.powerbot.game.api.methods.Calculations;
 import org.powerbot.game.api.util.internal.Constants;
 import org.powerbot.game.api.util.internal.Multipliers;
@@ -20,7 +21,7 @@ public class BotComposite {
 	private final Bot bot;
 
 	MouseExecutor executor;
-	EventDispatcher eventDispatcher;
+	EventManager eventManager;
 	ScriptHandler scriptHandler;
 	Context context;
 
@@ -35,8 +36,8 @@ public class BotComposite {
 		this.bot = bot;
 
 		executor = null;
-		eventDispatcher = new EventDispatcher();
-		scriptHandler = new ScriptHandler(eventDispatcher);
+		eventManager = new EventDispatcher();
+		scriptHandler = new ScriptHandler(eventManager);
 
 		client = null;
 		toolkit = new Calculations.Toolkit();

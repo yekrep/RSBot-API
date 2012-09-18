@@ -25,7 +25,7 @@ import org.powerbot.game.bot.event.listener.TextPaintListener;
  *
  * @author Timer
  */
-public class EventDispatcher implements EventManager, Runnable {
+public class EventDispatcher implements EventManager {
 	private static final Logger log = Logger.getLogger(EventDispatcher.class.getName());
 	private volatile boolean active;
 	private final List<EventObject> queue = new ArrayList<EventObject>();

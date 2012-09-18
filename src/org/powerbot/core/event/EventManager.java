@@ -9,7 +9,7 @@ import java.util.EventObject;
  *
  * @author Timer
  */
-public interface EventManager {
+public interface EventManager extends Runnable {
 	/**
 	 * Appends an <code>EventObject</code> to the queue for processing.
 	 *
