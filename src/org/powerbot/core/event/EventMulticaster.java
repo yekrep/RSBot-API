@@ -134,7 +134,7 @@ public class EventMulticaster implements EventManager {
 
 	@Override
 	public void addListener(final EventListener eventListener) {
-		if (!listeners.addIfAbsent(eventListener)) {
+		if (listeners.addIfAbsent(eventListener)) {
 			listenerMasks.put(eventListener, getMask(eventListener));
 		}
 	}
@@ -147,7 +147,8 @@ public class EventMulticaster implements EventManager {
 
 	@Override
 	public EventListener[] getListeners() {
-		return (EventListener[]) this.listeners.toArray();
+		final int size = this.listeners.size();
+		return this.listeners.toArray(new EventListener[size]);
 	}
 
 	@Override
