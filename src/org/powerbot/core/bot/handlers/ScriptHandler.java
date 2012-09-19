@@ -53,7 +53,6 @@ public class ScriptHandler {
 		script.start();
 		script.getContainer().addListener(jobEventListener);
 		(container = new TaskContainer()).submit(new RandomHandler(this));
-		container.addListener(jobEventListener);
 		started = System.currentTimeMillis();
 		track("");
 		return true;

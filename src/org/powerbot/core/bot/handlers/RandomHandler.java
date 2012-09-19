@@ -139,6 +139,7 @@ public class RandomHandler extends LoopTask {
 			for (final EventListener listener : listeners) {
 				handler.eventManager.removeListener(listener);
 			}
+			handler.eventManager.addListener(random);
 
 			timeout.setEndIn(Random.nextInt(240, 300) * 1000);
 			handler.pause();
@@ -149,6 +150,7 @@ public class RandomHandler extends LoopTask {
 				}
 				listeners = null;
 			}
+			handler.eventManager.removeListener(random);
 
 			random = null;
 			manifest = null;
