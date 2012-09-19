@@ -29,19 +29,14 @@ public interface EventManager extends Runnable {
 	 *
 	 * @param eventListener The listener to provide events to.
 	 */
-	public void accept(EventListener eventListener);
+	public void addListener(EventListener eventListener);
 
 	/**
 	 * Removes an event listener and terminates the dispatching of events for this listener.
 	 *
 	 * @param eventListener The listener to omit from dispatch.
 	 */
-	public void remove(EventListener eventListener);
+	public void removeListener(EventListener eventListener);
 
-	/**
-	 * Sets the activity state of this event manager.
-	 *
-	 * @param active <tt>true</tt> to allow execution; <tt>false</tt> to terminate activities and disallow execution.
-	 */
-	public void setActive(boolean active);
+	public void stop();
 }

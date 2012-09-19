@@ -4,8 +4,8 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 import org.powerbot.core.bot.handlers.ScriptHandler;
-import org.powerbot.core.event.EventDispatcher;
 import org.powerbot.core.event.EventManager;
+import org.powerbot.core.event.EventMulticaster;
 import org.powerbot.game.api.methods.Calculations;
 import org.powerbot.game.api.util.internal.Constants;
 import org.powerbot.game.api.util.internal.Multipliers;
@@ -36,7 +36,7 @@ public class BotComposite {
 		this.bot = bot;
 
 		executor = null;
-		eventManager = new EventDispatcher();
+		eventManager = new EventMulticaster();
 		scriptHandler = new ScriptHandler(eventManager);
 
 		client = null;

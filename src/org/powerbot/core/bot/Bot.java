@@ -13,6 +13,8 @@ import java.util.logging.Logger;
 import org.powerbot.concurrent.ThreadPool;
 import org.powerbot.core.bot.handlers.ScriptHandler;
 import org.powerbot.core.event.EventManager;
+import org.powerbot.core.event.events.PaintEvent;
+import org.powerbot.core.event.events.TextPaintEvent;
 import org.powerbot.core.script.job.Task;
 import org.powerbot.game.api.methods.input.Keyboard;
 import org.powerbot.game.api.methods.input.Mouse;
@@ -21,8 +23,6 @@ import org.powerbot.game.api.util.internal.Constants;
 import org.powerbot.game.api.util.internal.Multipliers;
 import org.powerbot.game.bot.CallbackImpl;
 import org.powerbot.game.bot.Context;
-import org.powerbot.core.event.events.PaintEvent;
-import org.powerbot.core.event.events.TextPaintEvent;
 import org.powerbot.game.bot.handler.input.MouseExecutor;
 import org.powerbot.game.bot.handler.input.util.MouseNode;
 import org.powerbot.game.client.Client;
@@ -150,7 +150,7 @@ public final class Bot implements Runnable {
 		}
 		log.info("Unloading environment");
 		if (composite.eventManager != null) {
-			composite.eventManager.setActive(false);
+			composite.eventManager.stop();
 		}
 		executor.submit(new Runnable() {
 			@Override

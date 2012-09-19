@@ -28,12 +28,12 @@ public class ScriptHandler {
 		this.jobEventListener = new JobListener() {
 			@Override
 			public void jobStarted(final Job job) {
-				eventManager.accept(job);
+				eventManager.addListener(job);
 			}
 
 			@Override
 			public void jobStopped(final Job job) {
-				eventManager.remove(job);
+				eventManager.removeListener(job);
 			}
 		};
 
