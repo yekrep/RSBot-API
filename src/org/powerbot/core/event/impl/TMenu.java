@@ -1,9 +1,9 @@
-package org.powerbot.game.bot.event.impl;
+package org.powerbot.core.event.impl;
 
 import java.awt.Graphics;
 
 import org.powerbot.game.api.methods.node.Menu;
-import org.powerbot.game.bot.event.listener.TextPaintListener;
+import org.powerbot.core.event.listeners.TextPaintListener;
 import org.powerbot.util.StringUtil;
 
 public class TMenu implements TextPaintListener {

@@ -1,7 +1,7 @@
 package org.powerbot.game.bot;
 
 import org.powerbot.core.bot.Bot;
-import org.powerbot.game.bot.event.MessageEvent;
+import org.powerbot.core.event.events.MessageEvent;
 import org.powerbot.game.client.Callback;
 import org.powerbot.game.client.Render;
 

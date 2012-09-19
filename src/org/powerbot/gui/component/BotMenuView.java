@@ -15,23 +15,23 @@ import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenu;
 
 import org.powerbot.core.bot.Bot;
-import org.powerbot.game.bot.event.impl.DrawBoundaries;
-import org.powerbot.game.bot.event.impl.DrawGroundItems;
-import org.powerbot.game.bot.event.impl.DrawInventory;
-import org.powerbot.game.bot.event.impl.DrawModels;
-import org.powerbot.game.bot.event.impl.DrawMouse;
-import org.powerbot.game.bot.event.impl.DrawNPCs;
-import org.powerbot.game.bot.event.impl.DrawPlayers;
-import org.powerbot.game.bot.event.impl.DrawScene;
-import org.powerbot.game.bot.event.impl.MessageLogger;
-import org.powerbot.game.bot.event.impl.TCamera;
-import org.powerbot.game.bot.event.impl.TClientState;
-import org.powerbot.game.bot.event.impl.TDestination;
-import org.powerbot.game.bot.event.impl.TLocation;
-import org.powerbot.game.bot.event.impl.TMapBase;
-import org.powerbot.game.bot.event.impl.TMenu;
-import org.powerbot.game.bot.event.impl.TMousePosition;
-import org.powerbot.game.bot.event.impl.TPlane;
+import org.powerbot.core.event.impl.DrawBoundaries;
+import org.powerbot.core.event.impl.DrawGroundItems;
+import org.powerbot.core.event.impl.DrawInventory;
+import org.powerbot.core.event.impl.DrawModels;
+import org.powerbot.core.event.impl.DrawMouse;
+import org.powerbot.core.event.impl.DrawNPCs;
+import org.powerbot.core.event.impl.DrawPlayers;
+import org.powerbot.core.event.impl.DrawScene;
+import org.powerbot.core.event.impl.MessageLogger;
+import org.powerbot.core.event.impl.TCamera;
+import org.powerbot.core.event.impl.TClientState;
+import org.powerbot.core.event.impl.TDestination;
+import org.powerbot.core.event.impl.TLocation;
+import org.powerbot.core.event.impl.TMapBase;
+import org.powerbot.core.event.impl.TMenu;
+import org.powerbot.core.event.impl.TMousePosition;
+import org.powerbot.core.event.impl.TPlane;
 
 /**
  * @author Paris

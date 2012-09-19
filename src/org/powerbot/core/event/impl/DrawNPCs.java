@@ -1,4 +1,4 @@
-package org.powerbot.game.bot.event.impl;
+package org.powerbot.core.event.impl;
 
 import java.awt.Color;
 import java.awt.FontMetrics;
@@ -8,7 +8,7 @@ import java.awt.Point;
 import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.api.methods.interactive.NPCs;
 import org.powerbot.game.api.wrappers.interactive.NPC;
-import org.powerbot.game.bot.event.listener.PaintListener;
+import org.powerbot.core.event.listeners.PaintListener;
 
 public class DrawNPCs implements PaintListener {
 	public void onRepaint(final Graphics render) {

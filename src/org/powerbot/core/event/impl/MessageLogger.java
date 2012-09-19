@@ -1,9 +1,9 @@
-package org.powerbot.game.bot.event.impl;
+package org.powerbot.core.event.impl;
 
 import java.util.logging.Logger;
 
-import org.powerbot.game.bot.event.MessageEvent;
-import org.powerbot.game.bot.event.listener.MessageListener;
+import org.powerbot.core.event.events.MessageEvent;
+import org.powerbot.core.event.listeners.MessageListener;
 
 public class MessageLogger implements MessageListener {
 	private static final Logger log = Logger.getLogger("Messages");

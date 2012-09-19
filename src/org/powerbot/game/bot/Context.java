@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.concurrent.ThreadPoolExecutor;
 
 import org.powerbot.core.bot.Bot;
-import org.powerbot.core.bot.handler.ScriptHandler;
+import org.powerbot.core.bot.handlers.ScriptHandler;
 import org.powerbot.core.event.EventManager;
 import org.powerbot.game.api.methods.Calculations;
 import org.powerbot.game.api.util.internal.Constants;

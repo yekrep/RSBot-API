@@ -26,7 +26,7 @@ import javax.swing.border.EmptyBorder;
 
 import org.powerbot.Boot;
 import org.powerbot.core.bot.Bot;
-import org.powerbot.core.bot.handler.ScriptHandler;
+import org.powerbot.core.bot.handlers.ScriptHandler;
 import org.powerbot.core.script.job.Task;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.gui.BotScripts;

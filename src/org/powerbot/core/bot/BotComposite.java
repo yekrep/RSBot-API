@@ -3,7 +3,7 @@ package org.powerbot.core.bot;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-import org.powerbot.core.bot.handler.ScriptHandler;
+import org.powerbot.core.bot.handlers.ScriptHandler;
 import org.powerbot.core.event.EventDispatcher;
 import org.powerbot.core.event.EventManager;
 import org.powerbot.game.api.methods.Calculations;
