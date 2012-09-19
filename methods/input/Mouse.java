@@ -123,7 +123,7 @@ public class Mouse {
 		}
 
 		mouse.sendEvent(
-				new MouseWheelEvent(target, MouseWheelEvent.MOUSE_WHEEL, System.currentTimeMillis() + delay, 0, getX(), getY(), 0, false, MouseWheelEvent.WHEEL_UNIT_SCROLL, down ? 3 : -3, 3)
+				new MouseWheelEvent(target, MouseWheelEvent.MOUSE_WHEEL, System.currentTimeMillis() + delay, 0, getX(), getY(), 0, false, MouseWheelEvent.WHEEL_UNIT_SCROLL, 3, down ? 3 : -3)
 		);
 	}
 
