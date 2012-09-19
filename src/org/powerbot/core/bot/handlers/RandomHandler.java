@@ -171,6 +171,6 @@ public class RandomHandler extends LoopTask {
 				jobListenerList.add(listener);
 			}
 		}
-		return (EventListener[]) jobListenerList.toArray();
+		return jobListenerList.toArray(new EventListener[jobListenerList.size()]);
 	}
 }
