@@ -1,7 +1,6 @@
 <stringer checkCaller="true" verbose="false" optimize="false" integrityProtection="false"
   srcFile="RSBot.jar" destFile="RSBot.jar">
-	<exclude name="org/powerbot/beta/**"/>
+	<exclude name="org/powerbot/core/**"/>
 	<exclude name="org/powerbot/concurrent/**"/>
-	<exclude name="org/powerbot/event/**"/>
 	<exclude name="org/powerbot/game/**"/>
 </stringer>

@@ -10,14 +10,14 @@ trimExclude org.powerbot.game.api. and
             org.powerbot.game.api.*.^* and
             org.powerbot.game.api.*.^* * and
             org.powerbot.game.api.*.^* *(*) and
-            org.powerbot.beta. and
-            org.powerbot.beta.^* and
-            org.powerbot.beta.^* * and
-            org.powerbot.beta.^* *(*) and
-            org.powerbot.beta.*. and
-            org.powerbot.beta.*.^* and
-            org.powerbot.beta.*.^* * and
-            org.powerbot.beta.*.^* *(*) and
+            org.powerbot.core. and
+            org.powerbot.core.^* and
+            org.powerbot.core.^* * and
+            org.powerbot.core.^* *(*) and
+            org.powerbot.core.*. and
+            org.powerbot.core.*.^* and
+            org.powerbot.core.*.^* * and
+            org.powerbot.core.*.^* *(*) and
             org.powerbot.game.bot. and
             org.powerbot.game.bot.^* and
             org.powerbot.game.bot.^* * and
@@ -56,15 +56,12 @@ trim        deleteSourceFileAttributes=true
             deleteUnknownAttributes=false;
 
 exclude     org.powerbot.Boot^ public static main(java.lang.String[]) and
-            org.powerbot.lang.^* and
-            org.powerbot.lang.* *(*) and
-            org.powerbot.lang.^*^ * and
             org.powerbot.concurrent. and
             org.powerbot.concurrent.^* and
             org.powerbot.concurrent.^* * and
             org.powerbot.concurrent.^* *(*) and
             org.powerbot.concurrent.*. and
-            org.powerbot.concurrent.api.*.^* and
+            org.powerbot.concurrent.*.^* and
             org.powerbot.concurrent.*.^* * and
             org.powerbot.concurrent.*.^* *(*) and
             org.powerbot.concurrent.strategy. and
@@ -75,17 +72,11 @@ exclude     org.powerbot.Boot^ public static main(java.lang.String[]) and
             org.powerbot.concurrent.strategy.*.^* and
             org.powerbot.concurrent.strategy.*.^* * and
             org.powerbot.concurrent.strategy.*.^* *(*) and
-            org.powerbot.event. and
-            org.powerbot.event.EventManager and
-            org.powerbot.event.EventManager *(*) and
             org.powerbot.game.bot.handler.input. and
             org.powerbot.game.bot.handler.input.MouseReactor and
             org.powerbot.game.bot.handler.input.MouseReactor *(*) and
             org.powerbot.game.bot.handler.input.util. and
             org.powerbot.game.bot.handler.input.util.MouseNode and
-            org.powerbot.game.bot.event.impl.^* and
-            org.powerbot.game.bot.event.impl.* *(*) and
-            org.powerbot.game.bot.event.impl.^*^ * and
             org.powerbot.game.client.^* and
             org.powerbot.game.client.^*^ * and
             org.powerbot.game.client.* *(*) and
@@ -97,7 +88,6 @@ exclude     org.powerbot.Boot^ public static main(java.lang.String[]) and
             org.powerbot.game.bot.event.^* and
             org.powerbot.game.bot.event.^*^ * and
             org.powerbot.game.bot.event.* *(*) and
-            org.powerbot.game.bot.Bot and
             org.powerbot.game.bot.Context and
             org.powerbot.game.bot.Context * and
             org.powerbot.game.bot.Context *(*) and
@@ -111,14 +101,14 @@ exclude     org.powerbot.Boot^ public static main(java.lang.String[]) and
             org.powerbot.game.api.*.^* and
             org.powerbot.game.api.*.^* * and
             org.powerbot.game.api.*.^* *(*) and
-            org.powerbot.beta. and
-            org.powerbot.beta.^* and
-            org.powerbot.beta.^* * and
-            org.powerbot.beta.^* *(*) and
-            org.powerbot.beta.*. and
-            org.powerbot.beta.*.^* and
-            org.powerbot.beta.*.^* * and
-            org.powerbot.beta.*.^* *(*);
+            org.powerbot.core. and
+            org.powerbot.core.^* and
+            org.powerbot.core.^* * and
+            org.powerbot.core.^* *(*) and
+            org.powerbot.core.*. and
+            org.powerbot.core.*.^* and
+            org.powerbot.core.*.^* * and
+            org.powerbot.core.*.^* *(*);
 
 obfuscate   changeLogFileIn=""
             changeLogFileOut="%ZKM_CHANGELOG%"
