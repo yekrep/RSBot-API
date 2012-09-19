@@ -11,7 +11,6 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.util.EventListener;
 import java.util.EventObject;
-import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
@@ -23,7 +22,7 @@ import org.powerbot.core.event.listeners.PaintListener;
 import org.powerbot.core.event.listeners.TextPaintListener;
 
 public class EventMulticaster implements EventManager {
-	private final List<EventListener> listeners;
+	private final CopyOnWriteArrayList<EventListener> listeners;
 	private final Map<EventListener, Long> listenerMasks;
 	private final Queue<EventObject> queue;
 
@@ -135,8 +134,7 @@ public class EventMulticaster implements EventManager {
 
 	@Override
 	public void addListener(final EventListener eventListener) {
-		if (!listeners.contains(eventListener)) {
-			listeners.add(eventListener);
+		if (!listeners.addIfAbsent(eventListener)) {
 			listenerMasks.put(eventListener, getMask(eventListener));
 		}
 	}
@@ -145,6 +143,11 @@ public class EventMulticaster implements EventManager {
 	public void removeListener(final EventListener eventListener) {
 		listeners.remove(eventListener);
 		listenerMasks.remove(eventListener);
+	}
+
+	@Override
+	public EventListener[] getListeners() {
+		return (EventListener[]) this.listeners.toArray();
 	}
 
 	@Override

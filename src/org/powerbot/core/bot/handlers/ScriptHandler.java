@@ -19,12 +19,14 @@ public class ScriptHandler {
 
 	private final JobListener jobEventListener;
 	private Container container;
+	public final EventManager eventManager;
 
 	private Script script;
 	private ScriptDefinition def;
 	public long started;
 
 	public ScriptHandler(final EventManager eventManager) {
+		this.eventManager = eventManager;
 		this.jobEventListener = new JobListener() {
 			@Override
 			public void jobStarted(final Job job) {

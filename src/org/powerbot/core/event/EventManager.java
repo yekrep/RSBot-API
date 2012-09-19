@@ -38,5 +38,7 @@ public interface EventManager extends Runnable {
 	 */
 	public void removeListener(EventListener eventListener);
 
+	public EventListener[] getListeners();
+
 	public void stop();
 }

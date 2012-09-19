@@ -1,5 +1,8 @@
 package org.powerbot.core.bot.handlers;
 
+import java.util.ArrayList;
+import java.util.EventListener;
+import java.util.List;
 import java.util.logging.Logger;
 
 import org.powerbot.core.randoms.AntiRandom;
@@ -26,6 +29,7 @@ import org.powerbot.core.randoms.SandwichLady;
 import org.powerbot.core.randoms.ScapeRune;
 import org.powerbot.core.randoms.SpinTickets;
 import org.powerbot.core.randoms.WidgetCloser;
+import org.powerbot.core.script.job.Job;
 import org.powerbot.core.script.job.LoopTask;
 import org.powerbot.game.api.Manifest;
 import org.powerbot.game.api.util.Random;
@@ -43,6 +47,8 @@ public class RandomHandler extends LoopTask {
 	private AntiRandom random;
 	private Manifest manifest;
 	private final Timer timeout;
+
+	private EventListener[] listeners;
 
 	public RandomHandler(final ScriptHandler scriptHandler) {
 		antiRandoms = new AntiRandom[]{
@@ -74,6 +80,8 @@ public class RandomHandler extends LoopTask {
 		handler = scriptHandler;
 		random = null;
 		timeout = new Timer(0);
+
+		listeners = null;
 	}
 
 	@Override
@@ -127,9 +135,21 @@ public class RandomHandler extends LoopTask {
 		}
 
 		if (start) {
+			listeners = getJobListeners();
+			for (final EventListener listener : listeners) {
+				handler.eventManager.removeListener(listener);
+			}
+
 			timeout.setEndIn(Random.nextInt(240, 300) * 1000);
 			handler.pause();
 		} else {
+			if (listeners != null) {
+				for (final EventListener listener : listeners) {
+					handler.eventManager.addListener(listener);
+				}
+				listeners = null;
+			}
+
 			random = null;
 			manifest = null;
 			handler.resume();
@@ -141,5 +161,16 @@ public class RandomHandler extends LoopTask {
 		if (manifest != null) {
 			log.warning("Random solver failed: " + manifest.name());
 		}
+	}
+
+	private EventListener[] getJobListeners() {
+		final EventListener[] listeners = handler.eventManager.getListeners();
+		final List<EventListener> jobListenerList = new ArrayList<>(listeners.length);
+		for (final EventListener listener : listeners) {
+			if (listener instanceof Job) {
+				jobListenerList.add(listener);
+			}
+		}
+		return (EventListener[]) jobListenerList.toArray();
 	}
 }
