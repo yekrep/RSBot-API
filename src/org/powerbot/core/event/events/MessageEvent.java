@@ -2,7 +2,7 @@ package org.powerbot.core.event.events;
 
 import java.util.EventListener;
 
-import org.powerbot.core.event.EventDispatcher;
+import org.powerbot.core.event.EventMulticaster;
 import org.powerbot.core.event.GameEvent;
 import org.powerbot.core.event.listeners.MessageListener;
 
@@ -17,7 +17,7 @@ public class MessageEvent extends GameEvent {
 	private final String sender, message;
 
 	public MessageEvent(final int id, final String sender, final String message) {
-		setType(EventDispatcher.MESSAGE_EVENT);
+		setType(EventMulticaster.MESSAGE_EVENT);
 		this.id = id;
 		this.sender = sender;
 		this.message = message;

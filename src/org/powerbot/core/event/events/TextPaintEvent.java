@@ -12,7 +12,7 @@ import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
 import java.util.EventListener;
 
-import org.powerbot.core.event.EventDispatcher;
+import org.powerbot.core.event.EventMulticaster;
 import org.powerbot.core.event.GameEvent;
 import org.powerbot.core.event.listeners.PaintListener;
 import org.powerbot.core.event.listeners.TextPaintListener;
@@ -28,7 +28,7 @@ public class TextPaintEvent extends GameEvent {
 	public int id = 0;
 
 	public TextPaintEvent() {
-		setType(EventDispatcher.TEXT_PAINT_EVENT);
+		setType(EventMulticaster.TEXT_PAINT_EVENT);
 		this.graphics = null;
 	}
 
