@@ -23,14 +23,6 @@ public final class ScheduledChecks implements ActionListener {
 			System.exit(1);
 		}
 
-		if (NetworkAccount.getInstance().isLoggedIn()) {
-			final long a = Controller.getInstance().getLastSessionUpdateTime();
-			if (a < System.currentTimeMillis() - 1000 * 60 * 10) {
-				SESSION_TIME = System.currentTimeMillis();
-				NetworkAccount.getInstance().session(0);
-			}
-		}
-
 		if (Bot.isInstantiated() && Bot.getInstance().getScriptHandler() != null) {
 			final ScriptHandler script = Bot.getInstance().getScriptHandler();
 			final ScriptDefinition definition;

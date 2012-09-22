@@ -116,7 +116,6 @@ public class BotChrome extends JFrame implements WindowListener {
 		if (Bot.isInstantiated()) {
 			Bot.getInstance().stop();
 		}
-		NetworkAccount.getInstance().session(-1);
 		dispose();
 		System.exit(0);
 	}

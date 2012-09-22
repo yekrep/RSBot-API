@@ -33,7 +33,6 @@ import org.powerbot.gui.BotScripts;
 import org.powerbot.ipc.Controller;
 import org.powerbot.service.NetworkAccount;
 import org.powerbot.util.Configuration;
-import org.powerbot.util.io.IniParser;
 import org.powerbot.util.io.Resources;
 
 /**
@@ -197,19 +196,13 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 		} else if (n > 2 && !NetworkAccount.getInstance().isVIP()) {
 			log.severe(BotLocale.NEEDVIPMULTITAB);
 		} else {
-			final Map<String, String> info = NetworkAccount.getInstance().session(0);
-			if (info == null || !info.containsKey("success") || !IniParser.parseBool(info.get("success"))) {
-				final String msg = info != null && info.containsKey("message") ? info.get("message") : BotLocale.CANTOPENTAB;
-				log.severe(msg);
+			if (s > 0) {
+				Boot.fork(Boot.SWITCH_NEWTAB);
 			} else {
-				if (s > 0) {
-					Boot.fork(Boot.SWITCH_NEWTAB);
-				} else {
-					final Bot bot = Bot.getInstance();
-					botButton.setVisible(true);
-					new Thread(bot.threadGroup, bot).start();
-					parent.panel.setBot(bot);
-				}
+				final Bot bot = Bot.getInstance();
+				botButton.setVisible(true);
+				new Thread(bot.threadGroup, bot).start();
+				parent.panel.setBot(bot);
 			}
 		}
 		tabAdd.setEnabled(true);
