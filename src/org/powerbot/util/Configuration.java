@@ -37,7 +37,7 @@ public class Configuration {
 		static final String DOMAIN_SERVICES = "services." + DOMAIN;
 		static final String DOMAIN_LINKS = "links." + DOMAIN;
 
-		public static final String DOWNLOAD = "http://" + DOMAIN_SERVICES + "/rsbot/releases/RSBot-%s.jar";
+		public static final String DOWNLOAD = "http://" + DOMAIN_SITE + "/rsbot/releases/RSBot-%s.jar";
 		public static final String VERSION = "http://" + DOMAIN_LINKS + "/version.txt";
 
 		public static final String CLIENTPATCH = "https://" + DOMAIN_SERVICES + "/aux/%s.ms";
