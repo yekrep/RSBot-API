@@ -157,7 +157,9 @@ public final class GeItem {
 		}
 		try {
 			final URL url = new URL(HOST + QUERIES[0] + itemId);
-			String line = new Scanner(url.openStream()).useDelimiter("\\A").next();
+			final Scanner s = new Scanner(url.openStream());
+			String line = s.useDelimiter("\\A").next();
+			s.close();
 			// Little "trick" against items whose description contains commas.
 			line = line.replaceAll("},", "}~").replaceAll("\",\"", "\"~\"").replaceFirst(",\"type", "~\"type");
 			// Much less hassle than making a custom JSON parser / adding external libs.
