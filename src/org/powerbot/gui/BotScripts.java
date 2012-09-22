@@ -407,6 +407,7 @@ public final class BotScripts extends JDialog implements ActionListener {
 							continue;
 						}
 						final URL src = parent.getCanonicalFile().toURI().toURL();
+						@SuppressWarnings("resource")
 						final ClassLoader cl = new URLClassLoader(new URL[]{src});
 						String className = file.getCanonicalPath().substring(parent.getCanonicalPath().length() + 1);
 						className = className.substring(0, className.lastIndexOf('.'));

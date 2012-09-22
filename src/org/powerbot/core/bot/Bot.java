@@ -40,6 +40,7 @@ import org.powerbot.service.GameAccounts;
  *
  * @author Timer
  */
+@SuppressWarnings("deprecation")
 public final class Bot implements Runnable {
 	static final Logger log = Logger.getLogger(Bot.class.getName());
 	private static Bot instance;
