@@ -34,6 +34,7 @@ import org.powerbot.game.loader.script.ModScript;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.gui.component.BotPanel;
 import org.powerbot.service.GameAccounts;
+import org.powerbot.util.Configuration;
 
 /**
  * An environment of the game that is automated.
@@ -218,8 +219,14 @@ public final class Bot implements Runnable {
 			paintEvent.graphics = back;
 			textPaintEvent.graphics = back;
 			textPaintEvent.id = 0;
-			composite.eventManager.fire(paintEvent);
-			composite.eventManager.fire(textPaintEvent);
+			try {
+				composite.eventManager.fire(paintEvent);
+				composite.eventManager.fire(textPaintEvent);
+			} catch (final Exception e) {
+				if (Configuration.DEVMODE) {
+					e.printStackTrace();
+				}
+			}
 		}
 		back.dispose();
 		final Graphics imageGraphics = image.getGraphics();
