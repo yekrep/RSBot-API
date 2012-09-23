@@ -34,13 +34,12 @@ public class Configuration {
 		static final String DOMAIN_SITE_TESTING = DOMAIN + ".localdomain";
 		static final String DOMAIN_SITE = TESTING ? DOMAIN_SITE_TESTING : DOMAIN_SITE_LIVE;
 		static final String PROTOCOL = TESTING ? "http://" : "https://";
-		static final String DOMAIN_SERVICES = "services." + DOMAIN;
 		static final String DOMAIN_LINKS = "links." + DOMAIN;
 
 		public static final String DOWNLOAD = "http://" + DOMAIN_SITE + "/rsbot/releases/RSBot-%s.jar";
 		public static final String VERSION = "http://" + DOMAIN_LINKS + "/version.txt";
 
-		public static final String CLIENTPATCH = "https://" + DOMAIN_SERVICES + "/aux/%s.ms";
+		public static final String CLIENTPATCH = "https://" + DOMAIN_SITE + "/rsbot/ms/%s.ms";
 		public static final String SCRIPTSAUTH = PROTOCOL + DOMAIN_SITE + "/scripts/api/auth/?{POST}a=%s&id=%s&n=%s";
 		public static final String SCRIPTSCOLLECTION = PROTOCOL + DOMAIN_SITE + "/scripts/api/collection/?{POST}a=%s";
 		public static final String SCRIPTSDOWNLOAD = PROTOCOL + DOMAIN_SITE + "/scripts/api/collection/download/?{POST}a=%s&s=%s&t=%s";
