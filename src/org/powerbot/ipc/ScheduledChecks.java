@@ -8,6 +8,7 @@ import org.powerbot.core.bot.Bot;
 import org.powerbot.core.bot.handlers.ScriptHandler;
 import org.powerbot.service.NetworkAccount;
 import org.powerbot.service.scripts.ScriptDefinition;
+import org.powerbot.util.Tracker;
 
 /**
  * @author Paris
@@ -22,6 +23,8 @@ public final class ScheduledChecks implements ActionListener {
 		if (!Controller.getInstance().isBound() || Controller.getInstance().getRunningInstances() < 1) {
 			System.exit(1);
 		}
+
+		Tracker.getInstance().trackEvent("ping", "1");
 
 		if (Bot.isInstantiated() && Bot.getInstance().getScriptHandler() != null) {
 			final ScriptHandler script = Bot.getInstance().getScriptHandler();
