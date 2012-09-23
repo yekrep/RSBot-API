@@ -24,8 +24,8 @@ public class Login extends AntiRandom {
 	private static final int WIDGET = 596;
 	private static final int WIDGET_LOGIN_ERROR = 13;
 	private static final int WIDGET_LOGIN_TRY_AGAIN = 65;
-	private static final int WIDGET_LOGIN_USERNAME_TEXT = 69;
-	private static final int WIDGET_LOGIN_PASSWORD_TEXT = 75;
+	private static final int WIDGET_LOGIN_USERNAME_TEXT = 70;
+	private static final int WIDGET_LOGIN_PASSWORD_TEXT = 76;
 
 	private static final int WIDGET_LOBBY = 906;
 	private static final int WIDGET_LOBBY_ERROR = 249;
