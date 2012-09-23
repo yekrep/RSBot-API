@@ -68,7 +68,10 @@ public class EventMulticaster implements EventManager {
 			return;
 		}
 		for (final EventListener listener : listeners) {
-			final long mask = listenerMasks.get(listener);
+			final Long mask = listenerMasks.get(listener);
+			if (mask == null) {
+				continue;
+			}
 			if ((mask & type) == 0) {
 				continue;
 			}
