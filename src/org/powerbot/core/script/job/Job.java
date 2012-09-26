@@ -22,14 +22,6 @@ public interface Job extends EventListener {
 	public boolean join();
 
 	/**
-	 * Makes an attempt to wait for this thread to complete by pausing (suspending) the calling thread within a certain time limit.
-	 *
-	 * @param timeout The maximum amount of time to allot for this worker to join with the calling thread.
-	 * @return <tt>true</tt> when successfully joined; otherwise <tt>false</tt>.
-	 */
-	public boolean join(long timeout);
-
-	/**
 	 * @return Whether or not this worker is alive.
 	 */
 	public boolean isAlive();

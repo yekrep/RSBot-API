@@ -1,5 +1,7 @@
 package org.powerbot.core.script.job;
 
+import java.util.concurrent.Future;
+
 import org.powerbot.game.api.util.Random;
 
 /**
@@ -8,7 +10,8 @@ import org.powerbot.game.api.util.Random;
  * @author Timer
  */
 public abstract class Task implements Job {
-	private Thread current_thread;
+	private Thread thread;
+	Future<?> future;
 	private Container container;
 	private volatile boolean alive, interrupted;
 	private final Object init_lock;
@@ -33,7 +36,7 @@ public abstract class Task implements Job {
 		}
 
 		interrupted = false;
-		current_thread = Thread.currentThread();
+		thread = Thread.currentThread();
 		try {
 			execute();
 		} catch (final ThreadDeath ignored) {
@@ -54,23 +57,14 @@ public abstract class Task implements Job {
 	 */
 	@Override
 	public final boolean join() {
-		return join(0);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public final boolean join(final long timeout) {
-		if (!alive || current_thread == null) {
+		if (future == null || future.isDone()) {
 			return true;
 		}
 		try {
-			current_thread.join(timeout);
-			return !current_thread.isAlive();
-		} catch (final Exception | Error ignored) {
+			future.get();
+		} catch (final Throwable ignored) {
 		}
-		return false;
+		return future.isDone();
 	}
 
 	/**

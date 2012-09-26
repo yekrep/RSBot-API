@@ -19,6 +19,7 @@ public class TaskContainer implements Container {
 	private final Object children_lock;
 
 	private final ThreadGroup group;
+	private final ExecutorService executor;
 	private volatile boolean paused, shutdown, interrupted;
 
 	private final TaskContainer parent_container;
@@ -37,11 +38,12 @@ public class TaskContainer implements Container {
 
 		jobs = new LinkedList<>();
 		job_lock = new Object();
+		group = new ThreadGroup(parent, getClass().getName() + "/" + hashCode());
+		this.executor = Executors.newCachedThreadPool(new ThreadPool(group));
 
 		children = new LinkedList<>();
 		children_lock = new Object();
 
-		group = new ThreadGroup(parent, getClass().getName() + "/" + hashCode());
 		paused = false;
 		shutdown = false;
 		interrupted = false;
@@ -59,11 +61,10 @@ public class TaskContainer implements Container {
 		}
 
 		job.setContainer(this);
-		new Thread(
-				group,
-				createWorker(job),
-				group.getName() + "@" + job.getClass().getName() + "/" + job.hashCode()
-		).start();
+		final Future<?> future = executor.submit(createWorker(job));
+		if (future != null && job instanceof Task) {
+			((Task) job).future = future;
+		}
 	}
 
 	/**
@@ -253,6 +254,28 @@ public class TaskContainer implements Container {
 
 		if (parent_container != null) {
 			parent_container.notifyListeners(job, started);
+		}
+	}
+
+	private final class ThreadPool implements ThreadFactory {
+		private final ThreadGroup group;
+		private final AtomicInteger worker;
+
+		private ThreadPool(final ThreadGroup group) {
+			this.group = group;
+			this.worker = new AtomicInteger(1);
+		}
+
+		@Override
+		public Thread newThread(final Runnable r) {
+			final Thread thread = new Thread(group, r, group.getName() + "@worker-" + worker.getAndIncrement());
+			if (!thread.isDaemon()) {
+				thread.setDaemon(false);
+			}
+			if (thread.getPriority() != Thread.NORM_PRIORITY) {
+				thread.setPriority(Thread.NORM_PRIORITY);
+			}
+			return thread;
 		}
 	}
 }
