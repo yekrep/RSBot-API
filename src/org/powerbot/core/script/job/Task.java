@@ -88,10 +88,10 @@ public abstract class Task implements Job {
 	public final void interrupt() {
 		interrupted = true;
 
-		if (alive && current_thread != null) {
+		if (thread != null) {
 			try {
-				if (!current_thread.isInterrupted()) {
-					current_thread.interrupt();
+				if (!thread.isInterrupted()) {
+					thread.interrupt();
 				}
 			} catch (final Throwable ignored) {
 			}
