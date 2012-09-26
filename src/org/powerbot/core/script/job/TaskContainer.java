@@ -1,7 +1,13 @@
 package org.powerbot.core.script.job;
 
-import java.util.LinkedList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * A fully featured {@link Container} designed to manipulate {@link Job}s.
@@ -9,17 +15,15 @@ import java.util.List;
  * @author Timer
  */
 public class TaskContainer implements Container {
-	private final List<JobListener> listeners;
-	private final Object listeners_lock;
-
-	private final List<Job> jobs;
-	private final Object job_lock;
-
+	private final CopyOnWriteArrayList<JobListener> listeners;
 	private final List<Container> children;
-	private final Object children_lock;
-
+	private Container[] childrenCache;
 	private final ThreadGroup group;
 	private final ExecutorService executor;
+
+	private Job[] jobs;
+	private int njobs;
+
 	private volatile boolean paused, shutdown, interrupted;
 
 	private final TaskContainer parent_container;
@@ -33,16 +37,14 @@ public class TaskContainer implements Container {
 	}
 
 	private TaskContainer(final ThreadGroup parent, final TaskContainer parent_container) {
-		listeners = new LinkedList<>();
-		listeners_lock = new Object();
-
-		jobs = new LinkedList<>();
-		job_lock = new Object();
+		listeners = new CopyOnWriteArrayList<>();
+		children = new CopyOnWriteArrayList<>();
+		childrenCache = new Container[0];
 		group = new ThreadGroup(parent, getClass().getName() + "/" + hashCode());
 		this.executor = Executors.newCachedThreadPool(new ThreadPool(group));
 
-		children = new LinkedList<>();
-		children_lock = new Object();
+		jobs = new Job[4];
+		njobs = 0;
 
 		paused = false;
 		shutdown = false;
@@ -97,25 +99,8 @@ public class TaskContainer implements Container {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public final Job[] enumerate() {
-		synchronized (job_lock) {
-			final int size;
-			if ((size = jobs.size()) > 0) {
-				final Job[] enumerated_jobs = new Job[size];
-				return jobs.toArray(enumerated_jobs);
-			}
-		}
-		return new Job[0];
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
 	public final int getActiveCount() {
-		synchronized (job_lock) {
-			return jobs.size();
-		}
+		return njobs;
 	}
 
 	/**
@@ -124,9 +109,7 @@ public class TaskContainer implements Container {
 	@Override
 	public final Container branch() {
 		final Container container = new TaskContainer(group, this);
-		synchronized (children_lock) {
-			children.add(container);
-		}
+		children.add(container);
 		return container;
 	}
 
@@ -135,12 +118,13 @@ public class TaskContainer implements Container {
 	 */
 	@Override
 	public final Container[] getChildren() {
-		synchronized (children_lock) {
-			final int size;
-			if ((size = children.size()) > 0) {
-				final Container[] children = new Container[size];
-				return this.children.toArray(children);
+		final int size;
+		if ((size = children.size()) > 0) {
+			if (size == childrenCache.length) {
+				return childrenCache;
 			}
+
+			return childrenCache = this.children.toArray(new Container[size]);
 		}
 		return new Container[0];
 	}
@@ -181,9 +165,10 @@ public class TaskContainer implements Container {
 			container.interrupt();
 		}
 
-		final Job[] jobs = enumerate();
-		for (final Job job : jobs) {
-			job.interrupt();
+		synchronized (this) {
+			for (int i = 0; i > njobs; i++) {
+				jobs[i].interrupt();
+			}
 		}
 	}
 
@@ -200,11 +185,7 @@ public class TaskContainer implements Container {
 	 */
 	@Override
 	public final void addListener(final JobListener listener) {
-		synchronized (listeners_lock) {
-			if (!listeners.contains(listener)) {
-				listeners.add(listener);
-			}
-		}
+		listeners.addIfAbsent(listener);
 	}
 
 	/**
@@ -212,16 +193,18 @@ public class TaskContainer implements Container {
 	 */
 	@Override
 	public final void removeListener(final JobListener listener) {
-		synchronized (listeners_lock) {
-			listeners.remove(listener);
-		}
+		listeners.remove(listener);
 	}
 
 	private Runnable createWorker(final Job job) {
 		return new Runnable() {
 			public void run() {
-				synchronized (job_lock) {
-					jobs.add(job);
+				synchronized (this) {
+					if (njobs == jobs.length) {
+						jobs = Arrays.copyOf(jobs, njobs * 2);
+					}
+					jobs[njobs] = job;
+					njobs++;
 				}
 				notifyListeners(job, true);
 				try {
@@ -229,8 +212,14 @@ public class TaskContainer implements Container {
 				} catch (final Throwable ignored) {
 					//TODO uncaught exception
 				}
-				synchronized (job_lock) {
-					jobs.remove(job);
+				synchronized (this) {
+					for (int i = 0; i < njobs; i++) {
+						if (jobs[i] == job) {
+							System.arraycopy(jobs, i + 1, jobs, i, --njobs - i);
+							jobs[njobs] = null;
+							break;
+						}
+					}
 				}
 				notifyListeners(job, false);
 				job.setContainer(null);
@@ -239,16 +228,16 @@ public class TaskContainer implements Container {
 	}
 
 	private void notifyListeners(final Job job, final boolean started) {
-		synchronized (listeners_lock) {
-			for (final JobListener listener : listeners) {
-				try {
-					if (started) {
-						listener.jobStarted(job);
-					} else {
-						listener.jobStopped(job);
-					}
-				} catch (final Throwable ignored) {
+		final JobListener[] listeners = new JobListener[this.listeners.size()];
+		this.listeners.toArray(listeners);
+		for (final JobListener listener : listeners) {
+			try {
+				if (started) {
+					listener.jobStarted(job);
+				} else {
+					listener.jobStopped(job);
 				}
+			} catch (final Throwable ignored) {
 			}
 		}
 
