@@ -1,7 +1,8 @@
 package org.powerbot.core.script.job;
 
-import java.util.LinkedList;
+import java.util.Deque;
 import java.util.List;
+import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -21,7 +22,7 @@ public class TaskContainer implements Container {
 	private final ThreadGroup group;
 	private final ExecutorService executor;
 
-	private List<Job> jobs;
+	private Deque<Job> jobs;
 
 	private volatile boolean paused, shutdown, interrupted;
 
@@ -42,7 +43,7 @@ public class TaskContainer implements Container {
 		group = new ThreadGroup(parent, getClass().getName() + "/" + hashCode());
 		this.executor = Executors.newCachedThreadPool(new ThreadPool(group));
 
-		jobs = new LinkedList<>();
+		jobs = new ConcurrentLinkedDeque<>();
 
 		paused = false;
 		shutdown = false;
@@ -163,10 +164,8 @@ public class TaskContainer implements Container {
 			container.interrupt();
 		}
 
-		synchronized (this) {
-			for (final Job job : jobs) {
-				job.interrupt();
-			}
+		for (final Job job : jobs) {
+			job.interrupt();
 		}
 	}
 
@@ -197,18 +196,14 @@ public class TaskContainer implements Container {
 	private Runnable createWorker(final Job job) {
 		return new Runnable() {
 			public void run() {
-				synchronized (this) {
-					jobs.add(job);
-				}
+				jobs.add(job);
 				notifyListeners(job, true);
 				try {
 					job.work();
 				} catch (final Throwable ignored) {
 					//TODO uncaught exception
 				}
-				synchronized (this) {
-					jobs.remove(job);
-				}
+				jobs.remove(job);
 				notifyListeners(job, false);
 				job.setContainer(null);
 			}
