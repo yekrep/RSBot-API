@@ -8,6 +8,7 @@ import org.powerbot.core.script.job.Container;
 import org.powerbot.core.script.job.Job;
 import org.powerbot.core.script.job.JobListener;
 import org.powerbot.core.script.job.TaskContainer;
+import org.powerbot.gui.BotChrome;
 import org.powerbot.service.scripts.ScriptDefinition;
 import org.powerbot.util.Tracker;
 
@@ -17,17 +18,32 @@ import org.powerbot.util.Tracker;
 public class ScriptHandler {
 	public final Logger log = Logger.getLogger(ScriptHandler.class.getName());
 
-	private final JobListener jobEventListener;
-	private Container container;
 	public final EventManager eventManager;
-
 	private Script script;
 	private ScriptDefinition def;
 	public long started;
 
+	private Container container;
+
 	public ScriptHandler(final EventManager eventManager) {
 		this.eventManager = eventManager;
-		this.jobEventListener = new JobListener() {
+		this.script = null;
+	}
+
+	public boolean start(final Script script, final ScriptDefinition def) {
+		/* Prevent duplicate scripts starting */
+		if (isActive()) {
+			return false;
+		}
+
+		/* Set definition and script */
+		this.def = def;
+		this.script = script;
+
+		/* Register listener */
+		script.getContainer().addListener(new JobListener() {
+			private boolean stopped = false;
+
 			@Override
 			public void jobStarted(final Job job) {
 				eventManager.addListener(job);
@@ -36,24 +52,21 @@ public class ScriptHandler {
 			@Override
 			public void jobStopped(final Job job) {
 				eventManager.removeListener(job);
+
+				if (stopped || job.equals(script)) {
+					BotChrome.getInstance().toolbar.updateScriptControls();
+					stopped = true;
+				}
 			}
-		};
+		});
 
-		this.script = null;
-	}
-
-	public boolean start(final Script script, final ScriptDefinition def) {
-		if (isActive()) {
-			return false;
-		}
-
-		this.def = def;
-		this.script = script;
-
+		/* Start the script */
 		script.start();
-		script.getContainer().addListener(jobEventListener);
-		(container = new TaskContainer()).submit(new RandomHandler(this));
 		started = System.currentTimeMillis();
+
+		/* Submit the random handler */
+		(container = new TaskContainer()).submit(new RandomHandler(this));
+		/* Track the script start */
 		track("");
 		return true;
 	}
