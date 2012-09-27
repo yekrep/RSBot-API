@@ -1,6 +1,6 @@
 package org.powerbot.core.script.job;
 
-import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
@@ -21,8 +21,7 @@ public class TaskContainer implements Container {
 	private final ThreadGroup group;
 	private final ExecutorService executor;
 
-	private Job[] jobs;
-	private int njobs;
+	private List<Job> jobs;
 
 	private volatile boolean paused, shutdown, interrupted;
 
@@ -43,8 +42,7 @@ public class TaskContainer implements Container {
 		group = new ThreadGroup(parent, getClass().getName() + "/" + hashCode());
 		this.executor = Executors.newCachedThreadPool(new ThreadPool(group));
 
-		jobs = new Job[4];
-		njobs = 0;
+		jobs = new LinkedList<>();
 
 		paused = false;
 		shutdown = false;
@@ -100,7 +98,7 @@ public class TaskContainer implements Container {
 	 */
 	@Override
 	public final int getActiveCount() {
-		return njobs;
+		return jobs.size();
 	}
 
 	/**
@@ -166,8 +164,8 @@ public class TaskContainer implements Container {
 		}
 
 		synchronized (this) {
-			for (int i = 0; i > njobs; i++) {
-				jobs[i].interrupt();
+			for (final Job job : jobs) {
+				job.interrupt();
 			}
 		}
 	}
@@ -200,11 +198,7 @@ public class TaskContainer implements Container {
 		return new Runnable() {
 			public void run() {
 				synchronized (this) {
-					if (njobs == jobs.length) {
-						jobs = Arrays.copyOf(jobs, njobs * 2);
-					}
-					jobs[njobs] = job;
-					njobs++;
+					jobs.add(job);
 				}
 				notifyListeners(job, true);
 				try {
@@ -213,13 +207,7 @@ public class TaskContainer implements Container {
 					//TODO uncaught exception
 				}
 				synchronized (this) {
-					for (int i = 0; i < njobs; i++) {
-						if (jobs[i] == job) {
-							System.arraycopy(jobs, i + 1, jobs, i, --njobs - i);
-							jobs[njobs] = null;
-							break;
-						}
-					}
+					jobs.remove(job);
 				}
 				notifyListeners(job, false);
 				job.setContainer(null);
