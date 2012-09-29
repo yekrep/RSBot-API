@@ -69,8 +69,11 @@ public class Context {
 		get().bot.getMouseExecutor().cancel();
 	}
 
+	@Deprecated
+	/**
+	 * @see org.powerbot.game.api.methods.input.Mouse#setMouseSpeed(org.powerbot.game.api.methods.input.Mouse.Speed)
+	 */
 	public void b(final int s) {
-		Bot.setSpeed(s);
 	}
 
 	public static void saveScreenCapture(final String fileName) {

@@ -302,8 +302,28 @@ public final class Bot implements Runnable {
 		});
 	}
 
-	public static void setSpeed(final int speed) {
-		MouseNode.threadSpeed.put(Thread.currentThread().getThreadGroup(), speed);
+	public static void setSpeed(final Mouse.Speed speed) {
+		final ThreadGroup group = Thread.currentThread().getThreadGroup();
+		switch (speed) {
+		case VERY_SLOW:
+			MouseNode.speeds.put(group, 0.5d);
+			break;
+		case SLOW:
+			MouseNode.speeds.put(group, 0.8d);
+			break;
+		case NORMAL:
+			MouseNode.speeds.put(group, 1d);
+			break;
+		case FAST:
+			MouseNode.speeds.put(group, 1.7d);
+			break;
+		case VERY_FAST:
+			MouseNode.speeds.put(group, 2.5d);
+			break;
+		default:
+			MouseNode.speeds.put(group, 1d);
+			break;
+		}
 	}
 
 	private static final class SafeMode implements Runnable {
