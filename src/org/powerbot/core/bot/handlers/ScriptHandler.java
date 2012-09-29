@@ -18,7 +18,7 @@ import org.powerbot.util.Tracker;
 public class ScriptHandler {
 	public final Logger log = Logger.getLogger(ScriptHandler.class.getName());
 
-	public final EventManager eventManager;
+	final EventManager eventManager;
 	private Script script;
 	private ScriptDefinition def;
 	public long started;
