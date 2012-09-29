@@ -91,7 +91,7 @@ public class TilePath extends Path {
 
 	public TilePath randomize(final int maxX, final int maxY) {
 		for (int i = 0; i < tiles.length; ++i) {
-			tiles[i] = orig[i].derive(Random.nextInt(-maxX, maxX), Random.nextInt(-maxY, maxY));
+			tiles[i] = orig[i].derive(Random.nextInt(-maxX, maxX + 1), Random.nextInt(-maxY, maxY + 1));
 		}
 		return this;
 	}
