@@ -76,7 +76,7 @@ public class Item implements Identifiable {
 				}
 			}
 			return null;
-		} catch (final ClassCastException e) {
+		} catch (final ClassCastException | AbstractMethodError e) {
 			return null;
 		}
 	}
