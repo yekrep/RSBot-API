@@ -24,6 +24,7 @@ public class ScriptHandler {
 	public long started;
 
 	private Container container;
+	private RandomHandler randomHandler;
 
 	public ScriptHandler(final EventManager eventManager) {
 		this.eventManager = eventManager;
@@ -65,7 +66,7 @@ public class ScriptHandler {
 		started = System.currentTimeMillis();
 
 		/* Submit the random handler */
-		(container = new TaskContainer()).submit(new RandomHandler(this));
+		(container = new TaskContainer()).submit(randomHandler = new RandomHandler(this));
 		/* Track the script start */
 		track("");
 		return true;
@@ -115,6 +116,10 @@ public class ScriptHandler {
 
 	public ScriptDefinition getDefinition() {
 		return def;
+	}
+
+	public RandomHandler getRandomHandler() {
+		return randomHandler;
 	}
 
 	private void track(final String action) {
