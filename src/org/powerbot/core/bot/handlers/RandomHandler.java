@@ -1,8 +1,10 @@
 package org.powerbot.core.bot.handlers;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.EventListener;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Logger;
 
 import org.powerbot.core.randoms.AntiRandom;
@@ -41,7 +43,8 @@ import org.powerbot.game.api.util.Timer;
 public class RandomHandler extends LoopTask {
 	private static final Logger log = Logger.getLogger(RandomHandler.class.getName());
 
-	private final AntiRandom[] antiRandoms;
+	private final AntiRandom[] randoms;
+	private final CopyOnWriteArrayList<AntiRandom> activeRandoms;
 	private final ScriptHandler handler;
 
 	private AntiRandom random;
@@ -51,7 +54,7 @@ public class RandomHandler extends LoopTask {
 	private EventListener[] listeners;
 
 	public RandomHandler(final ScriptHandler scriptHandler) {
-		antiRandoms = new AntiRandom[]{
+		randoms = new AntiRandom[]{
 				new Login(),
 				new WidgetCloser(),
 				new DrillDemon(),
@@ -76,6 +79,8 @@ public class RandomHandler extends LoopTask {
 				new SpinTickets(),
 				new BankPin()
 		};
+		activeRandoms = new CopyOnWriteArrayList<>();
+		activeRandoms.addAllAbsent(Arrays.asList(randoms));
 
 		handler = scriptHandler;
 		random = null;
@@ -117,8 +122,39 @@ public class RandomHandler extends LoopTask {
 		return handler.isActive() ? 2000 : -1;
 	}
 
+	public void enable(final Class<? extends AntiRandom> type, final boolean enable) {
+		AntiRandom random = null;
+
+		final String name = type.getName();
+		for (final AntiRandom checkRandom : randoms) {
+			if (checkRandom.getClass().getName().equals(name)) {
+				random = checkRandom;
+				break;
+			}
+		}
+
+		if (random != null) {
+			if (enable) {
+				activeRandoms.addIfAbsent(random);
+			} else {
+				activeRandoms.remove(random);
+			}
+		}
+	}
+
+	public boolean isEnabled(final Class<? extends AntiRandom> type) {
+		final String name = type.getName();
+		for (final AntiRandom checkRandom : randoms) {
+			if (checkRandom.getClass().getName().equals(name)) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	private AntiRandom next() {
-		for (final AntiRandom random : antiRandoms) {
+		for (final AntiRandom random : activeRandoms) {
 			try {
 				if (random.activate()) {
 					return random;
