@@ -45,4 +45,8 @@ public class Environment {
 	public static void enableRandom(final Class<? extends AntiRandom> random, final boolean enable) {
 		Context.get().getScriptHandler().getRandomHandler().enable(random, enable);
 	}
+
+	public static boolean isRandomEnabled(final Class<? extends AntiRandom> random) {
+		return Context.get().getScriptHandler().getRandomHandler().isEnabled(random);
+	}
 }
