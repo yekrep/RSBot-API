@@ -25,7 +25,8 @@ public abstract class LoopTask extends Task {
 			int time;
 			try {
 				time = loop();
-			} catch (final Throwable ignored) {
+			} catch (final Throwable e) {
+				e.printStackTrace();
 				time = -1;
 			}
 
