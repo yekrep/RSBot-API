@@ -3,6 +3,7 @@ package org.powerbot.game.api.methods;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
+import org.powerbot.core.randoms.AntiRandom;
 import org.powerbot.game.bot.Context;
 
 public class Environment {
@@ -39,5 +40,9 @@ public class Environment {
 			dir.mkdirs();
 		}
 		return dir;
+	}
+
+	public static void enableRandom(final Class<? extends AntiRandom> random, final boolean enable) {
+		Context.get().getScriptHandler().getRandomHandler().enable(random, enable);
 	}
 }
