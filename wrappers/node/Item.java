@@ -68,7 +68,7 @@ public class Item implements Identifiable {
 				if (ref instanceof HardReference) {
 					return new ItemDefinition((org.powerbot.game.client.RSItemDef) ((HardReference) ref).get());
 				} else if (ref instanceof SoftReference) {
-					final Object def = ((SoftReference) ref).get().get();
+					final Object def = ((java.lang.ref.SoftReference<?>) ((SoftReference) ref).get()).get();
 
 					if (def != null) {
 						return new ItemDefinition((org.powerbot.game.client.RSItemDef) def);

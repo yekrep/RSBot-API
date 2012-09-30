@@ -59,7 +59,7 @@ public class NPCs {
 	public static NPC[] getLoaded(final Filter<NPC> filter) {
 		final Client client = Context.client();
 		final int[] indices = client.getRSNPCIndexArray();
-		final Set<NPC> npcs = new HashSet<NPC>();
+		final Set<NPC> npcs = new HashSet<>();
 		for (final int index : indices) {
 			final Node node = Nodes.lookup((HashTable) client.getRSNPCNC(), index);
 			if (node != null) {
@@ -67,7 +67,7 @@ public class NPCs {
 				if (node instanceof RSNPCNode) {
 					npc = new NPC((RSNPC) ((RSNPCNode) node).getRSNPC());
 				} else if (node instanceof SoftReference) {
-					npc = new NPC((RSNPC) ((SoftReference) node).get().get());
+					npc = new NPC((RSNPC) ((java.lang.ref.SoftReference<?>) ((SoftReference) node).get()).get());
 				}
 				if (filter.accept(npc)) {
 					npcs.add(npc);
