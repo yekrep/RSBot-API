@@ -24,7 +24,7 @@ public final class ScheduledChecks implements ActionListener {
 			System.exit(1);
 		}
 
-		Tracker.getInstance().trackEvent("ping", "1");
+		Tracker.getInstance().trackPage("ping/", "");
 
 		if (Bot.isInstantiated() && Bot.getInstance().getScriptHandler() != null) {
 			final ScriptHandler script = Bot.getInstance().getScriptHandler();
