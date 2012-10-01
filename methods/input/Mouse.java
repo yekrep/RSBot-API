@@ -33,7 +33,7 @@ public class Mouse {
 		VERY_SLOW, SLOW, NORMAL, FAST, VERY_FAST
 	}
 
-	public static void setMouseSpeed(final Speed speed) {
+	public static void setSpeed(final Speed speed) {
 		Bot.setSpeed(speed);
 	}
 
