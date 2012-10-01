@@ -129,12 +129,15 @@ public class NPCs {
 			final Node node = Nodes.lookup((HashTable) client.getRSNPCNC(), index);
 			if (node != null && node instanceof RSNPCNode) {
 				final NPC t_npc = new NPC((RSNPC) ((RSNPCNode) node).getRSNPC());
-				if (filter.accept(t_npc)) {
-					final double dist = Calculations.distance(position, t_npc.getRegionOffset());
-					if (dist < distance) {
-						distance = dist;
-						npc = t_npc;
+				try {
+					if (filter.accept(t_npc)) {
+						final double dist = Calculations.distance(position, t_npc.getRegionOffset());
+						if (dist < distance) {
+							distance = dist;
+							npc = t_npc;
+						}
 					}
+				} catch (final Exception ignored) {
 				}
 			}
 		}
