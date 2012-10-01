@@ -11,6 +11,7 @@ import org.powerbot.core.script.job.JobListener;
 import org.powerbot.core.script.job.LoopTask;
 import org.powerbot.core.script.job.Task;
 import org.powerbot.core.script.job.TaskContainer;
+import org.powerbot.game.api.methods.input.Mouse;
 
 /**
  * @author Timer
@@ -63,6 +64,7 @@ public abstract class ActiveScript extends LoopTask implements Script {
 			startup_jobs.add(new Task() {
 				@Override
 				public void execute() {
+					Mouse.setSpeed(Mouse.Speed.NORMAL);
 					onStart();
 				}
 			});

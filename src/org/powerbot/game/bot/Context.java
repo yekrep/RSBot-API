@@ -71,7 +71,7 @@ public class Context {
 
 	@Deprecated
 	/**
-	 * @see org.powerbot.game.api.methods.input.Mouse#setMouseSpeed(org.powerbot.game.api.methods.input.Mouse.Speed)
+	 * @see org.powerbot.game.api.methods.input.Mouse#setSpeed(org.powerbot.game.api.methods.input.Mouse.Speed)
 	 */
 	public void b(final int s) {
 	}
