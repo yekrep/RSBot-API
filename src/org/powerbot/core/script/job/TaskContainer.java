@@ -94,6 +94,11 @@ public class TaskContainer implements Container {
 		return paused;
 	}
 
+	@Override
+	public Job[] enumerate() {
+		return jobs.toArray(new Job[jobs.size()]);
+	}
+
 	/**
 	 * {@inheritDoc}
 	 */
