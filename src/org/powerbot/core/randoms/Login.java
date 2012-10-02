@@ -3,6 +3,8 @@ package org.powerbot.core.randoms;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 import org.powerbot.core.bot.Bot;
 import org.powerbot.game.api.Manifest;
@@ -148,7 +150,11 @@ public class Login extends AntiRandom {
 
 						re_load_timer = null;
 						if (loginEvent.task != null) {
-							bot.getExecutor().submit(loginEvent.task);
+							final Future<?> future = bot.getExecutor().submit(loginEvent.task);
+							try {
+								future.get();
+							} catch (final InterruptedException | ExecutionException ignored) {
+							}
 						}
 						return;
 					}
