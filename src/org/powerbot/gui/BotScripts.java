@@ -562,6 +562,12 @@ public final class BotScripts extends JDialog implements ActionListener {
 					if (!NetworkAccount.getInstance().isLoggedIn()) {
 						return;
 					}
+					int n = 0;
+					for (final String running : Controller.getInstance().getRunningScripts()) {
+						if (def.getID().equals(running)) {
+							n++;
+						}
+					}
 					final ClassLoader cl;
 					if (def.local) {
 						try {
@@ -580,12 +586,6 @@ public final class BotScripts extends JDialog implements ActionListener {
 							log.severe("Could not download script");
 							ignored.printStackTrace();
 							return;
-						}
-						int n = 0;
-						for (final String running : Controller.getInstance().getRunningScripts()) {
-							if (def.getID().equals(running)) {
-								n++;
-							}
 						}
 						final Map<String, Map<String, String>> data;
 						try {
@@ -614,6 +614,11 @@ public final class BotScripts extends JDialog implements ActionListener {
 						script = cl.loadClass(def.className).asSubclass(Script.class).newInstance();
 					} catch (final Exception ignored) {
 						log.severe("Error loading script");
+						return;
+					}
+					final Manifest manifest = script.getClass().getAnnotation(Manifest.class);
+					if (manifest != null && manifest.singleinstance() && n > 0) {
+						JOptionPane.showMessageDialog(BotScripts.this, "This script can only be used on one account at a time.");
 						return;
 					}
 					final Bot bot = Bot.getInstance();
