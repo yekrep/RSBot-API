@@ -20,4 +20,6 @@ public @interface Manifest {
 	boolean vip() default false;
 
 	boolean hidden() default false;
+
+	boolean singleinstance() default false;
 }
