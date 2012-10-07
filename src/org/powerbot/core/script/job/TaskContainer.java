@@ -205,7 +205,8 @@ public class TaskContainer implements Container {
 				notifyListeners(job, true);
 				try {
 					job.work();
-				} catch (final Throwable ignored) {
+				} catch (final Throwable e) {
+					e.printStackTrace();
 					//TODO uncaught exception
 				}
 				jobs.remove(job);
