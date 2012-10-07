@@ -36,10 +36,9 @@ import org.powerbot.core.event.impl.TPlane;
 /**
  * @author Paris
  */
-public final class BotMenuView extends JMenu implements ActionListener {
+public final class BotMenuView extends JMenu implements ActionListener {//TODO revamp debugging options
 	private static final long serialVersionUID = 1L;
 	private final Map<String, Class<? extends EventListener>> map;
-	private final List<String> items;
 	private static Map<Bot, Map<String, EventListener>> listeners;
 
 	private static final String ALL = "All";
@@ -68,15 +67,14 @@ public final class BotMenuView extends JMenu implements ActionListener {
 		if (!Bot.isInstantiated()) {
 			setEnabled(false);
 			map = null;
-			items = null;
 			return;
 		}
 
 		if (listeners == null) {
-			listeners = new HashMap<Bot, Map<String, EventListener>>();
+			listeners = new HashMap<>();
 		}
 
-		map = new LinkedHashMap<String, Class<? extends EventListener>>();
+		map = new LinkedHashMap<>();
 		map.put(BOUNDARIES, DrawBoundaries.class);
 		map.put(MODELS, DrawModels.class);
 		map.put(SCENEENTITIES, DrawScene.class);
@@ -95,7 +93,7 @@ public final class BotMenuView extends JMenu implements ActionListener {
 		map.put(INVENTORY, DrawInventory.class);
 		map.put(MESSAGES, MessageLogger.class);
 
-		items = new ArrayList<String>(map.size());
+		final List<String> items = new ArrayList<>(map.size());
 		items.add(MOUSE);
 		items.add(PLAYERS);
 		items.add(NPCS);
@@ -119,7 +117,7 @@ public final class BotMenuView extends JMenu implements ActionListener {
 		final Bot bot = Bot.getInstance();
 		Map<String, EventListener> listeners = BotMenuView.listeners.get(bot);
 		if (listeners == null) {
-			listeners = new HashMap<String, EventListener>();
+			listeners = new HashMap<>();
 			BotMenuView.listeners.put(bot, listeners);
 		}
 
@@ -170,7 +168,7 @@ public final class BotMenuView extends JMenu implements ActionListener {
 		final String name = eventListener.getName();
 		Map<String, EventListener> listeners = BotMenuView.listeners.get(bot);
 		if (listeners == null) {
-			listeners = new HashMap<String, EventListener>();
+			listeners = new HashMap<>();
 			BotMenuView.listeners.put(bot, listeners);
 		}
 		if (!selected) {

@@ -19,7 +19,7 @@ import org.powerbot.game.loader.applet.Rs2Applet;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.service.NetworkAccount;
 
-public class Context {
+public class Context {//TODO remove idea of a 'context'
 	public static final Map<ThreadGroup, Context> context = new HashMap<ThreadGroup, Context>();
 
 	private final Bot bot;
@@ -126,10 +126,6 @@ public class Context {
 
 	public Calculations.Viewport getViewport() {
 		return bot.composite.viewport;
-	}
-
-	public void updateControls() {
-		BotChrome.getInstance().toolbar.updateScriptControls();
 	}
 
 	public String getDisplayName() {

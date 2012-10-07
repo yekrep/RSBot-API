@@ -17,7 +17,7 @@ import org.powerbot.game.client.RenderData;
 import org.powerbot.game.loader.ClientLoader;
 import org.powerbot.gui.BotChrome;
 
-public class BotComposite {
+public class BotComposite {//TODO remove the use of a composite ... export data elsewhere
 	private final Bot bot;
 
 	MouseExecutor executor;
@@ -73,7 +73,7 @@ public class BotComposite {
 		this.viewport.zZ = viewport[constants.VIEWPORT_ZZ];
 	}
 
-	public void reload() {
+	public void reload() {//TODO let script come to a complete pause first
 		Bot.log.info("Refreshing environment");
 		if (scriptHandler != null && scriptHandler.isActive()) {
 			scriptHandler.pause();
