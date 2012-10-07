@@ -180,7 +180,7 @@ public class RandomHandler extends LoopTask {
 			if (random instanceof Login) {
 				timeout.setEndIn(Random.nextInt(600, 720) * 1000);
 			} else {
-				timeout.setEndIn(Random.nextInt(240, 300) * 1000);
+				timeout.setEndIn(Random.nextInt(300, 420) * 1000);
 			}
 			handler.pause();
 		} else {
