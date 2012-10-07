@@ -2,6 +2,7 @@ package org.powerbot.util;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
@@ -9,12 +10,16 @@ import java.net.InetAddress;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.net.UnknownHostException;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map.Entry;
 import java.util.Random;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
+import org.powerbot.util.io.CryptFile;
 import org.powerbot.util.io.HttpClient;
+import org.powerbot.util.io.IOHelper;
 
 /**
  * @author Paris
@@ -117,12 +122,46 @@ public final class Tracker {
 	}
 
 	private static void call(final String url) {
+		final CryptFile cf = new CryptFile("tracker-cookies.txt", Tracker.class);
+		String cookies = null;
+		final StringBuilder c = new StringBuilder();
+
+		try {
+			cookies = IOHelper.readString(cf.getInputStream());
+		} catch (final IOException ignored) {
+		}
+
 		try {
 			final HttpURLConnection con = HttpClient.getHttpConnection(new URL(url));
+
+			if (cookies != null && !cookies.isEmpty()) {
+				con.setRequestProperty("Cookie", cookies.trim());
+			}
+
 			con.connect();
 			con.getResponseCode();
+
+			for (final Entry<String, List<String>> header : con.getHeaderFields().entrySet()) {
+				if (header.getKey().equalsIgnoreCase("Set-Cookie")) {
+					if (c.length() != 0) {
+						c.append("; ");
+					}
+					c.append(header.getValue());
+				}
+			}
+
 			con.disconnect();
 		} catch (final IOException ignored) {
+		}
+
+		if (c.length() == 0) {
+			cf.delete();
+		} else {
+			final ByteArrayInputStream bis = new ByteArrayInputStream(StringUtil.getBytesUtf8(c.toString().trim()));
+			try {
+				IOHelper.write(bis, cf.getOutputStream());
+			} catch (final IOException ignored) {
+			}
 		}
 	}
 }
