@@ -64,8 +64,8 @@ public class TilePath extends Path {
 	 */
 	@Override
 	public Tile getNext() {
+		final Tile dest = Walking.getDestination();
 		for (int i = tiles.length - 1; i >= 0; --i) {
-			final Tile dest = Walking.getDestination();
 			if (tiles[i].isOnMap() && (tiles[i].canReach() || (i != 0 && (dest.getX() != -1 ? Calculations.distance(dest, tiles[i - 1]) < 3 : Calculations.distanceTo(tiles[i - 1]) < 7)))) {
 				return tiles[i];
 			}
