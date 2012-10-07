@@ -13,10 +13,9 @@ import java.util.Scanner;
  * No external libs required.
  *
  * @author Aion
- * @version 1.0.4
- * @since 17/08/12
  */
 public final class GeItem {
+
 	public static final String HOST = "http://services.runescape.com";
 
 	public static final String[] QUERIES = {
@@ -63,6 +62,15 @@ public final class GeItem {
 	}
 
 	/**
+	 * Gets this item's category.
+	 *
+	 * @return the category for this item
+	 */
+	public String getCategory() {
+		return map.get("type");
+	}
+
+	/**
 	 * Gets this item's description.
 	 *
 	 * @return this item's description
@@ -78,6 +86,15 @@ public final class GeItem {
 	 */
 	public int getId() {
 		return Integer.parseInt(map.get("id"));
+	}
+
+	/**
+	 * Gets a copy of the <code>Map</code> that holds information about this <code>GeItem</code>.
+	 *
+	 * @return a <code>Map</code> holding information about this grand exchange item
+	 */
+	public Map<String, String> getMap() {
+		return new HashMap<>(map);
 	}
 
 	/**
@@ -164,7 +181,7 @@ public final class GeItem {
 			line = line.replaceAll("},", "}~").replaceAll("\",\"", "\"~\"").replaceFirst(",\"type", "~\"type");
 			// Much less hassle than making a custom JSON parser / adding external libs.
 			final String[] lines = line.replace("\"", "").split("~");
-			final Map<String, String> map = new HashMap<String, String>();
+			final Map<String, String> map = new HashMap<>();
 			for (int i = 0; i < lines.length; i++) {
 				final String[] data = lines[i].split(":", 2);
 				if (data[0].equals("{item")) {
@@ -235,17 +252,17 @@ public final class GeItem {
 			double price = Double.parseDouble(number.substring(0, number.length() - 1));
 			final double multiplier;
 			switch (number.charAt(number.length() - 1)) {
-			case 'b':
-				multiplier = 1000000000D;
-				break;
-			case 'm':
-				multiplier = 1000000D;
-				break;
-			case 'k':
-				multiplier = 1000D;
-				break;
-			default:
-				multiplier = 1D;
+				case 'b':
+					multiplier = 1000000000D;
+					break;
+				case 'm':
+					multiplier = 1000000D;
+					break;
+				case 'k':
+					multiplier = 1000D;
+					break;
+				default:
+					multiplier = 1D;
 			}
 			price *= multiplier;
 			return (int) price;
@@ -268,6 +285,7 @@ public final class GeItem {
 		sb.append("item name: ").append(getName()).append(" | ");
 		sb.append("item id: ").append(getId()).append(" | ");
 		sb.append("description: ").append(getDescription()).append(" | ");
+		sb.append("category: ").append(getCategory()).append(" | ");
 		sb.append("member: ").append(isMember()).append(" | ");
 		sb.append("price: ").append(getPrice()).append(" | ");
 		sb.append("change[today: ").append(getTodayChange()).append(" | ");
@@ -278,4 +296,5 @@ public final class GeItem {
 		sb.append("large: ").append(getSpriteURL(true).toString()).append("]]");
 		return sb.toString();
 	}
+
 }
