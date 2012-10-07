@@ -499,7 +499,10 @@ public class WidgetChild implements Entity, Identifiable {
 	}
 
 	public void draw(final Graphics render) {
-		//TODO
+		final Polygon[] p = getBounds();
+		if (p.length == 1) {
+			render.drawPolygon(p[0]);
+		}
 	}
 
 	public Point getCentralPoint() {

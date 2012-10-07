@@ -1,5 +1,6 @@
 package org.powerbot.game.api.wrappers.node;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Polygon;
@@ -110,6 +111,10 @@ public class GroundItem implements Entity, Locatable, Identifiable {
 	}
 
 	public void draw(final Graphics render) {
-		//TODO
+		final RegionOffset offset = getRegionOffset();
+		final Point p = Calculations.groundToScreen(offset.getX(), offset.getY(), offset.getPlane(), 0);
+
+		render.setColor(Color.magenta);
+		render.fillRect(p.x - 3, p.y - 3, 6, 6);
 	}
 }

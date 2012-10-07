@@ -207,7 +207,7 @@ public class Inventory {
 	 * @param item The item to select.
 	 * @return <tt>true</tt> if the item was selected; otherwise <tt>false</tt>.
 	 */
-	public static boolean selectItem(final Item item) {//TODO fix index 0
+	public static boolean selectItem(final Item item) {
 		final int itemID = item.getId();
 		Item selItem = getSelectedItem();
 		if (selItem != null && selItem.getId() == itemID) {

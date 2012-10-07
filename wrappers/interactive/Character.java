@@ -1,5 +1,6 @@
 package org.powerbot.game.api.wrappers.interactive;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Polygon;
@@ -337,7 +338,14 @@ public abstract class Character implements Entity, Locatable, Rotatable, Identif
 	}
 
 	public void draw(final Graphics render) {
-		//TODO
+		final RSCharacter character = get();
+		if (character != null) {
+			final RegionOffset offset = getRegionOffset();
+			final Point p = Calculations.groundToScreen(offset.getX(), offset.getY(), offset.getPlane(), getHeight() / 2);
+
+			render.setColor(Color.red);
+			render.fillRect(p.x - 3, p.y - 3, 6, 6);
+		}
 	}
 
 	@Override
