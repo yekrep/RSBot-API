@@ -499,8 +499,6 @@ public class Inventory {
 			if (getSelectedItem() != null) {
 				// Somehow, we couldn't deselect the item.
 				return false;
-			} else if (item == null) {
-				return true;
 			}
 		}
 		if (item == null) {
