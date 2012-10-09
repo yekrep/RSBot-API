@@ -42,7 +42,7 @@ import org.powerbot.util.Configuration;
  * @author Timer
  */
 @SuppressWarnings("deprecation")
-public final class Bot implements Runnable {
+public final class Bot implements Runnable {//TODO re-write bot
 	static final Logger log = Logger.getLogger(Bot.class.getName());
 	private static Bot instance;
 

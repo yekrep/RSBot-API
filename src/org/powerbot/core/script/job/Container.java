@@ -26,6 +26,13 @@ public interface Container {
 	public boolean isPaused();
 
 	/**
+	 * Enumerates an array containing all living instances of {@link Job}.
+	 *
+	 * @return The {@link Job}[] containing living jobs within this container.
+	 */
+	public Job[] enumerate();
+
+	/**
 	 * @return Evaluates the number of living instances of {@link Job} within this container.
 	 */
 	public int getActiveCount();

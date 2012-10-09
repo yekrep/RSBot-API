@@ -94,6 +94,11 @@ public class TaskContainer implements Container {
 		return paused;
 	}
 
+	@Override
+	public Job[] enumerate() {
+		return jobs.toArray(new Job[jobs.size()]);
+	}
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -200,7 +205,8 @@ public class TaskContainer implements Container {
 				notifyListeners(job, true);
 				try {
 					job.work();
-				} catch (final Throwable ignored) {
+				} catch (final Throwable e) {
+					e.printStackTrace();
 					//TODO uncaught exception
 				}
 				jobs.remove(job);

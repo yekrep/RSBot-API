@@ -40,9 +40,9 @@ public abstract class Task implements Job {
 		try {
 			execute();
 		} catch (final ThreadDeath ignored) {
-		} catch (final Throwable ignored) {
-			//TODO uncaught
-			ignored.printStackTrace();
+		} catch (final Throwable e) {
+			//TODO uncaught exception
+			e.printStackTrace();
 		}
 		alive = false;
 	}
