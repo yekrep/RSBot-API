@@ -15,7 +15,6 @@ import java.util.Scanner;
  * @author Aion
  */
 public final class GeItem {
-
 	public static final String HOST = "http://services.runescape.com";
 
 	public static final String[] QUERIES = {
@@ -252,17 +251,17 @@ public final class GeItem {
 			double price = Double.parseDouble(number.substring(0, number.length() - 1));
 			final double multiplier;
 			switch (number.charAt(number.length() - 1)) {
-				case 'b':
-					multiplier = 1000000000D;
-					break;
-				case 'm':
-					multiplier = 1000000D;
-					break;
-				case 'k':
-					multiplier = 1000D;
-					break;
-				default:
-					multiplier = 1D;
+			case 'b':
+				multiplier = 1000000000D;
+				break;
+			case 'm':
+				multiplier = 1000000D;
+				break;
+			case 'k':
+				multiplier = 1000D;
+				break;
+			default:
+				multiplier = 1D;
 			}
 			price *= multiplier;
 			return (int) price;
@@ -296,5 +295,4 @@ public final class GeItem {
 		sb.append("large: ").append(getSpriteURL(true).toString()).append("]]");
 		return sb.toString();
 	}
-
 }
