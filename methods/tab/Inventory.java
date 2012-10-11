@@ -55,7 +55,7 @@ public class Inventory {
 	 * @deprecated use {@link #contains(int...)}
 	 */
 	public static boolean contains(final int id) {
-		return contains(new int[] { id });
+		return contains(new int[]{id});
 	}
 
 	/**
@@ -84,7 +84,7 @@ public class Inventory {
 	 * Drags the inventory item whose id matches with the provided id to the specified inventory slot.
 	 *
 	 * @param itemId the id of the item to drag
-	 * @param slot the inventory slot
+	 * @param slot   the inventory slot
 	 */
 	public static void dragItem(final int itemId, final int slot) {
 		dragItem(getItem(itemId), slot);
@@ -189,14 +189,14 @@ public class Inventory {
 	 * @deprecated use {@link #getCount(boolean, int...)}
 	 */
 	public static int getCount(final boolean includeStacks, final int id) {
-		return getCount(includeStacks, new int[] { id });
+		return getCount(includeStacks, new int[]{id});
 	}
 
 	/**
 	 * Gets the count of inventory items whose id matches with any of the provided ids.
 	 *
 	 * @param includeStacks <tt>true</tt> to include stack sizes; otherwise <tt>false</tt>
-	 * @param ids the ids to look for
+	 * @param ids           the ids to look for
 	 * @return the count of inventory items whose id matches with any of the provided ids
 	 */
 	public static int getCount(final boolean includeStacks, final int... ids) {
@@ -216,7 +216,7 @@ public class Inventory {
 	 * Gets the count of all inventory items accepted by the provided filter.
 	 *
 	 * @param includeStacks <tt>true</tt> to include stack sizes; otherwise <tt>false</tt>
-	 * @param filter the filter to use
+	 * @param filter        the filter to use
 	 * @return the count of inventory items accepted by the filter
 	 */
 	public static int getCount(final boolean includeStacks, final Filter<Item> filter) {
@@ -226,7 +226,7 @@ public class Inventory {
 		}
 		return count;
 	}
-	
+
 	/**
 	 * Gets the first inventory item whose id matches with any of the provided ids.
 	 *
@@ -312,7 +312,7 @@ public class Inventory {
 	 * Gets all inventory items that are accepted by the provided filter.
 	 *
 	 * @param useCache <tt>true</tt> to get a cached version of the inventory items; otherwise <tt>false</tt>
-	 * @param filter the filter to use
+	 * @param filter   the filter to use
 	 * @return an array of <code>Item</code>
 	 */
 	public static Item[] getItems(final boolean useCache, final Filter<Item> filter) {
@@ -398,7 +398,7 @@ public class Inventory {
 	 * Returns the index of the first occurrence of an inventory item whose id matches with any of the provided ids.
 	 *
 	 * @param useCache <tt>true</tt> to get a cached version of the inventory items; otherwise <tt>false</tt>
-	 * @param ids the ids to look for
+	 * @param ids      the ids to look for
 	 * @return the index of the first occurrence of an inventory item whose id matches with any of the provided ids or -1
 	 */
 	public static int indexOf(final boolean useCache, final int... ids) {
@@ -432,7 +432,7 @@ public class Inventory {
 	 * Returns the index of the first occurrence of an inventory item whose name matches with the provided item name.
 	 *
 	 * @param useCache <tt>true</tt> to get a cached version of inventory items; otherwise <tt>false</tt>
-	 * @param name the item name
+	 * @param name     the item name
 	 * @return the index of the first occurrence of an inventory item whose name matches with the provided item name or -1
 	 */
 	public static int indexOf(final boolean useCache, final String name) {
