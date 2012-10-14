@@ -16,7 +16,6 @@ import org.powerbot.game.bot.handler.input.MouseExecutor;
 import org.powerbot.game.bot.util.ScreenCapture;
 import org.powerbot.game.client.Client;
 import org.powerbot.game.loader.applet.Rs2Applet;
-import org.powerbot.gui.BotChrome;
 import org.powerbot.service.NetworkAccount;
 
 public class Context {//TODO remove idea of a 'context'
