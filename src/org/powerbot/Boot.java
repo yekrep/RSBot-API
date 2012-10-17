@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.net.URLStreamHandler;
 import java.net.URLStreamHandlerFactory;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -166,11 +168,20 @@ public class Boot implements Runnable {
 		if (!options.contains("-XX:MaxPermSize=")) {
 			options += " -XX:MaxPermSize=" + Math.max(256, Runtime.getRuntime().maxMemory() / 1024 / 1024 / 4) + "m";
 		}
-		for (final String flag : new String[]{"-XX:+UseConcMarkSweepGC", "-XX:+CMSClassUnloadingEnabled", "-XX:+UseCodeCacheFlushing", "-XX:-UseSplitVerifier"}) {
+
+		final List<String> flags = new ArrayList<String>(4);
+		flags.add("-XX:+CMSClassUnloadingEnabled");
+		flags.add("-XX:+UseCodeCacheFlushing");
+		flags.add("-XX:-UseSplitVerifier");
+		if (Runtime.getRuntime().availableProcessors() > 1) {
+			flags.add("-XX:+UseConcMarkSweepGC");
+		}
+		for (final String flag : flags) {
 			if (!options.contains(flag)) {
 				options += " " + flag;
 			}
 		}
+
 		if (!args.contains(SWITCH_RESTARTED)) {
 			args += " " + SWITCH_RESTARTED;
 		}
