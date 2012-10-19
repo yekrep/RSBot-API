@@ -186,13 +186,6 @@ public class Inventory {
 	}
 
 	/**
-	 * @deprecated use {@link #getCount(boolean, int...)}
-	 */
-	public static int getCount(final boolean includeStacks, final int id) {
-		return getCount(includeStacks, new int[]{id});
-	}
-
-	/**
 	 * Gets the count of inventory items whose id matches with any of the provided ids.
 	 *
 	 * @param includeStacks <tt>true</tt> to include stack sizes; otherwise <tt>false</tt>
