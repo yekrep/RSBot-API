@@ -10,7 +10,7 @@ import org.powerbot.concurrent.strategy.Strategy;
 import org.powerbot.concurrent.strategy.StrategyGroup;
 import org.powerbot.core.script.job.Job;
 import org.powerbot.core.script.job.Task;
-import org.powerbot.util.Configuration;
+import org.powerbot.game.bot.Context;
 
 /**
  * @author Timer
@@ -93,6 +93,10 @@ public abstract class ActiveScript extends org.powerbot.core.script.ActiveScript
 
 	@Override
 	public int loop() {
+		if (Context.resolve().getClient() == null) {
+			return 500;
+		}
+
 		try {
 			final List<Job> jobs = new LinkedList<>();
 
@@ -102,8 +106,13 @@ public abstract class ActiveScript extends org.powerbot.core.script.ActiveScript
 				if (getContainer().isPaused()) {
 					break;
 				}
-				if (strategy.tasks == null || !strategy.validate() ||
-						(strategy.sync && !strategy.isIdle())) {
+				try {
+					if (strategy.tasks == null || !strategy.validate() ||
+							(strategy.sync && !strategy.isIdle())) {
+						continue;
+					}
+				} catch (final Exception e) {
+					e.printStackTrace();
 					continue;
 				}
 				for (final Runnable task : strategy.tasks) {
@@ -127,11 +136,10 @@ public abstract class ActiveScript extends org.powerbot.core.script.ActiveScript
 			}
 			Task.sleep(iterationSleep);
 		} catch (final ThreadDeath death) {
+			death.printStackTrace();
 			return -1;
 		} catch (final Exception t) {
-			if (Configuration.DEVMODE) {
-				t.printStackTrace();
-			}
+			t.printStackTrace();
 		}
 		return 0;
 	}
