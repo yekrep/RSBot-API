@@ -2,12 +2,8 @@ package org.powerbot.gui.component;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -15,12 +11,10 @@ import java.util.logging.Logger;
 
 import javax.swing.Box;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.JToolBar;
-import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
@@ -41,7 +35,7 @@ import org.powerbot.util.io.Resources;
 public final class BotToolBar extends JToolBar implements ActionListener {
 	private static final long serialVersionUID = 1L;
 	public final BotChrome parent;
-	public final JButton botButton, tabAdd, scriptPlay, scriptStop, panelInput;
+	public final BotHoverLabel botButton, tabAdd, scriptPlay, scriptStop, panelInput;
 
 	public BotToolBar(final BotChrome parent) {
 		this.parent = parent;
@@ -49,11 +43,17 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 		setBorder(new EmptyBorder(1, 3, 1, 3));
 		setBackground(Color.BLACK);
 
-		botButton = new BotButton("Game");
+		botButton = new BotHoverLabel(Resources.Paths.CROSS_SMALL_GRAY, Resources.Paths.CROSS_SMALL);
+		botButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				closeTab(true);
+			}
+		});
 		botButton.setVisible(false);
 		add(botButton);
 
-		tabAdd = new JButton(new ImageIcon(Resources.getImage(Resources.Paths.ADD_WHITE)));
+		tabAdd = new BotHoverLabel(Resources.Paths.ADD_WHITE, Resources.Paths.ADD_HIGHLIGHT);
 		tabAdd.setEnabled(false);
 		tabAdd.setBackground(getBackground());
 		tabAdd.addActionListener(new ActionListener() {
@@ -78,7 +78,7 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 
 		add(Box.createHorizontalGlue());
 
-		scriptPlay = new JButton(new ImageIcon(Resources.getImage(Resources.Paths.PLAY)));
+		scriptPlay = new BotHoverLabel(Resources.Paths.PLAY, Resources.Paths.PLAY_HIGHIGHT);
 		scriptPlay.setBackground(getBackground());
 		scriptPlay.addActionListener(this);
 		scriptPlay.setToolTipText(BotLocale.PLAYSCRIPT);
@@ -86,14 +86,16 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 		scriptPlay.setVisible(false);
 		scriptPlay.setEnabled(false);
 		add(scriptPlay);
-		scriptStop = new JButton(new ImageIcon(Resources.getImage(Resources.Paths.STOP)));
+		add(Box.createHorizontalStrut(4));
+		scriptStop = new BotHoverLabel(Resources.Paths.STOP, Resources.Paths.STOP_HIGHLIGHT);
 		scriptStop.setBackground(getBackground());
 		scriptStop.addActionListener(this);
 		scriptStop.setToolTipText(BotLocale.STOPSCRIPT);
 		scriptStop.setFocusable(false);
 		scriptStop.setVisible(false);
 		add(scriptStop);
-		panelInput = new JButton(new ImageIcon(Resources.getImage(Resources.Paths.KEYBOARD_WHITE)));
+		add(Box.createHorizontalStrut(16));
+		panelInput = new BotHoverLabel(Resources.Paths.KEYBOARD_WHITE, Resources.Paths.KEYBOARD_HIGHLIGHT);
 		panelInput.setBackground(getBackground());
 		panelInput.addActionListener(this);
 		panelInput.setToolTipText(BotLocale.INPUT);
@@ -102,7 +104,7 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 		add(Box.createHorizontalStrut(16));
 
 		final BotToolBar t = this;
-		final JButton settings = new JButton(new ImageIcon(Resources.getImage(Resources.Paths.SETTINGS_WHITE)));
+		final BotHoverLabel settings = new BotHoverLabel(Resources.Paths.SETTINGS_WHITE, Resources.Paths.SETTINGS_HIGHLIGHT);
 		settings.setBackground(getBackground());
 		settings.addActionListener(new ActionListener() {
 			public void actionPerformed(final ActionEvent arg0) {
@@ -258,45 +260,6 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 			scriptPlay.setIcon(new ImageIcon(Resources.getImage(running ? Resources.Paths.PAUSE : Resources.Paths.PLAY)));
 			scriptPlay.setToolTipText(running ? BotLocale.PAUSESCRIPT : active ? BotLocale.RESUMESCRIPT : BotLocale.PLAYSCRIPT);
 			scriptStop.setEnabled(active);
-		}
-	}
-
-	private final class BotButton extends JButton {
-		private static final long serialVersionUID = 1L;
-
-		public BotButton(final String name) {
-			super(name);
-			setBackground(Color.BLACK);
-			setForeground(Color.WHITE);
-			setFont(getFont().deriveFont(Font.BOLD));
-			setFocusable(false);
-			setHorizontalTextPosition(SwingConstants.LEFT);
-			setIcon(new ImageIcon(Resources.getImage(Resources.Paths.CROSS_SMALL_GRAY)));
-			addMouseMotionListener(new MouseMotionAdapter() {
-				@Override
-				public void mouseMoved(final MouseEvent e) {
-					if (e.getX() > getWidth() - getIcon().getIconWidth()
-							&& e.getX() < getWidth() - getIconTextGap()) {
-						setIcon(new ImageIcon(Resources.getImage(Resources.Paths.CROSS_SMALL)));
-					} else {
-						setIcon(new ImageIcon(Resources.getImage(Resources.Paths.CROSS_SMALL_GRAY)));
-					}
-				}
-			});
-			addMouseListener(new MouseAdapter() {
-				@Override
-				public void mouseClicked(final MouseEvent e) {
-					if (e.getX() > getWidth() - getIcon().getIconWidth()
-							&& e.getX() < getWidth() - getIconTextGap()) {
-						closeTab(false);
-					}
-				}
-
-				@Override
-				public void mouseExited(final MouseEvent e) {
-					setIcon(new ImageIcon(Resources.getImage(Resources.Paths.CROSS_SMALL_GRAY)));
-				}
-			});
 		}
 	}
 }
