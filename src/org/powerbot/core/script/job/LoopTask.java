@@ -11,6 +11,8 @@ package org.powerbot.core.script.job;
  * @author Timer
  */
 public abstract class LoopTask extends Task {
+	private boolean paused;
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -18,9 +20,11 @@ public abstract class LoopTask extends Task {
 	public final void execute() {
 		while (!getContainer().isShutdown()) {
 			if (getContainer().isPaused()) {
+				paused = true;
 				Task.sleep(1000);
 				continue;
 			}
+			paused = false;
 
 			int time;
 			try {
@@ -45,4 +49,8 @@ public abstract class LoopTask extends Task {
 	 * @return The amount of time to sleep before the next iteration.
 	 */
 	public abstract int loop();
+
+	public boolean isPaused() {
+		return paused;
+	}
 }
