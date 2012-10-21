@@ -23,7 +23,7 @@ public class ScriptHandler {
 	private ScriptDefinition def;
 	public long started;
 
-	private Container container;
+	private Container scriptContainer, randomContainer;
 	private RandomHandler randomHandler;
 
 	public ScriptHandler(final EventManager eventManager) {
@@ -42,7 +42,8 @@ public class ScriptHandler {
 		this.script = script;
 
 		/* Register listener */
-		script.getContainer().addListener(new JobListener() {
+		scriptContainer = script.getContainer();
+		scriptContainer.addListener(new JobListener() {
 			private boolean stopped = false;
 
 			@Override
@@ -66,7 +67,7 @@ public class ScriptHandler {
 		started = System.currentTimeMillis();
 
 		/* Submit the random handler */
-		(container = new TaskContainer()).submit(randomHandler = new RandomHandler(this));
+		(randomContainer = new TaskContainer()).submit(randomHandler = new RandomHandler(this));
 		/* Track the script start */
 		track("");
 		return true;
@@ -88,7 +89,7 @@ public class ScriptHandler {
 
 	public void shutdown() {
 		if (script != null) {
-			container.shutdown();
+			randomContainer.shutdown();
 			script.shutdown();
 			track("stop");
 		}
@@ -96,7 +97,7 @@ public class ScriptHandler {
 
 	public void stop() {
 		if (script != null) {
-			container.shutdown();
+			randomContainer.shutdown();
 			script.stop();
 			track("kill");
 		}
@@ -120,6 +121,10 @@ public class ScriptHandler {
 
 	public RandomHandler getRandomHandler() {
 		return randomHandler;
+	}
+
+	public Container getScriptContainer() {
+		return scriptContainer;
 	}
 
 	private void track(final String action) {
