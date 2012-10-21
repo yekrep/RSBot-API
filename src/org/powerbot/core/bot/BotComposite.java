@@ -1,11 +1,16 @@
 package org.powerbot.core.bot;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 import org.powerbot.core.bot.handlers.ScriptHandler;
 import org.powerbot.core.event.EventManager;
 import org.powerbot.core.event.EventMulticaster;
+import org.powerbot.core.script.job.Job;
+import org.powerbot.core.script.job.LoopTask;
+import org.powerbot.core.script.job.Task;
 import org.powerbot.game.api.methods.Calculations;
 import org.powerbot.game.api.util.internal.Constants;
 import org.powerbot.game.api.util.internal.Multipliers;
@@ -73,10 +78,22 @@ public class BotComposite {//TODO remove the use of a composite ... export data 
 		this.viewport.zZ = viewport[constants.VIEWPORT_ZZ];
 	}
 
-	public void reload() {//TODO let script come to a complete pause first
+	public void reload() {
 		Bot.log.info("Refreshing environment");
 		if (scriptHandler != null && scriptHandler.isActive()) {
 			scriptHandler.pause();
+
+			final Job[] jobs = scriptHandler.getScriptContainer().enumerate();
+			final List<LoopTask> loopTasks = new ArrayList<>();
+			for (final Job job : jobs) {
+				if (job instanceof LoopTask) loopTasks.add((LoopTask) job);
+			}
+			final long mark = System.currentTimeMillis();
+			for (final LoopTask task : loopTasks) {
+				while (!task.isPaused() && task.isAlive() && System.currentTimeMillis() - mark < 120000) {
+					Task.sleep(150);
+				}
+			}
 		}
 
 		bot.terminateApplet();
