@@ -617,7 +617,6 @@ public final class BotScripts extends JDialog implements ActionListener {
 						return;
 					}
 					final Manifest manifest = script.getClass().getAnnotation(Manifest.class);
-					final ScriptDefinition def = new ScriptDefinition(manifest);
 					if (manifest != null && manifest.singleinstance() && n > 0) {
 						JOptionPane.showMessageDialog(BotScripts.this, "This script can only be used on one account at a time.");
 						return;
