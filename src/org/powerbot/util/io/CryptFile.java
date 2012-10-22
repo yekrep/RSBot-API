@@ -174,7 +174,7 @@ public final class CryptFile {
 			for (int i = 0; i < 8; i++) {
 				md.update((byte) ((uid >> (i << 3)) & 0xff));
 			}
-			hash = StringUtil.byteArrayToHexString(md.digest()).substring(0, 6);
+			hash = StringUtil.byteArrayToHexString(md.digest()).substring(0, 12);
 		} catch (final NoSuchAlgorithmException ignored) {
 			final Adler32 c = new Adler32();
 			c.update(StringUtil.getBytesUtf8(id));
