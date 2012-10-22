@@ -188,8 +188,7 @@ public final class CryptFile {
 			hash = Integer.toHexString(id.hashCode());
 		}
 
-		final String name = hash + ".tmp";
-		final File file = new File(System.getProperty("java.io.tmpdir"), name);
+		final File file = new File(System.getProperty("java.io.tmpdir"), hash);
 
 		if (file.isFile() && file.lastModified() < TIMESTAMP) {
 			file.delete();
