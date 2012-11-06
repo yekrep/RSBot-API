@@ -20,6 +20,7 @@ public class Configuration {
 	public static boolean DEVMODE = false;
 	public static final boolean SUPERDEV;
 	public static final int VERSION = 4040;
+	public static volatile int VERSION_LATEST = -1;
 	public static final OperatingSystem OS;
 
 	public enum OperatingSystem {

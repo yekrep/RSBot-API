@@ -30,6 +30,7 @@ public final class LoadUpdates implements Callable<Boolean> {
 			log.log(Level.SEVERE, String.format("A newer version is available, please download from %s", BotLocale.WEBSITE), "Update");
 			return false;
 		}
+		Configuration.VERSION_LATEST = version;
 		return true;
 	}
 }

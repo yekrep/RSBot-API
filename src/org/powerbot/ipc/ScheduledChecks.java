@@ -8,6 +8,7 @@ import org.powerbot.core.bot.Bot;
 import org.powerbot.core.bot.handlers.ScriptHandler;
 import org.powerbot.service.NetworkAccount;
 import org.powerbot.service.scripts.ScriptDefinition;
+import org.powerbot.util.Configuration;
 import org.powerbot.util.Tracker;
 
 /**
@@ -35,6 +36,10 @@ public final class ScheduledChecks implements ActionListener {
 				log.info("Local script stopped after timeout for unauthorised developer");
 				script.stop();
 			}
+		}
+
+		if (Configuration.VERSION < Configuration.VERSION_LATEST || Configuration.VERSION_LATEST == -1) {
+			System.exit(1);
 		}
 	}
 }
