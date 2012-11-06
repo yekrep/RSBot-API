@@ -354,7 +354,7 @@ public final class BotScripts extends JDialog implements ActionListener {
 		}
 
 		final Map<String, Map<String, String>> manifests = IniParser.deserialise(HttpClient.openStream(Configuration.URLs.SCRIPTSCOLLECTION, NetworkAccount.getInstance().getAccount().getAuth()));
-		final boolean vip = NetworkAccount.getInstance().isVIP();
+		final boolean vip = NetworkAccount.getInstance().hasPermission(NetworkAccount.Permissions.VIP);
 		for (final Entry<String, Map<String, String>> entry : manifests.entrySet()) {
 			final Map<String, String> params = entry.getValue();
 			if (params.containsKey("vip") && IniParser.parseBool(params.get("vip")) && !vip) {

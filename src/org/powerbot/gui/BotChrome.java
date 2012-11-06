@@ -168,7 +168,7 @@ public class BotChrome extends JFrame implements WindowListener {
 						parent.add(parent.toolbar, BorderLayout.NORTH);
 						parent.validate();
 						parent.repaint();
-						parent.panel.loadingPanel.setAdVisible(!NetworkAccount.getInstance().isVIP());
+						parent.panel.loadingPanel.setAdVisible(!NetworkAccount.getInstance().hasPermission(NetworkAccount.Permissions.VIP));
 						Logger.getLogger(BotChrome.class.getName()).log(Level.INFO, "Add a tab to start a new bot", "Welcome");
 					}
 				});

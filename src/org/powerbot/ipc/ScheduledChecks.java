@@ -31,7 +31,7 @@ public final class ScheduledChecks implements ActionListener {
 			final ScriptDefinition definition;
 			if ((definition = script.getDefinition()) != null && definition.local &&
 					script.started < System.currentTimeMillis() - 1000 * LOCALSCRIPT_TIMEOUT && script.isActive() &&
-					!NetworkAccount.getInstance().isDeveloper()) {
+					!NetworkAccount.getInstance().hasPermission(NetworkAccount.Permissions.DEVELOPER)) {
 				log.info("Local script stopped after timeout for unauthorised developer");
 				script.stop();
 			}

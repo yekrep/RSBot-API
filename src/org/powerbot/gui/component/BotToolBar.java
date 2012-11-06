@@ -191,11 +191,11 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 		final int n = Controller.getInstance().getRunningInstances();
 		final Logger log = Logger.getLogger(BotChrome.class.getName());
 		log.info(BotLocale.LOADINGTAB);
-		if (!NetworkAccount.getInstance().isVIP() && Configuration.isServerOS()) {
+		if (!NetworkAccount.getInstance().hasPermission(NetworkAccount.Permissions.VIP) && Configuration.isServerOS()) {
 			log.info(BotLocale.NEEDVIPVPS);
 		} else if (n > 0 && !NetworkAccount.getInstance().isLoggedIn()) {
 			log.severe(BotLocale.NEEDSIGNINMULTITAB);
-		} else if (n > 2 && !NetworkAccount.getInstance().isVIP()) {
+		} else if (n > 2 && !NetworkAccount.getInstance().hasPermission(NetworkAccount.Permissions.VIP)) {
 			log.severe(BotLocale.NEEDVIPMULTITAB);
 		} else {
 			if (s > 0) {

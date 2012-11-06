@@ -45,12 +45,8 @@ public final class NetworkAccount {
 		return account != null && account.getID() != 0;
 	}
 
-	public boolean isVIP() {
-		return account != null && account.isVIP();
-	}
-
-	public boolean isDeveloper() {
-		return account != null && account.isDeveloper();
+	public boolean hasPermission(final int permission) {
+		return account != null && (account.getPermissions() & permission) == permission;
 	}
 
 	public Account getAccount() {
@@ -172,14 +168,6 @@ public final class NetworkAccount {
 
 		public int[] getGroupIDs() {
 			return groups;
-		}
-
-		public boolean isVIP() {
-			return (permissions & Permissions.VIP) == Permissions.VIP;
-		}
-
-		public boolean isDeveloper() {
-			return (permissions & Permissions.DEVELOPER) == Permissions.DEVELOPER;
 		}
 
 		public Map<String, String> getMap() {
