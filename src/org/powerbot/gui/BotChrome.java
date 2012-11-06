@@ -28,6 +28,7 @@ import org.powerbot.gui.component.BotPanel;
 import org.powerbot.gui.component.BotToolBar;
 import org.powerbot.service.NetworkAccount;
 import org.powerbot.util.Configuration;
+import org.powerbot.util.LoadAds;
 import org.powerbot.util.LoadUpdates;
 import org.powerbot.util.Tracker;
 import org.powerbot.util.io.Resources;
@@ -77,6 +78,7 @@ public class BotChrome extends JFrame implements WindowListener {
 		final List<Future<Boolean>> tasks = new ArrayList<Future<Boolean>>();
 		tasks.add(exec.submit(new LoadUpdates()));
 		tasks.add(exec.submit(new LoadAccount()));
+		tasks.add(exec.submit(new LoadAds()));
 		exec.execute(new LoadComplete(this, tasks));
 		exec.shutdown();
 	}
@@ -168,7 +170,6 @@ public class BotChrome extends JFrame implements WindowListener {
 						parent.add(parent.toolbar, BorderLayout.NORTH);
 						parent.validate();
 						parent.repaint();
-						parent.panel.loadingPanel.setAdVisible(!NetworkAccount.getInstance().hasPermission(NetworkAccount.Permissions.VIP));
 						Logger.getLogger(BotChrome.class.getName()).log(Level.INFO, "Add a tab to start a new bot", "Welcome");
 					}
 				});
