@@ -218,6 +218,11 @@ public class RestrictedSecurityManager extends SecurityManager {
 		}
 
 		log.severe((readOnly ? "Read" : "Write") + " denied: " + path + " on " + Thread.currentThread().getName() + "/" + Thread.currentThread().getThreadGroup().getName());
+		if (Configuration.SUPERDEV) {
+			for (final Class<?> clazz : getClassContext()) {
+				log.severe("\t" + clazz.getName());
+			}
+		}
 		throw new SecurityException();
 	}
 
