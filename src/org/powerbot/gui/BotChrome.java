@@ -21,11 +21,13 @@ import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 import javax.swing.WindowConstants;
 
 import org.powerbot.core.bot.Bot;
 import org.powerbot.gui.component.BotPanel;
 import org.powerbot.gui.component.BotToolBar;
+import org.powerbot.ipc.ScheduledChecks;
 import org.powerbot.service.NetworkAccount;
 import org.powerbot.util.Configuration;
 import org.powerbot.util.LoadAds;
@@ -166,6 +168,11 @@ public class BotChrome extends JFrame implements WindowListener {
 				SwingUtilities.invokeLater(new Runnable() {
 					@Override
 					public void run() {
+						final Timer timer = new Timer(1000 * 60 * 1, new ScheduledChecks());
+						timer.setCoalesce(false);
+						timer.setInitialDelay(1000 * 60 * 1);
+						timer.start();
+
 						parent.remove(parent.header);
 						parent.add(parent.toolbar, BorderLayout.NORTH);
 						parent.validate();

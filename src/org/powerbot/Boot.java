@@ -12,14 +12,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.JOptionPane;
-import javax.swing.Timer;
 import javax.swing.UIManager;
 
 import org.powerbot.game.loader.applet.Rs2Applet;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.gui.component.BotLocale;
 import org.powerbot.ipc.Controller;
-import org.powerbot.ipc.ScheduledChecks;
 import org.powerbot.util.Configuration;
 import org.powerbot.util.Configuration.OperatingSystem;
 import org.powerbot.util.RestrictedSecurityManager;
@@ -138,11 +136,6 @@ public class Boot implements Runnable {
 			System.setProperty("sun.net.spi.nameservice.nameservers", RestrictedSecurityManager.DNS1 + "," + RestrictedSecurityManager.DNS2);
 			System.setProperty("sun.net.spi.nameservice.provider.1", "dns,sun");
 		}
-
-		final Timer timer = new Timer(1000 * 60 * 10, new ScheduledChecks());
-		timer.setCoalesce(false);
-		timer.setInitialDelay(1000 * 60 * 1);
-		timer.start();
 
 		final BotChrome chrome = BotChrome.getInstance();
 		if (newtab) {
