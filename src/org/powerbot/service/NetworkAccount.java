@@ -166,10 +166,6 @@ public final class NetworkAccount {
 			return permissions;
 		}
 
-		public int[] getGroupIDs() {
-			return groups;
-		}
-
 		public Map<String, String> getMap() {
 			final Map<String, String> data = new HashMap<String, String>();
 			data.put("member_id", Integer.toString(id));
