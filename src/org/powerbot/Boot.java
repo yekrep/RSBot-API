@@ -15,6 +15,7 @@ import javax.swing.JOptionPane;
 import javax.swing.Timer;
 import javax.swing.UIManager;
 
+import org.powerbot.game.loader.applet.Rs2Applet;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.gui.component.BotLocale;
 import org.powerbot.ipc.Controller;
@@ -131,7 +132,7 @@ public class Boot implements Runnable {
 
 		StringUtil.newStringUtf8(null); // prevents ClassCircularityError exceptions
 		CryptFile.PERMISSIONS.clear();
-		System.setSecurityManager(new RestrictedSecurityManager());
+		System.setSecurityManager(new RestrictedSecurityManager(Rs2Applet.class));
 		System.setProperty("java.net.preferIPv4Stack", "true");
 		if (!Configuration.URLs.TESTING) {
 			System.setProperty("sun.net.spi.nameservice.nameservers", RestrictedSecurityManager.DNS1 + "," + RestrictedSecurityManager.DNS2);

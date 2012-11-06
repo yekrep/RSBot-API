@@ -19,6 +19,11 @@ public class RestrictedSecurityManager extends SecurityManager {
 	private static final Logger log = Logger.getLogger("Security");
 	public static final String DNS1 = "8.8.8.8", DNS2 = "8.8.4.4";
 	private static final int PUBLIC_PORT_START = 54700, PUBLIC_PORT_END = 54800;
+	private final Class<?>[] whitelist;
+
+	public RestrictedSecurityManager(final Class<?>... whitelist) {
+		this.whitelist = whitelist;
+	}
 
 	@Override
 	public void checkAccept(final String host, final int port) {
@@ -186,6 +191,10 @@ public class RestrictedSecurityManager extends SecurityManager {
 					throw new SecurityException();
 				}
 			}
+		}
+
+		if (isCallingClass(whitelist)) {
+			return;
 		}
 
 		// allow access for privileged thread groups
