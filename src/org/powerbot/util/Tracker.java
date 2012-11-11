@@ -1,15 +1,14 @@
 package org.powerbot.util;
 
 import java.awt.Dimension;
+import java.awt.GraphicsEnvironment;
 import java.awt.Toolkit;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
-import java.net.InetAddress;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.net.UnknownHostException;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map.Entry;
@@ -27,8 +26,8 @@ import org.powerbot.util.io.IOHelper;
 public final class Tracker {
 	private static Tracker instance;
 	private final Executor exec;
-	private static final String TRACKING_ID = "UA-5170375-18", PAGE_PREFIX = "/rsbot/";
-	private final String locale, arch, resolution, hostname;
+	private static final String TRACKING_ID = "UA-5170375-18", PAGE_PREFIX = "/rsbot/", HOSTNAME = "services.powerbot.org";
+	private final String locale, resolution, colours;
 	private final Random r;
 	private final int cookie, visitor;
 
@@ -36,20 +35,11 @@ public final class Tracker {
 		exec = Executors.newSingleThreadExecutor();
 
 		final Locale l = Locale.getDefault();
-		locale = l.getLanguage() + (l.getCountry().length() != 0 ? "-" + l.getCountry() : "");
-
-		arch = System.getProperty("sun.arch.data.model").equals("64") ? "64" : "32";
+		locale = (l.getLanguage() + (l.getCountry().length() != 0 ? "-" + l.getCountry() : "")).toLowerCase();
 
 		final Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
 		resolution = (int) d.getWidth() + "x" + (int) d.getHeight();
-
-		String h;
-		try {
-			h = InetAddress.getLocalHost().getHostName();
-		} catch (final UnknownHostException ignored) {
-			h = "localhost";
-		}
-		hostname = h;
+		colours = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration().getColorModel().getPixelSize() + "-bit";
 
 		r = new Random();
 		visitor = (int) (Configuration.getUID() & Integer.MAX_VALUE);
@@ -99,10 +89,10 @@ public final class Tracker {
 		s.append("http://www.google-analytics.com/__utm.gif");
 		s.append("?utmwv=4.9.4");
 		s.append("&utmn=").append(r.nextInt());
-		s.append("&utmhn=").append(hostname);
+		s.append("&utmhn=").append(HOSTNAME);
 		s.append("&utmcs=UTF-8");
 		s.append("&utmsr=").append(resolution);
-		s.append("&utmsc=").append(arch).append("-bit");
+		s.append("&utmsc=").append(colours);
 		s.append("&utmul=").append(locale);
 		s.append("&utmje=1");
 		s.append("&utmfl=10.3%20r181");
