@@ -106,7 +106,7 @@ public final class Tracker {
 		s.append("&utmul=").append(locale);
 		s.append("&utmje=1");
 		s.append("&utmfl=10.3%20r181");
-		s.append("&utmhid=").append(r.nextInt());
+		s.append("&utmhid=").append(r.nextInt() & Integer.MAX_VALUE);
 		s.append("&utmr=-");
 		s.append("&utmac=").append(TRACKING_ID);
 		s.append("&utmcc=").append(encode(utmcc.toString()));
