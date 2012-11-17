@@ -4,7 +4,7 @@ import java.awt.Canvas;
 import java.awt.Point;
 
 import org.powerbot.game.api.methods.interactive.Players;
-import org.powerbot.game.api.methods.widget.WidgetComposite;
+import org.powerbot.game.api.methods.widget.WidgetCache;
 import org.powerbot.game.api.util.internal.Multipliers;
 import org.powerbot.game.api.wrappers.Locatable;
 import org.powerbot.game.api.wrappers.RegionOffset;
@@ -144,7 +144,7 @@ public class Calculations {
 		final int calculatedX = (int) (x * 4 + 2) - (localTile.getX() << 9) / 0x80;
 		final int calculatedY = (int) (y * 4 + 2) - (localTile.getY() << 9) / 0x80;
 
-		final WidgetChild mm2 = WidgetComposite.getMap();
+		final WidgetChild mm2 = WidgetCache.getMap();
 		if (mm2 == null) {
 			return new Point(-1, -1);
 		}

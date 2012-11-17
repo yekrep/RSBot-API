@@ -1,5 +1,6 @@
 package org.powerbot.game.api.methods.widget;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,11 +15,11 @@ import org.powerbot.game.client.Client;
 /**
  * @author Timer
  */
-public class WidgetComposite {
-	private static final Map<ThreadGroup, Record> cache = new HashMap<ThreadGroup, Record>();
+public class WidgetCache {
+	private static final Map<ThreadGroup, Record> cache = Collections.synchronizedMap(new HashMap<ThreadGroup, Record>());
 
-	public static void clear(final ThreadGroup threadGroup) {
-		cache.remove(threadGroup);
+	public static void purge() {
+		cache.clear();
 	}
 
 	public static WidgetChild getCompass() {

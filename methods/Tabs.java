@@ -4,7 +4,7 @@ import java.awt.event.KeyEvent;
 
 import org.powerbot.core.script.job.Task;
 import org.powerbot.game.api.methods.input.Keyboard;
-import org.powerbot.game.api.methods.widget.WidgetComposite;
+import org.powerbot.game.api.methods.widget.WidgetCache;
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Timer;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
@@ -70,7 +70,7 @@ public enum Tabs {
 		if (fast && hasFunctionKey()) {
 			Keyboard.sendKey(KeyEvent.CHAR_UNDEFINED, getFunctionKey(), Random.nextInt(100, 300));
 		} else {
-			final WidgetChild widgetChild = WidgetComposite.getTab(this);
+			final WidgetChild widgetChild = WidgetCache.getTab(this);
 			if (widgetChild != null && widgetChild.validate()) {
 				if (widgetChild.click(true)) {
 					final Timer timer = new Timer(800);
@@ -89,7 +89,7 @@ public enum Tabs {
 
 	public static Tabs getCurrent() {
 		for (final Tabs t : Tabs.values()) {
-			final WidgetChild tab = WidgetComposite.getTab(t);
+			final WidgetChild tab = WidgetCache.getTab(t);
 			if (tab != null && tab.getTextureId() != -1) {
 				return t;
 			}

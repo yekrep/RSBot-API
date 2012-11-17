@@ -107,11 +107,11 @@ public class Camera {
 	}
 
 	public synchronized static boolean setNorth() {
-		return WidgetComposite.getCompass().click(true);
+		return WidgetCache.getCompass().click(true);
 	}
 
 	public synchronized static boolean setNorth(final int up) {
-		return WidgetComposite.getCompass().click(true) && setPitch(up);
+		return WidgetCache.getCompass().click(true) && setPitch(up);
 	}
 
 	public synchronized static void setAngle(int degrees) {
