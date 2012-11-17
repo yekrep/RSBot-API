@@ -18,7 +18,7 @@ import org.powerbot.core.event.events.TextPaintEvent;
 import org.powerbot.core.script.job.Task;
 import org.powerbot.game.api.methods.input.Keyboard;
 import org.powerbot.game.api.methods.input.Mouse;
-import org.powerbot.game.api.methods.widget.WidgetComposite;
+import org.powerbot.game.api.methods.widget.WidgetCache;
 import org.powerbot.game.api.util.internal.Constants;
 import org.powerbot.game.api.util.internal.Multipliers;
 import org.powerbot.game.bot.CallbackImpl;
@@ -124,7 +124,7 @@ public final class Bot implements Runnable {//TODO re-write bot
 		final Context previous = composite.context;
 		composite.context = new Context(this);
 		if (previous != null) {
-			WidgetComposite.clear(threadGroup);
+			WidgetCache.purge();
 			composite.context.world = previous.world;
 		}
 		Context.context.put(threadGroup, composite.context);
