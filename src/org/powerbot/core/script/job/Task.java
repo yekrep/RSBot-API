@@ -30,7 +30,7 @@ public abstract class Task implements Job {
 	public final void work() {
 		synchronized (init_lock) {
 			if (alive) {
-				return;//TODO duplicate task submission
+				throw new RuntimeException("task already running");
 			}
 			alive = true;
 		}
@@ -41,7 +41,6 @@ public abstract class Task implements Job {
 			execute();
 		} catch (final ThreadDeath ignored) {
 		} catch (final Throwable e) {
-			//TODO uncaught exception
 			e.printStackTrace();
 		}
 		alive = false;
