@@ -15,7 +15,7 @@ import org.powerbot.game.api.wrappers.widget.WidgetChild;
 public enum Tabs {
 	NONE(-1, null, -1),
 	ATTACK(0, "Combat", KeyEvent.VK_F5),
-	TASK_LIST(1, "Noticeboard", -1),
+	NOTICEBOARD(1, "Noticeboard", -1),
 	STATS(2, "Stats", -1),
 	COMBAT_ACADEMY(3, "Combat Academy", -1),
 	INVENTORY(4, "Inventory", KeyEvent.VK_F1),
