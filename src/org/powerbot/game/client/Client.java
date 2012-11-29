@@ -41,13 +41,9 @@ public interface Client {
 
 	public int getLoginIndex();
 
-	public int[] getSkillLevelMaxes();
-
 	public Object getRSGroundInfo();
 
 	public Object getCollapsedMenuItems();
-
-	public int[] getSkillExperienceMaxes();
 
 	public int getMinimapScale();
 
@@ -85,8 +81,6 @@ public interface Client {
 
 	public String getSelectedItemName();
 
-	public int[] getSkillLevels();
-
 	public Object getRSNPCNC();
 
 	public int getPlane();
@@ -114,8 +108,6 @@ public interface Client {
 	public int getLoopCycle();
 
 	public int getMenuOptionsCount();
-
-	public int[] getSkillExperiences();
 
 	public Object getRSItemDefLoader();
 
