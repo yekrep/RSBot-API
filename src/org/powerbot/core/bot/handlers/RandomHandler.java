@@ -9,26 +9,7 @@ import java.util.logging.Logger;
 
 import org.powerbot.core.randoms.AntiRandom;
 import org.powerbot.core.randoms.BankPin;
-import org.powerbot.core.randoms.Beekeeper;
-import org.powerbot.core.randoms.Certer;
-import org.powerbot.core.randoms.Chest;
-import org.powerbot.core.randoms.DrillDemon;
-import org.powerbot.core.randoms.EvilBob;
-import org.powerbot.core.randoms.EvilTwin;
-import org.powerbot.core.randoms.Exam;
-import org.powerbot.core.randoms.FirstTimeDeath;
-import org.powerbot.core.randoms.FreakyForester;
-import org.powerbot.core.randoms.Frog;
-import org.powerbot.core.randoms.GraveDigger;
 import org.powerbot.core.randoms.Login;
-import org.powerbot.core.randoms.LostAndFound;
-import org.powerbot.core.randoms.Maze;
-import org.powerbot.core.randoms.Mime;
-import org.powerbot.core.randoms.Pillory;
-import org.powerbot.core.randoms.Pinball;
-import org.powerbot.core.randoms.Quiz;
-import org.powerbot.core.randoms.SandwichLady;
-import org.powerbot.core.randoms.ScapeRune;
 import org.powerbot.core.randoms.SpinTickets;
 import org.powerbot.core.randoms.WidgetCloser;
 import org.powerbot.core.script.job.Job;
@@ -57,25 +38,6 @@ public class RandomHandler extends LoopTask {
 		randoms = new AntiRandom[]{
 				new Login(),
 				new WidgetCloser(),
-				new DrillDemon(),
-				new Mime(),
-				new Pinball(),
-				new SandwichLady(),
-				new Beekeeper(),
-				new LostAndFound(),
-				new FirstTimeDeath(),
-				new Quiz(),
-				new Frog(),
-				new Chest(),
-				new GraveDigger(),
-				new Pillory(),
-				new Certer(),
-				new FreakyForester(),
-				new EvilTwin(),
-				new EvilBob(),
-				new Maze(),
-				new Exam(),
-				new ScapeRune(),
 				new SpinTickets(),
 				new BankPin()
 		};
