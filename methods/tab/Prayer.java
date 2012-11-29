@@ -32,23 +32,31 @@ public class Prayer {
 		PROTECT_ITEM_CURSE(0, 0, 50),
 		SAP_WARRIOR(1, 1, 50),
 		SAP_RANGER(2, 2, 52),
-		SAP_MAGE(3, 3, 54),
-		SAP_SPIRIT(4, 4, 56),
-		BERSERKER(5, 5, 59),
-		DEFLECT_SUMMONING(6, 6, 62),
-		DEFLECT_MAGIC(7, 7, 65),
-		DEFLECT_MISSILE(8, 8, 68),
-		DEFLECT_MELEE(9, 9, 71),
-		LEECH_ATTACK(10, 10, 74),
-		LEECH_RANGE(11, 11, 76),
-		LEECH_MAGIC(12, 12, 78),
-		LEECH_DEFENCE(13, 13, 80),
-		LEECH_STRENGTH(14, 14, 82),
-		LEECH_ENERGY(15, 15, 84),
-		LEECH_SPECIAL_ATTACK(16, 16, 86),
-		WRATH(17, 17, 89),
-		SOUL_SPLIT(18, 18, 92),
-		TURMOIL(19, 19, 95);
+		SAP_RANGE_STRENGTH(3, 25, 53),
+		SAP_MAGE(4, 3, 54),
+		SAP_MAGIC_STRENGTH(5, 24, 55),
+		SAP_SPIRIT(6, 4, 56),
+		SAP_DEFENCE(7, 27, 57),
+		SAP_STRENGTH(8, 26, 58),
+		BERSERKER(9, 5, 59),
+		DEFLECT_SUMMONING(10, 6, 62),
+		DEFLECT_MAGIC(11, 7, 65),
+		DEFLECT_MISSILE(12, 8, 68),
+		DEFLECT_MELEE(13, 9, 71),
+		LEECH_ATTACK(14, 10, 74),
+		LEECH_RANGED(15, 11, 76),
+		LEECH_RANGE_STRENGTH(16, 20, 77),
+		LEECH_MAGIC(17, 12, 78),
+		LEECH_MAGIC_STRENGTH(18, 21, 79),
+		LEECH_DEFENCE(19, 13, 80),
+		LEECH_STRENGTH(20, 14, 82),
+		LEECH_ENERGY(21, 15, 84),
+		LEECH_ADRENALINE(22, 16, 86),
+		WRATH(23, 17, 89),
+		SOUL_SPLIT(24, 18, 92),
+		TURMOIL(25, 19, 95),
+		ANGUISH(26, 22, 95),
+		TORMENT(27, 23, 95);
 
 		private final int id, shift, level;
 
@@ -83,33 +91,39 @@ public class Prayer {
 		THICK_SKIN(0, 0, 1),
 		BURST_OF_STRENGTH(1, 1, 4),
 		CLARITY_OF_THOUGHT(2, 2, 7),
-		SHARP_EYE(3, 18, 8),
-		MYSTIC_WILL(4, 19, 9),
-		ROCK_SKIN(5, 3, 10),
-		SUPERHUMAN_STRENGTH(6, 4, 13),
-		IMPROVED_REFLEXES(7, 5, 16),
-		RAPID_RESTORE(8, 6, 19),
-		RAPID_HEAL(9, 7, 22),
-		PROTECT_ITEM_REGULAR(10, 8, 25),
-		HAWK_EYE(11, 20, 26),
-		MYSTIC_LORE(12, 21, 27),
-		STEEL_SKIN(13, 9, 28),
-		ULTIMATE_STRENGTH(14, 10, 31),
-		INCREDIBLE_REFLEXES(15, 11, 34),
-		PROTECT_FROM_SUMMONING(16, 24, 35),
-		PROTECT_FROM_MAGIC(17, 12, 37),
-		PROTECT_FROM_MISSILES(18, 13, 40),
-		PROTECT_FROM_MELEE(19, 14, 43),
-		EAGLE_EYE(20, 22, 44),
-		MYSTIC_MIGHT(21, 23, 45),
-		RETRIBUTION(22, 15, 46),
-		REDEMPTION(23, 16, 49),
-		SMITE(24, 17, 52),
-		CHIVALRY(25, 25, 60),
-		RAPID_RENEWAL(26, 27, 65),
-		PIETY(27, 26, 70),
-		RIGOUR(28, 29, 74),
-		AUGURY(29, 28, 77);
+		SHARP_EYE(3, 12, 8),
+		UNSTOPPABLE_FORCE(4, 14, 8),
+		MYSTIC_WILL(5, 13, 9),
+		CHARGE(6, 15, 9),
+		ROCK_SKIN(0, 0, 10),
+		SUPERHUMAN_STRENGTH(1, 1, 13),
+		IMPROVED_REFLEXES(2, 2, 16),
+		RAPID_RESTORE(7, 3, 19),
+		RAPID_HEAL(8, 4, 22),
+		PROTECT_ITEM_REGULAR(9, 5, 25),
+		HAWK_EYE(3, 12, 26),
+		UNRELENTING_FORCE(4, 14, 26),
+		MYSTIC_LORE(5, 13, 27),
+		SUPER_CHARGE(6, 15, 27),
+		STEEL_SKIN(0, 0, 28),
+		ULTIMATE_STRENGTH(1, 1, 31),
+		INCREDIBLE_REFLEXES(2, 2, 34),
+		PROTECT_FROM_SUMMONING(10, 16, 35),
+		PROTECT_FROM_MAGIC(11, 6, 37),
+		PROTECT_FROM_MISSILES(12, 7, 40),
+		PROTECT_FROM_MELEE(13, 8, 43),
+		EAGLE_EYE(3, 12, 44),
+		OVERPOWERING_FORCE(4, 14, 44),
+		MYSTIC_MIGHT(5, 13, 45),
+		OVERCHARGE(6, 15, 45),
+		RETRIBUTION(14, 9, 46),
+		REDEMPTION(15, 10, 49),
+		SMITE(16, 11, 52),
+		CHIVALRY(17, 27, 60),
+		RAPID_RENEWAL(18, 18, 65),
+		PIETY(19, 19, 70),
+		RIGOUR(20, 21, 74),
+		AUGURY(21, 20, 77);
 
 		private final int id, shift, level;
 
@@ -171,7 +185,7 @@ public class Prayer {
 	 * @return Current prayer points.
 	 */
 	public static int getPoints() {
-		return Settings.get(2382, 0x3ff);
+		return Settings.get(2382, 0x7fff);
 	}
 
 	/**
@@ -255,31 +269,31 @@ public class Prayer {
 				if (p.isSetQuick()) {
 					continue;
 				}
-				if (Widgets.get(WIDGET_PRAYER, 42).getChild(p.getId()).interact("Select")) {
+				if (Widgets.get(WIDGET_PRAYER, 11).getChild(p.getId()).interact("Select")) {
 					final Timer t = new Timer(500);
 					while (t.isRunning() && !p.isSetQuick()) {
 						Task.sleep(15);
 					}
 				} else {
-					Widgets.get(WIDGET_PRAYER, 43).interact("Confirm");
+					Widgets.get(WIDGET_PRAYER, 12).interact("Confirm");
 					return false;
 				}
 			}
 			Arrays.sort(prayers);
 			for (PrayerBook p : getQuick()) {
 				if (Arrays.binarySearch(prayers, p) < 0) {
-					if (Widgets.get(WIDGET_PRAYER, 42).getChild(p.getId()).interact("Deselect")) {
+					if (Widgets.get(WIDGET_PRAYER, 11).getChild(p.getId()).interact("Deselect")) {
 						final Timer t = new Timer(500);
 						while (t.isRunning() && !p.isSetQuick()) {
 							Task.sleep(15);
 						}
 					} else {
-						Widgets.get(WIDGET_PRAYER, 43).interact("Confirm");
+						Widgets.get(WIDGET_PRAYER, 12).interact("Confirm");
 						return false;
 					}
 				}
 			}
-			return Widgets.get(WIDGET_PRAYER, 43).interact("Confirm");
+			return Widgets.get(WIDGET_PRAYER, 12).interact("Confirm");
 		}
 		return false;
 	}
@@ -315,7 +329,7 @@ public class Prayer {
 			return true;
 		}
 		if (Tabs.PRAYER.open(false)) {
-			return Widgets.get(WIDGET_PRAYER, 8).getChild(prayer.getId()).interact(activate ? "Activate" : "Deactivate");
+			return Widgets.get(WIDGET_PRAYER, 9).getChild(prayer.getId()).interact(activate ? "Activate" : "Deactivate");
 		}
 		return false;
 	}
@@ -328,7 +342,7 @@ public class Prayer {
 	 */
 	public static boolean flashPrayer(final PrayerBook prayer) {
 		if (Tabs.PRAYER.open(false)) {
-			final Point point = Widgets.get(WIDGET_PRAYER, 8).getChild(prayer.getId()).getNextViewportPoint();
+			final Point point = Widgets.get(WIDGET_PRAYER, 9).getChild(prayer.getId()).getNextViewportPoint();
 			if (Mouse.click(point, true)) {
 				Task.sleep(250, 350);
 				return Mouse.click(point, true);
