@@ -76,22 +76,26 @@ public class Skills {
 
 	public static int[] getLevels() {
 		final Client client = Context.client();
-		return client.getSkillLevels();
+		//return client.getSkillLevels();
+		return new int[25];
 	}
 
 	public static int[] getMaxLevels() {
 		final Client client = Context.client();
-		return client.getSkillLevelMaxes();
+		//return client.getSkillLevelMaxes();
+		return new int[25];
 	}
 
 	public static int[] getExperiences() {
 		final Client client = Context.client();
-		return client.getSkillExperiences();
+		//return client.getSkillExperiences();
+		return new int[25];
 	}
 
 	public static int[] getMaxExperiences() {
 		final Client client = Context.client();
-		return client.getSkillExperienceMaxes();
+		//return client.getSkillExperienceMaxes();
+		return new int[25];
 	}
 
 	public static int getLevelAt(final int exp) {
