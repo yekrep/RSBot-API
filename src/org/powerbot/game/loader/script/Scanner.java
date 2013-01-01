@@ -37,11 +37,11 @@ public class Scanner {
 	}
 
 	public long readLong() {
-		return readInt() << 32 | readInt();
+		return ((long) readInt()) << 32 | readInt();
 	}
 
 	public String readString() {
-		return normaliseString(new String(readSegment()));
+		return new String(readSegment());
 	}
 
 	public byte[] readSegment() {
@@ -57,12 +57,5 @@ public class Scanner {
 		for (int i = off; i < off + len; i++) {
 			data[i] = (byte) readByte();
 		}
-	}
-
-	private String normaliseString(String s) {
-		final String prefix = "org/powerbot/game";
-		s = s.replace("org/powerbot", prefix);
-		s = s.replace("org/rsbot", prefix);
-		return s;
 	}
 }

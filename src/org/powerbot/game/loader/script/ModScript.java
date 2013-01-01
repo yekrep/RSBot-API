@@ -1,8 +1,11 @@
 package org.powerbot.game.loader.script;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.objectweb.asm.ClassReader;
@@ -18,6 +21,7 @@ import org.powerbot.asm.visitor.OverrideClassAdapter;
 import org.powerbot.asm.visitor.SetSignatureAdapter;
 import org.powerbot.asm.visitor.SetSuperAdapter;
 import org.powerbot.game.loader.AdaptException;
+import org.powerbot.util.io.IOHelper;
 
 public class ModScript implements NodeManipulator {
 	private final Map<String, ClassVisitor> adapters;
@@ -29,6 +33,7 @@ public class ModScript implements NodeManipulator {
 	private String name;
 	private int version;
 
+	private final List<String> ls = new ArrayList<>();
 	public static interface Headers {
 		int ATTRIBUTE = 1;
 		int GET_STATIC = 2;
@@ -42,6 +47,8 @@ public class ModScript implements NodeManipulator {
 		int OVERRIDE_CLASS = 10;
 		int CONSTANT = 11;
 		int MULTIPLIER = 12;
+		int END_OF_FILE = 13;
+	}
 	}
 
 	private static final int MAGIC = 0xFADFAD;
@@ -77,8 +84,8 @@ public class ModScript implements NodeManipulator {
 		}
 		name = scanner.readString();
 		version = scanner.readShort();
-		int num = scanner.readShort();
-		while (num-- > 0) {
+		read:
+		while (true) {
 			String clazz;
 			int count, ptr = 0;
 			final int op = scanner.readByte();
@@ -101,6 +108,18 @@ public class ModScript implements NodeManipulator {
 					f.owner = scanner.readString();
 					f.name = scanner.readString();
 					f.desc = scanner.readString();
+					f.overflow = scanner.readByte();
+					switch (f.overflow) {
+					case 1:
+						f.overflow_val = (long) scanner.readInt();
+						break;
+					case 2:
+						f.overflow_val = scanner.readLong();
+						break;
+					default:
+						f.overflow_val = 0;
+						break;
+					}
 					fieldsGet[ptr++] = f;
 				}
 				adapters.put(clazz, new AddGetterAdapter(delegate(clazz), op == Headers.GET_FIELD, fieldsGet));
@@ -140,6 +159,11 @@ public class ModScript implements NodeManipulator {
 				clazz = scanner.readString();
 				final String inter = scanner.readString();
 				adapters.put(clazz, new AddInterfaceAdapter(delegate(clazz), inter));
+				if (ls.contains(inter)) {
+					//System.out.println("WARNING - " + inter);
+				} else {
+					ls.add(inter);
+				}
 				break;
 			case Headers.SET_SUPER:
 				clazz = scanner.readString();
@@ -190,6 +214,8 @@ public class ModScript implements NodeManipulator {
 			case Headers.MULTIPLIER:
 				multipliers.put(scanner.readShort(), scanner.readInt());
 				break;
+			case Headers.END_OF_FILE:
+				break read;
 			}
 		}
 	}
