@@ -84,7 +84,10 @@ public class AddGetterAdapter extends ClassVisitor implements Opcodes {
 		}
 		final int op = getReturnOpcode(desc);
 		mv.visitInsn(op);
-		mv.visitMaxs(op == LRETURN || op == DRETURN ? 2 : 1, (getter_access & ACC_STATIC) == 0 ? 1 : 0);
+		mv.visitMaxs(op == LRETURN || op == DRETURN ?
+				overflow == 2 ? 4 : overflow == 1 ? 3 : 2 :
+				overflow == 2 ? 3 : overflow == 1 ? 2 : 1,
+				(getter_access & ACC_STATIC) == 0 ? 1 : 0);
 		mv.visitEnd();
 	}
 
