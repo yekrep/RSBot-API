@@ -1,7 +1,7 @@
 package org.powerbot.game.client;
 
 public interface RSInterface {
-	public Object getTooltip();
+	public String getTooltip();
 
 	public int getComponentID();
 
@@ -15,9 +15,9 @@ public interface RSInterface {
 
 	public int getTextureID();
 
-	public Object getComponents();
+	public RSInterface[] getComponents();
 
-	public Object getComponentName();
+	public String getComponentName();
 
 	public int getX();
 
@@ -29,7 +29,7 @@ public interface RSInterface {
 
 	public int getParentID();
 
-	public Object getText();
+	public String getText();
 
 	public int getVerticalScrollbarThumbSize();
 
@@ -37,7 +37,7 @@ public interface RSInterface {
 
 	public int getVerticalScrollbarPosition();
 
-	public Object getActions();
+	public String[] getActions();
 
 	public int getVerticalScrollbarSize();
 
@@ -49,7 +49,7 @@ public interface RSInterface {
 
 	public int getModelZoom();
 
-	public Object getSelectedActionName();
+	public String getSelectedActionName();
 
 	public int getHorizontalScrollbarSize();
 

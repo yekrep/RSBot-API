@@ -1,13 +1,13 @@
 package org.powerbot.game.client;
 
 public interface RSInfo {
-	public Object getGroundBytes();
+	public RSGroundBytes getGroundBytes();
 
-	public Object getGroundData();
+	public RSGroundData[] getGroundData();
 
-	public Object getBaseInfo();
+	public BaseInfo getBaseInfo();
 
-	public Object getRSGroundInfo();
+	public RSGroundInfo getRSGroundInfo();
 
-	public Object getRSObjectDefLoaders();
+	public RSObjectDefLoader getRSObjectDefLoaders();
 }

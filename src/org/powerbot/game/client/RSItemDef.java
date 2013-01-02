@@ -1,15 +1,15 @@
 package org.powerbot.game.client;
 
 public interface RSItemDef {
-	public Object getActions();
+	public String[] getActions();
 
-	public Object getLoader();
+	public RSItemDefLoader getLoader();
 
 	public int getID();
 
-	public Object getName();
+	public String getName();
 
 	public boolean isMembersObject();
 
-	public Object getGroundActions();
+	public String[] getGroundActions();
 }

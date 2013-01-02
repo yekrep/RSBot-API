@@ -1,15 +1,15 @@
 package org.powerbot.game.client;
 
 public interface RSGround {
-	public Object getRSAnimableList();
+	public RSAnimableNode getRSAnimableList();
 
-	public Object getBoundary1();
+	public RSObject getBoundary1();
 
-	public Object getWallDecoration2();
+	public RSObject getBoundary2();
 
-	public Object getFloorDecoration();
+	public RSObject getWallDecoration1();
 
-	public Object getWallDecoration1();
+	public RSObject getWallDecoration2();
 
-	public Object getBoundary2();
+	public RSObject getFloorDecoration();
 }

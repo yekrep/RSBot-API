@@ -3,9 +3,9 @@ package org.powerbot.game.client;
 public interface RSPlayer extends RSCharacter {
 	public int getTeam();
 
-	public Object getComposite();
+	public RSPlayerComposite getComposite();
 
-	public Object getName();
+	public String getName();
 
 	public int getPrayerIcon();
 

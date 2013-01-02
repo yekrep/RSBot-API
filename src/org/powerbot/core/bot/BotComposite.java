@@ -13,7 +13,6 @@ import org.powerbot.core.script.job.LoopTask;
 import org.powerbot.core.script.job.Task;
 import org.powerbot.game.api.methods.Calculations;
 import org.powerbot.game.api.util.internal.Constants;
-import org.powerbot.game.api.util.internal.Multipliers;
 import org.powerbot.game.bot.Context;
 import org.powerbot.game.bot.handler.input.MouseExecutor;
 import org.powerbot.game.client.Client;
@@ -35,7 +34,6 @@ public class BotComposite {//TODO remove the use of a composite ... export data 
 	public final Calculations.Viewport viewport;
 
 	public Constants constants;
-	public Multipliers multipliers;
 
 	public BotComposite(final Bot bot) {
 		this.bot = bot;
@@ -62,7 +60,7 @@ public class BotComposite {//TODO remove the use of a composite ... export data 
 		this.toolkit.absoluteY = render.getAbsoluteY();
 		this.toolkit.xMultiplier = render.getXMultiplier();
 		this.toolkit.yMultiplier = render.getYMultiplier();
-		final RenderData toolkit = render.getViewport();
+		final RenderData toolkit = render.getRenderData();
 		final float[] viewport = toolkit.getFloats();
 		this.viewport.xOff = viewport[constants.VIEWPORT_XOFF];
 		this.viewport.xX = viewport[constants.VIEWPORT_XX];

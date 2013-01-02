@@ -1,5 +1,5 @@
 package org.powerbot.game.client;
 
-public interface RSInterfaceNode extends Node {
+public interface RSInterfaceNode {
 	public int getMainID();
 }

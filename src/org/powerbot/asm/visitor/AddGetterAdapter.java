@@ -12,6 +12,8 @@ public class AddGetterAdapter extends ClassVisitor implements Opcodes {
 		public String owner;
 		public String name;
 		public String desc;
+		public int overflow;
+		public long overflow_val;
 	}
 
 	private final boolean virtual;

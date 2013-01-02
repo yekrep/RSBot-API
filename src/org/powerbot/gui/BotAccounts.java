@@ -52,7 +52,7 @@ public final class BotAccounts extends JDialog implements WindowListener {
 			"Summoning", "Dungeoneering"};
 
 	public BotAccounts(final BotChrome parent) {
-		super((Frame) parent, BotLocale.ACCOUNTS, true);
+		super(parent, BotLocale.ACCOUNTS, true);
 		setIconImage(Resources.getImage(Resources.Paths.ADDRESS));
 
 		final JScrollPane scroll = new JScrollPane();

@@ -1,7 +1,7 @@
 package org.powerbot.game.client;
 
 public interface RSObject {
-	public Model getModel();
+	public int getId();
 
-	public int getID();
+	public Model getModel();
 }

@@ -1,7 +1,7 @@
 package org.powerbot.game.client;
 
 public interface RSGroundInfo {
-	public Object getTileData();
+	public TileData[] getTileData();
 
-	public Object getRSGroundArray();
+	public RSGround[][][] getRSGroundArray();
 }

@@ -81,7 +81,7 @@ public class UIDManager {
 			if (os != null) {
 				try {
 					os.close();
-				} catch (final IOException ignored2) {
+				} catch (final IOException ignored) {
 				}
 			}
 		}

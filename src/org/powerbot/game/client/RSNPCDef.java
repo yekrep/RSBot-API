@@ -3,7 +3,9 @@ package org.powerbot.game.client;
 public interface RSNPCDef {
 	public int getID();
 
-	public Object getActions();
+	public String[] getActions();
 
-	public Object getName();
+	public String getName();
+
+	public int getLevel();
 }

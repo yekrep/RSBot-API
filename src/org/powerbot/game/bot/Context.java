@@ -11,7 +11,6 @@ import org.powerbot.core.bot.handlers.ScriptHandler;
 import org.powerbot.core.event.EventManager;
 import org.powerbot.game.api.methods.Calculations;
 import org.powerbot.game.api.util.internal.Constants;
-import org.powerbot.game.api.util.internal.Multipliers;
 import org.powerbot.game.bot.handler.input.MouseExecutor;
 import org.powerbot.game.bot.util.ScreenCapture;
 import org.powerbot.game.client.Client;
@@ -38,10 +37,6 @@ public class Context {//TODO remove idea of a 'context'
 
 	public static Client client() {
 		return get().getClient();
-	}
-
-	public static Multipliers multipliers() {
-		return get().bot.composite.multipliers;
 	}
 
 	public static Constants constants() {

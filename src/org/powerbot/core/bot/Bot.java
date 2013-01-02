@@ -20,7 +20,6 @@ import org.powerbot.game.api.methods.input.Keyboard;
 import org.powerbot.game.api.methods.input.Mouse;
 import org.powerbot.game.api.methods.widget.WidgetCache;
 import org.powerbot.game.api.util.internal.Constants;
-import org.powerbot.game.api.util.internal.Multipliers;
 import org.powerbot.game.bot.CallbackImpl;
 import org.powerbot.game.bot.Context;
 import org.powerbot.game.bot.handler.input.MouseExecutor;
@@ -246,7 +245,6 @@ public final class Bot implements Runnable {//TODO re-write bot
 		this.composite.client = client;
 		client.setCallback(new CallbackImpl(this));
 		composite.constants = new Constants(modScript.constants);
-		composite.multipliers = new Multipliers(modScript.multipliers);
 		executor.submit(new SafeMode(this));
 		composite.executor = new MouseExecutor(this);
 

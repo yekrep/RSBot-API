@@ -1,5 +1,5 @@
 package org.powerbot.game.client;
 
 public interface Cache {
-	public Object getTable();
+	public HashTable getTable();
 }

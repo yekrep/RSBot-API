@@ -45,7 +45,7 @@ public final class GameAccounts extends ArrayList<GameAccounts.Account> {
 		} finally {
 			try {
 				is.close();
-			} catch (final IOException ignored2) {
+			} catch (final IOException ignored) {
 			}
 		}
 		if (data == null) {
@@ -89,7 +89,7 @@ public final class GameAccounts extends ArrayList<GameAccounts.Account> {
 			if (os != null) {
 				try {
 					os.close();
-				} catch (final IOException ignored2) {
+				} catch (final IOException ignored) {
 				}
 			}
 		}

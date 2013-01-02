@@ -5,7 +5,7 @@ public interface RSAnimable extends RSInteractable {
 
 	public short getX2();
 
-	public short getY2();
-
 	public short getY1();
+
+	public short getY2();
 }

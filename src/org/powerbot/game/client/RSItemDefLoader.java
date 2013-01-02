@@ -1,7 +1,7 @@
 package org.powerbot.game.client;
 
 public interface RSItemDefLoader {
-	public Object getCache();
+	public Cache getCache();
 
 	public boolean isMembers();
 }

@@ -1,23 +1,23 @@
 package org.powerbot.game.client;
 
 public interface RSCharacter extends RSAnimable {
+	public Model getModel();
+
 	public int getInteracting();
 
 	public int isMoving();
 
-	public Object getAnimationQueue();
+	public int[] getAnimationQueue();
 
-	public Object getAnimation();
+	public RSAnimator getAnimation();
 
 	public int getHeight();
 
-	public Object getCombatStatusList();
+	public LinkedList getCombatStatusList();
 
 	public int getOrientation();
 
-	public Object getMessageData();
+	public RSMessageData getMessageData();
 
-	public Object getPassiveAnimation();
-
-	public Model getModel();
+	public RSAnimator getPassiveAnimation();
 }
