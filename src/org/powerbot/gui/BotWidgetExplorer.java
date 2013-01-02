@@ -134,6 +134,12 @@ public class BotWidgetExplorer extends JFrame implements PaintListener {
 					addInfo("Bound array index: ", Integer.toString(widgetChild.getBoundsArrayIndex()));
 					addInfo("Scrollable area: ", Boolean.toString(widgetChild.isInScrollableArea()));
 					addInfo("Parent id: ", Integer.toString(widgetChild.getParentId()));
+					addInfo("getHorizontalScrollPosition: ", Integer.toString(widgetChild.getHorizontalScrollPosition()));
+					addInfo("getVerticalScrollPosition: ", Integer.toString(widgetChild.getVerticalScrollPosition()));
+					addInfo("getScrollableContentWidth: ", Integer.toString(widgetChild.getScrollableContentWidth()));
+					addInfo("getScrollableContentHeight: ", Integer.toString(widgetChild.getScrollableContentHeight()));
+					addInfo("getHorizontalScrollThumbSize: ", Integer.toString(widgetChild.getHorizontalScrollThumbSize()));
+					addInfo("getVerticalScrollThumbSize: ", Integer.toString(widgetChild.getVerticalScrollThumbSize()));
 					infoArea.validate();
 					infoArea.repaint();
 				} finally {
