@@ -1,11 +1,8 @@
 package org.powerbot.game.loader.script;
 
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.objectweb.asm.ClassReader;
@@ -21,7 +18,6 @@ import org.powerbot.asm.visitor.OverrideClassAdapter;
 import org.powerbot.asm.visitor.SetSignatureAdapter;
 import org.powerbot.asm.visitor.SetSuperAdapter;
 import org.powerbot.game.loader.AdaptException;
-import org.powerbot.util.io.IOHelper;
 
 public class ModScript implements NodeManipulator {
 	private final Map<String, ClassVisitor> adapters;
@@ -32,8 +28,6 @@ public class ModScript implements NodeManipulator {
 	private Scanner scanner;
 	private String name;
 	private int version;
-
-	private final List<String> ls = new ArrayList<>();
 
 	public static interface Headers {
 		int ATTRIBUTE = 1;
@@ -51,21 +45,10 @@ public class ModScript implements NodeManipulator {
 		int END_OF_FILE = 13;
 	}
 
-	public static void main(final String[] p) {
-		final byte[] b = IOHelper.read(new File("C:\\Users\\Joe\\Desktop\\ModScript-6.MS"));
-		ModScript ms = new ModScript(b);
-		try {
-			ms.adapt();
-		} catch (AdaptException e) {
-			e.printStackTrace();
-		}
-	}
-
 	private static final int MAGIC = 0xFADFAD;
 
 	public ModScript(final byte[] data) {
 		this(new ByteArrayInputStream(data));
-		//System.out.println(Arrays.toString(data));
 	}
 
 	public ModScript(final InputStream data) {
@@ -74,11 +57,11 @@ public class ModScript implements NodeManipulator {
 	}
 
 	public ModScript() {
-		adapters = new HashMap<String, ClassVisitor>();
-		writers = new HashMap<String, ClassWriter>();
-		attributes = new HashMap<String, String>();
-		constants = new HashMap<Integer, Integer>();
-		multipliers = new HashMap<Integer, Integer>();
+		adapters = new HashMap<>();
+		writers = new HashMap<>();
+		attributes = new HashMap<>();
+		constants = new HashMap<>();
+		multipliers = new HashMap<>();
 	}
 
 	public String getName() {
@@ -95,10 +78,6 @@ public class ModScript implements NodeManipulator {
 		}
 		name = scanner.readString();
 		version = scanner.readShort();
-		//int num = scanner.readShort();
-		System.out.println(name);
-		System.out.println(version);
-		//System.out.println(num);
 		read:
 		while (true) {
 			String clazz;
@@ -109,13 +88,11 @@ public class ModScript implements NodeManipulator {
 				final String key = scanner.readString();
 				final String value = scanner.readString();
 				attributes.put(key, new StringBuilder(value).reverse().toString());
-				System.out.println("attribute " + key + " - " + value);
 				break;
 			case Headers.GET_STATIC:
 			case Headers.GET_FIELD:
 				clazz = scanner.readString();
 				count = scanner.readShort();
-				System.out.println("getter " + clazz + " (" + count + ")");
 				final AddGetterAdapter.Field[] fieldsGet = new AddGetterAdapter.Field[count];
 				while (ptr < count) {
 					final AddGetterAdapter.Field f = new AddGetterAdapter.Field();
@@ -137,9 +114,7 @@ public class ModScript implements NodeManipulator {
 						f.overflow_val = 0;
 						break;
 					}
-					System.out.println("b " + f.overflow + " " + f.overflow_val);
 					fieldsGet[ptr++] = f;
-					System.out.println(f.getter_desc + " " + f.getter_name);
 				}
 				adapters.put(clazz, new AddGetterAdapter(delegate(clazz), op == Headers.GET_FIELD, fieldsGet));
 				break;
@@ -159,7 +134,6 @@ public class ModScript implements NodeManipulator {
 			case Headers.ADD_METHOD:
 				clazz = scanner.readString();
 				count = scanner.readShort();
-				System.out.println("add method into " + clazz + " (" + count + ")");
 				final AddMethodAdapter.Method[] methods = new AddMethodAdapter.Method[count];
 				while (ptr < count) {
 					final AddMethodAdapter.Method m = new AddMethodAdapter.Method();
@@ -172,7 +146,6 @@ public class ModScript implements NodeManipulator {
 					m.max_locals = scanner.readByte();
 					m.max_stack = scanner.readByte();
 					methods[ptr++] = m;
-					System.out.println(m.desc + " " + m.name);
 				}
 				adapters.put(clazz, new AddMethodAdapter(delegate(clazz), methods));
 				break;
@@ -180,12 +153,6 @@ public class ModScript implements NodeManipulator {
 				clazz = scanner.readString();
 				final String inter = scanner.readString();
 				adapters.put(clazz, new AddInterfaceAdapter(delegate(clazz), inter));
-				System.out.println("interfacing " + clazz + " as " + inter);
-				if (ls.contains(inter)) {
-					//System.out.println("WARNING - " + inter);
-				} else {
-					ls.add(inter);
-				}
 				break;
 			case Headers.SET_SUPER:
 				clazz = scanner.readString();

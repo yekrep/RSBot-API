@@ -83,15 +83,16 @@ public class Boot implements Runnable {
 			URL.setURLStreamHandlerFactory(new URLStreamHandlerFactory() {
 				@Override
 				public URLStreamHandler createURLStreamHandler(final String protocol) {
-					if (protocol.equals("http")) {
+					switch (protocol) {
+					case "http":
 						return new sun.net.www.protocol.http.Handler();
-					} else if (protocol.equals("https")) {
+					case "https":
 						return new sun.net.www.protocol.https.Handler();
-					} else if (protocol.equals("file")) {
+					case "file":
 						return new sun.net.www.protocol.file.Handler();
-					} else if (protocol.equals("jar")) {
+					case "jar":
 						return new sun.net.www.protocol.jar.Handler();
-					} else if (protocol.equals("ftp")) {
+					case "ftp":
 						return new sun.net.www.protocol.ftp.Handler();
 					}
 					return null;

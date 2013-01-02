@@ -41,7 +41,7 @@ public class AddGetterAdapter extends ClassVisitor implements Opcodes {
 	@Override
 	public void visitEnd() {
 		for (final Field f : fields) {
-			visitGetter(f.getter_access, f.getter_name, f.getter_desc, virtual ? null : f.owner, f.name, f.desc);
+			visitGetter(f.getter_access, f.getter_name, f.getter_desc, virtual ? null : f.owner, f.name, f.desc, f.overflow, f.overflow_val);
 		}
 		super.visitEnd();
 	}
@@ -52,7 +52,8 @@ public class AddGetterAdapter extends ClassVisitor implements Opcodes {
 			final String getter_desc,
 			final String owner,
 			final String name,
-			final String desc) {
+			final String desc,
+			final int overflow, final long overflow_val) {
 		final MethodVisitor mv = super.visitMethod(getter_access, getter_name, getter_desc, null, null);
 		mv.visitCode();
 		if (owner == null) {
@@ -60,6 +61,26 @@ public class AddGetterAdapter extends ClassVisitor implements Opcodes {
 			mv.visitFieldInsn(GETFIELD, this.owner, name, desc);
 		} else {
 			mv.visitFieldInsn(GETSTATIC, owner, name, desc);
+		}
+		switch (overflow) {
+		case 1:
+			if (overflow_val >= -1 && overflow_val <= 5) {
+				mv.visitInsn(Opcodes.ICONST_0 + (int) overflow_val);
+			} else if (overflow_val >= Byte.MIN_VALUE && overflow_val <= Byte.MAX_VALUE) {
+				mv.visitIntInsn(Opcodes.BIPUSH, (int) overflow_val);
+			} else if (overflow_val >= Short.MIN_VALUE && overflow_val <= Short.MAX_VALUE) {
+				mv.visitIntInsn(Opcodes.SIPUSH, (int) overflow_val);
+			} else {
+				mv.visitLdcInsn(new Integer((int) overflow_val));
+			}
+			mv.visitInsn(Opcodes.IMUL);
+			break;
+		case 2:
+			mv.visitLdcInsn(new Long(overflow_val));
+			mv.visitInsn(Opcodes.LMUL);
+			break;
+		default:
+			break;
 		}
 		final int op = getReturnOpcode(desc);
 		mv.visitInsn(op);
