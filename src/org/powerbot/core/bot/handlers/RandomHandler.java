@@ -106,7 +106,7 @@ public class RandomHandler extends LoopTask {
 
 	public boolean isEnabled(final Class<? extends AntiRandom> type) {
 		final String name = type.getName();
-		for (final AntiRandom checkRandom : randoms) {
+		for (final AntiRandom checkRandom : activeRandoms) {
 			if (checkRandom.getClass().getName().equals(name)) {
 				return true;
 			}
