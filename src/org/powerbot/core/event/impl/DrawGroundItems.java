@@ -5,6 +5,7 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Point;
 
+import org.powerbot.core.event.listeners.PaintListener;
 import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.methods.node.GroundItems;
@@ -12,7 +13,6 @@ import org.powerbot.game.api.wrappers.Tile;
 import org.powerbot.game.api.wrappers.interactive.Player;
 import org.powerbot.game.api.wrappers.node.GroundItem;
 import org.powerbot.game.api.wrappers.node.ItemDefinition;
-import org.powerbot.core.event.listeners.PaintListener;
 
 public class DrawGroundItems implements PaintListener {
 	public void onRepaint(final Graphics render) {

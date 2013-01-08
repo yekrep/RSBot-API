@@ -2,8 +2,8 @@ package org.powerbot.core.event.impl;
 
 import java.awt.Graphics;
 
-import org.powerbot.game.api.methods.widget.Camera;
 import org.powerbot.core.event.listeners.TextPaintListener;
+import org.powerbot.game.api.methods.widget.Camera;
 import org.powerbot.util.StringUtil;
 
 public class TCamera implements TextPaintListener {

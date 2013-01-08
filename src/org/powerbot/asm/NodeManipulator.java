@@ -1,6 +1,6 @@
 package org.powerbot.asm;
 
-import org.powerbot.game.loader.AdaptException;
+import org.powerbot.core.loader.AdaptException;
 
 /**
  * Represents a container of ClassNodes and basic manipulative methods.

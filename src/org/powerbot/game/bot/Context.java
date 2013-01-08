@@ -9,12 +9,12 @@ import java.util.concurrent.ThreadPoolExecutor;
 import org.powerbot.core.bot.Bot;
 import org.powerbot.core.bot.handlers.ScriptHandler;
 import org.powerbot.core.event.EventManager;
+import org.powerbot.core.loader.applet.Rs2Applet;
 import org.powerbot.game.api.methods.Calculations;
 import org.powerbot.game.api.util.internal.Constants;
 import org.powerbot.game.bot.handler.input.MouseExecutor;
 import org.powerbot.game.bot.util.ScreenCapture;
 import org.powerbot.game.client.Client;
-import org.powerbot.game.loader.applet.Rs2Applet;
 import org.powerbot.service.NetworkAccount;
 
 public class Context {//TODO remove idea of a 'context'

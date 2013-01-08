@@ -1,4 +1,4 @@
-package org.powerbot.game.loader.script;
+package org.powerbot.core.loader.script;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

@@ -1,4 +1,4 @@
-package org.powerbot.game.loader;
+package org.powerbot.core.loader;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -14,7 +14,7 @@ import java.util.zip.GZIPOutputStream;
 
 import org.powerbot.asm.NodeManipulator;
 import org.powerbot.core.bot.Bot;
-import org.powerbot.game.loader.script.ModScript;
+import org.powerbot.core.loader.script.ModScript;
 import org.powerbot.util.Configuration;
 import org.powerbot.util.StringUtil;
 import org.powerbot.util.io.HttpClient;

@@ -8,6 +8,7 @@ import java.util.concurrent.Future;
 import org.powerbot.core.bot.handlers.ScriptHandler;
 import org.powerbot.core.event.EventManager;
 import org.powerbot.core.event.EventMulticaster;
+import org.powerbot.core.loader.ClientLoader;
 import org.powerbot.core.script.job.Job;
 import org.powerbot.core.script.job.LoopTask;
 import org.powerbot.core.script.job.Task;
@@ -18,7 +19,6 @@ import org.powerbot.game.bot.handler.input.MouseExecutor;
 import org.powerbot.game.client.Client;
 import org.powerbot.game.client.Render;
 import org.powerbot.game.client.RenderData;
-import org.powerbot.game.loader.ClientLoader;
 import org.powerbot.gui.BotChrome;
 
 public class BotComposite {//TODO remove the use of a composite ... export data elsewhere

@@ -7,12 +7,12 @@ import java.awt.Point;
 import java.awt.RenderingHints;
 import java.util.HashMap;
 
+import org.powerbot.core.event.listeners.PaintListener;
 import org.powerbot.game.api.methods.interactive.NPCs;
 import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.methods.node.SceneEntities;
 import org.powerbot.game.api.wrappers.graphics.CapturedModel;
 import org.powerbot.game.api.wrappers.node.SceneObject;
-import org.powerbot.core.event.listeners.PaintListener;
 
 public class DrawModels implements PaintListener {
 	private static final HashMap<Integer, Color> color_map = new HashMap<Integer, Color>();

@@ -1,4 +1,4 @@
-package org.powerbot.game.loader.applet;
+package org.powerbot.core.loader.applet;
 
 import java.applet.Applet;
 import java.awt.Graphics;
@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.powerbot.game.loader.RSClassLoader;
+import org.powerbot.core.loader.RSClassLoader;
 
 /**
  * An applet for manipulation of the wrapped client class.

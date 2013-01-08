@@ -2,9 +2,9 @@ package org.powerbot.core.event.impl;
 
 import java.awt.Graphics;
 
+import org.powerbot.core.event.listeners.TextPaintListener;
 import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.api.wrappers.Tile;
-import org.powerbot.core.event.listeners.TextPaintListener;
 import org.powerbot.util.StringUtil;
 
 public class TMapBase implements TextPaintListener {

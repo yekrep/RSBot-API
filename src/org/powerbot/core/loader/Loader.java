@@ -1,11 +1,11 @@
-package org.powerbot.game.loader;
+package org.powerbot.core.loader;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.powerbot.core.bot.Bot;
-import org.powerbot.game.loader.applet.ClientStub;
-import org.powerbot.game.loader.applet.Rs2Applet;
+import org.powerbot.core.loader.applet.ClientStub;
+import org.powerbot.core.loader.applet.Rs2Applet;
 import org.powerbot.util.Configuration;
 
 /**

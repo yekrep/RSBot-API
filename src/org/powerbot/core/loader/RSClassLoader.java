@@ -1,4 +1,4 @@
-package org.powerbot.game.loader;
+package org.powerbot.core.loader;
 
 import java.awt.AWTPermission;
 import java.io.BufferedInputStream;
@@ -18,11 +18,6 @@ import java.util.PropertyPermission;
 
 import org.powerbot.util.io.IOHelper;
 
-/**
- * Loads the game classes with restrictions.
- *
- * @author Alex
- */
 public class RSClassLoader extends ClassLoader {
 	private final Map<String, byte[]> classes = new HashMap<String, byte[]>();
 	private final ProtectionDomain domain;

@@ -1,4 +1,4 @@
-package org.powerbot.game.loader.applet;
+package org.powerbot.core.loader.applet;
 
 import java.net.URL;
 

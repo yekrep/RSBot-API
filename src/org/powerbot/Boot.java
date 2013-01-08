@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
-import org.powerbot.game.loader.applet.Rs2Applet;
+import org.powerbot.core.loader.applet.Rs2Applet;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.gui.component.BotLocale;
 import org.powerbot.ipc.Controller;

@@ -5,10 +5,10 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Point;
 
+import org.powerbot.core.event.listeners.PaintListener;
 import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.api.methods.interactive.NPCs;
 import org.powerbot.game.api.wrappers.interactive.NPC;
-import org.powerbot.core.event.listeners.PaintListener;
 
 public class DrawNPCs implements PaintListener {
 	public void onRepaint(final Graphics render) {

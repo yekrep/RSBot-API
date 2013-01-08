@@ -2,8 +2,8 @@ package org.powerbot.core.event.impl;
 
 import java.awt.Graphics;
 
-import org.powerbot.game.api.methods.Walking;
 import org.powerbot.core.event.listeners.TextPaintListener;
+import org.powerbot.game.api.methods.Walking;
 import org.powerbot.util.StringUtil;
 
 public class TDestination implements TextPaintListener {
