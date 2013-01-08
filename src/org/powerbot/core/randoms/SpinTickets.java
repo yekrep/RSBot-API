@@ -12,7 +12,7 @@ import org.powerbot.game.api.wrappers.node.Item;
 import org.powerbot.game.api.wrappers.widget.Widget;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
 
-@Manifest(name = "Squeal of Fortune Ticket Claim", authors = {"Timer"})
+@Manifest(name = "Squeal of Fortune Ticket Claim", authors = {"Timer"}, description = "Destroys tickets.")
 public class SpinTickets extends AntiRandom {
 	public static final int ITEM_ID_SPIN_TICKET = 24154;
 	public static final int ITEM_ID_SPIN_TICKET_X2 = 24155;

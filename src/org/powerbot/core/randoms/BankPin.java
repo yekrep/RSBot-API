@@ -6,7 +6,7 @@ import org.powerbot.game.api.methods.Settings;
 import org.powerbot.game.api.methods.Widgets;
 import org.powerbot.game.bot.Context;
 
-@Manifest(name = "Bank Pin", authors = {"Andy"}, version = 1.0)
+@Manifest(name = "Bank Pin", authors = {"Andy"}, version = 1.0, description = "Enters the bank pin.")
 public class BankPin extends AntiRandom {
 	private final int[] PIN_COMPONENTS = {6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
 
