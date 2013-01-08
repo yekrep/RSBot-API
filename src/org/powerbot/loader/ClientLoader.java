@@ -1,4 +1,4 @@
-package org.powerbot.core.loader;
+package org.powerbot.loader;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -7,53 +7,41 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.Callable;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.GZIPOutputStream;
 
 import org.powerbot.asm.NodeManipulator;
 import org.powerbot.core.bot.Bot;
-import org.powerbot.core.loader.script.ModScript;
+import org.powerbot.loader.script.ModScript;
 import org.powerbot.util.Configuration;
 import org.powerbot.util.StringUtil;
 import org.powerbot.util.io.HttpClient;
 import org.powerbot.util.io.IOHelper;
 
-public class ClientLoader implements Callable<Boolean> {
+public class ClientLoader {
 	private static final Logger log = Logger.getLogger(ClientLoader.class.getName());
 
 	public final Crawler crawler;
 	private final Map<String, byte[]> classes;
 	private String packHash;
 
-	private boolean cancelled = false;
-
-	public ClientLoader() {
+	private ClientLoader() {
 		crawler = new Crawler();
 		classes = new HashMap<>();
+
+		load();
 	}
 
-	public boolean isCancelled() {
-		return cancelled;
+	public static ClientLoader getInstance() {
+		return new ClientLoader();
 	}
 
-	public void cancel() {
-		cancelled = true;
-	}
-
-	@Override
-	public Boolean call() {
-		this.cancelled = false;
-		log.info("Initializing game environment");
+	public void load() {
+		log.info("Loading game");
 		classes.clear();
 		log.fine("Crawling (for) game information");
 		if (!crawler.crawl()) {
-			log.severe("Please try again");
-			return false;
-		}
-		if (cancelled) {
-			return false;
+			throw new RuntimeException("please check your firewall and internet connection");
 		}
 		log.fine("Downloading loader");
 		final byte[] loader = getLoader(crawler);
@@ -62,10 +50,7 @@ public class ClientLoader implements Callable<Boolean> {
 			final String ivParameterSpecKey = crawler.parameters.get("-1");
 			if (secretKeySpecKey == null || ivParameterSpecKey == null) {
 				log.fine("Invalid secret spec key and/or iv parameter spec key");
-				return false;
-			}
-			if (cancelled) {
-				return false;
+				throw new RuntimeException("decryption mismatch");
 			}
 			log.fine("Removing key ciphering");
 			final byte[] secretKeySpecBytes = Crypt.decode(secretKeySpecKey);
@@ -78,9 +63,6 @@ public class ClientLoader implements Callable<Boolean> {
 			if (classes != null && classes.size() > 0) {
 				this.classes.putAll(classes);
 				classes.clear();
-			}
-			if (cancelled) {
-				return false;
 			}
 			if (this.classes.size() > 0) {
 				NodeManipulator nodeManipulator = null;
@@ -96,16 +78,14 @@ public class ClientLoader implements Callable<Boolean> {
 						}
 					}
 				} catch (final Throwable e) {
-					log.log(Level.FINE, "Failed to load manipulator: ", e);
-					return false;
+					throw new RuntimeException("failed to load t-spec");
 				}
 				if (nodeManipulator != null) {
 					log.fine("Running node manipulator");
 					try {
 						nodeManipulator.adapt();
 					} catch (final AdaptException e) {
-						log.log(Level.FINE, "Node manipulation failed", e);
-						return false;
+						throw new RuntimeException("t-spec adaption error");
 					}
 					log.fine("Processing classes");
 					for (final Map.Entry<String, byte[]> clazz : this.classes.entrySet()) {
@@ -113,11 +93,8 @@ public class ClientLoader implements Callable<Boolean> {
 						this.classes.put(name, nodeManipulator.process(name, clazz.getValue()));
 					}
 				}
-
-				return !cancelled;
 			}
 		}
-		return false;
 	}
 
 	public Map<String, byte[]> getClasses() {

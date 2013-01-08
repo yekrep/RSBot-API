@@ -1,4 +1,4 @@
-package org.powerbot.core.loader;
+package org.powerbot.loader;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -13,9 +13,6 @@ import org.powerbot.util.io.HttpClient;
 import org.powerbot.util.io.IOHelper;
 
 /**
- * Crawls the game pages while faking HTTP header information to reduce detection rate.
- * Should appear as if a human is loading the game from a browser.
- *
  * @author Timer
  */
 public class Crawler {

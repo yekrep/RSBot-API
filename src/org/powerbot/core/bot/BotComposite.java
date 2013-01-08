@@ -2,13 +2,10 @@ package org.powerbot.core.bot;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
 
 import org.powerbot.core.bot.handlers.ScriptHandler;
 import org.powerbot.core.event.EventManager;
 import org.powerbot.core.event.EventMulticaster;
-import org.powerbot.core.loader.ClientLoader;
 import org.powerbot.core.script.job.Job;
 import org.powerbot.core.script.job.LoopTask;
 import org.powerbot.core.script.job.Task;
@@ -76,7 +73,7 @@ public class BotComposite {//TODO remove the use of a composite ... export data 
 		this.viewport.zZ = viewport[constants.VIEWPORT_ZZ];
 	}
 
-	public void reload() {
+	public void reload() {//TODO re-evaluate re-load method
 		Bot.log.info("Refreshing environment");
 		if (scriptHandler != null && scriptHandler.isActive()) {
 			scriptHandler.pause();
@@ -99,20 +96,9 @@ public class BotComposite {//TODO remove the use of a composite ... export data 
 
 		BotChrome.getInstance().panel.setBot(bot);
 
-		bot.clientLoader = new ClientLoader();
-		if (bot.clientLoader.call()) {
-			final Future<?> future = bot.start();
-			if (future == null) {
-				return;
-			}
-			try {
-				future.get();
-			} catch (final InterruptedException | ExecutionException ignored) {
-			}
-
-			if (scriptHandler != null && scriptHandler.isActive()) {
-				scriptHandler.resume();
-			}
+		bot.start();//TODO wait for loaded game
+		if (scriptHandler != null && scriptHandler.isActive()) {
+			scriptHandler.resume();
 		}
 
 		bot.refreshing = false;

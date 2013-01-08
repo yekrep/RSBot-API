@@ -6,7 +6,7 @@ import java.security.Permission;
 import java.util.Map.Entry;
 import java.util.logging.Logger;
 
-import org.powerbot.core.loader.RSClassLoader;
+import org.powerbot.core.bot.RSClassLoader;
 import org.powerbot.ipc.Controller;
 import org.powerbot.service.scripts.ScriptClassLoader;
 import org.powerbot.util.Configuration.OperatingSystem;

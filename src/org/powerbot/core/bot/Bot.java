@@ -4,22 +4,12 @@ import java.awt.Canvas;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import java.util.concurrent.Future;
-import java.util.concurrent.SynchronousQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
-import org.powerbot.concurrent.ThreadPool;
 import org.powerbot.core.bot.handlers.ScriptHandler;
 import org.powerbot.core.event.EventManager;
 import org.powerbot.core.event.events.PaintEvent;
 import org.powerbot.core.event.events.TextPaintEvent;
-import org.powerbot.core.loader.ClientLoader;
-import org.powerbot.core.loader.Loader;
-import org.powerbot.core.loader.applet.ClientStub;
-import org.powerbot.core.loader.applet.Rs2Applet;
-import org.powerbot.core.loader.script.ModScript;
 import org.powerbot.core.script.job.Task;
 import org.powerbot.game.api.methods.input.Keyboard;
 import org.powerbot.game.api.methods.input.Mouse;
@@ -32,27 +22,23 @@ import org.powerbot.game.bot.handler.input.util.MouseNode;
 import org.powerbot.game.client.Client;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.gui.component.BotPanel;
+import org.powerbot.loader.script.ModScript;
 import org.powerbot.service.GameAccounts;
 import org.powerbot.util.Configuration;
 
 /**
- * An environment of the game that is automated.
- *
  * @author Timer
  */
-@SuppressWarnings("deprecation")
 public final class Bot implements Runnable {//TODO re-write bot
 	static final Logger log = Logger.getLogger(Bot.class.getName());
 	private static Bot instance;
 
-	public volatile Rs2Applet appletContainer;
+	public volatile RSLoader appletContainer;
 	public volatile ClientStub stub;
 	public Runnable callback;
 
 	public ThreadGroup threadGroup;
-	protected ThreadPoolExecutor executor;
 
-	ClientLoader clientLoader;
 	public final BotComposite composite;
 
 	public ModScript modScript;
@@ -68,12 +54,11 @@ public final class Bot implements Runnable {//TODO re-write bot
 	public volatile boolean refreshing;
 
 	private Bot() {
-		appletContainer = null;
+		appletContainer = new RSLoader();
 		callback = null;
 		stub = null;
 
 		threadGroup = new ThreadGroup(Bot.class.getName() + "@" + hashCode());
-		executor = new ThreadPoolExecutor(1, Integer.MAX_VALUE, 60, TimeUnit.HOURS, new SynchronousQueue<Runnable>(), new ThreadPool(threadGroup), new ThreadPoolExecutor.CallerRunsPolicy());
 
 		composite = new BotComposite(this);
 		panel = null;
@@ -86,7 +71,7 @@ public final class Bot implements Runnable {//TODO re-write bot
 		paintEvent = new PaintEvent();
 		textPaintEvent = new TextPaintEvent();
 
-		executor.submit(composite.eventManager);
+		new Thread(threadGroup, composite.eventManager, composite.eventManager.getClass().getName()).start();
 		refreshing = false;
 	}
 
@@ -101,24 +86,12 @@ public final class Bot implements Runnable {//TODO re-write bot
 		return instance != null;
 	}
 
-	/**
-	 * Initializes this bot and adds it to reference.
-	 */
 	public void run() {
 		BotChrome.getInstance().toolbar.updateScriptControls();
-		clientLoader = new ClientLoader();
-		if (clientLoader.call()) {
-			start();
-		}
+		start();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public Future<?> start() {
-		if (clientLoader.isCancelled()) {
-			return null;
-		}
+	public void start() {
 		log.info("Starting bot");
 		final Context previous = composite.context;
 		composite.context = new Context(this);
@@ -127,25 +100,29 @@ public final class Bot implements Runnable {//TODO re-write bot
 			composite.context.world = previous.world;
 		}
 		Context.context.put(threadGroup, composite.context);
-		callback = new Runnable() {
+		appletContainer.setCallback(new Runnable() {
 			public void run() {
-				setClient((Client) appletContainer.clientInstance);
+				setClient((Client) appletContainer.getClient());
 				final Graphics graphics = image.getGraphics();
 				appletContainer.update(graphics);
 				graphics.dispose();
 				resize(BotChrome.PANEL_WIDTH, BotChrome.PANEL_HEIGHT);
 			}
-		};
-		log.fine("Submitting loader");
-		return executor.submit(new Loader(this));
+		});
+
+		appletContainer.load();
+		stub = new ClientStub(appletContainer);
+		appletContainer.setStub(stub);
+		stub.setApplet(appletContainer);
+		stub.setActive(true);
+		log.info("Starting game");
+		new Thread(threadGroup, appletContainer, "Loader").start();
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	public void stop() {
-		clientLoader.cancel();
-
 		if (composite.scriptHandler != null) {
 			composite.scriptHandler.stop();
 		}
@@ -153,14 +130,13 @@ public final class Bot implements Runnable {//TODO re-write bot
 		if (composite.eventManager != null) {
 			composite.eventManager.stop();
 		}
-		executor.submit(new Runnable() {
+		new Thread(threadGroup, new Runnable() {
 			@Override
 			public void run() {
 				terminateApplet();
 			}
-		});
+		}).start();
 		Context.context.remove(threadGroup);
-		executor.shutdown();
 		instance = null;
 	}
 
@@ -177,10 +153,6 @@ public final class Bot implements Runnable {//TODO re-write bot
 			stub = null;
 			composite.client = null;
 		}
-	}
-
-	public ThreadPoolExecutor getExecutor() {
-		return executor;
 	}
 
 	public void stopScript() {
@@ -245,7 +217,7 @@ public final class Bot implements Runnable {//TODO re-write bot
 		this.composite.client = client;
 		client.setCallback(new CallbackImpl(this));
 		composite.constants = new Constants(modScript.constants);
-		executor.submit(new SafeMode(this));
+		new Thread(threadGroup, new SafeMode(this)).start();
 		composite.executor = new MouseExecutor(this);
 
 		composite.setup(composite.constants);
@@ -257,10 +229,6 @@ public final class Bot implements Runnable {//TODO re-write bot
 
 	public Context getContext() {
 		return composite.context;
-	}
-
-	public ClientLoader getClientLoader() {
-		return clientLoader;
 	}
 
 	public Canvas getCanvas() {
@@ -293,11 +261,11 @@ public final class Bot implements Runnable {//TODO re-write bot
 		}
 
 		refreshing = true;
-		executor.submit(new Runnable() {
+		new Thread(threadGroup, new Runnable() {
 			public void run() {
 				composite.reload();
 			}
-		});
+		}).start();
 	}
 
 	public static void setSpeed(final Mouse.Speed speed) {
@@ -332,8 +300,8 @@ public final class Bot implements Runnable {//TODO re-write bot
 		}
 
 		public void run() {
-			if (bot != null && !bot.clientLoader.isCancelled() && bot.getClient() != null && !Keyboard.isReady()) {
-				while (!bot.clientLoader.isCancelled() && !Keyboard.isReady() && !Mouse.isReady()) {
+			if (bot != null && bot.getClient() != null && !Keyboard.isReady()) {
+				while (!Keyboard.isReady() && !Mouse.isReady()) {
 					Task.sleep(1000);
 				}
 				Task.sleep(800);

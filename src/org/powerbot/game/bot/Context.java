@@ -4,12 +4,11 @@ import java.awt.EventQueue;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ThreadPoolExecutor;
 
 import org.powerbot.core.bot.Bot;
+import org.powerbot.core.bot.RSLoader;
 import org.powerbot.core.bot.handlers.ScriptHandler;
 import org.powerbot.core.event.EventManager;
-import org.powerbot.core.loader.applet.Rs2Applet;
 import org.powerbot.game.api.methods.Calculations;
 import org.powerbot.game.api.util.internal.Constants;
 import org.powerbot.game.bot.handler.input.MouseExecutor;
@@ -98,10 +97,6 @@ public class Context {//TODO remove idea of a 'context'
 		return bot.getBuffer();
 	}
 
-	public ThreadPoolExecutor getContainer() {
-		return bot.getExecutor();
-	}
-
 	public EventManager getEventManager() {
 		return bot.getEventManager();
 	}
@@ -110,7 +105,7 @@ public class Context {//TODO remove idea of a 'context'
 		return bot.threadGroup;
 	}
 
-	public Rs2Applet getApplet() {
+	public RSLoader getLoader() {
 		return bot.appletContainer;
 	}
 

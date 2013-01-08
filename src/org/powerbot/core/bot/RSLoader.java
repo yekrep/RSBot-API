@@ -1,0 +1,126 @@
+package org.powerbot.core.bot;
+
+import java.applet.Applet;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
+import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.powerbot.loader.ClientLoader;
+import org.powerbot.util.Configuration;
+
+/**
+ * @author Timer
+ */
+public class RSLoader extends Applet implements Runnable {
+	private static Logger log = Logger.getLogger(RSLoader.class.getName());
+
+	private Runnable callback;
+	private Dimension size;
+
+	private Class<?> clazz;
+	private Object client;
+
+	private ClientLoader clientLoader;
+	private RSClassLoader classLoader;
+
+	public void load() {
+		try {
+			clientLoader = ClientLoader.getInstance();
+			classLoader = new RSClassLoader(clientLoader.getClasses(), new URL("http://" + Configuration.URLs.GAME + "/"));
+		} catch (final Exception e) {
+			log.severe("Unable to load client: " + e.getMessage());
+		}
+	}
+
+	public ClientLoader getClientLoader() {
+		return clientLoader;
+	}
+
+	public Object getClient() {
+		return client;
+	}
+
+	public void setCallback(final Runnable callback) {
+		this.callback = callback;
+	}
+
+	@Override
+	public void run() {
+		try {
+			clazz = classLoader.loadClass("client");
+			Constructor<?> constructor = clazz.getConstructor((Class[]) null);
+			client = constructor.newInstance((Object[]) null);
+
+			invokeMethod(new Object[]{this}, new Class[]{Applet.class}, "supplyApplet");
+			callback.run();
+			init();
+			start();
+		} catch (final Exception ignored) {
+			log.severe("Unable to load client, please check your firewall and internet connection.");
+		}
+	}
+
+	@Override
+	public final void init() {
+		if (client != null) invokeMethod(null, null, "init");
+	}
+
+	@Override
+	public final void start() {
+		if (client != null) invokeMethod(null, null, "start");
+
+	}
+
+	@Override
+	public final void stop() {
+		if (client != null) invokeMethod(null, null, "stop");
+
+	}
+
+	@Override
+	public final void destroy() {
+		if (client != null) invokeMethod(null, null, "destroy");
+
+	}
+
+	@Override
+	public final void paint(final Graphics render) {
+		if (client != null) invokeMethod(new Object[]{render}, new Class[]{Graphics.class}, "paint");
+
+	}
+
+	@Override
+	public final void update(final Graphics render) {
+		if (client != null) invokeMethod(new Object[]{render}, new Class[]{Graphics.class}, "update");
+
+	}
+
+	@Override
+	public final void setSize(final int width, final int height) {
+		super.setSize(width, height);
+		size = new Dimension(width, height);
+	}
+
+	@Override
+	public final Dimension getSize() {
+		return size;
+	}
+
+	@Override
+	public boolean isShowing() {
+		return true;
+	}
+
+	private void invokeMethod(final Object[] parameters, final Class<?>[] parameterTypes, final String name) {
+		try {
+			final Method method = clazz.getMethod(name, parameterTypes);
+			method.invoke(client, parameters);
+		} catch (final Exception e) {
+			log.log(Level.SEVERE, "Error invoking client method: ", e);
+		}
+	}
+}

@@ -3,7 +3,7 @@ package org.powerbot.asm.visitor;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
-import org.powerbot.core.loader.script.CodeReader;
+import org.powerbot.loader.script.CodeReader;
 
 public class AddMethodAdapter extends ClassVisitor {
 	public static class Method {

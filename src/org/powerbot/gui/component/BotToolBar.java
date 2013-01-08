@@ -143,14 +143,14 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 			if (activeScript != null) {
 				if (!activeScript.isShutdown()) {
 					bot.stopScript();
-					bot.getExecutor().submit(new Runnable() {
+					new Thread(bot.threadGroup,new Runnable() {
 						public void run() {
 							while (activeScript.isActive()) {
 								Task.sleep(150);
 							}
 							updateScriptControls();
 						}
-					});
+					}).start();
 				} else {
 					if (activeScript.isActive()) {
 						activeScript.log.info("Forcing script stop");

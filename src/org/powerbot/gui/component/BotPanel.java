@@ -136,7 +136,7 @@ public class BotPanel extends JPanel {
 			getGraphics().fillRect(0, 0, getWidth(), getHeight());
 			loadingPanel.validate();
 			loadingPanel.repaint();
-			bot.getExecutor().submit(new BotSet(bot.threadGroup));
+			loadingPanel.set(bot.threadGroup);
 			bot.setPanel(this);
 			if (bot.getCanvas() != null) {
 				offset();
@@ -242,18 +242,6 @@ public class BotPanel extends JPanel {
 	private void notifyListeners(final Component component, final MouseEvent mouseEvent) {
 		if (component != null && mouseEvent != null) {
 			bot.getEventManager().dispatch(mouseEvent);
-		}
-	}
-
-	private final class BotSet implements Runnable {
-		private final ThreadGroup threadGroup;
-
-		private BotSet(final ThreadGroup threadGroup) {
-			this.threadGroup = threadGroup;
-		}
-
-		public void run() {
-			loadingPanel.set(threadGroup);
 		}
 	}
 }

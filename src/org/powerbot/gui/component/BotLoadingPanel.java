@@ -28,7 +28,7 @@ import javax.swing.border.EmptyBorder;
 
 import org.powerbot.core.bot.Bot;
 import org.powerbot.core.bot.BotComposite;
-import org.powerbot.core.loader.ClientLoader;
+import org.powerbot.loader.ClientLoader;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.util.Configuration;
 import org.powerbot.util.LoadUpdates;

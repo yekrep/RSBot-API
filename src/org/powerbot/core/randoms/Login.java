@@ -3,10 +3,10 @@ package org.powerbot.core.randoms;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
 
 import org.powerbot.core.bot.Bot;
+import org.powerbot.core.script.job.Job;
+import org.powerbot.core.script.job.Task;
 import org.powerbot.game.api.Manifest;
 import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.api.methods.Widgets;
@@ -46,8 +46,9 @@ public class Login extends AntiRandom {
 	}
 
 	private enum LoginEvent {
-		TOKEN_FAILURE(WIDGET_LOGIN_ERROR, "game session", 1000 * 5 * 60, new Runnable() {
-			public void run() {
+		TOKEN_FAILURE(WIDGET_LOGIN_ERROR, "game session", 1000 * 5 * 60, new Task() {
+			@Override
+			public void execute() {
 				Context.resolve().refresh();
 			}
 		}),
@@ -55,9 +56,9 @@ public class Login extends AntiRandom {
 
 		private final String message;
 		private final int child, wait;
-		private final Runnable task;
+		private final Job task;
 
-		LoginEvent(final int child, final String message, final int wait, final Runnable task) {
+		LoginEvent(final int child, final String message, final int wait, final Job task) {
 			this.child = child;
 			this.message = message;
 			this.wait = wait;
@@ -73,9 +74,9 @@ public class Login extends AntiRandom {
 		LOGGED_IN(WIDGET_LOBBY_ERROR, "last session", Random.nextInt(1000, 4000));
 		private final String message;
 		private final int child, wait;
-		private final Runnable task;
+		private final Job task;
 
-		LobbyEvent(final int child, final String message, final int wait, final Runnable task) {
+		LobbyEvent(final int child, final String message, final int wait, final Job task) {
 			this.child = child;
 			this.message = message;
 			this.wait = wait;
@@ -106,7 +107,7 @@ public class Login extends AntiRandom {
 						}
 
 						if (lobbyEvent.task != null) {
-							bot.getExecutor().submit(lobbyEvent.task);
+							getContainer().submit(lobbyEvent.task);
 						}
 						return;
 					}
@@ -150,11 +151,8 @@ public class Login extends AntiRandom {
 
 						re_load_timer = null;
 						if (loginEvent.task != null) {
-							final Future<?> future = bot.getExecutor().submit(loginEvent.task);
-							try {
-								future.get();
-							} catch (final InterruptedException | ExecutionException ignored) {
-							}
+							getContainer().submit(loginEvent.task);
+							loginEvent.task.join();
 						}
 						return;
 					}

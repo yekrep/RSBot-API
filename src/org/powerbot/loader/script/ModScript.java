@@ -1,4 +1,4 @@
-package org.powerbot.core.loader.script;
+package org.powerbot.loader.script;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -17,7 +17,7 @@ import org.powerbot.asm.visitor.InsertCodeAdapter;
 import org.powerbot.asm.visitor.OverrideClassAdapter;
 import org.powerbot.asm.visitor.SetSignatureAdapter;
 import org.powerbot.asm.visitor.SetSuperAdapter;
-import org.powerbot.core.loader.AdaptException;
+import org.powerbot.loader.AdaptException;
 
 public class ModScript implements NodeManipulator {
 	private final Map<String, ClassVisitor> adapters;

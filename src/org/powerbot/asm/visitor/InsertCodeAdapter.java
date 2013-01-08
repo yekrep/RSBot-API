@@ -6,7 +6,7 @@ import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
-import org.powerbot.core.loader.script.CodeReader;
+import org.powerbot.loader.script.CodeReader;
 
 public class InsertCodeAdapter extends ClassVisitor {
 	private final String method_name;

@@ -1,4 +1,4 @@
-package org.powerbot.core.loader;
+package org.powerbot.core.bot;
 
 import java.awt.AWTPermission;
 import java.io.BufferedInputStream;
