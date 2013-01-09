@@ -99,6 +99,8 @@ public interface Client {
 
 	public RSInterfaceBase[] getRSInterfaceCache();
 
+	public RSHintArrow[] getRSHintArrows();
+
 	public void setCallback(Callback callback);
 
 	public Canvas getCanvas();
