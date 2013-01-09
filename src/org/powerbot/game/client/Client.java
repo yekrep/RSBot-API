@@ -99,6 +99,8 @@ public interface Client {
 
 	public RSInterfaceBase[] getRSInterfaceCache();
 
+	public int getCrossHairType();
+
 	public RSHintArrow[] getRSHintArrows();
 
 	public void setCallback(Callback callback);
