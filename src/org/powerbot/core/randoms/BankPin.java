@@ -1,30 +1,25 @@
 package org.powerbot.core.randoms;
 
 import org.powerbot.game.api.Manifest;
-import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.api.methods.Settings;
 import org.powerbot.game.api.methods.Widgets;
+import org.powerbot.game.api.wrappers.widget.WidgetChild;
 import org.powerbot.game.bot.Context;
 
-@Manifest(name = "Bank Pin", authors = {"Andy"}, version = 1.0, description = "Enters the bank pin.")
+@Manifest(name = "Bank Pin", authors = {"Timer"}, version = 1.0, description = "Enters the bank pin.")
 public class BankPin extends AntiRandom {
-	private final int[] PIN_COMPONENTS = {6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
-
 	@Override
 	public boolean activate() {
-		return Game.isLoggedIn() && Widgets.get(13).validate() && getPin() != null;
+		final WidgetChild pinInterface = Widgets.get(13, 0);
+		return pinInterface != null && pinInterface.visible();
 	}
 
 	@Override
 	public void execute() {
 		final String pin = String.format(getPin());
-
-		enterPin(pin);
-
-		if (Widgets.get(211).validate()) {
-			Widgets.get(211, 3).click(true);
-		} else if (Widgets.get(217).validate()) {
-			sleep(1000, 1300);
+		final int value = Integer.valueOf(String.valueOf(pin.charAt(Settings.get(163))));
+		if (value != 4 && Widgets.get(13, value + 6).interact("Select")) {
+			sleep(700, 1000);
 		}
 	}
 
@@ -34,16 +29,5 @@ public class BankPin extends AntiRandom {
 		} catch (final Exception ignored) {
 		}
 		return null;
-	}
-
-	private void enterPin(final String pin) {
-		final int state = Settings.get(563);
-		if (!Widgets.get(13).validate() || !Widgets.get(759).validate() || state == 4) {
-			return;
-		}
-		final String pin_number = String.valueOf(pin.charAt(state));
-		if (Widgets.get(13, PIN_COMPONENTS[Integer.valueOf(pin_number)]).click(true)) {
-			sleep(700, 1000);
-		}
 	}
 }
