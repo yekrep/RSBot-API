@@ -9,5 +9,7 @@ public interface Render {
 
 	public float getYMultiplier();
 
+	public int getGraphicsIndex();
+
 	public RenderData getRenderData();
 }

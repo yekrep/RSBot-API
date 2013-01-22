@@ -57,6 +57,7 @@ public class BotComposite {//TODO remove the use of a composite ... export data 
 		this.toolkit.absoluteY = render.getAbsoluteY();
 		this.toolkit.xMultiplier = render.getXMultiplier();
 		this.toolkit.yMultiplier = render.getYMultiplier();
+		this.toolkit.graphicsIndex = render.getGraphicsIndex();
 		final RenderData toolkit = render.getRenderData();
 		final float[] viewport = toolkit.getFloats();
 		this.viewport.xOff = viewport[constants.VIEWPORT_XOFF];
