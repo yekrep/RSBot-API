@@ -12,4 +12,6 @@ public interface RSGround {
 	public RSObject getWallDecoration2();
 
 	public RSObject getFloorDecoration();
+
+	public RSItemPile getRSItemPile();
 }
