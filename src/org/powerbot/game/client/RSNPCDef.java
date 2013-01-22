@@ -8,4 +8,6 @@ public interface RSNPCDef {
 	public String getName();
 
 	public int getLevel();
+
+	public int getPrayerIcon();
 }
