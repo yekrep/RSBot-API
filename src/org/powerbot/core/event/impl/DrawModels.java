@@ -10,6 +10,7 @@ import java.util.HashMap;
 import org.powerbot.core.event.listeners.PaintListener;
 import org.powerbot.game.api.methods.interactive.NPCs;
 import org.powerbot.game.api.methods.interactive.Players;
+import org.powerbot.game.api.methods.node.GroundItems;
 import org.powerbot.game.api.methods.node.SceneEntities;
 import org.powerbot.game.api.wrappers.graphics.CapturedModel;
 import org.powerbot.game.api.wrappers.node.SceneObject;
@@ -52,6 +53,16 @@ public class DrawModels implements PaintListener {
 			final CapturedModel model = e.getModel();
 			if (model != null && e.getLocation().isOnScreen()) {
 				render.setColor(Color.magenta);
+				model.draw(render);
+				render.setColor(Color.green);
+				final Point p = model.getCentralPoint();
+				render.fillOval(p.x - 2, p.y - 2, 4, 4);
+			}
+		}
+		for (final org.powerbot.game.api.wrappers.node.GroundItem e : GroundItems.getLoaded()) {
+			final CapturedModel model = e.getModel();
+			if (model != null && e.getLocation().isOnScreen()) {
+				render.setColor(Color.orange);
 				model.draw(render);
 				render.setColor(Color.green);
 				final Point p = model.getCentralPoint();
