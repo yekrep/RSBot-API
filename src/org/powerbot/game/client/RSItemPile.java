@@ -1,6 +1,6 @@
 package org.powerbot.game.client;
 
-public interface RSItemPile {
+public interface RSItemPile extends RSInteractable {
 	public int getID_1();
 
 	public int getID_2();
