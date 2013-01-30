@@ -1,6 +1,5 @@
 package org.powerbot.loader;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
@@ -25,15 +24,11 @@ public class ClientLoader {
 	private final Map<String, byte[]> classes;
 	private String packHash;
 
-	private ClientLoader() {
+	public ClientLoader() {
 		crawler = new Crawler();
 		classes = new HashMap<>();
 
 		load();
-	}
-
-	public static ClientLoader getInstance() {
-		return new ClientLoader();
 	}
 
 	public void load() {
