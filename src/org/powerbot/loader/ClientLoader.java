@@ -53,7 +53,7 @@ public class ClientLoader {
 		if (classes.size() == 0) throw new RuntimeException("failed to decrypt inner.pack");
 
 		final String hash = StringUtil.byteArrayToHexString(Deflator.inner_pack_hash);
-		log.info("Loading game (" + hash + ")");
+		log.info("Loading game (" + hash.substring(0, 6) + ")");
 
 		ModScript modScript = null;
 		while (true) {
