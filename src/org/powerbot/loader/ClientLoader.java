@@ -1,5 +1,6 @@
 package org.powerbot.loader;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
@@ -10,7 +11,6 @@ import java.util.Map;
 import java.util.logging.Logger;
 import java.util.zip.GZIPOutputStream;
 
-import org.powerbot.asm.NodeManipulator;
 import org.powerbot.core.bot.Bot;
 import org.powerbot.loader.script.ModScript;
 import org.powerbot.util.Configuration;
@@ -65,7 +65,7 @@ public class ClientLoader {
 				classes.clear();
 			}
 			if (this.classes.size() > 0) {
-				NodeManipulator nodeManipulator = null;
+				ModScript nodeManipulator = null;
 				try {
 					while (true) {
 						try {
@@ -117,7 +117,7 @@ public class ClientLoader {
 		return null;
 	}
 
-	public NodeManipulator getNodeManipulator(final Map<String, byte[]> classes) throws AdaptException, IOException, PendingException {
+	public ModScript getNodeManipulator(final Map<String, byte[]> classes) throws AdaptException, IOException, PendingException {
 		final String packHash = getHash();
 		final int delay = 1000 * 60 * 3 + 30;
 
