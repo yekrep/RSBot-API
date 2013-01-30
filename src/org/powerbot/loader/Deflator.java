@@ -39,7 +39,7 @@ public class Deflator {
 				}
 			}
 			if (inner_pack == null) {
-				return null;
+				return new HashMap<>();
 			}
 			final MessageDigest digest = MessageDigest.getInstance("SHA-1");
 			inner_pack_hash = digest.digest(inner_pack);
@@ -72,7 +72,7 @@ public class Deflator {
 			return classes;
 		} catch (final Exception ignored) {
 		}
-		return null;
+		return new HashMap<>();
 	}
 
 	private static byte[] read(final JarInputStream inputStream) throws IOException {
