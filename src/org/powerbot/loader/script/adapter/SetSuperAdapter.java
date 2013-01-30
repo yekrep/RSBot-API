@@ -1,4 +1,4 @@
-package org.powerbot.asm.visitor;
+package org.powerbot.loader.script.adapter;
 
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;

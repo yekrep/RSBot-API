@@ -9,15 +9,15 @@ import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
 import org.powerbot.asm.NodeManipulator;
-import org.powerbot.asm.visitor.AddFieldAdapter;
-import org.powerbot.asm.visitor.AddGetterAdapter;
-import org.powerbot.asm.visitor.AddInterfaceAdapter;
-import org.powerbot.asm.visitor.AddMethodAdapter;
-import org.powerbot.asm.visitor.InsertCodeAdapter;
-import org.powerbot.asm.visitor.OverrideClassAdapter;
-import org.powerbot.asm.visitor.SetSignatureAdapter;
-import org.powerbot.asm.visitor.SetSuperAdapter;
 import org.powerbot.loader.AdaptException;
+import org.powerbot.loader.script.adapter.AddFieldAdapter;
+import org.powerbot.loader.script.adapter.AddGetterAdapter;
+import org.powerbot.loader.script.adapter.AddInterfaceAdapter;
+import org.powerbot.loader.script.adapter.AddMethodAdapter;
+import org.powerbot.loader.script.adapter.InsertCodeAdapter;
+import org.powerbot.loader.script.adapter.OverrideClassAdapter;
+import org.powerbot.loader.script.adapter.SetSignatureAdapter;
+import org.powerbot.loader.script.adapter.SetSuperAdapter;
 
 public class ModScript implements NodeManipulator {
 	private final Map<String, ClassVisitor> adapters;

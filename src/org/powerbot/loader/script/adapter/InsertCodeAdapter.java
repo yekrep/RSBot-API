@@ -1,4 +1,4 @@
-package org.powerbot.asm.visitor;
+package org.powerbot.loader.script.adapter;
 
 import java.util.Map;
 
