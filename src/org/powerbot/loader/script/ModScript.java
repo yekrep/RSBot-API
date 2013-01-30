@@ -8,7 +8,6 @@ import java.util.Map;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
-import org.powerbot.loader.AdaptException;
 import org.powerbot.loader.script.adapter.AddFieldAdapter;
 import org.powerbot.loader.script.adapter.AddGetterAdapter;
 import org.powerbot.loader.script.adapter.AddInterfaceAdapter;
@@ -71,9 +70,9 @@ public class ModScript {
 		return version;
 	}
 
-	public void adapt() throws AdaptException {
+	public void adapt() {
 		if (scanner.readInt() != ModScript.MAGIC) {
-			throw new AdaptException("invalid patch format");
+			throw new RuntimeException("invalid patch format");
 		}
 		name = scanner.readString();
 		version = scanner.readShort();

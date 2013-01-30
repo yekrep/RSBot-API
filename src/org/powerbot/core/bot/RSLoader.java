@@ -30,7 +30,8 @@ public class RSLoader extends Applet implements Runnable {
 	public void load() {
 		try {
 			clientLoader = new ClientLoader();
-			classLoader = new RSClassLoader(clientLoader.getClasses(), new URL("http://" + Configuration.URLs.GAME + "/"));
+			clientLoader.load();
+			classLoader = new RSClassLoader(clientLoader.classes(), new URL("http://" + Configuration.URLs.GAME + "/"));
 		} catch (final Exception e) {
 			log.severe("Unable to load client: " + e.getMessage());
 		}

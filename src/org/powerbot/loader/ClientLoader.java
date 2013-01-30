@@ -20,100 +20,73 @@ import org.powerbot.util.io.IOHelper;
 public class ClientLoader {
 	private static final Logger log = Logger.getLogger(ClientLoader.class.getName());
 
-	public final Crawler crawler;
 	private final Map<String, byte[]> classes;
-	private String packHash;
+	public final Crawler crawler;
 
 	public ClientLoader() {
-		crawler = new Crawler();
 		classes = new HashMap<>();
-
-		load();
+		crawler = new Crawler();
 	}
 
 	public void load() {
 		log.info("Loading game");
-		classes.clear();
-		log.fine("Crawling (for) game information");
+
 		if (!crawler.crawl()) {
 			throw new RuntimeException("please check your firewall and internet connection");
 		}
-		log.fine("Downloading loader");
-		final byte[] loader = getLoader(crawler);
-		if (loader != null) {
-			final String secretKeySpecKey = crawler.parameters.get("0");
-			final String ivParameterSpecKey = crawler.parameters.get("-1");
-			if (secretKeySpecKey == null || ivParameterSpecKey == null) {
-				log.fine("Invalid secret spec key and/or iv parameter spec key");
-				throw new RuntimeException("decryption mismatch");
-			}
-			log.fine("Removing key ciphering");
-			final byte[] secretKeySpecBytes = Crypt.decode(secretKeySpecKey);
-			final byte[] ivParameterSpecBytes = Crypt.decode(ivParameterSpecKey);
-			log.fine("Extracting classes from loader");
-			final Map<String, byte[]> classes = Deflator.extract(secretKeySpecBytes, ivParameterSpecBytes, loader);
-			log.fine("Generating client hash");
-			packHash = StringUtil.byteArrayToHexString(Deflator.inner_pack_hash);
-			log.fine("Client hash (" + packHash + ")");
-			if (classes != null && classes.size() > 0) {
-				this.classes.putAll(classes);
-				classes.clear();
-			}
-			if (this.classes.size() > 0) {
-				ModScript nodeManipulator = null;
+
+		byte[] buffer;
+		try {
+			final URLConnection clientConnection = HttpClient.getHttpConnection(new URL(crawler.archive));
+			clientConnection.addRequestProperty("Referer", crawler.game);
+			buffer = IOHelper.read(HttpClient.getInputStream(clientConnection));
+		} catch (IOException ignored) {
+			buffer = null;
+		}
+
+		if (buffer == null || buffer.length == 0) throw new RuntimeException("error downloading game");
+		final String[] keys = {crawler.parameters.get("0"), crawler.parameters.get("1")};
+		if (keys[0] == null || keys[1] == null) throw new RuntimeException("error parsing parameters");
+
+		final byte[][] data = {Crypt.decode(keys[0]), Crypt.decode(keys[1])};
+		classes.putAll(Deflator.extract(data[0], data[1], buffer));
+		if (classes.size() == 0) throw new RuntimeException("failed to decrypt inner.pack");
+
+		final String hash = StringUtil.byteArrayToHexString(Deflator.inner_pack_hash);
+		log.info("Loading game (" + hash + ")");
+
+		ModScript modScript = null;
+		while (true) {
+			try {
+				modScript = getSpec(hash);
+			} catch (final IOException ignored) {
+				break;
+			} catch (final PendingException p) {
+				int d = p.getDelay() / 1000;
+				log.warning("Request pending, trying again in " + (d < 60 ? d + " seconds" : (int) Math.ceil(d / 60) + " minutes"));
 				try {
-					while (true) {
-						try {
-							nodeManipulator = getNodeManipulator(this.classes);
-							break;
-						} catch (final PendingException p) {
-							int d = p.getDelay() / 1000;
-							log.warning("Request pending, trying again in " + (d < 60 ? d + " seconds" : (int) Math.ceil(d / 60) + " minutes"));
-							Thread.sleep(p.getDelay());
-						}
-					}
-				} catch (final Throwable e) {
-					throw new RuntimeException("failed to load t-spec");
-				}
-				if (nodeManipulator != null) {
-					log.fine("Running node manipulator");
-					try {
-						nodeManipulator.adapt();
-					} catch (final AdaptException e) {
-						throw new RuntimeException("t-spec adaption error");
-					}
-					log.fine("Processing classes");
-					for (final Map.Entry<String, byte[]> clazz : this.classes.entrySet()) {
-						final String name = clazz.getKey();
-						this.classes.put(name, nodeManipulator.process(name, clazz.getValue()));
-					}
+					Thread.sleep(p.getDelay());
+				} catch (final InterruptedException ignored) {
+					break;
 				}
 			}
 		}
+		if (modScript == null) throw new RuntimeException("error getting t-spec");
+
+		modScript.adapt();
+		for (final Map.Entry<String, byte[]> clazz : classes.entrySet()) {
+			final String name = clazz.getKey();
+			classes.put(name, modScript.process(name, clazz.getValue()));
+		}
 	}
 
-	public Map<String, byte[]> getClasses() {
-		final Map<String, byte[]> classes = new HashMap<>();
+	public Map<String, byte[]> classes() {
+		final Map<String, byte[]> classes = new HashMap<>(this.classes.size());
 		classes.putAll(this.classes);
 		return classes;
 	}
 
-	public String getHash() {
-		return packHash;
-	}
-
-	public static byte[] getLoader(final Crawler crawler) {
-		try {
-			final URLConnection clientConnection = HttpClient.getHttpConnection(new URL(crawler.archive));
-			clientConnection.addRequestProperty("Referer", crawler.game);
-			return IOHelper.read(HttpClient.getInputStream(clientConnection));
-		} catch (final IOException ignored) {
-		}
-		return null;
-	}
-
-	public ModScript getNodeManipulator(final Map<String, byte[]> classes) throws AdaptException, IOException, PendingException {
-		final String packHash = getHash();
+	public ModScript getSpec(final String packHash) throws IOException, PendingException {
 		final int delay = 1000 * 60 * 3 + 30;
 
 		final HttpURLConnection con = HttpClient.getHttpConnection(new URL(String.format(Configuration.URLs.CLIENTPATCH, packHash)));
@@ -147,10 +120,10 @@ public class ClientLoader {
 					if (r_notify == HttpURLConnection.HTTP_OK || r_notify == HttpURLConnection.HTTP_ACCEPTED) {
 						throw new PendingException(delay * 2);
 					} else {
-						throw new AdaptException("Failed to load node manipulator; after reupload");
+						throw new RuntimeException("failed to load node manipulator; after reupload");
 					}
 				} else {
-					throw new AdaptException("Failed to load node manipulator");
+					throw new RuntimeException("failed to load node manipulator");
 				}
 			case HttpURLConnection.HTTP_ACCEPTED:
 				throw new PendingException(delay);

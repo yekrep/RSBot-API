@@ -32,7 +32,7 @@ public class Deflator {
 			byte[] inner_pack = null;
 			JarInputStream jarInputStream = new JarInputStream(new ByteArrayInputStream(loader));
 			JarEntry entry;
-			while ((entry = jarInputStream.getNextJarEntry()) != null && inner_pack == null) {
+			while ((entry = jarInputStream.getNextJarEntry()) != null) {
 				if (entry.getName().equals("inner.pack.gz")) {
 					inner_pack = read(jarInputStream);
 					break;
