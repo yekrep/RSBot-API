@@ -45,7 +45,7 @@ public class ClientLoader {
 		}
 
 		if (buffer == null || buffer.length == 0) throw new RuntimeException("error downloading game");
-		final String[] keys = {crawler.parameters.get("0"), crawler.parameters.get("1")};
+		final String[] keys = {crawler.parameters.get("0"), crawler.parameters.get("-1")};
 		if (keys[0] == null || keys[1] == null) throw new RuntimeException("error parsing parameters");
 
 		final byte[][] data = {Crypt.decode(keys[0]), Crypt.decode(keys[1])};
