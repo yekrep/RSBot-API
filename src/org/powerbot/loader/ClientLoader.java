@@ -59,6 +59,7 @@ public class ClientLoader {
 		while (true) {
 			try {
 				modScript = getSpec(hash);
+				break;
 			} catch (final IOException ignored) {
 				break;
 			} catch (final PendingException p) {
