@@ -54,7 +54,7 @@ public class PrintStreamHandler extends Handler {
 		std.print('[');
 		std.print(record.getLevel().getName());
 		std.print("] ");
-		if (Configuration.SUPERDEV || (Configuration.DEVMODE && RestrictedSecurityManager.isScriptThread(Thread.currentThread()))) {
+		if (Configuration.SUPERDEV || RestrictedSecurityManager.isScriptThread(Thread.currentThread())) {
 			std.print(record.getLoggerName());
 			std.print(": ");
 		}

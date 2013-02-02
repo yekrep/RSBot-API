@@ -141,7 +141,7 @@ public final class Controller implements Runnable {
 					break;
 
 				case MODE:
-					reply.setArgs(Configuration.SUPERDEV ? 2 : Configuration.DEVMODE ? 1 : 0);
+					reply.setArgs(Configuration.SUPERDEV ? 2 : 0);
 					break;
 
 				case LISTENING:

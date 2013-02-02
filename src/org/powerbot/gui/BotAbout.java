@@ -43,9 +43,8 @@ public final class BotAbout extends JDialog {
 		name.setForeground(Color.DARK_GRAY);
 		panelTitle.add(name);
 		final JLabel info = new JLabel("", SwingConstants.RIGHT);
-		info.setText(Configuration.DEVMODE ? "D " : "");
 		final long[] stat = {Runtime.getRuntime().maxMemory() / 1024 / 1024, Runtime.getRuntime().totalMemory() / 1024 / 1024, Runtime.getRuntime().availableProcessors()};
-		info.setText(String.format("%s%sm (%s%%) %sx", Configuration.DEVMODE ? "D " : "", stat[0], Math.round((double) stat[1] / stat[0] * 100), stat[2]));
+		info.setText(String.format("%sm (%s%%) %sx", stat[0], Math.round((double) stat[1] / stat[0] * 100), stat[2]));
 		info.setForeground(Color.GRAY);
 		panelTitle.add(info);
 		panelText.add(panelTitle);

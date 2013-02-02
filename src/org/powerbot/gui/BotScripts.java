@@ -93,7 +93,6 @@ public final class BotScripts extends JDialog implements ActionListener {
 	private final JToggleButton locals;
 	private final JButton username, refresh;
 	private final JTextField search;
-	private final boolean localOnly;
 	private volatile boolean init;
 
 	public BotScripts(final BotToolBar parent) {
@@ -105,11 +104,6 @@ public final class BotScripts extends JDialog implements ActionListener {
 
 		setIconImage(Resources.getImage(Resources.Paths.FILE));
 		this.parent = parent;
-
-		localOnly = Configuration.DEVMODE;
-		if (localOnly) {
-			setTitle(getTitle() + " (showing only local scripts)");
-		}
 
 		final JToolBar toolbar = new JToolBar();
 		final int d = 2;
@@ -134,7 +128,6 @@ public final class BotScripts extends JDialog implements ActionListener {
 		locals.setToolTipText(BotLocale.LOCALONLY);
 		locals.addActionListener(this);
 		locals.setFocusable(false);
-		locals.setVisible(Configuration.DEVMODE);
 		toolbar.add(locals);
 		toolbar.add(Box.createHorizontalStrut(d));
 
@@ -338,18 +331,12 @@ public final class BotScripts extends JDialog implements ActionListener {
 	public List<ScriptDefinition> loadScripts() throws IOException {
 		final List<ScriptDefinition> list = new ArrayList<ScriptDefinition>();
 
-		if (localOnly) {
-			final List<File> paths = new ArrayList<File>(2);
-			paths.add(new File("bin"));
-			paths.add(new File("out"));
-			for (final File path : paths) {
-				if (path.isDirectory()) {
-					loadLocalScripts(list, path, null);
-				}
-			}
-
-			if (!Configuration.SUPERDEV) {
-				return list;
+		final List<File> paths = new ArrayList<File>(2);
+		paths.add(new File("bin"));
+		paths.add(new File("out"));
+		for (final File path : paths) {
+			if (path.isDirectory()) {
+				loadLocalScripts(list, path, null);
 			}
 		}
 

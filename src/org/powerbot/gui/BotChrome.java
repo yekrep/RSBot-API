@@ -55,10 +55,6 @@ public class BotChrome extends JFrame implements WindowListener {
 		addWindowListener(this);
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 
-		if (Configuration.DEVMODE) {
-			setTitle(getTitle() + " (developer mode)");
-		}
-
 		panel = new BotPanel(this);
 		add(panel);
 

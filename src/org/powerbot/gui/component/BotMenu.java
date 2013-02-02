@@ -61,17 +61,15 @@ public final class BotMenu extends JPopupMenu implements ActionListener {
 		add(new BotMenuView(this));
 		addSeparator();
 
-		if (Configuration.DEVMODE) {
-			final JMenuItem widgetExplorer = new JMenuItem(BotLocale.WIDGETEXPLORER);
-			widgetExplorer.setEnabled(Bot.isInstantiated());
-			widgetExplorer.addActionListener(this);
-			add(widgetExplorer);
-			final JMenuItem settingExplorer = new JMenuItem(BotLocale.SETTINGEXPLORER);
-			settingExplorer.setEnabled(Bot.isInstantiated());
-			settingExplorer.addActionListener(this);
-			add(settingExplorer);
-			addSeparator();
-		}
+		final JMenuItem widgetExplorer = new JMenuItem(BotLocale.WIDGETEXPLORER);
+		widgetExplorer.setEnabled(Bot.isInstantiated());
+		widgetExplorer.addActionListener(this);
+		add(widgetExplorer);
+		final JMenuItem settingExplorer = new JMenuItem(BotLocale.SETTINGEXPLORER);
+		settingExplorer.setEnabled(Bot.isInstantiated());
+		settingExplorer.addActionListener(this);
+		add(settingExplorer);
+		addSeparator();
 
 		final JMenuItem site = new JMenuItem(BotLocale.WEBSITE);
 		site.setIcon(new ImageIcon(Resources.getImage(Resources.Paths.ICON_SMALL)));

@@ -194,9 +194,7 @@ public final class Bot implements Runnable {//TODO re-write bot
 				composite.eventManager.fire(paintEvent);
 				composite.eventManager.fire(textPaintEvent);
 			} catch (final Exception e) {
-				if (Configuration.DEVMODE) {
-					e.printStackTrace();
-				}
+				e.printStackTrace();
 			}
 		}
 		back.dispose();

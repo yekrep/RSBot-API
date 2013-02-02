@@ -27,7 +27,7 @@ import org.powerbot.util.io.PrintStreamHandler;
 
 public class Boot implements Runnable {
 	private final static Logger log = Logger.getLogger(Boot.class.getName());
-	private final static String SWITCH_DEV = "-dev", SWITCH_RESTARTED = "-restarted", SWITCH_VERSION_SHORT = "-v";
+	private final static String SWITCH_RESTARTED = "-restarted", SWITCH_VERSION_SHORT = "-v";
 	public final static String SWITCH_NEWTAB = "-newtab";
 
 	public static void main(final String[] args) {
@@ -40,9 +40,6 @@ public class Boot implements Runnable {
 
 		for (final String arg : args) {
 			switch (arg) {
-			case SWITCH_DEV:
-				Configuration.DEVMODE = true;
-				break;
 			case SWITCH_RESTARTED:
 				restarted = true;
 				break;
@@ -68,7 +65,7 @@ public class Boot implements Runnable {
 		final int req = 768;
 		long mem = Runtime.getRuntime().maxMemory() / 1024 / 1024;
 
-		if (mem < 768 && !restarted && !Configuration.DEVMODE) {
+		if (mem < 768 && !restarted) {
 			log.severe(String.format("Default heap size of %sm too small, restarting with %sm", mem, req));
 			fork("-Xmx" + req + "m ", SWITCH_RESTARTED);
 			return;
@@ -180,9 +177,6 @@ public class Boot implements Runnable {
 		if (!args.contains(SWITCH_RESTARTED)) {
 			args += " " + SWITCH_RESTARTED;
 		}
-		if (Configuration.DEVMODE && !args.contains(SWITCH_DEV)) {
-			args += " " + SWITCH_DEV;
-		}
 		String location = Boot.class.getProtectionDomain().getCodeSource().getLocation().getPath();
 		location = StringUtil.urlDecode(location).replaceAll("\\\\", "/");
 		final String cmd = "java " + options.trim() + " -classpath \"" + location + "\" \"" + Boot.class.getCanonicalName() + "\" " + args.trim();
@@ -200,7 +194,7 @@ public class Boot implements Runnable {
 
 	public static void message(final String txt) {
 		log.severe(txt);
-		if (!Configuration.DEVMODE && Configuration.OS == OperatingSystem.WINDOWS) {
+		if (Configuration.OS == OperatingSystem.WINDOWS) {
 			JOptionPane.showMessageDialog(null, txt, BotLocale.ERROR, JOptionPane.ERROR_MESSAGE);
 		}
 	}
