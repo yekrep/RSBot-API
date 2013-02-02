@@ -67,5 +67,5 @@ public final class BotLocale {
 	public static final String LICENSE = "License";
 	public static final String LICENSETCS = "License Terms and Conditions";
 	public static final String LICENSEMSG = "By using this software you agree to be bound by the terms of the license agreement.";
-	public static final String COPYRIGHT = "Copyright \u00a9 2011 - 2012 J.P. Holdings Int'l Ltd.";
+	public static final String COPYRIGHT = "Copyright \u00a9 2011 - 2012 J.P. Holdings Int'l Ltd and its licensors.";
 }
