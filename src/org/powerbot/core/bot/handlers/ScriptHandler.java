@@ -21,7 +21,6 @@ public class ScriptHandler {
 	final EventManager eventManager;
 	private Script script;
 	private ScriptDefinition def;
-	public long started;
 
 	private Container scriptContainer, randomContainer;
 	private RandomHandler randomHandler;
@@ -64,7 +63,6 @@ public class ScriptHandler {
 
 		/* Start the script */
 		script.start();
-		started = System.currentTimeMillis();
 
 		/* Submit the random handler */
 		(randomContainer = new TaskContainer()).submit(randomHandler = new RandomHandler(this));

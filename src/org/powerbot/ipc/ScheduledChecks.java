@@ -2,11 +2,11 @@ package org.powerbot.ipc;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.logging.Logger;
 
 import org.powerbot.core.bot.Bot;
 import org.powerbot.core.bot.handlers.ScriptHandler;
-import org.powerbot.service.NetworkAccount;
 import org.powerbot.service.scripts.ScriptDefinition;
 import org.powerbot.util.Configuration;
 
@@ -16,7 +16,8 @@ import org.powerbot.util.Configuration;
 public final class ScheduledChecks implements ActionListener {
 	private final static Logger log = Logger.getLogger(ScheduledChecks.class.getName());
 	public static volatile long SESSION_TIME = 0;
-	public static final int LOCALSCRIPT_TIMEOUT = 60 * 3;
+	public static final long LOCALSCRIPT_TIMEOUT = 15 * 60000000000L;
+	public static final AtomicLong timeout = new AtomicLong(0);
 
 	@Override
 	public void actionPerformed(final ActionEvent e) {
@@ -27,10 +28,8 @@ public final class ScheduledChecks implements ActionListener {
 		if (Bot.isInstantiated() && Bot.getInstance().getScriptHandler() != null) {
 			final ScriptHandler script = Bot.getInstance().getScriptHandler();
 			final ScriptDefinition definition;
-			if ((definition = script.getDefinition()) != null && definition.local &&
-					script.started < System.currentTimeMillis() - 1000 * LOCALSCRIPT_TIMEOUT && script.isActive() &&
-					!NetworkAccount.getInstance().hasPermission(NetworkAccount.Permissions.DEVELOPER)) {
-				log.info("Local script stopped after timeout for unauthorised developer");
+			if ((definition = script.getDefinition()) != null && definition.local && System.nanoTime() > timeout.get()) {
+				log.info("Local script restriction - script stopped");
 				script.stop();
 			}
 		}

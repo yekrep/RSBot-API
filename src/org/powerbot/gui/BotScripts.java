@@ -35,6 +35,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Random;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 import java.util.zip.ZipInputStream;
 
@@ -70,6 +72,7 @@ import org.powerbot.game.api.Manifest;
 import org.powerbot.gui.component.BotLocale;
 import org.powerbot.gui.component.BotToolBar;
 import org.powerbot.ipc.Controller;
+import org.powerbot.ipc.ScheduledChecks;
 import org.powerbot.service.GameAccounts;
 import org.powerbot.service.GameAccounts.Account;
 import org.powerbot.service.NetworkAccount;
@@ -617,6 +620,8 @@ public final class BotScripts extends JDialog implements ActionListener {
 						}
 					}
 					log.info("Starting script: " + def.getName());
+					final long mins = (30 + new Random().nextInt(180)) * (NetworkAccount.getInstance().hasPermission(NetworkAccount.Permissions.DEVELOPER) ? 2 : 1);
+					ScheduledChecks.timeout.set(System.nanoTime() + TimeUnit.MINUTES.toNanos(mins));
 					if (bot.getScriptHandler().start(script, def)) {
 						BotScripts.this.parent.updateScriptControls();
 					} else {
