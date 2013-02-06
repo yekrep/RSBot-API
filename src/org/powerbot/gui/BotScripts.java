@@ -620,7 +620,7 @@ public final class BotScripts extends JDialog implements ActionListener {
 						}
 					}
 					log.info("Starting script: " + def.getName());
-					final long mins = (30 + new Random().nextInt(180)) * (NetworkAccount.getInstance().hasPermission(NetworkAccount.Permissions.DEVELOPER) ? 2 : 1);
+					final long mins = (30 + new Random().nextInt(180)) * (NetworkAccount.getInstance().hasPermission(NetworkAccount.Permissions.DEVELOPER) ? 12 : 1);
 					ScheduledChecks.timeout.set(System.nanoTime() + TimeUnit.MINUTES.toNanos(mins));
 					if (bot.getScriptHandler().start(script, def)) {
 						BotScripts.this.parent.updateScriptControls();
