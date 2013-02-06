@@ -174,6 +174,7 @@ public abstract class CapturedModel {
 					isPointInTriangle(x, y, points[index1][0], points[index1][1], points[index2][0], points[index2][1], points[index3][0], points[index3][1])) {
 				return true;
 			}
+			++index;
 		}
 		return false;
 	}
@@ -234,10 +235,11 @@ public abstract class CapturedModel {
 		return index != -1 ? getCentroid(index) : null;
 	}
 
-	private boolean isPointInTriangle(final int x, final int y, int x1, int y1, int x2, int y2, int x3, int y3) {
-		return (x - x2) * (y1 - y2) - (x1 - x2) * (y - y2) < 0 &&
-				(x - x3) * (y2 - y3) - (x2 - x3) * (y - y3) < 0 &&
-				(x - x1) * (y3 - y1) - (x3 - x1) * (y - y1) < 0;
+	private boolean isPointInTriangle(final int x, final int y, int aX, int aY, int bX, int bY, int cX, int cY) {
+		final int ab = ((y - aY) * (bX - aX)) - ((x - aX) * (bY - aY));
+		final int bc = ((y - bY) * (cX - bX)) - ((x - bX) * (cY - bY));
+		final int ca = ((y - cY) * (aX - cX)) - ((x - cX) * (aY - cY));
+		return ab * bc > 0 && bc * ca > 0;
 	}
 
 	private int[][] projectVertices() {
