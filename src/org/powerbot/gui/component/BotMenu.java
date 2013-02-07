@@ -30,7 +30,7 @@ public final class BotMenu extends JPopupMenu implements ActionListener {
 	public BotMenu(final BotToolBar parent) {
 		this.parent = parent;
 
-		final int tabs = Bot.isInstantiated() ? 1 : 0, inst = Controller.getInstance().getRunningInstances();
+		final int tabs = Bot.instantiated() ? 1 : 0, inst = Controller.getInstance().getRunningInstances();
 
 		final JMenuItem newtab = new JMenuItem(BotLocale.NEWTAB);
 		newtab.setIcon(new ImageIcon(Resources.getImage(Resources.Paths.ADD)));
@@ -62,11 +62,11 @@ public final class BotMenu extends JPopupMenu implements ActionListener {
 		addSeparator();
 
 		final JMenuItem widgetExplorer = new JMenuItem(BotLocale.WIDGETEXPLORER);
-		widgetExplorer.setEnabled(Bot.isInstantiated());
+		widgetExplorer.setEnabled(Bot.instantiated());
 		widgetExplorer.addActionListener(this);
 		add(widgetExplorer);
 		final JMenuItem settingExplorer = new JMenuItem(BotLocale.SETTINGEXPLORER);
-		settingExplorer.setEnabled(Bot.isInstantiated());
+		settingExplorer.setEnabled(Bot.instantiated());
 		settingExplorer.addActionListener(this);
 		add(settingExplorer);
 		addSeparator();
@@ -93,7 +93,7 @@ public final class BotMenu extends JPopupMenu implements ActionListener {
 				parent.addTab();
 			}
 		} else if (a.equals(BotLocale.CLOSETAB)) {
-			if (Bot.isInstantiated()) {
+			if (Bot.instantiated()) {
 				parent.closeTab(false);
 			} else if (Controller.getInstance().getRunningInstances() > 1) {
 				parent.parent.windowClosing(null);
@@ -103,9 +103,9 @@ public final class BotMenu extends JPopupMenu implements ActionListener {
 		} else if (a.startsWith(BotLocale.SIGNIN) || a.startsWith(BotLocale.SIGNEDINAS)) {
 			new BotSignin(parent.parent);
 		} else if (a.equals(BotLocale.WIDGETEXPLORER)) {
-			BotWidgetExplorer.display(Bot.getInstance().getContext());
+			BotWidgetExplorer.display(Bot.context());
 		} else if (a.equals(BotLocale.SETTINGEXPLORER)) {
-			BotSettingExplorer.display(Bot.getInstance().getContext());
+			BotSettingExplorer.display(Bot.context());
 		} else if (a.equals(BotLocale.WEBSITE)) {
 			BotChrome.openURL(Configuration.URLs.SITE);
 		} else if (a.equals(BotLocale.ABOUT)) {

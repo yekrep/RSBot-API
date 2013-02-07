@@ -113,8 +113,8 @@ public class BotChrome extends JFrame implements WindowListener {
 	public void windowClosing(final WindowEvent arg0) {
 		log.info("Shutting down");
 		setVisible(false);
-		if (Bot.isInstantiated()) {
-			Bot.getInstance().stop();
+		if (Bot.instantiated()) {
+			Bot.instance().stop();
 		}
 		dispose();
 		System.exit(0);

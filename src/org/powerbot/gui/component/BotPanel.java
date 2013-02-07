@@ -173,11 +173,11 @@ public class BotPanel extends JPanel {
 
 	private void redispatch(final MouseEvent mouseEvent) {
 		if (mouseEvent == null || bot == null || bot.appletContainer == null || bot.appletContainer.getComponentCount() == 0 ||
-				bot.getClient() == null) {
+				Bot.client() == null) {
 			return;
 		}
 		mouseEvent.translatePoint(-xOff, -yOff);
-		final Mouse mouse = bot.getClient().getMouse();
+		final Mouse mouse = Bot.client().getMouse();
 		if (mouse == null) {
 			return;
 		}
@@ -226,7 +226,7 @@ public class BotPanel extends JPanel {
 
 	private void redispatch(final KeyEvent keyEvent) {
 		if (keyEvent == null || bot == null || bot.appletContainer == null || bot.appletContainer.getComponentCount() == 0 ||
-				bot.getClient() == null) {
+				Bot.client() == null) {
 			return;
 		}
 		bot.getEventManager().dispatch(keyEvent);

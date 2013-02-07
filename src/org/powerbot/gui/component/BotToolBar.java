@@ -21,7 +21,9 @@ import javax.swing.border.EmptyBorder;
 import org.powerbot.Boot;
 import org.powerbot.core.bot.Bot;
 import org.powerbot.core.bot.handlers.ScriptHandler;
+import org.powerbot.core.script.internal.Constants;
 import org.powerbot.core.script.job.Task;
+import org.powerbot.core.script.methods.Game;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.gui.BotScripts;
 import org.powerbot.ipc.Controller;
@@ -118,7 +120,7 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 	public void actionPerformed(final ActionEvent e) {
 		final Component c = (Component) e.getSource();
 		if (c == scriptPlay) {
-			final Bot bot = Bot.getInstance();
+			final Bot bot = Bot.instance();
 			final ScriptHandler script = bot.getScriptHandler();
 			if (script != null && script.isActive()) {
 				if (script.isPaused()) {
@@ -131,19 +133,19 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 				return;
 			}
 
-			if (bot.getClient() != null) {
+			if (Bot.client() != null) {
 				new BotScripts(this);
 			}
 		} else if (c == scriptStop) {
-			if (!Bot.isInstantiated()) {
+			if (!Bot.instantiated()) {
 				return;
 			}
-			final Bot bot = Bot.getInstance();
+			final Bot bot = Bot.instance();
 			final ScriptHandler activeScript = bot.getScriptHandler();
 			if (activeScript != null) {
 				if (!activeScript.isShutdown()) {
 					bot.stopScript();
-					new Thread(bot.threadGroup,new Runnable() {
+					new Thread(bot.threadGroup, new Runnable() {
 						public void run() {
 							while (activeScript.isActive()) {
 								Task.sleep(150);
@@ -187,7 +189,7 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 	}
 
 	public synchronized void addTab() {
-		final int s = Bot.isInstantiated() ? 1 : 0;
+		final int s = Bot.instantiated() ? 1 : 0;
 		final int n = Controller.getInstance().getRunningInstances();
 		final Logger log = Logger.getLogger(BotChrome.class.getName());
 		log.info(BotLocale.LOADINGTAB);
@@ -201,7 +203,7 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 			if (s > 0) {
 				Boot.fork(Boot.SWITCH_NEWTAB);
 			} else {
-				final Bot bot = Bot.getInstance();
+				final Bot bot = Bot.instance();
 				botButton.setVisible(true);
 				new Thread(bot.threadGroup, bot).start();
 				parent.panel.setBot(bot);
@@ -211,19 +213,13 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 	}
 
 	public void closeTab(final boolean silent) {
-		if (!Bot.isInstantiated()) {
+		if (!Bot.instantiated()) {
 			parent.panel.setBot(null);
 			return;
 		}
-		boolean loggedIn = false;
-		final Bot bot = Bot.getInstance();
-		if (bot != null && bot.getClient() != null && bot.composite.constants != null) {
-			final int state = bot.getClient().getLoginIndex();
-			loggedIn = state == bot.composite.constants.CLIENTSTATE_11 || state == bot.composite.constants.CLIENTSTATE_12;
-		}
 		if (!silent) {
 			try {
-				if (loggedIn && JOptionPane.showConfirmDialog(parent, "Are you sure you want to close this tab?", BotLocale.CLOSETAB, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) != JOptionPane.YES_OPTION) {
+				if (Game.isLoggedIn() && JOptionPane.showConfirmDialog(parent, "Are you sure you want to close this tab?", BotLocale.CLOSETAB, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) != JOptionPane.YES_OPTION) {
 					return;
 				}
 			} catch (final RuntimeException ignored) {
@@ -232,7 +228,7 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 		botButton.setVisible(false);
 		parent.panel.setBot(null);
 		updateScriptControls();
-		Bot.getInstance().stop();
+		Bot.instance().stop();
 		parent.panel.repaint();
 		Logger.getLogger(Bot.class.getName()).log(Level.INFO, "Add a tab to start another bot", "Closed");
 		System.gc();
@@ -243,7 +239,7 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 	}
 
 	public void updateScriptControls() {
-		final boolean b = Bot.isInstantiated();
+		final boolean b = Bot.instantiated();
 		scriptPlay.setVisible(b);
 		scriptStop.setVisible(b);
 		scriptPlay.setEnabled(b);
@@ -253,7 +249,7 @@ public final class BotToolBar extends JToolBar implements ActionListener {
 			scriptStop.setVisible(true);
 			scriptPlay.setEnabled(true);
 			scriptStop.setEnabled(true);
-			final Bot bot = Bot.getInstance();
+			final Bot bot = Bot.instance();
 			final ScriptHandler script = bot.getScriptHandler();
 			final boolean active = script != null && script.isActive();
 			final boolean running = active && !script.isPaused();

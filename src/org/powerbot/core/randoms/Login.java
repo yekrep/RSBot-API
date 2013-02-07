@@ -37,7 +37,7 @@ public class Login extends AntiRandom {
 	private final Bot bot;
 
 	public Login() {
-		this.bot = Bot.getInstance();
+		this.bot = Bot.instance();
 	}
 
 	public boolean activate() {

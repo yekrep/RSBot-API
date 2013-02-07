@@ -25,8 +25,8 @@ public final class ScheduledChecks implements ActionListener {
 			System.exit(1);
 		}
 
-		if (Bot.isInstantiated() && Bot.getInstance().getScriptHandler() != null) {
-			final ScriptHandler script = Bot.getInstance().getScriptHandler();
+		if (Bot.instantiated() && Bot.instance().getScriptHandler() != null) {
+			final ScriptHandler script = Bot.instance().getScriptHandler();
 			final ScriptDefinition definition;
 			if ((definition = script.getDefinition()) != null && definition.local && System.nanoTime() > timeout.get()) {
 				log.info("Local script restriction - script stopped");

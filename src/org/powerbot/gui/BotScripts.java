@@ -613,7 +613,7 @@ public final class BotScripts extends JDialog implements ActionListener {
 						JOptionPane.showMessageDialog(BotScripts.this, "This script can only be used on one account at a time.");
 						return;
 					}
-					final Bot bot = Bot.getInstance();
+					final Bot bot = Bot.instance();
 					bot.setAccount(null);
 					for (final Account a : GameAccounts.getInstance()) {
 						if (username.getText().equalsIgnoreCase(a.toString())) {

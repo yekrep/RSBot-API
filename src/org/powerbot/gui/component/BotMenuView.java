@@ -64,7 +64,7 @@ public final class BotMenuView extends JMenu implements ActionListener {//TODO r
 	public BotMenuView(final BotMenu parent) {
 		super(BotLocale.VIEW);
 
-		if (!Bot.isInstantiated()) {
+		if (!Bot.instantiated()) {
 			setEnabled(false);
 			map = null;
 			return;
@@ -114,7 +114,7 @@ public final class BotMenuView extends JMenu implements ActionListener {//TODO r
 		items.add(SEPERATOR);
 		items.add(MESSAGES);
 
-		final Bot bot = Bot.getInstance();
+		final Bot bot = Bot.instance();
 		Map<String, EventListener> listeners = BotMenuView.listeners.get(bot);
 		if (listeners == null) {
 			listeners = new HashMap<>();
@@ -164,7 +164,7 @@ public final class BotMenuView extends JMenu implements ActionListener {//TODO r
 	}
 
 	private void setView(final Class<? extends EventListener> eventListener, final boolean selected) {
-		final Bot bot = Bot.getInstance();
+		final Bot bot = Bot.instance();
 		final String name = eventListener.getName();
 		Map<String, EventListener> listeners = BotMenuView.listeners.get(bot);
 		if (listeners == null) {

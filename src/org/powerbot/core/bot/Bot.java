@@ -10,11 +10,11 @@ import org.powerbot.core.bot.handlers.ScriptHandler;
 import org.powerbot.core.event.EventManager;
 import org.powerbot.core.event.events.PaintEvent;
 import org.powerbot.core.event.events.TextPaintEvent;
+import org.powerbot.core.script.internal.Constants;
 import org.powerbot.core.script.job.Task;
 import org.powerbot.game.api.methods.input.Keyboard;
 import org.powerbot.game.api.methods.input.Mouse;
 import org.powerbot.game.api.methods.widget.WidgetCache;
-import org.powerbot.game.api.util.internal.Constants;
 import org.powerbot.game.bot.CallbackImpl;
 import org.powerbot.game.bot.Context;
 import org.powerbot.game.bot.handler.input.MouseExecutor;
@@ -24,7 +24,6 @@ import org.powerbot.gui.BotChrome;
 import org.powerbot.gui.component.BotPanel;
 import org.powerbot.loader.script.ModScript;
 import org.powerbot.service.GameAccounts;
-import org.powerbot.util.Configuration;
 
 /**
  * @author Timer
@@ -36,6 +35,8 @@ public final class Bot implements Runnable {//TODO re-write bot
 	public volatile RSLoader appletContainer;
 	public volatile ClientStub stub;
 	public Runnable callback;
+	private Client client;
+	private Constants constants;
 
 	public ThreadGroup threadGroup;
 
@@ -75,15 +76,27 @@ public final class Bot implements Runnable {//TODO re-write bot
 		refreshing = false;
 	}
 
-	public synchronized static Bot getInstance() {
+	public synchronized static Bot instance() {
 		if (instance == null) {
 			instance = new Bot();
 		}
 		return instance;
 	}
 
-	public synchronized static boolean isInstantiated() {
+	public static boolean instantiated() {
 		return instance != null;
+	}
+
+	public static Client client() {
+		return instance.client;
+	}
+
+	public static Constants constants() {
+		return instance.constants;
+	}
+
+	public static Context context() {
+		return instance.composite.context;
 	}
 
 	public void run() {
@@ -151,7 +164,7 @@ public final class Bot implements Runnable {//TODO re-write bot
 			appletContainer.destroy();
 			appletContainer = null;
 			stub = null;
-			composite.client = null;
+			client = null;
 		}
 	}
 
@@ -186,7 +199,7 @@ public final class Bot implements Runnable {//TODO re-write bot
 
 	public Graphics getBufferGraphics() {
 		final Graphics back = backBuffer.getGraphics();
-		if (composite.client != null && panel != null && !BotChrome.minimised) {
+		if (client != null && panel != null && !BotChrome.minimised) {
 			paintEvent.graphics = back;
 			textPaintEvent.graphics = back;
 			textPaintEvent.id = 0;
@@ -212,17 +225,11 @@ public final class Bot implements Runnable {//TODO re-write bot
 	}
 
 	private void setClient(final Client client) {
-		this.composite.client = client;
+		this.client = client;
 		client.setCallback(new CallbackImpl(this));
-		composite.constants = new Constants(modScript.constants);
+		constants = new Constants(modScript.constants);
 		new Thread(threadGroup, new SafeMode(this)).start();
-		composite.executor = new MouseExecutor(this);
-
-		composite.setup(composite.constants);
-	}
-
-	public Client getClient() {
-		return composite.client;
+		composite.executor = new MouseExecutor();
 	}
 
 	public Context getContext() {
@@ -230,7 +237,7 @@ public final class Bot implements Runnable {//TODO re-write bot
 	}
 
 	public Canvas getCanvas() {
-		return composite.client != null ? composite.client.getCanvas() : null;
+		return client != null ? client.getCanvas() : null;
 	}
 
 	public MouseExecutor getMouseExecutor() {
@@ -298,7 +305,7 @@ public final class Bot implements Runnable {//TODO re-write bot
 		}
 
 		public void run() {
-			if (bot != null && bot.getClient() != null && !Keyboard.isReady()) {
+			if (bot != null && bot.client != null && !Keyboard.isReady()) {
 				while (!Keyboard.isReady() && !Mouse.isReady()) {
 					Task.sleep(1000);
 				}

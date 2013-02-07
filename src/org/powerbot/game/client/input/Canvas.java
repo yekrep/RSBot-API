@@ -30,7 +30,7 @@ public class Canvas extends java.awt.Canvas {
 			if (loader_identified) {
 				return super.getGraphics();
 			} else {
-				bot = Bot.getInstance();
+				bot = Bot.instance();
 				BotChrome.getInstance().panel.offset();
 				loader_identified = true;
 			}

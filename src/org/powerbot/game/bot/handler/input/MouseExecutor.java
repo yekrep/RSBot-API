@@ -21,8 +21,8 @@ public class MouseExecutor {
 	private volatile MouseNode stepping_node;
 	private final Point target;
 
-	public MouseExecutor(final Bot bot) {
-		this.client = bot.getClient();
+	public MouseExecutor() {
+		this.client = Bot.client();
 		forceModifiers = new ArrayList<ForceModifier>(5);
 		velocity = new Vector();
 		target = new Point(-1, -1);
