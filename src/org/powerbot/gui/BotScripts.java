@@ -30,6 +30,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -552,8 +553,9 @@ public final class BotScripts extends JDialog implements ActionListener {
 					if (!NetworkAccount.getInstance().isLoggedIn()) {
 						return;
 					}
+					final Collection<String> runningList = Controller.getInstance().getRunningScripts();
 					int n = 0;
-					for (final String running : Controller.getInstance().getRunningScripts()) {
+					for (final String running : runningList) {
 						if (def.getID().equals(running)) {
 							n++;
 						}
@@ -619,13 +621,18 @@ public final class BotScripts extends JDialog implements ActionListener {
 							break;
 						}
 					}
-					log.info("Starting script: " + def.getName());
-					final long mins = (30 + new Random().nextInt(180)) * (NetworkAccount.getInstance().hasPermission(NetworkAccount.Permissions.DEVELOPER) ? 12 : 1);
-					ScheduledChecks.timeout.set(System.nanoTime() + TimeUnit.MINUTES.toNanos(mins));
-					if (bot.getScriptHandler().start(script, def)) {
-						BotScripts.this.parent.updateScriptControls();
+					runningList.removeAll(Controller.getInstance().getRunningScripts());
+					if (!runningList.isEmpty()) {
+						log.severe("You changed a script on another bot, please try again");
 					} else {
-						log.severe("There is a script running");
+						log.info("Starting script: " + def.getName());
+						final long mins = (30 + new Random().nextInt(180)) * (NetworkAccount.getInstance().hasPermission(NetworkAccount.Permissions.DEVELOPER) ? 12 : 1);
+						ScheduledChecks.timeout.set(System.nanoTime() + TimeUnit.MINUTES.toNanos(mins));
+						if (bot.getScriptHandler().start(script, def)) {
+							BotScripts.this.parent.updateScriptControls();
+						} else {
+							log.severe("There is a script running");
+						}
 					}
 				}
 			});
