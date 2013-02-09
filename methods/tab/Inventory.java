@@ -52,13 +52,6 @@ public class Inventory {
 	}
 
 	/**
-	 * @deprecated use {@link #contains(int...)}
-	 */
-	public static boolean contains(final int id) {
-		return contains(new int[]{id});
-	}
-
-	/**
 	 * Checks whether the inventory contains all of the provided item ids.
 	 *
 	 * @param ids the ids to look for
