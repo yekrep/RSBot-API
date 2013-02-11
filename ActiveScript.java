@@ -8,9 +8,9 @@ import java.util.List;
 import org.powerbot.concurrent.LoopTask;
 import org.powerbot.concurrent.strategy.Strategy;
 import org.powerbot.concurrent.strategy.StrategyGroup;
+import org.powerbot.core.bot.Bot;
 import org.powerbot.core.script.job.Job;
 import org.powerbot.core.script.job.Task;
-import org.powerbot.game.bot.Context;
 
 /**
  * @author Timer
@@ -93,7 +93,7 @@ public abstract class ActiveScript extends org.powerbot.core.script.ActiveScript
 
 	@Override
 	public int loop() {
-		if (Context.resolve().getClient() == null) {
+		if (Bot.client() == null) {
 			return 500;
 		}
 

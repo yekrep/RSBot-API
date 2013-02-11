@@ -5,8 +5,9 @@ import java.awt.Dimension;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.powerbot.core.bot.Bot;
+import org.powerbot.core.script.internal.Constants;
 import org.powerbot.core.script.job.Task;
-import org.powerbot.game.api.util.internal.Constants;
 import org.powerbot.game.api.wrappers.HintArrow;
 import org.powerbot.game.api.wrappers.Tile;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
@@ -33,7 +34,7 @@ public class Game {
 	 */
 	public static int getClientState() {
 		final Client client = Context.client();
-		final Constants constants = Context.constants();
+		final Constants constants = Bot.constants();
 		final int clientState = client.getLoginIndex();
 		if (clientState == constants.CLIENTSTATE_3) {
 			return 3;
