@@ -66,7 +66,7 @@ public final class BotMenuView extends JMenu implements ActionListener {//TODO r
 	private static final String MESSAGES = "Messages";
 	private static final String SEPERATOR = "-";
 
-	public BotMenuView(final BotMenu parent) {
+	public BotMenuView() {
 		super(BotLocale.VIEW);
 		setIcon(new ImageIcon(Resources.Paths.CONTROLS));
 
