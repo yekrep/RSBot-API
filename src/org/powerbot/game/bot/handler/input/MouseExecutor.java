@@ -4,7 +4,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.powerbot.core.bot.Bot;
+import org.powerbot.core.Bot;
 import org.powerbot.core.script.job.Task;
 import org.powerbot.game.api.methods.Calculations;
 import org.powerbot.game.api.methods.input.Mouse;

@@ -3,7 +3,7 @@ package org.powerbot.core.script.methods;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.powerbot.core.bot.Bot;
+import org.powerbot.core.Bot;
 import org.powerbot.core.script.util.Filter;
 import org.powerbot.core.script.wrappers.Player;
 import org.powerbot.core.script.wrappers.Tile;

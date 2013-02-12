@@ -13,7 +13,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
 
 import org.powerbot.Boot;
-import org.powerbot.core.bot.Bot;
+import org.powerbot.core.Bot;
 import org.powerbot.core.bot.handlers.ScriptHandler;
 import org.powerbot.core.script.job.Task;
 import org.powerbot.core.script.methods.Game;

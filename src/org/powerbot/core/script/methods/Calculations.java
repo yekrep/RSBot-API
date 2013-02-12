@@ -2,7 +2,7 @@ package org.powerbot.core.script.methods;
 
 import java.awt.Point;
 
-import org.powerbot.core.bot.Bot;
+import org.powerbot.core.Bot;
 import org.powerbot.core.script.wrappers.Locatable;
 import org.powerbot.core.script.wrappers.Player;
 import org.powerbot.core.script.wrappers.Tile;

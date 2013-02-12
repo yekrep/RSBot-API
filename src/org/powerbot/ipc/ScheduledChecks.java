@@ -5,7 +5,7 @@ import java.awt.event.ActionListener;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.logging.Logger;
 
-import org.powerbot.core.bot.Bot;
+import org.powerbot.core.Bot;
 import org.powerbot.core.bot.handlers.ScriptHandler;
 import org.powerbot.service.scripts.ScriptDefinition;
 import org.powerbot.util.Configuration;

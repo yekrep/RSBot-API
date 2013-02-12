@@ -1,4 +1,4 @@
-package org.powerbot.core.bot;
+package org.powerbot.core;
 
 import java.awt.Canvas;
 import java.awt.Dimension;
@@ -6,6 +6,8 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.logging.Logger;
 
+import org.powerbot.core.bot.ClientStub;
+import org.powerbot.core.bot.RSLoader;
 import org.powerbot.core.bot.handlers.ScriptHandler;
 import org.powerbot.core.event.EventManager;
 import org.powerbot.core.event.events.PaintEvent;

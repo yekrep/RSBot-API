@@ -22,7 +22,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.WindowConstants;
 
-import org.powerbot.core.bot.Bot;
+import org.powerbot.core.Bot;
 import org.powerbot.gui.component.BotKeyEventDispatcher;
 import org.powerbot.gui.component.BotPanel;
 import org.powerbot.ipc.ScheduledChecks;

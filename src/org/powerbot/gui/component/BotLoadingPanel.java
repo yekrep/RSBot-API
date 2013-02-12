@@ -26,8 +26,8 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
-import org.powerbot.core.bot.Bot;
-import org.powerbot.core.bot.BotComposite;
+import org.powerbot.core.Bot;
+import org.powerbot.core.BotComposite;
 import org.powerbot.loader.ClientLoader;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.util.Configuration;

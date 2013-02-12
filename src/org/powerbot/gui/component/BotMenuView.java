@@ -15,7 +15,7 @@ import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
-import org.powerbot.core.bot.Bot;
+import org.powerbot.core.Bot;
 import org.powerbot.core.event.impl.DrawBoundaries;
 import org.powerbot.core.event.impl.DrawGroundItems;
 import org.powerbot.core.event.impl.DrawInventory;

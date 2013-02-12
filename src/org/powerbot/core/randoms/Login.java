@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
-import org.powerbot.core.bot.Bot;
+import org.powerbot.core.Bot;
 import org.powerbot.core.script.job.Job;
 import org.powerbot.core.script.job.Task;
 import org.powerbot.game.api.Manifest;

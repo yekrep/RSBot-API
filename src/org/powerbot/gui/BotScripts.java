@@ -67,7 +67,7 @@ import javax.swing.Timer;
 import javax.swing.border.AbstractBorder;
 import javax.swing.border.EmptyBorder;
 
-import org.powerbot.core.bot.Bot;
+import org.powerbot.core.Bot;
 import org.powerbot.core.script.Script;
 import org.powerbot.game.api.Manifest;
 import org.powerbot.gui.component.BotLocale;

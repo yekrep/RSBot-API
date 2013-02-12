@@ -1,6 +1,6 @@
 package org.powerbot.core.script.methods;
 
-import org.powerbot.core.bot.Bot;
+import org.powerbot.core.Bot;
 import org.powerbot.core.script.internal.Constants;
 import org.powerbot.core.script.wrappers.Tile;
 import org.powerbot.game.client.BaseInfo;

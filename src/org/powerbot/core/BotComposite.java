@@ -1,4 +1,4 @@
-package org.powerbot.core.bot;
+package org.powerbot.core;
 
 import java.util.ArrayList;
 import java.util.List;

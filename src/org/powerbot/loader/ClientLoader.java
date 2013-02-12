@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.logging.Logger;
 import java.util.zip.GZIPOutputStream;
 
-import org.powerbot.core.bot.Bot;
+import org.powerbot.core.Bot;
 import org.powerbot.loader.script.ModScript;
 import org.powerbot.util.Configuration;
 import org.powerbot.util.StringUtil;

@@ -3,7 +3,7 @@ package org.powerbot.core.script.methods;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.powerbot.core.bot.Bot;
+import org.powerbot.core.Bot;
 import org.powerbot.core.script.wrappers.HintArrow;
 import org.powerbot.game.client.Client;
 import org.powerbot.game.client.RSHintArrow;

@@ -2,7 +2,7 @@ package org.powerbot.core.script.wrappers;
 
 import java.awt.Point;
 
-import org.powerbot.core.bot.Bot;
+import org.powerbot.core.Bot;
 import org.powerbot.core.script.internal.Nodes;
 import org.powerbot.core.script.methods.Game;
 import org.powerbot.game.client.Client;
