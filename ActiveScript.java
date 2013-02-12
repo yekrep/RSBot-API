@@ -8,7 +8,7 @@ import java.util.List;
 import org.powerbot.concurrent.LoopTask;
 import org.powerbot.concurrent.strategy.Strategy;
 import org.powerbot.concurrent.strategy.StrategyGroup;
-import org.powerbot.core.bot.Bot;
+import org.powerbot.core.Bot;
 import org.powerbot.core.script.job.Job;
 import org.powerbot.core.script.job.Task;
 
