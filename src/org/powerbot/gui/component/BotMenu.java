@@ -87,10 +87,6 @@ public final class BotMenu extends JPopupMenu implements ActionListener {
 		add(new BotMenuView(this));
 		addSeparator();
 
-		final JMenuItem site = new JMenuItem(BotLocale.WEBSITE);
-		site.setIcon(new ImageIcon(Resources.getImage(Resources.Paths.ICON_SMALL)));
-		site.addActionListener(this);
-		add(site);
 		final JMenuItem about = new JMenuItem(BotLocale.ABOUT);
 		BotKeyEventDispatcher.setAccelerator(about, BotKeyEventDispatcher.Action.ABOUT);
 		about.setIcon(new ImageIcon(Resources.getImage(Resources.Paths.INFO)));
@@ -105,7 +101,6 @@ public final class BotMenu extends JPopupMenu implements ActionListener {
 		case BotLocale.ACCOUNTS: showDialog(BotKeyEventDispatcher.Action.ACCOUNTS); break;
 		case BotLocale.PLAYSCRIPT: scriptPlayPause(); break;
 		case BotLocale.STOPSCRIPT: scriptStop(); break;
-		case BotLocale.WEBSITE: BotChrome.openURL(Configuration.URLs.SITE); break;
 		case BotLocale.ABOUT: showDialog(BotKeyEventDispatcher.Action.ABOUT); break;
 		default:
 			if (e.getSource() == signin) {
