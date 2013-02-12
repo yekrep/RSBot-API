@@ -33,28 +33,21 @@ import org.powerbot.service.GameAccounts;
 public final class Bot implements Runnable {//TODO re-write bot
 	static final Logger log = Logger.getLogger(Bot.class.getName());
 	private static Bot instance;
-
+	public final BotComposite composite;
+	private final PaintEvent paintEvent;
+	private final TextPaintEvent textPaintEvent;
 	public volatile RSLoader appletContainer;
 	public volatile ClientStub stub;
 	public Runnable callback;
+	public ThreadGroup threadGroup;
+	public ModScript modScript;
+	public BufferedImage image;
+	public volatile boolean refreshing;
 	private Client client;
 	private Constants constants;
-
-	public ThreadGroup threadGroup;
-
-	public final BotComposite composite;
-
-	public ModScript modScript;
 	private BotPanel panel;
-
 	private GameAccounts.Account account;
-
-	public BufferedImage image;
 	private BufferedImage backBuffer;
-	private final PaintEvent paintEvent;
-	private final TextPaintEvent textPaintEvent;
-
-	public volatile boolean refreshing;
 
 	private Bot() {
 		appletContainer = new RSLoader();
@@ -99,6 +92,30 @@ public final class Bot implements Runnable {//TODO re-write bot
 
 	public static Context context() {
 		return instance.composite.context;
+	}
+
+	public static void setSpeed(final Mouse.Speed speed) {
+		final ThreadGroup group = Thread.currentThread().getThreadGroup();
+		switch (speed) {
+		case VERY_SLOW:
+			MouseNode.speeds.put(group, 0.5d);
+			break;
+		case SLOW:
+			MouseNode.speeds.put(group, 0.8d);
+			break;
+		case NORMAL:
+			MouseNode.speeds.put(group, 1d);
+			break;
+		case FAST:
+			MouseNode.speeds.put(group, 1.7d);
+			break;
+		case VERY_FAST:
+			MouseNode.speeds.put(group, 2.5d);
+			break;
+		default:
+			MouseNode.speeds.put(group, 1d);
+			break;
+		}
 	}
 
 	public void run() {
@@ -249,12 +266,12 @@ public final class Bot implements Runnable {//TODO re-write bot
 		return composite.eventManager;
 	}
 
-	public void setAccount(final GameAccounts.Account account) {
-		this.account = account;
-	}
-
 	public GameAccounts.Account getAccount() {
 		return account;
+	}
+
+	public void setAccount(final GameAccounts.Account account) {
+		this.account = account;
 	}
 
 	public ScriptHandler getScriptHandler() {
@@ -272,30 +289,6 @@ public final class Bot implements Runnable {//TODO re-write bot
 				composite.reload();
 			}
 		}).start();
-	}
-
-	public static void setSpeed(final Mouse.Speed speed) {
-		final ThreadGroup group = Thread.currentThread().getThreadGroup();
-		switch (speed) {
-		case VERY_SLOW:
-			MouseNode.speeds.put(group, 0.5d);
-			break;
-		case SLOW:
-			MouseNode.speeds.put(group, 0.8d);
-			break;
-		case NORMAL:
-			MouseNode.speeds.put(group, 1d);
-			break;
-		case FAST:
-			MouseNode.speeds.put(group, 1.7d);
-			break;
-		case VERY_FAST:
-			MouseNode.speeds.put(group, 2.5d);
-			break;
-		default:
-			MouseNode.speeds.put(group, 1d);
-			break;
-		}
 	}
 
 	private static final class SafeMode implements Runnable {

@@ -2,7 +2,6 @@ package org.powerbot.core.script.wrappers;
 
 import java.lang.ref.WeakReference;
 
-import org.powerbot.game.client.RSCharacter;
 import org.powerbot.game.client.RSNPC;
 import org.powerbot.game.client.RSNPCDef;
 

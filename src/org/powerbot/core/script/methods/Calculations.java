@@ -15,19 +15,6 @@ import org.powerbot.game.client.TileData;
 public class Calculations {
 	public static final int[] SIN_TABLE = new int[16384];
 	public static final int[] COS_TABLE = new int[16384];
-
-	public static class Toolkit {
-		public float absoluteX, absoluteY;
-		public float xMultiplier, yMultiplier;
-		public int graphicsIndex;
-	}
-
-	public static class Viewport {
-		public float xOff, xX, xY, xZ;
-		public float yOff, yX, yY, yZ;
-		public float zOff, zX, zY, zZ;
-	}
-
 	public static final Toolkit toolkit;
 	public static final Viewport viewport;
 
@@ -129,5 +116,17 @@ public class Calculations {
 
 	public static double distanceTo(final Locatable locatable) {
 		return distance(Players.getLocal(), locatable);
+	}
+
+	public static class Toolkit {
+		public float absoluteX, absoluteY;
+		public float xMultiplier, yMultiplier;
+		public int graphicsIndex;
+	}
+
+	public static class Viewport {
+		public float xOff, xX, xY, xZ;
+		public float yOff, yX, yY, yZ;
+		public float zOff, zX, zY, zZ;
 	}
 }

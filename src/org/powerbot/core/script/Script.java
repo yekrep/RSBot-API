@@ -25,16 +25,16 @@ public interface Script {
 	public boolean isActive();
 
 	/**
+	 * @return Whether or not this {@link Script} is paused.
+	 */
+	public boolean isPaused();
+
+	/**
 	 * Sets the pause state of this script.
 	 *
 	 * @param paused <tt>true</tt> to be paused, <tt>false</tt> to be resumed.
 	 */
 	public void setPaused(final boolean paused);
-
-	/**
-	 * @return Whether or not this {@link Script} is paused.
-	 */
-	public boolean isPaused();
 
 	/**
 	 * Shuts down this {@link Script} for a graceful stop.

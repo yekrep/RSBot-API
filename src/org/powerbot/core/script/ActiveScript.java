@@ -18,10 +18,8 @@ import org.powerbot.game.api.methods.input.Mouse;
  */
 public abstract class ActiveScript extends LoopTask implements Script {
 	public final Logger log = Logger.getLogger(getClass().getName());
-
 	private final Container container;
 	private final List<Job> startup_jobs;
-
 	private final JobListener stop_listener;
 
 	public ActiveScript() {
@@ -89,16 +87,16 @@ public abstract class ActiveScript extends LoopTask implements Script {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public final void setPaused(final boolean paused) {
-		container.setPaused(paused);
+	public final boolean isPaused() {
+		return container.isPaused();
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public final boolean isPaused() {
-		return container.isPaused();
+	public final void setPaused(final boolean paused) {
+		container.setPaused(paused);
 	}
 
 	/**

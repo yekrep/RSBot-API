@@ -18,15 +18,13 @@ import org.powerbot.game.client.RenderData;
 import org.powerbot.gui.BotChrome;
 
 public class BotComposite {//TODO remove the use of a composite ... export data elsewhere
+	public final Calculations.Toolkit toolkit;
+	public final Calculations.Viewport viewport;
 	private final Bot bot;
-
 	MouseExecutor executor;
 	EventManager eventManager;
 	ScriptHandler scriptHandler;
 	Context context;
-
-	public final Calculations.Toolkit toolkit;
-	public final Calculations.Viewport viewport;
 
 	public BotComposite(final Bot bot) {
 		this.bot = bot;
