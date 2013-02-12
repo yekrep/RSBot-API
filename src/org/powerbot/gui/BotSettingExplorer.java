@@ -34,6 +34,7 @@ import org.powerbot.core.script.job.Task;
 import org.powerbot.game.api.methods.Settings;
 import org.powerbot.game.bot.Context;
 import org.powerbot.util.Tracker;
+import org.powerbot.util.io.Resources;
 
 public class BotSettingExplorer extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -134,6 +135,7 @@ public class BotSettingExplorer extends JFrame {
 
 	private void create() {
 		setTitle("Setting Explorer");
+		setIconImage(Resources.getImage(Resources.Paths.SETTINGS));
 		setResizable(false);
 		setPreferredSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT));
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);

@@ -38,6 +38,7 @@ import org.powerbot.game.api.wrappers.widget.Widget;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
 import org.powerbot.game.bot.Context;
 import org.powerbot.util.Tracker;
+import org.powerbot.util.io.Resources;
 
 /**
  * @author Timer
@@ -74,6 +75,7 @@ public class BotWidgetExplorer extends JFrame implements PaintListener {
 
 	public BotWidgetExplorer(final Context context) {
 		super("Widget Explorer");
+		setIconImage(Resources.getImage(Resources.Paths.EDIT));
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter() {
 			@Override

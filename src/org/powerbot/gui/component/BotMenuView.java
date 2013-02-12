@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.swing.ImageIcon;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
@@ -35,6 +36,7 @@ import org.powerbot.core.event.impl.TMousePosition;
 import org.powerbot.core.event.impl.TPlane;
 import org.powerbot.gui.BotSettingExplorer;
 import org.powerbot.gui.BotWidgetExplorer;
+import org.powerbot.util.io.Resources;
 
 /**
  * @author Paris
@@ -66,6 +68,7 @@ public final class BotMenuView extends JMenu implements ActionListener {//TODO r
 
 	public BotMenuView(final BotMenu parent) {
 		super(BotLocale.VIEW);
+		setIcon(new ImageIcon(Resources.Paths.CONTROLS));
 
 		if (!Bot.instantiated()) {
 			setEnabled(false);
@@ -138,9 +141,11 @@ public final class BotMenuView extends JMenu implements ActionListener {//TODO r
 
 		final JMenuItem widgetExplorer = new JMenuItem(BotLocale.WIDGETEXPLORER);
 		widgetExplorer.addActionListener(this);
+		widgetExplorer.setIcon(new ImageIcon(Resources.Paths.EDIT));
 		add(widgetExplorer);
 		final JMenuItem settingExplorer = new JMenuItem(BotLocale.SETTINGEXPLORER);
 		settingExplorer.addActionListener(this);
+		settingExplorer.setIcon(new ImageIcon(Resources.Paths.SETTINGS));
 		add(settingExplorer);
 		addSeparator();
 
