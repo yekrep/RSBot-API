@@ -6,8 +6,8 @@ import org.powerbot.util.Configuration;
  * @author Paris
  */
 public final class BotLocale {
-	public static final String NEWTAB = "New Tab";
-	public static final String CLOSETAB = "Close Tab";
+	public static final String NEWTAB = "New";
+	public static final String CLOSETAB = "Close";
 	public static final String PLAYSCRIPT = "Play";
 	public static final String RESUMESCRIPT = "Resume";
 	public static final String PAUSESCRIPT = "Pause";
@@ -18,8 +18,8 @@ public final class BotLocale {
 	public static final String SIGNIN = "Sign in";
 	public static final String SIGNOUT = "Sign out";
 	public static final String VIEW = "View";
-	public static final String WIDGETEXPLORER = "Widget Explorer";
-	public static final String SETTINGEXPLORER = "Setting Explorer";
+	public static final String WIDGETEXPLORER = "Widgets";
+	public static final String SETTINGEXPLORER = "Settings";
 	public static final String ABOUT = "About";
 	public static final String EXIT = "Exit";
 
