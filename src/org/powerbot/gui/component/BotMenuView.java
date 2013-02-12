@@ -13,6 +13,7 @@ import java.util.Map.Entry;
 
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 
 import org.powerbot.core.bot.Bot;
 import org.powerbot.core.event.impl.DrawBoundaries;
@@ -32,6 +33,8 @@ import org.powerbot.core.event.impl.TMapBase;
 import org.powerbot.core.event.impl.TMenu;
 import org.powerbot.core.event.impl.TMousePosition;
 import org.powerbot.core.event.impl.TPlane;
+import org.powerbot.gui.BotSettingExplorer;
+import org.powerbot.gui.BotWidgetExplorer;
 
 /**
  * @author Paris
@@ -133,6 +136,14 @@ public final class BotMenuView extends JMenu implements ActionListener {//TODO r
 			}
 		}
 
+		final JMenuItem widgetExplorer = new JMenuItem(BotLocale.WIDGETEXPLORER);
+		widgetExplorer.addActionListener(this);
+		add(widgetExplorer);
+		final JMenuItem settingExplorer = new JMenuItem(BotLocale.SETTINGEXPLORER);
+		settingExplorer.addActionListener(this);
+		add(settingExplorer);
+		addSeparator();
+
 		final JCheckBoxMenuItem all = new JCheckBoxMenuItem(ALL, selectedAll);
 		all.addActionListener(this);
 		add(all);
@@ -152,14 +163,21 @@ public final class BotMenuView extends JMenu implements ActionListener {//TODO r
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final JCheckBoxMenuItem item = (JCheckBoxMenuItem) e.getSource();
-		item.setSelected(!item.isSelected());
-		if (item.getText().equals(ALL)) {
-			for (final Entry<String, Class<? extends EventListener>> entry : map.entrySet()) {
-				setView(entry.getValue(), item.isSelected());
-			}
+		final String s = e.getActionCommand();
+		if (s.equals(BotLocale.WIDGETEXPLORER)) {
+			BotWidgetExplorer.display(Bot.context());
+		} else if (s.equals(BotLocale.SETTINGEXPLORER)) {
+			BotSettingExplorer.display(Bot.context());
 		} else {
-			setView(map.get(item.getText()), item.isSelected());
+			final JCheckBoxMenuItem item = (JCheckBoxMenuItem) e.getSource();
+			item.setSelected(!item.isSelected());
+			if (item.getText().equals(ALL)) {
+				for (final Entry<String, Class<? extends EventListener>> entry : map.entrySet()) {
+					setView(entry.getValue(), item.isSelected());
+				}
+			} else {
+				setView(map.get(item.getText()), item.isSelected());
+			}
 		}
 	}
 

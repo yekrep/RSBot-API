@@ -21,9 +21,7 @@ import org.powerbot.gui.BotAbout;
 import org.powerbot.gui.BotAccounts;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.gui.BotScripts;
-import org.powerbot.gui.BotSettingExplorer;
 import org.powerbot.gui.BotSignin;
-import org.powerbot.gui.BotWidgetExplorer;
 import org.powerbot.ipc.Controller;
 import org.powerbot.service.NetworkAccount;
 import org.powerbot.util.Configuration;
@@ -89,16 +87,6 @@ public final class BotMenu extends JPopupMenu implements ActionListener {
 		add(new BotMenuView(this));
 		addSeparator();
 
-		final JMenuItem widgetExplorer = new JMenuItem(BotLocale.WIDGETEXPLORER);
-		widgetExplorer.setEnabled(Bot.instantiated());
-		widgetExplorer.addActionListener(this);
-		add(widgetExplorer);
-		final JMenuItem settingExplorer = new JMenuItem(BotLocale.SETTINGEXPLORER);
-		settingExplorer.setEnabled(Bot.instantiated());
-		settingExplorer.addActionListener(this);
-		add(settingExplorer);
-		addSeparator();
-
 		final JMenuItem site = new JMenuItem(BotLocale.WEBSITE);
 		site.setIcon(new ImageIcon(Resources.getImage(Resources.Paths.ICON_SMALL)));
 		site.addActionListener(this);
@@ -117,8 +105,6 @@ public final class BotMenu extends JPopupMenu implements ActionListener {
 		case BotLocale.ACCOUNTS: showDialog(BotKeyEventDispatcher.Action.ACCOUNTS); break;
 		case BotLocale.PLAYSCRIPT: scriptPlayPause(); break;
 		case BotLocale.STOPSCRIPT: scriptStop(); break;
-		case BotLocale.WIDGETEXPLORER: BotWidgetExplorer.display(Bot.context()); break;
-		case BotLocale.SETTINGEXPLORER: BotSettingExplorer.display(Bot.context()); break;
 		case BotLocale.WEBSITE: BotChrome.openURL(Configuration.URLs.SITE); break;
 		case BotLocale.ABOUT: showDialog(BotKeyEventDispatcher.Action.ABOUT); break;
 		default:
