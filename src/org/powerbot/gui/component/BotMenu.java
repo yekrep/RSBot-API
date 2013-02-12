@@ -85,6 +85,7 @@ public final class BotMenu extends JPopupMenu implements ActionListener {
 		addSeparator();
 
 		add(new BotMenuView());
+		add(new BotMenuInput());
 		addSeparator();
 
 		final JMenuItem about = new JMenuItem(BotLocale.ABOUT);
