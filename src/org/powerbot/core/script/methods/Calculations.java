@@ -31,7 +31,6 @@ public class Calculations {
 
 	public static boolean isPointOnScreen(final Point point) {
 		return isPointOnScreen(point.x, point.y);
-
 	}
 
 	public static boolean isPointOnScreen(final int x, final int y) {
