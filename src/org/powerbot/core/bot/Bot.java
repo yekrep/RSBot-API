@@ -100,7 +100,6 @@ public final class Bot implements Runnable {//TODO re-write bot
 	}
 
 	public void run() {
-		BotChrome.getInstance().toolbar.updateScriptControls();
 		start();
 	}
 

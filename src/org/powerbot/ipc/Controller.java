@@ -29,6 +29,7 @@ import java.util.zip.InflaterInputStream;
 import org.powerbot.core.bot.Bot;
 import org.powerbot.core.bot.handlers.ScriptHandler;
 import org.powerbot.gui.BotChrome;
+import org.powerbot.gui.component.BotMenu;
 import org.powerbot.ipc.Message.MessageType;
 import org.powerbot.service.NetworkAccount;
 import org.powerbot.service.scripts.ScriptDefinition;
@@ -174,7 +175,7 @@ public final class Controller implements Runnable {
 					reply = null;
 					NetworkAccount.getInstance().revalidate();
 					BotChrome.getInstance().panel.loadingPanel.setAdVisible(!NetworkAccount.getInstance().hasPermission(NetworkAccount.Permissions.VIP));
-					BotChrome.getInstance().toolbar.closeTabIfInactive();
+					BotMenu.tabClose(true);
 					break;
 
 				default:

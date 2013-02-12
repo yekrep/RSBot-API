@@ -1,8 +1,7 @@
 package org.powerbot.gui;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Desktop;
+import java.awt.KeyboardFocusManager;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.IOException;
@@ -19,14 +18,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.WindowConstants;
 
 import org.powerbot.core.bot.Bot;
+import org.powerbot.gui.component.BotKeyEventDispatcher;
 import org.powerbot.gui.component.BotPanel;
-import org.powerbot.gui.component.BotToolBar;
 import org.powerbot.ipc.ScheduledChecks;
 import org.powerbot.service.NetworkAccount;
 import org.powerbot.util.Configuration;
@@ -44,8 +42,6 @@ public class BotChrome extends JFrame implements WindowListener {
 	private static Logger log = Logger.getLogger(BotChrome.class.getName());
 	public static final int PANEL_WIDTH = 765, PANEL_HEIGHT = 553;
 	public BotPanel panel;
-	public BotToolBar toolbar;
-	public JPanel header;
 	public static volatile boolean loaded = false;
 	public static volatile boolean minimised = false;
 
@@ -58,13 +54,7 @@ public class BotChrome extends JFrame implements WindowListener {
 		panel = new BotPanel(this);
 		add(panel);
 
-		toolbar = new BotToolBar(this);
-		header = new JPanel();
-		header.setBackground(Color.BLACK);
-		header.setPreferredSize(toolbar.getPreferredSize());
-		add(header, BorderLayout.NORTH);
-
-		log.log(Level.INFO, "Optimizing your experience", "Starting...");
+		log.log(Level.INFO, "Optimising your experience", "Starting...");
 		pack();
 		setMinimumSize(getSize());
 		setLocationRelativeTo(getParent());
@@ -169,11 +159,10 @@ public class BotChrome extends JFrame implements WindowListener {
 						timer.setInitialDelay(1000 * 60 * 1);
 						timer.start();
 
-						parent.remove(parent.header);
-						parent.add(parent.toolbar, BorderLayout.NORTH);
+						KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(new BotKeyEventDispatcher());
 						parent.validate();
 						parent.repaint();
-						Logger.getLogger(BotChrome.class.getName()).log(Level.INFO, "Add a tab to start a new bot", "Welcome");
+						Logger.getLogger(BotChrome.class.getName()).log(Level.INFO, "Press F1 to open the menu and start a new bot", "Welcome");
 					}
 				});
 			}

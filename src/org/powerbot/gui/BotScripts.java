@@ -71,7 +71,6 @@ import org.powerbot.core.bot.Bot;
 import org.powerbot.core.script.Script;
 import org.powerbot.game.api.Manifest;
 import org.powerbot.gui.component.BotLocale;
-import org.powerbot.gui.component.BotToolBar;
 import org.powerbot.ipc.Controller;
 import org.powerbot.ipc.ScheduledChecks;
 import org.powerbot.service.GameAccounts;
@@ -89,9 +88,8 @@ import org.powerbot.util.io.Resources;
  * @author Paris
  */
 public final class BotScripts extends JDialog implements ActionListener {
+	private static final long serialVersionUID = 5608832535551325651L;
 	private static final Logger log = Logger.getLogger(BotScripts.class.getName());
-	private static final long serialVersionUID = 1L;
-	private final BotToolBar parent;
 	private final JScrollPane scroll;
 	private final JPanel table;
 	private final JToggleButton locals;
@@ -99,16 +97,14 @@ public final class BotScripts extends JDialog implements ActionListener {
 	private final JTextField search;
 	private volatile boolean init;
 
-	public BotScripts(final BotToolBar parent) {
-		super(parent.parent, BotLocale.SCRIPTS, true);
+	public BotScripts(final BotChrome parent) {
+		super(parent, BotLocale.SCRIPTS, true);
 
 		if (!NetworkAccount.getInstance().isLoggedIn() && !Configuration.SUPERDEV) {
-			new BotSignin(parent.parent);
+			new BotSignin(parent);
 		}
 
 		setIconImage(Resources.getImage(Resources.Paths.FILE));
-		this.parent = parent;
-
 		final JToolBar toolbar = new JToolBar();
 		final int d = 2;
 		toolbar.setBorder(new EmptyBorder(d, d, d, d));
@@ -628,9 +624,7 @@ public final class BotScripts extends JDialog implements ActionListener {
 						log.info("Starting script: " + def.getName());
 						final long mins = (30 + new Random().nextInt(180)) * (NetworkAccount.getInstance().hasPermission(NetworkAccount.Permissions.DEVELOPER) ? 12 : 1);
 						ScheduledChecks.timeout.set(System.nanoTime() + TimeUnit.MINUTES.toNanos(mins));
-						if (bot.getScriptHandler().start(script, def)) {
-							BotScripts.this.parent.updateScriptControls();
-						} else {
+						if (!bot.getScriptHandler().start(script, def)) {
 							log.severe("There is a script running");
 						}
 					}

@@ -17,6 +17,7 @@ import javax.swing.UIManager;
 import org.powerbot.core.bot.RSLoader;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.gui.component.BotLocale;
+import org.powerbot.gui.component.BotMenu;
 import org.powerbot.ipc.Controller;
 import org.powerbot.util.Configuration;
 import org.powerbot.util.Configuration.OperatingSystem;
@@ -135,11 +136,10 @@ public class Boot implements Runnable {
 			System.setProperty("sun.net.spi.nameservice.provider.1", "dns,sun");
 		}
 
-		final BotChrome chrome = BotChrome.getInstance();
+		BotChrome.getInstance();
 		if (newtab) {
-			chrome.toolbar.addTab();
+			BotMenu.tabAdd();
 		}
-		chrome.toolbar.tabAdd.setEnabled(true);
 	}
 
 	public void run() {

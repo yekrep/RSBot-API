@@ -23,6 +23,7 @@ import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 
 import org.powerbot.gui.component.BotLocale;
+import org.powerbot.gui.component.BotMenu;
 import org.powerbot.service.NetworkAccount;
 import org.powerbot.util.Configuration;
 import org.powerbot.util.Tracker;
@@ -206,7 +207,7 @@ public final class BotSignin extends JDialog implements ActionListener {
 				Tracker.getInstance().trackPage("signin/login", getTitle());
 			} else if (signin.getText().equals(BotLocale.SIGNOUT)) {
 				NetworkAccount.getInstance().logout();
-				parent.toolbar.closeTabIfInactive();
+				BotMenu.tabClose(true);
 				updateState(false);
 				Tracker.getInstance().trackPage("signin/logout", getTitle());
 			}
