@@ -60,6 +60,7 @@ public class Npcs {
 		if (local == null) return null;
 
 		final Tile pos = local.getLocation();
+		if (pos == null) return null;
 		final Set<Npc> npcs = getLoaded();
 		for (final Npc npc : npcs) {
 			final double d;

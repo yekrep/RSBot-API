@@ -51,6 +51,7 @@ public class Players {
 		if (local == null) return null;
 
 		final Tile pos = local.getLocation();
+		if (pos == null) return null;
 		final Set<Player> players = getLoaded();
 		for (final Player player : players) {
 			final double d;
