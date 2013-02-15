@@ -135,49 +135,47 @@ public abstract class Mouse extends Focus implements MouseListener, MouseMotionL
 		e.consume();
 	}
 
+	@Deprecated
 	public final void move(final Point point) {
 		update(point.x, point.y);
 	}
 
+	@Deprecated
 	public final void update(final int x, final int y) {
 		clientX = x;
 		clientY = y;
 	}
 
 	public final void sendEvent(final MouseEvent e) {
+		if (e == null) return;
+
 		clientX = e.getX();
 		clientY = e.getY();
-		try {
-			if (e.getID() == MouseEvent.MOUSE_CLICKED) {
-				_mouseClicked(e);
-			} else if (e.getID() == MouseEvent.MOUSE_DRAGGED) {
-				_mouseDragged(e);
-			} else if (e.getID() == MouseEvent.MOUSE_ENTERED) {
-				clientPresent = true;
-				_mouseEntered(e);
-			} else if (e.getID() == MouseEvent.MOUSE_EXITED) {
-				clientPresent = false;
-				_mouseExited(e);
-			} else if (e.getID() == MouseEvent.MOUSE_MOVED) {
-				_mouseMoved(e);
-			} else if (e.getID() == MouseEvent.MOUSE_PRESSED) {
-				clientPressX = e.getX();
-				clientPressY = e.getY();
-				clientPressTime = System.currentTimeMillis();
-				clientPressed = true;
-				_mousePressed(e);
-			} else if (e.getID() == MouseEvent.MOUSE_RELEASED) {
-				clientPressed = false;
-				_mouseReleased(e);
-			} else if (e.getID() == MouseEvent.MOUSE_WHEEL) {
-				try {
-					_mouseWheelMoved((MouseWheelEvent) e);
-				} catch (final AbstractMethodError ignored) {
-				}
-			} else {
-				throw new InternalError(e.toString());
-			}
-		} catch (final NullPointerException ignored) {
+		if (e.getID() == MouseEvent.MOUSE_CLICKED) {
+			_mouseClicked(e);
+		} else if (e.getID() == MouseEvent.MOUSE_DRAGGED) {
+			_mouseDragged(e);
+		} else if (e.getID() == MouseEvent.MOUSE_ENTERED) {
+			clientPresent = true;
+			_mouseEntered(e);
+		} else if (e.getID() == MouseEvent.MOUSE_EXITED) {
+			clientPresent = false;
+			_mouseExited(e);
+		} else if (e.getID() == MouseEvent.MOUSE_MOVED) {
+			_mouseMoved(e);
+		} else if (e.getID() == MouseEvent.MOUSE_PRESSED) {
+			clientPressX = e.getX();
+			clientPressY = e.getY();
+			clientPressTime = e.getWhen();
+			clientPressed = true;
+			_mousePressed(e);
+		} else if (e.getID() == MouseEvent.MOUSE_RELEASED) {
+			clientPressed = false;
+			_mouseReleased(e);
+		} else if (e.getID() == MouseEvent.MOUSE_WHEEL) {
+			_mouseWheelMoved((MouseWheelEvent) e);
+		} else {
+			throw new InternalError(e.toString());
 		}
 	}
 }
