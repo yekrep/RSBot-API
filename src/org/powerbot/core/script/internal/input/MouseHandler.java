@@ -10,6 +10,7 @@ import org.powerbot.game.client.Client;
 import org.powerbot.game.client.input.Mouse;
 
 public class MouseHandler implements Runnable {
+	private static final int MAX_STEPS = 20;
 	private final MouseImpl mouseImpl;
 	private final Object LOCK = new Object();
 	private final Client client;
@@ -81,6 +82,11 @@ public class MouseHandler implements Runnable {
 			if (centerPoint.x == -1 || centerPoint.y == -1) {
 				complete(target);
 				return;
+			}
+
+			if (++target.steps > MAX_STEPS) {
+				complete(target);
+				continue;
 			}
 
 			final Point pos = mouse.getLocation();
