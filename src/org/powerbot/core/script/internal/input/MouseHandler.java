@@ -105,6 +105,7 @@ public class MouseHandler implements Runnable {
 				}
 			}
 
+			if (targetingPoint.x == -1 || targetingPoint.y == -1) continue;
 			final Point nextPos = mouseImpl.getNextPoint(targetingPoint);
 			moveMouse(nextPos.x, nextPos.y);
 		}
