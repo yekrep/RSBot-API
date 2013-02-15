@@ -10,7 +10,7 @@ import org.powerbot.game.client.Client;
 import org.powerbot.game.client.RSInterface;
 import org.powerbot.game.client.RSInterfaceNode;
 
-public class Component {//TODO isValid, getChildren, isVisible
+public class Component {//TODO isValid, getChildren, isVisible, targetable, validatable
 	private final Widget widget;
 	private final Component parent;
 	private final int index;

@@ -11,7 +11,7 @@ import org.powerbot.game.client.RSNPC;
 import org.powerbot.game.client.RSNPCNode;
 import org.powerbot.game.client.RSPlayer;
 
-public class HintArrow implements Locatable {
+public class HintArrow implements Locatable {//TODO validatable
 	private final WeakReference<RSHintArrow> arrow;
 
 	public HintArrow(final RSHintArrow arrow) {

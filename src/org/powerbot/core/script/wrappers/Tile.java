@@ -7,7 +7,7 @@ import org.powerbot.core.script.methods.Calculations;
 import org.powerbot.core.script.methods.Game;
 import org.powerbot.core.script.util.Random;
 
-public class Tile implements Locatable, Targetable {
+public class Tile implements Locatable, Targetable {//TODO validatable
 	public int x, y, plane;
 
 	public Tile(final int x, final int y) {

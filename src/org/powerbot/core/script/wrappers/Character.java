@@ -19,7 +19,7 @@ import org.powerbot.game.client.RSNPCNode;
 import org.powerbot.game.client.RSPlayer;
 import org.powerbot.game.client.Sequence;
 
-public abstract class Character implements Locatable, Targetable {
+public abstract class Character implements Locatable, Targetable {//TODO validatable
 	private int faceIndex = -1;
 
 	protected abstract RSCharacter getAccessor();
@@ -168,28 +168,28 @@ public abstract class Character implements Locatable, Targetable {
 			point = model.getCentroid(faceIndex = model.nextTriangle());
 			if (point != null) return point;
 		}
-		return null;
+		return null;//TODO finish
 	}
 
 	@Override
 	public Point getNextPoint() {
 		final Model model = getModel();
 		if (model != null) return model.getNextPoint();
-		return null;
+		return null;//TODO finish
 	}
 
 	@Override
 	public Point getCenterPoint() {
 		final Model model = getModel();
 		if (model != null) return model.getCenterPoint();
-		return null;
+		return null;//TODO finish
 	}
 
 	@Override
 	public boolean contains(final Point point) {
 		final Model model = getModel();
 		if (model != null) return model.contains(point);
-		return false;
+		return false;//TODO finish
 	}
 
 	private LinkedListNode[] getBarNodes() {
