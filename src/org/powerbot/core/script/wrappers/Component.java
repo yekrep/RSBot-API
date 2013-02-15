@@ -4,7 +4,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 
 import org.powerbot.core.Bot;
-import org.powerbot.core.script.internal.HashTable;
+import org.powerbot.core.script.internal.wrappers.HashTable;
 import org.powerbot.core.script.methods.Widgets;
 import org.powerbot.game.client.Client;
 import org.powerbot.game.client.RSInterface;

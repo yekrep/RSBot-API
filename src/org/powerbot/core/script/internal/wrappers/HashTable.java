@@ -1,4 +1,4 @@
-package org.powerbot.core.script.internal;
+package org.powerbot.core.script.internal.wrappers;
 
 import org.powerbot.game.client.Node;
 
