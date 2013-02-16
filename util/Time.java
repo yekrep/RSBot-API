@@ -7,35 +7,6 @@ package org.powerbot.game.api.util;
  */
 public class Time {
 	/**
-	 * @param time The number of milliseconds to ensure sleeping for.
-	 * @see org.powerbot.core.script.job.Task#sleep(int)
-	 * @deprecated
-	 */
-	@Deprecated
-	public static void sleep(final int time) {
-		try {
-			final long start = System.currentTimeMillis();
-			Thread.sleep(time);
-			long now;
-			while (start + time > (now = System.currentTimeMillis())) {
-				Thread.sleep(start + time - now);
-			}
-		} catch (final InterruptedException ignored) {
-		}
-	}
-
-	/**
-	 * Sleeps for a random number of milliseconds.
-	 *
-	 * @param min the minimum sleep time.
-	 * @param max the maximum sleep time.
-	 */
-	@Deprecated
-	public static void sleep(final int min, final int max) {
-		sleep(Random.nextInt(min, max));
-	}
-
-	/**
 	 * Converts milliseconds to a String in the format
 	 * hh:mm:ss.
 	 *
