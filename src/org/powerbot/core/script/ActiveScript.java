@@ -1,6 +1,5 @@
 package org.powerbot.core.script;
 
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -70,9 +69,13 @@ public abstract class ActiveScript extends LoopTask implements Script {
 		}
 		container.addListener(stop_listener);
 
-		for (final Job job : Collections.unmodifiableList(startup_jobs)) {
+		final Job[] jobs = new Job[startup_jobs.size()];
+		int pos = 0;
+		for (final Job job : startup_jobs) {
 			container.submit(job);
+			jobs[pos++] = job;
 		}
+		for (final Job job : jobs) job.join();
 	}
 
 	/**
