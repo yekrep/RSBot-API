@@ -64,9 +64,9 @@ public class Tile implements Locatable, Targetable {//TODO validatable
 
 	@Override
 	public Point getInteractPoint() {
-		int i = Random.nextGaussian(0, 100, 5);
-		int j = Random.nextGaussian(0, 100, 5);
-		return getPoint(i / 100.0D, j / 100.0D, 0);
+		final int x = Random.nextGaussian(0, 100, 5);
+		final int y = Random.nextGaussian(0, 100, 5);
+		return getPoint(x / 100.0D, y / 100.0D, 0);
 	}
 
 	@Override
