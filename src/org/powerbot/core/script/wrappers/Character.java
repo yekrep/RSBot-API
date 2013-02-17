@@ -168,28 +168,38 @@ public abstract class Character implements Locatable, Targetable {//TODO validat
 			point = model.getCentroid(faceIndex = model.nextTriangle());
 			if (point != null) return point;
 		}
-		return null;//TODO finish
+		return getScreenPoint();
 	}
 
 	@Override
 	public Point getNextPoint() {
 		final Model model = getModel();
 		if (model != null) return model.getNextPoint();
-		return null;//TODO finish
+		return getScreenPoint();
 	}
 
 	@Override
 	public Point getCenterPoint() {
 		final Model model = getModel();
 		if (model != null) return model.getCenterPoint();
-		return null;//TODO finish
+		return getScreenPoint();
 	}
 
 	@Override
 	public boolean contains(final Point point) {
 		final Model model = getModel();
 		if (model != null) return model.contains(point);
-		return false;//TODO finish
+		return point.distance(getScreenPoint()) < 15d;
+	}
+
+	private Point getScreenPoint() {
+		final RSCharacter character = getAccessor();
+		final RSInteractableData data = character != null ? character.getData() : null;
+		final RSInteractableLocation location = data != null ? data.getLocation() : null;
+		if (location != null) {
+			return Calculations.groundToScreen((int) location.getX(), (int) location.getY(), character.getPlane(), character.getHeight() / 2);
+		}
+		return new Point(-1, -1);
 	}
 
 	private LinkedListNode[] getBarNodes() {
