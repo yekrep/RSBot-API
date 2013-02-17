@@ -2,8 +2,12 @@ package org.powerbot.core.script.wrappers;
 
 import java.lang.ref.WeakReference;
 
+import org.powerbot.core.Bot;
+import org.powerbot.core.script.internal.Nodes;
+import org.powerbot.game.client.Client;
 import org.powerbot.game.client.RSNPC;
 import org.powerbot.game.client.RSNPCDef;
+import org.powerbot.game.client.RSNPCNode;
 
 public class Npc extends Character {
 	private final WeakReference<RSNPC> npc;
@@ -47,5 +51,23 @@ public class Npc extends Character {
 		final RSNPC npc = getAccessor();
 		final RSNPCDef def;
 		return npc != null && (def = npc.getRSNPCDef()) != null ? def.getPrayerIcon() : -1;
+	}
+
+	@Override
+	public boolean isValid() {
+		final Client client = Bot.client();
+		if (client == null) return false;
+		final RSNPC npc = getAccessor();
+		if (npc != null) {
+			final int[] indices = client.getRSNPCIndexArray();
+			final org.powerbot.game.client.HashTable npcTable = client.getRSNPCNC();
+			for (final int index : indices) {
+				Object node = Nodes.lookup(npcTable, indices[index]);
+				if (node == null) continue;
+				if (node instanceof RSNPCNode) node = ((RSNPCNode) node).getRSNPC();
+				if (node instanceof RSNPC) if (node.equals(npc)) return true;
+			}
+		}
+		return false;
 	}
 }

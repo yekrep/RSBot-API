@@ -4,6 +4,7 @@ import java.awt.Point;
 
 import org.powerbot.core.Bot;
 import org.powerbot.core.script.internal.Nodes;
+import org.powerbot.core.script.methods.Calculations;
 import org.powerbot.core.script.methods.Game;
 import org.powerbot.game.client.Client;
 import org.powerbot.game.client.CombatStatus;
@@ -19,7 +20,7 @@ import org.powerbot.game.client.RSNPCNode;
 import org.powerbot.game.client.RSPlayer;
 import org.powerbot.game.client.Sequence;
 
-public abstract class Character implements Locatable, Targetable {//TODO validatable
+public abstract class Character implements Locatable, Targetable, Validatable {
 	private int faceIndex = -1;
 
 	protected abstract RSCharacter getAccessor();

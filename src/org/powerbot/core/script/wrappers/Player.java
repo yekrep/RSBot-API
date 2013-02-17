@@ -1,7 +1,10 @@
 package org.powerbot.core.script.wrappers;
 
 import java.lang.ref.WeakReference;
+import java.util.Arrays;
 
+import org.powerbot.core.Bot;
+import org.powerbot.game.client.Client;
 import org.powerbot.game.client.RSPlayer;
 import org.powerbot.game.client.RSPlayerComposite;
 
@@ -65,5 +68,14 @@ public class Player extends Character {
 			return appearance;
 		}
 		return null;
+	}
+
+	@Override
+	public boolean isValid() {
+		final Client client = Bot.client();
+		if (client == null) return false;
+		final RSPlayer character = getAccessor();
+		final RSPlayer[] players = client.getRSPlayerArray();
+		return character != null && players != null && Arrays.asList(players).contains(character);
 	}
 }
