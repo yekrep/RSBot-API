@@ -1,6 +1,7 @@
 package org.powerbot.core.script.wrappers;
 
 import java.lang.ref.WeakReference;
+import java.util.Arrays;
 
 import org.powerbot.core.Bot;
 import org.powerbot.core.script.internal.Nodes;
@@ -11,7 +12,7 @@ import org.powerbot.game.client.RSNPC;
 import org.powerbot.game.client.RSNPCNode;
 import org.powerbot.game.client.RSPlayer;
 
-public class HintArrow implements Locatable {//TODO validatable
+public class HintArrow implements Locatable, Validatable {
 	private final WeakReference<RSHintArrow> arrow;
 
 	public HintArrow(final RSHintArrow arrow) {
@@ -60,5 +61,15 @@ public class HintArrow implements Locatable {//TODO validatable
 		final RSPlayer localPlayer = players[target];
 		if (localPlayer != null) return new Player(localPlayer).getLocation();
 		return null;
+	}
+
+	@Override
+	public boolean isValid() {
+		final Client client = Bot.client();
+		if (client == null) return false;
+
+		final RSHintArrow arrow = this.arrow.get();
+		final RSHintArrow[] arr = client.getRSHintArrows();
+		return arrow != null && arr != null && Arrays.asList(arr).contains(arrow);
 	}
 }
