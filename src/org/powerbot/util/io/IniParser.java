@@ -25,7 +25,8 @@ public class IniParser {
 	private static final char SECTIONOPEN = '[';
 	private static final char SECTIONCLOSE = ']';
 	private static final char KEYBOUND = '=';
-	private static final char[] COMMENTS = {'#', ';'};
+	private static final char ESCAPE = '\\';
+	private static final char COMMENTS = ';';
 	public static final String EMPTYSECTION = "";
 
 	private IniParser() {
@@ -72,7 +73,7 @@ public class IniParser {
 		for (final Entry<String, String> entry : map.entrySet()) {
 			out.write(entry.getKey());
 			out.write(KEYBOUND);
-			final String value = entry.getValue();
+			final String value = entry.getValue().replace(new String(new char[] { ESCAPE }), new String(new char[] { ESCAPE, ESCAPE })).replaceAll("(\r?\n)", "\\$1");
 			if (value != null) {
 				out.write(value);
 			}
@@ -96,38 +97,38 @@ public class IniParser {
 
 	@SuppressWarnings("unchecked")
 	public static void deserialise(final BufferedReader br, final Map<String, Map<String, String>> data, final Map<String, String> keys) throws IOException {
-		String line, section = EMPTYSECTION;
+		String line, section = EMPTYSECTION, key = "";
+		boolean multiline = false;
 
 		while ((line = br.readLine()) != null) {
 			line = line.trim();
+			if (line.length() > 0 && line.charAt(0) == COMMENTS) {
+				continue;
+			}
+			if (multiline) {
+				final String prev = data.get(section).get(key);
+				data.get(section).put(key, prev.substring(0, prev.length() - 2) + NEWLINE + line);
+				multiline = line.lastIndexOf(ESCAPE) == line.length() - 1 && (line.length() > 2 ? line.charAt(line.length() - 2) != ESCAPE : true);
+				continue;
+			}
 			if (line.isEmpty()) {
 				continue;
 			}
 			int z;
 			final int l = line.length();
-			final char t = line.charAt(0);
-			if (t == SECTIONOPEN) {
+			if (line.charAt(0) == SECTIONOPEN) {
 				z = line.indexOf(SECTIONCLOSE, 1);
 				z = z == -1 ? l : z;
 				section = z == 1 ? "" : line.substring(1, z).trim();
 			} else {
-				boolean skip = false;
-				for (final char c : COMMENTS) {
-					if (t == c) {
-						skip = true;
-						break;
-					}
-				}
-				if (skip) {
-					continue;
-				}
 				z = line.indexOf(KEYBOUND);
 				z = z == -1 ? l : z;
-				String key, value = "";
+				String value = "";
 				key = line.substring(0, z).trim();
 				if (++z < l) {
 					value = line.substring(z).trim();
 				}
+				multiline = value.length() > 0 && value.lastIndexOf(ESCAPE) == value.length() - 1 && (value.length() > 2 ? value.charAt(value.length() - 2) != ESCAPE : true);
 				if (!data.containsKey(section)) {
 					Map<String, String> map = null;
 					try {
