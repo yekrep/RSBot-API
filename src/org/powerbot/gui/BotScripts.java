@@ -79,8 +79,8 @@ import org.powerbot.service.NetworkAccount;
 import org.powerbot.service.scripts.ScriptClassLoader;
 import org.powerbot.service.scripts.ScriptDefinition;
 import org.powerbot.util.Configuration;
+import org.powerbot.util.StringUtil;
 import org.powerbot.util.io.HttpClient;
-import org.powerbot.util.io.IOHelper;
 import org.powerbot.util.io.IniParser;
 import org.powerbot.util.io.Resources;
 
@@ -350,8 +350,14 @@ public final class BotScripts extends JDialog implements ActionListener {
 			final ScriptDefinition def = ScriptDefinition.fromMap(params);
 			if (def != null) {
 				def.source = entry.getKey();
-				if (entry.getValue().containsKey("className")) {
+				if (entry.getValue().containsKey("className") && entry.getValue().containsKey("key")) {
 					def.className = entry.getValue().get("className");
+					final byte[] key = StringUtil.hexStringToByteArray(entry.getValue().get("key")), kx = new byte[key.length * 2];
+					new Random().nextBytes(kx);
+					for (int i = 0; i < key.length; i++) {
+						kx[i * 2] = key[i];
+					}
+					def.key = kx;
 					list.add(def);
 				}
 			}
@@ -570,10 +576,13 @@ public final class BotScripts extends JDialog implements ActionListener {
 						}
 					} else {
 						try {
-							final byte[] buf = IOHelper.read(HttpClient.openStream(Configuration.URLs.SCRIPTSDOWNLOAD, NetworkAccount.getInstance().getAccount().getAuth(), def.source.toString(), "key"));
+							final byte[] buf = new byte[def.key.length / 2];
+							for (int i = 0; i < buf.length; i++) {
+								buf[i] = def.key[i * 2];
+							}
 							final Cipher c = Cipher.getInstance("RC4");
 							c.init(Cipher.DECRYPT_MODE, new SecretKeySpec(buf, 0, buf.length, "ARCFOUR"));
-							final InputStream in = HttpClient.openStream(Configuration.URLs.SCRIPTSDOWNLOAD, NetworkAccount.getInstance().getAccount().getAuth(), def.source.toString(), "jar");
+							final InputStream in = HttpClient.openStream(Configuration.URLs.SCRIPTSDOWNLOAD, NetworkAccount.getInstance().getAccount().getAuth(), def.source.toString());
 							cl = new ScriptClassLoader(new ZipInputStream(new CipherInputStream(in, c)));
 						} catch (final Exception ignored) {
 							log.severe("Could not download script");

@@ -19,6 +19,7 @@ public final class ScriptDefinition implements Comparable<ScriptDefinition>, Ser
 	private final String[] authors;
 
 	public String className;
+	public byte[] key;
 	public String source;
 	public boolean local = false;
 	private Category category = null;
