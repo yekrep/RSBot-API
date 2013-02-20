@@ -85,16 +85,16 @@ public class ScriptHandler {
 	}
 
 	public void shutdown() {
+		if (randomContainer != null) randomContainer.shutdown();
 		if (script != null) {
-			randomContainer.shutdown();
 			script.shutdown();
 			track("stop");
 		}
 	}
 
 	public void stop() {
+		if (randomContainer != null) randomContainer.shutdown();
 		if (script != null) {
-			randomContainer.shutdown();
 			script.stop();
 			track("kill");
 		}
