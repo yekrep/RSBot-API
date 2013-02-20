@@ -399,7 +399,12 @@ public final class BotScripts extends JDialog implements ActionListener {
 						String className = file.getCanonicalPath().substring(parent.getCanonicalPath().length() + 1);
 						className = className.substring(0, className.lastIndexOf('.'));
 						className = className.replace(File.separatorChar, '.');
-						final Class<?> clazz = cl.loadClass(className);
+						final Class<?> clazz;
+						try {
+							clazz = cl.loadClass(className);
+						} catch (final NoClassDefFoundError ignored) {
+							continue;
+						}
 						if (Script.class.isAssignableFrom(clazz)) {
 							final Class<? extends Script> script = clazz.asSubclass(Script.class);
 							if (script.isAnnotationPresent(Manifest.class)) {
