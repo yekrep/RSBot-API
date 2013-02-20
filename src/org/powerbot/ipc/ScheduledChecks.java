@@ -23,6 +23,7 @@ public final class ScheduledChecks implements ActionListener {
 	@Override
 	public void actionPerformed(final ActionEvent e) {
 		if (!Controller.getInstance().isBound() || Controller.getInstance().getRunningInstances() < 1) {
+			Tracker.getInstance().trackEvent("exit", "instance-overload");
 			System.exit(1);
 		}
 
@@ -37,6 +38,7 @@ public final class ScheduledChecks implements ActionListener {
 		}
 
 		if (Configuration.VERSION < Configuration.VERSION_LATEST || Configuration.VERSION_LATEST == -1) {
+			Tracker.getInstance().trackEvent("exit", "version");
 			System.exit(1);
 		}
 	}
