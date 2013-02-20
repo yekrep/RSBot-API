@@ -93,7 +93,7 @@ public class BotComposite {//TODO remove the use of a composite ... export data 
 			final long mark = System.currentTimeMillis();
 			for (final LoopTask task : loopTasks) {
 				while (!task.isPaused() && task.isAlive() && System.currentTimeMillis() - mark < 120000) {
-					Task.sleep(150);
+					Task.sleep(1000);
 				}
 			}
 		}
