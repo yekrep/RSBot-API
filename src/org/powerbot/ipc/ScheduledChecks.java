@@ -9,6 +9,7 @@ import org.powerbot.core.Bot;
 import org.powerbot.core.bot.handlers.ScriptHandler;
 import org.powerbot.service.scripts.ScriptDefinition;
 import org.powerbot.util.Configuration;
+import org.powerbot.util.Tracker;
 
 /**
  * @author Paris
@@ -29,6 +30,7 @@ public final class ScheduledChecks implements ActionListener {
 			final ScriptHandler script = Bot.instance().getScriptHandler();
 			final ScriptDefinition definition;
 			if ((definition = script.getDefinition()) != null && definition.local && System.nanoTime() > timeout.get()) {
+				Tracker.getInstance().trackEvent("script", "timeout", definition.getName());
 				log.info("Local script restriction - script stopped");
 				script.stop();
 			}
