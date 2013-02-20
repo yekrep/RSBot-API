@@ -157,7 +157,6 @@ public class BotChrome extends JFrame implements WindowListener {
 					public void run() {
 						final Timer timer = new Timer(1000 * 60 * 1, new ScheduledChecks());
 						timer.setCoalesce(false);
-						timer.setInitialDelay(1000 * 60 * 1);
 						timer.start();
 
 						KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(new BotKeyEventDispatcher());
