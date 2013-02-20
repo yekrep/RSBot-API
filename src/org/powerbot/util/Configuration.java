@@ -39,7 +39,7 @@ public class Configuration {
 		public static final String DOWNLOAD = "http://" + DOMAIN_SITE + "/rsbot/releases/RSBot-%s.jar";
 		public static final String VERSION = "http://" + DOMAIN_LINKS + "/version.txt";
 
-		public static final String CLIENTPATCH = "https://" + DOMAIN_SITE + "/rsbot/ts/%s.ts";
+		public static final String CLIENTPATCH = "https://" + DOMAIN_SITE_LIVE + "/rsbot/ts/%s.ts";
 		public static final String CLIENTBUCKET = "http://buckets." + DOMAIN + "/process/?hash=%s";
 		public static final String SCRIPTSAUTH = PROTOCOL + DOMAIN_SITE + "/scripts/api/auth/?{POST}a=%s&id=%s&n=%s";
 		public static final String SCRIPTSCOLLECTION = PROTOCOL + DOMAIN_SITE + "/scripts/api/collection/?{POST}a=%s";
