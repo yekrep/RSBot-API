@@ -17,7 +17,6 @@ import javax.swing.UIManager;
 import org.powerbot.core.bot.RSLoader;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.gui.component.BotLocale;
-import org.powerbot.gui.component.BotMenu;
 import org.powerbot.ipc.Controller;
 import org.powerbot.util.Configuration;
 import org.powerbot.util.Configuration.OperatingSystem;
@@ -29,7 +28,6 @@ import org.powerbot.util.io.PrintStreamHandler;
 public class Boot implements Runnable {
 	private final static Logger log = Logger.getLogger(Boot.class.getName());
 	private final static String SWITCH_RESTARTED = "-restarted", SWITCH_VERSION_SHORT = "-v";
-	public final static String SWITCH_NEWTAB = "-newtab";
 
 	public static void main(final String[] args) {
 		final Logger logger = Logger.getLogger("");
@@ -37,15 +35,12 @@ public class Boot implements Runnable {
 			logger.removeHandler(handler);
 		}
 
-		boolean restarted = false, newtab = false;
+		boolean restarted = false;
 
 		for (final String arg : args) {
 			switch (arg) {
 			case SWITCH_RESTARTED:
 				restarted = true;
-				break;
-			case SWITCH_NEWTAB:
-				newtab = true;
 				break;
 			case SWITCH_VERSION_SHORT:
 				System.out.println(Configuration.VERSION);
@@ -137,17 +132,14 @@ public class Boot implements Runnable {
 		}
 
 		BotChrome.getInstance();
-		if (newtab) {
-			BotMenu.tabAdd();
-		}
 	}
 
 	public void run() {
 		main(new String[]{});
 	}
 
-	public static void fork(final String args) {
-		fork("", args);
+	public static void fork() {
+		fork("", "");
 	}
 
 	private static void fork(String options, String args) {

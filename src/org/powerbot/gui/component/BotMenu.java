@@ -148,7 +148,7 @@ public final class BotMenu extends JPopupMenu implements ActionListener {
 					log.severe(BotLocale.NEEDVIPMULTITAB);
 				} else {
 					if (s > 0) {
-						Boot.fork(Boot.SWITCH_NEWTAB);
+						Boot.fork();
 					} else {
 						final Bot bot = Bot.instance();
 						new Thread(bot.threadGroup, bot).start();
