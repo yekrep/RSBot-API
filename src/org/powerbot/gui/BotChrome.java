@@ -24,6 +24,7 @@ import javax.swing.WindowConstants;
 
 import org.powerbot.core.Bot;
 import org.powerbot.gui.component.BotKeyEventDispatcher;
+import org.powerbot.gui.component.BotMenu;
 import org.powerbot.gui.component.BotPanel;
 import org.powerbot.ipc.ScheduledChecks;
 import org.powerbot.service.NetworkAccount;
@@ -162,7 +163,11 @@ public class BotChrome extends JFrame implements WindowListener {
 						KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(new BotKeyEventDispatcher());
 						parent.validate();
 						parent.repaint();
+
 						Logger.getLogger(BotChrome.class.getName()).log(Level.INFO, "Press F1 to open the menu and start a new bot", "Welcome");
+						if (NetworkAccount.getInstance().isLoggedIn()) {
+							BotMenu.tabAdd();
+						}
 					}
 				});
 			}
