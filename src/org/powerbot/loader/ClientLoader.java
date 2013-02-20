@@ -14,6 +14,7 @@ import org.powerbot.core.Bot;
 import org.powerbot.loader.script.ModScript;
 import org.powerbot.util.Configuration;
 import org.powerbot.util.StringUtil;
+import org.powerbot.util.Tracker;
 import org.powerbot.util.io.HttpClient;
 import org.powerbot.util.io.IOHelper;
 
@@ -89,16 +90,22 @@ public class ClientLoader {
 
 	public ModScript getSpec(final String packHash) throws IOException, PendingException {
 		final int delay = 1000 * 60 * 3 + 30;
+		final String pre = "loader/spec/" + packHash;
+		int r;
 
 		final HttpURLConnection con = HttpClient.getHttpConnection(new URL(String.format(Configuration.URLs.CLIENTPATCH, packHash)));
 		con.setInstanceFollowRedirects(false);
 		con.connect();
-		if (con.getResponseCode() == HttpURLConnection.HTTP_OK) {
+		r = con.getResponseCode();
+		Tracker.getInstance().trackPage(pre, Integer.toString(r));
+		if (r == HttpURLConnection.HTTP_OK) {
 			return Bot.instance().modScript = new ModScript(IOHelper.read(HttpClient.getInputStream(con)));
 		} else {
 			final HttpURLConnection bucket = HttpClient.getHttpConnection(new URL(String.format(Configuration.URLs.CLIENTBUCKET, packHash)));
 			bucket.setInstanceFollowRedirects(false);
 			bucket.connect();
+			r = bucket.getResponseCode();
+			Tracker.getInstance().trackPage(pre + "/bucket", Integer.toString(r));
 			switch (bucket.getResponseCode()) {
 			case HttpURLConnection.HTTP_SEE_OTHER:
 				final String dest = bucket.getHeaderField("Location");
@@ -110,8 +117,9 @@ public class ClientLoader {
 				writePack(classes, out);
 				out.flush();
 				out.close();
-				final int r = put.getResponseCode();
+				r = put.getResponseCode();
 				put.disconnect();
+				Tracker.getInstance().trackPage(pre + "/bucket/upload", Integer.toString(r));
 				if (r == HttpURLConnection.HTTP_OK) {
 					final HttpURLConnection bucket_notify = HttpClient.getHttpConnection(new URL(String.format(Configuration.URLs.CLIENTBUCKET, packHash)));
 					bucket_notify.setRequestMethod("PUT");
