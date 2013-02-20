@@ -50,7 +50,7 @@ public final class Bot implements Runnable {//TODO re-write bot
 	private BufferedImage backBuffer;
 
 	private Bot() {
-		appletContainer = new RSLoader();
+		appletContainer = null;
 		callback = null;
 		stub = null;
 
@@ -131,6 +131,7 @@ public final class Bot implements Runnable {//TODO re-write bot
 			composite.context.world = previous.world;
 		}
 		Context.context.put(threadGroup, composite.context);
+		appletContainer = new RSLoader();
 		appletContainer.setCallback(new Runnable() {
 			public void run() {
 				setClient((Client) appletContainer.getClient());
