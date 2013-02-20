@@ -491,7 +491,7 @@ public final class BotScripts extends JDialog implements ActionListener {
 			setLayout(null);
 			setBorder(new InsetBorder());
 			setPreferredSize(getPreferredCellSize());
-			final boolean alt = row % 2 == 1;
+			final boolean alt = row % 2 == 0;
 			c[0] = getBackground();
 			final int s = 24;
 			c[1] = new Color(c[0].getRed() - s, c[0].getGreen() - s, c[0].getBlue() - s);
@@ -662,7 +662,7 @@ public final class BotScripts extends JDialog implements ActionListener {
 			if (c[0] != null && c[1] != null) {
 				final int w = parent.getWidth() / getPreferredCellSize().width;
 				final int row = getIndex() / w;
-				final boolean alt = row % 2 == 1;
+				final boolean alt = row % 2 == 0;
 				setBackground(alt ? c[1] : c[0]);
 			}
 			super.paintComponent(g);
