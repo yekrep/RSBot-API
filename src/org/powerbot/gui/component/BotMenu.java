@@ -25,6 +25,7 @@ import org.powerbot.gui.BotSignin;
 import org.powerbot.ipc.Controller;
 import org.powerbot.service.NetworkAccount;
 import org.powerbot.util.Configuration;
+import org.powerbot.util.Tracker;
 import org.powerbot.util.io.Resources;
 
 /**
@@ -101,6 +102,7 @@ public final class BotMenu extends JPopupMenu implements ActionListener {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
+		Tracker.getInstance().trackPage("/menu", e.getActionCommand());
 		switch (e.getActionCommand()) {
 		case BotLocale.NEWTAB: tabAdd(); break;
 		case BotLocale.CLOSETAB: tabClose(false); break;
@@ -147,6 +149,7 @@ public final class BotMenu extends JPopupMenu implements ActionListener {
 				} else if (n > 2 && !NetworkAccount.getInstance().hasPermission(NetworkAccount.Permissions.VIP)) {
 					log.severe(BotLocale.NEEDVIPMULTITAB);
 				} else {
+					Tracker.getInstance().trackEvent("tab", "add");
 					if (s > 0) {
 						Boot.fork();
 					} else {
@@ -174,6 +177,7 @@ public final class BotMenu extends JPopupMenu implements ActionListener {
 						} catch (final RuntimeException ignored) {
 						}
 					}
+					Tracker.getInstance().trackEvent("tab", "add", silent ? "silent" : "");
 					chrome.panel.setBot(null);
 					Bot.instance().stop();
 					chrome.panel.repaint();
@@ -191,8 +195,10 @@ public final class BotMenu extends JPopupMenu implements ActionListener {
 		final ScriptHandler script = bot.getScriptHandler();
 		if (script != null && script.isActive()) {
 			if (script.isPaused()) {
+				Tracker.getInstance().trackEvent("script", "resume");
 				script.resume();
 			} else {
+				Tracker.getInstance().trackEvent("script", "pause");
 				script.pause();
 			}
 			return;
@@ -211,6 +217,7 @@ public final class BotMenu extends JPopupMenu implements ActionListener {
 		final ScriptHandler activeScript = bot.getScriptHandler();
 		if (activeScript != null) {
 			if (!activeScript.isShutdown()) {
+				Tracker.getInstance().trackEvent("script", "stop");
 				bot.stopScript();
 				new Thread(bot.threadGroup, new Runnable() {
 					public void run() {
@@ -222,6 +229,7 @@ public final class BotMenu extends JPopupMenu implements ActionListener {
 			} else {
 				if (activeScript.isActive()) {
 					activeScript.log.info("Forcing script stop");
+					Tracker.getInstance().trackEvent("script", "stop", "force");
 					activeScript.stop();
 				}
 			}
