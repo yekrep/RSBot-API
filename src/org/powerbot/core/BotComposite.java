@@ -10,6 +10,7 @@ import org.powerbot.core.script.internal.Constants;
 import org.powerbot.core.script.job.Job;
 import org.powerbot.core.script.job.LoopTask;
 import org.powerbot.core.script.job.Task;
+import org.powerbot.core.script.methods.Game;
 import org.powerbot.game.api.methods.Calculations;
 import org.powerbot.game.bot.Context;
 import org.powerbot.game.bot.handler.input.MouseExecutor;
@@ -101,9 +102,9 @@ public class BotComposite {//TODO remove the use of a composite ... export data 
 		bot.terminateApplet();
 		bot.resize(BotChrome.PANEL_WIDTH, BotChrome.PANEL_HEIGHT);
 
+		new Thread(bot.threadGroup, Bot.instance()).start();
 		BotChrome.getInstance().panel.setBot(bot);
-
-		bot.start();//TODO wait for loaded game
+		while (Bot.client() == null || Game.getClientState() == -1) Task.sleep(1000);
 		if (scriptHandler != null && scriptHandler.isActive()) {
 			scriptHandler.resume();
 		}
