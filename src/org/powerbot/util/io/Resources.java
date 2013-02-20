@@ -35,6 +35,9 @@ public class Resources {
 		public static final String EDIT = ROOT_IMG + "/glyphicons_150_edit.png";
 		public static final String CONTROLS = ROOT_IMG + "/glyphicons_331_dashboard.png";
 		public static final String KEYBOARD = ROOT_IMG + "/glyphicons_268_keyboard_wireless.png";
+		public static final String STAR = ROOT_IMG + "/glyphicons_049_star.png";
+		public static final String UNSTAR = ROOT_IMG + "/glyphicons_048_dislikes.png";
+		public static final String COMMENTS = ROOT_IMG + "/glyphicons_244_conversation.png";
 		public static final String TWITTER = ROOT_IMG + "/twitter.png";
 		public static final String FACEBOOK = ROOT_IMG + "/facebook.png";
 		public static final String YOUTUBE = ROOT_IMG + "/youtube.png";

@@ -82,6 +82,11 @@ public final class BotMenu extends JPopupMenu implements ActionListener {
 		BotKeyEventDispatcher.setAccelerator(stop, BotKeyEventDispatcher.Action.SCRIPT_STOP);
 		stop.setIcon(new ImageIcon(Resources.getImage(Resources.Paths.STOP)));
 		add(stop);
+		final JMenuItem feedback = new JMenuItem(BotLocale.FEEDBACK);
+		feedback.setVisible(false);
+		feedback.setEnabled(running);
+		feedback.setIcon(new ImageIcon(Resources.getImage(Resources.Paths.COMMENTS)));
+		add(feedback);
 		addSeparator();
 
 		add(new BotMenuView());
