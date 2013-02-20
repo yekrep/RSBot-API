@@ -29,10 +29,6 @@ public class Mouse {
 	private static final Map<ThreadGroup, Integer> dragLengths = new HashMap<ThreadGroup, Integer>();
 	private static final Map<ThreadGroup, Integer> sides = new HashMap<ThreadGroup, Integer>();
 
-	public enum Speed {
-		VERY_SLOW, SLOW, NORMAL, FAST, VERY_FAST
-	}
-
 	public static void setSpeed(final Speed speed) {
 		Bot.setSpeed(speed);
 	}
@@ -84,7 +80,6 @@ public class Mouse {
 		final org.powerbot.game.client.input.Mouse mouse = getMouse();
 		return mouse == null ? -1L : mouse.getPressTime();
 	}
-
 
 	/**
 	 * @return <tt>true</tt> if the mouse is present; otherwise <tt>false</tt>.
@@ -260,8 +255,12 @@ public class Mouse {
 	public static boolean apply(final ViewportEntity viewportEntity, final Filter<Point> filter) {
 		final MouseExecutor executor = Context.get().getExecutor();
 		final MouseNode node = new MouseNode(viewportEntity, filter);
-		while (node.getTimer().isRunning() && node.processable()) {
-			executor.step(node);
+		try {
+			while (node.getTimer().isRunning() && node.processable()) {
+				executor.step(node);
+			}
+		} catch (final Exception e) {
+			e.printStackTrace();
 		}
 		return node.isCompleted();
 	}
@@ -429,5 +428,9 @@ public class Mouse {
 					}
 				}
 		);
+	}
+
+	public enum Speed {
+		VERY_SLOW, SLOW, NORMAL, FAST, VERY_FAST
 	}
 }
