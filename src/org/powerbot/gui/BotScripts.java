@@ -76,8 +76,8 @@ import org.powerbot.ipc.ScheduledChecks;
 import org.powerbot.service.GameAccounts;
 import org.powerbot.service.GameAccounts.Account;
 import org.powerbot.service.NetworkAccount;
-import org.powerbot.service.scripts.ScriptClassLoader;
 import org.powerbot.service.scripts.ScriptDefinition;
+import org.powerbot.service.scripts.ScriptLoader;
 import org.powerbot.util.Configuration;
 import org.powerbot.util.StringUtil;
 import org.powerbot.util.io.HttpClient;
@@ -570,8 +570,8 @@ public final class BotScripts extends JDialog implements ActionListener {
 					final ClassLoader cl;
 					if (def.local) {
 						try {
-							cl = new ScriptClassLoader(new File(def.source).toURI().toURL());
-						} catch (final IOException ignored) {
+							cl = (ClassLoader) ScriptLoader.getInstance(new ZipInputStream(new FileInputStream(def.source)));
+						} catch (final Exception ignored) {
 							return;
 						}
 					} else {
@@ -583,7 +583,7 @@ public final class BotScripts extends JDialog implements ActionListener {
 							final Cipher c = Cipher.getInstance("RC4");
 							c.init(Cipher.DECRYPT_MODE, new SecretKeySpec(buf, 0, buf.length, "ARCFOUR"));
 							final InputStream in = HttpClient.openStream(Configuration.URLs.SCRIPTSDOWNLOAD, NetworkAccount.getInstance().getAccount().getAuth(), def.source.toString());
-							cl = new ScriptClassLoader(new ZipInputStream(new CipherInputStream(in, c)));
+							cl = (ClassLoader) ScriptLoader.getInstance(new ZipInputStream(new CipherInputStream(in, c)));
 						} catch (final Exception ignored) {
 							log.severe("Could not download script");
 							ignored.printStackTrace();
