@@ -2,6 +2,8 @@ package org.powerbot.service.scripts;
 
 import java.io.ByteArrayOutputStream;
 import java.lang.reflect.Method;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -11,6 +13,11 @@ import org.powerbot.util.io.IOHelper;
  * @author Paris
  */
 public final class ScriptLoader {
+
+	public static Object getInstance(final URL... urls) throws Exception {
+		final Class<?> cl = URLClassLoader.class;
+		return cl.getDeclaredConstructor(URL[].class).newInstance(new Object[] { urls });
+	}
 
 	public static Object getInstance(final ZipInputStream in) throws Exception {
 		final Class<?> scl = ScriptClassLoader.class;

@@ -570,7 +570,7 @@ public final class BotScripts extends JDialog implements ActionListener {
 					final ClassLoader cl;
 					if (def.local) {
 						try {
-							cl = (ClassLoader) ScriptLoader.getInstance(new ZipInputStream(new FileInputStream(def.source)));
+							cl = (ClassLoader) ScriptLoader.getInstance(new File(def.source).toURI().toURL());
 						} catch (final Exception ignored) {
 							return;
 						}
