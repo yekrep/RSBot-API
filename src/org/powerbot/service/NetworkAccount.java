@@ -7,7 +7,6 @@ import java.util.Map;
 
 import org.powerbot.ipc.Controller;
 import org.powerbot.ipc.Message;
-import org.powerbot.ipc.Message.MessageType;
 import org.powerbot.util.Configuration;
 import org.powerbot.util.StringUtil;
 import org.powerbot.util.io.CryptFile;
@@ -112,7 +111,7 @@ public final class NetworkAccount {
 	}
 
 	private synchronized void broadcast() {
-		Controller.getInstance().broadcast(new Message(false, MessageType.SIGNIN));
+		Controller.getInstance().broadcast(new Message(false, Message.SIGNIN));
 	}
 
 	public final static class Account {

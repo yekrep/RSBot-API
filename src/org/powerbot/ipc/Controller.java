@@ -30,7 +30,6 @@ import org.powerbot.core.Bot;
 import org.powerbot.core.bot.handlers.ScriptHandler;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.gui.component.BotMenu;
-import org.powerbot.ipc.Message.MessageType;
 import org.powerbot.service.NetworkAccount;
 import org.powerbot.service.scripts.ScriptDefinition;
 import org.powerbot.util.Configuration;
@@ -128,36 +127,36 @@ public final class Controller implements Runnable {
 				Message reply = new Message(true, msg.getMessageType());
 
 				switch (msg.getMessageType()) {
-				case NONE:
+				case Message.NONE:
 					reply = null;
 					break;
 
-				case ALIVE:
+				case Message.ALIVE:
 					reply.setArgs(true);
 					break;
 
-				case DIE:
+				case Message.DIE:
 					stop = true;
 					BotChrome.getInstance().windowClosing(null);
 					break;
 
-				case MODE:
+				case Message.MODE:
 					reply.setArgs(Configuration.SUPERDEV ? 2 : 0);
 					break;
 
-				case LISTENING:
+				case Message.LISTENING:
 					reply.setArgs(sock.getLocalPort());
 					break;
 
-				case LOADED:
+				case Message.LOADED:
 					reply.setArgs(BotChrome.loaded ? 1 : 2);
 					break;
 
-				case SESSION:
+				case Message.SESSION:
 					reply.setArgs(ScheduledChecks.SESSION_TIME);
 					break;
 
-				case SCRIPT:
+				case Message.SCRIPT:
 					final ConcurrentLinkedQueue<String> list = new ConcurrentLinkedQueue<String>();
 					if (Bot.instantiated()) {
 						final ScriptHandler script = Bot.instance().getScriptHandler();
@@ -171,7 +170,7 @@ public final class Controller implements Runnable {
 					reply.setArgs(list.toArray());
 					break;
 
-				case SIGNIN:
+				case Message.SIGNIN:
 					reply = null;
 					NetworkAccount.getInstance().revalidate();
 					BotChrome.getInstance().panel.loadingPanel.setAdVisible(!NetworkAccount.getInstance().hasPermission(NetworkAccount.Permissions.VIP));
@@ -254,7 +253,7 @@ public final class Controller implements Runnable {
 	}
 
 	public int getRunningInstances() {
-		final MessageType type = MessageType.RUNNING;
+		final int type = Message.RUNNING;
 		final AtomicInteger i = new AtomicInteger(1);
 		final Event c = new Event() {
 			@Override
@@ -273,7 +272,7 @@ public final class Controller implements Runnable {
 	}
 
 	public Collection<Integer> getRunningModes() {
-		final MessageType type = MessageType.MODE;
+		final int type = Message.MODE;
 		final ConcurrentLinkedQueue<Integer> list = new ConcurrentLinkedQueue<Integer>();
 		final Event c = new Event() {
 			@Override
@@ -292,7 +291,7 @@ public final class Controller implements Runnable {
 	}
 
 	public boolean isAnotherInstanceLoading() {
-		final MessageType type = MessageType.LOADED;
+		final int type = Message.LOADED;
 		final AtomicBoolean n = new AtomicBoolean(false);
 		final Event c = new Event() {
 			@Override
@@ -311,7 +310,7 @@ public final class Controller implements Runnable {
 	}
 
 	public long getLastSessionUpdateTime() {
-		final MessageType type = MessageType.SESSION;
+		final int type = Message.SESSION;
 		final AtomicLong l = new AtomicLong(0);
 		final Event c = new Event() {
 			@Override
@@ -335,7 +334,7 @@ public final class Controller implements Runnable {
 	}
 
 	public Collection<String> getRunningScripts() {
-		final MessageType type = MessageType.SCRIPT;
+		final int type = Message.SCRIPT;
 		final ConcurrentLinkedQueue<String> list = new ConcurrentLinkedQueue<String>();
 		final Event c = new Event() {
 			@Override
