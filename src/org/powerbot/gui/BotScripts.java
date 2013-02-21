@@ -635,12 +635,17 @@ public final class BotScripts extends JDialog implements ActionListener {
 					if (!runningList.isEmpty()) {
 						log.severe("You changed a script on another bot, please try again");
 					} else {
-						log.info("Starting script: " + def.getName());
-						final long mins = (30 + new Random().nextInt(180)) * (NetworkAccount.getInstance().hasPermission(NetworkAccount.Permissions.DEVELOPER) ? 12 : 1);
-						ScheduledChecks.timeout.set(System.nanoTime() + TimeUnit.MINUTES.toNanos(mins));
-						if (!bot.getScriptHandler().start(script, def)) {
-							log.severe("There is a script running");
-						}
+						new Thread(new Runnable() {
+							@Override
+							public void run() {
+								log.info("Starting script: " + def.getName());
+								final long mins = (30 + new Random().nextInt(180)) * (NetworkAccount.getInstance().hasPermission(NetworkAccount.Permissions.DEVELOPER) ? 12 : 1);
+								ScheduledChecks.timeout.set(System.nanoTime() + TimeUnit.MINUTES.toNanos(mins));
+								if (!bot.getScriptHandler().start(script, def)) {
+									log.severe("There is a script running");
+								}
+							}
+						}).start();
 					}
 				}
 			});
