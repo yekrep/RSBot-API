@@ -39,6 +39,7 @@ import java.util.Map.Entry;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
+import java.util.zip.Inflater;
 import java.util.zip.ZipInputStream;
 
 import javax.crypto.Cipher;
@@ -576,12 +577,16 @@ public final class BotScripts extends JDialog implements ActionListener {
 						}
 					} else {
 						try {
-							final byte[] buf = new byte[def.key.length / 2];
+							final byte[] buf = new byte[def.key.length / 2], key = new byte[16];
 							for (int i = 0; i < buf.length; i++) {
 								buf[i] = def.key[i * 2];
 							}
+							final Inflater inf = new Inflater();
+							inf.setInput(buf);
+							inf.inflate(key, 0, key.length);
+							inf.end();
 							final Cipher c = Cipher.getInstance("RC4");
-							c.init(Cipher.DECRYPT_MODE, new SecretKeySpec(buf, 0, buf.length, "ARCFOUR"));
+							c.init(Cipher.DECRYPT_MODE, new SecretKeySpec(key, 0, key.length, "ARCFOUR"));
 							final InputStream in = HttpClient.openStream(Configuration.URLs.SCRIPTSDOWNLOAD, NetworkAccount.getInstance().getAccount().getAuth(), def.source.toString());
 							cl = (ClassLoader) ScriptLoader.getInstance(new ZipInputStream(new CipherInputStream(in, c)));
 						} catch (final Exception ignored) {
