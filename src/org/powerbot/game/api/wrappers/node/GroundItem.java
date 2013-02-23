@@ -58,7 +58,7 @@ public class GroundItem implements Entity, Locatable, Identifiable {
 		if (ground != null) {
 			final RSItemPile itemPile = ground.getRSItemPile();
 			if (itemPile != null) {
-				final int graphicsIndex = Context.resolve().composite.toolkit.graphicsIndex;
+				final int graphicsIndex = org.powerbot.core.script.methods.Calculations.toolkit.graphicsIndex;
 				final int[] ids = {itemPile.getID_1(), itemPile.getID_2(), itemPile.getID_3()};
 				final Model[] models = new Model[ids.length];
 

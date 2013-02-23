@@ -6,29 +6,18 @@ import java.awt.Polygon;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import org.powerbot.game.api.methods.Calculations;
+import org.powerbot.core.script.methods.Calculations;
 import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.util.Random;
-import org.powerbot.game.bot.Context;
 import org.powerbot.game.client.ModelCapture;
 
 public abstract class CapturedModel {
-	public static Filter<CapturedModel> newVertexFilter(final short[] faceA) {
-		return new Filter<CapturedModel>() {
-			public boolean accept(final CapturedModel m) {
-				return Arrays.equals(m.faceA, faceA);
-			}
-		};
-	}
-
 	protected int[] xPoints;
 	protected int[] yPoints;
 	protected int[] zPoints;
-
 	protected short[] faceA;
 	protected short[] faceB;
 	protected short[] faceC;
-
 	protected int numVertices;
 	protected int numFaces;
 
@@ -47,6 +36,14 @@ public abstract class CapturedModel {
 			numVertices = Math.min(xPoints.length, Math.min(yPoints.length, zPoints.length));
 			numFaces = Math.min(faceA.length, Math.min(faceB.length, faceC.length));
 		}
+	}
+
+	public static Filter<CapturedModel> newVertexFilter(final short[] faceA) {
+		return new Filter<CapturedModel>() {
+			public boolean accept(final CapturedModel m) {
+				return Arrays.equals(m.faceA, faceA);
+			}
+		};
 	}
 
 	protected abstract int getLocalX();
@@ -72,13 +69,13 @@ public abstract class CapturedModel {
 		update();
 		final int x = getLocalX();
 		final int y = getLocalY();
-		final int height = Calculations.calculateTileHeight(x, y);
+		final int height = Calculations.tileHeight(x, y);
 		final Point localPoint = Calculations.worldToScreen(
 				x + (this.xPoints[this.faceA[index]] + this.xPoints[this.faceB[index]] + this.xPoints[this.faceC[index]]) / 3,
 				height + (this.yPoints[this.faceA[index]] + this.yPoints[this.faceB[index]] + this.yPoints[this.faceC[index]]) / 3,
 				y + (this.zPoints[this.faceA[index]] + this.zPoints[this.faceB[index]] + this.zPoints[this.faceC[index]]) / 3
 		);
-		return Calculations.isOnScreen(localPoint) ? localPoint : null;
+		return org.powerbot.game.api.methods.Calculations.isOnScreen(localPoint) ? localPoint : null;
 	}
 
 	@Deprecated
@@ -111,7 +108,7 @@ public abstract class CapturedModel {
 
 		final int x = getLocalX();
 		final int y = getLocalY();
-		final int height = Calculations.calculateTileHeight(x, y);
+		final int height = Calculations.tileHeight(x, y);
 
 		while (index < numFaces) {
 			totalXAverage += (xPoints[faceA[index]] + xPoints[faceB[index]] + xPoints[faceC[index]]) / 3;
@@ -126,7 +123,7 @@ public abstract class CapturedModel {
 				y + totalYAverage / numFaces
 		);
 
-		if (Calculations.isOnScreen(averagePoint)) {
+		if (org.powerbot.game.api.methods.Calculations.isOnScreen(averagePoint)) {
 			return averagePoint;
 		}
 		return new Point(-1, -1);
@@ -208,21 +205,19 @@ public abstract class CapturedModel {
 	}
 
 	private int firstOnScreenIndex(final int pos, final int length) {
-		final Context context = Context.get();
-		final Calculations.Toolkit toolkit = context.getToolkit();
-		final Calculations.Viewport viewport = context.getViewport();
-
+		final Calculations.Toolkit toolkit = Calculations.toolkit;
+		final Calculations.Viewport viewport = Calculations.viewport;
 		final int x = getLocalX();
 		final int y = getLocalY();
-		final int h = Calculations.calculateTileHeight(x, y);
+		final int h = Calculations.tileHeight(x, y);
 		int index = pos;
 		while (index < length) {
-			final Point point = Calculations.worldToScreen(toolkit, viewport,
+			final Point point = Calculations.worldToScreen(
 					x + (this.xPoints[this.faceA[index]] + this.xPoints[this.faceB[index]] + this.xPoints[this.faceC[index]]) / 3,
 					h + (this.yPoints[this.faceA[index]] + this.yPoints[this.faceB[index]] + this.yPoints[this.faceC[index]]) / 3,
 					y + (this.zPoints[this.faceA[index]] + this.zPoints[this.faceB[index]] + this.zPoints[this.faceC[index]]) / 3
 			);
-			if (Calculations.isOnScreen(point)) {
+			if (org.powerbot.game.api.methods.Calculations.isOnScreen(point)) {
 				return index;
 			}
 			++index;
@@ -243,14 +238,13 @@ public abstract class CapturedModel {
 	}
 
 	private int[][] projectVertices() {
-		final Context context = Context.get();
-		final Calculations.Toolkit toolkit = context.getToolkit();
-		final Calculations.Viewport viewport = context.getViewport();
+		final Calculations.Toolkit toolkit = Calculations.toolkit;
+		final Calculations.Viewport viewport = Calculations.viewport;
 
 		update();
 		final int locX = getLocalX();
 		final int locY = getLocalY();
-		final int height = Calculations.calculateTileHeight(locX, locY);
+		final int height = Calculations.tileHeight(locX, locY);
 
 		final int[][] screen = new int[numVertices][3];
 		for (int index = 0; index < numVertices; index++) {
