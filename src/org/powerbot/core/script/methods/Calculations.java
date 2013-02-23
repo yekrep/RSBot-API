@@ -3,6 +3,7 @@ package org.powerbot.core.script.methods;
 import java.awt.Point;
 
 import org.powerbot.core.Bot;
+import org.powerbot.core.script.internal.Constants;
 import org.powerbot.core.script.wrappers.Locatable;
 import org.powerbot.core.script.wrappers.Player;
 import org.powerbot.core.script.wrappers.Tile;
@@ -10,6 +11,8 @@ import org.powerbot.game.client.Client;
 import org.powerbot.game.client.RSGroundBytes;
 import org.powerbot.game.client.RSGroundInfo;
 import org.powerbot.game.client.RSInfo;
+import org.powerbot.game.client.Render;
+import org.powerbot.game.client.RenderData;
 import org.powerbot.game.client.TileData;
 
 public class Calculations {
@@ -115,6 +118,34 @@ public class Calculations {
 
 	public static double distanceTo(final Locatable locatable) {
 		return distance(Players.getLocal(), locatable);
+	}
+
+	public static void updateToolkit(final Render render) {
+		if (render == null) return;
+		toolkit.absoluteX = render.getAbsoluteX();
+		toolkit.absoluteY = render.getAbsoluteY();
+		toolkit.xMultiplier = render.getXMultiplier();
+		toolkit.yMultiplier = render.getYMultiplier();
+		toolkit.graphicsIndex = render.getGraphicsIndex();
+
+		final Constants constants = Bot.constants();
+		final RenderData _viewport = render.getRenderData();
+		final float[] data;
+		if (viewport == null || constants == null || (data = _viewport.getFloats()) == null) return;
+		viewport.xOff = data[constants.VIEWPORT_XOFF];
+		viewport.xX = data[constants.VIEWPORT_XX];
+		viewport.xY = data[constants.VIEWPORT_XY];
+		viewport.xZ = data[constants.VIEWPORT_XZ];
+
+		viewport.yOff = data[constants.VIEWPORT_YOFF];
+		viewport.yX = data[constants.VIEWPORT_YX];
+		viewport.yY = data[constants.VIEWPORT_YY];
+		viewport.yZ = data[constants.VIEWPORT_YZ];
+
+		viewport.zOff = data[constants.VIEWPORT_ZOFF];
+		viewport.zX = data[constants.VIEWPORT_ZX];
+		viewport.zY = data[constants.VIEWPORT_ZY];
+		viewport.zZ = data[constants.VIEWPORT_ZZ];
 	}
 
 	public static class Toolkit {

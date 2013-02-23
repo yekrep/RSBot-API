@@ -2,6 +2,7 @@ package org.powerbot.game.bot;
 
 import org.powerbot.core.Bot;
 import org.powerbot.core.event.events.MessageEvent;
+import org.powerbot.core.script.methods.Calculations;
 import org.powerbot.game.client.Callback;
 import org.powerbot.game.client.Render;
 
@@ -23,7 +24,7 @@ public class CallbackImpl implements Callback {
 	 * @param render The render provided from the game.
 	 */
 	public void updateRenderInfo(final Render render) {
-		bot.composite.updateToolkit(render);
+		Calculations.updateToolkit(render);
 	}
 
 	/**
