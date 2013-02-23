@@ -69,11 +69,10 @@ public abstract class ActiveScript extends LoopTask implements Script {
 		}
 		container.addListener(stop_listener);
 
-
 		final Job[] jobs = new Job[startup_jobs.size()];
 		startup_jobs.toArray(jobs);
 		for (final Job job : jobs) container.submit(job);
-		for (final Job job : jobs) job.join();
+		for (final Job job : jobs) if (job != this) job.join();
 	}
 
 	/**
