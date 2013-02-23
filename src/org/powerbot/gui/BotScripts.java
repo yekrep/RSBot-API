@@ -621,6 +621,9 @@ public final class BotScripts extends JDialog implements ActionListener {
 						script = cl.loadClass(def.className).asSubclass(Script.class).newInstance();
 					} catch (final Exception ignored) {
 						log.severe("Error loading script");
+						if (Configuration.SUPERDEV) {
+							ignored.printStackTrace();
+						}
 						return;
 					}
 					final Manifest manifest = script.getClass().getAnnotation(Manifest.class);
