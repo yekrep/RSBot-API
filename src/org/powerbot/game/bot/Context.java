@@ -106,16 +106,6 @@ public class Context {//TODO remove idea of a 'context'
 		return bot.appletContainer;
 	}
 
-	@Deprecated
-	public Calculations.Toolkit getToolkit() {
-		return bot.composite.toolkit;
-	}
-
-	@Deprecated
-	public Calculations.Viewport getViewport() {
-		return bot.composite.viewport;
-	}
-
 	public String getDisplayName() {
 		if (NetworkAccount.getInstance().isLoggedIn()) {
 			return NetworkAccount.getInstance().getAccount().getDisplayName();

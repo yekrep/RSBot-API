@@ -20,28 +20,6 @@ import org.powerbot.game.client.TileData;
  * @author Timer
  */
 public class Calculations {
-	/**
-	 * A representation of the game's (Java) Toolkit.
-	 *
-	 * @author Timer
-	 */
-	public static class Toolkit {
-		public float absoluteX, absoluteY;
-		public float xMultiplier, yMultiplier;
-		public int graphicsIndex;
-	}
-
-	/**
-	 * A representation of the game's Viewport, or Matrix.
-	 *
-	 * @author Timer
-	 */
-	public static class Viewport {
-		public float xOff, xX, xY, xZ;
-		public float yOff, yX, yY, yZ;
-		public float zOff, zX, zY, zZ;
-	}
-
 	public static final int[] SIN_TABLE = new int[0x4000];
 	public static final int[] COS_TABLE = new int[0x4000];
 
@@ -112,13 +90,11 @@ public class Calculations {
 	 * @return The <code>Point</code> of the given coordinates on screen.
 	 */
 	public static Point worldToScreen(final int x, final int y, final int z) {
-		final Context context = Context.get();
-		final Calculations.Toolkit toolkit = context.getToolkit();
-		final Calculations.Viewport viewport = context.getViewport();
-		return worldToScreen(toolkit, viewport, x, y, z);
+		return worldToScreen(org.powerbot.core.script.methods.Calculations.toolkit, org.powerbot.core.script.methods.Calculations.viewport, x, y, z);
 	}
 
-	public static Point worldToScreen(final Toolkit toolkit, final Viewport viewport, int x, final int y, final int z) {
+	public static Point worldToScreen(final org.powerbot.core.script.methods.Calculations.Toolkit toolkit,
+	                                  final org.powerbot.core.script.methods.Calculations.Viewport viewport, int x, final int y, final int z) {
 		final float _z = (viewport.zOff + (viewport.zX * x + viewport.zY * y + viewport.zZ * z));
 		final float _x = (viewport.xOff + (viewport.xX * x + viewport.xY * y + viewport.xZ * z));
 		final float _y = (viewport.yOff + (viewport.yX * x + viewport.yY * y + viewport.yZ * z));
