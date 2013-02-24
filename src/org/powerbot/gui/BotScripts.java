@@ -341,8 +341,8 @@ public final class BotScripts extends JDialog implements ActionListener {
 			}
 		}
 
-		final Map<String, Map<String, String>> manifests = IniParser.deserialise(HttpClient.openStream(Configuration.URLs.SCRIPTSCOLLECTION, NetworkAccount.getInstance().getAccount().getAuth()));
-		final boolean vip = NetworkAccount.getInstance().hasPermission(NetworkAccount.Permissions.VIP);
+		final Map<String, Map<String, String>> manifests = IniParser.deserialise(HttpClient.openStream(Configuration.URLs.SCRIPTSCOLLECTION, NetworkAccount.getInstance().getAuth()));
+		final boolean vip = NetworkAccount.getInstance().hasPermission(NetworkAccount.VIP);
 		for (final Entry<String, Map<String, String>> entry : manifests.entrySet()) {
 			final Map<String, String> params = entry.getValue();
 			if (params.containsKey("vip") && IniParser.parseBool(params.get("vip")) && !vip) {
@@ -367,7 +367,7 @@ public final class BotScripts extends JDialog implements ActionListener {
 	}
 
 	public void loadLocalScripts(final List<ScriptDefinition> list, final File parent, final File dir) {
-		if (!NetworkAccount.getInstance().isLoggedIn() || !((NetworkAccount.getInstance().getAccount().getPermissions() & NetworkAccount.Permissions.LOCALSCRIPTS) == NetworkAccount.Permissions.LOCALSCRIPTS)) {
+		if (!NetworkAccount.getInstance().hasPermission(NetworkAccount.LOCALSCRIPTS)) {
 			return;
 		}
 		for (final File file : (dir == null ? parent : dir).listFiles()) {
@@ -587,7 +587,7 @@ public final class BotScripts extends JDialog implements ActionListener {
 							inf.end();
 							final Cipher c = Cipher.getInstance("RC4");
 							c.init(Cipher.DECRYPT_MODE, new SecretKeySpec(key, 0, key.length, "ARCFOUR"));
-							final InputStream in = HttpClient.openStream(Configuration.URLs.SCRIPTSDOWNLOAD, NetworkAccount.getInstance().getAccount().getAuth(), def.source.toString());
+							final InputStream in = HttpClient.openStream(Configuration.URLs.SCRIPTSDOWNLOAD, NetworkAccount.getInstance().getAuth(), def.source.toString());
 							cl = (ClassLoader) ScriptLoader.getInstance(new ZipInputStream(new CipherInputStream(in, c)));
 						} catch (final Exception ignored) {
 							log.severe("Could not download script");
@@ -596,7 +596,7 @@ public final class BotScripts extends JDialog implements ActionListener {
 						}
 						final Map<String, Map<String, String>> data;
 						try {
-							data = IniParser.deserialise(HttpClient.openStream(Configuration.URLs.SCRIPTSAUTH, NetworkAccount.getInstance().getAccount().getAuth(), def.getID(), Integer.toString(n)));
+							data = IniParser.deserialise(HttpClient.openStream(Configuration.URLs.SCRIPTSAUTH, NetworkAccount.getInstance().getAuth(), def.getID(), Integer.toString(n)));
 						} catch (final IOException ignored) {
 							log.severe("Unable to obtain auth response");
 							return;
@@ -647,7 +647,7 @@ public final class BotScripts extends JDialog implements ActionListener {
 							@Override
 							public void run() {
 								log.info("Starting script: " + def.getName());
-								final long mins = (30 + new Random().nextInt(180)) * (NetworkAccount.getInstance().hasPermission(NetworkAccount.Permissions.DEVELOPER) ? 12 : 1);
+								final long mins = (30 + new Random().nextInt(180)) * (NetworkAccount.getInstance().hasPermission(NetworkAccount.DEVELOPER) ? 12 : 1);
 								ScheduledChecks.timeout.set(System.nanoTime() + TimeUnit.MINUTES.toNanos(mins));
 								if (!bot.getScriptHandler().start(script, def)) {
 									log.severe("There is a script running");

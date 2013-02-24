@@ -11,10 +11,10 @@ import org.powerbot.core.bot.handlers.ScriptHandler;
 import org.powerbot.core.event.EventManager;
 import org.powerbot.core.script.internal.Constants;
 import org.powerbot.game.api.methods.Calculations;
+import org.powerbot.game.api.methods.Environment;
 import org.powerbot.game.bot.handler.input.MouseExecutor;
 import org.powerbot.game.bot.util.ScreenCapture;
 import org.powerbot.game.client.Client;
-import org.powerbot.service.NetworkAccount;
 
 public class Context {//TODO remove idea of a 'context'
 	public static final Map<ThreadGroup, Context> context = new HashMap<ThreadGroup, Context>();
@@ -107,17 +107,12 @@ public class Context {//TODO remove idea of a 'context'
 	}
 
 	public String getDisplayName() {
-		if (NetworkAccount.getInstance().isLoggedIn()) {
-			return NetworkAccount.getInstance().getAccount().getDisplayName();
-		}
-		return null;
+		return Environment.getProperties().getProperty("user.name");
 	}
 
 	public int getUserId() {
-		if (NetworkAccount.getInstance().isLoggedIn()) {
-			return NetworkAccount.getInstance().getAccount().getID();
-		}
-		return -1;
+		final String s = Environment.getProperties().getProperty("user.id");
+		return s == null || s.isEmpty() ? -1 : Integer.parseInt(s);
 	}
 
 	public void associate(final ThreadGroup threadGroup) {

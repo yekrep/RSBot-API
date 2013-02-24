@@ -61,7 +61,7 @@ public final class BotMenu extends JPopupMenu implements ActionListener {
 		BotKeyEventDispatcher.setAccelerator(signin, BotKeyEventDispatcher.Action.SIGNIN);
 		signin.setIcon(new ImageIcon(Resources.getImage(Resources.Paths.KEYS)));
 		if (NetworkAccount.getInstance().isLoggedIn()) {
-			signin.setText(NetworkAccount.getInstance().getAccount().getDisplayName());
+			signin.setText(NetworkAccount.getInstance().getDisplayName());
 		}
 		add(signin);
 		signin.addActionListener(this);
@@ -142,11 +142,11 @@ public final class BotMenu extends JPopupMenu implements ActionListener {
 				final int n = Controller.getInstance().getRunningInstances();
 				final Logger log = Logger.getLogger(BotChrome.class.getName());
 				log.info(BotLocale.LOADINGTAB);
-				if (!NetworkAccount.getInstance().hasPermission(NetworkAccount.Permissions.VIP) && Configuration.isServerOS()) {
+				if (!NetworkAccount.getInstance().hasPermission(NetworkAccount.VIP) && Configuration.isServerOS()) {
 					log.info(BotLocale.NEEDVIPVPS);
 				} else if (n > 0 && !NetworkAccount.getInstance().isLoggedIn()) {
 					log.severe(BotLocale.NEEDSIGNINMULTITAB);
-				} else if (n > 2 && !NetworkAccount.getInstance().hasPermission(NetworkAccount.Permissions.VIP)) {
+				} else if (n > 2 && !NetworkAccount.getInstance().hasPermission(NetworkAccount.VIP)) {
 					log.severe(BotLocale.NEEDVIPMULTITAB);
 				} else {
 					Tracker.getInstance().trackEvent("tab", "add");

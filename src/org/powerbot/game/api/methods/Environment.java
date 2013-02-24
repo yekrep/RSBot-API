@@ -2,11 +2,18 @@ package org.powerbot.game.api.methods;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.Properties;
 
 import org.powerbot.core.randoms.AntiRandom;
 import org.powerbot.game.bot.Context;
 
 public class Environment {
+	private final static Properties props = new Properties();
+
+	public static Properties getProperties() {
+		return props;
+	}
+
 	public static String getDisplayName() {
 		return Context.get().getDisplayName();
 	}

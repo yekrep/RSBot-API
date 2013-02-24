@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.powerbot.game.api.methods.Environment;
 import org.powerbot.ipc.Controller;
 import org.powerbot.ipc.Message;
 import org.powerbot.util.Configuration;
@@ -22,13 +23,12 @@ public final class NetworkAccount {
 	private final static String STORENAME = "netacct", AUTHKEY = "auth", CREATEDKEY = "created";
 	private final static int CACHETTL = 24 * 60 * 60 * 1000;
 	private final CryptFile store;
-	private Account account;
+	private final Map<String, String> props;
 
-	public static final class Permissions {
-		public static final int VIP = 1, DEVELOPER = 2, ADMIN = 4, LOCALSCRIPTS = 8, ORDER = 8;
-	}
+	public static final int VIP = 1, DEVELOPER = 2, ADMIN = 4, LOCALSCRIPTS = 8, ORDER = 8;
 
 	private NetworkAccount() {
+		props = new HashMap<String, String>();
 		store = new CryptFile(STORENAME, NetworkAccount.class);
 		revalidate();
 	}
@@ -41,33 +41,47 @@ public final class NetworkAccount {
 	}
 
 	public boolean isLoggedIn() {
-		return account != null && account.getID() != 0;
+		return !props.isEmpty();
 	}
 
 	public boolean hasPermission(final int permission) {
-		return account != null && (account.getPermissions() & permission) == permission;
+		final String s = getProp("permissions");
+		if (s == null || s.isEmpty()) {
+			return false;
+		}
+		final long l = Long.parseLong(s);
+		return (l & permission) == permission;
 	}
 
-	public Account getAccount() {
-		return account;
+	public String getProp(final String k) {
+		return props.containsKey(k) ? props.get(k) : null;
+	}
+
+	public String getAuth() {
+		return getProp(AUTHKEY);
+	}
+
+	public String getDisplayName() {
+		final String[] s = { getProp("display"), getProp("name") };
+		return s[s[0] == null || s[0].isEmpty() ? 1 : 0];
 	}
 
 	public synchronized void revalidate() {
-		account = null;
+		props.clear();
 
 		if (store.exists()) {
 			try {
 				final Map<String, String> data = IniParser.deserialise(store.getInputStream()).get(IniParser.EMPTYSECTION);
 				if (data.containsKey(CREATEDKEY) && Long.parseLong(data.get(CREATEDKEY)) + CACHETTL > System.currentTimeMillis()) {
-					account = Account.fromMap(data);
+					props.putAll(data);
 				} else {
 					login("", "", data.get(AUTHKEY));
 				}
 			} catch (final IOException ignored) {
 			}
 
-			if (!isLoggedIn() || !account.validate()) {
-				store.delete();
+			if (!validate(props)) {
+				logout();
 			}
 		}
 	}
@@ -80,117 +94,64 @@ public final class NetworkAccount {
 			ignored.printStackTrace();
 			return false;
 		}
-		final boolean success = parseResponse(is) && isLoggedIn();
+		final boolean success = readResponse(is);
 		if (success) {
-			final Map<String, String> data = account.getMap();
-			data.put(CREATEDKEY, Long.toString(System.currentTimeMillis()));
-			final Map<String, Map<String, String>> map = new HashMap<String, Map<String, String>>();
-			map.put(IniParser.EMPTYSECTION, data);
-			IniParser.serialise(map, store.getOutputStream());
+			broadcast();
+			updateCache();
 		} else {
-			store.delete();
+			logout();
 		}
-		broadcast();
 		return success;
 	}
 
-	private boolean parseResponse(final InputStream is) throws IOException {
+	private boolean readResponse(final InputStream is) throws IOException {
 		final Map<String, Map<String, String>> data = IniParser.deserialise(is);
 		if (data == null || data.size() == 0 || !data.containsKey(AUTHKEY)) {
 			return false;
 		}
-		final Map<String, String> auth = data.get(AUTHKEY);
-		account = Account.fromMap(auth);
+		props.putAll(data.get(AUTHKEY));
 		return true;
 	}
 
 	public synchronized void logout() {
-		account = null;
-		store.delete();
+		props.clear();
 		broadcast();
+		updateCache();
+	}
+
+	public static boolean validate(final Map<String, String> data) {
+		if (data.isEmpty() || !data.containsKey("email") || !data.containsKey("name") || !data.containsKey("permissions")) {
+			return false;
+		}
+		final String salt = (data.get("name") + data.get("email")).toUpperCase();
+		final long hash;
+		try {
+			hash = IOHelper.crc32(StringUtil.getBytesUtf8(salt));
+		} catch (final IOException ignored) {
+			return false;
+		}
+		final long perms = Long.parseLong(data.get("permissions"));
+		return perms >> ORDER == hash >> ORDER;
 	}
 
 	private synchronized void broadcast() {
 		Controller.getInstance().broadcast(new Message(false, Message.SIGNIN));
 	}
 
-	public final static class Account {
-		private final int id;
-		private final long permissions;
-		private final String auth, name, display, email;
-		private final int[] groups;
+	private synchronized void updateCache() {
+		Environment.getProperties().put("user.name", getDisplayName());
+		Environment.getProperties().put("user.id", getProp("member_id"));
 
-		public Account(final int id, final String auth, final String name, final String display, final String email, final long permissions, final int[] groups) {
-			this.id = id;
-			this.auth = auth;
-			this.name = name;
-			this.display = display;
-			this.email = email;
-			this.permissions = permissions;
-			this.groups = groups;
-		}
-
-		public boolean validate() {
-			final String salt = (getName() + getEmail()).toUpperCase();
-			final long hash;
+		if (isLoggedIn()) {
+			props.put(CREATEDKEY, Long.toString(System.currentTimeMillis()));
+			final Map<String, Map<String, String>> map = new HashMap<String, Map<String, String>>();
+			map.put(IniParser.EMPTYSECTION, props);
 			try {
-				hash = IOHelper.crc32(StringUtil.getBytesUtf8(salt));
+				IniParser.serialise(map, store.getOutputStream());
 			} catch (final IOException ignored) {
-				return false;
 			}
-			return getPermissions() >> Permissions.ORDER == hash >> Permissions.ORDER;
-		}
-
-		public int getID() {
-			return id;
-		}
-
-		public String getAuth() {
-			return auth;
-		}
-
-		public String getName() {
-			return name;
-		}
-
-		public String getDisplayName() {
-			return display;
-		}
-
-		public String getEmail() {
-			return email;
-		}
-
-		public long getPermissions() {
-			return permissions;
-		}
-
-		public Map<String, String> getMap() {
-			final Map<String, String> data = new HashMap<String, String>();
-			data.put("member_id", Integer.toString(id));
-			data.put("auth", auth);
-			data.put("name", name);
-			data.put("display", display);
-			data.put("email", email);
-			data.put("permissions", Long.toString(permissions));
-			final StringBuilder groups = new StringBuilder(this.groups.length * 2);
-			for (final int group : this.groups) {
-				groups.append(',');
-				groups.append(Integer.toString(group));
-			}
-			groups.deleteCharAt(0);
-			data.put("groups", groups.toString());
-			return data;
-		}
-
-		public static Account fromMap(final Map<String, String> auth) {
-			final int id = Integer.parseInt(auth.get("member_id"));
-			final String[] groups = auth.get("groups").split(",");
-			final int[] groupIDs = new int[groups.length];
-			for (int i = 0; i < groups.length; i++) {
-				groupIDs[i] = Integer.parseInt(groups[i]);
-			}
-			return new Account(id, auth.get("auth"), auth.get("name"), auth.get("display"), auth.get("email"), Long.parseLong(auth.get("permissions")), groupIDs);
+		} else {
+			store.delete();
 		}
 	}
 }
