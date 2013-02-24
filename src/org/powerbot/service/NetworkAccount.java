@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicLong;
 
 import org.powerbot.ipc.Controller;
 import org.powerbot.ipc.Message;
@@ -24,9 +25,7 @@ public final class NetworkAccount {
 	private final CryptFile store;
 	private Account account;
 
-	public static final class Permissions {
-		public static final int VIP = 1, DEVELOPER = 2, ADMIN = 4, LOCALSCRIPTS = 8, ORDER = 8;
-	}
+	public static final int VIP = 1, DEVELOPER = 2, ADMIN = 4, LOCALSCRIPTS = 8, ORDER = 8;
 
 	private NetworkAccount() {
 		store = new CryptFile(STORENAME, NetworkAccount.class);
@@ -116,7 +115,7 @@ public final class NetworkAccount {
 
 	public final static class Account {
 		private final int id;
-		private final long permissions;
+		private final AtomicLong permissions;
 		private final String auth, name, display, email;
 		private final int[] groups;
 
@@ -126,7 +125,7 @@ public final class NetworkAccount {
 			this.name = name;
 			this.display = display;
 			this.email = email;
-			this.permissions = permissions;
+			this.permissions = new AtomicLong(permissions);
 			this.groups = groups;
 		}
 
@@ -138,7 +137,7 @@ public final class NetworkAccount {
 			} catch (final IOException ignored) {
 				return false;
 			}
-			return getPermissions() >> Permissions.ORDER == hash >> Permissions.ORDER;
+			return getPermissions() >> ORDER == hash >> ORDER;
 		}
 
 		public int getID() {
@@ -162,7 +161,7 @@ public final class NetworkAccount {
 		}
 
 		public long getPermissions() {
-			return permissions;
+			return permissions.get();
 		}
 
 		public Map<String, String> getMap() {
@@ -172,7 +171,7 @@ public final class NetworkAccount {
 			data.put("name", name);
 			data.put("display", display);
 			data.put("email", email);
-			data.put("permissions", Long.toString(permissions));
+			data.put("permissions", Long.toString(permissions.get()));
 			final StringBuilder groups = new StringBuilder(this.groups.length * 2);
 			for (final int group : this.groups) {
 				groups.append(',');

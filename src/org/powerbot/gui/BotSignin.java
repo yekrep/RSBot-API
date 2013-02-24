@@ -215,7 +215,7 @@ public final class BotSignin extends JDialog implements ActionListener {
 			new Thread(new Runnable() {
 				@Override
 				public void run() {
-					parent.panel.loadingPanel.setAdVisible(!NetworkAccount.getInstance().hasPermission(NetworkAccount.Permissions.VIP));
+					parent.panel.loadingPanel.setAdVisible(!NetworkAccount.getInstance().hasPermission(NetworkAccount.VIP));
 				}
 			}).start();
 		}
