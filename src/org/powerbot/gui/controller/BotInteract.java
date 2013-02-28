@@ -1,15 +1,10 @@
-package org.powerbot.gui.component;
+package org.powerbot.gui.controller;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.swing.ImageIcon;
-import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
 
 import org.powerbot.Boot;
@@ -22,103 +17,19 @@ import org.powerbot.gui.BotAccounts;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.gui.BotScripts;
 import org.powerbot.gui.BotSignin;
+import org.powerbot.gui.component.BotLocale;
 import org.powerbot.ipc.Controller;
 import org.powerbot.service.NetworkAccount;
 import org.powerbot.util.Configuration;
 import org.powerbot.util.Tracker;
-import org.powerbot.util.io.Resources;
 
 /**
  * @author Paris
  */
-public final class BotMenu extends JPopupMenu implements ActionListener {
-	private static final long serialVersionUID = 1L;
-	private final JMenuItem signin;
+public final class BotInteract {
+	public static enum Action { MENU, TAB_ADD, TAB_CLOSE, ACCOUNTS, SIGNIN, ABOUT, SCRIPT_PLAYPAUSE, SCRIPT_STOP };
 
-	public BotMenu() {
-		final int tabs = Bot.instantiated() ? 1 : 0, inst = Controller.getInstance().getRunningInstances();
-
-		final JMenuItem newtab = new JMenuItem(BotLocale.NEWTAB);
-		BotKeyEventDispatcher.setAccelerator(newtab, BotKeyEventDispatcher.Action.TAB_ADD);
-		newtab.setIcon(new ImageIcon(Resources.getImage(Resources.Paths.ADD)));
-		newtab.addActionListener(this);
-		final JMenuItem closetab = new JMenuItem(BotLocale.CLOSETAB);
-		BotKeyEventDispatcher.setAccelerator(closetab, BotKeyEventDispatcher.Action.TAB_CLOSE);
-		closetab.setIcon(new ImageIcon(Resources.getImage(Resources.Paths.REMOVE)));
-		closetab.setEnabled(tabs > 0 || inst > 1);
-		closetab.addActionListener(this);
-		add(newtab);
-		add(closetab);
-		addSeparator();
-
-		final JMenuItem accounts = new JMenuItem(BotLocale.ACCOUNTS);
-		BotKeyEventDispatcher.setAccelerator(accounts, BotKeyEventDispatcher.Action.ACCOUNTS);
-		accounts.setIcon(new ImageIcon(Resources.getImage(Resources.Paths.ADDRESS)));
-		accounts.addActionListener(this);
-		add(accounts);
-
-		signin = new JMenuItem(BotLocale.SIGNIN + "...");
-		BotKeyEventDispatcher.setAccelerator(signin, BotKeyEventDispatcher.Action.SIGNIN);
-		signin.setIcon(new ImageIcon(Resources.getImage(Resources.Paths.KEYS)));
-		if (NetworkAccount.getInstance().isLoggedIn()) {
-			signin.setText(NetworkAccount.getInstance().getDisplayName());
-		}
-		add(signin);
-		signin.addActionListener(this);
-		addSeparator();
-
-		boolean running = false;
-		if (Bot.instantiated()) {
-			final Bot bot = Bot.instance();
-			final ScriptHandler script = bot.getScriptHandler();
-			running = script != null && script.isActive() && !script.isPaused();
-		}
-		final JMenuItem play = new JMenuItem(running ? BotLocale.PAUSESCRIPT : BotLocale.PLAYSCRIPT);
-		play.setEnabled(Bot.instantiated());
-		BotKeyEventDispatcher.setAccelerator(play, BotKeyEventDispatcher.Action.SCRIPT_PLAYPAUSE);
-		play.setIcon(new ImageIcon(Resources.getImage(running ? Resources.Paths.PAUSE : Resources.Paths.PLAY)));
-		add(play);
-		final JMenuItem stop = new JMenuItem(BotLocale.STOPSCRIPT);
-		stop.setEnabled(Bot.instantiated());
-		BotKeyEventDispatcher.setAccelerator(stop, BotKeyEventDispatcher.Action.SCRIPT_STOP);
-		stop.setIcon(new ImageIcon(Resources.getImage(Resources.Paths.STOP)));
-		add(stop);
-		final JMenuItem feedback = new JMenuItem(BotLocale.FEEDBACK);
-		feedback.setVisible(false);
-		feedback.setEnabled(running);
-		feedback.setIcon(new ImageIcon(Resources.getImage(Resources.Paths.COMMENTS)));
-		add(feedback);
-		addSeparator();
-
-		add(new BotMenuView());
-		add(new BotMenuInput());
-		addSeparator();
-
-		final JMenuItem about = new JMenuItem(BotLocale.ABOUT);
-		BotKeyEventDispatcher.setAccelerator(about, BotKeyEventDispatcher.Action.ABOUT);
-		about.setIcon(new ImageIcon(Resources.getImage(Resources.Paths.INFO)));
-		about.addActionListener(this);
-		add(about);
-	}
-
-	public void actionPerformed(final ActionEvent e) {
-		Tracker.getInstance().trackPage("/menu", e.getActionCommand());
-		switch (e.getActionCommand()) {
-		case BotLocale.NEWTAB: tabAdd(); break;
-		case BotLocale.CLOSETAB: tabClose(false); break;
-		case BotLocale.ACCOUNTS: showDialog(BotKeyEventDispatcher.Action.ACCOUNTS); break;
-		case BotLocale.PLAYSCRIPT: scriptPlayPause(); break;
-		case BotLocale.STOPSCRIPT: scriptStop(); break;
-		case BotLocale.ABOUT: showDialog(BotKeyEventDispatcher.Action.ABOUT); break;
-		default:
-			if (e.getSource() == signin) {
-				showDialog(BotKeyEventDispatcher.Action.SIGNIN);
-			}
-			break;
-		}
-	}
-
-	public static void showDialog(final BotKeyEventDispatcher.Action action) {
+	public static void showDialog(final Action action) {
 		final BotChrome chrome = BotChrome.getInstance();
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
@@ -201,6 +112,7 @@ public final class BotMenu extends JPopupMenu implements ActionListener {
 				Tracker.getInstance().trackEvent("script", "pause");
 				script.pause();
 			}
+			BotChrome.getInstance().toolbar.updateControls();
 			return;
 		}
 
@@ -234,5 +146,6 @@ public final class BotMenu extends JPopupMenu implements ActionListener {
 				}
 			}
 		}
+		BotChrome.getInstance().toolbar.updateControls();
 	}
 }

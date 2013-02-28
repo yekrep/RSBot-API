@@ -1,7 +1,7 @@
 package org.powerbot.gui;
 
+import java.awt.BorderLayout;
 import java.awt.Desktop;
-import java.awt.KeyboardFocusManager;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.IOException;
@@ -23,9 +23,9 @@ import javax.swing.Timer;
 import javax.swing.WindowConstants;
 
 import org.powerbot.core.Bot;
-import org.powerbot.gui.component.BotKeyEventDispatcher;
-import org.powerbot.gui.component.BotMenu;
 import org.powerbot.gui.component.BotPanel;
+import org.powerbot.gui.component.BotToolBar;
+import org.powerbot.gui.controller.BotInteract;
 import org.powerbot.ipc.ScheduledChecks;
 import org.powerbot.service.NetworkAccount;
 import org.powerbot.util.Configuration;
@@ -43,6 +43,7 @@ public class BotChrome extends JFrame implements WindowListener {
 	private static Logger log = Logger.getLogger(BotChrome.class.getName());
 	public static final int PANEL_WIDTH = 765, PANEL_HEIGHT = 553;
 	public BotPanel panel;
+	public BotToolBar toolbar;
 	public static volatile boolean loaded = false;
 	public static volatile boolean minimised = false;
 
@@ -52,6 +53,9 @@ public class BotChrome extends JFrame implements WindowListener {
 		addWindowListener(this);
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 
+		toolbar = new BotToolBar();
+		toolbar.setVisible(false);
+		add(toolbar, BorderLayout.NORTH);
 		panel = new BotPanel(this);
 		add(panel);
 
@@ -160,13 +164,15 @@ public class BotChrome extends JFrame implements WindowListener {
 						timer.setCoalesce(false);
 						timer.start();
 
-						KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(new BotKeyEventDispatcher());
+						toolbar.setVisible(true);
+						pack();
 						parent.validate();
 						parent.repaint();
 
-						Logger.getLogger(BotChrome.class.getName()).log(Level.INFO, "Press F1 to open the menu and start a new bot", "Welcome");
+						final String s = NetworkAccount.getInstance().isLoggedIn() ? "Add a tab to start playing" : "Sign in to add a tab and start playing";
+						Logger.getLogger(BotChrome.class.getName()).log(Level.INFO, s, "Welcome");
 						if (NetworkAccount.getInstance().isLoggedIn()) {
-							BotMenu.tabAdd();
+							BotInteract.tabAdd();
 						}
 					}
 				});

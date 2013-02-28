@@ -55,6 +55,7 @@ public class ScriptHandler {
 				eventManager.removeListener(job);
 
 				if (stopped || job.equals(script)) {
+					BotChrome.getInstance().toolbar.updateControls();
 					stopped = true;
 				}
 			}

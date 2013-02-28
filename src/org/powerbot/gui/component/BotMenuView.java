@@ -13,8 +13,8 @@ import java.util.Map.Entry;
 
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
 
 import org.powerbot.core.Bot;
 import org.powerbot.core.event.impl.DrawBoundaries;
@@ -41,7 +41,7 @@ import org.powerbot.util.io.Resources;
 /**
  * @author Paris
  */
-public final class BotMenuView extends JMenu implements ActionListener {//TODO revamp debugging options
+public final class BotMenuView extends JPopupMenu implements ActionListener {//TODO revamp debugging options
 	private static final long serialVersionUID = 1L;
 	private final Map<String, Class<? extends EventListener>> map;
 	private static Map<Bot, Map<String, EventListener>> listeners;
@@ -68,7 +68,6 @@ public final class BotMenuView extends JMenu implements ActionListener {//TODO r
 
 	public BotMenuView() {
 		super(BotLocale.VIEW);
-		setIcon(new ImageIcon(Resources.Paths.CONTROLS));
 
 		if (!Bot.instantiated()) {
 			setEnabled(false);

@@ -651,6 +651,8 @@ public final class BotScripts extends JDialog implements ActionListener {
 								ScheduledChecks.timeout.set(System.nanoTime() + TimeUnit.MINUTES.toNanos(mins));
 								if (!bot.getScriptHandler().start(script, def)) {
 									log.severe("There is a script running");
+								} else {
+									BotChrome.getInstance().toolbar.updateControls();
 								}
 							}
 						}).start();

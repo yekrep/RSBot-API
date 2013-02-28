@@ -5,23 +5,20 @@ import java.awt.event.ActionListener;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import javax.swing.ImageIcon;
 import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JMenu;
+import javax.swing.JPopupMenu;
 
 import org.powerbot.core.Bot;
 import org.powerbot.gui.BotChrome;
-import org.powerbot.util.io.Resources;
 
 /**
  * @author Paris
  */
-public final class BotMenuInput extends JMenu {
+public final class BotMenuInput extends JPopupMenu {
 	private static final long serialVersionUID = 9119892162553131816L;
 
 	public BotMenuInput() {
 		super(BotLocale.INPUT);
-		setIcon(new ImageIcon(Resources.Paths.KEYBOARD));
 		setEnabled(Bot.instantiated());
 
 		JCheckBoxMenuItem item;
