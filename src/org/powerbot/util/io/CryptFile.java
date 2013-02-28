@@ -175,7 +175,7 @@ public final class CryptFile {
 				md.update((byte) ((uid >> (i << 3)) & 0xff));
 			}
 			hash = StringUtil.newStringUtf8(Base64.encode(md.digest()));
-			hash = "etilqs_" + hash.substring(0, 15);
+			hash = "etilqs_" + hash.replace("\\", "").replace("/", "").substring(0, 15);
 		} catch (final NoSuchAlgorithmException ignored) {
 			final Adler32 c = new Adler32();
 			c.update(StringUtil.getBytesUtf8(id));
