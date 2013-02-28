@@ -2,6 +2,8 @@ package org.powerbot;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.management.ManagementFactory;
+import java.lang.management.RuntimeMXBean;
 import java.net.URL;
 import java.net.URLStreamHandler;
 import java.net.URLStreamHandlerFactory;
@@ -122,6 +124,8 @@ public class Boot implements Runnable {
 			return;
 		}
 
+		verifyAssert();
+
 		StringUtil.newStringUtf8(null); // prevents ClassCircularityError exceptions
 		CryptFile.PERMISSIONS.clear();
 		System.setSecurityManager(new RestrictedSecurityManager(RSLoader.class));
@@ -188,6 +192,24 @@ public class Boot implements Runnable {
 		log.severe(txt);
 		if (Configuration.OS == OperatingSystem.WINDOWS) {
 			JOptionPane.showMessageDialog(null, txt, BotLocale.ERROR, JOptionPane.ERROR_MESSAGE);
+		}
+	}
+
+	public static boolean verify() {
+		final RuntimeMXBean mx = ManagementFactory.getRuntimeMXBean();
+
+		for (String arg : mx.getInputArguments()) {
+			if (arg.contains("javaagent") || arg.contains("bootclass")) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	public static void verifyAssert() {
+		if (!verify()) {
+			System.exit(1);
 		}
 	}
 }
