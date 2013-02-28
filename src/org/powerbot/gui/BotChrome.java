@@ -57,6 +57,7 @@ public class BotChrome extends JFrame implements WindowListener {
 
 		log.log(Level.INFO, "Optimising your experience", "Starting...");
 		pack();
+		setResizable(false);
 		setMinimumSize(getSize());
 		setLocationRelativeTo(getParent());
 		setVisible(true);
