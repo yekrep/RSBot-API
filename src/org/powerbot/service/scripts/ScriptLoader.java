@@ -3,8 +3,6 @@ package org.powerbot.service.scripts;
 import java.io.ByteArrayOutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,11 +17,6 @@ import org.powerbot.util.io.IOHelper;
  * @author Paris
  */
 public final class ScriptLoader {
-
-	public static Object getInstance(final URL... urls) throws Exception {
-		final Class<?> cl = URLClassLoader.class;
-		return cl.getDeclaredConstructor(URL[].class).newInstance(new Object[] { urls });
-	}
 
 	public static Object getInstance(final ZipInputStream in) throws Exception {
 		final Class<?> scl = ScriptClassLoader.class;

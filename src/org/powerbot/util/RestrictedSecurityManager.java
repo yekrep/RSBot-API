@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 
 import org.powerbot.core.bot.RSClassLoader;
 import org.powerbot.ipc.Controller;
+import org.powerbot.service.scripts.LocalScriptClassLoader;
 import org.powerbot.service.scripts.ScriptClassLoader;
 import org.powerbot.util.Configuration.OperatingSystem;
 import org.powerbot.util.io.CryptFile;
@@ -236,7 +237,7 @@ public class RestrictedSecurityManager extends SecurityManager {
 		final Class<?>[] context = getClassContext();
 		for (int i = 1; i < context.length; i++) {
 			final ClassLoader loader = context[i].getClassLoader();
-			if (loader != null && loader.getClass().isAssignableFrom(ScriptClassLoader.class)) {
+			if (loader != null && (loader.getClass().isAssignableFrom(ScriptClassLoader.class) || loader.getClass().isAssignableFrom(LocalScriptClassLoader.class))) {
 				return true;
 			}
 		}
@@ -259,7 +260,7 @@ public class RestrictedSecurityManager extends SecurityManager {
 
 	public static boolean isScriptThread(final Thread t) {
 		final ClassLoader loader = t.getContextClassLoader();
-		return loader != null && loader.getClass().isAssignableFrom(ScriptClassLoader.class);
+		return loader != null && (loader.getClass().isAssignableFrom(ScriptClassLoader.class) || loader.getClass().isAssignableFrom(LocalScriptClassLoader.class));
 	}
 
 	public static void assertNonScript() {

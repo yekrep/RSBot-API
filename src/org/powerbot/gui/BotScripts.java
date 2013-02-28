@@ -77,6 +77,7 @@ import org.powerbot.ipc.ScheduledChecks;
 import org.powerbot.service.GameAccounts;
 import org.powerbot.service.GameAccounts.Account;
 import org.powerbot.service.NetworkAccount;
+import org.powerbot.service.scripts.LocalScriptClassLoader;
 import org.powerbot.service.scripts.ScriptDefinition;
 import org.powerbot.service.scripts.ScriptLoader;
 import org.powerbot.util.Configuration;
@@ -571,7 +572,7 @@ public final class BotScripts extends JDialog implements ActionListener {
 					final ClassLoader cl;
 					if (def.local) {
 						try {
-							cl = (ClassLoader) ScriptLoader.getInstance(new File(def.source).toURI().toURL());
+							cl = new LocalScriptClassLoader(new File(def.source).toURI().toURL());
 						} catch (final Exception ignored) {
 							return;
 						}
