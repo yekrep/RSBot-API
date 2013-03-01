@@ -54,7 +54,7 @@ public class BotChrome extends JFrame implements WindowListener {
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 
 		toolbar = new BotToolBar();
-		toolbar.setVisible(false);
+		toolbar.setVisibleEx(false);
 		add(toolbar, BorderLayout.NORTH);
 		panel = new BotPanel(this);
 		add(panel);
@@ -164,8 +164,7 @@ public class BotChrome extends JFrame implements WindowListener {
 						timer.setCoalesce(false);
 						timer.start();
 
-						toolbar.setVisible(true);
-						pack();
+						toolbar.setVisibleEx(true);
 						parent.validate();
 						parent.repaint();
 
