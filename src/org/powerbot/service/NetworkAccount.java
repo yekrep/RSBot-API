@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.powerbot.core.Bot;
 import org.powerbot.game.api.methods.Environment;
 import org.powerbot.ipc.Controller;
 import org.powerbot.ipc.Message;
@@ -139,8 +140,7 @@ public final class NetworkAccount {
 	}
 
 	private synchronized void updateCache() {
-		Environment.getProperties().put("user.name", getDisplayName());
-		Environment.getProperties().put("user.id", getProp("member_id"));
+		String name = null, id = null;
 
 		if (isLoggedIn()) {
 			props.put(CREATEDKEY, Long.toString(System.currentTimeMillis()));
@@ -150,8 +150,16 @@ public final class NetworkAccount {
 				IniParser.serialise(map, store.getOutputStream());
 			} catch (final IOException ignored) {
 			}
+
+			name = getDisplayName();
+			id = getProp("member_id");
 		} else {
 			store.delete();
+		}
+
+		if (Bot.instantiated()) {
+			Environment.getProperties().put("user.name", name);
+			Environment.getProperties().put("user.id", id);
 		}
 	}
 }
