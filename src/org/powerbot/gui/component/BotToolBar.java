@@ -7,12 +7,15 @@ import java.awt.event.ActionListener;
 import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JScrollPane;
+import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
 import org.powerbot.core.Bot;
 import org.powerbot.core.bot.handlers.ScriptHandler;
+import org.powerbot.gui.BotChrome;
 import org.powerbot.gui.controller.BotInteract;
 import org.powerbot.gui.controller.BotInteract.Action;
 import org.powerbot.service.NetworkAccount;
@@ -133,6 +136,21 @@ public final class BotToolBar extends JToolBar {
 
 		add(Box.createHorizontalStrut(d));
 
+		final JToggleButton logger = new JToggleButton(new ImageIcon(Resources.getImage(Resources.Paths.LIST)));
+		logger.setToolTipText(BotLocale.LOGPANE);
+		logger.setSelected(false);
+		logger.setFocusable(false);
+		logger.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				track(e);
+				final JScrollPane logpane = BotChrome.getInstance().logpane;
+				logpane.setVisible(!logpane.isVisible());
+				logger.setSelected(logpane.isVisible());
+				BotChrome.getInstance().pack();
+			}
+		});
+		add(logger);
 		final JButton about = new JButton(new ImageIcon(Resources.getImage(Resources.Paths.INFO)));
 		about.setToolTipText(BotLocale.ABOUT);
 		about.setFocusable(false);
@@ -150,7 +168,7 @@ public final class BotToolBar extends JToolBar {
 
 	public void track(final ActionEvent e) {
 		final Component c = (Component) e.getSource();
-		final String s = c == signin ? BotLocale.SIGNIN : ((JButton) c).getToolTipText();
+		final String s = c == signin ? BotLocale.SIGNIN : c instanceof JToggleButton ? ((JToggleButton) c).getToolTipText() : ((JButton) c).getToolTipText();
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {

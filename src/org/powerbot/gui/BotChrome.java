@@ -18,11 +18,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.JFrame;
+import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.WindowConstants;
 
 import org.powerbot.core.Bot;
+import org.powerbot.gui.component.BotLogPane;
 import org.powerbot.gui.component.BotPanel;
 import org.powerbot.gui.component.BotToolBar;
 import org.powerbot.gui.controller.BotInteract;
@@ -44,6 +46,7 @@ public class BotChrome extends JFrame implements WindowListener {
 	public static final int PANEL_WIDTH = 765, PANEL_HEIGHT = 553;
 	public BotPanel panel;
 	public BotToolBar toolbar;
+	public JScrollPane logpane;
 	public static volatile boolean loaded = false;
 	public static volatile boolean minimised = false;
 
@@ -58,6 +61,12 @@ public class BotChrome extends JFrame implements WindowListener {
 		add(toolbar, BorderLayout.NORTH);
 		panel = new BotPanel(this);
 		add(panel);
+
+		final BotLogPane logtextpane = new BotLogPane();
+		logpane = new JScrollPane(logtextpane);
+		logpane.setPreferredSize(logtextpane.getPreferredSize());
+		logpane.setVisible(false);
+		add(logpane, BorderLayout.SOUTH);
 
 		log.log(Level.INFO, "Optimising your experience", "Starting...");
 		pack();
