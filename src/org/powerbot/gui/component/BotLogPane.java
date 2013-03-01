@@ -10,6 +10,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.ByteArrayInputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Handler;
@@ -22,6 +23,9 @@ import javax.swing.JPopupMenu;
 import javax.swing.JTextPane;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
+
+import org.powerbot.gui.BotChrome;
+import org.powerbot.util.StringUtil;
 
 /**
  * @author Paris
@@ -55,6 +59,14 @@ public final class BotLogPane extends JTextPane {
 			}
 		});
 		pop.add(copy);
+		final JMenuItem saveas = new JMenuItem("Save As...");
+		saveas.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				BotFileChooser.saveAs(new ByteArrayInputStream(StringUtil.getBytesUtf8(handler.getText())), BotChrome.getInstance());
+			}
+		});
+		pop.add(saveas);
 		final JMenuItem clear = new JMenuItem("Clear");
 		clear.addActionListener(new ActionListener() {
 			@Override
@@ -68,6 +80,7 @@ public final class BotLogPane extends JTextPane {
 			public void popupMenuWillBecomeVisible(final PopupMenuEvent e) {
 				final String s = pane.getSelectedText();
 				copy.setEnabled(s != null && !s.isEmpty());
+				saveas.setEnabled(!handler.isEmpty());
 			}
 			@Override
 			public void popupMenuWillBecomeInvisible(final PopupMenuEvent e) {
@@ -129,6 +142,14 @@ public final class BotLogPane extends JTextPane {
 			s = new StringBuilder();
 			n = 0;
 			c.setText("");
+		}
+
+		public String getText() {
+			return StringUtil.stripHtml(c.getText().replace("<br>", "\r\n")).trim().replace("&#160;&#160;&#160;", "\t").replace("&#160;", " ").replaceAll("  +", "");
+		}
+
+		public boolean isEmpty() {
+			return n == 0;
 		}
 
 		@Override
