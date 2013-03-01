@@ -53,7 +53,7 @@ public final class BotLoadingPanel extends JPanel {
 		panel.setBackground(getBackground());
 		panelText.setBackground(getBackground());
 		panelTitle.setBackground(getBackground());
-		panelText.setBorder(BorderFactory.createEmptyBorder(50, 0, 50, 0));
+		panelText.setBorder(BorderFactory.createEmptyBorder(100, 0, 50, 0));
 
 		final JPanel panelTop = new JPanel(), panelBottom = new JPanel();
 		panelTop.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
@@ -96,7 +96,7 @@ public final class BotLoadingPanel extends JPanel {
 			@Override
 			public void run() {
 				ad.setVisible(visible);
-				panelText.setBorder(BorderFactory.createEmptyBorder(50, 0, visible ? 150 : 50, 0));
+				panelText.setBorder(BorderFactory.createEmptyBorder(visible ? 50 : 100, 0, visible ? 150 : 50, 0));
 			}
 		});
 	}

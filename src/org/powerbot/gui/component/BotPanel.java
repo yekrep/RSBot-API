@@ -5,7 +5,6 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.GridBagLayout;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
@@ -48,7 +47,6 @@ public class BotPanel extends JPanel {
 		xOff = yOff = 0;
 		inputMask = INPUT_MOUSE | INPUT_KEYBOARD;
 
-		setLayout(new GridBagLayout());
 		add(loadingPanel = new BotLoadingPanel(parent));
 
 		addComponentListener(new ComponentAdapter() {
