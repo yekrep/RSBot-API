@@ -62,13 +62,6 @@ public final class BotLoadingPanel extends JPanel {
 		panelBottom.setBackground(panel.getBackground());
 
 		final JLabel logo = new JLabel(new ImageIcon(Resources.getImage(Resources.Paths.ARROWS)));
-		logo.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		logo.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(final MouseEvent e) {
-				BotChrome.openURL(Configuration.URLs.SITE);
-			}
-		});
 		logo.setHorizontalAlignment(SwingConstants.RIGHT);
 		panelTitle.add(logo);
 
