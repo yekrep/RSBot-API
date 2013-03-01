@@ -157,7 +157,7 @@ public final class NetworkAccount {
 			store.delete();
 		}
 
-		if (Bot.instantiated()) {
+		if (name != null && id != null && Bot.instantiated()) {
 			Environment.getProperties().put("user.name", name);
 			Environment.getProperties().put("user.id", id);
 		}
