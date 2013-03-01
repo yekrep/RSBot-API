@@ -168,7 +168,9 @@ public class RestrictedSecurityManager extends SecurityManager {
 		if (isCallingClass(java.awt.event.InputEvent.class)) {
 			return;
 		}
-		throw new SecurityException();
+		if (isScriptThread()) {
+			throw new SecurityException();
+		}
 	}
 
 	@Override
