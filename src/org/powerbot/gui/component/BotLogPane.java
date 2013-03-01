@@ -170,7 +170,7 @@ public final class BotLogPane extends JTextPane {
 			}
 
 			final StringBuilder m = new StringBuilder();
-			final String timestamp = new SimpleDateFormat("H:m").format(new Date(record.getMillis()));
+			final String timestamp = new SimpleDateFormat("H:mm").format(new Date(record.getMillis()));
 			m.append("<span style=\"color: #666666;\">");
 			m.append(timestamp);
 			m.append("</span>");
