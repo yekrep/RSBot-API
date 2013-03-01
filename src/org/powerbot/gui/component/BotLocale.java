@@ -46,6 +46,8 @@ public final class BotLocale {
 	public static final String NEEDSIGNINMULTITAB = "Please sign in to open more tabs.";
 	public static final String CANTOPENTAB = "Unable to open a new tab.";
 	public static final String LOGPANE = "Show or hide log pane";
+	public static final String WELCOME_SIGNEDIN = "Hi %s, add a tab to start playing";
+	public static final String WELCOME_NOTSIGNEDIN = "Please sign in then add a tab to start playing";
 
 	public static final String SEARCH = "Search";
 	public static final String REFRESH = "Refresh";

@@ -8,6 +8,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
@@ -219,6 +221,13 @@ public final class BotSignin extends JDialog implements ActionListener {
 				}
 			}).start();
 		}
+		showWelcomeMessage();
+	}
+
+	public static void showWelcomeMessage() {
+		final NetworkAccount n = NetworkAccount.getInstance();
+		final String s = n.isLoggedIn() ? String.format(BotLocale.WELCOME_SIGNEDIN, n.getDisplayName()) : BotLocale.WELCOME_NOTSIGNEDIN;
+		Logger.getLogger(BotChrome.class.getName()).log(Level.INFO, s, "Welcome");
 	}
 
 	private void updateState(final boolean signedin) {

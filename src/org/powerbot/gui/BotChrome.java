@@ -177,9 +177,8 @@ public class BotChrome extends JFrame implements WindowListener {
 						parent.validate();
 						parent.repaint();
 
-						final String s = NetworkAccount.getInstance().isLoggedIn() ? "Add a tab to start playing" : "Sign in to add a tab and start playing";
-						Logger.getLogger(BotChrome.class.getName()).log(Level.INFO, s, "Welcome");
-						if (NetworkAccount.getInstance().isLoggedIn()) {
+						BotSignin.showWelcomeMessage();
+						if (NetworkAccount.getInstance().hasPermission(NetworkAccount.VIP)) {
 							BotInteract.tabAdd();
 						}
 					}
