@@ -93,6 +93,7 @@ public final class BotInteract {
 					Bot.instance().stop();
 					chrome.panel.repaint();
 					Logger.getLogger(Bot.class.getName()).log(Level.INFO, "Add a tab to start another bot", "Closed");
+					parent.toolbar.updateControls();
 					System.gc();
 				} else {
 					parent.dispatchEvent(new WindowEvent(parent, WindowEvent.WINDOW_CLOSING));
