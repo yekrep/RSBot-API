@@ -39,7 +39,7 @@ public final class LoadAds implements Callable<Boolean> {
 				SwingUtilities.invokeAndWait(new Runnable() {
 					@Override
 					public void run() {
-						BotChrome.getInstance().panel.loadingPanel.ad.setVisible(!NetworkAccount.getInstance().hasPermission(NetworkAccount.VIP));
+						BotChrome.getInstance().panel.loadingPanel.setAdVisible(!NetworkAccount.getInstance().hasPermission(NetworkAccount.VIP));
 						BotChrome.getInstance().panel.loadingPanel.ad.setImage(img, link);
 					}
 				});

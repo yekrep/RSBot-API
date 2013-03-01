@@ -39,9 +39,6 @@ public class Resources {
 		public static final String UNSTAR = ROOT_IMG + "/glyphicons_048_dislikes.png";
 		public static final String COMMENTS = ROOT_IMG + "/glyphicons_244_conversation.png";
 		public static final String LIST = ROOT_IMG + "/glyphicons_114_list.png";
-		public static final String TWITTER = ROOT_IMG + "/twitter.png";
-		public static final String FACEBOOK = ROOT_IMG + "/facebook.png";
-		public static final String YOUTUBE = ROOT_IMG + "/youtube.png";
 		public static final String SKILLS = ROOT_IMG + "/skills.png";
 	}
 

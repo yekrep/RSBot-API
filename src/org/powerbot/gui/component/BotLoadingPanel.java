@@ -41,22 +41,23 @@ public final class BotLoadingPanel extends JPanel {
 	private ThreadGroup listeningGroup = null;
 	public static final int PANEL_WIDTH = 728, PANEL_HEIGHT = 120;
 	public final DisplayAd ad;
+	private final JPanel panelText;
 	private final BotLoadingPanelLogHandler handler;
 
 	public BotLoadingPanel(final Component parent) {
 		setBackground(Color.BLACK);
 		setLayout(new GridLayout(0, 1));
 
-		final JPanel panel = new JPanel(new BorderLayout()), panelText = new JPanel(new GridLayout(0, 1)), panelTitle = new JPanel(new GridLayout(1, 0));
+		final JPanel panel = new JPanel(new BorderLayout()), panelTitle = new JPanel(new GridLayout(1, 0));
+		panelText = new JPanel(new GridLayout(0, 1));
 		panel.setBackground(getBackground());
 		panelText.setBackground(getBackground());
 		panelTitle.setBackground(getBackground());
-		panelText.setBorder(BorderFactory.createEmptyBorder(25, 0, 25, 0));
+		panelText.setBorder(BorderFactory.createEmptyBorder(50, 0, 50, 0));
 
-		final JPanel panelTop = new JPanel();
+		final JPanel panelTop = new JPanel(), panelBottom = new JPanel();
 		panelTop.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
 		panelTop.setBackground(panel.getBackground());
-		final JPanel panelBottom = new BotSocialPanel();
 		panelBottom.setBorder(new EmptyBorder(PANEL_HEIGHT - panelBottom.getPreferredSize().height, 0, 0, 0));
 		panelBottom.setPreferredSize(panelTop.getPreferredSize());
 		panelBottom.setBackground(panel.getBackground());
@@ -84,7 +85,7 @@ public final class BotLoadingPanel extends JPanel {
 		panel.add(panelBottom, BorderLayout.SOUTH);
 		add(panel);
 
-		ad = new DisplayAd(panelTop);
+		ad = new DisplayAd(panelBottom);
 
 		handler = new BotLoadingPanelLogHandler(this);
 		Logger.getLogger("").addHandler(handler);
@@ -95,6 +96,7 @@ public final class BotLoadingPanel extends JPanel {
 			@Override
 			public void run() {
 				ad.setVisible(visible);
+				panelText.setBorder(BorderFactory.createEmptyBorder(50, 0, visible ? 150 : 50, 0));
 			}
 		});
 	}
