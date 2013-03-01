@@ -2,6 +2,14 @@ package org.powerbot.gui.component;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Toolkit;
+import java.awt.datatransfer.StringSelection;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Handler;
@@ -9,7 +17,11 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
 import javax.swing.JTextPane;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
 
 /**
  * @author Paris
@@ -26,11 +38,83 @@ public final class BotLogPane extends JTextPane {
 		setPreferredSize(new Dimension(getPreferredSize().width, (int) (getPreferredSize().height * 3.5d)));
 		setText("");
 
-		Logger.getLogger("").addHandler(new BotLogPaneHandler(this));
+		final JTextPane pane = this;
+		final BotLogPaneHandler handler = new BotLogPaneHandler(this);
+		Logger.getLogger("").addHandler(handler);
+
+		final JPopupMenu pop = new JPopupMenu();
+		final JMenuItem copy = new JMenuItem("Copy");
+		copy.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				final String s = pane.getSelectedText();
+				if (s == null || s.isEmpty()) {
+					return;
+				}
+				Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(s), null);
+			}
+		});
+		pop.add(copy);
+		final JMenuItem clear = new JMenuItem("Clear");
+		clear.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				handler.clear();
+			}
+		});
+		pop.add(clear);
+		pop.addPopupMenuListener(new PopupMenuListener() {
+			@Override
+			public void popupMenuWillBecomeVisible(final PopupMenuEvent e) {
+				final String s = pane.getSelectedText();
+				copy.setEnabled(s != null && !s.isEmpty());
+			}
+			@Override
+			public void popupMenuWillBecomeInvisible(final PopupMenuEvent e) {
+			}
+			@Override
+			public void popupMenuCanceled(final PopupMenuEvent e) {
+			}
+	    });
+
+		addMouseListener(new MouseListener() {
+			@Override
+			public void mouseClicked(final MouseEvent e) {
+				if (e.isMetaDown()) {
+					pop.show(pane, e.getX(), e.getY());
+				}
+			}
+
+			@Override
+			public void mousePressed(final MouseEvent e) {
+			}
+
+			@Override
+			public void mouseReleased(final MouseEvent e) {
+			}
+
+			@Override
+			public void mouseEntered(final MouseEvent e) {
+			}
+
+			@Override
+			public void mouseExited(final MouseEvent e) {
+			}
+		});
+
+		addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(final KeyEvent e) {
+				final String s = pane.getSelectedText();
+				if (s != null && !s.isEmpty() && e.getKeyCode() == KeyEvent.VK_C && (e.getModifiers() & KeyEvent.CTRL_MASK) != 0) {
+					Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(s), null);
+				}
+			}
+		});
 	}
 
 	private final class BotLogPaneHandler extends Handler {
-		private final StringBuilder s;
+		private StringBuilder s;
 		private final String lf = "\n", html1 = "<html><body style=\"font-size: 11px; font-family: Consolas, Bitstream Vera Sans Mono, Liberation Mono, Courier, monospace; color: #999999;\">", html2 = "<body></html>";
 		private int n = 0;
 		private final int max = 100;
@@ -39,6 +123,12 @@ public final class BotLogPane extends JTextPane {
 		public BotLogPaneHandler(final JTextPane c) {
 			this.c = c;
 			s = new StringBuilder();
+		}
+
+		public void clear() {
+			s = new StringBuilder();
+			n = 0;
+			c.setText("");
 		}
 
 		@Override
