@@ -3,6 +3,8 @@ package org.powerbot.gui.component;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 
 import javax.swing.Box;
 import javax.swing.ImageIcon;
@@ -20,6 +22,8 @@ import org.powerbot.gui.controller.BotInteract;
 import org.powerbot.gui.controller.BotInteract.Action;
 import org.powerbot.service.NetworkAccount;
 import org.powerbot.util.Tracker;
+import org.powerbot.util.io.CryptFile;
+import org.powerbot.util.io.IOHelper;
 import org.powerbot.util.io.Resources;
 
 /**
@@ -28,13 +32,16 @@ import org.powerbot.util.io.Resources;
 public final class BotToolBar extends JToolBar {
 	private static final long serialVersionUID = 6279235497882884115L;
 	private final JButton add, accounts, play, stop, feedback, input, view;
-	private final JToggleButton signin;
+	private final JToggleButton signin, logger;
 	private final ImageIcon[] playIcons;
+	private final CryptFile loggerPref;
 
 	public BotToolBar() {
 		setFloatable(false);
 		setBorder(new EmptyBorder(1, 3, 1, 3));
 		final int d = 16;
+
+		loggerPref = new CryptFile("logpane.txt", BotToolBar.class);
 
 		add = new JButton(new ImageIcon(Resources.getImage(Resources.Paths.ADD)));
 		add.setToolTipText(BotLocale.NEWTAB);
@@ -137,18 +144,16 @@ public final class BotToolBar extends JToolBar {
 
 		add(Box.createHorizontalStrut(d));
 
-		final JToggleButton logger = new JToggleButton(new ImageIcon(Resources.getImage(Resources.Paths.LIST)));
+		logger = new JToggleButton(new ImageIcon(Resources.getImage(Resources.Paths.LIST)));
 		logger.setToolTipText(BotLocale.LOGPANE);
+		logger.setVisible(false);
 		logger.setSelected(false);
 		logger.setFocusable(false);
 		logger.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent e) {
 				track(e);
-				final JScrollPane logpane = BotChrome.getInstance().logpane;
-				logpane.setVisible(!logpane.isVisible());
-				logger.setSelected(logpane.isVisible());
-				BotChrome.getInstance().pack();
+				toggleLogPane();
 			}
 		});
 		add(logger);
@@ -176,6 +181,29 @@ public final class BotToolBar extends JToolBar {
 				Tracker.getInstance().trackPage("/toolbar", s);
 			}
 		});
+	}
+
+	public void toggleLogPane() {
+		final JScrollPane logpane = BotChrome.getInstance().logpane;
+		logpane.setVisible(!logpane.isVisible());
+		logger.setSelected(logpane.isVisible());
+		BotChrome.getInstance().pack();
+
+		if (logpane.isVisible()) {
+			try {
+				IOHelper.write(new ByteArrayInputStream(new byte[] { 1 }), loggerPref.getOutputStream());
+			} catch (final IOException ignored) {
+			}
+		} else {
+			loggerPref.delete();
+		}
+	}
+
+	public void registerPreferences() {
+		if (loggerPref.exists() && !logger.isSelected()) {
+			toggleLogPane();
+		}
+		logger.setVisible(true);
 	}
 
 	public void setVisibleEx(final boolean r) {

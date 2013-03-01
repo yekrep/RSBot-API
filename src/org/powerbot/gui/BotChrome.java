@@ -173,6 +173,7 @@ public class BotChrome extends JFrame implements WindowListener {
 						timer.setCoalesce(false);
 						timer.start();
 
+						toolbar.registerPreferences();
 						toolbar.setVisibleEx(true);
 						parent.validate();
 						parent.repaint();
