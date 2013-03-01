@@ -27,7 +27,8 @@ import org.powerbot.util.io.Resources;
  */
 public final class BotToolBar extends JToolBar {
 	private static final long serialVersionUID = 6279235497882884115L;
-	private final JButton add, accounts, signin, play, stop, feedback, input, view;
+	private final JButton add, accounts, play, stop, feedback, input, view;
+	private final JToggleButton signin;
 	private final ImageIcon[] playIcons;
 
 	public BotToolBar() {
@@ -60,7 +61,7 @@ public final class BotToolBar extends JToolBar {
 			}
 		});
 		add(accounts);
-		signin = new JButton(new ImageIcon(Resources.getImage(Resources.Paths.KEYS)));
+		signin = new JToggleButton(new ImageIcon(Resources.getImage(Resources.Paths.KEYS)));
 		signin.setToolTipText(BotLocale.SIGNIN);
 		signin.setFocusable(false);
 		signin.addActionListener(new ActionListener() {
@@ -186,6 +187,7 @@ public final class BotToolBar extends JToolBar {
 		final NetworkAccount a = NetworkAccount.getInstance();
 		add.setEnabled(a.isLoggedIn());
 		signin.setToolTipText(a.isLoggedIn() ? a.getDisplayName() : BotLocale.SIGNIN);
+		signin.setSelected(a.isLoggedIn());
 
 		final boolean e = Bot.instantiated();
 		for (final Component c : new Component[] { play, stop, input, view }) {
