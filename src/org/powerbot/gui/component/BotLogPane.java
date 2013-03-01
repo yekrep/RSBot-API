@@ -165,7 +165,13 @@ public final class BotLogPane extends JTextPane {
 			m.append(timestamp);
 			m.append("</span>");
 			m.append("&nbsp;&nbsp;&nbsp;");
-			m.append(record.getMessage());
+			if (record.getMessage().length() > 100) {
+				m.append("<span style=\"font-size: 8px;\">");
+				m.append(record.getMessage());
+				m.append("</span>");
+			} else {
+				m.append(record.getMessage());
+			}
 
 			if (record.getLevel().intValue() >= Level.WARNING.intValue()) {
 				s.append("<span style=\"color: #dc143c;\">");
