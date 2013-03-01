@@ -47,7 +47,7 @@ public final class BotLogPane extends JTextPane {
 		Logger.getLogger("").addHandler(handler);
 
 		final JPopupMenu pop = new JPopupMenu();
-		final JMenuItem copy = new JMenuItem("Copy");
+		final JMenuItem copy = new JMenuItem(BotLocale.COPY);
 		copy.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent e) {
@@ -59,7 +59,7 @@ public final class BotLogPane extends JTextPane {
 			}
 		});
 		pop.add(copy);
-		final JMenuItem saveas = new JMenuItem("Save As...");
+		final JMenuItem saveas = new JMenuItem(BotLocale.SAVEAS);
 		saveas.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent e) {
@@ -67,7 +67,7 @@ public final class BotLogPane extends JTextPane {
 			}
 		});
 		pop.add(saveas);
-		final JMenuItem clear = new JMenuItem("Clear");
+		final JMenuItem clear = new JMenuItem(BotLocale.CLEAR);
 		clear.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent e) {

@@ -25,6 +25,10 @@ public final class BotLocale {
 	public static final String ABOUT = "About";
 	public static final String EXIT = "Exit";
 
+	public static final String COPY = "Copy";
+	public static final String SAVEAS = "Save As...";
+	public static final String CLEAR = "Clear";
+
 	public static final String USERNAME = "Username";
 	public static final String USERNAME_OR_EMAIL = USERNAME + " or email";
 	public static final String PASSWORD = "Password";
