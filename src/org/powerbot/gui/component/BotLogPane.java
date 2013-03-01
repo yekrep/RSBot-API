@@ -25,6 +25,7 @@ import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
 import org.powerbot.gui.BotChrome;
+import org.powerbot.util.Configuration;
 import org.powerbot.util.StringUtil;
 
 /**
@@ -159,6 +160,15 @@ public final class BotLogPane extends JTextPane {
 				s.delete(0, s.indexOf(lf) + lf.length());
 			}
 
+			String r = record.getMessage();
+
+			if (Configuration.OS == Configuration.OperatingSystem.WINDOWS) {
+				r = r.replace(System.getProperty("java.io.tmpdir"), "%temp%");
+				r = r.replace(System.getProperty("user.home"), "%home%");
+			} else {
+				r = r.replace(System.getProperty("user.home"), "~");
+			}
+
 			final StringBuilder m = new StringBuilder();
 			final String timestamp = new SimpleDateFormat("H:m").format(new Date(record.getMillis()));
 			m.append("<span style=\"color: #666666;\">");
@@ -167,10 +177,10 @@ public final class BotLogPane extends JTextPane {
 			m.append("&nbsp;&nbsp;&nbsp;");
 			if (record.getMessage().length() > 100) {
 				m.append("<span style=\"font-size: 8px;\">");
-				m.append(record.getMessage());
+				m.append(r);
 				m.append("</span>");
 			} else {
-				m.append(record.getMessage());
+				m.append(r);
 			}
 
 			if (record.getLevel().intValue() >= Level.WARNING.intValue()) {
