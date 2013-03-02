@@ -39,8 +39,7 @@ trim        deleteSourceFileAttributes=true
             deleteExceptionAttributes=true
             deleteUnknownAttributes=false;
 
-exclude     org.powerbot.Boot^ public static main(java.lang.String[]) and
-            org.powerbot.game.bot.handler.input. and
+exclude     org.powerbot.game.bot.handler.input. and
             org.powerbot.game.bot.handler.input.MouseReactor and
             org.powerbot.game.bot.handler.input.MouseReactor *(*) and
             org.powerbot.game.bot.handler.input.util. and
@@ -54,8 +53,6 @@ exclude     org.powerbot.Boot^ public static main(java.lang.String[]) and
             org.powerbot.game.bot.Context and
             org.powerbot.game.bot.Context * and
             org.powerbot.game.bot.Context *(*) and
-            org.powerbot.game.loader. and
-            org.powerbot.game.loader.RSClassLoader and
             org.powerbot.game.api. and
             org.powerbot.game.api.^* and
             org.powerbot.game.api.^* * and
