@@ -1,10 +1,8 @@
 package org.powerbot.core.bot;
 
 import java.awt.AWTPermission;
-import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FilePermission;
-import java.io.IOException;
 import java.net.SocketPermission;
 import java.net.URL;
 import java.security.CodeSigner;
@@ -16,6 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.PropertyPermission;
 
+import org.powerbot.game.client.RandomAccessFile;
 import org.powerbot.util.io.IOHelper;
 
 public class RSClassLoader extends ClassLoader {
@@ -28,11 +27,10 @@ public class RSClassLoader extends ClassLoader {
 		this.classes.putAll(classes);
 
 		try {
-			String s = getClass().getResource("RSClassLoader.class").toString();
-			s = s.replace("loader/RSClassLoader.class", "client/RandomAccessFile.class");
-			final byte[] data = IOHelper.read(new BufferedInputStream(new URL(s).openStream()));
-			this.classes.put("org.powerbot.game.client.RandomAccessFile", data);
-		} catch (final IOException ignored) {
+			final Class<?> raf = RandomAccessFile.class;
+			final byte[] data = IOHelper.read(raf.getClassLoader().getResourceAsStream(raf.getName().replace('.', File.separatorChar) + ".class"));
+			this.classes.put(raf.getName(), data);
+		} catch (final Exception ignored) {
 		}
 	}
 
