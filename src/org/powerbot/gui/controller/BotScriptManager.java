@@ -16,7 +16,6 @@ import java.util.Map.Entry;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 import java.util.zip.Inflater;
-import java.util.zip.ZipInputStream;
 
 import javax.crypto.Cipher;
 import javax.crypto.CipherInputStream;
@@ -39,6 +38,7 @@ import org.powerbot.util.Configuration;
 import org.powerbot.util.StringUtil;
 import org.powerbot.util.io.HttpClient;
 import org.powerbot.util.io.IniParser;
+import org.powerbot.xboot.ZipInputStream;
 
 public class BotScriptManager {
 	private static final Logger log = Logger.getLogger(BotScriptManager.class.getName());
