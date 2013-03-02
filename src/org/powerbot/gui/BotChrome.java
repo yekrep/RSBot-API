@@ -18,6 +18,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
@@ -51,7 +52,7 @@ public class BotChrome extends JFrame implements WindowListener {
 	public static volatile boolean minimised = false;
 
 	private BotChrome() {
-		setTitle(Configuration.NAME + " " + (int) (Configuration.VERSION / 1000));
+		setTitle(Configuration.NAME + " " + (int) (Configuration.VERSION / 1000) + (Configuration.BETA ? " Beta" : ""));
 		setIconImage(Resources.getImage(Resources.Paths.ICON));
 		addWindowListener(this);
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -179,6 +180,12 @@ public class BotChrome extends JFrame implements WindowListener {
 						parent.repaint();
 
 						BotSignin.showWelcomeMessage();
+
+						if (Configuration.BETA) {
+							final String s = "This is a beta version for developers only and certain features have been disabled.\nDo not use this version for general purposes, you have been warned.";
+							JOptionPane.showMessageDialog(BotChrome.getInstance(), s, "Beta", JOptionPane.WARNING_MESSAGE);
+						}
+
 						if (NetworkAccount.getInstance().hasPermission(NetworkAccount.VIP)) {
 							BotInteract.tabAdd();
 						}
