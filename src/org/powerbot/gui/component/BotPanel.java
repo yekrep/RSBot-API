@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.MenuComponent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
@@ -20,6 +21,7 @@ import javax.swing.JPanel;
 import org.powerbot.core.Bot;
 import org.powerbot.game.client.input.Mouse;
 import org.powerbot.gui.BotChrome;
+import org.powerbot.util.Tracker;
 
 /**
  * A panel that re-dispatches human events to the game's applet.
@@ -107,6 +109,31 @@ public class BotPanel extends JPanel {
 				redispatch(e);
 			}
 		});
+	}
+
+	@Override
+	public void removeAll() {
+		track();
+	}
+
+	@Override
+	public void remove(final int index) {
+		track();
+	}
+
+	@Override
+	public void remove(final Component component) {
+		track();
+	}
+
+	@Override
+	public void remove(final MenuComponent component) {
+		track();
+	}
+
+	private void track() {
+		final StackTraceElement e = Thread.currentThread().getStackTrace()[3];
+		Tracker.getInstance().trackEvent("BotPanel", "remove", e.getClassName() + ":" + e.getMethodName());
 	}
 
 	@Override
