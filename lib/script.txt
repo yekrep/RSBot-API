@@ -70,6 +70,10 @@ exclude     org.powerbot.game.bot.handler.input. and
             org.powerbot.core.*.^* * and
             org.powerbot.core.*.^* *(*);
 
+unexclude   org.powerbot.core.bot.* and
+            org.powerbot.core.bot.* * and
+            org.powerbot.core.bot.* *(*);
+
 obfuscate   changeLogFileIn=""
             changeLogFileOut="%ZKM_CHANGELOG%"
             aggressiveMethodRenaming=true
@@ -79,6 +83,7 @@ obfuscate   changeLogFileIn=""
             encryptStringLiterals=flowObfuscate
             collapsePackagesWithDefault=""
             lineNumbers=delete
+            collapsePackagesWithDefault=""
             exceptionObfuscation=heavy;
 
 saveAll     archiveCompression=all "%ZKM_SAVE%";
