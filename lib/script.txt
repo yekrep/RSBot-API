@@ -31,23 +31,7 @@ trimExclude org.powerbot.game.api. and
             org.powerbot.game.client.* *(*) and
             org.powerbot.game.client.input.^* and
             org.powerbot.game.client.input.* *(*) and
-            org.powerbot.game.client.input.^*^ * and
-            org.powerbot.concurrent. and
-            org.powerbot.concurrent.^* and
-            org.powerbot.concurrent.^* * and
-            org.powerbot.concurrent.^* *(*) and
-            org.powerbot.concurrent.*. and
-            org.powerbot.concurrent.*.^* and
-            org.powerbot.concurrent.*.^* * and
-            org.powerbot.concurrent.*.^* *(*) and
-            org.powerbot.concurrent.strategy. and
-            org.powerbot.concurrent.strategy.^* and
-            org.powerbot.concurrent.strategy.^* * and
-            org.powerbot.concurrent.strategy.^* *(*) and
-            org.powerbot.concurrent.strategy.*. and
-            org.powerbot.concurrent.strategy.*.^* and
-            org.powerbot.concurrent.strategy.*.^* * and
-            org.powerbot.concurrent.strategy.*.^* *(*);
+            org.powerbot.game.client.input.^*^ *;
 
 trim        deleteSourceFileAttributes=true
             deleteDeprecatedAttributes=false
@@ -56,22 +40,6 @@ trim        deleteSourceFileAttributes=true
             deleteUnknownAttributes=false;
 
 exclude     org.powerbot.Boot^ public static main(java.lang.String[]) and
-            org.powerbot.concurrent. and
-            org.powerbot.concurrent.^* and
-            org.powerbot.concurrent.^* * and
-            org.powerbot.concurrent.^* *(*) and
-            org.powerbot.concurrent.*. and
-            org.powerbot.concurrent.*.^* and
-            org.powerbot.concurrent.*.^* * and
-            org.powerbot.concurrent.*.^* *(*) and
-            org.powerbot.concurrent.strategy. and
-            org.powerbot.concurrent.strategy.^* and
-            org.powerbot.concurrent.strategy.^* * and
-            org.powerbot.concurrent.strategy.^* *(*) and
-            org.powerbot.concurrent.strategy.*. and
-            org.powerbot.concurrent.strategy.*.^* and
-            org.powerbot.concurrent.strategy.*.^* * and
-            org.powerbot.concurrent.strategy.*.^* *(*) and
             org.powerbot.game.bot.handler.input. and
             org.powerbot.game.bot.handler.input.MouseReactor and
             org.powerbot.game.bot.handler.input.MouseReactor *(*) and
@@ -83,11 +51,6 @@ exclude     org.powerbot.Boot^ public static main(java.lang.String[]) and
             org.powerbot.game.client.input.^* and
             org.powerbot.game.client.input.* *(*) and
             org.powerbot.game.client.input.^*^ * and
-            public org.powerbot.game.bot.event.*.^* and
-            org.powerbot.game.bot.event.*.^* public *(*) and
-            org.powerbot.game.bot.event.^* and
-            org.powerbot.game.bot.event.^*^ * and
-            org.powerbot.game.bot.event.* *(*) and
             org.powerbot.game.bot.Context and
             org.powerbot.game.bot.Context * and
             org.powerbot.game.bot.Context *(*) and
