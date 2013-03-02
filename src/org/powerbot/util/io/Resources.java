@@ -33,7 +33,7 @@ public class Resources {
 		public static final String PENCIL = ROOT_IMG + "/glyphicons_030_pencil.png";
 		public static final String SETTINGS = ROOT_IMG + "/glyphicons_136_cogwheel.png";
 		public static final String EDIT = ROOT_IMG + "/glyphicons_150_edit.png";
-		public static final String CONTROLS = ROOT_IMG + "/glyphicons_331_dashboard.png";
+		public static final String VIEW = ROOT_IMG + "/glyphicons_051_eye_open.png";
 		public static final String KEYBOARD = ROOT_IMG + "/glyphicons_268_keyboard_wireless.png";
 		public static final String STAR = ROOT_IMG + "/glyphicons_049_star.png";
 		public static final String UNSTAR = ROOT_IMG + "/glyphicons_048_dislikes.png";

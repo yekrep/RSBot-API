@@ -130,7 +130,7 @@ public final class BotToolBar extends JToolBar {
 			}
 		});
 		add(input);
-		view = new JButton(new ImageIcon(Resources.getImage(Resources.Paths.CONTROLS)));
+		view = new JButton(new ImageIcon(Resources.getImage(Resources.Paths.VIEW)));
 		view.setToolTipText(BotLocale.VIEW);
 		view.setFocusable(false);
 		view.addActionListener(new ActionListener() {
