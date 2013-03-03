@@ -148,34 +148,36 @@ public abstract class Mouse extends Focus implements MouseListener, MouseMotionL
 
 	public final void sendEvent(final MouseEvent e) {
 		if (e == null) return;
-
-		clientX = e.getX();
-		clientY = e.getY();
-		if (e.getID() == MouseEvent.MOUSE_CLICKED) {
-			_mouseClicked(e);
-		} else if (e.getID() == MouseEvent.MOUSE_DRAGGED) {
-			_mouseDragged(e);
-		} else if (e.getID() == MouseEvent.MOUSE_ENTERED) {
-			clientPresent = true;
-			_mouseEntered(e);
-		} else if (e.getID() == MouseEvent.MOUSE_EXITED) {
-			clientPresent = false;
-			_mouseExited(e);
-		} else if (e.getID() == MouseEvent.MOUSE_MOVED) {
-			_mouseMoved(e);
-		} else if (e.getID() == MouseEvent.MOUSE_PRESSED) {
-			clientPressX = e.getX();
-			clientPressY = e.getY();
-			clientPressTime = e.getWhen();
-			clientPressed = true;
-			_mousePressed(e);
-		} else if (e.getID() == MouseEvent.MOUSE_RELEASED) {
-			clientPressed = false;
-			_mouseReleased(e);
-		} else if (e.getID() == MouseEvent.MOUSE_WHEEL) {
-			_mouseWheelMoved((MouseWheelEvent) e);
-		} else {
-			throw new InternalError(e.toString());
+		try {
+			clientX = e.getX();
+			clientY = e.getY();
+			if (e.getID() == MouseEvent.MOUSE_CLICKED) {
+				_mouseClicked(e);
+			} else if (e.getID() == MouseEvent.MOUSE_DRAGGED) {
+				_mouseDragged(e);
+			} else if (e.getID() == MouseEvent.MOUSE_ENTERED) {
+				clientPresent = true;
+				_mouseEntered(e);
+			} else if (e.getID() == MouseEvent.MOUSE_EXITED) {
+				clientPresent = false;
+				_mouseExited(e);
+			} else if (e.getID() == MouseEvent.MOUSE_MOVED) {
+				_mouseMoved(e);
+			} else if (e.getID() == MouseEvent.MOUSE_PRESSED) {
+				clientPressX = e.getX();
+				clientPressY = e.getY();
+				clientPressTime = e.getWhen();
+				clientPressed = true;
+				_mousePressed(e);
+			} else if (e.getID() == MouseEvent.MOUSE_RELEASED) {
+				clientPressed = false;
+				_mouseReleased(e);
+			} else if (e.getID() == MouseEvent.MOUSE_WHEEL) {
+				_mouseWheelMoved((MouseWheelEvent) e);
+			} else {
+				throw new InternalError(e.toString());
+			}
+		} catch (final Exception ignored) {
 		}
 	}
 }
