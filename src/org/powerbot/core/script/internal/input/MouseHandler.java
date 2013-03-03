@@ -96,6 +96,7 @@ public class MouseHandler implements Runnable {
 				continue;
 			}
 			if (++target.steps > MAX_STEPS) {
+				target.failed = true;
 				complete(target);
 				continue;
 			}
@@ -109,6 +110,7 @@ public class MouseHandler implements Runnable {
 				target.dest = new Vector3(p.x, p.y, 0);
 			}
 			if (target.dest.x == -1 || target.dest.y == -1) {
+				target.failed = true;
 				complete(target);
 				continue;
 			}
@@ -129,7 +131,7 @@ public class MouseHandler implements Runnable {
 				final double mod = 2.5 + Math.sqrt(Math.pow(dest.x - centroid.x, 2) + Math.pow(dest.y - centroid.y, 2));
 				if (traverseLength < mod) {
 					final Point pos = curr.to2DPoint();
-					if (target.targetable.contains(pos) && target.accept(pos)) {
+					if (target.targetable.contains(pos) && target.filter.accept(pos)) {
 						target.execute(this);
 						continue start;
 					}
@@ -175,5 +177,11 @@ public class MouseHandler implements Runnable {
 
 	private Component target() {
 		return applet.getComponentCount() > 0 ? applet.getComponent(0) : null;
+	}
+
+	public Point getLocation() {
+		final Mouse mouse;
+		if ((mouse = client.getMouse()) == null) return new Point(-1, -1);
+		return mouse.getLocation();
 	}
 }
