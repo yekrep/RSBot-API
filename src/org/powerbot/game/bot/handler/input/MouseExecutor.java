@@ -23,7 +23,7 @@ public class MouseExecutor {
 
 	public MouseExecutor() {
 		this.client = Bot.client();
-		forceModifiers = new ArrayList<ForceModifier>(5);
+		forceModifiers = new ArrayList<>(5);
 		velocity = new Vector();
 		target = new Point(-1, -1);
 		setup();

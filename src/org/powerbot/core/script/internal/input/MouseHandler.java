@@ -1,66 +1,85 @@
 package org.powerbot.core.script.internal.input;
 
 import java.applet.Applet;
+import java.awt.Component;
 import java.awt.Point;
+import java.awt.event.MouseEvent;
 import java.util.concurrent.TimeUnit;
 
 import org.powerbot.core.script.job.Task;
-import org.powerbot.core.script.util.Filter;
-import org.powerbot.core.script.wrappers.Targetable;
 import org.powerbot.game.client.Client;
 import org.powerbot.game.client.input.Mouse;
+import org.powerbot.golem.HeteroMouse;
 import org.powerbot.math.Vector3;
 
 public class MouseHandler implements Runnable {
 	private static final int MAX_STEPS = 20;
 	private final MouseSimulator simulator;
 	private final Object LOCK = new Object();
-	private final Client client;
 	private final Applet applet;
-	private final Mouse mouse;
+	private final Client client;
 	private boolean running;
-	private Target target;
+	private MouseTarget target;
 
-	public MouseHandler(final Client client) {
+	public MouseHandler(final Applet applet, final Client client) {
+		this.applet = applet;
 		this.client = client;
-		this.applet = (Applet) client;
-		this.mouse = client.getMouse();
-		simulator = null;
+		simulator = new HeteroMouse();
 		target = null;
 	}
 
-	private void click(final boolean left) {
+	public void click(final boolean left) {
+		final Mouse mouse;
+		if ((mouse = client.getMouse()) == null) return;
 		final int x = mouse.getX(), y = mouse.getY();
 		press(x, y, left);
 		Task.sleep(simulator.getPressDuration());
 		release(x, y, left);
 	}
 
-	private void press(final int x, final int y, final boolean left) {
+	public void press(final int x, final int y, final boolean left) {
+		final Mouse mouse;
+		if ((mouse = client.getMouse()) == null) return;
 		if (!mouse.isPresent() || mouse.isPressed()) return;
-		//TODO MOUSE_PRESSED
+		final Component target = target();
+		mouse.sendEvent(new MouseEvent(target, MouseEvent.MOUSE_PRESSED, System.currentTimeMillis(), 0, x, y, 1, false, left ? MouseEvent.BUTTON1 : MouseEvent.BUTTON3));
 	}
 
-	private void release(final int x, final int y, final boolean left) {
-		if (!mouse.isPresent() || !mouse.isPressed()) return;
+	public void release(final int x, final int y, final boolean left) {
+		final Mouse mouse;
+		if ((mouse = client.getMouse()) == null) return;
+		if (!mouse.isPressed()) return;
 		final long mark = System.currentTimeMillis();
-		//TODO MOUSE_RELEASED
-		//TODO do not fire if dragged
-		{
-			//TODO MOUSE_CLICKED
+		final Component target = target();
+		mouse.sendEvent(new MouseEvent(target, MouseEvent.MOUSE_RELEASED, mark, 0, x, y, 1, false, left ? MouseEvent.BUTTON1 : MouseEvent.BUTTON3));
+		if (mouse.getPressX() == mouse.getX() && mouse.getPressY() == mouse.getY()) {
+			mouse.sendEvent(new MouseEvent(target, MouseEvent.MOUSE_CLICKED, mark, 0, x, y, 1, false, left ? MouseEvent.BUTTON1 : MouseEvent.BUTTON3));
 		}
-		//TODO reset drag length
-
 	}
 
-	private void move(final int x, final int y) {
-		//TODO move mouse
+	public void move(final int x, final int y) {
+		final long mark = System.currentTimeMillis();
+		final Component target = target();
+		final Mouse mouse;
+		if ((mouse = client.getMouse()) == null) return;
+		final boolean present = x >= 0 && y >= 0 && x < target.getWidth() && y < target.getHeight();
+		if (!mouse.isPresent() && present) {
+			mouse.sendEvent(new MouseEvent(target, MouseEvent.MOUSE_ENTERED, mark, 0, x, y, 0, false));
+		}
+		if (mouse.isPressed()) {
+			mouse.sendEvent(new MouseEvent(target, MouseEvent.MOUSE_DRAGGED, mark, 0, x, y, 0, false));
+		} else if (present) {
+			mouse.sendEvent(new MouseEvent(target, MouseEvent.MOUSE_MOVED, mark, 0, x, y, 0, false));
+		} else if (mouse.isPresent()) {
+			mouse.sendEvent(new MouseEvent(target, MouseEvent.MOUSE_EXITED, mark, 0, x, y, 0, false));
+		}
 	}
 
 	@Override
 	public void run() {
 		running = true;
 
+		start:
 		while (running) {
 			synchronized (LOCK) {
 				if (target == null) {
@@ -71,6 +90,11 @@ public class MouseHandler implements Runnable {
 				}
 			}
 			if (target == null) continue;
+			final Mouse mouse;
+			if ((mouse = client.getMouse()) == null) {
+				Task.sleep(250);
+				continue;
+			}
 			if (++target.steps > MAX_STEPS) {
 				complete(target);
 				continue;
@@ -91,35 +115,42 @@ public class MouseHandler implements Runnable {
 			final Vector3 curr = target.curr;
 			final Vector3 dest = target.dest;
 
+			long m;
 			final Iterable<Vector3> spline = simulator.getPath(curr, dest);
 			for (final Vector3 v : spline) {
 				move(v.x, v.y);
-				Task.sleep(TimeUnit.NANOSECONDS.toMillis(simulator.getAbsoluteDelay(v.z)));
-			}
+				curr.x = v.x;
+				curr.y = v.y;
+				curr.z = v.z;
 
-			final Point centroid = target.targetable.getCenterPoint();
-			final double traverseLength = Math.sqrt(Math.pow(dest.x - curr.x, 2) + Math.pow(dest.y - curr.y, 2));
-			final double mod = 2.5 + Math.sqrt(Math.pow(dest.x - centroid.x, 2) + Math.pow(dest.y - centroid.y, 2));
-			if (traverseLength < mod) {
-				final Point pos = curr.to2DPoint();
-				if (target.targetable.contains(pos) && target.filter.accept(pos)) {
-					target.callback.execute(this);
-					continue;
+				m = System.currentTimeMillis();
+				final Point centroid = target.targetable.getCenterPoint();
+				final double traverseLength = Math.sqrt(Math.pow(dest.x - curr.x, 2) + Math.pow(dest.y - curr.y, 2));
+				final double mod = 2.5 + Math.sqrt(Math.pow(dest.x - centroid.x, 2) + Math.pow(dest.y - centroid.y, 2));
+				if (traverseLength < mod) {
+					final Point pos = curr.to2DPoint();
+					if (target.targetable.contains(pos) && target.accept(pos)) {
+						target.execute(this);
+						continue start;
+					}
 				}
+				m = System.currentTimeMillis() - m;
 
-				final Point next = target.targetable.getInteractPoint();
-				dest.x = next.x;
-				dest.y = next.y;
-				continue;
+				final long l = TimeUnit.NANOSECONDS.toMillis(simulator.getAbsoluteDelay(v.z)) - m;
+				Task.sleep(l);
 			}
+
+			final Point next = target.targetable.getInteractPoint();
+			dest.x = next.x;
+			dest.y = next.y;
 		}
 	}
 
-	public void handle(final Targetable target, final Filter<Point> filter, final MouseCallback mouseCallback) {
+	public void handle(final MouseTarget target) {
 		synchronized (LOCK) {
 			boolean notify = false;
 			if (this.target == null) notify = true;
-			this.target = new Target(target, filter, mouseCallback);
+			this.target = target;
 			if (notify) LOCK.notify();
 
 			try {
@@ -129,7 +160,7 @@ public class MouseHandler implements Runnable {
 		}
 	}
 
-	public void complete(final Target target) {
+	public void complete(final MouseTarget target) {
 		synchronized (LOCK) {
 			if (target.equals(this.target)) {
 				this.target = null;
@@ -140,5 +171,9 @@ public class MouseHandler implements Runnable {
 
 	public void stop() {
 		running = false;
+	}
+
+	private Component target() {
+		return applet.getComponentCount() > 0 ? applet.getComponent(0) : null;
 	}
 }

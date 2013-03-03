@@ -31,11 +31,11 @@ import org.powerbot.util.Tracker;
  */
 public class BotPanel extends JPanel {
 	public static final int INPUT_MOUSE = 1, INPUT_KEYBOARD = 2;
-	private int inputMask;
 	private static final long serialVersionUID = 1L;
+	public final BotLoadingPanel loadingPanel;
+	private int inputMask;
 	private Bot bot;
 	private int xOff, yOff;
-	public final BotLoadingPanel loadingPanel;
 
 	public BotPanel(final Component parent) {
 		final Dimension d = new Dimension(BotChrome.PANEL_WIDTH, BotChrome.PANEL_HEIGHT);
@@ -171,12 +171,12 @@ public class BotPanel extends JPanel {
 		}
 	}
 
-	public void setInputMask(final int inputMask) {
-		this.inputMask = inputMask;
-	}
-
 	public int getInputMask() {
 		return inputMask;
+	}
+
+	public void setInputMask(final int inputMask) {
+		this.inputMask = inputMask;
 	}
 
 	public void resize() {

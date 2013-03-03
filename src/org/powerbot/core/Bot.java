@@ -11,6 +11,7 @@ import org.powerbot.core.event.events.PaintEvent;
 import org.powerbot.core.event.events.TextPaintEvent;
 import org.powerbot.core.script.internal.Constants;
 import org.powerbot.core.script.internal.ScriptHandler;
+import org.powerbot.core.script.internal.input.MouseHandler;
 import org.powerbot.core.script.job.Task;
 import org.powerbot.game.api.methods.input.Keyboard;
 import org.powerbot.game.api.methods.input.Mouse;
@@ -47,6 +48,7 @@ public final class Bot implements Runnable {//TODO re-write bot
 	private BotPanel panel;
 	private GameAccounts.Account account;
 	private BufferedImage backBuffer;
+	private MouseHandler mouseHandler;
 
 	private Bot() {
 		appletContainer = null;
@@ -91,6 +93,10 @@ public final class Bot implements Runnable {//TODO re-write bot
 
 	public static Context context() {
 		return instance.composite.context;
+	}
+
+	public static MouseHandler mouseHandler() {
+		return instance.mouseHandler;
 	}
 
 	public static void setSpeed(final Mouse.Speed speed) {
@@ -157,6 +163,7 @@ public final class Bot implements Runnable {//TODO re-write bot
 	 * {@inheritDoc}
 	 */
 	public void stop() {
+		if (mouseHandler != null) mouseHandler().stop();
 		if (composite.scriptHandler != null) {
 			composite.scriptHandler.stop();
 		}
@@ -251,6 +258,8 @@ public final class Bot implements Runnable {//TODO re-write bot
 		constants = new Constants(modScript.constants);
 		new Thread(threadGroup, new SafeMode(this)).start();
 		composite.executor = new MouseExecutor();
+		mouseHandler = new MouseHandler(appletContainer, client);
+		new Thread(threadGroup, mouseHandler).start();
 	}
 
 	public Context getContext() {
