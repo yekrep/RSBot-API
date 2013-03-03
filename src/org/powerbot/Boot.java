@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
-import org.powerbot.core.bot.RSLoader;
+import org.powerbot.core.RSLoader;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.gui.component.BotFileChooser;
 import org.powerbot.gui.component.BotLocale;

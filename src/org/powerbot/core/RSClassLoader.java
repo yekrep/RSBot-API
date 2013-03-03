@@ -1,4 +1,4 @@
-package org.powerbot.core.bot;
+package org.powerbot.core;
 
 import java.awt.AWTPermission;
 import java.io.File;

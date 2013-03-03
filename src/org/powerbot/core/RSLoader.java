@@ -1,4 +1,4 @@
-package org.powerbot.core.bot;
+package org.powerbot.core;
 
 import java.applet.Applet;
 import java.awt.Dimension;

@@ -6,11 +6,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.powerbot.core.Bot;
-import org.powerbot.core.bot.RSLoader;
+import org.powerbot.core.RSLoader;
 import org.powerbot.core.bot.handlers.ScriptHandler;
 import org.powerbot.core.event.EventManager;
 import org.powerbot.core.script.internal.Constants;
-import org.powerbot.game.api.methods.Calculations;
 import org.powerbot.game.api.methods.Environment;
 import org.powerbot.game.bot.handler.input.MouseExecutor;
 import org.powerbot.game.bot.util.ScreenCapture;

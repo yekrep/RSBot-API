@@ -6,8 +6,6 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.logging.Logger;
 
-import org.powerbot.core.bot.ClientStub;
-import org.powerbot.core.bot.RSLoader;
 import org.powerbot.core.bot.handlers.ScriptHandler;
 import org.powerbot.core.event.EventManager;
 import org.powerbot.core.event.events.PaintEvent;
@@ -37,7 +35,7 @@ public final class Bot implements Runnable {//TODO re-write bot
 	private final PaintEvent paintEvent;
 	private final TextPaintEvent textPaintEvent;
 	public volatile RSLoader appletContainer;
-	public volatile ClientStub stub;
+	public volatile BotStub stub;
 	public Runnable callback;
 	public ThreadGroup threadGroup;
 	public ModScript modScript;
@@ -144,9 +142,8 @@ public final class Bot implements Runnable {//TODO re-write bot
 		});
 
 		appletContainer.load();
-		stub = new ClientStub(appletContainer);
+		stub = new BotStub(appletContainer, appletContainer.getClientLoader().crawler);
 		appletContainer.setStub(stub);
-		stub.setApplet(appletContainer);
 		stub.setActive(true);
 		log.info("Starting game");
 		new Thread(threadGroup, appletContainer, "Loader").start();
