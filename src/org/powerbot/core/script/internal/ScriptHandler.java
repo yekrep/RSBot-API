@@ -1,4 +1,4 @@
-package org.powerbot.core.bot.handlers;
+package org.powerbot.core.script.internal;
 
 import java.util.logging.Logger;
 

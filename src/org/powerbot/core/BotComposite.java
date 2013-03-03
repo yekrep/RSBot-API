@@ -3,7 +3,7 @@ package org.powerbot.core;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.powerbot.core.bot.handlers.ScriptHandler;
+import org.powerbot.core.script.internal.ScriptHandler;
 import org.powerbot.core.event.EventManager;
 import org.powerbot.core.event.EventMulticaster;
 import org.powerbot.core.script.job.Job;

@@ -6,7 +6,7 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.logging.Logger;
 
-import org.powerbot.core.bot.handlers.ScriptHandler;
+import org.powerbot.core.script.internal.ScriptHandler;
 import org.powerbot.core.event.EventManager;
 import org.powerbot.core.event.events.PaintEvent;
 import org.powerbot.core.event.events.TextPaintEvent;
