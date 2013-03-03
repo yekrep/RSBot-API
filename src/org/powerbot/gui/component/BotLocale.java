@@ -35,7 +35,6 @@ public final class BotLocale {
 	public static final String FORGOTPASS = "I've forgotten my password";
 	public static final String PIN = "PIN";
 	public static final String MEMBER = "Member";
-	public static final String REWARD = "Reward";
 
 	public static final String REGISTER = "Register";
 	public static final String ERROR = "Error";

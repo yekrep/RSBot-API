@@ -61,8 +61,6 @@ public final class GameAccounts extends ArrayList<GameAccounts.Account> {
 					a.pin = Integer.parseInt(v);
 				} else if (k.equalsIgnoreCase("member")) {
 					a.member = Integer.parseInt(v) == 1;
-				} else if (k.equalsIgnoreCase("reward")) {
-					a.reward = v;
 				}
 			}
 			add(a);
@@ -77,7 +75,6 @@ public final class GameAccounts extends ArrayList<GameAccounts.Account> {
 			e.put("password", a.password);
 			e.put("pin", Integer.toString(a.pin));
 			e.put("member", a.member ? "1" : "0");
-			e.put("reward", a.reward);
 			data.put(a.toString(), e);
 		}
 		OutputStream os = null;
@@ -122,7 +119,6 @@ public final class GameAccounts extends ArrayList<GameAccounts.Account> {
 		private String password;
 		public int pin = -1;
 		public boolean member = false;
-		public String reward;
 
 		public Account(final String username) {
 			this.username = normaliseUsername(username);

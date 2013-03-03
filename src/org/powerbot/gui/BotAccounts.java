@@ -12,7 +12,6 @@ import java.util.logging.Logger;
 import javax.swing.DefaultCellEditor;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
@@ -42,14 +41,6 @@ public final class BotAccounts extends JDialog implements WindowListener {
 	private final JTable table;
 	private final JButton delete;
 
-	private static final String[] RANDOM_REWARDS = {"Cash", "Runes", "Coal", "Essence", "Ore", "Bars", "Gems", "Herbs",
-			"Seeds", "Charms", "Surprise", "Emote", "Costume", "Attack",
-			"Defence", "Strength", "Constitution", "Range", "Prayer", "Magic",
-			"Cooking", "Woodcutting", "Fletching", "Fishing", "Firemaking",
-			"Crafting", "Smithing", "Mining", "Herblore", "Agility", "Thieving",
-			"Slayer", "Farming", "Runecrafting", "Hunter", "Construction",
-			"Summoning", "Dungeoneering"};
-
 	public BotAccounts(final BotChrome parent) {
 		super(parent, BotLocale.ACCOUNTS, true);
 		setIconImage(Resources.getImage(Resources.Paths.ADDRESS));
@@ -66,7 +57,6 @@ public final class BotAccounts extends JDialog implements WindowListener {
 			cm.getColumn(i).setCellRenderer(new PasswordCellRenderer());
 			cm.getColumn(i).setCellEditor(new PasswordCellEditor());
 		}
-		cm.getColumn(4).setCellEditor(new RandomRewardEditor());
 
 		scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		scroll.setViewportView(table);
@@ -87,8 +77,7 @@ public final class BotAccounts extends JDialog implements WindowListener {
 				if (existing != null) {
 					return;
 				}
-				final Account account = GameAccounts.getInstance().add(str);
-				account.reward = RANDOM_REWARDS[0];
+				GameAccounts.getInstance().add(str);
 				final int row = table.getRowCount();
 				((AccountTableModel) table.getModel()).fireTableRowsInserted(row, row);
 			}
@@ -150,14 +139,6 @@ public final class BotAccounts extends JDialog implements WindowListener {
 	public void windowOpened(final WindowEvent arg0) {
 	}
 
-	private static class RandomRewardEditor extends DefaultCellEditor {
-		private static final long serialVersionUID = 1L;
-
-		public RandomRewardEditor() {
-			super(new JComboBox<String>(RANDOM_REWARDS));
-		}
-	}
-
 	private static class PasswordCellEditor extends DefaultCellEditor {
 		private static final long serialVersionUID = 1L;
 
@@ -201,7 +182,7 @@ public final class BotAccounts extends JDialog implements WindowListener {
 		}
 
 		public int getColumnCount() {
-			return 5;
+			return 4;
 		}
 
 		public Object getValueAt(final int row, final int column) {
@@ -215,8 +196,6 @@ public final class BotAccounts extends JDialog implements WindowListener {
 				return account.pin == -1 ? "" : account.getPIN();
 			case 3:
 				return account.member;
-			case 4:
-				return account.reward;
 			}
 			return null;
 		}
@@ -232,8 +211,6 @@ public final class BotAccounts extends JDialog implements WindowListener {
 				return BotLocale.PIN;
 			case 3:
 				return BotLocale.MEMBER;
-			case 4:
-				return BotLocale.REWARD;
 			}
 			return null;
 		}
@@ -271,9 +248,6 @@ public final class BotAccounts extends JDialog implements WindowListener {
 				break;
 			case 3:
 				account.member = str.equals("true");
-				break;
-			case 4:
-				account.reward = str;
 				break;
 			}
 			fireTableCellUpdated(row, column);
