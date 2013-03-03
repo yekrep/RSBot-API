@@ -1,7 +1,6 @@
 package org.powerbot.core;
 
 import java.applet.Applet;
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
@@ -17,13 +16,9 @@ import org.powerbot.util.Configuration;
  */
 public class RSLoader extends Applet implements Runnable {
 	private static Logger log = Logger.getLogger(RSLoader.class.getName());
-
 	private Runnable callback;
-	private Dimension size;
-
 	private Class<?> clazz;
 	private Object client;
-
 	private ClientLoader clientLoader;
 	private RSClassLoader classLoader;
 
@@ -73,42 +68,26 @@ public class RSLoader extends Applet implements Runnable {
 	@Override
 	public final void start() {
 		if (client != null) invokeMethod(null, null, "start");
-
 	}
 
 	@Override
 	public final void stop() {
 		if (client != null) invokeMethod(null, null, "stop");
-
 	}
 
 	@Override
 	public final void destroy() {
 		if (client != null) invokeMethod(null, null, "destroy");
-
 	}
 
 	@Override
 	public final void paint(final Graphics render) {
 		if (client != null) invokeMethod(new Object[]{render}, new Class[]{Graphics.class}, "paint");
-
 	}
 
 	@Override
 	public final void update(final Graphics render) {
 		if (client != null) invokeMethod(new Object[]{render}, new Class[]{Graphics.class}, "update");
-
-	}
-
-	@Override
-	public final void setSize(final int width, final int height) {
-		super.setSize(width, height);
-		size = new Dimension(width, height);
-	}
-
-	@Override
-	public final Dimension getSize() {
-		return size;
 	}
 
 	@Override
