@@ -1,6 +1,8 @@
 package org.powerbot.core.script.wrappers;
 
 public interface Interactive extends Targetable {
+	public boolean isOnScreen();
+
 	public boolean hover();
 
 	public boolean click(boolean left);
