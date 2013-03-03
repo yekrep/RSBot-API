@@ -139,6 +139,5 @@ public final class BotInteract {
 				}
 			}
 		}
-		BotChrome.getInstance().toolbar.updateControls();
 	}
 }
