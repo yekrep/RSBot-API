@@ -10,7 +10,6 @@ import javax.swing.SwingUtilities;
 import org.powerbot.Boot;
 import org.powerbot.core.Bot;
 import org.powerbot.core.script.internal.ScriptHandler;
-import org.powerbot.core.script.job.Task;
 import org.powerbot.core.script.methods.Game;
 import org.powerbot.gui.BotAbout;
 import org.powerbot.gui.BotAccounts;
@@ -27,19 +26,23 @@ import org.powerbot.util.Tracker;
  * @author Paris
  */
 public final class BotInteract {
-	public static enum Action { MENU, TAB_ADD, TAB_CLOSE, ACCOUNTS, SIGNIN, ABOUT, SCRIPT_PLAYPAUSE, SCRIPT_STOP };
-
 	public static void showDialog(final Action action) {
 		final BotChrome chrome = BotChrome.getInstance();
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				switch (action)
-				{
-				case ACCOUNTS: new BotAccounts(chrome); break;
-				case SIGNIN: new BotSignin(chrome); break;
-				case ABOUT: new BotAbout(chrome); break;
-				default: break;
+				switch (action) {
+				case ACCOUNTS:
+					new BotAccounts(chrome);
+					break;
+				case SIGNIN:
+					new BotSignin(chrome);
+					break;
+				case ABOUT:
+					new BotAbout(chrome);
+					break;
+				default:
+					break;
 				}
 			}
 		});
@@ -140,4 +143,6 @@ public final class BotInteract {
 			}
 		}
 	}
+
+	public static enum Action {MENU, TAB_ADD, TAB_CLOSE, ACCOUNTS, SIGNIN, ABOUT, SCRIPT_PLAYPAUSE, SCRIPT_STOP}
 }
