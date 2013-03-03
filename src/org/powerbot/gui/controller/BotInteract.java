@@ -95,8 +95,13 @@ public final class BotInteract {
 					Bot.instance().stop();
 					parent.panel.repaint();
 					Logger.getLogger(Bot.class.getName()).log(Level.INFO, "Add a tab to start another bot", "Closed");
-					parent.toolbar.updateControls();
 					System.gc();
+					SwingUtilities.invokeLater(new Runnable() {
+						@Override
+						public void run() {
+							parent.toolbar.updateControls();
+						}
+					});
 				} else {
 					parent.dispatchEvent(new WindowEvent(parent, WindowEvent.WINDOW_CLOSING));
 				}
