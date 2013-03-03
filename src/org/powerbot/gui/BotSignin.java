@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -193,17 +194,19 @@ public final class BotSignin extends JDialog implements ActionListener {
 			signin.setEnabled(false);
 			if (signin.getText().equals(BotLocale.SIGNIN)) {
 				if (username.getText().length() != 0 && new String(password.getPassword()).length() != 0) {
-					boolean success = false;
+					Map<String, String> resp = null;
 					try {
-						success = NetworkAccount.getInstance().login(username.getText(), new String(password.getPassword()), "");
+						resp = NetworkAccount.getInstance().login(username.getText(), new String(password.getPassword()), "");
 					} catch (final IOException ignored) {
 					}
+					final boolean success = NetworkAccount.getInstance().isSuccess(resp);
 					updateState(success);
 					if (success) {
 						setVisible(false);
 						dispose();
 					} else {
-						JOptionPane.showMessageDialog(this, BotLocale.INVALIDCREDENTIALS, BotLocale.ERROR, JOptionPane.ERROR_MESSAGE);
+						final String m = resp != null && resp.containsKey("message") ? resp.get("message") : BotLocale.INVALIDCREDENTIALS;
+						JOptionPane.showMessageDialog(this, m, BotLocale.ERROR, JOptionPane.ERROR_MESSAGE);
 					}
 				}
 				Tracker.getInstance().trackPage("signin/login", getTitle());

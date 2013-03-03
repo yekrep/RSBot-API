@@ -21,7 +21,7 @@ import org.powerbot.util.io.IniParser;
  */
 public final class NetworkAccount {
 	private static NetworkAccount instance = null;
-	private final static String STORENAME = "netacct", AUTHKEY = "auth", CREATEDKEY = "created";
+	private final static String STORENAME = "netacct", AUTHKEY = "auth", RESPKEY = "response", CREATEDKEY = "created";
 	private final static int CACHETTL = 24 * 60 * 60 * 1000;
 	private final CryptFile store;
 	private final Map<String, String> props;
@@ -87,31 +87,36 @@ public final class NetworkAccount {
 		}
 	}
 
-	public synchronized boolean login(final String username, final String password, final String auth) throws IOException {
+	public synchronized Map<String, String> login(final String username, final String password, final String auth) throws IOException {
 		InputStream is;
 		try {
 			is = HttpClient.openStream(Configuration.URLs.SIGNIN, StringUtil.urlEncode(username), StringUtil.urlEncode(password), StringUtil.urlEncode(auth));
 		} catch (final NullPointerException ignored) {
 			ignored.printStackTrace();
-			return false;
+			return null;
 		}
-		final boolean success = readResponse(is);
+
+		boolean success = false;
+		final Map<String, Map<String, String>> data = IniParser.deserialise(is);
+		Map<String, String> resp = null;
+		if (data != null && data.size() != 0 && data.containsKey(RESPKEY)) {
+			resp = data.get(RESPKEY);
+			success = isSuccess(resp) && data.containsKey(AUTHKEY);
+		}
+
 		if (success) {
+			props.putAll(data.get(AUTHKEY));
 			broadcast();
 			updateCache();
 		} else {
 			logout();
 		}
-		return success;
+
+		return resp;
 	}
 
-	private boolean readResponse(final InputStream is) throws IOException {
-		final Map<String, Map<String, String>> data = IniParser.deserialise(is);
-		if (data == null || data.size() == 0 || !data.containsKey(AUTHKEY)) {
-			return false;
-		}
-		props.putAll(data.get(AUTHKEY));
-		return true;
+	public boolean isSuccess(final Map<String, String> resp) {
+		return resp != null && resp.containsKey("success") && IniParser.parseBool(resp.get("success"));
 	}
 
 	public synchronized void logout() {
