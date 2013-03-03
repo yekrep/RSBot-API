@@ -52,7 +52,7 @@ public final class HeteroMouse implements MouseSimulator {
 	 */
 	@Override
 	public long getAbsoluteDelay(final int z) {
-		return (0xff - (z % 0xff)) << 13;
+		return (0xff - (z % 0xff)) << 16;
 	}
 
 	private static Queue<Vector3> getParabola(final Vector3 a, Vector3 b) {
