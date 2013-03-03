@@ -2,16 +2,18 @@ package org.powerbot.core.script.internal.input;
 
 import java.applet.Applet;
 import java.awt.Point;
+import java.util.concurrent.TimeUnit;
 
 import org.powerbot.core.script.job.Task;
 import org.powerbot.core.script.util.Filter;
 import org.powerbot.core.script.wrappers.Targetable;
 import org.powerbot.game.client.Client;
 import org.powerbot.game.client.input.Mouse;
+import org.powerbot.math.Vector3;
 
 public class MouseHandler implements Runnable {
 	private static final int MAX_STEPS = 20;
-	private final MouseImpl mouseImpl;
+	private final MouseSimulator simulator;
 	private final Object LOCK = new Object();
 	private final Client client;
 	private final Applet applet;
@@ -23,14 +25,14 @@ public class MouseHandler implements Runnable {
 		this.client = client;
 		this.applet = (Applet) client;
 		this.mouse = client.getMouse();
-		mouseImpl = null;
+		simulator = null;
 		target = null;
 	}
 
-	private void clickMouse(final boolean left) {
+	private void click(final boolean left) {
 		final int x = mouse.getX(), y = mouse.getY();
 		press(x, y, left);
-		Task.sleep(mouseImpl.getPressDuration());
+		Task.sleep(simulator.getPressDuration());
 		release(x, y, left);
 	}
 
@@ -51,7 +53,7 @@ public class MouseHandler implements Runnable {
 
 	}
 
-	private void moveMouse(final int x, final int y) {
+	private void move(final int x, final int y) {
 		//TODO move mouse
 	}
 
@@ -69,45 +71,47 @@ public class MouseHandler implements Runnable {
 				}
 			}
 			if (target == null) continue;
-
-			final Point interactPoint = target.targetable.getInteractPoint();
-			if (target.interactPoint == null) target.interactPoint = interactPoint;
-			Point targetingPoint = target.interactPoint;
-			if (interactPoint.x == -1 || interactPoint.y == -1) {
-				complete(target);
-				return;
-			}
-
-			final Point centerPoint = target.targetable.getCenterPoint();
-			if (centerPoint.x == -1 || centerPoint.y == -1) {
-				complete(target);
-				return;
-			}
-
 			if (++target.steps > MAX_STEPS) {
 				complete(target);
 				continue;
 			}
 
-			final Point pos = mouse.getLocation();
-			final double traverseLength = Math.sqrt(Math.pow(targetingPoint.x - pos.x, 2) + Math.pow(targetingPoint.y - pos.y, 2));
-			final double mod = 2.5 + Math.sqrt(Math.pow(interactPoint.x - centerPoint.x, 2) + Math.pow(interactPoint.y - centerPoint.y, 2));
+			if (target.curr == null) {
+				final Point p = mouse.getLocation();
+				target.curr = new Vector3(p.x, p.y, 255);
+			}
+			if (target.dest == null) {
+				final Point p = target.targetable.getInteractPoint();
+				target.dest = new Vector3(p.x, p.y, 0);
+			}
+			if (target.dest.x == -1 || target.dest.y == -1) {
+				complete(target);
+				continue;
+			}
+			final Vector3 curr = target.curr;
+			final Vector3 dest = target.dest;
+
+			final Iterable<Vector3> spline = simulator.getPath(curr, dest);
+			for (final Vector3 v : spline) {
+				move(v.x, v.y);
+				Task.sleep(TimeUnit.NANOSECONDS.toMillis(simulator.getAbsoluteDelay(v.z)));
+			}
+
+			final Point centroid = target.targetable.getCenterPoint();
+			final double traverseLength = Math.sqrt(Math.pow(dest.x - curr.x, 2) + Math.pow(dest.y - curr.y, 2));
+			final double mod = 2.5 + Math.sqrt(Math.pow(dest.x - centroid.x, 2) + Math.pow(dest.y - centroid.y, 2));
 			if (traverseLength < mod) {
+				final Point pos = curr.to2DPoint();
 				if (target.targetable.contains(pos) && target.filter.accept(pos)) {
 					target.callback.execute(this);
 					continue;
 				}
 
-				final Point nextPoint = target.targetable.getNextPoint();
-				if (traverseLength == 0d ||
-						Math.pow(targetingPoint.x - nextPoint.x, 2) + Math.pow(targetingPoint.y - nextPoint.y, 2) < Math.pow(mod, 2)) {
-					targetingPoint = target.interactPoint = nextPoint;
-				}
+				final Point next = target.targetable.getInteractPoint();
+				dest.x = next.x;
+				dest.y = next.y;
+				continue;
 			}
-
-			if (targetingPoint.x == -1 || targetingPoint.y == -1) continue;
-			final Point nextPos = mouseImpl.getNextPoint(targetingPoint);
-			moveMouse(nextPos.x, nextPos.y);
 		}
 	}
 

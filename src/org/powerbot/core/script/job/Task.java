@@ -20,7 +20,7 @@ public abstract class Task implements Job {
 		interrupted = false;
 	}
 
-	public static void sleep(final int time) {
+	public static void sleep(final long time) {
 		if (Thread.currentThread().isInterrupted()) {
 			throw new ThreadDeath();
 		}

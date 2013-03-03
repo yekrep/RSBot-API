@@ -1,4 +1,4 @@
-package org.powerbot.game.bot.handler.input.util;
+package org.powerbot.core.script.internal.input;
 
 import org.powerbot.math.Vector3;
 
@@ -6,15 +6,16 @@ import org.powerbot.math.Vector3;
  * @author Paris
  */
 public interface MouseSimulator {
-
 	/**
 	 * Calculates a press duration i.e. delay between click hold and release events.
+	 *
 	 * @return the suggested duration in milliseconds
 	 */
 	public int getPressDuration();
 
 	/**
 	 * Computes a path between two points.
+	 *
 	 * @param a the current location
 	 * @param b the destination
 	 * @return a series of waypoints along a path in the form of 3-dimensional column matrices (x, y, z) where z is the relative instantaneous velocity
@@ -23,6 +24,7 @@ public interface MouseSimulator {
 
 	/**
 	 * Translates an instantaneous relative velocity to an absolute (real) delay.
+	 *
 	 * @param z a pre-calculated velocity value
 	 * @return the suggested duration in nanoseconds
 	 */
