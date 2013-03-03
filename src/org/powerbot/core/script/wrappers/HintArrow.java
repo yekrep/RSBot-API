@@ -72,4 +72,13 @@ public class HintArrow implements Locatable, Validatable {
 		final RSHintArrow[] arr = client.getRSHintArrows();
 		return arrow != null && arr != null && Arrays.asList(arr).contains(arrow);
 	}
+
+	@Override
+	public boolean equals(final Object o) {
+		if (o == null || !(o instanceof HintArrow)) return false;
+		final HintArrow a = (HintArrow) o;
+		final RSHintArrow a1 = this.arrow.get();
+		final RSHintArrow a2 = a.arrow.get();
+		return a1 != null && a2 != null && a1 == a2;
+	}
 }
