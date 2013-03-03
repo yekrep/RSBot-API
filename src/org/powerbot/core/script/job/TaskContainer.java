@@ -6,7 +6,6 @@ import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -18,15 +17,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class TaskContainer implements Container {
 	private final CopyOnWriteArrayList<JobListener> listeners;
 	private final List<Container> children;
-	private Container[] childrenCache;
 	private final ThreadGroup group;
 	private final ExecutorService executor;
-
-	private Deque<Job> jobs;
-
-	private volatile boolean paused, shutdown, interrupted;
-
 	private final TaskContainer parent_container;
+	private Container[] childrenCache;
+	private Deque<Job> jobs;
+	private volatile boolean paused, shutdown, interrupted;
 
 	public TaskContainer() {
 		this(Thread.currentThread().getThreadGroup());
@@ -62,10 +58,15 @@ public class TaskContainer implements Container {
 		}
 
 		job.setContainer(this);
-		final Future<?> future = executor.submit(createWorker(job));
-		if (future != null && job instanceof Task) {
-			((Task) job).future = future;
-		}
+		job.setFuture(executor.submit(createWorker(job)));
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public final boolean isPaused() {
+		return paused;
 	}
 
 	/**
@@ -84,14 +85,6 @@ public class TaskContainer implements Container {
 		for (final Container container : getChildren()) {
 			container.setPaused(paused);
 		}
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public final boolean isPaused() {
-		return paused;
 	}
 
 	@Override

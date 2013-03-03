@@ -10,17 +10,32 @@ import org.powerbot.game.api.util.Random;
  * @author Timer
  */
 public abstract class Task implements Job {
-	private Thread thread;
 	Future<?> future;
+	private Thread thread;
 	private Container container;
-	private volatile boolean alive, interrupted;
-	private final Object init_lock;
+	private volatile boolean interrupted;
 
 	public Task() {
 		container = null;
-		alive = false;
 		interrupted = false;
-		init_lock = new Object();
+	}
+
+	public static void sleep(final int time) {
+		if (Thread.currentThread().isInterrupted()) {
+			throw new ThreadDeath();
+		}
+
+		if (time > 0) {
+			try {
+				Thread.sleep(time);
+			} catch (final InterruptedException ignored) {
+				throw new ThreadDeath();
+			}
+		}
+	}
+
+	public static void sleep(final int min, final int max) {
+		sleep(Random.nextInt(min, max));
 	}
 
 	/**
@@ -28,13 +43,6 @@ public abstract class Task implements Job {
 	 */
 	@Override
 	public final void work() {
-		synchronized (init_lock) {
-			if (alive) {
-				throw new RuntimeException("task already running");
-			}
-			alive = true;
-		}
-
 		interrupted = false;
 		thread = Thread.currentThread();
 		try {
@@ -43,7 +51,6 @@ public abstract class Task implements Job {
 		} catch (final Throwable e) {
 			e.printStackTrace();
 		}
-		alive = false;
 	}
 
 	/**
@@ -71,7 +78,7 @@ public abstract class Task implements Job {
 	 */
 	@Override
 	public final boolean isAlive() {
-		return alive;
+		return !future.isDone();
 	}
 
 	/**
@@ -103,33 +110,25 @@ public abstract class Task implements Job {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void setContainer(final Container container) {
-		this.container = container;
+	public Container getContainer() {
+		return container;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Container getContainer() {
-		return container;
+	public void setContainer(final Container container) {
+		this.container = container;
 	}
 
-	public static void sleep(final int time) {
-		if (Thread.currentThread().isInterrupted()) {
-			throw new ThreadDeath();
-		}
-
-		if (time > 0) {
-			try {
-				Thread.sleep(time);
-			} catch (final InterruptedException ignored) {
-				throw new ThreadDeath();
-			}
-		}
+	@Override
+	public Future<?> getFuture() {
+		return future;
 	}
 
-	public static void sleep(final int min, final int max) {
-		sleep(Random.nextInt(min, max));
+	@Override
+	public void setFuture(final Future<?> future) {
+		this.future = future;
 	}
 }

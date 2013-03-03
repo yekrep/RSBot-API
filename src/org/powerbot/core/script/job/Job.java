@@ -1,6 +1,7 @@
 package org.powerbot.core.script.job;
 
 import java.util.EventListener;
+import java.util.concurrent.Future;
 
 /**
  * A {@link Job} is generally deployed in an asynchronous or concurrent environment.
@@ -37,15 +38,19 @@ public interface Job extends EventListener {
 	public boolean isInterrupted();
 
 	/**
+	 * @return The {@link Container} in which this {@link Job} was submitted to.
+	 */
+	public Container getContainer();
+
+	/**
 	 * Sets the {@link Container} of which this {@link Job} was submitted to.
 	 * Internal use only.
 	 *
 	 * @param container The {@link Container} in which this {@link Job} was submitted to.
 	 */
-	public void setContainer(final Container container);
+	public void setContainer(Container container);
 
-	/**
-	 * @return The {@link Container} in which this {@link Job} was submitted to.
-	 */
-	public Container getContainer();
+	public Future<?> getFuture();
+
+	public void setFuture(Future<?> future);
 }
