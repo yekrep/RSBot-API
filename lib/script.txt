@@ -39,11 +39,7 @@ trim        deleteSourceFileAttributes=true
             deleteExceptionAttributes=true
             deleteUnknownAttributes=false;
 
-exclude     org.powerbot.game.bot.handler.input. and
-            org.powerbot.game.bot.handler.input.MouseReactor and
-            org.powerbot.game.bot.handler.input.MouseReactor *(*) and
-            org.powerbot.game.bot.handler.input.util. and
-            org.powerbot.game.bot.handler.input.util.MouseNode and
+exclude     org.powerbot.game.bot.handler.input.util.MouseNode and
             org.powerbot.game.client.^* and
             org.powerbot.game.client.^*^ * and
             org.powerbot.game.client.* *(*) and
