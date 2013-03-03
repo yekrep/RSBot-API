@@ -2,7 +2,7 @@ package org.powerbot.core.script.wrappers;
 
 import org.powerbot.game.client.RSItem;
 
-public class Item {//TODO complete
+public class Item {//TODO complete, equals
 	private final int id, stackSize;
 
 	public Item(final int id, final int stackSize) {
