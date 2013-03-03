@@ -246,4 +246,13 @@ public abstract class Character implements Locatable, Targetable, Validatable {
 	private int toPercent(final int ratio) {
 		return (int) Math.ceil((ratio * 100) / 0xff);
 	}
+
+	@Override
+	public boolean equals(final Object o) {
+		if (o == null || !(o instanceof Character)) return false;
+		final Character c = (Character) o;
+		final RSCharacter c1 = this.getAccessor();
+		final RSCharacter c2 = c.getAccessor();
+		return c1 != null && c2 != null && c1 == c2;
+	}
 }
