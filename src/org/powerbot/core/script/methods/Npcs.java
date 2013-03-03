@@ -25,7 +25,7 @@ public class Npcs {
 
 		final Set<Npc> npcs = new HashSet<>(indices.length);
 		for (final int index : indices) {
-			Object npc = Nodes.lookup(npcTable, indices[index]);
+			Object npc = Nodes.lookup(npcTable, index);
 			if (npc == null) continue;
 			if (npc instanceof RSNPCNode) npc = ((RSNPCNode) npc).getRSNPC();
 			if (npc instanceof RSNPC) npcs.add(new Npc((RSNPC) npc));

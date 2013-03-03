@@ -62,7 +62,7 @@ public class Npc extends Character {
 			final int[] indices = client.getRSNPCIndexArray();
 			final org.powerbot.game.client.HashTable npcTable = client.getRSNPCNC();
 			for (final int index : indices) {
-				Object node = Nodes.lookup(npcTable, indices[index]);
+				Object node = Nodes.lookup(npcTable, index);
 				if (node == null) continue;
 				if (node instanceof RSNPCNode) node = ((RSNPCNode) node).getRSNPC();
 				if (node instanceof RSNPC) if (node.equals(npc)) return true;
