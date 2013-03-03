@@ -131,13 +131,6 @@ public final class BotInteract {
 			if (!activeScript.isShutdown()) {
 				Tracker.getInstance().trackEvent("script", "stop");
 				bot.stopScript();
-				new Thread(bot.threadGroup, new Runnable() {
-					public void run() {
-						while (activeScript.isActive()) {
-							Task.sleep(150);
-						}
-					}
-				}).start();
 			} else {
 				if (activeScript.isActive()) {
 					activeScript.log.info("Forcing script stop");
