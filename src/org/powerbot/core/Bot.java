@@ -6,11 +6,11 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.logging.Logger;
 
-import org.powerbot.core.script.internal.ScriptHandler;
 import org.powerbot.core.event.EventManager;
 import org.powerbot.core.event.events.PaintEvent;
 import org.powerbot.core.event.events.TextPaintEvent;
 import org.powerbot.core.script.internal.Constants;
+import org.powerbot.core.script.internal.ScriptHandler;
 import org.powerbot.core.script.job.Task;
 import org.powerbot.game.api.methods.input.Keyboard;
 import org.powerbot.game.api.methods.input.Mouse;
@@ -22,6 +22,7 @@ import org.powerbot.game.bot.handler.input.util.MouseNode;
 import org.powerbot.game.client.Client;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.gui.component.BotPanel;
+import org.powerbot.gui.controller.BotInteract;
 import org.powerbot.loader.script.ModScript;
 import org.powerbot.service.GameAccounts;
 
@@ -141,7 +142,10 @@ public final class Bot implements Runnable {//TODO re-write bot
 			}
 		});
 
-		appletContainer.load();
+		if (!appletContainer.load()) {
+			BotInteract.tabClose(true);
+			return;
+		}
 		stub = new BotStub(appletContainer, appletContainer.getClientLoader().crawler);
 		appletContainer.setStub(stub);
 		stub.setActive(true);
