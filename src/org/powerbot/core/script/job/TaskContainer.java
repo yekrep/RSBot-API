@@ -133,6 +133,7 @@ public class TaskContainer implements Container {
 	public final void shutdown() {
 		if (!isShutdown()) {
 			shutdown = true;
+			executor.shutdown();
 		}
 
 		for (final Container container : getChildren()) {
