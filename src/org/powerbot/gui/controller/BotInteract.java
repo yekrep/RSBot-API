@@ -79,19 +79,18 @@ public final class BotInteract {
 			public void run() {
 				final BotChrome parent = BotChrome.getInstance();
 				if (Bot.instantiated()) {
-					final BotChrome chrome = BotChrome.getInstance();
 					if (!silent) {
 						try {
-							if (Game.isLoggedIn() && JOptionPane.showConfirmDialog(chrome, "Are you sure you want to close this tab?", BotLocale.CLOSETAB, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) != JOptionPane.YES_OPTION) {
+							if (Game.isLoggedIn() && JOptionPane.showConfirmDialog(parent, "Are you sure you want to close this tab?", BotLocale.CLOSETAB, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) != JOptionPane.YES_OPTION) {
 								return;
 							}
 						} catch (final RuntimeException ignored) {
 						}
 					}
 					Tracker.getInstance().trackEvent("tab", "add", silent ? "silent" : "");
-					chrome.panel.setBot(null);
+					parent.panel.setBot(null);
 					Bot.instance().stop();
-					chrome.panel.repaint();
+					parent.panel.repaint();
 					Logger.getLogger(Bot.class.getName()).log(Level.INFO, "Add a tab to start another bot", "Closed");
 					parent.toolbar.updateControls();
 					System.gc();
