@@ -12,5 +12,13 @@ public class GroundItem implements Locatable {//TODO validatable, targetable
 	@Override
 	public Tile getLocation() {
 		return tile;
+
+	}
+
+	@Override
+	public boolean equals(final Object o) {
+		if (o == null || !(o instanceof GroundItem)) return false;
+		final GroundItem g = (GroundItem) o;
+		return g.tile.equals(this.tile) && g.item.equals(this.item);
 	}
 }
