@@ -103,6 +103,8 @@ public interface Client {
 
 	public RSHintArrow[] getRSHintArrows();
 
+	public NodeDeque getProjectileDeque();
+
 	public void setCallback(Callback callback);
 
 	public Canvas getCanvas();
