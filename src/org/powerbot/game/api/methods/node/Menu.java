@@ -74,6 +74,15 @@ public class Menu {
 		return select(action, null);
 	}
 
+	public static boolean close() {
+		if (isOpen()) {
+			final Point p = getLocation();
+			p.translate(-30 + Random.nextInt(0, 20), -10 + Random.nextInt(0, 20));
+			Mouse.move(p);
+		}
+		return !isOpen();
+	}
+
 	public static boolean select(final String action, final String option) {
 		int idx = getIndex(action, option);
 		if (!isOpen()) {
