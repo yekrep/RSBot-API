@@ -4,7 +4,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.Properties;
 
-import org.powerbot.core.randoms.AntiRandom;
 import org.powerbot.game.bot.Context;
 
 public class Environment {
@@ -49,11 +48,12 @@ public class Environment {
 		return dir;
 	}
 
-	public static void enableRandom(final Class<? extends AntiRandom> random, final boolean enable) {
-		Context.get().getScriptHandler().getRandomHandler().enable(random, enable);
+	@Deprecated
+	public static void enableRandom(final Class<?> random, final boolean enable) {
 	}
 
-	public static boolean isRandomEnabled(final Class<? extends AntiRandom> random) {
-		return Context.get().getScriptHandler().getRandomHandler().isEnabled(random);
+	@Deprecated
+	public static boolean isRandomEnabled(final Class<?> random) {
+		return true;
 	}
 }

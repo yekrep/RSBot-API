@@ -1,4 +1,4 @@
-package org.powerbot.core.randoms;
+package org.powerbot.core.script.internal.randoms;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -28,67 +28,26 @@ public class Login extends AntiRandom {
 	private static final int WIDGET_LOGIN_TRY_AGAIN = 65;
 	private static final int WIDGET_LOGIN_USERNAME_TEXT = 70;
 	private static final int WIDGET_LOGIN_PASSWORD_TEXT = 76;
-
 	private static final int WIDGET_LOBBY = 906;
 	private static final int WIDGET_LOBBY_ERROR = 249;
 	private static final int WIDGET_LOBBY_TRY_AGAIN = 259;
-
-	private volatile Timer re_load_timer = null;
 	private final Bot bot;
+	private volatile Timer re_load_timer = null;
 
 	public Login() {
 		this.bot = Bot.instance();
 	}
 
-	public boolean activate() {
+	@Override
+	public boolean valid() {
 		final int state = Game.getClientState();
 		return (state == Game.INDEX_LOGIN_SCREEN || state == Game.INDEX_LOBBY_SCREEN || state == Game.INDEX_LOGGING_IN) && bot.getAccount() != null;
 	}
 
-	private enum LoginEvent {
-		TOKEN_FAILURE(WIDGET_LOGIN_ERROR, "game session", 1000 * 5 * 60, new Task() {
-			@Override
-			public void execute() {
-				Context.resolve().refresh();
-			}
-		}),
-		INVALID_PASSWORD(WIDGET_LOGIN_ERROR, "Invalid username or password", -1);
+	@Override
+	public int loop() {
+		if (!valid()) return -1;
 
-		private final String message;
-		private final int child, wait;
-		private final Job task;
-
-		LoginEvent(final int child, final String message, final int wait, final Job task) {
-			this.child = child;
-			this.message = message;
-			this.wait = wait;
-			this.task = task;
-		}
-
-		LoginEvent(final int child, final String message, final int wait) {
-			this(child, message, wait, null);
-		}
-	}
-
-	private enum LobbyEvent {
-		LOGGED_IN(WIDGET_LOBBY_ERROR, "last session", Random.nextInt(1000, 4000));
-		private final String message;
-		private final int child, wait;
-		private final Job task;
-
-		LobbyEvent(final int child, final String message, final int wait, final Job task) {
-			this.child = child;
-			this.message = message;
-			this.wait = wait;
-			this.task = task;
-		}
-
-		LobbyEvent(final int child, final String message, final int wait) {
-			this(child, message, wait, null);
-		}
-	}
-
-	public void execute() {
 		if (Game.getClientState() == Game.INDEX_LOBBY_SCREEN) {
 			for (final LobbyEvent lobbyEvent : LobbyEvent.values()) {
 				final WidgetChild widgetChild = Widgets.get(WIDGET_LOBBY, lobbyEvent.child);
@@ -103,13 +62,13 @@ public class Login extends AntiRandom {
 							sleep(lobbyEvent.wait);
 						} else if (lobbyEvent.wait == -1) {
 							bot.stopScript();
-							return;
+							return -1;
 						}
 
 						if (lobbyEvent.task != null) {
 							getContainer().submit(lobbyEvent.task);
 						}
-						return;
+						return 0;
 					}
 				}
 			}
@@ -119,13 +78,11 @@ public class Login extends AntiRandom {
 				final Lobby.World world_wrapper;
 				if ((world_wrapper = Lobby.getWorld(world)) != null) {
 					Lobby.enterGame(world_wrapper);
-					sleep(Random.nextInt(200, 500));
-					return;
+					return Random.nextInt(200, 500);
 				}
 			}
 			Lobby.enterGame();
-			sleep(Random.nextInt(200, 500));
-			return;
+			return Random.nextInt(200, 500);
 		}
 
 		if (Game.getClientState() == Game.INDEX_LOGIN_SCREEN) {
@@ -146,7 +103,7 @@ public class Login extends AntiRandom {
 							sleep(loginEvent.wait);
 						} else if (loginEvent.wait == -1) {
 							bot.stopScript();
-							return;
+							return -1;
 						}
 
 						re_load_timer = null;
@@ -154,7 +111,7 @@ public class Login extends AntiRandom {
 							getContainer().submit(loginEvent.task);
 							loginEvent.task.join();
 						}
-						return;
+						return 0;
 					}
 				}
 			}
@@ -166,13 +123,13 @@ public class Login extends AntiRandom {
 				final String username = bot.getAccount().toString();
 				final WidgetChild usernameTextBox = Widgets.get(WIDGET, WIDGET_LOGIN_USERNAME_TEXT);
 				if (!clickLoginInterface(usernameTextBox)) {
-					return;
+					return 0;
 				}
 				sleep(Random.nextInt(500, 700));
 				final int textLength = usernameTextBox.getText().length();
 				if (textLength > 0) {
 					erase(textLength);
-					return;
+					return 0;
 				}
 				Keyboard.sendText(username, false);
 				sleep(Random.nextInt(500, 700));
@@ -180,18 +137,19 @@ public class Login extends AntiRandom {
 				final String password = bot.getAccount().getPassword();
 				final WidgetChild passwordTextBox = Widgets.get(WIDGET, WIDGET_LOGIN_PASSWORD_TEXT);
 				if (!clickLoginInterface(passwordTextBox)) {
-					return;
+					return 0;
 				}
 				sleep(Random.nextInt(500, 700));
 				final int textLength = passwordTextBox.getText().length();
 				if (textLength > 0) {
 					erase(textLength);
-					return;
+					return 0;
 				}
 				Keyboard.sendText(password, false);
 				sleep(Random.nextInt(500, 700));
 			}
 		}
+		return 0;
 	}
 
 	private boolean clickLoginInterface(final WidgetChild i) {
@@ -259,6 +217,48 @@ public class Login extends AntiRandom {
 		if (re_load_timer != null) {
 			render.setColor(Color.white);
 			render.drawString("Reloading game in: " + re_load_timer.toRemainingString(), 8, 30);
+		}
+	}
+
+	private enum LoginEvent {
+		TOKEN_FAILURE(WIDGET_LOGIN_ERROR, "game session", 1000 * 5 * 60, new Task() {
+			@Override
+			public void execute() {
+				Context.resolve().refresh();
+			}
+		}),
+		INVALID_PASSWORD(WIDGET_LOGIN_ERROR, "Invalid username or password", -1);
+		private final String message;
+		private final int child, wait;
+		private final Job task;
+
+		LoginEvent(final int child, final String message, final int wait, final Job task) {
+			this.child = child;
+			this.message = message;
+			this.wait = wait;
+			this.task = task;
+		}
+
+		LoginEvent(final int child, final String message, final int wait) {
+			this(child, message, wait, null);
+		}
+	}
+
+	private enum LobbyEvent {
+		LOGGED_IN(WIDGET_LOBBY_ERROR, "last session", Random.nextInt(1000, 4000));
+		private final String message;
+		private final int child, wait;
+		private final Job task;
+
+		LobbyEvent(final int child, final String message, final int wait, final Job task) {
+			this.child = child;
+			this.message = message;
+			this.wait = wait;
+			this.task = task;
+		}
+
+		LobbyEvent(final int child, final String message, final int wait) {
+			this(child, message, wait, null);
 		}
 	}
 }

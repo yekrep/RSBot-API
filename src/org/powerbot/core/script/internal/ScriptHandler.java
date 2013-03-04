@@ -4,6 +4,9 @@ import java.util.logging.Logger;
 
 import org.powerbot.core.event.EventManager;
 import org.powerbot.core.script.Script;
+import org.powerbot.core.script.internal.randoms.AntiRandom;
+import org.powerbot.core.script.internal.randoms.TicketDestroy;
+import org.powerbot.core.script.internal.randoms.WidgetCloser;
 import org.powerbot.core.script.job.Container;
 import org.powerbot.core.script.job.Job;
 import org.powerbot.core.script.job.JobListener;
@@ -17,11 +20,9 @@ import org.powerbot.util.Tracker;
  */
 public class ScriptHandler {
 	public final Logger log = Logger.getLogger(ScriptHandler.class.getName());
-
 	final EventManager eventManager;
 	private Script script;
 	private ScriptDefinition def;
-
 	private Container scriptContainer, randomContainer;
 	private RandomHandler randomHandler;
 
@@ -65,7 +66,10 @@ public class ScriptHandler {
 		script.start();
 
 		/* Submit the random handler */
-		(randomContainer = new TaskContainer()).submit(randomHandler = new RandomHandler(this));
+		(randomContainer = new TaskContainer()).submit(randomHandler = new RandomHandler(this, new AntiRandom[]{
+				new TicketDestroy(),
+				new WidgetCloser()
+		}));
 		/* Track the script start */
 		track("");
 		return true;
