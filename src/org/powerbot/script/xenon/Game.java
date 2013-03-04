@@ -1,5 +1,8 @@
 package org.powerbot.script.xenon;
 
+import java.awt.Canvas;
+import java.awt.Dimension;
+
 import org.powerbot.bot.Bot;
 import org.powerbot.game.client.BaseInfo;
 import org.powerbot.game.client.Client;
@@ -53,14 +56,19 @@ public class Game {
 	public static int getPlane() {
 		final Client client = Bot.client();
 		if (client == null) return -1;
-
 		return client.getPlane();
 	}
 
 	public static boolean isFixed() {
 		final Client client = Bot.client();
 		if (client == null) return false;
-
 		return client.getGUIRSInterfaceIndex() != 746;
+	}
+
+	public static Dimension getDimensions() {
+		final Client client = Bot.client();
+		final Canvas canvas;
+		if (client == null || (canvas = client.getCanvas()) == null) return new Dimension(0, 0);
+		return new Dimension(canvas.getWidth(), canvas.getHeight());
 	}
 }
