@@ -5,6 +5,8 @@ import java.util.logging.Logger;
 import org.powerbot.core.event.EventManager;
 import org.powerbot.core.script.Script;
 import org.powerbot.core.script.internal.randoms.AntiRandom;
+import org.powerbot.core.script.internal.randoms.BankPin;
+import org.powerbot.core.script.internal.randoms.Login;
 import org.powerbot.core.script.internal.randoms.TicketDestroy;
 import org.powerbot.core.script.internal.randoms.WidgetCloser;
 import org.powerbot.core.script.job.Container;
@@ -67,6 +69,8 @@ public class ScriptHandler {
 
 		/* Submit the random handler */
 		(randomContainer = new TaskContainer()).submit(randomHandler = new RandomHandler(this, new AntiRandom[]{
+				new Login(),
+				new BankPin(),
 				new TicketDestroy(),
 				new WidgetCloser()
 		}));
