@@ -12,7 +12,6 @@ public class GroundItem implements Locatable {//TODO validatable, targetable
 	@Override
 	public Tile getLocation() {
 		return tile;
-
 	}
 
 	@Override

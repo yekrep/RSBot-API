@@ -10,7 +10,7 @@ import org.powerbot.game.client.Client;
 import org.powerbot.game.client.RSInterface;
 import org.powerbot.game.client.RSInterfaceNode;
 
-public class Component {//TODO isValid, getChildren, isVisible, targetable (or interactive), validatable, equals
+public class Component {//TODO isValid, getChildren, isVisible, targetable, validatable
 	private final Widget widget;
 	private final Component parent;
 	private final int index;
@@ -216,7 +216,6 @@ public class Component {//TODO isValid, getChildren, isVisible, targetable (or i
 	public boolean isHorizontallyFlipped() {
 		final RSInterface component = getInternalComponent();
 		return component != null && component.isHorizontallyFlipped();
-
 	}
 
 	public int getScrollX() {
@@ -285,5 +284,12 @@ public class Component {//TODO isValid, getChildren, isVisible, targetable (or i
 			components = widget.getInternalComponents();
 		}
 		return components != null && index < components.length ? components[index] : null;
+	}
+
+	@Override
+	public boolean equals(final Object o) {
+		if (o == null || !(o instanceof Component)) return false;
+		final Component c = (Component) o;
+		return c.widget.equals(widget) && c.index == index && (parent == null || parent.equals(c.parent));
 	}
 }
