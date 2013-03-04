@@ -1,11 +1,11 @@
 package org.powerbot.script.xenon;
 
 import org.powerbot.bot.Bot;
-import org.powerbot.script.internal.Constants;
-import org.powerbot.script.xenon.wrappers.Tile;
 import org.powerbot.game.client.BaseInfo;
 import org.powerbot.game.client.Client;
 import org.powerbot.game.client.RSInfo;
+import org.powerbot.script.internal.Constants;
+import org.powerbot.script.xenon.wrappers.Tile;
 
 public class Game {
 	public static final int INDEX_LOGIN_SCREEN = 3;
@@ -55,5 +55,12 @@ public class Game {
 		if (client == null) return -1;
 
 		return client.getPlane();
+	}
+
+	public static boolean isFixed() {
+		final Client client = Bot.client();
+		if (client == null) return false;
+
+		return client.getGUIRSInterfaceIndex() != 746;
 	}
 }
