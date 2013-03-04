@@ -6,7 +6,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.powerbot.bot.Bot;
-import org.powerbot.script.internal.Constants;
 import org.powerbot.core.script.job.Task;
 import org.powerbot.game.api.wrappers.HintArrow;
 import org.powerbot.game.api.wrappers.Tile;
@@ -15,12 +14,14 @@ import org.powerbot.game.bot.Context;
 import org.powerbot.game.client.BaseInfo;
 import org.powerbot.game.client.Client;
 import org.powerbot.game.client.RSHintArrow;
+import org.powerbot.script.internal.Constants;
 
 /**
  * A utility for the manipulation of the game.
  *
  * @author Timer
  */
+@Deprecated
 public class Game {
 	public static final int INDEX_LOGIN_SCREEN = 3;
 	public static final int INDEX_LOBBY_SCREEN = 7;
