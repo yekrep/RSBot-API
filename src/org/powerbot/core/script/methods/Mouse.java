@@ -5,6 +5,7 @@ import java.awt.Point;
 import org.powerbot.core.Bot;
 import org.powerbot.core.script.internal.input.MouseHandler;
 import org.powerbot.core.script.internal.input.MouseTarget;
+import org.powerbot.core.script.job.Task;
 import org.powerbot.core.script.util.Filter;
 import org.powerbot.core.script.wrappers.Targetable;
 
@@ -30,7 +31,8 @@ public class Mouse {
 		final MouseTarget t;
 		handler.handle(t = new MouseTarget(target, MouseTarget.DUMMY) {
 			@Override
-			public void execute(MouseHandler handler) {
+			public void execute(final MouseHandler handler) {
+				Task.sleep(0, 350);
 				if (filter.accept(handler.getLocation())) {
 					handler.click(left);
 					handler.complete(this);
