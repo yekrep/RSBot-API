@@ -2,4 +2,5 @@
   srcFile="RSBot.jar" destFile="RSBot.jar">
 	<exclude name="org/powerbot/core/**"/>
 	<exclude name="org/powerbot/game/**"/>
+	<exclude name="org/powerbot/script/**"/>
 </stringer>
