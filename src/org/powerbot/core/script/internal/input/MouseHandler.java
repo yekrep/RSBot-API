@@ -100,11 +100,12 @@ public class MouseHandler implements Runnable {
 				complete(target);
 				continue;
 			}
-
+			final Point loc = mouse.getLocation();
 			if (target.curr == null) {
-				final Point p = mouse.getLocation();
-				target.curr = new Vector3(p.x, p.y, 255);
+				target.curr = new Vector3(loc.x, loc.y, 255);
 			}
+			target.curr.x = loc.x;
+			target.curr.y = loc.y;
 			if (target.dest == null) {
 				final Point p = target.targetable.getInteractPoint();
 				target.dest = new Vector3(p.x, p.y, 0);
