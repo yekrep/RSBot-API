@@ -5,7 +5,6 @@ import java.awt.Point;
 import org.powerbot.core.script.job.Task;
 import org.powerbot.core.script.methods.Mouse;
 import org.powerbot.core.script.util.Filter;
-import org.powerbot.core.script.util.Random;
 import org.powerbot.game.api.methods.node.Menu;
 
 public abstract class Interactive implements Targetable {
@@ -34,15 +33,16 @@ public abstract class Interactive implements Targetable {
 			if (!Mouse.move(this, new Filter<Point>() {
 				@Override
 				public boolean accept(final Point point) {
-					Task.sleep(Random.nextInt(100, 250));
-					return Menu.contains(action, option);
+					if (contains(point) && Menu.contains(action, option)) {
+						Task.sleep(5, 50);
+						return contains(point) && Menu.contains(action, option);
+					}
+					return false;
 				}
 			})) {
 				continue;
 			}
 
-			final int index = Menu.getIndex(action, option);
-			if (index != 0) Mouse.click(false);
 			if (Menu.select(action, option)) return true;
 			Menu.close();
 		}
