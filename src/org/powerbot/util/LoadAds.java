@@ -5,21 +5,26 @@ import java.awt.image.BufferedImage;
 import java.net.URL;
 import java.util.Map;
 import java.util.concurrent.Callable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 import javax.swing.SwingUtilities;
 
 import org.powerbot.gui.BotChrome;
 import org.powerbot.gui.component.BotLoadingPanel;
+import org.powerbot.gui.component.BotLocale;
 import org.powerbot.service.NetworkAccount;
 import org.powerbot.util.io.CryptFile;
 import org.powerbot.util.io.HttpClient;
 import org.powerbot.util.io.IniParser;
 
 public final class LoadAds implements Callable<Boolean> {
+	private static final Logger log = Logger.getLogger(LoadAds.class.getName());
 
 	@Override
 	public Boolean call() throws Exception {
+		log.log(Level.INFO, "Getting sponsor information", BotLocale.STARTING);
 		final Map<String, String> data = IniParser.deserialise(HttpClient.openStream(new URL(Configuration.URLs.ADS))).get(IniParser.EMPTYSECTION);
 		if (data.containsKey("image") && data.containsKey("link")) {
 			final CryptFile cf = new CryptFile("ads/image.png", getClass());

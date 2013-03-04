@@ -25,6 +25,7 @@ import javax.swing.Timer;
 import javax.swing.WindowConstants;
 
 import org.powerbot.core.Bot;
+import org.powerbot.gui.component.BotLocale;
 import org.powerbot.gui.component.BotLogPane;
 import org.powerbot.gui.component.BotPanel;
 import org.powerbot.gui.component.BotToolBar;
@@ -69,7 +70,7 @@ public class BotChrome extends JFrame implements WindowListener {
 		logpane.setVisible(false);
 		add(logpane, BorderLayout.SOUTH);
 
-		log.log(Level.INFO, "Optimising your experience", "Starting...");
+		log.log(Level.INFO, "Firing up the engines", BotLocale.STARTING);
 		pack();
 		setResizable(false);
 		setMinimumSize(getSize());
@@ -142,6 +143,7 @@ public class BotChrome extends JFrame implements WindowListener {
 
 	private final class LoadAccount implements Callable<Boolean> {
 		public Boolean call() throws Exception {
+			log.log(Level.INFO, "Signing into " + BotLocale.WEBSITE, BotLocale.STARTING);
 			NetworkAccount.getInstance();
 			return true;
 		}

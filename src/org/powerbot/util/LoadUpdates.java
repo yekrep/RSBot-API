@@ -15,6 +15,7 @@ public final class LoadUpdates implements Callable<Boolean> {
 	private static final Logger log = Logger.getLogger(LoadUpdates.class.getName());
 
 	public Boolean call() throws Exception {
+		log.log(Level.INFO, "Checking for updates", BotLocale.STARTING);
 		final int version;
 		try {
 			version = Integer.parseInt(IOHelper.readString(HttpClient.openStream(new URL(Configuration.URLs.VERSION))).trim());
