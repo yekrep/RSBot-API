@@ -41,7 +41,8 @@ public abstract class Interactive implements Targetable {
 				continue;
 			}
 
-			Mouse.click(false);
+			final int index = Menu.getIndex(action, option);
+			if (index != 0) Mouse.click(false);
 			if (Menu.select(action, option)) return true;
 			Menu.close();
 		}
