@@ -18,6 +18,7 @@ import org.powerbot.math.Vector3;
 public final class HeteroMouse implements MouseSimulator {
 	private final double[] pd;
 	private final Random r;
+	private final static int SHORT_DISTANCE = 250;
 
 	public HeteroMouse() {
 		r = new Random(System.nanoTime());
@@ -62,6 +63,12 @@ public final class HeteroMouse implements MouseSimulator {
 		final double d = a.get2DDistanceTo(b);
 		final int g0 = (int) d >> 2, g1 = g0 * 2 + 1;
 
+		System.out.println(d);
+		if (d < SHORT_DISTANCE) {
+			l0.addAll(impulse(a, b, 3));
+			return l0;
+		}
+
 		final int o = r.nextInt(2) + 2;
 		final Vector3[] p = new Vector3[o + 2], q = new Vector3[2];
 		p[0] = a; p[p.length - 1] = b;
@@ -87,17 +94,21 @@ public final class HeteroMouse implements MouseSimulator {
 	}
 
 	private static Collection<Vector3> impulse(final Vector3 a, final Vector3 b) {
-		final List<Vector3> l = new ArrayList<Vector3>();
-
 		final double g = a.get2DGradientTo(b), d = a.get2DDistanceTo(b);
-		final double dx = b.x - a.x, dy = b.y - a.y;
-
-		l.add(a);
-
 		int c = (int) d >> 3;
 		if (g <= -1 || g >= 1) {
 			c = 0;
 		}
+		return impulse(a, b, c);
+	}
+
+	private static Collection<Vector3> impulse(final Vector3 a, final Vector3 b, final int c) {
+		final List<Vector3> l = new ArrayList<Vector3>();
+
+		final double g = a.get2DGradientTo(b);
+		final double dx = b.x - a.x, dy = b.y - a.y;
+
+		l.add(a);
 
 		for (int i = 1; i <= c; i++) {
 			final float t = 1.0f / c * (float) i;
