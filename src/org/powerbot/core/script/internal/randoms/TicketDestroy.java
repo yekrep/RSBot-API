@@ -34,7 +34,7 @@ public class TicketDestroy extends AntiRandom {
 
 		final WidgetChild child = item.getWidgetChild();
 		if (child != null) {
-			if (((Settings.get(1448) & 0xFF00) >>> 8) < 10) {
+			if (((Settings.get(1448) & 0xFF00) >>> 8) < (child.getChildId() == ITEM_IDS[0] ? 10 : 9)) {
 				child.interact("Claim spin");
 				return Random.nextInt(1000, 2000);
 			}
