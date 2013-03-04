@@ -90,11 +90,11 @@ public class Calculations {
 	 * @return The <code>Point</code> of the given coordinates on screen.
 	 */
 	public static Point worldToScreen(final int x, final int y, final int z) {
-		return worldToScreen(org.powerbot.core.script.methods.Calculations.toolkit, org.powerbot.core.script.methods.Calculations.viewport, x, y, z);
+		return worldToScreen(org.powerbot.script.xenon.Calculations.toolkit, org.powerbot.script.xenon.Calculations.viewport, x, y, z);
 	}
 
-	public static Point worldToScreen(final org.powerbot.core.script.methods.Calculations.Toolkit toolkit,
-	                                  final org.powerbot.core.script.methods.Calculations.Viewport viewport, int x, final int y, final int z) {
+	public static Point worldToScreen(final org.powerbot.script.xenon.Calculations.Toolkit toolkit,
+	                                  final org.powerbot.script.xenon.Calculations.Viewport viewport, int x, final int y, final int z) {
 		final float _z = (viewport.zOff + (viewport.zX * x + viewport.zY * y + viewport.zZ * z));
 		final float _x = (viewport.xOff + (viewport.xX * x + viewport.xY * y + viewport.xZ * z));
 		final float _y = (viewport.yOff + (viewport.yX * x + viewport.yY * y + viewport.yZ * z));

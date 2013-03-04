@@ -5,8 +5,8 @@ import java.awt.Dimension;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.powerbot.core.Bot;
-import org.powerbot.core.script.internal.Constants;
+import org.powerbot.bot.Bot;
+import org.powerbot.script.internal.Constants;
 import org.powerbot.core.script.job.Task;
 import org.powerbot.game.api.wrappers.HintArrow;
 import org.powerbot.game.api.wrappers.Tile;

@@ -22,7 +22,7 @@ import javax.crypto.CipherInputStream;
 import javax.crypto.spec.SecretKeySpec;
 import javax.swing.JOptionPane;
 
-import org.powerbot.core.Bot;
+import org.powerbot.bot.Bot;
 import org.powerbot.core.script.Script;
 import org.powerbot.game.api.Manifest;
 import org.powerbot.gui.BotChrome;

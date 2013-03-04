@@ -8,9 +8,9 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import org.powerbot.Boot;
-import org.powerbot.core.Bot;
-import org.powerbot.core.script.internal.ScriptHandler;
-import org.powerbot.core.script.methods.Game;
+import org.powerbot.bot.Bot;
+import org.powerbot.script.internal.ScriptHandler;
+import org.powerbot.script.xenon.Game;
 import org.powerbot.gui.BotAbout;
 import org.powerbot.gui.BotAccounts;
 import org.powerbot.gui.BotChrome;

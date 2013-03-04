@@ -8,7 +8,7 @@ import java.util.Map;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JPopupMenu;
 
-import org.powerbot.core.Bot;
+import org.powerbot.bot.Bot;
 import org.powerbot.gui.BotChrome;
 
 /**

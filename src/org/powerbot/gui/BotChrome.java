@@ -24,7 +24,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.WindowConstants;
 
-import org.powerbot.core.Bot;
+import org.powerbot.bot.Bot;
 import org.powerbot.gui.component.BotLocale;
 import org.powerbot.gui.component.BotLogPane;
 import org.powerbot.gui.component.BotPanel;

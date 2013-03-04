@@ -5,7 +5,7 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.powerbot.core.Bot;
+import org.powerbot.bot.Bot;
 import org.powerbot.game.api.methods.Environment;
 import org.powerbot.ipc.Controller;
 import org.powerbot.ipc.Message;

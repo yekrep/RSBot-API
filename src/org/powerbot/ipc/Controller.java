@@ -26,8 +26,8 @@ import java.util.zip.DeflaterOutputStream;
 import java.util.zip.Inflater;
 import java.util.zip.InflaterInputStream;
 
-import org.powerbot.core.Bot;
-import org.powerbot.core.script.internal.ScriptHandler;
+import org.powerbot.bot.Bot;
+import org.powerbot.script.internal.ScriptHandler;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.gui.controller.BotInteract;
 import org.powerbot.service.NetworkAccount;

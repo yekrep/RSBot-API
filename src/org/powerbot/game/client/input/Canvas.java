@@ -12,7 +12,7 @@ import java.awt.image.Raster;
 import java.awt.image.WritableRaster;
 import java.util.Hashtable;
 
-import org.powerbot.core.Bot;
+import org.powerbot.bot.Bot;
 import org.powerbot.core.script.job.Task;
 import org.powerbot.gui.BotChrome;
 

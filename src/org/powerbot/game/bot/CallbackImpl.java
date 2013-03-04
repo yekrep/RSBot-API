@@ -1,8 +1,8 @@
 package org.powerbot.game.bot;
 
-import org.powerbot.core.Bot;
+import org.powerbot.bot.Bot;
 import org.powerbot.core.event.events.MessageEvent;
-import org.powerbot.core.script.methods.Calculations;
+import org.powerbot.script.xenon.Calculations;
 import org.powerbot.game.client.Callback;
 import org.powerbot.game.client.Render;
 
