@@ -63,7 +63,6 @@ public final class HeteroMouse implements MouseSimulator {
 		final double d = a.get2DDistanceTo(b);
 		final int g0 = (int) d >> 2, g1 = g0 * 2 + 1;
 
-		System.out.println(d);
 		if (d < SHORT_DISTANCE) {
 			l0.addAll(impulse(a, b, 3));
 			return l0;
