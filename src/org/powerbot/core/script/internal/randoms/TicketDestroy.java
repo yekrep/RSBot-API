@@ -5,6 +5,7 @@ import org.powerbot.core.script.methods.Players;
 import org.powerbot.core.script.util.Random;
 import org.powerbot.core.script.util.Timer;
 import org.powerbot.core.script.wrappers.Player;
+import org.powerbot.game.api.methods.Settings;
 import org.powerbot.game.api.methods.Tabs;
 import org.powerbot.game.api.methods.Widgets;
 import org.powerbot.game.api.methods.tab.Inventory;
@@ -32,17 +33,23 @@ public class TicketDestroy extends AntiRandom {
 		if (!valid()) return -1;
 
 		final WidgetChild child = item.getWidgetChild();
-		if (child != null && child.interact("Destroy")) {
-			final Timer timer = new Timer(Random.nextInt(4000, 6000));
-			while (timer.isRunning()) {
-				final Widget widget = Widgets.get(1183);
-				if (widget != null && widget.validate()) {
-					for (final WidgetChild c : widget.getChildren()) {
-						final String s;
-						if (c.visible() && (s = c.getTooltip()) != null && s.trim().equalsIgnoreCase("destroy")) {
-							if (c.interact("Destroy")) {
-								final Timer t = new Timer(Random.nextInt(1500, 2000));
-								while (t.isRunning() && child.getChildId() != -1) sleep(100, 250);
+		if (child != null) {
+			if (((Settings.get(1448) & 0xFF00) >>> 8) < 10) {
+				child.interact("Claim spin");
+				return Random.nextInt(1000, 2000);
+			}
+			if (child.interact("Destroy")) {
+				final Timer timer = new Timer(Random.nextInt(4000, 6000));
+				while (timer.isRunning()) {
+					final Widget widget = Widgets.get(1183);
+					if (widget != null && widget.validate()) {
+						for (final WidgetChild c : widget.getChildren()) {
+							final String s;
+							if (c.visible() && (s = c.getTooltip()) != null && s.trim().equalsIgnoreCase("destroy")) {
+								if (c.interact("Destroy")) {
+									final Timer t = new Timer(Random.nextInt(1500, 2000));
+									while (t.isRunning() && child.getChildId() != -1) sleep(100, 250);
+								}
 							}
 						}
 					}
