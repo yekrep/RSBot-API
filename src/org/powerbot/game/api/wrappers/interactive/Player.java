@@ -8,6 +8,7 @@ import org.powerbot.game.client.RSPlayerComposite;
 /**
  * @author Timer
  */
+@Deprecated
 public class Player extends Character {
 	private final WeakReference<RSPlayer> p;
 

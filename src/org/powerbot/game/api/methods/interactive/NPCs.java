@@ -18,6 +18,7 @@ import org.powerbot.game.client.RSNPCNode;
  *
  * @author Timer
  */
+@Deprecated
 public class NPCs {
 	public static final Filter<NPC> ALL_FILTER = new Filter<NPC>() {
 		public boolean accept(final NPC player) {

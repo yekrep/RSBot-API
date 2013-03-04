@@ -39,6 +39,7 @@ import org.powerbot.game.client.Sequence;
 /**
  * @author Timer
  */
+@Deprecated
 public abstract class Character implements Entity, Locatable, Rotatable, Identifiable {
 	private final Client client;
 

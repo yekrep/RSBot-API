@@ -16,6 +16,7 @@ import org.powerbot.game.client.RSPlayer;
  *
  * @author Timer
  */
+@Deprecated
 public class Players {
 	public static final Filter<Player> ALL_FILTER = new Filter<Player>() {
 		public boolean accept(final Player player) {

@@ -8,6 +8,7 @@ import org.powerbot.game.client.RSNPCDef;
 /**
  * @author Timer
  */
+@Deprecated
 public class NPC extends Character {
 	private final WeakReference<RSNPC> n;
 
