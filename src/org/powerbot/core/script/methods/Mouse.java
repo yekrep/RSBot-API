@@ -52,7 +52,7 @@ public class Mouse {
 		handler.handle(t = new MouseTarget(target, filter) {
 			@Override
 			public void execute(final MouseHandler handler) {
-				if (filter.accept(handler.getLocation())) handler.complete(this);
+				handler.complete(this);
 			}
 		});
 		return !t.failed;
