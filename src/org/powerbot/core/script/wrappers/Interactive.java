@@ -1,13 +1,50 @@
 package org.powerbot.core.script.wrappers;
 
-public interface Interactive extends Targetable {
-	public boolean isOnScreen();
+import java.awt.Point;
 
-	public boolean hover();
+import org.powerbot.core.script.job.Task;
+import org.powerbot.core.script.methods.Mouse;
+import org.powerbot.core.script.util.Filter;
+import org.powerbot.core.script.util.Random;
+import org.powerbot.game.api.methods.node.Menu;
 
-	public boolean click(boolean left);
+public abstract class Interactive implements Targetable {
+	private static final int ATTEMPTS = 5;
 
-	public boolean interact(String action);
+	public boolean isOnScreen() {
+		final Point p = getInteractPoint();
+		return p.x != -1 && p.y != -1;
+	}
 
-	public boolean interact(String action, String option);
+	public boolean hover() {
+		return Mouse.move(this);
+	}
+
+	public boolean click(final boolean left) {
+		return Mouse.click(this, left);
+	}
+
+	public boolean interact(final String action) {
+		return interact(action, null);
+	}
+
+	public boolean interact(final String action, final String option) {
+		int a = 0;
+		while (a++ < ATTEMPTS) {
+			if (!Mouse.move(this, new Filter<Point>() {
+				@Override
+				public boolean accept(final Point point) {
+					Task.sleep(Random.nextInt(100, 250));
+					return Menu.contains(action, option);
+				}
+			})) {
+				continue;
+			}
+
+			Mouse.click(false);
+			if (Menu.select(action, option)) return true;
+			Menu.close();
+		}
+		return false;
+	}
 }

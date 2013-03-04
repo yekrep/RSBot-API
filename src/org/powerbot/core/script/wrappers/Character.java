@@ -6,9 +6,6 @@ import org.powerbot.core.Bot;
 import org.powerbot.core.script.internal.Nodes;
 import org.powerbot.core.script.methods.Calculations;
 import org.powerbot.core.script.methods.Game;
-import org.powerbot.core.script.methods.Mouse;
-import org.powerbot.core.script.util.Filter;
-import org.powerbot.game.api.methods.node.Menu;
 import org.powerbot.game.client.Client;
 import org.powerbot.game.client.CombatStatus;
 import org.powerbot.game.client.CombatStatusData;
@@ -23,7 +20,7 @@ import org.powerbot.game.client.RSNPCNode;
 import org.powerbot.game.client.RSPlayer;
 import org.powerbot.game.client.Sequence;
 
-public abstract class Character implements Locatable, Interactive, Validatable {
+public abstract class Character extends Interactive implements Locatable, Targetable, Validatable {
 	private int faceIndex = -1;
 
 	protected abstract RSCharacter getAccessor();
@@ -257,47 +254,5 @@ public abstract class Character implements Locatable, Interactive, Validatable {
 		final RSCharacter c1 = this.getAccessor();
 		final RSCharacter c2 = c.getAccessor();
 		return c1 != null && c2 != null && c1 == c2;
-	}
-
-	@Override
-	public boolean isOnScreen() {
-		final Point p = getInteractPoint();
-		return p.x != -1 && p.y != -1;
-	}
-
-	@Override
-	public boolean hover() {
-		return Mouse.move(this);
-	}
-
-	@Override
-	public boolean click(final boolean left) {
-		return Mouse.click(this, left);
-	}
-
-	@Override
-	public boolean interact(final String action) {
-		if (Mouse.move(this, new Filter<Point>() {
-			@Override
-			public boolean accept(final Point point) {
-				return Menu.contains(action);
-			}
-		})) {
-			return Menu.select(action);
-		}
-		return false;
-	}
-
-	@Override
-	public boolean interact(final String action, final String option) {
-		if (Mouse.move(this, new Filter<Point>() {
-			@Override
-			public boolean accept(final Point point) {
-				return Menu.contains(action, option);
-			}
-		})) {
-			return Menu.select(action, option);
-		}
-		return false;
 	}
 }
