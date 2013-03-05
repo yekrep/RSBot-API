@@ -56,7 +56,7 @@ public final class HeteroMouse implements MouseSimulator {
 		return (0xff - (z % 0xff)) << 16;
 	}
 
-	private static Queue<Vector3> getParabola(final Vector3 a, Vector3 b) {
+	private Queue<Vector3> getParabola(final Vector3 a, Vector3 b) {
 		final Queue<Vector3> l0 = new ArrayDeque<Vector3>();
 		final Random r = new Random();
 
@@ -64,7 +64,7 @@ public final class HeteroMouse implements MouseSimulator {
 		final int g0 = (int) d >> 2, g1 = g0 * 2 + 1;
 
 		if (d < SHORT_DISTANCE) {
-			l0.addAll(impulse(a, b, 3));
+			l0.addAll(impulse(a, b, 4));
 			return l0;
 		}
 
@@ -92,19 +92,24 @@ public final class HeteroMouse implements MouseSimulator {
 		return l0;
 	}
 
-	private static Collection<Vector3> impulse(final Vector3 a, final Vector3 b) {
+	private Collection<Vector3> impulse(final Vector3 a, final Vector3 b) {
 		final double g = a.get2DGradientTo(b), d = a.get2DDistanceTo(b);
 		int c = (int) d >> 3;
-		if (g <= -1 || g >= 1) {
+		if (isBetween(g, -5, -1) || isBetween(g, 1, 5)) {
 			c = 0;
 		}
 		return impulse(a, b, c);
 	}
 
-	private static Collection<Vector3> impulse(final Vector3 a, final Vector3 b, final int c) {
+	private static boolean isBetween(final double n, final double min, final double max) {
+		return n >= min && n <= max;
+	}
+
+	private Collection<Vector3> impulse(final Vector3 a, final Vector3 b, final int c) {
 		final List<Vector3> l = new ArrayList<Vector3>();
 
-		final double g = a.get2DGradientTo(b);
+		final double r = a.get2DAngleTo(b), m = Math.PI * 1.5d;
+		final boolean h = isBetween(r, 0, Math.PI / 4) || isBetween(r, 3 * Math.PI / 4, Math.PI) || isBetween(r, Math.PI, 5 * Math.PI / 4) || isBetween(r, 7 * Math.PI / 4, 2 * Math.PI);
 		final double dx = b.x - a.x, dy = b.y - a.y;
 
 		l.add(a);
@@ -115,11 +120,15 @@ public final class HeteroMouse implements MouseSimulator {
 			double x = a.x + dxt;
 			double y = a.y + dyt;
 			double z = a.z;
-			if (g < 0) {
-				y += Math.sin(2 * Math.PI * t) * dyt / Math.PI;
+			final double f;
+			if (h) {
+				f = Math.sin(2 * Math.PI * t) * dxt * (-1 + 2 * this.r.nextDouble()) / m;
+				y += f;
 			} else {
-				x += Math.sin(2 * Math.PI * t) * dxt / Math.PI;
+				f = Math.cos(2 * Math.PI * t) * dyt * (-1 + 2 * this.r.nextDouble()) / m;
+				x += f;
 			}
+			z = Math.ceil(z + Math.pow(Math.abs(f), 3)) % 0xff;
 			l.add(new Vector3((int) x, (int) y, (int) z));
 		}
 
