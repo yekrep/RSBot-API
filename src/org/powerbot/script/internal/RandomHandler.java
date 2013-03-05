@@ -60,7 +60,7 @@ public class RandomHandler extends Task {
 					active.onStart();
 				} catch (final Exception ignored) {
 				}
-				timeout.setEndIn(Random.nextInt(300, 420) * 1000);
+				timeout.setEndIn(Random.nextInt(600, 720) * 1000);
 				getContainer().submit(active);
 			} else sleep(ITERATION_DELAY);
 		}
