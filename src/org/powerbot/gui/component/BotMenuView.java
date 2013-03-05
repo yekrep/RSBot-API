@@ -206,14 +206,14 @@ public final class BotMenuView extends JPopupMenu implements ActionListener {//T
 					listener = eventListener.asSubclass(EventListener.class).newInstance();
 				}
 				listeners.put(name, listener);
-				bot.getEventManager().addListener(listener);
+				bot.getEventMulticaster().addListener(listener);
 			} catch (final Exception ignored) {
 			}
 		} else {
 			final EventListener listener = listeners.get(name);
 			if (listener != null) {
 				listeners.remove(name);
-				bot.getEventManager().removeListener(listener);
+				bot.getEventMulticaster().removeListener(listener);
 			}
 		}
 	}

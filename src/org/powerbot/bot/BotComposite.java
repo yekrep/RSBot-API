@@ -3,21 +3,26 @@ package org.powerbot.bot;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.powerbot.script.internal.ScriptHandler;
-import org.powerbot.core.event.EventManager;
-import org.powerbot.core.event.EventMulticaster;
 import org.powerbot.core.script.job.Job;
 import org.powerbot.core.script.job.LoopTask;
 import org.powerbot.core.script.job.Task;
-import org.powerbot.script.xenon.Game;
+import org.powerbot.event.EventMulticaster;
 import org.powerbot.game.bot.Context;
 import org.powerbot.game.bot.handler.input.MouseExecutor;
 import org.powerbot.gui.BotChrome;
+import org.powerbot.script.event.MessageEvent;
+import org.powerbot.script.event.MessageListener;
+import org.powerbot.script.event.PaintEvent;
+import org.powerbot.script.event.PaintListener;
+import org.powerbot.script.event.TextPaintEvent;
+import org.powerbot.script.event.TextPaintListener;
+import org.powerbot.script.internal.ScriptHandler;
+import org.powerbot.script.xenon.Game;
 
 public class BotComposite {//TODO remove the use of a composite ... export data elsewhere
 	private final Bot bot;
 	MouseExecutor executor;
-	EventManager eventManager;
+	EventMulticaster eventMulticaster;
 	ScriptHandler scriptHandler;
 	Context context;
 
@@ -25,8 +30,8 @@ public class BotComposite {//TODO remove the use of a composite ... export data 
 		this.bot = bot;
 
 		executor = null;
-		eventManager = new EventMulticaster();
-		scriptHandler = new ScriptHandler(eventManager);
+		eventMulticaster = new EventMulticaster();
+		scriptHandler = new ScriptHandler(eventMulticaster);
 	}
 
 	public void reload() {//TODO re-evaluate re-load method

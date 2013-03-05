@@ -254,7 +254,7 @@ public class BotPanel extends JPanel {
 				Bot.client() == null) {
 			return;
 		}
-		bot.getEventManager().dispatch(keyEvent);
+		bot.getEventMulticaster().dispatch(keyEvent);
 		if ((inputMask & INPUT_KEYBOARD) == 0) {
 			return;
 		}
@@ -266,7 +266,7 @@ public class BotPanel extends JPanel {
 
 	private void notifyListeners(final Component component, final MouseEvent mouseEvent) {
 		if (component != null && mouseEvent != null) {
-			bot.getEventManager().dispatch(mouseEvent);
+			bot.getEventMulticaster().dispatch(mouseEvent);
 		}
 	}
 }

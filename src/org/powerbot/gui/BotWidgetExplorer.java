@@ -45,33 +45,13 @@ import org.powerbot.util.io.Resources;
  */
 public class BotWidgetExplorer extends JFrame implements PaintListener {
 	private static final long serialVersionUID = 1L;
+	private static BotWidgetExplorer instance;
 	private JTree tree;
 	private WidgetTreeModel treeModel;
 	private JPanel infoArea;
 	private JTextField searchBox;
 	private Rectangle highlightArea = null;
-
 	private Context context;
-	private static BotWidgetExplorer instance;
-
-	private static BotWidgetExplorer getInstance(final Context context) {
-		if (instance == null) {
-			instance = new BotWidgetExplorer(context);
-		}
-		return instance;
-	}
-
-	public static void display(final Context context) {
-		final BotWidgetExplorer botWidgetExplorer = getInstance(context);
-		if (botWidgetExplorer.isVisible()) {
-			botWidgetExplorer.context.getBot().getEventManager().removeListener(botWidgetExplorer);
-			botWidgetExplorer.highlightArea = null;
-		}
-		botWidgetExplorer.context = context;
-		botWidgetExplorer.treeModel.update("");
-		botWidgetExplorer.context.getBot().getEventManager().addListener(botWidgetExplorer);
-		botWidgetExplorer.setVisible(true);
-	}
 
 	public BotWidgetExplorer(final Context context) {
 		super("Widget Explorer");
@@ -81,7 +61,7 @@ public class BotWidgetExplorer extends JFrame implements PaintListener {
 			@Override
 			public void windowClosing(final WindowEvent e) {
 				setVisible(false);
-				context.getBot().getEventManager().removeListener(this);
+				context.getBot().getEventMulticaster().removeListener(this);
 				highlightArea = null;
 			}
 		});
@@ -198,6 +178,32 @@ public class BotWidgetExplorer extends JFrame implements PaintListener {
 		setVisible(false);
 
 		Tracker.getInstance().trackPage("widgetexplorer/", getTitle());
+	}
+
+	private static BotWidgetExplorer getInstance(final Context context) {
+		if (instance == null) {
+			instance = new BotWidgetExplorer(context);
+		}
+		return instance;
+	}
+
+	public static void display(final Context context) {
+		final BotWidgetExplorer botWidgetExplorer = getInstance(context);
+		if (botWidgetExplorer.isVisible()) {
+			botWidgetExplorer.context.getBot().getEventMulticaster().removeListener(botWidgetExplorer);
+			botWidgetExplorer.highlightArea = null;
+		}
+		botWidgetExplorer.context = context;
+		botWidgetExplorer.treeModel.update("");
+		botWidgetExplorer.context.getBot().getEventMulticaster().addListener(botWidgetExplorer);
+		botWidgetExplorer.setVisible(true);
+	}
+
+	public void onRepaint(final Graphics g) {
+		if (highlightArea != null) {
+			g.setColor(Color.orange);
+			g.drawRect(highlightArea.x, highlightArea.y, highlightArea.width, highlightArea.height);
+		}
 	}
 
 	private final class WidgetTreeModel implements TreeModel {
@@ -352,13 +358,6 @@ public class BotWidgetExplorer extends JFrame implements PaintListener {
 		@Override
 		public String toString() {
 			return "WidgetChild-" + widgetChild.getIndex();
-		}
-	}
-
-	public void onRepaint(final Graphics g) {
-		if (highlightArea != null) {
-			g.setColor(Color.orange);
-			g.drawRect(highlightArea.x, highlightArea.y, highlightArea.width, highlightArea.height);
 		}
 	}
 }

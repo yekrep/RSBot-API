@@ -2,18 +2,18 @@ package org.powerbot.script.internal;
 
 import java.util.logging.Logger;
 
-import org.powerbot.core.event.EventManager;
 import org.powerbot.core.script.Script;
+import org.powerbot.core.script.job.Container;
+import org.powerbot.core.script.job.Job;
+import org.powerbot.core.script.job.JobListener;
+import org.powerbot.core.script.job.TaskContainer;
+import org.powerbot.event.EventMulticaster;
+import org.powerbot.gui.BotChrome;
 import org.powerbot.script.internal.randoms.AntiRandom;
 import org.powerbot.script.internal.randoms.BankPin;
 import org.powerbot.script.internal.randoms.Login;
 import org.powerbot.script.internal.randoms.TicketDestroy;
 import org.powerbot.script.internal.randoms.WidgetCloser;
-import org.powerbot.core.script.job.Container;
-import org.powerbot.core.script.job.Job;
-import org.powerbot.core.script.job.JobListener;
-import org.powerbot.core.script.job.TaskContainer;
-import org.powerbot.gui.BotChrome;
 import org.powerbot.service.scripts.ScriptDefinition;
 import org.powerbot.util.Tracker;
 
@@ -22,14 +22,14 @@ import org.powerbot.util.Tracker;
  */
 public class ScriptHandler {
 	public final Logger log = Logger.getLogger(ScriptHandler.class.getName());
-	final EventManager eventManager;
+	final EventMulticaster eventMulticaster;
 	private Script script;
 	private ScriptDefinition def;
 	private Container scriptContainer, randomContainer;
 	private RandomHandler randomHandler;
 
-	public ScriptHandler(final EventManager eventManager) {
-		this.eventManager = eventManager;
+	public ScriptHandler(final EventMulticaster eventMulticaster) {
+		this.eventMulticaster = eventMulticaster;
 		this.script = null;
 	}
 
@@ -50,12 +50,12 @@ public class ScriptHandler {
 
 			@Override
 			public void jobStarted(final Job job) {
-				eventManager.addListener(job);
+				eventMulticaster.addListener(job);
 			}
 
 			@Override
 			public void jobStopped(final Job job) {
-				eventManager.removeListener(job);
+				eventMulticaster.removeListener(job);
 
 				if (stopped || job.equals(script)) {
 					BotChrome.getInstance().toolbar.updateControls();

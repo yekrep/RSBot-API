@@ -6,13 +6,8 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.logging.Logger;
 
-import org.powerbot.core.event.EventManager;
-import org.powerbot.core.event.events.PaintEvent;
-import org.powerbot.core.event.events.TextPaintEvent;
-import org.powerbot.script.internal.Constants;
-import org.powerbot.script.internal.ScriptHandler;
-import org.powerbot.script.internal.input.MouseHandler;
 import org.powerbot.core.script.job.Task;
+import org.powerbot.event.EventMulticaster;
 import org.powerbot.game.api.methods.input.Keyboard;
 import org.powerbot.game.api.methods.input.Mouse;
 import org.powerbot.game.api.methods.widget.WidgetCache;
@@ -25,6 +20,11 @@ import org.powerbot.gui.BotChrome;
 import org.powerbot.gui.component.BotPanel;
 import org.powerbot.gui.controller.BotInteract;
 import org.powerbot.loader.script.ModScript;
+import org.powerbot.script.event.PaintEvent;
+import org.powerbot.script.event.TextPaintEvent;
+import org.powerbot.script.internal.Constants;
+import org.powerbot.script.internal.ScriptHandler;
+import org.powerbot.script.internal.input.MouseHandler;
 import org.powerbot.service.GameAccounts;
 
 /**
@@ -68,7 +68,7 @@ public final class Bot implements Runnable {//TODO re-write bot
 		paintEvent = new PaintEvent();
 		textPaintEvent = new TextPaintEvent();
 
-		new Thread(threadGroup, composite.eventManager, composite.eventManager.getClass().getName()).start();
+		new Thread(threadGroup, composite.eventMulticaster, composite.eventMulticaster.getClass().getName()).start();
 		refreshing = false;
 	}
 
@@ -168,8 +168,8 @@ public final class Bot implements Runnable {//TODO re-write bot
 			composite.scriptHandler.stop();
 		}
 		log.info("Unloading environment");
-		if (composite.eventManager != null) {
-			composite.eventManager.stop();
+		if (composite.eventMulticaster != null) {
+			composite.eventMulticaster.stop();
 		}
 		new Thread(threadGroup, new Runnable() {
 			@Override
@@ -232,8 +232,8 @@ public final class Bot implements Runnable {//TODO re-write bot
 			textPaintEvent.graphics = back;
 			textPaintEvent.id = 0;
 			try {
-				composite.eventManager.fire(paintEvent);
-				composite.eventManager.fire(textPaintEvent);
+				composite.eventMulticaster.fire(paintEvent);
+				composite.eventMulticaster.fire(textPaintEvent);
 			} catch (final Exception e) {
 				e.printStackTrace();
 			}
@@ -274,8 +274,8 @@ public final class Bot implements Runnable {//TODO re-write bot
 		return composite.executor;
 	}
 
-	public EventManager getEventManager() {
-		return composite.eventManager;
+	public EventMulticaster getEventMulticaster() {
+		return composite.eventMulticaster;
 	}
 
 	public GameAccounts.Account getAccount() {

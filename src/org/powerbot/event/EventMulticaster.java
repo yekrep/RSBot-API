@@ -1,4 +1,4 @@
-package org.powerbot.core.event;
+package org.powerbot.event;
 
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
@@ -17,26 +17,23 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import org.powerbot.core.event.listeners.MessageListener;
-import org.powerbot.core.event.listeners.PaintListener;
-import org.powerbot.core.event.listeners.TextPaintListener;
+import org.powerbot.script.event.MessageEvent;
+import org.powerbot.script.event.MessageListener;
+import org.powerbot.script.event.PaintEvent;
+import org.powerbot.script.event.PaintListener;
+import org.powerbot.script.event.TextPaintEvent;
+import org.powerbot.script.event.TextPaintListener;
 
-public class EventMulticaster implements EventManager {
-	private final CopyOnWriteArrayList<EventListener> listeners;
-	private final Map<EventListener, Long> listenerMasks;
-	private final Queue<EventObject> queue;
-
-	private boolean active;
-
+public class EventMulticaster implements Runnable {
 	public static final int MOUSE_EVENT = 0x1;
 	public static final int MOUSE_MOTION_EVENT = 0x2;
 	public static final int MOUSE_WHEEL_EVENT = 0x4;
 	public static final int FOCUS_EVENT = 0x8;
 	public static final int KEY_EVENT = 0x10;
-
-	public static final int MESSAGE_EVENT = 0x20;
-	public static final int PAINT_EVENT = 0x40;
-	public static final int TEXT_PAINT_EVENT = 0x80;
+	private final CopyOnWriteArrayList<EventListener> listeners;
+	private final Map<EventListener, Long> listenerMasks;
+	private final Queue<EventObject> queue;
+	private boolean active;
 
 	public EventMulticaster() {
 		listeners = new CopyOnWriteArrayList<>();
@@ -46,7 +43,76 @@ public class EventMulticaster implements EventManager {
 		active = true;
 	}
 
-	@Override
+	private static int getType(final EventObject e) {
+		if (e instanceof MouseEvent) {
+			final MouseEvent me = (MouseEvent) e;
+			switch (me.getID()) {
+			case MouseEvent.MOUSE_PRESSED:
+			case MouseEvent.MOUSE_RELEASED:
+			case MouseEvent.MOUSE_CLICKED:
+			case MouseEvent.MOUSE_ENTERED:
+			case MouseEvent.MOUSE_EXITED:
+				return EventMulticaster.MOUSE_EVENT;
+
+			case MouseEvent.MOUSE_MOVED:
+			case MouseEvent.MOUSE_DRAGGED:
+				return EventMulticaster.MOUSE_MOTION_EVENT;
+
+			case MouseEvent.MOUSE_WHEEL:
+				return EventMulticaster.MOUSE_WHEEL_EVENT;
+			}
+		} else if (e instanceof FocusEvent) {
+			final FocusEvent fe = (FocusEvent) e;
+			switch (fe.getID()) {
+			case FocusEvent.FOCUS_GAINED:
+			case FocusEvent.FOCUS_LOST:
+				return EventMulticaster.FOCUS_EVENT;
+			}
+		} else if (e instanceof KeyEvent) {
+			final KeyEvent ke = (KeyEvent) e;
+			switch (ke.getID()) {
+			case KeyEvent.KEY_TYPED:
+			case KeyEvent.KEY_PRESSED:
+			case KeyEvent.KEY_RELEASED:
+				return EventMulticaster.KEY_EVENT;
+			}
+		} else if (e instanceof AbstractEvent) {
+			return ((AbstractEvent) e).id;
+		}
+
+		throw new RuntimeException("bad event");
+	}
+
+	private long getMask(final EventListener listener) {
+		long mask = 0;
+		if (listener instanceof MouseListener) {
+			mask |= EventMulticaster.MOUSE_EVENT;
+		}
+		if (listener instanceof MouseMotionListener) {
+			mask |= EventMulticaster.MOUSE_MOTION_EVENT;
+		}
+		if (listener instanceof MouseWheelListener) {
+			mask |= EventMulticaster.MOUSE_WHEEL_EVENT;
+		}
+		if (listener instanceof KeyListener) {
+			mask |= EventMulticaster.KEY_EVENT;
+		}
+		if (listener instanceof FocusListener) {
+			mask |= EventMulticaster.FOCUS_EVENT;
+		}
+
+		if (listener instanceof MessageListener) {
+			mask |= MessageEvent.ID;
+		}
+		if (listener instanceof PaintListener) {
+			mask |= PaintEvent.ID;
+		}
+		if (listener instanceof TextPaintListener) {
+			mask |= TextPaintEvent.ID;
+		}
+		return mask;
+	}
+
 	public void dispatch(final EventObject event) {
 		queue.offer(event);
 
@@ -58,7 +124,6 @@ public class EventMulticaster implements EventManager {
 		}
 	}
 
-	@Override
 	public void fire(final EventObject eventObject) {
 		fire(eventObject, getType(eventObject));
 	}
@@ -128,33 +193,28 @@ public class EventMulticaster implements EventManager {
 					((KeyListener) listener).keyReleased(ke);
 					break;
 				}
-			} else if (eventObject instanceof GameEvent) {
-				final GameEvent gameEvent = (GameEvent) eventObject;
-				gameEvent.dispatch(listener);
+			} else if (eventObject instanceof AbstractEvent) {
+				((AbstractEvent) eventObject).dispatch(listener);
 			}
 		}
 	}
 
-	@Override
 	public void addListener(final EventListener eventListener) {
 		if (listeners.addIfAbsent(eventListener)) {
 			listenerMasks.put(eventListener, getMask(eventListener));
 		}
 	}
 
-	@Override
 	public void removeListener(final EventListener eventListener) {
 		listeners.remove(eventListener);
 		listenerMasks.remove(eventListener);
 	}
 
-	@Override
 	public EventListener[] getListeners() {
 		final int size = this.listeners.size();
 		return this.listeners.toArray(new EventListener[size]);
 	}
 
-	@Override
 	public void stop() {
 		active = false;
 
@@ -187,76 +247,5 @@ public class EventMulticaster implements EventManager {
 				return;
 			}
 		}
-	}
-
-	private static long getMask(final EventListener listener) {
-		long mask = 0;
-		if (listener instanceof MouseListener) {
-			mask |= EventMulticaster.MOUSE_EVENT;
-		}
-		if (listener instanceof MouseMotionListener) {
-			mask |= EventMulticaster.MOUSE_MOTION_EVENT;
-		}
-		if (listener instanceof MouseWheelListener) {
-			mask |= EventMulticaster.MOUSE_WHEEL_EVENT;
-		}
-		if (listener instanceof KeyListener) {
-			mask |= EventMulticaster.KEY_EVENT;
-		}
-		if (listener instanceof FocusListener) {
-			mask |= EventMulticaster.FOCUS_EVENT;
-		}
-
-		if (listener instanceof MessageListener) {
-			mask |= EventMulticaster.MESSAGE_EVENT;
-		}
-		if (listener instanceof PaintListener) {
-			mask |= EventMulticaster.PAINT_EVENT;
-		}
-		if (listener instanceof TextPaintListener) {
-			mask |= EventMulticaster.TEXT_PAINT_EVENT;
-		}
-
-		return mask;
-	}
-
-	private static int getType(final EventObject e) {
-		if (e instanceof MouseEvent) {
-			final MouseEvent me = (MouseEvent) e;
-			switch (me.getID()) {
-			case MouseEvent.MOUSE_PRESSED:
-			case MouseEvent.MOUSE_RELEASED:
-			case MouseEvent.MOUSE_CLICKED:
-			case MouseEvent.MOUSE_ENTERED:
-			case MouseEvent.MOUSE_EXITED:
-				return EventMulticaster.MOUSE_EVENT;
-
-			case MouseEvent.MOUSE_MOVED:
-			case MouseEvent.MOUSE_DRAGGED:
-				return EventMulticaster.MOUSE_MOTION_EVENT;
-
-			case MouseEvent.MOUSE_WHEEL:
-				return EventMulticaster.MOUSE_WHEEL_EVENT;
-			}
-		} else if (e instanceof FocusEvent) {
-			final FocusEvent fe = (FocusEvent) e;
-			switch (fe.getID()) {
-			case FocusEvent.FOCUS_GAINED:
-			case FocusEvent.FOCUS_LOST:
-				return EventMulticaster.FOCUS_EVENT;
-			}
-		} else if (e instanceof KeyEvent) {
-			final KeyEvent ke = (KeyEvent) e;
-			switch (ke.getID()) {
-			case KeyEvent.KEY_TYPED:
-			case KeyEvent.KEY_PRESSED:
-			case KeyEvent.KEY_RELEASED:
-				return EventMulticaster.KEY_EVENT;
-			}
-		} else if (e instanceof GameEvent) {
-			return ((GameEvent) e).type;
-		}
-
-		throw new RuntimeException("bad event");
 	}
 }

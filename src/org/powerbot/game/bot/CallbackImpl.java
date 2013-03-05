@@ -1,10 +1,10 @@
 package org.powerbot.game.bot;
 
 import org.powerbot.bot.Bot;
-import org.powerbot.core.event.events.MessageEvent;
-import org.powerbot.script.xenon.Calculations;
 import org.powerbot.game.client.Callback;
 import org.powerbot.game.client.Render;
+import org.powerbot.script.event.MessageEvent;
+import org.powerbot.script.xenon.Calculations;
 
 /**
  * An implementation of callback responsible for processing client callbacks to appropriate bot functions.
@@ -35,6 +35,6 @@ public class CallbackImpl implements Callback {
 	 * @param message The message contents the sender sent.
 	 */
 	public void notifyMessage(final int id, final String sender, final String message) {
-		bot.getEventManager().dispatch(new MessageEvent(id, sender, message));
+		bot.getEventMulticaster().dispatch(new MessageEvent(id, sender, message));
 	}
 }

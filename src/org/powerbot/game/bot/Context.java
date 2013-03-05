@@ -7,17 +7,15 @@ import java.util.Map;
 
 import org.powerbot.bot.Bot;
 import org.powerbot.bot.RSLoader;
-import org.powerbot.script.internal.ScriptHandler;
-import org.powerbot.core.event.EventManager;
-import org.powerbot.script.internal.Constants;
 import org.powerbot.game.api.methods.Environment;
 import org.powerbot.game.bot.handler.input.MouseExecutor;
 import org.powerbot.game.bot.util.ScreenCapture;
 import org.powerbot.game.client.Client;
+import org.powerbot.script.internal.Constants;
+import org.powerbot.script.internal.ScriptHandler;
 
 public class Context {//TODO remove idea of a 'context'
 	public static final Map<ThreadGroup, Context> context = new HashMap<ThreadGroup, Context>();
-
 	private final Bot bot;
 	public int world = -1;
 
@@ -91,10 +89,6 @@ public class Context {//TODO remove idea of a 'context'
 
 	public BufferedImage getBuffer() {
 		return bot.getBuffer();
-	}
-
-	public EventManager getEventManager() {
-		return bot.getEventManager();
 	}
 
 	public ThreadGroup getThreadGroup() {
