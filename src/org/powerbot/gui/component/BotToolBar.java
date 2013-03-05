@@ -1,6 +1,7 @@
 package org.powerbot.gui.component;
 
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.ByteArrayInputStream;
@@ -31,16 +32,18 @@ import org.powerbot.util.io.Resources;
  */
 public final class BotToolBar extends JToolBar {
 	private static final long serialVersionUID = 6279235497882884115L;
+	private final BotChrome parent;
 	private final JButton add, accounts, play, stop, feedback, input, view;
 	private final JToggleButton signin, logger;
 	private final ImageIcon[] playIcons;
 	private final CryptFile loggerPref;
 
-	public BotToolBar() {
+	public BotToolBar(final BotChrome parent) {
 		setFloatable(false);
 		setBorder(new EmptyBorder(1, 3, 1, 3));
 		final int d = 16;
 
+		this.parent = parent;
 		loggerPref = new CryptFile("logpane.txt", BotToolBar.class);
 
 		add = new JButton(new ImageIcon(Resources.getImage(Resources.Paths.ADD)));
@@ -187,7 +190,8 @@ public final class BotToolBar extends JToolBar {
 		final JScrollPane logpane = BotChrome.getInstance().logpane;
 		logpane.setVisible(!logpane.isVisible());
 		logger.setSelected(logpane.isVisible());
-		BotChrome.getInstance().pack();
+		final int[] h = { logpane.getSize().height, logpane.getPreferredSize().height };
+		parent.setSize(new Dimension(parent.getSize().width, parent.getSize().height + h[h[0] == 0 ? 1 : 0] * (logpane.isVisible() ? 1 : -1)));
 
 		if (logpane.isVisible()) {
 			try {
