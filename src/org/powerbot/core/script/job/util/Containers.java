@@ -9,6 +9,7 @@ import org.powerbot.core.script.job.JobListener;
  *
  * @author Timer
  */
+@Deprecated
 public class Containers {
 	/**
 	 * Waits for a container to reach a state of termination.

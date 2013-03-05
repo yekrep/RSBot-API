@@ -9,6 +9,7 @@ import java.util.concurrent.Future;
  *
  * @author Timer
  */
+@Deprecated
 public interface Job extends EventListener {
 	/**
 	 * Executes the job or task of this worker.

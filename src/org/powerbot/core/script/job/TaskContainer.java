@@ -14,6 +14,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  *
  * @author Timer
  */
+@Deprecated
 public class TaskContainer implements Container {
 	private final CopyOnWriteArrayList<JobListener> listeners;
 	private final List<Container> children;

@@ -12,9 +12,9 @@ import java.util.concurrent.atomic.AtomicReference;
  *
  * @author Timer
  */
+@Deprecated
 public class Tree {
 	private final Queue<Node> nodes;
-
 	private final AtomicReference<Node> current_node = new AtomicReference<>();
 
 	/**

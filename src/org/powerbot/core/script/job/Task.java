@@ -9,6 +9,7 @@ import org.powerbot.game.api.util.Random;
  *
  * @author Timer
  */
+@Deprecated
 public abstract class Task implements Job {
 	Future<?> future;
 	private Thread thread;

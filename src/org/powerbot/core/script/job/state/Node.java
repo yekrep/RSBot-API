@@ -10,6 +10,7 @@ import org.powerbot.core.script.job.Task;
  *
  * @author Timer
  */
+@Deprecated
 public abstract class Node extends Task {
 	/**
 	 * Determines whether or not to execute this {@link Node}.

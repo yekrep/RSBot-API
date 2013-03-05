@@ -5,6 +5,7 @@ package org.powerbot.core.script.job;
  *
  * @author Timer
  */
+@Deprecated
 public interface Container {
 	/**
 	 * Submits a worker to this container to begin its job.
@@ -14,16 +15,16 @@ public interface Container {
 	public void submit(Job job);
 
 	/**
+	 * @return Whether or not this {@link Container} is paused.
+	 */
+	public boolean isPaused();
+
+	/**
 	 * Pauses this container for {@link Job}s which obey its rule.
 	 *
 	 * @param paused <tt>true</tt> to pause; otherwise, <tt>false</tt>.
 	 */
 	public void setPaused(final boolean paused);
-
-	/**
-	 * @return Whether or not this {@link Container} is paused.
-	 */
-	public boolean isPaused();
 
 	/**
 	 * Enumerates an array containing all living instances of {@link Job}.

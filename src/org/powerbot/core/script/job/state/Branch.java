@@ -11,6 +11,7 @@ import java.util.concurrent.atomic.AtomicReference;
  *
  * @author Timer
  */
+@Deprecated
 public abstract class Branch extends Node {
 	private final Queue<Node> nodes;
 

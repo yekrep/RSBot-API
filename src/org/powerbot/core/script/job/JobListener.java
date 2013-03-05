@@ -5,6 +5,7 @@ package org.powerbot.core.script.job;
  *
  * @author Timer
  */
+@Deprecated
 public interface JobListener {
 	/**
 	 * @param job The {@link Job} that was started.

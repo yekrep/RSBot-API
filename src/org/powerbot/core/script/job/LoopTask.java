@@ -10,6 +10,7 @@ package org.powerbot.core.script.job;
  *
  * @author Timer
  */
+@Deprecated
 public abstract class LoopTask extends Task {
 	private boolean paused;
 
