@@ -47,6 +47,18 @@ public class Vector2 {
 		return (double) (v.y - y) / (v.x - x);
 	}
 
+	public final double get2DAngleTo(final Vector2 v) {
+		double a = Math.atan2(v.y - y, v.x - x);
+
+		if (a < 0) {
+			a = Math.abs(a);
+		} else {
+			a = 2 * Math.PI - a;
+		}
+
+		return a;
+	}
+
 	public int[] toMatrix() {
 		return new int[] { x, y };
 	}
