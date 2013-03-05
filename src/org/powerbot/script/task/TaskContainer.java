@@ -5,6 +5,7 @@ import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class TaskContainer implements TaskListener {
 	private final ThreadGroup tg;
@@ -64,16 +65,17 @@ public class TaskContainer implements TaskListener {
 	private final class Factory implements ThreadFactory {
 		private final String name;
 		private TaskContainer container;
-		private int count = 0;
+		private AtomicInteger count;
 
 		private Factory(final TaskContainer container) {
 			this.name = Factory.class.getName() + "@" + hashCode();
 			this.container = container;
+			this.count = new AtomicInteger(0);
 		}
 
 		@Override
 		public Thread newThread(final Runnable r) {
-			return new Thread(container.getThreadGroup(), r, name + ++this.count);
+			return new Thread(container.getThreadGroup(), r, name + count.incrementAndGet());
 		}
 	}
 }
