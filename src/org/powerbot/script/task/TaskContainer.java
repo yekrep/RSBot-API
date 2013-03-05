@@ -64,8 +64,8 @@ public class TaskContainer implements TaskListener {
 
 	private final class Factory implements ThreadFactory {
 		private final String name;
-		private TaskContainer container;
-		private AtomicInteger count;
+		private final TaskContainer container;
+		private final AtomicInteger count;
 
 		private Factory(final TaskContainer container) {
 			this.name = Factory.class.getName() + "@" + hashCode();
