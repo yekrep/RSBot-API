@@ -34,14 +34,15 @@ public abstract class Task implements Runnable {
 		if (this.thread != null) throw new IllegalStateException(getClass().getName() + " is already running");
 
 		this.thread = Thread.currentThread();
-		container.taskStarted(this);
+		final TaskListener listener = container instanceof TaskListener ? (TaskListener) container : null;
+		if (listener != null) listener.taskStarted(this);
 		try {
 			execute();
 		} catch (final ThreadDeath ignored) {
 		} catch (final Throwable e) {
 			e.printStackTrace();
 		}
-		container.taskStopped(this);
+		if (listener != null) listener.taskStopped(this);
 		this.thread = null;
 		setContainer(null);
 	}
