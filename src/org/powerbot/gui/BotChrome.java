@@ -53,7 +53,7 @@ public class BotChrome extends JFrame implements WindowListener {
 	public static volatile boolean minimised = false;
 
 	private BotChrome() {
-		setTitle(Configuration.NAME + " " + (int) (Configuration.VERSION / 1000) + (Configuration.BETA ? " Beta" : ""));
+		setTitle(Configuration.TITLE + (Configuration.BETA ? " Beta" : ""));
 		setIconImage(Resources.getImage(Resources.Paths.ICON));
 		addWindowListener(this);
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
