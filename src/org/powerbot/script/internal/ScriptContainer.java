@@ -73,6 +73,12 @@ public class ScriptContainer extends AbstractContainer {
 		});
 	}
 
+	@Override
+	public boolean isActive() {
+		if (script == null) return false;
+		return super.isActive();
+	}
+
 	public void start(final Script script, final ScriptDefinition definition) {
 		this.script = script;
 		this.definition = definition;
