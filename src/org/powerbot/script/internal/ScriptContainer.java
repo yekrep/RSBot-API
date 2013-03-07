@@ -52,12 +52,14 @@ public class ScriptContainer extends AbstractContainer {
 	}
 
 	public void setPaused(final boolean paused) {
-		this.paused = paused;
-		final Iterator<ScriptListener> iterator = scriptListeners.iterator();
-		while (iterator.hasNext()) {
-			final ScriptListener l = iterator.next();
-			if (paused) l.scriptPaused(this);
-			else l.scriptResumed(this);
+		if (this.paused != paused) {
+			this.paused = paused;
+			final Iterator<ScriptListener> iterator = scriptListeners.iterator();
+			while (iterator.hasNext()) {
+				final ScriptListener l = iterator.next();
+				if (paused) l.scriptPaused(this);
+				else l.scriptResumed(this);
+			}
 		}
 	}
 
