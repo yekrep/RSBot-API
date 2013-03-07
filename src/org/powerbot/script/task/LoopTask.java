@@ -1,8 +1,6 @@
 package org.powerbot.script.task;
 
 public abstract class LoopTask extends Task {
-	private boolean paused = false;
-
 	public boolean onStart() {
 		return true;
 	}
@@ -26,11 +24,9 @@ public abstract class LoopTask extends Task {
 		final TaskContainer container = getContainer();
 		while (!container.isStopped()) {
 			if (container.isPaused()) {
-				paused = true;
 				sleep(500, 1000);
 				continue;
 			}
-			paused = false;
 
 			int time;
 			try {
@@ -48,9 +44,5 @@ public abstract class LoopTask extends Task {
 		}
 
 		onFinish();
-	}
-
-	public boolean isPaused() {
-		return paused;
 	}
 }
