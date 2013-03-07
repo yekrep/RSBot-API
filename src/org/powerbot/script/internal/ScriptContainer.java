@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.powerbot.event.EventMulticaster;
+import org.powerbot.gui.BotChrome;
 import org.powerbot.script.Script;
 import org.powerbot.script.task.Task;
 import org.powerbot.service.scripts.ScriptDefinition;
@@ -52,21 +53,21 @@ public class ScriptContainer extends AbstractContainer {
 		}, definition);
 		addListener(new ScriptListener() {
 			@Override
-			public void scriptStarted(ScriptContainer scriptContainer) {
+			public void scriptStarted(final ScriptContainer scriptContainer) {
 			}
 
 			@Override
-			public void scriptPaused(ScriptContainer scriptContainer) {
+			public void scriptPaused(final ScriptContainer scriptContainer) {
 				script.setPaused(true);
 			}
 
 			@Override
-			public void scriptResumed(ScriptContainer scriptContainer) {
+			public void scriptResumed(final ScriptContainer scriptContainer) {
 				script.setPaused(false);
 			}
 
 			@Override
-			public void scriptStopped(ScriptContainer scriptContainer) {
+			public void scriptStopped(final ScriptContainer scriptContainer) {
 				script.stop();
 			}
 		});
@@ -75,6 +76,27 @@ public class ScriptContainer extends AbstractContainer {
 	public void start(final Script script, final ScriptDefinition definition) {
 		this.script = script;
 		this.definition = definition;
+		addListener(new ScriptListener() {
+			@Override
+			public void scriptStarted(final ScriptContainer scriptContainer) {
+				BotChrome.getInstance().toolbar.updateControls();
+			}
+
+			@Override
+			public void scriptPaused(final ScriptContainer scriptContainer) {
+				BotChrome.getInstance().toolbar.updateControls();
+			}
+
+			@Override
+			public void scriptResumed(final ScriptContainer scriptContainer) {
+				BotChrome.getInstance().toolbar.updateControls();
+			}
+
+			@Override
+			public void scriptStopped(final ScriptContainer scriptContainer) {
+				BotChrome.getInstance().toolbar.updateControls();
+			}
+		});
 		script.start();
 		final List<Task> list = script.getStartupTasks();
 		final Iterator<Task> iterator = list.iterator();
