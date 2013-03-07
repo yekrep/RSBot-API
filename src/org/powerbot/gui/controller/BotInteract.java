@@ -120,7 +120,6 @@ public final class BotInteract {
 				Tracker.getInstance().trackEvent("script", "pause");
 				container.setPaused(true);
 			}
-			BotChrome.getInstance().toolbar.updateControls();
 			return;
 		}
 

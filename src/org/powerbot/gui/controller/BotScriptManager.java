@@ -243,11 +243,9 @@ public class BotScriptManager {
 			new Thread(new Runnable() {
 				@Override
 				public void run() {
-					log.info("Starting script: " + def.getName());
 					final long mins = (30 + new Random().nextInt(180)) * (NetworkAccount.getInstance().hasPermission(NetworkAccount.DEVELOPER) ? 12 : 1);
 					ScheduledChecks.timeout.set(System.nanoTime() + TimeUnit.MINUTES.toNanos(mins));
 					bot.startScript(script, def);
-					BotChrome.getInstance().toolbar.updateControls();
 				}
 			}).start();
 		}
