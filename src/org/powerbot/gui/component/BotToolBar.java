@@ -227,11 +227,9 @@ public final class BotToolBar extends JToolBar {
 		}
 
 		final ScriptContainer container = e ? Bot.instance().getScriptContainer() : null;
-		if (container != null) {
-			final boolean active = container.isActive(), running = active && !container.isPaused();
-			play.setIcon(playIcons[running ? 1 : 0]);
-			play.setToolTipText(running ? BotLocale.PAUSESCRIPT : active ? BotLocale.RESUMESCRIPT : BotLocale.PLAYSCRIPT);
-			stop.setEnabled(active);
-		}
+		final boolean active = container != null && container.isActive(), running = active && !container.isPaused();
+		play.setIcon(playIcons[running ? 1 : 0]);
+		play.setToolTipText(running ? BotLocale.PAUSESCRIPT : active ? BotLocale.RESUMESCRIPT : BotLocale.PLAYSCRIPT);
+		stop.setEnabled(active);
 	}
 }
