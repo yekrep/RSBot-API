@@ -7,7 +7,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.logging.Logger;
 
 import org.powerbot.bot.Bot;
-import org.powerbot.script.internal.ScriptHandler;
+import org.powerbot.script.internal.ScriptContainer;
 import org.powerbot.service.scripts.ScriptDefinition;
 import org.powerbot.util.Configuration;
 import org.powerbot.util.Tracker;
@@ -16,11 +16,11 @@ import org.powerbot.util.Tracker;
  * @author Paris
  */
 public final class ScheduledChecks implements ActionListener {
-	private final static Logger log = Logger.getLogger(ScheduledChecks.class.getName());
-	public static volatile long SESSION_TIME = 0;
 	public static final long LOCALSCRIPT_TIMEOUT = 15 * 60000000000L;
 	public static final AtomicLong timeout = new AtomicLong(0);
+	private final static Logger log = Logger.getLogger(ScheduledChecks.class.getName());
 	private static final long started = System.nanoTime();
+	public static volatile long SESSION_TIME = 0;
 
 	@Override
 	public void actionPerformed(final ActionEvent e) {
@@ -34,13 +34,13 @@ public final class ScheduledChecks implements ActionListener {
 			Tracker.getInstance().trackEvent("uptime", Long.toString(uptime));
 		}
 
-		if (Bot.instantiated() && Bot.instance().getScriptHandler() != null) {
-			final ScriptHandler script = Bot.instance().getScriptHandler();
+		final ScriptContainer container;
+		if (Bot.instantiated() && (container = Bot.instance().getScriptContainer()) != null) {
 			final ScriptDefinition definition;
-			if ((definition = script.getDefinition()) != null && definition.local && System.nanoTime() > timeout.get()) {
+			if ((definition = container.getDefinition()) != null && definition.local && System.nanoTime() > timeout.get()) {
 				Tracker.getInstance().trackEvent("script", "timeout", definition.getName());
 				log.info("Local script restriction - script stopped");
-				script.stop();
+				container.stop();
 			}
 		}
 

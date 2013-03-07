@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.Properties;
 
+import org.powerbot.bot.Bot;
 import org.powerbot.game.bot.Context;
 
 public class Environment {
@@ -40,7 +41,7 @@ public class Environment {
 	public static File getStorageDirectory() {
 		final File dir = new File(
 				System.getProperty("java.io.tmpdir"),
-				Context.get().getScriptHandler().getDefinition().getName().replace('.', File.pathSeparatorChar)
+				Bot.instance().getScriptContainer().getDefinition().getName().replace('.', File.pathSeparatorChar)
 		);
 		if (!dir.isDirectory()) {
 			dir.mkdirs();

@@ -57,7 +57,7 @@ public class WidgetCloser extends AntiRandom {
 	}
 
 	@Override
-	public void onStop() {
+	public void onFinish() {
 		component = null;
 		tries = 0;
 	}

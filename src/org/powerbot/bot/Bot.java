@@ -20,12 +20,14 @@ import org.powerbot.gui.BotChrome;
 import org.powerbot.gui.component.BotPanel;
 import org.powerbot.gui.controller.BotInteract;
 import org.powerbot.loader.script.ModScript;
+import org.powerbot.script.Script;
 import org.powerbot.script.event.PaintEvent;
 import org.powerbot.script.event.TextPaintEvent;
 import org.powerbot.script.internal.Constants;
-import org.powerbot.script.internal.ScriptHandler;
+import org.powerbot.script.internal.ScriptContainer;
 import org.powerbot.script.internal.input.MouseHandler;
 import org.powerbot.service.GameAccounts;
+import org.powerbot.service.scripts.ScriptDefinition;
 
 /**
  * @author Timer
@@ -49,6 +51,9 @@ public final class Bot implements Runnable {//TODO re-write bot
 	private GameAccounts.Account account;
 	private BufferedImage backBuffer;
 	private MouseHandler mouseHandler;
+	private EventMulticaster multicaster;
+	private MouseExecutor oldMouse;
+	private ScriptContainer scriptContainer;
 
 	private Bot() {
 		appletContainer = null;
@@ -58,6 +63,7 @@ public final class Bot implements Runnable {//TODO re-write bot
 		threadGroup = new ThreadGroup(Bot.class.getName() + "@" + hashCode());
 
 		composite = new BotComposite(this);
+		multicaster = new EventMulticaster();
 		panel = null;
 
 		account = null;
@@ -68,7 +74,7 @@ public final class Bot implements Runnable {//TODO re-write bot
 		paintEvent = new PaintEvent();
 		textPaintEvent = new TextPaintEvent();
 
-		new Thread(threadGroup, composite.eventMulticaster, composite.eventMulticaster.getClass().getName()).start();
+		new Thread(threadGroup, multicaster, multicaster.getClass().getName()).start();
 		refreshing = false;
 	}
 
@@ -164,12 +170,12 @@ public final class Bot implements Runnable {//TODO re-write bot
 	 */
 	public void stop() {
 		if (mouseHandler != null) mouseHandler().stop();
-		if (composite.scriptHandler != null) {
-			composite.scriptHandler.stop();
+		if (scriptContainer != null) {
+			scriptContainer.stop();
 		}
 		log.info("Unloading environment");
-		if (composite.eventMulticaster != null) {
-			composite.eventMulticaster.stop();
+		if (multicaster != null) {
+			multicaster.stop();
 		}
 		new Thread(threadGroup, new Runnable() {
 			@Override
@@ -196,13 +202,15 @@ public final class Bot implements Runnable {//TODO re-write bot
 		}
 	}
 
-	public void stopScript() {
-		if (composite.scriptHandler == null) {
-			throw new RuntimeException("script is non existent!");
-		}
+	@Deprecated
+	public void startScript(final org.powerbot.core.script.Script script, final ScriptDefinition definition) {
+		scriptContainer = new ScriptContainer(multicaster);
+		scriptContainer.start(script, definition);
+	}
 
-		log.info("Stopping script");
-		composite.scriptHandler.shutdown();
+	public void startScript(final Script script, final ScriptDefinition definition) {
+		scriptContainer = new ScriptContainer(multicaster);
+		scriptContainer.start(script, definition);
 	}
 
 	public BufferedImage getImage() {
@@ -232,8 +240,8 @@ public final class Bot implements Runnable {//TODO re-write bot
 			textPaintEvent.graphics = back;
 			textPaintEvent.id = 0;
 			try {
-				composite.eventMulticaster.fire(paintEvent);
-				composite.eventMulticaster.fire(textPaintEvent);
+				multicaster.fire(paintEvent);
+				multicaster.fire(textPaintEvent);
 			} catch (final Exception e) {
 				e.printStackTrace();
 			}
@@ -257,7 +265,7 @@ public final class Bot implements Runnable {//TODO re-write bot
 		client.setCallback(new CallbackImpl(this));
 		constants = new Constants(modScript.constants);
 		new Thread(threadGroup, new SafeMode(this)).start();
-		composite.executor = new MouseExecutor();
+		oldMouse = new MouseExecutor();
 		mouseHandler = new MouseHandler(appletContainer, client);
 		new Thread(threadGroup, mouseHandler).start();
 	}
@@ -271,11 +279,11 @@ public final class Bot implements Runnable {//TODO re-write bot
 	}
 
 	public MouseExecutor getMouseExecutor() {
-		return composite.executor;
+		return oldMouse;
 	}
 
 	public EventMulticaster getEventMulticaster() {
-		return composite.eventMulticaster;
+		return multicaster;
 	}
 
 	public GameAccounts.Account getAccount() {
@@ -286,8 +294,8 @@ public final class Bot implements Runnable {//TODO re-write bot
 		this.account = account;
 	}
 
-	public ScriptHandler getScriptHandler() {
-		return composite.scriptHandler;
+	public ScriptContainer getScriptContainer() {
+		return this.scriptContainer;
 	}
 
 	public synchronized void refresh() {

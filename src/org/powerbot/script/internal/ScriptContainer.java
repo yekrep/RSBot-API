@@ -1,5 +1,6 @@
 package org.powerbot.script.internal;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -8,11 +9,13 @@ import java.util.Set;
 import org.powerbot.event.EventMulticaster;
 import org.powerbot.script.Script;
 import org.powerbot.script.task.Task;
+import org.powerbot.service.scripts.ScriptDefinition;
 
 public class ScriptContainer extends AbstractContainer {
 	private final EventMulticaster multicaster;
 	private final Set<ScriptListener> scriptListeners;
 	private Script script;
+	private ScriptDefinition definition;
 	private boolean paused;
 
 	public ScriptContainer(final EventMulticaster multicaster) {
@@ -21,8 +24,57 @@ public class ScriptContainer extends AbstractContainer {
 		this.paused = false;
 	}
 
-	public void start(final Script script) {
+	public void start(final org.powerbot.core.script.Script script, final ScriptDefinition definition) {
+		start(new Script() {
+			@Override
+			public void start() {
+			}
+
+			@Override
+			public boolean isActive() {
+				return script.isActive();
+			}
+
+			@Override
+			public boolean isPaused() {
+				return script.isPaused();
+			}
+
+			@Override
+			public List<Task> getStartupTasks() {
+				return Arrays.asList(new Task[]{new Task() {
+					@Override
+					public void execute() {
+						script.start();
+					}
+				}});
+			}
+		}, definition);
+		addListener(new ScriptListener() {
+			@Override
+			public void scriptStarted(ScriptContainer scriptContainer) {
+			}
+
+			@Override
+			public void scriptPaused(ScriptContainer scriptContainer) {
+				script.setPaused(true);
+			}
+
+			@Override
+			public void scriptResumed(ScriptContainer scriptContainer) {
+				script.setPaused(false);
+			}
+
+			@Override
+			public void scriptStopped(ScriptContainer scriptContainer) {
+				script.stop();
+			}
+		});
+	}
+
+	public void start(final Script script, final ScriptDefinition definition) {
 		this.script = script;
+		this.definition = definition;
 		script.start();
 		final List<Task> list = script.getStartupTasks();
 		final Iterator<Task> iterator = list.iterator();
@@ -77,5 +129,9 @@ public class ScriptContainer extends AbstractContainer {
 		super.taskStopped(task);
 		multicaster.removeListener(task);
 		if (task == this.script) stop();
+	}
+
+	public ScriptDefinition getDefinition() {
+		return this.definition;
 	}
 }

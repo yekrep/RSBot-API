@@ -27,9 +27,9 @@ import java.util.zip.Inflater;
 import java.util.zip.InflaterInputStream;
 
 import org.powerbot.bot.Bot;
-import org.powerbot.script.internal.ScriptHandler;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.gui.controller.BotInteract;
+import org.powerbot.script.internal.ScriptContainer;
 import org.powerbot.service.NetworkAccount;
 import org.powerbot.service.scripts.ScriptDefinition;
 import org.powerbot.util.Configuration;
@@ -39,15 +39,15 @@ import org.powerbot.util.StringUtil;
  * @author Paris
  */
 public final class Controller implements Runnable {
+	public static final int MAX_INSTANCES = 24;
 	private final static Logger log = Logger.getLogger(Controller.class.getName());
+	private static final int RESPONSE_TIMEOUT = 1000;
 	private static Controller instance;
+	public final int instanceID;
 	private final DatagramSocket sock;
 	private final List<Event> callbacks;
 	private final ExecutorService executor;
-	public static final int MAX_INSTANCES = 24;
 	private final int[] ports = new int[MAX_INSTANCES + 1];
-	public final int instanceID;
-	private static final int RESPONSE_TIMEOUT = 1000;
 
 	private Controller() throws IOException {
 		for (int i = 0; i < ports.length; i++) {
@@ -157,11 +157,11 @@ public final class Controller implements Runnable {
 					break;
 
 				case Message.SCRIPT:
-					final ConcurrentLinkedQueue<String> list = new ConcurrentLinkedQueue<String>();
+					final ConcurrentLinkedQueue<String> list = new ConcurrentLinkedQueue<>();
 					if (Bot.instantiated()) {
-						final ScriptHandler script = Bot.instance().getScriptHandler();
-						if (script != null && script.isActive()) {
-							final ScriptDefinition def = script.getDefinition();
+						final ScriptContainer container = Bot.instance().getScriptContainer();
+						if (container != null && container.isActive()) {
+							final ScriptDefinition def = container.getDefinition();
 							if (def != null && def.getID() != null && !def.getID().isEmpty()) {
 								list.add(def.getID());
 							}

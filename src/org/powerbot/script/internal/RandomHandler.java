@@ -4,19 +4,19 @@ import java.util.logging.Logger;
 
 import org.powerbot.script.internal.randoms.AntiRandom;
 import org.powerbot.script.internal.randoms.RandomManifest;
-import org.powerbot.core.script.job.Task;
+import org.powerbot.script.task.Task;
 import org.powerbot.script.xenon.util.Random;
 import org.powerbot.script.xenon.util.Timer;
 
 public class RandomHandler extends Task {
 	private static final Logger log = Logger.getLogger(RandomHandler.class.getName());
 	private static final int ITERATION_DELAY = 1000;
-	private final ScriptHandler handler;
+	private final ScriptContainer handler;
 	private final AntiRandom[] events;
 	private final Timer timeout;
 	private AntiRandom active;
 
-	public RandomHandler(final ScriptHandler handler, final AntiRandom[] events) {
+	public RandomHandler(final ScriptContainer handler, final AntiRandom[] events) {
 		this.handler = handler;
 		this.events = events;
 		this.timeout = new Timer(0);
@@ -24,10 +24,10 @@ public class RandomHandler extends Task {
 
 	@Override
 	public void execute() {
-		while (handler.isActive() && !handler.isShutdown()) {
+		while (!handler.isStopped()) {
 			if (active != null) {
 				final String name = name(active);
-				if (active.isAlive()) {
+				if (active.isActive()) {
 					if (!timeout.isRunning()) {
 						log.info("Random event failed: " + (name != null ? name : "unknown"));
 						handler.stop();
@@ -37,10 +37,6 @@ public class RandomHandler extends Task {
 					continue;
 				}
 				log.info("Stopping random event: " + (name != null ? name : "unknown"));
-				try {
-					active.onStop();
-				} catch (final Exception ignored) {
-				}
 				active = null;
 				continue;
 			}
@@ -56,10 +52,6 @@ public class RandomHandler extends Task {
 			if (active != null) {
 				final String name = name(active);
 				log.info("Starting random event: " + (name != null ? name : "unknown"));
-				try {
-					active.onStart();
-				} catch (final Exception ignored) {
-				}
 				timeout.setEndIn(Random.nextInt(600, 720) * 1000);
 				getContainer().submit(active);
 			} else sleep(ITERATION_DELAY);
