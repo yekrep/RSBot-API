@@ -8,6 +8,7 @@ import java.util.Set;
 import java.util.logging.Logger;
 
 import org.powerbot.event.EventMulticaster;
+import org.powerbot.game.api.Manifest;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.script.Script;
 import org.powerbot.script.task.Task;
@@ -28,31 +29,7 @@ public class ScriptContainer extends AbstractContainer {
 	}
 
 	public void start(final org.powerbot.core.script.Script script, final ScriptDefinition definition) {
-		start(new Script() {
-			@Override
-			public void start() {
-			}
-
-			@Override
-			public boolean isActive() {
-				return script.isActive();
-			}
-
-			@Override
-			public boolean isPaused() {
-				return script.isPaused();
-			}
-
-			@Override
-			public List<Task> getStartupTasks() {
-				return Arrays.asList(new Task[]{new Task() {
-					@Override
-					public void execute() {
-						script.start();
-					}
-				}});
-			}
-		}, definition);
+		start(new WrapperScript(script), definition);
 		addListener(new ScriptListener() {
 			@Override
 			public void scriptStarted(final ScriptContainer scriptContainer) {
@@ -170,5 +147,38 @@ public class ScriptContainer extends AbstractContainer {
 
 	public ScriptDefinition getDefinition() {
 		return this.definition;
+	}
+
+	@Manifest(name = "backwards-compatibility wrapper", description = "this script it outdated", authors = {"internals - this script is OUTDATED"}, singleinstance = true)
+	private final class WrapperScript implements Script {
+		private final org.powerbot.core.script.Script script;
+
+		private WrapperScript(org.powerbot.core.script.Script script) {
+			this.script = script;
+		}
+
+		@Override
+		public void start() {
+		}
+
+		@Override
+		public boolean isActive() {
+			return script.isActive();
+		}
+
+		@Override
+		public boolean isPaused() {
+			return script.isPaused();
+		}
+
+		@Override
+		public List<Task> getStartupTasks() {
+			return Arrays.asList(new Task[]{new Task() {
+				@Override
+				public void execute() {
+					script.start();
+				}
+			}});
+		}
 	}
 }
