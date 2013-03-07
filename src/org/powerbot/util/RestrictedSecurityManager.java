@@ -220,7 +220,9 @@ public class RestrictedSecurityManager extends SecurityManager {
 			return;
 		}
 
-		log.severe((readOnly ? "Read" : "Write") + " denied: " + path + " on " + Thread.currentThread().getName() + "/" + Thread.currentThread().getThreadGroup().getName());
+		if (!isGameThread()) {
+			log.severe((readOnly ? "Read" : "Write") + " denied: " + path + " on " + Thread.currentThread().getName() + "/" + Thread.currentThread().getThreadGroup().getName());
+		}
 		throw new SecurityException();
 	}
 
