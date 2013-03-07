@@ -101,7 +101,7 @@ public class EventMulticaster implements Runnable {
 			mask |= EventMulticaster.FOCUS_EVENT;
 		}
 
-		if (listener instanceof MessageListener) {
+		if (listener instanceof MessageListener || listener instanceof org.powerbot.core.event.listeners.MessageListener) {
 			mask |= MessageEvent.ID;
 		}
 		if (listener instanceof PaintListener) {
@@ -194,7 +194,13 @@ public class EventMulticaster implements Runnable {
 					break;
 				}
 			} else if (eventObject instanceof AbstractEvent) {
-				((AbstractEvent) eventObject).dispatch(listener);
+				if (eventObject instanceof org.powerbot.core.event.events.MessageEvent) {
+					if (listener instanceof org.powerbot.core.event.listeners.MessageListener)
+						((AbstractEvent) eventObject).dispatch(listener);
+				} else if (eventObject instanceof MessageEvent) {
+					if (listener instanceof MessageListener)
+						((AbstractEvent) eventObject).dispatch(listener);
+				} else ((AbstractEvent) eventObject).dispatch(listener);
 			}
 		}
 	}
