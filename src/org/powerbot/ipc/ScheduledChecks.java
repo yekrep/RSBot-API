@@ -44,7 +44,7 @@ public final class ScheduledChecks implements ActionListener {
 					log.info("Local script restriction - script stopped");
 					container.stop();
 				}
-				final Manifest manifest = container.getClass().getAnnotation(Manifest.class);
+				final Manifest manifest = container.getScript().getClass().getAnnotation(Manifest.class);
 				if (manifest == null) {
 					container.stop();
 				} else {
