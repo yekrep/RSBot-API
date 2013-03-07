@@ -164,6 +164,10 @@ public class ScriptContainer extends AbstractContainer {
 		if (task == this.script) stop();
 	}
 
+	public Script getScript() {
+		return this.script;
+	}
+
 	public ScriptDefinition getDefinition() {
 		return this.definition;
 	}
