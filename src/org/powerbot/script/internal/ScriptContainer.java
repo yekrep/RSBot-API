@@ -5,15 +5,18 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.powerbot.event.EventMulticaster;
 import org.powerbot.script.Script;
 import org.powerbot.script.task.Task;
 
 public class ScriptContainer extends AbstractContainer {
+	private final EventMulticaster multicaster;
 	private final Set<ScriptListener> scriptListeners;
 	private Script script;
 	private boolean paused;
 
-	public ScriptContainer() {
+	public ScriptContainer(final EventMulticaster multicaster) {
+		this.multicaster = multicaster;
 		this.scriptListeners = new HashSet<>();
 		this.paused = false;
 	}
@@ -38,10 +41,12 @@ public class ScriptContainer extends AbstractContainer {
 
 	@Override
 	public void stop() {
-		super.stop();
-		final Iterator<ScriptListener> iterator = scriptListeners.iterator();
-		while (iterator.hasNext()) iterator.next().scriptStopped(this);
-		//TODO ensure stop (new thread + move listener here)
+		if (!isStopped()) {
+			super.stop();
+			final Iterator<ScriptListener> iterator = scriptListeners.iterator();
+			while (iterator.hasNext()) iterator.next().scriptStopped(this);
+			//TODO ensure stop (new thread + move listener here)
+		}
 	}
 
 	@Override
@@ -50,18 +55,27 @@ public class ScriptContainer extends AbstractContainer {
 	}
 
 	public void setPaused(final boolean paused) {
-		this.paused = paused;
-		final Iterator<ScriptListener> iterator = scriptListeners.iterator();
-		while (iterator.hasNext()) {
-			final ScriptListener l = iterator.next();
-			if (paused) l.scriptPaused(this);
-			else l.scriptResumed(this);
+		if (this.paused != paused) {
+			this.paused = paused;
+			final Iterator<ScriptListener> iterator = scriptListeners.iterator();
+			while (iterator.hasNext()) {
+				final ScriptListener l = iterator.next();
+				if (paused) l.scriptPaused(this);
+				else l.scriptResumed(this);
+			}
 		}
+	}
+
+	@Override
+	public void taskStarted(final Task task) {
+		super.taskStarted(task);
+		multicaster.addListener(task);
 	}
 
 	@Override
 	public void taskStopped(final Task task) {
 		super.taskStopped(task);
+		multicaster.removeListener(task);
 		if (task == this.script) stop();
 	}
 }
