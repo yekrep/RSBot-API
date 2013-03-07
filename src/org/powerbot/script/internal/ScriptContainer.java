@@ -5,15 +5,18 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.powerbot.event.EventMulticaster;
 import org.powerbot.script.Script;
 import org.powerbot.script.task.Task;
 
 public class ScriptContainer extends AbstractContainer {
+	private final EventMulticaster multicaster;
 	private final Set<ScriptListener> scriptListeners;
 	private Script script;
 	private boolean paused;
 
-	public ScriptContainer() {
+	public ScriptContainer(final EventMulticaster multicaster) {
+		this.multicaster = multicaster;
 		this.scriptListeners = new HashSet<>();
 		this.paused = false;
 	}
