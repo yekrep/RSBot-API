@@ -61,12 +61,11 @@ public class Boot implements Runnable {
 			}
 		});
 
-		final int req = 768;
-		long mem = Runtime.getRuntime().maxMemory() / 1024 / 1024;
+		final int xmx = (int) (Runtime.getRuntime().maxMemory() >> 20), xmx0 = 1024;
 
-		if (mem < 768 && !restarted) {
-			log.severe(String.format("Default heap size of %sm too small, restarting with %sm", mem, req));
-			fork("-Xmx" + req + "m ", SWITCH_RESTARTED);
+		if (xmx < xmx0 && !restarted) {
+			log.severe(String.format("Default heap size of %sm too small, restarting with %sm", xmx, xmx0));
+			fork("-Xmx" + xmx0 + "m ", SWITCH_RESTARTED);
 			return;
 		}
 
@@ -152,10 +151,10 @@ public class Boot implements Runnable {
 			options += " -Xss6m";
 		}
 		if (!options.contains("-Xmx")) {
-			options += " -Xmx" + (Runtime.getRuntime().maxMemory() / 1024 / 1024) + "m";
+			options += " -Xmx" + ((int) (Runtime.getRuntime().maxMemory() >> 20)) + "m";
 		}
 		if (!options.contains("-XX:MaxPermSize=")) {
-			options += " -XX:MaxPermSize=" + Math.max(256, Runtime.getRuntime().maxMemory() / 1024 / 1024 / 4) + "m";
+			options += " -XX:MaxPermSize=" + Math.max(256, Runtime.getRuntime().maxMemory() >> 22) + "m";
 		}
 
 		final List<String> flags = new ArrayList<String>(4);
