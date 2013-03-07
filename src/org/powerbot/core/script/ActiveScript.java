@@ -15,6 +15,7 @@ import org.powerbot.game.api.methods.input.Mouse;
 /**
  * @author Timer
  */
+@Deprecated
 public abstract class ActiveScript extends LoopTask implements Script {
 	public final Logger log = Logger.getLogger(getClass().getName());
 	private final Container container;

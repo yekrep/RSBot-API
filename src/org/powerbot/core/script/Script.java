@@ -8,6 +8,7 @@ import org.powerbot.core.script.job.Job;
 /**
  * @author Timer
  */
+@Deprecated
 public interface Script {
 	/**
 	 * @return {@link Job}s to be ran upon invocation of {@link org.powerbot.core.script.Script#start()}.
