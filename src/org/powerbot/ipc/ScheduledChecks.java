@@ -7,6 +7,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.logging.Logger;
 
 import org.powerbot.bot.Bot;
+import org.powerbot.game.api.Manifest;
 import org.powerbot.script.internal.ScriptContainer;
 import org.powerbot.service.scripts.ScriptDefinition;
 import org.powerbot.util.Configuration;
@@ -37,10 +38,23 @@ public final class ScheduledChecks implements ActionListener {
 		final ScriptContainer container;
 		if (Bot.instantiated() && (container = Bot.instance().getScriptContainer()) != null) {
 			final ScriptDefinition definition;
-			if ((definition = container.getDefinition()) != null && definition.local && System.nanoTime() > timeout.get()) {
-				Tracker.getInstance().trackEvent("script", "timeout", definition.getName());
-				log.info("Local script restriction - script stopped");
-				container.stop();
+			if ((definition = container.getDefinition()) != null) {
+				if (definition.local && System.nanoTime() > timeout.get()) {
+					Tracker.getInstance().trackEvent("script", "timeout", definition.getName());
+					log.info("Local script restriction - script stopped");
+					container.stop();
+				}
+				final Manifest manifest = container.getClass().getAnnotation(Manifest.class);
+				if (manifest == null) {
+					container.stop();
+				} else {
+					if (manifest.singleinstance()) {
+						if (Controller.getInstance().getRunningScripts().contains(definition.getID())) {
+							Tracker.getInstance().trackEvent("script", "singleinstance-bypass", definition.getID());
+							container.stop();
+						}
+					}
+				}
 			}
 		}
 
