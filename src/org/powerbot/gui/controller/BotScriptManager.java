@@ -23,11 +23,10 @@ import javax.crypto.spec.SecretKeySpec;
 import javax.swing.JOptionPane;
 
 import org.powerbot.bot.Bot;
-import org.powerbot.core.script.Script;
 import org.powerbot.game.api.Manifest;
-import org.powerbot.gui.BotChrome;
 import org.powerbot.ipc.Controller;
 import org.powerbot.ipc.ScheduledChecks;
+import org.powerbot.script.Script;
 import org.powerbot.service.GameAccounts;
 import org.powerbot.service.GameAccounts.Account;
 import org.powerbot.service.NetworkAccount;

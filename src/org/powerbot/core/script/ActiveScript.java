@@ -7,7 +7,6 @@ import java.util.logging.Logger;
 import org.powerbot.core.script.job.Container;
 import org.powerbot.core.script.job.Job;
 import org.powerbot.core.script.job.JobListener;
-import org.powerbot.core.script.job.LoopTask;
 import org.powerbot.core.script.job.Task;
 import org.powerbot.core.script.job.TaskContainer;
 import org.powerbot.game.api.methods.input.Mouse;
@@ -16,7 +15,7 @@ import org.powerbot.game.api.methods.input.Mouse;
  * @author Timer
  */
 @Deprecated
-public abstract class ActiveScript extends LoopTask implements Script {
+public abstract class ActiveScript extends Script {
 	public final Logger log = Logger.getLogger(getClass().getName());
 	private final Container container;
 	private final List<Job> startup_jobs;
@@ -52,7 +51,7 @@ public abstract class ActiveScript extends LoopTask implements Script {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public final void start() {
+	public final void _start() {
 		if (container.isShutdown()) {
 			return;
 		}

@@ -202,12 +202,6 @@ public final class Bot implements Runnable {//TODO re-write bot
 		}
 	}
 
-	@Deprecated
-	public void startScript(final org.powerbot.core.script.Script script, final ScriptDefinition definition) {
-		scriptContainer = new ScriptContainer(multicaster);
-		scriptContainer.start(script, definition);
-	}
-
 	public void startScript(final Script script, final ScriptDefinition definition) {
 		scriptContainer = new ScriptContainer(multicaster);
 		scriptContainer.start(script, definition);

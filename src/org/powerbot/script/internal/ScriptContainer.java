@@ -1,6 +1,5 @@
 package org.powerbot.script.internal;
 
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -8,7 +7,6 @@ import java.util.Set;
 import java.util.logging.Logger;
 
 import org.powerbot.event.EventMulticaster;
-import org.powerbot.game.api.Manifest;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.script.Script;
 import org.powerbot.script.task.Task;
@@ -26,30 +24,6 @@ public class ScriptContainer extends AbstractContainer {
 		this.multicaster = multicaster;
 		this.scriptListeners = new HashSet<>();
 		this.paused = false;
-	}
-
-	public void start(final org.powerbot.core.script.Script script, final ScriptDefinition definition) {
-		start(new WrapperScript(script), definition);
-		addListener(new ScriptListener() {
-			@Override
-			public void scriptStarted(final ScriptContainer scriptContainer) {
-			}
-
-			@Override
-			public void scriptPaused(final ScriptContainer scriptContainer) {
-				script.setPaused(true);
-			}
-
-			@Override
-			public void scriptResumed(final ScriptContainer scriptContainer) {
-				script.setPaused(false);
-			}
-
-			@Override
-			public void scriptStopped(final ScriptContainer scriptContainer) {
-				script.stop();
-			}
-		});
 	}
 
 	@Override
@@ -147,38 +121,5 @@ public class ScriptContainer extends AbstractContainer {
 
 	public ScriptDefinition getDefinition() {
 		return this.definition;
-	}
-
-	@Manifest(name = "backwards-compatibility wrapper", description = "this script it outdated", authors = {"internals - this script is OUTDATED"}, singleinstance = true)
-	private final class WrapperScript implements Script {
-		private final org.powerbot.core.script.Script script;
-
-		private WrapperScript(org.powerbot.core.script.Script script) {
-			this.script = script;
-		}
-
-		@Override
-		public void start() {
-		}
-
-		@Override
-		public boolean isActive() {
-			return script.isActive();
-		}
-
-		@Override
-		public boolean isPaused() {
-			return script.isPaused();
-		}
-
-		@Override
-		public List<Task> getStartupTasks() {
-			return Arrays.asList(new Task[]{new Task() {
-				@Override
-				public void execute() {
-					script.start();
-				}
-			}});
-		}
 	}
 }
