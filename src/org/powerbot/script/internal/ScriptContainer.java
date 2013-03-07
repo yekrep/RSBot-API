@@ -38,10 +38,12 @@ public class ScriptContainer extends AbstractContainer {
 
 	@Override
 	public void stop() {
-		super.stop();
-		final Iterator<ScriptListener> iterator = scriptListeners.iterator();
-		while (iterator.hasNext()) iterator.next().scriptStopped(this);
-		//TODO ensure stop (new thread + move listener here)
+		if (!isStopped()) {
+			super.stop();
+			final Iterator<ScriptListener> iterator = scriptListeners.iterator();
+			while (iterator.hasNext()) iterator.next().scriptStopped(this);
+			//TODO ensure stop (new thread + move listener here)
+		}
 	}
 
 	@Override
