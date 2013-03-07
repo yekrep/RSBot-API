@@ -1,16 +1,21 @@
-package org.powerbot.script.task;
+package org.powerbot.script.internal;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public abstract class AbstractContainer implements TaskContainer, TaskListener {
+import org.powerbot.script.task.Task;
+import org.powerbot.script.task.TaskContainer;
+import org.powerbot.script.task.TaskListener;
+
+public class AbstractContainer implements TaskContainer, TaskListener {
+	protected final Set<Task> tasks;
 	private final ThreadGroup tg;
 	private final ExecutorService executor;
-	private final Set<Task> tasks;
 
 	public AbstractContainer() {
 		this.tg = new ThreadGroup(AbstractContainer.class.getName() + "@" + hashCode());
@@ -28,17 +33,22 @@ public abstract class AbstractContainer implements TaskContainer, TaskListener {
 	}
 
 	@Override
-	public final void stop() {
+	public void stop() {
 		executor.shutdown();
 	}
 
 	@Override
-	public final boolean isActive() {
+	public boolean isActive() {
 		return !executor.isTerminated();
 	}
 
 	@Override
-	public final boolean isStopped() {
+	public boolean isPaused() {
+		return false;
+	}
+
+	@Override
+	public boolean isStopped() {
 		return executor.isShutdown();
 	}
 
@@ -56,8 +66,19 @@ public abstract class AbstractContainer implements TaskContainer, TaskListener {
 		}
 	}
 
-	private final ThreadGroup getThreadGroup() {
+	protected final ThreadGroup getThreadGroup() {
 		return this.tg;
+	}
+
+	protected final Task getTask(final Thread thread) {
+		synchronized (this.tasks) {
+			final Iterator<Task> iterator = this.tasks.iterator();
+			while (iterator.hasNext()) {
+				final Task task = iterator.next();
+				if (task.getThread() == thread) return task;
+			}
+		}
+		return null;
 	}
 
 	private final class Factory implements ThreadFactory {
