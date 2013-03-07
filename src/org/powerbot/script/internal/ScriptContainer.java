@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Logger;
 
 import org.powerbot.event.EventMulticaster;
 import org.powerbot.gui.BotChrome;
@@ -13,6 +14,7 @@ import org.powerbot.script.task.Task;
 import org.powerbot.service.scripts.ScriptDefinition;
 
 public class ScriptContainer extends AbstractContainer {
+	private final Logger log = Logger.getLogger(Script.class.getName());
 	private final EventMulticaster multicaster;
 	private final Set<ScriptListener> scriptListeners;
 	private Script script;
@@ -103,6 +105,8 @@ public class ScriptContainer extends AbstractContainer {
 				BotChrome.getInstance().toolbar.updateControls();
 			}
 		});
+
+		log.info("Starting script: " + definition.getName() + " by " + definition.getAuthors());
 		script.start();
 		final List<Task> list = script.getStartupTasks();
 		final Iterator<Task> iterator = list.iterator();
@@ -122,6 +126,7 @@ public class ScriptContainer extends AbstractContainer {
 	@Override
 	public void stop() {
 		if (!isStopped()) {
+			log.info("Stopping script: " + definition.getName());
 			super.stop();
 			final Iterator<ScriptListener> iterator = scriptListeners.iterator();
 			while (iterator.hasNext()) iterator.next().scriptStopped(this);
