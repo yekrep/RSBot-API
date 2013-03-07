@@ -1,10 +1,11 @@
 package org.powerbot.script.task;
 
+import java.util.EventListener;
 import java.util.concurrent.Future;
 
 import org.powerbot.game.api.util.Random;
 
-public abstract class Task implements Runnable {
+public abstract class Task implements Runnable, EventListener {
 	private TaskContainer container;
 	private Thread thread;
 	private Future<?> future;
