@@ -67,8 +67,15 @@ public class ScriptContainer extends AbstractContainer {
 	}
 
 	@Override
+	public void taskStarted(final Task task) {
+		super.taskStarted(task);
+		multicaster.addListener(task);
+	}
+
+	@Override
 	public void taskStopped(final Task task) {
 		super.taskStopped(task);
+		multicaster.removeListener(task);
 		if (task == this.script) stop();
 	}
 }
