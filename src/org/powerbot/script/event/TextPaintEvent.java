@@ -12,8 +12,6 @@ import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
 import java.util.EventListener;
 
-import org.powerbot.core.event.listeners.PaintListener;
-import org.powerbot.core.event.listeners.TextPaintListener;
 import org.powerbot.event.AbstractEvent;
 
 /**
