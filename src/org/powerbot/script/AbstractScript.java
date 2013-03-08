@@ -1,38 +1,44 @@
 package org.powerbot.script;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.ArrayDeque;
+import java.util.Collection;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.FutureTask;
 import java.util.logging.Logger;
 
-import org.powerbot.script.task.LoopTask;
-import org.powerbot.script.task.Task;
-
-public abstract class AbstractScript extends LoopTask implements Script {
+/**
+ * An abstract implementation of {@code Script}.
+ *
+ * @author Paris
+ */
+public abstract class AbstractScript implements Script {
 	protected final Logger log = Logger.getLogger(getClass().getName());
-	protected final List<Task> startupTasks = new LinkedList<>();
+	private final Map<State, Collection<FutureTask<Boolean>>> tasks;
 
-	@Override
-	public void start() {
-		if (!this.startupTasks.contains(this)) this.startupTasks.add(this);
+	public AbstractScript() {
+		tasks = new ConcurrentHashMap<State, Collection<FutureTask<Boolean>>>(State.values().length);
+
+		for (final State state : State.values()) {
+			tasks.put(state, new ArrayDeque<FutureTask<Boolean>>());
+		}
+
+		tasks.get(State.START).add(new FutureTask<Boolean>(this, true));
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public boolean isPaused() {
-		return getContainer().isPaused();
+	public final Collection<FutureTask<Boolean>> getTasks(final State state) {
+		return tasks.get(state);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public List<Task> getStartupTasks() {
-		return this.startupTasks;
-	}
-
-	@Override
-	public boolean onStart() {
-		return true;
-	}
-
-	@Override
-	public void onFinish() {
-		this.startupTasks.clear();
+	public final int getPriority() {
+		return 0;
 	}
 }
