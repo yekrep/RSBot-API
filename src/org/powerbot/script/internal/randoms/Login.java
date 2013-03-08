@@ -3,11 +3,11 @@ package org.powerbot.script.internal.randoms;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
 import org.powerbot.bot.Bot;
-import org.powerbot.game.api.Manifest;
 import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.api.methods.Widgets;
 import org.powerbot.game.api.methods.input.Keyboard;
@@ -17,12 +17,15 @@ import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Timer;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
 import org.powerbot.game.bot.Context;
+import org.powerbot.script.PollingTaskScript;
+import org.powerbot.script.event.PaintListener;
+import org.powerbot.script.task.BlockingTask;
 
 /**
  * @author Timer
  */
-@Manifest(name = "Login", description = "Logs into the game and handles errors", version = 0.1, authors = {"Timer"})
-public class Login extends AntiRandom {
+@RandomManifest(name = "Login")
+public class Login extends PollingTaskScript implements PaintListener {
 	private static final int WIDGET = 596;
 	private static final int WIDGET_LOGIN_ERROR = 13;
 	private static final int WIDGET_LOGIN_TRY_AGAIN = 65;
@@ -36,125 +39,144 @@ public class Login extends AntiRandom {
 
 	public Login() {
 		this.bot = Bot.instance();
+		submit(new LoginTask());
+		submit(new LobbyTask());
 	}
 
-	@Override
-	public boolean valid() {
-		final int state = Game.getClientState();
-		return (state == Game.INDEX_LOGIN_SCREEN || state == Game.INDEX_LOBBY_SCREEN || state == Game.INDEX_LOGGING_IN) && bot.getAccount() != null;
+	private final class LoginTask extends BlockingTask {
+
+		@Override
+		public boolean isValid() {
+			final int state = Game.getClientState();
+			return (state == Game.INDEX_LOGIN_SCREEN || state == Game.INDEX_LOGGING_IN) && bot.getAccount() != null;
+		}
+
+		public LoginTask() {
+			super(new Callable<Boolean>() {
+				@Override
+				public Boolean call() throws Exception {
+					for (final LoginEvent loginEvent : LoginEvent.values()) {
+						final WidgetChild widgetChild = Widgets.get(WIDGET, loginEvent.child);
+						if (widgetChild != null && widgetChild.validate()) {
+							final String text = widgetChild.getText().toLowerCase().trim();
+							Widgets.get(WIDGET, WIDGET_LOGIN_TRY_AGAIN).click(true);
+
+							if (text.contains(loginEvent.message.toLowerCase())) {
+								log.info("Handling login event: " + loginEvent.name());
+								boolean set_timer = loginEvent.equals(LoginEvent.TOKEN_FAILURE);
+
+								if (set_timer && loginEvent.wait > 0) {
+									re_load_timer = new Timer(loginEvent.wait);
+								}
+								if (loginEvent.wait > 0) {
+									sleep(loginEvent.wait);
+								} else if (loginEvent.wait == -1) {
+									getScriptController().stop();
+									return false;
+								}
+
+								re_load_timer = null;
+								if (loginEvent.task != null) {
+									try {
+										loginEvent.task.get();
+									} catch (final InterruptedException | ExecutionException ignored) {
+									}
+								}
+								return false;
+							}
+						}
+					}
+
+					if (isUsernameCorrect() && isPasswordValid()) {
+						attemptLogin();
+						sleep(Random.nextInt(1200, 2000));
+					} else if (!isUsernameCorrect()) {
+						final String username = bot.getAccount().toString();
+						final WidgetChild usernameTextBox = Widgets.get(WIDGET, WIDGET_LOGIN_USERNAME_TEXT);
+						if (!clickLoginInterface(usernameTextBox)) {
+							return false;
+						}
+						sleep(Random.nextInt(500, 700));
+						final int textLength = usernameTextBox.getText().length();
+						if (textLength > 0) {
+							erase(textLength);
+							return false;
+						}
+						Keyboard.sendText(username, false);
+						sleep(Random.nextInt(500, 700));
+					} else if (!isPasswordValid()) {
+						final String password = bot.getAccount().getPassword();
+						final WidgetChild passwordTextBox = Widgets.get(WIDGET, WIDGET_LOGIN_PASSWORD_TEXT);
+						if (!clickLoginInterface(passwordTextBox)) {
+							return false;
+						}
+						sleep(Random.nextInt(500, 700));
+						final int textLength = passwordTextBox.getText().length();
+						if (textLength > 0) {
+							erase(textLength);
+							return false;
+						}
+						Keyboard.sendText(password, false);
+						sleep(Random.nextInt(500, 700));
+					}
+					return null;
+				}
+			});
+		}
 	}
 
-	@Override
-	public int poll() {
-		if (!valid()) return -1;
+	private final class LobbyTask extends BlockingTask {
 
-		if (Game.getClientState() == Game.INDEX_LOBBY_SCREEN) {
-			for (final LobbyEvent lobbyEvent : LobbyEvent.values()) {
-				final WidgetChild widgetChild = Widgets.get(WIDGET_LOBBY, lobbyEvent.child);
-				if (widgetChild != null && widgetChild.validate()) {
-					final String text = widgetChild.getText().toLowerCase().trim();
-
-					if (text.contains(lobbyEvent.message.toLowerCase())) {
-						log.info("Handling lobby event: " + lobbyEvent.name());
-						Widgets.get(WIDGET_LOBBY, WIDGET_LOBBY_TRY_AGAIN).click(true);
-
-						if (lobbyEvent.wait > 0) {
-							sleep(lobbyEvent.wait);
-						} else if (lobbyEvent.wait == -1) {
-							bot.getScriptController().stop();
-							return -1;
-						}
-
-						if (lobbyEvent.task != null) {
-							try {
-								lobbyEvent.task.get();
-							} catch (final InterruptedException | ExecutionException ignored) {
-							}
-						}
-						return 0;
-					}
-				}
-			}
-
-			final int world = Context.get().world;
-			if (world > 0) {
-				final Lobby.World world_wrapper;
-				if ((world_wrapper = Lobby.getWorld(world)) != null) {
-					Lobby.enterGame(world_wrapper);
-					return Random.nextInt(200, 500);
-				}
-			}
-			Lobby.enterGame();
-			return Random.nextInt(200, 500);
+		@Override
+		public boolean isValid() {
+			final int state = Game.getClientState();
+			return state == Game.INDEX_LOBBY_SCREEN && bot.getAccount() != null;
 		}
 
-		if (Game.getClientState() == Game.INDEX_LOGIN_SCREEN) {
-			for (final LoginEvent loginEvent : LoginEvent.values()) {
-				final WidgetChild widgetChild = Widgets.get(WIDGET, loginEvent.child);
-				if (widgetChild != null && widgetChild.validate()) {
-					final String text = widgetChild.getText().toLowerCase().trim();
-					Widgets.get(WIDGET, WIDGET_LOGIN_TRY_AGAIN).click(true);
+		public LobbyTask() {
+			super(new Callable<Boolean>() {
+				@Override
+				public Boolean call() throws Exception {
+					for (final LobbyEvent lobbyEvent : LobbyEvent.values()) {
+						final WidgetChild widgetChild = Widgets.get(WIDGET_LOBBY, lobbyEvent.child);
+						if (widgetChild != null && widgetChild.validate()) {
+							final String text = widgetChild.getText().toLowerCase().trim();
 
-					if (text.contains(loginEvent.message.toLowerCase())) {
-						log.info("Handling login event: " + loginEvent.name());
-						boolean set_timer = loginEvent.equals(LoginEvent.TOKEN_FAILURE);
+							if (text.contains(lobbyEvent.message.toLowerCase())) {
+								log.info("Handling lobby event: " + lobbyEvent.name());
+								Widgets.get(WIDGET_LOBBY, WIDGET_LOBBY_TRY_AGAIN).click(true);
 
-						if (set_timer && loginEvent.wait > 0) {
-							re_load_timer = new Timer(loginEvent.wait);
-						}
-						if (loginEvent.wait > 0) {
-							sleep(loginEvent.wait);
-						} else if (loginEvent.wait == -1) {
-							bot.getScriptController().stop();
-							return -1;
-						}
+								if (lobbyEvent.wait > 0) {
+									sleep(lobbyEvent.wait);
+								} else if (lobbyEvent.wait == -1) {
+									bot.getScriptController().stop();
+									return false;
+								}
 
-						re_load_timer = null;
-						if (loginEvent.task != null) {
-							try {
-								loginEvent.task.get();
-							} catch (final InterruptedException | ExecutionException ignored) {
+								if (lobbyEvent.task != null) {
+									try {
+										lobbyEvent.task.get();
+									} catch (final InterruptedException | ExecutionException ignored) {
+									}
+								}
+								return false;
 							}
 						}
-						return 0;
 					}
-				}
-			}
 
-			if (isUsernameCorrect() && isPasswordValid()) {
-				attemptLogin();
-				sleep(Random.nextInt(1200, 2000));
-			} else if (!isUsernameCorrect()) {
-				final String username = bot.getAccount().toString();
-				final WidgetChild usernameTextBox = Widgets.get(WIDGET, WIDGET_LOGIN_USERNAME_TEXT);
-				if (!clickLoginInterface(usernameTextBox)) {
-					return 0;
+					final int world = Context.get().world;
+					if (world > 0) {
+						final Lobby.World world_wrapper;
+						if ((world_wrapper = Lobby.getWorld(world)) != null) {
+							Lobby.enterGame(world_wrapper);
+							return true;
+						}
+					}
+					Lobby.enterGame();
+					return true;
 				}
-				sleep(Random.nextInt(500, 700));
-				final int textLength = usernameTextBox.getText().length();
-				if (textLength > 0) {
-					erase(textLength);
-					return 0;
-				}
-				Keyboard.sendText(username, false);
-				sleep(Random.nextInt(500, 700));
-			} else if (!isPasswordValid()) {
-				final String password = bot.getAccount().getPassword();
-				final WidgetChild passwordTextBox = Widgets.get(WIDGET, WIDGET_LOGIN_PASSWORD_TEXT);
-				if (!clickLoginInterface(passwordTextBox)) {
-					return 0;
-				}
-				sleep(Random.nextInt(500, 700));
-				final int textLength = passwordTextBox.getText().length();
-				if (textLength > 0) {
-					erase(textLength);
-					return 0;
-				}
-				Keyboard.sendText(password, false);
-				sleep(Random.nextInt(500, 700));
-			}
+			});
 		}
-		return 0;
 	}
 
 	private boolean clickLoginInterface(final WidgetChild i) {
@@ -218,7 +240,6 @@ public class Login extends AntiRandom {
 
 	@Override
 	public void onRepaint(final Graphics render) {
-		super.onRepaint(render);
 		if (re_load_timer != null) {
 			render.setColor(Color.white);
 			render.drawString("Reloading game in: " + re_load_timer.toRemainingString(), 8, 30);
