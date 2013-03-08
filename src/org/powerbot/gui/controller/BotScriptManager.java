@@ -11,8 +11,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.Map.Entry;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 import java.util.zip.Inflater;
@@ -23,14 +23,13 @@ import javax.crypto.spec.SecretKeySpec;
 import javax.swing.JOptionPane;
 
 import org.powerbot.bot.Bot;
-import org.powerbot.core.script.Script;
 import org.powerbot.game.api.Manifest;
-import org.powerbot.gui.BotChrome;
 import org.powerbot.ipc.Controller;
 import org.powerbot.ipc.ScheduledChecks;
+import org.powerbot.script.Script;
 import org.powerbot.service.GameAccounts;
-import org.powerbot.service.NetworkAccount;
 import org.powerbot.service.GameAccounts.Account;
+import org.powerbot.service.NetworkAccount;
 import org.powerbot.service.scripts.LocalScriptClassLoader;
 import org.powerbot.service.scripts.ScriptDefinition;
 import org.powerbot.service.scripts.ScriptLoader;
@@ -243,14 +242,9 @@ public class BotScriptManager {
 			new Thread(new Runnable() {
 				@Override
 				public void run() {
-					log.info("Starting script: " + def.getName());
 					final long mins = (30 + new Random().nextInt(180)) * (NetworkAccount.getInstance().hasPermission(NetworkAccount.DEVELOPER) ? 12 : 1);
 					ScheduledChecks.timeout.set(System.nanoTime() + TimeUnit.MINUTES.toNanos(mins));
-					if (!bot.getScriptHandler().start(script, def)) {
-						log.severe("There is a script running");
-					} else {
-						BotChrome.getInstance().toolbar.updateControls();
-					}
+					bot.startScript(script, def);
 				}
 			}).start();
 		}

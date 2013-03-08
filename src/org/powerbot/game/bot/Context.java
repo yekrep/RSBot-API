@@ -12,7 +12,6 @@ import org.powerbot.game.bot.handler.input.MouseExecutor;
 import org.powerbot.game.bot.util.ScreenCapture;
 import org.powerbot.game.client.Client;
 import org.powerbot.script.internal.Constants;
-import org.powerbot.script.internal.ScriptHandler;
 
 public class Context {//TODO remove idea of a 'context'
 	public static final Map<ThreadGroup, Context> context = new HashMap<ThreadGroup, Context>();
@@ -68,10 +67,6 @@ public class Context {//TODO remove idea of a 'context'
 
 	public Bot getBot() {
 		return bot;
-	}
-
-	public ScriptHandler getScriptHandler() {
-		return bot.getScriptHandler();
 	}
 
 	@Deprecated

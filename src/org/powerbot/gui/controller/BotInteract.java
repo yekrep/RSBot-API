@@ -9,8 +9,6 @@ import javax.swing.SwingUtilities;
 
 import org.powerbot.Boot;
 import org.powerbot.bot.Bot;
-import org.powerbot.script.internal.ScriptHandler;
-import org.powerbot.script.xenon.Game;
 import org.powerbot.gui.BotAbout;
 import org.powerbot.gui.BotAccounts;
 import org.powerbot.gui.BotChrome;
@@ -18,6 +16,8 @@ import org.powerbot.gui.BotScripts;
 import org.powerbot.gui.BotSignin;
 import org.powerbot.gui.component.BotLocale;
 import org.powerbot.ipc.Controller;
+import org.powerbot.script.internal.ScriptContainer;
+import org.powerbot.script.xenon.Game;
 import org.powerbot.service.NetworkAccount;
 import org.powerbot.util.Configuration;
 import org.powerbot.util.Tracker;
@@ -111,16 +111,15 @@ public final class BotInteract {
 
 	public static synchronized void scriptPlayPause() {
 		final Bot bot = Bot.instance();
-		final ScriptHandler script = bot.getScriptHandler();
-		if (script != null && script.isActive()) {
-			if (script.isPaused()) {
+		final ScriptContainer container = bot.getScriptContainer();
+		if (container != null && container.isActive()) {
+			if (container.isPaused()) {
 				Tracker.getInstance().trackEvent("script", "resume");
-				script.resume();
+				container.setPaused(false);
 			} else {
 				Tracker.getInstance().trackEvent("script", "pause");
-				script.pause();
+				container.setPaused(true);
 			}
-			BotChrome.getInstance().toolbar.updateControls();
 			return;
 		}
 
@@ -134,17 +133,11 @@ public final class BotInteract {
 			return;
 		}
 		final Bot bot = Bot.instance();
-		final ScriptHandler activeScript = bot.getScriptHandler();
-		if (activeScript != null) {
-			if (!activeScript.isShutdown()) {
+		final ScriptContainer container = bot.getScriptContainer();
+		if (container != null) {
+			if (!container.isStopped()) {
 				Tracker.getInstance().trackEvent("script", "stop");
-				bot.stopScript();
-			} else {
-				if (activeScript.isActive()) {
-					activeScript.log.info("Forcing script stop");
-					Tracker.getInstance().trackEvent("script", "stop", "force");
-					activeScript.stop();
-				}
+				container.stop();
 			}
 		}
 	}

@@ -30,6 +30,8 @@ public abstract class LoopTask extends Task {
 			int time;
 			try {
 				time = loop();
+			} catch (final ThreadDeath ignored) {
+				time = -1;
 			} catch (final Throwable e) {
 				e.printStackTrace();
 				time = -1;

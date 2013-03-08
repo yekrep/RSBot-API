@@ -17,10 +17,10 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
 import org.powerbot.bot.Bot;
-import org.powerbot.script.internal.ScriptHandler;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.gui.controller.BotInteract;
 import org.powerbot.gui.controller.BotInteract.Action;
+import org.powerbot.script.internal.ScriptContainer;
 import org.powerbot.service.NetworkAccount;
 import org.powerbot.util.Tracker;
 import org.powerbot.util.io.CryptFile;
@@ -85,7 +85,7 @@ public final class BotToolBar extends JToolBar {
 
 		add(Box.createHorizontalGlue());
 
-		playIcons = new ImageIcon[] { new ImageIcon(Resources.getImage(Resources.Paths.PLAY)), new ImageIcon(Resources.getImage(Resources.Paths.PAUSE)) };
+		playIcons = new ImageIcon[]{new ImageIcon(Resources.getImage(Resources.Paths.PLAY)), new ImageIcon(Resources.getImage(Resources.Paths.PAUSE))};
 		play = new JButton(playIcons[0]);
 		play.setToolTipText(BotLocale.PLAYSCRIPT);
 		play.setFocusable(false);
@@ -190,12 +190,12 @@ public final class BotToolBar extends JToolBar {
 		final JScrollPane logpane = BotChrome.getInstance().logpane;
 		logpane.setVisible(!logpane.isVisible());
 		logger.setSelected(logpane.isVisible());
-		final int[] h = { logpane.getSize().height, logpane.getPreferredSize().height };
+		final int[] h = {logpane.getSize().height, logpane.getPreferredSize().height};
 		parent.setSize(new Dimension(parent.getSize().width, parent.getSize().height + h[h[0] == 0 ? 1 : 0] * (logpane.isVisible() ? 1 : -1)));
 
 		if (logpane.isVisible()) {
 			try {
-				IOHelper.write(new ByteArrayInputStream(new byte[] { 1 }), loggerPref.getOutputStream());
+				IOHelper.write(new ByteArrayInputStream(new byte[]{1}), loggerPref.getOutputStream());
 			} catch (final IOException ignored) {
 			}
 		} else {
@@ -222,16 +222,14 @@ public final class BotToolBar extends JToolBar {
 		signin.setSelected(a.isLoggedIn());
 
 		final boolean e = Bot.instantiated();
-		for (final Component c : new Component[] { play, stop, input, view }) {
+		for (final Component c : new Component[]{play, stop, input, view}) {
 			c.setVisible(e);
 		}
 
-		if (e && Bot.instance().getScriptHandler() != null) {
-			final ScriptHandler script = Bot.instance().getScriptHandler();
-			final boolean active = script != null && script.isActive(), running = active && !script.isPaused();
-			play.setIcon(playIcons[running ? 1 : 0]);
-			play.setToolTipText(running ? BotLocale.PAUSESCRIPT : active ? BotLocale.RESUMESCRIPT : BotLocale.PLAYSCRIPT);
-			stop.setEnabled(active);
-		}
+		final ScriptContainer container = e ? Bot.instance().getScriptContainer() : null;
+		final boolean active = container != null && container.isActive(), running = active && !container.isPaused();
+		play.setIcon(playIcons[running ? 1 : 0]);
+		play.setToolTipText(running ? BotLocale.PAUSESCRIPT : active ? BotLocale.RESUMESCRIPT : BotLocale.PLAYSCRIPT);
+		stop.setEnabled(active);
 	}
 }

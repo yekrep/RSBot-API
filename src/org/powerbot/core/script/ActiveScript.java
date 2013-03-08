@@ -4,19 +4,20 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.powerbot.bot.Bot;
 import org.powerbot.core.script.job.Container;
 import org.powerbot.core.script.job.Job;
 import org.powerbot.core.script.job.JobListener;
-import org.powerbot.core.script.job.LoopTask;
 import org.powerbot.core.script.job.Task;
 import org.powerbot.core.script.job.TaskContainer;
+import org.powerbot.event.EventMulticaster;
 import org.powerbot.game.api.methods.input.Mouse;
 
 /**
  * @author Timer
  */
 @Deprecated
-public abstract class ActiveScript extends LoopTask implements Script {
+public abstract class ActiveScript extends Script {
 	public final Logger log = Logger.getLogger(getClass().getName());
 	private final Container container;
 	private final List<Job> startup_jobs;
@@ -27,12 +28,16 @@ public abstract class ActiveScript extends LoopTask implements Script {
 		startup_jobs = new LinkedList<>();
 
 		stop_listener = new JobListener() {
+			private final EventMulticaster eventMulticaster = Bot.instance().getEventMulticaster();
+
 			@Override
 			public void jobStarted(final Job job) {
+				eventMulticaster.addListener(job);
 			}
 
 			@Override
 			public void jobStopped(final Job job) {
+				eventMulticaster.removeListener(job);
 				if (job.equals(ActiveScript.this)) {
 					shutdown();
 				}
@@ -52,7 +57,7 @@ public abstract class ActiveScript extends LoopTask implements Script {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public final void start() {
+	public final void _start() {
 		if (container.isShutdown()) {
 			return;
 		}
@@ -129,6 +134,14 @@ public abstract class ActiveScript extends LoopTask implements Script {
 	 */
 	@Override
 	public final void stop() {
+		if (!container.isShutdown()) {
+			container.submit(new Task() {
+				@Override
+				public void execute() {
+					onStop();
+				}
+			});
+		}
 		container.interrupt();
 	}
 

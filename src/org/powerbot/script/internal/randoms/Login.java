@@ -5,8 +5,6 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 
 import org.powerbot.bot.Bot;
-import org.powerbot.core.script.job.Job;
-import org.powerbot.core.script.job.Task;
 import org.powerbot.game.api.Manifest;
 import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.api.methods.Widgets;
@@ -17,6 +15,7 @@ import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Timer;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
 import org.powerbot.game.bot.Context;
+import org.powerbot.script.task.Task;
 
 /**
  * @author Timer
@@ -61,7 +60,7 @@ public class Login extends AntiRandom {
 						if (lobbyEvent.wait > 0) {
 							sleep(lobbyEvent.wait);
 						} else if (lobbyEvent.wait == -1) {
-							bot.stopScript();
+							bot.getScriptContainer().stop();
 							return -1;
 						}
 
@@ -102,7 +101,7 @@ public class Login extends AntiRandom {
 						if (loginEvent.wait > 0) {
 							sleep(loginEvent.wait);
 						} else if (loginEvent.wait == -1) {
-							bot.stopScript();
+							bot.getScriptContainer().stop();
 							return -1;
 						}
 
@@ -230,9 +229,9 @@ public class Login extends AntiRandom {
 		INVALID_PASSWORD(WIDGET_LOGIN_ERROR, "Invalid username or password", -1);
 		private final String message;
 		private final int child, wait;
-		private final Job task;
+		private final Task task;
 
-		LoginEvent(final int child, final String message, final int wait, final Job task) {
+		LoginEvent(final int child, final String message, final int wait, final Task task) {
 			this.child = child;
 			this.message = message;
 			this.wait = wait;
@@ -248,9 +247,9 @@ public class Login extends AntiRandom {
 		LOGGED_IN(WIDGET_LOBBY_ERROR, "last session", Random.nextInt(1000, 4000));
 		private final String message;
 		private final int child, wait;
-		private final Job task;
+		private final Task task;
 
-		LobbyEvent(final int child, final String message, final int wait, final Job task) {
+		LobbyEvent(final int child, final String message, final int wait, final Task task) {
 			this.child = child;
 			this.message = message;
 			this.wait = wait;
