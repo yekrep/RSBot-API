@@ -61,7 +61,7 @@ public class Login extends AntiRandom {
 						if (lobbyEvent.wait > 0) {
 							sleep(lobbyEvent.wait);
 						} else if (lobbyEvent.wait == -1) {
-							bot.getScriptController().close();
+							bot.getScriptController().stop();
 							return -1;
 						}
 
@@ -105,7 +105,7 @@ public class Login extends AntiRandom {
 						if (loginEvent.wait > 0) {
 							sleep(loginEvent.wait);
 						} else if (loginEvent.wait == -1) {
-							bot.getScriptController().close();
+							bot.getScriptController().stop();
 							return -1;
 						}
 

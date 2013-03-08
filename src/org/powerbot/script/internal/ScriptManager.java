@@ -1,6 +1,5 @@
 package org.powerbot.script.internal;
 
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.PriorityQueue;
 import java.util.Queue;
@@ -11,6 +10,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.powerbot.script.Script;
 import org.powerbot.script.Script.State;
+import org.powerbot.script.ScriptController;
+import org.powerbot.script.Stoppable;
 import org.powerbot.script.Suspendable;
 
 /**
@@ -18,25 +19,38 @@ import org.powerbot.script.Suspendable;
  *
  * @author Paris
  */
-public class ScriptController implements Runnable, Suspendable {
+public class ScriptManager implements Runnable, Stoppable, Suspendable {
 	protected final ExecutorService executor;
 	protected final Queue<Script> scripts;
-	protected final AtomicBoolean suspended, closing;
+	protected final AtomicBoolean suspended, stopping;
+	private final ScriptController controller;
 
-	public ScriptController() {
+	public ScriptManager() {
 		executor = new NamedCachedThreadPoolExecutor();
 		scripts = new PriorityQueue<Script>(4, new ScriptQueueComparator());
 		suspended = new AtomicBoolean(false);
-		closing = new AtomicBoolean(false);
+		stopping = new AtomicBoolean(false);
+		controller = new AbstractScriptController(this);
 	}
 
-	public ScriptController(final Script... scripts) {
+	public ScriptManager(final Script... scripts) {
 		this();
-		this.scripts.addAll(Arrays.asList(scripts));
+		for (final Script script : scripts) {
+			script.setScriptController(controller);
+			this.scripts.add(script);
+		}
+	}
+
+	public ExecutorService getExecutorService() {
+		return executor;
 	}
 
 	public Queue<Script> getScripts() {
 		return scripts;
+	}
+
+	public ScriptController getScriptController() {
+		return controller;
 	}
 
 	@Override
@@ -44,15 +58,17 @@ public class ScriptController implements Runnable, Suspendable {
 		call(State.START);
 	}
 
-	public void close() {
-		closing.set(true);
+	@Override
+	public synchronized void stop() {
+		stopping.set(true);
 		while (!scripts.isEmpty()) {
 			call(scripts.poll(), State.STOP);
 		}
 	}
 
-	public boolean isClosing() {
-		return closing.get();
+	@Override
+	public boolean isStopping() {
+		return stopping.get();
 	}
 
 	@Override
@@ -99,6 +115,43 @@ public class ScriptController implements Runnable, Suspendable {
 		@Override
 		public int compare(final Script o1, final Script o2) {
 			return o2.getPriority() - o1.getPriority();
+		}
+	}
+
+	private final class AbstractScriptController implements ScriptController {
+		private final ScriptManager manager;
+
+		public AbstractScriptController(final ScriptManager manager) {
+			this.manager = manager;
+		}
+
+		@Override
+		public boolean isStopping() {
+			return manager.isStopping();
+		}
+
+		@Override
+		public void stop() {
+			manager.stop();
+		}
+
+		@Override
+		public boolean isSuspended() {
+			return manager.isSuspended();
+		}
+
+		@Override
+		public void suspend() {
+			manager.suspend();
+		}
+
+		@Override
+		public void resume() {
+		}
+
+		@Override
+		public ExecutorService getExecutorService() {
+			return manager.getExecutorService();
 		}
 	}
 }

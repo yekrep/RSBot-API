@@ -24,7 +24,7 @@ import org.powerbot.script.Script;
 import org.powerbot.script.event.PaintEvent;
 import org.powerbot.script.event.TextPaintEvent;
 import org.powerbot.script.internal.Constants;
-import org.powerbot.script.internal.ScriptController;
+import org.powerbot.script.internal.ScriptManager;
 import org.powerbot.script.internal.input.MouseHandler;
 import org.powerbot.service.GameAccounts;
 import org.powerbot.service.scripts.ScriptDefinition;
@@ -53,7 +53,7 @@ public final class Bot implements Runnable {//TODO re-write bot
 	private MouseHandler mouseHandler;
 	private EventMulticaster multicaster;
 	private MouseExecutor oldMouse;
-	private ScriptController scriptController;
+	private ScriptManager scriptController;
 	private ScriptDefinition scriptDefinition;
 
 	private Bot() {
@@ -172,7 +172,7 @@ public final class Bot implements Runnable {//TODO re-write bot
 	public void stop() {
 		if (mouseHandler != null) mouseHandler().stop();
 		if (scriptController != null) {
-			scriptController.close();
+			scriptController.stop();
 		}
 		log.info("Unloading environment");
 		if (multicaster != null) {
@@ -204,7 +204,7 @@ public final class Bot implements Runnable {//TODO re-write bot
 	}
 
 	public void startScript(final Script script, final ScriptDefinition definition) {
-		scriptController = new ScriptController(); // TODO: multicaster?!
+		scriptController = new ScriptManager(); // TODO: multicaster?!
 		scriptController.getScripts().add(script);
 		scriptDefinition = definition;
 	}
@@ -290,7 +290,7 @@ public final class Bot implements Runnable {//TODO re-write bot
 		this.account = account;
 	}
 
-	public ScriptController getScriptController() {
+	public ScriptManager getScriptController() {
 		return this.scriptController;
 	}
 

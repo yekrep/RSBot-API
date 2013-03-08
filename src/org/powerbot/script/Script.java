@@ -24,4 +24,16 @@ public interface Script extends Runnable {
 	 * @return the absolute priority on the integer scale
 	 */
 	public int getPriority();
+
+	/**
+	 * Retrieves the {@code ScriptController}.
+	 * @return the attached {@code ScriptController}
+	 */
+	public ScriptController getScriptController();
+
+	/**
+	 * Sets the {@code ScriptController}.
+	 * @param controller the {@code ScriptController} to attach
+	 */
+	public void setScriptController(ScriptController controller);
 }

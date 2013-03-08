@@ -9,7 +9,7 @@ import java.util.logging.Logger;
 import org.powerbot.bot.Bot;
 import org.powerbot.game.api.Manifest;
 import org.powerbot.script.Script;
-import org.powerbot.script.internal.ScriptController;
+import org.powerbot.script.internal.ScriptManager;
 import org.powerbot.service.scripts.ScriptDefinition;
 import org.powerbot.util.Configuration;
 import org.powerbot.util.Tracker;
@@ -36,14 +36,14 @@ public final class ScheduledChecks implements ActionListener {
 			Tracker.getInstance().trackEvent("uptime", Long.toString(uptime));
 		}
 
-		final ScriptController controller = Bot.instance().getScriptController();
+		final ScriptManager controller = Bot.instance().getScriptController();
 		if (controller != null) {
 			final ScriptDefinition definition = Bot.instance().getScriptDefinition();
 			if (definition != null) {
 				if (definition.local && System.nanoTime() > timeout.get()) {
 					Tracker.getInstance().trackEvent("script", "timeout", definition.getName());
 					log.info("Local script restriction - script stopped");
-					controller.close();
+					controller.stop();
 				}
 			}
 			for (final Script script : controller.getScripts()) {
@@ -52,7 +52,7 @@ public final class ScheduledChecks implements ActionListener {
 					if (manifest.singleinstance()) {
 						if (Controller.getInstance().getRunningScripts().contains(definition.getID())) {
 							Tracker.getInstance().trackEvent("script", "singleinstance-bypass", definition.getID());
-							controller.close();
+							controller.stop();
 						}
 					}
 				}

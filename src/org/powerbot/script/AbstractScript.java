@@ -17,6 +17,7 @@ import org.powerbot.script.xenon.util.Random;
 public abstract class AbstractScript implements Script {
 	protected final Logger log = Logger.getLogger(getClass().getName());
 	private final Map<State, Collection<FutureTask<Boolean>>> tasks;
+	private ScriptController controller;
 
 	public AbstractScript() {
 		tasks = new ConcurrentHashMap<State, Collection<FutureTask<Boolean>>>(State.values().length);
@@ -42,6 +43,22 @@ public abstract class AbstractScript implements Script {
 	@Override
 	public final int getPriority() {
 		return 0;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public final ScriptController getScriptController() {
+		return controller;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public final void setScriptController(final ScriptController controller) {
+		this.controller = controller;
 	}
 
 	public void sleep(final int millis) {
