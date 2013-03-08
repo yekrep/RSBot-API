@@ -4,7 +4,6 @@ import java.util.Comparator;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Stack;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 
 import org.powerbot.script.task.AsyncTask;
@@ -42,12 +41,7 @@ public abstract class PollingTaskScript extends PollingScript {
 			@Override
 			public void run() {
 				while (!sync.isEmpty()) {
-					boolean result = true;
-					try {
-						result = sync.pop().get();
-					} catch (final InterruptedException | ExecutionException ignored) {
-					}
-					if (!result) {
+					if (!sync.pop().call()) {
 						break;
 					}
 				}

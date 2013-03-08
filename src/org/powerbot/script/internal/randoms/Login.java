@@ -6,6 +6,8 @@ import java.awt.Rectangle;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import org.powerbot.bot.Bot;
 import org.powerbot.game.api.methods.Game;
@@ -51,77 +53,73 @@ public class Login extends PollingTaskScript implements PaintListener {
 			return (state == Game.INDEX_LOGIN_SCREEN || state == Game.INDEX_LOGGING_IN) && bot.getAccount() != null;
 		}
 
-		public LoginTask() {
-			super(new Callable<Boolean>() {
-				@Override
-				public Boolean call() throws Exception {
-					for (final LoginEvent loginEvent : LoginEvent.values()) {
-						final WidgetChild widgetChild = Widgets.get(WIDGET, loginEvent.child);
-						if (widgetChild != null && widgetChild.validate()) {
-							final String text = widgetChild.getText().toLowerCase().trim();
-							Widgets.get(WIDGET, WIDGET_LOGIN_TRY_AGAIN).click(true);
+		@Override
+		public Boolean call() {
+			for (final LoginEvent loginEvent : LoginEvent.values()) {
+				final WidgetChild widgetChild = Widgets.get(WIDGET, loginEvent.child);
+				if (widgetChild != null && widgetChild.validate()) {
+					final String text = widgetChild.getText().toLowerCase().trim();
+					Widgets.get(WIDGET, WIDGET_LOGIN_TRY_AGAIN).click(true);
 
-							if (text.contains(loginEvent.message.toLowerCase())) {
-								log.info("Handling login event: " + loginEvent.name());
-								boolean set_timer = loginEvent.equals(LoginEvent.TOKEN_FAILURE);
+					if (text.contains(loginEvent.message.toLowerCase())) {
+						log.info("Handling login event: " + loginEvent.name());
+						boolean set_timer = loginEvent.equals(LoginEvent.TOKEN_FAILURE);
 
-								if (set_timer && loginEvent.wait > 0) {
-									re_load_timer = new Timer(loginEvent.wait);
-								}
-								if (loginEvent.wait > 0) {
-									sleep(loginEvent.wait);
-								} else if (loginEvent.wait == -1) {
-									getScriptController().stop();
-									return false;
-								}
+						if (set_timer && loginEvent.wait > 0) {
+							re_load_timer = new Timer(loginEvent.wait);
+						}
+						if (loginEvent.wait > 0) {
+							sleep(loginEvent.wait);
+						} else if (loginEvent.wait == -1) {
+							getScriptController().stop();
+							return false;
+						}
 
-								re_load_timer = null;
-								if (loginEvent.task != null) {
-									try {
-										loginEvent.task.get();
-									} catch (final InterruptedException | ExecutionException ignored) {
-									}
-								}
-								return false;
+						re_load_timer = null;
+						if (loginEvent.task != null) {
+							try {
+								loginEvent.task.get();
+							} catch (final InterruptedException | ExecutionException ignored) {
 							}
 						}
+						return false;
 					}
-
-					if (isUsernameCorrect() && isPasswordValid()) {
-						attemptLogin();
-						sleep(Random.nextInt(1200, 2000));
-					} else if (!isUsernameCorrect()) {
-						final String username = bot.getAccount().toString();
-						final WidgetChild usernameTextBox = Widgets.get(WIDGET, WIDGET_LOGIN_USERNAME_TEXT);
-						if (!clickLoginInterface(usernameTextBox)) {
-							return false;
-						}
-						sleep(Random.nextInt(500, 700));
-						final int textLength = usernameTextBox.getText().length();
-						if (textLength > 0) {
-							erase(textLength);
-							return false;
-						}
-						Keyboard.sendText(username, false);
-						sleep(Random.nextInt(500, 700));
-					} else if (!isPasswordValid()) {
-						final String password = bot.getAccount().getPassword();
-						final WidgetChild passwordTextBox = Widgets.get(WIDGET, WIDGET_LOGIN_PASSWORD_TEXT);
-						if (!clickLoginInterface(passwordTextBox)) {
-							return false;
-						}
-						sleep(Random.nextInt(500, 700));
-						final int textLength = passwordTextBox.getText().length();
-						if (textLength > 0) {
-							erase(textLength);
-							return false;
-						}
-						Keyboard.sendText(password, false);
-						sleep(Random.nextInt(500, 700));
-					}
-					return null;
 				}
-			});
+			}
+
+			if (isUsernameCorrect() && isPasswordValid()) {
+				attemptLogin();
+				sleep(Random.nextInt(1200, 2000));
+			} else if (!isUsernameCorrect()) {
+				final String username = bot.getAccount().toString();
+				final WidgetChild usernameTextBox = Widgets.get(WIDGET, WIDGET_LOGIN_USERNAME_TEXT);
+				if (!clickLoginInterface(usernameTextBox)) {
+					return false;
+				}
+				sleep(Random.nextInt(500, 700));
+				final int textLength = usernameTextBox.getText().length();
+				if (textLength > 0) {
+					erase(textLength);
+					return false;
+				}
+				Keyboard.sendText(username, false);
+				sleep(Random.nextInt(500, 700));
+			} else if (!isPasswordValid()) {
+				final String password = bot.getAccount().getPassword();
+				final WidgetChild passwordTextBox = Widgets.get(WIDGET, WIDGET_LOGIN_PASSWORD_TEXT);
+				if (!clickLoginInterface(passwordTextBox)) {
+					return false;
+				}
+				sleep(Random.nextInt(500, 700));
+				final int textLength = passwordTextBox.getText().length();
+				if (textLength > 0) {
+					erase(textLength);
+					return false;
+				}
+				Keyboard.sendText(password, false);
+				sleep(Random.nextInt(500, 700));
+			}
+			return true;
 		}
 	}
 
@@ -133,49 +131,45 @@ public class Login extends PollingTaskScript implements PaintListener {
 			return state == Game.INDEX_LOBBY_SCREEN && bot.getAccount() != null;
 		}
 
-		public LobbyTask() {
-			super(new Callable<Boolean>() {
-				@Override
-				public Boolean call() throws Exception {
-					for (final LobbyEvent lobbyEvent : LobbyEvent.values()) {
-						final WidgetChild widgetChild = Widgets.get(WIDGET_LOBBY, lobbyEvent.child);
-						if (widgetChild != null && widgetChild.validate()) {
-							final String text = widgetChild.getText().toLowerCase().trim();
+		@Override
+		public Boolean call() {
+			for (final LobbyEvent lobbyEvent : LobbyEvent.values()) {
+				final WidgetChild widgetChild = Widgets.get(WIDGET_LOBBY, lobbyEvent.child);
+				if (widgetChild != null && widgetChild.validate()) {
+					final String text = widgetChild.getText().toLowerCase().trim();
 
-							if (text.contains(lobbyEvent.message.toLowerCase())) {
-								log.info("Handling lobby event: " + lobbyEvent.name());
-								Widgets.get(WIDGET_LOBBY, WIDGET_LOBBY_TRY_AGAIN).click(true);
+					if (text.contains(lobbyEvent.message.toLowerCase())) {
+						log.info("Handling lobby event: " + lobbyEvent.name());
+						Widgets.get(WIDGET_LOBBY, WIDGET_LOBBY_TRY_AGAIN).click(true);
 
-								if (lobbyEvent.wait > 0) {
-									sleep(lobbyEvent.wait);
-								} else if (lobbyEvent.wait == -1) {
-									bot.getScriptController().stop();
-									return false;
-								}
+						if (lobbyEvent.wait > 0) {
+							sleep(lobbyEvent.wait);
+						} else if (lobbyEvent.wait == -1) {
+							bot.getScriptController().stop();
+							return false;
+						}
 
-								if (lobbyEvent.task != null) {
-									try {
-										lobbyEvent.task.get();
-									} catch (final InterruptedException | ExecutionException ignored) {
-									}
-								}
-								return false;
+						if (lobbyEvent.task != null) {
+							try {
+								lobbyEvent.task.get();
+							} catch (final InterruptedException | ExecutionException ignored) {
 							}
 						}
+						return false;
 					}
+				}
+			}
 
-					final int world = Context.get().world;
-					if (world > 0) {
-						final Lobby.World world_wrapper;
-						if ((world_wrapper = Lobby.getWorld(world)) != null) {
-							Lobby.enterGame(world_wrapper);
-							return true;
-						}
-					}
-					Lobby.enterGame();
+			final int world = Context.get().world;
+			if (world > 0) {
+				final Lobby.World world_wrapper;
+				if ((world_wrapper = Lobby.getWorld(world)) != null) {
+					Lobby.enterGame(world_wrapper);
 					return true;
 				}
-			});
+			}
+			Lobby.enterGame();
+			return true;
 		}
 	}
 
