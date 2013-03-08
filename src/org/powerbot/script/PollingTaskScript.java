@@ -24,6 +24,9 @@ public abstract class PollingTaskScript extends PollingScript {
 		freq = 1000;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public final int poll() {
 		final ExecutorService executor = getScriptController().getExecutorService();
@@ -81,10 +84,20 @@ public abstract class PollingTaskScript extends PollingScript {
 		}
 	}
 
+	/**
+	 * Retrieves the polling frequency.
+	 *
+	 * @return the frequency in milliseconds
+	 */
 	public int getPollFrequency() {
 		return freq;
 	}
 
+	/**
+	 * Sets the polling frequency.
+	 *
+	 * @param freq the new frequency in milliseconds.
+	 */
 	public void setPollFrequency(final int freq) {
 		this.freq = freq;
 	}

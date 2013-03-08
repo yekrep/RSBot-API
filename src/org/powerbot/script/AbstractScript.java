@@ -61,6 +61,11 @@ public abstract class AbstractScript implements Script {
 		this.controller = controller;
 	}
 
+	/**
+	 * Sleeps for the specified duration.
+	 *
+	 * @param millis the duration in milliseconds.
+	 */
 	public void sleep(final int millis) {
 		try {
 			Thread.sleep(millis);
@@ -68,6 +73,12 @@ public abstract class AbstractScript implements Script {
 		}
 	}
 
+	/**
+	 * Sleeps for a random duration between the specified intervals.
+	 *
+	 * @param min the minimum duration (inclusive)
+	 * @param max the maximum duration (exclusive)
+	 */
 	public void sleep(final int min, final int max) {
 		sleep(Random.nextInt(min, max));
 	}

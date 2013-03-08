@@ -64,6 +64,7 @@ public abstract class PollingScript extends AbstractScript implements Suspendabl
 
 	/**
 	 * The body of the loop.
+	 *
 	 * @return the delay in milliseconds before the next call
 	 */
 	public abstract int poll();
