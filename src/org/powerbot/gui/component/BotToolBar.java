@@ -20,7 +20,7 @@ import org.powerbot.bot.Bot;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.gui.controller.BotInteract;
 import org.powerbot.gui.controller.BotInteract.Action;
-import org.powerbot.script.internal.ScriptContainer;
+import org.powerbot.script.internal.ScriptController;
 import org.powerbot.service.NetworkAccount;
 import org.powerbot.util.Tracker;
 import org.powerbot.util.io.CryptFile;
@@ -226,8 +226,8 @@ public final class BotToolBar extends JToolBar {
 			c.setVisible(e);
 		}
 
-		final ScriptContainer container = e ? Bot.instance().getScriptContainer() : null;
-		final boolean active = container != null && container.isActive(), running = active && !container.isPaused();
+		final ScriptController container = e ? Bot.instance().getScriptController() : null;
+		final boolean active = container != null, running = active && !container.isSuspended();
 		play.setIcon(playIcons[running ? 1 : 0]);
 		play.setToolTipText(running ? BotLocale.PAUSESCRIPT : active ? BotLocale.RESUMESCRIPT : BotLocale.PLAYSCRIPT);
 		stop.setEnabled(active);

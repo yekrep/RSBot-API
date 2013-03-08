@@ -1,5 +1,7 @@
 package org.powerbot.script.internal.randoms;
 
+import java.util.concurrent.FutureTask;
+
 import org.powerbot.script.xenon.util.Random;
 import org.powerbot.script.xenon.util.Timer;
 import org.powerbot.game.api.methods.Widgets;
@@ -21,10 +23,18 @@ public class WidgetCloser extends AntiRandom {
 	};
 	private final Timer threshold;
 	private WidgetChild component;
-	private int tries;
+	private volatile int tries;
 
 	public WidgetCloser() {
 		this.threshold = new Timer(0);
+
+		getTasks(State.STOP).add(new FutureTask<Boolean>(new Runnable() {
+			@Override
+			public void run() {
+				component = null;
+				tries = 0;
+			}
+		}, true));
 	}
 
 	@Override
@@ -42,7 +52,7 @@ public class WidgetCloser extends AntiRandom {
 	}
 
 	@Override
-	public int loop() {
+	public int poll() {
 		if (!valid()) return -1;
 
 		if (++tries > 3) {
@@ -54,11 +64,5 @@ public class WidgetCloser extends AntiRandom {
 			while (timer.isRunning() && component.validate()) sleep(100, 250);
 		}
 		return 0;
-	}
-
-	@Override
-	public void onFinish() {
-		component = null;
-		tries = 0;
 	}
 }

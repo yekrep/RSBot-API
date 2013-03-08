@@ -3,6 +3,8 @@ package org.powerbot.script.internal.randoms;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.FutureTask;
 
 import org.powerbot.bot.Bot;
 import org.powerbot.game.api.Manifest;
@@ -15,7 +17,6 @@ import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Timer;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
 import org.powerbot.game.bot.Context;
-import org.powerbot.script.task.Task;
 
 /**
  * @author Timer
@@ -44,7 +45,7 @@ public class Login extends AntiRandom {
 	}
 
 	@Override
-	public int loop() {
+	public int poll() {
 		if (!valid()) return -1;
 
 		if (Game.getClientState() == Game.INDEX_LOBBY_SCREEN) {
@@ -60,12 +61,15 @@ public class Login extends AntiRandom {
 						if (lobbyEvent.wait > 0) {
 							sleep(lobbyEvent.wait);
 						} else if (lobbyEvent.wait == -1) {
-							bot.getScriptContainer().stop();
+							bot.getScriptController().close();
 							return -1;
 						}
 
 						if (lobbyEvent.task != null) {
-							getContainer().submit(lobbyEvent.task);
+							try {
+								lobbyEvent.task.get();
+							} catch (final InterruptedException | ExecutionException ignored) {
+							}
 						}
 						return 0;
 					}
@@ -101,14 +105,16 @@ public class Login extends AntiRandom {
 						if (loginEvent.wait > 0) {
 							sleep(loginEvent.wait);
 						} else if (loginEvent.wait == -1) {
-							bot.getScriptContainer().stop();
+							bot.getScriptController().close();
 							return -1;
 						}
 
 						re_load_timer = null;
 						if (loginEvent.task != null) {
-							getContainer().submit(loginEvent.task);
-							loginEvent.task.join();
+							try {
+								loginEvent.task.get();
+							} catch (final InterruptedException | ExecutionException ignored) {
+							}
 						}
 						return 0;
 					}
@@ -220,18 +226,18 @@ public class Login extends AntiRandom {
 	}
 
 	private enum LoginEvent {
-		TOKEN_FAILURE(WIDGET_LOGIN_ERROR, "game session", 1000 * 5 * 60, new Task() {
+		TOKEN_FAILURE(WIDGET_LOGIN_ERROR, "game session", 1000 * 5 * 60, new FutureTask<Boolean>(new Runnable() {
 			@Override
-			public void execute() {
+			public void run() {
 				Context.resolve().refresh();
 			}
-		}),
+		}, true)),
 		INVALID_PASSWORD(WIDGET_LOGIN_ERROR, "Invalid username or password", -1);
 		private final String message;
 		private final int child, wait;
-		private final Task task;
+		private final FutureTask<Boolean> task;
 
-		LoginEvent(final int child, final String message, final int wait, final Task task) {
+		LoginEvent(final int child, final String message, final int wait, final FutureTask<Boolean> task) {
 			this.child = child;
 			this.message = message;
 			this.wait = wait;
@@ -247,9 +253,9 @@ public class Login extends AntiRandom {
 		LOGGED_IN(WIDGET_LOBBY_ERROR, "last session", Random.nextInt(1000, 4000));
 		private final String message;
 		private final int child, wait;
-		private final Task task;
+		private final FutureTask<Boolean> task;
 
-		LobbyEvent(final int child, final String message, final int wait, final Task task) {
+		LobbyEvent(final int child, final String message, final int wait, final FutureTask<Boolean> task) {
 			this.child = child;
 			this.message = message;
 			this.wait = wait;

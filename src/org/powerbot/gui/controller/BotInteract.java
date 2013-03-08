@@ -16,7 +16,7 @@ import org.powerbot.gui.BotScripts;
 import org.powerbot.gui.BotSignin;
 import org.powerbot.gui.component.BotLocale;
 import org.powerbot.ipc.Controller;
-import org.powerbot.script.internal.ScriptContainer;
+import org.powerbot.script.internal.ScriptController;
 import org.powerbot.script.xenon.Game;
 import org.powerbot.service.NetworkAccount;
 import org.powerbot.util.Configuration;
@@ -111,14 +111,14 @@ public final class BotInteract {
 
 	public static synchronized void scriptPlayPause() {
 		final Bot bot = Bot.instance();
-		final ScriptContainer container = bot.getScriptContainer();
-		if (container != null && container.isActive()) {
-			if (container.isPaused()) {
+		final ScriptController container = bot.getScriptController();
+		if (container != null) {
+			if (container.isSuspended()) {
 				Tracker.getInstance().trackEvent("script", "resume");
-				container.setPaused(false);
+				container.resume();
 			} else {
 				Tracker.getInstance().trackEvent("script", "pause");
-				container.setPaused(true);
+				container.suspend();
 			}
 			return;
 		}
@@ -133,11 +133,11 @@ public final class BotInteract {
 			return;
 		}
 		final Bot bot = Bot.instance();
-		final ScriptContainer container = bot.getScriptContainer();
+		final ScriptController container = bot.getScriptController();
 		if (container != null) {
-			if (!container.isStopped()) {
+			if (!container.isClosing()) {
 				Tracker.getInstance().trackEvent("script", "stop");
-				container.stop();
+				container.close();
 			}
 		}
 	}

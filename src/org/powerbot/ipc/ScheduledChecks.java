@@ -8,7 +8,8 @@ import java.util.logging.Logger;
 
 import org.powerbot.bot.Bot;
 import org.powerbot.game.api.Manifest;
-import org.powerbot.script.internal.ScriptContainer;
+import org.powerbot.script.Script;
+import org.powerbot.script.internal.ScriptController;
 import org.powerbot.service.scripts.ScriptDefinition;
 import org.powerbot.util.Configuration;
 import org.powerbot.util.Tracker;
@@ -35,23 +36,23 @@ public final class ScheduledChecks implements ActionListener {
 			Tracker.getInstance().trackEvent("uptime", Long.toString(uptime));
 		}
 
-		final ScriptContainer container;
-		if (Bot.instantiated() && (container = Bot.instance().getScriptContainer()) != null) {
-			final ScriptDefinition definition;
-			if ((definition = container.getDefinition()) != null) {
+		final ScriptController controller = Bot.instance().getScriptController();
+		if (controller != null) {
+			final ScriptDefinition definition = Bot.instance().getScriptDefinition();
+			if (definition != null) {
 				if (definition.local && System.nanoTime() > timeout.get()) {
 					Tracker.getInstance().trackEvent("script", "timeout", definition.getName());
 					log.info("Local script restriction - script stopped");
-					container.stop();
+					controller.close();
 				}
-				final Manifest manifest = container.getScript().getClass().getAnnotation(Manifest.class);
-				if (manifest == null) {
-					container.stop();
-				} else {
+			}
+			for (final Script script : controller.getScripts()) {
+				final Manifest manifest = script.getClass().getAnnotation(Manifest.class);
+				if (manifest != null) {
 					if (manifest.singleinstance()) {
 						if (Controller.getInstance().getRunningScripts().contains(definition.getID())) {
 							Tracker.getInstance().trackEvent("script", "singleinstance-bypass", definition.getID());
-							container.stop();
+							controller.close();
 						}
 					}
 				}

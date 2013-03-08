@@ -41,7 +41,7 @@ public class Environment {
 	public static File getStorageDirectory() {
 		final File dir = new File(
 				System.getProperty("java.io.tmpdir"),
-				Bot.instance().getScriptContainer().getDefinition().getName().replace('.', File.pathSeparatorChar)
+				Bot.instance().getScriptDefinition().getName().replace('.', File.pathSeparatorChar)
 		);
 		if (!dir.isDirectory()) {
 			dir.mkdirs();

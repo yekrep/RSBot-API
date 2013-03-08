@@ -29,7 +29,7 @@ public class TicketDestroy extends AntiRandom {
 	}
 
 	@Override
-	public int loop() {
+	public int poll() {
 		if (!valid()) return -1;
 
 		final WidgetChild child = item.getWidgetChild();

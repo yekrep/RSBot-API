@@ -29,7 +29,6 @@ import java.util.zip.InflaterInputStream;
 import org.powerbot.bot.Bot;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.gui.controller.BotInteract;
-import org.powerbot.script.internal.ScriptContainer;
 import org.powerbot.service.NetworkAccount;
 import org.powerbot.service.scripts.ScriptDefinition;
 import org.powerbot.util.Configuration;
@@ -159,12 +158,9 @@ public final class Controller implements Runnable {
 				case Message.SCRIPT:
 					final ConcurrentLinkedQueue<String> list = new ConcurrentLinkedQueue<>();
 					if (Bot.instantiated()) {
-						final ScriptContainer container = Bot.instance().getScriptContainer();
-						if (container != null && container.isActive()) {
-							final ScriptDefinition def = container.getDefinition();
-							if (def != null && def.getID() != null && !def.getID().isEmpty()) {
-								list.add(def.getID());
-							}
+						final ScriptDefinition def = Bot.instance().getScriptDefinition();
+						if (def != null && def.getID() != null && !def.getID().isEmpty()) {
+							list.add(def.getID());
 						}
 					}
 					reply.setArgs(list.toArray());

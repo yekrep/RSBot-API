@@ -16,7 +16,7 @@ public class BankPin extends AntiRandom {
 	}
 
 	@Override
-	public int loop() {
+	public int poll() {
 		if (!valid()) return -1;
 
 		final String pin = String.format(getPin());

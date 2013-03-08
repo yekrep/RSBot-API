@@ -1,6 +1,5 @@
 package org.powerbot.script.internal;
 
-import java.io.Closeable;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.PriorityQueue;
@@ -19,15 +18,16 @@ import org.powerbot.script.Suspendable;
  *
  * @author Paris
  */
-public class ScriptController implements Runnable, Closeable, Suspendable {
+public class ScriptController implements Runnable, Suspendable {
 	protected final ExecutorService executor;
 	protected final Queue<Script> scripts;
-	protected final AtomicBoolean suspended;
+	protected final AtomicBoolean suspended, closing;
 
 	public ScriptController() {
 		executor = new NamedCachedThreadPoolExecutor();
 		scripts = new PriorityQueue<Script>(4, new ScriptQueueComparator());
 		suspended = new AtomicBoolean(false);
+		closing = new AtomicBoolean(false);
 	}
 
 	public ScriptController(final Script... scripts) {
@@ -44,11 +44,15 @@ public class ScriptController implements Runnable, Closeable, Suspendable {
 		call(State.START);
 	}
 
-	@Override
 	public void close() {
+		closing.set(true);
 		while (!scripts.isEmpty()) {
 			call(scripts.poll(), State.STOP);
 		}
+	}
+
+	public boolean isClosing() {
+		return closing.get();
 	}
 
 	@Override

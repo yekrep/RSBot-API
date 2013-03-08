@@ -3,7 +3,7 @@ package org.powerbot.bot;
 import org.powerbot.core.script.job.Task;
 import org.powerbot.game.bot.Context;
 import org.powerbot.gui.BotChrome;
-import org.powerbot.script.internal.ScriptContainer;
+import org.powerbot.script.internal.ScriptController;
 import org.powerbot.script.xenon.Game;
 
 public class BotComposite {//TODO remove the use of a composite ... export data elsewhere
@@ -16,9 +16,9 @@ public class BotComposite {//TODO remove the use of a composite ... export data 
 
 	public void reload() {//TODO re-evaluate re-load method
 		Bot.log.info("Refreshing environment");
-		final ScriptContainer container = bot.getScriptContainer();
-		if (container != null && container.isActive()) {
-			container.setPaused(true);
+		final ScriptController container = bot.getScriptController();
+		if (container != null) {
+			container.suspend();
 		}
 
 		bot.terminateApplet();
@@ -27,8 +27,8 @@ public class BotComposite {//TODO remove the use of a composite ... export data 
 		new Thread(bot.threadGroup, Bot.instance()).start();
 		BotChrome.getInstance().panel.setBot(bot);
 		while (Bot.client() == null || Game.getClientState() == -1) Task.sleep(1000);
-		if (container != null && container.isActive()) {
-			container.setPaused(false);
+		if (container != null) {
+			container.resume();
 		}
 
 		bot.refreshing = false;

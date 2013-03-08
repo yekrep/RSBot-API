@@ -7,6 +7,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.FutureTask;
 import java.util.logging.Logger;
 
+import org.powerbot.script.xenon.util.Random;
+
 /**
  * An abstract implementation of {@code Script}.
  *
@@ -40,5 +42,16 @@ public abstract class AbstractScript implements Script {
 	@Override
 	public final int getPriority() {
 		return 0;
+	}
+
+	public void sleep(final int millis) {
+		try {
+			Thread.sleep(millis);
+		} catch (final InterruptedException e) {
+		}
+	}
+
+	public void sleep(final int min, final int max) {
+		sleep(Random.nextInt(min, max));
 	}
 }

@@ -24,7 +24,7 @@ import org.powerbot.script.Script;
 import org.powerbot.script.event.PaintEvent;
 import org.powerbot.script.event.TextPaintEvent;
 import org.powerbot.script.internal.Constants;
-import org.powerbot.script.internal.ScriptContainer;
+import org.powerbot.script.internal.ScriptController;
 import org.powerbot.script.internal.input.MouseHandler;
 import org.powerbot.service.GameAccounts;
 import org.powerbot.service.scripts.ScriptDefinition;
@@ -53,7 +53,8 @@ public final class Bot implements Runnable {//TODO re-write bot
 	private MouseHandler mouseHandler;
 	private EventMulticaster multicaster;
 	private MouseExecutor oldMouse;
-	private ScriptContainer scriptContainer;
+	private ScriptController scriptController;
+	private ScriptDefinition scriptDefinition;
 
 	private Bot() {
 		appletContainer = null;
@@ -170,8 +171,8 @@ public final class Bot implements Runnable {//TODO re-write bot
 	 */
 	public void stop() {
 		if (mouseHandler != null) mouseHandler().stop();
-		if (scriptContainer != null) {
-			scriptContainer.stop();
+		if (scriptController != null) {
+			scriptController.close();
 		}
 		log.info("Unloading environment");
 		if (multicaster != null) {
@@ -203,8 +204,9 @@ public final class Bot implements Runnable {//TODO re-write bot
 	}
 
 	public void startScript(final Script script, final ScriptDefinition definition) {
-		scriptContainer = new ScriptContainer(multicaster);
-		scriptContainer.start(script, definition);
+		scriptController = new ScriptController(); // TODO: multicaster?!
+		scriptController.getScripts().add(script);
+		scriptDefinition = definition;
 	}
 
 	public BufferedImage getImage() {
@@ -288,8 +290,12 @@ public final class Bot implements Runnable {//TODO re-write bot
 		this.account = account;
 	}
 
-	public ScriptContainer getScriptContainer() {
-		return this.scriptContainer;
+	public ScriptController getScriptController() {
+		return this.scriptController;
+	}
+
+	public ScriptDefinition getScriptDefinition() {
+		return this.scriptDefinition;
 	}
 
 	public synchronized void refresh() {
