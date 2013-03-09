@@ -4,22 +4,22 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.powerbot.bot.Bot;
-import org.powerbot.script.internal.wrappers.Deque;
-import org.powerbot.script.xenon.util.Filter;
-import org.powerbot.script.xenon.wrappers.GroundItem;
-import org.powerbot.script.xenon.wrappers.Item;
-import org.powerbot.script.xenon.wrappers.Player;
-import org.powerbot.script.xenon.wrappers.Tile;
 import org.powerbot.game.api.util.node.Nodes;
 import org.powerbot.game.client.Client;
 import org.powerbot.game.client.HashTable;
 import org.powerbot.game.client.NodeDeque;
 import org.powerbot.game.client.NodeListCache;
 import org.powerbot.game.client.RSItem;
+import org.powerbot.script.internal.wrappers.Deque;
+import org.powerbot.script.xenon.util.Filter;
+import org.powerbot.script.xenon.wrappers.GroundItem;
+import org.powerbot.script.xenon.wrappers.Item;
+import org.powerbot.script.xenon.wrappers.Player;
+import org.powerbot.script.xenon.wrappers.Tile;
 
 public class GroundItems {
 	private static final int LOADED_DIST = 104;
-	
+
 	public static Set<GroundItem> getLoaded() {
 		return getLoaded(LOADED_DIST);
 	}
@@ -34,17 +34,17 @@ public class GroundItems {
 		if (table == null) return items;
 
 		final Player player = Players.getLocal();
-		final Tile location, base;
-		if (player == null || (location = player.getLocation()) == null || (base = Game.getMapBase()) == null) {
+		final Tile location;
+		if (player == null || (location = player.getLocation()) == null) {
 			return items;
 		}
-		int _x = location.getX() - base.getX(), _y = location.getY() - base.getY();
+		int _x = location.getX(), _y = location.getY();
 		final int plane = client.getPlane();
 		long id;
 		NodeListCache cache;
 		NodeDeque deque;
-		for (int x = Math.max(0, _x - range); x < Math.min(LOADED_DIST, _x + range); x++) {
-			for (int y = Math.max(0, _y - range); y < Math.min(LOADED_DIST, _y + range); y++) {
+		for (int x = _x - range; x < _x + range; x++) {
+			for (int y = _y - range; y < _y + range; y++) {
 				id = x | y << 14 | plane << 28;
 				cache = (NodeListCache) Nodes.lookup(table, id);
 				if (cache == null || (deque = cache.getNodeList()) == null) continue;
@@ -67,7 +67,6 @@ public class GroundItems {
 		final Set<GroundItem> set = new HashSet<>(items.size());
 		for (final GroundItem item : items) if (filter.accept(item)) set.add(item);
 		return set;
-
 	}
 
 	public static GroundItem getNearest(final Filter<GroundItem> filter) {
