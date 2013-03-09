@@ -1,6 +1,8 @@
 package org.powerbot.script.xenon.wrappers;
 
-public class GroundItem implements Locatable {//TODO validatable, targetable
+import java.awt.Point;
+
+public class GroundItem extends Interactive implements Locatable {//TODO validatable
 	private final Tile tile;
 	private final Item item;
 
@@ -23,5 +25,25 @@ public class GroundItem implements Locatable {//TODO validatable, targetable
 		if (o == null || !(o instanceof GroundItem)) return false;
 		final GroundItem g = (GroundItem) o;
 		return g.tile.equals(this.tile) && g.item.equals(this.item);
+	}
+
+	@Override
+	public Point getInteractPoint() {
+		return tile.getInteractPoint();
+	}
+
+	@Override
+	public Point getNextPoint() {
+		return tile.getNextPoint();
+	}
+
+	@Override
+	public Point getCenterPoint() {
+		return tile.getCenterPoint();
+	}
+
+	@Override
+	public boolean contains(final Point point) {
+		return tile.contains(point);
 	}
 }
