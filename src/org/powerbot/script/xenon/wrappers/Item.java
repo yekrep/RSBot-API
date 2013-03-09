@@ -24,6 +24,15 @@ public class Item {//TODO complete, equals
 		this.component = component;
 	}
 
+	public int getId() {
+		return this.id;
+	}
+
+	public int getStackSize() {
+		return this.stackSize;
+	}
+
+	@Override
 	public boolean equals(final Object o) {
 		if (o == null || !(o instanceof Item)) return false;
 		final Item i = (Item) o;
