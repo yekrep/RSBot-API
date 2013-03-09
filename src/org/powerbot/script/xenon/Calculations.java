@@ -37,7 +37,7 @@ public class Calculations {
 	}
 
 	public static boolean isPointOnScreen(final int x, final int y) {
-		return false;//TODO
+		return true;//TODO
 	}
 
 	public static int tileHeight(final int x, final int y) {
