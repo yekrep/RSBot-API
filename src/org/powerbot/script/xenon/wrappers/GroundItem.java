@@ -21,13 +21,6 @@ public class GroundItem extends Interactive implements Locatable {//TODO validat
 	}
 
 	@Override
-	public boolean equals(final Object o) {
-		if (o == null || !(o instanceof GroundItem)) return false;
-		final GroundItem g = (GroundItem) o;
-		return g.tile.equals(this.tile) && g.item.equals(this.item);
-	}
-
-	@Override
 	public Point getInteractPoint() {
 		return tile.getInteractPoint();
 	}
@@ -45,5 +38,12 @@ public class GroundItem extends Interactive implements Locatable {//TODO validat
 	@Override
 	public boolean contains(final Point point) {
 		return tile.contains(point);
+	}
+
+	@Override
+	public boolean equals(final Object o) {
+		if (o == null || !(o instanceof GroundItem)) return false;
+		final GroundItem g = (GroundItem) o;
+		return g.tile.equals(this.tile) && g.item.equals(this.item);
 	}
 }
