@@ -14,11 +14,11 @@ import org.powerbot.script.task.Task;
  *
  * @author Paris
  */
-public abstract class PollingTaskScript extends PollingScript {
+public abstract class TaskScript extends PollingScript {
 	private final Queue<Task> tasks;
 	protected volatile int freq;
 
-	public PollingTaskScript() {
+	public TaskScript() {
 		tasks = new PriorityQueue<Task>(4, new TaskQueueComparator());
 		freq = 1000;
 	}

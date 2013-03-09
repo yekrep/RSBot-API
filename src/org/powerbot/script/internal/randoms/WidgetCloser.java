@@ -2,11 +2,11 @@ package org.powerbot.script.internal.randoms;
 
 import org.powerbot.game.api.methods.Widgets;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
-import org.powerbot.script.PollingTaskScript;
+import org.powerbot.script.TaskScript;
 import org.powerbot.script.task.AsyncTask;
 
 @RandomManifest(name = "Widget closer")
-public class WidgetCloser extends PollingTaskScript {
+public class WidgetCloser extends TaskScript {
 
 	private static final int[] COMPONENTS = {
 		21 << 16 | 43, // beholding a player's statuette (duellist's cap)

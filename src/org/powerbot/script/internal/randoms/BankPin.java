@@ -1,6 +1,6 @@
 package org.powerbot.script.internal.randoms;
 
-import org.powerbot.script.PollingTaskScript;
+import org.powerbot.script.TaskScript;
 import org.powerbot.script.task.AsyncTask;
 import org.powerbot.game.api.methods.Settings;
 import org.powerbot.game.api.methods.Widgets;
@@ -8,7 +8,7 @@ import org.powerbot.game.api.wrappers.widget.WidgetChild;
 import org.powerbot.game.bot.Context;
 
 @RandomManifest(name = "Bank Pin")
-public class BankPin extends PollingTaskScript {
+public class BankPin extends TaskScript {
 
 	public BankPin() {
 		submit(new Task());

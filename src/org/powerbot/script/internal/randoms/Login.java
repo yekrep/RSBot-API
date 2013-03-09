@@ -19,7 +19,7 @@ import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Timer;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
 import org.powerbot.game.bot.Context;
-import org.powerbot.script.PollingTaskScript;
+import org.powerbot.script.TaskScript;
 import org.powerbot.script.event.PaintListener;
 import org.powerbot.script.task.BlockingTask;
 
@@ -27,7 +27,7 @@ import org.powerbot.script.task.BlockingTask;
  * @author Timer
  */
 @RandomManifest(name = "Login")
-public class Login extends PollingTaskScript implements PaintListener {
+public class Login extends TaskScript implements PaintListener {
 	private static final int WIDGET = 596;
 	private static final int WIDGET_LOGIN_ERROR = 13;
 	private static final int WIDGET_LOGIN_TRY_AGAIN = 65;
