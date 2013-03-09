@@ -12,12 +12,13 @@ import javax.swing.Timer;
  *
  * @author Paris
  */
-public abstract class PollingScript extends AbstractScript implements Suspendable {
+public abstract class PollingScript extends AbstractScript implements Suspendable, Stoppable {
 	private final Timer timer;
-	private final AtomicBoolean suspended;
+	private final AtomicBoolean suspended, stopping;
 
 	public PollingScript() {
 		suspended = new AtomicBoolean(false);
+		stopping = new AtomicBoolean(false);
 
 		timer = new Timer(0, new ActionListener() {
 			@Override
@@ -60,6 +61,14 @@ public abstract class PollingScript extends AbstractScript implements Suspendabl
 				resume();
 			}
 		}, true));
+
+		getTasks(State.STOP).add(new FutureTask<Boolean>(new Runnable() {
+			@Override
+			public void run() {
+				stopping.set(true);
+				stop();
+			}
+		}, true));
 	}
 
 	/**
@@ -70,11 +79,18 @@ public abstract class PollingScript extends AbstractScript implements Suspendabl
 	public abstract int poll();
 
 	/**
-	 * Called when the script is first started.
+	 * Initiates this {@code Script}.
 	 */
 	@Override
 	public final void run() {
 		timer.start();
+		start();
+	}
+
+	/**
+	 * Called when the script is first started.
+	 */
+	public void start() {
 	}
 
 	/**
@@ -97,5 +113,20 @@ public abstract class PollingScript extends AbstractScript implements Suspendabl
 	 */
 	@Override
 	public synchronized void resume() {
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public final boolean isStopping() {
+		return stopping.get();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public synchronized void stop() {
 	}
 }
