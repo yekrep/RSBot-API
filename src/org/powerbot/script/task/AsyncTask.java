@@ -1,11 +1,18 @@
 package org.powerbot.script.task;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 /**
  * An asynchronous {@code Task}.
  *
  * @author Paris
  */
 public abstract class AsyncTask implements Task, Runnable {
+	private final AtomicInteger priority;
+
+	public AsyncTask() {
+		priority = new AtomicInteger(0);
+	}
 
 	/**
 	 * {@inheritDoc}
@@ -24,6 +31,14 @@ public abstract class AsyncTask implements Task, Runnable {
 	 */
 	@Override
 	public int getPriority() {
-		return 0;
+		return priority.get();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void setPriority(final int priority) {
+		this.priority.set(priority);
 	}
 }

@@ -1,6 +1,7 @@
 package org.powerbot.script.task;
 
 import java.util.concurrent.Callable;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * A synchronous {@code Task} which can interrupt the following {@code Task}s in the group.
@@ -8,6 +9,11 @@ import java.util.concurrent.Callable;
  * @author Paris
  */
 public abstract class BlockingTask implements Task, Callable<Boolean> {
+	private final AtomicInteger priority;
+
+	public BlockingTask() {
+		priority = new AtomicInteger(0);
+	}
 
 	/**
 	 * {@inheritDoc}
@@ -29,5 +35,13 @@ public abstract class BlockingTask implements Task, Callable<Boolean> {
 	@Override
 	public int getPriority() {
 		return 0;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void setPriority(final int priority) {
+		this.priority.set(priority);
 	}
 }

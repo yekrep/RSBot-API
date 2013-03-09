@@ -14,7 +14,7 @@ import org.powerbot.script.xenon.util.Random;
  *
  * @author Paris
  */
-public abstract class AbstractScript implements Script {
+public abstract class AbstractScript implements Script, Prioritizable {
 	protected final Logger log = Logger.getLogger(getClass().getName());
 	private final Map<State, Collection<FutureTask<Boolean>>> tasks;
 	private ScriptController controller;
@@ -41,8 +41,15 @@ public abstract class AbstractScript implements Script {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public final int getPriority() {
+	public int getPriority() {
 		return 0;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public final void setPriority(final int priority) {
 	}
 
 	/**
