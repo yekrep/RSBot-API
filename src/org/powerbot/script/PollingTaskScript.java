@@ -4,7 +4,6 @@ import java.util.Comparator;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Stack;
-import java.util.concurrent.ExecutorService;
 
 import org.powerbot.script.task.AsyncTask;
 import org.powerbot.script.task.BlockingTask;
@@ -29,7 +28,7 @@ public abstract class PollingTaskScript extends PollingScript {
 	 */
 	@Override
 	public final int poll() {
-		final ExecutorService executor = getScriptController().getExecutorService();
+		final ExecutorDispatch<Boolean> executor = getScriptController().getExecutorService();
 		final Stack<BlockingTask> sync = new Stack<BlockingTask>();
 		for (final Task task : tasks) {
 			if (task.isValid()) {

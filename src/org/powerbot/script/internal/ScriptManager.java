@@ -3,11 +3,15 @@ package org.powerbot.script.internal;
 import java.util.Comparator;
 import java.util.PriorityQueue;
 import java.util.Queue;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import javax.swing.SwingUtilities;
+
+import org.powerbot.script.ExecutorDispatch;
 import org.powerbot.script.Script;
 import org.powerbot.script.Script.State;
 import org.powerbot.script.ScriptController;
@@ -19,7 +23,7 @@ import org.powerbot.script.Suspendable;
  *
  * @author Paris
  */
-public class ScriptManager implements Runnable, Stoppable, Suspendable {
+public class ScriptManager implements ExecutorDispatch<Boolean>, Runnable, Stoppable, Suspendable {
 	protected final ExecutorService executor;
 	protected final Queue<Script> scripts;
 	protected final AtomicBoolean suspended, stopping;
@@ -110,6 +114,43 @@ public class ScriptManager implements Runnable, Stoppable, Suspendable {
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void submit(final Runnable task) {
+		executor.submit(task);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void submit(final Runnable task, final Boolean result) {
+		executor.submit(task, result);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void submit(final Callable<Boolean> task) {
+		executor.submit(task);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void submitSwing(final Runnable task) {
+		executor.submit(new Runnable() {
+			@Override
+			public void run() {
+				SwingUtilities.invokeLater(task);
+			}
+		});
+	}
+
 	private final class ScriptQueueComparator implements Comparator<Script> {
 
 		@Override
@@ -150,8 +191,8 @@ public class ScriptManager implements Runnable, Stoppable, Suspendable {
 		}
 
 		@Override
-		public ExecutorService getExecutorService() {
-			return manager.getExecutorService();
+		public ExecutorDispatch<Boolean> getExecutorService() {
+			return manager;
 		}
 	}
 }

@@ -1,7 +1,5 @@
 package org.powerbot.script;
 
-import java.util.concurrent.ExecutorService;
-
 /**
  * A {@code Script} controller.
  *
@@ -10,9 +8,9 @@ import java.util.concurrent.ExecutorService;
 public interface ScriptController extends Stoppable, Suspendable {
 
 	/**
-	 * Retrieves the attached {@code ExecutorService}.
+	 * Retrieves the attached {@code ExecutorDispatch}.
 	 *
-	 * @return an {@code ExecutorService}
+	 * @return an {@code ExecutorDispatch}
 	 */
-	public ExecutorService getExecutorService();
+	public ExecutorDispatch<Boolean> getExecutorService();
 }
