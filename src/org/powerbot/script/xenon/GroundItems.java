@@ -24,7 +24,7 @@ public class GroundItems {
 		return getLoaded(LOADED_DIST);
 	}
 
-	public static Set<GroundItem> getLoaded(final int range) {
+	public static Set<GroundItem> getLoaded(final int _x, final int _y, final int range) {
 		final Set<GroundItem> items = new HashSet<>();
 
 		final Client client = Bot.client();
@@ -33,18 +33,12 @@ public class GroundItems {
 		final HashTable table = client.getRSItemHashTable();
 		if (table == null) return items;
 
-		final Player player = Players.getLocal();
-		final Tile location;
-		if (player == null || (location = player.getLocation()) == null) {
-			return items;
-		}
-		int _x = location.getX(), _y = location.getY();
 		final int plane = client.getPlane();
 		long id;
 		NodeListCache cache;
 		NodeDeque deque;
-		for (int x = _x - range; x < _x + range; x++) {
-			for (int y = _y - range; y < _y + range; y++) {
+		for (int x = _x - range; x <= _x + range; x++) {
+			for (int y = _y - range; y <= _y + range; y++) {
 				id = x | y << 14 | plane << 28;
 				cache = (NodeListCache) Nodes.lookup(table, id);
 				if (cache == null || (deque = cache.getNodeList()) == null) continue;
@@ -57,9 +51,19 @@ public class GroundItems {
 		return items;
 	}
 
+	public static Set<GroundItem> getLoaded(final int range) {
+		final Player player = Players.getLocal();
+		final Tile location;
+		if (player == null || (location = player.getLocation()) == null) {
+			return new HashSet<>(0);
+		}
+
+		int x = location.getX(), y = location.getY();
+		return getLoaded(x, y, range);
+	}
+
 	public static Set<GroundItem> getLoaded(final Filter<GroundItem> filter) {
 		return getLoaded(LOADED_DIST, filter);
-
 	}
 
 	public static Set<GroundItem> getLoaded(final int range, final Filter<GroundItem> filter) {
