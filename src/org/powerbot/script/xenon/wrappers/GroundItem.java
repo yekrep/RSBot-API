@@ -1,8 +1,11 @@
 package org.powerbot.script.xenon.wrappers;
 
 import java.awt.Point;
+import java.util.Set;
 
-public class GroundItem extends Interactive implements Locatable {//TODO validatable
+import org.powerbot.script.xenon.GroundItems;
+
+public class GroundItem extends Interactive implements Locatable, Validatable {
 	private final Tile tile;
 	private final Item item;
 
@@ -38,6 +41,12 @@ public class GroundItem extends Interactive implements Locatable {//TODO validat
 	@Override
 	public boolean contains(final Point point) {
 		return tile.contains(point);
+	}
+
+	@Override
+	public boolean isValid() {
+		final Set<GroundItem> items = GroundItems.getLoaded(tile.getX(), tile.getY(), 0);
+		return items.contains(this);
 	}
 
 	@Override
