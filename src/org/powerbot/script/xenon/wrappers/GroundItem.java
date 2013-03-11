@@ -21,6 +21,7 @@ import org.powerbot.script.xenon.util.Random;
 public class GroundItem extends Interactive implements Locatable, Validatable {
 	private final Tile tile;
 	private final Item item;
+	private int faceIndex = -1;
 
 	public GroundItem(final Tile tile, final Item item) {
 		this.tile = tile;
@@ -80,16 +81,27 @@ public class GroundItem extends Interactive implements Locatable, Validatable {
 
 	@Override
 	public Point getInteractPoint() {
+		final Model model = getModel();
+		if (model != null) {
+			Point point = model.getCentroid(faceIndex);
+			if (point != null) return point;
+			point = model.getCentroid(faceIndex = model.nextTriangle());
+			if (point != null) return point;
+		}
 		return tile.getInteractPoint();
 	}
 
 	@Override
 	public Point getNextPoint() {
+		final Model model = getModel();
+		if (model != null) model.getNextPoint();
 		return tile.getNextPoint();
 	}
 
 	@Override
 	public Point getCenterPoint() {
+		final Model model = getModel();
+		if (model != null) model.getCenterPoint();
 		return tile.getCenterPoint();
 	}
 
