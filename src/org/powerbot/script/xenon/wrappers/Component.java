@@ -37,6 +37,16 @@ public class Component {//TODO isValid, getChildren, isVisible, targetable, vali
 		return this.index;
 	}
 
+	public Component[] getChildren() {
+		final RSInterface component = getInternalComponent();
+		final RSInterface[] interfaces;
+		if (component != null && (interfaces = component.getComponents()) != null) {
+			final Component[] components = new Component[interfaces.length];
+			for (int i = 0; i < interfaces.length; i++) components[i] = new Component(widget, this, i);
+		}
+		return new Component[0];
+	}
+
 	public String[] getActions() {
 		final RSInterface component = getInternalComponent();
 		return component != null ? component.getActions() : null;
