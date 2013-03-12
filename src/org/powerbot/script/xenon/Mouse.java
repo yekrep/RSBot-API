@@ -4,6 +4,7 @@ import java.awt.Point;
 import java.awt.event.MouseEvent;
 
 import org.powerbot.bot.Bot;
+import org.powerbot.game.client.Client;
 import org.powerbot.script.internal.input.MouseHandler;
 import org.powerbot.script.internal.input.MouseTarget;
 import org.powerbot.script.task.Task;
@@ -11,6 +12,41 @@ import org.powerbot.script.xenon.util.Filter;
 import org.powerbot.script.xenon.wrappers.Targetable;
 
 public class Mouse {
+	public static Point getLocation() {
+		final Client client = Bot.client();
+		final org.powerbot.game.client.input.Mouse mouse;
+		if (client == null || (mouse = client.getMouse()) == null) return new Point(-1, -1);
+		return mouse.getLocation();
+	}
+
+	public static Point getPressLocation() {
+		final Client client = Bot.client();
+		final org.powerbot.game.client.input.Mouse mouse;
+		if (client == null || (mouse = client.getMouse()) == null) return new Point(-1, -1);
+		return mouse.getPressLocation();
+	}
+
+	public static long getPressTime() {
+		final Client client = Bot.client();
+		final org.powerbot.game.client.input.Mouse mouse;
+		if (client == null || (mouse = client.getMouse()) == null) return -1;
+		return mouse.getPressTime();
+	}
+
+	public static boolean isPressed() {
+		final Client client = Bot.client();
+		final org.powerbot.game.client.input.Mouse mouse;
+		if (client == null || (mouse = client.getMouse()) == null) return false;
+		return mouse.isPressed();
+	}
+
+	public static boolean isPresent() {
+		final Client client = Bot.client();
+		final org.powerbot.game.client.input.Mouse mouse;
+		if (client == null || (mouse = client.getMouse()) == null) return false;
+		return mouse.isPresent();
+	}
+
 	public static void hop(final Point p) {
 		hop(p.x, p.y);
 	}

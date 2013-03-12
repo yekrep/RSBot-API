@@ -58,6 +58,10 @@ public abstract class Mouse extends Focus implements MouseListener, MouseMotionL
 		return clientPressY;
 	}
 
+	public Point getPressLocation() {
+		return new Point(clientPressX, clientPressY);
+	}
+
 	public long getPressTime() {
 		return clientPressTime;
 	}
