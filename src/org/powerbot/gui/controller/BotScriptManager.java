@@ -25,6 +25,7 @@ import javax.swing.JOptionPane;
 import org.powerbot.bot.Bot;
 import org.powerbot.ipc.Controller;
 import org.powerbot.ipc.ScheduledChecks;
+import org.powerbot.script.AbstractScript;
 import org.powerbot.script.Manifest;
 import org.powerbot.script.Script;
 import org.powerbot.service.GameAccounts;
@@ -207,9 +208,9 @@ public class BotScriptManager {
 				return;
 			}
 		}
-		final Script script;
+		final AbstractScript script;
 		try {
-			script = cl.loadClass(def.className).asSubclass(Script.class).newInstance();
+			script = cl.loadClass(def.className).asSubclass(AbstractScript.class).newInstance();
 		} catch (final Exception ignored) {
 			log.severe("Error loading script");
 			if (Configuration.SUPERDEV) {
