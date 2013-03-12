@@ -22,6 +22,7 @@ import org.powerbot.game.client.RSInfo;
  *
  * @author Timer
  */
+@Deprecated
 public class Walking {
 	private static final int WIDGET = 750;
 	private static final int WIDGET_RUN = 2;

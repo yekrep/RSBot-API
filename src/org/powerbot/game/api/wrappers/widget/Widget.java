@@ -13,16 +13,15 @@ import org.powerbot.game.client.RSInterfaceBase;
 /**
  * @author Timer
  */
+@Deprecated
 public class Widget implements Identifiable {
-	private WidgetChild[] childCache = new WidgetChild[0];
 	private final Object CACHE_LOCK = new Object();
-
 	private final int index;
+	private WidgetChild[] childCache = new WidgetChild[0];
 
 	public Widget(final int index) {
 		this.index = index;
 	}
-
 
 	public boolean validate() {
 		if (getChildrenInternal() == null) {
