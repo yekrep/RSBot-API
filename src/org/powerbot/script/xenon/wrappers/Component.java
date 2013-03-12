@@ -265,12 +265,13 @@ public class Component {//TODO isValid, getChildren, isVisible, targetable, vali
 
 	private Rectangle getInteractRectangle() {
 		final Point absLocation = getAbsoluteLocation();
-		if (absLocation.x == -1 && absLocation.y == -1) return new Rectangle(-1, -1, 0, 0);
+		if (absLocation.x == -1 && absLocation.y == -1) return null;
 		final boolean canScroll = isInScrollableArea();
-		return new Rectangle(absLocation.x, absLocation.y,
-				canScroll ? getWidth() : getScrollWidth(),
-				canScroll ? getHeight() : getScrollHeight()
+		final Rectangle r = new Rectangle(absLocation.x + 1, absLocation.y + 1,
+				(canScroll ? getWidth() : getScrollWidth()) - 1,
+				(canScroll ? getHeight() : getScrollHeight()) - 1
 		);
+		return r.x > 0 && r.y > 0 && r.width > 0 && r.height > 0 ? r : null;
 	}
 
 	private boolean isInScrollableArea() {
