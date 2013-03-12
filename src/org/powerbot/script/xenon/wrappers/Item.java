@@ -9,7 +9,7 @@ import org.powerbot.game.client.RSItemDef;
 import org.powerbot.game.client.RSItemDefLoader;
 import org.powerbot.script.internal.Nodes;
 
-public class Item {//TODO complete
+public class Item {
 	private final int id, stackSize;
 	private final Component component;
 
@@ -37,6 +37,16 @@ public class Item {//TODO complete
 
 	public int getStackSize() {
 		return this.stackSize;
+	}
+
+	public String getName() {
+		String name = null;
+		if (component != null) name = component.getItemName();
+		else {
+			final ItemDefinition def;
+			if ((def = getDefinition()) != null) name = def.getName();
+		}
+		return name != null ? name.replaceAll("\\<.*?>", "") : null;
 	}
 
 	public Component getComponent() {
