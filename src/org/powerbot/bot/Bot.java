@@ -204,7 +204,7 @@ public final class Bot implements Runnable {//TODO re-write bot
 	}
 
 	public void startScript(final Script script, final ScriptDefinition definition) {
-		scriptController = new ScriptManager(); // TODO: multicaster?!
+		scriptController = new ScriptManager(getEventMulticaster());
 		scriptController.getScripts().add(script);
 		scriptDefinition = definition;
 	}
