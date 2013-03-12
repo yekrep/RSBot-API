@@ -25,8 +25,9 @@ import org.powerbot.script.event.PaintEvent;
 import org.powerbot.script.event.PaintListener;
 import org.powerbot.script.event.TextPaintEvent;
 import org.powerbot.script.event.TextPaintListener;
+import org.powerbot.script.util.Stoppable;
 
-public class EventMulticaster implements Runnable {
+public class EventMulticaster implements Runnable, Stoppable {
 	public static final int MOUSE_EVENT = 0x1;
 	public static final int MOUSE_MOTION_EVENT = 0x2;
 	public static final int MOUSE_WHEEL_EVENT = 0x4;
@@ -36,7 +37,7 @@ public class EventMulticaster implements Runnable {
 	private final Map<EventListener, Long> listenerMasks;
 	private final Queue<EventObject> queue;
 	private final Map<Class<? extends EventListener>, Integer> masks;
-	private boolean active;
+	private boolean active, stopping = false;
 
 	@SuppressWarnings("deprecation")
 	public EventMulticaster() {
@@ -218,7 +219,14 @@ public class EventMulticaster implements Runnable {
 		return this.listeners.toArray(new EventListener[size]);
 	}
 
+	@Override
+	public boolean isStopping() {
+		return stopping;
+	}
+
+	@Override
 	public void stop() {
+		stopping = true;
 		active = false;
 
 		synchronized (queue) {

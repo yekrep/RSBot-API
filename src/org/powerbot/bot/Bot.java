@@ -25,6 +25,7 @@ import org.powerbot.script.event.TextPaintEvent;
 import org.powerbot.script.internal.Constants;
 import org.powerbot.script.internal.ScriptManager;
 import org.powerbot.script.internal.input.MouseHandler;
+import org.powerbot.script.util.Stoppable;
 import org.powerbot.script.xenon.util.Delay;
 import org.powerbot.service.GameAccounts;
 import org.powerbot.service.scripts.ScriptDefinition;
@@ -32,7 +33,7 @@ import org.powerbot.service.scripts.ScriptDefinition;
 /**
  * @author Timer
  */
-public final class Bot implements Runnable {//TODO re-write bot
+public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 	static final Logger log = Logger.getLogger(Bot.class.getName());
 	private static Bot instance;
 	public final BotComposite composite;
@@ -55,6 +56,7 @@ public final class Bot implements Runnable {//TODO re-write bot
 	private MouseExecutor oldMouse;
 	private ScriptManager scriptController;
 	private ScriptDefinition scriptDefinition;
+	private volatile boolean stopping = false;
 
 	private Bot() {
 		appletContainer = null;
@@ -166,17 +168,21 @@ public final class Bot implements Runnable {//TODO re-write bot
 		new Thread(threadGroup, appletContainer, "Loader").start();
 	}
 
+	@Override
+	public boolean isStopping() {
+		return stopping;
+	}
+
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void stop() {
-		if (mouseHandler != null) mouseHandler().stop();
-		if (scriptController != null) {
-			scriptController.stop();
-		}
 		log.info("Unloading environment");
-		if (multicaster != null) {
-			multicaster.stop();
+		for (final Stoppable module : new Stoppable[] { mouseHandler, scriptController, multicaster }) {
+			if (module != null) {
+				module.stop();
+			}
 		}
 		new Thread(threadGroup, new Runnable() {
 			@Override
