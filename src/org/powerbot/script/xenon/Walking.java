@@ -1,10 +1,21 @@
 package org.powerbot.script.xenon;
 
+import org.powerbot.bot.Bot;
+import org.powerbot.game.client.Client;
 import org.powerbot.script.xenon.wrappers.Locatable;
 import org.powerbot.script.xenon.wrappers.Tile;
 
 public class Walking {
+	public static Tile getDestination() {
+		final Client client = Bot.client();
+		if (client == null) return null;
+		final int dX = client.getDestX(), dY = client.getDestY();
+		if (dX == -1 || dY == -1) return null;
+		final Tile base = Game.getMapBase();
+		return base != null ? base.derive(dX, dY) : null;
+	}
 	public static boolean stepTowards(final Locatable locatable) {
+		final Tile tile = locatable.getLocation();
 		return false;//TODO this
 	}
 
