@@ -5,7 +5,7 @@ import java.awt.Point;
 import org.powerbot.bot.Bot;
 import org.powerbot.script.internal.input.MouseHandler;
 import org.powerbot.script.internal.input.MouseTarget;
-import org.powerbot.core.script.job.Task;
+import org.powerbot.game.api.util.Random;
 import org.powerbot.script.xenon.util.Filter;
 import org.powerbot.script.xenon.wrappers.Targetable;
 
@@ -32,7 +32,10 @@ public class Mouse {
 		handler.handle(t = new MouseTarget(target, MouseTarget.DUMMY) {
 			@Override
 			public void execute(final MouseHandler handler) {
-				Task.sleep(0, 350);
+				try {
+					Thread.sleep(Random.nextInt(0, 350));
+				} catch (final InterruptedException ignored) {
+				}
 				if (filter.accept(handler.getLocation())) {
 					handler.click(left);
 					handler.complete(this);

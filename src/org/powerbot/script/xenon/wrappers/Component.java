@@ -253,6 +253,7 @@ public class Component {//TODO isValid, getChildren, isVisible, targetable, vali
 		return component != null && component.isInventoryInterface();
 	}
 
+	@SuppressWarnings("unused")
 	private Rectangle getInteractRectangle() {
 		final Point absLocation = getAbsoluteLocation();
 		if (absLocation.x == -1 && absLocation.y == -1) return new Rectangle(-1, -1, 0, 0);

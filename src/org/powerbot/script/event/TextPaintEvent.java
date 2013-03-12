@@ -20,6 +20,7 @@ import org.powerbot.event.AbstractEvent;
  * @author Timer
  */
 public class TextPaintEvent extends AbstractEvent {
+	private static final long serialVersionUID = 7174559879186449999L;
 	public static final int ID = 0x80;
 	public Graphics graphics;
 	public int id = 0;

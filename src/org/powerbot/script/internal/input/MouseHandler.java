@@ -6,7 +6,6 @@ import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.util.concurrent.TimeUnit;
 
-import org.powerbot.core.script.job.Task;
 import org.powerbot.game.client.Client;
 import org.powerbot.game.client.input.Mouse;
 import org.powerbot.golem.HeteroMouse;
@@ -33,7 +32,10 @@ public class MouseHandler implements Runnable {
 		if ((mouse = client.getMouse()) == null) return;
 		final int x = mouse.getX(), y = mouse.getY();
 		press(x, y, left);
-		Task.sleep(simulator.getPressDuration());
+		try {
+			Thread.sleep(simulator.getPressDuration());
+		} catch (final InterruptedException ignored) {
+		}
 		release(x, y, left);
 	}
 
@@ -92,7 +94,10 @@ public class MouseHandler implements Runnable {
 			if (target == null) continue;
 			final Mouse mouse;
 			if ((mouse = client.getMouse()) == null) {
-				Task.sleep(250);
+				try {
+					Thread.sleep(250);
+				} catch (final InterruptedException ignored) {
+				}
 				continue;
 			}
 			if (++target.steps > MAX_STEPS) {
@@ -140,7 +145,10 @@ public class MouseHandler implements Runnable {
 				m = System.currentTimeMillis() - m;
 
 				final long l = TimeUnit.NANOSECONDS.toMillis(simulator.getAbsoluteDelay(v.z)) - m;
-				Task.sleep(l);
+				try {
+					Thread.sleep(l);
+				} catch (final InterruptedException ignored) {
+				}
 			}
 
 			final Point next = target.targetable.getInteractPoint();

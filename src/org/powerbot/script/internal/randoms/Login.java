@@ -3,11 +3,8 @@ package org.powerbot.script.internal.randoms;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 import org.powerbot.bot.Bot;
 import org.powerbot.game.api.methods.Game;
@@ -26,6 +23,7 @@ import org.powerbot.script.task.BlockingTask;
 /**
  * @author Timer
  */
+@SuppressWarnings("deprecation")
 @RandomManifest(name = "Login")
 public class Login extends TaskScript implements PaintListener {
 	private static final int WIDGET = 596;

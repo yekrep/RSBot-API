@@ -10,6 +10,7 @@ import org.powerbot.event.AbstractEvent;
  * @author Timer
  */
 public class MessageEvent extends AbstractEvent {
+	private static final long serialVersionUID = 4178447203851407187L;
 	public static final int ID = 0x20;
 	private final int id;
 	private final String sender, message;
