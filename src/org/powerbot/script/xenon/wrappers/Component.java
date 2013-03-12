@@ -11,7 +11,7 @@ import org.powerbot.game.client.RSInterfaceNode;
 import org.powerbot.script.internal.wrappers.HashTable;
 import org.powerbot.script.xenon.Widgets;
 
-public class Component extends Interactive implements Validatable {//TODO isVisible
+public class Component extends Interactive implements Validatable {
 	private final Widget widget;
 	private final Component parent;
 	private final int index;
@@ -27,11 +27,11 @@ public class Component extends Interactive implements Validatable {//TODO isVisi
 	}
 
 	public Widget getWidget() {
-		return widget;
+		return this.widget;
 	}
 
 	public Component getParent() {
-		return parent;
+		return this.parent;
 	}
 
 	public int getIndex() {
@@ -264,6 +264,10 @@ public class Component extends Interactive implements Validatable {//TODO isVisi
 		return component != null && component.isInventoryInterface();
 	}
 
+	public boolean isVisible() {
+		return isValid();//TODO isVisible
+	}
+
 	@Override
 	public Point getInteractPoint() {
 		return getNextPoint();
@@ -293,7 +297,8 @@ public class Component extends Interactive implements Validatable {//TODO isVisi
 	@Override
 	public boolean isValid() {
 		final RSInterface internal = getInternalComponent();
-		return internal != null && internal.getBoundsArrayIndex() != -1;
+		return internal != null && (parent == null || parent.isVisible()) &&
+				getId() != -1 && internal.getBoundsArrayIndex() != -1;
 	}
 
 	private Rectangle getInteractRectangle() {
