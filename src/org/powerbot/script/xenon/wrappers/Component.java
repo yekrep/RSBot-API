@@ -265,7 +265,10 @@ public class Component extends Interactive implements Validatable {
 	}
 
 	public boolean isVisible() {
-		return isValid();//TODO isVisible
+		final RSInterface internal = getInternalComponent();
+		int id = 0;
+		if (internal != null && isValid() && !internal.isHidden()) id = getParentId();
+		return id == -1 || Widgets.get(id >> 16, id & 0xffff).isVisible();
 	}
 
 	@Override
