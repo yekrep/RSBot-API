@@ -119,7 +119,7 @@ public final class BotMenuView extends JPopupMenu implements ActionListener {//T
 		items.add(SEPERATOR);
 		items.add(MESSAGES);
 
-		final Bot bot = Bot.instance();
+		final Bot bot = Bot.getInstance();
 		Map<String, EventListener> listeners = BotMenuView.listeners.get(bot);
 		if (listeners == null) {
 			listeners = new HashMap<>();
@@ -186,7 +186,7 @@ public final class BotMenuView extends JPopupMenu implements ActionListener {//T
 	}
 
 	private void setView(final Class<? extends EventListener> eventListener, final boolean selected) {
-		final Bot bot = Bot.instance();
+		final Bot bot = Bot.getInstance();
 		final String name = eventListener.getName();
 		Map<String, EventListener> listeners = BotMenuView.listeners.get(bot);
 		if (listeners == null) {

@@ -99,7 +99,7 @@ public class ClientLoader {
 		r = con.getResponseCode();
 		Tracker.getInstance().trackPage(pre, Integer.toString(r));
 		if (r == HttpURLConnection.HTTP_OK) {
-			return Bot.instance().modScript = new ModScript(IOHelper.read(HttpClient.getInputStream(con)));
+			return Bot.getInstance().modScript = new ModScript(IOHelper.read(HttpClient.getInputStream(con)));
 		} else {
 			final HttpURLConnection bucket = HttpClient.getHttpConnection(new URL(String.format(Configuration.URLs.CLIENTBUCKET, packHash)));
 			bucket.setInstanceFollowRedirects(false);

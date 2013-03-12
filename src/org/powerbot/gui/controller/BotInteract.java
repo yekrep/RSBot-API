@@ -67,7 +67,7 @@ public final class BotInteract {
 					if (s > 0) {
 						Boot.fork();
 					} else {
-						final Bot bot = Bot.instance();
+						final Bot bot = Bot.getInstance();
 						new Thread(bot.threadGroup, bot).start();
 						BotChrome.getInstance().panel.setBot(bot);
 					}
@@ -92,7 +92,7 @@ public final class BotInteract {
 					}
 					Tracker.getInstance().trackEvent("tab", "add", silent ? "silent" : "");
 					parent.panel.setBot(null);
-					Bot.instance().stop();
+					Bot.getInstance().stop();
 					parent.panel.repaint();
 					Logger.getLogger(Bot.class.getName()).log(Level.INFO, "Add a tab to start another bot", "Closed");
 					System.gc();
@@ -110,7 +110,7 @@ public final class BotInteract {
 	}
 
 	public static synchronized void scriptPlayPause() {
-		final Bot bot = Bot.instance();
+		final Bot bot = Bot.getInstance();
 		final ScriptManager container = bot.getScriptController();
 		if (container != null) {
 			if (container.isSuspended()) {
@@ -132,7 +132,7 @@ public final class BotInteract {
 		if (!Bot.instantiated()) {
 			return;
 		}
-		final Bot bot = Bot.instance();
+		final Bot bot = Bot.getInstance();
 		final ScriptManager container = bot.getScriptController();
 		if (container != null) {
 			if (!container.isStopping()) {

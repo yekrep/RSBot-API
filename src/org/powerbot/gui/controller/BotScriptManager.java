@@ -228,7 +228,7 @@ public class BotScriptManager {
 			}
 			return;
 		}
-		final Bot bot = Bot.instance();
+		final Bot bot = Bot.getInstance();
 		bot.setAccount(null);
 		for (final Account a : GameAccounts.getInstance()) {
 			if (accountName.equalsIgnoreCase(a.toString())) {

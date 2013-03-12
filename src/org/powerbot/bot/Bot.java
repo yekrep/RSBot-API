@@ -79,7 +79,7 @@ public final class Bot implements Runnable {//TODO re-write bot
 		refreshing = false;
 	}
 
-	public synchronized static Bot instance() {
+	public synchronized static Bot getInstance() {
 		if (instance == null) {
 			instance = new Bot();
 		}

@@ -37,9 +37,9 @@ public final class ScheduledChecks implements ActionListener {
 			Tracker.getInstance().trackEvent("uptime", Long.toString(uptime));
 		}
 
-		final ScriptManager controller = Bot.instance().getScriptController();
+		final ScriptManager controller = Bot.getInstance().getScriptController();
 		if (controller != null) {
-			final ScriptDefinition definition = Bot.instance().getScriptDefinition();
+			final ScriptDefinition definition = Bot.getInstance().getScriptDefinition();
 			if (definition != null) {
 				if (definition.local && System.nanoTime() > timeout.get()) {
 					Tracker.getInstance().trackEvent("script", "timeout", definition.getName());
