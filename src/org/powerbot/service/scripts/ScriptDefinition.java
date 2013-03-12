@@ -6,6 +6,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.powerbot.script.Manifest;
+import org.powerbot.script.Script;
 import org.powerbot.util.StringUtil;
 
 /**
@@ -59,8 +60,7 @@ public final class ScriptDefinition implements Comparable<ScriptDefinition>, Ser
 		}
 	}
 
-	@SuppressWarnings("deprecation")
-	public ScriptDefinition(final Class<? extends org.powerbot.core.script.Script> clazz) {
+	public ScriptDefinition(final Class<? extends Script> clazz) {
 		this(clazz.getAnnotation(Manifest.class));
 	}
 
