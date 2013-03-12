@@ -4,10 +4,10 @@ import org.powerbot.game.api.methods.Tabs;
 import org.powerbot.game.api.methods.Widgets;
 import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.methods.widget.Bank;
-import org.powerbot.game.api.util.Delay;
 import org.powerbot.game.api.wrappers.node.Item;
 import org.powerbot.game.api.wrappers.widget.Widget;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
+import org.powerbot.script.xenon.util.Delay;
 
 public class Equipment {
 	public static final int WIDGET = 387;

@@ -7,10 +7,10 @@ import java.util.List;
 import org.powerbot.game.api.methods.Tabs;
 import org.powerbot.game.api.methods.Widgets;
 import org.powerbot.game.api.methods.input.Mouse;
-import org.powerbot.game.api.util.Delay;
 import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.wrappers.node.Item;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
+import org.powerbot.script.xenon.util.Delay;
 
 public class Inventory {
 

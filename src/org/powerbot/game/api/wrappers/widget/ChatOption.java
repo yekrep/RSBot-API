@@ -2,7 +2,7 @@ package org.powerbot.game.api.wrappers.widget;
 
 import org.powerbot.game.api.methods.Widgets;
 import org.powerbot.game.api.methods.input.Keyboard;
-import org.powerbot.game.api.util.Delay;
+import org.powerbot.script.xenon.util.Delay;
 
 /**
  * @author Stephan J. Bijzitter (Salvation)

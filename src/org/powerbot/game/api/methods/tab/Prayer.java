@@ -9,8 +9,8 @@ import org.powerbot.game.api.methods.Settings;
 import org.powerbot.game.api.methods.Tabs;
 import org.powerbot.game.api.methods.Widgets;
 import org.powerbot.game.api.methods.input.Mouse;
-import org.powerbot.game.api.util.Delay;
 import org.powerbot.game.api.util.Timer;
+import org.powerbot.script.xenon.util.Delay;
 
 /**
  * @author ArcaneSanity

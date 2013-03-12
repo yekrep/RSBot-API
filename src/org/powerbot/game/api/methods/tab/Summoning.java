@@ -5,11 +5,11 @@ import org.powerbot.game.api.methods.Widgets;
 import org.powerbot.game.api.methods.interactive.NPCs;
 import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.methods.node.Menu;
-import org.powerbot.game.api.util.Delay;
 import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.util.Timer;
 import org.powerbot.game.api.wrappers.interactive.NPC;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
+import org.powerbot.script.xenon.util.Delay;
 
 /**
  * Summoning related operations.

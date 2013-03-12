@@ -10,7 +10,6 @@ import org.powerbot.event.EventMulticaster;
 import org.powerbot.game.api.methods.input.Keyboard;
 import org.powerbot.game.api.methods.input.Mouse;
 import org.powerbot.game.api.methods.widget.WidgetCache;
-import org.powerbot.game.api.util.Delay;
 import org.powerbot.game.bot.CallbackImpl;
 import org.powerbot.game.bot.Context;
 import org.powerbot.game.bot.handler.input.MouseExecutor;
@@ -26,6 +25,7 @@ import org.powerbot.script.event.TextPaintEvent;
 import org.powerbot.script.internal.Constants;
 import org.powerbot.script.internal.ScriptManager;
 import org.powerbot.script.internal.input.MouseHandler;
+import org.powerbot.script.xenon.util.Delay;
 import org.powerbot.service.GameAccounts;
 import org.powerbot.service.scripts.ScriptDefinition;
 

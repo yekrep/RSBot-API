@@ -3,8 +3,8 @@ package org.powerbot.game.api.methods.tab;
 import org.powerbot.game.api.methods.Settings;
 import org.powerbot.game.api.methods.Tabs;
 import org.powerbot.game.api.methods.Widgets;
-import org.powerbot.game.api.util.Delay;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
+import org.powerbot.script.xenon.util.Delay;
 
 public class Attack {
 	public static final int WIDGET = 884;

@@ -1,10 +1,10 @@
 package org.powerbot.bot;
 
-import org.powerbot.game.api.util.Delay;
 import org.powerbot.game.bot.Context;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.script.internal.ScriptManager;
 import org.powerbot.script.xenon.Game;
+import org.powerbot.script.xenon.util.Delay;
 
 public class BotComposite {//TODO remove the use of a composite ... export data elsewhere
 	private final Bot bot;

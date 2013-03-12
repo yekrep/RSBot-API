@@ -6,7 +6,6 @@ import java.util.LinkedList;
 import java.util.regex.Pattern;
 
 import org.powerbot.game.api.methods.input.Mouse;
-import org.powerbot.game.api.util.Delay;
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Timer;
 import org.powerbot.game.api.util.node.Deque;
@@ -15,6 +14,7 @@ import org.powerbot.game.bot.Context;
 import org.powerbot.game.client.Client;
 import org.powerbot.game.client.MenuGroupNode;
 import org.powerbot.game.client.MenuItemNode;
+import org.powerbot.script.xenon.util.Delay;
 
 /**
  * @author Timer

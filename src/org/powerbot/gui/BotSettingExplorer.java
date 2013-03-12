@@ -31,8 +31,8 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import org.powerbot.game.api.methods.Settings;
-import org.powerbot.game.api.util.Delay;
 import org.powerbot.game.bot.Context;
+import org.powerbot.script.xenon.util.Delay;
 import org.powerbot.util.Tracker;
 import org.powerbot.util.io.Resources;
 

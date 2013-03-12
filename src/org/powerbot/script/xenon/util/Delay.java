@@ -1,6 +1,5 @@
-package org.powerbot.game.api.util;
+package org.powerbot.script.xenon.util;
 
-import org.powerbot.script.xenon.util.Random;
 
 public class Delay {
 

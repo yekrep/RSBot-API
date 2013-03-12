@@ -4,7 +4,6 @@ import java.awt.Point;
 
 import org.powerbot.game.api.methods.input.Mouse;
 import org.powerbot.game.api.methods.interactive.Players;
-import org.powerbot.game.api.util.Delay;
 import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.util.Timer;
 import org.powerbot.game.api.wrappers.Locatable;
@@ -16,6 +15,7 @@ import org.powerbot.game.bot.Context;
 import org.powerbot.game.client.Client;
 import org.powerbot.game.client.RSGroundData;
 import org.powerbot.game.client.RSInfo;
+import org.powerbot.script.xenon.util.Delay;
 
 /**
  * A utility for the manipulation of information required for walking.

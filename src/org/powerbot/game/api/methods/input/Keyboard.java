@@ -5,10 +5,10 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-import org.powerbot.game.api.util.Delay;
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.bot.Context;
 import org.powerbot.game.client.Client;
+import org.powerbot.script.xenon.util.Delay;
 
 /**
  * A utility that handles the dispatching of fake key events.

@@ -6,9 +6,9 @@ import java.util.EnumSet;
 import org.powerbot.game.api.methods.Calculations;
 import org.powerbot.game.api.methods.Walking;
 import org.powerbot.game.api.methods.interactive.Players;
-import org.powerbot.game.api.util.Delay;
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.wrappers.Tile;
+import org.powerbot.script.xenon.util.Delay;
 
 public class TilePath extends Path {
 	protected Tile[] tiles;

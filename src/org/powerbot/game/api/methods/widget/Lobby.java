@@ -8,12 +8,12 @@ import java.util.regex.Pattern;
 
 import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.api.methods.Widgets;
-import org.powerbot.game.api.util.Delay;
 import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Timer;
 import org.powerbot.game.api.wrappers.widget.Widget;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
+import org.powerbot.script.xenon.util.Delay;
 
 /**
  * @author HelBorn

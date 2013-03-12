@@ -13,8 +13,8 @@ import java.awt.image.WritableRaster;
 import java.util.Hashtable;
 
 import org.powerbot.bot.Bot;
-import org.powerbot.game.api.util.Delay;
 import org.powerbot.gui.BotChrome;
+import org.powerbot.script.xenon.util.Delay;
 
 public class Canvas extends java.awt.Canvas {
 	private static final long serialVersionUID = -2276037172265300477L;

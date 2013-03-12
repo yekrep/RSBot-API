@@ -3,9 +3,9 @@ package org.powerbot.script.xenon.wrappers;
 import java.awt.Point;
 
 import org.powerbot.script.xenon.Mouse;
+import org.powerbot.script.xenon.util.Delay;
 import org.powerbot.script.xenon.util.Filter;
 import org.powerbot.game.api.methods.node.Menu;
-import org.powerbot.game.api.util.Delay;
 
 public abstract class Interactive implements Targetable {
 	private static final int ATTEMPTS = 5;

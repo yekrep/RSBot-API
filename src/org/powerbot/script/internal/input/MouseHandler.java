@@ -6,11 +6,11 @@ import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.util.concurrent.TimeUnit;
 
-import org.powerbot.game.api.util.Delay;
 import org.powerbot.game.client.Client;
 import org.powerbot.game.client.input.Mouse;
 import org.powerbot.golem.HeteroMouse;
 import org.powerbot.math.Vector3;
+import org.powerbot.script.xenon.util.Delay;
 
 public class MouseHandler implements Runnable {
 	private static final int MAX_STEPS = 20;

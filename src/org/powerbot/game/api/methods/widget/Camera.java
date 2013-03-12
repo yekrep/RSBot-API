@@ -5,13 +5,13 @@ import java.awt.event.KeyEvent;
 import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.api.methods.input.Keyboard;
 import org.powerbot.game.api.methods.interactive.Players;
-import org.powerbot.game.api.util.Delay;
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Timer;
 import org.powerbot.game.api.wrappers.Locatable;
 import org.powerbot.game.api.wrappers.Tile;
 import org.powerbot.game.bot.Context;
 import org.powerbot.game.client.Client;
+import org.powerbot.script.xenon.util.Delay;
 
 /**
  * @author Timer

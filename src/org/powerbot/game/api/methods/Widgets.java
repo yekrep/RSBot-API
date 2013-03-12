@@ -6,12 +6,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.powerbot.game.api.methods.input.Mouse;
-import org.powerbot.game.api.util.Delay;
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.wrappers.widget.Widget;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
 import org.powerbot.game.bot.Context;
 import org.powerbot.game.client.Client;
+import org.powerbot.script.xenon.util.Delay;
 
 /**
  * A utility for the manipulation of widgets.
