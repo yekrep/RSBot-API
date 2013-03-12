@@ -27,6 +27,16 @@ public class Walking {
 		return ground != null ? new Tile(ground.getX(), ground.getY(), plane) : null;
 	}
 
+	public static int[][] getCollisionFlags(final int plane) {
+		final Client client = Bot.client();
+		if (client == null) return null;
+		final RSInfo info = client.getRSGroundInfo();
+		final RSGroundData[] grounds;
+		RSGroundData ground = null;
+		if (info != null && (grounds = info.getGroundData()) != null && plane < grounds.length) ground = grounds[plane];
+		return ground != null ? ground.getBlocks() : null;
+	}
+
 	public static boolean stepTowards(final Locatable locatable) {
 		final Tile tile = locatable.getLocation();
 		return false;//TODO this
