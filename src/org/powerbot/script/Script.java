@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.EventListener;
 import java.util.concurrent.FutureTask;
 
+import org.powerbot.script.util.ScriptController;
+
 /**
  * A stateful task based action driver.
  *

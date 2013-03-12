@@ -1,4 +1,4 @@
-package org.powerbot.script;
+package org.powerbot.script.xenon.util;
 
 import java.util.concurrent.Callable;
 

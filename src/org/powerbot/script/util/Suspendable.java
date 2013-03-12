@@ -1,4 +1,4 @@
-package org.powerbot.script;
+package org.powerbot.script.util;
 
 public interface Suspendable {
 

@@ -7,6 +7,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.FutureTask;
 import java.util.logging.Logger;
 
+import org.powerbot.script.util.Prioritizable;
+import org.powerbot.script.util.ScriptController;
 import org.powerbot.script.xenon.util.Random;
 
 /**

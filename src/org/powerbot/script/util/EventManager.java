@@ -1,4 +1,4 @@
-package org.powerbot.script.internal;
+package org.powerbot.script.util;
 
 import java.util.ArrayList;
 import java.util.EventListener;
@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.powerbot.event.EventMulticaster;
-import org.powerbot.script.Subscribable;
-import org.powerbot.script.Suspendable;
 
 public class EventManager implements Suspendable, Subscribable<EventListener> {
 	private final EventMulticaster multicaster;

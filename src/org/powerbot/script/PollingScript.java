@@ -7,6 +7,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.swing.Timer;
 
+import org.powerbot.script.util.Stoppable;
+import org.powerbot.script.util.Suspendable;
+
 /**
  * An implementation of {@code Script} which polls (or "loops") indefinitely.
  *

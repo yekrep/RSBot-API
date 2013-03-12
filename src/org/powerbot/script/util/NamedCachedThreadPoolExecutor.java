@@ -1,4 +1,4 @@
-package org.powerbot.script.internal;
+package org.powerbot.script.util;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.SynchronousQueue;

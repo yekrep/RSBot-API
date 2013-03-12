@@ -12,12 +12,15 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import javax.swing.SwingUtilities;
 
 import org.powerbot.event.EventMulticaster;
-import org.powerbot.script.ExecutorDispatch;
 import org.powerbot.script.Script;
 import org.powerbot.script.Script.State;
-import org.powerbot.script.ScriptController;
-import org.powerbot.script.Stoppable;
-import org.powerbot.script.Suspendable;
+import org.powerbot.script.util.AbstractScriptController;
+import org.powerbot.script.util.EventManager;
+import org.powerbot.script.util.NamedCachedThreadPoolExecutor;
+import org.powerbot.script.util.ScriptController;
+import org.powerbot.script.util.Stoppable;
+import org.powerbot.script.util.Suspendable;
+import org.powerbot.script.xenon.util.ExecutorDispatch;
 
 /**
  * A priority based {@code Script} controller.
