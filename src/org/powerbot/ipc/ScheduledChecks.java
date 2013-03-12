@@ -2,12 +2,13 @@ package org.powerbot.ipc;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Collection;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.logging.Logger;
 
 import org.powerbot.bot.Bot;
-import org.powerbot.game.api.Manifest;
+import org.powerbot.script.Manifest;
 import org.powerbot.script.Script;
 import org.powerbot.script.internal.ScriptManager;
 import org.powerbot.service.scripts.ScriptDefinition;
@@ -46,12 +47,20 @@ public final class ScheduledChecks implements ActionListener {
 					controller.stop();
 				}
 			}
+
+			final Collection<String> running = Controller.getInstance().getRunningScripts();
 			for (final Script script : controller.getScripts()) {
 				final Manifest manifest = script.getClass().getAnnotation(Manifest.class);
 				if (manifest != null) {
-					if (manifest.singleinstance()) {
+					int n = 0;
+					for (final String check : running) {
+						if (definition.getID().equals(check)) {
+							n++;
+						}
+					}
+					if (n > manifest.instantces()) {
 						if (Controller.getInstance().getRunningScripts().contains(definition.getID())) {
-							Tracker.getInstance().trackEvent("script", "singleinstance-bypass", definition.getID());
+							Tracker.getInstance().trackEvent("script", "instance-bypass", definition.getID());
 							controller.stop();
 						}
 					}

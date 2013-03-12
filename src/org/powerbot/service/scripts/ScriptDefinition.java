@@ -6,7 +6,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.powerbot.core.script.Script;
-import org.powerbot.game.api.Manifest;
+import org.powerbot.script.Manifest;
 import org.powerbot.util.StringUtil;
 
 /**

@@ -1,9 +1,8 @@
-package org.powerbot.game.api;
+package org.powerbot.script;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-@Deprecated
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Manifest {
 	String name();
@@ -22,5 +21,5 @@ public @interface Manifest {
 
 	boolean hidden() default false;
 
-	boolean singleinstance() default false;
+	int instantces() default Integer.MAX_VALUE;
 }

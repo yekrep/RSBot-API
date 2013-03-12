@@ -23,9 +23,9 @@ import javax.crypto.spec.SecretKeySpec;
 import javax.swing.JOptionPane;
 
 import org.powerbot.bot.Bot;
-import org.powerbot.game.api.Manifest;
 import org.powerbot.ipc.Controller;
 import org.powerbot.ipc.ScheduledChecks;
+import org.powerbot.script.Manifest;
 import org.powerbot.script.Script;
 import org.powerbot.service.GameAccounts;
 import org.powerbot.service.GameAccounts.Account;
@@ -218,8 +218,8 @@ public class BotScriptManager {
 			return;
 		}
 		final Manifest manifest = script.getClass().getAnnotation(Manifest.class);
-		if (manifest != null && manifest.singleinstance() && n > 0) {
-			final String s = "This script can only be used on one account at a time.";
+		if (manifest != null && n > manifest.instantces()) {
+			final String s = "This script can only be used on " + manifest.instantces() + " account" + (manifest.instantces() == 1 ? "" : "s") + " at a time.";
 			if (parent == null) {
 				log.info(s);
 			} else {
