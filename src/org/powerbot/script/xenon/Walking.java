@@ -2,6 +2,8 @@ package org.powerbot.script.xenon;
 
 import org.powerbot.bot.Bot;
 import org.powerbot.game.client.Client;
+import org.powerbot.game.client.RSGroundData;
+import org.powerbot.game.client.RSInfo;
 import org.powerbot.script.xenon.wrappers.Locatable;
 import org.powerbot.script.xenon.wrappers.Tile;
 
@@ -14,6 +16,17 @@ public class Walking {
 		final Tile base = Game.getMapBase();
 		return base != null ? base.derive(dX, dY) : null;
 	}
+
+	public static Tile getCollisionOffset(final int plane) {
+		final Client client = Bot.client();
+		if (client == null) return null;
+		final RSInfo info = client.getRSGroundInfo();
+		final RSGroundData[] grounds;
+		RSGroundData ground = null;
+		if (info != null && (grounds = info.getGroundData()) != null && plane < grounds.length) ground = grounds[plane];
+		return ground != null ? new Tile(ground.getX(), ground.getY(), plane) : null;
+	}
+
 	public static boolean stepTowards(final Locatable locatable) {
 		final Tile tile = locatable.getLocation();
 		return false;//TODO this
