@@ -1,34 +1,62 @@
 package org.powerbot.script.internal.wrappers;
 
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
 import org.powerbot.game.client.Node;
 
-public class HashTable {
+public class HashTable implements Iterator<Node>, Iterable<Node> {
 	private org.powerbot.game.client.HashTable nc;
-	private Node current;
-	private int c_index = 0;
+	private volatile Node current;
+	private volatile int cursor;
 
 	public HashTable(final org.powerbot.game.client.HashTable hashTable) {
 		nc = hashTable;
+		cursor = 0;
 	}
 
-	public Node getFirst() {
-		c_index = 0;
-		return getNext();
+	public void reset() {
+		cursor = 0;
 	}
 
-	public Node getNext() {
-		if (c_index > 0 && nc.getBuckets()[c_index - 1] != current) {
-			Node node = current;
-			current = node.getNext();
-			return node;
+	public Node first() {
+		reset();
+		return next();
+	}
+
+	@Override
+	public boolean hasNext() {
+		return cursor < nc.getBuckets().length;
+	}
+
+	@Override
+	public Node next() {
+		if (!hasNext()) {
+			throw new NoSuchElementException();
 		}
-		while (c_index < nc.getBuckets().length) {
-			Node node = nc.getBuckets()[c_index++].getNext();
-			if (nc.getBuckets()[c_index - 1] != node) {
-				current = node.getNext();
-				return node;
+		final Node[] b = nc.getBuckets();
+		if (cursor > 0 && b[cursor - 1] != current) {
+			final Node n = current;
+			current = n.getNext();
+			return n;
+		}
+		while (cursor < b.length) {
+			final Node p = b[cursor], n = b[cursor++].getNext();
+			if (p != n) {
+				current = n.getNext();
+				return n;
 			}
 		}
 		return null;
+	}
+
+	@Override
+	public void remove() {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public Iterator<Node> iterator() {
+		return this;
 	}
 }
