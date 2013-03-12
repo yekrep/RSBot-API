@@ -4,13 +4,14 @@ import java.awt.Point;
 import java.awt.Rectangle;
 
 import org.powerbot.bot.Bot;
-import org.powerbot.script.internal.wrappers.HashTable;
-import org.powerbot.script.xenon.Widgets;
+import org.powerbot.game.api.util.Random;
 import org.powerbot.game.client.Client;
 import org.powerbot.game.client.RSInterface;
 import org.powerbot.game.client.RSInterfaceNode;
+import org.powerbot.script.internal.wrappers.HashTable;
+import org.powerbot.script.xenon.Widgets;
 
-public class Component {//TODO isValid, getChildren, isVisible, targetable, validatable
+public class Component extends Interactive implements Validatable {//TODO isVisible
 	private final Widget widget;
 	private final Component parent;
 	private final int index;
@@ -261,6 +262,38 @@ public class Component {//TODO isValid, getChildren, isVisible, targetable, vali
 	public boolean isInventory() {
 		final RSInterface component = getInternalComponent();
 		return component != null && component.isInventoryInterface();
+	}
+
+	@Override
+	public Point getInteractPoint() {
+		return getNextPoint();
+	}
+
+	@Override
+	public Point getNextPoint() {
+		final Rectangle interact = getInteractRectangle();
+		return interact != null ? new Point(
+				Random.nextGaussian(interact.x, interact.x + interact.width, interact.width / 10),
+				Random.nextGaussian(interact.y, interact.y + interact.height, interact.height / 10)
+		) : null;
+	}
+
+	@Override
+	public Point getCenterPoint() {
+		final Rectangle interact = getInteractRectangle();
+		return interact != null ? new Point((int) interact.getCenterX(), (int) interact.getCenterY()) : null;
+	}
+
+	@Override
+	public boolean contains(final Point point) {
+		final Rectangle interact = getInteractRectangle();
+		return interact != null && interact.contains(point);
+	}
+
+	@Override
+	public boolean isValid() {
+		final RSInterface internal = getInternalComponent();
+		return internal != null && internal.getBoundsArrayIndex() != -1;
 	}
 
 	private Rectangle getInteractRectangle() {
