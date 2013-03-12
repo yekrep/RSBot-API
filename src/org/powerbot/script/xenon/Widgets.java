@@ -5,10 +5,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.powerbot.bot.Bot;
-import org.powerbot.script.xenon.wrappers.Component;
-import org.powerbot.script.xenon.wrappers.Widget;
 import org.powerbot.game.client.Client;
 import org.powerbot.game.client.RSInterfaceBase;
+import org.powerbot.script.xenon.wrappers.Component;
+import org.powerbot.script.xenon.wrappers.Widget;
 
 public class Widgets {
 	private static final Map<Client, Widget[]> cache = new HashMap<>();
@@ -32,5 +32,9 @@ public class Widgets {
 	public static Component get(final int index, final int componentIndex) {
 		final Widget widget = get(index);
 		return widget != null ? widget.getComponent(componentIndex) : null;
+	}
+
+	public static boolean scroll(final Component component, final Component bar) {
+		return false;//TODO scroll
 	}
 }
