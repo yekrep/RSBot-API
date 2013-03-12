@@ -5,8 +5,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.powerbot.core.script.job.Task;
 import org.powerbot.game.api.methods.input.Mouse;
+import org.powerbot.game.api.util.Delay;
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.wrappers.widget.Widget;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
@@ -156,13 +156,13 @@ public class Widgets {
 
 		Mouse.click(scrollBarArea.getAbsoluteX() + Random.nextInt(0, scrollBarArea.getWidth()), scrollBarArea.getAbsoluteY() + pos, true);
 
-		Task.sleep(Random.nextInt(200, 400));
+		Delay.sleep(Random.nextInt(200, 400));
 
 		while (component.getAbsoluteY() < areaY || component.getAbsoluteY() > areaY + areaHeight - component.getHeight()) {
 			final boolean scrollUp = component.getAbsoluteY() < areaY;
 			scrollBar.getChildren()[scrollUp ? 4 : 5].click(true);
 
-			Task.sleep(Random.nextInt(100, 200));
+			Delay.sleep(Random.nextInt(100, 200));
 		}
 
 		return component.getAbsoluteY() >= areaY && component.getAbsoluteY() <= areaY + areaHeight - component.getHeight();

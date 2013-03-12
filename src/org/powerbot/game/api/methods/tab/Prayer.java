@@ -5,11 +5,11 @@ import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import org.powerbot.core.script.job.Task;
 import org.powerbot.game.api.methods.Settings;
 import org.powerbot.game.api.methods.Tabs;
 import org.powerbot.game.api.methods.Widgets;
 import org.powerbot.game.api.methods.input.Mouse;
+import org.powerbot.game.api.util.Delay;
 import org.powerbot.game.api.util.Timer;
 
 /**
@@ -262,9 +262,9 @@ public class Prayer {
 		if (Widgets.get(WIDGET_PRAYER_ORB, 2).interact("Select quick")) {
 			final Timer timer = new Timer(1000);
 			while (timer.isRunning() && Settings.get(1769) != 0x1) {
-				Task.sleep(15);
+				Delay.sleep(15);
 			}
-			Task.sleep(100);
+			Delay.sleep(100);
 			for (PrayerBook p : prayers) {
 				if (p.isSetQuick()) {
 					continue;
@@ -272,7 +272,7 @@ public class Prayer {
 				if (Widgets.get(WIDGET_PRAYER, 11).getChild(p.getId()).interact("Select")) {
 					final Timer t = new Timer(500);
 					while (t.isRunning() && !p.isSetQuick()) {
-						Task.sleep(15);
+						Delay.sleep(15);
 					}
 				} else {
 					Widgets.get(WIDGET_PRAYER, 12).interact("Confirm");
@@ -285,7 +285,7 @@ public class Prayer {
 					if (Widgets.get(WIDGET_PRAYER, 11).getChild(p.getId()).interact("Deselect")) {
 						final Timer t = new Timer(500);
 						while (t.isRunning() && !p.isSetQuick()) {
-							Task.sleep(15);
+							Delay.sleep(15);
 						}
 					} else {
 						Widgets.get(WIDGET_PRAYER, 12).interact("Confirm");
@@ -306,7 +306,7 @@ public class Prayer {
 	public static boolean flashQuick() {
 		final Point point = Widgets.get(WIDGET_PRAYER_ORB, 2).getNextViewportPoint();
 		if (Mouse.click(point, true)) {
-			Task.sleep(250, 350);
+			Delay.sleep(250, 350);
 			return Mouse.click(point, true);
 		}
 		return false;
@@ -344,7 +344,7 @@ public class Prayer {
 		if (Tabs.PRAYER.open(false)) {
 			final Point point = Widgets.get(WIDGET_PRAYER, 9).getChild(prayer.getId()).getNextViewportPoint();
 			if (Mouse.click(point, true)) {
-				Task.sleep(250, 350);
+				Delay.sleep(250, 350);
 				return Mouse.click(point, true);
 			}
 		}
@@ -364,7 +364,7 @@ public class Prayer {
 			if (togglePrayer(p, false)) {
 				final Timer timer = new Timer(500);
 				while (timer.isRunning() && p.isActive()) {
-					Task.sleep(15);
+					Delay.sleep(15);
 				}
 			}
 		}

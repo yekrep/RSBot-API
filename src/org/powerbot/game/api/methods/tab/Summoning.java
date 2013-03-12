@@ -1,11 +1,11 @@
 package org.powerbot.game.api.methods.tab;
 
-import org.powerbot.core.script.job.Task;
 import org.powerbot.game.api.methods.Settings;
 import org.powerbot.game.api.methods.Widgets;
 import org.powerbot.game.api.methods.interactive.NPCs;
 import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.methods.node.Menu;
+import org.powerbot.game.api.util.Delay;
 import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.util.Timer;
 import org.powerbot.game.api.wrappers.interactive.NPC;
@@ -221,7 +221,7 @@ public class Summoning {
 		if ("dismiss".contains(action.toLowerCase())) {
 			if (Widgets.get(WIDGET_SUMMONING_ORB, 2).interact(action)) {
 				for (int i = 0; i < 50 && !Widgets.get(WIDGET_INTERACT).validate(); i++) {
-					Task.sleep(20);
+					Delay.sleep(20);
 				}
 				return Widgets.get(WIDGET_INTERACT, 3).click(true);
 			}
@@ -263,7 +263,7 @@ public class Summoning {
 			if (!isFamiliarSummoned()) {
 				final Timer timer = new Timer(800);
 				while (timer.isRunning() && !Menu.isOpen()) {
-					Task.sleep(15);
+					Delay.sleep(15);
 				}
 				if (!Menu.select("Select")) {
 					return false;
@@ -271,13 +271,13 @@ public class Summoning {
 			}
 			final Timer timer = new Timer(2000);
 			while (timer.isRunning() && !Widgets.get(WIDGET_SET_LEFT).validate()) {
-				Task.sleep(15);
+				Delay.sleep(15);
 			}
-			Task.sleep(200);
+			Delay.sleep(200);
 			if (option.getWidgetChild().interact("Select")) {
 				final Timer t = new Timer(800);
 				while (t.isRunning() && !option.isSelected()) {
-					Task.sleep(15);
+					Delay.sleep(15);
 				}
 			} else {
 				Widgets.get(WIDGET_SET_LEFT, 5).interact("Confirm");
@@ -385,7 +385,7 @@ public class Summoning {
 		if (Widgets.get(WIDGET_FOLLOWER_DETAILS, 51).interact("Dismiss")) {
 			final Timer timer = new Timer(1500);
 			while (timer.isRunning() && !Widgets.get(WIDGET_INTERACT, 20).validate()) {
-				Task.sleep(15);
+				Delay.sleep(15);
 			}
 			return Widgets.get(WIDGET_INTERACT, 3).click(true);
 		}

@@ -1,10 +1,10 @@
 package org.powerbot.game.api.methods.tab;
 
-import org.powerbot.core.script.job.Task;
 import org.powerbot.game.api.methods.Tabs;
 import org.powerbot.game.api.methods.Widgets;
 import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.methods.widget.Bank;
+import org.powerbot.game.api.util.Delay;
 import org.powerbot.game.api.wrappers.node.Item;
 import org.powerbot.game.api.wrappers.widget.Widget;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
@@ -429,7 +429,7 @@ public class Equipment {
 				if (!item.equals(Inventory.getItemAt(index))) {
 					return true;
 				}
-				Task.sleep(10);
+				Delay.sleep(10);
 			}
 		}
 		return false;
@@ -446,7 +446,7 @@ public class Equipment {
 		final Item item = getItem(itemIds);
 		if (item != null) {
 			if (item.getWidgetChild().interact("Remove")) {
-				Task.sleep(250, 500);
+				Delay.sleep(250, 500);
 				return getCount(itemIds) < count;
 			}
 		}

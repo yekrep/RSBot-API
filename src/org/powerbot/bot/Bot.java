@@ -6,11 +6,11 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.logging.Logger;
 
-import org.powerbot.core.script.job.Task;
 import org.powerbot.event.EventMulticaster;
 import org.powerbot.game.api.methods.input.Keyboard;
 import org.powerbot.game.api.methods.input.Mouse;
 import org.powerbot.game.api.methods.widget.WidgetCache;
+import org.powerbot.game.api.util.Delay;
 import org.powerbot.game.bot.CallbackImpl;
 import org.powerbot.game.bot.Context;
 import org.powerbot.game.bot.handler.input.MouseExecutor;
@@ -321,9 +321,9 @@ public final class Bot implements Runnable {//TODO re-write bot
 		public void run() {
 			if (bot != null && bot.client != null && !Keyboard.isReady()) {
 				while (!Keyboard.isReady() && !Mouse.isReady()) {
-					Task.sleep(1000);
+					Delay.sleep(1000);
 				}
-				Task.sleep(800);
+				Delay.sleep(800);
 				Keyboard.sendKey('s');
 			}
 		}

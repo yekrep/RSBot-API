@@ -13,7 +13,7 @@ import java.awt.image.WritableRaster;
 import java.util.Hashtable;
 
 import org.powerbot.bot.Bot;
-import org.powerbot.core.script.job.Task;
+import org.powerbot.game.api.util.Delay;
 import org.powerbot.gui.BotChrome;
 
 public class Canvas extends java.awt.Canvas {
@@ -35,7 +35,7 @@ public class Canvas extends java.awt.Canvas {
 				loader_identified = true;
 			}
 		}
-		Task.sleep(BotChrome.minimised ? MINIMISED_GRAPHICS_DELAY : GRAPHICS_DELAY);
+		Delay.sleep(BotChrome.minimised ? MINIMISED_GRAPHICS_DELAY : GRAPHICS_DELAY);
 		return bot.getBufferGraphics();
 	}
 

@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.powerbot.bot.Bot;
-import org.powerbot.core.script.job.Task;
+import org.powerbot.game.api.util.Delay;
 import org.powerbot.game.api.wrappers.HintArrow;
 import org.powerbot.game.api.wrappers.Tile;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
@@ -132,7 +132,7 @@ public class Game {
 		if (Tabs.LOGOUT.open()) {
 			final WidgetChild w = Widgets.get(182, lobby ? 6 : 13);
 			if (w != null && w.validate() && w.interact("Exit to " + (lobby ? "Lobby" : "Login"))) {
-				for (int i = 0; i < 10; i++, Task.sleep(100, 200)) {
+				for (int i = 0; i < 10; i++, Delay.sleep(100, 200)) {
 					if (Game.getClientState() == Game.INDEX_LOBBY_SCREEN && lobby || Game.getClientState() == Game.INDEX_LOGIN_SCREEN && !lobby) {
 						return true;
 					}

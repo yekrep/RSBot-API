@@ -2,9 +2,9 @@ package org.powerbot.game.api.methods;
 
 import java.awt.Point;
 
-import org.powerbot.core.script.job.Task;
 import org.powerbot.game.api.methods.input.Mouse;
 import org.powerbot.game.api.methods.interactive.Players;
+import org.powerbot.game.api.util.Delay;
 import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.util.Timer;
 import org.powerbot.game.api.wrappers.Locatable;
@@ -65,7 +65,7 @@ public class Walking {
 		if (isRunEnabled() != enabled && Widgets.get(WIDGET, WIDGET_RUN).click(true)) {
 			final Timer t = new Timer(1800);
 			while (t.isRunning() && isRunEnabled() != enabled) {
-				Task.sleep(5);
+				Delay.sleep(5);
 			}
 		}
 	}

@@ -5,7 +5,7 @@ import java.awt.Point;
 import org.powerbot.script.xenon.Mouse;
 import org.powerbot.script.xenon.util.Filter;
 import org.powerbot.game.api.methods.node.Menu;
-import org.powerbot.game.api.util.Random;
+import org.powerbot.game.api.util.Delay;
 
 public abstract class Interactive implements Targetable {
 	private static final int ATTEMPTS = 5;
@@ -34,10 +34,7 @@ public abstract class Interactive implements Targetable {
 				@Override
 				public boolean accept(final Point point) {
 					if (contains(point) && Menu.contains(action, option)) {
-						try {
-							Thread.sleep(Random.nextInt(0, 50));
-						} catch (final InterruptedException ignored) {
-						}
+						Delay.sleep(0, 50);
 						return contains(point) && Menu.contains(action, option);
 					}
 					return false;

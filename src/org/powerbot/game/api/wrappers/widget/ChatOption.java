@@ -1,8 +1,8 @@
 package org.powerbot.game.api.wrappers.widget;
 
-import org.powerbot.core.script.job.Task;
 import org.powerbot.game.api.methods.Widgets;
 import org.powerbot.game.api.methods.input.Keyboard;
+import org.powerbot.game.api.util.Delay;
 
 /**
  * @author Stephan J. Bijzitter (Salvation)
@@ -79,7 +79,7 @@ public class ChatOption {
 				if (!revalidate(child.validate(), child.visible())) {
 					return true;
 				}
-				Task.sleep(50, 100);
+				Delay.sleep(50, 100);
 			}
 		}
 		return false;
