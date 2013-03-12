@@ -35,6 +35,7 @@ import org.powerbot.game.client.RSItemPile;
 /**
  * @author Timer
  */
+@Deprecated
 public class GroundItem implements Entity, Locatable, Identifiable {
 	private final Tile tile;
 	private final RegionOffset localTile;

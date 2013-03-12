@@ -13,6 +13,7 @@ import org.powerbot.game.client.RSItemDef;
  *
  * @author Timer
  */
+@Deprecated
 public class Item implements Identifiable {
 	private final int id;
 	private final int stack;

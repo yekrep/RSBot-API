@@ -6,6 +6,7 @@ import org.powerbot.game.client.RSItemDef;
 /**
  * @author Timer
  */
+@Deprecated
 public class ItemDefinition implements Identifiable {
 	private final RSItemDef definition;
 

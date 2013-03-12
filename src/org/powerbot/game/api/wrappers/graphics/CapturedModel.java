@@ -6,11 +6,12 @@ import java.awt.Polygon;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import org.powerbot.script.xenon.Calculations;
 import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.client.ModelCapture;
+import org.powerbot.script.xenon.Calculations;
 
+@Deprecated
 public abstract class CapturedModel {
 	protected int[] xPoints;
 	protected int[] yPoints;

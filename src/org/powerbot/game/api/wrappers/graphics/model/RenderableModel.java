@@ -4,6 +4,7 @@ import org.powerbot.game.api.wrappers.graphics.CapturedModel;
 import org.powerbot.game.client.Model;
 import org.powerbot.game.client.RSInteractable;
 
+@Deprecated
 public class RenderableModel extends CapturedModel {
 	private RSInteractable interactable;
 
