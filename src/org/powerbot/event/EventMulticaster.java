@@ -11,7 +11,9 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.util.EventListener;
 import java.util.EventObject;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -23,8 +25,9 @@ import org.powerbot.script.event.PaintEvent;
 import org.powerbot.script.event.PaintListener;
 import org.powerbot.script.event.TextPaintEvent;
 import org.powerbot.script.event.TextPaintListener;
+import org.powerbot.script.util.Stoppable;
 
-public class EventMulticaster implements Runnable {
+public class EventMulticaster implements Runnable, Stoppable {
 	public static final int MOUSE_EVENT = 0x1;
 	public static final int MOUSE_MOTION_EVENT = 0x2;
 	public static final int MOUSE_WHEEL_EVENT = 0x4;
@@ -33,12 +36,25 @@ public class EventMulticaster implements Runnable {
 	private final CopyOnWriteArrayList<EventListener> listeners;
 	private final Map<EventListener, Long> listenerMasks;
 	private final Queue<EventObject> queue;
-	private boolean active;
+	private final Map<Class<? extends EventListener>, Integer> masks;
+	private boolean active, stopping = false;
 
+	@SuppressWarnings("deprecation")
 	public EventMulticaster() {
 		listeners = new CopyOnWriteArrayList<>();
 		listenerMasks = new ConcurrentHashMap<>();
 		queue = new ConcurrentLinkedQueue<>();
+
+		masks = new HashMap<Class<? extends EventListener>, Integer>();
+		masks.put(MouseListener.class, EventMulticaster.MOUSE_EVENT);
+		masks.put(MouseMotionListener.class, EventMulticaster.MOUSE_MOTION_EVENT);
+		masks.put(MouseWheelListener.class, EventMulticaster.MOUSE_WHEEL_EVENT);
+		masks.put(KeyListener.class, EventMulticaster.KEY_EVENT);
+		masks.put(FocusListener.class, EventMulticaster.FOCUS_EVENT);
+		masks.put(MessageListener.class, MessageEvent.ID);
+		masks.put(org.powerbot.core.event.listeners.MessageListener.class, MessageEvent.ID);
+		masks.put(PaintListener.class, PaintEvent.ID);
+		masks.put(TextPaintListener.class, TextPaintEvent.ID);
 
 		active = true;
 	}
@@ -85,31 +101,13 @@ public class EventMulticaster implements Runnable {
 
 	private long getMask(final EventListener listener) {
 		long mask = 0;
-		if (listener instanceof MouseListener) {
-			mask |= EventMulticaster.MOUSE_EVENT;
-		}
-		if (listener instanceof MouseMotionListener) {
-			mask |= EventMulticaster.MOUSE_MOTION_EVENT;
-		}
-		if (listener instanceof MouseWheelListener) {
-			mask |= EventMulticaster.MOUSE_WHEEL_EVENT;
-		}
-		if (listener instanceof KeyListener) {
-			mask |= EventMulticaster.KEY_EVENT;
-		}
-		if (listener instanceof FocusListener) {
-			mask |= EventMulticaster.FOCUS_EVENT;
+
+		for (final Entry<Class<? extends EventListener>, Integer> entry : masks.entrySet()) {
+			if (entry.getKey().isInstance(listener)) {
+				mask |= entry.getValue();
+			}
 		}
 
-		if (listener instanceof MessageListener || listener instanceof org.powerbot.core.event.listeners.MessageListener) {
-			mask |= MessageEvent.ID;
-		}
-		if (listener instanceof PaintListener) {
-			mask |= PaintEvent.ID;
-		}
-		if (listener instanceof TextPaintListener) {
-			mask |= TextPaintEvent.ID;
-		}
 		return mask;
 	}
 
@@ -221,7 +219,14 @@ public class EventMulticaster implements Runnable {
 		return this.listeners.toArray(new EventListener[size]);
 	}
 
+	@Override
+	public boolean isStopping() {
+		return stopping;
+	}
+
+	@Override
 	public void stop() {
+		stopping = true;
 		active = false;
 
 		synchronized (queue) {

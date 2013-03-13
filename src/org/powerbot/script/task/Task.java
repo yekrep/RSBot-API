@@ -1,6 +1,6 @@
 package org.powerbot.script.task;
 
-import org.powerbot.script.Prioritizable;
+import org.powerbot.script.util.Prioritizable;
 
 /**
  * The base interface for tasks.

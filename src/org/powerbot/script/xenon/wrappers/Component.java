@@ -113,7 +113,7 @@ public class Component extends Interactive implements Validatable {
 
 		final int containerId = getId() >>> 16;
 		final HashTable ncI = new HashTable(client.getRSInterfaceNC());
-		for (RSInterfaceNode node = (RSInterfaceNode) ncI.getFirst(); node != null; node = (RSInterfaceNode) ncI.getNext()) {
+		for (RSInterfaceNode node = (RSInterfaceNode) ncI.first(); node != null; node = (RSInterfaceNode) ncI.next()) {
 			if (containerId == node.getMainID()) {
 				return (int) node.getId();
 			}

@@ -13,8 +13,8 @@ import java.awt.image.WritableRaster;
 import java.util.Hashtable;
 
 import org.powerbot.bot.Bot;
-import org.powerbot.core.script.job.Task;
 import org.powerbot.gui.BotChrome;
+import org.powerbot.script.xenon.util.Delay;
 
 public class Canvas extends java.awt.Canvas {
 	private static final long serialVersionUID = -2276037172265300477L;
@@ -30,12 +30,12 @@ public class Canvas extends java.awt.Canvas {
 			if (loader_identified) {
 				return super.getGraphics();
 			} else {
-				bot = Bot.instance();
+				bot = Bot.getInstance();
 				BotChrome.getInstance().panel.offset();
 				loader_identified = true;
 			}
 		}
-		Task.sleep(BotChrome.minimised ? MINIMISED_GRAPHICS_DELAY : GRAPHICS_DELAY);
+		Delay.sleep(BotChrome.minimised ? MINIMISED_GRAPHICS_DELAY : GRAPHICS_DELAY);
 		return bot.getBufferGraphics();
 	}
 

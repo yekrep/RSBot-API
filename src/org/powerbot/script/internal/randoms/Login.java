@@ -23,6 +23,7 @@ import org.powerbot.script.task.BlockingTask;
 /**
  * @author Timer
  */
+@SuppressWarnings("deprecation")
 @RandomManifest(name = "Login")
 public class Login extends TaskScript implements PaintListener {
 	private static final int WIDGET = 596;
@@ -37,7 +38,7 @@ public class Login extends TaskScript implements PaintListener {
 	private volatile Timer re_load_timer = null;
 
 	public Login() {
-		this.bot = Bot.instance();
+		this.bot = Bot.getInstance();
 		submit(new LoginTask());
 		submit(new LobbyTask());
 	}

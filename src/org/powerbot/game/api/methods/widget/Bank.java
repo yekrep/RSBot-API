@@ -5,7 +5,6 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import org.powerbot.core.script.job.Task;
 import org.powerbot.game.api.methods.Calculations;
 import org.powerbot.game.api.methods.Settings;
 import org.powerbot.game.api.methods.Walking;
@@ -27,6 +26,7 @@ import org.powerbot.game.api.wrappers.node.Item;
 import org.powerbot.game.api.wrappers.node.SceneObject;
 import org.powerbot.game.api.wrappers.widget.Widget;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
+import org.powerbot.script.xenon.util.Delay;
 
 /**
  * Bank related methods.
@@ -180,7 +180,7 @@ public class Bank {
 		if (!bank.isOnScreen() && (!Players.getLocal().isMoving()
 				|| Calculations.distance(Walking.getDestination(), ((Locatable) bank).getLocation()) > 4)) {
 			Walking.walk((Locatable) bank);
-			Task.sleep(200, 400);
+			Delay.sleep(200, 400);
 		}
 		if (bank.isOnScreen()) {
 			boolean interacted = false;
@@ -197,7 +197,7 @@ public class Bank {
 			final Widget bankpin = Widgets.get(WIDGET_BANKPIN);
 			final Timer t = new Timer(4000);
 			while (t.isRunning() && interacted && !isOpen() && (bankpin == null || !bankpin.validate())) {
-				Task.sleep(10);
+				Delay.sleep(10);
 			}
 		}
 		return isOpen();
@@ -244,7 +244,7 @@ public class Bank {
 		final Timer t = new Timer(500);
 		while (t.isRunning() && item.getWidgetChild().getRelativeY() == 0 && getCurrentTab() != Tab.ALL) {
 			setCurrentTab(Tab.ALL);
-			Task.sleep(50, 70);
+			Delay.sleep(50, 70);
 		}
 		if (!isSlotVisible(item.getWidgetChild())) {
 			final WidgetChild scrollBar = Widgets.get(WIDGET_BANK, WIDGET_SCROLLBAR);
@@ -264,12 +264,12 @@ public class Bank {
 				return false;
 			}
 		} else if (item.getWidgetChild().interact("Withdraw-X") && waitForInputWidget(true)) {
-			Task.sleep(200, 800);
+			Delay.sleep(200, 800);
 			Keyboard.sendText(String.valueOf(amount), true);
 		}
 		t.setEndIn(2000);
 		while (t.isRunning() && Inventory.getCount(true) == invCount) {
-			Task.sleep(5);
+			Delay.sleep(5);
 		}
 		return Inventory.getCount(true) != invCount;
 	}
@@ -296,12 +296,12 @@ public class Bank {
 				return false;
 			}
 		} else if (item.getWidgetChild().interact("Deposit-X") && waitForInputWidget(true)) {
-			Task.sleep(200, 800);
+			Delay.sleep(200, 800);
 			Keyboard.sendText(String.valueOf(amount), true);
 		}
 		final Timer t = new Timer(2000);
 		while (t.isRunning() && Inventory.getCount(true) == invCount) {
-			Task.sleep(5);
+			Delay.sleep(5);
 		}
 		return Inventory.getCount(true) != invCount;
 	}
@@ -324,7 +324,7 @@ public class Bank {
 		if (child != null && child.click(true)) {
 			final Timer t = new Timer(2000);
 			while (t.isRunning() && Inventory.getCount() == invCount) {
-				Task.sleep(5);
+				Delay.sleep(5);
 			}
 		}
 		return invCount != Inventory.getCount();
@@ -448,7 +448,7 @@ public class Bank {
 		if (isWithdrawNotedEnabled() != noted && child != null && child.click(true)) {
 			final Timer t = new Timer(500);
 			while (t.isRunning() && isWithdrawNotedEnabled() != noted) {
-				Task.sleep(5);
+				Delay.sleep(5);
 			}
 		}
 		return isWithdrawNotedEnabled() == noted;
@@ -466,7 +466,7 @@ public class Bank {
 		if (isSearchEnabled() != enable && child != null && child.click(true)) {
 			final Timer t = new Timer(500);
 			while (t.isRunning() && isSearchEnabled() != enable) {
-				Task.sleep(5);
+				Delay.sleep(5);
 			}
 		}
 		return isSearchEnabled() == enable;
@@ -487,11 +487,11 @@ public class Bank {
 		}
 		if (isSearchEnabled() && !isInputWidgetOpen()) {
 			setSearchMode(false);
-			Task.sleep(1000, 2000);
+			Delay.sleep(1000, 2000);
 			setSearchMode(true);
 		}
 		if ((isSearchEnabled() || setSearchMode(true)) && waitForInputWidget(true)) {
-			Task.sleep(200, 400);
+			Delay.sleep(200, 400);
 			Keyboard.sendText(itemName, true);
 			if (waitForInputWidget(false)) {
 				return getItems(true);
@@ -558,7 +558,7 @@ public class Bank {
 	protected static boolean waitForInputWidget(final boolean open) {
 		final Timer t = new Timer(3000);
 		while (t.isRunning() && isInputWidgetOpen() != open) {
-			Task.sleep(5);
+			Delay.sleep(5);
 		}
 		return isInputWidgetOpen() == open;
 	}

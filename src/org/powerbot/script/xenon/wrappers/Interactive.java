@@ -2,10 +2,10 @@ package org.powerbot.script.xenon.wrappers;
 
 import java.awt.Point;
 
-import org.powerbot.script.task.Task;
-import org.powerbot.script.xenon.Mouse;
-import org.powerbot.script.xenon.util.Filter;
 import org.powerbot.game.api.methods.node.Menu;
+import org.powerbot.script.xenon.Mouse;
+import org.powerbot.script.xenon.util.Delay;
+import org.powerbot.script.xenon.util.Filter;
 
 public abstract class Interactive implements Targetable {
 	private static final int ATTEMPTS = 5;
@@ -34,7 +34,7 @@ public abstract class Interactive implements Targetable {
 				@Override
 				public boolean accept(final Point point) {
 					if (contains(point) && Menu.contains(action, option)) {
-						Task.sleep(5, 50);
+						Delay.sleep(0, 50);
 						return contains(point) && Menu.contains(action, option);
 					}
 					return false;

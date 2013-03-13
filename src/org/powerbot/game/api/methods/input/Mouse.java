@@ -10,7 +10,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.powerbot.bot.Bot;
-import org.powerbot.core.script.job.Task;
 import org.powerbot.game.api.methods.Calculations;
 import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.util.Random;
@@ -19,6 +18,7 @@ import org.powerbot.game.bot.Context;
 import org.powerbot.game.bot.handler.input.MouseExecutor;
 import org.powerbot.game.bot.handler.input.util.MouseNode;
 import org.powerbot.game.client.Client;
+import org.powerbot.script.xenon.util.Delay;
 
 /**
  * A utility for the manipulation of the game's mouse.
@@ -136,9 +136,9 @@ public class Mouse {
 		}
 		final int x = getX(), y = getY();
 		pressMouse(x, y, left);
-		Task.sleep(Random.nextInt(50, 150));
+		Delay.sleep(Random.nextInt(50, 150));
 		releaseMouse(x, y, left);
-		Task.sleep(Random.nextInt(50, 80));
+		Delay.sleep(Random.nextInt(50, 80));
 		return true;
 	}
 
@@ -166,9 +166,9 @@ public class Mouse {
 		}
 		final int x = getX(), y = getY();
 		pressMouse(x, y, left);
-		Task.sleep(time);
+		Delay.sleep(time);
 		releaseMouse(x, y, left);
-		Task.sleep(Random.nextInt(50, 80));
+		Delay.sleep(Random.nextInt(50, 80));
 	}
 
 	/**
@@ -225,9 +225,9 @@ public class Mouse {
 			return;
 		}
 		pressMouse(getX(), getY(), true);
-		Task.sleep(Random.nextInt(10, 400));
+		Delay.sleep(Random.nextInt(10, 400));
 		move(dx, dy, rx, ry);
-		Task.sleep(Random.nextInt(10, 400));
+		Delay.sleep(Random.nextInt(10, 400));
 		releaseMouse(getX(), getY(), true);
 	}
 

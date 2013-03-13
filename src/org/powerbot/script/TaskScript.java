@@ -8,6 +8,7 @@ import java.util.Stack;
 import org.powerbot.script.task.AsyncTask;
 import org.powerbot.script.task.BlockingTask;
 import org.powerbot.script.task.Task;
+import org.powerbot.script.xenon.util.ExecutorDispatch;
 
 /**
  * An implementation of {@code Script} which polls (or "loops") a set of tasks.

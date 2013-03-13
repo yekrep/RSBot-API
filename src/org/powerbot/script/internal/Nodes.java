@@ -16,7 +16,7 @@ public class Nodes {
 		for (Node node = n.getNext(); node != n && node != null; node = node.getNext()) {
 			if (node.getId() == id) {
 				if (node instanceof SoftReference) {
-					return ((java.lang.ref.SoftReference) ((SoftReference) node).get()).get();
+					return ((java.lang.ref.SoftReference<?>) ((SoftReference) node).get()).get();
 				} else if (node instanceof HardReference) {
 					return ((HardReference) node).get();
 				} else {

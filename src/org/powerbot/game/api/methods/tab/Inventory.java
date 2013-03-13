@@ -4,13 +4,13 @@ import java.awt.Rectangle;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.powerbot.core.script.job.Task;
 import org.powerbot.game.api.methods.Tabs;
 import org.powerbot.game.api.methods.Widgets;
 import org.powerbot.game.api.methods.input.Mouse;
 import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.wrappers.node.Item;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
+import org.powerbot.script.xenon.util.Delay;
 
 public class Inventory {
 
@@ -481,7 +481,7 @@ public class Inventory {
 				return true;
 			}
 			selectedItem.getWidgetChild().interact("Use");
-			Task.sleep(500, 700);
+			Delay.sleep(500, 700);
 			if (getSelectedItem() != null) {
 				// Somehow, we couldn't deselect the item.
 				return false;
@@ -491,7 +491,7 @@ public class Inventory {
 			return true;
 		}
 		item.getWidgetChild().interact("Use");
-		Task.sleep(500, 700);
+		Delay.sleep(500, 700);
 		return item.equals(getSelectedItem());
 	}
 

@@ -1,4 +1,6 @@
-package org.powerbot.script;
+package org.powerbot.script.util;
+
+import org.powerbot.script.xenon.util.ExecutorDispatch;
 
 /**
  * A {@code Script} controller.

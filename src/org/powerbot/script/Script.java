@@ -1,14 +1,17 @@
 package org.powerbot.script;
 
 import java.util.Collection;
+import java.util.EventListener;
 import java.util.concurrent.FutureTask;
+
+import org.powerbot.script.util.ScriptController;
 
 /**
  * A stateful task based action driver.
  *
  * @author Paris
  */
-public interface Script extends Runnable {
+public interface Script extends Runnable, EventListener {
 
 	public enum State { START, STOP, SUSPEND, RESUME };
 

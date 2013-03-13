@@ -2,7 +2,6 @@ package org.powerbot.game.api.methods;
 
 import java.awt.Point;
 
-import org.powerbot.core.script.job.Task;
 import org.powerbot.game.api.methods.input.Mouse;
 import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.util.Filter;
@@ -16,6 +15,7 @@ import org.powerbot.game.bot.Context;
 import org.powerbot.game.client.Client;
 import org.powerbot.game.client.RSGroundData;
 import org.powerbot.game.client.RSInfo;
+import org.powerbot.script.xenon.util.Delay;
 
 /**
  * A utility for the manipulation of information required for walking.
@@ -66,7 +66,7 @@ public class Walking {
 		if (isRunEnabled() != enabled && Widgets.get(WIDGET, WIDGET_RUN).click(true)) {
 			final Timer t = new Timer(1800);
 			while (t.isRunning() && isRunEnabled() != enabled) {
-				Task.sleep(5);
+				Delay.sleep(5);
 			}
 		}
 	}

@@ -2,7 +2,6 @@ package org.powerbot.game.api.methods.widget;
 
 import java.awt.event.KeyEvent;
 
-import org.powerbot.core.script.job.Task;
 import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.api.methods.input.Keyboard;
 import org.powerbot.game.api.methods.interactive.Players;
@@ -12,6 +11,7 @@ import org.powerbot.game.api.wrappers.Locatable;
 import org.powerbot.game.api.wrappers.Tile;
 import org.powerbot.game.bot.Context;
 import org.powerbot.game.client.Client;
+import org.powerbot.script.xenon.util.Delay;
 
 /**
  * @author Timer
@@ -66,7 +66,7 @@ public class Camera {
 			}
 
 			lastAlt = curAlt;
-			Task.sleep(Random.nextInt(5, 10));
+			Delay.sleep(Random.nextInt(5, 10));
 			curAlt = getPitch();
 
 			if (up && curAlt >= percent) {
@@ -119,7 +119,7 @@ public class Camera {
 					timer.reset();
 				}
 				prev = ang;
-				Task.sleep(10);
+				Delay.sleep(10);
 			}
 			Keyboard.releaseKey((char) KeyEvent.VK_LEFT, 0, 0);
 		} else if (getAngleTo(degrees) < -5) {
@@ -131,7 +131,7 @@ public class Camera {
 					timer.reset();
 				}
 				prev = ang;
-				Task.sleep(10);
+				Delay.sleep(10);
 			}
 			Keyboard.releaseKey((char) KeyEvent.VK_RIGHT, 0, 0);
 		}

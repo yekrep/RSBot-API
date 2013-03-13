@@ -11,12 +11,16 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.swing.SwingUtilities;
 
-import org.powerbot.script.ExecutorDispatch;
+import org.powerbot.event.EventMulticaster;
 import org.powerbot.script.Script;
 import org.powerbot.script.Script.State;
-import org.powerbot.script.ScriptController;
-import org.powerbot.script.Stoppable;
-import org.powerbot.script.Suspendable;
+import org.powerbot.script.util.AbstractScriptController;
+import org.powerbot.script.util.EventManager;
+import org.powerbot.script.util.NamedCachedThreadPoolExecutor;
+import org.powerbot.script.util.ScriptController;
+import org.powerbot.script.util.Stoppable;
+import org.powerbot.script.util.Suspendable;
+import org.powerbot.script.xenon.util.ExecutorDispatch;
 
 /**
  * A priority based {@code Script} controller.
@@ -28,17 +32,19 @@ public class ScriptManager implements ExecutorDispatch<Boolean>, Runnable, Stopp
 	protected final Queue<Script> scripts;
 	protected final AtomicBoolean suspended, stopping;
 	private final ScriptController controller;
+	private final EventManager events;
 
-	public ScriptManager() {
+	public ScriptManager(final EventMulticaster events) {
 		executor = new NamedCachedThreadPoolExecutor();
 		scripts = new PriorityQueue<Script>(4, new ScriptQueueComparator());
 		suspended = new AtomicBoolean(false);
 		stopping = new AtomicBoolean(false);
 		controller = new AbstractScriptController(this);
+		this.events = new EventManager(events);
 	}
 
-	public ScriptManager(final Script... scripts) {
-		this();
+	public ScriptManager(final EventMulticaster events, final Script... scripts) {
+		this(events);
 		for (final Script script : scripts) {
 			script.setScriptController(controller);
 			this.scripts.add(script);
@@ -57,14 +63,20 @@ public class ScriptManager implements ExecutorDispatch<Boolean>, Runnable, Stopp
 		return controller;
 	}
 
+	public EventManager getEventManager() {
+		return events;
+	}
+
 	@Override
 	public void run() {
+		events.subscribeAll();
 		call(State.START);
 	}
 
 	@Override
 	public synchronized void stop() {
 		stopping.set(true);
+		events.unsubscribeAll();
 		while (!scripts.isEmpty()) {
 			call(scripts.poll(), State.STOP);
 		}
@@ -83,18 +95,23 @@ public class ScriptManager implements ExecutorDispatch<Boolean>, Runnable, Stopp
 	@Override
 	public synchronized void suspend() {
 		suspended.set(true);
+		events.suspend();
 		call(State.SUSPEND);
 	}
 
 	@Override
 	public synchronized void resume() {
 		call(State.RESUME);
+		events.resume();
 		suspended.set(false);
 	}
 
 	public final void call(final State state) {
-		for (final Script script : scripts) {
-			call(script, state);
+		switch (state) {
+		case START: run(); break;
+		case STOP: stop(); break;
+		case SUSPEND: suspend(); break;
+		case RESUME: suspend(); break;
 		}
 	}
 
@@ -156,43 +173,6 @@ public class ScriptManager implements ExecutorDispatch<Boolean>, Runnable, Stopp
 		@Override
 		public int compare(final Script o1, final Script o2) {
 			return o2.getPriority() - o1.getPriority();
-		}
-	}
-
-	private final class AbstractScriptController implements ScriptController {
-		private final ScriptManager manager;
-
-		public AbstractScriptController(final ScriptManager manager) {
-			this.manager = manager;
-		}
-
-		@Override
-		public boolean isStopping() {
-			return manager.isStopping();
-		}
-
-		@Override
-		public void stop() {
-			manager.stop();
-		}
-
-		@Override
-		public boolean isSuspended() {
-			return manager.isSuspended();
-		}
-
-		@Override
-		public void suspend() {
-			manager.suspend();
-		}
-
-		@Override
-		public void resume() {
-		}
-
-		@Override
-		public ExecutorDispatch<Boolean> getExecutorService() {
-			return manager;
 		}
 	}
 }

@@ -10,15 +10,16 @@ import org.powerbot.game.client.Client;
 import org.powerbot.game.client.input.Mouse;
 import org.powerbot.golem.HeteroMouse;
 import org.powerbot.math.Vector3;
-import org.powerbot.script.task.Task;
+import org.powerbot.script.util.Stoppable;
+import org.powerbot.script.xenon.util.Delay;
 
-public class MouseHandler implements Runnable {
+public class MouseHandler implements Runnable, Stoppable {
 	private static final int MAX_STEPS = 20;
 	private final MouseSimulator simulator;
 	private final Object LOCK = new Object();
 	private final Applet applet;
 	private final Client client;
-	private boolean running;
+	private boolean running, stopping = false;
 	private MouseTarget target;
 
 	public MouseHandler(final Applet applet, final Client client) {
@@ -33,7 +34,7 @@ public class MouseHandler implements Runnable {
 		if ((mouse = client.getMouse()) == null) return;
 		final int x = mouse.getX(), y = mouse.getY();
 		press(x, y, button);
-		Task.sleep(simulator.getPressDuration());
+		Delay.sleep(simulator.getPressDuration());
 		release(x, y, button);
 	}
 
@@ -92,7 +93,7 @@ public class MouseHandler implements Runnable {
 			if (target == null) continue;
 			final Mouse mouse;
 			if ((mouse = client.getMouse()) == null) {
-				Task.sleep(250);
+				Delay.sleep(250);
 				continue;
 			}
 			if (++target.steps > MAX_STEPS) {
@@ -140,7 +141,7 @@ public class MouseHandler implements Runnable {
 				m = System.currentTimeMillis() - m;
 
 				final long l = TimeUnit.NANOSECONDS.toMillis(simulator.getAbsoluteDelay(v.z)) - m;
-				Task.sleep(l);
+				Delay.sleep(l);
 			}
 
 			final Point next = target.targetable.getInteractPoint();
@@ -172,7 +173,14 @@ public class MouseHandler implements Runnable {
 		}
 	}
 
+	@Override
+	public boolean isStopping() {
+		return stopping;
+	}
+
+	@Override
 	public void stop() {
+		stopping = true;
 		running = false;
 	}
 

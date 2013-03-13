@@ -6,7 +6,6 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.logging.Logger;
 
-import org.powerbot.core.script.job.Task;
 import org.powerbot.event.EventMulticaster;
 import org.powerbot.game.api.methods.input.Keyboard;
 import org.powerbot.game.api.methods.input.Mouse;
@@ -26,13 +25,15 @@ import org.powerbot.script.event.TextPaintEvent;
 import org.powerbot.script.internal.Constants;
 import org.powerbot.script.internal.ScriptManager;
 import org.powerbot.script.internal.input.MouseHandler;
+import org.powerbot.script.util.Stoppable;
+import org.powerbot.script.xenon.util.Delay;
 import org.powerbot.service.GameAccounts;
 import org.powerbot.service.scripts.ScriptDefinition;
 
 /**
  * @author Timer
  */
-public final class Bot implements Runnable {//TODO re-write bot
+public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 	static final Logger log = Logger.getLogger(Bot.class.getName());
 	private static Bot instance;
 	public final BotComposite composite;
@@ -55,6 +56,7 @@ public final class Bot implements Runnable {//TODO re-write bot
 	private MouseExecutor oldMouse;
 	private ScriptManager scriptController;
 	private ScriptDefinition scriptDefinition;
+	private volatile boolean stopping = false;
 
 	private Bot() {
 		appletContainer = null;
@@ -79,7 +81,7 @@ public final class Bot implements Runnable {//TODO re-write bot
 		refreshing = false;
 	}
 
-	public synchronized static Bot instance() {
+	public synchronized static Bot getInstance() {
 		if (instance == null) {
 			instance = new Bot();
 		}
@@ -166,17 +168,21 @@ public final class Bot implements Runnable {//TODO re-write bot
 		new Thread(threadGroup, appletContainer, "Loader").start();
 	}
 
+	@Override
+	public boolean isStopping() {
+		return stopping;
+	}
+
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void stop() {
-		if (mouseHandler != null) mouseHandler().stop();
-		if (scriptController != null) {
-			scriptController.stop();
-		}
 		log.info("Unloading environment");
-		if (multicaster != null) {
-			multicaster.stop();
+		for (final Stoppable module : new Stoppable[] { mouseHandler, scriptController, multicaster }) {
+			if (module != null) {
+				module.stop();
+			}
 		}
 		new Thread(threadGroup, new Runnable() {
 			@Override
@@ -204,7 +210,7 @@ public final class Bot implements Runnable {//TODO re-write bot
 	}
 
 	public void startScript(final Script script, final ScriptDefinition definition) {
-		scriptController = new ScriptManager(); // TODO: multicaster?!
+		scriptController = new ScriptManager(getEventMulticaster());
 		scriptController.getScripts().add(script);
 		scriptDefinition = definition;
 	}
@@ -321,9 +327,9 @@ public final class Bot implements Runnable {//TODO re-write bot
 		public void run() {
 			if (bot != null && bot.client != null && !Keyboard.isReady()) {
 				while (!Keyboard.isReady() && !Mouse.isReady()) {
-					Task.sleep(1000);
+					Delay.sleep(1000);
 				}
-				Task.sleep(800);
+				Delay.sleep(800);
 				Keyboard.sendKey('s');
 			}
 		}

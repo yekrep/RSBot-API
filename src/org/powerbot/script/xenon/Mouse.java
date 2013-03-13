@@ -7,7 +7,7 @@ import org.powerbot.bot.Bot;
 import org.powerbot.game.client.Client;
 import org.powerbot.script.internal.input.MouseHandler;
 import org.powerbot.script.internal.input.MouseTarget;
-import org.powerbot.script.task.Task;
+import org.powerbot.script.xenon.util.Delay;
 import org.powerbot.script.xenon.util.Filter;
 import org.powerbot.script.xenon.wrappers.Targetable;
 
@@ -77,7 +77,7 @@ public class Mouse {
 		handler.handle(t = new MouseTarget(target, MouseTarget.DUMMY) {
 			@Override
 			public void execute(final MouseHandler handler) {
-				Task.sleep(0, 350);
+				Delay.sleep(0, 350);
 				if (filter.accept(handler.getLocation())) {
 					handler.click(left ? MouseEvent.BUTTON1 : MouseEvent.BUTTON3);
 					handler.complete(this);

@@ -6,6 +6,7 @@ import org.powerbot.game.api.wrappers.widget.WidgetChild;
 import org.powerbot.game.bot.Context;
 import org.powerbot.script.TaskScript;
 import org.powerbot.script.task.AsyncTask;
+import org.powerbot.script.xenon.util.Delay;
 import org.powerbot.script.xenon.util.Random;
 
 @RandomManifest(name = "Bank Pin")
@@ -31,7 +32,7 @@ public class BankPin extends TaskScript {
 			final String pin = String.format(_pin);
 			final int value = Integer.valueOf(String.valueOf(pin.charAt(Settings.get(163))));
 			if (value != 4 && Widgets.get(13, value + 6).interact("Select")) {
-				org.powerbot.core.script.job.Task.sleep(Random.nextInt(700, 1200));
+				Delay.sleep(Random.nextInt(700, 1200));
 			}
 		}
 

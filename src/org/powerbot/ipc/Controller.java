@@ -158,7 +158,7 @@ public final class Controller implements Runnable {
 				case Message.SCRIPT:
 					final ConcurrentLinkedQueue<String> list = new ConcurrentLinkedQueue<>();
 					if (Bot.instantiated()) {
-						final ScriptDefinition def = Bot.instance().getScriptDefinition();
+						final ScriptDefinition def = Bot.getInstance().getScriptDefinition();
 						if (def != null && def.getID() != null && !def.getID().isEmpty()) {
 							list.add(def.getID());
 						}

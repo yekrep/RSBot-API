@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.regex.Pattern;
 
-import org.powerbot.core.script.job.Task;
 import org.powerbot.game.api.methods.input.Mouse;
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Timer;
@@ -15,6 +14,7 @@ import org.powerbot.game.bot.Context;
 import org.powerbot.game.client.Client;
 import org.powerbot.game.client.MenuGroupNode;
 import org.powerbot.game.client.MenuItemNode;
+import org.powerbot.script.xenon.util.Delay;
 
 /**
  * @author Timer
@@ -96,7 +96,7 @@ public class Menu {
 			Mouse.click(false);
 			final Timer t = new Timer(100);
 			while (t.isRunning() && !isOpen()) {
-				Task.sleep(5);
+				Delay.sleep(5);
 			}
 			idx = getIndex(action, option);
 
@@ -104,7 +104,7 @@ public class Menu {
 		} else if (idx == -1) {
 			while (isOpen()) {
 				Mouse.move(0, 0);
-				Task.sleep(Random.nextInt(100, 500));
+				Delay.sleep(Random.nextInt(100, 500));
 			}
 			return false;
 		}
@@ -181,17 +181,17 @@ public class Menu {
 		int x = Random.nextInt(4, items[mIdx].length() * 4);
 		int y = 21 + 16 * mIdx + Random.nextInt(3, 12);
 		Mouse.move(menuLoc.x + x, menuLoc.y + y, 2, 2);
-		Task.sleep(Random.nextInt(125, 150));
+		Delay.sleep(Random.nextInt(125, 150));
 		if (isOpen()) {
 			final Point subLoc = getSubLocation();
 			final Point start = Mouse.getLocation();
 			x = Random.nextInt(4, items[sIdx].length() * 4);
 			Mouse.move(subLoc.x + x, start.y, 2, 0);
-			Task.sleep(Random.nextInt(125, 150));
+			Delay.sleep(Random.nextInt(125, 150));
 			if (isOpen()) {
 				y = 16 * sIdx + Random.nextInt(3, 12) + 21;
 				Mouse.move(subLoc.x + x, subLoc.y + y, 0, 2);
-				Task.sleep(Random.nextInt(125, 150));
+				Delay.sleep(Random.nextInt(125, 150));
 				if (isOpen()) {
 					Mouse.click(true);
 					return true;
