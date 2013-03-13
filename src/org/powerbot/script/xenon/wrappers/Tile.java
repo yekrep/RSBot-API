@@ -57,6 +57,15 @@ public class Tile extends Interactive implements Locatable, Targetable {
 		return base != null ? Calculations.groundToScreen((int) ((x - base.x + modX) * 512d), (int) ((y - base.y + modY) * 512d), plane, height) : new Point(-1, -1);
 	}
 
+	public Point toMap() {
+		return Calculations.worldToMap(getX(), getY());
+	}
+
+	public boolean isOnMap() {
+		final Point p = toMap();
+		return p.x != -1 && p.y != -1;
+	}
+
 	@Override
 	public Tile getLocation() {
 		return this;

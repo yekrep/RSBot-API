@@ -6,11 +6,11 @@ import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.util.concurrent.TimeUnit;
 
-import org.powerbot.core.script.job.Task;
 import org.powerbot.game.client.Client;
 import org.powerbot.game.client.input.Mouse;
 import org.powerbot.golem.HeteroMouse;
 import org.powerbot.math.Vector3;
+import org.powerbot.script.task.Task;
 
 public class MouseHandler implements Runnable {
 	private static final int MAX_STEPS = 20;
@@ -28,32 +28,32 @@ public class MouseHandler implements Runnable {
 		target = null;
 	}
 
-	public void click(final boolean left) {
+	public void click(final int button) {
 		final Mouse mouse;
 		if ((mouse = client.getMouse()) == null) return;
 		final int x = mouse.getX(), y = mouse.getY();
-		press(x, y, left);
+		press(x, y, button);
 		Task.sleep(simulator.getPressDuration());
-		release(x, y, left);
+		release(x, y, button);
 	}
 
-	public void press(final int x, final int y, final boolean left) {
+	public void press(final int x, final int y, final int button) {
 		final Mouse mouse;
 		if ((mouse = client.getMouse()) == null) return;
 		if (!mouse.isPresent() || mouse.isPressed()) return;
 		final Component target = target();
-		mouse.sendEvent(new MouseEvent(target, MouseEvent.MOUSE_PRESSED, System.currentTimeMillis(), 0, x, y, 1, false, left ? MouseEvent.BUTTON1 : MouseEvent.BUTTON3));
+		mouse.sendEvent(new MouseEvent(target, MouseEvent.MOUSE_PRESSED, System.currentTimeMillis(), 0, x, y, 1, false, button));
 	}
 
-	public void release(final int x, final int y, final boolean left) {
+	public void release(final int x, final int y, final int button) {
 		final Mouse mouse;
 		if ((mouse = client.getMouse()) == null) return;
 		if (!mouse.isPressed()) return;
 		final long mark = System.currentTimeMillis();
 		final Component target = target();
-		mouse.sendEvent(new MouseEvent(target, MouseEvent.MOUSE_RELEASED, mark, 0, x, y, 1, false, left ? MouseEvent.BUTTON1 : MouseEvent.BUTTON3));
+		mouse.sendEvent(new MouseEvent(target, MouseEvent.MOUSE_RELEASED, mark, 0, x, y, 1, false, button));
 		if (mouse.getPressX() == mouse.getX() && mouse.getPressY() == mouse.getY()) {
-			mouse.sendEvent(new MouseEvent(target, MouseEvent.MOUSE_CLICKED, mark, 0, x, y, 1, false, left ? MouseEvent.BUTTON1 : MouseEvent.BUTTON3));
+			mouse.sendEvent(new MouseEvent(target, MouseEvent.MOUSE_CLICKED, mark, 0, x, y, 1, false, button));
 		}
 	}
 

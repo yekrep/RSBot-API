@@ -6,6 +6,7 @@ import org.powerbot.game.api.wrappers.interactive.Character;
 import org.powerbot.game.client.Model;
 import org.powerbot.game.client.RSInteractableLocation;
 
+@Deprecated
 public class CharacterModel extends CapturedModel {
 	private final Character character;
 	private final int[] x_base, z_base;

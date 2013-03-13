@@ -2,7 +2,7 @@ package org.powerbot.script.xenon.wrappers;
 
 import java.awt.Point;
 
-import org.powerbot.core.script.job.Task;
+import org.powerbot.script.task.Task;
 import org.powerbot.script.xenon.Mouse;
 import org.powerbot.script.xenon.util.Filter;
 import org.powerbot.game.api.methods.node.Menu;

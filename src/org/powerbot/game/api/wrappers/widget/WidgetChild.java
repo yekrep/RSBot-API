@@ -21,6 +21,7 @@ import org.powerbot.game.client.RSInterfaceNode;
 /**
  * @author Timer
  */
+@Deprecated
 public class WidgetChild implements Entity, Identifiable {
 	/**
 	 * The index of this interface in the parent. If this
@@ -30,12 +31,10 @@ public class WidgetChild implements Entity, Identifiable {
 	 * the parent component.
 	 */
 	private final int index;
-
 	/**
 	 * The parent interface containing this component.
 	 */
 	private final Widget parentWidget;
-
 	/**
 	 * The parent component
 	 */
@@ -372,7 +371,6 @@ public class WidgetChild implements Entity, Identifiable {
 		return false;
 	}
 
-
 	public int getParentId() {
 		final RSInterface inter = getInternal();
 		if (inter == null) {
@@ -410,7 +408,6 @@ public class WidgetChild implements Entity, Identifiable {
 		int scrollableContentHeight = scrollableArea.getScrollableContentHeight();
 		return scrollableContentHeight != 0;
 	}
-
 
 	private RSInterface getInternal() {
 		if (parent != null) {

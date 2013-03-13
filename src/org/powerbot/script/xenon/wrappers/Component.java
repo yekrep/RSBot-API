@@ -4,13 +4,14 @@ import java.awt.Point;
 import java.awt.Rectangle;
 
 import org.powerbot.bot.Bot;
-import org.powerbot.script.internal.wrappers.HashTable;
-import org.powerbot.script.xenon.Widgets;
+import org.powerbot.game.api.util.Random;
 import org.powerbot.game.client.Client;
 import org.powerbot.game.client.RSInterface;
 import org.powerbot.game.client.RSInterfaceNode;
+import org.powerbot.script.internal.wrappers.HashTable;
+import org.powerbot.script.xenon.Widgets;
 
-public class Component {//TODO isValid, getChildren, isVisible, targetable, validatable
+public class Component extends Interactive implements Validatable {
 	private final Widget widget;
 	private final Component parent;
 	private final int index;
@@ -26,15 +27,25 @@ public class Component {//TODO isValid, getChildren, isVisible, targetable, vali
 	}
 
 	public Widget getWidget() {
-		return widget;
+		return this.widget;
 	}
 
 	public Component getParent() {
-		return parent;
+		return this.parent;
 	}
 
 	public int getIndex() {
 		return this.index;
+	}
+
+	public Component[] getChildren() {
+		final RSInterface component = getInternalComponent();
+		final RSInterface[] interfaces;
+		if (component != null && (interfaces = component.getComponents()) != null) {
+			final Component[] components = new Component[interfaces.length];
+			for (int i = 0; i < interfaces.length; i++) components[i] = new Component(widget, this, i);
+		}
+		return new Component[0];
 	}
 
 	public String[] getActions() {
@@ -253,14 +264,55 @@ public class Component {//TODO isValid, getChildren, isVisible, targetable, vali
 		return component != null && component.isInventoryInterface();
 	}
 
+	public boolean isVisible() {
+		final RSInterface internal = getInternalComponent();
+		int id = 0;
+		if (internal != null && isValid() && !internal.isHidden()) id = getParentId();
+		return id == -1 || Widgets.get(id >> 16, id & 0xffff).isVisible();
+	}
+
+	@Override
+	public Point getInteractPoint() {
+		return getNextPoint();
+	}
+
+	@Override
+	public Point getNextPoint() {
+		final Rectangle interact = getInteractRectangle();
+		return interact != null ? new Point(
+				Random.nextGaussian(interact.x, interact.x + interact.width, interact.width / 10),
+				Random.nextGaussian(interact.y, interact.y + interact.height, interact.height / 10)
+		) : null;
+	}
+
+	@Override
+	public Point getCenterPoint() {
+		final Rectangle interact = getInteractRectangle();
+		return interact != null ? new Point((int) interact.getCenterX(), (int) interact.getCenterY()) : null;
+	}
+
+	@Override
+	public boolean contains(final Point point) {
+		final Rectangle interact = getInteractRectangle();
+		return interact != null && interact.contains(point);
+	}
+
+	@Override
+	public boolean isValid() {
+		final RSInterface internal = getInternalComponent();
+		return internal != null && (parent == null || parent.isVisible()) &&
+				getId() != -1 && internal.getBoundsArrayIndex() != -1;
+	}
+
 	private Rectangle getInteractRectangle() {
 		final Point absLocation = getAbsoluteLocation();
-		if (absLocation.x == -1 && absLocation.y == -1) return new Rectangle(-1, -1, 0, 0);
+		if (absLocation.x == -1 && absLocation.y == -1) return null;
 		final boolean canScroll = isInScrollableArea();
-		return new Rectangle(absLocation.x, absLocation.y,
-				canScroll ? getWidth() : getScrollWidth(),
-				canScroll ? getHeight() : getScrollHeight()
+		final Rectangle r = new Rectangle(absLocation.x + 1, absLocation.y + 1,
+				(canScroll ? getWidth() : getScrollWidth()) - 1,
+				(canScroll ? getHeight() : getScrollHeight()) - 1
 		);
+		return r.x > 0 && r.y > 0 && r.width > 0 && r.height > 0 ? r : null;
 	}
 
 	private boolean isInScrollableArea() {

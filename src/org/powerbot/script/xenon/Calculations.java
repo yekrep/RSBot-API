@@ -3,10 +3,6 @@ package org.powerbot.script.xenon;
 import java.awt.Point;
 
 import org.powerbot.bot.Bot;
-import org.powerbot.script.internal.Constants;
-import org.powerbot.script.xenon.wrappers.Locatable;
-import org.powerbot.script.xenon.wrappers.Player;
-import org.powerbot.script.xenon.wrappers.Tile;
 import org.powerbot.game.client.Client;
 import org.powerbot.game.client.RSGroundBytes;
 import org.powerbot.game.client.RSGroundInfo;
@@ -14,6 +10,11 @@ import org.powerbot.game.client.RSInfo;
 import org.powerbot.game.client.Render;
 import org.powerbot.game.client.RenderData;
 import org.powerbot.game.client.TileData;
+import org.powerbot.script.internal.Constants;
+import org.powerbot.script.xenon.wrappers.Component;
+import org.powerbot.script.xenon.wrappers.Locatable;
+import org.powerbot.script.xenon.wrappers.Player;
+import org.powerbot.script.xenon.wrappers.Tile;
 
 public class Calculations {
 	public static final int[] SIN_TABLE = new int[16384];
@@ -37,7 +38,7 @@ public class Calculations {
 	}
 
 	public static boolean isPointOnScreen(final int x, final int y) {
-		return false;//TODO
+		return true;//TODO
 	}
 
 	public static int tileHeight(final int x, final int y) {
@@ -95,6 +96,46 @@ public class Calculations {
 					Math.round(toolkit.absoluteX + (toolkit.xMultiplier * _x) / _z),
 					Math.round(toolkit.absoluteY + (toolkit.yMultiplier * _y) / _z)
 			);
+		}
+		return new Point(-1, -1);
+
+	}
+
+	public static Point worldToMap(double x, double y) {
+		final Client client = Bot.client();
+		if (client == null) return null;
+		final Tile base = Game.getMapBase();
+		final Player player = Players.getLocal();
+		Tile loc;
+		if (base == null || player == null || (loc = player.getLocation()) == null) return null;
+		x -= base.x;
+		y -= base.y;
+		loc = loc.derive(-base.x, -base.y);
+		final int pX = (int) (x * 4 + 2) - (loc.getX() << 9) / 128;
+		final int pY = (int) (y * 4 + 2) - (loc.getY() << 9) / 128;
+		final Component mapComponent = Components.getMap();
+		if (mapComponent == null) return new Point(-1, -1);
+		final int dist = pX * pX + pY * pY;
+		final int mapRadius = Math.max(mapComponent.getWidth() / 2, mapComponent.getHeight() / 2) - 8;
+		if (mapRadius * mapRadius >= dist) {
+			final Constants constants = Bot.constants();
+			final int SETTINGS_ON = constants != null ? constants.MINIMAP_SETTINGS_ON : -1;
+			int angle = 0x3fff & (int) client.getMinimapAngle();
+			final boolean unknown = client.getMinimapSettings() == SETTINGS_ON;
+			if (!unknown) angle = 0x3fff & client.getMinimapOffset() + (int) client.getMinimapAngle();
+			int sin = Calculations.SIN_TABLE[angle];
+			int cos = Calculations.COS_TABLE[angle];
+			if (!unknown) {
+				final int fact = 0x100 + client.getMinimapScale();
+				sin = 0x100 * sin / fact;
+				cos = 0x100 * cos / fact;
+			}
+			final int _x = cos * pX + sin * pY >> 0xf;
+			final int _y = cos * pY - sin * pX >> 0xf;
+			final Point basePoint = mapComponent.getAbsoluteLocation();
+			final int screen_x = _x + (int) basePoint.getX() + mapComponent.getWidth() / 2;
+			final int screen_y = -_y + (int) basePoint.getY() + mapComponent.getHeight() / 2;
+			return new Point(screen_x, screen_y);
 		}
 		return new Point(-1, -1);
 	}

@@ -19,6 +19,7 @@ import org.powerbot.game.client.HashTable;
 import org.powerbot.game.client.NodeListCache;
 import org.powerbot.game.client.RSItem;
 
+@Deprecated
 public class GroundItems {
 	public static final Filter<GroundItem> ALL_FILTER = new Filter<GroundItem>() {
 		public boolean accept(final GroundItem item) {
@@ -34,7 +35,6 @@ public class GroundItems {
 	public static GroundItem[] getLoaded() {
 		return getLoaded(104, ALL_FILTER);
 	}
-
 
 	public static GroundItem[] getLoaded(final int id) {
 		return getLoaded(new Filter<GroundItem>() {

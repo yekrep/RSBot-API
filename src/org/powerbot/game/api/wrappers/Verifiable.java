@@ -1,5 +1,6 @@
 package org.powerbot.game.api.wrappers;
 
+@Deprecated
 public interface Verifiable {
 	/**
 	 * Verify that this Object exists.

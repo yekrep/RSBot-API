@@ -7,6 +7,7 @@ import org.powerbot.game.bot.Context;
  *
  * @author Timer
  */
+@Deprecated
 public class Settings {
 	public static final int SETTING_COMBAT_STYLE = 43;
 	public static final int SETTING_AUTO_RETALIATE = 172;

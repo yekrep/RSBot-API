@@ -14,6 +14,7 @@ import org.powerbot.game.client.RSPlayer;
 /**
  * @author Timer
  */
+@Deprecated
 public class HintArrow implements Verifiable, Locatable {
 	private final RSHintArrow arrow;
 

@@ -8,6 +8,7 @@ import java.awt.Polygon;
  *
  * @author Timer
  */
+@Deprecated
 public interface Entity extends ViewportEntity {
 	/**
 	 * Determines if this entity is on screen.

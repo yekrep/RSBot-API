@@ -65,6 +65,10 @@ public class Game {
 		return client.getGUIRSInterfaceIndex() != 746;
 	}
 
+	public static void setPreferredWorld(final int world) {
+		//TODO this
+	}
+
 	public static Dimension getDimensions() {
 		final Client client = Bot.client();
 		final Canvas canvas;

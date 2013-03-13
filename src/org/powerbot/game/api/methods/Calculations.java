@@ -19,6 +19,7 @@ import org.powerbot.game.client.TileData;
  *
  * @author Timer
  */
+@Deprecated
 public class Calculations {
 	public static final int[] SIN_TABLE = new int[0x4000];
 	public static final int[] COS_TABLE = new int[0x4000];

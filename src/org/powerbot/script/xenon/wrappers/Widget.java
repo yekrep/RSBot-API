@@ -8,7 +8,7 @@ import org.powerbot.game.client.Client;
 import org.powerbot.game.client.RSInterface;
 import org.powerbot.game.client.RSInterfaceBase;
 
-public class Widget implements Iterable<Component> {
+public class Widget implements Validatable, Iterable<Component> {
 	private final int index;
 	private final Object LOCK;
 	private Component[] cache;
@@ -20,7 +20,7 @@ public class Widget implements Iterable<Component> {
 	}
 
 	public int getIndex() {
-		return index;
+		return this.index;
 	}
 
 	public int getComponentCount() {

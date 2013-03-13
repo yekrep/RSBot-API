@@ -2,6 +2,7 @@ package org.powerbot.game.api.wrappers;
 
 import java.awt.Point;
 
+@Deprecated
 public interface ViewportEntity extends Verifiable {
 	/**
 	 * Determines the central point of the entity.

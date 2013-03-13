@@ -25,6 +25,7 @@ import org.powerbot.game.client.Client;
  *
  * @author Timer
  */
+@Deprecated
 public class Mouse {
 	private static final Map<ThreadGroup, Integer> dragLengths = new HashMap<ThreadGroup, Integer>();
 	private static final Map<ThreadGroup, Integer> sides = new HashMap<ThreadGroup, Integer>();
