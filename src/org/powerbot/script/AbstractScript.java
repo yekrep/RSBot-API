@@ -1,8 +1,14 @@
 package org.powerbot.script;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayDeque;
 import java.util.Collection;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.FutureTask;
@@ -14,6 +20,7 @@ import java.util.logging.Logger;
 import org.powerbot.script.util.Prioritizable;
 import org.powerbot.script.util.ScriptController;
 import org.powerbot.script.xenon.util.Random;
+import org.powerbot.util.Configuration;
 
 /**
  * An abstract implementation of {@code Script}.
@@ -26,6 +33,12 @@ public abstract class AbstractScript implements Script, Prioritizable {
 	private ScriptController controller;
 	private final AtomicLong started, suspended;
 	private final Queue<Long> suspensions;
+	private final File dir;
+
+	/**
+	 * The settings for this {@link org.powerbot.script.Script}, which are saved between runs.
+	 */
+	protected final Properties settings;
 
 	public AbstractScript() {
 		tasks = new ConcurrentHashMap<State, Collection<FutureTask<Boolean>>>(State.values().length);
@@ -58,6 +71,54 @@ public abstract class AbstractScript implements Script, Prioritizable {
 			@Override
 			public void run() {
 				suspended.addAndGet(System.nanoTime() - suspensions.poll());
+			}
+		}, true));
+
+		dir = new File(new File(System.getProperty("java.io.tmpdir"), Configuration.NAME), getClass().getName());
+		final File xml = new File(dir, "settings.xml");
+		settings = new Properties();
+
+		if (xml.isFile() && xml.canRead()) {
+			FileInputStream in = null;
+			try {
+				in = new FileInputStream(xml);
+				settings.loadFromXML(in);
+			} catch (final IOException ignored) {
+			} finally {
+				if (in != null) {
+					try {
+						in.close();
+					} catch (final IOException ignored) {
+					}
+				}
+			}
+		}
+
+		getTasks(State.STOP).add(new FutureTask<Boolean>(new Runnable() {
+			@Override
+			public void run() {
+				if (settings.isEmpty()) {
+					if (xml.isFile()) {
+						xml.delete();
+					}
+				} else {
+					if (!dir.isDirectory()) {
+						dir.mkdirs();
+					}
+					BufferedOutputStream out = null;
+					try {
+						out = new BufferedOutputStream(new FileOutputStream(xml));
+						settings.storeToXML(out, "");
+					} catch (final IOException ignored) {
+					} finally {
+						if (out != null) {
+							try {
+								out.close();
+							} catch (final IOException ignored) {
+							}
+						}
+					}
+				}
 			}
 		}, true));
 	}
@@ -139,5 +200,17 @@ public abstract class AbstractScript implements Script, Prioritizable {
 	 */
 	public long getRuntime() {
 		return TimeUnit.NANOSECONDS.toSeconds(System.nanoTime() - started.get() - suspended.get());
+	}
+
+	/**
+	 * Returns the designated storage folder.
+	 *
+	 * @return a directory path where files can be saved to and read from
+	 */
+	public File getStorageDirectory() {
+		if (!dir.isDirectory()) {
+			dir.mkdirs();
+		}
+		return dir;
 	}
 }
