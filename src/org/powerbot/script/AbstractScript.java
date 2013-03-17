@@ -217,4 +217,40 @@ public abstract class AbstractScript implements Script, Prioritizable {
 		}
 		return dir;
 	}
+
+	/**
+	 * Returns the {@link org.powerbot.script.Manifest} attached to this {@link org.powerbot.script.Script} if present.
+	 *
+	 * @return the attached {@link org.powerbot.script.Manifest} if it exists, or {@code null} otherwise
+	 */
+	public Manifest getManifest() {
+		return getClass().isAnnotationPresent(Manifest.class) ? getClass().getAnnotation(Manifest.class) : null;
+	}
+
+	/**
+	 * Returns the name of this {@link org.powerbot.script.Script} as determined by its {@link org.powerbot.script.Manifest}.
+	 *
+	 * @return the name of this {@link org.powerbot.script.Script}
+	 */
+	public String getName() {
+		final Manifest manifest = getManifest();
+		return manifest == null || manifest.name() == null ? "" : manifest.name();
+	}
+
+	/**
+	 * Returns the version of this {@link org.powerbot.script.Script} as determined by its {@link org.powerbot.script.Manifest}.
+	 *
+	 * @return the version of this {@link org.powerbot.script.Script}
+	 */
+	public double getVersion() {
+		final Manifest manifest = getManifest();
+		if (manifest == null) {
+			try {
+				return (double) Manifest.class.getMethod("version").getDefaultValue();
+			} catch (final NoSuchMethodException ignored) {
+				return 1d;
+			}
+		}
+		return manifest.version();
+	}
 }
