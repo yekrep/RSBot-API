@@ -1,11 +1,7 @@
 package org.powerbot.script;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.atomic.AtomicBoolean;
-
-import javax.swing.Timer;
 
 import org.powerbot.script.util.Stoppable;
 import org.powerbot.script.util.Suspendable;
@@ -16,38 +12,23 @@ import org.powerbot.script.util.Suspendable;
  * @author Paris
  */
 public abstract class PollingScript extends AbstractScript implements Suspendable, Stoppable {
-	private final Timer timer;
 	private final AtomicBoolean suspended, stopping;
 
 	public PollingScript() {
 		suspended = new AtomicBoolean(false);
 		stopping = new AtomicBoolean(false);
 
-		timer = new Timer(0, new ActionListener() {
-			@Override
-			public void actionPerformed(final ActionEvent e) {
-				timer.setDelay(poll());
-			}
-		});
-		timer.setCoalesce(false);
-
 		getTasks(State.SUSPEND).add(new FutureTask<Boolean>(new Runnable() {
 			@Override
 			public void run() {
-				synchronized (timer) {
-					suspended.set(true);
-					timer.stop();
-				}
+				suspended.set(true);
 			}
 		}, true));
 
 		getTasks(State.RESUME).add(new FutureTask<Boolean>(new Runnable() {
 			@Override
 			public void run() {
-				synchronized (timer) {
-					timer.start();
-					suspended.set(false);
-				}
+				suspended.set(false);
 			}
 		}, true));
 
@@ -86,7 +67,9 @@ public abstract class PollingScript extends AbstractScript implements Suspendabl
 	 */
 	@Override
 	public final void run() {
-		timer.start();
+		while (!stopping.get()) {
+			sleep(Math.max(0, suspended.get() ? 600 : poll()));
+		}
 		start();
 	}
 
