@@ -210,9 +210,9 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 	}
 
 	public void startScript(final Script script, final ScriptDefinition definition) {
-		scriptController = new ScriptManager(getEventMulticaster());
-		scriptController.getScripts().add(script);
+		scriptController = new ScriptManager(getEventMulticaster(), script);
 		scriptDefinition = definition;
+		scriptController.run();
 	}
 
 	public BufferedImage getImage() {

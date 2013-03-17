@@ -1,12 +1,14 @@
 package org.powerbot.script.internal;
 
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Future;
+import java.util.concurrent.FutureTask;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.swing.SwingUtilities;
@@ -49,6 +51,7 @@ public class ScriptManager implements ExecutorDispatch<Boolean>, Runnable, Stopp
 			script.setScriptController(controller);
 			this.scripts.add(script);
 		}
+		run();
 	}
 
 	public ExecutorService getExecutorService() {
@@ -106,20 +109,24 @@ public class ScriptManager implements ExecutorDispatch<Boolean>, Runnable, Stopp
 		suspended.set(false);
 	}
 
-	public final void call(final State state) {
-		switch (state) {
-		case START: run(); break;
-		case STOP: stop(); break;
-		case SUSPEND: suspend(); break;
-		case RESUME: suspend(); break;
+	protected final void call(final State state) {
+		for (final Script script : scripts) {
+			call(script, state);
 		}
 	}
 
 	protected final void call(final Script script, final State state) {
-		for (final Future<Boolean> task : script.getTasks(state)) {
+		final List<FutureTask<Boolean>> pending = new ArrayList<FutureTask<Boolean>>();
+		for (final FutureTask<Boolean> task : script.getTasks(state)) {
 			if (task.isCancelled() || task.isDone()) {
 				continue;
 			}
+			pending.add(task);
+		}
+		for (final FutureTask<Boolean> task : pending) {
+			executor.execute(task);
+		}
+		for (final FutureTask<Boolean> task : pending) {
 			boolean result = false;
 			try {
 				result = task.get();
