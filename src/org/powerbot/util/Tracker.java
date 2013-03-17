@@ -132,7 +132,7 @@ public final class Tracker {
 			con.getResponseCode();
 
 			for (final Entry<String, List<String>> header : con.getHeaderFields().entrySet()) {
-				if (header.getKey().equalsIgnoreCase("Set-Cookie")) {
+				if (header.getKey() != null && header.getKey().equalsIgnoreCase("Set-Cookie")) {
 					if (c.length() != 0) {
 						c.append("; ");
 					}
