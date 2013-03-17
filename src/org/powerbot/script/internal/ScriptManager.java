@@ -31,24 +31,24 @@ import org.powerbot.script.xenon.util.ExecutorDispatch;
  */
 public class ScriptManager implements ExecutorDispatch<Boolean>, Runnable, Stoppable, Suspendable {
 	protected final ExecutorService executor;
-	protected final Queue<Script> scripts;
+	protected final Queue<ScriptDefinition> scripts;
 	protected final AtomicBoolean suspended, stopping;
 	private final ScriptController controller;
 	private final EventManager events;
 
 	public ScriptManager(final EventMulticaster events) {
 		executor = new NamedCachedThreadPoolExecutor();
-		scripts = new PriorityQueue<Script>(4, new ScriptQueueComparator());
+		scripts = new PriorityQueue<ScriptDefinition>(4, new ScriptQueueComparator());
 		suspended = new AtomicBoolean(false);
 		stopping = new AtomicBoolean(false);
 		controller = new AbstractScriptController(this);
 		this.events = new EventManager(events);
 	}
 
-	public ScriptManager(final EventMulticaster events, final Script... scripts) {
+	public ScriptManager(final EventMulticaster events, final ScriptDefinition... scripts) {
 		this(events);
-		for (final Script script : scripts) {
-			script.setScriptController(controller);
+		for (final ScriptDefinition script : scripts) {
+			script.getScript().setScriptController(controller);
 			this.scripts.add(script);
 		}
 		run();
@@ -58,7 +58,7 @@ public class ScriptManager implements ExecutorDispatch<Boolean>, Runnable, Stopp
 		return executor;
 	}
 
-	public Queue<Script> getScripts() {
+	public Queue<ScriptDefinition> getScripts() {
 		return scripts;
 	}
 
@@ -81,7 +81,7 @@ public class ScriptManager implements ExecutorDispatch<Boolean>, Runnable, Stopp
 		stopping.set(true);
 		events.unsubscribeAll();
 		while (!scripts.isEmpty()) {
-			call(scripts.poll(), State.STOP);
+			call(scripts.poll().getScript(), State.STOP);
 		}
 	}
 
@@ -110,8 +110,8 @@ public class ScriptManager implements ExecutorDispatch<Boolean>, Runnable, Stopp
 	}
 
 	protected final void call(final State state) {
-		for (final Script script : scripts) {
-			call(script, state);
+		for (final ScriptDefinition script : scripts) {
+			call(script.getScript(), state);
 		}
 	}
 
@@ -175,11 +175,11 @@ public class ScriptManager implements ExecutorDispatch<Boolean>, Runnable, Stopp
 		});
 	}
 
-	private final class ScriptQueueComparator implements Comparator<Script> {
+	private final class ScriptQueueComparator implements Comparator<ScriptDefinition> {
 
 		@Override
-		public int compare(final Script o1, final Script o2) {
-			return o2.getPriority() - o1.getPriority();
+		public int compare(final ScriptDefinition o1, final ScriptDefinition o2) {
+			return o2.getScript().getPriority() - o1.getScript().getPriority();
 		}
 	}
 }

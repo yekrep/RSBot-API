@@ -19,7 +19,6 @@ import org.powerbot.gui.BotChrome;
 import org.powerbot.gui.component.BotPanel;
 import org.powerbot.gui.controller.BotInteract;
 import org.powerbot.loader.script.ModScript;
-import org.powerbot.script.Script;
 import org.powerbot.script.event.PaintEvent;
 import org.powerbot.script.event.TextPaintEvent;
 import org.powerbot.script.internal.Constants;
@@ -55,7 +54,6 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 	private EventMulticaster multicaster;
 	private MouseExecutor oldMouse;
 	private ScriptManager scriptController;
-	private ScriptDefinition scriptDefinition;
 	private volatile boolean stopping = false;
 
 	private Bot() {
@@ -209,9 +207,8 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 		}
 	}
 
-	public void startScript(final Script script, final ScriptDefinition definition) {
+	public void startScript(final ScriptDefinition script) {
 		scriptController = new ScriptManager(getEventMulticaster(), script);
-		scriptDefinition = definition;
 		scriptController.run();
 	}
 
@@ -298,10 +295,6 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 
 	public ScriptManager getScriptController() {
 		return this.scriptController;
-	}
-
-	public ScriptDefinition getScriptDefinition() {
-		return this.scriptDefinition;
 	}
 
 	public synchronized void refresh() {

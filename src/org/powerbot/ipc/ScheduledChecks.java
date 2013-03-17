@@ -2,14 +2,11 @@ package org.powerbot.ipc;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Collection;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.logging.Logger;
 
 import org.powerbot.bot.Bot;
-import org.powerbot.script.Manifest;
-import org.powerbot.script.Script;
 import org.powerbot.script.internal.ScriptDefinition;
 import org.powerbot.script.internal.ScriptManager;
 import org.powerbot.util.Configuration;
@@ -39,30 +36,12 @@ public final class ScheduledChecks implements ActionListener {
 
 		final ScriptManager controller = Bot.getInstance().getScriptController();
 		if (controller != null) {
-			final ScriptDefinition definition = Bot.getInstance().getScriptDefinition();
-			if (definition != null) {
-				if (definition.local && System.nanoTime() > timeout.get()) {
-					Tracker.getInstance().trackEvent("script", "timeout", definition.getName());
-					log.info("Local script restriction - script stopped");
-					controller.stop();
-				}
-			}
-
-			final Collection<String> running = Controller.getInstance().getRunningScripts();
-			for (final Script script : controller.getScripts()) {
-				final Manifest manifest = script.getClass().getAnnotation(Manifest.class);
-				if (manifest != null) {
-					int n = 0;
-					for (final String check : running) {
-						if (definition.getID().equals(check)) {
-							n++;
-						}
-					}
-					if (n > manifest.instantces()) {
-						if (Controller.getInstance().getRunningScripts().contains(definition.getID())) {
-							Tracker.getInstance().trackEvent("script", "instance-bypass", definition.getID());
-							controller.stop();
-						}
+			for (final ScriptDefinition definition : controller.getScripts()) {
+				if (definition != null) {
+					if (definition.local && System.nanoTime() > timeout.get()) {
+						Tracker.getInstance().trackEvent("script", "timeout", definition.getName());
+						log.info("Local script restriction - script stopped");
+						controller.stop();
 					}
 				}
 			}

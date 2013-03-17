@@ -62,7 +62,7 @@ public class BotScriptManager {
 			if (params.containsKey("vip") && IniParser.parseBool(params.get("vip")) && !vip) {
 				continue;
 			}
-			final ScriptDefinition def = ScriptDefinition.fromMap(params);
+			final ScriptDefinition def = new ScriptDefinition(params);
 			if (def != null) {
 				def.source = entry.getKey();
 				if (entry.getValue().containsKey("className") && entry.getValue().containsKey("key")) {
@@ -129,8 +129,7 @@ public class BotScriptManager {
 						if (Script.class.isAssignableFrom(clazz)) {
 							final Class<? extends Script> script = clazz.asSubclass(Script.class);
 							if (script.isAnnotationPresent(Manifest.class)) {
-								final Manifest m = script.getAnnotation(Manifest.class);
-								final ScriptDefinition def = new ScriptDefinition(m);
+								final ScriptDefinition def = new ScriptDefinition(null, script.getAnnotation(Manifest.class));
 								def.source = parent.getCanonicalFile().toString();
 								def.className = className;
 								def.local = true;
@@ -218,9 +217,9 @@ public class BotScriptManager {
 			}
 			return;
 		}
-		final Manifest manifest = script.getClass().getAnnotation(Manifest.class);
-		if (manifest != null && n > manifest.instantces()) {
-			final String s = "This script can only be used on " + manifest.instantces() + " account" + (manifest.instantces() == 1 ? "" : "s") + " at a time.";
+		def.setScript(script);
+		if (n > def.getInstantces()) {
+			final String s = "This script can only be used on " + def.getInstantces() + " account" + (def.getInstantces() == 1 ? "" : "s") + " at a time.";
 			if (parent == null) {
 				log.info(s);
 			} else {
@@ -245,7 +244,7 @@ public class BotScriptManager {
 				public void run() {
 					final long mins = (30 + new Random().nextInt(180)) * (NetworkAccount.getInstance().hasPermission(NetworkAccount.DEVELOPER) ? 12 : 1);
 					ScheduledChecks.timeout.set(System.nanoTime() + TimeUnit.MINUTES.toNanos(mins));
-					bot.startScript(script, def);
+					bot.startScript(def);
 				}
 			}).start();
 		}

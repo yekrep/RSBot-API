@@ -14,9 +14,11 @@ import org.powerbot.util.StringUtil;
  */
 public final class ScriptDefinition implements Comparable<ScriptDefinition>, Serializable {
 	private static final long serialVersionUID = 7424073911663414957L;
+	private Script script;
 	private final String name, id, description, website;
 	private final double version;
 	private final String[] authors;
+	private final int instantces;
 
 	public String className;
 	public byte[] key;
@@ -60,26 +62,67 @@ public final class ScriptDefinition implements Comparable<ScriptDefinition>, Ser
 		}
 	}
 
-	public ScriptDefinition(final Class<? extends Script> clazz) {
-		this(clazz.getAnnotation(Manifest.class));
+	public ScriptDefinition(final Script script) {
+		this(script, script.getClass().getAnnotation(Manifest.class));
 	}
 
-	public ScriptDefinition(final Manifest manifest) {
+	public ScriptDefinition(final Script script, final Manifest manifest) {
+		this.script = script;
 		name = manifest.name();
 		id = null;
 		description = manifest.description();
 		version = manifest.version();
 		authors = manifest.authors();
 		website = manifest.website();
+		instantces = manifest.instantces();
 	}
 
-	public ScriptDefinition(final String name, final String id, final String description, final double version, final String[] authors, final String website) {
-		this.name = name;
-		this.id = id;
-		this.description = description;
+	public ScriptDefinition(final Script script, final Map<String, String> data) {
+		final Class<Manifest> manifest = Manifest.class;
+
+		this.script = script;
+		name = data.containsKey("name") ? data.get("name") : null;
+		id = data.containsKey("id") ? data.get("id") : null;
+		description = data.containsKey("description") ? data.get("description") : null;
+		website = data.containsKey("website") ? data.get("website") : null;
+		authors = data.containsKey("authors") ? data.get("authors").split(",") : new String[]{};
+
+		double version = 1d;
+		if (data.containsKey("version")) {
+			try {
+				version = Double.parseDouble(data.get("version"));
+			} catch (final NumberFormatException ignored) {
+			}
+		}
 		this.version = version;
-		this.authors = authors;
-		this.website = website;
+
+		int instantces = Integer.MAX_VALUE;
+		try {
+			instantces = (int) manifest.getMethod("instantces").getDefaultValue();
+		} catch (final NoSuchMethodException ignored) {
+		}
+		if (data.containsKey("instantces")) {
+			try {
+				instantces = Integer.parseInt(data.get("instantces"));
+			} catch (final NumberFormatException ignored) {
+			}
+		}
+		this.instantces = instantces;
+	}
+
+	public ScriptDefinition(final Map<String, String> data) {
+		this(null, data);
+	}
+
+	public Script getScript() {
+		return script;
+	}
+
+	public void setScript(final Script script) {
+		if (this.script != null) {
+			throw new IllegalStateException();
+		}
+		this.script = script;
 	}
 
 	private String getCleanText(String s) {
@@ -126,6 +169,10 @@ public final class ScriptDefinition implements Comparable<ScriptDefinition>, Ser
 		return url != null && !url.isEmpty() && (url.startsWith("http://") || url.startsWith("https://")) ? url : null;
 	}
 
+	public int getInstantces() {
+		return instantces;
+	}
+
 	public Category getCategory() {
 		if (category != null) {
 			return category;
@@ -165,24 +212,6 @@ public final class ScriptDefinition implements Comparable<ScriptDefinition>, Ser
 	@Override
 	public String toString() {
 		return getName().toLowerCase();
-	}
-
-	public static ScriptDefinition fromMap(final Map<String, String> data) {
-		final String name = data.containsKey("name") ? data.get("name") : null;
-		final String id = data.containsKey("id") ? data.get("id") : null;
-		final String description = data.containsKey("description") ? data.get("description") : null;
-		final String website = data.containsKey("website") ? data.get("website") : null;
-		final String[] authors = data.containsKey("authors") ? data.get("authors").split(",") : new String[]{};
-		double version = 1d;
-
-		if (data.containsKey("version")) {
-			try {
-				version = Double.parseDouble(data.get("version"));
-			} catch (final NumberFormatException ignored) {
-			}
-		}
-
-		return name == null || name.isEmpty() ? null : new ScriptDefinition(name, id, description, version, authors, website);
 	}
 
 	@Override

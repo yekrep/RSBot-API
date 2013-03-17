@@ -4,7 +4,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.Properties;
 
-import org.powerbot.bot.Bot;
 import org.powerbot.game.bot.Context;
 
 public class Environment {
@@ -34,19 +33,8 @@ public class Environment {
 		Context.saveScreenCapture();
 	}
 
-	public static void saveScreenCapture(final String name) {
-		Context.saveScreenCapture(name);
-	}
-
-	public static File getStorageDirectory() {
-		final File dir = new File(
-				System.getProperty("java.io.tmpdir"),
-				Bot.getInstance().getScriptDefinition().getName().replace('.', File.pathSeparatorChar)
-		);
-		if (!dir.isDirectory()) {
-			dir.mkdirs();
-		}
-		return dir;
+	public static void saveScreenCapture(final File path) {
+		Context.saveScreenCapture(path);
 	}
 
 	@Deprecated

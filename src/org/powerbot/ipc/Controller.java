@@ -30,6 +30,7 @@ import org.powerbot.bot.Bot;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.gui.controller.BotInteract;
 import org.powerbot.script.internal.ScriptDefinition;
+import org.powerbot.script.internal.ScriptManager;
 import org.powerbot.service.NetworkAccount;
 import org.powerbot.util.Configuration;
 import org.powerbot.util.StringUtil;
@@ -156,11 +157,13 @@ public final class Controller implements Runnable {
 					break;
 
 				case Message.SCRIPT:
-					final ConcurrentLinkedQueue<String> list = new ConcurrentLinkedQueue<>();
+					final Collection<String> list = new ArrayList<>();
 					if (Bot.instantiated()) {
-						final ScriptDefinition def = Bot.getInstance().getScriptDefinition();
-						if (def != null && def.getID() != null && !def.getID().isEmpty()) {
-							list.add(def.getID());
+						final ScriptManager controller = Bot.getInstance().getScriptController();
+						for (final ScriptDefinition def : controller.getScripts()) {
+							if (def != null && def.getID() != null && !def.getID().isEmpty()) {
+								list.add(def.getID());
+							}
 						}
 					}
 					reply.setArgs(list.toArray());

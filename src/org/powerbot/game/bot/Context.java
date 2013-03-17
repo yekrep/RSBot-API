@@ -2,6 +2,7 @@ package org.powerbot.game.bot;
 
 import java.awt.EventQueue;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -61,8 +62,8 @@ public class Context {//TODO remove idea of a 'context'
 		get().bot.getMouseExecutor().cancel();
 	}
 
-	public static void saveScreenCapture(final String fileName) {
-		ScreenCapture.save(Context.get(), fileName);
+	public static void saveScreenCapture(final File path) {
+		ScreenCapture.save(Context.get(), path, "png");
 	}
 
 	public Bot getBot() {
