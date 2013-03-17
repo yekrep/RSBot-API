@@ -17,7 +17,7 @@ public class NamedCachedThreadPoolExecutor extends ThreadPoolExecutor {
 
 	public NamedCachedThreadPoolExecutor() {
 		super(0, Integer.MAX_VALUE, 48L, TimeUnit.HOURS, new SynchronousQueue<Runnable>(), Executors.defaultThreadFactory());
-		setThreadFactory(new GroupedThreadFactory(new ThreadGroup(getClass().getName() + "@" + hashCode())));
+		setThreadFactory(new GroupedThreadFactory(new ThreadGroup(getClass().getName() + "@" + Integer.toHexString(hashCode()))));
 	}
 
 	private final class GroupedThreadFactory implements ThreadFactory {
@@ -26,7 +26,7 @@ public class NamedCachedThreadPoolExecutor extends ThreadPoolExecutor {
 		private final AtomicInteger c;
 
 		private GroupedThreadFactory(final ThreadGroup threadGroup) {
-			this.id = getClass().getName() + "@" + hashCode();
+			this.id = getClass().getName() + "@" + Integer.toHexString(hashCode());
 			this.threadGroup = threadGroup;
 			this.c = new AtomicInteger(0);
 		}

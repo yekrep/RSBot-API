@@ -63,7 +63,7 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 		callback = null;
 		stub = null;
 
-		threadGroup = new ThreadGroup(Bot.class.getName() + "@" + hashCode());
+		threadGroup = new ThreadGroup(Bot.class.getName() + "@" + Integer.toHexString(hashCode()));
 
 		composite = new BotComposite(this);
 		multicaster = new EventMulticaster();
