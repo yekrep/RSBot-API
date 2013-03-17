@@ -33,6 +33,7 @@ CALL :pack
 ECHO Obfuscating
 CALL :obfuscate
 CALL :rename
+CALL :docs
 CALL :end
 GOTO :eof
 
@@ -66,6 +67,10 @@ GOTO :eof
 FOR /F "delims=" %%G in ('java -jar "%dist%" -v') DO @SET version=%%G
 SET version=%version: =%
 MOVE /Y "%dist%" "%lib%\%name%-%version%.jar"
+GOTO :eof
+
+:docs
+CALL docs.bat
 GOTO :eof
 
 :end
