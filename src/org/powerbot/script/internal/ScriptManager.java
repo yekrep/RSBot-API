@@ -1,6 +1,8 @@
 package org.powerbot.script.internal;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.PriorityQueue;
@@ -35,6 +37,8 @@ public class ScriptManager implements ExecutorDispatch<Boolean>, Runnable, Stopp
 	protected final AtomicBoolean suspended, stopping;
 	private final ScriptController controller;
 	private final EventManager events;
+	protected final Queue<Runnable> callbacks;
+	private final CallbackRunner runner;
 
 	public ScriptManager(final EventMulticaster events) {
 		executor = new NamedCachedThreadPoolExecutor();
@@ -43,6 +47,8 @@ public class ScriptManager implements ExecutorDispatch<Boolean>, Runnable, Stopp
 		stopping = new AtomicBoolean(false);
 		controller = new AbstractScriptController(this);
 		this.events = new EventManager(events);
+		callbacks = new ArrayDeque<Runnable>();
+		runner = new CallbackRunner(executor, callbacks);
 	}
 
 	public ScriptManager(final EventMulticaster events, final ScriptDefinition... scripts) {
@@ -59,6 +65,18 @@ public class ScriptManager implements ExecutorDispatch<Boolean>, Runnable, Stopp
 
 	public Queue<ScriptDefinition> getScripts() {
 		return scripts;
+	}
+
+	public void addCallback(final Runnable e) {
+		synchronized (callbacks) {
+			callbacks.add(e);
+		}
+	}
+
+	public Runnable removeCallback(final Runnable e) {
+		synchronized (callbacks) {
+			return callbacks.contains(e) && callbacks.remove(e) ? e : null;
+		}
 	}
 
 	public ScriptController getScriptController() {
@@ -79,6 +97,7 @@ public class ScriptManager implements ExecutorDispatch<Boolean>, Runnable, Stopp
 	public synchronized void stop() {
 		stopping.set(true);
 		events.unsubscribeAll();
+		executor.execute(runner);
 		while (!scripts.isEmpty()) {
 			call(scripts.poll().getScript(), State.STOP);
 		}
@@ -109,6 +128,7 @@ public class ScriptManager implements ExecutorDispatch<Boolean>, Runnable, Stopp
 	}
 
 	protected final void call(final State state) {
+		executor.execute(runner);
 		for (final ScriptDefinition script : scripts) {
 			call(script.getScript(), state);
 		}
@@ -172,6 +192,25 @@ public class ScriptManager implements ExecutorDispatch<Boolean>, Runnable, Stopp
 				SwingUtilities.invokeLater(task);
 			}
 		});
+	}
+
+	private final class CallbackRunner implements Runnable {
+		private final ExecutorService executor;
+		private final Collection<Runnable> callbacks;
+
+		public CallbackRunner(final ExecutorService executor, final Collection<Runnable> callbacks) {
+			this.executor = executor;
+			this.callbacks = callbacks;
+		}
+
+		@Override
+		public void run() {
+			synchronized (callbacks) {
+				for (final Runnable e : callbacks) {
+					executor.execute(e);
+				}
+			}
+		}
 	}
 
 	private final class ScriptQueueComparator implements Comparator<ScriptDefinition> {
