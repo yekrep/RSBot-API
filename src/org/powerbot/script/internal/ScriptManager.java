@@ -51,7 +51,6 @@ public class ScriptManager implements ExecutorDispatch<Boolean>, Runnable, Stopp
 			script.getScript().setScriptController(controller);
 			this.scripts.add(script);
 		}
-		run();
 	}
 
 	public ExecutorService getExecutorService() {
