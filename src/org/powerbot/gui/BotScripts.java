@@ -52,10 +52,10 @@ import javax.swing.border.EmptyBorder;
 
 import org.powerbot.gui.component.BotLocale;
 import org.powerbot.gui.controller.BotScriptManager;
+import org.powerbot.script.internal.ScriptDefinition;
 import org.powerbot.service.GameAccounts;
 import org.powerbot.service.GameAccounts.Account;
 import org.powerbot.service.NetworkAccount;
-import org.powerbot.service.scripts.ScriptDefinition;
 import org.powerbot.util.Configuration;
 import org.powerbot.util.io.Resources;
 

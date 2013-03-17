@@ -23,12 +23,12 @@ import org.powerbot.script.Script;
 import org.powerbot.script.event.PaintEvent;
 import org.powerbot.script.event.TextPaintEvent;
 import org.powerbot.script.internal.Constants;
+import org.powerbot.script.internal.ScriptDefinition;
 import org.powerbot.script.internal.ScriptManager;
 import org.powerbot.script.internal.input.MouseHandler;
 import org.powerbot.script.util.Stoppable;
 import org.powerbot.script.xenon.util.Delay;
 import org.powerbot.service.GameAccounts;
-import org.powerbot.service.scripts.ScriptDefinition;
 
 /**
  * @author Timer

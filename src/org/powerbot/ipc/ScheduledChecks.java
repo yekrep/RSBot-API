@@ -10,8 +10,8 @@ import java.util.logging.Logger;
 import org.powerbot.bot.Bot;
 import org.powerbot.script.Manifest;
 import org.powerbot.script.Script;
+import org.powerbot.script.internal.ScriptDefinition;
 import org.powerbot.script.internal.ScriptManager;
-import org.powerbot.service.scripts.ScriptDefinition;
 import org.powerbot.util.Configuration;
 import org.powerbot.util.Tracker;
 

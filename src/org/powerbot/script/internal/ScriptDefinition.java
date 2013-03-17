@@ -1,4 +1,4 @@
-package org.powerbot.service.scripts;
+package org.powerbot.script.internal;
 
 import java.io.Serializable;
 import java.util.Map;

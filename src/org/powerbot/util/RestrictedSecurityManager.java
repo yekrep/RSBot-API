@@ -8,8 +8,8 @@ import java.util.logging.Logger;
 
 import org.powerbot.bot.RSClassLoader;
 import org.powerbot.ipc.Controller;
-import org.powerbot.service.scripts.LocalScriptClassLoader;
-import org.powerbot.service.scripts.ScriptClassLoader;
+import org.powerbot.script.internal.LocalScriptClassLoader;
+import org.powerbot.script.internal.ScriptClassLoader;
 import org.powerbot.util.Configuration.OperatingSystem;
 import org.powerbot.util.io.CryptFile;
 
