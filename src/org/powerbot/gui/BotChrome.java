@@ -5,6 +5,7 @@ import java.awt.Desktop;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.IOException;
+import java.lang.Thread.UncaughtExceptionHandler;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -57,6 +58,13 @@ public class BotChrome extends JFrame implements WindowListener {
 		setIconImage(Resources.getImage(Resources.Paths.ICON));
 		addWindowListener(this);
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+
+		Thread.setDefaultUncaughtExceptionHandler(new UncaughtExceptionHandler() {
+			@Override
+			public void uncaughtException(final Thread t, final Throwable e) {
+				log.log(Level.SEVERE, "Uncaught exception on " + t.getName() + "@" + Long.toHexString(t.getId()) + ": ", e);
+			}
+		});
 
 		toolbar = new BotToolBar(this);
 		toolbar.setVisibleEx(false);
