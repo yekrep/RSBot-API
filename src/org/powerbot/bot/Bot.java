@@ -6,6 +6,8 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.logging.Logger;
 
+import javax.swing.SwingUtilities;
+
 import org.powerbot.event.EventMulticaster;
 import org.powerbot.game.api.methods.input.Keyboard;
 import org.powerbot.game.api.methods.input.Mouse;
@@ -209,6 +211,17 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 
 	public void startScript(final ScriptDefinition script) {
 		scriptController = new ScriptManager(getEventMulticaster(), script);
+		scriptController.addCallback(new Runnable() {
+			@Override
+			public void run() {
+				SwingUtilities.invokeLater(new Runnable() {
+					@Override
+					public void run() {
+						BotChrome.getInstance().toolbar.updateControls();
+					}
+				});
+			}
+		});
 		scriptController.run();
 	}
 
