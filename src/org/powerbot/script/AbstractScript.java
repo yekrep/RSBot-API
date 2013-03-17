@@ -28,12 +28,16 @@ import org.powerbot.util.Configuration;
  * @author Paris
  */
 public abstract class AbstractScript implements Script, Prioritizable {
-	protected final Logger log = Logger.getLogger(getClass().getName());
 	private final Map<State, Collection<FutureTask<Boolean>>> tasks;
 	private ScriptController controller;
 	private final AtomicLong started, suspended;
 	private final Queue<Long> suspensions;
 	private final File dir;
+
+	/**
+	 * The designated {@link java.util.logging.Logger}, which should be used over {@code System.out.println}.
+	 */
+	protected final Logger log = Logger.getLogger(getClass().getName());
 
 	/**
 	 * The settings for this {@link org.powerbot.script.Script}, which are saved between runs.
