@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 
+import org.powerbot.util.Configuration;
+
 /**
  * Hiscore related-operations.
  *
@@ -29,7 +31,7 @@ public final class Highscores {
 		int GG_RESOURCE_RACE = 14;
 	}
 
-	public static final String HOST = "http://hiscore.runescape.com";
+	public static final String HOST = Configuration.URLs.GAME_HISCORES;
 	public static final String QUERY = "/index_lite.ws?player=";
 
 	private static final int ACTIVITY_INDICES = 15;

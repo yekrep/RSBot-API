@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
+import org.powerbot.util.Configuration;
+
 /**
  * Lightweight grand exchange utility.
  * No external libs required.
@@ -15,7 +17,7 @@ import java.util.Scanner;
  * @author Aion
  */
 public final class GeItem {
-	public static final String HOST = "http://services.runescape.com";
+	public static final String HOST = Configuration.URLs.GAME_SERVICES;
 
 	public static final String[] QUERIES = {
 			"/m=itemdb_rs/api/catalogue/detail.json?item=",

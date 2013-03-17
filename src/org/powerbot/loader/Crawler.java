@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.powerbot.util.Configuration;
 import org.powerbot.util.io.HttpClient;
 import org.powerbot.util.io.IOHelper;
 
@@ -27,7 +28,7 @@ public class Crawler {
 	public final Map<String, String> parameters = new HashMap<String, String>();
 
 	public Crawler() {
-		home = "http://runescape.com/g=runescape/";
+		home = Configuration.URLs.GAME + "/g=runescape/";
 		frame = home + "game.ws?j=1";
 
 		game = null;
