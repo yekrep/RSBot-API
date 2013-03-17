@@ -22,19 +22,6 @@ public abstract class PollingScript extends AbstractScript implements Suspendabl
 			@Override
 			public void run() {
 				suspended.set(true);
-			}
-		}, true));
-
-		getTasks(State.RESUME).add(new FutureTask<Boolean>(new Runnable() {
-			@Override
-			public void run() {
-				suspended.set(false);
-			}
-		}, true));
-
-		getTasks(State.SUSPEND).add(new FutureTask<Boolean>(new Runnable() {
-			@Override
-			public void run() {
 				suspend();
 			}
 		}, true));
@@ -42,6 +29,7 @@ public abstract class PollingScript extends AbstractScript implements Suspendabl
 		getTasks(State.RESUME).add(new FutureTask<Boolean>(new Runnable() {
 			@Override
 			public void run() {
+				suspended.set(false);
 				resume();
 			}
 		}, true));
