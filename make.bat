@@ -21,6 +21,7 @@ SET dist=%lib%\%name%.jar
 SET lstf=temp.txt
 SET imgdir=%res%\images
 SET manifest=%res%\Manifest.txt
+SET csbat=codesigner.bat
 CALL "jdk.bat"
 GOTO :eof
 
@@ -32,6 +33,7 @@ ECHO Packing JAR
 CALL :pack
 ECHO Obfuscating
 CALL :obfuscate
+CALL :codesign
 CALL :rename
 CALL :docs
 CALL :end
@@ -58,6 +60,10 @@ GOTO :eof
 CD "%lib%"
 CALL java -jar allatori.jar allatori.xml
 CD ..
+GOTO :eof
+
+:codesign
+IF EXIST "%csbat%" CALL "%csbat%"
 GOTO :eof
 
 :rename

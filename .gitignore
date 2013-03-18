@@ -3,6 +3,7 @@
 /.idea
 /.project
 /.settings/
+/codesigner.bat
 /bin/
 /docs/
 /sbin/
