@@ -3,16 +3,31 @@
 		<jar in="RSBot.jar" out="RSBot.jar" />
 	</jars>
 	<keep-names>
-		<class template="class *">
-			<field access="private+" template="private+ *" />
-			<method access="private+" template="private+ *(**)" />
+		<class template="class org.powerbot.Boot">
+			<method template="public main(java.lang.String[])" />
+		</class>
+		<class template="class org.powerbot.script.internal.*" stop="true" />
+		<class template="class org.powerbot.script.*">
+			<field access="protected+" />
+			<method access="protected+" parameters="keep" />
+		</class>
+		<class template="class org.powerbot.game.*">
+			<field access="protected+" />
+			<method access="protected+" />
+		</class>
+		<class template="interface org.powerbot.game.*">
+			<field access="protected+" />
+			<method access="protected+" />
 		</class>
 	</keep-names>
 	<property name="log-file" value="allatori-log.xml" />
 	<property name="string-encryption" value="maximum" />
-	<property name="string-encryption-type" value="fast" />
-	<property name="control-flow-obfuscation" value="disable" />
-	<property name="extensive-flow-obfuscation" value="disable" />
-	<property name="line-numbers" value="keep" />
-	<property name="member-reorder" value="disable" />
+	<property name="string-encryption-type" value="strong" />
+	<property name="extensive-flow-obfuscation" value="maximum" />
+	<property name="default-package" value="" />
+	<property name="classes-naming" value="windows" />
+	<property name="methods-naming" value="keywords" />
+	<property name="fields-naming" value="keywords" />
+	<property name="generics" value="remove" />
+	<property name="finalize" value="enable" />
 </config>

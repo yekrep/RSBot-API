@@ -57,9 +57,6 @@ GOTO :eof
 :obfuscate
 CD "%lib%"
 CALL java -jar allatori.jar allatori.xml
-CALL java -D"ZKM_OPEN=%name%.jar" -D"ZKM_SAVE=.\\" -D"ZKM_CHANGELOG=ZKM_ChangeLog.txt" -jar ZKM.jar script.txt
-DEL /F "%name%.jar.BACKUP"
-CALL java -jar stringer.jar -configFile stringer.xml "%name%.jar" "%name%.jar"
 CD ..
 GOTO :eof
 
