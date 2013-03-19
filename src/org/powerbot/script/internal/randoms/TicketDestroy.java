@@ -1,5 +1,6 @@
 package org.powerbot.script.internal.randoms;
 
+import org.powerbot.script.Manifest;
 import org.powerbot.script.TaskScript;
 import org.powerbot.script.task.AsyncTask;
 import org.powerbot.script.xenon.Game;
@@ -15,7 +16,7 @@ import org.powerbot.game.api.wrappers.node.Item;
 import org.powerbot.game.api.wrappers.widget.Widget;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
 
-@RandomManifest(name = "Spin ticket destroyer")
+@Manifest(name = "Spin ticket destroyer", authors = { "Timer" }, description = "Claims or destroys spin tickets")
 public class TicketDestroy extends TaskScript {
 	private static final int[] ITEM_IDS = {24154, 24155};
 

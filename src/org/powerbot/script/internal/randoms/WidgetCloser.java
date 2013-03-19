@@ -2,10 +2,11 @@ package org.powerbot.script.internal.randoms;
 
 import org.powerbot.game.api.methods.Widgets;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
+import org.powerbot.script.Manifest;
 import org.powerbot.script.TaskScript;
 import org.powerbot.script.task.AsyncTask;
 
-@RandomManifest(name = "Widget closer")
+@Manifest(name = "Widget closer", authors = { "Timer" }, description = "Closes widgets")
 public class WidgetCloser extends TaskScript {
 
 	private static final int[] COMPONENTS = {

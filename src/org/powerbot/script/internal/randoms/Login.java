@@ -16,6 +16,7 @@ import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Timer;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
 import org.powerbot.game.bot.Context;
+import org.powerbot.script.Manifest;
 import org.powerbot.script.TaskScript;
 import org.powerbot.script.event.PaintListener;
 import org.powerbot.script.task.BlockingTask;
@@ -24,7 +25,7 @@ import org.powerbot.script.task.BlockingTask;
  * @author Timer
  */
 @SuppressWarnings("deprecation")
-@RandomManifest(name = "Login")
+@Manifest(name = "Login", authors = { "Timer" }, description = "Enters account credentials to the login screen")
 public class Login extends TaskScript implements PaintListener {
 	private static final int WIDGET = 596;
 	private static final int WIDGET_LOGIN_ERROR = 13;
