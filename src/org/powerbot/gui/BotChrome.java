@@ -193,7 +193,9 @@ public class BotChrome extends JFrame implements WindowListener {
 
 						if (Configuration.BETA) {
 							final String s = "This is a beta version for developers only and certain features have been disabled.\nDo not use this version for general purposes, you have been warned.";
-							JOptionPane.showMessageDialog(BotChrome.getInstance(), s, "Beta", JOptionPane.WARNING_MESSAGE);
+							if (!Configuration.SUPERDEV) {
+								JOptionPane.showMessageDialog(BotChrome.getInstance(), s, "Beta", JOptionPane.WARNING_MESSAGE);
+							}
 						}
 
 						if (NetworkAccount.getInstance().hasPermission(NetworkAccount.VIP)) {
