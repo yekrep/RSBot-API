@@ -65,6 +65,9 @@ public final class HeteroMouse implements MouseSimulator {
 
 		if (d < SHORT_DISTANCE) {
 			l0.addAll(impulse(a, b, 4));
+			for (final Vector3 v : l0) {
+				v.z = Math.max(0xc8, v.z);
+			}
 			return l0;
 		}
 
