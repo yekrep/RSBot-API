@@ -51,7 +51,7 @@ public class ScriptManager implements ExecutorDispatch<Boolean>, Runnable, Stopp
 		runner = new CallbackRunner(executor, callbacks);
 	}
 
-	public ScriptManager(final EventMulticaster events, final ScriptDefinition... scripts) {
+	public ScriptManager(final EventMulticaster events, final Iterable<ScriptDefinition> scripts) {
 		this(events);
 		for (final ScriptDefinition script : scripts) {
 			script.getScript().setScriptController(controller);

@@ -4,6 +4,8 @@ import java.awt.Canvas;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 import javax.swing.SwingUtilities;
@@ -27,6 +29,10 @@ import org.powerbot.script.internal.Constants;
 import org.powerbot.script.internal.ScriptDefinition;
 import org.powerbot.script.internal.ScriptManager;
 import org.powerbot.script.internal.input.MouseHandler;
+import org.powerbot.script.internal.randoms.BankPin;
+import org.powerbot.script.internal.randoms.Login;
+import org.powerbot.script.internal.randoms.TicketDestroy;
+import org.powerbot.script.internal.randoms.WidgetCloser;
 import org.powerbot.script.util.Stoppable;
 import org.powerbot.script.xenon.util.Delay;
 import org.powerbot.service.GameAccounts;
@@ -210,7 +216,13 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 	}
 
 	public void startScript(final ScriptDefinition script) {
-		scriptController = new ScriptManager(getEventMulticaster(), script);
+		final List<ScriptDefinition> defs = new ArrayList<ScriptDefinition>();
+		defs.add(new ScriptDefinition(new Login()));
+		defs.add(new ScriptDefinition(new BankPin()));
+		defs.add(new ScriptDefinition(new TicketDestroy()));
+		defs.add(new ScriptDefinition(new WidgetCloser()));
+		defs.add(script);
+		scriptController = new ScriptManager(getEventMulticaster(), defs);
 		scriptController.addCallback(new Runnable() {
 			@Override
 			public void run() {
