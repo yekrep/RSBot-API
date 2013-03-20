@@ -1,16 +1,16 @@
 package org.powerbot.script.internal.randoms;
 
-import org.powerbot.game.api.methods.Settings;
-import org.powerbot.game.api.methods.Widgets;
-import org.powerbot.game.api.wrappers.widget.WidgetChild;
 import org.powerbot.game.bot.Context;
 import org.powerbot.script.Manifest;
 import org.powerbot.script.TaskScript;
 import org.powerbot.script.task.AsyncTask;
+import org.powerbot.script.xenon.Settings;
+import org.powerbot.script.xenon.Widgets;
 import org.powerbot.script.xenon.util.Delay;
 import org.powerbot.script.xenon.util.Random;
+import org.powerbot.script.xenon.wrappers.Component;
 
-@Manifest(name = "Bank Pin", authors = { "Timer" }, description = "Enters the stored bank pin")
+@Manifest(name = "Bank Pin", authors = {"Timer"}, description = "Enters the stored bank pin")
 public class BankPin extends TaskScript {
 	public BankPin() {
 		submit(new Task());
@@ -19,8 +19,8 @@ public class BankPin extends TaskScript {
 	private final class Task extends AsyncTask {
 		@Override
 		public boolean isValid() {
-			final WidgetChild pinInterface = Widgets.get(13, 0);
-			return pinInterface != null && pinInterface.visible();
+			final Component pinInterface = Widgets.get(13, 0);
+			return pinInterface != null && pinInterface.isVisible();
 		}
 
 		@Override
