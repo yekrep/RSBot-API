@@ -18,6 +18,7 @@ public class Widgets {
 		if (client == null || widget < 0) return null;
 
 		Widget[] cache = Widgets.cache.get(client);
+		if (cache == null) cache = new Widget[0];
 		if (widget < cache.length) return cache[widget];
 
 		final RSInterfaceBase[] containers = client.getRSInterfaceCache();
