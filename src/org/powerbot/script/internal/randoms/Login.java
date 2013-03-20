@@ -7,25 +7,23 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
 import org.powerbot.bot.Bot;
-import org.powerbot.game.api.methods.Game;
-import org.powerbot.game.api.methods.Widgets;
 import org.powerbot.game.api.methods.input.Keyboard;
-import org.powerbot.game.api.methods.input.Mouse;
 import org.powerbot.game.api.methods.widget.Lobby;
-import org.powerbot.game.api.util.Random;
-import org.powerbot.game.api.util.Timer;
-import org.powerbot.game.api.wrappers.widget.WidgetChild;
-import org.powerbot.game.bot.Context;
 import org.powerbot.script.Manifest;
 import org.powerbot.script.TaskScript;
 import org.powerbot.script.event.PaintListener;
 import org.powerbot.script.task.BlockingTask;
+import org.powerbot.script.xenon.Game;
+import org.powerbot.script.xenon.Mouse;
+import org.powerbot.script.xenon.Widgets;
+import org.powerbot.script.xenon.util.Random;
+import org.powerbot.script.xenon.util.Timer;
+import org.powerbot.script.xenon.wrappers.Component;
 
 /**
  * @author Timer
  */
-@SuppressWarnings("deprecation")
-@Manifest(name = "Login", authors = { "Timer" }, description = "Enters account credentials to the login screen")
+@Manifest(name = "Login", authors = {"Timer"}, description = "Enters account credentials to the login screen")
 public class Login extends TaskScript implements PaintListener {
 	private static final int WIDGET = 596;
 	private static final int WIDGET_LOGIN_ERROR = 13;
@@ -44,11 +42,11 @@ public class Login extends TaskScript implements PaintListener {
 		submit(new LobbyTask());
 	}
 
-	private boolean clickLoginInterface(final WidgetChild i) {
-		if (!i.validate()) {
+	private boolean clickLoginInterface(final Component i) {
+		if (!i.isValid()) {
 			return false;
 		}
-		final Rectangle pos = i.getBoundingRectangle();
+		final Rectangle pos = i.getArea();
 		if (pos.x == -1 || pos.y == -1 || pos.width == -1 || pos.height == -1) {
 			return false;
 		}
@@ -62,9 +60,9 @@ public class Login extends TaskScript implements PaintListener {
 		return Mouse.click(midx + Random.nextInt(1, maxRandomX), midy + Random.nextInt(-dy, dy), true);
 	}
 
-	private int getPasswordX(final WidgetChild a) {
+	private int getPasswordX(final Component a) {
 		int x = 0;
-		final Rectangle pos = a.getBoundingRectangle();
+		final Rectangle pos = a.getArea();
 		final int dx = (int) (pos.getWidth() - 4) / 2;
 		final int midx = (int) (pos.getMinX() + pos.getWidth() / 2);
 		if (pos.x == -1 || pos.y == -1 || pos.width == -1 || pos.height == -1) {
@@ -115,7 +113,7 @@ public class Login extends TaskScript implements PaintListener {
 		TOKEN_FAILURE(WIDGET_LOGIN_ERROR, "game session", 1000 * 5 * 60, new FutureTask<Boolean>(new Runnable() {
 			@Override
 			public void run() {
-				Context.resolve().refresh();
+				Bot.getInstance().refresh();
 			}
 		}, true)),
 		INVALID_PASSWORD(WIDGET_LOGIN_ERROR, "Invalid username or password", -1);
@@ -157,15 +155,16 @@ public class Login extends TaskScript implements PaintListener {
 		@Override
 		public boolean isValid() {
 			final int state = Game.getClientState();
+			log.info(state + " " + bot.getAccount());
 			return (state == Game.INDEX_LOGIN_SCREEN || state == Game.INDEX_LOGGING_IN) && bot.getAccount() != null;
 		}
 
 		@Override
 		public Boolean call() {
 			for (final LoginEvent loginEvent : LoginEvent.values()) {
-				final WidgetChild widgetChild = Widgets.get(WIDGET, loginEvent.child);
-				if (widgetChild != null && widgetChild.validate()) {
-					final String text = widgetChild.getText().toLowerCase().trim();
+				final Component Component = Widgets.get(WIDGET, loginEvent.child);
+				if (Component != null && Component.isValid()) {
+					final String text = Component.getText().toLowerCase().trim();
 					Widgets.get(WIDGET, WIDGET_LOGIN_TRY_AGAIN).click(true);
 
 					if (text.contains(loginEvent.message.toLowerCase())) {
@@ -199,7 +198,7 @@ public class Login extends TaskScript implements PaintListener {
 				sleep(Random.nextInt(1200, 2000));
 			} else if (!isUsernameCorrect()) {
 				final String username = bot.getAccount().toString();
-				final WidgetChild usernameTextBox = Widgets.get(WIDGET, WIDGET_LOGIN_USERNAME_TEXT);
+				final Component usernameTextBox = Widgets.get(WIDGET, WIDGET_LOGIN_USERNAME_TEXT);
 				if (!clickLoginInterface(usernameTextBox)) {
 					return false;
 				}
@@ -213,7 +212,7 @@ public class Login extends TaskScript implements PaintListener {
 				sleep(Random.nextInt(500, 700));
 			} else if (!isPasswordValid()) {
 				final String password = bot.getAccount().getPassword();
-				final WidgetChild passwordTextBox = Widgets.get(WIDGET, WIDGET_LOGIN_PASSWORD_TEXT);
+				final Component passwordTextBox = Widgets.get(WIDGET, WIDGET_LOGIN_PASSWORD_TEXT);
 				if (!clickLoginInterface(passwordTextBox)) {
 					return false;
 				}
@@ -231,7 +230,6 @@ public class Login extends TaskScript implements PaintListener {
 	}
 
 	private final class LobbyTask extends BlockingTask {
-
 		@Override
 		public boolean isValid() {
 			final int state = Game.getClientState();
@@ -241,9 +239,9 @@ public class Login extends TaskScript implements PaintListener {
 		@Override
 		public Boolean call() {
 			for (final LobbyEvent lobbyEvent : LobbyEvent.values()) {
-				final WidgetChild widgetChild = Widgets.get(WIDGET_LOBBY, lobbyEvent.child);
-				if (widgetChild != null && widgetChild.validate()) {
-					final String text = widgetChild.getText().toLowerCase().trim();
+				final Component Component = Widgets.get(WIDGET_LOBBY, lobbyEvent.child);
+				if (Component != null && Component.isValid()) {
+					final String text = Component.getText().toLowerCase().trim();
 
 					if (text.contains(lobbyEvent.message.toLowerCase())) {
 						log.info("Handling lobby event: " + lobbyEvent.name());
@@ -267,7 +265,7 @@ public class Login extends TaskScript implements PaintListener {
 				}
 			}
 
-			final int world = Context.get().world;
+			final int world = Bot.context().world;
 			if (world > 0) {
 				final Lobby.World world_wrapper;
 				if ((world_wrapper = Lobby.getWorld(world)) != null) {
