@@ -4,6 +4,8 @@ import org.powerbot.script.Manifest;
 import org.powerbot.script.TaskScript;
 import org.powerbot.script.task.AsyncTask;
 import org.powerbot.script.xenon.Widgets;
+import org.powerbot.script.xenon.util.Random;
+import org.powerbot.script.xenon.util.Timer;
 import org.powerbot.script.xenon.wrappers.Component;
 
 @Manifest(name = "Widget closer", authors = {"Timer"}, description = "Closes widgets")
@@ -25,23 +27,39 @@ public class WidgetCloser extends TaskScript {
 	}
 
 	private final class Task extends AsyncTask {
+		private final Timer threshold;
+		private Component component;
+		private int tries;
+
+		private Task() {
+			threshold = new Timer(0);
+		}
+
 		@Override
 		public boolean isValid() {
+			if (threshold.isRunning()) return false;
 			for (final int p : COMPONENTS) {
-				final Component child = Widgets.get(p >> 16, p & 0xffff);
-				if (child != null && child.isValid()) {
-					return true;
+				component = Widgets.get(p >> 16, p & 0xffff);
+				if (component != null && component.isValid()) {
+					break;
 				}
 			}
-			return false;
+			return component != null;
 		}
 
 		@Override
 		public void run() {
-			for (final int p : COMPONENTS) {
-				final Component child = Widgets.get(p >> 16, p & 0xffff);
-				if (child != null && child.isValid()) {
-					child.click(true);
+			if (++tries > 3) {
+				threshold.setEndIn(60000);
+				return;
+			}
+
+			if (component.isValid() && component.click(true)) {
+				final Timer timer = new Timer(Random.nextInt(2000, 2500));
+				while (timer.isRunning() && component.isValid()) sleep(100, 250);
+				if (!component.isValid()) {
+					component = null;
+					tries = 0;
 				}
 			}
 		}
