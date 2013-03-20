@@ -119,6 +119,7 @@ public class MouseHandler implements Runnable, Stoppable {
 			final Vector3 curr = target.curr;
 			final Vector3 dest = target.dest;
 
+			final Point centroid = target.targetable.getCenterPoint();
 			long m;
 			final Iterable<Vector3> spline = simulator.getPath(curr, dest);
 			for (final Vector3 v : spline) {
@@ -128,7 +129,6 @@ public class MouseHandler implements Runnable, Stoppable {
 				curr.z = v.z;
 
 				m = System.currentTimeMillis();
-				final Point centroid = target.targetable.getCenterPoint();
 				final double traverseLength = Math.sqrt(Math.pow(dest.x - curr.x, 2) + Math.pow(dest.y - curr.y, 2));
 				final double mod = 2.5 + Math.sqrt(Math.pow(dest.x - centroid.x, 2) + Math.pow(dest.y - centroid.y, 2));
 				if (traverseLength < mod) {
