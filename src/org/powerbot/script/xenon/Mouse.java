@@ -47,26 +47,32 @@ public class Mouse {
 		return mouse.isPresent();
 	}
 
-	public static void hop(final Point p) {
-		hop(p.x, p.y);
+	public static boolean hop(final Point p) {
+		return hop(p.x, p.y);
 	}
 
-	public static void hop(final int x, final int y) {
+	public static boolean hop(final int x, final int y) {
 		final MouseHandler handler = Bot.mouseHandler();
-		if (handler == null) return;
+		if (handler == null) return false;
 
 		handler.move(x, y);
+		return true;
 	}
 
-	public static void click(final boolean left) {
-		click(left ? MouseEvent.BUTTON1 : MouseEvent.BUTTON3);
+	public static boolean click(final int x, final int y, final boolean left) {
+		return move(x, y) && click(left ? MouseEvent.BUTTON1 : MouseEvent.BUTTON3);
 	}
 
-	public static void click(final int button) {
+	public static boolean click(final boolean left) {
+		return click(left ? MouseEvent.BUTTON1 : MouseEvent.BUTTON3);
+	}
+
+	public static boolean click(final int button) {
 		final MouseHandler handler = Bot.mouseHandler();
-		if (handler == null) return;
+		if (handler == null) return false;
 
 		handler.click(button);
+		return true;
 	}
 
 	public static boolean click(final Targetable target, final boolean left) {
@@ -87,27 +93,31 @@ public class Mouse {
 		return !t.failed;
 	}
 
-	public static void drag(final Point p1, final Point p2, final boolean left) {
-		drag(p1, p2, left ? MouseEvent.BUTTON1 : MouseEvent.BUTTON3);
+	public static boolean drag(final Point p1, final Point p2, final boolean left) {
+		return drag(p1, p2, left ? MouseEvent.BUTTON1 : MouseEvent.BUTTON3);
 	}
 
-	public static void drag(final Point p1, final Point p2, final int button) {
+	public static boolean drag(final Point p1, final Point p2, final int button) {
 		final MouseHandler handler = Bot.mouseHandler();
-		if (handler == null) return;
+		if (handler == null) return false;
 
 		Point loc = handler.getLocation();
-		if (!loc.equals(p1)) move(p1);
-		handler.press(p1.x, p1.y, button);
-		move(p2);
-		handler.release(p2.x, p2.y, button);
+		if (!loc.equals(p1)) if (move(p1)) {
+			handler.press(p1.x, p1.y, button);
+			if (move(p2)) {
+				handler.release(p2.x, p2.y, button);
+				return true;
+			}
+		}
+		return false;
 	}
 
-	public static void drag(final int x1, final int y1, final int x2, final int y2, final boolean left) {
-		drag(x1, y1, x2, y2, left ? MouseEvent.BUTTON1 : MouseEvent.BUTTON3);
+	public static boolean drag(final int x1, final int y1, final int x2, final int y2, final boolean left) {
+		return drag(x1, y1, x2, y2, left ? MouseEvent.BUTTON1 : MouseEvent.BUTTON3);
 	}
 
-	public static void drag(final int x1, final int y1, final int x2, final int y2, final int button) {
-		drag(new Point(x1, y1), new Point(x2, y2), button);
+	public static boolean drag(final int x1, final int y1, final int x2, final int y2, final int button) {
+		return drag(new Point(x1, y1), new Point(x2, y2), button);
 	}
 
 	public static boolean move(final Targetable target) {
@@ -128,14 +138,15 @@ public class Mouse {
 		return !t.failed;
 	}
 
-	public static void move(final int x, final int y) {
-		move(new Point(x, y));
+	public static boolean move(final int x, final int y) {
+		return move(new Point(x, y));
 	}
 
-	public static void move(final Point p) {
+	public static boolean move(final Point p) {
 		final MouseHandler handler = Bot.mouseHandler();
-		if (handler == null) return;
+		if (handler == null) return false;
 
+		final MouseTarget t;
 		final Targetable targetable = new Targetable() {
 			@Override
 			public Point getInteractPoint() {
@@ -157,11 +168,13 @@ public class Mouse {
 				return point.equals(p);
 			}
 		};
-		handler.handle(new MouseTarget(targetable, MouseTarget.DUMMY) {
+
+		handler.handle(t = new MouseTarget(targetable, MouseTarget.DUMMY) {
 			@Override
 			public void execute(final MouseHandler handler) {
 				handler.complete(this);
 			}
 		});
+		return !t.failed;
 	}
 }
