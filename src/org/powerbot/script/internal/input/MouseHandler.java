@@ -141,7 +141,7 @@ public class MouseHandler implements Runnable, Stoppable {
 				m = System.currentTimeMillis() - m;
 
 				final long l = TimeUnit.NANOSECONDS.toMillis(simulator.getAbsoluteDelay(v.z)) - m;
-				Delay.sleep(l);
+				if (l > 0) Delay.sleep(l);
 			}
 
 			final Point next = target.targetable.getInteractPoint();
