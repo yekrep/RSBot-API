@@ -59,7 +59,6 @@ public abstract class PollingScript extends AbstractScript implements Suspendabl
 		while (!stopping.get()) {
 			sleep(Math.max(0, suspended.get() ? 600 : poll()));
 		}
-		start();
 	}
 
 	/**
