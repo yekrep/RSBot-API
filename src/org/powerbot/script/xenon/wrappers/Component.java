@@ -271,6 +271,10 @@ public class Component extends Interactive implements Validatable {
 		return id == -1 || Widgets.get(id >> 16, id & 0xffff).isVisible();
 	}
 
+	public Rectangle getArea() {
+		return getInteractRectangle();
+	}
+
 	@Override
 	public Point getInteractPoint() {
 		return getNextPoint();
