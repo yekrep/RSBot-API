@@ -7,7 +7,7 @@ import org.powerbot.script.xenon.Calculations;
 import org.powerbot.script.xenon.Game;
 import org.powerbot.script.xenon.util.Random;
 
-public class Tile extends Interactive implements Locatable, Targetable {
+public class Tile extends Interactive implements Locatable {
 	public int x, y, plane;
 
 	public Tile(final int x, final int y) {

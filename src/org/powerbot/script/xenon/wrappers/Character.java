@@ -3,9 +3,6 @@ package org.powerbot.script.xenon.wrappers;
 import java.awt.Point;
 
 import org.powerbot.bot.Bot;
-import org.powerbot.script.internal.Nodes;
-import org.powerbot.script.xenon.Calculations;
-import org.powerbot.script.xenon.Game;
 import org.powerbot.game.client.Client;
 import org.powerbot.game.client.CombatStatus;
 import org.powerbot.game.client.CombatStatusData;
@@ -19,8 +16,11 @@ import org.powerbot.game.client.RSNPC;
 import org.powerbot.game.client.RSNPCNode;
 import org.powerbot.game.client.RSPlayer;
 import org.powerbot.game.client.Sequence;
+import org.powerbot.script.internal.Nodes;
+import org.powerbot.script.xenon.Calculations;
+import org.powerbot.script.xenon.Game;
 
-public abstract class Character extends Interactive implements Locatable, Targetable, Validatable {
+public abstract class Character extends Interactive implements Locatable {
 	private int faceIndex = -1;
 
 	protected abstract RSCharacter getAccessor();

@@ -11,7 +11,7 @@ import org.powerbot.game.client.RSInterfaceNode;
 import org.powerbot.script.internal.wrappers.HashTable;
 import org.powerbot.script.xenon.Widgets;
 
-public class Component extends Interactive implements Validatable {
+public class Component extends Interactive {
 	private final Widget widget;
 	private final Component parent;
 	private final int index;
