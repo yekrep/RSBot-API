@@ -38,18 +38,18 @@ public class Bank {
 			44, 45, 166, 494, 495, 496, 497, 498, 499, 553, 909, 953, 958, 1036, 1360, 1702, 2163, 2164, 2354, 2355,
 			2568, 2569, 2570, 2617, 2618, 2619, 2718, 2759, 3046, 3198, 3199, 3293, 3416, 3418, 3824, 4456, 4457,
 			4458, 4459, 4519, 4907, 5257, 5258, 5259, 5260, 5488, 5776, 5777, 5901, 6200, 6362, 7049, 7050, 7605,
-			8948, 9710, 13932, 14707, 14923, 14924, 14925, 15194
+			8948, 9710, 13932, 14707, 14923, 14924, 14925, 15194, 16602, 16603
 	};
 	public static final int[] BANK_BOOTH_IDS = new int[]{
 			782, 2213, 3045, 5276, 6084, 10517, 11338, 11758, 12759, 12798, 12799, 12800, 12801, 14369, 14370,
 			16700, 19230, 20325, 20326, 20327, 20328, 22819, 24914, 25808, 26972, 29085, 34752, 35647,
-			36262, 36786, 37474, 49018, 49019, 52397, 52589
+			36262, 36786, 37474, 49018, 49019, 52397, 52589, 69022, 69023, 69024
 	};
 	public static final int[] BANK_COUNTER_IDS = new int[]{
 			42217, 42377, 42378
 	};
 	public static final int[] BANK_CHEST_IDS = new int[]{
-			2693, 4483, 8981, 12308, 14382, 20607, 21301, 27663, 42192, 57437, 62691
+			2693, 4483, 8981, 12308, 14382, 20607, 21301, 27663, 42192, 57437, 62691, 81756
 	};
 	public static final int[] UNDEPOSITABLE_ITEM_IDS = new int[]{2528, 6796, 14664, 23713, 23714, 23715, 23716, 23717,
 			23718, 23719, 23720, 23721, 23722, 23723, 23724, 23725, 23726, 23727, 23728, 23729, 23730, 23731, 23732,
@@ -63,7 +63,6 @@ public class Bank {
 	public static final Tile[] UNREACHABLE_BANK_TILES = new Tile[]{
 			new Tile(3191, 3445, 0), new Tile(3180, 3433, 0)
 	};
-
 	public static final int WIDGET_BANK = 762;
 	public static final int WIDGET_SLOTS_CONTAINER = 95;
 	public static final int WIDGET_SCROLLBAR = 116;
@@ -74,12 +73,9 @@ public class Bank {
 	public static final int WIDGET_BUTTON_DEPOSIT_POUCH = 36;
 	public static final int WIDGET_BUTTON_SEARCH = 18;
 	public static final int WIDGET_BUTTON_WITHDRAW_NOTED = 20;
-
 	public static final int WIDGET_BANKPIN = 13;
-
 	public static final int SETTING_WITHDRAWAL_MODE = 160;
 	public static final int SETTING_BANK_TAB = 110;
-
 	private static final Filter<Identifiable> ALL_FILTER = new Filter<Identifiable>() {
 		@Override
 		public boolean accept(final Identifiable bank) {
@@ -94,66 +90,6 @@ public class Bank {
 			return true;
 		}
 	};
-
-	public static enum Amount {
-		ONE(1), FIVE(5), TEN(10), ALL_BUT_ONE(-1), ALL(0);
-
-		private final int value;
-
-		private Amount(final int value) {
-			this.value = value;
-		}
-
-		public int getValue() {
-			return value;
-		}
-	}
-
-	public static enum Tab {
-		NONE(-1), SEARCH(0), ALL(1), SECOND(2), THIRD(3), FOURTH(4),
-		FIFTH(5), SIXTH(6), SEVENTH(7), EIGHTH(8), NINTH(9);
-
-		private final int index;
-
-		private Tab(final int index) {
-			this.index = index;
-		}
-
-		public WidgetChild getWidgetChild() {
-			if (this != NONE && this != SEARCH && Bank.isOpen()) {
-				return Widgets.get(WIDGET_BANK, 67 - (index * 2));
-			}
-			return null;
-		}
-
-		public boolean open() {
-			final WidgetChild tabWidget = getWidgetChild();
-			return tabWidget != null && tabWidget.click(true);
-		}
-
-		/**
-		 * Gets the item that is shown on the tab, which will be the first item ordered in that tab. Note that the
-		 * main tab doesn't display a symbol item, so this will return <tt>null</tt> if attempted.
-		 *
-		 * @return The item visually shown on the bank tab, or <tt>null</tt> if none found.
-		 */
-		public Item getSymbolItem() {
-			final WidgetChild tabWidget = getWidgetChild();
-			if (tabWidget != null && tabWidget.getChildId() != -1) {
-				return new Item(tabWidget);
-			}
-			return null;
-		}
-
-		public static Tab getTab(final int index) {
-			for (final Tab tab : Tab.values()) {
-				if (tab.index == index) {
-					return tab;
-				}
-			}
-			return NONE;
-		}
-	}
 
 	public static Widget getWidget() {
 		return Widgets.get(WIDGET_BANK);
@@ -603,5 +539,63 @@ public class Bank {
 	private static boolean isBankChest(final Identifiable identifiable) {
 		Arrays.sort(BANK_CHEST_IDS);
 		return identifiable instanceof SceneObject && Arrays.binarySearch(BANK_CHEST_IDS, identifiable.getId()) >= 0;
+	}
+
+	public static enum Amount {
+		ONE(1), FIVE(5), TEN(10), ALL_BUT_ONE(-1), ALL(0);
+		private final int value;
+
+		private Amount(final int value) {
+			this.value = value;
+		}
+
+		public int getValue() {
+			return value;
+		}
+	}
+
+	public static enum Tab {
+		NONE(-1), SEARCH(0), ALL(1), SECOND(2), THIRD(3), FOURTH(4),
+		FIFTH(5), SIXTH(6), SEVENTH(7), EIGHTH(8), NINTH(9);
+		private final int index;
+
+		private Tab(final int index) {
+			this.index = index;
+		}
+
+		public static Tab getTab(final int index) {
+			for (final Tab tab : Tab.values()) {
+				if (tab.index == index) {
+					return tab;
+				}
+			}
+			return NONE;
+		}
+
+		public WidgetChild getWidgetChild() {
+			if (this != NONE && this != SEARCH && Bank.isOpen()) {
+				return Widgets.get(WIDGET_BANK, 67 - (index * 2));
+			}
+			return null;
+		}
+
+		public boolean open() {
+			final WidgetChild tabWidget = getWidgetChild();
+			return tabWidget != null && tabWidget.click(true);
+		}
+
+		/**
+		 * Gets the item that is shown on the tab, which will be the first item ordered in that tab. Note that the
+		 * main tab doesn't display a symbol item, so this will return <tt>null</tt> if attempted.
+		 *
+		 * @return The item visually shown on the bank tab, or <tt>null</tt> if none found.
+		 */
+		public Item getSymbolItem() {
+			final WidgetChild tabWidget = getWidgetChild();
+			if (tabWidget != null && tabWidget.getChildId() != -1) {
+				return new Item(tabWidget);
+			}
+			return null;
+		}
 	}
 }
