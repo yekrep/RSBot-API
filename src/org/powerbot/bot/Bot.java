@@ -185,7 +185,7 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 	@Override
 	public void stop() {
 		log.info("Unloading environment");
-		for (final Stoppable module : new Stoppable[] { mouseHandler, scriptController, multicaster }) {
+		for (final Stoppable module : new Stoppable[]{mouseHandler, scriptController, multicaster}) {
 			if (module != null) {
 				module.stop();
 			}

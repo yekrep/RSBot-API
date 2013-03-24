@@ -19,8 +19,8 @@ import org.powerbot.util.io.Resources;
  */
 public final class BotHoverLabel extends JLabel implements MouseListener {
 	private static final long serialVersionUID = 9128610756239839615L;
-	private Icon initial, hover;
 	private final List<ActionListener> listeners;
+	private Icon initial, hover;
 
 	public BotHoverLabel(final String initial, final String hover) {
 		super();

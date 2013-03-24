@@ -7,8 +7,8 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Random;
 
-import org.powerbot.script.internal.input.MouseSimulator;
 import org.powerbot.math.Vector3;
+import org.powerbot.script.internal.input.MouseSimulator;
 
 /**
  * A human simulated mouse implementation.
@@ -24,8 +24,8 @@ public final class HeteroMouse implements MouseSimulator {
 		r = new Random(System.nanoTime());
 		pd = new double[2];
 
-		final double[] e = { 3d, 45d + r.nextInt(11), 12d + r.nextGaussian() };
-		final double x[] = { Runtime.getRuntime().availableProcessors(), Runtime.getRuntime().maxMemory() >> 30 };
+		final double[] e = {3d, 45d + r.nextInt(11), 12d + r.nextGaussian()};
+		final double x[] = {Runtime.getRuntime().availableProcessors(), Runtime.getRuntime().maxMemory() >> 30};
 
 		pd[0] = 4 * Math.log(Math.sin(((Math.PI / x[0]) * Math.PI + 1) / 4)) / Math.PI + 2 * Math.PI * (Math.PI / x[0]) / 3 - 4 * Math.log(Math.sin(.25d)) / Math.PI;
 		pd[0] = e[0] * Math.exp(Math.pow(pd[0], 0.75d)) + e[1];
@@ -73,7 +73,8 @@ public final class HeteroMouse implements MouseSimulator {
 
 		final int o = r.nextInt(2) + 2;
 		final Vector3[] p = new Vector3[o + 2], q = new Vector3[2];
-		p[0] = a; p[p.length - 1] = b;
+		p[0] = a;
+		p[p.length - 1] = b;
 		for (int i = 1; i < p.length - 1; i++) {
 			p[i] = p[i % 2 == 0 ? p.length - 1 : 0].mul((r.nextDouble() - .5d) / (4 - o) + 1.0d);
 			p[i].x += -g0 + r.nextInt(g1);

@@ -83,13 +83,15 @@ public final class BotLogPane extends JTextPane {
 				copy.setEnabled(s != null && !s.isEmpty());
 				saveas.setEnabled(!handler.isEmpty());
 			}
+
 			@Override
 			public void popupMenuWillBecomeInvisible(final PopupMenuEvent e) {
 			}
+
 			@Override
 			public void popupMenuCanceled(final PopupMenuEvent e) {
 			}
-	    });
+		});
 
 		addMouseListener(new MouseListener() {
 			@Override

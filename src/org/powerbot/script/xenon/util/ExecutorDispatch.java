@@ -5,9 +5,8 @@ import java.util.concurrent.Callable;
 /**
  * An event dispatcher.
  *
- * @author Paris
- *
  * @param <T>
+ * @author Paris
  */
 public interface ExecutorDispatch<T> {
 

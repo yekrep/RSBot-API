@@ -18,7 +18,7 @@ import org.powerbot.script.xenon.Calculations;
 import org.powerbot.script.xenon.GroundItems;
 import org.powerbot.script.xenon.util.Random;
 
-public class GroundItem extends Interactive implements Locatable, Validatable {
+public class GroundItem extends Interactive implements Locatable {
 	private final Tile tile;
 	private final Item item;
 	private int faceIndex = -1;

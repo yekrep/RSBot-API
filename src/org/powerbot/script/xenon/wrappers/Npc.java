@@ -3,11 +3,11 @@ package org.powerbot.script.xenon.wrappers;
 import java.lang.ref.WeakReference;
 
 import org.powerbot.bot.Bot;
-import org.powerbot.script.internal.Nodes;
 import org.powerbot.game.client.Client;
 import org.powerbot.game.client.RSNPC;
 import org.powerbot.game.client.RSNPCDef;
 import org.powerbot.game.client.RSNPCNode;
+import org.powerbot.script.internal.Nodes;
 
 public class Npc extends Character {
 	private final WeakReference<RSNPC> npc;
