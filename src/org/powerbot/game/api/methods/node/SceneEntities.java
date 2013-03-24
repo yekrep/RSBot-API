@@ -24,13 +24,13 @@ import org.powerbot.game.client.RSObject;
  *
  * @author Timer
  */
+@Deprecated
 public class SceneEntities {
 	public static final int TYPE_INTERACTIVE = 0x1;
 	public static final int TYPE_FLOOR_DECORATION = 0x2;
 	public static final int TYPE_BOUNDARY = 0x4;
 	public static final int TYPE_WALL_DECORATION = 0x8;
 	public static final int TYPE_UNKNOWN = 0x10;
-
 	public static final Filter<SceneObject> ALL_FILTER = new Filter<SceneObject>() {
 		public boolean accept(final SceneObject obj) {
 			return true;
