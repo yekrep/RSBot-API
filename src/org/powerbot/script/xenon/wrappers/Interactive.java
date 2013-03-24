@@ -7,7 +7,7 @@ import org.powerbot.script.xenon.Mouse;
 import org.powerbot.script.xenon.util.Delay;
 import org.powerbot.script.xenon.util.Filter;
 
-public abstract class Interactive implements Targetable {
+public abstract class Interactive implements Targetable, Validatable {
 	private static final int ATTEMPTS = 5;
 
 	public boolean isOnScreen() {

@@ -7,7 +7,7 @@ import org.powerbot.script.xenon.Calculations;
 import org.powerbot.script.xenon.Game;
 import org.powerbot.script.xenon.util.Random;
 
-public class Tile extends Interactive implements Locatable, Targetable {
+public class Tile extends Interactive implements Locatable {
 	public int x, y, plane;
 
 	public Tile(final int x, final int y) {
@@ -106,6 +106,11 @@ public class Tile extends Interactive implements Locatable, Targetable {
 		return false;
 	}
 
+	@Override
+	public boolean isValid() {
+		return true;//TODO this
+	}
+
 	/*
 	@Override
 	public boolean isValid() {
@@ -141,11 +146,8 @@ public class Tile extends Interactive implements Locatable, Targetable {
 
 	@Override
 	public boolean equals(final Object o) {
-		final Tile t;
-		if (o != null && o instanceof Tile) {
-			t = (Tile) o;
-			return x == t.x && y == t.y && plane == t.plane;
-		}
-		return false;
+		if (o == null || !(o instanceof Tile)) return false;
+		final Tile t = (Tile) o;
+		return x == t.x && y == t.y && plane == t.plane;
 	}
 }
