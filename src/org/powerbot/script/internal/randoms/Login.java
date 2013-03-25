@@ -11,7 +11,7 @@ import org.powerbot.game.api.methods.input.Keyboard;
 import org.powerbot.game.api.methods.widget.Lobby;
 import org.powerbot.script.Manifest;
 import org.powerbot.script.TaskScript;
-import org.powerbot.script.event.PaintListener;
+import org.powerbot.event.PaintListener;
 import org.powerbot.script.task.BlockingTask;
 import org.powerbot.script.xenon.Game;
 import org.powerbot.script.xenon.Mouse;

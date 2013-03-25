@@ -3,7 +3,7 @@ package org.powerbot.game.bot;
 import org.powerbot.bot.Bot;
 import org.powerbot.game.client.Callback;
 import org.powerbot.game.client.Render;
-import org.powerbot.script.event.MessageEvent;
+import org.powerbot.event.MessageEvent;
 import org.powerbot.script.xenon.Calculations;
 
 /**

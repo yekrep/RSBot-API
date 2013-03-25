@@ -1,10 +1,10 @@
-package org.powerbot.core.event.impl;
+package org.powerbot.event.impl;
 
 import java.awt.Graphics;
 import java.awt.Point;
 
 import org.powerbot.game.api.methods.input.Mouse;
-import org.powerbot.script.event.TextPaintListener;
+import org.powerbot.event.TextPaintListener;
 import org.powerbot.util.StringUtil;
 
 public class TMousePosition implements TextPaintListener {

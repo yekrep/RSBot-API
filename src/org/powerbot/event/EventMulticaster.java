@@ -19,12 +19,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import org.powerbot.script.event.MessageEvent;
-import org.powerbot.script.event.MessageListener;
-import org.powerbot.script.event.PaintEvent;
-import org.powerbot.script.event.PaintListener;
-import org.powerbot.script.event.TextPaintEvent;
-import org.powerbot.script.event.TextPaintListener;
 import org.powerbot.script.util.Stoppable;
 
 public class EventMulticaster implements Runnable, Stoppable {

@@ -1,8 +1,6 @@
-package org.powerbot.script.event;
+package org.powerbot.event;
 
 import java.util.EventListener;
-
-import org.powerbot.event.AbstractEvent;
 
 /**
  * A message event that is dispatched when a new message is dispatched in the game.

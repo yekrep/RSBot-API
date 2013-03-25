@@ -1,4 +1,4 @@
-package org.powerbot.core.event.impl;
+package org.powerbot.event.impl;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -15,7 +15,7 @@ import org.powerbot.game.api.wrappers.interactive.NPC;
 import org.powerbot.game.api.wrappers.interactive.Player;
 import org.powerbot.game.api.wrappers.node.GroundItem;
 import org.powerbot.game.api.wrappers.node.SceneObject;
-import org.powerbot.script.event.PaintListener;
+import org.powerbot.event.PaintListener;
 
 public class DrawModels implements PaintListener {
 	private static final Map<Integer, Color> interactivePalette = new HashMap<>();

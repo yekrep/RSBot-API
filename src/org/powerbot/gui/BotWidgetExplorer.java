@@ -36,7 +36,7 @@ import org.powerbot.game.api.methods.Widgets;
 import org.powerbot.game.api.wrappers.widget.Widget;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
 import org.powerbot.game.bot.Context;
-import org.powerbot.script.event.PaintListener;
+import org.powerbot.event.PaintListener;
 import org.powerbot.util.Tracker;
 import org.powerbot.util.io.Resources;
 
