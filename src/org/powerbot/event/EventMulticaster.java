@@ -39,20 +39,18 @@ public class EventMulticaster implements Runnable, Stoppable {
 	private final Map<Class<? extends EventListener>, Integer> masks;
 	private boolean active, stopping = false;
 
-	@SuppressWarnings("deprecation")
 	public EventMulticaster() {
 		listeners = new CopyOnWriteArrayList<>();
 		listenerMasks = new ConcurrentHashMap<>();
 		queue = new ConcurrentLinkedQueue<>();
 
-		masks = new HashMap<Class<? extends EventListener>, Integer>();
+		masks = new HashMap<>();
 		masks.put(MouseListener.class, EventMulticaster.MOUSE_EVENT);
 		masks.put(MouseMotionListener.class, EventMulticaster.MOUSE_MOTION_EVENT);
 		masks.put(MouseWheelListener.class, EventMulticaster.MOUSE_WHEEL_EVENT);
 		masks.put(KeyListener.class, EventMulticaster.KEY_EVENT);
 		masks.put(FocusListener.class, EventMulticaster.FOCUS_EVENT);
 		masks.put(MessageListener.class, MessageEvent.ID);
-		masks.put(org.powerbot.core.event.listeners.MessageListener.class, MessageEvent.ID);
 		masks.put(PaintListener.class, PaintEvent.ID);
 		masks.put(TextPaintListener.class, TextPaintEvent.ID);
 
@@ -191,15 +189,7 @@ public class EventMulticaster implements Runnable, Stoppable {
 					((KeyListener) listener).keyReleased(ke);
 					break;
 				}
-			} else if (eventObject instanceof AbstractEvent) {
-				if (eventObject instanceof org.powerbot.core.event.events.MessageEvent) {
-					if (listener instanceof org.powerbot.core.event.listeners.MessageListener)
-						((AbstractEvent) eventObject).dispatch(listener);
-				} else if (eventObject instanceof MessageEvent) {
-					if (listener instanceof MessageListener)
-						((AbstractEvent) eventObject).dispatch(listener);
-				} else ((AbstractEvent) eventObject).dispatch(listener);
-			}
+			} else if (eventObject instanceof AbstractEvent) ((AbstractEvent) eventObject).dispatch(listener);
 		}
 	}
 

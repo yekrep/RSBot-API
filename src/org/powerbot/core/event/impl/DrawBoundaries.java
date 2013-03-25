@@ -4,12 +4,12 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 
-import org.powerbot.core.event.listeners.PaintListener;
 import org.powerbot.game.api.methods.Calculations;
 import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.api.methods.Walking;
 import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.wrappers.Tile;
+import org.powerbot.script.event.PaintListener;
 
 public class DrawBoundaries implements PaintListener {
 	private final Point[][] minimapPoints = new Point[105][105];

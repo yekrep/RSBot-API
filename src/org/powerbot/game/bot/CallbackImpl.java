@@ -36,6 +36,5 @@ public class CallbackImpl implements Callback {
 	 */
 	public void notifyMessage(final int id, final String sender, final String message) {
 		bot.getEventMulticaster().dispatch(new MessageEvent(id, sender, message));
-		bot.getEventMulticaster().dispatch(new org.powerbot.core.event.events.MessageEvent(id, sender, message));
 	}
 }

@@ -6,7 +6,6 @@ import java.awt.Point;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.powerbot.core.event.listeners.PaintListener;
 import org.powerbot.game.api.methods.interactive.NPCs;
 import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.methods.node.GroundItems;
@@ -16,6 +15,7 @@ import org.powerbot.game.api.wrappers.interactive.NPC;
 import org.powerbot.game.api.wrappers.interactive.Player;
 import org.powerbot.game.api.wrappers.node.GroundItem;
 import org.powerbot.game.api.wrappers.node.SceneObject;
+import org.powerbot.script.event.PaintListener;
 
 public class DrawModels implements PaintListener {
 	private static final Map<Integer, Color> interactivePalette = new HashMap<>();

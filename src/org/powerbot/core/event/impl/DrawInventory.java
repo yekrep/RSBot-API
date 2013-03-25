@@ -5,12 +5,12 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Point;
 
-import org.powerbot.core.event.listeners.PaintListener;
 import org.powerbot.game.api.methods.Game;
 import org.powerbot.game.api.methods.Tabs;
 import org.powerbot.game.api.methods.tab.Inventory;
 import org.powerbot.game.api.wrappers.node.Item;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
+import org.powerbot.script.event.PaintListener;
 
 public class DrawInventory implements PaintListener {
 	public void onRepaint(final Graphics render) {
