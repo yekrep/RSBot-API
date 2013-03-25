@@ -3,9 +3,17 @@ package org.powerbot.script.xenon.wrappers;
 import java.awt.Point;
 import java.lang.ref.WeakReference;
 
+import org.powerbot.bot.Bot;
+import org.powerbot.game.client.Cache;
+import org.powerbot.game.client.Client;
+import org.powerbot.game.client.HashTable;
+import org.powerbot.game.client.RSInfo;
 import org.powerbot.game.client.RSInteractableData;
 import org.powerbot.game.client.RSInteractableLocation;
 import org.powerbot.game.client.RSObject;
+import org.powerbot.game.client.RSObjectDef;
+import org.powerbot.game.client.RSObjectDefLoader;
+import org.powerbot.script.internal.Nodes;
 import org.powerbot.script.xenon.Game;
 import org.powerbot.script.xenon.Objects;
 
@@ -40,6 +48,20 @@ public class GameObject extends Interactive implements Locatable {
 	public int getPlane() {
 		final RSObject object = this.object.get();
 		return object != null ? object.getPlane() : -1;
+	}
+
+	public ObjectDefinition getDefinition() {
+		final Client client = Bot.client();
+		if (client == null) return null;
+
+		final RSInfo info;
+		final RSObjectDefLoader loader;
+		final Cache cache;
+		final HashTable table;
+		if ((info = client.getRSGroundInfo()) == null || (loader = info.getRSObjectDefLoaders()) == null ||
+				(cache = loader.getCache()) == null || (table = cache.getTable()) == null) return null;
+		final Object def = Nodes.lookup(table, getId());
+		return def != null && def instanceof RSObjectDef ? new ObjectDefinition((RSObjectDef) def) : null;
 	}
 
 	@Override
