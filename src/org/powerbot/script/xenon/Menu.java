@@ -25,6 +25,10 @@ public class Menu {
 		return client != null && client.isMenuOpen();
 	}
 
+	public static int indexOf(final String action) {
+		return indexOf(action, null);
+	}
+
 	public static int indexOf(String action, String option) {
 		final List<MenuItemNode> nodes = getMenuItemNodes();
 		int d = 0;
@@ -37,6 +41,10 @@ public class Menu {
 			d++;
 		}
 		return -1;
+	}
+
+	public static boolean click(final String action) {
+		return click(action, null);
 	}
 
 	public static boolean click(final String action, final String option) {
