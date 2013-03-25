@@ -1,7 +1,6 @@
 package org.powerbot.script.util;
 
 import org.powerbot.script.internal.ScriptManager;
-import org.powerbot.script.xenon.util.ExecutorDispatch;
 
 public final class AbstractScriptController implements ScriptController {
 	private final ScriptManager manager;
