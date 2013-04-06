@@ -6,9 +6,9 @@ import java.awt.Polygon;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import org.powerbot.game.client.ModelCapture;
 import org.powerbot.script.xenon.Calculations;
 import org.powerbot.script.xenon.util.Random;
-import org.powerbot.game.client.ModelCapture;
 
 public abstract class Model {
 	protected int[] xPoints;
@@ -241,12 +241,10 @@ public abstract class Model {
 
 	@Override
 	public boolean equals(final Object o) {
-		if (o != null && o instanceof Model) {
-			final Model model = (Model) o;
-			return Arrays.equals(faceA, model.faceA) &&
-					Arrays.equals(xPoints, model.xPoints) && Arrays.equals(yPoints, model.yPoints) && Arrays.equals(zPoints, model.zPoints);
-		}
-		return false;
+		if (o == null || !(o instanceof Model)) return false;
+		final Model model = (Model) o;
+		return Arrays.equals(faceA, model.faceA) &&
+				Arrays.equals(xPoints, model.xPoints) && Arrays.equals(yPoints, model.yPoints) && Arrays.equals(zPoints, model.zPoints);
 	}
 
 	@Override

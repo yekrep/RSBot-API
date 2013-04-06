@@ -3,10 +3,10 @@ package org.powerbot.script.xenon.wrappers;
 import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;
 
-import org.powerbot.script.xenon.Calculations;
 import org.powerbot.game.client.RSCharacter;
 import org.powerbot.game.client.RSInteractableData;
 import org.powerbot.game.client.RSInteractableLocation;
+import org.powerbot.script.xenon.Calculations;
 
 public class CharacterModel extends Model {
 	private final Reference<RSCharacter> character;

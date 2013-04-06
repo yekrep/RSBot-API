@@ -7,7 +7,7 @@ public class Deque<N> {
 	private final NodeDeque nl;
 	private Node current;
 
-	public Deque(NodeDeque nl) {
+	public Deque(final NodeDeque nl) {
 		this.nl = nl;
 	}
 

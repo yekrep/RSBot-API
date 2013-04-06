@@ -4,15 +4,15 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.powerbot.bot.Bot;
+import org.powerbot.game.client.Client;
+import org.powerbot.game.client.HashTable;
+import org.powerbot.game.client.RSNPC;
+import org.powerbot.game.client.RSNPCNode;
 import org.powerbot.script.internal.Nodes;
 import org.powerbot.script.xenon.util.Filter;
 import org.powerbot.script.xenon.wrappers.Npc;
 import org.powerbot.script.xenon.wrappers.Player;
 import org.powerbot.script.xenon.wrappers.Tile;
-import org.powerbot.game.client.Client;
-import org.powerbot.game.client.HashTable;
-import org.powerbot.game.client.RSNPC;
-import org.powerbot.game.client.RSNPCNode;
 
 public class Npcs {
 	public static Set<Npc> getLoaded() {

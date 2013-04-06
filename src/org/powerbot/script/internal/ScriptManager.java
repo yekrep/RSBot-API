@@ -24,7 +24,7 @@ import org.powerbot.script.util.NamedCachedThreadPoolExecutor;
 import org.powerbot.script.util.ScriptController;
 import org.powerbot.script.util.Stoppable;
 import org.powerbot.script.util.Suspendable;
-import org.powerbot.script.xenon.util.ExecutorDispatch;
+import org.powerbot.script.util.ExecutorDispatch;
 
 /**
  * A priority based {@code Script} controller.

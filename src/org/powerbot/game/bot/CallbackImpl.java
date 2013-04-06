@@ -3,7 +3,7 @@ package org.powerbot.game.bot;
 import org.powerbot.bot.Bot;
 import org.powerbot.game.client.Callback;
 import org.powerbot.game.client.Render;
-import org.powerbot.script.event.MessageEvent;
+import org.powerbot.event.MessageEvent;
 import org.powerbot.script.xenon.Calculations;
 
 /**
@@ -36,6 +36,5 @@ public class CallbackImpl implements Callback {
 	 */
 	public void notifyMessage(final int id, final String sender, final String message) {
 		bot.getEventMulticaster().dispatch(new MessageEvent(id, sender, message));
-		bot.getEventMulticaster().dispatch(new org.powerbot.core.event.events.MessageEvent(id, sender, message));
 	}
 }

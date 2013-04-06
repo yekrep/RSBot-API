@@ -58,7 +58,7 @@ public class GroundItems {
 			return new HashSet<>(0);
 		}
 
-		int x = location.getX(), y = location.getY();
+		final int x = location.getX(), y = location.getY();
 		return getLoaded(x, y, range);
 	}
 

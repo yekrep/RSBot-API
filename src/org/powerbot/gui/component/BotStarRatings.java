@@ -20,7 +20,7 @@ public final class BotStarRatings extends JPanel implements MouseListener {
 
 	public BotStarRatings(final int rating) {
 		stars = new JLabel[5];
-		icons = new ImageIcon[] { new ImageIcon(Resources.Paths.UNSTAR), new ImageIcon(Resources.Paths.STAR) };
+		icons = new ImageIcon[]{new ImageIcon(Resources.Paths.UNSTAR), new ImageIcon(Resources.Paths.STAR)};
 		this.rating = rating;
 		rate = 0;
 
@@ -56,7 +56,7 @@ public final class BotStarRatings extends JPanel implements MouseListener {
 	@Override
 	public void mouseEntered(final MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override

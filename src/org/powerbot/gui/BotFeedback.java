@@ -8,7 +8,7 @@ import org.powerbot.gui.component.BotLocale;
 import org.powerbot.util.Tracker;
 import org.powerbot.util.io.Resources;
 
-/***
+/**
  * @author Paris
  */
 public final class BotFeedback extends JDialog {
@@ -18,7 +18,6 @@ public final class BotFeedback extends JDialog {
 		super(parent, BotLocale.FEEDBACK, true);
 		setIconImage(Resources.getImage(Resources.Paths.COMMENTS));
 
-		
 
 		pack();
 		setMinimumSize(getSize());

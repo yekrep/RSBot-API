@@ -106,6 +106,11 @@ public class Tile extends Interactive implements Locatable {
 		return false;
 	}
 
+	@Override
+	public boolean isValid() {
+		return true;//TODO this
+	}
+
 	/*
 	@Override
 	public boolean isValid() {
@@ -141,11 +146,8 @@ public class Tile extends Interactive implements Locatable {
 
 	@Override
 	public boolean equals(final Object o) {
-		final Tile t;
-		if (o != null && o instanceof Tile) {
-			t = (Tile) o;
-			return x == t.x && y == t.y && plane == t.plane;
-		}
-		return false;
+		if (o == null || !(o instanceof Tile)) return false;
+		final Tile t = (Tile) o;
+		return x == t.x && y == t.y && plane == t.plane;
 	}
 }

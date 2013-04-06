@@ -1,4 +1,5 @@
 package org.powerbot.math;
+
 import java.awt.Point;
 
 /**
@@ -8,11 +9,13 @@ public class Vector2 {
 	public int x, y;
 
 	public Vector2() {
-		x = 0; y = 0;
+		x = 0;
+		y = 0;
 	}
 
 	public Vector2(final Vector2 v) {
-		x = v.x; y = v.y;
+		x = v.x;
+		y = v.y;
 	}
 
 	public Vector2(final int[] v) {
@@ -20,7 +23,8 @@ public class Vector2 {
 	}
 
 	public Vector2(final int x, final int y) {
-		this.x = x; this.y = y;
+		this.x = x;
+		this.y = y;
 	}
 
 	public Vector2(final Point p) {
@@ -60,7 +64,7 @@ public class Vector2 {
 	}
 
 	public int[] toMatrix() {
-		return new int[] { x, y };
+		return new int[]{x, y};
 	}
 
 	public Point to2DPoint() {

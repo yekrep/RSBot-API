@@ -77,8 +77,8 @@ class ZipConstants64 {
 	 * Language encoding flag EFS
 	 */
 	static final int EFS = 0x800; // If this bit is set the filename and
-									// comment fields for this file must be
-									// encoded using UTF-8.
+	// comment fields for this file must be
+	// encoded using UTF-8.
 
 	private ZipConstants64() {
 	}

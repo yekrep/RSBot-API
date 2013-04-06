@@ -4,11 +4,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.powerbot.bot.Bot;
+import org.powerbot.game.client.Client;
+import org.powerbot.game.client.RSPlayer;
 import org.powerbot.script.xenon.util.Filter;
 import org.powerbot.script.xenon.wrappers.Player;
 import org.powerbot.script.xenon.wrappers.Tile;
-import org.powerbot.game.client.Client;
-import org.powerbot.game.client.RSPlayer;
 
 public class Players {
 	public static Player getLocal() {

@@ -23,8 +23,8 @@ import org.powerbot.gui.BotChrome;
 import org.powerbot.gui.component.BotPanel;
 import org.powerbot.gui.controller.BotInteract;
 import org.powerbot.loader.script.ModScript;
-import org.powerbot.script.event.PaintEvent;
-import org.powerbot.script.event.TextPaintEvent;
+import org.powerbot.event.PaintEvent;
+import org.powerbot.event.TextPaintEvent;
 import org.powerbot.script.internal.Constants;
 import org.powerbot.script.internal.ScriptDefinition;
 import org.powerbot.script.internal.ScriptManager;
@@ -114,30 +114,6 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 		return instance.mouseHandler;
 	}
 
-	public static void setSpeed(final Mouse.Speed speed) {
-		final ThreadGroup group = Thread.currentThread().getThreadGroup();
-		switch (speed) {
-		case VERY_SLOW:
-			MouseNode.speeds.put(group, 0.5d);
-			break;
-		case SLOW:
-			MouseNode.speeds.put(group, 0.8d);
-			break;
-		case NORMAL:
-			MouseNode.speeds.put(group, 1d);
-			break;
-		case FAST:
-			MouseNode.speeds.put(group, 1.7d);
-			break;
-		case VERY_FAST:
-			MouseNode.speeds.put(group, 2.5d);
-			break;
-		default:
-			MouseNode.speeds.put(group, 1d);
-			break;
-		}
-	}
-
 	public void run() {
 		BotChrome.getInstance().toolbar.updateControls();
 		start();
@@ -185,7 +161,7 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 	@Override
 	public void stop() {
 		log.info("Unloading environment");
-		for (final Stoppable module : new Stoppable[] { mouseHandler, scriptController, multicaster }) {
+		for (final Stoppable module : new Stoppable[]{mouseHandler, scriptController, multicaster}) {
 			if (module != null) {
 				module.stop();
 			}

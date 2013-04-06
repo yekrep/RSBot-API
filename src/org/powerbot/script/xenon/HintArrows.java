@@ -4,9 +4,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.powerbot.bot.Bot;
-import org.powerbot.script.xenon.wrappers.HintArrow;
 import org.powerbot.game.client.Client;
 import org.powerbot.game.client.RSHintArrow;
+import org.powerbot.script.xenon.wrappers.HintArrow;
 
 public class HintArrows {
 	public static Set<HintArrow> getLoaded() {

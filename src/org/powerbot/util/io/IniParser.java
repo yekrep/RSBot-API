@@ -73,7 +73,7 @@ public class IniParser {
 		for (final Entry<String, String> entry : map.entrySet()) {
 			out.write(entry.getKey());
 			out.write(KEYBOUND);
-			final String value = entry.getValue().replace(new String(new char[] { ESCAPE }), new String(new char[] { ESCAPE, ESCAPE })).replaceAll("(\r?\n)", "\\$1");
+			final String value = entry.getValue().replace(new String(new char[]{ESCAPE}), new String(new char[]{ESCAPE, ESCAPE})).replaceAll("(\r?\n)", "\\$1");
 			if (value != null) {
 				out.write(value);
 			}

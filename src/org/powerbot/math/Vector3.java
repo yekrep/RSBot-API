@@ -51,7 +51,7 @@ public class Vector3 extends Vector2 {
 	}
 
 	public int[] toMatrix() {
-		return new int[] { x, y, z };
+		return new int[]{x, y, z};
 	}
 
 	@Override

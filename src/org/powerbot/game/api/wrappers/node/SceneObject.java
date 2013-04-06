@@ -31,6 +31,7 @@ import org.powerbot.game.client.RSObjectDef;
 /**
  * @author Timer
  */
+@Deprecated
 public class SceneObject implements Entity, Locatable, Identifiable {
 	private final RSObject object;
 	private final int type;

@@ -6,6 +6,7 @@ import org.powerbot.game.client.RSObjectDef;
 /**
  * @author Timer
  */
+@Deprecated
 public class SceneObjectDefinition implements Identifiable {
 	private final RSObjectDef def;
 

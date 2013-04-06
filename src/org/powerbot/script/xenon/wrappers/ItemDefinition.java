@@ -38,6 +38,6 @@ public class ItemDefinition implements Validatable {
 
 	@Override
 	public boolean isValid() {
-		return def.get() != null;
+		return def.get() != null;//TODO this
 	}
 }

@@ -19,6 +19,7 @@ import org.powerbot.script.xenon.util.Delay;
 /**
  * @author Timer
  */
+@Deprecated
 public class Menu {
 	private static final Pattern HTML_TAG = Pattern.compile("(^[^<]+>|<[^>]+>|<[^>]+$)");
 

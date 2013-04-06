@@ -13,10 +13,13 @@ import org.powerbot.script.util.ScriptController;
  */
 public interface Script extends Runnable, EventListener {
 
-	public enum State { START, STOP, SUSPEND, RESUME };
+	public enum State {START, STOP, SUSPEND, RESUME}
+
+	;
 
 	/**
 	 * Retrieves a list of tasks for the specified state.
+	 *
 	 * @param state the query state
 	 * @return the set of tasks for the requested {@code state}
 	 */
@@ -24,18 +27,21 @@ public interface Script extends Runnable, EventListener {
 
 	/**
 	 * Determines the overall order of priority of this script.
+	 *
 	 * @return the absolute priority on the integer scale
 	 */
 	public int getPriority();
 
 	/**
 	 * Retrieves the {@code ScriptController}.
+	 *
 	 * @return the attached {@code ScriptController}
 	 */
 	public ScriptController getScriptController();
 
 	/**
 	 * Sets the {@code ScriptController}.
+	 *
 	 * @param controller the {@code ScriptController} to attach
 	 */
 	public void setScriptController(ScriptController controller);

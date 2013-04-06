@@ -63,7 +63,7 @@ public final class NetworkAccount {
 	}
 
 	public String getDisplayName() {
-		final String[] s = { getProp("display"), getProp("name") };
+		final String[] s = {getProp("display"), getProp("name")};
 		return s[s[0] == null || s[0].isEmpty() ? 1 : 0];
 	}
 

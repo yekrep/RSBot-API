@@ -4,13 +4,13 @@ import java.lang.ref.WeakReference;
 import java.util.Arrays;
 
 import org.powerbot.bot.Bot;
-import org.powerbot.script.internal.Nodes;
-import org.powerbot.script.xenon.Game;
 import org.powerbot.game.client.Client;
 import org.powerbot.game.client.RSHintArrow;
 import org.powerbot.game.client.RSNPC;
 import org.powerbot.game.client.RSNPCNode;
 import org.powerbot.game.client.RSPlayer;
+import org.powerbot.script.internal.Nodes;
+import org.powerbot.script.xenon.Game;
 
 public class HintArrow implements Locatable, Validatable {
 	private final WeakReference<RSHintArrow> arrow;
@@ -77,8 +77,7 @@ public class HintArrow implements Locatable, Validatable {
 	public boolean equals(final Object o) {
 		if (o == null || !(o instanceof HintArrow)) return false;
 		final HintArrow a = (HintArrow) o;
-		final RSHintArrow a1 = this.arrow.get();
-		final RSHintArrow a2 = a.arrow.get();
-		return a1 != null && a2 != null && a1 == a2;
+		final RSHintArrow i;
+		return (i = this.arrow.get()) != null && i == a.arrow.get();
 	}
 }
