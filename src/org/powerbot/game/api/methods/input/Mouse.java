@@ -31,7 +31,6 @@ public class Mouse {
 	private static final Map<ThreadGroup, Integer> sides = new HashMap<ThreadGroup, Integer>();
 
 	public static void setSpeed(final Speed speed) {
-		Bot.setSpeed(speed);
 	}
 
 	/**
