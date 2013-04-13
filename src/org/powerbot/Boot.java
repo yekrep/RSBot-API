@@ -26,11 +26,14 @@ import org.powerbot.util.Configuration.OperatingSystem;
 import org.powerbot.util.RestrictedSecurityManager;
 import org.powerbot.util.StringUtil;
 import org.powerbot.util.io.CryptFile;
+import org.powerbot.util.io.IOHelper;
 import org.powerbot.util.io.PrintStreamHandler;
+import org.powerbot.util.io.Resources;
 
 public class Boot implements Runnable {
 	private final static Logger log = Logger.getLogger(Boot.class.getName());
 	private final static String SWITCH_RESTARTED = "-restarted", SWITCH_VERSION_SHORT = "-v";
+	private final static String ICON_TMP = System.getProperty("java.io.tmpdir") + File.separator + Configuration.NAME.toLowerCase() + ".ico.png";
 
 	public static void main(final String[] args) {
 		final Logger logger = Logger.getLogger("");
@@ -48,6 +51,13 @@ public class Boot implements Runnable {
 			case SWITCH_VERSION_SHORT:
 				System.out.println(Configuration.VERSION);
 				return;
+			}
+		}
+
+		if (!restarted && Configuration.OS == OperatingSystem.MAC) {
+			try {
+				IOHelper.write(Resources.getResourceURL(Resources.Paths.ICON).openStream(), new File(ICON_TMP));
+			} catch (final IOException ignored) {
 			}
 		}
 
@@ -163,6 +173,10 @@ public class Boot implements Runnable {
 		flags.add("-XX:-UseSplitVerifier");
 		if (Runtime.getRuntime().availableProcessors() > 1) {
 			flags.add("-XX:+UseConcMarkSweepGC");
+		}
+		if (Configuration.OS == OperatingSystem.MAC) {
+			flags.add("-Xdock:name=" + Configuration.NAME);
+			flags.add("-Xdock:icon=" + ICON_TMP);
 		}
 		for (final String flag : flags) {
 			if (!options.contains(flag)) {
