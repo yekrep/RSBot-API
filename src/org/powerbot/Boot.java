@@ -80,6 +80,9 @@ public class Boot implements Runnable {
 		}
 
 		try {
+			if (Configuration.OS == OperatingSystem.MAC) {
+				System.setProperty("apple.laf.useScreenMenuBar", "true");
+			}
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (final Exception ignored) {
 		}
