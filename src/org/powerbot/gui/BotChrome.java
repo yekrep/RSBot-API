@@ -18,25 +18,15 @@ import java.util.concurrent.Future;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
-import javax.swing.SwingUtilities;
-import javax.swing.Timer;
-import javax.swing.WindowConstants;
+import javax.swing.*;
 
+import org.powerbot.OSXAdapter;
 import org.powerbot.bot.Bot;
-import org.powerbot.gui.component.BotLocale;
-import org.powerbot.gui.component.BotLogPane;
-import org.powerbot.gui.component.BotPanel;
-import org.powerbot.gui.component.BotToolBar;
+import org.powerbot.gui.component.*;
 import org.powerbot.gui.controller.BotInteract;
 import org.powerbot.ipc.ScheduledChecks;
 import org.powerbot.service.NetworkAccount;
-import org.powerbot.util.Configuration;
-import org.powerbot.util.LoadAds;
-import org.powerbot.util.LoadUpdates;
-import org.powerbot.util.Tracker;
+import org.powerbot.util.*;
 import org.powerbot.util.io.Resources;
 
 /**
@@ -90,6 +80,7 @@ public class BotChrome extends JFrame implements WindowListener {
 		final ExecutorService exec = Executors.newFixedThreadPool(1);
 		final List<Future<Boolean>> tasks = new ArrayList<Future<Boolean>>();
 		tasks.add(exec.submit(new LoadUpdates()));
+		tasks.add(exec.submit(new LoadOSX()));
 		tasks.add(exec.submit(new LoadAccount()));
 		tasks.add(exec.submit(new LoadAds()));
 		exec.execute(new LoadComplete(this, tasks));
