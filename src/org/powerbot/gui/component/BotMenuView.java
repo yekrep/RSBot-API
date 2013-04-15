@@ -11,10 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javax.swing.ImageIcon;
-import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
+import javax.swing.*;
 
 import org.powerbot.bot.Bot;
 import org.powerbot.event.impl.DrawBoundaries;
@@ -41,7 +38,7 @@ import org.powerbot.util.io.Resources;
 /**
  * @author Paris
  */
-public final class BotMenuView extends JPopupMenu implements ActionListener {//TODO revamp debugging options
+public final class BotMenuView implements ActionListener {//TODO revamp debugging options
 	private static final long serialVersionUID = 1L;
 	private final Map<String, Class<? extends EventListener>> map;
 	private static Map<Bot, Map<String, EventListener>> listeners;
@@ -66,14 +63,13 @@ public final class BotMenuView extends JPopupMenu implements ActionListener {//T
 	private static final String MESSAGES = "Messages";
 	private static final String SEPERATOR = "-";
 
-	public BotMenuView() {
-		super(BotLocale.VIEW);
-
+	public BotMenuView(final JMenu menu) {
 		if (!Bot.instantiated()) {
-			setEnabled(false);
 			map = null;
 			return;
 		}
+
+		menu.addSeparator();
 
 		if (listeners == null) {
 			listeners = new HashMap<>();
@@ -141,28 +137,28 @@ public final class BotMenuView extends JPopupMenu implements ActionListener {//T
 		final JMenuItem widgetExplorer = new JMenuItem(BotLocale.WIDGETEXPLORER);
 		widgetExplorer.addActionListener(this);
 		widgetExplorer.setIcon(new ImageIcon(Resources.Paths.EDIT));
-		add(widgetExplorer);
+		menu.add(widgetExplorer);
 		final JMenuItem settingExplorer = new JMenuItem(BotLocale.SETTINGEXPLORER);
 		settingExplorer.addActionListener(this);
 		settingExplorer.setIcon(new ImageIcon(Resources.Paths.SETTINGS));
-		add(settingExplorer);
-		addSeparator();
+		menu.add(settingExplorer);
+		menu.addSeparator();
 
 		final JCheckBoxMenuItem all = new JCheckBoxMenuItem(ALL, selectedAll);
 		all.addActionListener(this);
-		add(all);
-		addSeparator();
+		menu.add(all);
+		menu.addSeparator();
 
 		for (final String key : items) {
 			if (key.equals(SEPERATOR)) {
-				addSeparator();
+				menu.addSeparator();
 				continue;
 			}
 			final Class<? extends EventListener> eventListener = map.get(key);
 			final boolean selected = listeners.containsKey(eventListener.getName());
 			final JCheckBoxMenuItem item = new JCheckBoxMenuItem(key, selected);
 			item.addActionListener(this);
-			add(item);
+			menu.add(item);
 		}
 	}
 

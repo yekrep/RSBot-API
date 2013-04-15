@@ -8,8 +8,8 @@ import org.powerbot.util.Configuration;
  * @author Paris
  */
 public final class BotLocale {
-	public static final String NEWTAB = "New";
-	public static final String CLOSETAB = "Close";
+	public static final String NEWTAB = "New Window";
+	public static final String CLOSETAB = "Close Window";
 	public static final String PLAYSCRIPT = "Play";
 	public static final String RESUMESCRIPT = "Resume";
 	public static final String PAUSESCRIPT = "Pause";
@@ -24,6 +24,9 @@ public final class BotLocale {
 	public static final String SETTINGEXPLORER = "Settings";
 	public static final String ABOUT = "About";
 	public static final String EXIT = "Exit";
+	public static final String HELP = "Help";
+	public static final String EDIT = "Edit";
+	public static final String FILE = "File";
 
 	public static final String COPY = "Copy";
 	public static final String SAVEAS = "Save As...";
@@ -48,7 +51,7 @@ public final class BotLocale {
 	public static final String NEEDSIGNIN = "Member Access";
 	public static final String NEEDSIGNINMULTITAB = "Please sign in to open more tabs.";
 	public static final String CANTOPENTAB = "Unable to open a new tab.";
-	public static final String LOGPANE = "Show or hide log pane";
+	public static final String LOGPANE = "Log Pane";
 	public static final String WELCOME_SIGNEDIN = "Hi %s, add a tab to start playing";
 	public static final String WELCOME_NOTSIGNEDIN = "Please sign in then add a tab to start playing";
 	public static final String STARTING = "Starting...";

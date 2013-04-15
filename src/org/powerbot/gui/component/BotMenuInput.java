@@ -5,8 +5,7 @@ import java.awt.event.ActionListener;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JPopupMenu;
+import javax.swing.*;
 
 import org.powerbot.bot.Bot;
 import org.powerbot.gui.BotChrome;
@@ -14,12 +13,11 @@ import org.powerbot.gui.BotChrome;
 /**
  * @author Paris
  */
-public final class BotMenuInput extends JPopupMenu {
+public final class BotMenuInput {
 	private static final long serialVersionUID = 9119892162553131816L;
 
-	public BotMenuInput() {
-		super(BotLocale.INPUT);
-		setEnabled(Bot.instantiated());
+	public BotMenuInput(final JMenu menu) {
+		final boolean enabled = Bot.instantiated();
 
 		JCheckBoxMenuItem item;
 		final BotPanel panel = BotChrome.getInstance().panel;
@@ -39,7 +37,8 @@ public final class BotMenuInput extends JPopupMenu {
 				}
 			});
 
-			add(item);
+			item.setEnabled(enabled);
+			menu.add(item);
 		}
 	}
 }

@@ -38,7 +38,6 @@ public class BotChrome extends JFrame implements WindowListener {
 	private static Logger log = Logger.getLogger(BotChrome.class.getName());
 	public static final int PANEL_WIDTH = 765, PANEL_HEIGHT = 553;
 	public BotPanel panel;
-	public BotToolBar toolbar;
 	public JScrollPane logpane;
 	public static volatile boolean loaded = false;
 	public static volatile boolean minimised = false;
@@ -56,9 +55,7 @@ public class BotChrome extends JFrame implements WindowListener {
 			}
 		});
 
-		toolbar = new BotToolBar(this);
-		toolbar.setVisibleEx(false);
-		add(toolbar, BorderLayout.NORTH);
+		setJMenuBar(new BotMenuBar());
 		panel = new BotPanel(this);
 		add(panel);
 
@@ -175,8 +172,6 @@ public class BotChrome extends JFrame implements WindowListener {
 						timer.setCoalesce(false);
 						timer.start();
 
-						toolbar.registerPreferences();
-						toolbar.setVisibleEx(true);
 						parent.validate();
 						parent.repaint();
 

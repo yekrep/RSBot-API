@@ -115,7 +115,6 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 	}
 
 	public void run() {
-		BotChrome.getInstance().toolbar.updateControls();
 		start();
 	}
 
@@ -199,17 +198,6 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 		defs.add(new ScriptDefinition(new WidgetCloser()));
 		defs.add(script);
 		scriptController = new ScriptManager(getEventMulticaster(), defs);
-		scriptController.addCallback(new Runnable() {
-			@Override
-			public void run() {
-				SwingUtilities.invokeLater(new Runnable() {
-					@Override
-					public void run() {
-						BotChrome.getInstance().toolbar.updateControls();
-					}
-				});
-			}
-		});
 		scriptController.run();
 	}
 

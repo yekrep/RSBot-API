@@ -1,19 +1,17 @@
 package org.powerbot.gui.controller;
 
+import java.awt.*;
 import java.awt.event.WindowEvent;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 
 import org.powerbot.Boot;
 import org.powerbot.bot.Bot;
-import org.powerbot.gui.BotAbout;
-import org.powerbot.gui.BotAccounts;
-import org.powerbot.gui.BotChrome;
-import org.powerbot.gui.BotScripts;
-import org.powerbot.gui.BotSignin;
+import org.powerbot.gui.*;
 import org.powerbot.gui.component.BotLocale;
 import org.powerbot.ipc.Controller;
 import org.powerbot.script.internal.ScriptManager;
@@ -21,6 +19,7 @@ import org.powerbot.script.xenon.Game;
 import org.powerbot.service.NetworkAccount;
 import org.powerbot.util.Configuration;
 import org.powerbot.util.Tracker;
+import org.powerbot.util.io.IOHelper;
 
 /**
  * @author Paris
@@ -40,6 +39,9 @@ public final class BotInteract {
 					break;
 				case ABOUT:
 					new BotAbout(chrome);
+					break;
+				case LICENSE:
+					new BotLicense(chrome, false);
 					break;
 				default:
 					break;
@@ -96,12 +98,6 @@ public final class BotInteract {
 					parent.panel.repaint();
 					Logger.getLogger(Bot.class.getName()).log(Level.INFO, "Add a tab to start another bot", "Closed");
 					System.gc();
-					SwingUtilities.invokeLater(new Runnable() {
-						@Override
-						public void run() {
-							parent.toolbar.updateControls();
-						}
-					});
 				} else {
 					parent.dispatchEvent(new WindowEvent(parent, WindowEvent.WINDOW_CLOSING));
 				}
@@ -142,5 +138,13 @@ public final class BotInteract {
 		}
 	}
 
-	public static enum Action {MENU, TAB_ADD, TAB_CLOSE, ACCOUNTS, SIGNIN, ABOUT, SCRIPT_PLAYPAUSE, SCRIPT_STOP}
+	public static boolean toggleLogPane() {
+		final BotChrome parent = BotChrome.getInstance();
+		parent.logpane.setVisible(!parent.logpane.isVisible());
+		final int[] h = { parent.logpane.getSize().height, parent.logpane.getPreferredSize().height };
+		parent.setSize(new Dimension(parent.getSize().width, parent.getSize().height + h[h[0] == 0 ? 1 : 0] * (parent.logpane.isVisible() ? 1 : -1)));
+		return parent.logpane.isVisible();
+	}
+
+	public static enum Action {MENU, TAB_ADD, TAB_CLOSE, ACCOUNTS, SIGNIN, ABOUT, LICENSE, SCRIPT_PLAYPAUSE, SCRIPT_STOP}
 }

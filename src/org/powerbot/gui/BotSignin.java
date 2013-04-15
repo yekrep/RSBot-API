@@ -249,6 +249,5 @@ public final class BotSignin extends JDialog implements ActionListener {
 			password.setEnabled(true);
 			register.setVisible(true);
 		}
-		BotChrome.getInstance().toolbar.updateControls();
 	}
 }
