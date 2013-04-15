@@ -28,5 +28,4 @@
 	<property name="classes-naming" value="windows" />
 	<property name="methods-naming" value="keywords" />
 	<property name="fields-naming" value="keywords" />
-	<property name="finalize" value="enable" />
 </config>
