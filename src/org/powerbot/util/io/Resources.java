@@ -18,7 +18,6 @@ public class Resources {
 		public static final String ROOT_IMG = ROOT + "/images";
 		public static final String ICON = ROOT_IMG + "/icon.png";
 		public static final String ICON_SMALL = ROOT_IMG + "/icon_small.png";
-		public static final String INFO = ROOT_IMG + "/glyphicons_195_circle_info.png";
 		public static final String ADD = ROOT_IMG + "/glyphicons_190_circle_plus.png";
 		public static final String ARROWS = ROOT_IMG + "/arrows.png";
 		public static final String REFRESH = ROOT_IMG + "/glyphicons_081_refresh.png";
@@ -33,12 +32,6 @@ public class Resources {
 		public static final String PENCIL = ROOT_IMG + "/glyphicons_030_pencil.png";
 		public static final String SETTINGS = ROOT_IMG + "/glyphicons_136_cogwheel.png";
 		public static final String EDIT = ROOT_IMG + "/glyphicons_150_edit.png";
-		public static final String VIEW = ROOT_IMG + "/glyphicons_051_eye_open.png";
-		public static final String KEYBOARD = ROOT_IMG + "/glyphicons_268_keyboard_wireless.png";
-		public static final String STAR = ROOT_IMG + "/glyphicons_049_star.png";
-		public static final String UNSTAR = ROOT_IMG + "/glyphicons_048_dislikes.png";
-		public static final String COMMENTS = ROOT_IMG + "/glyphicons_244_conversation.png";
-		public static final String LIST = ROOT_IMG + "/glyphicons_114_list.png";
 		public static final String SKILLS = ROOT_IMG + "/skills.png";
 	}
 
