@@ -31,8 +31,11 @@ public class BotMenuBar extends JMenuBar implements ActionListener {
 		}
 
 		signin = item(BotLocale.SIGNIN);
+		signin.setIcon(new ImageIcon(Resources.getImage(Resources.Paths.KEYS)));
 		edit.add(signin);
-		edit.add(item(BotLocale.ACCOUNTS));
+		final JMenuItem accounts = item(BotLocale.ACCOUNTS);
+		accounts.setIcon(new ImageIcon(Resources.getImage(Resources.Paths.ADDRESS)));
+		edit.add(accounts);
 
 		edit.addMenuListener(new MenuListener() {
 			@Override
