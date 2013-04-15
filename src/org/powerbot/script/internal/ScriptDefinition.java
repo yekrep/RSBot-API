@@ -74,7 +74,7 @@ public final class ScriptDefinition implements Comparable<ScriptDefinition>, Ser
 		version = manifest.version();
 		authors = manifest.authors();
 		website = manifest.website();
-		instantces = manifest.instantces();
+		instantces = manifest.instances();
 	}
 
 	public ScriptDefinition(final Script script, final Map<String, String> data) {
@@ -96,18 +96,18 @@ public final class ScriptDefinition implements Comparable<ScriptDefinition>, Ser
 		}
 		this.version = version;
 
-		int instantces = Integer.MAX_VALUE;
+		int instances = Integer.MAX_VALUE;
 		try {
-			instantces = (int) manifest.getMethod("instantces").getDefaultValue();
+			instances = (int) manifest.getMethod("instances").getDefaultValue();
 		} catch (final NoSuchMethodException ignored) {
 		}
-		if (data.containsKey("instantces")) {
+		if (data.containsKey("instances")) {
 			try {
-				instantces = Integer.parseInt(data.get("instantces"));
+				instances = Integer.parseInt(data.get("instances"));
 			} catch (final NumberFormatException ignored) {
 			}
 		}
-		this.instantces = instantces;
+		this.instantces = instances;
 	}
 
 	public ScriptDefinition(final Map<String, String> data) {
@@ -169,7 +169,7 @@ public final class ScriptDefinition implements Comparable<ScriptDefinition>, Ser
 		return url != null && !url.isEmpty() && (url.startsWith("http://") || url.startsWith("https://")) ? url : null;
 	}
 
-	public int getInstantces() {
+	public int getInstances() {
 		return instantces;
 	}
 

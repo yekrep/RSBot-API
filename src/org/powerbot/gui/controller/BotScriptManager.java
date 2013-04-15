@@ -218,8 +218,8 @@ public class BotScriptManager {
 			return;
 		}
 		def.setScript(script);
-		if (n > def.getInstantces()) {
-			final String s = "This script can only be used on " + def.getInstantces() + " account" + (def.getInstantces() == 1 ? "" : "s") + " at a time.";
+		if (n > def.getInstances()) {
+			final String s = "This script can only be used on " + def.getInstances() + " account" + (def.getInstances() == 1 ? "" : "s") + " at a time.";
 			if (parent == null) {
 				log.info(s);
 			} else {
