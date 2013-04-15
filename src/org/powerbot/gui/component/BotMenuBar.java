@@ -168,7 +168,7 @@ public class BotMenuBar extends JMenuBar implements ActionListener {
 			s = BotLocale.SIGNIN;
 		}
 		switch (s) {
-			case BotLocale.NEWTAB: BotInteract.tabAdd(); break;
+			case BotLocale.NEWTAB: case BotLocale.STARTTAB: BotInteract.tabAdd(); break;
 			case BotLocale.EXIT: BotInteract.tabClose(false); break;
 			case BotLocale.SIGNIN: BotInteract.showDialog(BotInteract.Action.SIGNIN); break;
 			case BotLocale.LOGPANE: logpane.setState(BotInteract.toggleLogPane()); break;
