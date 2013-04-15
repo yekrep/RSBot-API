@@ -145,7 +145,9 @@ public class BotMenuBar extends JMenuBar implements ActionListener {
 			help.add(item(BotLocale.ABOUT));
 		}
 		help.add(item(BotLocale.LICENSE));
-		help.add(item(BotLocale.WEBSITE));
+		final JMenuItem web = item(BotLocale.WEBSITE);
+		web.setIcon(new ImageIcon(Resources.getImage(Resources.Paths.ICON_SMALL)));
+		help.add(web);
 
 		add(file);
 		add(edit);
