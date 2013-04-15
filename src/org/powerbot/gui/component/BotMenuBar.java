@@ -5,6 +5,7 @@ import org.powerbot.gui.controller.BotInteract;
 import org.powerbot.script.internal.ScriptManager;
 import org.powerbot.service.NetworkAccount;
 import org.powerbot.util.Configuration;
+import org.powerbot.util.Tracker;
 import org.powerbot.util.io.Resources;
 
 import javax.swing.*;
@@ -165,10 +166,13 @@ public class BotMenuBar extends JMenuBar implements ActionListener {
 
 	@Override
 	public void actionPerformed(final ActionEvent e) {
-		String s = e.getActionCommand();
-		if (e.getSource() == signin) {
-			s = BotLocale.SIGNIN;
-		}
+		final String s = e.getSource() == signin ? BotLocale.SIGNIN : e.getActionCommand();
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				Tracker.getInstance().trackPage("menu/", s);
+			}
+		});
 		switch (s) {
 			case BotLocale.NEWTAB: case BotLocale.STARTTAB: BotInteract.tabAdd(); break;
 			case BotLocale.EXIT: BotInteract.tabClose(false); break;
