@@ -24,11 +24,27 @@ public class BotMenuBar extends JMenuBar implements ActionListener {
 		final JMenu file = new JMenu(BotLocale.FILE), edit = new JMenu(BotLocale.EDIT), view = new JMenu(BotLocale.VIEW),
 				script = new JMenu(BotLocale.SCRIPTS), input = new JMenu(BotLocale.INPUT), help = new JMenu(BotLocale.HELP);
 
-		file.add(item(BotLocale.NEWTAB));
+		final JMenuItem newtab = item(BotLocale.NEWTAB);
+		file.add(newtab);
 		if (Configuration.OS != Configuration.OperatingSystem.MAC) {
 			file.addSeparator();
 			file.add(item(BotLocale.EXIT));
 		}
+
+		file.addMenuListener(new MenuListener() {
+			@Override
+			public void menuSelected(final MenuEvent e) {
+				newtab.setText(Bot.instantiated() ? BotLocale.NEWTAB : BotLocale.STARTTAB);
+			}
+
+			@Override
+			public void menuDeselected(final MenuEvent e) {
+			}
+
+			@Override
+			public void menuCanceled(final MenuEvent e) {
+			}
+		});
 
 		signin = item(BotLocale.SIGNIN);
 		signin.setIcon(new ImageIcon(Resources.getImage(Resources.Paths.KEYS)));

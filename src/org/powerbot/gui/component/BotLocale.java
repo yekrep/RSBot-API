@@ -10,6 +10,7 @@ import org.powerbot.util.Configuration;
 public final class BotLocale {
 	public static final String NEWTAB = "New Window";
 	public static final String CLOSETAB = "Close Window";
+	public static final String STARTTAB = "Start Game";
 	public static final String PLAYSCRIPT = "Play";
 	public static final String RESUMESCRIPT = "Resume";
 	public static final String PAUSESCRIPT = "Pause";
