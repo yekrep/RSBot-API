@@ -86,7 +86,7 @@ public final class BotSignin extends JDialog implements ActionListener {
 		lostPass.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(final MouseEvent e) {
-				BotChrome.openURL(Configuration.URLs.LOSTPASS);
+				BotInteract.openURL(Configuration.URLs.LOSTPASS);
 			}
 		});
 		lostPass.setVisible(false);
@@ -97,7 +97,7 @@ public final class BotSignin extends JDialog implements ActionListener {
 		register.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(final MouseEvent e) {
-				BotChrome.openURL(Configuration.URLs.REGISTER);
+				BotInteract.openURL(Configuration.URLs.REGISTER);
 			}
 		});
 

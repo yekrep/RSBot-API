@@ -29,6 +29,7 @@ import javax.swing.border.EmptyBorder;
 import org.powerbot.bot.Bot;
 import org.powerbot.bot.BotComposite;
 import org.powerbot.gui.BotChrome;
+import org.powerbot.gui.controller.BotInteract;
 import org.powerbot.loader.ClientLoader;
 import org.powerbot.util.Configuration;
 import org.powerbot.util.LoadUpdates;
@@ -118,7 +119,7 @@ public final class BotLoadingPanel extends JPanel {
 				addMouseListener(new MouseAdapter() {
 					@Override
 					public void mouseClicked(final MouseEvent e) {
-						BotChrome.openURL(link);
+						BotInteract.openURL(link);
 					}
 				});
 			}

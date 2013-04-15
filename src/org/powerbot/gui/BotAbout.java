@@ -22,6 +22,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import org.powerbot.gui.component.BotLocale;
+import org.powerbot.gui.controller.BotInteract;
 import org.powerbot.util.Configuration;
 import org.powerbot.util.Tracker;
 
@@ -79,7 +80,7 @@ public final class BotAbout extends JDialog {
 		visit.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(final MouseEvent e) {
-				BotChrome.openURL(Configuration.URLs.SITE);
+				BotInteract.openURL(Configuration.URLs.SITE);
 			}
 		});
 		final JLabel license = new JLabel("<html><a href='#'>" + BotLocale.LICENSE + "</a></html>");
@@ -88,7 +89,7 @@ public final class BotAbout extends JDialog {
 			@Override
 			public void mouseClicked(final MouseEvent e) {
 				dispose();
-				BotChrome.openURL(Configuration.URLs.LICENSE);
+				BotInteract.openURL(Configuration.URLs.LICENSE);
 			}
 		});
 		final JButton ok = new JButton(BotLocale.OK);

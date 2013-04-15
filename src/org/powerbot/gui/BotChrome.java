@@ -91,22 +91,6 @@ public class BotChrome extends JFrame implements WindowListener {
 		return instance;
 	}
 
-	public static void openURL(final String url) {
-		if (!Desktop.isDesktopSupported() || !Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
-			return;
-		}
-		final URI uri;
-		try {
-			uri = new URI(url);
-		} catch (final URISyntaxException ignored) {
-			return;
-		}
-		try {
-			Desktop.getDesktop().browse(uri);
-		} catch (final IOException ignored) {
-		}
-	}
-
 	public void windowActivated(final WindowEvent arg0) {
 	}
 

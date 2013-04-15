@@ -51,6 +51,7 @@ import javax.swing.border.AbstractBorder;
 import javax.swing.border.EmptyBorder;
 
 import org.powerbot.gui.component.BotLocale;
+import org.powerbot.gui.controller.BotInteract;
 import org.powerbot.gui.controller.BotScriptManager;
 import org.powerbot.script.internal.ScriptDefinition;
 import org.powerbot.service.GameAccounts;
@@ -149,7 +150,7 @@ public final class BotScripts extends JDialog implements ActionListener {
 		more.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent e) {
-				BotChrome.openURL(Configuration.URLs.SCRIPTSLIST);
+				BotInteract.openURL(Configuration.URLs.SCRIPTSLIST);
 			}
 		});
 		panelRight.add(more);
@@ -398,7 +399,7 @@ public final class BotScripts extends JDialog implements ActionListener {
 					public void mouseClicked(final MouseEvent arg0) {
 						String url = def.getWebsite();
 						url = String.format(Configuration.URLs.LINKFILTER, url.replace("&", "%26"));
-						BotChrome.openURL(url);
+						BotInteract.openURL(url);
 					}
 				});
 				name.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));

@@ -2,8 +2,9 @@ package org.powerbot.gui.controller;
 
 import java.awt.*;
 import java.awt.event.WindowEvent;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -19,7 +20,6 @@ import org.powerbot.script.xenon.Game;
 import org.powerbot.service.NetworkAccount;
 import org.powerbot.util.Configuration;
 import org.powerbot.util.Tracker;
-import org.powerbot.util.io.IOHelper;
 
 /**
  * @author Paris
@@ -41,7 +41,7 @@ public final class BotInteract {
 					new BotAbout(chrome);
 					break;
 				case LICENSE:
-					BotChrome.openURL(Configuration.URLs.LICENSE);
+					openURL(Configuration.URLs.LICENSE);
 					break;
 				default:
 					break;
@@ -144,6 +144,22 @@ public final class BotInteract {
 		final int[] h = { parent.logpane.getSize().height, parent.logpane.getPreferredSize().height };
 		parent.setSize(new Dimension(parent.getSize().width, parent.getSize().height + h[h[0] == 0 ? 1 : 0] * (parent.logpane.isVisible() ? 1 : -1)));
 		return parent.logpane.isVisible();
+	}
+
+	public static void openURL(final String url) {
+		if (!Desktop.isDesktopSupported() || !Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
+			return;
+		}
+		final URI uri;
+		try {
+			uri = new URI(url);
+		} catch (final URISyntaxException ignored) {
+			return;
+		}
+		try {
+			Desktop.getDesktop().browse(uri);
+		} catch (final IOException ignored) {
+		}
 	}
 
 	public static enum Action {MENU, TAB_ADD, TAB_CLOSE, ACCOUNTS, SIGNIN, ABOUT, LICENSE, SCRIPT_PLAYPAUSE, SCRIPT_STOP}

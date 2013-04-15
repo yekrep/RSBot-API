@@ -1,7 +1,6 @@
 package org.powerbot.gui.component;
 
 import org.powerbot.bot.Bot;
-import org.powerbot.gui.BotChrome;
 import org.powerbot.gui.controller.BotInteract;
 import org.powerbot.script.internal.ScriptManager;
 import org.powerbot.service.NetworkAccount;
@@ -159,7 +158,7 @@ public class BotMenuBar extends JMenuBar implements ActionListener {
 			case BotLocale.STOPSCRIPT: BotInteract.scriptStop(); break;
 			case BotLocale.ABOUT: BotInteract.showDialog(BotInteract.Action.ABOUT); break;
 			case BotLocale.LICENSE: BotInteract.showDialog(BotInteract.Action.LICENSE); break;
-			case BotLocale.WEBSITE: BotChrome.openURL(Configuration.URLs.SITE); break;
+			case BotLocale.WEBSITE: BotInteract.openURL(Configuration.URLs.SITE); break;
 		}
 	}
 }
