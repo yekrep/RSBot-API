@@ -88,7 +88,7 @@ public final class BotAbout extends JDialog {
 			@Override
 			public void mouseClicked(final MouseEvent e) {
 				dispose();
-				new BotLicense(parent, false);
+				BotChrome.openURL(Configuration.URLs.LICENSE);
 			}
 		});
 		final JButton ok = new JButton(BotLocale.OK);

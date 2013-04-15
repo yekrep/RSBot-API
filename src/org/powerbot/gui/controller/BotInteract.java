@@ -41,7 +41,7 @@ public final class BotInteract {
 					new BotAbout(chrome);
 					break;
 				case LICENSE:
-					new BotLicense(chrome, false);
+					BotChrome.openURL(Configuration.URLs.LICENSE);
 					break;
 				default:
 					break;

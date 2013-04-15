@@ -39,6 +39,7 @@ public class Configuration {
 
 		public static final String DOWNLOAD = "http://" + DOMAIN_SITE + "/rsbot/releases/RSBot-%s.jar";
 		public static final String VERSION = "http://" + DOMAIN_LINKS + "/version.txt";
+		public static final String LICENSE = "http://" + DOMAIN_LINKS + "/license";
 
 		public static final String CLIENTPATCH = "https://" + DOMAIN_SITE_LIVE + "/rsbot/ts/%s.ts";
 		public static final String CLIENTBUCKET = "http://buckets." + DOMAIN + "/process/?hash=%s";
