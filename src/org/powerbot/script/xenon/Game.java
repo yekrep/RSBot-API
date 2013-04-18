@@ -56,6 +56,7 @@ public class Game {
 
 	public static boolean openTab(final int index) {
 		if (index < 0 || index >= TAB_NAMES.length) return false;
+		if (getCurrentTab() == index) return true;
 		final Component c = Components.getTab(index);
 		if (c != null && c.isValid() && c.click(true)) {
 			final Timer t = new Timer(800);
@@ -64,29 +65,41 @@ public class Game {
 		return getCurrentTab() == index;
 	}
 
+	public static boolean closeTab() {
+		if (isFixed()) return false;
+		final int curr;
+		if ((curr = getCurrentTab()) == TAB_NONE) return true;
+		final Component c = Components.getTab(curr);
+		if (c != null && c.isValid() && c.click(true)) {
+			final Timer t = new Timer(800);
+			while (t.isRunning() && getCurrentTab() != TAB_NONE) Delay.sleep(15);
+		}
+		return getCurrentTab() == TAB_NONE;
+	}
+
 	public static int getClientState() {
 		final Client client = Bot.client();
 		if (client == null) return -1;
 
 		final Constants constants = Bot.constants();
-		final int clientState = client.getLoginIndex();
-		if (clientState == constants.CLIENTSTATE_3) {
+		final int state = client.getLoginIndex();
+		if (state == constants.CLIENTSTATE_3) {
 			return 3;
-		} else if (clientState == constants.CLIENTSTATE_7) {
+		} else if (state == constants.CLIENTSTATE_7) {
 			return 7;
-		} else if (clientState == constants.CLIENTSTATE_9) {
+		} else if (state == constants.CLIENTSTATE_9) {
 			return 9;
-		} else if (clientState == constants.CLIENTSTATE_11) {
+		} else if (state == constants.CLIENTSTATE_11) {
 			return 11;
-		} else if (clientState == constants.CLIENTSTATE_12) {
+		} else if (state == constants.CLIENTSTATE_12) {
 			return 12;
 		}
 		return -1;
 	}
 
 	public static boolean isLoggedIn() {
-		final int state = getClientState();
-		for (final int loggedInState : INDEX_LOGGED_IN) if (loggedInState == state) return true;
+		final int curr = getClientState();
+		for (final int s : INDEX_LOGGED_IN) if (s == curr) return true;
 		return false;
 	}
 
