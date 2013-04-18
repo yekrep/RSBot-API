@@ -44,6 +44,7 @@ public class Component extends Interactive {
 		if (component != null && (interfaces = component.getComponents()) != null) {
 			final Component[] components = new Component[interfaces.length];
 			for (int i = 0; i < interfaces.length; i++) components[i] = new Component(widget, this, i);
+			return components;
 		}
 		return new Component[0];
 	}
