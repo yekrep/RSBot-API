@@ -10,6 +10,7 @@ import org.powerbot.game.client.Skill;
 /**
  * @author Timer
  */
+@Deprecated
 public class Skills {
 	public static final int[] XP_TABLE = {0, 0, 83, 174, 276, 388, 512, 650, 801, 969, 1154, 1358, 1584, 1833, 2107,
 			2411, 2746, 3115, 3523, 3973, 4470, 5018, 5624, 6291, 7028, 7842, 8740, 9730, 10824, 12031, 13363, 14833,
@@ -21,7 +22,6 @@ public class Skills {
 			11805606, 13034431, 14391160, 15889109, 17542976, 19368992, 21385073, 23611006, 26068632, 28782069,
 			31777943, 35085654, 38737661, 42769801, 47221641, 52136869, 57563718, 63555443, 70170840, 77474828,
 			85539082, 94442737, 104273167};
-
 	public static final int ATTACK = 0;
 	public static final int DEFENSE = 1;
 	public static final int STRENGTH = 2;
@@ -47,7 +47,6 @@ public class Skills {
 	public static final int CONSTRUCTION = 22;
 	public static final int SUMMONING = 23;
 	public static final int DUNGEONEERING = 24;
-
 	public static final int WIDGET = 320;
 	public static final int WIDGET_ATTACK = 1;
 	public static final int WIDGET_DEFENSE = 18;
