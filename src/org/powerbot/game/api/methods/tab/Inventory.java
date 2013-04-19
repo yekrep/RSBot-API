@@ -12,6 +12,7 @@ import org.powerbot.game.api.wrappers.node.Item;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
 import org.powerbot.script.xenon.util.Delay;
 
+@Deprecated
 public class Inventory {
 
 	public static final int WIDGET = 679;
