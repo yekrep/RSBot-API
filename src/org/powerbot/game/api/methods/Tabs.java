@@ -12,6 +12,7 @@ import org.powerbot.script.xenon.util.Delay;
 /**
  * @author Timer
  */
+@Deprecated
 public enum Tabs {
 	NONE(-1, null, -1),
 	ATTACK(0, "Combat", KeyEvent.VK_F5),
@@ -40,6 +41,17 @@ public enum Tabs {
 		this.description = description;
 		this.functionKey = functionKey;
 		this.index = index;
+	}
+
+	public static Tabs getCurrent() {
+		for (final Tabs t : Tabs.values()) {
+			final WidgetChild tab = WidgetCache.getTab(t);
+			if (tab != null && tab.getTextureId() != -1) {
+				return t;
+			}
+		}
+		final WidgetChild logout = Widgets.get(WIDGET_LOGOUT_X, 1);
+		return logout != null && logout.validate() && logout.visible() ? Tabs.LOGOUT : Tabs.NONE;
 	}
 
 	public String getDescription() {
@@ -86,16 +98,5 @@ public enum Tabs {
 
 	public boolean isOpen() {
 		return getCurrent() == this;
-	}
-
-	public static Tabs getCurrent() {
-		for (final Tabs t : Tabs.values()) {
-			final WidgetChild tab = WidgetCache.getTab(t);
-			if (tab != null && tab.getTextureId() != -1) {
-				return t;
-			}
-		}
-		final WidgetChild logout = Widgets.get(WIDGET_LOGOUT_X, 1);
-		return logout != null && logout.validate() && logout.visible() ? Tabs.LOGOUT : Tabs.NONE;
 	}
 }
