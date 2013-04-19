@@ -9,6 +9,7 @@ import org.powerbot.game.api.wrappers.widget.Widget;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
 import org.powerbot.script.xenon.util.Delay;
 
+@Deprecated
 public class Equipment {
 	public static final int WIDGET = 387;
 	public static final int WIDGET_BANK = 667;
