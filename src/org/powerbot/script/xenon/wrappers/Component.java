@@ -49,6 +49,11 @@ public class Component extends Interactive {
 		return new Component[0];
 	}
 
+	public Component getChild(final int index) {
+		final Component[] components = getChildren();
+		return index >= 0 && index < components.length ? components[index] : null;
+	}
+
 	public String[] getActions() {
 		final RSInterface component = getInternalComponent();
 		return component != null ? component.getActions() : null;
