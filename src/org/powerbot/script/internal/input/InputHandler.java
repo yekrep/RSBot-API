@@ -20,6 +20,10 @@ public class InputHandler {
 		this.client = client;
 	}
 
+	public void send(final String str) {
+		send(getKeyEvents(str));
+	}
+
 	public void send(final Queue<KeyEvent> queue) {
 		final Keyboard keyboard = client.getKeyboard();
 		if (keyboard == null) return;
