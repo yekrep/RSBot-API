@@ -155,30 +155,39 @@ public abstract class Mouse extends Focus implements MouseListener, MouseMotionL
 		try {
 			clientX = e.getX();
 			clientY = e.getY();
-			if (e.getID() == MouseEvent.MOUSE_CLICKED) {
+			switch (e.getID()) {
+			case MouseEvent.MOUSE_CLICKED:
 				_mouseClicked(e);
-			} else if (e.getID() == MouseEvent.MOUSE_DRAGGED) {
+				break;
+			case MouseEvent.MOUSE_DRAGGED:
 				_mouseDragged(e);
-			} else if (e.getID() == MouseEvent.MOUSE_ENTERED) {
+				break;
+			case MouseEvent.MOUSE_ENTERED:
 				clientPresent = true;
 				_mouseEntered(e);
-			} else if (e.getID() == MouseEvent.MOUSE_EXITED) {
+				break;
+			case MouseEvent.MOUSE_EXITED:
 				clientPresent = false;
 				_mouseExited(e);
-			} else if (e.getID() == MouseEvent.MOUSE_MOVED) {
+				break;
+			case MouseEvent.MOUSE_MOVED:
 				_mouseMoved(e);
-			} else if (e.getID() == MouseEvent.MOUSE_PRESSED) {
+				break;
+			case MouseEvent.MOUSE_PRESSED:
 				clientPressX = e.getX();
 				clientPressY = e.getY();
 				clientPressTime = e.getWhen();
 				clientPressed = true;
 				_mousePressed(e);
-			} else if (e.getID() == MouseEvent.MOUSE_RELEASED) {
+				break;
+			case MouseEvent.MOUSE_RELEASED:
 				clientPressed = false;
 				_mouseReleased(e);
-			} else if (e.getID() == MouseEvent.MOUSE_WHEEL) {
+				break;
+			case MouseEvent.MOUSE_WHEEL:
 				_mouseWheelMoved((MouseWheelEvent) e);
-			} else {
+				break;
+			default:
 				throw new InternalError(e.toString());
 			}
 		} catch (final Exception ignored) {
