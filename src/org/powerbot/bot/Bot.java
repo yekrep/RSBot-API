@@ -8,26 +8,24 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-import javax.swing.SwingUtilities;
-
 import org.powerbot.event.EventMulticaster;
+import org.powerbot.event.PaintEvent;
+import org.powerbot.event.TextPaintEvent;
 import org.powerbot.game.api.methods.input.Keyboard;
 import org.powerbot.game.api.methods.input.Mouse;
 import org.powerbot.game.api.methods.widget.WidgetCache;
 import org.powerbot.game.bot.CallbackImpl;
 import org.powerbot.game.bot.Context;
 import org.powerbot.game.bot.handler.input.MouseExecutor;
-import org.powerbot.game.bot.handler.input.util.MouseNode;
 import org.powerbot.game.client.Client;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.gui.component.BotPanel;
 import org.powerbot.gui.controller.BotInteract;
 import org.powerbot.loader.script.ModScript;
-import org.powerbot.event.PaintEvent;
-import org.powerbot.event.TextPaintEvent;
 import org.powerbot.script.internal.Constants;
 import org.powerbot.script.internal.ScriptDefinition;
 import org.powerbot.script.internal.ScriptManager;
+import org.powerbot.script.internal.input.InputHandler;
 import org.powerbot.script.internal.input.MouseHandler;
 import org.powerbot.script.internal.randoms.BankPin;
 import org.powerbot.script.internal.randoms.Login;
@@ -59,6 +57,7 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 	private GameAccounts.Account account;
 	private BufferedImage backBuffer;
 	private MouseHandler mouseHandler;
+	private InputHandler inputHandler;
 	private EventMulticaster multicaster;
 	private MouseExecutor oldMouse;
 	private ScriptManager scriptController;
@@ -112,6 +111,10 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 
 	public static MouseHandler mouseHandler() {
 		return instance.mouseHandler;
+	}
+
+	public static InputHandler inputHandler() {
+		return instance.inputHandler;
 	}
 
 	public void run() {
@@ -255,6 +258,7 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 		new Thread(threadGroup, new SafeMode(this)).start();
 		oldMouse = new MouseExecutor();
 		mouseHandler = new MouseHandler(appletContainer, client);
+		inputHandler = new InputHandler(appletContainer, client);
 		new Thread(threadGroup, mouseHandler).start();
 	}
 
