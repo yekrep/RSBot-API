@@ -42,7 +42,7 @@ public class MouseHandler implements Runnable, Stoppable {
 		final Mouse mouse;
 		if ((mouse = client.getMouse()) == null) return;
 		if (!mouse.isPresent() || mouse.isPressed()) return;
-		final Component target = target();
+		final Component target = getSource();
 		mouse.sendEvent(new MouseEvent(target, MouseEvent.MOUSE_PRESSED, System.currentTimeMillis(), 0, x, y, 1, false, button));
 	}
 
@@ -51,7 +51,7 @@ public class MouseHandler implements Runnable, Stoppable {
 		if ((mouse = client.getMouse()) == null) return;
 		if (!mouse.isPressed()) return;
 		final long mark = System.currentTimeMillis();
-		final Component target = target();
+		final Component target = getSource();
 		mouse.sendEvent(new MouseEvent(target, MouseEvent.MOUSE_RELEASED, mark, 0, x, y, 1, false, button));
 		if (mouse.getPressX() == mouse.getX() && mouse.getPressY() == mouse.getY()) {
 			mouse.sendEvent(new MouseEvent(target, MouseEvent.MOUSE_CLICKED, mark, 0, x, y, 1, false, button));
@@ -60,7 +60,7 @@ public class MouseHandler implements Runnable, Stoppable {
 
 	public void move(final int x, final int y) {
 		final long mark = System.currentTimeMillis();
-		final Component target = target();
+		final Component target = getSource();
 		final Mouse mouse;
 		if ((mouse = client.getMouse()) == null) return;
 		final boolean present = x >= 0 && y >= 0 && x < target.getWidth() && y < target.getHeight();
@@ -184,7 +184,7 @@ public class MouseHandler implements Runnable, Stoppable {
 		running = false;
 	}
 
-	private Component target() {
+	private Component getSource() {
 		return applet.getComponentCount() > 0 ? applet.getComponent(0) : null;
 	}
 
