@@ -21,4 +21,24 @@ public abstract class Keyboard extends Focus implements KeyListener {
 	public void keyTyped(final KeyEvent e) {
 		_keyTyped(e);
 	}
+
+	public final void sendEvent(final KeyEvent e) {
+		if (e == null) return;
+		try {
+			switch (e.getID()) {
+			case KeyEvent.KEY_PRESSED:
+				_keyPressed(e);
+				break;
+			case KeyEvent.KEY_RELEASED:
+				_keyReleased(e);
+				break;
+			case KeyEvent.KEY_TYPED:
+				_keyTyped(e);
+				break;
+			default:
+				throw new InternalError(e.toString());
+			}
+		} catch (final Exception ignored) {
+		}
+	}
 }
