@@ -15,6 +15,7 @@ import org.powerbot.script.xenon.util.Delay;
  *
  * @author Timer
  */
+@Deprecated
 public class Keyboard {
 	/**
 	 * 'Presses' the given char for the given delay and with the given mask.
