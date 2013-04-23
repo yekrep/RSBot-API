@@ -8,6 +8,7 @@ import org.powerbot.script.xenon.util.Delay;
 import org.powerbot.script.xenon.util.Random;
 import org.powerbot.script.xenon.util.Timer;
 import org.powerbot.script.xenon.wrappers.Locatable;
+import org.powerbot.script.xenon.wrappers.Player;
 import org.powerbot.script.xenon.wrappers.Tile;
 
 public class Camera {
@@ -129,8 +130,9 @@ public class Camera {
 	}
 
 	private static int getAngleToLocatable(final Locatable mobile) {
-		final Tile t = mobile.getLocation();
-		final Tile me = Players.getLocal().getLocation();
-		return ((int) Math.toDegrees(Math.atan2(t.getY() - me.getY(), t.getX() - me.getX()))) - 90;
+		final Player local = Players.getLocal();
+		final Tile t1 = local != null ? local.getLocation() : null;
+		final Tile t2 = mobile.getLocation();
+		return t1 != null && t2 != null ? ((int) Math.toDegrees(Math.atan2(t2.getY() - t1.getY(), t2.getX() - t1.getX()))) - 90 : 0;
 	}
 }
