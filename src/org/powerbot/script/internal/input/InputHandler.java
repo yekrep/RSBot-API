@@ -169,11 +169,11 @@ public class InputHandler {
 		queue.add(constructKeyEvent(KeyEvent.KEY_RELEASED, vk, c1));
 	}
 
-	private KeyEvent constructKeyEvent(final int id, final int vk) {
+	public KeyEvent constructKeyEvent(final int id, final int vk) {
 		return constructKeyEvent(id, vk, KeyEvent.CHAR_UNDEFINED);
 	}
 
-	private KeyEvent constructKeyEvent(final int id, final int vk, final char c) {
+	public KeyEvent constructKeyEvent(final int id, final int vk, final char c) {
 		return new KeyEvent(getSource(), id, System.currentTimeMillis(), 0, vk, c);
 	}
 
