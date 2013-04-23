@@ -36,15 +36,13 @@ public class Mouse {
 	public static boolean isPressed() {
 		final Client client = Bot.client();
 		final org.powerbot.game.client.input.Mouse mouse;
-		if (client == null || (mouse = client.getMouse()) == null) return false;
-		return mouse.isPressed();
+		return !(client == null || (mouse = client.getMouse()) == null) && mouse.isPressed();
 	}
 
 	public static boolean isPresent() {
 		final Client client = Bot.client();
 		final org.powerbot.game.client.input.Mouse mouse;
-		if (client == null || (mouse = client.getMouse()) == null) return false;
-		return mouse.isPresent();
+		return !(client == null || (mouse = client.getMouse()) == null) && mouse.isPresent();
 	}
 
 	public static boolean hop(final Point p) {
@@ -73,6 +71,10 @@ public class Mouse {
 
 		handler.click(button);
 		return true;
+	}
+
+	public static boolean click(final Point p, final boolean left) {
+		return move(p) && click(left);
 	}
 
 	public static boolean click(final Targetable target, final boolean left) {
