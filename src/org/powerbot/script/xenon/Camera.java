@@ -11,7 +11,6 @@ import org.powerbot.script.xenon.wrappers.Locatable;
 import org.powerbot.script.xenon.wrappers.Player;
 import org.powerbot.script.xenon.wrappers.Tile;
 
-@Deprecated
 public class Camera {
 	public static int getX() {
 		final Client client = Bot.client();

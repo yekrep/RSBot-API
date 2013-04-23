@@ -16,6 +16,7 @@ import org.powerbot.script.xenon.util.Delay;
 /**
  * @author Timer
  */
+@Deprecated
 public class Camera {
 	public static int getX() {
 		final Client client = Context.client();
