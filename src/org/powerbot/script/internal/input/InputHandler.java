@@ -33,6 +33,11 @@ public class InputHandler {
 		}
 	}
 
+	public void send(final KeyEvent e) {
+		final Keyboard keyboard = client.getKeyboard();
+		if (keyboard != null) keyboard.sendEvent(e);
+	}
+
 	private Queue<KeyEvent> getKeyEvents(final String sequence) {
 		final Queue<String> list = new LinkedList<>();
 		boolean braced = false;
