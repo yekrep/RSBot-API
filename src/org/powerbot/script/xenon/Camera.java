@@ -54,6 +54,26 @@ public class Camera {
 		Keyboard.releaseKey(up ? KeyEvent.VK_UP : KeyEvent.VK_DOWN);
 		return p - pitch;
 	}
+
+	public static void setAngle(final char direction) {
+		switch (direction) {
+		case 'n':
+			setAngle(0);
+			break;
+		case 'w':
+			setAngle(90);
+			break;
+		case 's':
+			setAngle(180);
+			break;
+		case 'e':
+			setAngle(270);
+			break;
+		default:
+			throw new RuntimeException("invalid direction " + direction + ", expecting n,w,s,e");
+		}
+	}
+
 	public static void setAngle(int degrees) {
 		degrees %= 360;
 		if (getAngleTo(degrees) > 5) {
