@@ -169,7 +169,10 @@ public class InputHandler {
 		queue.add(constructKeyEvent(KeyEvent.KEY_RELEASED, vk, c1));
 	}
 
-	public KeyEvent constructKeyEvent(final int id, final int vk) {
+	public KeyEvent constructKeyEvent(final int id, int vk) {
+		if (vk >= KeyEvent.VK_SHIFT && vk <= KeyEvent.VK_ALT) {
+			vk |= KeyEvent.KEY_LOCATION_LEFT; // because right variations don't exist on all keyboards
+		}
 		return constructKeyEvent(id, vk, KeyEvent.CHAR_UNDEFINED);
 	}
 
