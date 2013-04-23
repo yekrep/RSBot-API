@@ -54,6 +54,35 @@ public class Camera {
 		Keyboard.releaseKey(up ? KeyEvent.VK_UP : KeyEvent.VK_DOWN);
 		return p - pitch;
 	}
+	public static void setAngle(int degrees) {
+		degrees %= 360;
+		if (getAngleTo(degrees) > 5) {
+			Keyboard.pressKey(KeyEvent.VK_LEFT);
+			final Timer timer = new Timer(500);
+			int ang, prev = -1;
+			while ((ang = getAngleTo(degrees)) > 5 && timer.isRunning()) {
+				if (ang != prev) {
+					timer.reset();
+				}
+				prev = ang;
+				Delay.sleep(10, 15);
+			}
+			Keyboard.releaseKey(KeyEvent.VK_LEFT);
+		} else if (getAngleTo(degrees) < -5) {
+			Keyboard.pressKey(KeyEvent.VK_RIGHT);
+			final Timer timer = new Timer(500);
+			int ang, prev = -1;
+			while ((ang = getAngleTo(degrees)) < -5 && timer.isRunning()) {
+				if (ang != prev) {
+					timer.reset();
+				}
+				prev = ang;
+				Delay.sleep(10, 15);
+			}
+			Keyboard.releaseKey(KeyEvent.VK_RIGHT);
+		}
+	}
+
 	public static int getAngleTo(final int degrees) {
 		int ca = getYaw();
 		if (ca < degrees) {
