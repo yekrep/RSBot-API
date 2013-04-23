@@ -2,6 +2,8 @@ package org.powerbot.script.internal.input;
 
 import java.applet.Applet;
 import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -10,6 +12,9 @@ import java.util.Queue;
 
 import org.powerbot.game.client.Client;
 import org.powerbot.game.client.input.Keyboard;
+import org.powerbot.golem.HardwareSimulator;
+
+import javax.swing.*;
 
 public class InputHandler {
 	private final Applet applet;
@@ -21,15 +26,39 @@ public class InputHandler {
 	}
 
 	public void send(final String str) {
-		send(getKeyEvents(str));
+		send(str, false);
 	}
 
-	public void send(final Queue<KeyEvent> queue) {
+	public void send(final String str, final boolean async) {
+		send(getKeyEvents(str), async);
+	}
+
+	public void send(final Queue<KeyEvent> queue, final boolean async) {
 		final Keyboard keyboard = client.getKeyboard();
 		if (keyboard == null) return;
-		while (!queue.isEmpty()) {
-			final KeyEvent e = queue.poll();
-			keyboard.sendEvent(e);
+
+		final Timer t = new Timer(0, new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				final Timer t = ((Timer) e.getSource());
+				t.setDelay(HardwareSimulator.getDelayFactor() / 2);
+				if (queue.isEmpty()) {
+					t.stop();
+				} else {
+					keyboard.sendEvent(constructKeyEvent(queue.poll()));
+				}
+			}
+		});
+		t.setCoalesce(false);
+		t.start();
+
+		if (!async) {
+			while (t.isRunning()) {
+				try {
+					Thread.sleep(60);
+				} catch (final Exception ignored) {
+				}
+			}
 		}
 	}
 
@@ -178,6 +207,10 @@ public class InputHandler {
 
 	public KeyEvent constructKeyEvent(final int id, final int vk, final char c) {
 		return new KeyEvent(getSource(), id, System.currentTimeMillis(), 0, vk, c);
+	}
+
+	public KeyEvent constructKeyEvent(final KeyEvent e) {
+		return constructKeyEvent(e.getID(), e.getExtendedKeyCode(), e.getKeyChar());
 	}
 
 	private Component getSource() {
