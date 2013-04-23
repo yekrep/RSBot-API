@@ -54,4 +54,16 @@ public class Camera {
 		Keyboard.releaseKey(up ? KeyEvent.VK_UP : KeyEvent.VK_DOWN);
 		return p - pitch;
 	}
+	public static int getAngleTo(final int degrees) {
+		int ca = getYaw();
+		if (ca < degrees) {
+			ca += 360;
+		}
+		int da = ca - degrees;
+		if (da > 180) {
+			da -= 360;
+		}
+		return da;
+	}
+
 }
