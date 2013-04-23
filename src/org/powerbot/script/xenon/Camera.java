@@ -5,7 +5,10 @@ import java.awt.event.KeyEvent;
 import org.powerbot.bot.Bot;
 import org.powerbot.game.client.Client;
 import org.powerbot.script.xenon.util.Delay;
+import org.powerbot.script.xenon.util.Random;
 import org.powerbot.script.xenon.util.Timer;
+import org.powerbot.script.xenon.wrappers.Locatable;
+import org.powerbot.script.xenon.wrappers.Tile;
 
 public class Camera {
 	public static int getX() {
@@ -115,4 +118,19 @@ public class Camera {
 		return da;
 	}
 
+	public static void turnTo(final Locatable l) {
+		turnTo(l, 0);
+	}
+
+	public static void turnTo(final Locatable l, final int dev) {
+		final int a = getAngleToLocatable(l);
+		if (dev == 0) setAngle(a);
+		else setAngle(Random.nextInt(a - dev, a + dev + 1));
+	}
+
+	private static int getAngleToLocatable(final Locatable mobile) {
+		final Tile t = mobile.getLocation();
+		final Tile me = Players.getLocal().getLocation();
+		return ((int) Math.toDegrees(Math.atan2(t.getY() - me.getY(), t.getX() - me.getX()))) - 90;
+	}
 }
