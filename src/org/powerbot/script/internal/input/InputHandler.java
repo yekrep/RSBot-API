@@ -45,7 +45,7 @@ public class InputHandler {
 				if (queue.isEmpty()) {
 					t.stop();
 				} else {
-					keyboard.sendEvent(constructKeyEvent(queue.poll()));
+					keyboard.sendEvent(retimeKeyEvent(queue.poll()));
 				}
 			}
 		});
@@ -213,8 +213,8 @@ public class InputHandler {
 		return new KeyEvent(getSource(), id, System.currentTimeMillis(), 0, vk, c, loc);
 	}
 
-	public KeyEvent constructKeyEvent(final KeyEvent e) {
-		return constructKeyEvent(e.getID(), e.getExtendedKeyCode(), e.getKeyChar());
+	public KeyEvent retimeKeyEvent(final KeyEvent e) {
+		return new KeyEvent(e.getComponent(), e.getID(), System.currentTimeMillis(), 0, e.getExtendedKeyCode(), e.getKeyChar(), e.getKeyLocation());
 	}
 
 	private Component getSource() {
