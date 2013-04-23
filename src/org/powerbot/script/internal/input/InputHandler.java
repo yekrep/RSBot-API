@@ -199,14 +199,18 @@ public class InputHandler {
 	}
 
 	public KeyEvent constructKeyEvent(final int id, int vk) {
-		if (vk >= KeyEvent.VK_SHIFT && vk <= KeyEvent.VK_ALT) {
-			vk |= KeyEvent.KEY_LOCATION_LEFT; // because right variations don't exist on all keyboards
-		}
 		return constructKeyEvent(id, vk, KeyEvent.CHAR_UNDEFINED);
 	}
 
 	public KeyEvent constructKeyEvent(final int id, final int vk, final char c) {
-		return new KeyEvent(getSource(), id, System.currentTimeMillis(), 0, vk, c);
+		int loc = KeyEvent.KEY_LOCATION_STANDARD;
+		if (vk >= KeyEvent.VK_SHIFT && vk <= KeyEvent.VK_ALT) {
+			loc = KeyEvent.KEY_LOCATION_LEFT; // because right variations don't exist on all keyboards
+		}
+		if (id == KeyEvent.KEY_TYPED) {
+			loc = KeyEvent.KEY_LOCATION_UNKNOWN;
+		}
+		return new KeyEvent(getSource(), id, System.currentTimeMillis(), 0, vk, c, loc);
 	}
 
 	public KeyEvent constructKeyEvent(final KeyEvent e) {
