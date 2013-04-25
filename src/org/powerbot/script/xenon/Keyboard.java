@@ -6,15 +6,19 @@ import org.powerbot.bot.Bot;
 import org.powerbot.script.internal.input.InputHandler;
 
 public class Keyboard {
-	public static void type(final String str) {
-		type(str, false);
+	public static void send(final String str) {
+		send(str, false);
 	}
 
-	public static void type(String str, final boolean pressEnter) {
+	public static void send(String str, final boolean newLine) {
 		final InputHandler inputHandler = Bot.inputHandler();
 		if (inputHandler == null) return;
-		if (pressEnter) str += '\n';
+		if (newLine) str += '\n';
 		inputHandler.send(str);
+	}
+
+	public static void sendln(final String str) {
+		send(str, true);
 	}
 
 	public static void pressKey(final int vk) {
