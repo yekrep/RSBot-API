@@ -16,8 +16,9 @@ public class Inventory {
 		final Component inv = getComponent();
 		if (inv == null) return items;
 		final Component[] comps = inv.getChildren();
-		if (comps.length > 27) for (int i = 0; i < 28; i++)
+		if (comps.length > 27) for (int i = 0; i < 28; i++) {
 			if (comps[i].getItemId() != -1) items.add(new Item(comps[i]));
+		}
 		return items;
 	}
 
@@ -32,8 +33,9 @@ public class Inventory {
 		final Component inv = getComponent();
 		if (inv == null) return -1;
 		final Component[] comps = inv.getChildren();
-		if (comps.length > 27) for (int i = 0; i < 28; i++)
+		if (comps.length > 27) for (int i = 0; i < 28; i++) {
 			if (comps[i].getBorderThickness() == 2) return i;
+		}
 		return -1;
 	}
 
@@ -49,8 +51,9 @@ public class Inventory {
 		final Component inv = getComponent();
 		if (inv == null) return -1;
 		final Component[] comps = inv.getChildren();
-		if (comps.length > 27) for (int i = 0; i < 28; i++)
+		if (comps.length > 27) for (int i = 0; i < 28; i++) {
 			if (comps[i].getItemId() == id) return i;
+		}
 		return -1;
 	}
 
@@ -77,9 +80,10 @@ public class Inventory {
 		final Component inv = getComponent();
 		if (inv == null) return 0;
 		final Component[] comps = inv.getChildren();
-		if (comps.length > 27) for (int i = 0; i < 28; i++)
+		if (comps.length > 27) for (int i = 0; i < 28; i++) {
 			if (comps[i].getItemId() != -1) if (stacks) count += comps[i].getItemStackSize();
 			else ++count;
+		}
 		return count;
 	}
 
@@ -92,13 +96,15 @@ public class Inventory {
 		final Component inv = getComponent();
 		if (inv == null) return 0;
 		final Component[] comps = inv.getChildren();
-		if (comps.length > 27) for (int i = 0; i < 28; i++)
-			for (final int id : ids)
+		if (comps.length > 27) for (int i = 0; i < 28; i++) {
+			for (final int id : ids) {
 				if (comps[i].getItemId() == id) {
 					if (stacks) count += comps[i].getItemStackSize();
 					else ++count;
 					break;
 				}
+			}
+		}
 		return count;
 	}
 
@@ -106,5 +112,9 @@ public class Inventory {
 		Component c;
 		for (final int index : ALTERNATIVE_WIDGETS) if ((c = Widgets.get(index, 0)) != null && c.isValid()) return c;
 		return Widgets.get(WIDGET, 0);
+	}
+
+	public static Item getItem(int[] itemIds) {
+		return null;
 	}
 }
