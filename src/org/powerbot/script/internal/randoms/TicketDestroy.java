@@ -1,8 +1,5 @@
 package org.powerbot.script.internal.randoms;
 
-import org.powerbot.game.api.methods.Tabs;
-import org.powerbot.game.api.methods.tab.Inventory;
-import org.powerbot.game.api.wrappers.widget.WidgetChild;
 import org.powerbot.script.Manifest;
 import org.powerbot.script.TaskScript;
 import org.powerbot.script.task.AsyncTask;
@@ -10,6 +7,7 @@ import org.powerbot.script.xenon.Game;
 import org.powerbot.script.xenon.Players;
 import org.powerbot.script.xenon.Settings;
 import org.powerbot.script.xenon.Widgets;
+import org.powerbot.script.xenon.tabs.Inventory;
 import org.powerbot.script.xenon.util.Random;
 import org.powerbot.script.xenon.util.Timer;
 import org.powerbot.script.xenon.wrappers.Component;
@@ -30,16 +28,11 @@ public class TicketDestroy extends TaskScript {
 
 		@Override
 		public boolean isValid() {
-			if (!Game.isLoggedIn() || Tabs.getCurrent() != Tabs.INVENTORY) return false;
+			if (!Game.isLoggedIn() || Game.getCurrentTab() != Game.TAB_INVENTORY) return false;
 			final Player player;
 			if ((player = Players.getLocal()) == null ||
 					player.isInCombat() || player.getAnimation() != -1 || player.getInteracting() != null) return false;
-			org.powerbot.game.api.wrappers.node.Item old = Inventory.getItem(ITEM_IDS);
-			if (old == null) item = null;
-			else {
-				final WidgetChild c = old.getWidgetChild();
-				item = new Item(Widgets.get(c.getWidget().getIndex(), c.getIndex()));
-			}
+			item = Inventory.getItem(ITEM_IDS);
 			return item != null;
 		}
 
