@@ -7,22 +7,19 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
 import org.powerbot.bot.Bot;
-import org.powerbot.game.api.methods.input.Keyboard;
+import org.powerbot.event.PaintListener;
 import org.powerbot.game.api.methods.widget.Lobby;
 import org.powerbot.script.Manifest;
 import org.powerbot.script.TaskScript;
-import org.powerbot.event.PaintListener;
 import org.powerbot.script.task.BlockingTask;
 import org.powerbot.script.xenon.Game;
+import org.powerbot.script.xenon.Keyboard;
 import org.powerbot.script.xenon.Mouse;
 import org.powerbot.script.xenon.Widgets;
 import org.powerbot.script.xenon.util.Random;
 import org.powerbot.script.xenon.util.Timer;
 import org.powerbot.script.xenon.wrappers.Component;
 
-/**
- * @author Timer
- */
 @Manifest(name = "Login", authors = {"Timer"}, description = "Enters account credentials to the login screen")
 public class Login extends TaskScript implements PaintListener {
 	private static final int WIDGET = 596;
@@ -89,12 +86,12 @@ public class Login extends TaskScript implements PaintListener {
 	}
 
 	private void attemptLogin() {
-		Keyboard.sendKey('\n', Random.nextInt(100, 200));
+		Keyboard.send("\n");
 	}
 
 	private void erase(final int count) {
 		for (int i = 0; i <= count + Random.nextInt(1, 5); i++) {
-			Keyboard.sendKey('\b', Random.nextInt(50, 150));
+			Keyboard.send("\b");
 			if (Random.nextInt(0, 2) == 1) {
 				sleep(Random.nextInt(25, 100));
 			}
@@ -208,7 +205,7 @@ public class Login extends TaskScript implements PaintListener {
 					erase(textLength);
 					return false;
 				}
-				Keyboard.sendText(username, false);
+				Keyboard.send(username);
 				sleep(Random.nextInt(500, 700));
 			} else if (!isPasswordValid()) {
 				final String password = bot.getAccount().getPassword();
@@ -222,7 +219,7 @@ public class Login extends TaskScript implements PaintListener {
 					erase(textLength);
 					return false;
 				}
-				Keyboard.sendText(password, false);
+				Keyboard.send(password);
 				sleep(Random.nextInt(500, 700));
 			}
 			return true;
