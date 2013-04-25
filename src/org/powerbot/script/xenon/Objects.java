@@ -104,8 +104,8 @@ public class Objects {
 
 		final Tile pos = local.getLocation();
 		if (pos == null) return null;
-		final Set<GameObject> GameObjects = getLoaded(range);
-		for (final GameObject gameObject : GameObjects) {
+		final Set<GameObject> gameObjects = getLoaded(range);
+		for (final GameObject gameObject : gameObjects) {
 			final double d;
 			if (filter.accept(gameObject) && (d = Calculations.distance(pos, gameObject)) < dist) {
 				nearest = gameObject;
