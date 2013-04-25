@@ -4,12 +4,12 @@ import java.awt.Point;
 import java.awt.Rectangle;
 
 import org.powerbot.bot.Bot;
-import org.powerbot.game.api.util.Random;
 import org.powerbot.game.client.Client;
 import org.powerbot.game.client.RSInterface;
 import org.powerbot.game.client.RSInterfaceNode;
 import org.powerbot.script.internal.wrappers.HashTable;
 import org.powerbot.script.xenon.Widgets;
+import org.powerbot.script.xenon.util.Random;
 
 public class Component extends Interactive {
 	private final Widget widget;
@@ -47,6 +47,13 @@ public class Component extends Interactive {
 			return components;
 		}
 		return new Component[0];
+	}
+
+	public int getChildrenCount() {
+		final RSInterface component = getInternalComponent();
+		final RSInterface[] interfaces;
+		if (component != null && (interfaces = component.getComponents()) != null) return interfaces.length;
+		return 0;
 	}
 
 	public Component getChild(final int index) {
