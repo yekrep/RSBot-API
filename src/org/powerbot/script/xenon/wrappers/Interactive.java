@@ -2,7 +2,7 @@ package org.powerbot.script.xenon.wrappers;
 
 import java.awt.Point;
 
-import org.powerbot.game.api.methods.node.Menu;
+import org.powerbot.script.xenon.Menu;
 import org.powerbot.script.xenon.Mouse;
 import org.powerbot.script.xenon.util.Delay;
 import org.powerbot.script.xenon.util.Filter;
@@ -19,6 +19,10 @@ public abstract class Interactive implements Targetable, Validatable {
 		return Mouse.move(this);
 	}
 
+	public boolean click() {
+		return click(true);
+	}
+
 	public boolean click(final boolean left) {
 		return Mouse.click(this, left);
 	}
@@ -33,9 +37,9 @@ public abstract class Interactive implements Targetable, Validatable {
 			if (!Mouse.move(this, new Filter<Point>() {
 				@Override
 				public boolean accept(final Point point) {
-					if (contains(point) && Menu.contains(action, option)) {
+					if (contains(point) && Menu.indexOf(action, option) != -1) {
 						Delay.sleep(0, 50);
-						return contains(point) && Menu.contains(action, option);
+						return contains(point) && Menu.indexOf(action, option) != -1;
 					}
 					return false;
 				}
@@ -43,7 +47,7 @@ public abstract class Interactive implements Targetable, Validatable {
 				continue;
 			}
 
-			if (Menu.select(action, option)) return true;
+			if (Menu.click(action, option)) return true;
 			Menu.close();
 		}
 		return false;
