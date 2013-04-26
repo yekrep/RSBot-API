@@ -108,6 +108,10 @@ public class Inventory {
 		return count;
 	}
 
+	public static boolean isFull() {
+		return getCount() == 28;
+	}
+
 	private static Component getComponent() {
 		Component c;
 		for (final int index : ALTERNATIVE_WIDGETS) if ((c = Widgets.get(index, 0)) != null && c.isValid()) return c;
