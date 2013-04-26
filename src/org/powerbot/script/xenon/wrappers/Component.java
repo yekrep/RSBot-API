@@ -284,8 +284,24 @@ public class Component extends Interactive {
 		return id == -1 || Widgets.get(id >> 16, id & 0xffff).isVisible();
 	}
 
-	public Rectangle getArea() {
-		return getInteractRectangle();
+	public Rectangle getBoundingRect() {
+		final Point absLocation = getAbsoluteLocation();
+		if (absLocation.x == -1 && absLocation.y == -1) return null;
+		final Rectangle r = new Rectangle(absLocation.x, absLocation.y,
+				getWidth(),
+				getHeight()
+		);
+		return r.x > 0 && r.y > 0 && r.width > 0 && r.height > 0 ? r : null;
+	}
+
+	public Rectangle getViewportRect() {
+		final Point absLocation = getAbsoluteLocation();
+		if (absLocation.x == -1 && absLocation.y == -1) return null;
+		final Rectangle r = new Rectangle(absLocation.x, absLocation.y,
+				getScrollWidth(),
+				getScrollHeight()
+		);
+		return r.x > 0 && r.y > 0 && r.width > 0 && r.height > 0 ? r : null;
 	}
 
 	@Override
