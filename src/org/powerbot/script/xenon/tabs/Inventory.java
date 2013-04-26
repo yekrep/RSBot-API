@@ -29,6 +29,10 @@ public class Inventory {
 		return index >= 0 && index < 28 && comps.length > 27 && comps[index].getItemId() != -1 ? new Item(comps[index]) : null;
 	}
 
+	public static Item getItem(final int... itemIds) {
+		return null;
+	}
+
 	public static int getSelectedItemIndex() {
 		final Component inv = getComponent();
 		if (inv == null) return -1;
@@ -116,9 +120,5 @@ public class Inventory {
 		Component c;
 		for (final int index : ALTERNATIVE_WIDGETS) if ((c = Widgets.get(index, 0)) != null && c.isValid()) return c;
 		return Widgets.get(WIDGET, 0);
-	}
-
-	public static Item getItem(int[] itemIds) {
-		return null;
 	}
 }
