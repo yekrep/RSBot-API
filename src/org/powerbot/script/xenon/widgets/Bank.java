@@ -20,7 +20,7 @@ public class Bank {
 	public static final int WIDGET = 762;
 	public static final int COMPONENT_CLOSE = 45;
 	public static final int COMPONENT_ITEMS = 95;
-	public static final int COMPONENT_SCROLLBAR = 116;
+	public static final int COMPONENT_SCROLL_BAR = 116;
 	public static final int SETTING_BANK_STATE = 1248;
 
 	public static boolean isOpen() {
@@ -132,7 +132,7 @@ public class Bank {
 		if (p.y == 0) for (int i = 0; i < 5 && getCurrentTab() != 0; i++) if (!setCurrentTab(0)) Delay.sleep(100, 200);
 		if ((p = c.getRelativeLocation()).y == 0) return false;
 		final Rectangle bounds = container.getViewportRect();
-		final Component scroll = Widgets.get(WIDGET, COMPONENT_SCROLLBAR);
+		final Component scroll = Widgets.get(WIDGET, COMPONENT_SCROLL_BAR);
 		if (scroll == null) return false;
 		if (!bounds.contains(c.getBoundingRect()) && !Widgets.scroll(c, scroll)) return false;
 		if (!bounds.contains(c.getBoundingRect())) return false;
