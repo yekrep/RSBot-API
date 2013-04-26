@@ -1,8 +1,6 @@
 package org.powerbot.script.xenon.widgets;
 
 import java.util.Arrays;
-import java.util.LinkedHashSet;
-import java.util.Set;
 
 import org.powerbot.script.xenon.Settings;
 import org.powerbot.script.xenon.Widgets;
@@ -42,23 +40,25 @@ public class Bank {
 		return close(true);
 	}
 
-	public static Set<Item> getItems() {
-		final Set<Item> items = new LinkedHashSet<>();
+	public static Item[] getItems() {
 		final Component c = Widgets.get(WIDGET, COMPONENT_ITEMS);
-		if (c == null || !c.isValid()) return items;
+		if (c == null || !c.isValid()) return new Item[0];
 		final Component[] components = c.getChildren();
-		for (final Component i : components) if (i.getItemId() != -1) items.add(new Item(i));
-		return items;
+		Item[] items = new Item[components.length];
+		int d = 0;
+		for (final Component i : components) if (i.getItemId() != -1) items[d++] = new Item(i);
+		return Arrays.copyOf(items, d);
 	}
 
-	public static Set<Item> getItems(final Filter<Item> filter) {
-		final Set<Item> items = getItems();
-		final Set<Item> set = new LinkedHashSet<>(items.size());
-		for (final Item item : items) if (filter.accept(item)) set.add(item);
-		return set;
+	public static Item[] getItems(final Filter<Item> filter) {
+		final Item[] items = getItems();
+		final Item[] arr = new Item[items.length];
+		int d = 0;
+		for (final Item item : items) if (filter.accept(item)) arr[d++] = item;
+		return Arrays.copyOf(arr, d);
 	}
 
-	public static Set<Item> getItems(final boolean currentTab) {
+	public static Item[] getItems(final boolean currentTab) {
 		if (!currentTab) return getItems();
 		return getItems(new Filter<Item>() {
 			@Override
@@ -68,7 +68,7 @@ public class Bank {
 		});
 	}
 
-	public static Set<Item> getItems(final int... ids) {
+	public static Item[] getItems(final int... ids) {
 		Arrays.sort(ids);
 		return getItems(new Filter<Item>() {
 			@Override
@@ -79,22 +79,21 @@ public class Bank {
 	}
 
 	public static Item getItem(final int... ids) {
-		final Set<Item> items = getItems(ids);
-		if (items.isEmpty()) return null;
-		return items.iterator().next();
+		final Item[] items = getItems(ids);
+		return items.length > 0 ? items[0] : null;
 	}
 
 	public static Item getItem(final Filter<Item> filter) {
-		final Set<Item> items = getItems(filter);
-		if (items.isEmpty()) return null;
-		return items.iterator().next();
+		final Item[] items = getItems(filter);
+		return items.length > 0 ? items[0] : null;
 	}
 
-	public static Set<Item> getItems(final boolean currentTab, final Filter<Item> filter) {
-		final Set<Item> items = getItems(currentTab);
-		final Set<Item> set = new LinkedHashSet<>(items.size());
-		for (final Item item : items) if (filter.accept(item)) set.add(item);
-		return set;
+	public static Item[] getItems(final boolean currentTab, final Filter<Item> filter) {
+		final Item[] items = getItems(currentTab);
+		final Item[] arr = new Item[items.length];
+		int d = 0;
+		for (final Item item : items) if (filter.accept(item)) arr[d++] = item;
+		return Arrays.copyOf(arr, d);
 	}
 
 	public static int getCurrentTab() {
