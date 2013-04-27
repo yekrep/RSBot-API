@@ -83,8 +83,23 @@ public class Bank {
 		});
 	}
 
+	public static Item[] getItems(final boolean currentTab, final int... ids) {
+		Arrays.sort(ids);
+		return getItems(currentTab, new Filter<Item>() {
+			@Override
+			public boolean accept(final Item item) {
+				return Arrays.binarySearch(ids, item.getId()) >= 0;
+			}
+		});
+	}
+
 	public static Item getItem(final int... ids) {
 		final Item[] items = getItems(ids);
+		return items.length > 0 ? items[0] : null;
+	}
+
+	public static Item getItem(final boolean currentTab, final int... ids) {
+		final Item[] items = getItems(currentTab, ids);
 		return items.length > 0 ? items[0] : null;
 	}
 
