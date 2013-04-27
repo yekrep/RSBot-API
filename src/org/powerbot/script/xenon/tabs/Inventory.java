@@ -1,8 +1,8 @@
 package org.powerbot.script.xenon.tabs;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.Arrays;
 
+import org.powerbot.script.xenon.Game;
 import org.powerbot.script.xenon.Widgets;
 import org.powerbot.script.xenon.wrappers.Component;
 import org.powerbot.script.xenon.wrappers.Item;
@@ -11,13 +11,25 @@ public class Inventory {
 	public static final int WIDGET = 679;
 	private static final int[] ALTERNATIVE_WIDGETS = {};
 
-	public static Set<Item> getItems() {
-		final Set<Item> items = new LinkedHashSet<>();
+	public static Item[] getItems() {
+		final Item[] items = new Item[28];
+		final Component inv = getComponent();
+		if (inv == null) return items;
+		int d = 0;
+		final Component[] comps = inv.getChildren();
+		if (comps.length > 27) for (int i = 0; i < 28; i++) {
+			if (comps[i].getItemId() != -1) items[d++] = new Item(comps[i]);
+		}
+		return Arrays.copyOf(items, d);
+	}
+
+	public static Item[] getAllItems() {
+		final Item[] items = new Item[28];
 		final Component inv = getComponent();
 		if (inv == null) return items;
 		final Component[] comps = inv.getChildren();
 		if (comps.length > 27) for (int i = 0; i < 28; i++) {
-			if (comps[i].getItemId() != -1) items.add(new Item(comps[i]));
+			items[i] = new Item(comps[i]);
 		}
 		return items;
 	}
@@ -119,6 +131,7 @@ public class Inventory {
 	private static Component getComponent() {
 		Component c;
 		for (final int index : ALTERNATIVE_WIDGETS) if ((c = Widgets.get(index, 0)) != null && c.isValid()) return c;
+		Game.openTab(Game.TAB_INVENTORY);
 		return Widgets.get(WIDGET, 0);
 	}
 }
