@@ -8,6 +8,8 @@ import org.powerbot.script.xenon.wrappers.Tile;
 import org.powerbot.script.xenon.wrappers.TilePath;
 
 public class Walking {
+	private static final int SETTING_RUN_ENABLED = 463;
+
 	public static TilePath newTilePath(final Tile... tiles) {
 		if (tiles == null) throw new IllegalArgumentException("tiles are null");
 		return new TilePath(tiles);
@@ -42,7 +44,7 @@ public class Walking {
 	}
 
 	public static boolean isRunEnabled() {
-		return false;//TODO this
+		return Settings.get(SETTING_RUN_ENABLED) == 0x1;
 	}
 
 	public static int getEnergy() {
