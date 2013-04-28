@@ -8,6 +8,8 @@ import org.powerbot.script.xenon.wrappers.Tile;
 import org.powerbot.script.xenon.wrappers.TilePath;
 
 public class Walking {
+	private static final int WIDGET = 750;
+	private static final int COMPONENT_RUN_ENERGY = 6;
 	private static final int SETTING_RUN_ENABLED = 463;
 
 	public static TilePath newTilePath(final Tile... tiles) {
@@ -48,8 +50,13 @@ public class Walking {
 	}
 
 	public static int getEnergy() {
-		return -1;//TODO this
-
+		final Component c = Widgets.get(WIDGET, COMPONENT_RUN_ENERGY);
+		if (c != null && c.isValid()) try {
+			final String text = c.getText();
+			if (text != null) return Integer.parseInt(text.trim());
+		} catch (final NumberFormatException ignored) {
+		}
+		return -1;
 	}
 
 	public static Tile getClosestOnMap(Tile tile) {
