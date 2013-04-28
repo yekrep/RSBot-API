@@ -67,9 +67,7 @@ public class Inventory {
 		final Component inv = getComponent();
 		if (inv == null) return -1;
 		final Component[] comps = inv.getChildren();
-		if (comps.length > 27) for (int i = 0; i < 28; i++) {
-			if (comps[i].getItemId() == id) return i;
-		}
+		if (comps.length > 27) for (int i = 0; i < 28; i++) if (comps[i].getItemId() == id) return i;
 		return -1;
 	}
 
@@ -126,6 +124,10 @@ public class Inventory {
 
 	public static boolean isFull() {
 		return getCount() == 28;
+	}
+
+	public static boolean isEmpty() {
+		return getCount() == 0;
 	}
 
 	private static Component getComponent() {
