@@ -2,12 +2,17 @@ package org.powerbot.script.xenon;
 
 import org.powerbot.bot.Bot;
 import org.powerbot.game.client.Client;
-import org.powerbot.game.client.RSGroundData;
-import org.powerbot.game.client.RSInfo;
+import org.powerbot.script.xenon.wrappers.CollisionMap;
 import org.powerbot.script.xenon.wrappers.Locatable;
 import org.powerbot.script.xenon.wrappers.Tile;
+import org.powerbot.script.xenon.wrappers.TilePath;
 
 public class Walking {
+	public static TilePath newTilePath(final Tile... tiles) {
+		if (tiles == null) throw new IllegalArgumentException("tiles are null");
+		return new TilePath(tiles);
+	}
+
 	public static Tile getDestination() {
 		final Client client = Bot.client();
 		if (client == null) return null;
@@ -17,24 +22,14 @@ public class Walking {
 		return base != null ? base.derive(dX, dY) : null;
 	}
 
-	public static Tile getCollisionOffset(final int plane) {
+	public static CollisionMap getCollisionMap() {
 		final Client client = Bot.client();
 		if (client == null) return null;
-		final RSInfo info = client.getRSGroundInfo();
-		final RSGroundData[] grounds;
-		RSGroundData ground = null;
-		if (info != null && (grounds = info.getGroundData()) != null && plane < grounds.length) ground = grounds[plane];
-		return ground != null ? new Tile(ground.getX(), ground.getY(), plane) : null;
+		return new CollisionMap(client.getPlane());
 	}
 
-	public static int[][] getCollisionFlags(final int plane) {
-		final Client client = Bot.client();
-		if (client == null) return null;
-		final RSInfo info = client.getRSGroundInfo();
-		final RSGroundData[] grounds;
-		RSGroundData ground = null;
-		if (info != null && (grounds = info.getGroundData()) != null && plane < grounds.length) ground = grounds[plane];
-		return ground != null ? ground.getBlocks() : null;
+	public static CollisionMap getCollisionMap(final int plane) {
+		return new CollisionMap(plane);
 	}
 
 	public static boolean stepTowards(final Locatable locatable) {
