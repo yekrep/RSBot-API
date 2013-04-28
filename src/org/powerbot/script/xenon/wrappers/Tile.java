@@ -111,29 +111,6 @@ public class Tile extends Interactive implements Locatable {
 		return true;//TODO this
 	}
 
-	/*
-	@Override
-	public boolean isValid() {
-		final Client client = Bot.client();
-		final int plane;
-		final Tile base = Game.getMapBase();
-		if (client == null || base == null || this.plane != (plane = client.getPlane())) return false;
-		final int localX = x - base.getX(), localY = y - base.getY();
-		if (x < 0 || y < 0) return false;
-		final RSInfo info = client.getRSGroundInfo();
-		final RSGroundData[] groundDataArr = info != null ? info.getGroundData() : null;
-		final RSGroundData groundData;
-		final int[][] blocks;
-		if (groundDataArr != null && plane >= 0 && plane < groundDataArr.length && (groundData = groundDataArr[plane]) != null &&
-				(blocks = groundData.getBlocks()) != null) {
-			final int x = groundData.getX(), y = groundData.getY();
-			final int tX = localX - x, tY = localY - y;
-			return tX >= 0 && tY >= 0 && tX < blocks.length && tY < blocks[tX].length;
-		}
-		return false;
-	}
-	*/
-
 	@Override
 	public int hashCode() {
 		return x * 31 + y;
