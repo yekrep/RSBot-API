@@ -43,7 +43,7 @@ public class Login extends TaskScript implements PaintListener {
 		if (!i.isValid()) {
 			return false;
 		}
-		final Rectangle pos = i.getArea();
+		final Rectangle pos = i.getBoundingRect();
 		if (pos.x == -1 || pos.y == -1 || pos.width == -1 || pos.height == -1) {
 			return false;
 		}
@@ -59,7 +59,7 @@ public class Login extends TaskScript implements PaintListener {
 
 	private int getPasswordX(final Component a) {
 		int x = 0;
-		final Rectangle pos = a.getArea();
+		final Rectangle pos = a.getBoundingRect();
 		final int dx = (int) (pos.getWidth() - 4) / 2;
 		final int midx = (int) (pos.getMinX() + pos.getWidth() / 2);
 		if (pos.x == -1 || pos.y == -1 || pos.width == -1 || pos.height == -1) {
