@@ -15,9 +15,9 @@ import org.powerbot.script.xenon.wrappers.Player;
 
 public class Summoning {
 	public static final int WIDGET_FOLLOWER_DETAILS = 662;
-	public static final int WIDGET_SUMMONING_ORB = 747;
-	public static final int WIDGET_SET_LEFT = 880;
-	public static final int WIDGET_INTERACT = 1188;
+	public static final int COMPONENT_SUMMONING_ORB = 747;
+	public static final int COMPONENT_SET_LEFT = 880;
+	public static final int COMPONENT_INTERACT = 1188;
 
 	public static int getPoints() {
 		return Skills.getLevel(Skills.SUMMONING);
@@ -32,7 +32,7 @@ public class Summoning {
 	}
 
 	public static boolean select(final String action) {
-		final Component c = Widgets.get(WIDGET_SUMMONING_ORB, 2);
+		final Component c = Widgets.get(COMPONENT_SUMMONING_ORB, 2);
 		if (c == null) return false;
 		if (Option.RENEW_FAMILIAR.getText().toLowerCase().contains(action.toLowerCase())) {
 			final Familiar familiar = getEnum();
@@ -41,7 +41,7 @@ public class Summoning {
 		}
 		if (Option.DISMISS.getText().toLowerCase().contains(action.toLowerCase())) {
 			if (c.interact(action)) {
-				final Component c2 = Widgets.get(WIDGET_INTERACT, 3);
+				final Component c2 = Widgets.get(COMPONENT_INTERACT, 3);
 				if (c2 == null) return false;
 				for (int i = 0; i < 50 && !c2.isValid(); i++) Delay.sleep(20);
 				return c2.click(true);
@@ -63,7 +63,7 @@ public class Summoning {
 
 	public static boolean setLeftClickOption(final Option option) {
 		if (option.isSetLeft()) return true;
-		final Component c = Widgets.get(WIDGET_SUMMONING_ORB, 2);
+		final Component c = Widgets.get(COMPONENT_SUMMONING_ORB, 2);
 		if (c == null || !c.interact("Select")) return false;
 		if (!isFamiliarSummoned()) {
 			final Timer timer = new Timer(800);
@@ -74,7 +74,7 @@ public class Summoning {
 				return false;
 			}
 		}
-		final Component c2 = Widgets.get(WIDGET_SET_LEFT, 5);
+		final Component c2 = Widgets.get(COMPONENT_SET_LEFT, 5);
 		if (c2 == null) return false;
 		final Timer timer = new Timer(2000);
 		while (timer.isRunning() && !c2.isValid()) Delay.sleep(15);
@@ -90,7 +90,7 @@ public class Summoning {
 	}
 
 	public static boolean isCastOrAttackSelected() {
-		final Component c = Widgets.get(WIDGET_SUMMONING_ORB, 2);
+		final Component c = Widgets.get(COMPONENT_SUMMONING_ORB, 2);
 		return c != null && c.getBorderThickness() == 2;
 	}
 
@@ -139,10 +139,10 @@ public class Summoning {
 		final Component c2 = Widgets.get(WIDGET_FOLLOWER_DETAILS, 51);
 		if (c2 == null || !c2.interact("Dismiss")) return false;
 		final Timer timer = new Timer(1500);
-		final Component c3 = Widgets.get(WIDGET_INTERACT, 20);
+		final Component c3 = Widgets.get(COMPONENT_INTERACT, 20);
 		if (c3 == null) return false;
 		while (timer.isRunning() && !c3.isValid()) Delay.sleep(15);
-		return Widgets.get(WIDGET_INTERACT, 3).click(true);
+		return Widgets.get(COMPONENT_INTERACT, 3).click(true);
 	}
 
 	public static boolean takeBoB() {
@@ -307,7 +307,7 @@ public class Summoning {
 		}
 
 		public Component getComponent() {
-			return Widgets.get(WIDGET_SET_LEFT, this.id);
+			return Widgets.get(COMPONENT_SET_LEFT, this.id);
 		}
 
 		public boolean isSetLeft() {
