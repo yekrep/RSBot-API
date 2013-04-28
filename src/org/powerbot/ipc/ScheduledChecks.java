@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 import org.powerbot.bot.Bot;
 import org.powerbot.script.internal.ScriptDefinition;
 import org.powerbot.script.internal.ScriptManager;
+import org.powerbot.service.NetworkAccount;
 import org.powerbot.util.Configuration;
 import org.powerbot.util.Tracker;
 
@@ -17,7 +18,7 @@ import org.powerbot.util.Tracker;
  */
 public final class ScheduledChecks implements ActionListener {
 	public static final long LOCALSCRIPT_TIMEOUT = 15 * 60000000000L;
-	public static final AtomicLong timeout = new AtomicLong(0);
+	public static final AtomicLong timeout = new AtomicLong(0), session = new AtomicLong(0);
 	private final static Logger log = Logger.getLogger(ScheduledChecks.class.getName());
 	private static final long started = System.nanoTime();
 	public static volatile long SESSION_TIME = 0;
@@ -32,6 +33,15 @@ public final class ScheduledChecks implements ActionListener {
 		final long uptime = TimeUnit.NANOSECONDS.toMinutes(System.nanoTime() - started);
 		if (uptime % 10 == 0) {
 			Tracker.getInstance().trackEvent("uptime", Long.toString(uptime));
+		}
+
+		final long pinnged = TimeUnit.MILLISECONDS.toMinutes(System.nanoTime() - session.get());
+		if (session.get() == 0 || pinnged % 30 == 0) {
+			session.set(System.currentTimeMillis());
+			Controller.getInstance().broadcast(new Message(Message.SIGNIN_SESSION));
+			if (NetworkAccount.getInstance().isLoggedIn()) {
+				NetworkAccount.getInstance().session();
+			}
 		}
 
 		final ScriptManager controller = Bot.getInstance().getScriptController();

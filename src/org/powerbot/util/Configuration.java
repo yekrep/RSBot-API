@@ -47,7 +47,8 @@ public class Configuration {
 		public static final String SCRIPTSAUTH = PROTOCOL + DOMAIN_SITE + "/scripts/api/auth/?{POST}a=%s&id=%s&n=%s";
 		public static final String SCRIPTSCOLLECTION = PROTOCOL + DOMAIN_SITE + "/scripts/api/collection/?{POST}a=%s";
 		public static final String SCRIPTSDOWNLOAD = PROTOCOL + DOMAIN_SITE + "/scripts/api/collection/download/?{POST}a=%s&s=%s";
-		public static final String SIGNIN = PROTOCOL + DOMAIN_SITE + "/api/login/?{POST}u=%s&p=%s&a=%s";
+		public static final String SIGNIN = PROTOCOL + DOMAIN_SITE + "/api/login/?{POST}m=login&u=%s&p=%s&a=%s&uid=%s";
+		public static final String SIGNIN_SESSION = PROTOCOL + DOMAIN_SITE + "/api/login/?{POST}m=session&a=%s&uid=%s&n=%s";
 		public static final String LINKFILTER = "http://" + DOMAIN_SITE + "/api/safelink/?u=%s";
 
 		public static final String SITE = "http://" + DOMAIN_SITE + "/";

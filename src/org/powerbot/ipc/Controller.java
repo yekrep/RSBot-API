@@ -176,6 +176,10 @@ public final class Controller implements Runnable {
 					BotInteract.tabClose(true);
 					break;
 
+				case Message.SIGNIN_SESSION:
+					ScheduledChecks.session.set(System.currentTimeMillis());
+					break;
+
 				default:
 					break;
 				}

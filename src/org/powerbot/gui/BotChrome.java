@@ -124,7 +124,10 @@ public class BotChrome extends JFrame implements WindowListener {
 	private final class LoadAccount implements Callable<Boolean> {
 		public Boolean call() throws Exception {
 			log.log(Level.INFO, "Signing into " + BotLocale.WEBSITE, BotLocale.STARTING);
-			NetworkAccount.getInstance();
+			final NetworkAccount net = NetworkAccount.getInstance();
+			if (net.isLoggedIn() && !net.session()) {
+				net.logout();
+			}
 			return true;
 		}
 	}
