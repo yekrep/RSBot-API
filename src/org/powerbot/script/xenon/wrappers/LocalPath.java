@@ -76,6 +76,7 @@ public class LocalPath extends Path {
 		final int base_x = base.getX(), base_y = base.getY();
 		final int curr_x = start.getX() - base_x, curr_y = start.getY() - base_y;
 		int dest_x = end.getX() - base_x, dest_y = end.getY() - base_y;
+		if (dest_x < 0 || dest_y < 0 || dest_x > 103 || dest_y > 103) return null;
 		final CollisionMap map = Walking.getCollisionMap();
 		if (map == null) return null;
 		final int[][] meta = map.getMeta();
