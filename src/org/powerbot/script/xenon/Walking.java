@@ -17,6 +17,11 @@ public class Walking {
 		return new TilePath(tiles);
 	}
 
+	public static LocalPath findPath(final Tile end) {
+		if (end == null) throw new IllegalArgumentException("end tile is null");
+		return new LocalPath(end);
+	}
+
 	public static Tile getDestination() {
 		final Client client = Bot.client();
 		if (client == null) return null;
