@@ -8,7 +8,7 @@ import org.powerbot.game.client.Client;
 import org.powerbot.game.client.RSPlayer;
 import org.powerbot.game.client.RSPlayerComposite;
 
-public class Player extends Character {
+public class Player extends MobileEntity {
 	private final WeakReference<RSPlayer> player;
 
 	public Player(final RSPlayer player) {

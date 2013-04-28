@@ -9,7 +9,7 @@ import org.powerbot.game.client.RSNPCDef;
 import org.powerbot.game.client.RSNPCNode;
 import org.powerbot.script.internal.Nodes;
 
-public class Npc extends Character {
+public class Npc extends MobileEntity {
 	private final WeakReference<RSNPC> npc;
 
 	public Npc(final RSNPC npc) {
