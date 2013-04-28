@@ -4,8 +4,8 @@ import java.util.Arrays;
 import java.util.EnumSet;
 
 import org.powerbot.script.xenon.Calculations;
+import org.powerbot.script.xenon.Movement;
 import org.powerbot.script.xenon.Players;
-import org.powerbot.script.xenon.Walking;
 import org.powerbot.script.xenon.util.Random;
 
 public class TilePath extends Path {
@@ -23,21 +23,21 @@ public class TilePath extends Path {
 		final Player local = Players.getLocal();
 		final Tile next = getNext();
 		if (next == null || local == null) return false;
-		final Tile dest = Walking.getDestination();
+		final Tile dest = Movement.getDestination();
 		if (next.equals(getEnd())) {
 			if (Calculations.distanceTo(next) <= 1) return false;
-			if (end && (local.isMoving() || (dest != null && dest.equals(next)))) return false;
+			if (end && (local.isInMotion() || (dest != null && dest.equals(next)))) return false;
 			end = true;
 		} else end = false;
 		if (options != null) {
-			if (options.contains(TraversalOption.HANDLE_RUN) && !Walking.isRunEnabled() && Walking.getEnergy() > Random.nextInt(45, 60)) {
-				Walking.toggleRun(true);
+			if (options.contains(TraversalOption.HANDLE_RUN) && !Movement.isRunning() && Movement.getEnergy() > Random.nextInt(45, 60)) {
+				Movement.setRunning(true);
 			}
-			if (options.contains(TraversalOption.SPACE_ACTIONS) && dest != null && local.isMoving() && Calculations.distance(next, dest) < 3d) {
+			if (options.contains(TraversalOption.SPACE_ACTIONS) && dest != null && local.isInMotion() && Calculations.distance(next, dest) < 3d) {
 				if (Calculations.distanceTo(dest) > Random.nextDouble(4d, 6d)) return true;
 			}
 		}
-		return Walking.stepTowards(next);
+		return Movement.stepTowards(next);
 	}
 
 	@Override
@@ -47,7 +47,7 @@ public class TilePath extends Path {
 
 	@Override
 	public Tile getNext() {
-		final Tile dest = Walking.getDestination();
+		final Tile dest = Movement.getDestination();
 		for (int i = tiles.length - 1; i >= 0; --i) {
 			if (!tiles[i].isOnMap()) continue;
 			if (dest == null || Calculations.distance(dest, tiles[i - 1]) < 3) return tiles[i];

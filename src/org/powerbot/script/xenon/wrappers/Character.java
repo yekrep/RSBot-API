@@ -81,7 +81,7 @@ public abstract class Character extends Interactive implements Locatable {
 		return character != null ? character.isMoving() : 0;
 	}
 
-	public boolean isMoving() {
+	public boolean isInMotion() {
 		return getSpeed() != 0;
 	}
 

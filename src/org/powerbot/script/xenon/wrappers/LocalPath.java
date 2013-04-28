@@ -9,8 +9,8 @@ import java.util.Set;
 
 import org.powerbot.script.xenon.Calculations;
 import org.powerbot.script.xenon.Game;
+import org.powerbot.script.xenon.Movement;
 import org.powerbot.script.xenon.Players;
-import org.powerbot.script.xenon.Walking;
 
 public class LocalPath extends Path {
 	private static final int WALL_NORTHWEST = 0x1;
@@ -55,7 +55,7 @@ public class LocalPath extends Path {
 				this.base = null;
 				return null;
 			}
-			tilePath = Walking.newTilePath(tiles);
+			tilePath = Movement.newTilePath(tiles);
 			return tilePath.getNext();
 		}
 		return null;
@@ -77,7 +77,7 @@ public class LocalPath extends Path {
 		final int curr_x = start.getX() - base_x, curr_y = start.getY() - base_y;
 		int dest_x = end.getX() - base_x, dest_y = end.getY() - base_y;
 		if (dest_x < 0 || dest_y < 0 || dest_x > 103 || dest_y > 103) return null;
-		final CollisionMap map = Walking.getCollisionMap();
+		final CollisionMap map = Movement.getCollisionMap();
 		if (map == null) return null;
 		final int[][] meta = map.getMeta();
 		final Point offset = map.getPosition();

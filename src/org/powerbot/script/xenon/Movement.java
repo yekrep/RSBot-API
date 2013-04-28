@@ -10,7 +10,7 @@ import org.powerbot.script.xenon.wrappers.Locatable;
 import org.powerbot.script.xenon.wrappers.Tile;
 import org.powerbot.script.xenon.wrappers.TilePath;
 
-public class Walking {
+public class Movement {
 	private static final int WIDGET = 750;
 	private static final int COMPONENT_RUN = 2;
 	private static final int COMPONENT_RUN_ENERGY = 6;
@@ -50,19 +50,19 @@ public class Walking {
 		return false;//TODO this
 	}
 
-	public static boolean toggleRun(final boolean run) {
-		if (isRunEnabled() != run) {
+	public static boolean setRunning(final boolean run) {
+		if (isRunning() != run) {
 			final Component c = Widgets.get(WIDGET, COMPONENT_RUN);
-			if (c != null && c.click(true)) for (int i = 0; i < 20 && isRunEnabled() != run; i++) Delay.sleep(100, 200);
+			if (c != null && c.click(true)) for (int i = 0; i < 20 && isRunning() != run; i++) Delay.sleep(100, 200);
 		}
-		return isRunEnabled() == run;
+		return isRunning() == run;
 	}
 
-	public static boolean isRunEnabled() {
+	public static boolean isRunning() {
 		return Settings.get(SETTING_RUN_ENABLED) == 0x1;
 	}
 
-	public static int getEnergy() {
+	public static int getEnergyLevel() {
 		final Component c = Widgets.get(WIDGET, COMPONENT_RUN_ENERGY);
 		if (c != null && c.isValid()) try {
 			final String text = c.getText();
