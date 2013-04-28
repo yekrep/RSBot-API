@@ -18,8 +18,8 @@ import org.powerbot.script.xenon.wrappers.Widget;
 
 public class Bank {
 	public static final int WIDGET = 762;
-	public static final int COMPONENT_CLOSE = 45;
-	public static final int COMPONENT_ITEMS = 95;
+	public static final int COMPONENT_BUTTON_CLOSE = 45;
+	public static final int COMPONENT_CONTAINER_ITEMS = 95;
 	public static final int COMPONENT_BUTTON_WITHDRAW_MODE = 20;
 	public static final int COMPONENT_BUTTON_DEPOSIT_INVENTORY = 34;
 	public static final int COMPONENT_BUTTON_DEPOSIT_EQUIPMENT = 38;
@@ -35,7 +35,7 @@ public class Bank {
 
 	public static boolean close(final boolean wait) {
 		if (!isOpen()) return true;
-		final Component c = Widgets.get(WIDGET, COMPONENT_CLOSE);
+		final Component c = Widgets.get(WIDGET, COMPONENT_BUTTON_CLOSE);
 		if (c == null) return false;
 		if (c.isValid() && c.interact("Close")) {
 			if (!wait) return true;
@@ -51,7 +51,7 @@ public class Bank {
 	}
 
 	public static Item[] getItems() {
-		final Component c = Widgets.get(WIDGET, COMPONENT_ITEMS);
+		final Component c = Widgets.get(WIDGET, COMPONENT_CONTAINER_ITEMS);
 		if (c == null || !c.isValid()) return new Item[0];
 		final Component[] components = c.getChildren();
 		Item[] items = new Item[components.length];
@@ -106,6 +106,69 @@ public class Bank {
 		return Arrays.copyOf(arr, d);
 	}
 
+	public static Item getItemAt(final int index) {
+		final Component c = Widgets.get(WIDGET, COMPONENT_CONTAINER_ITEMS);
+		if (c == null || !c.isValid()) return null;
+		final Component i = c.getChild(index);
+		if (i != null && i.getItemId() != -1) return new Item(i);
+		return null;
+	}
+
+	public static int indexOf(final int id) {
+		final Component items = Widgets.get(WIDGET, COMPONENT_CONTAINER_ITEMS);
+		if (items == null || !items.isValid()) return -1;
+		final Component[] comps = items.getChildren();
+		for (int i = 0; i < comps.length; i++) if (comps[i].getItemId() == id) return i;
+		return -1;
+	}
+
+	public static boolean contains(final int id) {
+		return indexOf(id) != -1;
+	}
+
+	public static boolean containsAll(final int... ids) {
+		for (final int id : ids) if (indexOf(id) == -1) return false;
+		return true;
+	}
+
+	public static boolean containsOneOf(final int... ids) {
+		for (final int id : ids) if (indexOf(id) != -1) return true;
+		return false;
+	}
+
+	public static int getCount() {
+		return getCount(false);
+	}
+
+	public static int getCount(final boolean stacks) {
+		int count = 0;
+		final Item[] items = getItems();
+		for (final Item item : items) {
+			if (stacks) count += item.getStackSize();
+			else ++count;
+		}
+		return count;
+	}
+
+	public static int getCount(final int... ids) {
+		return getCount(false, ids);
+	}
+
+	public static int getCount(final boolean stacks, final int... ids) {
+		int count = 0;
+		final Item[] items = getItems();
+		for (final Item item : items) {
+			for (final int id : ids) {
+				if (item.getId() == id) {
+					if (stacks) count += item.getStackSize();
+					else ++count;
+					break;
+				}
+			}
+		}
+		return count;
+	}
+
 	public static int getCurrentTab() {
 		return ((Settings.get(SETTING_BANK_STATE) >>> 24) - 136) / 8;
 	}
@@ -129,7 +192,7 @@ public class Bank {
 	public static boolean withdraw(final int id, final int amount) {
 		final Item item = getItem(id);
 		if (item == null) return false;
-		final Component container = Widgets.get(WIDGET, COMPONENT_ITEMS);
+		final Component container = Widgets.get(WIDGET, COMPONENT_CONTAINER_ITEMS);
 		if (container == null || !container.isValid()) return false;
 
 		final Component c = item.getComponent();
