@@ -21,6 +21,9 @@ public class Bank {
 	public static final int COMPONENT_CLOSE = 45;
 	public static final int COMPONENT_ITEMS = 95;
 	public static final int COMPONENT_BUTTON_WITHDRAW_MODE = 20;
+	public static final int COMPONENT_BUTTON_DEPOSIT_INVENTORY = 34;
+	public static final int COMPONENT_BUTTON_DEPOSIT_EQUIPMENT = 38;
+	public static final int COMPONENT_BUTTON_DEPOSIT_FAMILIAR = 40;
 	public static final int COMPONENT_SCROLL_BAR = 116;
 	public static final int SETTING_BANK_STATE = 1248;
 	public static final int SETTING_WITHDRAW_MODE = 160;
@@ -182,6 +185,23 @@ public class Bank {
 		}
 		for (int i = 0; i < 25 && Inventory.getCount(true) == inv; i++) Delay.sleep(100, 200);
 		return Inventory.getCount(true) != inv;
+	}
+
+	public static boolean depositInventory() {
+		final Component c = Widgets.get(WIDGET, COMPONENT_BUTTON_DEPOSIT_INVENTORY);
+		if (c == null || !c.isValid()) return false;
+		if (Inventory.isEmpty()) return true;
+		return c.click();
+	}
+
+	public static boolean depositEquipment() {
+		final Component c = Widgets.get(WIDGET, COMPONENT_BUTTON_DEPOSIT_EQUIPMENT);
+		return c != null && c.isValid() && c.click();
+	}
+
+	public static boolean depositFamiliar() {
+		final Component c = Widgets.get(WIDGET, COMPONENT_BUTTON_DEPOSIT_FAMILIAR);
+		return c != null && c.isValid() && c.click();
 	}
 
 	public static boolean setWithdrawMode(final boolean noted) {
