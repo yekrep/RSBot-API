@@ -56,11 +56,7 @@ public class Bank {
 	}
 
 	public static Item[] getItems(final Filter<Item> filter) {
-		final Item[] items = getItems();
-		final Item[] arr = new Item[items.length];
-		int d = 0;
-		for (final Item item : items) if (filter.accept(item)) arr[d++] = item;
-		return Arrays.copyOf(arr, d);
+		return getItems(false, filter);
 	}
 
 	public static Item[] getItems(final boolean currentTab) {
@@ -83,28 +79,17 @@ public class Bank {
 		});
 	}
 
-	public static Item[] getItems(final boolean currentTab, final int... ids) {
-		Arrays.sort(ids);
-		return getItems(currentTab, new Filter<Item>() {
-			@Override
-			public boolean accept(final Item item) {
-				return Arrays.binarySearch(ids, item.getId()) >= 0;
-			}
-		});
-	}
-
 	public static Item getItem(final int... ids) {
 		final Item[] items = getItems(ids);
 		return items.length > 0 ? items[0] : null;
 	}
 
-	public static Item getItem(final boolean currentTab, final int... ids) {
-		final Item[] items = getItems(currentTab, ids);
-		return items.length > 0 ? items[0] : null;
+	public static Item getItem(final Filter<Item> filter) {
+		return getItem(false, filter);
 	}
 
-	public static Item getItem(final Filter<Item> filter) {
-		final Item[] items = getItems(filter);
+	public static Item getItem(final boolean currentTab, final Filter<Item> filter) {
+		final Item[] items = getItems(currentTab, filter);
 		return items.length > 0 ? items[0] : null;
 	}
 
