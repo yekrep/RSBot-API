@@ -31,7 +31,7 @@ public class TilePath extends Path {
 		} else end = false;
 		if (options != null) {
 			if (options.contains(TraversalOption.HANDLE_RUN) && !Walking.isRunEnabled() && Walking.getEnergy() > Random.nextInt(45, 60)) {
-				Walking.setRun(true);
+				Walking.toggleRun(true);
 			}
 			if (options.contains(TraversalOption.SPACE_ACTIONS) && dest != null && local.isMoving() && Calculations.distance(next, dest) < 3d) {
 				if (Calculations.distanceTo(dest) > Random.nextDouble(4d, 6d)) return true;
