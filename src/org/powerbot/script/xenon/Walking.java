@@ -2,13 +2,17 @@ package org.powerbot.script.xenon;
 
 import org.powerbot.bot.Bot;
 import org.powerbot.game.client.Client;
+import org.powerbot.script.xenon.util.Delay;
 import org.powerbot.script.xenon.wrappers.CollisionMap;
+import org.powerbot.script.xenon.wrappers.Component;
+import org.powerbot.script.xenon.wrappers.LocalPath;
 import org.powerbot.script.xenon.wrappers.Locatable;
 import org.powerbot.script.xenon.wrappers.Tile;
 import org.powerbot.script.xenon.wrappers.TilePath;
 
 public class Walking {
 	private static final int WIDGET = 750;
+	private static final int COMPONENT_RUN = 2;
 	private static final int COMPONENT_RUN_ENERGY = 6;
 	private static final int SETTING_RUN_ENABLED = 463;
 
@@ -46,8 +50,12 @@ public class Walking {
 		return false;//TODO this
 	}
 
-	public static boolean setRun(final boolean run) {
-		return false;//TODO this
+	public static boolean toggleRun(final boolean run) {
+		if (isRunEnabled() != run) {
+			final Component c = Widgets.get(WIDGET, COMPONENT_RUN);
+			if (c != null && c.click(true)) for (int i = 0; i < 20 && isRunEnabled() != run; i++) Delay.sleep(100, 200);
+		}
+		return isRunEnabled() == run;
 	}
 
 	public static boolean isRunEnabled() {
