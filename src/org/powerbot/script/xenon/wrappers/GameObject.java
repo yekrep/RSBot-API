@@ -2,6 +2,7 @@ package org.powerbot.script.xenon.wrappers;
 
 import java.awt.Point;
 import java.lang.ref.WeakReference;
+import java.util.Arrays;
 
 import org.powerbot.bot.Bot;
 import org.powerbot.game.client.Cache;
@@ -117,7 +118,7 @@ public class GameObject extends Interactive implements Locatable {
 	public boolean isValid() {
 		if (this.object.get() == null) return false;
 		final Tile tile = getLocation();
-		return tile != null && Objects.getLoaded(tile.getX(), tile.getY(), 0).contains(this);
+		return tile != null && Arrays.asList(Objects.getLoaded(tile.getX(), tile.getY(), 0)).contains(this);
 	}
 
 	@Override

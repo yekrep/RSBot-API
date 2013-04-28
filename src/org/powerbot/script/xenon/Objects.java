@@ -1,6 +1,6 @@
 package org.powerbot.script.xenon;
 
-import java.util.HashSet;
+import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -19,14 +19,14 @@ import org.powerbot.script.xenon.wrappers.Tile;
 public class Objects {
 	private static final int LOADED_DIST = 104;
 
-	public static Set<GameObject> getLoaded() {
+	public static GameObject[] getLoaded() {
 		return getLoaded(LOADED_DIST);
 	}
 
-	public static Set<GameObject> getLoaded(int _x, int _y, final int range) {
+	public static GameObject[] getLoaded(int _x, int _y, final int range) {
 		final Set<GameObject> objects = new LinkedHashSet<>();
 		final Client client = Bot.client();
-		if (client == null) return objects;
+		if (client == null) return new GameObject[0];
 
 		final RSInfo info;
 		final BaseInfo baseInfo;
@@ -47,7 +47,7 @@ public class Objects {
 		final int plane = client.getPlane();
 
 		final RSGround[][] objArr = plane > -1 && plane < grounds.length ? grounds[plane] : null;
-		if (objArr == null) return objects;
+		if (objArr == null) return new GameObject[0];
 		for (int x = Math.max(0, _x - range); x <= Math.min(_x + range, objArr.length - 1); x++) {
 			for (int y = Math.max(0, _y - range); y <= Math.min(_y + range, objArr[x].length - 1); y++) {
 				final RSGround ground = objArr[x][y];
@@ -65,30 +65,31 @@ public class Objects {
 				}
 			}
 		}
-		return objects;
+		return objects.toArray(new GameObject[objects.size()]);
 
 	}
 
-	public static Set<GameObject> getLoaded(final int range) {
+	public static GameObject[] getLoaded(final int range) {
 		final Player player = Players.getLocal();
 		final Tile location;
 		if (player == null || (location = player.getLocation()) == null) {
-			return new HashSet<>(0);
+			return new GameObject[0];
 		}
 
 		final int x = location.getX(), y = location.getY();
 		return getLoaded(x, y, range);
 	}
 
-	public static Set<GameObject> getLoaded(final Filter<GameObject> filter) {
+	public static GameObject[] getLoaded(final Filter<GameObject> filter) {
 		return getLoaded(LOADED_DIST, filter);
 	}
 
-	public static Set<GameObject> getLoaded(final int range, final Filter<GameObject> filter) {
-		final Set<GameObject> items = getLoaded(range);
-		final Set<GameObject> set = new HashSet<>(items.size());
-		for (final GameObject item : items) if (filter.accept(item)) set.add(item);
-		return set;
+	public static GameObject[] getLoaded(final int range, final Filter<GameObject> filter) {
+		final GameObject[] items = getLoaded(range);
+		final GameObject[] set = new GameObject[items.length];
+		int d = 0;
+		for (final GameObject item : items) if (filter.accept(item)) set[d++] = item;
+		return Arrays.copyOf(set, d);
 	}
 
 	public static GameObject getNearest(final Filter<GameObject> filter) {
@@ -104,7 +105,7 @@ public class Objects {
 
 		final Tile pos = local.getLocation();
 		if (pos == null) return null;
-		final Set<GameObject> gameObjects = getLoaded(range);
+		final GameObject[] gameObjects = getLoaded(range);
 		for (final GameObject gameObject : gameObjects) {
 			final double d;
 			if (filter.accept(gameObject) && (d = Calculations.distance(pos, gameObject)) < dist) {

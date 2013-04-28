@@ -13,12 +13,12 @@ import org.powerbot.script.internal.wrappers.Deque;
 import org.powerbot.script.xenon.wrappers.Projectile;
 
 public class Projectiles {
-	public static Set<Projectile> getLoaded() {
+	public static Projectile[] getLoaded() {
 		final Client client = Bot.client();
-		if (client == null) return new HashSet<>(0);
+		if (client == null) return new Projectile[0];
 
 		final NodeDeque deque = client.getProjectileDeque();
-		if (deque == null) return new HashSet<>(0);
+		if (deque == null) return new Projectile[0];
 
 		final Set<Projectile> projectiles = new HashSet<>();
 		final Deque<Node> nodes = new Deque<>(deque);
@@ -28,6 +28,6 @@ public class Projectiles {
 				projectiles.add(new Projectile(projectile));
 			}
 		}
-		return projectiles;
+		return projectiles.toArray(new Projectile[projectiles.size()]);
 	}
 }

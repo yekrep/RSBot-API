@@ -30,7 +30,7 @@ public class TilePath extends Path {
 			end = true;
 		} else end = false;
 		if (options != null) {
-			if (options.contains(TraversalOption.HANDLE_RUN) && !Movement.isRunning() && Movement.getEnergy() > Random.nextInt(45, 60)) {
+			if (options.contains(TraversalOption.HANDLE_RUN) && !Movement.isRunning() && Movement.getEnergyLevel() > Random.nextInt(45, 60)) {
 				Movement.setRunning(true);
 			}
 			if (options.contains(TraversalOption.SPACE_ACTIONS) && dest != null && local.isInMotion() && Calculations.distance(next, dest) < 3d) {

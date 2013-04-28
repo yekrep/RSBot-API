@@ -1,6 +1,6 @@
 package org.powerbot.script.xenon;
 
-import java.util.HashSet;
+import java.util.Arrays;
 import java.util.Set;
 
 import org.powerbot.bot.Bot;
@@ -15,33 +15,35 @@ import org.powerbot.script.xenon.wrappers.Player;
 import org.powerbot.script.xenon.wrappers.Tile;
 
 public class Npcs {
-	public static Set<Npc> getLoaded() {
+	public static Npc[] getLoaded() {
 		final Client client = Bot.client();
-		if (client == null) return new HashSet<>(0);
+		if (client == null) return new Npc[0];
 
 		final int[] indices = client.getRSNPCIndexArray();
 		final HashTable npcTable = client.getRSNPCNC();
-		if (indices == null || npcTable == null) return new HashSet<>(0);
+		if (indices == null || npcTable == null) return new Npc[0];
 
-		final Set<Npc> npcs = new HashSet<>(indices.length);
+		final Npc[] npcs = new Npc[indices.length];
+		int d = 0;
 		for (final int index : indices) {
 			Object npc = Nodes.lookup(npcTable, index);
 			if (npc == null) continue;
 			if (npc instanceof RSNPCNode) npc = ((RSNPCNode) npc).getRSNPC();
-			if (npc instanceof RSNPC) npcs.add(new Npc((RSNPC) npc));
+			if (npc instanceof RSNPC) npcs[d++] = new Npc((RSNPC) npc);
 		}
 
-		return npcs;
+		return Arrays.copyOf(npcs, d);
 	}
 
-	public static Set<Npc> getLoaded(final Filter<Npc> filter) {
-		final Set<Npc> npcs = getLoaded();
-		final Set<Npc> set = new HashSet<>(npcs.size());
-		for (final Npc npc : npcs) if (filter.accept(npc)) set.add(npc);
-		return set;
+	public static Npc[] getLoaded(final Filter<Npc> filter) {
+		final Npc[] npcs = getLoaded();
+		final Npc[] set = new Npc[npcs.length];
+		int d = 0;
+		for (final Npc npc : npcs) if (filter.accept(npc)) set[d++] = npc;
+		return Arrays.copyOf(set, d);
 	}
 
-	public static Set<Npc> getLoaded(final int... ids) {
+	public static Npc[] getLoaded(final int... ids) {
 		return getLoaded(new Filter<Npc>() {
 			@Override
 			public boolean accept(final Npc npc) {
@@ -61,7 +63,7 @@ public class Npcs {
 
 		final Tile pos = local.getLocation();
 		if (pos == null) return null;
-		final Set<Npc> npcs = getLoaded();
+		final Npc[] npcs = getLoaded();
 		for (final Npc npc : npcs) {
 			final double d;
 			if (filter.accept(npc) && (d = Calculations.distance(pos, npc)) < dist) {

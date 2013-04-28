@@ -1,7 +1,6 @@
 package org.powerbot.script.xenon;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Arrays;
 
 import org.powerbot.bot.Bot;
 import org.powerbot.game.client.Client;
@@ -19,28 +18,30 @@ public class Players {
 		return p != null ? new Player(p) : null;
 	}
 
-	public static Set<Player> getLoaded() {
+	public static Player[] getLoaded() {
 		final Client client = Bot.client();
-		if (client == null) return new HashSet<>(0);
+		if (client == null) return new Player[0];
 
 		final int[] indices = client.getRSPlayerIndexArray();
 		final RSPlayer[] players = client.getRSPlayerArray();
-		if (indices == null || players == null) return new HashSet<>(0);
+		if (indices == null || players == null) return new Player[0];
 
-		final Set<Player> loadedPlayers = new HashSet<>(indices.length);
+		final Player[] loadedPlayers = new Player[indices.length];
+		int d = 0;
 		for (final int index : indices) {
 			final RSPlayer player = players[index];
-			if (player != null) loadedPlayers.add(new Player(player));
+			if (player != null) loadedPlayers[d++] = new Player(player);
 		}
 
-		return loadedPlayers;
+		return Arrays.copyOf(loadedPlayers, d);
 	}
 
-	public static Set<Player> getLoaded(final Filter<Player> filter) {
-		final Set<Player> players = getLoaded();
-		final Set<Player> set = new HashSet<>(players.size());
-		for (final Player player : players) if (filter.accept(player)) set.add(player);
-		return set;
+	public static Player[] getLoaded(final Filter<Player> filter) {
+		final Player[] players = getLoaded();
+		final Player[] set = new Player[players.length];
+		int d = 0;
+		for (final Player player : players) if (filter.accept(player)) set[d++] = player;
+		return Arrays.copyOf(set, d);
 	}
 
 	public static Player getNearest(final Filter<Player> filter) {
@@ -52,7 +53,7 @@ public class Players {
 
 		final Tile pos = local.getLocation();
 		if (pos == null) return null;
-		final Set<Player> players = getLoaded();
+		final Player[] players = getLoaded();
 		for (final Player player : players) {
 			final double d;
 			if (filter.accept(player) && (d = Calculations.distance(pos, player)) < dist) {

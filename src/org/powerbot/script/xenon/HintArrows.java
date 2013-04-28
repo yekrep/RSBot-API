@@ -1,7 +1,6 @@
 package org.powerbot.script.xenon;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Arrays;
 
 import org.powerbot.bot.Bot;
 import org.powerbot.game.client.Client;
@@ -9,15 +8,16 @@ import org.powerbot.game.client.RSHintArrow;
 import org.powerbot.script.xenon.wrappers.HintArrow;
 
 public class HintArrows {
-	public static Set<HintArrow> getLoaded() {
+	public static HintArrow[] getLoaded() {
 		final Client client = Bot.client();
-		if (client == null) return new HashSet<>(0);
+		if (client == null) return new HintArrow[0];
 
-		final Set<HintArrow> arrows = new HashSet<>();
 		final RSHintArrow[] arr = client.getRSHintArrows();
+		final HintArrow[] arrows = new HintArrow[arr != null ? arr.length : 0];
+		int d = 0;
 		for (final RSHintArrow arrow : arr != null ? arr : new RSHintArrow[0]) {
-			if (arrow != null) arrows.add(new HintArrow(arrow));
+			if (arrow != null) arrows[d++] = new HintArrow(arrow);
 		}
-		return arrows;
+		return Arrays.copyOf(arrows, d);
 	}
 }

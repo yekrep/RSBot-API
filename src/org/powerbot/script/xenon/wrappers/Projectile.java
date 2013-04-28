@@ -1,6 +1,7 @@
 package org.powerbot.script.xenon.wrappers;
 
 import java.lang.ref.WeakReference;
+import java.util.Arrays;
 
 import org.powerbot.game.client.RSProjectile;
 import org.powerbot.script.xenon.Projectiles;
@@ -20,7 +21,7 @@ public class Projectile implements Validatable {
 	@Override
 	public boolean isValid() {
 		final RSProjectile projectile = this.projectile.get();
-		return projectile != null && Projectiles.getLoaded().contains(this);
+		return projectile != null && Arrays.asList(Projectiles.getLoaded()).contains(this);
 	}
 
 	@Override

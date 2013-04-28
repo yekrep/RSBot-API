@@ -1,5 +1,6 @@
 package org.powerbot.script.xenon;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -20,18 +21,18 @@ import org.powerbot.script.xenon.wrappers.Tile;
 public class GroundItems {
 	private static final int LOADED_DIST = 104;
 
-	public static Set<GroundItem> getLoaded() {
+	public static GroundItem[] getLoaded() {
 		return getLoaded(LOADED_DIST);
 	}
 
-	public static Set<GroundItem> getLoaded(final int _x, final int _y, final int range) {
+	public static GroundItem[] getLoaded(final int _x, final int _y, final int range) {
 		final Set<GroundItem> items = new HashSet<>();
 
 		final Client client = Bot.client();
-		if (client == null) return items;
+		if (client == null) return new GroundItem[0];
 
 		final HashTable table = client.getRSItemHashTable();
-		if (table == null) return items;
+		if (table == null) return new GroundItem[0];
 
 		final int plane = client.getPlane();
 		long id;
@@ -48,29 +49,30 @@ public class GroundItems {
 				}
 			}
 		}
-		return items;
+		return items.toArray(new GroundItem[items.size()]);
 	}
 
-	public static Set<GroundItem> getLoaded(final int range) {
+	public static GroundItem[] getLoaded(final int range) {
 		final Player player = Players.getLocal();
 		final Tile location;
 		if (player == null || (location = player.getLocation()) == null) {
-			return new HashSet<>(0);
+			return new GroundItem[0];
 		}
 
 		final int x = location.getX(), y = location.getY();
 		return getLoaded(x, y, range);
 	}
 
-	public static Set<GroundItem> getLoaded(final Filter<GroundItem> filter) {
+	public static GroundItem[] getLoaded(final Filter<GroundItem> filter) {
 		return getLoaded(LOADED_DIST, filter);
 	}
 
-	public static Set<GroundItem> getLoaded(final int range, final Filter<GroundItem> filter) {
-		final Set<GroundItem> items = getLoaded(range);
-		final Set<GroundItem> set = new HashSet<>(items.size());
-		for (final GroundItem item : items) if (filter.accept(item)) set.add(item);
-		return set;
+	public static GroundItem[] getLoaded(final int range, final Filter<GroundItem> filter) {
+		final GroundItem[] items = getLoaded(range);
+		final GroundItem[] set = new GroundItem[items.length];
+		int d = 0;
+		for (final GroundItem item : items) if (filter.accept(item)) set[d++] = item;
+		return Arrays.copyOf(set, d);
 	}
 
 	public static GroundItem getNearest(final Filter<GroundItem> filter) {
@@ -86,7 +88,7 @@ public class GroundItems {
 
 		final Tile pos = local.getLocation();
 		if (pos == null) return null;
-		final Set<GroundItem> groundItems = getLoaded(range);
+		final GroundItem[] groundItems = getLoaded(range);
 		for (final GroundItem groundItem : groundItems) {
 			final double d;
 			if (filter.accept(groundItem) && (d = Calculations.distance(pos, groundItem)) < dist) {

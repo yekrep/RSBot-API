@@ -1,6 +1,7 @@
 package org.powerbot.script.xenon.wrappers;
 
 import java.awt.Point;
+import java.util.Arrays;
 import java.util.Set;
 
 import org.powerbot.bot.Bot;
@@ -112,8 +113,8 @@ public class GroundItem extends Interactive implements Locatable {
 
 	@Override
 	public boolean isValid() {
-		final Set<GroundItem> items = GroundItems.getLoaded(tile.getX(), tile.getY(), 0);
-		return items.contains(this);
+		final GroundItem[] items = GroundItems.getLoaded(tile.getX(), tile.getY(), 0);
+		return Arrays.asList(items).contains(this);
 	}
 
 	@Override
