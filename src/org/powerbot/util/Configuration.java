@@ -63,10 +63,10 @@ public class Configuration {
 		public static final String ADS = "http://" + DOMAIN_LINKS + "/ads";
 
 		public static final String GAME_DOMAIN = "runescape.com";
+		public static final String GAME_SERVICES_DOMAIN = "services." + GAME_DOMAIN;
 		public static final String GAME_PROTOCOL = "https://";
 		public static final String GAME = GAME_PROTOCOL + GAME_DOMAIN;
 		public static final String GAME_SERVICES = GAME_PROTOCOL + "services." + GAME_DOMAIN;
-		public static final String GAME_HISCORES = GAME_PROTOCOL + "hiscore." + GAME_DOMAIN;
 	}
 
 	static {
