@@ -167,10 +167,10 @@ public class LocalPath extends Path {
 		if (f_x > 0 && (here & WALL_WEST) == 0 && (meta[f_x - 1][f_y] & BLOCKED) == 0) {
 			tiles.add(new Vertex(x - 1, y));
 		}
-		if (f_y < 105 && (here & WALL_NORTH) == 0 && (meta[f_x][f_y + 1] & BLOCKED) == 0) {
+		if (f_y < 104 - 1 && (here & WALL_NORTH) == 0 && (meta[f_x][f_y + 1] & BLOCKED) == 0) {
 			tiles.add(new Vertex(x, y + 1));
 		}
-		if (f_x < 105 && (here & WALL_EAST) == 0 && (meta[f_x + 1][f_y] & BLOCKED) == 0) {
+		if (f_x < 104 - 1 && (here & WALL_EAST) == 0 && (meta[f_x + 1][f_y] & BLOCKED) == 0) {
 			tiles.add(new Vertex(x + 1, y));
 		}
 		if (f_x > 0 && f_y > 0 && (here & (WALL_SOUTHWEST | WALL_SOUTH | WALL_WEST)) == 0
@@ -179,19 +179,19 @@ public class LocalPath extends Path {
 				&& (meta[f_x - 1][f_y] & (BLOCKED | WALL_SOUTH)) == 0) {
 			tiles.add(new Vertex(x - 1, y - 1));
 		}
-		if (f_x > 0 && f_y < 105 && (here & (WALL_NORTHWEST | WALL_NORTH | WALL_WEST)) == 0
+		if (f_x > 0 && f_y < 104 - 1 && (here & (WALL_NORTHWEST | WALL_NORTH | WALL_WEST)) == 0
 				&& (meta[f_x - 1][f_y + 1] & BLOCKED) == 0
 				&& (meta[f_x][f_y + 1] & (BLOCKED | WALL_WEST)) == 0
 				&& (meta[f_x - 1][f_y] & (BLOCKED | WALL_NORTH)) == 0) {
 			tiles.add(new Vertex(x - 1, y + 1));
 		}
-		if (f_x < 105 && f_y > 0 && (here & (WALL_SOUTHEAST | WALL_SOUTH | WALL_EAST)) == 0
+		if (f_x < 104 - 1 && f_y > 0 && (here & (WALL_SOUTHEAST | WALL_SOUTH | WALL_EAST)) == 0
 				&& (meta[f_x + 1][f_y - 1] & BLOCKED) == 0
 				&& (meta[f_x][f_y - 1] & (BLOCKED | WALL_EAST)) == 0
 				&& (meta[f_x + 1][f_y] & (BLOCKED | WALL_SOUTH)) == 0) {
 			tiles.add(new Vertex(x + 1, y - 1));
 		}
-		if (f_x > 0 && f_y < 105 && (here & (WALL_NORTHEAST | WALL_NORTH | WALL_EAST)) == 0
+		if (f_x < 104 - 1 && f_y < 104 - 1 && (here & (WALL_NORTHEAST | WALL_NORTH | WALL_EAST)) == 0
 				&& (meta[f_x + 1][f_y + 1] & BLOCKED) == 0
 				&& (meta[f_x][f_y + 1] & (BLOCKED | WALL_EAST)) == 0
 				&& (meta[f_x + 1][f_y] & (BLOCKED | WALL_NORTH)) == 0) {
