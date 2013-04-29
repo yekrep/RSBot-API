@@ -17,7 +17,7 @@ import org.powerbot.script.xenon.wrappers.Widget;
 import org.powerbot.util.Tracker;
 
 @Manifest(name = "Spin ticket destroyer", authors = {"Timer"}, description = "Claims or destroys spin tickets")
-public class TicketDestroy extends TaskScript {
+public class TicketDestroy extends TaskScript implements RandomEvent {
 	private static final int[] ITEM_IDS = {24154, 24155};
 
 	public TicketDestroy() {

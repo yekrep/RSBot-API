@@ -10,7 +10,7 @@ import org.powerbot.script.xenon.wrappers.Component;
 import org.powerbot.util.Tracker;
 
 @Manifest(name = "Widget closer", authors = {"Timer"}, description = "Closes widgets")
-public class WidgetCloser extends TaskScript {
+public class WidgetCloser extends TaskScript implements RandomEvent {
 	private static final int[] COMPONENTS = {
 			21 << 16 | 43, // beholding a player's statuette (duellist's cap)
 			1234 << 16 | 15, // membership offers

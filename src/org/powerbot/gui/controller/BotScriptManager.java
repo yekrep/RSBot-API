@@ -7,12 +7,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 import java.util.zip.Inflater;
@@ -31,6 +27,7 @@ import org.powerbot.script.Script;
 import org.powerbot.script.internal.LocalScriptClassLoader;
 import org.powerbot.script.internal.ScriptDefinition;
 import org.powerbot.script.internal.ScriptLoader;
+import org.powerbot.script.internal.randoms.RandomEvent;
 import org.powerbot.service.GameAccounts;
 import org.powerbot.service.GameAccounts.Account;
 import org.powerbot.service.NetworkAccount;
@@ -128,7 +125,7 @@ public class BotScriptManager {
 						}
 						if (Script.class.isAssignableFrom(clazz)) {
 							final Class<? extends Script> script = clazz.asSubclass(Script.class);
-							if (script.isAnnotationPresent(Manifest.class)) {
+							if (script.isAnnotationPresent(Manifest.class) && !Arrays.asList(script.getInterfaces()).contains(RandomEvent.class)) {
 								final ScriptDefinition def = new ScriptDefinition(null, script.getAnnotation(Manifest.class));
 								def.source = parent.getCanonicalFile().toString();
 								def.className = className;

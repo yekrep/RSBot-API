@@ -22,7 +22,7 @@ import org.powerbot.script.xenon.wrappers.Component;
 import org.powerbot.util.Tracker;
 
 @Manifest(name = "Login", authors = {"Timer"}, description = "Enters account credentials to the login screen")
-public class Login extends TaskScript implements PaintListener {
+public class Login extends TaskScript implements RandomEvent, PaintListener {
 	private static final int WIDGET = 596;
 	private static final int WIDGET_LOGIN_ERROR = 13;
 	private static final int WIDGET_LOGIN_TRY_AGAIN = 65;

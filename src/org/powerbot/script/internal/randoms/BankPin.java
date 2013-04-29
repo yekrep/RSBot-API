@@ -12,7 +12,7 @@ import org.powerbot.script.xenon.wrappers.Component;
 import org.powerbot.util.Tracker;
 
 @Manifest(name = "Bank Pin", authors = {"Timer"}, description = "Enters the stored bank pin")
-public class BankPin extends TaskScript {
+public class BankPin extends TaskScript implements RandomEvent {
 	public BankPin() {
 		submit(new Task());
 	}
