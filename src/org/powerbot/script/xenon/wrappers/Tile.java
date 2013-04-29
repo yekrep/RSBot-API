@@ -5,6 +5,7 @@ import java.awt.Polygon;
 
 import org.powerbot.script.xenon.Calculations;
 import org.powerbot.script.xenon.Game;
+import org.powerbot.script.xenon.Movement;
 import org.powerbot.script.xenon.util.Random;
 
 public class Tile extends Interactive implements Locatable {
@@ -64,6 +65,11 @@ public class Tile extends Interactive implements Locatable {
 	public boolean isOnMap() {
 		final Point p = toMap();
 		return p.x != -1 && p.y != -1;
+	}
+
+	public boolean canReach() {
+		final CollisionMap map = Movement.getCollisionMap(plane);
+		return map.canReach(this);
 	}
 
 	@Override
