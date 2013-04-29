@@ -14,6 +14,7 @@ import org.powerbot.script.xenon.wrappers.Component;
 import org.powerbot.script.xenon.wrappers.Item;
 import org.powerbot.script.xenon.wrappers.Player;
 import org.powerbot.script.xenon.wrappers.Widget;
+import org.powerbot.util.Tracker;
 
 @Manifest(name = "Spin ticket destroyer", authors = {"Timer"}, description = "Claims or destroys spin tickets")
 public class TicketDestroy extends TaskScript {
@@ -38,6 +39,7 @@ public class TicketDestroy extends TaskScript {
 
 		@Override
 		public void run() {
+			Tracker.getInstance().trackPage("randoms/TicketDestroy/", "");
 			final Component child = item.getComponent();
 			if (child != null) {
 				if (((Settings.get(1448) & 0xFF00) >>> 8) < (child.getItemId() == ITEM_IDS[0] ? 10 : 9)) {

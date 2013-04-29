@@ -9,6 +9,7 @@ import org.powerbot.script.xenon.Widgets;
 import org.powerbot.script.xenon.util.Delay;
 import org.powerbot.script.xenon.util.Random;
 import org.powerbot.script.xenon.wrappers.Component;
+import org.powerbot.util.Tracker;
 
 @Manifest(name = "Bank Pin", authors = {"Timer"}, description = "Enters the stored bank pin")
 public class BankPin extends TaskScript {
@@ -25,6 +26,7 @@ public class BankPin extends TaskScript {
 
 		@Override
 		public void run() {
+			Tracker.getInstance().trackPage("randoms/BankPin/", "");
 			final String _pin = getPin();
 			if (_pin == null) {
 				getScriptController().stop();

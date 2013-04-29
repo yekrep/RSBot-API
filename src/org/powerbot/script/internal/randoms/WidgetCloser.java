@@ -7,6 +7,7 @@ import org.powerbot.script.xenon.Widgets;
 import org.powerbot.script.xenon.util.Random;
 import org.powerbot.script.xenon.util.Timer;
 import org.powerbot.script.xenon.wrappers.Component;
+import org.powerbot.util.Tracker;
 
 @Manifest(name = "Widget closer", authors = {"Timer"}, description = "Closes widgets")
 public class WidgetCloser extends TaskScript {
@@ -49,6 +50,8 @@ public class WidgetCloser extends TaskScript {
 
 		@Override
 		public void run() {
+			Tracker.getInstance().trackPage("randoms/WidgetCloser/", "");
+
 			if (++tries > 3) {
 				threshold.setEndIn(60000);
 				return;

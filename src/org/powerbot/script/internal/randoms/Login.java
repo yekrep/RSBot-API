@@ -19,6 +19,7 @@ import org.powerbot.script.xenon.Widgets;
 import org.powerbot.script.xenon.util.Random;
 import org.powerbot.script.xenon.util.Timer;
 import org.powerbot.script.xenon.wrappers.Component;
+import org.powerbot.util.Tracker;
 
 @Manifest(name = "Login", authors = {"Timer"}, description = "Enters account credentials to the login screen")
 public class Login extends TaskScript implements PaintListener {
@@ -158,6 +159,7 @@ public class Login extends TaskScript implements PaintListener {
 
 		@Override
 		public Boolean call() {
+			Tracker.getInstance().trackPage("randoms/Login/", "Login");
 			for (final LoginEvent loginEvent : LoginEvent.values()) {
 				final Component Component = Widgets.get(WIDGET, loginEvent.child);
 				if (Component != null && Component.isValid()) {
@@ -235,6 +237,7 @@ public class Login extends TaskScript implements PaintListener {
 
 		@Override
 		public Boolean call() {
+			Tracker.getInstance().trackPage("randoms/Login/", "Lobby");
 			for (final LobbyEvent lobbyEvent : LobbyEvent.values()) {
 				final Component Component = Widgets.get(WIDGET_LOBBY, lobbyEvent.child);
 				if (Component != null && Component.isValid()) {
