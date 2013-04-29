@@ -24,6 +24,7 @@ import org.powerbot.OSXAdapter;
 import org.powerbot.bot.Bot;
 import org.powerbot.gui.component.*;
 import org.powerbot.gui.controller.BotInteract;
+import org.powerbot.ipc.Controller;
 import org.powerbot.ipc.ScheduledChecks;
 import org.powerbot.service.NetworkAccount;
 import org.powerbot.util.*;
@@ -102,6 +103,9 @@ public class BotChrome extends JFrame implements WindowListener {
 		setVisible(false);
 		if (Bot.instantiated()) {
 			Bot.getInstance().stop();
+		}
+		if (NetworkAccount.getInstance().isLoggedIn()) {
+			NetworkAccount.getInstance().sessionQuery(Controller.getInstance().getRunningInstances() - 1);
 		}
 		dispose();
 		System.exit(0);
