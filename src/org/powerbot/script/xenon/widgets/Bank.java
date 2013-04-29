@@ -5,6 +5,9 @@ import java.awt.Rectangle;
 import java.util.Arrays;
 
 import org.powerbot.script.xenon.Keyboard;
+import org.powerbot.script.xenon.Menu;
+import org.powerbot.script.xenon.Npcs;
+import org.powerbot.script.xenon.Objects;
 import org.powerbot.script.xenon.Settings;
 import org.powerbot.script.xenon.Widgets;
 import org.powerbot.script.xenon.tabs.Inventory;
@@ -13,10 +16,30 @@ import org.powerbot.script.xenon.util.Filter;
 import org.powerbot.script.xenon.util.Random;
 import org.powerbot.script.xenon.util.Timer;
 import org.powerbot.script.xenon.wrappers.Component;
+import org.powerbot.script.xenon.wrappers.GameObject;
+import org.powerbot.script.xenon.wrappers.Interactive;
 import org.powerbot.script.xenon.wrappers.Item;
+import org.powerbot.script.xenon.wrappers.Npc;
 import org.powerbot.script.xenon.wrappers.Widget;
 
 public class Bank {
+	public static final int[] BANK_NPC_IDS = new int[]{
+			44, 45, 166, 494, 495, 496, 497, 498, 499, 553, 909, 953, 958, 1036, 1360, 1702, 2163, 2164, 2354, 2355,
+			2568, 2569, 2570, 2617, 2618, 2619, 2718, 2759, 3046, 3198, 3199, 3293, 3416, 3418, 3824, 4456, 4457,
+			4458, 4459, 4519, 4907, 5257, 5258, 5259, 5260, 5488, 5776, 5777, 5901, 6200, 6362, 7049, 7050, 7605,
+			8948, 9710, 13932, 14707, 14923, 14924, 14925, 15194, 16603, 16602
+	};
+	public static final int[] BANK_BOOTH_IDS = new int[]{
+			782, 2213, 3045, 5276, 6084, 10517, 11338, 11758, 12759, 12798, 12799, 12800, 12801, 14369, 14370,
+			16700, 19230, 20325, 20326, 20327, 20328, 22819, 24914, 25808, 26972, 29085, 34752, 35647,
+			36262, 36786, 37474, 49018, 49019, 52397, 52589, 76274, 66665, 66666, 66667, 69024, 69023, 69022
+	};
+	public static final int[] BANK_COUNTER_IDS = new int[]{
+			42217, 42377, 42378, 2012
+	};
+	public static final int[] BANK_CHEST_IDS = new int[]{
+			2693, 4483, 8981, 12308, 14382, 20607, 21301, 27663, 42192, 57437, 62691, 83634, 81756
+	};
 	public static final int WIDGET = 762;
 	public static final int COMPONENT_BUTTON_CLOSE = 45;
 	public static final int COMPONENT_CONTAINER_ITEMS = 95;
@@ -31,6 +54,51 @@ public class Bank {
 	public static boolean isOpen() {
 		final Widget widget = Widgets.get(WIDGET);
 		return widget != null && widget.isValid();
+	}
+
+	public static boolean open() {
+		if (isOpen()) return true;
+		int count = 0;
+		final Interactive[] interactives = {
+				Npcs.getNearest(BANK_NPC_IDS),
+				Objects.getNearest(BANK_BOOTH_IDS),
+				Objects.getNearest(BANK_COUNTER_IDS),
+				Objects.getNearest(BANK_CHEST_IDS),
+		};
+		for (int i = 0; i < interactives.length; i++) {
+			if (interactives[i] != null && interactives[i].isOnScreen()) {
+				interactives[count++] = interactives[i];
+			}
+		}
+		if (count == 0) return false;
+		final Interactive interactive = interactives[Random.nextInt(0, count)];
+		final int id;
+		if (interactive instanceof Npc) id = ((Npc) interactive).getId();
+		else if (interactive instanceof GameObject) id = ((GameObject) interactive).getId();
+		else id = -1;
+		if (id == -1) return false;
+		int index = -1;
+		final int[][] ids = {BANK_NPC_IDS, BANK_BOOTH_IDS, BANK_COUNTER_IDS, BANK_CHEST_IDS};
+		for (int i = 0; i < ids.length; i++) {
+			Arrays.sort(ids[i]);
+			if (Arrays.binarySearch(ids[i], id) >= 0) {
+				index = i;
+				break;
+			}
+		}
+		if (index == -1) return false;
+		final String[] actions = {"Bank", "Bank", null, "Bank"};
+		final String[] options = {null, "Bank booth", null, "Counter"};
+		if (actions[index] == null) {
+			interactive.hover();
+			actions[index] = Menu.indexOf("Open") != -1 ? "Open" : Menu.indexOf("Use") != -1 ? "Use" : null;
+			if (actions[index] == null) return false;
+		}
+		if (interactive.interact(actions[index], options[index])) {
+			final Widget bankPin = Widgets.get(13);
+			for (int i = 0; i < 20 && !isOpen() && !bankPin.isValid(); i++) Delay.sleep(200, 300);
+		}
+		return isOpen();
 	}
 
 	public static boolean close(final boolean wait) {
