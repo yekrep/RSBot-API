@@ -92,6 +92,21 @@ public class Objects {
 		return Arrays.copyOf(set, d);
 	}
 
+	public static GameObject[] getLoaded(final int... ids) {
+		return getLoaded(LOADED_DIST, ids);
+	}
+
+	public static GameObject[] getLoaded(final int range, final int... ids) {
+		return getLoaded(range, new Filter<GameObject>() {
+			@Override
+			public boolean accept(final GameObject gameObject) {
+				final int objectId = gameObject.getId();
+				for (final int id : ids) if (objectId == id) return true;
+				return false;
+			}
+		});
+	}
+
 	public static GameObject getNearest(final Filter<GameObject> filter) {
 		return getNearest(LOADED_DIST, filter);
 	}
@@ -115,5 +130,20 @@ public class Objects {
 		}
 
 		return nearest;
+	}
+
+	public static GameObject getNearest(final int range, final int[] ids) {
+		return getNearest(range, new Filter<GameObject>() {
+			@Override
+			public boolean accept(final GameObject gameObject) {
+				final int objectId = gameObject.getId();
+				for (final int id : ids) if (objectId == id) return true;
+				return false;
+			}
+		});
+	}
+
+	public static GameObject getNearest(final int... ids) {
+		return getNearest(LOADED_DIST, ids);
 	}
 }
