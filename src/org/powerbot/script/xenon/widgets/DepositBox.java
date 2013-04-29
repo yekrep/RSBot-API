@@ -3,6 +3,7 @@ package org.powerbot.script.xenon.widgets;
 import java.util.Arrays;
 
 import org.powerbot.script.xenon.Keyboard;
+import org.powerbot.script.xenon.Objects;
 import org.powerbot.script.xenon.Widgets;
 import org.powerbot.script.xenon.tabs.Inventory;
 import org.powerbot.script.xenon.util.Delay;
@@ -10,10 +11,15 @@ import org.powerbot.script.xenon.util.Filter;
 import org.powerbot.script.xenon.util.Random;
 import org.powerbot.script.xenon.util.Timer;
 import org.powerbot.script.xenon.wrappers.Component;
+import org.powerbot.script.xenon.wrappers.GameObject;
 import org.powerbot.script.xenon.wrappers.Item;
 import org.powerbot.script.xenon.wrappers.Widget;
 
 public class DepositBox {
+	public static final int[] DEPOSIT_BOX_IDS = new int[]{
+			2045, 2133, 6396, 6402, 6404, 6417, 6418, 6453, 6457, 6478, 6836, 9398, 15985, 20228, 24995, 25937, 26969,
+			32924, 32930, 32931, 34755, 36788, 39830, 45079, 66668, 70512, 73268
+	};
 	public static final int WIDGET = 11;
 	public static final int COMPONENT_BUTTON_CLOSE = 15;
 	public static final int COMPONENT_CONTAINER_ITEMS = 17;
@@ -25,6 +31,16 @@ public class DepositBox {
 	public static boolean isOpen() {
 		final Widget widget = Widgets.get(WIDGET);
 		return widget != null && widget.isValid();
+	}
+
+	public static boolean open() {
+		if (isOpen()) return true;
+		final GameObject object = Objects.getNearest(DEPOSIT_BOX_IDS);
+		if (object.interact("Deposit")) {
+			final Widget bankPin = Widgets.get(13);
+			for (int i = 0; i < 20 && !isOpen() && !bankPin.isValid(); i++) Delay.sleep(200, 300);
+		}
+		return isOpen();
 	}
 
 	public static boolean close(final boolean wait) {
