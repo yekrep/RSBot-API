@@ -1,15 +1,14 @@
 package org.powerbot.util.io;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.attribute.BasicFileAttributeView;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.nio.file.attribute.FileTime;
 import java.security.GeneralSecurityException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -37,7 +36,7 @@ import org.powerbot.util.StringUtil;
  */
 public final class CryptFile {
 	public static final Map<File, Class<?>[]> PERMISSIONS = new HashMap<File, Class<?>[]>();
-	private static final long TIMESTAMP = 1346067355497L;
+	private static final long TIMESTAMP = 1346067355497L, GCTIME = 1000 * 60 * 60 * 24 * 3;
 	private static volatile SecretKey key;
 
 	private final File store;
@@ -56,13 +55,19 @@ public final class CryptFile {
 	}
 
 	public InputStream download(final URL url) throws IOException {
-		final HttpURLConnection con = HttpClient.getHttpConnection(url);
+		return download(HttpClient.getHttpConnection(url));
+	}
 
+	public InputStream download(final HttpURLConnection con) throws IOException {
 		if (exists()) {
-			con.setIfModifiedSince(store.lastModified());
+			try {
+				con.setIfModifiedSince(store.lastModified());
+			} catch (final IllegalStateException ignored) {
+			}
 		}
 
-		if (con.getResponseCode() != HttpURLConnection.HTTP_NOT_MODIFIED) {
+		if (con.getResponseCode() != HttpURLConnection.HTTP_NOT_MODIFIED &&
+				(exists() ? con.getLastModified() > store.lastModified() : true)) {
 			IOHelper.write(HttpClient.getInputStream(con), getOutputStream());
 		}
 
@@ -74,6 +79,7 @@ public final class CryptFile {
 		if (!store.isFile()) {
 			throw new FileNotFoundException(store.toString());
 		}
+		Files.getFileAttributeView(store.toPath(), BasicFileAttributeView.class).setTimes(null, FileTime.fromMillis(System.currentTimeMillis()), null);
 		if (store.length() == 0L) {
 			return new ByteArrayInputStream(new byte[]{});
 		}
@@ -167,34 +173,80 @@ public final class CryptFile {
 		final long uid = Configuration.getUID();
 		String hash = null;
 
+		final String[] parts = id.split("/", 2);
+		final String name = parts[parts.length == 2 ? 1 : 0], dir = parts.length == 2 ? parts[0] : "";
+
 		final MessageDigest md;
 		try {
 			md = MessageDigest.getInstance("SHA-1");
-			md.update(StringUtil.getBytesUtf8(id));
+			md.update(StringUtil.getBytesUtf8(name));
 			for (int i = 0; i < 8; i++) {
 				md.update((byte) ((uid >> (i << 3)) & 0xff));
 			}
 			hash = StringUtil.newStringUtf8(Base64.encode(md.digest()));
 			hash = "etilqs_" + hash.replaceAll("[^A-Za-z0-0]", "").substring(0, 15);
 		} catch (final NoSuchAlgorithmException ignored) {
-			final Adler32 c = new Adler32();
-			c.update(StringUtil.getBytesUtf8(id));
-			c.update((int) (uid & 0xffffffff));
-			c.update((int) (uid >> 32));
-			final long l = c.getValue();
-			hash = Long.toHexString(l);
+			hash = getCrc32(name, uid);
 		}
 
 		if (hash == null) {
-			hash = Integer.toHexString(id.hashCode());
+			hash = Integer.toHexString(name.hashCode());
 		}
 
-		final File file = new File(System.getProperty("java.io.tmpdir"), hash);
+		final File file;
+
+		if (dir.length() != 0) {
+			gc(dir, uid);
+			final File parent = getSecureDirName(dir, uid);
+			if (!parent.isDirectory()) {
+				parent.mkdirs();
+			}
+			file = new File(parent, hash);
+		} else {
+			file = new File(getRoot(), hash);
+		}
 
 		if (file.isFile() && file.lastModified() < TIMESTAMP) {
 			file.delete();
 		}
 
+		System.out.println(id + ": " + file.getAbsolutePath());
+
 		return file;
+	}
+
+	private static File getSecureDirName(final String dir, final long uid) {
+		return new File(getRoot(), getCrc32(dir, uid));
+	}
+
+	private static File getRoot() {
+		return new File(System.getProperty("java.io.tmpdir"));
+	}
+
+	private static String getCrc32(final String s, final long uid) {
+		final Adler32 c = new Adler32();
+		c.update(StringUtil.getBytesUtf8(s));
+		c.update((int) (uid & 0xffffffff));
+		c.update((int) (uid >> 32));
+		final long l = c.getValue();
+		return Long.toHexString(l);
+	}
+
+	private static void gc(final String dir, final long uid) {
+		final File file = getSecureDirName(dir, uid);
+
+		if (!file.isDirectory()) {
+			return;
+		}
+
+		for (final File f : file.listFiles()) {
+			try {
+				final long a = Files.readAttributes(f.toPath(), BasicFileAttributes.class).lastAccessTime().toMillis();
+				if (a < System.currentTimeMillis() - GCTIME) {
+					f.delete();
+				}
+			} catch (final IOException ignored) {
+			}
+		}
 	}
 }
