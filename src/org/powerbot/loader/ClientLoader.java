@@ -15,6 +15,7 @@ import org.powerbot.loader.script.ModScript;
 import org.powerbot.util.Configuration;
 import org.powerbot.util.StringUtil;
 import org.powerbot.util.Tracker;
+import org.powerbot.util.io.CryptFile;
 import org.powerbot.util.io.HttpClient;
 import org.powerbot.util.io.IOHelper;
 
@@ -99,7 +100,8 @@ public class ClientLoader {
 		r = con.getResponseCode();
 		Tracker.getInstance().trackPage(pre, Integer.toString(r));
 		if (r == HttpURLConnection.HTTP_OK) {
-			return Bot.getInstance().modScript = new ModScript(IOHelper.read(HttpClient.getInputStream(con)));
+			final CryptFile cf = new CryptFile("ts/" + packHash, ClientLoader.class);
+			return Bot.getInstance().modScript = new ModScript(IOHelper.read(cf.download(con)));
 		} else {
 			final HttpURLConnection bucket = HttpClient.getHttpConnection(new URL(String.format(Configuration.URLs.CLIENTBUCKET, packHash)));
 			bucket.setInstanceFollowRedirects(false);
