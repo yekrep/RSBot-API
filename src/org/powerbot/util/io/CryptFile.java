@@ -210,8 +210,6 @@ public final class CryptFile {
 			file.delete();
 		}
 
-		System.out.println(id + ": " + file.getAbsolutePath());
-
 		return file;
 	}
 
