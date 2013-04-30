@@ -145,7 +145,7 @@ public class Hiscores {
 	 * @param key the {@link org.powerbot.script.xenon.net.Hiscores.Stats} to lookup
 	 * @return the associated {@link org.powerbot.script.xenon.net.Hiscores.SkillStats}
 	 */
-	public SkillStats getSkills(final Stats key) {
+	public SkillStats getSkill(final Stats key) {
 		return skills.get(key);
 	}
 
@@ -155,7 +155,7 @@ public class Hiscores {
 	 * @param key the {@link org.powerbot.script.xenon.net.Hiscores.Stats} to lookup
 	 * @return the associated {@link org.powerbot.script.xenon.net.Hiscores.ActivityStats}
 	 */
-	public ActivityStats getActivities(final Stats key) {
+	public ActivityStats getActivity(final Stats key) {
 		return activities.get(key);
 	}
 
