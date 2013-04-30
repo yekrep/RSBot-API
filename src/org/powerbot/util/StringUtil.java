@@ -1,5 +1,7 @@
 package org.powerbot.util;
 
+import org.powerbot.util.io.Base64;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.io.PrintWriter;
@@ -8,6 +10,9 @@ import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.zip.Adler32;
 
 public class StringUtil {
 	public static String stripHtml(final String s) {
@@ -111,5 +116,20 @@ public class StringUtil {
 			data[i / 2] = (byte) ((Character.digit(s.charAt(i), 16) << 4) + Character.digit(s.charAt(i + 1), 16));
 		}
 		return data;
+	}
+
+	public static String getHash(final byte[] b) {
+		String h;
+		final MessageDigest md;
+		try {
+			md = MessageDigest.getInstance("SHA-1");
+			md.update(b);
+			h = StringUtil.newStringUtf8(Base64.encode(md.digest()));
+		} catch (final NoSuchAlgorithmException ignored) {
+			final Adler32 c = new Adler32();
+			c.update(b);
+			h = Long.toHexString(c.getValue());
+		}
+		return h;
 	}
 }
