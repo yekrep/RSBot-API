@@ -123,8 +123,8 @@ public class BotScriptManager {
 						} catch (final NoClassDefFoundError ignored) {
 							continue;
 						}
-						if (Script.class.isAssignableFrom(clazz)) {
-							final Class<? extends Script> script = clazz.asSubclass(Script.class);
+						if (AbstractScript.class.isAssignableFrom(clazz)) {
+							final Class<? extends AbstractScript> script = clazz.asSubclass(AbstractScript.class);
 							if (script.isAnnotationPresent(Manifest.class) && !Arrays.asList(script.getInterfaces()).contains(RandomEvent.class)) {
 								final ScriptDefinition def = new ScriptDefinition(null, script.getAnnotation(Manifest.class));
 								def.source = parent.getCanonicalFile().toString();
