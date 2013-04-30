@@ -148,7 +148,9 @@ public class ScriptManager implements ExecutorDispatch<Boolean>, Runnable, Stopp
 		for (final FutureTask<Boolean> task : pending) {
 			boolean result = false;
 			try {
-				result = task.get();
+				if (!task.isCancelled()) {
+					result = task.get();
+				}
 			} catch (InterruptedException | ExecutionException ignored) {
 			}
 			if (!result) {
