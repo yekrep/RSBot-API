@@ -56,9 +56,14 @@ public abstract class PollingScript extends AbstractScript implements Suspendabl
 	@Override
 	public final void run() {
 		start();
-		while (!stopping.get()) {
-			sleep(Math.max(0, suspended.get() ? 600 : poll()));
-		}
+		getScriptController().getExecutorService().submit(new Runnable() {
+			@Override
+			public void run() {
+				while (!stopping.get()) {
+					sleep(Math.max(0, suspended.get() ? 600 : poll()));
+				}
+			}
+		});
 	}
 
 	/**
