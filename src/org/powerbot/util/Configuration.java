@@ -15,10 +15,10 @@ import org.powerbot.util.io.Resources;
  * @author Paris
  */
 public class Configuration {
-	public static final String NAME = "RSBot", TITLE = NAME + " 4S";
+	public static final String NAME = "RSBot", TITLE = NAME + " 5";
 	public static final boolean FROMJAR;
 	public static final boolean SUPERDEV;
-	public static final int VERSION = 4053;
+	public static final int VERSION = 5000;
 	public static final boolean BETA = true;
 	public static volatile int VERSION_LATEST = -1;
 	public static final OperatingSystem OS;
