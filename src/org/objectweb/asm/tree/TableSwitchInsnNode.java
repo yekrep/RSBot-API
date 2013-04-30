@@ -47,23 +47,23 @@ public class TableSwitchInsnNode extends AbstractInsnNode {
 	/**
 	 * The minimum key value.
 	 */
-	public int min;
+	public final int min;
 
 	/**
 	 * The maximum key value.
 	 */
-	public int max;
+	public final int max;
 
 	/**
 	 * Beginning of the default handler block.
 	 */
-	public LabelNode dflt;
+	public final LabelNode dflt;
 
 	/**
 	 * Beginnings of the handler blocks. This list is a list of
 	 * {@link org.objectweb.asm.tree.LabelNode} objects.
 	 */
-	public List<LabelNode> labels;
+	public final List<LabelNode> labels;
 
 	/**
 	 * Constructs a new {@link org.objectweb.asm.tree.TableSwitchInsnNode}.
@@ -83,7 +83,7 @@ public class TableSwitchInsnNode extends AbstractInsnNode {
 		this.min = min;
 		this.max = max;
 		this.dflt = dflt;
-		this.labels = new ArrayList<LabelNode>();
+		this.labels = new ArrayList<>();
 		if (labels != null) {
 			this.labels.addAll(Arrays.asList(labels));
 		}

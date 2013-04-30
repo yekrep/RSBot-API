@@ -39,12 +39,7 @@ public final class BotSignin extends JDialog implements ActionListener {
 
 	private final BotChrome parent;
 	private final JButton signin;
-	private final JLabel labelUsername;
-	private final JLabel labelPassword;
-	private final JLabel lostPass;
 	private final JLabel register;
-	private final JLabel info;
-	private final JPanel panelSide;
 	private final JTextField username;
 	private final JPasswordField password;
 
@@ -53,15 +48,15 @@ public final class BotSignin extends JDialog implements ActionListener {
 		this.parent = parent;
 		setFont(getFont().deriveFont(getFont().getSize2D() * 1.5f));
 
-		labelUsername = new JLabel();
+		JLabel labelUsername = new JLabel();
 		username = new JTextField();
-		labelPassword = new JLabel();
+		JLabel labelPassword = new JLabel();
 		password = new JPasswordField();
 		signin = new JButton();
-		lostPass = new JLabel();
+		JLabel lostPass = new JLabel();
 		register = new JLabel();
-		panelSide = new JPanel();
-		info = new JLabel();
+		JPanel panelSide = new JPanel();
+		JLabel info = new JLabel();
 
 		for (final Component c : new Component[]{labelUsername, username, labelPassword, password, signin, lostPass, register, panelSide, info}) {
 			c.setFont(getFont());

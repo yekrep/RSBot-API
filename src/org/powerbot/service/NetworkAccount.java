@@ -29,7 +29,7 @@ public final class NetworkAccount {
 	public static final int VIP = 1, DEVELOPER = 2, ADMIN = 4, LOCALSCRIPTS = 8, ORDER = 8;
 
 	private NetworkAccount() {
-		props = new HashMap<String, String>();
+		props = new HashMap<>();
 		store = new CryptFile(STORENAME, NetworkAccount.class);
 		revalidate();
 	}
@@ -172,7 +172,7 @@ public final class NetworkAccount {
 
 		if (isLoggedIn()) {
 			props.put(CREATEDKEY, Long.toString(System.currentTimeMillis()));
-			final Map<String, Map<String, String>> map = new HashMap<String, Map<String, String>>();
+			final Map<String, Map<String, String>> map = new HashMap<>();
 			map.put(IniParser.EMPTYSECTION, props);
 			try {
 				IniParser.serialise(map, store.getOutputStream());

@@ -15,7 +15,7 @@ import org.powerbot.util.Configuration;
  * @author Timer
  */
 public class RSLoader extends Applet implements Runnable {
-	private static Logger log = Logger.getLogger(RSLoader.class.getName());
+	private static final Logger log = Logger.getLogger(RSLoader.class.getName());
 	private Runnable callback;
 	private Class<?> clazz;
 	private Object client;

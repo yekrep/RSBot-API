@@ -121,10 +121,10 @@ public class Menu {
 			return false;
 		}
 		if (isCollapsed()) {
-			final Queue<MenuGroupNode> groups = new Queue<MenuGroupNode>(Context.client().getCollapsedMenuItems());
+			final Queue<MenuGroupNode> groups = new Queue<>(Context.client().getCollapsedMenuItems());
 			int idx = 0, mainIdx = 0;
 			for (MenuGroupNode g = groups.getHead(); g != null; g = groups.getNext(), ++mainIdx) {
-				final Queue<MenuItemNode> subItems = new Queue<MenuItemNode>(g.getItems());
+				final Queue<MenuItemNode> subItems = new Queue<>(g.getItems());
 				int subIdx = 0;
 				for (MenuItemNode item = subItems.getHead(); item != null; item = subItems.getNext(), ++subIdx) {
 					if (idx++ == i) {
@@ -142,7 +142,7 @@ public class Menu {
 		final String[] options = getOptions();
 		final String[] actions = getActions();
 
-		final LinkedList<String> output = new LinkedList<String>();
+		final LinkedList<String> output = new LinkedList<>();
 
 		final int len = Math.min(options.length, actions.length);
 		for (int i = 0; i < len; i++) {
@@ -238,14 +238,14 @@ public class Menu {
 	}
 
 	public static String[] getMenuItemPart(final boolean firstPart) {
-		final LinkedList<String> itemsList = new LinkedList<String>();
+		final LinkedList<String> itemsList = new LinkedList<>();
 		final Client client = Context.client();
 		String firstAction = null;
 		if (isCollapsed()) {
-			final Queue<MenuGroupNode> menu = new Queue<MenuGroupNode>(client.getCollapsedMenuItems());
+			final Queue<MenuGroupNode> menu = new Queue<>(client.getCollapsedMenuItems());
 			try {
 				for (MenuGroupNode mgn = menu.getHead(); mgn != null; mgn = menu.getNext()) {
-					final Queue<MenuItemNode> submenu = new Queue<MenuItemNode>(mgn.getItems());
+					final Queue<MenuItemNode> submenu = new Queue<>(mgn.getItems());
 					for (MenuItemNode min = submenu.getHead(); min != null; min = submenu.getNext()) {
 						if (firstAction == null || firstAction.isEmpty()) {
 							firstAction = min.getAction();
@@ -259,7 +259,7 @@ public class Menu {
 			}
 		} else {
 			try {
-				final Deque<MenuItemNode> menu = new Deque<MenuItemNode>(client.getMenuItems());
+				final Deque<MenuItemNode> menu = new Deque<>(client.getMenuItems());
 				for (MenuItemNode min = menu.getHead(); min != null; min = menu.getNext()) {
 					if (firstAction == null || firstAction.isEmpty()) {
 						firstAction = min.getAction();
@@ -272,7 +272,7 @@ public class Menu {
 			}
 		}
 		final String[] items = itemsList.toArray(new String[itemsList.size()]);
-		final LinkedList<String> output = new LinkedList<String>();
+		final LinkedList<String> output = new LinkedList<>();
 		for (final String item : items) {
 			output.add(item == null ? "" : stripFormatting(item));
 		}

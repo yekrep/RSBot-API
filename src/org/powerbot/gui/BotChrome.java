@@ -36,10 +36,10 @@ import org.powerbot.util.io.Resources;
 public class BotChrome extends JFrame implements WindowListener {
 	private static final long serialVersionUID = 1L;
 	private static BotChrome instance;
-	private static Logger log = Logger.getLogger(BotChrome.class.getName());
+	private static final Logger log = Logger.getLogger(BotChrome.class.getName());
 	public static final int PANEL_WIDTH = 765, PANEL_HEIGHT = 553;
-	public BotPanel panel;
-	public JScrollPane logpane;
+	public final BotPanel panel;
+	public final JScrollPane logpane;
 	public static volatile boolean loaded = false;
 	public static volatile boolean minimised = false;
 
@@ -76,7 +76,7 @@ public class BotChrome extends JFrame implements WindowListener {
 		Tracker.getInstance().trackPage("", getTitle());
 
 		final ExecutorService exec = Executors.newFixedThreadPool(1);
-		final List<Future<Boolean>> tasks = new ArrayList<Future<Boolean>>();
+		final List<Future<Boolean>> tasks = new ArrayList<>();
 		tasks.add(exec.submit(new LoadUpdates()));
 		tasks.add(exec.submit(new LoadOSX()));
 		tasks.add(exec.submit(new LoadAccount()));

@@ -47,7 +47,7 @@ public class BotSettingExplorer extends JFrame {
 	private int current = -1;
 	private int[] settings_cache = null;
 	private boolean paused = false;
-	private final HashMap<Integer, String> lastChanges = new HashMap<Integer, String>();
+	private final HashMap<Integer, String> lastChanges = new HashMap<>();
 
 	private String[] lastLabels = null;
 	private JTextArea info = null;
@@ -161,7 +161,7 @@ public class BotSettingExplorer extends JFrame {
 		westPane.setLayout(new BorderLayout());
 		contentPane.add(westPane, BorderLayout.WEST);
 
-		settingsList = new JList<String>();
+		settingsList = new JList<>();
 		settingsList.setFont(font);
 		settingsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		settingsList.addListSelectionListener(new ListSelectionListener() {

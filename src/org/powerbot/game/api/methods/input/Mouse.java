@@ -27,8 +27,8 @@ import org.powerbot.script.xenon.util.Delay;
  */
 @Deprecated
 public class Mouse {
-	private static final Map<ThreadGroup, Integer> dragLengths = new HashMap<ThreadGroup, Integer>();
-	private static final Map<ThreadGroup, Integer> sides = new HashMap<ThreadGroup, Integer>();
+	private static final Map<ThreadGroup, Integer> dragLengths = new HashMap<>();
+	private static final Map<ThreadGroup, Integer> sides = new HashMap<>();
 
 	public static void setSpeed(final Speed speed) {
 	}

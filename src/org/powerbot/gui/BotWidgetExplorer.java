@@ -46,8 +46,8 @@ import org.powerbot.util.io.Resources;
 public class BotWidgetExplorer extends JFrame implements PaintListener {
 	private static final long serialVersionUID = 1L;
 	private static BotWidgetExplorer instance;
-	private JTree tree;
-	private WidgetTreeModel treeModel;
+	private final JTree tree;
+	private final WidgetTreeModel treeModel;
 	private JPanel infoArea;
 	private JTextField searchBox;
 	private Rectangle highlightArea = null;
@@ -208,8 +208,8 @@ public class BotWidgetExplorer extends JFrame implements PaintListener {
 
 	private final class WidgetTreeModel implements TreeModel {
 		private final Object root = new Object();
-		private final List<TreeModelListener> treeModelListeners = new ArrayList<TreeModelListener>();
-		private final List<WidgetWrapper> widgetWrappers = new ArrayList<WidgetWrapper>();
+		private final List<TreeModelListener> treeModelListeners = new ArrayList<>();
+		private final List<WidgetWrapper> widgetWrappers = new ArrayList<>();
 
 		public Object getRoot() {
 			return root;
@@ -318,7 +318,7 @@ public class BotWidgetExplorer extends JFrame implements PaintListener {
 	}
 
 	private final class WidgetWrapper {
-		private Widget widget;
+		private final Widget widget;
 
 		public WidgetWrapper(final Widget widget) {
 			this.widget = widget;
@@ -340,7 +340,7 @@ public class BotWidgetExplorer extends JFrame implements PaintListener {
 	}
 
 	private final class WidgetChildWrapper {
-		private WidgetChild widgetChild;
+		private final WidgetChild widgetChild;
 
 		public WidgetChildWrapper(final WidgetChild widgetChild) {
 			this.widgetChild = widgetChild;

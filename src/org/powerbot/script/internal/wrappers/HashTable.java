@@ -6,7 +6,7 @@ import java.util.NoSuchElementException;
 import org.powerbot.game.client.Node;
 
 public class HashTable implements Iterator<Node>, Iterable<Node> {
-	private org.powerbot.game.client.HashTable nc;
+	private final org.powerbot.game.client.HashTable nc;
 	private volatile Node current;
 	private volatile int cursor;
 

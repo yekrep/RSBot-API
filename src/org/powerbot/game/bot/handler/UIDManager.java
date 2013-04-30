@@ -12,10 +12,11 @@ import org.powerbot.util.io.IOHelper;
  * @author Timer
  */
 public class UIDManager {
-	private static String newline = System.getProperty("line.separator"), separator = "#";
+	private static final String newline = System.getProperty("line.separator");
+	private static final String separator = "#";
 	private final CryptFile store;
 
-	private HashMap<String, byte[]> uids = new HashMap<String, byte[]>();
+	private final HashMap<String, byte[]> uids = new HashMap<>();
 	private String lastUsed = "";
 
 	public UIDManager() {

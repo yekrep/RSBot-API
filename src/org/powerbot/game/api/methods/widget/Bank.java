@@ -307,7 +307,7 @@ public class Bank {
 			return new Item[0];
 		}
 		final WidgetChild[] slots = Widgets.get(WIDGET_BANK, WIDGET_SLOTS_CONTAINER).getChildren();
-		final ArrayList<Item> items = new ArrayList<Item>(slots.length);
+		final ArrayList<Item> items = new ArrayList<>(slots.length);
 		for (final WidgetChild slot : slots) {
 			if (slot != null && slot.getChildId() != -1 && (!currentTabOnly || slot.getRelativeY() != 0)) {
 				final Item item = new Item(slot);
@@ -505,7 +505,7 @@ public class Bank {
 	}
 
 	private static Locatable[] getLoadedBanks() {
-		final ArrayList<Locatable> banks = new ArrayList<Locatable>();
+		final ArrayList<Locatable> banks = new ArrayList<>();
 		final NPC[] loadedNPCs = NPCs.getLoaded(BANK_NPC_IDS);
 		for (final NPC npc : loadedNPCs) {
 			if (npc.validate() && ALL_FILTER.accept(npc)) {

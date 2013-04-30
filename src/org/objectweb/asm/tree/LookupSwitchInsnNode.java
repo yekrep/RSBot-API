@@ -47,18 +47,18 @@ public class LookupSwitchInsnNode extends AbstractInsnNode {
 	/**
 	 * Beginning of the default handler block.
 	 */
-	public LabelNode dflt;
+	public final LabelNode dflt;
 
 	/**
 	 * The values of the keys. This list is a list of {@link Integer} objects.
 	 */
-	public List<Integer> keys;
+	public final List<Integer> keys;
 
 	/**
 	 * Beginnings of the handler blocks. This list is a list of
 	 * {@link org.objectweb.asm.tree.LabelNode} objects.
 	 */
-	public List<LabelNode> labels;
+	public final List<LabelNode> labels;
 
 	/**
 	 * Constructs a new {@link org.objectweb.asm.tree.LookupSwitchInsnNode}.
@@ -74,8 +74,8 @@ public class LookupSwitchInsnNode extends AbstractInsnNode {
 			final LabelNode[] labels) {
 		super(Opcodes.LOOKUPSWITCH);
 		this.dflt = dflt;
-		this.keys = new ArrayList<Integer>(keys == null ? 0 : keys.length);
-		this.labels = new ArrayList<LabelNode>(labels == null ? 0 : labels.length);
+		this.keys = new ArrayList<>(keys == null ? 0 : keys.length);
+		this.labels = new ArrayList<>(labels == null ? 0 : labels.length);
 		if (keys != null) {
 			for (int i = 0; i < keys.length; ++i) {
 				this.keys.add(new Integer(keys[i]));

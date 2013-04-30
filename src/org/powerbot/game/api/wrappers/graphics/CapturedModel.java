@@ -14,13 +14,13 @@ import org.powerbot.script.xenon.Calculations;
 @Deprecated
 public abstract class CapturedModel {
 	protected int[] xPoints;
-	protected int[] yPoints;
+	protected final int[] yPoints;
 	protected int[] zPoints;
-	protected short[] faceA;
-	protected short[] faceB;
-	protected short[] faceC;
-	protected int numVertices;
-	protected int numFaces;
+	protected final short[] faceA;
+	protected final short[] faceB;
+	protected final short[] faceC;
+	protected final int numVertices;
+	protected final int numFaces;
 
 	public CapturedModel(final org.powerbot.game.client.Model model) {
 		xPoints = model.getXPoints();

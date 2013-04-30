@@ -16,7 +16,7 @@ import org.powerbot.game.api.wrappers.node.SceneObject;
 import org.powerbot.event.PaintListener;
 
 public class DrawScene implements PaintListener {
-	private static final HashMap<Integer, Color> color_map = new HashMap<Integer, Color>();
+	private static final HashMap<Integer, Color> color_map = new HashMap<>();
 
 	static {
 		color_map.put(SceneEntities.TYPE_BOUNDARY, Color.BLACK);

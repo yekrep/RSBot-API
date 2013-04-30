@@ -196,7 +196,7 @@ public class DepositBox {
 			return new Item[0];
 		}
 		final WidgetChild[] slots = Widgets.get(WIDGET_DEPOSIT_BOX, WIDGET_SLOTS_CONTAINER).getChildren();
-		final ArrayList<Item> items = new ArrayList<Item>();
+		final ArrayList<Item> items = new ArrayList<>();
 		for (final WidgetChild slot : slots) {
 			if (slot.getChildId() != -1) {
 				items.add(new Item(slot));
@@ -210,7 +210,7 @@ public class DepositBox {
 			return new Item[0];
 		}
 		final WidgetChild[] slots = Widgets.get(WIDGET_DEPOSIT_BOX, WIDGET_SLOTS_CONTAINER).getChildren();
-		final ArrayList<Item> items = new ArrayList<Item>();
+		final ArrayList<Item> items = new ArrayList<>();
 		for (final WidgetChild slot : slots) {
 			final Item item;
 			if (slot.getChildId() != -1 && filter.accept(item = new Item(slot))) {

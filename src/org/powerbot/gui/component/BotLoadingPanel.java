@@ -38,7 +38,7 @@ import org.powerbot.util.io.Resources;
 public final class BotLoadingPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	public final JLabel status, info;
-	private static final Map<ThreadGroup, LogRecord> logRecord = new HashMap<ThreadGroup, LogRecord>();
+	private static final Map<ThreadGroup, LogRecord> logRecord = new HashMap<>();
 	private ThreadGroup listeningGroup = null;
 	public static final int PANEL_WIDTH = 728, PANEL_HEIGHT = 120;
 	public final DisplayAd ad;

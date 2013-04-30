@@ -9,11 +9,6 @@ import org.powerbot.game.client.input.Mouse;
 import org.powerbot.event.PaintListener;
 
 public class DrawMouse implements PaintListener {
-	private final Bot bot;
-
-	public DrawMouse(final Bot bot) {
-		this.bot = bot;
-	}
 
 	public void onRepaint(final Graphics render) {
 		final Client client = Bot.client();

@@ -12,7 +12,7 @@ public final class SkillData {
 	public final int[] initialExp = new int[NUM_SKILL];
 	public final int[] initialLevels = new int[NUM_SKILL];
 
-	private Timer timer;
+	private final Timer timer;
 
 	public static enum Rate {
 		MINUTE(60000d),

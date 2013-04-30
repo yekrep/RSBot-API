@@ -90,12 +90,12 @@ public class IniParser {
 	}
 
 	public static Map<String, Map<String, String>> deserialise(final BufferedReader br) throws IOException {
-		final Map<String, Map<String, String>> data = new HashMap<String, Map<String, String>>();
+		final Map<String, Map<String, String>> data = new HashMap<>();
 		deserialise(br, data, new TreeMap<String, String>());
 		return data;
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({"unchecked", "RedundantArrayCreation"})
 	public static void deserialise(final BufferedReader br, final Map<String, Map<String, String>> data, final Map<String, String> keys) throws IOException {
 		String line, section = EMPTYSECTION, key = "";
 		boolean multiline = false;
@@ -140,7 +140,7 @@ public class IniParser {
 					} catch (final Exception ignored) {
 					}
 					if (map == null) {
-						map = new HashMap<String, String>();
+						map = new HashMap<>();
 					}
 					data.put(section, map);
 				}

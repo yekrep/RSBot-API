@@ -35,7 +35,7 @@ import org.powerbot.util.StringUtil;
  * @author Paris
  */
 public final class CryptFile {
-	public static final Map<File, Class<?>[]> PERMISSIONS = new HashMap<File, Class<?>[]>();
+	public static final Map<File, Class<?>[]> PERMISSIONS = new HashMap<>();
 	private static final long TIMESTAMP = 1346067355497L, GCTIME = 1000 * 60 * 60 * 24 * 3;
 	private static volatile SecretKey key;
 
@@ -171,7 +171,7 @@ public final class CryptFile {
 
 	private static File getSecureFile(final String id) {
 		final long uid = Configuration.getUID();
-		String hash = null;
+		String hash;
 
 		final String[] parts = id.split("/", 2);
 		final String name = parts[parts.length == 2 ? 1 : 0], dir = parts.length == 2 ? parts[0] : "";

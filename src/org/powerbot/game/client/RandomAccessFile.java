@@ -30,7 +30,7 @@ public class RandomAccessFile {
 		}
 	}
 
-	private boolean shouldOverride(final String filename) throws FileNotFoundException {
+	private boolean shouldOverride(final String filename) {
 		if (filename.equals("random.dat")) {
 			uidData = new UIDManager();
 			return true;
@@ -56,7 +56,7 @@ public class RandomAccessFile {
 		}
 	}
 
-	private void saveData() throws IOException {
+	private void saveData() {
 		if (uidData != null && data != null) {
 			uidData.setUID(client != null ? client.getCurrentUsername() : "", data);
 			uidData.save();
@@ -79,7 +79,7 @@ public class RandomAccessFile {
 		return raf.length();
 	}
 
-	public int read() throws IOException {
+	public int read() {
 		try {
 			checkData();
 

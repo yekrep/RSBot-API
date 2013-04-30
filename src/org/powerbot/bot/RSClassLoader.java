@@ -18,7 +18,7 @@ import org.powerbot.game.client.RandomAccessFile;
 import org.powerbot.util.io.IOHelper;
 
 public class RSClassLoader extends ClassLoader {
-	private final Map<String, byte[]> classes = new HashMap<String, byte[]>();
+	private final Map<String, byte[]> classes = new HashMap<>();
 	private final ProtectionDomain domain;
 
 	public RSClassLoader(final Map<String, byte[]> classes, final URL source) {

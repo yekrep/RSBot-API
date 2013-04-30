@@ -212,7 +212,7 @@ public class Prayer {
 	 * @return An array of currently active prayers/curses.
 	 */
 	public static PrayerBook[] getActive() {
-		Set<PrayerBook> active = new LinkedHashSet<PrayerBook>();
+		Set<PrayerBook> active = new LinkedHashSet<>();
 		for (PrayerBook p : isCursesOn() ? Curses.values() : Normal.values()) {
 			if (p.isActive()) {
 				active.add(p);
@@ -227,7 +227,7 @@ public class Prayer {
 	 * @return An array of currently set prayers/curses to quick-use.
 	 */
 	public static PrayerBook[] getQuick() {
-		Set<PrayerBook> setquick = new LinkedHashSet<PrayerBook>();
+		Set<PrayerBook> setquick = new LinkedHashSet<>();
 		for (PrayerBook p : isCursesOn() ? Curses.values() : Normal.values()) {
 			if (p.isSetQuick()) {
 				setquick.add(p);

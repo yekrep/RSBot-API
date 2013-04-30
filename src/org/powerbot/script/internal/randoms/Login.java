@@ -108,7 +108,7 @@ public class Login extends TaskScript implements RandomEvent, PaintListener {
 	}
 
 	private enum LoginEvent {
-		TOKEN_FAILURE(WIDGET_LOGIN_ERROR, "game session", 1000 * 5 * 60, new FutureTask<Boolean>(new Runnable() {
+		TOKEN_FAILURE(WIDGET_LOGIN_ERROR, "game session", 1000 * 5 * 60, new FutureTask<>(new Runnable() {
 			@Override
 			public void run() {
 				Bot.getInstance().refresh();

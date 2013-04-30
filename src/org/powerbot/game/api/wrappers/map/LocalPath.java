@@ -120,8 +120,8 @@ public class LocalPath extends Path {
 			}
 		}
 
-		final HashSet<Vertex> open = new HashSet<Vertex>();
-		final HashSet<Vertex> closed = new HashSet<Vertex>();
+		final HashSet<Vertex> open = new HashSet<>();
+		final HashSet<Vertex> closed = new HashSet<>();
 		Vertex curr = new Vertex(curr_x, curr_y, curr_plane);
 		final Vertex dest = new Vertex(dest_x, dest_y, curr_plane);
 
@@ -184,7 +184,7 @@ public class LocalPath extends Path {
 	}
 
 	private List<Vertex> successors(final Vertex t) {
-		final LinkedList<Vertex> tiles = new LinkedList<Vertex>();
+		final LinkedList<Vertex> tiles = new LinkedList<>();
 		final int x = t.x, y = t.y, z = t.z;
 		final int f_x = x - offX, f_y = y - offY;
 		final int here = flags[f_x][f_y];
@@ -229,7 +229,7 @@ public class LocalPath extends Path {
 	}
 
 	public static Tile[] path(final Vertex end, final int base_x, final int base_y) {
-		final LinkedList<Tile> path = new LinkedList<Tile>();
+		final LinkedList<Tile> path = new LinkedList<>();
 		Vertex p = end;
 		while (p != null) {
 			path.addFirst(p.get(base_x, base_y));
@@ -242,7 +242,7 @@ public class LocalPath extends Path {
 		public final int x, y, z;
 		public Vertex prev;
 		public double g, f;
-		public boolean special;
+		public final boolean special;
 
 		public Vertex(final int x, final int y, final int z) {
 			this(x, y, z, false);

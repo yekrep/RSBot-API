@@ -31,7 +31,7 @@ public final class BotHoverLabel extends JLabel implements MouseListener {
 		setPreferredSize(new Dimension(20, 20));
 		super.setIcon(this.initial);
 		addMouseListener(this);
-		listeners = new ArrayList<ActionListener>(1);
+		listeners = new ArrayList<>(1);
 	}
 
 	public void addActionListener(final ActionListener l) {

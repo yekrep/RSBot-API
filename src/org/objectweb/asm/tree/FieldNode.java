@@ -48,29 +48,29 @@ public class FieldNode extends FieldVisitor {
 	 * The field's access flags (see {@link org.objectweb.asm.Opcodes}). This
 	 * field also indicates if the field is synthetic and/or deprecated.
 	 */
-	public int access;
+	public final int access;
 
 	/**
 	 * The field's name.
 	 */
-	public String name;
+	public final String name;
 
 	/**
 	 * The field's descriptor (see {@link org.objectweb.asm.Type}).
 	 */
-	public String desc;
+	public final String desc;
 
 	/**
 	 * The field's signature. May be <tt>null</tt>.
 	 */
-	public String signature;
+	public final String signature;
 
 	/**
 	 * The field's initial value. This field, which may be <tt>null</tt> if
 	 * the field does not have an initial value, must be an {@link Integer}, a
 	 * {@link Float}, a {@link Long}, a {@link Double} or a {@link String}.
 	 */
-	public Object value;
+	public final Object value;
 
 	/**
 	 * The runtime visible annotations of this field. This list is a list of
@@ -169,12 +169,12 @@ public class FieldNode extends FieldVisitor {
 		final AnnotationNode an = new AnnotationNode(desc);
 		if (visible) {
 			if (visibleAnnotations == null) {
-				visibleAnnotations = new ArrayList<AnnotationNode>(1);
+				visibleAnnotations = new ArrayList<>(1);
 			}
 			visibleAnnotations.add(an);
 		} else {
 			if (invisibleAnnotations == null) {
-				invisibleAnnotations = new ArrayList<AnnotationNode>(1);
+				invisibleAnnotations = new ArrayList<>(1);
 			}
 			invisibleAnnotations.add(an);
 		}
@@ -184,7 +184,7 @@ public class FieldNode extends FieldVisitor {
 	@Override
 	public void visitAttribute(final Attribute attr) {
 		if (attrs == null) {
-			attrs = new ArrayList<Attribute>(1);
+			attrs = new ArrayList<>(1);
 		}
 		attrs.add(attr);
 	}

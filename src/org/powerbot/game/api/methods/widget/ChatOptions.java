@@ -49,7 +49,7 @@ public class ChatOptions {
 	 */
 	public static List<ChatOption> getOptions() {
 		final Widget w = getWidget();
-		final List<ChatOption> list = new LinkedList<ChatOption>();
+		final List<ChatOption> list = new LinkedList<>();
 
 		if (w != null) {
 			for (int i = 1; i < 6; i++) {
@@ -76,7 +76,7 @@ public class ChatOptions {
 	 * @return A list of ChatOptions containing specified option.
 	 */
 	public static List<ChatOption> getOptions(final String option) {
-		final List<ChatOption> list = new LinkedList<ChatOption>();
+		final List<ChatOption> list = new LinkedList<>();
 		for (final ChatOption w : getOptions()) {
 			if (w.getWidgetChild().getText().toLowerCase().contains(option.toLowerCase())) {
 				list.add(w);
@@ -90,7 +90,7 @@ public class ChatOptions {
 	 * @return A list of ChatOptions accepted by the filter.
 	 */
 	public static List<ChatOption> getOptions(final Filter<ChatOption> filter) {
-		final List<ChatOption> list = new LinkedList<ChatOption>();
+		final List<ChatOption> list = new LinkedList<>();
 		for (final ChatOption w : getOptions()) {
 			if (filter.accept(w)) {
 				list.add(w);

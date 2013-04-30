@@ -124,10 +124,10 @@ final class ZipCoder {
 		return isUTF8;
 	}
 
-	private Charset cs;
+	private final Charset cs;
 	private CharsetDecoder dec;
 	private CharsetEncoder enc;
-	private boolean isUTF8;
+	private final boolean isUTF8;
 	private ZipCoder utf8;
 
 	private ZipCoder(Charset cs) {

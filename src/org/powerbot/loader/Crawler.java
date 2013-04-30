@@ -22,10 +22,12 @@ public class Crawler {
 	public static final Pattern PATTERN_CLASS = Pattern.compile("code=(.*) ");
 	public static final Pattern PATTERN_PARAMETER = Pattern.compile("<param name=\"([^\\s]+)\"\\s+value=\"([^>]*)\">");
 
-	public String home, frame, game;
+	public final String home;
+	public final String frame;
+	public String game;
 	public String archive, clazz;
 
-	public final Map<String, String> parameters = new HashMap<String, String>();
+	public final Map<String, String> parameters = new HashMap<>();
 
 	public Crawler() {
 		home = Configuration.URLs.GAME + "/g=runescape/";

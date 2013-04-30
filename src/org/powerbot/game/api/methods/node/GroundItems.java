@@ -64,7 +64,7 @@ public class GroundItems {
 	 * @return <tt>GroundItem</tt> array containing all of the items in range.
 	 */
 	public static GroundItem[] getLoaded(final int range, final Filter<GroundItem> filter) {
-		final ArrayList<GroundItem> temp = new ArrayList<GroundItem>();
+		final ArrayList<GroundItem> temp = new ArrayList<>();
 		final Tile tile = Players.getLocal().getLocation();
 		final int pX = tile.getX();
 		final int pY = tile.getY();
@@ -150,7 +150,7 @@ public class GroundItems {
 		if (!Game.isLoggedIn()) {
 			return new GroundItem[0];
 		}
-		final List<GroundItem> groundItems = new ArrayList<GroundItem>();
+		final List<GroundItem> groundItems = new ArrayList<>();
 		final Client client = Context.client();
 		final HashTable itemHashTable = client.getRSItemHashTable();
 		final int floor = Game.getPlane();
@@ -162,7 +162,7 @@ public class GroundItems {
 			return new GroundItem[0];
 		}
 
-		final Deque<RSItem> itemDeque = new Deque<RSItem>(itemNodeListCache.getNodeList());
+		final Deque<RSItem> itemDeque = new Deque<>(itemNodeListCache.getNodeList());
 		for (RSItem item = itemDeque.getHead(); item != null; item = itemDeque.getNext()) {
 			groundItems.add(new GroundItem(new Tile(x, y, floor), new Item(item)));
 		}

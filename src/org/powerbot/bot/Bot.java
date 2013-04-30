@@ -46,8 +46,8 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 	private final TextPaintEvent textPaintEvent;
 	public volatile RSLoader appletContainer;
 	public volatile BotStub stub;
-	public Runnable callback;
-	public ThreadGroup threadGroup;
+	public final Runnable callback;
+	public final ThreadGroup threadGroup;
 	public ModScript modScript;
 	public BufferedImage image;
 	public volatile boolean refreshing;
@@ -58,10 +58,9 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 	private BufferedImage backBuffer;
 	private MouseHandler mouseHandler;
 	private InputHandler inputHandler;
-	private EventMulticaster multicaster;
+	private final EventMulticaster multicaster;
 	private MouseExecutor oldMouse;
 	private ScriptManager scriptController;
-	private volatile boolean stopping = false;
 
 	private Bot() {
 		appletContainer = null;
@@ -154,6 +153,7 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 
 	@Override
 	public boolean isStopping() {
+		boolean stopping = false;
 		return stopping;
 	}
 
@@ -194,7 +194,7 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 	}
 
 	public void startScript(final ScriptDefinition script) {
-		final List<ScriptDefinition> defs = new ArrayList<ScriptDefinition>();
+		final List<ScriptDefinition> defs = new ArrayList<>();
 		defs.add(new ScriptDefinition(new Login()));
 		defs.add(new ScriptDefinition(new BankPin()));
 		defs.add(new ScriptDefinition(new TicketDestroy()));

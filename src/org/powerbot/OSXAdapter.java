@@ -60,11 +60,12 @@ package org.powerbot;
 import java.lang.reflect.*;
 
 
+@SuppressWarnings({"unchecked", "RedundantArrayCreation"})
 public class OSXAdapter implements InvocationHandler {
 
-	protected Object targetObject;
-	protected Method targetMethod;
-	protected String proxySignature;
+	protected final Object targetObject;
+	protected final Method targetMethod;
+	protected final String proxySignature;
 
 	static Object macOSXApplication;
 

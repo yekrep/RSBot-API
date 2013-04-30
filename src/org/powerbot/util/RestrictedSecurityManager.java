@@ -42,16 +42,6 @@ public class RestrictedSecurityManager extends SecurityManager {
 	}
 
 	@Override
-	public void checkAccess(final Thread t) {
-		super.checkAccess(t);
-	}
-
-	@Override
-	public void checkAccess(final ThreadGroup g) {
-		super.checkAccess(g);
-	}
-
-	@Override
 	public void checkConnect(final String host, final int port) {
 		checkConnect(host, port, null);
 	}
@@ -107,11 +97,6 @@ public class RestrictedSecurityManager extends SecurityManager {
 			throw new SecurityException();
 		}
 		super.checkExit(status);
-	}
-
-	@Override
-	public void checkListen(final int port) {
-		super.checkListen(port);
 	}
 
 	@Override

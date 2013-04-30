@@ -81,7 +81,7 @@ public class ClassNode extends ClassVisitor {
 	 * {@link org.objectweb.asm.Type#getInternalName() getInternalName}). This
 	 * list is a list of {@link String} objects.
 	 */
-	public List<String> interfaces;
+	public final List<String> interfaces;
 
 	/**
 	 * The name of the source file from which this class was compiled. May be
@@ -145,7 +145,7 @@ public class ClassNode extends ClassVisitor {
 	 *
 	 * @associates org.objectweb.asm.tree.InnerClassNode
 	 */
-	public List<InnerClassNode> innerClasses;
+	public final List<InnerClassNode> innerClasses;
 
 	/**
 	 * The fields of this class. This list is a list of {@link FieldNode}
@@ -153,7 +153,7 @@ public class ClassNode extends ClassVisitor {
 	 *
 	 * @associates org.objectweb.asm.tree.FieldNode
 	 */
-	public List<FieldNode> fields;
+	public final List<FieldNode> fields;
 
 	/**
 	 * The methods of this class. This list is a list of {@link MethodNode}
@@ -161,7 +161,7 @@ public class ClassNode extends ClassVisitor {
 	 *
 	 * @associates org.objectweb.asm.tree.MethodNode
 	 */
-	public List<MethodNode> methods;
+	public final List<MethodNode> methods;
 
 	/**
 	 * Constructs a new {@link org.objectweb.asm.tree.ClassNode}. <i>Subclasses must not use this
@@ -180,10 +180,10 @@ public class ClassNode extends ClassVisitor {
 	 */
 	public ClassNode(final int api) {
 		super(api);
-		interfaces = new ArrayList<String>();
-		innerClasses = new ArrayList<InnerClassNode>();
-		fields = new ArrayList<FieldNode>();
-		methods = new ArrayList<MethodNode>();
+		interfaces = new ArrayList<>();
+		innerClasses = new ArrayList<>();
+		fields = new ArrayList<>();
+		methods = new ArrayList<>();
 	}
 
 	// ------------------------------------------------------------------------
@@ -231,12 +231,12 @@ public class ClassNode extends ClassVisitor {
 		final AnnotationNode an = new AnnotationNode(desc);
 		if (visible) {
 			if (visibleAnnotations == null) {
-				visibleAnnotations = new ArrayList<AnnotationNode>(1);
+				visibleAnnotations = new ArrayList<>(1);
 			}
 			visibleAnnotations.add(an);
 		} else {
 			if (invisibleAnnotations == null) {
-				invisibleAnnotations = new ArrayList<AnnotationNode>(1);
+				invisibleAnnotations = new ArrayList<>(1);
 			}
 			invisibleAnnotations.add(an);
 		}
@@ -246,7 +246,7 @@ public class ClassNode extends ClassVisitor {
 	@Override
 	public void visitAttribute(final Attribute attr) {
 		if (attrs == null) {
-			attrs = new ArrayList<Attribute>(1);
+			attrs = new ArrayList<>(1);
 		}
 		attrs.add(attr);
 	}

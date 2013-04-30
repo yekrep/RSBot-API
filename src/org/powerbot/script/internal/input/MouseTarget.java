@@ -14,8 +14,8 @@ public abstract class MouseTarget implements MouseCallback {
 		}
 	};
 	public boolean failed;
-	Targetable targetable;
-	public Filter<Point> filter;
+	final Targetable targetable;
+	public final Filter<Point> filter;
 	Vector3 curr;
 	Vector3 dest;
 	int steps;

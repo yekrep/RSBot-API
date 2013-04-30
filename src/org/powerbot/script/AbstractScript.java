@@ -45,33 +45,33 @@ public abstract class AbstractScript implements Script, Prioritizable {
 	protected final Properties settings;
 
 	public AbstractScript() {
-		tasks = new ConcurrentHashMap<State, Collection<FutureTask<Boolean>>>(State.values().length);
+		tasks = new ConcurrentHashMap<>(State.values().length);
 
 		for (final State state : State.values()) {
 			tasks.put(state, new ArrayDeque<FutureTask<Boolean>>());
 		}
 
-		tasks.get(State.START).add(new FutureTask<Boolean>(this, true));
+		tasks.get(State.START).add(new FutureTask<>(this, true));
 
 		started = new AtomicLong(System.nanoTime());
 		suspended = new AtomicLong(0);
-		suspensions = new SynchronousQueue<Long>();
+		suspensions = new SynchronousQueue<>();
 
-		tasks.get(State.START).add(new FutureTask<Boolean>(new Runnable() {
+		tasks.get(State.START).add(new FutureTask<>(new Runnable() {
 			@Override
 			public void run() {
 				started.set(System.nanoTime());
 			}
 		}, true));
 
-		tasks.get(State.SUSPEND).add(new FutureTask<Boolean>(new Runnable() {
+		tasks.get(State.SUSPEND).add(new FutureTask<>(new Runnable() {
 			@Override
 			public void run() {
 				suspensions.offer(System.nanoTime());
 			}
 		}, true));
 
-		tasks.get(State.RESUME).add(new FutureTask<Boolean>(new Runnable() {
+		tasks.get(State.RESUME).add(new FutureTask<>(new Runnable() {
 			@Override
 			public void run() {
 				suspended.addAndGet(System.nanoTime() - suspensions.poll());
@@ -98,7 +98,7 @@ public abstract class AbstractScript implements Script, Prioritizable {
 			}
 		}
 
-		getTasks(State.STOP).add(new FutureTask<Boolean>(new Runnable() {
+		getTasks(State.STOP).add(new FutureTask<>(new Runnable() {
 			@Override
 			public void run() {
 				if (settings.isEmpty()) {

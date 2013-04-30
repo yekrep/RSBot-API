@@ -6,7 +6,7 @@ import org.powerbot.game.client.RSInteractable;
 
 @Deprecated
 public class RenderableModel extends CapturedModel {
-	private RSInteractable interactable;
+	private final RSInteractable interactable;
 
 	public RenderableModel(final Model model, final RSInteractable interactable) {
 		super(model);

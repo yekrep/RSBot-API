@@ -180,7 +180,7 @@ public class Area {
 	public Tile[] getTileArray() {
 		if (tileArrayCache == null) {
 			final Rectangle bounds = getBounds();
-			final ArrayList<Tile> tiles = new ArrayList<Tile>(bounds.width * bounds.height);
+			final ArrayList<Tile> tiles = new ArrayList<>(bounds.width * bounds.height);
 			final int xMax = bounds.x + bounds.width, yMax = bounds.y + bounds.height;
 			for (int x = bounds.x; x < xMax; x++) {
 				for (int y = bounds.y; y < yMax; y++) {

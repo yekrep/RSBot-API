@@ -68,10 +68,10 @@ public final class GameAccounts extends ArrayList<GameAccounts.Account> {
 	}
 
 	public synchronized void save() {
-		final Map<String, Map<String, String>> data = new HashMap<String, Map<String, String>>();
+		final Map<String, Map<String, String>> data = new HashMap<>();
 		for (Iterator<Account> i = iterator(); i.hasNext(); ) {
 			final Account a = i.next();
-			final Map<String, String> e = new HashMap<String, String>();
+			final Map<String, String> e = new HashMap<>();
 			e.put("password", a.password);
 			e.put("pin", Integer.toString(a.pin));
 			e.put("member", a.member ? "1" : "0");
@@ -115,7 +115,7 @@ public final class GameAccounts extends ArrayList<GameAccounts.Account> {
 	}
 
 	public final class Account {
-		private String username;
+		private final String username;
 		private String password;
 		public int pin = -1;
 		public boolean member = false;

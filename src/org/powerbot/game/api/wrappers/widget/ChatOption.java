@@ -9,8 +9,8 @@ import org.powerbot.script.xenon.util.Delay;
  * @since 26-04-2012
  */
 public class ChatOption {
-	private int number;
-	private WidgetChild child;
+	private final int number;
+	private final WidgetChild child;
 
 	/**
 	 * Constructs a new ChatOption.

@@ -6,7 +6,7 @@ public final class SkillData {
 	public static final int NUM_SKILL = 25;
 	public final int[] initialExp = new int[NUM_SKILL];
 	public final int[] initialLevels = new int[NUM_SKILL];
-	private Timer timer;
+	private final Timer timer;
 
 	public SkillData() {
 		this(new Timer(0l));

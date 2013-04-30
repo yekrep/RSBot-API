@@ -18,7 +18,7 @@ public abstract class PollingScript extends AbstractScript implements Suspendabl
 		suspended = new AtomicBoolean(false);
 		stopping = new AtomicBoolean(false);
 
-		getTasks(State.SUSPEND).add(new FutureTask<Boolean>(new Runnable() {
+		getTasks(State.SUSPEND).add(new FutureTask<>(new Runnable() {
 			@Override
 			public void run() {
 				suspended.set(true);
@@ -26,7 +26,7 @@ public abstract class PollingScript extends AbstractScript implements Suspendabl
 			}
 		}, true));
 
-		getTasks(State.RESUME).add(new FutureTask<Boolean>(new Runnable() {
+		getTasks(State.RESUME).add(new FutureTask<>(new Runnable() {
 			@Override
 			public void run() {
 				suspended.set(false);
@@ -34,7 +34,7 @@ public abstract class PollingScript extends AbstractScript implements Suspendabl
 			}
 		}, true));
 
-		getTasks(State.STOP).add(new FutureTask<Boolean>(new Runnable() {
+		getTasks(State.STOP).add(new FutureTask<>(new Runnable() {
 			@Override
 			public void run() {
 				stopping.set(true);

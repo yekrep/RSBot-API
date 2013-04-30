@@ -262,8 +262,10 @@ public class Hiscores {
 	 * Skill information.
 	 */
 	public class SkillStats {
-		public int level, xp, rank;
-		public Stats stats;
+		public final int level;
+		public final int xp;
+		public final int rank;
+		public final Stats stats;
 
 		/**
 		 * Creates a new {@link org.powerbot.script.xenon.net.Hiscores.SkillStats} object.
@@ -321,8 +323,9 @@ public class Hiscores {
 	 * Activity information.
 	 */
 	public class ActivityStats {
-		public int score, rank;
-		public Stats stats;
+		public final int score;
+		public final int rank;
+		public final Stats stats;
 
 		/**
 		 * Creates a new {@link org.powerbot.script.xenon.net.Hiscores.ActivityStats} object.

@@ -48,7 +48,7 @@ public abstract class AnnotationVisitor {
 	 * The annotation visitor to which this visitor must delegate method calls.
 	 * May be null.
 	 */
-	protected AnnotationVisitor av;
+	protected final AnnotationVisitor av;
 
 	/**
 	 * Constructs a new {@link org.objectweb.asm.AnnotationVisitor}.

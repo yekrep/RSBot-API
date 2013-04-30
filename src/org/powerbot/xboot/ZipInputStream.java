@@ -52,9 +52,9 @@ import static org.powerbot.xboot.ZipConstants64.ZIP64_MAGICVAL;
 public class ZipInputStream extends InflaterInputStream implements ZipConstants {
 	private ZipEntry entry;
 	private int flag;
-	private CRC32 crc = new CRC32();
+	private final CRC32 crc = new CRC32();
 	private long remaining;
-	private byte[] tmpbuf = new byte[512];
+	private final byte[] tmpbuf = new byte[512];
 
 	private static final int STORED = ZipEntry.STORED;
 	private static final int DEFLATED = ZipEntry.DEFLATED;

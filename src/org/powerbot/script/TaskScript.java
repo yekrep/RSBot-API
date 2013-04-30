@@ -20,7 +20,7 @@ public abstract class TaskScript extends PollingScript {
 	protected volatile int freq;
 
 	public TaskScript() {
-		tasks = new PriorityQueue<Task>(4, new TaskQueueComparator());
+		tasks = new PriorityQueue<>(4, new TaskQueueComparator());
 		freq = 1000;
 	}
 
@@ -30,7 +30,7 @@ public abstract class TaskScript extends PollingScript {
 	@Override
 	public final int poll() {
 		final ExecutorDispatch<Boolean> executor = getScriptController().getExecutorService();
-		final Stack<BlockingTask> sync = new Stack<BlockingTask>();
+		final Stack<BlockingTask> sync = new Stack<>();
 		for (final Task task : tasks) {
 			if (task.isValid()) {
 				if (task instanceof AsyncTask) {

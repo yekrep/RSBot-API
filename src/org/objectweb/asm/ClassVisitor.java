@@ -49,7 +49,7 @@ public abstract class ClassVisitor {
 	 * The class visitor to which this visitor must delegate method calls. May
 	 * be null.
 	 */
-	protected ClassVisitor cv;
+	protected final ClassVisitor cv;
 
 	/**
 	 * Constructs a new {@link ClassVisitor}.

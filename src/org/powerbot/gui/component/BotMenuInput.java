@@ -23,7 +23,7 @@ public final class BotMenuInput {
 		final BotPanel panel = BotChrome.getInstance().panel;
 		final int panelInputMask = panel.getInputMask();
 
-		final Map<String, Integer> map = new LinkedHashMap<String, Integer>();
+		final Map<String, Integer> map = new LinkedHashMap<>();
 		map.put(BotLocale.ALLOW, BotPanel.INPUT_MOUSE | BotPanel.INPUT_KEYBOARD);
 		map.put(BotLocale.KEYBOARD, BotPanel.INPUT_KEYBOARD);
 		map.put(BotLocale.BLOCK, 0);

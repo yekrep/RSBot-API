@@ -44,7 +44,7 @@ public class JumpInsnNode extends AbstractInsnNode {
 	 * The operand of this instruction. This operand is a label that designates
 	 * the instruction to which this instruction may jump.
 	 */
-	public LabelNode label;
+	public final LabelNode label;
 
 	/**
 	 * Constructs a new {@link org.objectweb.asm.tree.JumpInsnNode}.

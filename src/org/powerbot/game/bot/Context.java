@@ -15,7 +15,7 @@ import org.powerbot.game.client.Client;
 import org.powerbot.script.internal.Constants;
 
 public class Context {//TODO remove idea of a 'context'
-	public static final Map<ThreadGroup, Context> context = new HashMap<ThreadGroup, Context>();
+	public static final Map<ThreadGroup, Context> context = new HashMap<>();
 	private final Bot bot;
 	public int world = -1;
 

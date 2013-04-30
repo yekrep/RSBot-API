@@ -40,7 +40,7 @@ public class Vector2 {
 	}
 
 	public Vector2 mul(final Vector2 U) {
-		return new Vector2((int) (x * U.x), (int) (y * U.y));
+		return new Vector2(x * U.x, y * U.y);
 	}
 
 	public final double get2DDistanceTo(final Vector2 v) {

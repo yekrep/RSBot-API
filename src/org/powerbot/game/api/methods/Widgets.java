@@ -19,7 +19,7 @@ import org.powerbot.script.xenon.util.Delay;
  * @author Timer
  */
 public class Widgets {
-	private static final Map<Client, Widget[]> caches = new HashMap<Client, Widget[]>();
+	private static final Map<Client, Widget[]> caches = new HashMap<>();
 
 	/**
 	 * @return An <code>Widget[]</code> of the latest cached widgets.
@@ -34,7 +34,7 @@ public class Widgets {
 		if (clientInterfaceCache == null) {
 			return new Widget[0];
 		}
-		final ArrayList<Widget> validInterfaces = new ArrayList<Widget>();
+		final ArrayList<Widget> validInterfaces = new ArrayList<>();
 		for (int index = 0; index < clientInterfaceCache.length; index++) {
 			if (clientInterfaceCache[index] != null) {
 				final Widget widget = get(index);

@@ -113,7 +113,7 @@ public class InflaterInputStream extends FilterInputStream {
 		usesDefaultInflater = true;
 	}
 
-	private byte[] singleByteBuf = new byte[1];
+	private final byte[] singleByteBuf = new byte[1];
 
 	/**
 	 * Reads a byte of uncompressed data. This method will block until enough
@@ -192,7 +192,7 @@ public class InflaterInputStream extends FilterInputStream {
 		}
 	}
 
-	private byte[] b = new byte[512];
+	private final byte[] b = new byte[512];
 
 	/**
 	 * Skips specified number of bytes of uncompressed data.

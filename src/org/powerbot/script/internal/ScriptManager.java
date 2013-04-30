@@ -42,12 +42,12 @@ public class ScriptManager implements ExecutorDispatch<Boolean>, Runnable, Stopp
 
 	public ScriptManager(final EventMulticaster events) {
 		executor = new NamedCachedThreadPoolExecutor();
-		scripts = new PriorityQueue<ScriptDefinition>(4, new ScriptQueueComparator());
+		scripts = new PriorityQueue<>(4, new ScriptQueueComparator());
 		suspended = new AtomicBoolean(false);
 		stopping = new AtomicBoolean(false);
 		controller = new AbstractScriptController(this);
 		this.events = new EventManager(events);
-		callbacks = new ArrayDeque<Runnable>();
+		callbacks = new ArrayDeque<>();
 		runner = new CallbackRunner(executor, callbacks);
 	}
 
@@ -135,7 +135,7 @@ public class ScriptManager implements ExecutorDispatch<Boolean>, Runnable, Stopp
 	}
 
 	protected final void call(final Script script, final State state) {
-		final List<FutureTask<Boolean>> pending = new ArrayList<FutureTask<Boolean>>();
+		final List<FutureTask<Boolean>> pending = new ArrayList<>();
 		for (final FutureTask<Boolean> task : script.getTasks(state)) {
 			if (task.isCancelled() || task.isDone()) {
 				continue;

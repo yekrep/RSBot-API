@@ -266,7 +266,7 @@ public class Bank {
 		final Component c = item.getComponent();
 		Point p = c.getRelativeLocation();
 		if (p.y == 0) for (int i = 0; i < 5 && getCurrentTab() != 0; i++) if (!setCurrentTab(0)) Delay.sleep(100, 200);
-		if ((p = c.getRelativeLocation()).y == 0) return false;
+		if (c.getRelativeLocation().y == 0) return false;
 		final Rectangle bounds = container.getViewportRect();
 		final Component scroll = Widgets.get(WIDGET, COMPONENT_SCROLL_BAR);
 		if (scroll == null) return false;

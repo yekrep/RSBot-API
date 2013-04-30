@@ -4,7 +4,7 @@ package org.powerbot.game.api.util.node;
  * @author Timer
  */
 public class HashTable {
-	private org.powerbot.game.client.HashTable nc;
+	private final org.powerbot.game.client.HashTable nc;
 	private org.powerbot.game.client.Node current;
 	private int c_index = 0;
 

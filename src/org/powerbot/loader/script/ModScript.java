@@ -20,9 +20,9 @@ import org.powerbot.loader.script.adapter.SetSuperAdapter;
 public class ModScript {
 	private final Map<String, ClassVisitor> adapters;
 	private final Map<String, ClassWriter> writers;
-	public Map<String, String> attributes;
-	public Map<Integer, Integer> constants;
-	public Map<Integer, Integer> multipliers;
+	public final Map<String, String> attributes;
+	public final Map<Integer, Integer> constants;
+	public final Map<Integer, Integer> multipliers;
 	private Scanner scanner;
 	private String name;
 	private int version;
@@ -177,7 +177,7 @@ public class ModScript {
 				final String name = scanner.readString();
 				final String desc = scanner.readString();
 				count = scanner.readByte();
-				final Map<Integer, byte[]> fragments = new HashMap<Integer, byte[]>();
+				final Map<Integer, byte[]> fragments = new HashMap<>();
 				while (count-- > 0) {
 					final int off = scanner.readShort();
 					final byte[] code = new byte[scanner.readInt()];

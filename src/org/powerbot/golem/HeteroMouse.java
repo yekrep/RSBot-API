@@ -48,7 +48,7 @@ public final class HeteroMouse implements MouseSimulator {
 	}
 
 	private Queue<Vector3> getParabola(final Vector3 a, Vector3 b) {
-		final Queue<Vector3> l0 = new ArrayDeque<Vector3>();
+		final Queue<Vector3> l0 = new ArrayDeque<>();
 		final Random r = new Random();
 
 		final double d = a.get2DDistanceTo(b);
@@ -101,7 +101,7 @@ public final class HeteroMouse implements MouseSimulator {
 	}
 
 	private Collection<Vector3> impulse(final Vector3 a, final Vector3 b, final int c) {
-		final List<Vector3> l = new ArrayList<Vector3>();
+		final List<Vector3> l = new ArrayList<>();
 
 		final double r = a.get2DAngleTo(b), m = Math.PI * 1.5d;
 		final boolean h = isBetween(r, 0, Math.PI / 4) || isBetween(r, 3 * Math.PI / 4, Math.PI) || isBetween(r, Math.PI, 5 * Math.PI / 4) || isBetween(r, 7 * Math.PI / 4, 2 * Math.PI);

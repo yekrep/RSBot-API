@@ -9,7 +9,9 @@ import org.powerbot.script.xenon.Movement;
 import org.powerbot.script.xenon.util.Random;
 
 public class Tile extends Interactive implements Locatable {
-	public int x, y, plane;
+	public final int x;
+	public final int y;
+	public final int plane;
 
 	public Tile(final int x, final int y) {
 		this(x, y, 0);

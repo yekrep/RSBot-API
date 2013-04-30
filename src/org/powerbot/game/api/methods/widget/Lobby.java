@@ -403,7 +403,7 @@ public class Lobby {
 		if (!panel.validate() && !Tab.WORLD_SELECT.open()) {
 			return new World[0];
 		}
-		final ArrayList<World> worlds = new ArrayList<World>();
+		final ArrayList<World> worlds = new ArrayList<>();
 		final WidgetChild[] rows = panel.getChild(WIDGET_WORLDS_ROWS).getChildren();
 		for (final WidgetChild row : rows) {
 			final World world = new World(row.getIndex());

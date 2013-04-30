@@ -79,7 +79,7 @@ public class SceneObject implements Entity, Locatable, Identifiable {
 	}
 
 	public RegionOffset getRegionOffset() {
-		final RSInteractable location = (RSInteractable) object;
+		final RSInteractable location = object;
 		final RSInteractableData data = location.getData();
 		return new RegionOffset((int) data.getLocation().getX() / 512, (int) data.getLocation().getY() / 512, plane);
 	}

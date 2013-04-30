@@ -69,7 +69,7 @@ public final class Controller implements Runnable {
 			throw new IOException();
 		}
 
-		callbacks = new ArrayList<Event>();
+		callbacks = new ArrayList<>();
 		executor = Executors.newCachedThreadPool();
 		StringUtil.getBytesUtf8(Long.toBinaryString(Configuration.getUID()) + Integer.toHexString(Configuration.VERSION));
 	}
@@ -213,7 +213,7 @@ public final class Controller implements Runnable {
 	}
 
 	public void broadcast(final Message msg) {
-		final List<Integer> list = new ArrayList<Integer>();
+		final List<Integer> list = new ArrayList<>();
 		for (int i = 0; i < ports.length; i++) {
 			if (ports[i] == sock.getLocalPort()) {
 				continue;
@@ -276,7 +276,7 @@ public final class Controller implements Runnable {
 
 	public Collection<Integer> getRunningModes() {
 		final int type = Message.MODE;
-		final ConcurrentLinkedQueue<Integer> list = new ConcurrentLinkedQueue<Integer>();
+		final ConcurrentLinkedQueue<Integer> list = new ConcurrentLinkedQueue<>();
 		final Event c = new Event() {
 			@Override
 			public boolean call(final Message msg, final SocketAddress sender) {
@@ -338,7 +338,7 @@ public final class Controller implements Runnable {
 
 	public Collection<String> getRunningScripts() {
 		final int type = Message.SCRIPT;
-		final ConcurrentLinkedQueue<String> list = new ConcurrentLinkedQueue<String>();
+		final ConcurrentLinkedQueue<String> list = new ConcurrentLinkedQueue<>();
 		final Event c = new Event() {
 			@Override
 			public boolean call(Message msg, final SocketAddress sender) {

@@ -75,7 +75,7 @@ public class SceneEntities {
 	 * @return An array of all of the loaded Locations within the currently loaded region that are accepted by the provided filter.
 	 */
 	public static SceneObject[] getLoaded(final Filter<SceneObject> filter) {
-		final Set<SceneObject> objects = new LinkedHashSet<SceneObject>();
+		final Set<SceneObject> objects = new LinkedHashSet<>();
 		for (int x = 0; x < 104; x++) {
 			for (int y = 0; y < 104; y++) {
 				for (final SceneObject l : getLocalAt(x, y, -1)) {
@@ -169,7 +169,7 @@ public class SceneEntities {
 
 	public static Set<SceneObject> getLocalAt(int x, int y, final int mask) {
 		final Client client = Context.client();
-		final Set<SceneObject> objects = new LinkedHashSet<SceneObject>();
+		final Set<SceneObject> objects = new LinkedHashSet<>();
 		final RSGround[][][] groundArray = getRSGroundArray(client);
 		if (groundArray == null) {
 			return objects;

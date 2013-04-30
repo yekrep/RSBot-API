@@ -23,7 +23,7 @@ public final class ScriptLoader {
 		final Object cl = scl.newInstance();
 		final Method m = ClassLoader.class.getDeclaredMethod("defineClass", String.class, byte[].class, int.class, int.class);
 		m.setAccessible(true);
-		final Map<String, byte[]> map = new HashMap<String, byte[]>();
+		final Map<String, byte[]> map = new HashMap<>();
 
 		ZipEntry entry;
 		while ((entry = in.getNextEntry()) != null) {
@@ -39,8 +39,8 @@ public final class ScriptLoader {
 		}
 		in.close();
 
-		final Stack<String> list = new Stack<String>();
-		final List<String> loaded = new ArrayList<String>(map.size());
+		final Stack<String> list = new Stack<>();
+		final List<String> loaded = new ArrayList<>(map.size());
 		list.addAll(map.keySet());
 
 		while (!list.isEmpty()) {
@@ -57,7 +57,7 @@ public final class ScriptLoader {
 				loaded.add(name);
 			} catch (final Exception e) {
 				if (e instanceof InvocationTargetException) {
-					final Throwable t = ((InvocationTargetException) e).getCause();
+					final Throwable t = e.getCause();
 					if (t instanceof NoClassDefFoundError) {
 						list.push(name);
 						list.push(t.getMessage());

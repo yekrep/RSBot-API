@@ -12,13 +12,13 @@ import org.powerbot.script.xenon.util.Random;
 
 public abstract class Model {
 	protected int[] xPoints;
-	protected int[] yPoints;
+	protected final int[] yPoints;
 	protected int[] zPoints;
-	protected short[] faceA;
-	protected short[] faceB;
-	protected short[] faceC;
-	protected int numFaces;
-	protected int numVertices;
+	protected final short[] faceA;
+	protected final short[] faceB;
+	protected final short[] faceC;
+	protected final int numFaces;
+	protected final int numVertices;
 
 	public Model(final org.powerbot.game.client.Model model) {
 		xPoints = model.getXPoints();

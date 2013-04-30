@@ -41,9 +41,9 @@ public class BotScriptManager {
 	private static final Logger log = Logger.getLogger(BotScriptManager.class.getName());
 
 	public static List<ScriptDefinition> loadScripts() throws IOException {
-		final List<ScriptDefinition> list = new ArrayList<ScriptDefinition>();
+		final List<ScriptDefinition> list = new ArrayList<>();
 
-		final List<File> paths = new ArrayList<File>(2);
+		final List<File> paths = new ArrayList<>(2);
 		paths.add(new File("bin"));
 		paths.add(new File("out"));
 		for (final File path : paths) {
