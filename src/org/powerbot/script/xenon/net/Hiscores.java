@@ -12,6 +12,7 @@ import org.powerbot.util.io.IOHelper;
 
 /**
  * Retrieves a player's hiscore profile.
+ * Results are cached.
  *
  * @author Paris
  */
@@ -23,6 +24,12 @@ public class Hiscores {
 	private final Map<Stats, ActivityStats> activities;
 	private final long updated;
 
+	/**
+	 * Downloads and parses a hiscore profile.
+	 *
+	 * @param username the username to query
+	 * @throws IOException
+	 */
 	private Hiscores(final String username) throws IOException {
 		final String txt = IOHelper.readString(HttpClient.openStream(String.format(PAGE, StringUtil.urlEncode(username.replace(" ", "%A0")))));
 
@@ -76,6 +83,12 @@ public class Hiscores {
 		}
 	}
 
+	/**
+	 * Returns a {@link org.powerbot.script.xenon.net.Hiscores} profile.
+	 *
+	 * @param username the player username
+	 * @return a {@link org.powerbot.script.xenon.net.Hiscores} profile or {@code null} if none was found
+	 */
 	public static synchronized Hiscores getProfile(String username) {
 		username = normaliseUsername(username);
 		if (cache.containsKey(username)) {
@@ -90,6 +103,12 @@ public class Hiscores {
 		return profile;
 	}
 
+	/**
+	 * Normalises a player username.
+	 *
+	 * @param u the username
+	 * @return a normalised name which is correctly formatted
+	 */
 	private static String normaliseUsername(String u) {
 		u = u.trim().toLowerCase();
 		final StringBuilder s = new StringBuilder(u.length());
@@ -111,28 +130,59 @@ public class Hiscores {
 		return s.toString();
 	}
 
+	/**
+	 * Returns the username of this player profile.
+	 *
+	 * @return the username of this player profile
+	 */
 	public String getUsername() {
 		return username;
 	}
 
+	/**
+	 * Returns the specified skill profile.
+	 *
+	 * @param key the {@link org.powerbot.script.xenon.net.Hiscores.Stats} to lookup
+	 * @return the associated {@link org.powerbot.script.xenon.net.Hiscores.SkillStats}
+	 */
 	public SkillStats getSkills(final Stats key) {
 		return skills.get(key);
 	}
 
+	/**
+	 * Returns the specified activity profile.
+	 *
+	 * @param key the {@link org.powerbot.script.xenon.net.Hiscores.Stats} to lookup
+	 * @return the associated {@link org.powerbot.script.xenon.net.Hiscores.ActivityStats}
+	 */
 	public ActivityStats getActivities(final Stats key) {
 		return activities.get(key);
 	}
 
+	/**
+	 * Returns the last update timestamp of when this profile.
+	 *
+	 * @return the time (in milliseconds)
+	 */
 	public long getUpdated() {
 		return updated;
 	}
 
+	/**
+	 * Clears the internal cache.
+	 */
 	protected void clear() {
 		cache.clear();
 	}
 
+	/**
+	 * The type of {@link org.powerbot.script.xenon.net.Hiscores.Stats}.
+	 */
 	public enum StatsType {SKILL, ACTIVITY}
 
+	/**
+	 * Stats information.
+	 */
 	public enum Stats {
 		OVERALL(0, StatsType.SKILL),
 		ATTACK(1, StatsType.SKILL),
@@ -178,24 +228,51 @@ public class Hiscores {
 		private final int index;
 		private final StatsType type;
 
+		/**
+		 * Creates a new {@link org.powerbot.script.xenon.net.Hiscores.Stats} object.
+		 *
+		 * @param index the index
+		 * @param type the type
+		 */
 		private Stats(final int index, final StatsType type) {
 			this.index = index;
 			this.type = type;
 		}
 
+		/**
+		 * Returns the index.
+		 *
+		 * @return the index
+		 */
 		public int getIndex() {
 			return index;
 		}
 
+		/**
+		 * Returns the type.
+		 *
+		 * @return the type
+		 */
 		public StatsType getType() {
 			return type;
 		}
 	}
 
+	/**
+	 * Skill information.
+	 */
 	public class SkillStats {
 		public int level, xp, rank;
 		public Stats stats;
 
+		/**
+		 * Creates a new {@link org.powerbot.script.xenon.net.Hiscores.SkillStats} object.
+		 *
+		 * @param stats the type of stat
+		 * @param level the level
+		 * @param xp the experience points
+		 * @param rank the global rank
+		 */
 		public SkillStats(final Stats stats, final int level, final int xp, final int rank) {
 			this.stats = stats;
 			this.level = level;
@@ -203,41 +280,86 @@ public class Hiscores {
 			this.rank = rank;
 		}
 
+		/**
+		 * Returns the type of stat.
+		 *
+		 * @return the type of stat
+		 */
 		public Stats getStats() {
 			return stats;
 		}
 
+		/**
+		 * Returns the level.
+		 *
+		 * @return the level
+		 */
 		public int getLevel() {
 			return level;
 		}
 
+		/**
+		 * Returns the total experience points.
+		 *
+		 * @return the total number of experience points
+		 */
 		public int getTotalXp() {
 			return xp;
 		}
 
+		/**
+		 * Returns the global rank.
+		 *
+		 * @return the global rank
+		 */
 		public int getRank() {
 			return rank;
 		}
 	}
 
+	/**
+	 * Activity information.
+	 */
 	public class ActivityStats {
 		public int score, rank;
 		public Stats stats;
 
+		/**
+		 * Creates a new {@link org.powerbot.script.xenon.net.Hiscores.ActivityStats} object.
+		 *
+		 * @param stats the type of stat
+		 * @param score the score
+		 * @param rank the global rank
+		 */
 		public ActivityStats(final Stats stats, final int score, final int rank) {
 			this.stats = stats;
 			this.score = score;
 			this.rank = rank;
 		}
 
+		/**
+		 * Returns the type of stat.
+		 *
+		 * @return the type of stat
+		 */
 		public Stats getStats() {
 			return stats;
 		}
 
+		/**
+		 * Returns the score.
+		 *
+		 * @return the score
+		 */
 		public int getScore() {
 			return score;
 		}
 
+		/**
+		 * Returns the global rank.
+		 *
+		 * @return the global rank
+		 */
 		public int getRank() {
 			return rank;
 		}
