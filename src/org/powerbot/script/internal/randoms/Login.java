@@ -153,7 +153,6 @@ public class Login extends TaskScript implements RandomEvent, PaintListener {
 		@Override
 		public boolean isValid() {
 			final int state = Game.getClientState();
-			log.info(state + " " + bot.getAccount());
 			return (state == Game.INDEX_LOGIN_SCREEN || state == Game.INDEX_LOGGING_IN) && bot.getAccount() != null;
 		}
 
