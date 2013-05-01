@@ -59,9 +59,7 @@ public class Objects {
 						ground.getWallDecoration1(), ground.getWallDecoration2()
 				};
 				for (int i = 0; i < objs.length; i++) {
-					if (objs[i] != null) {
-						objects.add(new GameObject(objs[i], types[i]));
-					}
+					if (objs[i] != null) objects.add(new GameObject(objs[i], types[i]));
 				}
 			}
 		}
