@@ -48,7 +48,7 @@ public class Bank {
 	public static final int COMPONENT_BUTTON_DEPOSIT_EQUIPMENT = 38;
 	public static final int COMPONENT_BUTTON_DEPOSIT_FAMILIAR = 40;
 	public static final int COMPONENT_SCROLL_BAR = 116;
-	public static final int SETTING_BANK_STATE = 1248;
+	public static final int SETTING_BANK_STATE = 110;
 	public static final int SETTING_WITHDRAW_MODE = 160;
 
 	public static boolean isOpen() {

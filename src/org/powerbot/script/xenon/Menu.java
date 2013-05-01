@@ -34,7 +34,7 @@ public class Menu {
 		int d = 0;
 		for (final MenuItemNode node : nodes) {
 			String a = node.getAction(), o = node.getOption();
-			a = a != null ? PATTERN_HTML.matcher(o).replaceAll("") : "";
+			a = a != null ? PATTERN_HTML.matcher(a).replaceAll("") : "";
 			o = o != null ? PATTERN_HTML.matcher(o).replaceAll("") : "";
 			if ((action == null || a.equalsIgnoreCase(action)) &&
 					(option == null || o.equalsIgnoreCase(option))) return d;
