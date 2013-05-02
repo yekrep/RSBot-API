@@ -52,6 +52,7 @@ public class Widgets {
 		if (p.y >= abs.y && p.y <= abs.y + height - component.getHeight()) return true;
 
 		final Component _bar = bar.getChild(0);
+		if (_bar == null) return false;
 		final int size = area.getScrollHeight();
 		int pos = (int) ((float) _bar.getHeight() / size * (component.getRelativeLocation().y + Random.nextInt(-height / 2, height / 2 - component.getHeight())));
 		if (pos < 0) pos = 0;
@@ -67,6 +68,7 @@ public class Widgets {
 		while ((a = component.getAbsoluteLocation()).y < abs.y || a.y > abs.y + height - component.getHeight()) {
 			up = a.y < abs.y;
 			c = bar.getChild(up ? 4 : 5);
+			if (c == null) break;
 			if (c.click()) Delay.sleep(100, 200);
 		}
 		return a.y >= abs.y && a.y <= height + abs.y + height - component.getHeight();
