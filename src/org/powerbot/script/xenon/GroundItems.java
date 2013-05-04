@@ -5,11 +5,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.powerbot.bot.Bot;
-import org.powerbot.game.client.Client;
-import org.powerbot.game.client.HashTable;
-import org.powerbot.game.client.NodeDeque;
-import org.powerbot.game.client.NodeListCache;
-import org.powerbot.game.client.RSItem;
+import org.powerbot.client.Client;
+import org.powerbot.client.HashTable;
+import org.powerbot.client.NodeDeque;
+import org.powerbot.client.NodeListCache;
+import org.powerbot.client.RSItem;
 import org.powerbot.script.internal.Nodes;
 import org.powerbot.script.internal.wrappers.Deque;
 import org.powerbot.script.xenon.util.Filter;

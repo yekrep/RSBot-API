@@ -6,8 +6,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.powerbot.bot.Bot;
-import org.powerbot.game.client.Client;
-import org.powerbot.game.client.RSInterfaceBase;
+import org.powerbot.client.Client;
+import org.powerbot.client.RSInterfaceBase;
 import org.powerbot.script.xenon.util.Delay;
 import org.powerbot.script.xenon.util.Random;
 import org.powerbot.script.xenon.wrappers.Component;

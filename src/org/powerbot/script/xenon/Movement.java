@@ -3,9 +3,9 @@ package org.powerbot.script.xenon;
 import java.awt.Point;
 
 import org.powerbot.bot.Bot;
-import org.powerbot.game.client.Client;
-import org.powerbot.game.client.RSGroundData;
-import org.powerbot.game.client.RSInfo;
+import org.powerbot.client.Client;
+import org.powerbot.client.RSGroundData;
+import org.powerbot.client.RSInfo;
 import org.powerbot.script.xenon.util.Delay;
 import org.powerbot.script.xenon.wrappers.Component;
 import org.powerbot.script.xenon.wrappers.LocalPath;

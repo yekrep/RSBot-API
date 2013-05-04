@@ -2,7 +2,7 @@ package org.powerbot.script.xenon.wrappers;
 
 import java.lang.ref.WeakReference;
 
-import org.powerbot.game.client.RSItemDef;
+import org.powerbot.client.RSItemDef;
 
 public class ItemDefinition implements Validatable {
 	private final WeakReference<RSItemDef> def;

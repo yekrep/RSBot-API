@@ -4,8 +4,8 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 import org.powerbot.bot.Bot;
-import org.powerbot.game.client.Client;
-import org.powerbot.game.client.input.Mouse;
+import org.powerbot.client.Client;
+import org.powerbot.client.input.Mouse;
 import org.powerbot.event.PaintListener;
 
 public class DrawMouse implements PaintListener {

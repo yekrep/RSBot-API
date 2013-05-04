@@ -3,7 +3,7 @@ package org.powerbot.script.xenon;
 import java.awt.event.KeyEvent;
 
 import org.powerbot.bot.Bot;
-import org.powerbot.game.client.Client;
+import org.powerbot.client.Client;
 import org.powerbot.script.xenon.util.Delay;
 import org.powerbot.script.xenon.util.Random;
 import org.powerbot.script.xenon.util.Timer;

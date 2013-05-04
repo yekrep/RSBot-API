@@ -11,7 +11,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javax.swing.*;
+import javax.swing.ImageIcon;
+import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 
 import org.powerbot.bot.Bot;
 import org.powerbot.event.impl.DrawBoundaries;
@@ -40,9 +43,6 @@ import org.powerbot.util.io.Resources;
  */
 public final class BotMenuView implements ActionListener {//TODO revamp debugging options
 	private static final long serialVersionUID = 1L;
-	private final Map<String, Class<? extends EventListener>> map;
-	private static Map<Bot, Map<String, EventListener>> listeners;
-
 	private static final String ALL = "All";
 	private static final String MOUSE = "Mouse";
 	private static final String PLAYERS = "Players";
@@ -62,6 +62,8 @@ public final class BotMenuView implements ActionListener {//TODO revamp debuggin
 	private static final String DESTINATION = "Destination";
 	private static final String MESSAGES = "Messages";
 	private static final String SEPERATOR = "-";
+	private static Map<Bot, Map<String, EventListener>> listeners;
+	private final Map<String, Class<? extends EventListener>> map;
 
 	public BotMenuView(final JMenu menu) {
 		if (!Bot.instantiated()) {
@@ -165,9 +167,9 @@ public final class BotMenuView implements ActionListener {//TODO revamp debuggin
 	public void actionPerformed(final ActionEvent e) {
 		final String s = e.getActionCommand();
 		if (s.equals(BotLocale.WIDGETEXPLORER)) {
-			BotWidgetExplorer.display(Bot.context());
+			BotWidgetExplorer.display();
 		} else if (s.equals(BotLocale.SETTINGEXPLORER)) {
-			BotSettingExplorer.display(Bot.context());
+			BotSettingExplorer.display();
 		} else {
 			final JCheckBoxMenuItem item = (JCheckBoxMenuItem) e.getSource();
 			item.setSelected(!item.isSelected());

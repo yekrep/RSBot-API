@@ -7,11 +7,11 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 import org.powerbot.bot.Bot;
-import org.powerbot.game.client.Client;
-import org.powerbot.game.client.MenuGroupNode;
-import org.powerbot.game.client.MenuItemNode;
-import org.powerbot.game.client.NodeDeque;
-import org.powerbot.game.client.NodeSubQueue;
+import org.powerbot.client.Client;
+import org.powerbot.client.MenuGroupNode;
+import org.powerbot.client.MenuItemNode;
+import org.powerbot.client.NodeDeque;
+import org.powerbot.client.NodeSubQueue;
 import org.powerbot.script.internal.wrappers.Deque;
 import org.powerbot.script.internal.wrappers.Queue;
 import org.powerbot.script.xenon.util.Delay;

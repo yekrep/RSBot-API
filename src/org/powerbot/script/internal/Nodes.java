@@ -1,9 +1,9 @@
 package org.powerbot.script.internal;
 
-import org.powerbot.game.client.HardReference;
-import org.powerbot.game.client.HashTable;
-import org.powerbot.game.client.Node;
-import org.powerbot.game.client.SoftReference;
+import org.powerbot.client.HardReference;
+import org.powerbot.client.HashTable;
+import org.powerbot.client.Node;
+import org.powerbot.client.SoftReference;
 
 public class Nodes {
 	public static Object lookup(final HashTable nc, final long id) {

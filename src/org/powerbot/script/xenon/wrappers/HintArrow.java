@@ -4,11 +4,11 @@ import java.lang.ref.WeakReference;
 import java.util.Arrays;
 
 import org.powerbot.bot.Bot;
-import org.powerbot.game.client.Client;
-import org.powerbot.game.client.RSHintArrow;
-import org.powerbot.game.client.RSNPC;
-import org.powerbot.game.client.RSNPCNode;
-import org.powerbot.game.client.RSPlayer;
+import org.powerbot.client.Client;
+import org.powerbot.client.RSHintArrow;
+import org.powerbot.client.RSNPC;
+import org.powerbot.client.RSNPCNode;
+import org.powerbot.client.RSPlayer;
 import org.powerbot.script.internal.Nodes;
 import org.powerbot.script.xenon.Game;
 

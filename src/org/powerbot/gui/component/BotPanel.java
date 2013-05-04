@@ -19,7 +19,7 @@ import java.awt.event.MouseWheelListener;
 import javax.swing.JPanel;
 
 import org.powerbot.bot.Bot;
-import org.powerbot.game.client.input.Mouse;
+import org.powerbot.client.input.Mouse;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.util.Tracker;
 

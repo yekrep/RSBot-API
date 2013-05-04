@@ -1,9 +1,9 @@
 package org.powerbot.script.xenon.tabs;
 
 import org.powerbot.bot.Bot;
-import org.powerbot.game.client.Client;
-import org.powerbot.game.client.PlayerMetaInfo;
-import org.powerbot.game.client.Skill;
+import org.powerbot.client.Client;
+import org.powerbot.client.PlayerMetaInfo;
+import org.powerbot.client.Skill;
 
 public class Skills {
 	public static final int[] XP_TABLE = {0, 0, 83, 174, 276, 388, 512, 650, 801, 969, 1154, 1358, 1584, 1833, 2107,

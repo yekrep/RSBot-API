@@ -10,8 +10,8 @@ import java.lang.reflect.Modifier;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import org.powerbot.game.client.Client;
-import org.powerbot.game.client.input.Keyboard;
+import org.powerbot.client.Client;
+import org.powerbot.client.input.Keyboard;
 import org.powerbot.golem.HardwareSimulator;
 
 import javax.swing.*;

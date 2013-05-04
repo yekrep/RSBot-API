@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.PropertyPermission;
 
-import org.powerbot.game.client.RandomAccessFile;
+import org.powerbot.client.RandomAccessFile;
 import org.powerbot.util.io.IOHelper;
 
 public class RSClassLoader extends ClassLoader {

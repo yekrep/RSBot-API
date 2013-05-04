@@ -8,12 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.powerbot.client.Client;
 import org.powerbot.event.EventMulticaster;
 import org.powerbot.event.PaintEvent;
 import org.powerbot.event.TextPaintEvent;
-import org.powerbot.game.bot.CallbackImpl;
-import org.powerbot.game.bot.Context;
-import org.powerbot.game.client.Client;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.gui.component.BotPanel;
 import org.powerbot.gui.controller.BotInteract;
@@ -49,6 +47,7 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 	public ModScript modScript;
 	public BufferedImage image;
 	public volatile boolean refreshing;
+	public int preferredWorld;
 	private Client client;
 	private Constants constants;
 	private BotPanel panel;
@@ -79,6 +78,7 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 
 		new Thread(threadGroup, multicaster, multicaster.getClass().getName()).start();
 		refreshing = false;
+		this.preferredWorld = -1;
 	}
 
 	public synchronized static Bot getInstance() {
@@ -100,10 +100,6 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 		return instance.constants;
 	}
 
-	public static Context context() {
-		return instance.composite.context;
-	}
-
 	public static MouseHandler mouseHandler() {
 		return instance.mouseHandler;
 	}
@@ -118,12 +114,6 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 
 	public void start() {
 		log.info("Starting bot");
-		final Context previous = composite.context;
-		composite.context = new Context(this);
-		if (previous != null) {
-			composite.context.world = previous.world;
-		}
-		Context.context.put(threadGroup, composite.context);
 		appletContainer = new RSLoader();
 		appletContainer.setCallback(new Runnable() {
 			public void run() {
@@ -169,7 +159,6 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 				terminateApplet();
 			}
 		}).start();
-		Context.context.remove(threadGroup);
 		instance = null;
 	}
 
@@ -254,10 +243,6 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 		mouseHandler = new MouseHandler(appletContainer, client);
 		inputHandler = new InputHandler(appletContainer, client);
 		new Thread(threadGroup, mouseHandler).start();
-	}
-
-	public Context getContext() {
-		return composite.context;
 	}
 
 	public Canvas getCanvas() {

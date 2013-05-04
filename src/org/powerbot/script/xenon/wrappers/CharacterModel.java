@@ -3,16 +3,16 @@ package org.powerbot.script.xenon.wrappers;
 import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;
 
-import org.powerbot.game.client.RSCharacter;
-import org.powerbot.game.client.RSInteractableData;
-import org.powerbot.game.client.RSInteractableLocation;
+import org.powerbot.client.RSCharacter;
+import org.powerbot.client.RSInteractableData;
+import org.powerbot.client.RSInteractableLocation;
 import org.powerbot.script.xenon.Calculations;
 
 public class CharacterModel extends Model {
 	private final Reference<RSCharacter> character;
 	private final int[] x_base, z_base;
 
-	public CharacterModel(final org.powerbot.game.client.Model model, final RSCharacter character) {
+	public CharacterModel(final org.powerbot.client.Model model, final RSCharacter character) {
 		super(model);
 		this.character = new WeakReference<>(character);
 		x_base = xPoints;

@@ -1,12 +1,12 @@
 package org.powerbot.script.xenon.wrappers;
 
 import org.powerbot.bot.Bot;
-import org.powerbot.game.client.Cache;
-import org.powerbot.game.client.Client;
-import org.powerbot.game.client.HashTable;
-import org.powerbot.game.client.RSItem;
-import org.powerbot.game.client.RSItemDef;
-import org.powerbot.game.client.RSItemDefLoader;
+import org.powerbot.client.Cache;
+import org.powerbot.client.Client;
+import org.powerbot.client.HashTable;
+import org.powerbot.client.RSItem;
+import org.powerbot.client.RSItemDef;
+import org.powerbot.client.RSItemDefLoader;
 import org.powerbot.script.internal.Nodes;
 
 public class Item {

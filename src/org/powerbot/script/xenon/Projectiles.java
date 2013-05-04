@@ -4,11 +4,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.powerbot.bot.Bot;
-import org.powerbot.game.client.Client;
-import org.powerbot.game.client.Node;
-import org.powerbot.game.client.NodeDeque;
-import org.powerbot.game.client.RSProjectile;
-import org.powerbot.game.client.RSProjectileNode;
+import org.powerbot.client.Client;
+import org.powerbot.client.Node;
+import org.powerbot.client.NodeDeque;
+import org.powerbot.client.RSProjectile;
+import org.powerbot.client.RSProjectileNode;
 import org.powerbot.script.internal.wrappers.Deque;
 import org.powerbot.script.xenon.wrappers.Projectile;
 

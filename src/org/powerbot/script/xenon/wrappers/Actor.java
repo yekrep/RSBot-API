@@ -3,19 +3,19 @@ package org.powerbot.script.xenon.wrappers;
 import java.awt.Point;
 
 import org.powerbot.bot.Bot;
-import org.powerbot.game.client.Client;
-import org.powerbot.game.client.CombatStatus;
-import org.powerbot.game.client.CombatStatusData;
-import org.powerbot.game.client.LinkedListNode;
-import org.powerbot.game.client.RSAnimator;
-import org.powerbot.game.client.RSCharacter;
-import org.powerbot.game.client.RSInteractableData;
-import org.powerbot.game.client.RSInteractableLocation;
-import org.powerbot.game.client.RSMessageData;
-import org.powerbot.game.client.RSNPC;
-import org.powerbot.game.client.RSNPCNode;
-import org.powerbot.game.client.RSPlayer;
-import org.powerbot.game.client.Sequence;
+import org.powerbot.client.Client;
+import org.powerbot.client.CombatStatus;
+import org.powerbot.client.CombatStatusData;
+import org.powerbot.client.LinkedListNode;
+import org.powerbot.client.RSAnimator;
+import org.powerbot.client.RSCharacter;
+import org.powerbot.client.RSInteractableData;
+import org.powerbot.client.RSInteractableLocation;
+import org.powerbot.client.RSMessageData;
+import org.powerbot.client.RSNPC;
+import org.powerbot.client.RSNPCNode;
+import org.powerbot.client.RSPlayer;
+import org.powerbot.client.Sequence;
 import org.powerbot.script.internal.Nodes;
 import org.powerbot.script.xenon.Calculations;
 import org.powerbot.script.xenon.Game;
@@ -28,7 +28,7 @@ public abstract class Actor extends Interactive implements Locatable {
 	public Model getModel() {
 		final RSCharacter character = getAccessor();
 		if (character != null) {
-			final org.powerbot.game.client.Model model = character.getModel();
+			final org.powerbot.client.Model model = character.getModel();
 			if (model != null) return new CharacterModel(model, character);
 		}
 		return null;
@@ -206,7 +206,7 @@ public abstract class Actor extends Interactive implements Locatable {
 	private LinkedListNode[] getBarNodes() {
 		final RSCharacter accessor = getAccessor();
 		if (accessor == null) return null;
-		final org.powerbot.game.client.LinkedList barList = accessor.getCombatStatusList();
+		final org.powerbot.client.LinkedList barList = accessor.getCombatStatusList();
 		if (barList == null) return null;
 		final LinkedListNode tail = barList.getTail();
 		LinkedListNode health, adrenaline, current;
@@ -232,7 +232,7 @@ public abstract class Actor extends Interactive implements Locatable {
 				continue;
 			}
 			final CombatStatus status = (CombatStatus) nodes[i];
-			final org.powerbot.game.client.LinkedList statuses = status.getData();
+			final org.powerbot.client.LinkedList statuses = status.getData();
 			if (statuses == null) {
 				data[i] = null;
 				continue;

@@ -41,7 +41,11 @@ public class Scanner {
 	}
 
 	public String readString() {
-		return new String(readSegment());
+		return normalize(new String(readSegment()));
+	}
+
+	private String normalize(final String s) {
+		return s.replace("org/powerbot/game/client", "org/powerbot/client");
 	}
 
 	public byte[] readSegment() {

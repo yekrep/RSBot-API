@@ -4,9 +4,9 @@ import java.awt.Point;
 import java.awt.Rectangle;
 
 import org.powerbot.bot.Bot;
-import org.powerbot.game.client.Client;
-import org.powerbot.game.client.RSInterface;
-import org.powerbot.game.client.RSInterfaceNode;
+import org.powerbot.client.Client;
+import org.powerbot.client.RSInterface;
+import org.powerbot.client.RSInterfaceNode;
 import org.powerbot.script.internal.wrappers.HashTable;
 import org.powerbot.script.xenon.Widgets;
 import org.powerbot.script.xenon.util.Random;

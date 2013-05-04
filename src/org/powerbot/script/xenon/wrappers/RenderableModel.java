@@ -1,11 +1,11 @@
 package org.powerbot.script.xenon.wrappers;
 
-import org.powerbot.game.client.RSInteractable;
+import org.powerbot.client.RSInteractable;
 
 public class RenderableModel extends Model {
 	private final RSInteractable interactable;
 
-	public RenderableModel(final org.powerbot.game.client.Model model, final RSInteractable interactable) {
+	public RenderableModel(final org.powerbot.client.Model model, final RSInteractable interactable) {
 		super(model);
 		this.interactable = interactable;
 	}

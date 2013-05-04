@@ -264,7 +264,7 @@ public class Login extends TaskScript implements RandomEvent, PaintListener {
 				}
 			}
 
-			final int world = Bot.context().world;
+			final int world = Bot.getInstance().preferredWorld;
 			if (world > 0) {
 				final Lobby.World world_wrapper;
 				if ((world_wrapper = Lobby.getWorld(world)) != null) {

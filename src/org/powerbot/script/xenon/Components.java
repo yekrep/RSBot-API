@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.powerbot.bot.Bot;
-import org.powerbot.game.client.Client;
+import org.powerbot.client.Client;
 import org.powerbot.script.xenon.wrappers.Component;
 import org.powerbot.script.xenon.wrappers.Widget;
 

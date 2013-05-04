@@ -3,8 +3,8 @@ package org.powerbot.script.xenon;
 import java.util.Arrays;
 
 import org.powerbot.bot.Bot;
-import org.powerbot.game.client.Client;
-import org.powerbot.game.client.RSHintArrow;
+import org.powerbot.client.Client;
+import org.powerbot.client.RSHintArrow;
 import org.powerbot.script.xenon.wrappers.HintArrow;
 
 public class HintArrows {

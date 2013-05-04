@@ -4,9 +4,9 @@ import java.awt.Canvas;
 import java.awt.Dimension;
 
 import org.powerbot.bot.Bot;
-import org.powerbot.game.client.BaseInfo;
-import org.powerbot.game.client.Client;
-import org.powerbot.game.client.RSInfo;
+import org.powerbot.client.BaseInfo;
+import org.powerbot.client.Client;
+import org.powerbot.client.RSInfo;
 import org.powerbot.script.internal.Constants;
 import org.powerbot.script.xenon.util.Delay;
 import org.powerbot.script.xenon.util.Timer;
@@ -125,8 +125,7 @@ public class Game {
 	}
 
 	public static void setPreferredWorld(final int world) {
-		Bot.context().world = world;
-		//TODO this
+		Bot.getInstance().preferredWorld = world;
 	}
 
 	public static Dimension getDimensions() {

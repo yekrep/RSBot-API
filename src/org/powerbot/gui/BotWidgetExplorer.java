@@ -31,8 +31,8 @@ import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
+import org.powerbot.bot.Bot;
 import org.powerbot.event.PaintListener;
-import org.powerbot.game.bot.Context;
 import org.powerbot.script.xenon.Widgets;
 import org.powerbot.script.xenon.wrappers.Component;
 import org.powerbot.script.xenon.wrappers.Widget;
@@ -50,9 +50,8 @@ public class BotWidgetExplorer extends JFrame implements PaintListener {
 	private JPanel infoArea;
 	private JTextField searchBox;
 	private Rectangle highlightArea = null;
-	private Context context;
 
-	public BotWidgetExplorer(final Context context) {
+	public BotWidgetExplorer() {
 		super("Widget Explorer");
 		setIconImage(Resources.getImage(Resources.Paths.EDIT));
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -60,11 +59,10 @@ public class BotWidgetExplorer extends JFrame implements PaintListener {
 			@Override
 			public void windowClosing(final WindowEvent e) {
 				setVisible(false);
-				context.getBot().getEventMulticaster().removeListener(this);
+				Bot.getInstance().getEventMulticaster().removeListener(this);
 				highlightArea = null;
 			}
 		});
-		this.context = context;
 		treeModel = new WidgetTreeModel();
 		treeModel.update("");
 		tree = new JTree(treeModel);
@@ -73,7 +71,6 @@ public class BotWidgetExplorer extends JFrame implements PaintListener {
 		tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 		tree.addTreeSelectionListener(new TreeSelectionListener() {
 			public void valueChanged(final TreeSelectionEvent e) {
-				context.associate(Thread.currentThread().getThreadGroup());
 				try {
 					final Object node = tree.getLastSelectedPathComponent();
 					if (node == null || node instanceof WidgetWrapper) {
@@ -121,8 +118,7 @@ public class BotWidgetExplorer extends JFrame implements PaintListener {
 					addInfo("getVerticalScrollThumbSize: ", Integer.toString(c.getScrollHeight()));
 					infoArea.validate();
 					infoArea.repaint();
-				} finally {
-					context.disregard(Thread.currentThread().getThreadGroup());
+				} catch (final Exception ignored) {
 				}
 			}
 
@@ -177,22 +173,21 @@ public class BotWidgetExplorer extends JFrame implements PaintListener {
 		Tracker.getInstance().trackPage("widgetexplorer/", getTitle());
 	}
 
-	private static BotWidgetExplorer getInstance(final Context context) {
+	private static BotWidgetExplorer getInstance() {
 		if (instance == null) {
-			instance = new BotWidgetExplorer(context);
+			instance = new BotWidgetExplorer();
 		}
 		return instance;
 	}
 
-	public static void display(final Context context) {
-		final BotWidgetExplorer botWidgetExplorer = getInstance(context);
+	public static void display() {
+		final BotWidgetExplorer botWidgetExplorer = getInstance();
 		if (botWidgetExplorer.isVisible()) {
-			botWidgetExplorer.context.getBot().getEventMulticaster().removeListener(botWidgetExplorer);
+			Bot.getInstance().getEventMulticaster().removeListener(botWidgetExplorer);
 			botWidgetExplorer.highlightArea = null;
 		}
-		botWidgetExplorer.context = context;
 		botWidgetExplorer.treeModel.update("");
-		botWidgetExplorer.context.getBot().getEventMulticaster().addListener(botWidgetExplorer);
+		Bot.getInstance().getEventMulticaster().addListener(botWidgetExplorer);
 		botWidgetExplorer.setVisible(true);
 	}
 
@@ -213,7 +208,6 @@ public class BotWidgetExplorer extends JFrame implements PaintListener {
 		}
 
 		public Object getChild(final Object parent, final int index) {
-			context.associate(Thread.currentThread().getThreadGroup());
 			try {
 				if (parent == root) {
 					return widgetWrappers.get(index);
@@ -224,12 +218,10 @@ public class BotWidgetExplorer extends JFrame implements PaintListener {
 				}
 				return null;
 			} finally {
-				context.disregard(Thread.currentThread().getThreadGroup());
 			}
 		}
 
 		public int getChildCount(final Object parent) {
-			context.associate(Thread.currentThread().getThreadGroup());
 			try {
 				if (parent == root) {
 					return widgetWrappers.size();
@@ -240,16 +232,13 @@ public class BotWidgetExplorer extends JFrame implements PaintListener {
 				}
 				return 0;
 			} finally {
-				context.disregard(Thread.currentThread().getThreadGroup());
 			}
 		}
 
 		public boolean isLeaf(final Object node) {
-			context.associate(Thread.currentThread().getThreadGroup());
 			try {
 				return node instanceof ComponentWrapper && ((ComponentWrapper) node).get().getChildren().length == 0;
 			} finally {
-				context.disregard(Thread.currentThread().getThreadGroup());
 			}
 		}
 
@@ -257,7 +246,6 @@ public class BotWidgetExplorer extends JFrame implements PaintListener {
 		}
 
 		public int getIndexOfChild(final Object parent, final Object child) {
-			context.associate(Thread.currentThread().getThreadGroup());
 			try {
 				if (parent == root) {
 					return widgetWrappers.indexOf(child);
@@ -268,7 +256,6 @@ public class BotWidgetExplorer extends JFrame implements PaintListener {
 				}
 				return -1;
 			} finally {
-				context.disregard(Thread.currentThread().getThreadGroup());
 			}
 		}
 
@@ -289,7 +276,6 @@ public class BotWidgetExplorer extends JFrame implements PaintListener {
 
 		public void update(final String search) {
 			widgetWrappers.clear();
-			context.associate(Thread.currentThread().getThreadGroup());
 			for (final Widget widget : Widgets.getLoaded()) {
 				children:
 				for (final Component Component : widget.getComponents()) {
@@ -306,7 +292,6 @@ public class BotWidgetExplorer extends JFrame implements PaintListener {
 				}
 			}
 			fireTreeStructureChanged(root);
-			context.disregard(Thread.currentThread().getThreadGroup());
 		}
 
 		private boolean search(final Component child, final String string) {

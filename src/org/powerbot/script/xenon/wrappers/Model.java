@@ -6,7 +6,7 @@ import java.awt.Polygon;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import org.powerbot.game.client.ModelCapture;
+import org.powerbot.client.ModelCapture;
 import org.powerbot.script.xenon.Calculations;
 import org.powerbot.script.xenon.util.Random;
 
@@ -20,7 +20,7 @@ public abstract class Model {
 	protected final int numFaces;
 	protected final int numVertices;
 
-	public Model(final org.powerbot.game.client.Model model) {
+	public Model(final org.powerbot.client.Model model) {
 		xPoints = model.getXPoints();
 		yPoints = model.getYPoints();
 		zPoints = model.getZPoints();

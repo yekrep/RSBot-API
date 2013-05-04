@@ -5,15 +5,15 @@ import java.lang.ref.WeakReference;
 import java.util.Arrays;
 
 import org.powerbot.bot.Bot;
-import org.powerbot.game.client.Cache;
-import org.powerbot.game.client.Client;
-import org.powerbot.game.client.HashTable;
-import org.powerbot.game.client.RSInfo;
-import org.powerbot.game.client.RSInteractableData;
-import org.powerbot.game.client.RSInteractableLocation;
-import org.powerbot.game.client.RSObject;
-import org.powerbot.game.client.RSObjectDef;
-import org.powerbot.game.client.RSObjectDefLoader;
+import org.powerbot.client.Cache;
+import org.powerbot.client.Client;
+import org.powerbot.client.HashTable;
+import org.powerbot.client.RSInfo;
+import org.powerbot.client.RSInteractableData;
+import org.powerbot.client.RSInteractableLocation;
+import org.powerbot.client.RSObject;
+import org.powerbot.client.RSObjectDef;
+import org.powerbot.client.RSObjectDefLoader;
 import org.powerbot.script.internal.Nodes;
 import org.powerbot.script.xenon.Game;
 import org.powerbot.script.xenon.Objects;
@@ -31,7 +31,7 @@ public class GameObject extends Interactive implements Locatable {
 	public Model getModel() {
 		final RSObject object = this.object.get();
 		if (object != null) {
-			final org.powerbot.game.client.Model model = object.getModel();
+			final org.powerbot.client.Model model = object.getModel();
 			if (model != null) return new RenderableModel(model, object);
 		}
 		return null;

@@ -4,9 +4,9 @@ import java.lang.ref.WeakReference;
 import java.util.Arrays;
 
 import org.powerbot.bot.Bot;
-import org.powerbot.game.client.Client;
-import org.powerbot.game.client.RSPlayer;
-import org.powerbot.game.client.RSPlayerComposite;
+import org.powerbot.client.Client;
+import org.powerbot.client.RSPlayer;
+import org.powerbot.client.RSPlayerComposite;
 
 public class Player extends Actor {
 	private final WeakReference<RSPlayer> player;

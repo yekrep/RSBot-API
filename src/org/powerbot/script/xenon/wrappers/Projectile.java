@@ -3,7 +3,7 @@ package org.powerbot.script.xenon.wrappers;
 import java.lang.ref.WeakReference;
 import java.util.Arrays;
 
-import org.powerbot.game.client.RSProjectile;
+import org.powerbot.client.RSProjectile;
 import org.powerbot.script.xenon.Projectiles;
 
 public class Projectile implements Validatable {

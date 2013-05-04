@@ -1,8 +1,8 @@
 package org.powerbot.script.xenon;
 
 import org.powerbot.bot.Bot;
-import org.powerbot.game.client.Client;
-import org.powerbot.game.client.PlayerMetaInfo;
+import org.powerbot.client.Client;
+import org.powerbot.client.PlayerMetaInfo;
 
 public class Settings {
 	public static int[] getArray() {
@@ -10,7 +10,7 @@ public class Settings {
 		if (client == null) return new int[0];
 
 		final PlayerMetaInfo info = client.getPlayerMetaInfo();
-		final org.powerbot.game.client.Settings settings;
+		final org.powerbot.client.Settings settings;
 		final int[] data;
 		if (info == null || (settings = info.getSettings()) == null || (data = settings.getData()) == null)
 			return new int[0];

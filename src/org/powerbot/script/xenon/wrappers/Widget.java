@@ -4,9 +4,9 @@ import java.util.Arrays;
 import java.util.Iterator;
 
 import org.powerbot.bot.Bot;
-import org.powerbot.game.client.Client;
-import org.powerbot.game.client.RSInterface;
-import org.powerbot.game.client.RSInterfaceBase;
+import org.powerbot.client.Client;
+import org.powerbot.client.RSInterface;
+import org.powerbot.client.RSInterfaceBase;
 
 public class Widget implements Validatable, Iterable<Component> {
 	private final int index;

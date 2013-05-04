@@ -2,18 +2,17 @@ package org.powerbot.script.xenon.wrappers;
 
 import java.awt.Point;
 import java.util.Arrays;
-import java.util.Set;
 
 import org.powerbot.bot.Bot;
-import org.powerbot.game.client.BaseInfo;
-import org.powerbot.game.client.Cache;
-import org.powerbot.game.client.Client;
-import org.powerbot.game.client.HashTable;
-import org.powerbot.game.client.RSGround;
-import org.powerbot.game.client.RSGroundInfo;
-import org.powerbot.game.client.RSInfo;
-import org.powerbot.game.client.RSItemDefLoader;
-import org.powerbot.game.client.RSItemPile;
+import org.powerbot.client.BaseInfo;
+import org.powerbot.client.Cache;
+import org.powerbot.client.Client;
+import org.powerbot.client.HashTable;
+import org.powerbot.client.RSGround;
+import org.powerbot.client.RSGroundInfo;
+import org.powerbot.client.RSInfo;
+import org.powerbot.client.RSItemDefLoader;
+import org.powerbot.client.RSItemPile;
 import org.powerbot.script.internal.Nodes;
 import org.powerbot.script.xenon.Calculations;
 import org.powerbot.script.xenon.GroundItems;
@@ -49,7 +48,7 @@ public class GroundItem extends Interactive implements Locatable {
 			if (itemPile != null) {
 				final int graphicsIndex = Calculations.toolkit.graphicsIndex;
 				final int[] ids = {itemPile.getID_1(), itemPile.getID_2(), itemPile.getID_3()};
-				final org.powerbot.game.client.Model[] models = new org.powerbot.game.client.Model[ids.length];
+				final org.powerbot.client.Model[] models = new org.powerbot.client.Model[ids.length];
 
 				final RSItemDefLoader defLoader;
 				final Cache cache;
@@ -61,8 +60,8 @@ public class GroundItem extends Interactive implements Locatable {
 				int i = 0;
 				for (final int id : ids) {
 					final Object model = Nodes.lookup(table, (long) id | (long) graphicsIndex << 29);
-					if (model != null && model instanceof org.powerbot.game.client.Model)
-						models[i++] = (org.powerbot.game.client.Model) model;
+					if (model != null && model instanceof org.powerbot.client.Model)
+						models[i++] = (org.powerbot.client.Model) model;
 				}
 
 				return i > 0 ? new RenderableModel(models[Random.nextInt(0, i)], itemPile) : null;

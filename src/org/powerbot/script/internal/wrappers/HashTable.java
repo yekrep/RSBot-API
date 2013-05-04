@@ -3,14 +3,14 @@ package org.powerbot.script.internal.wrappers;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import org.powerbot.game.client.Node;
+import org.powerbot.client.Node;
 
 public class HashTable implements Iterator<Node>, Iterable<Node> {
-	private final org.powerbot.game.client.HashTable nc;
+	private final org.powerbot.client.HashTable nc;
 	private volatile Node current;
 	private volatile int cursor;
 
-	public HashTable(final org.powerbot.game.client.HashTable hashTable) {
+	public HashTable(final org.powerbot.client.HashTable hashTable) {
 		nc = hashTable;
 		cursor = 0;
 	}

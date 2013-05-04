@@ -30,7 +30,7 @@ import javax.swing.WindowConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import org.powerbot.game.bot.Context;
+import org.powerbot.bot.Bot;
 import org.powerbot.script.xenon.Settings;
 import org.powerbot.script.xenon.util.Delay;
 import org.powerbot.util.Tracker;
@@ -63,19 +63,17 @@ public class BotSettingExplorer extends JFrame {
 		return instance;
 	}
 
-	public static void display(final Context context) {
+	public static void display() {
 		final BotSettingExplorer settingExplorer = getInstance();
 		if (settingExplorer.isVisible()) {
 			settingExplorer.clean();
 		}
 		settingExplorer.setVisible(true);
 		try {
-			context.associate(Thread.currentThread().getThreadGroup());
 			settingExplorer.settings_cache = Settings.getArray();
-			context.disregard(Thread.currentThread().getThreadGroup());
 		} catch (final NullPointerException ignored) {
 		}
-		new Thread(context.getThreadGroup(), new Runnable() {
+		new Thread(Bot.getInstance().threadGroup, new Runnable() {
 			@Override
 			public void run() {
 				while (settingExplorer.isVisible()) {

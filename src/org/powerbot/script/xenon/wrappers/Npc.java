@@ -3,10 +3,10 @@ package org.powerbot.script.xenon.wrappers;
 import java.lang.ref.WeakReference;
 
 import org.powerbot.bot.Bot;
-import org.powerbot.game.client.Client;
-import org.powerbot.game.client.RSNPC;
-import org.powerbot.game.client.RSNPCDef;
-import org.powerbot.game.client.RSNPCNode;
+import org.powerbot.client.Client;
+import org.powerbot.client.RSNPC;
+import org.powerbot.client.RSNPCDef;
+import org.powerbot.client.RSNPCNode;
 import org.powerbot.script.internal.Nodes;
 
 public class Npc extends Actor {
@@ -60,7 +60,7 @@ public class Npc extends Actor {
 		final RSNPC npc = getAccessor();
 		if (npc != null) {
 			final int[] indices = client.getRSNPCIndexArray();
-			final org.powerbot.game.client.HashTable npcTable = client.getRSNPCNC();
+			final org.powerbot.client.HashTable npcTable = client.getRSNPCNC();
 			for (final int index : indices) {
 				Object node = Nodes.lookup(npcTable, index);
 				if (node == null) continue;

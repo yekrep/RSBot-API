@@ -5,12 +5,12 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.powerbot.bot.Bot;
-import org.powerbot.game.client.BaseInfo;
-import org.powerbot.game.client.Client;
-import org.powerbot.game.client.RSGround;
-import org.powerbot.game.client.RSGroundInfo;
-import org.powerbot.game.client.RSInfo;
-import org.powerbot.game.client.RSObject;
+import org.powerbot.client.BaseInfo;
+import org.powerbot.client.Client;
+import org.powerbot.client.RSGround;
+import org.powerbot.client.RSGroundInfo;
+import org.powerbot.client.RSInfo;
+import org.powerbot.client.RSObject;
 import org.powerbot.script.xenon.util.Filter;
 import org.powerbot.script.xenon.wrappers.GameObject;
 import org.powerbot.script.xenon.wrappers.Player;
