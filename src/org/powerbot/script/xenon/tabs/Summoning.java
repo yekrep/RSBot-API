@@ -8,8 +8,8 @@ import org.powerbot.script.xenon.Widgets;
 import org.powerbot.script.xenon.util.Delay;
 import org.powerbot.script.xenon.util.Filter;
 import org.powerbot.script.xenon.util.Timer;
+import org.powerbot.script.xenon.wrappers.Actor;
 import org.powerbot.script.xenon.wrappers.Component;
-import org.powerbot.script.xenon.wrappers.MobileEntity;
 import org.powerbot.script.xenon.wrappers.Npc;
 import org.powerbot.script.xenon.wrappers.Player;
 
@@ -116,8 +116,8 @@ public class Summoning {
 		return Npcs.getNearest(new Filter<Npc>() {
 			@Override
 			public boolean accept(Npc npc) {
-				final MobileEntity mobileEntity;
-				return npc.getId() == Settings.get(1784) && (mobileEntity = npc.getInteracting()) != null && mobileEntity.equals(local);
+				final Actor actor;
+				return npc.getId() == Settings.get(1784) && (actor = npc.getInteracting()) != null && actor.equals(local);
 			}
 		});
 	}

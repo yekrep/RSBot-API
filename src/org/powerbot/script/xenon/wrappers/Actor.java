@@ -20,7 +20,7 @@ import org.powerbot.script.internal.Nodes;
 import org.powerbot.script.xenon.Calculations;
 import org.powerbot.script.xenon.Game;
 
-public abstract class MobileEntity extends Interactive implements Locatable {
+public abstract class Actor extends Interactive implements Locatable {
 	private int faceIndex = -1;
 
 	protected abstract RSCharacter getAccessor();
@@ -93,7 +93,7 @@ public abstract class MobileEntity extends Interactive implements Locatable {
 		return headMessage != null ? headMessage.getMessage() : null;
 	}
 
-	public MobileEntity getInteracting() {
+	public Actor getInteracting() {
 		final RSCharacter character = getAccessor();
 		final int index = character != null ? character.getInteracting() : -1;
 		if (index == -1) {
@@ -249,8 +249,8 @@ public abstract class MobileEntity extends Interactive implements Locatable {
 
 	@Override
 	public boolean equals(final Object o) {
-		if (o == null || !(o instanceof MobileEntity)) return false;
-		final MobileEntity c = (MobileEntity) o;
+		if (o == null || !(o instanceof Actor)) return false;
+		final Actor c = (Actor) o;
 		final RSCharacter i;
 		return (i = this.getAccessor()) != null && i == c.getAccessor();
 	}
