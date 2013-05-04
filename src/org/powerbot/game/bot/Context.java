@@ -8,7 +8,6 @@ import java.util.Map;
 
 import org.powerbot.bot.Bot;
 import org.powerbot.bot.RSLoader;
-import org.powerbot.game.api.methods.Environment;
 import org.powerbot.game.bot.util.ScreenCapture;
 
 @Deprecated
@@ -59,15 +58,6 @@ public class Context {//TODO remove idea of a 'context'
 
 	public RSLoader getLoader() {
 		return bot.appletContainer;
-	}
-
-	public String getDisplayName() {
-		return Environment.getProperties().getProperty("user.name");
-	}
-
-	public int getUserId() {
-		final String s = Environment.getProperties().getProperty("user.id");
-		return s == null || s.isEmpty() ? -1 : Integer.parseInt(s);
 	}
 
 	public void associate(final ThreadGroup threadGroup) {

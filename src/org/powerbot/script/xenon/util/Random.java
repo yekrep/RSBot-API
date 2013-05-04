@@ -3,7 +3,7 @@ package org.powerbot.script.xenon.util;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
-import org.powerbot.game.api.methods.Environment;
+import org.powerbot.script.xenon.Environment;
 
 public class Random {
 	private static final java.util.Random random;

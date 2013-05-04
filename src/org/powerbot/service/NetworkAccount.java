@@ -6,9 +6,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.powerbot.bot.Bot;
-import org.powerbot.game.api.methods.Environment;
 import org.powerbot.ipc.Controller;
 import org.powerbot.ipc.Message;
+import org.powerbot.script.xenon.Environment;
 import org.powerbot.util.Configuration;
 import org.powerbot.util.StringUtil;
 import org.powerbot.util.io.CryptFile;
@@ -20,13 +20,12 @@ import org.powerbot.util.io.IniParser;
  * @author Paris
  */
 public final class NetworkAccount {
-	private static NetworkAccount instance = null;
+	public static final int VIP = 1, DEVELOPER = 2, ADMIN = 4, LOCALSCRIPTS = 8, ORDER = 8;
 	private final static String STORENAME = "netacct", AUTHKEY = "auth", RESPKEY = "response", CREATEDKEY = "created";
 	private final static int CACHETTL = 24 * 60 * 60 * 1000;
+	private static NetworkAccount instance = null;
 	private final CryptFile store;
 	private final Map<String, String> props;
-
-	public static final int VIP = 1, DEVELOPER = 2, ADMIN = 4, LOCALSCRIPTS = 8, ORDER = 8;
 
 	private NetworkAccount() {
 		props = new HashMap<>();
@@ -39,6 +38,21 @@ public final class NetworkAccount {
 			instance = new NetworkAccount();
 		}
 		return instance;
+	}
+
+	public static boolean validate(final Map<String, String> data) {
+		if (data.isEmpty() || !data.containsKey("email") || !data.containsKey("name") || !data.containsKey("permissions")) {
+			return false;
+		}
+		final String salt = (data.get("name") + data.get("email")).toUpperCase();
+		final long hash;
+		try {
+			hash = IOHelper.crc32(StringUtil.getBytesUtf8(salt));
+		} catch (final IOException ignored) {
+			return false;
+		}
+		final long perms = Long.parseLong(data.get("permissions"));
+		return perms >> ORDER == hash >> ORDER;
 	}
 
 	public boolean isLoggedIn() {
@@ -89,7 +103,7 @@ public final class NetworkAccount {
 
 	public synchronized Map<String, String> login(final String username, final String password, final String auth) throws IOException {
 		InputStream is = HttpClient.openStream(Configuration.URLs.SIGNIN, StringUtil.urlEncode(username),
-			StringUtil.urlEncode(password), StringUtil.urlEncode(auth), Long.toString(Configuration.getUID()));
+				StringUtil.urlEncode(password), StringUtil.urlEncode(auth), Long.toString(Configuration.getUID()));
 
 		boolean success = false;
 		final Map<String, Map<String, String>> data = IniParser.deserialise(is);
@@ -146,21 +160,6 @@ public final class NetworkAccount {
 		broadcast();
 		updateCache();
 		sessionQuery(0);
-	}
-
-	public static boolean validate(final Map<String, String> data) {
-		if (data.isEmpty() || !data.containsKey("email") || !data.containsKey("name") || !data.containsKey("permissions")) {
-			return false;
-		}
-		final String salt = (data.get("name") + data.get("email")).toUpperCase();
-		final long hash;
-		try {
-			hash = IOHelper.crc32(StringUtil.getBytesUtf8(salt));
-		} catch (final IOException ignored) {
-			return false;
-		}
-		final long perms = Long.parseLong(data.get("permissions"));
-		return perms >> ORDER == hash >> ORDER;
 	}
 
 	private synchronized void broadcast() {
