@@ -103,7 +103,7 @@ public class Summoning {
 	}
 
 	public static boolean summonFamiliar(final Familiar familiar) {
-		return Inventory.getCount(familiar.getPouchId()) > 0 && org.powerbot.game.api.methods.tab.Skills.getRealLevel(Skills.SUMMONING) >= familiar.getRequiredLevel() &&
+		return Inventory.getCount(familiar.getPouchId()) > 0 && Skills.getRealLevel(Skills.SUMMONING) >= familiar.getRequiredLevel() &&
 				getPoints() >= familiar.getRequiredPoints() && Inventory.getItem(familiar.getPouchId()).getComponent().interact("Summon");
 	}
 

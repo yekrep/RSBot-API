@@ -77,10 +77,8 @@ public class LocalPath extends Path {
 		final int curr_x = start.getX() - base_x, curr_y = start.getY() - base_y;
 		int dest_x = end.getX() - base_x, dest_y = end.getY() - base_y;
 		if (dest_x < 0 || dest_y < 0 || dest_x > 103 || dest_y > 103) return null;
-		final CollisionMap map = Movement.getCollisionMap();
-		if (map == null) return null;
-		final int[][] meta = map.getMeta();
-		final Point offset = map.getPosition();
+		final int[][] meta = Movement.getMeta();
+		final Point offset = Movement.getPosition();
 		if (meta == null || offset == null) return null;
 		final int offX = offset.x, offY = offset.y;
 

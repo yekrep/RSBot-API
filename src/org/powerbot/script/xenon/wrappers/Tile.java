@@ -69,11 +69,6 @@ public class Tile extends Interactive implements Locatable {
 		return p.x != -1 && p.y != -1;
 	}
 
-	public boolean canReach() {
-		final CollisionMap map = Movement.getCollisionMap(plane);
-		return map.canReach(this);
-	}
-
 	@Override
 	public Tile getLocation() {
 		return this;

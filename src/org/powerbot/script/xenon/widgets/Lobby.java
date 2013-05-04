@@ -1,4 +1,4 @@
-package org.powerbot.game.api.methods.widget;
+package org.powerbot.script.xenon.widgets;
 
 import java.awt.Dimension;
 import java.awt.Rectangle;
@@ -6,23 +6,19 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.powerbot.game.api.methods.Game;
-import org.powerbot.game.api.methods.Widgets;
-import org.powerbot.game.api.util.Filter;
-import org.powerbot.game.api.util.Random;
-import org.powerbot.game.api.util.Timer;
-import org.powerbot.game.api.wrappers.widget.Widget;
-import org.powerbot.game.api.wrappers.widget.WidgetChild;
+import org.powerbot.script.xenon.Game;
+import org.powerbot.script.xenon.Widgets;
 import org.powerbot.script.xenon.util.Delay;
+import org.powerbot.script.xenon.util.Filter;
+import org.powerbot.script.xenon.util.Random;
+import org.powerbot.script.xenon.util.Timer;
+import org.powerbot.script.xenon.wrappers.Component;
+import org.powerbot.script.xenon.wrappers.Widget;
 
-/**
- * @author HelBorn
- */
 public class Lobby {
 	public static final int STATE_LOBBY_IDLE = 7;
 	public static final int STATE_LOGGING_IN = 9;
 	public static final int LOGIN_DEFAULT_TIMEOUT = 30000;
-
 	public static final int WIDGET_MAIN_LOBBY = 906;
 	public static final int WIDGET_BUTTON_PLAY_GAME = 197;
 	public static final int WIDGET_BUTTON_LOGOUT = 221;
@@ -38,253 +34,6 @@ public class Lobby {
 	public static final int WIDGET_WORLDS_COLUMN_LOOT_SHARE = 75;
 	public static final int WIDGET_WORLDS_COLUMN_PING = 76;
 
-	/**
-	 * Representation of the lobby tabs.
-	 */
-	public static enum Tab {
-		PLAYER_INFO(230, 907), WORLD_SELECT(28, 910), FRIENDS(27, 909),
-		FRIENDS_CHAT(280, 589), CLAN_CHAT(26, 912), OPTIONS(25, 911);
-
-		private final int widgetTabIndex;
-		private final int widgetPanelIndex;
-
-		private Tab(final int widgetTabIndex, final int widgetPanelIndex) {
-			this.widgetTabIndex = widgetTabIndex;
-			this.widgetPanelIndex = widgetPanelIndex;
-		}
-
-		/**
-		 * Gets the widget of the clickable tab.
-		 *
-		 * @return The widget of the tab.
-		 */
-		public WidgetChild getWidget() {
-			if (!Lobby.isOpen()) {
-				return null;
-			}
-			return Widgets.get(WIDGET_MAIN_LOBBY, widgetTabIndex);
-		}
-
-		/**
-		 * Gets the tab's panel widget.
-		 *
-		 * @return The tab's panel widget.
-		 */
-		public Widget getPanelWidget() {
-			if (!Lobby.isOpen()) {
-				return null;
-			}
-			return Widgets.get(widgetPanelIndex);
-		}
-
-		public boolean isOpen() {
-			final WidgetChild child = getWidget();
-			return child != null && child.validate() && child.getTextureId() == 4671;
-		}
-
-		public boolean open() {
-			final WidgetChild child = getWidget();
-			if (isOpen()) {
-				return true;
-			}
-			if (child != null && child.validate() && child.click(true)) {
-				Delay.sleep(Random.nextInt(1200, 2000));
-				return true;
-			}
-			return false;
-		}
-	}
-
-	/**
-	 * Representation of the lobby dialogs.
-	 */
-	public static enum Dialog {
-		TRANSFER_COUNTDOWN(255, -1, 252, "^You have only just left another world."),
-		ACCOUNT_IN_USE(260, -1, 252, "^Your account has not logged out from its last session."),
-		LOGIN_LIMIT_EXCEEDED(260, -1, 252, "^Login limit exceeded: too many connections from your address."),
-		MEMBERS_ONLY_WORLD(260, -1, 252, "^You need a member's account to log in to this world."),
-		INSUFFICIENT_SKILL_TOTAL(260, -1, 252, "^You must have a total skill level of"),
-		//ACCOUNT_BANNED(-1, -1, -1, null), //TODO
-		WILDERNESS_WARNING(118, 120, 113, "^Warning: This is a High-risk Wilderness world."),
-		VALIDATE_EMAIL(379, 379, 352, "^Validate your email now for increased account security");
-
-		private final int backButtonIndex;
-		private final int continueButtonIndex;
-		private final int textIndex;
-		private final Pattern textPattern;
-
-		private Dialog(final int backButtonIndex, final int continueButtonIndex, final int textIndex, final String textPattern) {
-			this.backButtonIndex = backButtonIndex;
-			this.continueButtonIndex = continueButtonIndex;
-			this.textIndex = textIndex;
-			this.textPattern = Pattern.compile(textPattern);
-		}
-
-		public boolean isOpen() {
-			final WidgetChild child = Widgets.get(WIDGET_MAIN_LOBBY, textIndex);
-			if (child != null && child.isOnScreen()) {
-				final String text = child.getText();
-				return text != null && textPattern.matcher(text).find();
-			}
-			return false;
-		}
-
-		public boolean hasContinue() {
-			return continueButtonIndex != -1;
-		}
-
-		public boolean clickContinue() {
-			if (!hasContinue()) {
-				return false;
-			}
-			final WidgetChild child = Widgets.get(WIDGET_MAIN_LOBBY, continueButtonIndex);
-			return child != null && child.isOnScreen() && child.click(true);
-		}
-
-		public boolean hasBack() {
-			return backButtonIndex != -1;
-		}
-
-		public boolean clickBack() {
-			if (!hasBack()) {
-				return false;
-			}
-			final WidgetChild child = Widgets.get(WIDGET_MAIN_LOBBY, backButtonIndex);
-			return child != null && child.isOnScreen() && child.click(true);
-		}
-	}
-
-	public static class World {
-		private final int number;
-		private final boolean members;
-		private final String activity;
-		private final boolean lootShare;
-		private int players;
-		private int ping;
-		private boolean favorite;
-
-		private World(final int widgetIndex) {
-			final Widget panel = Tab.WORLD_SELECT.getPanelWidget();
-			this.number = Integer.parseInt(panel.getChild(WIDGET_WORLDS_COLUMN_WORLD_NUMBER).getChild(widgetIndex).getText());
-			this.members = panel.getChild(WIDGET_WORLDS_COLUMN_MEMBERS).getChild(widgetIndex).getTextureId() == 1531;
-			this.activity = panel.getChild(WIDGET_WORLDS_COLUMN_ACTIVITY).getChild(widgetIndex).getText();
-			this.lootShare = panel.getChild(WIDGET_WORLDS_COLUMN_LOOT_SHARE).getChild(widgetIndex).getTextureId() == 699;
-			this.players = getPlayers();
-			this.ping = getPing();
-			this.favorite = isFavorite();
-		}
-
-		private static int getWidgetIndex(final int worldNumber) {
-			final Widget panel = Tab.WORLD_SELECT.getPanelWidget();
-			if (panel == null || !panel.validate()) {
-				return -1;
-			}
-			for (final WidgetChild child : panel.getChild(WIDGET_WORLDS_COLUMN_WORLD_NUMBER).getChildren()) {
-				if (child.getText().equals(String.valueOf(worldNumber))) {
-					return child.getIndex();
-				}
-			}
-			return -1;
-		}
-
-		public int getNumber() {
-			return number;
-		}
-
-		public boolean isMembers() {
-			return members;
-		}
-
-		public String getActivity() {
-			return activity;
-		}
-
-		public boolean isLootShare() {
-			return lootShare;
-		}
-
-		/**
-		 * Gets the current number of players.
-		 *
-		 * @return the number of players, or -1 if the world is offline or full.
-		 */
-		public int getPlayers() {
-			final int index = getWidgetIndex(number);
-			if (index != -1) {
-				final Widget panel = Tab.WORLD_SELECT.getPanelWidget();
-				try {
-					players = Integer.parseInt(panel.getChild(WIDGET_WORLDS_COLUMN_PLAYERS).getChild(index).getText());
-				} catch (final NumberFormatException ex) {
-					players = -1;
-				}
-			}
-			return players;
-		}
-
-		public int getPing() {
-			final int index = getWidgetIndex(number);
-			if (index != -1) {
-				final Widget panel = Tab.WORLD_SELECT.getPanelWidget();
-				try {
-					ping = Integer.parseInt(panel.getChild(WIDGET_WORLDS_COLUMN_PING).getChild(index).getText());
-				} catch (final NumberFormatException ex) {
-					ping = 999;
-				}
-			}
-			return ping;
-		}
-
-		public boolean isFavorite() {
-			final int index = getWidgetIndex(number);
-			if (index != -1) {
-				final Widget panel = Tab.WORLD_SELECT.getPanelWidget();
-				favorite = panel.getChild(WIDGET_WORLDS_COLUMN_FAVOURITE).getChild(index).getTextureId() == 1541;
-			}
-			return favorite;
-		}
-
-		/**
-		 * Opens the World Select tab and clicks on the correct world.
-		 *
-		 * @return <tt>true</tt> if the world is selected; otherwise <tt>false</tt>.
-		 */
-		public boolean click() {
-			if (!Lobby.isOpen() || (!Tab.WORLD_SELECT.isOpen() && !Tab.WORLD_SELECT.open())) {
-				return false;
-			}
-			final World selected = Lobby.getSelectedWorld();
-			if (selected != null && selected.equals(this)) {
-				return true;
-			}
-			final int index = getWidgetIndex(number);
-			if (index == -1) {
-				return false;
-			}
-			final Widget panel = Tab.WORLD_SELECT.getPanelWidget();
-			final WidgetChild table = panel.getChild(WIDGET_WORLDS_TABLE);
-			final WidgetChild row = panel.getChild(WIDGET_WORLDS_ROWS).getChild(index);
-			if (table != null && table.validate() && row != null && row.validate()) {
-				final Rectangle visibleBounds = new Rectangle(
-						table.getAbsoluteLocation(),
-						new Dimension(table.getWidth(), table.getHeight() - row.getHeight())
-				);
-				if (!visibleBounds.contains(row.getAbsoluteLocation())) {
-					final WidgetChild scrollBar = panel.getChild(WIDGET_WORLDS_TABLE_SCROLLBAR);
-					if (scrollBar == null || !Widgets.scroll(row, scrollBar)) {
-						return false;
-					}
-				}
-				return row.click(true);
-			}
-			return false;
-		}
-
-		@Override
-		public boolean equals(final Object o) {
-			return o instanceof World && ((World) o).number == this.number;
-		}
-	}
-
 	public static boolean isOpen() {
 		return Game.getClientState() == STATE_LOBBY_IDLE;
 	}
@@ -298,8 +47,8 @@ public class Lobby {
 		if (!isOpen() || !closeDialog()) {
 			return false;
 		}
-		final WidgetChild child = Widgets.get(WIDGET_MAIN_LOBBY, WIDGET_BUTTON_LOGOUT);
-		return child != null && child.validate() && child.click(true);
+		final Component child = Widgets.get(WIDGET_MAIN_LOBBY, WIDGET_BUTTON_LOGOUT);
+		return child != null && child.isValid() && child.click(true);
 	}
 
 	public static boolean enterGame() {
@@ -336,8 +85,8 @@ public class Lobby {
 			if (selected != null && !selected.equals(world) && !world.click()) {
 				return false;
 			}
-			final WidgetChild child = Widgets.get(WIDGET_MAIN_LOBBY, WIDGET_BUTTON_PLAY_GAME);
-			if (!(child != null && child.validate() && child.click(true))) {
+			final Component child = Widgets.get(WIDGET_MAIN_LOBBY, WIDGET_BUTTON_PLAY_GAME);
+			if (!(child != null && child.isValid() && child.click(true))) {
 				return false;
 			}
 		}
@@ -356,17 +105,17 @@ public class Lobby {
 	}
 
 	/**
-	 * Gets the currently selected world on the World Select panel. If the panel cannot be validated, the method
-	 * will open the World Select tab in order to validate it.
+	 * Gets the currently selected world on the World Select panel. If the panel cannot be isValidd, the method
+	 * will open the World Select tab in order to isValid it.
 	 *
 	 * @return The currently selected world, or <tt>null</tt> if unable to retrieve world.
 	 */
 	public static World getSelectedWorld() {
-		if (!isOpen() || !closeDialog() || (!Tab.WORLD_SELECT.getPanelWidget().validate() && !Tab.WORLD_SELECT.open())) {
+		if (!isOpen() || !closeDialog() || (!Tab.WORLD_SELECT.getPanelWidget().isValid() && !Tab.WORLD_SELECT.open())) {
 			return null;
 		}
 		final Widget panel = Tab.WORLD_SELECT.getPanelWidget();
-		final String text = panel.validate() ? panel.getChild(WIDGET_LABEL_CURRENT_WORLD).getText() : null;
+		final String text = panel.isValid() ? panel.getComponent(WIDGET_LABEL_CURRENT_WORLD).getText() : null;
 		if (text != null) {
 			final Matcher m = Pattern.compile("^World\\s(\\d*)$").matcher(text);
 			if (m.find()) {
@@ -400,12 +149,12 @@ public class Lobby {
 			return new World[0];
 		}
 		final Widget panel = Tab.WORLD_SELECT.getPanelWidget();
-		if (!panel.validate() && !Tab.WORLD_SELECT.open()) {
+		if (!panel.isValid() && !Tab.WORLD_SELECT.open()) {
 			return new World[0];
 		}
 		final ArrayList<World> worlds = new ArrayList<>();
-		final WidgetChild[] rows = panel.getChild(WIDGET_WORLDS_ROWS).getChildren();
-		for (final WidgetChild row : rows) {
+		final Component[] rows = panel.getComponent(WIDGET_WORLDS_ROWS).getChildren();
+		for (final Component row : rows) {
 			final World world = new World(row.getIndex());
 			if (filter.accept(world)) {
 				worlds.add(world);
@@ -426,5 +175,250 @@ public class Lobby {
 	private static boolean closeDialog() {
 		final Dialog dialog = getOpenDialog();
 		return dialog == null || (dialog.hasBack() && dialog.clickBack());
+	}
+
+	/**
+	 * Representation of the lobby tabs.
+	 */
+	public static enum Tab {
+		PLAYER_INFO(230, 907), WORLD_SELECT(28, 910), FRIENDS(27, 909),
+		FRIENDS_CHAT(280, 589), CLAN_CHAT(26, 912), OPTIONS(25, 911);
+		private final int widgetTabIndex;
+		private final int widgetPanelIndex;
+
+		private Tab(final int widgetTabIndex, final int widgetPanelIndex) {
+			this.widgetTabIndex = widgetTabIndex;
+			this.widgetPanelIndex = widgetPanelIndex;
+		}
+
+		/**
+		 * Gets the widget of the clickable tab.
+		 *
+		 * @return The widget of the tab.
+		 */
+		public Component getWidget() {
+			if (!Lobby.isOpen()) {
+				return null;
+			}
+			return Widgets.get(WIDGET_MAIN_LOBBY, widgetTabIndex);
+		}
+
+		/**
+		 * Gets the tab's panel widget.
+		 *
+		 * @return The tab's panel widget.
+		 */
+		public Widget getPanelWidget() {
+			if (!Lobby.isOpen()) {
+				return null;
+			}
+			return Widgets.get(widgetPanelIndex);
+		}
+
+		public boolean isOpen() {
+			final Component child = getWidget();
+			return child != null && child.isValid() && child.getTextureId() == 4671;
+		}
+
+		public boolean open() {
+			final Component child = getWidget();
+			if (isOpen()) {
+				return true;
+			}
+			if (child != null && child.isValid() && child.click(true)) {
+				Delay.sleep(Random.nextInt(1200, 2000));
+				return true;
+			}
+			return false;
+		}
+	}
+
+	/**
+	 * Representation of the lobby dialogs.
+	 */
+	public static enum Dialog {
+		TRANSFER_COUNTDOWN(255, -1, 252, "^You have only just left another world."),
+		ACCOUNT_IN_USE(260, -1, 252, "^Your account has not logged out from its last session."),
+		LOGIN_LIMIT_EXCEEDED(260, -1, 252, "^Login limit exceeded: too many connections from your address."),
+		MEMBERS_ONLY_WORLD(260, -1, 252, "^You need a member's account to log in to this world."),
+		INSUFFICIENT_SKILL_TOTAL(260, -1, 252, "^You must have a total skill level of"),
+		//ACCOUNT_BANNED(-1, -1, -1, null), //TODO
+		WILDERNESS_WARNING(118, 120, 113, "^Warning: This is a High-risk Wilderness world."),
+		VALIDATE_EMAIL(379, 379, 352, "^Validate your email now for increased account security");
+		private final int backButtonIndex;
+		private final int continueButtonIndex;
+		private final int textIndex;
+		private final Pattern textPattern;
+
+		private Dialog(final int backButtonIndex, final int continueButtonIndex, final int textIndex, final String textPattern) {
+			this.backButtonIndex = backButtonIndex;
+			this.continueButtonIndex = continueButtonIndex;
+			this.textIndex = textIndex;
+			this.textPattern = Pattern.compile(textPattern);
+		}
+
+		public boolean isOpen() {
+			final Component child = Widgets.get(WIDGET_MAIN_LOBBY, textIndex);
+			if (child != null && child.isOnScreen()) {
+				final String text = child.getText();
+				return text != null && textPattern.matcher(text).find();
+			}
+			return false;
+		}
+
+		public boolean hasContinue() {
+			return continueButtonIndex != -1;
+		}
+
+		public boolean clickContinue() {
+			if (!hasContinue()) {
+				return false;
+			}
+			final Component child = Widgets.get(WIDGET_MAIN_LOBBY, continueButtonIndex);
+			return child != null && child.isOnScreen() && child.click(true);
+		}
+
+		public boolean hasBack() {
+			return backButtonIndex != -1;
+		}
+
+		public boolean clickBack() {
+			if (!hasBack()) {
+				return false;
+			}
+			final Component child = Widgets.get(WIDGET_MAIN_LOBBY, backButtonIndex);
+			return child != null && child.isOnScreen() && child.click(true);
+		}
+	}
+
+	public static class World {
+		private final int number;
+		private final boolean members;
+		private final String activity;
+		private final boolean lootShare;
+		private int players;
+		private int ping;
+		private boolean favorite;
+
+		private World(final int widgetIndex) {
+			final Widget panel = Tab.WORLD_SELECT.getPanelWidget();
+			this.number = Integer.parseInt(panel.getComponent(WIDGET_WORLDS_COLUMN_WORLD_NUMBER).getChild(widgetIndex).getText());
+			this.members = panel.getComponent(WIDGET_WORLDS_COLUMN_MEMBERS).getChild(widgetIndex).getTextureId() == 1531;
+			this.activity = panel.getComponent(WIDGET_WORLDS_COLUMN_ACTIVITY).getChild(widgetIndex).getText();
+			this.lootShare = panel.getComponent(WIDGET_WORLDS_COLUMN_LOOT_SHARE).getChild(widgetIndex).getTextureId() == 699;
+			this.players = getPlayers();
+			this.ping = getPing();
+			this.favorite = isFavorite();
+		}
+
+		private static int getWidgetIndex(final int worldNumber) {
+			final Widget panel = Tab.WORLD_SELECT.getPanelWidget();
+			if (panel == null || !panel.isValid()) {
+				return -1;
+			}
+			for (final Component child : panel.getComponent(WIDGET_WORLDS_COLUMN_WORLD_NUMBER).getChildren()) {
+				if (child.getText().equals(String.valueOf(worldNumber))) {
+					return child.getIndex();
+				}
+			}
+			return -1;
+		}
+
+		public int getNumber() {
+			return number;
+		}
+
+		public boolean isMembers() {
+			return members;
+		}
+
+		public String getActivity() {
+			return activity;
+		}
+
+		public boolean isLootShare() {
+			return lootShare;
+		}
+
+		/**
+		 * Gets the current number of players.
+		 *
+		 * @return the number of players, or -1 if the world is offline or full.
+		 */
+		public int getPlayers() {
+			final int index = getWidgetIndex(number);
+			if (index != -1) {
+				final Widget panel = Tab.WORLD_SELECT.getPanelWidget();
+				try {
+					players = Integer.parseInt(panel.getComponent(WIDGET_WORLDS_COLUMN_PLAYERS).getChild(index).getText());
+				} catch (final NumberFormatException ex) {
+					players = -1;
+				}
+			}
+			return players;
+		}
+
+		public int getPing() {
+			final int index = getWidgetIndex(number);
+			if (index != -1) {
+				final Widget panel = Tab.WORLD_SELECT.getPanelWidget();
+				try {
+					ping = Integer.parseInt(panel.getComponent(WIDGET_WORLDS_COLUMN_PING).getChild(index).getText());
+				} catch (final NumberFormatException ex) {
+					ping = 999;
+				}
+			}
+			return ping;
+		}
+
+		public boolean isFavorite() {
+			final int index = getWidgetIndex(number);
+			if (index != -1) {
+				final Widget panel = Tab.WORLD_SELECT.getPanelWidget();
+				favorite = panel.getComponent(WIDGET_WORLDS_COLUMN_FAVOURITE).getChild(index).getTextureId() == 1541;
+			}
+			return favorite;
+		}
+
+		/**
+		 * Opens the World Select tab and clicks on the correct world.
+		 *
+		 * @return <tt>true</tt> if the world is selected; otherwise <tt>false</tt>.
+		 */
+		public boolean click() {
+			if (!Lobby.isOpen() || (!Tab.WORLD_SELECT.isOpen() && !Tab.WORLD_SELECT.open())) {
+				return false;
+			}
+			final World selected = Lobby.getSelectedWorld();
+			if (selected != null && selected.equals(this)) {
+				return true;
+			}
+			final int index = getWidgetIndex(number);
+			if (index == -1) {
+				return false;
+			}
+			final Widget panel = Tab.WORLD_SELECT.getPanelWidget();
+			final Component table = panel.getComponent(WIDGET_WORLDS_TABLE);
+			final Component row = panel.getComponent(WIDGET_WORLDS_ROWS).getChild(index);
+			if (table != null && table.isValid() && row != null && row.isValid()) {
+				final Rectangle visibleBounds = new Rectangle(
+						table.getAbsoluteLocation(),
+						new Dimension(table.getWidth(), table.getHeight() - row.getHeight())
+				);
+				if (!visibleBounds.contains(row.getAbsoluteLocation())) {
+					final Component scrollBar = panel.getComponent(WIDGET_WORLDS_TABLE_SCROLLBAR);
+					if (scrollBar == null || !Widgets.scroll(row, scrollBar)) {
+						return false;
+					}
+				}
+				return row.click(true);
+			}
+			return false;
+		}
+
+		@Override
+		public boolean equals(final Object o) {
+			return o instanceof World && ((World) o).number == this.number;
+		}
 	}
 }

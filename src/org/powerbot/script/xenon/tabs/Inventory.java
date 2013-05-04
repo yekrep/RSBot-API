@@ -7,9 +7,9 @@ import org.powerbot.script.xenon.Widgets;
 import org.powerbot.script.xenon.wrappers.Component;
 import org.powerbot.script.xenon.wrappers.Item;
 
-public class Inventory {
+public class Inventory {//TODO complete with filters
 	public static final int WIDGET = 679;
-	private static final int[] ALTERNATIVE_WIDGETS = {};
+	private static final int[] ALTERNATIVE_WIDGETS = {};//TODO this
 
 	public static Item[] getItems() {
 		final Item[] items = new Item[28];
@@ -42,7 +42,7 @@ public class Inventory {
 	}
 
 	public static Item getItem(final int... itemIds) {
-		return null;
+		return null;//TODO this
 	}
 
 	public static int getSelectedItemIndex() {

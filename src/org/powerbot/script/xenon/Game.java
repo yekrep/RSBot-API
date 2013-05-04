@@ -125,6 +125,7 @@ public class Game {
 	}
 
 	public static void setPreferredWorld(final int world) {
+		Bot.context().world = world;
 		//TODO this
 	}
 

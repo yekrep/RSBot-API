@@ -3,8 +3,8 @@ package org.powerbot.event.impl;
 import java.awt.Graphics;
 import java.awt.Point;
 
-import org.powerbot.game.api.methods.input.Mouse;
 import org.powerbot.event.TextPaintListener;
+import org.powerbot.script.xenon.Mouse;
 import org.powerbot.util.StringUtil;
 
 public class TMousePosition implements TextPaintListener {

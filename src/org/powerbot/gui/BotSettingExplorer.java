@@ -30,8 +30,8 @@ import javax.swing.WindowConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import org.powerbot.game.api.methods.Settings;
 import org.powerbot.game.bot.Context;
+import org.powerbot.script.xenon.Settings;
 import org.powerbot.script.xenon.util.Delay;
 import org.powerbot.util.Tracker;
 import org.powerbot.util.io.Resources;
@@ -40,15 +40,12 @@ public class BotSettingExplorer extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private static final int FRAME_WIDTH = 595;
 	private static final int FRAME_HEIGHT = 335;
-
 	private static BotSettingExplorer instance;
 	private final SimpleDateFormat FORMATTER = new SimpleDateFormat("HH:mm:ss");
-
+	private final HashMap<Integer, String> lastChanges = new HashMap<>();
 	private int current = -1;
 	private int[] settings_cache = null;
 	private boolean paused = false;
-	private final HashMap<Integer, String> lastChanges = new HashMap<>();
-
 	private String[] lastLabels = null;
 	private JTextArea info = null;
 	private JTextArea changes = null;
@@ -74,7 +71,7 @@ public class BotSettingExplorer extends JFrame {
 		settingExplorer.setVisible(true);
 		try {
 			context.associate(Thread.currentThread().getThreadGroup());
-			settingExplorer.settings_cache = Settings.get();
+			settingExplorer.settings_cache = Settings.getArray();
 			context.disregard(Thread.currentThread().getThreadGroup());
 		} catch (final NullPointerException ignored) {
 		}
@@ -94,7 +91,7 @@ public class BotSettingExplorer extends JFrame {
 	}
 
 	private void update() {
-		final int[] settings_clone = Settings.get();
+		final int[] settings_clone = Settings.getArray();
 		if (settings_cache == null) {
 			settings_cache = settings_clone;
 			return;

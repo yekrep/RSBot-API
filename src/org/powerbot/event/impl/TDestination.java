@@ -2,13 +2,15 @@ package org.powerbot.event.impl;
 
 import java.awt.Graphics;
 
-import org.powerbot.game.api.methods.Walking;
 import org.powerbot.event.TextPaintListener;
+import org.powerbot.script.xenon.Movement;
+import org.powerbot.script.xenon.wrappers.Tile;
 import org.powerbot.util.StringUtil;
 
 public class TDestination implements TextPaintListener {
 	public int draw(int idx, final Graphics render) {
-		StringUtil.drawLine(render, idx++, "Destination: " + Walking.getDestination().toString());
+		final Tile dest = Movement.getDestination();
+		StringUtil.drawLine(render, idx++, "Destination: " + (dest != null ? dest.toString() : ""));
 		return idx;
 	}
 }

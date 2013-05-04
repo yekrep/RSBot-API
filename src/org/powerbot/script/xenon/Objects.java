@@ -64,7 +64,6 @@ public class Objects {
 			}
 		}
 		return objects.toArray(new GameObject[objects.size()]);
-
 	}
 
 	public static GameObject[] getLoaded(final int range) {
@@ -94,7 +93,7 @@ public class Objects {
 		return getLoaded(LOADED_DIST, ids);
 	}
 
-	public static GameObject[] getLoaded(final int range, final int... ids) {
+	public static GameObject[] getLoaded(final int range, final int[] ids) {
 		return getLoaded(range, new Filter<GameObject>() {
 			@Override
 			public boolean accept(final GameObject gameObject) {

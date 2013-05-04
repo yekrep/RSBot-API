@@ -9,11 +9,9 @@ import java.util.Map;
 import org.powerbot.bot.Bot;
 import org.powerbot.bot.RSLoader;
 import org.powerbot.game.api.methods.Environment;
-import org.powerbot.game.bot.handler.input.MouseExecutor;
 import org.powerbot.game.bot.util.ScreenCapture;
-import org.powerbot.game.client.Client;
-import org.powerbot.script.internal.Constants;
 
+@Deprecated
 public class Context {//TODO remove idea of a 'context'
 	public static final Map<ThreadGroup, Context> context = new HashMap<>();
 	private final Bot bot;
@@ -23,60 +21,28 @@ public class Context {//TODO remove idea of a 'context'
 		this.bot = bot;
 	}
 
-	@Deprecated
-	public static Context get() {
-		return Bot.context();
-	}
-
-	public static Bot resolve() {
-		return get().bot;
-	}
-
-	@Deprecated
-	public static Client client() {
-		return Bot.client();
-	}
-
-	@Deprecated
-	public static Constants constants() {
-		return Bot.constants();
-	}
-
 	public static BufferedImage captureScreen() {
-		return ScreenCapture.capture(Context.get());
+		return ScreenCapture.capture(Bot.context());
 	}
 
 	public static BufferedImage getScreenBuffer() {
-		return ScreenCapture.getScreenBuffer(Context.get());
+		return ScreenCapture.getScreenBuffer(Bot.context());
 	}
 
 	public static void saveScreenCapture() {
-		ScreenCapture.save(Context.get());
+		ScreenCapture.save(Bot.context());
 	}
 
 	public static void setLoginWorld(final int world) {
-		get().world = world;
-	}
-
-	public static void cancelMouse() {
-		get().bot.getMouseExecutor().cancel();
+		Bot.context().world = world;
 	}
 
 	public static void saveScreenCapture(final File path) {
-		ScreenCapture.save(Context.get(), path, "png");
+		ScreenCapture.save(Bot.context(), path, "png");
 	}
 
 	public Bot getBot() {
 		return bot;
-	}
-
-	@Deprecated
-	public Client getClient() {
-		return Bot.client();
-	}
-
-	public MouseExecutor getExecutor() {
-		return bot.getMouseExecutor();
 	}
 
 	public BufferedImage getImage() {

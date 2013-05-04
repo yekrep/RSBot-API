@@ -4,8 +4,10 @@ import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 
-import org.powerbot.game.api.methods.Calculations;
-import org.powerbot.game.api.methods.interactive.Players;
+import org.powerbot.script.xenon.Calculations;
+import org.powerbot.script.xenon.Players;
+import org.powerbot.script.xenon.wrappers.Locatable;
+import org.powerbot.script.xenon.wrappers.Tile;
 
 /**
  * A polygonal area of tiles.

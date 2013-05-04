@@ -1,6 +1,6 @@
 package org.powerbot.script.internal.randoms;
 
-import org.powerbot.game.bot.Context;
+import org.powerbot.bot.Bot;
 import org.powerbot.script.Manifest;
 import org.powerbot.script.TaskScript;
 import org.powerbot.script.task.AsyncTask;
@@ -41,7 +41,7 @@ public class BankPin extends TaskScript implements RandomEvent {
 
 		private String getPin() {
 			try {
-				return Context.resolve().getAccount().getPIN();
+				return Bot.getInstance().getAccount().getPIN();
 			} catch (final Exception ignored) {
 			}
 			return null;

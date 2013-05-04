@@ -2,14 +2,15 @@ package org.powerbot.event.impl;
 
 import java.awt.Graphics;
 
-import org.powerbot.game.api.methods.Game;
-import org.powerbot.game.api.wrappers.Tile;
 import org.powerbot.event.TextPaintListener;
+import org.powerbot.script.xenon.Game;
+import org.powerbot.script.xenon.wrappers.Tile;
 import org.powerbot.util.StringUtil;
 
 public class TMapBase implements TextPaintListener {
 	public int draw(int idx, final Graphics render) {
-		StringUtil.drawLine(render, idx++, "Map base: " + new Tile(Game.getBaseX(), Game.getBaseY(), -1).toString());
+		final Tile t = Game.getMapBase();
+		StringUtil.drawLine(render, idx++, "Map base: " + (t != null ? t.toString() : ""));
 		return idx;
 	}
 }

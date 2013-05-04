@@ -8,7 +8,6 @@ import java.util.concurrent.FutureTask;
 
 import org.powerbot.bot.Bot;
 import org.powerbot.event.PaintListener;
-import org.powerbot.game.api.methods.widget.Lobby;
 import org.powerbot.script.Manifest;
 import org.powerbot.script.TaskScript;
 import org.powerbot.script.task.BlockingTask;
@@ -18,6 +17,7 @@ import org.powerbot.script.xenon.Mouse;
 import org.powerbot.script.xenon.Widgets;
 import org.powerbot.script.xenon.util.Random;
 import org.powerbot.script.xenon.util.Timer;
+import org.powerbot.script.xenon.widgets.Lobby;
 import org.powerbot.script.xenon.wrappers.Component;
 import org.powerbot.util.Tracker;
 

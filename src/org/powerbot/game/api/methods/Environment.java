@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.Properties;
 
+import org.powerbot.bot.Bot;
 import org.powerbot.game.bot.Context;
 
 public class Environment {
@@ -14,11 +15,11 @@ public class Environment {
 	}
 
 	public static String getDisplayName() {
-		return Context.get().getDisplayName();
+		return Bot.context().getDisplayName();
 	}
 
 	public static int getUserId() {
-		return Context.get().getUserId();
+		return Bot.context().getUserId();
 	}
 
 	public static BufferedImage captureScreen() {

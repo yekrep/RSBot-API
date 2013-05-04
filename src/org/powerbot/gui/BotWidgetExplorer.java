@@ -2,7 +2,6 @@ package org.powerbot.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
@@ -32,11 +31,11 @@ import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
-import org.powerbot.game.api.methods.Widgets;
-import org.powerbot.game.api.wrappers.widget.Widget;
-import org.powerbot.game.api.wrappers.widget.WidgetChild;
-import org.powerbot.game.bot.Context;
 import org.powerbot.event.PaintListener;
+import org.powerbot.game.bot.Context;
+import org.powerbot.script.xenon.Widgets;
+import org.powerbot.script.xenon.wrappers.Component;
+import org.powerbot.script.xenon.wrappers.Widget;
 import org.powerbot.util.Tracker;
 import org.powerbot.util.io.Resources;
 
@@ -81,47 +80,45 @@ public class BotWidgetExplorer extends JFrame implements PaintListener {
 						return;
 					}
 					infoArea.removeAll();
-					WidgetChild widgetChild = null;
-					if (node instanceof WidgetChildWrapper) {
-						highlightArea = ((WidgetChildWrapper) node).get().getBoundingRectangle();
-						widgetChild = ((WidgetChildWrapper) node).get();
+					Component c = null;
+					if (node instanceof ComponentWrapper) {
+						highlightArea = ((ComponentWrapper) node).get().getBoundingRect();
+						c = ((ComponentWrapper) node).get();
 					}
-					if (widgetChild == null) {
+					if (c == null) {
 						return;
 					}
-					addInfo("Index: ", Integer.toString(widgetChild.getIndex()));
-					addInfo("Validated: ", Boolean.toString(widgetChild.validate()));
-					addInfo("Visible: ", Boolean.toString(widgetChild.visible()));
-					addInfo("Absolute location: ", widgetChild.getAbsoluteLocation().toString());
-					addInfo("Relative location: ", widgetChild.getRelativeLocation().toString());
-					addInfo("Width: ", Integer.toString(widgetChild.getWidth()));
-					addInfo("Height: ", Integer.toString(widgetChild.getHeight()));
-					addInfo("Id: ", Integer.toString(widgetChild.getId()));
-					addInfo("Type: ", Integer.toString(widgetChild.getType()));
-					addInfo("Special type: ", Integer.toString(widgetChild.getSpecialType()));
-					addInfo("Child id: ", Integer.toString(widgetChild.getChildId()));
-					addInfo("Child index: ", Integer.toString(widgetChild.getChildIndex()));
-					addInfo("Texture id: ", Integer.toString(widgetChild.getTextureId()));
-					addInfo("Text: ", widgetChild.getText());
-					addInfo("Text color: ", Integer.toString(widgetChild.getTextColor()));
-					addInfo("Shadow color: ", Integer.toString(widgetChild.getShadowColor()));
-					addInfo("Tooltip: ", widgetChild.getTooltip());
-					addInfo("Border thickness: ", Integer.toString(widgetChild.getBorderThickness()));
-					addInfo("Selected action: ", widgetChild.getSelectedAction());
-					addInfo("Model id: ", Integer.toString(widgetChild.getModelId()));
-					addInfo("Model type: ", Integer.toString(widgetChild.getModelType()));
-					addInfo("Model zoom: ", Integer.toString(widgetChild.getModelZoom()));
-					addInfo("Inventory: ", Boolean.toString(widgetChild.isInventory()));
-					addInfo("Child stack size: ", Integer.toString(widgetChild.getChildStackSize()));
-					addInfo("Bound array index: ", Integer.toString(widgetChild.getBoundsArrayIndex()));
-					addInfo("Scrollable area: ", Boolean.toString(widgetChild.isInScrollableArea()));
-					addInfo("Parent id: ", Integer.toString(widgetChild.getParentId()));
-					addInfo("getHorizontalScrollPosition: ", Integer.toString(widgetChild.getHorizontalScrollPosition()));
-					addInfo("getVerticalScrollPosition: ", Integer.toString(widgetChild.getVerticalScrollPosition()));
-					addInfo("getScrollableContentWidth: ", Integer.toString(widgetChild.getScrollableContentWidth()));
-					addInfo("getScrollableContentHeight: ", Integer.toString(widgetChild.getScrollableContentHeight()));
-					addInfo("getHorizontalScrollThumbSize: ", Integer.toString(widgetChild.getHorizontalScrollThumbSize()));
-					addInfo("getVerticalScrollThumbSize: ", Integer.toString(widgetChild.getVerticalScrollThumbSize()));
+					addInfo("Index: ", Integer.toString(c.getIndex()));
+					addInfo("Validated: ", Boolean.toString(c.isValid()));
+					addInfo("Visible: ", Boolean.toString(c.isVisible()));
+					addInfo("Absolute location: ", c.getAbsoluteLocation().toString());
+					addInfo("Relative location: ", c.getRelativeLocation().toString());
+					addInfo("Width: ", Integer.toString(c.getWidth()));
+					addInfo("Height: ", Integer.toString(c.getHeight()));
+					addInfo("Id: ", Integer.toString(c.getId()));
+					addInfo("Type: ", Integer.toString(c.getType()));
+					addInfo("Special type: ", Integer.toString(c.getContentType()));
+					addInfo("Child id: ", Integer.toString(c.getItemId()));
+					addInfo("Child index: ", Integer.toString(c.getChildIndex()));
+					addInfo("Texture id: ", Integer.toString(c.getTextureId()));
+					addInfo("Text: ", c.getText());
+					addInfo("Text color: ", Integer.toString(c.getTextColor()));
+					addInfo("Shadow color: ", Integer.toString(c.getShadowColor()));
+					addInfo("Tooltip: ", c.getTooltip());
+					addInfo("Border thickness: ", Integer.toString(c.getBorderThickness()));
+					addInfo("Selected action: ", c.getSelectedAction());
+					addInfo("Model id: ", Integer.toString(c.getModelId()));
+					addInfo("Model type: ", Integer.toString(c.getModelType()));
+					addInfo("Model zoom: ", Integer.toString(c.getModelZoom()));
+					addInfo("Inventory: ", Boolean.toString(c.isInventory()));
+					addInfo("Child stack size: ", Integer.toString(c.getItemStackSize()));
+					addInfo("Parent id: ", Integer.toString(c.getParentId()));
+					addInfo("getHorizontalScrollPosition: ", Integer.toString(c.getScrollX()));
+					addInfo("getVerticalScrollPosition: ", Integer.toString(c.getScrollY()));
+					addInfo("getScrollableContentWidth: ", Integer.toString(c.getMaxHorizontalScroll()));
+					addInfo("getScrollableContentHeight: ", Integer.toString(c.getMaxVerticalScroll()));
+					addInfo("getHorizontalScrollThumbSize: ", Integer.toString(c.getScrollWidth()));
+					addInfo("getVerticalScrollThumbSize: ", Integer.toString(c.getScrollHeight()));
 					infoArea.validate();
 					infoArea.repaint();
 				} finally {
@@ -131,11 +128,11 @@ public class BotWidgetExplorer extends JFrame implements PaintListener {
 
 			private void addInfo(final String key, final String value) {
 				final JPanel row = new JPanel();
-				row.setAlignmentX(Component.LEFT_ALIGNMENT);
+				row.setAlignmentX(java.awt.Component.LEFT_ALIGNMENT);
 				row.setLayout(new BoxLayout(row, BoxLayout.X_AXIS));
 				for (final String data : new String[]{key, value}) {
 					final JLabel label = new JLabel(data);
-					label.setAlignmentY(Component.TOP_ALIGNMENT);
+					label.setAlignmentY(java.awt.Component.TOP_ALIGNMENT);
 					row.add(label);
 				}
 				infoArea.add(row);
@@ -221,9 +218,9 @@ public class BotWidgetExplorer extends JFrame implements PaintListener {
 				if (parent == root) {
 					return widgetWrappers.get(index);
 				} else if (parent instanceof WidgetWrapper) {
-					return new WidgetChildWrapper(((WidgetWrapper) parent).get().getChildren()[index]);
-				} else if (parent instanceof WidgetChildWrapper) {
-					return new WidgetChildWrapper(((WidgetChildWrapper) parent).get().getChildren()[index]);
+					return new ComponentWrapper(((WidgetWrapper) parent).get().getComponents()[index]);
+				} else if (parent instanceof ComponentWrapper) {
+					return new ComponentWrapper(((ComponentWrapper) parent).get().getChildren()[index]);
 				}
 				return null;
 			} finally {
@@ -237,9 +234,9 @@ public class BotWidgetExplorer extends JFrame implements PaintListener {
 				if (parent == root) {
 					return widgetWrappers.size();
 				} else if (parent instanceof WidgetWrapper) {
-					return ((WidgetWrapper) parent).get().getChildren().length;
-				} else if (parent instanceof WidgetChildWrapper) {
-					return ((WidgetChildWrapper) parent).get().getChildren().length;
+					return ((WidgetWrapper) parent).get().getComponents().length;
+				} else if (parent instanceof ComponentWrapper) {
+					return ((ComponentWrapper) parent).get().getChildren().length;
 				}
 				return 0;
 			} finally {
@@ -250,7 +247,7 @@ public class BotWidgetExplorer extends JFrame implements PaintListener {
 		public boolean isLeaf(final Object node) {
 			context.associate(Thread.currentThread().getThreadGroup());
 			try {
-				return node instanceof WidgetChildWrapper && ((WidgetChildWrapper) node).get().getChildren().length == 0;
+				return node instanceof ComponentWrapper && ((ComponentWrapper) node).get().getChildren().length == 0;
 			} finally {
 				context.disregard(Thread.currentThread().getThreadGroup());
 			}
@@ -265,9 +262,9 @@ public class BotWidgetExplorer extends JFrame implements PaintListener {
 				if (parent == root) {
 					return widgetWrappers.indexOf(child);
 				} else if (parent instanceof WidgetWrapper) {
-					return Arrays.asList(((WidgetWrapper) parent).get().getChildren()).indexOf(((WidgetChildWrapper) child).get());
-				} else if (parent instanceof WidgetChildWrapper) {
-					return Arrays.asList(((WidgetChildWrapper) parent).get().getChildren()).indexOf(((WidgetChildWrapper) child).get());
+					return Arrays.asList(((WidgetWrapper) parent).get().getComponents()).indexOf(((ComponentWrapper) child).get());
+				} else if (parent instanceof ComponentWrapper) {
+					return Arrays.asList(((ComponentWrapper) parent).get().getChildren()).indexOf(((ComponentWrapper) child).get());
 				}
 				return -1;
 			} finally {
@@ -295,12 +292,12 @@ public class BotWidgetExplorer extends JFrame implements PaintListener {
 			context.associate(Thread.currentThread().getThreadGroup());
 			for (final Widget widget : Widgets.getLoaded()) {
 				children:
-				for (final WidgetChild widgetChild : widget.getChildren()) {
-					if (search(widgetChild, search)) {
+				for (final Component Component : widget.getComponents()) {
+					if (search(Component, search)) {
 						widgetWrappers.add(new WidgetWrapper(widget));
 						break;
 					}
-					for (final WidgetChild widgetSubChild : widgetChild.getChildren()) {
+					for (final Component widgetSubChild : Component.getChildren()) {
 						if (search(widgetSubChild, search)) {
 							widgetWrappers.add(new WidgetWrapper(widget));
 							break children;
@@ -312,7 +309,7 @@ public class BotWidgetExplorer extends JFrame implements PaintListener {
 			context.disregard(Thread.currentThread().getThreadGroup());
 		}
 
-		private boolean search(final WidgetChild child, final String string) {
+		private boolean search(final Component child, final String string) {
 			return child.getText().toLowerCase().contains(string.toLowerCase());
 		}
 	}
@@ -339,25 +336,25 @@ public class BotWidgetExplorer extends JFrame implements PaintListener {
 		}
 	}
 
-	private final class WidgetChildWrapper {
-		private final WidgetChild widgetChild;
+	private final class ComponentWrapper {
+		private final Component Component;
 
-		public WidgetChildWrapper(final WidgetChild widgetChild) {
-			this.widgetChild = widgetChild;
+		public ComponentWrapper(final Component Component) {
+			this.Component = Component;
 		}
 
-		public WidgetChild get() {
-			return widgetChild;
+		public Component get() {
+			return Component;
 		}
 
 		@Override
 		public boolean equals(final Object object) {
-			return object != null && object instanceof WidgetChildWrapper && widgetChild.equals(((WidgetChildWrapper) object).get());
+			return object != null && object instanceof ComponentWrapper && Component.equals(((ComponentWrapper) object).get());
 		}
 
 		@Override
 		public String toString() {
-			return "WidgetChild-" + widgetChild.getIndex();
+			return "Component-" + Component.getIndex();
 		}
 	}
 }

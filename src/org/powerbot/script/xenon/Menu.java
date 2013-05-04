@@ -90,9 +90,10 @@ public class Menu {
 					final NodeSubQueue queue;
 					if ((queue = group.getItems()) == null) continue;
 					final Queue<MenuItemNode> queue2 = new Queue<>(queue);
-					for (MenuItemNode node = queue2.getHead(); node != null; node = queue2.getNext(), ++sub)
+					for (MenuItemNode node = queue2.getHead(); node != null; node = queue2.getNext(), ++sub) {
 						if (_index++ == index) if (sub == 0) break collapsed;
 						else return clickSub(client, main, sub);
+					}
 				}
 			}
 			if (client.isMenuOpen()) close();
@@ -161,5 +162,17 @@ public class Menu {
 				Collections.reverse(nodes);
 		}
 		return nodes;
+	}
+
+	public static String[] getItems() {
+		final List<MenuItemNode> nodes = getMenuItemNodes();
+		final int len = nodes.size();
+		int d = 0;
+		final String[] arr = new String[len];
+		for (final MenuItemNode node : nodes) {
+			String a = node.getAction(), o = node.getOption();
+			arr[d++] = a + " " + o;
+		}
+		return arr;
 	}
 }

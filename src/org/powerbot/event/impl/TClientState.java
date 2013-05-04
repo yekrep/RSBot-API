@@ -2,8 +2,8 @@ package org.powerbot.event.impl;
 
 import java.awt.Graphics;
 
-import org.powerbot.game.api.methods.Game;
 import org.powerbot.event.TextPaintListener;
+import org.powerbot.script.xenon.Game;
 import org.powerbot.util.StringUtil;
 
 /**

@@ -4,12 +4,12 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 
-import org.powerbot.game.api.methods.Calculations;
-import org.powerbot.game.api.methods.Game;
-import org.powerbot.game.api.methods.Walking;
-import org.powerbot.game.api.methods.interactive.Players;
-import org.powerbot.game.api.wrappers.Tile;
 import org.powerbot.event.PaintListener;
+import org.powerbot.script.xenon.Calculations;
+import org.powerbot.script.xenon.Game;
+import org.powerbot.script.xenon.Movement;
+import org.powerbot.script.xenon.Players;
+import org.powerbot.script.xenon.wrappers.Tile;
 
 public class DrawBoundaries implements PaintListener {
 	private final Point[][] minimapPoints = new Point[105][105];
@@ -20,9 +20,11 @@ public class DrawBoundaries implements PaintListener {
 			return;
 		}
 		final int plane = Game.getPlane();
-		final int[][] blocks = Walking.getCollisionFlags(plane);
-		final int baseX = Game.getBaseX();
-		final int baseY = Game.getBaseY();
+		final int[][] blocks = Movement.getMeta();
+		final Tile base = Game.getMapBase();
+		if (base == null) return;
+		final int baseX = base.getX();
+		final int baseY = base.getY();
 		for (int i = 0; i < screenPoints.length; i++) {
 			for (int j = 0; j < screenPoints[i].length; j++) {
 				final int x = i + baseX - 1;

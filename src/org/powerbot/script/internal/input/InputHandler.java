@@ -217,7 +217,7 @@ public class InputHandler {
 		return new KeyEvent(e.getComponent(), e.getID(), System.currentTimeMillis(), 0, e.getExtendedKeyCode(), e.getKeyChar(), e.getKeyLocation());
 	}
 
-	private Component getSource() {
+	public Component getSource() {
 		return applet.getComponentCount() > 0 ? applet.getComponent(0) : null;
 	}
 }

@@ -11,12 +11,8 @@ import java.util.logging.Logger;
 import org.powerbot.event.EventMulticaster;
 import org.powerbot.event.PaintEvent;
 import org.powerbot.event.TextPaintEvent;
-import org.powerbot.game.api.methods.input.Keyboard;
-import org.powerbot.game.api.methods.input.Mouse;
-import org.powerbot.game.api.methods.widget.WidgetCache;
 import org.powerbot.game.bot.CallbackImpl;
 import org.powerbot.game.bot.Context;
-import org.powerbot.game.bot.handler.input.MouseExecutor;
 import org.powerbot.game.client.Client;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.gui.component.BotPanel;
@@ -32,6 +28,7 @@ import org.powerbot.script.internal.randoms.Login;
 import org.powerbot.script.internal.randoms.TicketDestroy;
 import org.powerbot.script.internal.randoms.WidgetCloser;
 import org.powerbot.script.util.Stoppable;
+import org.powerbot.script.xenon.Keyboard;
 import org.powerbot.script.xenon.util.Delay;
 import org.powerbot.service.GameAccounts;
 
@@ -42,12 +39,13 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 	static final Logger log = Logger.getLogger(Bot.class.getName());
 	private static Bot instance;
 	public final BotComposite composite;
-	private final PaintEvent paintEvent;
-	private final TextPaintEvent textPaintEvent;
-	public volatile RSLoader appletContainer;
-	public volatile BotStub stub;
 	public final Runnable callback;
 	public final ThreadGroup threadGroup;
+	private final PaintEvent paintEvent;
+	private final TextPaintEvent textPaintEvent;
+	private final EventMulticaster multicaster;
+	public volatile RSLoader appletContainer;
+	public volatile BotStub stub;
 	public ModScript modScript;
 	public BufferedImage image;
 	public volatile boolean refreshing;
@@ -58,8 +56,6 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 	private BufferedImage backBuffer;
 	private MouseHandler mouseHandler;
 	private InputHandler inputHandler;
-	private final EventMulticaster multicaster;
-	private MouseExecutor oldMouse;
 	private ScriptManager scriptController;
 
 	private Bot() {
@@ -125,7 +121,6 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 		final Context previous = composite.context;
 		composite.context = new Context(this);
 		if (previous != null) {
-			WidgetCache.purge();
 			composite.context.world = previous.world;
 		}
 		Context.context.put(threadGroup, composite.context);
@@ -256,7 +251,6 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 		client.setCallback(new CallbackImpl(this));
 		constants = new Constants(modScript.constants);
 		new Thread(threadGroup, new SafeMode(this)).start();
-		oldMouse = new MouseExecutor();
 		mouseHandler = new MouseHandler(appletContainer, client);
 		inputHandler = new InputHandler(appletContainer, client);
 		new Thread(threadGroup, mouseHandler).start();
@@ -268,10 +262,6 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 
 	public Canvas getCanvas() {
 		return client != null ? client.getCanvas() : null;
-	}
-
-	public MouseExecutor getMouseExecutor() {
-		return oldMouse;
 	}
 
 	public EventMulticaster getEventMulticaster() {
@@ -312,11 +302,8 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 
 		public void run() {
 			if (bot != null && bot.client != null && !Keyboard.isReady()) {
-				while (!Keyboard.isReady() && !Mouse.isReady()) {
-					Delay.sleep(1000);
-				}
-				Delay.sleep(800);
-				Keyboard.sendKey('s');
+				Delay.sleep(800, 1200);
+				Keyboard.send("s");
 			}
 		}
 	}

@@ -6,23 +6,23 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.util.HashMap;
 
-import org.powerbot.game.api.methods.Calculations;
-import org.powerbot.game.api.methods.Game;
-import org.powerbot.game.api.methods.interactive.Players;
-import org.powerbot.game.api.methods.node.SceneEntities;
-import org.powerbot.game.api.wrappers.Tile;
-import org.powerbot.game.api.wrappers.interactive.Player;
-import org.powerbot.game.api.wrappers.node.SceneObject;
 import org.powerbot.event.PaintListener;
+import org.powerbot.script.xenon.Calculations;
+import org.powerbot.script.xenon.Game;
+import org.powerbot.script.xenon.Objects;
+import org.powerbot.script.xenon.Players;
+import org.powerbot.script.xenon.wrappers.GameObject;
+import org.powerbot.script.xenon.wrappers.Player;
+import org.powerbot.script.xenon.wrappers.Tile;
 
 public class DrawScene implements PaintListener {
-	private static final HashMap<Integer, Color> color_map = new HashMap<>();
+	private static final HashMap<GameObject.Type, Color> color_map = new HashMap<>();
 
 	static {
-		color_map.put(SceneEntities.TYPE_BOUNDARY, Color.BLACK);
-		color_map.put(SceneEntities.TYPE_FLOOR_DECORATION, Color.YELLOW);
-		color_map.put(SceneEntities.TYPE_INTERACTIVE, Color.WHITE);
-		color_map.put(SceneEntities.TYPE_WALL_DECORATION, Color.GRAY);
+		color_map.put(GameObject.Type.BOUNDARY, Color.BLACK);
+		color_map.put(GameObject.Type.FLOOR_DECORATION, Color.YELLOW);
+		color_map.put(GameObject.Type.INTERACTIVE, Color.WHITE);
+		color_map.put(GameObject.Type.WALL_DECORATION, Color.GRAY);
 	}
 
 	public void onRepaint(final Graphics render) {
@@ -39,15 +39,15 @@ public class DrawScene implements PaintListener {
 		for (int x = position.getX() - 25; x < position.getX() + 25; x++) {
 			for (int y = position.getY() - 25; y < position.getY() + 25; y++) {
 				final Tile accessPosition = new Tile(x, y, Game.getPlane());
-				final Point accessPoint = accessPosition.getCentralPoint();
-				if (!Calculations.isOnScreen(accessPoint)) {
+				final Point accessPoint = accessPosition.getCenterPoint();
+				if (!Calculations.isPointOnScreen(accessPoint)) {
 					continue;
 				}
-				final SceneObject[] locations = SceneEntities.getLoaded(accessPosition);
+				final GameObject[] locations = Objects.getLoaded(x, y, 0);
 				int i = 0;
-				for (final SceneObject location : locations) {
-					final Point locationPoint = location.getLocation().getCentralPoint();
-					if (!Calculations.isOnScreen(locationPoint)) {
+				for (final GameObject location : locations) {
+					final Point locationPoint = location.getLocation().getCenterPoint();
+					if (!Calculations.isPointOnScreen(locationPoint)) {
 						continue;
 					}
 					if (accessPoint.x > -1) {

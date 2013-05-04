@@ -44,4 +44,10 @@ public class Keyboard {
 		if (inputHandler == null) return;
 		inputHandler.send(inputHandler.constructKeyEvent(KeyEvent.KEY_RELEASED, vk, c));
 	}
+
+	public static boolean isReady() {
+		final InputHandler inputHandler = Bot.inputHandler();
+		if (inputHandler == null) return false;
+		return inputHandler.getSource() != null;
+	}
 }

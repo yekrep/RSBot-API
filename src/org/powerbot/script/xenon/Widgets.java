@@ -16,6 +16,16 @@ import org.powerbot.script.xenon.wrappers.Widget;
 public class Widgets {
 	private static final Map<Client, Widget[]> cache = new HashMap<>();
 
+	public static Widget[] getLoaded() {
+		final Client client = Bot.client();
+		if (client == null) return null;
+		final RSInterfaceBase[] containers = client.getRSInterfaceCache();
+		final int len = containers != null ? containers.length : 0;
+		final Widget[] arr = new Widget[len];
+		for (int i = 0; i < len; i++) arr[i] = new Widget(i);
+		return arr;
+	}
+
 	public static Widget get(final int widget) {
 		final Client client = Bot.client();
 		if (client == null || widget < 0) return null;

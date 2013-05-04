@@ -1,14 +1,29 @@
 package org.powerbot.script.xenon;
 
+import java.awt.Point;
+
 import org.powerbot.bot.Bot;
 import org.powerbot.game.client.Client;
+import org.powerbot.game.client.RSGroundData;
+import org.powerbot.game.client.RSInfo;
 import org.powerbot.script.xenon.util.Delay;
-import org.powerbot.script.xenon.wrappers.CollisionMap;
 import org.powerbot.script.xenon.wrappers.Component;
 import org.powerbot.script.xenon.wrappers.LocalPath;
 import org.powerbot.script.xenon.wrappers.Locatable;
+import org.powerbot.script.xenon.wrappers.Player;
 import org.powerbot.script.xenon.wrappers.Tile;
 import org.powerbot.script.xenon.wrappers.TilePath;
+
+import static org.powerbot.script.xenon.wrappers.Path.OBJECT_BLOCK;
+import static org.powerbot.script.xenon.wrappers.Path.OBJECT_TILE;
+import static org.powerbot.script.xenon.wrappers.Path.WALL_EAST;
+import static org.powerbot.script.xenon.wrappers.Path.WALL_NORTH;
+import static org.powerbot.script.xenon.wrappers.Path.WALL_NORTHEAST;
+import static org.powerbot.script.xenon.wrappers.Path.WALL_NORTHWEST;
+import static org.powerbot.script.xenon.wrappers.Path.WALL_SOUTH;
+import static org.powerbot.script.xenon.wrappers.Path.WALL_SOUTHEAST;
+import static org.powerbot.script.xenon.wrappers.Path.WALL_SOUTHWEST;
+import static org.powerbot.script.xenon.wrappers.Path.WALL_WEST;
 
 public class Movement {
 	private static final int WIDGET = 750;
@@ -35,14 +50,142 @@ public class Movement {
 		return base != null ? base.derive(dX, dY) : null;
 	}
 
-	public static CollisionMap getCollisionMap() {
+	public static Point getPosition() {
 		final Client client = Bot.client();
 		if (client == null) return null;
-		return new CollisionMap(client.getPlane());
+		final int plane = client.getPlane();
+		final RSInfo info = client.getRSGroundInfo();
+		final RSGroundData[] grounds;
+		RSGroundData ground = null;
+		if (info != null && (grounds = info.getGroundData()) != null && plane < grounds.length) ground = grounds[plane];
+		return ground != null ? new Point(ground.getX(), ground.getY()) : null;
 	}
 
-	public static CollisionMap getCollisionMap(final int plane) {
-		return new CollisionMap(plane);
+	public static int[][] getMeta() {
+		final Client client = Bot.client();
+		if (client == null) return null;
+		final int plane = client.getPlane();
+		final RSInfo info = client.getRSGroundInfo();
+		final RSGroundData[] grounds;
+		RSGroundData ground = null;
+		if (info != null && (grounds = info.getGroundData()) != null && plane < grounds.length) ground = grounds[plane];
+		return ground != null ? ground.getBlocks() : null;
+	}
+
+	public static boolean canReach(Tile tile) {
+		final Tile base = Game.getMapBase();
+		final Player player = Players.getLocal();
+		Tile loc = player != null ? player.getLocation() : null;
+		if (base == null || loc == null) return false;
+		tile = tile.derive(-base.x, -base.y);
+		loc = loc.derive(-base.x, -base.y);
+		return tile.getPlane() == base.getPlane() && getDistance(loc.x, loc.y, tile.x, tile.y, false) != -1;
+	}
+
+	public static int getDistance(final int startX, final int startY, final int endX, final int endY, final boolean findAdjacent) {
+		final Point pos = getPosition();
+		final int[][] meta = getMeta();
+		if (pos == null || meta == null) return -1;
+		final int[][] prev = new int[104][104];
+		final int[][] dist = new int[104][104];
+		for (int xx = 0; xx < 104; xx++) {
+			for (int yy = 0; yy < 104; yy++) {
+				prev[xx][yy] = 0;
+				dist[xx][yy] = Integer.MAX_VALUE;
+			}
+		}
+		final int[] path_x = new int[4000];
+		final int[] path_y = new int[4000];
+		int curr_x = startX;
+		int curr_y = startY;
+		prev[startX][startY] = 99;
+		dist[startX][startY] = 0;
+		int path_ptr = 0;
+		int step_ptr = 0;
+		path_x[path_ptr] = startX;
+		path_y[path_ptr++] = startY;
+		final int pathLength = path_x.length;
+		boolean foundPath = false;
+		while (step_ptr != path_ptr) {
+			curr_x = path_x[step_ptr];
+			curr_y = path_y[step_ptr];
+			if (Math.abs(curr_x - endX) + Math.abs(curr_y - endY) == (findAdjacent ? 1 : 0)) {
+				foundPath = true;
+				break;
+			}
+			step_ptr = (step_ptr + 1) % pathLength;
+			final int cost = dist[curr_x][curr_y] + 1;
+			final int here = meta[curr_x][curr_y];
+			if (curr_y > 0 && (here & WALL_SOUTH) == 0 && (meta[curr_x][curr_y - 1] & (OBJECT_TILE | OBJECT_BLOCK)) == 0) {
+				path_x[path_ptr] = curr_x;
+				path_y[path_ptr] = curr_y - 1;
+				path_ptr = (path_ptr + 1) % pathLength;
+				prev[curr_x][curr_y - 1] = 1;
+				dist[curr_x][curr_y - 1] = cost;
+			}
+			if (curr_x > 0 && (here & WALL_WEST) == 0 && (meta[curr_x - 1][curr_y] & (OBJECT_TILE | OBJECT_BLOCK)) == 0) {
+				path_x[path_ptr] = curr_x - 1;
+				path_y[path_ptr] = curr_y;
+				path_ptr = (path_ptr + 1) % pathLength;
+				prev[curr_x - 1][curr_y] = 2;
+				dist[curr_x - 1][curr_y] = cost;
+			}
+			if (curr_y < 104 - 1 && (here & WALL_NORTH) == 0 && (meta[curr_x][curr_y + 1] & (OBJECT_TILE | OBJECT_BLOCK)) == 0) {
+				path_x[path_ptr] = curr_x;
+				path_y[path_ptr] = curr_y + 1;
+				path_ptr = (path_ptr + 1) % pathLength;
+				prev[curr_x][curr_y + 1] = 4;
+				dist[curr_x][curr_y + 1] = cost;
+			}
+			if (curr_x < 104 - 1 && (here & WALL_EAST) == 0 && (meta[curr_x + 1][curr_y] & (OBJECT_TILE | OBJECT_BLOCK)) == 0) {
+				path_x[path_ptr] = curr_x + 1;
+				path_y[path_ptr] = curr_y;
+				path_ptr = (path_ptr + 1) % pathLength;
+				prev[curr_x + 1][curr_y] = 8;
+				dist[curr_x + 1][curr_y] = cost;
+			}
+			if (curr_x > 0 && curr_y > 0 && (here & (WALL_SOUTHWEST | WALL_SOUTH | WALL_WEST)) == 0
+					&& (meta[curr_x - 1][curr_y - 1] & (OBJECT_TILE | OBJECT_BLOCK)) == 0
+					&& (meta[curr_x][curr_y - 1] & (OBJECT_TILE | OBJECT_BLOCK | WALL_WEST)) == 0
+					&& (meta[curr_x - 1][curr_y] & (OBJECT_TILE | OBJECT_BLOCK | WALL_SOUTH)) == 0) {
+				path_x[path_ptr] = curr_x - 1;
+				path_y[path_ptr] = curr_y - 1;
+				path_ptr = (path_ptr + 1) % pathLength;
+				prev[curr_x - 1][curr_y - 1] = 3;
+				dist[curr_x - 1][curr_y - 1] = cost;
+			}
+			if (curr_x > 0 && curr_y < 104 - 1 && (here & (WALL_NORTHWEST | WALL_NORTH | WALL_WEST)) == 0
+					&& (meta[curr_x - 1][curr_y + 1] & (OBJECT_TILE | OBJECT_BLOCK)) == 0
+					&& (meta[curr_x][curr_y + 1] & (OBJECT_TILE | OBJECT_BLOCK | WALL_WEST)) == 0
+					&& (meta[curr_x - 1][curr_y] & (OBJECT_TILE | OBJECT_BLOCK | WALL_NORTH)) == 0) {
+				path_x[path_ptr] = curr_x - 1;
+				path_y[path_ptr] = curr_y + 1;
+				path_ptr = (path_ptr + 1) % pathLength;
+				prev[curr_x - 1][curr_y + 1] = 6;
+				dist[curr_x - 1][curr_y + 1] = cost;
+			}
+			if (curr_x < 104 - 1 && curr_y > 0 && (here & (WALL_SOUTHEAST | WALL_SOUTH | WALL_EAST)) == 0
+					&& (meta[curr_x + 1][curr_y - 1] & (OBJECT_TILE | OBJECT_BLOCK)) == 0
+					&& (meta[curr_x][curr_y - 1] & (OBJECT_TILE | OBJECT_BLOCK | WALL_EAST)) == 0
+					&& (meta[curr_x + 1][curr_y] & (OBJECT_TILE | OBJECT_BLOCK | WALL_SOUTH)) == 0) {
+				path_x[path_ptr] = curr_x + 1;
+				path_y[path_ptr] = curr_y - 1;
+				path_ptr = (path_ptr + 1) % pathLength;
+				prev[curr_x + 1][curr_y - 1] = 9;
+				dist[curr_x + 1][curr_y - 1] = cost;
+			}
+			if (curr_x < 104 - 1 && curr_y < 104 - 1 && (here & (WALL_NORTHEAST | WALL_NORTH | WALL_EAST)) == 0
+					&& (meta[curr_x + 1][curr_y + 1] & (OBJECT_TILE | OBJECT_BLOCK)) == 0
+					&& (meta[curr_x][curr_y + 1] & (OBJECT_TILE | OBJECT_BLOCK | WALL_EAST)) == 0
+					&& (meta[curr_x + 1][curr_y] & (OBJECT_TILE | OBJECT_BLOCK | WALL_NORTH)) == 0) {
+				path_x[path_ptr] = curr_x + 1;
+				path_y[path_ptr] = curr_y + 1;
+				path_ptr = (path_ptr + 1) % pathLength;
+				prev[curr_x + 1][curr_y + 1] = 12;
+				dist[curr_x + 1][curr_y + 1] = cost;
+			}
+		}
+		return foundPath ? dist[curr_x][curr_y] : -1;
 	}
 
 	public static boolean stepTowards(final Locatable locatable) {
