@@ -144,9 +144,8 @@ public class MouseHandler implements Runnable, Stoppable {
 				if (l > 0) Delay.sleep(l);
 			}
 
-			final Point next = target.targetable.getInteractPoint();
-			dest.x = next.x;
-			dest.y = next.y;
+			final Point next = target.targetable.getNextPoint();
+			target.dest = new Vector3(next.x, next.y, 0);
 		}
 	}
 
