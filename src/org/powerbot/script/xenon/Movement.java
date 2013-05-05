@@ -50,7 +50,7 @@ public class Movement {
 		return base != null ? base.derive(dX, dY) : null;
 	}
 
-	public static Point getPosition() {
+	public static Point getCollisionOffset() {
 		final Client client = Bot.client();
 		if (client == null) return null;
 		final int plane = client.getPlane();
@@ -61,7 +61,7 @@ public class Movement {
 		return ground != null ? new Point(ground.getX(), ground.getY()) : null;
 	}
 
-	public static int[][] getMeta() {
+	public static int[][] getCollisionMeta() {
 		final Client client = Bot.client();
 		if (client == null) return null;
 		final int plane = client.getPlane();
@@ -83,8 +83,8 @@ public class Movement {
 	}
 
 	public static int getDistance(final int startX, final int startY, final int endX, final int endY, final boolean findAdjacent) {
-		final Point pos = getPosition();
-		final int[][] meta = getMeta();
+		final Point pos = getCollisionOffset();
+		final int[][] meta = getCollisionMeta();
 		if (pos == null || meta == null) return -1;
 		final int[][] prev = new int[104][104];
 		final int[][] dist = new int[104][104];

@@ -20,7 +20,7 @@ public class DrawBoundaries implements PaintListener {
 			return;
 		}
 		final int plane = Game.getPlane();
-		final int[][] blocks = Movement.getMeta();
+		final int[][] blocks = Movement.getCollisionMeta();
 		final Tile base = Game.getMapBase();
 		if (base == null) return;
 		final int baseX = base.getX();
