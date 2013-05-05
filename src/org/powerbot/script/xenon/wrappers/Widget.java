@@ -67,8 +67,8 @@ public class Widget implements Validatable, Iterable<Component> {
 		final Client client = Bot.client();
 		if (client == null) return null;
 		final RSInterfaceBase[] containers = client.getRSInterfaceCache();
-		if (containers != null && index >= 0 && index < containers.length) {
-			final RSInterfaceBase container = containers[index];
+		final RSInterfaceBase container;
+		if (containers != null && index >= 0 && index < containers.length && (container = containers[index]) != null) {
 			return container.getComponents();
 		}
 		return null;
