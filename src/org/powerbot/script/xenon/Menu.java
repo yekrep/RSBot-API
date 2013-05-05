@@ -52,8 +52,8 @@ public class Menu {
 		if (client == null) return false;
 		int index = indexOf(action, option);
 		if (index == -1) return false;
-		else if (index == 0) return Mouse.click(true);
 		if (!client.isMenuOpen()) {
+			if (index == 0) return Mouse.click(true);
 			if (Mouse.click(false)) {
 				final long m = System.currentTimeMillis();
 				while (System.currentTimeMillis() - m < 100 && !client.isMenuOpen()) {
