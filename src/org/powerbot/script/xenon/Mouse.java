@@ -122,6 +122,22 @@ public class Mouse {
 		return drag(new Point(x1, y1), new Point(x2, y2), button);
 	}
 
+	public static boolean drag(final int x, final int y, final boolean left) {
+		return drag(getLocation(), new Point(x, y), left);
+	}
+
+	public static boolean drag(final Point p, final boolean left) {
+		return drag(getLocation(), p, left);
+	}
+
+	public static boolean drag(final int x, final int y, final int button) {
+		return drag(getLocation(), new Point(x, y), button);
+	}
+
+	public static boolean drag(final Point p, final int button) {
+		return drag(getLocation(), p, button);
+	}
+
 	public static boolean move(final Targetable target) {
 		return move(target, MouseTarget.DUMMY);
 	}
