@@ -188,6 +188,15 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 		scriptController.run();
 	}
 
+	public void stopScripts() {
+		synchronized (scriptController) {
+			if (scriptController != null) {
+				scriptController.stop();
+				scriptController = null;
+			}
+		}
+	}
+
 	public BufferedImage getImage() {
 		return image;
 	}

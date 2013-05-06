@@ -44,14 +44,15 @@ public final class ScheduledChecks implements ActionListener {
 			}
 		}
 
-		final ScriptManager controller = Bot.getInstance().getScriptController();
+		final Bot bot = Bot.getInstance();
+		final ScriptManager controller = bot.getScriptController();
 		if (controller != null) {
 			for (final ScriptDefinition definition : controller.getScripts()) {
 				if (definition != null) {
 					if (definition.local && System.nanoTime() > timeout.get()) {
 						Tracker.getInstance().trackEvent("script", "timeout", definition.getName());
 						log.info("Local script restriction - script stopped");
-						controller.stop();
+						bot.stopScripts();
 					}
 				}
 			}

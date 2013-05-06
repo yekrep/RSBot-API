@@ -249,7 +249,7 @@ public class Login extends TaskScript implements RandomEvent, PaintListener {
 						if (lobbyEvent.wait > 0) {
 							sleep(lobbyEvent.wait);
 						} else if (lobbyEvent.wait == -1) {
-							bot.getScriptController().stop();
+							bot.stopScripts();
 							return false;
 						}
 

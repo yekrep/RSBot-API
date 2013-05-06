@@ -133,7 +133,7 @@ public final class BotInteract {
 		if (container != null) {
 			if (!container.isStopping()) {
 				Tracker.getInstance().trackEvent("script", "stop");
-				container.stop();
+				bot.stopScripts();
 			}
 		}
 	}
