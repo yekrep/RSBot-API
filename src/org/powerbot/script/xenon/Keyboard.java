@@ -5,49 +5,53 @@ import java.awt.event.KeyEvent;
 import org.powerbot.bot.Bot;
 import org.powerbot.script.internal.input.InputHandler;
 
-public class Keyboard {
-	public static void send(final String str) {
-		send(str, false);
+public class Keyboard {//TODO patch up return trues.
+	public static boolean send(final String str) {
+		return send(str, false);
 	}
 
-	public static void send(String str, final boolean newLine) {
+	public static boolean send(String str, final boolean newLine) {
 		final InputHandler inputHandler = Bot.inputHandler();
-		if (inputHandler == null) return;
+		if (inputHandler == null) return false;
 		if (newLine) str += '\n';
 		inputHandler.send(str);
+		return true;
 	}
 
-	public static void sendln(final String str) {
-		send(str, true);
+	public static boolean sendln(final String str) {
+		return send(str, true);
 	}
 
-	public static void pressKey(final int vk) {
+	public static boolean pressKey(final int vk) {
 		final InputHandler inputHandler = Bot.inputHandler();
-		if (inputHandler == null) return;
+		if (inputHandler == null) return false;
 		inputHandler.send(inputHandler.constructKeyEvent(KeyEvent.KEY_PRESSED, vk));
+		return true;
 	}
 
-	public static void pressKey(final int vk, final char c) {
+	public static boolean pressKey(final int vk, final char c) {
 		final InputHandler inputHandler = Bot.inputHandler();
-		if (inputHandler == null) return;
+		if (inputHandler == null) return false;
 		inputHandler.send(inputHandler.constructKeyEvent(KeyEvent.KEY_PRESSED, vk, c));
+		return true;
 	}
 
-	public static void releaseKey(final int vk) {
+	public static boolean releaseKey(final int vk) {
 		final InputHandler inputHandler = Bot.inputHandler();
-		if (inputHandler == null) return;
+		if (inputHandler == null) return false;
 		inputHandler.send(inputHandler.constructKeyEvent(KeyEvent.KEY_RELEASED, vk));
+		return true;
 	}
 
-	public static void releaseKey(final int vk, final char c) {
+	public static boolean releaseKey(final int vk, final char c) {
 		final InputHandler inputHandler = Bot.inputHandler();
-		if (inputHandler == null) return;
+		if (inputHandler == null) return false;
 		inputHandler.send(inputHandler.constructKeyEvent(KeyEvent.KEY_RELEASED, vk, c));
+		return true;
 	}
 
 	public static boolean isReady() {
 		final InputHandler inputHandler = Bot.inputHandler();
-		if (inputHandler == null) return false;
-		return inputHandler.getSource() != null;
+		return inputHandler != null && inputHandler.getSource() != null;
 	}
 }
