@@ -1,6 +1,7 @@
 package org.powerbot.script.xenon;
 
 import java.awt.Point;
+import java.awt.Rectangle;
 
 import org.powerbot.bot.Bot;
 import org.powerbot.client.Client;
@@ -11,6 +12,7 @@ import org.powerbot.client.Render;
 import org.powerbot.client.RenderData;
 import org.powerbot.client.TileData;
 import org.powerbot.script.internal.Constants;
+import org.powerbot.script.xenon.widgets.ActionBar;
 import org.powerbot.script.xenon.wrappers.Component;
 import org.powerbot.script.xenon.wrappers.Locatable;
 import org.powerbot.script.xenon.wrappers.Player;
@@ -38,7 +40,14 @@ public class Calculations {
 	}
 
 	public static boolean isPointOnScreen(final int x, final int y) {
-		return true;//TODO
+		final Rectangle r;
+		if (Game.isLoggedIn()) {
+			final Component c = Widgets.get(ActionBar.WIDGET, ActionBar.COMPONENT_BAR);
+			r = c != null && c.isValid() ? c.getBoundingRect() : null;
+			if (r != null && r.contains(x, y)) return false;
+			if (Game.isFixed()) return x >= 4 && y >= 54 && x < 516 && y < 388;
+		} else r = null;
+		return true;
 	}
 
 	public static int tileHeight(final int x, final int y) {

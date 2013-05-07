@@ -7,6 +7,7 @@ import java.util.Set;
 import org.powerbot.bot.Bot;
 import org.powerbot.client.BaseInfo;
 import org.powerbot.client.Client;
+import org.powerbot.client.RSAnimableNode;
 import org.powerbot.client.RSGround;
 import org.powerbot.client.RSGroundInfo;
 import org.powerbot.client.RSInfo;
@@ -53,13 +54,20 @@ public class Objects {
 				final RSGround ground = objArr[x][y];
 				if (ground == null) continue;
 
+				for (RSAnimableNode node = ground.getRSAnimableList(); node != null; node = node.getNext()) {
+					final RSObject obj = node.getRSAnimable();
+					if (obj != null && obj.getId() != -1) objects.add(new GameObject(obj, GameObject.Type.INTERACTIVE));
+				}
+
+
 				final RSObject[] objs = {
 						ground.getBoundary1(), ground.getBoundary2(),
 						ground.getFloorDecoration(),
 						ground.getWallDecoration1(), ground.getWallDecoration2()
 				};
+
 				for (int i = 0; i < objs.length; i++) {
-					if (objs[i] != null) objects.add(new GameObject(objs[i], types[i]));
+					if (objs[i] != null && objs[i].getId() != -1) objects.add(new GameObject(objs[i], types[i]));
 				}
 			}
 		}

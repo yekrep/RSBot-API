@@ -3,22 +3,26 @@ package org.powerbot.script.xenon.wrappers;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Polygon;
+import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.powerbot.client.ModelCapture;
 import org.powerbot.script.xenon.Calculations;
+import org.powerbot.script.xenon.Game;
+import org.powerbot.script.xenon.Widgets;
 import org.powerbot.script.xenon.util.Random;
+import org.powerbot.script.xenon.widgets.ActionBar;
 
 public abstract class Model {
-	protected int[] xPoints;
 	protected final int[] yPoints;
-	protected int[] zPoints;
 	protected final short[] faceA;
 	protected final short[] faceB;
 	protected final short[] faceC;
 	protected final int numFaces;
 	protected final int numVertices;
+	protected int[] xPoints;
+	protected int[] zPoints;
 
 	public Model(final org.powerbot.client.Model model) {
 		xPoints = model.getXPoints();
@@ -180,15 +184,18 @@ public abstract class Model {
 		final int plane = getPlane();
 		final int h = Calculations.tileHeight(x, y, plane);
 		int index = pos;
+		final boolean fixed = Game.isFixed();
+		final Component c = Widgets.get(ActionBar.WIDGET, ActionBar.COMPONENT_BAR);
+		final Rectangle r = c != null && c.isValid() ? c.getBoundingRect() : null;
 		while (index < length) {
 			final Point point = Calculations.worldToScreen(
 					x + (this.xPoints[this.faceA[index]] + this.xPoints[this.faceB[index]] + this.xPoints[this.faceC[index]]) / 3,
 					h + (this.yPoints[this.faceA[index]] + this.yPoints[this.faceB[index]] + this.yPoints[this.faceC[index]]) / 3,
 					y + (this.zPoints[this.faceA[index]] + this.zPoints[this.faceB[index]] + this.zPoints[this.faceC[index]]) / 3
 			);
-			if (Calculations.isPointOnScreen(point)) {
-				return index;
-			}
+			if ((r == null || !r.contains(point)) &&
+					fixed ? (point.x >= 4 && point.y >= 4 && point.x < 516 && point.y < 388) :
+					(point.x != -1 && point.y != -1)) return index;
 			++index;
 		}
 		return -1;
