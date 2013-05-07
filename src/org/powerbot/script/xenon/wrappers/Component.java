@@ -291,7 +291,7 @@ public class Component extends Interactive {
 				getWidth(),
 				getHeight()
 		);
-		return r.x > 0 && r.y > 0 && r.width > 0 && r.height > 0 ? r : null;
+		return r.x >= 0 && r.y >= 0 && r.width > 0 && r.height > 0 ? r : null;
 	}
 
 	public Rectangle getViewportRect() {
@@ -301,7 +301,7 @@ public class Component extends Interactive {
 				getScrollWidth(),
 				getScrollHeight()
 		);
-		return r.x > 0 && r.y > 0 && r.width > 0 && r.height > 0 ? r : null;
+		return r.x >= 0 && r.y >= 0 && r.width > 0 && r.height > 0 ? r : null;
 	}
 
 	@Override
