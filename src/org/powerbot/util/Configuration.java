@@ -63,8 +63,6 @@ public class Configuration {
 		public static final String FACEBOOK = "http://" + DOMAIN_LINKS + "/facebook";
 		public static final String YOUTUBE = "http://" + DOMAIN_LINKS + "/youtube";
 
-		public static final String ADS = "http://" + DOMAIN_LINKS + "/ads";
-
 		public static final String GAME_DOMAIN = "runescape.com";
 		public static final String GAME_SERVICES_DOMAIN = "services." + GAME_DOMAIN;
 		public static final String GAME_PROTOCOL = "https://";

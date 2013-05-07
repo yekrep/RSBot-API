@@ -173,7 +173,6 @@ public final class Controller implements Runnable {
 				case Message.SIGNIN:
 					reply = null;
 					NetworkAccount.getInstance().revalidate();
-					BotChrome.getInstance().panel.loadingPanel.setAdVisible(!NetworkAccount.getInstance().hasPermission(NetworkAccount.VIP));
 					BotInteract.tabClose(true);
 					break;
 

@@ -80,7 +80,6 @@ public class BotChrome extends JFrame implements WindowListener {
 		tasks.add(exec.submit(new LoadUpdates()));
 		tasks.add(exec.submit(new LoadOSX()));
 		tasks.add(exec.submit(new LoadAccount()));
-		tasks.add(exec.submit(new LoadAds()));
 		exec.execute(new LoadComplete(this, tasks));
 		exec.shutdown();
 	}

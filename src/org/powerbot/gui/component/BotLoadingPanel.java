@@ -41,7 +41,6 @@ public final class BotLoadingPanel extends JPanel {
 	private static final Map<ThreadGroup, LogRecord> logRecord = new HashMap<>();
 	private ThreadGroup listeningGroup = null;
 	public static final int PANEL_WIDTH = 728, PANEL_HEIGHT = 120;
-	public final DisplayAd ad;
 	private final JPanel panelText;
 	private final BotLoadingPanelLogHandler handler;
 
@@ -86,48 +85,8 @@ public final class BotLoadingPanel extends JPanel {
 		panel.add(panelBottom, BorderLayout.SOUTH);
 		add(panel);
 
-		ad = new DisplayAd(panelBottom);
-
 		handler = new BotLoadingPanelLogHandler(this);
 		Logger.getLogger("").addHandler(handler);
-	}
-
-	public synchronized void setAdVisible(final boolean visible) {
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				ad.setVisible(visible);
-				panelText.setBorder(BorderFactory.createEmptyBorder(visible ? 50 : 100, 0, visible ? 150 : 50, 0));
-			}
-		});
-	}
-
-	public final class DisplayAd extends JLabel {
-		private static final long serialVersionUID = -4699438171304667794L;
-		private final JPanel container;
-
-		public DisplayAd(final JPanel container) {
-			super();
-			this.container = container;
-		}
-
-		public void setImage(final Image image, final String link) {
-			setIcon(new ImageIcon(image));
-			setBorder(null);
-			setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-			if (link != null && !link.isEmpty()) {
-				addMouseListener(new MouseAdapter() {
-					@Override
-					public void mouseClicked(final MouseEvent e) {
-						BotInteract.openURL(link);
-					}
-				});
-			}
-			final Dimension d1 = container.getPreferredSize(), d2 = getPreferredSize();
-			final int dw = (d1.width - d2.width) / 2, dh = d1.height - d2.height;
-			container.setBorder(BorderFactory.createEmptyBorder(0, dw, dh, dw));
-			container.add(this);
-		}
 	}
 
 	public void set(final ThreadGroup threadGroup) {
