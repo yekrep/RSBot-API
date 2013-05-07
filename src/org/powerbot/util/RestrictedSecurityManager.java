@@ -166,7 +166,6 @@ public class RestrictedSecurityManager extends SecurityManager {
 
 	private void checkFilePath(final String pathRaw, final boolean readOnly) {
 		final String path = StringUtil.urlDecode(new File(pathRaw).getAbsolutePath());
-		final String tmp = System.getProperty("java.io.tmpdir");
 
 		// permission controls for crypt files
 		for (final Entry<File, Class<?>[]> entry : CryptFile.PERMISSIONS.entrySet()) {
@@ -200,8 +199,13 @@ public class RestrictedSecurityManager extends SecurityManager {
 			return;
 		}
 
+		// allow home directory for secure file controller
+		if ((path + File.separator).startsWith(Configuration.HOME.getAbsolutePath()) && isCallingClass(CryptFile.class)) {
+			return;
+		}
+
 		// allow write access to temp directory
-		if ((path + File.separator).startsWith(tmp)) {
+		if ((path + File.separator).startsWith(Configuration.TEMP.getAbsolutePath())) {
 			return;
 		}
 

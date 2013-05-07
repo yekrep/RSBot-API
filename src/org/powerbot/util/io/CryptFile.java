@@ -39,10 +39,15 @@ public final class CryptFile {
 	private static final long TIMESTAMP = 1346067355497L, GCTIME = 1000 * 60 * 60 * 24 * 3;
 	private static volatile SecretKey key;
 
-	private final File store;
+	private final File root, store;
 
 	public CryptFile(final String id, final Class<?>... parents) {
-		store = getSecureFile(id);
+		this(id, false, parents);
+	}
+
+	public CryptFile(final String id, final boolean temp, final Class<?>... parents) {
+		root = temp ? Configuration.TEMP : Configuration.HOME;
+		store = getSecureFile(root, id);
 		PERMISSIONS.put(store, parents);
 	}
 
@@ -112,7 +117,7 @@ public final class CryptFile {
 			return c;
 		}
 
-		final File keyfile = getSecureFile("secret.key");
+		final File keyfile = getSecureFile(Configuration.HOME, "secret.key");
 		final int p = 4096;
 
 		if (keyfile.isFile() && keyfile.length() != 0L) {
@@ -169,7 +174,7 @@ public final class CryptFile {
 		return c;
 	}
 
-	private static File getSecureFile(final String id) {
+	private static File getSecureFile(final File root, final String id) {
 		final long uid = Configuration.getUID();
 		String hash;
 
@@ -197,13 +202,13 @@ public final class CryptFile {
 
 		if (dir.length() != 0) {
 			gc(dir, uid);
-			final File parent = getSecureDirName(dir, uid);
+			final File parent = getSecureDirName(root, dir, uid);
 			if (!parent.isDirectory()) {
 				parent.mkdirs();
 			}
 			file = new File(parent, hash);
 		} else {
-			file = new File(getRoot(), hash);
+			file = new File(root, hash);
 		}
 
 		if (file.isFile() && file.lastModified() < TIMESTAMP) {
@@ -213,12 +218,8 @@ public final class CryptFile {
 		return file;
 	}
 
-	private static File getSecureDirName(final String dir, final long uid) {
-		return new File(getRoot(), getCrc32(dir, uid));
-	}
-
-	private static File getRoot() {
-		return new File(System.getProperty("java.io.tmpdir"));
+	private static File getSecureDirName(final File root, final String dir, final long uid) {
+		return new File(root, getCrc32(dir, uid));
 	}
 
 	private static String getCrc32(final String s, final long uid) {
@@ -231,7 +232,7 @@ public final class CryptFile {
 	}
 
 	private static void gc(final String dir, final long uid) {
-		final File file = getSecureDirName(dir, uid);
+		final File file = getSecureDirName(Configuration.TEMP, dir, uid);
 
 		if (!file.isDirectory()) {
 			return;

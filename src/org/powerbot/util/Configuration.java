@@ -11,6 +11,8 @@ import org.powerbot.ipc.Controller;
 import org.powerbot.util.io.IOHelper;
 import org.powerbot.util.io.Resources;
 
+import javax.naming.ConfigurationException;
+
 /**
  * @author Paris
  */
@@ -22,6 +24,7 @@ public class Configuration {
 	public static final boolean BETA = true;
 	public static volatile int VERSION_LATEST = -1;
 	public static final OperatingSystem OS;
+	public static final File HOME, TEMP = new File(System.getProperty("java.io.tmpdir"));
 
 	public enum OperatingSystem {
 		MAC, WINDOWS, LINUX, UNKNOWN
@@ -88,6 +91,16 @@ public class Configuration {
 			OS = OperatingSystem.LINUX;
 		} else {
 			OS = OperatingSystem.UNKNOWN;
+		}
+
+		if (OS == OperatingSystem.WINDOWS) {
+			HOME = new File(System.getenv("APPDATA"), NAME);
+		} else {
+			HOME = new File(System.getProperty("user.home"), "." + NAME.toLowerCase());
+		}
+
+		if (!HOME.isDirectory()) {
+			HOME.mkdirs();
 		}
 	}
 
