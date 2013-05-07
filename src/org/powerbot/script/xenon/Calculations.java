@@ -45,7 +45,7 @@ public class Calculations {
 		return tileHeight(x, y, -1);
 	}
 
-	public static int tileHeight(int x, int y, int plane) {
+	public static int tileHeight(final int rX, final int rY, int plane) {
 		final Client client = Bot.client();
 		if (client == null) return 0;
 		if (plane == -1) plane = client.getPlane();
@@ -54,13 +54,9 @@ public class Calculations {
 		final RSGroundBytes groundBytes = info != null ? info.getGroundBytes() : null;
 		final byte[][][] settings = groundBytes != null ? groundBytes.getBytes() : null;
 		if (settings != null) {
-			if ((x >= 512 && x <= 52224) || (y >= 512 && y <= 52224)) {
-				x = x >> 9;
-				y = y >> 9;
-			}
-
+			final int x = rX >> 9, y = rY >> 9;
 			if (x < 0 || x > 103 || y < 0 || y > 103) return 0;
-			if (plane <= 3 && (settings[1][x][y] & 2) != 0) {
+			if (plane < 3 && (settings[1][x][y] & 2) != 0) {
 				++plane;
 			}
 			final RSGroundInfo groundInfo = info.getRSGroundInfo();
@@ -68,8 +64,8 @@ public class Calculations {
 			if (tileData == null || plane < 0 || plane >= tileData.length) return 0;
 			final int[][] heights = tileData[plane].getHeights();
 			if (heights != null) {
-				final int aX = x & 512 - 1;
-				final int aY = y & 512 - 1;
+				final int aX = rX & 0x1ff;
+				final int aY = rY & 0x1ff;
 				final int start_h = heights[x][y] * (512 - aX) + heights[x + 1][y] * aX >> 9;
 				final int end_h = heights[x][1 + y] * (512 - aX) + heights[x + 1][y + 1] * aX >> 9;
 				return start_h * (512 - aY) + end_h * aY >> 9;
@@ -98,7 +94,6 @@ public class Calculations {
 			);
 		}
 		return new Point(-1, -1);
-
 	}
 
 	public static Point worldToMap(double x, double y) {
