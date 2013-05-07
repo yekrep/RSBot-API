@@ -69,10 +69,12 @@ public class ActionBar {
 	}
 
 	public static boolean deleteSlot(final int slot) {
-		final Component c;
+		Component c;
 		if (slot < 0 || slot >= NUM_SLOTS || (c = Widgets.get(WIDGET, COMPONENT_SLOTS[slot])) == null) return false;
 		final Action action = getActionAt(slot);
 		if (action == null) return true;
+		c = Widgets.get(WIDGET, COMPONENT_TRASH);
+		if (c == null || !c.isValid()) return false;
 		if (action.hover() && Mouse.drag(c.getInteractPoint(), true)) {
 			for (int i = 0; i < 5 && getActionAt(slot) != null; i++) Delay.sleep(100, 200);
 		}
