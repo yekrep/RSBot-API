@@ -34,6 +34,7 @@ import org.powerbot.script.internal.ScriptManager;
 import org.powerbot.service.NetworkAccount;
 import org.powerbot.util.Configuration;
 import org.powerbot.util.StringUtil;
+import org.powerbot.util.Tracker;
 
 /**
  * @author Paris
@@ -178,6 +179,10 @@ public final class Controller implements Runnable {
 
 				case Message.SIGNIN_SESSION:
 					ScheduledChecks.session.set(System.currentTimeMillis());
+					break;
+
+				case Message.TRACKER:
+					Tracker.getInstance().setTimestamps((int) msg.getArgs()[0], (long) msg.getArgs()[1]);
 					break;
 
 				default:
@@ -355,6 +360,10 @@ public final class Controller implements Runnable {
 		broadcast(new Message(type));
 		callbacks.remove(c);
 		return list;
+	}
+
+	public void updateTrackerTimestamps(final Object... args) {
+		broadcast(new Message(false, Message.TRACKER, args));
 	}
 
 	private final class Callbacks implements Runnable {

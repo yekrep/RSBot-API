@@ -3,22 +3,21 @@ package org.powerbot.util;
 import java.awt.Dimension;
 import java.awt.GraphicsEnvironment;
 import java.awt.Toolkit;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Random;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicInteger;
 
+import org.powerbot.ipc.Controller;
 import org.powerbot.util.io.CryptFile;
 import org.powerbot.util.io.HttpClient;
 import org.powerbot.util.io.IOHelper;
+import org.powerbot.util.io.IniParser;
 
 /**
  * @author Paris
@@ -27,9 +26,13 @@ public final class Tracker {
 	private static Tracker instance;
 	private final Executor exec;
 	private static final String TRACKING_ID = "UA-5170375-18", PAGE_PREFIX = "/rsbot/", HOSTNAME = "services.powerbot.org";
+	private static final String KEY_VISITS = "visits", KEY_FIRST = "first", KEY_PREVIOUS = "prev";
 	private final String locale, resolution, colours;
 	private final Random r;
-	private final int cookie, visitor;
+	private final CryptFile store;
+	private final int visitor;
+	private final long[] timestamps;
+	private final AtomicInteger visits;
 
 	private Tracker() {
 		exec = Executors.newSingleThreadExecutor();
@@ -43,7 +46,41 @@ public final class Tracker {
 
 		r = new Random();
 		visitor = (int) (Configuration.getUID() & Integer.MAX_VALUE);
-		cookie = visitor;
+		timestamps = new long[2];
+		visits = new AtomicInteger(0);
+
+		store = new CryptFile("tracker.ini", Tracker.class);
+		if (store.exists()) {
+			try (final InputStream in = store.getInputStream()) {
+				final Map<String, String> data = IniParser.deserialise(in).get(IniParser.EMPTYSECTION);
+				if (data.containsKey(KEY_VISITS)) {
+					try {
+						visits.set(Integer.parseInt(data.get(KEY_VISITS)));
+					} catch (final NumberFormatException ignored) {
+					}
+				}
+				if (data.containsKey(KEY_FIRST)) {
+					try {
+						timestamps[0] = Long.parseLong(data.get(KEY_FIRST));
+					} catch (final NumberFormatException ignored) {
+					}
+				}
+				if (data.containsKey(KEY_PREVIOUS)) {
+					try {
+						timestamps[1] = Long.parseLong(data.get(KEY_PREVIOUS));
+					} catch (final NumberFormatException ignored) {
+					}
+				}
+			} catch (final IOException ignored) {
+			}
+		}
+
+		if (timestamps[0] == 0) {
+			timestamps[0] = System.currentTimeMillis() / 1000L;
+			timestamps[1] = timestamps[0];
+		} else if (timestamps[1] == 0) {
+			timestamps[1] = timestamps[0];
+		}
 	}
 
 	public synchronized static Tracker getInstance() {
@@ -51,6 +88,35 @@ public final class Tracker {
 			instance = new Tracker();
 		}
 		return instance;
+	}
+
+	private long[] getTimestamps() {
+		synchronized (timestamps) {
+			final long prev = timestamps[1];
+			timestamps[1] = System.currentTimeMillis() / 1000L;
+
+			final Map<String, String> data = new HashMap<>(3);
+			data.put(KEY_VISITS, Integer.toString(visits.incrementAndGet()));
+			data.put(KEY_FIRST, Long.toString(timestamps[0]));
+			data.put(KEY_FIRST, Long.toString(prev));
+			final Map<String, Map<String, String>> map = new HashMap<>(1);
+			map.put(IniParser.EMPTYSECTION, data);
+			try (final OutputStream out = store.getOutputStream()) {
+				IniParser.serialise(map, out);
+			} catch (final IOException ignored) {
+			}
+
+			Controller.getInstance().updateTrackerTimestamps(visits.get(), timestamps[1]);
+
+			return new long[] {timestamps[0], prev, timestamps[1]};
+		}
+	}
+
+	public void setTimestamps(final int visits, final long prev) {
+		synchronized (timestamps) {
+			this.visits.set(visits);
+			timestamps[1] = prev;
+		}
 	}
 
 	public void trackEvent(final String category, final String action) {
@@ -83,9 +149,9 @@ public final class Tracker {
 
 	private StringBuilder getBase() {
 		final StringBuilder s = new StringBuilder(), utmcc = new StringBuilder();
-		final long now = System.currentTimeMillis();
-		utmcc.append("__utma=").append(cookie).append(".").append(visitor).append(".").append(now).append(".").append(now).append(".").append(now).append(".1; ");
-		utmcc.append("__utmz=").append(cookie).append(".").append(now).append(".1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none);");
+		final long[] t = getTimestamps();
+		utmcc.append("__utma=999.").append(visitor).append('.').append(t[0]).append('.').append(t[1]).append('.').append(t[2]).append('.').append(visits.get()).append("; ");
+		utmcc.append("__utmz=999.").append(t[2]).append(".1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none);");
 		s.append("http://www.google-analytics.com/__utm.gif");
 		s.append("?utmwv=4.9.4");
 		s.append("&utmn=").append(r.nextInt());

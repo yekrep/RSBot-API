@@ -23,6 +23,7 @@ public final class Message implements Serializable {
 	public static final int SIGNIN = BASE + 90;
 	public static final int SIGNIN_SESSION = BASE + 95;
 	public static final int SCRIPT = BASE + 100;
+	public static final int TRACKER = BASE + 110;
 
 	public Message(final int type) {
 		this(false, type);
