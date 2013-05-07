@@ -342,10 +342,10 @@ public class Component extends Interactive {
 		if (absLocation.x == -1 && absLocation.y == -1) return null;
 		final boolean canScroll = isInScrollableArea();
 		final Rectangle r = new Rectangle(absLocation.x + 1, absLocation.y + 1,
-				(canScroll ? getWidth() : getScrollWidth()) - 1,
-				(canScroll ? getHeight() : getScrollHeight()) - 1
+				(canScroll ? getWidth() : getScrollWidth()) - 2,
+				(canScroll ? getHeight() : getScrollHeight()) - 2
 		);
-		return r.x > 0 && r.y > 0 && r.width > 0 && r.height > 0 ? r : null;
+		return r.x > 0 && r.y > 0 && r.width > 0 && r.height > 0 ? r : getBoundingRect();
 	}
 
 	private boolean isInScrollableArea() {
