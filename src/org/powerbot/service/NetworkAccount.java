@@ -29,7 +29,7 @@ public final class NetworkAccount {
 
 	private NetworkAccount() {
 		props = new HashMap<>();
-		store = new CryptFile(STORENAME, NetworkAccount.class);
+		store = new CryptFile(STORENAME, true, NetworkAccount.class);
 		revalidate();
 	}
 

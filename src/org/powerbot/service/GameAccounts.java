@@ -22,7 +22,7 @@ public final class GameAccounts extends ArrayList<GameAccounts.Account> {
 
 	private GameAccounts() {
 		super();
-		store = new CryptFile("gameaccts", GameAccounts.class);
+		store = new CryptFile("gameaccts", true, GameAccounts.class);
 		load();
 	}
 

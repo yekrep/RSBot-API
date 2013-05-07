@@ -49,7 +49,7 @@ public final class Tracker {
 		timestamps = new long[2];
 		visits = new AtomicInteger(0);
 
-		store = new CryptFile("tracker.ini", Tracker.class);
+		store = new CryptFile("tracker.ini", true, Tracker.class);
 		if (store.exists()) {
 			try (final InputStream in = store.getInputStream()) {
 				final Map<String, String> data = IniParser.deserialise(in).get(IniParser.EMPTYSECTION);
