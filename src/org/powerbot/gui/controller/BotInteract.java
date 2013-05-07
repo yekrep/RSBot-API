@@ -71,7 +71,6 @@ public final class BotInteract {
 					} else {
 						final Bot bot = Bot.getInstance();
 						new Thread(bot.threadGroup, bot).start();
-						BotChrome.getInstance().panel.setBot(bot);
 					}
 				}
 			}
@@ -93,7 +92,6 @@ public final class BotInteract {
 						}
 					}
 					Tracker.getInstance().trackEvent("tab", "add", silent ? "silent" : "");
-					parent.panel.setBot(null);
 					Bot.getInstance().stop();
 					parent.panel.repaint();
 					Logger.getLogger(Bot.class.getName()).log(Level.INFO, "Add a tab to start another bot", "Closed");

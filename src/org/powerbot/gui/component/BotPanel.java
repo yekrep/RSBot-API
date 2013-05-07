@@ -1,11 +1,6 @@
 package org.powerbot.gui.component;
 
-import java.awt.Canvas;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.MenuComponent;
+import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
@@ -15,13 +10,16 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.awt.image.ImageObserver;
+import java.util.logging.Logger;
 
-import javax.swing.JPanel;
+import javax.swing.*;
 
 import org.powerbot.bot.Bot;
 import org.powerbot.client.input.Mouse;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.util.Tracker;
+import org.powerbot.util.io.Resources;
 
 /**
  * A panel that re-dispatches human events to the game's applet.
@@ -32,9 +30,9 @@ import org.powerbot.util.Tracker;
 public class BotPanel extends JPanel {
 	public static final int INPUT_MOUSE = 1, INPUT_KEYBOARD = 2;
 	private static final long serialVersionUID = 1L;
-	public final BotLoadingPanel loadingPanel;
 	private int inputMask;
 	private Bot bot;
+	private final JLabel status;
 	private int xOff, yOff;
 
 	public BotPanel(final Component parent) {
@@ -49,7 +47,19 @@ public class BotPanel extends JPanel {
 		xOff = yOff = 0;
 		inputMask = INPUT_MOUSE | INPUT_KEYBOARD;
 
-		add(loadingPanel = new BotLoadingPanel(parent));
+		setLayout(new GridBagLayout());
+		final JPanel panel = new JPanel();
+		panel.setLayout(getLayout());
+		panel.setBackground(getBackground());
+		panel.add(new JLabel(new ImageIcon(Resources.getImage(Resources.Paths.ARROWS))), new GridBagConstraints());
+		final GridBagConstraints c = new GridBagConstraints();
+		c.gridy = 1;
+		panel.add(status = new JLabel(), c);
+		status.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
+		final Font f = status.getFont();
+		status.setFont(new Font(f.getFamily(), f.getStyle(), f.getSize() + 1));
+		add(panel);
+		Logger.getLogger("").addHandler(new BotPanelLogHandler(status));
 
 		addComponentListener(new ComponentAdapter() {
 			@Override
@@ -145,7 +155,6 @@ public class BotPanel extends JPanel {
 		super.paintComponent(g);
 
 		if (bot != null) {
-			loadingPanel.setVisible(false);
 			g.drawImage(bot.image, xOff, yOff, null);
 		}
 	}
@@ -155,19 +164,12 @@ public class BotPanel extends JPanel {
 			this.bot.setPanel(null);
 		}
 		this.bot = bot;
-		loadingPanel.setVisible(true);
+		getComponent(0).setVisible(bot == null);
 		if (bot != null) {
-			getGraphics().setColor(Color.BLACK);
-			getGraphics().fillRect(0, 0, getWidth(), getHeight());
-			loadingPanel.validate();
-			loadingPanel.repaint();
-			loadingPanel.set(bot.threadGroup);
 			bot.setPanel(this);
 			if (bot.getCanvas() != null) {
 				offset();
 			}
-		} else {
-			loadingPanel.set(null);
 		}
 	}
 

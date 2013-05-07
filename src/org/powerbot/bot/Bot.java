@@ -134,6 +134,7 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 		stub.setActive(true);
 		log.info("Starting game");
 		new Thread(threadGroup, appletContainer, "Loader").start();
+		BotChrome.getInstance().panel.setBot(this);
 	}
 
 	@Override
