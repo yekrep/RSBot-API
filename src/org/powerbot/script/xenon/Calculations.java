@@ -43,7 +43,7 @@ public class Calculations {
 		final Rectangle r;
 		if (Game.isLoggedIn()) {
 			final Component c = Widgets.get(ActionBar.WIDGET, ActionBar.COMPONENT_BAR);
-			r = c != null && c.isValid() ? c.getBoundingRect() : null;
+			r = c != null && c.isVisible() ? c.getBoundingRect() : null;
 			if (r != null && r.contains(x, y)) return false;
 			if (Game.isFixed()) return x >= 4 && y >= 54 && x < 516 && y < 388;
 		} else r = null;

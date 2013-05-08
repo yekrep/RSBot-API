@@ -186,7 +186,7 @@ public abstract class Model {
 		int index = pos;
 		final boolean fixed = Game.isFixed();
 		final Component c = Widgets.get(ActionBar.WIDGET, ActionBar.COMPONENT_BAR);
-		final Rectangle r = c != null && c.isValid() ? c.getBoundingRect() : null;
+		final Rectangle r = c != null && c.isVisible() ? c.getBoundingRect() : null;
 		while (index < length) {
 			final Point point = Calculations.worldToScreen(
 					x + (this.xPoints[this.faceA[index]] + this.xPoints[this.faceB[index]] + this.xPoints[this.faceC[index]]) / 3,
