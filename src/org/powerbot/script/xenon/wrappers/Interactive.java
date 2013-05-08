@@ -34,7 +34,6 @@ public abstract class Interactive implements Targetable, Validatable {
 	public boolean interact(final String action, final String option) {
 		int a = 0;
 		while (a++ < ATTEMPTS) {
-			if (Menu.isOpen()) Menu.close();
 			if (!Mouse.move(this, new Filter<Point>() {
 				@Override
 				public boolean accept(final Point point) {
