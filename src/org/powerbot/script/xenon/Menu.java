@@ -34,10 +34,10 @@ public class Menu {
 		int d = 0;
 		for (final MenuItemNode node : nodes) {
 			String a = node.getAction(), o = node.getOption();
-			a = a != null ? PATTERN_HTML.matcher(a).replaceAll("") : "";
-			o = o != null ? PATTERN_HTML.matcher(o).replaceAll("") : "";
-			if ((action == null || a.equalsIgnoreCase(action)) &&
-					(option == null || o.equalsIgnoreCase(option))) return d;
+			a = a != null ? PATTERN_HTML.matcher(a).replaceAll("").toLowerCase() : "";
+			o = o != null ? PATTERN_HTML.matcher(o).replaceAll("").toLowerCase() : "";
+			if ((action == null || a.contains(action.toLowerCase())) &&
+					(option == null || o.contains(option.toLowerCase()))) return d;
 			d++;
 		}
 		return -1;
@@ -172,6 +172,8 @@ public class Menu {
 		final String[] arr = new String[len];
 		for (final MenuItemNode node : nodes) {
 			String a = node.getAction(), o = node.getOption();
+			if (a != null) a = PATTERN_HTML.matcher(a).replaceAll("");
+			if (o != null) o = PATTERN_HTML.matcher(o).replaceAll("");
 			arr[d++] = a + " " + o;
 		}
 		return arr;
