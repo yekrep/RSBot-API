@@ -29,6 +29,10 @@ public class GroundItem extends Interactive implements Locatable {
 	}
 
 	public Model getModel() {
+		return getModel(-1);
+	}
+
+	public Model getModel(final int p) {
 		final Client client = Bot.client();
 		if (client == null) return null;
 		final RSInfo info;
@@ -46,10 +50,6 @@ public class GroundItem extends Interactive implements Locatable {
 		if (ground != null) {
 			final RSItemPile itemPile = ground.getRSItemPile();
 			if (itemPile != null) {
-				final int graphicsIndex = Calculations.toolkit.graphicsIndex;
-				final int[] ids = {itemPile.getID_1(), itemPile.getID_2(), itemPile.getID_3()};
-				final org.powerbot.client.Model[] models = new org.powerbot.client.Model[ids.length];
-
 				final RSItemDefLoader defLoader;
 				final Cache cache;
 				final HashTable table;
@@ -57,9 +57,20 @@ public class GroundItem extends Interactive implements Locatable {
 						(cache = defLoader.getModelCache()) == null || (table = cache.getTable()) == null)
 					return null;
 
+				final int graphicsIndex = Calculations.toolkit.graphicsIndex;
+				Object model;
+				if (p != -1 && (model = Nodes.lookup(table, (long) p | (long) graphicsIndex << 29)) != null &&
+						model instanceof org.powerbot.client.Model) {
+					return new RenderableModel((org.powerbot.client.Model) model, itemPile);
+				}
+
+				final int[] ids = {itemPile.getID_1(), itemPile.getID_2(), itemPile.getID_3()};
+				final org.powerbot.client.Model[] models = new org.powerbot.client.Model[ids.length];
+
 				int i = 0;
 				for (final int id : ids) {
-					final Object model = Nodes.lookup(table, (long) id | (long) graphicsIndex << 29);
+					if (id < 1) continue;
+					model = Nodes.lookup(table, (long) id | (long) graphicsIndex << 29);
 					if (model != null && model instanceof org.powerbot.client.Model)
 						models[i++] = (org.powerbot.client.Model) model;
 				}
@@ -81,7 +92,7 @@ public class GroundItem extends Interactive implements Locatable {
 
 	@Override
 	public Point getInteractPoint() {
-		final Model model = getModel();
+		final Model model = getModel(this.item.getId());
 		if (model != null) {
 			Point point = model.getCentroid(faceIndex);
 			if (point != null) return point;
@@ -93,14 +104,14 @@ public class GroundItem extends Interactive implements Locatable {
 
 	@Override
 	public Point getNextPoint() {
-		final Model model = getModel();
+		final Model model = getModel(this.item.getId());
 		if (model != null) model.getNextPoint();
 		return tile.getNextPoint();
 	}
 
 	@Override
 	public Point getCenterPoint() {
-		final Model model = getModel();
+		final Model model = getModel(this.item.getId());
 		if (model != null) model.getCenterPoint();
 		return tile.getCenterPoint();
 	}
