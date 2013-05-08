@@ -147,7 +147,7 @@ public abstract class Model {
 			final int index2 = faceB[index];
 			final int index3 = faceC[index];
 			if (points[index1][2] + points[index2][2] + points[index3][2] == 3 &&
-					isPointInTriangle(x, y, points[index1][0], points[index1][1], points[index2][0], points[index2][1], points[index3][0], points[index3][1])) {
+					barycentric(x, y, points[index1][0], points[index1][1], points[index2][0], points[index2][1], points[index3][0], points[index3][1])) {
 				return true;
 			}
 			++index;
@@ -206,11 +206,16 @@ public abstract class Model {
 		return index != -1 ? getCentroid(index) : null;
 	}
 
-	private boolean isPointInTriangle(final int x, final int y, int aX, int aY, int bX, int bY, int cX, int cY) {
-		final int ab = ((y - aY) * (bX - aX)) - ((x - aX) * (bY - aY));
-		final int bc = ((y - bY) * (cX - bX)) - ((x - bX) * (cY - bY));
-		final int ca = ((y - cY) * (aX - cX)) - ((x - cX) * (aY - cY));
-		return ab * bc > 0 && bc * ca > 0;
+	private boolean barycentric(int x, int y, int aX, int aY, int bX, int bY, int cX, int cY) {
+		final int v00 = cX - aX, v01 = cY - aY;
+		final int v10 = bX - aX, v11 = bY - aY;
+		final int v20 = x - aX, v21 = y - aY;
+		final int d00 = v00 * v00 + v01 * v01, d01 = v00 * v10 + v01 * v11, d02 = v00 * v20 + v01 * v21;
+		final int d11 = v10 * v10 + v11 * v11, d12 = v10 * v20 + v11 * v21;
+		float denom = 1.0f / (d00 * d11 - d01 * d01);
+		float u = (d11 * d02 - d01 * d12) * denom;
+		float v = (d00 * d12 - d01 * d02) * denom;
+		return u >= 0 && v >= 0 && u + v < 1;
 	}
 
 	private int[][] projectVertices() {
