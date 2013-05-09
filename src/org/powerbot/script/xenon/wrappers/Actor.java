@@ -29,7 +29,7 @@ public abstract class Actor extends Interactive implements Locatable {
 		final RSCharacter character = getAccessor();
 		if (character != null) {
 			final org.powerbot.client.Model model = character.getModel();
-			if (model != null) return new CharacterModel(model, character);
+			if (model != null) return new ActorModel(model, character);
 		}
 		return null;
 	}

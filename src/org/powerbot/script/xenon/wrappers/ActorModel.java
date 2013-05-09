@@ -8,11 +8,11 @@ import org.powerbot.client.RSInteractableData;
 import org.powerbot.client.RSInteractableLocation;
 import org.powerbot.script.xenon.Calculations;
 
-public class CharacterModel extends Model {
+class ActorModel extends Model {
 	private final Reference<RSCharacter> character;
 	private final int[] x_base, z_base;
 
-	public CharacterModel(final org.powerbot.client.Model model, final RSCharacter character) {
+	public ActorModel(final org.powerbot.client.Model model, final RSCharacter character) {
 		super(model);
 		this.character = new WeakReference<>(character);
 		x_base = xPoints;
