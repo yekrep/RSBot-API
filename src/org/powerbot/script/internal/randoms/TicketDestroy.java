@@ -1,8 +1,7 @@
 package org.powerbot.script.internal.randoms;
 
 import org.powerbot.script.Manifest;
-import org.powerbot.script.TaskScript;
-import org.powerbot.script.task.AsyncTask;
+import org.powerbot.script.PollingScript;
 import org.powerbot.script.xenon.Game;
 import org.powerbot.script.xenon.Players;
 import org.powerbot.script.xenon.Settings;
@@ -17,28 +16,17 @@ import org.powerbot.script.xenon.wrappers.Widget;
 import org.powerbot.util.Tracker;
 
 @Manifest(name = "Spin ticket destroyer", authors = {"Timer"}, description = "Claims or destroys spin tickets")
-public class TicketDestroy extends TaskScript implements RandomEvent {
+public class TicketDestroy extends PollingScript implements RandomEvent {
 	private static final int[] ITEM_IDS = {24154, 24155};
 
-	public TicketDestroy() {
-		submit(new Task());
-	}
-
-	private final class Task extends AsyncTask {
-		private Item item;
-
-		@Override
-		public boolean isValid() {
-			if (!Game.isLoggedIn() || Game.getCurrentTab() != Game.TAB_INVENTORY) return false;
-			final Player player;
-			if ((player = Players.getLocal()) == null ||
-					player.isInCombat() || player.getAnimation() != -1 || player.getInteracting() != null) return false;
-			item = Inventory.getItem(ITEM_IDS);
-			return item != null;
-		}
-
-		@Override
-		public void run() {
+	@Override
+	public int poll() {
+		if (!Game.isLoggedIn() || Game.getCurrentTab() != Game.TAB_INVENTORY) return 600;
+		final Player player;
+		if ((player = Players.getLocal()) == null ||
+				player.isInCombat() || player.getAnimation() != -1 || player.getInteracting() != null) return 600;
+		final Item item = Inventory.getItem(ITEM_IDS);
+		if (item != null) {
 			Tracker.getInstance().trackPage("randoms/TicketDestroy/", "");
 			final Component child = item.getComponent();
 			if (child != null) {
@@ -64,5 +52,6 @@ public class TicketDestroy extends TaskScript implements RandomEvent {
 				}
 			}
 		}
+		return 600;
 	}
 }

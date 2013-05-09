@@ -1,8 +1,7 @@
 package org.powerbot.script.internal.randoms;
 
 import org.powerbot.script.Manifest;
-import org.powerbot.script.TaskScript;
-import org.powerbot.script.task.AsyncTask;
+import org.powerbot.script.PollingScript;
 import org.powerbot.script.xenon.Widgets;
 import org.powerbot.script.xenon.util.Random;
 import org.powerbot.script.xenon.util.Timer;
@@ -10,7 +9,7 @@ import org.powerbot.script.xenon.wrappers.Component;
 import org.powerbot.util.Tracker;
 
 @Manifest(name = "Widget closer", authors = {"Timer"}, description = "Closes widgets")
-public class WidgetCloser extends TaskScript implements RandomEvent {
+public class WidgetCloser extends PollingScript implements RandomEvent {
 	private static final int[] COMPONENTS = {
 			21 << 16 | 43, // beholding a player's statuette (duellist's cap)
 			1234 << 16 | 15, // membership offers
@@ -22,39 +21,29 @@ public class WidgetCloser extends TaskScript implements RandomEvent {
 			1107 << 16 | 157, // clan popups
 			755 << 16 | 44, // world map
 	};
+	private final Timer threshold;
+	private Component component;
+	private int tries;
 
 	public WidgetCloser() {
-		submit(new Task());
+		this.threshold = new Timer(0);
 	}
 
-	private final class Task extends AsyncTask {
-		private final Timer threshold;
-		private Component component;
-		private int tries;
-
-		private Task() {
-			threshold = new Timer(0);
-		}
-
-		@Override
-		public boolean isValid() {
-			if (threshold.isRunning()) return false;
-			for (final int p : COMPONENTS) {
-				component = Widgets.get(p >> 16, p & 0xffff);
-				if (component != null && component.isValid()) {
-					break;
-				}
+	@Override
+	public int poll() {
+		if (threshold.isRunning()) return 1000;
+		for (final int p : COMPONENTS) {
+			component = Widgets.get(p >> 16, p & 0xffff);
+			if (component != null && component.isValid()) {
+				break;
 			}
-			return component != null;
 		}
-
-		@Override
-		public void run() {
+		if (component != null) {
 			Tracker.getInstance().trackPage("randoms/WidgetCloser/", "");
 
 			if (++tries > 3) {
 				threshold.setEndIn(60000);
-				return;
+				return 0;
 			}
 
 			if (component.isValid() && component.click(true)) {
@@ -66,5 +55,6 @@ public class WidgetCloser extends TaskScript implements RandomEvent {
 				}
 			}
 		}
+		return 600;
 	}
 }
