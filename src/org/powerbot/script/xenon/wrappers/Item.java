@@ -1,5 +1,7 @@
 package org.powerbot.script.xenon.wrappers;
 
+import java.lang.ref.WeakReference;
+
 import org.powerbot.bot.Bot;
 import org.powerbot.client.Cache;
 import org.powerbot.client.Client;
@@ -10,20 +12,18 @@ import org.powerbot.client.RSItemDefLoader;
 import org.powerbot.script.internal.Nodes;
 
 public class Item implements Validatable {
-	private final int id, stackSize;
+	private final int id;
 	private final Component component;
-	private final RSItem item;
+	private final WeakReference<RSItem> item;
 
 	public Item(final RSItem item) {
 		this.id = item.getId();
-		this.stackSize = item.getStackSize();
 		this.component = null;
-		this.item = item;
+		this.item = new WeakReference<>(item);
 	}
 
 	public Item(final Component component) {
 		this.id = component.getItemId();
-		this.stackSize = component.getItemStackSize();
 		this.component = component;
 		this.item = null;
 	}
@@ -33,7 +33,9 @@ public class Item implements Validatable {
 	}
 
 	public int getStackSize() {
-		return this.stackSize;
+		final RSItem item = this.item.get();
+		if (item != null) return item.getStackSize();
+		return component != null && component.getItemId() == this.id ? component.getItemStackSize() : -1;
 	}
 
 	public String getName() {
@@ -65,14 +67,16 @@ public class Item implements Validatable {
 
 	@Override
 	public boolean isValid() {
-		return false;
+		if (this.component != null && this.component.isValid() && this.component.getItemId() == this.id) return true;
+		final RSItem item = this.item.get();
+		return item != null;
 	}
 
 	@Override
 	public boolean equals(final Object o) {
 		if (o == null || !(o instanceof Item)) return false;
 		final Item i = (Item) o;
-		return this.id == i.id && this.stackSize == i.stackSize &&
+		return this.id == i.id &&
 				(this.component == null || this.component.equals(i.component)) &&
 				(this.item == null || this.item == i.item);
 	}
