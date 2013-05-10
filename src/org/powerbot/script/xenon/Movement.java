@@ -11,6 +11,7 @@ import org.powerbot.script.xenon.wrappers.Component;
 import org.powerbot.script.xenon.wrappers.LocalPath;
 import org.powerbot.script.xenon.wrappers.Locatable;
 import org.powerbot.script.xenon.wrappers.Player;
+import org.powerbot.script.xenon.wrappers.Targetable;
 import org.powerbot.script.xenon.wrappers.Tile;
 import org.powerbot.script.xenon.wrappers.TilePath;
 
@@ -186,7 +187,27 @@ public class Movement {
 
 	public static boolean stepTowards(final Locatable locatable) {
 		final Tile tile = locatable.getLocation();
-		return false;//TODO this
+		return Mouse.click(new Targetable() {
+			@Override
+			public Point getInteractPoint() {
+				return tile.getMapPoint();
+			}
+
+			@Override
+			public Point getNextPoint() {
+				return tile.getMapPoint();
+			}
+
+			@Override
+			public Point getCenterPoint() {
+				return tile.getMapPoint();
+			}
+
+			@Override
+			public boolean contains(final Point point) {
+				return point.distance(tile.getMapPoint()) < Math.sqrt(3);
+			}
+		}, true);
 	}
 
 	public static boolean setRunning(final boolean run) {
