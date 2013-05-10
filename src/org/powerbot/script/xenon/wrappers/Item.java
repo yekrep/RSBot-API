@@ -9,26 +9,23 @@ import org.powerbot.client.RSItemDef;
 import org.powerbot.client.RSItemDefLoader;
 import org.powerbot.script.internal.Nodes;
 
-public class Item {
+public class Item implements Validatable {
 	private final int id, stackSize;
 	private final Component component;
-
-	public Item(final int id, final int stackSize) {
-		this.id = id;
-		this.stackSize = stackSize;
-		this.component = null;
-	}
+	private final RSItem item;
 
 	public Item(final RSItem item) {
 		this.id = item.getId();
 		this.stackSize = item.getStackSize();
 		this.component = null;
+		this.item = item;
 	}
 
 	public Item(final Component component) {
 		this.id = component.getItemId();
 		this.stackSize = component.getItemStackSize();
 		this.component = component;
+		this.item = null;
 	}
 
 	public int getId() {
@@ -63,7 +60,12 @@ public class Item {
 		if ((loader = client.getRSItemDefLoader()) == null ||
 				(cache = loader.getCache()) == null || (table = cache.getTable()) == null) return null;
 		final Object o = Nodes.lookup(table, this.id);
-		return o != null && o instanceof RSItemDef ? new ItemDefinition((RSItemDef) o) : null;
+		return o != null && o instanceof RSItemDef ? new ItemDefinition(this, (RSItemDef) o) : null;
+	}
+
+	@Override
+	public boolean isValid() {
+		return false;
 	}
 
 	@Override
@@ -71,6 +73,7 @@ public class Item {
 		if (o == null || !(o instanceof Item)) return false;
 		final Item i = (Item) o;
 		return this.id == i.id && this.stackSize == i.stackSize &&
-				(this.component == null || this.component.equals(i.component));
+				(this.component == null || this.component.equals(i.component)) &&
+				(this.item == null || this.item == i.item);
 	}
 }
