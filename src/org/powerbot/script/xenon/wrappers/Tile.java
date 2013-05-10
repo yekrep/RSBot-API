@@ -117,7 +117,10 @@ public class Tile extends Interactive implements Locatable {
 
 	@Override
 	public boolean isValid() {
-		return true;//TODO this
+		final Tile t = Game.getMapBase();
+		if (t == null) return false;
+		final int x = this.x - t.x, y = this.y - t.y;
+		return x >= 0 && y >= 0 && x < 104 && y < 104;
 	}
 
 	@Override
