@@ -60,12 +60,12 @@ public class Tile extends Interactive implements Locatable {
 		return base != null ? Game.groundToScreen((int) ((x - base.x + modX) * 512d), (int) ((y - base.y + modY) * 512d), plane, height) : new Point(-1, -1);
 	}
 
-	public Point toMap() {
-		return Game.worldToMap(getX(), getY());
+	public Point getMapPoint() {
+		return Game.worldToMap(getX() + 0.5d, getY() + 0.5d);
 	}
 
 	public boolean isOnMap() {
-		final Point p = toMap();
+		final Point p = getMapPoint();
 		return p.x != -1 && p.y != -1;
 	}
 
