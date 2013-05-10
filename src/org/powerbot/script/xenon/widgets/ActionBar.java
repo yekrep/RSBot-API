@@ -71,7 +71,7 @@ public class ActionBar {
 	}
 
 	public static boolean isLocked() {
-		return (Settings.get(682) & 0x10) != 0;
+		return ((Settings.get(682) >> 4) & 0x1) != 0;
 	}
 
 	public static boolean setLocked(final boolean locked) {

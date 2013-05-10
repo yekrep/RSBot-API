@@ -17,7 +17,6 @@ import org.powerbot.client.RSNPCNode;
 import org.powerbot.client.RSPlayer;
 import org.powerbot.client.Sequence;
 import org.powerbot.script.internal.Nodes;
-import org.powerbot.script.xenon.Calculations;
 import org.powerbot.script.xenon.Game;
 
 public abstract class Actor extends Interactive implements Locatable {
@@ -198,7 +197,7 @@ public abstract class Actor extends Interactive implements Locatable {
 		final RSInteractableData data = character != null ? character.getData() : null;
 		final RSInteractableLocation location = data != null ? data.getLocation() : null;
 		if (location != null) {
-			return Calculations.groundToScreen((int) location.getX(), (int) location.getY(), character.getPlane(), character.getHeight() / 2);
+			return Game.groundToScreen((int) location.getX(), (int) location.getY(), character.getPlane(), character.getHeight() / 2);
 		}
 		return new Point(-1, -1);
 	}

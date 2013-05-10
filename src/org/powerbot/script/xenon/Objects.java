@@ -128,7 +128,7 @@ public class Objects {
 		final GameObject[] gameObjects = getLoaded(range);
 		for (final GameObject gameObject : gameObjects) {
 			final double d;
-			if (filter.accept(gameObject) && (d = Calculations.distance(pos, gameObject)) < dist) {
+			if (filter.accept(gameObject) && (d = Movement.distance(pos, gameObject)) < dist) {
 				nearest = gameObject;
 				dist = d;
 			}

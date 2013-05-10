@@ -5,7 +5,6 @@ import java.awt.Graphics;
 import java.awt.Point;
 
 import org.powerbot.event.PaintListener;
-import org.powerbot.script.xenon.Calculations;
 import org.powerbot.script.xenon.Game;
 import org.powerbot.script.xenon.Movement;
 import org.powerbot.script.xenon.Players;
@@ -29,7 +28,7 @@ public class DrawBoundaries implements PaintListener {
 			for (int j = 0; j < screenPoints[i].length; j++) {
 				final int x = i + baseX - 1;
 				final int y = j + baseY - 1;
-				Point mini = Calculations.worldToMap(x - 0.5, y - 0.5);
+				Point mini = Game.worldToMap(x - 0.5, y - 0.5);
 				if (mini.x == -1 || mini.y == -1) {
 					mini = null;
 				}
@@ -97,7 +96,7 @@ public class DrawBoundaries implements PaintListener {
 			}
 		}
 		final Tile pos = Players.getLocal().getLocation();
-		final Point mini = Calculations.worldToMap(pos.getX(), pos.getY());
+		final Point mini = Game.worldToMap(pos.getX(), pos.getY());
 		render.setColor(Color.red);
 		render.fillRect((int) mini.getX() - 1, (int) mini.getY() - 1, 2, 2);
 	}

@@ -3,9 +3,9 @@ package org.powerbot.script.xenon.wrappers;
 import java.awt.Point;
 import java.awt.Polygon;
 
-import org.powerbot.script.xenon.Calculations;
 import org.powerbot.script.xenon.Game;
 import org.powerbot.script.xenon.Movement;
+import org.powerbot.script.xenon.Players;
 import org.powerbot.script.xenon.util.Random;
 
 public class Tile extends Interactive implements Locatable {
@@ -57,16 +57,22 @@ public class Tile extends Interactive implements Locatable {
 
 	public Point getPoint(final double modX, final double modY, final int height) {
 		final Tile base = Game.getMapBase();
-		return base != null ? Calculations.groundToScreen((int) ((x - base.x + modX) * 512d), (int) ((y - base.y + modY) * 512d), plane, height) : new Point(-1, -1);
+		return base != null ? Game.groundToScreen((int) ((x - base.x + modX) * 512d), (int) ((y - base.y + modY) * 512d), plane, height) : new Point(-1, -1);
 	}
 
 	public Point toMap() {
-		return Calculations.worldToMap(getX(), getY());
+		return Game.worldToMap(getX(), getY());
 	}
 
 	public boolean isOnMap() {
 		final Point p = toMap();
 		return p.x != -1 && p.y != -1;
+	}
+
+	public boolean canReach() {
+		final Player player = Players.getLocal();
+		final Tile loc = player != null ? player.getLocation() : null;
+		return Movement.getDistance(this, loc, false) != -1;
 	}
 
 	@Override
@@ -97,8 +103,8 @@ public class Tile extends Interactive implements Locatable {
 		final Point topRight = getPoint(1.0D, 0.0D, 0);
 		final Point bottomRight = getPoint(1.0D, 1.0D, 0);
 		final Point bottomLeft = getPoint(0.0D, 1.0D, 0);
-		if (Calculations.isPointOnScreen(topLeft) && Calculations.isPointOnScreen(topRight) &&
-				Calculations.isPointOnScreen(bottomRight) && Calculations.isPointOnScreen(bottomLeft)) {
+		if (Game.isPointOnScreen(topLeft) && Game.isPointOnScreen(topRight) &&
+				Game.isPointOnScreen(bottomRight) && Game.isPointOnScreen(bottomLeft)) {
 			final Polygon localPolygon = new Polygon();
 			localPolygon.addPoint(topLeft.x, topLeft.y);
 			localPolygon.addPoint(topRight.x, topRight.y);

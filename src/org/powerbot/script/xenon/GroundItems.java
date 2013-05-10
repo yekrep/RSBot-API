@@ -91,7 +91,7 @@ public class GroundItems {
 		final GroundItem[] groundItems = getLoaded(range);
 		for (final GroundItem groundItem : groundItems) {
 			final double d;
-			if (filter.accept(groundItem) && (d = Calculations.distance(pos, groundItem)) < dist) {
+			if (filter.accept(groundItem) && (d = Movement.distance(pos, groundItem)) < dist) {
 				nearest = groundItem;
 				dist = d;
 			}
