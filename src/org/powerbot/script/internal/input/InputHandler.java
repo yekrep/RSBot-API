@@ -106,8 +106,9 @@ public class InputHandler {
 
 			if (s.length() == 1) { // simple letter
 				final char c = s.charAt(0);
-				final int vk = KeyEvent.getExtendedKeyCodeForChar((int) c);
+				int vk = KeyEvent.getExtendedKeyCodeForChar((int) c);
 				if (c == '\r') continue;
+				if (c == '\n') vk = KeyEvent.VK_ENTER;
 				if (vk == KeyEvent.VK_UNDEFINED) {
 					throw new IllegalArgumentException("invalid keyChar");
 				} else {
