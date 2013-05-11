@@ -25,7 +25,6 @@ import org.powerbot.script.util.ScriptController;
 import org.powerbot.script.util.Stoppable;
 import org.powerbot.script.util.Suspendable;
 import org.powerbot.script.util.ExecutorDispatch;
-import org.powerbot.script.xenon.util.Delay;
 
 /**
  * A priority based {@code Script} controller.

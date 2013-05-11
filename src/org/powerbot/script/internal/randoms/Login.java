@@ -159,12 +159,10 @@ public class Login extends PollingScript implements RandomEvent, PaintListener {
 
 	private boolean clickLoginInterface(final Component i) {
 		if (!i.isValid()) {
-			getScriptController().getLockQueue().remove(this);
 			return false;
 		}
 		final Rectangle pos = i.getBoundingRect();
 		if (pos.x == -1 || pos.y == -1 || pos.width == -1 || pos.height == -1) {
-			getScriptController().getLockQueue().remove(this);
 			return false;
 		}
 		final int dy = (int) (pos.getHeight() - 4) / 2;
@@ -172,10 +170,8 @@ public class Login extends PollingScript implements RandomEvent, PaintListener {
 		final int midx = (int) pos.getCenterX();
 		final int midy = (int) (pos.getMinY() + pos.getHeight() / 2);
 		if (i.getIndex() == WIDGET_LOGIN_PASSWORD_TEXT) {
-			getScriptController().getLockQueue().remove(this);
 			return Mouse.click(getPasswordX(i), midy + Random.nextInt(-dy, dy), true);
 		}
-		getScriptController().getLockQueue().remove(this);
 		return Mouse.click(midx + Random.nextInt(1, maxRandomX), midy + Random.nextInt(-dy, dy), true);
 	}
 
@@ -185,31 +181,26 @@ public class Login extends PollingScript implements RandomEvent, PaintListener {
 		final int dx = (int) (pos.getWidth() - 4) / 2;
 		final int midx = (int) (pos.getMinX() + pos.getWidth() / 2);
 		if (pos.x == -1 || pos.y == -1 || pos.width == -1 || pos.height == -1) {
-			getScriptController().getLockQueue().remove(this);
 			return 0;
 		}
 		for (int i = 0; i < Widgets.get(WIDGET, WIDGET_LOGIN_PASSWORD_TEXT).getText().length(); i++) {
 			x += 11;
 		}
 		if (x > 44) {
-			getScriptController().getLockQueue().remove(this);
 			return (int) (pos.getMinX() + x + 15);
 		} else {
-			getScriptController().getLockQueue().remove(this);
 			return midx + Random.nextInt(-dx, dx);
 		}
 	}
 
 	private boolean isUsernameCorrect() {
 		final String userName = bot.getAccount().toString();
-		getScriptController().getLockQueue().remove(this);
 		return Widgets.get(WIDGET, WIDGET_LOGIN_USERNAME_TEXT).getText().toLowerCase().equalsIgnoreCase(userName);
 	}
 
 	private boolean isPasswordValid() {
-		String passWord = bot.getAccount().getPassword();
-		getScriptController().getLockQueue().remove(this);
-		return Widgets.get(WIDGET, WIDGET_LOGIN_PASSWORD_TEXT).getText().length() == (passWord == null ? 0 : passWord.length());
+		final String s = bot.getAccount().getPassword();
+		return Widgets.get(WIDGET, WIDGET_LOGIN_PASSWORD_TEXT).getText().length() == (s == null ? 0 : s.length());
 	}
 
 	private void attemptLogin() {
