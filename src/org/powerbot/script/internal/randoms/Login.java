@@ -1,11 +1,5 @@
 package org.powerbot.script.internal.randoms;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Rectangle;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.FutureTask;
-
 import org.powerbot.bot.Bot;
 import org.powerbot.event.PaintListener;
 import org.powerbot.script.Manifest;
@@ -19,6 +13,10 @@ import org.powerbot.script.xenon.util.Timer;
 import org.powerbot.script.xenon.widgets.Lobby;
 import org.powerbot.script.xenon.wrappers.Component;
 import org.powerbot.util.Tracker;
+
+import java.awt.*;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.FutureTask;
 
 @Manifest(name = "Login", authors = {"Timer"}, description = "Enters account credentials to the login screen")
 public class Login extends PollingScript implements RandomEvent, PaintListener {
@@ -39,6 +37,7 @@ public class Login extends PollingScript implements RandomEvent, PaintListener {
 
 	@Override
 	public int poll() {
+		getScriptController().getLockQueue().offer(this);
 		final int state = Game.getClientState();
 		if ((state == Game.INDEX_LOGIN_SCREEN || state == Game.INDEX_LOGGING_IN) && bot.getAccount() != null) {
 			Tracker.getInstance().trackPage("randoms/Login/", "Login");
@@ -59,6 +58,7 @@ public class Login extends PollingScript implements RandomEvent, PaintListener {
 							sleep(loginEvent.wait);
 						} else if (loginEvent.wait == -1) {
 							getScriptController().stop();
+							getScriptController().getLockQueue().remove(this);
 							return -1;
 						}
 
@@ -69,6 +69,7 @@ public class Login extends PollingScript implements RandomEvent, PaintListener {
 							} catch (final InterruptedException | ExecutionException ignored) {
 							}
 						}
+						getScriptController().getLockQueue().remove(this);
 						return 0;
 					}
 				}
@@ -81,12 +82,14 @@ public class Login extends PollingScript implements RandomEvent, PaintListener {
 				final String username = bot.getAccount().toString();
 				final Component usernameTextBox = Widgets.get(WIDGET, WIDGET_LOGIN_USERNAME_TEXT);
 				if (!clickLoginInterface(usernameTextBox)) {
+					getScriptController().getLockQueue().remove(this);
 					return 0;
 				}
 				sleep(Random.nextInt(500, 700));
 				final int textLength = usernameTextBox.getText().length();
 				if (textLength > 0) {
 					erase(textLength);
+					getScriptController().getLockQueue().remove(this);
 					return 0;
 				}
 				Keyboard.send(username);
@@ -95,12 +98,14 @@ public class Login extends PollingScript implements RandomEvent, PaintListener {
 				final String password = bot.getAccount().getPassword();
 				final Component passwordTextBox = Widgets.get(WIDGET, WIDGET_LOGIN_PASSWORD_TEXT);
 				if (!clickLoginInterface(passwordTextBox)) {
+					getScriptController().getLockQueue().remove(this);
 					return 0;
 				}
 				sleep(Random.nextInt(500, 700));
 				final int textLength = passwordTextBox.getText().length();
 				if (textLength > 0) {
 					erase(textLength);
+					getScriptController().getLockQueue().remove(this);
 					return 0;
 				}
 				Keyboard.send(password);
@@ -121,6 +126,7 @@ public class Login extends PollingScript implements RandomEvent, PaintListener {
 							sleep(lobbyEvent.wait);
 						} else if (lobbyEvent.wait == -1) {
 							bot.stopScripts();
+							getScriptController().getLockQueue().remove(this);
 							return -1;
 						}
 
@@ -130,6 +136,7 @@ public class Login extends PollingScript implements RandomEvent, PaintListener {
 							} catch (final InterruptedException | ExecutionException ignored) {
 							}
 						}
+						getScriptController().getLockQueue().remove(this);
 						return 0;
 					}
 				}
@@ -140,20 +147,24 @@ public class Login extends PollingScript implements RandomEvent, PaintListener {
 				final Lobby.World world_wrapper;
 				if ((world_wrapper = Lobby.getWorld(world)) != null) {
 					Lobby.enterGame(world_wrapper);
+					getScriptController().getLockQueue().remove(this);
 					return 0;
 				}
 			}
 			Lobby.enterGame();
 		}
+		getScriptController().getLockQueue().remove(this);
 		return 600;
 	}
 
 	private boolean clickLoginInterface(final Component i) {
 		if (!i.isValid()) {
+			getScriptController().getLockQueue().remove(this);
 			return false;
 		}
 		final Rectangle pos = i.getBoundingRect();
 		if (pos.x == -1 || pos.y == -1 || pos.width == -1 || pos.height == -1) {
+			getScriptController().getLockQueue().remove(this);
 			return false;
 		}
 		final int dy = (int) (pos.getHeight() - 4) / 2;
@@ -161,8 +172,10 @@ public class Login extends PollingScript implements RandomEvent, PaintListener {
 		final int midx = (int) pos.getCenterX();
 		final int midy = (int) (pos.getMinY() + pos.getHeight() / 2);
 		if (i.getIndex() == WIDGET_LOGIN_PASSWORD_TEXT) {
+			getScriptController().getLockQueue().remove(this);
 			return Mouse.click(getPasswordX(i), midy + Random.nextInt(-dy, dy), true);
 		}
+		getScriptController().getLockQueue().remove(this);
 		return Mouse.click(midx + Random.nextInt(1, maxRandomX), midy + Random.nextInt(-dy, dy), true);
 	}
 
@@ -172,25 +185,30 @@ public class Login extends PollingScript implements RandomEvent, PaintListener {
 		final int dx = (int) (pos.getWidth() - 4) / 2;
 		final int midx = (int) (pos.getMinX() + pos.getWidth() / 2);
 		if (pos.x == -1 || pos.y == -1 || pos.width == -1 || pos.height == -1) {
+			getScriptController().getLockQueue().remove(this);
 			return 0;
 		}
 		for (int i = 0; i < Widgets.get(WIDGET, WIDGET_LOGIN_PASSWORD_TEXT).getText().length(); i++) {
 			x += 11;
 		}
 		if (x > 44) {
+			getScriptController().getLockQueue().remove(this);
 			return (int) (pos.getMinX() + x + 15);
 		} else {
+			getScriptController().getLockQueue().remove(this);
 			return midx + Random.nextInt(-dx, dx);
 		}
 	}
 
 	private boolean isUsernameCorrect() {
 		final String userName = bot.getAccount().toString();
+		getScriptController().getLockQueue().remove(this);
 		return Widgets.get(WIDGET, WIDGET_LOGIN_USERNAME_TEXT).getText().toLowerCase().equalsIgnoreCase(userName);
 	}
 
 	private boolean isPasswordValid() {
 		String passWord = bot.getAccount().getPassword();
+		getScriptController().getLockQueue().remove(this);
 		return Widgets.get(WIDGET, WIDGET_LOGIN_PASSWORD_TEXT).getText().length() == (passWord == null ? 0 : passWord.length());
 	}
 

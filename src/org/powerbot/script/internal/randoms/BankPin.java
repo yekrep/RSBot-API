@@ -17,9 +17,11 @@ public class BankPin extends PollingScript implements RandomEvent {
 		final Component pinInterface = Widgets.get(13, 0);
 		if (pinInterface == null || !pinInterface.isVisible()) return 600;
 		Tracker.getInstance().trackPage("randoms/BankPin/", "");
+		getScriptController().getLockQueue().offer(this);
 		final String _pin = getPin();
 		if (_pin == null) {
 			getScriptController().stop();
+			getScriptController().getLockQueue().remove(this);
 			return -1;
 		}
 		final String pin = String.format(_pin);
@@ -27,6 +29,7 @@ public class BankPin extends PollingScript implements RandomEvent {
 		if (value != 4 && Widgets.get(13, value + 6).interact("Select")) {
 			Delay.sleep(Random.nextInt(700, 1200));
 		}
+		getScriptController().getLockQueue().remove(this);
 		return 0;
 	}
 

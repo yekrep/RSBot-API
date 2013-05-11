@@ -1,12 +1,18 @@
 package org.powerbot.script.util;
 
+import org.powerbot.script.Script;
 import org.powerbot.script.internal.ScriptManager;
+
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public final class AbstractScriptController implements ScriptController {
 	private final ScriptManager manager;
+	private final Queue<Script> queue;
 
 	public AbstractScriptController(final ScriptManager manager) {
 		this.manager = manager;
+		queue = new ConcurrentLinkedQueue<>();
 	}
 
 	@Override
@@ -36,6 +42,11 @@ public final class AbstractScriptController implements ScriptController {
 	@Override
 	public ExecutorDispatch<Boolean> getExecutorService() {
 		return manager;
+	}
+
+	@Override
+	public Queue<Script> getLockQueue() {
+		return queue;
 	}
 }
 

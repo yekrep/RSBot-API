@@ -1,5 +1,9 @@
 package org.powerbot.script.util;
 
+import org.powerbot.script.Script;
+
+import java.util.Queue;
+
 /**
  * A {@code Script} controller.
  *
@@ -13,4 +17,11 @@ public interface ScriptController extends Stoppable, Suspendable {
 	 * @return an {@code ExecutorDispatch}
 	 */
 	public ExecutorDispatch<Boolean> getExecutorService();
+
+	/**
+	 * Retrieves a locking queue.
+	 *
+	 * @return a queue
+	 */
+	public Queue<Script> getLockQueue();
 }

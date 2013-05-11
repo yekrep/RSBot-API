@@ -25,6 +25,7 @@ import org.powerbot.script.util.ScriptController;
 import org.powerbot.script.util.Stoppable;
 import org.powerbot.script.util.Suspendable;
 import org.powerbot.script.util.ExecutorDispatch;
+import org.powerbot.script.xenon.util.Delay;
 
 /**
  * A priority based {@code Script} controller.
@@ -143,7 +144,18 @@ public class ScriptManager implements ExecutorDispatch<Boolean>, Runnable, Stopp
 			pending.add(task);
 		}
 		for (final FutureTask<Boolean> task : pending) {
-			executor.execute(task);
+			executor.execute(new Runnable() {
+				@Override
+				public void run() {
+					while (!controller.getLockQueue().isEmpty() && !controller.getLockQueue().contains(script)) {
+						try {
+							Thread.currentThread().sleep(60);
+						} catch (final InterruptedException ignored) {
+						}
+					}
+					task.run();
+				}
+			});
 		}
 		for (final FutureTask<Boolean> task : pending) {
 			boolean result = false;
