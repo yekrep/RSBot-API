@@ -7,7 +7,6 @@ import java.awt.Point;
 import java.util.HashMap;
 
 import org.powerbot.event.PaintListener;
-import org.powerbot.script.xenon.Calculations;
 import org.powerbot.script.xenon.Game;
 import org.powerbot.script.xenon.Objects;
 import org.powerbot.script.xenon.Players;
@@ -40,14 +39,14 @@ public class DrawScene implements PaintListener {
 			for (int y = position.getY() - 25; y < position.getY() + 25; y++) {
 				final Tile accessPosition = new Tile(x, y, Game.getPlane());
 				final Point accessPoint = accessPosition.getCenterPoint();
-				if (!Calculations.isPointOnScreen(accessPoint)) {
+				if (!Game.isPointOnScreen(accessPoint)) {
 					continue;
 				}
 				final GameObject[] locations = Objects.getLoaded(x, y, 0);
 				int i = 0;
 				for (final GameObject location : locations) {
 					final Point locationPoint = location.getLocation().getCenterPoint();
-					if (!Calculations.isPointOnScreen(locationPoint)) {
+					if (!Game.isPointOnScreen(locationPoint)) {
 						continue;
 					}
 					if (accessPoint.x > -1) {

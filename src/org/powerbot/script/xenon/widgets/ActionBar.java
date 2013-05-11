@@ -19,30 +19,19 @@ public class ActionBar {
 	public static final int[] COMPONENT_SLOTS_COOLDOWN = {36, 73, 77, 81, 85, 89, 93, 97, 101, 105, 109, 113};
 	public static final int SETTING_ITEM = 811, SETTING_ABILITY = 727;
 
-	public static State getState() {
+	public static boolean isExpanded() {
 		final Component c = Widgets.get(WIDGET, COMPONENT_BAR);
-		if (c == null || !c.isValid()) return State.UNAVAILABLE;
-		return c.isVisible() ? State.EXPANDED : State.COLLAPSED;
+		if (c == null || !c.isValid()) return false;
+		return c.isVisible();
 	}
 
-	public static boolean setState(final State state) {
-		if (getState() == state) return true;
-		final Component c;
-		switch (state) {
-		case EXPANDED:
-			c = Widgets.get(WIDGET, COMPONENT_BUTTON_EXPAND);
-			break;
-		case COLLAPSED:
-			c = Widgets.get(WIDGET, COMPONENT_BUTTON_COLLAPSE);
-			break;
-		default:
-			c = null;
-			break;
+	public static boolean setExpanded(final boolean expanded) {
+		if (isExpanded() == expanded) return true;
+		final Component c = Widgets.get(WIDGET, expanded ? COMPONENT_BUTTON_EXPAND : COMPONENT_BUTTON_COLLAPSE);
+		if (c != null && c.isValid() && c.interact(expanded ? "Expand" : "Collapse")) {
+			for (int i = 0; i < 5 && isExpanded() != expanded; i++) Delay.sleep(20, 50);
 		}
-		if (c != null && c.isValid() && c.interact(state.action)) {
-			for (int i = 0; i < 5 && getState() != state; i++) Delay.sleep(20, 50);
-		}
-		return getState() == state;
+		return isExpanded() == expanded;
 	}
 
 	public static Action getAction(final int... ids) {
@@ -82,7 +71,7 @@ public class ActionBar {
 	}
 
 	public static boolean isLocked() {
-		return (Settings.get(682) & 0x10) != 0;
+		return ((Settings.get(682) >> 4) & 0x1) != 0;
 	}
 
 	public static boolean setLocked(final boolean locked) {
@@ -92,14 +81,5 @@ public class ActionBar {
 			for (int i = 0; i < 25 && locked != isLocked(); i++) Delay.sleep(100, 150);
 		}
 		return isLocked() == locked;
-	}
-
-	public static enum State {
-		EXPANDED("Expand"), COLLAPSED("Minimise"), UNAVAILABLE(null);
-		private final String action;
-
-		State(final String action) {
-			this.action = action;
-		}
 	}
 }

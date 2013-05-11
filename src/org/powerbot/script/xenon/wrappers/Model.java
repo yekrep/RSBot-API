@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.powerbot.client.ModelCapture;
-import org.powerbot.script.xenon.Calculations;
 import org.powerbot.script.xenon.Game;
 import org.powerbot.script.xenon.Widgets;
 import org.powerbot.script.xenon.util.Random;
@@ -62,13 +61,13 @@ public abstract class Model {
 		final int x = getX();
 		final int y = getY();
 		final int plane = getPlane();
-		final int height = Calculations.tileHeight(x, y, plane);
-		final Point localPoint = Calculations.worldToScreen(
+		final int height = Game.tileHeight(x, y, plane);
+		final Point localPoint = Game.worldToScreen(
 				x + (this.xPoints[this.faceA[index]] + this.xPoints[this.faceB[index]] + this.xPoints[this.faceC[index]]) / 3,
 				height + (this.yPoints[this.faceA[index]] + this.yPoints[this.faceB[index]] + this.yPoints[this.faceC[index]]) / 3,
 				y + (this.zPoints[this.faceA[index]] + this.zPoints[this.faceB[index]] + this.zPoints[this.faceC[index]]) / 3
 		);
-		return Calculations.isPointOnScreen(localPoint) ? localPoint : null;
+		return Game.isPointOnScreen(localPoint) ? localPoint : null;
 	}
 
 	public Point getCenterPoint() {
@@ -85,7 +84,7 @@ public abstract class Model {
 		final int x = getX();
 		final int y = getY();
 		final int plane = getPlane();
-		final int height = Calculations.tileHeight(x, y, plane);
+		final int height = Game.tileHeight(x, y, plane);
 
 		while (index < numFaces) {
 			totalXAverage += (xPoints[faceA[index]] + xPoints[faceB[index]] + xPoints[faceC[index]]) / 3;
@@ -94,13 +93,13 @@ public abstract class Model {
 			index++;
 		}
 
-		final Point averagePoint = Calculations.worldToScreen(
+		final Point averagePoint = Game.worldToScreen(
 				x + totalXAverage / numFaces,
 				height + totalHeightAverage / numFaces,
 				y + totalYAverage / numFaces
 		);
 
-		if (Calculations.isPointOnScreen(averagePoint)) {
+		if (Game.isPointOnScreen(averagePoint)) {
 			return averagePoint;
 		}
 		return new Point(-1, -1);
@@ -182,13 +181,13 @@ public abstract class Model {
 		final int x = getX();
 		final int y = getY();
 		final int plane = getPlane();
-		final int h = Calculations.tileHeight(x, y, plane);
+		final int h = Game.tileHeight(x, y, plane);
 		int index = pos;
 		final boolean fixed = Game.isFixed();
 		final Component c = Widgets.get(ActionBar.WIDGET, ActionBar.COMPONENT_BAR);
 		final Rectangle r = c != null && c.isVisible() ? c.getBoundingRect() : null;
 		while (index < length) {
-			final Point point = Calculations.worldToScreen(
+			final Point point = Game.worldToScreen(
 					x + (this.xPoints[this.faceA[index]] + this.xPoints[this.faceB[index]] + this.xPoints[this.faceC[index]]) / 3,
 					h + (this.yPoints[this.faceA[index]] + this.yPoints[this.faceB[index]] + this.yPoints[this.faceC[index]]) / 3,
 					y + (this.zPoints[this.faceA[index]] + this.zPoints[this.faceB[index]] + this.zPoints[this.faceC[index]]) / 3
@@ -219,14 +218,14 @@ public abstract class Model {
 	}
 
 	private int[][] projectVertices() {
-		final Calculations.Toolkit toolkit = Calculations.toolkit;
-		final Calculations.Viewport viewport = Calculations.viewport;
+		final Game.Toolkit toolkit = Game.toolkit;
+		final Game.Viewport viewport = Game.viewport;
 
 		update();
 		final int locX = getX();
 		final int locY = getY();
 		final int plane = getPlane();
-		final int height = Calculations.tileHeight(locX, locY, plane);
+		final int height = Game.tileHeight(locX, locY, plane);
 
 		final int[][] screen = new int[numVertices][3];
 		for (int index = 0; index < numVertices; index++) {

@@ -6,7 +6,7 @@ import java.lang.ref.WeakReference;
 import org.powerbot.client.RSCharacter;
 import org.powerbot.client.RSInteractableData;
 import org.powerbot.client.RSInteractableLocation;
-import org.powerbot.script.xenon.Calculations;
+import org.powerbot.script.xenon.Game;
 
 class ActorModel extends Model {
 	private final Reference<RSCharacter> character;
@@ -51,8 +51,8 @@ class ActorModel extends Model {
 		if (character == null) return;
 
 		final int theta = character.getOrientation() & 0x3fff;
-		final int sin = Calculations.SIN_TABLE[theta];
-		final int cos = Calculations.COS_TABLE[theta];
+		final int sin = Game.SIN_TABLE[theta];
+		final int cos = Game.COS_TABLE[theta];
 		for (int i = 0; i < numVertices; ++i) {
 			xPoints[i] = x_base[i] * cos + z_base[i] * sin >> 15;
 			zPoints[i] = z_base[i] * cos - x_base[i] * sin >> 15;

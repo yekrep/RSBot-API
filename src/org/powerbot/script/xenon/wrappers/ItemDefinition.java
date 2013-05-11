@@ -5,9 +5,11 @@ import java.lang.ref.WeakReference;
 import org.powerbot.client.RSItemDef;
 
 public class ItemDefinition implements Validatable {
+	private final Item item;
 	private final WeakReference<RSItemDef> def;
 
-	ItemDefinition(final RSItemDef def) {
+	ItemDefinition(final Item item, final RSItemDef def) {
+		this.item = item;
 		this.def = new WeakReference<>(def);
 	}
 
@@ -38,6 +40,6 @@ public class ItemDefinition implements Validatable {
 
 	@Override
 	public boolean isValid() {
-		return def.get() != null;//TODO this
+		return item.isValid() && def.get() != null;
 	}
 }

@@ -65,7 +65,7 @@ public class Npcs {
 		final Npc[] npcs = getLoaded();
 		for (final Npc npc : npcs) {
 			final double d;
-			if (filter.accept(npc) && (d = Calculations.distance(pos, npc)) < dist) {
+			if (filter.accept(npc) && (d = Movement.distance(pos, npc)) < dist) {
 				nearest = npc;
 				dist = d;
 			}

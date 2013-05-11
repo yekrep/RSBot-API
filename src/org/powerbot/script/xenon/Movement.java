@@ -11,6 +11,7 @@ import org.powerbot.script.xenon.wrappers.Component;
 import org.powerbot.script.xenon.wrappers.LocalPath;
 import org.powerbot.script.xenon.wrappers.Locatable;
 import org.powerbot.script.xenon.wrappers.Player;
+import org.powerbot.script.xenon.wrappers.Targetable;
 import org.powerbot.script.xenon.wrappers.Tile;
 import org.powerbot.script.xenon.wrappers.TilePath;
 
@@ -72,17 +73,13 @@ public class Movement {
 		return ground != null ? ground.getBlocks() : null;
 	}
 
-	public static boolean canReach(Tile tile) {
+	public static int getDistance(Tile start, Tile end, final boolean findAdjacent) {
 		final Tile base = Game.getMapBase();
-		final Player player = Players.getLocal();
-		Tile loc = player != null ? player.getLocation() : null;
-		if (base == null || loc == null) return false;
-		tile = tile.derive(-base.x, -base.y);
-		loc = loc.derive(-base.x, -base.y);
-		return tile.getPlane() == base.getPlane() && getDistance(loc.x, loc.y, tile.x, tile.y, false) != -1;
-	}
-
-	public static int getDistance(final int startX, final int startY, final int endX, final int endY, final boolean findAdjacent) {
+		if (base == null || start == null || end == null) return -1;
+		start = start.derive(-base.x, -base.y);
+		end = end.derive(-base.x, -base.y);
+		final int startX = start.getX(), startY = start.getY();
+		final int endX = end.getX(), endY = end.getY();
 		final Point pos = getCollisionOffset();
 		final int[][] meta = getCollisionMeta();
 		if (pos == null || meta == null) return -1;
@@ -190,7 +187,27 @@ public class Movement {
 
 	public static boolean stepTowards(final Locatable locatable) {
 		final Tile tile = locatable.getLocation();
-		return false;//TODO this
+		return Mouse.click(new Targetable() {
+			@Override
+			public Point getInteractPoint() {
+				return tile.getMapPoint();
+			}
+
+			@Override
+			public Point getNextPoint() {
+				return tile.getMapPoint();
+			}
+
+			@Override
+			public Point getCenterPoint() {
+				return tile.getMapPoint();
+			}
+
+			@Override
+			public boolean contains(final Point point) {
+				return point.distance(tile.getMapPoint()) < Math.sqrt(3);
+			}
+		}, true);
 	}
 
 	public static boolean setRunning(final boolean run) {
@@ -228,5 +245,26 @@ public class Movement {
 				location.getY() + (int) (16d * Math.sin(angle)),
 				tile.getPlane()
 		);
+	}
+
+	public static double distance(final int x1, final int y1, final int x2, final int y2) {
+		return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
+	}
+
+	public static double distance(final Locatable a, final Locatable b) {
+		final Tile tA = a != null ? a.getLocation() : null, tB = b != null ? b.getLocation() : null;
+		if (tA == null || tB == null) return Double.MAX_VALUE;
+		return distance(tA.x, tA.y, tB.x, tB.y);
+	}
+
+	public static double distanceTo(final int x, final int y) {
+		final Player local = Players.getLocal();
+		final Tile location;
+		if (local == null || (location = local.getLocation()) == null) return Double.MAX_VALUE;
+		return distance(location.x, location.y, x, y);
+	}
+
+	public static double distanceTo(final Locatable locatable) {
+		return distance(Players.getLocal(), locatable);
 	}
 }

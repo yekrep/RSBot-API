@@ -7,7 +7,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import org.powerbot.script.xenon.Calculations;
 import org.powerbot.script.xenon.Game;
 import org.powerbot.script.xenon.Movement;
 import org.powerbot.script.xenon.Players;
@@ -39,7 +38,7 @@ public class LocalPath extends Path {
 
 	@Override
 	public boolean isValid() {
-		return getNext() != null && Calculations.distanceTo(end) > Math.sqrt(3);
+		return getNext() != null && Movement.distanceTo(end) > Math.sqrt(3);
 	}
 
 	@Override

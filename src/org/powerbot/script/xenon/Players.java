@@ -56,7 +56,7 @@ public class Players {
 		final Player[] players = getLoaded();
 		for (final Player player : players) {
 			final double d;
-			if (filter.accept(player) && (d = Calculations.distance(pos, player)) < dist) {
+			if (filter.accept(player) && (d = Movement.distance(pos, player)) < dist) {
 				nearest = player;
 				dist = d;
 			}

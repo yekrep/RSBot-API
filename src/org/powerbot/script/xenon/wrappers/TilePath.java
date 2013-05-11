@@ -3,7 +3,6 @@ package org.powerbot.script.xenon.wrappers;
 import java.util.Arrays;
 import java.util.EnumSet;
 
-import org.powerbot.script.xenon.Calculations;
 import org.powerbot.script.xenon.Movement;
 import org.powerbot.script.xenon.Players;
 import org.powerbot.script.xenon.util.Random;
@@ -25,7 +24,7 @@ public class TilePath extends Path {
 		if (next == null || local == null) return false;
 		final Tile dest = Movement.getDestination();
 		if (next.equals(getEnd())) {
-			if (Calculations.distanceTo(next) <= 1) return false;
+			if (Movement.distanceTo(next) <= 1) return false;
 			if (end && (local.isInMotion() || (dest != null && dest.equals(next)))) return false;
 			end = true;
 		} else end = false;
@@ -33,8 +32,8 @@ public class TilePath extends Path {
 			if (options.contains(TraversalOption.HANDLE_RUN) && !Movement.isRunning() && Movement.getEnergyLevel() > Random.nextInt(45, 60)) {
 				Movement.setRunning(true);
 			}
-			if (options.contains(TraversalOption.SPACE_ACTIONS) && dest != null && local.isInMotion() && Calculations.distance(next, dest) < 3d) {
-				if (Calculations.distanceTo(dest) > Random.nextDouble(4d, 6d)) return true;
+			if (options.contains(TraversalOption.SPACE_ACTIONS) && dest != null && local.isInMotion() && Movement.distance(next, dest) < 3d) {
+				if (Movement.distanceTo(dest) > Random.nextDouble(4d, 6d)) return true;
 			}
 		}
 		return Movement.stepTowards(next);
@@ -42,7 +41,7 @@ public class TilePath extends Path {
 
 	@Override
 	public boolean isValid() {
-		return tiles.length > 0 && getNext() != null && Calculations.distanceTo(getEnd()) > Math.sqrt(2);
+		return tiles.length > 0 && getNext() != null && Movement.distanceTo(getEnd()) > Math.sqrt(2);
 	}
 
 	@Override
@@ -50,7 +49,7 @@ public class TilePath extends Path {
 		final Tile dest = Movement.getDestination();
 		for (int i = tiles.length - 1; i >= 0; --i) {
 			if (!tiles[i].isOnMap()) continue;
-			if (dest == null || Calculations.distance(dest, tiles[i - 1]) < 3) return tiles[i];
+			if (dest == null || Movement.distance(dest, tiles[i - 1]) < 3) return tiles[i];
 		}
 		return null;
 	}

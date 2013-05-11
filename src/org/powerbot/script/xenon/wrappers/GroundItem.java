@@ -14,7 +14,7 @@ import org.powerbot.client.RSInfo;
 import org.powerbot.client.RSItemDefLoader;
 import org.powerbot.client.RSItemPile;
 import org.powerbot.script.internal.Nodes;
-import org.powerbot.script.xenon.Calculations;
+import org.powerbot.script.xenon.Game;
 import org.powerbot.script.xenon.GroundItems;
 import org.powerbot.script.xenon.util.Random;
 
@@ -57,7 +57,7 @@ public class GroundItem extends Interactive implements Locatable {
 						(cache = defLoader.getModelCache()) == null || (table = cache.getTable()) == null)
 					return null;
 
-				final int graphicsIndex = Calculations.toolkit.graphicsIndex;
+				final int graphicsIndex = Game.toolkit.graphicsIndex;
 				Object model;
 				if (p != -1 && (model = Nodes.lookup(table, (long) p | (long) graphicsIndex << 29)) != null &&
 						model instanceof org.powerbot.client.Model) {
