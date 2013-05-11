@@ -15,8 +15,6 @@ public interface Script extends Runnable, EventListener {
 
 	public enum State {START, STOP, SUSPEND, RESUME}
 
-	;
-
 	/**
 	 * Retrieves a list of tasks for the specified state.
 	 *
