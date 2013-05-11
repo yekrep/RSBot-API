@@ -1,5 +1,11 @@
 package org.powerbot.script.internal.randoms;
 
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Rectangle;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.FutureTask;
+
 import org.powerbot.bot.Bot;
 import org.powerbot.event.PaintListener;
 import org.powerbot.script.Manifest;
@@ -13,10 +19,6 @@ import org.powerbot.script.xenon.util.Timer;
 import org.powerbot.script.xenon.widgets.Lobby;
 import org.powerbot.script.xenon.wrappers.Component;
 import org.powerbot.util.Tracker;
-
-import java.awt.*;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.FutureTask;
 
 @Manifest(name = "Login", authors = {"Timer"}, description = "Enters account credentials to the login screen")
 public class Login extends PollingScript implements RandomEvent, PaintListener {
@@ -76,7 +78,7 @@ public class Login extends PollingScript implements RandomEvent, PaintListener {
 			}
 
 			if (isUsernameCorrect() && isPasswordValid()) {
-				attemptLogin();
+				Keyboard.send("\n");
 				sleep(Random.nextInt(1200, 2000));
 			} else if (!isUsernameCorrect()) {
 				final String username = bot.getAccount().toString();
@@ -201,10 +203,6 @@ public class Login extends PollingScript implements RandomEvent, PaintListener {
 	private boolean isPasswordValid() {
 		final String s = bot.getAccount().getPassword();
 		return Widgets.get(WIDGET, WIDGET_LOGIN_PASSWORD_TEXT).getText().length() == (s == null ? 0 : s.length());
-	}
-
-	private void attemptLogin() {
-		Keyboard.send("\n");
 	}
 
 	private void erase(final int count) {
