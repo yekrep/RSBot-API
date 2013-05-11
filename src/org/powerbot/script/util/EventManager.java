@@ -19,6 +19,10 @@ public class EventManager implements Suspendable, Subscribable<EventListener> {
 		subscribed = new AtomicBoolean(false);
 	}
 
+	public void add(final EventListener e) {
+		queue.add(e);
+	}
+
 	@Override
 	public boolean isSuspended() {
 		return subscribed.get();

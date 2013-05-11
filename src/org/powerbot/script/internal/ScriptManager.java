@@ -1,12 +1,6 @@
 package org.powerbot.script.internal;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.List;
-import java.util.PriorityQueue;
-import java.util.Queue;
+import java.util.*;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -55,6 +49,7 @@ public class ScriptManager implements ExecutorDispatch<Boolean>, Runnable, Stopp
 		this(events);
 		for (final ScriptDefinition script : scripts) {
 			script.getScript().setScriptController(controller);
+			this.events.add(script.getScript());
 			this.scripts.add(script);
 		}
 	}
