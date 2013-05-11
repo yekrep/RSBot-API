@@ -1,9 +1,9 @@
 package org.powerbot.script;
 
+import java.util.Queue;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.powerbot.script.internal.wrappers.Queue;
 import org.powerbot.script.util.Stoppable;
 import org.powerbot.script.util.Suspendable;
 
@@ -61,7 +61,7 @@ public abstract class PollingScript extends AbstractScript implements Suspendabl
 			@Override
 			public void run() {
 				while (!stopping.get()) {
-					final java.util.Queue<Script> queue = getScriptController().getLockQueue();
+					final Queue<Script> queue = getScriptController().getLockQueue();
 					sleep(Math.max(0, suspended.get() || (!queue.isEmpty() && !queue.contains(this)) ? 600 : poll()));
 				}
 			}
