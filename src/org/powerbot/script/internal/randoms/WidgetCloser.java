@@ -13,7 +13,7 @@ public class WidgetCloser extends PollingScript implements RandomEvent {
 	private static final int[] COMPONENTS = {
 			21 << 16 | 43, // beholding a player's statuette (duellist's cap)
 			1234 << 16 | 15, // membership offers
-			906 << 16 | 354, // membership offers
+			906 << 16 | 378, // membership offers
 			906 << 16 | 493, // email register
 			1252 << 16 | 8, // Squeal of Fortune notification
 			1253 << 16 | 16, // Squeal of Fortune window
