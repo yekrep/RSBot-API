@@ -21,6 +21,9 @@ public interface ScriptController extends Stoppable, Suspendable {
 	/**
 	 * Retrieves a locking queue.
 	 *
+	 * If the queue is not empty only {@link org.powerbot.script.Script}s in the queue will be executed.
+	 * In effect, all other {@link org.powerbot.script.Script}s will be paused.
+	 *
 	 * @return a queue
 	 */
 	public Queue<Script> getLockQueue();
