@@ -4,12 +4,27 @@ import java.util.Arrays;
 
 import org.powerbot.script.xenon.Game;
 import org.powerbot.script.xenon.Widgets;
+import org.powerbot.script.xenon.util.Filter;
 import org.powerbot.script.xenon.wrappers.Component;
 import org.powerbot.script.xenon.wrappers.Item;
 
-public class Inventory {//TODO complete with filters
+public class Inventory {
 	public static final int WIDGET = 679;
-	private static final int[] ALTERNATIVE_WIDGETS = {};//TODO this
+	public static final int WIDGET_BANK = 763;
+	public static final int WIDGET_PRICE_CHECK = 204;
+	public static final int WIDGET_EQUIPMENT_BONUSES = 670;
+	public static final int WIDGET_EXCHANGE = 644;
+	public static final int WIDGET_SHOP = 621;
+	public static final int WIDGET_DUNGEONEERING_SHOP = 957;
+	public static final int WIDGET_BEAST_OF_BURDEN_STORAGE = 665;
+	public static final int WIDGET_STORE = 1266;
+	public static final int WIDGET_SAWMILL_CART = 771;
+	private static final int[] ALTERNATIVE_WIDGETS = {
+			WIDGET_BANK,
+			WIDGET_PRICE_CHECK, WIDGET_EQUIPMENT_BONUSES,
+			WIDGET_EXCHANGE, WIDGET_SHOP, WIDGET_DUNGEONEERING_SHOP,
+			WIDGET_BEAST_OF_BURDEN_STORAGE, WIDGET_STORE, WIDGET_SAWMILL_CART
+	};
 
 	public static Item[] getItems() {
 		final Item[] items = new Item[28];
@@ -41,8 +56,39 @@ public class Inventory {//TODO complete with filters
 		return index >= 0 && index < 28 && comps.length > 27 && comps[index].getItemId() != -1 ? new Item(comps[index]) : null;
 	}
 
-	public static Item getItem(final int... itemIds) {
-		return null;//TODO this
+	public static Item[] getItems(final Filter<Item> filter) {
+		final Item[] items = getItems();
+		final Item[] set = new Item[items.length];
+		int d = 0;
+		for (final Item item : items) if (filter.accept(item)) set[d++] = item;
+		return Arrays.copyOf(set, d);
+	}
+
+	public static Item[] getItems(final int... ids) {
+		return getItems(new Filter<Item>() {
+			@Override
+			public boolean accept(final Item item) {
+				final int _id = item.getId();
+				for (final int id : ids) if (id == _id) return true;
+				return false;
+			}
+		});
+	}
+
+	public static Item getItem(final Filter<Item> filter) {
+		final Item[] items = getItems(filter);
+		return items != null && items.length > 0 ? items[0] : null;
+	}
+
+	public static Item getItem(final int... ids) {
+		return getItem(new Filter<Item>() {
+			@Override
+			public boolean accept(final Item item) {
+				final int _id = item.getId();
+				for (final int id : ids) if (id == _id) return true;
+				return false;
+			}
+		});
 	}
 
 	public static int getSelectedItemIndex() {
