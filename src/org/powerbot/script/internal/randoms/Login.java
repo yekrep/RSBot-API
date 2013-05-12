@@ -1,5 +1,11 @@
 package org.powerbot.script.internal.randoms;
 
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Rectangle;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.FutureTask;
+
 import org.powerbot.bot.Bot;
 import org.powerbot.event.PaintListener;
 import org.powerbot.script.Manifest;
@@ -15,10 +21,6 @@ import org.powerbot.script.xenon.util.Timer;
 import org.powerbot.script.xenon.widgets.Lobby;
 import org.powerbot.script.xenon.wrappers.Component;
 import org.powerbot.util.Tracker;
-
-import java.awt.*;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.FutureTask;
 
 @Manifest(name = "Login", authors = {"Timer"}, description = "Enters account credentials to the login screen")
 public class Login extends PollingScript implements RandomEvent, PaintListener {
@@ -43,7 +45,7 @@ public class Login extends PollingScript implements RandomEvent, PaintListener {
 			getScriptController().getLockQueue().offer(this);
 			getScriptController().getLockQueue().offer(wc);
 		} else {
-			lock(false);
+			getScriptController().getLockQueue().remove(this);
 			getScriptController().getLockQueue().remove(wc);
 		}
 	}
@@ -190,7 +192,8 @@ public class Login extends PollingScript implements RandomEvent, PaintListener {
 		final int dy = (int) (pos.getHeight() - 4) / 2;
 		final int maxRandomX = (int) (pos.getMaxX() - pos.getCenterX());
 		final int midx = (int) pos.getCenterX();
-		final int midy = (int) (pos.getMinY() + pos.getHeight() / 2);
+		final int h = (int) pos.getHeight();
+		final int midy = (int) (pos.getMinY() + (h == 0 ? 27 : h) / 2);
 		if (i.getIndex() == WIDGET_LOGIN_PASSWORD_TEXT) {
 			return Mouse.click(getPasswordX(i), midy + Random.nextInt(-dy, dy), true);
 		}
