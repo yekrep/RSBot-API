@@ -4,6 +4,7 @@ import java.applet.Applet;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -13,6 +14,7 @@ import java.util.Queue;
 import org.powerbot.client.Client;
 import org.powerbot.client.input.Keyboard;
 import org.powerbot.golem.HardwareSimulator;
+import org.powerbot.script.xenon.util.Delay;
 
 import javax.swing.*;
 
@@ -36,6 +38,7 @@ public class InputHandler {
 	public void send(final Queue<KeyEvent> queue, final boolean async) {
 		final Keyboard keyboard = client.getKeyboard();
 		if (keyboard == null) return;
+		Delay.sleep(500);
 
 		final Timer t = new Timer(0, new ActionListener() {
 			@Override
@@ -108,7 +111,6 @@ public class InputHandler {
 				final char c = s.charAt(0);
 				int vk = KeyEvent.getExtendedKeyCodeForChar((int) c);
 				if (c == '\r') continue;
-				if (c == '\n') vk = KeyEvent.VK_ENTER;
 				if (vk == KeyEvent.VK_UNDEFINED) {
 					throw new IllegalArgumentException("invalid keyChar");
 				} else {
@@ -215,7 +217,15 @@ public class InputHandler {
 	}
 
 	public KeyEvent retimeKeyEvent(final KeyEvent e) {
-		return new KeyEvent(e.getComponent(), e.getID(), System.currentTimeMillis(), 0, e.getExtendedKeyCode(), e.getKeyChar(), e.getKeyLocation());
+		try {
+			final Field f = InputEvent.class.getDeclaredField("when");
+			final boolean a = f.isAccessible();
+			f.setAccessible(true);
+			f.setLong(e, System.currentTimeMillis());
+			f.setAccessible(a);
+		} catch (final Exception ignored) {
+		}
+		return e;
 	}
 
 	public Component getSource() {
