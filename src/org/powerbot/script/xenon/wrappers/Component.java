@@ -315,13 +315,13 @@ public class Component extends Interactive {
 		return interact != null ? new Point(
 				Random.nextGaussian(interact.x, interact.x + interact.width, interact.width / 10),
 				Random.nextGaussian(interact.y, interact.y + interact.height, interact.height / 10)
-		) : null;
+		) : new Point(-1, -1);
 	}
 
 	@Override
 	public Point getCenterPoint() {
 		final Rectangle interact = getInteractRectangle();
-		return interact != null ? new Point((int) interact.getCenterX(), (int) interact.getCenterY()) : null;
+		return interact != null ? new Point((int) interact.getCenterX(), (int) interact.getCenterY()) : new Point(-1, -1);
 	}
 
 	@Override
