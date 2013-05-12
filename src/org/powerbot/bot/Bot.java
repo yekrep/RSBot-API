@@ -180,10 +180,10 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 
 	public void startScript(final ScriptDefinition script) {
 		final List<ScriptDefinition> defs = new ArrayList<>();
+		defs.add(new ScriptDefinition(new WidgetCloser()));
 		defs.add(new ScriptDefinition(new Login()));
 		defs.add(new ScriptDefinition(new BankPin()));
 		defs.add(new ScriptDefinition(new TicketDestroy()));
-		defs.add(new ScriptDefinition(new WidgetCloser()));
 		defs.add(script);
 		scriptController = new ScriptManager(getEventMulticaster(), defs);
 		scriptController.run();

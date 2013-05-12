@@ -1,15 +1,11 @@
 package org.powerbot.script.internal.randoms;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Rectangle;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.FutureTask;
-
 import org.powerbot.bot.Bot;
 import org.powerbot.event.PaintListener;
 import org.powerbot.script.Manifest;
 import org.powerbot.script.PollingScript;
+import org.powerbot.script.Script;
+import org.powerbot.script.internal.ScriptDefinition;
 import org.powerbot.script.xenon.Game;
 import org.powerbot.script.xenon.Keyboard;
 import org.powerbot.script.xenon.Mouse;
@@ -19,6 +15,10 @@ import org.powerbot.script.xenon.util.Timer;
 import org.powerbot.script.xenon.widgets.Lobby;
 import org.powerbot.script.xenon.wrappers.Component;
 import org.powerbot.util.Tracker;
+
+import java.awt.*;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.FutureTask;
 
 @Manifest(name = "Login", authors = {"Timer"}, description = "Enters account credentials to the login screen")
 public class Login extends PollingScript implements RandomEvent, PaintListener {
@@ -32,14 +32,34 @@ public class Login extends PollingScript implements RandomEvent, PaintListener {
 	private static final int WIDGET_LOBBY_TRY_AGAIN = 259;
 	private final Bot bot;
 	private volatile Timer re_load_timer = null;
+	private Script wc;
 
 	public Login() {
 		this.bot = Bot.getInstance();
 	}
 
+	private void lock(final boolean b) {
+		if (b) {
+			getScriptController().getLockQueue().offer(this);
+			getScriptController().getLockQueue().offer(wc);
+		} else {
+			lock(false);
+			getScriptController().getLockQueue().remove(wc);
+		}
+	}
+
 	@Override
 	public int poll() {
-		getScriptController().getLockQueue().offer(this);
+		if (wc == null) {
+			for (final ScriptDefinition def : getScriptController().getScripts()) {
+				if (def.getScript() instanceof WidgetCloser) {
+					this.wc = def.getScript();
+					break;
+				}
+			}
+		}
+
+		lock(true);
 		final int state = Game.getClientState();
 		if ((state == Game.INDEX_LOGIN_SCREEN || state == Game.INDEX_LOGGING_IN) && bot.getAccount() != null) {
 			Tracker.getInstance().trackPage("randoms/Login/", "Login");
@@ -60,7 +80,7 @@ public class Login extends PollingScript implements RandomEvent, PaintListener {
 							sleep(loginEvent.wait);
 						} else if (loginEvent.wait == -1) {
 							getScriptController().stop();
-							getScriptController().getLockQueue().remove(this);
+							lock(false);
 							return -1;
 						}
 
@@ -71,7 +91,7 @@ public class Login extends PollingScript implements RandomEvent, PaintListener {
 							} catch (final InterruptedException | ExecutionException ignored) {
 							}
 						}
-						getScriptController().getLockQueue().remove(this);
+						lock(false);
 						return 0;
 					}
 				}
@@ -84,14 +104,14 @@ public class Login extends PollingScript implements RandomEvent, PaintListener {
 				final String username = bot.getAccount().toString();
 				final Component usernameTextBox = Widgets.get(WIDGET, WIDGET_LOGIN_USERNAME_TEXT);
 				if (!clickLoginInterface(usernameTextBox)) {
-					getScriptController().getLockQueue().remove(this);
+					lock(false);
 					return 0;
 				}
 				sleep(Random.nextInt(500, 700));
 				final int textLength = usernameTextBox.getText().length();
 				if (textLength > 0) {
 					erase(textLength);
-					getScriptController().getLockQueue().remove(this);
+					lock(false);
 					return 0;
 				}
 				Keyboard.send(username);
@@ -100,14 +120,14 @@ public class Login extends PollingScript implements RandomEvent, PaintListener {
 				final String password = bot.getAccount().getPassword();
 				final Component passwordTextBox = Widgets.get(WIDGET, WIDGET_LOGIN_PASSWORD_TEXT);
 				if (!clickLoginInterface(passwordTextBox)) {
-					getScriptController().getLockQueue().remove(this);
+					lock(false);
 					return 0;
 				}
 				sleep(Random.nextInt(500, 700));
 				final int textLength = passwordTextBox.getText().length();
 				if (textLength > 0) {
 					erase(textLength);
-					getScriptController().getLockQueue().remove(this);
+					lock(false);
 					return 0;
 				}
 				Keyboard.send(password);
@@ -128,7 +148,7 @@ public class Login extends PollingScript implements RandomEvent, PaintListener {
 							sleep(lobbyEvent.wait);
 						} else if (lobbyEvent.wait == -1) {
 							bot.stopScripts();
-							getScriptController().getLockQueue().remove(this);
+							lock(false);
 							return -1;
 						}
 
@@ -138,7 +158,7 @@ public class Login extends PollingScript implements RandomEvent, PaintListener {
 							} catch (final InterruptedException | ExecutionException ignored) {
 							}
 						}
-						getScriptController().getLockQueue().remove(this);
+						lock(false);
 						return 0;
 					}
 				}
@@ -149,13 +169,13 @@ public class Login extends PollingScript implements RandomEvent, PaintListener {
 				final Lobby.World world_wrapper;
 				if ((world_wrapper = Lobby.getWorld(world)) != null) {
 					Lobby.enterGame(world_wrapper);
-					getScriptController().getLockQueue().remove(this);
+					lock(false);
 					return 0;
 				}
 			}
 			Lobby.enterGame();
 		}
-		getScriptController().getLockQueue().remove(this);
+		lock(false);
 		return 600;
 	}
 

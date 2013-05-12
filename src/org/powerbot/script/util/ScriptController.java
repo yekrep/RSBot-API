@@ -1,6 +1,7 @@
 package org.powerbot.script.util;
 
 import org.powerbot.script.Script;
+import org.powerbot.script.internal.ScriptDefinition;
 
 import java.util.Queue;
 
@@ -27,4 +28,11 @@ public interface ScriptController extends Stoppable, Suspendable {
 	 * @return a queue
 	 */
 	public Queue<Script> getLockQueue();
+
+	/**
+	 * Gets all the scripts.
+	 *
+	 * @return the queue of scripts
+	 */
+	Iterable<ScriptDefinition> getScripts();
 }

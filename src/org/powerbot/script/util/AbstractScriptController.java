@@ -1,6 +1,7 @@
 package org.powerbot.script.util;
 
 import org.powerbot.script.Script;
+import org.powerbot.script.internal.ScriptDefinition;
 import org.powerbot.script.internal.ScriptManager;
 
 import java.util.Queue;
@@ -47,6 +48,11 @@ public final class AbstractScriptController implements ScriptController {
 	@Override
 	public Queue<Script> getLockQueue() {
 		return queue;
+	}
+
+	@Override
+	public Iterable<ScriptDefinition> getScripts() {
+		return manager.getScripts();
 	}
 }
 
