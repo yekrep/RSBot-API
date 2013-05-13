@@ -17,9 +17,6 @@ import org.powerbot.script.xenon.wrappers.Tile;
  * {@link Npcs} is a static utility which provides access to {@link Npc}s in the game.
  * <p/>
  * {@link Npc}s are only accessible within the mini-map's range.
- * <p/>
- * <p/>
- * Be sure to check for nulls when using the getNearest helpers.
  *
  * @author Timer
  */
