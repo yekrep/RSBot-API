@@ -12,7 +12,16 @@ import org.powerbot.client.RSProjectileNode;
 import org.powerbot.script.internal.wrappers.Deque;
 import org.powerbot.script.xenon.wrappers.Projectile;
 
+/**
+ * {@link Projectiles} is a static utility which provides access to the game's projectiles
+ * {@link Projectile}s are game projectiles on the current plane which target an entity
+ */
 public class Projectiles {
+	/**
+	 * Returns the {@link Projectile}s in the region.
+	 *
+	 * @return an array of loaded {@link Projectile}s
+	 */
 	public static Projectile[] getLoaded() {
 		final Client client = Bot.client();
 		if (client == null) return new Projectile[0];
