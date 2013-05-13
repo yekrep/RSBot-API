@@ -14,7 +14,10 @@ import org.powerbot.script.xenon.wrappers.Player;
 import org.powerbot.script.xenon.wrappers.Tile;
 
 /**
- * A utility which provides access to the loaded non-player actors in the game.
+ * {@link Npcs} is a static utility which provides access to {@link Npc}s in the game.
+ * {@link Npc}s are only accessible within the mini-map's range.
+ * <p/>
+ * Be sure to check for nulls when using the getNearest helpers.
  *
  * @author Timer
  */
@@ -106,7 +109,7 @@ public class Npcs {
 	 * Returns the nearest {@link Npc} in the region with the given id(s).
 	 *
 	 * @param ids a list of ids to accept
-	 * @return the {@link Npc} nearest to the local player with one of the given ids
+	 * @return the {@link Npc} nearest to the local player with one of the provided ids
 	 */
 	public static Npc getNearest(final int... ids) {
 		return getNearest(new Filter<Npc>() {
