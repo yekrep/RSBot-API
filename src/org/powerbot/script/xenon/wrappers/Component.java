@@ -10,6 +10,7 @@ import org.powerbot.client.RSInterfaceNode;
 import org.powerbot.script.internal.wrappers.HashTable;
 import org.powerbot.script.xenon.Widgets;
 import org.powerbot.script.xenon.util.Random;
+import org.powerbot.util.StringUtil;
 
 public class Component extends Interactive {
 	private final Widget widget;
@@ -88,7 +89,7 @@ public class Component extends Interactive {
 
 	public String getItemName() {
 		final RSInterface component = getInternalComponent();
-		return component != null ? component.getComponentName() : null;
+		return component != null ? StringUtil.stripHtml(component.getComponentName()) : null;
 	}
 
 	public int getItemId() {
