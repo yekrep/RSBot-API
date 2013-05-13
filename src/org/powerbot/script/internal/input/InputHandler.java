@@ -11,12 +11,11 @@ import java.lang.reflect.Modifier;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import javax.swing.Timer;
+
 import org.powerbot.client.Client;
 import org.powerbot.client.input.Keyboard;
 import org.powerbot.golem.HardwareSimulator;
-import org.powerbot.script.xenon.util.Delay;
-
-import javax.swing.*;
 
 public class InputHandler {
 	private final Applet applet;
@@ -38,7 +37,6 @@ public class InputHandler {
 	public void send(final Queue<KeyEvent> queue, final boolean async) {
 		final Keyboard keyboard = client.getKeyboard();
 		if (keyboard == null) return;
-		Delay.sleep(500);
 
 		final Timer t = new Timer(0, new ActionListener() {
 			@Override
