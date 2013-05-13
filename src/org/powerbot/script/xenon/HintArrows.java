@@ -7,7 +7,15 @@ import org.powerbot.client.Client;
 import org.powerbot.client.RSHintArrow;
 import org.powerbot.script.xenon.wrappers.HintArrow;
 
+/**
+ * {@link HintArrows} is a static utility which provides access to the game's hint (directional) arrows.
+ */
 public class HintArrows {
+	/**
+	 * Returns the loaded {@link HintArrow}s.
+	 *
+	 * @return an array of loaded {@link HintArrow}s
+	 */
 	public static HintArrow[] getLoaded() {
 		final Client client = Bot.client();
 		if (client == null) return new HintArrow[0];
