@@ -10,7 +10,7 @@ import org.powerbot.util.StringUtil;
 public class TDestination implements TextPaintListener {
 	public int draw(int idx, final Graphics render) {
 		final Tile dest = Movement.getDestination();
-		StringUtil.drawLine(render, idx++, "Destination: " + (dest != null ? dest.toString() : ""));
+		StringUtil.drawLine(render, idx++, "Destination: " + (dest != null ? dest.toString() : "null"));
 		return idx;
 	}
 }

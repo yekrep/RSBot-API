@@ -19,17 +19,10 @@ public class DrawInventory implements PaintListener {
 		render.setColor(Color.green);
 		final FontMetrics fontMetrics = render.getFontMetrics();
 		final Item[] items = Inventory.getItems();
-		if (items != null) {
-			for (final Item item : items) {
-				if (item != null) {
-					final Component child = item.getComponent();
-					if (child != null && child.isValid() && child.getItemId() != -1) {
-						final Point center = child.getAbsoluteLocation();
-						final String id = item.getId() + "";
-						render.drawString(id, center.x, center.y + fontMetrics.getHeight());
-					}
-				}
-			}
+		for (final Item item : items) {
+			final Component c = item.getComponent();
+			final Point p = c.getAbsoluteLocation();
+			render.drawString(c.getItemId()+"", p.x, p.y + fontMetrics.getHeight());
 		}
 	}
 }
