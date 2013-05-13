@@ -78,11 +78,11 @@ public class Movement {
 		if (base == null || start == null || end == null) return -1;
 		start = start.derive(-base.x, -base.y);
 		end = end.derive(-base.x, -base.y);
-		final int startX = start.getX(), startY = start.getY();
-		final int endX = end.getX(), endY = end.getY();
 		final Point pos = getCollisionOffset();
 		final int[][] meta = getCollisionMeta();
 		if (pos == null || meta == null) return -1;
+		final int startX = start.getX() - pos.x, startY = start.getY() - pos.y;
+		final int endX = end.getX() - pos.x, endY = end.getY() - pos.y;
 		final int[][] prev = new int[104][104];
 		final int[][] dist = new int[104][104];
 		for (int xx = 0; xx < 104; xx++) {
