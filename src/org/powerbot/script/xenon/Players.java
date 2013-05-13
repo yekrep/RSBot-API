@@ -11,7 +11,9 @@ import org.powerbot.script.xenon.wrappers.Tile;
 
 /**
  * {@link Players} is a static utility which provides access to the {@link Player}s in the game.
+ * <p/>
  * {@link Player}s are only accessible within mini-map's range.
+ * <p/>
  * <p/>
  * Be sure to check for nulls when using the getNearest helper!
  *

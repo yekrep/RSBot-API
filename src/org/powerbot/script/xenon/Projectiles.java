@@ -13,8 +13,11 @@ import org.powerbot.script.internal.wrappers.Deque;
 import org.powerbot.script.xenon.wrappers.Projectile;
 
 /**
- * {@link Projectiles} is a static utility which provides access to the game's projectiles
- * {@link Projectile}s are game projectiles on the current plane which target an entity
+ * {@link Projectiles} is a static utility which provides access to the game's projectiles.
+ * <p/>
+ * {@link Projectile}s are game projectiles on the current plane which target an entity.
+ *
+ * @author Timer
  */
 public class Projectiles {
 	/**

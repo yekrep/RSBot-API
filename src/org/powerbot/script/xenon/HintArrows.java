@@ -9,6 +9,8 @@ import org.powerbot.script.xenon.wrappers.HintArrow;
 
 /**
  * {@link HintArrows} is a static utility which provides access to the game's hint (directional) arrows.
+ *
+ * @author Timer
  */
 public class HintArrows {
 	/**
