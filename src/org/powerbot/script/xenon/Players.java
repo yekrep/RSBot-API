@@ -9,7 +9,23 @@ import org.powerbot.script.xenon.util.Filter;
 import org.powerbot.script.xenon.wrappers.Player;
 import org.powerbot.script.xenon.wrappers.Tile;
 
+/**
+ * {@link Players} is a static utility which provides access to the {@link Player}s in the game.
+ * {@link Player}s are only accessible within mini-map's range.
+ * <p/>
+ * Be sure to check for nulls when using the getNearest helper!
+ *
+ * @author Timer
+ */
 public class Players {
+	/**
+	 * Returns the game's local player (your player).
+	 * Must be logged in to retrieve.
+	 * <p/>
+	 * Be sure to check for nulls!
+	 *
+	 * @return the local {@link Player}
+	 */
 	public static Player getLocal() {
 		final Client client = Bot.client();
 		if (client == null) return null;
@@ -18,6 +34,11 @@ public class Players {
 		return p != null ? new Player(p) : null;
 	}
 
+	/**
+	 * Returns all the {@link Player}s in the region.
+	 *
+	 * @return an array of all the loaded {@link Player}s
+	 */
 	public static Player[] getLoaded() {
 		final Client client = Bot.client();
 		if (client == null) return new Player[0];
@@ -36,6 +57,12 @@ public class Players {
 		return Arrays.copyOf(loadedPlayers, d);
 	}
 
+	/**
+	 * Returns all the {@link Player}s in the region accepted by the provided {@link Filter}.
+	 *
+	 * @param filter the {@link Filter} by which to accept {@link Player}s
+	 * @return an array of the filtered {@link Player}s
+	 */
 	public static Player[] getLoaded(final Filter<Player> filter) {
 		final Player[] players = getLoaded();
 		final Player[] set = new Player[players.length];
@@ -44,6 +71,12 @@ public class Players {
 		return Arrays.copyOf(set, d);
 	}
 
+	/**
+	 * Returns the nearest {@link Player} in the region accepted by the {@link Filter}
+	 *
+	 * @param filter the {@link Filter} by which to accept {@link Player}s
+	 * @return the {@link Player} nearest to the local player accepted by the filter
+	 */
 	public static Player getNearest(final Filter<Player> filter) {
 		Player nearest = null;
 		double dist = 104d;
