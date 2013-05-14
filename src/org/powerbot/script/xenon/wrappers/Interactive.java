@@ -3,6 +3,7 @@ package org.powerbot.script.xenon.wrappers;
 import java.awt.Graphics;
 import java.awt.Point;
 
+import org.powerbot.script.xenon.Game;
 import org.powerbot.script.xenon.Menu;
 import org.powerbot.script.xenon.Mouse;
 import org.powerbot.script.xenon.util.Delay;
@@ -12,8 +13,7 @@ public abstract class Interactive implements Targetable, Validatable {
 	private static final int ATTEMPTS = 5;
 
 	public boolean isOnScreen() {
-		final Point p = getInteractPoint();
-		return p.x != -1 && p.y != -1;
+		return Game.isPointOnScreen(getInteractPoint());
 	}
 
 	public boolean hover() {
