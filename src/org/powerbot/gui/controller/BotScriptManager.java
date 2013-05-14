@@ -52,35 +52,49 @@ public class BotScriptManager {
 			}
 		}
 
-		final Map<String, Map<String, String>> manifests = IniParser.deserialise(HttpClient.openStream(Configuration.URLs.SCRIPTSCOLLECTION, NetworkAccount.getInstance().getAuth()));
+		loadNetworkScripts(list);
+
+		return list;
+	}
+
+	private static void loadNetworkScripts(final Collection<ScriptDefinition> list) {
+		final Map<String, Map<String, String>> manifests;
+		try {
+			manifests = IniParser.deserialise(HttpClient.openStream(Configuration.URLs.SCRIPTSCOLLECTION, NetworkAccount.getInstance().getAuth()));
+		} catch (final IOException ignored) {
+			return;
+		}
+
 		final boolean vip = NetworkAccount.getInstance().hasPermission(NetworkAccount.VIP);
+
 		for (final Entry<String, Map<String, String>> entry : manifests.entrySet()) {
 			final Map<String, String> params = entry.getValue();
 			if (params.containsKey("vip") && IniParser.parseBool(params.get("vip")) && !vip) {
 				continue;
 			}
 			final ScriptDefinition def = new ScriptDefinition(params);
-			if (def != null) {
-				def.source = entry.getKey();
-				if (entry.getValue().containsKey("className") && entry.getValue().containsKey("key")) {
-					def.className = entry.getValue().get("className");
-					final byte[] key = StringUtil.hexStringToByteArray(entry.getValue().get("key")), kx = new byte[key.length * 2];
-					new Random().nextBytes(kx);
-					for (int i = 0; i < key.length; i++) {
-						kx[i * 2] = key[i];
-					}
-					def.key = kx;
-					list.add(def);
+			if (def == null) {
+				continue;
+			}
+			def.source = entry.getKey();
+			if (entry.getValue().containsKey("className") && entry.getValue().containsKey("key")) {
+				def.className = entry.getValue().get("className");
+				final byte[] key = StringUtil.hexStringToByteArray(entry.getValue().get("key")), kx = new byte[key.length * 2];
+				new Random().nextBytes(kx);
+				for (int i = 0; i < key.length; i++) {
+					kx[i * 2] = key[i];
 				}
+				def.key = kx;
+				list.add(def);
 			}
 		}
-		return list;
 	}
 
-	public static void loadLocalScripts(final List<ScriptDefinition> list, final File parent, final File dir) {
+	private static void loadLocalScripts(final Collection<ScriptDefinition> list, final File parent, final File dir) {
 		if (!NetworkAccount.getInstance().hasPermission(NetworkAccount.LOCALSCRIPTS)) {
 			return;
 		}
+
 		for (final File file : (dir == null ? parent : dir).listFiles()) {
 			final String name = file.getName();
 			if (file.isDirectory()) {
