@@ -157,12 +157,15 @@ public final class BotLogPane extends JTextPane {
 
 		@Override
 		public void publish(final LogRecord record) {
+			String r = record.getMessage();
+			if (r == null || r.isEmpty()) {
+				return;
+			}
+
 			if (++n > max) {
 				n--;
 				s.delete(0, s.indexOf(lf) + lf.length());
 			}
-
-			String r = record.getMessage();
 
 			if (Configuration.OS == Configuration.OperatingSystem.WINDOWS) {
 				r = r.replace(System.getProperty("java.io.tmpdir"), "%temp%");
