@@ -1,5 +1,7 @@
 package org.powerbot.script.xenon.wrappers;
 
+import java.awt.Color;
+import java.awt.Graphics;
 import java.lang.ref.WeakReference;
 
 import org.powerbot.bot.Bot;
@@ -10,6 +12,7 @@ import org.powerbot.client.RSNPCNode;
 import org.powerbot.script.internal.Nodes;
 
 public class Npc extends Actor {
+	private static final Color TARGET_COLOR = new Color(255, 0, 255, 75);
 	private final WeakReference<RSNPC> npc;
 
 	public Npc(final RSNPC npc) {
@@ -69,5 +72,12 @@ public class Npc extends Actor {
 			}
 		}
 		return false;
+	}
+
+	@Override
+	public void draw(final Graphics render) {
+		render.setColor(TARGET_COLOR);
+		final Model m = getModel();
+		if (m != null) m.drawWireFrame(render);
 	}
 }

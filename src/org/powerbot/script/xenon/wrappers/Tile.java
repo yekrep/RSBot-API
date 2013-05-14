@@ -1,5 +1,7 @@
 package org.powerbot.script.xenon.wrappers;
 
+import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Polygon;
 
@@ -9,6 +11,7 @@ import org.powerbot.script.xenon.Players;
 import org.powerbot.script.xenon.util.Random;
 
 public class Tile extends Interactive implements Locatable {
+	private static final Color TARGET_COLOR = new Color(255, 0, 0, 75);
 	public final int x;
 	public final int y;
 	public final int plane;
@@ -105,12 +108,12 @@ public class Tile extends Interactive implements Locatable {
 		final Point bottomLeft = getPoint(0.0D, 1.0D, 0);
 		if (Game.isPointOnScreen(topLeft) && Game.isPointOnScreen(topRight) &&
 				Game.isPointOnScreen(bottomRight) && Game.isPointOnScreen(bottomLeft)) {
-			final Polygon localPolygon = new Polygon();
-			localPolygon.addPoint(topLeft.x, topLeft.y);
-			localPolygon.addPoint(topRight.x, topRight.y);
-			localPolygon.addPoint(bottomRight.x, bottomRight.y);
-			localPolygon.addPoint(bottomLeft.x, bottomLeft.y);
-			return localPolygon.contains(point);
+			final Polygon p = new Polygon();
+			p.addPoint(topLeft.x, topLeft.y);
+			p.addPoint(topRight.x, topRight.y);
+			p.addPoint(bottomRight.x, bottomRight.y);
+			p.addPoint(bottomLeft.x, bottomLeft.y);
+			return p.contains(point);
 		}
 		return false;
 	}
@@ -121,6 +124,26 @@ public class Tile extends Interactive implements Locatable {
 		if (t == null) return false;
 		final int x = this.x - t.x, y = this.y - t.y;
 		return x >= 0 && y >= 0 && x < 104 && y < 104;
+	}
+
+	@Override
+	public void draw(final Graphics render) {
+		render.setColor(TARGET_COLOR);
+		final Point topLeft = getPoint(0.0D, 0.0D, 0);
+		final Point topRight = getPoint(1.0D, 0.0D, 0);
+		final Point bottomRight = getPoint(1.0D, 1.0D, 0);
+		final Point bottomLeft = getPoint(0.0D, 1.0D, 0);
+		if (Game.isPointOnScreen(topLeft) && Game.isPointOnScreen(topRight) &&
+				Game.isPointOnScreen(bottomRight) && Game.isPointOnScreen(bottomLeft)) {
+			final Polygon p = new Polygon();
+			p.addPoint(topLeft.x, topLeft.y);
+			p.addPoint(topRight.x, topRight.y);
+			p.addPoint(bottomRight.x, bottomRight.y);
+			p.addPoint(bottomLeft.x, bottomLeft.y);
+			render.drawPolygon(p);
+			render.setColor(new Color(0, 0, 0, 20));
+			render.fillPolygon(p);
+		}
 	}
 
 	@Override

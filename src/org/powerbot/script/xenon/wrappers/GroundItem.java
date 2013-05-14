@@ -1,5 +1,7 @@
 package org.powerbot.script.xenon.wrappers;
 
+import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.Point;
 import java.util.Arrays;
 
@@ -19,6 +21,7 @@ import org.powerbot.script.xenon.GroundItems;
 import org.powerbot.script.xenon.util.Random;
 
 public class GroundItem extends Interactive implements Locatable {
+	private static final Color TARGET_COLOR = new Color(255, 255, 0, 75);
 	private final Tile tile;
 	private final Item item;
 	private int faceIndex = -1;
@@ -132,5 +135,12 @@ public class GroundItem extends Interactive implements Locatable {
 		if (o == null || !(o instanceof GroundItem)) return false;
 		final GroundItem g = (GroundItem) o;
 		return g.tile.equals(this.tile) && g.item.equals(this.item);
+	}
+
+	@Override
+	public void draw(final Graphics render) {
+		render.setColor(TARGET_COLOR);
+		final Model m = getModel();
+		if (m != null) m.drawWireFrame(render);
 	}
 }

@@ -1,5 +1,7 @@
 package org.powerbot.script.xenon.wrappers;
 
+import java.awt.Color;
+import java.awt.Graphics;
 import java.lang.ref.WeakReference;
 import java.util.Arrays;
 
@@ -9,6 +11,7 @@ import org.powerbot.client.RSPlayer;
 import org.powerbot.client.RSPlayerComposite;
 
 public class Player extends Actor {
+	private static final Color TARGET_COLOR = new Color(255, 0, 0, 75);
 	private final WeakReference<RSPlayer> player;
 
 	public Player(final RSPlayer player) {
@@ -77,5 +80,12 @@ public class Player extends Actor {
 		final RSPlayer character = getAccessor();
 		final RSPlayer[] players = client.getRSPlayerArray();
 		return character != null && players != null && Arrays.asList(players).contains(character);
+	}
+
+	@Override
+	public void draw(final Graphics render) {
+		render.setColor(TARGET_COLOR);
+		final Model m = getModel();
+		if (m != null) m.drawWireFrame(render);
 	}
 }

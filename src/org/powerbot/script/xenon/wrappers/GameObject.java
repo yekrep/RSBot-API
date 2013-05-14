@@ -1,5 +1,7 @@
 package org.powerbot.script.xenon.wrappers;
 
+import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.Point;
 import java.lang.ref.WeakReference;
 import java.util.Arrays;
@@ -19,6 +21,7 @@ import org.powerbot.script.xenon.Game;
 import org.powerbot.script.xenon.Objects;
 
 public class GameObject extends Interactive implements Locatable {
+	private static final Color TARGET_COLOR = new Color(0, 255, 0, 75);
 	private final WeakReference<RSObject> object;
 	private final Type type;
 	private int faceIndex = -1;
@@ -127,6 +130,13 @@ public class GameObject extends Interactive implements Locatable {
 		final GameObject g = (GameObject) o;
 		final RSObject i;
 		return (i = this.object.get()) != null && i == g.object.get();
+	}
+
+	@Override
+	public void draw(final Graphics render) {
+		render.setColor(TARGET_COLOR);
+		final Model m = getModel();
+		if (m != null) m.drawWireFrame(render);
 	}
 
 	public static enum Type {

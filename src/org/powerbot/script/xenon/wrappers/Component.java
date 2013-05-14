@@ -1,5 +1,7 @@
 package org.powerbot.script.xenon.wrappers;
 
+import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
 
@@ -13,6 +15,8 @@ import org.powerbot.script.xenon.util.Random;
 import org.powerbot.util.StringUtil;
 
 public class Component extends Interactive {
+	private static final Color TARGET_FILL_COLOR = new Color(0, 0, 0, 50);
+	private static final Color TARGET_STROKE_COLOR = new Color(0, 255, 0, 150);
 	private final Widget widget;
 	private final Component parent;
 	private final int index;
@@ -336,6 +340,16 @@ public class Component extends Interactive {
 		final RSInterface internal = getInternalComponent();
 		return internal != null && (parent == null || parent.isVisible()) &&
 				getId() != -1 && internal.getBoundsArrayIndex() != -1;
+	}
+
+	@Override
+	public void draw(final Graphics render) {
+		final Rectangle rectangle = getInteractRectangle();
+		if (rectangle == null) return;
+		render.setColor(TARGET_FILL_COLOR);
+		render.fillRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
+		render.setColor(TARGET_STROKE_COLOR);
+		render.fillRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
 	}
 
 	private Rectangle getInteractRectangle() {

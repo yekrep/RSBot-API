@@ -1,5 +1,6 @@
 package org.powerbot.script.xenon.wrappers;
 
+import java.awt.Graphics;
 import java.awt.Point;
 
 import org.powerbot.script.xenon.Menu;
@@ -56,5 +57,8 @@ public abstract class Interactive implements Targetable, Validatable {
 	@Override
 	public boolean isValid() {
 		return true;
+	}
+
+	public void draw(final Graphics graphics) {
 	}
 }
