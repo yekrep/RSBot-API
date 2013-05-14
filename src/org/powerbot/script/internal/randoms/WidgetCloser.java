@@ -1,7 +1,10 @@
 package org.powerbot.script.internal.randoms;
 
+import java.awt.Point;
+
 import org.powerbot.script.Manifest;
 import org.powerbot.script.PollingScript;
+import org.powerbot.script.xenon.Mouse;
 import org.powerbot.script.xenon.Widgets;
 import org.powerbot.script.xenon.util.Random;
 import org.powerbot.script.xenon.util.Timer;
@@ -45,7 +48,7 @@ public class WidgetCloser extends PollingScript implements RandomEvent {
 				return 0;
 			}
 
-			if (component.isValid() && component.click(true)) {
+			if (component.isValid() && click(component)) {
 				final Timer timer = new Timer(Random.nextInt(2000, 2500));
 				while (timer.isRunning() && component.isValid()) sleep(100, 250);
 				if (!component.isValid()) {
@@ -55,5 +58,13 @@ public class WidgetCloser extends PollingScript implements RandomEvent {
 			}
 		}
 		return 600;
+	}
+
+	private boolean click(final Component component) {
+		if (component.getWidget().getIndex() == 1252) {
+			final Point p = component.getAbsoluteLocation();
+			return Mouse.click(p.x + Random.nextInt(0, component.getWidth()), p.y + 50 + Random.nextInt(0, component.getHeight()), true);
+		}
+		return component.click();
 	}
 }
