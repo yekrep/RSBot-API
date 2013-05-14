@@ -15,6 +15,7 @@ public class Resources {
 	public static class Paths {
 		public static final String ROOT = "resources";
 		public static final String LICENSE = "license.txt";
+		public static final String ACKNOWLEDGEMENTS = "acknowledgements.txt";
 		public static final String ROOT_IMG = ROOT + "/images";
 		public static final String ICON = ROOT_IMG + "/icon.png";
 		public static final String ICON_SMALL = ROOT_IMG + "/icon_small.png";
