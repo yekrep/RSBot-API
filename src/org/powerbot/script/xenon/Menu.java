@@ -57,6 +57,7 @@ public class Menu {
 				while (System.currentTimeMillis() - m < 100 && !client.isMenuOpen()) {
 					Delay.sleep(5);
 				}
+				Delay.sleep(0, 300);
 
 				if (!client.isMenuOpen()) return false;
 				if ((index = indexOf(action, option)) == -1) {
