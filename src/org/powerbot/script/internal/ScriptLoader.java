@@ -8,10 +8,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 import org.powerbot.util.io.IOHelper;
-import org.powerbot.xboot.ZipEntry;
-import org.powerbot.xboot.ZipInputStream;
 
 /**
  * @author Paris
