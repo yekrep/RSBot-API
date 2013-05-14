@@ -295,7 +295,11 @@ public class BotWidgetExplorer extends JFrame implements PaintListener {
 		}
 
 		private boolean search(final Component child, final String string) {
-			return child.getText().toLowerCase().contains(string.toLowerCase());
+			try {
+				return child.getText().toLowerCase().contains(string.toLowerCase());
+			} catch (final NullPointerException ignored) {
+				return false;
+			}
 		}
 	}
 
