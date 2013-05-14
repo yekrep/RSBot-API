@@ -49,7 +49,7 @@ public class DrawModels implements PaintListener {
 			m.drawWireFrame(render);
 		}
 
-		render.setColor(new Color(225, 1, 217, 20));
+		render.setColor(new Color(225, 0, 225, 20));
 		final Npc[] npcs = Npcs.getLoaded();
 		for (final Npc actor : npcs) {
 			m = actor.getModel();
@@ -57,7 +57,7 @@ public class DrawModels implements PaintListener {
 			m.drawWireFrame(render);
 		}
 
-		render.setColor(new Color(64, 24, 255, 20));
+		render.setColor(new Color(225, 225, 0, 20));
 		final GroundItem[] groundItems = GroundItems.getLoaded(20);
 		for (final GroundItem item : groundItems) {
 			m = item.getModel();
