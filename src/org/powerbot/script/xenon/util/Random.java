@@ -41,11 +41,11 @@ public class Random {
 		return random.nextDouble();
 	}
 
-	public static int nextGaussian(final int min, final int max, final int sd) {
+	public static int nextGaussian(final int min, final int max, final double sd) {
 		return nextGaussian(min, max, min + (max - min) / 2, sd);
 	}
 
-	public static int nextGaussian(final int min, final int max, final int mean, final int sd) {
+	public static int nextGaussian(final int min, final int max, final int mean, final double sd) {
 		if (min == max) {
 			return min;
 		}
