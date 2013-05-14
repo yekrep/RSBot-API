@@ -1,13 +1,9 @@
 package org.powerbot.gui;
 
 import java.awt.BorderLayout;
-import java.awt.Desktop;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.io.IOException;
 import java.lang.Thread.UncaughtExceptionHandler;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -20,7 +16,6 @@ import java.util.logging.Logger;
 
 import javax.swing.*;
 
-import org.powerbot.OSXAdapter;
 import org.powerbot.bot.Bot;
 import org.powerbot.gui.component.*;
 import org.powerbot.gui.controller.BotInteract;

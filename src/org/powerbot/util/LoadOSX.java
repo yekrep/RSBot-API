@@ -1,6 +1,6 @@
 package org.powerbot.util;
 
-import org.powerbot.OSXAdapter;
+import apple.dts.samplecode.osxadapter.OSXAdapter;
 import org.powerbot.gui.controller.BotInteract;
 
 import java.lang.annotation.ElementType;

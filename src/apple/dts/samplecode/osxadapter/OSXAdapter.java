@@ -55,7 +55,7 @@ Copyright � 2003-2007 Apple, Inc., All Rights Reserved
 
 */
 
-package org.powerbot;
+package apple.dts.samplecode.osxadapter;
 
 import java.lang.reflect.*;
 
