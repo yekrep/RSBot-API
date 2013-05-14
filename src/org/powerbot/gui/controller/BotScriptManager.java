@@ -82,62 +82,61 @@ public class BotScriptManager {
 			return;
 		}
 		for (final File file : (dir == null ? parent : dir).listFiles()) {
+			final String name = file.getName();
 			if (file.isDirectory()) {
 				loadLocalScripts(list, parent, file);
-			} else if (file.isFile()) {
-				final String name = file.getName();
+			} else if (file.isFile() && name.endsWith(".class") && name.indexOf('$') == -1 && !isZKMClassFile(file)) {
 				try {
-					if (name.endsWith(".class") && name.indexOf('$') == -1) {
-						if (name.length() < 9) {
-							continue;
-						}
-						final FileInputStream fis = new FileInputStream(file);
-						final byte[] data = new byte[512];
-						fis.read(data);
-						fis.close();
-						if (data == null || data.length < 12) {
-							continue;
-						}
-						if (data[7] != 0x33) {
-							continue;
-						}
-						boolean skip = false;
-						for (int i = 11; i < data.length - 2; ) {
-							if (data[i++] == 0x5a && data[i++] == 0x4b && data[i++] == 0x4d) {
-								skip = true;
-								break;
-							}
-						}
-						if (skip) {
-							continue;
-						}
-						final URL src = parent.getCanonicalFile().toURI().toURL();
-						@SuppressWarnings("resource")
-						final ClassLoader cl = new URLClassLoader(new URL[]{src});
-						String className = file.getCanonicalPath().substring(parent.getCanonicalPath().length() + 1);
-						className = className.substring(0, className.lastIndexOf('.'));
-						className = className.replace(File.separatorChar, '.');
-						final Class<?> clazz;
-						try {
-							clazz = cl.loadClass(className);
-						} catch (final NoClassDefFoundError ignored) {
-							continue;
-						}
-						if (AbstractScript.class.isAssignableFrom(clazz)) {
-							final Class<? extends AbstractScript> script = clazz.asSubclass(AbstractScript.class);
-							if (script.isAnnotationPresent(Manifest.class) && !Arrays.asList(script.getInterfaces()).contains(RandomEvent.class)) {
-								final ScriptDefinition def = new ScriptDefinition(null, script.getAnnotation(Manifest.class));
-								def.source = parent.getCanonicalFile().toString();
-								def.className = className;
-								def.local = true;
-								list.add(def);
-							}
+					final URL src = parent.getCanonicalFile().toURI().toURL();
+					@SuppressWarnings("resource")
+					final ClassLoader cl = new URLClassLoader(new URL[]{src});
+					String className = file.getCanonicalPath().substring(parent.getCanonicalPath().length() + 1);
+					className = className.substring(0, className.lastIndexOf('.'));
+					className = className.replace(File.separatorChar, '.');
+					final Class<?> clazz;
+					try {
+						clazz = cl.loadClass(className);
+					} catch (final NoClassDefFoundError ignored) {
+						continue;
+					}
+					if (AbstractScript.class.isAssignableFrom(clazz)) {
+						final Class<? extends AbstractScript> script = clazz.asSubclass(AbstractScript.class);
+						if (script.isAnnotationPresent(Manifest.class) && !Arrays.asList(script.getInterfaces()).contains(RandomEvent.class)) {
+							final ScriptDefinition def = new ScriptDefinition(null, script.getAnnotation(Manifest.class));
+							def.source = parent.getCanonicalFile().toString();
+							def.className = className;
+							def.local = true;
+							list.add(def);
 						}
 					}
 				} catch (final Exception ignored) {
 				}
 			}
 		}
+	}
+
+	private static boolean isZKMClassFile(final File file) {
+		if (file.getName().length() < 9) {
+			return true;
+		}
+		try (final FileInputStream fis = new FileInputStream(file)) {
+			final byte[] data = new byte[512];
+			fis.read(data);
+			fis.close();
+			if (data == null || data.length < 12) {
+				return true;
+			}
+			if (data[7] != 0x33) {
+				return true;
+			}
+			for (int i = 11; i < data.length - 2; ) {
+				if (data[i++] == 0x5a && data[i++] == 0x4b && data[i++] == 0x4d) {
+					return true;
+				}
+			}
+		} catch (final IOException ignored) {
+		}
+		return false;
 	}
 
 	public static void loadScript(final ScriptDefinition def, final String accountName, final Component parent) {
