@@ -4,7 +4,6 @@ import java.awt.Point;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.regex.Pattern;
 
 import org.powerbot.bot.Bot;
 import org.powerbot.client.Client;
@@ -16,10 +15,9 @@ import org.powerbot.script.internal.wrappers.Deque;
 import org.powerbot.script.internal.wrappers.Queue;
 import org.powerbot.script.xenon.util.Delay;
 import org.powerbot.script.xenon.util.Random;
+import org.powerbot.util.StringUtil;
 
 public class Menu {
-	private static final Pattern PATTERN_HTML = Pattern.compile("(^[^<]+>|<[^>]+>|<[^>]+$)");
-
 	public static boolean isOpen() {
 		final Client client = Bot.client();
 		return client != null && client.isMenuOpen();
@@ -34,8 +32,8 @@ public class Menu {
 		int d = 0;
 		for (final MenuItemNode node : nodes) {
 			String a = node.getAction(), o = node.getOption();
-			a = a != null ? PATTERN_HTML.matcher(a).replaceAll("").toLowerCase() : "";
-			o = o != null ? PATTERN_HTML.matcher(o).replaceAll("").toLowerCase() : "";
+			a = a != null ? StringUtil.stripHtml(a).toLowerCase() : "";
+			o = o != null ? StringUtil.stripHtml(o).toLowerCase() : "";
 			if ((action == null || a.contains(action.toLowerCase())) &&
 					(option == null || o.contains(option.toLowerCase()))) return d;
 			d++;
@@ -159,7 +157,7 @@ public class Menu {
 		if (nodes.size() > 1) {
 			final MenuItemNode node = nodes.get(0);
 			final String action = node.getAction();
-			if (action != null && PATTERN_HTML.matcher(action).replaceAll("").equals(collapsed ? "Walk here" : "Cancel"))
+			if (action != null && StringUtil.stripHtml(action).equalsIgnoreCase(collapsed ? "Walk here" : "Cancel"))
 				Collections.reverse(nodes);
 		}
 		return nodes;
@@ -172,8 +170,8 @@ public class Menu {
 		final String[] arr = new String[len];
 		for (final MenuItemNode node : nodes) {
 			String a = node.getAction(), o = node.getOption();
-			if (a != null) a = PATTERN_HTML.matcher(a).replaceAll("");
-			if (o != null) o = PATTERN_HTML.matcher(o).replaceAll("");
+			if (a != null) a = StringUtil.stripHtml(a);
+			if (o != null) o = StringUtil.stripHtml(o);
 			arr[d++] = a + " " + o;
 		}
 		return arr;

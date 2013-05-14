@@ -1,7 +1,5 @@
 package org.powerbot.util;
 
-import org.powerbot.util.io.Base64;
-
 import java.awt.Color;
 import java.awt.Graphics;
 import java.io.PrintWriter;
@@ -12,11 +10,17 @@ import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.regex.Pattern;
 import java.util.zip.Adler32;
 
+import org.powerbot.util.io.Base64;
+
 public class StringUtil {
+	private static final Pattern PATTERN_HTML = Pattern.compile("(^[^<]+>|<[^>]+>|<[^>]+$)");
+
 	public static String stripHtml(final String s) {
-		return s.replaceAll("\\<.*?\\>", "");
+		if (s == null) return "";
+		return PATTERN_HTML.matcher(s).replaceAll("");
 	}
 
 	/**

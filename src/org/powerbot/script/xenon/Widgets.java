@@ -13,9 +13,20 @@ import org.powerbot.script.xenon.util.Random;
 import org.powerbot.script.xenon.wrappers.Component;
 import org.powerbot.script.xenon.wrappers.Widget;
 
+/**
+ * {@link Widgets} is a static utility which provides access to the game's {@link Component}s by means of {@link Widget}s.
+ * <p/>
+ * {@link Widget}s are cached and are available at all times, even when not present in game.
+ * {@link Widget}s must be validated before use.
+ */
 public class Widgets {
 	private static final Map<Client, Widget[]> cache = new HashMap<>();
 
+	/**
+	 * Returns all the {@link Widget}s that are currently loaded in the game.
+	 *
+	 * @return an array of {@link Widget}s which are currently loaded
+	 */
 	public static Widget[] getLoaded() {
 		final Client client = Bot.client();
 		if (client == null) return null;
@@ -26,6 +37,12 @@ public class Widgets {
 		return arr;
 	}
 
+	/**
+	 * Retrieves the cached {@link Widget} for the given index.
+	 *
+	 * @param widget the index of the desired {@link Widget}
+	 * @return the {@link Widget} respective to the given index
+	 */
 	public static Widget get(final int widget) {
 		final Client client = Bot.client();
 		if (client == null || widget < 0) return null;
@@ -43,11 +60,25 @@ public class Widgets {
 		return cache[widget];
 	}
 
+	/**
+	 * Retrieves the cached {@link Component} of the given {@link Widget} index.
+	 *
+	 * @param index          the index of the desired {@link Widget}
+	 * @param componentIndex the index of the desired {@link Component} of the given {@link Widget}
+	 * @return the {@link Component} belonging to the {@link Widget} requested
+	 */
 	public static Component get(final int index, final int componentIndex) {
 		final Widget widget = get(index);
 		return widget != null ? widget.getComponent(componentIndex) : null;
 	}
 
+	/**
+	 * Scrolls a component into view.
+	 *
+	 * @param component the {@link Component} which is desired to be visible
+	 * @param bar       the {@link Component} of the scroll bar
+	 * @return {@code true} if visible; otherwise {@code false}
+	 */
 	public static boolean scroll(final Component component, final Component bar) {
 		if (component == null || bar == null || !component.isValid() || bar.getChildrenCount() != 6) return false;
 		Component area = component;
