@@ -49,7 +49,6 @@ public final class HeteroMouse implements MouseSimulator {
 
 	private Queue<Vector3> getParabola(final Vector3 a, Vector3 b) {
 		final Queue<Vector3> l0 = new ArrayDeque<>();
-		final Random r = new Random();
 
 		final double d = a.get2DDistanceTo(b);
 		final int g0 = (int) d >> 2, g1 = g0 * 2 + 1;
