@@ -15,7 +15,7 @@ public class Deque<N> {
 		int size = 0;
 		Node node = nl.getTail().getNext();
 
-		while (node != nl.getTail()) {
+		while (node != null && node != nl.getTail()) {
 			node = node.getNext();
 			size++;
 		}
@@ -27,7 +27,7 @@ public class Deque<N> {
 	public N getHead() {
 		Node node = nl.getTail().getNext();
 
-		if (node == nl.getTail()) {
+		if (node == null || node == nl.getTail()) {
 			current = null;
 			return null;
 		}
@@ -40,7 +40,7 @@ public class Deque<N> {
 	public N getNext() {
 		Node node = current;
 
-		if (node == nl.getTail()) {
+		if (node == null || node == nl.getTail()) {
 			current = null;
 			return null;
 		}

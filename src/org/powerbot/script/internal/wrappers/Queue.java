@@ -15,7 +15,7 @@ public class Queue<N extends NodeSub> {
 		int size = 0;
 		NodeSub node = nl.getTail().getNextSub();
 
-		while (node != nl.getTail()) {
+		while (node != null && node != nl.getTail()) {
 			node = node.getNextSub();
 			size++;
 		}
@@ -27,7 +27,7 @@ public class Queue<N extends NodeSub> {
 	public N getHead() {
 		NodeSub node = nl.getTail().getNextSub();
 
-		if (node == nl.getTail()) {
+		if (node == null || node == nl.getTail()) {
 			current = null;
 			return null;
 		}
@@ -40,7 +40,7 @@ public class Queue<N extends NodeSub> {
 	public N getNext() {
 		NodeSub node = current;
 
-		if (node == nl.getTail()) {
+		if (node == null || node == nl.getTail()) {
 			current = null;
 			return null;
 		}
