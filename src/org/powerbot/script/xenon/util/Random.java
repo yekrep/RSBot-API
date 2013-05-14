@@ -3,19 +3,22 @@ package org.powerbot.script.xenon.util;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
+import ec.util.MersenneTwister;
+import org.powerbot.golem.HardwareSimulator;
 import org.powerbot.script.xenon.Environment;
 
 public class Random {
 	private static final java.util.Random random;
 
 	static {
+		final long seed = HardwareSimulator.getRandomSeed();
 		java.util.Random r;
 		try {
 			r = SecureRandom.getInstance("SHA1PRNG");
+			r.setSeed(seed);
 		} catch (NoSuchAlgorithmException ignored) {
-			r = new java.util.Random();
+			r = new MersenneTwister(seed & Integer.MAX_VALUE);
 		}
-		r.setSeed((long) Environment.getUserId() << 32 ^ System.currentTimeMillis() + r.nextInt(0xffff));
 		random = r;
 	}
 
