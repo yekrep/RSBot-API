@@ -58,7 +58,4 @@ public abstract class Interactive implements Targetable, Validatable {
 	public boolean isValid() {
 		return true;
 	}
-
-	public void draw(final Graphics graphics) {
-	}
 }

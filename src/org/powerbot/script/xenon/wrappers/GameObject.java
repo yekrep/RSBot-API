@@ -20,7 +20,7 @@ import org.powerbot.script.internal.Nodes;
 import org.powerbot.script.xenon.Game;
 import org.powerbot.script.xenon.Objects;
 
-public class GameObject extends Interactive implements Locatable {
+public class GameObject extends Interactive implements Locatable, Drawable {
 	private static final Color TARGET_COLOR = new Color(0, 255, 0, 20);
 	private final WeakReference<RSObject> object;
 	private final Type type;

@@ -19,7 +19,7 @@ import org.powerbot.client.Sequence;
 import org.powerbot.script.internal.Nodes;
 import org.powerbot.script.xenon.Game;
 
-public abstract class Actor extends Interactive implements Locatable {
+public abstract class Actor extends Interactive implements Locatable, Drawable {
 	private int faceIndex = -1;
 
 	protected abstract RSCharacter getAccessor();

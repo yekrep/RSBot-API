@@ -10,8 +10,8 @@ import org.powerbot.script.xenon.Movement;
 import org.powerbot.script.xenon.Players;
 import org.powerbot.script.xenon.util.Random;
 
-public class Tile extends Interactive implements Locatable {
-	private static final Color TARGET_COLOR = new Color(255, 0, 0, 75);
+public class Tile extends Interactive implements Locatable, Drawable {
+	public static final Color TARGET_COLOR = new Color(255, 0, 0, 75);
 	public final int x;
 	public final int y;
 	public final int plane;

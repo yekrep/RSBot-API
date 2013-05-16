@@ -11,7 +11,7 @@ import org.powerbot.client.RSPlayer;
 import org.powerbot.client.RSPlayerComposite;
 
 public class Player extends Actor {
-	private static final Color TARGET_COLOR = new Color(255, 0, 0, 15);
+	public static final Color TARGET_COLOR = new Color(255, 0, 0, 15);
 	private final WeakReference<RSPlayer> player;
 
 	public Player(final RSPlayer player) {

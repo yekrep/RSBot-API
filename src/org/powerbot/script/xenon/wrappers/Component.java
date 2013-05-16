@@ -14,9 +14,9 @@ import org.powerbot.script.xenon.Widgets;
 import org.powerbot.script.xenon.util.Random;
 import org.powerbot.util.StringUtil;
 
-public class Component extends Interactive {
-	private static final Color TARGET_FILL_COLOR = new Color(0, 0, 0, 50);
-	private static final Color TARGET_STROKE_COLOR = new Color(0, 255, 0, 150);
+public class Component extends Interactive implements Drawable {
+	public static final Color TARGET_FILL_COLOR = new Color(0, 0, 0, 50);
+	public static final Color TARGET_STROKE_COLOR = new Color(0, 255, 0, 150);
 	private final Widget widget;
 	private final Component parent;
 	private final int index;

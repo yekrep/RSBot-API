@@ -2,24 +2,18 @@ package org.powerbot.script.internal.input;
 
 import java.applet.Applet;
 import java.awt.Component;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.RenderingHints;
 import java.awt.event.MouseEvent;
 import java.util.concurrent.TimeUnit;
 
 import org.powerbot.client.Client;
 import org.powerbot.client.input.Mouse;
-import org.powerbot.event.PaintListener;
 import org.powerbot.golem.HeteroMouse;
 import org.powerbot.math.Vector3;
 import org.powerbot.script.util.Stoppable;
 import org.powerbot.script.xenon.util.Delay;
-import org.powerbot.script.xenon.wrappers.Interactive;
-import org.powerbot.script.xenon.wrappers.Targetable;
 
-public class MouseHandler implements Runnable, Stoppable, PaintListener {
+public class MouseHandler implements Runnable, Stoppable {
 	private static final int MAX_STEPS = 20;
 	private final MouseSimulator simulator;
 	private final Object LOCK = new Object();
@@ -197,15 +191,5 @@ public class MouseHandler implements Runnable, Stoppable, PaintListener {
 		final Mouse mouse;
 		if ((mouse = client.getMouse()) == null) return new Point(-1, -1);
 		return mouse.getLocation();
-	}
-
-	@Override
-	public void onRepaint(final Graphics render) {
-		final Targetable target;
-		if (this.target != null && this.target.targetable != null) target = this.target.targetable;
-		else target = null;
-		if (target == null) return;
-		((Graphics2D) render).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		if (target instanceof Interactive) ((Interactive) target).draw(render);
 	}
 }

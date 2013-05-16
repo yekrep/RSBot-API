@@ -20,8 +20,8 @@ import org.powerbot.script.xenon.Game;
 import org.powerbot.script.xenon.GroundItems;
 import org.powerbot.script.xenon.util.Random;
 
-public class GroundItem extends Interactive implements Locatable {
-	private static final Color TARGET_COLOR = new Color(255, 255, 0, 75);
+public class GroundItem extends Interactive implements Locatable, Drawable {
+	public static final Color TARGET_COLOR = new Color(255, 255, 0, 75);
 	private final Tile tile;
 	private final Item item;
 	private int faceIndex = -1;

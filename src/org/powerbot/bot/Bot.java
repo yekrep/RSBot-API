@@ -251,7 +251,6 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 		constants = new Constants(modScript.constants);
 		new Thread(threadGroup, new SafeMode(this)).start();
 		mouseHandler = new MouseHandler(appletContainer, client);
-		getEventMulticaster().addListener(mouseHandler);
 		inputHandler = new InputHandler(appletContainer, client);
 		new Thread(threadGroup, mouseHandler).start();
 	}

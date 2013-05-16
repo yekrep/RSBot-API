@@ -12,7 +12,7 @@ import org.powerbot.client.RSNPCNode;
 import org.powerbot.script.internal.Nodes;
 
 public class Npc extends Actor {
-	private static final Color TARGET_COLOR = new Color(255, 0, 255, 15);
+	public static final Color TARGET_COLOR = new Color(255, 0, 255, 15);
 	private final WeakReference<RSNPC> npc;
 
 	public Npc(final RSNPC npc) {
