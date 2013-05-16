@@ -39,7 +39,7 @@ public abstract class Interactive implements Targetable, Validatable {
 				@Override
 				public boolean accept(final Point point) {
 					if (contains(point) && Menu.indexOf(action, option) != -1) {
-						Delay.sleep(0, 50);
+						Delay.sleep(0, 80);
 						return contains(point) && Menu.indexOf(action, option) != -1;
 					}
 					return false;
