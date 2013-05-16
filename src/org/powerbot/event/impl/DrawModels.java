@@ -37,7 +37,7 @@ public class DrawModels implements PaintListener {
 		final Player[] players = Players.getLoaded();
 		for (final Player actor : players) {
 			if (!actor.isOnScreen()) continue;
-			actor.draw(render, 5);
+			actor.draw(render, 10);
 		}
 
 		final Npc[] npcs = Npcs.getLoaded();
