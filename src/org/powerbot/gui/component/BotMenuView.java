@@ -17,7 +17,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
 import org.powerbot.bot.Bot;
-import org.powerbot.bot.debug.ViewMouse;
+import org.powerbot.event.impl.ViewMouse;
 import org.powerbot.event.impl.DrawBoundaries;
 import org.powerbot.event.impl.DrawGroundItems;
 import org.powerbot.event.impl.DrawInventory;
