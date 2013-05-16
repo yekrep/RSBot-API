@@ -1,9 +1,7 @@
 package org.powerbot.script.xenon.wrappers;
 
-import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Point;
 import java.lang.ref.WeakReference;
 import java.util.Arrays;
@@ -23,7 +21,7 @@ import org.powerbot.script.xenon.Game;
 import org.powerbot.script.xenon.Objects;
 
 public class GameObject extends Interactive implements Locatable, Drawable {
-	private static final Color TARGET_COLOR = new Color(0, 255, 0);
+	private static final Color TARGET_COLOR = new Color(0, 255, 0, 20);
 	private final WeakReference<RSObject> object;
 	private final Type type;
 	private int faceIndex = -1;
@@ -136,13 +134,16 @@ public class GameObject extends Interactive implements Locatable, Drawable {
 
 	@Override
 	public void draw(final Graphics render) {
-		draw(render, 0.0784313725f);
+		draw(render, 20);
 	}
 
 	@Override
-	public void draw(final Graphics render, final float alpha) {
-		((Graphics2D) render).setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha > 1f ? 1f : alpha));
-		render.setColor(TARGET_COLOR);
+	public void draw(final Graphics render, final int alpha) {
+		Color c = TARGET_COLOR;
+		final int rgb = c.getRGB();
+		if (((rgb >> 24) & 0xff) != alpha) {
+			c = new Color((rgb >> 16) & 0xff, (rgb >> 8) & 0xff, rgb & 0xff, alpha);
+		}
 		final Model m = getModel();
 		if (m != null) m.drawWireFrame(render);
 	}

@@ -1,9 +1,7 @@
 package org.powerbot.script.xenon.wrappers;
 
-import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Polygon;
 
@@ -13,7 +11,7 @@ import org.powerbot.script.xenon.Players;
 import org.powerbot.script.xenon.util.Random;
 
 public class Tile extends Interactive implements Locatable, Drawable {
-	public static final Color TARGET_COLOR = new Color(255, 0, 0);
+	public static final Color TARGET_COLOR = new Color(255, 0, 0, 75);
 	public final int x;
 	public final int y;
 	public final int plane;
@@ -130,13 +128,16 @@ public class Tile extends Interactive implements Locatable, Drawable {
 
 	@Override
 	public void draw(final Graphics render) {
-		draw(render, 0.2941176470f);
+		draw(render, 75);
 	}
 
 	@Override
-	public void draw(final Graphics render, final float alpha) {
-		((Graphics2D) render).setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha > 1f ? 1f : alpha));
-		render.setColor(TARGET_COLOR);
+	public void draw(final Graphics render, final int alpha) {
+		Color c = TARGET_COLOR;
+		final int rgb = c.getRGB();
+		if (((rgb >> 24) & 0xff) != alpha) {
+			c = new Color((rgb >> 16) & 0xff, (rgb >> 8) & 0xff, rgb & 0xff, alpha);
+		}
 		final Point topLeft = getPoint(0.0D, 0.0D, 0);
 		final Point topRight = getPoint(1.0D, 0.0D, 0);
 		final Point bottomRight = getPoint(1.0D, 1.0D, 0);

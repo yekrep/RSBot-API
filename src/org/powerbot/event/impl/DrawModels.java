@@ -1,6 +1,5 @@
 package org.powerbot.event.impl;
 
-import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -19,34 +18,37 @@ import org.powerbot.script.xenon.wrappers.Player;
 
 public class DrawModels implements PaintListener {
 	private static final Color[] C = {Color.GREEN, Color.WHITE, Color.BLACK, Color.BLUE};
-	private static final float[] A = {0.1f, 0.15f, 1f, 0.2f};
+	private static final int[] A = {25, 40, 255, 50};
 
 	@Override
 	public void onRepaint(final Graphics render) {
 		((Graphics2D) render).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		final GameObject[] objects = Objects.getLoaded(20);
+		final GameObject[] objects = Objects.getLoaded(10);
 		for (final GameObject obj : objects) {
+			if (!obj.isOnScreen()) continue;
 			final Model m = obj.getModel();
 			if (m == null) continue;
 			final int o = obj.getType().ordinal();
-			((Graphics2D) render).setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, A[o]));
-			render.setColor(C[o]);
+			final int rgb = C[o].getRGB();
+			render.setColor(new Color((rgb >> 16) & 0xff, (rgb >> 8) & 0xff, rgb & 0xff, A[o]));
 			m.drawWireFrame(render);
 		}
 
 		final Player[] players = Players.getLoaded();
 		for (final Player actor : players) {
-			actor.draw(render, 0.08f);
+			if (!actor.isOnScreen()) continue;
+			actor.draw(render, 5);
 		}
 
 		final Npc[] npcs = Npcs.getLoaded();
 		for (final Npc actor : npcs) {
-			actor.draw(render, 0.08f);
+			if (!actor.isOnScreen()) continue;
+			actor.draw(render, 20);
 		}
 
 		final GroundItem[] groundItems = GroundItems.getLoaded(20);
 		for (final GroundItem item : groundItems) {
-			item.draw(render, 0.08f);
+			item.draw(render, 20);
 		}
 	}
 }

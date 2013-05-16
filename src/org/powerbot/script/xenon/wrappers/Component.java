@@ -1,9 +1,7 @@
 package org.powerbot.script.xenon.wrappers;
 
-import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 
@@ -17,8 +15,8 @@ import org.powerbot.script.xenon.util.Random;
 import org.powerbot.util.StringUtil;
 
 public class Component extends Interactive implements Drawable {
-	public static final Color TARGET_FILL_COLOR = new Color(0, 0, 0);
-	public static final Color TARGET_STROKE_COLOR = new Color(0, 255, 0);
+	public static final Color TARGET_FILL_COLOR = new Color(0, 0, 0, 50);
+	public static final Color TARGET_STROKE_COLOR = new Color(0, 255, 0, 150);
 	private final Widget widget;
 	private final Component parent;
 	private final int index;
@@ -346,20 +344,27 @@ public class Component extends Interactive implements Drawable {
 
 	@Override
 	public void draw(final Graphics render) {
-		draw(render, 0.1568627450f);
+		draw(render, 50);
 	}
 
 	@Override
-	public void draw(final Graphics render, float alpha) {
+	public void draw(final Graphics render, int alpha) {
 		final Rectangle rectangle = getInteractRectangle();
 		if (rectangle == null) return;
-		((Graphics2D) render).setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha > 1f ? 1f : alpha));
-		render.setColor(TARGET_FILL_COLOR);
+		Color c = TARGET_FILL_COLOR;
+		int rgb = c.getRGB();
+		if (((rgb >> 24) & 0xff) != alpha) {
+			c = new Color((rgb >> 16) & 0xff, (rgb >> 8) & 0xff, rgb & 0xff, alpha);
+		}
 		render.fillRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
-		alpha *= 3f;
-		((Graphics2D) render).setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha * 3f));
-		render.setColor(TARGET_STROKE_COLOR);
-		render.fillRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
+		c = TARGET_STROKE_COLOR;
+		rgb = c.getRGB();
+		alpha *= 3;
+		if (((rgb >> 24) & 0xff) != alpha) {
+			c = new Color((rgb >> 16) & 0xff, (rgb >> 8) & 0xff, rgb & 0xff, alpha);
+		}
+		render.setColor(c);
+		render.drawRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
 	}
 
 	private Rectangle getInteractRectangle() {
