@@ -17,13 +17,11 @@ public class Settings {
 	 */
 	public static int[] getArray() {
 		final Client client = Bot.client();
-		if (client == null) return new int[0];
-
-		final PlayerMetaInfo info = client.getPlayerMetaInfo();
+		final PlayerMetaInfo info;
+		if (client == null || (info = client.getPlayerMetaInfo()) == null) return new int[0];
 		final org.powerbot.client.Settings settings;
 		final int[] data;
-		if (info == null || (settings = info.getSettings()) == null || (data = settings.getData()) == null)
-			return new int[0];
+		if ((settings = info.getSettings()) == null || (data = settings.getData()) == null) return new int[0];
 		return data.clone();
 	}
 

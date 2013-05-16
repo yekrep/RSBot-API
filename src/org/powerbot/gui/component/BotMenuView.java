@@ -17,11 +17,11 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
 import org.powerbot.bot.Bot;
+import org.powerbot.bot.debug.ViewMouse;
 import org.powerbot.event.impl.DrawBoundaries;
 import org.powerbot.event.impl.DrawGroundItems;
 import org.powerbot.event.impl.DrawInventory;
 import org.powerbot.event.impl.DrawModels;
-import org.powerbot.event.impl.DrawMouse;
 import org.powerbot.event.impl.DrawNPCs;
 import org.powerbot.event.impl.DrawPlayers;
 import org.powerbot.event.impl.DrawScene;
@@ -32,7 +32,6 @@ import org.powerbot.event.impl.TDestination;
 import org.powerbot.event.impl.TLocation;
 import org.powerbot.event.impl.TMapBase;
 import org.powerbot.event.impl.TMenu;
-import org.powerbot.event.impl.TMousePosition;
 import org.powerbot.event.impl.TPlane;
 import org.powerbot.gui.BotSettingExplorer;
 import org.powerbot.gui.BotWidgetExplorer;
@@ -53,7 +52,6 @@ public final class BotMenuView implements ActionListener {//TODO revamp debuggin
 	private static final String BOUNDARIES = "Boundaries";
 	private static final String INVENTORY = "Inventory";
 	private static final String CLIENTSTATE = "Client State";
-	private static final String MOUSEPOSITION = "Mouse Position";
 	private static final String MENU = "Menu";
 	private static final String PLANE = "Plane";
 	private static final String CAMERA = "Camera";
@@ -85,14 +83,13 @@ public final class BotMenuView implements ActionListener {//TODO revamp debuggin
 		map.put(NPCS, DrawNPCs.class);
 		map.put(GROUND_ITEMS, DrawGroundItems.class);
 		map.put(CLIENTSTATE, TClientState.class);
-		map.put(MOUSEPOSITION, TMousePosition.class);
 		map.put(MENU, TMenu.class);
 		map.put(PLANE, TPlane.class);
 		map.put(CAMERA, TCamera.class);
 		map.put(MAPBASE, TMapBase.class);
 		map.put(LOCATION, TLocation.class);
 		map.put(DESTINATION, TDestination.class);
-		map.put(MOUSE, DrawMouse.class);
+		map.put(MOUSE, ViewMouse.class);
 		map.put(INVENTORY, DrawInventory.class);
 		map.put(MESSAGES, MessageLogger.class);
 
@@ -107,7 +104,6 @@ public final class BotMenuView implements ActionListener {//TODO revamp debuggin
 		items.add(INVENTORY);
 		items.add(SEPERATOR);
 		items.add(CLIENTSTATE);
-		items.add(MOUSEPOSITION);
 		items.add(MENU);
 		items.add(PLANE);
 		items.add(CAMERA);

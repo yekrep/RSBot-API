@@ -10,6 +10,7 @@ import org.powerbot.client.RSItem;
 import org.powerbot.client.RSItemDef;
 import org.powerbot.client.RSItemDefLoader;
 import org.powerbot.script.internal.Nodes;
+import org.powerbot.util.StringUtil;
 
 public class Item implements Validatable {
 	private final int id;
@@ -45,7 +46,7 @@ public class Item implements Validatable {
 			final ItemDefinition def;
 			if ((def = getDefinition()) != null) name = def.getName();
 		}
-		return name != null ? name.replaceAll("\\<.*?>", "") : null;
+		return name != null ? StringUtil.stripHtml(name) : null;
 	}
 
 	public Component getComponent() {
