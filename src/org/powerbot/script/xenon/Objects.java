@@ -35,7 +35,7 @@ public class Objects {
 		final RSGround[][][] grounds;
 		if ((info = client.getRSGroundInfo()) == null || (baseInfo = info.getBaseInfo()) == null ||
 				(groundInfo = info.getRSGroundInfo()) == null || (grounds = groundInfo.getRSGroundArray()) == null)
-			return null;
+			return new GameObject[0];
 
 		final GameObject.Type[] types = {
 				GameObject.Type.BOUNDARY, GameObject.Type.BOUNDARY,
