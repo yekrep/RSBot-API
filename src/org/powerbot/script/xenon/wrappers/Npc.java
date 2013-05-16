@@ -1,7 +1,9 @@
 package org.powerbot.script.xenon.wrappers;
 
+import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.lang.ref.WeakReference;
 
 import org.powerbot.bot.Bot;
@@ -12,7 +14,7 @@ import org.powerbot.client.RSNPCNode;
 import org.powerbot.script.internal.Nodes;
 
 public class Npc extends Actor {
-	public static final Color TARGET_COLOR = new Color(255, 0, 255, 15);
+	public static final Color TARGET_COLOR = new Color(255, 0, 255);
 	private final WeakReference<RSNPC> npc;
 
 	public Npc(final RSNPC npc) {
@@ -76,6 +78,12 @@ public class Npc extends Actor {
 
 	@Override
 	public void draw(final Graphics render) {
+		draw(render, 0.0588235294f);
+	}
+
+	@Override
+	public void draw(final Graphics render, final float alpha) {
+		((Graphics2D) render).setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha > 1f ? 1f : alpha));
 		render.setColor(TARGET_COLOR);
 		final Model m = getModel();
 		if (m != null) m.drawWireFrame(render);

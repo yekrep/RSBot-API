@@ -1,7 +1,9 @@
 package org.powerbot.script.xenon.wrappers;
 
+import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 
@@ -15,8 +17,8 @@ import org.powerbot.script.xenon.util.Random;
 import org.powerbot.util.StringUtil;
 
 public class Component extends Interactive implements Drawable {
-	public static final Color TARGET_FILL_COLOR = new Color(0, 0, 0, 50);
-	public static final Color TARGET_STROKE_COLOR = new Color(0, 255, 0, 150);
+	public static final Color TARGET_FILL_COLOR = new Color(0, 0, 0);
+	public static final Color TARGET_STROKE_COLOR = new Color(0, 255, 0);
 	private final Widget widget;
 	private final Component parent;
 	private final int index;
@@ -344,10 +346,18 @@ public class Component extends Interactive implements Drawable {
 
 	@Override
 	public void draw(final Graphics render) {
+		draw(render, 0.1568627450f);
+	}
+
+	@Override
+	public void draw(final Graphics render, float alpha) {
 		final Rectangle rectangle = getInteractRectangle();
 		if (rectangle == null) return;
+		((Graphics2D) render).setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha > 1f ? 1f : alpha));
 		render.setColor(TARGET_FILL_COLOR);
 		render.fillRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
+		alpha *= 3f;
+		((Graphics2D) render).setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha * 3f));
 		render.setColor(TARGET_STROKE_COLOR);
 		render.fillRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
 	}
