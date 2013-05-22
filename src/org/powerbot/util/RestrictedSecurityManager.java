@@ -6,6 +6,7 @@ import java.security.Permission;
 import java.util.Map.Entry;
 import java.util.logging.Logger;
 
+import javafx.application.Platform;
 import org.powerbot.bot.RSClassLoader;
 import org.powerbot.ipc.Controller;
 import org.powerbot.script.internal.LocalScriptClassLoader;
@@ -206,6 +207,11 @@ public class RestrictedSecurityManager extends SecurityManager {
 
 		// allow write access to temp directory
 		if ((path + File.separator).startsWith(Configuration.TEMP.getAbsolutePath())) {
+			return;
+		}
+
+		// TODO: don't assume entire FX thread should be whitelisted
+		if (Platform.isFxApplicationThread()) {
 			return;
 		}
 

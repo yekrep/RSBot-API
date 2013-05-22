@@ -34,6 +34,11 @@ public class Resources {
 		public static final String SETTINGS = ROOT_IMG + "/glyphicons_136_cogwheel.png";
 		public static final String EDIT = ROOT_IMG + "/glyphicons_150_edit.png";
 		public static final String SKILLS = ROOT_IMG + "/skills.png";
+
+		public static final String ROOT_HTML = ROOT + "/html";
+		public static final String HTML_INDEX = ROOT_HTML + "/index.html";
+		public static final String HTML_CSS = ROOT_HTML + "/main.css";
+		public static final String HTML_JS = ROOT_HTML + "/main.js";
 	}
 
 	public static URL getResourceURL(final String path) throws MalformedURLException {
