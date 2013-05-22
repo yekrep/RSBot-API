@@ -1,4 +1,4 @@
-package org.powerbot.math;
+package org.powerbot.golem.math;
 
 import java.awt.Point;
 

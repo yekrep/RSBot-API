@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
 import org.powerbot.client.Client;
 import org.powerbot.client.input.Mouse;
 import org.powerbot.golem.HeteroMouse;
-import org.powerbot.math.Vector3;
+import org.powerbot.golem.math.Vector3;
 import org.powerbot.script.util.Stoppable;
 import org.powerbot.script.xenon.util.Delay;
 

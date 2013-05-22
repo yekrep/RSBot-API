@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Random;
 
-import org.powerbot.math.Vector3;
+import org.powerbot.golem.math.Vector3;
 import org.powerbot.script.internal.input.MouseSimulator;
 
 /**
