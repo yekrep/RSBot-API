@@ -15,6 +15,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.zip.Adler32;
 import java.util.zip.Deflater;
 import java.util.zip.DeflaterOutputStream;
@@ -35,20 +36,27 @@ import org.powerbot.util.StringUtil;
  * @author Paris
  */
 public final class CryptFile {
-	public static final Map<File, Class<?>[]> PERMISSIONS = new HashMap<>();
-	private static final long TIMESTAMP = 1346067355497L, GCTIME = 1000 * 60 * 60 * 24 * 3;
-	private static volatile SecretKey key;
-
+	public static final Map<File, Class<?>[]> PERMISSIONS = new ConcurrentHashMap<>();
+	private static final long VECTOR = 0x9e3779b9, TIMESTAMP = 1346067355497L, GCTIME = 1000 * 60 * 60 * 24 * 3;
+	private static final String KEY_ALGO = "ARCFOUR", CIPHER_ALGO = "RC4";
+	private final SecretKey key;
 	private final File root, store;
 
-	public CryptFile(final String id, final Class<?>... parents) {
-		this(id, false, parents);
+	public CryptFile(final String name, final Class<?>... parents) {
+		this(name, false);
 	}
 
-	public CryptFile(final String id, final boolean temp, final Class<?>... parents) {
+	public CryptFile(final String name, final boolean temp, final Class<?>... parents) {
 		root = temp ? Configuration.TEMP : Configuration.HOME;
-		store = getSecureFile(root, id);
+		store = getSecureFile(name);
 		PERMISSIONS.put(store, parents);
+
+		int k = (int) ((Configuration.getUID() ^ VECTOR) & Integer.MAX_VALUE);
+		final byte[] b = new byte[4];
+		for (int i = 0; i < b.length; i++, k >>>= 8) {
+			b[i] = (byte) (k & 0xff);
+		}
+		key = new SecretKeySpec(b, 0, b.length, KEY_ALGO);
 	}
 
 	public boolean exists() {
@@ -88,98 +96,30 @@ public final class CryptFile {
 		if (store.length() == 0L) {
 			return new ByteArrayInputStream(new byte[]{});
 		}
-		Cipher c;
+		final Cipher c;
 		try {
-			c = getCipher(Cipher.DECRYPT_MODE);
-		} catch (final GeneralSecurityException ignored) {
-			ignored.printStackTrace();
-			throw new IOException();
+			c = Cipher.getInstance(CIPHER_ALGO);
+			c.init(Cipher.ENCRYPT_MODE, key);
+		} catch (final GeneralSecurityException e) {
+			throw new IOException(e);
 		}
 		return new CipherInputStream(new FileInputStream(store), c);
 	}
 
 	public OutputStream getOutputStream() throws IOException {
-		Cipher c;
+		final Cipher c;
 		try {
-			c = getCipher(Cipher.ENCRYPT_MODE);
-		} catch (final GeneralSecurityException ignored) {
-			throw new IOException();
+			c = Cipher.getInstance(CIPHER_ALGO);
+			c.init(Cipher.DECRYPT_MODE, key);
+		} catch (final GeneralSecurityException e) {
+			throw new IOException(e);
 		}
 		return new CipherOutputStream(new FileOutputStream(store), c);
 	}
 
-	private static synchronized Cipher getCipher(final int opmode) throws GeneralSecurityException {
-		final String KEY_ALGO = "ARCFOUR", CIPHER_ALGO = "RC4";
-		final Cipher c = Cipher.getInstance(CIPHER_ALGO);
-
-		if (key != null) {
-			c.init(opmode, key);
-			return c;
-		}
-
-		final File keyfile = getSecureFile(Configuration.HOME, "secret.key");
-		final int p = 4096;
-
-		if (keyfile.isFile() && keyfile.length() != 0L) {
-			InputStream in = null;
-			try {
-				in = new InflaterInputStream(new FileInputStream(keyfile), new Inflater(true));
-				in.skip(p);
-				byte[] buf = new byte[4];
-				in.read(buf, 0, buf.length);
-				final int l = buf[0] | (buf[1] << 8) | (buf[2] << 16) | (buf[3] << 24);
-				buf = new byte[l];
-				in.read(buf, 0, l);
-				c.init(opmode, key = new SecretKeySpec(buf, 0, buf.length, KEY_ALGO));
-			} catch (final IOException ignored) {
-			} finally {
-				if (in != null) {
-					try {
-						in.close();
-					} catch (final IOException ignored) {
-					}
-				}
-			}
-		} else {
-			DeflaterOutputStream out = null;
-			try {
-				out = new DeflaterOutputStream(new FileOutputStream(keyfile), new Deflater(1, true));
-				final SecureRandom r = new SecureRandom();
-				byte[] buf = new byte[p];
-				r.nextBytes(buf);
-				out.write(buf);
-				final KeyGenerator kg = KeyGenerator.getInstance(KEY_ALGO);
-				final SecretKey k = kg.generateKey();
-				c.init(opmode, key = k);
-				buf = k.getEncoded();
-				for (int i = 0; i < 4; i++) {
-					out.write((buf.length >> (i << 3)) & 0xff);
-				}
-				out.write(buf);
-				buf = new byte[128 + r.nextInt(8096)];
-				r.nextBytes(buf);
-				out.write(buf);
-			} catch (final IOException ignored) {
-			} finally {
-				if (out != null) {
-					try {
-						out.finish();
-						out.close();
-					} catch (final IOException ignored) {
-					}
-				}
-			}
-		}
-
-		return c;
-	}
-
-	private static File getSecureFile(final File root, final String id) {
+	private File getSecureFile(final String name) {
 		final long uid = Configuration.getUID();
 		String hash;
-
-		final String[] parts = id.split("/", 2);
-		final String name = parts[parts.length == 2 ? 1 : 0], dir = parts.length == 2 ? parts[0] : "";
 
 		final MessageDigest md;
 		try {
@@ -191,25 +131,14 @@ public final class CryptFile {
 			hash = StringUtil.newStringUtf8(Base64.encode(md.digest()));
 			hash = "etilqs_" + hash.replaceAll("[^A-Za-z0-0]", "").substring(0, 15);
 		} catch (final NoSuchAlgorithmException ignored) {
-			hash = getCrc32(name, uid);
+			final Adler32 c = new Adler32();
+			c.update(StringUtil.getBytesUtf8(name));
+			c.update((int) (uid & Integer.MAX_VALUE));
+			c.update((int) (uid >> 32));
+			hash = Long.toHexString(c.getValue());
 		}
 
-		if (hash == null) {
-			hash = Integer.toHexString(name.hashCode());
-		}
-
-		final File file;
-
-		if (dir.length() != 0) {
-			gc(dir, uid);
-			final File parent = getSecureDirName(root, dir, uid);
-			if (!parent.isDirectory()) {
-				parent.mkdirs();
-			}
-			file = new File(parent, hash);
-		} else {
-			file = new File(root, hash);
-		}
+		final File file = new File(root, hash);
 
 		if (file.isFile() && file.lastModified() < TIMESTAMP) {
 			file.delete();
@@ -218,31 +147,18 @@ public final class CryptFile {
 		return file;
 	}
 
-	private static File getSecureDirName(final File root, final String dir, final long uid) {
-		return new File(root, getCrc32(dir, uid));
-	}
+	private static void gc() {
+		final File root = Configuration.TEMP;
 
-	private static String getCrc32(final String s, final long uid) {
-		final Adler32 c = new Adler32();
-		c.update(StringUtil.getBytesUtf8(s));
-		c.update((int) (uid & 0xffffffff));
-		c.update((int) (uid >> 32));
-		final long l = c.getValue();
-		return Long.toHexString(l);
-	}
-
-	private static void gc(final String dir, final long uid) {
-		final File file = getSecureDirName(Configuration.TEMP, dir, uid);
-
-		if (!file.isDirectory()) {
+		if (!root.isDirectory()) {
 			return;
 		}
 
-		for (final File f : file.listFiles()) {
+		for (final File file : root.listFiles()) {
 			try {
-				final long a = Files.readAttributes(f.toPath(), BasicFileAttributes.class).lastAccessTime().toMillis();
-				if (a < System.currentTimeMillis() - GCTIME) {
-					f.delete();
+				final long atime = Files.readAttributes(file.toPath(), BasicFileAttributes.class).lastAccessTime().toMillis();
+				if (atime < System.currentTimeMillis() - GCTIME) {
+					file.delete();
 				}
 			} catch (final IOException ignored) {
 			}
