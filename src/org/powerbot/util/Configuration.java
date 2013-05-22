@@ -24,7 +24,7 @@ public class Configuration {
 	public static final boolean BETA = true;
 	public static volatile int VERSION_LATEST = -1;
 	public static final OperatingSystem OS;
-	public static final File HOME, TEMP = new File(System.getProperty("java.io.tmpdir"));
+	public static final File HOME, TEMP;
 
 	public enum OperatingSystem {
 		MAC, WINDOWS, LINUX, UNKNOWN
@@ -96,6 +96,9 @@ public class Configuration {
 		} else {
 			HOME = new File(System.getProperty("user.home"), "." + NAME.toLowerCase());
 		}
+
+		final String tid = Integer.toHexString((Long.toHexString(getUID()) + NAME).hashCode());
+		TEMP = new File(new File(System.getProperty("java.io.tmpdir")), tid);
 
 		if (!HOME.isDirectory()) {
 			HOME.mkdirs();
