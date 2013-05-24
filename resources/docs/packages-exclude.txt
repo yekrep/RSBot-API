@@ -1,0 +1,1 @@
+org.powerbot.script.internal:org.powerbot.script.internal.input:org.powerbot.script.internal.randomsorg.powerbot.script.internal.wrappers
