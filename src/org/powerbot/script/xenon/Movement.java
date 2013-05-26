@@ -8,7 +8,6 @@ import org.powerbot.client.RSGroundData;
 import org.powerbot.client.RSInfo;
 import org.powerbot.script.xenon.util.Delay;
 import org.powerbot.script.xenon.wrappers.Component;
-import org.powerbot.script.xenon.wrappers.LocalPath;
 import org.powerbot.script.xenon.wrappers.Locatable;
 import org.powerbot.script.xenon.wrappers.Player;
 import org.powerbot.script.xenon.wrappers.Targetable;
@@ -35,11 +34,6 @@ public class Movement {
 	public static TilePath newTilePath(final Tile... tiles) {
 		if (tiles == null) throw new IllegalArgumentException("tiles are null");
 		return new TilePath(tiles);
-	}
-
-	public static LocalPath findPath(final Tile end) {
-		if (end == null) throw new IllegalArgumentException("end tile is null");
-		return new LocalPath(end);
 	}
 
 	public static Tile getDestination() {
