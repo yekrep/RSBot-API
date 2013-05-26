@@ -51,7 +51,7 @@ public class TilePath extends Path {
 			if (!tiles[i].isOnMap()) continue;
 			if (dest == null || Movement.distance(dest, tiles[i - 1]) < 3) return tiles[i];
 		}
-		if (tiles.length > 0 && tiles[0].isOnMap()) return tiles[0];
+		if (tiles[0].isOnMap()) return tiles[0];
 		return null;
 	}
 
