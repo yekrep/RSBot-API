@@ -6,8 +6,6 @@ import java.awt.Point;
 import java.awt.Polygon;
 
 import org.powerbot.script.xenon.Game;
-import org.powerbot.script.xenon.Movement;
-import org.powerbot.script.xenon.Players;
 import org.powerbot.script.xenon.util.Random;
 
 public class Tile extends Interactive implements Locatable, Drawable {
@@ -70,12 +68,6 @@ public class Tile extends Interactive implements Locatable, Drawable {
 	public boolean isOnMap() {
 		final Point p = getMapPoint();
 		return p.x != -1 && p.y != -1;
-	}
-
-	public boolean canReach() {
-		final Player player = Players.getLocal();
-		final Tile loc = player != null ? player.getLocation() : null;
-		return Movement.getDistance(this, loc, false) != -1;
 	}
 
 	@Override
