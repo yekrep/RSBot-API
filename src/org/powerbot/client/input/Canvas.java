@@ -14,7 +14,7 @@ import java.util.Hashtable;
 
 import org.powerbot.bot.Bot;
 import org.powerbot.gui.BotChrome;
-import org.powerbot.script.xenon.util.Delay;
+import org.powerbot.script.util.Delay;
 
 public class Canvas extends java.awt.Canvas {
 	private static final long serialVersionUID = -2276037172265300477L;

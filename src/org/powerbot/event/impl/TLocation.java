@@ -3,9 +3,9 @@ package org.powerbot.event.impl;
 import java.awt.Graphics;
 
 import org.powerbot.event.TextPaintListener;
-import org.powerbot.script.xenon.Players;
-import org.powerbot.script.xenon.wrappers.Player;
-import org.powerbot.script.xenon.wrappers.Tile;
+import org.powerbot.script.methods.Players;
+import org.powerbot.script.wrappers.Player;
+import org.powerbot.script.wrappers.Tile;
 import org.powerbot.util.StringUtil;
 
 public class TLocation implements TextPaintListener {

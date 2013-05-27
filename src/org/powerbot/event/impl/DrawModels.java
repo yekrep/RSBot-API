@@ -6,15 +6,15 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 
 import org.powerbot.event.PaintListener;
-import org.powerbot.script.xenon.GroundItems;
-import org.powerbot.script.xenon.Npcs;
-import org.powerbot.script.xenon.Objects;
-import org.powerbot.script.xenon.Players;
-import org.powerbot.script.xenon.wrappers.GameObject;
-import org.powerbot.script.xenon.wrappers.GroundItem;
-import org.powerbot.script.xenon.wrappers.Model;
-import org.powerbot.script.xenon.wrappers.Npc;
-import org.powerbot.script.xenon.wrappers.Player;
+import org.powerbot.script.methods.GroundItems;
+import org.powerbot.script.methods.Npcs;
+import org.powerbot.script.methods.Objects;
+import org.powerbot.script.methods.Players;
+import org.powerbot.script.wrappers.GameObject;
+import org.powerbot.script.wrappers.GroundItem;
+import org.powerbot.script.wrappers.Model;
+import org.powerbot.script.wrappers.Npc;
+import org.powerbot.script.wrappers.Player;
 
 public class DrawModels implements PaintListener {
 	private static final Color[] C = {Color.GREEN, Color.WHITE, Color.BLACK, Color.BLUE};

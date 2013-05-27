@@ -17,9 +17,9 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.logging.Logger;
 
-import org.powerbot.script.util.Prioritizable;
-import org.powerbot.script.util.ScriptController;
-import org.powerbot.script.xenon.util.Random;
+import org.powerbot.script.framework.Prioritizable;
+import org.powerbot.script.framework.ScriptController;
+import org.powerbot.script.util.Random;
 import org.powerbot.util.Configuration;
 
 /**
@@ -40,7 +40,7 @@ public abstract class AbstractScript implements Script, Prioritizable {
 	protected final Logger log = Logger.getLogger(getClass().getName());
 
 	/**
-	 * The settings for this {@link org.powerbot.script.Script}, which are saved between runs.
+	 * The settings for this {@link Script}, which are saved between runs.
 	 */
 	protected final Properties settings;
 
@@ -219,18 +219,18 @@ public abstract class AbstractScript implements Script, Prioritizable {
 	}
 
 	/**
-	 * Returns the {@link org.powerbot.script.Manifest} attached to this {@link org.powerbot.script.Script} if present.
+	 * Returns the {@link Manifest} attached to this {@link Script} if present.
 	 *
-	 * @return the attached {@link org.powerbot.script.Manifest} if it exists, or {@code null} otherwise
+	 * @return the attached {@link Manifest} if it exists, or {@code null} otherwise
 	 */
 	public Manifest getManifest() {
 		return getClass().isAnnotationPresent(Manifest.class) ? getClass().getAnnotation(Manifest.class) : null;
 	}
 
 	/**
-	 * Returns the name of this {@link org.powerbot.script.Script} as determined by its {@link org.powerbot.script.Manifest}.
+	 * Returns the name of this {@link Script} as determined by its {@link Manifest}.
 	 *
-	 * @return the name of this {@link org.powerbot.script.Script}
+	 * @return the name of this {@link Script}
 	 */
 	public String getName() {
 		final Manifest manifest = getManifest();
@@ -238,9 +238,9 @@ public abstract class AbstractScript implements Script, Prioritizable {
 	}
 
 	/**
-	 * Returns the version of this {@link org.powerbot.script.Script} as determined by its {@link org.powerbot.script.Manifest}.
+	 * Returns the version of this {@link Script} as determined by its {@link Manifest}.
 	 *
-	 * @return the version of this {@link org.powerbot.script.Script}
+	 * @return the version of this {@link Script}
 	 */
 	public double getVersion() {
 		final Manifest manifest = getManifest();

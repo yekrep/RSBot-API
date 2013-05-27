@@ -9,8 +9,8 @@ import java.util.logging.Logger;
 import javafx.application.Platform;
 import org.powerbot.bot.RSClassLoader;
 import org.powerbot.ipc.Controller;
-import org.powerbot.script.internal.LocalScriptClassLoader;
-import org.powerbot.script.internal.ScriptClassLoader;
+import org.powerbot.script.framework.LocalScriptClassLoader;
+import org.powerbot.script.framework.ScriptClassLoader;
 import org.powerbot.util.Configuration.OperatingSystem;
 import org.powerbot.util.io.CryptFile;
 

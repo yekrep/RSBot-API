@@ -3,8 +3,8 @@ package org.powerbot.event.impl;
 import java.awt.Graphics;
 
 import org.powerbot.event.TextPaintListener;
-import org.powerbot.script.xenon.Movement;
-import org.powerbot.script.xenon.wrappers.Tile;
+import org.powerbot.script.methods.Movement;
+import org.powerbot.script.wrappers.Tile;
 import org.powerbot.util.StringUtil;
 
 public class TDestination implements TextPaintListener {

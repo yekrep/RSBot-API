@@ -3,12 +3,20 @@ package org.powerbot.util;
 import java.awt.Dimension;
 import java.awt.GraphicsEnvironment;
 import java.awt.Toolkit;
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Random;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -108,7 +116,7 @@ public final class Tracker {
 
 			Controller.getInstance().updateTrackerTimestamps(visits.get(), timestamps[1]);
 
-			return new long[] {timestamps[0], prev, timestamps[1]};
+			return new long[]{timestamps[0], prev, timestamps[1]};
 		}
 	}
 

@@ -7,8 +7,8 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.logging.Logger;
 
 import org.powerbot.bot.Bot;
-import org.powerbot.script.internal.ScriptDefinition;
-import org.powerbot.script.internal.ScriptManager;
+import org.powerbot.script.framework.ScriptDefinition;
+import org.powerbot.script.framework.ScriptManager;
 import org.powerbot.service.NetworkAccount;
 import org.powerbot.util.Configuration;
 import org.powerbot.util.Tracker;

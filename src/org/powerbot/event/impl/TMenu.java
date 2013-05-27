@@ -3,7 +3,7 @@ package org.powerbot.event.impl;
 import java.awt.Graphics;
 
 import org.powerbot.event.TextPaintListener;
-import org.powerbot.script.xenon.Menu;
+import org.powerbot.script.methods.Menu;
 import org.powerbot.util.StringUtil;
 
 public class TMenu implements TextPaintListener {

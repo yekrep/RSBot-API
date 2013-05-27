@@ -4,8 +4,8 @@ import java.util.Queue;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.powerbot.script.util.Stoppable;
-import org.powerbot.script.util.Suspendable;
+import org.powerbot.script.framework.Stoppable;
+import org.powerbot.script.framework.Suspendable;
 
 /**
  * An implementation of {@code Script} which polls (or "loops") indefinitely.

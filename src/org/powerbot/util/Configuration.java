@@ -11,8 +11,6 @@ import org.powerbot.ipc.Controller;
 import org.powerbot.util.io.IOHelper;
 import org.powerbot.util.io.Resources;
 
-import javax.naming.ConfigurationException;
-
 /**
  * @author Paris
  */
@@ -45,7 +43,7 @@ public class Configuration {
 		public static final String VERSION = "http://" + DOMAIN_LINKS + "/version.txt";
 		public static final String LICENSE = "http://" + DOMAIN_LINKS + "/license";
 
-		public static final String CLIENTPATCH = "https://" + DOMAIN_SITE_CDN + "/rsbot/ts/%s.ts";
+		public static final String CLIENTPATCH = "https://" + DOMAIN_SITE_CDN + "/rsbot/ts2/%s.ts";
 		public static final String CLIENTBUCKET = "http://buckets." + DOMAIN + "/process/?hash=%s";
 		public static final String SCRIPTSAUTH = PROTOCOL + DOMAIN_SITE + "/scripts/api/auth/?{POST}a=%s&id=%s&n=%s";
 		public static final String SCRIPTSCOLLECTION = PROTOCOL + DOMAIN_SITE + "/scripts/api/collection/?{POST}a=%s";

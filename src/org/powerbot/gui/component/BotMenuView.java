@@ -17,7 +17,6 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
 import org.powerbot.bot.Bot;
-import org.powerbot.event.impl.ViewMouse;
 import org.powerbot.event.impl.DrawGroundItems;
 import org.powerbot.event.impl.DrawInventory;
 import org.powerbot.event.impl.DrawModels;
@@ -32,6 +31,7 @@ import org.powerbot.event.impl.TLocation;
 import org.powerbot.event.impl.TMapBase;
 import org.powerbot.event.impl.TMenu;
 import org.powerbot.event.impl.TPlane;
+import org.powerbot.event.impl.ViewMouse;
 import org.powerbot.gui.BotSettingExplorer;
 import org.powerbot.gui.BotWidgetExplorer;
 import org.powerbot.util.io.Resources;

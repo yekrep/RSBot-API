@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.powerbot.client.Client;
+import org.powerbot.client.Constants;
 import org.powerbot.event.EventMulticaster;
 import org.powerbot.event.PaintEvent;
 import org.powerbot.event.TextPaintEvent;
@@ -16,18 +17,17 @@ import org.powerbot.gui.BotChrome;
 import org.powerbot.gui.component.BotPanel;
 import org.powerbot.gui.controller.BotInteract;
 import org.powerbot.loader.script.ModScript;
-import org.powerbot.script.internal.Constants;
-import org.powerbot.script.internal.ScriptDefinition;
-import org.powerbot.script.internal.ScriptManager;
-import org.powerbot.script.internal.input.InputHandler;
-import org.powerbot.script.internal.input.MouseHandler;
-import org.powerbot.script.internal.randoms.BankPin;
-import org.powerbot.script.internal.randoms.Login;
-import org.powerbot.script.internal.randoms.TicketDestroy;
-import org.powerbot.script.internal.randoms.WidgetCloser;
-import org.powerbot.script.util.Stoppable;
-import org.powerbot.script.xenon.Keyboard;
-import org.powerbot.script.xenon.util.Delay;
+import org.powerbot.script.framework.ScriptDefinition;
+import org.powerbot.script.framework.ScriptManager;
+import org.powerbot.script.framework.Stoppable;
+import org.powerbot.script.internal.InputHandler;
+import org.powerbot.script.internal.MouseHandler;
+import org.powerbot.script.methods.Keyboard;
+import org.powerbot.script.randoms.BankPin;
+import org.powerbot.script.randoms.Login;
+import org.powerbot.script.randoms.TicketDestroy;
+import org.powerbot.script.randoms.WidgetCloser;
+import org.powerbot.script.util.Delay;
 import org.powerbot.service.GameAccounts;
 
 /**

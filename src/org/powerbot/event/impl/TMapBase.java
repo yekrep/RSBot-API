@@ -3,8 +3,8 @@ package org.powerbot.event.impl;
 import java.awt.Graphics;
 
 import org.powerbot.event.TextPaintListener;
-import org.powerbot.script.xenon.Game;
-import org.powerbot.script.xenon.wrappers.Tile;
+import org.powerbot.script.methods.Game;
+import org.powerbot.script.wrappers.Tile;
 import org.powerbot.util.StringUtil;
 
 public class TMapBase implements TextPaintListener {

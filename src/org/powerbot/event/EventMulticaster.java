@@ -19,7 +19,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import org.powerbot.script.util.Stoppable;
+import org.powerbot.script.framework.Stoppable;
 
 public class EventMulticaster implements Runnable, Stoppable {
 	public static final int MOUSE_EVENT = 0x1;

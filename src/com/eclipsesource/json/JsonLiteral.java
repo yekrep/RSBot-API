@@ -15,45 +15,45 @@ import java.io.IOException;
 
 class JsonLiteral extends JsonValue {
 
-  private final String value;
+	private final String value;
 
-  JsonLiteral( String value ) {
-    this.value = value;
-  }
+	JsonLiteral(String value) {
+		this.value = value;
+	}
 
-  @Override
-  protected void write( JsonWriter writer ) throws IOException {
-    writer.write( value );
-  }
+	@Override
+	protected void write(JsonWriter writer) throws IOException {
+		writer.write(value);
+	}
 
-  @Override
-  public String toString() {
-    return value;
-  }
+	@Override
+	public String toString() {
+		return value;
+	}
 
-  @Override
-  public boolean asBoolean() {
-    return isBoolean() ? isTrue() : super.asBoolean();
-  }
+	@Override
+	public boolean asBoolean() {
+		return isBoolean() ? isTrue() : super.asBoolean();
+	}
 
-  @Override
-  public boolean isNull() {
-    return this == NULL;
-  }
+	@Override
+	public boolean isNull() {
+		return this == NULL;
+	}
 
-  @Override
-  public boolean isBoolean() {
-    return this == TRUE || this == FALSE;
-  }
+	@Override
+	public boolean isBoolean() {
+		return this == TRUE || this == FALSE;
+	}
 
-  @Override
-  public boolean isTrue() {
-    return this == TRUE;
-  }
+	@Override
+	public boolean isTrue() {
+		return this == TRUE;
+	}
 
-  @Override
-  public boolean isFalse() {
-    return this == FALSE;
-  }
+	@Override
+	public boolean isFalse() {
+		return this == FALSE;
+	}
 
 }

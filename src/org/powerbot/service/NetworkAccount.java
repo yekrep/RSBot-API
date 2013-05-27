@@ -8,7 +8,7 @@ import java.util.Map;
 import org.powerbot.bot.Bot;
 import org.powerbot.ipc.Controller;
 import org.powerbot.ipc.Message;
-import org.powerbot.script.xenon.Environment;
+import org.powerbot.script.methods.Environment;
 import org.powerbot.util.Configuration;
 import org.powerbot.util.StringUtil;
 import org.powerbot.util.io.CryptFile;

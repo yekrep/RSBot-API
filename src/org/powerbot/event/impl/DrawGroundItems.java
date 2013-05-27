@@ -4,16 +4,15 @@ import java.awt.Color;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Point;
-import java.util.Set;
 
 import org.powerbot.event.PaintListener;
-import org.powerbot.script.xenon.Game;
-import org.powerbot.script.xenon.GroundItems;
-import org.powerbot.script.xenon.Players;
-import org.powerbot.script.xenon.wrappers.GroundItem;
-import org.powerbot.script.xenon.wrappers.Item;
-import org.powerbot.script.xenon.wrappers.Player;
-import org.powerbot.script.xenon.wrappers.Tile;
+import org.powerbot.script.methods.Game;
+import org.powerbot.script.methods.GroundItems;
+import org.powerbot.script.methods.Players;
+import org.powerbot.script.wrappers.GroundItem;
+import org.powerbot.script.wrappers.Item;
+import org.powerbot.script.wrappers.Player;
+import org.powerbot.script.wrappers.Tile;
 
 public class DrawGroundItems implements PaintListener {
 	public void onRepaint(final Graphics render) {

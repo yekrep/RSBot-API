@@ -6,9 +6,9 @@ import java.awt.Graphics;
 import java.awt.Point;
 
 import org.powerbot.event.PaintListener;
-import org.powerbot.script.xenon.Game;
-import org.powerbot.script.xenon.Npcs;
-import org.powerbot.script.xenon.wrappers.Npc;
+import org.powerbot.script.methods.Game;
+import org.powerbot.script.methods.Npcs;
+import org.powerbot.script.wrappers.Npc;
 
 public class DrawNPCs implements PaintListener {
 	public void onRepaint(final Graphics render) {

@@ -1,5 +1,13 @@
 package org.powerbot.gui.component;
 
+import java.awt.Color;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.LogRecord;
+
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import org.powerbot.bot.Bot;
 import org.powerbot.bot.BotComposite;
 import org.powerbot.gui.BotChrome;
@@ -7,15 +15,9 @@ import org.powerbot.loader.ClientLoader;
 import org.powerbot.util.Configuration;
 import org.powerbot.util.LoadUpdates;
 
-import javax.swing.*;
-import java.awt.*;
-import java.util.logging.Handler;
-import java.util.logging.Level;
-import java.util.logging.LogRecord;
-
 /**
-* @author Paris
-*/
+ * @author Paris
+ */
 final class BotPanelLogHandler extends Handler {
 	private final JLabel label;
 

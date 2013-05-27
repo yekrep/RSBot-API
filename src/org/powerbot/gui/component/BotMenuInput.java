@@ -5,7 +5,8 @@ import java.awt.event.ActionListener;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import javax.swing.*;
+import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JMenu;
 
 import org.powerbot.bot.Bot;
 import org.powerbot.gui.BotChrome;

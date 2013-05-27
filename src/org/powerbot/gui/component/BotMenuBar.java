@@ -1,18 +1,24 @@
 package org.powerbot.gui.component;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.ImageIcon;
+import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.SwingUtilities;
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuListener;
+
 import org.powerbot.bot.Bot;
 import org.powerbot.gui.controller.BotInteract;
-import org.powerbot.script.internal.ScriptManager;
+import org.powerbot.script.framework.ScriptManager;
 import org.powerbot.service.NetworkAccount;
 import org.powerbot.util.Configuration;
 import org.powerbot.util.Tracker;
 import org.powerbot.util.io.Resources;
-
-import javax.swing.*;
-import javax.swing.event.MenuEvent;
-import javax.swing.event.MenuListener;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 /**
  * @author Paris
@@ -93,7 +99,7 @@ public class BotMenuBar extends JMenuBar implements ActionListener {
 			}
 		});
 
-		final ImageIcon[] playIcons = new ImageIcon[] { new ImageIcon(Resources.getImage(Resources.Paths.PLAY)), new ImageIcon(Resources.getImage(Resources.Paths.PAUSE)) };
+		final ImageIcon[] playIcons = new ImageIcon[]{new ImageIcon(Resources.getImage(Resources.Paths.PLAY)), new ImageIcon(Resources.getImage(Resources.Paths.PAUSE))};
 		play = item(BotLocale.PLAYSCRIPT);
 		play.setIcon(playIcons[0]);
 		script.add(play);
@@ -174,16 +180,39 @@ public class BotMenuBar extends JMenuBar implements ActionListener {
 			}
 		});
 		switch (s) {
-			case BotLocale.NEWTAB: case BotLocale.STARTTAB: BotInteract.tabAdd(); break;
-			case BotLocale.EXIT: BotInteract.tabClose(false); break;
-			case BotLocale.SIGNIN: BotInteract.showDialog(BotInteract.Action.SIGNIN); break;
-			case BotLocale.LOGPANE: logpane.setState(BotInteract.toggleLogPane()); break;
-			case BotLocale.ACCOUNTS: BotInteract.showDialog(BotInteract.Action.ACCOUNTS); break;
-			case BotLocale.PLAYSCRIPT: case BotLocale.PAUSESCRIPT: case BotLocale.RESUMESCRIPT: BotInteract.scriptPlayPause(); break;
-			case BotLocale.STOPSCRIPT: BotInteract.scriptStop(); break;
-			case BotLocale.ABOUT: BotInteract.showDialog(BotInteract.Action.ABOUT); break;
-			case BotLocale.LICENSE: BotInteract.showDialog(BotInteract.Action.LICENSE); break;
-			case BotLocale.WEBSITE: BotInteract.openURL(Configuration.URLs.SITE); break;
+		case BotLocale.NEWTAB:
+		case BotLocale.STARTTAB:
+			BotInteract.tabAdd();
+			break;
+		case BotLocale.EXIT:
+			BotInteract.tabClose(false);
+			break;
+		case BotLocale.SIGNIN:
+			BotInteract.showDialog(BotInteract.Action.SIGNIN);
+			break;
+		case BotLocale.LOGPANE:
+			logpane.setState(BotInteract.toggleLogPane());
+			break;
+		case BotLocale.ACCOUNTS:
+			BotInteract.showDialog(BotInteract.Action.ACCOUNTS);
+			break;
+		case BotLocale.PLAYSCRIPT:
+		case BotLocale.PAUSESCRIPT:
+		case BotLocale.RESUMESCRIPT:
+			BotInteract.scriptPlayPause();
+			break;
+		case BotLocale.STOPSCRIPT:
+			BotInteract.scriptStop();
+			break;
+		case BotLocale.ABOUT:
+			BotInteract.showDialog(BotInteract.Action.ABOUT);
+			break;
+		case BotLocale.LICENSE:
+			BotInteract.showDialog(BotInteract.Action.LICENSE);
+			break;
+		case BotLocale.WEBSITE:
+			BotInteract.openURL(Configuration.URLs.SITE);
+			break;
 		}
 	}
 }

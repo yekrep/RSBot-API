@@ -3,7 +3,7 @@ package org.powerbot.bot;
 import org.powerbot.client.Callback;
 import org.powerbot.client.Render;
 import org.powerbot.event.MessageEvent;
-import org.powerbot.script.xenon.Game;
+import org.powerbot.script.methods.Game;
 
 /**
  * An implementation of callback responsible for processing client callbacks to appropriate bot functions.

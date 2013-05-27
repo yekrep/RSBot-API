@@ -8,7 +8,7 @@ import java.util.Queue;
 import java.util.Random;
 
 import org.powerbot.golem.math.Vector3;
-import org.powerbot.script.internal.input.MouseSimulator;
+import org.powerbot.script.internal.MouseSimulator;
 
 /**
  * A human simulated mouse implementation.

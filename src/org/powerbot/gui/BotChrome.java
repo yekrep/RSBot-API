@@ -14,16 +14,25 @@ import java.util.concurrent.Future;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.swing.*;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.SwingUtilities;
+import javax.swing.Timer;
+import javax.swing.WindowConstants;
 
-import javafx.embed.swing.JFXPanel;
 import org.powerbot.bot.Bot;
-import org.powerbot.gui.component.*;
-import org.powerbot.gui.controller.BotInteract;
+import org.powerbot.gui.component.BotLocale;
+import org.powerbot.gui.component.BotLogPane;
+import org.powerbot.gui.component.BotMenuBar;
+import org.powerbot.gui.component.BotPanel;
 import org.powerbot.ipc.Controller;
 import org.powerbot.ipc.ScheduledChecks;
 import org.powerbot.service.NetworkAccount;
-import org.powerbot.util.*;
+import org.powerbot.util.Configuration;
+import org.powerbot.util.LoadOSX;
+import org.powerbot.util.LoadUpdates;
+import org.powerbot.util.Tracker;
 import org.powerbot.util.io.Resources;
 
 /**

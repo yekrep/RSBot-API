@@ -1,6 +1,7 @@
 package org.powerbot.gui.controller;
 
-import java.awt.*;
+import java.awt.Desktop;
+import java.awt.Dimension;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.net.URI;
@@ -8,15 +9,20 @@ import java.net.URISyntaxException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.swing.*;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 import org.powerbot.Boot;
 import org.powerbot.bot.Bot;
-import org.powerbot.gui.*;
+import org.powerbot.gui.BotAbout;
+import org.powerbot.gui.BotAccounts;
+import org.powerbot.gui.BotChrome;
+import org.powerbot.gui.BotScripts;
+import org.powerbot.gui.BotSignin;
 import org.powerbot.gui.component.BotLocale;
 import org.powerbot.ipc.Controller;
-import org.powerbot.script.internal.ScriptManager;
-import org.powerbot.script.xenon.Game;
+import org.powerbot.script.framework.ScriptManager;
+import org.powerbot.script.methods.Game;
 import org.powerbot.service.NetworkAccount;
 import org.powerbot.util.Configuration;
 import org.powerbot.util.Tracker;
@@ -139,7 +145,7 @@ public final class BotInteract {
 	public static boolean toggleLogPane() {
 		final BotChrome parent = BotChrome.getInstance();
 		parent.logpane.setVisible(!parent.logpane.isVisible());
-		final int[] h = { parent.logpane.getSize().height, parent.logpane.getPreferredSize().height };
+		final int[] h = {parent.logpane.getSize().height, parent.logpane.getPreferredSize().height};
 		parent.setSize(new Dimension(parent.getSize().width, parent.getSize().height + h[h[0] == 0 ? 1 : 0] * (parent.logpane.isVisible() ? 1 : -1)));
 		return parent.logpane.isVisible();
 	}

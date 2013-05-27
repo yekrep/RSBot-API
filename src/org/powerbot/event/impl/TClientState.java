@@ -3,7 +3,7 @@ package org.powerbot.event.impl;
 import java.awt.Graphics;
 
 import org.powerbot.event.TextPaintListener;
-import org.powerbot.script.xenon.Game;
+import org.powerbot.script.methods.Game;
 import org.powerbot.util.StringUtil;
 
 /**

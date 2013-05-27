@@ -57,7 +57,10 @@ Copyright � 2003-2007 Apple, Inc., All Rights Reserved
 
 package apple.dts.samplecode.osxadapter;
 
-import java.lang.reflect.*;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 
 
 @SuppressWarnings({"unchecked", "RedundantArrayCreation"})
@@ -85,8 +88,8 @@ public class OSXAdapter implements InvocationHandler {
 		// If we're setting a handler, enable the About menu item by calling
 		// com.apple.eawt.Application reflectively
 		try {
-			Method enableAboutMethod = macOSXApplication.getClass().getDeclaredMethod("setEnabledAboutMenu", new Class[] { boolean.class });
-			enableAboutMethod.invoke(macOSXApplication, new Object[] { Boolean.valueOf(enableAboutMenu) });
+			Method enableAboutMethod = macOSXApplication.getClass().getDeclaredMethod("setEnabledAboutMenu", new Class[]{boolean.class});
+			enableAboutMethod.invoke(macOSXApplication, new Object[]{Boolean.valueOf(enableAboutMenu)});
 		} catch (Exception ex) {
 			System.err.println("OSXAdapter could not access the About Menu");
 			ex.printStackTrace();
@@ -103,8 +106,8 @@ public class OSXAdapter implements InvocationHandler {
 		// If we're setting a handler, enable the Preferences menu item by calling
 		// com.apple.eawt.Application reflectively
 		try {
-			Method enablePrefsMethod = macOSXApplication.getClass().getDeclaredMethod("setEnabledPreferencesMenu", new Class[] { boolean.class });
-			enablePrefsMethod.invoke(macOSXApplication, new Object[] { Boolean.valueOf(enablePrefsMenu) });
+			Method enablePrefsMethod = macOSXApplication.getClass().getDeclaredMethod("setEnabledPreferencesMenu", new Class[]{boolean.class});
+			enablePrefsMethod.invoke(macOSXApplication, new Object[]{Boolean.valueOf(enablePrefsMenu)});
 		} catch (Exception ex) {
 			System.err.println("OSXAdapter could not access the About Menu");
 			ex.printStackTrace();
@@ -121,9 +124,9 @@ public class OSXAdapter implements InvocationHandler {
 			public boolean callTarget(Object appleEvent) {
 				if (appleEvent != null) {
 					try {
-						Method getFilenameMethod = appleEvent.getClass().getDeclaredMethod("getFilename", (Class[])null);
-						String filename = (String) getFilenameMethod.invoke(appleEvent, (Object[])null);
-						this.targetMethod.invoke(this.targetObject, new Object[] { filename });
+						Method getFilenameMethod = appleEvent.getClass().getDeclaredMethod("getFilename", (Class[]) null);
+						String filename = (String) getFilenameMethod.invoke(appleEvent, (Object[]) null);
+						this.targetMethod.invoke(this.targetObject, new Object[]{filename});
 					} catch (Exception ex) {
 
 					}
@@ -138,13 +141,13 @@ public class OSXAdapter implements InvocationHandler {
 		try {
 			Class applicationClass = Class.forName("com.apple.eawt.Application");
 			if (macOSXApplication == null) {
-				macOSXApplication = applicationClass.getConstructor((Class[])null).newInstance((Object[])null);
+				macOSXApplication = applicationClass.getConstructor((Class[]) null).newInstance((Object[]) null);
 			}
 			Class applicationListenerClass = Class.forName("com.apple.eawt.ApplicationListener");
-			Method addListenerMethod = applicationClass.getDeclaredMethod("addApplicationListener", new Class[] { applicationListenerClass });
+			Method addListenerMethod = applicationClass.getDeclaredMethod("addApplicationListener", new Class[]{applicationListenerClass});
 			// Create a proxy object around this handler that can be reflectively added as an Apple ApplicationListener
-			Object osxAdapterProxy = Proxy.newProxyInstance(OSXAdapter.class.getClassLoader(), new Class[] { applicationListenerClass }, adapter);
-			addListenerMethod.invoke(macOSXApplication, new Object[] { osxAdapterProxy });
+			Object osxAdapterProxy = Proxy.newProxyInstance(OSXAdapter.class.getClassLoader(), new Class[]{applicationListenerClass}, adapter);
+			addListenerMethod.invoke(macOSXApplication, new Object[]{osxAdapterProxy});
 		} catch (ClassNotFoundException cnfe) {
 			System.err.println("This version of Mac OS X does not support the Apple EAWT.  ApplicationEvent handling has been disabled (" + cnfe + ")");
 		} catch (Exception ex) {  // Likely a NoSuchMethodException or an IllegalAccessException loading/invoking eawt.Application methods
@@ -165,7 +168,7 @@ public class OSXAdapter implements InvocationHandler {
 	// that comes with the various callbacks
 	// See setFileHandler above for an example
 	public boolean callTarget(Object appleEvent) throws InvocationTargetException, IllegalAccessException {
-		Object result = targetMethod.invoke(targetObject, (Object[])null);
+		Object result = targetMethod.invoke(targetObject, (Object[]) null);
 		if (result == null) {
 			return true;
 		}
@@ -174,7 +177,7 @@ public class OSXAdapter implements InvocationHandler {
 
 	// InvocationHandler implementation
 	// This is the entry point for our proxy object; it is called every time an ApplicationListener method is invoked
-	public Object invoke (Object proxy, Method method, Object[] args) throws Throwable {
+	public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 		if (isCorrectMethod(method, args)) {
 			boolean handled = callTarget(args[0]);
 			setApplicationEventHandled(args[0], handled);
@@ -194,9 +197,9 @@ public class OSXAdapter implements InvocationHandler {
 	protected void setApplicationEventHandled(Object event, boolean handled) {
 		if (event != null) {
 			try {
-				Method setHandledMethod = event.getClass().getDeclaredMethod("setHandled", new Class[] { boolean.class });
+				Method setHandledMethod = event.getClass().getDeclaredMethod("setHandled", new Class[]{boolean.class});
 				// If the target method returns a boolean, use that as a hint
-				setHandledMethod.invoke(event, new Object[] { Boolean.valueOf(handled) });
+				setHandledMethod.invoke(event, new Object[]{Boolean.valueOf(handled)});
 			} catch (Exception ex) {
 				System.err.println("OSXAdapter was unable to handle an ApplicationEvent: " + event);
 				ex.printStackTrace();

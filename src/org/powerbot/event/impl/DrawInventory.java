@@ -6,10 +6,10 @@ import java.awt.Graphics;
 import java.awt.Point;
 
 import org.powerbot.event.PaintListener;
-import org.powerbot.script.xenon.Game;
-import org.powerbot.script.xenon.tabs.Inventory;
-import org.powerbot.script.xenon.wrappers.Component;
-import org.powerbot.script.xenon.wrappers.Item;
+import org.powerbot.script.methods.Game;
+import org.powerbot.script.methods.tabs.Inventory;
+import org.powerbot.script.wrappers.Component;
+import org.powerbot.script.wrappers.Item;
 
 public class DrawInventory implements PaintListener {
 	public void onRepaint(final Graphics render) {
@@ -22,7 +22,7 @@ public class DrawInventory implements PaintListener {
 		for (final Item item : items) {
 			final Component c = item.getComponent();
 			final Point p = c.getAbsoluteLocation();
-			render.drawString(c.getItemId()+"", p.x, p.y + fontMetrics.getHeight());
+			render.drawString(c.getItemId() + "", p.x, p.y + fontMetrics.getHeight());
 		}
 	}
 }

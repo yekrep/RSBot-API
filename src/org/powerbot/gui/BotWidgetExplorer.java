@@ -33,9 +33,9 @@ import javax.swing.tree.TreeSelectionModel;
 
 import org.powerbot.bot.Bot;
 import org.powerbot.event.PaintListener;
-import org.powerbot.script.xenon.Widgets;
-import org.powerbot.script.xenon.wrappers.Component;
-import org.powerbot.script.xenon.wrappers.Widget;
+import org.powerbot.script.methods.Widgets;
+import org.powerbot.script.wrappers.Component;
+import org.powerbot.script.wrappers.Widget;
 import org.powerbot.util.Tracker;
 import org.powerbot.util.io.Resources;
 

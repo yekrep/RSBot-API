@@ -1,14 +1,14 @@
 package org.powerbot.util;
 
-import apple.dts.samplecode.osxadapter.OSXAdapter;
-import org.powerbot.gui.controller.BotInteract;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.lang.reflect.Method;
 import java.util.concurrent.Callable;
+
+import apple.dts.samplecode.osxadapter.OSXAdapter;
+import org.powerbot.gui.controller.BotInteract;
 
 /**
  * @author Paris
@@ -20,10 +20,13 @@ public class LoadOSX implements Callable<Boolean> {
 		if (Configuration.OS == Configuration.OperatingSystem.MAC) {
 			for (final Method m : getClass().getDeclaredMethods()) {
 				if (m.isAnnotationPresent(OSXAdapterInfo.class)) {
-					switch (m.getAnnotation(OSXAdapterInfo.class).mode())
-					{
-						case 1: OSXAdapter.setAboutHandler(this, m); break;
-						case 2: OSXAdapter.setQuitHandler(this, m); break;
+					switch (m.getAnnotation(OSXAdapterInfo.class).mode()) {
+					case 1:
+						OSXAdapter.setAboutHandler(this, m);
+						break;
+					case 2:
+						OSXAdapter.setQuitHandler(this, m);
+						break;
 					}
 				}
 			}
