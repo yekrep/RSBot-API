@@ -312,7 +312,7 @@ public strictfp class MersenneTwister extends java.util.Random implements Serial
 		for (mti = 1; mti < N; mti++) {
 			mt[mti] =
 					(1812433253 * (mt[mti - 1] ^ (mt[mti - 1] >>> 30)) + mti);
-		    /* See Knuth TAOCP Vol2. 3rd Ed. P.106 for multiplier. */
+			/* See Knuth TAOCP Vol2. 3rd Ed. P.106 for multiplier. */
             /* In the previous versions, MSBs of the seed affect   */
             /* only MSBs of the array mt[].                        */
             /* 2002/01/09 modified by Makoto Matsumoto             */
