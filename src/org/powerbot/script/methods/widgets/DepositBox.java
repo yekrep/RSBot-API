@@ -191,7 +191,9 @@ public class DepositBox {
 		final Component c = Widgets.get(WIDGET, COMPONENT_BUTTON_DEPOSIT_INVENTORY);
 		if (c == null || !c.isValid()) return false;
 		if (Inventory.isEmpty()) return true;
-		return c.click();
+		final int inv = Inventory.getCount(true);
+		if (c.click()) for (int i = 0; i < 25 && Inventory.getCount(true) == inv; i++) Delay.sleep(100, 200);
+		return Inventory.getCount(true) != inv;
 	}
 
 	public static boolean depositEquipment() {
