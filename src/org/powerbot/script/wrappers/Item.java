@@ -14,17 +14,27 @@ import org.powerbot.util.StringUtil;
 
 public class Item implements Validatable {
 	private final int id;
+	private final int stack;
 	private final Component component;
 	private final WeakReference<RSItem> item;
 
+	public Item(int id, int stack) {
+		this.id = id;
+		this.stack = stack;
+		this.component = null;
+		this.item = null;
+	}
+
 	public Item(final RSItem item) {
 		this.id = item.getId();
+		this.stack = -1;
 		this.component = null;
 		this.item = new WeakReference<>(item);
 	}
 
 	public Item(final Component component) {
 		this.id = component.getItemId();
+		this.stack = -1;
 		this.component = component;
 		this.item = null;
 	}
@@ -36,7 +46,8 @@ public class Item implements Validatable {
 	public int getStackSize() {
 		final RSItem item = this.item.get();
 		if (item != null) return item.getStackSize();
-		return component != null && component.getItemId() == this.id ? component.getItemStackSize() : -1;
+		if (component != null) return component.getItemId() == this.id ? component.getItemStackSize() : -1;
+		return stack;
 	}
 
 	public String getName() {
@@ -69,15 +80,15 @@ public class Item implements Validatable {
 	@Override
 	public boolean isValid() {
 		if (this.component != null && this.component.isValid() && this.component.getItemId() == this.id) return true;
-		final RSItem item = this.item.get();
-		return item != null;
+		if (this.item != null && this.item.get() != null) return true;
+		return false;
 	}
 
 	@Override
 	public boolean equals(final Object o) {
 		if (o == null || !(o instanceof Item)) return false;
 		final Item i = (Item) o;
-		return this.id == i.id &&
+		return this.id == i.id && this.stack == i.stack &&
 				(this.component == null || this.component.equals(i.component)) &&
 				(this.item == null || this.item == i.item);
 	}
