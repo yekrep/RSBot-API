@@ -46,12 +46,38 @@ public class TilePath extends Path {
 
 	@Override
 	public Tile getNext() {
-		final Tile dest = Movement.getDestination();
-		for (int i = tiles.length - 1; i >= 0; --i) {
+		/* Get current destination */
+		Tile dest = Movement.getDestination();
+		/* Label main loop for continuing purposes */
+		out:
+		/* Iterate over all tiles but the first tile (0) starting with the last (length - 1). */
+		for (int i = tiles.length - 1; i > 0; --i) {
+			/* The tiles not on screen, go to the next. */
 			if (!tiles[i].isOnMap()) continue;
-			if (dest == null || Movement.distance(dest, tiles[i - 1]) < 3) return tiles[i];
+			/* If our destination is null, assume mid path and continue there. */
+			/* LARGELY SPACED PATH SUPPORT: If the current destination is the tile on the map, return that tile
+			 * as the next one will be coming soon (we hope/assume this, as short spaced paths should never experience
+			 * this condition as one will be on map before it reaches the current target). */
+			if (dest == null || Movement.distance(tiles[i], dest) < 3d) return tiles[i];
+			/* Tile is on map and isn't currently "targeted" (dest), let's check it out.
+			 * Iterate over all tiles succeeding it. */
+			for (int a = i - 1; a >= 0; --a) {
+				/* The tile before the tile on map isn't on map.  Break out to the next tile.
+				 * Explanation: Path wraps around something and must be followed.
+				 * We cannot suddenly click out of a "pathable" region (104x104).
+				 * In these cases, we can assume a better tile will become available. */
+				if (!tiles[a].isOnMap()) continue out;
+				/* If a tile (successor) is currently targeted, return the tile that was the "best"
+				 * on the map for getNext as we can safely assume we're following our path. */
+				if (Movement.distance(tiles[a], dest) < 3d) return tiles[i];
+			}
 		}
-		if (tiles[0].isOnMap()) return tiles[0];
+		/* Well, we've made it this far.  Return the first tile if nothing else is on our map.
+		* CLICKING BACK AND FORTH PREVENTION: check for dest not to be null if we're just starting
+		 * our path.  If our destination isn't null and we somehow got to our first tile then
+		 * we can safely assume lag is being experienced and return null until next call of getNext. */
+		if (dest == null && tiles[0].isOnMap()) return tiles[0];
+		/* Where are we? ++fail */
 		return null;
 	}
 
