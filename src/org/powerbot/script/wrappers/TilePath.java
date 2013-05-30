@@ -33,7 +33,7 @@ public class TilePath extends Path {
 				Movement.setRunning(true);
 			}
 			if (options.contains(TraversalOption.SPACE_ACTIONS) && dest != null && local.isInMotion() && Movement.distance(next, dest) < 3d) {
-				if (Movement.distanceTo(dest) > Random.nextDouble(4d, 6d)) return true;
+				if (Movement.distanceTo(dest) > Random.nextDouble(4d, 7d)) return true;
 			}
 		}
 		return Movement.stepTowards(next);
