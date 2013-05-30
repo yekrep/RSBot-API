@@ -108,4 +108,6 @@ public interface Client {
 	public void setCallback(Callback callback);
 
 	public Canvas getCanvas();
+
+	public HashTable getItemSlots();
 }
