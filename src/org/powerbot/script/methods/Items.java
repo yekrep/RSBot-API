@@ -7,9 +7,9 @@ import org.powerbot.client.ItemSlot;
 import org.powerbot.script.wrappers.Item;
 
 public class Items {//you might want to move/hide this class
-	public static final int INDEX_INVENTORY = 0;
-	public static final int INDEX_EQUIPMENT = 0;
-	public static final int INDEX_BANK = 0;
+	public static final int INDEX_INVENTORY = 93;
+	public static final int INDEX_EQUIPMENT = 670;
+	public static final int INDEX_BANK = 95;
 
 	private static Item[] getItems(int index) {
 		final Client client = Bot.client();
