@@ -75,10 +75,13 @@ public class TilePath extends Path {
 		/* Well, we've made it this far.  Return the first tile if nothing else is on our map.
 		* CLICKING BACK AND FORTH PREVENTION: check for dest not to be null if we're just starting
 		 * our path.  If our destination isn't null and we somehow got to our first tile then
-		 * we can safely assume lag is being experienced and return null until next call of getNext. */
-		if (dest == null && tiles[0].isOnMap()) return tiles[0];
-		/* Where are we? ++fail */
-		return null;
+		 * we can safely assume lag is being experienced and return null until next call of getNext.
+		 * TELEPORTATION SUPPORT: If destination is set but but we're not moving, assume
+		 * invalid destination tile from teleportation reset and return first tile. */
+		if (!tiles[0].isOnMap()) return null;
+		Player p = Players.getLocal();
+		if (dest != null && p != null && p.isInMotion()) return null;
+		return tiles[0];
 	}
 
 	@Override
