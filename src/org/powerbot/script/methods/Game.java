@@ -178,29 +178,31 @@ public class Game {
 		return tileHeight(x, y, -1);
 	}
 
-	public static int tileHeight(final int rX, final int rY, int plane) {
-		final Client client = World.getWorld().getClient();
+	public static int tileHeight(int rX, int rY, int plane) {
+		Client client = World.getWorld().getClient();
 		if (client == null) return 0;
 		if (plane == -1) plane = client.getPlane();
 
-		final RSInfo info = client.getRSGroundInfo();
-		final RSGroundBytes groundBytes = info != null ? info.getGroundBytes() : null;
-		final byte[][][] settings = groundBytes != null ? groundBytes.getBytes() : null;
+		RSInfo world = client.getRSGroundInfo();
+		RSGroundBytes ground = world != null ? world.getGroundBytes() : null;
+		byte[][][] settings = ground != null ? ground.getBytes() : null;
 		if (settings != null) {
-			final int x = rX >> 9, y = rY >> 9;
+			int x = rX >> 9, y = rY >> 9;
 			if (x < 0 || x > 103 || y < 0 || y > 103) return 0;
 			if (plane < 3 && (settings[1][x][y] & 2) != 0) {
 				++plane;
 			}
-			final RSGroundInfo groundInfo = info.getRSGroundInfo();
-			final TileData[] tileData = groundInfo != null ? groundInfo.getTileData() : null;
-			if (tileData == null || plane < 0 || plane >= tileData.length) return 0;
-			final int[][] heights = tileData[plane].getHeights();
+			RSGroundInfo worldGround = world.getRSGroundInfo();
+			TileData[] groundPlanes = worldGround != null ? worldGround.getTileData() : null;
+			if (groundPlanes == null || plane < 0 || plane >= groundPlanes.length) return 0;
+			TileData groundData = groundPlanes[plane];
+			if (groundData == null) return 0;
+			int[][] heights = groundData.getHeights();
 			if (heights != null) {
-				final int aX = rX & 0x1ff;
-				final int aY = rY & 0x1ff;
-				final int start_h = heights[x][y] * (512 - aX) + heights[x + 1][y] * aX >> 9;
-				final int end_h = heights[x][1 + y] * (512 - aX) + heights[x + 1][y + 1] * aX >> 9;
+				int aX = rX & 0x1ff;
+				int aY = rY & 0x1ff;
+				int start_h = heights[x][y] * (512 - aX) + heights[x + 1][y] * aX >> 9;
+				int end_h = heights[x][1 + y] * (512 - aX) + heights[x + 1][y + 1] * aX >> 9;
 				return start_h * (512 - aY) + end_h * aY >> 9;
 			}
 		}
