@@ -22,6 +22,7 @@ public class WidgetCloser extends PollingScript implements RandomEvent {
 			1218 << 16 | 77, // advanced skill guide
 			1107 << 16 | 157, // clan popups
 			755 << 16 | 44, // world map
+			438 << 16 | 22, //membership refer friend
 	};
 	private final Timer threshold;
 	private Component component;
