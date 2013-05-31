@@ -56,8 +56,6 @@ public class Game {
 	public static final int INDEX_MAP_LOADED = 11;
 	public static final int INDEX_MAP_LOADING = 12;
 	public static final int[] INDEX_LOGGED_IN = {INDEX_MAP_LOADED, INDEX_MAP_LOADING};
-	public static final Toolkit toolkit;
-	public static final Viewport viewport;
 	public static final int[] SIN_TABLE = new int[16384];
 	public static final int[] COS_TABLE = new int[16384];
 
@@ -67,9 +65,6 @@ public class Game {
 			SIN_TABLE[i] = (int) (32768D * Math.sin(i * d));
 			COS_TABLE[i] = (int) (32768D * Math.cos(i * d));
 		}
-
-		toolkit = new Toolkit();
-		viewport = new Viewport();
 	}
 
 	public static int getCurrentTab() {
@@ -222,6 +217,9 @@ public class Game {
 	}
 
 	public static Point worldToScreen(int x, final int y, final int z) {
+		final World world = World.getWorld();
+		final Viewport viewport = world.getViewport();
+		final Toolkit toolkit = world.getToolkit();
 		final float _z = (viewport.zOff + (viewport.zX * x + viewport.zY * y + viewport.zZ * z));
 		final float _x = (viewport.xOff + (viewport.xX * x + viewport.xY * y + viewport.xZ * z));
 		final float _y = (viewport.yOff + (viewport.yX * x + viewport.yY * y + viewport.yZ * z));
@@ -275,6 +273,9 @@ public class Game {
 
 	public static void updateToolkit(final Render render) {
 		if (render == null) return;
+		final World world = World.getWorld();
+		final Viewport viewport = world.getViewport();
+		final Toolkit toolkit = world.getToolkit();
 		toolkit.absoluteX = render.getAbsoluteX();
 		toolkit.absoluteY = render.getAbsoluteY();
 		toolkit.xMultiplier = render.getXMultiplier();

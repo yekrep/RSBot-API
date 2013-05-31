@@ -59,7 +59,7 @@ public class GroundItem extends Interactive implements Locatable, Drawable {
 						(cache = defLoader.getModelCache()) == null || (table = cache.getTable()) == null)
 					return null;
 
-				final int graphicsIndex = Game.toolkit.graphicsIndex;
+				final int graphicsIndex = World.getWorld().getToolkit().graphicsIndex;
 				Object model;
 				if (p != -1 && (model = Game.lookup(table, (long) p | (long) graphicsIndex << 29)) != null &&
 						model instanceof org.powerbot.client.Model) {
