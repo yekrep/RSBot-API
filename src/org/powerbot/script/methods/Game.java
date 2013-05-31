@@ -174,14 +174,9 @@ public class Game {
 		return true;
 	}
 
-	public static int tileHeight(final int x, final int y) {
-		return tileHeight(x, y, -1);
-	}
-
 	public static int tileHeight(int rX, int rY, int plane) {
 		Client client = World.getWorld().getClient();
-		if (client == null) return 0;
-		if (plane == -1) plane = client.getPlane();
+		if (client == null || plane < 0 || plane > 3) return 0;
 
 		RSInfo world = client.getRSGroundInfo();
 		RSGroundBytes ground = world != null ? world.getGroundBytes() : null;
