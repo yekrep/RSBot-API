@@ -95,8 +95,8 @@ class Components {
 				this.index = index;
 				this.compass = -1;
 				this.map = -1;
-				this.tabs = new int[17];
-				for (int i = 0; i < 17; i++) this.tabs[i] = -1;
+				this.tabs = new int[Game.TAB_NAMES.length];
+				for (int i = 0; i < this.tabs.length; i++) this.tabs[i] = -1;
 			}
 		}
 	}
