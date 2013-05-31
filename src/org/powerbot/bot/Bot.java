@@ -34,6 +34,7 @@ import org.powerbot.service.GameAccounts;
  * @author Timer
  */
 public final class Bot implements Runnable, Stoppable {//TODO re-write bot
+	public World world;
 	static final Logger log = Logger.getLogger(Bot.class.getName());
 	private static Bot instance;
 	public final BotComposite composite;
@@ -48,7 +49,6 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 	public BufferedImage image;
 	public volatile boolean refreshing;
 	public int preferredWorld;
-	private Client client;
 	private Constants constants;
 	private BotPanel panel;
 	private GameAccounts.Account account;
@@ -58,6 +58,8 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 	private ScriptManager scriptController;
 
 	private Bot() {
+		this.world = new World();
+
 		appletContainer = null;
 		callback = null;
 		stub = null;
@@ -90,10 +92,6 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 
 	public static boolean instantiated() {
 		return instance != null;
-	}
-
-	public static Client client() {
-		return instance.client;
 	}
 
 	public static Constants constants() {
@@ -174,7 +172,7 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 			appletContainer.destroy();
 			appletContainer = null;
 			stub = null;
-			client = null;
+			this.world.setClient(null);
 		}
 	}
 
@@ -220,7 +218,7 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 
 	public Graphics getBufferGraphics() {
 		final Graphics back = backBuffer.getGraphics();
-		if (client != null && panel != null && !BotChrome.minimised) {
+		if (this.world.getClient() != null && panel != null && !BotChrome.minimised) {
 			paintEvent.graphics = back;
 			textPaintEvent.graphics = back;
 			textPaintEvent.id = 0;
@@ -246,7 +244,7 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 	}
 
 	private void setClient(final Client client) {
-		this.client = client;
+		this.world.setClient(client);
 		client.setCallback(new CallbackImpl(this));
 		constants = new Constants(modScript.constants);
 		new Thread(threadGroup, new SafeMode(this)).start();
@@ -256,6 +254,7 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 	}
 
 	public Canvas getCanvas() {
+		final Client client = world.getClient();
 		return client != null ? client.getCanvas() : null;
 	}
 
@@ -296,7 +295,7 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 		}
 
 		public void run() {
-			if (bot != null && bot.client != null && !Keyboard.isReady()) {
+			if (bot != null && bot.world.getClient() != null && !Keyboard.isReady()) {
 				Delay.sleep(800, 1200);
 				Keyboard.send("s");
 			}

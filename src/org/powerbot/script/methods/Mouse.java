@@ -3,7 +3,8 @@ package org.powerbot.script.methods;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 
-import org.powerbot.bot.Bot;
+import org.powerbot.bot.*;
+import org.powerbot.bot.World;
 import org.powerbot.client.Client;
 import org.powerbot.script.internal.MouseHandler;
 import org.powerbot.script.internal.MouseTarget;
@@ -13,34 +14,34 @@ import org.powerbot.script.wrappers.Targetable;
 
 public class Mouse {
 	public static Point getLocation() {
-		final Client client = Bot.client();
+		final Client client = World.getWorld().getClient();
 		final org.powerbot.client.input.Mouse mouse;
 		if (client == null || (mouse = client.getMouse()) == null) return new Point(-1, -1);
 		return mouse.getLocation();
 	}
 
 	public static Point getPressLocation() {
-		final Client client = Bot.client();
+		final Client client = World.getWorld().getClient();
 		final org.powerbot.client.input.Mouse mouse;
 		if (client == null || (mouse = client.getMouse()) == null) return new Point(-1, -1);
 		return mouse.getPressLocation();
 	}
 
 	public static long getPressTime() {
-		final Client client = Bot.client();
+		final Client client = World.getWorld().getClient();
 		final org.powerbot.client.input.Mouse mouse;
 		if (client == null || (mouse = client.getMouse()) == null) return -1;
 		return mouse.getPressTime();
 	}
 
 	public static boolean isPressed() {
-		final Client client = Bot.client();
+		final Client client = World.getWorld().getClient();
 		final org.powerbot.client.input.Mouse mouse;
 		return !(client == null || (mouse = client.getMouse()) == null) && mouse.isPressed();
 	}
 
 	public static boolean isPresent() {
-		final Client client = Bot.client();
+		final Client client = World.getWorld().getClient();
 		final org.powerbot.client.input.Mouse mouse;
 		return !(client == null || (mouse = client.getMouse()) == null) && mouse.isPresent();
 	}

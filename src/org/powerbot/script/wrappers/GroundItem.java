@@ -5,7 +5,7 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.util.Arrays;
 
-import org.powerbot.bot.Bot;
+import org.powerbot.bot.World;
 import org.powerbot.client.BaseInfo;
 import org.powerbot.client.Cache;
 import org.powerbot.client.Client;
@@ -35,7 +35,7 @@ public class GroundItem extends Interactive implements Locatable, Drawable {
 	}
 
 	public Model getModel(final int p) {
-		final Client client = Bot.client();
+		final Client client = World.getWorld().getClient();
 		if (client == null) return null;
 		final RSInfo info;
 		final BaseInfo baseInfo;

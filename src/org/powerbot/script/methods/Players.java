@@ -2,7 +2,7 @@ package org.powerbot.script.methods;
 
 import java.util.Arrays;
 
-import org.powerbot.bot.Bot;
+import org.powerbot.bot.World;
 import org.powerbot.client.Client;
 import org.powerbot.client.RSPlayer;
 import org.powerbot.script.util.Filter;
@@ -26,7 +26,7 @@ public class Players {
 	 * @return the local {@link Player}
 	 */
 	public static Player getLocal() {
-		final Client client = Bot.client();
+		final Client client = World.getWorld().getClient();
 		if (client == null) return null;
 
 		final RSPlayer p = client.getMyRSPlayer();
@@ -39,7 +39,7 @@ public class Players {
 	 * @return an array of all the loaded {@link Player}s
 	 */
 	public static Player[] getLoaded() {
-		final Client client = Bot.client();
+		final Client client = World.getWorld().getClient();
 		if (client == null) return new Player[0];
 
 		final int[] indices = client.getRSPlayerIndexArray();

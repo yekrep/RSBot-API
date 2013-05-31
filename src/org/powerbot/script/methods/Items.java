@@ -1,6 +1,6 @@
 package org.powerbot.script.methods;
 
-import org.powerbot.bot.Bot;
+import org.powerbot.bot.World;
 import org.powerbot.client.Client;
 import org.powerbot.client.HashTable;
 import org.powerbot.client.ItemSlot;
@@ -12,7 +12,7 @@ public class Items {//you might want to move/hide this class
 	public static final int INDEX_BANK = 95;
 
 	private static Item[] getItems(int index) {
-		final Client client = Bot.client();
+		final Client client = World.getWorld().getClient();
 		final HashTable table;
 		if (client == null || (table = client.getItemSlots()) == null) return new Item[0];
 		Object n = Game.lookup(table, index);

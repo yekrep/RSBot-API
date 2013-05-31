@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.powerbot.bot.Bot;
+import org.powerbot.bot.World;
 import org.powerbot.client.Client;
 import org.powerbot.client.MenuGroupNode;
 import org.powerbot.client.MenuItemNode;
@@ -19,7 +19,7 @@ import org.powerbot.util.StringUtil;
 
 public class Menu {
 	public static boolean isOpen() {
-		final Client client = Bot.client();
+		final Client client = World.getWorld().getClient();
 		return client != null && client.isMenuOpen();
 	}
 
@@ -46,7 +46,7 @@ public class Menu {
 	}
 
 	public static boolean click(final String action, final String option) {
-		final Client client = Bot.client();
+		final Client client = World.getWorld().getClient();
 		if (client == null) return false;
 		int index = indexOf(action, option);
 		if (index == -1) return false;
@@ -70,7 +70,7 @@ public class Menu {
 	}
 
 	public static boolean close() {
-		final Client client = Bot.client();
+		final Client client = World.getWorld().getClient();
 		if (client == null) return false;
 		if (client.isMenuOpen()) {
 			Mouse.move(client.getMenuX() - 30 + Random.nextInt(0, 20), client.getMenuY() - 10 + Random.nextInt(0, 20));
@@ -133,7 +133,7 @@ public class Menu {
 	private static List<MenuItemNode> getMenuItemNodes() {
 		final List<MenuItemNode> nodes = new LinkedList<>();
 
-		final Client client = Bot.client();
+		final Client client = World.getWorld().getClient();
 		if (client == null) return nodes;
 
 		final boolean collapsed;

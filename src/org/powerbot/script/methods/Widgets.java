@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.powerbot.bot.Bot;
+import org.powerbot.bot.World;
 import org.powerbot.client.Client;
 import org.powerbot.client.RSInterfaceBase;
 import org.powerbot.script.util.Delay;
@@ -28,7 +28,7 @@ public class Widgets {
 	 * @return an array of {@link Widget}s which are currently loaded
 	 */
 	public static Widget[] getLoaded() {
-		final Client client = Bot.client();
+		final Client client = World.getWorld().getClient();
 		if (client == null) return null;
 		final RSInterfaceBase[] containers = client.getRSInterfaceCache();
 		final int len = containers != null ? containers.length : 0;
@@ -44,7 +44,7 @@ public class Widgets {
 	 * @return the {@link Widget} respective to the given index
 	 */
 	public static Widget get(final int widget) {
-		final Client client = Bot.client();
+		final Client client = World.getWorld().getClient();
 		if (client == null || widget < 0) return null;
 
 		Widget[] cache = Widgets.cache.get(client);

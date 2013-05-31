@@ -2,7 +2,7 @@ package org.powerbot.script.wrappers;
 
 import java.awt.Point;
 
-import org.powerbot.bot.Bot;
+import org.powerbot.bot.World;
 import org.powerbot.client.Client;
 import org.powerbot.client.CombatStatus;
 import org.powerbot.client.CombatStatusData;
@@ -97,7 +97,7 @@ public abstract class Actor extends Interactive implements Locatable, Drawable {
 		if (index == -1) {
 			return null;
 		}
-		final Client client = Bot.client();
+		final Client client = World.getWorld().getClient();
 		if (client == null) return null;
 		if (index < 32768) {
 			final Object npcNode = Game.lookup(client.getRSNPCNC(), index);
@@ -140,7 +140,7 @@ public abstract class Actor extends Interactive implements Locatable, Drawable {
 	}
 
 	public boolean isInCombat() {
-		final Client client = Bot.client();
+		final Client client = World.getWorld().getClient();
 		if (client == null) return false;
 		final CombatStatusData[] data = getBarData();
 		return data != null && data[1] != null && data[1].getLoopCycleStatus() < client.getLoopCycle();

@@ -3,7 +3,7 @@ package org.powerbot.script.methods;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.powerbot.bot.Bot;
+import org.powerbot.bot.World;
 import org.powerbot.client.Client;
 import org.powerbot.script.wrappers.Component;
 import org.powerbot.script.wrappers.Widget;
@@ -68,7 +68,7 @@ class Components {
 	}
 
 	private static Container get() {
-		final Client client = Bot.client();
+		final Client client = World.getWorld().getClient();
 		if (client == null) return null;
 		Container c = cache.get(client);
 		if (c == null) {

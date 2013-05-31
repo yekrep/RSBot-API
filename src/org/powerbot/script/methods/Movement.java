@@ -2,7 +2,7 @@ package org.powerbot.script.methods;
 
 import java.awt.Point;
 
-import org.powerbot.bot.Bot;
+import org.powerbot.bot.World;
 import org.powerbot.client.Client;
 import org.powerbot.script.util.Delay;
 import org.powerbot.script.wrappers.Component;
@@ -24,7 +24,7 @@ public class Movement {
 	}
 
 	public static Tile getDestination() {
-		final Client client = Bot.client();
+		final Client client = World.getWorld().getClient();
 		if (client == null) return null;
 		final int dX = client.getDestX(), dY = client.getDestY();
 		if (dX == -1 || dY == -1) return null;

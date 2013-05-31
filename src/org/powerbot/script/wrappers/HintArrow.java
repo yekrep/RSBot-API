@@ -3,7 +3,7 @@ package org.powerbot.script.wrappers;
 import java.lang.ref.WeakReference;
 import java.util.Arrays;
 
-import org.powerbot.bot.Bot;
+import org.powerbot.bot.World;
 import org.powerbot.client.Client;
 import org.powerbot.client.RSHintArrow;
 import org.powerbot.client.RSNPC;
@@ -35,7 +35,7 @@ public class HintArrow implements Locatable, Validatable {
 
 	@Override
 	public Tile getLocation() {
-		final Client client = Bot.client();
+		final Client client = World.getWorld().getClient();
 		final RSHintArrow arrow = this.arrow.get();
 		if (client == null || arrow == null) return null;
 
@@ -64,7 +64,7 @@ public class HintArrow implements Locatable, Validatable {
 
 	@Override
 	public boolean isValid() {
-		final Client client = Bot.client();
+		final Client client = World.getWorld().getClient();
 		if (client == null) return false;
 
 		final RSHintArrow arrow = this.arrow.get();

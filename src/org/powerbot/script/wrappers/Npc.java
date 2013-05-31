@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.lang.ref.WeakReference;
 
-import org.powerbot.bot.Bot;
+import org.powerbot.bot.World;
 import org.powerbot.client.Client;
 import org.powerbot.client.RSNPC;
 import org.powerbot.client.RSNPCDef;
@@ -58,7 +58,7 @@ public class Npc extends Actor {
 
 	@Override
 	public boolean isValid() {
-		final Client client = Bot.client();
+		final Client client = World.getWorld().getClient();
 		if (client == null) return false;
 		final RSNPC npc = getAccessor();
 		if (npc != null) {

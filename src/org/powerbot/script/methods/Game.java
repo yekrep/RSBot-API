@@ -6,6 +6,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 
 import org.powerbot.bot.Bot;
+import org.powerbot.bot.World;
 import org.powerbot.client.BaseInfo;
 import org.powerbot.client.Client;
 import org.powerbot.client.Constants;
@@ -106,7 +107,7 @@ public class Game {
 	}
 
 	public static int getClientState() {
-		final Client client = Bot.client();
+		final Client client = World.getWorld().getClient();
 		if (client == null) return -1;
 
 		final Constants constants = Bot.constants();
@@ -132,7 +133,7 @@ public class Game {
 	}
 
 	public static Tile getMapBase() {
-		final Client client = Bot.client();
+		final Client client = World.getWorld().getClient();
 		if (client == null) return null;
 
 		final RSInfo info = client.getRSGroundInfo();
@@ -141,13 +142,13 @@ public class Game {
 	}
 
 	public static int getPlane() {
-		final Client client = Bot.client();
+		final Client client = World.getWorld().getClient();
 		if (client == null) return -1;
 		return client.getPlane();
 	}
 
 	public static boolean isFixed() {
-		final Client client = Bot.client();
+		final Client client = World.getWorld().getClient();
 		if (client == null) return false;
 		return client.getGUIRSInterfaceIndex() != 746;
 	}
@@ -157,7 +158,7 @@ public class Game {
 	}
 
 	public static Dimension getDimensions() {
-		final Client client = Bot.client();
+		final Client client = World.getWorld().getClient();
 		final Canvas canvas;
 		if (client == null || (canvas = client.getCanvas()) == null) return new Dimension(0, 0);
 		return new Dimension(canvas.getWidth(), canvas.getHeight());
@@ -183,7 +184,7 @@ public class Game {
 	}
 
 	public static int tileHeight(final int rX, final int rY, int plane) {
-		final Client client = Bot.client();
+		final Client client = World.getWorld().getClient();
 		if (client == null) return 0;
 		if (plane == -1) plane = client.getPlane();
 
@@ -234,7 +235,7 @@ public class Game {
 	}
 
 	public static Point worldToMap(double x, double y) {
-		final Client client = Bot.client();
+		final Client client = World.getWorld().getClient();
 		if (client == null) return null;
 		final Tile base = getMapBase();
 		final Player player = Players.getLocal();

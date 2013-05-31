@@ -2,7 +2,7 @@ package org.powerbot.script.methods;
 
 import java.awt.event.KeyEvent;
 
-import org.powerbot.bot.Bot;
+import org.powerbot.bot.World;
 import org.powerbot.client.Client;
 import org.powerbot.script.util.Delay;
 import org.powerbot.script.util.Random;
@@ -13,27 +13,27 @@ import org.powerbot.script.wrappers.Tile;
 
 public class Camera {
 	public static int getX() {
-		final Client client = Bot.client();
+		final Client client = World.getWorld().getClient();
 		return client != null ? client.getCamPosX() : -1;
 	}
 
 	public static int getY() {
-		final Client client = Bot.client();
+		final Client client = World.getWorld().getClient();
 		return client != null ? client.getCamPosY() : -1;
 	}
 
 	public static int getZ() {
-		final Client client = Bot.client();
+		final Client client = World.getWorld().getClient();
 		return client != null ? client.getCamPosZ() : -1;
 	}
 
 	public static int getYaw() {
-		final Client client = Bot.client();
+		final Client client = World.getWorld().getClient();
 		return client != null ? (int) (client.getCameraYaw() / 45.51) : -1;
 	}
 
 	public static int getPitch() {
-		final Client client = Bot.client();
+		final Client client = World.getWorld().getClient();
 		return client != null ? (int) ((client.getCameraPitch() - 1024) / 20.48) : -1;
 	}
 

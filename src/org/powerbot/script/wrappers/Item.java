@@ -2,7 +2,7 @@ package org.powerbot.script.wrappers;
 
 import java.lang.ref.WeakReference;
 
-import org.powerbot.bot.Bot;
+import org.powerbot.bot.World;
 import org.powerbot.client.Cache;
 import org.powerbot.client.Client;
 import org.powerbot.client.HashTable;
@@ -65,7 +65,7 @@ public class Item implements Validatable {
 	}
 
 	public ItemDefinition getDefinition() {
-		final Client client = Bot.client();
+		final Client client = World.getWorld().getClient();
 		if (client == null) return null;
 
 		final RSItemDefLoader loader;

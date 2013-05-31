@@ -2,7 +2,7 @@ package org.powerbot.script.methods;
 
 import java.util.Arrays;
 
-import org.powerbot.bot.Bot;
+import org.powerbot.bot.World;
 import org.powerbot.client.Client;
 import org.powerbot.client.HashTable;
 import org.powerbot.client.RSNPC;
@@ -26,7 +26,7 @@ public class Npcs {
 	 * @return an array of the loaded {@link Npc}s
 	 */
 	public static Npc[] getLoaded() {
-		final Client client = Bot.client();
+		final Client client = World.getWorld().getClient();
 		if (client == null) return new Npc[0];
 
 		final int[] indices = client.getRSNPCIndexArray();

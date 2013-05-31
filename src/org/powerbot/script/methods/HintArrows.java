@@ -2,7 +2,7 @@ package org.powerbot.script.methods;
 
 import java.util.Arrays;
 
-import org.powerbot.bot.Bot;
+import org.powerbot.bot.World;
 import org.powerbot.client.Client;
 import org.powerbot.client.RSHintArrow;
 import org.powerbot.script.wrappers.HintArrow;
@@ -19,7 +19,7 @@ public class HintArrows {
 	 * @return an array of loaded {@link HintArrow}s
 	 */
 	public static HintArrow[] getLoaded() {
-		final Client client = Bot.client();
+		final Client client = World.getWorld().getClient();
 		if (client == null) return new HintArrow[0];
 
 		final RSHintArrow[] arr = client.getRSHintArrows();

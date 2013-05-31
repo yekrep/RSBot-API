@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.powerbot.bot.Bot;
+import org.powerbot.bot.World;
 import org.powerbot.client.Client;
 import org.powerbot.client.HashTable;
 import org.powerbot.client.NodeDeque;
@@ -27,7 +27,7 @@ public class GroundItems {
 	public static GroundItem[] getLoaded(final int _x, final int _y, final int range) {
 		final Set<GroundItem> items = new HashSet<>();
 
-		final Client client = Bot.client();
+		final Client client = World.getWorld().getClient();
 		if (client == null) return new GroundItem[0];
 
 		final HashTable table = client.getRSItemHashTable();

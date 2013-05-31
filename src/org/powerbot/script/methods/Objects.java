@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import org.powerbot.bot.Bot;
+import org.powerbot.bot.World;
 import org.powerbot.client.BaseInfo;
 import org.powerbot.client.Client;
 import org.powerbot.client.RSAnimableNode;
@@ -26,7 +26,7 @@ public class Objects {
 
 	public static GameObject[] getLoaded(int _x, int _y, final int range) {
 		final Set<GameObject> objects = new LinkedHashSet<>();
-		final Client client = Bot.client();
+		final Client client = World.getWorld().getClient();
 		if (client == null) return new GameObject[0];
 
 		final RSInfo info;

@@ -6,7 +6,7 @@ import java.awt.Point;
 import java.lang.ref.WeakReference;
 import java.util.Arrays;
 
-import org.powerbot.bot.Bot;
+import org.powerbot.bot.World;
 import org.powerbot.client.Cache;
 import org.powerbot.client.Client;
 import org.powerbot.client.HashTable;
@@ -54,7 +54,7 @@ public class GameObject extends Interactive implements Locatable, Drawable {
 	}
 
 	public ObjectDefinition getDefinition() {
-		final Client client = Bot.client();
+		final Client client = World.getWorld().getClient();
 		if (client == null) return null;
 
 		final RSInfo info;

@@ -1,6 +1,6 @@
 package org.powerbot.script.methods;
 
-import org.powerbot.bot.Bot;
+import org.powerbot.bot.World;
 import org.powerbot.client.Client;
 import org.powerbot.client.PlayerMetaInfo;
 
@@ -16,7 +16,7 @@ public class Settings {
 	 * @return an array of the game's settings
 	 */
 	public static int[] getArray() {
-		final Client client = Bot.client();
+		final Client client = World.getWorld().getClient();
 		final PlayerMetaInfo info;
 		if (client == null || (info = client.getPlayerMetaInfo()) == null) return new int[0];
 		final org.powerbot.client.Settings settings;
