@@ -5,16 +5,17 @@ import java.awt.Graphics;
 import java.lang.ref.WeakReference;
 import java.util.Arrays;
 
-import org.powerbot.bot.World;
 import org.powerbot.client.Client;
 import org.powerbot.client.RSPlayer;
 import org.powerbot.client.RSPlayerComposite;
+import org.powerbot.script.methods.World;
 
 public class Player extends Actor {
 	public static final Color TARGET_COLOR = new Color(255, 0, 0, 15);
 	private final WeakReference<RSPlayer> player;
 
-	public Player(final RSPlayer player) {
+	public Player(World world, final RSPlayer player) {
+		super(world);
 		this.player = new WeakReference<>(player);
 	}
 
@@ -75,7 +76,7 @@ public class Player extends Actor {
 
 	@Override
 	public boolean isValid() {
-		final Client client = World.getWorld().getClient();
+		final Client client = world.getClient();
 		if (client == null) return false;
 		final RSPlayer character = getAccessor();
 		final RSPlayer[] players = client.getRSPlayerArray();

@@ -7,13 +7,14 @@ import org.powerbot.client.RSCharacter;
 import org.powerbot.client.RSInteractableData;
 import org.powerbot.client.RSInteractableLocation;
 import org.powerbot.script.methods.Game;
+import org.powerbot.script.methods.World;
 
 class ActorModel extends Model {
 	private final Reference<RSCharacter> character;
 	private final int[] x_base, z_base;
 
-	public ActorModel(final org.powerbot.client.Model model, final RSCharacter character) {
-		super(model);
+	public ActorModel(World world, final org.powerbot.client.Model model, final RSCharacter character) {
+		super(world, model);
 		this.character = new WeakReference<>(character);
 		x_base = xPoints;
 		z_base = zPoints;

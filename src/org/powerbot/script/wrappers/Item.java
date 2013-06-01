@@ -2,37 +2,40 @@ package org.powerbot.script.wrappers;
 
 import java.lang.ref.WeakReference;
 
-import org.powerbot.bot.World;
 import org.powerbot.client.Cache;
 import org.powerbot.client.Client;
 import org.powerbot.client.HashTable;
 import org.powerbot.client.RSItem;
 import org.powerbot.client.RSItemDef;
 import org.powerbot.client.RSItemDefLoader;
-import org.powerbot.script.methods.Game;
+import org.powerbot.script.methods.World;
+import org.powerbot.script.methods.WorldImpl;
 import org.powerbot.util.StringUtil;
 
-public class Item implements Validatable {
+public class Item extends WorldImpl implements Validatable {
 	private final int id;
 	private final int stack;
 	private final Component component;
 	private final WeakReference<RSItem> item;
 
-	public Item(int id, int stack) {
+	public Item(World world, int id, int stack) {
+		super(world);
 		this.id = id;
 		this.stack = stack;
 		this.component = null;
 		this.item = null;
 	}
 
-	public Item(final RSItem item) {
+	public Item(World world, final RSItem item) {
+		super(world);
 		this.id = item.getId();
 		this.stack = -1;
 		this.component = null;
 		this.item = new WeakReference<>(item);
 	}
 
-	public Item(final Component component) {
+	public Item(World world, final Component component) {
+		super(world);
 		this.id = component.getItemId();
 		this.stack = -1;
 		this.component = component;
@@ -65,7 +68,7 @@ public class Item implements Validatable {
 	}
 
 	public ItemDefinition getDefinition() {
-		final Client client = World.getWorld().getClient();
+		final Client client = world.getClient();
 		if (client == null) return null;
 
 		final RSItemDefLoader loader;
@@ -73,7 +76,7 @@ public class Item implements Validatable {
 		final HashTable table;
 		if ((loader = client.getRSItemDefLoader()) == null ||
 				(cache = loader.getCache()) == null || (table = cache.getTable()) == null) return null;
-		final Object o = Game.lookup(table, this.id);
+		final Object o = world.game.lookup(table, this.id);
 		return o != null && o instanceof RSItemDef ? new ItemDefinition(this, (RSItemDef) o) : null;
 	}
 

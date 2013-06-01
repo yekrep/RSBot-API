@@ -7,14 +7,14 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import org.powerbot.bot.World;
 import org.powerbot.client.ModelCapture;
 import org.powerbot.script.methods.Game;
-import org.powerbot.script.methods.Widgets;
+import org.powerbot.script.methods.World;
+import org.powerbot.script.methods.WorldImpl;
 import org.powerbot.script.methods.widgets.ActionBar;
 import org.powerbot.script.util.Random;
 
-public abstract class Model {
+public abstract class Model extends WorldImpl {
 	protected final int[] yPoints;
 	protected final short[] faceA;
 	protected final short[] faceB;
@@ -24,7 +24,8 @@ public abstract class Model {
 	protected int[] xPoints;
 	protected int[] zPoints;
 
-	public Model(final org.powerbot.client.Model model) {
+	public Model(World world, final org.powerbot.client.Model model) {
+		super(world);
 		xPoints = model.getXPoints();
 		yPoints = model.getYPoints();
 		zPoints = model.getZPoints();
@@ -62,13 +63,13 @@ public abstract class Model {
 		final int x = getX();
 		final int y = getY();
 		final int plane = getPlane();
-		final int height = Game.tileHeight(x, y, plane);
-		final Point localPoint = Game.worldToScreen(
+		final int height = world.game.tileHeight(x, y, plane);
+		final Point localPoint = world.game.worldToScreen(
 				x + (this.xPoints[this.faceA[index]] + this.xPoints[this.faceB[index]] + this.xPoints[this.faceC[index]]) / 3,
 				height + (this.yPoints[this.faceA[index]] + this.yPoints[this.faceB[index]] + this.yPoints[this.faceC[index]]) / 3,
 				y + (this.zPoints[this.faceA[index]] + this.zPoints[this.faceB[index]] + this.zPoints[this.faceC[index]]) / 3
 		);
-		return Game.isPointOnScreen(localPoint) ? localPoint : null;
+		return world.game.isPointOnScreen(localPoint) ? localPoint : null;
 	}
 
 	public Point getCenterPoint() {
@@ -85,7 +86,7 @@ public abstract class Model {
 		final int x = getX();
 		final int y = getY();
 		final int plane = getPlane();
-		final int height = Game.tileHeight(x, y, plane);
+		final int height = world.game.tileHeight(x, y, plane);
 
 		while (index < numFaces) {
 			totalXAverage += (xPoints[faceA[index]] + xPoints[faceB[index]] + xPoints[faceC[index]]) / 3;
@@ -94,13 +95,13 @@ public abstract class Model {
 			index++;
 		}
 
-		final Point averagePoint = Game.worldToScreen(
+		final Point averagePoint = world.game.worldToScreen(
 				x + totalXAverage / numFaces,
 				height + totalHeightAverage / numFaces,
 				y + totalYAverage / numFaces
 		);
 
-		if (Game.isPointOnScreen(averagePoint)) {
+		if (world.game.isPointOnScreen(averagePoint)) {
 			return averagePoint;
 		}
 		return new Point(-1, -1);
@@ -182,13 +183,13 @@ public abstract class Model {
 		final int x = getX();
 		final int y = getY();
 		final int plane = getPlane();
-		final int h = Game.tileHeight(x, y, plane);
+		final int h = world.game.tileHeight(x, y, plane);
 		int index = pos;
-		final boolean fixed = Game.isFixed();
-		final Component c = Widgets.get(ActionBar.WIDGET, ActionBar.COMPONENT_BAR);
+		final boolean fixed = world.game.isFixed();
+		final Component c = world.widgets.get(ActionBar.WIDGET, ActionBar.COMPONENT_BAR);
 		final Rectangle r = c != null && c.isVisible() ? c.getBoundingRect() : null;
 		while (index < length) {
-			final Point point = Game.worldToScreen(
+			final Point point = world.game.worldToScreen(
 					x + (this.xPoints[this.faceA[index]] + this.xPoints[this.faceB[index]] + this.xPoints[this.faceC[index]]) / 3,
 					h + (this.yPoints[this.faceA[index]] + this.yPoints[this.faceB[index]] + this.yPoints[this.faceC[index]]) / 3,
 					y + (this.zPoints[this.faceA[index]] + this.zPoints[this.faceB[index]] + this.zPoints[this.faceC[index]]) / 3
@@ -219,7 +220,6 @@ public abstract class Model {
 	}
 
 	private int[][] projectVertices() {
-		final World world = World.getWorld();
 		final Game.Viewport viewport = world.getViewport();
 		final Game.Toolkit toolkit = world.getToolkit();
 
@@ -227,7 +227,7 @@ public abstract class Model {
 		final int locX = getX();
 		final int locY = getY();
 		final int plane = getPlane();
-		final int height = Game.tileHeight(locX, locY, plane);
+		final int height = world.game.tileHeight(locX, locY, plane);
 
 		final int[][] screen = new int[numVertices][3];
 		for (int index = 0; index < numVertices; index++) {

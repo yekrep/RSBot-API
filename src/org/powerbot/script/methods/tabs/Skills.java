@@ -1,11 +1,12 @@
 package org.powerbot.script.methods.tabs;
 
-import org.powerbot.bot.World;
 import org.powerbot.client.Client;
 import org.powerbot.client.PlayerMetaInfo;
 import org.powerbot.client.Skill;
+import org.powerbot.script.methods.World;
+import org.powerbot.script.methods.WorldImpl;
 
-public class Skills {
+public class Skills extends WorldImpl {
 	public static final int[] XP_TABLE = {0, 0, 83, 174, 276, 388, 512, 650, 801, 969, 1154, 1358, 1584, 1833, 2107,
 			2411, 2746, 3115, 3523, 3973, 4470, 5018, 5624, 6291, 7028, 7842, 8740, 9730, 10824, 12031, 13363, 14833,
 			16456, 18247, 20224, 22406, 24815, 27473, 30408, 33648, 37224, 41171, 45529, 50339, 55649, 61512, 67983,
@@ -42,26 +43,30 @@ public class Skills {
 	public static final int SUMMONING = 23;
 	public static final int DUNGEONEERING = 24;
 
-	public static int getLevel(final int index) {
+	public Skills(World world) {
+		super(world);
+	}
+
+	public int getLevel(final int index) {
 		final int[] levels = getLevels();
 		if (index >= 0 && index < levels.length) return -1;
 		return levels[index];
 	}
 
-	public static int getRealLevel(final int index) {
+	public int getRealLevel(final int index) {
 		final int[] levels = getRealLevels();
 		if (index >= 0 && index < levels.length) return -1;
 		return levels[index];
 	}
 
-	public static int getExperience(final int index) {
+	public int getExperience(final int index) {
 		final int[] exps = getExperiences();
 		if (index >= 0 && index < exps.length) return -1;
 		return exps[index];
 	}
 
-	public static int[] getLevels() {
-		final Client client = World.getWorld().getClient();
+	public int[] getLevels() {
+		final Client client = world.getClient();
 		if (client == null) return new int[0];
 		final PlayerMetaInfo info = client.getPlayerMetaInfo();
 		final Skill[] skills;
@@ -73,8 +78,8 @@ public class Skills {
 		return new int[0];
 	}
 
-	public static int[] getRealLevels() {
-		final Client client = World.getWorld().getClient();
+	public int[] getRealLevels() {
+		final Client client = world.getClient();
 		if (client == null) return new int[0];
 		final PlayerMetaInfo info = client.getPlayerMetaInfo();
 		final Skill[] skills;
@@ -86,8 +91,8 @@ public class Skills {
 		return new int[0];
 	}
 
-	public static int[] getExperiences() {
-		final Client client = World.getWorld().getClient();
+	public int[] getExperiences() {
+		final Client client = world.getClient();
 		if (client == null) return new int[0];
 		final PlayerMetaInfo info = client.getPlayerMetaInfo();
 		final Skill[] skills;
@@ -99,7 +104,7 @@ public class Skills {
 		return new int[0];
 	}
 
-	public static int getLevelAt(final int exp) {
+	public int getLevelAt(final int exp) {
 		for (int i = XP_TABLE.length - 1; i > 0; i--) {
 			if (exp > XP_TABLE[i]) {
 				return i;
@@ -108,7 +113,7 @@ public class Skills {
 		return 1;
 	}
 
-	public static int getExperienceAt(final int level) {
+	public int getExperienceAt(final int level) {
 		if (level < 0 || level > 120) return -1;
 		return XP_TABLE[level];
 	}

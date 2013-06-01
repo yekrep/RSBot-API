@@ -6,7 +6,6 @@ import java.awt.Point;
 import java.lang.ref.WeakReference;
 import java.util.Arrays;
 
-import org.powerbot.bot.World;
 import org.powerbot.client.Cache;
 import org.powerbot.client.Client;
 import org.powerbot.client.HashTable;
@@ -16,8 +15,7 @@ import org.powerbot.client.RSInteractableLocation;
 import org.powerbot.client.RSObject;
 import org.powerbot.client.RSObjectDef;
 import org.powerbot.client.RSObjectDefLoader;
-import org.powerbot.script.methods.Game;
-import org.powerbot.script.methods.Objects;
+import org.powerbot.script.methods.World;
 
 public class GameObject extends Interactive implements Locatable, Drawable {
 	private static final Color TARGET_COLOR = new Color(0, 255, 0, 20);
@@ -25,7 +23,8 @@ public class GameObject extends Interactive implements Locatable, Drawable {
 	private final Type type;
 	private int faceIndex = -1;
 
-	public GameObject(final RSObject object, final Type type) {
+	public GameObject(World world, final RSObject object, final Type type) {
+		super(world);
 		this.object = new WeakReference<>(object);
 		this.type = type;
 	}
@@ -34,7 +33,7 @@ public class GameObject extends Interactive implements Locatable, Drawable {
 		final RSObject object = this.object.get();
 		if (object != null) {
 			final org.powerbot.client.Model model = object.getModel();
-			if (model != null) return new RenderableModel(model, object);
+			if (model != null) return new RenderableModel(world, model, object);
 		}
 		return null;
 	}
@@ -54,7 +53,7 @@ public class GameObject extends Interactive implements Locatable, Drawable {
 	}
 
 	public ObjectDefinition getDefinition() {
-		final Client client = World.getWorld().getClient();
+		final Client client = world.getClient();
 		if (client == null) return null;
 
 		final RSInfo info;
@@ -63,7 +62,7 @@ public class GameObject extends Interactive implements Locatable, Drawable {
 		final HashTable table;
 		if ((info = client.getRSGroundInfo()) == null || (loader = info.getRSObjectDefLoaders()) == null ||
 				(cache = loader.getCache()) == null || (table = cache.getTable()) == null) return null;
-		final Object def = Game.lookup(table, getId());
+		final Object def = world.game.lookup(table, getId());
 		return def != null && def instanceof RSObjectDef ? new ObjectDefinition((RSObjectDef) def) : null;
 	}
 
@@ -73,7 +72,7 @@ public class GameObject extends Interactive implements Locatable, Drawable {
 		final RSInteractableData data = object != null ? object.getData() : null;
 		final RSInteractableLocation location = data != null ? data.getLocation() : null;
 		if (location != null) {
-			final Tile base = Game.getMapBase();
+			final Tile base = world.game.getMapBase();
 			return base != null ? base.derive((int) location.getX() >> 9, (int) location.getY() >> 9, object.getPlane()) : null;
 		}
 		return null;
@@ -120,7 +119,7 @@ public class GameObject extends Interactive implements Locatable, Drawable {
 	public boolean isValid() {
 		if (this.object.get() == null) return false;
 		final Tile tile = getLocation();
-		return tile != null && Arrays.asList(Objects.getLoaded(tile.getX(), tile.getY(), 0)).contains(this);
+		return tile != null && Arrays.asList(world.objects.getLoaded(tile.getX(), tile.getY(), 0)).contains(this);
 	}
 
 	@Override

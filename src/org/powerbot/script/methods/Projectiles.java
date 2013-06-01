@@ -3,7 +3,6 @@ package org.powerbot.script.methods;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.powerbot.bot.World;
 import org.powerbot.client.Client;
 import org.powerbot.client.Node;
 import org.powerbot.client.NodeDeque;
@@ -19,14 +18,18 @@ import org.powerbot.script.wrappers.Projectile;
  *
  * @author Timer
  */
-public class Projectiles {
+public class Projectiles extends WorldImpl {
+	public Projectiles(World world) {
+		super(world);
+	}
+
 	/**
 	 * Returns the {@link Projectile}s in the region.
 	 *
 	 * @return an array of loaded {@link Projectile}s
 	 */
-	public static Projectile[] getLoaded() {
-		final Client client = World.getWorld().getClient();
+	public Projectile[] getLoaded() {
+		final Client client = world.getClient();
 		if (client == null) return new Projectile[0];
 
 		final NodeDeque deque = client.getProjectileDeque();
@@ -37,7 +40,7 @@ public class Projectiles {
 		for (Node node = nodes.getHead(); node != null; node = nodes.getNext()) {
 			final RSProjectile projectile;
 			if (node instanceof RSProjectileNode && (projectile = ((RSProjectileNode) node).getProjectile()) != null) {
-				projectiles.add(new Projectile(projectile));
+				projectiles.add(new Projectile(world, projectile));
 			}
 		}
 		return projectiles.toArray(new Projectile[projectiles.size()]);

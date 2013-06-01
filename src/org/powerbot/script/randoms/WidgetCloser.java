@@ -4,8 +4,6 @@ import java.awt.Point;
 
 import org.powerbot.script.Manifest;
 import org.powerbot.script.PollingScript;
-import org.powerbot.script.methods.Mouse;
-import org.powerbot.script.methods.Widgets;
 import org.powerbot.script.util.Random;
 import org.powerbot.script.util.Timer;
 import org.powerbot.script.wrappers.Component;
@@ -36,7 +34,7 @@ public class WidgetCloser extends PollingScript implements RandomEvent {
 	public int poll() {
 		if (threshold.isRunning()) return 1000;
 		for (final int p : COMPONENTS) {
-			component = Widgets.get(p >> 16, p & 0xffff);
+			component = world.widgets.get(p >> 16, p & 0xffff);
 			if (component != null && component.isValid()) {
 				break;
 			} else component = null;
@@ -64,7 +62,7 @@ public class WidgetCloser extends PollingScript implements RandomEvent {
 	private boolean click(final Component component) {
 		if (component.getWidget().getIndex() == 1252) {
 			final Point p = component.getAbsoluteLocation();
-			return Mouse.click(p.x + Random.nextInt(0, component.getWidth()), p.y + 50 + Random.nextInt(0, component.getHeight()), true);
+			return world.mouse.click(p.x + Random.nextInt(0, component.getWidth()), p.y + 50 + Random.nextInt(0, component.getHeight()), true);
 		}
 		return component.click();
 	}

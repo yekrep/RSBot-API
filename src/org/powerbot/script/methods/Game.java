@@ -6,7 +6,6 @@ import java.awt.Point;
 import java.awt.Rectangle;
 
 import org.powerbot.bot.Bot;
-import org.powerbot.bot.World;
 import org.powerbot.client.BaseInfo;
 import org.powerbot.client.Client;
 import org.powerbot.client.Constants;
@@ -27,7 +26,7 @@ import org.powerbot.script.wrappers.Component;
 import org.powerbot.script.wrappers.Player;
 import org.powerbot.script.wrappers.Tile;
 
-public class Game {
+public class Game extends WorldImpl {
 	public static final int TAB_NONE = -1;
 	public static final int TAB_COMBAT = 0;
 	public static final int TAB_NOTICEBOARD = 1;
@@ -67,21 +66,25 @@ public class Game {
 		}
 	}
 
-	public static int getCurrentTab() {
+	public Game(World world) {
+		super(world);
+	}
+
+	public int getCurrentTab() {
 		Component c;
 		for (int i = 0; i < TAB_NAMES.length - 1; i++) {
-			if ((c = Components.getTab(i)) != null) {
+			if ((c = world.components.getTab(i)) != null) {
 				if (c.getTextureId() != -1) return i;
 			}
 		}
-		if ((c = Widgets.get(182, 1)) != null && c.isVisible()) return TAB_LOGOUT;
+		if ((c = world.widgets.get(182, 1)) != null && c.isVisible()) return TAB_LOGOUT;
 		return TAB_NONE;
 	}
 
-	public static boolean openTab(final int index) {
+	public boolean openTab(final int index) {
 		if (index < 0 || index >= TAB_NAMES.length) return false;
 		if (getCurrentTab() == index) return true;
-		final Component c = Components.getTab(index);
+		final Component c = world.components.getTab(index);
 		if (c != null && c.isValid() && c.click(true)) {
 			final Timer t = new Timer(800);
 			while (t.isRunning() && getCurrentTab() != index) Delay.sleep(15);
@@ -89,11 +92,11 @@ public class Game {
 		return getCurrentTab() == index;
 	}
 
-	public static boolean closeTab() {
+	public boolean closeTab() {
 		if (isFixed()) return false;
 		final int curr;
 		if ((curr = getCurrentTab()) == TAB_NONE) return true;
-		final Component c = Components.getTab(curr);
+		final Component c = world.components.getTab(curr);
 		if (c != null && c.isValid() && c.click(true)) {
 			final Timer t = new Timer(800);
 			while (t.isRunning() && getCurrentTab() != TAB_NONE) Delay.sleep(15);
@@ -101,8 +104,8 @@ public class Game {
 		return getCurrentTab() == TAB_NONE;
 	}
 
-	public static int getClientState() {
-		final Client client = World.getWorld().getClient();
+	public int getClientState() {
+		final Client client = world.getClient();
 		if (client == null) return -1;
 
 		final Constants constants = Bot.constants();
@@ -121,52 +124,52 @@ public class Game {
 		return -1;
 	}
 
-	public static boolean isLoggedIn() {
+	public boolean isLoggedIn() {
 		final int curr = getClientState();
 		for (final int s : INDEX_LOGGED_IN) if (s == curr) return true;
 		return false;
 	}
 
-	public static Tile getMapBase() {
-		final Client client = World.getWorld().getClient();
+	public Tile getMapBase() {
+		final Client client = world.getClient();
 		if (client == null) return null;
 
 		final RSInfo info = client.getRSGroundInfo();
 		final BaseInfo baseInfo = info != null ? info.getBaseInfo() : null;
-		return baseInfo != null ? new Tile(baseInfo.getX(), baseInfo.getY(), client.getPlane()) : null;
+		return baseInfo != null ? new Tile(world, baseInfo.getX(), baseInfo.getY(), client.getPlane()) : null;
 	}
 
-	public static int getPlane() {
-		final Client client = World.getWorld().getClient();
+	public int getPlane() {
+		final Client client = world.getClient();
 		if (client == null) return -1;
 		return client.getPlane();
 	}
 
-	public static boolean isFixed() {
-		final Client client = World.getWorld().getClient();
+	public boolean isFixed() {
+		final Client client = world.getClient();
 		if (client == null) return false;
 		return client.getGUIRSInterfaceIndex() != 746;
 	}
 
-	public static void setPreferredWorld(final int world) {
+	public void setPreferredWorld(final int world) {
 		Bot.getInstance().preferredWorld = world;
 	}
 
-	public static Dimension getDimensions() {
-		final Client client = World.getWorld().getClient();
+	public Dimension getDimensions() {
+		final Client client = world.getClient();
 		final Canvas canvas;
 		if (client == null || (canvas = client.getCanvas()) == null) return new Dimension(0, 0);
 		return new Dimension(canvas.getWidth(), canvas.getHeight());
 	}
 
-	public static boolean isPointOnScreen(final Point point) {
+	public boolean isPointOnScreen(final Point point) {
 		return isPointOnScreen(point.x, point.y);
 	}
 
-	public static boolean isPointOnScreen(final int x, final int y) {
+	public boolean isPointOnScreen(final int x, final int y) {
 		final Rectangle r;
 		if (isLoggedIn()) {
-			final Component c = Widgets.get(ActionBar.WIDGET, ActionBar.COMPONENT_BAR);
+			final Component c = world.widgets.get(ActionBar.WIDGET, ActionBar.COMPONENT_BAR);
 			r = c != null && c.isVisible() ? c.getBoundingRect() : null;
 			if (r != null && r.contains(x, y)) return false;
 			if (isFixed()) return x >= 4 && y >= 54 && x < 516 && y < 388;
@@ -174,12 +177,12 @@ public class Game {
 		return true;
 	}
 
-	public static int tileHeight(final int x, final int y) {
+	public int tileHeight(final int x, final int y) {
 		return tileHeight(x, y, -1);
 	}
 
-	public static int tileHeight(final int rX, final int rY, int plane) {
-		final Client client = World.getWorld().getClient();
+	public int tileHeight(final int rX, final int rY, int plane) {
+		final Client client = world.getClient();
 		if (client == null) return 0;
 		if (plane == -1) plane = client.getPlane();
 
@@ -208,7 +211,7 @@ public class Game {
 		return 0;
 	}
 
-	public static Point groundToScreen(final int x, final int y, final int plane, final int height) {
+	public Point groundToScreen(final int x, final int y, final int plane, final int height) {
 		if (x < 512 || y < 512 || x > 52224 || y > 52224) {
 			return new Point(-1, -1);
 		}
@@ -216,10 +219,9 @@ public class Game {
 		return worldToScreen(x, h, y);
 	}
 
-	public static Point worldToScreen(int x, final int y, final int z) {
-		final World world = World.getWorld();
-		final Viewport viewport = world.getViewport();
-		final Toolkit toolkit = world.getToolkit();
+	public Point worldToScreen(int x, final int y, final int z) {
+		Toolkit toolkit = world.getToolkit();
+		Viewport viewport = world.getViewport();
 		final float _z = (viewport.zOff + (viewport.zX * x + viewport.zY * y + viewport.zZ * z));
 		final float _x = (viewport.xOff + (viewport.xX * x + viewport.xY * y + viewport.xZ * z));
 		final float _y = (viewport.yOff + (viewport.yX * x + viewport.yY * y + viewport.yZ * z));
@@ -232,11 +234,11 @@ public class Game {
 		return new Point(-1, -1);
 	}
 
-	public static Point worldToMap(double x, double y) {
-		final Client client = World.getWorld().getClient();
+	public Point worldToMap(double x, double y) {
+		final Client client = world.getClient();
 		if (client == null) return null;
 		final Tile base = getMapBase();
-		final Player player = Players.getLocal();
+		final Player player = world.players.getLocal();
 		Tile loc;
 		if (base == null || player == null || (loc = player.getLocation()) == null) return null;
 		x -= base.x;
@@ -244,7 +246,7 @@ public class Game {
 		loc = loc.derive(-base.x, -base.y);
 		final int pX = (int) (x * 4 + 2) - (loc.getX() << 9) / 128;
 		final int pY = (int) (y * 4 + 2) - (loc.getY() << 9) / 128;
-		final Component mapComponent = Components.getMap();
+		final Component mapComponent = world.components.getMap();
 		if (mapComponent == null) return new Point(-1, -1);
 		final int dist = pX * pX + pY * pY;
 		final int mapRadius = Math.max(mapComponent.getWidth() / 2, mapComponent.getHeight() / 2) - 8;
@@ -271,11 +273,10 @@ public class Game {
 		return new Point(-1, -1);
 	}
 
-	public static void updateToolkit(final Render render) {
+	public void updateToolkit(final Render render) {
 		if (render == null) return;
-		final World world = World.getWorld();
-		final Viewport viewport = world.getViewport();
-		final Toolkit toolkit = world.getToolkit();
+		Toolkit toolkit = world.getToolkit();
+		Viewport viewport = world.getViewport();
 		toolkit.absoluteX = render.getAbsoluteX();
 		toolkit.absoluteY = render.getAbsoluteY();
 		toolkit.xMultiplier = render.getXMultiplier();
@@ -303,7 +304,7 @@ public class Game {
 
 	}
 
-	public static Object lookup(final HashTable nc, final long id) {
+	public Object lookup(final HashTable nc, final long id) {
 		final Node[] buckets;
 		if (nc == null || (buckets = nc.getBuckets()) == null || id < 0) {
 			return null;

@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import org.powerbot.bot.World;
 import org.powerbot.client.BaseInfo;
 import org.powerbot.client.Client;
 import org.powerbot.client.RSAnimableNode;
@@ -17,16 +16,20 @@ import org.powerbot.script.wrappers.GameObject;
 import org.powerbot.script.wrappers.Player;
 import org.powerbot.script.wrappers.Tile;
 
-public class Objects {
+public class Objects extends WorldImpl {
 	private static final int LOADED_DIST = 104;
 
-	public static GameObject[] getLoaded() {
+	public Objects(World world) {
+		super(world);
+	}
+
+	public GameObject[] getLoaded() {
 		return getLoaded(LOADED_DIST);
 	}
 
-	public static GameObject[] getLoaded(int _x, int _y, final int range) {
+	public GameObject[] getLoaded(int _x, int _y, final int range) {
 		final Set<GameObject> objects = new LinkedHashSet<>();
-		final Client client = World.getWorld().getClient();
+		final Client client = world.getClient();
 		if (client == null) return new GameObject[0];
 
 		final RSInfo info;
@@ -56,7 +59,8 @@ public class Objects {
 
 				for (RSAnimableNode node = ground.getRSAnimableList(); node != null; node = node.getNext()) {
 					final RSObject obj = node.getRSAnimable();
-					if (obj != null && obj.getId() != -1) objects.add(new GameObject(obj, GameObject.Type.INTERACTIVE));
+					if (obj != null && obj.getId() != -1)
+						objects.add(new GameObject(world, obj, GameObject.Type.INTERACTIVE));
 				}
 
 
@@ -67,15 +71,15 @@ public class Objects {
 				};
 
 				for (int i = 0; i < objs.length; i++) {
-					if (objs[i] != null && objs[i].getId() != -1) objects.add(new GameObject(objs[i], types[i]));
+					if (objs[i] != null && objs[i].getId() != -1) objects.add(new GameObject(world, objs[i], types[i]));
 				}
 			}
 		}
 		return objects.toArray(new GameObject[objects.size()]);
 	}
 
-	public static GameObject[] getLoaded(final int range) {
-		final Player player = Players.getLocal();
+	public GameObject[] getLoaded(final int range) {
+		final Player player = world.players.getLocal();
 		final Tile location;
 		if (player == null || (location = player.getLocation()) == null) {
 			return new GameObject[0];
@@ -85,11 +89,11 @@ public class Objects {
 		return getLoaded(x, y, range);
 	}
 
-	public static GameObject[] getLoaded(final Filter<GameObject> filter) {
+	public GameObject[] getLoaded(final Filter<GameObject> filter) {
 		return getLoaded(LOADED_DIST, filter);
 	}
 
-	public static GameObject[] getLoaded(final int range, final Filter<GameObject> filter) {
+	public GameObject[] getLoaded(final int range, final Filter<GameObject> filter) {
 		final GameObject[] items = getLoaded(range);
 		final GameObject[] set = new GameObject[items.length];
 		int d = 0;
@@ -97,11 +101,11 @@ public class Objects {
 		return Arrays.copyOf(set, d);
 	}
 
-	public static GameObject[] getLoaded(final int... ids) {
+	public GameObject[] getLoaded(final int... ids) {
 		return getLoaded(LOADED_DIST, ids);
 	}
 
-	public static GameObject[] getLoaded(final int range, final int[] ids) {
+	public GameObject[] getLoaded(final int range, final int[] ids) {
 		return getLoaded(range, new Filter<GameObject>() {
 			@Override
 			public boolean accept(final GameObject gameObject) {
@@ -112,15 +116,15 @@ public class Objects {
 		});
 	}
 
-	public static GameObject getNearest(final Filter<GameObject> filter) {
+	public GameObject getNearest(final Filter<GameObject> filter) {
 		return getNearest(LOADED_DIST, filter);
 	}
 
-	public static GameObject getNearest(final int range, final Filter<GameObject> filter) {
+	public GameObject getNearest(final int range, final Filter<GameObject> filter) {
 		GameObject nearest = null;
 		double dist = 104d;
 
-		final Player local = Players.getLocal();
+		final Player local = world.players.getLocal();
 		if (local == null) return null;
 
 		final Tile pos = local.getLocation();
@@ -128,7 +132,7 @@ public class Objects {
 		final GameObject[] gameObjects = getLoaded(range);
 		for (final GameObject gameObject : gameObjects) {
 			final double d;
-			if (filter.accept(gameObject) && (d = Movement.distance(pos, gameObject)) < dist) {
+			if (filter.accept(gameObject) && (d = world.movement.distance(pos, gameObject)) < dist) {
 				nearest = gameObject;
 				dist = d;
 			}
@@ -137,7 +141,7 @@ public class Objects {
 		return nearest;
 	}
 
-	public static GameObject getNearest(final int range, final int[] ids) {
+	public GameObject getNearest(final int range, final int[] ids) {
 		return getNearest(range, new Filter<GameObject>() {
 			@Override
 			public boolean accept(final GameObject gameObject) {
@@ -148,7 +152,7 @@ public class Objects {
 		});
 	}
 
-	public static GameObject getNearest(final int... ids) {
+	public GameObject getNearest(final int... ids) {
 		return getNearest(LOADED_DIST, ids);
 	}
 }

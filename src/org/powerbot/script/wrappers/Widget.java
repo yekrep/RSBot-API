@@ -3,17 +3,19 @@ package org.powerbot.script.wrappers;
 import java.util.Arrays;
 import java.util.Iterator;
 
-import org.powerbot.bot.World;
 import org.powerbot.client.Client;
 import org.powerbot.client.RSInterface;
 import org.powerbot.client.RSInterfaceBase;
+import org.powerbot.script.methods.World;
+import org.powerbot.script.methods.WorldImpl;
 
-public class Widget implements Validatable, Iterable<Component> {
+public class Widget extends WorldImpl implements Validatable, Iterable<Component> {
 	private final int index;
 	private final Object LOCK;
 	private Component[] cache;
 
-	public Widget(final int index) {
+	public Widget(World world, final int index) {
+		super(world);
 		this.index = index;
 		this.LOCK = new Object();
 		this.cache = new Component[0];
@@ -35,7 +37,7 @@ public class Widget implements Validatable, Iterable<Component> {
 			if (cache.length < components.length) {
 				final int len = cache.length;
 				cache = Arrays.copyOf(cache, components.length);
-				for (int i = len; i < components.length; i++) cache[i] = new Component(this, i);
+				for (int i = len; i < components.length; i++) cache[i] = new Component(world, this, i);
 			}
 			return cache.clone();
 		}
@@ -49,14 +51,14 @@ public class Widget implements Validatable, Iterable<Component> {
 			if (cache.length < mod) {
 				final int len = cache.length;
 				cache = Arrays.copyOf(cache, mod);
-				for (int i = len; i < mod; i++) cache[i] = new Component(this, i);
+				for (int i = len; i < mod; i++) cache[i] = new Component(world, this, i);
 			}
 			return cache[index];
 		}
 	}
 
 	public boolean isValid() {
-		final Client client = World.getWorld().getClient();
+		final Client client = world.getClient();
 		if (client == null) return false;
 
 		final RSInterfaceBase[] containers = client.getRSInterfaceCache();
@@ -64,7 +66,7 @@ public class Widget implements Validatable, Iterable<Component> {
 	}
 
 	RSInterface[] getInternalComponents() {
-		final Client client = World.getWorld().getClient();
+		final Client client = world.getClient();
 		if (client == null) return null;
 		final RSInterfaceBase[] containers = client.getRSInterfaceCache();
 		final RSInterfaceBase container;

@@ -9,7 +9,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import org.powerbot.bot.Bot;
-import org.powerbot.bot.BotComposite;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.loader.ClientLoader;
 import org.powerbot.util.Configuration;

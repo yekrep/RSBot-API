@@ -2,9 +2,7 @@ package org.powerbot.script.wrappers;
 
 import java.awt.Point;
 
-import org.powerbot.script.methods.Keyboard;
-import org.powerbot.script.methods.Settings;
-import org.powerbot.script.methods.Widgets;
+import org.powerbot.script.methods.World;
 import org.powerbot.script.methods.widgets.ActionBar;
 
 public class Action extends Interactive {
@@ -12,7 +10,8 @@ public class Action extends Interactive {
 	private final Type type;
 	private final int id;
 
-	public Action(final int slot, final Type type, final int id) {
+	public Action(World world, final int slot, final Type type, final int id) {
+		super(world);
 		if (slot < 0 || slot >= ActionBar.NUM_SLOTS || type == null || id <= 0) throw new IllegalArgumentException();
 		this.slot = slot;
 		this.type = type;
@@ -28,7 +27,7 @@ public class Action extends Interactive {
 	}
 
 	public String getBind() {
-		final Component c = Widgets.get(ActionBar.WIDGET, ActionBar.COMPONENT_SLOTS_BIND[slot]);
+		final Component c = world.widgets.get(ActionBar.WIDGET, ActionBar.COMPONENT_SLOTS_BIND[slot]);
 		if (c == null) return "";
 		final String str = c.getText();
 		return str != null ? str.trim() : "";
@@ -37,12 +36,12 @@ public class Action extends Interactive {
 	public boolean select() {//TODO if bind is in-capable, click + add a method for clicking
 		if (!isValid()) return false;
 		final String b = getBind();
-		return b != null && Keyboard.send(b);
+		return b != null && world.keyboard.send(b);
 	}
 
 	public boolean isReady() {
-		final Component reload = Widgets.get(ActionBar.WIDGET, ActionBar.COMPONENT_SLOTS_COOLDOWN[slot]);
-		final Component action = Widgets.get(ActionBar.WIDGET, ActionBar.COMPONENT_SLOTS_ACTION[slot]);
+		final Component reload = world.widgets.get(ActionBar.WIDGET, ActionBar.COMPONENT_SLOTS_COOLDOWN[slot]);
+		final Component action = world.widgets.get(ActionBar.WIDGET, ActionBar.COMPONENT_SLOTS_ACTION[slot]);
 		return reload != null && action != null &&
 				reload.isValid() && !reload.isVisible() &&
 				action.isValid() && action.getTextColor() == 0xFFFFFF;
@@ -50,36 +49,36 @@ public class Action extends Interactive {
 
 	@Override
 	public Point getInteractPoint() {
-		final Component c = Widgets.get(ActionBar.WIDGET, ActionBar.COMPONENT_SLOTS[slot]);
+		final Component c = world.widgets.get(ActionBar.WIDGET, ActionBar.COMPONENT_SLOTS[slot]);
 		if (c == null) return new Point(-1, -1);
 		return c.getInteractPoint();
 	}
 
 	@Override
 	public Point getNextPoint() {
-		final Component c = Widgets.get(ActionBar.WIDGET, ActionBar.COMPONENT_SLOTS[slot]);
+		final Component c = world.widgets.get(ActionBar.WIDGET, ActionBar.COMPONENT_SLOTS[slot]);
 		if (c == null) return new Point(-1, -1);
 		return c.getNextPoint();
 	}
 
 	@Override
 	public Point getCenterPoint() {
-		final Component c = Widgets.get(ActionBar.WIDGET, ActionBar.COMPONENT_SLOTS[slot]);
+		final Component c = world.widgets.get(ActionBar.WIDGET, ActionBar.COMPONENT_SLOTS[slot]);
 		if (c == null) return new Point(-1, -1);
 		return c.getCenterPoint();
 	}
 
 	@Override
 	public boolean contains(final Point point) {
-		final Component c = Widgets.get(ActionBar.WIDGET, ActionBar.COMPONENT_SLOTS[slot]);
+		final Component c = world.widgets.get(ActionBar.WIDGET, ActionBar.COMPONENT_SLOTS[slot]);
 		return c != null && c.contains(point);
 	}
 
 	@Override
 	public boolean isValid() {
 		return this.id == (this.type == Type.ABILITY ?
-				Settings.get(ActionBar.SETTING_ABILITY + this.slot) :
-				Settings.get(ActionBar.SETTING_ITEM + this.slot));
+				world.settings.get(ActionBar.SETTING_ABILITY + this.slot) :
+				world.settings.get(ActionBar.SETTING_ITEM + this.slot));
 	}
 
 	public static enum Type {

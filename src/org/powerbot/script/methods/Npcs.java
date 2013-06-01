@@ -2,7 +2,6 @@ package org.powerbot.script.methods;
 
 import java.util.Arrays;
 
-import org.powerbot.bot.World;
 import org.powerbot.client.Client;
 import org.powerbot.client.HashTable;
 import org.powerbot.client.RSNPC;
@@ -13,20 +12,24 @@ import org.powerbot.script.wrappers.Player;
 import org.powerbot.script.wrappers.Tile;
 
 /**
- * {@link Npcs} is a static utility which provides access to {@link Npc}s in the game.
+ * {@link Npcs} is a utility which provides access to {@link Npc}s in the game.
  * <p/>
  * {@link Npc}s are only accessible within the mini-map's range.
  *
  * @author Timer
  */
-public class Npcs {
+public class Npcs extends WorldImpl {
+	public Npcs(World world) {
+		super(world);
+	}
+
 	/**
 	 * Returns all the {@link Npc}s in the region.
 	 *
 	 * @return an array of the loaded {@link Npc}s
 	 */
-	public static Npc[] getLoaded() {
-		final Client client = World.getWorld().getClient();
+	public Npc[] getLoaded() {
+		final Client client = world.getClient();
 		if (client == null) return new Npc[0];
 
 		final int[] indices = client.getRSNPCIndexArray();
@@ -36,10 +39,10 @@ public class Npcs {
 		final Npc[] npcs = new Npc[indices.length];
 		int d = 0;
 		for (final int index : indices) {
-			Object npc = Game.lookup(npcTable, index);
+			Object npc = world.game.lookup(npcTable, index);
 			if (npc == null) continue;
 			if (npc instanceof RSNPCNode) npc = ((RSNPCNode) npc).getRSNPC();
-			if (npc instanceof RSNPC) npcs[d++] = new Npc((RSNPC) npc);
+			if (npc instanceof RSNPC) npcs[d++] = new Npc(world, (RSNPC) npc);
 		}
 
 		return Arrays.copyOf(npcs, d);
@@ -51,7 +54,7 @@ public class Npcs {
 	 * @param filter the {@link Filter} by which to accept {@link Npc}s
 	 * @return an array of the filtered {@link Npc}s
 	 */
-	public static Npc[] getLoaded(final Filter<Npc> filter) {
+	public Npc[] getLoaded(final Filter<Npc> filter) {
 		final Npc[] npcs = getLoaded();
 		final Npc[] set = new Npc[npcs.length];
 		int d = 0;
@@ -65,7 +68,7 @@ public class Npcs {
 	 * @param ids a list of ids to accept
 	 * @return an array of the filtered {@link Npc}s
 	 */
-	public static Npc[] getLoaded(final int... ids) {
+	public Npc[] getLoaded(final int... ids) {
 		return getLoaded(new Filter<Npc>() {
 			@Override
 			public boolean accept(final Npc npc) {
@@ -82,11 +85,11 @@ public class Npcs {
 	 * @param filter the {@link Filter} by which to accept an {@link Npc}
 	 * @return the {@link Npc} nearest to the local player accepted by the {@link Filter}
 	 */
-	public static Npc getNearest(final Filter<Npc> filter) {
+	public Npc getNearest(final Filter<Npc> filter) {
 		Npc nearest = null;
 		double dist = 104d;
 
-		final Player local = Players.getLocal();
+		final Player local = world.players.getLocal();
 		if (local == null) return null;
 
 		final Tile pos = local.getLocation();
@@ -94,7 +97,7 @@ public class Npcs {
 		final Npc[] npcs = getLoaded();
 		for (final Npc npc : npcs) {
 			final double d;
-			if (filter.accept(npc) && (d = Movement.distance(pos, npc)) < dist) {
+			if (filter.accept(npc) && (d = world.movement.distance(pos, npc)) < dist) {
 				nearest = npc;
 				dist = d;
 			}
@@ -109,7 +112,7 @@ public class Npcs {
 	 * @param ids a list of ids to accept
 	 * @return the {@link Npc} nearest to the local player with one of the provided ids
 	 */
-	public static Npc getNearest(final int... ids) {
+	public Npc getNearest(final int... ids) {
 		return getNearest(new Filter<Npc>() {
 			@Override
 			public boolean accept(final Npc npc) {

@@ -3,8 +3,7 @@ package org.powerbot.script.wrappers;
 import java.util.Arrays;
 import java.util.EnumSet;
 
-import org.powerbot.script.methods.Movement;
-import org.powerbot.script.methods.Players;
+import org.powerbot.script.methods.World;
 import org.powerbot.script.util.Random;
 
 public class TilePath extends Path {
@@ -12,42 +11,43 @@ public class TilePath extends Path {
 	protected Tile[] orig;
 	private boolean end;
 
-	public TilePath(final Tile[] tiles) {
+	public TilePath(World world, final Tile[] tiles) {
+		super(world);
 		orig = tiles;
 		this.tiles = Arrays.copyOf(tiles, tiles.length);
 	}
 
 	@Override
 	public boolean traverse(final EnumSet<TraversalOption> options) {
-		final Player local = Players.getLocal();
+		final Player local = world.players.getLocal();
 		final Tile next = getNext();
 		if (next == null || local == null) return false;
-		final Tile dest = Movement.getDestination();
+		final Tile dest = world.movement.getDestination();
 		if (next.equals(getEnd())) {
-			if (Movement.distanceTo(next) <= 1) return false;
+			if (world.movement.distanceTo(next) <= 1) return false;
 			if (end && (local.isInMotion() || (dest != null && dest.equals(next)))) return false;
 			end = true;
 		} else end = false;
 		if (options != null) {
-			if (options.contains(TraversalOption.HANDLE_RUN) && !Movement.isRunning() && Movement.getEnergyLevel() > Random.nextInt(45, 60)) {
-				Movement.setRunning(true);
+			if (options.contains(TraversalOption.HANDLE_RUN) && !world.movement.isRunning() && world.movement.getEnergyLevel() > Random.nextInt(45, 60)) {
+				world.movement.setRunning(true);
 			}
-			if (options.contains(TraversalOption.SPACE_ACTIONS) && dest != null && local.isInMotion() && Movement.distance(next, dest) < 3d) {
-				if (Movement.distanceTo(dest) > Random.nextDouble(4d, 7d)) return true;
+			if (options.contains(TraversalOption.SPACE_ACTIONS) && dest != null && local.isInMotion() && world.movement.distance(next, dest) < 3d) {
+				if (world.movement.distanceTo(dest) > Random.nextDouble(4d, 7d)) return true;
 			}
 		}
-		return Movement.stepTowards(next);
+		return world.movement.stepTowards(next);
 	}
 
 	@Override
 	public boolean isValid() {
-		return tiles.length > 0 && getNext() != null && Movement.distanceTo(getEnd()) > Math.sqrt(2);
+		return tiles.length > 0 && getNext() != null && world.movement.distanceTo(getEnd()) > Math.sqrt(2);
 	}
 
 	@Override
 	public Tile getNext() {
 		/* Get current destination */
-		Tile dest = Movement.getDestination();
+		Tile dest = world.movement.getDestination();
 		/* Label main loop for continuing purposes */
 		out:
 		/* Iterate over all tiles but the first tile (0) starting with the last (length - 1). */
@@ -58,7 +58,7 @@ public class TilePath extends Path {
 			/* LARGELY SPACED PATH SUPPORT: If the current destination is the tile on the map, return that tile
 			 * as the next one will be coming soon (we hope/assume this, as short spaced paths should never experience
 			 * this condition as one will be on map before it reaches the current target). */
-			if (dest == null || Movement.distance(tiles[i], dest) < 3d) return tiles[i];
+			if (dest == null || world.movement.distance(tiles[i], dest) < 3d) return tiles[i];
 			/* Tile is on map and isn't currently "targeted" (dest), let's check it out.
 			 * Iterate over all tiles succeeding it. */
 			for (int a = i - 1; a >= 0; --a) {
@@ -69,7 +69,7 @@ public class TilePath extends Path {
 				if (!tiles[a].isOnMap()) continue out;
 				/* If a tile (successor) is currently targeted, return the tile that was the "best"
 				 * on the map for getNext as we can safely assume we're following our path. */
-				if (Movement.distance(tiles[a], dest) < 3d) return tiles[i];
+				if (world.movement.distance(tiles[a], dest) < 3d) return tiles[i];
 			}
 		}
 		/* Well, we've made it this far.  Return the first tile if nothing else is on our map.
@@ -79,7 +79,7 @@ public class TilePath extends Path {
 		 * TELEPORTATION SUPPORT: If destination is set but but we're not moving, assume
 		 * invalid destination tile from teleportation reset and return first tile. */
 		if (!tiles[0].isOnMap()) return null;
-		Player p = Players.getLocal();
+		Player p = world.players.getLocal();
 		if (dest != null && p != null && p.isInMotion()) return null;
 		return tiles[0];
 	}

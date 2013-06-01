@@ -22,7 +22,7 @@ import org.powerbot.script.framework.ScriptManager;
 import org.powerbot.script.framework.Stoppable;
 import org.powerbot.script.internal.InputHandler;
 import org.powerbot.script.internal.MouseHandler;
-import org.powerbot.script.methods.Keyboard;
+import org.powerbot.script.methods.World;
 import org.powerbot.script.randoms.BankPin;
 import org.powerbot.script.randoms.Login;
 import org.powerbot.script.randoms.TicketDestroy;
@@ -37,7 +37,6 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 	public World world;
 	static final Logger log = Logger.getLogger(Bot.class.getName());
 	private static Bot instance;
-	public final BotComposite composite;
 	public final Runnable callback;
 	public final ThreadGroup threadGroup;
 	private final PaintEvent paintEvent;
@@ -66,7 +65,6 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 
 		threadGroup = new ThreadGroup(Bot.class.getName() + "@" + Integer.toHexString(hashCode()));
 
-		composite = new BotComposite(this);
 		multicaster = new EventMulticaster();
 		panel = null;
 
@@ -247,7 +245,7 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 		this.world.setClient(client);
 		client.setCallback(new CallbackImpl(this));
 		constants = new Constants(modScript.constants);
-		new Thread(threadGroup, new SafeMode(this)).start();
+		new Thread(threadGroup, new SafeMode()).start();
 		mouseHandler = new MouseHandler(appletContainer, client);
 		inputHandler = new InputHandler(appletContainer, client);
 		new Thread(threadGroup, mouseHandler).start();
@@ -282,22 +280,35 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 		refreshing = true;
 		new Thread(threadGroup, new Runnable() {
 			public void run() {
-				composite.reload();
+				reload();
 			}
 		}).start();
 	}
 
-	private static final class SafeMode implements Runnable {
-		private final Bot bot;
-
-		public SafeMode(final Bot bot) {
-			this.bot = bot;
+	public void reload() {//TODO re-evaluate re-load method
+		Bot.log.info("Refreshing environment");
+		final ScriptManager container = getScriptController();
+		if (container != null) {
+			container.suspend();
 		}
 
+		terminateApplet();
+		resize(BotChrome.PANEL_WIDTH, BotChrome.PANEL_HEIGHT);
+
+		new Thread(threadGroup, Bot.getInstance()).start();
+		while (world.game.getClientState() == -1) Delay.sleep(1000);
+		if (container != null) {
+			container.resume();
+		}
+
+		refreshing = false;
+	}
+
+	private final class SafeMode implements Runnable {
 		public void run() {
-			if (bot != null && bot.world.getClient() != null && !Keyboard.isReady()) {
+			if (world.getClient() != null && !world.keyboard.isReady()) {
 				Delay.sleep(800, 1200);
-				Keyboard.send("s");
+				world.keyboard.send("s");
 			}
 		}
 	}

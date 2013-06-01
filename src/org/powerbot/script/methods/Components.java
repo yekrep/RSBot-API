@@ -1,22 +1,22 @@
 package org.powerbot.script.methods;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.powerbot.bot.World;
 import org.powerbot.client.Client;
 import org.powerbot.script.wrappers.Component;
 import org.powerbot.script.wrappers.Widget;
 
-class Components {
-	private static final Map<Client, Container> cache = new HashMap<>();
+class Components extends WorldImpl {
+	private final Container container;
 
-	static Component getCompass() {
-		final Container container = get();
+	public Components(World world) {
+		super(world);
+		this.container = new Container();
+	}
+
+	Component getCompass() {
 		if (container == null) return null;
 
 		if (container.compass == -1) {
-			final Widget game = Widgets.get(container.index);
+			final Widget game = world.widgets.get(container.index);
 			final Component[] components = game != null ? game.getComponents() : null;
 			if (components != null) for (final Component c : components) {
 				final String[] actions = c.getActions();
@@ -26,16 +26,15 @@ class Components {
 				}
 			}
 		}
-		if (container.compass != -1) return Widgets.get(container.index, container.compass);
+		if (container.compass != -1) return world.widgets.get(container.index, container.compass);
 		return null;
 	}
 
-	static Component getMap() {
-		final Container container = get();
+	Component getMap() {
 		if (container == null) return null;
 
 		if (container.map == -1) {
-			final Widget game = Widgets.get(container.index);
+			final Widget game = world.widgets.get(container.index);
 			final Component[] components = game != null ? game.getComponents() : null;
 			if (components != null) for (final Component c : components) {
 				if (c.getContentType() == 1338) {
@@ -44,16 +43,15 @@ class Components {
 				}
 			}
 		}
-		if (container.map != -1) return Widgets.get(container.index, container.map);
+		if (container.map != -1) return world.widgets.get(container.index, container.map);
 		return null;
 	}
 
-	static Component getTab(final int index) {
-		final Container container = get();
+	Component getTab(final int index) {
 		if (container == null || index < 0 || index >= container.tabs.length) return null;
 
 		if (container.tabs[index] == -1) {
-			final Widget game = Widgets.get(container.index);
+			final Widget game = world.widgets.get(container.index);
 			final Component[] components = game != null ? game.getComponents() : null;
 			if (components != null) for (final Component c : components) {
 				final String[] actions = c.getActions();
@@ -63,34 +61,27 @@ class Components {
 				}
 			}
 		}
-		if (container.tabs[index] != -1) return Widgets.get(container.index, container.tabs[index]);
+		if (container.tabs[index] != -1) return world.widgets.get(container.index, container.tabs[index]);
 		return null;
 	}
 
-	private static Container get() {
-		final Client client = World.getWorld().getClient();
-		if (client == null) return null;
-		Container c = cache.get(client);
-		if (c == null) {
-			c = new Container(client);
-			cache.put(client, c);
-		}
-		c.sync(client);
-		return c.index != -1 ? c : null;
-	}
-
-	private static final class Container {
+	private final class Container {
+		private Client client;
 		private int index;
 		private int compass, map;
 		private int[] tabs;
 
-		private Container(final Client client) {
+		private Container() {
 			index = 0;
-			sync(client);
+			sync();
 		}
 
-		private void sync(final Client client) {
-			int index = client.getGUIRSInterfaceIndex();
+		private void sync() {
+			Client client = world.getClient();
+			int index;
+			if (this.client != client) index = -1;
+			else index = client.getGUIRSInterfaceIndex();
+			this.client = client;
 			if (index != this.index) {
 				this.index = index;
 				this.compass = -1;
