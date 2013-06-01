@@ -3,6 +3,7 @@ package org.powerbot.script.wrappers;
 import java.util.Arrays;
 import java.util.EnumSet;
 
+import org.powerbot.script.methods.Game;
 import org.powerbot.script.methods.Movement;
 import org.powerbot.script.methods.Players;
 import org.powerbot.script.util.Random;
@@ -46,6 +47,10 @@ public class TilePath extends Path {
 
 	@Override
 	public Tile getNext() {
+		/* Do not return a tile to walk to while the map is loading.
+		 * This prevents random tile clicking. */
+		int state = Game.getClientState();
+		if (state == Game.INDEX_MAP_LOADING) return null;
 		/* Get current destination */
 		Tile dest = Movement.getDestination();
 		/* Label main loop for continuing purposes */
