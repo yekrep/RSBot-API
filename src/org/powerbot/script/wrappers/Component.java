@@ -5,11 +5,12 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
 
+import org.powerbot.bot.World;
 import org.powerbot.client.Client;
 import org.powerbot.client.RSInterface;
 import org.powerbot.client.RSInterfaceNode;
 import org.powerbot.script.internal.wrappers.HashTable;
-import org.powerbot.script.methods.World;
+import org.powerbot.script.methods.Widgets;
 import org.powerbot.script.util.Random;
 import org.powerbot.util.StringUtil;
 
@@ -20,12 +21,11 @@ public class Component extends Interactive implements Drawable {
 	private final Component parent;
 	private final int index;
 
-	public Component(World world, final Widget widget, final int index) {
-		this(world, widget, null, index);
+	public Component(final Widget widget, final int index) {
+		this(widget, null, index);
 	}
 
-	public Component(World world, final Widget widget, final Component parent, final int index) {
-		super(world);
+	public Component(final Widget widget, final Component parent, final int index) {
 		this.widget = widget;
 		this.parent = parent;
 		this.index = index;
@@ -48,7 +48,7 @@ public class Component extends Interactive implements Drawable {
 		final RSInterface[] interfaces;
 		if (component != null && (interfaces = component.getComponents()) != null) {
 			final Component[] components = new Component[interfaces.length];
-			for (int i = 0; i < interfaces.length; i++) components[i] = new Component(world, widget, this, i);
+			for (int i = 0; i < interfaces.length; i++) components[i] = new Component(widget, this, i);
 			return components;
 		}
 		return new Component[0];
@@ -122,7 +122,7 @@ public class Component extends Interactive implements Drawable {
 	}
 
 	public int getParentId() {
-		final Client client = world.getClient();
+		final Client client = World.getWorld().getClient();
 		final RSInterface component = getInternalComponent();
 		if (client == null || component == null) return -1;
 
@@ -141,13 +141,13 @@ public class Component extends Interactive implements Drawable {
 	}
 
 	public Point getAbsoluteLocation() {
-		final Client client = world.getClient();
+		final Client client = World.getWorld().getClient();
 		final RSInterface component = getInternalComponent();
 		if (client == null || component == null) return new Point(-1, -1);
 		final int pId = getParentId();
 		int x = 0, y = 0;
 		if (pId != -1) {
-			final Point point = world.widgets.get(pId >> 16, pId & 0xffff).getAbsoluteLocation();
+			final Point point = Widgets.get(pId >> 16, pId & 0xffff).getAbsoluteLocation();
 			x = point.x;
 			y = point.y;
 		} else {
@@ -160,7 +160,7 @@ public class Component extends Interactive implements Drawable {
 			//y = getMasterY();
 		}
 		if (pId != -1) {
-			final Component child = world.widgets.get(pId >> 16, pId & 0xffff);
+			final Component child = Widgets.get(pId >> 16, pId & 0xffff);
 			final int horizontalScrollSize = child.getMaxHorizontalScroll(), verticalScrollSize = child.getMaxVerticalScroll();
 			if (horizontalScrollSize > 0 || verticalScrollSize > 0) {
 				x -= child.getScrollX();
@@ -286,7 +286,7 @@ public class Component extends Interactive implements Drawable {
 		final RSInterface internal = getInternalComponent();
 		int id = 0;
 		if (internal != null && isValid() && !internal.isHidden()) id = getParentId();
-		return id == -1 || (id != 0 && world.widgets.get(id >> 16, id & 0xffff).isVisible());
+		return id == -1 || (id != 0 && Widgets.get(id >> 16, id & 0xffff).isVisible());
 	}
 
 	public Rectangle getBoundingRect() {
@@ -382,9 +382,9 @@ public class Component extends Interactive implements Drawable {
 		int pId = getParentId();
 		if (pId == -1) return false;
 
-		Component scrollableArea = world.widgets.get(pId >> 16, pId & 0xffff);
+		Component scrollableArea = Widgets.get(pId >> 16, pId & 0xffff);
 		while (scrollableArea.getMaxVerticalScroll() == 0 && (pId = scrollableArea.getParentId()) != -1) {
-			scrollableArea = world.widgets.get(pId >> 16, pId & 0xffff);
+			scrollableArea = Widgets.get(pId >> 16, pId & 0xffff);
 		}
 
 		return scrollableArea.getMaxVerticalScroll() != 0;

@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.powerbot.bot.World;
 import org.powerbot.client.Client;
 import org.powerbot.client.MenuGroupNode;
 import org.powerbot.client.MenuItemNode;
@@ -16,21 +17,17 @@ import org.powerbot.script.util.Delay;
 import org.powerbot.script.util.Random;
 import org.powerbot.util.StringUtil;
 
-public class Menu extends WorldImpl {
-	public Menu(World world) {
-		super(world);
-	}
-
-	public boolean isOpen() {
-		final Client client = world.getClient();
+public class Menu {
+	public static boolean isOpen() {
+		final Client client = World.getWorld().getClient();
 		return client != null && client.isMenuOpen();
 	}
 
-	public int indexOf(final String action) {
+	public static int indexOf(final String action) {
 		return indexOf(action, null);
 	}
 
-	public int indexOf(String action, String option) {
+	public static int indexOf(String action, String option) {
 		final List<MenuItemNode> nodes = getMenuItemNodes();
 		int d = 0;
 		for (final MenuItemNode node : nodes) {
@@ -44,18 +41,18 @@ public class Menu extends WorldImpl {
 		return -1;
 	}
 
-	public boolean click(final String action) {
+	public static boolean click(final String action) {
 		return click(action, null);
 	}
 
-	public boolean click(final String action, final String option) {
-		final Client client = world.getClient();
+	public static boolean click(final String action, final String option) {
+		final Client client = World.getWorld().getClient();
 		if (client == null) return false;
 		int index = indexOf(action, option);
 		if (index == -1) return false;
 		if (!client.isMenuOpen()) {
-			if (index == 0) return world.mouse.click(true);
-			if (world.mouse.click(false)) {
+			if (index == 0) return Mouse.click(true);
+			if (Mouse.click(false)) {
 				final long m = System.currentTimeMillis();
 				while (System.currentTimeMillis() - m < 100 && !client.isMenuOpen()) {
 					Delay.sleep(5);
@@ -72,16 +69,16 @@ public class Menu extends WorldImpl {
 		return clickIndex(client, index);
 	}
 
-	public boolean close() {
-		final Client client = world.getClient();
+	public static boolean close() {
+		final Client client = World.getWorld().getClient();
 		if (client == null) return false;
 		if (client.isMenuOpen()) {
-			world.mouse.move(client.getMenuX() - 30 + Random.nextInt(0, 20), client.getMenuY() - 10 + Random.nextInt(0, 20));
+			Mouse.move(client.getMenuX() - 30 + Random.nextInt(0, 20), client.getMenuY() - 10 + Random.nextInt(0, 20));
 		}
 		return !client.isMenuOpen();
 	}
 
-	private boolean clickIndex(final Client client, int index) {
+	private static boolean clickIndex(final Client client, int index) {
 		int _index = 0, main = 0;
 		final NodeSubQueue menu;
 		collapsed:
@@ -102,28 +99,28 @@ public class Menu extends WorldImpl {
 			if (client.isMenuOpen()) close();
 			return false;
 		}
-		return world.mouse.move(
+		return Mouse.move(
 				client.getMenuX() + Random.nextInt(4, client.getMenuWidth() - 5),
 				client.getMenuY() + (21 + 16 * index + Random.nextInt(3, 12))
-		) && client.isMenuOpen() && world.mouse.click(true);
+		) && client.isMenuOpen() && Mouse.click(true);
 	}
 
-	private boolean clickSub(final Client client, final int main, final int sub) {
-		if (world.mouse.move(
+	private static boolean clickSub(final Client client, final int main, final int sub) {
+		if (Mouse.move(
 				client.getMenuX() + Random.nextInt(4, client.getMenuWidth() - 5),
 				client.getMenuY() + (21 + 16 * main + Random.nextInt(3, 12)))) {
 			Delay.sleep(Random.nextInt(125, 175));
 			if (client.isMenuOpen()) {
-				final Point p = world.mouse.getLocation();
+				final Point p = Mouse.getLocation();
 				final int cX;
 				final int subX = client.getSubMenuX();
-				if (world.mouse.move(cX = subX + Random.nextInt(4, client.getSubMenuWidth() - 5), p.y)) {
+				if (Mouse.move(cX = subX + Random.nextInt(4, client.getSubMenuWidth() - 5), p.y)) {
 					Delay.sleep(Random.nextInt(125, 175));
 					if (client.isMenuOpen()) {
 						final int subY = client.getSubMenuY();
-						if (world.mouse.move(cX, subY + (16 * sub + Random.nextInt(3, 12) + 21))) {
+						if (Mouse.move(cX, subY + (16 * sub + Random.nextInt(3, 12) + 21))) {
 							Delay.sleep(Random.nextInt(125, 175));
-							return client.isMenuOpen() && world.mouse.click(true);
+							return client.isMenuOpen() && Mouse.click(true);
 						}
 					}
 				}
@@ -133,10 +130,10 @@ public class Menu extends WorldImpl {
 		return false;
 	}
 
-	private List<MenuItemNode> getMenuItemNodes() {
+	private static List<MenuItemNode> getMenuItemNodes() {
 		final List<MenuItemNode> nodes = new LinkedList<>();
 
-		final Client client = world.getClient();
+		final Client client = World.getWorld().getClient();
 		if (client == null) return nodes;
 
 		final boolean collapsed;
@@ -167,7 +164,7 @@ public class Menu extends WorldImpl {
 		return nodes;
 	}
 
-	public String[] getItems() {
+	public static String[] getItems() {
 		final List<MenuItemNode> nodes = getMenuItemNodes();
 		final int len = nodes.size();
 		int d = 0;

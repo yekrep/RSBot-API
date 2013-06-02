@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.util.Arrays;
 
+import org.powerbot.bot.World;
 import org.powerbot.client.BaseInfo;
 import org.powerbot.client.Cache;
 import org.powerbot.client.Client;
@@ -14,7 +15,8 @@ import org.powerbot.client.RSGroundInfo;
 import org.powerbot.client.RSInfo;
 import org.powerbot.client.RSItemDefLoader;
 import org.powerbot.client.RSItemPile;
-import org.powerbot.script.methods.World;
+import org.powerbot.script.methods.Game;
+import org.powerbot.script.methods.GroundItems;
 import org.powerbot.script.util.Random;
 
 public class GroundItem extends Interactive implements Locatable, Drawable {
@@ -23,8 +25,7 @@ public class GroundItem extends Interactive implements Locatable, Drawable {
 	private final Item item;
 	private int faceIndex = -1;
 
-	public GroundItem(World world, final Tile tile, final Item item) {
-		super(world);
+	public GroundItem(final Tile tile, final Item item) {
 		this.tile = tile;
 		this.item = item;
 	}
@@ -34,7 +35,7 @@ public class GroundItem extends Interactive implements Locatable, Drawable {
 	}
 
 	public Model getModel(final int p) {
-		final Client client = world.getClient();
+		final Client client = World.getWorld().getClient();
 		if (client == null) return null;
 		final RSInfo info;
 		final BaseInfo baseInfo;
@@ -58,11 +59,11 @@ public class GroundItem extends Interactive implements Locatable, Drawable {
 						(cache = defLoader.getModelCache()) == null || (table = cache.getTable()) == null)
 					return null;
 
-				final int graphicsIndex = world.getToolkit().graphicsIndex;
+				final int graphicsIndex = World.getWorld().getToolkit().graphicsIndex;
 				Object model;
-				if (p != -1 && (model = world.game.lookup(table, (long) p | (long) graphicsIndex << 29)) != null &&
+				if (p != -1 && (model = Game.lookup(table, (long) p | (long) graphicsIndex << 29)) != null &&
 						model instanceof org.powerbot.client.Model) {
-					return new RenderableModel(world, (org.powerbot.client.Model) model, itemPile);
+					return new RenderableModel((org.powerbot.client.Model) model, itemPile);
 				}
 
 				final int[] ids = {itemPile.getID_1(), itemPile.getID_2(), itemPile.getID_3()};
@@ -71,12 +72,12 @@ public class GroundItem extends Interactive implements Locatable, Drawable {
 				int i = 0;
 				for (final int id : ids) {
 					if (id < 1) continue;
-					model = world.game.lookup(table, (long) id | (long) graphicsIndex << 29);
+					model = Game.lookup(table, (long) id | (long) graphicsIndex << 29);
 					if (model != null && model instanceof org.powerbot.client.Model)
 						models[i++] = (org.powerbot.client.Model) model;
 				}
 
-				return i > 0 ? new RenderableModel(world, models[Random.nextInt(0, i)], itemPile) : null;
+				return i > 0 ? new RenderableModel(models[Random.nextInt(0, i)], itemPile) : null;
 			}
 		}
 		return null;
@@ -124,7 +125,7 @@ public class GroundItem extends Interactive implements Locatable, Drawable {
 
 	@Override
 	public boolean isValid() {
-		final GroundItem[] items = world.groundItems.getLoaded(tile.getX(), tile.getY(), 0);
+		final GroundItem[] items = GroundItems.getLoaded(tile.getX(), tile.getY(), 0);
 		return Arrays.asList(items).contains(this);
 	}
 

@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import org.powerbot.bot.Bot;
+import org.powerbot.bot.World;
 
 /**
  * @author Timer

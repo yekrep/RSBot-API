@@ -2,6 +2,7 @@ package org.powerbot.script.wrappers;
 
 import java.awt.Point;
 
+import org.powerbot.bot.World;
 import org.powerbot.client.Client;
 import org.powerbot.client.CombatStatus;
 import org.powerbot.client.CombatStatusData;
@@ -15,14 +16,10 @@ import org.powerbot.client.RSNPC;
 import org.powerbot.client.RSNPCNode;
 import org.powerbot.client.RSPlayer;
 import org.powerbot.client.Sequence;
-import org.powerbot.script.methods.World;
+import org.powerbot.script.methods.Game;
 
 public abstract class Actor extends Interactive implements Locatable, Drawable {
 	private int faceIndex = -1;
-
-	public Actor(World world) {
-		super(world);
-	}
 
 	protected abstract RSCharacter getAccessor();
 
@@ -30,7 +27,7 @@ public abstract class Actor extends Interactive implements Locatable, Drawable {
 		final RSCharacter character = getAccessor();
 		if (character != null) {
 			final org.powerbot.client.Model model = character.getModel();
-			if (model != null) return new ActorModel(world, model, character);
+			if (model != null) return new ActorModel(model, character);
 		}
 		return null;
 	}
@@ -100,21 +97,21 @@ public abstract class Actor extends Interactive implements Locatable, Drawable {
 		if (index == -1) {
 			return null;
 		}
-		final Client client = world.getClient();
+		final Client client = World.getWorld().getClient();
 		if (client == null) return null;
 		if (index < 32768) {
-			final Object npcNode = world.game.lookup(client.getRSNPCNC(), index);
+			final Object npcNode = Game.lookup(client.getRSNPCNC(), index);
 			if (npcNode == null) {
 				return null;
 			}
 			if (npcNode instanceof RSNPCNode) {
-				return new Npc(world, ((RSNPCNode) npcNode).getRSNPC());
-			} else if (npcNode instanceof RSNPC) return new Npc(world, (RSNPC) npcNode);
+				return new Npc(((RSNPCNode) npcNode).getRSNPC());
+			} else if (npcNode instanceof RSNPC) return new Npc((RSNPC) npcNode);
 			return null;
 		} else {
 			final int pos = index - 32768;
 			final RSPlayer[] players = client.getRSPlayerArray();
-			return pos >= 0 && pos < players.length ? new Player(world, players[pos]) : null;
+			return pos >= 0 && pos < players.length ? new Player(players[pos]) : null;
 		}
 	}
 
@@ -143,7 +140,7 @@ public abstract class Actor extends Interactive implements Locatable, Drawable {
 	}
 
 	public boolean isInCombat() {
-		final Client client = world.getClient();
+		final Client client = World.getWorld().getClient();
 		if (client == null) return false;
 		final CombatStatusData[] data = getBarData();
 		return data != null && data[1] != null && data[1].getLoopCycleStatus() < client.getLoopCycle();
@@ -155,7 +152,7 @@ public abstract class Actor extends Interactive implements Locatable, Drawable {
 		final RSInteractableData data = character != null ? character.getData() : null;
 		final RSInteractableLocation location = data != null ? data.getLocation() : null;
 		if (location != null) {
-			final Tile base = world.game.getMapBase();
+			final Tile base = Game.getMapBase();
 			return base != null ? base.derive((int) location.getX() >> 9, (int) location.getY() >> 9, character.getPlane()) : null;
 		}
 		return null;
@@ -199,7 +196,7 @@ public abstract class Actor extends Interactive implements Locatable, Drawable {
 		final RSInteractableData data = character != null ? character.getData() : null;
 		final RSInteractableLocation location = data != null ? data.getLocation() : null;
 		if (location != null) {
-			return world.game.groundToScreen((int) location.getX(), (int) location.getY(), character.getPlane(), character.getHeight() / 2);
+			return Game.groundToScreen((int) location.getX(), (int) location.getY(), character.getPlane(), character.getHeight() / 2);
 		}
 		return new Point(-1, -1);
 	}

@@ -1,5 +1,6 @@
 package org.powerbot.script.methods;
 
+import org.powerbot.bot.World;
 import org.powerbot.client.Client;
 import org.powerbot.client.PlayerMetaInfo;
 
@@ -8,18 +9,14 @@ import org.powerbot.client.PlayerMetaInfo;
  *
  * @author Timer
  */
-public class Settings extends WorldImpl {
-	public Settings(World world) {
-		super(world);
-	}
-
+public class Settings {
 	/**
 	 * Returns the array of settings for the game.
 	 *
 	 * @return an array of the game's settings
 	 */
-	public int[] getArray() {
-		final Client client = world.getClient();
+	public static int[] getArray() {
+		final Client client = World.getWorld().getClient();
 		final PlayerMetaInfo info;
 		if (client == null || (info = client.getPlayerMetaInfo()) == null) return new int[0];
 		final org.powerbot.client.Settings settings;
@@ -34,7 +31,7 @@ public class Settings extends WorldImpl {
 	 * @param index the index of the setting
 	 * @return the setting for the specified index
 	 */
-	public int get(final int index) {
+	public static int get(final int index) {
 		final int[] arr = getArray();
 		return index < arr.length ? arr[index] : -1;
 	}

@@ -2,7 +2,10 @@ package org.powerbot.script.methods;
 
 import java.awt.Point;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
+import org.powerbot.bot.World;
 import org.powerbot.client.Client;
 import org.powerbot.client.RSInterfaceBase;
 import org.powerbot.script.util.Delay;
@@ -11,30 +14,26 @@ import org.powerbot.script.wrappers.Component;
 import org.powerbot.script.wrappers.Widget;
 
 /**
- * {@link Widgets} is a utility which provides access to the game's {@link Component}s by means of {@link Widget}s.
+ * {@link Widgets} is a static utility which provides access to the game's {@link Component}s by means of {@link Widget}s.
  * <p/>
  * {@link Widget}s are cached and are available at all times, even when not present in game.
  * {@link Widget}s must be validated before use.
  */
-public class Widgets extends WorldImpl {
-	private Widget[] cache = new Widget[0];
-
-	public Widgets(World world) {
-		super(world);
-	}
+public class Widgets {
+	private static final Map<Client, Widget[]> cache = new HashMap<>();
 
 	/**
 	 * Returns all the {@link Widget}s that are currently loaded in the game.
 	 *
 	 * @return an array of {@link Widget}s which are currently loaded
 	 */
-	public Widget[] getLoaded() {
-		final Client client = world.getClient();
+	public static Widget[] getLoaded() {
+		final Client client = World.getWorld().getClient();
 		if (client == null) return null;
 		final RSInterfaceBase[] containers = client.getRSInterfaceCache();
 		final int len = containers != null ? containers.length : 0;
 		final Widget[] arr = new Widget[len];
-		for (int i = 0; i < len; i++) arr[i] = new Widget(world, i);
+		for (int i = 0; i < len; i++) arr[i] = new Widget(i);
 		return arr;
 	}
 
@@ -44,10 +43,11 @@ public class Widgets extends WorldImpl {
 	 * @param widget the index of the desired {@link Widget}
 	 * @return the {@link Widget} respective to the given index
 	 */
-	public synchronized Widget get(final int widget) {
-		final Client client = world.getClient();
+	public static Widget get(final int widget) {
+		final Client client = World.getWorld().getClient();
 		if (client == null || widget < 0) return null;
 
+		Widget[] cache = Widgets.cache.get(client);
 		if (cache == null) cache = new Widget[0];
 		if (widget < cache.length) return cache[widget];
 
@@ -55,7 +55,8 @@ public class Widgets extends WorldImpl {
 		final int mod = Math.max(containers != null ? containers.length : 0, widget + 1);
 		final int len = cache.length;
 		cache = Arrays.copyOf(cache, mod);
-		for (int i = len; i < mod; i++) cache[i] = new Widget(world, i);
+		for (int i = len; i < mod; i++) cache[i] = new Widget(i);
+		Widgets.cache.put(client, cache);
 		return cache[widget];
 	}
 
@@ -66,7 +67,7 @@ public class Widgets extends WorldImpl {
 	 * @param componentIndex the index of the desired {@link Component} of the given {@link Widget}
 	 * @return the {@link Component} belonging to the {@link Widget} requested
 	 */
-	public Component get(final int index, final int componentIndex) {
+	public static Component get(final int index, final int componentIndex) {
 		final Widget widget = get(index);
 		return widget != null ? widget.getComponent(componentIndex) : null;
 	}
@@ -78,7 +79,7 @@ public class Widgets extends WorldImpl {
 	 * @param bar       the {@link Component} of the scroll bar
 	 * @return {@code true} if visible; otherwise {@code false}
 	 */
-	public boolean scroll(final Component component, final Component bar) {
+	public static boolean scroll(final Component component, final Component bar) {
 		if (component == null || bar == null || !component.isValid() || bar.getChildrenCount() != 6) return false;
 		Component area = component;
 		int id;
@@ -99,7 +100,7 @@ public class Widgets extends WorldImpl {
 		else if (pos >= _bar.getHeight()) pos = _bar.getHeight() - 1;
 		final Point nav = _bar.getAbsoluteLocation();
 		nav.translate(Random.nextInt(0, _bar.getWidth()), pos);
-		if (!world.mouse.click(nav, true)) return false;
+		if (!Mouse.click(nav, true)) return false;
 		Delay.sleep(200, 400);
 
 		boolean up;

@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.powerbot.script.methods.World;
-import org.powerbot.script.methods.WorldImpl;
+import org.powerbot.script.methods.Game;
+import org.powerbot.script.methods.Widgets;
 import org.powerbot.script.util.Delay;
 import org.powerbot.script.util.Filter;
 import org.powerbot.script.util.Random;
@@ -15,7 +15,7 @@ import org.powerbot.script.util.Timer;
 import org.powerbot.script.wrappers.Component;
 import org.powerbot.script.wrappers.Widget;
 
-public class Lobby extends WorldImpl {
+public class Lobby {
 	public static final int STATE_LOBBY_IDLE = 7;
 	public static final int STATE_LOGGING_IN = 9;
 	public static final int LOGIN_DEFAULT_TIMEOUT = 30000;
@@ -34,12 +34,8 @@ public class Lobby extends WorldImpl {
 	public static final int WIDGET_WORLDS_COLUMN_LOOT_SHARE = 75;
 	public static final int WIDGET_WORLDS_COLUMN_PING = 76;
 
-	public Lobby(World world) {
-		super(world);
-	}
-
-	public boolean isOpen() {
-		return world.game.getClientState() == STATE_LOBBY_IDLE;
+	public static boolean isOpen() {
+		return Game.getClientState() == STATE_LOBBY_IDLE;
 	}
 
 	/**
@@ -47,24 +43,24 @@ public class Lobby extends WorldImpl {
 	 *
 	 * @return <tt>true</tt> if the logout button was clicked; otherwise <tt>false</tt>.
 	 */
-	public boolean close() {
+	public static boolean close() {
 		if (!isOpen() || !closeDialog()) {
 			return false;
 		}
-		final Component child = world.widgets.get(WIDGET_MAIN_LOBBY, WIDGET_BUTTON_LOGOUT);
+		final Component child = Widgets.get(WIDGET_MAIN_LOBBY, WIDGET_BUTTON_LOGOUT);
 		return child != null && child.isValid() && child.click(true);
 	}
 
-	public boolean enterGame() {
+	public static boolean enterGame() {
 		return enterGame(LOGIN_DEFAULT_TIMEOUT);
 	}
 
-	public boolean enterGame(final int timeout) {
+	public static boolean enterGame(final int timeout) {
 		return enterGame(null, timeout);
 	}
 
-	public boolean enterGame(final Server server) {
-		return enterGame(server, LOGIN_DEFAULT_TIMEOUT);
+	public static boolean enterGame(final World world) {
+		return enterGame(world, LOGIN_DEFAULT_TIMEOUT);
 	}
 
 	/**
@@ -75,27 +71,27 @@ public class Lobby extends WorldImpl {
 	 * If the login fails, the {@link Dialog} will still be open when the method finishes as it allows the
 	 * developer to diagnose the reason for login failure.
 	 *
-	 * @param server  The world to select before logging in. Can be <tt>null</tt> if no world selection is wanted.
+	 * @param world   The world to select before logging in. Can be <tt>null</tt> if no world selection is wanted.
 	 * @param timeout The amount of time (in milliseconds) to wait for the account to login. If the timeout is
 	 *                reached, the method will exit regardless the the current login state.
 	 * @return <tt>true</tt> if the account is logged in; otherwise <tt>false</tt>.
 	 */
-	public boolean enterGame(final Server server, final int timeout) {
-		if (world.game.getClientState() == STATE_LOBBY_IDLE) {
+	public static boolean enterGame(final World world, final int timeout) {
+		if (Game.getClientState() == STATE_LOBBY_IDLE) {
 			if (!closeDialog() || (Tab.OPTIONS.isOpen() && !Tab.PLAYER_INFO.open())) {
 				return false;
 			}
-			final Server selected = (server != null) ? getSelectedWorld() : null;
-			if (selected != null && !selected.equals(server) && !server.click()) {
+			final World selected = (world != null) ? getSelectedWorld() : null;
+			if (selected != null && !selected.equals(world) && !world.click()) {
 				return false;
 			}
-			final Component child = world.widgets.get(WIDGET_MAIN_LOBBY, WIDGET_BUTTON_PLAY_GAME);
+			final Component child = Widgets.get(WIDGET_MAIN_LOBBY, WIDGET_BUTTON_PLAY_GAME);
 			if (!(child != null && child.isValid() && child.click(true))) {
 				return false;
 			}
 		}
 		final Timer t = new Timer(timeout);
-		while (t.isRunning() && !world.game.isLoggedIn()) {
+		while (t.isRunning() && !Game.isLoggedIn()) {
 			final Dialog dialog = getOpenDialog();
 			if (dialog == Dialog.TRANSFER_COUNTDOWN || (dialog != null && dialog.clickContinue())) {
 				t.reset();
@@ -105,7 +101,7 @@ public class Lobby extends WorldImpl {
 			}
 			Delay.sleep(5);
 		}
-		return world.game.isLoggedIn();
+		return Game.isLoggedIn();
 	}
 
 	/**
@@ -114,7 +110,7 @@ public class Lobby extends WorldImpl {
 	 *
 	 * @return The currently selected world, or <tt>null</tt> if unable to retrieve world.
 	 */
-	public Server getSelectedWorld() {
+	public static World getSelectedWorld() {
 		if (!isOpen() || !closeDialog() || (!Tab.WORLD_SELECT.getPanelWidget().isValid() && !Tab.WORLD_SELECT.open())) {
 			return null;
 		}
@@ -129,45 +125,45 @@ public class Lobby extends WorldImpl {
 		return null;
 	}
 
-	public Server getWorld(final int worldNumber) {
-		final Server[] servers = getWorlds(new Filter<Server>() {
+	public static World getWorld(final int worldNumber) {
+		final World[] worlds = getWorlds(new Filter<World>() {
 			@Override
-			public boolean accept(final Server world) {
+			public boolean accept(final World world) {
 				return world.getNumber() == worldNumber;
 			}
 		});
-		return servers.length == 1 ? servers[0] : null;
+		return worlds.length == 1 ? worlds[0] : null;
 	}
 
-	public Server[] getWorlds() {
-		return getWorlds(new Filter<Server>() {
+	public static World[] getWorlds() {
+		return getWorlds(new Filter<World>() {
 			@Override
-			public boolean accept(final Server server) {
+			public boolean accept(final World world) {
 				return true;
 			}
 		});
 	}
 
-	public Server[] getWorlds(final Filter<Server> filter) {
+	public static World[] getWorlds(final Filter<World> filter) {
 		if (!isOpen() || !closeDialog()) {
-			return new Server[0];
+			return new World[0];
 		}
 		final Widget panel = Tab.WORLD_SELECT.getPanelWidget();
 		if (!panel.isValid() && !Tab.WORLD_SELECT.open()) {
-			return new Server[0];
+			return new World[0];
 		}
-		final ArrayList<Server> servers = new ArrayList<>();
+		final ArrayList<World> worlds = new ArrayList<>();
 		final Component[] rows = panel.getComponent(WIDGET_WORLDS_ROWS).getChildren();
 		for (final Component row : rows) {
-			final Server server = new Server(row.getIndex());
-			if (filter.accept(server)) {
-				servers.add(server);
+			final World world = new World(row.getIndex());
+			if (filter.accept(world)) {
+				worlds.add(world);
 			}
 		}
-		return servers.toArray(new Server[servers.size()]);
+		return worlds.toArray(new World[worlds.size()]);
 	}
 
-	public Dialog getOpenDialog() {
+	public static Dialog getOpenDialog() {
 		for (final Dialog d : Dialog.values()) {
 			if (d.isOpen()) {
 				return d;
@@ -176,7 +172,7 @@ public class Lobby extends WorldImpl {
 		return null;
 	}
 
-	private boolean closeDialog() {
+	private static boolean closeDialog() {
 		final Dialog dialog = getOpenDialog();
 		return dialog == null || (dialog.hasBack() && dialog.clickBack());
 	}
@@ -184,7 +180,7 @@ public class Lobby extends WorldImpl {
 	/**
 	 * Representation of the lobby tabs.
 	 */
-	public enum Tab {
+	public static enum Tab {
 		PLAYER_INFO(230, 907), WORLD_SELECT(28, 910), FRIENDS(27, 909),
 		FRIENDS_CHAT(280, 589), CLAN_CHAT(26, 912), OPTIONS(25, 911);
 		private final int widgetTabIndex;
@@ -201,10 +197,10 @@ public class Lobby extends WorldImpl {
 		 * @return The widget of the tab.
 		 */
 		public Component getWidget() {
-			if (!Lobby.this.isOpen()) {
+			if (!Lobby.isOpen()) {
 				return null;
 			}
-			return Lobby.this.world.widgets.get(WIDGET_MAIN_LOBBY, widgetTabIndex);
+			return Widgets.get(WIDGET_MAIN_LOBBY, widgetTabIndex);
 		}
 
 		/**
@@ -213,10 +209,10 @@ public class Lobby extends WorldImpl {
 		 * @return The tab's panel widget.
 		 */
 		public Widget getPanelWidget() {
-			if (!Lobby.this.isOpen()) {
+			if (!Lobby.isOpen()) {
 				return null;
 			}
-			return Lobby.this.world.widgets.get(widgetPanelIndex);
+			return Widgets.get(widgetPanelIndex);
 		}
 
 		public boolean isOpen() {
@@ -240,7 +236,7 @@ public class Lobby extends WorldImpl {
 	/**
 	 * Representation of the lobby dialogs.
 	 */
-	public enum Dialog {
+	public static enum Dialog {
 		TRANSFER_COUNTDOWN(255, -1, 252, "^You have only just left another world."),
 		ACCOUNT_IN_USE(260, -1, 252, "^Your account has not logged out from its last session."),
 		LOGIN_LIMIT_EXCEEDED(260, -1, 252, "^Login limit exceeded: too many connections from your address."),
@@ -262,7 +258,7 @@ public class Lobby extends WorldImpl {
 		}
 
 		public boolean isOpen() {
-			final Component child = Lobby.this.world.widgets.get(WIDGET_MAIN_LOBBY, textIndex);
+			final Component child = Widgets.get(WIDGET_MAIN_LOBBY, textIndex);
 			if (child != null && child.isOnScreen()) {
 				final String text = child.getText();
 				return text != null && textPattern.matcher(text).find();
@@ -278,7 +274,7 @@ public class Lobby extends WorldImpl {
 			if (!hasContinue()) {
 				return false;
 			}
-			final Component child = Lobby.this.world.widgets.get(WIDGET_MAIN_LOBBY, continueButtonIndex);
+			final Component child = Widgets.get(WIDGET_MAIN_LOBBY, continueButtonIndex);
 			return child != null && child.isOnScreen() && child.click(true);
 		}
 
@@ -290,12 +286,12 @@ public class Lobby extends WorldImpl {
 			if (!hasBack()) {
 				return false;
 			}
-			final Component child = Lobby.this.world.widgets.get(WIDGET_MAIN_LOBBY, backButtonIndex);
+			final Component child = Widgets.get(WIDGET_MAIN_LOBBY, backButtonIndex);
 			return child != null && child.isOnScreen() && child.click(true);
 		}
 	}
 
-	public class Server {
+	public static class World {
 		private final int number;
 		private final boolean members;
 		private final String activity;
@@ -304,7 +300,7 @@ public class Lobby extends WorldImpl {
 		private int ping;
 		private boolean favorite;
 
-		private Server(final int widgetIndex) {
+		private World(final int widgetIndex) {
 			final Widget panel = Tab.WORLD_SELECT.getPanelWidget();
 			this.number = Integer.parseInt(panel.getComponent(WIDGET_WORLDS_COLUMN_WORLD_NUMBER).getChild(widgetIndex).getText());
 			this.members = panel.getComponent(WIDGET_WORLDS_COLUMN_MEMBERS).getChild(widgetIndex).getTextureId() == 1531;
@@ -315,7 +311,7 @@ public class Lobby extends WorldImpl {
 			this.favorite = isFavorite();
 		}
 
-		private int getWidgetIndex(final int worldNumber) {
+		private static int getWidgetIndex(final int worldNumber) {
 			final Widget panel = Tab.WORLD_SELECT.getPanelWidget();
 			if (panel == null || !panel.isValid()) {
 				return -1;
@@ -390,10 +386,10 @@ public class Lobby extends WorldImpl {
 		 * @return <tt>true</tt> if the world is selected; otherwise <tt>false</tt>.
 		 */
 		public boolean click() {
-			if (!isOpen() || (!Tab.WORLD_SELECT.isOpen() && !Tab.WORLD_SELECT.open())) {
+			if (!Lobby.isOpen() || (!Tab.WORLD_SELECT.isOpen() && !Tab.WORLD_SELECT.open())) {
 				return false;
 			}
-			final Server selected = getSelectedWorld();
+			final World selected = Lobby.getSelectedWorld();
 			if (selected != null && selected.equals(this)) {
 				return true;
 			}
@@ -411,7 +407,7 @@ public class Lobby extends WorldImpl {
 				);
 				if (!visibleBounds.contains(row.getAbsoluteLocation())) {
 					final Component scrollBar = panel.getComponent(WIDGET_WORLDS_TABLE_SCROLLBAR);
-					if (scrollBar == null || !world.widgets.scroll(row, scrollBar)) {
+					if (scrollBar == null || !Widgets.scroll(row, scrollBar)) {
 						return false;
 					}
 				}
@@ -422,7 +418,7 @@ public class Lobby extends WorldImpl {
 
 		@Override
 		public boolean equals(final Object o) {
-			return o instanceof Server && ((Server) o).number == this.number;
+			return o instanceof World && ((World) o).number == this.number;
 		}
 	}
 }

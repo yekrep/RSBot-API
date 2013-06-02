@@ -5,7 +5,7 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Polygon;
 
-import org.powerbot.script.methods.World;
+import org.powerbot.script.methods.Game;
 import org.powerbot.script.util.Random;
 
 public class Tile extends Interactive implements Locatable, Drawable {
@@ -14,12 +14,11 @@ public class Tile extends Interactive implements Locatable, Drawable {
 	public final int y;
 	public final int plane;
 
-	public Tile(World world, final int x, final int y) {
-		this(world, x, y, 0);
+	public Tile(final int x, final int y) {
+		this(x, y, 0);
 	}
 
-	public Tile(World world, final int x, final int y, final int plane) {
-		super(world);
+	public Tile(final int x, final int y, final int plane) {
 		this.x = x;
 		this.y = y;
 		this.plane = plane;
@@ -42,7 +41,7 @@ public class Tile extends Interactive implements Locatable, Drawable {
 	}
 
 	public Tile derive(final int x, final int y, final int plane) {
-		return new Tile(world, this.x + x, this.y + y, plane);
+		return new Tile(this.x + x, this.y + y, plane);
 	}
 
 	public Tile randomize(final int left, final int right, final int down, final int up) {
@@ -58,12 +57,12 @@ public class Tile extends Interactive implements Locatable, Drawable {
 	}
 
 	public Point getPoint(final double modX, final double modY, final int height) {
-		final Tile base = world.game.getMapBase();
-		return base != null ? world.game.groundToScreen((int) ((x - base.x + modX) * 512d), (int) ((y - base.y + modY) * 512d), plane, height) : new Point(-1, -1);
+		final Tile base = Game.getMapBase();
+		return base != null ? Game.groundToScreen((int) ((x - base.x + modX) * 512d), (int) ((y - base.y + modY) * 512d), plane, height) : new Point(-1, -1);
 	}
 
 	public Point getMapPoint() {
-		return world.game.worldToMap(getX() + 0.5d, getY() + 0.5d);
+		return Game.worldToMap(getX() + 0.5d, getY() + 0.5d);
 	}
 
 	public boolean isOnMap() {
@@ -99,8 +98,8 @@ public class Tile extends Interactive implements Locatable, Drawable {
 		final Point topRight = getPoint(1.0D, 0.0D, 0);
 		final Point bottomRight = getPoint(1.0D, 1.0D, 0);
 		final Point bottomLeft = getPoint(0.0D, 1.0D, 0);
-		if (world.game.isPointOnScreen(topLeft) && world.game.isPointOnScreen(topRight) &&
-				world.game.isPointOnScreen(bottomRight) && world.game.isPointOnScreen(bottomLeft)) {
+		if (Game.isPointOnScreen(topLeft) && Game.isPointOnScreen(topRight) &&
+				Game.isPointOnScreen(bottomRight) && Game.isPointOnScreen(bottomLeft)) {
 			final Polygon p = new Polygon();
 			p.addPoint(topLeft.x, topLeft.y);
 			p.addPoint(topRight.x, topRight.y);
@@ -113,7 +112,7 @@ public class Tile extends Interactive implements Locatable, Drawable {
 
 	@Override
 	public boolean isValid() {
-		final Tile t = world.game.getMapBase();
+		final Tile t = Game.getMapBase();
 		if (t == null) return false;
 		final int x = this.x - t.x, y = this.y - t.y;
 		return x >= 0 && y >= 0 && x < 104 && y < 104;
@@ -135,8 +134,8 @@ public class Tile extends Interactive implements Locatable, Drawable {
 		final Point topRight = getPoint(1.0D, 0.0D, 0);
 		final Point bottomRight = getPoint(1.0D, 1.0D, 0);
 		final Point bottomLeft = getPoint(0.0D, 1.0D, 0);
-		if (world.game.isPointOnScreen(topLeft) && world.game.isPointOnScreen(topRight) &&
-				world.game.isPointOnScreen(bottomRight) && world.game.isPointOnScreen(bottomLeft)) {
+		if (Game.isPointOnScreen(topLeft) && Game.isPointOnScreen(topRight) &&
+				Game.isPointOnScreen(bottomRight) && Game.isPointOnScreen(bottomLeft)) {
 			final Polygon p = new Polygon();
 			p.addPoint(topLeft.x, topLeft.y);
 			p.addPoint(topRight.x, topRight.y);

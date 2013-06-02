@@ -3,6 +3,7 @@ package org.powerbot.bot;
 import org.powerbot.client.Callback;
 import org.powerbot.client.Render;
 import org.powerbot.event.MessageEvent;
+import org.powerbot.script.methods.Game;
 
 /**
  * An implementation of callback responsible for processing client callbacks to appropriate bot functions.
@@ -22,7 +23,7 @@ public class CallbackImpl implements Callback {
 	 * @param render The render provided from the game.
 	 */
 	public void updateRenderInfo(final Render render) {
-		bot.world.game.updateToolkit(render);
+		Game.updateToolkit(render);
 	}
 
 	/**

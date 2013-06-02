@@ -4,8 +4,13 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.Arrays;
 
-import org.powerbot.script.methods.World;
-import org.powerbot.script.methods.WorldImpl;
+import org.powerbot.script.methods.Keyboard;
+import org.powerbot.script.methods.Menu;
+import org.powerbot.script.methods.Npcs;
+import org.powerbot.script.methods.Objects;
+import org.powerbot.script.methods.Settings;
+import org.powerbot.script.methods.Widgets;
+import org.powerbot.script.methods.tabs.Inventory;
 import org.powerbot.script.util.Delay;
 import org.powerbot.script.util.Filter;
 import org.powerbot.script.util.Random;
@@ -17,7 +22,7 @@ import org.powerbot.script.wrappers.Item;
 import org.powerbot.script.wrappers.Npc;
 import org.powerbot.script.wrappers.Widget;
 
-public class Bank extends WorldImpl {
+public class Bank {
 	public static final int[] BANK_NPC_IDS = new int[]{
 			44, 45, 166, 494, 495, 496, 497, 498, 499, 553, 909, 953, 958, 1036, 1360, 1702, 2163, 2164, 2354, 2355,
 			2568, 2569, 2570, 2617, 2618, 2619, 2718, 2759, 3046, 3198, 3199, 3293, 3416, 3418, 3824, 4456, 4457,
@@ -46,23 +51,19 @@ public class Bank extends WorldImpl {
 	public static final int SETTING_BANK_STATE = 110;
 	public static final int SETTING_WITHDRAW_MODE = 160;
 
-	public Bank(World world) {
-		super(world);
-	}
-
-	public boolean isOpen() {
-		final Widget widget = world.widgets.get(WIDGET);
+	public static boolean isOpen() {
+		final Widget widget = Widgets.get(WIDGET);
 		return widget != null && widget.isValid();
 	}
 
-	public boolean open() {
+	public static boolean open() {
 		if (isOpen()) return true;
 		int count = 0;
 		final Interactive[] interactives = {
-				world.npcs.getNearest(BANK_NPC_IDS),
-				world.objects.getNearest(BANK_BOOTH_IDS),
-				world.objects.getNearest(BANK_COUNTER_IDS),
-				world.objects.getNearest(BANK_CHEST_IDS),
+				Npcs.getNearest(BANK_NPC_IDS),
+				Objects.getNearest(BANK_BOOTH_IDS),
+				Objects.getNearest(BANK_COUNTER_IDS),
+				Objects.getNearest(BANK_CHEST_IDS),
 		};
 		for (int i = 0; i < interactives.length; i++) {
 			if (interactives[i] != null && interactives[i].isOnScreen()) {
@@ -90,19 +91,19 @@ public class Bank extends WorldImpl {
 		final String[] options = {null, "Bank booth", null, "Counter"};
 		if (actions[index] == null) {
 			interactive.hover();
-			actions[index] = world.menu.indexOf("Open") != -1 ? "Open" : world.menu.indexOf("Use") != -1 ? "Use" : null;
+			actions[index] = Menu.indexOf("Open") != -1 ? "Open" : Menu.indexOf("Use") != -1 ? "Use" : null;
 			if (actions[index] == null) return false;
 		}
 		if (interactive.interact(actions[index], options[index])) {
-			final Widget bankPin = world.widgets.get(13);
+			final Widget bankPin = Widgets.get(13);
 			for (int i = 0; i < 20 && !isOpen() && !bankPin.isValid(); i++) Delay.sleep(200, 300);
 		}
 		return isOpen();
 	}
 
-	public boolean close(final boolean wait) {
+	public static boolean close(final boolean wait) {
 		if (!isOpen()) return true;
-		final Component c = world.widgets.get(WIDGET, COMPONENT_BUTTON_CLOSE);
+		final Component c = Widgets.get(WIDGET, COMPONENT_BUTTON_CLOSE);
 		if (c == null) return false;
 		if (c.isValid() && c.interact("Close")) {
 			if (!wait) return true;
@@ -113,25 +114,25 @@ public class Bank extends WorldImpl {
 		return false;
 	}
 
-	public boolean close() {
+	public static boolean close() {
 		return close(true);
 	}
 
-	public Item[] getItems() {
-		final Component c = world.widgets.get(WIDGET, COMPONENT_CONTAINER_ITEMS);
+	public static Item[] getItems() {
+		final Component c = Widgets.get(WIDGET, COMPONENT_CONTAINER_ITEMS);
 		if (c == null || !c.isValid()) return new Item[0];
 		final Component[] components = c.getChildren();
 		Item[] items = new Item[components.length];
 		int d = 0;
-		for (final Component i : components) if (i.getItemId() != -1) items[d++] = new Item(world, i);
+		for (final Component i : components) if (i.getItemId() != -1) items[d++] = new Item(i);
 		return Arrays.copyOf(items, d);
 	}
 
-	public Item[] getItems(final Filter<Item> filter) {
+	public static Item[] getItems(final Filter<Item> filter) {
 		return getItems(false, filter);
 	}
 
-	public Item[] getItems(final boolean currentTab) {
+	public static Item[] getItems(final boolean currentTab) {
 		if (!currentTab) return getItems();
 		return getItems(new Filter<Item>() {
 			@Override
@@ -141,7 +142,7 @@ public class Bank extends WorldImpl {
 		});
 	}
 
-	public Item[] getItems(final int... ids) {
+	public static Item[] getItems(final int... ids) {
 		Arrays.sort(ids);
 		return getItems(new Filter<Item>() {
 			@Override
@@ -151,21 +152,21 @@ public class Bank extends WorldImpl {
 		});
 	}
 
-	public Item getItem(final int... ids) {
+	public static Item getItem(final int... ids) {
 		final Item[] items = getItems(ids);
 		return items.length > 0 ? items[0] : null;
 	}
 
-	public Item getItem(final Filter<Item> filter) {
+	public static Item getItem(final Filter<Item> filter) {
 		return getItem(false, filter);
 	}
 
-	public Item getItem(final boolean currentTab, final Filter<Item> filter) {
+	public static Item getItem(final boolean currentTab, final Filter<Item> filter) {
 		final Item[] items = getItems(currentTab, filter);
 		return items.length > 0 ? items[0] : null;
 	}
 
-	public Item[] getItems(final boolean currentTab, final Filter<Item> filter) {
+	public static Item[] getItems(final boolean currentTab, final Filter<Item> filter) {
 		final Item[] items = getItems(currentTab);
 		final Item[] arr = new Item[items.length];
 		int d = 0;
@@ -173,41 +174,41 @@ public class Bank extends WorldImpl {
 		return Arrays.copyOf(arr, d);
 	}
 
-	public Item getItemAt(final int index) {
-		final Component c = world.widgets.get(WIDGET, COMPONENT_CONTAINER_ITEMS);
+	public static Item getItemAt(final int index) {
+		final Component c = Widgets.get(WIDGET, COMPONENT_CONTAINER_ITEMS);
 		if (c == null || !c.isValid()) return null;
 		final Component i = c.getChild(index);
-		if (i != null && i.getItemId() != -1) return new Item(world, i);
+		if (i != null && i.getItemId() != -1) return new Item(i);
 		return null;
 	}
 
-	public int indexOf(final int id) {
-		final Component items = world.widgets.get(WIDGET, COMPONENT_CONTAINER_ITEMS);
+	public static int indexOf(final int id) {
+		final Component items = Widgets.get(WIDGET, COMPONENT_CONTAINER_ITEMS);
 		if (items == null || !items.isValid()) return -1;
 		final Component[] comps = items.getChildren();
 		for (int i = 0; i < comps.length; i++) if (comps[i].getItemId() == id) return i;
 		return -1;
 	}
 
-	public boolean contains(final int id) {
+	public static boolean contains(final int id) {
 		return indexOf(id) != -1;
 	}
 
-	public boolean containsAll(final int... ids) {
+	public static boolean containsAll(final int... ids) {
 		for (final int id : ids) if (indexOf(id) == -1) return false;
 		return true;
 	}
 
-	public boolean containsOneOf(final int... ids) {
+	public static boolean containsOneOf(final int... ids) {
 		for (final int id : ids) if (indexOf(id) != -1) return true;
 		return false;
 	}
 
-	public int getCount() {
+	public static int getCount() {
 		return getCount(false);
 	}
 
-	public int getCount(final boolean stacks) {
+	public static int getCount(final boolean stacks) {
 		int count = 0;
 		final Item[] items = getItems();
 		for (final Item item : items) {
@@ -217,11 +218,11 @@ public class Bank extends WorldImpl {
 		return count;
 	}
 
-	public int getCount(final int... ids) {
+	public static int getCount(final int... ids) {
 		return getCount(false, ids);
 	}
 
-	public int getCount(final boolean stacks, final int... ids) {
+	public static int getCount(final boolean stacks, final int... ids) {
 		int count = 0;
 		final Item[] items = getItems();
 		for (final Item item : items) {
@@ -236,12 +237,12 @@ public class Bank extends WorldImpl {
 		return count;
 	}
 
-	public int getCurrentTab() {
-		return ((world.settings.get(SETTING_BANK_STATE) >>> 24) - 136) / 8;
+	public static int getCurrentTab() {
+		return ((Settings.get(SETTING_BANK_STATE) >>> 24) - 136) / 8;
 	}
 
-	public boolean setCurrentTab(final int index) {
-		final Component c = world.widgets.get(WIDGET, 63 - (index * 2));
+	public static boolean setCurrentTab(final int index) {
+		final Component c = Widgets.get(WIDGET, 63 - (index * 2));
 		if (c != null && c.isValid() && c.click(true)) {
 			final Timer timer = new Timer(800);
 			while (timer.isRunning() && getCurrentTab() != index) Delay.sleep(15);
@@ -250,16 +251,16 @@ public class Bank extends WorldImpl {
 		return false;
 	}
 
-	public Item getTabItem(final int index) {
-		final Component c = world.widgets.get(WIDGET, 63 - (index * 2));
-		if (c != null && c.isValid()) return new Item(world, c);
+	public static Item getTabItem(final int index) {
+		final Component c = Widgets.get(WIDGET, 63 - (index * 2));
+		if (c != null && c.isValid()) return new Item(c);
 		return null;
 	}
 
-	public boolean withdraw(final int id, final int amount) {
+	public static boolean withdraw(final int id, final int amount) {
 		final Item item = getItem(id);
 		if (item == null) return false;
-		final Component container = world.widgets.get(WIDGET, COMPONENT_CONTAINER_ITEMS);
+		final Component container = Widgets.get(WIDGET, COMPONENT_CONTAINER_ITEMS);
 		if (container == null || !container.isValid()) return false;
 
 		final Component c = item.getComponent();
@@ -267,9 +268,9 @@ public class Bank extends WorldImpl {
 		if (p.y == 0) for (int i = 0; i < 5 && getCurrentTab() != 0; i++) if (!setCurrentTab(0)) Delay.sleep(100, 200);
 		if (c.getRelativeLocation().y == 0) return false;
 		final Rectangle bounds = container.getViewportRect();
-		final Component scroll = world.widgets.get(WIDGET, COMPONENT_SCROLL_BAR);
+		final Component scroll = Widgets.get(WIDGET, COMPONENT_SCROLL_BAR);
 		if (scroll == null) return false;
-		if (!bounds.contains(c.getBoundingRect()) && !world.widgets.scroll(c, scroll)) return false;
+		if (!bounds.contains(c.getBoundingRect()) && !Widgets.scroll(c, scroll)) return false;
 		if (!bounds.contains(c.getBoundingRect())) return false;
 
 		String action = "Withdraw-" + amount;
@@ -277,7 +278,7 @@ public class Bank extends WorldImpl {
 				(item.getStackSize() <= amount && amount != 1 && amount != 5 && amount != 10)) action = "Withdraw-All";
 		else if (amount == -1 || amount == (item.getStackSize() - 1)) action = "Withdraw-All but one";
 
-		final int inv = world.inventory.getCount(true);
+		final int inv = Inventory.getCount(true);
 		if (containsAction(c, action)) {
 			if (!c.interact(action)) return false;
 		} else {
@@ -285,25 +286,25 @@ public class Bank extends WorldImpl {
 			for (int i = 0; i < 20 && !isInputWidgetOpen(); i++) Delay.sleep(100, 200);
 			if (!isInputWidgetOpen()) return false;
 			Delay.sleep(200, 800);
-			world.keyboard.sendln(amount + "");
+			Keyboard.sendln(amount + "");
 		}
-		for (int i = 0; i < 25 && world.inventory.getCount(true) == inv; i++) Delay.sleep(100, 200);
-		return world.inventory.getCount(true) != inv || world.inventory.isFull();
+		for (int i = 0; i < 25 && Inventory.getCount(true) == inv; i++) Delay.sleep(100, 200);
+		return Inventory.getCount(true) != inv || Inventory.isFull();
 	}
 
-	public boolean deposit(final int id, final int amount) {
+	public static boolean deposit(final int id, final int amount) {
 		if (!isOpen() || amount < 0) return false;
-		final Item item = world.inventory.getItem(id);
+		final Item item = Inventory.getItem(id);
 		if (item == null) return false;
 		String action = "Deposit-" + amount;
-		final int c = world.inventory.getCount(true, id);
+		final int c = Inventory.getCount(true, id);
 		if (c == 1) action = "Depoist";
 		else if (c <= amount || amount == 0) {
 			action = "Deposit-All";
 		}
 
 		final Component comp = item.getComponent();
-		final int inv = world.inventory.getCount(true);
+		final int inv = Inventory.getCount(true);
 		if (containsAction(comp, action)) {
 			if (!comp.interact(action)) return false;
 		} else {
@@ -311,32 +312,32 @@ public class Bank extends WorldImpl {
 			for (int i = 0; i < 20 && !isInputWidgetOpen(); i++) Delay.sleep(100, 200);
 			if (!isInputWidgetOpen()) return false;
 			Delay.sleep(200, 800);
-			world.keyboard.sendln(amount + "");
+			Keyboard.sendln(amount + "");
 		}
-		for (int i = 0; i < 25 && world.inventory.getCount(true) == inv; i++) Delay.sleep(100, 200);
-		return world.inventory.getCount(true) != inv;
+		for (int i = 0; i < 25 && Inventory.getCount(true) == inv; i++) Delay.sleep(100, 200);
+		return Inventory.getCount(true) != inv;
 	}
 
-	public boolean depositInventory() {
-		final Component c = world.widgets.get(WIDGET, COMPONENT_BUTTON_DEPOSIT_INVENTORY);
+	public static boolean depositInventory() {
+		final Component c = Widgets.get(WIDGET, COMPONENT_BUTTON_DEPOSIT_INVENTORY);
 		if (c == null || !c.isValid()) return false;
-		if (world.inventory.isEmpty()) return true;
+		if (Inventory.isEmpty()) return true;
 		return c.click();
 	}
 
-	public boolean depositEquipment() {
-		final Component c = world.widgets.get(WIDGET, COMPONENT_BUTTON_DEPOSIT_EQUIPMENT);
+	public static boolean depositEquipment() {
+		final Component c = Widgets.get(WIDGET, COMPONENT_BUTTON_DEPOSIT_EQUIPMENT);
 		return c != null && c.isValid() && c.click();
 	}
 
-	public boolean depositFamiliar() {
-		final Component c = world.widgets.get(WIDGET, COMPONENT_BUTTON_DEPOSIT_FAMILIAR);
+	public static boolean depositFamiliar() {
+		final Component c = Widgets.get(WIDGET, COMPONENT_BUTTON_DEPOSIT_FAMILIAR);
 		return c != null && c.isValid() && c.click();
 	}
 
-	public boolean setWithdrawMode(final boolean noted) {
+	public static boolean setWithdrawMode(final boolean noted) {
 		if (isWithdrawModeNoted() != noted) {
-			final Component c = world.widgets.get(WIDGET, COMPONENT_BUTTON_WITHDRAW_MODE);
+			final Component c = Widgets.get(WIDGET, COMPONENT_BUTTON_WITHDRAW_MODE);
 			if (c != null && c.isValid() && c.click(true)) {
 				for (int i = 0; i < 20 && isWithdrawModeNoted() != noted; i++) Delay.sleep(100, 200);
 			}
@@ -344,19 +345,19 @@ public class Bank extends WorldImpl {
 		return isWithdrawModeNoted() == noted;
 	}
 
-	public boolean isWithdrawModeNoted() {
-		return world.settings.get(SETTING_WITHDRAW_MODE) == 0x1;
+	public static boolean isWithdrawModeNoted() {
+		return Settings.get(SETTING_WITHDRAW_MODE) == 0x1;
 	}
 
-	private boolean containsAction(final Component c, final String action) {
+	private static boolean containsAction(final Component c, final String action) {
 		final String[] actions = c.getActions();
 		if (action == null) return false;
 		for (final String a : actions) if (a != null && a.matches("^" + action + "(<.*>)?$")) return true;
 		return false;
 	}
 
-	private boolean isInputWidgetOpen() {
-		final Component child = world.widgets.get(752, 3);
+	private static boolean isInputWidgetOpen() {
+		final Component child = Widgets.get(752, 3);
 		return child != null && child.isValid() && child.isOnScreen();
 	}
 }

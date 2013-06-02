@@ -12,6 +12,10 @@ import org.powerbot.script.Manifest;
 import org.powerbot.script.PollingScript;
 import org.powerbot.script.Script;
 import org.powerbot.script.framework.ScriptDefinition;
+import org.powerbot.script.methods.Game;
+import org.powerbot.script.methods.Keyboard;
+import org.powerbot.script.methods.Mouse;
+import org.powerbot.script.methods.Widgets;
 import org.powerbot.script.methods.widgets.Lobby;
 import org.powerbot.script.util.Random;
 import org.powerbot.script.util.Timer;
@@ -58,14 +62,14 @@ public class Login extends PollingScript implements RandomEvent, PaintListener {
 		}
 
 		lock(true);
-		final int state = world.game.getClientState();
-		if ((state == world.game.INDEX_LOGIN_SCREEN || state == world.game.INDEX_LOGGING_IN) && bot.getAccount() != null) {
+		final int state = Game.getClientState();
+		if ((state == Game.INDEX_LOGIN_SCREEN || state == Game.INDEX_LOGGING_IN) && bot.getAccount() != null) {
 			Tracker.getInstance().trackPage("randoms/Login/", "Login");
 			for (final LoginEvent loginEvent : LoginEvent.values()) {
-				final Component Component = world.widgets.get(WIDGET, loginEvent.child);
+				final Component Component = Widgets.get(WIDGET, loginEvent.child);
 				if (Component != null && Component.isValid()) {
 					final String text = Component.getText().toLowerCase().trim();
-					world.widgets.get(WIDGET, WIDGET_LOGIN_TRY_AGAIN).click(true);
+					Widgets.get(WIDGET, WIDGET_LOGIN_TRY_AGAIN).click(true);
 
 					if (text.contains(loginEvent.message.toLowerCase())) {
 						log.info("Handling login event: " + loginEvent.name());
@@ -96,11 +100,11 @@ public class Login extends PollingScript implements RandomEvent, PaintListener {
 			}
 
 			if (isUsernameCorrect() && isPasswordValid()) {
-				world.keyboard.send("\n");
+				Keyboard.send("\n");
 				sleep(Random.nextInt(1200, 2000));
 			} else if (!isUsernameCorrect()) {
 				final String username = bot.getAccount().toString();
-				final Component usernameTextBox = world.widgets.get(WIDGET, WIDGET_LOGIN_USERNAME_TEXT);
+				final Component usernameTextBox = Widgets.get(WIDGET, WIDGET_LOGIN_USERNAME_TEXT);
 				if (!clickLoginInterface(usernameTextBox)) {
 					lock(false);
 					return 0;
@@ -112,11 +116,11 @@ public class Login extends PollingScript implements RandomEvent, PaintListener {
 					lock(false);
 					return 0;
 				}
-				world.keyboard.send(username);
+				Keyboard.send(username);
 				sleep(Random.nextInt(500, 700));
 			} else if (!isPasswordValid()) {
 				final String password = bot.getAccount().getPassword();
-				final Component passwordTextBox = world.widgets.get(WIDGET, WIDGET_LOGIN_PASSWORD_TEXT);
+				final Component passwordTextBox = Widgets.get(WIDGET, WIDGET_LOGIN_PASSWORD_TEXT);
 				if (!clickLoginInterface(passwordTextBox)) {
 					lock(false);
 					return 0;
@@ -128,19 +132,19 @@ public class Login extends PollingScript implements RandomEvent, PaintListener {
 					lock(false);
 					return 0;
 				}
-				world.keyboard.send(password);
+				Keyboard.send(password);
 				sleep(Random.nextInt(500, 700));
 			}
-		} else if (state == world.game.INDEX_LOBBY_SCREEN && bot.getAccount() != null) {
+		} else if (state == Game.INDEX_LOBBY_SCREEN && bot.getAccount() != null) {
 			Tracker.getInstance().trackPage("randoms/Login/", "Lobby");
 			for (final LobbyEvent lobbyEvent : LobbyEvent.values()) {
-				final Component Component = world.widgets.get(WIDGET_LOBBY, lobbyEvent.child);
+				final Component Component = Widgets.get(WIDGET_LOBBY, lobbyEvent.child);
 				if (Component != null && Component.isValid()) {
 					final String text = Component.getText().toLowerCase().trim();
 
 					if (text.contains(lobbyEvent.message.toLowerCase())) {
 						log.info("Handling lobby event: " + lobbyEvent.name());
-						world.widgets.get(WIDGET_LOBBY, WIDGET_LOBBY_TRY_AGAIN).click(true);
+						Widgets.get(WIDGET_LOBBY, WIDGET_LOBBY_TRY_AGAIN).click(true);
 
 						if (lobbyEvent.wait > 0) {
 							sleep(lobbyEvent.wait);
@@ -164,14 +168,14 @@ public class Login extends PollingScript implements RandomEvent, PaintListener {
 
 			final int world = Bot.getInstance().preferredWorld;
 			if (world > 0) {
-				final Lobby.Server server_wrapper;
-				if ((server_wrapper = this.world.lobby.getWorld(world)) != null) {
-					this.world.lobby.enterGame(server_wrapper);
+				final Lobby.World world_wrapper;
+				if ((world_wrapper = Lobby.getWorld(world)) != null) {
+					Lobby.enterGame(world_wrapper);
 					lock(false);
 					return 0;
 				}
 			}
-			this.world.lobby.enterGame();
+			Lobby.enterGame();
 		}
 		lock(false);
 		return 600;
@@ -191,9 +195,9 @@ public class Login extends PollingScript implements RandomEvent, PaintListener {
 		final int h = (int) pos.getHeight();
 		final int midy = (int) (pos.getMinY() + (h == 0 ? 27 : h) / 2);
 		if (i.getIndex() == WIDGET_LOGIN_PASSWORD_TEXT) {
-			return world.mouse.click(getPasswordX(i), midy + Random.nextInt(-dy, dy), true);
+			return Mouse.click(getPasswordX(i), midy + Random.nextInt(-dy, dy), true);
 		}
-		return world.mouse.click(midx + Random.nextInt(1, maxRandomX), midy + Random.nextInt(-dy, dy), true);
+		return Mouse.click(midx + Random.nextInt(1, maxRandomX), midy + Random.nextInt(-dy, dy), true);
 	}
 
 	private int getPasswordX(final Component a) {
@@ -204,7 +208,7 @@ public class Login extends PollingScript implements RandomEvent, PaintListener {
 		if (pos.x == -1 || pos.y == -1 || pos.width == -1 || pos.height == -1) {
 			return 0;
 		}
-		for (int i = 0; i < world.widgets.get(WIDGET, WIDGET_LOGIN_PASSWORD_TEXT).getText().length(); i++) {
+		for (int i = 0; i < Widgets.get(WIDGET, WIDGET_LOGIN_PASSWORD_TEXT).getText().length(); i++) {
 			x += 11;
 		}
 		if (x > 44) {
@@ -216,17 +220,17 @@ public class Login extends PollingScript implements RandomEvent, PaintListener {
 
 	private boolean isUsernameCorrect() {
 		final String userName = bot.getAccount().toString();
-		return world.widgets.get(WIDGET, WIDGET_LOGIN_USERNAME_TEXT).getText().toLowerCase().equalsIgnoreCase(userName);
+		return Widgets.get(WIDGET, WIDGET_LOGIN_USERNAME_TEXT).getText().toLowerCase().equalsIgnoreCase(userName);
 	}
 
 	private boolean isPasswordValid() {
 		final String s = bot.getAccount().getPassword();
-		return world.widgets.get(WIDGET, WIDGET_LOGIN_PASSWORD_TEXT).getText().length() == (s == null ? 0 : s.length());
+		return Widgets.get(WIDGET, WIDGET_LOGIN_PASSWORD_TEXT).getText().length() == (s == null ? 0 : s.length());
 	}
 
 	private void erase(final int count) {
 		for (int i = 0; i <= count + Random.nextInt(1, 5); i++) {
-			world.keyboard.send("\b");
+			Keyboard.send("\b");
 			if (Random.nextInt(0, 2) == 1) {
 				sleep(Random.nextInt(25, 100));
 			}

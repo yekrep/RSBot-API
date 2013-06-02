@@ -1,25 +1,22 @@
 package org.powerbot.script.methods.tabs;
 
 import org.powerbot.script.methods.Game;
-import org.powerbot.script.methods.World;
-import org.powerbot.script.methods.WorldImpl;
+import org.powerbot.script.methods.Players;
+import org.powerbot.script.methods.Widgets;
+import org.powerbot.script.methods.widgets.Bank;
 import org.powerbot.script.wrappers.Component;
 import org.powerbot.script.wrappers.Item;
 import org.powerbot.script.wrappers.Player;
 import org.powerbot.script.wrappers.Widget;
 
-public class Equipment extends WorldImpl {
+public class Equipment {
 	public static final int WIDGET = 387;
 	public static final int WIDGET_BANK = 667;
 	public static final int COMPONENT_BANK = 7;
 	public static final int NUM_SLOTS = 13;
 	public static final int NUM_APPEARANCE_SLOTS = 9;
 
-	public Equipment(World world) {
-		super(world);
-	}
-
-	public boolean appearanceContainsAll(final int... itemIds) {
+	public static boolean appearanceContainsAll(final int... itemIds) {
 		final int[] visibleEquipment = getAppearanceIds();
 		for (final int id : itemIds) {
 			boolean hasItem = false;
@@ -34,13 +31,13 @@ public class Equipment extends WorldImpl {
 		return true;
 	}
 
-	public boolean appearanceContainsOneOf(final int... itemIds) {
+	public static boolean appearanceContainsOneOf(final int... itemIds) {
 		for (final int id : getAppearanceIds())
 			for (final int i : itemIds) if (i == id) return true;
 		return false;
 	}
 
-	public boolean containsAll(final int... ids) {
+	public static boolean containsAll(final int... ids) {
 		final Item[] items = getItems();
 		for (final Item item : items) {
 			if (item == null) continue;
@@ -57,7 +54,7 @@ public class Equipment extends WorldImpl {
 		return true;
 	}
 
-	public boolean containsOneOf(final int... ids) {
+	public static boolean containsOneOf(final int... ids) {
 		for (final Item item : getItems()) {
 			final int _id = item.getId();
 			for (final int id : ids) if (_id == id) return true;
@@ -65,8 +62,8 @@ public class Equipment extends WorldImpl {
 		return false;
 	}
 
-	public int getAppearanceId(final Slot slot) {
-		final Player p = world.players.getLocal();
+	public static int getAppearanceId(final Slot slot) {
+		final Player p = Players.getLocal();
 		final int[] app;
 		if (slot.getAppearanceIndex() == -1 || p == null || (app = p.getAppearance()) == null) {
 			return -1;
@@ -78,10 +75,10 @@ public class Equipment extends WorldImpl {
 		return id > 0 ? id : -1;
 	}
 
-	public int[] getAppearanceIds() {
+	public static int[] getAppearanceIds() {
 		final int[] ids = new int[NUM_APPEARANCE_SLOTS];
 		for (int i = 0; i < ids.length; i++) ids[i] = -1;
-		final Player p = world.players.getLocal();
+		final Player p = Players.getLocal();
 		final int[] app;
 		if (p == null || (app = p.getAppearance()) == null) {
 			return ids;
@@ -98,15 +95,15 @@ public class Equipment extends WorldImpl {
 		return ids;
 	}
 
-	public Item[] getCachedItems() {
-		final Widget widget = world.widgets.get(WIDGET);
+	public static Item[] getCachedItems() {
+		final Widget widget = Widgets.get(WIDGET);
 		if (widget != null) {
 			final Component[] components = widget.getComponents();
 			if (components.length > 0) {
 				final Item[] items = new Item[NUM_SLOTS];
 				final Slot[] slots = Slot.values();
 				for (int i = 0; i < NUM_SLOTS; i++) {
-					items[i] = new Item(world, components[slots[i].getComponentIndex()]);
+					items[i] = new Item(components[slots[i].getComponentIndex()]);
 				}
 				return items;
 			}
@@ -114,11 +111,11 @@ public class Equipment extends WorldImpl {
 		return new Item[0];
 	}
 
-	public int getCount() {
+	public static int getCount() {
 		return NUM_SLOTS - getCount(-1);
 	}
 
-	public int getCount(final int... itemIds) {
+	public static int getCount(final int... itemIds) {
 		int count = 0;
 		for (final Item item : getItems()) {
 			if (item == null) continue;
@@ -133,18 +130,18 @@ public class Equipment extends WorldImpl {
 		return count;
 	}
 
-	public Item getItem(final Slot slot) {
+	public static Item getItem(final Slot slot) {
 		final Widget widget = getWidget();
 		if (widget != null && widget.isValid()) {
 			final Component itemComp = widget.getIndex() == WIDGET_BANK ?
 					widget.getComponent(COMPONENT_BANK).getChild(slot.getBankComponentIndex()) :
 					widget.getComponent(slot.getComponentIndex());
-			if (itemComp != null) return new Item(world, itemComp);
+			if (itemComp != null) return new Item(itemComp);
 		}
 		return null;
 	}
 
-	public Item getItem(final int... itemIds) {
+	public static Item getItem(final int... itemIds) {
 		for (final Item item : getItems()) {
 			if (item == null) continue;
 			for (final int itemId : itemIds) {
@@ -156,7 +153,7 @@ public class Equipment extends WorldImpl {
 		return null;
 	}
 
-	public Item getCachedItem(final int... itemIds) {
+	public static Item getCachedItem(final int... itemIds) {
 		for (final Item item : getCachedItems()) {
 			if (item == null) continue;
 			for (final int itemId : itemIds) {
@@ -168,15 +165,15 @@ public class Equipment extends WorldImpl {
 		return null;
 	}
 
-	public Item getCachedItem(final Slot slot) {
-		final Widget cache = world.widgets.get(WIDGET);
+	public static Item getCachedItem(final Slot slot) {
+		final Widget cache = Widgets.get(WIDGET);
 		if (cache != null && cache.isValid()) {
-			return new Item(world, cache.getComponent(slot.getComponentIndex()));
+			return new Item(cache.getComponent(slot.getComponentIndex()));
 		}
 		return null;
 	}
 
-	public Item[] getItems() {
+	public static Item[] getItems() {
 		final Widget widget = getWidget();
 		if (widget != null) {
 			final boolean b = widget.getIndex() != WIDGET;
@@ -186,13 +183,13 @@ public class Equipment extends WorldImpl {
 					final Item[] items = new Item[NUM_SLOTS];
 					final Slot[] slots = Slot.values();
 					for (int i = 0; i < NUM_SLOTS; i++) {
-						items[i] = new Item(world, equip[slots[i].getComponentIndex()]);
+						items[i] = new Item(equip[slots[i].getComponentIndex()]);
 					}
 					return items;
 				} else {
 					final Item[] items = new Item[equip.length];
 					for (int i = 0; i < items.length; i++) {
-						items[i] = new Item(world, equip[i]);
+						items[i] = new Item(equip[i]);
 					}
 					return items;
 				}
@@ -201,13 +198,13 @@ public class Equipment extends WorldImpl {
 		return new Item[0];
 	}
 
-	private Widget getWidget() {
-		if (world.bank.isOpen()) return world.widgets.get(WIDGET_BANK);
-		world.game.openTab(Game.TAB_EQUIPMENT);
-		return world.widgets.get(WIDGET);
+	private static Widget getWidget() {
+		if (Bank.isOpen()) return Widgets.get(WIDGET_BANK);
+		Game.openTab(Game.TAB_EQUIPMENT);
+		return Widgets.get(WIDGET);
 	}
 
-	public enum Slot {
+	public static enum Slot {
 		HEAD(7, 0, 0, -1),
 		CAPE(10, 1, 1, -1),
 		NECK(13, 2, 2, -1),
@@ -234,7 +231,7 @@ public class Equipment extends WorldImpl {
 		}
 
 		public int getIndex() {
-			return Equipment.this.world.bank.isOpen() ? bank : component;
+			return Bank.isOpen() ? bank : component;
 		}
 
 		public int getComponentIndex() {

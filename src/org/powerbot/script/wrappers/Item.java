@@ -2,40 +2,37 @@ package org.powerbot.script.wrappers;
 
 import java.lang.ref.WeakReference;
 
+import org.powerbot.bot.World;
 import org.powerbot.client.Cache;
 import org.powerbot.client.Client;
 import org.powerbot.client.HashTable;
 import org.powerbot.client.RSItem;
 import org.powerbot.client.RSItemDef;
 import org.powerbot.client.RSItemDefLoader;
-import org.powerbot.script.methods.World;
-import org.powerbot.script.methods.WorldImpl;
+import org.powerbot.script.methods.Game;
 import org.powerbot.util.StringUtil;
 
-public class Item extends WorldImpl implements Validatable {
+public class Item implements Validatable {
 	private final int id;
 	private final int stack;
 	private final Component component;
 	private final WeakReference<RSItem> item;
 
-	public Item(World world, int id, int stack) {
-		super(world);
+	public Item(int id, int stack) {
 		this.id = id;
 		this.stack = stack;
 		this.component = null;
 		this.item = null;
 	}
 
-	public Item(World world, final RSItem item) {
-		super(world);
+	public Item(final RSItem item) {
 		this.id = item.getId();
 		this.stack = -1;
 		this.component = null;
 		this.item = new WeakReference<>(item);
 	}
 
-	public Item(World world, final Component component) {
-		super(world);
+	public Item(final Component component) {
 		this.id = component.getItemId();
 		this.stack = -1;
 		this.component = component;
@@ -68,7 +65,7 @@ public class Item extends WorldImpl implements Validatable {
 	}
 
 	public ItemDefinition getDefinition() {
-		final Client client = world.getClient();
+		final Client client = World.getWorld().getClient();
 		if (client == null) return null;
 
 		final RSItemDefLoader loader;
@@ -76,7 +73,7 @@ public class Item extends WorldImpl implements Validatable {
 		final HashTable table;
 		if ((loader = client.getRSItemDefLoader()) == null ||
 				(cache = loader.getCache()) == null || (table = cache.getTable()) == null) return null;
-		final Object o = world.game.lookup(table, this.id);
+		final Object o = Game.lookup(table, this.id);
 		return o != null && o instanceof RSItemDef ? new ItemDefinition(this, (RSItemDef) o) : null;
 	}
 

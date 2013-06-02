@@ -19,7 +19,6 @@ import java.util.logging.Logger;
 
 import org.powerbot.script.framework.Prioritizable;
 import org.powerbot.script.framework.ScriptController;
-import org.powerbot.script.methods.World;
 import org.powerbot.script.util.Random;
 import org.powerbot.util.Configuration;
 
@@ -34,7 +33,6 @@ public abstract class AbstractScript implements Script, Prioritizable {
 	private final AtomicLong started, suspended;
 	private final Queue<Long> suspensions;
 	private final File dir;
-	public World world;
 
 	/**
 	 * The designated {@link java.util.logging.Logger}, which should be used over {@code System.out.println}.

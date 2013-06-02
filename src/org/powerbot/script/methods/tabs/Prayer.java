@@ -5,36 +5,32 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.powerbot.script.methods.Game;
-import org.powerbot.script.methods.World;
-import org.powerbot.script.methods.WorldImpl;
+import org.powerbot.script.methods.Settings;
+import org.powerbot.script.methods.Widgets;
 import org.powerbot.script.util.Delay;
 import org.powerbot.script.util.Timer;
 import org.powerbot.script.wrappers.Component;
 import org.powerbot.script.wrappers.Widget;
 
-public class Prayer extends WorldImpl {
+public class Prayer {
 	public static final int WIDGET = 271;
 	public static final int WIDGET_ORB = 749;
 	public static final int PRAYER_BOOK_CURSES = 0x17;
 	public static final int PRAYER_BOOK_NORMAL = 0x16;
 
-	public Prayer(World world) {
-		super(world);
+	public static int getPoints() {
+		return (Settings.get(3274) & 0x7fff) / 10;
 	}
 
-	public int getPoints() {
-		return (world.settings.get(3274) & 0x7fff) / 10;
+	public static int getPrayerBook() {
+		return Settings.get(3277) % 2 != 0 ? PRAYER_BOOK_CURSES : PRAYER_BOOK_NORMAL;
 	}
 
-	public int getPrayerBook() {
-		return world.settings.get(3277) % 2 != 0 ? PRAYER_BOOK_CURSES : PRAYER_BOOK_NORMAL;
+	public static boolean isQuickOn() {
+		return Settings.get(1769) == 0x2;
 	}
 
-	public boolean isQuickOn() {
-		return world.settings.get(1769) == 0x2;
-	}
-
-	public Effect[] getActive() {
+	public static Effect[] getActive() {
 		final Set<Effect> active = new LinkedHashSet<>();
 		for (final Effect p : getPrayerBook() == PRAYER_BOOK_CURSES ? Curses.values() : Normal.values()) {
 			if (p.isActive()) {
@@ -44,7 +40,7 @@ public class Prayer extends WorldImpl {
 		return active.toArray(new Effect[active.size()]);
 	}
 
-	public Effect[] getQuickEffects() {
+	public static Effect[] getQuickEffects() {
 		final Set<Effect> quick = new LinkedHashSet<>();
 		for (final Effect p : getPrayerBook() == PRAYER_BOOK_CURSES ? Curses.values() : Normal.values()) {
 			if (p.isSetQuick()) {
@@ -54,24 +50,24 @@ public class Prayer extends WorldImpl {
 		return quick.toArray(new Effect[quick.size()]);
 	}
 
-	public boolean setQuick(final boolean activate) {
+	public static boolean setQuick(final boolean activate) {
 		if (isQuickOn() == activate) return true;
-		final Component c = world.widgets.get(WIDGET_ORB, 2);
+		final Component c = Widgets.get(WIDGET_ORB, 2);
 		return c != null && c.interact("Turn");
 	}
 
-	public boolean setQuickEffects(final Effect... prayers) {
-		final Widget prayer = world.widgets.get(WIDGET);
-		final Component orb = world.widgets.get(WIDGET_ORB, 2);
+	public static boolean setQuickEffects(final Effect... prayers) {
+		final Widget prayer = Widgets.get(WIDGET);
+		final Component orb = Widgets.get(WIDGET_ORB, 2);
 		if (prayer == null || orb == null) return false;
 		for (final Effect e : prayers) {
 			if (e.getBook() != (getPrayerBook() == PRAYER_BOOK_CURSES ? PRAYER_BOOK_CURSES : PRAYER_BOOK_NORMAL) ||
-					e.getRequiredLevel() > world.skills.getRealLevel(Skills.PRAYER)) return false;
+					e.getRequiredLevel() > Skills.getRealLevel(Skills.PRAYER)) return false;
 		}
 
 		if (!orb.interact("Select quick")) return false;
 		final Timer timer = new Timer(1000);
-		while (timer.isRunning() && world.settings.get(1769) != 0x1) {
+		while (timer.isRunning() && Settings.get(1769) != 0x1) {
 			Delay.sleep(15);
 		}
 		Delay.sleep(100);
@@ -114,19 +110,19 @@ public class Prayer extends WorldImpl {
 		return complete != null && complete.interact("Confirm");
 	}
 
-	public boolean setEffect(final Effect prayer, final boolean activate) {
+	public static boolean setEffect(final Effect prayer, final boolean activate) {
 		if (prayer.getBook() != getPrayerBook()
-				|| prayer.getRequiredLevel() > world.skills.getRealLevel(Skills.PRAYER)) return false;
+				|| prayer.getRequiredLevel() > Skills.getRealLevel(Skills.PRAYER)) return false;
 		if (prayer.isActive() == activate) return true;
-		if (world.game.openTab(Game.TAB_PRAYER)) {
-			Component c = world.widgets.get(WIDGET, 9);
+		if (Game.openTab(Game.TAB_PRAYER)) {
+			Component c = Widgets.get(WIDGET, 9);
 			if (c != null) c = c.getChild(prayer.getId());
 			return c != null && c.interact(activate ? "Activate" : "Deactivate");
 		}
 		return false;
 	}
 
-	public boolean deactivateAll() {
+	public static boolean deactivateAll() {
 		if (getActive().length == 0) {
 			return true;
 		}
@@ -141,7 +137,7 @@ public class Prayer extends WorldImpl {
 		return getActive().length == 0;
 	}
 
-	public enum Curses implements Effect {
+	public static enum Curses implements Effect {
 		PROTECT_ITEM_CURSE(0, 0, 50),
 		SAP_WARRIOR(1, 1, 50),
 		SAP_RANGER(2, 2, 52),
@@ -191,15 +187,15 @@ public class Prayer extends WorldImpl {
 		}
 
 		public boolean isActive() {
-			return ((Prayer.this.world.settings.get(3275) >>> this.shift) & 0x1) == 1;
+			return ((Settings.get(3275) >>> this.shift) & 0x1) == 1;
 		}
 
 		public boolean isSetQuick() {
-			return ((Prayer.this.world.settings.get(1768) >>> this.shift) & 0x1) == 1;
+			return ((Settings.get(1768) >>> this.shift) & 0x1) == 1;
 		}
 	}
 
-	public enum Normal implements Effect {
+	public static enum Normal implements Effect {
 		THICK_SKIN(0, 0, 1),
 		BURST_OF_STRENGTH(1, 1, 4),
 		CLARITY_OF_THOUGHT(2, 2, 7),
@@ -257,11 +253,11 @@ public class Prayer extends WorldImpl {
 		}
 
 		public boolean isActive() {
-			return ((Prayer.this.world.settings.get(3272) >>> this.shift) & 0x1) == 1;
+			return ((Settings.get(3272) >>> this.shift) & 0x1) == 1;
 		}
 
 		public boolean isSetQuick() {
-			return ((Prayer.this.world.settings.get(1770) >>> this.shift) & 0x1) == 1;
+			return ((Settings.get(1770) >>> this.shift) & 0x1) == 1;
 		}
 	}
 

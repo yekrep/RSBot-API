@@ -1,23 +1,21 @@
 package org.powerbot.script.util;
 
-import org.powerbot.script.methods.World;
-import org.powerbot.script.methods.WorldImpl;
+import org.powerbot.script.methods.tabs.Skills;
 
-public final class SkillData extends WorldImpl {
+public final class SkillData {
 	public static final int NUM_SKILL = 25;
 	public final int[] initialExp = new int[NUM_SKILL];
 	public final int[] initialLevels = new int[NUM_SKILL];
 	private final Timer timer;
 
-	public SkillData(World world) {
-		this(world, new Timer(0l));
+	public SkillData() {
+		this(new Timer(0l));
 	}
 
-	public SkillData(World world, final Timer timer) {
-		super(world);
+	public SkillData(final Timer timer) {
 		for (int index = 0; index < NUM_SKILL; index++) {
-			initialExp[index] = world.skills.getExperience(index);
-			initialLevels[index] = world.skills.getRealLevel(index);
+			initialExp[index] = Skills.getExperience(index);
+			initialLevels[index] = Skills.getRealLevel(index);
 		}
 		this.timer = timer == null ? new Timer(0l) : timer;
 	}
@@ -26,7 +24,7 @@ public final class SkillData extends WorldImpl {
 		if (index < 0 || index > NUM_SKILL) {
 			throw new IllegalArgumentException("0 > index < " + NUM_SKILL);
 		}
-		return world.skills.getExperience(index) - initialExp[index];
+		return Skills.getExperience(index) - initialExp[index];
 	}
 
 	public int experience(final Rate rate, final int index) {
@@ -37,7 +35,7 @@ public final class SkillData extends WorldImpl {
 		if (index < 0 || index > NUM_SKILL) {
 			throw new IllegalArgumentException("0 > index < " + NUM_SKILL);
 		}
-		return world.skills.getRealLevel(index) - initialLevels[index];
+		return Skills.getRealLevel(index) - initialLevels[index];
 	}
 
 	public int level(final Rate rate, final int index) {
@@ -49,7 +47,7 @@ public final class SkillData extends WorldImpl {
 		if (exp == 0d) {
 			return 0l;
 		}
-		return (long) ((world.skills.getExperienceAt(world.skills.getRealLevel(index) + 1) - world.skills.getExperience(index)) / exp * rate.time);
+		return (long) ((Skills.getExperienceAt(Skills.getRealLevel(index) + 1) - Skills.getExperience(index)) / exp * rate.time);
 	}
 
 	public static enum Rate {
