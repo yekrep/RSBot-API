@@ -131,7 +131,7 @@ public class Component extends Interactive implements Drawable {
 
 		final int containerId = getId() >>> 16;
 		final HashTable ncI = new HashTable(client.getRSInterfaceNC());
-		for (RSInterfaceNode node = (RSInterfaceNode) ncI.first(); node != null && ncI.hasNext(); node = (RSInterfaceNode) ncI.next()) {
+		for (RSInterfaceNode node = (RSInterfaceNode) ncI.getFirst(); node != null; node = (RSInterfaceNode) ncI.getNext()) {
 			if (containerId == node.getMainID()) {
 				return (int) node.getId();
 			}
