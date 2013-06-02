@@ -5,47 +5,48 @@ import org.powerbot.client.NodeSubQueue;
 
 public class Queue<N extends NodeSub> {
 	private final NodeSubQueue nl;
-	private NodeSub current;
+	private NodeSub curr;
 
 	public Queue(final NodeSubQueue nl) {
 		this.nl = nl;
 	}
 
 	public int size() {
-		int size = 0;
-		NodeSub node = nl.getTail().getNextSub();
-
-		while (node != null && node != nl.getTail()) {
-			node = node.getNextSub();
-			size++;
+		int s = 0;
+		NodeSub t = nl.getTail();
+		NodeSub n;
+		if (t != null) n = t.getNextSub();
+		else n = null;
+		while (n != null && n != t) {
+			n = n.getNextSub();
+			++s;
 		}
-
-		return size;
+		return s;
 	}
 
 	@SuppressWarnings("unchecked")
 	public N getHead() {
-		NodeSub node = nl.getTail().getNextSub();
-
-		if (node == null || node == nl.getTail()) {
-			current = null;
+		NodeSub t = nl.getTail();
+		NodeSub n;
+		if (t != null) n = t.getNextSub();
+		else n = null;
+		if (n == null || n == t) {
+			curr = null;
 			return null;
 		}
-		current = node.getNextSub();
-
-		return (N) node;
+		curr = n.getNextSub();
+		return (N) n;
 	}
 
 	@SuppressWarnings("unchecked")
 	public N getNext() {
-		NodeSub node = current;
-
-		if (node == null || node == nl.getTail()) {
-			current = null;
+		NodeSub t = nl.getTail();
+		NodeSub n = curr;
+		if (t == null || n == null || n == t) {
+			curr = null;
 			return null;
 		}
-		current = node.getNextSub();
-
-		return (N) node;
+		curr = n.getNextSub();
+		return (N) n;
 	}
 }
