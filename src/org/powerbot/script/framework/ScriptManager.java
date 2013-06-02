@@ -142,7 +142,7 @@ public class ScriptManager implements ExecutorDispatch<Boolean>, Runnable, Stopp
 				public void run() {
 					while (!controller.getLockQueue().isEmpty() && !controller.getLockQueue().contains(script)) {
 						try {
-							Thread.currentThread().sleep(60);
+							Thread.sleep(60);
 						} catch (final InterruptedException ignored) {
 						}
 					}
