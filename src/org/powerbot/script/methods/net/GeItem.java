@@ -88,7 +88,6 @@ public class GeItem {
 		try {
 			ge = new GeItem(id);
 		} catch (final IOException ignored) {
-			ignored.printStackTrace();
 		}
 		cache.put(id, ge);
 		return ge;
