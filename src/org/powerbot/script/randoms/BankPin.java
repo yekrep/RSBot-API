@@ -26,7 +26,7 @@ public class BankPin extends PollingScript implements RandomEvent {
 		}
 		final String pin = String.format(_pin);
 		final int value = Integer.valueOf(String.valueOf(pin.charAt(Settings.get(163))));
-		if (value != 4 && Widgets.get(13, value + 6).interact("Select")) {
+		if (Widgets.get(13, value + 6).interact("Select")) {
 			Delay.sleep(Random.nextInt(700, 1200));
 		}
 		getScriptController().getLockQueue().remove(this);
