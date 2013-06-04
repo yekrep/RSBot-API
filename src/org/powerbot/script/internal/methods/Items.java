@@ -20,8 +20,6 @@ public class Items {
 		final ItemSlot slot = (ItemSlot) n;
 		int[] ids = slot.getIds(), stacks = slot.getStackSizes();
 		if (ids.length != stacks.length) return new int[0][];
-		int[][] data = new int[ids.length][2];
-		for (int i = 0; i < ids.length; i++) data[i] = new int[]{ids[i], stacks[i]};
-		return data;
+		return new int[][]{ids, stacks};
 	}
 }
