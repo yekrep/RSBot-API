@@ -83,9 +83,11 @@ public class TilePath extends Path {
 		 * we can safely assume lag is being experienced and return null until next call of getNext.
 		 * TELEPORTATION SUPPORT: If destination is set but but we're not moving, assume
 		 * invalid destination tile from teleportation reset and return first tile. */
-		if (!tiles[0].isOnMap()) return null;
 		Player p = Players.getLocal();
-		if (dest != null && p != null && p.isInMotion()) return null;
+		if (p != null && !p.isInMotion() && dest != null) {
+			for (int i = tiles.length - 1; i >= 0; --i) if (tiles[i].isOnMap()) return tiles[i];
+		}
+		if (!tiles[0].isOnMap()) return null;
 		return tiles[0];
 	}
 
