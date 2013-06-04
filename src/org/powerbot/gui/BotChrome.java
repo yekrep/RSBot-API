@@ -45,7 +45,6 @@ public class BotChrome extends JFrame implements WindowListener {
 	public static final int PANEL_WIDTH = 765, PANEL_HEIGHT = 553;
 	public final BotPanel panel;
 	public final JScrollPane logpane;
-	public final BotControlPanel control;
 	public static volatile boolean loaded = false;
 	public static volatile boolean minimised = false;
 
@@ -79,7 +78,6 @@ public class BotChrome extends JFrame implements WindowListener {
 		setLocationRelativeTo(getParent());
 		setVisible(true);
 
-		control = new BotControlPanel(this);
 		Tracker.getInstance().trackPage("", getTitle());
 
 		final ExecutorService exec = Executors.newFixedThreadPool(1);
@@ -161,7 +159,6 @@ public class BotChrome extends JFrame implements WindowListener {
 				} catch (final InterruptedException | ExecutionException ignored) {
 				}
 			}
-
 			if (pass) {
 				SwingUtilities.invokeLater(new Runnable() {
 					@Override
@@ -170,6 +167,11 @@ public class BotChrome extends JFrame implements WindowListener {
 						timer.setCoalesce(false);
 						timer.start();
 
+						parent.validate();
+						parent.repaint();
+
+						BotSignin.showWelcomeMessage();
+
 						if (Configuration.BETA) {
 							final String s = "This is a beta version for developers only and certain features have been disabled.\nDo not use this version for general purposes, you have been warned.";
 							if (!Configuration.SUPERDEV) {
@@ -177,12 +179,13 @@ public class BotChrome extends JFrame implements WindowListener {
 							}
 						}
 
+						if (NetworkAccount.getInstance().hasPermission(NetworkAccount.VIP)) {
+							BotInteract.tabAdd();
+						}
 					}
 				});
 			}
-
-			new Thread(Bot.getInstance()).start();
-
+			System.gc();
 			loaded = true;
 		}
 	}
