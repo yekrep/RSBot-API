@@ -148,6 +148,7 @@ public class GroundItem extends Interactive implements Locatable, Drawable {
 		if (((rgb >> 24) & 0xff) != alpha) {
 			c = new Color((rgb >> 16) & 0xff, (rgb >> 8) & 0xff, rgb & 0xff, alpha);
 		}
+		render.setColor(c);
 		final Model m = getModel();
 		if (m != null) m.drawWireFrame(render);
 	}
