@@ -18,13 +18,6 @@ public class Item implements Validatable {
 	private final Component component;
 	private final WeakReference<RSItem> item;
 
-	public Item(int id, int stack) {
-		this.id = id;
-		this.stack = stack;
-		this.component = null;
-		this.item = null;
-	}
-
 	public Item(final RSItem item) {
 		this.id = item.getId();
 		this.stack = -1;
