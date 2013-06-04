@@ -26,6 +26,7 @@ import org.powerbot.gui.component.BotLocale;
 import org.powerbot.gui.component.BotLogPane;
 import org.powerbot.gui.component.BotMenuBar;
 import org.powerbot.gui.component.BotPanel;
+import org.powerbot.gui.controller.BotInteract;
 import org.powerbot.ipc.Controller;
 import org.powerbot.ipc.ScheduledChecks;
 import org.powerbot.service.NetworkAccount;
@@ -108,9 +109,6 @@ public class BotChrome extends JFrame implements WindowListener {
 		if (Bot.instantiated()) {
 			Bot.getInstance().stop();
 		}
-		if (NetworkAccount.getInstance().isLoggedIn()) {
-			NetworkAccount.getInstance().sessionQuery(Controller.getInstance().getRunningInstances() - 1);
-		}
 		dispose();
 		System.exit(0);
 	}
@@ -133,7 +131,7 @@ public class BotChrome extends JFrame implements WindowListener {
 		public Boolean call() throws Exception {
 			log.log(Level.INFO, "Signing into " + BotLocale.WEBSITE, BotLocale.STARTING);
 			final NetworkAccount net = NetworkAccount.getInstance();
-			if (net.isLoggedIn() && !net.session()) {
+			if (net.isLoggedIn()) {
 				net.logout();
 			}
 			return true;
