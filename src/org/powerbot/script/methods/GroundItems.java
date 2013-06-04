@@ -13,7 +13,6 @@ import org.powerbot.client.RSItem;
 import org.powerbot.script.internal.wrappers.Deque;
 import org.powerbot.script.util.Filter;
 import org.powerbot.script.wrappers.GroundItem;
-import org.powerbot.script.wrappers.Item;
 import org.powerbot.script.wrappers.Player;
 import org.powerbot.script.wrappers.Tile;
 
@@ -44,7 +43,7 @@ public class GroundItems {
 				if (cache == null || (deque = cache.getNodeList()) == null) continue;
 				final Deque<RSItem> itemStack = new Deque<>(deque);
 				for (RSItem item = itemStack.getHead(); item != null; item = itemStack.getNext()) {
-					items.add(new GroundItem(new Tile(x, y, plane), new Item(item)));
+					items.add(new GroundItem(new Tile(x, y, plane), item));
 				}
 			}
 		}
