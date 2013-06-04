@@ -1,6 +1,5 @@
 package org.powerbot.script.methods.tabs;
 
-import org.powerbot.script.methods.Game;
 import org.powerbot.script.methods.Players;
 import org.powerbot.script.methods.Widgets;
 import org.powerbot.script.methods.widgets.Bank;
@@ -244,7 +243,6 @@ public class Equipment {
 
 	private static Widget getWidget() {
 		if (Bank.isOpen()) return Widgets.get(WIDGET_BANK);
-		Game.openTab(Game.TAB_EQUIPMENT);
 		return Widgets.get(WIDGET);
 	}
 }
