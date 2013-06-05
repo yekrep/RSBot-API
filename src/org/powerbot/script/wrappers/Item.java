@@ -68,6 +68,11 @@ public class Item implements Validatable {
 	}
 
 	@Override
+	public String toString() {
+		return getClass().getSimpleName() + "[" + id + "/" + stack + "]@" + component;
+	}
+
+	@Override
 	public boolean equals(final Object o) {
 		if (o == null || !(o instanceof Item)) return false;
 		final Item i = (Item) o;
