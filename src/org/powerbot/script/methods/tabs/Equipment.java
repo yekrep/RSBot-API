@@ -1,8 +1,10 @@
 package org.powerbot.script.methods.tabs;
 
+import org.powerbot.script.internal.methods.Items;
 import org.powerbot.script.methods.Widgets;
 import org.powerbot.script.methods.widgets.Bank;
-import org.powerbot.script.wrappers.Widget;
+import org.powerbot.script.wrappers.Component;
+import org.powerbot.script.wrappers.Item;
 
 public class Equipment {
 	public static final int WIDGET = 387;
@@ -60,8 +62,13 @@ public class Equipment {
 		}
 	}
 
-	private static Widget getWidget() {
-		if (Bank.isOpen()) return Widgets.get(WIDGET_BANK);
-		return Widgets.get(WIDGET);
+	public static Item getItem(Slot slot) {
+		int index = slot.getIndex();
+		int[][] data = Items.getItems(Items.INDEX_EQUIPMENT);
+		if (index < 0 || index >= data.length || data[index][0] == -1) return null;
+		Component c;
+		if (Bank.isOpen()) c = Widgets.get(WIDGET_BANK, COMPONENT_BANK).getChild(slot.getBankComponentIndex());
+		else c = Widgets.get(WIDGET, slot.getComponentIndex());
+		return new Item(data[index][0], data[index][1], c);
 	}
 }
