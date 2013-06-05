@@ -12,29 +12,35 @@ public class Equipment {
 	public static final int NUM_APPEARANCE_SLOTS = 9;
 
 	public static enum Slot {
-		HEAD(7, 0, 0, -1),
-		CAPE(10, 1, 1, -1),
-		NECK(13, 2, 2, -1),
-		MAIN_HAND(16, 3, 3, 15),
-		TORSO(19, 4, 4, -1),
-		OFF_HAND(22, 5, 5, 16),
-		LEGS(25, 7, 7, -1),
-		HANDS(28, 9, 9, -1),
-		FEET(31, 10, 10, -1),
-		RING(34, 12, -1, -1),
-		QUIVER(39, 13, -1, -1),
-		AURA(48, 14, 14, -1),
-		POCKET(70, 15, -1, -1);
+		HEAD(0, 7, 0, 0, -1),
+		CAPE(1, 10, 1, 1, -1),
+		NECK(2, 13, 2, 2, -1),
+		MAIN_HAND(3, 16, 3, 3, 15),
+		TORSO(4, 19, 4, 4, -1),
+		OFF_HAND(-1, 22, 5, 5, 16),
+		LEGS(7, 25, 7, 7, -1),
+		HANDS(9, 28, 9, 9, -1),
+		FEET(10, 31, 10, 10, -1),
+		RING(12, 34, 12, -1, -1),
+		QUIVER(13, 39, 13, -1, -1),
+		AURA(14, 48, 14, 14, -1),
+		POCKET(14, 70, 15, -1, -1);
+		private final int index;
 		private final int component;
 		private final int bank;
 		private final int appearance;
 		private final int sheathed;
 
-		Slot(final int component, final int bank, final int appearance, final int sheathed) {
+		Slot(int index, int component, int bank, int appearance, int sheathed) {
+			this.index = index;
 			this.component = component;
 			this.bank = bank;
 			this.appearance = appearance;
 			this.sheathed = sheathed;
+		}
+
+		public int getIndex() {
+			return index;
 		}
 
 		public int getComponentIndex() {
