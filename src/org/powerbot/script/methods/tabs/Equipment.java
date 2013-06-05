@@ -7,7 +7,7 @@ import org.powerbot.script.wrappers.Widget;
 public class Equipment {
 	public static final int WIDGET = 387;
 	public static final int WIDGET_BANK = 667;
-	public static final int COMPONENT_BANK = 7;
+	public static final int COMPONENT_BANK = 121;
 	public static final int NUM_SLOTS = 13;
 	public static final int NUM_APPEARANCE_SLOTS = 9;
 
