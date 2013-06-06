@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Point;
-import java.util.HashMap;
 
 import org.powerbot.event.PaintListener;
 import org.powerbot.script.methods.Game;
@@ -15,14 +14,7 @@ import org.powerbot.script.wrappers.Player;
 import org.powerbot.script.wrappers.Tile;
 
 public class DrawScene implements PaintListener {
-	private static final HashMap<GameObject.Type, Color> color_map = new HashMap<>();
-
-	static {
-		color_map.put(GameObject.Type.BOUNDARY, Color.BLACK);
-		color_map.put(GameObject.Type.FLOOR_DECORATION, Color.YELLOW);
-		color_map.put(GameObject.Type.INTERACTIVE, Color.WHITE);
-		color_map.put(GameObject.Type.WALL_DECORATION, Color.GRAY);
-	}
+	private static final Color[] C = {Color.GREEN, Color.WHITE, Color.BLACK, Color.BLUE};
 
 	public void onRepaint(final Graphics render) {
 		if (!Game.isLoggedIn()) {
@@ -58,7 +50,7 @@ public class DrawScene implements PaintListener {
 					final String s = "" + location.getId();
 					final int ty = locationPoint.y - textHeight / 2 - i++ * 15;
 					final int tx = locationPoint.x - metrics.stringWidth(s) / 2;
-					render.setColor(color_map.get(location.getType()));
+					render.setColor(C[location.getType().ordinal()]);
 					render.drawString(s, tx, ty);
 				}
 			}

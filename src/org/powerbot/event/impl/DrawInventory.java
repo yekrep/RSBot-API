@@ -1,6 +1,7 @@
 package org.powerbot.event.impl;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Point;
@@ -16,13 +17,14 @@ public class DrawInventory implements PaintListener {
 		if (!Game.isLoggedIn() || Game.getCurrentTab() != Game.TAB_INVENTORY) {
 			return;
 		}
+		render.setFont(new Font("Arial", 0, 10));
 		render.setColor(Color.green);
-		final FontMetrics fontMetrics = render.getFontMetrics();
-		final Item[] items = Inventory.getItems();
-		for (final Item item : items) {
-			final Component c = item.getComponent();
-			final Point p = c.getAbsoluteLocation();
-			render.drawString(c.getItemId() + "", p.x, p.y + fontMetrics.getHeight());
+		Item[] items = Inventory.getItems();
+		for (Item item : items) {
+			Component c = item.getComponent();
+			if (c == null) continue;
+			Point p = c.getAbsoluteLocation();
+			render.drawString(c.getItemId() + "", p.x, p.y + c.getHeight());
 		}
 	}
 }
