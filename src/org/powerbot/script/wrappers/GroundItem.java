@@ -3,6 +3,7 @@ package org.powerbot.script.wrappers;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
+import java.lang.ref.WeakReference;
 import java.util.Arrays;
 
 import org.powerbot.bot.World;
@@ -13,6 +14,8 @@ import org.powerbot.client.HashTable;
 import org.powerbot.client.RSGround;
 import org.powerbot.client.RSGroundInfo;
 import org.powerbot.client.RSInfo;
+import org.powerbot.client.RSItem;
+import org.powerbot.client.RSItemDef;
 import org.powerbot.client.RSItemDefLoader;
 import org.powerbot.client.RSItemPile;
 import org.powerbot.script.methods.Game;
@@ -22,12 +25,12 @@ import org.powerbot.script.util.Random;
 public class GroundItem extends Interactive implements Locatable, Drawable {
 	public static final Color TARGET_COLOR = new Color(255, 255, 0, 75);
 	private final Tile tile;
-	private final Item item;
+	private final WeakReference<RSItem> item;
 	private int faceIndex = -1;
 
-	public GroundItem(final Tile tile, final Item item) {
+	public GroundItem(Tile tile, RSItem item) {
 		this.tile = tile;
-		this.item = item;
+		this.item = new WeakReference<>(item);
 	}
 
 	public Model getModel() {
@@ -83,8 +86,28 @@ public class GroundItem extends Interactive implements Locatable, Drawable {
 		return null;
 	}
 
-	public Item getItem() {
-		return this.item;
+	public int getId() {
+		RSItem item = this.item.get();
+		return item != null ? item.getId() : -1;
+	}
+
+	public int getStackSize() {
+		RSItem item = this.item.get();
+		return item != null ? item.getStackSize() : -1;
+	}
+
+	public ItemDefinition getDefinition() {
+		final Client client = World.getWorld().getClient();
+		if (client == null) return null;
+		int id = getId();
+		if (id == -1) return null;
+		final RSItemDefLoader loader;
+		final Cache cache;
+		final HashTable table;
+		if ((loader = client.getRSItemDefLoader()) == null ||
+				(cache = loader.getCache()) == null || (table = cache.getTable()) == null) return null;
+		final Object o = Game.lookup(table, id);
+		return o != null && o instanceof RSItemDef ? new ItemDefinition((RSItemDef) o) : null;
 	}
 
 	@Override
@@ -94,7 +117,7 @@ public class GroundItem extends Interactive implements Locatable, Drawable {
 
 	@Override
 	public Point getInteractPoint() {
-		final Model model = getModel(this.item.getId());
+		final Model model = getModel(getId());
 		if (model != null) {
 			Point point = model.getCentroid(faceIndex);
 			if (point != null) return point;
@@ -106,14 +129,14 @@ public class GroundItem extends Interactive implements Locatable, Drawable {
 
 	@Override
 	public Point getNextPoint() {
-		final Model model = getModel(this.item.getId());
+		final Model model = getModel(getId());
 		if (model != null) model.getNextPoint();
 		return tile.getNextPoint();
 	}
 
 	@Override
 	public Point getCenterPoint() {
-		final Model model = getModel(this.item.getId());
+		final Model model = getModel(getId());
 		if (model != null) model.getCenterPoint();
 		return tile.getCenterPoint();
 	}
@@ -148,6 +171,7 @@ public class GroundItem extends Interactive implements Locatable, Drawable {
 		if (((rgb >> 24) & 0xff) != alpha) {
 			c = new Color((rgb >> 16) & 0xff, (rgb >> 8) & 0xff, rgb & 0xff, alpha);
 		}
+		render.setColor(c);
 		final Model m = getModel();
 		if (m != null) m.drawWireFrame(render);
 	}

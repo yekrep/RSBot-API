@@ -26,6 +26,7 @@ import org.powerbot.gui.component.BotLocale;
 import org.powerbot.gui.component.BotLogPane;
 import org.powerbot.gui.component.BotMenuBar;
 import org.powerbot.gui.component.BotPanel;
+import org.powerbot.gui.controller.BotInteract;
 import org.powerbot.ipc.Controller;
 import org.powerbot.ipc.ScheduledChecks;
 import org.powerbot.service.NetworkAccount;
@@ -45,7 +46,6 @@ public class BotChrome extends JFrame implements WindowListener {
 	public static final int PANEL_WIDTH = 765, PANEL_HEIGHT = 553;
 	public final BotPanel panel;
 	public final JScrollPane logpane;
-	public final BotControlPanel control;
 	public static volatile boolean loaded = false;
 	public static volatile boolean minimised = false;
 
@@ -79,7 +79,6 @@ public class BotChrome extends JFrame implements WindowListener {
 		setLocationRelativeTo(getParent());
 		setVisible(true);
 
-		control = new BotControlPanel(this);
 		Tracker.getInstance().trackPage("", getTitle());
 
 		final ExecutorService exec = Executors.newFixedThreadPool(1);
@@ -110,9 +109,6 @@ public class BotChrome extends JFrame implements WindowListener {
 		if (Bot.instantiated()) {
 			Bot.getInstance().stop();
 		}
-		if (NetworkAccount.getInstance().isLoggedIn()) {
-			NetworkAccount.getInstance().sessionQuery(Controller.getInstance().getRunningInstances() - 1);
-		}
 		dispose();
 		System.exit(0);
 	}
@@ -135,7 +131,7 @@ public class BotChrome extends JFrame implements WindowListener {
 		public Boolean call() throws Exception {
 			log.log(Level.INFO, "Signing into " + BotLocale.WEBSITE, BotLocale.STARTING);
 			final NetworkAccount net = NetworkAccount.getInstance();
-			if (net.isLoggedIn() && !net.session()) {
+			if (net.isLoggedIn()) {
 				net.logout();
 			}
 			return true;
@@ -161,7 +157,6 @@ public class BotChrome extends JFrame implements WindowListener {
 				} catch (final InterruptedException | ExecutionException ignored) {
 				}
 			}
-
 			if (pass) {
 				SwingUtilities.invokeLater(new Runnable() {
 					@Override
@@ -170,6 +165,11 @@ public class BotChrome extends JFrame implements WindowListener {
 						timer.setCoalesce(false);
 						timer.start();
 
+						parent.validate();
+						parent.repaint();
+
+						BotSignin.showWelcomeMessage();
+
 						if (Configuration.BETA) {
 							final String s = "This is a beta version for developers only and certain features have been disabled.\nDo not use this version for general purposes, you have been warned.";
 							if (!Configuration.SUPERDEV) {
@@ -177,12 +177,13 @@ public class BotChrome extends JFrame implements WindowListener {
 							}
 						}
 
+						if (NetworkAccount.getInstance().hasPermission(NetworkAccount.VIP)) {
+							BotInteract.tabAdd();
+						}
 					}
 				});
 			}
-
-			new Thread(Bot.getInstance()).start();
-
+			System.gc();
 			loaded = true;
 		}
 	}

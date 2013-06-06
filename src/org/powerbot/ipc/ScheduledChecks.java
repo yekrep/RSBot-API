@@ -39,9 +39,6 @@ public final class ScheduledChecks implements ActionListener {
 		if (session.get() == 0 || pinnged % 30 == 0) {
 			session.set(System.currentTimeMillis());
 			Controller.getInstance().broadcast(new Message(Message.SIGNIN_SESSION));
-			if (NetworkAccount.getInstance().isLoggedIn()) {
-				NetworkAccount.getInstance().session();
-			}
 		}
 
 		final Bot bot = Bot.getInstance();

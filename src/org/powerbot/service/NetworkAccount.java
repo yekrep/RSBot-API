@@ -115,11 +115,6 @@ public final class NetworkAccount {
 
 		if (success) {
 			props.putAll(data.get(AUTHKEY));
-			final Map<String, String> session = sessionQuery();
-			if (!isSuccess(session)) {
-				logout();
-				return session;
-			}
 			broadcast();
 			updateCache();
 		} else {
@@ -127,28 +122,6 @@ public final class NetworkAccount {
 		}
 
 		return resp;
-	}
-
-	public boolean session() {
-		return isLoggedIn() && isSuccess(sessionQuery());
-	}
-
-	public Map<String, String> sessionQuery() {
-		return sessionQuery(Controller.getInstance().getRunningInstances());
-	}
-
-	public Map<String, String> sessionQuery(final int n) {
-		final Map<String, String> data;
-		try {
-			final InputStream is = HttpClient.openStream(Configuration.URLs.SIGNIN_SESSION,
-					StringUtil.urlEncode(getAuth()), Long.toString(Configuration.getUID()), Integer.toString(n));
-			data = IniParser.deserialise(is).get(RESPKEY);
-		} catch (final IOException ignored) {
-			ignored.printStackTrace();
-			return null;
-		}
-
-		return data;
 	}
 
 	public boolean isSuccess(final Map<String, String> resp) {
@@ -159,7 +132,6 @@ public final class NetworkAccount {
 		props.clear();
 		broadcast();
 		updateCache();
-		sessionQuery(0);
 	}
 
 	private synchronized void broadcast() {

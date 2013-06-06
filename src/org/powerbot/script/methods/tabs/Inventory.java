@@ -2,7 +2,7 @@ package org.powerbot.script.methods.tabs;
 
 import java.util.Arrays;
 
-import org.powerbot.script.methods.Game;
+import org.powerbot.script.internal.methods.Items;
 import org.powerbot.script.methods.Widgets;
 import org.powerbot.script.util.Filter;
 import org.powerbot.script.wrappers.Component;
@@ -32,8 +32,15 @@ public class Inventory {
 		if (inv == null) return items;
 		int d = 0;
 		final Component[] comps = inv.getChildren();
+		int[][] data;
+		if (inv.isVisible()) data = Items.getItems(Items.INDEX_INVENTORY);
+		else data = null;
 		if (comps.length > 27) for (int i = 0; i < 28; i++) {
-			if (comps[i].getItemId() != -1) items[d++] = new Item(comps[i]);
+			if (data != null) {
+				if (i >= data.length) break;
+				if (data[i][0] == -1) continue;
+				items[d++] = new Item(data[i][0], data[i][1], comps[i]);
+			} else if (comps[i].getItemId() != -1) items[d++] = new Item(comps[i]);
 		}
 		return Arrays.copyOf(items, d);
 	}
@@ -43,8 +50,15 @@ public class Inventory {
 		final Component inv = getComponent();
 		if (inv == null) return items;
 		final Component[] comps = inv.getChildren();
+		int[][] data;
+		if (inv.isVisible()) data = Items.getItems(Items.INDEX_INVENTORY);
+		else data = null;
 		if (comps.length > 27) for (int i = 0; i < 28; i++) {
-			items[i] = new Item(comps[i]);
+			if (data != null) {
+				if (i < data.length) {
+					items[i] = new Item(data[i][0], data[i][1], comps[i]);
+				} else items[i] = new Item(-1, -1, comps[i]);
+			} else items[i] = new Item(comps[i]);
 		}
 		return items;
 	}
@@ -53,7 +67,11 @@ public class Inventory {
 		final Component inv = getComponent();
 		if (inv == null) return null;
 		final Component[] comps = inv.getChildren();
-		return index >= 0 && index < 28 && comps.length > 27 && comps[index].getItemId() != -1 ? new Item(comps[index]) : null;
+		int[][] data = Items.getItems(Items.INDEX_INVENTORY);
+		if (index >= 0 && index < 28 && comps.length > 27 && index < data.length && data[index][0] != -1) {
+			return new Item(data[index][0], data[index][1], comps[index]);
+		}
+		return null;
 	}
 
 	public static Item[] getItems(final Filter<Item> filter) {
@@ -110,10 +128,12 @@ public class Inventory {
 	}
 
 	public static int indexOf(final int id) {
-		final Component inv = getComponent();
-		if (inv == null) return -1;
-		final Component[] comps = inv.getChildren();
-		if (comps.length > 27) for (int i = 0; i < 28; i++) if (comps[i].getItemId() == id) return i;
+		int[][] data = Items.getItems(Items.INDEX_INVENTORY);
+		for (int i = 0; i < 28; i++) {
+			if (i < data.length) {
+				if (data[i][0] == id) return i;
+			} else break;
+		}
 		return -1;
 	}
 
@@ -136,12 +156,10 @@ public class Inventory {
 	}
 
 	public static int getCount(final boolean stacks) {
+		int[][] data = Items.getItems(Items.INDEX_INVENTORY);
 		int count = 0;
-		final Component inv = getComponent();
-		if (inv == null) return 0;
-		final Component[] comps = inv.getChildren();
-		if (comps.length > 27) for (int i = 0; i < 28; i++) {
-			if (comps[i].getItemId() != -1) if (stacks) count += comps[i].getItemStackSize();
+		for (int i = 0; i < data.length; i++) {
+			if (data[i][0] != -1) if (stacks) count += data[i][1];
 			else ++count;
 		}
 		return count;
@@ -152,14 +170,12 @@ public class Inventory {
 	}
 
 	public static int getCount(final boolean stacks, final int... ids) {
+		int[][] data = Items.getItems(Items.INDEX_INVENTORY);
 		int count = 0;
-		final Component inv = getComponent();
-		if (inv == null) return 0;
-		final Component[] comps = inv.getChildren();
-		if (comps.length > 27) for (int i = 0; i < 28; i++) {
+		for (int i = 0; i < data.length; i++) {
 			for (final int id : ids) {
-				if (comps[i].getItemId() == id) {
-					if (stacks) count += comps[i].getItemStackSize();
+				if (data[i][0] == id) {
+					if (stacks) count += data[i][1];
 					else ++count;
 					break;
 				}
@@ -179,7 +195,6 @@ public class Inventory {
 	private static Component getComponent() {
 		Component c;
 		for (final int index : ALTERNATIVE_WIDGETS) if ((c = Widgets.get(index, 0)) != null && c.isValid()) return c;
-		Game.openTab(Game.TAB_INVENTORY);
 		return Widgets.get(WIDGET, 0);
 	}
 }
