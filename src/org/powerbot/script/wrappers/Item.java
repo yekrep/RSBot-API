@@ -1,5 +1,7 @@
 package org.powerbot.script.wrappers;
 
+import java.awt.Point;
+
 import org.powerbot.bot.World;
 import org.powerbot.client.Cache;
 import org.powerbot.client.Client;
@@ -9,7 +11,7 @@ import org.powerbot.client.RSItemDefLoader;
 import org.powerbot.script.methods.Game;
 import org.powerbot.util.StringUtil;
 
-public class Item implements Validatable {
+public class Item extends Interactive {
 	private final int id;
 	private int stack;
 	private final Component component;
@@ -36,7 +38,7 @@ public class Item implements Validatable {
 
 	public String getName() {
 		String name = null;
-		if (component != null && component.getItemId() == this.id) name = component.getItemName();
+		if (component.getItemId() == this.id) name = component.getItemName();
 		else {
 			final ItemDefinition def;
 			if ((def = getDefinition()) != null) name = def.getName();
@@ -59,6 +61,26 @@ public class Item implements Validatable {
 				(cache = loader.getCache()) == null || (table = cache.getTable()) == null) return null;
 		final Object o = Game.lookup(table, this.id);
 		return o != null && o instanceof RSItemDef ? new ItemDefinition((RSItemDef) o) : null;
+	}
+
+	@Override
+	public Point getInteractPoint() {
+		return component.getInteractPoint();
+	}
+
+	@Override
+	public Point getNextPoint() {
+		return component.getNextPoint();
+	}
+
+	@Override
+	public Point getCenterPoint() {
+		return component.getCenterPoint();
+	}
+
+	@Override
+	public boolean contains(Point point) {
+		return component.contains(point);
 	}
 
 	@Override
