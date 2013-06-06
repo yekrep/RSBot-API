@@ -62,6 +62,21 @@ public class Equipment {
 		}
 	}
 
+	public static Item[] getItems() {
+		boolean b = Bank.isOpen();
+		int[][] data = Items.getItems(Items.INDEX_EQUIPMENT);
+		Item[] items = new Item[NUM_SLOTS];
+		for (Slot slot : Slot.values()) {
+			int index = slot.getIndex();
+			if (index < 0 || index >= data.length || data[index][0] == -1) continue;
+			Component c;
+			if (b) c = Widgets.get(WIDGET_BANK, COMPONENT_BANK).getChild(slot.getBankComponentIndex());
+			else c = Widgets.get(WIDGET, slot.getComponentIndex());
+			items[slot.ordinal()] = new Item(data[index][0], data[index][1], c);
+		}
+		return items;
+	}
+
 	public static Item getItem(Slot slot) {
 		int index = slot.getIndex();
 		int[][] data = Items.getItems(Items.INDEX_EQUIPMENT);
