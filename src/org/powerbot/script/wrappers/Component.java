@@ -402,6 +402,11 @@ public class Component extends Interactive implements Drawable {
 	}
 
 	@Override
+	public String toString() {
+		return getClass().getSimpleName() + "[" + index + (parent != null ? "/" + parent : "") + "]@" + widget;
+	}
+
+	@Override
 	public boolean equals(final Object o) {
 		if (o == null || !(o instanceof Component)) return false;
 		final Component c = (Component) o;

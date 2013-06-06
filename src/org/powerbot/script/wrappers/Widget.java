@@ -98,6 +98,11 @@ public class Widget implements Validatable, Iterable<Component> {
 	}
 
 	@Override
+	public String toString() {
+		return getClass().getSimpleName() + "[" + index + "]";
+	}
+
+	@Override
 	public boolean equals(final Object o) {
 		if (o == null || !(o instanceof Widget)) return false;
 		final Widget w = (Widget) o;
