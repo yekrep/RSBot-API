@@ -71,4 +71,31 @@ public class Equipment {
 		else c = Widgets.get(WIDGET, slot.getComponentIndex());
 		return new Item(data[index][0], data[index][1], c);
 	}
+
+	public static boolean contains(int id) {
+		int[][] data = Items.getItems(Items.INDEX_EQUIPMENT);
+		for (int i = 0; i < data.length; i++) if (data[i][0] == id) return true;
+		return false;
+	}
+
+	public static boolean containsAll(int... ids) {
+		int[][] data = Items.getItems(Items.INDEX_EQUIPMENT);
+		for (int id : ids) {
+			boolean contains = false;
+			for (int i = 0; i < data.length; i++) {
+				if (data[i][0] == id) {
+					contains = true;
+					break;
+				}
+			}
+			if (!contains) return false;
+		}
+		return true;
+	}
+
+	public static boolean containsOneOf(int... ids) {
+		int[][] data = Items.getItems(Items.INDEX_EQUIPMENT);
+		for (int id : ids) for (int i = 0; i < data.length; i++) if (data[i][0] == id) return true;
+		return false;
+	}
 }
