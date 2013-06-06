@@ -21,6 +21,7 @@ public class Item extends Interactive {
 	}
 
 	public Item(int id, int stack, Component component) {
+		if (component == null) throw new IllegalArgumentException("component is null");
 		this.id = id;
 		this.stack = stack;
 		this.component = component;
