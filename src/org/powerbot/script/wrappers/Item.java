@@ -63,8 +63,8 @@ public class Item implements Validatable {
 
 	@Override
 	public boolean isValid() {
-		if (this.component != null && this.component.isValid() && this.component.getItemId() == this.id) return true;
-		return false;
+		return this.component != null && this.component.isValid() &&
+				(!this.component.isVisible() || this.component.getItemId() == this.id);
 	}
 
 	@Override
