@@ -1,6 +1,5 @@
 package org.powerbot.script.methods;
 
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -11,33 +10,29 @@ import org.powerbot.client.NodeDeque;
 import org.powerbot.client.NodeListCache;
 import org.powerbot.client.RSItem;
 import org.powerbot.script.internal.wrappers.Deque;
-import org.powerbot.script.util.Filter;
 import org.powerbot.script.wrappers.GroundItem;
-import org.powerbot.script.wrappers.Player;
 import org.powerbot.script.wrappers.Tile;
 
 public class GroundItems {
-	private static final int LOADED_DIST = 104;
-
 	public static GroundItem[] getLoaded() {
-		return getLoaded(LOADED_DIST);
-	}
+		Set<GroundItem> items = new HashSet<>();
 
-	public static GroundItem[] getLoaded(final int _x, final int _y, final int range) {
-		final Set<GroundItem> items = new HashSet<>();
-
-		final Client client = World.getWorld().getClient();
+		Client client = World.getWorld().getClient();
 		if (client == null) return new GroundItem[0];
 
-		final HashTable table = client.getRSItemHashTable();
+		HashTable table = client.getRSItemHashTable();
 		if (table == null) return new GroundItem[0];
 
-		final int plane = client.getPlane();
+		int plane = client.getPlane();
 		long id;
 		NodeListCache cache;
 		NodeDeque deque;
-		for (int x = _x - range; x <= _x + range; x++) {
-			for (int y = _y - range; y <= _y + range; y++) {
+
+		Tile base = Game.getMapBase();
+		if (base == null) return new GroundItem[0];
+		int bx = base.getX(), by = base.getY();
+		for (int x = bx; x < x + 104; x++) {
+			for (int y = by; y < by + 104; y++) {
 				id = x | y << 14 | plane << 28;
 				cache = (NodeListCache) Game.lookup(table, id);
 				if (cache == null || (deque = cache.getNodeList()) == null) continue;
@@ -48,53 +43,5 @@ public class GroundItems {
 			}
 		}
 		return items.toArray(new GroundItem[items.size()]);
-	}
-
-	public static GroundItem[] getLoaded(final int range) {
-		final Player player = Players.getLocal();
-		final Tile location;
-		if (player == null || (location = player.getLocation()) == null) {
-			return new GroundItem[0];
-		}
-
-		final int x = location.getX(), y = location.getY();
-		return getLoaded(x, y, range);
-	}
-
-	public static GroundItem[] getLoaded(final Filter<GroundItem> filter) {
-		return getLoaded(LOADED_DIST, filter);
-	}
-
-	public static GroundItem[] getLoaded(final int range, final Filter<GroundItem> filter) {
-		final GroundItem[] items = getLoaded(range);
-		final GroundItem[] set = new GroundItem[items.length];
-		int d = 0;
-		for (final GroundItem item : items) if (filter.accept(item)) set[d++] = item;
-		return Arrays.copyOf(set, d);
-	}
-
-	public static GroundItem getNearest(final Filter<GroundItem> filter) {
-		return getNearest(LOADED_DIST, filter);
-	}
-
-	public static GroundItem getNearest(final int range, final Filter<GroundItem> filter) {
-		GroundItem nearest = null;
-		double dist = 104d;
-
-		final Player local = Players.getLocal();
-		if (local == null) return null;
-
-		final Tile pos = local.getLocation();
-		if (pos == null) return null;
-		final GroundItem[] groundItems = getLoaded(range);
-		for (final GroundItem groundItem : groundItems) {
-			final double d;
-			if (filter.accept(groundItem) && (d = Movement.distance(pos, groundItem)) < dist) {
-				nearest = groundItem;
-				dist = d;
-			}
-		}
-
-		return nearest;
 	}
 }
