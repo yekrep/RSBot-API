@@ -61,11 +61,12 @@ public class Bank {
 		if (isOpen()) return true;
 		int count = 0;
 		Npc[] npcs = Npcs.getLoaded();
+		GameObject[] objects = Objects.getLoaded();
 		final Interactive[] interactives = {
 				Filters.nearest(Filters.id(npcs, BANK_NPC_IDS)),
-				Objects.getNearest(BANK_BOOTH_IDS),
-				Objects.getNearest(BANK_COUNTER_IDS),
-				Objects.getNearest(BANK_CHEST_IDS),
+				Filters.nearest(Filters.id(objects, BANK_BOOTH_IDS)),
+				Filters.nearest(Filters.id(objects, BANK_COUNTER_IDS)),
+				Filters.nearest(Filters.id(objects, BANK_CHEST_IDS)),
 		};
 		for (int i = 0; i < interactives.length; i++) {
 			if (interactives[i] != null && interactives[i].isOnScreen()) {

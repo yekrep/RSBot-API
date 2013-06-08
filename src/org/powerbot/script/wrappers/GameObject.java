@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.lang.ref.WeakReference;
-import java.util.Arrays;
 
 import org.powerbot.bot.World;
 import org.powerbot.client.Cache;
@@ -18,8 +17,9 @@ import org.powerbot.client.RSObjectDef;
 import org.powerbot.client.RSObjectDefLoader;
 import org.powerbot.script.methods.Game;
 import org.powerbot.script.methods.Objects;
+import org.powerbot.script.util.Filters;
 
-public class GameObject extends Interactive implements Locatable, Drawable {
+public class GameObject extends Interactive implements Locatable, Drawable, Identifiable {
 	private static final Color TARGET_COLOR = new Color(0, 255, 0, 20);
 	private final WeakReference<RSObject> object;
 	private final Type type;
@@ -118,9 +118,7 @@ public class GameObject extends Interactive implements Locatable, Drawable {
 
 	@Override
 	public boolean isValid() {
-		if (this.object.get() == null) return false;
-		final Tile tile = getLocation();
-		return tile != null && Arrays.asList(Objects.getLoaded(tile.getX(), tile.getY(), 0)).contains(this);
+		return this.object.get() != null && Filters.accept(Objects.getLoaded(), Filters.accept(this));
 	}
 
 	@Override

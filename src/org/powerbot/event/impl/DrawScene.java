@@ -9,6 +9,7 @@ import org.powerbot.event.PaintListener;
 import org.powerbot.script.methods.Game;
 import org.powerbot.script.methods.Objects;
 import org.powerbot.script.methods.Players;
+import org.powerbot.script.util.Filters;
 import org.powerbot.script.wrappers.GameObject;
 import org.powerbot.script.wrappers.Player;
 import org.powerbot.script.wrappers.Tile;
@@ -34,7 +35,7 @@ public class DrawScene implements PaintListener {
 				if (!Game.isPointOnScreen(accessPoint)) {
 					continue;
 				}
-				final GameObject[] locations = Objects.getLoaded(x, y, 0);
+				final GameObject[] locations = Filters.at(Objects.getLoaded(), new Tile(x, y, Game.getPlane()));
 				int i = 0;
 				for (final GameObject location : locations) {
 					final Point locationPoint = location.getLocation().getCenterPoint();

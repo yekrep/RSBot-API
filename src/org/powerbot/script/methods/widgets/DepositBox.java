@@ -8,6 +8,7 @@ import org.powerbot.script.methods.Widgets;
 import org.powerbot.script.methods.tabs.Inventory;
 import org.powerbot.script.util.Delay;
 import org.powerbot.script.util.Filter;
+import org.powerbot.script.util.Filters;
 import org.powerbot.script.util.Random;
 import org.powerbot.script.util.Timer;
 import org.powerbot.script.wrappers.Component;
@@ -35,7 +36,7 @@ public class DepositBox {
 
 	public static boolean open() {
 		if (isOpen()) return true;
-		final GameObject object = Objects.getNearest(DEPOSIT_BOX_IDS);
+		GameObject object = Filters.nearest(Filters.id(Objects.getLoaded(), DEPOSIT_BOX_IDS));
 		if (object.interact("Deposit")) {
 			final Widget bankPin = Widgets.get(13);
 			for (int i = 0; i < 20 && !isOpen() && !bankPin.isValid(); i++) Delay.sleep(200, 300);

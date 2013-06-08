@@ -24,7 +24,7 @@ public class DrawModels implements PaintListener {
 	@Override
 	public void onRepaint(final Graphics render) {
 		((Graphics2D) render).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		GameObject[] objects = Objects.getLoaded(10);
+		GameObject[] objects = Filters.range(Objects.getLoaded(), 10);
 		for (final GameObject obj : objects) {
 			if (!obj.isOnScreen()) continue;
 			final Model m = obj.getModel();
