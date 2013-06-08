@@ -5,7 +5,12 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import org.powerbot.script.methods.Movement;
+import org.powerbot.script.methods.Players;
 import org.powerbot.script.wrappers.Identifiable;
+import org.powerbot.script.wrappers.Locatable;
+import org.powerbot.script.wrappers.Player;
+import org.powerbot.script.wrappers.Tile;
 
 public class Filters {
 	private static <T> T[] flatten(T[][] paramArrayOfT) {
@@ -61,5 +66,25 @@ public class Filters {
 				return false;
 			}
 		});
+	}
+
+	public static <T extends Locatable> T nearest(T[] arr) {
+		T nearest = null;
+		double dist = Double.MAX_VALUE;
+
+		Player local = Players.getLocal();
+		if (local == null) return null;
+
+		Tile pos = local.getLocation();
+		if (pos == null) return null;
+		for (T t : arr) {
+			double d;
+			if ((d = Movement.distance(pos, t)) < dist) {
+				nearest = t;
+				dist = d;
+			}
+		}
+
+		return nearest;
 	}
 }
