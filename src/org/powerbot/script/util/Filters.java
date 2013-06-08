@@ -56,6 +56,20 @@ public class Filters {
 		return Arrays.copyOf(arr, d);
 	}
 
+	public static <T> boolean accept(T[] arr, Filter<T> filter) {
+		for (T a : arr) if (filter.accept(a)) return true;
+		return false;
+	}
+
+	public static <T> Filter<T> accept(final T obj) {
+		return new Filter<T>() {
+			@Override
+			public boolean accept(T t) {
+				return obj != null && obj.equals(t);
+			}
+		};
+	}
+
 	public static <T extends Identifiable> T[] id(T[] arr, final int... ids) {
 		return filter(arr, new Filter<T>() {
 			@Override
