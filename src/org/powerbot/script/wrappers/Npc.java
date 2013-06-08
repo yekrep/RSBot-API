@@ -11,7 +11,7 @@ import org.powerbot.client.RSNPCDef;
 import org.powerbot.client.RSNPCNode;
 import org.powerbot.script.methods.Game;
 
-public class Npc extends Actor {
+public class Npc extends Actor implements Identifiable {
 	public static final Color TARGET_COLOR = new Color(255, 0, 255, 15);
 	private final WeakReference<RSNPC> npc;
 
