@@ -13,6 +13,7 @@ import org.powerbot.script.methods.Widgets;
 import org.powerbot.script.methods.tabs.Inventory;
 import org.powerbot.script.util.Delay;
 import org.powerbot.script.util.Filter;
+import org.powerbot.script.util.Filters;
 import org.powerbot.script.util.Random;
 import org.powerbot.script.util.Timer;
 import org.powerbot.script.wrappers.Component;
@@ -59,8 +60,9 @@ public class Bank {
 	public static boolean open() {
 		if (isOpen()) return true;
 		int count = 0;
+		Npc[] npcs = Npcs.getLoaded();
 		final Interactive[] interactives = {
-				Npcs.getNearest(BANK_NPC_IDS),
+				Filters.nearest(Filters.id(npcs, BANK_NPC_IDS)),
 				Objects.getNearest(BANK_BOOTH_IDS),
 				Objects.getNearest(BANK_COUNTER_IDS),
 				Objects.getNearest(BANK_CHEST_IDS),

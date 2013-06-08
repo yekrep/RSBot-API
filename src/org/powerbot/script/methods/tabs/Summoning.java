@@ -7,6 +7,7 @@ import org.powerbot.script.methods.Settings;
 import org.powerbot.script.methods.Widgets;
 import org.powerbot.script.util.Delay;
 import org.powerbot.script.util.Filter;
+import org.powerbot.script.util.Filters;
 import org.powerbot.script.util.Timer;
 import org.powerbot.script.wrappers.Actor;
 import org.powerbot.script.wrappers.Component;
@@ -113,13 +114,15 @@ public class Summoning {
 		}
 		final Player local = Players.getLocal();
 		if (local == null) return null;
-		return Npcs.getNearest(new Filter<Npc>() {
+		Npc[] npcs = Npcs.getLoaded();
+		npcs = Filters.filter(npcs, new Filter<Npc>() {
 			@Override
 			public boolean accept(Npc npc) {
 				final Actor actor;
 				return npc.getId() == Settings.get(1784) && (actor = npc.getInteracting()) != null && actor.equals(local);
 			}
 		});
+		return Filters.nearest(npcs);
 	}
 
 	public static Familiar getEnum() {

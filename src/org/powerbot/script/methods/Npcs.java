@@ -7,10 +7,7 @@ import org.powerbot.client.Client;
 import org.powerbot.client.HashTable;
 import org.powerbot.client.RSNPC;
 import org.powerbot.client.RSNPCNode;
-import org.powerbot.script.util.Filter;
 import org.powerbot.script.wrappers.Npc;
-import org.powerbot.script.wrappers.Player;
-import org.powerbot.script.wrappers.Tile;
 
 /**
  * {@link Npcs} is a static utility which provides access to {@link Npc}s in the game.
@@ -43,80 +40,5 @@ public class Npcs {
 		}
 
 		return Arrays.copyOf(npcs, d);
-	}
-
-	/**
-	 * Returns the {@link Npc}s in the region which are accepted by the provided filter.
-	 *
-	 * @param filter the {@link Filter} by which to accept {@link Npc}s
-	 * @return an array of the filtered {@link Npc}s
-	 */
-	public static Npc[] getLoaded(final Filter<Npc> filter) {
-		final Npc[] npcs = getLoaded();
-		final Npc[] set = new Npc[npcs.length];
-		int d = 0;
-		for (final Npc npc : npcs) if (filter.accept(npc)) set[d++] = npc;
-		return Arrays.copyOf(set, d);
-	}
-
-	/**
-	 * Returns the {@link Npc}s in the region with the provided id(s).
-	 *
-	 * @param ids a list of ids to accept
-	 * @return an array of the filtered {@link Npc}s
-	 */
-	public static Npc[] getLoaded(final int... ids) {
-		return getLoaded(new Filter<Npc>() {
-			@Override
-			public boolean accept(final Npc npc) {
-				final int npcId = npc.getId();
-				for (final int id : ids) if (npcId == id) return true;
-				return false;
-			}
-		});
-	}
-
-	/**
-	 * Returns the nearest {@link Npc} in the region accepted by the provided {@link Filter}.
-	 *
-	 * @param filter the {@link Filter} by which to accept an {@link Npc}
-	 * @return the {@link Npc} nearest to the local player accepted by the {@link Filter}
-	 */
-	public static Npc getNearest(final Filter<Npc> filter) {
-		Npc nearest = null;
-		double dist = 104d;
-
-		final Player local = Players.getLocal();
-		if (local == null) return null;
-
-		final Tile pos = local.getLocation();
-		if (pos == null) return null;
-		final Npc[] npcs = getLoaded();
-		for (final Npc npc : npcs) {
-			final double d;
-			if (filter.accept(npc) && (d = Movement.distance(pos, npc)) < dist) {
-				nearest = npc;
-				dist = d;
-			}
-		}
-
-		return nearest;
-	}
-
-	/**
-	 * Returns the nearest {@link Npc} in the region with the given id(s).
-	 *
-	 * @param ids a list of ids to accept
-	 * @return the {@link Npc} nearest to the local player with one of the provided ids
-	 */
-	public static Npc getNearest(final int... ids) {
-		return getNearest(new Filter<Npc>() {
-			@Override
-			public boolean accept(final Npc npc) {
-				final int npcId = npc.getId();
-				for (final int id : ids) if (npcId == id) return true;
-				return false;
-			}
-		});
 	}
 }
