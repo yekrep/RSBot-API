@@ -63,10 +63,11 @@ public class Components {
 	}
 
 	private static Container get() {
-		Container c = World.getWorld().getComponents();
+		World world = World.getWorld();
+		Container c = world.getComponents();
 		if (c == null) {
 			c = new Container();
-			World.getWorld().setComponents(c);
+			world.setComponents(c);
 		}
 		c.sync();
 		return c.index != -1 ? c : null;
