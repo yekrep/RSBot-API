@@ -10,6 +10,7 @@ import org.powerbot.script.methods.GroundItems;
 import org.powerbot.script.methods.Npcs;
 import org.powerbot.script.methods.Objects;
 import org.powerbot.script.methods.Players;
+import org.powerbot.script.util.Filters;
 import org.powerbot.script.wrappers.GameObject;
 import org.powerbot.script.wrappers.GroundItem;
 import org.powerbot.script.wrappers.Model;
@@ -23,7 +24,7 @@ public class DrawModels implements PaintListener {
 	@Override
 	public void onRepaint(final Graphics render) {
 		((Graphics2D) render).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		final GameObject[] objects = Objects.getLoaded(10);
+		GameObject[] objects = Objects.getLoaded(10);
 		for (final GameObject obj : objects) {
 			if (!obj.isOnScreen()) continue;
 			final Model m = obj.getModel();
@@ -34,19 +35,20 @@ public class DrawModels implements PaintListener {
 			m.drawWireFrame(render);
 		}
 
-		final Player[] players = Players.getLoaded();
+		Player[] players = Players.getLoaded();
 		for (final Player actor : players) {
 			if (!actor.isOnScreen()) continue;
 			actor.draw(render, 10);
 		}
 
-		final Npc[] npcs = Npcs.getLoaded();
+		Npc[] npcs = Npcs.getLoaded();
 		for (final Npc actor : npcs) {
 			if (!actor.isOnScreen()) continue;
 			actor.draw(render, 20);
 		}
 
-		final GroundItem[] groundItems = GroundItems.getLoaded(20);
+		GroundItem[] groundItems = GroundItems.getLoaded();
+		groundItems = Filters.range(groundItems, 20);
 		for (final GroundItem item : groundItems) {
 			item.draw(render, 20);
 		}
