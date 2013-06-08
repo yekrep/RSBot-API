@@ -96,13 +96,24 @@ public class Filters {
 		});
 	}
 
+	public static <T extends Locatable> T[] at(T[] arr, Locatable loc) {
+		final Tile pos = loc.getLocation();
+		if (pos == null) return Arrays.copyOf(arr, 0);
+		return filter(arr, new Filter<T>() {
+			@Override
+			public boolean accept(T t) {
+				Tile tile = t.getLocation();
+				return tile != null && tile.equals(pos);
+			}
+		});
+	}
+
 	public static <T extends Locatable> T nearest(T[] arr) {
 		T nearest = null;
 		double dist = Double.MAX_VALUE;
 
 		Player local = Players.getLocal();
 		if (local == null) return null;
-
 		Tile pos = local.getLocation();
 		if (pos == null) return null;
 		for (T t : arr) {
