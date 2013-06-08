@@ -82,6 +82,20 @@ public class Filters {
 		});
 	}
 
+	public static <T extends Locatable> T[] range(T[] arr, final double range) {
+		Player local = Players.getLocal();
+		if (local == null) return Arrays.copyOf(arr, 0);
+
+		final Tile pos = local.getLocation();
+		if (pos == null) return Arrays.copyOf(arr, 0);
+		return filter(arr, new Filter<T>() {
+			@Override
+			public boolean accept(T t) {
+				return Movement.distance(pos, t) < range;
+			}
+		});
+	}
+
 	public static <T extends Locatable> T nearest(T[] arr) {
 		T nearest = null;
 		double dist = Double.MAX_VALUE;
