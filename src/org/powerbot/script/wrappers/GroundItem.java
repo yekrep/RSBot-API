@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.lang.ref.WeakReference;
-import java.util.Arrays;
 
 import org.powerbot.bot.World;
 import org.powerbot.client.BaseInfo;
@@ -20,6 +19,7 @@ import org.powerbot.client.RSItemDefLoader;
 import org.powerbot.client.RSItemPile;
 import org.powerbot.script.methods.Game;
 import org.powerbot.script.methods.GroundItems;
+import org.powerbot.script.util.Filters;
 import org.powerbot.script.util.Random;
 
 public class GroundItem extends Interactive implements Locatable, Drawable {
@@ -148,8 +148,8 @@ public class GroundItem extends Interactive implements Locatable, Drawable {
 
 	@Override
 	public boolean isValid() {
-		final GroundItem[] items = GroundItems.getLoaded(tile.getX(), tile.getY(), 0);
-		return Arrays.asList(items).contains(this);
+		GroundItem[] items = GroundItems.getLoaded();
+		return Filters.accept(items, Filters.accept(this));
 	}
 
 	@Override
