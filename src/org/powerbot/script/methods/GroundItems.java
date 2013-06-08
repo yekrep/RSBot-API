@@ -31,7 +31,7 @@ public class GroundItems {
 		Tile base = Game.getMapBase();
 		if (base == null) return new GroundItem[0];
 		int bx = base.getX(), by = base.getY();
-		for (int x = bx; x < x + 104; x++) {
+		for (int x = bx; x < bx + 104; x++) {
 			for (int y = by; y < by + 104; y++) {
 				id = x | y << 14 | plane << 28;
 				cache = (NodeListCache) Game.lookup(table, id);
