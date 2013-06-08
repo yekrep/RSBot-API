@@ -2,8 +2,6 @@ package org.powerbot.script.methods;
 
 import java.awt.Point;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.powerbot.bot.World;
 import org.powerbot.client.Client;
@@ -20,8 +18,6 @@ import org.powerbot.script.wrappers.Widget;
  * {@link Widget}s must be validated before use.
  */
 public class Widgets {
-	private static final Map<Client, Widget[]> cache = new HashMap<>();
-
 	/**
 	 * Returns all the {@link Widget}s that are currently loaded in the game.
 	 *
@@ -44,10 +40,11 @@ public class Widgets {
 	 * @return the {@link Widget} respective to the given index
 	 */
 	public static Widget get(final int widget) {
-		final Client client = World.getWorld().getClient();
+		World world = World.getWorld();
+		Client client = world.getClient();
 		if (client == null || widget < 0) return null;
 
-		Widget[] cache = Widgets.cache.get(client);
+		Widget[] cache = world.cache;
 		if (cache == null) cache = new Widget[0];
 		if (widget < cache.length) return cache[widget];
 
@@ -56,7 +53,7 @@ public class Widgets {
 		final int len = cache.length;
 		cache = Arrays.copyOf(cache, mod);
 		for (int i = len; i < mod; i++) cache[i] = new Widget(i);
-		Widgets.cache.put(client, cache);
+		world.cache = cache;
 		return cache[widget];
 	}
 

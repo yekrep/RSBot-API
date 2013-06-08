@@ -5,13 +5,15 @@ import java.util.concurrent.atomic.AtomicReference;
 import org.powerbot.client.Client;
 import org.powerbot.script.methods.Components;
 import org.powerbot.script.methods.Game;
+import org.powerbot.script.wrappers.Widget;
 
 public class World {
 	private static final World EMPTY = new World();
 	private final Game.Toolkit toolkit;
 	private final Game.Viewport viewport;
 	private AtomicReference<Client> client;
-	private Components.Container components;
+	public Components.Container components;
+	public Widget[] cache;
 
 	public World() {
 		this.toolkit = new Game.Toolkit();
@@ -38,13 +40,5 @@ public class World {
 
 	public Game.Viewport getViewport() {
 		return this.viewport;
-	}
-
-	public void setComponents(Components.Container components) {
-		this.components = components;
-	}
-
-	public Components.Container getComponents() {
-		return this.components;
 	}
 }
