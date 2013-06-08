@@ -1,6 +1,7 @@
 package org.powerbot.script.util;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -39,5 +40,12 @@ public class Filters {
 				return !filter.accept(t);
 			}
 		};
+	}
+
+	public static <T> T[] filter(Filter<T> filter, T[] arr) {
+		arr = arr.clone();
+		int d = 0;
+		for (int i = 0; i < arr.length; i++) if (filter.accept(arr[i])) arr[d++] = arr[i];
+		return Arrays.copyOf(arr, d);
 	}
 }
