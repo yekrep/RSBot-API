@@ -1,16 +1,11 @@
 package org.powerbot.script.methods;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.powerbot.bot.World;
 import org.powerbot.client.Client;
 import org.powerbot.script.wrappers.Component;
 import org.powerbot.script.wrappers.Widget;
 
-class Components {
-	private static final Map<Client, Container> cache = new HashMap<>();
-
+public class Components {
 	static Component getCompass() {
 		final Container container = get();
 		if (container == null) return null;
@@ -68,29 +63,32 @@ class Components {
 	}
 
 	private static Container get() {
-		final Client client = World.getWorld().getClient();
-		if (client == null) return null;
-		Container c = cache.get(client);
+		Container c = World.getWorld().getComponents();
 		if (c == null) {
-			c = new Container(client);
-			cache.put(client, c);
+			c = new Container();
+			World.getWorld().setComponents(c);
 		}
-		c.sync(client);
+		c.sync();
 		return c.index != -1 ? c : null;
 	}
 
-	private static final class Container {
+	public static final class Container {
+		private Client client;
 		private int index;
 		private int compass, map;
 		private int[] tabs;
 
-		private Container(final Client client) {
+		private Container() {
 			index = 0;
-			sync(client);
+			sync();
 		}
 
-		private void sync(final Client client) {
-			int index = client.getGUIRSInterfaceIndex();
+		private void sync() {
+			Client client = World.getWorld().getClient();
+			int index;
+			if (client != this.client) index = -1;
+			else index = client.getGUIRSInterfaceIndex();
+			this.client = client;
 			if (index != this.index) {
 				this.index = index;
 				this.compass = -1;
