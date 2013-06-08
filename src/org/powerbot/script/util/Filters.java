@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import org.powerbot.script.wrappers.Identifiable;
+
 public class Filters {
 	private static <T> T[] flatten(T[][] paramArrayOfT) {
 		final List<T> list = new ArrayList<>();
@@ -42,10 +44,22 @@ public class Filters {
 		};
 	}
 
-	public static <T> T[] filter(Filter<T> filter, T[] arr) {
+	public static <T> T[] filter(T[] arr, Filter<T> filter) {
 		arr = arr.clone();
 		int d = 0;
 		for (int i = 0; i < arr.length; i++) if (filter.accept(arr[i])) arr[d++] = arr[i];
 		return Arrays.copyOf(arr, d);
+	}
+
+	public static <T extends Identifiable> T[] id(T[] arr, final int... ids) {
+		return filter(arr, new Filter<T>() {
+			@Override
+			public boolean accept(T t) {
+				if (t == null) return false;
+				int _id = t.getId();
+				for (int id : ids) if (id == _id) return true;
+				return false;
+			}
+		});
 	}
 }
