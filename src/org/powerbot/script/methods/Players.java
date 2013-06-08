@@ -5,9 +5,7 @@ import java.util.Arrays;
 import org.powerbot.bot.World;
 import org.powerbot.client.Client;
 import org.powerbot.client.RSPlayer;
-import org.powerbot.script.util.Filter;
 import org.powerbot.script.wrappers.Player;
-import org.powerbot.script.wrappers.Tile;
 
 /**
  * {@link Players} is a static utility which provides access to the {@link Player}s in the game.
@@ -54,46 +52,5 @@ public class Players {
 		}
 
 		return Arrays.copyOf(loadedPlayers, d);
-	}
-
-	/**
-	 * Returns all the {@link Player}s in the region accepted by the provided {@link Filter}.
-	 *
-	 * @param filter the {@link Filter} by which to accept {@link Player}s
-	 * @return an array of the filtered {@link Player}s
-	 */
-	public static Player[] getLoaded(final Filter<Player> filter) {
-		final Player[] players = getLoaded();
-		final Player[] set = new Player[players.length];
-		int d = 0;
-		for (final Player player : players) if (filter.accept(player)) set[d++] = player;
-		return Arrays.copyOf(set, d);
-	}
-
-	/**
-	 * Returns the nearest {@link Player} in the region accepted by the {@link Filter}
-	 *
-	 * @param filter the {@link Filter} by which to accept {@link Player}s
-	 * @return the {@link Player} nearest to the local player accepted by the filter
-	 */
-	public static Player getNearest(final Filter<Player> filter) {
-		Player nearest = null;
-		double dist = 104d;
-
-		final Player local = Players.getLocal();
-		if (local == null) return null;
-
-		final Tile pos = local.getLocation();
-		if (pos == null) return null;
-		final Player[] players = getLoaded();
-		for (final Player player : players) {
-			final double d;
-			if (filter.accept(player) && (d = Movement.distance(pos, player)) < dist) {
-				nearest = player;
-				dist = d;
-			}
-		}
-
-		return nearest;
 	}
 }
