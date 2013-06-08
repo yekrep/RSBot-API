@@ -221,22 +221,27 @@ public abstract class Actor extends Interactive implements Locatable, Drawable {
 	}
 
 	private CombatStatusData[] getBarData() {
-		final LinkedListNode[] nodes = getBarNodes();
+		LinkedListNode[] nodes = getBarNodes();
 		if (nodes == null) return null;
-		final CombatStatusData[] data = new CombatStatusData[nodes.length];
+		CombatStatusData[] data = new CombatStatusData[nodes.length];
 		for (int i = 0; i < nodes.length; i++) {
 			if (nodes[i] == null || !(nodes[i] instanceof CombatStatus)) {
 				data[i] = null;
 				continue;
 			}
-			final CombatStatus status = (CombatStatus) nodes[i];
-			final org.powerbot.client.LinkedList statuses = status.getData();
+			CombatStatus status = (CombatStatus) nodes[i];
+			org.powerbot.client.LinkedList statuses = status.getData();
 			if (statuses == null) {
 				data[i] = null;
 				continue;
 			}
 
-			data[i] = (CombatStatusData) statuses.getTail().getNext();
+			LinkedListNode node = statuses.getTail().getNext();
+			if (node == null || !(node instanceof CombatStatusData)) {
+				data[i] = null;
+				continue;
+			}
+			data[i] = (CombatStatusData) node;
 		}
 		return data;
 	}
