@@ -49,6 +49,23 @@ public class ScriptHandler implements Suspendable, Stoppable {
 	}
 
 	private boolean call(Script.Event event) {
-		return false;
+		Script script = this.script.get();
+		if (script == null) return false;
+
+		Collection<FutureTask<Boolean>> tasks = script.getTriggers(event);
+		List<FutureTask<Boolean>> pending = new ArrayList<>(tasks.size());
+		pending.addAll(tasks);
+
+		Executor service = getExecutor();
+		for (FutureTask<Boolean> task : pending) {
+			service.execute(task);
+			boolean result = false;
+			try {
+				result = task.get();
+			} catch (InterruptedException | ExecutionException ignored) {
+			}
+			if (!result) break;
+		}
+		return true;
 	}
 }
