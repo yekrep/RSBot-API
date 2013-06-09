@@ -21,7 +21,7 @@ public class ScriptHandler implements Suspendable, Stoppable {
 	private AtomicBoolean stopping;
 
 	public ScriptHandler() {
-		this.executor = new ScriptExecutor();
+		this.executor = new ScriptExecutor(this);
 		this.script = new AtomicReference<>(null);
 		this.suspended = new AtomicBoolean(false);
 		this.stopping = new AtomicBoolean(false);

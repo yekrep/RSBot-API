@@ -7,10 +7,19 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class ScriptExecutor extends ThreadPoolExecutor {
-	public ScriptExecutor() {
+	private ScriptHandler handler;
+
+	public ScriptExecutor(ScriptHandler handler) {
 		super(0, Integer.MAX_VALUE, 60l, TimeUnit.SECONDS, new SynchronousQueue<Runnable>());
 		allowCoreThreadTimeOut(true);
 		setThreadFactory(new GroupedThreadFactory(new ThreadGroup(getClass().getName() + "@" + Integer.toHexString(hashCode()))));
+		this.handler = handler;
+	}
+
+	@Override
+	public void shutdown() {
+		super.shutdown();
+		if (!handler.isStopping()) handler.stop();
 	}
 
 	private final class GroupedThreadFactory implements ThreadFactory {
