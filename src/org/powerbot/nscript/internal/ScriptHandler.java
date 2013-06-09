@@ -44,7 +44,8 @@ public class ScriptHandler implements Suspendable, Stoppable {
 	@Override
 	public void stop() {
 		if (!stopping.compareAndSet(false, true)) return;
-		//TODO this
+		getExecutor().shutdown();
+		//TODO ensure everything gets shutdown
 	}
 
 	@Override
