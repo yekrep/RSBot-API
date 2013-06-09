@@ -1,20 +1,29 @@
 package org.powerbot.nscript.internal;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.FutureTask;
-import java.util.concurrent.atomic.AtomicReference;
-
 import org.powerbot.nscript.Script;
 import org.powerbot.nscript.lang.Stoppable;
 import org.powerbot.nscript.lang.Suspendable;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.FutureTask;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
+
 public class ScriptHandler implements Suspendable, Stoppable {
 	private ExecutorService executor;
 	private AtomicReference<Script> script;
+	private AtomicBoolean suspended;
+	private AtomicBoolean stopping;
 
 	public ScriptHandler() {
 		this.executor = new ScriptExecutor();
 		this.script = new AtomicReference<>(null);
+		this.suspended = new AtomicBoolean(false);
 		this.stopping = new AtomicBoolean(false);
 	}
 
@@ -40,11 +49,16 @@ public class ScriptHandler implements Suspendable, Stoppable {
 
 	@Override
 	public boolean isSuspended() {
-		return false;
+		return suspended.get();
 	}
 
 	@Override
 	public void setSuspended(boolean suspended) {
+		if (this.suspended.compareAndSet(!suspended, suspended)) {
+			if (!call(suspended ? Script.Event.SUSPEND : Script.Event.RESUME)) {
+				this.suspended.compareAndSet(suspended, !suspended);
+			}
+		}
 	}
 
 	public ExecutorService getExecutor() {
