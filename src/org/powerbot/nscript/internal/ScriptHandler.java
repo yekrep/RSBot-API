@@ -15,6 +15,7 @@ public class ScriptHandler implements Suspendable, Stoppable {
 	public ScriptHandler() {
 		this.executor = new ScriptExecutor();
 		this.script = new AtomicReference<>(null);
+		this.stopping = new AtomicBoolean(false);
 	}
 
 	public boolean start(Script script) {
@@ -28,11 +29,13 @@ public class ScriptHandler implements Suspendable, Stoppable {
 
 	@Override
 	public boolean isStopping() {
-		return false;
+		return stopping.get();
 	}
 
 	@Override
 	public void stop() {
+		if (!stopping.compareAndSet(false, true)) return;
+		//TODO this
 	}
 
 	@Override
