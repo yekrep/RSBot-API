@@ -1,18 +1,19 @@
 package org.powerbot.nscript;
 
-import org.powerbot.nscript.lang.Stoppable;
-import org.powerbot.nscript.lang.Suspendable;
-
-import java.util.Collection;
+import java.util.Deque;
 import java.util.EventListener;
-import java.util.concurrent.ExecutorService;
+import java.util.concurrent.FutureTask;
 
-public interface Script extends Runnable, Suspendable, Stoppable, EventListener {
+import org.powerbot.nscript.internal.ScriptContainer;
+
+public interface Script extends Runnable, EventListener {
 	public enum Event {
 		START, SUSPEND, RESUME, STOP
 	}
 
-	public Collection<Runnable> getTriggers(Event event);
+	public Deque<FutureTask<Boolean>> getTriggers(Event event);
 
-	public ExecutorService getExecutor();
+	public void setContainer(ScriptContainer container);
+
+	public ScriptContainer getContainer();
 }
