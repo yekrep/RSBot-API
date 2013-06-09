@@ -82,7 +82,7 @@ public class ScriptHandler implements Suspendable, Stoppable {
 				result = task.get();
 			} catch (InterruptedException | ExecutionException ignored) {
 			}
-			if (!result) break;
+			if (!result) return false;
 		}
 		return true;
 	}
