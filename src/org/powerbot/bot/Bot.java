@@ -48,7 +48,6 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 	public ModScript modScript;
 	public BufferedImage image;
 	public volatile boolean refreshing;
-	public int preferredWorld;
 	private Constants constants;
 	private BotPanel panel;
 	private GameAccounts.Account account;
@@ -80,7 +79,6 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 
 		new Thread(threadGroup, multicaster, multicaster.getClass().getName()).start();
 		refreshing = false;
-		this.preferredWorld = -1;
 	}
 
 	public synchronized static Bot getInstance() {

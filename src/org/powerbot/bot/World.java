@@ -1,17 +1,18 @@
 package org.powerbot.bot;
 
-import java.util.concurrent.atomic.AtomicReference;
-
 import org.powerbot.client.Client;
 import org.powerbot.script.methods.Components;
 import org.powerbot.script.methods.Game;
 import org.powerbot.script.wrappers.Widget;
+
+import java.util.concurrent.atomic.AtomicReference;
 
 public class World {
 	private static final World EMPTY = new World();
 	private final Game.Toolkit toolkit;
 	private final Game.Viewport viewport;
 	private AtomicReference<Client> client;
+	public int preferredWorld;
 	public Components.Container components;
 	public Widget[] cache;
 
@@ -19,6 +20,7 @@ public class World {
 		this.toolkit = new Game.Toolkit();
 		this.viewport = new Game.Viewport();
 		this.client = new AtomicReference<>(null);
+		this.preferredWorld = -1;
 	}
 
 	public static World getWorld() {

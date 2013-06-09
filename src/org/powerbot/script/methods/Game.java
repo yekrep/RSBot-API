@@ -1,31 +1,16 @@
 package org.powerbot.script.methods;
 
-import java.awt.Canvas;
-import java.awt.Dimension;
-import java.awt.Point;
-import java.awt.Rectangle;
-
 import org.powerbot.bot.Bot;
 import org.powerbot.bot.World;
-import org.powerbot.client.BaseInfo;
-import org.powerbot.client.Client;
-import org.powerbot.client.Constants;
-import org.powerbot.client.HardReference;
-import org.powerbot.client.HashTable;
-import org.powerbot.client.Node;
-import org.powerbot.client.RSGroundBytes;
-import org.powerbot.client.RSGroundInfo;
-import org.powerbot.client.RSInfo;
-import org.powerbot.client.Render;
-import org.powerbot.client.RenderData;
-import org.powerbot.client.SoftReference;
-import org.powerbot.client.TileData;
+import org.powerbot.client.*;
 import org.powerbot.script.methods.widgets.ActionBar;
 import org.powerbot.script.util.Delay;
 import org.powerbot.script.util.Timer;
 import org.powerbot.script.wrappers.Component;
 import org.powerbot.script.wrappers.Player;
 import org.powerbot.script.wrappers.Tile;
+
+import java.awt.*;
 
 public class Game {
 	public static final int TAB_NONE = -1;
@@ -149,7 +134,7 @@ public class Game {
 	}
 
 	public static void setPreferredWorld(final int world) {
-		Bot.getInstance().preferredWorld = world;
+		World.getWorld().preferredWorld = world;
 	}
 
 	public static Dimension getDimensions() {
