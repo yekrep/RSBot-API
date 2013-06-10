@@ -3,7 +3,6 @@ package org.powerbot.nscript;
 import java.util.Deque;
 import java.util.EventListener;
 import java.util.concurrent.Callable;
-import java.util.concurrent.FutureTask;
 
 import org.powerbot.nscript.internal.ScriptContainer;
 

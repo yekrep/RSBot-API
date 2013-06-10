@@ -1,5 +1,6 @@
 package org.powerbot.nscript.internal;
 
+import java.util.List;
 import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -18,8 +19,14 @@ public class ScriptExecutor extends ThreadPoolExecutor {
 
 	@Override
 	public void shutdown() {
-		super.shutdown();
 		if (!handler.isStopping()) handler.stop();
+		super.shutdown();
+	}
+
+	@Override
+	public List<Runnable> shutdownNow() {
+		if (!handler.isStopping()) handler.stop();
+		return super.shutdownNow();
 	}
 
 	private final class GroupedThreadFactory implements ThreadFactory {
