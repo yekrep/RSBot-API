@@ -1,0 +1,26 @@
+package org.powerbot.nscript;
+
+public abstract class PollingScript extends AbstractScript {
+	public abstract int poll();
+
+	@Override
+	public void run() {
+		while (!getContainer().isStopping()) {
+			int sleep;
+			try {
+				if (getContainer().isSuspended()) sleep = 600;
+				else sleep = poll();
+			} catch (Exception e) {
+				e.printStackTrace();
+				sleep = -1;
+			}
+
+			if (sleep > 0) {
+				try {
+					Thread.sleep(sleep);
+				} catch (InterruptedException ignored) {
+				}
+			} else if (sleep == -1) getContainer().stop();
+		}
+	}
+}
