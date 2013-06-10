@@ -16,7 +16,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class ScriptHandler implements Suspendable, Stoppable {
-	private EventManager eventManager;
+	EventManager eventManager;
 	private ScriptContainer container;
 	private ExecutorService executor;
 	private AtomicReference<Script> script;
