@@ -130,7 +130,7 @@ public class Camera {
 	}
 
 	private static int getAngleToLocatable(final Locatable mobile) {
-		final Player local = World.getPlayer();
+		final Player local = Players.getLocal();
 		final Tile t1 = local != null ? local.getLocation() : null;
 		final Tile t2 = mobile.getLocation();
 		return t1 != null && t2 != null ? ((int) Math.toDegrees(Math.atan2(t2.getY() - t1.getY(), t2.getX() - t1.getX()))) - 90 : 0;

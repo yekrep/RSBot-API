@@ -84,7 +84,7 @@ public class Movement {
 			return tile;
 		}
 
-		final Tile location = World.getPlayer().getLocation();
+		final Tile location = Players.getLocal().getLocation();
 		tile = tile.derive(-location.getX(), -location.getY());
 		final double angle = Math.atan2(tile.getY(), tile.getX());
 		return new Tile(
@@ -105,13 +105,13 @@ public class Movement {
 	}
 
 	public static double distanceTo(final int x, final int y) {
-		final Player local = World.getPlayer();
+		final Player local = Players.getLocal();
 		final Tile location;
 		if (local == null || (location = local.getLocation()) == null) return Double.MAX_VALUE;
 		return distance(location.x, location.y, x, y);
 	}
 
 	public static double distanceTo(final Locatable locatable) {
-		return distance(World.getPlayer(), locatable);
+		return distance(Players.getLocal(), locatable);
 	}
 }

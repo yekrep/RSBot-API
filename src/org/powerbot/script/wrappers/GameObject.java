@@ -16,7 +16,7 @@ import org.powerbot.client.RSObject;
 import org.powerbot.client.RSObjectDef;
 import org.powerbot.client.RSObjectDefLoader;
 import org.powerbot.script.methods.Game;
-import org.powerbot.script.methods.World;
+import org.powerbot.script.methods.Objects;
 import org.powerbot.script.util.Filters;
 
 public class GameObject extends Interactive implements Locatable, Drawable, Identifiable {
@@ -118,7 +118,7 @@ public class GameObject extends Interactive implements Locatable, Drawable, Iden
 
 	@Override
 	public boolean isValid() {
-		return this.object.get() != null && Filters.accept(World.getObjects(), Filters.accept(this));
+		return this.object.get() != null && Filters.accept(Objects.getLoaded(), Filters.accept(this));
 	}
 
 	@Override

@@ -5,7 +5,7 @@ import java.util.EnumSet;
 
 import org.powerbot.script.methods.Game;
 import org.powerbot.script.methods.Movement;
-import org.powerbot.script.methods.World;
+import org.powerbot.script.methods.Players;
 import org.powerbot.script.util.Random;
 
 public class TilePath extends Path {
@@ -20,7 +20,7 @@ public class TilePath extends Path {
 
 	@Override
 	public boolean traverse(final EnumSet<TraversalOption> options) {
-		final Player local = World.getPlayer();
+		final Player local = Players.getLocal();
 		final Tile next = getNext();
 		if (next == null || local == null) return false;
 		final Tile dest = Movement.getDestination();
@@ -83,7 +83,7 @@ public class TilePath extends Path {
 		 * we can safely assume lag is being experienced and return null until next call of getNext.
 		 * TELEPORTATION SUPPORT: If destination is set but but we're not moving, assume
 		 * invalid destination tile from teleportation reset and return first tile. */
-		Player p = World.getPlayer();
+		Player p = Players.getLocal();
 		if (p != null && !p.isInMotion() && dest != null) {
 			for (int i = tiles.length - 1; i >= 0; --i) if (tiles[i].isOnMap()) return tiles[i];
 		}

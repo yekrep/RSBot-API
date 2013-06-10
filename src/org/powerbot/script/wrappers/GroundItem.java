@@ -18,7 +18,7 @@ import org.powerbot.client.RSItemDef;
 import org.powerbot.client.RSItemDefLoader;
 import org.powerbot.client.RSItemPile;
 import org.powerbot.script.methods.Game;
-import org.powerbot.script.methods.World;
+import org.powerbot.script.methods.GroundItems;
 import org.powerbot.script.util.Filters;
 import org.powerbot.script.util.Random;
 
@@ -148,7 +148,7 @@ public class GroundItem extends Interactive implements Locatable, Drawable {
 
 	@Override
 	public boolean isValid() {
-		return Filters.accept(World.getStacks(), Filters.accept(this));
+		return Filters.accept(GroundItems.getLoaded(), Filters.accept(this));
 	}
 
 	@Override
