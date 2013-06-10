@@ -1,6 +1,6 @@
 package org.powerbot.script.methods;
 
-import org.powerbot.bot.World;
+import org.powerbot.bot.ClientFactory;
 import org.powerbot.client.Client;
 import org.powerbot.script.wrappers.Component;
 import org.powerbot.script.wrappers.Widget;
@@ -63,11 +63,11 @@ public class Components {
 	}
 
 	private static Container get() {
-		World world = World.getWorld();
-		Container c = world.components;
+		ClientFactory clientFactory = ClientFactory.getFactory();
+		Container c = clientFactory.components;
 		if (c == null) {
 			c = new Container();
-			world.components = c;
+			clientFactory.components = c;
 		}
 		c.sync();
 		return c.index != -1 ? c : null;
@@ -85,7 +85,7 @@ public class Components {
 		}
 
 		private void sync() {
-			Client client = World.getWorld().getClient();
+			Client client = ClientFactory.getFactory().getClient();
 			int index;
 			if (client != this.client) index = -1;
 			else index = client.getGUIRSInterfaceIndex();

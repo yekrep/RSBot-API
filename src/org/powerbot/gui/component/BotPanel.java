@@ -26,7 +26,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import org.powerbot.bot.Bot;
-import org.powerbot.bot.World;
+import org.powerbot.bot.ClientFactory;
 import org.powerbot.client.input.Mouse;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.util.Tracker;
@@ -211,11 +211,11 @@ public class BotPanel extends JPanel {
 
 	private void redispatch(final MouseEvent mouseEvent) {
 		if (mouseEvent == null || bot == null || bot.appletContainer == null || bot.appletContainer.getComponentCount() == 0 ||
-				World.getWorld() == null) {
+				ClientFactory.getFactory() == null) {
 			return;
 		}
 		mouseEvent.translatePoint(-xOff, -yOff);
-		final Mouse mouse = World.getWorld().getClient().getMouse();
+		final Mouse mouse = ClientFactory.getFactory().getClient().getMouse();
 		if (mouse == null) {
 			return;
 		}
@@ -264,7 +264,7 @@ public class BotPanel extends JPanel {
 
 	private void redispatch(final KeyEvent keyEvent) {
 		if (keyEvent == null || bot == null || bot.appletContainer == null || bot.appletContainer.getComponentCount() == 0 ||
-				World.getWorld() == null) {
+				ClientFactory.getFactory() == null) {
 			return;
 		}
 		bot.getEventMulticaster().dispatch(keyEvent);

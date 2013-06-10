@@ -1,6 +1,6 @@
 package org.powerbot.script.methods.tabs;
 
-import org.powerbot.bot.World;
+import org.powerbot.bot.ClientFactory;
 import org.powerbot.client.Client;
 import org.powerbot.client.PlayerMetaInfo;
 import org.powerbot.client.Skill;
@@ -61,7 +61,7 @@ public class Skills {
 	}
 
 	public static int[] getLevels() {
-		final Client client = World.getWorld().getClient();
+		final Client client = ClientFactory.getFactory().getClient();
 		if (client == null) return new int[0];
 		final PlayerMetaInfo info = client.getPlayerMetaInfo();
 		final Skill[] skills;
@@ -74,7 +74,7 @@ public class Skills {
 	}
 
 	public static int[] getRealLevels() {
-		final Client client = World.getWorld().getClient();
+		final Client client = ClientFactory.getFactory().getClient();
 		if (client == null) return new int[0];
 		final PlayerMetaInfo info = client.getPlayerMetaInfo();
 		final Skill[] skills;
@@ -87,7 +87,7 @@ public class Skills {
 	}
 
 	public static int[] getExperiences() {
-		final Client client = World.getWorld().getClient();
+		final Client client = ClientFactory.getFactory().getClient();
 		if (client == null) return new int[0];
 		final PlayerMetaInfo info = client.getPlayerMetaInfo();
 		final Skill[] skills;

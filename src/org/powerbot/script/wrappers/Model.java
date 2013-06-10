@@ -7,7 +7,7 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import org.powerbot.bot.World;
+import org.powerbot.bot.ClientFactory;
 import org.powerbot.client.ModelCapture;
 import org.powerbot.script.methods.Game;
 import org.powerbot.script.methods.Widgets;
@@ -219,9 +219,9 @@ public abstract class Model {
 	}
 
 	private int[][] projectVertices() {
-		final World world = World.getWorld();
-		final Game.Viewport viewport = world.getViewport();
-		final Game.Toolkit toolkit = world.getToolkit();
+		final ClientFactory clientFactory = ClientFactory.getFactory();
+		final Game.Viewport viewport = clientFactory.getViewport();
+		final Game.Toolkit toolkit = clientFactory.getToolkit();
 
 		update();
 		final int locX = getX();

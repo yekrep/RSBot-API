@@ -2,7 +2,7 @@ package org.powerbot.script.wrappers;
 
 import java.awt.Point;
 
-import org.powerbot.bot.World;
+import org.powerbot.bot.ClientFactory;
 import org.powerbot.client.Cache;
 import org.powerbot.client.Client;
 import org.powerbot.client.HashTable;
@@ -52,7 +52,7 @@ public class Item extends Interactive {
 	}
 
 	public ItemDefinition getDefinition() {
-		final Client client = World.getWorld().getClient();
+		final Client client = ClientFactory.getFactory().getClient();
 		if (client == null) return null;
 
 		final RSItemDefLoader loader;

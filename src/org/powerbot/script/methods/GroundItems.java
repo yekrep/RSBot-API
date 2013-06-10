@@ -3,7 +3,7 @@ package org.powerbot.script.methods;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.powerbot.bot.World;
+import org.powerbot.bot.ClientFactory;
 import org.powerbot.client.Client;
 import org.powerbot.client.HashTable;
 import org.powerbot.client.NodeDeque;
@@ -17,7 +17,7 @@ public class GroundItems {
 	public static GroundItem[] getLoaded() {
 		Set<GroundItem> items = new HashSet<>();
 
-		Client client = World.getWorld().getClient();
+		Client client = ClientFactory.getFactory().getClient();
 		if (client == null) return new GroundItem[0];
 
 		HashTable table = client.getRSItemHashTable();

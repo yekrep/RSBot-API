@@ -1,7 +1,7 @@
 package org.powerbot.script.methods;
 
 import org.powerbot.bot.Bot;
-import org.powerbot.bot.World;
+import org.powerbot.bot.ClientFactory;
 import org.powerbot.client.*;
 import org.powerbot.script.methods.widgets.ActionBar;
 import org.powerbot.script.util.Delay;
@@ -87,7 +87,7 @@ public class Game {
 	}
 
 	public static int getClientState() {
-		final Client client = World.getWorld().getClient();
+		final Client client = ClientFactory.getFactory().getClient();
 		if (client == null) return -1;
 
 		final Constants constants = Bot.constants();
@@ -113,7 +113,7 @@ public class Game {
 	}
 
 	public static Tile getMapBase() {
-		final Client client = World.getWorld().getClient();
+		final Client client = ClientFactory.getFactory().getClient();
 		if (client == null) return null;
 
 		final RSInfo info = client.getRSGroundInfo();
@@ -122,23 +122,23 @@ public class Game {
 	}
 
 	public static int getPlane() {
-		final Client client = World.getWorld().getClient();
+		final Client client = ClientFactory.getFactory().getClient();
 		if (client == null) return -1;
 		return client.getPlane();
 	}
 
 	public static boolean isFixed() {
-		final Client client = World.getWorld().getClient();
+		final Client client = ClientFactory.getFactory().getClient();
 		if (client == null) return false;
 		return client.getGUIRSInterfaceIndex() != 746;
 	}
 
 	public static void setPreferredWorld(final int world) {
-		World.getWorld().preferredWorld = world;
+		ClientFactory.getFactory().preferredWorld = world;
 	}
 
 	public static Dimension getDimensions() {
-		final Client client = World.getWorld().getClient();
+		final Client client = ClientFactory.getFactory().getClient();
 		final Canvas canvas;
 		if (client == null || (canvas = client.getCanvas()) == null) return new Dimension(0, 0);
 		return new Dimension(canvas.getWidth(), canvas.getHeight());
@@ -160,7 +160,7 @@ public class Game {
 	}
 
 	public static int tileHeight(final int rX, final int rY, int plane) {
-		final Client client = World.getWorld().getClient();
+		final Client client = ClientFactory.getFactory().getClient();
 		if (client == null) return 0;
 		if (plane == -1) plane = client.getPlane();
 		RSInfo world = client.getRSGroundInfo();
@@ -199,9 +199,9 @@ public class Game {
 	}
 
 	public static Point worldToScreen(int x, final int y, final int z) {
-		final World world = World.getWorld();
-		final Viewport viewport = world.getViewport();
-		final Toolkit toolkit = world.getToolkit();
+		final ClientFactory clientFactory = ClientFactory.getFactory();
+		final Viewport viewport = clientFactory.getViewport();
+		final Toolkit toolkit = clientFactory.getToolkit();
 		final float _z = (viewport.zOff + (viewport.zX * x + viewport.zY * y + viewport.zZ * z));
 		final float _x = (viewport.xOff + (viewport.xX * x + viewport.xY * y + viewport.xZ * z));
 		final float _y = (viewport.yOff + (viewport.yX * x + viewport.yY * y + viewport.yZ * z));
@@ -215,7 +215,7 @@ public class Game {
 	}
 
 	public static Point worldToMap(double x, double y) {
-		final Client client = World.getWorld().getClient();
+		final Client client = ClientFactory.getFactory().getClient();
 		if (client == null) return null;
 		final Tile base = getMapBase();
 		final Player player = Players.getLocal();
@@ -255,9 +255,9 @@ public class Game {
 
 	public static void updateToolkit(final Render render) {
 		if (render == null) return;
-		final World world = World.getWorld();
-		final Viewport viewport = world.getViewport();
-		final Toolkit toolkit = world.getToolkit();
+		final ClientFactory clientFactory = ClientFactory.getFactory();
+		final Viewport viewport = clientFactory.getViewport();
+		final Toolkit toolkit = clientFactory.getToolkit();
 		toolkit.absoluteX = render.getAbsoluteX();
 		toolkit.absoluteY = render.getAbsoluteY();
 		toolkit.xMultiplier = render.getXMultiplier();

@@ -5,7 +5,7 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.lang.ref.WeakReference;
 
-import org.powerbot.bot.World;
+import org.powerbot.bot.ClientFactory;
 import org.powerbot.client.Cache;
 import org.powerbot.client.Client;
 import org.powerbot.client.HashTable;
@@ -54,7 +54,7 @@ public class GameObject extends Interactive implements Locatable, Drawable, Iden
 	}
 
 	public ObjectDefinition getDefinition() {
-		final Client client = World.getWorld().getClient();
+		final Client client = ClientFactory.getFactory().getClient();
 		if (client == null) return null;
 
 		final RSInfo info;

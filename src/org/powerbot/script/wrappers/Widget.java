@@ -3,7 +3,7 @@ package org.powerbot.script.wrappers;
 import java.util.Arrays;
 import java.util.Iterator;
 
-import org.powerbot.bot.World;
+import org.powerbot.bot.ClientFactory;
 import org.powerbot.client.Client;
 import org.powerbot.client.RSInterface;
 import org.powerbot.client.RSInterfaceBase;
@@ -56,7 +56,7 @@ public class Widget implements Validatable, Iterable<Component> {
 	}
 
 	public boolean isValid() {
-		final Client client = World.getWorld().getClient();
+		final Client client = ClientFactory.getFactory().getClient();
 		if (client == null) return false;
 
 		final RSInterfaceBase[] containers = client.getRSInterfaceCache();
@@ -64,7 +64,7 @@ public class Widget implements Validatable, Iterable<Component> {
 	}
 
 	RSInterface[] getInternalComponents() {
-		final Client client = World.getWorld().getClient();
+		final Client client = ClientFactory.getFactory().getClient();
 		if (client == null) return null;
 		final RSInterfaceBase[] containers = client.getRSInterfaceCache();
 		final RSInterfaceBase container;

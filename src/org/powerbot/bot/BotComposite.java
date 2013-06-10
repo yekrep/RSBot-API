@@ -23,7 +23,7 @@ public class BotComposite {//TODO remove the use of a composite ... export data 
 		bot.resize(BotChrome.PANEL_WIDTH, BotChrome.PANEL_HEIGHT);
 
 		new Thread(bot.threadGroup, Bot.getInstance()).start();
-		while (World.getWorld() == null || Game.getClientState() == -1) Delay.sleep(1000);
+		while (ClientFactory.getFactory() == null || Game.getClientState() == -1) Delay.sleep(1000);
 		if (container != null) {
 			container.resume();
 		}

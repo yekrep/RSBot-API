@@ -5,7 +5,7 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
 
-import org.powerbot.bot.World;
+import org.powerbot.bot.ClientFactory;
 import org.powerbot.client.Client;
 import org.powerbot.client.RSInterface;
 import org.powerbot.client.RSInterfaceNode;
@@ -122,7 +122,7 @@ public class Component extends Interactive implements Drawable {
 	}
 
 	public int getParentId() {
-		final Client client = World.getWorld().getClient();
+		final Client client = ClientFactory.getFactory().getClient();
 		final RSInterface component = getInternalComponent();
 		if (client == null || component == null) return -1;
 
@@ -141,7 +141,7 @@ public class Component extends Interactive implements Drawable {
 	}
 
 	public Point getAbsoluteLocation() {
-		final Client client = World.getWorld().getClient();
+		final Client client = ClientFactory.getFactory().getClient();
 		final RSInterface component = getInternalComponent();
 		if (client == null || component == null) return new Point(-1, -1);
 		final int pId = getParentId();

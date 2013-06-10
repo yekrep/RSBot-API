@@ -1,7 +1,7 @@
 package org.powerbot.script.randoms;
 
 import org.powerbot.bot.Bot;
-import org.powerbot.bot.World;
+import org.powerbot.bot.ClientFactory;
 import org.powerbot.event.PaintListener;
 import org.powerbot.script.Manifest;
 import org.powerbot.script.PollingScript;
@@ -165,7 +165,7 @@ public class Login extends PollingScript implements RandomEvent, PaintListener {
 				}
 			}
 
-			final int world = World.getWorld().preferredWorld;
+			final int world = ClientFactory.getFactory().preferredWorld;
 			if (world > 0) {
 				final Lobby.World world_wrapper;
 				if ((world_wrapper = Lobby.getWorld(world)) != null) {

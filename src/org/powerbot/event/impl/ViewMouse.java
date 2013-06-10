@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 
-import org.powerbot.bot.World;
+import org.powerbot.bot.ClientFactory;
 import org.powerbot.client.Client;
 import org.powerbot.client.input.Mouse;
 import org.powerbot.event.PaintListener;
@@ -12,7 +12,7 @@ import org.powerbot.event.PaintListener;
 public class ViewMouse implements PaintListener {
 	@Override
 	public void onRepaint(final Graphics render) {
-		final Client client = World.getWorld().getClient();
+		final Client client = ClientFactory.getFactory().getClient();
 		final Mouse mouse;
 		if (client == null || (mouse = client.getMouse()) == null) return;
 

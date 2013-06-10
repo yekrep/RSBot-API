@@ -5,7 +5,7 @@ import java.awt.Graphics;
 import java.lang.ref.WeakReference;
 import java.util.Arrays;
 
-import org.powerbot.bot.World;
+import org.powerbot.bot.ClientFactory;
 import org.powerbot.client.Client;
 import org.powerbot.client.RSPlayer;
 import org.powerbot.client.RSPlayerComposite;
@@ -75,7 +75,7 @@ public class Player extends Actor {
 
 	@Override
 	public boolean isValid() {
-		final Client client = World.getWorld().getClient();
+		final Client client = ClientFactory.getFactory().getClient();
 		if (client == null) return false;
 		final RSPlayer character = getAccessor();
 		final RSPlayer[] players = client.getRSPlayerArray();

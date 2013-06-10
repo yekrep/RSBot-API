@@ -3,7 +3,7 @@ package org.powerbot.script.methods;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.powerbot.bot.World;
+import org.powerbot.bot.ClientFactory;
 import org.powerbot.client.Client;
 import org.powerbot.client.Node;
 import org.powerbot.client.NodeDeque;
@@ -26,7 +26,7 @@ public class Projectiles {
 	 * @return an array of loaded {@link Projectile}s
 	 */
 	public static Projectile[] getLoaded() {
-		final Client client = World.getWorld().getClient();
+		final Client client = ClientFactory.getFactory().getClient();
 		if (client == null) return new Projectile[0];
 
 		final NodeDeque deque = client.getProjectileDeque();

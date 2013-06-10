@@ -3,7 +3,7 @@ package org.powerbot.script.methods;
 import java.awt.Point;
 import java.util.Arrays;
 
-import org.powerbot.bot.World;
+import org.powerbot.bot.ClientFactory;
 import org.powerbot.client.Client;
 import org.powerbot.client.RSInterfaceBase;
 import org.powerbot.script.util.Delay;
@@ -24,7 +24,7 @@ public class Widgets {
 	 * @return an array of {@link Widget}s which are currently loaded
 	 */
 	public static Widget[] getLoaded() {
-		final Client client = World.getWorld().getClient();
+		final Client client = ClientFactory.getFactory().getClient();
 		if (client == null) return null;
 		final RSInterfaceBase[] containers = client.getRSInterfaceCache();
 		final int len = containers != null ? containers.length : 0;
@@ -40,11 +40,11 @@ public class Widgets {
 	 * @return the {@link Widget} respective to the given index
 	 */
 	public static Widget get(final int widget) {
-		World world = World.getWorld();
-		Client client = world.getClient();
+		ClientFactory clientFactory = ClientFactory.getFactory();
+		Client client = clientFactory.getClient();
 		if (client == null || widget < 0) return null;
 
-		Widget[] cache = world.cache;
+		Widget[] cache = clientFactory.cache;
 		if (cache == null) cache = new Widget[0];
 		if (widget < cache.length) return cache[widget];
 
@@ -53,7 +53,7 @@ public class Widgets {
 		final int len = cache.length;
 		cache = Arrays.copyOf(cache, mod);
 		for (int i = len; i < mod; i++) cache[i] = new Widget(i);
-		world.cache = cache;
+		clientFactory.cache = cache;
 		return cache[widget];
 	}
 

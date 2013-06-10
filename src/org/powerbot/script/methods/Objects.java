@@ -3,7 +3,7 @@ package org.powerbot.script.methods;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import org.powerbot.bot.World;
+import org.powerbot.bot.ClientFactory;
 import org.powerbot.client.Client;
 import org.powerbot.client.RSAnimableNode;
 import org.powerbot.client.RSGround;
@@ -15,7 +15,7 @@ import org.powerbot.script.wrappers.GameObject;
 public class Objects {
 	public static GameObject[] getLoaded() {
 		final Set<GameObject> objects = new LinkedHashSet<>();
-		final Client client = World.getWorld().getClient();
+		final Client client = ClientFactory.getFactory().getClient();
 		if (client == null) return new GameObject[0];
 
 		final RSInfo info;

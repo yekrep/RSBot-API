@@ -5,7 +5,7 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.lang.ref.WeakReference;
 
-import org.powerbot.bot.World;
+import org.powerbot.bot.ClientFactory;
 import org.powerbot.client.BaseInfo;
 import org.powerbot.client.Cache;
 import org.powerbot.client.Client;
@@ -38,7 +38,7 @@ public class GroundItem extends Interactive implements Locatable, Drawable {
 	}
 
 	public Model getModel(final int p) {
-		final Client client = World.getWorld().getClient();
+		final Client client = ClientFactory.getFactory().getClient();
 		if (client == null) return null;
 		final RSInfo info;
 		final BaseInfo baseInfo;
@@ -62,7 +62,7 @@ public class GroundItem extends Interactive implements Locatable, Drawable {
 						(cache = defLoader.getModelCache()) == null || (table = cache.getTable()) == null)
 					return null;
 
-				final int graphicsIndex = World.getWorld().getToolkit().graphicsIndex;
+				final int graphicsIndex = ClientFactory.getFactory().getToolkit().graphicsIndex;
 				Object model;
 				if (p != -1 && (model = Game.lookup(table, (long) p | (long) graphicsIndex << 29)) != null &&
 						model instanceof org.powerbot.client.Model) {
@@ -97,7 +97,7 @@ public class GroundItem extends Interactive implements Locatable, Drawable {
 	}
 
 	public ItemDefinition getDefinition() {
-		final Client client = World.getWorld().getClient();
+		final Client client = ClientFactory.getFactory().getClient();
 		if (client == null) return null;
 		int id = getId();
 		if (id == -1) return null;
