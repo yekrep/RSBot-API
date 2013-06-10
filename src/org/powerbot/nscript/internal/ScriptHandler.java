@@ -16,7 +16,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class ScriptHandler implements Suspendable, Stoppable {
-	private EventManager eventManager;
+	EventManager eventManager;
 	private ScriptContainer container;
 	private ExecutorService executor;
 	private AtomicReference<Script> script;
@@ -35,10 +35,13 @@ public class ScriptHandler implements Suspendable, Stoppable {
 	public boolean start(Script script) {
 		if (this.script.compareAndSet(null, script)) {
 			script.setContainer(container);
+			eventManager.add(script);
 			if (call(Script.Event.START)) {
+				eventManager.subscribeAll();
 				getExecutor().submit(script);
 				return true;
 			} else {
+				eventManager.unsubscribeAll();
 				script.setContainer(null);
 				this.script.set(null);
 			}

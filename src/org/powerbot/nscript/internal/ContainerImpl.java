@@ -1,5 +1,6 @@
 package org.powerbot.nscript.internal;
 
+import java.util.EventListener;
 import java.util.concurrent.ExecutorService;
 
 public class ContainerImpl implements ScriptContainer {
@@ -37,5 +38,15 @@ public class ContainerImpl implements ScriptContainer {
 	@Override
 	public void resume() {
 		handler.resume();
+	}
+
+	@Override
+	public void subscribe(EventListener eventListener) {
+		handler.eventManager.subscribe(eventListener);
+	}
+
+	@Override
+	public void unsubscribe(EventListener eventListener) {
+		handler.eventManager.unsubscribe(eventListener);
 	}
 }
