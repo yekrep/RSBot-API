@@ -27,7 +27,7 @@ public class DrawGroundItems implements PaintListener {
 		final int plane = Game.getPlane();
 		for (int x = tile.getX(); x <= tile.getX() + 20; x++) {
 			for (int y = tile.getY() - 10; y <= tile.getY() + 20; y++) {
-				GroundItem[] groundItems = World.getGroundItems();
+				GroundItem[] groundItems = World.getStacks();
 				groundItems = Filters.at(groundItems, new Tile(x, y, Game.getPlane()));
 				int d = 0;
 				final Tile loc = new Tile(x, y, plane);

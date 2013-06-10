@@ -148,7 +148,7 @@ public class GroundItem extends Interactive implements Locatable, Drawable {
 
 	@Override
 	public boolean isValid() {
-		return Filters.accept(World.getGroundItems(), Filters.accept(this));
+		return Filters.accept(World.getStacks(), Filters.accept(this));
 	}
 
 	@Override
