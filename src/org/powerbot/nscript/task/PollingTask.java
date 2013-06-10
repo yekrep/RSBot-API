@@ -32,7 +32,7 @@ public abstract class PollingTask implements Runnable {
 		}
 	}
 
-	public ScriptContainer getContainer() {
+	public final ScriptContainer getContainer() {
 		return container;
 	}
 }
