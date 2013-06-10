@@ -7,10 +7,10 @@ import org.powerbot.nscript.lang.Suspendable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.FutureTask;
+import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -71,16 +71,16 @@ public class ScriptHandler implements Suspendable, Stoppable {
 		Script script = this.script.get();
 		if (script == null) return false;
 
-		Collection<FutureTask<Boolean>> tasks = script.getTriggers(event);
-		List<FutureTask<Boolean>> pending = new ArrayList<>(tasks.size());
+		Collection<Callable<Boolean>> tasks = script.getTriggers(event);
+		List<Callable<Boolean>> pending = new ArrayList<>(tasks.size());
 		pending.addAll(tasks);
 
-		Executor service = getExecutor();
-		for (FutureTask<Boolean> task : pending) {
-			service.execute(task);
+		ExecutorService service = getExecutor();
+		for (Callable<Boolean> task : pending) {
+			Future<Boolean> f = service.submit(task);
 			boolean result = false;
 			try {
-				result = task.get();
+				result = f.get();
 			} catch (InterruptedException | ExecutionException ignored) {
 			}
 			if (!result) return false;
