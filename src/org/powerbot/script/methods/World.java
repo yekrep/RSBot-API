@@ -122,7 +122,7 @@ public class World {
 		return objects.toArray(new GameObject[objects.size()]);
 	}
 
-	public static GroundItem[] getStacks() {
+	public static GroundItem[] getGroundItems() {
 		Set<GroundItem> items = new HashSet<>();
 
 		Client client = ClientFactory.getFactory().getClient();

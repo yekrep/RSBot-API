@@ -44,7 +44,7 @@ public class DrawModels implements PaintListener {
 			actor.draw(render, 20);
 		}
 
-		GroundItem[] groundItems = World.getStacks();
+		GroundItem[] groundItems = World.getGroundItems();
 		groundItems = Filters.range(groundItems, 20);
 		for (final GroundItem item : groundItems) {
 			item.draw(render, 20);
