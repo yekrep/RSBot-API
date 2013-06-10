@@ -35,8 +35,9 @@ public class ScriptHandler implements Suspendable, Stoppable {
 	public boolean start(Script script) {
 		if (this.script.compareAndSet(null, script)) {
 			script.setContainer(container);
+			eventManager.add(script);
+			eventManager.subscribeAll();
 			if (call(Script.Event.START)) {
-				eventManager.subscribe(script);
 				getExecutor().submit(script);
 				return true;
 			} else {
