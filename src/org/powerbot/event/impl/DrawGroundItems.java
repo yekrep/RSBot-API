@@ -7,7 +7,8 @@ import java.awt.Point;
 
 import org.powerbot.event.PaintListener;
 import org.powerbot.script.methods.Game;
-import org.powerbot.script.methods.World;
+import org.powerbot.script.methods.GroundItems;
+import org.powerbot.script.methods.Players;
 import org.powerbot.script.util.Filters;
 import org.powerbot.script.wrappers.GroundItem;
 import org.powerbot.script.wrappers.ItemDefinition;
@@ -18,7 +19,7 @@ public class DrawGroundItems implements PaintListener {
 	public void onRepaint(final Graphics render) {
 		if (!Game.isLoggedIn()) return;
 
-		final Player player = World.getPlayer();
+		final Player player = Players.getLocal();
 		if (player == null) return;
 		final Tile tile = player.getLocation();
 		if (tile == null) return;
@@ -27,7 +28,7 @@ public class DrawGroundItems implements PaintListener {
 		final int plane = Game.getPlane();
 		for (int x = tile.getX(); x <= tile.getX() + 20; x++) {
 			for (int y = tile.getY() - 10; y <= tile.getY() + 20; y++) {
-				GroundItem[] groundItems = World.getStacks();
+				GroundItem[] groundItems = GroundItems.getLoaded();
 				groundItems = Filters.at(groundItems, new Tile(x, y, Game.getPlane()));
 				int d = 0;
 				final Tile loc = new Tile(x, y, plane);

@@ -1,6 +1,10 @@
 package org.powerbot.script.methods.tabs;
 
-import org.powerbot.script.methods.*;
+import org.powerbot.script.methods.Menu;
+import org.powerbot.script.methods.Npcs;
+import org.powerbot.script.methods.Players;
+import org.powerbot.script.methods.Settings;
+import org.powerbot.script.methods.Widgets;
 import org.powerbot.script.util.Delay;
 import org.powerbot.script.util.Filter;
 import org.powerbot.script.util.Filters;
@@ -108,9 +112,9 @@ public class Summoning {
 		if (!isFamiliarSummoned()) {
 			return null;
 		}
-		final Player local = World.getPlayer();
+		final Player local = Players.getLocal();
 		if (local == null) return null;
-		Npc[] npcs = World.getNpcs();
+		Npc[] npcs = Npcs.getLoaded();
 		npcs = Filters.filter(npcs, new Filter<Npc>() {
 			@Override
 			public boolean accept(Npc npc) {
