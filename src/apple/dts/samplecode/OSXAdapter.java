@@ -55,7 +55,7 @@ Copyright � 2003-2007 Apple, Inc., All Rights Reserved
 
 */
 
-package apple.dts.samplecode.osxadapter;
+package apple.dts.samplecode;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;

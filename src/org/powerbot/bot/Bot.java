@@ -15,7 +15,6 @@ import org.powerbot.event.PaintEvent;
 import org.powerbot.event.TextPaintEvent;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.gui.component.BotPanel;
-import org.powerbot.gui.controller.BotInteract;
 import org.powerbot.loader.script.ModScript;
 import org.powerbot.script.framework.ScriptDefinition;
 import org.powerbot.script.framework.ScriptManager;
@@ -122,7 +121,6 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 		});
 
 		if (!appletContainer.load()) {
-			BotInteract.tabClose(true);
 			return;
 		}
 		stub = new BotStub(appletContainer, appletContainer.getClientLoader().crawler);

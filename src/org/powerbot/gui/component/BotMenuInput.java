@@ -15,7 +15,6 @@ import org.powerbot.gui.BotChrome;
  * @author Paris
  */
 public final class BotMenuInput {
-	private static final long serialVersionUID = 9119892162553131816L;
 
 	public BotMenuInput(final JMenu menu) {
 		final boolean enabled = Bot.instantiated();

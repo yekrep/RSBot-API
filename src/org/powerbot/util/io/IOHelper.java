@@ -4,7 +4,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,7 +12,6 @@ import java.net.URL;
 import java.util.Map;
 import java.util.zip.CRC32;
 import java.util.zip.CheckedInputStream;
-import java.util.zip.GZIPInputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -51,17 +49,17 @@ public class IOHelper {
 	}
 
 	public static byte[] read(final URL in) {
-		try {
-			return read(in.openStream());
+		try (final InputStream is = in.openStream()) {
+			return read(is);
 		} catch (final IOException ignored) {
 			return null;
 		}
 	}
 
 	public static byte[] read(final File in) {
-		try {
-			return read(new FileInputStream(in));
-		} catch (final FileNotFoundException ignored) {
+		try (final InputStream is = new FileInputStream(in)) {
+			return read(is);
+		} catch (final IOException ignored) {
 			return null;
 		}
 	}
@@ -71,10 +69,6 @@ public class IOHelper {
 	}
 
 	public static String readString(final URL in) {
-		return StringUtil.newStringUtf8(read(in));
-	}
-
-	public static String readString(final File in) {
 		return StringUtil.newStringUtf8(read(in));
 	}
 
@@ -100,9 +94,9 @@ public class IOHelper {
 	}
 
 	public static void write(final InputStream in, final File out) {
-		try {
-			write(in, new FileOutputStream(out));
-		} catch (final FileNotFoundException ignored) {
+		try (final OutputStream os = new FileOutputStream(out)) {
+			write(in, os);
+		} catch (final IOException ignored) {
 		}
 	}
 
@@ -111,85 +105,41 @@ public class IOHelper {
 		write(in, out);
 	}
 
-	public static void write(final Map<String, byte[]> entries, final File out) throws IOException {
-		final ZipOutputStream zip = new ZipOutputStream(new FileOutputStream(out));
-		zip.setMethod(ZipOutputStream.STORED);
-		zip.setLevel(0);
-		for (final Map.Entry<String, byte[]> item : entries.entrySet()) {
-			final ZipEntry entry = new ZipEntry(item.getKey() + ".class");
-			entry.setMethod(ZipEntry.STORED);
-			final byte[] data = item.getValue();
-			entry.setSize(data.length);
-			entry.setCompressedSize(data.length);
-			entry.setCrc(IOHelper.crc32(data));
-			zip.putNextEntry(entry);
-			zip.write(item.getValue());
-			zip.closeEntry();
+	public static void write(final Map<String, byte[]> entries, final File out) {
+		try (final ZipOutputStream zip = new ZipOutputStream(new FileOutputStream(out))) {
+			zip.setMethod(ZipOutputStream.STORED);
+			zip.setLevel(0);
+			for (final Map.Entry<String, byte[]> item : entries.entrySet()) {
+				final ZipEntry entry = new ZipEntry(item.getKey() + ".class");
+				entry.setMethod(ZipEntry.STORED);
+				final byte[] data = item.getValue();
+				entry.setSize(data.length);
+				entry.setCompressedSize(data.length);
+				entry.setCrc(IOHelper.crc32(data));
+				zip.putNextEntry(entry);
+				zip.write(item.getValue());
+				zip.closeEntry();
+			}
+			zip.close();
+		} catch (final IOException ignored) {
 		}
-		zip.close();
 	}
 
-	public static long crc32(final InputStream in) throws IOException {
-		final CheckedInputStream cis = new CheckedInputStream(in, new CRC32());
-		final byte[] buf = new byte[BUFFER_SIZE];
-		while (cis.read(buf) != -1) {
+	public static long crc32(final InputStream in) {
+		try (final CheckedInputStream cis = new CheckedInputStream(in, new CRC32())) {
+			final byte[] buf = new byte[BUFFER_SIZE];
+			while (cis.read(buf) != -1) ;
+			return cis.getChecksum().getValue();
+		} catch (final IOException ignored) {
+			return -1;
 		}
-		return cis.getChecksum().getValue();
 	}
 
 	public static long crc32(final byte[] data) throws IOException {
-		return crc32(new ByteArrayInputStream(data));
-	}
-
-	public static long crc32(final File path) throws IOException {
-		return crc32(new FileInputStream(path));
-	}
-
-	public static byte[] ungzip(final byte[] data) {
-		if (data.length < 2) {
-			return data;
-		}
-
-		final int header = (data[0] | data[1] << 8) ^ 0xffff0000;
-		if (header != GZIPInputStream.GZIP_MAGIC) {
-			return data;
-		}
-
-		try {
-			final ByteArrayInputStream b = new ByteArrayInputStream(data);
-			final GZIPInputStream gzin = new GZIPInputStream(b);
-			final ByteArrayOutputStream out = new ByteArrayOutputStream(data.length);
-			for (int c = gzin.read(); c != -1; c = gzin.read()) {
-				out.write(c);
-			}
-			return out.toByteArray();
-		} catch (final IOException e) {
-			e.printStackTrace();
-			return data;
-		}
-	}
-
-	public static boolean isZip(final File file) {
-		final String name = file.getName().toLowerCase();
-		if (name.endsWith(".jar") || name.endsWith(".zip")) {
-			return true;
-		}
-		FileInputStream fis = null;
-		try {
-			fis = new FileInputStream(file);
-			final byte[] m = new byte[4];
-			fis.read(m);
-			fis.close();
-			return (m[0] << 24 | m[1] << 16 | m[2] << 8 | m[3]) == 0x504b0304;
+		try (final InputStream is = new ByteArrayInputStream(data)) {
+			return crc32(is);
 		} catch (final IOException ignored) {
-		} finally {
-			if (fis != null) {
-				try {
-					fis.close();
-				} catch (final IOException ignored) {
-				}
-			}
+			return -1;
 		}
-		return false;
 	}
 }

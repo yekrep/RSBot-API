@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 import javax.swing.Box;
@@ -51,12 +52,11 @@ import javax.swing.border.AbstractBorder;
 import javax.swing.border.EmptyBorder;
 
 import org.powerbot.gui.component.BotLocale;
-import org.powerbot.gui.controller.BotInteract;
-import org.powerbot.gui.controller.BotScriptManager;
 import org.powerbot.script.framework.ScriptDefinition;
 import org.powerbot.service.GameAccounts;
 import org.powerbot.service.GameAccounts.Account;
 import org.powerbot.service.NetworkAccount;
+import org.powerbot.service.scripts.ScriptList;
 import org.powerbot.util.Configuration;
 import org.powerbot.util.io.Resources;
 
@@ -64,7 +64,7 @@ import org.powerbot.util.io.Resources;
  * @author Paris
  */
 public final class BotScripts extends JDialog implements ActionListener {
-	private static final long serialVersionUID = 5608832535551325651L;
+	private static final Logger log = Logger.getLogger(BotScripts.class.getName());
 	private final JScrollPane scroll;
 	private final JPanel table;
 	private final JToggleButton locals;
@@ -75,8 +75,17 @@ public final class BotScripts extends JDialog implements ActionListener {
 	public BotScripts(final BotChrome parent) {
 		super(parent, BotLocale.SCRIPTS, true);
 
-		if (!NetworkAccount.getInstance().isLoggedIn() && !Configuration.SUPERDEV) {
+		if (!NetworkAccount.getInstance().isLoggedIn() && Configuration.FROMJAR) {
 			new BotSignin(parent);
+			if (!NetworkAccount.getInstance().isLoggedIn()) {
+				scroll = null;
+				table = null;
+				locals = null;
+				username = refresh = null;
+				search = null;
+				dispose();
+				return;
+			}
 		}
 
 		setIconImage(Resources.getImage(Resources.Paths.FILE));
@@ -150,7 +159,7 @@ public final class BotScripts extends JDialog implements ActionListener {
 		more.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent e) {
-				BotInteract.openURL(Configuration.URLs.SCRIPTSLIST);
+				BotChrome.openURL(Configuration.URLs.SCRIPTSLIST);
 			}
 		});
 		panelRight.add(more);
@@ -209,7 +218,7 @@ public final class BotScripts extends JDialog implements ActionListener {
 			}
 		});
 
-		if (NetworkAccount.getInstance().isLoggedIn() || Configuration.SUPERDEV) {
+		if (NetworkAccount.getInstance().isLoggedIn() || !Configuration.FROMJAR) {
 			setVisible(true);
 		} else {
 			dispose();
@@ -255,7 +264,7 @@ public final class BotScripts extends JDialog implements ActionListener {
 			public void run() {
 				final List<ScriptDefinition> scripts;
 				try {
-					scripts = BotScriptManager.loadScripts();
+					scripts = ScriptList.getList();
 					Collections.sort(scripts, new Comparator<ScriptDefinition>() {
 						@Override
 						public int compare(final ScriptDefinition a, final ScriptDefinition b) {
@@ -399,7 +408,7 @@ public final class BotScripts extends JDialog implements ActionListener {
 					public void mouseClicked(final MouseEvent arg0) {
 						String url = def.getWebsite();
 						url = String.format(Configuration.URLs.LINKFILTER, url.replace("&", "%26"));
-						BotInteract.openURL(url);
+						BotChrome.openURL(url);
 					}
 				});
 				name.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -430,8 +439,8 @@ public final class BotScripts extends JDialog implements ActionListener {
 			act.addActionListener(new ActionListener() {
 				public void actionPerformed(final ActionEvent e) {
 					setVisible(false);
-					BotScriptManager.loadScript(def, username.getText(), BotScripts.this);
 					dispose();
+					ScriptList.load(def, username.getText());
 				}
 			});
 			act.setFont(act.getFont().deriveFont(Font.BOLD, act.getFont().getSize2D() - 1f));

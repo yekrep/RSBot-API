@@ -1,3 +1,5 @@
+We acknowledge the following third-parties for portions of their open source code:
+
 ASM
 http://asm.ow2.org/
 

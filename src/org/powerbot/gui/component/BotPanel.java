@@ -8,7 +8,6 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.MenuComponent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
@@ -29,7 +28,6 @@ import org.powerbot.bot.Bot;
 import org.powerbot.bot.ClientFactory;
 import org.powerbot.client.input.Mouse;
 import org.powerbot.gui.BotChrome;
-import org.powerbot.util.Tracker;
 import org.powerbot.util.io.Resources;
 
 /**
@@ -40,10 +38,8 @@ import org.powerbot.util.io.Resources;
  */
 public class BotPanel extends JPanel {
 	public static final int INPUT_MOUSE = 1, INPUT_KEYBOARD = 2;
-	private static final long serialVersionUID = 1L;
 	private int inputMask;
 	private Bot bot;
-	private final JLabel status;
 	private int xOff, yOff;
 
 	public BotPanel(final Component parent) {
@@ -65,6 +61,7 @@ public class BotPanel extends JPanel {
 		panel.add(new JLabel(new ImageIcon(Resources.getImage(Resources.Paths.ARROWS))), new GridBagConstraints());
 		final GridBagConstraints c = new GridBagConstraints();
 		c.gridy = 1;
+		final JLabel status;
 		panel.add(status = new JLabel(), c);
 		status.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
 		final Font f = status.getFont();
@@ -133,31 +130,6 @@ public class BotPanel extends JPanel {
 	}
 
 	@Override
-	public void removeAll() {
-		track();
-	}
-
-	@Override
-	public void remove(final int index) {
-		track();
-	}
-
-	@Override
-	public void remove(final Component component) {
-		track();
-	}
-
-	@Override
-	public void remove(final MenuComponent component) {
-		track();
-	}
-
-	private void track() {
-		final StackTraceElement e = Thread.currentThread().getStackTrace()[3];
-		Tracker.getInstance().trackEvent("BotPanel", "remove", e.getClassName() + ":" + e.getMethodName());
-	}
-
-	@Override
 	public void paintComponent(final Graphics g) {
 		if (BotChrome.minimised) {
 			return;
@@ -184,12 +156,12 @@ public class BotPanel extends JPanel {
 		}
 	}
 
-	public int getInputMask() {
-		return inputMask;
-	}
-
 	public void setInputMask(final int inputMask) {
 		this.inputMask = inputMask;
+	}
+
+	public int getInputMask() {
+		return inputMask;
 	}
 
 	public void resize() {

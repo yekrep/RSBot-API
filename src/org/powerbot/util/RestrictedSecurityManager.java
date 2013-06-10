@@ -1,16 +1,14 @@
 package org.powerbot.util;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.InetAddress;
 import java.security.Permission;
 import java.util.Map.Entry;
 import java.util.logging.Logger;
 
 import org.powerbot.bot.RSClassLoader;
-import org.powerbot.ipc.Controller;
-import org.powerbot.script.framework.LocalScriptClassLoader;
-import org.powerbot.script.framework.ScriptClassLoader;
-import org.powerbot.util.Configuration.OperatingSystem;
+import org.powerbot.service.scripts.ScriptClassLoader;
 import org.powerbot.util.io.CryptFile;
 
 /**
@@ -18,27 +16,30 @@ import org.powerbot.util.io.CryptFile;
  */
 public class RestrictedSecurityManager extends SecurityManager {
 	private static final Logger log = Logger.getLogger("Security");
-	public static final String DNS1 = "8.8.8.8", DNS2 = "8.8.4.4";
 	private static final int PUBLIC_PORT_START = 54700, PUBLIC_PORT_END = 54800;
-	private final Class<?>[] whitelist;
+	private final Class<?>[] whitelist, whitelistHome;
 
-	public RestrictedSecurityManager(final Class<?>... whitelist) {
+	public RestrictedSecurityManager(final Class<?>[] whitelist, final Class<?>[] whitelistHome) {
 		this.whitelist = whitelist;
+		this.whitelistHome = whitelistHome;
 	}
 
 	@Override
 	public void checkAccept(final String host, final int port) {
-		if (isCallingClass(Controller.class)) {
-			return;
-		}
 		if (port >= PUBLIC_PORT_START || port <= PUBLIC_PORT_END) {
 			return;
 		}
-		if (port == 53 && (host.equals(DNS1) || host.equals(DNS2))) {
-			super.checkAccept(host, port);
-			return;
-		}
 		throw new SecurityException();
+	}
+
+	@Override
+	public void checkAccess(final Thread t) {
+		super.checkAccess(t);
+	}
+
+	@Override
+	public void checkAccess(final ThreadGroup g) {
+		super.checkAccess(g);
 	}
 
 	@Override
@@ -49,13 +50,11 @@ public class RestrictedSecurityManager extends SecurityManager {
 	@Override
 	public void checkConnect(final String host, final int port, final Object context) {
 		if (!(port == 80 || port == 443 || port == 53 || port == 43594 || port == -1)) {
-			if (!isCallingClass(Controller.class)) {
-				log.severe("Connection denied to port " + port);
-				throw new SecurityException();
-			}
+			log.severe("Connection denied to port " + port);
+			throw new SecurityException();
 		}
 		if (host.equals("localhost") || host.endsWith(".localdomain") || host.startsWith("127.") || host.startsWith("192.168.") || host.startsWith("10.") || host.endsWith("::1")) {
-			if (!isCallingClass(Configuration.class, Controller.class) && !Configuration.SUPERDEV && !(port >= PUBLIC_PORT_START && port <= PUBLIC_PORT_END)) {
+			if (!isCallingClass(Configuration.class) && Configuration.FROMJAR && !(port >= PUBLIC_PORT_START && port <= PUBLIC_PORT_END)) {
 				log.severe("Connection denied to localhost");
 				throw new SecurityException();
 			}
@@ -97,6 +96,11 @@ public class RestrictedSecurityManager extends SecurityManager {
 			throw new SecurityException();
 		}
 		super.checkExit(status);
+	}
+
+	@Override
+	public void checkListen(final int port) {
+		super.checkListen(port);
 	}
 
 	@Override
@@ -153,9 +157,7 @@ public class RestrictedSecurityManager extends SecurityManager {
 		if (isCallingClass(java.awt.event.InputEvent.class)) {
 			return;
 		}
-		if (isScriptThread()) {
-			throw new SecurityException();
-		}
+		throw new SecurityException();
 	}
 
 	@Override
@@ -165,15 +167,15 @@ public class RestrictedSecurityManager extends SecurityManager {
 	}
 
 	private void checkFilePath(final String pathRaw, final boolean readOnly) {
-		final String path = StringUtil.urlDecode(new File(pathRaw).getAbsolutePath());
+		final String path = getCanonicalPath(new File(StringUtil.urlDecode(pathRaw))), tmp = getCanonicalPath(Configuration.TEMP);
 
 		// permission controls for crypt files
 		for (final Entry<File, Class<?>[]> entry : CryptFile.PERMISSIONS.entrySet()) {
 			final Class<?>[] entries = new Class<?>[entry.getValue().length + 1];
 			entries[0] = CryptFile.class;
 			System.arraycopy(entry.getValue(), 0, entries, 1, entries.length - 1);
-			final String pathDecoded = StringUtil.urlDecode(entry.getKey().getAbsolutePath());
-			if (pathDecoded.equals(pathRaw)) {
+			final String pathDecoded = getCanonicalPath(new File(StringUtil.urlDecode(entry.getKey().getAbsolutePath())));
+			if (pathDecoded.equals(path)) {
 				if (!isCallingClass(entries)) {
 					throw new SecurityException();
 				}
@@ -181,6 +183,10 @@ public class RestrictedSecurityManager extends SecurityManager {
 		}
 
 		if (isCallingClass(whitelist)) {
+			return;
+		}
+
+		if ((path + File.separator).startsWith(Configuration.HOME.getAbsolutePath()) && isCallingClass(whitelistHome)) {
 			return;
 		}
 
@@ -194,25 +200,24 @@ public class RestrictedSecurityManager extends SecurityManager {
 			return;
 		}
 
-		// hack fix for odd occurrence on OS X
-		if (Configuration.OS == OperatingSystem.MAC && path.startsWith("/var/folders/") && Thread.currentThread().getName().equals("main")) {
-			return;
-		}
-
-		// allow home directory for secure file controller
-		if ((path + File.separator).startsWith(Configuration.HOME.getAbsolutePath()) && isCallingClass(CryptFile.class)) {
-			return;
-		}
-
 		// allow write access to temp directory
-		if ((path + File.separator).startsWith(Configuration.TEMP.getAbsolutePath())) {
+		if ((path + File.separator).startsWith(tmp)) {
 			return;
 		}
 
-		if (!isGameThread()) {
+		if (!path.contains("runescape" + File.separator + "LIVE")) {
 			log.severe((readOnly ? "Read" : "Write") + " denied: " + path + " on " + Thread.currentThread().getName() + "/" + Thread.currentThread().getThreadGroup().getName());
 		}
+
 		throw new SecurityException();
+	}
+
+	private static String getCanonicalPath(final File f) {
+		try {
+			return f.getCanonicalPath();
+		} catch (final IOException ignored) {
+			return f.getAbsolutePath();
+		}
 	}
 
 	private boolean isCallingClass(final Class<?>... classes) {
@@ -230,7 +235,7 @@ public class RestrictedSecurityManager extends SecurityManager {
 		final Class<?>[] context = getClassContext();
 		for (int i = 1; i < context.length; i++) {
 			final ClassLoader loader = context[i].getClassLoader();
-			if (loader != null && (loader.getClass().isAssignableFrom(ScriptClassLoader.class) || loader.getClass().isAssignableFrom(LocalScriptClassLoader.class))) {
+			if (loader != null && loader.getClass().isAssignableFrom(ScriptClassLoader.class)) {
 				return true;
 			}
 		}
@@ -253,7 +258,7 @@ public class RestrictedSecurityManager extends SecurityManager {
 
 	public static boolean isScriptThread(final Thread t) {
 		final ClassLoader loader = t.getContextClassLoader();
-		return loader != null && (loader.getClass().isAssignableFrom(ScriptClassLoader.class) || loader.getClass().isAssignableFrom(LocalScriptClassLoader.class));
+		return loader != null && loader.getClass().isAssignableFrom(ScriptClassLoader.class);
 	}
 
 	public static void assertNonScript() {

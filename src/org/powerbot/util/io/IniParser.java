@@ -73,7 +73,7 @@ public class IniParser {
 		for (final Entry<String, String> entry : map.entrySet()) {
 			out.write(entry.getKey());
 			out.write(KEYBOUND);
-			final String value = entry.getValue().replace(new String(new char[]{ESCAPE}), new String(new char[]{ESCAPE, ESCAPE})).replaceAll("(\r?\n)", "\\$1");
+			final String value = entry.getValue().replace(new String(new char[] { ESCAPE }), new String(new char[] { ESCAPE, ESCAPE })).replaceAll("(\r?\n)", "\\$1");
 			if (value != null) {
 				out.write(value);
 			}
@@ -95,7 +95,7 @@ public class IniParser {
 		return data;
 	}
 
-	@SuppressWarnings({"unchecked", "RedundantArrayCreation"})
+	@SuppressWarnings("unchecked")
 	public static void deserialise(final BufferedReader br, final Map<String, Map<String, String>> data, final Map<String, String> keys) throws IOException {
 		String line, section = EMPTYSECTION, key = "";
 		boolean multiline = false;
@@ -132,9 +132,9 @@ public class IniParser {
 				if (!data.containsKey(section)) {
 					Map<String, String> map = null;
 					try {
-						final Method method = keys.getClass().getMethod("clone", new Class<?>[]{});
+						final Method method = keys.getClass().getMethod("clone");
 						if (method != null) {
-							map = (Map<String, String>) method.invoke(data, new Object[]{});
+							map = (Map<String, String>) method.invoke(data);
 							map.clear();
 						}
 					} catch (final Exception ignored) {

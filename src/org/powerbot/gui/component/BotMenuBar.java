@@ -4,7 +4,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
-import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -12,8 +11,15 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 
+import org.powerbot.Boot;
 import org.powerbot.bot.Bot;
-import org.powerbot.gui.controller.BotInteract;
+import org.powerbot.bot.ClientFactory;
+import org.powerbot.gui.BotAbout;
+import org.powerbot.gui.BotAccounts;
+import org.powerbot.gui.BotChrome;
+import org.powerbot.gui.BotLicense;
+import org.powerbot.gui.BotScripts;
+import org.powerbot.gui.BotSignin;
 import org.powerbot.script.framework.ScriptManager;
 import org.powerbot.service.NetworkAccount;
 import org.powerbot.util.Configuration;
@@ -25,33 +31,17 @@ import org.powerbot.util.io.Resources;
  */
 public class BotMenuBar extends JMenuBar implements ActionListener {
 	private final JMenuItem signin, play, stop;
-	private final JCheckBoxMenuItem logpane;
 
 	public BotMenuBar() {
 		final JMenu file = new JMenu(BotLocale.FILE), edit = new JMenu(BotLocale.EDIT), view = new JMenu(BotLocale.VIEW),
 				script = new JMenu(BotLocale.SCRIPTS), input = new JMenu(BotLocale.INPUT), help = new JMenu(BotLocale.HELP);
 
-		final JMenuItem newtab = item(BotLocale.NEWTAB);
+		final JMenuItem newtab = item(BotLocale.NEWWINDOW);
 		file.add(newtab);
 		if (Configuration.OS != Configuration.OperatingSystem.MAC) {
 			file.addSeparator();
 			file.add(item(BotLocale.EXIT));
 		}
-
-		file.addMenuListener(new MenuListener() {
-			@Override
-			public void menuSelected(final MenuEvent e) {
-				newtab.setText(Bot.instantiated() ? BotLocale.NEWTAB : BotLocale.STARTTAB);
-			}
-
-			@Override
-			public void menuDeselected(final MenuEvent e) {
-			}
-
-			@Override
-			public void menuCanceled(final MenuEvent e) {
-			}
-		});
 
 		signin = item(BotLocale.SIGNIN);
 		signin.setIcon(new ImageIcon(Resources.getImage(Resources.Paths.KEYS)));
@@ -76,15 +66,11 @@ public class BotMenuBar extends JMenuBar implements ActionListener {
 			}
 		});
 
-		logpane = new JCheckBoxMenuItem(BotLocale.LOGPANE);
-		logpane.addActionListener(this);
-
 		view.addMenuListener(new MenuListener() {
 			@Override
 			public void menuSelected(final MenuEvent e) {
 				final JMenu menu = (JMenu) e.getSource();
 				menu.removeAll();
-				menu.add(logpane);
 				if (Bot.instantiated()) {
 					new BotMenuView(menu);
 				}
@@ -99,7 +85,7 @@ public class BotMenuBar extends JMenuBar implements ActionListener {
 			}
 		});
 
-		final ImageIcon[] playIcons = new ImageIcon[]{new ImageIcon(Resources.getImage(Resources.Paths.PLAY)), new ImageIcon(Resources.getImage(Resources.Paths.PAUSE))};
+		final ImageIcon[] playIcons = new ImageIcon[] { new ImageIcon(Resources.getImage(Resources.Paths.PLAY)), new ImageIcon(Resources.getImage(Resources.Paths.PAUSE)) };
 		play = item(BotLocale.PLAYSCRIPT);
 		play.setIcon(playIcons[0]);
 		script.add(play);
@@ -113,9 +99,10 @@ public class BotMenuBar extends JMenuBar implements ActionListener {
 				final boolean b = Bot.instantiated();
 				final ScriptManager container = b ? Bot.getInstance().getScriptController() : null;
 				final boolean active = container != null && !container.getScripts().isEmpty() && !container.isStopping(), running = active && !container.isSuspended();
+				play.setEnabled(b && ClientFactory.getFactory() != null);
 				play.setText(running ? BotLocale.PAUSESCRIPT : active ? BotLocale.RESUMESCRIPT : BotLocale.PLAYSCRIPT);
 				play.setIcon(playIcons[running ? 1 : 0]);
-				stop.setEnabled(active);
+				stop.setEnabled(running);
 			}
 
 			@Override
@@ -180,39 +167,82 @@ public class BotMenuBar extends JMenuBar implements ActionListener {
 			}
 		});
 		switch (s) {
-		case BotLocale.NEWTAB:
-		case BotLocale.STARTTAB:
-			BotInteract.tabAdd();
-			break;
-		case BotLocale.EXIT:
-			BotInteract.tabClose(false);
-			break;
-		case BotLocale.SIGNIN:
-			BotInteract.showDialog(BotInteract.Action.SIGNIN);
-			break;
-		case BotLocale.LOGPANE:
-			logpane.setState(BotInteract.toggleLogPane());
-			break;
-		case BotLocale.ACCOUNTS:
-			BotInteract.showDialog(BotInteract.Action.ACCOUNTS);
-			break;
-		case BotLocale.PLAYSCRIPT:
-		case BotLocale.PAUSESCRIPT:
-		case BotLocale.RESUMESCRIPT:
-			BotInteract.scriptPlayPause();
-			break;
-		case BotLocale.STOPSCRIPT:
-			BotInteract.scriptStop();
-			break;
-		case BotLocale.ABOUT:
-			BotInteract.showDialog(BotInteract.Action.ABOUT);
-			break;
-		case BotLocale.LICENSE:
-			BotInteract.showDialog(BotInteract.Action.LICENSE);
-			break;
-		case BotLocale.WEBSITE:
-			BotInteract.openURL(Configuration.URLs.SITE);
-			break;
+		case BotLocale.NEWWINDOW: Boot.fork(false); break;
+		case BotLocale.EXIT: BotChrome.getInstance().windowClosing(null); break;
+		case BotLocale.SIGNIN: showDialog(Action.SIGNIN); break;
+		case BotLocale.ACCOUNTS: showDialog(Action.ACCOUNTS); break;
+		case BotLocale.PLAYSCRIPT: case BotLocale.PAUSESCRIPT: case BotLocale.RESUMESCRIPT: scriptPlayPause(); break;
+		case BotLocale.STOPSCRIPT: scriptStop(); break;
+		case BotLocale.ABOUT: showDialog(Action.ABOUT); break;
+		case BotLocale.LICENSE: showDialog(Action.LICENSE); break;
+		case BotLocale.WEBSITE: BotChrome.openURL(Configuration.URLs.SITE); break;
 		}
+	}
+
+	public enum Action {ACCOUNTS, SIGNIN, ABOUT, LICENSE};
+
+	public static void showDialog(final Action action) {
+		final BotChrome chrome = BotChrome.getInstance();
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				switch (action)
+				{
+				case ACCOUNTS: new BotAccounts(chrome); break;
+				case SIGNIN: new BotSignin(chrome); break;
+				case ABOUT: new BotAbout(chrome); break;
+				case LICENSE: new BotLicense(chrome); break;
+				default: break;
+				}
+			}
+		});
+	}
+
+	public synchronized void scriptPlayPause() {
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				final Bot bot = Bot.getInstance();
+				final ScriptManager script = bot.getScriptController();
+				if (script != null && !script.getScripts().isEmpty()) {
+					if (script.isSuspended()) {
+						Tracker.getInstance().trackEvent("script", "resume");
+						script.resume();
+					} else {
+						Tracker.getInstance().trackEvent("script", "pause");
+						script.suspend();
+					}
+					return;
+				}
+
+				if (ClientFactory.getFactory() != null) {
+					SwingUtilities.invokeLater(new Runnable() {
+						@Override
+						public void run() {
+							new BotScripts(BotChrome.getInstance());
+						}
+					});
+				}
+			}
+		}).start();
+	}
+
+	public synchronized void scriptStop() {
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				if (!Bot.instantiated()) {
+					return;
+				}
+				final Bot bot = Bot.getInstance();
+				final ScriptManager script = bot.getScriptController();
+				if (script != null) {
+					if (!script.isStopping()) {
+						Tracker.getInstance().trackEvent("script", "stop");
+						script.stop();
+					}
+				}
+			}
+		}).start();
 	}
 }
