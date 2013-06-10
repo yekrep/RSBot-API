@@ -23,17 +23,17 @@ public abstract class AbstractScript implements Script {
 	}
 
 	@Override
-	public Deque<Callable<Boolean>> getTriggers(Event event) {
+	public final Deque<Callable<Boolean>> getTriggers(Event event) {
 		return triggers.get(event);
 	}
 
 	@Override
-	public void setContainer(ScriptContainer container) {
+	public final void setContainer(ScriptContainer container) {
 		this.container = container;
 	}
 
 	@Override
-	public ScriptContainer getContainer() {
+	public final ScriptContainer getContainer() {
 		return this.container;
 	}
 }

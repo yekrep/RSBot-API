@@ -4,7 +4,7 @@ public abstract class PollingScript extends AbstractScript {
 	public abstract int poll();
 
 	@Override
-	public void run() {
+	public final void run() {
 		while (!getContainer().isStopping()) {
 			int sleep;
 			try {
