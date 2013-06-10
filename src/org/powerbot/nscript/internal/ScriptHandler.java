@@ -61,11 +61,16 @@ public class ScriptHandler implements Suspendable, Stoppable {
 	}
 
 	@Override
-	public void setSuspended(boolean suspended) {
-		if (this.suspended.compareAndSet(!suspended, suspended)) {
-			if (!call(suspended ? Script.Event.SUSPEND : Script.Event.RESUME)) {
-				this.suspended.compareAndSet(suspended, !suspended);
-			}
+	public void suspend() {
+		if (this.suspended.compareAndSet(false, true) && !call(Script.Event.SUSPEND)) {
+			this.suspended.compareAndSet(true, false);
+		}
+	}
+
+	@Override
+	public void resume() {
+		if (this.suspended.compareAndSet(true, false) && !call(Script.Event.RESUME)) {
+			this.suspended.compareAndSet(false, true);
 		}
 	}
 

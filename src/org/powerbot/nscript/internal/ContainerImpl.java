@@ -30,7 +30,12 @@ public class ContainerImpl implements ScriptContainer {
 	}
 
 	@Override
-	public void setSuspended(boolean suspended) {
-		handler.setSuspended(suspended);
+	public void suspend() {
+		handler.suspend();
+	}
+
+	@Override
+	public void resume() {
+		handler.resume();
 	}
 }
