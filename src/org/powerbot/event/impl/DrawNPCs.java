@@ -7,7 +7,7 @@ import java.awt.Point;
 
 import org.powerbot.event.PaintListener;
 import org.powerbot.script.methods.Game;
-import org.powerbot.script.methods.Npcs;
+import org.powerbot.script.methods.World;
 import org.powerbot.script.wrappers.Npc;
 
 public class DrawNPCs implements PaintListener {
@@ -15,7 +15,7 @@ public class DrawNPCs implements PaintListener {
 		if (!Game.isLoggedIn()) {
 			return;
 		}
-		final Npc[] npcs = Npcs.getLoaded();
+		final Npc[] npcs = World.getNpcs();
 		final FontMetrics metrics = render.getFontMetrics();
 		for (final Npc npc : npcs) {
 			final Point location = npc.getCenterPoint();

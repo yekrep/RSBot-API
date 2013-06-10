@@ -218,7 +218,7 @@ public class Game {
 		final Client client = ClientFactory.getFactory().getClient();
 		if (client == null) return null;
 		final Tile base = getMapBase();
-		final Player player = Players.getLocal();
+		final Player player = World.getPlayer();
 		Tile loc;
 		if (base == null || player == null || (loc = player.getLocation()) == null) return null;
 		x -= base.x;

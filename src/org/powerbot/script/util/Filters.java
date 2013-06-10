@@ -6,7 +6,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.powerbot.script.methods.Movement;
-import org.powerbot.script.methods.Players;
+import org.powerbot.script.methods.World;
 import org.powerbot.script.wrappers.Identifiable;
 import org.powerbot.script.wrappers.Locatable;
 import org.powerbot.script.wrappers.Player;
@@ -83,7 +83,7 @@ public class Filters {
 	}
 
 	public static <T extends Locatable> T[] range(T[] arr, final double range) {
-		Player local = Players.getLocal();
+		Player local = World.getPlayer();
 		if (local == null) return Arrays.copyOf(arr, 0);
 
 		final Tile pos = local.getLocation();
@@ -112,7 +112,7 @@ public class Filters {
 		T nearest = null;
 		double dist = Double.MAX_VALUE;
 
-		Player local = Players.getLocal();
+		Player local = World.getPlayer();
 		if (local == null) return null;
 		Tile pos = local.getLocation();
 		if (pos == null) return null;

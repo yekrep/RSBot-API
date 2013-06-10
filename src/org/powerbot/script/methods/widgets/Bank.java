@@ -4,12 +4,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.Arrays;
 
-import org.powerbot.script.methods.Keyboard;
-import org.powerbot.script.methods.Menu;
-import org.powerbot.script.methods.Npcs;
-import org.powerbot.script.methods.Objects;
-import org.powerbot.script.methods.Settings;
-import org.powerbot.script.methods.Widgets;
+import org.powerbot.script.methods.*;
 import org.powerbot.script.methods.tabs.Inventory;
 import org.powerbot.script.util.Delay;
 import org.powerbot.script.util.Filter;
@@ -60,8 +55,8 @@ public class Bank {
 	public static boolean open() {
 		if (isOpen()) return true;
 		int count = 0;
-		Npc[] npcs = Npcs.getLoaded();
-		GameObject[] objects = Objects.getLoaded();
+		Npc[] npcs = World.getNpcs();
+		GameObject[] objects = World.getObjects();
 		final Interactive[] interactives = {
 				Filters.nearest(Filters.id(npcs, BANK_NPC_IDS)),
 				Filters.nearest(Filters.id(objects, BANK_BOOTH_IDS)),
