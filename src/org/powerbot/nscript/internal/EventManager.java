@@ -9,6 +9,9 @@ import java.util.EventListener;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+/**
+ * @author Paris
+ */
 public class EventManager implements Suspendable, Subscribable<EventListener> {
 	private final EventMulticaster multicaster;
 	private final List<EventListener> queue, added;
