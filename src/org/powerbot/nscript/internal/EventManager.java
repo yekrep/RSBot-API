@@ -25,7 +25,9 @@ public class EventManager implements Suspendable, Subscribable<EventListener> {
 	}
 
 	public void add(final EventListener e) {
-		queue.add(e);
+		synchronized (multicaster) {
+			queue.add(e);
+		}
 	}
 
 	@Override
