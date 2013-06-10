@@ -1,6 +1,6 @@
 package org.powerbot.script.methods.tabs;
 
-import org.powerbot.bot.ClientFactory;
+import org.powerbot.script.methods.ClientFactory;
 import org.powerbot.client.Client;
 import org.powerbot.client.PlayerMetaInfo;
 import org.powerbot.client.Skill;

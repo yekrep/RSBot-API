@@ -3,7 +3,7 @@ package org.powerbot.script.wrappers;
 import java.lang.ref.WeakReference;
 import java.util.Arrays;
 
-import org.powerbot.bot.ClientFactory;
+import org.powerbot.script.methods.ClientFactory;
 import org.powerbot.client.Client;
 import org.powerbot.client.RSHintArrow;
 import org.powerbot.client.RSNPC;

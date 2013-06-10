@@ -4,7 +4,6 @@ import java.awt.Point;
 import java.awt.event.MouseEvent;
 
 import org.powerbot.bot.*;
-import org.powerbot.bot.ClientFactory;
 import org.powerbot.client.Client;
 import org.powerbot.script.internal.MouseHandler;
 import org.powerbot.script.internal.MouseTarget;

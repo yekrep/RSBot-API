@@ -1,7 +1,7 @@
 package org.powerbot.script.randoms;
 
 import org.powerbot.bot.Bot;
-import org.powerbot.bot.ClientFactory;
+import org.powerbot.script.methods.ClientFactory;
 import org.powerbot.event.PaintListener;
 import org.powerbot.script.Manifest;
 import org.powerbot.script.PollingScript;

@@ -1,8 +1,7 @@
-package org.powerbot.bot;
+package org.powerbot.script.methods;
 
+import org.powerbot.bot.Bot;
 import org.powerbot.client.Client;
-import org.powerbot.script.methods.Components;
-import org.powerbot.script.methods.Game;
 import org.powerbot.script.wrappers.Widget;
 
 import java.util.concurrent.atomic.AtomicReference;

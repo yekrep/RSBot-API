@@ -2,7 +2,7 @@ package org.powerbot.script.wrappers;
 
 import java.awt.Point;
 
-import org.powerbot.bot.ClientFactory;
+import org.powerbot.script.methods.ClientFactory;
 import org.powerbot.client.Client;
 import org.powerbot.client.CombatStatus;
 import org.powerbot.client.CombatStatusData;

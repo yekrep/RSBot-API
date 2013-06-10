@@ -2,7 +2,6 @@ package org.powerbot.script.methods;
 
 import java.util.Arrays;
 
-import org.powerbot.bot.ClientFactory;
 import org.powerbot.client.Client;
 import org.powerbot.client.RSHintArrow;
 import org.powerbot.script.wrappers.HintArrow;

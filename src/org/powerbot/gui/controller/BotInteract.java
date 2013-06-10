@@ -14,7 +14,7 @@ import javax.swing.SwingUtilities;
 
 import org.powerbot.Boot;
 import org.powerbot.bot.Bot;
-import org.powerbot.bot.ClientFactory;
+import org.powerbot.script.methods.ClientFactory;
 import org.powerbot.gui.BotAbout;
 import org.powerbot.gui.BotAccounts;
 import org.powerbot.gui.BotChrome;

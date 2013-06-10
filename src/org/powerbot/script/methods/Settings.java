@@ -1,6 +1,5 @@
 package org.powerbot.script.methods;
 
-import org.powerbot.bot.ClientFactory;
 import org.powerbot.client.Client;
 import org.powerbot.client.PlayerMetaInfo;
 

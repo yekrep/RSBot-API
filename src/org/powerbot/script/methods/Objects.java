@@ -3,7 +3,6 @@ package org.powerbot.script.methods;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import org.powerbot.bot.ClientFactory;
 import org.powerbot.client.Client;
 import org.powerbot.client.RSAnimableNode;
 import org.powerbot.client.RSGround;

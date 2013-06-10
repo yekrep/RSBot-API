@@ -7,7 +7,7 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import org.powerbot.bot.ClientFactory;
+import org.powerbot.script.methods.ClientFactory;
 import org.powerbot.client.ModelCapture;
 import org.powerbot.script.methods.Game;
 import org.powerbot.script.methods.Widgets;

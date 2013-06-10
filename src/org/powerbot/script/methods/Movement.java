@@ -2,7 +2,6 @@ package org.powerbot.script.methods;
 
 import java.awt.Point;
 
-import org.powerbot.bot.ClientFactory;
 import org.powerbot.client.Client;
 import org.powerbot.script.util.Delay;
 import org.powerbot.script.wrappers.Component;

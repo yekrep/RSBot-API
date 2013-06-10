@@ -2,6 +2,7 @@ package org.powerbot.bot;
 
 import org.powerbot.gui.BotChrome;
 import org.powerbot.script.framework.ScriptManager;
+import org.powerbot.script.methods.ClientFactory;
 import org.powerbot.script.methods.Game;
 import org.powerbot.script.util.Delay;
 

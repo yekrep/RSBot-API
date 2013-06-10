@@ -3,7 +3,7 @@ package org.powerbot.script.wrappers;
 import java.util.Arrays;
 import java.util.Iterator;
 
-import org.powerbot.bot.ClientFactory;
+import org.powerbot.script.methods.ClientFactory;
 import org.powerbot.client.Client;
 import org.powerbot.client.RSInterface;
 import org.powerbot.client.RSInterfaceBase;

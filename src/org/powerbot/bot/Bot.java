@@ -22,6 +22,7 @@ import org.powerbot.script.framework.ScriptManager;
 import org.powerbot.script.framework.Stoppable;
 import org.powerbot.script.internal.InputHandler;
 import org.powerbot.script.internal.MouseHandler;
+import org.powerbot.script.methods.ClientFactory;
 import org.powerbot.script.methods.Keyboard;
 import org.powerbot.script.randoms.BankPin;
 import org.powerbot.script.randoms.Login;

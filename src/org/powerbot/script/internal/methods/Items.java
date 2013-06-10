@@ -1,6 +1,6 @@
 package org.powerbot.script.internal.methods;
 
-import org.powerbot.bot.ClientFactory;
+import org.powerbot.script.methods.ClientFactory;
 import org.powerbot.client.Client;
 import org.powerbot.client.HashTable;
 import org.powerbot.client.ItemSlot;

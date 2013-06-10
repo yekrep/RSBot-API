@@ -1,7 +1,6 @@
 package org.powerbot.script.methods;
 
 import org.powerbot.bot.Bot;
-import org.powerbot.bot.ClientFactory;
 import org.powerbot.client.*;
 import org.powerbot.script.methods.widgets.ActionBar;
 import org.powerbot.script.util.Delay;

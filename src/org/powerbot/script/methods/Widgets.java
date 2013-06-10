@@ -3,7 +3,6 @@ package org.powerbot.script.methods;
 import java.awt.Point;
 import java.util.Arrays;
 
-import org.powerbot.bot.ClientFactory;
 import org.powerbot.client.Client;
 import org.powerbot.client.RSInterfaceBase;
 import org.powerbot.script.util.Delay;
