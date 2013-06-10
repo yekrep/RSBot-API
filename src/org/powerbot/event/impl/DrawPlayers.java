@@ -7,7 +7,7 @@ import java.awt.Point;
 
 import org.powerbot.event.PaintListener;
 import org.powerbot.script.methods.Game;
-import org.powerbot.script.methods.Players;
+import org.powerbot.script.methods.World;
 import org.powerbot.script.wrappers.Player;
 
 public class DrawPlayers implements PaintListener {
@@ -15,7 +15,7 @@ public class DrawPlayers implements PaintListener {
 		if (!Game.isLoggedIn()) {
 			return;
 		}
-		final Player[] players = Players.getLoaded();
+		final Player[] players = World.getPlayers();
 		final FontMetrics metrics = render.getFontMetrics();
 		for (final Player player : players) {
 			final Point location = player.getCenterPoint();

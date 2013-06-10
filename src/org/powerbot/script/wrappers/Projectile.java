@@ -4,7 +4,7 @@ import java.lang.ref.WeakReference;
 import java.util.Arrays;
 
 import org.powerbot.client.RSProjectile;
-import org.powerbot.script.methods.Projectiles;
+import org.powerbot.script.methods.World;
 
 public class Projectile implements Validatable {
 	private final WeakReference<RSProjectile> projectile;
@@ -21,7 +21,7 @@ public class Projectile implements Validatable {
 	@Override
 	public boolean isValid() {
 		final RSProjectile projectile = this.projectile.get();
-		return projectile != null && Arrays.asList(Projectiles.getLoaded()).contains(this);
+		return projectile != null && Arrays.asList(World.getProjectiles()).contains(this);
 	}
 
 	@Override
