@@ -1,32 +1,32 @@
 package org.powerbot.script.methods;
 
-import java.awt.Point;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-
-import org.powerbot.client.Client;
-import org.powerbot.client.MenuGroupNode;
-import org.powerbot.client.MenuItemNode;
-import org.powerbot.client.NodeDeque;
-import org.powerbot.client.NodeSubQueue;
+import org.powerbot.client.*;
 import org.powerbot.script.internal.wrappers.Deque;
 import org.powerbot.script.internal.wrappers.Queue;
 import org.powerbot.script.util.Delay;
 import org.powerbot.script.util.Random;
 import org.powerbot.util.StringUtil;
 
-public class Menu {
-	public static boolean isOpen() {
-		final Client client = ClientFactory.getFactory().getClient();
+import java.awt.*;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+
+public class Menu extends ClientLink {
+	public Menu(ClientFactory factory) {
+		super(factory);
+	}
+
+	public boolean isOpen() {
+		Client client = ctx.getClient();
 		return client != null && client.isMenuOpen();
 	}
 
-	public static int indexOf(final String action) {
+	public int indexOf(final String action) {
 		return indexOf(action, null);
 	}
 
-	public static int indexOf(String action, String option) {
+	public int indexOf(String action, String option) {
 		final List<MenuItemNode> nodes = getMenuItemNodes();
 		int d = 0;
 		for (final MenuItemNode node : nodes) {
@@ -40,18 +40,18 @@ public class Menu {
 		return -1;
 	}
 
-	public static boolean click(final String action) {
+	public boolean click(final String action) {
 		return click(action, null);
 	}
 
-	public static boolean click(final String action, final String option) {
-		final Client client = ClientFactory.getFactory().getClient();
+	public boolean click(final String action, final String option) {
+		Client client = ctx.getClient();
 		if (client == null) return false;
 		int index = indexOf(action, option);
 		if (index == -1) return false;
 		if (!client.isMenuOpen()) {
-			if (index == 0) return Mouse.click(true);
-			if (Mouse.click(false)) {
+			if (index == 0) return ctx.mouse.click(true);
+			if (ctx.mouse.click(false)) {
 				final long m = System.currentTimeMillis();
 				while (System.currentTimeMillis() - m < 100 && !client.isMenuOpen()) {
 					Delay.sleep(5);
@@ -68,16 +68,16 @@ public class Menu {
 		return clickIndex(client, index);
 	}
 
-	public static boolean close() {
-		final Client client = ClientFactory.getFactory().getClient();
+	public boolean close() {
+		Client client = ctx.getClient();
 		if (client == null) return false;
 		if (client.isMenuOpen()) {
-			Mouse.move(client.getMenuX() - 30 + Random.nextInt(0, 20), client.getMenuY() - 10 + Random.nextInt(0, 20));
+			ctx.mouse.move(client.getMenuX() - 30 + Random.nextInt(0, 20), client.getMenuY() - 10 + Random.nextInt(0, 20));
 		}
 		return !client.isMenuOpen();
 	}
 
-	private static boolean clickIndex(final Client client, int index) {
+	private boolean clickIndex(final Client client, int index) {
 		int _index = 0, main = 0;
 		final NodeSubQueue menu;
 		collapsed:
@@ -98,28 +98,28 @@ public class Menu {
 			if (client.isMenuOpen()) close();
 			return false;
 		}
-		return Mouse.move(
+		return ctx.mouse.move(
 				client.getMenuX() + Random.nextInt(4, client.getMenuWidth() - 5),
 				client.getMenuY() + (21 + 16 * index + Random.nextInt(3, 12))
-		) && client.isMenuOpen() && Mouse.click(true);
+		) && client.isMenuOpen() && ctx.mouse.click(true);
 	}
 
-	private static boolean clickSub(final Client client, final int main, final int sub) {
-		if (Mouse.move(
+	private boolean clickSub(final Client client, final int main, final int sub) {
+		if (ctx.mouse.move(
 				client.getMenuX() + Random.nextInt(4, client.getMenuWidth() - 5),
 				client.getMenuY() + (21 + 16 * main + Random.nextInt(3, 12)))) {
 			Delay.sleep(Random.nextInt(125, 175));
 			if (client.isMenuOpen()) {
-				final Point p = Mouse.getLocation();
+				final Point p = ctx.mouse.getLocation();
 				final int cX;
 				final int subX = client.getSubMenuX();
-				if (Mouse.move(cX = subX + Random.nextInt(4, client.getSubMenuWidth() - 5), p.y)) {
+				if (ctx.mouse.move(cX = subX + Random.nextInt(4, client.getSubMenuWidth() - 5), p.y)) {
 					Delay.sleep(Random.nextInt(125, 175));
 					if (client.isMenuOpen()) {
 						final int subY = client.getSubMenuY();
-						if (Mouse.move(cX, subY + (16 * sub + Random.nextInt(3, 12) + 21))) {
+						if (ctx.mouse.move(cX, subY + (16 * sub + Random.nextInt(3, 12) + 21))) {
 							Delay.sleep(Random.nextInt(125, 175));
-							return client.isMenuOpen() && Mouse.click(true);
+							return client.isMenuOpen() && ctx.mouse.click(true);
 						}
 					}
 				}
@@ -129,10 +129,10 @@ public class Menu {
 		return false;
 	}
 
-	private static List<MenuItemNode> getMenuItemNodes() {
+	private List<MenuItemNode> getMenuItemNodes() {
 		final List<MenuItemNode> nodes = new LinkedList<>();
 
-		final Client client = ClientFactory.getFactory().getClient();
+		Client client = ctx.getClient();
 		if (client == null) return nodes;
 
 		final boolean collapsed;
@@ -163,7 +163,7 @@ public class Menu {
 		return nodes;
 	}
 
-	public static String[] getItems() {
+	public String[] getItems() {
 		final List<MenuItemNode> nodes = getMenuItemNodes();
 		final int len = nodes.size();
 		int d = 0;

@@ -1,20 +1,17 @@
 package org.powerbot.script.wrappers;
 
+import org.powerbot.client.*;
+import org.powerbot.script.methods.ClientFactory;
+import org.powerbot.script.methods.ClientLink;
+
 import java.lang.ref.WeakReference;
 import java.util.Arrays;
 
-import org.powerbot.script.methods.ClientFactory;
-import org.powerbot.client.Client;
-import org.powerbot.client.RSHintArrow;
-import org.powerbot.client.RSNPC;
-import org.powerbot.client.RSNPCNode;
-import org.powerbot.client.RSPlayer;
-import org.powerbot.script.methods.Game;
-
-public class HintArrow implements Locatable, Validatable {
+public class HintArrow extends ClientLink implements Locatable, Validatable {
 	private final WeakReference<RSHintArrow> arrow;
 
-	public HintArrow(final RSHintArrow arrow) {
+	public HintArrow(ClientFactory ctx, final RSHintArrow arrow) {
+		super(ctx);
 		this.arrow = new WeakReference<>(arrow);
 	}
 
@@ -35,7 +32,7 @@ public class HintArrow implements Locatable, Validatable {
 
 	@Override
 	public Tile getLocation() {
-		final Client client = ClientFactory.getFactory().getClient();
+		Client client = ctx.getClient();
 		final RSHintArrow arrow = this.arrow.get();
 		if (client == null || arrow == null) return null;
 
@@ -44,27 +41,27 @@ public class HintArrow implements Locatable, Validatable {
 		if (type == -1 || type == 0) return null;
 		if (type == 1) {
 			Npc npc = null;
-			final Object node = Game.lookup(client.getRSNPCNC(), target);
+			final Object node = ctx.game.lookup(client.getRSNPCNC(), target);
 			if (node != null) {
 				if (node instanceof RSNPCNode) {
-					npc = new Npc(((RSNPCNode) node).getRSNPC());
-				} else if (node instanceof RSNPC) npc = new Npc((RSNPC) node);
+					npc = new Npc(ctx, ((RSNPCNode) node).getRSNPC());
+				} else if (node instanceof RSNPC) npc = new Npc(ctx, (RSNPC) node);
 			}
 			return npc != null ? npc.getLocation() : null;
 		} else if (type == 2) {
-			final Tile base = Game.getMapBase();
+			final Tile base = ctx.game.getMapBase();
 			return base != null ? base.derive(arrow.getX() >> 9, arrow.getY() >> 9, getPlane()) : null;
 		}
 		final RSPlayer[] players = client.getRSPlayerArray();
 		if (type != 10 || target < 0 || target >= players.length) return null;
 		final RSPlayer localPlayer = players[target];
-		if (localPlayer != null) return new Player(localPlayer).getLocation();
+		if (localPlayer != null) return new Player(ctx, localPlayer).getLocation();
 		return null;
 	}
 
 	@Override
 	public boolean isValid() {
-		final Client client = ClientFactory.getFactory().getClient();
+		Client client = ctx.getClient();
 		if (client == null) return false;
 
 		final RSHintArrow arrow = this.arrow.get();

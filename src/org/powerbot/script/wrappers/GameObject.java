@@ -1,23 +1,11 @@
 package org.powerbot.script.wrappers;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Point;
-import java.lang.ref.WeakReference;
-
+import org.powerbot.client.*;
 import org.powerbot.script.methods.ClientFactory;
-import org.powerbot.client.Cache;
-import org.powerbot.client.Client;
-import org.powerbot.client.HashTable;
-import org.powerbot.client.RSInfo;
-import org.powerbot.client.RSInteractableData;
-import org.powerbot.client.RSInteractableLocation;
-import org.powerbot.client.RSObject;
-import org.powerbot.client.RSObjectDef;
-import org.powerbot.client.RSObjectDefLoader;
-import org.powerbot.script.methods.Game;
-import org.powerbot.script.methods.Objects;
 import org.powerbot.script.util.Filters;
+
+import java.awt.*;
+import java.lang.ref.WeakReference;
 
 public class GameObject extends Interactive implements Locatable, Drawable, Identifiable {
 	private static final Color TARGET_COLOR = new Color(0, 255, 0, 20);
@@ -25,7 +13,8 @@ public class GameObject extends Interactive implements Locatable, Drawable, Iden
 	private final Type type;
 	private int faceIndex = -1;
 
-	public GameObject(final RSObject object, final Type type) {
+	public GameObject(ClientFactory ctx, final RSObject object, final Type type) {
+		super(ctx);
 		this.object = new WeakReference<>(object);
 		this.type = type;
 	}
@@ -34,7 +23,7 @@ public class GameObject extends Interactive implements Locatable, Drawable, Iden
 		final RSObject object = this.object.get();
 		if (object != null) {
 			final org.powerbot.client.Model model = object.getModel();
-			if (model != null) return new RenderableModel(model, object);
+			if (model != null) return new RenderableModel(ctx, model, object);
 		}
 		return null;
 	}
@@ -54,7 +43,7 @@ public class GameObject extends Interactive implements Locatable, Drawable, Iden
 	}
 
 	public ObjectDefinition getDefinition() {
-		final Client client = ClientFactory.getFactory().getClient();
+		Client client = ctx.getClient();
 		if (client == null) return null;
 
 		final RSInfo info;
@@ -63,7 +52,7 @@ public class GameObject extends Interactive implements Locatable, Drawable, Iden
 		final HashTable table;
 		if ((info = client.getRSGroundInfo()) == null || (loader = info.getRSObjectDefLoaders()) == null ||
 				(cache = loader.getCache()) == null || (table = cache.getTable()) == null) return null;
-		final Object def = Game.lookup(table, getId());
+		final Object def = ctx.game.lookup(table, getId());
 		return def != null && def instanceof RSObjectDef ? new ObjectDefinition((RSObjectDef) def) : null;
 	}
 
@@ -73,7 +62,7 @@ public class GameObject extends Interactive implements Locatable, Drawable, Iden
 		final RSInteractableData data = object != null ? object.getData() : null;
 		final RSInteractableLocation location = data != null ? data.getLocation() : null;
 		if (location != null) {
-			final Tile base = Game.getMapBase();
+			final Tile base = ctx.game.getMapBase();
 			return base != null ? base.derive((int) location.getX() >> 9, (int) location.getY() >> 9, object.getPlane()) : null;
 		}
 		return null;
@@ -118,7 +107,7 @@ public class GameObject extends Interactive implements Locatable, Drawable, Iden
 
 	@Override
 	public boolean isValid() {
-		return this.object.get() != null && Filters.accept(Objects.getLoaded(), Filters.accept(this));
+		return this.object.get() != null && Filters.accept(ctx.objects.getLoaded(), Filters.accept(this));
 	}
 
 	@Override

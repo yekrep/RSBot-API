@@ -1,20 +1,20 @@
 package org.powerbot.script.wrappers;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.lang.ref.WeakReference;
-import java.util.Arrays;
-
-import org.powerbot.script.methods.ClientFactory;
 import org.powerbot.client.Client;
 import org.powerbot.client.RSPlayer;
 import org.powerbot.client.RSPlayerComposite;
+import org.powerbot.script.methods.ClientFactory;
+
+import java.awt.*;
+import java.lang.ref.WeakReference;
+import java.util.Arrays;
 
 public class Player extends Actor {
 	public static final Color TARGET_COLOR = new Color(255, 0, 0, 15);
 	private final WeakReference<RSPlayer> player;
 
-	public Player(final RSPlayer player) {
+	public Player(ClientFactory ctx, final RSPlayer player) {
+		super(ctx);
 		this.player = new WeakReference<>(player);
 	}
 
@@ -75,7 +75,7 @@ public class Player extends Actor {
 
 	@Override
 	public boolean isValid() {
-		final Client client = ClientFactory.getFactory().getClient();
+		Client client = ctx.getClient();
 		if (client == null) return false;
 		final RSPlayer character = getAccessor();
 		final RSPlayer[] players = client.getRSPlayerArray();

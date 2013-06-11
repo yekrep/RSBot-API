@@ -1,10 +1,5 @@
 package org.powerbot.service;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.powerbot.bot.Bot;
 import org.powerbot.ipc.Controller;
 import org.powerbot.ipc.Message;
@@ -15,6 +10,11 @@ import org.powerbot.util.io.CryptFile;
 import org.powerbot.util.io.HttpClient;
 import org.powerbot.util.io.IOHelper;
 import org.powerbot.util.io.IniParser;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Paris

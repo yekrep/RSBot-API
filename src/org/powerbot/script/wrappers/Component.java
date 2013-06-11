@@ -1,18 +1,14 @@
 package org.powerbot.script.wrappers;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Point;
-import java.awt.Rectangle;
-
-import org.powerbot.script.methods.ClientFactory;
 import org.powerbot.client.Client;
 import org.powerbot.client.RSInterface;
 import org.powerbot.client.RSInterfaceNode;
 import org.powerbot.script.internal.wrappers.HashTable;
-import org.powerbot.script.methods.Widgets;
+import org.powerbot.script.methods.ClientFactory;
 import org.powerbot.script.util.Random;
 import org.powerbot.util.StringUtil;
+
+import java.awt.*;
 
 public class Component extends Interactive implements Drawable {
 	public static final Color TARGET_FILL_COLOR = new Color(0, 0, 0, 50);
@@ -21,11 +17,12 @@ public class Component extends Interactive implements Drawable {
 	private final Component parent;
 	private final int index;
 
-	public Component(final Widget widget, final int index) {
-		this(widget, null, index);
+	public Component(ClientFactory ctx, final Widget widget, final int index) {
+		this(ctx, widget, null, index);
 	}
 
-	public Component(final Widget widget, final Component parent, final int index) {
+	public Component(ClientFactory ctx, final Widget widget, final Component parent, final int index) {
+		super(ctx);
 		this.widget = widget;
 		this.parent = parent;
 		this.index = index;
@@ -48,7 +45,7 @@ public class Component extends Interactive implements Drawable {
 		final RSInterface[] interfaces;
 		if (component != null && (interfaces = component.getComponents()) != null) {
 			final Component[] components = new Component[interfaces.length];
-			for (int i = 0; i < interfaces.length; i++) components[i] = new Component(widget, this, i);
+			for (int i = 0; i < interfaces.length; i++) components[i] = new Component(ctx, widget, this, i);
 			return components;
 		}
 		return new Component[0];
@@ -122,7 +119,7 @@ public class Component extends Interactive implements Drawable {
 	}
 
 	public int getParentId() {
-		final Client client = ClientFactory.getFactory().getClient();
+		Client client = ctx.getClient();
 		final RSInterface component = getInternalComponent();
 		if (client == null || component == null) return -1;
 
@@ -141,13 +138,13 @@ public class Component extends Interactive implements Drawable {
 	}
 
 	public Point getAbsoluteLocation() {
-		final Client client = ClientFactory.getFactory().getClient();
+		Client client = ctx.getClient();
 		final RSInterface component = getInternalComponent();
 		if (client == null || component == null) return new Point(-1, -1);
 		final int pId = getParentId();
 		int x = 0, y = 0;
 		if (pId != -1) {
-			final Point point = Widgets.get(pId >> 16, pId & 0xffff).getAbsoluteLocation();
+			final Point point = ctx.widgets.get(pId >> 16, pId & 0xffff).getAbsoluteLocation();
 			x = point.x;
 			y = point.y;
 		} else {
@@ -160,7 +157,7 @@ public class Component extends Interactive implements Drawable {
 			//y = getMasterY();
 		}
 		if (pId != -1) {
-			final Component child = Widgets.get(pId >> 16, pId & 0xffff);
+			final Component child = ctx.widgets.get(pId >> 16, pId & 0xffff);
 			final int horizontalScrollSize = child.getMaxHorizontalScroll(), verticalScrollSize = child.getMaxVerticalScroll();
 			if (horizontalScrollSize > 0 || verticalScrollSize > 0) {
 				x -= child.getScrollX();
@@ -286,7 +283,7 @@ public class Component extends Interactive implements Drawable {
 		final RSInterface internal = getInternalComponent();
 		int id = 0;
 		if (internal != null && isValid() && !internal.isHidden()) id = getParentId();
-		return id == -1 || (id != 0 && Widgets.get(id >> 16, id & 0xffff).isVisible());
+		return id == -1 || (id != 0 && ctx.widgets.get(id >> 16, id & 0xffff).isVisible());
 	}
 
 	public Rectangle getBoundingRect() {
@@ -356,6 +353,7 @@ public class Component extends Interactive implements Drawable {
 		if (((rgb >> 24) & 0xff) != alpha) {
 			c = new Color((rgb >> 16) & 0xff, (rgb >> 8) & 0xff, rgb & 0xff, alpha);
 		}
+		render.setColor(c);
 		render.fillRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
 		c = TARGET_STROKE_COLOR;
 		rgb = c.getRGB();
@@ -382,9 +380,9 @@ public class Component extends Interactive implements Drawable {
 		int pId = getParentId();
 		if (pId == -1) return false;
 
-		Component scrollableArea = Widgets.get(pId >> 16, pId & 0xffff);
+		Component scrollableArea = ctx.widgets.get(pId >> 16, pId & 0xffff);
 		while (scrollableArea.getMaxVerticalScroll() == 0 && (pId = scrollableArea.getParentId()) != -1) {
-			scrollableArea = Widgets.get(pId >> 16, pId & 0xffff);
+			scrollableArea = ctx.widgets.get(pId >> 16, pId & 0xffff);
 		}
 
 		return scrollableArea.getMaxVerticalScroll() != 0;

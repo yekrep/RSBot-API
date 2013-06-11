@@ -1,10 +1,7 @@
 package org.powerbot.script.methods.tabs;
 
-import org.powerbot.script.methods.Menu;
-import org.powerbot.script.methods.Npcs;
-import org.powerbot.script.methods.Players;
-import org.powerbot.script.methods.Settings;
-import org.powerbot.script.methods.Widgets;
+import org.powerbot.script.methods.ClientFactory;
+import org.powerbot.script.methods.ClientLink;
 import org.powerbot.script.util.Delay;
 import org.powerbot.script.util.Filter;
 import org.powerbot.script.util.Filters;
@@ -14,35 +11,39 @@ import org.powerbot.script.wrappers.Component;
 import org.powerbot.script.wrappers.Npc;
 import org.powerbot.script.wrappers.Player;
 
-public class Summoning {
+public class Summoning extends ClientLink {
 	public static final int WIDGET_FOLLOWER_DETAILS = 662;
 	public static final int COMPONENT_SUMMONING_ORB = 747;
 	public static final int COMPONENT_SET_LEFT = 880;
 	public static final int COMPONENT_INTERACT = 1188;
 
-	public static int getPoints() {
-		return Skills.getLevel(Skills.SUMMONING);
+	public Summoning(ClientFactory factory) {
+		super(factory);
 	}
 
-	public static int getSpecialPoints() {
-		return Settings.get(1787);
+	public int getPoints() {
+		return ctx.skills.getLevel(Skills.SUMMONING);
 	}
 
-	public static boolean select(final Option option) {
+	public int getSpecialPoints() {
+		return ctx.settings.get(1787);
+	}
+
+	public boolean select(final Option option) {
 		return select(option.getText());
 	}
 
-	public static boolean select(final String action) {
-		final Component c = Widgets.get(COMPONENT_SUMMONING_ORB, 2);
+	public boolean select(final String action) {
+		final Component c = ctx.widgets.get(COMPONENT_SUMMONING_ORB, 2);
 		if (c == null) return false;
 		if (Option.RENEW_FAMILIAR.getText().toLowerCase().contains(action.toLowerCase())) {
 			final Familiar familiar = getEnum();
-			return familiar != null && familiar.getRequiredPoints() <= getPoints() && Inventory.getCount(Settings.get(1831)) > 0
+			return familiar != null && familiar.getRequiredPoints() <= getPoints() && ctx.inventory.getCount(ctx.settings.get(1831)) > 0
 					&& c.interact(action);
 		}
 		if (Option.DISMISS.getText().toLowerCase().contains(action.toLowerCase())) {
 			if (c.interact(action)) {
-				final Component c2 = Widgets.get(COMPONENT_INTERACT, 3);
+				final Component c2 = ctx.widgets.get(COMPONENT_INTERACT, 3);
 				if (c2 == null) return false;
 				for (int i = 0; i < 50 && !c2.isValid(); i++) Delay.sleep(20);
 				return c2.click(true);
@@ -57,32 +58,32 @@ public class Summoning {
 		return c.interact(action);
 	}
 
-	public static Option getLeftClickOption() {
-		for (Option o : Option.values()) if (o.isSetLeft()) return o;
+	public Option getLeftClickOption() {
+		for (Option o : Option.values()) if (ctx.settings.get(1789) == o.action()) return o;
 		return Option.FOLLOWER_DETAILS;
 	}
 
-	public static boolean setLeftClickOption(final Option option) {
-		if (option.isSetLeft()) return true;
-		final Component c = Widgets.get(COMPONENT_SUMMONING_ORB, 2);
+	public boolean setLeftClickOption(final Option option) {
+		if (ctx.settings.get(1789) == option.action()) return true;
+		final Component c = ctx.widgets.get(COMPONENT_SUMMONING_ORB, 2);
 		if (c == null || !c.interact("Select")) return false;
 		if (!isFamiliarSummoned()) {
 			final Timer timer = new Timer(800);
-			while (timer.isRunning() && !Menu.isOpen()) {
+			while (timer.isRunning() && !ctx.menu.isOpen()) {
 				Delay.sleep(15);
 			}
-			if (!Menu.click("Select")) {
+			if (!ctx.menu.click("Select")) {
 				return false;
 			}
 		}
-		final Component c2 = Widgets.get(COMPONENT_SET_LEFT, 5);
+		final Component c2 = ctx.widgets.get(COMPONENT_SET_LEFT, 5);
 		if (c2 == null) return false;
 		final Timer timer = new Timer(2000);
 		while (timer.isRunning() && !c2.isValid()) Delay.sleep(15);
 		Delay.sleep(200);
-		if (option.getComponent().interact("Select")) {
+		if (ctx.widgets.get(COMPONENT_SET_LEFT, option.getId()).interact("Select")) {
 			final Timer t = new Timer(800);
-			while (t.isRunning() && !option.isSelected()) Delay.sleep(15);
+			while (t.isRunning() && ctx.settings.get(1790) != option.selected()) Delay.sleep(15);
 		} else {
 			c2.interact("Confirm");
 			return false;
@@ -90,81 +91,81 @@ public class Summoning {
 		return c2.interact("Confirm");
 	}
 
-	public static boolean isCastOrAttackSelected() {
-		final Component c = Widgets.get(COMPONENT_SUMMONING_ORB, 2);
+	public boolean isCastOrAttackSelected() {
+		final Component c = ctx.widgets.get(COMPONENT_SUMMONING_ORB, 2);
 		return c != null && c.getBorderThickness() == 2;
 	}
 
-	public static int getTimeLeft() {
-		return Math.round((Settings.get(1786) / (float) 2.13333333333));
+	public int getTimeLeft() {
+		return Math.round((ctx.settings.get(1786) / (float) 2.13333333333));
 	}
 
-	public static boolean isFamiliarSummoned() {
-		return getTimeLeft() > 0 && Settings.get(1831) > 0;
+	public boolean isFamiliarSummoned() {
+		return getTimeLeft() > 0 && ctx.settings.get(1831) > 0;
 	}
 
-	public static boolean summonFamiliar(final Familiar familiar) {
-		return Inventory.getCount(familiar.getPouchId()) > 0 && Skills.getRealLevel(Skills.SUMMONING) >= familiar.getRequiredLevel() &&
-				getPoints() >= familiar.getRequiredPoints() && Inventory.getItem(familiar.getPouchId()).getComponent().interact("Summon");
+	public boolean summonFamiliar(final Familiar familiar) {
+		return ctx.inventory.getCount(familiar.getPouchId()) > 0 && ctx.skills.getRealLevel(Skills.SUMMONING) >= familiar.getRequiredLevel() &&
+				getPoints() >= familiar.getRequiredPoints() && ctx.inventory.getItem(familiar.getPouchId()).getComponent().interact("Summon");
 	}
 
-	public static Npc getFamiliar() {
+	public Npc getFamiliar() {
 		if (!isFamiliarSummoned()) {
 			return null;
 		}
-		final Player local = Players.getLocal();
+		final Player local = ctx.players.getLocal();
 		if (local == null) return null;
-		Npc[] npcs = Npcs.getLoaded();
+		Npc[] npcs = ctx.npcs.getLoaded();
 		npcs = Filters.filter(npcs, new Filter<Npc>() {
 			@Override
 			public boolean accept(Npc npc) {
 				final Actor actor;
-				return npc.getId() == Settings.get(1784) && (actor = npc.getInteracting()) != null && actor.equals(local);
+				return npc.getId() == ctx.settings.get(1784) && (actor = npc.getInteracting()) != null && actor.equals(local);
 			}
 		});
-		return Filters.nearest(npcs);
+		return Filters.nearest(npcs, ctx.players.getLocal());
 	}
 
-	public static Familiar getEnum() {
+	public Familiar getEnum() {
 		if (!isFamiliarSummoned()) return null;
-		for (final Familiar f : Familiar.values()) if (f.getPouchId() == Settings.get(1831)) return f;
+		for (final Familiar f : Familiar.values()) if (f.getPouchId() == ctx.settings.get(1831)) return f;
 		return null;
 	}
 
-	public static boolean callFamiliar() {
-		final Component c = Widgets.get(WIDGET_FOLLOWER_DETAILS, 49);
+	public boolean callFamiliar() {
+		final Component c = ctx.widgets.get(WIDGET_FOLLOWER_DETAILS, 49);
 		return c != null && isFamiliarSummoned() && c.isVisible() && c.interact("Call");
 	}
 
-	public static boolean dismissFamiliar() {
-		final Component c = Widgets.get(WIDGET_FOLLOWER_DETAILS, 51);
+	public boolean dismissFamiliar() {
+		final Component c = ctx.widgets.get(WIDGET_FOLLOWER_DETAILS, 51);
 		if (c == null || !isFamiliarSummoned() || !c.isVisible()) return false;
-		final Component c2 = Widgets.get(WIDGET_FOLLOWER_DETAILS, 51);
+		final Component c2 = ctx.widgets.get(WIDGET_FOLLOWER_DETAILS, 51);
 		if (c2 == null || !c2.interact("Dismiss")) return false;
 		final Timer timer = new Timer(1500);
-		final Component c3 = Widgets.get(COMPONENT_INTERACT, 20);
+		final Component c3 = ctx.widgets.get(COMPONENT_INTERACT, 20);
 		if (c3 == null) return false;
 		while (timer.isRunning() && !c3.isValid()) Delay.sleep(15);
-		return Widgets.get(COMPONENT_INTERACT, 3).click(true);
+		return ctx.widgets.get(COMPONENT_INTERACT, 3).click(true);
 	}
 
-	public static boolean takeBoB() {
-		final Component c = Widgets.get(WIDGET_FOLLOWER_DETAILS, 67);
+	public boolean takeBoB() {
+		final Component c = ctx.widgets.get(WIDGET_FOLLOWER_DETAILS, 67);
 		return c != null && isFamiliarSummoned() && c.isVisible() && c.interact("Take");
 	}
 
-	public static boolean renewFamiliar() {
-		final Component c = Widgets.get(WIDGET_FOLLOWER_DETAILS, 69);
+	public boolean renewFamiliar() {
+		final Component c = ctx.widgets.get(WIDGET_FOLLOWER_DETAILS, 69);
 		return c != null && isFamiliarSummoned() && c.isVisible() && c.interact("Renew");
 	}
 
-	public static boolean cast() {
-		final Component c = Widgets.get(WIDGET_FOLLOWER_DETAILS, 5);
+	public boolean cast() {
+		final Component c = ctx.widgets.get(WIDGET_FOLLOWER_DETAILS, 5);
 		return c != null && isFamiliarSummoned() && c.isVisible() && c.interact("Cast");
 	}
 
-	public static boolean attack() {
-		final Component c = Widgets.get(WIDGET_FOLLOWER_DETAILS, 65);
+	public boolean attack() {
+		final Component c = ctx.widgets.get(WIDGET_FOLLOWER_DETAILS, 65);
 		return c != null && isFamiliarSummoned() && c.isVisible() && c.interact("Attack");
 	}
 
@@ -309,16 +310,16 @@ public class Summoning {
 			return this.text;
 		}
 
-		public Component getComponent() {
-			return Widgets.get(COMPONENT_SET_LEFT, this.id);
+		public int getId() {
+			return id;
 		}
 
-		public boolean isSetLeft() {
-			return Settings.get(1789) == this.setting;
+		public int action() {
+			return setting;
 		}
 
-		public boolean isSelected() {
-			return Settings.get(1790) == this.set;
+		public int selected() {
+			return set;
 		}
 	}
 }

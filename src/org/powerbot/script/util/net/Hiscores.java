@@ -1,4 +1,4 @@
-package org.powerbot.script.methods.net;
+package org.powerbot.script.util.net;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -84,10 +84,10 @@ public class Hiscores {
 	}
 
 	/**
-	 * Returns a {@link org.powerbot.script.methods.net.Hiscores} profile.
+	 * Returns a {@link org.powerbot.script.util.net.Hiscores} profile.
 	 *
 	 * @param username the player username
-	 * @return a {@link org.powerbot.script.methods.net.Hiscores} profile or {@code null} if none was found
+	 * @return a {@link org.powerbot.script.util.net.Hiscores} profile or {@code null} if none was found
 	 */
 	public static synchronized Hiscores getProfile(String username) {
 		username = normaliseUsername(username);
@@ -142,8 +142,8 @@ public class Hiscores {
 	/**
 	 * Returns the specified skill profile.
 	 *
-	 * @param key the {@link org.powerbot.script.methods.net.Hiscores.Stats} to lookup
-	 * @return the associated {@link org.powerbot.script.methods.net.Hiscores.SkillStats}
+	 * @param key the {@link org.powerbot.script.util.net.Hiscores.Stats} to lookup
+	 * @return the associated {@link org.powerbot.script.util.net.Hiscores.SkillStats}
 	 */
 	public SkillStats getSkill(final Stats key) {
 		return skills.get(key);
@@ -152,8 +152,8 @@ public class Hiscores {
 	/**
 	 * Returns the specified activity profile.
 	 *
-	 * @param key the {@link org.powerbot.script.methods.net.Hiscores.Stats} to lookup
-	 * @return the associated {@link org.powerbot.script.methods.net.Hiscores.ActivityStats}
+	 * @param key the {@link org.powerbot.script.util.net.Hiscores.Stats} to lookup
+	 * @return the associated {@link org.powerbot.script.util.net.Hiscores.ActivityStats}
 	 */
 	public ActivityStats getActivity(final Stats key) {
 		return activities.get(key);
@@ -176,7 +176,7 @@ public class Hiscores {
 	}
 
 	/**
-	 * The type of {@link org.powerbot.script.methods.net.Hiscores.Stats}.
+	 * The type of {@link org.powerbot.script.util.net.Hiscores.Stats}.
 	 */
 	public enum StatsType {
 		SKILL, ACTIVITY
@@ -231,7 +231,7 @@ public class Hiscores {
 		private final StatsType type;
 
 		/**
-		 * Creates a new {@link org.powerbot.script.methods.net.Hiscores.Stats} object.
+		 * Creates a new {@link org.powerbot.script.util.net.Hiscores.Stats} object.
 		 *
 		 * @param index the index
 		 * @param type  the type
@@ -270,7 +270,7 @@ public class Hiscores {
 		public final Stats stats;
 
 		/**
-		 * Creates a new {@link org.powerbot.script.methods.net.Hiscores.SkillStats} object.
+		 * Creates a new {@link org.powerbot.script.util.net.Hiscores.SkillStats} object.
 		 *
 		 * @param stats the type of stat
 		 * @param level the level
@@ -330,7 +330,7 @@ public class Hiscores {
 		public final Stats stats;
 
 		/**
-		 * Creates a new {@link org.powerbot.script.methods.net.Hiscores.ActivityStats} object.
+		 * Creates a new {@link org.powerbot.script.util.net.Hiscores.ActivityStats} object.
 		 *
 		 * @param stats the type of stat
 		 * @param score the score

@@ -1,73 +1,111 @@
 package org.powerbot.script.methods.tabs;
 
-import java.util.Arrays;
-import java.util.LinkedHashSet;
-import java.util.Set;
-
+import org.powerbot.script.methods.ClientFactory;
+import org.powerbot.script.methods.ClientLink;
 import org.powerbot.script.methods.Game;
-import org.powerbot.script.methods.Settings;
-import org.powerbot.script.methods.Widgets;
 import org.powerbot.script.util.Delay;
 import org.powerbot.script.util.Timer;
 import org.powerbot.script.wrappers.Component;
 import org.powerbot.script.wrappers.Widget;
 
-public class Prayer {
+import java.util.Arrays;
+import java.util.LinkedHashSet;
+import java.util.Set;
+
+public class Prayer extends ClientLink {
 	public static final int WIDGET = 271;
 	public static final int WIDGET_ORB = 749;
 	public static final int PRAYER_BOOK_CURSES = 0x17;
 	public static final int PRAYER_BOOK_NORMAL = 0x16;
 
-	public static int getPoints() {
-		return (Settings.get(3274) & 0x7fff) / 10;
+	public Prayer(ClientFactory factory) {
+		super(factory);
 	}
 
-	public static int getPrayerBook() {
-		return Settings.get(3277) % 2 != 0 ? PRAYER_BOOK_CURSES : PRAYER_BOOK_NORMAL;
+	public int getPoints() {
+		return (ctx.settings.get(3274) & 0x7fff) / 10;
 	}
 
-	public static boolean isQuickOn() {
-		return Settings.get(1769) == 0x2;
+	public int getPrayerBook() {
+		return ctx.settings.get(3277) % 2 != 0 ? PRAYER_BOOK_CURSES : PRAYER_BOOK_NORMAL;
 	}
 
-	public static Effect[] getActive() {
+	public boolean isQuickOn() {
+		return ctx.settings.get(1769) == 0x2;
+	}
+
+	public boolean isEffectActive(Effect effect) {
+		int book = getPrayerBook();
+		int setting;
+		switch (book) {
+			case PRAYER_BOOK_CURSES:
+				setting = 3275;
+				break;
+			case PRAYER_BOOK_NORMAL:
+				setting = 3272;
+				break;
+			default:
+				setting = -1;
+				break;
+		}
+		return (ctx.settings.get(setting >>> effect.getShift()) & 0x1) == 1;
+	}
+
+	public boolean isEffectQuick(Effect effect) {
+		int book = getPrayerBook();
+		int setting;
+		switch (book) {
+			case PRAYER_BOOK_CURSES:
+				setting = 1768;
+				break;
+			case PRAYER_BOOK_NORMAL:
+				setting = 1770;
+				break;
+			default:
+				setting = -1;
+				break;
+		}
+		return (ctx.settings.get(setting >>> effect.getShift()) & 0x1) == 1;
+	}
+
+	public Effect[] getActive() {
 		final Set<Effect> active = new LinkedHashSet<>();
 		for (final Effect p : getPrayerBook() == PRAYER_BOOK_CURSES ? Curses.values() : Normal.values()) {
-			if (p.isActive()) {
+			if (isEffectActive(p)) {
 				active.add(p);
 			}
 		}
 		return active.toArray(new Effect[active.size()]);
 	}
 
-	public static Effect[] getQuickEffects() {
+	public Effect[] getQuickEffects() {
 		final Set<Effect> quick = new LinkedHashSet<>();
 		for (final Effect p : getPrayerBook() == PRAYER_BOOK_CURSES ? Curses.values() : Normal.values()) {
-			if (p.isSetQuick()) {
+			if (isEffectQuick(p)) {
 				quick.add(p);
 			}
 		}
 		return quick.toArray(new Effect[quick.size()]);
 	}
 
-	public static boolean setQuick(final boolean activate) {
+	public boolean setQuick(final boolean activate) {
 		if (isQuickOn() == activate) return true;
-		final Component c = Widgets.get(WIDGET_ORB, 2);
+		final Component c = ctx.widgets.get(WIDGET_ORB, 2);
 		return c != null && c.interact("Turn");
 	}
 
-	public static boolean setQuickEffects(final Effect... prayers) {
-		final Widget prayer = Widgets.get(WIDGET);
-		final Component orb = Widgets.get(WIDGET_ORB, 2);
+	public boolean setQuickEffects(final Effect... prayers) {
+		final Widget prayer = ctx.widgets.get(WIDGET);
+		final Component orb = ctx.widgets.get(WIDGET_ORB, 2);
 		if (prayer == null || orb == null) return false;
 		for (final Effect e : prayers) {
 			if (e.getBook() != (getPrayerBook() == PRAYER_BOOK_CURSES ? PRAYER_BOOK_CURSES : PRAYER_BOOK_NORMAL) ||
-					e.getRequiredLevel() > Skills.getRealLevel(Skills.PRAYER)) return false;
+					e.getRequiredLevel() > ctx.skills.getRealLevel(Skills.PRAYER)) return false;
 		}
 
 		if (!orb.interact("Select quick")) return false;
 		final Timer timer = new Timer(1000);
-		while (timer.isRunning() && Settings.get(1769) != 0x1) {
+		while (timer.isRunning() && ctx.settings.get(1769) != 0x1) {
 			Delay.sleep(15);
 		}
 		Delay.sleep(100);
@@ -75,12 +113,12 @@ public class Prayer {
 		final Component pane = prayer.getComponent(11);
 		if (pane == null) return false;
 		for (final Effect e : prayers) {
-			if (e.isSetQuick()) continue;
+			if (isEffectQuick(e)) continue;
 			final Component p = pane.getChild(e.getId());
 			if (p == null) return false;
 			if (p.interact("Select")) {
 				final Timer t = new Timer(500);
-				while (t.isRunning() && !e.isSetQuick()) {
+				while (t.isRunning() && !isEffectQuick(e)) {
 					Delay.sleep(15);
 				}
 			} else {
@@ -96,7 +134,7 @@ public class Prayer {
 				if (p == null) return false;
 				if (p.interact("Deselect")) {
 					final Timer t = new Timer(500);
-					while (t.isRunning() && !e.isSetQuick()) {
+					while (t.isRunning() && !isEffectQuick(e)) {
 						Delay.sleep(15);
 					}
 				} else {
@@ -110,26 +148,26 @@ public class Prayer {
 		return complete != null && complete.interact("Confirm");
 	}
 
-	public static boolean setEffect(final Effect prayer, final boolean activate) {
+	public boolean setEffect(final Effect prayer, final boolean activate) {
 		if (prayer.getBook() != getPrayerBook()
-				|| prayer.getRequiredLevel() > Skills.getRealLevel(Skills.PRAYER)) return false;
-		if (prayer.isActive() == activate) return true;
-		if (Game.openTab(Game.TAB_PRAYER)) {
-			Component c = Widgets.get(WIDGET, 9);
+				|| prayer.getRequiredLevel() > ctx.skills.getRealLevel(Skills.PRAYER)) return false;
+		if (isEffectActive(prayer) == activate) return true;
+		if (ctx.game.openTab(Game.TAB_PRAYER)) {
+			Component c = ctx.widgets.get(WIDGET, 9);
 			if (c != null) c = c.getChild(prayer.getId());
 			return c != null && c.interact(activate ? "Activate" : "Deactivate");
 		}
 		return false;
 	}
 
-	public static boolean deactivateAll() {
+	public boolean deactivateAll() {
 		if (getActive().length == 0) {
 			return true;
 		}
 		for (final Effect e : getActive()) {
 			if (setEffect(e, false)) {
 				final Timer timer = new Timer(500);
-				while (timer.isRunning() && e.isActive()) {
+				while (timer.isRunning() && isEffectActive(e)) {
 					Delay.sleep(15);
 				}
 			}
@@ -186,12 +224,8 @@ public class Prayer {
 			return this.level;
 		}
 
-		public boolean isActive() {
-			return ((Settings.get(3275) >>> this.shift) & 0x1) == 1;
-		}
-
-		public boolean isSetQuick() {
-			return ((Settings.get(1768) >>> this.shift) & 0x1) == 1;
+		public int getShift() {
+			return shift;
 		}
 	}
 
@@ -252,12 +286,8 @@ public class Prayer {
 			return this.level;
 		}
 
-		public boolean isActive() {
-			return ((Settings.get(3272) >>> this.shift) & 0x1) == 1;
-		}
-
-		public boolean isSetQuick() {
-			return ((Settings.get(1770) >>> this.shift) & 0x1) == 1;
+		public int getShift() {
+			return shift;
 		}
 	}
 
@@ -268,8 +298,6 @@ public class Prayer {
 
 		public int getRequiredLevel();
 
-		public boolean isActive();
-
-		public boolean isSetQuick();
+		public int getShift();
 	}
 }

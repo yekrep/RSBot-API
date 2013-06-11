@@ -1,12 +1,13 @@
 package org.powerbot.script.wrappers;
 
 import org.powerbot.client.RSInteractable;
+import org.powerbot.script.methods.ClientFactory;
 
 public class RenderableModel extends Model {
 	private final RSInteractable interactable;
 
-	public RenderableModel(final org.powerbot.client.Model model, final RSInteractable interactable) {
-		super(model);
+	public RenderableModel(ClientFactory ctx, final org.powerbot.client.Model model, final RSInteractable interactable) {
+		super(ctx, model);
 		this.interactable = interactable;
 	}
 

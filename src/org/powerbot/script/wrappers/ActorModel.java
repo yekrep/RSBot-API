@@ -1,19 +1,20 @@
 package org.powerbot.script.wrappers;
 
-import java.lang.ref.Reference;
-import java.lang.ref.WeakReference;
-
 import org.powerbot.client.RSCharacter;
 import org.powerbot.client.RSInteractableData;
 import org.powerbot.client.RSInteractableLocation;
+import org.powerbot.script.methods.ClientFactory;
 import org.powerbot.script.methods.Game;
+
+import java.lang.ref.Reference;
+import java.lang.ref.WeakReference;
 
 class ActorModel extends Model {
 	private final Reference<RSCharacter> character;
 	private final int[] x_base, z_base;
 
-	public ActorModel(final org.powerbot.client.Model model, final RSCharacter character) {
-		super(model);
+	public ActorModel(ClientFactory ctx, final org.powerbot.client.Model model, final RSCharacter character) {
+		super(ctx, model);
 		this.character = new WeakReference<>(character);
 		x_base = xPoints;
 		z_base = zPoints;

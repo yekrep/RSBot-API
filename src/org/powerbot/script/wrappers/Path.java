@@ -1,8 +1,11 @@
 package org.powerbot.script.wrappers;
 
+import org.powerbot.script.methods.ClientFactory;
+import org.powerbot.script.methods.ClientLink;
+
 import java.util.EnumSet;
 
-public abstract class Path {
+public abstract class Path extends ClientLink {
 	public static final int WALL_NORTHWEST = 0x1;
 	public static final int WALL_NORTH = 0x2;
 	public static final int WALL_NORTHEAST = 0x4;
@@ -31,6 +34,10 @@ public abstract class Path {
 	public static final int WALL_ALLOW_RANGE_SOUTHWEST = 0x10000000;
 	public static final int WALL_ALLOW_RANGE_WEST = 0x20000000;
 	public static final int OBJECT_ALLOW_RANGE = 0x40000000;
+
+	public Path(ClientFactory factory) {
+		super(factory);
+	}
 
 	public abstract boolean traverse(final EnumSet<TraversalOption> options);
 

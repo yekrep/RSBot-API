@@ -1,26 +1,22 @@
 package org.powerbot.script.wrappers;
 
-import java.awt.Point;
-
+import org.powerbot.client.*;
 import org.powerbot.script.methods.ClientFactory;
-import org.powerbot.client.Cache;
-import org.powerbot.client.Client;
-import org.powerbot.client.HashTable;
-import org.powerbot.client.RSItemDef;
-import org.powerbot.client.RSItemDefLoader;
-import org.powerbot.script.methods.Game;
 import org.powerbot.util.StringUtil;
+
+import java.awt.*;
 
 public class Item extends Interactive {
 	private final int id;
 	private int stack;
 	private final Component component;
 
-	public Item(Component component) {
-		this(component.getItemId(), component.getItemStackSize(), component);
+	public Item(ClientFactory ctx, Component component) {
+		this(ctx, component.getItemId(), component.getItemStackSize(), component);
 	}
 
-	public Item(int id, int stack, Component component) {
+	public Item(ClientFactory ctx, int id, int stack, Component component) {
+		super(ctx);
 		if (component == null) throw new IllegalArgumentException("component is null");
 		this.id = id;
 		this.stack = stack;
@@ -52,7 +48,7 @@ public class Item extends Interactive {
 	}
 
 	public ItemDefinition getDefinition() {
-		final Client client = ClientFactory.getFactory().getClient();
+		Client client = ctx.getClient();
 		if (client == null) return null;
 
 		final RSItemDefLoader loader;
@@ -60,7 +56,7 @@ public class Item extends Interactive {
 		final HashTable table;
 		if ((loader = client.getRSItemDefLoader()) == null ||
 				(cache = loader.getCache()) == null || (table = cache.getTable()) == null) return null;
-		final Object o = Game.lookup(table, this.id);
+		final Object o = ctx.game.lookup(table, this.id);
 		return o != null && o instanceof RSItemDef ? new ItemDefinition((RSItemDef) o) : null;
 	}
 

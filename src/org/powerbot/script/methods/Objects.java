@@ -1,20 +1,19 @@
 package org.powerbot.script.methods;
 
+import org.powerbot.client.*;
+import org.powerbot.script.wrappers.GameObject;
+
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import org.powerbot.client.Client;
-import org.powerbot.client.RSAnimableNode;
-import org.powerbot.client.RSGround;
-import org.powerbot.client.RSGroundInfo;
-import org.powerbot.client.RSInfo;
-import org.powerbot.client.RSObject;
-import org.powerbot.script.wrappers.GameObject;
+public class Objects extends ClientLink {
+	public Objects(ClientFactory factory) {
+		super(factory);
+	}
 
-public class Objects {
-	public static GameObject[] getLoaded() {
+	public GameObject[] getLoaded() {
 		final Set<GameObject> objects = new LinkedHashSet<>();
-		final Client client = ClientFactory.getFactory().getClient();
+		Client client = ctx.getClient();
 		if (client == null) return new GameObject[0];
 
 		final RSInfo info;
@@ -41,7 +40,8 @@ public class Objects {
 
 				for (RSAnimableNode node = ground.getRSAnimableList(); node != null; node = node.getNext()) {
 					final RSObject obj = node.getRSAnimable();
-					if (obj != null && obj.getId() != -1) objects.add(new GameObject(obj, GameObject.Type.INTERACTIVE));
+					if (obj != null && obj.getId() != -1)
+						objects.add(new GameObject(ctx, obj, GameObject.Type.INTERACTIVE));
 				}
 
 
@@ -52,7 +52,7 @@ public class Objects {
 				};
 
 				for (int i = 0; i < objs.length; i++) {
-					if (objs[i] != null && objs[i].getId() != -1) objects.add(new GameObject(objs[i], types[i]));
+					if (objs[i] != null && objs[i].getId() != -1) objects.add(new GameObject(ctx, objs[i], types[i]));
 				}
 			}
 		}

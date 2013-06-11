@@ -1,17 +1,21 @@
 package org.powerbot.script.methods.tabs;
 
 import org.powerbot.script.internal.methods.Items;
-import org.powerbot.script.methods.Widgets;
-import org.powerbot.script.methods.widgets.Bank;
+import org.powerbot.script.methods.ClientFactory;
+import org.powerbot.script.methods.ClientLink;
 import org.powerbot.script.wrappers.Component;
 import org.powerbot.script.wrappers.Item;
 
-public class Equipment {
+public class Equipment extends ClientLink {
 	public static final int WIDGET = 387;
 	public static final int WIDGET_BANK = 667;
 	public static final int COMPONENT_BANK = 121;
 	public static final int NUM_SLOTS = 13;
 	public static final int NUM_APPEARANCE_SLOTS = 9;
+
+	public Equipment(ClientFactory factory) {
+		super(factory);
+	}
 
 	public static enum Slot {
 		HEAD(0, 7, 0, 0, -1),
@@ -62,39 +66,39 @@ public class Equipment {
 		}
 	}
 
-	public static Item[] getItems() {
-		boolean b = Bank.isOpen();
-		int[][] data = Items.getItems(Items.INDEX_EQUIPMENT);
+	public Item[] getItems() {
+		boolean b = ctx.bank.isOpen();
+		int[][] data = ctx.items.getItems(Items.INDEX_EQUIPMENT);
 		Item[] items = new Item[NUM_SLOTS];
 		for (Slot slot : Slot.values()) {
 			int index = slot.getIndex();
 			if (index < 0 || index >= data.length || data[index][0] == -1) continue;
 			Component c;
-			if (b) c = Widgets.get(WIDGET_BANK, COMPONENT_BANK).getChild(slot.getBankComponentIndex());
-			else c = Widgets.get(WIDGET, slot.getComponentIndex());
-			items[slot.ordinal()] = new Item(data[index][0], data[index][1], c);
+			if (b) c = ctx.widgets.get(WIDGET_BANK, COMPONENT_BANK).getChild(slot.getBankComponentIndex());
+			else c = ctx.widgets.get(WIDGET, slot.getComponentIndex());
+			items[slot.ordinal()] = new Item(ctx, data[index][0], data[index][1], c);
 		}
 		return items;
 	}
 
-	public static Item getItem(Slot slot) {
+	public Item getItem(Slot slot) {
 		int index = slot.getIndex();
-		int[][] data = Items.getItems(Items.INDEX_EQUIPMENT);
+		int[][] data = ctx.items.getItems(Items.INDEX_EQUIPMENT);
 		if (index < 0 || index >= data.length || data[index][0] == -1) return null;
 		Component c;
-		if (Bank.isOpen()) c = Widgets.get(WIDGET_BANK, COMPONENT_BANK).getChild(slot.getBankComponentIndex());
-		else c = Widgets.get(WIDGET, slot.getComponentIndex());
-		return new Item(data[index][0], data[index][1], c);
+		if (ctx.bank.isOpen()) c = ctx.widgets.get(WIDGET_BANK, COMPONENT_BANK).getChild(slot.getBankComponentIndex());
+		else c = ctx.widgets.get(WIDGET, slot.getComponentIndex());
+		return new Item(ctx, data[index][0], data[index][1], c);
 	}
 
-	public static boolean contains(int id) {
-		int[][] data = Items.getItems(Items.INDEX_EQUIPMENT);
+	public boolean contains(int id) {
+		int[][] data = ctx.items.getItems(Items.INDEX_EQUIPMENT);
 		for (int i = 0; i < data.length; i++) if (data[i][0] == id) return true;
 		return false;
 	}
 
-	public static boolean containsAll(int... ids) {
-		int[][] data = Items.getItems(Items.INDEX_EQUIPMENT);
+	public boolean containsAll(int... ids) {
+		int[][] data = ctx.items.getItems(Items.INDEX_EQUIPMENT);
 		for (int id : ids) {
 			boolean contains = false;
 			for (int i = 0; i < data.length; i++) {
@@ -108,8 +112,8 @@ public class Equipment {
 		return true;
 	}
 
-	public static boolean containsOneOf(int... ids) {
-		int[][] data = Items.getItems(Items.INDEX_EQUIPMENT);
+	public boolean containsOneOf(int... ids) {
+		int[][] data = ctx.items.getItems(Items.INDEX_EQUIPMENT);
 		for (int id : ids) for (int i = 0; i < data.length; i++) if (data[i][0] == id) return true;
 		return false;
 	}

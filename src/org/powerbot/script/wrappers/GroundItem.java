@@ -1,26 +1,12 @@
 package org.powerbot.script.wrappers;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Point;
-import java.lang.ref.WeakReference;
-
+import org.powerbot.client.*;
 import org.powerbot.script.methods.ClientFactory;
-import org.powerbot.client.BaseInfo;
-import org.powerbot.client.Cache;
-import org.powerbot.client.Client;
-import org.powerbot.client.HashTable;
-import org.powerbot.client.RSGround;
-import org.powerbot.client.RSGroundInfo;
-import org.powerbot.client.RSInfo;
-import org.powerbot.client.RSItem;
-import org.powerbot.client.RSItemDef;
-import org.powerbot.client.RSItemDefLoader;
-import org.powerbot.client.RSItemPile;
-import org.powerbot.script.methods.Game;
-import org.powerbot.script.methods.GroundItems;
 import org.powerbot.script.util.Filters;
 import org.powerbot.script.util.Random;
+
+import java.awt.*;
+import java.lang.ref.WeakReference;
 
 public class GroundItem extends Interactive implements Locatable, Drawable {
 	public static final Color TARGET_COLOR = new Color(255, 255, 0, 75);
@@ -28,7 +14,8 @@ public class GroundItem extends Interactive implements Locatable, Drawable {
 	private final WeakReference<RSItem> item;
 	private int faceIndex = -1;
 
-	public GroundItem(Tile tile, RSItem item) {
+	public GroundItem(ClientFactory ctx, Tile tile, RSItem item) {
+		super(ctx);
 		this.tile = tile;
 		this.item = new WeakReference<>(item);
 	}
@@ -38,7 +25,7 @@ public class GroundItem extends Interactive implements Locatable, Drawable {
 	}
 
 	public Model getModel(final int p) {
-		final Client client = ClientFactory.getFactory().getClient();
+		Client client = ctx.getClient();
 		if (client == null) return null;
 		final RSInfo info;
 		final BaseInfo baseInfo;
@@ -62,11 +49,11 @@ public class GroundItem extends Interactive implements Locatable, Drawable {
 						(cache = defLoader.getModelCache()) == null || (table = cache.getTable()) == null)
 					return null;
 
-				final int graphicsIndex = ClientFactory.getFactory().getToolkit().graphicsIndex;
+				final int graphicsIndex = ctx.game.toolkit.graphicsIndex;
 				Object model;
-				if (p != -1 && (model = Game.lookup(table, (long) p | (long) graphicsIndex << 29)) != null &&
+				if (p != -1 && (model = ctx.game.lookup(table, (long) p | (long) graphicsIndex << 29)) != null &&
 						model instanceof org.powerbot.client.Model) {
-					return new RenderableModel((org.powerbot.client.Model) model, itemPile);
+					return new RenderableModel(ctx, (org.powerbot.client.Model) model, itemPile);
 				}
 
 				final int[] ids = {itemPile.getID_1(), itemPile.getID_2(), itemPile.getID_3()};
@@ -75,12 +62,12 @@ public class GroundItem extends Interactive implements Locatable, Drawable {
 				int i = 0;
 				for (final int id : ids) {
 					if (id < 1) continue;
-					model = Game.lookup(table, (long) id | (long) graphicsIndex << 29);
+					model = ctx.game.lookup(table, (long) id | (long) graphicsIndex << 29);
 					if (model != null && model instanceof org.powerbot.client.Model)
 						models[i++] = (org.powerbot.client.Model) model;
 				}
 
-				return i > 0 ? new RenderableModel(models[Random.nextInt(0, i)], itemPile) : null;
+				return i > 0 ? new RenderableModel(ctx, models[Random.nextInt(0, i)], itemPile) : null;
 			}
 		}
 		return null;
@@ -97,7 +84,7 @@ public class GroundItem extends Interactive implements Locatable, Drawable {
 	}
 
 	public ItemDefinition getDefinition() {
-		final Client client = ClientFactory.getFactory().getClient();
+		Client client = ctx.getClient();
 		if (client == null) return null;
 		int id = getId();
 		if (id == -1) return null;
@@ -106,7 +93,7 @@ public class GroundItem extends Interactive implements Locatable, Drawable {
 		final HashTable table;
 		if ((loader = client.getRSItemDefLoader()) == null ||
 				(cache = loader.getCache()) == null || (table = cache.getTable()) == null) return null;
-		final Object o = Game.lookup(table, id);
+		final Object o = ctx.game.lookup(table, id);
 		return o != null && o instanceof RSItemDef ? new ItemDefinition((RSItemDef) o) : null;
 	}
 
@@ -148,7 +135,7 @@ public class GroundItem extends Interactive implements Locatable, Drawable {
 
 	@Override
 	public boolean isValid() {
-		return Filters.accept(GroundItems.getLoaded(), Filters.accept(this));
+		return Filters.accept(ctx.groundItems.getLoaded(), Filters.accept(this));
 	}
 
 	@Override

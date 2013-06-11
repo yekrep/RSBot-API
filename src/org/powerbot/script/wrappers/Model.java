@@ -1,20 +1,17 @@
 package org.powerbot.script.wrappers;
 
-import java.awt.Graphics;
-import java.awt.Point;
-import java.awt.Polygon;
-import java.awt.Rectangle;
-import java.util.ArrayList;
-import java.util.Arrays;
-
-import org.powerbot.script.methods.ClientFactory;
 import org.powerbot.client.ModelCapture;
+import org.powerbot.script.methods.ClientFactory;
+import org.powerbot.script.methods.ClientLink;
 import org.powerbot.script.methods.Game;
-import org.powerbot.script.methods.Widgets;
 import org.powerbot.script.methods.widgets.ActionBar;
 import org.powerbot.script.util.Random;
 
-public abstract class Model {
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+
+public abstract class Model extends ClientLink {
 	protected final int[] yPoints;
 	protected final short[] faceA;
 	protected final short[] faceB;
@@ -24,7 +21,8 @@ public abstract class Model {
 	protected int[] xPoints;
 	protected int[] zPoints;
 
-	public Model(final org.powerbot.client.Model model) {
+	public Model(ClientFactory ctx, final org.powerbot.client.Model model) {
+		super(ctx);
 		xPoints = model.getXPoints();
 		yPoints = model.getYPoints();
 		zPoints = model.getZPoints();
@@ -62,13 +60,13 @@ public abstract class Model {
 		final int x = getX();
 		final int y = getY();
 		final int plane = getPlane();
-		final int height = Game.tileHeight(x, y, plane);
-		final Point localPoint = Game.worldToScreen(
+		final int height = ctx.game.tileHeight(x, y, plane);
+		final Point localPoint = ctx.game.worldToScreen(
 				x + (this.xPoints[this.faceA[index]] + this.xPoints[this.faceB[index]] + this.xPoints[this.faceC[index]]) / 3,
 				height + (this.yPoints[this.faceA[index]] + this.yPoints[this.faceB[index]] + this.yPoints[this.faceC[index]]) / 3,
 				y + (this.zPoints[this.faceA[index]] + this.zPoints[this.faceB[index]] + this.zPoints[this.faceC[index]]) / 3
 		);
-		return Game.isPointOnScreen(localPoint) ? localPoint : null;
+		return ctx.game.isPointOnScreen(localPoint) ? localPoint : null;
 	}
 
 	public Point getCenterPoint() {
@@ -85,7 +83,7 @@ public abstract class Model {
 		final int x = getX();
 		final int y = getY();
 		final int plane = getPlane();
-		final int height = Game.tileHeight(x, y, plane);
+		final int height = ctx.game.tileHeight(x, y, plane);
 
 		while (index < numFaces) {
 			totalXAverage += (xPoints[faceA[index]] + xPoints[faceB[index]] + xPoints[faceC[index]]) / 3;
@@ -94,13 +92,13 @@ public abstract class Model {
 			index++;
 		}
 
-		final Point averagePoint = Game.worldToScreen(
+		final Point averagePoint = ctx.game.worldToScreen(
 				x + totalXAverage / numFaces,
 				height + totalHeightAverage / numFaces,
 				y + totalYAverage / numFaces
 		);
 
-		if (Game.isPointOnScreen(averagePoint)) {
+		if (ctx.game.isPointOnScreen(averagePoint)) {
 			return averagePoint;
 		}
 		return new Point(-1, -1);
@@ -182,13 +180,13 @@ public abstract class Model {
 		final int x = getX();
 		final int y = getY();
 		final int plane = getPlane();
-		final int h = Game.tileHeight(x, y, plane);
+		final int h = ctx.game.tileHeight(x, y, plane);
 		int index = pos;
-		final boolean fixed = Game.isFixed();
-		final Component c = Widgets.get(ActionBar.WIDGET, ActionBar.COMPONENT_BAR);
+		final boolean fixed = ctx.game.isFixed();
+		final Component c = ctx.widgets.get(ActionBar.WIDGET, ActionBar.COMPONENT_BAR);
 		final Rectangle r = c != null && c.isVisible() ? c.getBoundingRect() : null;
 		while (index < length) {
-			final Point point = Game.worldToScreen(
+			final Point point = ctx.game.worldToScreen(
 					x + (this.xPoints[this.faceA[index]] + this.xPoints[this.faceB[index]] + this.xPoints[this.faceC[index]]) / 3,
 					h + (this.yPoints[this.faceA[index]] + this.yPoints[this.faceB[index]] + this.yPoints[this.faceC[index]]) / 3,
 					y + (this.zPoints[this.faceA[index]] + this.zPoints[this.faceB[index]] + this.zPoints[this.faceC[index]]) / 3
@@ -219,15 +217,14 @@ public abstract class Model {
 	}
 
 	private int[][] projectVertices() {
-		final ClientFactory clientFactory = ClientFactory.getFactory();
-		final Game.Viewport viewport = clientFactory.getViewport();
-		final Game.Toolkit toolkit = clientFactory.getToolkit();
+		final Game.Toolkit toolkit = ctx.game.toolkit;
+		final Game.Viewport viewport = ctx.game.viewport;
 
 		update();
 		final int locX = getX();
 		final int locY = getY();
 		final int plane = getPlane();
-		final int height = Game.tileHeight(locX, locY, plane);
+		final int height = ctx.game.tileHeight(locX, locY, plane);
 
 		final int[][] screen = new int[numVertices][3];
 		for (int index = 0; index < numVertices; index++) {

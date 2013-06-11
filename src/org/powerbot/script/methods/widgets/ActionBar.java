@@ -1,13 +1,12 @@
 package org.powerbot.script.methods.widgets;
 
-import org.powerbot.script.methods.Mouse;
-import org.powerbot.script.methods.Settings;
-import org.powerbot.script.methods.Widgets;
+import org.powerbot.script.methods.ClientFactory;
+import org.powerbot.script.methods.ClientLink;
 import org.powerbot.script.util.Delay;
 import org.powerbot.script.wrappers.Action;
 import org.powerbot.script.wrappers.Component;
 
-public class ActionBar {
+public class ActionBar extends ClientLink {
 	public static final int NUM_SLOTS = 12;
 	public static final int WIDGET = 640;
 	public static final int COMPONENT_BAR = 4;
@@ -19,64 +18,68 @@ public class ActionBar {
 	public static final int[] COMPONENT_SLOTS_COOLDOWN = {36, 73, 77, 81, 85, 89, 93, 97, 101, 105, 109, 113};
 	public static final int SETTING_ITEM = 811, SETTING_ABILITY = 727;
 
-	public static boolean isExpanded() {
-		final Component c = Widgets.get(WIDGET, COMPONENT_BAR);
+	public ActionBar(ClientFactory factory) {
+		super(factory);
+	}
+
+	public boolean isExpanded() {
+		final Component c = ctx.widgets.get(WIDGET, COMPONENT_BAR);
 		if (c == null || !c.isValid()) return false;
 		return c.isVisible();
 	}
 
-	public static boolean setExpanded(final boolean expanded) {
+	public boolean setExpanded(final boolean expanded) {
 		if (isExpanded() == expanded) return true;
-		final Component c = Widgets.get(WIDGET, expanded ? COMPONENT_BUTTON_EXPAND : COMPONENT_BUTTON_COLLAPSE);
+		final Component c = ctx.widgets.get(WIDGET, expanded ? COMPONENT_BUTTON_EXPAND : COMPONENT_BUTTON_COLLAPSE);
 		if (c != null && c.isValid() && c.interact(expanded ? "Expand" : "Collapse")) {
 			for (int i = 0; i < 5 && isExpanded() != expanded; i++) Delay.sleep(20, 50);
 		}
 		return isExpanded() == expanded;
 	}
 
-	public static Action getAction(final int... ids) {
+	public Action getAction(final int... ids) {
 		final Action[] actions = getActions();
 		for (final Action action : actions) for (final int id : ids) if (action.getId() == id) return action;
 		return null;
 	}
 
-	public static Action getActionAt(final int slot) {
+	public Action getActionAt(final int slot) {
 		if (slot < 0 || slot >= NUM_SLOTS) return null;
 		Action.Type type;
-		int id = Settings.get(SETTING_ABILITY + slot);
+		int id = ctx.settings.get(SETTING_ABILITY + slot);
 		if (id != 0) type = Action.Type.ABILITY;
-		else if ((id = Settings.get(SETTING_ITEM + slot)) != 0) type = Action.Type.ITEM;
+		else if ((id = ctx.settings.get(SETTING_ITEM + slot)) != 0) type = Action.Type.ITEM;
 		else type = null;
 		if (type == null) return null;
-		return new Action(slot, type, id);
+		return new Action(ctx, slot, type, id);
 	}
 
-	public static Action[] getActions() {
+	public Action[] getActions() {
 		final Action[] actions = new Action[NUM_SLOTS];
 		for (int i = 0; i < NUM_SLOTS; i++) actions[i] = getActionAt(i);
 		return actions;
 	}
 
-	public static boolean deleteSlot(final int slot) {
+	public boolean deleteSlot(final int slot) {
 		Component c;
-		if (slot < 0 || slot >= NUM_SLOTS || (c = Widgets.get(WIDGET, COMPONENT_SLOTS[slot])) == null) return false;
+		if (slot < 0 || slot >= NUM_SLOTS || (c = ctx.widgets.get(WIDGET, COMPONENT_SLOTS[slot])) == null) return false;
 		final Action action = getActionAt(slot);
 		if (action == null) return true;
-		c = Widgets.get(WIDGET, COMPONENT_TRASH);
+		c = ctx.widgets.get(WIDGET, COMPONENT_TRASH);
 		if (c == null || !c.isValid()) return false;
-		if (action.hover() && Mouse.drag(c.getInteractPoint(), true)) {
+		if (action.hover() && ctx.mouse.drag(c.getInteractPoint(), true)) {
 			for (int i = 0; i < 5 && getActionAt(slot) != null; i++) Delay.sleep(100, 200);
 		}
 		return getActionAt(slot) == null;
 	}
 
-	public static boolean isLocked() {
-		return ((Settings.get(682) >> 4) & 0x1) != 0;
+	public boolean isLocked() {
+		return ((ctx.settings.get(682) >> 4) & 0x1) != 0;
 	}
 
-	public static boolean setLocked(final boolean locked) {
+	public boolean setLocked(final boolean locked) {
 		if (isLocked() == locked) return true;
-		final Component c = Widgets.get(WIDGET, COMPONENT_LOCK);
+		final Component c = ctx.widgets.get(WIDGET, COMPONENT_LOCK);
 		if (c != null && c.isValid() && c.interact("Toggle Lock")) {
 			for (int i = 0; i < 25 && locked != isLocked(); i++) Delay.sleep(100, 150);
 		}

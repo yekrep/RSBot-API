@@ -1,13 +1,7 @@
 package org.powerbot.script.methods.widgets;
 
-import java.awt.Dimension;
-import java.awt.Rectangle;
-import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import org.powerbot.script.methods.Game;
-import org.powerbot.script.methods.Widgets;
+import org.powerbot.script.methods.ClientFactory;
+import org.powerbot.script.methods.ClientLink;
 import org.powerbot.script.util.Delay;
 import org.powerbot.script.util.Filter;
 import org.powerbot.script.util.Random;
@@ -15,7 +9,12 @@ import org.powerbot.script.util.Timer;
 import org.powerbot.script.wrappers.Component;
 import org.powerbot.script.wrappers.Widget;
 
-public class Lobby {
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class Lobby extends ClientLink {
 	public static final int STATE_LOBBY_IDLE = 7;
 	public static final int STATE_LOGGING_IN = 9;
 	public static final int LOGIN_DEFAULT_TIMEOUT = 30000;
@@ -34,8 +33,12 @@ public class Lobby {
 	public static final int WIDGET_WORLDS_COLUMN_LOOT_SHARE = 75;
 	public static final int WIDGET_WORLDS_COLUMN_PING = 76;
 
-	public static boolean isOpen() {
-		return Game.getClientState() == STATE_LOBBY_IDLE;
+	public Lobby(ClientFactory factory) {
+		super(factory);
+	}
+
+	public boolean isOpen() {
+		return ctx.game.getClientState() == STATE_LOBBY_IDLE;
 	}
 
 	/**
@@ -43,23 +46,23 @@ public class Lobby {
 	 *
 	 * @return <tt>true</tt> if the logout button was clicked; otherwise <tt>false</tt>.
 	 */
-	public static boolean close() {
+	public boolean close() {
 		if (!isOpen() || !closeDialog()) {
 			return false;
 		}
-		final Component child = Widgets.get(WIDGET_MAIN_LOBBY, WIDGET_BUTTON_LOGOUT);
+		final Component child = ctx.widgets.get(WIDGET_MAIN_LOBBY, WIDGET_BUTTON_LOGOUT);
 		return child != null && child.isValid() && child.click(true);
 	}
 
-	public static boolean enterGame() {
+	public boolean enterGame() {
 		return enterGame(LOGIN_DEFAULT_TIMEOUT);
 	}
 
-	public static boolean enterGame(final int timeout) {
+	public boolean enterGame(final int timeout) {
 		return enterGame(null, timeout);
 	}
 
-	public static boolean enterGame(final World world) {
+	public boolean enterGame(final World world) {
 		return enterGame(world, LOGIN_DEFAULT_TIMEOUT);
 	}
 
@@ -76,24 +79,24 @@ public class Lobby {
 	 *                reached, the method will exit regardless the the current login state.
 	 * @return <tt>true</tt> if the account is logged in; otherwise <tt>false</tt>.
 	 */
-	public static boolean enterGame(final World world, final int timeout) {
-		if (Game.getClientState() == STATE_LOBBY_IDLE) {
-			if (!closeDialog() || (Tab.OPTIONS.isOpen() && !Tab.PLAYER_INFO.open())) {
+	public boolean enterGame(final World world, final int timeout) {
+		if (ctx.game.getClientState() == STATE_LOBBY_IDLE) {
+			if (!closeDialog() || (getCurrentTab() == Tab.OPTIONS && !openTab(Tab.PLAYER_INFO))) {
 				return false;
 			}
 			final World selected = (world != null) ? getSelectedWorld() : null;
 			if (selected != null && !selected.equals(world) && !world.click()) {
 				return false;
 			}
-			final Component child = Widgets.get(WIDGET_MAIN_LOBBY, WIDGET_BUTTON_PLAY_GAME);
+			final Component child = ctx.widgets.get(WIDGET_MAIN_LOBBY, WIDGET_BUTTON_PLAY_GAME);
 			if (!(child != null && child.isValid() && child.click(true))) {
 				return false;
 			}
 		}
 		final Timer t = new Timer(timeout);
-		while (t.isRunning() && !Game.isLoggedIn()) {
+		while (t.isRunning() && !ctx.game.isLoggedIn()) {
 			final Dialog dialog = getOpenDialog();
-			if (dialog == Dialog.TRANSFER_COUNTDOWN || (dialog != null && dialog.clickContinue())) {
+			if (dialog == Dialog.TRANSFER_COUNTDOWN || (dialog != null && continueDialog())) {
 				t.reset();
 			} else if (dialog != null) {
 				Delay.sleep(500, 1000);
@@ -101,7 +104,7 @@ public class Lobby {
 			}
 			Delay.sleep(5);
 		}
-		return Game.isLoggedIn();
+		return ctx.game.isLoggedIn();
 	}
 
 	/**
@@ -110,11 +113,11 @@ public class Lobby {
 	 *
 	 * @return The currently selected world, or <tt>null</tt> if unable to retrieve world.
 	 */
-	public static World getSelectedWorld() {
-		if (!isOpen() || !closeDialog() || (!Tab.WORLD_SELECT.getPanelWidget().isValid() && !Tab.WORLD_SELECT.open())) {
+	public World getSelectedWorld() {
+		if (!isOpen() || !closeDialog() || (!ctx.widgets.get(Tab.WORLD_SELECT.getIndex()).isValid() && !openTab(Tab.WORLD_SELECT))) {
 			return null;
 		}
-		final Widget panel = Tab.WORLD_SELECT.getPanelWidget();
+		final Widget panel = ctx.widgets.get(Tab.WORLD_SELECT.getIndex());
 		final String text = panel.isValid() ? panel.getComponent(WIDGET_LABEL_CURRENT_WORLD).getText() : null;
 		if (text != null) {
 			final Matcher m = Pattern.compile("^World\\s(\\d*)$").matcher(text);
@@ -125,7 +128,7 @@ public class Lobby {
 		return null;
 	}
 
-	public static World getWorld(final int worldNumber) {
+	public World getWorld(final int worldNumber) {
 		final World[] worlds = getWorlds(new Filter<World>() {
 			@Override
 			public boolean accept(final World world) {
@@ -135,7 +138,7 @@ public class Lobby {
 		return worlds.length == 1 ? worlds[0] : null;
 	}
 
-	public static World[] getWorlds() {
+	public World[] getWorlds() {
 		return getWorlds(new Filter<World>() {
 			@Override
 			public boolean accept(final World world) {
@@ -144,12 +147,12 @@ public class Lobby {
 		});
 	}
 
-	public static World[] getWorlds(final Filter<World> filter) {
+	public World[] getWorlds(final Filter<World> filter) {
 		if (!isOpen() || !closeDialog()) {
 			return new World[0];
 		}
-		final Widget panel = Tab.WORLD_SELECT.getPanelWidget();
-		if (!panel.isValid() && !Tab.WORLD_SELECT.open()) {
+		final Widget panel = ctx.widgets.get(Tab.WORLD_SELECT.getIndex());
+		if (!panel.isValid() && !openTab(Tab.WORLD_SELECT)) {
 			return new World[0];
 		}
 		final ArrayList<World> worlds = new ArrayList<>();
@@ -163,18 +166,53 @@ public class Lobby {
 		return worlds.toArray(new World[worlds.size()]);
 	}
 
-	public static Dialog getOpenDialog() {
+	public Dialog getOpenDialog() {
 		for (final Dialog d : Dialog.values()) {
-			if (d.isOpen()) {
-				return d;
+			Component child = ctx.widgets.get(WIDGET_MAIN_LOBBY, d.getTextIndex());
+			if (child != null && child.isOnScreen()) {
+				final String text = child.getText();
+				if (text != null && d.getTextPattern().matcher(text).find()) return d;
 			}
 		}
 		return null;
 	}
 
-	private static boolean closeDialog() {
+	private boolean closeDialog() {
 		final Dialog dialog = getOpenDialog();
-		return dialog == null || (dialog.hasBack() && dialog.clickBack());
+		if (dialog == null || !dialog.hasBack()) {
+			return false;
+		}
+		final Component child = ctx.widgets.get(WIDGET_MAIN_LOBBY, dialog.getBackIndex());
+		return child != null && child.isOnScreen() && child.click(true);
+	}
+
+	private boolean continueDialog() {
+		final Dialog dialog = getOpenDialog();
+		if (dialog == null || !dialog.hasContinue()) {
+			return false;
+		}
+		final Component child = ctx.widgets.get(WIDGET_MAIN_LOBBY, dialog.getContinueIndex());
+		return child != null && child.isOnScreen() && child.click(true);
+	}
+
+	public Tab getCurrentTab() {
+		for (Tab tab : Tab.values()) {
+			Component child = ctx.widgets.get(WIDGET_MAIN_LOBBY, tab.getComponent());
+			if (child != null && child.isValid() && child.getTextureId() == 4671) return tab;
+		}
+		return null;
+	}
+
+	public boolean openTab(Tab tab) {
+		Component child = ctx.widgets.get(WIDGET_MAIN_LOBBY, tab.getComponent());
+		if (isOpen()) {
+			return true;
+		}
+		if (child != null && child.isValid() && child.click(true)) {
+			Delay.sleep(Random.nextInt(1200, 2000));
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -191,45 +229,12 @@ public class Lobby {
 			this.widgetPanelIndex = widgetPanelIndex;
 		}
 
-		/**
-		 * Gets the widget of the clickable tab.
-		 *
-		 * @return The widget of the tab.
-		 */
-		public Component getWidget() {
-			if (!Lobby.isOpen()) {
-				return null;
-			}
-			return Widgets.get(WIDGET_MAIN_LOBBY, widgetTabIndex);
+		public int getIndex() {
+			return widgetPanelIndex;
 		}
 
-		/**
-		 * Gets the tab's panel widget.
-		 *
-		 * @return The tab's panel widget.
-		 */
-		public Widget getPanelWidget() {
-			if (!Lobby.isOpen()) {
-				return null;
-			}
-			return Widgets.get(widgetPanelIndex);
-		}
-
-		public boolean isOpen() {
-			final Component child = getWidget();
-			return child != null && child.isValid() && child.getTextureId() == 4671;
-		}
-
-		public boolean open() {
-			final Component child = getWidget();
-			if (isOpen()) {
-				return true;
-			}
-			if (child != null && child.isValid() && child.click(true)) {
-				Delay.sleep(Random.nextInt(1200, 2000));
-				return true;
-			}
-			return false;
+		public int getComponent() {
+			return widgetTabIndex;
 		}
 	}
 
@@ -257,41 +262,45 @@ public class Lobby {
 			this.textPattern = Pattern.compile(textPattern);
 		}
 
-		public boolean isOpen() {
-			final Component child = Widgets.get(WIDGET_MAIN_LOBBY, textIndex);
-			if (child != null && child.isOnScreen()) {
-				final String text = child.getText();
-				return text != null && textPattern.matcher(text).find();
-			}
-			return false;
+		public int getBackIndex() {
+			return backButtonIndex;
+		}
+
+		public int getContinueIndex() {
+			return continueButtonIndex;
+		}
+
+		public int getTextIndex() {
+			return textIndex;
+		}
+
+		public Pattern getTextPattern() {
+			return textPattern;
 		}
 
 		public boolean hasContinue() {
 			return continueButtonIndex != -1;
 		}
 
-		public boolean clickContinue() {
-			if (!hasContinue()) {
-				return false;
-			}
-			final Component child = Widgets.get(WIDGET_MAIN_LOBBY, continueButtonIndex);
-			return child != null && child.isOnScreen() && child.click(true);
-		}
-
 		public boolean hasBack() {
 			return backButtonIndex != -1;
 		}
-
-		public boolean clickBack() {
-			if (!hasBack()) {
-				return false;
-			}
-			final Component child = Widgets.get(WIDGET_MAIN_LOBBY, backButtonIndex);
-			return child != null && child.isOnScreen() && child.click(true);
-		}
 	}
 
-	public static class World {
+	private int getWorldIndex(final int worldNumber) {
+		final Widget panel = ctx.widgets.get(Tab.WORLD_SELECT.getIndex());
+		if (panel == null || !panel.isValid()) {
+			return -1;
+		}
+		for (final Component child : panel.getComponent(WIDGET_WORLDS_COLUMN_WORLD_NUMBER).getChildren()) {
+			if (child.getText().equals(String.valueOf(worldNumber))) {
+				return child.getIndex();
+			}
+		}
+		return -1;
+	}
+
+	public class World {
 		private final int number;
 		private final boolean members;
 		private final String activity;
@@ -301,7 +310,7 @@ public class Lobby {
 		private boolean favorite;
 
 		private World(final int widgetIndex) {
-			final Widget panel = Tab.WORLD_SELECT.getPanelWidget();
+			final Widget panel = ctx.widgets.get(Tab.WORLD_SELECT.getIndex());
 			this.number = Integer.parseInt(panel.getComponent(WIDGET_WORLDS_COLUMN_WORLD_NUMBER).getChild(widgetIndex).getText());
 			this.members = panel.getComponent(WIDGET_WORLDS_COLUMN_MEMBERS).getChild(widgetIndex).getTextureId() == 1531;
 			this.activity = panel.getComponent(WIDGET_WORLDS_COLUMN_ACTIVITY).getChild(widgetIndex).getText();
@@ -309,19 +318,6 @@ public class Lobby {
 			this.players = getPlayers();
 			this.ping = getPing();
 			this.favorite = isFavorite();
-		}
-
-		private static int getWidgetIndex(final int worldNumber) {
-			final Widget panel = Tab.WORLD_SELECT.getPanelWidget();
-			if (panel == null || !panel.isValid()) {
-				return -1;
-			}
-			for (final Component child : panel.getComponent(WIDGET_WORLDS_COLUMN_WORLD_NUMBER).getChildren()) {
-				if (child.getText().equals(String.valueOf(worldNumber))) {
-					return child.getIndex();
-				}
-			}
-			return -1;
 		}
 
 		public int getNumber() {
@@ -346,9 +342,9 @@ public class Lobby {
 		 * @return the number of players, or -1 if the world is offline or full.
 		 */
 		public int getPlayers() {
-			final int index = getWidgetIndex(number);
+			final int index = getWorldIndex(number);
 			if (index != -1) {
-				final Widget panel = Tab.WORLD_SELECT.getPanelWidget();
+				Widget panel = ctx.widgets.get(Tab.WORLD_SELECT.getIndex());
 				try {
 					players = Integer.parseInt(panel.getComponent(WIDGET_WORLDS_COLUMN_PLAYERS).getChild(index).getText());
 				} catch (final NumberFormatException ex) {
@@ -359,9 +355,9 @@ public class Lobby {
 		}
 
 		public int getPing() {
-			final int index = getWidgetIndex(number);
+			final int index = getWorldIndex(number);
 			if (index != -1) {
-				final Widget panel = Tab.WORLD_SELECT.getPanelWidget();
+				Widget panel = ctx.widgets.get(Tab.WORLD_SELECT.getIndex());
 				try {
 					ping = Integer.parseInt(panel.getComponent(WIDGET_WORLDS_COLUMN_PING).getChild(index).getText());
 				} catch (final NumberFormatException ex) {
@@ -372,9 +368,9 @@ public class Lobby {
 		}
 
 		public boolean isFavorite() {
-			final int index = getWidgetIndex(number);
+			final int index = getWorldIndex(number);
 			if (index != -1) {
-				final Widget panel = Tab.WORLD_SELECT.getPanelWidget();
+				Widget panel = ctx.widgets.get(Tab.WORLD_SELECT.getIndex());
 				favorite = panel.getComponent(WIDGET_WORLDS_COLUMN_FAVOURITE).getChild(index).getTextureId() == 1541;
 			}
 			return favorite;
@@ -386,18 +382,18 @@ public class Lobby {
 		 * @return <tt>true</tt> if the world is selected; otherwise <tt>false</tt>.
 		 */
 		public boolean click() {
-			if (!Lobby.isOpen() || (!Tab.WORLD_SELECT.isOpen() && !Tab.WORLD_SELECT.open())) {
+			if (!isOpen() || (Tab.WORLD_SELECT != getCurrentTab() && !openTab(Tab.WORLD_SELECT))) {
 				return false;
 			}
-			final World selected = Lobby.getSelectedWorld();
+			final World selected = getSelectedWorld();
 			if (selected != null && selected.equals(this)) {
 				return true;
 			}
-			final int index = getWidgetIndex(number);
+			final int index = getWorldIndex(number);
 			if (index == -1) {
 				return false;
 			}
-			final Widget panel = Tab.WORLD_SELECT.getPanelWidget();
+			Widget panel = ctx.widgets.get(Tab.WORLD_SELECT.getIndex());
 			final Component table = panel.getComponent(WIDGET_WORLDS_TABLE);
 			final Component row = panel.getComponent(WIDGET_WORLDS_ROWS).getChild(index);
 			if (table != null && table.isValid() && row != null && row.isValid()) {
@@ -407,7 +403,7 @@ public class Lobby {
 				);
 				if (!visibleBounds.contains(row.getAbsoluteLocation())) {
 					final Component scrollBar = panel.getComponent(WIDGET_WORLDS_TABLE_SCROLLBAR);
-					if (scrollBar == null || !Widgets.scroll(row, scrollBar)) {
+					if (scrollBar == null || !ctx.widgets.scroll(row, scrollBar)) {
 						return false;
 					}
 				}

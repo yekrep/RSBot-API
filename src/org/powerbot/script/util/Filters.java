@@ -1,16 +1,13 @@
 package org.powerbot.script.util;
 
+import org.powerbot.script.wrappers.Identifiable;
+import org.powerbot.script.wrappers.Locatable;
+import org.powerbot.script.wrappers.Tile;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
-import org.powerbot.script.methods.Movement;
-import org.powerbot.script.methods.Players;
-import org.powerbot.script.wrappers.Identifiable;
-import org.powerbot.script.wrappers.Locatable;
-import org.powerbot.script.wrappers.Player;
-import org.powerbot.script.wrappers.Tile;
 
 public class Filters {
 	private static <T> T[] flatten(T[][] paramArrayOfT) {
@@ -82,8 +79,7 @@ public class Filters {
 		});
 	}
 
-	public static <T extends Locatable> T[] range(T[] arr, final double range) {
-		Player local = Players.getLocal();
+	public static <T extends Locatable> T[] range(T[] arr, Locatable local, final double range) {
 		if (local == null) return Arrays.copyOf(arr, 0);
 
 		final Tile pos = local.getLocation();
@@ -91,7 +87,7 @@ public class Filters {
 		return filter(arr, new Filter<T>() {
 			@Override
 			public boolean accept(T t) {
-				return Movement.distance(pos, t) < range;
+				return distance(pos, t) < range;
 			}
 		});
 	}
@@ -108,22 +104,31 @@ public class Filters {
 		});
 	}
 
-	public static <T extends Locatable> T nearest(T[] arr) {
+	public static <T extends Locatable> T nearest(T[] arr, Locatable local) {
 		T nearest = null;
 		double dist = Double.MAX_VALUE;
 
-		Player local = Players.getLocal();
 		if (local == null) return null;
 		Tile pos = local.getLocation();
 		if (pos == null) return null;
 		for (T t : arr) {
 			double d;
-			if ((d = Movement.distance(pos, t)) < dist) {
+			if ((d = distance(pos, t)) < dist) {
 				nearest = t;
 				dist = d;
 			}
 		}
 
 		return nearest;
+	}
+
+	private static double distance(final int x1, final int y1, final int x2, final int y2) {
+		return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
+	}
+
+	private static double distance(final Locatable a, final Locatable b) {
+		final Tile tA = a != null ? a.getLocation() : null, tB = b != null ? b.getLocation() : null;
+		if (tA == null || tB == null) return Double.MAX_VALUE;
+		return distance(tA.x, tA.y, tB.x, tB.y);
 	}
 }

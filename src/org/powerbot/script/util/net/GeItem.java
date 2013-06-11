@@ -1,4 +1,4 @@
-package org.powerbot.script.methods.net;
+package org.powerbot.script.util.net;
 
 import java.io.IOException;
 import java.net.URL;
@@ -75,10 +75,10 @@ public class GeItem {
 	}
 
 	/**
-	 * Returns a {@link org.powerbot.script.methods.net.GeItem} profile for an item.
+	 * Returns a {@link org.powerbot.script.util.net.GeItem} profile for an item.
 	 *
 	 * @param id the item ID to query
-	 * @return a {@link org.powerbot.script.methods.net.GeItem} profile or {@code null} if none was found
+	 * @return a {@link org.powerbot.script.util.net.GeItem} profile or {@code null} if none was found
 	 */
 	public static synchronized GeItem getProfile(final int id) {
 		if (cache.containsKey(id)) {
@@ -214,14 +214,14 @@ public class GeItem {
 	}
 
 	/**
-	 * The type of {@link org.powerbot.script.methods.net.GeItem.Price}.
+	 * The type of {@link org.powerbot.script.util.net.GeItem.Price}.
 	 */
 	public enum PriceType {
 		CURRENT, TODAY
 	}
 
 	/**
-	 * The type of {@link org.powerbot.script.methods.net.GeItem.Change}.
+	 * The type of {@link org.powerbot.script.util.net.GeItem.Change}.
 	 */
 	public enum ChangeType {
 		DAY30, DAY90, DAY180
@@ -235,9 +235,9 @@ public class GeItem {
 		private final int trend, price;
 
 		/**
-		 * Creates a new {@link org.powerbot.script.methods.net.GeItem.Price} object.
+		 * Creates a new {@link org.powerbot.script.util.net.GeItem.Price} object.
 		 *
-		 * @param type  the {@link org.powerbot.script.methods.net.GeItem.PriceType}
+		 * @param type  the {@link org.powerbot.script.util.net.GeItem.PriceType}
 		 * @param trend the trend
 		 * @param price the price
 		 */
@@ -248,7 +248,7 @@ public class GeItem {
 		}
 
 		/**
-		 * Returns the type of this {@link org.powerbot.script.methods.net.GeItem.Price}.
+		 * Returns the type of this {@link org.powerbot.script.util.net.GeItem.Price}.
 		 *
 		 * @return the type
 		 */
@@ -284,9 +284,9 @@ public class GeItem {
 		private final double change;
 
 		/**
-		 * Creates a new {@link org.powerbot.script.methods.net.GeItem.Change} object.
+		 * Creates a new {@link org.powerbot.script.util.net.GeItem.Change} object.
 		 *
-		 * @param type   the {@link org.powerbot.script.methods.net.GeItem.ChangeType}
+		 * @param type   the {@link org.powerbot.script.util.net.GeItem.ChangeType}
 		 * @param trend  the trend
 		 * @param change the relative change
 		 */
@@ -297,7 +297,7 @@ public class GeItem {
 		}
 
 		/**
-		 * Returns the type of this {@link org.powerbot.script.methods.net.GeItem.Change}.
+		 * Returns the type of this {@link org.powerbot.script.util.net.GeItem.Change}.
 		 *
 		 * @return the type
 		 */

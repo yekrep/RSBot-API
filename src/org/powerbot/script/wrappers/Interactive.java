@@ -1,22 +1,25 @@
 package org.powerbot.script.wrappers;
 
-import java.awt.Point;
-
-import org.powerbot.script.methods.Game;
-import org.powerbot.script.methods.Menu;
-import org.powerbot.script.methods.Mouse;
+import org.powerbot.script.methods.ClientFactory;
+import org.powerbot.script.methods.ClientLink;
 import org.powerbot.script.util.Delay;
 import org.powerbot.script.util.Filter;
 
-public abstract class Interactive implements Targetable, Validatable {
+import java.awt.*;
+
+public abstract class Interactive extends ClientLink implements Targetable, Validatable {
 	private static final int ATTEMPTS = 5;
 
+	public Interactive(ClientFactory ctx) {
+		super(ctx);
+	}
+
 	public boolean isOnScreen() {
-		return Game.isPointOnScreen(getInteractPoint());
+		return ctx.game.isPointOnScreen(getInteractPoint());
 	}
 
 	public boolean hover() {
-		return Mouse.move(this);
+		return ctx.mouse.move(this);
 	}
 
 	public boolean click() {
@@ -24,7 +27,7 @@ public abstract class Interactive implements Targetable, Validatable {
 	}
 
 	public boolean click(final boolean left) {
-		return Mouse.click(this, left);
+		return ctx.mouse.click(this, left);
 	}
 
 	public boolean interact(final String action) {
@@ -34,12 +37,12 @@ public abstract class Interactive implements Targetable, Validatable {
 	public boolean interact(final String action, final String option) {
 		int a = 0;
 		while (a++ < ATTEMPTS) {
-			if (!Mouse.move(this, new Filter<Point>() {
+			if (!ctx.mouse.move(this, new Filter<Point>() {
 				@Override
 				public boolean accept(final Point point) {
-					if (contains(point) && Menu.indexOf(action, option) != -1) {
+					if (contains(point) && ctx.menu.indexOf(action, option) != -1) {
 						Delay.sleep(0, 80);
-						return contains(point) && Menu.indexOf(action, option) != -1;
+						return contains(point) && ctx.menu.indexOf(action, option) != -1;
 					}
 					return false;
 				}
@@ -47,8 +50,8 @@ public abstract class Interactive implements Targetable, Validatable {
 				continue;
 			}
 
-			if (Menu.click(action, option)) return true;
-			Menu.close();
+			if (ctx.menu.click(action, option)) return true;
+			ctx.menu.close();
 		}
 		return false;
 	}
