@@ -8,9 +8,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
@@ -23,10 +20,10 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 import org.powerbot.gui.component.BotLocale;
-import org.powerbot.gui.controller.BotInteract;
 import org.powerbot.service.NetworkAccount;
 import org.powerbot.util.Configuration;
 import org.powerbot.util.Tracker;
@@ -35,9 +32,7 @@ import org.powerbot.util.Tracker;
  * @author Paris
  */
 public final class BotSignin extends JDialog implements ActionListener {
-	private static final long serialVersionUID = 1L;
 
-	private final BotChrome parent;
 	private final JButton signin;
 	private final JLabel register;
 	private final JTextField username;
@@ -45,7 +40,6 @@ public final class BotSignin extends JDialog implements ActionListener {
 
 	public BotSignin(final BotChrome parent) {
 		super(parent, BotLocale.SIGNIN + " to " + BotLocale.WEBSITE, true);
-		this.parent = parent;
 		setFont(getFont().deriveFont(getFont().getSize2D() * 1.5f));
 
 		JLabel labelUsername = new JLabel();
@@ -81,7 +75,7 @@ public final class BotSignin extends JDialog implements ActionListener {
 		lostPass.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(final MouseEvent e) {
-				BotInteract.openURL(Configuration.URLs.LOSTPASS);
+				BotChrome.openURL(Configuration.URLs.LOSTPASS);
 			}
 		});
 		lostPass.setVisible(false);
@@ -92,7 +86,7 @@ public final class BotSignin extends JDialog implements ActionListener {
 		register.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(final MouseEvent e) {
-				BotInteract.openURL(Configuration.URLs.REGISTER);
+				BotChrome.openURL(Configuration.URLs.REGISTER);
 			}
 		});
 
@@ -183,43 +177,54 @@ public final class BotSignin extends JDialog implements ActionListener {
 		Tracker.getInstance().trackPage("signin/", getTitle());
 	}
 
-	public void actionPerformed(final ActionEvent arg0) {
-		final Object s = arg0.getSource();
-		if (s == signin) {
-			signin.setEnabled(false);
-			if (signin.getText().equals(BotLocale.SIGNIN)) {
-				if (username.getText().length() != 0 && new String(password.getPassword()).length() != 0) {
-					Map<String, String> resp = null;
-					try {
-						resp = NetworkAccount.getInstance().login(username.getText(), new String(password.getPassword()), "");
-					} catch (final IOException ignored) {
+	public void actionPerformed(final ActionEvent e) {
+		signin.setEnabled(false);
+		username.setEnabled(false);
+		password.setEnabled(false);
+		if (signin.getText().equals(BotLocale.SIGNIN)) {
+			final String user = username.getText().trim(), pass = new String(password.getPassword()).trim();
+			if (!user.isEmpty() && !pass.isEmpty()) {
+				new Thread(new Runnable() {
+					@Override
+					public void run() {
+						boolean s = false;
+						try {
+							s = NetworkAccount.getInstance().login(user, pass, "");
+						} catch (final IOException ignored) {
+						}
+						final boolean success = s;
+						SwingUtilities.invokeLater(new Runnable() {
+							@Override
+							public void run() {
+								updateState(success);
+								if (success) {
+									setVisible(false);
+									dispose();
+								} else {
+									final String m = NetworkAccount.getInstance().getResponse("message");
+									JOptionPane.showMessageDialog(BotSignin.this, m == null || m.isEmpty() ? BotLocale.INVALIDCREDENTIALS : m, BotLocale.ERROR, JOptionPane.ERROR_MESSAGE);
+								}
+							}
+						});
 					}
-					final boolean success = NetworkAccount.getInstance().isSuccess(resp);
-					updateState(success);
-					if (success) {
-						setVisible(false);
-						dispose();
-					} else {
-						final String m = resp != null && resp.containsKey("message") ? resp.get("message") : BotLocale.INVALIDCREDENTIALS;
-						JOptionPane.showMessageDialog(this, m, BotLocale.ERROR, JOptionPane.ERROR_MESSAGE);
-					}
-				}
-				Tracker.getInstance().trackPage("signin/login", getTitle());
-			} else if (signin.getText().equals(BotLocale.SIGNOUT)) {
-				NetworkAccount.getInstance().logout();
-				BotInteract.tabClose(true);
-				updateState(false);
-				Tracker.getInstance().trackPage("signin/logout", getTitle());
+				}).start();
 			}
-			signin.setEnabled(true);
+			Tracker.getInstance().trackPage("signin/login", getTitle());
+		} else if (signin.getText().equals(BotLocale.SIGNOUT)) {
+			new Thread(new Runnable() {
+				@Override
+				public void run() {
+					NetworkAccount.getInstance().logout();
+					SwingUtilities.invokeLater(new Runnable() {
+						@Override
+						public void run() {
+							updateState(false);
+						}
+					});
+				}
+			}).start();
+			Tracker.getInstance().trackPage("signin/logout", getTitle());
 		}
-		showWelcomeMessage();
-	}
-
-	public static void showWelcomeMessage() {
-		final NetworkAccount n = NetworkAccount.getInstance();
-		final String s = n.isLoggedIn() ? String.format(BotLocale.WELCOME_SIGNEDIN, n.getDisplayName()) : BotLocale.WELCOME_NOTSIGNEDIN;
-		Logger.getLogger(BotChrome.class.getName()).log(Level.INFO, s, "Welcome");
 	}
 
 	private void updateState(final boolean signedin) {
@@ -238,5 +243,6 @@ public final class BotSignin extends JDialog implements ActionListener {
 			password.setEnabled(true);
 			register.setVisible(true);
 		}
+		signin.setEnabled(true);
 	}
 }

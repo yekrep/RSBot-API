@@ -45,6 +45,9 @@ public class PrintStreamHandler extends Handler {
 
 	@Override
 	public synchronized void publish(final LogRecord record) {
+		if (record == null || record.getMessage() == null) {
+			return;
+		}
 		final String text = record.getMessage().trim();
 		if (text.length() == 0) {
 			return;
@@ -54,7 +57,7 @@ public class PrintStreamHandler extends Handler {
 		std.print('[');
 		std.print(record.getLevel().getName());
 		std.print("] ");
-		if (Configuration.SUPERDEV || RestrictedSecurityManager.isScriptThread(Thread.currentThread())) {
+		if (!Configuration.FROMJAR || RestrictedSecurityManager.isScriptThread(Thread.currentThread())) {
 			std.print(record.getLoggerName());
 			std.print(": ");
 		}

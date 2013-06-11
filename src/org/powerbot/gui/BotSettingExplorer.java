@@ -37,15 +37,17 @@ import org.powerbot.util.Tracker;
 import org.powerbot.util.io.Resources;
 
 public class BotSettingExplorer extends JFrame {
-	private static final long serialVersionUID = 1L;
 	private static final int FRAME_WIDTH = 595;
 	private static final int FRAME_HEIGHT = 335;
+
 	private static BotSettingExplorer instance;
 	private final SimpleDateFormat FORMATTER = new SimpleDateFormat("HH:mm:ss");
-	private final HashMap<Integer, String> lastChanges = new HashMap<>();
+
 	private int current = -1;
 	private int[] settings_cache = null;
 	private boolean paused = false;
+	private final HashMap<Integer, String> lastChanges = new HashMap<>();
+
 	private String[] lastLabels = null;
 	private JTextArea info = null;
 	private JTextArea changes = null;

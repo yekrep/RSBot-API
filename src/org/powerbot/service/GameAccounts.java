@@ -16,13 +16,12 @@ import org.powerbot.util.io.IniParser;
  * @author Paris
  */
 public final class GameAccounts extends ArrayList<GameAccounts.Account> {
-	private static final long serialVersionUID = 1L;
 	private static final GameAccounts instance = new GameAccounts();
 	private final CryptFile store;
 
 	private GameAccounts() {
 		super();
-		store = new CryptFile("gameaccts", true, GameAccounts.class);
+		store = new CryptFile("accounts.1.ini", false, GameAccounts.class);
 		load();
 	}
 
@@ -31,26 +30,18 @@ public final class GameAccounts extends ArrayList<GameAccounts.Account> {
 	}
 
 	private synchronized void load() {
-		InputStream is;
+		if (!store.exists()) {
+			return;
+		}
+		Map<String, Map<String, String>> data = null;
 		try {
-			is = store.getInputStream();
-		} catch (IOException ignored) {
+			data = IniParser.deserialise(store.getInputStream());
+		} catch (final IOException ignored) {
+		}
+		if (data == null || data.isEmpty()) {
 			return;
 		}
-		final Map<String, Map<String, String>> data;
-		try {
-			data = IniParser.deserialise(is);
-		} catch (IOException ignored) {
-			return;
-		} finally {
-			try {
-				is.close();
-			} catch (final IOException ignored) {
-			}
-		}
-		if (data == null) {
-			return;
-		}
+
 		for (final Entry<String, Map<String, String>> e : data.entrySet()) {
 			final Account a = new Account(e.getKey());
 			for (final Entry<String, String> p : e.getValue().entrySet()) {
@@ -68,27 +59,18 @@ public final class GameAccounts extends ArrayList<GameAccounts.Account> {
 	}
 
 	public synchronized void save() {
-		final Map<String, Map<String, String>> data = new HashMap<>();
-		for (Iterator<Account> i = iterator(); i.hasNext(); ) {
-			final Account a = i.next();
-			final Map<String, String> e = new HashMap<>();
+		final Map<String, Map<String, String>> data = new HashMap<>(size());
+		for (final Account a : this) {
+			final Map<String, String> e = new HashMap<>(3);
 			e.put("password", a.password);
 			e.put("pin", Integer.toString(a.pin));
 			e.put("member", a.member ? "1" : "0");
 			data.put(a.toString(), e);
 		}
-		OutputStream os = null;
+
 		try {
-			os = store.getOutputStream();
-			IniParser.serialise(data, os);
-		} catch (final Exception ignored) {
-		} finally {
-			if (os != null) {
-				try {
-					os.close();
-				} catch (final IOException ignored) {
-				}
-			}
+			IniParser.serialise(data, store.getOutputStream());
+		} catch (final IOException ignored) {
 		}
 	}
 
@@ -115,7 +97,7 @@ public final class GameAccounts extends ArrayList<GameAccounts.Account> {
 	}
 
 	public final class Account {
-		private final String username;
+		private String username;
 		private String password;
 		public int pin = -1;
 		public boolean member = false;

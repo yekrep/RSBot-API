@@ -1,29 +1,31 @@
 package org.powerbot.util.io;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributeView;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.FileTime;
 import java.security.GeneralSecurityException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.zip.Adler32;
+import java.util.zip.Deflater;
+import java.util.zip.DeflaterOutputStream;
+import java.util.zip.Inflater;
+import java.util.zip.InflaterInputStream;
 
 import javax.crypto.Cipher;
 import javax.crypto.CipherInputStream;
 import javax.crypto.CipherOutputStream;
+import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
@@ -35,30 +37,36 @@ import org.powerbot.util.StringUtil;
  */
 public final class CryptFile {
 	public static final Map<File, Class<?>[]> PERMISSIONS = new ConcurrentHashMap<>();
-	private static final long VECTOR = 0x9e3779b9, TIMESTAMP = 1346067355497L, GCTIME = 1000 * 60 * 60 * 24 * 3;
+	private static final long VECTOR = 0x9e3779b9;
 	private static final String KEY_ALGO = "ARCFOUR", CIPHER_ALGO = "RC4";
 	private final SecretKey key;
-	private final File root, store;
+	private final File store;
 
 	public CryptFile(final String name, final Class<?>... parents) {
-		this(name, false);
+		this(name, true);
 	}
 
 	public CryptFile(final String name, final boolean temp, final Class<?>... parents) {
-		root = temp ? Configuration.TEMP : Configuration.HOME;
-		store = getSecureFile(name);
+		final File root = temp ? Configuration.TEMP : Configuration.HOME;
+		store = new File(root, getHashedName(name));
 		PERMISSIONS.put(store, parents);
 
-		int k = (int) ((Configuration.getUID() ^ VECTOR) & Integer.MAX_VALUE);
-		final byte[] b = new byte[4];
-		for (int i = 0; i < b.length; i++, k >>>= 8) {
-			b[i] = (byte) (k & 0xff);
+		long k = Configuration.getUID() ^ VECTOR;
+		final byte[] b = new byte[16];
+		for (int j = 0; j < 2; j++) {
+			for (int i = 0; i < 8; i++, k >>>= 8) {
+				b[j * 8 + i] = (byte) (k & 0xff);
+			}
 		}
 		key = new SecretKeySpec(b, 0, b.length, KEY_ALGO);
 	}
 
 	public boolean exists() {
 		return store.isFile() && store.length() != 0L;
+	}
+
+	public long lastModified() {
+		return store.lastModified();
 	}
 
 	public void delete() {
@@ -77,8 +85,42 @@ public final class CryptFile {
 			}
 		}
 
+		final long mod = con.getLastModified();
+
 		if (con.getResponseCode() != HttpURLConnection.HTTP_NOT_MODIFIED &&
-				(exists() ? con.getLastModified() > store.lastModified() : true)) {
+				(!exists() || mod == 0L || mod > store.lastModified())) {
+			IOHelper.write(HttpClient.getInputStream(con), getOutputStream());
+		}
+
+		con.disconnect();
+		return getInputStream();
+	}
+
+	public InputStream download(final String link, final Object... args) throws IOException {
+		final String[] s = HttpClient.splitPostURL(link, args);
+		final HttpURLConnection con = HttpClient.getHttpConnection(new URL(s[0]));
+
+		if (store.exists()) {
+			try {
+				con.setIfModifiedSince(store.lastModified());
+			} catch (final IllegalStateException ignored) {
+			}
+		}
+
+		if (s.length > 1) {
+			con.setDoOutput(true);
+			if (s[1] != null && !s[1].isEmpty()) {
+				try (final OutputStreamWriter out = new OutputStreamWriter(con.getOutputStream())) {
+					out.write(s[1]);
+					out.flush();
+				}
+			}
+		}
+
+		final long mod = con.getLastModified();
+
+		if (con.getResponseCode() != HttpURLConnection.HTTP_NOT_MODIFIED &&
+				(!store.exists() || mod == 0L || mod > store.lastModified())) {
 			IOHelper.write(HttpClient.getInputStream(con), getOutputStream());
 		}
 
@@ -112,10 +154,11 @@ public final class CryptFile {
 		} catch (final GeneralSecurityException e) {
 			throw new IOException(e);
 		}
+		store.setLastModified(System.currentTimeMillis());
 		return new CipherOutputStream(new FileOutputStream(store), c);
 	}
 
-	private File getSecureFile(final String name) {
+	public static String getHashedName(final String name) {
 		final long uid = Configuration.getUID();
 		String hash;
 
@@ -136,30 +179,6 @@ public final class CryptFile {
 			hash = Long.toHexString(c.getValue());
 		}
 
-		final File file = new File(root, hash);
-
-		if (file.isFile() && file.lastModified() < TIMESTAMP) {
-			file.delete();
-		}
-
-		return file;
-	}
-
-	private static void gc() {
-		final File root = Configuration.TEMP;
-
-		if (!root.isDirectory()) {
-			return;
-		}
-
-		for (final File file : root.listFiles()) {
-			try {
-				final long atime = Files.readAttributes(file.toPath(), BasicFileAttributes.class).lastAccessTime().toMillis();
-				if (atime < System.currentTimeMillis() - GCTIME) {
-					file.delete();
-				}
-			} catch (final IOException ignored) {
-			}
-		}
+		return hash;
 	}
 }

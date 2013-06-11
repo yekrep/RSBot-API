@@ -7,13 +7,29 @@ import java.lang.annotation.Target;
 import java.lang.reflect.Method;
 import java.util.concurrent.Callable;
 
-import apple.dts.samplecode.osxadapter.OSXAdapter;
-import org.powerbot.gui.controller.BotInteract;
+import apple.dts.samplecode.OSXAdapter;
+import org.powerbot.gui.BotChrome;
+import org.powerbot.gui.component.BotMenuBar;
 
 /**
  * @author Paris
  */
 public class LoadOSX implements Callable<Boolean> {
+
+	@LoadOSX.OSXAdapterInfo(mode = 1)
+	public static void about() {
+		BotMenuBar.showDialog(BotMenuBar.Action.ABOUT);
+	}
+
+	@LoadOSX.OSXAdapterInfo(mode = 2)
+	public static void quit() {
+		BotChrome.getInstance().windowClosing(null);
+	}
+
+	@LoadOSX.OSXAdapterInfo(mode = 3)
+	public static void signin() {
+		BotMenuBar.showDialog(BotMenuBar.Action.SIGNIN);
+	}
 
 	@Override
 	public Boolean call() throws Exception {
@@ -27,21 +43,14 @@ public class LoadOSX implements Callable<Boolean> {
 					case 2:
 						OSXAdapter.setQuitHandler(this, m);
 						break;
+					case 3:
+						OSXAdapter.setPreferencesHandler(this, m);
+						break;
 					}
 				}
 			}
 		}
 		return true;
-	}
-
-	@LoadOSX.OSXAdapterInfo(mode = 1)
-	public static void about() {
-		BotInteract.showDialog(BotInteract.Action.ABOUT);
-	}
-
-	@LoadOSX.OSXAdapterInfo(mode = 2)
-	public static void quit() {
-		BotInteract.tabClose(false);
 	}
 
 	@Retention(RetentionPolicy.RUNTIME)

@@ -11,7 +11,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Calendar;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -22,12 +21,10 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import org.powerbot.gui.component.BotLocale;
-import org.powerbot.gui.controller.BotInteract;
 import org.powerbot.util.Configuration;
 import org.powerbot.util.Tracker;
 
 public final class BotAbout extends JDialog {
-	private static final long serialVersionUID = 1L;
 
 	public BotAbout(final Frame parent) {
 		super(parent, BotLocale.ABOUT, true);
@@ -57,7 +54,7 @@ public final class BotAbout extends JDialog {
 		panelText.add(Box.createVerticalStrut(1));
 
 		final String[] jagex = {
-				"RuneScape\u00ae is a trademark of Jagex \u00a9 1999 - " + Calendar.getInstance().get(Calendar.YEAR) + " Jagex Ltd.",
+				"RuneScape\u00ae is a trademark of Jagex \u00a9 1999 - 2012 Jagex Ltd.",
 				"RuneScape content and materials are trademarks and copyrights of Jagex or its licensees.",
 				"This program is issued with no warranty and is not affiliated with Jagex Ltd., nor do they endorse usage of our software."};
 
@@ -80,7 +77,7 @@ public final class BotAbout extends JDialog {
 		visit.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(final MouseEvent e) {
-				BotInteract.openURL(Configuration.URLs.SITE);
+				BotChrome.openURL(Configuration.URLs.SITE);
 			}
 		});
 		final JLabel license = new JLabel("<html><a href='#'>" + BotLocale.LICENSE + "</a></html>");
@@ -89,7 +86,7 @@ public final class BotAbout extends JDialog {
 			@Override
 			public void mouseClicked(final MouseEvent e) {
 				dispose();
-				BotInteract.openURL(Configuration.URLs.LICENSE);
+				new BotLicense(parent);
 			}
 		});
 		final JButton ok = new JButton(BotLocale.OK);

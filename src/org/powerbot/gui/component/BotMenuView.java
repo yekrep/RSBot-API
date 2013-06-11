@@ -40,13 +40,15 @@ import org.powerbot.util.io.Resources;
  * @author Paris
  */
 public final class BotMenuView implements ActionListener {//TODO revamp debugging options
-	private static final long serialVersionUID = 1L;
+	private final Map<String, Class<? extends EventListener>> map;
+	private static Map<Bot, Map<String, EventListener>> listeners;
+
 	private static final String ALL = "All";
 	private static final String MOUSE = "Mouse";
 	private static final String PLAYERS = "Players";
 	private static final String NPCS = "NPCs";
 	private static final String GROUND_ITEMS = "Ground Items";
-	private static final String SCENEENTITIES = "Scene Entities";
+	private static final String SCENEENTITIES = "Objects";
 	private static final String MODELS = "Models";
 	private static final String INVENTORY = "Inventory";
 	private static final String CLIENTSTATE = "Client State";
@@ -58,11 +60,22 @@ public final class BotMenuView implements ActionListener {//TODO revamp debuggin
 	private static final String DESTINATION = "Destination";
 	private static final String MESSAGES = "Messages";
 	private static final String SEPERATOR = "-";
-	private static Map<Bot, Map<String, EventListener>> listeners;
-	private final Map<String, Class<? extends EventListener>> map;
 
 	public BotMenuView(final JMenu menu) {
-		if (!Bot.instantiated()) {
+		final boolean enabled = Bot.instantiated();
+
+		final JMenuItem widgetExplorer = new JMenuItem(BotLocale.WIDGETEXPLORER);
+		widgetExplorer.addActionListener(this);
+		widgetExplorer.setIcon(new ImageIcon(Resources.Paths.EDIT));
+		widgetExplorer.setEnabled(enabled);
+		menu.add(widgetExplorer);
+		final JMenuItem settingExplorer = new JMenuItem(BotLocale.SETTINGEXPLORER);
+		settingExplorer.addActionListener(this);
+		settingExplorer.setIcon(new ImageIcon(Resources.Paths.SETTINGS));
+		settingExplorer.setEnabled(enabled);
+		menu.add(settingExplorer);
+
+		if (!enabled) {
 			map = null;
 			return;
 		}
@@ -127,16 +140,6 @@ public final class BotMenuView implements ActionListener {//TODO revamp debuggin
 				break;
 			}
 		}
-
-		final JMenuItem widgetExplorer = new JMenuItem(BotLocale.WIDGETEXPLORER);
-		widgetExplorer.addActionListener(this);
-		widgetExplorer.setIcon(new ImageIcon(Resources.Paths.EDIT));
-		menu.add(widgetExplorer);
-		final JMenuItem settingExplorer = new JMenuItem(BotLocale.SETTINGEXPLORER);
-		settingExplorer.addActionListener(this);
-		settingExplorer.setIcon(new ImageIcon(Resources.Paths.SETTINGS));
-		menu.add(settingExplorer);
-		menu.addSeparator();
 
 		final JCheckBoxMenuItem all = new JCheckBoxMenuItem(ALL, selectedAll);
 		all.addActionListener(this);

@@ -3,29 +3,26 @@ package org.powerbot.util;
 import java.awt.Dimension;
 import java.awt.GraphicsEnvironment;
 import java.awt.Toolkit;
-import java.io.ByteArrayInputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Random;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.zip.Adler32;
 
-import org.powerbot.ipc.Controller;
 import org.powerbot.util.io.CryptFile;
 import org.powerbot.util.io.HttpClient;
-import org.powerbot.util.io.IOHelper;
-import org.powerbot.util.io.IniParser;
 
 /**
  * @author Paris
@@ -34,10 +31,10 @@ public final class Tracker {
 	private static Tracker instance;
 	private final Executor exec;
 	private static final String TRACKING_ID = "UA-5170375-18", PAGE_PREFIX = "/rsbot/", HOSTNAME = "services.powerbot.org";
-	private static final String KEY_VISITS = "visits", KEY_FIRST = "first", KEY_PREVIOUS = "prev";
 	private final String locale, resolution, colours;
 	private final Random r;
-	private final CryptFile store;
+	private final File cache;
+	private final AtomicLong cacheTime;
 	private final int visitor;
 	private final long[] timestamps;
 	private final AtomicInteger visits;
@@ -52,36 +49,14 @@ public final class Tracker {
 		resolution = (int) d.getWidth() + "x" + (int) d.getHeight();
 		colours = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration().getColorModel().getPixelSize() + "-bit";
 
+		cache = new File(Configuration.HOME, CryptFile.getHashedName(TRACKING_ID + ".1.ga"));
+		cacheTime = new AtomicLong(0);
+
 		r = new Random();
 		visitor = (int) (Configuration.getUID() & Integer.MAX_VALUE);
 		timestamps = new long[2];
-		visits = new AtomicInteger(0);
-
-		store = new CryptFile("tracker.ini", true, Tracker.class);
-		if (store.exists()) {
-			try (final InputStream in = store.getInputStream()) {
-				final Map<String, String> data = IniParser.deserialise(in).get(IniParser.EMPTYSECTION);
-				if (data.containsKey(KEY_VISITS)) {
-					try {
-						visits.set(Integer.parseInt(data.get(KEY_VISITS)));
-					} catch (final NumberFormatException ignored) {
-					}
-				}
-				if (data.containsKey(KEY_FIRST)) {
-					try {
-						timestamps[0] = Long.parseLong(data.get(KEY_FIRST));
-					} catch (final NumberFormatException ignored) {
-					}
-				}
-				if (data.containsKey(KEY_PREVIOUS)) {
-					try {
-						timestamps[1] = Long.parseLong(data.get(KEY_PREVIOUS));
-					} catch (final NumberFormatException ignored) {
-					}
-				}
-			} catch (final IOException ignored) {
-			}
-		}
+		visits = new AtomicInteger(-1);
+		getTimestamps();
 
 		if (timestamps[0] == 0) {
 			timestamps[0] = System.currentTimeMillis() / 1000L;
@@ -100,30 +75,33 @@ public final class Tracker {
 
 	private long[] getTimestamps() {
 		synchronized (timestamps) {
+			if (cacheTime.get() < cache.lastModified()) {
+				try (final DataInputStream in = new DataInputStream(new FileInputStream(cache))) {
+					for (int i = 0; i < timestamps.length; i++) {
+						timestamps[i] = in.readLong();
+					}
+					visits.set(in.readInt());
+					in.close();
+				} catch (final IOException ignored) {
+				}
+			}
+
 			final long prev = timestamps[1];
 			timestamps[1] = System.currentTimeMillis() / 1000L;
 
-			final Map<String, String> data = new HashMap<>(3);
-			data.put(KEY_VISITS, Integer.toString(visits.incrementAndGet()));
-			data.put(KEY_FIRST, Long.toString(timestamps[0]));
-			data.put(KEY_FIRST, Long.toString(prev));
-			final Map<String, Map<String, String>> map = new HashMap<>(1);
-			map.put(IniParser.EMPTYSECTION, data);
-			try (final OutputStream out = store.getOutputStream()) {
-				IniParser.serialise(map, out);
+			try (final DataOutputStream out = new DataOutputStream(new FileOutputStream(cache))) {
+				for (int i = 0; i < timestamps.length; i++) {
+					out.writeLong(timestamps[i]);
+				}
+				out.writeInt(visits.incrementAndGet());
+				out.close();
+				final long mod = System.currentTimeMillis();
+				cacheTime.set(mod);
+				cache.setLastModified(mod);
 			} catch (final IOException ignored) {
 			}
 
-			Controller.getInstance().updateTrackerTimestamps(visits.get(), timestamps[1]);
-
-			return new long[]{timestamps[0], prev, timestamps[1]};
-		}
-	}
-
-	public void setTimestamps(final int visits, final long prev) {
-		synchronized (timestamps) {
-			this.visits.set(visits);
-			timestamps[1] = prev;
+			return new long[] {timestamps[0], prev, timestamps[1]};
 		}
 	}
 
@@ -186,46 +164,12 @@ public final class Tracker {
 	}
 
 	private static void call(final String url) {
-		final CryptFile cf = new CryptFile("tracker-cookies.txt", Tracker.class);
-		String cookies = null;
-		final StringBuilder c = new StringBuilder();
-
-		try {
-			cookies = IOHelper.readString(cf.getInputStream());
-		} catch (final IOException ignored) {
-		}
-
 		try {
 			final HttpURLConnection con = HttpClient.getHttpConnection(new URL(url));
-
-			if (cookies != null && !cookies.isEmpty()) {
-				con.setRequestProperty("Cookie", cookies.trim());
-			}
-
 			con.connect();
 			con.getResponseCode();
-
-			for (final Entry<String, List<String>> header : con.getHeaderFields().entrySet()) {
-				if (header.getKey() != null && header.getKey().equalsIgnoreCase("Set-Cookie")) {
-					if (c.length() != 0) {
-						c.append("; ");
-					}
-					c.append(header.getValue());
-				}
-			}
-
 			con.disconnect();
 		} catch (final IOException ignored) {
-		}
-
-		if (c.length() == 0) {
-			cf.delete();
-		} else {
-			final ByteArrayInputStream bis = new ByteArrayInputStream(StringUtil.getBytesUtf8(c.toString().trim()));
-			try {
-				IOHelper.write(bis, cf.getOutputStream());
-			} catch (final IOException ignored) {
-			}
 		}
 	}
 }

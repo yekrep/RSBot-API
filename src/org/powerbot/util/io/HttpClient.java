@@ -25,23 +25,34 @@ public class HttpClient {
 
 	static {
 		final boolean x64 = System.getProperty("sun.arch.data.model").equals("64");
-		final StringBuilder s = new StringBuilder(70);
-		s.append("Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; ");
+		final StringBuilder s = new StringBuilder(60);
+
+		s.append(Configuration.NAME).append('/').append(Configuration.VERSION).append(" (");
+		switch (Configuration.OS) {
+		case WINDOWS:
+			s.append("Windows NT ").append(System.getProperty("os.version"));
+			if (x64) {
+				s.append("; WOW64");
+			}
+			break;
+		case MAC:
+			s.append("Macintosh; Intel ").append(System.getProperty("os.name")).append(' ').append(System.getProperty("os.version").replace('.', '_'));
+			break;
+		case LINUX:
+			s.append("X11; Linux ").append(x64 ? "x86_64" : "i686");
+			break;
+		}
+		s.append(") Java/").append(System.getProperty("java.version"));
+
+		HTTP_USERAGENT_REAL = s.toString();
+
+		s.setLength(0);
+		s.append("Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; ");
 		if (x64) {
 			s.append("WOW64; ");
 		}
-		s.append("Trident/5.0)");
+		s.append("Trident/6.0)");
 		HTTP_USERAGENT_FAKE = s.toString();
-		s.setLength(0);
-		s.append(Configuration.NAME);
-		s.append('/');
-		s.append(Configuration.VERSION);
-		s.append(" (");
-		s.append(System.getProperty("os.name"));
-		s.append("; Java/");
-		s.append(System.getProperty("java.version"));
-		s.append(')');
-		HTTP_USERAGENT_REAL = s.toString();
 	}
 
 	public static boolean isGameURL(final URL url) {
@@ -72,10 +83,16 @@ public class HttpClient {
 		final HttpURLConnection con = getHttpConnection(url);
 
 		if (file.exists()) {
-			con.setIfModifiedSince(file.lastModified());
+			try {
+				con.setIfModifiedSince(file.lastModified());
+			} catch (final IllegalStateException ignored) {
+			}
 		}
 
-		if (con.getResponseCode() != HttpURLConnection.HTTP_NOT_MODIFIED) {
+		final long mod = con.getLastModified();
+
+		if (con.getResponseCode() != HttpURLConnection.HTTP_NOT_MODIFIED &&
+				(!file.exists() || mod == 0L || mod > file.lastModified())) {
 			IOHelper.write(getInputStream(con), file);
 		}
 
@@ -88,26 +105,32 @@ public class HttpClient {
 	}
 
 	public static InputStream openStream(String link, final Object... args) throws IOException {
-		URL url = new URL(String.format(link, args));
-		final String query = url.getFile(), marker = "{POST}";
-		final int z = query.indexOf(marker);
+		final String[] s = splitPostURL(link, args);
+		final URLConnection con = HttpClient.getHttpConnection(new URL(s[0]));
+		if (s.length > 1) {
+			con.setDoOutput(true);
+			if (s[1] != null && !s[1].isEmpty()) {
+				try (final OutputStreamWriter out = new OutputStreamWriter(con.getOutputStream())) {
+					out.write(s[1]);
+					out.flush();
+				}
+			}
+		}
+		return HttpClient.getInputStream(con);
+	}
+
+	public static String[] splitPostURL(final String link, final Object... args) {
+		final String s = String.format(link, args), marker = "{POST}";
+		final int z = s.indexOf(marker);
 		if (z == -1) {
-			return HttpClient.openStream(url);
+			return new String[] {s};
 		}
-		String pre = z == 0 ? "" : query.substring(0, z), post = z + marker.length() >= query.length() ? null : query.substring(z + marker.length());
-		if (post == null || post.isEmpty()) {
-			return HttpClient.openStream(url);
-		}
+		final int o = z + marker.length();
+		String pre = s.substring(0, z), post = o >= s.length() ? "" : s.substring(o);
 		if (pre.length() > 0 && pre.charAt(pre.length() - 1) == '?') {
 			pre = pre.substring(0, pre.length() - 1);
 		}
-		url = new URL(url.getProtocol(), url.getHost(), url.getPort(), pre);
-		final URLConnection con = HttpClient.getHttpConnection(url);
-		con.setDoOutput(true);
-		final OutputStreamWriter out = new OutputStreamWriter(con.getOutputStream());
-		out.write(post);
-		out.flush();
-		return HttpClient.getInputStream(con);
+		return new String[] {pre, post};
 	}
 
 	public static InputStream getInputStream(final URLConnection con) throws IOException {

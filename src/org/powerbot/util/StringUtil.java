@@ -8,19 +8,10 @@ import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.regex.Pattern;
-import java.util.zip.Adler32;
-
-import org.powerbot.util.io.Base64;
 
 public class StringUtil {
-	private static final Pattern PATTERN_HTML = Pattern.compile("(^[^<]+>|<[^>]+>|<[^>]+$)");
-
 	public static String stripHtml(final String s) {
-		if (s == null) return "";
-		return PATTERN_HTML.matcher(s).replaceAll("");
+		return s.replaceAll("\\<.*?\\>", "");
 	}
 
 	/**
@@ -77,16 +68,6 @@ public class StringUtil {
 		return path;
 	}
 
-	public static String throwableToString(final Throwable t) {
-		if (t != null) {
-			final Writer exception = new StringWriter();
-			final PrintWriter printWriter = new PrintWriter(exception);
-			t.printStackTrace(printWriter);
-			return exception.toString();
-		}
-		return "";
-	}
-
 	public static byte[] getBytesUtf8(final String string) {
 		try {
 			return string.getBytes("UTF-8");
@@ -120,20 +101,5 @@ public class StringUtil {
 			data[i / 2] = (byte) ((Character.digit(s.charAt(i), 16) << 4) + Character.digit(s.charAt(i + 1), 16));
 		}
 		return data;
-	}
-
-	public static String getHash(final byte[] b) {
-		String h;
-		final MessageDigest md;
-		try {
-			md = MessageDigest.getInstance("SHA-1");
-			md.update(b);
-			h = StringUtil.newStringUtf8(Base64.encode(md.digest()));
-		} catch (final NoSuchAlgorithmException ignored) {
-			final Adler32 c = new Adler32();
-			c.update(b);
-			h = Long.toHexString(c.getValue());
-		}
-		return h;
 	}
 }

@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 import javax.swing.DefaultCellEditor;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
@@ -37,7 +38,6 @@ import org.powerbot.util.io.Resources;
  */
 public final class BotAccounts extends JDialog implements WindowListener {
 	private final Logger log = Logger.getLogger(BotAccounts.class.getName());
-	private static final long serialVersionUID = 1L;
 	private final JTable table;
 	private final JButton delete;
 

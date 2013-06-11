@@ -13,16 +13,15 @@ import org.powerbot.util.StringUtil;
  * @author Paris
  */
 public final class ScriptDefinition implements Comparable<ScriptDefinition>, Serializable {
-	private static final long serialVersionUID = 7424073911663414957L;
 	private Script script;
 	private final String name, id, description, website;
 	private final double version;
 	private final String[] authors;
-	private final int instantces;
 
 	public String className;
 	public byte[] key;
 	public String source;
+	public int session;
 	public boolean local = false;
 	private Category category = null;
 
@@ -74,44 +73,15 @@ public final class ScriptDefinition implements Comparable<ScriptDefinition>, Ser
 		version = manifest.version();
 		authors = manifest.authors();
 		website = manifest.website();
-		instantces = manifest.instances();
 	}
 
-	public ScriptDefinition(final Script script, final Map<String, String> data) {
-		final Class<Manifest> manifest = Manifest.class;
-
-		this.script = script;
-		name = data.containsKey("name") ? data.get("name") : null;
-		id = data.containsKey("id") ? data.get("id") : null;
-		description = data.containsKey("description") ? data.get("description") : null;
-		website = data.containsKey("website") ? data.get("website") : null;
-		authors = data.containsKey("authors") ? data.get("authors").split(",") : new String[]{};
-
-		double version = 1d;
-		if (data.containsKey("version")) {
-			try {
-				version = Double.parseDouble(data.get("version"));
-			} catch (final NumberFormatException ignored) {
-			}
-		}
+	public ScriptDefinition(final String name, final String id, final String description, final double version, final String[] authors, final String website) {
+		this.name = name;
+		this.id = id;
+		this.description = description;
 		this.version = version;
-
-		int instances = Integer.MAX_VALUE;
-		try {
-			instances = (int) manifest.getMethod("instances").getDefaultValue();
-		} catch (final NoSuchMethodException ignored) {
-		}
-		if (data.containsKey("instances")) {
-			try {
-				instances = Integer.parseInt(data.get("instances"));
-			} catch (final NumberFormatException ignored) {
-			}
-		}
-		this.instantces = instances;
-	}
-
-	public ScriptDefinition(final Map<String, String> data) {
-		this(null, data);
+		this.authors = authors;
+		this.website = website;
 	}
 
 	public Script getScript() {
@@ -169,10 +139,6 @@ public final class ScriptDefinition implements Comparable<ScriptDefinition>, Ser
 		return url != null && !url.isEmpty() && (url.startsWith("http://") || url.startsWith("https://")) ? url : null;
 	}
 
-	public int getInstances() {
-		return instantces;
-	}
-
 	public Category getCategory() {
 		if (category != null) {
 			return category;
@@ -212,6 +178,24 @@ public final class ScriptDefinition implements Comparable<ScriptDefinition>, Ser
 	@Override
 	public String toString() {
 		return getName().toLowerCase();
+	}
+
+	public static ScriptDefinition fromMap(final Map<String, String> data) {
+		final String name = data.containsKey("name") ? data.get("name") : null;
+		final String id = data.containsKey("id") ? data.get("id") : null;
+		final String description = data.containsKey("description") ? data.get("description") : null;
+		final String website = data.containsKey("website") ? data.get("website") : null;
+		final String[] authors = data.containsKey("authors") ? data.get("authors").split(",") : new String[]{};
+		double version = 1d;
+
+		if (data.containsKey("version")) {
+			try {
+				version = Double.parseDouble(data.get("version"));
+			} catch (final NumberFormatException ignored) {
+			}
+		}
+
+		return name == null || name.isEmpty() ? null : new ScriptDefinition(name, id, description, version, authors, website);
 	}
 
 	@Override
