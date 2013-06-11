@@ -1,5 +1,9 @@
 package org.powerbot.loader;
 
+import org.powerbot.util.Configuration;
+import org.powerbot.util.io.HttpClient;
+import org.powerbot.util.io.IOHelper;
+
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -8,10 +12,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.powerbot.util.Configuration;
-import org.powerbot.util.io.HttpClient;
-import org.powerbot.util.io.IOHelper;
 
 /**
  * @author Timer
@@ -30,7 +30,7 @@ public class Crawler {
 	public final Map<String, String> parameters = new HashMap<>();
 
 	public Crawler() {
-		home = Configuration.URLs.GAME + "/g=runescape/";
+		home = "http://" + Configuration.URLs.GAME + "/g=runescape/";
 		frame = home + "game.ws?j=1";
 
 		game = null;

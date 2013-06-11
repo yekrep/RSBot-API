@@ -1,13 +1,5 @@
 package org.powerbot.bot;
 
-import java.awt.Canvas;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Logger;
-
 import org.powerbot.client.Client;
 import org.powerbot.client.Constants;
 import org.powerbot.event.EventMulticaster;
@@ -28,6 +20,12 @@ import org.powerbot.script.randoms.TicketDestroy;
 import org.powerbot.script.randoms.WidgetCloser;
 import org.powerbot.script.util.Delay;
 import org.powerbot.service.GameAccounts;
+
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * @author Timer
@@ -291,9 +289,11 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 		}
 
 		public void run() {
-			if (bot != null && bot.clientFactory.getClient() != null && !Keyboard.isReady()) {
-				Delay.sleep(800, 1200);
-				Keyboard.send("s");
+			if (bot != null && bot.clientFactory.getClient() != null) {
+				for (int i = 0; i < 30; i++)
+					if (!Keyboard.isReady()) Delay.sleep(500, 1000);
+					else break;
+				if (Keyboard.isReady()) Keyboard.send("s");
 			}
 		}
 	}
