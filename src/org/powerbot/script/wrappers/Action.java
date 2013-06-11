@@ -1,7 +1,7 @@
 package org.powerbot.script.wrappers;
 
 import org.powerbot.script.methods.ClientFactory;
-import org.powerbot.script.methods.widgets.ActionBar;
+import org.powerbot.script.methods.ActionBar;
 
 import java.awt.*;
 

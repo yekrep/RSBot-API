@@ -4,7 +4,7 @@ import org.powerbot.client.ModelCapture;
 import org.powerbot.script.methods.ClientFactory;
 import org.powerbot.script.methods.ClientLink;
 import org.powerbot.script.methods.Game;
-import org.powerbot.script.methods.widgets.ActionBar;
+import org.powerbot.script.methods.ActionBar;
 import org.powerbot.script.util.Random;
 
 import java.awt.*;

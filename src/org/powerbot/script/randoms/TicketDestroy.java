@@ -6,7 +6,7 @@ import org.powerbot.script.methods.Game;
 import org.powerbot.script.methods.Players;
 import org.powerbot.script.methods.Settings;
 import org.powerbot.script.methods.Widgets;
-import org.powerbot.script.methods.tabs.Inventory;
+import org.powerbot.script.methods.Inventory;
 import org.powerbot.script.util.Random;
 import org.powerbot.script.util.Timer;
 import org.powerbot.script.wrappers.Component;

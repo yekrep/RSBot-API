@@ -11,7 +11,7 @@ import org.powerbot.script.methods.Game;
 import org.powerbot.script.methods.Keyboard;
 import org.powerbot.script.methods.Mouse;
 import org.powerbot.script.methods.Widgets;
-import org.powerbot.script.methods.widgets.Lobby;
+import org.powerbot.script.methods.Lobby;
 import org.powerbot.script.util.Random;
 import org.powerbot.script.util.Timer;
 import org.powerbot.script.wrappers.Component;

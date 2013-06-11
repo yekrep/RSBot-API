@@ -2,11 +2,6 @@ package org.powerbot.script.methods;
 
 import org.powerbot.client.Client;
 import org.powerbot.script.internal.methods.Items;
-import org.powerbot.script.methods.tabs.*;
-import org.powerbot.script.methods.widgets.ActionBar;
-import org.powerbot.script.methods.widgets.Bank;
-import org.powerbot.script.methods.widgets.DepositBox;
-import org.powerbot.script.methods.widgets.Lobby;
 
 import java.util.concurrent.atomic.AtomicReference;
 

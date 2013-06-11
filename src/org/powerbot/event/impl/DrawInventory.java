@@ -2,13 +2,12 @@ package org.powerbot.event.impl;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Point;
 
 import org.powerbot.event.PaintListener;
 import org.powerbot.script.methods.Game;
-import org.powerbot.script.methods.tabs.Inventory;
+import org.powerbot.script.methods.Inventory;
 import org.powerbot.script.wrappers.Component;
 import org.powerbot.script.wrappers.Item;
 

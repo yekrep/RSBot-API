@@ -1,6 +1,6 @@
 package org.powerbot.script.util;
 
-import org.powerbot.script.methods.tabs.Skills;
+import org.powerbot.script.methods.Skills;
 
 public final class SkillData {
 	public static final int NUM_SKILL = 25;
