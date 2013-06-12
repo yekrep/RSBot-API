@@ -8,7 +8,7 @@ import org.powerbot.event.TextPaintEvent;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.gui.component.BotPanel;
 import org.powerbot.loader.script.ModScript;
-import org.powerbot.script.framework.ScriptDefinition;
+import org.powerbot.script.Script;
 import org.powerbot.script.internal.InputHandler;
 import org.powerbot.script.internal.MouseHandler;
 import org.powerbot.script.internal.ScriptHandler;
@@ -165,8 +165,8 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 		}
 	}
 
-	public void startScript(final ScriptDefinition script) {
-		scriptController.start(script.getScript());      //TODO Paris [inspect]
+	public void startScript(final Script script) {
+		scriptController.start(script);      //TODO Paris [inspect]
 	}
 
 	public void stopScripts() {

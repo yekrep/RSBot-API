@@ -1,4 +1,4 @@
-package org.powerbot.script.framework;
+package org.powerbot.service.scripts;
 
 import org.powerbot.script.Manifest;
 import org.powerbot.script.Script;
