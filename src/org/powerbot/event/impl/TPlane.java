@@ -1,11 +1,11 @@
 package org.powerbot.event.impl;
 
+import java.awt.Graphics;
+
 import org.powerbot.bot.Bot;
 import org.powerbot.event.TextPaintListener;
 import org.powerbot.script.methods.ClientFactory;
 import org.powerbot.util.StringUtil;
-
-import java.awt.*;
 
 /**
  * @author Timer

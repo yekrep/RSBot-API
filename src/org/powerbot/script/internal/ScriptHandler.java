@@ -1,10 +1,5 @@
 package org.powerbot.script.internal;
 
-import org.powerbot.event.EventMulticaster;
-import org.powerbot.script.Script;
-import org.powerbot.script.lang.Stoppable;
-import org.powerbot.script.lang.Suspendable;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -14,6 +9,11 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
+
+import org.powerbot.event.EventMulticaster;
+import org.powerbot.script.Script;
+import org.powerbot.script.lang.Stoppable;
+import org.powerbot.script.lang.Suspendable;
 
 public class ScriptHandler implements Suspendable, Stoppable {
 	EventManager eventManager;
@@ -59,7 +59,9 @@ public class ScriptHandler implements Suspendable, Stoppable {
 
 	@Override
 	public void stop() {
-		if (!stopping.compareAndSet(false, true)) return;
+		if (!stopping.compareAndSet(false, true)) {
+			return;
+		}
 		getExecutor().shutdown();
 		//TODO ensure everything gets shutdown
 	}
@@ -93,7 +95,9 @@ public class ScriptHandler implements Suspendable, Stoppable {
 
 	private boolean call(Script.Event event) {
 		Script script = this.script.get();
-		if (script == null) return false;
+		if (script == null) {
+			return false;
+		}
 
 		Collection<Callable<Boolean>> tasks = script.getTriggers(event);
 		List<Callable<Boolean>> pending = new ArrayList<>(tasks.size());
@@ -107,7 +111,9 @@ public class ScriptHandler implements Suspendable, Stoppable {
 				result = f.get();
 			} catch (InterruptedException | ExecutionException ignored) {
 			}
-			if (!result) return false;
+			if (!result) {
+				return false;
+			}
 		}
 		return true;
 	}

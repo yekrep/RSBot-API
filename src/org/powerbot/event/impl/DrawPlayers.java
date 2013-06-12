@@ -1,11 +1,14 @@
 package org.powerbot.event.impl;
 
+import java.awt.Color;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Point;
+
 import org.powerbot.bot.Bot;
 import org.powerbot.event.PaintListener;
 import org.powerbot.script.methods.ClientFactory;
 import org.powerbot.script.wrappers.Player;
-
-import java.awt.*;
 
 public class DrawPlayers implements PaintListener {
 	public void onRepaint(final Graphics render) {

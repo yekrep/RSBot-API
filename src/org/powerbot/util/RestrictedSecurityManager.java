@@ -1,15 +1,15 @@
 package org.powerbot.util;
 
-import org.powerbot.bot.RSClassLoader;
-import org.powerbot.service.scripts.ScriptClassLoader;
-import org.powerbot.util.io.CryptFile;
-
 import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.security.Permission;
 import java.util.Map.Entry;
 import java.util.logging.Logger;
+
+import org.powerbot.bot.RSClassLoader;
+import org.powerbot.service.scripts.ScriptClassLoader;
+import org.powerbot.util.io.CryptFile;
 
 /**
  * @author Paris

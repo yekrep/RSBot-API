@@ -1,5 +1,7 @@
 package org.powerbot.script.methods;
 
+import java.awt.event.KeyEvent;
+
 import org.powerbot.client.Client;
 import org.powerbot.script.util.Delay;
 import org.powerbot.script.util.Random;
@@ -7,8 +9,6 @@ import org.powerbot.script.util.Timer;
 import org.powerbot.script.wrappers.Locatable;
 import org.powerbot.script.wrappers.Player;
 import org.powerbot.script.wrappers.Tile;
-
-import java.awt.event.KeyEvent;
 
 public class Camera extends ClientLink {
 	public Camera(ClientFactory factory) {
@@ -42,7 +42,9 @@ public class Camera extends ClientLink {
 
 	public int setPitch(final int pitch) {
 		int p = getPitch();
-		if (p == pitch) return 0;
+		if (p == pitch) {
+			return 0;
+		}
 		final boolean up = pitch > p;
 		ctx.keyboard.pressKey(up ? KeyEvent.VK_UP : KeyEvent.VK_DOWN);
 		int curr;
@@ -53,8 +55,11 @@ public class Camera extends ClientLink {
 				p = curr;
 				timer.reset();
 			}
-			if (up && curr >= pitch) break;
-			else if (!up && curr <= pitch) break;
+			if (up && curr >= pitch) {
+				break;
+			} else if (!up && curr <= pitch) {
+				break;
+			}
 
 			Delay.sleep(5, 10);
 		}
@@ -64,20 +69,20 @@ public class Camera extends ClientLink {
 
 	public void setAngle(final char direction) {
 		switch (direction) {
-			case 'n':
-				setAngle(0);
-				break;
-			case 'w':
-				setAngle(90);
-				break;
-			case 's':
-				setAngle(180);
-				break;
-			case 'e':
-				setAngle(270);
-				break;
-			default:
-				throw new RuntimeException("invalid direction " + direction + ", expecting n,w,s,e");
+		case 'n':
+			setAngle(0);
+			break;
+		case 'w':
+			setAngle(90);
+			break;
+		case 's':
+			setAngle(180);
+			break;
+		case 'e':
+			setAngle(270);
+			break;
+		default:
+			throw new RuntimeException("invalid direction " + direction + ", expecting n,w,s,e");
 		}
 	}
 
@@ -128,8 +133,11 @@ public class Camera extends ClientLink {
 
 	public void turnTo(final Locatable l, final int dev) {
 		final int a = getAngleToLocatable(l);
-		if (dev == 0) setAngle(a);
-		else setAngle(Random.nextInt(a - dev, a + dev + 1));
+		if (dev == 0) {
+			setAngle(a);
+		} else {
+			setAngle(Random.nextInt(a - dev, a + dev + 1));
+		}
 	}
 
 	private int getAngleToLocatable(final Locatable mobile) {

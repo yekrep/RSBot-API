@@ -1,16 +1,17 @@
 package org.powerbot.script.methods;
 
+import java.awt.Dimension;
+import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.powerbot.script.util.Delay;
 import org.powerbot.script.util.Filter;
 import org.powerbot.script.util.Random;
 import org.powerbot.script.util.Timer;
 import org.powerbot.script.wrappers.Component;
 import org.powerbot.script.wrappers.Widget;
-
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class Lobby extends ClientLink {
 	public static final int STATE_LOBBY_IDLE = 7;
@@ -169,7 +170,9 @@ public class Lobby extends ClientLink {
 			Component child = ctx.widgets.get(WIDGET_MAIN_LOBBY, d.getTextIndex());
 			if (child != null && child.isOnScreen()) {
 				final String text = child.getText();
-				if (text != null && text.toLowerCase().contains(d.getText())) return d;
+				if (text != null && text.toLowerCase().contains(d.getText())) {
+					return d;
+				}
 			}
 		}
 		return null;
@@ -196,7 +199,9 @@ public class Lobby extends ClientLink {
 	public Tab getCurrentTab() {
 		for (Tab tab : Tab.values()) {
 			Component child = ctx.widgets.get(WIDGET_MAIN_LOBBY, tab.getComponent());
-			if (child != null && child.isValid() && child.getTextureId() == 4671) return tab;
+			if (child != null && child.isValid() && child.getTextureId() == 4671) {
+				return tab;
+			}
 		}
 		return null;
 	}

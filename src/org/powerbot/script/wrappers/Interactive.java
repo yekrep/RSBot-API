@@ -1,11 +1,11 @@
 package org.powerbot.script.wrappers;
 
+import java.awt.Point;
+
 import org.powerbot.script.methods.ClientFactory;
 import org.powerbot.script.methods.ClientLink;
 import org.powerbot.script.util.Delay;
 import org.powerbot.script.util.Filter;
-
-import java.awt.*;
 
 public abstract class Interactive extends ClientLink implements Targetable, Validatable {
 	private static final int ATTEMPTS = 5;
@@ -50,7 +50,9 @@ public abstract class Interactive extends ClientLink implements Targetable, Vali
 				continue;
 			}
 
-			if (ctx.menu.click(action, option)) return true;
+			if (ctx.menu.click(action, option)) {
+				return true;
+			}
 			ctx.menu.close();
 		}
 		return false;

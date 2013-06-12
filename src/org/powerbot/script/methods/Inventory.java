@@ -1,13 +1,11 @@
 package org.powerbot.script.methods;
 
+import java.util.Arrays;
+
 import org.powerbot.script.internal.methods.Items;
-import org.powerbot.script.methods.ClientFactory;
-import org.powerbot.script.methods.ClientLink;
 import org.powerbot.script.util.Filter;
 import org.powerbot.script.wrappers.Component;
 import org.powerbot.script.wrappers.Item;
-
-import java.util.Arrays;
 
 public class Inventory extends ClientLink {
 	public static final int WIDGET = 679;
@@ -34,18 +32,31 @@ public class Inventory extends ClientLink {
 	public Item[] getItems() {
 		final Item[] items = new Item[28];
 		final Component inv = getComponent();
-		if (inv == null) return items;
+		if (inv == null) {
+			return items;
+		}
 		int d = 0;
 		final Component[] comps = inv.getChildren();
 		int[][] data;
-		if (inv.isVisible()) data = ctx.items.getItems(Items.INDEX_INVENTORY);
-		else data = null;
-		if (comps.length > 27) for (int i = 0; i < 28; i++) {
-			if (data != null) {
-				if (i >= data.length) break;
-				if (data[i][0] == -1) continue;
-				items[d++] = new Item(ctx, data[i][0], data[i][1], comps[i]);
-			} else if (comps[i].getItemId() != -1) items[d++] = new Item(ctx, comps[i]);
+		if (inv.isVisible()) {
+			data = ctx.items.getItems(Items.INDEX_INVENTORY);
+		} else {
+			data = null;
+		}
+		if (comps.length > 27) {
+			for (int i = 0; i < 28; i++) {
+				if (data != null) {
+					if (i >= data.length) {
+						break;
+					}
+					if (data[i][0] == -1) {
+						continue;
+					}
+					items[d++] = new Item(ctx, data[i][0], data[i][1], comps[i]);
+				} else if (comps[i].getItemId() != -1) {
+					items[d++] = new Item(ctx, comps[i]);
+				}
+			}
 		}
 		return Arrays.copyOf(items, d);
 	}
@@ -53,24 +64,37 @@ public class Inventory extends ClientLink {
 	public Item[] getAllItems() {
 		final Item[] items = new Item[28];
 		final Component inv = getComponent();
-		if (inv == null) return items;
+		if (inv == null) {
+			return items;
+		}
 		final Component[] comps = inv.getChildren();
 		int[][] data;
-		if (inv.isVisible()) data = ctx.items.getItems(Items.INDEX_INVENTORY);
-		else data = null;
-		if (comps.length > 27) for (int i = 0; i < 28; i++) {
-			if (data != null) {
-				if (i < data.length) {
-					items[i] = new Item(ctx, data[i][0], data[i][1], comps[i]);
-				} else items[i] = new Item(ctx, -1, -1, comps[i]);
-			} else items[i] = new Item(ctx, comps[i]);
+		if (inv.isVisible()) {
+			data = ctx.items.getItems(Items.INDEX_INVENTORY);
+		} else {
+			data = null;
+		}
+		if (comps.length > 27) {
+			for (int i = 0; i < 28; i++) {
+				if (data != null) {
+					if (i < data.length) {
+						items[i] = new Item(ctx, data[i][0], data[i][1], comps[i]);
+					} else {
+						items[i] = new Item(ctx, -1, -1, comps[i]);
+					}
+				} else {
+					items[i] = new Item(ctx, comps[i]);
+				}
+			}
 		}
 		return items;
 	}
 
 	public Item getItemAt(final int index) {
 		final Component inv = getComponent();
-		if (inv == null) return null;
+		if (inv == null) {
+			return null;
+		}
 		final Component[] comps = inv.getChildren();
 		int[][] data = ctx.items.getItems(Items.INDEX_INVENTORY);
 		if (index >= 0 && index < 28 && comps.length > 27 && index < data.length && data[index][0] != -1) {
@@ -83,7 +107,11 @@ public class Inventory extends ClientLink {
 		final Item[] items = getItems();
 		final Item[] set = new Item[items.length];
 		int d = 0;
-		for (final Item item : items) if (filter.accept(item)) set[d++] = item;
+		for (final Item item : items) {
+			if (filter.accept(item)) {
+				set[d++] = item;
+			}
+		}
 		return Arrays.copyOf(set, d);
 	}
 
@@ -92,7 +120,11 @@ public class Inventory extends ClientLink {
 			@Override
 			public boolean accept(final Item item) {
 				final int _id = item.getId();
-				for (final int id : ids) if (id == _id) return true;
+				for (final int id : ids) {
+					if (id == _id) {
+						return true;
+					}
+				}
 				return false;
 			}
 		});
@@ -108,7 +140,11 @@ public class Inventory extends ClientLink {
 			@Override
 			public boolean accept(final Item item) {
 				final int _id = item.getId();
-				for (final int id : ids) if (id == _id) return true;
+				for (final int id : ids) {
+					if (id == _id) {
+						return true;
+					}
+				}
 				return false;
 			}
 		});
@@ -116,10 +152,16 @@ public class Inventory extends ClientLink {
 
 	public int getSelectedItemIndex() {
 		final Component inv = getComponent();
-		if (inv == null) return -1;
+		if (inv == null) {
+			return -1;
+		}
 		final Component[] comps = inv.getChildren();
-		if (comps.length > 27) for (int i = 0; i < 28; i++) {
-			if (comps[i].getBorderThickness() == 2) return i;
+		if (comps.length > 27) {
+			for (int i = 0; i < 28; i++) {
+				if (comps[i].getBorderThickness() == 2) {
+					return i;
+				}
+			}
 		}
 		return -1;
 	}
@@ -136,8 +178,12 @@ public class Inventory extends ClientLink {
 		int[][] data = ctx.items.getItems(Items.INDEX_INVENTORY);
 		for (int i = 0; i < 28; i++) {
 			if (i < data.length) {
-				if (data[i][0] == id) return i;
-			} else break;
+				if (data[i][0] == id) {
+					return i;
+				}
+			} else {
+				break;
+			}
 		}
 		return -1;
 	}
@@ -147,12 +193,20 @@ public class Inventory extends ClientLink {
 	}
 
 	public boolean containsAll(final int... ids) {
-		for (final int id : ids) if (indexOf(id) == -1) return false;
+		for (final int id : ids) {
+			if (indexOf(id) == -1) {
+				return false;
+			}
+		}
 		return true;
 	}
 
 	public boolean containsOneOf(final int... ids) {
-		for (final int id : ids) if (indexOf(id) != -1) return true;
+		for (final int id : ids) {
+			if (indexOf(id) != -1) {
+				return true;
+			}
+		}
 		return false;
 	}
 
@@ -164,8 +218,13 @@ public class Inventory extends ClientLink {
 		int[][] data = ctx.items.getItems(Items.INDEX_INVENTORY);
 		int count = 0;
 		for (int i = 0; i < data.length; i++) {
-			if (data[i][0] != -1) if (stacks) count += data[i][1];
-			else ++count;
+			if (data[i][0] != -1) {
+				if (stacks) {
+					count += data[i][1];
+				} else {
+					++count;
+				}
+			}
 		}
 		return count;
 	}
@@ -180,8 +239,11 @@ public class Inventory extends ClientLink {
 		for (int i = 0; i < data.length; i++) {
 			for (final int id : ids) {
 				if (data[i][0] == id) {
-					if (stacks) count += data[i][1];
-					else ++count;
+					if (stacks) {
+						count += data[i][1];
+					} else {
+						++count;
+					}
 					break;
 				}
 			}
@@ -199,8 +261,11 @@ public class Inventory extends ClientLink {
 
 	private Component getComponent() {
 		Component c;
-		for (final int index : ALTERNATIVE_WIDGETS)
-			if ((c = ctx.widgets.get(index, 0)) != null && c.isValid()) return c;
+		for (final int index : ALTERNATIVE_WIDGETS) {
+			if ((c = ctx.widgets.get(index, 0)) != null && c.isValid()) {
+				return c;
+			}
+		}
 		return ctx.widgets.get(WIDGET, 0);
 	}
 }

@@ -19,7 +19,6 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.zip.Adler32;
 
 import org.powerbot.util.io.CryptFile;
 import org.powerbot.util.io.HttpClient;
@@ -101,7 +100,7 @@ public final class Tracker {
 			} catch (final IOException ignored) {
 			}
 
-			return new long[] {timestamps[0], prev, timestamps[1]};
+			return new long[]{timestamps[0], prev, timestamps[1]};
 		}
 	}
 

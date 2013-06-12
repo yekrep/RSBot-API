@@ -1,13 +1,14 @@
 package org.powerbot.script.wrappers;
 
+import java.awt.Color;
+import java.awt.Graphics;
+import java.lang.ref.WeakReference;
+import java.util.Arrays;
+
 import org.powerbot.client.Client;
 import org.powerbot.client.RSPlayer;
 import org.powerbot.client.RSPlayerComposite;
 import org.powerbot.script.methods.ClientFactory;
-
-import java.awt.*;
-import java.lang.ref.WeakReference;
-import java.util.Arrays;
 
 public class Player extends Actor {
 	public static final Color TARGET_COLOR = new Color(255, 0, 0, 15);
@@ -76,7 +77,9 @@ public class Player extends Actor {
 	@Override
 	public boolean isValid() {
 		Client client = ctx.getClient();
-		if (client == null) return false;
+		if (client == null) {
+			return false;
+		}
 		final RSPlayer character = getAccessor();
 		final RSPlayer[] players = client.getRSPlayerArray();
 		return character != null && players != null && Arrays.asList(players).contains(character);
@@ -96,6 +99,8 @@ public class Player extends Actor {
 		}
 		render.setColor(c);
 		final Model m = getModel();
-		if (m != null) m.drawWireFrame(render);
+		if (m != null) {
+			m.drawWireFrame(render);
+		}
 	}
 }

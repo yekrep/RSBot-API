@@ -1,13 +1,13 @@
 package org.powerbot.script.methods;
 
+import java.util.Arrays;
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 import org.powerbot.script.util.Delay;
 import org.powerbot.script.util.Timer;
 import org.powerbot.script.wrappers.Component;
 import org.powerbot.script.wrappers.Widget;
-
-import java.util.Arrays;
-import java.util.LinkedHashSet;
-import java.util.Set;
 
 public class Prayer extends ClientLink {
 	public static final int WIDGET = 271;
@@ -35,15 +35,15 @@ public class Prayer extends ClientLink {
 		int book = getPrayerBook();
 		int setting;
 		switch (book) {
-			case PRAYER_BOOK_CURSES:
-				setting = 3275;
-				break;
-			case PRAYER_BOOK_NORMAL:
-				setting = 3272;
-				break;
-			default:
-				setting = -1;
-				break;
+		case PRAYER_BOOK_CURSES:
+			setting = 3275;
+			break;
+		case PRAYER_BOOK_NORMAL:
+			setting = 3272;
+			break;
+		default:
+			setting = -1;
+			break;
 		}
 		return (ctx.settings.get(setting >>> effect.getShift()) & 0x1) == 1;
 	}
@@ -52,15 +52,15 @@ public class Prayer extends ClientLink {
 		int book = getPrayerBook();
 		int setting;
 		switch (book) {
-			case PRAYER_BOOK_CURSES:
-				setting = 1768;
-				break;
-			case PRAYER_BOOK_NORMAL:
-				setting = 1770;
-				break;
-			default:
-				setting = -1;
-				break;
+		case PRAYER_BOOK_CURSES:
+			setting = 1768;
+			break;
+		case PRAYER_BOOK_NORMAL:
+			setting = 1770;
+			break;
+		default:
+			setting = -1;
+			break;
 		}
 		return (ctx.settings.get(setting >>> effect.getShift()) & 0x1) == 1;
 	}
@@ -86,7 +86,9 @@ public class Prayer extends ClientLink {
 	}
 
 	public boolean setQuick(final boolean activate) {
-		if (isQuickOn() == activate) return true;
+		if (isQuickOn() == activate) {
+			return true;
+		}
 		final Component c = ctx.widgets.get(WIDGET_ORB, 2);
 		return c != null && c.interact("Turn");
 	}
@@ -94,13 +96,19 @@ public class Prayer extends ClientLink {
 	public boolean setQuickEffects(final Effect... prayers) {
 		final Widget prayer = ctx.widgets.get(WIDGET);
 		final Component orb = ctx.widgets.get(WIDGET_ORB, 2);
-		if (prayer == null || orb == null) return false;
+		if (prayer == null || orb == null) {
+			return false;
+		}
 		for (final Effect e : prayers) {
 			if (e.getBook() != (getPrayerBook() == PRAYER_BOOK_CURSES ? PRAYER_BOOK_CURSES : PRAYER_BOOK_NORMAL) ||
-					e.getRequiredLevel() > ctx.skills.getRealLevel(Skills.PRAYER)) return false;
+					e.getRequiredLevel() > ctx.skills.getRealLevel(Skills.PRAYER)) {
+				return false;
+			}
 		}
 
-		if (!orb.interact("Select quick")) return false;
+		if (!orb.interact("Select quick")) {
+			return false;
+		}
 		final Timer timer = new Timer(1000);
 		while (timer.isRunning() && ctx.settings.get(1769) != 0x1) {
 			Delay.sleep(15);
@@ -108,11 +116,17 @@ public class Prayer extends ClientLink {
 		Delay.sleep(100);
 
 		final Component pane = prayer.getComponent(11);
-		if (pane == null) return false;
+		if (pane == null) {
+			return false;
+		}
 		for (final Effect e : prayers) {
-			if (isEffectQuick(e)) continue;
+			if (isEffectQuick(e)) {
+				continue;
+			}
 			final Component p = pane.getChild(e.getId());
-			if (p == null) return false;
+			if (p == null) {
+				return false;
+			}
 			if (p.interact("Select")) {
 				final Timer t = new Timer(500);
 				while (t.isRunning() && !isEffectQuick(e)) {
@@ -120,7 +134,9 @@ public class Prayer extends ClientLink {
 				}
 			} else {
 				final Component complete = prayer.getComponent(12);
-				if (complete != null) complete.interact("Confirm");
+				if (complete != null) {
+					complete.interact("Confirm");
+				}
 				return false;
 			}
 		}
@@ -128,7 +144,9 @@ public class Prayer extends ClientLink {
 		for (final Effect e : getQuickEffects()) {
 			if (Arrays.binarySearch(prayers, e) < 0) {
 				final Component p = pane.getChild(e.getId());
-				if (p == null) return false;
+				if (p == null) {
+					return false;
+				}
 				if (p.interact("Deselect")) {
 					final Timer t = new Timer(500);
 					while (t.isRunning() && !isEffectQuick(e)) {
@@ -136,7 +154,9 @@ public class Prayer extends ClientLink {
 					}
 				} else {
 					final Component complete = prayer.getComponent(12);
-					if (complete != null) complete.interact("Confirm");
+					if (complete != null) {
+						complete.interact("Confirm");
+					}
 					return false;
 				}
 			}
@@ -147,11 +167,17 @@ public class Prayer extends ClientLink {
 
 	public boolean setEffect(final Effect prayer, final boolean activate) {
 		if (prayer.getBook() != getPrayerBook()
-				|| prayer.getRequiredLevel() > ctx.skills.getRealLevel(Skills.PRAYER)) return false;
-		if (isEffectActive(prayer) == activate) return true;
+				|| prayer.getRequiredLevel() > ctx.skills.getRealLevel(Skills.PRAYER)) {
+			return false;
+		}
+		if (isEffectActive(prayer) == activate) {
+			return true;
+		}
 		if (ctx.game.openTab(Game.TAB_PRAYER)) {
 			Component c = ctx.widgets.get(WIDGET, 9);
-			if (c != null) c = c.getChild(prayer.getId());
+			if (c != null) {
+				c = c.getChild(prayer.getId());
+			}
 			return c != null && c.interact(activate ? "Activate" : "Deactivate");
 		}
 		return false;

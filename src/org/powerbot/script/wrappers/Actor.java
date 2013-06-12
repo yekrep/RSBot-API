@@ -1,9 +1,21 @@
 package org.powerbot.script.wrappers;
 
-import org.powerbot.client.*;
-import org.powerbot.script.methods.ClientFactory;
+import java.awt.Point;
 
-import java.awt.*;
+import org.powerbot.client.Client;
+import org.powerbot.client.CombatStatus;
+import org.powerbot.client.CombatStatusData;
+import org.powerbot.client.LinkedListNode;
+import org.powerbot.client.RSAnimator;
+import org.powerbot.client.RSCharacter;
+import org.powerbot.client.RSInteractableData;
+import org.powerbot.client.RSInteractableLocation;
+import org.powerbot.client.RSMessageData;
+import org.powerbot.client.RSNPC;
+import org.powerbot.client.RSNPCNode;
+import org.powerbot.client.RSPlayer;
+import org.powerbot.client.Sequence;
+import org.powerbot.script.methods.ClientFactory;
 
 public abstract class Actor extends Interactive implements Locatable, Drawable {
 	private int faceIndex = -1;
@@ -18,7 +30,9 @@ public abstract class Actor extends Interactive implements Locatable, Drawable {
 		final RSCharacter character = getAccessor();
 		if (character != null) {
 			final org.powerbot.client.Model model = character.getModel();
-			if (model != null) return new ActorModel(ctx, model, character);
+			if (model != null) {
+				return new ActorModel(ctx, model, character);
+			}
 		}
 		return null;
 	}
@@ -39,27 +53,37 @@ public abstract class Actor extends Interactive implements Locatable, Drawable {
 
 	public int getAnimation() {
 		final RSCharacter character = getAccessor();
-		if (character == null) return -1;
+		if (character == null) {
+			return -1;
+		}
 
 		final RSAnimator animator = character.getAnimation();
 		final Sequence sequence;
-		if (animator == null || (sequence = animator.getSequence()) == null) return -1;
+		if (animator == null || (sequence = animator.getSequence()) == null) {
+			return -1;
+		}
 		return sequence.getID();
 	}
 
 	public int getStance() {
 		final RSCharacter character = getAccessor();
-		if (character == null) return -1;
+		if (character == null) {
+			return -1;
+		}
 
 		final RSAnimator animator = character.getPassiveAnimation();
 		final Sequence sequence;
-		if (animator == null || (sequence = animator.getSequence()) == null) return -1;
+		if (animator == null || (sequence = animator.getSequence()) == null) {
+			return -1;
+		}
 		return sequence.getID();
 	}
 
 	public int[] getAnimationQueue() {
 		final RSCharacter character = getAccessor();
-		if (character == null) return new int[0];
+		if (character == null) {
+			return new int[0];
+		}
 
 		final int[] arr = character.getAnimationQueue();
 		return arr != null ? arr : new int[0];
@@ -76,7 +100,9 @@ public abstract class Actor extends Interactive implements Locatable, Drawable {
 
 	public String getMessage() {
 		final RSCharacter character = getAccessor();
-		if (character == null) return null;
+		if (character == null) {
+			return null;
+		}
 
 		final RSMessageData headMessage = character.getMessageData();
 		return headMessage != null ? headMessage.getMessage() : null;
@@ -89,7 +115,9 @@ public abstract class Actor extends Interactive implements Locatable, Drawable {
 			return null;
 		}
 		Client client = ctx.getClient();
-		if (client == null) return null;
+		if (client == null) {
+			return null;
+		}
 		if (index < 32768) {
 			final Object npcNode = ctx.game.lookup(client.getRSNPCNC(), index);
 			if (npcNode == null) {
@@ -97,7 +125,9 @@ public abstract class Actor extends Interactive implements Locatable, Drawable {
 			}
 			if (npcNode instanceof RSNPCNode) {
 				return new Npc(ctx, ((RSNPCNode) npcNode).getRSNPC());
-			} else if (npcNode instanceof RSNPC) return new Npc(ctx, (RSNPC) npcNode);
+			} else if (npcNode instanceof RSNPC) {
+				return new Npc(ctx, (RSNPC) npcNode);
+			}
 			return null;
 		} else {
 			final int pos = index - 32768;
@@ -108,31 +138,41 @@ public abstract class Actor extends Interactive implements Locatable, Drawable {
 
 	public int getAdrenalineRatio() {
 		final CombatStatusData[] data = getBarData();
-		if (data == null || data[0] == null) return 0;
+		if (data == null || data[0] == null) {
+			return 0;
+		}
 		return data[0].getHPRatio();
 	}
 
 	public int getHealthRatio() {
 		final CombatStatusData[] data = getBarData();
-		if (data == null || data[1] == null) return 100;
+		if (data == null || data[1] == null) {
+			return 100;
+		}
 		return data[1].getHPRatio();
 	}
 
 	public int getAdrenalinePercent() {
 		final CombatStatusData[] data = getBarData();
-		if (data == null || data[0] == null) return 0;
+		if (data == null || data[0] == null) {
+			return 0;
+		}
 		return toPercent(data[0].getHPRatio());
 	}
 
 	public int getHealthPercent() {
 		final CombatStatusData[] data = getBarData();
-		if (data == null || data[1] == null) return 100;
+		if (data == null || data[1] == null) {
+			return 100;
+		}
 		return toPercent(data[1].getHPRatio());
 	}
 
 	public boolean isInCombat() {
 		Client client = ctx.getClient();
-		if (client == null) return false;
+		if (client == null) {
+			return false;
+		}
 		final CombatStatusData[] data = getBarData();
 		return data != null && data[1] != null && data[1].getLoopCycleStatus() < client.getLoopCycle();
 	}
@@ -154,9 +194,13 @@ public abstract class Actor extends Interactive implements Locatable, Drawable {
 		final Model model = getModel();
 		if (model != null) {
 			Point point = model.getCentroid(faceIndex);
-			if (point != null) return point;
+			if (point != null) {
+				return point;
+			}
 			point = model.getCentroid(faceIndex = model.nextTriangle());
-			if (point != null) return point;
+			if (point != null) {
+				return point;
+			}
 		}
 		return getScreenPoint();
 	}
@@ -164,21 +208,27 @@ public abstract class Actor extends Interactive implements Locatable, Drawable {
 	@Override
 	public Point getNextPoint() {
 		final Model model = getModel();
-		if (model != null) return model.getNextPoint();
+		if (model != null) {
+			return model.getNextPoint();
+		}
 		return getScreenPoint();
 	}
 
 	@Override
 	public Point getCenterPoint() {
 		final Model model = getModel();
-		if (model != null) return model.getCenterPoint();
+		if (model != null) {
+			return model.getCenterPoint();
+		}
 		return getScreenPoint();
 	}
 
 	@Override
 	public boolean contains(final Point point) {
 		final Model model = getModel();
-		if (model != null) return model.contains(point);
+		if (model != null) {
+			return model.contains(point);
+		}
 		return point.distance(getScreenPoint()) < 15d;
 	}
 
@@ -194,9 +244,13 @@ public abstract class Actor extends Interactive implements Locatable, Drawable {
 
 	private LinkedListNode[] getBarNodes() {
 		final RSCharacter accessor = getAccessor();
-		if (accessor == null) return null;
+		if (accessor == null) {
+			return null;
+		}
 		final org.powerbot.client.LinkedList barList = accessor.getCombatStatusList();
-		if (barList == null) return null;
+		if (barList == null) {
+			return null;
+		}
 		final LinkedListNode tail = barList.getTail();
 		LinkedListNode health, adrenaline, current;
 		current = tail.getNext();
@@ -213,7 +267,9 @@ public abstract class Actor extends Interactive implements Locatable, Drawable {
 
 	private CombatStatusData[] getBarData() {
 		LinkedListNode[] nodes = getBarNodes();
-		if (nodes == null) return null;
+		if (nodes == null) {
+			return null;
+		}
 		CombatStatusData[] data = new CombatStatusData[nodes.length];
 		for (int i = 0; i < nodes.length; i++) {
 			if (nodes[i] == null || !(nodes[i] instanceof CombatStatus)) {
@@ -243,7 +299,9 @@ public abstract class Actor extends Interactive implements Locatable, Drawable {
 
 	@Override
 	public boolean equals(final Object o) {
-		if (o == null || !(o instanceof Actor)) return false;
+		if (o == null || !(o instanceof Actor)) {
+			return false;
+		}
 		final Actor c = (Actor) o;
 		final RSCharacter i;
 		return (i = this.getAccessor()) != null && i == c.getAccessor();

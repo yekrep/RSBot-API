@@ -27,7 +27,9 @@ public class Projectile extends ClientLink implements Validatable {
 
 	@Override
 	public boolean equals(final Object o) {
-		if (o == null || !(o instanceof Projectile)) return false;
+		if (o == null || !(o instanceof Projectile)) {
+			return false;
+		}
 		final Projectile c = (Projectile) o;
 		final RSProjectile i;
 		return (i = this.projectile.get()) != null && i == c.projectile.get();

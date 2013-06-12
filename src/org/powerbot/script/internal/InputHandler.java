@@ -36,7 +36,9 @@ public class InputHandler {
 
 	public void send(final Queue<KeyEvent> queue, final boolean async) {
 		final Keyboard keyboard = client.getKeyboard();
-		if (keyboard == null) return;
+		if (keyboard == null) {
+			return;
+		}
 
 		final Timer t = new Timer(0, new ActionListener() {
 			@Override
@@ -65,7 +67,9 @@ public class InputHandler {
 
 	public void send(final KeyEvent e) {
 		final Keyboard keyboard = client.getKeyboard();
-		if (keyboard != null) keyboard.sendEvent(e);
+		if (keyboard != null) {
+			keyboard.sendEvent(e);
+		}
 	}
 
 	private Queue<KeyEvent> getKeyEvents(final String sequence) {
@@ -108,7 +112,9 @@ public class InputHandler {
 			if (s.length() == 1) { // simple letter
 				final char c = s.charAt(0);
 				int vk = KeyEvent.getExtendedKeyCodeForChar((int) c);
-				if (c == '\r') continue;
+				if (c == '\r') {
+					continue;
+				}
 				if (vk == KeyEvent.VK_UNDEFINED) {
 					throw new IllegalArgumentException("invalid keyChar");
 				} else {

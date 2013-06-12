@@ -128,7 +128,9 @@ public class IOHelper {
 	public static long crc32(final InputStream in) {
 		try (final CheckedInputStream cis = new CheckedInputStream(in, new CRC32())) {
 			final byte[] buf = new byte[BUFFER_SIZE];
-			while (cis.read(buf) != -1) ;
+			while (cis.read(buf) != -1) {
+				;
+			}
 			return cis.getChecksum().getValue();
 		} catch (final IOException ignored) {
 			return -1;

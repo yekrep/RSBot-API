@@ -1,8 +1,8 @@
 package org.powerbot.script.randoms;
 
 import org.powerbot.bot.Bot;
-import org.powerbot.script.PollingScript;
 import org.powerbot.script.Manifest;
+import org.powerbot.script.PollingScript;
 import org.powerbot.script.util.Delay;
 import org.powerbot.script.util.Random;
 import org.powerbot.script.wrappers.Component;
@@ -13,7 +13,9 @@ public class BankPin extends PollingScript implements RandomEvent {
 	@Override
 	public int poll() {
 		final Component pinInterface = ctx.widgets.get(13, 0);
-		if (pinInterface == null || !pinInterface.isVisible()) return 600;
+		if (pinInterface == null || !pinInterface.isVisible()) {
+			return 600;
+		}
 		Tracker.getInstance().trackPage("randoms/BankPin/", "");
 		final String _pin = getPin();
 		if (_pin == null) {

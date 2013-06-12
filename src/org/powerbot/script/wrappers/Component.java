@@ -1,5 +1,10 @@
 package org.powerbot.script.wrappers;
 
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Point;
+import java.awt.Rectangle;
+
 import org.powerbot.client.Client;
 import org.powerbot.client.RSInterface;
 import org.powerbot.client.RSInterfaceNode;
@@ -7,8 +12,6 @@ import org.powerbot.script.internal.wrappers.HashTable;
 import org.powerbot.script.methods.ClientFactory;
 import org.powerbot.script.util.Random;
 import org.powerbot.util.StringUtil;
-
-import java.awt.*;
 
 public class Component extends Interactive implements Drawable {
 	public static final Color TARGET_FILL_COLOR = new Color(0, 0, 0, 50);
@@ -45,7 +48,9 @@ public class Component extends Interactive implements Drawable {
 		final RSInterface[] interfaces;
 		if (component != null && (interfaces = component.getComponents()) != null) {
 			final Component[] components = new Component[interfaces.length];
-			for (int i = 0; i < interfaces.length; i++) components[i] = new Component(ctx, widget, this, i);
+			for (int i = 0; i < interfaces.length; i++) {
+				components[i] = new Component(ctx, widget, this, i);
+			}
 			return components;
 		}
 		return new Component[0];
@@ -54,7 +59,9 @@ public class Component extends Interactive implements Drawable {
 	public int getChildrenCount() {
 		final RSInterface component = getInternalComponent();
 		final RSInterface[] interfaces;
-		if (component != null && (interfaces = component.getComponents()) != null) return interfaces.length;
+		if (component != null && (interfaces = component.getComponents()) != null) {
+			return interfaces.length;
+		}
 		return 0;
 	}
 
@@ -121,10 +128,14 @@ public class Component extends Interactive implements Drawable {
 	public int getParentId() {
 		Client client = ctx.getClient();
 		final RSInterface component = getInternalComponent();
-		if (client == null || component == null) return -1;
+		if (client == null || component == null) {
+			return -1;
+		}
 
 		final int pId = component.getParentID();
-		if (pId != -1) return pId;
+		if (pId != -1) {
+			return pId;
+		}
 
 		final int containerId = getId() >>> 16;
 		final HashTable ncI = new HashTable(client.getRSInterfaceNC());
@@ -140,7 +151,9 @@ public class Component extends Interactive implements Drawable {
 	public Point getAbsoluteLocation() {
 		Client client = ctx.getClient();
 		final RSInterface component = getInternalComponent();
-		if (client == null || component == null) return new Point(-1, -1);
+		if (client == null || component == null) {
+			return new Point(-1, -1);
+		}
 		final int pId = getParentId();
 		int x = 0, y = 0;
 		if (pId != -1) {
@@ -282,13 +295,17 @@ public class Component extends Interactive implements Drawable {
 	public boolean isVisible() {
 		final RSInterface internal = getInternalComponent();
 		int id = 0;
-		if (internal != null && isValid() && !internal.isHidden()) id = getParentId();
+		if (internal != null && isValid() && !internal.isHidden()) {
+			id = getParentId();
+		}
 		return id == -1 || (id != 0 && ctx.widgets.get(id >> 16, id & 0xffff).isVisible());
 	}
 
 	public Rectangle getBoundingRect() {
 		final Point absLocation = getAbsoluteLocation();
-		if (absLocation.x == -1 && absLocation.y == -1) return null;
+		if (absLocation.x == -1 && absLocation.y == -1) {
+			return null;
+		}
 		final Rectangle r = new Rectangle(absLocation.x, absLocation.y,
 				getWidth(),
 				getHeight()
@@ -298,7 +315,9 @@ public class Component extends Interactive implements Drawable {
 
 	public Rectangle getViewportRect() {
 		final Point absLocation = getAbsoluteLocation();
-		if (absLocation.x == -1 && absLocation.y == -1) return null;
+		if (absLocation.x == -1 && absLocation.y == -1) {
+			return null;
+		}
 		final Rectangle r = new Rectangle(absLocation.x, absLocation.y,
 				getScrollWidth(),
 				getScrollHeight()
@@ -347,7 +366,9 @@ public class Component extends Interactive implements Drawable {
 	@Override
 	public void draw(final Graphics render, int alpha) {
 		final Rectangle rectangle = getInteractRectangle();
-		if (rectangle == null) return;
+		if (rectangle == null) {
+			return;
+		}
 		Color c = TARGET_FILL_COLOR;
 		int rgb = c.getRGB();
 		if (((rgb >> 24) & 0xff) != alpha) {
@@ -367,7 +388,9 @@ public class Component extends Interactive implements Drawable {
 
 	private Rectangle getInteractRectangle() {
 		final Point absLocation = getAbsoluteLocation();
-		if (absLocation.x == -1 && absLocation.y == -1) return null;
+		if (absLocation.x == -1 && absLocation.y == -1) {
+			return null;
+		}
 		final boolean canScroll = isInScrollableArea();
 		final Rectangle r = new Rectangle(absLocation.x + 1, absLocation.y + 1,
 				(canScroll ? getWidth() : getScrollWidth()) - 2,
@@ -378,7 +401,9 @@ public class Component extends Interactive implements Drawable {
 
 	private boolean isInScrollableArea() {
 		int pId = getParentId();
-		if (pId == -1) return false;
+		if (pId == -1) {
+			return false;
+		}
 
 		Component scrollableArea = ctx.widgets.get(pId >> 16, pId & 0xffff);
 		while (scrollableArea.getMaxVerticalScroll() == 0 && (pId = scrollableArea.getParentId()) != -1) {
@@ -406,7 +431,9 @@ public class Component extends Interactive implements Drawable {
 
 	@Override
 	public boolean equals(final Object o) {
-		if (o == null || !(o instanceof Component)) return false;
+		if (o == null || !(o instanceof Component)) {
+			return false;
+		}
 		final Component c = (Component) o;
 		return c.widget.equals(widget) && c.index == index &&
 				(parent == null && c.parent == null || (parent != null && parent.equals(c.parent)));

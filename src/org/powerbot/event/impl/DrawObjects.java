@@ -1,18 +1,21 @@
 package org.powerbot.event.impl;
 
+import java.awt.Color;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Point;
+import java.lang.ref.WeakReference;
+import java.lang.reflect.Field;
+
 import org.powerbot.bot.Bot;
 import org.powerbot.client.RSAnimable;
 import org.powerbot.client.RSObject;
 import org.powerbot.event.PaintListener;
-import org.powerbot.script.methods.ClientFactory;
 import org.powerbot.script.lang.Filterable;
+import org.powerbot.script.methods.ClientFactory;
 import org.powerbot.script.wrappers.GameObject;
 import org.powerbot.script.wrappers.Player;
 import org.powerbot.script.wrappers.Tile;
-
-import java.awt.*;
-import java.lang.ref.WeakReference;
-import java.lang.reflect.Field;
 
 public class DrawObjects implements PaintListener {
 	private static final Color[] C = {Color.GREEN, Color.WHITE, Color.BLACK, Color.BLUE};
@@ -36,7 +39,9 @@ public class DrawObjects implements PaintListener {
 			for (int y = position.getY() - 25; y < position.getY() + 25; y++) {
 				Tile tile = new Tile(ctx, x, y, ctx.game.getPlane());
 				GameObject[] objs = larr.at(tile).list();
-				if (objs.length == 0) continue;
+				if (objs.length == 0) {
+					continue;
+				}
 
 				Point locationPoint = tile.getCenterPoint();
 				render.setColor(Color.black);
@@ -57,11 +62,12 @@ public class DrawObjects implements PaintListener {
 						RSAnimable animable = (RSAnimable) rsObject;
 						int x1 = animable.getX1(), x2 = animable.getX2(), y1 = animable.getY1(), y2 = animable.getY2();
 
-						for (int _x = x1; _x <= x2; _x++)
+						for (int _x = x1; _x <= x2; _x++) {
 							for (int _y = y1; _y <= y2; _y++) {
 								Tile _tile = base.derive(_x, _y);
 								_tile.draw(render);
 							}
+						}
 					}
 
 					String s = "" + object.getId();

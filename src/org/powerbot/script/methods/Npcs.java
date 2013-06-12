@@ -28,19 +28,29 @@ public class Npcs extends Filtering<Npc> {
 	@Override
 	public Npc[] list() {
 		Client client = ctx.getClient();
-		if (client == null) return new Npc[0];
+		if (client == null) {
+			return new Npc[0];
+		}
 
 		final int[] indices = client.getRSNPCIndexArray();
 		final HashTable npcTable = client.getRSNPCNC();
-		if (indices == null || npcTable == null) return new Npc[0];
+		if (indices == null || npcTable == null) {
+			return new Npc[0];
+		}
 
 		final Npc[] npcs = new Npc[indices.length];
 		int d = 0;
 		for (final int index : indices) {
 			Object npc = ctx.game.lookup(npcTable, index);
-			if (npc == null) continue;
-			if (npc instanceof RSNPCNode) npc = ((RSNPCNode) npc).getRSNPC();
-			if (npc instanceof RSNPC) npcs[d++] = new Npc(ctx, (RSNPC) npc);
+			if (npc == null) {
+				continue;
+			}
+			if (npc instanceof RSNPCNode) {
+				npc = ((RSNPCNode) npc).getRSNPC();
+			}
+			if (npc instanceof RSNPC) {
+				npcs[d++] = new Npc(ctx, (RSNPC) npc);
+			}
 		}
 
 		return Arrays.copyOf(npcs, d);

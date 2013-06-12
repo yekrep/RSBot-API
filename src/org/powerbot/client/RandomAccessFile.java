@@ -1,10 +1,10 @@
 package org.powerbot.client;
 
-import org.powerbot.bot.Bot;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+
+import org.powerbot.bot.Bot;
 
 /**
  * @author Timer

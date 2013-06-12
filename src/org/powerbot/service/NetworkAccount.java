@@ -14,11 +14,6 @@ import org.powerbot.util.io.HttpClient;
 import org.powerbot.util.io.IOHelper;
 import org.powerbot.util.io.IniParser;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * @author Paris
  */
@@ -44,7 +39,7 @@ public final class NetworkAccount {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				for (;;) {
+				for (; ; ) {
 					final long m = store.lastModified();
 					if (m == 0 ? updated.get() != 0 : updated.get() < m) {
 						revalidate();
@@ -91,7 +86,7 @@ public final class NetworkAccount {
 	}
 
 	public String getDisplayName() {
-		final String[] s = { getProp("display"), getProp("name") };
+		final String[] s = {getProp("display"), getProp("name")};
 		return s[s[0] == null || s[0].isEmpty() ? 1 : 0];
 	}
 

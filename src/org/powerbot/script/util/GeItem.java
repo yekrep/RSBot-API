@@ -84,9 +84,18 @@ public class GeItem {
 		if (s.length() > 1) {
 			final char x = s.charAt(s.length() - 1);
 			switch (x) {
-			case 'B': case 'b': f = 1000000000d; break;
-			case 'M': case 'm': f = 1000000d; break;
-			case 'K': case 'k': f = 1000d; break;
+			case 'B':
+			case 'b':
+				f = 1000000000d;
+				break;
+			case 'M':
+			case 'm':
+				f = 1000000d;
+				break;
+			case 'K':
+			case 'k':
+				f = 1000d;
+				break;
 			}
 			if (f != 1) {
 				s = s.substring(0, s.length() - 1);

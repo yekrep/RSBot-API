@@ -32,7 +32,9 @@ public class GameObject extends Interactive implements Locatable, Drawable, Iden
 		final RSObject object = this.object.get();
 		if (object != null) {
 			final org.powerbot.client.Model model = object.getModel();
-			if (model != null) return new RenderableModel(ctx, model, object);
+			if (model != null) {
+				return new RenderableModel(ctx, model, object);
+			}
 		}
 		return null;
 	}
@@ -53,14 +55,18 @@ public class GameObject extends Interactive implements Locatable, Drawable, Iden
 
 	public ObjectDefinition getDefinition() {
 		Client client = ctx.getClient();
-		if (client == null) return null;
+		if (client == null) {
+			return null;
+		}
 
 		final RSInfo info;
 		final RSObjectDefLoader loader;
 		final Cache cache;
 		final HashTable table;
 		if ((info = client.getRSGroundInfo()) == null || (loader = info.getRSObjectDefLoaders()) == null ||
-				(cache = loader.getCache()) == null || (table = cache.getTable()) == null) return null;
+				(cache = loader.getCache()) == null || (table = cache.getTable()) == null) {
+			return null;
+		}
 		final Object def = ctx.game.lookup(table, getId());
 		return def != null && def instanceof RSObjectDef ? new ObjectDefinition((RSObjectDef) def) : null;
 	}
@@ -82,9 +88,13 @@ public class GameObject extends Interactive implements Locatable, Drawable, Iden
 		final Model model = getModel();
 		if (model != null) {
 			Point point = model.getCentroid(faceIndex);
-			if (point != null) return point;
+			if (point != null) {
+				return point;
+			}
 			point = model.getCentroid(faceIndex = model.nextTriangle());
-			if (point != null) return point;
+			if (point != null) {
+				return point;
+			}
 		}
 		final Tile tile = getLocation();
 		return tile != null ? tile.getInteractPoint() : null;
@@ -93,7 +103,9 @@ public class GameObject extends Interactive implements Locatable, Drawable, Iden
 	@Override
 	public Point getNextPoint() {
 		final Model model = getModel();
-		if (model != null) return model.getNextPoint();
+		if (model != null) {
+			return model.getNextPoint();
+		}
 		final Tile tile = getLocation();
 		return tile != null ? tile.getNextPoint() : null;
 	}
@@ -101,7 +113,9 @@ public class GameObject extends Interactive implements Locatable, Drawable, Iden
 	@Override
 	public Point getCenterPoint() {
 		final Model model = getModel();
-		if (model != null) return model.getCenterPoint();
+		if (model != null) {
+			return model.getCenterPoint();
+		}
 		final Tile tile = getLocation();
 		return tile != null ? tile.getCenterPoint() : null;
 	}
@@ -109,7 +123,9 @@ public class GameObject extends Interactive implements Locatable, Drawable, Iden
 	@Override
 	public boolean contains(final Point point) {
 		final Model model = getModel();
-		if (model != null) return model.contains(point);
+		if (model != null) {
+			return model.contains(point);
+		}
 		final Tile tile = getLocation();
 		return tile != null && tile.contains(point);
 	}
@@ -121,7 +137,9 @@ public class GameObject extends Interactive implements Locatable, Drawable, Iden
 
 	@Override
 	public boolean equals(final Object o) {
-		if (o == null || !(o instanceof GameObject)) return false;
+		if (o == null || !(o instanceof GameObject)) {
+			return false;
+		}
 		final GameObject g = (GameObject) o;
 		final RSObject i;
 		return (i = this.object.get()) != null && i == g.object.get();
@@ -140,7 +158,9 @@ public class GameObject extends Interactive implements Locatable, Drawable, Iden
 			c = new Color((rgb >> 16) & 0xff, (rgb >> 8) & 0xff, rgb & 0xff, alpha);
 		}
 		final Model m = getModel();
-		if (m != null) m.drawWireFrame(render);
+		if (m != null) {
+			m.drawWireFrame(render);
+		}
 	}
 
 	public static enum Type {

@@ -1,19 +1,29 @@
 package org.powerbot.gui.component;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.ImageIcon;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.SwingUtilities;
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuListener;
+
 import org.powerbot.Boot;
 import org.powerbot.bot.Bot;
-import org.powerbot.gui.*;
+import org.powerbot.gui.BotAbout;
+import org.powerbot.gui.BotAccounts;
+import org.powerbot.gui.BotChrome;
+import org.powerbot.gui.BotLicense;
+import org.powerbot.gui.BotScripts;
+import org.powerbot.gui.BotSignin;
 import org.powerbot.script.internal.ScriptHandler;
 import org.powerbot.service.NetworkAccount;
 import org.powerbot.util.Configuration;
 import org.powerbot.util.Tracker;
 import org.powerbot.util.io.Resources;
-
-import javax.swing.*;
-import javax.swing.event.MenuEvent;
-import javax.swing.event.MenuListener;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 /**
  * @author Paris
@@ -156,35 +166,35 @@ public class BotMenuBar extends JMenuBar implements ActionListener {
 			}
 		});
 		switch (s) {
-			case BotLocale.NEWWINDOW:
-				Boot.fork(false);
-				break;
-			case BotLocale.EXIT:
-				BotChrome.getInstance().windowClosing(null);
-				break;
-			case BotLocale.SIGNIN:
-				showDialog(Action.SIGNIN);
-				break;
-			case BotLocale.ACCOUNTS:
-				showDialog(Action.ACCOUNTS);
-				break;
-			case BotLocale.PLAYSCRIPT:
-			case BotLocale.PAUSESCRIPT:
-			case BotLocale.RESUMESCRIPT:
-				scriptPlayPause();
-				break;
-			case BotLocale.STOPSCRIPT:
-				scriptStop();
-				break;
-			case BotLocale.ABOUT:
-				showDialog(Action.ABOUT);
-				break;
-			case BotLocale.LICENSE:
-				showDialog(Action.LICENSE);
-				break;
-			case BotLocale.WEBSITE:
-				BotChrome.openURL(Configuration.URLs.SITE);
-				break;
+		case BotLocale.NEWWINDOW:
+			Boot.fork(false);
+			break;
+		case BotLocale.EXIT:
+			BotChrome.getInstance().windowClosing(null);
+			break;
+		case BotLocale.SIGNIN:
+			showDialog(Action.SIGNIN);
+			break;
+		case BotLocale.ACCOUNTS:
+			showDialog(Action.ACCOUNTS);
+			break;
+		case BotLocale.PLAYSCRIPT:
+		case BotLocale.PAUSESCRIPT:
+		case BotLocale.RESUMESCRIPT:
+			scriptPlayPause();
+			break;
+		case BotLocale.STOPSCRIPT:
+			scriptStop();
+			break;
+		case BotLocale.ABOUT:
+			showDialog(Action.ABOUT);
+			break;
+		case BotLocale.LICENSE:
+			showDialog(Action.LICENSE);
+			break;
+		case BotLocale.WEBSITE:
+			BotChrome.openURL(Configuration.URLs.SITE);
+			break;
 		}
 	}
 
@@ -198,20 +208,20 @@ public class BotMenuBar extends JMenuBar implements ActionListener {
 			@Override
 			public void run() {
 				switch (action) {
-					case ACCOUNTS:
-						new BotAccounts(chrome);
-						break;
-					case SIGNIN:
-						new BotSignin(chrome);
-						break;
-					case ABOUT:
-						new BotAbout(chrome);
-						break;
-					case LICENSE:
-						new BotLicense(chrome);
-						break;
-					default:
-						break;
+				case ACCOUNTS:
+					new BotAccounts(chrome);
+					break;
+				case SIGNIN:
+					new BotSignin(chrome);
+					break;
+				case ABOUT:
+					new BotAbout(chrome);
+					break;
+				case LICENSE:
+					new BotLicense(chrome);
+					break;
+				default:
+					break;
 				}
 			}
 		});

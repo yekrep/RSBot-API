@@ -1,15 +1,18 @@
 package org.powerbot.script.wrappers;
 
+import java.awt.Graphics;
+import java.awt.Point;
+import java.awt.Polygon;
+import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import org.powerbot.client.ModelCapture;
+import org.powerbot.script.methods.ActionBar;
 import org.powerbot.script.methods.ClientFactory;
 import org.powerbot.script.methods.ClientLink;
 import org.powerbot.script.methods.Game;
-import org.powerbot.script.methods.ActionBar;
 import org.powerbot.script.util.Random;
-
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 public abstract class Model extends ClientLink {
 	protected final int[] yPoints;
@@ -55,7 +58,9 @@ public abstract class Model extends ClientLink {
 	}
 
 	public Point getCentroid(final int index) {
-		if (index < 0 || index >= numFaces) return null;
+		if (index < 0 || index >= numFaces) {
+			return null;
+		}
 		update();
 		final int x = getX();
 		final int y = getY();
@@ -193,7 +198,9 @@ public abstract class Model extends ClientLink {
 			);
 			if ((r == null || !r.contains(point)) &&
 					fixed ? (point.x >= 4 && point.y >= 4 && point.x < 516 && point.y < 388) :
-					(point.x != -1 && point.y != -1)) return index;
+					(point.x != -1 && point.y != -1)) {
+				return index;
+			}
 			++index;
 		}
 		return -1;
@@ -251,7 +258,9 @@ public abstract class Model extends ClientLink {
 
 	@Override
 	public boolean equals(final Object o) {
-		if (o == null || !(o instanceof Model)) return false;
+		if (o == null || !(o instanceof Model)) {
+			return false;
+		}
 		final Model model = (Model) o;
 		return Arrays.equals(faceA, model.faceA) &&
 				Arrays.equals(xPoints, model.xPoints) && Arrays.equals(yPoints, model.yPoints) && Arrays.equals(zPoints, model.zPoints);

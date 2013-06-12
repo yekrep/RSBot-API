@@ -31,10 +31,14 @@ public class Projectiles extends Filtering<Projectile> {
 	@Override
 	public Projectile[] list() {
 		Client client = ctx.getClient();
-		if (client == null) return new Projectile[0];
+		if (client == null) {
+			return new Projectile[0];
+		}
 
 		final NodeDeque deque = client.getProjectileDeque();
-		if (deque == null) return new Projectile[0];
+		if (deque == null) {
+			return new Projectile[0];
+		}
 
 		final Set<Projectile> projectiles = new HashSet<>();
 		final Deque<Node> nodes = new Deque<>(deque);

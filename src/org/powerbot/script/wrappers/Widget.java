@@ -1,13 +1,13 @@
 package org.powerbot.script.wrappers;
 
+import java.util.Arrays;
+import java.util.Iterator;
+
 import org.powerbot.client.Client;
 import org.powerbot.client.RSInterface;
 import org.powerbot.client.RSInterfaceBase;
 import org.powerbot.script.methods.ClientFactory;
 import org.powerbot.script.methods.ClientLink;
-
-import java.util.Arrays;
-import java.util.Iterator;
 
 public class Widget extends ClientLink implements Validatable, Iterable<Component> {
 	private final int index;
@@ -33,11 +33,15 @@ public class Widget extends ClientLink implements Validatable, Iterable<Componen
 	public Component[] getComponents() {
 		synchronized (LOCK) {
 			final RSInterface[] components = getInternalComponents();
-			if (components == null) return cache;
+			if (components == null) {
+				return cache;
+			}
 			if (cache.length < components.length) {
 				final int len = cache.length;
 				cache = Arrays.copyOf(cache, components.length);
-				for (int i = len; i < components.length; i++) cache[i] = new Component(ctx, this, i);
+				for (int i = len; i < components.length; i++) {
+					cache[i] = new Component(ctx, this, i);
+				}
 			}
 			return cache.clone();
 		}
@@ -45,13 +49,17 @@ public class Widget extends ClientLink implements Validatable, Iterable<Componen
 
 	public Component getComponent(final int index) {
 		synchronized (LOCK) {
-			if (index < cache.length) return cache[index];
+			if (index < cache.length) {
+				return cache[index];
+			}
 			final RSInterface[] components = getInternalComponents();
 			final int mod = Math.max(components != null ? components.length : 0, index + 1);
 			if (cache.length < mod) {
 				final int len = cache.length;
 				cache = Arrays.copyOf(cache, mod);
-				for (int i = len; i < mod; i++) cache[i] = new Component(ctx, this, i);
+				for (int i = len; i < mod; i++) {
+					cache[i] = new Component(ctx, this, i);
+				}
 			}
 			return cache[index];
 		}
@@ -59,7 +67,9 @@ public class Widget extends ClientLink implements Validatable, Iterable<Componen
 
 	public boolean isValid() {
 		Client client = ctx.getClient();
-		if (client == null) return false;
+		if (client == null) {
+			return false;
+		}
 
 		final RSInterfaceBase[] containers = client.getRSInterfaceCache();
 		return containers != null && index < containers.length && containers[index] != null && containers[index].getComponents() != null;
@@ -67,7 +77,9 @@ public class Widget extends ClientLink implements Validatable, Iterable<Componen
 
 	RSInterface[] getInternalComponents() {
 		Client client = ctx.getClient();
-		if (client == null) return null;
+		if (client == null) {
+			return null;
+		}
 		final RSInterfaceBase[] containers = client.getRSInterfaceCache();
 		final RSInterfaceBase container;
 		if (containers != null && index >= 0 && index < containers.length && (container = containers[index]) != null) {
@@ -106,7 +118,9 @@ public class Widget extends ClientLink implements Validatable, Iterable<Componen
 
 	@Override
 	public boolean equals(final Object o) {
-		if (o == null || !(o instanceof Widget)) return false;
+		if (o == null || !(o instanceof Widget)) {
+			return false;
+		}
 		final Widget w = (Widget) o;
 		return w.index == this.index;
 	}

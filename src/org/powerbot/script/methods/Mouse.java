@@ -1,5 +1,8 @@
 package org.powerbot.script.methods;
 
+import java.awt.Point;
+import java.awt.event.MouseEvent;
+
 import org.powerbot.bot.Bot;
 import org.powerbot.client.Client;
 import org.powerbot.script.internal.MouseHandler;
@@ -7,9 +10,6 @@ import org.powerbot.script.internal.MouseTarget;
 import org.powerbot.script.util.Delay;
 import org.powerbot.script.util.Filter;
 import org.powerbot.script.wrappers.Targetable;
-
-import java.awt.*;
-import java.awt.event.MouseEvent;
 
 public class Mouse extends ClientLink {
 	public Mouse(ClientFactory factory) {
@@ -19,21 +19,27 @@ public class Mouse extends ClientLink {
 	public Point getLocation() {
 		Client client = ctx.getClient();
 		final org.powerbot.client.input.Mouse mouse;
-		if (client == null || (mouse = client.getMouse()) == null) return new Point(-1, -1);
+		if (client == null || (mouse = client.getMouse()) == null) {
+			return new Point(-1, -1);
+		}
 		return mouse.getLocation();
 	}
 
 	public Point getPressLocation() {
 		Client client = ctx.getClient();
 		final org.powerbot.client.input.Mouse mouse;
-		if (client == null || (mouse = client.getMouse()) == null) return new Point(-1, -1);
+		if (client == null || (mouse = client.getMouse()) == null) {
+			return new Point(-1, -1);
+		}
 		return mouse.getPressLocation();
 	}
 
 	public long getPressTime() {
 		Client client = ctx.getClient();
 		final org.powerbot.client.input.Mouse mouse;
-		if (client == null || (mouse = client.getMouse()) == null) return -1;
+		if (client == null || (mouse = client.getMouse()) == null) {
+			return -1;
+		}
 		return mouse.getPressTime();
 	}
 
@@ -55,7 +61,9 @@ public class Mouse extends ClientLink {
 
 	public boolean hop(final int x, final int y) {
 		final MouseHandler handler = Bot.mouseHandler();
-		if (handler == null) return false;
+		if (handler == null) {
+			return false;
+		}
 
 		handler.move(x, y);
 		return true;
@@ -71,7 +79,9 @@ public class Mouse extends ClientLink {
 
 	public boolean click(final int button) {
 		final MouseHandler handler = Bot.mouseHandler();
-		if (handler == null) return false;
+		if (handler == null) {
+			return false;
+		}
 
 		handler.click(button);
 		return true;
@@ -83,7 +93,9 @@ public class Mouse extends ClientLink {
 
 	public boolean click(final Targetable target, final boolean left) {
 		final MouseHandler handler = Bot.mouseHandler();
-		if (handler == null) return false;
+		if (handler == null) {
+			return false;
+		}
 
 		final MouseTarget t;
 		handler.handle(t = new MouseTarget(target, MouseTarget.DUMMY) {
@@ -105,14 +117,18 @@ public class Mouse extends ClientLink {
 
 	public boolean drag(final Point p1, final Point p2, final int button) {
 		final MouseHandler handler = Bot.mouseHandler();
-		if (handler == null) return false;
+		if (handler == null) {
+			return false;
+		}
 
 		Point loc = handler.getLocation();
-		if (!loc.equals(p1)) if (move(p1)) {
-			handler.press(p1.x, p1.y, button);
-			if (move(p2)) {
-				handler.release(p2.x, p2.y, button);
-				return true;
+		if (!loc.equals(p1)) {
+			if (move(p1)) {
+				handler.press(p1.x, p1.y, button);
+				if (move(p2)) {
+					handler.release(p2.x, p2.y, button);
+					return true;
+				}
 			}
 		}
 		return false;
@@ -148,7 +164,9 @@ public class Mouse extends ClientLink {
 
 	public boolean move(final Targetable target, final Filter<Point> filter) {
 		final MouseHandler handler = Bot.mouseHandler();
-		if (handler == null) return false;
+		if (handler == null) {
+			return false;
+		}
 
 		final MouseTarget t;
 		handler.handle(t = new MouseTarget(target, filter) {
@@ -166,7 +184,9 @@ public class Mouse extends ClientLink {
 
 	public boolean move(final Point p) {
 		final MouseHandler handler = Bot.mouseHandler();
-		if (handler == null) return false;
+		if (handler == null) {
+			return false;
+		}
 
 		final MouseTarget t;
 		final Targetable targetable = new Targetable() {

@@ -1,9 +1,12 @@
 package org.powerbot.script.wrappers;
 
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Point;
+import java.awt.Polygon;
+
 import org.powerbot.script.methods.ClientFactory;
 import org.powerbot.script.util.Random;
-
-import java.awt.*;
 
 public class Tile extends Interactive implements Locatable, Drawable {
 	public static final Color TARGET_COLOR = new Color(255, 0, 0, 75);
@@ -111,7 +114,9 @@ public class Tile extends Interactive implements Locatable, Drawable {
 	@Override
 	public boolean isValid() {
 		final Tile t = ctx.game.getMapBase();
-		if (t == null) return false;
+		if (t == null) {
+			return false;
+		}
 		final int x = this.x - t.x, y = this.y - t.y;
 		return x >= 0 && y >= 0 && x < 104 && y < 104;
 	}
@@ -158,7 +163,9 @@ public class Tile extends Interactive implements Locatable, Drawable {
 
 	@Override
 	public boolean equals(final Object o) {
-		if (o == null || !(o instanceof Tile)) return false;
+		if (o == null || !(o instanceof Tile)) {
+			return false;
+		}
 		final Tile t = (Tile) o;
 		return x == t.x && y == t.y && plane == t.plane;
 	}

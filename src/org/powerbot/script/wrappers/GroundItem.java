@@ -37,14 +37,17 @@ public class GroundItem extends Interactive implements Locatable, Drawable {
 
 	public Model getModel(final int p) {
 		Client client = ctx.getClient();
-		if (client == null) return null;
+		if (client == null) {
+			return null;
+		}
 		final RSInfo info;
 		final BaseInfo baseInfo;
 		final RSGroundInfo groundInfo;
 		final RSGround[][][] grounds;
 		if ((info = client.getRSGroundInfo()) == null || (baseInfo = info.getBaseInfo()) == null ||
-				(groundInfo = info.getRSGroundInfo()) == null || (grounds = groundInfo.getRSGroundArray()) == null)
+				(groundInfo = info.getRSGroundInfo()) == null || (grounds = groundInfo.getRSGroundArray()) == null) {
 			return null;
+		}
 		final int x = tile.getX() - baseInfo.getX(), y = tile.getY() - baseInfo.getY();
 		final int plane = client.getPlane();
 		final RSGround ground = plane > -1 && plane < grounds.length &&
@@ -57,8 +60,9 @@ public class GroundItem extends Interactive implements Locatable, Drawable {
 				final Cache cache;
 				final HashTable table;
 				if ((defLoader = client.getRSItemDefLoader()) == null ||
-						(cache = defLoader.getModelCache()) == null || (table = cache.getTable()) == null)
+						(cache = defLoader.getModelCache()) == null || (table = cache.getTable()) == null) {
 					return null;
+				}
 
 				final int graphicsIndex = ctx.game.toolkit.graphicsIndex;
 				Object model;
@@ -72,10 +76,13 @@ public class GroundItem extends Interactive implements Locatable, Drawable {
 
 				int i = 0;
 				for (final int id : ids) {
-					if (id < 1) continue;
+					if (id < 1) {
+						continue;
+					}
 					model = ctx.game.lookup(table, (long) id | (long) graphicsIndex << 29);
-					if (model != null && model instanceof org.powerbot.client.Model)
+					if (model != null && model instanceof org.powerbot.client.Model) {
 						models[i++] = (org.powerbot.client.Model) model;
+					}
 				}
 
 				return i > 0 ? new RenderableModel(ctx, models[Random.nextInt(0, i)], itemPile) : null;
@@ -96,14 +103,20 @@ public class GroundItem extends Interactive implements Locatable, Drawable {
 
 	public ItemDefinition getDefinition() {
 		Client client = ctx.getClient();
-		if (client == null) return null;
+		if (client == null) {
+			return null;
+		}
 		int id = getId();
-		if (id == -1) return null;
+		if (id == -1) {
+			return null;
+		}
 		final RSItemDefLoader loader;
 		final Cache cache;
 		final HashTable table;
 		if ((loader = client.getRSItemDefLoader()) == null ||
-				(cache = loader.getCache()) == null || (table = cache.getTable()) == null) return null;
+				(cache = loader.getCache()) == null || (table = cache.getTable()) == null) {
+			return null;
+		}
 		final Object o = ctx.game.lookup(table, id);
 		return o != null && o instanceof RSItemDef ? new ItemDefinition((RSItemDef) o) : null;
 	}
@@ -118,9 +131,13 @@ public class GroundItem extends Interactive implements Locatable, Drawable {
 		final Model model = getModel(getId());
 		if (model != null) {
 			Point point = model.getCentroid(faceIndex);
-			if (point != null) return point;
+			if (point != null) {
+				return point;
+			}
 			point = model.getCentroid(faceIndex = model.nextTriangle());
-			if (point != null) return point;
+			if (point != null) {
+				return point;
+			}
 		}
 		return tile.getInteractPoint();
 	}
@@ -128,14 +145,18 @@ public class GroundItem extends Interactive implements Locatable, Drawable {
 	@Override
 	public Point getNextPoint() {
 		final Model model = getModel(getId());
-		if (model != null) model.getNextPoint();
+		if (model != null) {
+			model.getNextPoint();
+		}
 		return tile.getNextPoint();
 	}
 
 	@Override
 	public Point getCenterPoint() {
 		final Model model = getModel(getId());
-		if (model != null) model.getCenterPoint();
+		if (model != null) {
+			model.getCenterPoint();
+		}
 		return tile.getCenterPoint();
 	}
 
@@ -151,7 +172,9 @@ public class GroundItem extends Interactive implements Locatable, Drawable {
 
 	@Override
 	public boolean equals(final Object o) {
-		if (o == null || !(o instanceof GroundItem)) return false;
+		if (o == null || !(o instanceof GroundItem)) {
+			return false;
+		}
 		final GroundItem g = (GroundItem) o;
 		return g.tile.equals(this.tile) && g.item.equals(this.item);
 	}
@@ -170,6 +193,8 @@ public class GroundItem extends Interactive implements Locatable, Drawable {
 		}
 		render.setColor(c);
 		final Model m = getModel();
-		if (m != null) m.drawWireFrame(render);
+		if (m != null) {
+			m.drawWireFrame(render);
+		}
 	}
 }

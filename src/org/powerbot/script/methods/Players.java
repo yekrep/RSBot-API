@@ -1,10 +1,10 @@
 package org.powerbot.script.methods;
 
+import java.util.Arrays;
+
 import org.powerbot.client.Client;
 import org.powerbot.client.RSPlayer;
 import org.powerbot.script.wrappers.Player;
-
-import java.util.Arrays;
 
 /**
  * {@link Players} is a static utility which provides access to the {@link Player}s in the game.
@@ -28,7 +28,9 @@ public class Players extends Filtering<Player> {
 	 */
 	public Player getLocal() {
 		Client client = ctx.getClient();
-		if (client == null) return null;
+		if (client == null) {
+			return null;
+		}
 
 		final RSPlayer p = client.getMyRSPlayer();
 		return p != null ? new Player(ctx, p) : null;
@@ -42,17 +44,23 @@ public class Players extends Filtering<Player> {
 	@Override
 	public Player[] list() {
 		Client client = ctx.getClient();
-		if (client == null) return new Player[0];
+		if (client == null) {
+			return new Player[0];
+		}
 
 		final int[] indices = client.getRSPlayerIndexArray();
 		final RSPlayer[] players = client.getRSPlayerArray();
-		if (indices == null || players == null) return new Player[0];
+		if (indices == null || players == null) {
+			return new Player[0];
+		}
 
 		final Player[] loadedPlayers = new Player[indices.length];
 		int d = 0;
 		for (final int index : indices) {
 			final RSPlayer player = players[index];
-			if (player != null) loadedPlayers[d++] = new Player(ctx, player);
+			if (player != null) {
+				loadedPlayers[d++] = new Player(ctx, player);
+			}
 		}
 
 		return Arrays.copyOf(loadedPlayers, d);

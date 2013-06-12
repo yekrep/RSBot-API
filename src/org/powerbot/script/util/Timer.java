@@ -22,17 +22,25 @@ public class Timer {
 		final int hrs = (int) total_hrs % 24;
 		final int days = (int) total_days;
 		if (days > 0) {
-			if (days < 10) t.append("0");
+			if (days < 10) {
+				t.append("0");
+			}
 			t.append(days);
 			t.append(":");
 		}
-		if (hrs < 10) t.append("0");
+		if (hrs < 10) {
+			t.append("0");
+		}
 		t.append(hrs);
 		t.append(":");
-		if (mins < 10) t.append("0");
+		if (mins < 10) {
+			t.append("0");
+		}
 		t.append(mins);
 		t.append(":");
-		if (secs < 10) t.append("0");
+		if (secs < 10) {
+			t.append("0");
+		}
 		t.append(secs);
 		return t.toString();
 	}

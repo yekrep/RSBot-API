@@ -1,7 +1,7 @@
 package org.powerbot.script.randoms;
 
-import org.powerbot.script.PollingScript;
 import org.powerbot.script.Manifest;
+import org.powerbot.script.PollingScript;
 import org.powerbot.script.methods.Game;
 import org.powerbot.script.util.Random;
 import org.powerbot.script.util.Timer;
@@ -17,10 +17,14 @@ public class TicketDestroy extends PollingScript implements RandomEvent {
 
 	@Override
 	public int poll() {
-		if (!ctx.game.isLoggedIn() || ctx.game.getCurrentTab() != Game.TAB_INVENTORY) return 600;
+		if (!ctx.game.isLoggedIn() || ctx.game.getCurrentTab() != Game.TAB_INVENTORY) {
+			return 600;
+		}
 		final Player player;
 		if ((player = ctx.players.getLocal()) == null ||
-				player.isInCombat() || player.getAnimation() != -1 || player.getInteracting() != null) return 600;
+				player.isInCombat() || player.getAnimation() != -1 || player.getInteracting() != null) {
+			return 600;
+		}
 		final Item item = ctx.inventory.getItem(ITEM_IDS);
 		if (item != null) {
 			Tracker.getInstance().trackPage("randoms/TicketDestroy/", "");
@@ -39,7 +43,9 @@ public class TicketDestroy extends PollingScript implements RandomEvent {
 								if (c.isVisible() && (s = c.getTooltip()) != null && s.trim().equalsIgnoreCase("destroy")) {
 									if (c.interact("Destroy")) {
 										final Timer t = new Timer(Random.nextInt(1500, 2000));
-										while (t.isRunning() && child.getItemId() != -1) sleep(100, 250);
+										while (t.isRunning() && child.getItemId() != -1) {
+											sleep(100, 250);
+										}
 									}
 								}
 							}

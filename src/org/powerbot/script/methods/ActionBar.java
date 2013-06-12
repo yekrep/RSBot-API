@@ -1,7 +1,5 @@
 package org.powerbot.script.methods;
 
-import org.powerbot.script.methods.ClientFactory;
-import org.powerbot.script.methods.ClientLink;
 import org.powerbot.script.util.Delay;
 import org.powerbot.script.wrappers.Action;
 import org.powerbot.script.wrappers.Component;
@@ -24,51 +22,81 @@ public class ActionBar extends ClientLink {
 
 	public boolean isExpanded() {
 		final Component c = ctx.widgets.get(WIDGET, COMPONENT_BAR);
-		if (c == null || !c.isValid()) return false;
+		if (c == null || !c.isValid()) {
+			return false;
+		}
 		return c.isVisible();
 	}
 
 	public boolean setExpanded(final boolean expanded) {
-		if (isExpanded() == expanded) return true;
+		if (isExpanded() == expanded) {
+			return true;
+		}
 		final Component c = ctx.widgets.get(WIDGET, expanded ? COMPONENT_BUTTON_EXPAND : COMPONENT_BUTTON_COLLAPSE);
 		if (c != null && c.isValid() && c.interact(expanded ? "Expand" : "Collapse")) {
-			for (int i = 0; i < 5 && isExpanded() != expanded; i++) Delay.sleep(20, 50);
+			for (int i = 0; i < 5 && isExpanded() != expanded; i++) {
+				Delay.sleep(20, 50);
+			}
 		}
 		return isExpanded() == expanded;
 	}
 
 	public Action getAction(final int... ids) {
 		final Action[] actions = getActions();
-		for (final Action action : actions) for (final int id : ids) if (action.getId() == id) return action;
+		for (final Action action : actions) {
+			for (final int id : ids) {
+				if (action.getId() == id) {
+					return action;
+				}
+			}
+		}
 		return null;
 	}
 
 	public Action getActionAt(final int slot) {
-		if (slot < 0 || slot >= NUM_SLOTS) return null;
+		if (slot < 0 || slot >= NUM_SLOTS) {
+			return null;
+		}
 		Action.Type type;
 		int id = ctx.settings.get(SETTING_ABILITY + slot);
-		if (id != 0) type = Action.Type.ABILITY;
-		else if ((id = ctx.settings.get(SETTING_ITEM + slot)) != 0) type = Action.Type.ITEM;
-		else type = null;
-		if (type == null) return null;
+		if (id != 0) {
+			type = Action.Type.ABILITY;
+		} else if ((id = ctx.settings.get(SETTING_ITEM + slot)) != 0) {
+			type = Action.Type.ITEM;
+		} else {
+			type = null;
+		}
+		if (type == null) {
+			return null;
+		}
 		return new Action(ctx, slot, type, id);
 	}
 
 	public Action[] getActions() {
 		final Action[] actions = new Action[NUM_SLOTS];
-		for (int i = 0; i < NUM_SLOTS; i++) actions[i] = getActionAt(i);
+		for (int i = 0; i < NUM_SLOTS; i++) {
+			actions[i] = getActionAt(i);
+		}
 		return actions;
 	}
 
 	public boolean deleteSlot(final int slot) {
 		Component c;
-		if (slot < 0 || slot >= NUM_SLOTS || (c = ctx.widgets.get(WIDGET, COMPONENT_SLOTS[slot])) == null) return false;
+		if (slot < 0 || slot >= NUM_SLOTS || (c = ctx.widgets.get(WIDGET, COMPONENT_SLOTS[slot])) == null) {
+			return false;
+		}
 		final Action action = getActionAt(slot);
-		if (action == null) return true;
+		if (action == null) {
+			return true;
+		}
 		c = ctx.widgets.get(WIDGET, COMPONENT_TRASH);
-		if (c == null || !c.isValid()) return false;
+		if (c == null || !c.isValid()) {
+			return false;
+		}
 		if (action.hover() && ctx.mouse.drag(c.getInteractPoint(), true)) {
-			for (int i = 0; i < 5 && getActionAt(slot) != null; i++) Delay.sleep(100, 200);
+			for (int i = 0; i < 5 && getActionAt(slot) != null; i++) {
+				Delay.sleep(100, 200);
+			}
 		}
 		return getActionAt(slot) == null;
 	}
@@ -78,10 +106,14 @@ public class ActionBar extends ClientLink {
 	}
 
 	public boolean setLocked(final boolean locked) {
-		if (isLocked() == locked) return true;
+		if (isLocked() == locked) {
+			return true;
+		}
 		final Component c = ctx.widgets.get(WIDGET, COMPONENT_LOCK);
 		if (c != null && c.isValid() && c.interact("Toggle Lock")) {
-			for (int i = 0; i < 25 && locked != isLocked(); i++) Delay.sleep(100, 150);
+			for (int i = 0; i < 25 && locked != isLocked(); i++) {
+				Delay.sleep(100, 150);
+			}
 		}
 		return isLocked() == locked;
 	}

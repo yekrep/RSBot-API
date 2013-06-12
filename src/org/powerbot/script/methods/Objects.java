@@ -20,14 +20,17 @@ public class Objects extends Filtering<GameObject> {
 	@Override
 	public GameObject[] list() {
 		Client client = ctx.getClient();
-		if (client == null) return new GameObject[0];
+		if (client == null) {
+			return new GameObject[0];
+		}
 
 		final RSInfo info;
 		final RSGroundInfo groundInfo;
 		final RSGround[][][] grounds;
 		if ((info = client.getRSGroundInfo()) == null || (groundInfo = info.getRSGroundInfo()) == null ||
-				(grounds = groundInfo.getRSGroundArray()) == null)
+				(grounds = groundInfo.getRSGroundArray()) == null) {
 			return new GameObject[0];
+		}
 
 		final GameObject.Type[] types = {
 				GameObject.Type.BOUNDARY, GameObject.Type.BOUNDARY,
@@ -38,14 +41,18 @@ public class Objects extends Filtering<GameObject> {
 		final int plane = client.getPlane();
 
 		final RSGround[][] objArr = plane > -1 && plane < grounds.length ? grounds[plane] : null;
-		if (objArr == null) return new GameObject[0];
+		if (objArr == null) {
+			return new GameObject[0];
+		}
 
 		final Set<GameObject> objects = new LinkedHashSet<>();
 		Set<RSObject> refs = new HashSet<>();
 		for (int x = 0; x <= objArr.length - 1; x++) {
 			for (int y = 0; y <= objArr[x].length - 1; y++) {
 				final RSGround ground = objArr[x][y];
-				if (ground == null) continue;
+				if (ground == null) {
+					continue;
+				}
 
 				for (RSAnimableNode node = ground.getRSAnimableList(); node != null; node = node.getNext()) {
 					final RSObject obj = node.getRSAnimable();
@@ -63,7 +70,9 @@ public class Objects extends Filtering<GameObject> {
 				};
 
 				for (int i = 0; i < objs.length; i++) {
-					if (objs[i] != null && objs[i].getId() != -1) objects.add(new GameObject(ctx, objs[i], types[i]));
+					if (objs[i] != null && objs[i].getId() != -1) {
+						objects.add(new GameObject(ctx, objs[i], types[i]));
+					}
 				}
 			}
 		}

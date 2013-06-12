@@ -32,6 +32,7 @@ public class Boot implements Runnable {
 	private final static Logger log = Logger.getLogger(Boot.class.getName());
 	private final static String SWITCH_RESTARTED = "-restarted", SWITCH_DEBUG = "-debug", SWITCH_VERSION_SHORT = "-v";
 	private final static File ICON_TMP = new File(System.getProperty("java.io.tmpdir"), Configuration.NAME.toLowerCase() + ".ico.png");
+
 	public static void main(final String[] args) {
 		final Logger logger = Logger.getLogger("");
 		for (final Handler handler : logger.getHandlers()) {
@@ -109,8 +110,8 @@ public class Boot implements Runnable {
 
 		StringUtil.newStringUtf8(null); // prevents ClassCircularityError exceptions
 		CryptFile.PERMISSIONS.clear();
-		System.setSecurityManager(new RestrictedSecurityManager(new Class<?>[] {RSLoader.class},
-				new Class<?>[] {NetworkAccount.class, GameAccounts.class, Tracker.class}));
+		System.setSecurityManager(new RestrictedSecurityManager(new Class<?>[]{RSLoader.class},
+				new Class<?>[]{NetworkAccount.class, GameAccounts.class, Tracker.class}));
 		System.setProperty("java.net.preferIPv4Stack", "true");
 
 		BotChrome.getInstance();

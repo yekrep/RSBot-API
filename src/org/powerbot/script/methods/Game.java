@@ -1,14 +1,29 @@
 package org.powerbot.script.methods;
 
+import java.awt.Canvas;
+import java.awt.Dimension;
+import java.awt.Point;
+import java.awt.Rectangle;
+
 import org.powerbot.bot.Bot;
-import org.powerbot.client.*;
+import org.powerbot.client.BaseInfo;
+import org.powerbot.client.Client;
+import org.powerbot.client.Constants;
+import org.powerbot.client.HardReference;
+import org.powerbot.client.HashTable;
+import org.powerbot.client.Node;
+import org.powerbot.client.RSGroundBytes;
+import org.powerbot.client.RSGroundInfo;
+import org.powerbot.client.RSInfo;
+import org.powerbot.client.Render;
+import org.powerbot.client.RenderData;
+import org.powerbot.client.SoftReference;
+import org.powerbot.client.TileData;
 import org.powerbot.script.util.Delay;
 import org.powerbot.script.util.Timer;
 import org.powerbot.script.wrappers.Component;
 import org.powerbot.script.wrappers.Player;
 import org.powerbot.script.wrappers.Tile;
-
-import java.awt.*;
 
 public class Game extends ClientLink {
 	public static final int TAB_NONE = -1;
@@ -63,39 +78,57 @@ public class Game extends ClientLink {
 		Component c;
 		for (int i = 0; i < TAB_NAMES.length - 1; i++) {
 			if ((c = ctx.components.getTab(i)) != null) {
-				if (c.getTextureId() != -1) return i;
+				if (c.getTextureId() != -1) {
+					return i;
+				}
 			}
 		}
-		if ((c = ctx.widgets.get(182, 1)) != null && c.isVisible()) return TAB_LOGOUT;
+		if ((c = ctx.widgets.get(182, 1)) != null && c.isVisible()) {
+			return TAB_LOGOUT;
+		}
 		return TAB_NONE;
 	}
 
 	public boolean openTab(final int index) {
-		if (index < 0 || index >= TAB_NAMES.length) return false;
-		if (getCurrentTab() == index) return true;
+		if (index < 0 || index >= TAB_NAMES.length) {
+			return false;
+		}
+		if (getCurrentTab() == index) {
+			return true;
+		}
 		final Component c = ctx.components.getTab(index);
 		if (c != null && c.isValid() && c.click(true)) {
 			final Timer t = new Timer(800);
-			while (t.isRunning() && getCurrentTab() != index) Delay.sleep(15);
+			while (t.isRunning() && getCurrentTab() != index) {
+				Delay.sleep(15);
+			}
 		}
 		return getCurrentTab() == index;
 	}
 
 	public boolean closeTab() {
-		if (isFixed()) return false;
+		if (isFixed()) {
+			return false;
+		}
 		final int curr;
-		if ((curr = getCurrentTab()) == TAB_NONE) return true;
+		if ((curr = getCurrentTab()) == TAB_NONE) {
+			return true;
+		}
 		final Component c = ctx.components.getTab(curr);
 		if (c != null && c.isValid() && c.click(true)) {
 			final Timer t = new Timer(800);
-			while (t.isRunning() && getCurrentTab() != TAB_NONE) Delay.sleep(15);
+			while (t.isRunning() && getCurrentTab() != TAB_NONE) {
+				Delay.sleep(15);
+			}
 		}
 		return getCurrentTab() == TAB_NONE;
 	}
 
 	public int getClientState() {
 		Client client = ctx.getClient();
-		if (client == null) return -1;
+		if (client == null) {
+			return -1;
+		}
 
 		final Constants constants = Bot.constants();
 		final int state = client.getLoginIndex();
@@ -115,13 +148,19 @@ public class Game extends ClientLink {
 
 	public boolean isLoggedIn() {
 		final int curr = getClientState();
-		for (final int s : INDEX_LOGGED_IN) if (s == curr) return true;
+		for (final int s : INDEX_LOGGED_IN) {
+			if (s == curr) {
+				return true;
+			}
+		}
 		return false;
 	}
 
 	public Tile getMapBase() {
 		Client client = ctx.getClient();
-		if (client == null) return null;
+		if (client == null) {
+			return null;
+		}
 
 		final RSInfo info = client.getRSGroundInfo();
 		final BaseInfo baseInfo = info != null ? info.getBaseInfo() : null;
@@ -130,13 +169,17 @@ public class Game extends ClientLink {
 
 	public int getPlane() {
 		Client client = ctx.getClient();
-		if (client == null) return -1;
+		if (client == null) {
+			return -1;
+		}
 		return client.getPlane();
 	}
 
 	public boolean isFixed() {
 		Client client = ctx.getClient();
-		if (client == null) return false;
+		if (client == null) {
+			return false;
+		}
 		return client.getGUIRSInterfaceIndex() != 746;
 	}
 
@@ -147,7 +190,9 @@ public class Game extends ClientLink {
 	public Dimension getDimensions() {
 		Client client = ctx.getClient();
 		final Canvas canvas;
-		if (client == null || (canvas = client.getCanvas()) == null) return new Dimension(0, 0);
+		if (client == null || (canvas = client.getCanvas()) == null) {
+			return new Dimension(0, 0);
+		}
 		return new Dimension(canvas.getWidth(), canvas.getHeight());
 	}
 
@@ -160,30 +205,46 @@ public class Game extends ClientLink {
 		if (isLoggedIn()) {
 			final Component c = ctx.widgets.get(ActionBar.WIDGET, ActionBar.COMPONENT_BAR);
 			r = c != null && c.isVisible() ? c.getBoundingRect() : null;
-			if (r != null && r.contains(x, y)) return false;
-			if (isFixed()) return x >= 4 && y >= 54 && x < 516 && y < 388;
-		} else r = null;
+			if (r != null && r.contains(x, y)) {
+				return false;
+			}
+			if (isFixed()) {
+				return x >= 4 && y >= 54 && x < 516 && y < 388;
+			}
+		} else {
+			r = null;
+		}
 		return true;
 	}
 
 	public int tileHeight(final int rX, final int rY, int plane) {
 		Client client = ctx.getClient();
-		if (client == null) return 0;
-		if (plane == -1) plane = client.getPlane();
+		if (client == null) {
+			return 0;
+		}
+		if (plane == -1) {
+			plane = client.getPlane();
+		}
 		RSInfo world = client.getRSGroundInfo();
 		RSGroundBytes ground = world != null ? world.getGroundBytes() : null;
 		byte[][][] settings = ground != null ? ground.getBytes() : null;
 		if (settings != null) {
 			int x = rX >> 9, y = rY >> 9;
-			if (x < 0 || x > 103 || y < 0 || y > 103) return 0;
+			if (x < 0 || x > 103 || y < 0 || y > 103) {
+				return 0;
+			}
 			if (plane < 3 && (settings[1][x][y] & 2) != 0) {
 				++plane;
 			}
 			RSGroundInfo worldGround = world.getRSGroundInfo();
 			TileData[] groundPlanes = worldGround != null ? worldGround.getTileData() : null;
-			if (groundPlanes == null || plane < 0 || plane >= groundPlanes.length) return 0;
+			if (groundPlanes == null || plane < 0 || plane >= groundPlanes.length) {
+				return 0;
+			}
 			TileData groundData = groundPlanes[plane];
-			if (groundData == null) return 0;
+			if (groundData == null) {
+				return 0;
+			}
 			int[][] heights = groundData.getHeights();
 			if (heights != null) {
 				int aX = rX & 0x1ff;
@@ -220,18 +281,24 @@ public class Game extends ClientLink {
 
 	public Point worldToMap(double x, double y) {
 		Client client = ctx.getClient();
-		if (client == null) return null;
+		if (client == null) {
+			return null;
+		}
 		final Tile base = getMapBase();
 		final Player player = ctx.players.getLocal();
 		Tile loc;
-		if (base == null || player == null || (loc = player.getLocation()) == null) return null;
+		if (base == null || player == null || (loc = player.getLocation()) == null) {
+			return null;
+		}
 		x -= base.x;
 		y -= base.y;
 		loc = loc.derive(-base.x, -base.y);
 		final int pX = (int) (x * 4 + 2) - (loc.getX() << 9) / 128;
 		final int pY = (int) (y * 4 + 2) - (loc.getY() << 9) / 128;
 		final Component mapComponent = ctx.components.getMap();
-		if (mapComponent == null) return new Point(-1, -1);
+		if (mapComponent == null) {
+			return new Point(-1, -1);
+		}
 		final int dist = pX * pX + pY * pY;
 		final int mapRadius = Math.max(mapComponent.getWidth() / 2, mapComponent.getHeight() / 2) - 8;
 		if (mapRadius * mapRadius >= dist) {
@@ -239,7 +306,9 @@ public class Game extends ClientLink {
 			final int SETTINGS_ON = constants != null ? constants.MINIMAP_SETTINGS_ON : -1;
 			int angle = 0x3fff & (int) client.getMinimapAngle();
 			final boolean unknown = client.getMinimapSettings() == SETTINGS_ON;
-			if (!unknown) angle = 0x3fff & client.getMinimapOffset() + (int) client.getMinimapAngle();
+			if (!unknown) {
+				angle = 0x3fff & client.getMinimapOffset() + (int) client.getMinimapAngle();
+			}
 			int sin = SIN_TABLE[angle];
 			int cos = COS_TABLE[angle];
 			if (!unknown) {
@@ -258,7 +327,9 @@ public class Game extends ClientLink {
 	}
 
 	public void updateToolkit(final Render render) {
-		if (render == null) return;
+		if (render == null) {
+			return;
+		}
 		toolkit.absoluteX = render.getAbsoluteX();
 		toolkit.absoluteY = render.getAbsoluteY();
 		toolkit.xMultiplier = render.getXMultiplier();
@@ -268,7 +339,9 @@ public class Game extends ClientLink {
 		final Constants constants = Bot.constants();
 		final RenderData _viewport = render.getRenderData();
 		final float[] data;
-		if (viewport == null || constants == null || (data = _viewport.getFloats()) == null) return;
+		if (viewport == null || constants == null || (data = _viewport.getFloats()) == null) {
+			return;
+		}
 		viewport.xOff = data[constants.VIEWPORT_XOFF];
 		viewport.xX = data[constants.VIEWPORT_XX];
 		viewport.xY = data[constants.VIEWPORT_XY];

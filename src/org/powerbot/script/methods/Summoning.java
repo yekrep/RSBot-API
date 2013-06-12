@@ -32,7 +32,9 @@ public class Summoning extends ClientLink {
 
 	public boolean select(final String action) {
 		final Component c = ctx.widgets.get(COMPONENT_SUMMONING_ORB, 2);
-		if (c == null) return false;
+		if (c == null) {
+			return false;
+		}
 		if (Option.RENEW_FAMILIAR.getText().toLowerCase().contains(action.toLowerCase())) {
 			final Familiar familiar = getEnum();
 			return familiar != null && familiar.getRequiredPoints() <= getPoints() && ctx.inventory.getCount(ctx.settings.get(1831)) > 0
@@ -41,8 +43,12 @@ public class Summoning extends ClientLink {
 		if (Option.DISMISS.getText().toLowerCase().contains(action.toLowerCase())) {
 			if (c.interact(action)) {
 				final Component c2 = ctx.widgets.get(COMPONENT_INTERACT, 3);
-				if (c2 == null) return false;
-				for (int i = 0; i < 50 && !c2.isValid(); i++) Delay.sleep(20);
+				if (c2 == null) {
+					return false;
+				}
+				for (int i = 0; i < 50 && !c2.isValid(); i++) {
+					Delay.sleep(20);
+				}
 				return c2.click(true);
 			}
 			return false;
@@ -56,14 +62,22 @@ public class Summoning extends ClientLink {
 	}
 
 	public Option getLeftClickOption() {
-		for (Option o : Option.values()) if (ctx.settings.get(1789) == o.action()) return o;
+		for (Option o : Option.values()) {
+			if (ctx.settings.get(1789) == o.action()) {
+				return o;
+			}
+		}
 		return Option.FOLLOWER_DETAILS;
 	}
 
 	public boolean setLeftClickOption(final Option option) {
-		if (ctx.settings.get(1789) == option.action()) return true;
+		if (ctx.settings.get(1789) == option.action()) {
+			return true;
+		}
 		final Component c = ctx.widgets.get(COMPONENT_SUMMONING_ORB, 2);
-		if (c == null || !c.interact("Select")) return false;
+		if (c == null || !c.interact("Select")) {
+			return false;
+		}
 		if (!isFamiliarSummoned()) {
 			final Timer timer = new Timer(800);
 			while (timer.isRunning() && !ctx.menu.isOpen()) {
@@ -74,13 +88,19 @@ public class Summoning extends ClientLink {
 			}
 		}
 		final Component c2 = ctx.widgets.get(COMPONENT_SET_LEFT, 5);
-		if (c2 == null) return false;
+		if (c2 == null) {
+			return false;
+		}
 		final Timer timer = new Timer(2000);
-		while (timer.isRunning() && !c2.isValid()) Delay.sleep(15);
+		while (timer.isRunning() && !c2.isValid()) {
+			Delay.sleep(15);
+		}
 		Delay.sleep(200);
 		if (ctx.widgets.get(COMPONENT_SET_LEFT, option.getId()).interact("Select")) {
 			final Timer t = new Timer(800);
-			while (t.isRunning() && ctx.settings.get(1790) != option.selected()) Delay.sleep(15);
+			while (t.isRunning() && ctx.settings.get(1790) != option.selected()) {
+				Delay.sleep(15);
+			}
 		} else {
 			c2.interact("Confirm");
 			return false;
@@ -111,7 +131,9 @@ public class Summoning extends ClientLink {
 			return null;
 		}
 		final Player local = ctx.players.getLocal();
-		if (local == null) return null;
+		if (local == null) {
+			return null;
+		}
 		return ctx.npcs.filter(new Filter<Npc>() {
 			@Override
 			public boolean accept(Npc npc) {
@@ -122,8 +144,14 @@ public class Summoning extends ClientLink {
 	}
 
 	public Familiar getEnum() {
-		if (!isFamiliarSummoned()) return null;
-		for (final Familiar f : Familiar.values()) if (f.getPouchId() == ctx.settings.get(1831)) return f;
+		if (!isFamiliarSummoned()) {
+			return null;
+		}
+		for (final Familiar f : Familiar.values()) {
+			if (f.getPouchId() == ctx.settings.get(1831)) {
+				return f;
+			}
+		}
 		return null;
 	}
 
@@ -134,13 +162,21 @@ public class Summoning extends ClientLink {
 
 	public boolean dismissFamiliar() {
 		final Component c = ctx.widgets.get(WIDGET_FOLLOWER_DETAILS, 51);
-		if (c == null || !isFamiliarSummoned() || !c.isVisible()) return false;
+		if (c == null || !isFamiliarSummoned() || !c.isVisible()) {
+			return false;
+		}
 		final Component c2 = ctx.widgets.get(WIDGET_FOLLOWER_DETAILS, 51);
-		if (c2 == null || !c2.interact("Dismiss")) return false;
+		if (c2 == null || !c2.interact("Dismiss")) {
+			return false;
+		}
 		final Timer timer = new Timer(1500);
 		final Component c3 = ctx.widgets.get(COMPONENT_INTERACT, 20);
-		if (c3 == null) return false;
-		while (timer.isRunning() && !c3.isValid()) Delay.sleep(15);
+		if (c3 == null) {
+			return false;
+		}
+		while (timer.isRunning() && !c3.isValid()) {
+			Delay.sleep(15);
+		}
 		return ctx.widgets.get(COMPONENT_INTERACT, 3).click(true);
 	}
 

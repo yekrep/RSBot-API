@@ -3,8 +3,6 @@ package org.powerbot.script.methods;
 import org.powerbot.client.Client;
 import org.powerbot.client.PlayerMetaInfo;
 import org.powerbot.client.Skill;
-import org.powerbot.script.methods.ClientFactory;
-import org.powerbot.script.methods.ClientLink;
 
 public class Skills extends ClientLink {
 	public static final int[] XP_TABLE = {0, 0, 83, 174, 276, 388, 512, 650, 801, 969, 1154, 1358, 1584, 1833, 2107,
@@ -49,30 +47,40 @@ public class Skills extends ClientLink {
 
 	public int getLevel(final int index) {
 		final int[] levels = getLevels();
-		if (index >= 0 && index < levels.length) return -1;
+		if (index >= 0 && index < levels.length) {
+			return -1;
+		}
 		return levels[index];
 	}
 
 	public int getRealLevel(final int index) {
 		final int[] levels = getRealLevels();
-		if (index >= 0 && index < levels.length) return -1;
+		if (index >= 0 && index < levels.length) {
+			return -1;
+		}
 		return levels[index];
 	}
 
 	public int getExperience(final int index) {
 		final int[] exps = getExperiences();
-		if (index >= 0 && index < exps.length) return -1;
+		if (index >= 0 && index < exps.length) {
+			return -1;
+		}
 		return exps[index];
 	}
 
 	public int[] getLevels() {
 		Client client = ctx.getClient();
-		if (client == null) return new int[0];
+		if (client == null) {
+			return new int[0];
+		}
 		final PlayerMetaInfo info = client.getPlayerMetaInfo();
 		final Skill[] skills;
 		if (info != null && (skills = info.getSkills()) != null) {
 			final int[] levels = new int[skills.length];
-			for (int i = 0; i < skills.length; i++) levels[i] = skills[i].getLevel();
+			for (int i = 0; i < skills.length; i++) {
+				levels[i] = skills[i].getLevel();
+			}
 			return levels;
 		}
 		return new int[0];
@@ -80,12 +88,16 @@ public class Skills extends ClientLink {
 
 	public int[] getRealLevels() {
 		Client client = ctx.getClient();
-		if (client == null) return new int[0];
+		if (client == null) {
+			return new int[0];
+		}
 		final PlayerMetaInfo info = client.getPlayerMetaInfo();
 		final Skill[] skills;
 		if (info != null && (skills = info.getSkills()) != null) {
 			final int[] levels = new int[skills.length];
-			for (int i = 0; i < skills.length; i++) levels[i] = skills[i].getRealLevel();
+			for (int i = 0; i < skills.length; i++) {
+				levels[i] = skills[i].getRealLevel();
+			}
 			return levels;
 		}
 		return new int[0];
@@ -93,12 +105,16 @@ public class Skills extends ClientLink {
 
 	public int[] getExperiences() {
 		Client client = ctx.getClient();
-		if (client == null) return new int[0];
+		if (client == null) {
+			return new int[0];
+		}
 		final PlayerMetaInfo info = client.getPlayerMetaInfo();
 		final Skill[] skills;
 		if (info != null && (skills = info.getSkills()) != null) {
 			final int[] exps = new int[skills.length];
-			for (int i = 0; i < skills.length; i++) exps[i] = skills[i].getExperience();
+			for (int i = 0; i < skills.length; i++) {
+				exps[i] = skills[i].getExperience();
+			}
 			return exps;
 		}
 		return new int[0];
@@ -114,7 +130,9 @@ public class Skills extends ClientLink {
 	}
 
 	public int getExperienceAt(final int level) {
-		if (level < 0 || level > 120) return -1;
+		if (level < 0 || level > 120) {
+			return -1;
+		}
 		return XP_TABLE[level];
 	}
 }

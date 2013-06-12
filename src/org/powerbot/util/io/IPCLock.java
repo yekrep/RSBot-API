@@ -5,7 +5,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.channels.Channel;
-import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
 import java.util.Random;
 
@@ -41,7 +40,7 @@ public class IPCLock {
 	}
 
 	public FileLock getLock(final int id) {
-		for (;;) {
+		for (; ; ) {
 			try {
 				return new RandomAccessFile(file, "rwd").getChannel().tryLock(SIZE % id, 1, false);
 			} catch (final IOException ignored) {

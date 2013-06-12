@@ -8,8 +8,11 @@ public abstract class PollingScript extends AbstractScript {
 		while (!getContainer().isStopping()) {
 			int sleep;
 			try {
-				if (getContainer().isSuspended()) sleep = 600;
-				else sleep = poll();
+				if (getContainer().isSuspended()) {
+					sleep = 600;
+				} else {
+					sleep = poll();
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
 				sleep = -1;
@@ -20,7 +23,9 @@ public abstract class PollingScript extends AbstractScript {
 					Thread.sleep(sleep);
 				} catch (InterruptedException ignored) {
 				}
-			} else if (sleep == -1) getContainer().stop();
+			} else if (sleep == -1) {
+				getContainer().stop();
+			}
 		}
 	}
 }

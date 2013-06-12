@@ -1,9 +1,5 @@
 package org.powerbot.loader;
 
-import org.powerbot.util.Configuration;
-import org.powerbot.util.io.HttpClient;
-import org.powerbot.util.io.IOHelper;
-
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -12,6 +8,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.powerbot.util.Configuration;
+import org.powerbot.util.io.HttpClient;
+import org.powerbot.util.io.IOHelper;
 
 /**
  * @author Timer

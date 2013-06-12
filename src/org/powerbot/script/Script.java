@@ -1,11 +1,11 @@
 package org.powerbot.script;
 
-import org.powerbot.script.internal.ScriptContainer;
-import org.powerbot.script.methods.ClientFactory;
-
 import java.util.Deque;
 import java.util.EventListener;
 import java.util.concurrent.Callable;
+
+import org.powerbot.script.internal.ScriptContainer;
+import org.powerbot.script.methods.ClientFactory;
 
 public interface Script extends Runnable, EventListener {
 	public enum Event {

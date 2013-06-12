@@ -8,7 +8,9 @@ public class HashTable {
 	private int pos = 0;
 
 	public HashTable(final org.powerbot.client.HashTable nc) {
-		if (nc == null) throw new IllegalArgumentException();
+		if (nc == null) {
+			throw new IllegalArgumentException();
+		}
 		this.nc = nc;
 	}
 
@@ -19,7 +21,9 @@ public class HashTable {
 
 	public Node getNext() {
 		Node[] b = nc.getBuckets();
-		if (b == null) return null;
+		if (b == null) {
+			return null;
+		}
 		if (pos > 0 && pos <= b.length && b[pos - 1] != curr) {
 			Node n = curr;
 			curr = n.getNext();

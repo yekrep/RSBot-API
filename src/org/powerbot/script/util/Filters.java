@@ -8,7 +8,9 @@ import java.util.List;
 public class Filters {
 	private static <T> T[] flatten(T[][] paramArrayOfT) {
 		final List<T> list = new ArrayList<>();
-		for (T[] arr : paramArrayOfT) Collections.addAll(list, arr);
+		for (T[] arr : paramArrayOfT) {
+			Collections.addAll(list, arr);
+		}
 		return list.toArray((T[]) new Object[list.size()]);
 	}
 
@@ -16,7 +18,11 @@ public class Filters {
 		return new Filter<T>() {
 			public boolean accept(T paramT) {
 				Filter<T>[] filters = Filters.flatten(new Filter[][]{{first, second}, rest});
-				for (Filter<T> filter : filters) if (!filter.accept(paramT)) return false;
+				for (Filter<T> filter : filters) {
+					if (!filter.accept(paramT)) {
+						return false;
+					}
+				}
 				return true;
 			}
 		};
@@ -27,7 +33,11 @@ public class Filters {
 			@Override
 			public boolean accept(T t) {
 				Filter<T>[] filters = Filters.flatten(new Filter[][]{{first, second}, rest});
-				for (Filter<T> filter : filters) if (filter.accept(t)) return true;
+				for (Filter<T> filter : filters) {
+					if (filter.accept(t)) {
+						return true;
+					}
+				}
 				return false;
 			}
 		};
@@ -45,7 +55,11 @@ public class Filters {
 	public static <T> T[] filter(T[] arr, Filter<T> filter) {
 		arr = arr.clone();
 		int d = 0;
-		for (int i = 0; i < arr.length; i++) if (arr[i] != null && filter.accept(arr[i])) arr[d++] = arr[i];
+		for (int i = 0; i < arr.length; i++) {
+			if (arr[i] != null && filter.accept(arr[i])) {
+				arr[d++] = arr[i];
+			}
+		}
 		return Arrays.copyOf(arr, d);
 	}
 }

@@ -21,10 +21,14 @@ public class Settings extends ClientLink {
 	public int[] getArray() {
 		Client client = ctx.getClient();
 		final PlayerMetaInfo info;
-		if (client == null || (info = client.getPlayerMetaInfo()) == null) return new int[0];
+		if (client == null || (info = client.getPlayerMetaInfo()) == null) {
+			return new int[0];
+		}
 		final org.powerbot.client.Settings settings;
 		final int[] data;
-		if ((settings = info.getSettings()) == null || (data = settings.getData()) == null) return new int[0];
+		if ((settings = info.getSettings()) == null || (data = settings.getData()) == null) {
+			return new int[0];
+		}
 		return data.clone();
 	}
 

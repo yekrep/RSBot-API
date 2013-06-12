@@ -1,15 +1,15 @@
 package org.powerbot.bot;
 
-import org.powerbot.loader.ClientLoader;
-import org.powerbot.util.Configuration;
-
 import java.applet.Applet;
-import java.awt.*;
+import java.awt.Graphics;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import org.powerbot.loader.ClientLoader;
+import org.powerbot.util.Configuration;
 
 /**
  * @author Timer
@@ -64,32 +64,44 @@ public class RSLoader extends Applet implements Runnable {
 
 	@Override
 	public final void init() {
-		if (client != null) invokeMethod(null, null, "init");
+		if (client != null) {
+			invokeMethod(null, null, "init");
+		}
 	}
 
 	@Override
 	public final void start() {
-		if (client != null) invokeMethod(null, null, "start");
+		if (client != null) {
+			invokeMethod(null, null, "start");
+		}
 	}
 
 	@Override
 	public final void stop() {
-		if (client != null) invokeMethod(null, null, "stop");
+		if (client != null) {
+			invokeMethod(null, null, "stop");
+		}
 	}
 
 	@Override
 	public final void destroy() {
-		if (client != null) invokeMethod(null, null, "destroy");
+		if (client != null) {
+			invokeMethod(null, null, "destroy");
+		}
 	}
 
 	@Override
 	public final void paint(final Graphics render) {
-		if (client != null) invokeMethod(new Object[]{render}, new Class[]{Graphics.class}, "paint");
+		if (client != null) {
+			invokeMethod(new Object[]{render}, new Class[]{Graphics.class}, "paint");
+		}
 	}
 
 	@Override
 	public final void update(final Graphics render) {
-		if (client != null) invokeMethod(new Object[]{render}, new Class[]{Graphics.class}, "update");
+		if (client != null) {
+			invokeMethod(new Object[]{render}, new Class[]{Graphics.class}, "update");
+		}
 	}
 
 	@Override

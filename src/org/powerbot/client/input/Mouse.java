@@ -151,7 +151,9 @@ public abstract class Mouse extends Focus implements MouseListener, MouseMotionL
 	}
 
 	public final void sendEvent(final MouseEvent e) {
-		if (e == null) return;
+		if (e == null) {
+			return;
+		}
 		try {
 			clientX = e.getX();
 			clientY = e.getY();

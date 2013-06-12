@@ -24,13 +24,17 @@ public class HintArrows extends Filtering<HintArrow> {
 	@Override
 	public HintArrow[] list() {
 		Client client = ctx.getClient();
-		if (client == null) return new HintArrow[0];
+		if (client == null) {
+			return new HintArrow[0];
+		}
 
 		final RSHintArrow[] arr = client.getRSHintArrows();
 		final HintArrow[] arrows = new HintArrow[arr != null ? arr.length : 0];
 		int d = 0;
 		for (final RSHintArrow arrow : arr != null ? arr : new RSHintArrow[0]) {
-			if (arrow != null) arrows[d++] = new HintArrow(ctx, arrow);
+			if (arrow != null) {
+				arrows[d++] = new HintArrow(ctx, arrow);
+			}
 		}
 		return Arrays.copyOf(arrows, d);
 	}

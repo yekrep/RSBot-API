@@ -2,10 +2,7 @@ package org.powerbot.util;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
-import java.io.Writer;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 

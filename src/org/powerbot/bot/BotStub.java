@@ -69,7 +69,9 @@ public class BotStub implements AppletStub, AppletContext {
 	@Override
 	public Applet getApplet(final String name) {
 		final String n;
-		if ((n = params.get("name")) != null && n.equals(name)) return applet;
+		if ((n = params.get("name")) != null && n.equals(name)) {
+			return applet;
+		}
 		return null;
 	}
 
@@ -87,7 +89,9 @@ public class BotStub implements AppletStub, AppletContext {
 
 	@Override
 	public void showDocument(final URL url, final String target) {
-		if (!target.equals("tbi")) log.info("Attempting to show: " + url.toString() + " [" + target + "]");
+		if (!target.equals("tbi")) {
+			log.info("Attempting to show: " + url.toString() + " [" + target + "]");
+		}
 	}
 
 	@Override

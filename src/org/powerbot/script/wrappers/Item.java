@@ -1,10 +1,14 @@
 package org.powerbot.script.wrappers;
 
-import org.powerbot.client.*;
+import java.awt.Point;
+
+import org.powerbot.client.Cache;
+import org.powerbot.client.Client;
+import org.powerbot.client.HashTable;
+import org.powerbot.client.RSItemDef;
+import org.powerbot.client.RSItemDefLoader;
 import org.powerbot.script.methods.ClientFactory;
 import org.powerbot.util.StringUtil;
-
-import java.awt.*;
 
 public class Item extends Interactive {
 	private final int id;
@@ -17,7 +21,9 @@ public class Item extends Interactive {
 
 	public Item(ClientFactory ctx, int id, int stack, Component component) {
 		super(ctx);
-		if (component == null) throw new IllegalArgumentException("component is null");
+		if (component == null) {
+			throw new IllegalArgumentException("component is null");
+		}
 		this.id = id;
 		this.stack = stack;
 		this.component = component;
@@ -29,16 +35,21 @@ public class Item extends Interactive {
 
 	public int getStackSize() {
 		int stack = component.getItemStackSize();
-		if (component.isVisible() && component.getItemId() == this.id) return this.stack = stack;
+		if (component.isVisible() && component.getItemId() == this.id) {
+			return this.stack = stack;
+		}
 		return this.stack;
 	}
 
 	public String getName() {
 		String name = null;
-		if (component.getItemId() == this.id) name = component.getItemName();
-		else {
+		if (component.getItemId() == this.id) {
+			name = component.getItemName();
+		} else {
 			final ItemDefinition def;
-			if ((def = getDefinition()) != null) name = def.getName();
+			if ((def = getDefinition()) != null) {
+				name = def.getName();
+			}
 		}
 		return name != null ? StringUtil.stripHtml(name) : null;
 	}
@@ -49,13 +60,17 @@ public class Item extends Interactive {
 
 	public ItemDefinition getDefinition() {
 		Client client = ctx.getClient();
-		if (client == null) return null;
+		if (client == null) {
+			return null;
+		}
 
 		final RSItemDefLoader loader;
 		final Cache cache;
 		final HashTable table;
 		if ((loader = client.getRSItemDefLoader()) == null ||
-				(cache = loader.getCache()) == null || (table = cache.getTable()) == null) return null;
+				(cache = loader.getCache()) == null || (table = cache.getTable()) == null) {
+			return null;
+		}
 		final Object o = ctx.game.lookup(table, this.id);
 		return o != null && o instanceof RSItemDef ? new ItemDefinition((RSItemDef) o) : null;
 	}
@@ -93,7 +108,9 @@ public class Item extends Interactive {
 
 	@Override
 	public boolean equals(final Object o) {
-		if (o == null || !(o instanceof Item)) return false;
+		if (o == null || !(o instanceof Item)) {
+			return false;
+		}
 		final Item i = (Item) o;
 		return this.id == i.id && this.component.equals(i.component);
 	}

@@ -1,14 +1,33 @@
 package org.powerbot.gui.component;
 
+import java.awt.Canvas;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
+import java.util.logging.Logger;
+
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
 import org.powerbot.bot.Bot;
 import org.powerbot.client.input.Mouse;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.util.io.Resources;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.util.logging.Logger;
 
 /**
  * A panel that re-dispatches human events to the game's applet.

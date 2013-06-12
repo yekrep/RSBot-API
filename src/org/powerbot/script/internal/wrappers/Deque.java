@@ -8,7 +8,9 @@ public class Deque<N> {
 	private Node curr;
 
 	public Deque(final NodeDeque nl) {
-		if (nl == null) throw new IllegalArgumentException();
+		if (nl == null) {
+			throw new IllegalArgumentException();
+		}
 		this.nl = nl;
 	}
 
@@ -16,8 +18,11 @@ public class Deque<N> {
 		int s = 0;
 		Node t = nl.getTail();
 		Node n;
-		if (t != null) n = t.getNext();
-		else n = null;
+		if (t != null) {
+			n = t.getNext();
+		} else {
+			n = null;
+		}
 		while (n != null && n != t) {
 			n = n.getNext();
 			++s;
@@ -29,8 +34,11 @@ public class Deque<N> {
 	public N getHead() {
 		Node t = nl.getTail();
 		Node n;
-		if (t != null) n = t.getNext();
-		else n = null;
+		if (t != null) {
+			n = t.getNext();
+		} else {
+			n = null;
+		}
 		if (n == null || n == t) {
 			curr = null;
 			return null;

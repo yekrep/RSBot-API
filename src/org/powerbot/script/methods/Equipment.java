@@ -1,8 +1,6 @@
 package org.powerbot.script.methods;
 
 import org.powerbot.script.internal.methods.Items;
-import org.powerbot.script.methods.ClientFactory;
-import org.powerbot.script.methods.ClientLink;
 import org.powerbot.script.wrappers.Component;
 import org.powerbot.script.wrappers.Item;
 
@@ -72,10 +70,15 @@ public class Equipment extends ClientLink {
 		Item[] items = new Item[NUM_SLOTS];
 		for (Slot slot : Slot.values()) {
 			int index = slot.getIndex();
-			if (index < 0 || index >= data.length || data[index][0] == -1) continue;
+			if (index < 0 || index >= data.length || data[index][0] == -1) {
+				continue;
+			}
 			Component c;
-			if (b) c = ctx.widgets.get(WIDGET_BANK, COMPONENT_BANK).getChild(slot.getBankComponentIndex());
-			else c = ctx.widgets.get(WIDGET, slot.getComponentIndex());
+			if (b) {
+				c = ctx.widgets.get(WIDGET_BANK, COMPONENT_BANK).getChild(slot.getBankComponentIndex());
+			} else {
+				c = ctx.widgets.get(WIDGET, slot.getComponentIndex());
+			}
 			items[slot.ordinal()] = new Item(ctx, data[index][0], data[index][1], c);
 		}
 		return items;
@@ -84,16 +87,25 @@ public class Equipment extends ClientLink {
 	public Item getItem(Slot slot) {
 		int index = slot.getIndex();
 		int[][] data = ctx.items.getItems(Items.INDEX_EQUIPMENT);
-		if (index < 0 || index >= data.length || data[index][0] == -1) return null;
+		if (index < 0 || index >= data.length || data[index][0] == -1) {
+			return null;
+		}
 		Component c;
-		if (ctx.bank.isOpen()) c = ctx.widgets.get(WIDGET_BANK, COMPONENT_BANK).getChild(slot.getBankComponentIndex());
-		else c = ctx.widgets.get(WIDGET, slot.getComponentIndex());
+		if (ctx.bank.isOpen()) {
+			c = ctx.widgets.get(WIDGET_BANK, COMPONENT_BANK).getChild(slot.getBankComponentIndex());
+		} else {
+			c = ctx.widgets.get(WIDGET, slot.getComponentIndex());
+		}
 		return new Item(ctx, data[index][0], data[index][1], c);
 	}
 
 	public boolean contains(int id) {
 		int[][] data = ctx.items.getItems(Items.INDEX_EQUIPMENT);
-		for (int i = 0; i < data.length; i++) if (data[i][0] == id) return true;
+		for (int i = 0; i < data.length; i++) {
+			if (data[i][0] == id) {
+				return true;
+			}
+		}
 		return false;
 	}
 
@@ -107,14 +119,22 @@ public class Equipment extends ClientLink {
 					break;
 				}
 			}
-			if (!contains) return false;
+			if (!contains) {
+				return false;
+			}
 		}
 		return true;
 	}
 
 	public boolean containsOneOf(int... ids) {
 		int[][] data = ctx.items.getItems(Items.INDEX_EQUIPMENT);
-		for (int id : ids) for (int i = 0; i < data.length; i++) if (data[i][0] == id) return true;
+		for (int id : ids) {
+			for (int i = 0; i < data.length; i++) {
+				if (data[i][0] == id) {
+					return true;
+				}
+			}
+		}
 		return false;
 	}
 }

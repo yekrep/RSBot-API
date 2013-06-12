@@ -1,13 +1,13 @@
 package org.powerbot.script.randoms;
 
-import org.powerbot.script.PollingScript;
+import java.awt.Point;
+
 import org.powerbot.script.Manifest;
+import org.powerbot.script.PollingScript;
 import org.powerbot.script.util.Random;
 import org.powerbot.script.util.Timer;
 import org.powerbot.script.wrappers.Component;
 import org.powerbot.util.Tracker;
-
-import java.awt.*;
 
 @Manifest(name = "Widget closer", authors = {"Timer"}, description = "Closes widgets")
 public class WidgetCloser extends PollingScript implements RandomEvent {
@@ -32,12 +32,16 @@ public class WidgetCloser extends PollingScript implements RandomEvent {
 
 	@Override
 	public int poll() {
-		if (threshold.isRunning()) return 1000;
+		if (threshold.isRunning()) {
+			return 1000;
+		}
 		for (final int p : COMPONENTS) {
 			component = ctx.widgets.get(p >> 16, p & 0xffff);
 			if (component != null && component.isValid()) {
 				break;
-			} else component = null;
+			} else {
+				component = null;
+			}
 		}
 		if (component != null) {
 			Tracker.getInstance().trackPage("randoms/WidgetCloser/", "");
@@ -49,7 +53,9 @@ public class WidgetCloser extends PollingScript implements RandomEvent {
 
 			if (component.isValid() && click(component)) {
 				final Timer timer = new Timer(Random.nextInt(2000, 2500));
-				while (timer.isRunning() && component.isValid()) sleep(100, 250);
+				while (timer.isRunning() && component.isValid()) {
+					sleep(100, 250);
+				}
 				if (!component.isValid()) {
 					component = null;
 					tries = 0;

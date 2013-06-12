@@ -9,7 +9,6 @@ import java.util.logging.Logger;
 
 import org.powerbot.gui.component.BotLocale;
 import org.powerbot.util.io.CryptFile;
-import org.powerbot.util.io.HttpClient;
 import org.powerbot.util.io.IOHelper;
 
 public final class LoadUpdates implements Callable<Boolean> {

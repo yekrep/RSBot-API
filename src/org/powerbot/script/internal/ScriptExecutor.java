@@ -19,13 +19,17 @@ public class ScriptExecutor extends ThreadPoolExecutor {
 
 	@Override
 	public void shutdown() {
-		if (!handler.isStopping()) handler.stop();
+		if (!handler.isStopping()) {
+			handler.stop();
+		}
 		super.shutdown();
 	}
 
 	@Override
 	public List<Runnable> shutdownNow() {
-		if (!handler.isStopping()) handler.stop();
+		if (!handler.isStopping()) {
+			handler.stop();
+		}
 		return super.shutdownNow();
 	}
 

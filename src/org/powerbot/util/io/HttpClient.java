@@ -123,14 +123,14 @@ public class HttpClient {
 		final String s = String.format(link, args), marker = "{POST}";
 		final int z = s.indexOf(marker);
 		if (z == -1) {
-			return new String[] {s};
+			return new String[]{s};
 		}
 		final int o = z + marker.length();
 		String pre = s.substring(0, z), post = o >= s.length() ? "" : s.substring(o);
 		if (pre.length() > 0 && pre.charAt(pre.length() - 1) == '?') {
 			pre = pre.substring(0, pre.length() - 1);
 		}
-		return new String[] {pre, post};
+		return new String[]{pre, post};
 	}
 
 	public static InputStream getInputStream(final URLConnection con) throws IOException {

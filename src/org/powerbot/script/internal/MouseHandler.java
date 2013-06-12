@@ -1,16 +1,17 @@
 package org.powerbot.script.internal;
 
+import java.applet.Applet;
+import java.awt.Component;
+import java.awt.Point;
+import java.awt.event.MouseEvent;
+import java.util.concurrent.TimeUnit;
+
 import org.powerbot.client.Client;
 import org.powerbot.client.input.Mouse;
 import org.powerbot.golem.HeteroMouse;
 import org.powerbot.golem.math.Vector3;
 import org.powerbot.script.lang.Stoppable;
 import org.powerbot.script.util.Delay;
-
-import java.applet.Applet;
-import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.util.concurrent.TimeUnit;
 
 public class MouseHandler implements Runnable, Stoppable {
 	private static final int MAX_STEPS = 20;
@@ -30,7 +31,9 @@ public class MouseHandler implements Runnable, Stoppable {
 
 	public void click(final int button) {
 		final Mouse mouse;
-		if ((mouse = client.getMouse()) == null) return;
+		if ((mouse = client.getMouse()) == null) {
+			return;
+		}
 		final int x = mouse.getX(), y = mouse.getY();
 		press(x, y, button);
 		Delay.sleep(simulator.getPressDuration());
@@ -39,16 +42,24 @@ public class MouseHandler implements Runnable, Stoppable {
 
 	public void press(final int x, final int y, final int button) {
 		final Mouse mouse;
-		if ((mouse = client.getMouse()) == null) return;
-		if (!mouse.isPresent() || mouse.isPressed()) return;
+		if ((mouse = client.getMouse()) == null) {
+			return;
+		}
+		if (!mouse.isPresent() || mouse.isPressed()) {
+			return;
+		}
 		final Component target = getSource();
 		mouse.sendEvent(new MouseEvent(target, MouseEvent.MOUSE_PRESSED, System.currentTimeMillis(), 0, x, y, 1, false, button));
 	}
 
 	public void release(final int x, final int y, final int button) {
 		final Mouse mouse;
-		if ((mouse = client.getMouse()) == null) return;
-		if (!mouse.isPressed()) return;
+		if ((mouse = client.getMouse()) == null) {
+			return;
+		}
+		if (!mouse.isPressed()) {
+			return;
+		}
 		final long mark = System.currentTimeMillis();
 		final Component target = getSource();
 		mouse.sendEvent(new MouseEvent(target, MouseEvent.MOUSE_RELEASED, mark, 0, x, y, 1, false, button));
@@ -61,7 +72,9 @@ public class MouseHandler implements Runnable, Stoppable {
 		final long mark = System.currentTimeMillis();
 		final Component target = getSource();
 		final Mouse mouse;
-		if ((mouse = client.getMouse()) == null) return;
+		if ((mouse = client.getMouse()) == null) {
+			return;
+		}
 		final boolean present = x >= 0 && y >= 0 && x < target.getWidth() && y < target.getHeight();
 		if (!mouse.isPresent() && present) {
 			mouse.sendEvent(new MouseEvent(target, MouseEvent.MOUSE_ENTERED, mark, 0, x, y, 0, false));
@@ -89,7 +102,9 @@ public class MouseHandler implements Runnable, Stoppable {
 					}
 				}
 			}
-			if (target == null) continue;
+			if (target == null) {
+				continue;
+			}
 			final Mouse mouse;
 			if ((mouse = client.getMouse()) == null) {
 				Delay.sleep(250);
@@ -140,7 +155,9 @@ public class MouseHandler implements Runnable, Stoppable {
 				m = System.currentTimeMillis() - m;
 
 				final long l = TimeUnit.NANOSECONDS.toMillis(simulator.getAbsoluteDelay(v.z)) - m;
-				if (l > 0) Delay.sleep(l);
+				if (l > 0) {
+					Delay.sleep(l);
+				}
 			}
 
 			final Point next = target.targetable.getNextPoint();
@@ -151,9 +168,13 @@ public class MouseHandler implements Runnable, Stoppable {
 	public void handle(final MouseTarget target) {
 		synchronized (LOCK) {
 			boolean notify = false;
-			if (this.target == null) notify = true;
+			if (this.target == null) {
+				notify = true;
+			}
 			this.target = target;
-			if (notify) LOCK.notify();
+			if (notify) {
+				LOCK.notify();
+			}
 
 			try {
 				LOCK.wait();
@@ -188,7 +209,9 @@ public class MouseHandler implements Runnable, Stoppable {
 
 	public Point getLocation() {
 		final Mouse mouse;
-		if ((mouse = client.getMouse()) == null) return new Point(-1, -1);
+		if ((mouse = client.getMouse()) == null) {
+			return new Point(-1, -1);
+		}
 		return mouse.getLocation();
 	}
 }

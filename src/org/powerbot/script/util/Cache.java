@@ -95,7 +95,9 @@ public class Cache<K, V> implements Map<K, V> {//TODO concurrent (thread-safe)
 		lock.lock();
 		try {
 			final Node<K, V> node = table.get(key);
-			if (node == null) return null;
+			if (node == null) {
+				return null;
+			}
 			history.add(node);
 			return node.value;
 		} finally {
@@ -127,7 +129,9 @@ public class Cache<K, V> implements Map<K, V> {//TODO concurrent (thread-safe)
 			if (space == 0) {
 				final Node<K, V> h = history.poll();
 				table.remove(h.key);
-			} else space--;
+			} else {
+				space--;
+			}
 			final Node<K, V> e = new Node<>(key, value);
 			table.put(key, e);
 			history.add(e);
@@ -148,7 +152,9 @@ public class Cache<K, V> implements Map<K, V> {//TODO concurrent (thread-safe)
 		lock.lock();
 		try {
 			final Node<K, V> node = table.remove(key);
-			if (node == null) return null;
+			if (node == null) {
+				return null;
+			}
 			space++;
 			node.pop();
 			return node.value;
@@ -173,7 +179,9 @@ public class Cache<K, V> implements Map<K, V> {//TODO concurrent (thread-safe)
 		lock.lock();
 		try {
 			table.clear();
-			while (history.poll() != null) ;
+			while (history.poll() != null) {
+				;
+			}
 			space = size;
 		} finally {
 			lock.unlock();
@@ -215,7 +223,9 @@ public class Cache<K, V> implements Map<K, V> {//TODO concurrent (thread-safe)
 
 		public void add(final Node<K, V> node) {
 			/* Remove node */
-			if (node.prev != null) node.pop();
+			if (node.prev != null) {
+				node.pop();
+			}
 			/* Set node's previous to the end (previous) */
 			node.prev = nil.prev;
 			/* Set node's next to end */
@@ -229,7 +239,9 @@ public class Cache<K, V> implements Map<K, V> {//TODO concurrent (thread-safe)
 			/* Get end's next (first) */
 			final Node node = nil.next;
 			/* Check if end */
-			if (node == nil) return null;
+			if (node == nil) {
+				return null;
+			}
 			/* Remove node */
 			node.pop();
 			return node;
@@ -253,7 +265,9 @@ public class Cache<K, V> implements Map<K, V> {//TODO concurrent (thread-safe)
 
 		public void pop() {
 			/* Check if referencing another node */
-			if (prev == null) return;
+			if (prev == null) {
+				return;
+			}
 			/* Set previous next to this next */
 			prev.next = next;
 			/* Set next previous to this previous */

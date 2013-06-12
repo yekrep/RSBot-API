@@ -15,7 +15,6 @@ import org.powerbot.loader.script.ModScript;
 import org.powerbot.util.Configuration;
 import org.powerbot.util.StringUtil;
 import org.powerbot.util.Tracker;
-import org.powerbot.util.io.CryptFile;
 import org.powerbot.util.io.HttpClient;
 import org.powerbot.util.io.IOHelper;
 
@@ -46,13 +45,19 @@ public class ClientLoader {
 			buffer = null;
 		}
 
-		if (buffer == null || buffer.length == 0) throw new RuntimeException("error downloading game");
+		if (buffer == null || buffer.length == 0) {
+			throw new RuntimeException("error downloading game");
+		}
 		final String[] keys = {crawler.parameters.get("0"), crawler.parameters.get("-1")};
-		if (keys[0] == null || keys[1] == null) throw new RuntimeException("error parsing parameters");
+		if (keys[0] == null || keys[1] == null) {
+			throw new RuntimeException("error parsing parameters");
+		}
 
 		final byte[][] data = {Crypt.decode(keys[0]), Crypt.decode(keys[1])};
 		classes.putAll(Deflator.extract(data[0], data[1], buffer));
-		if (classes.size() == 0) throw new RuntimeException("failed to decrypt inner.pack");
+		if (classes.size() == 0) {
+			throw new RuntimeException("failed to decrypt inner.pack");
+		}
 
 		final String hash = StringUtil.byteArrayToHexString(Deflator.inner_pack_hash);
 		log.info("Loading game (" + hash.substring(0, 6) + ")");
@@ -74,7 +79,9 @@ public class ClientLoader {
 				}
 			}
 		}
-		if (modScript == null) throw new RuntimeException("error getting t-spec");
+		if (modScript == null) {
+			throw new RuntimeException("error getting t-spec");
+		}
 
 		modScript.adapt();
 		for (final Map.Entry<String, byte[]> clazz : classes.entrySet()) {

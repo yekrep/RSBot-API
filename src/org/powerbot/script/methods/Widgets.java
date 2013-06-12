@@ -1,14 +1,14 @@
 package org.powerbot.script.methods;
 
+import java.awt.Point;
+import java.util.Arrays;
+
 import org.powerbot.client.Client;
 import org.powerbot.client.RSInterfaceBase;
 import org.powerbot.script.util.Delay;
 import org.powerbot.script.util.Random;
 import org.powerbot.script.wrappers.Component;
 import org.powerbot.script.wrappers.Widget;
-
-import java.awt.*;
-import java.util.Arrays;
 
 /**
  * {@link Widgets} is a static utility which provides access to the game's {@link Component}s by means of {@link Widget}s.
@@ -30,11 +30,15 @@ public class Widgets extends ClientLink {
 	 */
 	public Widget[] getLoaded() {
 		Client client = ctx.getClient();
-		if (client == null) return null;
+		if (client == null) {
+			return null;
+		}
 		final RSInterfaceBase[] containers = client.getRSInterfaceCache();
 		final int len = containers != null ? containers.length : 0;
 		final Widget[] arr = new Widget[len];
-		for (int i = 0; i < len; i++) arr[i] = new Widget(ctx,i);
+		for (int i = 0; i < len; i++) {
+			arr[i] = new Widget(ctx, i);
+		}
 		return arr;
 	}
 
@@ -46,16 +50,24 @@ public class Widgets extends ClientLink {
 	 */
 	public Widget get(final int widget) {
 		Client client = ctx.getClient();
-		if (client == null || widget < 0) return null;
+		if (client == null || widget < 0) {
+			return null;
+		}
 
-		if (cache == null) cache = new Widget[0];
-		if (widget < cache.length) return cache[widget];
+		if (cache == null) {
+			cache = new Widget[0];
+		}
+		if (widget < cache.length) {
+			return cache[widget];
+		}
 
 		final RSInterfaceBase[] containers = client.getRSInterfaceCache();
 		final int mod = Math.max(containers != null ? containers.length : 0, widget + 1);
 		final int len = cache.length;
 		cache = Arrays.copyOf(cache, mod);
-		for (int i = len; i < mod; i++) cache[i] = new Widget(ctx,i);
+		for (int i = len; i < mod; i++) {
+			cache[i] = new Widget(ctx, i);
+		}
 		return cache[widget];
 	}
 
@@ -79,27 +91,44 @@ public class Widgets extends ClientLink {
 	 * @return {@code true} if visible; otherwise {@code false}
 	 */
 	public boolean scroll(final Component component, final Component bar) {
-		if (component == null || bar == null || !component.isValid() || bar.getChildrenCount() != 6) return false;
+		if (component == null || bar == null || !component.isValid() || bar.getChildrenCount() != 6) {
+			return false;
+		}
 		Component area = component;
 		int id;
-		while (area.getScrollHeight() == 0 && (id = area.getParentId()) != -1) area = get(id >> 16, id & 0xffff);
-		if (area.getScrollHeight() == 0) return false;
+		while (area.getScrollHeight() == 0 && (id = area.getParentId()) != -1) {
+			area = get(id >> 16, id & 0xffff);
+		}
+		if (area.getScrollHeight() == 0) {
+			return false;
+		}
 
 		final Point abs = area.getAbsoluteLocation();
-		if (abs.x == -1 || abs.y == -1) return false;
+		if (abs.x == -1 || abs.y == -1) {
+			return false;
+		}
 		final int height = area.getHeight();
 		final Point p = component.getAbsoluteLocation();
-		if (p.y >= abs.y && p.y <= abs.y + height - component.getHeight()) return true;
+		if (p.y >= abs.y && p.y <= abs.y + height - component.getHeight()) {
+			return true;
+		}
 
 		final Component _bar = bar.getChild(0);
-		if (_bar == null) return false;
+		if (_bar == null) {
+			return false;
+		}
 		final int size = area.getScrollHeight();
 		int pos = (int) ((float) _bar.getHeight() / size * (component.getRelativeLocation().y + Random.nextInt(-height / 2, height / 2 - component.getHeight())));
-		if (pos < 0) pos = 0;
-		else if (pos >= _bar.getHeight()) pos = _bar.getHeight() - 1;
+		if (pos < 0) {
+			pos = 0;
+		} else if (pos >= _bar.getHeight()) {
+			pos = _bar.getHeight() - 1;
+		}
 		final Point nav = _bar.getAbsoluteLocation();
 		nav.translate(Random.nextInt(0, _bar.getWidth()), pos);
-		if (!ctx.mouse.click(nav, true)) return false;
+		if (!ctx.mouse.click(nav, true)) {
+			return false;
+		}
 		Delay.sleep(200, 400);
 
 		boolean up;
@@ -108,8 +137,12 @@ public class Widgets extends ClientLink {
 		while ((a = component.getAbsoluteLocation()).y < abs.y || a.y > abs.y + height - component.getHeight()) {
 			up = a.y < abs.y;
 			c = bar.getChild(up ? 4 : 5);
-			if (c == null) break;
-			if (c.click()) Delay.sleep(100, 200);
+			if (c == null) {
+				break;
+			}
+			if (c.click()) {
+				Delay.sleep(100, 200);
+			}
 		}
 		return a.y >= abs.y && a.y <= height + abs.y + height - component.getHeight();
 	}

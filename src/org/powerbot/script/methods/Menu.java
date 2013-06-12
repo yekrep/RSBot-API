@@ -1,16 +1,20 @@
 package org.powerbot.script.methods;
 
-import org.powerbot.client.*;
+import java.awt.Point;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+
+import org.powerbot.client.Client;
+import org.powerbot.client.MenuGroupNode;
+import org.powerbot.client.MenuItemNode;
+import org.powerbot.client.NodeDeque;
+import org.powerbot.client.NodeSubQueue;
 import org.powerbot.script.internal.wrappers.Deque;
 import org.powerbot.script.internal.wrappers.Queue;
 import org.powerbot.script.util.Delay;
 import org.powerbot.script.util.Random;
 import org.powerbot.util.StringUtil;
-
-import java.awt.*;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
 
 public class Menu extends ClientLink {
 	public Menu(ClientFactory factory) {
@@ -34,7 +38,9 @@ public class Menu extends ClientLink {
 			a = a != null ? StringUtil.stripHtml(a).toLowerCase() : "";
 			o = o != null ? StringUtil.stripHtml(o).toLowerCase() : "";
 			if ((action == null || a.contains(action.toLowerCase())) &&
-					(option == null || o.contains(option.toLowerCase()))) return d;
+					(option == null || o.contains(option.toLowerCase()))) {
+				return d;
+			}
 			d++;
 		}
 		return -1;
@@ -46,11 +52,17 @@ public class Menu extends ClientLink {
 
 	public boolean click(final String action, final String option) {
 		Client client = ctx.getClient();
-		if (client == null) return false;
+		if (client == null) {
+			return false;
+		}
 		int index = indexOf(action, option);
-		if (index == -1) return false;
+		if (index == -1) {
+			return false;
+		}
 		if (!client.isMenuOpen()) {
-			if (index == 0) return ctx.mouse.click(true);
+			if (index == 0) {
+				return ctx.mouse.click(true);
+			}
 			if (ctx.mouse.click(false)) {
 				final long m = System.currentTimeMillis();
 				while (System.currentTimeMillis() - m < 100 && !client.isMenuOpen()) {
@@ -58,7 +70,9 @@ public class Menu extends ClientLink {
 				}
 				Delay.sleep(0, 300);
 
-				if (!client.isMenuOpen()) return false;
+				if (!client.isMenuOpen()) {
+					return false;
+				}
 				if ((index = indexOf(action, option)) == -1) {
 					close();
 					return false;
@@ -70,7 +84,9 @@ public class Menu extends ClientLink {
 
 	public boolean close() {
 		Client client = ctx.getClient();
-		if (client == null) return false;
+		if (client == null) {
+			return false;
+		}
 		if (client.isMenuOpen()) {
 			ctx.mouse.move(client.getMenuX() - 30 + Random.nextInt(0, 20), client.getMenuY() - 10 + Random.nextInt(0, 20));
 		}
@@ -87,15 +103,24 @@ public class Menu extends ClientLink {
 				for (MenuGroupNode group = groups.getHead(); group != null; group = groups.getNext(), ++main) {
 					int sub = 0;
 					final NodeSubQueue queue;
-					if ((queue = group.getItems()) == null) continue;
+					if ((queue = group.getItems()) == null) {
+						continue;
+					}
 					final Queue<MenuItemNode> queue2 = new Queue<>(queue);
 					for (MenuItemNode node = queue2.getHead(); node != null; node = queue2.getNext(), ++sub) {
-						if (_index++ == index) if (sub == 0) break collapsed;
-						else return clickSub(client, main, sub);
+						if (_index++ == index) {
+							if (sub == 0) {
+								break collapsed;
+							} else {
+								return clickSub(client, main, sub);
+							}
+						}
 					}
 				}
 			}
-			if (client.isMenuOpen()) close();
+			if (client.isMenuOpen()) {
+				close();
+			}
 			return false;
 		}
 		return ctx.mouse.move(
@@ -125,7 +150,9 @@ public class Menu extends ClientLink {
 				}
 			}
 		}
-		if (client.isMenuOpen()) close();
+		if (client.isMenuOpen()) {
+			close();
+		}
 		return false;
 	}
 
@@ -133,7 +160,9 @@ public class Menu extends ClientLink {
 		final List<MenuItemNode> nodes = new LinkedList<>();
 
 		Client client = ctx.getClient();
-		if (client == null) return nodes;
+		if (client == null) {
+			return nodes;
+		}
 
 		final boolean collapsed;
 		if (collapsed = client.isMenuCollapsed()) {
@@ -142,23 +171,30 @@ public class Menu extends ClientLink {
 				final Queue<MenuGroupNode> groups = new Queue<>(menu);
 				for (MenuGroupNode group = groups.getHead(); group != null; group = groups.getNext()) {
 					final NodeSubQueue queue;
-					if ((queue = group.getItems()) == null) continue;
+					if ((queue = group.getItems()) == null) {
+						continue;
+					}
 					final Queue<MenuItemNode> queue2 = new Queue<>(queue);
-					for (MenuItemNode node = queue2.getHead(); node != null; node = queue2.getNext()) nodes.add(node);
+					for (MenuItemNode node = queue2.getHead(); node != null; node = queue2.getNext()) {
+						nodes.add(node);
+					}
 				}
 			}
 		} else {
 			final NodeDeque menu = client.getMenuItems();
 			if (menu != null) {
 				final Deque<MenuItemNode> deque = new Deque<>(menu);
-				for (MenuItemNode node = deque.getHead(); node != null; node = deque.getNext()) nodes.add(node);
+				for (MenuItemNode node = deque.getHead(); node != null; node = deque.getNext()) {
+					nodes.add(node);
+				}
 			}
 		}
 		if (nodes.size() > 1) {
 			final MenuItemNode node = nodes.get(0);
 			final String action = node.getAction();
-			if (action != null && StringUtil.stripHtml(action).equalsIgnoreCase(collapsed ? "Walk here" : "Cancel"))
+			if (action != null && StringUtil.stripHtml(action).equalsIgnoreCase(collapsed ? "Walk here" : "Cancel")) {
 				Collections.reverse(nodes);
+			}
 		}
 		return nodes;
 	}
@@ -170,8 +206,12 @@ public class Menu extends ClientLink {
 		final String[] arr = new String[len];
 		for (final MenuItemNode node : nodes) {
 			String a = node.getAction(), o = node.getOption();
-			if (a != null) a = StringUtil.stripHtml(a);
-			if (o != null) o = StringUtil.stripHtml(o);
+			if (a != null) {
+				a = StringUtil.stripHtml(a);
+			}
+			if (o != null) {
+				o = StringUtil.stripHtml(o);
+			}
 			arr[d++] = a + " " + o;
 		}
 		return arr;

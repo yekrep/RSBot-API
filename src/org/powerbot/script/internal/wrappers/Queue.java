@@ -15,8 +15,11 @@ public class Queue<N extends NodeSub> {
 		int s = 0;
 		NodeSub t = nl.getTail();
 		NodeSub n;
-		if (t != null) n = t.getNextSub();
-		else n = null;
+		if (t != null) {
+			n = t.getNextSub();
+		} else {
+			n = null;
+		}
 		while (n != null && n != t) {
 			n = n.getNextSub();
 			++s;
@@ -28,8 +31,11 @@ public class Queue<N extends NodeSub> {
 	public N getHead() {
 		NodeSub t = nl.getTail();
 		NodeSub n;
-		if (t != null) n = t.getNextSub();
-		else n = null;
+		if (t != null) {
+			n = t.getNextSub();
+		} else {
+			n = null;
+		}
 		if (n == null || n == t) {
 			curr = null;
 			return null;

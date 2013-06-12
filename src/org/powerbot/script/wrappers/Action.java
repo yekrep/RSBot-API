@@ -1,9 +1,9 @@
 package org.powerbot.script.wrappers;
 
-import org.powerbot.script.methods.ClientFactory;
-import org.powerbot.script.methods.ActionBar;
+import java.awt.Point;
 
-import java.awt.*;
+import org.powerbot.script.methods.ActionBar;
+import org.powerbot.script.methods.ClientFactory;
 
 public class Action extends Interactive {
 	private final int slot;
@@ -12,7 +12,9 @@ public class Action extends Interactive {
 
 	public Action(ClientFactory ctx, final int slot, final Type type, final int id) {
 		super(ctx);
-		if (slot < 0 || slot >= ActionBar.NUM_SLOTS || type == null || id <= 0) throw new IllegalArgumentException();
+		if (slot < 0 || slot >= ActionBar.NUM_SLOTS || type == null || id <= 0) {
+			throw new IllegalArgumentException();
+		}
 		this.slot = slot;
 		this.type = type;
 		this.id = id;
@@ -28,13 +30,17 @@ public class Action extends Interactive {
 
 	public String getBind() {
 		final Component c = ctx.widgets.get(ActionBar.WIDGET, ActionBar.COMPONENT_SLOTS_BIND[slot]);
-		if (c == null) return "";
+		if (c == null) {
+			return "";
+		}
 		final String str = c.getText();
 		return str != null ? str.trim() : "";
 	}
 
 	public boolean select() {//TODO if bind is in-capable, click + add a method for clicking
-		if (!isValid()) return false;
+		if (!isValid()) {
+			return false;
+		}
 		final String b = getBind();
 		return b != null && ctx.keyboard.send(b);
 	}
@@ -50,21 +56,27 @@ public class Action extends Interactive {
 	@Override
 	public Point getInteractPoint() {
 		final Component c = ctx.widgets.get(ActionBar.WIDGET, ActionBar.COMPONENT_SLOTS[slot]);
-		if (c == null) return new Point(-1, -1);
+		if (c == null) {
+			return new Point(-1, -1);
+		}
 		return c.getInteractPoint();
 	}
 
 	@Override
 	public Point getNextPoint() {
 		final Component c = ctx.widgets.get(ActionBar.WIDGET, ActionBar.COMPONENT_SLOTS[slot]);
-		if (c == null) return new Point(-1, -1);
+		if (c == null) {
+			return new Point(-1, -1);
+		}
 		return c.getNextPoint();
 	}
 
 	@Override
 	public Point getCenterPoint() {
 		final Component c = ctx.widgets.get(ActionBar.WIDGET, ActionBar.COMPONENT_SLOTS[slot]);
-		if (c == null) return new Point(-1, -1);
+		if (c == null) {
+			return new Point(-1, -1);
+		}
 		return c.getCenterPoint();
 	}
 
