@@ -1,82 +1,62 @@
 package org.powerbot.script;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.ArrayDeque;
-import java.util.Collection;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Queue;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.FutureTask;
-import java.util.concurrent.SynchronousQueue;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicLong;
-import java.util.logging.Logger;
-
-import org.powerbot.script.framework.Prioritizable;
-import org.powerbot.script.framework.ScriptController;
+import org.powerbot.script.internal.ScriptContainer;
+import org.powerbot.script.methods.ClientFactory;
 import org.powerbot.script.util.Random;
 import org.powerbot.util.Configuration;
 
-/**
- * An abstract implementation of {@code Script}.
- *
- * @author Paris
- */
-public abstract class AbstractScript implements Script, Prioritizable {
-	private final Map<State, Collection<FutureTask<Boolean>>> tasks;
-	private ScriptController controller;
+import java.io.*;
+import java.util.Deque;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Queue;
+import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.logging.Logger;
+
+public abstract class AbstractScript implements Script {
+	public final Logger log = Logger.getLogger(getClass().getName());
+	protected ClientFactory ctx;
+	private ScriptContainer container;
+	private final Map<Event, Deque<Callable<Boolean>>> triggers;
 	private final AtomicLong started, suspended;
 	private final Queue<Long> suspensions;
 	private final File dir;
-
-	/**
-	 * The designated {@link java.util.logging.Logger}, which should be used over {@code System.out.println}.
-	 */
-	protected final Logger log = Logger.getLogger(getClass().getName());
-
-	/**
-	 * The settings for this {@link Script}, which are saved between runs.
-	 */
 	protected final Properties settings;
 
 	public AbstractScript() {
-		tasks = new ConcurrentHashMap<>(State.values().length);
-
-		for (final State state : State.values()) {
-			tasks.put(state, new ArrayDeque<FutureTask<Boolean>>());
+		this.triggers = new ConcurrentHashMap<>();
+		for (Event event : Event.values()) {
+			this.triggers.put(event, new ConcurrentLinkedDeque<Callable<Boolean>>());
 		}
-
-		tasks.get(State.START).add(new FutureTask<>(this, true));
 
 		started = new AtomicLong(System.nanoTime());
 		suspended = new AtomicLong(0);
-		suspensions = new SynchronousQueue<>();
+		suspensions = new ConcurrentLinkedQueue<>();
 
-		tasks.get(State.START).add(new FutureTask<>(new Runnable() {
+		triggers.get(Event.START).add(new Callable<Boolean>() {
 			@Override
-			public void run() {
+			public Boolean call() throws Exception {
 				started.set(System.nanoTime());
+				return true;
 			}
-		}, true));
+		});
 
-		tasks.get(State.SUSPEND).add(new FutureTask<>(new Runnable() {
+		triggers.get(Event.SUSPEND).add(new Callable<Boolean>() {
 			@Override
-			public void run() {
+			public Boolean call() throws Exception {
 				suspensions.offer(System.nanoTime());
+				return true;
 			}
-		}, true));
+		});
 
-		tasks.get(State.RESUME).add(new FutureTask<>(new Runnable() {
+		triggers.get(Event.RESUME).add(new Callable<Boolean>() {
 			@Override
-			public void run() {
+			public Boolean call() throws Exception {
 				suspended.addAndGet(System.nanoTime() - suspensions.poll());
+				return true;
 			}
-		}, true));
+		});
 
 		dir = new File(new File(System.getProperty("java.io.tmpdir"), Configuration.NAME), getClass().getName());
 		final File xml = new File(dir, "settings.xml");
@@ -98,9 +78,9 @@ public abstract class AbstractScript implements Script, Prioritizable {
 			}
 		}
 
-		getTasks(State.STOP).add(new FutureTask<>(new Runnable() {
+		triggers.get(Event.STOP).add(new Callable<Boolean>() {
 			@Override
-			public void run() {
+			public Boolean call() throws Exception {
 				if (settings.isEmpty()) {
 					if (xml.isFile()) {
 						xml.delete();
@@ -123,47 +103,34 @@ public abstract class AbstractScript implements Script, Prioritizable {
 						}
 					}
 				}
+				return true;
 			}
-		}, true));
+		});
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
-	public final Collection<FutureTask<Boolean>> getTasks(final State state) {
-		return tasks.get(state);
+	public final Deque<Callable<Boolean>> getTriggers(Event event) {
+		return triggers.get(event);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
-	public int getPriority() {
-		return 0;
+	public final void setContainer(ScriptContainer container) {
+		this.container = container;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
-	public final void setPriority(final int priority) {
+	public final ScriptContainer getContainer() {
+		return this.container;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
-	public final ScriptController getScriptController() {
-		return controller;
+	public void setClientFactory(ClientFactory clientFactory) {
+		this.ctx = clientFactory;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
-	public final void setScriptController(final ScriptController controller) {
-		this.controller = controller;
+	public ClientFactory getClientFactory() {
+		return ctx;
 	}
 
 	/**
@@ -219,9 +186,9 @@ public abstract class AbstractScript implements Script, Prioritizable {
 	}
 
 	/**
-	 * Returns the {@link Manifest} attached to this {@link Script} if present.
+	 * Returns the {@link org.powerbot.script.Manifest} attached to this {@link Script} if present.
 	 *
-	 * @return the attached {@link Manifest} if it exists, or {@code null} otherwise
+	 * @return the attached {@link org.powerbot.script.Manifest} if it exists, or {@code null} otherwise
 	 */
 	public Manifest getManifest() {
 		return getClass().isAnnotationPresent(Manifest.class) ? getClass().getAnnotation(Manifest.class) : null;

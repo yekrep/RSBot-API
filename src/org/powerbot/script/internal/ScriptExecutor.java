@@ -1,23 +1,32 @@
-package org.powerbot.script.framework;
+package org.powerbot.script.internal;
 
-import java.util.concurrent.Executors;
+import java.util.List;
 import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
-/**
- * A named thread group pool executor.
- *
- * @author Paris
- * @author Timer
- */
-public class NamedCachedThreadPoolExecutor extends ThreadPoolExecutor {
+public class ScriptExecutor extends ThreadPoolExecutor {
+	private ScriptHandler handler;
 
-	public NamedCachedThreadPoolExecutor() {
-		super(0, Integer.MAX_VALUE, 48L, TimeUnit.HOURS, new SynchronousQueue<Runnable>(), Executors.defaultThreadFactory());
+	public ScriptExecutor(ScriptHandler handler) {
+		super(0, Integer.MAX_VALUE, 60l, TimeUnit.SECONDS, new SynchronousQueue<Runnable>());
+		allowCoreThreadTimeOut(true);
 		setThreadFactory(new GroupedThreadFactory(new ThreadGroup(getClass().getName() + "@" + Integer.toHexString(hashCode()))));
+		this.handler = handler;
+	}
+
+	@Override
+	public void shutdown() {
+		if (!handler.isStopping()) handler.stop();
+		super.shutdown();
+	}
+
+	@Override
+	public List<Runnable> shutdownNow() {
+		if (!handler.isStopping()) handler.stop();
+		return super.shutdownNow();
 	}
 
 	private final class GroupedThreadFactory implements ThreadFactory {

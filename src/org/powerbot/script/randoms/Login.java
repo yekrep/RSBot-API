@@ -2,7 +2,7 @@ package org.powerbot.script.randoms;
 
 import org.powerbot.bot.Bot;
 import org.powerbot.event.PaintListener;
-import org.powerbot.nscript.PollingScript;
+import org.powerbot.script.PollingScript;
 import org.powerbot.script.Manifest;
 import org.powerbot.script.methods.Game;
 import org.powerbot.script.methods.Lobby;

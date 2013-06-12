@@ -1,4 +1,4 @@
-package org.powerbot.nscript.internal;
+package org.powerbot.script.internal;
 
 import java.util.EventListener;
 import java.util.concurrent.ExecutorService;

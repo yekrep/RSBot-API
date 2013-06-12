@@ -1,13 +1,13 @@
 package org.powerbot.script.framework;
 
+import org.powerbot.script.Manifest;
+import org.powerbot.script.Script;
+import org.powerbot.util.StringUtil;
+
 import java.io.Serializable;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.powerbot.script.Manifest;
-import org.powerbot.script.Script;
-import org.powerbot.util.StringUtil;
 
 /**
  * @author Paris

@@ -9,22 +9,16 @@ import org.powerbot.gui.BotChrome;
 import org.powerbot.gui.component.BotPanel;
 import org.powerbot.loader.script.ModScript;
 import org.powerbot.script.framework.ScriptDefinition;
-import org.powerbot.script.framework.ScriptManager;
-import org.powerbot.script.framework.Stoppable;
 import org.powerbot.script.internal.InputHandler;
 import org.powerbot.script.internal.MouseHandler;
+import org.powerbot.script.internal.ScriptHandler;
+import org.powerbot.script.lang.Stoppable;
 import org.powerbot.script.methods.ClientFactory;
-import org.powerbot.script.randoms.BankPin;
-import org.powerbot.script.randoms.Login;
-import org.powerbot.script.randoms.TicketDestroy;
-import org.powerbot.script.randoms.WidgetCloser;
 import org.powerbot.script.util.Delay;
 import org.powerbot.service.GameAccounts;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -51,7 +45,7 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 	private BufferedImage backBuffer;
 	private MouseHandler mouseHandler;
 	private InputHandler inputHandler;
-	private ScriptManager scriptController;
+	private ScriptHandler scriptController;
 
 	private Bot() {
 		appletContainer = null;
@@ -75,7 +69,8 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 		new Thread(threadGroup, multicaster, multicaster.getClass().getName()).start();
 		refreshing = false;
 
-		this.clientFactory = new ClientFactory();
+		scriptController = new ScriptHandler(getEventMulticaster());
+		clientFactory = new ClientFactory();
 	}
 
 	public synchronized static Bot getInstance() {
@@ -171,14 +166,7 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 	}
 
 	public void startScript(final ScriptDefinition script) {
-		final List<ScriptDefinition> defs = new ArrayList<>();
-		defs.add(new ScriptDefinition(new WidgetCloser()));
-		defs.add(new ScriptDefinition(new Login()));
-		defs.add(new ScriptDefinition(new BankPin()));
-		defs.add(new ScriptDefinition(new TicketDestroy()));
-		defs.add(script);
-		scriptController = new ScriptManager(getEventMulticaster(), defs);
-		scriptController.run();
+		scriptController.start(script.getScript());      //TODO Paris [inspect]
 	}
 
 	public void stopScripts() {
@@ -264,7 +252,7 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 		this.account = account;
 	}
 
-	public ScriptManager getScriptController() {
+	public ScriptHandler getScriptController() {
 		return this.scriptController;
 	}
 

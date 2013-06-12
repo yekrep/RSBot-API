@@ -1,46 +1,24 @@
 package org.powerbot.script;
 
-import java.util.Collection;
+import org.powerbot.script.internal.ScriptContainer;
+import org.powerbot.script.methods.ClientFactory;
+
+import java.util.Deque;
 import java.util.EventListener;
-import java.util.concurrent.FutureTask;
+import java.util.concurrent.Callable;
 
-import org.powerbot.script.framework.ScriptController;
-
-/**
- * A stateful task based action driver.
- *
- * @author Paris
- */
 public interface Script extends Runnable, EventListener {
+	public enum Event {
+		START, SUSPEND, RESUME, STOP
+	}
 
-	public enum State {START, STOP, SUSPEND, RESUME}
+	public Deque<Callable<Boolean>> getTriggers(Event event);
 
-	/**
-	 * Retrieves a list of tasks for the specified state.
-	 *
-	 * @param state the query state
-	 * @return the set of tasks for the requested {@code state}
-	 */
-	public Collection<FutureTask<Boolean>> getTasks(State state);
+	public void setContainer(ScriptContainer container);
 
-	/**
-	 * Determines the overall order of priority of this script.
-	 *
-	 * @return the absolute priority on the integer scale
-	 */
-	public int getPriority();
+	public ScriptContainer getContainer();
 
-	/**
-	 * Retrieves the {@code ScriptController}.
-	 *
-	 * @return the attached {@code ScriptController}
-	 */
-	public ScriptController getScriptController();
+	public void setClientFactory(ClientFactory clientFactory);
 
-	/**
-	 * Sets the {@code ScriptController}.
-	 *
-	 * @param controller the {@code ScriptController} to attach
-	 */
-	public void setScriptController(ScriptController controller);
+	public ClientFactory getClientFactory();
 }

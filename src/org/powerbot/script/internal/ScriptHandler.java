@@ -1,9 +1,9 @@
-package org.powerbot.nscript.internal;
+package org.powerbot.script.internal;
 
 import org.powerbot.event.EventMulticaster;
-import org.powerbot.nscript.Script;
-import org.powerbot.nscript.lang.Stoppable;
-import org.powerbot.nscript.lang.Suspendable;
+import org.powerbot.script.Script;
+import org.powerbot.script.lang.Stoppable;
+import org.powerbot.script.lang.Suspendable;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -26,7 +26,6 @@ public class ScriptHandler implements Suspendable, Stoppable {
 	public ScriptHandler(EventMulticaster multicaster) {
 		this.eventManager = new EventManager(multicaster);
 		this.container = new ContainerImpl(this);
-		this.executor = new ScriptExecutor(this);
 		this.script = new AtomicReference<>(null);
 		this.suspended = new AtomicBoolean(false);
 		this.stopping = new AtomicBoolean(false);
@@ -34,6 +33,10 @@ public class ScriptHandler implements Suspendable, Stoppable {
 
 	public boolean start(Script script) {
 		if (this.script.compareAndSet(null, script)) {
+			suspended.set(false);
+			stopping.set(false);
+			this.executor = new ScriptExecutor(this);
+
 			script.setContainer(container);
 			eventManager.add(script);
 			if (call(Script.Event.START)) {
@@ -78,6 +81,10 @@ public class ScriptHandler implements Suspendable, Stoppable {
 		if (this.suspended.compareAndSet(true, false) && !call(Script.Event.RESUME)) {
 			this.suspended.compareAndSet(false, true);
 		}
+	}
+
+	public Script getScript() {
+		return script.get();
 	}
 
 	public ExecutorService getExecutor() {

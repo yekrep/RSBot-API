@@ -1,4 +1,4 @@
-package org.powerbot.nscript.lang;
+package org.powerbot.script.lang;
 
 public interface Stoppable {
 	public boolean isStopping();

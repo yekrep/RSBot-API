@@ -1,7 +1,7 @@
 package org.powerbot.bot;
 
 import org.powerbot.gui.BotChrome;
-import org.powerbot.script.framework.ScriptManager;
+import org.powerbot.script.internal.ScriptHandler;
 import org.powerbot.script.util.Delay;
 
 public class BotComposite {//TODO remove the use of a composite ... export data elsewhere
@@ -13,7 +13,7 @@ public class BotComposite {//TODO remove the use of a composite ... export data 
 
 	public void reload() {//TODO re-evaluate re-load method
 		Bot.log.info("Refreshing environment");
-		final ScriptManager container = bot.getScriptController();
+		final ScriptHandler container = bot.getScriptController();
 		if (container != null) {
 			container.suspend();
 		}

@@ -3,7 +3,7 @@ package org.powerbot.gui.component;
 import org.powerbot.Boot;
 import org.powerbot.bot.Bot;
 import org.powerbot.gui.*;
-import org.powerbot.script.framework.ScriptManager;
+import org.powerbot.script.internal.ScriptHandler;
 import org.powerbot.service.NetworkAccount;
 import org.powerbot.util.Configuration;
 import org.powerbot.util.Tracker;
@@ -86,8 +86,8 @@ public class BotMenuBar extends JMenuBar implements ActionListener {
 			@Override
 			public void menuSelected(final MenuEvent e) {
 				final boolean b = Bot.instantiated();
-				final ScriptManager container = b ? Bot.getInstance().getScriptController() : null;
-				final boolean active = container != null && !container.getScripts().isEmpty() && !container.isStopping(), running = active && !container.isSuspended();
+				final ScriptHandler container = b ? Bot.getInstance().getScriptController() : null;
+				final boolean active = container != null && container.getScript() != null && !container.isStopping(), running = active && !container.isSuspended();
 				play.setEnabled(b && Bot.getInstance().clientFactory.getClient() != null);
 				play.setText(running ? BotLocale.PAUSESCRIPT : active ? BotLocale.RESUMESCRIPT : BotLocale.PLAYSCRIPT);
 				play.setIcon(playIcons[running ? 1 : 0]);
@@ -222,8 +222,8 @@ public class BotMenuBar extends JMenuBar implements ActionListener {
 			@Override
 			public void run() {
 				final Bot bot = Bot.getInstance();
-				final ScriptManager script = bot.getScriptController();
-				if (script != null && !script.getScripts().isEmpty()) {
+				final ScriptHandler script = bot.getScriptController();
+				if (script != null && script.getScript() != null) {
 					if (script.isSuspended()) {
 						Tracker.getInstance().trackEvent("script", "resume");
 						script.resume();
@@ -254,7 +254,7 @@ public class BotMenuBar extends JMenuBar implements ActionListener {
 					return;
 				}
 				final Bot bot = Bot.getInstance();
-				final ScriptManager script = bot.getScriptController();
+				final ScriptHandler script = bot.getScriptController();
 				if (script != null) {
 					if (!script.isStopping()) {
 						Tracker.getInstance().trackEvent("script", "stop");

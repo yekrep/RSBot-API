@@ -1,6 +1,6 @@
 package org.powerbot.script.randoms;
 
-import org.powerbot.nscript.PollingScript;
+import org.powerbot.script.PollingScript;
 import org.powerbot.script.Manifest;
 import org.powerbot.script.methods.Game;
 import org.powerbot.script.util.Random;

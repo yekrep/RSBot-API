@@ -1,7 +1,7 @@
 package org.powerbot.script.randoms;
 
 import org.powerbot.bot.Bot;
-import org.powerbot.nscript.PollingScript;
+import org.powerbot.script.PollingScript;
 import org.powerbot.script.Manifest;
 import org.powerbot.script.util.Delay;
 import org.powerbot.script.util.Random;

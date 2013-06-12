@@ -1,8 +1,8 @@
-package org.powerbot.nscript.internal;
+package org.powerbot.script.internal;
 
-import org.powerbot.nscript.lang.Stoppable;
-import org.powerbot.nscript.lang.Subscribable;
-import org.powerbot.nscript.lang.Suspendable;
+import org.powerbot.script.lang.Stoppable;
+import org.powerbot.script.lang.Subscribable;
+import org.powerbot.script.lang.Suspendable;
 
 import java.util.EventListener;
 import java.util.concurrent.ExecutorService;
