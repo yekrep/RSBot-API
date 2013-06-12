@@ -128,6 +128,7 @@ public class Tile extends Interactive implements Locatable, Drawable {
 		if (((rgb >> 24) & 0xff) != alpha) {
 			c = new Color((rgb >> 16) & 0xff, (rgb >> 8) & 0xff, rgb & 0xff, alpha);
 		}
+		render.setColor(c);
 		final Point topLeft = getPoint(0.0D, 0.0D, 0);
 		final Point topRight = getPoint(1.0D, 0.0D, 0);
 		final Point bottomRight = getPoint(1.0D, 1.0D, 0);
