@@ -20,6 +20,7 @@ import org.powerbot.script.wrappers.Tile;
 public class DrawObjects implements PaintListener {
 	private static final Color[] C = {Color.GREEN, Color.WHITE, Color.BLACK, Color.BLUE};
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void onRepaint(final Graphics render) {
 		ClientFactory ctx = BotChrome.getInstance().getBot().getClientFactory();
