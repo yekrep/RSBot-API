@@ -29,7 +29,6 @@ import org.powerbot.service.GameAccounts;
 public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 	public static final Logger log = Logger.getLogger(Bot.class.getName());
 	private ClientFactory clientFactory;
-	public final BotComposite composite;
 	public final Runnable callback;
 	public final ThreadGroup threadGroup;
 	private final PaintEvent paintEvent;
@@ -54,7 +53,6 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 
 		threadGroup = new ThreadGroup(Bot.class.getName() + "@" + Integer.toHexString(hashCode()));
 
-		composite = new BotComposite(this);
 		multicaster = new EventMulticaster();
 		panel = null;
 
@@ -260,7 +258,23 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 		refreshing.set(true);
 		new Thread(threadGroup, new Runnable() {
 			public void run() {
-				composite.reload();
+				log.info("Refreshing environment");
+				final ScriptHandler container = getScriptController();
+				if (container != null) {
+					container.suspend();
+				}
+
+				terminateApplet();
+				resize(BotChrome.PANEL_WIDTH, BotChrome.PANEL_HEIGHT);
+
+				while (getClientFactory().getClient() == null || getClientFactory().game.getClientState() == -1) {
+					Delay.sleep(1000);
+				}
+				if (container != null) {
+					container.resume();
+				}
+
+				refreshing.set(false);
 			}
 		}).start();
 	}
