@@ -3,6 +3,7 @@ package org.powerbot.script.methods;
 import org.powerbot.client.*;
 import org.powerbot.script.wrappers.GameObject;
 
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -12,7 +13,6 @@ public class Objects extends ClientLink {
 	}
 
 	public GameObject[] getLoaded() {
-		final Set<GameObject> objects = new LinkedHashSet<>();
 		Client client = ctx.getClient();
 		if (client == null) return new GameObject[0];
 
@@ -33,6 +33,9 @@ public class Objects extends ClientLink {
 
 		final RSGround[][] objArr = plane > -1 && plane < grounds.length ? grounds[plane] : null;
 		if (objArr == null) return new GameObject[0];
+
+		final Set<GameObject> objects = new LinkedHashSet<>();
+		Set<RSObject> refs = new HashSet<>();
 		for (int x = 0; x <= objArr.length - 1; x++) {
 			for (int y = 0; y <= objArr[x].length - 1; y++) {
 				final RSGround ground = objArr[x][y];
@@ -40,8 +43,10 @@ public class Objects extends ClientLink {
 
 				for (RSAnimableNode node = ground.getRSAnimableList(); node != null; node = node.getNext()) {
 					final RSObject obj = node.getRSAnimable();
-					if (obj != null && obj.getId() != -1)
+					if (obj != null && obj.getId() != -1 && !refs.contains(obj)) {
+						refs.add(obj);
 						objects.add(new GameObject(ctx, obj, GameObject.Type.INTERACTIVE));
+					}
 				}
 
 
