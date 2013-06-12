@@ -13,7 +13,7 @@ import java.util.Arrays;
  *
  * @author Timer
  */
-public class Players extends ClientLink {
+public class Players extends Filtering<Player> {
 	public Players(ClientFactory factory) {
 		super(factory);
 	}
@@ -39,7 +39,8 @@ public class Players extends ClientLink {
 	 *
 	 * @return an array of all the loaded {@link Player}s
 	 */
-	public Player[] getLoaded() {
+	@Override
+	public Player[] list() {
 		Client client = ctx.getClient();
 		if (client == null) return new Player[0];
 

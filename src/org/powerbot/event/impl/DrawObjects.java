@@ -1,18 +1,21 @@
 package org.powerbot.event.impl;
 
+import java.awt.Color;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Point;
+import java.lang.ref.WeakReference;
+import java.lang.reflect.Field;
+
 import org.powerbot.bot.Bot;
 import org.powerbot.client.RSAnimable;
 import org.powerbot.client.RSObject;
 import org.powerbot.event.PaintListener;
 import org.powerbot.script.methods.ClientFactory;
-import org.powerbot.script.util.Filters;
+import org.powerbot.script.methods.Filterable;
 import org.powerbot.script.wrappers.GameObject;
 import org.powerbot.script.wrappers.Player;
 import org.powerbot.script.wrappers.Tile;
-
-import java.awt.*;
-import java.lang.ref.WeakReference;
-import java.lang.reflect.Field;
 
 public class DrawObjects implements PaintListener {
 	private static final Color[] C = {Color.GREEN, Color.WHITE, Color.BLACK, Color.BLUE};
@@ -30,12 +33,11 @@ public class DrawObjects implements PaintListener {
 		final Tile position = player.getLocation();
 		final int textHeight = metrics.getHeight();
 		Tile base = ctx.game.getMapBase();
-		GameObject[] larr = ctx.objects.getLoaded();
-		larr = Filters.range(larr, ctx.players.getLocal(), 25);
+		Filterable<GameObject> larr = ctx.objects.range(25);
 		for (int x = position.getX() - 25; x < position.getX() + 25; x++) {
 			for (int y = position.getY() - 25; y < position.getY() + 25; y++) {
 				Tile tile = new Tile(ctx, x, y, ctx.game.getPlane());
-				GameObject[] objs = Filters.at(larr, tile);
+				GameObject[] objs = larr.at(tile).list();
 				if (objs.length == 0) continue;
 
 				Point locationPoint = tile.getCenterPoint();

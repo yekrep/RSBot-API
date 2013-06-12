@@ -1,18 +1,24 @@
 package org.powerbot.script.methods;
 
-import org.powerbot.client.*;
-import org.powerbot.script.wrappers.GameObject;
-
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-public class Objects extends ClientLink {
+import org.powerbot.client.Client;
+import org.powerbot.client.RSAnimableNode;
+import org.powerbot.client.RSGround;
+import org.powerbot.client.RSGroundInfo;
+import org.powerbot.client.RSInfo;
+import org.powerbot.client.RSObject;
+import org.powerbot.script.wrappers.GameObject;
+
+public class Objects extends Filtering<GameObject> {
 	public Objects(ClientFactory factory) {
 		super(factory);
 	}
 
-	public GameObject[] getLoaded() {
+	@Override
+	public GameObject[] list() {
 		Client client = ctx.getClient();
 		if (client == null) return new GameObject[0];
 

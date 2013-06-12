@@ -1,11 +1,10 @@
 package org.powerbot.script.wrappers;
 
+import java.lang.ref.WeakReference;
+
 import org.powerbot.client.RSProjectile;
 import org.powerbot.script.methods.ClientFactory;
 import org.powerbot.script.methods.ClientLink;
-
-import java.lang.ref.WeakReference;
-import java.util.Arrays;
 
 public class Projectile extends ClientLink implements Validatable {
 	private final WeakReference<RSProjectile> projectile;
@@ -23,7 +22,7 @@ public class Projectile extends ClientLink implements Validatable {
 	@Override
 	public boolean isValid() {
 		final RSProjectile projectile = this.projectile.get();
-		return projectile != null && Arrays.asList(ctx.projectiles.getLoaded()).contains(this);
+		return projectile != null && ctx.projectiles.contains(this);
 	}
 
 	@Override

@@ -13,9 +13,8 @@ public class DrawPlayers implements PaintListener {
 		if (!ctx.game.isLoggedIn()) {
 			return;
 		}
-		final Player[] players = ctx.players.getLoaded();
 		final FontMetrics metrics = render.getFontMetrics();
-		for (final Player player : players) {
+		for (final Player player : ctx.players.list()) {
 			final Point location = player.getCenterPoint();
 			if (location.x == -1 || location.y == -1) {
 				continue;

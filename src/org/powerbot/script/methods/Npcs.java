@@ -1,12 +1,12 @@
 package org.powerbot.script.methods;
 
+import java.util.Arrays;
+
 import org.powerbot.client.Client;
 import org.powerbot.client.HashTable;
 import org.powerbot.client.RSNPC;
 import org.powerbot.client.RSNPCNode;
 import org.powerbot.script.wrappers.Npc;
-
-import java.util.Arrays;
 
 /**
  * {@link Npcs} is a static utility which provides access to {@link Npc}s in the game.
@@ -15,7 +15,7 @@ import java.util.Arrays;
  *
  * @author Timer
  */
-public class Npcs extends ClientLink {
+public class Npcs extends Filtering<Npc> {
 	public Npcs(ClientFactory factory) {
 		super(factory);
 	}
@@ -25,7 +25,8 @@ public class Npcs extends ClientLink {
 	 *
 	 * @return an array of the loaded {@link Npc}s
 	 */
-	public Npc[] getLoaded() {
+	@Override
+	public Npc[] list() {
 		Client client = ctx.getClient();
 		if (client == null) return new Npc[0];
 

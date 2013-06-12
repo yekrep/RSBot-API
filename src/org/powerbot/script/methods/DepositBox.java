@@ -1,14 +1,15 @@
 package org.powerbot.script.methods;
 
-import org.powerbot.script.methods.ClientFactory;
-import org.powerbot.script.methods.ClientLink;
-import org.powerbot.script.util.*;
+import java.util.Arrays;
+
+import org.powerbot.script.util.Delay;
+import org.powerbot.script.util.Filter;
+import org.powerbot.script.util.Random;
+import org.powerbot.script.util.Timer;
 import org.powerbot.script.wrappers.Component;
 import org.powerbot.script.wrappers.GameObject;
 import org.powerbot.script.wrappers.Item;
 import org.powerbot.script.wrappers.Widget;
-
-import java.util.Arrays;
 
 public class DepositBox extends ClientLink {
 	public static final int[] DEPOSIT_BOX_IDS = new int[]{
@@ -34,7 +35,7 @@ public class DepositBox extends ClientLink {
 
 	public boolean open() {
 		if (isOpen()) return true;
-		GameObject object = Filters.nearest(Filters.id(ctx.objects.getLoaded(), DEPOSIT_BOX_IDS), ctx.players.getLocal());
+		GameObject object = ctx.objects.id(DEPOSIT_BOX_IDS).nearest();
 		if (object.interact("Deposit")) {
 			final Widget bankPin = ctx.widgets.get(13);
 			for (int i = 0; i < 20 && !isOpen() && !bankPin.isValid(); i++) Delay.sleep(200, 300);

@@ -1,12 +1,23 @@
 package org.powerbot.script.wrappers;
 
-import org.powerbot.client.*;
-import org.powerbot.script.methods.ClientFactory;
-import org.powerbot.script.util.Filters;
-import org.powerbot.script.util.Random;
-
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Point;
 import java.lang.ref.WeakReference;
+
+import org.powerbot.client.BaseInfo;
+import org.powerbot.client.Cache;
+import org.powerbot.client.Client;
+import org.powerbot.client.HashTable;
+import org.powerbot.client.RSGround;
+import org.powerbot.client.RSGroundInfo;
+import org.powerbot.client.RSInfo;
+import org.powerbot.client.RSItem;
+import org.powerbot.client.RSItemDef;
+import org.powerbot.client.RSItemDefLoader;
+import org.powerbot.client.RSItemPile;
+import org.powerbot.script.methods.ClientFactory;
+import org.powerbot.script.util.Random;
 
 public class GroundItem extends Interactive implements Locatable, Drawable {
 	public static final Color TARGET_COLOR = new Color(255, 255, 0, 75);
@@ -135,7 +146,7 @@ public class GroundItem extends Interactive implements Locatable, Drawable {
 
 	@Override
 	public boolean isValid() {
-		return Filters.accept(ctx.groundItems.getLoaded(), Filters.accept(this));
+		return ctx.groundItems.contains(this);
 	}
 
 	@Override

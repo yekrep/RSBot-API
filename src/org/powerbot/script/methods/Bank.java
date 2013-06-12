@@ -1,13 +1,19 @@
 package org.powerbot.script.methods;
 
-import org.powerbot.script.methods.ClientFactory;
-import org.powerbot.script.methods.ClientLink;
-import org.powerbot.script.util.*;
-import org.powerbot.script.wrappers.Component;
-import org.powerbot.script.wrappers.*;
-
-import java.awt.*;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.util.Arrays;
+
+import org.powerbot.script.util.Delay;
+import org.powerbot.script.util.Filter;
+import org.powerbot.script.util.Random;
+import org.powerbot.script.util.Timer;
+import org.powerbot.script.wrappers.Component;
+import org.powerbot.script.wrappers.GameObject;
+import org.powerbot.script.wrappers.Interactive;
+import org.powerbot.script.wrappers.Item;
+import org.powerbot.script.wrappers.Npc;
+import org.powerbot.script.wrappers.Widget;
 
 public class Bank extends ClientLink {
 	public static final int[] BANK_NPC_IDS = new int[]{
@@ -50,13 +56,11 @@ public class Bank extends ClientLink {
 	public boolean open() {
 		if (isOpen()) return true;
 		int count = 0;
-		Npc[] npcs = ctx.npcs.getLoaded();
-		GameObject[] objects = ctx.objects.getLoaded();
 		final Interactive[] interactives = {
-				Filters.nearest(Filters.id(npcs, BANK_NPC_IDS), ctx.players.getLocal()),
-				Filters.nearest(Filters.id(objects, BANK_BOOTH_IDS), ctx.players.getLocal()),
-				Filters.nearest(Filters.id(objects, BANK_COUNTER_IDS), ctx.players.getLocal()),
-				Filters.nearest(Filters.id(objects, BANK_CHEST_IDS), ctx.players.getLocal()),
+				ctx.npcs.id(BANK_NPC_IDS).nearest(),
+				ctx.objects.id(BANK_BOOTH_IDS).nearest(),
+				ctx.objects.id(BANK_COUNTER_IDS).nearest(),
+				ctx.objects.id(BANK_CHEST_IDS).nearest(),
 		};
 		for (int i = 0; i < interactives.length; i++) {
 			if (interactives[i] != null && interactives[i].isOnScreen()) {

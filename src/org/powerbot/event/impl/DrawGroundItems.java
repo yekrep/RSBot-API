@@ -1,15 +1,18 @@
 package org.powerbot.event.impl;
 
+import java.awt.Color;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Point;
+
 import org.powerbot.bot.Bot;
 import org.powerbot.event.PaintListener;
 import org.powerbot.script.methods.ClientFactory;
-import org.powerbot.script.util.Filters;
+import org.powerbot.script.methods.Filterable;
 import org.powerbot.script.wrappers.GroundItem;
 import org.powerbot.script.wrappers.ItemDefinition;
 import org.powerbot.script.wrappers.Player;
 import org.powerbot.script.wrappers.Tile;
-
-import java.awt.*;
 
 public class DrawGroundItems implements PaintListener {
 	public void onRepaint(final Graphics render) {
@@ -24,10 +27,10 @@ public class DrawGroundItems implements PaintListener {
 		final FontMetrics metrics = render.getFontMetrics();
 		final int tHeight = metrics.getHeight();
 		final int plane = ctx.game.getPlane();
-		GroundItem[] origin = ctx.groundItems.getLoaded();
+		Filterable<GroundItem> origin = ctx.groundItems.branch();
 		for (int x = tile.getX() - 10; x <= tile.getX() + 10; x++) {
 			for (int y = tile.getY() - 10; y <= tile.getY() + 10; y++) {
-				GroundItem[] groundItems = Filters.at(origin, new Tile(ctx, x, y, ctx.game.getPlane()));
+				GroundItem[] groundItems = origin.at(new Tile(ctx, x, y, ctx.game.getPlane())).list();
 				int d = 0;
 				final Tile loc = new Tile(ctx, x, y, plane);
 				final Point screen = loc.getCenterPoint();

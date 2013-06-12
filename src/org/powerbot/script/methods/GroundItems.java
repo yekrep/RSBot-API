@@ -8,12 +8,13 @@ import org.powerbot.script.wrappers.Tile;
 import java.util.HashSet;
 import java.util.Set;
 
-public class GroundItems extends ClientLink {
+public class GroundItems extends Filtering<GroundItem> {
 	public GroundItems(ClientFactory factory) {
 		super(factory);
 	}
 
-	public GroundItem[] getLoaded() {
+	@Override
+	public GroundItem[] list() {
 		Set<GroundItem> items = new HashSet<>();
 
 		Client client = ctx.getClient();

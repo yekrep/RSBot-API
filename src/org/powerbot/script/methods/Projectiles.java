@@ -1,11 +1,15 @@
 package org.powerbot.script.methods;
 
-import org.powerbot.client.*;
-import org.powerbot.script.internal.wrappers.Deque;
-import org.powerbot.script.wrappers.Projectile;
-
 import java.util.HashSet;
 import java.util.Set;
+
+import org.powerbot.client.Client;
+import org.powerbot.client.Node;
+import org.powerbot.client.NodeDeque;
+import org.powerbot.client.RSProjectile;
+import org.powerbot.client.RSProjectileNode;
+import org.powerbot.script.internal.wrappers.Deque;
+import org.powerbot.script.wrappers.Projectile;
 
 /**
  * {@link Projectiles} is a static utility which provides access to the game's projectiles.
@@ -14,7 +18,7 @@ import java.util.Set;
  *
  * @author Timer
  */
-public class Projectiles extends ClientLink {
+public class Projectiles extends Filtering<Projectile> {
 	public Projectiles(ClientFactory factory) {
 		super(factory);
 	}
@@ -24,7 +28,8 @@ public class Projectiles extends ClientLink {
 	 *
 	 * @return an array of loaded {@link Projectile}s
 	 */
-	public Projectile[] getLoaded() {
+	@Override
+	public Projectile[] list() {
 		Client client = ctx.getClient();
 		if (client == null) return new Projectile[0];
 

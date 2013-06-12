@@ -16,7 +16,7 @@ public class DrawModels implements PaintListener {
 	public void onRepaint(final Graphics render) {
 		ClientFactory ctx = Bot.getInstance().clientFactory;
 		((Graphics2D) render).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		GameObject[] objects = Filters.range(ctx.objects.getLoaded(), ctx.players.getLocal(), 10);
+		GameObject[] objects = ctx.objects.range(10).list();
 		for (final GameObject obj : objects) {
 			if (!obj.isOnScreen()) continue;
 			final Model m = obj.getModel();
@@ -27,20 +27,19 @@ public class DrawModels implements PaintListener {
 			m.drawWireFrame(render);
 		}
 
-		Player[] players = ctx.players.getLoaded();
+		Player[] players = ctx.players.list();
 		for (final Player actor : players) {
 			if (!actor.isOnScreen()) continue;
 			actor.draw(render, 10);
 		}
 
-		Npc[] npcs = ctx.npcs.getLoaded();
+		Npc[] npcs = ctx.npcs.list();
 		for (final Npc actor : npcs) {
 			if (!actor.isOnScreen()) continue;
 			actor.draw(render, 20);
 		}
 
-		GroundItem[] groundItems = ctx.groundItems.getLoaded();
-		groundItems = Filters.range(groundItems, ctx.players.getLocal(), 20);
+		GroundItem[] groundItems = ctx.groundItems.range(20).list();
 		for (final GroundItem item : groundItems) {
 			item.draw(render, 20);
 		}

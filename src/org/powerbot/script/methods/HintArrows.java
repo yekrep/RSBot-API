@@ -1,17 +1,17 @@
 package org.powerbot.script.methods;
 
+import java.util.Arrays;
+
 import org.powerbot.client.Client;
 import org.powerbot.client.RSHintArrow;
 import org.powerbot.script.wrappers.HintArrow;
-
-import java.util.Arrays;
 
 /**
  * {@link HintArrows} is a static utility which provides access to the game's hint (directional) arrows.
  *
  * @author Timer
  */
-public class HintArrows extends ClientLink {
+public class HintArrows extends Filtering<HintArrow> {
 	public HintArrows(ClientFactory factory) {
 		super(factory);
 	}
@@ -21,7 +21,8 @@ public class HintArrows extends ClientLink {
 	 *
 	 * @return an array of loaded {@link HintArrow}s
 	 */
-	public HintArrow[] getLoaded() {
+	@Override
+	public HintArrow[] list() {
 		Client client = ctx.getClient();
 		if (client == null) return new HintArrow[0];
 

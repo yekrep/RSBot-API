@@ -1,11 +1,20 @@
 package org.powerbot.script.wrappers;
 
-import org.powerbot.client.*;
-import org.powerbot.script.methods.ClientFactory;
-import org.powerbot.script.util.Filters;
-
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Point;
 import java.lang.ref.WeakReference;
+
+import org.powerbot.client.Cache;
+import org.powerbot.client.Client;
+import org.powerbot.client.HashTable;
+import org.powerbot.client.RSInfo;
+import org.powerbot.client.RSInteractableData;
+import org.powerbot.client.RSInteractableLocation;
+import org.powerbot.client.RSObject;
+import org.powerbot.client.RSObjectDef;
+import org.powerbot.client.RSObjectDefLoader;
+import org.powerbot.script.methods.ClientFactory;
 
 public class GameObject extends Interactive implements Locatable, Drawable, Identifiable {
 	private static final Color TARGET_COLOR = new Color(0, 255, 0, 20);
@@ -107,7 +116,7 @@ public class GameObject extends Interactive implements Locatable, Drawable, Iden
 
 	@Override
 	public boolean isValid() {
-		return this.object.get() != null && Filters.accept(ctx.objects.getLoaded(), Filters.accept(this));
+		return this.object.get() != null && ctx.objects.contains(this);
 	}
 
 	@Override

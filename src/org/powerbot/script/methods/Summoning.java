@@ -2,7 +2,6 @@ package org.powerbot.script.methods;
 
 import org.powerbot.script.util.Delay;
 import org.powerbot.script.util.Filter;
-import org.powerbot.script.util.Filters;
 import org.powerbot.script.util.Timer;
 import org.powerbot.script.wrappers.Actor;
 import org.powerbot.script.wrappers.Component;
@@ -113,15 +112,13 @@ public class Summoning extends ClientLink {
 		}
 		final Player local = ctx.players.getLocal();
 		if (local == null) return null;
-		Npc[] npcs = ctx.npcs.getLoaded();
-		npcs = Filters.filter(npcs, new Filter<Npc>() {
+		return ctx.npcs.filter(new Filter<Npc>() {
 			@Override
 			public boolean accept(Npc npc) {
 				final Actor actor;
 				return npc.getId() == ctx.settings.get(1784) && (actor = npc.getInteracting()) != null && actor.equals(local);
 			}
-		});
-		return Filters.nearest(npcs, ctx.players.getLocal());
+		}).nearest();
 	}
 
 	public Familiar getEnum() {

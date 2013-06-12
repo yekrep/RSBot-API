@@ -1,11 +1,14 @@
 package org.powerbot.event.impl;
 
+import java.awt.Color;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Point;
+
 import org.powerbot.bot.Bot;
 import org.powerbot.event.PaintListener;
 import org.powerbot.script.methods.ClientFactory;
 import org.powerbot.script.wrappers.Npc;
-
-import java.awt.*;
 
 public class DrawNPCs implements PaintListener {
 	public void onRepaint(final Graphics render) {
@@ -13,9 +16,8 @@ public class DrawNPCs implements PaintListener {
 		if (!ctx.game.isLoggedIn()) {
 			return;
 		}
-		final Npc[] npcs = ctx.npcs.getLoaded();
 		final FontMetrics metrics = render.getFontMetrics();
-		for (final Npc npc : npcs) {
+		for (final Npc npc : ctx.npcs.list()) {
 			final Point location = npc.getCenterPoint();
 			if (location.x == -1 || location.y == -1) {
 				continue;
