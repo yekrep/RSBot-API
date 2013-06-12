@@ -1,15 +1,15 @@
 package org.powerbot.util;
 
+import org.powerbot.bot.RSClassLoader;
+import org.powerbot.service.scripts.ScriptClassLoader;
+import org.powerbot.util.io.CryptFile;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.security.Permission;
 import java.util.Map.Entry;
 import java.util.logging.Logger;
-
-import org.powerbot.bot.RSClassLoader;
-import org.powerbot.service.scripts.ScriptClassLoader;
-import org.powerbot.util.io.CryptFile;
 
 /**
  * @author Paris
@@ -171,9 +171,10 @@ public class RestrictedSecurityManager extends SecurityManager {
 
 		// permission controls for crypt files
 		for (final Entry<File, Class<?>[]> entry : CryptFile.PERMISSIONS.entrySet()) {
-			final Class<?>[] entries = new Class<?>[entry.getValue().length + 1];
+			final Class<?>[] entries = new Class<?>[entry.getValue().length + 2];
 			entries[0] = CryptFile.class;
-			System.arraycopy(entry.getValue(), 0, entries, 1, entries.length - 1);
+			entries[1] = RestrictedSecurityManager.class;
+			System.arraycopy(entry.getValue(), 0, entries, 2, entries.length - 2);
 			final String pathDecoded = getCanonicalPath(new File(StringUtil.urlDecode(entry.getKey().getAbsolutePath())));
 			if (pathDecoded.equals(path)) {
 				if (!isCallingClass(entries)) {
