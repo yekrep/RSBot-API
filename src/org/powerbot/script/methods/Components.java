@@ -79,7 +79,7 @@ class Components extends ClientLink {
 		private void sync() {
 			Client client = ctx.getClient();
 			int index;
-			if (this.client != client) index = -1;
+			if (client == null || this.client != client) index = -1;
 			else index = client.getGUIRSInterfaceIndex();
 			this.client = client;
 			if (index != this.index) {
