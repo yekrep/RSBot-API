@@ -13,7 +13,6 @@ import java.util.regex.Pattern;
  * @author Paris
  */
 public final class ScriptDefinition implements Comparable<ScriptDefinition>, Serializable {
-	private Script script;
 	private final String name, id, description, website;
 	private final double version;
 	private final String[] authors;
@@ -62,11 +61,10 @@ public final class ScriptDefinition implements Comparable<ScriptDefinition>, Ser
 	}
 
 	public ScriptDefinition(final Script script) {
-		this(script, script.getClass().getAnnotation(Manifest.class));
+		this(script.getClass().getAnnotation(Manifest.class));
 	}
 
-	public ScriptDefinition(final Script script, final Manifest manifest) {
-		this.script = script;
+	public ScriptDefinition(final Manifest manifest) {
 		name = manifest.name();
 		id = null;
 		description = manifest.description();
@@ -82,17 +80,6 @@ public final class ScriptDefinition implements Comparable<ScriptDefinition>, Ser
 		this.version = version;
 		this.authors = authors;
 		this.website = website;
-	}
-
-	public Script getScript() {
-		return script;
-	}
-
-	public void setScript(final Script script) {
-		if (this.script != null) {
-			throw new IllegalStateException();
-		}
-		this.script = script;
 	}
 
 	private String getCleanText(String s) {
