@@ -1,21 +1,19 @@
 package org.powerbot.event.impl;
 
-import java.awt.Color;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.Point;
-
+import org.powerbot.bot.Bot;
 import org.powerbot.event.PaintListener;
-import org.powerbot.script.methods.Game;
-import org.powerbot.script.methods.Npcs;
+import org.powerbot.script.methods.ClientFactory;
 import org.powerbot.script.wrappers.Npc;
+
+import java.awt.*;
 
 public class DrawNPCs implements PaintListener {
 	public void onRepaint(final Graphics render) {
-		if (!Game.isLoggedIn()) {
+		ClientFactory ctx = Bot.getInstance().clientFactory;
+		if (!ctx.game.isLoggedIn()) {
 			return;
 		}
-		final Npc[] npcs = Npcs.getLoaded();
+		final Npc[] npcs = ctx.npcs.getLoaded();
 		final FontMetrics metrics = render.getFontMetrics();
 		for (final Npc npc : npcs) {
 			final Point location = npc.getCenterPoint();

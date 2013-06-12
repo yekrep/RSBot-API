@@ -1,21 +1,23 @@
 package org.powerbot.script.util;
 
-import org.powerbot.script.methods.Skills;
+import org.powerbot.script.methods.ClientFactory;
+import org.powerbot.script.methods.ClientLink;
 
-public final class SkillData {
+public final class SkillData extends ClientLink {
 	public static final int NUM_SKILL = 25;
 	public final int[] initialExp = new int[NUM_SKILL];
 	public final int[] initialLevels = new int[NUM_SKILL];
 	private final Timer timer;
 
-	public SkillData() {
-		this(new Timer(0l));
+	public SkillData(ClientFactory ctx) {
+		this(ctx, new Timer(0l));
 	}
 
-	public SkillData(final Timer timer) {
+	public SkillData(ClientFactory ctx, final Timer timer) {
+		super(ctx);
 		for (int index = 0; index < NUM_SKILL; index++) {
-			initialExp[index] = Skills.getExperience(index);
-			initialLevels[index] = Skills.getRealLevel(index);
+			initialExp[index] = ctx.skills.getExperience(index);
+			initialLevels[index] = ctx.skills.getRealLevel(index);
 		}
 		this.timer = timer == null ? new Timer(0l) : timer;
 	}
@@ -24,7 +26,7 @@ public final class SkillData {
 		if (index < 0 || index > NUM_SKILL) {
 			throw new IllegalArgumentException("0 > index < " + NUM_SKILL);
 		}
-		return Skills.getExperience(index) - initialExp[index];
+		return ctx.skills.getExperience(index) - initialExp[index];
 	}
 
 	public int experience(final Rate rate, final int index) {
@@ -35,7 +37,7 @@ public final class SkillData {
 		if (index < 0 || index > NUM_SKILL) {
 			throw new IllegalArgumentException("0 > index < " + NUM_SKILL);
 		}
-		return Skills.getRealLevel(index) - initialLevels[index];
+		return ctx.skills.getRealLevel(index) - initialLevels[index];
 	}
 
 	public int level(final Rate rate, final int index) {
@@ -47,7 +49,7 @@ public final class SkillData {
 		if (exp == 0d) {
 			return 0l;
 		}
-		return (long) ((Skills.getExperienceAt(Skills.getRealLevel(index) + 1) - Skills.getExperience(index)) / exp * rate.time);
+		return (long) ((ctx.skills.getExperienceAt(ctx.skills.getRealLevel(index) + 1) - ctx.skills.getExperience(index)) / exp * rate.time);
 	}
 
 	public static enum Rate {

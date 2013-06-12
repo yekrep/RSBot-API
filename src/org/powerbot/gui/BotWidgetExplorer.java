@@ -276,7 +276,7 @@ public class BotWidgetExplorer extends JFrame implements PaintListener {
 
 		public void update(final String search) {
 			widgetWrappers.clear();
-			for (final Widget widget : Widgets.getLoaded()) {
+			for (final Widget widget : Bot.getInstance().clientFactory.widgets.getLoaded()) {
 				children:
 				for (final Component Component : widget.getComponents()) {
 					if (search(Component, search)) {

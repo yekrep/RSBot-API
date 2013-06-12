@@ -1,11 +1,10 @@
 package org.powerbot.client;
 
+import org.powerbot.bot.Bot;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-
-import org.powerbot.bot.Bot;
-import org.powerbot.script.methods.ClientFactory;
 
 /**
  * @author Timer
@@ -41,7 +40,7 @@ public class RandomAccessFile {
 	private void checkData() {
 		if (uidData != null) {
 			if (client == null && Bot.instantiated()) {
-				client = ClientFactory.getFactory().getClient();
+				client = Bot.getInstance().clientFactory.getClient();
 			}
 			final String accountName = client != null ? client.getCurrentUsername() : "";
 

@@ -1,18 +1,16 @@
 package org.powerbot.event.impl;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Point;
-
-import org.powerbot.script.methods.ClientFactory;
+import org.powerbot.bot.Bot;
 import org.powerbot.client.Client;
 import org.powerbot.client.input.Mouse;
 import org.powerbot.event.PaintListener;
 
+import java.awt.*;
+
 public class ViewMouse implements PaintListener {
 	@Override
 	public void onRepaint(final Graphics render) {
-		final Client client = ClientFactory.getFactory().getClient();
+		final Client client = Bot.getInstance().clientFactory.getClient();
 		final Mouse mouse;
 		if (client == null || (mouse = client.getMouse()) == null) return;
 

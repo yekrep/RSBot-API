@@ -1,21 +1,19 @@
 package org.powerbot.event.impl;
 
-import java.awt.Color;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.Point;
-
+import org.powerbot.bot.Bot;
 import org.powerbot.event.PaintListener;
-import org.powerbot.script.methods.Game;
-import org.powerbot.script.methods.Players;
+import org.powerbot.script.methods.ClientFactory;
 import org.powerbot.script.wrappers.Player;
+
+import java.awt.*;
 
 public class DrawPlayers implements PaintListener {
 	public void onRepaint(final Graphics render) {
-		if (!Game.isLoggedIn()) {
+		ClientFactory ctx = Bot.getInstance().clientFactory;
+		if (!ctx.game.isLoggedIn()) {
 			return;
 		}
-		final Player[] players = Players.getLoaded();
+		final Player[] players = ctx.players.getLoaded();
 		final FontMetrics metrics = render.getFontMetrics();
 		for (final Player player : players) {
 			final Point location = player.getCenterPoint();

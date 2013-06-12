@@ -1,40 +1,19 @@
 package org.powerbot.gui;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import org.powerbot.bot.Bot;
+import org.powerbot.script.util.Delay;
+import org.powerbot.util.Tracker;
+import org.powerbot.util.io.Resources;
+
+import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import java.awt.*;
+import java.awt.event.*;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
-
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JList;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javax.swing.ListSelectionModel;
-import javax.swing.WindowConstants;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-
-import org.powerbot.bot.Bot;
-import org.powerbot.script.methods.Settings;
-import org.powerbot.script.util.Delay;
-import org.powerbot.util.Tracker;
-import org.powerbot.util.io.Resources;
 
 public class BotSettingExplorer extends JFrame {
 	private static final int FRAME_WIDTH = 595;
@@ -72,7 +51,7 @@ public class BotSettingExplorer extends JFrame {
 		}
 		settingExplorer.setVisible(true);
 		try {
-			settingExplorer.settings_cache = Settings.getArray();
+			settingExplorer.settings_cache = Bot.getInstance().clientFactory.settings.getArray();
 		} catch (final NullPointerException ignored) {
 		}
 		new Thread(Bot.getInstance().threadGroup, new Runnable() {
@@ -91,7 +70,7 @@ public class BotSettingExplorer extends JFrame {
 	}
 
 	private void update() {
-		final int[] settings_clone = Settings.getArray();
+		final int[] settings_clone = Bot.getInstance().clientFactory.settings.getArray();
 		if (settings_cache == null) {
 			settings_cache = settings_clone;
 			return;

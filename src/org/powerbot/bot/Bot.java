@@ -14,7 +14,6 @@ import org.powerbot.script.framework.Stoppable;
 import org.powerbot.script.internal.InputHandler;
 import org.powerbot.script.internal.MouseHandler;
 import org.powerbot.script.methods.ClientFactory;
-import org.powerbot.script.methods.Keyboard;
 import org.powerbot.script.randoms.BankPin;
 import org.powerbot.script.randoms.Login;
 import org.powerbot.script.randoms.TicketDestroy;
@@ -55,8 +54,6 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 	private ScriptManager scriptController;
 
 	private Bot() {
-		this.clientFactory = new ClientFactory();
-
 		appletContainer = null;
 		callback = null;
 		stub = null;
@@ -77,6 +74,8 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 
 		new Thread(threadGroup, multicaster, multicaster.getClass().getName()).start();
 		refreshing = false;
+
+		this.clientFactory = new ClientFactory();
 	}
 
 	public synchronized static Bot getInstance() {
@@ -282,7 +281,7 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 		}).start();
 	}
 
-	private static final class SafeMode implements Runnable {
+	private final class SafeMode implements Runnable {
 		private final Bot bot;
 
 		public SafeMode(final Bot bot) {
@@ -292,9 +291,9 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 		public void run() {
 			if (bot != null && bot.clientFactory.getClient() != null) {
 				for (int i = 0; i < 30; i++)
-					if (!Keyboard.isReady()) Delay.sleep(500, 1000);
+					if (!clientFactory.keyboard.isReady()) Delay.sleep(500, 1000);
 					else break;
-				if (Keyboard.isReady()) Keyboard.send("s");
+				if (clientFactory.keyboard.isReady()) clientFactory.keyboard.send("s");
 			}
 		}
 	}

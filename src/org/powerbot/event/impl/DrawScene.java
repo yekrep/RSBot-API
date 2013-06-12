@@ -1,27 +1,24 @@
 package org.powerbot.event.impl;
 
-import java.awt.Color;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.Point;
-
+import org.powerbot.bot.Bot;
 import org.powerbot.event.PaintListener;
-import org.powerbot.script.methods.Game;
-import org.powerbot.script.methods.Objects;
-import org.powerbot.script.methods.Players;
+import org.powerbot.script.methods.ClientFactory;
 import org.powerbot.script.util.Filters;
 import org.powerbot.script.wrappers.GameObject;
 import org.powerbot.script.wrappers.Player;
 import org.powerbot.script.wrappers.Tile;
 
+import java.awt.*;
+
 public class DrawScene implements PaintListener {
 	private static final Color[] C = {Color.GREEN, Color.WHITE, Color.BLACK, Color.BLUE};
 
 	public void onRepaint(final Graphics render) {
-		if (!Game.isLoggedIn()) {
+		ClientFactory ctx = Bot.getInstance().clientFactory;
+		if (!ctx.game.isLoggedIn()) {
 			return;
 		}
-		final Player player = Players.getLocal();
+		final Player player = ctx.players.getLocal();
 		if (player == null) {
 			return;
 		}
@@ -30,16 +27,16 @@ public class DrawScene implements PaintListener {
 		final int textHeight = metrics.getHeight();
 		for (int x = position.getX() - 25; x < position.getX() + 25; x++) {
 			for (int y = position.getY() - 25; y < position.getY() + 25; y++) {
-				final Tile accessPosition = new Tile(x, y, Game.getPlane());
+				final Tile accessPosition = new Tile(ctx, x, y, ctx.game.getPlane());
 				final Point accessPoint = accessPosition.getCenterPoint();
-				if (!Game.isPointOnScreen(accessPoint)) {
+				if (!ctx.game.isPointOnScreen(accessPoint)) {
 					continue;
 				}
-				final GameObject[] locations = Filters.at(Objects.getLoaded(), new Tile(x, y, Game.getPlane()));
+				final GameObject[] locations = Filters.at(ctx.objects.getLoaded(), new Tile(ctx, x, y, ctx.game.getPlane()));
 				int i = 0;
 				for (final GameObject location : locations) {
 					final Point locationPoint = location.getLocation().getCenterPoint();
-					if (!Game.isPointOnScreen(locationPoint)) {
+					if (!ctx.game.isPointOnScreen(locationPoint)) {
 						continue;
 					}
 					if (accessPoint.x > -1) {
