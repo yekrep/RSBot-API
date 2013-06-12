@@ -20,13 +20,14 @@ public class DrawGroundItems implements PaintListener {
 		if (player == null) return;
 		final Tile tile = player.getLocation();
 		if (tile == null) return;
+
 		final FontMetrics metrics = render.getFontMetrics();
 		final int tHeight = metrics.getHeight();
 		final int plane = ctx.game.getPlane();
-		for (int x = tile.getX(); x <= tile.getX() + 20; x++) {
-			for (int y = tile.getY() - 10; y <= tile.getY() + 20; y++) {
-				GroundItem[] groundItems = ctx.groundItems.getLoaded();
-				groundItems = Filters.at(groundItems, new Tile(ctx, x, y, ctx.game.getPlane()));
+		GroundItem[] origin = ctx.groundItems.getLoaded();
+		for (int x = tile.getX() - 10; x <= tile.getX() + 10; x++) {
+			for (int y = tile.getY() - 10; y <= tile.getY() + 10; y++) {
+				GroundItem[] groundItems = Filters.at(origin, new Tile(ctx, x, y, ctx.game.getPlane()));
 				int d = 0;
 				final Tile loc = new Tile(ctx, x, y, plane);
 				final Point screen = loc.getCenterPoint();
