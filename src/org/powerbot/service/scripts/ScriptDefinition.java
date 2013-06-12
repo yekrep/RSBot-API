@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 /**
  * @author Paris
  */
-public final class ScriptDefinition implements Comparable<ScriptDefinition>, Serializable {
+public final class ScriptDefinition implements Comparable<ScriptDefinition> {
 	private final String name, id, description, website;
 	private final double version;
 	private final String[] authors;
