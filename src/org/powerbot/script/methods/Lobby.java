@@ -1,7 +1,5 @@
 package org.powerbot.script.methods;
 
-import org.powerbot.script.methods.ClientFactory;
-import org.powerbot.script.methods.ClientLink;
 import org.powerbot.script.util.Delay;
 import org.powerbot.script.util.Filter;
 import org.powerbot.script.util.Random;
@@ -171,7 +169,7 @@ public class Lobby extends ClientLink {
 			Component child = ctx.widgets.get(WIDGET_MAIN_LOBBY, d.getTextIndex());
 			if (child != null && child.isOnScreen()) {
 				final String text = child.getText();
-				if (text != null && d.getTextPattern().matcher(text).find()) return d;
+				if (text != null && text.toLowerCase().contains(d.getText())) return d;
 			}
 		}
 		return null;
@@ -242,24 +240,29 @@ public class Lobby extends ClientLink {
 	 * Representation of the lobby dialogs.
 	 */
 	public static enum Dialog {
-		TRANSFER_COUNTDOWN(255, -1, 252, "^You have only just left another world."),
-		ACCOUNT_IN_USE(260, -1, 252, "^Your account has not logged out from its last session."),
-		LOGIN_LIMIT_EXCEEDED(260, -1, 252, "^Login limit exceeded: too many connections from your address."),
-		MEMBERS_ONLY_WORLD(260, -1, 252, "^You need a member's account to log in to this world."),
-		INSUFFICIENT_SKILL_TOTAL(260, -1, 252, "^You must have a total skill level of"),
+		TRANSFER_COUNTDOWN(255, -1, 253, "You have only just left another world."),
+		ACCOUNT_IN_USE(260, -1, 253, "Your account has not logged out from its last session."),
+		LOGIN_LIMIT_EXCEEDED(260, -1, 253, "Login limit exceeded: too many connections from your address."),
+		MEMBERS_ONLY_WORLD(260, -1, 253, "You need a member's account to log in to this world."),
+		INSUFFICIENT_SKILL_TOTAL(260, -1, 253, "You must have a total skill level of"),
 		//ACCOUNT_BANNED(-1, -1, -1, null), //TODO
-		WILDERNESS_WARNING(118, 120, 113, "^Warning: This is a High-risk Wilderness world."),
-		VALIDATE_EMAIL(379, 379, 352, "^Validate your email now for increased account security");
+		WILDERNESS_WARNING(117, 119, 113, "Warning: This is a High-risk Wilderness world."),
+		VALIDATE_EMAIL(379, 379, 355, "Validate your email now for increased account security"),
+		STANDING_IN_MEMBERS(260, -1, 253, "You are standing in a members-only"),
+		SERVER_UPDATED(261, -1, 253, "The server is being updated."),
+		ERROR_CONNECTING(259, -1, 253, "Error connecting to server"),
+		CHOOSE_ANOTHER_WORLD(259, -1, 253, "choose another"),
+		SESSION_EXPIRED(259, -1, 253, "session has now ended");
 		private final int backButtonIndex;
 		private final int continueButtonIndex;
 		private final int textIndex;
-		private final Pattern textPattern;
+		private final String text;
 
 		private Dialog(final int backButtonIndex, final int continueButtonIndex, final int textIndex, final String textPattern) {
 			this.backButtonIndex = backButtonIndex;
 			this.continueButtonIndex = continueButtonIndex;
 			this.textIndex = textIndex;
-			this.textPattern = Pattern.compile(textPattern);
+			this.text = textPattern.toLowerCase();
 		}
 
 		public int getBackIndex() {
@@ -274,8 +277,8 @@ public class Lobby extends ClientLink {
 			return textIndex;
 		}
 
-		public Pattern getTextPattern() {
-			return textPattern;
+		public String getText() {
+			return text;
 		}
 
 		public boolean hasContinue() {
