@@ -25,37 +25,35 @@ public final class ScriptDefinition implements Comparable<ScriptDefinition> {
 	private Category category = null;
 
 	public enum Category {
-		AGILITY(0, "course"),
-		AIO(1, ""),
-		COMBAT(2, "fight|kill|duel|soul"),
-		CONSTRUCTION(3, "constr"),
-		COOKING(4, "cook"),
-		CRAFTING(5, "craft|spin|crush|grind|flax|vial"),
-		DUNGEONEERING(6, "dung"),
-		FARMING(7, "farm"),
-		FIREMAKING(8, "fire"),
-		FISHING(9, "fish"),
-		FLETCHING(10, "fletch"),
-		HERBLORE(11, "herb|clean|mix"),
-		HUNTER(12, "hunt|catch"),
-		MAGIC(13, "mage"),
-		MINIGAME(14, "sorc|puzzle|minigame|pest|cape"),
-		MINING(15, "mine|ore"),
-		MONEY(16, "gp|gold"),
-		PRAYER(17, "pray|bones"),
-		QUEST(18, "quest"),
-		RANGED(19, "range|arrow"),
-		RUNECRAFTING(20, "rune|ess"),
-		SMITHING(21, "smith|bars"),
-		SUMMONING(22, "summ"),
-		THIEVING(23, "thief|steal|thiev"),
-		WOODCUTTING(24, "wood|chop");
+		AGILITY("course"),
+		AIO(""),
+		COMBAT("fight|kill|duel|soul"),
+		CONSTRUCTION("constr"),
+		COOKING("cook"),
+		CRAFTING("craft|spin|crush|grind|flax|vial"),
+		DUNGEONEERING("dung"),
+		FARMING("farm"),
+		FIREMAKING("fire"),
+		FISHING("fish"),
+		FLETCHING("fletch"),
+		HERBLORE("herb|clean|mix"),
+		HUNTER("hunt|catch"),
+		MAGIC("mage"),
+		MINIGAME("sorc|puzzle|minigame|pest|cape"),
+		MINING("mine|ore"),
+		MONEY("gp|gold"),
+		PRAYER("pray|bones"),
+		QUEST("quest"),
+		RANGED("range|arrow"),
+		RUNECRAFTING("rune|ess"),
+		SMITHING("smith|bars"),
+		SUMMONING("summ"),
+		THIEVING("thief|steal|thiev"),
+		WOODCUTTING("wood|chop");
 
-		public final int index;
 		public final String regex;
 
-		private Category(final int index, final String regex) {
-			this.index = index;
+		private Category(final String regex) {
 			this.regex = regex;
 		}
 	}

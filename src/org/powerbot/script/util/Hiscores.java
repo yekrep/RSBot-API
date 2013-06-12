@@ -40,7 +40,7 @@ public class Hiscores {
 
 		final Map<Integer, Stats> map = new HashMap<>();
 		for (final Stats s : Stats.values()) {
-			map.put(s.getIndex(), s);
+			map.put(s.ordinal(), s);
 		}
 
 		final String[] groups = txt.split("\n");
@@ -186,68 +186,52 @@ public class Hiscores {
 	 * Stats information.
 	 */
 	public enum Stats {
-		OVERALL(0, StatsType.SKILL),
-		ATTACK(1, StatsType.SKILL),
-		DEFENCE(2, StatsType.SKILL),
-		STRENGTH(3, StatsType.SKILL),
-		CONSTITUTION(4, StatsType.SKILL),
-		RANGED(5, StatsType.SKILL),
-		PRAYER(6, StatsType.SKILL),
-		MAGIC(7, StatsType.SKILL),
-		COOKING(8, StatsType.SKILL),
-		WOODCUTTING(9, StatsType.SKILL),
-		FLETCHING(10, StatsType.SKILL),
-		FISHING(11, StatsType.SKILL),
-		FIREMAKING(12, StatsType.SKILL),
-		CRAFTING(13, StatsType.SKILL),
-		SMITHING(14, StatsType.SKILL),
-		MINING(15, StatsType.SKILL),
-		HERBLORE(16, StatsType.SKILL),
-		AGILITY(17, StatsType.SKILL),
-		THIEVING(18, StatsType.SKILL),
-		SLAYER(19, StatsType.SKILL),
-		FARMING(20, StatsType.SKILL),
-		RUNECRAFTING(21, StatsType.SKILL),
-		HUNTER(22, StatsType.SKILL),
-		CONSTRUCTION(23, StatsType.SKILL),
-		SUMMONING(24, StatsType.SKILL),
-		DUNGEONEERING(25, StatsType.SKILL),
-		BOUNTY_HUNTERS(26, StatsType.ACTIVITY),
-		BOUNTY_HUNTER_ROGUES(27, StatsType.ACTIVITY),
-		DOMINION_TOWER(28, StatsType.ACTIVITY),
-		THE_CRUCIBLE(29, StatsType.ACTIVITY),
-		CASTLE_WARS_GAMES(30, StatsType.ACTIVITY),
-		BA_ATTACKERS(31, StatsType.ACTIVITY),
-		BA_DEFENDERS(32, StatsType.ACTIVITY),
-		BA_COLLECTORS(33, StatsType.ACTIVITY),
-		BA_HEALERS(34, StatsType.ACTIVITY),
-		DUEL_TOURNAMENT(35, StatsType.ACTIVITY),
-		MOBILISING_ARMIES(36, StatsType.ACTIVITY),
-		CONQUEST(37, StatsType.ACTIVITY),
-		FIST_OF_GUTHIX(38, StatsType.ACTIVITY),
-		GG_RESOURCE_RACE(39, StatsType.ACTIVITY),
-		GG_ATHLETICS(40, StatsType.ACTIVITY);
-		private final int index;
-		private final StatsType type;
+		OVERALL,
+		ATTACK,
+		DEFENCE,
+		STRENGTH,
+		CONSTITUTION,
+		RANGED,
+		PRAYER,
+		MAGIC,
+		COOKING,
+		WOODCUTTING,
+		FLETCHING,
+		FISHING,
+		FIREMAKING,
+		CRAFTING,
+		SMITHING,
+		MINING,
+		HERBLORE,
+		AGILITY,
+		THIEVING,
+		SLAYER,
+		FARMING,
+		RUNECRAFTING,
+		HUNTER,
+		CONSTRUCTION,
+		SUMMONING,
+		DUNGEONEERING,
+		BOUNTY_HUNTERS,
+		BOUNTY_HUNTER_ROGUES,
+		DOMINION_TOWER,
+		THE_CRUCIBLE,
+		CASTLE_WARS_GAMES,
+		BA_ATTACKERS,
+		BA_DEFENDERS,
+		BA_COLLECTORS,
+		BA_HEALERS,
+		DUEL_TOURNAMENT,
+		MOBILISING_ARMIES,
+		CONQUEST,
+		FIST_OF_GUTHIX,
+		GG_RESOURCE_RACE,
+		GG_ATHLETICS;
 
 		/**
 		 * Creates a new {@link Hiscores.Stats} object.
-		 *
-		 * @param index the index
-		 * @param type  the type
 		 */
-		private Stats(final int index, final StatsType type) {
-			this.index = index;
-			this.type = type;
-		}
-
-		/**
-		 * Returns the index.
-		 *
-		 * @return the index
-		 */
-		public int getIndex() {
-			return index;
+		private Stats() {
 		}
 
 		/**
@@ -256,7 +240,7 @@ public class Hiscores {
 		 * @return the type
 		 */
 		public StatsType getType() {
-			return type;
+			return ordinal() > 25 ? StatsType.ACTIVITY : StatsType.SKILL;
 		}
 	}
 
