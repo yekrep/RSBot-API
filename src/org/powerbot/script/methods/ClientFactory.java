@@ -26,7 +26,7 @@ public class ClientFactory {
 	public Settings settings;
 	public Widgets widgets;
 
-	public Items items;
+	Items items;
 
 	public Equipment equipment;
 	public Inventory inventory;

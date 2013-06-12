@@ -1,12 +1,8 @@
 package org.powerbot.script.randoms;
 
+import org.powerbot.nscript.PollingScript;
 import org.powerbot.script.Manifest;
-import org.powerbot.script.PollingScript;
 import org.powerbot.script.methods.Game;
-import org.powerbot.script.methods.Players;
-import org.powerbot.script.methods.Settings;
-import org.powerbot.script.methods.Widgets;
-import org.powerbot.script.methods.Inventory;
 import org.powerbot.script.util.Random;
 import org.powerbot.script.util.Timer;
 import org.powerbot.script.wrappers.Component;
@@ -21,22 +17,22 @@ public class TicketDestroy extends PollingScript implements RandomEvent {
 
 	@Override
 	public int poll() {
-		if (!Game.isLoggedIn() || Game.getCurrentTab() != Game.TAB_INVENTORY) return 600;
+		if (!ctx.game.isLoggedIn() || ctx.game.getCurrentTab() != Game.TAB_INVENTORY) return 600;
 		final Player player;
-		if ((player = Players.getLocal()) == null ||
+		if ((player = ctx.players.getLocal()) == null ||
 				player.isInCombat() || player.getAnimation() != -1 || player.getInteracting() != null) return 600;
-		final Item item = Inventory.getItem(ITEM_IDS);
+		final Item item = ctx.inventory.getItem(ITEM_IDS);
 		if (item != null) {
 			Tracker.getInstance().trackPage("randoms/TicketDestroy/", "");
 			final Component child = item.getComponent();
 			if (child != null) {
-				if (((Settings.get(1448) & 0xFF00) >>> 8) < (child.getItemId() == ITEM_IDS[0] ? 10 : 9)) {
+				if (((ctx.settings.get(1448) & 0xFF00) >>> 8) < (child.getItemId() == ITEM_IDS[0] ? 10 : 9)) {
 					child.interact("Claim spin");
 				}
 				if (child.interact("Destroy")) {
 					final Timer timer = new Timer(Random.nextInt(4000, 6000));
 					while (timer.isRunning()) {
-						final Widget widget = Widgets.get(1183);
+						final Widget widget = ctx.widgets.get(1183);
 						if (widget != null && widget.isValid()) {
 							for (final Component c : widget.getComponents()) {
 								final String s;

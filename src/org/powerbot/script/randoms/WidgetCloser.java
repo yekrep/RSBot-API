@@ -1,15 +1,13 @@
 package org.powerbot.script.randoms;
 
-import java.awt.Point;
-
+import org.powerbot.nscript.PollingScript;
 import org.powerbot.script.Manifest;
-import org.powerbot.script.PollingScript;
-import org.powerbot.script.methods.Mouse;
-import org.powerbot.script.methods.Widgets;
 import org.powerbot.script.util.Random;
 import org.powerbot.script.util.Timer;
 import org.powerbot.script.wrappers.Component;
 import org.powerbot.util.Tracker;
+
+import java.awt.*;
 
 @Manifest(name = "Widget closer", authors = {"Timer"}, description = "Closes widgets")
 public class WidgetCloser extends PollingScript implements RandomEvent {
@@ -36,7 +34,7 @@ public class WidgetCloser extends PollingScript implements RandomEvent {
 	public int poll() {
 		if (threshold.isRunning()) return 1000;
 		for (final int p : COMPONENTS) {
-			component = Widgets.get(p >> 16, p & 0xffff);
+			component = ctx.widgets.get(p >> 16, p & 0xffff);
 			if (component != null && component.isValid()) {
 				break;
 			} else component = null;
@@ -64,7 +62,7 @@ public class WidgetCloser extends PollingScript implements RandomEvent {
 	private boolean click(final Component component) {
 		if (component.getWidget().getIndex() == 1252) {
 			final Point p = component.getAbsoluteLocation();
-			return Mouse.click(p.x + Random.nextInt(0, component.getWidth()), p.y + 50 + Random.nextInt(0, component.getHeight()), true);
+			return ctx.mouse.click(p.x + Random.nextInt(0, component.getWidth()), p.y + 50 + Random.nextInt(0, component.getHeight()), true);
 		}
 		return component.click();
 	}

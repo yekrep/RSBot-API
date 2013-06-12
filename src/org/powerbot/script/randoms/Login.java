@@ -1,16 +1,10 @@
 package org.powerbot.script.randoms;
 
 import org.powerbot.bot.Bot;
-import org.powerbot.script.methods.ClientFactory;
 import org.powerbot.event.PaintListener;
+import org.powerbot.nscript.PollingScript;
 import org.powerbot.script.Manifest;
-import org.powerbot.script.PollingScript;
-import org.powerbot.script.Script;
-import org.powerbot.script.framework.ScriptDefinition;
 import org.powerbot.script.methods.Game;
-import org.powerbot.script.methods.Keyboard;
-import org.powerbot.script.methods.Mouse;
-import org.powerbot.script.methods.Widgets;
 import org.powerbot.script.methods.Lobby;
 import org.powerbot.script.util.Random;
 import org.powerbot.script.util.Timer;
@@ -33,42 +27,21 @@ public class Login extends PollingScript implements RandomEvent, PaintListener {
 	private static final int WIDGET_LOBBY_TRY_AGAIN = 259;
 	private final Bot bot;
 	private volatile Timer re_load_timer = null;
-	private Script wc;
 
 	public Login() {
 		this.bot = Bot.getInstance();
 	}
 
-	private void lock(final boolean b) {
-		if (b) {
-			getScriptController().getLockQueue().offer(this);
-			getScriptController().getLockQueue().offer(wc);
-		} else {
-			getScriptController().getLockQueue().remove(this);
-			getScriptController().getLockQueue().remove(wc);
-		}
-	}
-
 	@Override
 	public int poll() {
-		if (wc == null) {
-			for (final ScriptDefinition def : getScriptController().getScripts()) {
-				if (def.getScript() instanceof WidgetCloser) {
-					this.wc = def.getScript();
-					break;
-				}
-			}
-		}
-
-		lock(true);
-		final int state = Game.getClientState();
+		final int state = ctx.game.getClientState();
 		if ((state == Game.INDEX_LOGIN_SCREEN || state == Game.INDEX_LOGGING_IN) && bot.getAccount() != null) {
 			Tracker.getInstance().trackPage("randoms/Login/", "Login");
 			for (final LoginEvent loginEvent : LoginEvent.values()) {
-				final Component Component = Widgets.get(WIDGET, loginEvent.child);
+				final Component Component = ctx.widgets.get(WIDGET, loginEvent.child);
 				if (Component != null && Component.isValid()) {
 					final String text = Component.getText().toLowerCase().trim();
-					Widgets.get(WIDGET, WIDGET_LOGIN_TRY_AGAIN).click(true);
+					ctx.widgets.get(WIDGET, WIDGET_LOGIN_TRY_AGAIN).click(true);
 
 					if (text.contains(loginEvent.message.toLowerCase())) {
 						log.info("Handling login event: " + loginEvent.name());
@@ -80,8 +53,7 @@ public class Login extends PollingScript implements RandomEvent, PaintListener {
 						if (loginEvent.wait > 0) {
 							sleep(loginEvent.wait);
 						} else if (loginEvent.wait == -1) {
-							getScriptController().stop();
-							lock(false);
+							getContainer().stop();
 							return -1;
 						}
 
@@ -92,64 +64,58 @@ public class Login extends PollingScript implements RandomEvent, PaintListener {
 							} catch (final InterruptedException | ExecutionException ignored) {
 							}
 						}
-						lock(false);
 						return 0;
 					}
 				}
 			}
 
 			if (isUsernameCorrect() && isPasswordValid()) {
-				Keyboard.send("\n");
+				ctx.keyboard.send("\n");
 				sleep(Random.nextInt(1200, 2000));
 			} else if (!isUsernameCorrect()) {
 				final String username = bot.getAccount().toString();
-				final Component usernameTextBox = Widgets.get(WIDGET, WIDGET_LOGIN_USERNAME_TEXT);
+				final Component usernameTextBox = ctx.widgets.get(WIDGET, WIDGET_LOGIN_USERNAME_TEXT);
 				if (!clickLoginInterface(usernameTextBox)) {
-					lock(false);
 					return 0;
 				}
 				sleep(Random.nextInt(500, 700));
 				final int textLength = usernameTextBox.getText().length();
 				if (textLength > 0) {
 					erase(textLength);
-					lock(false);
 					return 0;
 				}
-				Keyboard.send(username);
+				ctx.keyboard.send(username);
 				sleep(Random.nextInt(500, 700));
 			} else if (!isPasswordValid()) {
 				final String password = bot.getAccount().getPassword();
-				final Component passwordTextBox = Widgets.get(WIDGET, WIDGET_LOGIN_PASSWORD_TEXT);
+				final Component passwordTextBox = ctx.widgets.get(WIDGET, WIDGET_LOGIN_PASSWORD_TEXT);
 				if (!clickLoginInterface(passwordTextBox)) {
-					lock(false);
 					return 0;
 				}
 				sleep(Random.nextInt(500, 700));
 				final int textLength = passwordTextBox.getText().length();
 				if (textLength > 0) {
 					erase(textLength);
-					lock(false);
 					return 0;
 				}
-				Keyboard.send(password);
+				ctx.keyboard.send(password);
 				sleep(Random.nextInt(500, 700));
 			}
 		} else if (state == Game.INDEX_LOBBY_SCREEN && bot.getAccount() != null) {
 			Tracker.getInstance().trackPage("randoms/Login/", "Lobby");
 			for (final LobbyEvent lobbyEvent : LobbyEvent.values()) {
-				final Component Component = Widgets.get(WIDGET_LOBBY, lobbyEvent.child);
+				final Component Component = ctx.widgets.get(WIDGET_LOBBY, lobbyEvent.child);
 				if (Component != null && Component.isValid()) {
 					final String text = Component.getText().toLowerCase().trim();
 
 					if (text.contains(lobbyEvent.message.toLowerCase())) {
 						log.info("Handling lobby event: " + lobbyEvent.name());
-						Widgets.get(WIDGET_LOBBY, WIDGET_LOBBY_TRY_AGAIN).click(true);
+						ctx.widgets.get(WIDGET_LOBBY, WIDGET_LOBBY_TRY_AGAIN).click(true);
 
 						if (lobbyEvent.wait > 0) {
 							sleep(lobbyEvent.wait);
 						} else if (lobbyEvent.wait == -1) {
 							bot.stopScripts();
-							lock(false);
 							return -1;
 						}
 
@@ -159,24 +125,21 @@ public class Login extends PollingScript implements RandomEvent, PaintListener {
 							} catch (final InterruptedException | ExecutionException ignored) {
 							}
 						}
-						lock(false);
 						return 0;
 					}
 				}
 			}
 
-			final int world = ClientFactory.getFactory().preferredWorld;
+			final int world = ctx.preferredWorld;
 			if (world > 0) {
 				final Lobby.World world_wrapper;
-				if ((world_wrapper = Lobby.getWorld(world)) != null) {
-					Lobby.enterGame(world_wrapper);
-					lock(false);
+				if ((world_wrapper = ctx.lobby.getWorld(world)) != null) {
+					ctx.lobby.enterGame(world_wrapper);
 					return 0;
 				}
 			}
-			Lobby.enterGame();
+			ctx.lobby.enterGame();
 		}
-		lock(false);
 		return 600;
 	}
 
@@ -194,9 +157,9 @@ public class Login extends PollingScript implements RandomEvent, PaintListener {
 		final int h = (int) pos.getHeight();
 		final int midy = (int) (pos.getMinY() + (h == 0 ? 27 : h) / 2);
 		if (i.getIndex() == WIDGET_LOGIN_PASSWORD_TEXT) {
-			return Mouse.click(getPasswordX(i), midy + Random.nextInt(-dy, dy), true);
+			return ctx.mouse.click(getPasswordX(i), midy + Random.nextInt(-dy, dy), true);
 		}
-		return Mouse.click(midx + Random.nextInt(1, maxRandomX), midy + Random.nextInt(-dy, dy), true);
+		return ctx.mouse.click(midx + Random.nextInt(1, maxRandomX), midy + Random.nextInt(-dy, dy), true);
 	}
 
 	private int getPasswordX(final Component a) {
@@ -207,7 +170,7 @@ public class Login extends PollingScript implements RandomEvent, PaintListener {
 		if (pos.x == -1 || pos.y == -1 || pos.width == -1 || pos.height == -1) {
 			return 0;
 		}
-		for (int i = 0; i < Widgets.get(WIDGET, WIDGET_LOGIN_PASSWORD_TEXT).getText().length(); i++) {
+		for (int i = 0; i < ctx.widgets.get(WIDGET, WIDGET_LOGIN_PASSWORD_TEXT).getText().length(); i++) {
 			x += 11;
 		}
 		if (x > 44) {
@@ -219,17 +182,17 @@ public class Login extends PollingScript implements RandomEvent, PaintListener {
 
 	private boolean isUsernameCorrect() {
 		final String userName = bot.getAccount().toString();
-		return Widgets.get(WIDGET, WIDGET_LOGIN_USERNAME_TEXT).getText().toLowerCase().equalsIgnoreCase(userName);
+		return ctx.widgets.get(WIDGET, WIDGET_LOGIN_USERNAME_TEXT).getText().toLowerCase().equalsIgnoreCase(userName);
 	}
 
 	private boolean isPasswordValid() {
 		final String s = bot.getAccount().getPassword();
-		return Widgets.get(WIDGET, WIDGET_LOGIN_PASSWORD_TEXT).getText().length() == (s == null ? 0 : s.length());
+		return ctx.widgets.get(WIDGET, WIDGET_LOGIN_PASSWORD_TEXT).getText().length() == (s == null ? 0 : s.length());
 	}
 
 	private void erase(final int count) {
 		for (int i = 0; i <= count + Random.nextInt(1, 5); i++) {
-			Keyboard.send("\b");
+			ctx.keyboard.send("\b");
 			if (Random.nextInt(0, 2) == 1) {
 				sleep(Random.nextInt(25, 100));
 			}
