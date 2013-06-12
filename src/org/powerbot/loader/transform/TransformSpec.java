@@ -1,4 +1,4 @@
-package org.powerbot.loader.script;
+package org.powerbot.loader.transform;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -8,14 +8,14 @@ import java.util.Map;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
-import org.powerbot.loader.script.adapter.AddFieldAdapter;
-import org.powerbot.loader.script.adapter.AddGetterAdapter;
-import org.powerbot.loader.script.adapter.AddInterfaceAdapter;
-import org.powerbot.loader.script.adapter.AddMethodAdapter;
-import org.powerbot.loader.script.adapter.InsertCodeAdapter;
-import org.powerbot.loader.script.adapter.OverrideClassAdapter;
-import org.powerbot.loader.script.adapter.SetSignatureAdapter;
-import org.powerbot.loader.script.adapter.SetSuperAdapter;
+import org.powerbot.loader.transform.adapter.AddFieldAdapter;
+import org.powerbot.loader.transform.adapter.AddGetterAdapter;
+import org.powerbot.loader.transform.adapter.AddInterfaceAdapter;
+import org.powerbot.loader.transform.adapter.AddMethodAdapter;
+import org.powerbot.loader.transform.adapter.InsertCodeAdapter;
+import org.powerbot.loader.transform.adapter.OverrideClassAdapter;
+import org.powerbot.loader.transform.adapter.SetSignatureAdapter;
+import org.powerbot.loader.transform.adapter.SetSuperAdapter;
 
 public class TransformSpec {
 	private final Map<String, ClassVisitor> adapters;

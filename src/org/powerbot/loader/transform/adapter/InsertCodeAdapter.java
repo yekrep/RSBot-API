@@ -1,4 +1,4 @@
-package org.powerbot.loader.script.adapter;
+package org.powerbot.loader.transform.adapter;
 
 import java.util.Map;
 
@@ -6,7 +6,7 @@ import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
-import org.powerbot.loader.script.CodeReader;
+import org.powerbot.loader.transform.CodeReader;
 
 public class InsertCodeAdapter extends ClassVisitor {
 	private final String method_name;

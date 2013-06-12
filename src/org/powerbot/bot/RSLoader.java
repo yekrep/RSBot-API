@@ -9,7 +9,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.powerbot.loader.ClientLoader;
-import org.powerbot.loader.script.TransformSpec;
+import org.powerbot.loader.transform.TransformSpec;
 import org.powerbot.util.Configuration;
 
 /**

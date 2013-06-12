@@ -1,4 +1,4 @@
-package org.powerbot.loader.script;
+package org.powerbot.loader.transform;
 
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;

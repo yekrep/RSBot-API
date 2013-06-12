@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.logging.Logger;
 import java.util.zip.GZIPOutputStream;
 
-import org.powerbot.loader.script.TransformSpec;
+import org.powerbot.loader.transform.TransformSpec;
 import org.powerbot.util.Configuration;
 import org.powerbot.util.StringUtil;
 import org.powerbot.util.Tracker;
