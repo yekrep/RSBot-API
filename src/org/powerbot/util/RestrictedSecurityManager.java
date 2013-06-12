@@ -171,10 +171,9 @@ public class RestrictedSecurityManager extends SecurityManager {
 
 		// permission controls for crypt files
 		for (final Entry<File, Class<?>[]> entry : CryptFile.PERMISSIONS.entrySet()) {
-			final Class<?>[] entries = new Class<?>[entry.getValue().length + 2];
+			final Class<?>[] entries = new Class<?>[entry.getValue().length + 1];
 			entries[0] = CryptFile.class;
-			entries[1] = RestrictedSecurityManager.class;
-			System.arraycopy(entry.getValue(), 0, entries, 2, entries.length - 2);
+			System.arraycopy(entry.getValue(), 0, entries, 1, entries.length - 1);
 			final String pathDecoded = getCanonicalPath(new File(StringUtil.urlDecode(entry.getKey().getAbsolutePath())));
 			if (pathDecoded.equals(path)) {
 				if (!isCallingClass(entries)) {
