@@ -8,6 +8,7 @@ import java.util.concurrent.FutureTask;
 
 import org.powerbot.bot.Bot;
 import org.powerbot.event.PaintListener;
+import org.powerbot.gui.BotChrome;
 import org.powerbot.script.Manifest;
 import org.powerbot.script.PollingScript;
 import org.powerbot.script.methods.Game;
@@ -31,7 +32,7 @@ public class Login extends PollingScript implements RandomEvent, PaintListener {
 	private volatile Timer re_load_timer = null;
 
 	public Login() {
-		this.bot = Bot.getInstance();
+		this.bot = ctx.bot;
 	}
 
 	@Override
@@ -213,7 +214,7 @@ public class Login extends PollingScript implements RandomEvent, PaintListener {
 		TOKEN_FAILURE(WIDGET_LOGIN_ERROR, "game session", 1000 * 5 * 60, new FutureTask<>(new Runnable() {
 			@Override
 			public void run() {
-				Bot.getInstance().refresh();
+				BotChrome.getInstance().getBot().refresh();
 			}
 		}, true)),
 		INVALID_PASSWORD(WIDGET_LOGIN_ERROR, "Invalid username or password", -1);

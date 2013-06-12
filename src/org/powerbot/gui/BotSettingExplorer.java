@@ -30,7 +30,6 @@ import javax.swing.WindowConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import org.powerbot.bot.Bot;
 import org.powerbot.script.util.Delay;
 import org.powerbot.util.Tracker;
 import org.powerbot.util.io.Resources;
@@ -71,10 +70,10 @@ public class BotSettingExplorer extends JFrame {
 		}
 		settingExplorer.setVisible(true);
 		try {
-			settingExplorer.settings_cache = Bot.getInstance().clientFactory.settings.getArray();
+			settingExplorer.settings_cache = BotChrome.getInstance().getBot().getClientFactory().settings.getArray();
 		} catch (final NullPointerException ignored) {
 		}
-		new Thread(Bot.getInstance().threadGroup, new Runnable() {
+		new Thread(BotChrome.getInstance().getBot().threadGroup, new Runnable() {
 			@Override
 			public void run() {
 				while (settingExplorer.isVisible()) {
@@ -90,7 +89,7 @@ public class BotSettingExplorer extends JFrame {
 	}
 
 	private void update() {
-		final int[] settings_clone = Bot.getInstance().clientFactory.settings.getArray();
+		final int[] settings_clone = BotChrome.getInstance().getBot().getClientFactory().settings.getArray();
 		if (settings_cache == null) {
 			settings_cache = settings_clone;
 			return;

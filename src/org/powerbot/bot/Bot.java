@@ -4,6 +4,7 @@ import java.awt.Canvas;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Logger;
 
 import org.powerbot.client.Client;
@@ -13,7 +14,6 @@ import org.powerbot.event.PaintEvent;
 import org.powerbot.event.TextPaintEvent;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.gui.component.BotPanel;
-import org.powerbot.loader.script.ModScript;
 import org.powerbot.script.Script;
 import org.powerbot.script.internal.InputHandler;
 import org.powerbot.script.internal.MouseHandler;
@@ -27,20 +27,18 @@ import org.powerbot.service.GameAccounts;
  * @author Timer
  */
 public final class Bot implements Runnable, Stoppable {//TODO re-write bot
-	public ClientFactory clientFactory;
-	static final Logger log = Logger.getLogger(Bot.class.getName());
-	private static Bot instance;
+	public static final Logger log = Logger.getLogger(Bot.class.getName());
+	private ClientFactory clientFactory;
 	public final BotComposite composite;
 	public final Runnable callback;
 	public final ThreadGroup threadGroup;
 	private final PaintEvent paintEvent;
 	private final TextPaintEvent textPaintEvent;
 	private final EventMulticaster multicaster;
-	public volatile RSLoader appletContainer;
-	public volatile BotStub stub;
-	public ModScript modScript;
-	public BufferedImage image;
-	public volatile boolean refreshing;
+	private volatile RSLoader appletContainer;
+	private volatile BotStub stub;
+	private BufferedImage image;
+	public AtomicBoolean refreshing;
 	private Constants constants;
 	private BotPanel panel;
 	private GameAccounts.Account account;
@@ -49,7 +47,7 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 	private InputHandler inputHandler;
 	private ScriptHandler scriptController;
 
-	private Bot() {
+	public Bot() {
 		appletContainer = null;
 		callback = null;
 		stub = null;
@@ -69,33 +67,10 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 		textPaintEvent = new TextPaintEvent();
 
 		new Thread(threadGroup, multicaster, multicaster.getClass().getName()).start();
-		refreshing = false;
+		refreshing = new AtomicBoolean(false);
 
 		scriptController = new ScriptHandler(getEventMulticaster());
-		clientFactory = new ClientFactory();
-	}
-
-	public synchronized static Bot getInstance() {
-		if (instance == null) {
-			instance = new Bot();
-		}
-		return instance;
-	}
-
-	public static boolean instantiated() {
-		return instance != null;
-	}
-
-	public static Constants constants() {
-		return instance.constants;
-	}
-
-	public static MouseHandler mouseHandler() {
-		return instance.mouseHandler;
-	}
-
-	public static InputHandler inputHandler() {
-		return instance.inputHandler;
+		clientFactory = new ClientFactory(this);
 	}
 
 	public void run() {
@@ -149,7 +124,6 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 				terminateApplet();
 			}
 		}).start();
-		instance = null;
 	}
 
 	void terminateApplet() {
@@ -188,6 +162,26 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 		return backBuffer;
 	}
 
+	public RSLoader getAppletContainer() {
+		return appletContainer;
+	}
+
+	public ClientFactory getClientFactory() {
+		return clientFactory;
+	}
+
+	public Constants getConstants() {
+		return constants;
+	}
+
+	public InputHandler getInputHandler() {
+		return inputHandler;
+	}
+
+	public MouseHandler getMouseHandler() {
+		return mouseHandler;
+	}
+
 	public void resize(final int width, final int height) {
 		backBuffer = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 		image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
@@ -202,7 +196,7 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 
 	public Graphics getBufferGraphics() {
 		final Graphics back = backBuffer.getGraphics();
-		if (this.clientFactory.getClient() != null && panel != null && !BotChrome.minimised) {
+		if (this.clientFactory.getClient() != null && panel != null && !BotChrome.getInstance().isMinimised()) {
 			paintEvent.graphics = back;
 			textPaintEvent.graphics = back;
 			textPaintEvent.id = 0;
@@ -230,7 +224,7 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 	private void setClient(final Client client) {
 		this.clientFactory.setClient(client);
 		client.setCallback(new CallbackImpl(this));
-		constants = new Constants(modScript.constants);
+		constants = new Constants(appletContainer.getTspec().constants);
 		new Thread(threadGroup, new SafeMode(this)).start();
 		mouseHandler = new MouseHandler(appletContainer, client);
 		inputHandler = new InputHandler(appletContainer, client);
@@ -259,11 +253,11 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 	}
 
 	public synchronized void refresh() {
-		if (refreshing) {
+		if (refreshing.get()) {
 			return;
 		}
 
-		refreshing = true;
+		refreshing.set(true);
 		new Thread(threadGroup, new Runnable() {
 			public void run() {
 				composite.reload();

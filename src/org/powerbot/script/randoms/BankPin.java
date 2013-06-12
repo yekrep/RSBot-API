@@ -1,6 +1,5 @@
 package org.powerbot.script.randoms;
 
-import org.powerbot.bot.Bot;
 import org.powerbot.script.Manifest;
 import org.powerbot.script.PollingScript;
 import org.powerbot.script.util.Delay;
@@ -32,7 +31,7 @@ public class BankPin extends PollingScript implements RandomEvent {
 
 	private String getPin() {
 		try {
-			return Bot.getInstance().getAccount().getPIN();
+			return ctx.bot.getAccount().getPIN();
 		} catch (final Exception ignored) {
 		}
 		return null;

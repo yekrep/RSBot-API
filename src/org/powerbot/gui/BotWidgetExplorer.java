@@ -31,7 +31,6 @@ import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
-import org.powerbot.bot.Bot;
 import org.powerbot.event.PaintListener;
 import org.powerbot.script.wrappers.Component;
 import org.powerbot.script.wrappers.Widget;
@@ -58,7 +57,7 @@ public class BotWidgetExplorer extends JFrame implements PaintListener {
 			@Override
 			public void windowClosing(final WindowEvent e) {
 				setVisible(false);
-				Bot.getInstance().getEventMulticaster().removeListener(this);
+				BotChrome.getInstance().getBot().getEventMulticaster().removeListener(this);
 				highlightArea = null;
 			}
 		});
@@ -182,11 +181,11 @@ public class BotWidgetExplorer extends JFrame implements PaintListener {
 	public static void display() {
 		final BotWidgetExplorer botWidgetExplorer = getInstance();
 		if (botWidgetExplorer.isVisible()) {
-			Bot.getInstance().getEventMulticaster().removeListener(botWidgetExplorer);
+			BotChrome.getInstance().getBot().getEventMulticaster().removeListener(botWidgetExplorer);
 			botWidgetExplorer.highlightArea = null;
 		}
 		botWidgetExplorer.treeModel.update("");
-		Bot.getInstance().getEventMulticaster().addListener(botWidgetExplorer);
+		BotChrome.getInstance().getBot().getEventMulticaster().addListener(botWidgetExplorer);
 		botWidgetExplorer.setVisible(true);
 	}
 
@@ -275,7 +274,7 @@ public class BotWidgetExplorer extends JFrame implements PaintListener {
 
 		public void update(final String search) {
 			widgetWrappers.clear();
-			for (final Widget widget : Bot.getInstance().clientFactory.widgets.getLoaded()) {
+			for (final Widget widget : BotChrome.getInstance().getBot().getClientFactory().widgets.getLoaded()) {
 				children:
 				for (final Component Component : widget.getComponents()) {
 					if (search(Component, search)) {

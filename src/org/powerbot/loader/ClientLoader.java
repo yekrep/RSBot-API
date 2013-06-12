@@ -10,26 +10,27 @@ import java.util.Map;
 import java.util.logging.Logger;
 import java.util.zip.GZIPOutputStream;
 
-import org.powerbot.bot.Bot;
-import org.powerbot.loader.script.ModScript;
+import org.powerbot.loader.script.TransformSpec;
 import org.powerbot.util.Configuration;
 import org.powerbot.util.StringUtil;
 import org.powerbot.util.Tracker;
 import org.powerbot.util.io.HttpClient;
 import org.powerbot.util.io.IOHelper;
 
-public class ClientLoader {
+public class ClientLoader implements Runnable {
 	private static final Logger log = Logger.getLogger(ClientLoader.class.getName());
 
 	private final Map<String, byte[]> classes;
 	public final Crawler crawler;
+	private TransformSpec tspec;
 
 	public ClientLoader() {
 		classes = new HashMap<>();
 		crawler = new Crawler();
 	}
 
-	public void load() {
+	@Override
+	public void run() {
 		log.info("Loading game");
 
 		if (!crawler.crawl()) {
@@ -62,10 +63,10 @@ public class ClientLoader {
 		final String hash = StringUtil.byteArrayToHexString(Deflator.inner_pack_hash);
 		log.info("Loading game (" + hash.substring(0, 6) + ")");
 
-		ModScript modScript = null;
+		tspec = null;
 		while (true) {
 			try {
-				modScript = getSpec(hash);
+				tspec = getSpec(hash);
 				break;
 			} catch (final IOException ignored) {
 				break;
@@ -79,15 +80,19 @@ public class ClientLoader {
 				}
 			}
 		}
-		if (modScript == null) {
+		if (tspec == null) {
 			throw new RuntimeException("error getting t-spec");
 		}
 
-		modScript.adapt();
+		tspec.adapt();
 		for (final Map.Entry<String, byte[]> clazz : classes.entrySet()) {
 			final String name = clazz.getKey();
-			classes.put(name, modScript.process(name, clazz.getValue()));
+			classes.put(name, tspec.process(name, clazz.getValue()));
 		}
+	}
+
+	public TransformSpec getTspec() {
+		return tspec;
 	}
 
 	public Map<String, byte[]> classes() {
@@ -96,7 +101,7 @@ public class ClientLoader {
 		return classes;
 	}
 
-	public ModScript getSpec(final String packHash) throws IOException, PendingException {
+	private synchronized TransformSpec getSpec(final String packHash) throws IOException, PendingException {
 		final int delay = 1000 * 60 * 3 + 30;
 		final String pre = "loader/spec/" + packHash;
 		int r;
@@ -107,7 +112,7 @@ public class ClientLoader {
 		r = con.getResponseCode();
 		Tracker.getInstance().trackPage(pre, Integer.toString(r));
 		if (r == HttpURLConnection.HTTP_OK) {
-			return Bot.getInstance().modScript = new ModScript(IOHelper.read(HttpClient.getInputStream(con)));
+			return new TransformSpec(IOHelper.read(HttpClient.getInputStream(con)));
 		} else {
 			final HttpURLConnection bucket = HttpClient.getHttpConnection(new URL(String.format(Configuration.URLs.CLIENTBUCKET, packHash)));
 			bucket.setInstanceFollowRedirects(false);

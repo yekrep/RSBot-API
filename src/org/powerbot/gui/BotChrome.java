@@ -1,8 +1,9 @@
 package org.powerbot.gui;
 
 import java.awt.Desktop;
+import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
+import java.io.Closeable;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -30,18 +31,35 @@ import org.powerbot.util.io.Resources;
 /**
  * @author Paris
  */
-public class BotChrome extends JFrame implements WindowListener {
+public class BotChrome extends JFrame implements Closeable {
 	private static BotChrome instance;
 	private static Logger log = Logger.getLogger(BotChrome.class.getName());
 	public static final int PANEL_WIDTH = 765, PANEL_HEIGHT = 553;
 	public BotPanel panel;
-	public static volatile boolean minimised = false;
+	private final Bot bot;
+	private static volatile boolean minimised;
 
 	private BotChrome() {
 		setTitle(Configuration.NAME);
 		setIconImage(Resources.getImage(Resources.Paths.ICON));
-		addWindowListener(this);
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(final WindowEvent e) {
+				close();
+			}
+
+			@Override
+			public void windowDeiconified(final WindowEvent e) {
+				minimised = false;
+			}
+
+			@Override
+			public void windowIconified(final WindowEvent e) {
+				minimised = true;
+			}
+		});
 
 		setJMenuBar(new BotMenuBar());
 
@@ -60,15 +78,40 @@ public class BotChrome extends JFrame implements WindowListener {
 		final List<Future<Boolean>> tasks = new ArrayList<>();
 		tasks.add(exec.submit(new LoadUpdates()));
 		tasks.add(exec.submit(new LoadOSX()));
-		exec.execute(new LoadComplete(this, tasks));
 		exec.shutdown();
+
+		Bot bot = null;
+		boolean pass = true;
+		for (final Future<Boolean> task : tasks) {
+			try {
+				if (!task.get()) {
+					pass = false;
+				}
+			} catch (final InterruptedException | ExecutionException ignored) {
+			}
+		}
+		if (pass) {
+			bot = new Bot();
+			new Thread(bot.threadGroup, bot).start();
+		}
+		this.bot = bot;
+
+		System.gc();
 	}
 
-	public static BotChrome getInstance() {
+	public static synchronized BotChrome getInstance() {
 		if (instance == null) {
 			instance = new BotChrome();
 		}
 		return instance;
+	}
+
+	public Bot getBot() {
+		return bot;
+	}
+
+	public boolean isMinimised() {
+		return minimised;
 	}
 
 	public static void openURL(final String url) {
@@ -87,57 +130,11 @@ public class BotChrome extends JFrame implements WindowListener {
 		}
 	}
 
-	public void windowActivated(final WindowEvent arg0) {
-	}
-
-	public void windowClosed(final WindowEvent arg0) {
-	}
-
-	public void windowClosing(final WindowEvent arg0) {
+	@Override
+	public void close() {
 		log.info("Shutting down");
 		setVisible(false);
 		dispose();
 		System.exit(0);
-	}
-
-	public void windowDeactivated(final WindowEvent arg0) {
-	}
-
-	public void windowDeiconified(final WindowEvent arg0) {
-		minimised = false;
-	}
-
-	public void windowIconified(final WindowEvent arg0) {
-		minimised = true;
-	}
-
-	public void windowOpened(final WindowEvent arg0) {
-	}
-
-	private final class LoadComplete implements Runnable {
-		private final BotChrome parent;
-		private final List<Future<Boolean>> tasks;
-
-		public LoadComplete(final BotChrome parent, final List<Future<Boolean>> tasks) {
-			this.parent = parent;
-			this.tasks = tasks;
-		}
-
-		public void run() {
-			boolean pass = true;
-			for (final Future<Boolean> task : tasks) {
-				try {
-					if (!task.get()) {
-						pass = false;
-					}
-				} catch (final InterruptedException | ExecutionException ignored) {
-				}
-			}
-			if (pass) {
-				final Bot bot = Bot.getInstance();
-				new Thread(bot.threadGroup, bot).start();
-			}
-			System.gc();
-		}
 	}
 }

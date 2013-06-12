@@ -7,10 +7,10 @@ import java.awt.Point;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
 
-import org.powerbot.bot.Bot;
 import org.powerbot.client.RSAnimable;
 import org.powerbot.client.RSObject;
 import org.powerbot.event.PaintListener;
+import org.powerbot.gui.BotChrome;
 import org.powerbot.script.lang.Filterable;
 import org.powerbot.script.methods.ClientFactory;
 import org.powerbot.script.wrappers.GameObject;
@@ -22,7 +22,7 @@ public class DrawObjects implements PaintListener {
 
 	@Override
 	public void onRepaint(final Graphics render) {
-		ClientFactory ctx = Bot.getInstance().clientFactory;
+		ClientFactory ctx = BotChrome.getInstance().getBot().getClientFactory();
 		if (!ctx.game.isLoggedIn()) {
 			return;
 		}

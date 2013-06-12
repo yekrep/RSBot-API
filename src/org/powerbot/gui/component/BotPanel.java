@@ -130,14 +130,14 @@ public class BotPanel extends JPanel {
 
 	@Override
 	public void paintComponent(final Graphics g) {
-		if (BotChrome.minimised) {
+		if (BotChrome.getInstance().isMinimised()) {
 			return;
 		}
 
 		super.paintComponent(g);
 
 		if (bot != null) {
-			g.drawImage(bot.image, xOff, yOff, null);
+			g.drawImage(bot.getImage(), xOff, yOff, null);
 		}
 	}
 
@@ -164,7 +164,7 @@ public class BotPanel extends JPanel {
 	}
 
 	public void resize() {
-		if (bot != null && bot.appletContainer != null) {
+		if (bot != null && bot.getAppletContainer() != null) {
 			bot.resize(getWidth(), getHeight());
 			offset();
 		}
@@ -181,17 +181,17 @@ public class BotPanel extends JPanel {
 	}
 
 	private void redispatch(final MouseEvent mouseEvent) {
-		if (mouseEvent == null || bot == null || bot.appletContainer == null || bot.appletContainer.getComponentCount() == 0 ||
-				Bot.getInstance().clientFactory.getClient() == null) {
+		if (mouseEvent == null || bot == null || bot.getAppletContainer() == null || bot.getAppletContainer().getComponentCount() == 0 ||
+				bot.getClientFactory().getClient() == null) {
 			return;
 		}
 		mouseEvent.translatePoint(-xOff, -yOff);
-		final Mouse mouse = Bot.getInstance().clientFactory.getClient().getMouse();
+		final Mouse mouse = bot.getClientFactory().getClient().getMouse();
 		if (mouse == null) {
 			return;
 		}
 		final boolean present = mouse.isPresent();
-		final Component component = bot.appletContainer.getComponent(0);
+		final Component component = bot.getAppletContainer().getComponent(0);
 		notifyListeners(component, mouseEvent);
 		if ((inputMask & INPUT_MOUSE) == 0) {
 			return;
@@ -234,15 +234,15 @@ public class BotPanel extends JPanel {
 	}
 
 	private void redispatch(final KeyEvent keyEvent) {
-		if (keyEvent == null || bot == null || bot.appletContainer == null || bot.appletContainer.getComponentCount() == 0 ||
-				Bot.getInstance().clientFactory.getClient() == null) {
+		if (keyEvent == null || bot == null || bot.getAppletContainer() == null || bot.getAppletContainer().getComponentCount() == 0 ||
+				bot.getClientFactory().getClient() == null) {
 			return;
 		}
 		bot.getEventMulticaster().dispatch(keyEvent);
 		if ((inputMask & INPUT_KEYBOARD) == 0) {
 			return;
 		}
-		final Component component = bot.appletContainer.getComponent(0);
+		final Component component = bot.getAppletContainer().getComponent(0);
 		if (component != null) {
 			component.dispatchEvent(keyEvent);
 		}

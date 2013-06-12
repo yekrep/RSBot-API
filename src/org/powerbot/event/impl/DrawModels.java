@@ -5,8 +5,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 
-import org.powerbot.bot.Bot;
 import org.powerbot.event.PaintListener;
+import org.powerbot.gui.BotChrome;
 import org.powerbot.script.methods.ClientFactory;
 import org.powerbot.script.wrappers.GameObject;
 import org.powerbot.script.wrappers.GroundItem;
@@ -20,7 +20,7 @@ public class DrawModels implements PaintListener {
 
 	@Override
 	public void onRepaint(final Graphics render) {
-		ClientFactory ctx = Bot.getInstance().clientFactory;
+		ClientFactory ctx = BotChrome.getInstance().getBot().getClientFactory();
 		((Graphics2D) render).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		GameObject[] objects = ctx.objects.range(10).list();
 		for (final GameObject obj : objects) {

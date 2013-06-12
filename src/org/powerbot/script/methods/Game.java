@@ -5,7 +5,6 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 
-import org.powerbot.bot.Bot;
 import org.powerbot.client.BaseInfo;
 import org.powerbot.client.Client;
 import org.powerbot.client.Constants;
@@ -130,7 +129,7 @@ public class Game extends ClientLink {
 			return -1;
 		}
 
-		final Constants constants = Bot.constants();
+		final Constants constants = getConstants();
 		final int state = client.getLoginIndex();
 		if (state == constants.CLIENTSTATE_3) {
 			return 3;
@@ -302,7 +301,7 @@ public class Game extends ClientLink {
 		final int dist = pX * pX + pY * pY;
 		final int mapRadius = Math.max(mapComponent.getWidth() / 2, mapComponent.getHeight() / 2) - 8;
 		if (mapRadius * mapRadius >= dist) {
-			final Constants constants = Bot.constants();
+			final Constants constants = getConstants();
 			final int SETTINGS_ON = constants != null ? constants.MINIMAP_SETTINGS_ON : -1;
 			int angle = 0x3fff & (int) client.getMinimapAngle();
 			final boolean unknown = client.getMinimapSettings() == SETTINGS_ON;
@@ -336,7 +335,7 @@ public class Game extends ClientLink {
 		toolkit.yMultiplier = render.getYMultiplier();
 		toolkit.graphicsIndex = render.getGraphicsIndex();
 
-		final Constants constants = Bot.constants();
+		final Constants constants = getConstants();
 		final RenderData _viewport = render.getRenderData();
 		final float[] data;
 		if (viewport == null || constants == null || (data = _viewport.getFloats()) == null) {
@@ -378,6 +377,10 @@ public class Game extends ClientLink {
 			}
 		}
 		return null;
+	}
+
+	private Constants getConstants() {
+		return ctx.bot.getConstants();
 	}
 
 	public class Toolkit {

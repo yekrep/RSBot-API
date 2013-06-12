@@ -23,7 +23,7 @@ public class LoadOSX implements Callable<Boolean> {
 
 	@LoadOSX.OSXAdapterInfo(mode = 2)
 	public static void quit() {
-		BotChrome.getInstance().windowClosing(null);
+		BotChrome.getInstance().close();
 	}
 
 	@LoadOSX.OSXAdapterInfo(mode = 3)

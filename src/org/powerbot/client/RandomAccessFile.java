@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import org.powerbot.bot.Bot;
+import org.powerbot.gui.BotChrome;
 
 /**
  * @author Timer
@@ -39,9 +39,7 @@ public class RandomAccessFile {
 
 	private void checkData() {
 		if (uidData != null) {
-			if (client == null && Bot.instantiated()) {
-				client = Bot.getInstance().clientFactory.getClient();
-			}
+			client = BotChrome.getInstance().getBot().getClientFactory().getClient();
 			final String accountName = client != null ? client.getCurrentUsername() : "";
 
 			if (!uidData.getLastUsed().equals(accountName) && data != null) {

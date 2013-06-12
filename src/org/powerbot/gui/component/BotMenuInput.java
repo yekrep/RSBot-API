@@ -8,7 +8,6 @@ import java.util.Map;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenu;
 
-import org.powerbot.bot.Bot;
 import org.powerbot.gui.BotChrome;
 
 /**
@@ -17,8 +16,6 @@ import org.powerbot.gui.BotChrome;
 public final class BotMenuInput {
 
 	public BotMenuInput(final JMenu menu) {
-		final boolean enabled = Bot.instantiated();
-
 		JCheckBoxMenuItem item;
 		final BotPanel panel = BotChrome.getInstance().panel;
 		final int panelInputMask = panel.getInputMask();
@@ -36,8 +33,6 @@ public final class BotMenuInput {
 					panel.setInputMask(mask);
 				}
 			});
-
-			item.setEnabled(enabled);
 			menu.add(item);
 		}
 	}

@@ -30,12 +30,12 @@ public class Canvas extends java.awt.Canvas {
 			if (loader_identified) {
 				return super.getGraphics();
 			} else {
-				bot = Bot.getInstance();
+				bot = BotChrome.getInstance().getBot();
 				BotChrome.getInstance().panel.offset();
 				loader_identified = true;
 			}
 		}
-		Delay.sleep(BotChrome.minimised ? MINIMISED_GRAPHICS_DELAY : GRAPHICS_DELAY);
+		Delay.sleep(BotChrome.getInstance().isMinimised() ? MINIMISED_GRAPHICS_DELAY : GRAPHICS_DELAY);
 		return bot.getBufferGraphics();
 	}
 
@@ -62,7 +62,7 @@ public class Canvas extends java.awt.Canvas {
 	@Override
 	public final Dimension getSize() {
 		if (bot != null) {
-			return bot.appletContainer.getSize();
+			return bot.getAppletContainer().getSize();
 		}
 		return BotChrome.getInstance().panel.getSize();
 	}

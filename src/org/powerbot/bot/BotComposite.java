@@ -12,7 +12,7 @@ public class BotComposite {//TODO remove the use of a composite ... export data 
 	}
 
 	public void reload() {//TODO re-evaluate re-load method
-		Bot.log.info("Refreshing environment");
+		bot.log.info("Refreshing environment");
 		final ScriptHandler container = bot.getScriptController();
 		if (container != null) {
 			container.suspend();
@@ -21,14 +21,14 @@ public class BotComposite {//TODO remove the use of a composite ... export data 
 		bot.terminateApplet();
 		bot.resize(BotChrome.PANEL_WIDTH, BotChrome.PANEL_HEIGHT);
 
-		new Thread(bot.threadGroup, Bot.getInstance()).start();
-		while (Bot.getInstance().clientFactory.getClient() == null || Bot.getInstance().clientFactory.game.getClientState() == -1) {
+		new Thread(bot.threadGroup, bot).start();
+		while (bot.getClientFactory().getClient() == null || bot.getClientFactory().game.getClientState() == -1) {
 			Delay.sleep(1000);
 		}
 		if (container != null) {
 			container.resume();
 		}
 
-		bot.refreshing = false;
+		bot.refreshing.set(false);
 	}
 }

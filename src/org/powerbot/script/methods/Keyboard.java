@@ -2,7 +2,6 @@ package org.powerbot.script.methods;
 
 import java.awt.event.KeyEvent;
 
-import org.powerbot.bot.Bot;
 import org.powerbot.script.internal.InputHandler;
 
 public class Keyboard extends ClientLink {
@@ -15,7 +14,7 @@ public class Keyboard extends ClientLink {
 	}
 
 	public boolean send(String str, final boolean newLine) {
-		final InputHandler inputHandler = Bot.inputHandler();
+		final InputHandler inputHandler = getInputHandler();
 		if (inputHandler == null) {
 			return false;
 		}
@@ -31,7 +30,7 @@ public class Keyboard extends ClientLink {
 	}
 
 	public boolean pressKey(final int vk) {
-		final InputHandler inputHandler = Bot.inputHandler();
+		final InputHandler inputHandler = getInputHandler();
 		if (inputHandler == null) {
 			return false;
 		}
@@ -40,7 +39,7 @@ public class Keyboard extends ClientLink {
 	}
 
 	public boolean pressKey(final int vk, final char c) {
-		final InputHandler inputHandler = Bot.inputHandler();
+		final InputHandler inputHandler = getInputHandler();
 		if (inputHandler == null) {
 			return false;
 		}
@@ -49,7 +48,7 @@ public class Keyboard extends ClientLink {
 	}
 
 	public boolean releaseKey(final int vk) {
-		final InputHandler inputHandler = Bot.inputHandler();
+		final InputHandler inputHandler = getInputHandler();
 		if (inputHandler == null) {
 			return false;
 		}
@@ -58,7 +57,7 @@ public class Keyboard extends ClientLink {
 	}
 
 	public boolean releaseKey(final int vk, final char c) {
-		final InputHandler inputHandler = Bot.inputHandler();
+		final InputHandler inputHandler = getInputHandler();
 		if (inputHandler == null) {
 			return false;
 		}
@@ -67,7 +66,11 @@ public class Keyboard extends ClientLink {
 	}
 
 	public boolean isReady() {
-		final InputHandler inputHandler = Bot.inputHandler();
+		final InputHandler inputHandler = getInputHandler();
 		return inputHandler != null && inputHandler.getSource() != null;
+	}
+
+	private InputHandler getInputHandler() {
+		return ctx.bot.getInputHandler();
 	}
 }

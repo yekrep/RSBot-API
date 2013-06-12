@@ -3,7 +3,6 @@ package org.powerbot.script.methods;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 
-import org.powerbot.bot.Bot;
 import org.powerbot.client.Client;
 import org.powerbot.script.internal.MouseHandler;
 import org.powerbot.script.internal.MouseTarget;
@@ -60,7 +59,7 @@ public class Mouse extends ClientLink {
 	}
 
 	public boolean hop(final int x, final int y) {
-		final MouseHandler handler = Bot.mouseHandler();
+		final MouseHandler handler = getMouseHandler();
 		if (handler == null) {
 			return false;
 		}
@@ -78,7 +77,7 @@ public class Mouse extends ClientLink {
 	}
 
 	public boolean click(final int button) {
-		final MouseHandler handler = Bot.mouseHandler();
+		final MouseHandler handler = getMouseHandler();
 		if (handler == null) {
 			return false;
 		}
@@ -92,7 +91,7 @@ public class Mouse extends ClientLink {
 	}
 
 	public boolean click(final Targetable target, final boolean left) {
-		final MouseHandler handler = Bot.mouseHandler();
+		final MouseHandler handler = getMouseHandler();
 		if (handler == null) {
 			return false;
 		}
@@ -116,7 +115,7 @@ public class Mouse extends ClientLink {
 	}
 
 	public boolean drag(final Point p1, final Point p2, final int button) {
-		final MouseHandler handler = Bot.mouseHandler();
+		final MouseHandler handler = getMouseHandler();
 		if (handler == null) {
 			return false;
 		}
@@ -163,7 +162,7 @@ public class Mouse extends ClientLink {
 	}
 
 	public boolean move(final Targetable target, final Filter<Point> filter) {
-		final MouseHandler handler = Bot.mouseHandler();
+		final MouseHandler handler = getMouseHandler();
 		if (handler == null) {
 			return false;
 		}
@@ -183,7 +182,7 @@ public class Mouse extends ClientLink {
 	}
 
 	public boolean move(final Point p) {
-		final MouseHandler handler = Bot.mouseHandler();
+		final MouseHandler handler = getMouseHandler();
 		if (handler == null) {
 			return false;
 		}
@@ -218,5 +217,9 @@ public class Mouse extends ClientLink {
 			}
 		});
 		return !t.failed;
+	}
+
+	private MouseHandler getMouseHandler() {
+		return ctx.bot.getMouseHandler();
 	}
 }

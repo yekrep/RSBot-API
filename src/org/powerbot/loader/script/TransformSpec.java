@@ -17,7 +17,7 @@ import org.powerbot.loader.script.adapter.OverrideClassAdapter;
 import org.powerbot.loader.script.adapter.SetSignatureAdapter;
 import org.powerbot.loader.script.adapter.SetSuperAdapter;
 
-public class ModScript {
+public class TransformSpec {
 	private final Map<String, ClassVisitor> adapters;
 	private final Map<String, ClassWriter> writers;
 	public final Map<String, String> attributes;
@@ -45,16 +45,16 @@ public class ModScript {
 
 	private static final int MAGIC = 0xFADFAD;
 
-	public ModScript(final byte[] data) {
+	public TransformSpec(final byte[] data) {
 		this(new ByteArrayInputStream(data));
 	}
 
-	public ModScript(final InputStream data) {
+	public TransformSpec(final InputStream data) {
 		this();
 		scanner = new Scanner(data);
 	}
 
-	public ModScript() {
+	public TransformSpec() {
 		adapters = new HashMap<>();
 		writers = new HashMap<>();
 		attributes = new HashMap<>();
@@ -71,7 +71,7 @@ public class ModScript {
 	}
 
 	public void adapt() {
-		if (scanner.readInt() != ModScript.MAGIC) {
+		if (scanner.readInt() != TransformSpec.MAGIC) {
 			throw new RuntimeException("invalid patch format");
 		}
 		name = scanner.readString();

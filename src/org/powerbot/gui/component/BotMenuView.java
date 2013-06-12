@@ -32,6 +32,7 @@ import org.powerbot.event.impl.TMapBase;
 import org.powerbot.event.impl.TMenu;
 import org.powerbot.event.impl.TPlane;
 import org.powerbot.event.impl.ViewMouse;
+import org.powerbot.gui.BotChrome;
 import org.powerbot.gui.BotSettingExplorer;
 import org.powerbot.gui.BotWidgetExplorer;
 import org.powerbot.util.io.Resources;
@@ -62,23 +63,14 @@ public final class BotMenuView implements ActionListener {//TODO revamp debuggin
 	private static final String SEPERATOR = "-";
 
 	public BotMenuView(final JMenu menu) {
-		final boolean enabled = Bot.instantiated();
-
 		final JMenuItem widgetExplorer = new JMenuItem(BotLocale.WIDGETEXPLORER);
 		widgetExplorer.addActionListener(this);
 		widgetExplorer.setIcon(new ImageIcon(Resources.Paths.EDIT));
-		widgetExplorer.setEnabled(enabled);
 		menu.add(widgetExplorer);
 		final JMenuItem settingExplorer = new JMenuItem(BotLocale.SETTINGEXPLORER);
 		settingExplorer.addActionListener(this);
 		settingExplorer.setIcon(new ImageIcon(Resources.Paths.SETTINGS));
-		settingExplorer.setEnabled(enabled);
 		menu.add(settingExplorer);
-
-		if (!enabled) {
-			map = null;
-			return;
-		}
 
 		menu.addSeparator();
 
@@ -122,7 +114,7 @@ public final class BotMenuView implements ActionListener {//TODO revamp debuggin
 		items.add(SEPERATOR);
 		items.add(MESSAGES);
 
-		final Bot bot = Bot.getInstance();
+		final Bot bot = BotChrome.getInstance().getBot();
 		Map<String, EventListener> listeners = BotMenuView.listeners.get(bot);
 		if (listeners == null) {
 			listeners = new HashMap<>();
@@ -179,7 +171,7 @@ public final class BotMenuView implements ActionListener {//TODO revamp debuggin
 	}
 
 	private void setView(final Class<? extends EventListener> eventListener, final boolean selected) {
-		final Bot bot = Bot.getInstance();
+		final Bot bot = BotChrome.getInstance().getBot();
 		final String name = eventListener.getName();
 		Map<String, EventListener> listeners = BotMenuView.listeners.get(bot);
 		if (listeners == null) {

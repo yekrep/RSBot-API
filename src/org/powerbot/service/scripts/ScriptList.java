@@ -21,6 +21,7 @@ import javax.crypto.CipherInputStream;
 import javax.crypto.spec.SecretKeySpec;
 
 import org.powerbot.bot.Bot;
+import org.powerbot.gui.BotChrome;
 import org.powerbot.script.Manifest;
 import org.powerbot.script.Script;
 import org.powerbot.service.GameAccounts;
@@ -191,7 +192,7 @@ public class ScriptList {
 			}
 			return;
 		}
-		final Bot bot = Bot.getInstance();
+		final Bot bot = BotChrome.getInstance().getBot();
 		bot.setAccount(GameAccounts.getInstance().get(username));
 		final FileLock l = lock;
 		new Thread(new Runnable() {

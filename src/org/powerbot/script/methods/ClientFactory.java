@@ -2,12 +2,15 @@ package org.powerbot.script.methods;
 
 import java.util.concurrent.atomic.AtomicReference;
 
+import org.powerbot.bot.Bot;
 import org.powerbot.client.Client;
 import org.powerbot.script.internal.methods.Items;
 
 public class ClientFactory {
 	private AtomicReference<Client> client;
 	public int preferredWorld;
+
+	public final Bot bot;
 
 	public Camera camera;
 	Components components;
@@ -39,9 +42,11 @@ public class ClientFactory {
 	public DepositBox depositBox;
 	public Lobby lobby;
 
-	public ClientFactory() {
+	public ClientFactory(final Bot bot) {
 		this.client = new AtomicReference<>(null);
 		this.preferredWorld = -1;
+
+		this.bot = bot;
 
 		camera = new Camera(this);
 		components = new Components(this);
