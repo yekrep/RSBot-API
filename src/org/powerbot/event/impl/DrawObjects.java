@@ -14,7 +14,7 @@ import java.awt.*;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
 
-public class DrawScene implements PaintListener {
+public class DrawObjects implements PaintListener {
 	private static final Color[] C = {Color.GREEN, Color.WHITE, Color.BLACK, Color.BLUE};
 
 	public void onRepaint(final Graphics render) {
