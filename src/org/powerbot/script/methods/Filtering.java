@@ -3,6 +3,7 @@ package org.powerbot.script.methods;
 import java.util.Arrays;
 
 import org.powerbot.script.util.Filter;
+import org.powerbot.script.util.Filters;
 import org.powerbot.script.wrappers.Identifiable;
 import org.powerbot.script.wrappers.Locatable;
 import org.powerbot.script.wrappers.Tile;
@@ -47,10 +48,7 @@ abstract class Filtering<T> extends ClientLink implements Filterable<T> {
 
 	@Override
 	public Filterable<T> filter(Filter<T> filter) {
-		T[] arr = list();
-		int d = 0;
-		for (int i = 0; i < arr.length; i++) if (arr[i] != null && filter.accept(arr[i])) arr[d++] = arr[i];
-		return new FilterClone<>(ctx, Arrays.copyOf(arr, d));
+		return new FilterClone<>(ctx, Filters.filter(list(), filter));
 	}
 
 	@Override
