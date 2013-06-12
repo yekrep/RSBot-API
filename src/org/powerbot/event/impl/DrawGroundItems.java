@@ -8,7 +8,7 @@ import java.awt.Point;
 import org.powerbot.bot.Bot;
 import org.powerbot.event.PaintListener;
 import org.powerbot.script.methods.ClientFactory;
-import org.powerbot.script.methods.Filterable;
+import org.powerbot.script.lang.Filterable;
 import org.powerbot.script.wrappers.GroundItem;
 import org.powerbot.script.wrappers.ItemDefinition;
 import org.powerbot.script.wrappers.Player;

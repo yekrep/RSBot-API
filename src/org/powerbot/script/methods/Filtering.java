@@ -2,6 +2,7 @@ package org.powerbot.script.methods;
 
 import java.util.Arrays;
 
+import org.powerbot.script.lang.Filterable;
 import org.powerbot.script.util.Filter;
 import org.powerbot.script.util.Filters;
 import org.powerbot.script.wrappers.Identifiable;

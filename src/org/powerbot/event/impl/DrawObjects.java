@@ -1,25 +1,23 @@
 package org.powerbot.event.impl;
 
-import java.awt.Color;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.Point;
-import java.lang.ref.WeakReference;
-import java.lang.reflect.Field;
-
 import org.powerbot.bot.Bot;
 import org.powerbot.client.RSAnimable;
 import org.powerbot.client.RSObject;
 import org.powerbot.event.PaintListener;
 import org.powerbot.script.methods.ClientFactory;
-import org.powerbot.script.methods.Filterable;
+import org.powerbot.script.lang.Filterable;
 import org.powerbot.script.wrappers.GameObject;
 import org.powerbot.script.wrappers.Player;
 import org.powerbot.script.wrappers.Tile;
 
+import java.awt.*;
+import java.lang.ref.WeakReference;
+import java.lang.reflect.Field;
+
 public class DrawObjects implements PaintListener {
 	private static final Color[] C = {Color.GREEN, Color.WHITE, Color.BLACK, Color.BLUE};
 
+	@Override
 	public void onRepaint(final Graphics render) {
 		ClientFactory ctx = Bot.getInstance().clientFactory;
 		if (!ctx.game.isLoggedIn()) {
