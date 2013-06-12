@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.eclipsesource.json.JsonObject;
+import com.eclipsesource.json.JsonValue;
 import org.powerbot.util.Configuration;
 import org.powerbot.util.StringUtil;
 import org.powerbot.util.io.HttpClient;
@@ -57,7 +58,7 @@ public class GeItem {
 			final String n = t.name().toLowerCase();
 			if (names.contains(n)) {
 				final JsonObject c = json.get(n).asObject();
-				prices.put(t, new Price(t, trendAsInt(c.get("trend").asString()), c.get("price").asInt()));
+				prices.put(t, new Price(t, trendAsInt(c.get("trend").asString()), parsePrice(c.get("price"))));
 			}
 		}
 
@@ -72,6 +73,26 @@ public class GeItem {
 		}
 
 		members = json.get("members").asString().equals("true");
+	}
+
+	private static int parsePrice(final JsonValue v) {
+		return v.isString() ? formatPrice(v.asString()) : v.isNumber() ? v.asInt() : 0;
+	}
+
+	private static int formatPrice(String s) {
+		double f = 1;
+		if (s.length() > 1) {
+			final char x = s.charAt(s.length() - 1);
+			switch (x) {
+			case 'B': case 'b': f = 1000000000d; break;
+			case 'M': case 'm': f = 1000000d; break;
+			case 'K': case 'k': f = 1000d; break;
+			}
+			if (f != 1) {
+				s = s.substring(0, s.length() - 1);
+			}
+		}
+		return (int) (Double.parseDouble(s) * f);
 	}
 
 	/**
