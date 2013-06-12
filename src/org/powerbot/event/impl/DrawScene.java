@@ -1,6 +1,8 @@
 package org.powerbot.event.impl;
 
 import org.powerbot.bot.Bot;
+import org.powerbot.client.RSAnimable;
+import org.powerbot.client.RSObject;
 import org.powerbot.event.PaintListener;
 import org.powerbot.script.methods.ClientFactory;
 import org.powerbot.script.util.Filters;
@@ -9,6 +11,8 @@ import org.powerbot.script.wrappers.Player;
 import org.powerbot.script.wrappers.Tile;
 
 import java.awt.*;
+import java.lang.ref.WeakReference;
+import java.lang.reflect.Field;
 
 public class DrawScene implements PaintListener {
 	private static final Color[] C = {Color.GREEN, Color.WHITE, Color.BLACK, Color.BLUE};
@@ -25,30 +29,45 @@ public class DrawScene implements PaintListener {
 		final FontMetrics metrics = render.getFontMetrics();
 		final Tile position = player.getLocation();
 		final int textHeight = metrics.getHeight();
+		Tile base = ctx.game.getMapBase();
+		GameObject[] larr = ctx.objects.getLoaded();
+		larr = Filters.range(larr, ctx.players.getLocal(), 25);
 		for (int x = position.getX() - 25; x < position.getX() + 25; x++) {
 			for (int y = position.getY() - 25; y < position.getY() + 25; y++) {
-				final Tile accessPosition = new Tile(ctx, x, y, ctx.game.getPlane());
-				final Point accessPoint = accessPosition.getCenterPoint();
-				if (!ctx.game.isPointOnScreen(accessPoint)) {
-					continue;
-				}
-				final GameObject[] locations = Filters.at(ctx.objects.getLoaded(), new Tile(ctx, x, y, ctx.game.getPlane()));
+				Tile tile = new Tile(ctx, x, y, ctx.game.getPlane());
+				GameObject[] objs = Filters.at(larr, tile);
+				if (objs.length == 0) continue;
+
+				Point locationPoint = tile.getCenterPoint();
+				render.setColor(Color.black);
+				render.fillRect(locationPoint.x - 1, locationPoint.y - 1, 2, 2);
 				int i = 0;
-				for (final GameObject location : locations) {
-					final Point locationPoint = location.getLocation().getCenterPoint();
-					if (!ctx.game.isPointOnScreen(locationPoint)) {
-						continue;
+				for (GameObject object : objs) {
+					WeakReference<RSObject> internalObj;
+					try {
+						Field f = object.getClass().getDeclaredField("object");
+						f.setAccessible(true);
+						internalObj = (WeakReference<RSObject>) f.get(object);
+					} catch (IllegalAccessException | NoSuchFieldException e) {
+						internalObj = null;
 					}
-					if (accessPoint.x > -1) {
-						render.setColor(Color.GREEN);
-						render.fillRect(accessPoint.x - 1, accessPoint.y - 1, 2, 2);
-						render.setColor(Color.RED);
-						render.drawLine(accessPoint.x, accessPoint.y, locationPoint.x, locationPoint.y);
+
+					RSObject rsObject = internalObj != null ? internalObj.get() : null;
+					if (rsObject != null && rsObject instanceof RSAnimable) {
+						RSAnimable animable = (RSAnimable) rsObject;
+						int x1 = animable.getX1(), x2 = animable.getX2(), y1 = animable.getY1(), y2 = animable.getY2();
+
+						for (int _x = x1; _x <= x2; _x++)
+							for (int _y = y1; _y <= y2; _y++) {
+								Tile _tile = base.derive(_x, _y);
+								_tile.draw(render);
+							}
 					}
-					final String s = "" + location.getId();
-					final int ty = locationPoint.y - textHeight / 2 - i++ * 15;
-					final int tx = locationPoint.x - metrics.stringWidth(s) / 2;
-					render.setColor(C[location.getType().ordinal()]);
+
+					String s = "" + object.getId();
+					int ty = locationPoint.y - textHeight / 2 - i++ * 15;
+					int tx = locationPoint.x - metrics.stringWidth(s) / 2;
+					render.setColor(C[object.getType().ordinal()]);
 					render.drawString(s, tx, ty);
 				}
 			}
