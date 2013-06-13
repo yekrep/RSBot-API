@@ -11,6 +11,7 @@ import org.powerbot.script.lang.Filterable;
 import org.powerbot.script.methods.ClientFactory;
 import org.powerbot.script.wrappers.GroundItem;
 import org.powerbot.script.wrappers.ItemDefinition;
+import org.powerbot.script.wrappers.Locatable;
 import org.powerbot.script.wrappers.Player;
 import org.powerbot.script.wrappers.Tile;
 
@@ -33,17 +34,15 @@ public class DrawGroundItems implements PaintListener {
 		final FontMetrics metrics = render.getFontMetrics();
 		final int tHeight = metrics.getHeight();
 		final int plane = ctx.game.getPlane();
-		Filterable<GroundItem> origin = ctx.groundItems.branch();
 		for (int x = tile.getX() - 10; x <= tile.getX() + 10; x++) {
 			for (int y = tile.getY() - 10; y <= tile.getY() + 10; y++) {
-				GroundItem[] groundItems = origin.at(new Tile(ctx, x, y, ctx.game.getPlane())).list();
 				int d = 0;
 				final Tile loc = new Tile(ctx, x, y, plane);
 				final Point screen = loc.getCenterPoint();
 				if (screen.x == -1 || screen.y == -1) {
 					continue;
 				}
-				for (final GroundItem groundItem : groundItems) {
+				for (final GroundItem groundItem : ctx.groundItems.at(new Tile(ctx, x, y, ctx.game.getPlane()))) {
 					final ItemDefinition def = groundItem.getDefinition();
 					final String name = def != null ? def.getName() : null;
 					String s = "";

@@ -10,6 +10,7 @@ import org.powerbot.gui.BotChrome;
 import org.powerbot.script.methods.ClientFactory;
 import org.powerbot.script.wrappers.GameObject;
 import org.powerbot.script.wrappers.GroundItem;
+import org.powerbot.script.wrappers.Locatable;
 import org.powerbot.script.wrappers.Model;
 import org.powerbot.script.wrappers.Npc;
 import org.powerbot.script.wrappers.Player;
@@ -53,8 +54,7 @@ public class DrawModels implements PaintListener {
 			actor.draw(render, 20);
 		}
 
-		GroundItem[] groundItems = ctx.groundItems.range(20).list();
-		for (final GroundItem item : groundItems) {
+		for (final GroundItem item : ctx.groundItems.within(20)) {
 			item.draw(render, 20);
 		}
 	}

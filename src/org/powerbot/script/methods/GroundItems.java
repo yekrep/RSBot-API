@@ -1,7 +1,7 @@
 package org.powerbot.script.methods;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.powerbot.client.Client;
 import org.powerbot.client.HashTable;
@@ -9,26 +9,27 @@ import org.powerbot.client.NodeDeque;
 import org.powerbot.client.NodeListCache;
 import org.powerbot.client.RSItem;
 import org.powerbot.script.internal.wrappers.Deque;
+import org.powerbot.script.lang.LocatableQuery;
 import org.powerbot.script.wrappers.GroundItem;
 import org.powerbot.script.wrappers.Tile;
 
-public class GroundItems extends Filtering<GroundItem> {
+public class GroundItems extends LocatableQuery<GroundItem> {
 	public GroundItems(ClientFactory factory) {
 		super(factory);
 	}
 
 	@Override
-	public GroundItem[] list() {
-		Set<GroundItem> items = new HashSet<>();
+	public List<GroundItem> get() {
+		final List<GroundItem> items = new ArrayList<>();
 
 		Client client = ctx.getClient();
 		if (client == null) {
-			return new GroundItem[0];
+			return items;
 		}
 
 		HashTable table = client.getRSItemHashTable();
 		if (table == null) {
-			return new GroundItem[0];
+			return items;
 		}
 
 		int plane = client.getPlane();
@@ -38,7 +39,7 @@ public class GroundItems extends Filtering<GroundItem> {
 
 		Tile base = ctx.game.getMapBase();
 		if (base == null) {
-			return new GroundItem[0];
+			return items;
 		}
 		int bx = base.getX(), by = base.getY();
 		for (int x = bx; x < bx + 104; x++) {
@@ -54,6 +55,6 @@ public class GroundItems extends Filtering<GroundItem> {
 				}
 			}
 		}
-		return items.toArray(new GroundItem[items.size()]);
+		return items;
 	}
 }
