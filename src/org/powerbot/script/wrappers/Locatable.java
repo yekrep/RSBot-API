@@ -7,6 +7,18 @@ import org.powerbot.script.util.Filter;
 public interface Locatable {
 	public Tile getLocation();
 
+	public interface Query<T> {
+		public T at(Locatable t);
+
+		public T within(double d);
+
+		public T within(Locatable t, double d);
+
+		public T nearest();
+
+		public T nearest(Locatable t);
+	}
+
 	public class Matcher implements Filter<Locatable> {
 		private final Locatable target;
 

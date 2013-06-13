@@ -5,6 +5,12 @@ import org.powerbot.script.util.Filter;
 public interface Identifiable {
 	public int getId();
 
+	public interface Query<T> {
+		public T id(int... ids);
+
+		public T id(Identifiable... ids);
+	}
+
 	public class Matcher implements Filter<Identifiable> {
 		private final int[] ids;
 
