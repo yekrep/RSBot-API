@@ -71,8 +71,9 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends Cl
 
 		synchronized (items) {
 			final List<K> range = new ArrayList<>(count);
+			final int c = Math.min(offset + count, items.size());
 
-			for (int i = offset; i < offset + count; i++) {
+			for (int i = offset; i < c; i++) {
 				range.add(items.get(i));
 			}
 
