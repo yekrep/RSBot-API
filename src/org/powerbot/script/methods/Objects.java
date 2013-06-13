@@ -1,7 +1,9 @@
 package org.powerbot.script.methods;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.powerbot.client.Client;
@@ -10,18 +12,21 @@ import org.powerbot.client.RSGround;
 import org.powerbot.client.RSGroundInfo;
 import org.powerbot.client.RSInfo;
 import org.powerbot.client.RSObject;
+import org.powerbot.script.lang.BasicQuery;
 import org.powerbot.script.wrappers.GameObject;
 
-public class Objects extends Filtering<GameObject> {
+public class Objects extends BasicQuery<GameObject> {
 	public Objects(ClientFactory factory) {
 		super(factory);
 	}
 
 	@Override
-	public GameObject[] list() {
+	public List<GameObject> get() {
+		final List<GameObject> items = new ArrayList<>();
+
 		Client client = ctx.getClient();
 		if (client == null) {
-			return new GameObject[0];
+			return items;
 		}
 
 		final RSInfo info;
@@ -29,7 +34,7 @@ public class Objects extends Filtering<GameObject> {
 		final RSGround[][][] grounds;
 		if ((info = client.getRSGroundInfo()) == null || (groundInfo = info.getRSGroundInfo()) == null ||
 				(grounds = groundInfo.getRSGroundArray()) == null) {
-			return new GameObject[0];
+			return items;
 		}
 
 		final GameObject.Type[] types = {
@@ -42,10 +47,9 @@ public class Objects extends Filtering<GameObject> {
 
 		final RSGround[][] objArr = plane > -1 && plane < grounds.length ? grounds[plane] : null;
 		if (objArr == null) {
-			return new GameObject[0];
+			return items;
 		}
 
-		final Set<GameObject> objects = new LinkedHashSet<>();
 		Set<RSObject> refs = new HashSet<>();
 		for (int x = 0; x <= objArr.length - 1; x++) {
 			for (int y = 0; y <= objArr[x].length - 1; y++) {
@@ -58,7 +62,7 @@ public class Objects extends Filtering<GameObject> {
 					final RSObject obj = node.getRSAnimable();
 					if (obj != null && obj.getId() != -1 && !refs.contains(obj)) {
 						refs.add(obj);
-						objects.add(new GameObject(ctx, obj, GameObject.Type.INTERACTIVE));
+						items.add(new GameObject(ctx, obj, GameObject.Type.INTERACTIVE));
 					}
 				}
 
@@ -71,11 +75,11 @@ public class Objects extends Filtering<GameObject> {
 
 				for (int i = 0; i < objs.length; i++) {
 					if (objs[i] != null && objs[i].getId() != -1) {
-						objects.add(new GameObject(ctx, objs[i], types[i]));
+						items.add(new GameObject(ctx, objs[i], types[i]));
 					}
 				}
 			}
 		}
-		return objects.toArray(new GameObject[objects.size()]);
+		return items;
 	}
 }
