@@ -1,6 +1,8 @@
 package org.powerbot.script.methods;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import org.powerbot.client.Client;
 import org.powerbot.client.RSPlayer;
@@ -43,27 +45,27 @@ public class Players extends GameNameQuery<Player> {
 	 * @return an array of all the loaded {@link Player}s
 	 */
 	@Override
-	protected Player[] get() {
+	protected List<Player> get() {
+		final List<Player> items = new ArrayList<>();
+
 		Client client = ctx.getClient();
 		if (client == null) {
-			return new Player[0];
+			return items;
 		}
 
 		final int[] indices = client.getRSPlayerIndexArray();
 		final RSPlayer[] players = client.getRSPlayerArray();
 		if (indices == null || players == null) {
-			return new Player[0];
+			return items;
 		}
 
-		final Player[] loadedPlayers = new Player[indices.length];
-		int d = 0;
 		for (final int index : indices) {
 			final RSPlayer player = players[index];
 			if (player != null) {
-				loadedPlayers[d++] = new Player(ctx, player);
+				items.add(new Player(ctx, player));
 			}
 		}
 
-		return Arrays.copyOf(loadedPlayers, d);
+		return items;
 	}
 }

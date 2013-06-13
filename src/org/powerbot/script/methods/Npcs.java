@@ -1,6 +1,8 @@
 package org.powerbot.script.methods;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import org.powerbot.client.Client;
 import org.powerbot.client.HashTable;
@@ -27,20 +29,20 @@ public class Npcs extends GameDualQuery<Npc> {
 	 * @return an array of the loaded {@link Npc}s
 	 */
 	@Override
-	protected Npc[] get() {
+	protected List<Npc> get() {
+		final List<Npc> items = new ArrayList<>();
+
 		Client client = ctx.getClient();
 		if (client == null) {
-			return new Npc[0];
+			return items;
 		}
 
 		final int[] indices = client.getRSNPCIndexArray();
 		final HashTable npcTable = client.getRSNPCNC();
 		if (indices == null || npcTable == null) {
-			return new Npc[0];
+			return items;
 		}
 
-		final Npc[] npcs = new Npc[indices.length];
-		int d = 0;
 		for (final int index : indices) {
 			Object npc = ctx.game.lookup(npcTable, index);
 			if (npc == null) {
@@ -50,10 +52,10 @@ public class Npcs extends GameDualQuery<Npc> {
 				npc = ((RSNPCNode) npc).getRSNPC();
 			}
 			if (npc instanceof RSNPC) {
-				npcs[d++] = new Npc(ctx, (RSNPC) npc);
+				items.add(new Npc(ctx, (RSNPC) npc));
 			}
 		}
 
-		return Arrays.copyOf(npcs, d);
+		return items;
 	}
 }

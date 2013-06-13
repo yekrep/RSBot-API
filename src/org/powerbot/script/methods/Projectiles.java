@@ -1,6 +1,8 @@
 package org.powerbot.script.methods;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.powerbot.client.Client;
@@ -30,25 +32,26 @@ public class Projectiles extends BasicQuery<Projectile> {
 	 * @return an array of loaded {@link Projectile}s
 	 */
 	@Override
-	protected Projectile[] get() {
+	protected List<Projectile> get() {
+		final List<Projectile> items = new ArrayList<>();
+
 		Client client = ctx.getClient();
 		if (client == null) {
-			return new Projectile[0];
+			return items;
 		}
 
 		final NodeDeque deque = client.getProjectileDeque();
 		if (deque == null) {
-			return new Projectile[0];
+			return items;
 		}
 
-		final Set<Projectile> projectiles = new HashSet<>();
 		final Deque<Node> nodes = new Deque<>(deque);
 		for (Node node = nodes.getHead(); node != null; node = nodes.getNext()) {
 			final RSProjectile projectile;
 			if (node instanceof RSProjectileNode && (projectile = ((RSProjectileNode) node).getProjectile()) != null) {
-				projectiles.add(new Projectile(ctx, projectile));
+				items.add(new Projectile(ctx, projectile));
 			}
 		}
-		return projectiles.toArray(new Projectile[projectiles.size()]);
+		return items;
 	}
 }

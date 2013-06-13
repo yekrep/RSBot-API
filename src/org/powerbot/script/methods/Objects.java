@@ -20,12 +20,12 @@ public class Objects extends GameBasicQuery<GameObject> {
 	}
 
 	@Override
-	protected GameObject[] get() {
+	protected List<GameObject> get() {
 		final List<GameObject> items = new ArrayList<>();
 
 		Client client = ctx.getClient();
 		if (client == null) {
-			return new GameObject[0];
+			return items;
 		}
 
 		final RSInfo info;
@@ -33,7 +33,7 @@ public class Objects extends GameBasicQuery<GameObject> {
 		final RSGround[][][] grounds;
 		if ((info = client.getRSGroundInfo()) == null || (groundInfo = info.getRSGroundInfo()) == null ||
 				(grounds = groundInfo.getRSGroundArray()) == null) {
-			return new GameObject[0];
+			return items;
 		}
 
 		final GameObject.Type[] types = {
@@ -46,7 +46,7 @@ public class Objects extends GameBasicQuery<GameObject> {
 
 		final RSGround[][] objArr = plane > -1 && plane < grounds.length ? grounds[plane] : null;
 		if (objArr == null) {
-			return new GameObject[0];
+			return items;
 		}
 
 		Set<RSObject> refs = new HashSet<>();
@@ -79,6 +79,6 @@ public class Objects extends GameBasicQuery<GameObject> {
 				}
 			}
 		}
-		return items.toArray(new GameObject[items.size()]);
+		return items;
 	}
 }

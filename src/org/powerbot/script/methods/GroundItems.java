@@ -19,15 +19,17 @@ public class GroundItems extends GameBasicQuery<GroundItem> {
 	}
 
 	@Override
-	protected GroundItem[] get() {
+	protected List<GroundItem> get() {
+		final List<GroundItem> items = new ArrayList<>();
+
 		Client client = ctx.getClient();
 		if (client == null) {
-			return new GroundItem[0];
+			return items;
 		}
 
 		HashTable table = client.getRSItemHashTable();
 		if (table == null) {
-			return new GroundItem[0];
+			return items;
 		}
 
 		int plane = client.getPlane();
@@ -37,9 +39,8 @@ public class GroundItems extends GameBasicQuery<GroundItem> {
 
 		Tile base = ctx.game.getMapBase();
 		if (base == null) {
-			return new GroundItem[0];
+			return items;
 		}
-		List<GroundItem> items = new ArrayList<>();
 		int bx = base.getX(), by = base.getY();
 		for (int x = bx; x < bx + 104; x++) {
 			for (int y = by; y < by + 104; y++) {
@@ -54,6 +55,6 @@ public class GroundItems extends GameBasicQuery<GroundItem> {
 				}
 			}
 		}
-		return items.toArray(new GroundItem[items.size()]);
+		return items;
 	}
 }

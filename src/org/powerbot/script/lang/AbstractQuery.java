@@ -32,14 +32,14 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends Cl
 
 	protected abstract T getThis();
 
-	protected abstract K[] get();
+	protected abstract List<K> get();
 
 	public T select() {
 		final List<K> items = this.items.get();
 
 		synchronized (items) {
 			items.clear();
-			items.addAll(Arrays.asList(get()));
+			items.addAll(get());
 		}
 
 		return getThis();

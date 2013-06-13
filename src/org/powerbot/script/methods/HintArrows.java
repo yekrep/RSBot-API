@@ -1,6 +1,8 @@
 package org.powerbot.script.methods;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import org.powerbot.client.Client;
 import org.powerbot.client.RSHintArrow;
@@ -23,20 +25,20 @@ public class HintArrows extends BasicQuery<HintArrow> {
 	 * @return an array of loaded {@link HintArrow}s
 	 */
 	@Override
-	protected HintArrow[] get() {
+	protected List<HintArrow> get() {
+		final List<HintArrow> items = new ArrayList<>();
+
 		Client client = ctx.getClient();
 		if (client == null) {
-			return new HintArrow[0];
+			return items;
 		}
 
 		final RSHintArrow[] arr = client.getRSHintArrows();
-		final HintArrow[] arrows = new HintArrow[arr != null ? arr.length : 0];
-		int d = 0;
 		for (final RSHintArrow arrow : arr != null ? arr : new RSHintArrow[0]) {
 			if (arrow != null) {
-				arrows[d++] = new HintArrow(ctx, arrow);
+				items.add(new HintArrow(ctx, arrow));
 			}
 		}
-		return Arrays.copyOf(arrows, d);
+		return items;
 	}
 }
