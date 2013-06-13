@@ -85,6 +85,7 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends Cl
 
 	public K first() {
 		// TODO: have a "nil" version of K so this doesn't return null
+		if (size() < 1) return null;
 		return items.get().get(0);
 	}
 
