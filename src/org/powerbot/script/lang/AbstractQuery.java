@@ -11,6 +11,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.powerbot.script.methods.ClientFactory;
 import org.powerbot.script.methods.ClientLink;
+import org.powerbot.script.wrappers.Identifiable;
 
 /**
  * @author Paris
@@ -53,6 +54,24 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends Cl
 		}
 
 		return getThis();
+	}
+
+	public T select(final int... ids) {
+		return select(new Filter<K>() {
+			@Override
+			public boolean accept(final K k) {
+				if (!(k instanceof Identifiable)) {
+					return false;
+				}
+				final int x = ((Identifiable) k).getId();
+				for (final int id : ids) {
+					if (x == id) {
+						return true;
+					}
+				}
+				return false;
+			}
+		});
 	}
 
 	public T sort(final Comparator<? super K> c) {
