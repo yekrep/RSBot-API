@@ -134,13 +134,13 @@ public class Summoning extends ClientLink {
 		if (local == null) {
 			return null;
 		}
-		return ctx.npcs.filter(new Filter<Npc>() {
+		return ctx.npcs.select().select(new Filter<Npc>() {
 			@Override
 			public boolean accept(Npc npc) {
 				final Actor actor;
 				return npc.getId() == ctx.settings.get(1784) && (actor = npc.getInteracting()) != null && actor.equals(local);
 			}
-		}).nearest();
+		}).nearest().first();
 	}
 
 	public Familiar getEnum() {

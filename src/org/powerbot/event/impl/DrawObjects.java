@@ -11,7 +11,6 @@ import org.powerbot.client.RSAnimable;
 import org.powerbot.client.RSObject;
 import org.powerbot.event.PaintListener;
 import org.powerbot.gui.BotChrome;
-import org.powerbot.script.lang.Filterable;
 import org.powerbot.script.methods.ClientFactory;
 import org.powerbot.script.wrappers.GameObject;
 import org.powerbot.script.wrappers.Player;

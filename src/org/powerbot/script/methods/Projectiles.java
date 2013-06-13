@@ -9,6 +9,7 @@ import org.powerbot.client.NodeDeque;
 import org.powerbot.client.RSProjectile;
 import org.powerbot.client.RSProjectileNode;
 import org.powerbot.script.internal.wrappers.Deque;
+import org.powerbot.script.lang.BasicQuery;
 import org.powerbot.script.wrappers.Projectile;
 
 /**
@@ -18,7 +19,7 @@ import org.powerbot.script.wrappers.Projectile;
  *
  * @author Timer
  */
-public class Projectiles extends Filtering<Projectile> {
+public class Projectiles extends BasicQuery<Projectile> {
 	public Projectiles(ClientFactory factory) {
 		super(factory);
 	}
@@ -29,7 +30,7 @@ public class Projectiles extends Filtering<Projectile> {
 	 * @return an array of loaded {@link Projectile}s
 	 */
 	@Override
-	public Projectile[] list() {
+	protected Projectile[] get() {
 		Client client = ctx.getClient();
 		if (client == null) {
 			return new Projectile[0];

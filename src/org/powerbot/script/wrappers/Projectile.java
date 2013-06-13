@@ -6,7 +6,7 @@ import org.powerbot.client.RSProjectile;
 import org.powerbot.script.methods.ClientFactory;
 import org.powerbot.script.methods.ClientLink;
 
-public class Projectile extends ClientLink implements Validatable {
+public class Projectile extends ClientLink implements Identifiable, Validatable {
 	private final WeakReference<RSProjectile> projectile;
 
 	public Projectile(ClientFactory ctx, final RSProjectile projectile) {
@@ -14,6 +14,7 @@ public class Projectile extends ClientLink implements Validatable {
 		this.projectile = new WeakReference<>(projectile);
 	}
 
+	@Override
 	public int getId() {
 		final RSProjectile projectile = this.projectile.get();
 		return projectile != null ? projectile.getID() : -1;

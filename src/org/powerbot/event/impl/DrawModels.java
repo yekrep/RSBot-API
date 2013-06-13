@@ -10,7 +10,6 @@ import org.powerbot.gui.BotChrome;
 import org.powerbot.script.methods.ClientFactory;
 import org.powerbot.script.wrappers.GameObject;
 import org.powerbot.script.wrappers.GroundItem;
-import org.powerbot.script.wrappers.Locatable;
 import org.powerbot.script.wrappers.Model;
 import org.powerbot.script.wrappers.Npc;
 import org.powerbot.script.wrappers.Player;
@@ -38,16 +37,14 @@ public class DrawModels implements PaintListener {
 			m.drawWireFrame(render);
 		}
 
-		Player[] players = ctx.players.list();
-		for (final Player actor : players) {
+		for (final Player actor : ctx.players.select()) {
 			if (!actor.isOnScreen()) {
 				continue;
 			}
 			actor.draw(render, 10);
 		}
 
-		Npc[] npcs = ctx.npcs.list();
-		for (final Npc actor : npcs) {
+		for (final Npc actor : ctx.npcs.select()) {
 			if (!actor.isOnScreen()) {
 				continue;
 			}

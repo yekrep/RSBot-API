@@ -1,6 +1,7 @@
 package org.powerbot.script.lang;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Deque;
@@ -11,7 +12,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.powerbot.script.methods.ClientFactory;
 import org.powerbot.script.methods.ClientLink;
-import org.powerbot.script.wrappers.Identifiable;
+import org.powerbot.script.util.Filter;
 
 /**
  * @author Paris
@@ -23,7 +24,7 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends Cl
 		super(factory);
 		items = new ThreadLocal<List<K>>() {
 			@Override
-		    protected List<K> initialValue() {
+			protected List<K> initialValue() {
 				return new CopyOnWriteArrayList<>(get());
 			}
 		};
@@ -31,14 +32,14 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends Cl
 
 	protected abstract T getThis();
 
-	protected abstract List<K> get();
+	protected abstract K[] get();
 
 	public T select() {
 		final List<K> items = this.items.get();
 
 		synchronized (items) {
 			items.clear();
-			items.addAll(get());
+			items.addAll(Arrays.asList(get()));
 		}
 
 		return getThis();
@@ -54,24 +55,6 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends Cl
 		}
 
 		return getThis();
-	}
-
-	public T select(final int... ids) {
-		return select(new Filter<K>() {
-			@Override
-			public boolean accept(final K k) {
-				if (!(k instanceof Identifiable)) {
-					return false;
-				}
-				final int x = ((Identifiable) k).getId();
-				for (final int id : ids) {
-					if (x == id) {
-						return true;
-					}
-				}
-				return false;
-			}
-		});
 	}
 
 	public T sort(final Comparator<? super K> c) {
@@ -129,9 +112,5 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends Cl
 
 	public Deque<K> toDeque() {
 		return new ConcurrentLinkedDeque<>(items.get());
-	}
-
-	public interface Filter<K> {
-		public boolean accept(K k);
 	}
 }

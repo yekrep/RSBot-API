@@ -1,11 +1,11 @@
 package org.powerbot.script.wrappers;
 
-import org.powerbot.script.lang.AbstractQuery;
+import org.powerbot.script.util.Filter;
 
 public interface Identifiable {
 	public int getId();
 
-	public class Matcher implements AbstractQuery.Filter<Identifiable> {
+	public class Matcher implements Filter<Identifiable> {
 		private final int[] ids;
 
 		public Matcher(final int... ids) {

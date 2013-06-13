@@ -2,12 +2,12 @@ package org.powerbot.script.wrappers;
 
 import java.util.Comparator;
 
-import org.powerbot.script.lang.AbstractQuery;
+import org.powerbot.script.util.Filter;
 
 public interface Locatable {
 	public Tile getLocation();
 
-	public class Matcher implements AbstractQuery.Filter<Locatable> {
+	public class Matcher implements Filter<Locatable> {
 		private final Locatable target;
 
 		public Matcher(final Locatable target) {
@@ -20,7 +20,7 @@ public interface Locatable {
 		}
 	}
 
-	public class WithinRange implements AbstractQuery.Filter<Locatable> {
+	public class WithinRange implements Filter<Locatable> {
 		private final Locatable target;
 		private final double distance;
 

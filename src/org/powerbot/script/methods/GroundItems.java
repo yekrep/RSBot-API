@@ -9,27 +9,25 @@ import org.powerbot.client.NodeDeque;
 import org.powerbot.client.NodeListCache;
 import org.powerbot.client.RSItem;
 import org.powerbot.script.internal.wrappers.Deque;
-import org.powerbot.script.lang.LocatableQuery;
+import org.powerbot.script.lang.GameBasicQuery;
 import org.powerbot.script.wrappers.GroundItem;
 import org.powerbot.script.wrappers.Tile;
 
-public class GroundItems extends LocatableQuery<GroundItem> {
+public class GroundItems extends GameBasicQuery<GroundItem> {
 	public GroundItems(ClientFactory factory) {
 		super(factory);
 	}
 
 	@Override
-	public List<GroundItem> get() {
-		final List<GroundItem> items = new ArrayList<>();
-
+	protected GroundItem[] get() {
 		Client client = ctx.getClient();
 		if (client == null) {
-			return items;
+			return new GroundItem[0];
 		}
 
 		HashTable table = client.getRSItemHashTable();
 		if (table == null) {
-			return items;
+			return new GroundItem[0];
 		}
 
 		int plane = client.getPlane();
@@ -39,8 +37,9 @@ public class GroundItems extends LocatableQuery<GroundItem> {
 
 		Tile base = ctx.game.getMapBase();
 		if (base == null) {
-			return items;
+			return new GroundItem[0];
 		}
+		List<GroundItem> items = new ArrayList<>();
 		int bx = base.getX(), by = base.getY();
 		for (int x = bx; x < bx + 104; x++) {
 			for (int y = by; y < by + 104; y++) {
@@ -55,6 +54,6 @@ public class GroundItems extends LocatableQuery<GroundItem> {
 				}
 			}
 		}
-		return items;
+		return items.toArray(new GroundItem[items.size()]);
 	}
 }

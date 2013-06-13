@@ -17,7 +17,7 @@ import org.powerbot.client.RSPlayer;
 import org.powerbot.client.Sequence;
 import org.powerbot.script.methods.ClientFactory;
 
-public abstract class Actor extends Interactive implements Locatable, Drawable {
+public abstract class Actor extends Interactive implements Nameable, Locatable, Drawable {
 	private int faceIndex = -1;
 
 	public Actor(ClientFactory ctx) {
@@ -36,8 +36,6 @@ public abstract class Actor extends Interactive implements Locatable, Drawable {
 		}
 		return null;
 	}
-
-	public abstract String getName();
 
 	public abstract int getLevel();
 

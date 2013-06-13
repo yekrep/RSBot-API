@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 import org.powerbot.client.Client;
 import org.powerbot.client.RSPlayer;
+import org.powerbot.script.lang.GameNameQuery;
 import org.powerbot.script.wrappers.Player;
 
 /**
@@ -13,7 +14,7 @@ import org.powerbot.script.wrappers.Player;
  *
  * @author Timer
  */
-public class Players extends Filtering<Player> {
+public class Players extends GameNameQuery<Player> {
 	public Players(ClientFactory factory) {
 		super(factory);
 	}
@@ -42,7 +43,7 @@ public class Players extends Filtering<Player> {
 	 * @return an array of all the loaded {@link Player}s
 	 */
 	@Override
-	public Player[] list() {
+	protected Player[] get() {
 		Client client = ctx.getClient();
 		if (client == null) {
 			return new Player[0];

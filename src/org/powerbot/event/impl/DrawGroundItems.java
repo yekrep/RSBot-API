@@ -7,11 +7,9 @@ import java.awt.Point;
 
 import org.powerbot.event.PaintListener;
 import org.powerbot.gui.BotChrome;
-import org.powerbot.script.lang.Filterable;
 import org.powerbot.script.methods.ClientFactory;
 import org.powerbot.script.wrappers.GroundItem;
 import org.powerbot.script.wrappers.ItemDefinition;
-import org.powerbot.script.wrappers.Locatable;
 import org.powerbot.script.wrappers.Player;
 import org.powerbot.script.wrappers.Tile;
 

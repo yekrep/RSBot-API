@@ -2,7 +2,6 @@ package org.powerbot.script.methods;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -12,22 +11,21 @@ import org.powerbot.client.RSGround;
 import org.powerbot.client.RSGroundInfo;
 import org.powerbot.client.RSInfo;
 import org.powerbot.client.RSObject;
-import org.powerbot.script.lang.BasicQuery;
-import org.powerbot.script.lang.LocatableQuery;
+import org.powerbot.script.lang.GameBasicQuery;
 import org.powerbot.script.wrappers.GameObject;
 
-public class Objects extends LocatableQuery<GameObject> {
+public class Objects extends GameBasicQuery<GameObject> {
 	public Objects(ClientFactory factory) {
 		super(factory);
 	}
 
 	@Override
-	public List<GameObject> get() {
+	protected GameObject[] get() {
 		final List<GameObject> items = new ArrayList<>();
 
 		Client client = ctx.getClient();
 		if (client == null) {
-			return items;
+			return new GameObject[0];
 		}
 
 		final RSInfo info;
@@ -35,7 +33,7 @@ public class Objects extends LocatableQuery<GameObject> {
 		final RSGround[][][] grounds;
 		if ((info = client.getRSGroundInfo()) == null || (groundInfo = info.getRSGroundInfo()) == null ||
 				(grounds = groundInfo.getRSGroundArray()) == null) {
-			return items;
+			return new GameObject[0];
 		}
 
 		final GameObject.Type[] types = {
@@ -48,7 +46,7 @@ public class Objects extends LocatableQuery<GameObject> {
 
 		final RSGround[][] objArr = plane > -1 && plane < grounds.length ? grounds[plane] : null;
 		if (objArr == null) {
-			return items;
+			return new GameObject[0];
 		}
 
 		Set<RSObject> refs = new HashSet<>();
@@ -81,6 +79,6 @@ public class Objects extends LocatableQuery<GameObject> {
 				}
 			}
 		}
-		return items;
+		return items.toArray(new GameObject[items.size()]);
 	}
 }

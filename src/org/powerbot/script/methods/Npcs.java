@@ -6,6 +6,7 @@ import org.powerbot.client.Client;
 import org.powerbot.client.HashTable;
 import org.powerbot.client.RSNPC;
 import org.powerbot.client.RSNPCNode;
+import org.powerbot.script.lang.GameDualQuery;
 import org.powerbot.script.wrappers.Npc;
 
 /**
@@ -15,7 +16,7 @@ import org.powerbot.script.wrappers.Npc;
  *
  * @author Timer
  */
-public class Npcs extends Filtering<Npc> {
+public class Npcs extends GameDualQuery<Npc> {
 	public Npcs(ClientFactory factory) {
 		super(factory);
 	}
@@ -26,7 +27,7 @@ public class Npcs extends Filtering<Npc> {
 	 * @return an array of the loaded {@link Npc}s
 	 */
 	@Override
-	public Npc[] list() {
+	protected Npc[] get() {
 		Client client = ctx.getClient();
 		if (client == null) {
 			return new Npc[0];

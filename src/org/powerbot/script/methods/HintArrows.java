@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 import org.powerbot.client.Client;
 import org.powerbot.client.RSHintArrow;
+import org.powerbot.script.lang.BasicQuery;
 import org.powerbot.script.wrappers.HintArrow;
 
 /**
@@ -11,7 +12,7 @@ import org.powerbot.script.wrappers.HintArrow;
  *
  * @author Timer
  */
-public class HintArrows extends Filtering<HintArrow> {
+public class HintArrows extends BasicQuery<HintArrow> {
 	public HintArrows(ClientFactory factory) {
 		super(factory);
 	}
@@ -22,7 +23,7 @@ public class HintArrows extends Filtering<HintArrow> {
 	 * @return an array of loaded {@link HintArrow}s
 	 */
 	@Override
-	public HintArrow[] list() {
+	protected HintArrow[] get() {
 		Client client = ctx.getClient();
 		if (client == null) {
 			return new HintArrow[0];
