@@ -9,11 +9,11 @@ import org.powerbot.client.NodeDeque;
 import org.powerbot.client.NodeListCache;
 import org.powerbot.client.RSItem;
 import org.powerbot.script.internal.wrappers.Deque;
-import org.powerbot.script.lang.GameBasicQuery;
+import org.powerbot.script.lang.LocatableIdQuery;
 import org.powerbot.script.wrappers.GroundItem;
 import org.powerbot.script.wrappers.Tile;
 
-public class GroundItems extends GameBasicQuery<GroundItem> {
+public class GroundItems extends LocatableIdQuery<GroundItem> {
 	public GroundItems(ClientFactory factory) {
 		super(factory);
 	}

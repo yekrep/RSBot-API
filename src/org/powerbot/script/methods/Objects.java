@@ -11,10 +11,10 @@ import org.powerbot.client.RSGround;
 import org.powerbot.client.RSGroundInfo;
 import org.powerbot.client.RSInfo;
 import org.powerbot.client.RSObject;
-import org.powerbot.script.lang.GameBasicQuery;
+import org.powerbot.script.lang.LocatableIdQuery;
 import org.powerbot.script.wrappers.GameObject;
 
-public class Objects extends GameBasicQuery<GameObject> {
+public class Objects extends LocatableIdQuery<GameObject> {
 	public Objects(ClientFactory factory) {
 		super(factory);
 	}

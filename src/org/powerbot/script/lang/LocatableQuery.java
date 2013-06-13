@@ -2,15 +2,15 @@ package org.powerbot.script.lang;
 
 import org.powerbot.script.methods.ClientFactory;
 import org.powerbot.script.wrappers.Locatable;
-import org.powerbot.script.wrappers.Nameable;
 
-public abstract class GameNameQuery<K extends Locatable & Nameable> extends AbstractQuery<GameNameQuery<K>, K> implements Locatable.Query<GameNameQuery<K>> {
-	public GameNameQuery(final ClientFactory factory) {
+public abstract class LocatableQuery<K extends Locatable> extends AbstractQuery<LocatableQuery<K>, K>
+		implements Locatable.Query<LocatableQuery<K>> {
+	public LocatableQuery(final ClientFactory factory) {
 		super(factory);
 	}
 
 	@Override
-	protected GameNameQuery<K> getThis() {
+	protected LocatableQuery<K> getThis() {
 		return this;
 	}
 
@@ -18,7 +18,7 @@ public abstract class GameNameQuery<K extends Locatable & Nameable> extends Abst
 	 * {@inheritDoc}
 	 */
 	@Override
-	public GameNameQuery<K> at(Locatable l) {
+	public LocatableQuery<K> at(Locatable l) {
 		return select(new Locatable.Matcher(l));
 	}
 
@@ -26,7 +26,7 @@ public abstract class GameNameQuery<K extends Locatable & Nameable> extends Abst
 	 * {@inheritDoc}
 	 */
 	@Override
-	public GameNameQuery<K> within(double distance) {
+	public LocatableQuery<K> within(double distance) {
 		return within(ctx.players.getLocal(), distance);
 	}
 
@@ -34,7 +34,7 @@ public abstract class GameNameQuery<K extends Locatable & Nameable> extends Abst
 	 * {@inheritDoc}
 	 */
 	@Override
-	public GameNameQuery<K> within(Locatable target, double distance) {
+	public LocatableQuery<K> within(Locatable target, double distance) {
 		return select(new Locatable.WithinRange(target, distance));
 	}
 
@@ -42,7 +42,7 @@ public abstract class GameNameQuery<K extends Locatable & Nameable> extends Abst
 	 * {@inheritDoc}
 	 */
 	@Override
-	public GameNameQuery<K> nearest() {
+	public LocatableQuery<K> nearest() {
 		return nearest(ctx.players.getLocal());
 	}
 
@@ -50,7 +50,7 @@ public abstract class GameNameQuery<K extends Locatable & Nameable> extends Abst
 	 * {@inheritDoc}
 	 */
 	@Override
-	public GameNameQuery<K> nearest(Locatable target) {
+	public LocatableQuery<K> nearest(Locatable target) {
 		return sort(new Locatable.NearestTo(target));
 	}
 }

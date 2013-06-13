@@ -1,12 +1,11 @@
 package org.powerbot.script.methods;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.powerbot.client.Client;
 import org.powerbot.client.RSPlayer;
-import org.powerbot.script.lang.GameNameQuery;
+import org.powerbot.script.lang.LocatableNameQuery;
 import org.powerbot.script.wrappers.Player;
 
 /**
@@ -16,7 +15,7 @@ import org.powerbot.script.wrappers.Player;
  *
  * @author Timer
  */
-public class Players extends GameNameQuery<Player> {
+public class Players extends LocatableNameQuery<Player> {
 	public Players(ClientFactory factory) {
 		super(factory);
 	}

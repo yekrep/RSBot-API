@@ -27,7 +27,8 @@ public interface Identifiable {
 
 		@Override
 		public boolean accept(final Identifiable i) {
-			final int x = i.getId();
+			final int x = i != null ? i.getId() : -1;
+			if (x == -1) return false;
 			for (int id : ids) {
 				if (id == x) {
 					return true;

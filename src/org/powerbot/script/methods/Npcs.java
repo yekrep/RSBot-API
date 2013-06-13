@@ -1,14 +1,13 @@
 package org.powerbot.script.methods;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.powerbot.client.Client;
 import org.powerbot.client.HashTable;
 import org.powerbot.client.RSNPC;
 import org.powerbot.client.RSNPCNode;
-import org.powerbot.script.lang.GameDualQuery;
+import org.powerbot.script.lang.LocatableIdNameQuery;
 import org.powerbot.script.wrappers.Npc;
 
 /**
@@ -18,7 +17,7 @@ import org.powerbot.script.wrappers.Npc;
  *
  * @author Timer
  */
-public class Npcs extends GameDualQuery<Npc> {
+public class Npcs extends LocatableIdNameQuery<Npc> {
 	public Npcs(ClientFactory factory) {
 		super(factory);
 	}

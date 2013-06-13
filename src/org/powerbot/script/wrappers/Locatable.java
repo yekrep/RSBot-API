@@ -1,8 +1,8 @@
 package org.powerbot.script.wrappers;
 
-import java.util.Comparator;
-
 import org.powerbot.script.util.Filter;
+
+import java.util.Comparator;
 
 public interface Locatable {
 	public Tile getLocation();
@@ -28,7 +28,9 @@ public interface Locatable {
 
 		@Override
 		public boolean accept(final Locatable l) {
-			return l.getLocation().equals(target);
+			Tile tile = l != null ? l.getLocation() : null;
+			Tile target = this.target.getLocation();
+			return tile != null && target != null && target.equals(tile);
 		}
 	}
 
@@ -43,7 +45,9 @@ public interface Locatable {
 
 		@Override
 		public boolean accept(final Locatable l) {
-			return l.getLocation().distanceTo(target.getLocation()) <= distance;
+			Tile tile = l != null ? l.getLocation() : null;
+			Tile target = this.target.getLocation();
+			return tile != null && target != null && tile.distance2DTo(target) <= distance;
 		}
 	}
 
@@ -56,8 +60,10 @@ public interface Locatable {
 
 		@Override
 		public int compare(final Locatable o1, final Locatable o2) {
-			final Tile t = target.getLocation();
-			final double d1 = o1.getLocation().distanceTo(t), d2 = o2.getLocation().distanceTo(t);
+			Tile target = this.target.getLocation();
+			Tile t1 = o1.getLocation(), t2 = o2.getLocation();
+			if (target == null || t1 == null || t2 == null) return Integer.MAX_VALUE;
+			double d1 = t1.distanceTo(target), d2 = t2.distanceTo(target);
 			return Double.compare(d1, d2);
 		}
 	}

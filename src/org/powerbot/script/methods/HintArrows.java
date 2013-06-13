@@ -1,20 +1,19 @@
 package org.powerbot.script.methods;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import org.powerbot.client.Client;
 import org.powerbot.client.RSHintArrow;
-import org.powerbot.script.lang.BasicQuery;
+import org.powerbot.script.lang.LocatableQuery;
 import org.powerbot.script.wrappers.HintArrow;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * {@link HintArrows} is a static utility which provides access to the game's hint (directional) arrows.
  *
  * @author Timer
  */
-public class HintArrows extends BasicQuery<HintArrow> {
+public class HintArrows extends LocatableQuery<HintArrow> {
 	public HintArrows(ClientFactory factory) {
 		super(factory);
 	}

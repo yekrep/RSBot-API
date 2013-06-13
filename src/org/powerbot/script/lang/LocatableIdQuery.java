@@ -4,14 +4,14 @@ import org.powerbot.script.methods.ClientFactory;
 import org.powerbot.script.wrappers.Identifiable;
 import org.powerbot.script.wrappers.Locatable;
 
-public abstract class GameBasicQuery<K extends Locatable & Identifiable> extends AbstractQuery<GameBasicQuery<K>, K>
-		implements Locatable.Query<GameBasicQuery<K>>, Identifiable.Query<GameBasicQuery<K>> {
-	public GameBasicQuery(final ClientFactory factory) {
+public abstract class LocatableIdQuery<K extends Locatable & Identifiable> extends AbstractQuery<LocatableIdQuery<K>, K>
+		implements Locatable.Query<LocatableIdQuery<K>>, Identifiable.Query<LocatableIdQuery<K>> {
+	public LocatableIdQuery(final ClientFactory factory) {
 		super(factory);
 	}
 
 	@Override
-	protected GameBasicQuery<K> getThis() {
+	protected LocatableIdQuery<K> getThis() {
 		return this;
 	}
 
@@ -19,7 +19,7 @@ public abstract class GameBasicQuery<K extends Locatable & Identifiable> extends
 	 * {@inheritDoc}
 	 */
 	@Override
-	public GameBasicQuery<K> at(Locatable l) {
+	public LocatableIdQuery<K> at(Locatable l) {
 		return select(new Locatable.Matcher(l));
 	}
 
@@ -27,7 +27,7 @@ public abstract class GameBasicQuery<K extends Locatable & Identifiable> extends
 	 * {@inheritDoc}
 	 */
 	@Override
-	public GameBasicQuery<K> within(double distance) {
+	public LocatableIdQuery<K> within(double distance) {
 		return within(ctx.players.getLocal(), distance);
 	}
 
@@ -35,7 +35,7 @@ public abstract class GameBasicQuery<K extends Locatable & Identifiable> extends
 	 * {@inheritDoc}
 	 */
 	@Override
-	public GameBasicQuery<K> within(Locatable target, double distance) {
+	public LocatableIdQuery<K> within(Locatable target, double distance) {
 		return select(new Locatable.WithinRange(target, distance));
 	}
 
@@ -43,7 +43,7 @@ public abstract class GameBasicQuery<K extends Locatable & Identifiable> extends
 	 * {@inheritDoc}
 	 */
 	@Override
-	public GameBasicQuery<K> nearest() {
+	public LocatableIdQuery<K> nearest() {
 		return nearest(ctx.players.getLocal());
 	}
 
@@ -51,7 +51,7 @@ public abstract class GameBasicQuery<K extends Locatable & Identifiable> extends
 	 * {@inheritDoc}
 	 */
 	@Override
-	public GameBasicQuery<K> nearest(Locatable target) {
+	public LocatableIdQuery<K> nearest(Locatable target) {
 		return sort(new Locatable.NearestTo(target));
 	}
 
@@ -59,7 +59,7 @@ public abstract class GameBasicQuery<K extends Locatable & Identifiable> extends
 	 * {@inheritDoc}
 	 */
 	@Override
-	public GameBasicQuery<K> id(int... ids) {
+	public LocatableIdQuery<K> id(int... ids) {
 		return select(new Identifiable.Matcher(ids));
 	}
 
@@ -67,7 +67,7 @@ public abstract class GameBasicQuery<K extends Locatable & Identifiable> extends
 	 * {@inheritDoc}
 	 */
 	@Override
-	public GameBasicQuery<K> id(Identifiable... identifiables) {
+	public LocatableIdQuery<K> id(Identifiable... identifiables) {
 		return select(new Identifiable.Matcher(identifiables));
 	}
 }

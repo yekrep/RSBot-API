@@ -5,14 +5,14 @@ import org.powerbot.script.wrappers.Identifiable;
 import org.powerbot.script.wrappers.Locatable;
 import org.powerbot.script.wrappers.Nameable;
 
-public abstract class GameDualQuery<K extends Locatable & Identifiable & Nameable> extends AbstractQuery<GameDualQuery<K>, K>
-		implements Locatable.Query<GameDualQuery<K>>, Identifiable.Query<GameDualQuery<K>> {
-	public GameDualQuery(final ClientFactory factory) {
+public abstract class LocatableIdNameQuery<K extends Locatable & Identifiable & Nameable> extends AbstractQuery<LocatableIdNameQuery<K>, K>
+		implements Locatable.Query<LocatableIdNameQuery<K>>, Identifiable.Query<LocatableIdNameQuery<K>> {
+	public LocatableIdNameQuery(final ClientFactory factory) {
 		super(factory);
 	}
 
 	@Override
-	protected GameDualQuery<K> getThis() {
+	protected LocatableIdNameQuery<K> getThis() {
 		return this;
 	}
 
@@ -20,7 +20,7 @@ public abstract class GameDualQuery<K extends Locatable & Identifiable & Nameabl
 	 * {@inheritDoc}
 	 */
 	@Override
-	public GameDualQuery<K> at(Locatable l) {
+	public LocatableIdNameQuery<K> at(Locatable l) {
 		return select(new Locatable.Matcher(l));
 	}
 
@@ -28,7 +28,7 @@ public abstract class GameDualQuery<K extends Locatable & Identifiable & Nameabl
 	 * {@inheritDoc}
 	 */
 	@Override
-	public GameDualQuery<K> within(double distance) {
+	public LocatableIdNameQuery<K> within(double distance) {
 		return within(ctx.players.getLocal(), distance);
 	}
 
@@ -36,7 +36,7 @@ public abstract class GameDualQuery<K extends Locatable & Identifiable & Nameabl
 	 * {@inheritDoc}
 	 */
 	@Override
-	public GameDualQuery<K> within(Locatable target, double distance) {
+	public LocatableIdNameQuery<K> within(Locatable target, double distance) {
 		return select(new Locatable.WithinRange(target, distance));
 	}
 
@@ -44,7 +44,7 @@ public abstract class GameDualQuery<K extends Locatable & Identifiable & Nameabl
 	 * {@inheritDoc}
 	 */
 	@Override
-	public GameDualQuery<K> nearest() {
+	public LocatableIdNameQuery<K> nearest() {
 		return nearest(ctx.players.getLocal());
 	}
 
@@ -52,7 +52,7 @@ public abstract class GameDualQuery<K extends Locatable & Identifiable & Nameabl
 	 * {@inheritDoc}
 	 */
 	@Override
-	public GameDualQuery<K> nearest(Locatable target) {
+	public LocatableIdNameQuery<K> nearest(Locatable target) {
 		return sort(new Locatable.NearestTo(target));
 	}
 
@@ -60,7 +60,7 @@ public abstract class GameDualQuery<K extends Locatable & Identifiable & Nameabl
 	 * {@inheritDoc}
 	 */
 	@Override
-	public GameDualQuery<K> id(int... ids) {
+	public LocatableIdNameQuery<K> id(int... ids) {
 		return select(new Identifiable.Matcher(ids));
 	}
 
@@ -68,7 +68,7 @@ public abstract class GameDualQuery<K extends Locatable & Identifiable & Nameabl
 	 * {@inheritDoc}
 	 */
 	@Override
-	public GameDualQuery<K> id(Identifiable... identifiables) {
+	public LocatableIdNameQuery<K> id(Identifiable... identifiables) {
 		return select(new Identifiable.Matcher(identifiables));
 	}
 }
