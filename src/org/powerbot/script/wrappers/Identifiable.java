@@ -8,7 +8,7 @@ public interface Identifiable {
 	public interface Query<T> {
 		public T id(int... ids);
 
-		public T id(Identifiable... ids);
+		public <V extends Identifiable> T id(V... ids);
 	}
 
 	public class Matcher implements Filter<Identifiable> {

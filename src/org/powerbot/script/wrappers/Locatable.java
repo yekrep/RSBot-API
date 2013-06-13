@@ -8,15 +8,15 @@ public interface Locatable {
 	public Tile getLocation();
 
 	public interface Query<T> {
-		public T at(Locatable t);
+		public <V extends Locatable> T at(V t);
 
 		public T within(double d);
 
-		public T within(Locatable t, double d);
+		public <V extends Locatable> T within(V t, double d);
 
 		public T nearest();
 
-		public T nearest(Locatable t);
+		public <V extends Locatable> T nearest(V t);
 	}
 
 	public class Matcher implements Filter<Locatable> {
