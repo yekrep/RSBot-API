@@ -35,11 +35,10 @@ public class DrawObjects implements PaintListener {
 		final Tile position = player.getLocation();
 		final int textHeight = metrics.getHeight();
 		Tile base = ctx.game.getMapBase();
-		Filterable<GameObject> larr = ctx.objects.range(25);
 		for (int x = position.getX() - 25; x < position.getX() + 25; x++) {
 			for (int y = position.getY() - 25; y < position.getY() + 25; y++) {
 				Tile tile = new Tile(ctx, x, y, ctx.game.getPlane());
-				GameObject[] objs = larr.at(tile).list();
+				GameObject[] objs = ctx.objects.within(25).at(tile).toArray();
 				if (objs.length == 0) {
 					continue;
 				}
