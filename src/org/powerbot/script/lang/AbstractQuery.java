@@ -100,6 +100,11 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends Cl
 		return getThis();
 	}
 
+	public K first() {
+		// TODO: have a "nil" version of K so this doesn't return null
+		return items.get().get(0);
+	}
+
 	@Override
 	public Iterator<K> iterator() {
 		return items.get().iterator();
