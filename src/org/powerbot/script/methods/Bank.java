@@ -59,10 +59,10 @@ public class Bank extends ClientLink {
 		}
 		int count = 0;
 		final Interactive[] interactives = {
-				ctx.npcs.select().id(BANK_NPC_IDS).nearest().first(),
-				ctx.objects.select().id(BANK_BOOTH_IDS).nearest().first(),
-				ctx.objects.select().id(BANK_COUNTER_IDS).nearest().first(),
-				ctx.objects.select().id(BANK_CHEST_IDS).nearest().first(),
+				ctx.npcs.id(BANK_NPC_IDS).nearest().first(),
+				ctx.objects.id(BANK_BOOTH_IDS).nearest().first(),
+				ctx.objects.id(BANK_COUNTER_IDS).nearest().first(),
+				ctx.objects.id(BANK_CHEST_IDS).nearest().first(),
 		};
 		for (int i = 0; i < interactives.length; i++) {
 			if (interactives[i] != null && interactives[i].isOnScreen()) {

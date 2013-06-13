@@ -37,7 +37,7 @@ public class DepositBox extends ClientLink {
 		if (isOpen()) {
 			return true;
 		}
-		GameObject object = ctx.objects.select().id(DEPOSIT_BOX_IDS).nearest().first();
+		GameObject object = ctx.objects.id(DEPOSIT_BOX_IDS).nearest().first();
 		if (object.interact("Deposit")) {
 			final Widget bankPin = ctx.widgets.get(13);
 			for (int i = 0; i < 20 && !isOpen() && !bankPin.isValid(); i++) {

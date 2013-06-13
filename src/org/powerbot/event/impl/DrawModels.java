@@ -37,14 +37,14 @@ public class DrawModels implements PaintListener {
 			m.drawWireFrame(render);
 		}
 
-		for (final Player actor : ctx.players.select()) {
+		for (final Player actor : ctx.players) {
 			if (!actor.isOnScreen()) {
 				continue;
 			}
 			actor.draw(render, 10);
 		}
 
-		for (final Npc actor : ctx.npcs.select()) {
+		for (final Npc actor : ctx.npcs) {
 			if (!actor.isOnScreen()) {
 				continue;
 			}
