@@ -15,64 +15,60 @@ import org.powerbot.script.methods.ClientLink;
 /**
  * @author Paris
  */
-public abstract class AbstractQuery<T> extends ClientLink implements Iterable<T> {
-	private ThreadLocal<List<T>> items;
+public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends ClientLink implements Iterable<K> {
+	private ThreadLocal<List<K>> items;
 
 	public AbstractQuery(final ClientFactory factory) {
 		super(factory);
-		items = new ThreadLocal<List<T>>() {
+		items = new ThreadLocal<List<K>>() {
 			@Override
-		    protected List<T> initialValue() {
+		    protected List<K> initialValue() {
 				return new CopyOnWriteArrayList<>(get());
 			}
 		};
 	}
 
-	protected abstract List<T> get();
+	protected abstract T getThis();
 
-	public AbstractQuery<T> select() {
-		final List<T> items = this.items.get();
+	protected abstract List<K> get();
+
+	public T select() {
+		final List<K> items = this.items.get();
 
 		synchronized (items) {
 			items.clear();
 			items.addAll(get());
 		}
 
-		return this;
+		return getThis();
 	}
 
-	public AbstractQuery<T> select(final Filter<T> f) {
-		doSelect(f);
-		return this;
-	}
+	public T select(final Filter<? super K> f) {
+		final List<K> items = this.items.get();
 
-	protected void doSelect(final Filter<? super T> f) {
-		final List<T> items = this.items.get();
 		for (int i = 0; i < items.size(); i++) {
 			if (!f.accept(items.get(i))) {
 				items.remove(i);
 			}
 		}
+
+		return getThis();
 	}
 
-	public AbstractQuery<T> sort(final Comparator<? super T> c) {
-		doSort(c);
-		return this;
-	}
-
-	protected void doSort(final Comparator<? super T> c) {
+	public T sort(final Comparator<? super K> c) {
 		Collections.sort(this.items.get(), c);
+		return getThis();
 	}
 
-	public AbstractQuery<T> limit(final int count) {
+	public T limit(final int count) {
 		return limit(0, count);
 	}
 
-	public AbstractQuery<T> limit(final int offset, final int count) {
-		final List<T> items = this.items.get();
+	public T limit(final int offset, final int count) {
+		final List<K> items = this.items.get();
 
 		synchronized (items) {
-			final List<T> range = new ArrayList<>(count);
+			final List<K> range = new ArrayList<>(count);
 
 			for (int i = offset; i < offset + count; i++) {
 				range.add(items.get(i));
@@ -82,11 +78,11 @@ public abstract class AbstractQuery<T> extends ClientLink implements Iterable<T>
 			items.addAll(range);
 		}
 
-		return this;
+		return getThis();
 	}
 
 	@Override
-	public Iterator<T> iterator() {
+	public Iterator<K> iterator() {
 		return items.get().iterator();
 	}
 
@@ -94,8 +90,8 @@ public abstract class AbstractQuery<T> extends ClientLink implements Iterable<T>
 		return items.get().isEmpty();
 	}
 
-	public boolean contains(final T t) {
-		return items.get().contains(t);
+	public boolean contains(final K k) {
+		return items.get().contains(k);
 	}
 
 	public int size() {
@@ -103,15 +99,15 @@ public abstract class AbstractQuery<T> extends ClientLink implements Iterable<T>
 	}
 
 	@SuppressWarnings("unchecked")
-	public T[] toArray() {
-		return (T[]) items.get().toArray();
+	public K[] toArray() {
+		return (K[]) items.get().toArray();
 	}
 
-	public Deque<T> toDeque() {
+	public Deque<K> toDeque() {
 		return new ConcurrentLinkedDeque<>(items.get());
 	}
 
-	public interface Filter<T> {
-		public boolean accept(T t);
+	public interface Filter<K> {
+		public boolean accept(K k);
 	}
 }

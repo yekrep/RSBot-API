@@ -6,32 +6,34 @@ import org.powerbot.script.wrappers.Locatable;
 /**
  * @author Paris
  */
-public abstract class LocatableQuery<T extends Locatable> extends AbstractQuery<T> {
+public abstract class LocatableQuery<K extends Locatable> extends AbstractQuery<LocatableQuery<K>, K> {
 
 	public LocatableQuery(final ClientFactory factory) {
 		super(factory);
 	}
 
-	public LocatableQuery<T> at(final Locatable l) {
-		doSelect(new Locatable.Matcher(l));
+	@Override
+	protected LocatableQuery<K> getThis() {
 		return this;
 	}
 
-	public LocatableQuery<T> within(final double distance) {
+	public LocatableQuery<K> at(final Locatable l) {
+		return select(new Locatable.Matcher(l));
+	}
+
+	public LocatableQuery<K> within(final double distance) {
 		return within(ctx.players.getLocal(), distance);
 	}
 
-	public LocatableQuery<T> within(final Locatable target, final double distance) {
-		doSelect(new Locatable.WithinRange(target, distance));
-		return this;
+	public LocatableQuery<K> within(final Locatable target, final double distance) {
+		return select(new Locatable.WithinRange(target, distance));
 	}
 
-	public LocatableQuery<T> nearest() {
+	public LocatableQuery<K> nearest() {
 		return nearest(ctx.players.getLocal());
 	}
 
-	public LocatableQuery<T> nearest(final Locatable target) {
-		doSort(new Locatable.NearestTo(target));
-		return this;
+	public LocatableQuery<K> nearest(final Locatable target) {
+		return sort(new Locatable.NearestTo(target));
 	}
 }
