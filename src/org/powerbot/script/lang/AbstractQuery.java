@@ -5,6 +5,7 @@ import org.powerbot.script.methods.ClientLink;
 import org.powerbot.script.util.Filter;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Deque;
@@ -52,6 +53,16 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends Cl
 			items.addAll(collection);
 		}
 
+		return getThis();
+	}
+
+	public T select(final Filter<? super K> f) {
+		final List<K> items = this.items.get();
+		List<K> remove = new ArrayList<>(items.size());
+		for (K k : items) {
+			if (!f.accept(k)) remove.add(k);
+		}
+		items.removeAll(remove);
 		return getThis();
 	}
 
