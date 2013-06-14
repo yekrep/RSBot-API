@@ -17,6 +17,7 @@ class Components extends ClientLink {
 			return null;
 		}
 
+		container.sync();
 		if (container.compass == -1) {
 			final Widget game = ctx.widgets.get(container.index);
 			final Component[] components = game != null ? game.getComponents() : null;
@@ -41,6 +42,7 @@ class Components extends ClientLink {
 			return null;
 		}
 
+		container.sync();
 		if (container.map == -1) {
 			final Widget game = ctx.widgets.get(container.index);
 			final Component[] components = game != null ? game.getComponents() : null;
@@ -64,6 +66,7 @@ class Components extends ClientLink {
 			return null;
 		}
 
+		container.sync();
 		if (container.tabs[index] == -1) {
 			final Widget game = ctx.widgets.get(container.index);
 			final Component[] components = game != null ? game.getComponents() : null;
