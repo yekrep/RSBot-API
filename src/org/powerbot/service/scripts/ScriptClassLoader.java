@@ -25,7 +25,7 @@ public final class ScriptClassLoader extends ClassLoader {
 	}
 
 	public ScriptClassLoader(final ZipInputStream in) throws IOException {
-		files = new HashMap<String, byte[]>();
+		files = new HashMap<>();
 		ZipEntry entry;
 		while ((entry = in.getNextEntry()) != null) {
 			final ByteArrayOutputStream out = new ByteArrayOutputStream();
