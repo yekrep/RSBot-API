@@ -1,10 +1,14 @@
 package org.powerbot.script.methods;
 
+import org.powerbot.script.lang.IdQuery;
 import org.powerbot.script.util.Delay;
 import org.powerbot.script.wrappers.Action;
 import org.powerbot.script.wrappers.Component;
 
-public class ActionBar extends ClientLink {
+import java.util.ArrayList;
+import java.util.List;
+
+public class ActionBar extends IdQuery<Action> {
 	public static final int NUM_SLOTS = 12;
 	public static final int WIDGET = 640;
 	public static final int COMPONENT_BAR = 4;
@@ -41,18 +45,6 @@ public class ActionBar extends ClientLink {
 		return isExpanded() == expanded;
 	}
 
-	public Action getAction(final int... ids) {
-		final Action[] actions = getActions();
-		for (final Action action : actions) {
-			for (final int id : ids) {
-				if (action.getId() == id) {
-					return action;
-				}
-			}
-		}
-		return null;
-	}
-
 	public Action getActionAt(final int slot) {
 		if (slot < 0 || slot >= NUM_SLOTS) {
 			return null;
@@ -76,6 +68,17 @@ public class ActionBar extends ClientLink {
 		final Action[] actions = new Action[NUM_SLOTS];
 		for (int i = 0; i < NUM_SLOTS; i++) {
 			actions[i] = getActionAt(i);
+		}
+		return actions;
+	}
+
+	@Override
+	protected List<Action> get() {
+		List<Action> actions = new ArrayList<>(NUM_SLOTS);
+		Action[] arr = getActions();
+		for (Action a : arr) {
+			if (a == null) continue;
+			actions.add(a);
 		}
 		return actions;
 	}
