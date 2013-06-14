@@ -19,7 +19,7 @@ public class GroundItems extends LocatableIdQuery<GroundItem> {
 	}
 
 	@Override
-	protected List<GroundItem> get() {
+	protected List<GroundItem> list() {
 		final List<GroundItem> items = new ArrayList<>();
 
 		Client client = ctx.getClient();

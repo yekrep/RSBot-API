@@ -30,7 +30,7 @@ public class Projectiles extends IdQuery<Projectile> {
 	 * @return an array of loaded {@link Projectile}s
 	 */
 	@Override
-	protected List<Projectile> get() {
+	protected List<Projectile> list() {
 		final List<Projectile> items = new ArrayList<>();
 
 		Client client = ctx.getClient();

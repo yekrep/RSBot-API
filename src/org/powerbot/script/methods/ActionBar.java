@@ -73,7 +73,7 @@ public class ActionBar extends IdQuery<Action> {
 	}
 
 	@Override
-	protected List<Action> get() {
+	protected List<Action> list() {
 		List<Action> actions = new ArrayList<>(NUM_SLOTS);
 		Action[] arr = getActions();
 		for (Action a : arr) {
