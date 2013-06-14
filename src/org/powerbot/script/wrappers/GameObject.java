@@ -1,10 +1,5 @@
 package org.powerbot.script.wrappers;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Point;
-import java.lang.ref.WeakReference;
-
 import org.powerbot.client.Cache;
 import org.powerbot.client.Client;
 import org.powerbot.client.HashTable;
@@ -15,6 +10,11 @@ import org.powerbot.client.RSObject;
 import org.powerbot.client.RSObjectDef;
 import org.powerbot.client.RSObjectDefLoader;
 import org.powerbot.script.methods.ClientFactory;
+
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Point;
+import java.lang.ref.WeakReference;
 
 public class GameObject extends Interactive implements Locatable, Drawable, Identifiable {
 	private static final Color TARGET_COLOR = new Color(0, 255, 0, 20);
@@ -97,7 +97,7 @@ public class GameObject extends Interactive implements Locatable, Drawable, Iden
 			}
 		}
 		final Tile tile = getLocation();
-		return tile != null ? tile.getInteractPoint() : null;
+		return tile != null ? tile.getMatrix(ctx).getInteractPoint() : null;
 	}
 
 	@Override
@@ -107,7 +107,7 @@ public class GameObject extends Interactive implements Locatable, Drawable, Iden
 			return model.getNextPoint();
 		}
 		final Tile tile = getLocation();
-		return tile != null ? tile.getNextPoint() : null;
+		return tile != null ? tile.getMatrix(ctx).getNextPoint() : null;
 	}
 
 	@Override
@@ -117,7 +117,7 @@ public class GameObject extends Interactive implements Locatable, Drawable, Iden
 			return model.getCenterPoint();
 		}
 		final Tile tile = getLocation();
-		return tile != null ? tile.getCenterPoint() : null;
+		return tile != null ? tile.getMatrix(ctx).getCenterPoint() : null;
 	}
 
 	@Override
@@ -127,7 +127,7 @@ public class GameObject extends Interactive implements Locatable, Drawable, Iden
 			return model.contains(point);
 		}
 		final Tile tile = getLocation();
-		return tile != null && tile.contains(point);
+		return tile != null && tile.getMatrix(ctx).contains(point);
 	}
 
 	@Override
@@ -157,6 +157,7 @@ public class GameObject extends Interactive implements Locatable, Drawable, Iden
 		if (((rgb >> 24) & 0xff) != alpha) {
 			c = new Color((rgb >> 16) & 0xff, (rgb >> 8) & 0xff, rgb & 0xff, alpha);
 		}
+		render.setColor(c);
 		final Model m = getModel();
 		if (m != null) {
 			m.drawWireFrame(render);

@@ -1,12 +1,5 @@
 package org.powerbot.event.impl;
 
-import java.awt.Color;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.Point;
-import java.lang.ref.WeakReference;
-import java.lang.reflect.Field;
-
 import org.powerbot.client.RSAnimable;
 import org.powerbot.client.RSObject;
 import org.powerbot.event.PaintListener;
@@ -15,6 +8,13 @@ import org.powerbot.script.methods.ClientFactory;
 import org.powerbot.script.wrappers.GameObject;
 import org.powerbot.script.wrappers.Player;
 import org.powerbot.script.wrappers.Tile;
+
+import java.awt.Color;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Point;
+import java.lang.ref.WeakReference;
+import java.lang.reflect.Field;
 
 public class DrawObjects implements PaintListener {
 	private static final Color[] C = {Color.GREEN, Color.WHITE, Color.BLACK, Color.BLUE};
@@ -36,13 +36,13 @@ public class DrawObjects implements PaintListener {
 		Tile base = ctx.game.getMapBase();
 		for (int x = position.getX() - 25; x < position.getX() + 25; x++) {
 			for (int y = position.getY() - 25; y < position.getY() + 25; y++) {
-				Tile tile = new Tile(ctx, x, y, ctx.game.getPlane());
+				Tile tile = new Tile(x, y, ctx.game.getPlane());
 				GameObject[] objs = ctx.objects.within(25).at(tile).toArray();
 				if (objs.length == 0) {
 					continue;
 				}
 
-				Point locationPoint = tile.getCenterPoint();
+				Point locationPoint = tile.getMatrix(ctx).getCenterPoint();
 				render.setColor(Color.black);
 				render.fillRect(locationPoint.x - 1, locationPoint.y - 1, 2, 2);
 				int i = 0;
@@ -64,7 +64,7 @@ public class DrawObjects implements PaintListener {
 						for (int _x = x1; _x <= x2; _x++) {
 							for (int _y = y1; _y <= y2; _y++) {
 								Tile _tile = base.derive(_x, _y);
-								_tile.draw(render);
+								_tile.getMatrix(ctx).draw(render);
 							}
 						}
 					}

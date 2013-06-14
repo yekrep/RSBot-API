@@ -1,10 +1,5 @@
 package org.powerbot.script.wrappers;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Point;
-import java.lang.ref.WeakReference;
-
 import org.powerbot.client.BaseInfo;
 import org.powerbot.client.Cache;
 import org.powerbot.client.Client;
@@ -18,6 +13,11 @@ import org.powerbot.client.RSItemDefLoader;
 import org.powerbot.client.RSItemPile;
 import org.powerbot.script.methods.ClientFactory;
 import org.powerbot.script.util.Random;
+
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Point;
+import java.lang.ref.WeakReference;
 
 public class GroundItem extends Interactive implements Identifiable, Locatable, Drawable {
 	public static final Color TARGET_COLOR = new Color(255, 255, 0, 75);
@@ -140,30 +140,30 @@ public class GroundItem extends Interactive implements Identifiable, Locatable, 
 				return point;
 			}
 		}
-		return tile.getInteractPoint();
+		return tile.getMatrix(ctx).getInteractPoint();
 	}
 
 	@Override
 	public Point getNextPoint() {
 		final Model model = getModel(getId());
 		if (model != null) {
-			model.getNextPoint();
+			return model.getNextPoint();
 		}
-		return tile.getNextPoint();
+		return tile.getMatrix(ctx).getNextPoint();
 	}
 
 	@Override
 	public Point getCenterPoint() {
 		final Model model = getModel(getId());
 		if (model != null) {
-			model.getCenterPoint();
+			return model.getCenterPoint();
 		}
-		return tile.getCenterPoint();
+		return tile.getMatrix(ctx).getCenterPoint();
 	}
 
 	@Override
 	public boolean contains(final Point point) {
-		return tile.contains(point);
+		return tile.getMatrix(ctx).contains(point);
 	}
 
 	@Override

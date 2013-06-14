@@ -51,7 +51,7 @@ public class GroundItems extends LocatableIdQuery<GroundItem> {
 				}
 				final Deque<RSItem> itemStack = new Deque<>(deque);
 				for (RSItem item = itemStack.getHead(); item != null; item = itemStack.getNext()) {
-					items.add(new GroundItem(ctx, new Tile(ctx, x, y, plane), item));
+					items.add(new GroundItem(ctx, new Tile(x, y, plane), item));
 				}
 			}
 		}

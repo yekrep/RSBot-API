@@ -1,7 +1,5 @@
 package org.powerbot.script.methods;
 
-import java.awt.Point;
-
 import org.powerbot.client.Client;
 import org.powerbot.script.util.Delay;
 import org.powerbot.script.wrappers.Component;
@@ -9,7 +7,10 @@ import org.powerbot.script.wrappers.Locatable;
 import org.powerbot.script.wrappers.Player;
 import org.powerbot.script.wrappers.Targetable;
 import org.powerbot.script.wrappers.Tile;
+import org.powerbot.script.wrappers.TileMatrix;
 import org.powerbot.script.wrappers.TilePath;
+
+import java.awt.Point;
 
 public class Movement extends ClientLink {
 	private static final int WIDGET = 750;
@@ -42,8 +43,10 @@ public class Movement extends ClientLink {
 	}
 
 	public boolean stepTowards(final Locatable locatable) {
-		final Tile tile = locatable.getLocation();
+		final Tile loc = locatable.getLocation();
 		return ctx.mouse.click(new Targetable() {
+			private TileMatrix tile = loc.getMatrix(ctx);
+
 			@Override
 			public Point getInteractPoint() {
 				return tile.getMapPoint();
@@ -97,14 +100,14 @@ public class Movement extends ClientLink {
 	}
 
 	public Tile getClosestOnMap(Tile tile) {
-		if (tile.isOnMap()) {
+		if (tile.getMatrix(ctx).isOnMap()) {
 			return tile;
 		}
 
 		final Tile location = ctx.players.getLocal().getLocation();
 		tile = tile.derive(-location.getX(), -location.getY());
 		final double angle = Math.atan2(tile.getY(), tile.getX());
-		return new Tile(ctx,
+		return new Tile(
 				location.getX() + (int) (16d * Math.cos(angle)),
 				location.getY() + (int) (16d * Math.sin(angle)),
 				tile.getPlane()
