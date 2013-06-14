@@ -25,7 +25,7 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends Cl
 		items = new ThreadLocal<List<K>>() {
 			@Override
 			protected List<K> initialValue() {
-				return new CopyOnWriteArrayList<>(get());
+				return new CopyOnWriteArrayList<>(AbstractQuery.this.get());
 			}
 		};
 	}
