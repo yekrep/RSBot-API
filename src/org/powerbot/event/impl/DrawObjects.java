@@ -37,7 +37,7 @@ public class DrawObjects implements PaintListener {
 		for (int x = position.getX() - 25; x < position.getX() + 25; x++) {
 			for (int y = position.getY() - 25; y < position.getY() + 25; y++) {
 				Tile tile = new Tile(x, y, ctx.game.getPlane());
-				GameObject[] objs = ctx.objects.within(25).at(tile).toArray();
+				GameObject[] objs = ctx.objects.select().at(tile).toArray();
 				if (objs.length == 0) {
 					continue;
 				}
