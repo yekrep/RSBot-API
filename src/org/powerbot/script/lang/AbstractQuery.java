@@ -45,12 +45,14 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends Cl
 		return getThis();
 	}
 
-	public T select(Collection<K> collection) {
+	public T select(final Iterable<K> c) {
 		final List<K> items = this.items.get();
 
 		synchronized (items) {
 			items.clear();
-			items.addAll(collection);
+			for (final K item : c) {
+				items.add(item);
+			}
 		}
 
 		return getThis();
