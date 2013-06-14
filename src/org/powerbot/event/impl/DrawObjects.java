@@ -37,8 +37,7 @@ public class DrawObjects implements PaintListener {
 		for (int x = position.getX() - 25; x < position.getX() + 25; x++) {
 			for (int y = position.getY() - 25; y < position.getY() + 25; y++) {
 				Tile tile = new Tile(x, y, ctx.game.getPlane());
-				GameObject[] objs = ctx.objects.select().at(tile).toArray();
-				if (objs.length == 0) {
+				if (ctx.objects.select().at(tile).size() == 0) {
 					continue;
 				}
 
@@ -46,7 +45,7 @@ public class DrawObjects implements PaintListener {
 				render.setColor(Color.black);
 				render.fillRect(locationPoint.x - 1, locationPoint.y - 1, 2, 2);
 				int i = 0;
-				for (GameObject object : objs) {
+				for (GameObject object : ctx.objects) {
 					WeakReference<RSObject> internalObj;
 					try {
 						Field f = object.getClass().getDeclaredField("object");

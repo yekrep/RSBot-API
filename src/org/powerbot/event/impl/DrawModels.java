@@ -1,10 +1,5 @@
 package org.powerbot.event.impl;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
-
 import org.powerbot.event.PaintListener;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.script.methods.ClientFactory;
@@ -14,6 +9,11 @@ import org.powerbot.script.wrappers.Model;
 import org.powerbot.script.wrappers.Npc;
 import org.powerbot.script.wrappers.Player;
 
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+
 public class DrawModels implements PaintListener {
 	private static final Color[] C = {Color.GREEN, Color.WHITE, Color.BLACK, Color.BLUE};
 	private static final int[] A = {25, 40, 255, 50};
@@ -22,8 +22,7 @@ public class DrawModels implements PaintListener {
 	public void onRepaint(final Graphics render) {
 		ClientFactory ctx = BotChrome.getInstance().getBot().getClientFactory();
 		((Graphics2D) render).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		GameObject[] objects = ctx.objects.within(10).toArray();
-		for (final GameObject obj : objects) {
+		for (final GameObject obj : ctx.objects.select().within(10)) {
 			if (!obj.isOnScreen()) {
 				continue;
 			}
@@ -51,7 +50,7 @@ public class DrawModels implements PaintListener {
 			actor.draw(render, 20);
 		}
 
-		for (final GroundItem item : ctx.groundItems.within(20)) {
+		for (final GroundItem item : ctx.groundItems.select().within(20)) {
 			item.draw(render, 20);
 		}
 	}

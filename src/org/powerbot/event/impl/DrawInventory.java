@@ -20,8 +20,7 @@ public class DrawInventory implements PaintListener {
 		}
 		render.setFont(new Font("Arial", 0, 10));
 		render.setColor(Color.green);
-		Item[] items = ctx.inventory.select().toArray();
-		for (Item item : items) {
+		for (Item item : ctx.inventory.select()) {
 			Component c = item.getComponent();
 			if (c == null) {
 				continue;

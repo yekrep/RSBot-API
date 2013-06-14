@@ -106,11 +106,6 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends Cl
 		return items.get().size();
 	}
 
-	@SuppressWarnings("unchecked")
-	public K[] toArray() {
-		return (K[]) items.get().toArray();
-	}
-
 	public Deque<K> toDeque() {
 		return new ConcurrentLinkedDeque<>(items.get());
 	}
