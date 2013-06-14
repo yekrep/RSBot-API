@@ -17,7 +17,7 @@ public class DrawNPCs implements PaintListener {
 			return;
 		}
 		final FontMetrics metrics = render.getFontMetrics();
-		for (final Npc npc : ctx.npcs) {
+		for (final Npc npc : ctx.npcs.select()) {
 			final Point location = npc.getCenterPoint();
 			if (location.x == -1 || location.y == -1) {
 				continue;
