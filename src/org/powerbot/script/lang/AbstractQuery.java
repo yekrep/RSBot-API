@@ -5,7 +5,6 @@ import org.powerbot.script.methods.ClientLink;
 import org.powerbot.script.util.Filter;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Deque;
@@ -22,6 +21,7 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends Cl
 
 	public AbstractQuery(final ClientFactory factory) {
 		super(factory);
+
 		items = new ThreadLocal<List<K>>() {
 			@Override
 			protected List<K> initialValue() {
@@ -60,16 +60,29 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends Cl
 
 	public T select(final Filter<? super K> f) {
 		final List<K> items = this.items.get();
-		List<K> remove = new ArrayList<>(items.size());
-		for (K k : items) {
-			if (!f.accept(k)) remove.add(k);
+
+		synchronized (items) {
+			final List<K> remove = new ArrayList<>(items.size());
+
+			for (final K k : items) {
+				if (!f.accept(k)) {
+					remove.add(k);
+				}
+			}
+
+			items.removeAll(remove);
 		}
-		items.removeAll(remove);
+
 		return getThis();
 	}
 
 	public T sort(final Comparator<? super K> c) {
-		Collections.sort(this.items.get(), c);
+		final List<K> items = this.items.get();
+
+		synchronized (items) {
+			Collections.sort(items, c);
+		}
+
 		return getThis();
 	}
 
@@ -96,9 +109,11 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends Cl
 	}
 
 	public K first() {
-		// TODO: have a "nil" version of K so this doesn't return null
-		if (size() < 1) return null;
-		return items.get().get(0);
+		final List<K> items = this.items.get();
+
+		synchronized (items) {
+			return items.size() == 0 ? null : items.get(0);
+		}
 	}
 
 	@Override
