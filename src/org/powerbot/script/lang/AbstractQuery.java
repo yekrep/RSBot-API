@@ -25,21 +25,21 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends Cl
 		items = new ThreadLocal<List<K>>() {
 			@Override
 			protected List<K> initialValue() {
-				return new CopyOnWriteArrayList<>(list());
+				return new CopyOnWriteArrayList<>(get());
 			}
 		};
 	}
 
 	protected abstract T getThis();
 
-	protected abstract List<K> list();
+	protected abstract List<K> get();
 
 	public T select() {
 		final List<K> items = this.items.get();
 
 		synchronized (items) {
 			items.clear();
-			items.addAll(list());
+			items.addAll(get());
 		}
 
 		return getThis();

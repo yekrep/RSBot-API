@@ -24,7 +24,7 @@ public class HintArrows extends LocatableQuery<HintArrow> {
 	 * @return an array of loaded {@link HintArrow}s
 	 */
 	@Override
-	protected List<HintArrow> list() {
+	protected List<HintArrow> get() {
 		final List<HintArrow> items = new ArrayList<>();
 
 		Client client = ctx.getClient();

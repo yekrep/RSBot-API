@@ -44,7 +44,7 @@ public class Players extends LocatableNameQuery<Player> {
 	 * @return an array of all the loaded {@link Player}s
 	 */
 	@Override
-	protected List<Player> list() {
+	protected List<Player> get() {
 		final List<Player> items = new ArrayList<>();
 
 		Client client = ctx.getClient();

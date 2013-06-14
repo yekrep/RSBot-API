@@ -28,7 +28,7 @@ public class Npcs extends LocatableIdNameQuery<Npc> {
 	 * @return an array of the loaded {@link Npc}s
 	 */
 	@Override
-	protected List<Npc> list() {
+	protected List<Npc> get() {
 		final List<Npc> items = new ArrayList<>();
 
 		Client client = ctx.getClient();

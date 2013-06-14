@@ -31,12 +31,13 @@ public class Inventory extends IdQuery<Item> {
 	}
 
 	@Override
-	protected List<Item> list() {
+	protected List<Item> get() {
 		List<Item> items = new ArrayList<>(28);
 		final Component inv = getComponent();
 		if (inv == null) {
 			return items;
 		}
+		int d = 0;
 		final Component[] comps = inv.getChildren();
 		int[][] data;
 		if (inv.isVisible()) {

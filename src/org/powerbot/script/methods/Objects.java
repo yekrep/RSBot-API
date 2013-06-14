@@ -20,7 +20,7 @@ public class Objects extends LocatableIdQuery<GameObject> {
 	}
 
 	@Override
-	protected List<GameObject> list() {
+	protected List<GameObject> get() {
 		final List<GameObject> items = new ArrayList<>();
 
 		Client client = ctx.getClient();
