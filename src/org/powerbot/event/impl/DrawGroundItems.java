@@ -40,7 +40,7 @@ public class DrawGroundItems implements PaintListener {
 				if (screen.x == -1 || screen.y == -1) {
 					continue;
 				}
-				for (final GroundItem groundItem : ctx.groundItems.select().at(new Tile(x, y, ctx.game.getPlane()))) {
+				for (final GroundItem groundItem : ctx.groundItems.select().at(loc)) {
 					final ItemDefinition def = groundItem.getDefinition();
 					final String name = def != null ? def.getName() : null;
 					String s = "";
