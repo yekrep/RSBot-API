@@ -1,10 +1,10 @@
 package org.powerbot.script.methods;
 
 import org.powerbot.client.Client;
+import org.powerbot.script.lang.Locatable;
+import org.powerbot.script.lang.Targetable;
 import org.powerbot.script.util.Delay;
 import org.powerbot.script.wrappers.Component;
-import org.powerbot.script.wrappers.Locatable;
-import org.powerbot.script.wrappers.Targetable;
 import org.powerbot.script.wrappers.Tile;
 import org.powerbot.script.wrappers.TileMatrix;
 import org.powerbot.script.wrappers.TilePath;

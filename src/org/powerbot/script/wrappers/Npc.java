@@ -1,14 +1,15 @@
 package org.powerbot.script.wrappers;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.lang.ref.WeakReference;
-
 import org.powerbot.client.Client;
 import org.powerbot.client.RSNPC;
 import org.powerbot.client.RSNPCDef;
 import org.powerbot.client.RSNPCNode;
+import org.powerbot.script.lang.Identifiable;
 import org.powerbot.script.methods.ClientFactory;
+
+import java.awt.Color;
+import java.awt.Graphics;
+import java.lang.ref.WeakReference;
 
 public class Npc extends Actor implements Identifiable {
 	public static final Color TARGET_COLOR = new Color(255, 0, 255, 15);

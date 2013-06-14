@@ -9,6 +9,9 @@ import org.powerbot.client.RSInteractableLocation;
 import org.powerbot.client.RSObject;
 import org.powerbot.client.RSObjectDef;
 import org.powerbot.client.RSObjectDefLoader;
+import org.powerbot.script.lang.Drawable;
+import org.powerbot.script.lang.Identifiable;
+import org.powerbot.script.lang.Locatable;
 import org.powerbot.script.methods.ClientFactory;
 
 import java.awt.Color;

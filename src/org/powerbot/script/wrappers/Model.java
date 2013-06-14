@@ -1,18 +1,18 @@
 package org.powerbot.script.wrappers;
 
-import java.awt.Graphics;
-import java.awt.Point;
-import java.awt.Polygon;
-import java.awt.Rectangle;
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import org.powerbot.client.ModelCapture;
 import org.powerbot.script.methods.ActionBar;
 import org.powerbot.script.methods.ClientFactory;
 import org.powerbot.script.methods.ClientLink;
 import org.powerbot.script.methods.Game;
 import org.powerbot.script.util.Random;
+
+import java.awt.Graphics;
+import java.awt.Point;
+import java.awt.Polygon;
+import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public abstract class Model extends ClientLink {
 	protected final int[] yPoints;

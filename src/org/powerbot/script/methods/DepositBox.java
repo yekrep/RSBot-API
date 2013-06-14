@@ -1,7 +1,5 @@
 package org.powerbot.script.methods;
 
-import java.util.Arrays;
-
 import org.powerbot.script.util.Delay;
 import org.powerbot.script.util.Filter;
 import org.powerbot.script.util.Random;
@@ -10,6 +8,8 @@ import org.powerbot.script.wrappers.Component;
 import org.powerbot.script.wrappers.GameObject;
 import org.powerbot.script.wrappers.Item;
 import org.powerbot.script.wrappers.Widget;
+
+import java.util.Arrays;
 
 public class DepositBox extends ClientLink {
 	public static final int[] DEPOSIT_BOX_IDS = new int[]{

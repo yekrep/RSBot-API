@@ -1,14 +1,14 @@
 package org.powerbot.script.wrappers;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.lang.ref.WeakReference;
-import java.util.Arrays;
-
 import org.powerbot.client.Client;
 import org.powerbot.client.RSPlayer;
 import org.powerbot.client.RSPlayerComposite;
 import org.powerbot.script.methods.ClientFactory;
+
+import java.awt.Color;
+import java.awt.Graphics;
+import java.lang.ref.WeakReference;
+import java.util.Arrays;
 
 public class Player extends Actor {
 	public static final Color TARGET_COLOR = new Color(255, 0, 0, 15);

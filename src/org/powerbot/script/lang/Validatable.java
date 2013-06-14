@@ -1,4 +1,4 @@
-package org.powerbot.script.wrappers;
+package org.powerbot.script.lang;
 
 public interface Validatable {
 	public boolean isValid();

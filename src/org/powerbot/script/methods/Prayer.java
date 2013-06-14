@@ -1,13 +1,13 @@
 package org.powerbot.script.methods;
 
-import java.util.Arrays;
-import java.util.LinkedHashSet;
-import java.util.Set;
-
 import org.powerbot.script.util.Delay;
 import org.powerbot.script.util.Timer;
 import org.powerbot.script.wrappers.Component;
 import org.powerbot.script.wrappers.Widget;
+
+import java.util.Arrays;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 public class Prayer extends ClientLink {
 	public static final int WIDGET = 271;
@@ -35,15 +35,15 @@ public class Prayer extends ClientLink {
 		int book = getPrayerBook();
 		int setting;
 		switch (book) {
-		case PRAYER_BOOK_CURSES:
-			setting = 3275;
-			break;
-		case PRAYER_BOOK_NORMAL:
-			setting = 3272;
-			break;
-		default:
-			setting = -1;
-			break;
+			case PRAYER_BOOK_CURSES:
+				setting = 3275;
+				break;
+			case PRAYER_BOOK_NORMAL:
+				setting = 3272;
+				break;
+			default:
+				setting = -1;
+				break;
 		}
 		return (ctx.settings.get(setting >>> effect.getShift()) & 0x1) == 1;
 	}
@@ -52,15 +52,15 @@ public class Prayer extends ClientLink {
 		int book = getPrayerBook();
 		int setting;
 		switch (book) {
-		case PRAYER_BOOK_CURSES:
-			setting = 1768;
-			break;
-		case PRAYER_BOOK_NORMAL:
-			setting = 1770;
-			break;
-		default:
-			setting = -1;
-			break;
+			case PRAYER_BOOK_CURSES:
+				setting = 1768;
+				break;
+			case PRAYER_BOOK_NORMAL:
+				setting = 1770;
+				break;
+			default:
+				setting = -1;
+				break;
 		}
 		return (ctx.settings.get(setting >>> effect.getShift()) & 0x1) == 1;
 	}

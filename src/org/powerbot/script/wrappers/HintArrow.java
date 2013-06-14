@@ -1,15 +1,17 @@
 package org.powerbot.script.wrappers;
 
-import java.lang.ref.WeakReference;
-import java.util.Arrays;
-
 import org.powerbot.client.Client;
 import org.powerbot.client.RSHintArrow;
 import org.powerbot.client.RSNPC;
 import org.powerbot.client.RSNPCNode;
 import org.powerbot.client.RSPlayer;
+import org.powerbot.script.lang.Locatable;
+import org.powerbot.script.lang.Validatable;
 import org.powerbot.script.methods.ClientFactory;
 import org.powerbot.script.methods.ClientLink;
+
+import java.lang.ref.WeakReference;
+import java.util.Arrays;
 
 public class HintArrow extends ClientLink implements Locatable, Validatable {
 	private final WeakReference<RSHintArrow> arrow;

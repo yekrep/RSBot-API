@@ -1,8 +1,6 @@
 package org.powerbot.script.lang;
 
 import org.powerbot.script.methods.ClientFactory;
-import org.powerbot.script.wrappers.Locatable;
-import org.powerbot.script.wrappers.Nameable;
 
 public abstract class LocatableNameQuery<K extends Locatable & Nameable> extends AbstractQuery<LocatableNameQuery<K>, K>
 		implements Locatable.Query<LocatableNameQuery<K>>, Nameable.Query<LocatableNameQuery<K>> {

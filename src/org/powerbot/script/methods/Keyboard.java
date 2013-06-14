@@ -1,8 +1,8 @@
 package org.powerbot.script.methods;
 
-import java.awt.event.KeyEvent;
-
 import org.powerbot.script.internal.InputHandler;
+
+import java.awt.event.KeyEvent;
 
 public class Keyboard extends ClientLink {
 	public Keyboard(ClientFactory factory) {

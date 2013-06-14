@@ -1,9 +1,9 @@
 package org.powerbot.script.wrappers;
 
-import java.util.EnumSet;
-
 import org.powerbot.script.methods.ClientFactory;
 import org.powerbot.script.methods.ClientLink;
+
+import java.util.EnumSet;
 
 public abstract class Path extends ClientLink {
 	public static final int WALL_NORTHWEST = 0x1;

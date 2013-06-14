@@ -1,14 +1,14 @@
 package org.powerbot.script.util;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
 import org.powerbot.util.Configuration;
 import org.powerbot.util.StringUtil;
 import org.powerbot.util.io.HttpClient;
 import org.powerbot.util.io.IOHelper;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Retrieves a player's hiscore profile.
@@ -50,34 +50,34 @@ public class Hiscores {
 				final Stats s = map.get(i);
 
 				switch (s.getType()) {
-				case SKILL:
-					if (parts.length == 3) {
-						final int[] x = new int[3];
-						try {
-							for (int j = 0; j < x.length; j++) {
-								x[j] = Integer.parseInt(parts[j]);
+					case SKILL:
+						if (parts.length == 3) {
+							final int[] x = new int[3];
+							try {
+								for (int j = 0; j < x.length; j++) {
+									x[j] = Integer.parseInt(parts[j]);
+								}
+							} catch (final NumberFormatException ignored) {
+								ignored.printStackTrace();
+								break;
 							}
-						} catch (final NumberFormatException ignored) {
-							ignored.printStackTrace();
-							break;
+							skills.put(s, new SkillStats(s, x[1], x[2], x[0]));
 						}
-						skills.put(s, new SkillStats(s, x[1], x[2], x[0]));
-					}
-					break;
+						break;
 
-				case ACTIVITY:
-					if (parts.length == 2) {
-						final int[] x = new int[2];
-						try {
-							for (int j = 0; j < x.length; j++) {
-								x[j] = Integer.parseInt(parts[j]);
+					case ACTIVITY:
+						if (parts.length == 2) {
+							final int[] x = new int[2];
+							try {
+								for (int j = 0; j < x.length; j++) {
+									x[j] = Integer.parseInt(parts[j]);
+								}
+							} catch (final NumberFormatException ignored) {
+								break;
 							}
-						} catch (final NumberFormatException ignored) {
-							break;
+							activities.put(s, new ActivityStats(s, x[1], x[0]));
 						}
-						activities.put(s, new ActivityStats(s, x[1], x[0]));
-					}
-					break;
+						break;
 				}
 			}
 		}

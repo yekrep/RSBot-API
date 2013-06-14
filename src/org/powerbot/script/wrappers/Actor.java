@@ -1,7 +1,5 @@
 package org.powerbot.script.wrappers;
 
-import java.awt.Point;
-
 import org.powerbot.client.Client;
 import org.powerbot.client.CombatStatus;
 import org.powerbot.client.CombatStatusData;
@@ -15,7 +13,12 @@ import org.powerbot.client.RSNPC;
 import org.powerbot.client.RSNPCNode;
 import org.powerbot.client.RSPlayer;
 import org.powerbot.client.Sequence;
+import org.powerbot.script.lang.Drawable;
+import org.powerbot.script.lang.Locatable;
+import org.powerbot.script.lang.Nameable;
 import org.powerbot.script.methods.ClientFactory;
+
+import java.awt.Point;
 
 public abstract class Actor extends Interactive implements Nameable, Locatable, Drawable {
 	private int faceIndex = -1;

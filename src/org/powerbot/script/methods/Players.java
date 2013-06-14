@@ -1,12 +1,12 @@
 package org.powerbot.script.methods;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.powerbot.client.Client;
 import org.powerbot.client.RSPlayer;
 import org.powerbot.script.lang.LocatableNameQuery;
 import org.powerbot.script.wrappers.Player;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * {@link Players} is a static utility which provides access to the {@link Player}s in the game.

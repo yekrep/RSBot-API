@@ -1,10 +1,10 @@
 package org.powerbot.script.methods;
 
-import java.util.concurrent.atomic.AtomicReference;
-
 import org.powerbot.bot.Bot;
 import org.powerbot.client.Client;
 import org.powerbot.script.internal.methods.Items;
+
+import java.util.concurrent.atomic.AtomicReference;
 
 public class ClientFactory {
 	private AtomicReference<Client> client;

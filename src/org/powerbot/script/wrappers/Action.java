@@ -1,11 +1,12 @@
 package org.powerbot.script.wrappers;
 
-import java.awt.Point;
-
+import org.powerbot.script.lang.Identifiable;
 import org.powerbot.script.methods.ActionBar;
 import org.powerbot.script.methods.ClientFactory;
 
-public class Action extends Interactive {
+import java.awt.Point;
+
+public class Action extends Interactive implements Identifiable {
 	private final int slot;
 	private final Type type;
 	private final int id;
@@ -24,6 +25,7 @@ public class Action extends Interactive {
 		return this.type;
 	}
 
+	@Override
 	public int getId() {
 		return id;
 	}

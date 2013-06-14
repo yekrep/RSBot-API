@@ -1,9 +1,5 @@
 package org.powerbot.script.methods;
 
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.util.Arrays;
-
 import org.powerbot.script.util.Delay;
 import org.powerbot.script.util.Filter;
 import org.powerbot.script.util.Random;
@@ -14,6 +10,10 @@ import org.powerbot.script.wrappers.Interactive;
 import org.powerbot.script.wrappers.Item;
 import org.powerbot.script.wrappers.Npc;
 import org.powerbot.script.wrappers.Widget;
+
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.util.Arrays;
 
 public class Bank extends ClientLink {
 	public static final int[] BANK_NPC_IDS = new int[]{

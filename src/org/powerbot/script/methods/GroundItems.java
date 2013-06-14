@@ -1,8 +1,5 @@
 package org.powerbot.script.methods;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.powerbot.client.Client;
 import org.powerbot.client.HashTable;
 import org.powerbot.client.NodeDeque;
@@ -12,6 +9,9 @@ import org.powerbot.script.internal.wrappers.Deque;
 import org.powerbot.script.lang.LocatableIdQuery;
 import org.powerbot.script.wrappers.GroundItem;
 import org.powerbot.script.wrappers.Tile;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class GroundItems extends LocatableIdQuery<GroundItem> {
 	public GroundItems(ClientFactory factory) {

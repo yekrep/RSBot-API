@@ -4,7 +4,7 @@ import java.awt.Point;
 
 import org.powerbot.golem.math.Vector3;
 import org.powerbot.script.util.Filter;
-import org.powerbot.script.wrappers.Targetable;
+import org.powerbot.script.lang.Targetable;
 
 public abstract class MouseTarget implements MouseCallback {
 	public static final Filter<Point> DUMMY = new Filter<Point>() {

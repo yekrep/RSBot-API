@@ -1,18 +1,18 @@
 package org.powerbot.script.util;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
 import com.eclipsesource.json.JsonObject;
 import com.eclipsesource.json.JsonValue;
 import org.powerbot.util.Configuration;
 import org.powerbot.util.StringUtil;
 import org.powerbot.util.io.HttpClient;
 import org.powerbot.util.io.IOHelper;
+
+import java.io.IOException;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Retrieves information about an item on the Grand Exchange.
@@ -84,18 +84,18 @@ public class GeItem {
 		if (s.length() > 1) {
 			final char x = s.charAt(s.length() - 1);
 			switch (x) {
-			case 'B':
-			case 'b':
-				f = 1000000000d;
-				break;
-			case 'M':
-			case 'm':
-				f = 1000000d;
-				break;
-			case 'K':
-			case 'k':
-				f = 1000d;
-				break;
+				case 'B':
+				case 'b':
+					f = 1000000000d;
+					break;
+				case 'M':
+				case 'm':
+					f = 1000000d;
+					break;
+				case 'K':
+				case 'k':
+					f = 1000d;
+					break;
 			}
 			if (f != 1) {
 				s = s.substring(0, s.length() - 1);
@@ -131,12 +131,12 @@ public class GeItem {
 	 */
 	private int trendAsInt(final String s) {
 		switch (s) {
-		case "neutral":
-			return 0;
-		case "positive":
-			return 1;
-		case "negative":
-			return -1;
+			case "neutral":
+				return 0;
+			case "positive":
+				return 1;
+			case "negative":
+				return -1;
 		}
 		return 0;
 	}

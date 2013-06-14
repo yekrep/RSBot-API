@@ -1,10 +1,5 @@
 package org.powerbot.script.methods;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.powerbot.client.Client;
 import org.powerbot.client.RSAnimableNode;
 import org.powerbot.client.RSGround;
@@ -13,6 +8,11 @@ import org.powerbot.client.RSInfo;
 import org.powerbot.client.RSObject;
 import org.powerbot.script.lang.LocatableIdQuery;
 import org.powerbot.script.wrappers.GameObject;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class Objects extends LocatableIdQuery<GameObject> {
 	public Objects(ClientFactory factory) {

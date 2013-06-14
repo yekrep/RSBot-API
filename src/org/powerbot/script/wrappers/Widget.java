@@ -1,13 +1,14 @@
 package org.powerbot.script.wrappers;
 
-import java.util.Arrays;
-import java.util.Iterator;
-
 import org.powerbot.client.Client;
 import org.powerbot.client.RSInterface;
 import org.powerbot.client.RSInterfaceBase;
+import org.powerbot.script.lang.Validatable;
 import org.powerbot.script.methods.ClientFactory;
 import org.powerbot.script.methods.ClientLink;
+
+import java.util.Arrays;
+import java.util.Iterator;
 
 public class Widget extends ClientLink implements Validatable, Iterable<Component> {
 	private final int index;

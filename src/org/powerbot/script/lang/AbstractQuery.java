@@ -1,5 +1,9 @@
 package org.powerbot.script.lang;
 
+import org.powerbot.script.methods.ClientFactory;
+import org.powerbot.script.methods.ClientLink;
+import org.powerbot.script.util.Filter;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -8,10 +12,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.CopyOnWriteArrayList;
-
-import org.powerbot.script.methods.ClientFactory;
-import org.powerbot.script.methods.ClientLink;
-import org.powerbot.script.util.Filter;
 
 /**
  * @author Paris

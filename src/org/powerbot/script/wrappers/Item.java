@@ -1,7 +1,5 @@
 package org.powerbot.script.wrappers;
 
-import java.awt.Point;
-
 import org.powerbot.client.Cache;
 import org.powerbot.client.Client;
 import org.powerbot.client.HashTable;
@@ -9,6 +7,8 @@ import org.powerbot.client.RSItemDef;
 import org.powerbot.client.RSItemDefLoader;
 import org.powerbot.script.methods.ClientFactory;
 import org.powerbot.util.StringUtil;
+
+import java.awt.Point;
 
 public class Item extends Interactive {
 	private final int id;

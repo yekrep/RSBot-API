@@ -1,8 +1,8 @@
 package org.powerbot.script.wrappers;
 
-import java.lang.ref.WeakReference;
-
 import org.powerbot.client.RSItemDef;
+
+import java.lang.ref.WeakReference;
 
 public class ItemDefinition {
 	private final WeakReference<RSItemDef> def;

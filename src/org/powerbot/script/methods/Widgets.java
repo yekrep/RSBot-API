@@ -1,14 +1,14 @@
 package org.powerbot.script.methods;
 
-import java.awt.Point;
-import java.util.Arrays;
-
 import org.powerbot.client.Client;
 import org.powerbot.client.RSInterfaceBase;
 import org.powerbot.script.util.Delay;
 import org.powerbot.script.util.Random;
 import org.powerbot.script.wrappers.Component;
 import org.powerbot.script.wrappers.Widget;
+
+import java.awt.Point;
+import java.util.Arrays;
 
 /**
  * {@link Widgets} is a static utility which provides access to the game's {@link Component}s by means of {@link Widget}s.

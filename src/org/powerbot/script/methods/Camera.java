@@ -1,14 +1,14 @@
 package org.powerbot.script.methods;
 
-import java.awt.event.KeyEvent;
-
 import org.powerbot.client.Client;
+import org.powerbot.script.lang.Locatable;
 import org.powerbot.script.util.Delay;
 import org.powerbot.script.util.Random;
 import org.powerbot.script.util.Timer;
-import org.powerbot.script.wrappers.Locatable;
 import org.powerbot.script.wrappers.Player;
 import org.powerbot.script.wrappers.Tile;
+
+import java.awt.event.KeyEvent;
 
 public class Camera extends ClientLink {
 	public Camera(ClientFactory factory) {
@@ -69,20 +69,20 @@ public class Camera extends ClientLink {
 
 	public void setAngle(final char direction) {
 		switch (direction) {
-		case 'n':
-			setAngle(0);
-			break;
-		case 'w':
-			setAngle(90);
-			break;
-		case 's':
-			setAngle(180);
-			break;
-		case 'e':
-			setAngle(270);
-			break;
-		default:
-			throw new RuntimeException("invalid direction " + direction + ", expecting n,w,s,e");
+			case 'n':
+				setAngle(0);
+				break;
+			case 'w':
+				setAngle(90);
+				break;
+			case 's':
+				setAngle(180);
+				break;
+			case 'e':
+				setAngle(270);
+				break;
+			default:
+				throw new RuntimeException("invalid direction " + direction + ", expecting n,w,s,e");
 		}
 	}
 

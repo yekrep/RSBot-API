@@ -1,5 +1,6 @@
 package org.powerbot.script.wrappers;
 
+import org.powerbot.script.lang.Locatable;
 import org.powerbot.script.methods.ClientFactory;
 import org.powerbot.script.util.Random;
 

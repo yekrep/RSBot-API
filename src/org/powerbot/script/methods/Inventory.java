@@ -1,11 +1,11 @@
 package org.powerbot.script.methods;
 
-import java.util.Arrays;
-
 import org.powerbot.script.internal.methods.Items;
 import org.powerbot.script.util.Filter;
 import org.powerbot.script.wrappers.Component;
 import org.powerbot.script.wrappers.Item;
+
+import java.util.Arrays;
 
 public class Inventory extends ClientLink {
 	public static final int WIDGET = 679;

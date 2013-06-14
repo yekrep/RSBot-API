@@ -1,17 +1,18 @@
 package org.powerbot.script.wrappers;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Point;
-import java.awt.Rectangle;
-
 import org.powerbot.client.Client;
 import org.powerbot.client.RSInterface;
 import org.powerbot.client.RSInterfaceNode;
 import org.powerbot.script.internal.wrappers.HashTable;
+import org.powerbot.script.lang.Drawable;
 import org.powerbot.script.methods.ClientFactory;
 import org.powerbot.script.util.Random;
 import org.powerbot.util.StringUtil;
+
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Point;
+import java.awt.Rectangle;
 
 public class Component extends Interactive implements Drawable {
 	public static final Color TARGET_FILL_COLOR = new Color(0, 0, 0, 50);
