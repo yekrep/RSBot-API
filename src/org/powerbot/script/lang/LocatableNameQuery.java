@@ -65,7 +65,7 @@ public abstract class LocatableNameQuery<K extends Locatable & Nameable> extends
 	 * {@inheritDoc}
 	 */
 	@Override
-	public <V extends Nameable> LocatableNameQuery<K> name(V... names) {
+	public LocatableNameQuery<K> name(Nameable... names) {
 		return select(new Nameable.Matcher(names));
 	}
 }

@@ -8,7 +8,7 @@ public interface Nameable {
 	public interface Query<T> {
 		public T name(String... names);
 
-		public <V extends Nameable> T name(V... names);
+		public T name(Nameable... names);
 	}
 
 	public class Matcher implements Filter<Nameable> {
