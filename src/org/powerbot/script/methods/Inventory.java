@@ -2,12 +2,10 @@ package org.powerbot.script.methods;
 
 import org.powerbot.script.internal.methods.Items;
 import org.powerbot.script.lang.IdQuery;
-import org.powerbot.script.util.Filter;
 import org.powerbot.script.wrappers.Component;
 import org.powerbot.script.wrappers.Item;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Inventory extends IdQuery<Item> {

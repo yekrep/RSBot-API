@@ -1,5 +1,10 @@
 package org.powerbot.script.internal;
 
+import org.powerbot.client.Client;
+import org.powerbot.client.input.Keyboard;
+import org.powerbot.golem.HardwareSimulator;
+
+import javax.swing.Timer;
 import java.applet.Applet;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
@@ -10,12 +15,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.LinkedList;
 import java.util.Queue;
-
-import javax.swing.Timer;
-
-import org.powerbot.client.Client;
-import org.powerbot.client.input.Keyboard;
-import org.powerbot.golem.HardwareSimulator;
 
 public class InputHandler {
 	private final Applet applet;
@@ -80,23 +79,23 @@ public class InputHandler {
 		for (int i = 0; i < sequence.length(); i++) {
 			final char c = sequence.charAt(i);
 			switch (c) {
-			case '{':
-				braced = true;
-				break;
-			case '}':
-				braced = false;
-				if (buf.length() != 0) {
-					list.add(buf.toString());
-					buf = new StringBuilder();
-				}
-				break;
-			default:
-				if (braced) {
-					buf.append(c);
-				} else {
-					list.add(String.valueOf(c));
-				}
-				break;
+				case '{':
+					braced = true;
+					break;
+				case '}':
+					braced = false;
+					if (buf.length() != 0) {
+						list.add(buf.toString());
+						buf = new StringBuilder();
+					}
+					break;
+				default:
+					if (braced) {
+						buf.append(c);
+					} else {
+						list.add(String.valueOf(c));
+					}
+					break;
 			}
 		}
 
@@ -161,16 +160,16 @@ public class InputHandler {
 						final boolean[] states = {false, false};
 						if (p.length > 1 && p[1] != null && !p[1].isEmpty()) {
 							switch (p[1].trim().toLowerCase()) {
-							case "down":
-							case "press":
-							case "pressed":
-								states[0] = true;
-								break;
-							case "up":
-							case "release":
-							case "released":
-								states[1] = true;
-								break;
+								case "down":
+								case "press":
+								case "pressed":
+									states[0] = true;
+									break;
+								case "up":
+								case "release":
+								case "released":
+									states[1] = true;
+									break;
 							}
 						} else {
 							states[0] = true;

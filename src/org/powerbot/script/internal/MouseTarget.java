@@ -1,10 +1,10 @@
 package org.powerbot.script.internal;
 
-import java.awt.Point;
-
 import org.powerbot.golem.math.Vector3;
-import org.powerbot.script.util.Filter;
 import org.powerbot.script.lang.Targetable;
+import org.powerbot.script.util.Filter;
+
+import java.awt.Point;
 
 public abstract class MouseTarget implements MouseCallback {
 	public static final Filter<Point> DUMMY = new Filter<Point>() {

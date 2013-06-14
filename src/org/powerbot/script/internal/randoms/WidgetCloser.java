@@ -1,13 +1,13 @@
 package org.powerbot.script.internal.randoms;
 
-import java.awt.Point;
-
 import org.powerbot.script.Manifest;
 import org.powerbot.script.PollingScript;
 import org.powerbot.script.util.Random;
 import org.powerbot.script.util.Timer;
 import org.powerbot.script.wrappers.Component;
 import org.powerbot.util.Tracker;
+
+import java.awt.Point;
 
 @Manifest(name = "Widget closer", authors = {"Timer"}, description = "Closes widgets")
 public class WidgetCloser extends PollingScript implements RandomEvent {

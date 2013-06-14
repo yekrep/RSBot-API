@@ -1,5 +1,10 @@
 package org.powerbot.script.internal;
 
+import org.powerbot.event.EventMulticaster;
+import org.powerbot.script.Script;
+import org.powerbot.script.lang.Stoppable;
+import org.powerbot.script.lang.Suspendable;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -9,11 +14,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
-
-import org.powerbot.event.EventMulticaster;
-import org.powerbot.script.Script;
-import org.powerbot.script.lang.Stoppable;
-import org.powerbot.script.lang.Suspendable;
 
 public class ScriptHandler implements Suspendable, Stoppable {
 	EventManager eventManager;

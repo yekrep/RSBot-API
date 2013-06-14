@@ -1,5 +1,10 @@
 package org.powerbot.script;
 
+import org.powerbot.script.internal.ScriptContainer;
+import org.powerbot.script.methods.ClientFactory;
+import org.powerbot.script.util.Random;
+import org.powerbot.util.Configuration;
+
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -16,11 +21,6 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.logging.Logger;
-
-import org.powerbot.script.internal.ScriptContainer;
-import org.powerbot.script.methods.ClientFactory;
-import org.powerbot.script.util.Random;
-import org.powerbot.util.Configuration;
 
 public abstract class AbstractScript implements Script {
 	public final Logger log = Logger.getLogger(getClass().getName());

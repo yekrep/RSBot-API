@@ -1,13 +1,13 @@
 package org.powerbot.script.internal;
 
+import org.powerbot.event.EventMulticaster;
+import org.powerbot.script.lang.Subscribable;
+import org.powerbot.script.lang.Suspendable;
+
 import java.util.ArrayList;
 import java.util.EventListener;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
-
-import org.powerbot.event.EventMulticaster;
-import org.powerbot.script.lang.Subscribable;
-import org.powerbot.script.lang.Suspendable;
 
 /**
  * @author Paris
