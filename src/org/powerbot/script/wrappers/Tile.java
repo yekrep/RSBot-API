@@ -53,18 +53,11 @@ public class Tile implements Locatable {
 		return randomize(-x, x, -y, y);
 	}
 
-	public double distanceTo(final Tile t) {
-		return plane == t.plane ? distance2DTo(t) : Double.POSITIVE_INFINITY;
-	}
-
-	public double distance2DTo(final Tile t) {
+	public double distanceTo(final Locatable l) {
+		Tile t = l != null ? l.getLocation() : null;
+		if (t == null || plane != t.plane) return Double.POSITIVE_INFINITY;
 		final int dx = x - t.x, dy = y - t.y;
 		return Math.sqrt(dx * dx + dy * dy);
-	}
-
-	public double distance3DTo(final Tile t) {
-		final int dx = x - t.x, dy = y - t.y, dz = plane - t.plane;
-		return Math.sqrt(dx * dx + dy * dy + dz * dz);
 	}
 
 	@Override

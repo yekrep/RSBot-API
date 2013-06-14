@@ -4,7 +4,6 @@ import org.powerbot.client.Client;
 import org.powerbot.script.util.Delay;
 import org.powerbot.script.wrappers.Component;
 import org.powerbot.script.wrappers.Locatable;
-import org.powerbot.script.wrappers.Player;
 import org.powerbot.script.wrappers.Targetable;
 import org.powerbot.script.wrappers.Tile;
 import org.powerbot.script.wrappers.TileMatrix;
@@ -112,30 +111,5 @@ public class Movement extends ClientLink {
 				location.getY() + (int) (16d * Math.sin(angle)),
 				tile.getPlane()
 		);
-	}
-
-	public double distance(final int x1, final int y1, final int x2, final int y2) {
-		return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
-	}
-
-	public double distance(final Locatable a, final Locatable b) {
-		final Tile tA = a != null ? a.getLocation() : null, tB = b != null ? b.getLocation() : null;
-		if (tA == null || tB == null) {
-			return Double.MAX_VALUE;
-		}
-		return distance(tA.x, tA.y, tB.x, tB.y);
-	}
-
-	public double distanceTo(final int x, final int y) {
-		final Player local = ctx.players.getLocal();
-		final Tile location;
-		if (local == null || (location = local.getLocation()) == null) {
-			return Double.MAX_VALUE;
-		}
-		return distance(location.x, location.y, x, y);
-	}
-
-	public double distanceTo(final Locatable locatable) {
-		return distance(ctx.players.getLocal(), locatable);
 	}
 }

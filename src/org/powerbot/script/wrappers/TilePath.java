@@ -27,7 +27,7 @@ public class TilePath extends Path {
 		}
 		final Tile dest = ctx.movement.getDestination();
 		if (next.equals(getEnd())) {
-			if (ctx.movement.distanceTo(next) <= 1) {
+			if (next.distanceTo(ctx.players.getLocal()) <= 1) {
 				return false;
 			}
 			if (end && (local.isInMotion() || (dest != null && dest.equals(next)))) {
@@ -41,8 +41,8 @@ public class TilePath extends Path {
 			if (options.contains(TraversalOption.HANDLE_RUN) && !ctx.movement.isRunning() && ctx.movement.getEnergyLevel() > Random.nextInt(45, 60)) {
 				ctx.movement.setRunning(true);
 			}
-			if (options.contains(TraversalOption.SPACE_ACTIONS) && dest != null && local.isInMotion() && ctx.movement.distance(next, dest) < 3d) {
-				if (ctx.movement.distanceTo(dest) > Random.nextDouble(4d, 7d)) {
+			if (options.contains(TraversalOption.SPACE_ACTIONS) && dest != null && local.isInMotion() && next.distanceTo(dest) < 3d) {
+				if (dest.distanceTo(ctx.players.getLocal()) > Random.nextDouble(4d, 7d)) {
 					return true;
 				}
 			}
@@ -52,7 +52,7 @@ public class TilePath extends Path {
 
 	@Override
 	public boolean isValid() {
-		return tiles.length > 0 && getNext() != null && ctx.movement.distanceTo(getEnd()) > Math.sqrt(2);
+		return tiles.length > 0 && getNext() != null && getEnd().distanceTo(ctx.players.getLocal()) > Math.sqrt(2);
 	}
 
 	@Override
@@ -77,7 +77,7 @@ public class TilePath extends Path {
 			/* LARGELY SPACED PATH SUPPORT: If the current destination is the tile on the map, return that tile
 			 * as the next one will be coming soon (we hope/assume this, as short spaced paths should never experience
 			 * this condition as one will be on map before it reaches the current target). */
-			if (dest == null || ctx.movement.distance(tiles[i], dest) < 3d) {
+			if (dest == null || tiles[i].distanceTo(dest) < 3d) {
 				return tiles[i];
 			}
 			/* Tile is on map and isn't currently "targeted" (dest), let's check it out.
@@ -92,7 +92,7 @@ public class TilePath extends Path {
 				}
 				/* If a tile (successor) is currently targeted, return the tile that was the "best"
 				 * on the map for getNext as we can safely assume we're following our path. */
-				if (ctx.movement.distance(tiles[a], dest) < 3d) {
+				if (tiles[a].distanceTo(dest) < 3d) {
 					return tiles[i];
 				}
 			}

@@ -47,7 +47,7 @@ public interface Locatable {
 		public boolean accept(final Locatable l) {
 			Tile tile = l != null ? l.getLocation() : null;
 			Tile target = this.target.getLocation();
-			return tile != null && target != null && tile.distance2DTo(target) <= distance;
+			return tile != null && target != null && tile.distanceTo(target) <= distance;
 		}
 	}
 
