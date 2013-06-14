@@ -53,7 +53,7 @@ public class PaintEvent extends AbstractEvent {
 
 		try {
 			((PaintListener) eventListener).onRepaint(graphics);
-		} catch (final Exception e) {
+		} catch (final Throwable e) {
 			e.printStackTrace();
 		}
 
