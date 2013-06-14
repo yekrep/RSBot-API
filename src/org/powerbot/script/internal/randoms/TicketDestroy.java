@@ -1,4 +1,4 @@
-package org.powerbot.script.randoms;
+package org.powerbot.script.internal.randoms;
 
 import org.powerbot.script.Manifest;
 import org.powerbot.script.PollingScript;

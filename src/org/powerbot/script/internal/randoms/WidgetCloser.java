@@ -1,4 +1,4 @@
-package org.powerbot.script.randoms;
+package org.powerbot.script.internal.randoms;
 
 import java.awt.Point;
 
