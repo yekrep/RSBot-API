@@ -211,7 +211,7 @@ public class DepositBox extends ClientLink {
 		if (!isOpen() || amount < 0) {
 			return false;
 		}
-		final Item item = ctx.inventory.getItem(id);
+		final Item item = ctx.inventory.select().id(id).first();
 		if (item == null) {
 			return false;
 		}

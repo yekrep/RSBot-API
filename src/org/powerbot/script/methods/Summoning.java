@@ -123,7 +123,7 @@ public class Summoning extends ClientLink {
 
 	public boolean summonFamiliar(final Familiar familiar) {
 		return ctx.inventory.getCount(familiar.getPouchId()) > 0 && ctx.skills.getRealLevel(Skills.SUMMONING) >= familiar.getRequiredLevel() &&
-				getPoints() >= familiar.getRequiredPoints() && ctx.inventory.getItem(familiar.getPouchId()).getComponent().interact("Summon");
+				getPoints() >= familiar.getRequiredPoints() && ctx.inventory.select().id(familiar.getPouchId()).first().getComponent().interact("Summon");
 	}
 
 	public Npc getFamiliar() {

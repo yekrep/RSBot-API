@@ -5,12 +5,13 @@ import org.powerbot.client.Client;
 import org.powerbot.client.HashTable;
 import org.powerbot.client.RSItemDef;
 import org.powerbot.client.RSItemDefLoader;
+import org.powerbot.script.lang.Identifiable;
 import org.powerbot.script.methods.ClientFactory;
 import org.powerbot.util.StringUtil;
 
 import java.awt.Point;
 
-public class Item extends Interactive {
+public class Item extends Interactive implements Identifiable {
 	private final int id;
 	private int stack;
 	private final Component component;
@@ -29,6 +30,7 @@ public class Item extends Interactive {
 		this.component = component;
 	}
 
+	@Override
 	public int getId() {
 		return this.id;
 	}

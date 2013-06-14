@@ -1,13 +1,16 @@
 package org.powerbot.script.methods;
 
 import org.powerbot.script.internal.methods.Items;
+import org.powerbot.script.lang.IdQuery;
 import org.powerbot.script.util.Filter;
 import org.powerbot.script.wrappers.Component;
 import org.powerbot.script.wrappers.Item;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
-public class Inventory extends ClientLink {
+public class Inventory extends IdQuery<Item> {
 	public static final int WIDGET = 679;
 	public static final int WIDGET_BANK = 763;
 	public static final int WIDGET_PRICE_CHECK = 204;
@@ -29,8 +32,9 @@ public class Inventory extends ClientLink {
 		super(factory);
 	}
 
-	public Item[] getItems() {
-		final Item[] items = new Item[28];
+	@Override
+	protected List<Item> get() {
+		List<Item> items = new ArrayList<>(28);
 		final Component inv = getComponent();
 		if (inv == null) {
 			return items;
@@ -52,13 +56,13 @@ public class Inventory extends ClientLink {
 					if (data[i][0] == -1) {
 						continue;
 					}
-					items[d++] = new Item(ctx, data[i][0], data[i][1], comps[i]);
+					items.add(new Item(ctx, data[i][0], data[i][1], comps[i]));
 				} else if (comps[i].getItemId() != -1) {
-					items[d++] = new Item(ctx, comps[i]);
+					items.add(new Item(ctx, comps[i]));
 				}
 			}
 		}
-		return Arrays.copyOf(items, d);
+		return items;
 	}
 
 	public Item[] getAllItems() {
@@ -101,53 +105,6 @@ public class Inventory extends ClientLink {
 			return new Item(ctx, data[index][0], data[index][1], comps[index]);
 		}
 		return null;
-	}
-
-	public Item[] getItems(final Filter<Item> filter) {
-		final Item[] items = getItems();
-		final Item[] set = new Item[items.length];
-		int d = 0;
-		for (final Item item : items) {
-			if (filter.accept(item)) {
-				set[d++] = item;
-			}
-		}
-		return Arrays.copyOf(set, d);
-	}
-
-	public Item[] getItems(final int... ids) {
-		return getItems(new Filter<Item>() {
-			@Override
-			public boolean accept(final Item item) {
-				final int _id = item.getId();
-				for (final int id : ids) {
-					if (id == _id) {
-						return true;
-					}
-				}
-				return false;
-			}
-		});
-	}
-
-	public Item getItem(final Filter<Item> filter) {
-		final Item[] items = getItems(filter);
-		return items != null && items.length > 0 ? items[0] : null;
-	}
-
-	public Item getItem(final int... ids) {
-		return getItem(new Filter<Item>() {
-			@Override
-			public boolean accept(final Item item) {
-				final int _id = item.getId();
-				for (final int id : ids) {
-					if (id == _id) {
-						return true;
-					}
-				}
-				return false;
-			}
-		});
 	}
 
 	public int getSelectedItemIndex() {

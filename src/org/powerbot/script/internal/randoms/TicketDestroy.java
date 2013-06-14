@@ -25,7 +25,7 @@ public class TicketDestroy extends PollingScript implements RandomEvent {
 				player.isInCombat() || player.getAnimation() != -1 || player.getInteracting() != null) {
 			return 600;
 		}
-		final Item item = ctx.inventory.getItem(ITEM_IDS);
+		final Item item = ctx.inventory.select().id(ITEM_IDS).first();
 		if (item != null) {
 			Tracker.getInstance().trackPage("randoms/TicketDestroy/", "");
 			final Component child = item.getComponent();
