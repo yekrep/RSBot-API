@@ -44,13 +44,12 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends Cl
 		return getThis();
 	}
 
-	public T select(final Filter<? super K> f) {
+	public T select(Collection<K> collection) {
 		final List<K> items = this.items.get();
 
-		for (int i = 0; i < items.size(); i++) {
-			if (!f.accept(items.get(i))) {
-				items.remove(i);
-			}
+		synchronized (items) {
+			items.clear();
+			items.addAll(collection);
 		}
 
 		return getThis();
