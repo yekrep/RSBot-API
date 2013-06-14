@@ -5,6 +5,9 @@ import org.powerbot.script.util.Random;
 
 import java.awt.Color;
 
+/**
+ * Represents a position in three-dimensional game space.
+ */
 public class Tile implements Locatable {
 	public static final Color TARGET_COLOR = new Color(255, 0, 0, 75);
 	public final int x;
@@ -33,6 +36,12 @@ public class Tile implements Locatable {
 		return plane;
 	}
 
+	/**
+	 * Retrieves the {@link TileMatrix} for this {@link Tile}.
+	 *
+	 * @param ctx The context to retrieve the matrix in.
+	 * @return the {@link TileMatrix} of this {@link Tile} with the given context
+	 */
 	public TileMatrix getMatrix(ClientFactory ctx) {
 		return new TileMatrix(ctx, this);
 	}

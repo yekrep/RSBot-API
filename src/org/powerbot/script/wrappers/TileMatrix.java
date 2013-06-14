@@ -8,6 +8,9 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Polygon;
 
+/**
+ * An interactive tile matrix.
+ */
 public final class TileMatrix extends Interactive implements Locatable, Drawable {
 	private Tile tile;
 
