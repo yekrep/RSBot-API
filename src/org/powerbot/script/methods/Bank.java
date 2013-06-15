@@ -462,13 +462,14 @@ public class Bank extends ClientLink {
 		return ctx.settings.get(SETTING_WITHDRAW_MODE) == 0x1;
 	}
 
-	private boolean containsAction(final Component c, final String action) {
+	private boolean containsAction(final Component c, String action) {
+		action = action.toLowerCase();
 		final String[] actions = c.getActions();
 		if (action == null) {
 			return false;
 		}
 		for (final String a : actions) {
-			if (a != null && a.matches("^" + action + "(<.*>)?$")) {
+			if (a != null && a.toLowerCase().contains(action)) {
 				return true;
 			}
 		}
