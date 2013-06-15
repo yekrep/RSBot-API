@@ -12,13 +12,17 @@ import org.powerbot.script.internal.InputHandler;
 import org.powerbot.script.internal.MouseHandler;
 import org.powerbot.script.internal.ScriptHandler;
 import org.powerbot.script.lang.Stoppable;
+import org.powerbot.script.methods.Game;
+import org.powerbot.script.methods.Keyboard;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.util.Delay;
+import org.powerbot.script.util.Random;
 import org.powerbot.service.GameAccounts;
 
 import java.awt.Canvas;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Logger;
@@ -96,6 +100,29 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 		stub.setActive(true);
 		log.info("Starting game");
 		new Thread(threadGroup, appletContainer, "Loader").start();
+
+		final Thread t = new Thread(threadGroup, new Runnable() {
+			@Override
+			public void run() {
+				for (; ; ) {
+					int s;
+					if ((s = getMethodContext().game.getClientState()) >= Game.INDEX_LOGIN_SCREEN) {
+						if (s == Game.INDEX_LOGIN_SCREEN) {
+							getMethodContext().keyboard.pressKey(KeyEvent.VK_ESCAPE, KeyEvent.CHAR_UNDEFINED);
+						}
+						break;
+					} else {
+						try {
+							Thread.sleep(300);
+						} catch (final InterruptedException ignored) {
+						}
+					}
+				}
+			}
+		});
+		t.setPriority(Thread.MIN_PRIORITY);
+		t.start();
+
 		BotChrome.getInstance().panel.setBot(this);
 	}
 
