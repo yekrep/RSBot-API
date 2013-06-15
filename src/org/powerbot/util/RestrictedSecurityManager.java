@@ -167,8 +167,9 @@ public class RestrictedSecurityManager extends SecurityManager {
 	}
 
 	private void checkFilePath(final String pathRaw, final boolean readOnly) {
-		final String path = getCanonicalPath(new File(StringUtil.urlDecode(pathRaw))), tmp = getCanonicalPath(Configuration.TEMP);
+		if (isRecursive()) return;
 
+		final String path = getCanonicalPath(new File(StringUtil.urlDecode(pathRaw))), tmp = getCanonicalPath(Configuration.TEMP);
 		// permission controls for crypt files
 		for (final Entry<File, Class<?>[]> entry : CryptFile.PERMISSIONS.entrySet()) {
 			final Class<?>[] entries = new Class<?>[entry.getValue().length + 1];
@@ -227,6 +228,15 @@ public class RestrictedSecurityManager extends SecurityManager {
 					return true;
 				}
 			}
+		}
+		return false;
+	}
+
+	private boolean isRecursive() {
+		final String match = "org.powerbot.util.RestrictedSecurityManager.getCanonicalPath";
+		for (StackTraceElement element : Thread.currentThread().getStackTrace()) {
+			String str = element.getClassName() + "." + element.getMethodName();
+			if (str.equals(match)) return true;
 		}
 		return false;
 	}
