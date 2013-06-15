@@ -21,6 +21,7 @@ public class RandomHandler implements Runnable {
 		this.events = events;
 		this.timeout = new Timer(0);
 		this.suspended = false;
+		this.pos = -1;
 	}
 
 	@Override
