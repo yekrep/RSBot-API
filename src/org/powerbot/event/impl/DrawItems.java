@@ -26,7 +26,7 @@ public class DrawItems implements PaintListener {
 			Component container = ctx.widgets.get(Bank.WIDGET, Bank.COMPONENT_CONTAINER_ITEMS);
 			Rectangle r = container.getViewportRect();
 			if (r != null) {
-				for (Item item : ctx.bank.getItems()) {
+				for (Item item : ctx.bank.select()) {
 					Component c = item.getComponent();
 					if (c == null) {
 						continue;

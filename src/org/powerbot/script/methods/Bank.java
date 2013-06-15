@@ -1,7 +1,7 @@
 package org.powerbot.script.methods;
 
+import org.powerbot.script.lang.ItemQuery;
 import org.powerbot.script.util.Delay;
-import org.powerbot.script.util.Filter;
 import org.powerbot.script.util.Random;
 import org.powerbot.script.util.Timer;
 import org.powerbot.script.wrappers.Component;
@@ -13,9 +13,11 @@ import org.powerbot.script.wrappers.Widget;
 
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
-public class Bank extends ClientLink {
+public class Bank extends ItemQuery<Item> {
 	public static final int[] BANK_NPC_IDS = new int[]{
 			44, 45, 166, 494, 495, 496, 497, 498, 499, 553, 909, 953, 958, 1036, 1360, 1702, 2163, 2164, 2354, 2355,
 			2568, 2569, 2570, 2617, 2618, 2619, 2718, 2759, 3046, 3198, 3199, 3293, 3416, 3418, 3824, 4456, 4457,
@@ -139,72 +141,20 @@ public class Bank extends ClientLink {
 		return close(true);
 	}
 
-	public Item[] getItems() {
+	@Override
+	protected List<Item> get() {
 		final Component c = ctx.widgets.get(WIDGET, COMPONENT_CONTAINER_ITEMS);
 		if (c == null || !c.isValid()) {
-			return new Item[0];
+			return new ArrayList<>();
 		}
 		final Component[] components = c.getChildren();
-		Item[] items = new Item[components.length];
-		int d = 0;
+		List<Item> items = new ArrayList<>(components.length);
 		for (final Component i : components) {
 			if (i.getItemId() != -1) {
-				items[d++] = new Item(ctx, i);
+				items.add(new Item(ctx, i));
 			}
 		}
-		return Arrays.copyOf(items, d);
-	}
-
-	public Item[] getItems(final Filter<Item> filter) {
-		return getItems(false, filter);
-	}
-
-	public Item[] getItems(final boolean currentTab) {
-		if (!currentTab) {
-			return getItems();
-		}
-		return getItems(new Filter<Item>() {
-			@Override
-			public boolean accept(final Item item) {
-				return item.getComponent().getRelativeLocation().y != 0;
-			}
-		});
-	}
-
-	public Item[] getItems(final int... ids) {
-		Arrays.sort(ids);
-		return getItems(new Filter<Item>() {
-			@Override
-			public boolean accept(final Item item) {
-				return Arrays.binarySearch(ids, item.getId()) >= 0;
-			}
-		});
-	}
-
-	public Item getItem(final int... ids) {
-		final Item[] items = getItems(ids);
-		return items.length > 0 ? items[0] : null;
-	}
-
-	public Item getItem(final Filter<Item> filter) {
-		return getItem(false, filter);
-	}
-
-	public Item getItem(final boolean currentTab, final Filter<Item> filter) {
-		final Item[] items = getItems(currentTab, filter);
-		return items.length > 0 ? items[0] : null;
-	}
-
-	public Item[] getItems(final boolean currentTab, final Filter<Item> filter) {
-		final Item[] items = getItems(currentTab);
-		final Item[] arr = new Item[items.length];
-		int d = 0;
-		for (final Item item : items) {
-			if (filter.accept(item)) {
-				arr[d++] = item;
-			}
-		}
-		return Arrays.copyOf(arr, d);
+		return items;
 	}
 
 	public Item getItemAt(final int index) {
@@ -233,11 +183,7 @@ public class Bank extends ClientLink {
 		return -1;
 	}
 
-	public boolean contains(final int id) {
-		return indexOf(id) != -1;
-	}
-
-	public boolean containsAll(final int... ids) {
+	public boolean contains(final int... ids) {
 		for (final int id : ids) {
 			if (indexOf(id) == -1) {
 				return false;
@@ -253,45 +199,6 @@ public class Bank extends ClientLink {
 			}
 		}
 		return false;
-	}
-
-	public int getCount() {
-		return getCount(false);
-	}
-
-	public int getCount(final boolean stacks) {
-		int count = 0;
-		final Item[] items = getItems();
-		for (final Item item : items) {
-			if (stacks) {
-				count += item.getStackSize();
-			} else {
-				++count;
-			}
-		}
-		return count;
-	}
-
-	public int getCount(final int... ids) {
-		return getCount(false, ids);
-	}
-
-	public int getCount(final boolean stacks, final int... ids) {
-		int count = 0;
-		final Item[] items = getItems();
-		for (final Item item : items) {
-			for (final int id : ids) {
-				if (item.getId() == id) {
-					if (stacks) {
-						count += item.getStackSize();
-					} else {
-						++count;
-					}
-					break;
-				}
-			}
-		}
-		return count;
 	}
 
 	public int getCurrentTab() {
@@ -319,7 +226,7 @@ public class Bank extends ClientLink {
 	}
 
 	public boolean withdraw(final int id, final int amount) {
-		final Item item = getItem(id);
+		final Item item = select().id(id).first();
 		if (item == null) {
 			return false;
 		}
