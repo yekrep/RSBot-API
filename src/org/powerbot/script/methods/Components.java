@@ -73,7 +73,7 @@ class Components extends ClientLink {
 			if (components != null) {
 				for (final Component c : components) {
 					final String[] actions = c.getActions();
-					if (actions != null && actions.length > 1 && actions[0].equalsIgnoreCase(Game.TAB_NAMES[index])) {
+					if (actions != null && actions.length > 0 && actions[0].equalsIgnoreCase(Game.TAB_NAMES[index])) {
 						container.tabs[index] = c.getIndex();
 						break;
 					}
