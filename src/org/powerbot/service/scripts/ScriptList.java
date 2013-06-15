@@ -136,7 +136,7 @@ public class ScriptList {
 		final ClassLoader cl;
 		if (def.local) {
 			try {
-				cl = new ScriptClassLoader(new File(def.source).toURI().toURL());
+				cl = new URLClassLoader(new URL[]{new File(def.source).toURI().toURL()});
 			} catch (final Exception ignored) {
 				return;
 			}
