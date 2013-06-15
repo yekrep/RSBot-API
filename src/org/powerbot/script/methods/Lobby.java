@@ -180,9 +180,8 @@ public class Lobby extends ClientLink {
 
 	private boolean closeDialog() {
 		final Dialog dialog = getOpenDialog();
-		if (dialog == null || !dialog.hasBack()) {
-			return false;
-		}
+		if (dialog == null) return true;
+		if (!dialog.hasBack()) return false;
 		final Component child = ctx.widgets.get(WIDGET_MAIN_LOBBY, dialog.getBackIndex());
 		return child != null && child.isOnScreen() && child.click(true);
 	}
