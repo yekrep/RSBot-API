@@ -57,9 +57,11 @@ public class Objects extends LocatableIdQuery<GameObject> {
 					continue;
 				}
 
-				for (RSAnimableNode node = ground.getRSAnimableList(); node != null; node = node.getNext()) {
-					final RSObject obj = node.getRSAnimable();
-					if (obj != null && obj.getId() != -1 && !refs.contains(obj)) {
+				for (RSAnimableNode animable = ground.getRSAnimableList(); animable != null; animable = animable.getNext()) {
+					Object node = animable.getRSAnimable();
+					if (node == null || !(node instanceof RSObject)) continue;
+					RSObject obj = (RSObject) node;
+					if (obj.getId() != -1 && !refs.contains(obj)) {
 						refs.add(obj);
 						items.add(new GameObject(ctx, obj, GameObject.Type.INTERACTIVE));
 					}
