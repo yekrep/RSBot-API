@@ -2,8 +2,8 @@ package org.powerbot.script.lang;
 
 import org.powerbot.script.methods.ClientFactory;
 
-public abstract class ItemQuery<K extends Identifiable> extends AbstractQuery<ItemQuery<K>, K>
-		implements Identifiable.Query<ItemQuery<K>> {
+public abstract class ItemQuery<K extends Identifiable & Stackable> extends AbstractQuery<ItemQuery<K>, K>
+		implements Identifiable.Query<ItemQuery<K>>, Stackable.Query<ItemQuery<K>> {
 	public ItemQuery(final ClientFactory factory) {
 		super(factory);
 	}
@@ -27,5 +27,18 @@ public abstract class ItemQuery<K extends Identifiable> extends AbstractQuery<It
 	@Override
 	public ItemQuery<K> id(Identifiable... identifiables) {
 		return select(new Identifiable.Matcher(identifiables));
+	}
+
+	@Override
+	public int count() {
+		return size();
+	}
+
+	@Override
+	public int count(boolean stacks) {
+		if (!stacks) return count();
+		int count = 0;
+		for (Stackable stackable : this) count += stackable.getStackSize();
+		return count;
 	}
 }
