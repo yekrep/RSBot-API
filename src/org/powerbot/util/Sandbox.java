@@ -1,0 +1,281 @@
+package org.powerbot.util;
+
+import java.io.File;
+import java.io.IOException;
+import java.net.InetAddress;
+import java.security.Permission;
+import java.util.Map.Entry;
+import java.util.logging.Logger;
+
+import org.powerbot.Configuration;
+import org.powerbot.bot.RSClassLoader;
+import org.powerbot.service.scripts.ScriptClassLoader;
+import org.powerbot.util.io.CryptFile;
+
+/**
+ * @author Paris
+ */
+public class Sandbox extends SecurityManager {
+	private static final Logger log = Logger.getLogger("Sandbox");
+	private static final int PUBLIC_PORT_START = 54700, PUBLIC_PORT_END = 54800;
+	private final Class<?>[] whitelist, whitelistHome;
+
+	public Sandbox(final Class<?>[] whitelist, final Class<?>[] whitelistHome) {
+		this.whitelist = whitelist;
+		this.whitelistHome = whitelistHome;
+	}
+
+	@Override
+	public void checkAccept(final String host, final int port) {
+		if (port >= PUBLIC_PORT_START || port <= PUBLIC_PORT_END) {
+			return;
+		}
+		throw new SecurityException();
+	}
+
+	@Override
+	public void checkAccess(final Thread t) {
+		super.checkAccess(t);
+	}
+
+	@Override
+	public void checkAccess(final ThreadGroup g) {
+		super.checkAccess(g);
+	}
+
+	@Override
+	public void checkConnect(final String host, final int port) {
+		checkConnect(host, port, null);
+	}
+
+	@Override
+	public void checkConnect(final String host, final int port, final Object context) {
+		if (!(port == 80 || port == 443 || port == 53 || port == 43594 || port == -1)) {
+			log.severe("Connection denied to port " + port);
+			throw new SecurityException();
+		}
+		if (host.equals("localhost") || host.endsWith(".localdomain") || host.startsWith("127.") || host.startsWith("192.168.") || host.startsWith("10.") || host.endsWith("::1")) {
+			if (!isCallingClass(Configuration.class) && Configuration.FROMJAR && !(port >= PUBLIC_PORT_START && port <= PUBLIC_PORT_END)) {
+				log.severe("Connection denied to localhost");
+				throw new SecurityException();
+			}
+		}
+		if (context == null) {
+			super.checkConnect(host, port);
+		} else {
+			super.checkConnect(host, port, context);
+		}
+	}
+
+	@Override
+	public void checkCreateClassLoader() {
+		if (isScriptThread() && !isCallingClass(javax.swing.UIDefaults.class, java.io.ObjectOutputStream.class, java.io.ObjectInputStream.class,
+				java.lang.reflect.Proxy.class)) {
+			log.severe("Creating class loader denied");
+			throw new SecurityException();
+		}
+		super.checkCreateClassLoader();
+	}
+
+	@Override
+	public void checkDelete(final String file) {
+		checkFilePath(file, false);
+		super.checkDelete(file);
+	}
+
+	@Override
+	public void checkExec(final String cmd) {
+		if (isScriptThread()) {
+			throw new SecurityException();
+		}
+		super.checkExec(cmd);
+	}
+
+	@Override
+	public void checkExit(final int status) {
+		if (isScriptThread()) {
+			throw new SecurityException();
+		}
+		super.checkExit(status);
+	}
+
+	@Override
+	public void checkListen(final int port) {
+		super.checkListen(port);
+	}
+
+	@Override
+	public void checkMulticast(final InetAddress maddr) {
+		throw new SecurityException();
+	}
+
+	@Override
+	public void checkMulticast(final InetAddress maddr, final byte ttl) {
+		throw new SecurityException();
+	}
+
+	@Override
+	public void checkPermission(final Permission perm) {
+		if (perm instanceof RuntimePermission) {
+			if (perm.getName().equals("setSecurityManager")) {
+				throw new SecurityException();
+			}
+		}
+	}
+
+	@Override
+	public void checkPermission(final Permission perm, final Object context) {
+		checkPermission(perm);
+	}
+
+	@Override
+	public void checkPrintJobAccess() {
+		throw new SecurityException();
+	}
+
+	@Override
+	public void checkRead(final String file) {
+		checkFilePath(file, true);
+		super.checkRead(file);
+	}
+
+	@Override
+	public void checkRead(final String file, final Object context) {
+		checkRead(file);
+		super.checkRead(file, context);
+	}
+
+	@Override
+	public void checkSetFactory() {
+		if (isScriptThread()) {
+			throw new SecurityException();
+		}
+		super.checkSetFactory();
+	}
+
+	@Override
+	public void checkSystemClipboardAccess() {
+		if (isCallingClass(java.awt.event.InputEvent.class)) {
+			return;
+		}
+		throw new SecurityException();
+	}
+
+	@Override
+	public void checkWrite(final String file) {
+		checkFilePath(file, false);
+		super.checkWrite(file);
+	}
+
+	private void checkFilePath(final String pathRaw, final boolean readOnly) {
+		if (isRecursive()) return;
+
+		final String path = getCanonicalPath(new File(StringUtil.urlDecode(pathRaw))), tmp = getCanonicalPath(Configuration.TEMP);
+		// permission controls for crypt files
+		for (final Entry<File, Class<?>[]> entry : CryptFile.PERMISSIONS.entrySet()) {
+			final Class<?>[] entries = new Class<?>[entry.getValue().length + 1];
+			entries[0] = CryptFile.class;
+			System.arraycopy(entry.getValue(), 0, entries, 1, entries.length - 1);
+			final String pathDecoded = getCanonicalPath(new File(StringUtil.urlDecode(entry.getKey().getAbsolutePath())));
+			if (pathDecoded.equals(path)) {
+				if (!isCallingClass(entries)) {
+					throw new SecurityException();
+				}
+			}
+		}
+
+		if (isCallingClass(whitelist)) {
+			return;
+		}
+
+		if ((path + File.separator).startsWith(Configuration.HOME.getAbsolutePath()) && isCallingClass(whitelistHome)) {
+			return;
+		}
+
+		// allow access for privileged thread groups
+		if (isGameThread()) {
+			return;
+		}
+
+		// allow read permissions to all files
+		if (readOnly) {
+			return;
+		}
+
+		// allow write access to temp directory
+		if ((path + File.separator).startsWith(tmp)) {
+			return;
+		}
+
+		if (!path.contains("runescape" + File.separator + "LIVE")) {
+			log.severe((readOnly ? "Read" : "Write") + " denied: " + path + " on " + Thread.currentThread().getName() + "/" + Thread.currentThread().getThreadGroup().getName());
+		}
+
+		throw new SecurityException();
+	}
+
+	private static String getCanonicalPath(final File f) {
+		try {
+			return f.getCanonicalPath();
+		} catch (final IOException ignored) {
+			return f.getAbsolutePath();
+		}
+	}
+
+	private boolean isCallingClass(final Class<?>... classes) {
+		for (final Class<?> context : getClassContext()) {
+			for (final Class<?> clazz : classes) {
+				if (clazz.isAssignableFrom(context)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	private boolean isRecursive() {
+		final String match = "org.powerbot.util.Sandbox.getCanonicalPath";
+		for (StackTraceElement element : Thread.currentThread().getStackTrace()) {
+			String str = element.getClassName() + "." + element.getMethodName();
+			if (str.equals(match)) return true;
+		}
+		return false;
+	}
+
+	private boolean isScriptThread() {
+		final Class<?>[] context = getClassContext();
+		for (int i = 1; i < context.length; i++) {
+			final ClassLoader loader = context[i].getClassLoader();
+			if (loader != null && loader.getClass().isAssignableFrom(ScriptClassLoader.class)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private boolean isGameThread() {
+		final Class<?>[] context = getClassContext();
+		for (int i = 1; i < 5; i++) {
+			if (context[i].isAssignableFrom(Sandbox.class)) {
+				continue;
+			}
+			final ClassLoader loader = context[i].getClassLoader();
+			if (loader != null && loader.getClass().isAssignableFrom(RSClassLoader.class)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public static boolean isScriptThread(final Thread t) {
+		final ClassLoader loader = t.getContextClassLoader();
+		return loader != null && loader.getClass().isAssignableFrom(ScriptClassLoader.class);
+	}
+
+	public static void assertNonScript() {
+		final SecurityManager sm = System.getSecurityManager();
+		if (sm == null || !(sm instanceof Sandbox) || ((Sandbox) sm).isScriptThread()) {
+			throw new SecurityException();
+		}
+	}
+}

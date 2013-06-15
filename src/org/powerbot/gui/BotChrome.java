@@ -23,9 +23,9 @@ import javax.swing.WindowConstants;
 import org.powerbot.bot.Bot;
 import org.powerbot.gui.component.BotMenuBar;
 import org.powerbot.gui.component.BotPanel;
-import org.powerbot.util.Configuration;
-import org.powerbot.util.LoadOSX;
-import org.powerbot.util.LoadUpdates;
+import org.powerbot.Configuration;
+import org.powerbot.service.UpdateCheck;
+import org.powerbot.util.OSXAdapt;
 import org.powerbot.util.Tracker;
 import org.powerbot.util.io.Resources;
 
@@ -78,8 +78,8 @@ public class BotChrome extends JFrame implements Closeable {
 
 		final ExecutorService exec = Executors.newFixedThreadPool(1);
 		final List<Future<Boolean>> tasks = new ArrayList<>();
-		tasks.add(exec.submit(new LoadUpdates()));
-		tasks.add(exec.submit(new LoadOSX()));
+		tasks.add(exec.submit(new UpdateCheck()));
+		tasks.add(exec.submit(new OSXAdapt()));
 		exec.shutdown();
 
 		Bot bot = null;

@@ -20,7 +20,7 @@ import java.util.Map;
 import java.util.Vector;
 import java.util.logging.Logger;
 
-import org.powerbot.loader.Crawler;
+import org.powerbot.bot.loader.Crawler;
 
 public class BotStub implements AppletStub, AppletContext {
 	private static final Logger log = Logger.getLogger(BotStub.class.getName());

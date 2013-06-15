@@ -8,9 +8,9 @@ import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.powerbot.loader.ClientLoader;
-import org.powerbot.loader.transform.TransformSpec;
-import org.powerbot.util.Configuration;
+import org.powerbot.bot.loader.ClientLoader;
+import org.powerbot.bot.loader.transform.TransformSpec;
+import org.powerbot.Configuration;
 
 /**
  * @author Timer

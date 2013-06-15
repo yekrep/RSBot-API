@@ -21,7 +21,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import org.powerbot.gui.component.BotLocale;
-import org.powerbot.util.Configuration;
+import org.powerbot.Configuration;
 import org.powerbot.util.Tracker;
 
 public final class BotAbout extends JDialog {

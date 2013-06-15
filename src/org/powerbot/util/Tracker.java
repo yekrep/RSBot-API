@@ -20,6 +20,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
+import org.powerbot.Configuration;
 import org.powerbot.util.io.CryptFile;
 import org.powerbot.util.io.HttpClient;
 

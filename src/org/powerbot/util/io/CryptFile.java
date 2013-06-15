@@ -27,7 +27,7 @@ import javax.crypto.CipherOutputStream;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
-import org.powerbot.util.Configuration;
+import org.powerbot.Configuration;
 import org.powerbot.util.StringUtil;
 
 /**

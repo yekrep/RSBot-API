@@ -31,7 +31,7 @@ import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
-import org.powerbot.event.PaintListener;
+import org.powerbot.client.event.PaintListener;
 import org.powerbot.script.wrappers.Component;
 import org.powerbot.script.wrappers.Widget;
 import org.powerbot.util.Tracker;
@@ -189,7 +189,7 @@ public class BotWidgetExplorer extends JFrame implements PaintListener {
 		botWidgetExplorer.setVisible(true);
 	}
 
-	public void onRepaint(final Graphics g) {
+	public void repaint(final Graphics g) {
 		if (highlightArea != null) {
 			g.setColor(Color.orange);
 			g.drawRect(highlightArea.x, highlightArea.y, highlightArea.width, highlightArea.height);

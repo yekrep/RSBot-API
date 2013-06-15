@@ -21,7 +21,7 @@ import org.powerbot.gui.BotScripts;
 import org.powerbot.gui.BotSignin;
 import org.powerbot.script.internal.ScriptHandler;
 import org.powerbot.service.NetworkAccount;
-import org.powerbot.util.Configuration;
+import org.powerbot.Configuration;
 import org.powerbot.util.Tracker;
 import org.powerbot.util.io.Resources;
 

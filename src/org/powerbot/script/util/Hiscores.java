@@ -1,6 +1,6 @@
 package org.powerbot.script.util;
 
-import org.powerbot.util.Configuration;
+import org.powerbot.Configuration;
 import org.powerbot.util.StringUtil;
 import org.powerbot.util.io.HttpClient;
 import org.powerbot.util.io.IOHelper;

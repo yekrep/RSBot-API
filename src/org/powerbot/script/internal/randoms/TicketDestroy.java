@@ -1,7 +1,7 @@
 package org.powerbot.script.internal.randoms;
 
 import org.powerbot.script.Manifest;
-import org.powerbot.script.internal.ScriptContainer;
+import org.powerbot.script.internal.ScriptGroup;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.methods.Game;
 import org.powerbot.script.util.Random;
@@ -17,7 +17,7 @@ public class TicketDestroy extends PollingPassive {
 	private static final int[] ITEM_IDS = {24154, 24155};
 	private Item item;
 
-	public TicketDestroy(MethodContext ctx, ScriptContainer container) {
+	public TicketDestroy(MethodContext ctx, ScriptGroup container) {
 		super(ctx, container);
 	}
 

@@ -5,26 +5,24 @@ public abstract class PollingScript extends AbstractScript {
 
 	@Override
 	public final void run() {
-		while (!getContainer().isStopping()) {
-			int sleep;
-			try {
-				if (getContainer().isSuspended()) {
-					sleep = 600;
-				} else {
+		while (!getGroup().isStopping()) {
+			final int sleep;
+
+			if (getGroup().isSuspended()) {
+				sleep = 600;
+			} else {
+				try {
 					sleep = poll();
+				} catch (final Throwable t) {
+					t.printStackTrace();
+					getGroup().stop();
+					break;
 				}
-			} catch (Throwable e) {
-				e.printStackTrace();
-				sleep = -1;
 			}
 
-			if (sleep > 0) {
-				try {
-					Thread.sleep(sleep);
-				} catch (InterruptedException ignored) {
-				}
-			} else if (sleep == -1) {
-				getContainer().stop();
+			try {
+				Thread.sleep(Math.max(0, sleep));
+			} catch (final InterruptedException ignored) {
 			}
 		}
 	}

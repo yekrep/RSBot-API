@@ -7,7 +7,7 @@ import org.powerbot.script.Script;
 import org.powerbot.script.internal.randoms.RandomEvent;
 import org.powerbot.service.GameAccounts;
 import org.powerbot.service.NetworkAccount;
-import org.powerbot.util.Configuration;
+import org.powerbot.Configuration;
 import org.powerbot.util.StringUtil;
 import org.powerbot.util.io.CryptFile;
 import org.powerbot.util.io.HttpClient;

@@ -2,9 +2,9 @@ package org.powerbot.bot;
 
 import org.powerbot.client.Client;
 import org.powerbot.client.Constants;
-import org.powerbot.event.EventMulticaster;
-import org.powerbot.event.PaintEvent;
-import org.powerbot.event.TextPaintEvent;
+import org.powerbot.client.event.EventMulticaster;
+import org.powerbot.client.event.PaintEvent;
+import org.powerbot.client.event.TextPaintEvent;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.gui.component.BotPanel;
 import org.powerbot.script.Script;
@@ -13,10 +13,8 @@ import org.powerbot.script.internal.MouseHandler;
 import org.powerbot.script.internal.ScriptHandler;
 import org.powerbot.script.lang.Stoppable;
 import org.powerbot.script.methods.Game;
-import org.powerbot.script.methods.Keyboard;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.util.Delay;
-import org.powerbot.script.util.Random;
 import org.powerbot.service.GameAccounts;
 
 import java.awt.Canvas;

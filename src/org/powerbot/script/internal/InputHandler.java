@@ -2,7 +2,7 @@ package org.powerbot.script.internal;
 
 import org.powerbot.client.Client;
 import org.powerbot.client.input.Keyboard;
-import org.powerbot.golem.HardwareSimulator;
+import org.powerbot.util.math.HardwareSimulator;
 
 import javax.swing.Timer;
 import java.applet.Applet;

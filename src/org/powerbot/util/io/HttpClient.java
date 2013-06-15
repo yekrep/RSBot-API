@@ -15,7 +15,7 @@ import java.util.zip.GZIPOutputStream;
 import java.util.zip.Inflater;
 import java.util.zip.InflaterInputStream;
 
-import org.powerbot.util.Configuration;
+import org.powerbot.Configuration;
 
 /**
  * @author Paris

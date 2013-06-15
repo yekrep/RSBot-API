@@ -2,7 +2,7 @@ package org.powerbot.script.internal.randoms;
 
 import org.powerbot.gui.BotChrome;
 import org.powerbot.script.Manifest;
-import org.powerbot.script.internal.ScriptContainer;
+import org.powerbot.script.internal.ScriptGroup;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.methods.Game;
 import org.powerbot.script.methods.Lobby;
@@ -29,7 +29,7 @@ public class Login extends PollingPassive {
 	private static final int WIDGET_LOBBY_TRY_AGAIN = 259;
 	private volatile Timer re_load_timer = null;
 
-	public Login(MethodContext ctx, ScriptContainer container) {
+	public Login(MethodContext ctx, ScriptGroup container) {
 		super(ctx, container);
 	}
 
@@ -212,8 +212,8 @@ public class Login extends PollingPassive {
 	}
 
 	@Override
-	public void onRepaint(final Graphics render) {
-		super.onRepaint(render);
+	public void repaint(final Graphics render) {
+		super.repaint(render);
 		if (re_load_timer != null) {
 			render.setColor(Color.white);
 			render.drawString("Reloading game in: " + re_load_timer.toRemainingString(), 8, 30);

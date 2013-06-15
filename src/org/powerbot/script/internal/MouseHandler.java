@@ -2,8 +2,8 @@ package org.powerbot.script.internal;
 
 import org.powerbot.client.Client;
 import org.powerbot.client.input.Mouse;
-import org.powerbot.golem.HeteroMouse;
-import org.powerbot.golem.math.Vector3;
+import org.powerbot.util.math.HeteroMouse;
+import org.powerbot.util.math.Vector3;
 import org.powerbot.script.lang.Stoppable;
 import org.powerbot.script.util.Delay;
 

@@ -1,6 +1,6 @@
 package org.powerbot.script.internal;
 
-import org.powerbot.golem.math.Vector3;
+import org.powerbot.util.math.Vector3;
 
 /**
  * @author Paris

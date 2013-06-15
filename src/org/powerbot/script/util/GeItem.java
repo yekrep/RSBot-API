@@ -2,7 +2,7 @@ package org.powerbot.script.util;
 
 import com.eclipsesource.json.JsonObject;
 import com.eclipsesource.json.JsonValue;
-import org.powerbot.util.Configuration;
+import org.powerbot.Configuration;
 import org.powerbot.util.StringUtil;
 import org.powerbot.util.io.HttpClient;
 import org.powerbot.util.io.IOHelper;

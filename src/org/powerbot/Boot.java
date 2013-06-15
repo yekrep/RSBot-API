@@ -4,9 +4,8 @@ import org.powerbot.bot.RSLoader;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.service.GameAccounts;
 import org.powerbot.service.NetworkAccount;
-import org.powerbot.util.Configuration;
-import org.powerbot.util.Configuration.OperatingSystem;
-import org.powerbot.util.RestrictedSecurityManager;
+import org.powerbot.Configuration.OperatingSystem;
+import org.powerbot.util.Sandbox;
 import org.powerbot.util.StringUtil;
 import org.powerbot.util.Tracker;
 import org.powerbot.util.io.CryptFile;
@@ -113,7 +112,7 @@ public class Boot implements Runnable {
 		StringUtil.newStringUtf8(null); // prevents ClassCircularityError exceptions
 		CryptFile.PERMISSIONS.clear();
 		if (!debugging) {
-			System.setSecurityManager(new RestrictedSecurityManager(new Class<?>[]{RSLoader.class},
+			System.setSecurityManager(new Sandbox(new Class<?>[]{RSLoader.class},
 					new Class<?>[]{NetworkAccount.class, GameAccounts.class, Tracker.class}));
 		}
 		System.setProperty("java.net.preferIPv4Stack", "true");

@@ -1,10 +1,10 @@
 package org.powerbot.script.internal;
 
-import org.powerbot.event.EventMulticaster;
+import org.powerbot.client.event.EventMulticaster;
 import org.powerbot.script.Script;
+import org.powerbot.script.internal.randoms.PollingPassive;
 import org.powerbot.script.internal.randoms.BankPin;
 import org.powerbot.script.internal.randoms.Login;
-import org.powerbot.script.internal.randoms.PollingPassive;
 import org.powerbot.script.internal.randoms.TicketDestroy;
 import org.powerbot.script.internal.randoms.WidgetCloser;
 import org.powerbot.script.lang.Stoppable;
@@ -24,7 +24,7 @@ import java.util.concurrent.atomic.AtomicReference;
 public class ScriptHandler implements Suspendable, Stoppable {
 	MethodContext methodContext;
 	EventManager eventManager;
-	private ScriptContainer container;
+	private ScriptGroup container;
 	private ExecutorService executor;
 	private AtomicReference<Script> script;
 	private AtomicBoolean suspended;
@@ -34,7 +34,7 @@ public class ScriptHandler implements Suspendable, Stoppable {
 	public ScriptHandler(MethodContext methodContext, EventMulticaster multicaster) {
 		this.methodContext = methodContext;
 		this.eventManager = new EventManager(multicaster);
-		this.container = new ContainerImpl(this);
+		this.container = new GroupImpl(this);
 		this.script = new AtomicReference<>(null);
 		this.suspended = new AtomicBoolean(false);
 		this.stopping = new AtomicBoolean(false);
@@ -55,17 +55,17 @@ public class ScriptHandler implements Suspendable, Stoppable {
 			stopping.set(false);
 			this.executor = new ScriptExecutor(this);
 
-			script.setContainer(container);
+			script.setGroup(container);
 			script.setContext(methodContext);
 			eventManager.add(script);
-			if (call(Script.Event.START)) {
+			if (call(Script.State.START)) {
 				eventManager.subscribeAll();
 				getExecutor().submit(randomHandler);
 				getExecutor().submit(script);
 				return true;
 			} else {
 				eventManager.unsubscribeAll();
-				script.setContainer(null);
+				script.setGroup(null);
 				this.script.set(null);
 			}
 		}
@@ -86,7 +86,7 @@ public class ScriptHandler implements Suspendable, Stoppable {
 		getExecutor().submit(new Runnable() {
 			@Override
 			public void run() {
-				call(Script.Event.STOP);
+				call(Script.State.STOP);
 			}
 		});
 		getExecutor().shutdown();
@@ -100,14 +100,14 @@ public class ScriptHandler implements Suspendable, Stoppable {
 
 	@Override
 	public void suspend() {
-		if (this.suspended.compareAndSet(false, true) && !call(Script.Event.SUSPEND)) {
+		if (this.suspended.compareAndSet(false, true) && !call(Script.State.SUSPEND)) {
 			this.suspended.compareAndSet(true, false);
 		}
 	}
 
 	@Override
 	public void resume() {
-		if (this.suspended.compareAndSet(true, false) && !call(Script.Event.RESUME)) {
+		if (this.suspended.compareAndSet(true, false) && !call(Script.State.RESUME)) {
 			this.suspended.compareAndSet(false, true);
 		}
 	}
@@ -120,13 +120,13 @@ public class ScriptHandler implements Suspendable, Stoppable {
 		return executor;
 	}
 
-	private boolean call(Script.Event event) {
+	private boolean call(Script.State state) {
 		Script script = this.script.get();
 		if (script == null || getExecutor().isShutdown()) {
 			return false;
 		}
 
-		Collection<Callable<Boolean>> tasks = script.getTriggers(event);
+		Collection<Callable<Boolean>> tasks = script.getStates(state);
 		List<Callable<Boolean>> pending = new ArrayList<>(tasks.size());
 		pending.addAll(tasks);
 

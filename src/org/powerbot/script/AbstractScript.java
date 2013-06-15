@@ -1,10 +1,5 @@
 package org.powerbot.script;
 
-import org.powerbot.script.internal.ScriptContainer;
-import org.powerbot.script.methods.MethodContext;
-import org.powerbot.script.util.Random;
-import org.powerbot.util.Configuration;
-
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -22,27 +17,32 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.logging.Logger;
 
+import org.powerbot.script.internal.ScriptGroup;
+import org.powerbot.script.methods.MethodContext;
+import org.powerbot.script.util.Random;
+import org.powerbot.Configuration;
+
 public abstract class AbstractScript implements Script {
 	public final Logger log = Logger.getLogger(getClass().getName());
 	protected MethodContext ctx;
-	private ScriptContainer container;
-	private final Map<Event, Deque<Callable<Boolean>>> triggers;
+	private ScriptGroup group;
+	private final Map<State, Deque<Callable<Boolean>>> triggers;
 	private final AtomicLong started, suspended;
 	private final Queue<Long> suspensions;
 	private final File dir;
 	protected final Properties settings;
 
 	public AbstractScript() {
-		this.triggers = new ConcurrentHashMap<>();
-		for (Event event : Event.values()) {
-			this.triggers.put(event, new ConcurrentLinkedDeque<Callable<Boolean>>());
+		triggers = new ConcurrentHashMap<>();
+		for (final State state : State.values()) {
+			triggers.put(state, new ConcurrentLinkedDeque<Callable<Boolean>>());
 		}
 
 		started = new AtomicLong(System.nanoTime());
 		suspended = new AtomicLong(0);
 		suspensions = new ConcurrentLinkedQueue<>();
 
-		triggers.get(Event.START).add(new Callable<Boolean>() {
+		triggers.get(State.START).add(new Callable<Boolean>() {
 			@Override
 			public Boolean call() throws Exception {
 				started.set(System.nanoTime());
@@ -50,7 +50,7 @@ public abstract class AbstractScript implements Script {
 			}
 		});
 
-		triggers.get(Event.SUSPEND).add(new Callable<Boolean>() {
+		triggers.get(State.SUSPEND).add(new Callable<Boolean>() {
 			@Override
 			public Boolean call() throws Exception {
 				suspensions.offer(System.nanoTime());
@@ -58,7 +58,7 @@ public abstract class AbstractScript implements Script {
 			}
 		});
 
-		triggers.get(Event.RESUME).add(new Callable<Boolean>() {
+		triggers.get(State.RESUME).add(new Callable<Boolean>() {
 			@Override
 			public Boolean call() throws Exception {
 				suspended.addAndGet(System.nanoTime() - suspensions.poll());
@@ -71,22 +71,13 @@ public abstract class AbstractScript implements Script {
 		settings = new Properties();
 
 		if (xml.isFile() && xml.canRead()) {
-			FileInputStream in = null;
-			try {
-				in = new FileInputStream(xml);
+			try (final FileInputStream in = new FileInputStream(xml)) {
 				settings.loadFromXML(in);
 			} catch (final IOException ignored) {
-			} finally {
-				if (in != null) {
-					try {
-						in.close();
-					} catch (final IOException ignored) {
-					}
-				}
 			}
 		}
 
-		triggers.get(Event.STOP).add(new Callable<Boolean>() {
+		triggers.get(State.STOP).add(new Callable<Boolean>() {
 			@Override
 			public Boolean call() throws Exception {
 				if (settings.isEmpty()) {
@@ -97,18 +88,9 @@ public abstract class AbstractScript implements Script {
 					if (!dir.isDirectory()) {
 						dir.mkdirs();
 					}
-					BufferedOutputStream out = null;
-					try {
-						out = new BufferedOutputStream(new FileOutputStream(xml));
+					try (final BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(xml))) {
 						settings.storeToXML(out, "");
 					} catch (final IOException ignored) {
-					} finally {
-						if (out != null) {
-							try {
-								out.close();
-							} catch (final IOException ignored) {
-							}
-						}
 					}
 				}
 				return true;
@@ -117,23 +99,23 @@ public abstract class AbstractScript implements Script {
 	}
 
 	@Override
-	public final Deque<Callable<Boolean>> getTriggers(Event event) {
-		return triggers.get(event);
+	public final Deque<Callable<Boolean>> getStates(final State state) {
+		return triggers.get(state);
 	}
 
 	@Override
-	public final void setContainer(ScriptContainer container) {
-		this.container = container;
+	public final void setGroup(final ScriptGroup group) {
+		this.group = group;
 	}
 
 	@Override
-	public final ScriptContainer getContainer() {
-		return this.container;
+	public final ScriptGroup getGroup() {
+		return group;
 	}
 
 	@Override
-	public void setContext(MethodContext methodContext) {
-		this.ctx = methodContext;
+	public void setContext(final MethodContext ctx) {
+		this.ctx = ctx;
 	}
 
 	@Override
@@ -149,7 +131,7 @@ public abstract class AbstractScript implements Script {
 	public void sleep(final int millis) {
 		try {
 			Thread.sleep(millis);
-		} catch (final InterruptedException e) {
+		} catch (final InterruptedException ignored) {
 		}
 	}
 

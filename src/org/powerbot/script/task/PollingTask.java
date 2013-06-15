@@ -1,7 +1,7 @@
 package org.powerbot.script.task;
 
 import org.powerbot.script.Script;
-import org.powerbot.script.internal.ScriptContainer;
+import org.powerbot.script.internal.ScriptGroup;
 import org.powerbot.script.lang.Stoppable;
 import org.powerbot.script.lang.Suspendable;
 import org.powerbot.script.methods.MethodContext;
@@ -12,14 +12,14 @@ import java.util.logging.Logger;
 
 public abstract class PollingTask extends MethodProvider implements Runnable, Suspendable, Stoppable {
 	public Logger log = Logger.getLogger(getClass().getName());
-	private final ScriptContainer container;
+	private final ScriptGroup container;
 	private AtomicBoolean suspended, stopping;
 
 	public PollingTask(Script script) {
-		this(script.getContext(), script.getContainer());
+		this(script.getContext(), script.getGroup());
 	}
 
-	public PollingTask(MethodContext ctx, ScriptContainer container) {
+	public PollingTask(MethodContext ctx, ScriptGroup container) {
 		super(ctx);
 		this.container = container;
 		this.suspended = new AtomicBoolean(false);
@@ -56,7 +56,7 @@ public abstract class PollingTask extends MethodProvider implements Runnable, Su
 		stop();
 	}
 
-	public ScriptContainer getContainer() {
+	public ScriptGroup getContainer() {
 		return this.container;
 	}
 

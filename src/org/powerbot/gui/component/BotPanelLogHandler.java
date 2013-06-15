@@ -10,9 +10,9 @@ import javax.swing.JOptionPane;
 
 import org.powerbot.bot.Bot;
 import org.powerbot.gui.BotChrome;
-import org.powerbot.loader.ClientLoader;
-import org.powerbot.util.Configuration;
-import org.powerbot.util.LoadUpdates;
+import org.powerbot.bot.loader.ClientLoader;
+import org.powerbot.Configuration;
+import org.powerbot.service.UpdateCheck;
 
 /**
  * @author Paris
@@ -42,7 +42,7 @@ final class BotPanelLogHandler extends Handler {
 		if (x > 0) {
 			src = src.substring(0, x);
 		}
-		if (!(src.equals(BotChrome.class.getName()) || src.equals(LoadUpdates.class.getName()) ||
+		if (!(src.equals(BotChrome.class.getName()) || src.equals(UpdateCheck.class.getName()) ||
 				src.equals(Bot.class.getName())) || src.equals(ClientLoader.class.getName())) {
 			return;
 		}

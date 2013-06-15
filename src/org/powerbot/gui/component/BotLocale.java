@@ -1,6 +1,6 @@
 package org.powerbot.gui.component;
 
-import org.powerbot.util.Configuration;
+import org.powerbot.Configuration;
 
 /**
  * @author Paris

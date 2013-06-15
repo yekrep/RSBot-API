@@ -10,13 +10,13 @@ import java.util.logging.Logger;
 
 public class RandomHandler implements Runnable {
 	private static final Logger log = Logger.getLogger(RandomHandler.class.getName());
-	private final ScriptContainer handler;
+	private final ScriptGroup handler;
 	private final PollingPassive[] events;
 	private final Timer timeout;
 	private int pos;
 	private boolean suspended;
 
-	public RandomHandler(final ScriptContainer handler, final PollingPassive[] events) {
+	public RandomHandler(final ScriptGroup handler, final PollingPassive[] events) {
 		this.handler = handler;
 		this.events = events;
 		this.timeout = new Timer(0);

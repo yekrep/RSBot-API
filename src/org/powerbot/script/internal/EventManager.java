@@ -1,6 +1,6 @@
 package org.powerbot.script.internal;
 
-import org.powerbot.event.EventMulticaster;
+import org.powerbot.client.event.EventMulticaster;
 import org.powerbot.script.lang.Subscribable;
 import org.powerbot.script.lang.Suspendable;
 

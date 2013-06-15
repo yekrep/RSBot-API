@@ -8,7 +8,7 @@ import java.nio.channels.Channel;
 import java.nio.channels.FileLock;
 import java.util.Random;
 
-import org.powerbot.util.Configuration;
+import org.powerbot.Configuration;
 
 /**
  * @author Paris

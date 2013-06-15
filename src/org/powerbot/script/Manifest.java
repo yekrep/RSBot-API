@@ -24,5 +24,5 @@ public @interface Manifest {
 
 	boolean hidden() default false;
 
-	int instances() default Integer.MAX_VALUE;
+	int instances() default 4;
 }

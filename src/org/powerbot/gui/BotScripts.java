@@ -57,7 +57,7 @@ import org.powerbot.service.GameAccounts.Account;
 import org.powerbot.service.NetworkAccount;
 import org.powerbot.service.scripts.ScriptDefinition;
 import org.powerbot.service.scripts.ScriptList;
-import org.powerbot.util.Configuration;
+import org.powerbot.Configuration;
 import org.powerbot.util.io.Resources;
 
 /**

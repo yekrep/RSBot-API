@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
-import org.powerbot.util.Configuration;
+import org.powerbot.Configuration;
 import org.powerbot.util.StringUtil;
 import org.powerbot.util.io.CryptFile;
 import org.powerbot.util.io.HttpClient;

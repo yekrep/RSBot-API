@@ -1,7 +1,7 @@
 package org.powerbot.script.internal.randoms;
 
-import org.powerbot.event.PaintListener;
-import org.powerbot.script.internal.ScriptContainer;
+import org.powerbot.client.event.PaintListener;
+import org.powerbot.script.internal.ScriptGroup;
 import org.powerbot.script.lang.Validatable;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.task.PollingTask;
@@ -9,7 +9,7 @@ import org.powerbot.script.task.PollingTask;
 import java.awt.Graphics;
 
 public abstract class PollingPassive extends PollingTask implements Validatable, PaintListener {
-	public PollingPassive(MethodContext ctx, ScriptContainer container) {
+	public PollingPassive(final MethodContext ctx, final ScriptGroup container) {
 		super(ctx, container);
 	}
 
@@ -19,6 +19,6 @@ public abstract class PollingPassive extends PollingTask implements Validatable,
 	}
 
 	@Override
-	public void onRepaint(Graphics render) {
+	public void repaint(Graphics render) {
 	}
 }

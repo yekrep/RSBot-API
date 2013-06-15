@@ -1,7 +1,7 @@
 package org.powerbot.script.internal.randoms;
 
 import org.powerbot.script.Manifest;
-import org.powerbot.script.internal.ScriptContainer;
+import org.powerbot.script.internal.ScriptGroup;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.util.Random;
 import org.powerbot.script.util.Timer;
@@ -25,7 +25,7 @@ public class WidgetCloser extends PollingPassive {
 	private Component component;
 	private int tries;
 
-	public WidgetCloser(MethodContext ctx, ScriptContainer container) {
+	public WidgetCloser(MethodContext ctx, ScriptGroup container) {
 		super(ctx, container);
 		this.threshold = new Timer(0);
 	}
