@@ -14,7 +14,6 @@ public class RandomHandler implements Runnable {
 	private final PollingPassive[] events;
 	private final Timer timeout;
 	private int pos;
-	private PollingPassive active;
 	private boolean suspended;
 
 	public RandomHandler(final ScriptContainer handler, final PollingPassive[] events) {
@@ -28,12 +27,12 @@ public class RandomHandler implements Runnable {
 	public void run() {
 		log.info("Random handler starting");
 		while (!handler.isStopping()) {
-			if (active != null) {
+			if (pos != -1) {
 				//keep script suspended
 				if (!handler.isSuspended()) handler.suspend();
 
-				final String name = name(active);
-				if (!active.isStopping()) {
+				final String name = name(events[pos]);
+				if (!events[pos].isStopping()) {
 					if (!timeout.isRunning()) {
 						log.info("Random event failed: " + (name != null ? name : "unknown"));
 						handler.stop();
@@ -46,28 +45,27 @@ public class RandomHandler implements Runnable {
 					}
 				}
 				log.info("Stopping random event: " + (name != null ? name : "unknown"));
-				active = null;
+				pos = -1;
 				if (!suspended) handler.resume();
 				continue;
 			}
 			int random = random();
 			if (random != -1) {
 				pos = random;
-				active = events[random];
 			}
-			if (active != null) {
+			if (pos != -1) {
 				suspended = handler.isSuspended();
-				final String name = name(active);
+				final String name = name(events[pos]);
 				log.info("Starting random event: " + (name != null ? name : "unknown"));
 				timeout.setEndIn(Random.nextInt(600, 720) * 1000);
-				handler.getExecutor().submit(active);
+				handler.getExecutor().submit(events[pos]);
 				if (!suspended) handler.suspend();
 			} else {
 				Delay.sleep(600);
 			}
 		}
 		log.info("Random handler stopping");
-		active = null;
+		pos = -1;
 	}
 
 	private String name(final PollingPassive event) {
