@@ -16,7 +16,7 @@ import java.util.List;
  * @author Timer
  */
 public class Players extends LocatableNameQuery<Player> {
-	public Players(ClientFactory factory) {
+	public Players(MethodContext factory) {
 		super(factory);
 	}
 

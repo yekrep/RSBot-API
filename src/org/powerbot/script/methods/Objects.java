@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Set;
 
 public class Objects extends LocatableIdQuery<GameObject> {
-	public Objects(ClientFactory factory) {
+	public Objects(MethodContext factory) {
 		super(factory);
 	}
 

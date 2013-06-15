@@ -5,7 +5,7 @@ import org.powerbot.client.RSNPC;
 import org.powerbot.client.RSNPCDef;
 import org.powerbot.client.RSNPCNode;
 import org.powerbot.script.lang.Identifiable;
-import org.powerbot.script.methods.ClientFactory;
+import org.powerbot.script.methods.MethodContext;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -15,7 +15,7 @@ public class Npc extends Actor implements Identifiable {
 	public static final Color TARGET_COLOR = new Color(255, 0, 255, 15);
 	private final WeakReference<RSNPC> npc;
 
-	public Npc(ClientFactory ctx, final RSNPC npc) {
+	public Npc(MethodContext ctx, final RSNPC npc) {
 		super(ctx);
 		this.npc = new WeakReference<>(npc);
 	}

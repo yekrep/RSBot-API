@@ -26,7 +26,7 @@ public class Inventory extends ItemQuery<Item> {
 			WIDGET_BEAST_OF_BURDEN_STORAGE, WIDGET_STORE, WIDGET_SAWMILL_CART
 	};
 
-	public Inventory(ClientFactory factory) {
+	public Inventory(MethodContext factory) {
 		super(factory);
 	}
 

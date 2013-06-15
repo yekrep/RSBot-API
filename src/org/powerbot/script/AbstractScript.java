@@ -1,7 +1,7 @@
 package org.powerbot.script;
 
 import org.powerbot.script.internal.ScriptContainer;
-import org.powerbot.script.methods.ClientFactory;
+import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.util.Random;
 import org.powerbot.util.Configuration;
 
@@ -24,7 +24,7 @@ import java.util.logging.Logger;
 
 public abstract class AbstractScript implements Script {
 	public final Logger log = Logger.getLogger(getClass().getName());
-	protected ClientFactory ctx;
+	protected MethodContext ctx;
 	private ScriptContainer container;
 	private final Map<Event, Deque<Callable<Boolean>>> triggers;
 	private final AtomicLong started, suspended;
@@ -132,12 +132,12 @@ public abstract class AbstractScript implements Script {
 	}
 
 	@Override
-	public void setClientFactory(ClientFactory clientFactory) {
-		this.ctx = clientFactory;
+	public void setContext(MethodContext methodContext) {
+		this.ctx = methodContext;
 	}
 
 	@Override
-	public ClientFactory getClientFactory() {
+	public MethodContext getContext() {
 		return ctx;
 	}
 

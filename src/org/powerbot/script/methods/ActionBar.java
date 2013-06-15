@@ -20,7 +20,7 @@ public class ActionBar extends IdQuery<Action> {
 	public static final int[] COMPONENT_SLOTS_COOLDOWN = {36, 73, 77, 81, 85, 89, 93, 97, 101, 105, 109, 113};
 	public static final int SETTING_ITEM = 811, SETTING_ABILITY = 727;
 
-	public ActionBar(ClientFactory factory) {
+	public ActionBar(MethodContext factory) {
 		super(factory);
 	}
 

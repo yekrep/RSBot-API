@@ -1,7 +1,7 @@
 package org.powerbot.script.lang;
 
-import org.powerbot.script.methods.ClientFactory;
-import org.powerbot.script.methods.ClientLink;
+import org.powerbot.script.methods.MethodContext;
+import org.powerbot.script.methods.MethodProvider;
 import org.powerbot.script.util.Filter;
 
 import java.util.ArrayList;
@@ -16,10 +16,10 @@ import java.util.concurrent.CopyOnWriteArrayList;
 /**
  * @author Paris
  */
-public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends ClientLink implements Iterable<K> {
+public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends MethodProvider implements Iterable<K> {
 	private ThreadLocal<List<K>> items;
 
-	public AbstractQuery(final ClientFactory factory) {
+	public AbstractQuery(final MethodContext factory) {
 		super(factory);
 
 		items = new ThreadLocal<List<K>>() {

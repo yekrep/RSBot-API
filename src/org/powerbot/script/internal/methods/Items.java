@@ -3,15 +3,15 @@ package org.powerbot.script.internal.methods;
 import org.powerbot.client.Client;
 import org.powerbot.client.HashTable;
 import org.powerbot.client.ItemSlot;
-import org.powerbot.script.methods.ClientFactory;
-import org.powerbot.script.methods.ClientLink;
+import org.powerbot.script.methods.MethodContext;
+import org.powerbot.script.methods.MethodProvider;
 
-public class Items extends ClientLink {
+public class Items extends MethodProvider {
 	public static final int INDEX_INVENTORY = 93;
 	public static final int INDEX_EQUIPMENT = 670;
 	public static final int INDEX_BANK = 95;
 
-	public Items(ClientFactory factory) {
+	public Items(MethodContext factory) {
 		super(factory);
 	}
 

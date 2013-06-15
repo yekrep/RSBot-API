@@ -12,7 +12,7 @@ import org.powerbot.client.RSObjectDefLoader;
 import org.powerbot.script.lang.Drawable;
 import org.powerbot.script.lang.Identifiable;
 import org.powerbot.script.lang.Locatable;
-import org.powerbot.script.methods.ClientFactory;
+import org.powerbot.script.methods.MethodContext;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -25,7 +25,7 @@ public class GameObject extends Interactive implements Locatable, Drawable, Iden
 	private final Type type;
 	private int faceIndex = -1;
 
-	public GameObject(ClientFactory ctx, final RSObject object, final Type type) {
+	public GameObject(MethodContext ctx, final RSObject object, final Type type) {
 		super(ctx);
 		this.object = new WeakReference<>(object);
 		this.type = type;

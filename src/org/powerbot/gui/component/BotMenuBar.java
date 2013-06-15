@@ -95,7 +95,7 @@ public class BotMenuBar extends JMenuBar implements ActionListener {
 			public void menuSelected(final MenuEvent e) {
 				final ScriptHandler container = BotChrome.getInstance().getBot().getScriptController();
 				final boolean active = container != null && container.getScript() != null && !container.isStopping(), running = active && !container.isSuspended();
-				play.setEnabled(BotChrome.getInstance().getBot().getClientFactory().getClient() != null);
+				play.setEnabled(BotChrome.getInstance().getBot().getMethodContext().getClient() != null);
 				play.setText(running ? BotLocale.PAUSESCRIPT : active ? BotLocale.RESUMESCRIPT : BotLocale.PLAYSCRIPT);
 				play.setIcon(playIcons[running ? 1 : 0]);
 				stop.setEnabled(running);
@@ -239,7 +239,7 @@ public class BotMenuBar extends JMenuBar implements ActionListener {
 					return;
 				}
 
-				if (bot.getClientFactory().getClient() != null) {
+				if (bot.getMethodContext().getClient() != null) {
 					SwingUtilities.invokeLater(new Runnable() {
 						@Override
 						public void run() {

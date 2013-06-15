@@ -3,7 +3,7 @@ package org.powerbot.script.wrappers;
 import org.powerbot.client.RSCharacter;
 import org.powerbot.client.RSInteractableData;
 import org.powerbot.client.RSInteractableLocation;
-import org.powerbot.script.methods.ClientFactory;
+import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.methods.Game;
 
 import java.lang.ref.Reference;
@@ -13,7 +13,7 @@ class ActorModel extends Model {
 	private final Reference<RSCharacter> character;
 	private final int[] x_base, z_base;
 
-	public ActorModel(ClientFactory ctx, final org.powerbot.client.Model model, final RSCharacter character) {
+	public ActorModel(MethodContext ctx, final org.powerbot.client.Model model, final RSCharacter character) {
 		super(ctx, model);
 		this.character = new WeakReference<>(character);
 		x_base = xPoints;

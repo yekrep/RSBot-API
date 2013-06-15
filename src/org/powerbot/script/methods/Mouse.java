@@ -10,8 +10,8 @@ import org.powerbot.script.util.Filter;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 
-public class Mouse extends ClientLink {
-	public Mouse(ClientFactory factory) {
+public class Mouse extends MethodProvider {
+	public Mouse(MethodContext factory) {
 		super(factory);
 	}
 

@@ -2,7 +2,7 @@ package org.powerbot.event.impl;
 
 import org.powerbot.event.PaintListener;
 import org.powerbot.gui.BotChrome;
-import org.powerbot.script.methods.ClientFactory;
+import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.wrappers.GroundItem;
 import org.powerbot.script.wrappers.ItemDefinition;
 import org.powerbot.script.wrappers.Player;
@@ -16,7 +16,7 @@ import java.util.Deque;
 
 public class DrawGroundItems implements PaintListener {
 	public void onRepaint(final Graphics render) {
-		ClientFactory ctx = BotChrome.getInstance().getBot().getClientFactory();
+		MethodContext ctx = BotChrome.getInstance().getBot().getMethodContext();
 		if (!ctx.game.isLoggedIn()) {
 			return;
 		}

@@ -1,19 +1,19 @@
 package org.powerbot.script.util;
 
-import org.powerbot.script.methods.ClientFactory;
-import org.powerbot.script.methods.ClientLink;
+import org.powerbot.script.methods.MethodContext;
+import org.powerbot.script.methods.MethodProvider;
 
-public final class SkillData extends ClientLink {
+public final class SkillData extends MethodProvider {
 	public static final int NUM_SKILL = 25;
 	public final int[] initialExp = new int[NUM_SKILL];
 	public final int[] initialLevels = new int[NUM_SKILL];
 	private final Timer timer;
 
-	public SkillData(ClientFactory ctx) {
+	public SkillData(MethodContext ctx) {
 		this(ctx, new Timer(0l));
 	}
 
-	public SkillData(ClientFactory ctx, final Timer timer) {
+	public SkillData(MethodContext ctx, final Timer timer) {
 		super(ctx);
 		for (int index = 0; index < NUM_SKILL; index++) {
 			initialExp[index] = ctx.skills.getExperience(index);

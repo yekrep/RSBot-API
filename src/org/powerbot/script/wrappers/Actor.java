@@ -16,14 +16,14 @@ import org.powerbot.client.Sequence;
 import org.powerbot.script.lang.Drawable;
 import org.powerbot.script.lang.Locatable;
 import org.powerbot.script.lang.Nameable;
-import org.powerbot.script.methods.ClientFactory;
+import org.powerbot.script.methods.MethodContext;
 
 import java.awt.Point;
 
 public abstract class Actor extends Interactive implements Nameable, Locatable, Drawable {
 	private int faceIndex = -1;
 
-	public Actor(ClientFactory ctx) {
+	public Actor(MethodContext ctx) {
 		super(ctx);
 	}
 

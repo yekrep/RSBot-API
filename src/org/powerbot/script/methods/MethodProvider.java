@@ -2,10 +2,10 @@ package org.powerbot.script.methods;
 
 import org.powerbot.script.util.Random;
 
-public class ClientLink {
-	public ClientFactory ctx;
+public class MethodProvider {
+	public MethodContext ctx;
 
-	public ClientLink(ClientFactory factory) {
+	public MethodProvider(MethodContext factory) {
 		this.ctx = factory;
 	}
 

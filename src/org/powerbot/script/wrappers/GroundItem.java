@@ -14,7 +14,7 @@ import org.powerbot.client.RSItemPile;
 import org.powerbot.script.lang.Drawable;
 import org.powerbot.script.lang.Identifiable;
 import org.powerbot.script.lang.Locatable;
-import org.powerbot.script.methods.ClientFactory;
+import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.util.Random;
 
 import java.awt.Color;
@@ -28,7 +28,7 @@ public class GroundItem extends Interactive implements Identifiable, Locatable, 
 	private final WeakReference<RSItem> item;
 	private int faceIndex = -1;
 
-	public GroundItem(ClientFactory ctx, Tile tile, RSItem item) {
+	public GroundItem(MethodContext ctx, Tile tile, RSItem item) {
 		super(ctx);
 		this.tile = tile;
 		this.item = new WeakReference<>(item);

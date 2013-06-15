@@ -3,7 +3,7 @@ package org.powerbot.script.internal.randoms;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.script.Manifest;
 import org.powerbot.script.internal.ScriptContainer;
-import org.powerbot.script.methods.ClientFactory;
+import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.methods.Game;
 import org.powerbot.script.methods.Lobby;
 import org.powerbot.script.util.Random;
@@ -29,7 +29,7 @@ public class Login extends PollingPassive {
 	private static final int WIDGET_LOBBY_TRY_AGAIN = 259;
 	private volatile Timer re_load_timer = null;
 
-	public Login(ClientFactory ctx, ScriptContainer container) {
+	public Login(MethodContext ctx, ScriptContainer container) {
 		super(ctx, container);
 	}
 

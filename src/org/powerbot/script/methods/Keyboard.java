@@ -4,8 +4,8 @@ import org.powerbot.script.internal.InputHandler;
 
 import java.awt.event.KeyEvent;
 
-public class Keyboard extends ClientLink {
-	public Keyboard(ClientFactory factory) {
+public class Keyboard extends MethodProvider {
+	public Keyboard(MethodContext factory) {
 		super(factory);
 	}
 

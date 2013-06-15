@@ -4,16 +4,14 @@ import org.powerbot.script.internal.methods.Items;
 import org.powerbot.script.wrappers.Component;
 import org.powerbot.script.wrappers.Item;
 
-import java.util.Arrays;
-
-public class Equipment extends ClientLink {
+public class Equipment extends MethodProvider {
 	public static final int WIDGET = 387;
 	public static final int WIDGET_BANK = 667;
 	public static final int COMPONENT_BANK = 121;
 	public static final int NUM_SLOTS = 13;
 	public static final int NUM_APPEARANCE_SLOTS = 9;
 
-	public Equipment(ClientFactory factory) {
+	public Equipment(MethodContext factory) {
 		super(factory);
 	}
 

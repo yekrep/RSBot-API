@@ -183,8 +183,8 @@ public class BotPanel extends JPanel {
 
 	private void redispatch(MouseEvent event) {
 		if (event == null) return;
-		if (bot == null || bot.getClientFactory().getClient() == null) return;
-		if (!bot.getClientFactory().mouse.isReady()) return;
+		if (bot == null || bot.getMethodContext().getClient() == null) return;
+		if (!bot.getMethodContext().mouse.isReady()) return;
 		Mouse mouse = bot.getMouseHandler().getMouse();
 		if (mouse == null) return;
 
@@ -199,8 +199,8 @@ public class BotPanel extends JPanel {
 
 	private void redispatch(KeyEvent event) {
 		if (event == null) return;
-		if (bot == null || bot.getClientFactory().getClient() == null) return;
-		if (!bot.getClientFactory().keyboard.isReady()) return;
+		if (bot == null || bot.getMethodContext().getClient() == null) return;
+		if (!bot.getMethodContext().keyboard.isReady()) return;
 		Component c = bot.getInputHandler().getSource();
 		try {
 			final Field f = EventObject.class.getDeclaredField("source");

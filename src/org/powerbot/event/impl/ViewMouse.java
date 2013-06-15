@@ -12,7 +12,7 @@ import org.powerbot.gui.BotChrome;
 public class ViewMouse implements PaintListener {
 	@Override
 	public void onRepaint(final Graphics render) {
-		final Client client = BotChrome.getInstance().getBot().getClientFactory().getClient();
+		final Client client = BotChrome.getInstance().getBot().getMethodContext().getClient();
 		final Mouse mouse;
 		if (client == null || (mouse = client.getMouse()) == null) {
 			return;

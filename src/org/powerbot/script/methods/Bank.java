@@ -46,7 +46,7 @@ public class Bank extends ItemQuery<Item> {
 	public static final int SETTING_BANK_STATE = 110;
 	public static final int SETTING_WITHDRAW_MODE = 160;
 
-	public Bank(ClientFactory factory) {
+	public Bank(MethodContext factory) {
 		super(factory);
 	}
 

@@ -18,7 +18,7 @@ import java.util.List;
  * @author Timer
  */
 public class Npcs extends LocatableIdNameQuery<Npc> {
-	public Npcs(ClientFactory factory) {
+	public Npcs(MethodContext factory) {
 		super(factory);
 	}
 

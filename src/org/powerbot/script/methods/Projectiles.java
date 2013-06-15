@@ -20,7 +20,7 @@ import java.util.List;
  * @author Timer
  */
 public class Projectiles extends IdQuery<Projectile> {
-	public Projectiles(ClientFactory factory) {
+	public Projectiles(MethodContext factory) {
 		super(factory);
 	}
 

@@ -4,22 +4,22 @@ import org.powerbot.script.Script;
 import org.powerbot.script.internal.ScriptContainer;
 import org.powerbot.script.lang.Stoppable;
 import org.powerbot.script.lang.Suspendable;
-import org.powerbot.script.methods.ClientFactory;
-import org.powerbot.script.methods.ClientLink;
+import org.powerbot.script.methods.MethodContext;
+import org.powerbot.script.methods.MethodProvider;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Logger;
 
-public abstract class PollingTask extends ClientLink implements Runnable, Suspendable, Stoppable {
+public abstract class PollingTask extends MethodProvider implements Runnable, Suspendable, Stoppable {
 	public Logger log = Logger.getLogger(getClass().getName());
 	private final ScriptContainer container;
 	private AtomicBoolean suspended, stopping;
 
 	public PollingTask(Script script) {
-		this(script.getClientFactory(), script.getContainer());
+		this(script.getContext(), script.getContainer());
 	}
 
-	public PollingTask(ClientFactory ctx, ScriptContainer container) {
+	public PollingTask(MethodContext ctx, ScriptContainer container) {
 		super(ctx);
 		this.container = container;
 		this.suspended = new AtomicBoolean(false);

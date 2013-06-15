@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GroundItems extends LocatableIdQuery<GroundItem> {
-	public GroundItems(ClientFactory factory) {
+	public GroundItems(MethodContext factory) {
 		super(factory);
 	}
 

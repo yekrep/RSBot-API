@@ -4,18 +4,18 @@ import org.powerbot.client.Client;
 import org.powerbot.client.RSInterface;
 import org.powerbot.client.RSInterfaceBase;
 import org.powerbot.script.lang.Validatable;
-import org.powerbot.script.methods.ClientFactory;
-import org.powerbot.script.methods.ClientLink;
+import org.powerbot.script.methods.MethodContext;
+import org.powerbot.script.methods.MethodProvider;
 
 import java.util.Arrays;
 import java.util.Iterator;
 
-public class Widget extends ClientLink implements Validatable, Iterable<Component> {
+public class Widget extends MethodProvider implements Validatable, Iterable<Component> {
 	private final int index;
 	private final Object LOCK;
 	private Component[] cache;
 
-	public Widget(ClientFactory ctx, final int index) {
+	public Widget(MethodContext ctx, final int index) {
 		super(ctx);
 		this.index = index;
 		this.LOCK = new Object();

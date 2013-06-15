@@ -16,10 +16,10 @@ import java.util.Arrays;
  * {@link Widget}s are cached and are available at all times, even when not present in game.
  * {@link Widget}s must be validated before use.
  */
-public class Widgets extends ClientLink {
+public class Widgets extends MethodProvider {
 	public Widget[] cache;
 
-	public Widgets(ClientFactory factory) {
+	public Widgets(MethodContext factory) {
 		super(factory);
 	}
 

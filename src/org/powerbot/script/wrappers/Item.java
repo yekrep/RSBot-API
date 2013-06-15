@@ -7,7 +7,7 @@ import org.powerbot.client.RSItemDef;
 import org.powerbot.client.RSItemDefLoader;
 import org.powerbot.script.lang.Identifiable;
 import org.powerbot.script.lang.Stackable;
-import org.powerbot.script.methods.ClientFactory;
+import org.powerbot.script.methods.MethodContext;
 import org.powerbot.util.StringUtil;
 
 import java.awt.Point;
@@ -17,11 +17,11 @@ public class Item extends Interactive implements Identifiable, Stackable {
 	private int stack;
 	private final Component component;
 
-	public Item(ClientFactory ctx, Component component) {
+	public Item(MethodContext ctx, Component component) {
 		this(ctx, component.getItemId(), component.getItemStackSize(), component);
 	}
 
-	public Item(ClientFactory ctx, int id, int stack, Component component) {
+	public Item(MethodContext ctx, int id, int stack, Component component) {
 		super(ctx);
 		if (component == null) {
 			throw new IllegalArgumentException("component is null");

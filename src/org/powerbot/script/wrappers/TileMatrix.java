@@ -2,7 +2,7 @@ package org.powerbot.script.wrappers;
 
 import org.powerbot.script.lang.Drawable;
 import org.powerbot.script.lang.Locatable;
-import org.powerbot.script.methods.ClientFactory;
+import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.util.Random;
 
 import java.awt.Color;
@@ -16,7 +16,7 @@ import java.awt.Polygon;
 public final class TileMatrix extends Interactive implements Locatable, Drawable {
 	private Tile tile;
 
-	TileMatrix(ClientFactory ctx, Tile tile) {
+	TileMatrix(MethodContext ctx, Tile tile) {
 		super(ctx);
 		this.tile = tile;
 	}

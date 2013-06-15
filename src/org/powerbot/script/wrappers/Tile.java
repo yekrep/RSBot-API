@@ -1,7 +1,7 @@
 package org.powerbot.script.wrappers;
 
 import org.powerbot.script.lang.Locatable;
-import org.powerbot.script.methods.ClientFactory;
+import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.util.Random;
 
 import java.awt.Color;
@@ -43,7 +43,7 @@ public class Tile implements Locatable {
 	 * @param ctx The context to retrieve the matrix in.
 	 * @return the {@link TileMatrix} of this {@link Tile} with the given context
 	 */
-	public TileMatrix getMatrix(ClientFactory ctx) {
+	public TileMatrix getMatrix(MethodContext ctx) {
 		return new TileMatrix(ctx, this);
 	}
 

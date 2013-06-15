@@ -16,8 +16,8 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Menu extends ClientLink {
-	public Menu(ClientFactory factory) {
+public class Menu extends MethodProvider {
+	public Menu(MethodContext factory) {
 		super(factory);
 	}
 

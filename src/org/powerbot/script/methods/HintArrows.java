@@ -14,7 +14,7 @@ import java.util.List;
  * @author Timer
  */
 public class HintArrows extends LocatableQuery<HintArrow> {
-	public HintArrows(ClientFactory factory) {
+	public HintArrows(MethodContext factory) {
 		super(factory);
 	}
 

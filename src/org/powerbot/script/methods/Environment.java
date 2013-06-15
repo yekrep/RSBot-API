@@ -2,10 +2,10 @@ package org.powerbot.script.methods;
 
 import java.util.Properties;
 
-public class Environment extends ClientLink {//TODO remove this class entirely
+public class Environment extends MethodProvider {//TODO remove this class entirely
 	private static final Properties properties = new Properties();
 
-	public Environment(ClientFactory factory) {
+	public Environment(MethodContext factory) {
 		super(factory);
 	}
 

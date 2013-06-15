@@ -8,8 +8,8 @@ import org.powerbot.client.PlayerMetaInfo;
  *
  * @author Timer
  */
-public class Settings extends ClientLink {
-	public Settings(ClientFactory factory) {
+public class Settings extends MethodProvider {
+	public Settings(MethodContext factory) {
 		super(factory);
 	}
 

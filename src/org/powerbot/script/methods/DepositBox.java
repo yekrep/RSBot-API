@@ -25,7 +25,7 @@ public class DepositBox extends ItemQuery<Item> {
 	public static final int COMPONENT_BUTTON_DEPOSIT_FAMILIAR = 25;
 	public static final int COMPONENT_BUTTON_DEPOSIT_POUCH = 21;
 
-	public DepositBox(ClientFactory factory) {
+	public DepositBox(MethodContext factory) {
 		super(factory);
 	}
 

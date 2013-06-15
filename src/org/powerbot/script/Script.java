@@ -1,7 +1,7 @@
 package org.powerbot.script;
 
 import org.powerbot.script.internal.ScriptContainer;
-import org.powerbot.script.methods.ClientFactory;
+import org.powerbot.script.methods.MethodContext;
 
 import java.util.Deque;
 import java.util.EventListener;
@@ -18,7 +18,7 @@ public interface Script extends Runnable, EventListener {
 
 	public ScriptContainer getContainer();
 
-	public void setClientFactory(ClientFactory clientFactory);
+	public void setContext(MethodContext methodContext);
 
-	public ClientFactory getClientFactory();
+	public MethodContext getContext();
 }

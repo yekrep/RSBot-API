@@ -4,10 +4,10 @@ import org.powerbot.client.Client;
 import org.powerbot.script.wrappers.Component;
 import org.powerbot.script.wrappers.Widget;
 
-class Components extends ClientLink {
+class Components extends MethodProvider {
 	private final Container container;
 
-	public Components(ClientFactory factory) {
+	public Components(MethodContext factory) {
 		super(factory);
 		this.container = new Container();
 	}

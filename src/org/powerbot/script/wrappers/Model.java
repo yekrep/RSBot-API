@@ -2,8 +2,8 @@ package org.powerbot.script.wrappers;
 
 import org.powerbot.client.ModelCapture;
 import org.powerbot.script.methods.ActionBar;
-import org.powerbot.script.methods.ClientFactory;
-import org.powerbot.script.methods.ClientLink;
+import org.powerbot.script.methods.MethodContext;
+import org.powerbot.script.methods.MethodProvider;
 import org.powerbot.script.methods.Game;
 import org.powerbot.script.util.Random;
 
@@ -14,7 +14,7 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public abstract class Model extends ClientLink {
+public abstract class Model extends MethodProvider {
 	protected final int[] yPoints;
 	protected final short[] faceA;
 	protected final short[] faceB;
@@ -24,7 +24,7 @@ public abstract class Model extends ClientLink {
 	protected int[] xPoints;
 	protected int[] zPoints;
 
-	public Model(ClientFactory ctx, final org.powerbot.client.Model model) {
+	public Model(MethodContext ctx, final org.powerbot.client.Model model) {
 		super(ctx);
 		xPoints = model.getXPoints();
 		yPoints = model.getYPoints();

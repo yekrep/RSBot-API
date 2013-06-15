@@ -10,8 +10,8 @@ import org.powerbot.script.wrappers.Tile;
 
 import java.awt.event.KeyEvent;
 
-public class Camera extends ClientLink {
-	public Camera(ClientFactory factory) {
+public class Camera extends MethodProvider {
+	public Camera(MethodContext factory) {
 		super(factory);
 	}
 

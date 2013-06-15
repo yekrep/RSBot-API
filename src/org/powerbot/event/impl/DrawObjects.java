@@ -4,7 +4,7 @@ import org.powerbot.client.RSAnimable;
 import org.powerbot.client.RSObject;
 import org.powerbot.event.PaintListener;
 import org.powerbot.gui.BotChrome;
-import org.powerbot.script.methods.ClientFactory;
+import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.wrappers.GameObject;
 import org.powerbot.script.wrappers.Player;
 import org.powerbot.script.wrappers.Tile;
@@ -22,7 +22,7 @@ public class DrawObjects implements PaintListener {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void onRepaint(final Graphics render) {
-		ClientFactory ctx = BotChrome.getInstance().getBot().getClientFactory();
+		MethodContext ctx = BotChrome.getInstance().getBot().getMethodContext();
 		if (!ctx.game.isLoggedIn()) {
 			return;
 		}

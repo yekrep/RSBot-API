@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Lobby extends ClientLink {
+public class Lobby extends MethodProvider {
 	public static final int STATE_LOBBY_IDLE = 7;
 	public static final int STATE_LOGGING_IN = 9;
 	public static final int LOGIN_DEFAULT_TIMEOUT = 30000;
@@ -32,7 +32,7 @@ public class Lobby extends ClientLink {
 	public static final int WIDGET_WORLDS_COLUMN_LOOT_SHARE = 75;
 	public static final int WIDGET_WORLDS_COLUMN_PING = 76;
 
-	public Lobby(ClientFactory factory) {
+	public Lobby(MethodContext factory) {
 		super(factory);
 	}
 

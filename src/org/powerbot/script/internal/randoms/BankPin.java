@@ -2,14 +2,14 @@ package org.powerbot.script.internal.randoms;
 
 import org.powerbot.script.Manifest;
 import org.powerbot.script.internal.ScriptContainer;
-import org.powerbot.script.methods.ClientFactory;
+import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.util.Random;
 import org.powerbot.script.wrappers.Component;
 import org.powerbot.util.Tracker;
 
 @Manifest(name = "Bank Pin", authors = {"Timer"}, description = "Enters the stored bank pin")
 public class BankPin extends PollingPassive {
-	public BankPin(ClientFactory ctx, ScriptContainer container) {
+	public BankPin(MethodContext ctx, ScriptContainer container) {
 		super(ctx, container);
 	}
 

@@ -5,7 +5,7 @@ import org.powerbot.client.RSInterface;
 import org.powerbot.client.RSInterfaceNode;
 import org.powerbot.script.internal.wrappers.HashTable;
 import org.powerbot.script.lang.Drawable;
-import org.powerbot.script.methods.ClientFactory;
+import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.util.Random;
 import org.powerbot.util.StringUtil;
 
@@ -21,11 +21,11 @@ public class Component extends Interactive implements Drawable {
 	private final Component parent;
 	private final int index;
 
-	public Component(ClientFactory ctx, final Widget widget, final int index) {
+	public Component(MethodContext ctx, final Widget widget, final int index) {
 		this(ctx, widget, null, index);
 	}
 
-	public Component(ClientFactory ctx, final Widget widget, final Component parent, final int index) {
+	public Component(MethodContext ctx, final Widget widget, final Component parent, final int index) {
 		super(ctx);
 		this.widget = widget;
 		this.parent = parent;

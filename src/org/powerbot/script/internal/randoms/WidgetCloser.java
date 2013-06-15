@@ -2,13 +2,11 @@ package org.powerbot.script.internal.randoms;
 
 import org.powerbot.script.Manifest;
 import org.powerbot.script.internal.ScriptContainer;
-import org.powerbot.script.methods.ClientFactory;
+import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.util.Random;
 import org.powerbot.script.util.Timer;
 import org.powerbot.script.wrappers.Component;
 import org.powerbot.util.Tracker;
-
-import java.awt.Point;
 
 @Manifest(name = "Widget closer", authors = {"Timer"}, description = "Closes widgets")
 public class WidgetCloser extends PollingPassive {
@@ -27,7 +25,7 @@ public class WidgetCloser extends PollingPassive {
 	private Component component;
 	private int tries;
 
-	public WidgetCloser(ClientFactory ctx, ScriptContainer container) {
+	public WidgetCloser(MethodContext ctx, ScriptContainer container) {
 		super(ctx, container);
 		this.threshold = new Timer(0);
 	}

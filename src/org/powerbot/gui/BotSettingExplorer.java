@@ -70,7 +70,7 @@ public class BotSettingExplorer extends JFrame {
 		}
 		settingExplorer.setVisible(true);
 		try {
-			settingExplorer.settings_cache = BotChrome.getInstance().getBot().getClientFactory().settings.getArray();
+			settingExplorer.settings_cache = BotChrome.getInstance().getBot().getMethodContext().settings.getArray();
 		} catch (final NullPointerException ignored) {
 		}
 		new Thread(BotChrome.getInstance().getBot().threadGroup, new Runnable() {
@@ -89,7 +89,7 @@ public class BotSettingExplorer extends JFrame {
 	}
 
 	private void update() {
-		final int[] settings_clone = BotChrome.getInstance().getBot().getClientFactory().settings.getArray();
+		final int[] settings_clone = BotChrome.getInstance().getBot().getMethodContext().settings.getArray();
 		if (settings_cache == null) {
 			settings_cache = settings_clone;
 			return;

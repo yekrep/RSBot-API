@@ -9,13 +9,13 @@ import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-public class Prayer extends ClientLink {
+public class Prayer extends MethodProvider {
 	public static final int WIDGET = 271;
 	public static final int WIDGET_ORB = 749;
 	public static final int PRAYER_BOOK_CURSES = 0x17;
 	public static final int PRAYER_BOOK_NORMAL = 0x16;
 
-	public Prayer(ClientFactory factory) {
+	public Prayer(MethodContext factory) {
 		super(factory);
 	}
 

@@ -2,7 +2,7 @@ package org.powerbot.script.wrappers;
 
 import org.powerbot.script.lang.Identifiable;
 import org.powerbot.script.methods.ActionBar;
-import org.powerbot.script.methods.ClientFactory;
+import org.powerbot.script.methods.MethodContext;
 
 import java.awt.Point;
 
@@ -11,7 +11,7 @@ public class Action extends Interactive implements Identifiable {
 	private final Type type;
 	private final int id;
 
-	public Action(ClientFactory ctx, final int slot, final Type type, final int id) {
+	public Action(MethodContext ctx, final int slot, final Type type, final int id) {
 		super(ctx);
 		if (slot < 0 || slot >= ActionBar.NUM_SLOTS || type == null || id <= 0) {
 			throw new IllegalArgumentException();

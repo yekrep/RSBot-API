@@ -9,7 +9,7 @@ import org.powerbot.script.internal.randoms.TicketDestroy;
 import org.powerbot.script.internal.randoms.WidgetCloser;
 import org.powerbot.script.lang.Stoppable;
 import org.powerbot.script.lang.Suspendable;
-import org.powerbot.script.methods.ClientFactory;
+import org.powerbot.script.methods.MethodContext;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -22,7 +22,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class ScriptHandler implements Suspendable, Stoppable {
-	ClientFactory clientFactory;
+	MethodContext methodContext;
 	EventManager eventManager;
 	private ScriptContainer container;
 	private ExecutorService executor;
@@ -31,8 +31,8 @@ public class ScriptHandler implements Suspendable, Stoppable {
 	private AtomicBoolean stopping;
 	private RandomHandler randomHandler;
 
-	public ScriptHandler(ClientFactory clientFactory, EventMulticaster multicaster) {
-		this.clientFactory = clientFactory;
+	public ScriptHandler(MethodContext methodContext, EventMulticaster multicaster) {
+		this.methodContext = methodContext;
 		this.eventManager = new EventManager(multicaster);
 		this.container = new ContainerImpl(this);
 		this.script = new AtomicReference<>(null);
@@ -41,10 +41,10 @@ public class ScriptHandler implements Suspendable, Stoppable {
 
 		this.randomHandler = new RandomHandler(container,
 				new PollingPassive[]{
-						new WidgetCloser(clientFactory, container),
-						new Login(clientFactory, container),
-						new TicketDestroy(clientFactory, container),
-						new BankPin(clientFactory, container),
+						new WidgetCloser(methodContext, container),
+						new Login(methodContext, container),
+						new TicketDestroy(methodContext, container),
+						new BankPin(methodContext, container),
 				}
 		);
 	}
@@ -56,7 +56,7 @@ public class ScriptHandler implements Suspendable, Stoppable {
 			this.executor = new ScriptExecutor(this);
 
 			script.setContainer(container);
-			script.setClientFactory(clientFactory);
+			script.setContext(methodContext);
 			eventManager.add(script);
 			if (call(Script.Event.START)) {
 				eventManager.subscribeAll();

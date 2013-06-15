@@ -6,7 +6,7 @@ import org.powerbot.script.internal.methods.Items;
 
 import java.util.concurrent.atomic.AtomicReference;
 
-public class ClientFactory {
+public class MethodContext {
 	private AtomicReference<Client> client;
 	public int preferredWorld;
 
@@ -42,7 +42,7 @@ public class ClientFactory {
 	public DepositBox depositBox;
 	public Lobby lobby;
 
-	public ClientFactory(final Bot bot) {
+	public MethodContext(final Bot bot) {
 		this.client = new AtomicReference<>(null);
 		this.preferredWorld = -1;
 

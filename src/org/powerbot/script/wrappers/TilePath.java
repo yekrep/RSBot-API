@@ -1,6 +1,6 @@
 package org.powerbot.script.wrappers;
 
-import org.powerbot.script.methods.ClientFactory;
+import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.methods.Game;
 import org.powerbot.script.util.Random;
 
@@ -12,7 +12,7 @@ public class TilePath extends Path {
 	protected Tile[] orig;
 	private boolean end;
 
-	public TilePath(ClientFactory ctx, final Tile[] tiles) {
+	public TilePath(MethodContext ctx, final Tile[] tiles) {
 		super(ctx);
 		orig = tiles;
 		this.tiles = Arrays.copyOf(tiles, tiles.length);

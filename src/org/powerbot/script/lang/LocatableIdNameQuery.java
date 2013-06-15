@@ -1,11 +1,11 @@
 package org.powerbot.script.lang;
 
-import org.powerbot.script.methods.ClientFactory;
+import org.powerbot.script.methods.MethodContext;
 
 public abstract class LocatableIdNameQuery<K extends Locatable & Identifiable & Nameable> extends AbstractQuery<LocatableIdNameQuery<K>, K>
 		implements Locatable.Query<LocatableIdNameQuery<K>>, Identifiable.Query<LocatableIdNameQuery<K>>,
 		Nameable.Query<LocatableIdNameQuery<K>> {
-	public LocatableIdNameQuery(final ClientFactory factory) {
+	public LocatableIdNameQuery(final MethodContext factory) {
 		super(factory);
 	}
 

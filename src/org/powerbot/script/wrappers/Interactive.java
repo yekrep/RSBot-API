@@ -2,17 +2,17 @@ package org.powerbot.script.wrappers;
 
 import org.powerbot.script.lang.Targetable;
 import org.powerbot.script.lang.Validatable;
-import org.powerbot.script.methods.ClientFactory;
-import org.powerbot.script.methods.ClientLink;
+import org.powerbot.script.methods.MethodContext;
+import org.powerbot.script.methods.MethodProvider;
 import org.powerbot.script.util.Delay;
 import org.powerbot.script.util.Filter;
 
 import java.awt.Point;
 
-public abstract class Interactive extends ClientLink implements Targetable, Validatable {
+public abstract class Interactive extends MethodProvider implements Targetable, Validatable {
 	private static final int ATTEMPTS = 5;
 
-	public Interactive(ClientFactory ctx) {
+	public Interactive(MethodContext ctx) {
 		super(ctx);
 	}
 

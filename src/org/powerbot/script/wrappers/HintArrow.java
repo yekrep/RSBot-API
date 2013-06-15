@@ -7,16 +7,16 @@ import org.powerbot.client.RSNPCNode;
 import org.powerbot.client.RSPlayer;
 import org.powerbot.script.lang.Locatable;
 import org.powerbot.script.lang.Validatable;
-import org.powerbot.script.methods.ClientFactory;
-import org.powerbot.script.methods.ClientLink;
+import org.powerbot.script.methods.MethodContext;
+import org.powerbot.script.methods.MethodProvider;
 
 import java.lang.ref.WeakReference;
 import java.util.Arrays;
 
-public class HintArrow extends ClientLink implements Locatable, Validatable {
+public class HintArrow extends MethodProvider implements Locatable, Validatable {
 	private final WeakReference<RSHintArrow> arrow;
 
-	public HintArrow(ClientFactory ctx, final RSHintArrow arrow) {
+	public HintArrow(MethodContext ctx, final RSHintArrow arrow) {
 		super(ctx);
 		this.arrow = new WeakReference<>(arrow);
 	}

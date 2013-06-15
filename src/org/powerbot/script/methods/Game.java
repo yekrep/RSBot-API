@@ -24,7 +24,7 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 
-public class Game extends ClientLink {
+public class Game extends MethodProvider {
 	public static final int TAB_NONE = -1;
 	public static final int TAB_COMBAT = 0;
 	public static final int TAB_NOTICEBOARD = 1;
@@ -67,7 +67,7 @@ public class Game extends ClientLink {
 	public final Game.Toolkit toolkit;
 	public final Game.Viewport viewport;
 
-	public Game(ClientFactory factory) {
+	public Game(MethodContext factory) {
 		super(factory);
 		this.toolkit = new Toolkit();
 		this.viewport = new Viewport();

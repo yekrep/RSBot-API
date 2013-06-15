@@ -12,7 +12,7 @@ import org.powerbot.script.internal.InputHandler;
 import org.powerbot.script.internal.MouseHandler;
 import org.powerbot.script.internal.ScriptHandler;
 import org.powerbot.script.lang.Stoppable;
-import org.powerbot.script.methods.ClientFactory;
+import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.util.Delay;
 import org.powerbot.service.GameAccounts;
 
@@ -28,7 +28,7 @@ import java.util.logging.Logger;
  */
 public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 	public static final Logger log = Logger.getLogger(Bot.class.getName());
-	private ClientFactory clientFactory;
+	private MethodContext methodContext;
 	public final Runnable callback;
 	public final ThreadGroup threadGroup;
 	private final PaintEvent paintEvent;
@@ -67,8 +67,8 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 		new Thread(threadGroup, multicaster, multicaster.getClass().getName()).start();
 		refreshing = new AtomicBoolean(false);
 
-		clientFactory = new ClientFactory(this);
-		scriptController = new ScriptHandler(clientFactory, multicaster);
+		methodContext = new MethodContext(this);
+		scriptController = new ScriptHandler(methodContext, multicaster);
 	}
 
 	public void run() {
@@ -135,7 +135,7 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 			appletContainer.destroy();
 			appletContainer = null;
 			stub = null;
-			this.clientFactory.setClient(null);
+			this.methodContext.setClient(null);
 		}
 	}
 
@@ -164,8 +164,8 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 		return appletContainer;
 	}
 
-	public ClientFactory getClientFactory() {
-		return clientFactory;
+	public MethodContext getMethodContext() {
+		return methodContext;
 	}
 
 	public Constants getConstants() {
@@ -194,7 +194,7 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 
 	public Graphics getBufferGraphics() {
 		final Graphics back = backBuffer.getGraphics();
-		if (this.clientFactory.getClient() != null && panel != null && !BotChrome.getInstance().isMinimised()) {
+		if (this.methodContext.getClient() != null && panel != null && !BotChrome.getInstance().isMinimised()) {
 			paintEvent.graphics = back;
 			textPaintEvent.graphics = back;
 			textPaintEvent.id = 0;
@@ -220,7 +220,7 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 	}
 
 	private void setClient(final Client client) {
-		this.clientFactory.setClient(client);
+		this.methodContext.setClient(client);
 		client.setCallback(new CallbackImpl(this));
 		constants = new Constants(appletContainer.getTspec().constants);
 		new Thread(threadGroup, new SafeMode(this)).start();
@@ -230,7 +230,7 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 	}
 
 	public Canvas getCanvas() {
-		final Client client = clientFactory.getClient();
+		final Client client = methodContext.getClient();
 		return client != null ? client.getCanvas() : null;
 	}
 
@@ -267,7 +267,7 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 				terminateApplet();
 				resize(BotChrome.PANEL_WIDTH, BotChrome.PANEL_HEIGHT);
 
-				while (getClientFactory().getClient() == null || getClientFactory().game.getClientState() == -1) {
+				while (getMethodContext().getClient() == null || getMethodContext().game.getClientState() == -1) {
 					Delay.sleep(1000);
 				}
 				if (container != null) {
@@ -287,16 +287,16 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 		}
 
 		public void run() {
-			if (bot != null && bot.clientFactory.getClient() != null) {
+			if (bot != null && bot.methodContext.getClient() != null) {
 				for (int i = 0; i < 30; i++) {
-					if (!clientFactory.keyboard.isReady()) {
+					if (!methodContext.keyboard.isReady()) {
 						Delay.sleep(500, 1000);
 					} else {
 						break;
 					}
 				}
-				if (clientFactory.keyboard.isReady()) {
-					clientFactory.keyboard.send("s");
+				if (methodContext.keyboard.isReady()) {
+					methodContext.keyboard.send("s");
 				}
 			}
 		}

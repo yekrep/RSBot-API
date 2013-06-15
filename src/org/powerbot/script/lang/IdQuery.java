@@ -1,10 +1,10 @@
 package org.powerbot.script.lang;
 
-import org.powerbot.script.methods.ClientFactory;
+import org.powerbot.script.methods.MethodContext;
 
 public abstract class IdQuery<K extends Identifiable> extends AbstractQuery<IdQuery<K>, K>
 		implements Identifiable.Query<IdQuery<K>> {
-	public IdQuery(final ClientFactory factory) {
+	public IdQuery(final MethodContext factory) {
 		super(factory);
 	}
 

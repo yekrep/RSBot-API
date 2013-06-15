@@ -8,13 +8,13 @@ import org.powerbot.script.wrappers.Component;
 import org.powerbot.script.wrappers.Npc;
 import org.powerbot.script.wrappers.Player;
 
-public class Summoning extends ClientLink {
+public class Summoning extends MethodProvider {
 	public static final int WIDGET_FOLLOWER_DETAILS = 662;
 	public static final int COMPONENT_SUMMONING_ORB = 747;
 	public static final int COMPONENT_SET_LEFT = 880;
 	public static final int COMPONENT_INTERACT = 1188;
 
-	public Summoning(ClientFactory factory) {
+	public Summoning(MethodContext factory) {
 		super(factory);
 	}
 
