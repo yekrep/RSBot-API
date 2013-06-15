@@ -95,7 +95,7 @@ public class ScriptHandler implements Suspendable, Stoppable {
 
 	private boolean call(Script.Event event) {
 		Script script = this.script.get();
-		if (script == null) {
+		if (script == null || getExecutor().isShutdown()) {
 			return false;
 		}
 
