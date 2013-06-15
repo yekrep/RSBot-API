@@ -8,8 +8,10 @@ import org.powerbot.script.methods.ClientFactory;
 import org.powerbot.script.methods.ClientLink;
 
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.logging.Logger;
 
 public abstract class PollingTask extends ClientLink implements Runnable, Suspendable, Stoppable {
+	public Logger log = Logger.getLogger(getClass().getName());
 	private final ScriptContainer container;
 	private AtomicBoolean suspended, stopping;
 
