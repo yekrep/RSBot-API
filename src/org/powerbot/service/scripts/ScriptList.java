@@ -1,5 +1,22 @@
 package org.powerbot.service.scripts;
 
+import org.powerbot.bot.Bot;
+import org.powerbot.gui.BotChrome;
+import org.powerbot.script.Manifest;
+import org.powerbot.script.Script;
+import org.powerbot.script.internal.randoms.RandomEvent;
+import org.powerbot.service.GameAccounts;
+import org.powerbot.service.NetworkAccount;
+import org.powerbot.util.Configuration;
+import org.powerbot.util.StringUtil;
+import org.powerbot.util.io.CryptFile;
+import org.powerbot.util.io.HttpClient;
+import org.powerbot.util.io.IPCLock;
+import org.powerbot.util.io.IniParser;
+
+import javax.crypto.Cipher;
+import javax.crypto.CipherInputStream;
+import javax.crypto.spec.SecretKeySpec;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -15,23 +32,6 @@ import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import java.util.zip.Inflater;
 import java.util.zip.ZipInputStream;
-
-import javax.crypto.Cipher;
-import javax.crypto.CipherInputStream;
-import javax.crypto.spec.SecretKeySpec;
-
-import org.powerbot.bot.Bot;
-import org.powerbot.gui.BotChrome;
-import org.powerbot.script.Manifest;
-import org.powerbot.script.Script;
-import org.powerbot.service.GameAccounts;
-import org.powerbot.service.NetworkAccount;
-import org.powerbot.util.Configuration;
-import org.powerbot.util.StringUtil;
-import org.powerbot.util.io.CryptFile;
-import org.powerbot.util.io.HttpClient;
-import org.powerbot.util.io.IPCLock;
-import org.powerbot.util.io.IniParser;
 
 /**
  * @author Paris
@@ -109,10 +109,11 @@ public class ScriptList {
 						} catch (final Throwable ignored) {
 							continue;
 						}
-						if (Script.class.isAssignableFrom(clazz)) {
+						if (Script.class.isAssignableFrom(clazz) && !RandomEvent.class.isAssignableFrom(clazz)) {
 							final Class<? extends Script> script = clazz.asSubclass(Script.class);
 							if (script.isAnnotationPresent(Manifest.class)) {
-								final ScriptDefinition def = new ScriptDefinition(script.cast(Script.class));
+								final Manifest m = script.getAnnotation(Manifest.class);
+								final ScriptDefinition def = new ScriptDefinition(m);
 								def.source = parent.getCanonicalFile().toString();
 								def.className = className;
 								def.local = true;
