@@ -28,6 +28,7 @@ public abstract class PollingTask extends ClientLink implements Runnable, Suspen
 
 	@Override
 	public final void run() {
+		stopping.set(false);
 		while (!isStopping()) {
 			int sleep;
 			try {
