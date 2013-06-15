@@ -46,12 +46,12 @@ public class DrawGroundItems implements PaintListener {
 					final ItemDefinition def = groundItem.getDefinition();
 					final String name = def != null ? def.getName() : null;
 					String s = "";
-					if (name != null) {
-						s += name + " ";
-					}
 					s += groundItem.getId();
+					if (name != null) {
+						s += " " + name;
+					}
 					final int stack = groundItem.getStackSize();
-					if (stack > 0) {
+					if (stack > 1) {
 						s += " (" + groundItem.getStackSize() + ")";
 					}
 					final int ty = screen.y - tHeight * (++d) + tHeight / 2;
