@@ -36,7 +36,7 @@ public final class BotMenuView implements ActionListener {//TODO revamp debuggin
 	private static final String GROUND_ITEMS = "Ground Items";
 	private static final String SCENEENTITIES = "Objects";
 	private static final String MODELS = "Models";
-	private static final String INVENTORY = "Inventory";
+	private static final String Items = "Items";
 	private static final String TAB = "Tab";
 	private static final String CLIENTSTATE = "Client State";
 	private static final String MENU = "Menu";
@@ -78,7 +78,7 @@ public final class BotMenuView implements ActionListener {//TODO revamp debuggin
 		map.put(LOCATION, TLocation.class);
 		map.put(DESTINATION, TDestination.class);
 		map.put(MOUSE, ViewMouse.class);
-		map.put(INVENTORY, DrawInventory.class);
+		map.put(Items, DrawItems.class);
 		map.put(TAB, TCurrentTab.class);
 		map.put(MESSAGES, MessageLogger.class);
 
@@ -89,7 +89,7 @@ public final class BotMenuView implements ActionListener {//TODO revamp debuggin
 		items.add(GROUND_ITEMS);
 		items.add(SCENEENTITIES);
 		items.add(MODELS);
-		items.add(INVENTORY);
+		items.add(Items);
 		items.add(SEPERATOR);
 		items.add(TAB);
 		items.add(CLIENTSTATE);
