@@ -1,5 +1,14 @@
 package org.powerbot.gui.component;
 
+import org.powerbot.bot.Bot;
+import org.powerbot.client.input.Mouse;
+import org.powerbot.gui.BotChrome;
+import org.powerbot.util.io.Resources;
+
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Component;
@@ -17,17 +26,9 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.lang.reflect.Field;
+import java.util.EventObject;
 import java.util.logging.Logger;
-
-import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-
-import org.powerbot.bot.Bot;
-import org.powerbot.client.input.Mouse;
-import org.powerbot.gui.BotChrome;
-import org.powerbot.util.io.Resources;
 
 /**
  * A panel that re-dispatches human events to the game's applet.
@@ -180,77 +181,78 @@ public class BotPanel extends JPanel {
 		}
 	}
 
-	private void redispatch(final MouseEvent mouseEvent) {
-		if (mouseEvent == null || bot == null || bot.getAppletContainer() == null || bot.getAppletContainer().getComponentCount() == 0 ||
-				bot.getClientFactory().getClient() == null) {
-			return;
-		}
-		mouseEvent.translatePoint(-xOff, -yOff);
-		final Mouse mouse = bot.getClientFactory().getClient().getMouse();
-		if (mouse == null) {
-			return;
-		}
-		final boolean present = mouse.isPresent();
-		final Component component = bot.getAppletContainer().getComponent(0);
-		notifyListeners(component, mouseEvent);
+	private void redispatch(MouseEvent event) {
+		if (event == null) return;
+		if (bot == null || bot.getClientFactory().getClient() == null) return;
+		if (!bot.getClientFactory().mouse.isReady()) return;
+		Mouse mouse = bot.getMouseHandler().getMouse();
+		if (mouse == null) return;
+
+		event.translatePoint(-xOff, -yOff);
+		bot.getEventMulticaster().dispatch(event);
 		if ((inputMask & INPUT_MOUSE) == 0) {
 			return;
 		}
-		int mouseX = mouseEvent.getX(), mouseY = mouseEvent.getY();
-		final int modifiers = mouseEvent.getModifiers(), clickCount = mouseEvent.getClickCount();
-		if (mouseEvent.getID() != MouseEvent.MOUSE_EXITED &&
-				mouseX > 0 && mouseX < component.getWidth() && mouseY > 0 && mouseY < component.getHeight()) {
-			if (present) {
-				if (mouseEvent instanceof MouseWheelEvent) {
-					final MouseWheelEvent mouseWheelEvent = (MouseWheelEvent) mouseEvent;
-					component.dispatchEvent(new MouseWheelEvent(
-							component, mouseEvent.getID(),
-							System.currentTimeMillis(), modifiers,
-							mouseX, mouseY, clickCount, mouseEvent.isPopupTrigger(),
-							mouseWheelEvent.getScrollType(), mouseWheelEvent.getScrollAmount(), mouseWheelEvent.getWheelRotation()
-					));
-				} else {
-					component.dispatchEvent(new MouseEvent(
-							component, mouseEvent.getID(),
-							System.currentTimeMillis(), modifiers,
-							mouseX, mouseY, clickCount, mouseEvent.isPopupTrigger(),
-							mouseEvent.getButton()
-					));
-				}
-			} else {
-				component.dispatchEvent(new MouseEvent(
-						component, MouseEvent.MOUSE_ENTERED,
-						System.currentTimeMillis(), modifiers,
-						mouseX, mouseY, clickCount, false
-				));
-			}
-		} else if (present) {
-			component.dispatchEvent(new MouseEvent(
-					component, MouseEvent.MOUSE_EXITED,
-					System.currentTimeMillis(), modifiers,
-					mouseX, mouseY, clickCount, false
-			));
-		}
+
+		mouse.sendEvent(generate(event, bot.getMouseHandler().getSource(), mouse.isPresent()));
 	}
 
-	private void redispatch(final KeyEvent keyEvent) {
-		if (keyEvent == null || bot == null || bot.getAppletContainer() == null || bot.getAppletContainer().getComponentCount() == 0 ||
-				bot.getClientFactory().getClient() == null) {
-			return;
+	private void redispatch(KeyEvent event) {
+		if (event == null) return;
+		if (bot == null || bot.getClientFactory().getClient() == null) return;
+		if (!bot.getClientFactory().keyboard.isReady()) return;
+		Component c = bot.getInputHandler().getSource();
+		try {
+			final Field f = EventObject.class.getDeclaredField("source");
+			final boolean a = f.isAccessible();
+			f.setAccessible(true);
+			f.set(event, c);
+			f.setAccessible(a);
+		} catch (final Exception ignored) {
 		}
-		bot.getEventMulticaster().dispatch(keyEvent);
+		bot.getEventMulticaster().dispatch(event);
 		if ((inputMask & INPUT_KEYBOARD) == 0) {
 			return;
 		}
-		final Component component = bot.getAppletContainer().getComponent(0);
-		if (component != null) {
-			component.dispatchEvent(keyEvent);
-		}
+		bot.getInputHandler().send(event);
 	}
 
-	private void notifyListeners(final Component component, final MouseEvent mouseEvent) {
-		if (component != null && mouseEvent != null) {
-			bot.getEventMulticaster().dispatch(mouseEvent);
+	private MouseEvent generate(MouseEvent event, Component component, boolean present) {
+		int mouseX = event.getX(), mouseY = event.getY();
+		int modifiers = event.getModifiers(), clickCount = event.getClickCount();
+		if (event.getID() != MouseEvent.MOUSE_EXITED &&
+				mouseX > 0 && mouseX < component.getWidth() && mouseY > 0 && mouseY < component.getHeight()) {
+			if (present) {
+				if (event instanceof MouseWheelEvent) {
+					final MouseWheelEvent mouseWheelEvent = (MouseWheelEvent) event;
+					return new MouseWheelEvent(
+							component, event.getID(),
+							System.currentTimeMillis(), modifiers,
+							mouseX, mouseY, clickCount, event.isPopupTrigger(),
+							mouseWheelEvent.getScrollType(), mouseWheelEvent.getScrollAmount(), mouseWheelEvent.getWheelRotation()
+					);
+				} else {
+					return new MouseEvent(
+							component, event.getID(),
+							System.currentTimeMillis(), modifiers,
+							mouseX, mouseY, clickCount, event.isPopupTrigger(),
+							event.getButton()
+					);
+				}
+			} else {
+				return new MouseEvent(
+						component, MouseEvent.MOUSE_ENTERED,
+						System.currentTimeMillis(), modifiers,
+						mouseX, mouseY, clickCount, false
+				);
+			}
+		} else if (present) {
+			return new MouseEvent(
+					component, MouseEvent.MOUSE_EXITED,
+					System.currentTimeMillis(), modifiers,
+					mouseX, mouseY, clickCount, false
+			);
 		}
+		return null;
 	}
 }
