@@ -4,6 +4,7 @@ import org.powerbot.event.EventMulticaster;
 import org.powerbot.script.Script;
 import org.powerbot.script.lang.Stoppable;
 import org.powerbot.script.lang.Suspendable;
+import org.powerbot.script.methods.ClientFactory;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -16,6 +17,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class ScriptHandler implements Suspendable, Stoppable {
+	ClientFactory clientFactory;
 	EventManager eventManager;
 	private ScriptContainer container;
 	private ExecutorService executor;
@@ -23,7 +25,8 @@ public class ScriptHandler implements Suspendable, Stoppable {
 	private AtomicBoolean suspended;
 	private AtomicBoolean stopping;
 
-	public ScriptHandler(EventMulticaster multicaster) {
+	public ScriptHandler(ClientFactory clientFactory, EventMulticaster multicaster) {
+		this.clientFactory = clientFactory;
 		this.eventManager = new EventManager(multicaster);
 		this.container = new ContainerImpl(this);
 		this.script = new AtomicReference<>(null);
@@ -38,6 +41,7 @@ public class ScriptHandler implements Suspendable, Stoppable {
 			this.executor = new ScriptExecutor(this);
 
 			script.setContainer(container);
+			script.setClientFactory(clientFactory);
 			eventManager.add(script);
 			if (call(Script.Event.START)) {
 				eventManager.subscribeAll();

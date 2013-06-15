@@ -13,7 +13,7 @@ public abstract class PollingScript extends AbstractScript {
 				} else {
 					sleep = poll();
 				}
-			} catch (Exception e) {
+			} catch (Throwable e) {
 				e.printStackTrace();
 				sleep = -1;
 			}
