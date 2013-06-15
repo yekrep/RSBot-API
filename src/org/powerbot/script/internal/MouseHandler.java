@@ -203,8 +203,12 @@ public class MouseHandler implements Runnable, Stoppable {
 		running = false;
 	}
 
-	private Component getSource() {
+	public Component getSource() {
 		return applet.getComponentCount() > 0 ? applet.getComponent(0) : null;
+	}
+
+	public Mouse getMouse() {
+		return client.getMouse();
 	}
 
 	public Point getLocation() {
