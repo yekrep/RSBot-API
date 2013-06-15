@@ -86,6 +86,16 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends Me
 		return getThis();
 	}
 
+	public T shuffle() {
+		final List<K> items = this.items.get();
+
+		synchronized (items) {
+			Collections.shuffle(items);
+		}
+
+		return getThis();
+	}
+
 	public T limit(final int count) {
 		return limit(0, count);
 	}
