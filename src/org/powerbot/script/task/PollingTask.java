@@ -2,26 +2,36 @@ package org.powerbot.script.task;
 
 import org.powerbot.script.Script;
 import org.powerbot.script.internal.ScriptContainer;
+import org.powerbot.script.lang.Stoppable;
+import org.powerbot.script.lang.Suspendable;
+import org.powerbot.script.methods.ClientFactory;
+import org.powerbot.script.methods.ClientLink;
 
-public abstract class PollingTask implements Runnable {
+import java.util.concurrent.atomic.AtomicBoolean;
+
+public abstract class PollingTask extends ClientLink implements Runnable, Suspendable, Stoppable {
 	private final ScriptContainer container;
+	private AtomicBoolean suspended, stopping;
 
 	public PollingTask(Script script) {
-		this(script.getContainer());
+		this(script.getClientFactory(), script.getContainer());
 	}
 
-	public PollingTask(ScriptContainer container) {
+	public PollingTask(ClientFactory ctx, ScriptContainer container) {
+		super(ctx);
 		this.container = container;
+		this.suspended = new AtomicBoolean(false);
+		this.stopping = new AtomicBoolean(false);
 	}
 
 	public abstract int poll();
 
 	@Override
 	public final void run() {
-		while (!getContainer().isStopping()) {
+		while (!isStopping()) {
 			int sleep;
 			try {
-				if (getContainer().isSuspended()) {
+				if (isSuspended()) {
 					sleep = 600;
 				} else {
 					sleep = poll();
@@ -40,9 +50,38 @@ public abstract class PollingTask implements Runnable {
 				break;
 			}
 		}
+		stop();
 	}
 
 	public ScriptContainer getContainer() {
 		return this.container;
+	}
+
+	@Override
+	public boolean isStopping() {
+		return getContainer().isStopping() || stopping.get();
+	}
+
+	@Override
+	public void stop() {
+		if (stopping.compareAndSet(false, true)) {
+		}
+	}
+
+	@Override
+	public boolean isSuspended() {
+		return getContainer().isSuspended() || suspended.get();
+	}
+
+	@Override
+	public void suspend() {
+		if (suspended.compareAndSet(false, true)) {
+		}
+	}
+
+	@Override
+	public void resume() {
+		if (suspended.compareAndSet(true, false)) {
+		}
 	}
 }
