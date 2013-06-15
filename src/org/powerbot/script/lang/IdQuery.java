@@ -25,6 +25,29 @@ public abstract class IdQuery<K extends Identifiable> extends AbstractQuery<IdQu
 	 * {@inheritDoc}
 	 */
 	@Override
+	public IdQuery<K> id(int[]... ids) {
+		int z = 0;
+
+		for (final int[] x : ids) {
+			z += x.length;
+		}
+
+		final int[] a = new int[z];
+		int i = 0;
+
+		for (final int[] x : ids) {
+			for (final int y : x) {
+				a[i++] = y;
+			}
+		}
+
+		return select(new Identifiable.Matcher(a));
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public IdQuery<K> id(Identifiable... identifiables) {
 		return select(new Identifiable.Matcher(identifiables));
 	}

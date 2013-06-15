@@ -8,6 +8,8 @@ public interface Identifiable {
 	public interface Query<T> {
 		public T id(int... ids);
 
+		public T id(int[]... ids);
+
 		public T id(Identifiable... ids);
 	}
 

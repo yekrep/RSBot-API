@@ -65,6 +65,29 @@ public abstract class LocatableIdQuery<K extends Locatable & Identifiable> exten
 	 * {@inheritDoc}
 	 */
 	@Override
+	public LocatableIdQuery<K> id(final int[]... ids) {
+		int z = 0;
+
+		for (final int[] x : ids) {
+			z += x.length;
+		}
+
+		final int[] a = new int[z];
+		int i = 0;
+
+		for (final int[] x : ids) {
+			for (final int y : x) {
+				a[i++] = y;
+			}
+		}
+
+		return select(new Identifiable.Matcher(a));
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public LocatableIdQuery<K> id(Identifiable... identifiables) {
 		return select(new Identifiable.Matcher(identifiables));
 	}
