@@ -6,12 +6,13 @@ import org.powerbot.client.HashTable;
 import org.powerbot.client.RSItemDef;
 import org.powerbot.client.RSItemDefLoader;
 import org.powerbot.script.lang.Identifiable;
+import org.powerbot.script.lang.Stackable;
 import org.powerbot.script.methods.ClientFactory;
 import org.powerbot.util.StringUtil;
 
 import java.awt.Point;
 
-public class Item extends Interactive implements Identifiable {
+public class Item extends Interactive implements Identifiable, Stackable {
 	private final int id;
 	private int stack;
 	private final Component component;
@@ -35,6 +36,7 @@ public class Item extends Interactive implements Identifiable {
 		return this.id;
 	}
 
+	@Override
 	public int getStackSize() {
 		int stack = component.getItemStackSize();
 		if (component.isVisible() && component.getItemId() == this.id) {

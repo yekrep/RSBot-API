@@ -216,7 +216,7 @@ public class DepositBox extends ClientLink {
 			return false;
 		}
 		String action = "Deposit-" + amount;
-		final int c = ctx.inventory.getCount(true, id);
+		final int c = ctx.inventory.select().id(id).count(true);
 		if (c == 1) {
 			action = "Depoist";
 		} else if (c <= amount || amount == 0) {
@@ -224,7 +224,7 @@ public class DepositBox extends ClientLink {
 		}
 
 		final Component comp = item.getComponent();
-		final int inv = ctx.inventory.getCount(true);
+		final int inv = ctx.inventory.select().count(true);
 		if (containsAction(comp, action)) {
 			if (!comp.interact(action)) {
 				return false;
@@ -242,10 +242,10 @@ public class DepositBox extends ClientLink {
 			Delay.sleep(200, 800);
 			ctx.keyboard.sendln(amount + "");
 		}
-		for (int i = 0; i < 25 && ctx.inventory.getCount(true) == inv; i++) {
+		for (int i = 0; i < 25 && ctx.inventory.select().count(true) == inv; i++) {
 			Delay.sleep(100, 200);
 		}
-		return ctx.inventory.getCount(true) != inv;
+		return ctx.inventory.select().count(true) != inv;
 	}
 
 	public boolean depositInventory() {
@@ -256,13 +256,13 @@ public class DepositBox extends ClientLink {
 		if (ctx.inventory.isEmpty()) {
 			return true;
 		}
-		final int inv = ctx.inventory.getCount(true);
+		final int inv = ctx.inventory.select().count(true);
 		if (c.click()) {
-			for (int i = 0; i < 25 && ctx.inventory.getCount(true) == inv; i++) {
+			for (int i = 0; i < 25 && ctx.inventory.select().count(true) == inv; i++) {
 				Delay.sleep(100, 200);
 			}
 		}
-		return ctx.inventory.getCount(true) != inv;
+		return ctx.inventory.select().count(true) != inv;
 	}
 
 	public boolean depositEquipment() {

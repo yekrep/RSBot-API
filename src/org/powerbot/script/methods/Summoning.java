@@ -37,7 +37,7 @@ public class Summoning extends ClientLink {
 		}
 		if (Option.RENEW_FAMILIAR.getText().toLowerCase().contains(action.toLowerCase())) {
 			final Familiar familiar = getEnum();
-			return familiar != null && familiar.getRequiredPoints() <= getPoints() && ctx.inventory.getCount(ctx.settings.get(1831)) > 0
+			return familiar != null && familiar.getRequiredPoints() <= getPoints() && ctx.inventory.select().id(ctx.settings.get(1831)).count() > 0
 					&& c.interact(action);
 		}
 		if (Option.DISMISS.getText().toLowerCase().contains(action.toLowerCase())) {
@@ -122,7 +122,7 @@ public class Summoning extends ClientLink {
 	}
 
 	public boolean summonFamiliar(final Familiar familiar) {
-		return ctx.inventory.getCount(familiar.getPouchId()) > 0 && ctx.skills.getRealLevel(Skills.SUMMONING) >= familiar.getRequiredLevel() &&
+		return ctx.inventory.select().id(familiar.getPouchId()).count() > 0 && ctx.skills.getRealLevel(Skills.SUMMONING) >= familiar.getRequiredLevel() &&
 				getPoints() >= familiar.getRequiredPoints() && ctx.inventory.select().id(familiar.getPouchId()).first().getComponent().interact("Summon");
 	}
 

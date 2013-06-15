@@ -142,11 +142,7 @@ public class Inventory extends ItemQuery<Item> {
 		return -1;
 	}
 
-	public boolean contains(final int id) {
-		return indexOf(id) != -1;
-	}
-
-	public boolean containsAll(final int... ids) {
+	public boolean contains(final int... ids) {
 		for (final int id : ids) {
 			if (indexOf(id) == -1) {
 				return false;
@@ -162,55 +158,6 @@ public class Inventory extends ItemQuery<Item> {
 			}
 		}
 		return false;
-	}
-
-	public int getCount() {
-		return getCount(false);
-	}
-
-	public int getCount(final boolean stacks) {
-		int[][] data = ctx.items.getItems(Items.INDEX_INVENTORY);
-		int count = 0;
-		for (int i = 0; i < data.length; i++) {
-			if (data[i][0] != -1) {
-				if (stacks) {
-					count += data[i][1];
-				} else {
-					++count;
-				}
-			}
-		}
-		return count;
-	}
-
-	public int getCount(final int... ids) {
-		return getCount(false, ids);
-	}
-
-	public int getCount(final boolean stacks, final int... ids) {
-		int[][] data = ctx.items.getItems(Items.INDEX_INVENTORY);
-		int count = 0;
-		for (int i = 0; i < data.length; i++) {
-			for (final int id : ids) {
-				if (data[i][0] == id) {
-					if (stacks) {
-						count += data[i][1];
-					} else {
-						++count;
-					}
-					break;
-				}
-			}
-		}
-		return count;
-	}
-
-	public boolean isFull() {
-		return getCount() == 28;
-	}
-
-	public boolean isEmpty() {
-		return getCount() == 0;
 	}
 
 	private Component getComponent() {

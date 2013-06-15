@@ -360,7 +360,7 @@ public class Bank extends ClientLink {
 			action = "Withdraw-All but one";
 		}
 
-		final int inv = ctx.inventory.getCount(true);
+		final int inv = ctx.inventory.select().count(true);
 		if (containsAction(c, action)) {
 			if (!c.interact(action)) {
 				return false;
@@ -378,10 +378,10 @@ public class Bank extends ClientLink {
 			Delay.sleep(200, 800);
 			ctx.keyboard.sendln(amount + "");
 		}
-		for (int i = 0; i < 25 && ctx.inventory.getCount(true) == inv; i++) {
+		for (int i = 0; i < 25 && ctx.inventory.select().count(true) == inv; i++) {
 			Delay.sleep(100, 200);
 		}
-		return ctx.inventory.getCount(true) != inv || ctx.inventory.isFull();
+		return ctx.inventory.select().count(true) != inv || ctx.inventory.count() == 28;
 	}
 
 	public boolean deposit(final int id, final int amount) {
@@ -393,7 +393,7 @@ public class Bank extends ClientLink {
 			return false;
 		}
 		String action = "Deposit-" + amount;
-		final int c = ctx.inventory.getCount(true, id);
+		final int c = ctx.inventory.select().id(id).count(true);
 		if (c == 1) {
 			action = "Depoist";
 		} else if (c <= amount || amount == 0) {
@@ -401,7 +401,7 @@ public class Bank extends ClientLink {
 		}
 
 		final Component comp = item.getComponent();
-		final int inv = ctx.inventory.getCount(true);
+		final int inv = ctx.inventory.select().count(true);
 		if (containsAction(comp, action)) {
 			if (!comp.interact(action)) {
 				return false;
@@ -419,10 +419,10 @@ public class Bank extends ClientLink {
 			Delay.sleep(200, 800);
 			ctx.keyboard.sendln(amount + "");
 		}
-		for (int i = 0; i < 25 && ctx.inventory.getCount(true) == inv; i++) {
+		for (int i = 0; i < 25 && ctx.inventory.select().count(true) == inv; i++) {
 			Delay.sleep(100, 200);
 		}
-		return ctx.inventory.getCount(true) != inv;
+		return ctx.inventory.select().count(true) != inv;
 	}
 
 	public boolean depositInventory() {
