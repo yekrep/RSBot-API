@@ -1,19 +1,5 @@
 package org.powerbot;
 
-import java.io.File;
-import java.io.IOException;
-import java.lang.management.ManagementFactory;
-import java.net.URL;
-import java.net.URLStreamHandler;
-import java.net.URLStreamHandlerFactory;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Handler;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import javax.swing.UIManager;
-
 import org.powerbot.bot.RSLoader;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.service.GameAccounts;
@@ -28,6 +14,19 @@ import org.powerbot.util.io.IOHelper;
 import org.powerbot.util.io.PrintStreamHandler;
 import org.powerbot.util.io.Resources;
 
+import javax.swing.UIManager;
+import java.io.File;
+import java.io.IOException;
+import java.lang.management.ManagementFactory;
+import java.net.URL;
+import java.net.URLStreamHandler;
+import java.net.URLStreamHandlerFactory;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public class Boot implements Runnable {
 	private final static Logger log = Logger.getLogger(Boot.class.getName());
 	private final static String SWITCH_RESTARTED = "-restarted", SWITCH_DEBUG = "-debug", SWITCH_VERSION_SHORT = "-v";
@@ -39,11 +38,14 @@ public class Boot implements Runnable {
 			logger.removeHandler(handler);
 		}
 
-		boolean restarted = false;
+		boolean restarted = false, debugging = false;
 
 		for (final String arg : args) {
 			switch (arg) {
 			case SWITCH_DEBUG:
+				debugging = true;
+				restarted = true;
+				break;
 			case SWITCH_RESTARTED:
 				restarted = true;
 				break;
@@ -110,8 +112,10 @@ public class Boot implements Runnable {
 
 		StringUtil.newStringUtf8(null); // prevents ClassCircularityError exceptions
 		CryptFile.PERMISSIONS.clear();
-		System.setSecurityManager(new RestrictedSecurityManager(new Class<?>[]{RSLoader.class},
-				new Class<?>[]{NetworkAccount.class, GameAccounts.class, Tracker.class}));
+		if (!debugging) {
+			System.setSecurityManager(new RestrictedSecurityManager(new Class<?>[]{RSLoader.class},
+					new Class<?>[]{NetworkAccount.class, GameAccounts.class, Tracker.class}));
+		}
 		System.setProperty("java.net.preferIPv4Stack", "true");
 
 		BotChrome.getInstance();
