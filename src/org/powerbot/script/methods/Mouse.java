@@ -219,6 +219,11 @@ public class Mouse extends ClientLink {
 		return !t.failed;
 	}
 
+	public boolean isReady() {
+		MouseHandler handler = getMouseHandler();
+		return handler != null && handler.getSource() != null;
+	}
+
 	private MouseHandler getMouseHandler() {
 		return ctx.bot.getMouseHandler();
 	}
