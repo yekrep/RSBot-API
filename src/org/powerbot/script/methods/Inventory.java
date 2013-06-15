@@ -1,14 +1,14 @@
 package org.powerbot.script.methods;
 
 import org.powerbot.script.internal.methods.Items;
-import org.powerbot.script.lang.IdQuery;
+import org.powerbot.script.lang.ItemQuery;
 import org.powerbot.script.wrappers.Component;
 import org.powerbot.script.wrappers.Item;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Inventory extends IdQuery<Item> {
+public class Inventory extends ItemQuery<Item> {
 	public static final int WIDGET = 679;
 	public static final int WIDGET_BANK = 763;
 	public static final int WIDGET_PRICE_CHECK = 204;
@@ -37,7 +37,6 @@ public class Inventory extends IdQuery<Item> {
 		if (inv == null) {
 			return items;
 		}
-		int d = 0;
 		final Component[] comps = inv.getChildren();
 		int[][] data;
 		if (inv.isVisible()) {
