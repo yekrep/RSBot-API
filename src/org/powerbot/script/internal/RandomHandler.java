@@ -43,7 +43,7 @@ public class RandomHandler implements Runnable {
 					if (cursor == -1 || cursor == pos) {
 						Delay.sleep(600);
 						continue;
-					}
+					} else events[pos].stop();
 				}
 				log.info("Stopping random event: " + (name != null ? name : "unknown"));
 				pos = -1;
