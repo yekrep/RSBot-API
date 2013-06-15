@@ -63,6 +63,12 @@ public class ScriptHandler implements Suspendable, Stoppable {
 			return;
 		}
 		script.set(null);
+		getExecutor().submit(new Runnable() {
+			@Override
+			public void run() {
+				call(Script.Event.STOP);
+			}
+		});
 		getExecutor().shutdown();
 		//TODO ensure everything gets shutdown
 	}
