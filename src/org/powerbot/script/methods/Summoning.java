@@ -118,7 +118,7 @@ public class Summoning extends MethodProvider {
 	}
 
 	public int getTimeLeft() {
-		return Math.round((ctx.settings.get(1786) / (float) 2.13333333333));
+		return Math.round((ctx.settings.get(1786) / 2.13333333333f));
 	}
 
 	public boolean isFamiliarSummoned() {
