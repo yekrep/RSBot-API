@@ -101,17 +101,7 @@ public class Equipment extends ClientLink {
 		return new Item(ctx, data[index][0], data[index][1], c);
 	}
 
-	public boolean contains(int id) {
-		int[][] data = ctx.items.getItems(Items.INDEX_EQUIPMENT);
-		for (int i = 0; i < data.length; i++) {
-			if (data[i][0] == id) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	public boolean containsAll(int... ids) {
+	public boolean contains(int... ids) {
 		int[][] data = ctx.items.getItems(Items.INDEX_EQUIPMENT);
 		for (int id : ids) {
 			boolean contains = false;
