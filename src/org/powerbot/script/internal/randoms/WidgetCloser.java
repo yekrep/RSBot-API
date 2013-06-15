@@ -41,7 +41,7 @@ public class WidgetCloser extends PollingPassive {
 			return -1;
 		}
 
-		if (component.isVisible() && click(component)) {
+		if (component.isVisible() && component.click(true)) {
 			final Timer timer = new Timer(Random.nextInt(2000, 2500));
 			while (timer.isRunning() && component.isVisible()) {
 				sleep(100, 250);
@@ -53,14 +53,6 @@ public class WidgetCloser extends PollingPassive {
 			}
 		}
 		return 600;
-	}
-
-	private boolean click(final Component component) {
-		if (component.getWidget().getIndex() == 1252) {
-			final Point p = component.getAbsoluteLocation();
-			return ctx.mouse.click(p.x + Random.nextInt(0, component.getWidth()), p.y + 50 + Random.nextInt(0, component.getHeight()), true);
-		}
-		return component.click();
 	}
 
 	@Override
