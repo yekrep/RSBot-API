@@ -1,7 +1,7 @@
 package org.powerbot.script.methods;
 
+import org.powerbot.script.lang.ItemQuery;
 import org.powerbot.script.util.Delay;
-import org.powerbot.script.util.Filter;
 import org.powerbot.script.util.Random;
 import org.powerbot.script.util.Timer;
 import org.powerbot.script.wrappers.Component;
@@ -9,9 +9,10 @@ import org.powerbot.script.wrappers.GameObject;
 import org.powerbot.script.wrappers.Item;
 import org.powerbot.script.wrappers.Widget;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
-public class DepositBox extends ClientLink {
+public class DepositBox extends ItemQuery<Item> {
 	public static final int[] DEPOSIT_BOX_IDS = new int[]{
 			2045, 2133, 6396, 6402, 6404, 6417, 6418, 6453, 6457, 6478, 6836, 9398, 15985, 20228, 24995, 25937, 26969,
 			32924, 32930, 32931, 34755, 36788, 39830, 45079, 66668, 70512, 73268
@@ -72,52 +73,20 @@ public class DepositBox extends ClientLink {
 		return close(true);
 	}
 
-	public Item[] getItems() {
+	@Override
+	protected List<Item> get() {
 		final Component c = ctx.widgets.get(WIDGET, COMPONENT_CONTAINER_ITEMS);
 		if (c == null || !c.isValid()) {
-			return new Item[0];
+			return new ArrayList<>();
 		}
 		final Component[] components = c.getChildren();
-		Item[] items = new Item[components.length];
-		int d = 0;
+		List<Item> items = new ArrayList<>(components.length);
 		for (final Component i : components) {
 			if (i.getItemId() != -1) {
-				items[d++] = new Item(ctx, i);
+				items.add(new Item(ctx, i));
 			}
 		}
-		return Arrays.copyOf(items, d);
-	}
-
-	public Item[] getItems(final int... ids) {
-		Arrays.sort(ids);
-		return getItems(new Filter<Item>() {
-			@Override
-			public boolean accept(final Item item) {
-				return Arrays.binarySearch(ids, item.getId()) >= 0;
-			}
-		});
-	}
-
-	public Item getItem(final int... ids) {
-		final Item[] items = getItems(ids);
-		return items.length > 0 ? items[0] : null;
-	}
-
-	public Item getItem(final Filter<Item> filter) {
-		final Item[] items = getItems(filter);
-		return items.length > 0 ? items[0] : null;
-	}
-
-	public Item[] getItems(final Filter<Item> filter) {
-		final Item[] items = getItems();
-		final Item[] arr = new Item[items.length];
-		int d = 0;
-		for (final Item item : items) {
-			if (filter.accept(item)) {
-				arr[d++] = item;
-			}
-		}
-		return Arrays.copyOf(arr, d);
+		return items;
 	}
 
 	public Item getItemAt(final int index) {
@@ -146,11 +115,7 @@ public class DepositBox extends ClientLink {
 		return -1;
 	}
 
-	public boolean contains(final int id) {
-		return indexOf(id) != -1;
-	}
-
-	public boolean containsAll(final int... ids) {
+	public boolean contains(final int... ids) {
 		for (final int id : ids) {
 			if (indexOf(id) == -1) {
 				return false;
@@ -166,45 +131,6 @@ public class DepositBox extends ClientLink {
 			}
 		}
 		return false;
-	}
-
-	public int getCount() {
-		return getCount(false);
-	}
-
-	public int getCount(final boolean stacks) {
-		int count = 0;
-		final Item[] items = getItems();
-		for (final Item item : items) {
-			if (stacks) {
-				count += item.getStackSize();
-			} else {
-				++count;
-			}
-		}
-		return count;
-	}
-
-	public int getCount(final int... ids) {
-		return getCount(false, ids);
-	}
-
-	public int getCount(final boolean stacks, final int... ids) {
-		int count = 0;
-		final Item[] items = getItems();
-		for (final Item item : items) {
-			for (final int id : ids) {
-				if (item.getId() == id) {
-					if (stacks) {
-						count += item.getStackSize();
-					} else {
-						++count;
-					}
-					break;
-				}
-			}
-		}
-		return count;
 	}
 
 	public boolean deposit(final int id, final int amount) {
@@ -280,13 +206,14 @@ public class DepositBox extends ClientLink {
 		return c != null && c.isValid() && c.click();
 	}
 
-	private boolean containsAction(final Component c, final String action) {
+	private boolean containsAction(final Component c, String action) {
+		action = action.toLowerCase();
 		final String[] actions = c.getActions();
 		if (action == null) {
 			return false;
 		}
 		for (final String a : actions) {
-			if (a != null && a.matches("^" + action + "(<.*>)?$")) {
+			if (a != null && a.toLowerCase().contains(action)) {
 				return true;
 			}
 		}
