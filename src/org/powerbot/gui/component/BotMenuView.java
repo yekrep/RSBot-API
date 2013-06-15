@@ -1,5 +1,16 @@
 package org.powerbot.gui.component;
 
+import org.powerbot.bot.Bot;
+import org.powerbot.event.impl.*;
+import org.powerbot.gui.BotChrome;
+import org.powerbot.gui.BotSettingExplorer;
+import org.powerbot.gui.BotWidgetExplorer;
+import org.powerbot.util.io.Resources;
+
+import javax.swing.ImageIcon;
+import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.lang.reflect.Constructor;
@@ -10,32 +21,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import javax.swing.ImageIcon;
-import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-
-import org.powerbot.bot.Bot;
-import org.powerbot.event.impl.DrawGroundItems;
-import org.powerbot.event.impl.DrawInventory;
-import org.powerbot.event.impl.DrawModels;
-import org.powerbot.event.impl.DrawNPCs;
-import org.powerbot.event.impl.DrawObjects;
-import org.powerbot.event.impl.DrawPlayers;
-import org.powerbot.event.impl.MessageLogger;
-import org.powerbot.event.impl.TCamera;
-import org.powerbot.event.impl.TClientState;
-import org.powerbot.event.impl.TDestination;
-import org.powerbot.event.impl.TLocation;
-import org.powerbot.event.impl.TMapBase;
-import org.powerbot.event.impl.TMenu;
-import org.powerbot.event.impl.TPlane;
-import org.powerbot.event.impl.ViewMouse;
-import org.powerbot.gui.BotChrome;
-import org.powerbot.gui.BotSettingExplorer;
-import org.powerbot.gui.BotWidgetExplorer;
-import org.powerbot.util.io.Resources;
 
 /**
  * @author Paris
@@ -52,6 +37,7 @@ public final class BotMenuView implements ActionListener {//TODO revamp debuggin
 	private static final String SCENEENTITIES = "Objects";
 	private static final String MODELS = "Models";
 	private static final String INVENTORY = "Inventory";
+	private static final String TAB = "Tab";
 	private static final String CLIENTSTATE = "Client State";
 	private static final String MENU = "Menu";
 	private static final String PLANE = "Plane";
@@ -93,6 +79,7 @@ public final class BotMenuView implements ActionListener {//TODO revamp debuggin
 		map.put(DESTINATION, TDestination.class);
 		map.put(MOUSE, ViewMouse.class);
 		map.put(INVENTORY, DrawInventory.class);
+		map.put(TAB, TCurrentTab.class);
 		map.put(MESSAGES, MessageLogger.class);
 
 		final List<String> items = new ArrayList<>(map.size());
@@ -104,6 +91,7 @@ public final class BotMenuView implements ActionListener {//TODO revamp debuggin
 		items.add(MODELS);
 		items.add(INVENTORY);
 		items.add(SEPERATOR);
+		items.add(TAB);
 		items.add(CLIENTSTATE);
 		items.add(MENU);
 		items.add(PLANE);
