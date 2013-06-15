@@ -146,4 +146,8 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends Me
 	public Deque<K> toDeque() {
 		return new ConcurrentLinkedDeque<>(items.get());
 	}
+
+	public List<K> toList() {
+		return items.get();
+	}
 }
