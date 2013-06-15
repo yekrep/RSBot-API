@@ -1,5 +1,6 @@
 package org.powerbot.gui;
 
+import java.awt.Color;
 import java.awt.Desktop;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -42,6 +43,7 @@ public class BotChrome extends JFrame implements Closeable {
 	private BotChrome() {
 		setTitle(Configuration.NAME);
 		setIconImage(Resources.getImage(Resources.Paths.ICON));
+		setBackground(Color.BLACK);
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 
 		addWindowListener(new WindowAdapter() {
