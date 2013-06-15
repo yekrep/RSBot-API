@@ -2,6 +2,9 @@ package org.powerbot.script.internal;
 
 import org.powerbot.event.EventMulticaster;
 import org.powerbot.script.Script;
+import org.powerbot.script.internal.randoms.BankPin;
+import org.powerbot.script.internal.randoms.PollingPassive;
+import org.powerbot.script.internal.randoms.WidgetCloser;
 import org.powerbot.script.lang.Stoppable;
 import org.powerbot.script.lang.Suspendable;
 import org.powerbot.script.methods.ClientFactory;
@@ -24,6 +27,7 @@ public class ScriptHandler implements Suspendable, Stoppable {
 	private AtomicReference<Script> script;
 	private AtomicBoolean suspended;
 	private AtomicBoolean stopping;
+	private RandomHandler randomHandler;
 
 	public ScriptHandler(ClientFactory clientFactory, EventMulticaster multicaster) {
 		this.clientFactory = clientFactory;
@@ -32,6 +36,15 @@ public class ScriptHandler implements Suspendable, Stoppable {
 		this.script = new AtomicReference<>(null);
 		this.suspended = new AtomicBoolean(false);
 		this.stopping = new AtomicBoolean(false);
+
+		this.randomHandler = new RandomHandler(container,
+				new PollingPassive[]{
+						//login
+						new WidgetCloser(clientFactory, container),
+						//spin tickets
+						new BankPin(clientFactory, container),
+				}
+		);
 	}
 
 	public boolean start(Script script) {
@@ -45,6 +58,7 @@ public class ScriptHandler implements Suspendable, Stoppable {
 			eventManager.add(script);
 			if (call(Script.Event.START)) {
 				eventManager.subscribeAll();
+				getExecutor().submit(randomHandler);
 				getExecutor().submit(script);
 				return true;
 			} else {
