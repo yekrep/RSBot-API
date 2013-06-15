@@ -61,7 +61,7 @@ public class ClientLoader implements Runnable {
 		}
 
 		final String hash = StringUtil.byteArrayToHexString(Deflator.inner_pack_hash);
-		log.info("Loading game (" + hash.substring(0, 6) + ")");
+		log.info("Unpacking game (" + hash.substring(0, 6) + ")");
 
 		tspec = null;
 		while (true) {
