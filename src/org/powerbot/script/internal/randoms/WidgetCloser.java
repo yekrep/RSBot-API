@@ -1,7 +1,8 @@
 package org.powerbot.script.internal.randoms;
 
 import org.powerbot.script.Manifest;
-import org.powerbot.script.PollingScript;
+import org.powerbot.script.internal.ScriptContainer;
+import org.powerbot.script.methods.ClientFactory;
 import org.powerbot.script.util.Random;
 import org.powerbot.script.util.Timer;
 import org.powerbot.script.wrappers.Component;
@@ -10,7 +11,7 @@ import org.powerbot.util.Tracker;
 import java.awt.Point;
 
 @Manifest(name = "Widget closer", authors = {"Timer"}, description = "Closes widgets")
-public class WidgetCloser extends PollingScript implements RandomEvent {
+public class WidgetCloser extends PollingPassive {
 	private static final int[] COMPONENTS = {
 			21 << 16 | 43, // beholding a player's statuette (duellist's cap)
 			1234 << 16 | 15, // membership offers
@@ -26,40 +27,29 @@ public class WidgetCloser extends PollingScript implements RandomEvent {
 	private Component component;
 	private int tries;
 
-	public WidgetCloser() {
+	public WidgetCloser(ClientFactory ctx, ScriptContainer container) {
+		super(ctx, container);
 		this.threshold = new Timer(0);
 	}
 
 	@Override
 	public int poll() {
-		if (threshold.isRunning()) {
-			return 1000;
+		Tracker.getInstance().trackPage("randoms/WidgetCloser/", "");
+
+		if (++tries > 3) {
+			threshold.setEndIn(60000);
+			return -1;
 		}
-		for (final int p : COMPONENTS) {
-			component = ctx.widgets.get(p >> 16, p & 0xffff);
-			if (component != null && component.isValid()) {
-				break;
-			} else {
+
+		if (component.isVisible() && click(component)) {
+			final Timer timer = new Timer(Random.nextInt(2000, 2500));
+			while (timer.isRunning() && component.isVisible()) {
+				sleep(100, 250);
+			}
+			if (!component.isVisible()) {
 				component = null;
-			}
-		}
-		if (component != null) {
-			Tracker.getInstance().trackPage("randoms/WidgetCloser/", "");
-
-			if (++tries > 3) {
-				threshold.setEndIn(60000);
-				return 0;
-			}
-
-			if (component.isValid() && click(component)) {
-				final Timer timer = new Timer(Random.nextInt(2000, 2500));
-				while (timer.isRunning() && component.isValid()) {
-					sleep(100, 250);
-				}
-				if (!component.isValid()) {
-					component = null;
-					tries = 0;
-				}
+				tries = 0;
+				return -1;
 			}
 		}
 		return 600;
@@ -71,5 +61,21 @@ public class WidgetCloser extends PollingScript implements RandomEvent {
 			return ctx.mouse.click(p.x + Random.nextInt(0, component.getWidth()), p.y + 50 + Random.nextInt(0, component.getHeight()), true);
 		}
 		return component.click();
+	}
+
+	@Override
+	public boolean isValid() {
+		if (threshold.isRunning()) {
+			return false;
+		}
+		for (final int p : COMPONENTS) {
+			component = ctx.widgets.get(p >> 16, p & 0xffff);
+			if (component != null && component.isVisible()) {
+				break;
+			} else {
+				component = null;
+			}
+		}
+		return component != null;
 	}
 }
