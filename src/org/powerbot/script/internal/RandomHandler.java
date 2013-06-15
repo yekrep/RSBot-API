@@ -31,15 +31,15 @@ public class RandomHandler implements Runnable {
 				//keep script suspended
 				if (!handler.isSuspended()) handler.suspend();
 
-				final String name = name(events[pos]);
+				final String name = getName(events[pos]);
 				if (!events[pos].isStopping()) {
 					if (!timeout.isRunning()) {
 						log.info("Random event failed: " + (name != null ? name : "unknown"));
 						handler.stop();
 						break;
 					}
-					int random = random();
-					if (random == -1 || random == pos) {
+					int cursor = getCursor();
+					if (cursor == -1 || cursor == pos) {
 						Delay.sleep(600);
 						continue;
 					}
@@ -49,13 +49,13 @@ public class RandomHandler implements Runnable {
 				if (!suspended) handler.resume();
 				continue;
 			}
-			int random = random();
-			if (random != -1) {
-				pos = random;
+			int cursor = getCursor();
+			if (cursor != -1) {
+				pos = cursor;
 			}
 			if (pos != -1) {
 				suspended = handler.isSuspended();
-				final String name = name(events[pos]);
+				final String name = getName(events[pos]);
 				log.info("Starting random event: " + (name != null ? name : "unknown"));
 				timeout.setEndIn(Random.nextInt(600, 720) * 1000);
 				handler.getExecutor().submit(events[pos]);
@@ -68,7 +68,7 @@ public class RandomHandler implements Runnable {
 		pos = -1;
 	}
 
-	private String name(final PollingPassive event) {
+	private String getName(final PollingPassive event) {
 		final Class<?> c = event.getClass();
 		if (c.isAnnotationPresent(Manifest.class)) {
 			final Manifest randomManifest = c.getAnnotation(Manifest.class);
@@ -78,7 +78,7 @@ public class RandomHandler implements Runnable {
 		return null;
 	}
 
-	private int random() {
+	private int getCursor() {
 		for (int i = 0; i < events.length; i++) {
 			try {
 				if (events[i].isValid()) return i;
