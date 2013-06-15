@@ -38,11 +38,12 @@ public class DepositBox extends ItemQuery<Item> {
 		if (isOpen()) {
 			return true;
 		}
-		GameObject object = ctx.objects.select().id(DEPOSIT_BOX_IDS).nearest().first();
-		if (object.interact("Deposit")) {
-			final Widget bankPin = ctx.widgets.get(13);
-			for (int i = 0; i < 20 && !isOpen() && !bankPin.isValid(); i++) {
-				Delay.sleep(200, 300);
+		for (final GameObject object : ctx.objects.select().id(DEPOSIT_BOX_IDS).nearest().first()) {
+			if (object.interact("Deposit")) {
+				final Widget bankPin = ctx.widgets.get(13);
+				for (int i = 0; i < 20 && !isOpen() && !bankPin.isValid(); i++) {
+					Delay.sleep(200, 300);
+				}
 			}
 		}
 		return isOpen();
@@ -137,41 +138,42 @@ public class DepositBox extends ItemQuery<Item> {
 		if (!isOpen() || amount < 0) {
 			return false;
 		}
-		final Item item = ctx.inventory.select().id(id).first();
-		if (item == null) {
-			return false;
-		}
-		String action = "Deposit-" + amount;
-		final int c = ctx.inventory.select().id(id).count(true);
-		if (c == 1) {
-			action = "Depoist";
-		} else if (c <= amount || amount == 0) {
-			action = "Deposit-All";
-		}
 
-		final Component comp = item.getComponent();
-		final int inv = ctx.inventory.select().count(true);
-		if (containsAction(comp, action)) {
-			if (!comp.interact(action)) {
-				return false;
+		for (final Item item : ctx.inventory.select().id(id).first()) {
+			String action = "Deposit-" + amount;
+			final int c = ctx.inventory.select().id(id).count(true);
+			if (c == 1) {
+				action = "Depoist";
+			} else if (c <= amount || amount == 0) {
+				action = "Deposit-All";
 			}
-		} else {
-			if (!comp.interact("Withdraw-X")) {
-				return false;
+
+			final Component comp = item.getComponent();
+			final int inv = ctx.inventory.select().count(true);
+			if (containsAction(comp, action)) {
+				if (!comp.interact(action)) {
+					return false;
+				}
+			} else {
+				if (!comp.interact("Withdraw-X")) {
+					return false;
+				}
+				for (int i = 0; i < 20 && !isInputWidgetOpen(); i++) {
+					Delay.sleep(100, 200);
+				}
+				if (!isInputWidgetOpen()) {
+					return false;
+				}
+				Delay.sleep(200, 800);
+				ctx.keyboard.sendln(amount + "");
 			}
-			for (int i = 0; i < 20 && !isInputWidgetOpen(); i++) {
+			for (int i = 0; i < 25 && ctx.inventory.select().count(true) == inv; i++) {
 				Delay.sleep(100, 200);
 			}
-			if (!isInputWidgetOpen()) {
-				return false;
-			}
-			Delay.sleep(200, 800);
-			ctx.keyboard.sendln(amount + "");
+			return ctx.inventory.select().count(true) != inv;
 		}
-		for (int i = 0; i < 25 && ctx.inventory.select().count(true) == inv; i++) {
-			Delay.sleep(100, 200);
-		}
-		return ctx.inventory.select().count(true) != inv;
+
+		return false;
 	}
 
 	public boolean depositInventory() {

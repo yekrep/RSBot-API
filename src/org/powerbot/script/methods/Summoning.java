@@ -1,10 +1,14 @@
 package org.powerbot.script.methods;
 
+import java.util.List;
+
+import org.powerbot.script.lang.LocatableIdNameQuery;
 import org.powerbot.script.util.Delay;
 import org.powerbot.script.util.Filter;
 import org.powerbot.script.util.Timer;
 import org.powerbot.script.wrappers.Actor;
 import org.powerbot.script.wrappers.Component;
+import org.powerbot.script.wrappers.Item;
 import org.powerbot.script.wrappers.Npc;
 import org.powerbot.script.wrappers.Player;
 
@@ -122,8 +126,12 @@ public class Summoning extends MethodProvider {
 	}
 
 	public boolean summonFamiliar(final Familiar familiar) {
-		return ctx.inventory.select().id(familiar.getPouchId()).count() > 0 && ctx.skills.getRealLevel(Skills.SUMMONING) >= familiar.getRequiredLevel() &&
-				getPoints() >= familiar.getRequiredPoints() && ctx.inventory.select().id(familiar.getPouchId()).first().getComponent().interact("Summon");
+		if (ctx.inventory.select().id(familiar.getPouchId()).count() > 0 && ctx.skills.getRealLevel(Skills.SUMMONING) >= familiar.getRequiredLevel()) {
+			for (final Item item : ctx.inventory.select().id(familiar.getPouchId()).first()) {
+				return item.getComponent().interact("Summon");
+			}
+		}
+		return false;
 	}
 
 	public Npc getFamiliar() {
@@ -134,13 +142,14 @@ public class Summoning extends MethodProvider {
 		if (local == null) {
 			return null;
 		}
-		return ctx.npcs.select().select(new Filter<Npc>() {
+		final List<Npc> npcs = ctx.npcs.select().select(new Filter<Npc>() {
 			@Override
 			public boolean accept(Npc npc) {
 				final Actor actor;
 				return npc.getId() == ctx.settings.get(1784) && (actor = npc.getInteracting()) != null && actor.equals(local);
 			}
-		}).nearest().first();
+		}).nearest().first().toList();
+		return npcs.isEmpty() ? null : npcs.get(0);
 	}
 
 	public Familiar getEnum() {

@@ -118,12 +118,8 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends Me
 		return getThis();
 	}
 
-	public K first() {
-		final List<K> items = this.items.get();
-
-		synchronized (items) {
-			return items.size() == 0 ? null : items.get(0);
-		}
+	public T first() {
+		return limit(1);
 	}
 
 	@Override

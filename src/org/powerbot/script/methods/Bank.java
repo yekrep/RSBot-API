@@ -1,7 +1,9 @@
 package org.powerbot.script.methods;
 
+import org.powerbot.script.lang.AbstractQuery;
 import org.powerbot.script.lang.ItemQuery;
 import org.powerbot.script.util.Delay;
+import org.powerbot.script.util.Filter;
 import org.powerbot.script.util.Random;
 import org.powerbot.script.util.Timer;
 import org.powerbot.script.wrappers.Component;
@@ -59,22 +61,23 @@ public class Bank extends ItemQuery<Item> {
 		if (isOpen()) {
 			return true;
 		}
-		int count = 0;
-		final Interactive[] interactives = {
-				ctx.npcs.select().id(BANK_NPC_IDS).nearest().first(),
-				ctx.objects.select().id(BANK_BOOTH_IDS).nearest().first(),
-				ctx.objects.select().id(BANK_COUNTER_IDS).nearest().first(),
-				ctx.objects.select().id(BANK_CHEST_IDS).nearest().first(),
-		};
-		for (int i = 0; i < interactives.length; i++) {
-			if (interactives[i] != null && interactives[i].isOnScreen()) {
-				interactives[count++] = interactives[i];
+
+		final Filter<Interactive> f = new Filter<Interactive>() {
+			@Override
+			public boolean accept(final Interactive interactive) {
+				return interactive.isOnScreen();
 			}
-		}
-		if (count == 0) {
+		};
+
+		final List<Interactive> interactives = new ArrayList<>();
+		interactives.addAll(ctx.npcs.select().id(BANK_NPC_IDS).nearest().select(f).first().toList());
+		interactives.addAll(ctx.objects.select().id(BANK_BOOTH_IDS, BANK_COUNTER_IDS, BANK_CHEST_IDS).nearest().select(f).first().toList());
+
+		if (interactives.isEmpty()) {
 			return false;
 		}
-		final Interactive interactive = interactives[Random.nextInt(0, count)];
+
+		final Interactive interactive = interactives.get(Random.nextInt(0, interactives.size()));
 		final int id;
 		if (interactive instanceof Npc) {
 			id = ((Npc) interactive).getId();
@@ -226,7 +229,13 @@ public class Bank extends ItemQuery<Item> {
 	}
 
 	public boolean withdraw(final int id, final int amount) {
-		final Item item = select().id(id).first();
+		for (final Item item : select().id(id).first()) {
+			return withdraw(item, amount);
+		}
+		return false;
+	}
+
+	public boolean withdraw(final Item item, final int amount) {
 		if (item == null) {
 			return false;
 		}
@@ -292,15 +301,19 @@ public class Bank extends ItemQuery<Item> {
 	}
 
 	public boolean deposit(final int id, final int amount) {
-		if (!isOpen() || amount < 0) {
+		for (final Item item : ctx.inventory.select().id(id).first()) {
+			return deposit(item, amount);
+		}
+		return false;
+	}
+
+	public boolean deposit(final Item item, final int amount) {
+		if (!isOpen() || amount < 0 || item == null) {
 			return false;
 		}
-		final Item item = ctx.inventory.select().id(id).first();
-		if (item == null) {
-			return false;
-		}
+
 		String action = "Deposit-" + amount;
-		final int c = ctx.inventory.select().id(id).count(true);
+		final int c = ctx.inventory.select().id(item.getId()).count(true);
 		if (c == 1) {
 			action = "Depoist";
 		} else if (c <= amount || amount == 0) {

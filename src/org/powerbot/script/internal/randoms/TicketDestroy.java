@@ -61,7 +61,6 @@ public class TicketDestroy extends PollingPassive {
 				player.isInCombat() || player.getAnimation() != -1 || player.getInteracting() != null) {
 			return false;
 		}
-		item = ctx.inventory.select().id(ITEM_IDS).first();
-		return item != null;
+		return !ctx.inventory.select().id(ITEM_IDS).isEmpty();
 	}
 }
