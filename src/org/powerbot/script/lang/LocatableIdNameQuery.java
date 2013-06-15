@@ -3,7 +3,8 @@ package org.powerbot.script.lang;
 import org.powerbot.script.methods.ClientFactory;
 
 public abstract class LocatableIdNameQuery<K extends Locatable & Identifiable & Nameable> extends AbstractQuery<LocatableIdNameQuery<K>, K>
-		implements Locatable.Query<LocatableIdNameQuery<K>>, Identifiable.Query<LocatableIdNameQuery<K>> {
+		implements Locatable.Query<LocatableIdNameQuery<K>>, Identifiable.Query<LocatableIdNameQuery<K>>,
+		Nameable.Query<LocatableIdNameQuery<K>> {
 	public LocatableIdNameQuery(final ClientFactory factory) {
 		super(factory);
 	}
@@ -67,5 +68,21 @@ public abstract class LocatableIdNameQuery<K extends Locatable & Identifiable & 
 	@Override
 	public LocatableIdNameQuery<K> id(Identifiable... identifiables) {
 		return select(new Identifiable.Matcher(identifiables));
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public LocatableIdNameQuery<K> name(String... names) {
+		return select(new Nameable.Matcher(names));
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public LocatableIdNameQuery<K> name(Nameable... names) {
+		return select(new Nameable.Matcher(names));
 	}
 }
