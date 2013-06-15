@@ -1,4 +1,4 @@
-package org.powerbot.script.task;
+package org.powerbot.script.internal.randoms;
 
 import org.powerbot.script.Script;
 import org.powerbot.script.internal.ScriptGroup;
