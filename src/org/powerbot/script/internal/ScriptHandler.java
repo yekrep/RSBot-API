@@ -3,7 +3,9 @@ package org.powerbot.script.internal;
 import org.powerbot.event.EventMulticaster;
 import org.powerbot.script.Script;
 import org.powerbot.script.internal.randoms.BankPin;
+import org.powerbot.script.internal.randoms.Login;
 import org.powerbot.script.internal.randoms.PollingPassive;
+import org.powerbot.script.internal.randoms.TicketDestroy;
 import org.powerbot.script.internal.randoms.WidgetCloser;
 import org.powerbot.script.lang.Stoppable;
 import org.powerbot.script.lang.Suspendable;
@@ -39,9 +41,9 @@ public class ScriptHandler implements Suspendable, Stoppable {
 
 		this.randomHandler = new RandomHandler(container,
 				new PollingPassive[]{
-						//login
 						new WidgetCloser(clientFactory, container),
-						//spin tickets
+						new Login(clientFactory, container),
+						new TicketDestroy(clientFactory, container),
 						new BankPin(clientFactory, container),
 				}
 		);

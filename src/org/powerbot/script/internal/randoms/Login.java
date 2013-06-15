@@ -1,10 +1,9 @@
 package org.powerbot.script.internal.randoms;
 
-import org.powerbot.bot.Bot;
-import org.powerbot.event.PaintListener;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.script.Manifest;
-import org.powerbot.script.PollingScript;
+import org.powerbot.script.internal.ScriptContainer;
+import org.powerbot.script.methods.ClientFactory;
 import org.powerbot.script.methods.Game;
 import org.powerbot.script.methods.Lobby;
 import org.powerbot.script.util.Random;
@@ -19,7 +18,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
 @Manifest(name = "Login", authors = {"Timer"}, description = "Enters account credentials to the login screen")
-public class Login extends PollingScript implements RandomEvent, PaintListener {
+public class Login extends PollingPassive {
 	private static final int WIDGET = 596;
 	private static final int WIDGET_LOGIN_ERROR = 13;
 	private static final int WIDGET_LOGIN_TRY_AGAIN = 65;
@@ -28,17 +27,27 @@ public class Login extends PollingScript implements RandomEvent, PaintListener {
 	private static final int WIDGET_LOBBY = 906;
 	private static final int WIDGET_LOBBY_ERROR = 249;
 	private static final int WIDGET_LOBBY_TRY_AGAIN = 259;
-	private final Bot bot;
 	private volatile Timer re_load_timer = null;
 
-	public Login() {
-		this.bot = ctx.bot;
+	public Login(ClientFactory ctx, ScriptContainer container) {
+		super(ctx, container);
+	}
+
+	@Override
+	public boolean isValid() {
+		int state = ctx.game.getClientState();
+		return (state == Game.INDEX_LOGIN_SCREEN ||
+				state == Game.INDEX_LOBBY_SCREEN ||
+				state == Game.INDEX_LOGGING_IN) &&
+				ctx.bot.getAccount() != null;
 	}
 
 	@Override
 	public int poll() {
-		final int state = ctx.game.getClientState();
-		if ((state == Game.INDEX_LOGIN_SCREEN || state == Game.INDEX_LOGGING_IN) && bot.getAccount() != null) {
+		if (!isValid()) return -1;
+
+		int state = ctx.game.getClientState();
+		if ((state == Game.INDEX_LOGIN_SCREEN || state == Game.INDEX_LOGGING_IN) && ctx.bot.getAccount() != null) {
 			Tracker.getInstance().trackPage("randoms/Login/", "Login");
 			for (final LoginEvent loginEvent : LoginEvent.values()) {
 				final Component Component = ctx.widgets.get(WIDGET, loginEvent.child);
@@ -76,7 +85,7 @@ public class Login extends PollingScript implements RandomEvent, PaintListener {
 				ctx.keyboard.send("\n");
 				sleep(Random.nextInt(1200, 2000));
 			} else if (!isUsernameCorrect()) {
-				final String username = bot.getAccount().toString();
+				final String username = ctx.bot.getAccount().toString();
 				final Component usernameTextBox = ctx.widgets.get(WIDGET, WIDGET_LOGIN_USERNAME_TEXT);
 				if (!clickLoginInterface(usernameTextBox)) {
 					return 0;
@@ -90,7 +99,7 @@ public class Login extends PollingScript implements RandomEvent, PaintListener {
 				ctx.keyboard.send(username);
 				sleep(Random.nextInt(500, 700));
 			} else if (!isPasswordValid()) {
-				final String password = bot.getAccount().getPassword();
+				final String password = ctx.bot.getAccount().getPassword();
 				final Component passwordTextBox = ctx.widgets.get(WIDGET, WIDGET_LOGIN_PASSWORD_TEXT);
 				if (!clickLoginInterface(passwordTextBox)) {
 					return 0;
@@ -104,7 +113,7 @@ public class Login extends PollingScript implements RandomEvent, PaintListener {
 				ctx.keyboard.send(password);
 				sleep(Random.nextInt(500, 700));
 			}
-		} else if (state == Game.INDEX_LOBBY_SCREEN && bot.getAccount() != null) {
+		} else if (state == Game.INDEX_LOBBY_SCREEN && ctx.bot.getAccount() != null) {
 			Tracker.getInstance().trackPage("randoms/Login/", "Lobby");
 			for (final LobbyEvent lobbyEvent : LobbyEvent.values()) {
 				final Component Component = ctx.widgets.get(WIDGET_LOBBY, lobbyEvent.child);
@@ -118,7 +127,7 @@ public class Login extends PollingScript implements RandomEvent, PaintListener {
 						if (lobbyEvent.wait > 0) {
 							sleep(lobbyEvent.wait);
 						} else if (lobbyEvent.wait == -1) {
-							bot.stopScripts();
+							ctx.bot.stopScripts();
 							return -1;
 						}
 
@@ -184,12 +193,12 @@ public class Login extends PollingScript implements RandomEvent, PaintListener {
 	}
 
 	private boolean isUsernameCorrect() {
-		final String userName = bot.getAccount().toString();
+		final String userName = ctx.bot.getAccount().toString();
 		return ctx.widgets.get(WIDGET, WIDGET_LOGIN_USERNAME_TEXT).getText().toLowerCase().equalsIgnoreCase(userName);
 	}
 
 	private boolean isPasswordValid() {
-		final String s = bot.getAccount().getPassword();
+		final String s = ctx.bot.getAccount().getPassword();
 		return ctx.widgets.get(WIDGET, WIDGET_LOGIN_PASSWORD_TEXT).getText().length() == (s == null ? 0 : s.length());
 	}
 
@@ -204,6 +213,7 @@ public class Login extends PollingScript implements RandomEvent, PaintListener {
 
 	@Override
 	public void onRepaint(final Graphics render) {
+		super.onRepaint(render);
 		if (re_load_timer != null) {
 			render.setColor(Color.white);
 			render.drawString("Reloading game in: " + re_load_timer.toRemainingString(), 8, 30);
