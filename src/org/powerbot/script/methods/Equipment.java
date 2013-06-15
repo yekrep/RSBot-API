@@ -4,6 +4,8 @@ import org.powerbot.script.internal.methods.Items;
 import org.powerbot.script.wrappers.Component;
 import org.powerbot.script.wrappers.Item;
 
+import java.util.Arrays;
+
 public class Equipment extends ClientLink {
 	public static final int WIDGET = 387;
 	public static final int WIDGET_BANK = 667;
@@ -21,7 +23,7 @@ public class Equipment extends ClientLink {
 		NECK(2, 13, 2, 2, -1),
 		MAIN_HAND(3, 16, 3, 3, 15),
 		TORSO(4, 19, 4, 4, -1),
-		OFF_HAND(-1, 22, 5, 5, 16),
+		OFF_HAND(5, 22, 5, 5, 16),
 		LEGS(7, 25, 7, 7, -1),
 		HANDS(9, 28, 9, 9, -1),
 		FEET(10, 31, 10, 10, -1),
