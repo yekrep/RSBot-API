@@ -248,7 +248,7 @@ public class DepositBox extends ClientLink {
 		return ctx.inventory.getCount(true) != inv;
 	}
 
-	public boolean depositctInventory() {
+	public boolean depositInventory() {
 		final Component c = ctx.widgets.get(WIDGET, COMPONENT_BUTTON_DEPOSIT_INVENTORY);
 		if (c == null || !c.isValid()) {
 			return false;
