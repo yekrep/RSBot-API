@@ -32,8 +32,13 @@ public class BankPin extends PollingPassive {
 			return -1;
 		}
 		String pin = String.format(_pin);
-		int value = Integer.valueOf(String.valueOf(pin.charAt(ctx.settings.get(163))));
-		ctx.widgets.get(13, value + 6).interact("Select");
+		int setting;
+		int value = Integer.valueOf(String.valueOf(pin.charAt(setting = ctx.settings.get(163))));
+		if (ctx.widgets.get(13, value + 6).interact("Select")) {
+			for (int i = 0; i < 40 && setting == ctx.settings.get(163); i++) {
+				sleep(500, 1000);
+			}
+		}
 		return Random.nextInt(700, 1200);
 	}
 
