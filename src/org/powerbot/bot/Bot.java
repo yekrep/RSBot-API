@@ -140,7 +140,7 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 	}
 
 	public void startScript(final Script script) {
-		scriptController.start(script);      //TODO Paris [inspect]
+		scriptController.start(script);
 	}
 
 	public void stopScripts() {

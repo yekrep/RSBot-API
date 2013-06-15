@@ -13,6 +13,7 @@ public class RandomHandler implements Runnable {
 	private final ScriptContainer handler;
 	private final PollingPassive[] events;
 	private final Timer timeout;
+	private int pos;
 	private PollingPassive active;
 	private boolean suspended;
 
@@ -38,22 +39,21 @@ public class RandomHandler implements Runnable {
 						handler.stop();
 						break;
 					}
-					Delay.sleep(600);
-					continue;
+					int random = random();
+					if (random == -1 || random == pos) {
+						Delay.sleep(600);
+						continue;
+					}
 				}
 				log.info("Stopping random event: " + (name != null ? name : "unknown"));
 				active = null;
 				if (!suspended) handler.resume();
 				continue;
 			}
-			try {
-				for (final PollingPassive event : events) {
-					if (event.isValid()) {
-						active = event;
-						break;
-					}
-				}
-			} catch (final Exception ignored) {
+			int random = random();
+			if (random != -1) {
+				pos = random;
+				active = events[random];
 			}
 			if (active != null) {
 				suspended = handler.isSuspended();
@@ -78,5 +78,15 @@ public class RandomHandler implements Runnable {
 			if (!name.isEmpty()) return name;
 		}
 		return null;
+	}
+
+	private int random() {
+		for (int i = 0; i < events.length; i++) {
+			try {
+				if (events[i].isValid()) return i;
+			} catch (Exception ignored) {
+			}
+		}
+		return -1;
 	}
 }
