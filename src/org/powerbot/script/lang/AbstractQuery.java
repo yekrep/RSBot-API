@@ -34,6 +34,9 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends Me
 
 	protected abstract List<K> get();
 
+	/**
+	 * Resets this query to contain all the loaded elements.
+	 */
 	public T select() {
 		final List<K> items = this.items.get();
 
@@ -45,6 +48,11 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends Me
 		return getThis();
 	}
 
+	/**
+	 * Sets this query's elements to a given collection.
+	 *
+	 * @param c a collection of types to set this query to contain
+	 */
 	public T select(final Iterable<K> c) {
 		final List<K> items = this.items.get();
 
@@ -58,6 +66,11 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends Me
 		return getThis();
 	}
 
+	/**
+	 * Filters the current elements by the given filter.
+	 *
+	 * @param f the filter to apply to contained types
+	 */
 	public T select(final Filter<? super K> f) {
 		final List<K> items = this.items.get();
 
@@ -76,6 +89,11 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends Me
 		return getThis();
 	}
 
+	/**
+	 * Sorts the current elements by a comparator.
+	 *
+	 * @param c the comparator
+	 */
 	public T sort(final Comparator<? super K> c) {
 		final List<K> items = this.items.get();
 
@@ -86,6 +104,9 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends Me
 		return getThis();
 	}
 
+	/**
+	 * Shuffles the current collection.
+	 */
 	public T shuffle() {
 		final List<K> items = this.items.get();
 
@@ -96,10 +117,21 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends Me
 		return getThis();
 	}
 
+	/**
+	 * Truncates the current collection to the maximum size.  Does not expand.
+	 *
+	 * @param count the maximum size
+	 */
 	public T limit(final int count) {
 		return limit(0, count);
 	}
 
+	/**
+	 * Truncates the current collection to the maximum size.  Does not expand.
+	 *
+	 * @param offset beginning element
+	 * @param count  count of elements
+	 */
 	public T limit(final int offset, final int count) {
 		final List<K> items = this.items.get();
 
@@ -118,6 +150,9 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends Me
 		return getThis();
 	}
 
+	/**
+	 * Truncates all elements except the first.
+	 */
 	public T first() {
 		return limit(1);
 	}
