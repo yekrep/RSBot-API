@@ -11,11 +11,11 @@
 			<field access="protected+" />
 			<method access="protected+" parameters="keep" />
 		</class>
-		<class template="class org.powerbot.game.*">
+		<class template="class org.powerbot.client.*">
 			<field access="protected+" />
 			<method access="protected+" />
 		</class>
-		<class template="interface org.powerbot.game.*">
+		<class template="interface org.powerbot.event.*">
 			<field access="protected+" />
 			<method access="protected+" />
 		</class>
