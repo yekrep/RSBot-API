@@ -29,7 +29,7 @@ public class TicketDestroy extends PollingScript implements InternalScript {
 			return -1;
 		}
 
-		if (!ctx.inventory.select().id(ITEM_IDS).isEmpty()) {
+		if (ctx.inventory.select().id(ITEM_IDS).isEmpty()) {
 			return -1;
 		}
 
