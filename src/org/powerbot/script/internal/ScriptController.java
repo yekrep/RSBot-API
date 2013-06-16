@@ -28,7 +28,7 @@ public final class ScriptController implements Runnable, Suspendable, Stoppable,
 	public ScriptController(final MethodContext ctx, final EventMulticaster multicaster, final Script script) {
 		this.ctx = ctx;
 		events = new EventManager(multicaster);
-		executor = new ScriptExecutor(this);
+		executor = new ScriptThreadExecutor(this);
 		suspended = new AtomicBoolean(false);
 		stopping = new AtomicBoolean(false);
 

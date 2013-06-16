@@ -7,10 +7,10 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class ScriptExecutor extends ThreadPoolExecutor {
+public class ScriptThreadExecutor extends ThreadPoolExecutor {
 	private ScriptController controller;
 
-	public ScriptExecutor(ScriptController controller) {
+	public ScriptThreadExecutor(ScriptController controller) {
 		super(0, Integer.MAX_VALUE, 60l, TimeUnit.SECONDS, new SynchronousQueue<Runnable>());
 		allowCoreThreadTimeOut(true);
 		setThreadFactory(new GroupedThreadFactory(new ThreadGroup(getClass().getName() + "@" + Integer.toHexString(hashCode()))));
