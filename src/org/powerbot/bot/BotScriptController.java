@@ -110,14 +110,10 @@ public final class BotScriptController implements ScriptController {
 			executor.execute(new Runnable() {
 				@Override
 				public void run() {
-					for (final Callable<Boolean> task : s.getExecQueue(state)) {
-						boolean pass = false;
+					for (final Runnable task : s.getExecQueue(state)) {
 						try {
-							pass = task.call();
-						} catch (final Exception ignored) {
-						}
-						if (!pass) {
-							break;
+							task.run();
+						} catch (final Throwable ignored) {
 						}
 					}
 				}

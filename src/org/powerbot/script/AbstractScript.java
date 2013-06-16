@@ -24,7 +24,7 @@ public abstract class AbstractScript implements Script {
 	public final Logger log = Logger.getLogger(getClass().getName());
 	protected MethodContext ctx;
 	private ScriptController controller;
-	private final Map<State, Queue<Callable<Boolean>>> exec;
+	private final Map<State, Queue<Runnable>> exec;
 	private final AtomicLong started, suspended;
 	private final Queue<Long> suspensions;
 	private final File dir;
@@ -33,34 +33,31 @@ public abstract class AbstractScript implements Script {
 	public AbstractScript() {
 		exec = new ConcurrentHashMap<>(State.values().length);
 		for (final State state : State.values()) {
-			exec.put(state, new ConcurrentLinkedQueue<Callable<Boolean>>());
+			exec.put(state, new ConcurrentLinkedQueue<Runnable>());
 		}
 
 		started = new AtomicLong(System.nanoTime());
 		suspended = new AtomicLong(0);
 		suspensions = new ConcurrentLinkedQueue<>();
 
-		exec.get(State.START).add(new Callable<Boolean>() {
+		exec.get(State.START).add(new Runnable() {
 			@Override
-			public Boolean call() throws Exception {
+			public void run() {
 				started.set(System.nanoTime());
-				return true;
 			}
 		});
 
-		exec.get(State.SUSPEND).add(new Callable<Boolean>() {
+		exec.get(State.SUSPEND).add(new Runnable() {
 			@Override
-			public Boolean call() throws Exception {
+			public void run() {
 				suspensions.offer(System.nanoTime());
-				return true;
 			}
 		});
 
-		exec.get(State.RESUME).add(new Callable<Boolean>() {
+		exec.get(State.RESUME).add(new Runnable() {
 			@Override
-			public Boolean call() throws Exception {
+			public void run() {
 				suspended.addAndGet(System.nanoTime() - suspensions.poll());
-				return true;
 			}
 		});
 
@@ -75,9 +72,9 @@ public abstract class AbstractScript implements Script {
 			}
 		}
 
-		exec.get(State.STOP).add(new Callable<Boolean>() {
+		exec.get(State.STOP).add(new Runnable() {
 			@Override
-			public Boolean call() throws Exception {
+			public void run() {
 				if (settings.isEmpty()) {
 					if (xml.isFile()) {
 						xml.delete();
@@ -91,13 +88,12 @@ public abstract class AbstractScript implements Script {
 					} catch (final IOException ignored) {
 					}
 				}
-				return true;
 			}
 		});
 	}
 
 	@Override
-	public final Queue<Callable<Boolean>> getExecQueue(final State state) {
+	public final Queue<Runnable> getExecQueue(final State state) {
 		return exec.get(state);
 	}
 

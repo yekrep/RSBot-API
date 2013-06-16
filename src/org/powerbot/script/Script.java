@@ -12,7 +12,7 @@ public interface Script extends Runnable, EventListener {
 		START, SUSPEND, RESUME, STOP
 	}
 
-	public Queue<Callable<Boolean>> getExecQueue(State state);
+	public Queue<Runnable> getExecQueue(State state);
 
 	public void setController(ScriptController container);
 
