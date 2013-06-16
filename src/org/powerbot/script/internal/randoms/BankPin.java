@@ -2,12 +2,13 @@ package org.powerbot.script.internal.randoms;
 
 import org.powerbot.script.Manifest;
 import org.powerbot.script.PollingScript;
+import org.powerbot.script.internal.InternalScript;
 import org.powerbot.script.util.Random;
 import org.powerbot.script.wrappers.Component;
 import org.powerbot.util.Tracker;
 
 @Manifest(name = "Bank Pin", authors = {"Timer"}, description = "Enters the stored bank pin")
-public class BankPin extends PollingScript implements RandomEvent {
+public class BankPin extends PollingScript implements InternalScript {
 
 	@Override
 	public int poll() {

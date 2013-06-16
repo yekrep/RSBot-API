@@ -4,7 +4,7 @@ import org.powerbot.bot.Bot;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.script.Manifest;
 import org.powerbot.script.Script;
-import org.powerbot.script.internal.randoms.RandomEvent;
+import org.powerbot.script.internal.InternalScript;
 import org.powerbot.service.GameAccounts;
 import org.powerbot.service.NetworkAccount;
 import org.powerbot.Configuration;
@@ -109,7 +109,7 @@ public class ScriptList {
 						} catch (final Throwable ignored) {
 							continue;
 						}
-						if (Script.class.isAssignableFrom(clazz) && !RandomEvent.class.isAssignableFrom(clazz)) {
+						if (Script.class.isAssignableFrom(clazz) && !InternalScript.class.isAssignableFrom(clazz)) {
 							final Class<? extends Script> script = clazz.asSubclass(Script.class);
 							if (script.isAnnotationPresent(Manifest.class)) {
 								final Manifest m = script.getAnnotation(Manifest.class);

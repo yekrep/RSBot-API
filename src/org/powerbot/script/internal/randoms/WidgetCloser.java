@@ -2,13 +2,14 @@ package org.powerbot.script.internal.randoms;
 
 import org.powerbot.script.Manifest;
 import org.powerbot.script.PollingScript;
+import org.powerbot.script.internal.InternalScript;
 import org.powerbot.script.util.Random;
 import org.powerbot.script.util.Timer;
 import org.powerbot.script.wrappers.Component;
 import org.powerbot.util.Tracker;
 
 @Manifest(name = "Widget closer", authors = {"Timer"}, description = "Closes widgets")
-public class WidgetCloser extends PollingScript implements RandomEvent {
+public class WidgetCloser extends PollingScript implements InternalScript {
 
 	private static final int[] COMPONENTS = {
 			21 << 16 | 43, // beholding a player's statuette (duellist's cap)
