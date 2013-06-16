@@ -168,7 +168,10 @@ public class Sandbox extends SecurityManager {
 	}
 
 	private void checkFilePath(final String pathRaw, final boolean readOnly) {
-		if (isRecursive()) return;
+		final Class[] ctx = getClassContext();
+		if (ctx.length > 3 && ctx[3].getName().equals("java.io.Win32FileSystem")) {
+			return;
+		}
 
 		final String path = getCanonicalPath(new File(StringUtil.urlDecode(pathRaw))), tmp = getCanonicalPath(Configuration.TEMP);
 		// permission controls for crypt files
@@ -229,15 +232,6 @@ public class Sandbox extends SecurityManager {
 					return true;
 				}
 			}
-		}
-		return false;
-	}
-
-	private boolean isRecursive() {
-		final String match = "org.powerbot.util.Sandbox.getCanonicalPath";
-		for (StackTraceElement element : Thread.currentThread().getStackTrace()) {
-			String str = element.getClassName() + "." + element.getMethodName();
-			if (str.equals(match)) return true;
 		}
 		return false;
 	}
