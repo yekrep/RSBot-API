@@ -99,6 +99,10 @@ public final class ScriptController implements Runnable, Suspendable, Stoppable,
 		events.unsubscribe(l);
 	}
 
+	public ExecutorService getExecutor() {
+		return this.executor;
+	}
+
 	private void call(final Script.State state) {
 		for (final Script s : scripts) {
 			executor.execute(new Runnable() {
