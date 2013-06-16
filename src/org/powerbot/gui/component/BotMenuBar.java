@@ -19,7 +19,7 @@ import org.powerbot.gui.BotChrome;
 import org.powerbot.gui.BotLicense;
 import org.powerbot.gui.BotScripts;
 import org.powerbot.gui.BotSignin;
-import org.powerbot.script.internal.ScriptHandler;
+import org.powerbot.script.internal.ScriptController;
 import org.powerbot.service.NetworkAccount;
 import org.powerbot.Configuration;
 import org.powerbot.util.Tracker;
@@ -93,8 +93,8 @@ public class BotMenuBar extends JMenuBar implements ActionListener {
 		script.addMenuListener(new MenuListener() {
 			@Override
 			public void menuSelected(final MenuEvent e) {
-				final ScriptHandler container = BotChrome.getInstance().getBot().getScriptController();
-				final boolean active = container != null && container.getScript() != null && !container.isStopping(), running = active && !container.isSuspended();
+				final ScriptController controller = BotChrome.getInstance().getBot().getScriptController();
+				final boolean active = controller != null && !controller.isStopping(), running = active && !controller.isSuspended();
 				play.setEnabled(BotChrome.getInstance().getBot().getMethodContext().getClient() != null);
 				play.setText(running ? BotLocale.PAUSESCRIPT : active ? BotLocale.RESUMESCRIPT : BotLocale.PLAYSCRIPT);
 				play.setIcon(playIcons[running ? 1 : 0]);
@@ -227,8 +227,8 @@ public class BotMenuBar extends JMenuBar implements ActionListener {
 			@Override
 			public void run() {
 				final Bot bot = BotChrome.getInstance().getBot();
-				final ScriptHandler script = bot.getScriptController();
-				if (script != null && script.getScript() != null) {
+				final ScriptController script = bot.getScriptController();
+				if (script != null) {
 					if (script.isSuspended()) {
 						Tracker.getInstance().trackEvent("script", "resume");
 						script.resume();
@@ -255,12 +255,10 @@ public class BotMenuBar extends JMenuBar implements ActionListener {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				final ScriptHandler script = BotChrome.getInstance().getBot().getScriptController();
-				if (script != null) {
-					if (!script.isStopping()) {
-						Tracker.getInstance().trackEvent("script", "stop");
-						script.stop();
-					}
+				final ScriptController controller = BotChrome.getInstance().getBot().getScriptController();
+				if (controller != null && !controller.isStopping()) {
+					Tracker.getInstance().trackEvent("script", "stop");
+					controller.stop();
 				}
 			}
 		}).start();

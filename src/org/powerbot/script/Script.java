@@ -1,10 +1,10 @@
 package org.powerbot.script;
 
-import org.powerbot.script.internal.ScriptGroup;
+import org.powerbot.script.internal.ScriptController;
 import org.powerbot.script.methods.MethodContext;
 
-import java.util.Deque;
 import java.util.EventListener;
+import java.util.Queue;
 import java.util.concurrent.Callable;
 
 public interface Script extends Runnable, EventListener {
@@ -12,11 +12,11 @@ public interface Script extends Runnable, EventListener {
 		START, SUSPEND, RESUME, STOP
 	}
 
-	public Deque<Callable<Boolean>> getStates(State state);
+	public Queue<Callable<Boolean>> getExecQueue(State state);
 
-	public void setGroup(ScriptGroup container);
+	public void setController(ScriptController container);
 
-	public ScriptGroup getGroup();
+	public ScriptController getController();
 
 	public void setContext(MethodContext ctx);
 

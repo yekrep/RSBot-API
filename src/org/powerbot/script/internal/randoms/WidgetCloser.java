@@ -1,15 +1,15 @@
 package org.powerbot.script.internal.randoms;
 
 import org.powerbot.script.Manifest;
-import org.powerbot.script.internal.ScriptGroup;
-import org.powerbot.script.methods.MethodContext;
+import org.powerbot.script.PollingScript;
 import org.powerbot.script.util.Random;
 import org.powerbot.script.util.Timer;
 import org.powerbot.script.wrappers.Component;
 import org.powerbot.util.Tracker;
 
 @Manifest(name = "Widget closer", authors = {"Timer"}, description = "Closes widgets")
-public class WidgetCloser extends PollingPassive {
+public class WidgetCloser extends PollingScript implements RandomEvent {
+
 	private static final int[] COMPONENTS = {
 			21 << 16 | 43, // beholding a player's statuette (duellist's cap)
 			1234 << 16 | 15, // membership offers
@@ -21,17 +21,21 @@ public class WidgetCloser extends PollingPassive {
 			755 << 16 | 44, // world map
 			438 << 16 | 22, //membership refer friend
 	};
-	private final Timer threshold;
-	private Component component;
-	private int tries;
 
-	public WidgetCloser(MethodContext ctx, ScriptGroup container) {
-		super(ctx, container);
-		this.threshold = new Timer(0);
+	private final Timer threshold;
+	private volatile Component component;
+	private volatile int tries;
+
+	public WidgetCloser() {
+		threshold = new Timer(0);
 	}
 
 	@Override
 	public int poll() {
+		if (!isValid()) {
+			return -1;
+		}
+
 		Tracker.getInstance().trackPage("randoms/WidgetCloser/", "");
 
 		if (++tries > 3) {
@@ -50,10 +54,10 @@ public class WidgetCloser extends PollingPassive {
 				return -1;
 			}
 		}
-		return 600;
+
+		return -1;
 	}
 
-	@Override
 	public boolean isValid() {
 		if (threshold.isRunning()) {
 			return false;

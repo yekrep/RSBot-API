@@ -5,19 +5,17 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Deque;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Queue;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.logging.Logger;
 
-import org.powerbot.script.internal.ScriptGroup;
+import org.powerbot.script.internal.ScriptController;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.util.Random;
 import org.powerbot.Configuration;
@@ -25,24 +23,24 @@ import org.powerbot.Configuration;
 public abstract class AbstractScript implements Script {
 	public final Logger log = Logger.getLogger(getClass().getName());
 	protected MethodContext ctx;
-	private ScriptGroup group;
-	private final Map<State, Deque<Callable<Boolean>>> triggers;
+	private ScriptController controller;
+	private final Map<State, Queue<Callable<Boolean>>> exec;
 	private final AtomicLong started, suspended;
 	private final Queue<Long> suspensions;
 	private final File dir;
 	protected final Properties settings;
 
 	public AbstractScript() {
-		triggers = new ConcurrentHashMap<>();
+		exec = new ConcurrentHashMap<>(State.values().length);
 		for (final State state : State.values()) {
-			triggers.put(state, new ConcurrentLinkedDeque<Callable<Boolean>>());
+			exec.put(state, new ConcurrentLinkedQueue<Callable<Boolean>>());
 		}
 
 		started = new AtomicLong(System.nanoTime());
 		suspended = new AtomicLong(0);
 		suspensions = new ConcurrentLinkedQueue<>();
 
-		triggers.get(State.START).add(new Callable<Boolean>() {
+		exec.get(State.START).add(new Callable<Boolean>() {
 			@Override
 			public Boolean call() throws Exception {
 				started.set(System.nanoTime());
@@ -50,7 +48,7 @@ public abstract class AbstractScript implements Script {
 			}
 		});
 
-		triggers.get(State.SUSPEND).add(new Callable<Boolean>() {
+		exec.get(State.SUSPEND).add(new Callable<Boolean>() {
 			@Override
 			public Boolean call() throws Exception {
 				suspensions.offer(System.nanoTime());
@@ -58,7 +56,7 @@ public abstract class AbstractScript implements Script {
 			}
 		});
 
-		triggers.get(State.RESUME).add(new Callable<Boolean>() {
+		exec.get(State.RESUME).add(new Callable<Boolean>() {
 			@Override
 			public Boolean call() throws Exception {
 				suspended.addAndGet(System.nanoTime() - suspensions.poll());
@@ -66,7 +64,7 @@ public abstract class AbstractScript implements Script {
 			}
 		});
 
-		dir = new File(new File(System.getProperty("java.io.tmpdir"), Configuration.NAME), getClass().getName());
+		dir = new File(new File(Configuration.TEMP, Configuration.NAME), getClass().getName());
 		final File xml = new File(dir, "settings.xml");
 		settings = new Properties();
 
@@ -77,7 +75,7 @@ public abstract class AbstractScript implements Script {
 			}
 		}
 
-		triggers.get(State.STOP).add(new Callable<Boolean>() {
+		exec.get(State.STOP).add(new Callable<Boolean>() {
 			@Override
 			public Boolean call() throws Exception {
 				if (settings.isEmpty()) {
@@ -99,18 +97,18 @@ public abstract class AbstractScript implements Script {
 	}
 
 	@Override
-	public final Deque<Callable<Boolean>> getStates(final State state) {
-		return triggers.get(state);
+	public final Queue<Callable<Boolean>> getExecQueue(final State state) {
+		return exec.get(state);
 	}
 
 	@Override
-	public final void setGroup(final ScriptGroup group) {
-		this.group = group;
+	public final void setController(final ScriptController group) {
+		this.controller = group;
 	}
 
 	@Override
-	public final ScriptGroup getGroup() {
-		return group;
+	public final ScriptController getController() {
+		return controller;
 	}
 
 	@Override

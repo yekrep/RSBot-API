@@ -1,9 +1,9 @@
 package org.powerbot.script.internal.randoms;
 
+import org.powerbot.client.event.PaintListener;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.script.Manifest;
-import org.powerbot.script.internal.ScriptGroup;
-import org.powerbot.script.methods.MethodContext;
+import org.powerbot.script.PollingScript;
 import org.powerbot.script.methods.Game;
 import org.powerbot.script.methods.Lobby;
 import org.powerbot.script.util.Random;
@@ -18,7 +18,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
 @Manifest(name = "Login", authors = {"Timer"}, description = "Enters account credentials to the login screen")
-public class Login extends PollingPassive {
+public class Login extends PollingScript implements RandomEvent, PaintListener {
 	private static final int WIDGET = 596;
 	private static final int WIDGET_LOGIN_ERROR = 13;
 	private static final int WIDGET_LOGIN_TRY_AGAIN = 65;
@@ -29,11 +29,6 @@ public class Login extends PollingPassive {
 	private static final int WIDGET_LOBBY_TRY_AGAIN = 259;
 	private volatile Timer re_load_timer = null;
 
-	public Login(MethodContext ctx, ScriptGroup container) {
-		super(ctx, container);
-	}
-
-	@Override
 	public boolean isValid() {
 		int state = ctx.game.getClientState();
 		return (state == Game.INDEX_LOGIN_SCREEN ||
@@ -44,7 +39,9 @@ public class Login extends PollingPassive {
 
 	@Override
 	public int poll() {
-		if (!isValid()) return -1;
+		if (!isValid()) {
+			getController().stop();
+		}
 
 		int state = ctx.game.getClientState();
 		if ((state == Game.INDEX_LOGIN_SCREEN || state == Game.INDEX_LOGGING_IN) && ctx.bot.getAccount() != null) {
@@ -65,7 +62,7 @@ public class Login extends PollingPassive {
 						if (loginEvent.wait > 0) {
 							sleep(loginEvent.wait);
 						} else if (loginEvent.wait == -1) {
-							getContainer().stop();
+							getController().stop();
 							return -1;
 						}
 
@@ -127,7 +124,7 @@ public class Login extends PollingPassive {
 						if (lobbyEvent.wait > 0) {
 							sleep(lobbyEvent.wait);
 						} else if (lobbyEvent.wait == -1) {
-							ctx.bot.stopScripts();
+							getController().stop();
 							return -1;
 						}
 
@@ -213,7 +210,6 @@ public class Login extends PollingPassive {
 
 	@Override
 	public void repaint(final Graphics render) {
-		super.repaint(render);
 		if (re_load_timer != null) {
 			render.setColor(Color.white);
 			render.drawString("Reloading game in: " + re_load_timer.toRemainingString(), 8, 30);

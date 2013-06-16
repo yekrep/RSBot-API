@@ -10,7 +10,7 @@ import org.powerbot.gui.component.BotPanel;
 import org.powerbot.script.Script;
 import org.powerbot.script.internal.InputHandler;
 import org.powerbot.script.internal.MouseHandler;
-import org.powerbot.script.internal.ScriptHandler;
+import org.powerbot.script.internal.ScriptController;
 import org.powerbot.script.lang.Stoppable;
 import org.powerbot.script.methods.Game;
 import org.powerbot.script.methods.MethodContext;
@@ -30,7 +30,7 @@ import java.util.logging.Logger;
  */
 public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 	public static final Logger log = Logger.getLogger(Bot.class.getName());
-	private MethodContext methodContext;
+	private MethodContext ctx;
 	public final Runnable callback;
 	public final ThreadGroup threadGroup;
 	private final PaintEvent paintEvent;
@@ -46,7 +46,7 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 	private BufferedImage backBuffer;
 	private MouseHandler mouseHandler;
 	private InputHandler inputHandler;
-	private ScriptHandler scriptController;
+	private ScriptController controller;
 
 	public Bot() {
 		appletContainer = null;
@@ -69,8 +69,7 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 		new Thread(threadGroup, multicaster, multicaster.getClass().getName()).start();
 		refreshing = new AtomicBoolean(false);
 
-		methodContext = new MethodContext(this);
-		scriptController = new ScriptHandler(methodContext, multicaster);
+		ctx = new MethodContext(this);
 	}
 
 	public void run() {
@@ -136,7 +135,7 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 	@Override
 	public void stop() {
 		log.info("Unloading environment");
-		for (final Stoppable module : new Stoppable[]{mouseHandler, scriptController, multicaster}) {
+		for (final Stoppable module : new Stoppable[]{mouseHandler, controller, multicaster}) {
 			if (module != null) {
 				module.stop();
 			}
@@ -160,21 +159,13 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 			appletContainer.destroy();
 			appletContainer = null;
 			stub = null;
-			this.methodContext.setClient(null);
+			this.ctx.setClient(null);
 		}
 	}
 
-	public void startScript(final Script script) {
-		scriptController.start(script);
-	}
-
-	public void stopScripts() {
-		synchronized (scriptController) {
-			if (scriptController != null) {
-				scriptController.stop();
-				scriptController = null;
-			}
-		}
+	public synchronized void startScript(final Script script) {
+		controller = new BotScriptController(ctx, multicaster, script);
+		controller.run();
 	}
 
 	public BufferedImage getImage() {
@@ -190,7 +181,7 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 	}
 
 	public MethodContext getMethodContext() {
-		return methodContext;
+		return ctx;
 	}
 
 	public Constants getConstants() {
@@ -219,7 +210,7 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 
 	public Graphics getBufferGraphics() {
 		final Graphics back = backBuffer.getGraphics();
-		if (this.methodContext.getClient() != null && panel != null && !BotChrome.getInstance().isMinimised()) {
+		if (this.ctx.getClient() != null && panel != null && !BotChrome.getInstance().isMinimised()) {
 			paintEvent.graphics = back;
 			textPaintEvent.graphics = back;
 			textPaintEvent.id = 0;
@@ -245,7 +236,7 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 	}
 
 	private void setClient(final Client client) {
-		this.methodContext.setClient(client);
+		this.ctx.setClient(client);
 		client.setCallback(new CallbackImpl(this));
 		constants = new Constants(appletContainer.getTspec().constants);
 		new Thread(threadGroup, new SafeMode(this)).start();
@@ -255,7 +246,7 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 	}
 
 	public Canvas getCanvas() {
-		final Client client = methodContext.getClient();
+		final Client client = ctx.getClient();
 		return client != null ? client.getCanvas() : null;
 	}
 
@@ -271,8 +262,8 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 		this.account = account;
 	}
 
-	public ScriptHandler getScriptController() {
-		return this.scriptController;
+	public ScriptController getScriptController() {
+		return controller;
 	}
 
 	public synchronized void refresh() {
@@ -284,9 +275,8 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 		new Thread(threadGroup, new Runnable() {
 			public void run() {
 				log.info("Refreshing environment");
-				final ScriptHandler container = getScriptController();
-				if (container != null) {
-					container.suspend();
+				if (controller != null) {
+					controller.suspend();
 				}
 
 				terminateApplet();
@@ -295,8 +285,8 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 				while (getMethodContext().getClient() == null || getMethodContext().game.getClientState() == -1) {
 					Delay.sleep(1000);
 				}
-				if (container != null) {
-					container.resume();
+				if (controller != null) {
+					controller.resume();
 				}
 
 				refreshing.set(false);
@@ -312,16 +302,16 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 		}
 
 		public void run() {
-			if (bot != null && bot.methodContext.getClient() != null) {
+			if (bot != null && bot.ctx.getClient() != null) {
 				for (int i = 0; i < 30; i++) {
-					if (!methodContext.keyboard.isReady()) {
+					if (!ctx.keyboard.isReady()) {
 						Delay.sleep(500, 1000);
 					} else {
 						break;
 					}
 				}
-				if (methodContext.keyboard.isReady()) {
-					methodContext.keyboard.send("s");
+				if (ctx.keyboard.isReady()) {
+					ctx.keyboard.send("s");
 				}
 			}
 		}
