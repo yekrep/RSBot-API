@@ -33,7 +33,7 @@ public class Widgets extends MethodProvider {
 		if (client == null) {
 			return null;
 		}
-		final RSInterfaceBase[] containers = client.getRSInterfaceCache();
+		final RSInterfaceBase[] containers = client.getRSInterfaceCache().clone();
 		final int len = containers != null ? containers.length : 0;
 		final Widget[] arr = new Widget[len];
 		for (int i = 0; i < len; i++) {
@@ -65,7 +65,7 @@ public class Widgets extends MethodProvider {
 		final int mod = Math.max(containers != null ? containers.length : 0, widget + 1);
 		final int len = cache.length;
 		cache = Arrays.copyOf(cache, mod);
-		for (int i = len; i < cache.length; i++) {
+		for (int i = len; i < mod; i++) {
 			cache[i] = new Widget(ctx, i);
 		}
 		return cache[widget];
