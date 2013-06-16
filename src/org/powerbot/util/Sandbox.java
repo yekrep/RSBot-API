@@ -168,6 +168,11 @@ public class Sandbox extends SecurityManager {
 	}
 
 	private void checkFilePath(final String pathRaw, final boolean readOnly) {
+		final Class[] ctx = getClassContext();
+		if (ctx.length > 3 && ctx[3].getName().equals("java.io.Win32FileSystem")) {
+			return;
+		}
+
 		final String path = getCanonicalPath(new File(StringUtil.urlDecode(pathRaw))), tmp = getCanonicalPath(Configuration.TEMP);
 		// permission controls for crypt files
 		for (final Entry<File, Class<?>[]> entry : CryptFile.PERMISSIONS.entrySet()) {
