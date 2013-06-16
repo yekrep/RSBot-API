@@ -45,6 +45,13 @@ public final class TileMatrix extends Interactive implements Locatable, Drawable
 	}
 
 	@Override
+	public boolean isOnScreen() {
+		Point topLeft = getPoint(0.0D, 0.0D, 0);
+		Point bottomRight = getPoint(1.0D, 1.0D, 0);
+		return ctx.game.isPointOnScreen(topLeft) && ctx.game.isPointOnScreen(bottomRight);
+	}
+
+	@Override
 	public Point getInteractPoint() {
 		final int x = Random.nextGaussian(0, 100, 5);
 		final int y = Random.nextGaussian(0, 100, 5);
