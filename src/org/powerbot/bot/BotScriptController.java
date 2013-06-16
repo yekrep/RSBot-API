@@ -43,6 +43,7 @@ public final class BotScriptController implements ScriptController {
 	@Override
 	public void run() {
 		for (final Script s : scripts) {
+			s.setController(this);
 			s.setContext(ctx);
 			events.add(s);
 		}
