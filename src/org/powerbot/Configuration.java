@@ -32,9 +32,8 @@ public class Configuration {
 		static final String DOMAIN_SITE_TESTING = DOMAIN + ".localdomain";
 		static final String DOMAIN_SITE = TESTING ? DOMAIN_SITE_TESTING : DOMAIN_SITE_LIVE;
 		static final String PROTOCOL = TESTING ? "http://" : "https://";
-		static final String DOMAIN_LINKS = "links." + DOMAIN;
 
-		public static final String VERSION = "http://" + DOMAIN_LINKS + "/version.txt";
+		public static final String VERSION = "http://cdn." + DOMAIN + "/rsbot/version.txt";
 
 		public static final String CLIENTPATCH = "https://" + DOMAIN_SITE_LIVE + "/rsbot/ts2/%s.ts";
 		public static final String CLIENTBUCKET = "http://buckets." + DOMAIN + "/process/?hash=%s";
@@ -45,9 +44,9 @@ public class Configuration {
 		public static final String LINKFILTER = "http://" + DOMAIN_SITE + "/api/safelink/?u=%s";
 
 		public static final String SITE = "http://" + DOMAIN_SITE + "/";
-		public static final String REGISTER = "http://" + DOMAIN_LINKS + "/register";
-		public static final String LOSTPASS = "http://" + DOMAIN_LINKS + "/lostpass";
-		public static final String SCRIPTSLIST = "http://" + DOMAIN_LINKS + "/scripts";
+		public static final String REGISTER = "http://" + DOMAIN_SITE_LIVE + "/go/register";
+		public static final String LOSTPASS = "http://" + DOMAIN_SITE_LIVE + "/go/lostpass";
+		public static final String SCRIPTSLIST = "http://" + DOMAIN_SITE_LIVE + "/go/scripts";
 
 		public static final String GAME = "runescape.com";
 		public static final String GAME_SERVICES_DOMAIN = "services." + GAME;
