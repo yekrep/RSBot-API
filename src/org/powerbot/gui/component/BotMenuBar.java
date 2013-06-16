@@ -255,10 +255,11 @@ public class BotMenuBar extends JMenuBar implements ActionListener {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				final ScriptController controller = BotChrome.getInstance().getBot().getScriptController();
+				final Bot bot = BotChrome.getInstance().getBot();
+				final ScriptController controller = bot.getScriptController();
 				if (controller != null && !controller.isStopping()) {
 					Tracker.getInstance().trackEvent("script", "stop");
-					controller.stop();
+					bot.stopScript();
 				}
 			}
 		}).start();

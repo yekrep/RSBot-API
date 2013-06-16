@@ -168,6 +168,13 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 		controller.run();
 	}
 
+	public synchronized void stopScript() {
+		if (controller != null) {
+			controller.stop();
+		}
+		controller = null;
+	}
+
 	public BufferedImage getImage() {
 		return image;
 	}
