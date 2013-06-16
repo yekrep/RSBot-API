@@ -91,6 +91,10 @@ public class Lobby extends MethodProvider {
 			if (!(child != null && child.isValid() && child.click(true))) {
 				return false;
 			}
+			for (int i = 0; i < 30 && ctx.game.getClientState() == STATE_LOBBY_IDLE; i++) {
+				sleep(50, 100);
+			}
+			if (ctx.game.getClientState() == STATE_LOBBY_IDLE) return false;
 		}
 		final Timer t = new Timer(timeout);
 		while (t.isRunning() && !ctx.game.isLoggedIn()) {
