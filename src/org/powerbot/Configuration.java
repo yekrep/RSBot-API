@@ -1,13 +1,13 @@
 package org.powerbot;
 
+import org.powerbot.util.StringUtil;
+import org.powerbot.util.io.Resources;
+
 import java.io.File;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.Enumeration;
 import java.util.zip.Adler32;
-
-import org.powerbot.util.StringUtil;
-import org.powerbot.util.io.Resources;
 
 /**
  * @author Paris
@@ -15,7 +15,7 @@ import org.powerbot.util.io.Resources;
 public class Configuration {
 	public static final String NAME = "RSBot";
 	public static final boolean FROMJAR, SERVEROS;
-	public static final int VERSION = 4061;
+	public static final int VERSION = 5000;
 	public static final OperatingSystem OS;
 	public static final File HOME, TEMP;
 
