@@ -1,5 +1,6 @@
 package org.powerbot.service.scripts;
 
+import org.powerbot.Configuration;
 import org.powerbot.bot.Bot;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.script.Manifest;
@@ -7,7 +8,6 @@ import org.powerbot.script.Script;
 import org.powerbot.script.internal.InternalScript;
 import org.powerbot.service.GameAccounts;
 import org.powerbot.service.NetworkAccount;
-import org.powerbot.Configuration;
 import org.powerbot.util.StringUtil;
 import org.powerbot.util.io.CryptFile;
 import org.powerbot.util.io.HttpClient;
@@ -142,7 +142,7 @@ public class ScriptList {
 		final ClassLoader cl;
 		if (def.local) {
 			try {
-				cl = new URLClassLoader(new URL[]{new File(def.source).toURI().toURL()});
+				cl = new ScriptClassLoader(new File(def.source).toURI().toURL());
 			} catch (final Exception ignored) {
 				return;
 			}
