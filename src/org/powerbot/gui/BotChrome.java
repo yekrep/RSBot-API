@@ -38,7 +38,7 @@ public class BotChrome extends JFrame implements Closeable {
 	public static final int PANEL_WIDTH = 765, PANEL_HEIGHT = 553;
 	public BotPanel panel;
 	private final Bot bot;
-	private static volatile boolean minimised;
+	private static boolean minimised;
 
 	private BotChrome() {
 		setTitle(Configuration.NAME + (Configuration.BETA ? " Beta" : ""));
