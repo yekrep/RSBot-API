@@ -1,10 +1,13 @@
 package org.powerbot.script;
 
+import java.awt.image.BufferedImage;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Queue;
@@ -14,11 +17,16 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.logging.Logger;
+import java.util.zip.Adler32;
+
+import javax.imageio.ImageIO;
 
 import org.powerbot.script.internal.ScriptController;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.util.Random;
 import org.powerbot.Configuration;
+import org.powerbot.util.StringUtil;
+import org.powerbot.util.io.HttpClient;
 
 public abstract class AbstractScript implements Script {
 	public final Logger log = Logger.getLogger(getClass().getName());
@@ -205,5 +213,51 @@ public abstract class AbstractScript implements Script {
 			}
 		}
 		return manifest.version();
+	}
+
+	/**
+	 * Downloads a file via HTTP/HTTPS. Server side caching is supported to reduce bandwidth.
+	 *
+	 * @param url the HTTP/HTTPS address of the remote resource to download
+	 * @param name a local file name, path separators are supported
+	 * @return the {@link java.io.File} of the downloaded resource
+	 */
+	public File download(final String url, final String name) {
+		File f = getStorageDirectory();
+
+		for (final String part : name.split("\\|/")) {
+			f = new File(f, part);
+		}
+
+		final URL u;
+		try {
+			u = new URL(url);
+		} catch (final MalformedURLException ignored) {
+			return f;
+		}
+
+		try {
+			HttpClient.download(u, f);
+		} catch (final IOException ignored) {
+		}
+
+		return f;
+	}
+
+	/**
+	 * Returns a downloaded image resource as a usable {@link java.awt.image.BufferedImage}.
+	 *
+	 * @param url the HTTP/HTTPS address of the remote image file
+	 * @return a {@link java.awt.image.BufferedImage}, which will be a blank 1x1 pixel if the remote image failed to download
+	 */
+	public BufferedImage downloadImage(final String url) {
+		final Adler32 c = new Adler32();
+		c.update(StringUtil.getBytesUtf8(url));
+		final File f = download(url, "images/" + Long.toHexString(c.getValue()));
+		try {
+			return ImageIO.read(f);
+		} catch (final IOException ignored) {
+			return new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
+		}
 	}
 }
