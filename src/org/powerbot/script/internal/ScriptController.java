@@ -105,10 +105,6 @@ public final class ScriptController implements Runnable, Suspendable, Stoppable,
 	}
 
 	private void call(final Script.State state) {
-		if (executor.isShutdown()) {
-			return;
-		}
-
 		for (final Script s : scripts) {
 			executor.execute(new Runnable() {
 				@Override
