@@ -111,10 +111,8 @@ public class Boot implements Runnable {
 
 		StringUtil.newStringUtf8(null); // prevents ClassCircularityError exceptions
 		CryptFile.PERMISSIONS.clear();
-		if (!debugging) {
-			System.setSecurityManager(new Sandbox(new Class<?>[]{RSLoader.class},
-					new Class<?>[]{NetworkAccount.class, GameAccounts.class, Tracker.class}));
-		}
+		System.setSecurityManager(new Sandbox(new Class<?>[]{RSLoader.class},
+				new Class<?>[]{NetworkAccount.class, GameAccounts.class, Tracker.class}));
 		System.setProperty("java.net.preferIPv4Stack", "true");
 
 		BotChrome.getInstance();
