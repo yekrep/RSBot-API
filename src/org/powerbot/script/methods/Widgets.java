@@ -65,7 +65,7 @@ public class Widgets extends MethodProvider {
 		final int mod = Math.max(containers != null ? containers.length : 0, widget + 1);
 		final int len = cache.length;
 		cache = Arrays.copyOf(cache, mod);
-		for (int i = len; i < mod; i++) {
+		for (int i = len; i < cache.length; i++) {
 			cache[i] = new Widget(ctx, i);
 		}
 		return cache[widget];
