@@ -48,25 +48,25 @@ public class Skills extends MethodProvider {
 	public int getLevel(final int index) {
 		final int[] levels = getLevels();
 		if (index >= 0 && index < levels.length) {
-			return -1;
+			return levels[index];
 		}
-		return levels[index];
+		return -1;
 	}
 
 	public int getRealLevel(final int index) {
 		final int[] levels = getRealLevels();
 		if (index >= 0 && index < levels.length) {
-			return -1;
+			return levels[index];
 		}
-		return levels[index];
+		return -1;
 	}
 
 	public int getExperience(final int index) {
 		final int[] exps = getExperiences();
 		if (index >= 0 && index < exps.length) {
-			return -1;
+			return exps[index];
 		}
-		return exps[index];
+		return -1;
 	}
 
 	public int[] getLevels() {
