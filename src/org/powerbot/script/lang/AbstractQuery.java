@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Deque;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
@@ -178,6 +179,6 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends Me
 	}
 
 	public List<K> toList() {
-		return items.get();
+		return new LinkedList<>(items.get());
 	}
 }
