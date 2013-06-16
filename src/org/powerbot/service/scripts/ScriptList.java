@@ -59,30 +59,44 @@ public class ScriptList {
 			}
 		}
 
+		if (!Configuration.BETA) {
+			getNetworkList(list);
+		}
+
+		return list;
+	}
+
+	private static void getNetworkList(final List<ScriptDefinition> list) throws IOException {
 		final Map<String, Map<String, String>> manifests = IniParser.deserialise(NetworkAccount.getInstance().getScriptsList());
+
 		final boolean vip = NetworkAccount.getInstance().hasPermission(NetworkAccount.VIP);
+
 		for (final Map.Entry<String, Map<String, String>> entry : manifests.entrySet()) {
 			final Map<String, String> params = entry.getValue();
+
 			if (params.containsKey("vip") && IniParser.parseBool(params.get("vip")) && !vip) {
 				continue;
 			}
+
 			final ScriptDefinition def = ScriptDefinition.fromMap(params);
 			if (def != null && params.containsKey("link") && params.containsKey("className") && params.containsKey("key")) {
 				def.source = params.get("link");
 				def.className = params.get("className");
+
 				final byte[] key = StringUtil.hexStringToByteArray(params.get("key")), kx = new byte[key.length * 2];
 				new Random().nextBytes(kx);
 				for (int i = 0; i < key.length; i++) {
 					kx[i * 2] = key[i];
 				}
 				def.key = kx;
+
 				if (params.containsKey("session")) {
 					def.session = Integer.parseInt(params.get("session"));
 				}
+
 				list.add(def);
 			}
 		}
-		return list;
 	}
 
 	public static void getLocalList(final List<ScriptDefinition> list, final File parent, final File dir) {
