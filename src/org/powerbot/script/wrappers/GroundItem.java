@@ -171,7 +171,7 @@ public class GroundItem extends Interactive implements Identifiable, Locatable, 
 
 	@Override
 	public boolean isValid() {
-		return ctx.groundItems.contains(this);
+		return ctx.groundItems.select().contains(this);
 	}
 
 	@Override

@@ -135,7 +135,7 @@ public class GameObject extends Interactive implements Locatable, Drawable, Iden
 
 	@Override
 	public boolean isValid() {
-		return this.object.get() != null && ctx.objects.contains(this);
+		return this.object.get() != null && ctx.objects.select().contains(this);
 	}
 
 	@Override

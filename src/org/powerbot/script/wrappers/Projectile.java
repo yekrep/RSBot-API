@@ -25,7 +25,7 @@ public class Projectile extends MethodProvider implements Identifiable, Validata
 	@Override
 	public boolean isValid() {
 		final RSProjectile projectile = this.projectile.get();
-		return projectile != null && ctx.projectiles.contains(this);
+		return projectile != null && ctx.projectiles.select().contains(this);
 	}
 
 	@Override
