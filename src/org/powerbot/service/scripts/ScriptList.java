@@ -43,18 +43,10 @@ public class ScriptList {
 		final List<ScriptDefinition> list = new ArrayList<>();
 
 		if (NetworkAccount.getInstance().hasPermission(NetworkAccount.LOCALSCRIPTS)) {
-			final List<File> paths = new ArrayList<>(2);
-
 			for (final String s : System.getProperty("java.class.path").split(Pattern.quote(File.pathSeparator))) {
 				final File f = new File(s);
 				if (f.isDirectory()) {
-					paths.add(f);
-				}
-			}
-
-			for (final File path : paths) {
-				if (path.isDirectory()) {
-					getLocalList(list, path, null);
+					getLocalList(list, f, null);
 				}
 			}
 		}
