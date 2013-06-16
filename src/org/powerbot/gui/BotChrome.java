@@ -41,7 +41,7 @@ public class BotChrome extends JFrame implements Closeable {
 	private static volatile boolean minimised;
 
 	private BotChrome() {
-		setTitle(Configuration.NAME);
+		setTitle(Configuration.NAME + (Configuration.BETA ? " Beta" : ""));
 		setIconImage(Resources.getImage(Resources.Paths.ICON));
 		setBackground(Color.BLACK);
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);

@@ -16,6 +16,7 @@ public class Configuration {
 	public static final String NAME = "RSBot";
 	public static final boolean FROMJAR, SERVEROS;
 	public static final int VERSION = 4061;
+	public static final boolean BETA = true;
 	public static final OperatingSystem OS;
 	public static final File HOME, TEMP;
 
