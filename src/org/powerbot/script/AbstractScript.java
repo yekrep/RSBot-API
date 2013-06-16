@@ -90,6 +90,8 @@ public abstract class AbstractScript implements Script {
 				}
 			}
 		});
+
+		exec.get(State.START).add(this);
 	}
 
 	@Override
