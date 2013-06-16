@@ -15,7 +15,8 @@
 			<field access="protected+" />
 			<method access="protected+" />
 		</class>
-		<class template="interface org.powerbot.event.*">
+		<class template="class org.powerbot.event.debug.*" stop="true" />
+		<class template="class org.powerbot.event.*">
 			<field access="protected+" />
 			<method access="protected+" />
 		</class>
