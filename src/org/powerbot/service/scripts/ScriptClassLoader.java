@@ -5,6 +5,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.zip.ZipEntry;
@@ -43,6 +44,9 @@ public final class ScriptClassLoader extends ClassLoader {
 
 	@Override
 	public Class<?> loadClass(final String name) throws ClassNotFoundException {
+		if (files == null) {
+			return super.loadClass(name);
+		}
 		final Class<?> clazz = findLoadedClass(name);
 		if (clazz != null) {
 			return clazz;
