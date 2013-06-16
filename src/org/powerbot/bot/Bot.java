@@ -7,10 +7,10 @@ import org.powerbot.client.event.PaintEvent;
 import org.powerbot.client.event.TextPaintEvent;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.gui.component.BotPanel;
+import org.powerbot.script.internal.ScriptController;
 import org.powerbot.script.Script;
 import org.powerbot.script.internal.InputHandler;
 import org.powerbot.script.internal.MouseHandler;
-import org.powerbot.script.internal.ScriptController;
 import org.powerbot.script.lang.Stoppable;
 import org.powerbot.script.methods.Game;
 import org.powerbot.script.methods.MethodContext;
@@ -164,7 +164,7 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 	}
 
 	public synchronized void startScript(final Script script) {
-		controller = new BotScriptController(ctx, multicaster, script);
+		controller = new ScriptController(ctx, multicaster, script);
 		controller.run();
 	}
 
