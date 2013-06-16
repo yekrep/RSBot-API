@@ -1,4 +1,4 @@
-package org.powerbot.client.event;
+package org.powerbot.event;
 
 import java.awt.Color;
 import java.awt.Composite;

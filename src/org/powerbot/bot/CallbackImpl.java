@@ -2,7 +2,7 @@ package org.powerbot.bot;
 
 import org.powerbot.client.Callback;
 import org.powerbot.client.Render;
-import org.powerbot.client.event.MessageEvent;
+import org.powerbot.event.MessageEvent;
 
 /**
  * An implementation of callback responsible for processing client callbacks to appropriate bot functions.

@@ -1,8 +1,8 @@
-package org.powerbot.client.event.debug;
+package org.powerbot.event.debug;
 
 import org.powerbot.client.RSAnimable;
 import org.powerbot.client.RSObject;
-import org.powerbot.client.event.PaintListener;
+import org.powerbot.event.PaintListener;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.wrappers.GameObject;

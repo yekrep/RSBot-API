@@ -1,4 +1,4 @@
-package org.powerbot.client.event.debug;
+package org.powerbot.event.debug;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -6,7 +6,7 @@ import java.awt.Point;
 
 import org.powerbot.client.Client;
 import org.powerbot.client.input.Mouse;
-import org.powerbot.client.event.PaintListener;
+import org.powerbot.event.PaintListener;
 import org.powerbot.gui.BotChrome;
 
 public class ViewMouse implements PaintListener {

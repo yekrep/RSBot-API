@@ -1,6 +1,6 @@
 package org.powerbot.bot;
 
-import org.powerbot.client.event.EventMulticaster;
+import org.powerbot.event.EventMulticaster;
 import org.powerbot.script.Script;
 import org.powerbot.script.internal.EventManager;
 import org.powerbot.script.internal.ScriptController;
