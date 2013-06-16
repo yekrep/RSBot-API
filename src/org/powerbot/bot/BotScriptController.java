@@ -99,6 +99,11 @@ public final class BotScriptController implements ScriptController {
 		events.unsubscribe(l);
 	}
 
+	@Override
+	public ExecutorService getExecutor() {
+		return executor;
+	}
+
 	private void call(final Script.State state) {
 		if (executor.isShutdown()) {
 			return;
