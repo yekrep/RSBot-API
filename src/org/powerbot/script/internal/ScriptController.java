@@ -2,13 +2,6 @@ package org.powerbot.script.internal;
 
 import java.util.Collection;
 import java.util.EventListener;
-import java.util.LinkedList;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.SynchronousQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.powerbot.client.event.EventMulticaster;
 import org.powerbot.script.Script;

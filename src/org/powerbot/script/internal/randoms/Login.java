@@ -1,6 +1,6 @@
 package org.powerbot.script.internal.randoms;
 
-import org.powerbot.client.event.PaintListener;
+import org.powerbot.event.PaintListener;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.script.Manifest;
 import org.powerbot.script.PollingScript;
@@ -30,20 +30,8 @@ public class Login extends PollingScript implements InternalScript, PaintListene
 	private static final int WIDGET_LOBBY_TRY_AGAIN = 259;
 	private volatile Timer re_load_timer = null;
 
-	public boolean isValid() {
-		int state = ctx.game.getClientState();
-		return (state == Game.INDEX_LOGIN_SCREEN ||
-				state == Game.INDEX_LOBBY_SCREEN ||
-				state == Game.INDEX_LOGGING_IN) &&
-				ctx.bot.getAccount() != null;
-	}
-
 	@Override
 	public int poll() {
-		if (!isValid()) {
-			getController().stop();
-		}
-
 		int state = ctx.game.getClientState();
 		if ((state == Game.INDEX_LOGIN_SCREEN || state == Game.INDEX_LOGGING_IN) && ctx.bot.getAccount() != null) {
 			Tracker.getInstance().trackPage("randoms/Login/", "Login");

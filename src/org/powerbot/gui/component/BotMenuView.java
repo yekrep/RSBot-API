@@ -1,7 +1,7 @@
 package org.powerbot.gui.component;
 
 import org.powerbot.bot.Bot;
-import org.powerbot.client.event.debug.*;
+import org.powerbot.event.debug.*;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.gui.BotSettingExplorer;
 import org.powerbot.gui.BotWidgetExplorer;

@@ -1,6 +1,6 @@
-package org.powerbot.client.event.debug;
+package org.powerbot.event.debug;
 
-import org.powerbot.client.event.TextPaintListener;
+import org.powerbot.event.TextPaintListener;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.methods.Game;

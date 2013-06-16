@@ -2,9 +2,9 @@ package org.powerbot.bot;
 
 import org.powerbot.client.Client;
 import org.powerbot.client.Constants;
-import org.powerbot.client.event.EventMulticaster;
-import org.powerbot.client.event.PaintEvent;
-import org.powerbot.client.event.TextPaintEvent;
+import org.powerbot.event.EventMulticaster;
+import org.powerbot.event.PaintEvent;
+import org.powerbot.event.TextPaintEvent;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.gui.component.BotPanel;
 import org.powerbot.script.internal.ScriptController;
