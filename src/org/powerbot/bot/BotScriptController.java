@@ -1,15 +1,5 @@
 package org.powerbot.bot;
 
-import java.util.Collection;
-import java.util.EventListener;
-import java.util.LinkedList;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.SynchronousQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
-
 import org.powerbot.client.event.EventMulticaster;
 import org.powerbot.script.Script;
 import org.powerbot.script.internal.EventManager;
@@ -19,6 +9,16 @@ import org.powerbot.script.internal.randoms.Login;
 import org.powerbot.script.internal.randoms.TicketDestroy;
 import org.powerbot.script.internal.randoms.WidgetCloser;
 import org.powerbot.script.methods.MethodContext;
+
+import java.util.Collection;
+import java.util.EventListener;
+import java.util.LinkedList;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.SynchronousQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public final class BotScriptController implements ScriptController {
 	private final MethodContext ctx;
@@ -31,7 +31,7 @@ public final class BotScriptController implements ScriptController {
 	public BotScriptController(final MethodContext ctx, final EventMulticaster multicaster, final Script script) {
 		this.ctx = ctx;
 		events = new EventManager(multicaster);
-		executor = new ThreadPoolExecutor(0, Integer.MAX_VALUE, 48L, TimeUnit.MINUTES, new SynchronousQueue<Runnable>());
+		executor = new ThreadPoolExecutor(0, Integer.MAX_VALUE, 60l, TimeUnit.SECONDS, new SynchronousQueue<Runnable>());
 		suspended = new AtomicBoolean(false);
 		stopping = new AtomicBoolean(false);
 
