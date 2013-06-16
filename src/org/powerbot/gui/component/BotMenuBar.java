@@ -1,17 +1,7 @@
 package org.powerbot.gui.component;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.ImageIcon;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.SwingUtilities;
-import javax.swing.event.MenuEvent;
-import javax.swing.event.MenuListener;
-
 import org.powerbot.Boot;
+import org.powerbot.Configuration;
 import org.powerbot.bot.Bot;
 import org.powerbot.gui.BotAbout;
 import org.powerbot.gui.BotAccounts;
@@ -21,9 +11,18 @@ import org.powerbot.gui.BotScripts;
 import org.powerbot.gui.BotSignin;
 import org.powerbot.script.internal.ScriptController;
 import org.powerbot.service.NetworkAccount;
-import org.powerbot.Configuration;
 import org.powerbot.util.Tracker;
 import org.powerbot.util.io.Resources;
+
+import javax.swing.ImageIcon;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.SwingUtilities;
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * @author Paris
@@ -228,7 +227,7 @@ public class BotMenuBar extends JMenuBar implements ActionListener {
 			public void run() {
 				final Bot bot = BotChrome.getInstance().getBot();
 				final ScriptController script = bot.getScriptController();
-				if (script != null) {
+				if (script != null && !script.isStopping()) {
 					if (script.isSuspended()) {
 						Tracker.getInstance().trackEvent("script", "resume");
 						script.resume();
