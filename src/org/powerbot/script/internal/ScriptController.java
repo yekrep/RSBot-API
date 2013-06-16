@@ -2,11 +2,15 @@ package org.powerbot.script.internal;
 
 import java.util.Collection;
 import java.util.EventListener;
+import java.util.LinkedList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.SynchronousQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.powerbot.client.event.EventMulticaster;
+import org.powerbot.event.EventMulticaster;
 import org.powerbot.script.Script;
-import org.powerbot.script.internal.EventManager;
-import org.powerbot.script.internal.ScriptController;
 import org.powerbot.script.internal.randoms.BankPin;
 import org.powerbot.script.internal.randoms.Login;
 import org.powerbot.script.internal.randoms.TicketDestroy;
@@ -42,6 +46,7 @@ public final class ScriptController implements Runnable, Suspendable, Stoppable,
 	@Override
 	public void run() {
 		for (final Script s : scripts) {
+			s.setController(this);
 			s.setContext(ctx);
 			events.add(s);
 		}
