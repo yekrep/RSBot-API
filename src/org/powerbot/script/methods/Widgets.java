@@ -2,7 +2,6 @@ package org.powerbot.script.methods;
 
 import org.powerbot.client.Client;
 import org.powerbot.client.RSInterfaceBase;
-import org.powerbot.script.util.Delay;
 import org.powerbot.script.util.Random;
 import org.powerbot.script.wrappers.Component;
 import org.powerbot.script.wrappers.Widget;
@@ -90,60 +89,51 @@ public class Widgets extends MethodProvider {
 	 * @param bar       the {@link Component} of the scroll bar
 	 * @return {@code true} if visible; otherwise {@code false}
 	 */
-	public boolean scroll(final Component component, final Component bar) {
-		if (component == null || bar == null || !component.isValid() || bar.getChildrenCount() != 6) {
-			return false;
-		}
-		Component area = component;
+	public boolean scroll(Component component, Component bar) {
+		if (component == null || !component.isValid()) return false;
+		if (bar == null || !bar.isValid() || bar.getChildrenCount() != 6) return false;
+		Component pane = component;
 		int id;
-		while (area.getScrollHeight() == 0 && (id = area.getParentId()) != -1) {
-			area = get(id >> 16, id & 0xffff);
+		while (pane.getScrollHeight() == 0 && (id = pane.getParentId()) != -1) {
+			pane = ctx.widgets.get(id >> 16, id & 0xffff);
 		}
-		if (area.getScrollHeight() == 0) {
-			return false;
-		}
+		if (pane.getScrollHeight() == 0) return false;
+		return scroll(component, pane, bar);
+	}
 
-		final Point abs = area.getAbsoluteLocation();
-		if (abs.x == -1 || abs.y == -1) {
-			return false;
-		}
-		final int height = area.getHeight();
-		final Point p = component.getAbsoluteLocation();
-		if (p.y >= abs.y && p.y <= abs.y + height - component.getHeight()) {
-			return true;
-		}
-
-		final Component _bar = bar.getChild(0);
-		if (_bar == null) {
-			return false;
-		}
-		final int size = area.getScrollHeight();
-		int pos = (int) ((float) _bar.getHeight() / size * (component.getRelativeLocation().y + Random.nextInt(-height / 2, height / 2 - component.getHeight())));
-		if (pos < 0) {
-			pos = 0;
-		} else if (pos >= _bar.getHeight()) {
-			pos = _bar.getHeight() - 1;
-		}
-		final Point nav = _bar.getAbsoluteLocation();
-		nav.translate(Random.nextInt(0, _bar.getWidth()), pos);
-		if (!ctx.mouse.click(nav, true)) {
-			return false;
-		}
-		Delay.sleep(200, 400);
-
+	public boolean scroll(Component component, Component pane, Component bar) {
+		if (component == null || !component.isValid()) return false;
+		if (bar == null || !bar.isValid() || bar.getChildrenCount() != 6) return false;
+		if (pane == null || !pane.isValid() || pane.getScrollHeight() == 0) return false;
+		Point view = pane.getAbsoluteLocation();
+		int height = pane.getScrollHeight();
+		if (view.x < 0 || view.y < 0 || height < 1) return false;
+		Point pos = component.getAbsoluteLocation();
+		int length = component.getHeight();
+		if (pos.y >= view.y && pos.y <= view.y + height - length) return true;
+		Component thumb = bar.getChild(0);
+		int thumbSize = thumb.getScrollHeight();
+		int y = (height / thumbSize) *
+				(component.getRelativeLocation().y + Random.nextInt(-height / 2, height / 2 - length));
+		if (y < 0) {
+			y = 0;
+		} else if (y >= thumbSize) y = thumbSize - 1;
+		Point p = thumb.getAbsoluteLocation();
+		p.translate(Random.nextInt(0, thumb.getWidth()), y);
+		if (!ctx.mouse.click(p, true)) return false;
+		sleep(200, 400);
 		boolean up;
 		Point a;
 		Component c;
-		while ((a = component.getAbsoluteLocation()).y < abs.y || a.y > abs.y + height - component.getHeight()) {
-			up = a.y < abs.y;
+		while ((a = component.getAbsoluteLocation()).y < view.y || a.y > view.y + height - length) {
+			up = a.y < view.y;
 			c = bar.getChild(up ? 4 : 5);
 			if (c == null) {
 				break;
 			}
-			if (c.click()) {
-				Delay.sleep(100, 200);
-			}
+			if (c.click()) sleep(100, 200);
+
 		}
-		return a.y >= abs.y && a.y <= height + abs.y + height - component.getHeight();
+		return a.y >= view.y && a.y <= height + view.y + height - length;
 	}
 }
