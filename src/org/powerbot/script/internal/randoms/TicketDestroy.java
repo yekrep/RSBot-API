@@ -4,6 +4,7 @@ import org.powerbot.script.Manifest;
 import org.powerbot.script.PollingScript;
 import org.powerbot.script.internal.InternalScript;
 import org.powerbot.script.methods.Game;
+import org.powerbot.script.util.Filter;
 import org.powerbot.script.util.Random;
 import org.powerbot.script.util.Timer;
 import org.powerbot.script.wrappers.Component;
@@ -29,14 +30,17 @@ public class TicketDestroy extends PollingScript implements InternalScript {
 			return -1;
 		}
 
-		if (ctx.inventory.select().id(ITEM_IDS).isEmpty()) {
+		Component child = null;
+		for (final Item item : ctx.inventory.select().id(ITEM_IDS).first()) {
+			child = item.getComponent();
+		}
+
+		if (child == null || !item.isValid()) {
 			return -1;
 		}
 
 		Tracker.getInstance().trackPage("randoms/TicketDestroy/", "");
 
-		final Component child = ctx.inventory.toList().get(0).getComponent();
-		if (child == null || !item.isValid()) return -1;
 		if (((ctx.settings.get(1448) & 0xFF00) >>> 8) < (child.getItemId() == ITEM_IDS[0] ? 10 : 9)) {
 			child.interact("Claim spin");
 			sleep(1000, 2000);

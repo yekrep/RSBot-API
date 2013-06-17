@@ -12,7 +12,9 @@ import java.awt.Color;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Point;
+import java.util.ArrayList;
 import java.util.Deque;
+import java.util.List;
 
 public class DrawGroundItems implements PaintListener {
 	public void repaint(final Graphics render) {
@@ -33,7 +35,8 @@ public class DrawGroundItems implements PaintListener {
 		final FontMetrics metrics = render.getFontMetrics();
 		final int tHeight = metrics.getHeight();
 		final int plane = ctx.game.getPlane();
-		Deque<GroundItem> groundItemDeque = ctx.groundItems.select().toDeque();
+		final List<GroundItem> check = new ArrayList<>();
+		ctx.groundItems.select().addTo(check);
 		for (int x = tile.getX() - 10; x <= tile.getX() + 10; x++) {
 			for (int y = tile.getY() - 10; y <= tile.getY() + 10; y++) {
 				int d = 0;
@@ -42,7 +45,7 @@ public class DrawGroundItems implements PaintListener {
 				if (screen.x == -1 || screen.y == -1) {
 					continue;
 				}
-				for (final GroundItem groundItem : ctx.groundItems.select(groundItemDeque).at(loc)) {
+				for (final GroundItem groundItem : ctx.groundItems.select(check).at(loc)) {
 					final ItemDefinition def = groundItem.getDefinition();
 					final String name = def != null ? def.getName() : null;
 					String s = "";

@@ -142,14 +142,17 @@ public class Summoning extends MethodProvider {
 		if (local == null) {
 			return null;
 		}
-		final List<Npc> npcs = ctx.npcs.select().select(new Filter<Npc>() {
+		ctx.npcs.select().select(new Filter<Npc>() {
 			@Override
 			public boolean accept(Npc npc) {
 				final Actor actor;
 				return npc.getId() == ctx.settings.get(1784) && (actor = npc.getInteracting()) != null && actor.equals(local);
 			}
-		}).nearest().first().toList();
-		return npcs.isEmpty() ? null : npcs.get(0);
+		}).nearest();
+		for (final Npc npc : ctx.npcs) {
+			return npc;
+		}
+		return null;
 	}
 
 	public Familiar getEnum() {

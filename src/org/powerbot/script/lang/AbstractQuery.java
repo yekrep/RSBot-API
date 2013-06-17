@@ -5,13 +5,11 @@ import org.powerbot.script.methods.MethodProvider;
 import org.powerbot.script.util.Filter;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Deque;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
@@ -158,6 +156,16 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends Me
 		return limit(1);
 	}
 
+	public T addTo(final Collection<? super K> c) {
+		final List<K> items = this.items.get();
+
+		synchronized (items) {
+			c.addAll(items);
+		}
+
+		return getThis();
+	}
+
 	@Override
 	public Iterator<K> iterator() {
 		return items.get().iterator();
@@ -173,13 +181,5 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends Me
 
 	public int size() {
 		return items.get().size();
-	}
-
-	public Deque<K> toDeque() {
-		return new ConcurrentLinkedDeque<>(items.get());
-	}
-
-	public List<K> toList() {
-		return new LinkedList<>(items.get());
 	}
 }
