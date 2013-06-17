@@ -50,6 +50,7 @@ public final class ScriptController implements Runnable, Suspendable, Stoppable,
 		}
 
 		call(Script.State.START);
+		events.subscribeAll();
 	}
 
 	@Override
