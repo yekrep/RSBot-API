@@ -45,8 +45,10 @@ public final class ScriptController implements Runnable, Suspendable, Stoppable,
 		for (final Script s : scripts) {
 			s.setController(this);
 			s.setContext(ctx);
-			s.getExecQueue(Script.State.START).add(s);
 			events.add(s);
+			if (!s.getExecQueue(Script.State.START).contains(s)) {
+				s.getExecQueue(Script.State.START).add(s);
+			}
 		}
 
 		call(Script.State.START);
