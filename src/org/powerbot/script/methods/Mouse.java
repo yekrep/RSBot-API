@@ -54,6 +54,16 @@ public class Mouse extends MethodProvider {
 		return !(client == null || (mouse = client.getMouse()) == null) && mouse.isPresent();
 	}
 
+	public boolean scroll(boolean down) {
+		final MouseHandler handler = getMouseHandler();
+		if (handler == null) {
+			return false;
+		}
+
+		handler.scroll(down);
+		return true;
+	}
+
 	public boolean hop(final Point p) {
 		return hop(p.x, p.y);
 	}

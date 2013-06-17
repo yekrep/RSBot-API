@@ -2,15 +2,16 @@ package org.powerbot.script.internal;
 
 import org.powerbot.client.Client;
 import org.powerbot.client.input.Mouse;
-import org.powerbot.util.math.HeteroMouse;
-import org.powerbot.util.math.Vector3;
 import org.powerbot.script.lang.Stoppable;
 import org.powerbot.script.util.Delay;
+import org.powerbot.util.math.HeteroMouse;
+import org.powerbot.util.math.Vector3;
 
 import java.applet.Applet;
 import java.awt.Component;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 import java.util.concurrent.TimeUnit;
 
 public class MouseHandler implements Runnable, Stoppable {
@@ -38,6 +39,19 @@ public class MouseHandler implements Runnable, Stoppable {
 		press(x, y, button);
 		Delay.sleep(simulator.getPressDuration());
 		release(x, y, button);
+	}
+
+	public void scroll(boolean down) {
+		final Mouse mouse;
+		if ((mouse = client.getMouse()) == null) {
+			return;
+		}
+		if (!mouse.isPresent()) {
+			return;
+		}
+		final Component target = getSource();
+		Point location = getLocation();
+		mouse.sendEvent(new MouseWheelEvent(target, MouseWheelEvent.MOUSE_WHEEL, System.currentTimeMillis(), 0, location.x, location.y, 0, false, MouseWheelEvent.WHEEL_UNIT_SCROLL, 3, down ? 3 : -3));
 	}
 
 	public void press(final int x, final int y, final int button) {
