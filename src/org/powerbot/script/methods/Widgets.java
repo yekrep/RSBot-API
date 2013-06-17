@@ -47,7 +47,7 @@ public class Widgets extends MethodProvider {
 	 * @param widget the index of the desired {@link Widget}
 	 * @return the {@link Widget} respective to the given index
 	 */
-	public Widget get(final int widget) {
+	public synchronized Widget get(final int widget) {
 		Client client = ctx.getClient();
 		if (client == null || widget < 0) {
 			return null;
@@ -127,16 +127,14 @@ public class Widgets extends MethodProvider {
 		}
 		Point a;
 		Component c;
-		int fails = 0;
+		int tY = thumb.getAbsoluteLocation().y;
+		long mark = System.currentTimeMillis();
 		while ((a = component.getAbsoluteLocation()).y < view.y || a.y > view.y + height - length) {
 			if (scroll) {
-				int tY = thumb.getAbsoluteLocation().y;
 				if (ctx.mouse.scroll(a.y > view.y)) {
-					sleep(200, 300);
-					if (tY == thumb.getAbsoluteLocation().y) {
-						if (++fails > 2) {
-							return scroll(component, pane, bar, false);
-						}
+					sleep(150, 225);
+					if (System.currentTimeMillis() - mark > 2000 && tY == thumb.getAbsoluteLocation().y) {
+						return scroll(component, pane, bar, false);
 					}
 				} else {
 					break;
