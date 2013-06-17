@@ -257,7 +257,7 @@ public class Bank extends ItemQuery<Item> {
 		}
 		final Rectangle bounds = container.getViewportRect();
 		final Component scroll = ctx.widgets.get(WIDGET, COMPONENT_SCROLL_BAR);
-		if (scroll == null) {
+		if (scroll == null || bounds == null) {
 			return false;
 		}
 		if (!bounds.contains(c.getBoundingRect()) && !ctx.widgets.scroll(c, scroll, getCurrentTab() != 0)) {
