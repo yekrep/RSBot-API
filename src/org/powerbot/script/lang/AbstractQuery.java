@@ -12,6 +12,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * @author Paris
@@ -25,7 +26,7 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends Me
 		items = new ThreadLocal<List<K>>() {
 			@Override
 			protected List<K> initialValue() {
-				return AbstractQuery.this.get();
+				return new CopyOnWriteArrayList<>(AbstractQuery.this.get());
 			}
 		};
 	}
