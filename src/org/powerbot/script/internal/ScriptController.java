@@ -15,7 +15,6 @@ import java.util.Collection;
 import java.util.EventListener;
 import java.util.LinkedList;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public final class ScriptController implements Runnable, Suspendable, Stoppable, Subscribable<EventListener> {
@@ -62,12 +61,7 @@ public final class ScriptController implements Runnable, Suspendable, Stoppable,
 	@Override
 	public void stop() {
 		if (stopping.compareAndSet(false, true)) {
-			executor.submit(new Runnable() {
-				@Override
-				public void run() {
-					call(Script.State.STOP);
-				}
-			});
+			call(Script.State.STOP);
 			executor.shutdown();
 			events.unsubscribeAll();
 		}
@@ -120,7 +114,7 @@ public final class ScriptController implements Runnable, Suspendable, Stoppable,
 						}
 					}
 				});
-			} catch (RejectedExecutionException ignored) {
+			} catch (Exception ignored) {
 			}
 		}
 	}
