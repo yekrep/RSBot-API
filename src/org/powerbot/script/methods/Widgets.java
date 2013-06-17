@@ -132,11 +132,7 @@ public class Widgets extends MethodProvider {
 			if (scroll) {
 				int tY = thumb.getAbsoluteLocation().y;
 				if (ctx.mouse.scroll(a.y > view.y)) {
-					sleep(25, 120);
-					long mark = System.currentTimeMillis();
-					while (System.currentTimeMillis() - mark < Random.nextInt(500, 1000) && tY == thumb.getAbsoluteLocation().y) {
-						sleep(25, 80);
-					}
+					sleep(200, 300);
 					if (tY == thumb.getAbsoluteLocation().y) {
 						if (++fails > 2) {
 							return scroll(component, pane, bar, false);
