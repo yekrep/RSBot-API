@@ -121,8 +121,10 @@ public class Widgets extends MethodProvider {
 		} else if (y >= thumbSize) y = thumbSize - 1;
 		Point p = thumbHolder.getAbsoluteLocation();
 		p.translate(Random.nextInt(0, thumbHolder.getWidth()), y);
-		if (!ctx.mouse.click(p, true)) return false;
-		sleep(200, 400);
+		if (!scroll) {
+			if (!ctx.mouse.click(p, true)) return false;
+			sleep(200, 400);
+		}
 		Point a;
 		Component c;
 		int fails = 0;
@@ -135,7 +137,11 @@ public class Widgets extends MethodProvider {
 					while (System.currentTimeMillis() - mark < Random.nextInt(500, 1000) && tY == thumb.getAbsoluteLocation().y) {
 						sleep(25, 80);
 					}
-					if (tY == thumb.getAbsoluteLocation().y) if (++fails > 2) scroll = false;
+					if (tY == thumb.getAbsoluteLocation().y) {
+						if (++fails > 2) {
+							return scroll(component, pane, bar, false);
+						}
+					}
 				} else {
 					break;
 				}
