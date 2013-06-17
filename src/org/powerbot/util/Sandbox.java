@@ -1,16 +1,16 @@
 package org.powerbot.util;
 
+import org.powerbot.Configuration;
+import org.powerbot.bot.RSClassLoader;
+import org.powerbot.service.scripts.ScriptClassLoader;
+import org.powerbot.util.io.CryptFile;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.security.Permission;
 import java.util.Map.Entry;
 import java.util.logging.Logger;
-
-import org.powerbot.Configuration;
-import org.powerbot.bot.RSClassLoader;
-import org.powerbot.service.scripts.ScriptClassLoader;
-import org.powerbot.util.io.CryptFile;
 
 /**
  * @author Paris
@@ -135,6 +135,10 @@ public class Sandbox extends SecurityManager {
 
 	@Override
 	public void checkRead(final String file) {
+		final Class[] ctx = getClassContext();
+		if (ctx.length > 2 && ctx[2].getName().startsWith("sun.misc.URLClassPath$FileLoader")) {
+			return;
+		}
 		checkFilePath(file, true);
 		super.checkRead(file);
 	}
