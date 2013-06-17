@@ -1,6 +1,5 @@
 package org.powerbot.script.methods;
 
-import org.powerbot.script.lang.AbstractQuery;
 import org.powerbot.script.lang.ItemQuery;
 import org.powerbot.script.util.Delay;
 import org.powerbot.script.util.Filter;
@@ -261,7 +260,7 @@ public class Bank extends ItemQuery<Item> {
 		if (scroll == null) {
 			return false;
 		}
-		if (!bounds.contains(c.getBoundingRect()) && !ctx.widgets.scroll(c, scroll)) {
+		if (!bounds.contains(c.getBoundingRect()) && !ctx.widgets.scroll(c, scroll, getCurrentTab() != 0)) {
 			return false;
 		}
 		if (!bounds.contains(c.getBoundingRect())) {

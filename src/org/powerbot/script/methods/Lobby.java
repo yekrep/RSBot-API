@@ -414,7 +414,7 @@ public class Lobby extends MethodProvider {
 				);
 				if (!visibleBounds.contains(row.getAbsoluteLocation())) {
 					final Component scrollBar = panel.getComponent(WIDGET_WORLDS_TABLE_SCROLLBAR);
-					if (scrollBar == null || !ctx.widgets.scroll(row, scrollBar)) {
+					if (scrollBar == null || !ctx.widgets.scroll(row, scrollBar, false)) {
 						return false;
 					}
 				}
