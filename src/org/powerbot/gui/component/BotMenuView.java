@@ -46,6 +46,7 @@ public final class BotMenuView implements ActionListener {//TODO revamp debuggin
 	private static final String LOCATION = "Location";
 	private static final String DESTINATION = "Destination";
 	private static final String MESSAGES = "Messages";
+	private static final String MOUSEPOS = "Mouse Position";
 	private static final String SEPERATOR = "-";
 
 	public BotMenuView(final JMenu menu) {
@@ -80,6 +81,7 @@ public final class BotMenuView implements ActionListener {//TODO revamp debuggin
 		map.put(MOUSE, ViewMouse.class);
 		map.put(Items, DrawItems.class);
 		map.put(TAB, TCurrentTab.class);
+		map.put(MOUSEPOS, TMousePosition.class);
 		map.put(MESSAGES, MessageLogger.class);
 
 		final List<String> items = new ArrayList<>(map.size());
@@ -99,6 +101,7 @@ public final class BotMenuView implements ActionListener {//TODO revamp debuggin
 		items.add(MAPBASE);
 		items.add(LOCATION);
 		items.add(DESTINATION);
+		items.add(MOUSEPOS);
 		items.add(SEPERATOR);
 		items.add(MESSAGES);
 
