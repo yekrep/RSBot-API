@@ -305,25 +305,23 @@ public class Component extends Interactive implements Drawable {
 	public Rectangle getBoundingRect() {
 		final Point absLocation = getAbsoluteLocation();
 		if (absLocation.x == -1 && absLocation.y == -1) {
-			return null;
+			return new Rectangle(-1, -1, 0, 0);
 		}
-		final Rectangle r = new Rectangle(absLocation.x, absLocation.y,
+		return new Rectangle(absLocation.x, absLocation.y,
 				getWidth(),
 				getHeight()
 		);
-		return r.x >= 0 && r.y >= 0 && r.width >= 0 && r.height >= 0 ? r : null;
 	}
 
 	public Rectangle getViewportRect() {
 		final Point absLocation = getAbsoluteLocation();
 		if (absLocation.x == -1 && absLocation.y == -1) {
-			return null;
+			return new Rectangle(-1, -1, 0, 0);
 		}
-		final Rectangle r = new Rectangle(absLocation.x, absLocation.y,
+		return new Rectangle(absLocation.x, absLocation.y,
 				getScrollWidth(),
 				getScrollHeight()
 		);
-		return r.x >= 0 && r.y >= 0 && r.width >= 0 && r.height >= 0 ? r : null;
 	}
 
 	@Override
