@@ -1,6 +1,7 @@
 package org.powerbot.util;
 
 import java.io.File;
+import java.io.FilePermission;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.security.Permission;
@@ -31,16 +32,6 @@ public class Sandbox extends SecurityManager {
 			return;
 		}
 		throw new SecurityException();
-	}
-
-	@Override
-	public void checkAccess(final Thread t) {
-		super.checkAccess(t);
-	}
-
-	@Override
-	public void checkAccess(final ThreadGroup g) {
-		super.checkAccess(g);
 	}
 
 	@Override
@@ -78,12 +69,6 @@ public class Sandbox extends SecurityManager {
 	}
 
 	@Override
-	public void checkDelete(final String file) {
-		checkFilePath(file, false);
-		super.checkDelete(file);
-	}
-
-	@Override
 	public void checkExec(final String cmd) {
 		if (isScriptThread()) {
 			throw new SecurityException();
@@ -100,15 +85,11 @@ public class Sandbox extends SecurityManager {
 	}
 
 	@Override
-	public void checkListen(final int port) {
-		super.checkListen(port);
-	}
-
-	@Override
 	public void checkMulticast(final InetAddress maddr) {
 		throw new SecurityException();
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public void checkMulticast(final InetAddress maddr, final byte ttl) {
 		throw new SecurityException();
@@ -120,6 +101,10 @@ public class Sandbox extends SecurityManager {
 			if (perm.getName().equals("setSecurityManager")) {
 				throw new SecurityException();
 			}
+		} else if (perm instanceof FilePermission) {
+			final FilePermission fp = (FilePermission) perm;
+			final String a = fp.getActions();
+			checkFilePath(fp.getName(), a.equalsIgnoreCase("read") || a.equalsIgnoreCase("readlink"));
 		}
 	}
 
@@ -131,18 +116,6 @@ public class Sandbox extends SecurityManager {
 	@Override
 	public void checkPrintJobAccess() {
 		throw new SecurityException();
-	}
-
-	@Override
-	public void checkRead(final String file) {
-		checkFilePath(file, true);
-		super.checkRead(file);
-	}
-
-	@Override
-	public void checkRead(final String file, final Object context) {
-		checkRead(file);
-		super.checkRead(file, context);
 	}
 
 	@Override
@@ -161,15 +134,9 @@ public class Sandbox extends SecurityManager {
 		throw new SecurityException();
 	}
 
-	@Override
-	public void checkWrite(final String file) {
-		checkFilePath(file, false);
-		super.checkWrite(file);
-	}
-
 	private void checkFilePath(final String pathRaw, final boolean readOnly) {
 		final Class[] ctx = getClassContext();
-		if (ctx.length > 3 && ctx[3].getName().equals("java.io.Win32FileSystem")) {
+		if (ctx.length > 4 && ctx[4].getName().equals("java.io.Win32FileSystem")) {
 			return;
 		}
 
@@ -249,7 +216,7 @@ public class Sandbox extends SecurityManager {
 
 	private boolean isGameThread() {
 		final Class<?>[] context = getClassContext();
-		for (int i = 1; i < 5; i++) {
+		for (int i = 1; i < 6; i++) {
 			if (context[i].isAssignableFrom(Sandbox.class)) {
 				continue;
 			}
