@@ -30,12 +30,7 @@ public class Players extends LocatableNameQuery<Player> {
 	 */
 	public Player getLocal() {
 		Client client = ctx.getClient();
-		if (client == null) {
-			return null;
-		}
-
-		final RSPlayer p = client.getMyRSPlayer();
-		return p != null ? new Player(ctx, p) : null;
+		return new Player(ctx, client != null ? client.getMyRSPlayer() : null);
 	}
 
 	/**
