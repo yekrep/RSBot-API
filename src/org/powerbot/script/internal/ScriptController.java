@@ -62,8 +62,8 @@ public final class ScriptController implements Runnable, Suspendable, Stoppable,
 	public void stop() {
 		if (stopping.compareAndSet(false, true)) {
 			call(Script.State.STOP);
-			executor.shutdown();
 			events.unsubscribeAll();
+			executor.shutdown();
 		}
 	}
 
