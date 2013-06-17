@@ -122,17 +122,19 @@ public class Widgets extends MethodProvider {
 		p.translate(Random.nextInt(0, thumb.getWidth()), y);
 		if (!ctx.mouse.click(p, true)) return false;
 		sleep(200, 400);
-		boolean up;
 		Point a;
-		Component c;
+		//Component c;
 		while ((a = component.getAbsoluteLocation()).y < view.y || a.y > view.y + height - length) {
-			up = a.y < view.y;
-			c = bar.getChild(up ? 4 : 5);
+			/*c = bar.getChild(a.y < view.y ? 4 : 5);
 			if (c == null) {
 				break;
 			}
-			if (c.click()) sleep(100, 200);
-
+			if (c.click()) sleep(100, 200);*/
+			if (ctx.mouse.scroll(a.y > view.y)) {
+				sleep(100, 200);
+			} else {
+				break;
+			}
 		}
 		return a.y >= view.y && a.y <= height + view.y + height - length;
 	}
