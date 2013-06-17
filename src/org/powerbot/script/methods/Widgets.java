@@ -113,8 +113,8 @@ public class Widgets extends MethodProvider {
 		if (pos.y >= view.y && pos.y <= view.y + height - length) return true;
 		Component thumb = bar.getChild(0);
 		int thumbSize = thumb.getScrollHeight();
-		int y = (height / thumbSize) *
-				(component.getRelativeLocation().y + Random.nextInt(-height / 2, height / 2 - length));
+		int y = (int) ((float) thumbSize / pane.getMaxVerticalScroll() *
+				(component.getRelativeLocation().y + Random.nextInt(-height / 2, height / 2 - length)));
 		if (y < 0) {
 			y = 0;
 		} else if (y >= thumbSize) y = thumbSize - 1;
