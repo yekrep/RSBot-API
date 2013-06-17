@@ -1,5 +1,13 @@
 package org.powerbot.script;
 
+import org.powerbot.Configuration;
+import org.powerbot.script.internal.ScriptController;
+import org.powerbot.script.methods.MethodContext;
+import org.powerbot.script.util.Random;
+import org.powerbot.util.StringUtil;
+import org.powerbot.util.io.HttpClient;
+
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -11,22 +19,12 @@ import java.net.URL;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Queue;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.logging.Logger;
 import java.util.zip.Adler32;
-
-import javax.imageio.ImageIO;
-
-import org.powerbot.script.internal.ScriptController;
-import org.powerbot.script.methods.MethodContext;
-import org.powerbot.script.util.Random;
-import org.powerbot.Configuration;
-import org.powerbot.util.StringUtil;
-import org.powerbot.util.io.HttpClient;
 
 public abstract class AbstractScript implements Script {
 	public final Logger log = Logger.getLogger(getClass().getName());
@@ -98,8 +96,6 @@ public abstract class AbstractScript implements Script {
 				}
 			}
 		});
-
-		exec.get(State.START).add(this);
 	}
 
 	@Override
@@ -218,7 +214,7 @@ public abstract class AbstractScript implements Script {
 	/**
 	 * Downloads a file via HTTP/HTTPS. Server side caching is supported to reduce bandwidth.
 	 *
-	 * @param url the HTTP/HTTPS address of the remote resource to download
+	 * @param url  the HTTP/HTTPS address of the remote resource to download
 	 * @param name a local file name, path separators are supported
 	 * @return the {@link java.io.File} of the downloaded resource
 	 */
