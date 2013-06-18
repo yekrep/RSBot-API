@@ -18,7 +18,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * @author Paris
  */
 public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends MethodProvider implements Iterable<K> {
-	private ThreadLocal<List<K>> items;
+	private final ThreadLocal<List<K>> items;
 
 	public AbstractQuery(final MethodContext factory) {
 		super(factory);
