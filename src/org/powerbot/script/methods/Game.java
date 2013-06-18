@@ -163,7 +163,7 @@ public class Game extends MethodProvider {
 
 		final RSInfo info = client.getRSGroundInfo();
 		final BaseInfo baseInfo = info != null ? info.getBaseInfo() : null;
-		return baseInfo != null ? new Tile(baseInfo.getX(), baseInfo.getY(), client.getPlane()) : null;
+		return baseInfo != null ? new Tile(baseInfo.getX(), baseInfo.getY(), client.getPlane()) : new Tile(0, 0, client.getPlane());
 	}
 
 	public int getPlane() {

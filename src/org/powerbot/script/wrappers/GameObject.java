@@ -81,10 +81,9 @@ public class GameObject extends Interactive implements Locatable, Drawable, Iden
 		final RSInteractableData data = object != null ? object.getData() : null;
 		final RSInteractableLocation location = data != null ? data.getLocation() : null;
 		if (location != null) {
-			final Tile base = ctx.game.getMapBase();
-			return base != null ? base.derive((int) location.getX() >> 9, (int) location.getY() >> 9, object.getPlane()) : null;
+			return ctx.game.getMapBase().derive((int) location.getX() >> 9, (int) location.getY() >> 9, object.getPlane());
 		}
-		return null;
+		return new Tile(-1, -1, -1);
 	}
 
 	@Override
