@@ -28,7 +28,7 @@ import java.util.zip.Adler32;
 
 public abstract class AbstractScript implements Script {
 	public final Logger log = Logger.getLogger(getClass().getName());
-	protected MethodContext ctx;
+	protected final MethodContext ctx;
 	private ScriptController controller;
 	private final Map<State, Queue<Runnable>> exec;
 	private final AtomicLong started, suspended;
@@ -37,6 +37,7 @@ public abstract class AbstractScript implements Script {
 	protected final Properties settings;
 
 	public AbstractScript() {
+		ctx = new MethodContext();
 		exec = new ConcurrentHashMap<>(State.values().length);
 		for (final State state : State.values()) {
 			exec.put(state, new ConcurrentLinkedQueue<Runnable>());
@@ -115,7 +116,7 @@ public abstract class AbstractScript implements Script {
 
 	@Override
 	public void setContext(final MethodContext ctx) {
-		this.ctx = ctx;
+		this.ctx.init(ctx);
 	}
 
 	@Override

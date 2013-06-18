@@ -235,6 +235,6 @@ public class Mouse extends MethodProvider {
 	}
 
 	private MouseHandler getMouseHandler() {
-		return ctx.bot.getMouseHandler();
+		return ctx.getBot().getMouseHandler();
 	}
 }
