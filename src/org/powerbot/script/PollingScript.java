@@ -27,6 +27,12 @@ public abstract class PollingScript extends AbstractScript {
 		}
 	}
 
+	/**
+	 * Causes the currently executing thread to sleep (temporarily cease
+	 * execution) for the specified number of milliseconds.
+	 *
+	 * @param millis the length of time to sleep in milliseconds
+	 */
 	public final void sleep(final long millis) {
 		try {
 			Thread.sleep(millis);
