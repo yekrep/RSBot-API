@@ -2,6 +2,8 @@ package org.powerbot.script;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.powerbot.script.util.Random;
+
 public abstract class PollingScript extends AbstractScript {
 	private final AtomicBoolean running;
 
@@ -76,6 +78,17 @@ public abstract class PollingScript extends AbstractScript {
 			Thread.sleep(millis);
 		} catch (final InterruptedException ignored) {
 		}
+	}
+
+	/**
+	 * Causes the currently executing thread to sleep (temporarily cease
+	 * execution) for a random number of milliseconds within the specified bounds.
+	 *
+	 * @param min the inclusive lower bound
+	 * @param max the exclusive upper bound
+	 */
+	public final void sleep(final int min, final int max) {
+		sleep(Random.nextInt(min, max));
 	}
 
 	/**

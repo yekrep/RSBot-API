@@ -125,28 +125,6 @@ public abstract class AbstractScript implements Script {
 	}
 
 	/**
-	 * Sleeps for the specified duration.
-	 *
-	 * @param millis the duration in milliseconds.
-	 */
-	public void sleep(final int millis) {
-		try {
-			Thread.sleep(millis);
-		} catch (final InterruptedException ignored) {
-		}
-	}
-
-	/**
-	 * Sleeps for a random duration between the specified intervals.
-	 *
-	 * @param min the minimum duration (inclusive)
-	 * @param max the maximum duration (exclusive)
-	 */
-	public void sleep(final int min, final int max) {
-		sleep(Random.nextInt(min, max));
-	}
-
-	/**
 	 * Returns the total running time.
 	 *
 	 * @return the total runtime so far in seconds (including pauses)
