@@ -73,7 +73,12 @@ public class Component extends Interactive implements Drawable {
 
 	public String[] getActions() {
 		final RSInterface component = getInternalComponent();
-		return component != null ? component.getActions() : new String[0];
+		String[] actions = new String[0];
+		if (component != null) {
+			actions = component.getActions();
+			if (actions == null) actions = new String[0];
+		}
+		return actions;
 	}
 
 	public int getTextureId() {
