@@ -51,7 +51,7 @@ public class MouseHandler implements Runnable, Stoppable {
 		}
 		final Component target = getSource();
 		Point location = getLocation();
-		mouse.sendEvent(new MouseWheelEvent(target, MouseWheelEvent.MOUSE_WHEEL, System.currentTimeMillis(), 0, location.x, location.y, 0, false, MouseWheelEvent.WHEEL_UNIT_SCROLL, 3, down ? 3 : -3));
+		mouse.sendEvent(new MouseWheelEvent(target, MouseWheelEvent.MOUSE_WHEEL, System.currentTimeMillis(), 0, location.x, location.y, 0, false, MouseWheelEvent.WHEEL_UNIT_SCROLL, 1, down ? 1 : -1));
 	}
 
 	public void press(final int x, final int y, final int button) {
