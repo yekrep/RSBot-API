@@ -116,7 +116,7 @@ public class GroundItem extends Interactive implements Identifiable, Nameable, S
 		if ((def = getDefinition()) != null) {
 			name = def.getName();
 		}
-		return name != null ? StringUtil.stripHtml(name) : null;
+		return name != null ? StringUtil.stripHtml(name) : "";
 	}
 
 
@@ -137,7 +137,7 @@ public class GroundItem extends Interactive implements Identifiable, Nameable, S
 			return null;
 		}
 		final Object o = ctx.game.lookup(table, id);
-		return o != null && o instanceof RSItemDef ? new ItemDefinition((RSItemDef) o) : null;
+		return o != null && o instanceof RSItemDef ? new ItemDefinition((RSItemDef) o) : new ItemDefinition(null);
 	}
 
 	@Override
