@@ -22,10 +22,14 @@ public abstract class PollingScript extends AbstractScript {
 				}
 			}
 
-			try {
-				Thread.sleep(Math.max(0, sleep == -1 ? DEFAULT_DELAY : sleep));
-			} catch (final InterruptedException ignored) {
-			}
+			sleep(Math.max(0, sleep == -1 ? DEFAULT_DELAY : sleep));
+		}
+	}
+
+	public final void sleep(final long millis) {
+		try {
+			Thread.sleep(millis);
+		} catch (final InterruptedException ignored) {
 		}
 	}
 }
