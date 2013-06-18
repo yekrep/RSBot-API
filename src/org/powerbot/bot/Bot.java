@@ -7,10 +7,10 @@ import org.powerbot.event.PaintEvent;
 import org.powerbot.event.TextPaintEvent;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.gui.component.BotPanel;
-import org.powerbot.script.internal.ScriptController;
 import org.powerbot.script.Script;
 import org.powerbot.script.internal.InputHandler;
 import org.powerbot.script.internal.MouseHandler;
+import org.powerbot.script.internal.ScriptController;
 import org.powerbot.script.lang.Stoppable;
 import org.powerbot.script.methods.Game;
 import org.powerbot.script.methods.MethodContext;
@@ -20,7 +20,6 @@ import org.powerbot.service.GameAccounts;
 import java.awt.Canvas;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Logger;
@@ -105,7 +104,7 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 					int s;
 					if ((s = getMethodContext().game.getClientState()) >= Game.INDEX_LOGIN_SCREEN) {
 						if (s == Game.INDEX_LOGIN_SCREEN) {
-							getMethodContext().keyboard.pressKey(KeyEvent.VK_ESCAPE, KeyEvent.CHAR_UNDEFINED);
+							getMethodContext().keyboard.send("{VK_ESCAPE}");
 						}
 						break;
 					} else {

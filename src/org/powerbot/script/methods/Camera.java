@@ -8,8 +8,6 @@ import org.powerbot.script.util.Timer;
 import org.powerbot.script.wrappers.Player;
 import org.powerbot.script.wrappers.Tile;
 
-import java.awt.event.KeyEvent;
-
 public class Camera extends MethodProvider {
 	public Camera(MethodContext factory) {
 		super(factory);
@@ -46,7 +44,7 @@ public class Camera extends MethodProvider {
 			return 0;
 		}
 		final boolean up = pitch > p;
-		ctx.keyboard.pressKey(up ? KeyEvent.VK_UP : KeyEvent.VK_DOWN);
+		ctx.keyboard.send(up ? "{VK_UP down}" : "{VK_DOWN down}");
 		int curr;
 		final Timer timer = new Timer(100);
 		while (timer.isRunning()) {
@@ -63,33 +61,33 @@ public class Camera extends MethodProvider {
 
 			Delay.sleep(5, 10);
 		}
-		ctx.keyboard.releaseKey(up ? KeyEvent.VK_UP : KeyEvent.VK_DOWN);
+		ctx.keyboard.send(up ? "{VK_UP up}" : "{VK_DOWN up}");
 		return p - pitch;
 	}
 
 	public void setAngle(final char direction) {
 		switch (direction) {
-			case 'n':
-				setAngle(0);
-				break;
-			case 'w':
-				setAngle(90);
-				break;
-			case 's':
-				setAngle(180);
-				break;
-			case 'e':
-				setAngle(270);
-				break;
-			default:
-				throw new RuntimeException("invalid direction " + direction + ", expecting n,w,s,e");
+		case 'n':
+			setAngle(0);
+			break;
+		case 'w':
+			setAngle(90);
+			break;
+		case 's':
+			setAngle(180);
+			break;
+		case 'e':
+			setAngle(270);
+			break;
+		default:
+			throw new RuntimeException("invalid direction " + direction + ", expecting n,w,s,e");
 		}
 	}
 
 	public void setAngle(int degrees) {
 		degrees %= 360;
 		if (getAngleTo(degrees) > 5) {
-			ctx.keyboard.pressKey(KeyEvent.VK_LEFT);
+			ctx.keyboard.send("{VK_LEFT down}");
 			final Timer timer = new Timer(500);
 			int ang, prev = -1;
 			while ((ang = getAngleTo(degrees)) > 5 && timer.isRunning()) {
@@ -99,9 +97,9 @@ public class Camera extends MethodProvider {
 				prev = ang;
 				Delay.sleep(10, 15);
 			}
-			ctx.keyboard.releaseKey(KeyEvent.VK_LEFT);
+			ctx.keyboard.send("{VK_LEFT up}");
 		} else if (getAngleTo(degrees) < -5) {
-			ctx.keyboard.pressKey(KeyEvent.VK_RIGHT);
+			ctx.keyboard.send("{VK_RIGHT down}");
 			final Timer timer = new Timer(500);
 			int ang, prev = -1;
 			while ((ang = getAngleTo(degrees)) < -5 && timer.isRunning()) {
@@ -111,7 +109,7 @@ public class Camera extends MethodProvider {
 				prev = ang;
 				Delay.sleep(10, 15);
 			}
-			ctx.keyboard.releaseKey(KeyEvent.VK_RIGHT);
+			ctx.keyboard.send("{VK_RIGHT up}");
 		}
 	}
 
