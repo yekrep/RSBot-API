@@ -27,7 +27,7 @@ public class Player extends Actor {
 	@Override
 	public String getName() {
 		final RSPlayer player = getAccessor();
-		return player != null ? player.getName() : null;
+		return player != null ? player.getName() : "";
 	}
 
 	@Override
@@ -71,7 +71,7 @@ public class Player extends Actor {
 			}
 			return appearance;
 		}
-		return null;
+		return new int[0];
 	}
 
 	@Override
