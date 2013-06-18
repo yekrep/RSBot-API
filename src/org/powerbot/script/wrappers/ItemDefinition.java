@@ -22,7 +22,7 @@ public class ItemDefinition implements Identifiable, Nameable {
 	@Override
 	public String getName() {
 		final RSItemDef def = this.def.get();
-		return def != null ? def.getName() : null;
+		return def != null ? def.getName() : "";
 	}
 
 	public boolean isMembers() {
@@ -32,11 +32,11 @@ public class ItemDefinition implements Identifiable, Nameable {
 
 	public String[] getActions() {
 		final RSItemDef def = this.def.get();
-		return def != null ? def.getActions() : null;
+		return def != null ? def.getActions() : new String[0];
 	}
 
 	public String[] getGroundActions() {
 		final RSItemDef def = this.def.get();
-		return def != null ? def.getGroundActions() : null;
+		return def != null ? def.getGroundActions() : new String[0];
 	}
 }
