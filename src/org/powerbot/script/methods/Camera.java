@@ -38,11 +38,9 @@ public class Camera extends MethodProvider {
 		return client != null ? (int) ((client.getCameraPitch() - 1024) / 20.48) : -1;
 	}
 
-	public int setPitch(final int pitch) {
+	public boolean setPitch(final int pitch) {
 		int p = getPitch();
-		if (p == pitch) {
-			return 0;
-		}
+		if (p == pitch) return true;
 		final boolean up = pitch > p;
 		ctx.keyboard.send(up ? "{VK_UP down}" : "{VK_DOWN down}");
 		int curr;
@@ -62,7 +60,7 @@ public class Camera extends MethodProvider {
 			Delay.sleep(5, 10);
 		}
 		ctx.keyboard.send(up ? "{VK_UP up}" : "{VK_DOWN up}");
-		return p - pitch;
+		return Math.abs(p - pitch) < 10;
 	}
 
 	public void setAngle(final char direction) {

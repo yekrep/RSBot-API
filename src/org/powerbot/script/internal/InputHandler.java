@@ -79,23 +79,23 @@ public class InputHandler {
 		for (int i = 0; i < sequence.length(); i++) {
 			final char c = sequence.charAt(i);
 			switch (c) {
-				case '{':
-					braced = true;
-					break;
-				case '}':
-					braced = false;
-					if (buf.length() != 0) {
-						list.add(buf.toString());
-						buf = new StringBuilder();
-					}
-					break;
-				default:
-					if (braced) {
-						buf.append(c);
-					} else {
-						list.add(String.valueOf(c));
-					}
-					break;
+			case '{':
+				braced = true;
+				break;
+			case '}':
+				braced = false;
+				if (buf.length() != 0) {
+					list.add(buf.toString());
+					buf = new StringBuilder();
+				}
+				break;
+			default:
+				if (braced) {
+					buf.append(c);
+				} else {
+					list.add(String.valueOf(c));
+				}
+				break;
 			}
 		}
 
@@ -160,16 +160,16 @@ public class InputHandler {
 						final boolean[] states = {false, false};
 						if (p.length > 1 && p[1] != null && !p[1].isEmpty()) {
 							switch (p[1].trim().toLowerCase()) {
-								case "down":
-								case "press":
-								case "pressed":
-									states[0] = true;
-									break;
-								case "up":
-								case "release":
-								case "released":
-									states[1] = true;
-									break;
+							case "down":
+							case "press":
+							case "pressed":
+								states[0] = true;
+								break;
+							case "up":
+							case "release":
+							case "released":
+								states[1] = true;
+								break;
 							}
 						} else {
 							states[0] = true;
