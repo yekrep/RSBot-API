@@ -1,8 +1,13 @@
 package org.powerbot.script;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 public abstract class PollingScript extends AbstractScript {
+	private final AtomicBoolean running;
 
 	public PollingScript() {
+		running = new AtomicBoolean(false);
+
 		getExecQueue(State.START).add(new Runnable() {
 			@Override
 			public void run() {
@@ -33,6 +38,10 @@ public abstract class PollingScript extends AbstractScript {
 
 	@Override
 	public final void run() {
+		if (!running.compareAndSet(false, true)) {
+			return;
+		}
+
 		final int delay = 600;
 
 		while (!getController().isStopping()) {
@@ -52,6 +61,8 @@ public abstract class PollingScript extends AbstractScript {
 
 			sleep(Math.max(0, sleep == -1 ? delay : sleep));
 		}
+
+		running.set(false);
 	}
 
 	/**
