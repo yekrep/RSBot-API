@@ -71,6 +71,6 @@ public class Keyboard extends MethodProvider {
 	}
 
 	private InputHandler getInputHandler() {
-		return ctx.bot.getInputHandler();
+		return ctx.getBot().getInputHandler();
 	}
 }

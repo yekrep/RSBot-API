@@ -33,7 +33,7 @@ public class Login extends PollingScript implements InternalScript, PaintListene
 	@Override
 	public int poll() {
 		int state = ctx.game.getClientState();
-		if ((state == Game.INDEX_LOGIN_SCREEN || state == Game.INDEX_LOGGING_IN) && ctx.bot.getAccount() != null) {
+		if ((state == Game.INDEX_LOGIN_SCREEN || state == Game.INDEX_LOGGING_IN) && ctx.getBot().getAccount() != null) {
 			Tracker.getInstance().trackPage("randoms/Login/", "Login");
 			for (final LoginEvent loginEvent : LoginEvent.values()) {
 				final Component Component = ctx.widgets.get(WIDGET, loginEvent.child);
@@ -71,7 +71,7 @@ public class Login extends PollingScript implements InternalScript, PaintListene
 				ctx.keyboard.send("\n");
 				sleep(Random.nextInt(1200, 2000));
 			} else if (!isUsernameCorrect()) {
-				final String username = ctx.bot.getAccount().toString();
+				final String username = ctx.getBot().getAccount().toString();
 				final Component usernameTextBox = ctx.widgets.get(WIDGET, WIDGET_LOGIN_USERNAME_TEXT);
 				if (!clickLoginInterface(usernameTextBox)) {
 					return 0;
@@ -85,7 +85,7 @@ public class Login extends PollingScript implements InternalScript, PaintListene
 				ctx.keyboard.send(username);
 				sleep(Random.nextInt(500, 700));
 			} else if (!isPasswordValid()) {
-				final String password = ctx.bot.getAccount().getPassword();
+				final String password = ctx.getBot().getAccount().getPassword();
 				final Component passwordTextBox = ctx.widgets.get(WIDGET, WIDGET_LOGIN_PASSWORD_TEXT);
 				if (!clickLoginInterface(passwordTextBox)) {
 					return 0;
@@ -99,7 +99,7 @@ public class Login extends PollingScript implements InternalScript, PaintListene
 				ctx.keyboard.send(password);
 				sleep(Random.nextInt(500, 700));
 			}
-		} else if (state == Game.INDEX_LOBBY_SCREEN && ctx.bot.getAccount() != null) {
+		} else if (state == Game.INDEX_LOBBY_SCREEN && ctx.getBot().getAccount() != null) {
 			Tracker.getInstance().trackPage("randoms/Login/", "Lobby");
 			for (final LobbyEvent lobbyEvent : LobbyEvent.values()) {
 				final Component Component = ctx.widgets.get(WIDGET_LOBBY, lobbyEvent.child);
@@ -128,7 +128,7 @@ public class Login extends PollingScript implements InternalScript, PaintListene
 				}
 			}
 
-			final int world = ctx.preferredWorld;
+			final int world = ctx.getPreferredWorld();
 			if (world > 0) {
 				final Lobby.World world_wrapper;
 				if ((world_wrapper = ctx.lobby.getWorld(world)) != null) {
@@ -179,12 +179,12 @@ public class Login extends PollingScript implements InternalScript, PaintListene
 	}
 
 	private boolean isUsernameCorrect() {
-		final String userName = ctx.bot.getAccount().toString();
+		final String userName = ctx.getBot().getAccount().toString();
 		return ctx.widgets.get(WIDGET, WIDGET_LOGIN_USERNAME_TEXT).getText().toLowerCase().equalsIgnoreCase(userName);
 	}
 
 	private boolean isPasswordValid() {
-		final String s = ctx.bot.getAccount().getPassword();
+		final String s = ctx.getBot().getAccount().getPassword();
 		return ctx.widgets.get(WIDGET, WIDGET_LOGIN_PASSWORD_TEXT).getText().length() == (s == null ? 0 : s.length());
 	}
 

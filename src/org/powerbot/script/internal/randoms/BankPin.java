@@ -38,7 +38,7 @@ public class BankPin extends PollingScript implements InternalScript {
 
 	private String getPin() {
 		try {
-			return ctx.bot.getAccount().getPIN();
+			return ctx.getBot().getAccount().getPIN();
 		} catch (final Exception ignored) {
 		}
 		return null;

@@ -183,7 +183,11 @@ public class Game extends MethodProvider {
 	}
 
 	public void setPreferredWorld(final int world) {
-		ctx.preferredWorld = world;
+		ctx.setPreferredWorld(world);
+	}
+
+	public int getPreferredWorld() {
+		return ctx.getPreferredWorld();
 	}
 
 	public Dimension getDimensions() {
@@ -380,7 +384,7 @@ public class Game extends MethodProvider {
 	}
 
 	private Constants getConstants() {
-		return ctx.bot.getConstants();
+		return ctx.getBot().getConstants();
 	}
 
 	public class Toolkit {
