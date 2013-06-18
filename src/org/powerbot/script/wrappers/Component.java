@@ -73,7 +73,7 @@ public class Component extends Interactive implements Drawable {
 
 	public String[] getActions() {
 		final RSInterface component = getInternalComponent();
-		return component != null ? component.getActions() : null;
+		return component != null ? component.getActions() : new String[0];
 	}
 
 	public int getTextureId() {
@@ -98,7 +98,7 @@ public class Component extends Interactive implements Drawable {
 
 	public String getItemName() {
 		final RSInterface component = getInternalComponent();
-		return component != null ? StringUtil.stripHtml(component.getComponentName()) : null;
+		return component != null ? StringUtil.stripHtml(component.getComponentName()) : "";
 	}
 
 	public int getItemId() {
@@ -190,7 +190,7 @@ public class Component extends Interactive implements Drawable {
 
 	public String getSelectedAction() {
 		final RSInterface component = getInternalComponent();
-		return component != null ? component.getSelectedActionName() : null;
+		return component != null ? component.getSelectedActionName() : "";
 	}
 
 	public int getShadowColor() {
@@ -205,7 +205,7 @@ public class Component extends Interactive implements Drawable {
 
 	public String getText() {
 		final RSInterface component = getInternalComponent();
-		return component != null ? component.getText() : null;
+		return component != null ? component.getText() : "";
 	}
 
 	public int getTextColor() {
@@ -215,7 +215,7 @@ public class Component extends Interactive implements Drawable {
 
 	public String getTooltip() {
 		final RSInterface component = getInternalComponent();
-		return component != null ? component.getTooltip() : null;
+		return component != null ? component.getTooltip() : "";
 	}
 
 	public int getType() {
