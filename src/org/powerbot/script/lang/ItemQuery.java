@@ -2,8 +2,8 @@ package org.powerbot.script.lang;
 
 import org.powerbot.script.methods.MethodContext;
 
-public abstract class ItemQuery<K extends Identifiable & Stackable> extends AbstractQuery<ItemQuery<K>, K>
-		implements Identifiable.Query<ItemQuery<K>>, Stackable.Query<ItemQuery<K>> {
+public abstract class ItemQuery<K extends Identifiable & Nameable & Stackable> extends AbstractQuery<ItemQuery<K>, K>
+		implements Identifiable.Query<ItemQuery<K>>, Nameable.Query<ItemQuery<K>>, Stackable.Query<ItemQuery<K>> {
 	public ItemQuery(final MethodContext factory) {
 		super(factory);
 	}

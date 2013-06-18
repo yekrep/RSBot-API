@@ -6,13 +6,14 @@ import org.powerbot.client.HashTable;
 import org.powerbot.client.RSItemDef;
 import org.powerbot.client.RSItemDefLoader;
 import org.powerbot.script.lang.Identifiable;
+import org.powerbot.script.lang.Nameable;
 import org.powerbot.script.lang.Stackable;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.util.StringUtil;
 
 import java.awt.Point;
 
-public class Item extends Interactive implements Identifiable, Stackable {
+public class Item extends Interactive implements Identifiable, Nameable, Stackable {
 	private final int id;
 	private int stack;
 	private final Component component;
@@ -45,6 +46,7 @@ public class Item extends Interactive implements Identifiable, Stackable {
 		return this.stack;
 	}
 
+	@Override
 	public String getName() {
 		String name = null;
 		if (component.getItemId() == this.id) {
