@@ -72,7 +72,7 @@ public class GameObject extends Interactive implements Locatable, Drawable, Iden
 			return null;
 		}
 		final Object def = ctx.game.lookup(table, getId());
-		return def != null && def instanceof RSObjectDef ? new ObjectDefinition((RSObjectDef) def) : null;
+		return def != null && def instanceof RSObjectDef ? new ObjectDefinition((RSObjectDef) def) : new ObjectDefinition(null);
 	}
 
 	@Override
@@ -101,7 +101,7 @@ public class GameObject extends Interactive implements Locatable, Drawable, Iden
 			}
 		}
 		final Tile tile = getLocation();
-		return tile != null ? tile.getMatrix(ctx).getInteractPoint() : null;
+		return tile != null ? tile.getMatrix(ctx).getInteractPoint() : new Point(-1, -1);
 	}
 
 	@Override
@@ -111,7 +111,7 @@ public class GameObject extends Interactive implements Locatable, Drawable, Iden
 			return model.getNextPoint();
 		}
 		final Tile tile = getLocation();
-		return tile != null ? tile.getMatrix(ctx).getNextPoint() : null;
+		return tile != null ? tile.getMatrix(ctx).getNextPoint() : new Point(-1, -1);
 	}
 
 	@Override
@@ -121,7 +121,7 @@ public class GameObject extends Interactive implements Locatable, Drawable, Iden
 			return model.getCenterPoint();
 		}
 		final Tile tile = getLocation();
-		return tile != null ? tile.getMatrix(ctx).getCenterPoint() : null;
+		return tile != null ? tile.getMatrix(ctx).getCenterPoint() : new Point(-1, -1);
 	}
 
 	@Override
