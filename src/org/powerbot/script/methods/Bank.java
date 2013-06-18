@@ -262,13 +262,10 @@ public class Bank extends ItemQuery<Item> {
 		if (scroll == null || bounds == null) {
 			return false;
 		}
-		if (!bounds.contains(c.getBoundingRect()) && !ctx.widgets.scroll(c, scroll, getCurrentTab() != 0)) {
-			return false;
-		}
 		if (!bounds.contains(c.getBoundingRect())) {
-			return false;
+			if (ctx.widgets.scroll(c, scroll, bounds.contains(ctx.mouse.getLocation()))) Delay.sleep(200, 400);
+			if (!bounds.contains(c.getBoundingRect())) return false;
 		}
-
 		String action = "Withdraw-" + amount;
 		if (amount == 0 ||
 				(item.getStackSize() <= amount && amount != 1 && amount != 5 && amount != 10)) {
