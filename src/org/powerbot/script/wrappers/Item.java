@@ -57,7 +57,7 @@ public class Item extends Interactive implements Identifiable, Nameable, Stackab
 				name = def.getName();
 			}
 		}
-		return name != null ? StringUtil.stripHtml(name) : null;
+		return name != null ? StringUtil.stripHtml(name) : "";
 	}
 
 	public Component getComponent() {
@@ -78,7 +78,7 @@ public class Item extends Interactive implements Identifiable, Nameable, Stackab
 			return null;
 		}
 		final Object o = ctx.game.lookup(table, this.id);
-		return o != null && o instanceof RSItemDef ? new ItemDefinition((RSItemDef) o) : null;
+		return o != null && o instanceof RSItemDef ? new ItemDefinition((RSItemDef) o) : new ItemDefinition(null);
 	}
 
 	@Override
