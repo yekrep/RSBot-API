@@ -4,6 +4,8 @@ import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.methods.MethodProvider;
 import org.powerbot.script.util.Filter;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -40,8 +42,8 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends Me
 		final List<K> items = this.items.get();
 
 		synchronized (items) {
-			items.clear();
-			items.addAll(get());
+			final List<K> a = get();
+			setArray(items, a);
 		}
 
 		return getThis();
@@ -97,7 +99,9 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends Me
 		final List<K> items = this.items.get();
 
 		synchronized (items) {
-			Collections.sort(items, c);
+			final List<K> a = new ArrayList<>(items);
+			Collections.sort(a, c);
+			setArray(items, a);
 		}
 
 		return getThis();
@@ -110,10 +114,26 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends Me
 		final List<K> items = this.items.get();
 
 		synchronized (items) {
-			Collections.shuffle(items);
+			final List<K> a = new ArrayList<>(items);
+			Collections.shuffle(a);
+			setArray(items, a);
 		}
 
 		return getThis();
+	}
+
+	private void setArray(final List<K> a, final List<K> c) {
+		try {
+			final Method m = a.getClass().getMethod("setArray", Object[].class);
+			if (m != null) {
+				m.invoke(a, c.toArray());
+				return;
+			}
+		} catch (final NoSuchMethodException | IllegalAccessException | InvocationTargetException ignored) {
+		}
+
+		a.clear();
+		a.addAll(c);
 	}
 
 	/**
@@ -135,15 +155,14 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends Me
 		final List<K> items = this.items.get();
 
 		synchronized (items) {
-			final List<K> range = new ArrayList<>(count);
+			final List<K> a = new ArrayList<>(count);
 			final int c = Math.min(offset + count, items.size());
 
 			for (int i = offset; i < c; i++) {
-				range.add(items.get(i));
+				a.add(items.get(i));
 			}
 
-			items.clear();
-			items.addAll(range);
+			setArray(items, a);
 		}
 
 		return getThis();
