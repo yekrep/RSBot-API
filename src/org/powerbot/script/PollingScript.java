@@ -1,17 +1,18 @@
 package org.powerbot.script;
 
 public abstract class PollingScript extends AbstractScript {
-	public static final int DEFAULT_DELAY = 600;
 
 	public abstract int poll();
 
 	@Override
 	public final void run() {
+		final int delay = 600;
+
 		while (!getController().isStopping()) {
 			final int sleep;
 
 			if (getController().isSuspended()) {
-				sleep = DEFAULT_DELAY;
+				sleep = delay;
 			} else {
 				try {
 					sleep = poll();
@@ -22,7 +23,7 @@ public abstract class PollingScript extends AbstractScript {
 				}
 			}
 
-			sleep(Math.max(0, sleep == -1 ? DEFAULT_DELAY : sleep));
+			sleep(Math.max(0, sleep == -1 ? delay : sleep));
 		}
 	}
 
