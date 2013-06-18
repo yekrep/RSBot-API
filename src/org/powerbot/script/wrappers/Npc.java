@@ -29,7 +29,7 @@ public class Npc extends Actor implements Identifiable {
 	public String getName() {
 		final RSNPC npc = getAccessor();
 		final RSNPCDef def;
-		return npc != null && (def = npc.getRSNPCDef()) != null ? def.getName() : null;
+		return npc != null && (def = npc.getRSNPCDef()) != null ? def.getName() : "";
 	}
 
 	@Override
@@ -48,7 +48,7 @@ public class Npc extends Actor implements Identifiable {
 	public String[] getActions() {
 		final RSNPC npc = getAccessor();
 		final RSNPCDef def;
-		return npc != null && (def = npc.getRSNPCDef()) != null ? def.getActions() : null;
+		return npc != null && (def = npc.getRSNPCDef()) != null ? def.getActions() : new String[0];
 	}
 
 	public int getPrayerIcon() {
