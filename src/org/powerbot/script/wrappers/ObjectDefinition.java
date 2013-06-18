@@ -18,11 +18,11 @@ public class ObjectDefinition {
 
 	public String getName() {
 		final RSObjectDef def = this.definition.get();
-		return def != null ? def.getName() : null;
+		return def != null ? def.getName() : "";
 	}
 
 	public String[] getActions() {
 		final RSObjectDef def = this.definition.get();
-		return def != null ? def.getActions() : null;
+		return def != null ? def.getActions() : new String[0];
 	}
 }
