@@ -26,16 +26,34 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.logging.Logger;
 import java.util.zip.Adler32;
 
+/**
+ * An abstract implementation of {@link Script}.
+ */
 public abstract class AbstractScript implements Script {
+	/**
+	 * The {@link Logger} which should be used to print debugging messages.
+	 */
 	public final Logger log = Logger.getLogger(getClass().getName());
+
+	/**
+	 * The {@link MethodContext} for accessing client data.
+	 */
 	protected final MethodContext ctx;
+
 	private ScriptController controller;
 	private final Map<State, Queue<Runnable>> exec;
 	private final AtomicLong started, suspended;
 	private final Queue<Long> suspensions;
 	private final File dir;
+
+	/**
+	 * The user profile settings of this {@link AbstractScript}, which will be saved and reloaded between sessions.
+	 */
 	protected final Properties settings;
 
+	/**
+	 * Creates an instance of {@link AbstractScript}.
+	 */
 	public AbstractScript() {
 		ctx = new MethodContext();
 		exec = new ConcurrentHashMap<>(State.values().length);
@@ -99,26 +117,41 @@ public abstract class AbstractScript implements Script {
 		});
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public final Queue<Runnable> getExecQueue(final State state) {
 		return exec.get(state);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public final void setController(final ScriptController group) {
 		this.controller = group;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public final ScriptController getController() {
 		return controller;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void setContext(final MethodContext ctx) {
 		this.ctx.init(ctx);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public MethodContext getContext() {
 		return ctx;
@@ -155,9 +188,9 @@ public abstract class AbstractScript implements Script {
 	}
 
 	/**
-	 * Returns the {@link org.powerbot.script.Manifest} attached to this {@link Script} if present.
+	 * Returns the {@link Manifest} attached to this {@link Script} if present.
 	 *
-	 * @return the attached {@link org.powerbot.script.Manifest} if it exists, or {@code null} otherwise
+	 * @return the attached {@link Manifest} if it exists, or {@code null} otherwise
 	 */
 	public Manifest getManifest() {
 		return getClass().isAnnotationPresent(Manifest.class) ? getClass().getAnnotation(Manifest.class) : null;

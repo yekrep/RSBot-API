@@ -4,9 +4,18 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.powerbot.script.util.Random;
 
+/**
+ * An implementation of {@link AbstractScript} which polls (or "loops")
+ * indefinitely at intervals returned by the last run.
+ *
+ * @author Paris
+ */
 public abstract class PollingScript extends AbstractScript {
 	private final AtomicBoolean running;
 
+	/**
+	 * Creates an instance of a {@link PollingScript}.
+	 */
 	public PollingScript() {
 		running = new AtomicBoolean(false);
 
@@ -36,6 +45,11 @@ public abstract class PollingScript extends AbstractScript {
 		});
 	}
 
+	/**
+	 * The main body of this {@link PollingScript}, which is called in a single-threaded loop.
+	 *
+	 * @return the delay in milliseconds before calling this method again
+	 */
 	public abstract int poll();
 
 	@Override
@@ -93,28 +107,28 @@ public abstract class PollingScript extends AbstractScript {
 
 	/**
 	 * Called on {@link State#START}.
-	 * This method can either be overriden or ignored.
+	 * This method can either be overridden or ignored.
 	 */
 	public void start() {
 	}
 
 	/**
 	 * Called on {@link State#STOP}.
-	 * This method can either be overriden or ignored.
+	 * This method can either be overridden or ignored.
 	 */
 	public void stop() {
 	}
 
 	/**
 	 * Called on {@link State#SUSPEND}.
-	 * This method can either be overriden or ignored.
+	 * This method can either be overridden or ignored.
 	 */
 	public void suspend() {
 	}
 
 	/**
 	 * Called on {@link State#RESUME}.
-	 * This method can either be overriden or ignored.
+	 * This method can either be overridden or ignored.
 	 */
 	public void resume() {
 	}
