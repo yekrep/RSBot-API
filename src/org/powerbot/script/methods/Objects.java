@@ -81,6 +81,7 @@ public class Objects extends ObjectQuery<GameObject> {
 				}
 			}
 		}
+		refs.clear();//help gc
 		return items;
 	}
 }

@@ -6,7 +6,9 @@ import org.powerbot.script.lang.PlayerQuery;
 import org.powerbot.script.wrappers.Player;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * {@link Players} is a static utility which provides access to the {@link Player}s in the game.
@@ -53,12 +55,15 @@ public class Players extends PlayerQuery<Player> {
 			return items;
 		}
 
+		final Set<RSPlayer> set = new HashSet<>(indices.length);
 		for (final int index : indices) {
 			final RSPlayer player = players[index];
-			if (player != null) {
+			if (player != null && !set.contains(player)) {
 				items.add(new Player(ctx, player));
+				set.add(player);
 			}
 		}
+		set.clear();//help gc
 
 		return items;
 	}
