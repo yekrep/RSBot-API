@@ -185,7 +185,9 @@ public class GroundItem extends Interactive implements Identifiable, Locatable, 
 			return false;
 		}
 		final GroundItem g = (GroundItem) o;
-		return g.tile.equals(this.tile) && g.item.equals(this.item);
+		if (!this.tile.equals(g.tile)) return false;
+		RSItem item1 = this.item.get(), item2 = g.item.get();
+		return item1 != null && item2 != null && item1 == item2;
 	}
 
 	@Override
