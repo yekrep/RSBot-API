@@ -14,6 +14,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * @param <K> key type
  * @param <V> value type
  */
+@SuppressWarnings("unchecked")
 public class Cache<K, V> implements Map<K, V> {//TODO concurrent (thread-safe)
 	private final Map<K, Node<K, V>> table = new HashMap<>();
 	private final Queue<K, V> history = new Queue<>();
