@@ -2,9 +2,9 @@ package org.powerbot.script.wrappers;
 
 import org.powerbot.client.ModelCapture;
 import org.powerbot.script.methods.ActionBar;
+import org.powerbot.script.methods.Game;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.methods.MethodProvider;
-import org.powerbot.script.methods.Game;
 import org.powerbot.script.util.Random;
 
 import java.awt.Graphics;
@@ -71,7 +71,7 @@ public abstract class Model extends MethodProvider {
 				height + (this.yPoints[this.faceA[index]] + this.yPoints[this.faceB[index]] + this.yPoints[this.faceC[index]]) / 3,
 				y + (this.zPoints[this.faceA[index]] + this.zPoints[this.faceB[index]] + this.zPoints[this.faceC[index]]) / 3
 		);
-		return ctx.game.isPointOnScreen(localPoint) ? localPoint : null;
+		return ctx.game.isPointOnScreen(localPoint) ? localPoint : new Point(-1, -1);
 	}
 
 	public Point getCenterPoint() {
