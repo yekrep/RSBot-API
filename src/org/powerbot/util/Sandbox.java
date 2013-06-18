@@ -136,7 +136,7 @@ public class Sandbox extends SecurityManager {
 
 	private void checkFilePath(final String pathRaw, final boolean readOnly) {
 		final Class[] ctx = getClassContext();
-		if (ctx.length > 4 && ctx[4].getName().equals("java.io.Win32FileSystem")) {
+		if (ctx.length > 4 && (ctx[4].getName().equals("java.io.Win32FileSystem") || ctx[4].getName().equals("java.io.WinNTFileSystem"))) {
 			return;
 		}
 
