@@ -52,6 +52,22 @@ public abstract class ItemQuery<K extends Identifiable & Nameable & Stackable> e
 		return select(new Identifiable.Matcher(identifiables));
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public ItemQuery<K> name(String... names) {
+		return select(new Nameable.Matcher(names));
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public ItemQuery<K> name(Nameable... names) {
+		return select(new Nameable.Matcher(names));
+	}
+
 	@Override
 	public int count() {
 		return size();

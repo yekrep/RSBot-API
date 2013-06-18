@@ -14,15 +14,18 @@ import org.powerbot.client.RSItemPile;
 import org.powerbot.script.lang.Drawable;
 import org.powerbot.script.lang.Identifiable;
 import org.powerbot.script.lang.Locatable;
+import org.powerbot.script.lang.Nameable;
+import org.powerbot.script.lang.Stackable;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.util.Random;
+import org.powerbot.util.StringUtil;
 
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.lang.ref.WeakReference;
 
-public class GroundItem extends Interactive implements Identifiable, Locatable, Drawable {
+public class GroundItem extends Interactive implements Identifiable, Nameable, Stackable, Locatable, Drawable {
 	public static final Color TARGET_COLOR = new Color(255, 255, 0, 75);
 	private final Tile tile;
 	private final WeakReference<RSItem> item;
@@ -100,10 +103,22 @@ public class GroundItem extends Interactive implements Identifiable, Locatable, 
 		return item != null ? item.getId() : -1;
 	}
 
+	@Override
 	public int getStackSize() {
 		RSItem item = this.item.get();
 		return item != null ? item.getStackSize() : -1;
 	}
+
+	@Override
+	public String getName() {
+		String name = null;
+		final ItemDefinition def;
+		if ((def = getDefinition()) != null) {
+			name = def.getName();
+		}
+		return name != null ? StringUtil.stripHtml(name) : null;
+	}
+
 
 	public ItemDefinition getDefinition() {
 		Client client = ctx.getClient();

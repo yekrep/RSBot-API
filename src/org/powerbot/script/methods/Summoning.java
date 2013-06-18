@@ -1,8 +1,5 @@
 package org.powerbot.script.methods;
 
-import java.util.List;
-
-import org.powerbot.script.lang.LocatableIdNameQuery;
 import org.powerbot.script.util.Delay;
 import org.powerbot.script.util.Filter;
 import org.powerbot.script.util.Timer;

@@ -2,14 +2,14 @@ package org.powerbot.script.lang;
 
 import org.powerbot.script.methods.MethodContext;
 
-public abstract class LocatableNameQuery<K extends Locatable & Nameable> extends AbstractQuery<LocatableNameQuery<K>, K>
-		implements Locatable.Query<LocatableNameQuery<K>>, Nameable.Query<LocatableNameQuery<K>> {
-	public LocatableNameQuery(final MethodContext factory) {
+public abstract class PlayerQuery<K extends Locatable & Nameable> extends AbstractQuery<PlayerQuery<K>, K>
+		implements Locatable.Query<PlayerQuery<K>>, Nameable.Query<PlayerQuery<K>> {
+	public PlayerQuery(final MethodContext factory) {
 		super(factory);
 	}
 
 	@Override
-	protected LocatableNameQuery<K> getThis() {
+	protected PlayerQuery<K> getThis() {
 		return this;
 	}
 
@@ -17,7 +17,7 @@ public abstract class LocatableNameQuery<K extends Locatable & Nameable> extends
 	 * {@inheritDoc}
 	 */
 	@Override
-	public LocatableNameQuery<K> at(Locatable l) {
+	public PlayerQuery<K> at(Locatable l) {
 		return select(new Locatable.Matcher(l));
 	}
 
@@ -25,7 +25,7 @@ public abstract class LocatableNameQuery<K extends Locatable & Nameable> extends
 	 * {@inheritDoc}
 	 */
 	@Override
-	public LocatableNameQuery<K> within(double distance) {
+	public PlayerQuery<K> within(double distance) {
 		return within(ctx.players.getLocal(), distance);
 	}
 
@@ -33,7 +33,7 @@ public abstract class LocatableNameQuery<K extends Locatable & Nameable> extends
 	 * {@inheritDoc}
 	 */
 	@Override
-	public LocatableNameQuery<K> within(Locatable target, double distance) {
+	public PlayerQuery<K> within(Locatable target, double distance) {
 		return select(new Locatable.WithinRange(target, distance));
 	}
 
@@ -41,7 +41,7 @@ public abstract class LocatableNameQuery<K extends Locatable & Nameable> extends
 	 * {@inheritDoc}
 	 */
 	@Override
-	public LocatableNameQuery<K> nearest() {
+	public PlayerQuery<K> nearest() {
 		return nearest(ctx.players.getLocal());
 	}
 
@@ -49,7 +49,7 @@ public abstract class LocatableNameQuery<K extends Locatable & Nameable> extends
 	 * {@inheritDoc}
 	 */
 	@Override
-	public LocatableNameQuery<K> nearest(Locatable target) {
+	public PlayerQuery<K> nearest(Locatable target) {
 		return sort(new Locatable.NearestTo(target));
 	}
 
@@ -57,7 +57,7 @@ public abstract class LocatableNameQuery<K extends Locatable & Nameable> extends
 	 * {@inheritDoc}
 	 */
 	@Override
-	public LocatableNameQuery<K> name(String... names) {
+	public PlayerQuery<K> name(String... names) {
 		return select(new Nameable.Matcher(names));
 	}
 
@@ -65,7 +65,7 @@ public abstract class LocatableNameQuery<K extends Locatable & Nameable> extends
 	 * {@inheritDoc}
 	 */
 	@Override
-	public LocatableNameQuery<K> name(Nameable... names) {
+	public PlayerQuery<K> name(Nameable... names) {
 		return select(new Nameable.Matcher(names));
 	}
 }

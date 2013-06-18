@@ -2,15 +2,15 @@ package org.powerbot.script.lang;
 
 import org.powerbot.script.methods.MethodContext;
 
-public abstract class LocatableIdNameQuery<K extends Locatable & Identifiable & Nameable> extends AbstractQuery<LocatableIdNameQuery<K>, K>
-		implements Locatable.Query<LocatableIdNameQuery<K>>, Identifiable.Query<LocatableIdNameQuery<K>>,
-		Nameable.Query<LocatableIdNameQuery<K>> {
-	public LocatableIdNameQuery(final MethodContext factory) {
+public abstract class GroundItemQuery<K extends Locatable & Identifiable & Nameable & Stackable> extends AbstractQuery<GroundItemQuery<K>, K>
+		implements Locatable.Query<GroundItemQuery<K>>, Identifiable.Query<GroundItemQuery<K>>,
+		Nameable.Query<GroundItemQuery<K>>, Stackable.Query<GroundItemQuery<K>> {
+	public GroundItemQuery(final MethodContext factory) {
 		super(factory);
 	}
 
 	@Override
-	protected LocatableIdNameQuery<K> getThis() {
+	protected GroundItemQuery<K> getThis() {
 		return this;
 	}
 
@@ -18,7 +18,7 @@ public abstract class LocatableIdNameQuery<K extends Locatable & Identifiable & 
 	 * {@inheritDoc}
 	 */
 	@Override
-	public LocatableIdNameQuery<K> at(Locatable l) {
+	public GroundItemQuery<K> at(Locatable l) {
 		return select(new Locatable.Matcher(l));
 	}
 
@@ -26,7 +26,7 @@ public abstract class LocatableIdNameQuery<K extends Locatable & Identifiable & 
 	 * {@inheritDoc}
 	 */
 	@Override
-	public LocatableIdNameQuery<K> within(double distance) {
+	public GroundItemQuery<K> within(double distance) {
 		return within(ctx.players.getLocal(), distance);
 	}
 
@@ -34,7 +34,7 @@ public abstract class LocatableIdNameQuery<K extends Locatable & Identifiable & 
 	 * {@inheritDoc}
 	 */
 	@Override
-	public LocatableIdNameQuery<K> within(Locatable target, double distance) {
+	public GroundItemQuery<K> within(Locatable target, double distance) {
 		return select(new Locatable.WithinRange(target, distance));
 	}
 
@@ -42,7 +42,7 @@ public abstract class LocatableIdNameQuery<K extends Locatable & Identifiable & 
 	 * {@inheritDoc}
 	 */
 	@Override
-	public LocatableIdNameQuery<K> nearest() {
+	public GroundItemQuery<K> nearest() {
 		return nearest(ctx.players.getLocal());
 	}
 
@@ -50,7 +50,7 @@ public abstract class LocatableIdNameQuery<K extends Locatable & Identifiable & 
 	 * {@inheritDoc}
 	 */
 	@Override
-	public LocatableIdNameQuery<K> nearest(Locatable target) {
+	public GroundItemQuery<K> nearest(Locatable target) {
 		return sort(new Locatable.NearestTo(target));
 	}
 
@@ -58,7 +58,7 @@ public abstract class LocatableIdNameQuery<K extends Locatable & Identifiable & 
 	 * {@inheritDoc}
 	 */
 	@Override
-	public LocatableIdNameQuery<K> id(int... ids) {
+	public GroundItemQuery<K> id(int... ids) {
 		return select(new Identifiable.Matcher(ids));
 	}
 
@@ -66,7 +66,7 @@ public abstract class LocatableIdNameQuery<K extends Locatable & Identifiable & 
 	 * {@inheritDoc}
 	 */
 	@Override
-	public LocatableIdNameQuery<K> id(final int[]... ids) {
+	public GroundItemQuery<K> id(final int[]... ids) {
 		int z = 0;
 
 		for (final int[] x : ids) {
@@ -89,7 +89,7 @@ public abstract class LocatableIdNameQuery<K extends Locatable & Identifiable & 
 	 * {@inheritDoc}
 	 */
 	@Override
-	public LocatableIdNameQuery<K> id(Identifiable... identifiables) {
+	public GroundItemQuery<K> id(Identifiable... identifiables) {
 		return select(new Identifiable.Matcher(identifiables));
 	}
 
@@ -97,7 +97,7 @@ public abstract class LocatableIdNameQuery<K extends Locatable & Identifiable & 
 	 * {@inheritDoc}
 	 */
 	@Override
-	public LocatableIdNameQuery<K> name(String... names) {
+	public GroundItemQuery<K> name(String... names) {
 		return select(new Nameable.Matcher(names));
 	}
 
@@ -105,7 +105,20 @@ public abstract class LocatableIdNameQuery<K extends Locatable & Identifiable & 
 	 * {@inheritDoc}
 	 */
 	@Override
-	public LocatableIdNameQuery<K> name(Nameable... names) {
+	public GroundItemQuery<K> name(Nameable... names) {
 		return select(new Nameable.Matcher(names));
+	}
+
+	@Override
+	public int count() {
+		return size();
+	}
+
+	@Override
+	public int count(boolean stacks) {
+		if (!stacks) return count();
+		int count = 0;
+		for (Stackable stackable : this) count += stackable.getStackSize();
+		return count;
 	}
 }

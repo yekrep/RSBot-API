@@ -2,14 +2,15 @@ package org.powerbot.script.lang;
 
 import org.powerbot.script.methods.MethodContext;
 
-public abstract class LocatableIdQuery<K extends Locatable & Identifiable> extends AbstractQuery<LocatableIdQuery<K>, K>
-		implements Locatable.Query<LocatableIdQuery<K>>, Identifiable.Query<LocatableIdQuery<K>> {
-	public LocatableIdQuery(final MethodContext factory) {
+public abstract class NpcQuery<K extends Locatable & Identifiable & Nameable> extends AbstractQuery<NpcQuery<K>, K>
+		implements Locatable.Query<NpcQuery<K>>, Identifiable.Query<NpcQuery<K>>,
+		Nameable.Query<NpcQuery<K>> {
+	public NpcQuery(final MethodContext factory) {
 		super(factory);
 	}
 
 	@Override
-	protected LocatableIdQuery<K> getThis() {
+	protected NpcQuery<K> getThis() {
 		return this;
 	}
 
@@ -17,7 +18,7 @@ public abstract class LocatableIdQuery<K extends Locatable & Identifiable> exten
 	 * {@inheritDoc}
 	 */
 	@Override
-	public LocatableIdQuery<K> at(Locatable l) {
+	public NpcQuery<K> at(Locatable l) {
 		return select(new Locatable.Matcher(l));
 	}
 
@@ -25,7 +26,7 @@ public abstract class LocatableIdQuery<K extends Locatable & Identifiable> exten
 	 * {@inheritDoc}
 	 */
 	@Override
-	public LocatableIdQuery<K> within(double distance) {
+	public NpcQuery<K> within(double distance) {
 		return within(ctx.players.getLocal(), distance);
 	}
 
@@ -33,7 +34,7 @@ public abstract class LocatableIdQuery<K extends Locatable & Identifiable> exten
 	 * {@inheritDoc}
 	 */
 	@Override
-	public LocatableIdQuery<K> within(Locatable target, double distance) {
+	public NpcQuery<K> within(Locatable target, double distance) {
 		return select(new Locatable.WithinRange(target, distance));
 	}
 
@@ -41,7 +42,7 @@ public abstract class LocatableIdQuery<K extends Locatable & Identifiable> exten
 	 * {@inheritDoc}
 	 */
 	@Override
-	public LocatableIdQuery<K> nearest() {
+	public NpcQuery<K> nearest() {
 		return nearest(ctx.players.getLocal());
 	}
 
@@ -49,7 +50,7 @@ public abstract class LocatableIdQuery<K extends Locatable & Identifiable> exten
 	 * {@inheritDoc}
 	 */
 	@Override
-	public LocatableIdQuery<K> nearest(Locatable target) {
+	public NpcQuery<K> nearest(Locatable target) {
 		return sort(new Locatable.NearestTo(target));
 	}
 
@@ -57,7 +58,7 @@ public abstract class LocatableIdQuery<K extends Locatable & Identifiable> exten
 	 * {@inheritDoc}
 	 */
 	@Override
-	public LocatableIdQuery<K> id(int... ids) {
+	public NpcQuery<K> id(int... ids) {
 		return select(new Identifiable.Matcher(ids));
 	}
 
@@ -65,7 +66,7 @@ public abstract class LocatableIdQuery<K extends Locatable & Identifiable> exten
 	 * {@inheritDoc}
 	 */
 	@Override
-	public LocatableIdQuery<K> id(final int[]... ids) {
+	public NpcQuery<K> id(final int[]... ids) {
 		int z = 0;
 
 		for (final int[] x : ids) {
@@ -88,7 +89,23 @@ public abstract class LocatableIdQuery<K extends Locatable & Identifiable> exten
 	 * {@inheritDoc}
 	 */
 	@Override
-	public LocatableIdQuery<K> id(Identifiable... identifiables) {
+	public NpcQuery<K> id(Identifiable... identifiables) {
 		return select(new Identifiable.Matcher(identifiables));
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public NpcQuery<K> name(String... names) {
+		return select(new Nameable.Matcher(names));
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public NpcQuery<K> name(Nameable... names) {
+		return select(new Nameable.Matcher(names));
 	}
 }

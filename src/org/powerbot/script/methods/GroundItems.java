@@ -6,14 +6,14 @@ import org.powerbot.client.NodeDeque;
 import org.powerbot.client.NodeListCache;
 import org.powerbot.client.RSItem;
 import org.powerbot.script.internal.wrappers.Deque;
-import org.powerbot.script.lang.LocatableIdQuery;
+import org.powerbot.script.lang.GroundItemQuery;
 import org.powerbot.script.wrappers.GroundItem;
 import org.powerbot.script.wrappers.Tile;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class GroundItems extends LocatableIdQuery<GroundItem> {
+public class GroundItems extends GroundItemQuery<GroundItem> {
 	public GroundItems(MethodContext factory) {
 		super(factory);
 	}

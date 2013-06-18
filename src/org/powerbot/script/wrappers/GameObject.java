@@ -42,6 +42,7 @@ public class GameObject extends Interactive implements Locatable, Drawable, Iden
 		return null;
 	}
 
+	@Override
 	public int getId() {
 		final RSObject object = this.object.get();
 		return object != null ? object.getId() : -1;

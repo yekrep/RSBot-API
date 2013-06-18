@@ -2,7 +2,7 @@ package org.powerbot.script.methods;
 
 import org.powerbot.client.Client;
 import org.powerbot.client.RSHintArrow;
-import org.powerbot.script.lang.LocatableQuery;
+import org.powerbot.script.lang.HintArrowQuery;
 import org.powerbot.script.wrappers.HintArrow;
 
 import java.util.ArrayList;
@@ -13,7 +13,7 @@ import java.util.List;
  *
  * @author Timer
  */
-public class HintArrows extends LocatableQuery<HintArrow> {
+public class HintArrows extends HintArrowQuery<HintArrow> {
 	public HintArrows(MethodContext factory) {
 		super(factory);
 	}

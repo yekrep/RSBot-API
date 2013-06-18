@@ -2,14 +2,14 @@ package org.powerbot.script.lang;
 
 import org.powerbot.script.methods.MethodContext;
 
-public abstract class LocatableQuery<K extends Locatable> extends AbstractQuery<LocatableQuery<K>, K>
-		implements Locatable.Query<LocatableQuery<K>> {
-	public LocatableQuery(final MethodContext factory) {
+public abstract class HintArrowQuery<K extends Locatable> extends AbstractQuery<HintArrowQuery<K>, K>
+		implements Locatable.Query<HintArrowQuery<K>> {
+	public HintArrowQuery(final MethodContext factory) {
 		super(factory);
 	}
 
 	@Override
-	protected LocatableQuery<K> getThis() {
+	protected HintArrowQuery<K> getThis() {
 		return this;
 	}
 
@@ -17,7 +17,7 @@ public abstract class LocatableQuery<K extends Locatable> extends AbstractQuery<
 	 * {@inheritDoc}
 	 */
 	@Override
-	public LocatableQuery<K> at(Locatable l) {
+	public HintArrowQuery<K> at(Locatable l) {
 		return select(new Locatable.Matcher(l));
 	}
 
@@ -25,7 +25,7 @@ public abstract class LocatableQuery<K extends Locatable> extends AbstractQuery<
 	 * {@inheritDoc}
 	 */
 	@Override
-	public LocatableQuery<K> within(double distance) {
+	public HintArrowQuery<K> within(double distance) {
 		return within(ctx.players.getLocal(), distance);
 	}
 
@@ -33,7 +33,7 @@ public abstract class LocatableQuery<K extends Locatable> extends AbstractQuery<
 	 * {@inheritDoc}
 	 */
 	@Override
-	public LocatableQuery<K> within(Locatable target, double distance) {
+	public HintArrowQuery<K> within(Locatable target, double distance) {
 		return select(new Locatable.WithinRange(target, distance));
 	}
 
@@ -41,7 +41,7 @@ public abstract class LocatableQuery<K extends Locatable> extends AbstractQuery<
 	 * {@inheritDoc}
 	 */
 	@Override
-	public LocatableQuery<K> nearest() {
+	public HintArrowQuery<K> nearest() {
 		return nearest(ctx.players.getLocal());
 	}
 
@@ -49,7 +49,7 @@ public abstract class LocatableQuery<K extends Locatable> extends AbstractQuery<
 	 * {@inheritDoc}
 	 */
 	@Override
-	public LocatableQuery<K> nearest(Locatable target) {
+	public HintArrowQuery<K> nearest(Locatable target) {
 		return sort(new Locatable.NearestTo(target));
 	}
 }
