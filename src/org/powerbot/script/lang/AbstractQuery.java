@@ -46,13 +46,8 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends Me
 	 * Resets this query to contain all the loaded elements.
 	 */
 	public T select() {
-		final List<K> items = this.items.get();
-
-		synchronized (items) {
-			final List<K> a = get();
-			setArray(items, a);
-		}
-
+		final List<K> items = this.items.get(), a = get();
+		setArray(items, a);
 		return getThis();
 	}
 
@@ -62,15 +57,11 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends Me
 	 * @param c a collection of types to set this query to contain
 	 */
 	public T select(final Iterable<K> c) {
-		final List<K> items = this.items.get();
-
-		synchronized (items) {
-			items.clear();
-			for (final K item : c) {
-				items.add(item);
-			}
+		final List<K> items = this.items.get(), a = new ArrayList<>();
+		for (final K k : c) {
+			a.add(k);
 		}
-
+		setArray(items, a);
 		return getThis();
 	}
 
@@ -80,20 +71,13 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends Me
 	 * @param f the filter to apply to contained types
 	 */
 	public T filter(final Filter<? super K> f) {
-		final List<K> items = this.items.get();
-
-		synchronized (items) {
-			final List<K> remove = new ArrayList<>(items.size());
-
-			for (final K k : items) {
-				if (!f.accept(k)) {
-					remove.add(k);
-				}
+		final List<K> items = this.items.get(), a = new ArrayList<>(items.size());
+		for (final K k : items) {
+			if (f.accept(k)) {
+				a.add(k);
 			}
-
-			items.removeAll(remove);
 		}
-
+		setArray(items, a);
 		return getThis();
 	}
 
@@ -103,14 +87,9 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends Me
 	 * @param c the comparator
 	 */
 	public T sort(final Comparator<? super K> c) {
-		final List<K> items = this.items.get();
-
-		synchronized (items) {
-			final List<K> a = new ArrayList<>(items);
-			Collections.sort(a, c);
-			setArray(items, a);
-		}
-
+		final List<K> items = this.items.get(), a = new ArrayList<>(items);
+		Collections.sort(a, c);
+		setArray(items, a);
 		return getThis();
 	}
 
@@ -118,14 +97,9 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends Me
 	 * Shuffles the current collection.
 	 */
 	public T shuffle() {
-		final List<K> items = this.items.get();
-
-		synchronized (items) {
-			final List<K> a = new ArrayList<>(items);
-			Collections.shuffle(a);
-			setArray(items, a);
-		}
-
+		final List<K> items = this.items.get(), a = new ArrayList<>(items);
+		Collections.shuffle(a);
+		setArray(items, a);
 		return getThis();
 	}
 
@@ -158,19 +132,12 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends Me
 	 * @param count  count of elements
 	 */
 	public T limit(final int offset, final int count) {
-		final List<K> items = this.items.get();
-
-		synchronized (items) {
-			final List<K> a = new ArrayList<>(count);
-			final int c = Math.min(offset + count, items.size());
-
-			for (int i = offset; i < c; i++) {
-				a.add(items.get(i));
-			}
-
-			setArray(items, a);
+		final List<K> items = this.items.get(), a = new ArrayList<>(count);
+		final int c = Math.min(offset + count, items.size());
+		for (int i = offset; i < c; i++) {
+			a.add(items.get(i));
 		}
-
+		setArray(items, a);
 		return getThis();
 	}
 
@@ -182,12 +149,7 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends Me
 	}
 
 	public T addTo(final Collection<? super K> c) {
-		final List<K> items = this.items.get();
-
-		synchronized (items) {
-			c.addAll(items);
-		}
-
+		c.addAll(items.get());
 		return getThis();
 	}
 
