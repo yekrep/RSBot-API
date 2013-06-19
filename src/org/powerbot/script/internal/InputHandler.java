@@ -193,26 +193,20 @@ public class InputHandler {
 						throw new IllegalArgumentException("invalid keyChar");
 					} else {
 						if (Character.isUpperCase(c)) {
-							if (states[0] && !states[1]) {
+							if (states[0]) {
 								queue.add(constructKeyEvent(KeyEvent.KEY_PRESSED, vk, String.valueOf(c).toLowerCase().charAt(0)));
 								queue.add(constructKeyEvent(KeyEvent.KEY_TYPED, KeyEvent.VK_UNDEFINED, c));
 							}
-							if (states[1] && !states[0]) {
+							if (states[1]) {
 								queue.add(constructKeyEvent(KeyEvent.KEY_RELEASED, vk, String.valueOf(c).toLowerCase().charAt(0)));
 							}
-							if (states[0] && states[1]) {
-								pushUpperAlpha(queue, vk, c);
-							}
 						} else {
-							if (states[0] && !states[1]) {
+							if (states[0]) {
 								queue.add(constructKeyEvent(KeyEvent.KEY_PRESSED, vk, c));
 								queue.add(constructKeyEvent(KeyEvent.KEY_TYPED, KeyEvent.VK_UNDEFINED, c));
 							}
-							if (states[1] && !states[0]) {
+							if (states[1]) {
 								queue.add(constructKeyEvent(KeyEvent.KEY_RELEASED, vk, c));
-							}
-							if (states[0] && states[1]) {
-								pushAlpha(queue, vk, c);
 							}
 						}
 					}

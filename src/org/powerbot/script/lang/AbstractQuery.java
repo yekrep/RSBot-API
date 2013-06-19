@@ -14,11 +14,22 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
+ * An abstract implementation of a chaining query-based data set filter which is thread safe.
+ *
+ * @param <T> the super class
+ * @param <K> the subject type
+ *
  * @author Paris
  */
 public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends MethodProvider implements Iterable<K> {
 	private final ThreadLocal<List<K>> items;
+	private final Method set;
 
+	/**
+	 * Creates a base {@link AbstractQuery}.
+	 *
+	 * @param factory the {@link MethodContext} to associate with
+	 */
 	public AbstractQuery(final MethodContext factory) {
 		super(factory);
 
@@ -28,107 +39,106 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends Me
 				return new CopyOnWriteArrayList<>(AbstractQuery.this.get());
 			}
 		};
+
+		Method set = null;
+		try {
+			set = CopyOnWriteArrayList.class.getMethod("setArray", Object[].class);
+		} catch (final NoSuchMethodException ignored) {
+		}
+		this.set = set;
 	}
 
+	/**
+	 * Returns {@code this}.
+	 *
+	 * @return must always return {@code this}
+	 */
 	protected abstract T getThis();
 
+	/**
+	 * Returns a fresh data set.
+	 *
+	 * @return a new data set for subsequent queries
+	 */
 	protected abstract List<K> get();
 
 	/**
-	 * Resets this query to contain all the loaded elements.
+	 * Selects a fresh data set into the query cache.
+	 *
+	 * @return {@code this} for the purpose of chaining
 	 */
 	public T select() {
-		final List<K> items = this.items.get();
-
-		synchronized (items) {
-			final List<K> a = get();
-			setArray(items, a);
-		}
-
+		final List<K> items = this.items.get(), a = get();
+		setArray(items, a);
 		return getThis();
 	}
 
 	/**
-	 * Sets this query's elements to a given collection.
+	 * Selects the specified data set into the query cache.
 	 *
-	 * @param c a collection of types to set this query to contain
+	 * @param c a {@link List}, {@link Collection} or any other {@link Iterable}
+	 *             source of items to replace the existing cache with
+	 * @return {@code this} for the purpose of chaining
 	 */
 	public T select(final Iterable<K> c) {
-		final List<K> items = this.items.get();
-
-		synchronized (items) {
-			items.clear();
-			for (final K item : c) {
-				items.add(item);
-			}
+		final List<K> items = this.items.get(), a = new ArrayList<>();
+		for (final K k : c) {
+			a.add(k);
 		}
-
+		setArray(items, a);
 		return getThis();
 	}
 
 	/**
-	 * Filters the current elements by the given filter.
+	 * Selects the items which satisfy the condition of the specified
+	 * {@link Filter} into the query cache.
 	 *
-	 * @param f the filter to apply to contained types
+	 * @param f the condition
+	 * @return {@code this} for the purpose of chaining
 	 */
-	public T filter(final Filter<? super K> f) {
-		final List<K> items = this.items.get();
-
-		synchronized (items) {
-			final List<K> remove = new ArrayList<>(items.size());
-
-			for (final K k : items) {
-				if (!f.accept(k)) {
-					remove.add(k);
-				}
+	public T select(final Filter<? super K> f) {
+		final List<K> items = this.items.get(), a = new ArrayList<>(items.size());
+		for (final K k : items) {
+			if (f.accept(k)) {
+				a.add(k);
 			}
-
-			items.removeAll(remove);
 		}
-
+		setArray(items, a);
 		return getThis();
 	}
 
 	/**
-	 * Sorts the current elements by a comparator.
+	 * Sorts the items in the query cache by the specified {@link Comparator}.
 	 *
 	 * @param c the comparator
+	 * @return {@code this} for the purpose of chaining
 	 */
 	public T sort(final Comparator<? super K> c) {
-		final List<K> items = this.items.get();
-
-		synchronized (items) {
-			final List<K> a = new ArrayList<>(items);
-			Collections.sort(a, c);
-			setArray(items, a);
-		}
-
+		final List<K> items = this.items.get(), a = new ArrayList<>(items);
+		Collections.sort(a, c);
+		setArray(items, a);
 		return getThis();
 	}
 
 	/**
-	 * Shuffles the current collection.
+	 * Sorts the items in the query cache by a random rearrangement.
+	 *
+	 * @return {@code this} for the purpose of chaining
 	 */
 	public T shuffle() {
-		final List<K> items = this.items.get();
-
-		synchronized (items) {
-			final List<K> a = new ArrayList<>(items);
-			Collections.shuffle(a);
-			setArray(items, a);
-		}
-
+		final List<K> items = this.items.get(), a = new ArrayList<>(items);
+		Collections.shuffle(a);
+		setArray(items, a);
 		return getThis();
 	}
 
 	private void setArray(final List<K> a, final List<K> c) {
 		try {
-			final Method m = a.getClass().getMethod("setArray", Object[].class);
-			if (m != null) {
-				m.invoke(a, c.toArray());
+			if (set != null) {
+				set.invoke(a, c.toArray());
 				return;
 			}
-		} catch (final NoSuchMethodException | IllegalAccessException | InvocationTargetException ignored) {
+		} catch (final IllegalAccessException | InvocationTargetException ignored) {
 		}
 
 		a.clear();
@@ -136,67 +146,84 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends Me
 	}
 
 	/**
-	 * Truncates the current collection to the maximum size.  Does not expand.
+	 * Limits the query cache to the specified number of items.
 	 *
-	 * @param count the maximum size
+	 * @param count the maximum number of items to retain
+	 * @return {@code this} for the purpose of chaining
 	 */
 	public T limit(final int count) {
 		return limit(0, count);
 	}
 
 	/**
-	 * Truncates the current collection to the maximum size.  Does not expand.
+	 * Limits the query cache to the items within the specified bounds.
 	 *
-	 * @param offset beginning element
-	 * @param count  count of elements
+	 * @param offset the starting index
+	 * @param count the maximum number of items to retain
+	 * @return {@code this} for the purpose of chaining
 	 */
 	public T limit(final int offset, final int count) {
-		final List<K> items = this.items.get();
-
-		synchronized (items) {
-			final List<K> a = new ArrayList<>(count);
-			final int c = Math.min(offset + count, items.size());
-
-			for (int i = offset; i < c; i++) {
-				a.add(items.get(i));
-			}
-
-			setArray(items, a);
+		final List<K> items = this.items.get(), a = new ArrayList<>(count);
+		final int c = Math.min(offset + count, items.size());
+		for (int i = offset; i < c; i++) {
+			a.add(items.get(i));
 		}
-
+		setArray(items, a);
 		return getThis();
 	}
 
 	/**
-	 * Truncates all elements except the first.
+	 * Limits the query cache to the first item (if any).
+	 *
+	 * @return {@code this} for the purpose of chaining
 	 */
 	public T first() {
 		return limit(1);
 	}
 
+	/**
+	 * Adds every item in the query cache to the specified {@link Collection}.
+	 *
+	 * @param c the {@link Collection} to add to
+	 * @return {@code this} for the purpose of chaining
+	 */
 	public T addTo(final Collection<? super K> c) {
-		final List<K> items = this.items.get();
-
-		synchronized (items) {
-			c.addAll(items);
-		}
-
+		c.addAll(items.get());
 		return getThis();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Iterator<K> iterator() {
 		return items.get().iterator();
 	}
 
+	/**
+	 * Returns {@code true} if the query cache contains no items.
+	 *
+	 * @return {@code true} if the query cache contains no items
+	 */
 	public boolean isEmpty() {
 		return items.get().isEmpty();
 	}
 
+	/**
+	 * Returns {@code true} if the query cache contains the specified item.
+	 *
+	 * @param k item whose presence in this query cache is to be tested
+	 * @return {@code true} if the query cache contains the specified item
+	 */
 	public boolean contains(final K k) {
 		return items.get().contains(k);
 	}
 
+	/**
+	 * Returns the number of items in the query cache.
+	 *
+	 * @return the number of items in the query cache
+	 */
 	public int size() {
 		return items.get().size();
 	}

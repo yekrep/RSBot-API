@@ -18,7 +18,7 @@ public abstract class ItemQuery<K extends Identifiable & Nameable & Stackable> e
 	 */
 	@Override
 	public ItemQuery<K> id(int... ids) {
-		return filter(new Identifiable.Matcher(ids));
+		return select(new Identifiable.Matcher(ids));
 	}
 
 	/**
@@ -41,7 +41,7 @@ public abstract class ItemQuery<K extends Identifiable & Nameable & Stackable> e
 			}
 		}
 
-		return filter(new Identifiable.Matcher(a));
+		return select(new Identifiable.Matcher(a));
 	}
 
 	/**
@@ -49,7 +49,7 @@ public abstract class ItemQuery<K extends Identifiable & Nameable & Stackable> e
 	 */
 	@Override
 	public ItemQuery<K> id(Identifiable... identifiables) {
-		return filter(new Identifiable.Matcher(identifiables));
+		return select(new Identifiable.Matcher(identifiables));
 	}
 
 	/**
@@ -57,7 +57,7 @@ public abstract class ItemQuery<K extends Identifiable & Nameable & Stackable> e
 	 */
 	@Override
 	public ItemQuery<K> name(String... names) {
-		return filter(new Nameable.Matcher(names));
+		return select(new Nameable.Matcher(names));
 	}
 
 	/**
@@ -65,7 +65,7 @@ public abstract class ItemQuery<K extends Identifiable & Nameable & Stackable> e
 	 */
 	@Override
 	public ItemQuery<K> name(Nameable... names) {
-		return filter(new Nameable.Matcher(names));
+		return select(new Nameable.Matcher(names));
 	}
 
 	@Override
