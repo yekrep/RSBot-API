@@ -64,7 +64,7 @@ public class Equipment extends MethodProvider {
 		}
 	}
 
-	public Item[] getItems() {
+	public Item[] getAllItems() {
 		boolean b = ctx.bank.isOpen();
 		int[][] data = ctx.items.getItems(Items.INDEX_EQUIPMENT);
 		Item[] items = new Item[NUM_SLOTS];

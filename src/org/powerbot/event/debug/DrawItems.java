@@ -50,7 +50,7 @@ public class DrawItems implements PaintListener {
 				render.drawString(c.getItemId() + "", p.x, p.y + c.getHeight());
 			}
 		} else if (ctx.game.getCurrentTab() == Game.TAB_EQUIPMENT) {
-			for (Item item : ctx.equipment.getItems()) {
+			for (Item item : ctx.equipment.getAllItems()) {
 				if (item == null) continue;
 				Component c = item.getComponent();
 				if (c == null) {

@@ -142,24 +142,6 @@ public class Inventory extends ItemQuery<Item> {
 		return -1;
 	}
 
-	public boolean contains(final int... ids) {
-		for (final int id : ids) {
-			if (indexOf(id) == -1) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	public boolean containsOneOf(final int... ids) {
-		for (final int id : ids) {
-			if (indexOf(id) != -1) {
-				return true;
-			}
-		}
-		return false;
-	}
-
 	private Component getComponent() {
 		Component c;
 		for (final int index : ALTERNATIVE_WIDGETS) {
