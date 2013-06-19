@@ -66,7 +66,7 @@ public class Tile implements Locatable {
 
 	public double distanceTo(final Locatable l) {
 		Tile t = l != null ? l.getLocation() : null;
-		if (t == null || plane != t.plane) return Double.POSITIVE_INFINITY;
+		if (t == null || plane != t.plane || plane == NIL.plane) return Double.POSITIVE_INFINITY;
 		final int dx = x - t.x, dy = y - t.y;
 		return Math.sqrt(dx * dx + dy * dy);
 	}
