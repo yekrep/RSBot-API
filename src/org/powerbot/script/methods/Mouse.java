@@ -3,9 +3,9 @@ package org.powerbot.script.methods;
 import org.powerbot.client.Client;
 import org.powerbot.script.internal.MouseHandler;
 import org.powerbot.script.internal.MouseTarget;
+import org.powerbot.script.lang.Filter;
 import org.powerbot.script.lang.Targetable;
 import org.powerbot.script.util.Delay;
-import org.powerbot.script.lang.Filter;
 
 import java.awt.Point;
 import java.awt.event.MouseEvent;
@@ -131,13 +131,11 @@ public class Mouse extends MethodProvider {
 		}
 
 		Point loc = handler.getLocation();
-		if (!loc.equals(p1)) {
-			if (move(p1)) {
-				handler.press(p1.x, p1.y, button);
-				if (move(p2)) {
-					handler.release(p2.x, p2.y, button);
-					return true;
-				}
+		if (loc.equals(p1) || move(p1)) {
+			handler.press(p1.x, p1.y, button);
+			if (move(p2)) {
+				handler.release(p2.x, p2.y, button);
+				return true;
 			}
 		}
 		return false;
