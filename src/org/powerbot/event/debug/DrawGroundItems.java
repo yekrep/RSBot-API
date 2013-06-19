@@ -4,7 +4,6 @@ import org.powerbot.event.PaintListener;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.wrappers.GroundItem;
-import org.powerbot.script.wrappers.ItemDefinition;
 import org.powerbot.script.wrappers.Player;
 import org.powerbot.script.wrappers.Tile;
 
@@ -13,7 +12,6 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.util.ArrayList;
-import java.util.Deque;
 import java.util.List;
 
 public class DrawGroundItems implements PaintListener {
@@ -46,11 +44,10 @@ public class DrawGroundItems implements PaintListener {
 					continue;
 				}
 				for (final GroundItem groundItem : ctx.groundItems.select(check).at(loc)) {
-					final ItemDefinition def = groundItem.getDefinition();
-					final String name = def != null ? def.getName() : null;
+					String name = groundItem.getName();
 					String s = "";
 					s += groundItem.getId();
-					if (name != null) {
+					if (!name.isEmpty()) {
 						s += " " + name;
 					}
 					final int stack = groundItem.getStackSize();
