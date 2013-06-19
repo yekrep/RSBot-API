@@ -140,48 +140,78 @@ public class InputHandler {
 				}
 			} else { // more advanced key (F1, etc)
 				final String prefix = "VK_";
-				if (s.startsWith(prefix)) {
-					s = s.substring(prefix.length());
-				}
 				final String[] p = s.split(" ", 2);
 				s = p[0];
-				for (final Field f : KeyEvent.class.getFields()) {
-					if (f.getName().startsWith(prefix) && Modifier.isPublic(f.getModifiers()) &&
-							Modifier.isStatic(f.getModifiers()) && f.getType().equals(int.class) &&
-							f.getName().equalsIgnoreCase(prefix + s)) {
-						int vk = KeyEvent.VK_UNDEFINED;
-						try {
-							vk = f.getInt(null);
-						} catch (final Exception ignored) {
-						}
-						if (vk == KeyEvent.VK_UNDEFINED) {
-							throw new IllegalArgumentException("invalid keyString");
-						}
-						final boolean[] states = {false, false};
-						if (p.length > 1 && p[1] != null && !p[1].isEmpty()) {
-							switch (p[1].trim().toLowerCase()) {
-							case "down":
-							case "press":
-							case "pressed":
-								states[0] = true;
-								break;
-							case "up":
-							case "release":
-							case "released":
-								states[1] = true;
-								break;
+				final boolean[] states = {false, false};
+				if (p.length > 1 && p[1] != null && !p[1].isEmpty()) {
+					switch (p[1].trim().toLowerCase()) {
+					case "down":
+					case "press":
+					case "pressed":
+						states[0] = true;
+						break;
+					case "up":
+					case "release":
+					case "released":
+						states[1] = true;
+						break;
+					}
+				} else {
+					states[0] = true;
+					states[1] = true;
+				}
+
+				if (s.startsWith(prefix)) {
+					for (final Field f : KeyEvent.class.getFields()) {
+						if (f.getName().startsWith(prefix) && Modifier.isPublic(f.getModifiers()) &&
+								Modifier.isStatic(f.getModifiers()) && f.getType().equals(int.class) &&
+								f.getName().equalsIgnoreCase(prefix + s)) {
+							int vk = KeyEvent.VK_UNDEFINED;
+							try {
+								vk = f.getInt(null);
+							} catch (final Exception ignored) {
 							}
-						} else {
-							states[0] = true;
-							states[1] = true;
-						}
-						if (states[0]) {
-							queue.add(constructKeyEvent(KeyEvent.KEY_PRESSED, vk));
-						}
-						if (states[1]) {
-							queue.add(constructKeyEvent(KeyEvent.KEY_RELEASED, vk));
+							if (vk == KeyEvent.VK_UNDEFINED) {
+								throw new IllegalArgumentException("invalid keyString");
+							}
+							if (states[0]) {
+								queue.add(constructKeyEvent(KeyEvent.KEY_PRESSED, vk));
+							}
+							if (states[1]) {
+								queue.add(constructKeyEvent(KeyEvent.KEY_RELEASED, vk));
+							}
+							break;
 						}
 					}
+				} else if (s.length() == 1) {
+					final char c = s.charAt(0);
+					final int vk = KeyEvent.getExtendedKeyCodeForChar((int) c);
+					if (c == '\r') {
+						continue;
+					}
+					if (vk == KeyEvent.VK_UNDEFINED) {
+						throw new IllegalArgumentException("invalid keyChar");
+					} else {
+						if (Character.isUpperCase(c)) {
+							if (states[0]) {
+								queue.add(constructKeyEvent(KeyEvent.KEY_PRESSED, vk, String.valueOf(c).toLowerCase().charAt(0)));
+								queue.add(constructKeyEvent(KeyEvent.KEY_TYPED, KeyEvent.VK_UNDEFINED, c));
+							}
+							if (states[1]) {
+								queue.add(constructKeyEvent(KeyEvent.KEY_RELEASED, vk, String.valueOf(c).toLowerCase().charAt(0)));
+							}
+						} else {
+							if (states[0]) {
+								queue.add(constructKeyEvent(KeyEvent.KEY_PRESSED, vk, c));
+								queue.add(constructKeyEvent(KeyEvent.KEY_TYPED, KeyEvent.VK_UNDEFINED, c));
+							}
+							if (states[1]) {
+								queue.add(constructKeyEvent(KeyEvent.KEY_RELEASED, vk, c));
+							}
+						}
+					}
+				} else {
+					throw new IllegalArgumentException("invalid advance entry");
 				}
 			}
 		}
