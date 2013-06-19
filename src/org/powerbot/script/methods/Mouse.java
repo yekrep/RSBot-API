@@ -5,7 +5,7 @@ import org.powerbot.script.internal.MouseHandler;
 import org.powerbot.script.internal.MouseTarget;
 import org.powerbot.script.lang.Targetable;
 import org.powerbot.script.util.Delay;
-import org.powerbot.script.util.Filter;
+import org.powerbot.script.lang.Filter;
 
 import java.awt.Point;
 import java.awt.event.MouseEvent;

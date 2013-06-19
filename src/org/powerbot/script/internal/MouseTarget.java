@@ -2,7 +2,7 @@ package org.powerbot.script.internal;
 
 import org.powerbot.util.math.Vector3;
 import org.powerbot.script.lang.Targetable;
-import org.powerbot.script.util.Filter;
+import org.powerbot.script.lang.Filter;
 
 import java.awt.Point;
 

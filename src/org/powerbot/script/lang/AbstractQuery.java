@@ -2,7 +2,6 @@ package org.powerbot.script.lang;
 
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.methods.MethodProvider;
-import org.powerbot.script.util.Filter;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

@@ -1,7 +1,5 @@
 package org.powerbot.script.lang;
 
-import org.powerbot.script.util.Filter;
-
 public interface Nameable {
 	public String getName();
 

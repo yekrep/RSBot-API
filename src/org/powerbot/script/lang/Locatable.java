@@ -1,6 +1,5 @@
 package org.powerbot.script.lang;
 
-import org.powerbot.script.util.Filter;
 import org.powerbot.script.wrappers.Tile;
 
 import java.util.Comparator;

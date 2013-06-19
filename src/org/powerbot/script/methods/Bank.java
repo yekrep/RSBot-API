@@ -2,7 +2,7 @@ package org.powerbot.script.methods;
 
 import org.powerbot.script.lang.ItemQuery;
 import org.powerbot.script.util.Delay;
-import org.powerbot.script.util.Filter;
+import org.powerbot.script.lang.Filter;
 import org.powerbot.script.util.Random;
 import org.powerbot.script.util.Timer;
 import org.powerbot.script.wrappers.Component;
