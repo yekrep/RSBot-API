@@ -139,6 +139,7 @@ public class ScriptList {
 			return;
 		}
 		FileLock lock = null;
+		CryptFile cache = null;
 		final ClassLoader cl;
 		if (def.local) {
 			try {
@@ -158,7 +159,7 @@ public class ScriptList {
 				inf.end();
 				final Cipher c = Cipher.getInstance("RC4");
 				c.init(Cipher.DECRYPT_MODE, new SecretKeySpec(key, 0, key.length, "ARCFOUR"));
-				final CryptFile cache = new CryptFile("script.1-" + def.getID().replace('/', '-'), ScriptList.class, ScriptClassLoader.class);
+				cache = new CryptFile("script.1-" + def.getID().replace('/', '-'), ScriptList.class, ScriptClassLoader.class);
 				final InputStream in = cache.download(new URL(def.source));
 				cl = new ScriptClassLoader(new ZipInputStream(new CipherInputStream(in, c)));
 			} catch (final Exception ignored) {
@@ -193,6 +194,9 @@ public class ScriptList {
 		try {
 			script = cl.loadClass(def.className).asSubclass(Script.class).newInstance();
 		} catch (final Exception ignored) {
+			if (cache != null) {
+				cache.delete();
+			}
 			log.severe("Error loading script");
 			if (!Configuration.FROMJAR) {
 				ignored.printStackTrace();
