@@ -90,7 +90,7 @@ public class Item extends Interactive implements Identifiable, Nameable, Stackab
 
 	@Override
 	public boolean isValid() {
-		return this.component != null && this.component.isValid() &&
+		return this.id != -1 && this.component != null && this.component.isValid() &&
 				(!this.component.isVisible() || this.component.getItemId() == this.id);
 	}
 
