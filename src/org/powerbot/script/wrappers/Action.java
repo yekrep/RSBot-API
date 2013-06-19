@@ -32,11 +32,7 @@ public class Action extends Interactive implements Identifiable {
 
 	public String getBind() {
 		final Component c = ctx.widgets.get(ActionBar.WIDGET, ActionBar.COMPONENT_SLOTS_BIND[slot]);
-		if (c == null) {
-			return "";
-		}
-		final String str = c.getText();
-		return str != null ? str.trim() : "";
+		return c.getText().trim();
 	}
 
 	public boolean select() {//TODO if bind is in-capable, click + add a method for clicking
@@ -44,48 +40,38 @@ public class Action extends Interactive implements Identifiable {
 			return false;
 		}
 		final String b = getBind();
-		return b != null && ctx.keyboard.send(b);
+		return b.length() == 1 && ctx.keyboard.send(getBind());
 	}
 
 	public boolean isReady() {
 		final Component reload = ctx.widgets.get(ActionBar.WIDGET, ActionBar.COMPONENT_SLOTS_COOLDOWN[slot]);
 		final Component action = ctx.widgets.get(ActionBar.WIDGET, ActionBar.COMPONENT_SLOTS_ACTION[slot]);
-		return reload != null && action != null &&
-				reload.isValid() && !reload.isVisible() &&
+		return reload.isValid() && !reload.isVisible() &&
 				action.isValid() && action.getTextColor() == 0xFFFFFF;
 	}
 
 	@Override
 	public Point getInteractPoint() {
 		final Component c = ctx.widgets.get(ActionBar.WIDGET, ActionBar.COMPONENT_SLOTS[slot]);
-		if (c == null) {
-			return new Point(-1, -1);
-		}
 		return c.getInteractPoint();
 	}
 
 	@Override
 	public Point getNextPoint() {
 		final Component c = ctx.widgets.get(ActionBar.WIDGET, ActionBar.COMPONENT_SLOTS[slot]);
-		if (c == null) {
-			return new Point(-1, -1);
-		}
 		return c.getNextPoint();
 	}
 
 	@Override
 	public Point getCenterPoint() {
 		final Component c = ctx.widgets.get(ActionBar.WIDGET, ActionBar.COMPONENT_SLOTS[slot]);
-		if (c == null) {
-			return new Point(-1, -1);
-		}
 		return c.getCenterPoint();
 	}
 
 	@Override
 	public boolean contains(final Point point) {
 		final Component c = ctx.widgets.get(ActionBar.WIDGET, ActionBar.COMPONENT_SLOTS[slot]);
-		return c != null && c.contains(point);
+		return c.contains(point);
 	}
 
 	@Override

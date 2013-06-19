@@ -4,25 +4,29 @@ import org.powerbot.client.RSObjectDef;
 
 import java.lang.ref.WeakReference;
 
-public class ObjectDefinition {
+class ObjectDefinition {
 	private final WeakReference<RSObjectDef> definition;
 
-	public ObjectDefinition(final RSObjectDef definition) {
+	ObjectDefinition(final RSObjectDef definition) {
 		this.definition = new WeakReference<>(definition);
 	}
 
-	public int getId() {
+	int getId() {//TODO use or remove??
 		final RSObjectDef def = this.definition.get();
 		return def != null ? def.getID() : -1;
 	}
 
-	public String getName() {
+	String getName() {
 		final RSObjectDef def = this.definition.get();
-		return def != null ? def.getName() : "";
+		String name = "";
+		if (def != null && (name = def.getName()) == null) name = "";
+		return name;
 	}
 
-	public String[] getActions() {
+	String[] getActions() {
 		final RSObjectDef def = this.definition.get();
-		return def != null ? def.getActions() : new String[0];
+		String[] actions = new String[0];
+		if (def != null && (actions = def.getActions()) == null) actions = new String[0];
+		return actions;
 	}
 }

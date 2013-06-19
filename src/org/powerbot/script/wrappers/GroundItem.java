@@ -8,7 +8,6 @@ import org.powerbot.client.RSGround;
 import org.powerbot.client.RSGroundInfo;
 import org.powerbot.client.RSInfo;
 import org.powerbot.client.RSItem;
-import org.powerbot.client.RSItemDef;
 import org.powerbot.client.RSItemDefLoader;
 import org.powerbot.client.RSItemPile;
 import org.powerbot.script.lang.Drawable;
@@ -18,7 +17,6 @@ import org.powerbot.script.lang.Nameable;
 import org.powerbot.script.lang.Stackable;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.util.Random;
-import org.powerbot.util.StringUtil;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -111,33 +109,19 @@ public class GroundItem extends Interactive implements Identifiable, Nameable, S
 
 	@Override
 	public String getName() {
-		String name = null;
-		final ItemDefinition def;
-		if ((def = getDefinition()) != null) {
-			name = def.getName();
-		}
-		return name != null ? StringUtil.stripHtml(name) : "";
+		return ItemDefinition.getDef(ctx, getId()).getName();
 	}
 
+	public boolean isMembers() {
+		return ItemDefinition.getDef(ctx, getId()).isMembers();
+	}
 
-	public ItemDefinition getDefinition() {
-		Client client = ctx.getClient();
-		if (client == null) {
-			return null;
-		}
-		int id = getId();
-		if (id == -1) {
-			return null;
-		}
-		final RSItemDefLoader loader;
-		final Cache cache;
-		final HashTable table;
-		if ((loader = client.getRSItemDefLoader()) == null ||
-				(cache = loader.getCache()) == null || (table = cache.getTable()) == null) {
-			return null;
-		}
-		final Object o = ctx.game.lookup(table, id);
-		return o != null && o instanceof RSItemDef ? new ItemDefinition((RSItemDef) o) : new ItemDefinition(null);
+	public String[] getActions() {
+		return ItemDefinition.getDef(ctx, getId()).getActions();
+	}
+
+	public String[] getGroundActions() {
+		return ItemDefinition.getDef(ctx, getId()).getGroundActions();
 	}
 
 	@Override

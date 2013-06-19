@@ -74,10 +74,7 @@ public class Component extends Interactive implements Drawable {
 	public String[] getActions() {
 		final RSInterface component = getInternalComponent();
 		String[] actions = new String[0];
-		if (component != null) {
-			actions = component.getActions();
-			if (actions == null) actions = new String[0];
-		}
+		if (component != null) if ((actions = component.getActions()) == null) actions = new String[0];
 		return actions;
 	}
 
@@ -103,7 +100,9 @@ public class Component extends Interactive implements Drawable {
 
 	public String getItemName() {
 		final RSInterface component = getInternalComponent();
-		return component != null ? StringUtil.stripHtml(component.getComponentName()) : "";
+		String name = "";
+		if (component != null && (name = component.getComponentName()) == null) name = "";
+		return StringUtil.stripHtml(name);
 	}
 
 	public int getItemId() {
@@ -195,7 +194,9 @@ public class Component extends Interactive implements Drawable {
 
 	public String getSelectedAction() {
 		final RSInterface component = getInternalComponent();
-		return component != null ? component.getSelectedActionName() : "";
+		String action = "";
+		if (component != null && (action = component.getSelectedActionName()) == null) action = "";
+		return action;
 	}
 
 	public int getShadowColor() {
@@ -210,7 +211,9 @@ public class Component extends Interactive implements Drawable {
 
 	public String getText() {
 		final RSInterface component = getInternalComponent();
-		return component != null ? component.getText() : "";
+		String text = "";
+		if (component != null && (text = component.getText()) == null) text = "";
+		return text;
 	}
 
 	public int getTextColor() {
@@ -220,7 +223,9 @@ public class Component extends Interactive implements Drawable {
 
 	public String getTooltip() {
 		final RSInterface component = getInternalComponent();
-		return component != null ? component.getTooltip() : "";
+		String tip = "";
+		if (component != null && (tip = component.getTooltip()) == null) tip = "";
+		return tip;
 	}
 
 	public int getType() {

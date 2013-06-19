@@ -1,10 +1,5 @@
 package org.powerbot.script.wrappers;
 
-import org.powerbot.client.Cache;
-import org.powerbot.client.Client;
-import org.powerbot.client.HashTable;
-import org.powerbot.client.RSItemDef;
-import org.powerbot.client.RSItemDefLoader;
 import org.powerbot.script.lang.Identifiable;
 import org.powerbot.script.lang.Nameable;
 import org.powerbot.script.lang.Stackable;
@@ -48,37 +43,29 @@ public class Item extends Interactive implements Identifiable, Nameable, Stackab
 
 	@Override
 	public String getName() {
-		String name = null;
+		String name;
 		if (component.getItemId() == this.id) {
 			name = component.getItemName();
 		} else {
-			final ItemDefinition def;
-			if ((def = getDefinition()) != null) {
-				name = def.getName();
-			}
+			name = ItemDefinition.getDef(ctx, this.id).getName();
 		}
-		return name != null ? StringUtil.stripHtml(name) : "";
+		return StringUtil.stripHtml(name);
+	}
+
+	public boolean isMembers() {
+		return ItemDefinition.getDef(ctx, getId()).isMembers();
+	}
+
+	public String[] getActions() {
+		return ItemDefinition.getDef(ctx, getId()).getActions();
+	}
+
+	public String[] getGroundActions() {
+		return ItemDefinition.getDef(ctx, getId()).getGroundActions();
 	}
 
 	public Component getComponent() {
 		return component;
-	}
-
-	public ItemDefinition getDefinition() {
-		Client client = ctx.getClient();
-		if (client == null) {
-			return null;
-		}
-
-		final RSItemDefLoader loader;
-		final Cache cache;
-		final HashTable table;
-		if ((loader = client.getRSItemDefLoader()) == null ||
-				(cache = loader.getCache()) == null || (table = cache.getTable()) == null) {
-			return null;
-		}
-		final Object o = ctx.game.lookup(table, this.id);
-		return o != null && o instanceof RSItemDef ? new ItemDefinition((RSItemDef) o) : new ItemDefinition(null);
 	}
 
 	@Override

@@ -10,6 +10,7 @@ import java.awt.Color;
  * Represents a position in three-dimensional game space.
  */
 public class Tile implements Locatable {
+	public static final Tile NIL = new Tile(-1, -1, -1);
 	public static final Color TARGET_COLOR = new Color(255, 0, 0, 75);
 	public final int x;
 	public final int y;

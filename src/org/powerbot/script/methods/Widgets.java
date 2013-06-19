@@ -30,7 +30,7 @@ public class Widgets extends MethodProvider {
 	public Widget[] getLoaded() {
 		Client client = ctx.getClient();
 		if (client == null) {
-			return null;
+			return new Widget[0];
 		}
 		final RSInterfaceBase[] containers = client.getRSInterfaceCache().clone();
 		final int len = containers != null ? containers.length : 0;
@@ -49,7 +49,7 @@ public class Widgets extends MethodProvider {
 	 */
 	public synchronized Widget get(final int widget) {
 		Client client = ctx.getClient();
-		if (client == null || widget < 0) {
+		if (widget < 0) {
 			return null;
 		}
 
@@ -60,7 +60,7 @@ public class Widgets extends MethodProvider {
 			return cache[widget];
 		}
 
-		final RSInterfaceBase[] containers = client.getRSInterfaceCache();
+		final RSInterfaceBase[] containers = client != null ? client.getRSInterfaceCache() : new RSInterfaceBase[0];
 		final int mod = Math.max(containers != null ? containers.length : 0, widget + 1);
 		final int len = cache.length;
 		cache = Arrays.copyOf(cache, mod);
@@ -78,8 +78,7 @@ public class Widgets extends MethodProvider {
 	 * @return the {@link Component} belonging to the {@link Widget} requested
 	 */
 	public Component get(final int index, final int componentIndex) {
-		final Widget widget = get(index);
-		return widget != null ? widget.getComponent(componentIndex) : null;
+		return get(index).getComponent(componentIndex);
 	}
 
 	/**

@@ -12,6 +12,7 @@ import org.powerbot.client.RSObjectDefLoader;
 import org.powerbot.script.lang.Drawable;
 import org.powerbot.script.lang.Identifiable;
 import org.powerbot.script.lang.Locatable;
+import org.powerbot.script.lang.Nameable;
 import org.powerbot.script.methods.MethodContext;
 
 import java.awt.Color;
@@ -19,7 +20,7 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.lang.ref.WeakReference;
 
-public class GameObject extends Interactive implements Locatable, Drawable, Identifiable {
+public class GameObject extends Interactive implements Locatable, Nameable, Drawable, Identifiable {
 	private static final Color TARGET_COLOR = new Color(0, 255, 0, 20);
 	private final WeakReference<RSObject> object;
 	private final Type type;
@@ -52,15 +53,24 @@ public class GameObject extends Interactive implements Locatable, Drawable, Iden
 		return type;
 	}
 
+	@Override
+	public String getName() {
+		return getDefinition().getName();
+	}
+
+	public String[] getActions() {
+		return getDefinition().getActions();
+	}
+
 	public int getPlane() {
 		final RSObject object = this.object.get();
 		return object != null ? object.getPlane() : -1;
 	}
 
-	public ObjectDefinition getDefinition() {
+	private ObjectDefinition getDefinition() {
 		Client client = ctx.getClient();
 		if (client == null) {
-			return null;
+			return new ObjectDefinition(null);
 		}
 
 		final RSInfo info;
@@ -69,7 +79,7 @@ public class GameObject extends Interactive implements Locatable, Drawable, Iden
 		final HashTable table;
 		if ((info = client.getRSGroundInfo()) == null || (loader = info.getRSObjectDefLoaders()) == null ||
 				(cache = loader.getCache()) == null || (table = cache.getTable()) == null) {
-			return null;
+			return new ObjectDefinition(null);
 		}
 		final Object def = ctx.game.lookup(table, getId());
 		return def != null && def instanceof RSObjectDef ? new ObjectDefinition((RSObjectDef) def) : new ObjectDefinition(null);

@@ -102,11 +102,13 @@ public abstract class Actor extends Interactive implements Nameable, Locatable, 
 	public String getMessage() {
 		final RSCharacter character = getAccessor();
 		if (character == null) {
-			return null;
+			return "";
 		}
 
 		final RSMessageData headMessage = character.getMessageData();
-		return headMessage != null ? headMessage.getMessage() : null;
+		String message = "";
+		if (headMessage != null && (message = headMessage.getMessage()) == null) message = "";
+		return message;
 	}
 
 	public Actor getInteracting() {

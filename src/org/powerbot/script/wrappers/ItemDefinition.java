@@ -1,42 +1,65 @@
 package org.powerbot.script.wrappers;
 
+import org.powerbot.client.Cache;
+import org.powerbot.client.Client;
+import org.powerbot.client.HashTable;
 import org.powerbot.client.RSItemDef;
-import org.powerbot.script.lang.Identifiable;
-import org.powerbot.script.lang.Nameable;
+import org.powerbot.client.RSItemDefLoader;
+import org.powerbot.script.methods.MethodContext;
 
 import java.lang.ref.WeakReference;
 
-public class ItemDefinition implements Identifiable, Nameable {
+class ItemDefinition {
 	private final WeakReference<RSItemDef> def;
 
 	ItemDefinition(final RSItemDef def) {
 		this.def = new WeakReference<>(def);
 	}
 
-	@Override
-	public int getId() {
+	static ItemDefinition getDef(MethodContext ctx, int id) {
+		Client client = ctx.getClient();
+		if (client == null || id == -1) {
+			return new ItemDefinition(null);
+		}
+		final RSItemDefLoader loader;
+		final Cache cache;
+		final HashTable table;
+		if ((loader = client.getRSItemDefLoader()) == null ||
+				(cache = loader.getCache()) == null || (table = cache.getTable()) == null) {
+			return new ItemDefinition(null);
+		}
+		final Object o = ctx.game.lookup(table, id);
+		return o != null && o instanceof RSItemDef ? new ItemDefinition((RSItemDef) o) : new ItemDefinition(null);
+	}
+
+	int getId() {//TODO use or remove???
 		final RSItemDef def = this.def.get();
 		return def != null ? def.getID() : -1;
 	}
 
-	@Override
-	public String getName() {
+	String getName() {
 		final RSItemDef def = this.def.get();
-		return def != null ? def.getName() : "";
+		String name = "";
+		if (def != null && (name = def.getName()) == null) name = "";
+		return name;
 	}
 
-	public boolean isMembers() {
+	boolean isMembers() {
 		final RSItemDef def = this.def.get();
 		return def != null && def.isMembersObject();
 	}
 
-	public String[] getActions() {
+	String[] getActions() {
 		final RSItemDef def = this.def.get();
-		return def != null ? def.getActions() : new String[0];
+		String[] actions = new String[0];
+		if (def != null && (actions = def.getActions()) == null) actions = new String[0];
+		return actions;
 	}
 
-	public String[] getGroundActions() {
+	String[] getGroundActions() {
 		final RSItemDef def = this.def.get();
-		return def != null ? def.getGroundActions() : new String[0];
+		String[] actions = new String[0];
+		if (def != null && (actions = def.getGroundActions()) == null) actions = new String[0];
+		return actions;
 	}
 }
