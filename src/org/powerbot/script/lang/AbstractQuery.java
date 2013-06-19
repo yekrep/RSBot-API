@@ -2,7 +2,6 @@ package org.powerbot.script.lang;
 
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.methods.MethodProvider;
-import org.powerbot.script.util.Filter;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -72,14 +71,14 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends Me
 	 *
 	 * @param f the filter to apply to contained types
 	 */
-	public T filter(final Filter<? super K> f) {
+	public T filter(final Predicate<? super K> f) {
 		final List<K> items = this.items.get();
 
 		synchronized (items) {
 			final List<K> remove = new ArrayList<>(items.size());
 
 			for (final K k : items) {
-				if (!f.accept(k)) {
+				if (!f.apply(k)) {
 					remove.add(k);
 				}
 			}

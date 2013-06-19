@@ -1,7 +1,7 @@
 package org.powerbot.script.methods;
 
+import org.powerbot.script.lang.Predicate;
 import org.powerbot.script.util.Delay;
-import org.powerbot.script.util.Filter;
 import org.powerbot.script.util.Random;
 import org.powerbot.script.util.Timer;
 import org.powerbot.script.wrappers.Component;
@@ -132,9 +132,9 @@ public class Lobby extends MethodProvider {
 	}
 
 	public World getWorld(final int worldNumber) {
-		final World[] worlds = getWorlds(new Filter<World>() {
+		final World[] worlds = getWorlds(new Predicate<World>() {
 			@Override
-			public boolean accept(final World world) {
+			public boolean apply(final World world) {
 				return world.getNumber() == worldNumber;
 			}
 		});
@@ -142,15 +142,15 @@ public class Lobby extends MethodProvider {
 	}
 
 	public World[] getWorlds() {
-		return getWorlds(new Filter<World>() {
+		return getWorlds(new Predicate<World>() {
 			@Override
-			public boolean accept(final World world) {
+			public boolean apply(final World world) {
 				return true;
 			}
 		});
 	}
 
-	public World[] getWorlds(final Filter<World> filter) {
+	public World[] getWorlds(final Predicate<World> predicate) {
 		if (!isOpen() || !closeDialog()) {
 			return new World[0];
 		}
@@ -162,7 +162,7 @@ public class Lobby extends MethodProvider {
 		final Component[] rows = panel.getComponent(WIDGET_WORLDS_ROWS).getChildren();
 		for (final Component row : rows) {
 			final World world = new World(row.getIndex());
-			if (filter.accept(world)) {
+			if (predicate.apply(world)) {
 				worlds.add(world);
 			}
 		}

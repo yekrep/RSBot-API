@@ -1,7 +1,7 @@
 package org.powerbot.script.methods;
 
 import org.powerbot.script.util.Delay;
-import org.powerbot.script.util.Filter;
+import org.powerbot.script.lang.Predicate;
 import org.powerbot.script.util.Timer;
 import org.powerbot.script.wrappers.Actor;
 import org.powerbot.script.wrappers.Component;
@@ -139,9 +139,9 @@ public class Summoning extends MethodProvider {
 		if (local == null) {
 			return null;
 		}
-		ctx.npcs.select().filter(new Filter<Npc>() {
+		ctx.npcs.select().filter(new Predicate<Npc>() {
 			@Override
-			public boolean accept(Npc npc) {
+			public boolean apply(Npc npc) {
 				final Actor actor;
 				return npc.getId() == ctx.settings.get(1784) && (actor = npc.getInteracting()) != null && actor.equals(local);
 			}

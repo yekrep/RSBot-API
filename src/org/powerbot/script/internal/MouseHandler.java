@@ -161,7 +161,7 @@ public class MouseHandler implements Runnable, Stoppable {
 				final double mod = 2.5 + Math.sqrt(Math.pow(dest.x - centroid.x, 2) + Math.pow(dest.y - centroid.y, 2));
 				if (traverseLength < mod) {
 					final Point pos = curr.to2DPoint();
-					if (target.targetable.contains(pos) && target.filter.accept(pos)) {
+					if (target.targetable.contains(pos) && target.predicate.apply(pos)) {
 						target.execute(this);
 						continue start;
 					}
