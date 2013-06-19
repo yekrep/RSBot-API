@@ -154,14 +154,14 @@ public class Login extends PollingScript implements InternalScript, PaintListene
 		final int midx = (int) pos.getCenterX();
 		final int h = (int) pos.getHeight();
 		final int midy = (int) (pos.getMinY() + (h == 0 ? 27 : h) / 2);
-		ctx.lock.lock();
+		getController().getLock().lock();
 		try {
 			if (i.getIndex() == WIDGET_LOGIN_PASSWORD_TEXT) {
 				return ctx.mouse.click(getPasswordX(i), midy + Random.nextInt(-dy, dy), true);
 			}
 			return ctx.mouse.click(midx + Random.nextInt(1, maxRandomX), midy + Random.nextInt(-dy, dy), true);
 		} finally {
-			ctx.lock.unlock();
+			getController().getLock().unlock();
 		}
 	}
 
