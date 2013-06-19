@@ -69,10 +69,10 @@ public class Bank extends ItemQuery<Item> {
 		};
 
 		final List<Interactive> interactives = new ArrayList<>();
-		ctx.npcs.select().id(BANK_NPC_IDS).filter(f).nearest().first().addTo(interactives);
-		ctx.objects.select().id(BANK_BOOTH_IDS).filter(f).nearest().first().addTo(interactives);
-		ctx.objects.select().id(BANK_COUNTER_IDS).filter(f).nearest().first().addTo(interactives);
-		ctx.objects.select().id(BANK_CHEST_IDS).filter(f).nearest().first().addTo(interactives);
+		ctx.npcs.select().id(BANK_NPC_IDS).select(f).nearest().first().addTo(interactives);
+		ctx.objects.select().id(BANK_BOOTH_IDS).select(f).nearest().first().addTo(interactives);
+		ctx.objects.select().id(BANK_COUNTER_IDS).select(f).nearest().first().addTo(interactives);
+		ctx.objects.select().id(BANK_CHEST_IDS).select(f).nearest().first().addTo(interactives);
 
 		if (interactives.isEmpty()) {
 			return false;

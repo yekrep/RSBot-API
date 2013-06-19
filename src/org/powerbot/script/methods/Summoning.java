@@ -139,7 +139,7 @@ public class Summoning extends MethodProvider {
 		if (local == null) {
 			return null;
 		}
-		ctx.npcs.select().filter(new Filter<Npc>() {
+		ctx.npcs.select().select(new Filter<Npc>() {
 			@Override
 			public boolean accept(Npc npc) {
 				final Actor actor;

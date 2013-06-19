@@ -18,7 +18,7 @@ public abstract class IdQuery<K extends Identifiable> extends AbstractQuery<IdQu
 	 */
 	@Override
 	public IdQuery<K> id(int... ids) {
-		return filter(new Identifiable.Matcher(ids));
+		return select(new Identifiable.Matcher(ids));
 	}
 
 	/**
@@ -41,7 +41,7 @@ public abstract class IdQuery<K extends Identifiable> extends AbstractQuery<IdQu
 			}
 		}
 
-		return filter(new Identifiable.Matcher(a));
+		return select(new Identifiable.Matcher(a));
 	}
 
 	/**
@@ -49,6 +49,6 @@ public abstract class IdQuery<K extends Identifiable> extends AbstractQuery<IdQu
 	 */
 	@Override
 	public IdQuery<K> id(Identifiable... identifiables) {
-		return filter(new Identifiable.Matcher(identifiables));
+		return select(new Identifiable.Matcher(identifiables));
 	}
 }
