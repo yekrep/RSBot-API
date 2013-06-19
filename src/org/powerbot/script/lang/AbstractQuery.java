@@ -14,12 +14,22 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
+ * An abstract implementation of a chaining query-based data set filter which is thread safe.
+ *
+ * @param <T> the super class
+ * @param <K> the subject type
+ *
  * @author Paris
  */
 public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends MethodProvider implements Iterable<K> {
 	private final ThreadLocal<List<K>> items;
 	private final Method set;
 
+	/**
+	 * Creates a base {@link AbstractQuery}.
+	 *
+	 * @param factory the {@link MethodContext} to associate with
+	 */
 	public AbstractQuery(final MethodContext factory) {
 		super(factory);
 
@@ -38,12 +48,24 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends Me
 		this.set = set;
 	}
 
+	/**
+	 * Returns {@code this}.
+	 *
+	 * @return must always return {@code this}
+	 */
 	protected abstract T getThis();
 
+	/**
+	 * Returns a fresh data set.
+	 *
+	 * @return a new data set for subsequent queries
+	 */
 	protected abstract List<K> get();
 
 	/**
-	 * Resets this query to contain all the loaded elements.
+	 * Selects a fresh data set into the query cache.
+	 *
+	 * @return {@code this} for the purpose of chaining
 	 */
 	public T select() {
 		final List<K> items = this.items.get(), a = get();
@@ -52,9 +74,11 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends Me
 	}
 
 	/**
-	 * Sets this query's elements to a given collection.
+	 * Selects the specified data set into the query cache.
 	 *
-	 * @param c a collection of types to set this query to contain
+	 * @param c a {@link List}, {@link Collection} or any other {@link Iterable}
+	 *             source of items to replace the existing cache with
+	 * @return {@code this} for the purpose of chaining
 	 */
 	public T select(final Iterable<K> c) {
 		final List<K> items = this.items.get(), a = new ArrayList<>();
@@ -66,9 +90,11 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends Me
 	}
 
 	/**
-	 * Filters the current elements by the given filter.
+	 * Selects the items which satisfy the condition of the specified
+	 * {@link Filter} into the query cache.
 	 *
-	 * @param f the filter to apply to contained types
+	 * @param f the condition
+	 * @return {@code this} for the purpose of chaining
 	 */
 	public T select(final Filter<? super K> f) {
 		final List<K> items = this.items.get(), a = new ArrayList<>(items.size());
@@ -82,9 +108,10 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends Me
 	}
 
 	/**
-	 * Sorts the current elements by a comparator.
+	 * Sorts the items in the query cache by the specified {@link Comparator}.
 	 *
 	 * @param c the comparator
+	 * @return {@code this} for the purpose of chaining
 	 */
 	public T sort(final Comparator<? super K> c) {
 		final List<K> items = this.items.get(), a = new ArrayList<>(items);
@@ -94,7 +121,9 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends Me
 	}
 
 	/**
-	 * Shuffles the current collection.
+	 * Sorts the items in the query cache by a random rearrangement.
+	 *
+	 * @return {@code this} for the purpose of chaining
 	 */
 	public T shuffle() {
 		final List<K> items = this.items.get(), a = new ArrayList<>(items);
@@ -117,19 +146,21 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends Me
 	}
 
 	/**
-	 * Truncates the current collection to the maximum size.  Does not expand.
+	 * Limits the query cache to the specified number of items.
 	 *
-	 * @param count the maximum size
+	 * @param count the maximum number of items to retain
+	 * @return {@code this} for the purpose of chaining
 	 */
 	public T limit(final int count) {
 		return limit(0, count);
 	}
 
 	/**
-	 * Truncates the current collection to the maximum size.  Does not expand.
+	 * Limits the query cache to the items within the specified bounds.
 	 *
-	 * @param offset beginning element
-	 * @param count  count of elements
+	 * @param offset the starting index
+	 * @param count the maximum number of items to retain
+	 * @return {@code this} for the purpose of chaining
 	 */
 	public T limit(final int offset, final int count) {
 		final List<K> items = this.items.get(), a = new ArrayList<>(count);
@@ -142,30 +173,57 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends Me
 	}
 
 	/**
-	 * Truncates all elements except the first.
+	 * Limits the query cache to the first item (if any).
+	 *
+	 * @return {@code this} for the purpose of chaining
 	 */
 	public T first() {
 		return limit(1);
 	}
 
+	/**
+	 * Adds every item in the query cache to the specified {@link Collection}.
+	 *
+	 * @param c the {@link Collection} to add to
+	 * @return {@code this} for the purpose of chaining
+	 */
 	public T addTo(final Collection<? super K> c) {
 		c.addAll(items.get());
 		return getThis();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Iterator<K> iterator() {
 		return items.get().iterator();
 	}
 
+	/**
+	 * Returns {@code true} if the query cache contains no items.
+	 *
+	 * @return {@code true} if the query cache contains no items
+	 */
 	public boolean isEmpty() {
 		return items.get().isEmpty();
 	}
 
+	/**
+	 * Returns {@code true} if the query cache contains the specified item.
+	 *
+	 * @param k item whose presence in this query cache is to be tested
+	 * @return {@code true} if the query cache contains the specified item
+	 */
 	public boolean contains(final K k) {
 		return items.get().contains(k);
 	}
 
+	/**
+	 * Returns the number of items in the query cache.
+	 *
+	 * @return the number of items in the query cache
+	 */
 	public int size() {
 		return items.get().size();
 	}
