@@ -41,13 +41,13 @@ public class HintArrow extends MethodProvider implements Locatable, Validatable 
 		Client client = ctx.getClient();
 		final RSHintArrow arrow = this.arrow.get();
 		if (client == null || arrow == null) {
-			return new Tile(-1, -1, -1);
+			return Tile.NIL;
 		}
 
 		final int type = getType();
 		int target = getTargetId();
 		if (type == -1 || type == 0) {
-			return new Tile(-1, -1, -1);
+			return Tile.NIL;
 		}
 		if (type == 1) {
 			Npc npc = null;
@@ -59,19 +59,19 @@ public class HintArrow extends MethodProvider implements Locatable, Validatable 
 					npc = new Npc(ctx, (RSNPC) node);
 				}
 			}
-			return npc != null ? npc.getLocation() : new Tile(-1, -1, -1);
+			return npc != null ? npc.getLocation() : Tile.NIL;
 		} else if (type == 2) {
 			return ctx.game.getMapBase().derive(arrow.getX() >> 9, arrow.getY() >> 9, getPlane());
 		}
 		final RSPlayer[] players = client.getRSPlayerArray();
 		if (type != 10 || target < 0 || target >= players.length) {
-			return new Tile(-1, -1, -1);
+			return Tile.NIL;
 		}
 		final RSPlayer localPlayer = players[target];
 		if (localPlayer != null) {
 			return new Player(ctx, localPlayer).getLocation();
 		}
-		return new Tile(-1, -1, -1);
+		return Tile.NIL;
 	}
 
 	@Override

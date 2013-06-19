@@ -188,7 +188,7 @@ public abstract class Actor extends Interactive implements Nameable, Locatable, 
 		if (location != null) {
 			return ctx.game.getMapBase().derive((int) location.getX() >> 9, (int) location.getY() >> 9, character.getPlane());
 		}
-		return new Tile(-1, -1, -1);
+		return Tile.NIL;
 	}
 
 	@Override
