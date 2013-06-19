@@ -1,5 +1,7 @@
 package org.powerbot.script.lang;
 
+import org.powerbot.script.util.Filter;
+
 public interface Identifiable {
 	public int getId();
 
@@ -11,7 +13,7 @@ public interface Identifiable {
 		public T id(Identifiable... ids);
 	}
 
-	public class Matcher implements Predicate<Identifiable> {
+	public class Matcher implements Filter<Identifiable> {
 		private final int[] ids;
 
 		public Matcher(final int... ids) {
@@ -26,7 +28,7 @@ public interface Identifiable {
 		}
 
 		@Override
-		public boolean apply(final Identifiable i) {
+		public boolean accept(final Identifiable i) {
 			final int x = i != null ? i.getId() : -1;
 			if (x == -1) return false;
 			for (int id : ids) {

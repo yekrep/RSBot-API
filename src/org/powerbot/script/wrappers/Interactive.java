@@ -1,11 +1,11 @@
 package org.powerbot.script.wrappers;
 
-import org.powerbot.script.lang.Predicate;
 import org.powerbot.script.lang.Targetable;
 import org.powerbot.script.lang.Validatable;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.methods.MethodProvider;
 import org.powerbot.script.util.Delay;
+import org.powerbot.script.util.Filter;
 
 import java.awt.Point;
 
@@ -39,9 +39,9 @@ public abstract class Interactive extends MethodProvider implements Targetable, 
 	public boolean interact(final String action, final String option) {
 		int a = 0;
 		while (a++ < ATTEMPTS) {
-			if (!ctx.mouse.move(this, new Predicate<Point>() {
+			if (!ctx.mouse.move(this, new Filter<Point>() {
 				@Override
-				public boolean apply(final Point point) {
+				public boolean accept(final Point point) {
 					if (contains(point) && ctx.menu.indexOf(action, option) != -1) {
 						Delay.sleep(0, 80);
 						return contains(point) && ctx.menu.indexOf(action, option) != -1;

@@ -1,5 +1,7 @@
 package org.powerbot.script.lang;
 
+import org.powerbot.script.util.Filter;
+
 public interface Nameable {
 	public String getName();
 
@@ -9,7 +11,7 @@ public interface Nameable {
 		public T name(Nameable... names);
 	}
 
-	public class Matcher implements Predicate<Nameable> {
+	public class Matcher implements Filter<Nameable> {
 		private final String[] names;
 
 		public Matcher(final String... names) {
@@ -24,7 +26,7 @@ public interface Nameable {
 		}
 
 		@Override
-		public boolean apply(final Nameable i) {
+		public boolean accept(final Nameable i) {
 			final String n = i.getName();
 			if (n == null) return false;
 			for (String name : names) {

@@ -2,7 +2,7 @@ package org.powerbot.script.methods;
 
 import org.powerbot.script.lang.ItemQuery;
 import org.powerbot.script.util.Delay;
-import org.powerbot.script.lang.Predicate;
+import org.powerbot.script.util.Filter;
 import org.powerbot.script.util.Random;
 import org.powerbot.script.util.Timer;
 import org.powerbot.script.wrappers.Component;
@@ -61,9 +61,9 @@ public class Bank extends ItemQuery<Item> {
 			return true;
 		}
 
-		final Predicate<Interactive> f = new Predicate<Interactive>() {
+		final Filter<Interactive> f = new Filter<Interactive>() {
 			@Override
-			public boolean apply(final Interactive interactive) {
+			public boolean accept(final Interactive interactive) {
 				return interactive.isOnScreen();
 			}
 		};

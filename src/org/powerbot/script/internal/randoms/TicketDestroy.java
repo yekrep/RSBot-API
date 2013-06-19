@@ -4,6 +4,7 @@ import org.powerbot.script.Manifest;
 import org.powerbot.script.PollingScript;
 import org.powerbot.script.internal.InternalScript;
 import org.powerbot.script.methods.Game;
+import org.powerbot.script.util.Filter;
 import org.powerbot.script.util.Random;
 import org.powerbot.script.util.Timer;
 import org.powerbot.script.wrappers.Component;

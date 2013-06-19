@@ -5,7 +5,7 @@ import org.powerbot.script.internal.MouseHandler;
 import org.powerbot.script.internal.MouseTarget;
 import org.powerbot.script.lang.Targetable;
 import org.powerbot.script.util.Delay;
-import org.powerbot.script.lang.Predicate;
+import org.powerbot.script.util.Filter;
 
 import java.awt.Point;
 import java.awt.event.MouseEvent;
@@ -111,7 +111,7 @@ public class Mouse extends MethodProvider {
 			@Override
 			public void execute(final MouseHandler handler) {
 				Delay.sleep(0, 350);
-				if (predicate.apply(handler.getLocation())) {
+				if (filter.accept(handler.getLocation())) {
 					handler.click(left ? MouseEvent.BUTTON1 : MouseEvent.BUTTON3);
 					handler.complete(this);
 				}
@@ -171,14 +171,14 @@ public class Mouse extends MethodProvider {
 		return move(target, MouseTarget.DUMMY);
 	}
 
-	public boolean move(final Targetable target, final Predicate<Point> predicate) {
+	public boolean move(final Targetable target, final Filter<Point> filter) {
 		final MouseHandler handler = getMouseHandler();
 		if (handler == null) {
 			return false;
 		}
 
 		final MouseTarget t;
-		handler.handle(t = new MouseTarget(target, predicate) {
+		handler.handle(t = new MouseTarget(target, filter) {
 			@Override
 			public void execute(final MouseHandler handler) {
 				handler.complete(this);

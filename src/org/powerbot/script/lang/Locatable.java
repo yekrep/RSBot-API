@@ -1,5 +1,6 @@
 package org.powerbot.script.lang;
 
+import org.powerbot.script.util.Filter;
 import org.powerbot.script.wrappers.Tile;
 
 import java.util.Comparator;
@@ -19,7 +20,7 @@ public interface Locatable {
 		public T nearest(Locatable t);
 	}
 
-	public class Matcher implements Predicate<Locatable> {
+	public class Matcher implements Filter<Locatable> {
 		private final Locatable target;
 
 		public Matcher(final Locatable target) {
@@ -27,14 +28,14 @@ public interface Locatable {
 		}
 
 		@Override
-		public boolean apply(final Locatable l) {
+		public boolean accept(final Locatable l) {
 			Tile tile = l != null ? l.getLocation() : null;
 			Tile target = this.target.getLocation();
 			return tile != null && target != null && target.equals(tile);
 		}
 	}
 
-	public class WithinRange implements Predicate<Locatable> {
+	public class WithinRange implements Filter<Locatable> {
 		private final Locatable target;
 		private final double distance;
 
@@ -44,7 +45,7 @@ public interface Locatable {
 		}
 
 		@Override
-		public boolean apply(final Locatable l) {
+		public boolean accept(final Locatable l) {
 			Tile tile = l != null ? l.getLocation() : null;
 			Tile target = this.target.getLocation();
 			return tile != null && target != null && tile.distanceTo(target) <= distance;
