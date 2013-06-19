@@ -70,14 +70,15 @@ public class Equipment extends MethodProvider {
 		Item[] items = new Item[NUM_SLOTS];
 		for (Slot slot : Slot.values()) {
 			int index = slot.getIndex();
-			if (index < 0 || index >= data.length || data[index][0] == -1) {
-				continue;
-			}
 			Component c;
 			if (b) {
 				c = ctx.widgets.get(WIDGET_BANK, COMPONENT_BANK).getChild(slot.getBankComponentIndex());
 			} else {
 				c = ctx.widgets.get(WIDGET, slot.getComponentIndex());
+			}
+			if (index < 0 || index >= data.length || data[index][0] == -1) {
+				items[slot.ordinal()] = new Item(ctx, -1, -1, c);
+				continue;
 			}
 			items[slot.ordinal()] = new Item(ctx, data[index][0], data[index][1], c);
 		}
