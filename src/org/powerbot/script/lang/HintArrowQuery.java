@@ -18,7 +18,7 @@ public abstract class HintArrowQuery<K extends Locatable> extends AbstractQuery<
 	 */
 	@Override
 	public HintArrowQuery<K> at(Locatable l) {
-		return select(new Locatable.Matcher(l));
+		return filter(new Locatable.Matcher(l));
 	}
 
 	/**
@@ -34,7 +34,7 @@ public abstract class HintArrowQuery<K extends Locatable> extends AbstractQuery<
 	 */
 	@Override
 	public HintArrowQuery<K> within(Locatable target, double distance) {
-		return select(new Locatable.WithinRange(target, distance));
+		return filter(new Locatable.WithinRange(target, distance));
 	}
 
 	/**

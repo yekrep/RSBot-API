@@ -72,7 +72,7 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends Me
 	 *
 	 * @param f the filter to apply to contained types
 	 */
-	public T select(final Filter<? super K> f) {
+	public T filter(final Filter<? super K> f) {
 		final List<K> items = this.items.get();
 
 		synchronized (items) {

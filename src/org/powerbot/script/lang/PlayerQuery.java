@@ -18,7 +18,7 @@ public abstract class PlayerQuery<K extends Locatable & Nameable> extends Abstra
 	 */
 	@Override
 	public PlayerQuery<K> at(Locatable l) {
-		return select(new Locatable.Matcher(l));
+		return filter(new Locatable.Matcher(l));
 	}
 
 	/**
@@ -34,7 +34,7 @@ public abstract class PlayerQuery<K extends Locatable & Nameable> extends Abstra
 	 */
 	@Override
 	public PlayerQuery<K> within(Locatable target, double distance) {
-		return select(new Locatable.WithinRange(target, distance));
+		return filter(new Locatable.WithinRange(target, distance));
 	}
 
 	/**
@@ -58,7 +58,7 @@ public abstract class PlayerQuery<K extends Locatable & Nameable> extends Abstra
 	 */
 	@Override
 	public PlayerQuery<K> name(String... names) {
-		return select(new Nameable.Matcher(names));
+		return filter(new Nameable.Matcher(names));
 	}
 
 	/**
@@ -66,6 +66,6 @@ public abstract class PlayerQuery<K extends Locatable & Nameable> extends Abstra
 	 */
 	@Override
 	public PlayerQuery<K> name(Nameable... names) {
-		return select(new Nameable.Matcher(names));
+		return filter(new Nameable.Matcher(names));
 	}
 }

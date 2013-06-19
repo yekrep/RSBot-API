@@ -2,15 +2,15 @@ package org.powerbot.script.lang;
 
 import org.powerbot.script.methods.MethodContext;
 
-public abstract class GroundItemQuery<K extends Locatable & Identifiable & Nameable & Stackable> extends AbstractQuery<GroundItemQuery<K>, K>
-		implements Locatable.Query<GroundItemQuery<K>>, Identifiable.Query<GroundItemQuery<K>>,
-		Nameable.Query<GroundItemQuery<K>>, Stackable.Query<GroundItemQuery<K>> {
-	public GroundItemQuery(final MethodContext factory) {
+public abstract class BasicNamedQuery<K extends Locatable & Identifiable & Nameable> extends AbstractQuery<BasicNamedQuery<K>, K>
+		implements Locatable.Query<BasicNamedQuery<K>>, Identifiable.Query<BasicNamedQuery<K>>,
+		Nameable.Query<BasicNamedQuery<K>> {
+	public BasicNamedQuery(final MethodContext factory) {
 		super(factory);
 	}
 
 	@Override
-	protected GroundItemQuery<K> getThis() {
+	protected BasicNamedQuery<K> getThis() {
 		return this;
 	}
 
@@ -18,7 +18,7 @@ public abstract class GroundItemQuery<K extends Locatable & Identifiable & Namea
 	 * {@inheritDoc}
 	 */
 	@Override
-	public GroundItemQuery<K> at(Locatable l) {
+	public BasicNamedQuery<K> at(Locatable l) {
 		return filter(new Locatable.Matcher(l));
 	}
 
@@ -26,7 +26,7 @@ public abstract class GroundItemQuery<K extends Locatable & Identifiable & Namea
 	 * {@inheritDoc}
 	 */
 	@Override
-	public GroundItemQuery<K> within(double distance) {
+	public BasicNamedQuery<K> within(double distance) {
 		return within(ctx.players.getLocal(), distance);
 	}
 
@@ -34,7 +34,7 @@ public abstract class GroundItemQuery<K extends Locatable & Identifiable & Namea
 	 * {@inheritDoc}
 	 */
 	@Override
-	public GroundItemQuery<K> within(Locatable target, double distance) {
+	public BasicNamedQuery<K> within(Locatable target, double distance) {
 		return filter(new Locatable.WithinRange(target, distance));
 	}
 
@@ -42,7 +42,7 @@ public abstract class GroundItemQuery<K extends Locatable & Identifiable & Namea
 	 * {@inheritDoc}
 	 */
 	@Override
-	public GroundItemQuery<K> nearest() {
+	public BasicNamedQuery<K> nearest() {
 		return nearest(ctx.players.getLocal());
 	}
 
@@ -50,7 +50,7 @@ public abstract class GroundItemQuery<K extends Locatable & Identifiable & Namea
 	 * {@inheritDoc}
 	 */
 	@Override
-	public GroundItemQuery<K> nearest(Locatable target) {
+	public BasicNamedQuery<K> nearest(Locatable target) {
 		return sort(new Locatable.NearestTo(target));
 	}
 
@@ -58,7 +58,7 @@ public abstract class GroundItemQuery<K extends Locatable & Identifiable & Namea
 	 * {@inheritDoc}
 	 */
 	@Override
-	public GroundItemQuery<K> id(int... ids) {
+	public BasicNamedQuery<K> id(int... ids) {
 		return filter(new Identifiable.Matcher(ids));
 	}
 
@@ -66,7 +66,7 @@ public abstract class GroundItemQuery<K extends Locatable & Identifiable & Namea
 	 * {@inheritDoc}
 	 */
 	@Override
-	public GroundItemQuery<K> id(final int[]... ids) {
+	public BasicNamedQuery<K> id(final int[]... ids) {
 		int z = 0;
 
 		for (final int[] x : ids) {
@@ -89,7 +89,7 @@ public abstract class GroundItemQuery<K extends Locatable & Identifiable & Namea
 	 * {@inheritDoc}
 	 */
 	@Override
-	public GroundItemQuery<K> id(Identifiable... identifiables) {
+	public BasicNamedQuery<K> id(Identifiable... identifiables) {
 		return filter(new Identifiable.Matcher(identifiables));
 	}
 
@@ -97,7 +97,7 @@ public abstract class GroundItemQuery<K extends Locatable & Identifiable & Namea
 	 * {@inheritDoc}
 	 */
 	@Override
-	public GroundItemQuery<K> name(String... names) {
+	public BasicNamedQuery<K> name(String... names) {
 		return filter(new Nameable.Matcher(names));
 	}
 
@@ -105,20 +105,7 @@ public abstract class GroundItemQuery<K extends Locatable & Identifiable & Namea
 	 * {@inheritDoc}
 	 */
 	@Override
-	public GroundItemQuery<K> name(Nameable... names) {
+	public BasicNamedQuery<K> name(Nameable... names) {
 		return filter(new Nameable.Matcher(names));
-	}
-
-	@Override
-	public int count() {
-		return size();
-	}
-
-	@Override
-	public int count(boolean stacks) {
-		if (!stacks) return count();
-		int count = 0;
-		for (Stackable stackable : this) count += stackable.getStackSize();
-		return count;
 	}
 }

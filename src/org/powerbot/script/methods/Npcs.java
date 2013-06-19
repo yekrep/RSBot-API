@@ -4,7 +4,7 @@ import org.powerbot.client.Client;
 import org.powerbot.client.HashTable;
 import org.powerbot.client.RSNPC;
 import org.powerbot.client.RSNPCNode;
-import org.powerbot.script.lang.NpcQuery;
+import org.powerbot.script.lang.BasicNamedQuery;
 import org.powerbot.script.wrappers.Npc;
 
 import java.util.ArrayList;
@@ -17,7 +17,7 @@ import java.util.List;
  *
  * @author Timer
  */
-public class Npcs extends NpcQuery<Npc> {
+public class Npcs extends BasicNamedQuery<Npc> {
 	public Npcs(MethodContext factory) {
 		super(factory);
 	}
