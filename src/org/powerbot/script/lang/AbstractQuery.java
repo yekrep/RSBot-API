@@ -18,6 +18,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  */
 public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends MethodProvider implements Iterable<K> {
 	private final ThreadLocal<List<K>> items;
+	private final Method set;
 
 	public AbstractQuery(final MethodContext factory) {
 		super(factory);
@@ -28,6 +29,13 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends Me
 				return new CopyOnWriteArrayList<>(AbstractQuery.this.get());
 			}
 		};
+
+		Method set = null;
+		try {
+			set = CopyOnWriteArrayList.class.getMethod("setArray", Object[].class);
+		} catch (final NoSuchMethodException ignored) {
+		}
+		this.set = set;
 	}
 
 	protected abstract T getThis();
@@ -123,12 +131,11 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends Me
 
 	private void setArray(final List<K> a, final List<K> c) {
 		try {
-			final Method m = a.getClass().getMethod("setArray", Object[].class);
-			if (m != null) {
-				m.invoke(a, c.toArray());
+			if (set != null) {
+				set.invoke(a, c.toArray());
 				return;
 			}
-		} catch (final NoSuchMethodException | IllegalAccessException | InvocationTargetException ignored) {
+		} catch (final IllegalAccessException | InvocationTargetException ignored) {
 		}
 
 		a.clear();
