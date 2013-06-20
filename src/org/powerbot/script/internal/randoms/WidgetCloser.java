@@ -10,7 +10,6 @@ import org.powerbot.util.Tracker;
 
 @Manifest(name = "Widget closer", authors = {"Timer"}, description = "Closes widgets")
 public class WidgetCloser extends PollingScript implements InternalScript {
-
 	private static final int[] COMPONENTS = {
 			21 << 16 | 43, // beholding a player's statuette (duellist's cap)
 			1234 << 16 | 15, // membership offers
@@ -23,36 +22,24 @@ public class WidgetCloser extends PollingScript implements InternalScript {
 			438 << 16 | 22, //membership refer friend
 	};
 
-	private final Timer threshold;
-	private volatile Component component;
-	private volatile int tries;
-
-	public WidgetCloser() {
-		threshold = new Timer(0);
-	}
+	private Component component;
+	private int tries;
 
 	@Override
 	public int poll() {
-		if (!isValid()) {
-			return -1;
+		if (++tries > 3) {
+			tries = 0;
+			return Random.nextInt(30, 61) * 1000;
 		}
 
 		Tracker.getInstance().trackPage("randoms/WidgetCloser/", "");
-
-		if (++tries > 3) {
-			threshold.setEndIn(60000);
-			return -1;
-		}
-
-		if (component.isVisible() && component.click(true)) {
+		if (component.click(true)) {
 			final Timer timer = new Timer(Random.nextInt(2000, 2500));
 			while (timer.isRunning() && component.isVisible()) {
 				sleep(100, 250);
 			}
 			if (!component.isVisible()) {
-				component = null;
 				tries = 0;
-				return -1;
 			}
 		}
 
@@ -61,9 +48,6 @@ public class WidgetCloser extends PollingScript implements InternalScript {
 
 	@Override
 	public boolean isValid() {
-		if (threshold.isRunning()) {
-			return false;
-		}
 		for (final int p : COMPONENTS) {
 			component = ctx.widgets.get(p >> 16, p & 0xffff);
 			if (component != null && component.isVisible()) {
