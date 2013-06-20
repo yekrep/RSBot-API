@@ -179,6 +179,12 @@ public class GroundItem extends Interactive implements Identifiable, Nameable, S
 	}
 
 	@Override
+	public int hashCode() {
+		final RSItem i;
+		return (i = this.item.get()) != null ? System.identityHashCode(i) : 0;
+	}
+
+	@Override
 	public boolean equals(final Object o) {
 		if (o == null || !(o instanceof GroundItem)) {
 			return false;

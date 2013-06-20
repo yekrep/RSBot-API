@@ -55,6 +55,11 @@ public class Action extends MethodProvider implements Identifiable, Validatable 
 	}
 
 	@Override
+	public int hashCode() {
+		return Math.max(this.id, 0);
+	}
+
+	@Override
 	public boolean isValid() {
 		return this.type != Type.UNKNOWN && this.id == (this.type == Type.ABILITY ?
 				ctx.settings.get(ActionBar.SETTING_ABILITY + this.slot) :

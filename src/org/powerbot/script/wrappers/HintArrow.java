@@ -87,6 +87,12 @@ public class HintArrow extends MethodProvider implements Locatable, Validatable 
 	}
 
 	@Override
+	public int hashCode() {
+		RSHintArrow i;
+		return (i = this.arrow.get()) != null ? System.identityHashCode(i) : 0;
+	}
+
+	@Override
 	public boolean equals(final Object o) {
 		if (o == null || !(o instanceof HintArrow)) {
 			return false;

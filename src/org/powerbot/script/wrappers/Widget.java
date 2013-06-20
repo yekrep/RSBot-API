@@ -118,6 +118,11 @@ public class Widget extends MethodProvider implements Validatable, Iterable<Comp
 	}
 
 	@Override
+	public int hashCode() {
+		return this.index;
+	}
+
+	@Override
 	public boolean equals(final Object o) {
 		if (o == null || !(o instanceof Widget)) {
 			return false;

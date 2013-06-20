@@ -149,6 +149,12 @@ public class GameObject extends Interactive implements Locatable, Nameable, Draw
 	}
 
 	@Override
+	public int hashCode() {
+		final RSObject i;
+		return (i = this.object.get()) != null ? System.identityHashCode(i) : 0;
+	}
+
+	@Override
 	public boolean equals(final Object o) {
 		if (o == null || !(o instanceof GameObject)) {
 			return false;
