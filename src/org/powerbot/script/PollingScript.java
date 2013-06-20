@@ -1,8 +1,8 @@
 package org.powerbot.script;
 
-import java.util.concurrent.atomic.AtomicBoolean;
-
 import org.powerbot.script.util.Random;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * An implementation of {@link AbstractScript} which polls (or "loops")
@@ -67,7 +67,9 @@ public abstract class PollingScript extends AbstractScript {
 				sleep = delay;
 			} else {
 				try {
-					sleep = poll();
+					if (isValid()) {
+						sleep = poll();
+					} else sleep = delay;
 				} catch (final Throwable t) {
 					t.printStackTrace();
 					getController().stop();

@@ -1,16 +1,20 @@
 package org.powerbot.script;
 
 import org.powerbot.script.internal.ScriptController;
+import org.powerbot.script.lang.Prioritizable;
+import org.powerbot.script.lang.Validatable;
 import org.powerbot.script.methods.MethodContext;
 
 import java.util.EventListener;
 import java.util.Queue;
-import java.util.concurrent.Callable;
 
 /**
  * The base interface of a script.
  */
-public interface Script extends Runnable, EventListener {
+public interface Script extends Runnable, Validatable, Prioritizable, EventListener {
+	public static final int PRIORITY_NORMAL = 0;
+	public static final int PRIORITY_RAISED = 1;
+
 	/**
 	 * The representative states of a {@link Script}
 	 */

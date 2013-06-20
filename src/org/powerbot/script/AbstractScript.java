@@ -156,6 +156,16 @@ public abstract class AbstractScript implements Script {
 		return ctx;
 	}
 
+	@Override
+	public boolean isValid() {
+		return true;
+	}
+
+	@Override
+	public int getPriority() {
+		return PRIORITY_NORMAL;
+	}
+
 	/**
 	 * Returns the total running time.
 	 *
