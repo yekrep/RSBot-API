@@ -5,14 +5,11 @@ import org.powerbot.client.Client;
 import org.powerbot.script.internal.methods.Items;
 
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.concurrent.locks.ReentrantLock;
 
 public class MethodContext {
 	private AtomicReference<Client> client;
 	private AtomicReference<Integer> preferredWorld;
 	private AtomicReference<Bot> bot;
-
-	public final ReentrantLock lock = new ReentrantLock(true);
 
 	public ActionBar actionBar;
 	public Bank bank;
