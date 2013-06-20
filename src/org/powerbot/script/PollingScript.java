@@ -63,7 +63,7 @@ public abstract class PollingScript extends AbstractScript {
 		while (!getController().isStopping()) {
 			final int sleep;
 
-			if (getController().isSuspended()) {
+			if (getController().isSuspended() || getController().getPriority() > getPriority()) {
 				sleep = delay;
 			} else {
 				try {
