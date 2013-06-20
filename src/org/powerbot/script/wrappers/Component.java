@@ -351,13 +351,12 @@ public class Component extends Interactive implements Drawable {
 	@Override
 	public Point getCenterPoint() {
 		final Rectangle interact = getInteractRectangle();
-		return interact != null ? new Point((int) interact.getCenterX(), (int) interact.getCenterY()) : new Point(-1, -1);
+		return interact.getWidth() != -1 && interact.getHeight() != -1 ? new Point((int) interact.getCenterX(), (int) interact.getCenterY()) : new Point(-1, -1);
 	}
 
 	@Override
 	public boolean contains(final Point point) {
-		final Rectangle interact = getInteractRectangle();
-		return interact != null && interact.contains(point);
+		return getInteractRectangle().contains(point);
 	}
 
 	@Override
@@ -375,7 +374,7 @@ public class Component extends Interactive implements Drawable {
 	@Override
 	public void draw(final Graphics render, int alpha) {
 		final Rectangle rectangle = getInteractRectangle();
-		if (rectangle == null) {
+		if (rectangle.getWidth() == -1 || rectangle.getHeight() == -1) {
 			return;
 		}
 		Color c = TARGET_FILL_COLOR;
