@@ -106,28 +106,28 @@ public abstract class PollingScript extends AbstractScript {
 	}
 
 	/**
-	 * Called on {@link State#START}.
+	 * Called on {@link org.powerbot.script.Script.State#START}.
 	 * This method can either be overridden or ignored.
 	 */
 	public void start() {
 	}
 
 	/**
-	 * Called on {@link State#STOP}.
+	 * Called on {@link org.powerbot.script.Script.State#STOP}.
 	 * This method can either be overridden or ignored.
 	 */
 	public void stop() {
 	}
 
 	/**
-	 * Called on {@link State#SUSPEND}.
+	 * Called on {@link org.powerbot.script.Script.State#SUSPEND}.
 	 * This method can either be overridden or ignored.
 	 */
 	public void suspend() {
 	}
 
 	/**
-	 * Called on {@link State#RESUME}.
+	 * Called on {@link org.powerbot.script.Script.State#RESUME}.
 	 * This method can either be overridden or ignored.
 	 */
 	public void resume() {
