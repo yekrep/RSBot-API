@@ -6,6 +6,7 @@ import org.powerbot.script.internal.randoms.BankPin;
 import org.powerbot.script.internal.randoms.Login;
 import org.powerbot.script.internal.randoms.TicketDestroy;
 import org.powerbot.script.internal.randoms.WidgetCloser;
+import org.powerbot.script.lang.Prioritizable;
 import org.powerbot.script.lang.Stoppable;
 import org.powerbot.script.lang.Subscribable;
 import org.powerbot.script.lang.Suspendable;
@@ -18,9 +19,10 @@ import java.util.Queue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public final class ScriptController implements Runnable, Suspendable, Stoppable, Subscribable<EventListener> {
+public final class ScriptController implements Runnable, Suspendable, Stoppable, Subscribable<EventListener>, Prioritizable {
 	private final MethodContext ctx;
 	private final EventManager events;
+	private PriorityManager priorityManager;
 	private ExecutorService executor;
 	private Queue<Script> scripts;
 	private AtomicBoolean suspended;
@@ -29,6 +31,7 @@ public final class ScriptController implements Runnable, Suspendable, Stoppable,
 	public ScriptController(final MethodContext ctx, final EventMulticaster multicaster, final Script script) {
 		this.ctx = ctx;
 		events = new EventManager(multicaster);
+		priorityManager = new PriorityManager(this);
 		executor = new ScriptThreadExecutor(this);
 		suspended = new AtomicBoolean(false);
 		stopping = new AtomicBoolean(false);
@@ -52,6 +55,7 @@ public final class ScriptController implements Runnable, Suspendable, Stoppable,
 			}
 		}
 
+		getExecutor().submit(priorityManager);
 		call(Script.State.START);
 		events.subscribeAll();
 	}
@@ -99,6 +103,11 @@ public final class ScriptController implements Runnable, Suspendable, Stoppable,
 		events.unsubscribe(l);
 	}
 
+	@Override
+	public int getPriority() {
+		return priorityManager.getPriority();
+	}
+
 	public ExecutorService getExecutor() {
 		return this.executor;
 	}
@@ -120,6 +129,10 @@ public final class ScriptController implements Runnable, Suspendable, Stoppable,
 			} catch (Exception ignored) {
 			}
 		}
+	}
+
+	Queue<Script> getScripts() {
+		return scripts;
 	}
 
 	private final class ScriptComparator implements Comparator<Script> {
