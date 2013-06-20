@@ -398,4 +398,18 @@ public class Bank extends ItemQuery<Item> {
 		final Component child = ctx.widgets.get(752, 3);
 		return child != null && child.isValid() && child.isOnScreen();
 	}
+
+	public static enum Amount {
+		ONE(1), FIVE(5), TEN(10), ALL_BUT_ONE(-1), ALL(0);
+
+		private final int value;
+
+		private Amount(final int value) {
+			this.value = value;
+		}
+
+		public int getValue() {
+			return value;
+		}
+	}
 }
