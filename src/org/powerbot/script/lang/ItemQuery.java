@@ -2,8 +2,8 @@ package org.powerbot.script.lang;
 
 import org.powerbot.script.methods.MethodContext;
 
-public abstract class ItemQuery<K extends Identifiable & Nameable & Stackable> extends AbstractQuery<ItemQuery<K>, K>
-		implements Identifiable.Query<ItemQuery<K>>, Nameable.Query<ItemQuery<K>>, Stackable.Query<ItemQuery<K>> {
+public abstract class ItemQuery<K extends Identifiable & Nameable & Stackable & Interactable> extends AbstractQuery<ItemQuery<K>, K>
+		implements Identifiable.Query<ItemQuery<K>>, Nameable.Query<ItemQuery<K>>, Stackable.Query<ItemQuery<K>>, Interactable.Query<ItemQuery<K>> {
 	public ItemQuery(final MethodContext factory) {
 		super(factory);
 	}
@@ -66,6 +66,22 @@ public abstract class ItemQuery<K extends Identifiable & Nameable & Stackable> e
 	@Override
 	public ItemQuery<K> name(Nameable... names) {
 		return select(new Nameable.Matcher(names));
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public ItemQuery<K> click(final boolean left) {
+		return each(new Interactable.Clicker(left));
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public ItemQuery<K> interact(final String action, final String option) {
+		return each(new Interactable.Interacter(action, option));
 	}
 
 	@Override

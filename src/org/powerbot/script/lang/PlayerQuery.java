@@ -2,8 +2,8 @@ package org.powerbot.script.lang;
 
 import org.powerbot.script.methods.MethodContext;
 
-public abstract class PlayerQuery<K extends Locatable & Nameable> extends AbstractQuery<PlayerQuery<K>, K>
-		implements Locatable.Query<PlayerQuery<K>>, Nameable.Query<PlayerQuery<K>> {
+public abstract class PlayerQuery<K extends Locatable & Nameable & Interactable> extends AbstractQuery<PlayerQuery<K>, K>
+		implements Locatable.Query<PlayerQuery<K>>, Nameable.Query<PlayerQuery<K>>, Interactable.Query<PlayerQuery<K>> {
 	public PlayerQuery(final MethodContext factory) {
 		super(factory);
 	}
@@ -67,5 +67,21 @@ public abstract class PlayerQuery<K extends Locatable & Nameable> extends Abstra
 	@Override
 	public PlayerQuery<K> name(Nameable... names) {
 		return select(new Nameable.Matcher(names));
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public PlayerQuery<K> click(final boolean left) {
+		return each(new Interactable.Clicker(left));
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public PlayerQuery<K> interact(final String action, final String option) {
+		return each(new Interactable.Interacter(action, option));
 	}
 }
