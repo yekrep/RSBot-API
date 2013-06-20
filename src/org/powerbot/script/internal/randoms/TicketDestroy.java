@@ -15,7 +15,7 @@ import org.powerbot.util.Tracker;
 @Manifest(name = "Spin ticket destroyer", authors = {"Timer"}, description = "Claims or destroys spin tickets")
 public class TicketDestroy extends PollingScript implements InternalScript {
 	private static final int[] ITEM_IDS = {24154, 24155};
-	private Component item;
+	private Component component;
 
 	@Override
 	public boolean isValid() {
@@ -29,16 +29,19 @@ public class TicketDestroy extends PollingScript implements InternalScript {
 			return false;
 		}
 
-		this.item = null;
+		this.component = null;
 		for (final Item item : ctx.inventory.select().id(ITEM_IDS).first()) {
-			this.item = item.getComponent();
-			return this.item.isValid();
+			this.component = item.getComponent();
+			return this.component.isValid();
 		}
 		return false;
 	}
 
 	@Override
 	public int poll() {
+		Component item = this.component;
+		if (item == null) return -1;
+
 		Tracker.getInstance().trackPage("randoms/TicketDestroy/", "");
 
 		if (((ctx.settings.get(1448) & 0xFF00) >>> 8) < (item.getItemId() == ITEM_IDS[0] ? 10 : 9)) {

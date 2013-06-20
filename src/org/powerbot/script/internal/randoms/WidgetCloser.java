@@ -27,6 +27,9 @@ public class WidgetCloser extends PollingScript implements InternalScript {
 
 	@Override
 	public int poll() {
+		Component component = this.component;
+		if (component == null) return -1;
+
 		if (++tries > 3) {
 			tries = 0;
 			return Random.nextInt(30, 61) * 1000;
