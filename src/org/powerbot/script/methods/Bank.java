@@ -229,19 +229,17 @@ public class Bank extends ItemQuery<Item> {
 		return null;
 	}
 
-	public boolean withdraw(final int id, final int amount) {
-		for (final Item item : select().id(id).first()) {
-			return withdraw(item, amount);
-		}
-		return false;
+	public boolean withdraw(int id, Amount amount) {
+		return withdraw(id, amount.getValue());
 	}
 
-	public boolean withdraw(final Item item, final int amount) {
-		if (item == null) {
-			return false;
+	public boolean withdraw(int id, int amount) {
+		Item item = null;
+		for (final Item _item : select().id(id).first()) {
+			item = _item;
 		}
 		final Component container = ctx.widgets.get(WIDGET, COMPONENT_CONTAINER_ITEMS);
-		if (container == null || !container.isValid()) {
+		if (item == null || !container.isValid()) {
 			return false;
 		}
 
