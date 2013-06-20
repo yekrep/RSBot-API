@@ -56,10 +56,8 @@ public class ActionBar extends IdQuery<Action> {
 		} else if ((id = ctx.settings.get(SETTING_ITEM + slot)) > 0) {
 			type = Action.Type.ITEM;
 		} else {
-			type = null;
-		}
-		if (type == null) {
-			return null;
+			type = Action.Type.UNKNOWN;
+			id = -1;
 		}
 		return new Action(ctx, slot, type, id);
 	}
