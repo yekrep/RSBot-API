@@ -13,7 +13,7 @@ import java.util.Queue;
  */
 public interface Script extends Runnable, Validatable, Prioritizable, EventListener {
 	public static final int PRIORITY_NORMAL = 0;
-	public static final int PRIORITY_RAISED = 1;
+	public static final int PRIORITY_HIGH = 1;
 
 	/**
 	 * The representative states of a {@link Script}

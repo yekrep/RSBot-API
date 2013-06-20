@@ -38,7 +38,7 @@ public class BankPin extends PollingScript implements InternalScript {
 
 	@Override
 	public int getPriority() {
-		return PRIORITY_RAISED;
+		return PRIORITY_HIGH;
 	}
 
 	private String getPin() {
