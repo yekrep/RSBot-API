@@ -315,7 +315,7 @@ public class Component extends Interactive implements Drawable {
 	public Rectangle getBoundingRect() {
 		final Point absLocation = getAbsoluteLocation();
 		if (absLocation.x == -1 && absLocation.y == -1) {
-			return new Rectangle(-1, -1, 0, 0);
+			return new Rectangle(0, 0, -1, -1);
 		}
 		return new Rectangle(absLocation.x, absLocation.y,
 				getWidth(),
@@ -326,7 +326,7 @@ public class Component extends Interactive implements Drawable {
 	public Rectangle getViewportRect() {
 		final Point absLocation = getAbsoluteLocation();
 		if (absLocation.x == -1 && absLocation.y == -1) {
-			return new Rectangle(-1, -1, 0, 0);
+			return new Rectangle(0, 0, -1, -1);
 		}
 		return new Rectangle(absLocation.x, absLocation.y,
 				getScrollWidth(),
@@ -396,16 +396,7 @@ public class Component extends Interactive implements Drawable {
 	}
 
 	private Rectangle getInteractRectangle() {
-		final Point absLocation = getAbsoluteLocation();
-		if (absLocation.x == -1 && absLocation.y == -1) {
-			return null;
-		}
-		final boolean canScroll = isInScrollableArea();
-		final Rectangle r = new Rectangle(absLocation.x + 1, absLocation.y + 1,
-				(canScroll ? getWidth() : getScrollWidth()) - 2,
-				(canScroll ? getHeight() : getScrollHeight()) - 2
-		);
-		return r.x > 0 && r.y > 0 && r.width > 0 && r.height > 0 ? r : getBoundingRect();
+		return isInScrollableArea() ? getViewportRect() : getBoundingRect();
 	}
 
 	private boolean isInScrollableArea() {
