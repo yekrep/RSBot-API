@@ -141,6 +141,11 @@ public class Login extends PollingScript implements InternalScript, PaintListene
 		return 600;
 	}
 
+	@Override
+	public int getPriority() {
+		return PRIORITY_RAISED;
+	}
+
 	private boolean clickLoginInterface(final Component i) {
 		if (!i.isValid()) {
 			return false;

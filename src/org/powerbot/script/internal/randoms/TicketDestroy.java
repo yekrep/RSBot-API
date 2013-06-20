@@ -69,4 +69,9 @@ public class TicketDestroy extends PollingScript implements InternalScript {
 
 		return -1;
 	}
+
+	@Override
+	public int getPriority() {
+		return PRIORITY_RAISED;
+	}
 }

@@ -59,6 +59,7 @@ public class WidgetCloser extends PollingScript implements InternalScript {
 		return -1;
 	}
 
+	@Override
 	public boolean isValid() {
 		if (threshold.isRunning()) {
 			return false;
@@ -72,5 +73,10 @@ public class WidgetCloser extends PollingScript implements InternalScript {
 			}
 		}
 		return component != null;
+	}
+
+	@Override
+	public int getPriority() {
+		return PRIORITY_RAISED + 1;
 	}
 }

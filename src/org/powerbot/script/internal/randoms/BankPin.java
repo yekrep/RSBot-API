@@ -36,6 +36,11 @@ public class BankPin extends PollingScript implements InternalScript {
 		return Random.nextInt(700, 1200);
 	}
 
+	@Override
+	public int getPriority() {
+		return PRIORITY_RAISED;
+	}
+
 	private String getPin() {
 		try {
 			return ctx.getBot().getAccount().getPIN();
