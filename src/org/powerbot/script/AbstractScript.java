@@ -3,7 +3,6 @@ package org.powerbot.script;
 import org.powerbot.Configuration;
 import org.powerbot.script.internal.ScriptController;
 import org.powerbot.script.methods.MethodContext;
-import org.powerbot.script.util.Random;
 import org.powerbot.util.StringUtil;
 import org.powerbot.util.io.HttpClient;
 
@@ -129,8 +128,8 @@ public abstract class AbstractScript implements Script {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public final void setController(final ScriptController group) {
-		this.controller = group;
+	public final void setController(final ScriptController controller) {
+		this.controller = controller;
 	}
 
 	/**
