@@ -38,11 +38,11 @@ public class WidgetCloser extends PollingScript implements InternalScript {
 		}
 
 		Tracker.getInstance().trackPage("randoms/WidgetCloser/", "");
-		getController().getLock().lock();
+		ctx.lock.lock();
 
 		if (++tries > 3) {
 			threshold.setEndIn(60000);
-			getController().getLock().unlock();
+			ctx.lock.unlock();
 			return -1;
 		}
 
@@ -54,7 +54,7 @@ public class WidgetCloser extends PollingScript implements InternalScript {
 			if (!component.isVisible()) {
 				component = null;
 				tries = 0;
-				getController().getLock().unlock();
+				ctx.lock.unlock();
 				return -1;
 			}
 		}

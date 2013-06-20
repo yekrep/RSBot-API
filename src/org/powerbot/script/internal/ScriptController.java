@@ -16,13 +16,11 @@ import java.util.EventListener;
 import java.util.LinkedList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.locks.ReentrantLock;
 
 public final class ScriptController implements Runnable, Suspendable, Stoppable, Subscribable<EventListener> {
 	private final MethodContext ctx;
 	private final EventManager events;
 	private ExecutorService executor;
-	private ReentrantLock lock;
 	private Collection<Script> scripts;
 	private AtomicBoolean suspended;
 	private AtomicBoolean stopping;
@@ -31,7 +29,6 @@ public final class ScriptController implements Runnable, Suspendable, Stoppable,
 		this.ctx = ctx;
 		events = new EventManager(multicaster);
 		executor = new ScriptThreadExecutor(this);
-		lock = new ReentrantLock(true);
 		suspended = new AtomicBoolean(false);
 		stopping = new AtomicBoolean(false);
 
@@ -103,10 +100,6 @@ public final class ScriptController implements Runnable, Suspendable, Stoppable,
 
 	public ExecutorService getExecutor() {
 		return this.executor;
-	}
-
-	public ReentrantLock getLock() {
-		return lock;
 	}
 
 	private void call(final Script.State state) {

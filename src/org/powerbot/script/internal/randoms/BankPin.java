@@ -14,12 +14,12 @@ public class BankPin extends PollingScript implements InternalScript {
 	public int poll() {
 		final Component pinInterface = ctx.widgets.get(13, 0);
 		if (pinInterface == null || !pinInterface.isVisible()) {
-			getController().getLock().unlock();
+			ctx.lock.unlock();
 			return -1;
 		}
 
 		Tracker.getInstance().trackPage("randoms/BankPin/", "");
-		getController().getLock().lock();
+		ctx.lock.lock();
 
 		String pin = getPin();
 		if (pin == null) {
