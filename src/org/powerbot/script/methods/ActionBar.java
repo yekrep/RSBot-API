@@ -51,15 +51,13 @@ public class ActionBar extends IdQuery<Action> {
 		}
 		Action.Type type;
 		int id = ctx.settings.get(SETTING_ABILITY + slot);
-		if (id != 0) {
+		if (id > 0) {
 			type = Action.Type.ABILITY;
-		} else if ((id = ctx.settings.get(SETTING_ITEM + slot)) != 0) {
+		} else if ((id = ctx.settings.get(SETTING_ITEM + slot)) > 0) {
 			type = Action.Type.ITEM;
 		} else {
-			type = null;
-		}
-		if (type == null) {
-			return null;
+			type = Action.Type.UNKNOWN;
+			id = -1;
 		}
 		return new Action(ctx, slot, type, id);
 	}
@@ -96,7 +94,7 @@ public class ActionBar extends IdQuery<Action> {
 		if (c == null || !c.isValid()) {
 			return false;
 		}
-		if (action.hover() && ctx.mouse.drag(c.getInteractPoint(), true)) {
+		if (action.getComponent().hover() && ctx.mouse.drag(c.getInteractPoint(), true)) {
 			for (int i = 0; i < 5 && getActionAt(slot) != null; i++) {
 				Delay.sleep(100, 200);
 			}

@@ -1,8 +1,8 @@
 package org.powerbot.script.methods;
 
+import org.powerbot.script.lang.Filter;
 import org.powerbot.script.lang.ItemQuery;
 import org.powerbot.script.util.Delay;
-import org.powerbot.script.lang.Filter;
 import org.powerbot.script.util.Random;
 import org.powerbot.script.util.Timer;
 import org.powerbot.script.wrappers.Component;
@@ -229,19 +229,17 @@ public class Bank extends ItemQuery<Item> {
 		return null;
 	}
 
-	public boolean withdraw(final int id, final int amount) {
-		for (final Item item : select().id(id).first()) {
-			return withdraw(item, amount);
-		}
-		return false;
+	public boolean withdraw(int id, Amount amount) {
+		return withdraw(id, amount.getValue());
 	}
 
-	public boolean withdraw(final Item item, final int amount) {
-		if (item == null) {
-			return false;
+	public boolean withdraw(int id, int amount) {
+		Item item = null;
+		for (final Item _item : select().id(id).first()) {
+			item = _item;
 		}
 		final Component container = ctx.widgets.get(WIDGET, COMPONENT_CONTAINER_ITEMS);
-		if (container == null || !container.isValid()) {
+		if (item == null || !container.isValid()) {
 			return false;
 		}
 
@@ -298,14 +296,16 @@ public class Bank extends ItemQuery<Item> {
 		return ctx.inventory.select().count(true) != inv || ctx.inventory.count() == 28;
 	}
 
-	public boolean deposit(final int id, final int amount) {
-		for (final Item item : ctx.inventory.select().id(id).first()) {
-			return deposit(item, amount);
-		}
-		return false;
+	public boolean deposit(int id, Amount amount) {
+		return deposit(id, amount.getValue());
 	}
 
-	public boolean deposit(final Item item, final int amount) {
+	public boolean deposit(final int id, final int amount) {
+		Item item = null;
+		for (final Item _item : ctx.inventory.select().id(id).first()) {
+			item = _item;
+		}
+
 		if (!isOpen() || amount < 0 || item == null) {
 			return false;
 		}
@@ -313,7 +313,7 @@ public class Bank extends ItemQuery<Item> {
 		String action = "Deposit-" + amount;
 		final int c = ctx.inventory.select().id(item.getId()).count(true);
 		if (c == 1) {
-			action = "Depoist";
+			action = "Deposit";
 		} else if (c <= amount || amount == 0) {
 			action = "Deposit-All";
 		}
@@ -397,5 +397,19 @@ public class Bank extends ItemQuery<Item> {
 	private boolean isInputWidgetOpen() {
 		final Component child = ctx.widgets.get(752, 3);
 		return child != null && child.isValid() && child.isOnScreen();
+	}
+
+	public static enum Amount {
+		ONE(1), FIVE(5), TEN(10), ALL_BUT_ONE(-1), ALL(0);
+
+		private final int value;
+
+		private Amount(final int value) {
+			this.value = value;
+		}
+
+		public int getValue() {
+			return value;
+		}
 	}
 }

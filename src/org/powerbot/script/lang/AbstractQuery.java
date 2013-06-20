@@ -200,6 +200,17 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends Me
 		return items.get().iterator();
 	}
 
+	public T each(final ChainingIterator<K> c) {
+		int i = 0;
+		for (final K k : this) {
+			if (!c.next(i++, k)) {
+				break;
+			}
+		}
+
+		return getThis();
+	}
+
 	/**
 	 * Returns {@code true} if the query cache contains no items.
 	 *
