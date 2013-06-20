@@ -200,6 +200,12 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends Me
 		return items.get().iterator();
 	}
 
+	/**
+	 * Iterates through the items in the query cache with the specified callback.
+	 *
+	 * @param c the callback
+	 * @return {@code this} for the purpose of chaining
+	 */
 	public T each(final ChainingIterator<K> c) {
 		int i = 0;
 		for (final K k : this) {
