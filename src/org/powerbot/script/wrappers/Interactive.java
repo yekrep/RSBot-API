@@ -1,6 +1,5 @@
 package org.powerbot.script.wrappers;
 
-import org.powerbot.script.lang.Interactable;
 import org.powerbot.script.lang.Targetable;
 import org.powerbot.script.lang.Validatable;
 import org.powerbot.script.methods.MethodContext;
@@ -10,25 +9,17 @@ import org.powerbot.script.lang.Filter;
 
 import java.awt.Point;
 
-public abstract class Interactive extends MethodProvider implements Interactable, Targetable, Validatable {
+public abstract class Interactive extends MethodProvider implements Targetable, Validatable {
 	private static final int ATTEMPTS = 5;
 
 	public Interactive(MethodContext ctx) {
 		super(ctx);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
 	public boolean isOnScreen() {
 		return ctx.game.isPointOnScreen(getInteractPoint());
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
 	public boolean hover() {
 		return ctx.mouse.move(this);
 	}
@@ -37,10 +28,6 @@ public abstract class Interactive extends MethodProvider implements Interactable
 		return click(true);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
 	public boolean click(final boolean left) {
 		return ctx.mouse.click(this, left);
 	}
@@ -49,10 +36,6 @@ public abstract class Interactive extends MethodProvider implements Interactable
 		return interact(action, null);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
 	public boolean interact(final String action, final String option) {
 		int a = 0;
 		while (a++ < ATTEMPTS) {
