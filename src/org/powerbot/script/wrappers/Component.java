@@ -342,7 +342,7 @@ public class Component extends Interactive implements Drawable {
 	@Override
 	public Point getNextPoint() {
 		final Rectangle interact = getInteractRectangle();
-		return interact != null ? new Point(
+		return interact.getWidth() != -1 && interact.getHeight() != -1 ? new Point(
 				Random.nextGaussian(interact.x, interact.x + interact.width, interact.width / 10),
 				Random.nextGaussian(interact.y, interact.y + interact.height, interact.height / 10)
 		) : new Point(-1, -1);
