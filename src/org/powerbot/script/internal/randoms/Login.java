@@ -31,6 +31,15 @@ public class Login extends PollingScript implements InternalScript, PaintListene
 	private volatile Timer re_load_timer = null;
 
 	@Override
+	public boolean isValid() {
+		int state = ctx.game.getClientState();
+		return (state == Game.INDEX_LOGIN_SCREEN ||
+				state == Game.INDEX_LOBBY_SCREEN ||
+				state == Game.INDEX_LOGGING_IN) &&
+				ctx.getBot().getAccount() != null;
+	}
+
+	@Override
 	public int poll() {
 		int state = ctx.game.getClientState();
 		if ((state == Game.INDEX_LOGIN_SCREEN || state == Game.INDEX_LOGGING_IN) && ctx.getBot().getAccount() != null) {
