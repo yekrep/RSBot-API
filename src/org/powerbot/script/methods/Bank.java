@@ -1,8 +1,8 @@
 package org.powerbot.script.methods;
 
+import org.powerbot.script.lang.Filter;
 import org.powerbot.script.lang.ItemQuery;
 import org.powerbot.script.util.Delay;
-import org.powerbot.script.lang.Filter;
 import org.powerbot.script.util.Random;
 import org.powerbot.script.util.Timer;
 import org.powerbot.script.wrappers.Component;
@@ -296,14 +296,16 @@ public class Bank extends ItemQuery<Item> {
 		return ctx.inventory.select().count(true) != inv || ctx.inventory.count() == 28;
 	}
 
-	public boolean deposit(final int id, final int amount) {
-		for (final Item item : ctx.inventory.select().id(id).first()) {
-			return deposit(item, amount);
-		}
-		return false;
+	public boolean deposit(int id, Amount amount) {
+		return deposit(id, amount.getValue());
 	}
 
-	public boolean deposit(final Item item, final int amount) {
+	public boolean deposit(final int id, final int amount) {
+		Item item = null;
+		for (final Item _item : ctx.inventory.select().id(id).first()) {
+			item = _item;
+		}
+
 		if (!isOpen() || amount < 0 || item == null) {
 			return false;
 		}
