@@ -296,7 +296,13 @@ public abstract class Actor extends Interactive implements Nameable, Locatable, 
 	}
 
 	private int toPercent(final int ratio) {
-		return (int) Math.ceil((ratio * 100) / 0xff);
+		return (int) Math.ceil((ratio * 100d) / 255);
+	}
+
+	@Override
+	public int hashCode() {
+		final RSCharacter i;
+		return (i = this.getAccessor()) != null ? System.identityHashCode(i) : 0;
 	}
 
 	@Override

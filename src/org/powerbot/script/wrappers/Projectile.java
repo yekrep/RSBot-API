@@ -29,6 +29,12 @@ public class Projectile extends MethodProvider implements Identifiable, Validata
 	}
 
 	@Override
+	public int hashCode() {
+		final RSProjectile i;
+		return (i = this.projectile.get()) != null ? System.identityHashCode(i) : 0;
+	}
+
+	@Override
 	public boolean equals(final Object o) {
 		if (o == null || !(o instanceof Projectile)) {
 			return false;

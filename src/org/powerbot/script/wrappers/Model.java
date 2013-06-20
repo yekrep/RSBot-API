@@ -257,6 +257,11 @@ public abstract class Model extends MethodProvider {
 	}
 
 	@Override
+	public int hashCode() {
+		return Arrays.hashCode(faceA);
+	}
+
+	@Override
 	public boolean equals(final Object o) {
 		if (o == null || !(o instanceof Model)) {
 			return false;

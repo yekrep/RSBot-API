@@ -439,6 +439,11 @@ public class Component extends Interactive implements Drawable {
 	}
 
 	@Override
+	public int hashCode() {
+		return widget.getIndex() * 31 + index;
+	}
+
+	@Override
 	public boolean equals(final Object o) {
 		if (o == null || !(o instanceof Component)) {
 			return false;

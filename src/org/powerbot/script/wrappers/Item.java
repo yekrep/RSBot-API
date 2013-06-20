@@ -100,6 +100,11 @@ public class Item extends Interactive implements Identifiable, Nameable, Stackab
 	}
 
 	@Override
+	public int hashCode() {
+		return this.id * 31 + this.component.getIndex();
+	}
+
+	@Override
 	public boolean equals(final Object o) {
 		if (o == null || !(o instanceof Item)) {
 			return false;
