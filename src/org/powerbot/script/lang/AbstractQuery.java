@@ -18,7 +18,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
  *
  * @param <T> the super class
  * @param <K> the subject type
- *
  * @author Paris
  */
 public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends MethodProvider implements Iterable<K> {
@@ -77,7 +76,7 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends Me
 	 * Selects the specified data set into the query cache.
 	 *
 	 * @param c a {@link List}, {@link Collection} or any other {@link Iterable}
-	 *             source of items to replace the existing cache with
+	 *          source of items to replace the existing cache with
 	 * @return {@code this} for the purpose of chaining
 	 */
 	public T select(final Iterable<K> c) {
@@ -159,7 +158,7 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends Me
 	 * Limits the query cache to the items within the specified bounds.
 	 *
 	 * @param offset the starting index
-	 * @param count the maximum number of items to retain
+	 * @param count  the maximum number of items to retain
 	 * @return {@code this} for the purpose of chaining
 	 */
 	public T limit(final int offset, final int count) {
