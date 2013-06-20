@@ -11,9 +11,10 @@ import org.powerbot.script.lang.Subscribable;
 import org.powerbot.script.lang.Suspendable;
 import org.powerbot.script.methods.MethodContext;
 
-import java.util.Collection;
+import java.util.Comparator;
 import java.util.EventListener;
-import java.util.LinkedList;
+import java.util.PriorityQueue;
+import java.util.Queue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -21,7 +22,7 @@ public final class ScriptController implements Runnable, Suspendable, Stoppable,
 	private final MethodContext ctx;
 	private final EventManager events;
 	private ExecutorService executor;
-	private Collection<Script> scripts;
+	private Queue<Script> scripts;
 	private AtomicBoolean suspended;
 	private AtomicBoolean stopping;
 
@@ -32,7 +33,7 @@ public final class ScriptController implements Runnable, Suspendable, Stoppable,
 		suspended = new AtomicBoolean(false);
 		stopping = new AtomicBoolean(false);
 
-		scripts = new LinkedList<>();
+		scripts = new PriorityQueue<>(5, new ScriptComparator());
 		scripts.add(new Login());
 		scripts.add(new WidgetCloser());
 		scripts.add(new TicketDestroy());
@@ -118,6 +119,13 @@ public final class ScriptController implements Runnable, Suspendable, Stoppable,
 				});
 			} catch (Exception ignored) {
 			}
+		}
+	}
+
+	private final class ScriptComparator implements Comparator<Script> {
+		@Override
+		public int compare(final Script script1, final Script script2) {
+			return script2.getPriority() - script1.getPriority();
 		}
 	}
 }
