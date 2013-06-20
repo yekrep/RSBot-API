@@ -1,19 +1,19 @@
 package org.powerbot.script.wrappers;
 
 import org.powerbot.script.lang.Identifiable;
+import org.powerbot.script.lang.Validatable;
 import org.powerbot.script.methods.ActionBar;
 import org.powerbot.script.methods.MethodContext;
+import org.powerbot.script.methods.MethodProvider;
 
-import java.awt.Point;
-
-public class Action extends Interactive implements Identifiable {
+public class Action extends MethodProvider implements Identifiable, Validatable {
 	private final int slot;
 	private final Type type;
 	private final int id;
 
 	public Action(MethodContext ctx, final int slot, final Type type, final int id) {
 		super(ctx);
-		if (slot < 0 || slot >= ActionBar.NUM_SLOTS || type == null || id <= 0) {
+		if (slot < 0 || slot >= ActionBar.NUM_SLOTS || type == null) {
 			throw new IllegalArgumentException();
 		}
 		this.slot = slot;
@@ -50,38 +50,18 @@ public class Action extends Interactive implements Identifiable {
 				action.isValid() && action.getTextColor() == 0xFFFFFF;
 	}
 
-	@Override
-	public Point getInteractPoint() {
-		final Component c = ctx.widgets.get(ActionBar.WIDGET, ActionBar.COMPONENT_SLOTS[slot]);
-		return c.getInteractPoint();
-	}
-
-	@Override
-	public Point getNextPoint() {
-		final Component c = ctx.widgets.get(ActionBar.WIDGET, ActionBar.COMPONENT_SLOTS[slot]);
-		return c.getNextPoint();
-	}
-
-	@Override
-	public Point getCenterPoint() {
-		final Component c = ctx.widgets.get(ActionBar.WIDGET, ActionBar.COMPONENT_SLOTS[slot]);
-		return c.getCenterPoint();
-	}
-
-	@Override
-	public boolean contains(final Point point) {
-		final Component c = ctx.widgets.get(ActionBar.WIDGET, ActionBar.COMPONENT_SLOTS[slot]);
-		return c.contains(point);
+	public Component getComponent() {
+		return ctx.widgets.get(ActionBar.WIDGET, ActionBar.COMPONENT_SLOTS[slot]);
 	}
 
 	@Override
 	public boolean isValid() {
-		return this.id == (this.type == Type.ABILITY ?
+		return this.type != Type.UNKNOWN && this.id == (this.type == Type.ABILITY ?
 				ctx.settings.get(ActionBar.SETTING_ABILITY + this.slot) :
 				ctx.settings.get(ActionBar.SETTING_ITEM + this.slot));
 	}
 
 	public static enum Type {
-		ABILITY, ITEM
+		ABILITY, ITEM, UNKNOWN
 	}
 }
