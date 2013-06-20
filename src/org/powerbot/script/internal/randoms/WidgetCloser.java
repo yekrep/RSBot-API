@@ -77,6 +77,6 @@ public class WidgetCloser extends PollingScript implements InternalScript {
 
 	@Override
 	public int getPriority() {
-		return PRIORITY_HIGH + 1;
+		return PRIORITY_HIGHER;
 	}
 }

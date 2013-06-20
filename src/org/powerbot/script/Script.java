@@ -16,7 +16,7 @@ public interface Script extends Runnable, Validatable, Prioritizable, EventListe
 	public static final int PRIORITY_LOW = 1;
 	public static final int PRIORITY_NORMAL = 2;
 	public static final int PRIORITY_HIGH = 3;
-	public static final int PRIORTY_HIGHER = 4;
+	public static final int PRIORITY_HIGHER = 4;
 
 	/**
 	 * The representative states of a {@link Script}
