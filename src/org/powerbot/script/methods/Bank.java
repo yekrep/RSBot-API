@@ -313,7 +313,7 @@ public class Bank extends ItemQuery<Item> {
 		String action = "Deposit-" + amount;
 		final int c = ctx.inventory.select().id(item.getId()).count(true);
 		if (c == 1) {
-			action = "Depoist";
+			action = "Deposit";
 		} else if (c <= amount || amount == 0) {
 			action = "Deposit-All";
 		}
