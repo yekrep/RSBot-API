@@ -41,9 +41,9 @@ public abstract class Interactive extends MethodProvider implements Targetable, 
 	}
 
 	public boolean interact(final String action, final String option) {
-		if (!isValid()) return false;
 		int a = 0;
 		while (a++ < ATTEMPTS) {
+			if (!isValid()) return false;
 			if (!ctx.mouse.move(this, new Filter<Point>() {
 				@Override
 				public boolean accept(final Point point) {
