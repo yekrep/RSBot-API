@@ -4,19 +4,17 @@ import org.powerbot.script.Manifest;
 import org.powerbot.script.PollingScript;
 import org.powerbot.script.internal.InternalScript;
 import org.powerbot.script.util.Random;
-import org.powerbot.script.wrappers.Component;
 import org.powerbot.util.Tracker;
 
 @Manifest(name = "Bank Pin", authors = {"Timer"}, description = "Enters the stored bank pin")
 public class BankPin extends PollingScript implements InternalScript {
+	@Override
+	public boolean isValid() {
+		return ctx.widgets.get(13, 0).isVisible();
+	}
 
 	@Override
 	public int poll() {
-		final Component pinInterface = ctx.widgets.get(13, 0);
-		if (pinInterface == null || !pinInterface.isVisible()) {
-			return -1;
-		}
-
 		Tracker.getInstance().trackPage("randoms/BankPin/", "");
 
 		String pin = getPin();
