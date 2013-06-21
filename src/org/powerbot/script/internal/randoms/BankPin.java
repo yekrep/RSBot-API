@@ -1,37 +1,36 @@
 package org.powerbot.script.internal.randoms;
 
-import org.powerbot.script.Manifest;
 import org.powerbot.script.PollingScript;
 import org.powerbot.script.internal.InternalScript;
-import org.powerbot.script.util.Random;
-import org.powerbot.util.Tracker;
 
-@Manifest(name = "Bank Pin", authors = {"Timer"}, description = "Enters the stored bank pin")
+/**
+ * @author Paris
+ * @author Timer
+ */
 public class BankPin extends PollingScript implements InternalScript {
-	public boolean isValid() {
-		return ctx.widgets.get(13, 0).isVisible();
-	}
+	private final int PIN_INDEX = 163, PIN_WIDGET = 13, PIN_WIDGET_BASE = 0, PIN_WIDGET_OFFSET = 6;
 
 	@Override
 	public int poll() {
-		if (!isValid()) return -1;
-		Tracker.getInstance().trackPage("randoms/BankPin/", "");
+		final String pin = getPin();
 
-		String pin = getPin();
-		if (pin == null) {
-			getController().stop();
-			return -1;
-		}
-
-		int setting;
-		int value = Integer.valueOf(String.valueOf(pin.charAt(setting = ctx.settings.get(163))));
-		if (ctx.widgets.get(13, value + 6).interact("Select")) {
-			for (int i = 0; i < 40 && setting == ctx.settings.get(163); i++) {
-				sleep(500, 1000);
+		while (ctx.widgets.get(PIN_WIDGET, PIN_WIDGET_BASE).isVisible()) {
+			if (pin == null) {
+				getController().stop();
+				return -1;
 			}
+
+			int i, v = Integer.valueOf(String.valueOf(pin.charAt(i = ctx.settings.get(PIN_INDEX))));
+			if (ctx.widgets.get(PIN_WIDGET, v + PIN_WIDGET_OFFSET).interact("Select")) {
+				while (i == ctx.settings.get(PIN_INDEX)) {
+					sleep(2400);
+				}
+			}
+
+			sleep(600);
 		}
 
-		return Random.nextInt(700, 1200);
+		return -1;
 	}
 
 	private String getPin() {
