@@ -132,12 +132,12 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends Me
 	}
 
 	private void setArray(final List<K> a, final List<K> c) {
-		try {
-			if (set != null) {
+		if (set != null) {
+			try {
 				set.invoke(a, c.toArray());
 				return;
+			} catch (final IllegalAccessException | InvocationTargetException ignored) {
 			}
-		} catch (final IllegalAccessException | InvocationTargetException ignored) {
 		}
 
 		a.clear();
