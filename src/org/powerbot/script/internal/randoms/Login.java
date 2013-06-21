@@ -33,7 +33,7 @@ public class Login extends PollingScript implements InternalScript, PaintListene
 	@Override
 	public boolean isValid() {
 		int state = ctx.game.getClientState();
-		return (state == Game.INDEX_LOGIN_SCREEN ||
+		return (state == -1 || state == Game.INDEX_LOGIN_SCREEN ||
 				state == Game.INDEX_LOBBY_SCREEN ||
 				state == Game.INDEX_LOGGING_IN) &&
 				ctx.getBot().getAccount() != null;
