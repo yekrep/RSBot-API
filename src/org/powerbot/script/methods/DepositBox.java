@@ -116,24 +116,6 @@ public class DepositBox extends ItemQuery<Item> {
 		return -1;
 	}
 
-	public boolean contains(final int... ids) {
-		for (final int id : ids) {
-			if (indexOf(id) == -1) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	public boolean containsOneOf(final int... ids) {
-		for (final int id : ids) {
-			if (indexOf(id) != -1) {
-				return true;
-			}
-		}
-		return false;
-	}
-
 	public boolean deposit(final int id, final int amount) {
 		if (!isOpen() || amount < 0) {
 			return false;
