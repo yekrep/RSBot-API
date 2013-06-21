@@ -10,6 +10,9 @@ import java.util.logging.Logger;
 
 import org.powerbot.Configuration;
 import org.powerbot.bot.RSClassLoader;
+import org.powerbot.bot.RSLoader;
+import org.powerbot.service.GameAccounts;
+import org.powerbot.service.NetworkAccount;
 import org.powerbot.service.scripts.ScriptClassLoader;
 import org.powerbot.util.io.CryptFile;
 
@@ -19,12 +22,6 @@ import org.powerbot.util.io.CryptFile;
 public class Sandbox extends SecurityManager {
 	private static final Logger log = Logger.getLogger("Sandbox");
 	private static final int PUBLIC_PORT_START = 54700, PUBLIC_PORT_END = 54800;
-	private final Class<?>[] whitelist, whitelistHome;
-
-	public Sandbox(final Class<?>[] whitelist, final Class<?>[] whitelistHome) {
-		this.whitelist = whitelist;
-		this.whitelistHome = whitelistHome;
-	}
 
 	@Override
 	public void checkAccept(final String host, final int port) {
@@ -164,11 +161,12 @@ public class Sandbox extends SecurityManager {
 			}
 		}
 
-		if (isCallingClass(whitelist)) {
+		if (isCallingClass(RSLoader.class)) {
 			return;
 		}
 
-		if ((path + File.separator).startsWith(Configuration.HOME.getAbsolutePath()) && isCallingClass(whitelistHome)) {
+		if ((path + File.separator).startsWith(Configuration.HOME.getAbsolutePath()) &&
+				isCallingClass(NetworkAccount.class, GameAccounts.class, Tracker.class)) {
 			return;
 		}
 

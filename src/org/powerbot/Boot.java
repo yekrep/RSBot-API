@@ -111,8 +111,7 @@ public class Boot implements Runnable {
 
 		StringUtil.newStringUtf8(null); // prevents ClassCircularityError exceptions
 		CryptFile.PERMISSIONS.clear();
-		final Sandbox sandbox = new Sandbox(new Class<?>[]{RSLoader.class},
-				new Class<?>[]{NetworkAccount.class, GameAccounts.class, Tracker.class});
+		final Sandbox sandbox = new Sandbox();
 		sandbox.checkRead(Resources.Paths.ROOT);
 		System.setSecurityManager(sandbox);
 		System.setProperty("java.net.preferIPv4Stack", "true");
