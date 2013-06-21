@@ -2,9 +2,9 @@ package org.powerbot.script.lang;
 
 import org.powerbot.script.methods.MethodContext;
 
-public abstract class GroundItemQuery<K extends Locatable & Identifiable & Nameable & Stackable> extends AbstractQuery<GroundItemQuery<K>, K>
+public abstract class GroundItemQuery<K extends Locatable & Identifiable & Nameable & Stackable & Interactable> extends AbstractQuery<GroundItemQuery<K>, K>
 		implements Locatable.Query<GroundItemQuery<K>>, Identifiable.Query<GroundItemQuery<K>>,
-		Nameable.Query<GroundItemQuery<K>>, Stackable.Query<GroundItemQuery<K>> {
+		Nameable.Query<GroundItemQuery<K>>, Stackable.Query<GroundItemQuery<K>>, Interactable.Query<GroundItemQuery<K>> {
 	public GroundItemQuery(final MethodContext factory) {
 		super(factory);
 	}
@@ -107,6 +107,22 @@ public abstract class GroundItemQuery<K extends Locatable & Identifiable & Namea
 	@Override
 	public GroundItemQuery<K> name(Nameable... names) {
 		return select(new Nameable.Matcher(names));
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public GroundItemQuery<K> click(final boolean left) {
+		return each(new Interactable.Clicker(left));
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public GroundItemQuery<K> interact(final String action, final String option) {
+		return each(new Interactable.Interacter(action, option));
 	}
 
 	@Override
