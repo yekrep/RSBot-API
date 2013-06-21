@@ -28,7 +28,7 @@ public class PriorityManager implements Runnable, Prioritizable {
 			}
 			this.priority = priority;
 
-			Delay.sleep(Random.nextInt(delay / 2, delay * 2));
+			Delay.sleep(Random.nextInt(delay / 6, delay));
 		}
 	}
 
