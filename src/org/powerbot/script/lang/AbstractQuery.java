@@ -199,6 +199,12 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends Me
 		return items.get().iterator();
 	}
 
+	/**
+	 * Enumerates through each item in the query cache.
+	 *
+	 * @param c the handler for each iteration
+	 * @return {@code this} for the purpose of chaining
+	 */
 	public T each(final ChainingIterator<K> c) {
 		int i = 0;
 		for (final K k : this) {
