@@ -30,7 +30,8 @@ public class TicketDestroy extends PollingScript implements InternalScript {
 		}
 
 		this.component = null;
-		for (final Item item : ctx.inventory.select().id(ITEM_IDS).first()) {
+		Item item = ctx.inventory.select().id(ITEM_IDS).first();
+		if (item.isValid()) {
 			this.component = item.getComponent();
 			return this.component.isValid();
 		}

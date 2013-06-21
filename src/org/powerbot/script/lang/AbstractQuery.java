@@ -176,8 +176,9 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends Me
 	 *
 	 * @return {@code this} for the purpose of chaining
 	 */
-	public T first() {
-		return limit(1);
+	public K first() {
+		if (limit(1).isEmpty()) return getNil();
+		return iterator().next();
 	}
 
 	/**
