@@ -187,24 +187,6 @@ public class Bank extends ItemQuery<Item> {
 		return -1;
 	}
 
-	public boolean contains(final int... ids) {
-		for (final int id : ids) {
-			if (indexOf(id) == -1) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	public boolean containsOneOf(final int... ids) {
-		for (final int id : ids) {
-			if (indexOf(id) != -1) {
-				return true;
-			}
-		}
-		return false;
-	}
-
 	public int getCurrentTab() {
 		return ((ctx.settings.get(SETTING_BANK_STATE) >>> 24) - 136) / 8;
 	}
