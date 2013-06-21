@@ -1,7 +1,7 @@
 package org.powerbot.script.methods;
 
-import org.powerbot.script.util.Delay;
 import org.powerbot.script.lang.Filter;
+import org.powerbot.script.util.Delay;
 import org.powerbot.script.util.Timer;
 import org.powerbot.script.wrappers.Actor;
 import org.powerbot.script.wrappers.Component;
@@ -124,7 +124,7 @@ public class Summoning extends MethodProvider {
 
 	public boolean summonFamiliar(final Familiar familiar) {
 		if (ctx.inventory.select().id(familiar.getPouchId()).count() > 0 && ctx.skills.getRealLevel(Skills.SUMMONING) >= familiar.getRequiredLevel()) {
-			for (final Item item : ctx.inventory.select().id(familiar.getPouchId()).first()) {
+			for (final Item item : ctx.inventory.select().id(familiar.getPouchId()).limit(1)) {
 				return item.getComponent().interact("Summon");
 			}
 		}

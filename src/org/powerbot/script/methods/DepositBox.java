@@ -38,7 +38,7 @@ public class DepositBox extends ItemQuery<Item> {
 		if (isOpen()) {
 			return true;
 		}
-		for (final GameObject object : ctx.objects.select().id(DEPOSIT_BOX_IDS).nearest().first()) {
+		for (final GameObject object : ctx.objects.select().id(DEPOSIT_BOX_IDS).nearest().limit(1)) {
 			if (object.interact("Deposit")) {
 				final Widget bankPin = ctx.widgets.get(13);
 				for (int i = 0; i < 20 && !isOpen() && !bankPin.isValid(); i++) {
@@ -121,7 +121,7 @@ public class DepositBox extends ItemQuery<Item> {
 			return false;
 		}
 
-		for (final Item item : ctx.inventory.select().id(id).first()) {
+		for (final Item item : ctx.inventory.select().id(id).limit(1)) {
 			String action = "Deposit-" + amount;
 			final int c = ctx.inventory.select().id(id).count(true);
 			if (c == 1) {
