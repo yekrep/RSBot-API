@@ -1,14 +1,14 @@
 package org.powerbot.script.internal.randoms;
 
-import org.powerbot.script.Manifest;
 import org.powerbot.script.PollingScript;
 import org.powerbot.script.internal.InternalScript;
 import org.powerbot.script.util.Random;
 import org.powerbot.script.util.Timer;
 import org.powerbot.script.wrappers.Component;
-import org.powerbot.util.Tracker;
 
-@Manifest(name = "Widget closer", authors = {"Timer"}, description = "Closes widgets")
+/**
+ * @author Timer
+ */
 public class WidgetCloser extends PollingScript implements InternalScript {
 	private static final int[] COMPONENTS = {
 			21 << 16 | 43, // beholding a player's statuette (duellist's cap)
@@ -37,7 +37,6 @@ public class WidgetCloser extends PollingScript implements InternalScript {
 			return Random.nextInt(30, 61) * 1000;
 		}
 
-		Tracker.getInstance().trackPage("randoms/WidgetCloser/", "");
 		if (component.click(true)) {
 			final Timer timer = new Timer(Random.nextInt(2000, 2500));
 			while (timer.isRunning() && component.isVisible()) {

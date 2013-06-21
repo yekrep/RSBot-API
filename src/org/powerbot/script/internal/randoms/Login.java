@@ -2,7 +2,6 @@ package org.powerbot.script.internal.randoms;
 
 import org.powerbot.event.PaintListener;
 import org.powerbot.gui.BotChrome;
-import org.powerbot.script.Manifest;
 import org.powerbot.script.PollingScript;
 import org.powerbot.script.internal.InternalScript;
 import org.powerbot.script.methods.Game;
@@ -10,7 +9,6 @@ import org.powerbot.script.methods.Lobby;
 import org.powerbot.script.util.Random;
 import org.powerbot.script.util.Timer;
 import org.powerbot.script.wrappers.Component;
-import org.powerbot.util.Tracker;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -18,7 +16,9 @@ import java.awt.Rectangle;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
-@Manifest(name = "Login", authors = {"Timer"}, description = "Enters account credentials to the login screen")
+/**
+ * @author Timer
+ */
 public class Login extends PollingScript implements InternalScript, PaintListener {
 	private static final int WIDGET = 596;
 	private static final int WIDGET_LOGIN_ERROR = 13;
@@ -44,7 +44,6 @@ public class Login extends PollingScript implements InternalScript, PaintListene
 
 		int state = ctx.game.getClientState();
 		if ((state == Game.INDEX_LOGIN_SCREEN || state == Game.INDEX_LOGGING_IN) && ctx.getBot().getAccount() != null) {
-			Tracker.getInstance().trackPage("randoms/Login/", "Login");
 			for (final LoginEvent loginEvent : LoginEvent.values()) {
 				final Component Component = ctx.widgets.get(WIDGET, loginEvent.child);
 				if (Component != null && Component.isValid()) {
@@ -110,7 +109,6 @@ public class Login extends PollingScript implements InternalScript, PaintListene
 				sleep(Random.nextInt(500, 700));
 			}
 		} else if (state == Game.INDEX_LOBBY_SCREEN && ctx.getBot().getAccount() != null) {
-			Tracker.getInstance().trackPage("randoms/Login/", "Lobby");
 			for (final LobbyEvent lobbyEvent : LobbyEvent.values()) {
 				final Component Component = ctx.widgets.get(WIDGET_LOBBY, lobbyEvent.child);
 				if (Component != null && Component.isValid()) {

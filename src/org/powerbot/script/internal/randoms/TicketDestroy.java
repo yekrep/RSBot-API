@@ -1,6 +1,5 @@
 package org.powerbot.script.internal.randoms;
 
-import org.powerbot.script.Manifest;
 import org.powerbot.script.PollingScript;
 import org.powerbot.script.internal.InternalScript;
 import org.powerbot.script.methods.Game;
@@ -10,9 +9,10 @@ import org.powerbot.script.wrappers.Component;
 import org.powerbot.script.wrappers.Item;
 import org.powerbot.script.wrappers.Player;
 import org.powerbot.script.wrappers.Widget;
-import org.powerbot.util.Tracker;
 
-@Manifest(name = "Spin ticket destroyer", authors = {"Timer"}, description = "Claims or destroys spin tickets")
+/**
+ * @author Timer
+ */
 public class TicketDestroy extends PollingScript implements InternalScript {
 	private static final int[] ITEM_IDS = {24154, 24155};
 	private Component component;
@@ -46,8 +46,6 @@ public class TicketDestroy extends PollingScript implements InternalScript {
 
 		Component item = this.component;
 		if (item == null) return -1;
-
-		Tracker.getInstance().trackPage("randoms/TicketDestroy/", "");
 
 		if (((ctx.settings.get(1448) & 0xFF00) >>> 8) < (item.getItemId() == ITEM_IDS[0] ? 10 : 9)) {
 			item.interact("Claim spin");
