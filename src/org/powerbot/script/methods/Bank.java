@@ -216,7 +216,10 @@ public class Bank extends ItemQuery<Item> {
 	}
 
 	public boolean withdraw(int id, int amount) {
-		Item item = select().id(id).first();
+		Item item = select().getNil();
+		for (Item _item : id(id).first()) {
+			item = _item;
+		}
 		final Component container = ctx.widgets.get(WIDGET, COMPONENT_CONTAINER_ITEMS);
 		if (!item.isValid() || !container.isValid()) {
 			return false;
@@ -280,7 +283,10 @@ public class Bank extends ItemQuery<Item> {
 	}
 
 	public boolean deposit(final int id, final int amount) {
-		Item item = ctx.inventory.select().id(id).first();
+		Item item = ctx.inventory.select().getNil();
+		for (Item _item : ctx.inventory.id(id).first()) {
+			item = _item;
+		}
 
 		if (!isOpen() || amount < 0 || !item.isValid()) {
 			return false;
