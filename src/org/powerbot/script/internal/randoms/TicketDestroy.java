@@ -17,7 +17,6 @@ public class TicketDestroy extends PollingScript implements InternalScript {
 	private static final int[] ITEM_IDS = {24154, 24155};
 	private Component component;
 
-	@Override
 	public boolean isValid() {
 		if (!ctx.game.isLoggedIn() || ctx.game.getCurrentTab() != Game.TAB_INVENTORY) {
 			return false;
@@ -43,6 +42,8 @@ public class TicketDestroy extends PollingScript implements InternalScript {
 
 	@Override
 	public int poll() {
+		if (!isValid()) return -1;
+
 		Component item = this.component;
 		if (item == null) return -1;
 
@@ -79,10 +80,5 @@ public class TicketDestroy extends PollingScript implements InternalScript {
 			}
 		}
 		return -1;
-	}
-
-	@Override
-	public int getPriority() {
-		return PRIORITY_HIGH;
 	}
 }

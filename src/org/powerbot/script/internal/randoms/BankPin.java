@@ -8,13 +8,13 @@ import org.powerbot.util.Tracker;
 
 @Manifest(name = "Bank Pin", authors = {"Timer"}, description = "Enters the stored bank pin")
 public class BankPin extends PollingScript implements InternalScript {
-	@Override
 	public boolean isValid() {
 		return ctx.widgets.get(13, 0).isVisible();
 	}
 
 	@Override
 	public int poll() {
+		if (!isValid()) return -1;
 		Tracker.getInstance().trackPage("randoms/BankPin/", "");
 
 		String pin = getPin();
@@ -32,11 +32,6 @@ public class BankPin extends PollingScript implements InternalScript {
 		}
 
 		return Random.nextInt(700, 1200);
-	}
-
-	@Override
-	public int getPriority() {
-		return PRIORITY_HIGH;
 	}
 
 	private String getPin() {

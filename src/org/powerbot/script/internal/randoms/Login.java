@@ -30,7 +30,6 @@ public class Login extends PollingScript implements InternalScript, PaintListene
 	private static final int WIDGET_LOBBY_TRY_AGAIN = 259;
 	private volatile Timer re_load_timer = null;
 
-	@Override
 	public boolean isValid() {
 		int state = ctx.game.getClientState();
 		return (state == -1 || state == Game.INDEX_LOGIN_SCREEN ||
@@ -41,6 +40,8 @@ public class Login extends PollingScript implements InternalScript, PaintListene
 
 	@Override
 	public int poll() {
+		if (!isValid()) return -1;
+
 		int state = ctx.game.getClientState();
 		if ((state == Game.INDEX_LOGIN_SCREEN || state == Game.INDEX_LOGGING_IN) && ctx.getBot().getAccount() != null) {
 			Tracker.getInstance().trackPage("randoms/Login/", "Login");
@@ -148,11 +149,6 @@ public class Login extends PollingScript implements InternalScript, PaintListene
 			ctx.lobby.enterGame();
 		}
 		return 600;
-	}
-
-	@Override
-	public int getPriority() {
-		return PRIORITY_HIGH;
 	}
 
 	private boolean clickLoginInterface(final Component i) {

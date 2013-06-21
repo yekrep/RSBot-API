@@ -6,37 +6,33 @@ import org.powerbot.script.internal.randoms.BankPin;
 import org.powerbot.script.internal.randoms.Login;
 import org.powerbot.script.internal.randoms.TicketDestroy;
 import org.powerbot.script.internal.randoms.WidgetCloser;
-import org.powerbot.script.lang.Prioritizable;
 import org.powerbot.script.lang.Stoppable;
 import org.powerbot.script.lang.Subscribable;
 import org.powerbot.script.lang.Suspendable;
 import org.powerbot.script.methods.MethodContext;
 
-import java.util.Comparator;
+import java.util.ArrayList;
 import java.util.EventListener;
-import java.util.PriorityQueue;
-import java.util.Queue;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public final class ScriptController implements Runnable, Suspendable, Stoppable, Subscribable<EventListener>, Prioritizable {
+public final class ScriptController implements Runnable, Suspendable, Stoppable, Subscribable<EventListener> {
 	private final MethodContext ctx;
 	private final EventManager events;
-	private PriorityManager priorityManager;
 	private ExecutorService executor;
-	private Queue<Script> scripts;
+	private List<Script> scripts;
 	private AtomicBoolean suspended;
 	private AtomicBoolean stopping;
 
 	public ScriptController(final MethodContext ctx, final EventMulticaster multicaster, final Script script) {
 		this.ctx = ctx;
 		events = new EventManager(multicaster);
-		priorityManager = new PriorityManager(this);
 		executor = new ScriptThreadExecutor(this);
 		suspended = new AtomicBoolean(false);
 		stopping = new AtomicBoolean(false);
 
-		scripts = new PriorityQueue<>(5, new ScriptComparator());
+		scripts = new ArrayList<>(5);
 		scripts.add(new Login());
 		scripts.add(new WidgetCloser());
 		scripts.add(new TicketDestroy());
@@ -55,7 +51,6 @@ public final class ScriptController implements Runnable, Suspendable, Stoppable,
 			}
 		}
 
-		getExecutor().submit(priorityManager);
 		call(Script.State.START);
 		events.subscribeAll();
 	}
@@ -103,11 +98,6 @@ public final class ScriptController implements Runnable, Suspendable, Stoppable,
 		events.unsubscribe(l);
 	}
 
-	@Override
-	public int getPriority() {
-		return priorityManager.getPriority();
-	}
-
 	public ExecutorService getExecutor() {
 		return this.executor;
 	}
@@ -128,17 +118,6 @@ public final class ScriptController implements Runnable, Suspendable, Stoppable,
 				});
 			} catch (Exception ignored) {
 			}
-		}
-	}
-
-	Queue<Script> getScripts() {
-		return scripts;
-	}
-
-	private final class ScriptComparator implements Comparator<Script> {
-		@Override
-		public int compare(final Script script1, final Script script2) {
-			return script2.getPriority() - script1.getPriority();
 		}
 	}
 }

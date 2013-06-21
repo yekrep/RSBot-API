@@ -1,8 +1,6 @@
 package org.powerbot.script;
 
 import org.powerbot.script.internal.ScriptController;
-import org.powerbot.script.lang.Prioritizable;
-import org.powerbot.script.lang.Validatable;
 import org.powerbot.script.methods.MethodContext;
 
 import java.util.EventListener;
@@ -11,13 +9,7 @@ import java.util.Queue;
 /**
  * The base interface of a script.
  */
-public interface Script extends Runnable, Validatable, Prioritizable, EventListener {
-	public static final int PRIORITY_LOWER = 0;
-	public static final int PRIORITY_LOW = 1;
-	public static final int PRIORITY_NORMAL = 2;
-	public static final int PRIORITY_HIGH = 3;
-	public static final int PRIORITY_HIGHER = 4;
-
+public interface Script extends Runnable, EventListener {
 	/**
 	 * The representative states of a {@link Script}
 	 */
