@@ -20,7 +20,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * @param <K> the subject type
  * @author Paris
  */
-public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends MethodProvider implements Iterable<K> {
+public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends MethodProvider implements Iterable<K>, Nillable<K> {
 	private final ThreadLocal<List<K>> items;
 	private final Method set;
 

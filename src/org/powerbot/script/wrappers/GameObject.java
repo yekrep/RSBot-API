@@ -184,6 +184,6 @@ public class GameObject extends Interactive implements Locatable, Nameable, Draw
 	}
 
 	public static enum Type {
-		INTERACTIVE, BOUNDARY, WALL_DECORATION, FLOOR_DECORATION
+		INTERACTIVE, BOUNDARY, WALL_DECORATION, FLOOR_DECORATION, UNKNOWN
 	}
 }

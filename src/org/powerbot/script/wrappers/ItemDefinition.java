@@ -18,7 +18,7 @@ class ItemDefinition {
 
 	static ItemDefinition getDef(MethodContext ctx, int id) {
 		Client client = ctx.getClient();
-		if (client == null || id == -1) {
+		if (client == null || id <= 0) {
 			return new ItemDefinition(null);
 		}
 		final RSItemDefLoader loader;

@@ -208,4 +208,9 @@ public class DepositBox extends ItemQuery<Item> {
 		final Component child = ctx.widgets.get(752, 3);
 		return child != null && child.isValid() && child.isOnScreen();
 	}
+
+	@Override
+	public Item getNil() {
+		return new Item(ctx, -1, -1, null);
+	}
 }

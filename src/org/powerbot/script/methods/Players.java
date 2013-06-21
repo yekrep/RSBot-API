@@ -67,4 +67,9 @@ public class Players extends PlayerQuery<Player> {
 
 		return items;
 	}
+
+	@Override
+	public Player getNil() {
+		return new Player(ctx, null);
+	}
 }

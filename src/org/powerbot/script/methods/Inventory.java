@@ -151,4 +151,9 @@ public class Inventory extends ItemQuery<Item> {
 		}
 		return ctx.widgets.get(WIDGET, 0);
 	}
+
+	@Override
+	public Item getNil() {
+		return new Item(ctx, -1, -1, null);
+	}
 }

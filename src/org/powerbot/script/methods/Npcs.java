@@ -57,4 +57,9 @@ public class Npcs extends BasicNamedQuery<Npc> {
 
 		return items;
 	}
+
+	@Override
+	public Npc getNil() {
+		return new Npc(ctx, null);
+	}
 }

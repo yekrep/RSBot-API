@@ -118,4 +118,9 @@ public class ActionBar extends IdQuery<Action> {
 		}
 		return isLocked() == locked;
 	}
+
+	@Override
+	public Action getNil() {
+		return new Action(ctx, 0, Action.Type.UNKNOWN, -1);
+	}
 }

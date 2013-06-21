@@ -60,6 +60,15 @@ public class Action extends MethodProvider implements Identifiable, Validatable 
 	}
 
 	@Override
+	public boolean equals(final Object o) {
+		if (o == null || !(o instanceof Action)) {
+			return false;
+		}
+		Action action = (Action) o;
+		return type == action.getType() && id == action.id;
+	}
+
+	@Override
 	public boolean isValid() {
 		return this.type != Type.UNKNOWN && this.id == (this.type == Type.ABILITY ?
 				ctx.settings.get(ActionBar.SETTING_ABILITY + this.slot) :

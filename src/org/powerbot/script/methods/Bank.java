@@ -381,6 +381,11 @@ public class Bank extends ItemQuery<Item> {
 		return child != null && child.isValid() && child.isOnScreen();
 	}
 
+	@Override
+	public Item getNil() {
+		return new Item(ctx, -1, -1, null);
+	}
+
 	public static enum Amount {
 		ONE(1), FIVE(5), TEN(10), ALL_BUT_ONE(-1), ALL(0);
 

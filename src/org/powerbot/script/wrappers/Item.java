@@ -19,9 +19,6 @@ public class Item extends Interactive implements Identifiable, Nameable, Stackab
 
 	public Item(MethodContext ctx, int id, int stack, Component component) {
 		super(ctx);
-		if (component == null) {
-			throw new IllegalArgumentException("component is null");
-		}
 		this.id = id;
 		this.stack = stack;
 		this.component = component;
@@ -34,6 +31,7 @@ public class Item extends Interactive implements Identifiable, Nameable, Stackab
 
 	@Override
 	public int getStackSize() {
+		if (component == null) return stack;
 		int stack = component.getItemStackSize();
 		if (component.isVisible() && component.getItemId() == this.id) {
 			return this.stack = stack;
@@ -43,6 +41,7 @@ public class Item extends Interactive implements Identifiable, Nameable, Stackab
 
 	@Override
 	public String getName() {
+		if (component == null) return "";
 		String name;
 		if (component.getItemId() == this.id) {
 			name = component.getItemName();
@@ -70,21 +69,25 @@ public class Item extends Interactive implements Identifiable, Nameable, Stackab
 
 	@Override
 	public Point getInteractPoint() {
+		if (component == null) return new Point(-1, -1);
 		return component.getInteractPoint();
 	}
 
 	@Override
 	public Point getNextPoint() {
+		if (component == null) return new Point(-1, -1);
 		return component.getNextPoint();
 	}
 
 	@Override
 	public Point getCenterPoint() {
+		if (component == null) return new Point(-1, -1);
 		return component.getCenterPoint();
 	}
 
 	@Override
 	public boolean contains(Point point) {
+		if (component == null) return false;
 		return component.contains(point);
 	}
 
@@ -101,6 +104,7 @@ public class Item extends Interactive implements Identifiable, Nameable, Stackab
 
 	@Override
 	public int hashCode() {
+		if (component == null) return -1;
 		return this.id * 31 + this.component.getIndex();
 	}
 
@@ -110,6 +114,6 @@ public class Item extends Interactive implements Identifiable, Nameable, Stackab
 			return false;
 		}
 		final Item i = (Item) o;
-		return this.id == i.id && this.component.equals(i.component);
+		return this.id == i.id && this.component != null && this.component.equals(i.component);
 	}
 }

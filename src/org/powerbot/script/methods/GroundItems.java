@@ -57,4 +57,9 @@ public class GroundItems extends GroundItemQuery<GroundItem> {
 		}
 		return items;
 	}
+
+	@Override
+	public GroundItem getNil() {
+		return new GroundItem(ctx, Tile.NIL, null);
+	}
 }

@@ -84,4 +84,9 @@ public class Objects extends BasicNamedQuery<GameObject> {
 		refs.clear();//help gc
 		return items;
 	}
+
+	@Override
+	public GameObject getNil() {
+		return new GameObject(ctx, null, GameObject.Type.UNKNOWN);
+	}
 }

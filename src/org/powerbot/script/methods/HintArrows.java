@@ -40,4 +40,9 @@ public class HintArrows extends HintArrowQuery<HintArrow> {
 		}
 		return items;
 	}
+
+	@Override
+	public HintArrow getNil() {
+		return new HintArrow(ctx, null);
+	}
 }

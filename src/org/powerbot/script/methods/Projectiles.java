@@ -52,4 +52,9 @@ public class Projectiles extends IdQuery<Projectile> {
 		}
 		return items;
 	}
+
+	@Override
+	public Projectile getNil() {
+		return new Projectile(ctx, null);
+	}
 }
