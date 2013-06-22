@@ -131,6 +131,18 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends Me
 		return getThis();
 	}
 
+	/**
+	 * Reverses the order of items in the query cache.
+	 *
+	 * @return {@code this} for the purpose of chaining
+	 */
+	public T reverse() {
+		final List<K> items = this.items.get(), a = new ArrayList<>(items);
+		Collections.reverse(a);
+		setArray(items, a);
+		return getThis();
+	}
+
 	private void setArray(final List<K> a, final List<K> c) {
 		if (set != null) {
 			try {
