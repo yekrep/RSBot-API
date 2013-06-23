@@ -159,19 +159,19 @@ public abstract class AbstractScript implements Script {
 	/**
 	 * Returns the total running time.
 	 *
-	 * @return the total runtime so far in seconds (including pauses)
+	 * @return the total runtime so far in milliseconds (including pauses)
 	 */
 	public long getTotalRuntime() {
-		return TimeUnit.NANOSECONDS.toSeconds(System.nanoTime() - started.get());
+		return TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - started.get());
 	}
 
 	/**
 	 * Returns the actual running time.
 	 *
-	 * @return the actual runtime so far in seconds
+	 * @return the actual runtime so far in milliseconds
 	 */
 	public long getRuntime() {
-		return TimeUnit.NANOSECONDS.toSeconds(System.nanoTime() - started.get() - suspended.get());
+		return TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - started.get() - suspended.get());
 	}
 
 	/**
