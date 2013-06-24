@@ -51,16 +51,7 @@ public class Bank extends ItemQuery<Item> {
 		super(factory);
 	}
 
-	public boolean isOpen() {
-		final Widget widget = ctx.widgets.get(WIDGET);
-		return widget != null && widget.isValid();
-	}
-
-	public boolean open() {
-		if (isOpen()) {
-			return true;
-		}
-
+	private Interactive getBank() {
 		final Filter<Interactive> f = new Filter<Interactive>() {
 			@Override
 			public boolean accept(final Interactive interactive) {
@@ -75,10 +66,31 @@ public class Bank extends ItemQuery<Item> {
 		ctx.objects.select().id(BANK_CHEST_IDS).select(f).nearest().limit(1).addTo(interactives);
 
 		if (interactives.isEmpty()) {
-			return false;
+			return null;
 		}
 
-		final Interactive interactive = interactives.get(Random.nextInt(0, interactives.size()));
+		return interactives.get(Random.nextInt(0, interactives.size()));
+	}
+
+	public boolean isPresent() {
+		return getBank() != null;
+	}
+
+	public boolean isOnScreen() {
+		Interactive interactive = getBank();
+		return interactive != null && interactive.isOnScreen();
+	}
+
+	public boolean isOpen() {
+		final Widget widget = ctx.widgets.get(WIDGET);
+		return widget != null && widget.isValid();
+	}
+
+	public boolean open() {
+		if (isOpen()) {
+			return true;
+		}
+		Interactive interactive = getBank();
 		final int id;
 		if (interactive instanceof Npc) {
 			id = ((Npc) interactive).getId();
