@@ -342,7 +342,7 @@ public class Bank extends ItemQuery<Item> {
 		if (c == null || !c.isValid()) {
 			return false;
 		}
-		if (ctx.inventory.isEmpty()) {
+		if (ctx.inventory.select().isEmpty()) {
 			return true;
 		}
 		return c.click();
