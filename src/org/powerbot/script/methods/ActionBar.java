@@ -37,7 +37,7 @@ public class ActionBar extends IdQuery<Action> {
 			return true;
 		}
 		final Component c = ctx.widgets.get(WIDGET, expanded ? COMPONENT_BUTTON_EXPAND : COMPONENT_BUTTON_COLLAPSE);
-		if (c != null && c.isValid() && c.interact(expanded ? "Expand" : "Collapse")) {
+		if (c.isValid() && c.interact(expanded ? "Expand" : "Minimise")) {
 			for (int i = 0; i < 5 && isExpanded() != expanded; i++) {
 				Delay.sleep(20, 50);
 			}
