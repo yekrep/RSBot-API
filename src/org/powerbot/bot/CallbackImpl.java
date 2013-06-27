@@ -5,8 +5,12 @@ import org.powerbot.client.RSObjectDef;
 import org.powerbot.client.Render;
 import org.powerbot.event.MessageEvent;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 public class CallbackImpl implements Callback {
 	private final Bot bot;
+	public static final Map<Integer, Integer> clippingTypes = new ConcurrentHashMap<>();
 
 	public CallbackImpl(final Bot bot) {
 		this.bot = bot;
@@ -24,6 +28,6 @@ public class CallbackImpl implements Callback {
 
 	@Override
 	public void notifyObjectDefinitionLoad(RSObjectDef def) {
-		//TODO
+		clippingTypes.put(def.getID(), def.getClippingType());
 	}
 }
