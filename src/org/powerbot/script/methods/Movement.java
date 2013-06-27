@@ -14,8 +14,8 @@ import java.awt.Point;
 public class Movement extends MethodProvider {
 	private static final int WIDGET = 750;
 	private static final int COMPONENT_RUN = 2;
-	private static int COMPONENT_RUN_ENERGY = 6;
-	private static int SETTING_RUN_ENABLED = 463;
+	private static final int COMPONENT_RUN_ENERGY = 6;
+	private static final int SETTING_RUN_ENABLED = 463;
 
 	public Movement(MethodContext factory) {
 		super(factory);
