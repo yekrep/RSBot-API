@@ -8,4 +8,6 @@ public interface RSObjectDef {
 	public RSObjectDefLoader getLoader();
 
 	public int getID();
+
+	public int getClippingType();
 }
