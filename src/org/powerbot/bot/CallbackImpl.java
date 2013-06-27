@@ -1,14 +1,10 @@
 package org.powerbot.bot;
 
 import org.powerbot.client.Callback;
+import org.powerbot.client.RSObjectDef;
 import org.powerbot.client.Render;
 import org.powerbot.event.MessageEvent;
 
-/**
- * An implementation of callback responsible for processing client callbacks to appropriate bot functions.
- *
- * @author Timer
- */
 public class CallbackImpl implements Callback {
 	private final Bot bot;
 
@@ -16,23 +12,18 @@ public class CallbackImpl implements Callback {
 		this.bot = bot;
 	}
 
-	/**
-	 * Updates this bot's render information used to calculate screen vectors.
-	 *
-	 * @param render The render provided from the game.
-	 */
+	@Override
 	public void updateRenderInfo(final Render render) {
 		bot.getMethodContext().game.updateToolkit(render);
 	}
 
-	/**
-	 * Notifies the bot of of a message dispatched in the game.
-	 *
-	 * @param id      The Id of the message dispatched.
-	 * @param sender  The name of the sender of this message.
-	 * @param message The message contents the sender sent.
-	 */
+	@Override
 	public void notifyMessage(final int id, final String sender, final String message) {
 		bot.getEventMulticaster().dispatch(new MessageEvent(id, sender, message));
+	}
+
+	@Override
+	public void notifyObjectDefinitionLoad(RSObjectDef def) {
+		//TODO
 	}
 }
