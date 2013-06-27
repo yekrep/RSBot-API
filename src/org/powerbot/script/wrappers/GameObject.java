@@ -1,5 +1,6 @@
 package org.powerbot.script.wrappers;
 
+import org.powerbot.bot.CallbackImpl;
 import org.powerbot.client.Cache;
 import org.powerbot.client.Client;
 import org.powerbot.client.HashTable;
@@ -30,6 +31,11 @@ public class GameObject extends Interactive implements Locatable, Nameable, Draw
 		super(ctx);
 		this.object = new WeakReference<>(object);
 		this.type = type;
+	}
+
+	public static int clippingTypeForId(int id) {
+		Integer type = CallbackImpl.clippingTypes.get(id);
+		return type == null ? -1 : type;
 	}
 
 	public Model getModel() {
