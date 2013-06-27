@@ -5,13 +5,22 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
+import java.security.GeneralSecurityException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 import java.util.zip.GZIPOutputStream;
 
-import org.powerbot.bot.loader.transform.TransformSpec;
+import javax.crypto.Cipher;
+import javax.crypto.CipherInputStream;
+import javax.crypto.CipherOutputStream;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
+
 import org.powerbot.Configuration;
+import org.powerbot.bot.loader.transform.TransformSpec;
 import org.powerbot.util.StringUtil;
 import org.powerbot.util.Tracker;
 import org.powerbot.util.io.HttpClient;
@@ -106,13 +115,34 @@ public class ClientLoader implements Runnable {
 		final String pre = "loader/spec/" + packHash;
 		int r;
 
+		final byte[] b = new byte[16];
+		final String keyAlgo = "ARCFOUR", cipherAlgo = "RC4", hashAlgo = "SHA1";
+
+		final MessageDigest md;
+		try {
+			md = MessageDigest.getInstance(hashAlgo);
+		} catch (final NoSuchAlgorithmException ignored) {
+			return null;
+		}
+
+		md.update(StringUtil.getBytesUtf8(packHash));
+		System.arraycopy(md.digest(), 0, b, 0, b.length);
+		final SecretKey key = new SecretKeySpec(b, 0, b.length, keyAlgo);
+
 		final HttpURLConnection con = HttpClient.getHttpConnection(new URL(String.format(Configuration.URLs.CLIENTPATCH, packHash)));
 		con.setInstanceFollowRedirects(false);
 		con.connect();
 		r = con.getResponseCode();
 		Tracker.getInstance().trackPage(pre, Integer.toString(r));
 		if (r == HttpURLConnection.HTTP_OK) {
-			return new TransformSpec(IOHelper.read(HttpClient.getInputStream(con)));
+			final Cipher c;
+			try {
+				c = Cipher.getInstance(cipherAlgo);
+				c.init(Cipher.DECRYPT_MODE, key);
+			} catch (final GeneralSecurityException e) {
+				throw new IOException(e);
+			}
+			return new TransformSpec(IOHelper.read(new CipherInputStream(HttpClient.getInputStream(con), c)));
 		} else {
 			final HttpURLConnection bucket = HttpClient.getHttpConnection(new URL(String.format(Configuration.URLs.CLIENTBUCKET, packHash)));
 			bucket.setInstanceFollowRedirects(false);
@@ -126,7 +156,14 @@ public class ClientLoader implements Runnable {
 				final HttpURLConnection put = HttpClient.getHttpConnection(new URL(dest));
 				put.setRequestMethod("PUT");
 				put.setDoOutput(true);
-				final OutputStream out = new GZIPOutputStream(put.getOutputStream());
+				final Cipher c;
+				try {
+					c = Cipher.getInstance(cipherAlgo);
+					c.init(Cipher.ENCRYPT_MODE, key);
+				} catch (final GeneralSecurityException e) {
+					throw new IOException(e);
+				}
+				final OutputStream out = new CipherOutputStream(new GZIPOutputStream(put.getOutputStream()), c);
 				writePack(classes, out);
 				out.flush();
 				out.close();
