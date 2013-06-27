@@ -39,6 +39,10 @@ public final class TileMatrix extends Interactive implements Locatable, Drawable
 		return p.x != -1 && p.y != -1;
 	}
 
+	public boolean isReachable() {
+		return false;//TODO: internal
+	}
+
 	@Override
 	public Tile getLocation() {
 		return tile;
