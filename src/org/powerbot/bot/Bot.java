@@ -243,7 +243,7 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 
 	private void setClient(final Client client) {
 		this.ctx.setClient(client);
-		client.setCallback(new CallbackImpl(this));
+		client.setCallback(new AbstractCallback(this));
 		constants = new Constants(appletContainer.getTspec().constants);
 		new Thread(threadGroup, new SafeMode(this)).start();
 		mouseHandler = new MouseHandler(appletContainer, client);

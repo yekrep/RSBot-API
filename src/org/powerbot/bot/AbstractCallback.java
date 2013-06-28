@@ -8,11 +8,11 @@ import org.powerbot.event.MessageEvent;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class CallbackImpl implements Callback {
+public class AbstractCallback implements Callback {
 	private final Bot bot;
 	public static final Map<Integer, Integer> clippingTypes = new ConcurrentHashMap<>();
 
-	public CallbackImpl(final Bot bot) {
+	public AbstractCallback(final Bot bot) {
 		this.bot = bot;
 	}
 
