@@ -145,6 +145,7 @@ public class ClientLoader implements Runnable {
 			return new TransformSpec(IOHelper.read(new CipherInputStream(HttpClient.getInputStream(con), c)));
 		} else {
 			final HttpURLConnection bucket = HttpClient.getHttpConnection(new URL(String.format(Configuration.URLs.CLIENTBUCKET, packHash)));
+			bucket.addRequestProperty(String.format("x-%s-cv", Configuration.NAME.toLowerCase()), "100");
 			bucket.setInstanceFollowRedirects(false);
 			bucket.connect();
 			r = bucket.getResponseCode();
@@ -186,6 +187,9 @@ public class ClientLoader implements Runnable {
 				}
 			case HttpURLConnection.HTTP_ACCEPTED:
 				throw new PendingException(delay);
+			case HttpURLConnection.HTTP_BAD_REQUEST:
+				Tracker.getInstance().trackPage(pre + "/bucket/failure", "");
+				throw new RuntimeException("failed to update client pack");
 			}
 		}
 
