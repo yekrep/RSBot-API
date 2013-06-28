@@ -29,13 +29,14 @@ public class Configuration {
 
 		public static final String DOMAIN = "powerbot.org";
 		static final String DOMAIN_SITE_LIVE = "www." + DOMAIN;
+		static final String DOMAIN_SITE_CDN = "cdn." + DOMAIN;
 		static final String DOMAIN_SITE_TESTING = DOMAIN + ".localdomain";
 		static final String DOMAIN_SITE = TESTING ? DOMAIN_SITE_TESTING : DOMAIN_SITE_LIVE;
 		static final String PROTOCOL = TESTING ? "http://" : "https://";
 
-		public static final String VERSION = "http://cdn." + DOMAIN + "/rsbot/version.txt";
+		public static final String VERSION = "http://" + DOMAIN_SITE_CDN + "/rsbot/version.txt";
 
-		public static final String CLIENTPATCH = "https://" + DOMAIN_SITE_LIVE + "/rsbot/ts2/%s.ts";
+		public static final String CLIENTPATCH = "https://" + DOMAIN_SITE_CDN + "/rsbot/ts/%s.ts";
 		public static final String CLIENTBUCKET = "http://buckets." + DOMAIN + "/process/?hash=%s";
 		public static final String SCRIPTSAUTH = PROTOCOL + DOMAIN_SITE + "/scripts/api/auth/?{POST}a=%s&id=%s";
 		public static final String SCRIPTSCOLLECTION = PROTOCOL + DOMAIN_SITE + "/scripts/api/collection/?{POST}a=%s";
