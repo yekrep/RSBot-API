@@ -185,10 +185,7 @@ public class Sandbox extends SecurityManager {
 			return;
 		}
 
-		if (!path.contains("runescape" + File.separator + "LIVE")) {
-			log.severe((readOnly ? "Read" : "Write") + " denied: " + path + " on " + Thread.currentThread().getName() + "/" + Thread.currentThread().getThreadGroup().getName());
-		}
-
+		log.severe((readOnly ? "Read" : "Write") + " denied: " + path + " on " + Thread.currentThread().getName() + "/" + Thread.currentThread().getThreadGroup().getName());
 		throw new SecurityException();
 	}
 
