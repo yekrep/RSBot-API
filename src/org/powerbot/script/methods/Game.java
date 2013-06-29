@@ -1,5 +1,6 @@
 package org.powerbot.script.methods;
 
+import org.powerbot.bot.Bot;
 import org.powerbot.client.BaseInfo;
 import org.powerbot.client.Client;
 import org.powerbot.client.Constants;
@@ -125,11 +126,10 @@ public class Game extends MethodProvider {
 
 	public int getClientState() {
 		Client client = ctx.getClient();
-		if (client == null) {
+		final Constants constants = getConstants();
+		if (client == null || constants == null) {
 			return -1;
 		}
-
-		final Constants constants = getConstants();
 		final int state = client.getLoginIndex();
 		if (state == constants.CLIENTSTATE_3) {
 			return 3;
@@ -384,7 +384,8 @@ public class Game extends MethodProvider {
 	}
 
 	private Constants getConstants() {
-		return ctx.getBot().getConstants();
+		Bot bot = ctx.getBot();
+		return bot != null ? bot.getConstants() : null;
 	}
 
 	public class Toolkit {
