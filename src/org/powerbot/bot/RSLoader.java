@@ -1,16 +1,14 @@
 package org.powerbot.bot;
 
+import org.powerbot.bot.loader.ClientLoader;
+import org.powerbot.bot.loader.transform.TransformSpec;
+
 import java.applet.Applet;
 import java.awt.Graphics;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
-import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import org.powerbot.bot.loader.ClientLoader;
-import org.powerbot.bot.loader.transform.TransformSpec;
-import org.powerbot.Configuration;
 
 /**
  * @author Timer
@@ -29,7 +27,7 @@ public class RSLoader extends Applet implements Runnable {
 			clientLoader = new ClientLoader();
 			clientLoader.run();
 			tspec = clientLoader.getTspec();
-			classLoader = new RSClassLoader(clientLoader.classes());
+			classLoader = new RSClassLoader(clientLoader.classes(), clientLoader.tspec);
 		} catch (final Exception e) {
 			log.severe("Unable to load client: " + e.getMessage());
 			return false;

@@ -1,5 +1,6 @@
 package org.powerbot.bot;
 
+import org.powerbot.bot.loader.transform.TransformSpec;
 import org.powerbot.client.RandomAccessFile;
 import org.powerbot.util.io.IOHelper;
 
@@ -14,8 +15,10 @@ import java.util.Map;
 public class RSClassLoader extends ClassLoader {
 	private final Map<String, byte[]> classes = new HashMap<>();
 	private final ProtectionDomain domain;
+	private final TransformSpec spec;
 
-	public RSClassLoader(final Map<String, byte[]> classes) {
+	public RSClassLoader(final Map<String, byte[]> classes, TransformSpec spec) {
+		this.spec = spec;
 		this.classes.putAll(classes);
 
 		try {
@@ -34,7 +37,7 @@ public class RSClassLoader extends ClassLoader {
 	@Override
 	public final Class<?> loadClass(final String name) throws ClassNotFoundException {
 		if (classes.containsKey(name)) {
-			final byte buffer[] = classes.remove(name);
+			final byte[] buffer = spec.process(name, classes.remove(name));
 			try {
 				return defineClass(name, buffer, 0, buffer.length, domain);
 			} catch (final Throwable t) {

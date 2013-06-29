@@ -31,7 +31,7 @@ public class ClientLoader implements Runnable {
 
 	private final Map<String, byte[]> classes;
 	public final Crawler crawler;
-	private TransformSpec tspec;
+	public TransformSpec tspec;
 
 	public ClientLoader() {
 		classes = new HashMap<>();
@@ -94,10 +94,6 @@ public class ClientLoader implements Runnable {
 		}
 
 		tspec.adapt();
-		for (final Map.Entry<String, byte[]> clazz : classes.entrySet()) {
-			final String name = clazz.getKey();
-			classes.put(name, tspec.process(name, clazz.getValue()));
-		}
 	}
 
 	public TransformSpec getTspec() {
