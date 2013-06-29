@@ -3,6 +3,7 @@ package org.powerbot.script;
 import org.powerbot.script.util.Random;
 
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * An implementation of {@link AbstractScript} which polls (or "loops")
@@ -14,10 +15,18 @@ public abstract class PollingScript extends AbstractScript {
 	private final AtomicBoolean running;
 
 	/**
+	 * The sleep bias for {@link #sleep(long)} and {@link #poll()}.
+	 * The absolute sleep value is defined by {@code millis * (1 + ((bias % 100) / 100))}.
+	 * By default this value is 50 i.e. +50%.
+	 */
+	protected final AtomicInteger bias;
+
+	/**
 	 * Creates an instance of a {@link PollingScript}.
 	 */
 	public PollingScript() {
 		running = new AtomicBoolean(false);
+		bias = new AtomicInteger(50);
 
 		getExecQueue(State.START).add(new Runnable() {
 			@Override
@@ -89,20 +98,11 @@ public abstract class PollingScript extends AbstractScript {
 	 */
 	public final void sleep(final long millis) {
 		try {
-			Thread.sleep(millis);
+			final int min = (int) millis;
+			final int max = min * (1 + ((bias.get() % 100) / 100));
+			Thread.sleep(Random.nextInt(min, max));
 		} catch (final InterruptedException ignored) {
 		}
-	}
-
-	/**
-	 * Causes the currently executing thread to sleep (temporarily cease
-	 * execution) for a random number of milliseconds within the specified bounds.
-	 *
-	 * @param min the inclusive lower bound
-	 * @param max the exclusive upper bound
-	 */
-	public final void sleep(final int min, final int max) {
-		sleep(Random.nextInt(min, max));
 	}
 
 	/**

@@ -49,7 +49,7 @@ public class TicketDestroy extends PollingScript implements InternalScript {
 
 		if (((ctx.settings.get(1448) & 0xFF00) >>> 8) < (item.getItemId() == ITEM_IDS[0] ? 10 : 9)) {
 			item.interact("Claim spin");
-			sleep(1000, 2000);
+			sleep(1500);
 		}
 
 		if (!item.interact("Destroy")) {
@@ -59,7 +59,7 @@ public class TicketDestroy extends PollingScript implements InternalScript {
 		Widget widget = ctx.widgets.get(1183);
 		final Timer timer = new Timer(Random.nextInt(4000, 6000));
 		while (timer.isRunning() && !widget.isValid()) {
-			sleep(100, 200);
+			sleep(150);
 		}
 		if (!widget.isValid()) {
 			return -1;
@@ -74,7 +74,7 @@ public class TicketDestroy extends PollingScript implements InternalScript {
 		if (component != null && component.interact("Destroy")) {
 			final Timer t = new Timer(Random.nextInt(1500, 2000));
 			while (t.isRunning() && item.getItemId() != -1) {
-				sleep(100, 250);
+				sleep(175);
 			}
 		}
 		return -1;

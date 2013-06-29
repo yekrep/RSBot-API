@@ -40,7 +40,7 @@ public class WidgetCloser extends PollingScript implements InternalScript {
 		if (component.click(true)) {
 			final Timer timer = new Timer(Random.nextInt(2000, 2500));
 			while (timer.isRunning() && component.isVisible()) {
-				sleep(100, 250);
+				sleep(175);
 			}
 			if (!component.isVisible()) {
 				tries = 0;
