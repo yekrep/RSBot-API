@@ -1,29 +1,21 @@
 package org.powerbot.bot;
 
-import java.awt.AWTPermission;
+import org.powerbot.client.RandomAccessFile;
+import org.powerbot.util.io.IOHelper;
+
 import java.io.File;
-import java.io.FilePermission;
-import java.net.SocketPermission;
-import java.net.URL;
-import java.security.CodeSigner;
+import java.security.AllPermission;
 import java.security.CodeSource;
 import java.security.Permissions;
 import java.security.ProtectionDomain;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.PropertyPermission;
-
-import org.powerbot.client.RandomAccessFile;
-import org.powerbot.util.io.IOHelper;
 
 public class RSClassLoader extends ClassLoader {
 	private final Map<String, byte[]> classes = new HashMap<>();
 	private final ProtectionDomain domain;
 
-	public RSClassLoader(final Map<String, byte[]> classes, final URL source) {
-		final CodeSource codeSource = new CodeSource(source, (CodeSigner[]) null);
-		domain = new ProtectionDomain(codeSource, createPermissions());
+	public RSClassLoader(final Map<String, byte[]> classes) {
 		this.classes.putAll(classes);
 
 		try {
@@ -32,41 +24,11 @@ public class RSClassLoader extends ClassLoader {
 			this.classes.put(raf.getName(), data);
 		} catch (final Exception ignored) {
 		}
-	}
 
-	private Permissions createPermissions() {
-		final Permissions instance = new Permissions();
-		instance.add(new AWTPermission("accessEventQueue"));
-		instance.add(new PropertyPermission("user.home", "read"));
-		instance.add(new PropertyPermission("java.vendor", "read"));
-		instance.add(new PropertyPermission("java.version", "read"));
-		instance.add(new PropertyPermission("os.name", "read"));
-		instance.add(new PropertyPermission("os.arch", "read"));
-		instance.add(new PropertyPermission("os.version", "read"));
-		instance.add(new SocketPermission("*", "connect,resolve"));
-		String uDir = System.getProperty("user.home");
-		if (uDir != null) {
-			uDir += "/";
-		} else {
-			uDir = "~/";
-		}
-		final String[] dirs = {"c:/rscache/", "/rscache/", "c:/windows/", "c:/winnt/", "c:/", uDir, "/tmp/", "."};
-		final String[] rsDirs = {".jagex_cache_32", ".file_store_32"};
-		for (String dir : dirs) {
-			final File f = new File(dir);
-			instance.add(new FilePermission(dir, "read"));
-			if (!f.exists()) {
-				continue;
-			}
-			dir = f.getPath();
-			for (final String rsDir : rsDirs) {
-				instance.add(new FilePermission(dir + File.separator + rsDir + File.separator + "-", "read"));
-				instance.add(new FilePermission(dir + File.separator + rsDir + File.separator + "-", "write"));
-			}
-		}
-		Calendar.getInstance();
-		instance.setReadOnly();
-		return instance;
+		CodeSource codesource = new CodeSource(null, (java.security.cert.Certificate[]) null);
+		Permissions permissions = new Permissions();
+		permissions.add(new AllPermission());
+		domain = new ProtectionDomain(codesource, permissions);
 	}
 
 	@Override
