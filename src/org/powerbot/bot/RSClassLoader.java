@@ -21,13 +21,6 @@ public class RSClassLoader extends ClassLoader {
 		this.spec = spec;
 		this.classes.putAll(classes);
 
-		try {
-			final Class<?> raf = RandomAccessFile.class;
-			final byte[] data = IOHelper.read(raf.getClassLoader().getResourceAsStream(raf.getName().replace('.', File.separatorChar) + ".class"));
-			this.classes.put(raf.getName(), data);
-		} catch (final Exception ignored) {
-		}
-
 		CodeSource codesource = new CodeSource(null, (java.security.cert.Certificate[]) null);
 		Permissions permissions = new Permissions();
 		permissions.add(new AllPermission());
