@@ -282,7 +282,7 @@ public class Game extends MethodProvider {
 		return new Point(-1, -1);
 	}
 
-	public Point worldToMap(double x, double y) {
+	public Point tileToMap(double x, double y) {
 		Client client = ctx.getClient();
 		if (client == null) {
 			return null;

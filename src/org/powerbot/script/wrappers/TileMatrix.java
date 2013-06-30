@@ -31,7 +31,7 @@ public final class TileMatrix extends Interactive implements Locatable, Drawable
 	}
 
 	public Point getMapPoint() {
-		return ctx.game.worldToMap(tile.getX() + 0.5d, tile.getY() + 0.5d);
+		return ctx.game.tileToMap(tile.getX() + 0.5d, tile.getY() + 0.5d);
 	}
 
 	public boolean isOnMap() {
