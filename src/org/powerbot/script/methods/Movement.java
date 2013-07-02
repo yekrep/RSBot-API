@@ -37,8 +37,7 @@ public class Movement extends MethodProvider {
 		if (dX == -1 || dY == -1) {
 			return null;
 		}
-		final Tile base = ctx.game.getMapBase();
-		return base != null ? base.derive(dX, dY) : null;
+		return ctx.game.getMapBase().derive(dX, dY);
 	}
 
 	public boolean stepTowards(final Locatable locatable) {
