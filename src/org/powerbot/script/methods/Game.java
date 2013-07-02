@@ -214,6 +214,8 @@ public class Game extends MethodProvider {
 			if (isFixed()) {
 				return x >= 4 && y >= 54 && x < 516 && y < 388;
 			}
+			Dimension dimension = ctx.game.getDimensions();
+			return x > 0 && y > 0 && x < dimension.getWidth() && y < dimension.getHeight();
 		} else {
 			r = null;
 		}
