@@ -40,6 +40,10 @@ public final class ClippingValue {
 		return (type & clippingValue.type) == clippingValue.type;
 	}
 
+	public boolean hit(ClippingValue clippingValue) {
+		return (type & clippingValue.type) != 0;
+	}
+
 	public ClippingValue mark(final ClippingValue clippingValue) {
 		if (markable) {
 			type |= clippingValue.type;
