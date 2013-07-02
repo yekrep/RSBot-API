@@ -53,6 +53,7 @@ public class Tile implements Locatable {
 	}
 
 	public Tile derive(final int x, final int y, final int plane) {
+		if (this == NIL) return NIL;
 		return new Tile(this.x + x, this.y + y, plane);
 	}
 
