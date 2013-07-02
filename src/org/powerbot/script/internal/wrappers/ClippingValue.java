@@ -10,9 +10,9 @@ public final class ClippingValue {
 	public static final ClippingValue SOUTH = new ClippingValue(0x20, false);
 	public static final ClippingValue SOUTHWEST = new ClippingValue(0x40, false);
 	public static final ClippingValue WEST = new ClippingValue(0x80, false);
-	public static final ClippingValue OBJECT_TILE = new ClippingValue(0x100, false);
+	public static final ClippingValue OBJECT_BLOCK = new ClippingValue(0x100, false);
 	public static final ClippingValue DECORATION_BLOCK = new ClippingValue(0x40000, false);
-	public static final ClippingValue OBJECT_BLOCK = new ClippingValue(0x200000, false);
+	public static final ClippingValue DEAD_BLOCK = new ClippingValue(0x200000, false);
 	public static final ClippingValue ALLOW_RANGE_NORTHWEST = new ClippingValue(0x400000, false);
 	public static final ClippingValue ALLOW_RANGE_NORTH = new ClippingValue(0x800000, false);
 	public static final ClippingValue ALLOW_RANGE_NORTHEAST = new ClippingValue(0x1000000, false);

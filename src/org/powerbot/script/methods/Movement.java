@@ -175,7 +175,7 @@ public class Movement extends MethodProvider {
 			if (curr_y > 0 &&
 					prev[curr_x][curr_y - 1] == 0 &&
 					!values[curr_x][curr_y].hit(ClippingValue.SOUTH) &&
-					!values[curr_x][curr_y - 1].hit(ClippingValue.OBJECT_TILE.mark(ClippingValue.OBJECT_BLOCK))) {
+					!values[curr_x][curr_y - 1].hit(ClippingValue.OBJECT_BLOCK.mark(ClippingValue.DEAD_BLOCK))) {
 				path_x[path_ptr] = curr_x;
 				path_y[path_ptr] = curr_y - 1;
 				path_ptr = (path_ptr + 1) % pathLength;
@@ -186,7 +186,7 @@ public class Movement extends MethodProvider {
 			if (curr_x > 0 &&
 					prev[curr_x - 1][curr_y] == 0 &&
 					!values[curr_x][curr_y].hit(ClippingValue.WEST) &&
-					!values[curr_x - 1][curr_y].hit(ClippingValue.OBJECT_TILE.mark(ClippingValue.OBJECT_BLOCK))) {
+					!values[curr_x - 1][curr_y].hit(ClippingValue.OBJECT_BLOCK.mark(ClippingValue.DEAD_BLOCK))) {
 				path_x[path_ptr] = curr_x - 1;
 				path_y[path_ptr] = curr_y;
 				path_ptr = (path_ptr + 1) % pathLength;
@@ -196,7 +196,7 @@ public class Movement extends MethodProvider {
 			// north
 			if (curr_y < 104 - 1 && prev[curr_x][curr_y + 1] == 0 &&
 					!values[curr_x][curr_y].hit(ClippingValue.NORTH) &&
-					!values[curr_x][curr_y + 1].hit(ClippingValue.OBJECT_TILE.mark(ClippingValue.OBJECT_BLOCK))) {
+					!values[curr_x][curr_y + 1].hit(ClippingValue.OBJECT_BLOCK.mark(ClippingValue.DEAD_BLOCK))) {
 				path_x[path_ptr] = curr_x;
 				path_y[path_ptr] = curr_y + 1;
 				path_ptr = (path_ptr + 1) % pathLength;
@@ -206,7 +206,7 @@ public class Movement extends MethodProvider {
 			// east
 			if (curr_x < 104 - 1 && prev[curr_x + 1][curr_y] == 0 &&
 					!values[curr_x][curr_y].hit(ClippingValue.EAST) &&
-					!values[curr_x + 1][curr_y].hit(ClippingValue.OBJECT_TILE.mark(ClippingValue.OBJECT_BLOCK))) {
+					!values[curr_x + 1][curr_y].hit(ClippingValue.OBJECT_BLOCK.mark(ClippingValue.DEAD_BLOCK))) {
 				path_x[path_ptr] = curr_x + 1;
 				path_y[path_ptr] = curr_y;
 				path_ptr = (path_ptr + 1) % pathLength;
@@ -215,9 +215,9 @@ public class Movement extends MethodProvider {
 			}
 			if (curr_x > 0 && curr_y > 0 && prev[curr_x - 1][curr_y - 1] == 0 &&
 					!values[curr_x][curr_y].hit(ClippingValue.SOUTHWEST.mark(ClippingValue.SOUTH.mark(ClippingValue.WEST))) &&
-					!values[curr_x - 1][curr_y - 1].hit(ClippingValue.OBJECT_TILE.mark(ClippingValue.OBJECT_BLOCK)) &&
-					!values[curr_x][curr_y - 1].hit(ClippingValue.WEST.mark(ClippingValue.OBJECT_TILE.mark(ClippingValue.OBJECT_BLOCK))) &&
-					!values[curr_x - 1][curr_y].hit(ClippingValue.SOUTH.mark(ClippingValue.OBJECT_TILE.mark(ClippingValue.OBJECT_BLOCK)))) {
+					!values[curr_x - 1][curr_y - 1].hit(ClippingValue.OBJECT_BLOCK.mark(ClippingValue.DEAD_BLOCK)) &&
+					!values[curr_x][curr_y - 1].hit(ClippingValue.WEST.mark(ClippingValue.OBJECT_BLOCK.mark(ClippingValue.DEAD_BLOCK))) &&
+					!values[curr_x - 1][curr_y].hit(ClippingValue.SOUTH.mark(ClippingValue.OBJECT_BLOCK.mark(ClippingValue.DEAD_BLOCK)))) {
 				path_x[path_ptr] = curr_x - 1;
 				path_y[path_ptr] = curr_y - 1;
 				path_ptr = (path_ptr + 1) % pathLength;
@@ -226,9 +226,9 @@ public class Movement extends MethodProvider {
 			}
 			if (curr_x > 0 && curr_y < ySize - 1 && prev[curr_x - 1][curr_y + 1] == 0 &&
 					!values[curr_x][curr_y].hit(ClippingValue.NORTHWEST.mark(ClippingValue.NORTH.mark(ClippingValue.WEST))) &&
-					!values[curr_x - 1][curr_y + 1].hit(ClippingValue.OBJECT_TILE.mark(ClippingValue.OBJECT_BLOCK)) &&
-					!values[curr_x][curr_y + 1].hit(ClippingValue.WEST.mark(ClippingValue.OBJECT_TILE.mark(ClippingValue.OBJECT_BLOCK))) &&
-					!values[curr_x - 1][curr_y].hit(ClippingValue.NORTH.mark(ClippingValue.OBJECT_TILE.mark(ClippingValue.OBJECT_BLOCK)))) {
+					!values[curr_x - 1][curr_y + 1].hit(ClippingValue.OBJECT_BLOCK.mark(ClippingValue.DEAD_BLOCK)) &&
+					!values[curr_x][curr_y + 1].hit(ClippingValue.WEST.mark(ClippingValue.OBJECT_BLOCK.mark(ClippingValue.DEAD_BLOCK))) &&
+					!values[curr_x - 1][curr_y].hit(ClippingValue.NORTH.mark(ClippingValue.OBJECT_BLOCK.mark(ClippingValue.DEAD_BLOCK)))) {
 				path_x[path_ptr] = curr_x - 1;
 				path_y[path_ptr] = curr_y + 1;
 				path_ptr = (path_ptr + 1) % pathLength;
@@ -237,9 +237,9 @@ public class Movement extends MethodProvider {
 			}
 			if (curr_x < ySize - 1 && curr_y > 0 && prev[curr_x - 1][curr_y - 1] == 0 &&
 					!values[curr_x][curr_y].hit(ClippingValue.SOUTHEAST.mark(ClippingValue.SOUTH.mark(ClippingValue.EAST))) &&
-					!values[curr_x + 1][curr_y - 1].hit(ClippingValue.OBJECT_TILE.mark(ClippingValue.OBJECT_BLOCK)) &&
-					!values[curr_x][curr_y - 1].hit(ClippingValue.EAST.mark(ClippingValue.OBJECT_TILE.mark(ClippingValue.OBJECT_BLOCK))) &&
-					!values[curr_x + 1][curr_y].hit(ClippingValue.SOUTH.mark(ClippingValue.OBJECT_TILE.mark(ClippingValue.OBJECT_BLOCK)))) {
+					!values[curr_x + 1][curr_y - 1].hit(ClippingValue.OBJECT_BLOCK.mark(ClippingValue.DEAD_BLOCK)) &&
+					!values[curr_x][curr_y - 1].hit(ClippingValue.EAST.mark(ClippingValue.OBJECT_BLOCK.mark(ClippingValue.DEAD_BLOCK))) &&
+					!values[curr_x + 1][curr_y].hit(ClippingValue.SOUTH.mark(ClippingValue.OBJECT_BLOCK.mark(ClippingValue.DEAD_BLOCK)))) {
 				path_x[path_ptr] = curr_x + 1;
 				path_y[path_ptr] = curr_y - 1;
 				path_ptr = (path_ptr + 1) % pathLength;
@@ -248,9 +248,9 @@ public class Movement extends MethodProvider {
 			}
 			if (curr_x < xSize - 1 && curr_y < ySize - 1 && prev[curr_x + 1][curr_y + 1] == 0 &&
 					!values[curr_x][curr_y].hit(ClippingValue.NORTHEAST.mark(ClippingValue.NORTH.mark(ClippingValue.WEST))) &&
-					!values[curr_x + 1][curr_y + 1].hit(ClippingValue.OBJECT_TILE.mark(ClippingValue.OBJECT_BLOCK)) &&
-					!values[curr_x][curr_y + 1].hit(ClippingValue.EAST.mark(ClippingValue.OBJECT_TILE.mark(ClippingValue.OBJECT_BLOCK))) &&
-					!values[curr_x + 1][curr_y].hit(ClippingValue.NORTH.mark(ClippingValue.OBJECT_TILE.mark(ClippingValue.OBJECT_BLOCK)))) {
+					!values[curr_x + 1][curr_y + 1].hit(ClippingValue.OBJECT_BLOCK.mark(ClippingValue.DEAD_BLOCK)) &&
+					!values[curr_x][curr_y + 1].hit(ClippingValue.EAST.mark(ClippingValue.OBJECT_BLOCK.mark(ClippingValue.DEAD_BLOCK))) &&
+					!values[curr_x + 1][curr_y].hit(ClippingValue.NORTH.mark(ClippingValue.OBJECT_BLOCK.mark(ClippingValue.DEAD_BLOCK)))) {
 				path_x[path_ptr] = curr_x + 1;
 				path_y[path_ptr] = curr_y + 1;
 				path_ptr = (path_ptr + 1) % pathLength;

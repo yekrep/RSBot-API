@@ -58,9 +58,8 @@ public final class ClippingMap {
 		clipping[offsetX][offsetY].mark(clippingValue);
 	}
 
-	public void markInteractiveArea(
-			int localX, int localY, final int xSize, final int ySize, final boolean allowsRanged) {
-		ClippingValue clippingValue = OBJECT_TILE;
+	public void markInteractiveArea(int localX, int localY, final int xSize, final int ySize, final boolean allowsRanged) {
+		ClippingValue clippingValue = OBJECT_BLOCK;
 		if (allowsRanged) {
 			clippingValue = clippingValue.mark(OBJECT_ALLOW_RANGE);
 		}
@@ -79,9 +78,8 @@ public final class ClippingMap {
 		}
 	}
 
-	public void markInteractive(
-			int localX, int localY, final boolean allowsRanged) {
-		ClippingValue clippingValue = OBJECT_TILE;
+	public void markInteractive(int localX, int localY, final boolean allowsRanged) {
+		ClippingValue clippingValue = OBJECT_BLOCK;
 		if (allowsRanged) {
 			clippingValue = clippingValue.mark(OBJECT_ALLOW_RANGE);
 		}
@@ -89,61 +87,82 @@ public final class ClippingMap {
 	}
 
 	public void markDeadBlock(int localX, int localY) {
-		_mark(offsetLocalX(localX), offsetLocalY(localY), OBJECT_BLOCK);
+		_mark(offsetLocalX(localX), offsetLocalY(localY), DEAD_BLOCK);
 	}
 
-	public void markWall(
-			int localX, int localY, final int type, int orientation, final boolean objectAllowsRanged) {
+	public void markWall(int localX, int localY, final int type, int orientation, final boolean objectAllowsRanged) {
 		localX = offsetLocalX(localX);
 		localY = offsetLocalY(localY);
 		orientation %= 4;
-		if (0 == type) {
-			if (orientation == 0) {
+		switch (type) {
+		case 0:
+			switch (orientation) {
+			case 0:
 				_mark(localX, localY, WEST);
 				_mark(localX - 1, localY, EAST);
-			} else if (1 == orientation) {
+				break;
+			case 1:
 				_mark(localX, localY, NORTH);
 				_mark(localX, localY + 1, SOUTH);
-			} else if (2 == orientation) {
+				break;
+			case 2:
 				_mark(localX, localY, EAST);
 				_mark(localX + 1, localY, WEST);
-			} else if (3 == orientation) {
+				break;
+			case 3:
 				_mark(localX, localY, SOUTH);
 				_mark(localX, localY - 1, NORTH);
+				break;
 			}
-		} else if ((1 == type) || (type == 3)) {
-			if (orientation == 0) {
-				_mark(localX, localY, NORTHWEST);
-				_mark(localX - 1, localY + 1, SOUTHEAST);
-			} else if (1 == orientation) {
-				_mark(localX, localY, NORTHEAST);
-				_mark(localX + 1, 1 + localY, SOUTHWEST);
-			} else if (2 == orientation) {
-				_mark(localX, localY, SOUTHEAST);
-				_mark(localX + 1, localY - 1, NORTHWEST);
-			} else if (orientation == 3) {
-				_mark(localX, localY, SOUTHWEST);
-				_mark(localX - 1, localY - 1, NORTHEAST);
-			}
-		} else if (2 == type) {
-			if (orientation == 0) {
+			break;
+		case 2:
+			switch (orientation) {
+			case 0:
 				_mark(localX, localY, NORTH.mark(WEST));
 				_mark(localX - 1, localY, EAST);
 				_mark(localX, 1 + localY, SOUTH);
-			} else if (orientation == 1) {
+				break;
+			case 1:
 				_mark(localX, localY, NORTH.mark(EAST));
 				_mark(localX, 1 + localY, SOUTH);
 				_mark(localX + 1, localY, WEST);
-			} else if (orientation == 2) {
+				break;
+			case 2:
 				_mark(localX, localY, SOUTH.mark(EAST));
 				_mark(localX + 1, localY, WEST);
 				_mark(localX, localY - 1, NORTH);
-			} else if (orientation == 3) {
+				break;
+			case 3:
 				_mark(localX, localY, SOUTH.mark(WEST));
 				_mark(localX, localY - 1, NORTH);
 				_mark(localX - 1, localY, EAST);
+				break;
 			}
+			break;
+		case 1:
+		case 3:
+			switch (orientation) {
+			case 0:
+				_mark(localX, localY, NORTHWEST);
+				_mark(localX - 1, localY + 1, SOUTHEAST);
+				break;
+			case 1:
+				_mark(localX, localY, NORTHEAST);
+				_mark(localX + 1, 1 + localY, SOUTHWEST);
+				break;
+			case 2:
+				_mark(localX, localY, SOUTHEAST);
+				_mark(localX + 1, localY - 1, NORTHWEST);
+				break;
+			case 3:
+				_mark(localX, localY, SOUTHWEST);
+				_mark(localX - 1, localY - 1, NORTHEAST);
+				break;
+			}
+			break;
 		}
+
+		//TODO: scrap / integrate
 		if (objectAllowsRanged) {
 			if (0 == type) {
 				if (0 == orientation) {
