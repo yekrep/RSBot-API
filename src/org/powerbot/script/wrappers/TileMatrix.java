@@ -51,8 +51,11 @@ public final class TileMatrix extends Interactive implements Locatable, Drawable
 	@Override
 	public boolean isOnScreen() {
 		Point topLeft = getPoint(0.0D, 0.0D, 0);
+		Point topRight = getPoint(1.0D, 0.0D, 0);
 		Point bottomRight = getPoint(1.0D, 1.0D, 0);
-		return ctx.game.isPointOnScreen(topLeft) && ctx.game.isPointOnScreen(bottomRight);
+		Point bottomLeft = getPoint(0.0D, 1.0D, 0);
+		return ctx.game.isPointOnScreen(topLeft) && ctx.game.isPointOnScreen(topRight) &&
+				ctx.game.isPointOnScreen(bottomRight) && ctx.game.isPointOnScreen(bottomLeft);
 	}
 
 	@Override
@@ -74,10 +77,10 @@ public final class TileMatrix extends Interactive implements Locatable, Drawable
 
 	@Override
 	public boolean contains(final Point point) {
-		final Point topLeft = getPoint(0.0D, 0.0D, 0);
-		final Point topRight = getPoint(1.0D, 0.0D, 0);
-		final Point bottomRight = getPoint(1.0D, 1.0D, 0);
-		final Point bottomLeft = getPoint(0.0D, 1.0D, 0);
+		Point topLeft = getPoint(0.0D, 0.0D, 0);
+		Point topRight = getPoint(1.0D, 0.0D, 0);
+		Point bottomRight = getPoint(1.0D, 1.0D, 0);
+		Point bottomLeft = getPoint(0.0D, 1.0D, 0);
 		if (ctx.game.isPointOnScreen(topLeft) && ctx.game.isPointOnScreen(topRight) &&
 				ctx.game.isPointOnScreen(bottomRight) && ctx.game.isPointOnScreen(bottomLeft)) {
 			final Polygon p = new Polygon();
