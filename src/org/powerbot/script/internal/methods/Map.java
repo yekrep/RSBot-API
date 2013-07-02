@@ -23,6 +23,12 @@ public class Map extends MethodProvider {
 		super(factory);
 	}
 
+	private final GameObject.Type[] TYPES = {
+			GameObject.Type.BOUNDARY, GameObject.Type.BOUNDARY,
+			GameObject.Type.FLOOR_DECORATION,
+			GameObject.Type.WALL_DECORATION, GameObject.Type.WALL_DECORATION
+	};
+
 	public ClippingMap[] getPlanes() {
 		Client client = ctx.getClient();
 		if (client == null) {
@@ -94,41 +100,35 @@ public class Map extends MethodProvider {
 				ground.getWallDecoration1(), ground.getWallDecoration2()
 		};
 
-
-		final GameObject.Type[] types = {
-				GameObject.Type.BOUNDARY, GameObject.Type.BOUNDARY,
-				GameObject.Type.FLOOR_DECORATION,
-				GameObject.Type.WALL_DECORATION, GameObject.Type.WALL_DECORATION
-		};
 		for (int i = 0; i < objs.length; i++) {
 			if (objs[i] != null && objs[i].getId() != -1) {
-				items.add(new GameObject(ctx, objs[i], types[i]));
+				items.add(new GameObject(ctx, objs[i], TYPES[i]));
 			}
 		}
 		return items;
 	}
 
 	private void updateClippingMap(final ClippingMap clippingMap, final int localX, final int localY, final List<GameObject> objects) {
+		int clippingType;
 		for (GameObject next : objects) {
-			final int clippingType = GameObject.clippingTypeForId(next.getId());
+			clippingType = GameObject.clippingTypeForId(next.getId());
 			switch (next.getType()) {
 			case BOUNDARY:
-				if (clippingType != 0) {
-					RSObject object = rsObject(next);
-					if (object == null) continue;
-					RSRotatableObject rot = (RSRotatableObject) object;
-					clippingMap.markWall(localX, localY, rot.getType(), rot.getOrientation(), false);
-				}
+				if (clippingType == 0) continue;
+
+				RSObject object = rsObject(next);
+				if (object == null) continue;
+				RSRotatableObject rot = (RSRotatableObject) object;
+				clippingMap.markWall(localX, localY, rot.getType(), rot.getOrientation(), false);
 				break;
 			case FLOOR_DECORATION:
-				if (clippingType == 1) {
-					clippingMap.markDecoration(localX, localY);
-				}
+				if (clippingType != 1) continue;
+				clippingMap.markDecoration(localX, localY);
+
 				break;
 			case INTERACTIVE:
-				if (clippingType != 0) {
-					clippingMap.markInteractive(localX, localY, false);
-				}
+				if (clippingType == 0) continue;
+				clippingMap.markInteractive(localX, localY, false);
 				break;
 			}
 		}
