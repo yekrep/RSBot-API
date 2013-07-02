@@ -41,9 +41,8 @@ public class Item extends Interactive implements Identifiable, Nameable, Stackab
 
 	@Override
 	public String getName() {
-		if (component == null) return "";
 		String name;
-		if (component.getItemId() == this.id) {
+		if (component != null && component.getItemId() == this.id) {
 			name = component.getItemName();
 		} else {
 			name = ItemDefinition.getDef(ctx, this.id).getName();
