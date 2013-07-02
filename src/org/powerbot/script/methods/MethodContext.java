@@ -3,6 +3,7 @@ package org.powerbot.script.methods;
 import org.powerbot.bot.Bot;
 import org.powerbot.client.Client;
 import org.powerbot.script.internal.methods.Items;
+import org.powerbot.script.internal.methods.Map;
 
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -38,6 +39,7 @@ public class MethodContext {
 	public Widgets widgets;
 
 	Items items;
+	Map map;
 
 	public MethodContext(final Bot bot) {
 		this.client = new AtomicReference<>(null);
@@ -71,6 +73,7 @@ public class MethodContext {
 		widgets = new Widgets(this);
 
 		items = new Items(this);
+		map = new Map(this);
 	}
 
 	public MethodContext() {
@@ -112,6 +115,7 @@ public class MethodContext {
 		widgets = ctx.widgets;
 
 		items = ctx.items;
+		map = ctx.map;
 	}
 
 	public void setClient(Client client) {
