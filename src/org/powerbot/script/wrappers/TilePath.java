@@ -111,7 +111,7 @@ public class TilePath extends Path {
 				}
 			}
 		}
-		if (!tiles[0].getMatrix(ctx).isOnMap()) {
+		if (tiles.length == 0 || !tiles[0].getMatrix(ctx).isOnMap()) {
 			return null;
 		}
 		return tiles[0];
