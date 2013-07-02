@@ -130,22 +130,13 @@ public class Movement extends MethodProvider {
 		int endX = end.getX(), endY = end.getY();
 		int xSize = map.getSizeX() - 6, ySize = map.getSizeY() - 6;
 		ClippingValue[][] values = new ClippingValue[xSize][ySize];
-		for (int mX = 0; mX < xSize; mX++) {
-			for (int mY = 0; mY < ySize; mY++) {
-				values[mX][mY] = map.getClippingValueAtLocal(mX, mY);
-			}
-		}
 		int[][] blocks = new int[xSize][ySize];
-		for (int mX = 0; mX < xSize; mX++) {
-			for (int mY = 0; mY < ySize; mY++) {
-				blocks[mX][mY] = values[mX][mY].getType();
-			}
-		}
-
 		final int[][] prev = new int[xSize][ySize];
 		final int[][] dist = new int[xSize][ySize];
 		for (int xx = 0; xx < xSize; xx++) {
 			for (int yy = 0; yy < ySize; yy++) {
+				values[xx][yy] = map.getClippingValueAtLocal(xx, yy);
+				blocks[xx][yy] = values[xx][yy].getType();
 				prev[xx][yy] = 0;
 				dist[xx][yy] = Integer.MAX_VALUE;
 			}
@@ -171,7 +162,6 @@ public class Movement extends MethodProvider {
 			}
 			step_ptr = (step_ptr + 1) % pathLength;
 			final int cost = dist[curr_x][curr_y] + 1;
-			// south
 			if (curr_y > 0 &&
 					prev[curr_x][curr_y - 1] == 0 &&
 					!values[curr_x][curr_y].hit(ClippingValue.SOUTH) &&
@@ -182,7 +172,6 @@ public class Movement extends MethodProvider {
 				prev[curr_x][curr_y - 1] = 1;
 				dist[curr_x][curr_y - 1] = cost;
 			}
-			// west
 			if (curr_x > 0 &&
 					prev[curr_x - 1][curr_y] == 0 &&
 					!values[curr_x][curr_y].hit(ClippingValue.WEST) &&
@@ -193,7 +182,6 @@ public class Movement extends MethodProvider {
 				prev[curr_x - 1][curr_y] = 2;
 				dist[curr_x - 1][curr_y] = cost;
 			}
-			// north
 			if (curr_y < 104 - 1 && prev[curr_x][curr_y + 1] == 0 &&
 					!values[curr_x][curr_y].hit(ClippingValue.NORTH) &&
 					!values[curr_x][curr_y + 1].hit(ClippingValue.OBJECT_BLOCK.mark(ClippingValue.DEAD_BLOCK))) {
@@ -203,7 +191,6 @@ public class Movement extends MethodProvider {
 				prev[curr_x][curr_y + 1] = 4;
 				dist[curr_x][curr_y + 1] = cost;
 			}
-			// east
 			if (curr_x < 104 - 1 && prev[curr_x + 1][curr_y] == 0 &&
 					!values[curr_x][curr_y].hit(ClippingValue.EAST) &&
 					!values[curr_x + 1][curr_y].hit(ClippingValue.OBJECT_BLOCK.mark(ClippingValue.DEAD_BLOCK))) {
