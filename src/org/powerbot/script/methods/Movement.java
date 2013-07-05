@@ -128,7 +128,7 @@ public class Movement extends MethodProvider {
 
 		int startX = start.getX(), startY = start.getY();
 		int endX = end.getX(), endY = end.getY();
-		int xSize = map.getSizeX() - 6, ySize = map.getSizeY() - 6;
+		int xSize = map.getWidth() - 6, ySize = map.getHeight() - 6;
 		CollisionFlag[][] values = new CollisionFlag[xSize][ySize];
 		int[][] blocks = new int[xSize][ySize];
 		final int[][] prev = new int[xSize][ySize];

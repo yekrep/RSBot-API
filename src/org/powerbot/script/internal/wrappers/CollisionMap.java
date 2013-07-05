@@ -4,32 +4,32 @@ import static org.powerbot.script.internal.wrappers.CollisionFlag.*;
 
 public final class CollisionMap {
 	public CollisionMap(final int localXSize, final int localYSize) {
-		this.xReadableOffset = -1;
-		this.yReadableOffset = -1;
-		this.xSize = localXSize + 6;
-		this.ySize = localYSize + 6;
-		this.clipping = new CollisionFlag[xSize][ySize];
+		this.xOff = -1;
+		this.yOff = -1;
+		this.width = localXSize + 6;
+		this.height = localYSize + 6;
+		this.clipping = new CollisionFlag[width][height];
 		clear();
 	}
 
 	private final CollisionFlag[][] clipping;
-	private final int xReadableOffset;
-	private final int yReadableOffset;
-	private final int xSize;
-	private final int ySize;
+	private final int xOff;
+	private final int yOff;
+	private final int width;
+	private final int height;
 
-	public int getSizeX() {
-		return xSize;
+	public int getWidth() {
+		return width;
 	}
 
-	public int getSizeY() {
-		return ySize;
+	public int getHeight() {
+		return height;
 	}
 
 	public void clear() {
-		for (int x = 0; x < this.xSize; x++) {
-			for (int y = 0; y < this.ySize; y++) {
-				if ((x <= 1) || (y <= 1) || (x >= this.xSize - 6) || (y >= this.ySize - 6)) {
+		for (int x = 0; x < this.width; x++) {
+			for (int y = 0; y < this.height; y++) {
+				if ((x <= 1) || (y <= 1) || (x >= this.width - 6) || (y >= this.height - 6)) {
 					this.clipping[x][y] = CollisionFlag.PADDING;
 				} else {
 					this.clipping[x][y] = CollisionFlag.createNewMarkable();
@@ -43,11 +43,11 @@ public final class CollisionMap {
 	}
 
 	public int offsetLocalX(final int localX) {
-		return localX - xReadableOffset;
+		return localX - xOff;
 	}
 
 	public int offsetLocalY(final int localY) {
-		return localY - yReadableOffset;
+		return localY - yOff;
 	}
 
 	public void markDecoration(int localX, int localY) {
@@ -66,11 +66,11 @@ public final class CollisionMap {
 		localX = offsetLocalX(localX);
 		localY = offsetLocalY(localY);
 		for (int xPos = localX; xPos < localX + xSize; xPos++) {
-			if ((xPos < 0) || (xPos >= this.xSize)) {
+			if ((xPos < 0) || (xPos >= this.width)) {
 				continue;
 			}
 			for (int yPos = localY; yPos < ySize + localY; yPos++) {
-				if ((yPos < 0) || (yPos >= this.ySize)) {
+				if ((yPos < 0) || (yPos >= this.height)) {
 					continue;
 				}
 				_mark(xPos, yPos, collisionFlag);
