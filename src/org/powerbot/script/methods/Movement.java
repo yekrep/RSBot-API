@@ -113,17 +113,24 @@ public class Movement extends MethodProvider {
 		);
 	}
 
-	public int getDistance(Tile start, Tile end) {
-		CollisionMap[] maps = ctx.map.getCollisionMaps();
-		int plane = ctx.game.getPlane();
-		if (plane < 0 || plane >= maps.length) return -1;
-		CollisionMap map = maps[plane];
-		if (map == null) return -1;
+	public int getDistance(Locatable _start, Locatable _end) {
+		Tile start, end;
+		if (_start == null || _end == null) {
+			return -1;
+		}
+		start = _start.getLocation();
+		end = _end.getLocation();
 
 		Tile base = ctx.game.getMapBase();
 		if (base == Tile.NIL || start == Tile.NIL || end == Tile.NIL) return -1;
 		start = start.derive(-base.x, -base.y);
 		end = end.derive(-base.x, -base.y);
+
+		CollisionMap[] maps = ctx.map.getCollisionMaps();
+		int plane = ctx.game.getPlane();
+		if (plane < 0 || plane >= maps.length) return -1;
+		CollisionMap map = maps[plane];
+		if (map == null) return -1;
 
 		int startX = start.getX(), startY = start.getY();
 		int endX = end.getX(), endY = end.getY();
