@@ -115,7 +115,7 @@ public class Movement extends MethodProvider {
 	}
 
 	public int pathDistance(Tile start, Tile end, final boolean findAdjacent) {
-		CollisionMap[] maps = ctx.map.getPlanes();
+		CollisionMap[] maps = ctx.map.getCollisionMaps();
 		int plane = ctx.game.getPlane();
 		if (plane < 0 || plane >= maps.length) return -1;
 		CollisionMap map = maps[plane];

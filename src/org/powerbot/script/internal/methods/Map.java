@@ -29,7 +29,7 @@ public class Map extends MethodProvider {
 			GameObject.Type.WALL_DECORATION, GameObject.Type.WALL_DECORATION
 	};
 
-	public CollisionMap[] getPlanes() {
+	public CollisionMap[] getCollisionMaps() {
 		Client client = ctx.getClient();
 		if (client == null) {
 			return new CollisionMap[0];
@@ -56,10 +56,10 @@ public class Map extends MethodProvider {
 				for (int locY = 0; locY < ySize; locY++) {
 					List<GameObject> objects = getObjects(locX, locY, plane, grounds);
 					if ((settings[plane][locX][locY] & 0x1) == 0) {
-						updateClippingMap(collisionMaps[plane], locX, locY, objects);
+						readCollision(collisionMaps[plane], locX, locY, objects);
 						continue;
 					}
-					updateClippingMap(collisionMaps[plane], locX, locY, objects);
+					readCollision(collisionMaps[plane], locX, locY, objects);
 					int planeOffset = plane;
 					if ((settings[1][locX][locY] & 0x2) != 0) {
 						planeOffset--;
@@ -110,7 +110,7 @@ public class Map extends MethodProvider {
 		return items;
 	}
 
-	private void updateClippingMap(final CollisionMap collisionMap, final int localX, final int localY, final List<GameObject> objects) {
+	private void readCollision(final CollisionMap collisionMap, final int localX, final int localY, final List<GameObject> objects) {
 		int clippingType;
 		for (GameObject next : objects) {
 			clippingType = GameObject.clippingTypeForId(next.getId());
@@ -149,5 +149,13 @@ public class Map extends MethodProvider {
 		} catch (NoSuchFieldException | IllegalAccessException ignored) {
 		}
 		return null;
+	}
+
+	private CollisionMap getCollisionMap(int plane) {
+		CollisionMap[] maps = getCollisionMaps();
+		if (plane < 0 || plane >= maps.length) {
+			return null;
+		}
+		return maps[plane];
 	}
 }
