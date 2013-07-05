@@ -8,7 +8,7 @@ import org.powerbot.client.RSGroundInfo;
 import org.powerbot.client.RSInfo;
 import org.powerbot.client.RSObject;
 import org.powerbot.client.RSRotatableObject;
-import org.powerbot.script.internal.wrappers.ClippingMap;
+import org.powerbot.script.internal.wrappers.CollisionMap;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.methods.MethodProvider;
 import org.powerbot.script.wrappers.GameObject;
@@ -29,37 +29,37 @@ public class Map extends MethodProvider {
 			GameObject.Type.WALL_DECORATION, GameObject.Type.WALL_DECORATION
 	};
 
-	public ClippingMap[] getPlanes() {
+	public CollisionMap[] getPlanes() {
 		Client client = ctx.getClient();
 		if (client == null) {
-			return new ClippingMap[0];
+			return new CollisionMap[0];
 		}
 		final RSInfo info;
 		final RSGroundInfo groundInfo;
 		final RSGround[][][] grounds;
 		if ((info = client.getRSGroundInfo()) == null || (groundInfo = info.getRSGroundInfo()) == null ||
 				(grounds = groundInfo.getRSGroundArray()) == null) {
-			return new ClippingMap[0];
+			return new CollisionMap[0];
 		}
 		RSGroundBytes ground = info.getGroundBytes();
 		byte[][][] settings = ground != null ? ground.getBytes() : null;
-		if (settings == null) return new ClippingMap[0];
-		ClippingMap[] clippingMaps = new ClippingMap[settings.length];
-		for (int plane = 0; plane < clippingMaps.length; plane++) {
+		if (settings == null) return new CollisionMap[0];
+		CollisionMap[] collisionMaps = new CollisionMap[settings.length];
+		for (int plane = 0; plane < collisionMaps.length; plane++) {
 			int xSize = settings[plane].length;
 			int ySize = Integer.MAX_VALUE;
 			for (int x = 0; x < xSize; x++) {
 				ySize = Math.min(ySize, settings[plane][x].length);
 			}
-			clippingMaps[plane] = new ClippingMap(xSize, ySize);
+			collisionMaps[plane] = new CollisionMap(xSize, ySize);
 			for (int locX = 0; locX < xSize; locX++) {
 				for (int locY = 0; locY < ySize; locY++) {
 					List<GameObject> objects = getObjects(locX, locY, plane, grounds);
 					if ((settings[plane][locX][locY] & 0x1) == 0) {
-						updateClippingMap(clippingMaps[plane], locX, locY, objects);
+						updateClippingMap(collisionMaps[plane], locX, locY, objects);
 						continue;
 					}
-					updateClippingMap(clippingMaps[plane], locX, locY, objects);
+					updateClippingMap(collisionMaps[plane], locX, locY, objects);
 					int planeOffset = plane;
 					if ((settings[1][locX][locY] & 0x2) != 0) {
 						planeOffset--;
@@ -67,14 +67,14 @@ public class Map extends MethodProvider {
 					if (planeOffset < 0) {
 						continue;
 					}
-					if (clippingMaps[planeOffset] == null) {
-						clippingMaps[planeOffset] = new ClippingMap(xSize, ySize);
+					if (collisionMaps[planeOffset] == null) {
+						collisionMaps[planeOffset] = new CollisionMap(xSize, ySize);
 					}
-					clippingMaps[planeOffset].markDeadBlock(locX, locY);
+					collisionMaps[planeOffset].markDeadBlock(locX, locY);
 				}
 			}
 		}
-		return clippingMaps;
+		return collisionMaps;
 	}
 
 	private List<GameObject> getObjects(int x, int y, int plane, RSGround[][][] grounds) {
@@ -82,7 +82,9 @@ public class Map extends MethodProvider {
 		RSGround ground;
 		if (plane < grounds.length && x < grounds[plane].length && y < grounds[plane][x].length) {
 			ground = grounds[plane][x][y];
-		} else return items;
+		} else {
+			return items;
+		}
 		if (ground == null) return items;
 
 		for (RSAnimableNode animable = ground.getRSAnimableList(); animable != null; animable = animable.getNext()) {
@@ -108,7 +110,7 @@ public class Map extends MethodProvider {
 		return items;
 	}
 
-	private void updateClippingMap(final ClippingMap clippingMap, final int localX, final int localY, final List<GameObject> objects) {
+	private void updateClippingMap(final CollisionMap collisionMap, final int localX, final int localY, final List<GameObject> objects) {
 		int clippingType;
 		for (GameObject next : objects) {
 			clippingType = GameObject.clippingTypeForId(next.getId());
@@ -119,16 +121,16 @@ public class Map extends MethodProvider {
 				RSObject object = rsObject(next);
 				if (object == null) continue;
 				RSRotatableObject rot = (RSRotatableObject) object;
-				clippingMap.markWall(localX, localY, rot.getType(), rot.getOrientation(), false);
+				collisionMap.markWall(localX, localY, rot.getType(), rot.getOrientation(), false);
 				break;
 			case FLOOR_DECORATION:
 				if (clippingType != 1) continue;
-				clippingMap.markDecoration(localX, localY);
+				collisionMap.markDecoration(localX, localY);
 
 				break;
 			case INTERACTIVE:
 				if (clippingType == 0) continue;
-				clippingMap.markInteractive(localX, localY, false);
+				collisionMap.markInteractive(localX, localY, false);
 				break;
 			}
 		}

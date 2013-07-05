@@ -1,18 +1,18 @@
 package org.powerbot.script.internal.wrappers;
 
-import static org.powerbot.script.internal.wrappers.ClippingValue.*;
+import static org.powerbot.script.internal.wrappers.CollisionFlag.*;
 
-public final class ClippingMap {
-	public ClippingMap(final int localXSize, final int localYSize) {
+public final class CollisionMap {
+	public CollisionMap(final int localXSize, final int localYSize) {
 		this.xReadableOffset = -1;
 		this.yReadableOffset = -1;
 		this.xSize = localXSize + 6;
 		this.ySize = localYSize + 6;
-		this.clipping = new ClippingValue[xSize][ySize];
+		this.clipping = new CollisionFlag[xSize][ySize];
 		clear();
 	}
 
-	private final ClippingValue[][] clipping;
+	private final CollisionFlag[][] clipping;
 	private final int xReadableOffset;
 	private final int yReadableOffset;
 	private final int xSize;
@@ -30,15 +30,15 @@ public final class ClippingMap {
 		for (int x = 0; x < this.xSize; x++) {
 			for (int y = 0; y < this.ySize; y++) {
 				if ((x <= 1) || (y <= 1) || (x >= this.xSize - 6) || (y >= this.ySize - 6)) {
-					this.clipping[x][y] = ClippingValue.PADDING;
+					this.clipping[x][y] = CollisionFlag.PADDING;
 				} else {
-					this.clipping[x][y] = ClippingValue.createNewMarkable();
+					this.clipping[x][y] = CollisionFlag.createNewMarkable();
 				}
 			}
 		}
 	}
 
-	public ClippingValue getClippingValueAtLocal(final int localX, final int localY) {
+	public CollisionFlag getClippingValueAtLocal(final int localX, final int localY) {
 		return clipping[offsetLocalX(localX)][offsetLocalY(localY)];
 	}
 
@@ -54,14 +54,14 @@ public final class ClippingMap {
 		_mark(offsetLocalX(localX), offsetLocalY(localY), DECORATION_BLOCK);
 	}
 
-	private void _mark(final int offsetX, final int offsetY, final ClippingValue clippingValue) {
-		clipping[offsetX][offsetY].mark(clippingValue);
+	private void _mark(final int offsetX, final int offsetY, final CollisionFlag collisionFlag) {
+		clipping[offsetX][offsetY].mark(collisionFlag);
 	}
 
 	public void markInteractiveArea(int localX, int localY, final int xSize, final int ySize, final boolean allowsRanged) {
-		ClippingValue clippingValue = OBJECT_BLOCK;
+		CollisionFlag collisionFlag = OBJECT_BLOCK;
 		if (allowsRanged) {
-			clippingValue = clippingValue.mark(OBJECT_ALLOW_RANGE);
+			collisionFlag = collisionFlag.mark(OBJECT_ALLOW_RANGE);
 		}
 		localX = offsetLocalX(localX);
 		localY = offsetLocalY(localY);
@@ -73,17 +73,17 @@ public final class ClippingMap {
 				if ((yPos < 0) || (yPos >= this.ySize)) {
 					continue;
 				}
-				_mark(xPos, yPos, clippingValue);
+				_mark(xPos, yPos, collisionFlag);
 			}
 		}
 	}
 
 	public void markInteractive(int localX, int localY, final boolean allowsRanged) {
-		ClippingValue clippingValue = OBJECT_BLOCK;
+		CollisionFlag collisionFlag = OBJECT_BLOCK;
 		if (allowsRanged) {
-			clippingValue = clippingValue.mark(OBJECT_ALLOW_RANGE);
+			collisionFlag = collisionFlag.mark(OBJECT_ALLOW_RANGE);
 		}
-		_mark(offsetLocalX(localX), offsetLocalY(localY), clippingValue);
+		_mark(offsetLocalX(localX), offsetLocalY(localY), collisionFlag);
 	}
 
 	public void markDeadBlock(int localX, int localY) {

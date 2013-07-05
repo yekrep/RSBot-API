@@ -1,8 +1,8 @@
 package org.powerbot.script.methods;
 
 import org.powerbot.client.Client;
-import org.powerbot.script.internal.wrappers.ClippingMap;
-import org.powerbot.script.internal.wrappers.ClippingValue;
+import org.powerbot.script.internal.wrappers.CollisionFlag;
+import org.powerbot.script.internal.wrappers.CollisionMap;
 import org.powerbot.script.lang.Locatable;
 import org.powerbot.script.lang.Targetable;
 import org.powerbot.script.util.Delay;
@@ -115,10 +115,10 @@ public class Movement extends MethodProvider {
 	}
 
 	public int pathDistance(Tile start, Tile end, final boolean findAdjacent) {
-		ClippingMap[] maps = ctx.map.getPlanes();
+		CollisionMap[] maps = ctx.map.getPlanes();
 		int plane = ctx.game.getPlane();
 		if (plane < 0 || plane >= maps.length) return -1;
-		ClippingMap map = maps[plane];
+		CollisionMap map = maps[plane];
 		if (map == null) return -1;
 
 		Tile base = ctx.game.getMapBase();
@@ -129,7 +129,7 @@ public class Movement extends MethodProvider {
 		int startX = start.getX(), startY = start.getY();
 		int endX = end.getX(), endY = end.getY();
 		int xSize = map.getSizeX() - 6, ySize = map.getSizeY() - 6;
-		ClippingValue[][] values = new ClippingValue[xSize][ySize];
+		CollisionFlag[][] values = new CollisionFlag[xSize][ySize];
 		int[][] blocks = new int[xSize][ySize];
 		final int[][] prev = new int[xSize][ySize];
 		final int[][] dist = new int[xSize][ySize];
@@ -164,8 +164,8 @@ public class Movement extends MethodProvider {
 			final int cost = dist[curr_x][curr_y] + 1;
 			if (curr_y > 0 &&
 					prev[curr_x][curr_y - 1] == 0 &&
-					!values[curr_x][curr_y].hit(ClippingValue.SOUTH) &&
-					!values[curr_x][curr_y - 1].hit(ClippingValue.OBJECT_BLOCK.mark(ClippingValue.DEAD_BLOCK))) {
+					!values[curr_x][curr_y].marked(CollisionFlag.SOUTH) &&
+					!values[curr_x][curr_y - 1].marked(CollisionFlag.OBJECT_BLOCK.mark(CollisionFlag.DEAD_BLOCK))) {
 				path_x[path_ptr] = curr_x;
 				path_y[path_ptr] = curr_y - 1;
 				path_ptr = (path_ptr + 1) % pathLength;
@@ -174,8 +174,8 @@ public class Movement extends MethodProvider {
 			}
 			if (curr_x > 0 &&
 					prev[curr_x - 1][curr_y] == 0 &&
-					!values[curr_x][curr_y].hit(ClippingValue.WEST) &&
-					!values[curr_x - 1][curr_y].hit(ClippingValue.OBJECT_BLOCK.mark(ClippingValue.DEAD_BLOCK))) {
+					!values[curr_x][curr_y].marked(CollisionFlag.WEST) &&
+					!values[curr_x - 1][curr_y].marked(CollisionFlag.OBJECT_BLOCK.mark(CollisionFlag.DEAD_BLOCK))) {
 				path_x[path_ptr] = curr_x - 1;
 				path_y[path_ptr] = curr_y;
 				path_ptr = (path_ptr + 1) % pathLength;
@@ -183,8 +183,8 @@ public class Movement extends MethodProvider {
 				dist[curr_x - 1][curr_y] = cost;
 			}
 			if (curr_y < 104 - 1 && prev[curr_x][curr_y + 1] == 0 &&
-					!values[curr_x][curr_y].hit(ClippingValue.NORTH) &&
-					!values[curr_x][curr_y + 1].hit(ClippingValue.OBJECT_BLOCK.mark(ClippingValue.DEAD_BLOCK))) {
+					!values[curr_x][curr_y].marked(CollisionFlag.NORTH) &&
+					!values[curr_x][curr_y + 1].marked(CollisionFlag.OBJECT_BLOCK.mark(CollisionFlag.DEAD_BLOCK))) {
 				path_x[path_ptr] = curr_x;
 				path_y[path_ptr] = curr_y + 1;
 				path_ptr = (path_ptr + 1) % pathLength;
@@ -192,8 +192,8 @@ public class Movement extends MethodProvider {
 				dist[curr_x][curr_y + 1] = cost;
 			}
 			if (curr_x < 104 - 1 && prev[curr_x + 1][curr_y] == 0 &&
-					!values[curr_x][curr_y].hit(ClippingValue.EAST) &&
-					!values[curr_x + 1][curr_y].hit(ClippingValue.OBJECT_BLOCK.mark(ClippingValue.DEAD_BLOCK))) {
+					!values[curr_x][curr_y].marked(CollisionFlag.EAST) &&
+					!values[curr_x + 1][curr_y].marked(CollisionFlag.OBJECT_BLOCK.mark(CollisionFlag.DEAD_BLOCK))) {
 				path_x[path_ptr] = curr_x + 1;
 				path_y[path_ptr] = curr_y;
 				path_ptr = (path_ptr + 1) % pathLength;
@@ -201,10 +201,10 @@ public class Movement extends MethodProvider {
 				dist[curr_x + 1][curr_y] = cost;
 			}
 			if (curr_x > 0 && curr_y > 0 && prev[curr_x - 1][curr_y - 1] == 0 &&
-					!values[curr_x][curr_y].hit(ClippingValue.SOUTHWEST.mark(ClippingValue.SOUTH.mark(ClippingValue.WEST))) &&
-					!values[curr_x - 1][curr_y - 1].hit(ClippingValue.OBJECT_BLOCK.mark(ClippingValue.DEAD_BLOCK)) &&
-					!values[curr_x][curr_y - 1].hit(ClippingValue.WEST.mark(ClippingValue.OBJECT_BLOCK.mark(ClippingValue.DEAD_BLOCK))) &&
-					!values[curr_x - 1][curr_y].hit(ClippingValue.SOUTH.mark(ClippingValue.OBJECT_BLOCK.mark(ClippingValue.DEAD_BLOCK)))) {
+					!values[curr_x][curr_y].marked(CollisionFlag.SOUTHWEST.mark(CollisionFlag.SOUTH.mark(CollisionFlag.WEST))) &&
+					!values[curr_x - 1][curr_y - 1].marked(CollisionFlag.OBJECT_BLOCK.mark(CollisionFlag.DEAD_BLOCK)) &&
+					!values[curr_x][curr_y - 1].marked(CollisionFlag.WEST.mark(CollisionFlag.OBJECT_BLOCK.mark(CollisionFlag.DEAD_BLOCK))) &&
+					!values[curr_x - 1][curr_y].marked(CollisionFlag.SOUTH.mark(CollisionFlag.OBJECT_BLOCK.mark(CollisionFlag.DEAD_BLOCK)))) {
 				path_x[path_ptr] = curr_x - 1;
 				path_y[path_ptr] = curr_y - 1;
 				path_ptr = (path_ptr + 1) % pathLength;
@@ -212,10 +212,10 @@ public class Movement extends MethodProvider {
 				dist[curr_x - 1][curr_y - 1] = cost;
 			}
 			if (curr_x > 0 && curr_y < ySize - 1 && prev[curr_x - 1][curr_y + 1] == 0 &&
-					!values[curr_x][curr_y].hit(ClippingValue.NORTHWEST.mark(ClippingValue.NORTH.mark(ClippingValue.WEST))) &&
-					!values[curr_x - 1][curr_y + 1].hit(ClippingValue.OBJECT_BLOCK.mark(ClippingValue.DEAD_BLOCK)) &&
-					!values[curr_x][curr_y + 1].hit(ClippingValue.WEST.mark(ClippingValue.OBJECT_BLOCK.mark(ClippingValue.DEAD_BLOCK))) &&
-					!values[curr_x - 1][curr_y].hit(ClippingValue.NORTH.mark(ClippingValue.OBJECT_BLOCK.mark(ClippingValue.DEAD_BLOCK)))) {
+					!values[curr_x][curr_y].marked(CollisionFlag.NORTHWEST.mark(CollisionFlag.NORTH.mark(CollisionFlag.WEST))) &&
+					!values[curr_x - 1][curr_y + 1].marked(CollisionFlag.OBJECT_BLOCK.mark(CollisionFlag.DEAD_BLOCK)) &&
+					!values[curr_x][curr_y + 1].marked(CollisionFlag.WEST.mark(CollisionFlag.OBJECT_BLOCK.mark(CollisionFlag.DEAD_BLOCK))) &&
+					!values[curr_x - 1][curr_y].marked(CollisionFlag.NORTH.mark(CollisionFlag.OBJECT_BLOCK.mark(CollisionFlag.DEAD_BLOCK)))) {
 				path_x[path_ptr] = curr_x - 1;
 				path_y[path_ptr] = curr_y + 1;
 				path_ptr = (path_ptr + 1) % pathLength;
@@ -223,10 +223,10 @@ public class Movement extends MethodProvider {
 				dist[curr_x - 1][curr_y + 1] = cost;
 			}
 			if (curr_x < ySize - 1 && curr_y > 0 && prev[curr_x - 1][curr_y - 1] == 0 &&
-					!values[curr_x][curr_y].hit(ClippingValue.SOUTHEAST.mark(ClippingValue.SOUTH.mark(ClippingValue.EAST))) &&
-					!values[curr_x + 1][curr_y - 1].hit(ClippingValue.OBJECT_BLOCK.mark(ClippingValue.DEAD_BLOCK)) &&
-					!values[curr_x][curr_y - 1].hit(ClippingValue.EAST.mark(ClippingValue.OBJECT_BLOCK.mark(ClippingValue.DEAD_BLOCK))) &&
-					!values[curr_x + 1][curr_y].hit(ClippingValue.SOUTH.mark(ClippingValue.OBJECT_BLOCK.mark(ClippingValue.DEAD_BLOCK)))) {
+					!values[curr_x][curr_y].marked(CollisionFlag.SOUTHEAST.mark(CollisionFlag.SOUTH.mark(CollisionFlag.EAST))) &&
+					!values[curr_x + 1][curr_y - 1].marked(CollisionFlag.OBJECT_BLOCK.mark(CollisionFlag.DEAD_BLOCK)) &&
+					!values[curr_x][curr_y - 1].marked(CollisionFlag.EAST.mark(CollisionFlag.OBJECT_BLOCK.mark(CollisionFlag.DEAD_BLOCK))) &&
+					!values[curr_x + 1][curr_y].marked(CollisionFlag.SOUTH.mark(CollisionFlag.OBJECT_BLOCK.mark(CollisionFlag.DEAD_BLOCK)))) {
 				path_x[path_ptr] = curr_x + 1;
 				path_y[path_ptr] = curr_y - 1;
 				path_ptr = (path_ptr + 1) % pathLength;
@@ -234,10 +234,10 @@ public class Movement extends MethodProvider {
 				dist[curr_x + 1][curr_y - 1] = cost;
 			}
 			if (curr_x < xSize - 1 && curr_y < ySize - 1 && prev[curr_x + 1][curr_y + 1] == 0 &&
-					!values[curr_x][curr_y].hit(ClippingValue.NORTHEAST.mark(ClippingValue.NORTH.mark(ClippingValue.WEST))) &&
-					!values[curr_x + 1][curr_y + 1].hit(ClippingValue.OBJECT_BLOCK.mark(ClippingValue.DEAD_BLOCK)) &&
-					!values[curr_x][curr_y + 1].hit(ClippingValue.EAST.mark(ClippingValue.OBJECT_BLOCK.mark(ClippingValue.DEAD_BLOCK))) &&
-					!values[curr_x + 1][curr_y].hit(ClippingValue.NORTH.mark(ClippingValue.OBJECT_BLOCK.mark(ClippingValue.DEAD_BLOCK)))) {
+					!values[curr_x][curr_y].marked(CollisionFlag.NORTHEAST.mark(CollisionFlag.NORTH.mark(CollisionFlag.WEST))) &&
+					!values[curr_x + 1][curr_y + 1].marked(CollisionFlag.OBJECT_BLOCK.mark(CollisionFlag.DEAD_BLOCK)) &&
+					!values[curr_x][curr_y + 1].marked(CollisionFlag.EAST.mark(CollisionFlag.OBJECT_BLOCK.mark(CollisionFlag.DEAD_BLOCK))) &&
+					!values[curr_x + 1][curr_y].marked(CollisionFlag.NORTH.mark(CollisionFlag.OBJECT_BLOCK.mark(CollisionFlag.DEAD_BLOCK)))) {
 				path_x[path_ptr] = curr_x + 1;
 				path_y[path_ptr] = curr_y + 1;
 				path_ptr = (path_ptr + 1) % pathLength;
