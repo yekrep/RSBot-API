@@ -40,7 +40,7 @@ public final class TileMatrix extends Interactive implements Locatable, Drawable
 	}
 
 	public boolean isReachable() {
-		return ctx.movement.pathDistance(ctx.players.getLocal().getLocation(), tile) != -1;
+		return ctx.movement.getDistance(ctx.players.getLocal().getLocation(), tile) != -1;
 	}
 
 	@Override
