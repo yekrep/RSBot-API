@@ -1,7 +1,7 @@
 package org.powerbot.script.wrappers;
 
-import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.methods.Game;
+import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.util.Random;
 
 import java.util.Arrays;
@@ -42,8 +42,8 @@ public class TilePath extends Path {
 			if (options.contains(TraversalOption.HANDLE_RUN) && !ctx.movement.isRunning() && ctx.movement.getEnergyLevel() > Random.nextInt(45, 60)) {
 				ctx.movement.setRunning(true);
 			}
-			if (options.contains(TraversalOption.SPACE_ACTIONS) && dest != null && local.isInMotion() && next.distanceTo(dest) < 3d) {
-				if (dest.distanceTo(ctx.players.getLocal()) > Random.nextDouble(4d, 7d)) {
+			if (options.contains(TraversalOption.SPACE_ACTIONS) && dest != null && local.isInMotion() && dest.distanceTo(last) < 3d) {
+				if (dest.distanceTo(ctx.players.getLocal()) > Random.nextGaussian(5000, 8000, 6000, 1000) / 1000d) {
 					return true;
 				}
 			}
