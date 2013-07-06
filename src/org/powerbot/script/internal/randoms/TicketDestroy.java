@@ -18,7 +18,7 @@ public class TicketDestroy extends PollingScript implements InternalScript {
 	private Component component;
 
 	public boolean isValid() {
-		if (!ctx.game.isLoggedIn() || ctx.game.getCurrentTab() != Game.TAB_INVENTORY) {
+		if (!ctx.game.isLoggedIn() || ctx.game.getCurrentTab() != Game.Tab.INVENTORY) {
 			return false;
 		}
 

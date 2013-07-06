@@ -173,7 +173,7 @@ public class Prayer extends MethodProvider {
 		if (isEffectActive(prayer) == activate) {
 			return true;
 		}
-		if (ctx.game.openTab(Game.TAB_PRAYER)) {
+		if (ctx.game.openTab(Game.Tab.PRAYER)) {
 			Component c = ctx.widgets.get(WIDGET, 9);
 			if (c != null) {
 				c = c.getChild(prayer.getId());

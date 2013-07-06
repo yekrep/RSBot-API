@@ -61,27 +61,27 @@ class Components extends MethodProvider {
 		return null;
 	}
 
-	Component getTab(final int index) {
-		if (container == null || index < 0 || index >= container.tabs.length) {
+	Component getTab(Game.Tab tab) {
+		if (container == null) {
 			return null;
 		}
 
 		container.sync();
-		if (container.tabs[index] == -1) {
+		if (container.tabs[tab.ordinal()] == -1) {
 			final Widget game = ctx.widgets.get(container.index);
 			final Component[] components = game != null ? game.getComponents() : null;
 			if (components != null) {
 				for (final Component c : components) {
 					final String[] actions = c.getActions();
-					if (actions != null && actions.length > 0 && actions[0].equalsIgnoreCase(Game.TAB_NAMES[index])) {
-						container.tabs[index] = c.getIndex();
+					if (actions != null && actions.length > 0 && actions[0].equalsIgnoreCase(tab.getName())) {
+						container.tabs[tab.ordinal()] = c.getIndex();
 						break;
 					}
 				}
 			}
 		}
-		if (container.tabs[index] != -1) {
-			return ctx.widgets.get(container.index, container.tabs[index]);
+		if (container.tabs[tab.ordinal()] != -1) {
+			return ctx.widgets.get(container.index, container.tabs[tab.ordinal()]);
 		}
 		return null;
 	}
@@ -110,7 +110,7 @@ class Components extends MethodProvider {
 				this.index = index;
 				this.compass = -1;
 				this.map = -1;
-				this.tabs = new int[Game.TAB_NAMES.length];
+				this.tabs = new int[Game.Tab.values().length];
 				for (int i = 0; i < this.tabs.length; i++) {
 					this.tabs[i] = -1;
 				}

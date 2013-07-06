@@ -26,28 +26,6 @@ import org.powerbot.script.wrappers.Player;
 import org.powerbot.script.wrappers.Tile;
 
 public class Game extends MethodProvider {
-	public static final int TAB_NONE = -1;
-	public static final int TAB_COMBAT = 0;
-	public static final int TAB_NOTICEBOARD = 1;
-	public static final int TAB_STATS = 2;
-	public static final int TAB_ACADEMY = 3;
-	public static final int TAB_INVENTORY = 4;
-	public static final int TAB_EQUIPMENT = 5;
-	public static final int TAB_PRAYER = 6;
-	public static final int TAB_ABILITY_BOOK = 7;
-	public static final int TAB_EXTRAS = 8;
-	public static final int TAB_FRIENDS = 9;
-	public static final int TAB_FRIENDS_CHAT = 10;
-	public static final int TAB_CLAN_CHAT = 11;
-	public static final int TAB_OPTIONS = 12;
-	public static final int TAB_EMOTES = 13;
-	public static final int TAB_MUSIC = 14;
-	public static final int TAB_NOTES = 15;
-	public static final int TAB_LOGOUT = 16;
-	public static final String[] TAB_NAMES = {
-			"Combat", "Noticeboard", "Stats", "Combat Academy", "Inventory", "Worn Equipment", "Prayer List", "Ability Book",
-			"Extras", "Friends List", "Friends Chat", "Clan Chat", "Options", "Emotes", "Music Player", "Notes", "Exit"
-	};
 	public static final int INDEX_LOGIN_SCREEN = 3;
 	public static final int INDEX_LOBBY_SCREEN = 7;
 	public static final int INDEX_LOGGING_IN = 9;
@@ -68,60 +46,90 @@ public class Game extends MethodProvider {
 	public final Game.Toolkit toolkit;
 	public final Game.Viewport viewport;
 
+	public enum Tab {
+		NIL(null),
+		COMBAT("Combat"),
+		NOTICEBOARD("Noticeboard"),
+		STATS("Stats"),
+		ACADEMY("Combat Academy"),
+		INVENTORY("Inventory"),
+		EQUIPMENT("Worn Equipment"),
+		PRAYER("Prayer List"),
+		ABILITY_BOOK("Ability Book"),
+		EXTRAS("Extras"),
+		FRIENDS("Friends List"),
+		FRIENDS_CHAT("Friends Chat"),
+		CLAN_CHAT("Clan Chat"),
+		OPTIONS("Options"),
+		EMOTES("Emotes"),
+		MUSIC("Music Player"),
+		NOTES("Notes"),
+		LOGOUT("Exit");
+		public final String hint;
+
+		Tab(String hint) {
+			this.hint = hint;
+		}
+
+		public String getName() {
+			return hint;
+		}
+	}
+
 	public Game(MethodContext factory) {
 		super(factory);
 		this.toolkit = new Toolkit();
 		this.viewport = new Viewport();
 	}
 
-	public int getCurrentTab() {
+	public Tab getCurrentTab() {
 		Component c;
-		for (int i = 0; i < TAB_NAMES.length - 1; i++) {
-			if ((c = ctx.components.getTab(i)) != null) {
+		for (Tab tab : Tab.values()) {
+			if (tab == Tab.LOGOUT) {
+				continue;
+			}
+			if ((c = ctx.components.getTab(tab)) != null) {
 				if (c.getTextureId() != -1) {
-					return i;
+					return tab;
 				}
 			}
 		}
 		if ((c = ctx.widgets.get(182, 1)) != null && c.isVisible()) {
-			return TAB_LOGOUT;
+			return Tab.LOGOUT;
 		}
-		return TAB_NONE;
+		return Tab.NIL;
 	}
 
-	public boolean openTab(final int index) {
-		if (index < 0 || index >= TAB_NAMES.length) {
-			return false;
-		}
-		if (getCurrentTab() == index) {
+	public boolean openTab(Tab tab) {
+		if (getCurrentTab() == tab) {
 			return true;
 		}
-		final Component c = ctx.components.getTab(index);
+		final Component c = ctx.components.getTab(tab);
 		if (c != null && c.isValid() && c.click(true)) {
 			final Timer t = new Timer(800);
-			while (t.isRunning() && getCurrentTab() != index) {
+			while (t.isRunning() && getCurrentTab() != tab) {
 				Delay.sleep(15);
 			}
 		}
-		return getCurrentTab() == index;
+		return getCurrentTab() == tab;
 	}
 
 	public boolean closeTab() {
 		if (isFixed()) {
 			return false;
 		}
-		final int curr;
-		if ((curr = getCurrentTab()) == TAB_NONE) {
+		final Tab curr;
+		if ((curr = getCurrentTab()) == Tab.NIL) {
 			return true;
 		}
 		final Component c = ctx.components.getTab(curr);
 		if (c != null && c.isValid() && c.click(true)) {
 			final Timer t = new Timer(800);
-			while (t.isRunning() && getCurrentTab() != TAB_NONE) {
+			while (t.isRunning() && getCurrentTab() != Tab.NIL) {
 				Delay.sleep(15);
 			}
 		}
-		return getCurrentTab() == TAB_NONE;
+		return getCurrentTab() == Tab.NIL;
 	}
 
 	public int getClientState() {

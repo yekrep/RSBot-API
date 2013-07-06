@@ -46,7 +46,7 @@ public class DrawItems implements PaintListener {
 			}
 		}
 
-		if (ctx.game.getCurrentTab() == Game.TAB_INVENTORY) {
+		if (ctx.game.getCurrentTab() == Game.Tab.INVENTORY) {
 			for (Item item : ctx.inventory.select()) {
 				Component c = item.getComponent();
 				if (c == null) {
@@ -55,7 +55,7 @@ public class DrawItems implements PaintListener {
 				Point p = c.getAbsoluteLocation();
 				render.drawString(c.getItemId() + "", p.x, p.y + c.getHeight());
 			}
-		} else if (ctx.game.getCurrentTab() == Game.TAB_EQUIPMENT) {
+		} else if (ctx.game.getCurrentTab() == Game.Tab.EQUIPMENT) {
 			for (Item item : ctx.equipment.getAllItems()) {
 				if (item == null) {
 					continue;
