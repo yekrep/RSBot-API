@@ -221,7 +221,7 @@ public class Sandbox extends SecurityManager {
 
 	private boolean isGameThread() {
 		final Class<?>[] context = getClassContext();
-		for (int i = 1; i < Math.min(6, context.length); i++) {
+		for (int i = 1; i < Math.min(8, context.length); i++) {
 			if (context[i].isAssignableFrom(Sandbox.class)) {
 				continue;
 			}
