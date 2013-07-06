@@ -27,7 +27,7 @@ public class TilePath extends Path {
 		}
 		final Tile dest = ctx.movement.getDestination();
 		if (next.equals(getEnd())) {
-			if (next.distanceTo(ctx.players.getLocal()) <= 1) {
+			if (next.distanceTo(ctx.players.getLocal()) <= 2) {
 				return false;
 			}
 			if (end && (local.isInMotion() || (dest != null && dest.equals(next)))) {
