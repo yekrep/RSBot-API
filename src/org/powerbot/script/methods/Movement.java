@@ -1,11 +1,11 @@
 package org.powerbot.script.methods;
 
 import org.powerbot.client.Client;
-import org.powerbot.script.internal.wrappers.CollisionMap;
 import org.powerbot.script.lang.Locatable;
 import org.powerbot.script.lang.Targetable;
 import org.powerbot.script.util.Delay;
 import org.powerbot.script.wrappers.Component;
+import org.powerbot.script.wrappers.LocalPath;
 import org.powerbot.script.wrappers.Tile;
 import org.powerbot.script.wrappers.TileMatrix;
 import org.powerbot.script.wrappers.TilePath;
@@ -27,6 +27,13 @@ public class Movement extends MethodProvider {
 			throw new IllegalArgumentException("tiles are null");
 		}
 		return new TilePath(ctx, tiles);
+	}
+
+	public LocalPath findPath(Locatable locatable) {
+		if (locatable == null) {
+			throw new IllegalArgumentException();
+		}
+		return new LocalPath(ctx, ctx.map, locatable);
 	}
 
 	public Tile getDestination() {
