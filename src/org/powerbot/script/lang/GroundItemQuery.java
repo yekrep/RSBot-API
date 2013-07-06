@@ -116,9 +116,13 @@ public abstract class GroundItemQuery<K extends Locatable & Identifiable & Namea
 
 	@Override
 	public int count(boolean stacks) {
-		if (!stacks) return count();
+		if (!stacks) {
+			return count();
+		}
 		int count = 0;
-		for (Stackable stackable : this) count += stackable.getStackSize();
+		for (Stackable stackable : this) {
+			count += stackable.getStackSize();
+		}
 		return count;
 	}
 }

@@ -1,5 +1,15 @@
 package org.powerbot.script.internal.methods;
 
+import java.lang.ref.WeakReference;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.PriorityQueue;
+import java.util.Queue;
+
 import org.powerbot.client.Client;
 import org.powerbot.client.RSAnimableNode;
 import org.powerbot.client.RSGround;
@@ -13,16 +23,6 @@ import org.powerbot.script.internal.wrappers.CollisionMap;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.methods.MethodProvider;
 import org.powerbot.script.wrappers.GameObject;
-
-import java.lang.ref.WeakReference;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.PriorityQueue;
-import java.util.Queue;
 
 public class Map extends MethodProvider {
 	public Map(MethodContext factory) {
@@ -49,7 +49,9 @@ public class Map extends MethodProvider {
 		}
 		RSGroundBytes ground = info.getGroundBytes();
 		byte[][][] settings = ground != null ? ground.getBytes() : null;
-		if (settings == null) return new CollisionMap[0];
+		if (settings == null) {
+			return new CollisionMap[0];
+		}
 		CollisionMap[] collisionMaps = new CollisionMap[settings.length];
 		for (int plane = 0; plane < collisionMaps.length; plane++) {
 			int width = settings[plane].length;
@@ -91,11 +93,15 @@ public class Map extends MethodProvider {
 		} else {
 			return items;
 		}
-		if (ground == null) return items;
+		if (ground == null) {
+			return items;
+		}
 
 		for (RSAnimableNode animable = ground.getRSAnimableList(); animable != null; animable = animable.getNext()) {
 			Object node = animable.getRSAnimable();
-			if (node == null || !(node instanceof RSObject)) continue;
+			if (node == null || !(node instanceof RSObject)) {
+				continue;
+			}
 			RSObject obj = (RSObject) node;
 			if (obj.getId() != -1) {
 				items.add(new GameObject(ctx, obj, GameObject.Type.INTERACTIVE));
@@ -122,20 +128,28 @@ public class Map extends MethodProvider {
 			clippingType = GameObject.clippingTypeForId(next.getId());
 			switch (next.getType()) {
 			case BOUNDARY:
-				if (clippingType == 0) continue;
+				if (clippingType == 0) {
+					continue;
+				}
 
 				RSObject object = rsObject(next);
-				if (object == null) continue;
+				if (object == null) {
+					continue;
+				}
 				RSRotatableObject rot = (RSRotatableObject) object;
 				collisionMap.markWall(localX, localY, rot.getType(), rot.getOrientation(), false);
 				break;
 			case FLOOR_DECORATION:
-				if (clippingType != 1) continue;
+				if (clippingType != 1) {
+					continue;
+				}
 				collisionMap.markDecoration(localX, localY);
 
 				break;
 			case INTERACTIVE:
-				if (clippingType == 0) continue;
+				if (clippingType == 0) {
+					continue;
+				}
 				collisionMap.markInteractive(localX, localY, false);
 				break;
 			}

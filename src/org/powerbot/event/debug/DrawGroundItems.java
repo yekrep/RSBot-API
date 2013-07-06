@@ -1,18 +1,18 @@
 package org.powerbot.event.debug;
 
-import org.powerbot.event.PaintListener;
-import org.powerbot.gui.BotChrome;
-import org.powerbot.script.methods.MethodContext;
-import org.powerbot.script.wrappers.GroundItem;
-import org.powerbot.script.wrappers.Player;
-import org.powerbot.script.wrappers.Tile;
-
 import java.awt.Color;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.powerbot.event.PaintListener;
+import org.powerbot.gui.BotChrome;
+import org.powerbot.script.methods.MethodContext;
+import org.powerbot.script.wrappers.GroundItem;
+import org.powerbot.script.wrappers.Player;
+import org.powerbot.script.wrappers.Tile;
 
 public class DrawGroundItems implements PaintListener {
 	public void repaint(final Graphics render) {

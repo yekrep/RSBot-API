@@ -1,12 +1,12 @@
 package org.powerbot.script.methods;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.powerbot.script.internal.methods.Items;
 import org.powerbot.script.lang.ItemQuery;
 import org.powerbot.script.wrappers.Component;
 import org.powerbot.script.wrappers.Item;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class Inventory extends ItemQuery<Item> {
 	public static final int WIDGET = 679;

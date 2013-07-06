@@ -26,7 +26,9 @@ public interface Nameable {
 		@Override
 		public boolean accept(final Nameable i) {
 			final String n = i.getName();
-			if (n == null) return false;
+			if (n == null) {
+				return false;
+			}
 			for (String name : names) {
 				if (name != null && name.equalsIgnoreCase(n)) {
 					return true;

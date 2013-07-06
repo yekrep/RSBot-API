@@ -1,5 +1,10 @@
 package org.powerbot.script.methods;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.powerbot.client.Client;
 import org.powerbot.client.RSAnimableNode;
 import org.powerbot.client.RSGround;
@@ -8,11 +13,6 @@ import org.powerbot.client.RSInfo;
 import org.powerbot.client.RSObject;
 import org.powerbot.script.lang.BasicNamedQuery;
 import org.powerbot.script.wrappers.GameObject;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 public class Objects extends BasicNamedQuery<GameObject> {
 	public Objects(MethodContext factory) {
@@ -59,7 +59,9 @@ public class Objects extends BasicNamedQuery<GameObject> {
 
 				for (RSAnimableNode animable = ground.getRSAnimableList(); animable != null; animable = animable.getNext()) {
 					Object node = animable.getRSAnimable();
-					if (node == null || !(node instanceof RSObject)) continue;
+					if (node == null || !(node instanceof RSObject)) {
+						continue;
+					}
 					RSObject obj = (RSObject) node;
 					if (obj.getId() != -1 && !refs.contains(obj)) {
 						refs.add(obj);

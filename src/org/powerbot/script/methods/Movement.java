@@ -1,5 +1,7 @@
 package org.powerbot.script.methods;
 
+import java.awt.Point;
+
 import org.powerbot.client.Client;
 import org.powerbot.script.lang.Locatable;
 import org.powerbot.script.lang.Targetable;
@@ -9,8 +11,6 @@ import org.powerbot.script.wrappers.LocalPath;
 import org.powerbot.script.wrappers.Tile;
 import org.powerbot.script.wrappers.TileMatrix;
 import org.powerbot.script.wrappers.TilePath;
-
-import java.awt.Point;
 
 public class Movement extends MethodProvider {
 	private static final int WIDGET = 750;
@@ -129,7 +129,9 @@ public class Movement extends MethodProvider {
 		end = _end.getLocation();
 
 		Tile base = ctx.game.getMapBase();
-		if (base == Tile.NIL || start == Tile.NIL || end == Tile.NIL) return -1;
+		if (base == Tile.NIL || start == Tile.NIL || end == Tile.NIL) {
+			return -1;
+		}
 		start = start.derive(-base.x, -base.y);
 		end = end.derive(-base.x, -base.y);
 

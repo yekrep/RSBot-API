@@ -1,23 +1,25 @@
 package org.powerbot.event.debug;
 
-import org.powerbot.event.PaintListener;
-import org.powerbot.gui.BotChrome;
-import org.powerbot.script.methods.Bank;
-import org.powerbot.script.methods.MethodContext;
-import org.powerbot.script.methods.Game;
-import org.powerbot.script.wrappers.Component;
-import org.powerbot.script.wrappers.Item;
-
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
 
+import org.powerbot.event.PaintListener;
+import org.powerbot.gui.BotChrome;
+import org.powerbot.script.methods.Bank;
+import org.powerbot.script.methods.Game;
+import org.powerbot.script.methods.MethodContext;
+import org.powerbot.script.wrappers.Component;
+import org.powerbot.script.wrappers.Item;
+
 public class DrawItems implements PaintListener {
 	public void repaint(final Graphics render) {
 		MethodContext ctx = BotChrome.getInstance().getBot().getMethodContext();
-		if (!ctx.game.isLoggedIn()) return;
+		if (!ctx.game.isLoggedIn()) {
+			return;
+		}
 
 		render.setFont(new Font("Arial", 0, 10));
 		render.setColor(Color.green);
@@ -32,8 +34,12 @@ public class DrawItems implements PaintListener {
 						continue;
 					}
 					Rectangle r2 = c.getBoundingRect();
-					if (r2 == null) continue;
-					if (c.getRelativeLocation().y == 0 || !r.contains(r2)) continue;
+					if (r2 == null) {
+						continue;
+					}
+					if (c.getRelativeLocation().y == 0 || !r.contains(r2)) {
+						continue;
+					}
 					Point p = c.getAbsoluteLocation();
 					render.drawString(c.getItemId() + "", p.x, p.y + c.getHeight());
 				}
@@ -51,7 +57,9 @@ public class DrawItems implements PaintListener {
 			}
 		} else if (ctx.game.getCurrentTab() == Game.TAB_EQUIPMENT) {
 			for (Item item : ctx.equipment.getAllItems()) {
-				if (item == null) continue;
+				if (item == null) {
+					continue;
+				}
 				Component c = item.getComponent();
 				if (c == null) {
 					continue;

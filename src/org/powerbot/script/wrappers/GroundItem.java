@@ -1,5 +1,10 @@
 package org.powerbot.script.wrappers;
 
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Point;
+import java.lang.ref.WeakReference;
+
 import org.powerbot.client.BaseInfo;
 import org.powerbot.client.Cache;
 import org.powerbot.client.Client;
@@ -17,11 +22,6 @@ import org.powerbot.script.lang.Nameable;
 import org.powerbot.script.lang.Stackable;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.util.Random;
-
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Point;
-import java.lang.ref.WeakReference;
 
 public class GroundItem extends Interactive implements Identifiable, Nameable, Stackable, Locatable, Drawable {
 	public static final Color TARGET_COLOR = new Color(255, 255, 0, 75);
@@ -190,7 +190,9 @@ public class GroundItem extends Interactive implements Identifiable, Nameable, S
 			return false;
 		}
 		final GroundItem g = (GroundItem) o;
-		if (!this.tile.equals(g.tile)) return false;
+		if (!this.tile.equals(g.tile)) {
+			return false;
+		}
 		RSItem item1 = this.item.get(), item2 = g.item.get();
 		return item1 != null && item2 != null && item1 == item2;
 	}

@@ -1,19 +1,5 @@
 package org.powerbot;
 
-import org.powerbot.Configuration.OperatingSystem;
-import org.powerbot.bot.RSLoader;
-import org.powerbot.gui.BotChrome;
-import org.powerbot.service.GameAccounts;
-import org.powerbot.service.NetworkAccount;
-import org.powerbot.util.Sandbox;
-import org.powerbot.util.StringUtil;
-import org.powerbot.util.Tracker;
-import org.powerbot.util.io.CryptFile;
-import org.powerbot.util.io.IOHelper;
-import org.powerbot.util.io.PrintStreamHandler;
-import org.powerbot.util.io.Resources;
-
-import javax.swing.UIManager;
 import java.io.File;
 import java.io.IOException;
 import java.lang.management.ManagementFactory;
@@ -25,6 +11,17 @@ import java.util.List;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.swing.UIManager;
+
+import org.powerbot.Configuration.OperatingSystem;
+import org.powerbot.gui.BotChrome;
+import org.powerbot.util.Sandbox;
+import org.powerbot.util.StringUtil;
+import org.powerbot.util.io.CryptFile;
+import org.powerbot.util.io.IOHelper;
+import org.powerbot.util.io.PrintStreamHandler;
+import org.powerbot.util.io.Resources;
 
 public class Boot implements Runnable {
 	private final static Logger log = Logger.getLogger(Boot.class.getName());

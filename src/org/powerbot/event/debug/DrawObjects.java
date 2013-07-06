@@ -1,5 +1,12 @@
 package org.powerbot.event.debug;
 
+import java.awt.Color;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Point;
+import java.lang.ref.WeakReference;
+import java.lang.reflect.Field;
+
 import org.powerbot.client.RSAnimable;
 import org.powerbot.client.RSObject;
 import org.powerbot.event.PaintListener;
@@ -8,13 +15,6 @@ import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.wrappers.GameObject;
 import org.powerbot.script.wrappers.Player;
 import org.powerbot.script.wrappers.Tile;
-
-import java.awt.Color;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.Point;
-import java.lang.ref.WeakReference;
-import java.lang.reflect.Field;
 
 public class DrawObjects implements PaintListener {
 	private static final Color[] C = {Color.GREEN, Color.WHITE, Color.BLACK, Color.BLUE};
@@ -35,14 +35,20 @@ public class DrawObjects implements PaintListener {
 		Tile base = ctx.game.getMapBase();
 		for (GameObject object : ctx.objects.select().within(25)) {
 			Tile t = object.getLocation();
-			if (t == null) continue;
+			if (t == null) {
+				continue;
+			}
 
 			Point p = t.getMatrix(ctx).getCenterPoint();
-			if (p.x == -1) continue;
+			if (p.x == -1) {
+				continue;
+			}
 
 			Point p2 = p;
 			p = object.getCenterPoint();
-			if (p.x == -1) continue;
+			if (p.x == -1) {
+				continue;
+			}
 
 
 			WeakReference<RSObject> internalObj;

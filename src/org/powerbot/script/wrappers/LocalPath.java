@@ -1,10 +1,10 @@
 package org.powerbot.script.wrappers;
 
+import java.util.EnumSet;
+
 import org.powerbot.script.internal.methods.Map;
 import org.powerbot.script.lang.Locatable;
 import org.powerbot.script.methods.MethodContext;
-
-import java.util.EnumSet;
 
 public class LocalPath extends Path {
 	private Locatable destination;
@@ -21,7 +21,7 @@ public class LocalPath extends Path {
 
 	@Override
 	public boolean traverse(EnumSet<TraversalOption> options) {
-		return isValid() &&tilePath.traverse(options);
+		return isValid() && tilePath.traverse(options);
 	}
 
 	@Override

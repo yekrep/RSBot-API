@@ -27,10 +27,14 @@ public class WidgetCloser extends PollingScript implements InternalScript {
 
 	@Override
 	public int poll() {
-		if (!isValid()) return -1;
+		if (!isValid()) {
+			return -1;
+		}
 
 		Component component = this.component;
-		if (component == null) return -1;
+		if (component == null) {
+			return -1;
+		}
 
 		if (++tries > 3) {
 			tries = 0;

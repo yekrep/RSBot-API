@@ -1,14 +1,14 @@
 package org.powerbot.script.wrappers;
 
-import org.powerbot.script.lang.Drawable;
-import org.powerbot.script.lang.Locatable;
-import org.powerbot.script.methods.MethodContext;
-import org.powerbot.script.util.Random;
-
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Polygon;
+
+import org.powerbot.script.lang.Drawable;
+import org.powerbot.script.lang.Locatable;
+import org.powerbot.script.methods.MethodContext;
+import org.powerbot.script.util.Random;
 
 /**
  * An interactive tile matrix.

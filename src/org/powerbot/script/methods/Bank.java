@@ -1,5 +1,11 @@
 package org.powerbot.script.methods;
 
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.powerbot.script.lang.Filter;
 import org.powerbot.script.lang.ItemQuery;
 import org.powerbot.script.util.Delay;
@@ -11,12 +17,6 @@ import org.powerbot.script.wrappers.Interactive;
 import org.powerbot.script.wrappers.Item;
 import org.powerbot.script.wrappers.Npc;
 import org.powerbot.script.wrappers.Widget;
-
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class Bank extends ItemQuery<Item> {
 	public static final int[] BANK_NPC_IDS = new int[]{
@@ -255,8 +255,12 @@ public class Bank extends ItemQuery<Item> {
 			return false;
 		}
 		if (!bounds.contains(c.getBoundingRect())) {
-			if (ctx.widgets.scroll(c, scroll, bounds.contains(ctx.mouse.getLocation()))) Delay.sleep(200, 400);
-			if (!bounds.contains(c.getBoundingRect())) return false;
+			if (ctx.widgets.scroll(c, scroll, bounds.contains(ctx.mouse.getLocation()))) {
+				Delay.sleep(200, 400);
+			}
+			if (!bounds.contains(c.getBoundingRect())) {
+				return false;
+			}
 		}
 		String action = "Withdraw-" + amount;
 		if (amount == 0 ||

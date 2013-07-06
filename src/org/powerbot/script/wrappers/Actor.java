@@ -1,5 +1,7 @@
 package org.powerbot.script.wrappers;
 
+import java.awt.Point;
+
 import org.powerbot.client.Client;
 import org.powerbot.client.CombatStatus;
 import org.powerbot.client.CombatStatusData;
@@ -17,8 +19,6 @@ import org.powerbot.script.lang.Drawable;
 import org.powerbot.script.lang.Locatable;
 import org.powerbot.script.lang.Nameable;
 import org.powerbot.script.methods.MethodContext;
-
-import java.awt.Point;
 
 public abstract class Actor extends Interactive implements Nameable, Locatable, Drawable {
 	private int faceIndex = -1;
@@ -107,7 +107,9 @@ public abstract class Actor extends Interactive implements Nameable, Locatable, 
 
 		final RSMessageData headMessage = character.getMessageData();
 		String message = "";
-		if (headMessage != null && (message = headMessage.getMessage()) == null) message = "";
+		if (headMessage != null && (message = headMessage.getMessage()) == null) {
+			message = "";
+		}
 		return message;
 	}
 

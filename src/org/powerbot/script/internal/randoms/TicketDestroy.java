@@ -42,10 +42,14 @@ public class TicketDestroy extends PollingScript implements InternalScript {
 
 	@Override
 	public int poll() {
-		if (!isValid()) return -1;
+		if (!isValid()) {
+			return -1;
+		}
 
 		Component item = this.component;
-		if (item == null) return -1;
+		if (item == null) {
+			return -1;
+		}
 
 		if (((ctx.settings.get(1448) & 0xFF00) >>> 8) < (item.getItemId() == ITEM_IDS[0] ? 10 : 9)) {
 			item.interact("Claim spin");

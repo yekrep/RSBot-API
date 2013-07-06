@@ -40,7 +40,9 @@ public class Camera extends MethodProvider {
 
 	public boolean setPitch(final int pitch) {
 		int p = getPitch();
-		if (p == pitch) return true;
+		if (p == pitch) {
+			return true;
+		}
 		final boolean up = pitch > p;
 		ctx.keyboard.send(up ? "{VK_UP down}" : "{VK_DOWN down}");
 		int curr;

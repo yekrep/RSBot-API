@@ -23,9 +23,9 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
+import org.powerbot.Configuration;
 import org.powerbot.gui.component.BotLocale;
 import org.powerbot.service.NetworkAccount;
-import org.powerbot.Configuration;
 import org.powerbot.util.Tracker;
 
 /**

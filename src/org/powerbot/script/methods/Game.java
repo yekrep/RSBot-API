@@ -1,5 +1,10 @@
 package org.powerbot.script.methods;
 
+import java.awt.Canvas;
+import java.awt.Dimension;
+import java.awt.Point;
+import java.awt.Rectangle;
+
 import org.powerbot.bot.Bot;
 import org.powerbot.client.BaseInfo;
 import org.powerbot.client.Client;
@@ -19,11 +24,6 @@ import org.powerbot.script.util.Timer;
 import org.powerbot.script.wrappers.Component;
 import org.powerbot.script.wrappers.Player;
 import org.powerbot.script.wrappers.Tile;
-
-import java.awt.Canvas;
-import java.awt.Dimension;
-import java.awt.Point;
-import java.awt.Rectangle;
 
 public class Game extends MethodProvider {
 	public static final int TAB_NONE = -1;

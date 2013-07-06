@@ -1,17 +1,17 @@
 package org.powerbot.script.methods;
 
-import org.powerbot.script.util.Delay;
-import org.powerbot.script.lang.Filter;
-import org.powerbot.script.util.Random;
-import org.powerbot.script.util.Timer;
-import org.powerbot.script.wrappers.Component;
-import org.powerbot.script.wrappers.Widget;
-
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.powerbot.script.lang.Filter;
+import org.powerbot.script.util.Delay;
+import org.powerbot.script.util.Random;
+import org.powerbot.script.util.Timer;
+import org.powerbot.script.wrappers.Component;
+import org.powerbot.script.wrappers.Widget;
 
 public class Lobby extends MethodProvider {
 	public static final int STATE_LOBBY_IDLE = 7;
@@ -94,7 +94,9 @@ public class Lobby extends MethodProvider {
 			for (int i = 0; i < 30 && ctx.game.getClientState() == STATE_LOBBY_IDLE; i++) {
 				sleep(50, 100);
 			}
-			if (ctx.game.getClientState() == STATE_LOBBY_IDLE) return false;
+			if (ctx.game.getClientState() == STATE_LOBBY_IDLE) {
+				return false;
+			}
 		}
 		final Timer t = new Timer(timeout);
 		while (t.isRunning() && !ctx.game.isLoggedIn()) {
@@ -184,8 +186,12 @@ public class Lobby extends MethodProvider {
 
 	private boolean closeDialog() {
 		final Dialog dialog = getOpenDialog();
-		if (dialog == null) return true;
-		if (!dialog.hasBack()) return false;
+		if (dialog == null) {
+			return true;
+		}
+		if (!dialog.hasBack()) {
+			return false;
+		}
 		final Component child = ctx.widgets.get(WIDGET_MAIN_LOBBY, dialog.getBackIndex());
 		return child != null && child.isOnScreen() && child.click(true);
 	}

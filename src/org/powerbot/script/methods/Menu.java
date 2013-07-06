@@ -1,5 +1,10 @@
 package org.powerbot.script.methods;
 
+import java.awt.Point;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+
 import org.powerbot.client.Client;
 import org.powerbot.client.MenuGroupNode;
 import org.powerbot.client.MenuItemNode;
@@ -10,11 +15,6 @@ import org.powerbot.script.internal.wrappers.Queue;
 import org.powerbot.script.util.Delay;
 import org.powerbot.script.util.Random;
 import org.powerbot.util.StringUtil;
-
-import java.awt.Point;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
 
 public class Menu extends MethodProvider {
 	public Menu(MethodContext factory) {

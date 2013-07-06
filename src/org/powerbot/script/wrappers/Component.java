@@ -1,5 +1,10 @@
 package org.powerbot.script.wrappers;
 
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Point;
+import java.awt.Rectangle;
+
 import org.powerbot.client.Client;
 import org.powerbot.client.RSInterface;
 import org.powerbot.client.RSInterfaceNode;
@@ -8,11 +13,6 @@ import org.powerbot.script.lang.Drawable;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.util.Random;
 import org.powerbot.util.StringUtil;
-
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Point;
-import java.awt.Rectangle;
 
 public class Component extends Interactive implements Drawable {
 	public static final Color TARGET_FILL_COLOR = new Color(0, 0, 0, 50);
@@ -74,7 +74,11 @@ public class Component extends Interactive implements Drawable {
 	public String[] getActions() {
 		final RSInterface component = getInternalComponent();
 		String[] actions = new String[0];
-		if (component != null) if ((actions = component.getActions()) == null) actions = new String[0];
+		if (component != null) {
+			if ((actions = component.getActions()) == null) {
+				actions = new String[0];
+			}
+		}
 		return actions;
 	}
 
@@ -101,7 +105,9 @@ public class Component extends Interactive implements Drawable {
 	public String getItemName() {
 		final RSInterface component = getInternalComponent();
 		String name = "";
-		if (component != null && (name = component.getComponentName()) == null) name = "";
+		if (component != null && (name = component.getComponentName()) == null) {
+			name = "";
+		}
 		return StringUtil.stripHtml(name);
 	}
 
@@ -195,7 +201,9 @@ public class Component extends Interactive implements Drawable {
 	public String getSelectedAction() {
 		final RSInterface component = getInternalComponent();
 		String action = "";
-		if (component != null && (action = component.getSelectedActionName()) == null) action = "";
+		if (component != null && (action = component.getSelectedActionName()) == null) {
+			action = "";
+		}
 		return action;
 	}
 
@@ -212,7 +220,9 @@ public class Component extends Interactive implements Drawable {
 	public String getText() {
 		final RSInterface component = getInternalComponent();
 		String text = "";
-		if (component != null && (text = component.getText()) == null) text = "";
+		if (component != null && (text = component.getText()) == null) {
+			text = "";
+		}
 		return text;
 	}
 
@@ -224,7 +234,9 @@ public class Component extends Interactive implements Drawable {
 	public String getTooltip() {
 		final RSInterface component = getInternalComponent();
 		String tip = "";
-		if (component != null && (tip = component.getTooltip()) == null) tip = "";
+		if (component != null && (tip = component.getTooltip()) == null) {
+			tip = "";
+		}
 		return tip;
 	}
 

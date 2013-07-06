@@ -1,11 +1,11 @@
 package org.powerbot.script.wrappers;
 
+import java.util.Arrays;
+import java.util.EnumSet;
+
 import org.powerbot.script.methods.Game;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.util.Random;
-
-import java.util.Arrays;
-import java.util.EnumSet;
 
 public class TilePath extends Path {
 	protected Tile[] tiles;

@@ -8,8 +8,8 @@ import javax.swing.JDialog;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-import org.powerbot.gui.component.BotLocale;
 import org.powerbot.Configuration;
+import org.powerbot.gui.component.BotLocale;
 import org.powerbot.util.Tracker;
 import org.powerbot.util.io.IOHelper;
 import org.powerbot.util.io.Resources;

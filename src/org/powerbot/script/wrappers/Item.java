@@ -1,12 +1,12 @@
 package org.powerbot.script.wrappers;
 
+import java.awt.Point;
+
 import org.powerbot.script.lang.Identifiable;
 import org.powerbot.script.lang.Nameable;
 import org.powerbot.script.lang.Stackable;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.util.StringUtil;
-
-import java.awt.Point;
 
 public class Item extends Interactive implements Identifiable, Nameable, Stackable {
 	private final int id;
@@ -31,7 +31,9 @@ public class Item extends Interactive implements Identifiable, Nameable, Stackab
 
 	@Override
 	public int getStackSize() {
-		if (component == null) return stack;
+		if (component == null) {
+			return stack;
+		}
 		int stack = component.getItemStackSize();
 		if (component.isVisible() && component.getItemId() == this.id) {
 			return this.stack = stack;
@@ -68,25 +70,33 @@ public class Item extends Interactive implements Identifiable, Nameable, Stackab
 
 	@Override
 	public Point getInteractPoint() {
-		if (component == null) return new Point(-1, -1);
+		if (component == null) {
+			return new Point(-1, -1);
+		}
 		return component.getInteractPoint();
 	}
 
 	@Override
 	public Point getNextPoint() {
-		if (component == null) return new Point(-1, -1);
+		if (component == null) {
+			return new Point(-1, -1);
+		}
 		return component.getNextPoint();
 	}
 
 	@Override
 	public Point getCenterPoint() {
-		if (component == null) return new Point(-1, -1);
+		if (component == null) {
+			return new Point(-1, -1);
+		}
 		return component.getCenterPoint();
 	}
 
 	@Override
 	public boolean contains(Point point) {
-		if (component == null) return false;
+		if (component == null) {
+			return false;
+		}
 		return component.contains(point);
 	}
 
@@ -103,7 +113,9 @@ public class Item extends Interactive implements Identifiable, Nameable, Stackab
 
 	@Override
 	public int hashCode() {
-		if (component == null) return -1;
+		if (component == null) {
+			return -1;
+		}
 		return this.id * 31 + this.component.getIndex();
 	}
 

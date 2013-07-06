@@ -1,8 +1,5 @@
 package org.powerbot.script.lang;
 
-import org.powerbot.script.methods.MethodContext;
-import org.powerbot.script.methods.MethodProvider;
-
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -12,6 +9,9 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+
+import org.powerbot.script.methods.MethodContext;
+import org.powerbot.script.methods.MethodProvider;
 
 /**
  * An abstract implementation of a chaining query-based data set filter which is thread safe.
@@ -224,7 +224,7 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends Me
 	/**
 	 * Enumerates through each item in the query cache with an option for non-blocking execution.
 	 *
-	 * @param c the handler for each iteration
+	 * @param c     the handler for each iteration
 	 * @param async {@code true} to iterate asynchronously, otherwise {@code false} for blocking execution
 	 * @return {@code this} for the purpose of chaining
 	 */

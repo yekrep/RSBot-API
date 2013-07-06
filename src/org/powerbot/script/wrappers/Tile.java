@@ -1,10 +1,10 @@
 package org.powerbot.script.wrappers;
 
+import java.awt.Color;
+
 import org.powerbot.script.lang.Locatable;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.util.Random;
-
-import java.awt.Color;
 
 /**
  * Represents a position in three-dimensional game space.
@@ -53,7 +53,9 @@ public class Tile implements Locatable {
 	}
 
 	public Tile derive(final int x, final int y, final int plane) {
-		if (this == NIL) return NIL;
+		if (this == NIL) {
+			return NIL;
+		}
 		return new Tile(this.x + x, this.y + y, plane);
 	}
 
@@ -67,7 +69,9 @@ public class Tile implements Locatable {
 
 	public double distanceTo(final Locatable l) {
 		Tile t = l != null ? l.getLocation() : null;
-		if (t == null || plane != t.plane || plane == NIL.plane) return Double.POSITIVE_INFINITY;
+		if (t == null || plane != t.plane || plane == NIL.plane) {
+			return Double.POSITIVE_INFINITY;
+		}
 		final int dx = x - t.x, dy = y - t.y;
 		return Math.sqrt(dx * dx + dy * dy);
 	}

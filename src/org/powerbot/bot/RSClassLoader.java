@@ -1,16 +1,13 @@
 package org.powerbot.bot;
 
-import org.powerbot.bot.loader.transform.TransformSpec;
-import org.powerbot.client.RandomAccessFile;
-import org.powerbot.util.io.IOHelper;
-
-import java.io.File;
 import java.security.AllPermission;
 import java.security.CodeSource;
 import java.security.Permissions;
 import java.security.ProtectionDomain;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.powerbot.bot.loader.transform.TransformSpec;
 
 public class RSClassLoader extends ClassLoader {
 	private final Map<String, byte[]> classes = new HashMap<>();

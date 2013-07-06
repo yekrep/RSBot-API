@@ -1,12 +1,12 @@
 package org.powerbot.script.methods;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.powerbot.script.lang.IdQuery;
 import org.powerbot.script.util.Delay;
 import org.powerbot.script.wrappers.Action;
 import org.powerbot.script.wrappers.Component;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ActionBar extends IdQuery<Action> {
 	public static final int NUM_SLOTS = 12;
@@ -75,7 +75,9 @@ public class ActionBar extends IdQuery<Action> {
 		List<Action> actions = new ArrayList<>(NUM_SLOTS);
 		Action[] arr = getActions();
 		for (Action a : arr) {
-			if (a == null) continue;
+			if (a == null) {
+				continue;
+			}
 			actions.add(a);
 		}
 		return actions;

@@ -1,11 +1,11 @@
 package org.powerbot.script.methods;
 
+import java.util.concurrent.atomic.AtomicReference;
+
 import org.powerbot.bot.Bot;
 import org.powerbot.client.Client;
 import org.powerbot.script.internal.methods.Items;
 import org.powerbot.script.internal.methods.Map;
-
-import java.util.concurrent.atomic.AtomicReference;
 
 public class MethodContext {
 	private AtomicReference<Client> client;
@@ -83,7 +83,9 @@ public class MethodContext {
 	}
 
 	public void init(MethodContext ctx) {
-		if (this.client.get() != null) return;
+		if (this.client.get() != null) {
+			return;
+		}
 		client = ctx.client;
 		preferredWorld = ctx.preferredWorld;
 		bot = ctx.bot;

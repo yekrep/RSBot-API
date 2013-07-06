@@ -1,12 +1,5 @@
 package org.powerbot.script;
 
-import org.powerbot.Configuration;
-import org.powerbot.script.internal.ScriptController;
-import org.powerbot.script.methods.MethodContext;
-import org.powerbot.util.StringUtil;
-import org.powerbot.util.io.HttpClient;
-
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -24,6 +17,14 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.logging.Logger;
 import java.util.zip.Adler32;
+
+import javax.imageio.ImageIO;
+
+import org.powerbot.Configuration;
+import org.powerbot.script.internal.ScriptController;
+import org.powerbot.script.methods.MethodContext;
+import org.powerbot.util.StringUtil;
+import org.powerbot.util.io.HttpClient;
 
 /**
  * An abstract implementation of {@link Script}.

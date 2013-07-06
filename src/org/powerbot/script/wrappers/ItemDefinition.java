@@ -1,13 +1,13 @@
 package org.powerbot.script.wrappers;
 
+import java.lang.ref.WeakReference;
+
 import org.powerbot.client.Cache;
 import org.powerbot.client.Client;
 import org.powerbot.client.HashTable;
 import org.powerbot.client.RSItemDef;
 import org.powerbot.client.RSItemDefLoader;
 import org.powerbot.script.methods.MethodContext;
-
-import java.lang.ref.WeakReference;
 
 class ItemDefinition {
 	private final WeakReference<RSItemDef> def;
@@ -40,7 +40,9 @@ class ItemDefinition {
 	String getName() {
 		final RSItemDef def = this.def.get();
 		String name = "";
-		if (def != null && (name = def.getName()) == null) name = "";
+		if (def != null && (name = def.getName()) == null) {
+			name = "";
+		}
 		return name;
 	}
 
@@ -52,14 +54,18 @@ class ItemDefinition {
 	String[] getActions() {
 		final RSItemDef def = this.def.get();
 		String[] actions = new String[0];
-		if (def != null && (actions = def.getActions()) == null) actions = new String[0];
+		if (def != null && (actions = def.getActions()) == null) {
+			actions = new String[0];
+		}
 		return actions;
 	}
 
 	String[] getGroundActions() {
 		final RSItemDef def = this.def.get();
 		String[] actions = new String[0];
-		if (def != null && (actions = def.getGroundActions()) == null) actions = new String[0];
+		if (def != null && (actions = def.getGroundActions()) == null) {
+			actions = new String[0];
+		}
 		return actions;
 	}
 }

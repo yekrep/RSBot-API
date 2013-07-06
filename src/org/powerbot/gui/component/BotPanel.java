@@ -1,14 +1,5 @@
 package org.powerbot.gui.component;
 
-import org.powerbot.bot.Bot;
-import org.powerbot.client.input.Mouse;
-import org.powerbot.gui.BotChrome;
-import org.powerbot.util.io.Resources;
-
-import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Component;
@@ -29,6 +20,16 @@ import java.awt.event.MouseWheelListener;
 import java.lang.reflect.Field;
 import java.util.EventObject;
 import java.util.logging.Logger;
+
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+import org.powerbot.bot.Bot;
+import org.powerbot.client.input.Mouse;
+import org.powerbot.gui.BotChrome;
+import org.powerbot.util.io.Resources;
 
 /**
  * A panel that re-dispatches human events to the game's applet.
@@ -182,11 +183,19 @@ public class BotPanel extends JPanel {
 	}
 
 	private void redispatch(MouseEvent event) {
-		if (event == null) return;
-		if (bot == null || bot.getMethodContext().getClient() == null) return;
-		if (!bot.getMethodContext().mouse.isReady()) return;
+		if (event == null) {
+			return;
+		}
+		if (bot == null || bot.getMethodContext().getClient() == null) {
+			return;
+		}
+		if (!bot.getMethodContext().mouse.isReady()) {
+			return;
+		}
 		Mouse mouse = bot.getMouseHandler().getMouse();
-		if (mouse == null) return;
+		if (mouse == null) {
+			return;
+		}
 
 		event.translatePoint(-xOff, -yOff);
 		bot.getEventMulticaster().dispatch(event);
@@ -198,9 +207,15 @@ public class BotPanel extends JPanel {
 	}
 
 	private void redispatch(KeyEvent event) {
-		if (event == null) return;
-		if (bot == null || bot.getMethodContext().getClient() == null) return;
-		if (!bot.getMethodContext().keyboard.isReady()) return;
+		if (event == null) {
+			return;
+		}
+		if (bot == null || bot.getMethodContext().getClient() == null) {
+			return;
+		}
+		if (!bot.getMethodContext().keyboard.isReady()) {
+			return;
+		}
 		Component c = bot.getInputHandler().getSource();
 		try {
 			final Field f = EventObject.class.getDeclaredField("source");

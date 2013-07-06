@@ -20,10 +20,10 @@ import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
+import org.powerbot.Configuration;
 import org.powerbot.bot.Bot;
 import org.powerbot.gui.component.BotMenuBar;
 import org.powerbot.gui.component.BotPanel;
-import org.powerbot.Configuration;
 import org.powerbot.service.UpdateCheck;
 import org.powerbot.util.OSXAdapt;
 import org.powerbot.util.Tracker;

@@ -1,16 +1,5 @@
 package org.powerbot.gui.component;
 
-import org.powerbot.bot.Bot;
-import org.powerbot.event.debug.*;
-import org.powerbot.gui.BotChrome;
-import org.powerbot.gui.BotSettingExplorer;
-import org.powerbot.gui.BotWidgetExplorer;
-import org.powerbot.util.io.Resources;
-
-import javax.swing.ImageIcon;
-import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.lang.reflect.Constructor;
@@ -21,6 +10,35 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import javax.swing.ImageIcon;
+import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+
+import org.powerbot.bot.Bot;
+import org.powerbot.event.debug.DrawAbilities;
+import org.powerbot.event.debug.DrawGroundItems;
+import org.powerbot.event.debug.DrawItems;
+import org.powerbot.event.debug.DrawModels;
+import org.powerbot.event.debug.DrawNPCs;
+import org.powerbot.event.debug.DrawObjects;
+import org.powerbot.event.debug.DrawPlayers;
+import org.powerbot.event.debug.MessageLogger;
+import org.powerbot.event.debug.TCamera;
+import org.powerbot.event.debug.TClientState;
+import org.powerbot.event.debug.TCurrentTab;
+import org.powerbot.event.debug.TDestination;
+import org.powerbot.event.debug.TLocation;
+import org.powerbot.event.debug.TMapBase;
+import org.powerbot.event.debug.TMenu;
+import org.powerbot.event.debug.TMousePosition;
+import org.powerbot.event.debug.TPlane;
+import org.powerbot.event.debug.ViewMouse;
+import org.powerbot.gui.BotChrome;
+import org.powerbot.gui.BotSettingExplorer;
+import org.powerbot.gui.BotWidgetExplorer;
+import org.powerbot.util.io.Resources;
 
 /**
  * @author Paris

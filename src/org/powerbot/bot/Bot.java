@@ -1,5 +1,12 @@
 package org.powerbot.bot;
 
+import java.awt.Canvas;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.logging.Logger;
+
 import org.powerbot.client.Client;
 import org.powerbot.client.Constants;
 import org.powerbot.event.EventMulticaster;
@@ -16,13 +23,6 @@ import org.powerbot.script.methods.Game;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.util.Delay;
 import org.powerbot.service.GameAccounts;
-
-import java.awt.Canvas;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.logging.Logger;
 
 /**
  * @author Timer

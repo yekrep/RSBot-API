@@ -1,13 +1,13 @@
 package org.powerbot.script.methods;
 
+import java.awt.Point;
+import java.util.Arrays;
+
 import org.powerbot.client.Client;
 import org.powerbot.client.RSInterfaceBase;
 import org.powerbot.script.util.Random;
 import org.powerbot.script.wrappers.Component;
 import org.powerbot.script.wrappers.Widget;
-
-import java.awt.Point;
-import java.util.Arrays;
 
 /**
  * {@link Widgets} is a static utility which provides access to the game's {@link Component}s by means of {@link Widget}s.
@@ -89,27 +89,43 @@ public class Widgets extends MethodProvider {
 	 * @return {@code true} if visible; otherwise {@code false}
 	 */
 	public boolean scroll(Component component, Component bar, boolean scroll) {
-		if (component == null || !component.isValid()) return false;
-		if (bar == null || !bar.isValid() || bar.getChildrenCount() != 6) return false;
+		if (component == null || !component.isValid()) {
+			return false;
+		}
+		if (bar == null || !bar.isValid() || bar.getChildrenCount() != 6) {
+			return false;
+		}
 		Component pane = component;
 		int id;
 		while (pane.getMaxVerticalScroll() == 0 && (id = pane.getParentId()) != -1) {
 			pane = ctx.widgets.get(id >> 16, id & 0xffff);
 		}
-		if (pane.getMaxVerticalScroll() == 0) return false;
+		if (pane.getMaxVerticalScroll() == 0) {
+			return false;
+		}
 		return scroll(component, pane, bar, scroll);
 	}
 
 	public boolean scroll(Component component, Component pane, Component bar, boolean scroll) {
-		if (component == null || !component.isValid()) return false;
-		if (bar == null || !bar.isValid() || bar.getChildrenCount() != 6) return false;
-		if (pane == null || !pane.isValid() || pane.getScrollHeight() == 0) return false;
+		if (component == null || !component.isValid()) {
+			return false;
+		}
+		if (bar == null || !bar.isValid() || bar.getChildrenCount() != 6) {
+			return false;
+		}
+		if (pane == null || !pane.isValid() || pane.getScrollHeight() == 0) {
+			return false;
+		}
 		Point view = pane.getAbsoluteLocation();
 		int height = pane.getScrollHeight();
-		if (view.x < 0 || view.y < 0 || height < 1) return false;
+		if (view.x < 0 || view.y < 0 || height < 1) {
+			return false;
+		}
 		Point pos = component.getAbsoluteLocation();
 		int length = component.getHeight();
-		if (pos.y >= view.y && pos.y <= view.y + height - length) return true;
+		if (pos.y >= view.y && pos.y <= view.y + height - length) {
+			return true;
+		}
 		Component thumbHolder = bar.getChild(0);
 		Component thumb = bar.getChild(1);
 		int thumbSize = thumbHolder.getScrollHeight();
@@ -117,11 +133,15 @@ public class Widgets extends MethodProvider {
 				(component.getRelativeLocation().y + Random.nextInt(-height / 2, height / 2 - length)));
 		if (y < 0) {
 			y = 0;
-		} else if (y >= thumbSize) y = thumbSize - 1;
+		} else if (y >= thumbSize) {
+			y = thumbSize - 1;
+		}
 		Point p = thumbHolder.getAbsoluteLocation();
 		p.translate(Random.nextInt(0, thumbHolder.getWidth()), y);
 		if (!scroll) {
-			if (!ctx.mouse.click(p, true)) return false;
+			if (!ctx.mouse.click(p, true)) {
+				return false;
+			}
 			sleep(200, 400);
 		}
 		Point a;
@@ -154,7 +174,9 @@ public class Widgets extends MethodProvider {
 				if (c == null) {
 					break;
 				}
-				if (c.click()) sleep(50, 300);
+				if (c.click()) {
+					sleep(50, 300);
+				}
 			}
 		}
 		return a.y >= view.y && a.y <= height + view.y + height - length;

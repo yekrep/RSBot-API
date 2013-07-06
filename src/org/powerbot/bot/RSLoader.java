@@ -1,14 +1,14 @@
 package org.powerbot.bot;
 
-import org.powerbot.bot.loader.ClientLoader;
-import org.powerbot.bot.loader.transform.TransformSpec;
-
 import java.applet.Applet;
 import java.awt.Graphics;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import org.powerbot.bot.loader.ClientLoader;
+import org.powerbot.bot.loader.transform.TransformSpec;
 
 /**
  * @author Timer

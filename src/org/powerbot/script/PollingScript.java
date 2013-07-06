@@ -1,9 +1,9 @@
 package org.powerbot.script;
 
-import org.powerbot.script.util.Random;
-
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import org.powerbot.script.util.Random;
 
 /**
  * An implementation of {@link AbstractScript} which polls (or "loops")

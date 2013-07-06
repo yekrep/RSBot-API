@@ -1,9 +1,9 @@
 package org.powerbot.script.wrappers;
 
+import java.util.EnumSet;
+
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.methods.MethodProvider;
-
-import java.util.EnumSet;
 
 public abstract class Path extends MethodProvider {
 	public static final int WALL_NORTHWEST = 0x1;

@@ -1,5 +1,8 @@
 package org.powerbot.script.methods;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.powerbot.client.Client;
 import org.powerbot.client.Node;
 import org.powerbot.client.NodeDeque;
@@ -8,9 +11,6 @@ import org.powerbot.client.RSProjectileNode;
 import org.powerbot.script.internal.wrappers.Deque;
 import org.powerbot.script.lang.IdQuery;
 import org.powerbot.script.wrappers.Projectile;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * {@link Projectiles} is a static utility which provides access to the game's projectiles.

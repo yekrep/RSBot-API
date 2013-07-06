@@ -1,13 +1,13 @@
 package org.powerbot;
 
-import org.powerbot.util.StringUtil;
-import org.powerbot.util.io.Resources;
-
 import java.io.File;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.Enumeration;
 import java.util.zip.Adler32;
+
+import org.powerbot.util.StringUtil;
+import org.powerbot.util.io.Resources;
 
 /**
  * @author Paris

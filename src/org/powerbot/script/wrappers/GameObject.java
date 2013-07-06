@@ -1,5 +1,10 @@
 package org.powerbot.script.wrappers;
 
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Point;
+import java.lang.ref.WeakReference;
+
 import org.powerbot.bot.AbstractCallback;
 import org.powerbot.client.Cache;
 import org.powerbot.client.Client;
@@ -15,11 +20,6 @@ import org.powerbot.script.lang.Identifiable;
 import org.powerbot.script.lang.Locatable;
 import org.powerbot.script.lang.Nameable;
 import org.powerbot.script.methods.MethodContext;
-
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Point;
-import java.lang.ref.WeakReference;
 
 public class GameObject extends Interactive implements Locatable, Nameable, Drawable, Identifiable {
 	private static final Color TARGET_COLOR = new Color(0, 255, 0, 20);

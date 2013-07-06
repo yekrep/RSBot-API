@@ -1,14 +1,14 @@
 package org.powerbot.script.methods;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.powerbot.client.Client;
 import org.powerbot.client.HashTable;
 import org.powerbot.client.RSNPC;
 import org.powerbot.client.RSNPCNode;
 import org.powerbot.script.lang.BasicNamedQuery;
 import org.powerbot.script.wrappers.Npc;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * {@link Npcs} is a static utility which provides access to {@link Npc}s in the game.

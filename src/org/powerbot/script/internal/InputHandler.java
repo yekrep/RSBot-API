@@ -1,10 +1,5 @@
 package org.powerbot.script.internal;
 
-import org.powerbot.client.Client;
-import org.powerbot.client.input.Keyboard;
-import org.powerbot.util.math.HardwareSimulator;
-
-import javax.swing.Timer;
 import java.applet.Applet;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
@@ -15,6 +10,12 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.LinkedList;
 import java.util.Queue;
+
+import javax.swing.Timer;
+
+import org.powerbot.client.Client;
+import org.powerbot.client.input.Keyboard;
+import org.powerbot.util.math.HardwareSimulator;
 
 public class InputHandler {
 	private final Applet applet;

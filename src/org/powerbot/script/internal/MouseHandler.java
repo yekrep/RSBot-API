@@ -1,18 +1,18 @@
 package org.powerbot.script.internal;
 
-import org.powerbot.client.Client;
-import org.powerbot.client.input.Mouse;
-import org.powerbot.script.lang.Stoppable;
-import org.powerbot.script.util.Delay;
-import org.powerbot.util.math.HeteroMouse;
-import org.powerbot.util.math.Vector3;
-
 import java.applet.Applet;
 import java.awt.Component;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.util.concurrent.TimeUnit;
+
+import org.powerbot.client.Client;
+import org.powerbot.client.input.Mouse;
+import org.powerbot.script.lang.Stoppable;
+import org.powerbot.script.util.Delay;
+import org.powerbot.util.math.HeteroMouse;
+import org.powerbot.util.math.Vector3;
 
 public class MouseHandler implements Runnable, Stoppable {
 	private static final int MAX_STEPS = 20;

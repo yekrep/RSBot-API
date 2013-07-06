@@ -1,5 +1,11 @@
 package org.powerbot.script.internal;
 
+import java.util.ArrayList;
+import java.util.EventListener;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import org.powerbot.event.EventMulticaster;
 import org.powerbot.script.Script;
 import org.powerbot.script.internal.randoms.BankPin;
@@ -10,12 +16,6 @@ import org.powerbot.script.lang.Stoppable;
 import org.powerbot.script.lang.Subscribable;
 import org.powerbot.script.lang.Suspendable;
 import org.powerbot.script.methods.MethodContext;
-
-import java.util.ArrayList;
-import java.util.EventListener;
-import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public final class ScriptController implements Runnable, Suspendable, Stoppable, Subscribable<EventListener> {
 	private final MethodContext ctx;

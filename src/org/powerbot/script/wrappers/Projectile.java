@@ -1,12 +1,12 @@
 package org.powerbot.script.wrappers;
 
+import java.lang.ref.WeakReference;
+
 import org.powerbot.client.RSProjectile;
 import org.powerbot.script.lang.Identifiable;
 import org.powerbot.script.lang.Validatable;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.methods.MethodProvider;
-
-import java.lang.ref.WeakReference;
 
 public class Projectile extends MethodProvider implements Identifiable, Validatable {
 	private final WeakReference<RSProjectile> projectile;

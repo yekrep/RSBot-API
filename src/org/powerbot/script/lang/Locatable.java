@@ -1,8 +1,8 @@
 package org.powerbot.script.lang;
 
-import org.powerbot.script.wrappers.Tile;
-
 import java.util.Comparator;
+
+import org.powerbot.script.wrappers.Tile;
 
 public interface Locatable {
 	public Tile getLocation();
@@ -62,7 +62,9 @@ public interface Locatable {
 		public int compare(final Locatable o1, final Locatable o2) {
 			Tile target = this.target.getLocation();
 			Tile t1 = o1.getLocation(), t2 = o2.getLocation();
-			if (target == null || t1 == null || t2 == null) return Integer.MAX_VALUE;
+			if (target == null || t1 == null || t2 == null) {
+				return Integer.MAX_VALUE;
+			}
 			double d1 = t1.distanceTo(target), d2 = t2.distanceTo(target);
 			return Double.compare(d1, d2);
 		}

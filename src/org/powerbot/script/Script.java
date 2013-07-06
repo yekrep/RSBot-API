@@ -1,10 +1,10 @@
 package org.powerbot.script;
 
-import org.powerbot.script.internal.ScriptController;
-import org.powerbot.script.methods.MethodContext;
-
 import java.util.EventListener;
 import java.util.Queue;
+
+import org.powerbot.script.internal.ScriptController;
+import org.powerbot.script.methods.MethodContext;
 
 /**
  * The base interface of a script.

@@ -1,10 +1,10 @@
 package org.powerbot.script.util;
 
-import ec.util.MersenneTwister;
-import org.powerbot.util.math.HardwareSimulator;
-
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+
+import ec.util.MersenneTwister;
+import org.powerbot.util.math.HardwareSimulator;
 
 public class Random {
 	private static final java.util.Random random;

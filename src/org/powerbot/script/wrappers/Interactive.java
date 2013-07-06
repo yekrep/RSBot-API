@@ -1,13 +1,13 @@
 package org.powerbot.script.wrappers;
 
+import java.awt.Point;
+
 import org.powerbot.script.lang.Filter;
 import org.powerbot.script.lang.Targetable;
 import org.powerbot.script.lang.Validatable;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.methods.MethodProvider;
 import org.powerbot.script.util.Delay;
-
-import java.awt.Point;
 
 public abstract class Interactive extends MethodProvider implements Targetable, Validatable {
 	private static final int ATTEMPTS = 5;
@@ -21,29 +21,39 @@ public abstract class Interactive extends MethodProvider implements Targetable, 
 	}
 
 	public boolean hover() {
-		if (!isValid()) return false;
+		if (!isValid()) {
+			return false;
+		}
 		return ctx.mouse.move(this);
 	}
 
 	public boolean click() {
-		if (!isValid()) return false;
+		if (!isValid()) {
+			return false;
+		}
 		return click(true);
 	}
 
 	public boolean click(final boolean left) {
-		if (!isValid()) return false;
+		if (!isValid()) {
+			return false;
+		}
 		return ctx.mouse.click(this, left);
 	}
 
 	public boolean interact(final String action) {
-		if (!isValid()) return false;
+		if (!isValid()) {
+			return false;
+		}
 		return interact(action, null);
 	}
 
 	public boolean interact(final String action, final String option) {
 		int a = 0;
 		while (a++ < ATTEMPTS) {
-			if (!isValid()) return false;
+			if (!isValid()) {
+				return false;
+			}
 			if (!ctx.mouse.move(this, new Filter<Point>() {
 				@Override
 				public boolean accept(final Point point) {

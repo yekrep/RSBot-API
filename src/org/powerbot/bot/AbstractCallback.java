@@ -1,12 +1,12 @@
 package org.powerbot.bot;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 import org.powerbot.client.Callback;
 import org.powerbot.client.RSObjectDef;
 import org.powerbot.client.Render;
 import org.powerbot.event.MessageEvent;
-
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class AbstractCallback implements Callback {
 	private final Bot bot;

@@ -1,14 +1,14 @@
 package org.powerbot.script.methods;
 
+import java.awt.Point;
+import java.awt.event.MouseEvent;
+
 import org.powerbot.client.Client;
 import org.powerbot.script.internal.MouseHandler;
 import org.powerbot.script.internal.MouseTarget;
 import org.powerbot.script.lang.Filter;
 import org.powerbot.script.lang.Targetable;
 import org.powerbot.script.util.Delay;
-
-import java.awt.Point;
-import java.awt.event.MouseEvent;
 
 public class Mouse extends MethodProvider {
 	public Mouse(MethodContext factory) {

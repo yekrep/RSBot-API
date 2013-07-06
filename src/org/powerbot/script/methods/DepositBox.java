@@ -1,5 +1,8 @@
 package org.powerbot.script.methods;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.powerbot.script.lang.ItemQuery;
 import org.powerbot.script.util.Delay;
 import org.powerbot.script.util.Random;
@@ -8,9 +11,6 @@ import org.powerbot.script.wrappers.Component;
 import org.powerbot.script.wrappers.GameObject;
 import org.powerbot.script.wrappers.Item;
 import org.powerbot.script.wrappers.Widget;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class DepositBox extends ItemQuery<Item> {
 	public static final int[] DEPOSIT_BOX_IDS = new int[]{

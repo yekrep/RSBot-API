@@ -1,5 +1,11 @@
 package org.powerbot.script.internal.randoms;
 
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Rectangle;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.FutureTask;
+
 import org.powerbot.event.PaintListener;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.script.PollingScript;
@@ -9,12 +15,6 @@ import org.powerbot.script.methods.Lobby;
 import org.powerbot.script.util.Random;
 import org.powerbot.script.util.Timer;
 import org.powerbot.script.wrappers.Component;
-
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Rectangle;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.FutureTask;
 
 /**
  * @author Timer
@@ -40,7 +40,9 @@ public class Login extends PollingScript implements InternalScript, PaintListene
 
 	@Override
 	public int poll() {
-		if (!isValid()) return -1;
+		if (!isValid()) {
+			return -1;
+		}
 
 		int state = ctx.game.getClientState();
 		if ((state == Game.INDEX_LOGIN_SCREEN || state == Game.INDEX_LOGGING_IN) && ctx.getBot().getAccount() != null) {
