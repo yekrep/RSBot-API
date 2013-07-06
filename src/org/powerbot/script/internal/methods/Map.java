@@ -322,8 +322,8 @@ public class Map extends MethodProvider {
 		}
 	}
 
-	private class Node {
-		private int x, y;
+	public class Node {
+		public final int x, y;
 		private boolean visited;
 		private Node prev;
 		private double dist;
