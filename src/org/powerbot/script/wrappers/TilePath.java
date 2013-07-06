@@ -11,6 +11,7 @@ public class TilePath extends Path {
 	protected Tile[] tiles;
 	protected Tile[] orig;
 	private boolean end;
+	private Tile last;
 
 	public TilePath(MethodContext ctx, final Tile[] tiles) {
 		super(ctx);
@@ -47,6 +48,7 @@ public class TilePath extends Path {
 				}
 			}
 		}
+		last = next;
 		return ctx.movement.stepTowards(next);
 	}
 
