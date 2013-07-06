@@ -47,7 +47,7 @@ public class Game extends MethodProvider {
 	public final Game.Viewport viewport;
 
 	public enum Tab {
-		NIL(null),
+		NIL("nil"),
 		COMBAT("Combat"),
 		NOTICEBOARD("Noticeboard"),
 		STATS("Stats"),
