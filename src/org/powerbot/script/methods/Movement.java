@@ -126,14 +126,8 @@ public class Movement extends MethodProvider {
 		start = start.derive(-base.x, -base.y);
 		end = end.derive(-base.x, -base.y);
 
-		CollisionMap[] maps = ctx.map.getCollisionMaps();
-		int plane = ctx.game.getPlane();
-		if (plane < 0 || plane >= maps.length) return -1;
-		CollisionMap map = maps[plane];
-		if (map == null) return -1;
-
 		int startX = start.getX(), startY = start.getY();
 		int endX = end.getX(), endY = end.getY();
-		return ctx.map.getDistance(startX, startY, endX, endY, plane);
+		return ctx.map.getDistance(startX, startY, endX, endY, ctx.game.getPlane());
 	}
 }
