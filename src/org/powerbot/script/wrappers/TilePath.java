@@ -43,7 +43,7 @@ public class TilePath extends Path {
 				ctx.movement.setRunning(true);
 			}
 			if (options.contains(TraversalOption.SPACE_ACTIONS) && dest != null && local.isInMotion() && dest.distanceTo(last) < 3d) {
-				if (dest.distanceTo(ctx.players.getLocal()) > Random.nextGaussian(5000, 8000, 6000, 1000) / 1000d) {
+				if (dest.distanceTo(ctx.players.getLocal()) > Random.nextGaussian(5000, 9000, 6500, 1500) / 1000d) {
 					return true;
 				}
 			}
