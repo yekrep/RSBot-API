@@ -166,7 +166,7 @@ public class Game extends MethodProvider {
 	public Tile getMapBase() {
 		Client client = ctx.getClient();
 		if (client == null) {
-			return null;
+			return Tile.NIL;
 		}
 
 		final RSInfo info = client.getRSGroundInfo();
