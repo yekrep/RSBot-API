@@ -295,13 +295,13 @@ public class Game extends MethodProvider {
 	public Point tileToMap(double x, double y) {
 		Client client = ctx.getClient();
 		if (client == null) {
-			return null;
+			return new Point(-1, -1);
 		}
 		final Tile base = getMapBase();
 		final Player player = ctx.players.getLocal();
 		Tile loc;
 		if (base == null || player == null || (loc = player.getLocation()) == null) {
-			return null;
+			return new Point(-1, -1);
 		}
 		x -= base.x;
 		y -= base.y;
