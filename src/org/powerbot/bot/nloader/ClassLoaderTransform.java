@@ -1,6 +1,11 @@
 package org.powerbot.bot.nloader;
 
+import java.util.ListIterator;
+
+import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.ClassNode;
+import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 
 public class ClassLoaderTransform implements Transform {
@@ -28,6 +33,18 @@ public class ClassLoaderTransform implements Transform {
 			System.out.println("Methods dump: ");
 			for (MethodNode methodNode : node.methods) {
 				System.out.println(methodNode.desc);
+				ListIterator<AbstractInsnNode> iterator = methodNode.instructions.iterator();
+				while (iterator.hasNext()) {
+					AbstractInsnNode abstractInsnNode = iterator.next();
+					if (abstractInsnNode instanceof MethodInsnNode) {
+						MethodInsnNode methodInsnNode = (MethodInsnNode) abstractInsnNode;
+						if (methodInsnNode.getOpcode() == Opcodes.INVOKEVIRTUAL &&
+								methodInsnNode.name.equals("defineClass")) {
+							System.out.println("Found a defineClass in " + methodInsnNode.owner + "!");
+						}
+					}
+				}
+				System.out.println();
 			}
 		}
 	}
