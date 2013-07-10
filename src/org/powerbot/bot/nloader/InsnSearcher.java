@@ -2,6 +2,7 @@ package org.powerbot.bot.nloader;
 
 import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.InsnList;
+import org.objectweb.asm.tree.MethodNode;
 
 /**
  * @author Timer
@@ -9,6 +10,10 @@ import org.objectweb.asm.tree.InsnList;
 public class InsnSearcher {
 	private final AbstractInsnNode first;
 	private AbstractInsnNode curr;
+
+	public InsnSearcher(MethodNode node) {
+		this(node.instructions);
+	}
 
 	public InsnSearcher(InsnList list) {
 		this(list.getFirst());
