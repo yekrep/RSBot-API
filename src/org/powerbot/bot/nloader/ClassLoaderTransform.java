@@ -28,11 +28,11 @@ public class ClassLoaderTransform implements Transform {
 	public void accept(ClassNode node) {
 		//TODO: implement bytecode-modification
 		System.out.println(node.name + " (super " + node.superName + ")");
-		if (node.superName != null && node.superName.equals(ClassLoader.class.getName())) {
+		if (node.superName != null && node.superName.equals(ClassLoader.class.getName().replace('.', '/'))) {
 			System.out.println("Found our class!");
 			System.out.println("Methods dump: ");
 			for (MethodNode methodNode : node.methods) {
-				System.out.println(methodNode.desc);
+				System.out.println(methodNode.name + methodNode.desc);
 				ListIterator<AbstractInsnNode> iterator = methodNode.instructions.iterator();
 				while (iterator.hasNext()) {
 					AbstractInsnNode abstractInsnNode = iterator.next();
@@ -40,11 +40,13 @@ public class ClassLoaderTransform implements Transform {
 						MethodInsnNode methodInsnNode = (MethodInsnNode) abstractInsnNode;
 						if (methodInsnNode.getOpcode() == Opcodes.INVOKEVIRTUAL &&
 								methodInsnNode.name.equals("defineClass")) {
-							System.out.println("Found a defineClass in " + methodInsnNode.owner + "!");
+							System.out.println("=====");
+							System.out.println(methodInsnNode.name + methodInsnNode.desc);
+							System.out.println("=====");
+							break;
 						}
 					}
 				}
-				System.out.println();
 			}
 		}
 	}
