@@ -23,6 +23,10 @@ public class InsnSearcher {
 		return curr;
 	}
 
+	public void reset() {
+		curr = first;
+	}
+
 	public AbstractInsnNode getNext() {
 		curr = curr.getNext();
 		while (curr != null && curr.getOpcode() == -1) {
@@ -36,6 +40,7 @@ public class InsnSearcher {
 		while (curr != null && curr.getOpcode() == -1) {
 			curr = curr.getPrevious();
 		}
+		return curr;
 	}
 
 	public AbstractInsnNode getNext(int opcode) {
@@ -55,6 +60,26 @@ public class InsnSearcher {
 			node = getPrevious();
 			if (node == null || node.getOpcode() == opcode) {
 				break;
+			}
+		}
+		return node;
+	}
+
+	public AbstractInsnNode getNext(int[] opcodes) {
+		int len = opcodes.length;
+		int d = 0;
+		AbstractInsnNode node;
+		for (; ; ) {
+			node = getNext();
+			if (node == null) {
+				break;
+			}
+			if (node.getOpcode() == opcodes[d++]) {
+				if (d == len) {
+					return node;
+				}
+			} else {
+				d = 0;
 			}
 		}
 		return node;
