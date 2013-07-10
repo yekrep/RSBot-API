@@ -1,6 +1,7 @@
 package org.powerbot.bot.nloader;
 
 import org.objectweb.asm.tree.ClassNode;
+import org.objectweb.asm.tree.MethodNode;
 
 public class ClassLoaderTransform implements Transform {
 
@@ -22,5 +23,12 @@ public class ClassLoaderTransform implements Transform {
 	public void accept(ClassNode node) {
 		//TODO: implement bytecode-modification
 		System.out.println(node.name + " (super " + node.superName + ")");
+		if (node.superName != null && node.superName.equals(ClassLoader.class.getName())) {
+			System.out.println("Found our class!");
+			System.out.println("Methods dump: ");
+			for (MethodNode methodNode : node.methods) {
+				System.out.println(methodNode.desc);
+			}
+		}
 	}
 }
