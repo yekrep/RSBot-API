@@ -23,7 +23,8 @@ public class GameClassLoader extends ClassLoader {
 		Permissions permissions = new Permissions();
 		permissions.add(new AllPermission());
 		domain = new ProtectionDomain(codesource, permissions);
-		processor = new AbstractProcessor(new ClassLoaderTransform(), new AppletTransform());
+		AppletTransform appletTransform = new AppletTransform();
+		processor = new AbstractProcessor(appletTransform, new ClassLoaderTransform(appletTransform));
 	}
 
 	@Override
@@ -35,7 +36,9 @@ public class GameClassLoader extends ClassLoader {
 		if (bytes != null) {
 			bytes = processor.transform(bytes);
 			Class<?> clazz = defineClass(name, bytes, 0, bytes.length, domain);
-			if (resolve) resolveClass(clazz);
+			if (resolve) {
+				resolveClass(clazz);
+			}
 			loaded.put(name, clazz);
 			return clazz;
 		}
@@ -45,7 +48,9 @@ public class GameClassLoader extends ClassLoader {
 	@Override
 	public final InputStream getResourceAsStream(String name) {
 		byte[] resource = resources.get(name);
-		if (resource != null) return new ByteArrayInputStream(resource);
+		if (resource != null) {
+			return new ByteArrayInputStream(resource);
+		}
 		return ClassLoader.getSystemResourceAsStream(name);
 	}
 }

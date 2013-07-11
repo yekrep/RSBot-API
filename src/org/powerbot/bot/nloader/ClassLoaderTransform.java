@@ -11,9 +11,11 @@ import org.objectweb.asm.tree.VarInsnNode;
 
 public class ClassLoaderTransform implements Transform {
 	private final String super_;
+	private AppletTransform parent;
 
-	public ClassLoaderTransform() {
+	public ClassLoaderTransform(AppletTransform parent) {
 		this.super_ = ClassLoader.class.getName().replace('.', '/');
+		this.parent = parent;
 	}
 
 	@Override
@@ -50,7 +52,7 @@ public class ClassLoaderTransform implements Transform {
 			throw new RuntimeException();
 		}
 		int var = ((VarInsnNode) byteLoad).var;
-		insnList.add(new FieldInsnNode(Opcodes.GETSTATIC, "Rs2Applet", "processor", "Lorg/powerbot/bot/nloader/Processor;"));
+		insnList.add(new FieldInsnNode(Opcodes.GETSTATIC, parent.getIdentified(), "processor", "Lorg/powerbot/bot/nloader/Processor;"));
 		insnList.add(new VarInsnNode(Opcodes.ALOAD, var));
 		insnList.add(new MethodInsnNode(Opcodes.INVOKEINTERFACE, Processor.class.getName().replace('.', '/'), "transform", "([B)[B"));
 		insnList.add(new VarInsnNode(Opcodes.ASTORE, var));

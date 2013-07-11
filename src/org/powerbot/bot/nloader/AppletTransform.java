@@ -8,9 +8,11 @@ import org.objectweb.asm.tree.ClassNode;
 
 public class AppletTransform implements Transform {
 	private final String super_;
+	private String identified;
 
 	public AppletTransform() {
 		this.super_ = Applet.class.getName().replace('.', '/');
+		this.identified = null;
 	}
 
 	@Override
@@ -19,7 +21,7 @@ public class AppletTransform implements Transform {
 		if (super_ == null || !super_.equals(this.super_)) {
 			return;
 		}
-		System.out.println(node.name + " " + node.superName);
+		identified = node.name;
 		node.interfaces.add(InjectedProcessor.class.getName().replace('.', '/'));
 		node.visitField(Opcodes.ACC_PUBLIC | Opcodes.ACC_STATIC, "processor", "L" + Processor.class.getName().replace('.', '/') + ";", null, null);
 		MethodVisitor mv = node.visitMethod(
@@ -33,5 +35,9 @@ public class AppletTransform implements Transform {
 		mv.visitInsn(Opcodes.RETURN);
 		mv.visitMaxs(1, 1);
 		mv.visitEnd();
+	}
+
+	public String getIdentified() {
+		return identified;
 	}
 }
