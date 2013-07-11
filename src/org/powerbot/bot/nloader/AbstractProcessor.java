@@ -28,7 +28,7 @@ public class AbstractProcessor implements Processor {
 	}
 
 	private byte[] getCode(ClassNode node) {
-		ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_FRAMES | ClassWriter.COMPUTE_MAXS);
+		ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS);
 		node.accept(writer);
 		return writer.toByteArray();
 	}

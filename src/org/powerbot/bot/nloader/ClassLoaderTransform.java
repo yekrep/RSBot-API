@@ -5,11 +5,8 @@ import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldInsnNode;
 import org.objectweb.asm.tree.InsnList;
-import org.objectweb.asm.tree.InsnNode;
-import org.objectweb.asm.tree.LdcInsnNode;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
-import org.objectweb.asm.tree.TypeInsnNode;
 import org.objectweb.asm.tree.VarInsnNode;
 
 public class ClassLoaderTransform implements Transform {
@@ -25,7 +22,6 @@ public class ClassLoaderTransform implements Transform {
 		if (super_ == null || !super_.equals(this.super_)) {
 			return;
 		}
-		System.out.println(node.name + " " + node.superName);
 		final int[] ops = {
 				Opcodes.ALOAD, Opcodes.ALOAD, Opcodes.ILOAD, Opcodes.ILOAD, Opcodes.ALOAD,
 				Opcodes.INVOKEVIRTUAL
@@ -50,17 +46,14 @@ public class ClassLoaderTransform implements Transform {
 
 	private InsnList createCallback(AbstractInsnNode byteLoad) {
 		InsnList insnList = new InsnList();
-		insnList.add(new FieldInsnNode(Opcodes.GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;"));
-		insnList.add(new TypeInsnNode(Opcodes.NEW, "java/lang/StringBuilder"));
-		insnList.add(new InsnNode(Opcodes.DUP));
-		insnList.add(new MethodInsnNode(Opcodes.INVOKESPECIAL, "java/lang/StringBuilder", "<init>", "()V"));
-		insnList.add(new LdcInsnNode("Class bytes defined: "));
-		insnList.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(Ljava/lang/String;)Ljava/lang/StringBuilder;"));
-		insnList.add(new VarInsnNode(Opcodes.ALOAD, ((VarInsnNode) byteLoad).var));
-		insnList.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "java/util/Arrays", "toString", "([B)Ljava/lang/String;"));
-		insnList.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(Ljava/lang/String;)Ljava/lang/StringBuilder;"));
-		insnList.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, "java/lang/StringBuilder", "toString", "()Ljava/lang/String;"));
-		insnList.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V"));
+		if (!(byteLoad instanceof VarInsnNode)) {
+			throw new RuntimeException();
+		}
+		int var = ((VarInsnNode) byteLoad).var;
+		insnList.add(new FieldInsnNode(Opcodes.GETSTATIC, "Rs2Applet", "processor", "Lorg/powerbot/bot/nloader/Processor;"));
+		insnList.add(new VarInsnNode(Opcodes.ALOAD, var));
+		insnList.add(new MethodInsnNode(Opcodes.INVOKEINTERFACE, Processor.class.getName().replace('.', '/'), "transform", "([B)[B"));
+		insnList.add(new VarInsnNode(Opcodes.ASTORE, var));
 		return insnList;
 	}
 }
