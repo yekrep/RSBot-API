@@ -1,4 +1,4 @@
-package org.powerbot.bot.nloader;
+package org.powerbot.bot.nloader.bytecode;
 
 import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.InsnList;

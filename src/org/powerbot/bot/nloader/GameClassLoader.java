@@ -10,6 +10,12 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
 
+import org.powerbot.bot.nloader.bytecode.AbstractProcessor;
+import org.powerbot.bot.nloader.bytecode.AppletTransform;
+import org.powerbot.bot.nloader.bytecode.ClassLoaderTransform;
+import org.powerbot.bot.nloader.bytecode.ListClassesTransform;
+import org.powerbot.bot.nloader.bytecode.Processor;
+
 public class GameClassLoader extends ClassLoader {
 	private final Map<String, byte[]> resources = new HashMap<>();
 	private final Hashtable<String, Class<?>> loaded;

@@ -1,4 +1,4 @@
-package org.powerbot.bot.nloader;
+package org.powerbot.bot.nloader.bytecode;
 
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;

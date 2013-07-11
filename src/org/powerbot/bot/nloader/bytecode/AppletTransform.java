@@ -1,10 +1,12 @@
-package org.powerbot.bot.nloader;
+package org.powerbot.bot.nloader.bytecode;
 
 import java.applet.Applet;
 
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.ClassNode;
+import org.powerbot.bot.nloader.Application;
+import org.powerbot.bot.nloader.Bridge;
 
 public class AppletTransform implements Transform {
 	private final String super_;
@@ -22,7 +24,7 @@ public class AppletTransform implements Transform {
 			return;
 		}
 		identified = node.name;
-		node.interfaces.add(InjectedInterface.class.getName().replace('.', '/'));
+		node.interfaces.add(Application.class.getName().replace('.', '/'));
 		node.visitField(Opcodes.ACC_PUBLIC | Opcodes.ACC_STATIC, "accessor", "L" + Bridge.class.getName().replace('.', '/') + ";", null, null);
 		MethodVisitor mv = node.visitMethod(
 				Opcodes.ACC_PUBLIC,

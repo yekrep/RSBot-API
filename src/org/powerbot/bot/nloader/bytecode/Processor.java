@@ -1,4 +1,4 @@
-package org.powerbot.bot.nloader;
+package org.powerbot.bot.nloader.bytecode;
 
 public interface Processor {
 	public byte[] transform(byte[] b);

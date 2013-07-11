@@ -1,5 +1,5 @@
 package org.powerbot.bot.nloader;
 
-public interface InjectedInterface {
+public interface Application {
 	public void setBridge(Bridge bridge);
 }

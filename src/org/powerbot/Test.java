@@ -9,9 +9,9 @@ import javax.swing.JPanel;
 
 import org.powerbot.bot.loader.Crawler;
 import org.powerbot.bot.nloader.AbstractBridge;
+import org.powerbot.bot.nloader.Application;
 import org.powerbot.bot.nloader.GameLoader;
 import org.powerbot.bot.nloader.GameStub;
-import org.powerbot.bot.nloader.InjectedInterface;
 
 public class Test implements Runnable {
 	public static void main(String[] params) {
@@ -30,7 +30,7 @@ public class Test implements Runnable {
 					Class<?> clazz = cLoader.loadClass("Rs2Applet");
 					Constructor<?> constructor = clazz.getConstructor((Class[]) null);
 					applet = (Applet) constructor.newInstance((Object[]) null);
-					((InjectedInterface) applet).setBridge(new AbstractBridge());
+					((Application) applet).setBridge(new AbstractBridge());
 					applet.setPreferredSize(new Dimension(800, 700));
 				} catch (Exception ignored) {
 					ignored.printStackTrace();
