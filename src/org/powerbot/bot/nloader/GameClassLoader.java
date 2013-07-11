@@ -24,7 +24,8 @@ public class GameClassLoader extends ClassLoader {
 		permissions.add(new AllPermission());
 		domain = new ProtectionDomain(codesource, permissions);
 		AppletTransform appletTransform = new AppletTransform();
-		processor = new AbstractProcessor(appletTransform, new ClassLoaderTransform(appletTransform));
+		processor = new AbstractProcessor(appletTransform,
+				new ClassLoaderTransform(appletTransform), new ListClassesTransform(appletTransform));
 	}
 
 	@Override

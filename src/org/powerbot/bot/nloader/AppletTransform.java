@@ -22,16 +22,16 @@ public class AppletTransform implements Transform {
 			return;
 		}
 		identified = node.name;
-		node.interfaces.add(InjectedProcessor.class.getName().replace('.', '/'));
-		node.visitField(Opcodes.ACC_PUBLIC | Opcodes.ACC_STATIC, "processor", "L" + Processor.class.getName().replace('.', '/') + ";", null, null);
+		node.interfaces.add(InjectedInterface.class.getName().replace('.', '/'));
+		node.visitField(Opcodes.ACC_PUBLIC | Opcodes.ACC_STATIC, "accessor", "L" + Bridge.class.getName().replace('.', '/') + ";", null, null);
 		MethodVisitor mv = node.visitMethod(
 				Opcodes.ACC_PUBLIC,
-				"setProcessor", "(L" + Processor.class.getName().replace('.', '/') + ";)V",
+				"setBridge", "(L" + Bridge.class.getName().replace('.', '/') + ";)V",
 				null, null
 		);
 		mv.visitCode();
 		mv.visitVarInsn(Opcodes.ALOAD, 1);
-		mv.visitFieldInsn(Opcodes.PUTSTATIC, node.name, "processor", "L" + Processor.class.getName().replace('.', '/') + ";");
+		mv.visitFieldInsn(Opcodes.PUTSTATIC, node.name, "accessor", "L" + Bridge.class.getName().replace('.', '/') + ";");
 		mv.visitInsn(Opcodes.RETURN);
 		mv.visitMaxs(1, 1);
 		mv.visitEnd();

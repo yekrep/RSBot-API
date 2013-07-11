@@ -7,13 +7,11 @@ import java.lang.reflect.Constructor;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import org.objectweb.asm.ClassReader;
-import org.objectweb.asm.tree.ClassNode;
 import org.powerbot.bot.loader.Crawler;
+import org.powerbot.bot.nloader.AbstractBridge;
 import org.powerbot.bot.nloader.GameLoader;
 import org.powerbot.bot.nloader.GameStub;
-import org.powerbot.bot.nloader.InjectedProcessor;
-import org.powerbot.bot.nloader.Processor;
+import org.powerbot.bot.nloader.InjectedInterface;
 
 public class Test implements Runnable {
 	public static void main(String[] params) {
@@ -32,16 +30,7 @@ public class Test implements Runnable {
 					Class<?> clazz = cLoader.loadClass("Rs2Applet");
 					Constructor<?> constructor = clazz.getConstructor((Class[]) null);
 					applet = (Applet) constructor.newInstance((Object[]) null);
-					((InjectedProcessor) applet).setProcessor(new Processor() {
-						@Override
-						public byte[] transform(byte[] bytes) {
-							ClassNode node = new ClassNode();
-							ClassReader reader = new ClassReader(bytes);
-							reader.accept(node, ClassReader.SKIP_DEBUG | ClassReader.SKIP_FRAMES);
-							System.out.println("loading: " + node.name);
-							return bytes;
-						}
-					});
+					((InjectedInterface) applet).setBridge(new AbstractBridge());
 					applet.setPreferredSize(new Dimension(800, 700));
 				} catch (Exception ignored) {
 					ignored.printStackTrace();

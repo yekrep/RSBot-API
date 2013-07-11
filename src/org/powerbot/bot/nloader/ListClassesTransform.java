@@ -9,38 +9,33 @@ import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.VarInsnNode;
 
-public class ClassLoaderTransform implements Transform {
-	private final String super_;
+public class ListClassesTransform implements Transform {
 	private AppletTransform parent;
 
-	public ClassLoaderTransform(AppletTransform parent) {
-		this.super_ = ClassLoader.class.getName().replace('.', '/');
+	public ListClassesTransform(AppletTransform parent) {
 		this.parent = parent;
 	}
 
 	@Override
 	public void accept(ClassNode node) {
-		String super_ = node.superName;
-		if (super_ == null || !super_.equals(this.super_)) {
-			return;
-		}
+		final String methodName = "put";
+		final String desc = "(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;";
 		final int[] ops = {
-				Opcodes.ALOAD, Opcodes.ALOAD, Opcodes.ILOAD, Opcodes.ILOAD, Opcodes.ALOAD,
-				Opcodes.INVOKEVIRTUAL
+				Opcodes.ALOAD, Opcodes.ALOAD,
+				Opcodes.INVOKEVIRTUAL,
+				Opcodes.POP
 		};
-		final String methodName = "defineClass";
-		final String desc = "(Ljava/lang/String;[BIILjava/security/ProtectionDomain;)Ljava/lang/Class;";
 		for (MethodNode method : node.methods) {
+			if (!method.desc.contains("[B")) {
+				continue;
+			}
 			InsnSearcher searcher = new InsnSearcher(method);
 			while (searcher.getNext(ops) != null) {
-				AbstractInsnNode abstractInsnNode = searcher.current();
+				AbstractInsnNode abstractInsnNode = searcher.getPrevious();
 				MethodInsnNode methodInsnNode = (MethodInsnNode) abstractInsnNode;
 				if (methodInsnNode.name.equals(methodName) &&
 						methodInsnNode.desc.equals(desc)) {
-					for (int i = 0; i < ops.length; i++) {
-						searcher.getPrevious();
-					}
-					method.instructions.insert(searcher.current(), createCallback(searcher.getNext().getNext()));
+					method.instructions.insert(searcher.current(), createCallback(searcher.getPrevious().getPrevious()));
 				}
 			}
 		}
@@ -54,8 +49,7 @@ public class ClassLoaderTransform implements Transform {
 		int var = ((VarInsnNode) byteLoad).var;
 		insnList.add(new FieldInsnNode(Opcodes.GETSTATIC, parent.getIdentified(), "accessor", "L" + Bridge.class.getName().replace('.', '/') + ";"));
 		insnList.add(new VarInsnNode(Opcodes.ALOAD, var));
-		insnList.add(new MethodInsnNode(Opcodes.INVOKEINTERFACE, Bridge.class.getName().replace('.', '/'), "onDefine", "([B)[B"));
-		insnList.add(new VarInsnNode(Opcodes.ASTORE, var));
+		insnList.add(new MethodInsnNode(Opcodes.INVOKEINTERFACE, Bridge.class.getName().replace('.', '/'), "notifyClass", "(Ljava/lang/String;)V"));
 		return insnList;
 	}
 }
