@@ -28,6 +28,10 @@ public class InsnSearcher {
 		return curr;
 	}
 
+	public void set(AbstractInsnNode curr) {
+		this.curr = curr;
+	}
+
 	public void reset() {
 		curr = first;
 	}
@@ -71,20 +75,29 @@ public class InsnSearcher {
 	}
 
 	public AbstractInsnNode getNext(int[] opcodes) {
-		int len = opcodes.length;
-		int d = 0;
+		if (opcodes.length < 1) {
+			return null;
+		}
+		AbstractInsnNode curr;
 		AbstractInsnNode node;
 		for (; ; ) {
 			node = getNext();
 			if (node == null) {
 				break;
 			}
-			if (node.getOpcode() == opcodes[d++]) {
-				if (d == len) {
-					return node;
+			if (node.getOpcode() == opcodes[0]) {
+				curr = current();
+				AbstractInsnNode secondary;
+				for (int i = 1; i < opcodes.length; i++) {
+					secondary = getNext();
+					if (secondary == null || secondary.getOpcode() != opcodes[i]) {
+						break;
+					}
+					if (i == opcodes.length - 1) {
+						return secondary;
+					}
 				}
-			} else {
-				d = 0;
+				set(curr);
 			}
 		}
 		return node;
