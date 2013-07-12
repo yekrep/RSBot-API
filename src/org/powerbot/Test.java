@@ -18,6 +18,10 @@ public class Test implements Runnable {
 		new Thread(new Test()).start();
 	}
 
+	/**
+	 * Do not review this code.
+	 * It is absolute crap -- I didn't intend to spend time on it.
+	 */
 	@Override
 	public void run() {
 		Crawler crawler = new Crawler();
