@@ -25,7 +25,7 @@ public class AbstractBridge implements Bridge {
 	}
 
 	@Override
-	public byte[] classDefined(ClassLoader loader, byte[] bytes) {
+	public byte[] classDefined(byte[] bytes) {
 		ClassNode node = new ClassNode();
 		ClassReader reader = new ClassReader(bytes);
 		reader.accept(node, ClassReader.SKIP_DEBUG | ClassReader.SKIP_FRAMES);
