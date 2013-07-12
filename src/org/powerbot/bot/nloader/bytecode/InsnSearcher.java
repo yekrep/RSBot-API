@@ -90,7 +90,7 @@ public class InsnSearcher {
 				AbstractInsnNode secondary;
 				for (int i = 1; i < opcodes.length; i++) {
 					secondary = getNext();
-					if (secondary == null || secondary.getOpcode() != opcodes[i]) {
+					if (secondary == null || (secondary.getOpcode() != opcodes[i] && opcodes[i] != -1)) {
 						break;
 					}
 					if (i == opcodes.length - 1) {

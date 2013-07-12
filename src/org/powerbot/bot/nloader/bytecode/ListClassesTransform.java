@@ -22,9 +22,9 @@ public class ListClassesTransform implements Transform {
 
 	@Override
 	public void accept(ClassNode node) {
-		final String methodName = "put";
-		final String desc = "(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;";
-		final int[] ops = {
+		String methodName = "put";
+		String desc = "(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;";
+		int[] ops = {
 				Opcodes.ALOAD, Opcodes.ALOAD,
 				Opcodes.INVOKEVIRTUAL,
 				Opcodes.POP
@@ -39,6 +39,30 @@ public class ListClassesTransform implements Transform {
 					AbstractInsnNode second = searcher.getPrevious();
 					AbstractInsnNode first = searcher.getPrevious();
 					method.instructions.insert(searcher.current(), createCallback(first, second));
+				}
+			}
+		}
+
+		methodName = "getNextJarEntry";
+		desc = "()Ljava/util/jar/JarEntry;";
+		ops = new int[]{
+				Opcodes.INVOKEVIRTUAL,
+				Opcodes.DUP,
+				Opcodes.ASTORE,
+				Opcodes.IFNULL
+		};
+		for (MethodNode method : node.methods) {
+			InsnSearcher searcher = new InsnSearcher(method);
+			while (searcher.getNext(ops) != null) {
+				AbstractInsnNode abstractInsnNode = searcher.getPrevious(Opcodes.INVOKEVIRTUAL);
+				MethodInsnNode methodInsnNode = (MethodInsnNode) abstractInsnNode;
+				if (methodInsnNode.name.equals(methodName) &&
+						methodInsnNode.desc.equals(desc)) {
+					JumpInsnNode jump = (JumpInsnNode) searcher.getNext(Opcodes.IFNULL);
+					AbstractInsnNode pos = jump.getPrevious();
+					LabelNode label = jump.label;
+					method.instructions.remove(jump);
+					method.instructions.insert(pos, createEnd(label));
 				}
 			}
 		}
@@ -60,6 +84,17 @@ public class ListClassesTransform implements Transform {
 		insnList.add(new VarInsnNode(Opcodes.ALOAD, n));
 		insnList.add(new MethodInsnNode(Opcodes.INVOKEINTERFACE, Bridge.class.getName().replace('.', '/'), "entry", "(Ljava/lang/String;)V"));
 		insnList.add(label);
+		return insnList;
+	}
+
+	private InsnList createEnd(LabelNode label) {
+		InsnList insnList = new InsnList();
+		LabelNode skip = new LabelNode();
+		insnList.add(new JumpInsnNode(Opcodes.IFNONNULL, skip));
+		insnList.add(new FieldInsnNode(Opcodes.GETSTATIC, parent.getIdentified(), "accessor", "L" + Bridge.class.getName().replace('.', '/') + ";"));
+		insnList.add(new MethodInsnNode(Opcodes.INVOKEINTERFACE, Bridge.class.getName().replace('.', '/'), "end", "()V"));
+		insnList.add(new JumpInsnNode(Opcodes.GOTO, label));
+		insnList.add(skip);
 		return insnList;
 	}
 }

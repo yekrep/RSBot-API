@@ -42,4 +42,9 @@ public class AbstractBridge implements Bridge {
 			entries.add(name);
 		}
 	}
+
+	@Override
+	public void end() {
+		//TODO: all entries have been loaded
+	}
 }

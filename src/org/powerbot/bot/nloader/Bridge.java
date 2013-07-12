@@ -6,4 +6,6 @@ public interface Bridge {
 	public byte[] classDefined(byte[] bytes);
 
 	public void entry(String name);
+
+	public void end();
 }
