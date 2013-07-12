@@ -4,34 +4,35 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.tree.ClassNode;
 
 public class AbstractBridge implements Bridge {
-	public final List<String> classes;
-	public final Map<String, byte[]> loaded;
+	public final List<String> entries;
+	public Map<String, byte[]> loaded;
 
 	public AbstractBridge() {
-		this.classes = Collections.synchronizedList(new LinkedList<String>());
-		this.loaded = new ConcurrentHashMap<>();
+		this.entries = Collections.synchronizedList(new LinkedList<String>());
+		this.loaded = null;
 	}
 
 	@Override
-	public byte[] onDefine(byte[] bytes) {
+	public byte[] classDefined(byte[] bytes) {
 		ClassNode node = new ClassNode();
 		ClassReader reader = new ClassReader(bytes);
 		reader.accept(node, ClassReader.SKIP_DEBUG | ClassReader.SKIP_FRAMES);
-		loaded.put(node.name, bytes);
+		if (loaded != null) {
+			loaded.put(node.name, bytes);
+		}
 		return bytes;
 	}
 
 	@Override
-	public void notifyClass(String name) {
+	public void entry(String name) {
 		name = name.replace('/', '.');//not necessary but to be safe
-		if (!classes.contains(name)) {
-			classes.add(name);
+		if (!entries.contains(name)) {
+			entries.add(name);
 		}
 	}
 }
