@@ -32,6 +32,15 @@ public class ClassLoaderTransform implements Transform {
 		final String methodName = "defineClass";
 		final String desc = "(Ljava/lang/String;[BIILjava/security/ProtectionDomain;)Ljava/lang/Class;";
 		for (MethodNode method : node.methods) {
+			if (method.name.equals("<init>")) {
+				InsnList insnList = new InsnList();
+				insnList.add(new FieldInsnNode(Opcodes.GETSTATIC, parent.getIdentified(), "accessor", "L" + Bridge.class.getName().replace('.', '/') + ";"));
+				insnList.add(new VarInsnNode(Opcodes.ALOAD, 0));
+				insnList.add(new MethodInsnNode(Opcodes.INVOKEINTERFACE, Bridge.class.getName().replace('.', '/'), "classLoader", "(Ljava/lang/ClassLoader;)V"));
+				method.instructions.insertBefore(method.instructions.getLast(), insnList);
+				continue;
+			}
+
 			InsnSearcher searcher = new InsnSearcher(method);
 			while (searcher.getNext(ops) != null) {
 				AbstractInsnNode abstractInsnNode = searcher.current();
@@ -54,8 +63,9 @@ public class ClassLoaderTransform implements Transform {
 		}
 		int var = ((VarInsnNode) byteLoad).var;
 		insnList.add(new FieldInsnNode(Opcodes.GETSTATIC, parent.getIdentified(), "accessor", "L" + Bridge.class.getName().replace('.', '/') + ";"));
+		insnList.add(new VarInsnNode(Opcodes.ALOAD, 0));
 		insnList.add(new VarInsnNode(Opcodes.ALOAD, var));
-		insnList.add(new MethodInsnNode(Opcodes.INVOKEINTERFACE, Bridge.class.getName().replace('.', '/'), "classDefined", "([B)[B"));
+		insnList.add(new MethodInsnNode(Opcodes.INVOKEINTERFACE, Bridge.class.getName().replace('.', '/'), "classDefined", "(Ljava/lang/ClassLoader;[B)[B"));
 		insnList.add(new VarInsnNode(Opcodes.ASTORE, var));
 		return insnList;
 	}

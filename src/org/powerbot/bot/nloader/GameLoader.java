@@ -2,6 +2,7 @@ package org.powerbot.bot.nloader;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -32,7 +33,9 @@ public class GameLoader implements Callable<ClassLoader> {
 		} catch (IOException ignored) {
 			buffer = null;
 		}
-		if (buffer == null) return null;
+		if (buffer == null) {
+			return null;
+		}
 
 		Map<String, byte[]> resources = new HashMap<>();
 		try {

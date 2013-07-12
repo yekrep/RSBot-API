@@ -29,12 +29,13 @@ public class Test implements Runnable {
 			GameLoader loader = new GameLoader(crawler);
 			ClassLoader cLoader = loader.call();
 			if (cLoader != null) {
+				AbstractBridge abstractBridge = new AbstractBridge();
 				Applet applet;
 				try {
 					Class<?> clazz = cLoader.loadClass("Rs2Applet");
 					Constructor<?> constructor = clazz.getConstructor((Class[]) null);
 					applet = (Applet) constructor.newInstance((Object[]) null);
-					((Application) applet).setBridge(new AbstractBridge());
+					((Application) applet).setBridge(abstractBridge);
 					applet.setPreferredSize(new Dimension(800, 700));
 				} catch (Exception ignored) {
 					ignored.printStackTrace();
