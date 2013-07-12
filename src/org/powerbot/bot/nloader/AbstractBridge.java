@@ -37,7 +37,7 @@ public class AbstractBridge implements Bridge {
 
 	@Override
 	public void entry(String name) {
-		name = name.replace('.', '/');
+		name = name.replace('/', '.');
 		if (!entries.contains(name)) {
 			entries.add(name);
 		}
@@ -45,6 +45,6 @@ public class AbstractBridge implements Bridge {
 
 	@Override
 	public void end() {
-		//TODO: all entries have been loaded
+		//TODO: implement end
 	}
 }
