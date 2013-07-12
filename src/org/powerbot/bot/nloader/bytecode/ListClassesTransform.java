@@ -27,9 +27,6 @@ public class ListClassesTransform implements Transform {
 				Opcodes.POP
 		};
 		for (MethodNode method : node.methods) {
-			if (!method.desc.contains("[B")) {
-				continue;
-			}
 			InsnSearcher searcher = new InsnSearcher(method);
 			while (searcher.getNext(ops) != null) {
 				AbstractInsnNode abstractInsnNode = searcher.getPrevious();
