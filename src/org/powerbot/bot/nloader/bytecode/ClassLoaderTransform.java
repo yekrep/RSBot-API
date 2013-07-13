@@ -32,6 +32,10 @@ public class ClassLoaderTransform implements Transform {
 		final String methodName = "defineClass";
 		final String desc = "(Ljava/lang/String;[BIILjava/security/ProtectionDomain;)Ljava/lang/Class;";
 		for (MethodNode method : node.methods) {
+			/*
+			* Invoke the classLoader callback when a new class loader is created.
+			* This is required to acquire the class loader.
+			 */
 			if (method.name.equals("<init>")) {
 				InsnList insnList = new InsnList();
 				insnList.add(new FieldInsnNode(Opcodes.GETSTATIC, parent.getIdentified(), "accessor", "L" + Bridge.class.getName().replace('.', '/') + ";"));
@@ -47,25 +51,35 @@ public class ClassLoaderTransform implements Transform {
 				MethodInsnNode methodInsnNode = (MethodInsnNode) abstractInsnNode;
 				if (methodInsnNode.name.equals(methodName) &&
 						methodInsnNode.desc.equals(desc)) {
+					/*
+					* Found a define class invoke.
+					* Rewind to before the first instruction.
+					* Store position.
+					 */
 					for (int i = 0; i < ops.length; i++) {
 						searcher.getPrevious();
 					}
-					method.instructions.insert(searcher.current(), createCallback(searcher.getNext().getNext()));
+					AbstractInsnNode pos = searcher.current();
+					/*
+					* Fast-forward to the byte array load.
+					 */
+					AbstractInsnNode load = searcher.getNext().getNext();
+					/*
+					* Change the byte array before the call.
+					* defineClass(name, bytes, pos, len, domain)
+					* --->
+					* bytes = classDefined(bytes);
+					* defineClass(name, bytes, pos, len, domain)
+					 */
+					InsnList insnList = new InsnList();
+					int var = ((VarInsnNode) load).var;
+					insnList.add(new FieldInsnNode(Opcodes.GETSTATIC, parent.getIdentified(), "accessor", "L" + Bridge.class.getName().replace('.', '/') + ";"));
+					insnList.add(new VarInsnNode(Opcodes.ALOAD, var));
+					insnList.add(new MethodInsnNode(Opcodes.INVOKEINTERFACE, Bridge.class.getName().replace('.', '/'), "classDefined", "([B)[B"));
+					insnList.add(new VarInsnNode(Opcodes.ASTORE, var));
+					method.instructions.insert(pos, insnList);
 				}
 			}
 		}
-	}
-
-	private InsnList createCallback(AbstractInsnNode byteLoad) {
-		InsnList insnList = new InsnList();
-		if (!(byteLoad instanceof VarInsnNode)) {
-			throw new RuntimeException();
-		}
-		int var = ((VarInsnNode) byteLoad).var;
-		insnList.add(new FieldInsnNode(Opcodes.GETSTATIC, parent.getIdentified(), "accessor", "L" + Bridge.class.getName().replace('.', '/') + ";"));
-		insnList.add(new VarInsnNode(Opcodes.ALOAD, var));
-		insnList.add(new MethodInsnNode(Opcodes.INVOKEINTERFACE, Bridge.class.getName().replace('.', '/'), "classDefined", "([B)[B"));
-		insnList.add(new VarInsnNode(Opcodes.ASTORE, var));
-		return insnList;
 	}
 }

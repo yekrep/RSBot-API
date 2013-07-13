@@ -24,8 +24,19 @@ public class AppletTransform implements Transform {
 			return;
 		}
 		identified = node.name;
+		/*
+		* Add application interface.
+		* This is for casting the loaded applet to what we need.
+		*/
 		node.interfaces.add(Application.class.getName().replace('.', '/'));
+		/*
+		* Create static accessor field for the bridge.
+		 */
 		node.visitField(Opcodes.ACC_PUBLIC | Opcodes.ACC_STATIC, "accessor", "L" + Bridge.class.getName().replace('.', '/') + ";", null, null);
+		/*
+		* Create set bridge method.
+		* Write basic code to set field.
+		 */
 		MethodVisitor mv = node.visitMethod(
 				Opcodes.ACC_PUBLIC,
 				"setBridge", "(L" + Bridge.class.getName().replace('.', '/') + ";)V",
