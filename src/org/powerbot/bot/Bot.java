@@ -46,6 +46,7 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 	private MouseHandler mouseHandler;
 	private InputHandler inputHandler;
 	private ScriptController controller;
+	private boolean stopping;
 
 	public Bot() {
 		appletContainer = null;
@@ -124,7 +125,6 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 
 	@Override
 	public boolean isStopping() {
-		boolean stopping = false;
 		return stopping;
 	}
 
@@ -133,6 +133,7 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 	 */
 	@Override
 	public void stop() {
+		stopping = true;
 		log.info("Unloading environment");
 		for (final Stoppable module : new Stoppable[]{mouseHandler, controller, multicaster}) {
 			if (module != null) {
