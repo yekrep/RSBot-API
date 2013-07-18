@@ -109,6 +109,12 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 		Crawler crawler = loader.getGameLoader().getCrawler();
 		GameStub stub = new GameStub(crawler.parameters, crawler.archive);
 		appletContainer.setStub(stub);
+
+		final Graphics graphics = image.getGraphics();
+		appletContainer.update(graphics);
+		graphics.dispose();
+		resize(BotChrome.PANEL_WIDTH, BotChrome.PANEL_HEIGHT);
+
 		appletContainer.init();
 		if (loader.getBridge().getTransformSpec() == null) {
 			Thread thread = new Thread(new Runnable() {
