@@ -1,5 +1,6 @@
 package org.powerbot.bot;
 
+import java.applet.Applet;
 import java.awt.Canvas;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -7,6 +8,10 @@ import java.awt.image.BufferedImage;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Logger;
 
+import org.powerbot.bot.loader.Crawler;
+import org.powerbot.bot.nloader.GameLoader;
+import org.powerbot.bot.nloader.GameStub;
+import org.powerbot.bot.nloader.NRSLoader;
 import org.powerbot.client.Client;
 import org.powerbot.client.Constants;
 import org.powerbot.event.EventMulticaster;
@@ -30,12 +35,11 @@ import org.powerbot.service.GameAccounts;
 public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 	public static final Logger log = Logger.getLogger(Bot.class.getName());
 	private MethodContext ctx;
-	public final Runnable callback;
 	public final ThreadGroup threadGroup;
 	private final PaintEvent paintEvent;
 	private final TextPaintEvent textPaintEvent;
 	private final EventMulticaster multicaster;
-	private volatile RSLoader appletContainer;
+	private volatile Applet appletContainer;
 	private volatile BotStub stub;
 	private BufferedImage image;
 	public AtomicBoolean refreshing;
@@ -50,7 +54,6 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 
 	public Bot() {
 		appletContainer = null;
-		callback = null;
 		stub = null;
 
 		threadGroup = new ThreadGroup(Bot.class.getName() + "@" + Integer.toHexString(hashCode()));
@@ -76,12 +79,69 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 		start();
 	}
 
+	public void startNew() {
+		log.info("Loading bot");
+		Crawler crawler = new Crawler();
+		if (!crawler.crawl()) {
+			return;
+		}
+
+		GameLoader game = new GameLoader(crawler);
+		ClassLoader classLoader = game.call();
+		if (classLoader == null) {
+			return;
+		}
+
+		final NRSLoader loader = new NRSLoader(game, classLoader);
+		loader.setCallback(new Runnable() {
+			@Override
+			public void run() {
+				sequence(loader);
+			}
+		});
+	}
+
+	private void sequence(NRSLoader loader) {
+		log.info("Loading game");
+		this.appletContainer = loader.getApplet();
+		Crawler crawler = loader.getGameLoader().getCrawler();
+		GameStub stub = new GameStub(crawler.parameters, crawler.archive);
+		appletContainer.setStub(stub);
+		appletContainer.init();
+		appletContainer.start();
+
+		final Thread t = new Thread(threadGroup, new Runnable() {
+			@Override
+			public void run() {
+				for (; ; ) {
+					int s;
+					if ((s = getMethodContext().game.getClientState()) >= Game.INDEX_LOGIN_SCREEN) {
+						if (s == Game.INDEX_LOGIN_SCREEN) {
+							getMethodContext().keyboard.send("{VK_ESCAPE}");
+						}
+						break;
+					} else {
+						try {
+							Thread.sleep(300);
+						} catch (final InterruptedException ignored) {
+						}
+					}
+				}
+			}
+		});
+		t.setPriority(Thread.MIN_PRIORITY);
+		t.start();
+
+		BotChrome.getInstance().panel.setBot(this);
+	}
+
 	public void start() {
 		log.info("Starting bot");
-		appletContainer = new RSLoader();
-		appletContainer.setCallback(new Runnable() {
+		final RSLoader rsLoader = new RSLoader();
+		appletContainer = rsLoader;
+		rsLoader.setCallback(new Runnable() {
 			public void run() {
-				setClient((Client) appletContainer.getClient());
+				setClient((Client) rsLoader.getClient());
 				final Graphics graphics = image.getGraphics();
 				appletContainer.update(graphics);
 				graphics.dispose();
@@ -89,14 +149,14 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 			}
 		});
 
-		if (!appletContainer.load()) {
+		if (!rsLoader.load()) {
 			return;
 		}
-		stub = new BotStub(appletContainer, appletContainer.getClientLoader().crawler);
+		stub = new BotStub(appletContainer, rsLoader.getClientLoader().crawler);
 		appletContainer.setStub(stub);
 		stub.setActive(true);
 		log.info("Starting game");
-		new Thread(threadGroup, appletContainer, "Loader").start();
+		new Thread(threadGroup, rsLoader, "Loader").start();
 
 		final Thread t = new Thread(threadGroup, new Runnable() {
 			@Override
@@ -183,7 +243,7 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 		return backBuffer;
 	}
 
-	public RSLoader getAppletContainer() {
+	public Applet getAppletContainer() {
 		return appletContainer;
 	}
 
@@ -245,7 +305,7 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 	private void setClient(final Client client) {
 		this.ctx.setClient(client);
 		client.setCallback(new AbstractCallback(this));
-		constants = new Constants(appletContainer.getTspec().constants);
+		constants = new Constants(((RSLoader) appletContainer).getTspec().constants);
 		new Thread(threadGroup, new SafeMode(this)).start();
 		mouseHandler = new MouseHandler(appletContainer, client);
 		inputHandler = new InputHandler(appletContainer, client);

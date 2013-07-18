@@ -3,6 +3,7 @@ package org.powerbot;
 import java.applet.Applet;
 import java.awt.Dimension;
 import java.lang.reflect.Constructor;
+import java.security.MessageDigest;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -12,6 +13,7 @@ import org.powerbot.bot.nloader.AbstractBridge;
 import org.powerbot.bot.nloader.Application;
 import org.powerbot.bot.nloader.GameLoader;
 import org.powerbot.bot.nloader.GameStub;
+import org.powerbot.util.StringUtil;
 
 public class Test implements Runnable {
 	public static void main(String[] params) {
@@ -29,7 +31,13 @@ public class Test implements Runnable {
 			GameLoader loader = new GameLoader(crawler);
 			ClassLoader cLoader = loader.call();
 			if (cLoader != null) {
-				AbstractBridge abstractBridge = new AbstractBridge();
+				try {
+					MessageDigest digest = MessageDigest.getInstance("SHA-1");
+					System.out.println(StringUtil.byteArrayToHexString(digest.digest(loader.getResources().get("inner.pack.gz"))));
+				} catch (Exception ignored) {
+				}
+
+				AbstractBridge abstractBridge = new AbstractBridge(null);
 				Applet applet;
 				try {
 					Class<?> clazz = cLoader.loadClass("Rs2Applet");
