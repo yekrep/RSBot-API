@@ -5,6 +5,7 @@ import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldInsnNode;
 import org.objectweb.asm.tree.InsnList;
+import org.objectweb.asm.tree.InsnNode;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.VarInsnNode;
@@ -64,12 +65,14 @@ public class ClassLoaderTransform implements Transform {
 					* Fast-forward to the byte array load.
 					 */
 					AbstractInsnNode load = searcher.getNext().getNext();
+					AbstractInsnNode off = load.getNext();
+					AbstractInsnNode len = off.getNext();
 					/*
 					* Change the byte array before the call.
 					* defineClass(name, bytes, pos, len, domain)
 					* --->
 					* bytes = classDefined(bytes);
-					* defineClass(name, bytes, pos, len, domain)
+					* defineClass(name, bytes, pos, bytes.length, domain)
 					 */
 					InsnList insnList = new InsnList();
 					int var = ((VarInsnNode) load).var;
@@ -78,6 +81,12 @@ public class ClassLoaderTransform implements Transform {
 					insnList.add(new MethodInsnNode(Opcodes.INVOKEINTERFACE, Bridge.class.getName().replace('.', '/'), "classDefined", "([B)[B"));
 					insnList.add(new VarInsnNode(Opcodes.ASTORE, var));
 					method.instructions.insert(pos, insnList);
+
+					insnList.clear();
+					method.instructions.remove(len);
+					insnList.add(new VarInsnNode(Opcodes.ALOAD, var));
+					insnList.add(new InsnNode(Opcodes.ARRAYLENGTH));
+					method.instructions.insert(off, insnList);
 				}
 			}
 		}
