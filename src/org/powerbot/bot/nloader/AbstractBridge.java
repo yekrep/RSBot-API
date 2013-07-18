@@ -10,7 +10,7 @@ import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.tree.ClassNode;
 import org.powerbot.bot.loader.transform.TransformSpec;
 
-public class AbstractBridge implements Bridge {
+public abstract class AbstractBridge implements Bridge {
 	public final List<String> entries;
 	public final Map<String, byte[]> loaded;
 	private final TransformSpec transformSpec;
@@ -53,16 +53,16 @@ public class AbstractBridge implements Bridge {
 
 	@Override
 	public void end() {
-		if (transformSpec != null) {
+		if (transformSpec != null || loader == null) {
 			return;
 		}
 
-		//TODO: implement end
-	}
-
-	@Override
-	public void instance(Object object) {
-		//TODO: implement instance
+		for (String entry : entries) {
+			try {
+				loader.loadClass(entry);
+			} catch (ClassNotFoundException ignored) {
+			}
+		}
 	}
 
 	public TransformSpec getTransformSpec() {

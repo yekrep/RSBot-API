@@ -80,7 +80,12 @@ public class NRSLoader implements Runnable {
 			spec = null;
 		}
 
-		((Application) applet).setBridge(bridge = new AbstractBridge(spec));
+		((Application) applet).setBridge(bridge = new AbstractBridge(spec) {
+			@Override
+			public void instance(Object object) {
+				//TODO: set client
+			}
+		});
 		callback.run();
 	}
 

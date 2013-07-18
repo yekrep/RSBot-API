@@ -37,7 +37,11 @@ public class Test implements Runnable {
 				} catch (Exception ignored) {
 				}
 
-				AbstractBridge abstractBridge = new AbstractBridge(null);
+				AbstractBridge abstractBridge = new AbstractBridge(null) {
+					@Override
+					public void instance(Object object) {
+					}
+				};
 				Applet applet;
 				try {
 					Class<?> clazz = cLoader.loadClass("Rs2Applet");
