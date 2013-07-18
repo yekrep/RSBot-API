@@ -5,6 +5,11 @@ import java.applet.Applet;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.ClassNode;
+import org.objectweb.asm.tree.FieldInsnNode;
+import org.objectweb.asm.tree.InsnList;
+import org.objectweb.asm.tree.MethodInsnNode;
+import org.objectweb.asm.tree.MethodNode;
+import org.objectweb.asm.tree.VarInsnNode;
 import org.powerbot.bot.nloader.Application;
 import org.powerbot.bot.nloader.Bridge;
 
@@ -48,6 +53,35 @@ public class AppletTransform implements Transform {
 		mv.visitInsn(Opcodes.RETURN);
 		mv.visitMaxs(1, 1);
 		mv.visitEnd();
+
+		final int[] ops = {
+				Opcodes.ALOAD,
+				Opcodes.ALOAD, Opcodes.ACONST_NULL, Opcodes.CHECKCAST, Opcodes.INVOKEVIRTUAL,
+				Opcodes.PUTFIELD
+		};
+		final String methodOwner = "java/lang/reflect/Constructor";
+		final String methodName = "newInstance";
+		final String desc = "([Ljava/lang/Object;)Ljava/lang/Object;";
+		for (MethodNode method : node.methods) {
+			InsnSearcher searcher = new InsnSearcher(method);
+			while (searcher.getNext(ops) != null) {
+				FieldInsnNode fieldInsnNode = (FieldInsnNode) searcher.current();
+				MethodInsnNode methodInsnNode = (MethodInsnNode) fieldInsnNode.getPrevious();
+				if (methodInsnNode.owner.equals(methodOwner) &&
+						methodInsnNode.name.equals(methodName) &&
+						methodInsnNode.desc.equals(desc)) {
+					searcher.getPrevious(Opcodes.ALOAD);
+					searcher.getPrevious(Opcodes.ALOAD);
+					int var = ((VarInsnNode) searcher.current()).var;
+					InsnList insnList = new InsnList();
+					insnList.add(new FieldInsnNode(Opcodes.GETSTATIC, identified, "accessor", "L" + Bridge.class.getName().replace('.', '/') + ";"));
+					insnList.add(new VarInsnNode(Opcodes.ALOAD, var));
+					insnList.add(new FieldInsnNode(Opcodes.GETFIELD, fieldInsnNode.owner, fieldInsnNode.name, fieldInsnNode.desc));
+					insnList.add(new MethodInsnNode(Opcodes.INVOKEINTERFACE, Bridge.class.getName().replace('.', '/'), "instance", "(Ljava/lang/Object;)V"));
+					method.instructions.insert(fieldInsnNode, insnList);
+				}
+			}
+		}
 	}
 
 	public String getIdentified() {

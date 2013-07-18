@@ -46,7 +46,6 @@ public class GameLoader implements Callable<ClassLoader> {
 				resources.put(entryName, read(jar));
 			}
 		} catch (IOException ignored) {
-			ignored.printStackTrace();
 		}
 		return new GameClassLoader(resources);
 	}
