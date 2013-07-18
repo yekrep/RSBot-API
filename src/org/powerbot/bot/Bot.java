@@ -119,6 +119,9 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 							break;
 						} catch (IOException ignored) {
 						} catch (NRSLoader.PendingException p) {
+							//TODO: change to something more informative
+							int d = p.getDelay() / 1000;
+							log.warning("Request pending, trying again in " + (d < 60 ? d + " seconds" : (int) Math.ceil(d / 60) + " minutes"));
 							try {
 								Thread.sleep(p.getDelay());
 							} catch (final InterruptedException ignored) {
