@@ -100,6 +100,7 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 				sequence(loader);
 			}
 		});
+		new Thread(threadGroup, loader).start();
 	}
 
 	private void sequence(final NRSLoader loader) {
