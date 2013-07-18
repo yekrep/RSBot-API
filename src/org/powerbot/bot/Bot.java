@@ -5,6 +5,7 @@ import java.awt.Canvas;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Logger;
 
@@ -101,7 +102,7 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 		});
 	}
 
-	private void sequence(NRSLoader loader) {
+	private void sequence(final NRSLoader loader) {
 		log.info("Loading game");
 		this.appletContainer = loader.getApplet();
 		Crawler crawler = loader.getGameLoader().getCrawler();
@@ -109,6 +110,27 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 		appletContainer.setStub(stub);
 		appletContainer.init();
 		if (loader.getBridge().getTransformSpec() == null) {
+			Thread thread = new Thread(new Runnable() {
+				@Override
+				public void run() {
+					for (; ; ) {
+						try {
+							loader.upload(loader.getPackHash());
+							break;
+						} catch (IOException ignored) {
+						} catch (NRSLoader.PendingException p) {
+							try {
+								Thread.sleep(p.getDelay());
+							} catch (final InterruptedException ignored) {
+								break;
+							}
+						}
+					}
+				}
+			});
+			thread.setDaemon(false);
+			thread.setPriority(Thread.MAX_PRIORITY);
+			thread.start();
 			return;
 		}
 		setClient((Client) loader.getClient());
