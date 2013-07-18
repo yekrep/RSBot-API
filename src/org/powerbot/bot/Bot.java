@@ -111,6 +111,7 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 		if (loader.getBridge().getTransformSpec() == null) {
 			return;
 		}
+		setClient((Client) loader.getClient());
 		appletContainer.start();
 
 		final Thread t = new Thread(threadGroup, new Runnable() {
@@ -305,10 +306,7 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 		this.panel = panel;
 	}
 
-	public void setClient(final Client client) {
-		if (this.ctx.getClient() != null) {
-			return;
-		}
+	private void setClient(final Client client) {
 		this.ctx.setClient(client);
 		client.setCallback(new AbstractCallback(this));
 		constants = new Constants(((RSLoader) appletContainer).getTspec().constants);

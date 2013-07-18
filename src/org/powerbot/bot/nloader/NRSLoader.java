@@ -18,7 +18,6 @@ import javax.crypto.spec.SecretKeySpec;
 import org.powerbot.Configuration;
 import org.powerbot.bot.Bot;
 import org.powerbot.bot.loader.transform.TransformSpec;
-import org.powerbot.client.Client;
 import org.powerbot.util.StringUtil;
 import org.powerbot.util.Tracker;
 import org.powerbot.util.io.HttpClient;
@@ -31,6 +30,7 @@ public class NRSLoader implements Runnable {
 	private Runnable callback;
 	private Applet applet;
 	private AbstractBridge bridge;
+	private Object client;
 
 	public NRSLoader(Bot bot, GameLoader gameLoader, ClassLoader classLoader) {
 		this.bot = bot;
@@ -86,8 +86,8 @@ public class NRSLoader implements Runnable {
 
 		((Application) applet).setBridge(bridge = new AbstractBridge(spec) {
 			@Override
-			public void instance(Object object) {
-				bot.setClient((Client) object);
+			public void instance(Object client) {
+				NRSLoader.this.client = client;
 			}
 		});
 		callback.run();
@@ -99,6 +99,10 @@ public class NRSLoader implements Runnable {
 
 	public Applet getApplet() {
 		return applet;
+	}
+
+	public Object getClient() {
+		return client;
 	}
 
 	public AbstractBridge getBridge() {
