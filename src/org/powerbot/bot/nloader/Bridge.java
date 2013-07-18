@@ -8,4 +8,6 @@ public interface Bridge {
 	public void entry(String name);
 
 	public void end();
+
+	public void instance(Object object);
 }

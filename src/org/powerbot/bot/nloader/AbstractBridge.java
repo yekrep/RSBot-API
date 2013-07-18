@@ -47,4 +47,8 @@ public class AbstractBridge implements Bridge {
 	public void end() {
 		//TODO: implement end
 	}
+
+	@Override
+	public void instance(Object object) {
+	}
 }
