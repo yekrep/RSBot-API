@@ -92,7 +92,7 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 			return;
 		}
 
-		final NRSLoader loader = new NRSLoader(game, classLoader);
+		final NRSLoader loader = new NRSLoader(this, game, classLoader);
 		loader.setCallback(new Runnable() {
 			@Override
 			public void run() {
@@ -305,7 +305,10 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 		this.panel = panel;
 	}
 
-	private void setClient(final Client client) {
+	public void setClient(final Client client) {
+		if (this.ctx.getClient() != null) {
+			return;
+		}
 		this.ctx.setClient(client);
 		client.setCallback(new AbstractCallback(this));
 		constants = new Constants(((RSLoader) appletContainer).getTspec().constants);
