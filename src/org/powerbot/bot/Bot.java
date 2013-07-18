@@ -108,6 +108,9 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 		GameStub stub = new GameStub(crawler.parameters, crawler.archive);
 		appletContainer.setStub(stub);
 		appletContainer.init();
+		if (loader.getBridge().getTransformSpec() == null) {
+			return;
+		}
 		appletContainer.start();
 
 		final Thread t = new Thread(threadGroup, new Runnable() {

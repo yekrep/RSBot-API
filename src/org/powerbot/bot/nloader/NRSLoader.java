@@ -81,6 +81,7 @@ public class NRSLoader implements Runnable {
 		}
 
 		((Application) applet).setBridge(bridge = new AbstractBridge(spec));
+		callback.run();
 	}
 
 	public GameLoader getGameLoader() {

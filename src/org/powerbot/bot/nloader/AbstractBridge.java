@@ -64,4 +64,8 @@ public class AbstractBridge implements Bridge {
 	public void instance(Object object) {
 		//TODO: implement instance
 	}
+
+	public TransformSpec getTransformSpec() {
+		return transformSpec;
+	}
 }
