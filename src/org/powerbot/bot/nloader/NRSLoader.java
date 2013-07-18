@@ -87,6 +87,9 @@ public class NRSLoader implements Runnable {
 		} catch (IOException ignored) {
 			spec = null;
 		}
+		if (spec != null) {
+			spec.adapt();
+		}
 
 		((Application) applet).setBridge(bridge = new AbstractBridge(spec) {
 			@Override
