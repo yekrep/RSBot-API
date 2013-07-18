@@ -10,6 +10,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Logger;
 
 import org.powerbot.bot.loader.Crawler;
+import org.powerbot.bot.loader.transform.TransformSpec;
 import org.powerbot.bot.nloader.GameLoader;
 import org.powerbot.bot.nloader.GameStub;
 import org.powerbot.bot.nloader.NRSLoader;
@@ -80,7 +81,7 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 		start();
 	}
 
-	public void startNew() {
+	public void start() {
 		log.info("Loading bot");
 		Crawler crawler = new Crawler();
 		if (!crawler.crawl()) {
@@ -145,54 +146,6 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 		}
 		setClient((Client) loader.getClient(), loader.getBridge().getTransformSpec());
 		appletContainer.start();
-
-		final Thread t = new Thread(threadGroup, new Runnable() {
-			@Override
-			public void run() {
-				for (; ; ) {
-					int s;
-					if ((s = getMethodContext().game.getClientState()) >= Game.INDEX_LOGIN_SCREEN) {
-						if (s == Game.INDEX_LOGIN_SCREEN) {
-							getMethodContext().keyboard.send("{VK_ESCAPE}");
-						}
-						break;
-					} else {
-						try {
-							Thread.sleep(300);
-						} catch (final InterruptedException ignored) {
-						}
-					}
-				}
-			}
-		});
-		t.setPriority(Thread.MIN_PRIORITY);
-		t.start();
-
-		BotChrome.getInstance().panel.setBot(this);
-	}
-
-	public void start() {
-		log.info("Starting bot");
-		final RSLoader rsLoader = new RSLoader();
-		appletContainer = rsLoader;
-		rsLoader.setCallback(new Runnable() {
-			public void run() {
-				setClient((Client) rsLoader.getClient());
-				final Graphics graphics = image.getGraphics();
-				appletContainer.update(graphics);
-				graphics.dispose();
-				resize(BotChrome.PANEL_WIDTH, BotChrome.PANEL_HEIGHT);
-			}
-		});
-
-		if (!rsLoader.load()) {
-			return;
-		}
-		stub = new BotStub(appletContainer, rsLoader.getClientLoader().crawler);
-		appletContainer.setStub(stub);
-		stub.setActive(true);
-		log.info("Starting game");
-		new Thread(threadGroup, rsLoader, "Loader").start();
 
 		final Thread t = new Thread(threadGroup, new Runnable() {
 			@Override
