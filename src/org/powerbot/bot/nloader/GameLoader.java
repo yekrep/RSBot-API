@@ -2,10 +2,10 @@ package org.powerbot.bot.nloader;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Callable;
@@ -17,10 +17,12 @@ import org.powerbot.util.io.HttpClient;
 import org.powerbot.util.io.IOHelper;
 
 public class GameLoader implements Callable<ClassLoader> {
-	private Crawler crawler;
+	private final Crawler crawler;
+	private final Map<String, byte[]> resources;
 
 	public GameLoader(Crawler crawler) {
 		this.crawler = crawler;
+		this.resources = new HashMap<>();
 	}
 
 	@Override
@@ -37,7 +39,6 @@ public class GameLoader implements Callable<ClassLoader> {
 			return null;
 		}
 
-		Map<String, byte[]> resources = new HashMap<>();
 		try {
 			JarInputStream jar = new JarInputStream(new ByteArrayInputStream(buffer));
 			JarEntry entry;
@@ -48,6 +49,14 @@ public class GameLoader implements Callable<ClassLoader> {
 		} catch (IOException ignored) {
 		}
 		return new GameClassLoader(resources);
+	}
+
+	public Map<String, byte[]> getResources() {
+		return Collections.unmodifiableMap(resources);
+	}
+
+	public Crawler getCrawler() {
+		return crawler;
 	}
 
 	private static byte[] read(final JarInputStream inputStream) throws IOException {
