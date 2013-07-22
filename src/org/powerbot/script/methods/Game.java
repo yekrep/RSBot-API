@@ -46,6 +46,8 @@ public class Game extends MethodProvider {
 	public final Game.Toolkit toolkit;
 	public final Game.Viewport viewport;
 
+	public int mapAngle;
+
 	public enum Tab {
 		NIL("nil"),
 		COMBAT("Combat"),
@@ -214,14 +216,15 @@ public class Game extends MethodProvider {
 	public boolean isPointOnScreen(final int x, final int y) {
 		final Rectangle r;
 		if (isLoggedIn()) {
-			final Component c = ctx.widgets.get(ActionBar.WIDGET, ActionBar.COMPONENT_BAR);
+			/*final Component c = ctx.widgets.get(ActionBar.WIDGET, ActionBar.COMPONENT_BAR);
 			r = c != null && c.isVisible() ? c.getBoundingRect() : null;
 			if (r != null && r.contains(x, y)) {
 				return false;
 			}
 			if (isFixed()) {
 				return x >= 4 && y >= 54 && x < 516 && y < 388;
-			}
+			}*/
+			//TODO this
 			Dimension dimension = ctx.game.getDimensions();
 			return x > 0 && y > 0 && x < dimension.getWidth() && y < dimension.getHeight();
 		} else {
@@ -308,7 +311,7 @@ public class Game extends MethodProvider {
 		loc = loc.derive(-base.x, -base.y);
 		final int pX = (int) (x * 4 + 2) - (loc.getX() << 9) / 128;
 		final int pY = (int) (y * 4 + 2) - (loc.getY() << 9) / 128;
-		final Component mapComponent = ctx.components.getMap();
+		final Component mapComponent = ctx.widgets.get(1477, 53);//TODO: this
 		if (mapComponent == null) {
 			return new Point(-1, -1);
 		}
@@ -317,14 +320,10 @@ public class Game extends MethodProvider {
 		if (mapRadius * mapRadius >= dist) {
 			final Constants constants = getConstants();
 			final int SETTINGS_ON = constants != null ? constants.MINIMAP_SETTINGS_ON : -1;
-			int angle = 0x3fff & (int) client.getMinimapAngle();
-			final boolean unknown = client.getMinimapSettings() == SETTINGS_ON;
-			if (!unknown) {
-				angle = 0x3fff & client.getMinimapOffset() + (int) client.getMinimapAngle();
-			}
-			int sin = SIN_TABLE[angle];
-			int cos = COS_TABLE[angle];
-			if (!unknown) {
+			final boolean flag = client.getMinimapSettings() == SETTINGS_ON;
+			int sin = SIN_TABLE[mapAngle];
+			int cos = COS_TABLE[mapAngle];
+			if (!flag) {
 				final int fact = 0x100 + client.getMinimapScale();
 				sin = 0x100 * sin / fact;
 				cos = 0x100 * cos / fact;
