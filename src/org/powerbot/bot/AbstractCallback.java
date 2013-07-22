@@ -17,6 +17,10 @@ public class AbstractCallback implements Callback {
 	}
 
 	@Override
+	public void updateMinimapAngle(int angle) {
+	}
+
+	@Override
 	public void updateRenderInfo(final Render render) {
 		bot.getMethodContext().game.updateToolkit(render);
 	}
