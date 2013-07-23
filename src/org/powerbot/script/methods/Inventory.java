@@ -33,88 +33,68 @@ public class Inventory extends ItemQuery<Item> {
 	@Override
 	protected List<Item> get() {
 		List<Item> items = new ArrayList<>(28);
-		final Component inv = getComponent();
-		if (inv == null) {
-			return items;
-		}
-		final Component[] comps = inv.getChildren();
+		Component inv = getComponent();
 		int[][] data;
 		if (inv.isVisible()) {
 			data = ctx.items.getItems(Items.INDEX_INVENTORY);
 		} else {
 			data = null;
 		}
-		if (comps.length > 27) {
-			for (int i = 0; i < 28; i++) {
-				if (data != null) {
-					if (i >= data.length) {
-						break;
-					}
-					if (data[i][0] == -1) {
-						continue;
-					}
-					items.add(new Item(ctx, data[i][0], data[i][1], comps[i]));
-				} else if (comps[i].getItemId() != -1) {
-					items.add(new Item(ctx, comps[i]));
+		for (int i = 0; i < 28; i++) {
+			Component comp = inv.getChild(i);
+			if (data != null) {
+				if (i >= data.length) {
+					break;
 				}
+				if (data[i][0] == -1) {
+					continue;
+				}
+				items.add(new Item(ctx, data[i][0], data[i][1], comp));
+			} else if (comp.getItemId() != -1) {
+				items.add(new Item(ctx, comp));
 			}
 		}
 		return items;
 	}
 
 	public Item[] getAllItems() {
-		final Item[] items = new Item[28];
-		final Component inv = getComponent();
-		if (inv == null) {
-			return items;
-		}
-		final Component[] comps = inv.getChildren();
+		Item[] items = new Item[28];
+		Component inv = getComponent();
 		int[][] data;
 		if (inv.isVisible()) {
 			data = ctx.items.getItems(Items.INDEX_INVENTORY);
 		} else {
 			data = null;
 		}
-		if (comps.length > 27) {
-			for (int i = 0; i < 28; i++) {
-				if (data != null) {
-					if (i < data.length) {
-						items[i] = new Item(ctx, data[i][0], data[i][1], comps[i]);
-					} else {
-						items[i] = new Item(ctx, -1, -1, comps[i]);
-					}
+		for (int i = 0; i < 28; i++) {
+			Component comp = inv.getChild(i);
+			if (data != null) {
+				if (i < data.length) {
+					items[i] = new Item(ctx, data[i][0], data[i][1], comp);
 				} else {
-					items[i] = new Item(ctx, comps[i]);
+					items[i] = new Item(ctx, -1, -1, comp);
 				}
+			} else {
+				items[i] = new Item(ctx, comp);
 			}
 		}
 		return items;
 	}
 
 	public Item getItemAt(final int index) {
-		final Component inv = getComponent();
-		if (inv == null) {
-			return null;
-		}
-		final Component[] comps = inv.getChildren();
+		Component inv = getComponent();
 		int[][] data = ctx.items.getItems(Items.INDEX_INVENTORY);
-		if (index >= 0 && index < 28 && comps.length > 27 && index < data.length && data[index][0] != -1) {
-			return new Item(ctx, data[index][0], data[index][1], comps[index]);
+		if (index >= 0 && index < 28 && index < data.length && data[index][0] != -1) {
+			return new Item(ctx, data[index][0], data[index][1], inv.getChild(index));
 		}
 		return null;
 	}
 
 	public int getSelectedItemIndex() {
-		final Component inv = getComponent();
-		if (inv == null) {
-			return -1;
-		}
-		final Component[] comps = inv.getChildren();
-		if (comps.length > 27) {
-			for (int i = 0; i < 28; i++) {
-				if (comps[i].getBorderThickness() == 2) {
-					return i;
-				}
+		Component inv = getComponent();
+		for (int i = 0; i < 28; i++) {
+			if (inv.getChild(i).getBorderThickness() == 2) {
+				return i;
 			}
 		}
 		return -1;
