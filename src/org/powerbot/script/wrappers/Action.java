@@ -31,7 +31,7 @@ public class Action extends MethodProvider implements Identifiable, Validatable 
 	}
 
 	public String getBind() {
-		final Component c = ctx.widgets.get(ActionBar.WIDGET, ActionBar.COMPONENT_SLOTS_BIND[slot]);
+		final Component c = ctx.widgets.get(ActionBar.WIDGET, ActionBar.COMPONENT_SLOT_BIND_START + slot * 4);
 		return c.getText().trim();
 	}
 
@@ -44,14 +44,13 @@ public class Action extends MethodProvider implements Identifiable, Validatable 
 	}
 
 	public boolean isReady() {
-		final Component reload = ctx.widgets.get(ActionBar.WIDGET, ActionBar.COMPONENT_SLOTS_COOLDOWN[slot]);
-		final Component action = ctx.widgets.get(ActionBar.WIDGET, ActionBar.COMPONENT_SLOTS_ACTION[slot]);
-		return reload.isValid() && !reload.isVisible() &&
-				action.isValid() && action.getTextColor() == 0xFFFFFF;
+		Component cooldown = ctx.widgets.get(ActionBar.WIDGET, ActionBar.COMPONENT_SLOT_COOLDOWN_START + slot * 4);
+		Component action = ctx.widgets.get(ActionBar.WIDGET, ActionBar.COMPONENT_SLOT_ACTION_START + slot * 4);
+		return cooldown.getTextureId() != ActionBar.TEXTURE_COOL_DOWN && action.getTextColor() == 0xFFFFFF;
 	}
 
 	public Component getComponent() {
-		return ctx.widgets.get(ActionBar.WIDGET, ActionBar.COMPONENT_SLOTS[slot]);
+		return ctx.widgets.get(ActionBar.WIDGET, ActionBar.COMPONENT_SLOT_ACTION_START + slot * 4);
 	}
 
 	@Override

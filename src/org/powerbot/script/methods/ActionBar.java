@@ -10,15 +10,18 @@ import org.powerbot.script.wrappers.Component;
 
 public class ActionBar extends IdQuery<Action> {
 	public static final int NUM_SLOTS = 12;
-	public static final int WIDGET = 640;
-	public static final int COMPONENT_BAR = 4;
-	public static final int COMPONENT_LOCK = 26, COMPONENT_TRASH = 27;
-	public static final int COMPONENT_BUTTON_EXPAND = 3, COMPONENT_BUTTON_COLLAPSE = 30;
-	public static final int[] COMPONENT_SLOTS = {34, 38, 41, 44, 47, 50, 53, 56, 59, 62, 65, 68};
-	public static final int[] COMPONENT_SLOTS_ACTION = {32, 72, 76, 80, 84, 88, 92, 96, 100, 104, 108, 112};
-	public static final int[] COMPONENT_SLOTS_BIND = {70, 75, 79, 83, 87, 91, 95, 99, 103, 107, 111, 115};
-	public static final int[] COMPONENT_SLOTS_COOLDOWN = {36, 73, 77, 81, 85, 89, 93, 97, 101, 105, 109, 113};
+	public static final int WIDGET = 1430;
+	public static final int COMPONENT_BAR = 76;
+	public static final int COMPONENT_LOCK = 19, COMPONENT_TRASH = 20;
+	public static final int WIDGET_LAYOUT = 1477;
+	public static final int COMPONENT_BUTTON_TOGGLE = 70, COMPONENT_BUTTON_TOGGLE_IDX = 1;
 	public static final int SETTING_ITEM = 811, SETTING_ABILITY = 727;
+
+	public static final int COMPONENT_SLOT_ACTION_START = 96;
+	public static final int COMPONENT_SLOT_COOLDOWN_START = 97;
+	public static final int COMPONENT_SLOT_BIND_START = 99;
+
+	public static final int TEXTURE_COOL_DOWN = 14590;
 
 	public ActionBar(MethodContext factory) {
 		super(factory);
@@ -37,8 +40,8 @@ public class ActionBar extends IdQuery<Action> {
 		if (isExpanded() == expanded) {
 			return true;
 		}
-		final Component c = ctx.widgets.get(WIDGET, expanded ? COMPONENT_BUTTON_EXPAND : COMPONENT_BUTTON_COLLAPSE);
-		if (c.isValid() && c.interact(expanded ? "Expand" : "Minimise")) {
+		final Component c = ctx.widgets.get(WIDGET_LAYOUT, COMPONENT_BUTTON_TOGGLE).getChild(COMPONENT_BUTTON_TOGGLE_IDX);
+		if (c.isValid() && c.interact(expanded ? "Maximise" : "Minimise")) {
 			for (int i = 0; i < 5 && isExpanded() != expanded; i++) {
 				Delay.sleep(20, 50);
 			}
@@ -86,7 +89,7 @@ public class ActionBar extends IdQuery<Action> {
 
 	public boolean deleteSlot(final int slot) {
 		Component c;
-		if (slot < 0 || slot >= NUM_SLOTS || (c = ctx.widgets.get(WIDGET, COMPONENT_SLOTS[slot])) == null) {
+		if (slot < 0 || slot >= NUM_SLOTS || (c = ctx.widgets.get(WIDGET, COMPONENT_SLOT_ACTION_START + slot * 4)) == null) {
 			return false;
 		}
 		final Action action = getActionAt(slot);
