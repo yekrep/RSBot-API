@@ -38,6 +38,9 @@ public class Sandbox extends SecurityManager {
 
 	@Override
 	public void checkConnect(final String host, final int port, final Object context) {
+		if (isGameThread()) {
+			return;
+		}
 		if (!(port == 80 || port == 443 || port == 53 || port == 43594 || port == -1)) {
 			log.severe("Connection denied to port " + port);
 			throw new SecurityException();
