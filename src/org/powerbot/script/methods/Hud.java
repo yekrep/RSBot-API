@@ -43,32 +43,34 @@ public class Hud extends MethodProvider {
 	}
 
 	public enum Window {
-		SKILLS(Menu.HERO, 18775, 1466),
-		ACTIVE_TASK(Menu.HERO, 18789, 1220),
-		BACKPACK(Menu.GEAR, 18772, 1473),
-		WORN_EQUIPMENT(Menu.GEAR, 18773, 1464),
-		PRAYER_ABILITIES(Menu.POWERS, 18774, 1458),
-		MAGIC_ABILITIES(Menu.POWERS, 18752, 1461),
-		MELEE_ABILITIES(Menu.POWERS, 18750, 1460),
-		RANGED_ABILITIES(Menu.POWERS, 18751, 1452),
-		DEFENCE_ABILITIES(Menu.POWERS, 18753, 1449),
-		FRIENDS(Menu.SOCIAL, 18759, 550, 33),
-		FRIENDS_CHAT_INFO(Menu.SOCIAL, 18761, 1427),
-		CLAN(Menu.SOCIAL, 18762, 1110, 2),
-		NOTES(Menu.OPTIONS, 18779, 1417),
-		MUSIC_PLAYER(Menu.OPTIONS, 18780, 1416);
+		SKILLS(Menu.HERO, 18738, 18775, 1466),
+		ACTIVE_TASK(Menu.HERO, 18735, 18789, 1220),
+		BACKPACK(Menu.GEAR, 18732, 18772, 1473),
+		WORN_EQUIPMENT(Menu.GEAR, 18733, 18773, 1464),
+		PRAYER_ABILITIES(Menu.POWERS, 18734, 18774, 1458),
+		MAGIC_ABILITIES(Menu.POWERS, 18724, 18752, 1461),
+		MELEE_ABILITIES(Menu.POWERS, 18722, 18750, 1460),
+		RANGED_ABILITIES(Menu.POWERS, 18723, 18751, 1452),
+		DEFENCE_ABILITIES(Menu.POWERS, 18725, 18753, 1449),
+		FRIENDS(Menu.SOCIAL, 18737, 18759, 550, 33),
+		FRIENDS_CHAT_INFO(Menu.SOCIAL, 18739, 18761, 1427),
+		CLAN(Menu.SOCIAL, 18740, 18762, 1110, 2),
+		NOTES(Menu.OPTIONS, 18744, 18779, 1417),
+		MUSIC_PLAYER(Menu.OPTIONS, 18745, 18780, 1416);
 		private final Menu menu;
+		private final int miniTexture;
 		private final int texture;
 		private final int widget;
 		private final int component;
 
-		Window(Menu menu, int texture, int widget) {
-			this(menu, texture, widget, 0);
+		Window(Menu menu, int texture, int miniTexture, int widget) {
+			this(menu, texture, miniTexture, widget, 0);
 		}
 
-		Window(Menu menu, int texture, int widget, int component) {
+		Window(Menu menu, int texture, int miniTexture, int widget, int component) {
 			this.menu = menu;
 			this.texture = texture;
+			this.miniTexture = miniTexture;
 			this.widget = widget;
 			this.component = component;
 		}
@@ -79,6 +81,10 @@ public class Hud extends MethodProvider {
 
 		public int getTexture() {
 			return texture;
+		}
+
+		public int getMiniTexture() {
+			return miniTexture;
 		}
 
 		public int getWidget() {
@@ -132,7 +138,6 @@ public class Hud extends MethodProvider {
 		if (isVisible(window)) {
 			return true;
 		}
-		;
 		if (open(window) && !isVisible(window)) {
 			Component tab = getTab(window);
 			if (tab != null && tab.click()) {
@@ -147,6 +152,24 @@ public class Hud extends MethodProvider {
 		return isVisible(window);
 	}
 
+	public boolean close(Window window) {
+		if (!isOpen(window)) {
+			return true;
+		}
+		if (view(window)) {
+			Component sprite = getSprite(window);
+			if (sprite != null && sprite.getWidget().getComponent(sprite.getParent().getIndex() + 1).interact("Close")) {
+				for (int i = 0; i < 20; i++) {
+					if (!isOpen(window)) {
+						break;
+					}
+					sleep(100, 150);
+				}
+			}
+		}
+		return !isOpen(window);
+	}
+
 	private boolean isViewable(Window window) {
 		if (!isOpen(window)) {
 			return false;
@@ -156,7 +179,7 @@ public class Hud extends MethodProvider {
 	}
 
 	private Component getToggle(Window window) {
-		int texture = window.getTexture();
+		int texture = window.getMiniTexture();
 		for (Component sub : ctx.widgets.get(WIDGET_MENU_WINDOWS, COMPONENT_MENU_WINDOWS_LIST).getChildren()) {
 			if (sub.getTextureId() == texture && sub.isVisible()) {
 				return sub;
@@ -176,10 +199,22 @@ public class Hud extends MethodProvider {
 	}
 
 	private Component getTab(Window window) {
-		int texture = window.getTexture();
+		int texture = window.getMiniTexture();
 		for (Component child : ctx.widgets.get(WIDGET_HUD)) {
 			for (Component sub : child.getChildren()) {
 				if (sub.getTextureId() == texture && sub.isValid()) {
+					return sub;
+				}
+			}
+		}
+		return null;
+	}
+
+	private Component getSprite(Window window) {
+		int texture = window.getTexture();
+		for (Component child : ctx.widgets.get(WIDGET_HUD)) {
+			for (Component sub : child.getChildren()) {
+				if (sub.getTextureId() == texture && sub.isVisible()) {
 					return sub;
 				}
 			}
