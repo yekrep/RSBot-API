@@ -13,10 +13,11 @@ import org.powerbot.script.wrappers.TileMatrix;
 import org.powerbot.script.wrappers.TilePath;
 
 public class Movement extends MethodProvider {
-	private static final int WIDGET = 750;
-	private static final int COMPONENT_RUN = 2;
-	private static final int COMPONENT_RUN_ENERGY = 6;
-	private static final int SETTING_RUN_ENABLED = 463;
+	public static final int WIDGET_MAP = 1465;
+	public static final int COMPONENT_MAP = 12;
+	public static final int COMPONENT_RUN = 4;
+	public static final int COMPONENT_RUN_ENERGY = 5;
+	public static final int SETTING_RUN_ENABLED = 463;
 
 	public Movement(MethodContext factory) {
 		super(factory);
@@ -77,7 +78,7 @@ public class Movement extends MethodProvider {
 
 	public boolean setRunning(final boolean run) {
 		if (isRunning() != run) {
-			final Component c = ctx.widgets.get(WIDGET, COMPONENT_RUN);
+			final Component c = ctx.widgets.get(WIDGET_MAP, COMPONENT_RUN);
 			if (c != null && c.click(true)) {
 				for (int i = 0; i < 20 && isRunning() != run; i++) {
 					Delay.sleep(100, 200);
@@ -92,32 +93,14 @@ public class Movement extends MethodProvider {
 	}
 
 	public int getEnergyLevel() {
-		final Component c = ctx.widgets.get(WIDGET, COMPONENT_RUN_ENERGY);
+		final Component c = ctx.widgets.get(WIDGET_MAP, COMPONENT_RUN_ENERGY);
 		if (c != null && c.isValid()) {
 			try {
-				final String text = c.getText();
-				if (text != null) {
-					return Integer.parseInt(text.trim());
-				}
+				return Integer.parseInt(c.getText().replace('%', ' ').trim());
 			} catch (final NumberFormatException ignored) {
 			}
 		}
-		return -1;
-	}
-
-	public Tile getClosestOnMap(Tile tile) {
-		if (tile.getMatrix(ctx).isOnMap()) {
-			return tile;
-		}
-
-		final Tile location = ctx.players.getLocal().getLocation();
-		tile = tile.derive(-location.getX(), -location.getY());
-		final double angle = Math.atan2(tile.getY(), tile.getX());
-		return new Tile(
-				location.getX() + (int) (16d * Math.cos(angle)),
-				location.getY() + (int) (16d * Math.sin(angle)),
-				tile.getPlane()
-		);
+		return 0;
 	}
 
 	public int getDistance(Locatable _start, Locatable _end) {
