@@ -54,7 +54,8 @@ public class DrawItems implements PaintListener {
 				Point p = c.getAbsoluteLocation();
 				render.drawString(c.getItemId() + "", p.x, p.y + c.getHeight());
 			}
-		} else if (ctx.equipment.getComponent().isVisible()) {
+		}
+		if (ctx.equipment.getComponent().isVisible()) {
 			for (Item item : ctx.equipment.getAllItems()) {
 				if (item == null) {
 					continue;
