@@ -12,8 +12,10 @@ public class Inventory extends ItemQuery<Item> {
 	public static final int WIDGET = 1473;
 	public static final int WIDGET_CONTAINER = 8;
 	public static final int WIDGET_BANK = 762 << 16 | 6;
+	public static final int WIDGET_DEPOSIT_BOX = 11 << 16 | 15;
 	private static final int[] ALTERNATIVE_WIDGETS = {
 			WIDGET_BANK,
+			WIDGET_DEPOSIT_BOX,
 	};
 
 	public Inventory(MethodContext factory) {
