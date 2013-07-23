@@ -22,6 +22,7 @@ public class MethodContext {
 	public Game game;
 	public GroundItems groundItems;
 	public HintArrows hintArrows;
+	public Hud hud;
 	public Inventory inventory;
 	public Keyboard keyboard;
 	public Lobby lobby;
@@ -56,6 +57,7 @@ public class MethodContext {
 		game = new Game(this);
 		groundItems = new GroundItems(this);
 		hintArrows = new HintArrows(this);
+		hud = new Hud(this);
 		inventory = new Inventory(this);
 		keyboard = new Keyboard(this);
 		lobby = new Lobby(this);
@@ -100,6 +102,7 @@ public class MethodContext {
 		game = ctx.game;
 		groundItems = ctx.groundItems;
 		hintArrows = ctx.hintArrows;
+		hud = ctx.hud;
 		inventory = ctx.inventory;
 		keyboard = ctx.keyboard;
 		lobby = ctx.lobby;
