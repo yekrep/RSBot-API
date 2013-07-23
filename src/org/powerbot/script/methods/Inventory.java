@@ -9,21 +9,6 @@ import org.powerbot.script.wrappers.Component;
 import org.powerbot.script.wrappers.Item;
 
 public class Inventory extends ItemQuery<Item> {
-	/*
-	public static final int WIDGET_PRICE_CHECK = 204;
-	public static final int WIDGET_EQUIPMENT_BONUSES = 670;
-	public static final int WIDGET_EXCHANGE = 644;
-	public static final int WIDGET_SHOP = 621;
-	public static final int WIDGET_DUNGEONEERING_SHOP = 957;
-	public static final int WIDGET_BEAST_OF_BURDEN_STORAGE = 665;
-	public static final int WIDGET_STORE = 1266;
-	public static final int WIDGET_SAWMILL_CART = 771;
-	private static final int[] ALTERNATIVE_WIDGETS = {
-			WIDGET_BANK,
-			WIDGET_PRICE_CHECK, WIDGET_EQUIPMENT_BONUSES,
-			WIDGET_EXCHANGE, WIDGET_SHOP, WIDGET_DUNGEONEERING_SHOP,
-			WIDGET_BEAST_OF_BURDEN_STORAGE, WIDGET_STORE, WIDGET_SAWMILL_CART
-	};*/
 	public static final int WIDGET = 1473;
 	public static final int WIDGET_CONTAINER = 8;
 	public static final int WIDGET_BANK = 762 << 16 | 6;
