@@ -27,7 +27,6 @@ import org.powerbot.event.debug.DrawPlayers;
 import org.powerbot.event.debug.MessageLogger;
 import org.powerbot.event.debug.TCamera;
 import org.powerbot.event.debug.TClientState;
-import org.powerbot.event.debug.TCurrentTab;
 import org.powerbot.event.debug.TDestination;
 import org.powerbot.event.debug.TLocation;
 import org.powerbot.event.debug.TMapBase;
@@ -100,7 +99,6 @@ public final class BotMenuView implements ActionListener {//TODO revamp debuggin
 		map.put(MOUSE, ViewMouse.class);
 		map.put(ITEMS, DrawItems.class);
 		map.put(ABILTIIES, DrawAbilities.class);
-		map.put(TAB, TCurrentTab.class);
 		map.put(MOUSEPOS, TMousePosition.class);
 		map.put(MESSAGES, MessageLogger.class);
 

@@ -116,7 +116,7 @@ public class Inventory extends ItemQuery<Item> {
 		return -1;
 	}
 
-	private Component getComponent() {
+	public Component getComponent() {
 		Component c;
 		for (final int id : ALTERNATIVE_WIDGETS) {
 			if ((c = ctx.widgets.get(id >> 16, id & 0xffff)) != null && c.isValid()) {

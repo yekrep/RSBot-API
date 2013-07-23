@@ -50,14 +50,10 @@ public class Equipment extends MethodProvider {
 		boolean b = ctx.bank.isOpen();
 		int[][] data = ctx.items.getItems(Items.INDEX_EQUIPMENT);
 		Item[] items = new Item[NUM_SLOTS];
+		Component component = getComponent();
 		for (Slot slot : Slot.values()) {
 			int index = slot.getStorageIndex();
-			Component c;
-			if (b) {
-				c = ctx.widgets.get(WIDGET_GEAR, COMPONENT_GEAR_CONTAINER).getChild(slot.getComponentIndex());
-			} else {
-				c = ctx.widgets.get(WIDGET, COMPONENT_CONTAINER).getChild(slot.getComponentIndex());
-			}
+			Component c = component.getChild(slot.getComponentIndex());
 			if (index < 0 || index >= data.length || data[index][0] == -1) {
 				items[slot.ordinal()] = new Item(ctx, -1, -1, c);
 				continue;
@@ -73,12 +69,7 @@ public class Equipment extends MethodProvider {
 		if (index < 0 || index >= data.length || data[index][0] == -1) {
 			return null;
 		}
-		Component c;
-		if (ctx.bank.isOpen()) {
-			c = ctx.widgets.get(WIDGET_GEAR, COMPONENT_GEAR_CONTAINER).getChild(slot.getComponentIndex());
-		} else {
-			c = ctx.widgets.get(WIDGET, COMPONENT_CONTAINER).getChild(slot.getComponentIndex());
-		}
+		Component c = getComponent().getChild(slot.getComponentIndex());
 		return new Item(ctx, data[index][0], data[index][1], c);
 	}
 
@@ -97,5 +88,12 @@ public class Equipment extends MethodProvider {
 			}
 		}
 		return true;
+	}
+
+	public Component getComponent() {
+		if (ctx.bank.isOpen()) {
+			return ctx.widgets.get(WIDGET_GEAR, COMPONENT_GEAR_CONTAINER);
+		}
+		return ctx.widgets.get(WIDGET, COMPONENT_CONTAINER);
 	}
 }

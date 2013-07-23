@@ -48,90 +48,10 @@ public class Game extends MethodProvider {
 
 	public int mapAngle;
 
-	public enum Tab {
-		NIL("nil"),
-		COMBAT("Combat"),
-		NOTICEBOARD("Noticeboard"),
-		STATS("Stats"),
-		ACADEMY("Combat Academy"),
-		INVENTORY("Inventory"),
-		EQUIPMENT("Worn Equipment"),
-		PRAYER("Prayer List"),
-		ABILITY_BOOK("Ability Book"),
-		EXTRAS("Extras"),
-		FRIENDS("Friends List"),
-		FRIENDS_CHAT("Friends Chat"),
-		CLAN_CHAT("Clan Chat"),
-		OPTIONS("Options"),
-		EMOTES("Emotes"),
-		MUSIC("Music Player"),
-		NOTES("Notes"),
-		LOGOUT("Exit");
-		public final String hint;
-
-		Tab(String hint) {
-			this.hint = hint;
-		}
-
-		public String getName() {
-			return hint;
-		}
-	}
-
 	public Game(MethodContext factory) {
 		super(factory);
 		this.toolkit = new Toolkit();
 		this.viewport = new Viewport();
-	}
-
-	public Tab getCurrentTab() {
-		Component c;
-		for (Tab tab : Tab.values()) {
-			if (tab == Tab.LOGOUT) {
-				continue;
-			}
-			if ((c = ctx.components.getTab(tab)) != null) {
-				if (c.getTextureId() != -1) {
-					return tab;
-				}
-			}
-		}
-		if ((c = ctx.widgets.get(182, 1)) != null && c.isVisible()) {
-			return Tab.LOGOUT;
-		}
-		return Tab.NIL;
-	}
-
-	public boolean openTab(Tab tab) {
-		if (getCurrentTab() == tab) {
-			return true;
-		}
-		final Component c = ctx.components.getTab(tab);
-		if (c != null && c.isValid() && c.click(true)) {
-			final Timer t = new Timer(800);
-			while (t.isRunning() && getCurrentTab() != tab) {
-				Delay.sleep(15);
-			}
-		}
-		return getCurrentTab() == tab;
-	}
-
-	public boolean closeTab() {
-		if (isFixed()) {
-			return false;
-		}
-		final Tab curr;
-		if ((curr = getCurrentTab()) == Tab.NIL) {
-			return true;
-		}
-		final Component c = ctx.components.getTab(curr);
-		if (c != null && c.isValid() && c.click(true)) {
-			final Timer t = new Timer(800);
-			while (t.isRunning() && getCurrentTab() != Tab.NIL) {
-				Delay.sleep(15);
-			}
-		}
-		return getCurrentTab() == Tab.NIL;
 	}
 
 	public int getClientState() {

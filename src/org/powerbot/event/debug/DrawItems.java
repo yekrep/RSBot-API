@@ -9,7 +9,6 @@ import java.awt.Rectangle;
 import org.powerbot.event.PaintListener;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.script.methods.Bank;
-import org.powerbot.script.methods.Game;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.wrappers.Component;
 import org.powerbot.script.wrappers.Item;
@@ -46,7 +45,7 @@ public class DrawItems implements PaintListener {
 			}
 		}
 
-		if (ctx.game.getCurrentTab() == Game.Tab.INVENTORY) {
+		if (ctx.inventory.getComponent().isVisible()) {
 			for (Item item : ctx.inventory.select()) {
 				Component c = item.getComponent();
 				if (c == null) {
@@ -55,7 +54,7 @@ public class DrawItems implements PaintListener {
 				Point p = c.getAbsoluteLocation();
 				render.drawString(c.getItemId() + "", p.x, p.y + c.getHeight());
 			}
-		} else if (ctx.game.getCurrentTab() == Game.Tab.EQUIPMENT) {
+		} else if (ctx.equipment.getComponent().isVisible()) {
 			for (Item item : ctx.equipment.getAllItems()) {
 				if (item == null) {
 					continue;

@@ -12,31 +12,6 @@ class Components extends MethodProvider {
 		this.container = new Container();
 	}
 
-	Component getCompass() {
-		if (container == null) {
-			return null;
-		}
-
-		container.sync();
-		if (container.compass == -1) {
-			final Widget game = ctx.widgets.get(container.index);
-			final Component[] components = game != null ? game.getComponents() : null;
-			if (components != null) {
-				for (final Component c : components) {
-					final String[] actions = c.getActions();
-					if (actions != null && actions.length == 1 && actions[0].equalsIgnoreCase("face north")) {
-						container.compass = c.getIndex();
-						break;
-					}
-				}
-			}
-		}
-		if (container.compass != -1) {
-			return ctx.widgets.get(container.index, container.compass);
-		}
-		return null;
-	}
-
 	Component getMap() {
 		if (container == null) {
 			return null;
@@ -61,36 +36,10 @@ class Components extends MethodProvider {
 		return null;
 	}
 
-	Component getTab(Game.Tab tab) {
-		if (container == null) {
-			return null;
-		}
-
-		container.sync();
-		if (container.tabs[tab.ordinal()] == -1) {
-			final Widget game = ctx.widgets.get(container.index);
-			final Component[] components = game != null ? game.getComponents() : null;
-			if (components != null) {
-				for (final Component c : components) {
-					final String[] actions = c.getActions();
-					if (actions != null && actions.length > 0 && actions[0].equalsIgnoreCase(tab.getName())) {
-						container.tabs[tab.ordinal()] = c.getIndex();
-						break;
-					}
-				}
-			}
-		}
-		if (container.tabs[tab.ordinal()] != -1) {
-			return ctx.widgets.get(container.index, container.tabs[tab.ordinal()]);
-		}
-		return null;
-	}
-
 	private final class Container {
 		private Client client;
 		private int index;
-		private int compass, map;
-		private int[] tabs;
+		private int map;
 
 		private Container() {
 			index = 0;
@@ -108,12 +57,7 @@ class Components extends MethodProvider {
 			this.client = client;
 			if (index != this.index) {
 				this.index = index;
-				this.compass = -1;
 				this.map = -1;
-				this.tabs = new int[Game.Tab.values().length];
-				for (int i = 0; i < this.tabs.length; i++) {
-					this.tabs[i] = -1;
-				}
 			}
 		}
 	}
