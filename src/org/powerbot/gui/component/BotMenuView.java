@@ -55,7 +55,6 @@ public final class BotMenuView implements ActionListener {//TODO revamp debuggin
 	private static final String MODELS = "Models";
 	private static final String ITEMS = "Items";
 	private static final String ABILTIIES = "Abilities";
-	private static final String TAB = "Tab";
 	private static final String CLIENTSTATE = "Client State";
 	private static final String MENU = "Menu";
 	private static final String PLANE = "Plane";
@@ -112,7 +111,6 @@ public final class BotMenuView implements ActionListener {//TODO revamp debuggin
 		items.add(ITEMS);
 		items.add(ABILTIIES);
 		items.add(SEPERATOR);
-		items.add(TAB);
 		items.add(CLIENTSTATE);
 		items.add(MENU);
 		items.add(PLANE);
