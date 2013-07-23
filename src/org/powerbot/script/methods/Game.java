@@ -3,7 +3,6 @@ package org.powerbot.script.methods;
 import java.awt.Canvas;
 import java.awt.Dimension;
 import java.awt.Point;
-import java.awt.Rectangle;
 
 import org.powerbot.bot.Bot;
 import org.powerbot.client.BaseInfo;
@@ -19,8 +18,6 @@ import org.powerbot.client.Render;
 import org.powerbot.client.RenderData;
 import org.powerbot.client.SoftReference;
 import org.powerbot.client.TileData;
-import org.powerbot.script.util.Delay;
-import org.powerbot.script.util.Timer;
 import org.powerbot.script.wrappers.Component;
 import org.powerbot.script.wrappers.Player;
 import org.powerbot.script.wrappers.Tile;
@@ -104,14 +101,6 @@ public class Game extends MethodProvider {
 		return client.getPlane();
 	}
 
-	public boolean isFixed() {
-		Client client = ctx.getClient();
-		if (client == null) {
-			return false;
-		}
-		return client.getGUIRSInterfaceIndex() != 746;
-	}
-
 	public void setPreferredWorld(final int world) {
 		ctx.setPreferredWorld(world);
 	}
@@ -134,23 +123,8 @@ public class Game extends MethodProvider {
 	}
 
 	public boolean isPointOnScreen(final int x, final int y) {
-		final Rectangle r;
-		if (isLoggedIn()) {
-			/*final Component c = ctx.widgets.get(ActionBar.WIDGET, ActionBar.COMPONENT_BAR);
-			r = c != null && c.isVisible() ? c.getBoundingRect() : null;
-			if (r != null && r.contains(x, y)) {
-				return false;
-			}
-			if (isFixed()) {
-				return x >= 4 && y >= 54 && x < 516 && y < 388;
-			}*/
-			//TODO this
-			Dimension dimension = ctx.game.getDimensions();
-			return x > 0 && y > 0 && x < dimension.getWidth() && y < dimension.getHeight();
-		} else {
-			r = null;
-		}
-		return true;
+		Dimension dimension = getDimensions();
+		return x > 0 && y > 0 && x < dimension.getWidth() && y < dimension.getHeight();
 	}
 
 	public int tileHeight(final int rX, final int rY, int plane) {
