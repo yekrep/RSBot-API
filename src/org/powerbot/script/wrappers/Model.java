@@ -3,12 +3,10 @@ package org.powerbot.script.wrappers;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Polygon;
-import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.powerbot.client.ModelCapture;
-import org.powerbot.script.methods.ActionBar;
 import org.powerbot.script.methods.Game;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.methods.MethodProvider;
@@ -187,18 +185,13 @@ public abstract class Model extends MethodProvider {
 		final int plane = getPlane();
 		final int h = ctx.game.tileHeight(x, y, plane);
 		int index = pos;
-		final boolean fixed = ctx.game.isFixed();
-		final Component c = ctx.widgets.get(ActionBar.WIDGET, ActionBar.COMPONENT_BAR);
-		final Rectangle r = c != null && c.isVisible() ? c.getBoundingRect() : null;
 		while (index < length) {
 			final Point point = ctx.game.worldToScreen(
 					x + (this.xPoints[this.faceA[index]] + this.xPoints[this.faceB[index]] + this.xPoints[this.faceC[index]]) / 3,
 					h + (this.yPoints[this.faceA[index]] + this.yPoints[this.faceB[index]] + this.yPoints[this.faceC[index]]) / 3,
 					y + (this.zPoints[this.faceA[index]] + this.zPoints[this.faceB[index]] + this.zPoints[this.faceC[index]]) / 3
 			);
-			if ((r == null || !r.contains(point)) &&
-					fixed ? (point.x >= 4 && point.y >= 4 && point.x < 516 && point.y < 388) :
-					(point.x != -1 && point.y != -1)) {
+			if (point.x != -1 && point.y != -1) {
 				return index;
 			}
 			++index;
