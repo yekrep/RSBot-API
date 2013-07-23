@@ -22,6 +22,7 @@ public class ActionBar extends IdQuery<Action> {
 
 	public ActionBar(MethodContext factory) {
 		super(factory);
+		//TODO: update this class
 	}
 
 	public boolean isExpanded() {

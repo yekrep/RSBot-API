@@ -21,13 +21,13 @@ import org.powerbot.script.wrappers.Component;
  */
 public class Login extends PollingScript implements InternalScript, PaintListener {
 	private static final int WIDGET = 596;
-	private static final int WIDGET_LOGIN_ERROR = 13;
-	private static final int WIDGET_LOGIN_TRY_AGAIN = 65;
-	private static final int WIDGET_LOGIN_USERNAME_TEXT = 70;
-	private static final int WIDGET_LOGIN_PASSWORD_TEXT = 76;
+	private static final int WIDGET_LOGIN_ERROR = 50;
+	private static final int WIDGET_LOGIN_TRY_AGAIN = 81;
+	private static final int WIDGET_LOGIN_USERNAME_TEXT = 83;
+	private static final int WIDGET_LOGIN_PASSWORD_TEXT = 86;
 	private static final int WIDGET_LOBBY = 906;
-	private static final int WIDGET_LOBBY_ERROR = 249;
-	private static final int WIDGET_LOBBY_TRY_AGAIN = 259;
+	private static final int WIDGET_LOBBY_ERROR = 561;
+	private static final int WIDGET_LOBBY_TRY_AGAIN = 567;
 	private volatile Timer re_load_timer = null;
 
 	public boolean isValid() {
