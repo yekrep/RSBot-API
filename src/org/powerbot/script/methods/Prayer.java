@@ -10,13 +10,14 @@ import org.powerbot.script.wrappers.Component;
 import org.powerbot.script.wrappers.Widget;
 
 public class Prayer extends MethodProvider {
-	public static final int WIDGET = 271;
+	public static final int WIDGET = 1458;
 	public static final int WIDGET_ORB = 749;
 	public static final int PRAYER_BOOK_CURSES = 0x17;
 	public static final int PRAYER_BOOK_NORMAL = 0x16;
 
 	public Prayer(MethodContext factory) {
 		super(factory);
+		//TODO: update this
 	}
 
 	public int getPoints() {
