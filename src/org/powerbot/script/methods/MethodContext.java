@@ -14,7 +14,6 @@ public class MethodContext {
 
 	public ActionBar actionBar;
 	public Bank bank;
-	public Camera camera;
 	Components components;
 	public DepositBox depositBox;
 	public Environment environment;
@@ -48,7 +47,6 @@ public class MethodContext {
 
 		actionBar = new ActionBar(this);
 		bank = new Bank(this);
-		camera = new Camera(this);
 		components = new Components(this);
 		depositBox = new DepositBox(this);
 		environment = new Environment(this);
@@ -92,7 +90,6 @@ public class MethodContext {
 
 		actionBar = ctx.actionBar;
 		bank = ctx.bank;
-		camera = ctx.camera;
 		components = ctx.components;
 		depositBox = ctx.depositBox;
 		environment = ctx.environment;

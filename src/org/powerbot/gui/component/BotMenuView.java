@@ -25,7 +25,6 @@ import org.powerbot.event.debug.DrawNPCs;
 import org.powerbot.event.debug.DrawObjects;
 import org.powerbot.event.debug.DrawPlayers;
 import org.powerbot.event.debug.MessageLogger;
-import org.powerbot.event.debug.TCamera;
 import org.powerbot.event.debug.TClientState;
 import org.powerbot.event.debug.TDestination;
 import org.powerbot.event.debug.TLocation;
@@ -58,7 +57,6 @@ public final class BotMenuView implements ActionListener {//TODO revamp debuggin
 	private static final String CLIENTSTATE = "Client State";
 	private static final String MENU = "Menu";
 	private static final String PLANE = "Plane";
-	private static final String CAMERA = "Camera";
 	private static final String MAPBASE = "Map Base";
 	private static final String LOCATION = "Location";
 	private static final String DESTINATION = "Destination";
@@ -91,7 +89,6 @@ public final class BotMenuView implements ActionListener {//TODO revamp debuggin
 		map.put(CLIENTSTATE, TClientState.class);
 		map.put(MENU, TMenu.class);
 		map.put(PLANE, TPlane.class);
-		map.put(CAMERA, TCamera.class);
 		map.put(MAPBASE, TMapBase.class);
 		map.put(LOCATION, TLocation.class);
 		map.put(DESTINATION, TDestination.class);
@@ -114,7 +111,6 @@ public final class BotMenuView implements ActionListener {//TODO revamp debuggin
 		items.add(CLIENTSTATE);
 		items.add(MENU);
 		items.add(PLANE);
-		items.add(CAMERA);
 		items.add(MAPBASE);
 		items.add(LOCATION);
 		items.add(DESTINATION);
