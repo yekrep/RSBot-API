@@ -9,8 +9,7 @@ import org.powerbot.script.wrappers.Component;
 import org.powerbot.script.wrappers.Item;
 
 public class Inventory extends ItemQuery<Item> {
-	public static final int WIDGET = 679;
-	public static final int WIDGET_BANK = 763;
+	/*
 	public static final int WIDGET_PRICE_CHECK = 204;
 	public static final int WIDGET_EQUIPMENT_BONUSES = 670;
 	public static final int WIDGET_EXCHANGE = 644;
@@ -24,6 +23,12 @@ public class Inventory extends ItemQuery<Item> {
 			WIDGET_PRICE_CHECK, WIDGET_EQUIPMENT_BONUSES,
 			WIDGET_EXCHANGE, WIDGET_SHOP, WIDGET_DUNGEONEERING_SHOP,
 			WIDGET_BEAST_OF_BURDEN_STORAGE, WIDGET_STORE, WIDGET_SAWMILL_CART
+	};*/
+	public static final int WIDGET = 1473;
+	public static final int WIDGET_CONTAINER = 8;
+	public static final int WIDGET_BANK = 762 << 16 | 6;
+	private static final int[] ALTERNATIVE_WIDGETS = {
+			WIDGET_BANK,
 	};
 
 	public Inventory(MethodContext factory) {
@@ -124,12 +129,12 @@ public class Inventory extends ItemQuery<Item> {
 
 	private Component getComponent() {
 		Component c;
-		for (final int index : ALTERNATIVE_WIDGETS) {
-			if ((c = ctx.widgets.get(index, 0)) != null && c.isValid()) {
+		for (final int id : ALTERNATIVE_WIDGETS) {
+			if ((c = ctx.widgets.get(id >> 16, id & 0xffff)) != null && c.isValid()) {
 				return c;
 			}
 		}
-		return ctx.widgets.get(WIDGET, 0);
+		return ctx.widgets.get(WIDGET, WIDGET_CONTAINER);
 	}
 
 	@Override
