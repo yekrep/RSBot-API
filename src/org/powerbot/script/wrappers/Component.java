@@ -67,7 +67,10 @@ public class Component extends Interactive implements Drawable {
 	}
 
 	public Component getChild(final int index) {
-		return index >= 0 ? new Component(ctx, widget, this, index) : null;
+		if (index < 0) {
+			throw new IndexOutOfBoundsException(index + " < " + 0);
+		}
+		return new Component(ctx, widget, this, index);
 	}
 
 	public String[] getActions() {
