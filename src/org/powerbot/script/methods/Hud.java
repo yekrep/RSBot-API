@@ -158,7 +158,7 @@ public class Hud extends MethodProvider {
 		}
 		if (view(window)) {
 			Component sprite = getSprite(window);
-			if (sprite != null && sprite.getWidget().getComponent(sprite.getParent().getIndex() + 1).interact("Close")) {
+			if (sprite != null && sprite.getWidget().getComponent(sprite.getParent().getIndex() + 1).getChild(1).interact("Close")) {
 				for (int i = 0; i < 20; i++) {
 					if (!isOpen(window)) {
 						break;
