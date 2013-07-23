@@ -10,12 +10,14 @@ import org.powerbot.script.wrappers.Item;
 
 public class Inventory extends ItemQuery<Item> {
 	public static final int WIDGET = 1473;
-	public static final int WIDGET_CONTAINER = 8;
+	public static final int COMPONENT_CONTAINER = 8;
 	public static final int WIDGET_BANK = 762 << 16 | 6;
 	public static final int WIDGET_DEPOSIT_BOX = 11 << 16 | 15;
+	public static final int WIDGET_GEAR = 1474 << 16 | 13;
 	private static final int[] ALTERNATIVE_WIDGETS = {
 			WIDGET_BANK,
 			WIDGET_DEPOSIT_BOX,
+			WIDGET_GEAR,
 	};
 
 	public Inventory(MethodContext factory) {
@@ -121,7 +123,7 @@ public class Inventory extends ItemQuery<Item> {
 				return c;
 			}
 		}
-		return ctx.widgets.get(WIDGET, WIDGET_CONTAINER);
+		return ctx.widgets.get(WIDGET, COMPONENT_CONTAINER);
 	}
 
 	@Override
