@@ -18,12 +18,12 @@ public class DepositBox extends ItemQuery<Item> {
 			32924, 32930, 32931, 34755, 36788, 39830, 45079, 66668, 70512, 73268, 79036
 	};
 	public static final int WIDGET = 11;
-	public static final int COMPONENT_BUTTON_CLOSE = 15;
-	public static final int COMPONENT_CONTAINER_ITEMS = 17;
-	public static final int COMPONENT_BUTTON_DEPOSIT_INVENTORY = 19;
-	public static final int COMPONENT_BUTTON_DEPOSIT_EQUIPMENT = 23;
-	public static final int COMPONENT_BUTTON_DEPOSIT_FAMILIAR = 25;
-	public static final int COMPONENT_BUTTON_DEPOSIT_POUCH = 21;
+	public static final int COMPONENT_BUTTON_CLOSE = 14;
+	public static final int COMPONENT_CONTAINER_ITEMS = 15;
+	public static final int COMPONENT_BUTTON_DEPOSIT_INVENTORY = 17;
+	public static final int COMPONENT_BUTTON_DEPOSIT_EQUIPMENT = 21;
+	public static final int COMPONENT_BUTTON_DEPOSIT_FAMILIAR = 23;
+	public static final int COMPONENT_BUTTON_DEPOSIT_POUCH = 19;
 
 	public DepositBox(MethodContext factory) {
 		super(factory);
