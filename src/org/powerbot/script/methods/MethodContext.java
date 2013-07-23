@@ -21,7 +21,7 @@ public class MethodContext {
 	public GroundItems groundItems;
 	public HintArrows hintArrows;
 	public Hud hud;
-	public Inventory inventory;
+	public Backpack backpack;
 	public Keyboard keyboard;
 	public Lobby lobby;
 	public Menu menu;
@@ -45,6 +45,7 @@ public class MethodContext {
 		this.bot = new AtomicReference<>(bot);
 
 		actionBar = new ActionBar(this);
+		backpack = new Backpack(this);
 		bank = new Bank(this);
 		depositBox = new DepositBox(this);
 		environment = new Environment(this);
@@ -53,7 +54,6 @@ public class MethodContext {
 		groundItems = new GroundItems(this);
 		hintArrows = new HintArrows(this);
 		hud = new Hud(this);
-		inventory = new Inventory(this);
 		keyboard = new Keyboard(this);
 		lobby = new Lobby(this);
 		menu = new Menu(this);
@@ -87,6 +87,7 @@ public class MethodContext {
 		bot = ctx.bot;
 
 		actionBar = ctx.actionBar;
+		backpack = ctx.backpack;
 		bank = ctx.bank;
 		depositBox = ctx.depositBox;
 		environment = ctx.environment;
@@ -95,7 +96,6 @@ public class MethodContext {
 		groundItems = ctx.groundItems;
 		hintArrows = ctx.hintArrows;
 		hud = ctx.hud;
-		inventory = ctx.inventory;
 		keyboard = ctx.keyboard;
 		lobby = ctx.lobby;
 		menu = ctx.menu;

@@ -29,8 +29,8 @@ public class TicketDestroy extends PollingScript implements InternalScript {
 		}
 
 		this.component = null;
-		Item item = ctx.inventory.select().getNil();
-		for (Item _item : ctx.inventory.id(ITEM_IDS).first()) {
+		Item item = ctx.backpack.select().getNil();
+		for (Item _item : ctx.backpack.id(ITEM_IDS).first()) {
 			item = _item;
 		}
 		if (item.isValid()) {

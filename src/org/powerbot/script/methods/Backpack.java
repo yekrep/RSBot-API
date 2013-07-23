@@ -8,7 +8,7 @@ import org.powerbot.script.lang.ItemQuery;
 import org.powerbot.script.wrappers.Component;
 import org.powerbot.script.wrappers.Item;
 
-public class Inventory extends ItemQuery<Item> {
+public class Backpack extends ItemQuery<Item> {
 	public static final int WIDGET = 1473;
 	public static final int COMPONENT_CONTAINER = 8;
 	public static final int WIDGET_BANK = 762 << 16 | 6;
@@ -20,7 +20,7 @@ public class Inventory extends ItemQuery<Item> {
 			WIDGET_GEAR,
 	};
 
-	public Inventory(MethodContext factory) {
+	public Backpack(MethodContext factory) {
 		super(factory);
 	}
 

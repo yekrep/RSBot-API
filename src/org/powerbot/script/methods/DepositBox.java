@@ -121,9 +121,9 @@ public class DepositBox extends ItemQuery<Item> {
 			return false;
 		}
 
-		for (final Item item : ctx.inventory.select().id(id).limit(1)) {
+		for (final Item item : ctx.backpack.select().id(id).limit(1)) {
 			String action = "Deposit-" + amount;
-			final int c = ctx.inventory.select().id(id).count(true);
+			final int c = ctx.backpack.select().id(id).count(true);
 			if (c == 1) {
 				action = "Depoist";
 			} else if (c <= amount || amount == 0) {
@@ -131,7 +131,7 @@ public class DepositBox extends ItemQuery<Item> {
 			}
 
 			final Component comp = item.getComponent();
-			final int inv = ctx.inventory.select().count(true);
+			final int inv = ctx.backpack.select().count(true);
 			if (containsAction(comp, action)) {
 				if (!comp.interact(action)) {
 					return false;
@@ -149,10 +149,10 @@ public class DepositBox extends ItemQuery<Item> {
 				Delay.sleep(200, 800);
 				ctx.keyboard.sendln(amount + "");
 			}
-			for (int i = 0; i < 25 && ctx.inventory.select().count(true) == inv; i++) {
+			for (int i = 0; i < 25 && ctx.backpack.select().count(true) == inv; i++) {
 				Delay.sleep(100, 200);
 			}
-			return ctx.inventory.select().count(true) != inv;
+			return ctx.backpack.select().count(true) != inv;
 		}
 
 		return false;
@@ -163,16 +163,16 @@ public class DepositBox extends ItemQuery<Item> {
 		if (c == null || !c.isValid()) {
 			return false;
 		}
-		if (ctx.inventory.isEmpty()) {
+		if (ctx.backpack.isEmpty()) {
 			return true;
 		}
-		final int inv = ctx.inventory.select().count(true);
+		final int inv = ctx.backpack.select().count(true);
 		if (c.click()) {
-			for (int i = 0; i < 25 && ctx.inventory.select().count(true) == inv; i++) {
+			for (int i = 0; i < 25 && ctx.backpack.select().count(true) == inv; i++) {
 				Delay.sleep(100, 200);
 			}
 		}
-		return ctx.inventory.select().count(true) != inv;
+		return ctx.backpack.select().count(true) != inv;
 	}
 
 	public boolean depositEquipment() {

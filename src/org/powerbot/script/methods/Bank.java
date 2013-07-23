@@ -270,7 +270,7 @@ public class Bank extends ItemQuery<Item> {
 			action = "Withdraw-All but one";
 		}
 
-		final int inv = ctx.inventory.select().count(true);
+		final int inv = ctx.backpack.select().count(true);
 		if (containsAction(c, action)) {
 			if (!c.interact(action)) {
 				return false;
@@ -288,10 +288,10 @@ public class Bank extends ItemQuery<Item> {
 			Delay.sleep(200, 800);
 			ctx.keyboard.sendln(amount + "");
 		}
-		for (int i = 0; i < 25 && ctx.inventory.select().count(true) == inv; i++) {
+		for (int i = 0; i < 25 && ctx.backpack.select().count(true) == inv; i++) {
 			Delay.sleep(100, 200);
 		}
-		return ctx.inventory.select().count(true) != inv || ctx.inventory.count() == 28;
+		return ctx.backpack.select().count(true) != inv || ctx.backpack.count() == 28;
 	}
 
 	public boolean deposit(int id, Amount amount) {
@@ -299,8 +299,8 @@ public class Bank extends ItemQuery<Item> {
 	}
 
 	public boolean deposit(final int id, final int amount) {
-		Item item = ctx.inventory.select().getNil();
-		for (Item _item : ctx.inventory.id(id).first()) {
+		Item item = ctx.backpack.select().getNil();
+		for (Item _item : ctx.backpack.id(id).first()) {
 			item = _item;
 		}
 
@@ -309,7 +309,7 @@ public class Bank extends ItemQuery<Item> {
 		}
 
 		String action = "Deposit-" + amount;
-		final int c = ctx.inventory.select().id(item.getId()).count(true);
+		final int c = ctx.backpack.select().id(item.getId()).count(true);
 		if (c == 1) {
 			action = "Deposit";
 		} else if (c <= amount || amount == 0) {
@@ -317,7 +317,7 @@ public class Bank extends ItemQuery<Item> {
 		}
 
 		final Component comp = item.getComponent();
-		final int inv = ctx.inventory.select().count(true);
+		final int inv = ctx.backpack.select().count(true);
 		if (containsAction(comp, action)) {
 			if (!comp.interact(action)) {
 				return false;
@@ -335,10 +335,10 @@ public class Bank extends ItemQuery<Item> {
 			Delay.sleep(200, 800);
 			ctx.keyboard.sendln(amount + "");
 		}
-		for (int i = 0; i < 25 && ctx.inventory.select().count(true) == inv; i++) {
+		for (int i = 0; i < 25 && ctx.backpack.select().count(true) == inv; i++) {
 			Delay.sleep(100, 200);
 		}
-		return ctx.inventory.select().count(true) != inv;
+		return ctx.backpack.select().count(true) != inv;
 	}
 
 	public boolean depositInventory() {
@@ -346,7 +346,7 @@ public class Bank extends ItemQuery<Item> {
 		if (c == null || !c.isValid()) {
 			return false;
 		}
-		if (ctx.inventory.select().isEmpty()) {
+		if (ctx.backpack.select().isEmpty()) {
 			return true;
 		}
 		return c.click();
