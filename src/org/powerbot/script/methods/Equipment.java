@@ -91,9 +91,7 @@ public class Equipment extends MethodProvider {
 	}
 
 	public Component getComponent() {
-		if (ctx.bank.isOpen()) {
-			return ctx.widgets.get(WIDGET_GEAR, COMPONENT_GEAR_CONTAINER);
-		}
-		return ctx.widgets.get(WIDGET, COMPONENT_CONTAINER);
+		Component gear = ctx.widgets.get(WIDGET_GEAR, COMPONENT_GEAR_CONTAINER);
+		return gear.isVisible() ? gear : ctx.widgets.get(WIDGET, COMPONENT_CONTAINER);
 	}
 }
