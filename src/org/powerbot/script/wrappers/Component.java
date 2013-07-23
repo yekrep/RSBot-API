@@ -406,7 +406,7 @@ public class Component extends Interactive implements Drawable {
 	}
 
 	private Rectangle getInteractRectangle() {
-		return isInScrollableArea() ? getViewportRect() : getBoundingRect();
+		return getViewportRect();
 	}
 
 	private boolean isInScrollableArea() {
