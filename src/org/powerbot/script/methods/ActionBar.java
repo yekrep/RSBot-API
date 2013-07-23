@@ -17,23 +17,18 @@ public class ActionBar extends IdQuery<Action> {
 	public static final int COMPONENT_BUTTON_TOGGLE = 70, COMPONENT_BUTTON_TOGGLE_IDX = 1;
 	public static final int SETTING_ITEM = 811, SETTING_ABILITY = 727;
 
-	public static final int COMPONENT_SLOT_ACTION_START = 96;
-	public static final int COMPONENT_SLOT_COOLDOWN_START = 97;
-	public static final int COMPONENT_SLOT_BIND_START = 99;
+	public static final int COMPONENT_SLOT_ACTION = 96;
+	public static final int COMPONENT_SLOT_COOL_DOWN = 97;
+	public static final int COMPONENT_SLOT_BIND = 99;
 
 	public static final int TEXTURE_COOL_DOWN = 14590;
 
 	public ActionBar(MethodContext factory) {
 		super(factory);
-		//TODO: update this class
 	}
 
 	public boolean isExpanded() {
-		final Component c = ctx.widgets.get(WIDGET, COMPONENT_BAR);
-		if (c == null || !c.isValid()) {
-			return false;
-		}
-		return c.isVisible();
+		return ctx.widgets.get(WIDGET, COMPONENT_BAR).isVisible();
 	}
 
 	public boolean setExpanded(final boolean expanded) {
@@ -89,7 +84,7 @@ public class ActionBar extends IdQuery<Action> {
 
 	public boolean deleteSlot(final int slot) {
 		Component c;
-		if (slot < 0 || slot >= NUM_SLOTS || (c = ctx.widgets.get(WIDGET, COMPONENT_SLOT_ACTION_START + slot * 4)) == null) {
+		if (slot < 0 || slot >= NUM_SLOTS || (c = ctx.widgets.get(WIDGET, COMPONENT_SLOT_ACTION + slot * 4)) == null) {
 			return false;
 		}
 		final Action action = getActionAt(slot);
@@ -97,7 +92,7 @@ public class ActionBar extends IdQuery<Action> {
 			return true;
 		}
 		c = ctx.widgets.get(WIDGET, COMPONENT_TRASH);
-		if (c == null || !c.isValid()) {
+		if (!c.isValid()) {
 			return false;
 		}
 		if (action.getComponent().hover() && ctx.mouse.drag(c.getInteractPoint(), true)) {
