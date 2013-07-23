@@ -26,7 +26,7 @@ public abstract class HintArrowQuery<K extends Locatable> extends AbstractQuery<
 	 */
 	@Override
 	public HintArrowQuery<K> within(double distance) {
-		return within(ctx.players.getLocal(), distance);
+		return within(ctx.players.local(), distance);
 	}
 
 	/**
@@ -42,7 +42,7 @@ public abstract class HintArrowQuery<K extends Locatable> extends AbstractQuery<
 	 */
 	@Override
 	public HintArrowQuery<K> nearest() {
-		return nearest(ctx.players.getLocal());
+		return nearest(ctx.players.local());
 	}
 
 	/**

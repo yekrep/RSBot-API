@@ -21,7 +21,7 @@ public class DrawGroundItems implements PaintListener {
 			return;
 		}
 
-		final Player player = ctx.players.getLocal();
+		final Player player = ctx.players.local();
 		if (player == null) {
 			return;
 		}

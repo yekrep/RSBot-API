@@ -21,14 +21,14 @@ public class TilePath extends Path {
 
 	@Override
 	public boolean traverse(final EnumSet<TraversalOption> options) {
-		final Player local = ctx.players.getLocal();
+		final Player local = ctx.players.local();
 		final Tile next = getNext();
 		if (next == null || local == null) {
 			return false;
 		}
 		final Tile dest = ctx.movement.getDestination();
 		if (next.equals(getEnd())) {
-			if (next.distanceTo(ctx.players.getLocal()) <= 2) {
+			if (next.distanceTo(ctx.players.local()) <= 2) {
 				return false;
 			}
 			if (end && (local.isInMotion() || (dest != null && dest.equals(next)))) {
@@ -43,7 +43,7 @@ public class TilePath extends Path {
 				ctx.movement.setRunning(true);
 			}
 			if (options.contains(TraversalOption.SPACE_ACTIONS) && dest != null && local.isInMotion() && dest.distanceTo(last) < 3d) {
-				if (dest.distanceTo(ctx.players.getLocal()) > Random.nextGaussian(5000, 9000, 6500, 1500) / 1000d) {
+				if (dest.distanceTo(ctx.players.local()) > Random.nextGaussian(5000, 9000, 6500, 1500) / 1000d) {
 					return true;
 				}
 			}
@@ -54,7 +54,7 @@ public class TilePath extends Path {
 
 	@Override
 	public boolean isValid() {
-		return tiles.length > 0 && getNext() != null && getEnd().distanceTo(ctx.players.getLocal()) > Math.sqrt(2);
+		return tiles.length > 0 && getNext() != null && getEnd().distanceTo(ctx.players.local()) > Math.sqrt(2);
 	}
 
 	@Override
@@ -105,7 +105,7 @@ public class TilePath extends Path {
 		 * we can safely assume lag is being experienced and return null until next call of getNext.
 		 * TELEPORTATION SUPPORT: If destination is set but but we're not moving, assume
 		 * invalid destination tile from teleportation reset and return first tile. */
-		Player p = ctx.players.getLocal();
+		Player p = ctx.players.local();
 		if (p != null && !p.isInMotion() && dest != null) {
 			for (int i = tiles.length - 1; i >= 0; --i) {
 				if (tiles[i].getMatrix(ctx).isOnMap()) {

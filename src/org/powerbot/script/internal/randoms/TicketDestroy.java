@@ -23,7 +23,7 @@ public class TicketDestroy extends PollingScript implements InternalScript {
 		}
 
 		final Player player;
-		if ((player = ctx.players.getLocal()) == null ||
+		if ((player = ctx.players.local()) == null ||
 				player.isInCombat() || player.getAnimation() != -1 || player.getInteracting() != null) {
 			return false;
 		}

@@ -34,7 +34,7 @@ public class LocalPath extends Path {
 			return true;
 		}
 		tile = end;
-		Tile start = ctx.players.getLocal().getLocation();
+		Tile start = ctx.players.local().getLocation();
 		Tile base = ctx.game.getMapBase();
 		if (base == Tile.NIL || start == Tile.NIL || end == Tile.NIL) {
 			return false;

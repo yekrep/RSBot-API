@@ -26,7 +26,7 @@ public abstract class PlayerQuery<K extends Locatable & Nameable> extends Abstra
 	 */
 	@Override
 	public PlayerQuery<K> within(double distance) {
-		return within(ctx.players.getLocal(), distance);
+		return within(ctx.players.local(), distance);
 	}
 
 	/**
@@ -42,7 +42,7 @@ public abstract class PlayerQuery<K extends Locatable & Nameable> extends Abstra
 	 */
 	@Override
 	public PlayerQuery<K> nearest() {
-		return nearest(ctx.players.getLocal());
+		return nearest(ctx.players.local());
 	}
 
 	/**

@@ -198,7 +198,7 @@ public class Game extends MethodProvider {
 		Tile base = getMapBase();
 		x -= base.x;
 		y -= base.y;
-		Tile loc = ctx.players.getLocal().getLocation().derive(-base.x, -base.y);
+		Tile loc = ctx.players.local().getLocation().derive(-base.x, -base.y);
 		if (loc == Tile.NIL) {
 			return new Point(-1, -1);
 		}

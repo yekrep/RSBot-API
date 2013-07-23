@@ -26,7 +26,7 @@ public class DrawObjects implements PaintListener {
 		if (!ctx.game.isLoggedIn()) {
 			return;
 		}
-		final Player player = ctx.players.getLocal();
+		final Player player = ctx.players.local();
 		if (player == null) {
 			return;
 		}

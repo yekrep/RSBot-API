@@ -23,16 +23,13 @@ public class Players extends PlayerQuery<Player> {
 	}
 
 	/**
-	 * Returns the game's local player (your player).
-	 * Must be logged in to retrieve.
-	 * <p/>
-	 * Be sure to check for nulls!
+	 * Returns the game's local player (your player) when logged in.
 	 *
-	 * @return the local {@link Player}
+	 * @return the local {@link Player} or the value of {@link #getNil()}
 	 */
-	public Player getLocal() {
-		Client client = ctx.getClient();
-		return new Player(ctx, client != null ? client.getMyRSPlayer() : null);
+	public Player local() {
+		final Client client = ctx.getClient();
+		return client == null ? getNil() : new Player(ctx, client.getMyRSPlayer());
 	}
 
 	/**
