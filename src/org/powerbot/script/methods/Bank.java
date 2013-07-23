@@ -37,13 +37,13 @@ public class Bank extends ItemQuery<Item> {
 			2693, 4483, 8981, 12308, 14382, 20607, 21301, 27663, 42192, 57437, 62691, 83634, 81756
 	};
 	public static final int WIDGET = 762;
-	public static final int COMPONENT_BUTTON_CLOSE = 45;
-	public static final int COMPONENT_CONTAINER_ITEMS = 95;
-	public static final int COMPONENT_BUTTON_WITHDRAW_MODE = 20;
-	public static final int COMPONENT_BUTTON_DEPOSIT_INVENTORY = 34;
-	public static final int COMPONENT_BUTTON_DEPOSIT_EQUIPMENT = 38;
-	public static final int COMPONENT_BUTTON_DEPOSIT_FAMILIAR = 40;
-	public static final int COMPONENT_SCROLL_BAR = 116;
+	public static final int COMPONENT_BUTTON_CLOSE = 63;
+	public static final int COMPONENT_CONTAINER_ITEMS = 113;
+	public static final int COMPONENT_BUTTON_WITHDRAW_MODE = 39;
+	public static final int COMPONENT_BUTTON_DEPOSIT_INVENTORY = 54;
+	public static final int COMPONENT_BUTTON_DEPOSIT_EQUIPMENT = 58;
+	public static final int COMPONENT_BUTTON_DEPOSIT_FAMILIAR = 60;
+	public static final int COMPONENT_SCROLL_BAR = 116;//TODO: update
 	public static final int SETTING_BANK_STATE = 110;
 	public static final int SETTING_WITHDRAW_MODE = 160;
 
