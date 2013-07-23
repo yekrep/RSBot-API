@@ -36,7 +36,6 @@ public class MethodContext {
 	public Projectiles projectiles;
 	public Settings settings;
 	public Skills skills;
-	public Summoning summoning;
 	public Widgets widgets;
 
 	Items items;
@@ -71,7 +70,6 @@ public class MethodContext {
 		projectiles = new Projectiles(this);
 		settings = new Settings(this);
 		skills = new Skills(this);
-		summoning = new Summoning(this);
 		widgets = new Widgets(this);
 
 		items = new Items(this);
@@ -116,7 +114,6 @@ public class MethodContext {
 		projectiles = ctx.projectiles;
 		settings = ctx.settings;
 		skills = ctx.skills;
-		summoning = ctx.summoning;
 		widgets = ctx.widgets;
 
 		items = ctx.items;
