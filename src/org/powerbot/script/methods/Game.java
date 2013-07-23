@@ -19,7 +19,6 @@ import org.powerbot.client.RenderData;
 import org.powerbot.client.SoftReference;
 import org.powerbot.client.TileData;
 import org.powerbot.script.wrappers.Component;
-import org.powerbot.script.wrappers.Player;
 import org.powerbot.script.wrappers.Tile;
 
 public class Game extends MethodProvider {
@@ -190,31 +189,28 @@ public class Game extends MethodProvider {
 	}
 
 	public Point tileToMap(double x, double y) {
+		x -= 0.5;
+		y -= 0.5;
 		Client client = ctx.getClient();
 		if (client == null) {
 			return new Point(-1, -1);
 		}
-		final Tile base = getMapBase();
-		final Player player = ctx.players.getLocal();
-		Tile loc;
-		if (base == null || player == null || (loc = player.getLocation()) == null) {
-			return new Point(-1, -1);
-		}
+		Tile base = getMapBase();
 		x -= base.x;
 		y -= base.y;
-		loc = loc.derive(-base.x, -base.y);
-		final int pX = (int) (x * 4 + 2) - (loc.getX() << 9) / 128;
-		final int pY = (int) (y * 4 + 2) - (loc.getY() << 9) / 128;
-		final Component mapComponent = ctx.widgets.get(1477, 53);//TODO: this
-		if (mapComponent == null) {
+		Tile loc = ctx.players.getLocal().getLocation().derive(-base.x, -base.y);
+		if (loc == Tile.NIL) {
 			return new Point(-1, -1);
 		}
-		final int dist = pX * pX + pY * pY;
-		final int mapRadius = Math.max(mapComponent.getWidth() / 2, mapComponent.getHeight() / 2) - 8;
+		int pX = (int) (x * 4 + 2) - (loc.getX() << 9) / 128;
+		int pY = (int) (y * 4 + 2) - (loc.getY() << 9) / 128;
+		Component mapComponent = ctx.widgets.get(1477, 53);
+		int dist = pX * pX + pY * pY;
+		int mapRadius = Math.max(mapComponent.getWidth() / 2, mapComponent.getHeight() / 2) - 8;
 		if (mapRadius * mapRadius >= dist) {
-			final Constants constants = getConstants();
-			final int SETTINGS_ON = constants != null ? constants.MINIMAP_SETTINGS_ON : -1;
-			final boolean flag = client.getMinimapSettings() == SETTINGS_ON;
+			Constants constants = getConstants();
+			int SETTINGS_ON = constants != null ? constants.MINIMAP_SETTINGS_ON : -1;
+			boolean flag = client.getMinimapSettings() == SETTINGS_ON;
 			int sin = SIN_TABLE[mapAngle];
 			int cos = COS_TABLE[mapAngle];
 			if (!flag) {
@@ -222,11 +218,11 @@ public class Game extends MethodProvider {
 				sin = 0x100 * sin / fact;
 				cos = 0x100 * cos / fact;
 			}
-			final int _x = cos * pX + sin * pY >> 0xf;
-			final int _y = cos * pY - sin * pX >> 0xf;
-			final Point basePoint = mapComponent.getAbsoluteLocation();
-			final int screen_x = _x + (int) basePoint.getX() + mapComponent.getWidth() / 2;
-			final int screen_y = -_y + (int) basePoint.getY() + mapComponent.getHeight() / 2;
+			int _x = cos * pX + sin * pY >> 0xf;
+			int _y = cos * pY - sin * pX >> 0xf;
+			Point basePoint = mapComponent.getAbsoluteLocation();
+			int screen_x = _x + (int) basePoint.getX() + mapComponent.getWidth() / 2;
+			int screen_y = -_y + (int) basePoint.getY() + mapComponent.getHeight() / 2;
 			return new Point(screen_x, screen_y);
 		}
 		return new Point(-1, -1);
