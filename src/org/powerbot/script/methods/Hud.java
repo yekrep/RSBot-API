@@ -41,6 +41,7 @@ public class Hud extends MethodProvider {
 
 	public enum Window {
 		ALL_CHAT(Menu.NONE, 18726, 18754, 137, 82),
+		PRIVATE_CHAT(Menu.NONE, 18727, 18755, 1467, 55),
 		SKILLS(Menu.HERO, 18738, 18775, 1466),
 		ACTIVE_TASK(Menu.HERO, 18735, 18789, 1220),
 		BACKPACK(Menu.GEAR, 18732, 18772, Backpack.WIDGET),
