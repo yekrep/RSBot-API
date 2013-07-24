@@ -31,7 +31,6 @@ public class MethodContext {
 	public Objects objects;
 	public Players players;
 	public Powers powers;
-	public Prayer prayer;
 	public Projectiles projectiles;
 	public Settings settings;
 	public Skills skills;
@@ -64,7 +63,6 @@ public class MethodContext {
 		objects = new Objects(this);
 		players = new Players(this);
 		powers = new Powers(this);
-		prayer = new Prayer(this);
 		projectiles = new Projectiles(this);
 		settings = new Settings(this);
 		skills = new Skills(this);
@@ -107,7 +105,6 @@ public class MethodContext {
 		objects = ctx.objects;
 		players = ctx.players;
 		powers = ctx.powers;
-		prayer = ctx.prayer;
 		projectiles = ctx.projectiles;
 		settings = ctx.settings;
 		skills = ctx.skills;
