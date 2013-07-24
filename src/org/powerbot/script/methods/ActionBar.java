@@ -9,22 +9,26 @@ import org.powerbot.script.wrappers.Action;
 import org.powerbot.script.wrappers.Component;
 
 public class ActionBar extends IdQuery<Action> {
-	public static final int NUM_SLOTS = 12;
 	public static final int WIDGET = 1430;
+	public static final int SETTING_ADRENALINE = 679;
+
+	public static final int NUM_SLOTS = 12;
 	public static final int COMPONENT_BAR = 76;
 	public static final int COMPONENT_LOCK = 19, COMPONENT_TRASH = 20;
 	public static final int WIDGET_LAYOUT = 1477;
 	public static final int COMPONENT_BUTTON_TOGGLE = 70, COMPONENT_BUTTON_TOGGLE_IDX = 1;
 	public static final int SETTING_ITEM = 811, SETTING_ABILITY = 727;
-
 	public static final int COMPONENT_SLOT_ACTION = 96;
 	public static final int COMPONENT_SLOT_COOL_DOWN = 97;
 	public static final int COMPONENT_SLOT_BIND = 99;
-
 	public static final int TEXTURE_COOL_DOWN = 14590;
 
 	public ActionBar(MethodContext factory) {
 		super(factory);
+	}
+
+	public int getAdrenaline() {
+		return ctx.settings.get(SETTING_ADRENALINE);
 	}
 
 	public boolean isExpanded() {
