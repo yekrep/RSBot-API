@@ -99,7 +99,7 @@ public class Component extends Interactive implements Drawable {
 		return component != null ? component.getID() : -1;
 	}
 
-	public int getComponentIndex() {
+	public int getItemIndex() {
 		final RSInterface component = getInternalComponent();
 		return component != null ? component.getComponentIndex() : -1;
 	}
