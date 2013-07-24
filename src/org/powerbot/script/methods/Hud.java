@@ -13,6 +13,7 @@ public class Hud extends MethodProvider {
 	}
 
 	public enum Menu {
+		NONE(-1),
 		HERO(18829, Window.SKILLS, Window.ACTIVE_TASK),
 		GEAR(18830, Window.BACKPACK, Window.WORN_EQUIPMENT),
 		ADVENTURES(18831, Window.ACTIVE_TASK),
