@@ -82,8 +82,7 @@ public class Bank extends ItemQuery<Item> {
 	}
 
 	public boolean isOpen() {
-		final Widget widget = ctx.widgets.get(WIDGET);
-		return widget != null && widget.isValid();
+		return ctx.widgets.get(WIDGET, COMPONENT_CONTAINER_ITEMS).isValid();
 	}
 
 	public boolean open() {
