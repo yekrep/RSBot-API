@@ -215,7 +215,7 @@ public class Bank extends ItemQuery<Item> {
 	}
 
 	public Item getTabItem(final int index) {
-		final Component c = ctx.widgets.get(WIDGET, 63 - (index * 2));
+		final Component c = ctx.widgets.get(WIDGET, 82 - (index * 2));
 		if (c != null && c.isValid()) {
 			return new Item(ctx, c);
 		}
