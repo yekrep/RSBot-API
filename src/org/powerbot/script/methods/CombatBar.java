@@ -91,25 +91,22 @@ public class CombatBar extends IdQuery<Action> {
 		return actions;
 	}
 
-	public boolean deleteSlot(final int slot) {
-		Component c;
-		if (slot < 0 || slot >= NUM_SLOTS || (c = ctx.widgets.get(WIDGET, COMPONENT_SLOT_ACTION + slot * 4)) == null) {
-			return false;
-		}
-		final Action action = getActionAt(slot);
-		if (action == null) {
+	public boolean deleteAction(Action action) {
+		int slot = action.getSlot();
+		action = getActionAt(slot);
+		if (action.getId() == -1) {
 			return true;
 		}
-		c = ctx.widgets.get(WIDGET, COMPONENT_TRASH);
-		if (!c.isValid()) {
+		Component c = ctx.widgets.get(WIDGET, COMPONENT_TRASH);
+		if (!c.isVisible()) {
 			return false;
 		}
 		if (action.getComponent().hover() && ctx.mouse.drag(c.getInteractPoint(), true)) {
-			for (int i = 0; i < 5 && getActionAt(slot) != null; i++) {
+			for (int i = 0; i < 5 && getActionAt(slot).getId() != -1; i++) {
 				Delay.sleep(100, 200);
 			}
 		}
-		return getActionAt(slot) == null;
+		return getActionAt(slot).getId() == -1;
 	}
 
 	public boolean isLocked() {
