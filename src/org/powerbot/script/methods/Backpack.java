@@ -10,6 +10,7 @@ import org.powerbot.script.wrappers.Item;
 
 public class Backpack extends ItemQuery<Item> {
 	public static final int WIDGET = 1473;
+	public static final int COMPONENT_SCROLL_BAR = 6;
 	public static final int COMPONENT_CONTAINER = 8;
 	public static final int WIDGET_BANK = 762 << 16 | 6;
 	public static final int WIDGET_DEPOSIT_BOX = 11 << 16 | 15;
@@ -40,6 +41,17 @@ public class Backpack extends ItemQuery<Item> {
 			items.add(new Item(ctx, data[i][0], data[i][1], comp));
 		}
 		return items;
+	}
+
+	public boolean isCollapsed() {
+		Component component = getComponent();
+		if (!component.isVisible()) {
+			return false;
+		}
+		if (component.getWidget().getIndex() == WIDGET) {
+			return ctx.widgets.get(WIDGET, COMPONENT_SCROLL_BAR).getRelativeLocation().getX() != 0;
+		}
+		return false;
 	}
 
 	public Item[] getAllItems() {
