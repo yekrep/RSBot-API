@@ -50,6 +50,10 @@ public class Game extends MethodProvider {
 		this.viewport = new Viewport();
 	}
 
+	public enum Crosshair {
+		NONE, DEFAULT, ACTION
+	}
+
 	public int getClientState() {
 		Client client = ctx.getClient();
 		final Constants constants = getConstants();
@@ -79,6 +83,15 @@ public class Game extends MethodProvider {
 			}
 		}
 		return false;
+	}
+
+	public Crosshair getCrosshair() {
+		Client client = ctx.getClient();
+		int type = client != null ? client.getCrossHairType() : -1;
+		if (type < 0 || type > 2) {
+			return Crosshair.NONE;
+		}
+		return Crosshair.values()[type];
 	}
 
 	public Tile getMapBase() {
