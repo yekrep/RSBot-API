@@ -112,7 +112,7 @@ public class ActionBar extends IdQuery<Action> {
 			return true;
 		}
 		final Component c = ctx.widgets.get(WIDGET, COMPONENT_LOCK);
-		if (c != null && c.isValid() && c.interact("Toggle Lock")) {
+		if (c != null && c.isValid() && c.interact("lock")) {
 			for (int i = 0; i < 25 && locked != isLocked(); i++) {
 				Delay.sleep(100, 150);
 			}
