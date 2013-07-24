@@ -138,6 +138,16 @@ public class Backpack extends ItemQuery<Item> {
 		return ctx.widgets.get(WIDGET, COMPONENT_CONTAINER);
 	}
 
+	public int getMoneyPouch() {
+		int[][] arrs = ctx.items.getItems(Items.INDEX_MONEY_POUCH);
+		for (int[] arr : arrs) {
+			if (arr[0] == 995) {
+				return arr[1];
+			}
+		}
+		return 0;
+	}
+
 	@Override
 	public Item getNil() {
 		return new Item(ctx, -1, -1, null);
