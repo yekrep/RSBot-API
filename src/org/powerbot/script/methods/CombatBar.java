@@ -12,6 +12,10 @@ public class CombatBar extends IdQuery<Action> {
 	public static final int WIDGET = 1430;
 	public static final int SETTING_ADRENALINE = 679;
 	public static final int COMPONENT_HEALTH = 82;
+	public static final int COMPONENT_ADRENALINE = 92;
+	public static final int COMPONENT_PRAYER = 88;
+	public static final int COMPONENT_SUMMONING = 94;
+	public static final int COMPONENT_TEXT = 7;
 
 	public static final int NUM_SLOTS = 12;
 	public static final int COMPONENT_BAR = 76;
@@ -26,30 +30,6 @@ public class CombatBar extends IdQuery<Action> {
 
 	public CombatBar(MethodContext factory) {
 		super(factory);
-	}
-
-	public int getHealth() {
-		String text = ctx.widgets.get(WIDGET, COMPONENT_HEALTH).getChild(COMPONENT_TEXT).getText();
-		int index = text.indexOf('/');
-		if (index != -1) {
-			try {
-				return Integer.parseInt(text.substring(0, index));
-			} catch (NumberFormatException ignored) {
-			}
-		}
-		return -1;
-	}
-
-	public int getMaximumHealth() {
-		String text = ctx.widgets.get(WIDGET, COMPONENT_HEALTH).getChild(COMPONENT_TEXT).getText();
-		int index = text.indexOf('/');
-		if (index != -1) {
-			try {
-				return Integer.parseInt(text.substring(index + 1));
-			} catch (NumberFormatException ignored) {
-			}
-		}
-		return -1;
 	}
 
 	public int getAdrenaline() {
