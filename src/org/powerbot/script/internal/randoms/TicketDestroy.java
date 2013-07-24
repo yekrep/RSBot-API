@@ -18,7 +18,7 @@ public class TicketDestroy extends PollingScript implements InternalScript {
 	private Component component;
 
 	public boolean isValid() {
-		if (!ctx.game.isLoggedIn() || !ctx.hud.isVisible(Hud.Window.BACKPACK)) {
+		if (!ctx.game.isLoggedIn() || !ctx.hud.isVisible(Hud.Window.BACKPACK) || ctx.backpack.isCollapsed()) {
 			return false;
 		}
 
@@ -29,8 +29,8 @@ public class TicketDestroy extends PollingScript implements InternalScript {
 		}
 
 		this.component = null;
-		Item item = ctx.backpack.select().getNil();
-		for (Item _item : ctx.backpack.id(ITEM_IDS).first()) {
+		Item item = ctx.backpack.getNil();
+		for (Item _item : ctx.backpack.select().id(ITEM_IDS).first()) {
 			item = _item;
 		}
 		if (item.isValid()) {
@@ -54,6 +54,7 @@ public class TicketDestroy extends PollingScript implements InternalScript {
 		if (((ctx.settings.get(1448) & 0xFF00) >>> 8) < (item.getItemId() == ITEM_IDS[0] ? 10 : 9)) {
 			item.interact("Claim spin");
 			sleep(1500);
+			return -1;
 		}
 
 		if (!item.interact("Destroy")) {
