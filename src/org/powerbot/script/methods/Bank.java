@@ -43,7 +43,7 @@ public class Bank extends ItemQuery<Item> {
 	public static final int COMPONENT_BUTTON_DEPOSIT_INVENTORY = 54;
 	public static final int COMPONENT_BUTTON_DEPOSIT_EQUIPMENT = 58;
 	public static final int COMPONENT_BUTTON_DEPOSIT_FAMILIAR = 60;
-	public static final int COMPONENT_SCROLL_BAR = 116;//TODO: update
+	public static final int COMPONENT_SCROLL_BAR = 134;
 	public static final int SETTING_BANK_STATE = 110;
 	public static final int SETTING_WITHDRAW_MODE = 160;
 
