@@ -28,25 +28,16 @@ public class Backpack extends ItemQuery<Item> {
 	protected List<Item> get() {
 		List<Item> items = new ArrayList<>(28);
 		Component inv = getComponent();
-		int[][] data;
-		if (inv.isVisible()) {
-			data = ctx.items.getItems(Items.INDEX_INVENTORY);
-		} else {
-			data = null;
-		}
+		int[][] data = ctx.items.getItems(Items.INDEX_INVENTORY);
 		for (int i = 0; i < 28; i++) {
 			Component comp = inv.getChild(i);
-			if (data != null) {
-				if (i >= data.length) {
-					break;
-				}
-				if (data[i][0] == -1) {
-					continue;
-				}
-				items.add(new Item(ctx, data[i][0], data[i][1], comp));
-			} else if (comp.getItemId() != -1) {
-				items.add(new Item(ctx, comp));
+			if (i >= data.length) {
+				break;
 			}
+			if (data[i][0] == -1) {
+				continue;
+			}
+			items.add(new Item(ctx, data[i][0], data[i][1], comp));
 		}
 		return items;
 	}
@@ -54,22 +45,13 @@ public class Backpack extends ItemQuery<Item> {
 	public Item[] getAllItems() {
 		Item[] items = new Item[28];
 		Component inv = getComponent();
-		int[][] data;
-		if (inv.isVisible()) {
-			data = ctx.items.getItems(Items.INDEX_INVENTORY);
-		} else {
-			data = null;
-		}
+		int[][] data = ctx.items.getItems(Items.INDEX_INVENTORY);
 		for (int i = 0; i < 28; i++) {
 			Component comp = inv.getChild(i);
-			if (data != null) {
-				if (i < data.length) {
-					items[i] = new Item(ctx, data[i][0], data[i][1], comp);
-				} else {
-					items[i] = new Item(ctx, -1, -1, comp);
-				}
+			if (i < data.length) {
+				items[i] = new Item(ctx, data[i][0], data[i][1], comp);
 			} else {
-				items[i] = new Item(ctx, comp);
+				items[i] = getNil();
 			}
 		}
 		return items;
