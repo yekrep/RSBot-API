@@ -55,7 +55,7 @@ public class CombatBar extends IdQuery<Action> {
 
 	public Action getActionAt(final int slot) {
 		if (slot < 0 || slot >= NUM_SLOTS) {
-			return null;
+			throw new IndexOutOfBoundsException("0 > " + slot + " >= " + NUM_SLOTS);
 		}
 		Action.Type type;
 		int id = ctx.settings.get(SETTING_ABILITY + slot);
