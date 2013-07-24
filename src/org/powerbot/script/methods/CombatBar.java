@@ -32,6 +32,30 @@ public class CombatBar extends IdQuery<Action> {
 		super(factory);
 	}
 
+	public int getHealth() {
+		String text = ctx.widgets.get(WIDGET, COMPONENT_HEALTH).getChild(COMPONENT_TEXT).getText();
+		int index = text.indexOf('/');
+		if (index != -1) {
+			try {
+				return Integer.parseInt(text.substring(0, index));
+			} catch (NumberFormatException ignored) {
+			}
+		}
+		return -1;
+	}
+
+	public int getMaximumHealth() {
+		String text = ctx.widgets.get(WIDGET, COMPONENT_HEALTH).getChild(COMPONENT_TEXT).getText();
+		int index = text.indexOf('/');
+		if (index != -1) {
+			try {
+				return Integer.parseInt(text.substring(index + 1));
+			} catch (NumberFormatException ignored) {
+			}
+		}
+		return -1;
+	}
+
 	public int getAdrenaline() {
 		return ctx.settings.get(SETTING_ADRENALINE);
 	}
