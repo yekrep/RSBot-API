@@ -21,6 +21,10 @@ public class Action extends MethodProvider implements Identifiable, Validatable 
 		this.id = id;
 	}
 
+	public int getSlot() {
+		return slot;
+	}
+
 	public Type getType() {
 		return this.type;
 	}
