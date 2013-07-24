@@ -12,7 +12,7 @@ public class MethodContext {
 	private AtomicReference<Integer> preferredWorld;
 	private AtomicReference<Bot> bot;
 
-	public ActionBar actionBar;
+	public CombatBar combatBar;
 	public Bank bank;
 	public DepositBox depositBox;
 	public Environment environment;
@@ -45,7 +45,7 @@ public class MethodContext {
 		this.preferredWorld = new AtomicReference<>(-1);
 		this.bot = new AtomicReference<>(bot);
 
-		actionBar = new ActionBar(this);
+		combatBar = new CombatBar(this);
 		backpack = new Backpack(this);
 		bank = new Bank(this);
 		depositBox = new DepositBox(this);
@@ -88,7 +88,7 @@ public class MethodContext {
 		preferredWorld = ctx.preferredWorld;
 		bot = ctx.bot;
 
-		actionBar = ctx.actionBar;
+		combatBar = ctx.combatBar;
 		backpack = ctx.backpack;
 		bank = ctx.bank;
 		depositBox = ctx.depositBox;

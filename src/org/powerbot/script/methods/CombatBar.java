@@ -8,7 +8,7 @@ import org.powerbot.script.util.Delay;
 import org.powerbot.script.wrappers.Action;
 import org.powerbot.script.wrappers.Component;
 
-public class ActionBar extends IdQuery<Action> {
+public class CombatBar extends IdQuery<Action> {
 	public static final int WIDGET = 1430;
 	public static final int SETTING_ADRENALINE = 679;
 
@@ -23,7 +23,7 @@ public class ActionBar extends IdQuery<Action> {
 	public static final int COMPONENT_SLOT_BIND = 99;
 	public static final int TEXTURE_COOL_DOWN = 14590;
 
-	public ActionBar(MethodContext factory) {
+	public CombatBar(MethodContext factory) {
 		super(factory);
 	}
 
