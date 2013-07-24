@@ -25,10 +25,6 @@ public class Hud extends MethodProvider {
 		private final int texture;
 		private final Window[] windows;
 
-		Menu(int texture) {
-			this(texture, new Window[0]);
-		}
-
 		Menu(int texture, Window... windows) {
 			this.texture = texture;
 			this.windows = windows;
