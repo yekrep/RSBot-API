@@ -1,5 +1,6 @@
 package org.powerbot.script.methods;
 
+import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +12,7 @@ import org.powerbot.script.wrappers.Item;
 public class Backpack extends ItemQuery<Item> {
 	public static final int WIDGET = 1473;
 	public static final int COMPONENT_SCROLL_BAR = 6;
+	public static final int COMPONENT_VIEW = 7;
 	public static final int COMPONENT_CONTAINER = 8;
 	public static final int WIDGET_BANK = 762 << 16 | 6;
 	public static final int WIDGET_DEPOSIT_BOX = 11 << 16 | 15;
@@ -54,6 +56,22 @@ public class Backpack extends ItemQuery<Item> {
 		return false;
 	}
 
+	public boolean scroll(Item item) {
+		if (!isCollapsed()) {
+			return true;
+		}
+		Component backpack = getComponent();
+		if (backpack.getWidget().getIndex() == WIDGET) {
+			Rectangle view = ctx.widgets.get(WIDGET, COMPONENT_VIEW).getViewportRect();
+			Component c = item.getComponent();
+			if (!view.contains(c.getBoundingRect())) {
+				ctx.widgets.scroll(c, ctx.widgets.get(WIDGET, COMPONENT_SCROLL_BAR), view.contains(ctx.mouse.getLocation()));
+			}
+			return view.contains(c.getBoundingRect());
+		}
+		return false;
+	}
+
 	public Item[] getAllItems() {
 		Item[] items = new Item[28];
 		Component inv = getComponent();
@@ -75,7 +93,7 @@ public class Backpack extends ItemQuery<Item> {
 		if (index >= 0 && index < 28 && index < data.length && data[index][0] != -1) {
 			return new Item(ctx, data[index][0], data[index][1], inv.getChild(index));
 		}
-		return null;
+		return getNil();
 	}
 
 	public int getSelectedItemIndex() {
@@ -113,7 +131,7 @@ public class Backpack extends ItemQuery<Item> {
 	public Component getComponent() {
 		Component c;
 		for (final int id : ALTERNATIVE_WIDGETS) {
-			if ((c = ctx.widgets.get(id >> 16, id & 0xffff)) != null && c.isValid()) {
+			if ((c = ctx.widgets.get(id >> 16, id & 0xffff)) != null && c.isVisible()) {
 				return c;
 			}
 		}
