@@ -64,7 +64,7 @@ public class Action extends MethodProvider implements Identifiable, Validatable 
 			return false;
 		}
 		Action action = (Action) o;
-		return type == action.getType() && id == action.id;
+		return slot == action.slot && type == action.type && id == action.id;
 	}
 
 	@Override
