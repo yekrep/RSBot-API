@@ -102,7 +102,7 @@ public class Hud extends MethodProvider {
 	}
 
 	public boolean open(Window window) {
-		if (isViewable(window)) {
+		if (isViewable(window) || window.getMenu() == Menu.NONE) {
 			return true;
 		}
 		Component menu = getMenu(window.getMenu());
@@ -150,6 +150,9 @@ public class Hud extends MethodProvider {
 	}
 
 	public boolean close(Window window) {
+		if (window.getMenu() == Menu.NONE) {
+			return false;
+		}
 		if (!isOpen(window)) {
 			return true;
 		}
