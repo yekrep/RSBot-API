@@ -11,6 +11,10 @@ import org.powerbot.script.wrappers.Component;
 public class CombatBar extends IdQuery<Action> {
 	public static final int WIDGET = 1430;
 	public static final int SETTING_ADRENALINE = 679;
+	public static final int COMPONENT_BUTTON_HEAL = 2;
+	public static final int COMPONENT_BUTTON_RETALIATE = 6;
+	public static final int COMPONENT_BUTTON_PRAYER = 4;
+	public static final int COMPONENT_BUTTON_SUMMONING = 5;
 	public static final int COMPONENT_HEALTH = 82;
 	public static final int COMPONENT_ADRENALINE = 92;
 	public static final int COMPONENT_PRAYER = 88;
