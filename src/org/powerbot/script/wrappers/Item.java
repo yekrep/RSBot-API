@@ -94,10 +94,7 @@ public class Item extends Interactive implements Identifiable, Nameable, Stackab
 
 	@Override
 	public boolean contains(Point point) {
-		if (component == null) {
-			return false;
-		}
-		return component.contains(point);
+		return component != null && component.contains(point);
 	}
 
 	@Override
@@ -125,6 +122,8 @@ public class Item extends Interactive implements Identifiable, Nameable, Stackab
 			return false;
 		}
 		final Item i = (Item) o;
-		return this.id == i.id && this.component != null && this.component.equals(i.component);
+		return this.id == i.id &&
+				((this.component != null && this.component.equals(i.component))
+						|| (this.component == null && i.component == null));
 	}
 }
