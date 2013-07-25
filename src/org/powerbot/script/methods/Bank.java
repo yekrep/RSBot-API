@@ -392,8 +392,8 @@ public class Bank extends ItemQuery<Item> {
 	}
 
 	private boolean isInputWidgetOpen() {
-		final Component child = ctx.widgets.get(752, 3);
-		return child != null && child.isValid() && child.isOnScreen();
+		final Component child = ctx.widgets.get(1469, 1);
+		return child != null && child.isVisible();
 	}
 
 	@Override
