@@ -38,7 +38,7 @@ public class Summoning extends MethodProvider {
 		}
 		if (Option.RENEW_FAMILIAR.getText().toLowerCase().contains(action.toLowerCase())) {
 			final Familiar familiar = getEnum();
-			return familiar != null && familiar.getRequiredPoints() <= getPoints() && ctx.inventory.select().id(ctx.settings.get(1831)).count() > 0
+			return familiar != null && familiar.getRequiredPoints() <= getPoints() && ctx.backpack.select().id(ctx.settings.get(1831)).count() > 0
 					&& c.interact(action);
 		}
 		if (Option.DISMISS.getText().toLowerCase().contains(action.toLowerCase())) {
@@ -123,8 +123,8 @@ public class Summoning extends MethodProvider {
 	}
 
 	public boolean summonFamiliar(final Familiar familiar) {
-		if (ctx.inventory.select().id(familiar.getPouchId()).count() > 0 && ctx.skills.getRealLevel(Skills.SUMMONING) >= familiar.getRequiredLevel()) {
-			for (final Item item : ctx.inventory.select().id(familiar.getPouchId()).limit(1)) {
+		if (ctx.backpack.select().id(familiar.getPouchId()).count() > 0 && ctx.skills.getRealLevel(Skills.SUMMONING) >= familiar.getRequiredLevel()) {
+			for (final Item item : ctx.backpack.select().id(familiar.getPouchId()).limit(1)) {
 				return item.getComponent().interact("Summon");
 			}
 		}
@@ -135,7 +135,7 @@ public class Summoning extends MethodProvider {
 		if (!isFamiliarSummoned()) {
 			return null;
 		}
-		final Player local = ctx.players.getLocal();
+		final Player local = ctx.players.local();
 		if (local == null) {
 			return null;
 		}
