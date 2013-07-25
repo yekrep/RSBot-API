@@ -1,13 +1,20 @@
 package org.powerbot.script.methods;
 
+import java.awt.Rectangle;
+import java.util.Arrays;
+import java.util.concurrent.TimeUnit;
+
 import org.powerbot.script.wrappers.Component;
 
 public class Hud extends MethodProvider {
 	public static final int WIDGET_HUD = 1477;
+	public static final int COMPONENT_COMBAT_BAR = 70;
 	public static final int WIDGET_MENU = 1431;
 	public static final int WIDGET_MENU_BOUNDS = 32;
 	public static final int WIDGET_MENU_WINDOWS = 1432;
 	public static final int COMPONENT_MENU_WINDOWS_LIST = 4;
+	private Rectangle[] boundsCache;
+	private long cachedTime;
 
 	public Hud(MethodContext factory) {
 		super(factory);
@@ -47,6 +54,7 @@ public class Hud extends MethodProvider {
 		CLAN_CHAT(Menu.NONE, 18792, 18757, 1471, 55),
 		GUEST_CLAN_CHAT(Menu.NONE, 18731, 18790, 1470, 55),
 		EMOTES(Menu.NONE, 18741, 18776, 590, 14),
+		MINIMAP(Menu.NONE, 18742, 0, 1465, 12),
 
 		SKILLS(Menu.HERO, 18738, 18775, 1466),
 		ACTIVE_TASK(Menu.HERO, 18735, 18789, 1220),
@@ -99,6 +107,27 @@ public class Hud extends MethodProvider {
 		private int getComponent() {
 			return component;
 		}
+	}
+
+	public Rectangle[] getBounds() {
+		if (TimeUnit.MILLISECONDS.convert(System.nanoTime() - cachedTime, TimeUnit.NANOSECONDS) > 1000) {
+			if (boundsCache != null) {
+				return boundsCache;
+			}
+		}
+		Rectangle[] arr = new Rectangle[Window.values().length + 2];
+		int index = 0;
+		arr[index++] = ctx.widgets.get(WIDGET_MENU, WIDGET_MENU_BOUNDS).getViewportRect();
+		arr[index++] = ctx.widgets.get(WIDGET_HUD, COMPONENT_COMBAT_BAR).getViewportRect();
+		for (Window window : Window.values()) {
+			Component sprite = getSprite(window);
+			if (sprite == null) {
+				continue;
+			}
+			arr[index++] = sprite.getParent().getViewportRect();
+		}
+		cachedTime = System.nanoTime();
+		return boundsCache = Arrays.copyOf(arr, index);
 	}
 
 	public boolean isOpen(Window window) {
