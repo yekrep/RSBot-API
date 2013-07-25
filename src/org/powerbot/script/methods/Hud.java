@@ -145,6 +145,9 @@ public class Hud extends MethodProvider {
 		if (isViewable(window) || window.getMenu() == Menu.NONE) {
 			return true;
 		}
+		if (window.getMenu() == Menu.OTHER) {
+			return false;
+		}
 		Component menu = getMenu(window.getMenu());
 		if (menu != null && (getToggle(window) != null || menu.hover())) {
 			Component list = ctx.widgets.get(WIDGET_MENU_WINDOWS, COMPONENT_MENU_WINDOWS_LIST);
