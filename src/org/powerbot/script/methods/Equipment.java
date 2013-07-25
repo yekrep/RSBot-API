@@ -65,10 +65,10 @@ public class Equipment extends MethodProvider {
 	public Item getItemAt(Slot slot) {
 		int index = slot.getStorageIndex();
 		int[][] data = ctx.items.getItems(Items.INDEX_EQUIPMENT);
-		if (index < 0 || index >= data.length || data[index][0] == -1) {
-			return null;
-		}
 		Component c = getComponent().getChild(slot.getComponentIndex());
+		if (index >= data.length || data[index][0] == -1) {
+			return new Item(ctx, -1, -1, c);
+		}
 		return new Item(ctx, data[index][0], data[index][1], c);
 	}
 
