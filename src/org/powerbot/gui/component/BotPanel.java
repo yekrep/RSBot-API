@@ -47,7 +47,7 @@ public class BotPanel extends JPanel {
 		final Dimension d = new Dimension(BotChrome.PANEL_WIDTH, BotChrome.PANEL_HEIGHT);
 		setSize(d);
 		setPreferredSize(d);
-		setMinimumSize(d);
+		setMinimumSize(new Dimension(BotChrome.PANEL_MIN_WIDTH, BotChrome.PANEL_MIN_HEIGHT));
 		setFocusable(true);
 		setFocusTraversalKeysEnabled(false);
 		setBackground(Color.black);

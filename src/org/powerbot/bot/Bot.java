@@ -59,7 +59,7 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 
 		account = null;
 
-		final Dimension d = new Dimension(BotChrome.PANEL_WIDTH, BotChrome.PANEL_HEIGHT);
+		final Dimension d = new Dimension(BotChrome.PANEL_MIN_WIDTH, BotChrome.PANEL_MIN_HEIGHT);
 		image = new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_RGB);
 		backBuffer = new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_RGB);
 		paintEvent = new PaintEvent();
