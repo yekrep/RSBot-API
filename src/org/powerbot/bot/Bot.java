@@ -272,34 +272,6 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 		return controller;
 	}
 
-	public synchronized void refresh() {
-		if (refreshing.get()) {
-			return;
-		}
-
-		refreshing.set(true);
-		new Thread(threadGroup, new Runnable() {
-			public void run() {
-				log.info("Refreshing environment");
-				if (controller != null) {
-					controller.suspend();
-				}
-
-				terminateApplet();
-				resize(BotChrome.PANEL_WIDTH, BotChrome.PANEL_HEIGHT);
-
-				while (getMethodContext().getClient() == null || getMethodContext().game.getClientState() == -1) {
-					Delay.sleep(1000);
-				}
-				if (controller != null) {
-					controller.resume();
-				}
-
-				refreshing.set(false);
-			}
-		}).start();
-	}
-
 	private final class SafeMode implements Runnable {
 		private final Bot bot;
 
