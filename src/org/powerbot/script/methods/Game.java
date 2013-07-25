@@ -3,6 +3,7 @@ package org.powerbot.script.methods;
 import java.awt.Canvas;
 import java.awt.Dimension;
 import java.awt.Point;
+import java.awt.Rectangle;
 
 import org.powerbot.bot.Bot;
 import org.powerbot.client.BaseInfo;
@@ -160,7 +161,18 @@ public class Game extends MethodProvider {
 
 	public boolean isPointOnScreen(final int x, final int y) {
 		Dimension dimension = getDimensions();
-		return x > 0 && y > 0 && x < dimension.getWidth() && y < dimension.getHeight();
+		if (x > 0 && y > 0) {
+			if (isLoggedIn()) {
+				Rectangle[] rectangles = ctx.hud.getBounds();
+				for (Rectangle rectangle : rectangles) {
+					if (rectangle.contains(x, y)) {
+						return false;
+					}
+				}
+			}
+			return x < dimension.getWidth() && y < dimension.getHeight();
+		}
+		return false;
 	}
 
 	public int tileHeight(final int rX, final int rY, int plane) {
