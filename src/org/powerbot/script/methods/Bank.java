@@ -269,7 +269,7 @@ public class Bank extends ItemQuery<Item> {
 			action = "Withdraw-All but one";
 		}
 
-		final int inv = ctx.backpack.select().count(true);
+		final int inv = ctx.backpack.getMoneyPouch() + ctx.backpack.select().count(true);
 		if (containsAction(c, action)) {
 			if (!c.interact(action)) {
 				return false;
@@ -287,10 +287,10 @@ public class Bank extends ItemQuery<Item> {
 			Delay.sleep(200, 800);
 			ctx.keyboard.sendln(amount + "");
 		}
-		for (int i = 0; i < 25 && ctx.backpack.select().count(true) == inv; i++) {
+		for (int i = 0; i < 25 && ctx.backpack.getMoneyPouch() + ctx.backpack.select().count(true) == inv; i++) {
 			Delay.sleep(100, 200);
 		}
-		return ctx.backpack.select().count(true) != inv || ctx.backpack.count() == 28;
+		return ctx.backpack.getMoneyPouch() + ctx.backpack.select().count(true) != inv;
 	}
 
 	public boolean deposit(int id, Amount amount) {

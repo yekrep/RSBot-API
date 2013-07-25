@@ -31,9 +31,9 @@ public class Menu extends MethodProvider {
 	}
 
 	public int indexOf(String action, String option) {
-		final List<MenuItemNode> nodes = getMenuItemNodes();
+		List<MenuItemNode> nodes = getMenuItemNodes();
 		int d = 0;
-		for (final MenuItemNode node : nodes) {
+		for (MenuItemNode node : nodes) {
 			String a = node.getAction(), o = node.getOption();
 			a = a != null ? StringUtil.stripHtml(a).toLowerCase() : "";
 			o = o != null ? StringUtil.stripHtml(o).toLowerCase() : "";
@@ -216,11 +216,11 @@ public class Menu extends MethodProvider {
 	}
 
 	public String[] getItems() {
-		final List<MenuItemNode> nodes = getMenuItemNodes();
-		final int len = nodes.size();
+		List<MenuItemNode> nodes = getMenuItemNodes();
+		int len = nodes.size();
 		int d = 0;
-		final String[] arr = new String[len];
-		for (final MenuItemNode node : nodes) {
+		String[] arr = new String[len];
+		for (MenuItemNode node : nodes) {
 			String a = node.getAction(), o = node.getOption();
 			if (a != null) {
 				a = StringUtil.stripHtml(a);
