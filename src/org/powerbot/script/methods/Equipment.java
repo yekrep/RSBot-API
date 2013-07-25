@@ -1,10 +1,14 @@
 package org.powerbot.script.methods;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.powerbot.script.internal.methods.Items;
+import org.powerbot.script.lang.ItemQuery;
 import org.powerbot.script.wrappers.Component;
 import org.powerbot.script.wrappers.Item;
 
-public class Equipment extends MethodProvider {
+public class Equipment extends ItemQuery<Item> {
 	public static final int WIDGET = 1464;
 	public static final int COMPONENT_CONTAINER = 28;
 	public static final int WIDGET_GEAR = 1462;
@@ -46,18 +50,18 @@ public class Equipment extends MethodProvider {
 		}
 	}
 
-	public Item[] getAllItems() {
+	@Override
+	protected List<Item> get() {
+		List<Item> items = new ArrayList<>(28);
 		int[][] data = ctx.items.getItems(Items.INDEX_EQUIPMENT);
-		Item[] items = new Item[NUM_SLOTS];
 		Component component = getComponent();
 		for (Slot slot : Slot.values()) {
 			int index = slot.getStorageIndex();
 			Component c = component.getChild(slot.getComponentIndex());
 			if (index < 0 || index >= data.length || data[index][0] == -1) {
-				items[slot.ordinal()] = new Item(ctx, -1, -1, c);
 				continue;
 			}
-			items[slot.ordinal()] = new Item(ctx, data[index][0], data[index][1], c);
+			items.add(new Item(ctx, data[index][0], data[index][1], c));
 		}
 		return items;
 	}
@@ -72,25 +76,13 @@ public class Equipment extends MethodProvider {
 		return new Item(ctx, data[index][0], data[index][1], c);
 	}
 
-	public boolean contains(int... ids) {
-		int[][] data = ctx.items.getItems(Items.INDEX_EQUIPMENT);
-		for (int id : ids) {
-			boolean contains = false;
-			for (int i = 0; i < data.length; i++) {
-				if (data[i][0] == id) {
-					contains = true;
-					break;
-				}
-			}
-			if (!contains) {
-				return false;
-			}
-		}
-		return true;
-	}
-
 	public Component getComponent() {
 		Component gear = ctx.widgets.get(WIDGET_GEAR, COMPONENT_GEAR_CONTAINER);
 		return gear.isVisible() ? gear : ctx.widgets.get(WIDGET, COMPONENT_CONTAINER);
+	}
+
+	@Override
+	public Item getNil() {
+		return new Item(ctx, -1, -1, null);
 	}
 }

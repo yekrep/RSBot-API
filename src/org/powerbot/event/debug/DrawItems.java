@@ -56,7 +56,7 @@ public class DrawItems implements PaintListener {
 			}
 		}
 		if (ctx.equipment.getComponent().isVisible()) {
-			for (Item item : ctx.equipment.getAllItems()) {
+			for (Item item : ctx.equipment.select()) {
 				if (item == null) {
 					continue;
 				}
