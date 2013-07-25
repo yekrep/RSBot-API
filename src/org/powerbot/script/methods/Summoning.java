@@ -75,7 +75,7 @@ public class Summoning extends MethodProvider {
 	public Option getLeftClickOption() {
 		int val = ctx.settings.get(SETTING_LEFT_OPTION);
 		for (Option o : Option.values()) {
-			if (val == o.action()) {
+			if (val == o.getValue()) {
 				return o;
 			}
 		}
@@ -83,7 +83,7 @@ public class Summoning extends MethodProvider {
 	}
 
 	public boolean setLeftClickOption(final Option option) {
-		if (ctx.settings.get(SETTING_LEFT_OPTION) == option.action()) {
+		if (ctx.settings.get(SETTING_LEFT_OPTION) == option.getValue()) {
 			return true;
 		}
 		if (!ctx.widgets.get(CombatBar.WIDGET, CombatBar.COMPONENT_BUTTON_SUMMONING).interact("Select")) {
@@ -97,7 +97,7 @@ public class Summoning extends MethodProvider {
 		}
 		if (ctx.widgets.get(WIDGET_LEFT_SELECT, option.getId()).interact("Select")) {
 			for (int i = 0; i < 20; i++) {
-				if (ctx.settings.get(SETTING_LEFT_SELECTED) == option.selected()) {
+				if (ctx.settings.get(SETTING_LEFT_SELECTED) == option.getTentative()) {
 					break;
 				}
 				sleep(100, 200);
@@ -110,14 +110,14 @@ public class Summoning extends MethodProvider {
 			}
 			if (confirm.interact("Confirm")) {
 				for (int i2 = 0; i2 < 20; i2++) {
-					if (ctx.settings.get(SETTING_LEFT_OPTION) == option.action()) {
+					if (ctx.settings.get(SETTING_LEFT_OPTION) == option.getValue()) {
 						break;
 					}
 					sleep(100, 200);
 				}
 			}
 		}
-		return ctx.settings.get(SETTING_LEFT_OPTION) == option.action();
+		return ctx.settings.get(SETTING_LEFT_OPTION) == option.getValue();
 	}
 
 
@@ -324,11 +324,11 @@ public class Summoning extends MethodProvider {
 			return id;
 		}
 
-		public int action() {
+		public int getValue() {
 			return setting;
 		}
 
-		public int selected() {
+		public int getTentative() {
 			return set;
 		}
 	}
