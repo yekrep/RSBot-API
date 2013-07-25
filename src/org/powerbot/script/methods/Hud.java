@@ -22,6 +22,7 @@ public class Hud extends MethodProvider {
 
 	public enum Menu {
 		NONE(-1),
+		OTHER(-1),
 		HERO(18829, Window.SKILLS, Window.ACTIVE_TASK),
 		GEAR(18830, Window.BACKPACK, Window.WORN_EQUIPMENT),
 		ADVENTURES(18831, Window.ACTIVE_TASK),
@@ -69,7 +70,9 @@ public class Hud extends MethodProvider {
 		FRIENDS_CHAT_INFO(Menu.SOCIAL, 18739, 18761, 1427),
 		CLAN(Menu.SOCIAL, 18740, 18762, 1110, 2),
 		NOTES(Menu.OPTIONS, 18744, 18779, 1417),
-		MUSIC_PLAYER(Menu.OPTIONS, 18745, 18780, 1416);
+		MUSIC_PLAYER(Menu.OPTIONS, 18745, 18780, 1416),
+
+		FAMILIAR(Menu.OTHER, 18748, 18787, Summoning.WIDGET);
 		private final Menu menu;
 		private final int miniTexture;
 		private final int texture;
