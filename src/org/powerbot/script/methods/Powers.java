@@ -1,6 +1,5 @@
 package org.powerbot.script.methods;
 
-import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -18,6 +17,7 @@ public class Powers extends MethodProvider {
 	public static final int COMPONENT_PRAYER_CONTAINER = 24;
 	public static final int COMPONENT_PRAYER_SELECT_CONTAINER = 25;
 	public static final int COMPONENT_PRAYER_SELECT_CONFIRM = 4;
+	public static final int COMPONENT_QUICK_SELECTION = 32;
 
 	public Powers(MethodContext factory) {
 		super(factory);
@@ -235,6 +235,34 @@ public class Powers extends MethodProvider {
 		return quick.toArray(new Effect[quick.size()]);
 	}
 
+	public boolean setQuickSelection(boolean quick) {
+		if (isQuickSelection() == quick) {
+			return true;
+		}
+		if (ctx.hud.isVisible(Hud.Window.PRAYER_ABILITIES)) {
+			if (quick) {
+				if (!ctx.widgets.get(WIDGET_PRAYER, COMPONENT_QUICK_SELECTION).interact("Select quick")) {
+					return false;
+				}
+			} else {
+				if (!ctx.widgets.get(WIDGET_PRAYER, COMPONENT_PRAYER_SELECT_CONFIRM).interact("Confirm")) {
+					return false;
+				}
+			}
+		} else {
+			if (!ctx.widgets.get(CombatBar.WIDGET, CombatBar.COMPONENT_BUTTON_PRAYER).interact(quick ? "Select quick" : "Finish")) {
+				return false;
+			}
+		}
+		for (int i = 0; i < 20; i++) {
+			if (isQuickSelection() == quick) {
+				break;
+			}
+			sleep(100, 200);
+		}
+		return isQuickSelection() == quick;
+	}
+
 	public boolean setPrayerActive(Effect effect, boolean active) {
 		if (ctx.skills.getLevel(Skills.PRAYER) < effect.getLevel()) {
 			return false;
@@ -250,14 +278,7 @@ public class Powers extends MethodProvider {
 
 	public boolean setQuickPrayers(Effect... effects) {
 		if (!isQuickSelection()) {
-			if (ctx.widgets.get(CombatBar.WIDGET, CombatBar.COMPONENT_BUTTON_PRAYER).interact("Select quick")) {
-				for (int i = 0; i < 20; i++) {
-					if (isQuickSelection()) {
-						break;
-					}
-					sleep(100, 200);
-				}
-			}
+			setQuickSelection(true);
 		}
 		if (isQuickSelection() && ctx.hud.view(Hud.Window.PRAYER_ABILITIES)) {
 			for (Effect effect : effects) {
@@ -269,10 +290,8 @@ public class Powers extends MethodProvider {
 				}
 			}
 
-			Effect[] quicks = getQuickPrayers();
-			Arrays.sort(quicks);
-			for (Effect effect : effects) {
-				if (Arrays.binarySearch(quicks, effect) < 0) {
+			for (Effect effect : getQuickPrayers()) {
+				if (isPrayerQuick(effect) && !search(effects, effect)) {
 					if (ctx.widgets.get(WIDGET_PRAYER, COMPONENT_PRAYER_SELECT_CONTAINER).getChild(effect.getId()).interact("Deselect")) {
 						sleep(800, 1200);
 					}
@@ -284,34 +303,17 @@ public class Powers extends MethodProvider {
 			if (!isQuickSelection()) {
 				break;
 			}
-
-			if (i < 1 && ctx.hud.isVisible(Hud.Window.PRAYER_ABILITIES)) {
-				if (!ctx.widgets.get(WIDGET_PRAYER, COMPONENT_PRAYER_SELECT_CONFIRM).interact("Confirm")) {
-					continue;
-				}
-			} else {
-				if (!ctx.widgets.get(CombatBar.WIDGET, CombatBar.COMPONENT_BUTTON_PRAYER).interact("Finish")) {
-					continue;
-				}
-			}
-			for (int i2 = 0; i2 < 20; i2++) {
-				if (!isQuickSelection()) {
-					break;
-				}
-				sleep(100, 200);
-			}
-		}
-
-		Effect[] quicks = getQuickPrayers();
-		if (quicks.length != effects.length) {
-			return false;
-		}
-		Arrays.sort(quicks);
-		for (Effect effect : effects) {
-			if (Arrays.binarySearch(quicks, effect) < 0) {
-				return false;
-			}
+			setQuickSelection(false);
 		}
 		return !isQuickSelection();
+	}
+
+	private boolean search(Effect[] effects, Effect effect) {
+		for (Effect e : effects) {
+			if (e.getId() == effect.getId()) {
+				return true;
+			}
+		}
+		return false;
 	}
 }
