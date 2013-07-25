@@ -163,6 +163,10 @@ public class Powers extends MethodProvider {
 		return ctx.settings.get(SETTING_PRAYERS_SELECTION) == 0x1;
 	}
 
+	public boolean isQuickPrayers() {
+		return ctx.settings.get(SETTING_PRAYERS_SELECTION) == 0x2;
+	}
+
 	public boolean isPrayerActive(Effect effect) {
 		int setting;
 		if (effect instanceof Prayer) {
