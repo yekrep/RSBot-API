@@ -421,7 +421,7 @@ public final class BotScripts extends JDialog implements ActionListener {
 			desc.setLineWrap(true);
 			desc.setWrapStyleWord(true);
 			desc.setFocusable(false);
-			desc.setFont(name.getFont().deriveFont(0, name.getFont().getSize2D() - 2f));
+			desc.setFont(name.getFont().deriveFont(0, name.getFont().getSize2D() - 1f));
 			panelInfo.add(desc);
 
 			final JPanel panelIcons = new JPanel(new GridLayout(0, 2));
@@ -443,7 +443,7 @@ public final class BotScripts extends JDialog implements ActionListener {
 					ScriptList.load(def, username.getText());
 				}
 			});
-			act.setFont(act.getFont().deriveFont(Font.BOLD, act.getFont().getSize2D() - 1f));
+			act.setFont(act.getFont().deriveFont(Font.BOLD, act.getFont().getSize2D()));
 			act.setBackground(null);
 			act.setFocusable(false);
 			panelIconsRight.add(act);
