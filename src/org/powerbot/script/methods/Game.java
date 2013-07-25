@@ -20,6 +20,7 @@ import org.powerbot.client.SoftReference;
 import org.powerbot.client.TileData;
 import org.powerbot.script.wrappers.Component;
 import org.powerbot.script.wrappers.Tile;
+import org.powerbot.script.wrappers.Widget;
 
 public class Game extends MethodProvider {
 	public static final int INDEX_LOGIN_SCREEN = 3;
@@ -52,6 +53,29 @@ public class Game extends MethodProvider {
 
 	public enum Crosshair {
 		NONE, DEFAULT, ACTION
+	}
+
+	public boolean logout(boolean lobby) {
+		if (ctx.widgets.get(1477, 73).getChild(1).interact("Logout")) {
+			Widget widget = ctx.widgets.get(26);
+			for (int i = 0; i < 20; i++) {
+				if (widget.isValid()) {
+					break;
+				}
+				sleep(100, 200);
+			}
+			if (widget.isValid()) {
+				if (widget.getComponent(lobby ? 18 : 11).interact("Select")) {
+					for (int i = 0; i < 10; i++) {
+						if (getClientState() == (lobby ? INDEX_LOBBY_SCREEN : INDEX_LOGIN_SCREEN)) {
+							break;
+						}
+						sleep(700, 1000);
+					}
+				}
+			}
+		}
+		return getClientState() == (lobby ? INDEX_LOBBY_SCREEN : INDEX_LOGIN_SCREEN);
 	}
 
 	public int getClientState() {
