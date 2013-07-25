@@ -7,11 +7,21 @@ import org.powerbot.script.wrappers.Npc;
 import org.powerbot.script.wrappers.Player;
 
 public class Summoning extends MethodProvider {
+	public static final int WIDGET = 662;
+	public static final int COMPONENT_NAME = 54;
+	public static final int COMPONENT_TAKE_BOB = 68;
+	public static final int COMPONENT_RENEW = 70;
+	public static final int COMPONENT_CALL = 50;
+	public static final int COMPONENT_DISMISS = 52;
 	public static final int SETTING_NPC_ID = 1784;
 	public static final int SETTING_TIME_LEFT = 1786;
 	public static final int SETTING_SPECIAL_POINTS = 1787;
 	public static final int SETTING_LEFT_OPTION = 1789;
+	public static final int SETTING_LEFT_SELECTED = 1790;
 	public static final int SETTING_POUCH_ID = 1831;
+
+	public static final int WIDGET_LEFT_SELECT = 880;
+	public static final int COMPONENT_CONFIRM = 6;
 
 	public Summoning(MethodContext factory) {
 		super(factory);
@@ -42,14 +52,11 @@ public class Summoning extends MethodProvider {
 		if (Option.RENEW_FAMILIAR.getText().toLowerCase().contains(action.toLowerCase())) {
 			final Familiar familiar = getFamiliar();
 			return familiar != null && familiar.getRequiredPoints() <= getSpecialPoints() &&
-					ctx.backpack.select().id(ctx.settings.get(1831)).count() > 0 && c.interact(action);
+					ctx.backpack.select().id(ctx.settings.get(SETTING_POUCH_ID)).count() > 0 && c.interact(action);
 		}
 		if (Option.DISMISS.getText().toLowerCase().contains(action.toLowerCase())) {
 			if (c.interact(action)) {
-				final Component c2 = ctx.widgets.get(-1, -1);
-				if (c2 == null) {
-					return false;
-				}
+				Component c2 = ctx.widgets.get(1188, 2);
 				for (int i = 0; i < 50 && !c2.isValid(); i++) {
 					sleep(20);
 				}
@@ -74,6 +81,45 @@ public class Summoning extends MethodProvider {
 		}
 		return Option.FOLLOWER_DETAILS;
 	}
+
+	public boolean setLeftClickOption(final Option option) {
+		if (ctx.settings.get(SETTING_LEFT_OPTION) == option.action()) {
+			return true;
+		}
+		if (!ctx.widgets.get(CombatBar.WIDGET, CombatBar.COMPONENT_BUTTON_SUMMONING).interact("Select")) {
+			return false;
+		}
+		for (int i = 0; i < 20; i++) {
+			if (ctx.widgets.get(WIDGET_LEFT_SELECT).isValid()) {
+				break;
+			}
+			sleep(100, 200);
+		}
+		if (ctx.widgets.get(WIDGET_LEFT_SELECT, option.getId()).interact("Select")) {
+			for (int i = 0; i < 20; i++) {
+				if (ctx.settings.get(SETTING_LEFT_SELECTED) == option.selected()) {
+					break;
+				}
+				sleep(100, 200);
+			}
+		}
+		Component confirm = ctx.widgets.get(WIDGET_LEFT_SELECT, COMPONENT_CONFIRM);
+		for (int i = 0; i < 3; i++) {
+			if (!confirm.isValid()) {
+				break;
+			}
+			if (confirm.interact("Confirm")) {
+				for (int i2 = 0; i2 < 20; i2++) {
+					if (ctx.settings.get(SETTING_LEFT_OPTION) == option.action()) {
+						break;
+					}
+					sleep(100, 200);
+				}
+			}
+		}
+		return ctx.settings.get(SETTING_LEFT_OPTION) == option.action();
+	}
+
 
 	public Npc getNpc() {
 		if (!isFamiliarSummoned()) {
@@ -102,6 +148,36 @@ public class Summoning extends MethodProvider {
 			}
 		}
 		return null;
+	}
+
+	public boolean callFamiliar() {
+		final Component c = ctx.widgets.get(WIDGET, 49);
+		return c != null && isFamiliarSummoned() && c.isVisible() && c.interact("Call");
+	}
+
+	public boolean dismissFamiliar() {
+		final Component c = ctx.widgets.get(WIDGET, 51);
+		return c != null && isFamiliarSummoned() && c.isVisible() && c.interact("Dismiss Now");
+	}
+
+	public boolean takeBoB() {
+		final Component c = ctx.widgets.get(WIDGET, 67);
+		return c != null && isFamiliarSummoned() && c.isVisible() && c.interact("Take");
+	}
+
+	public boolean renewFamiliar() {
+		final Component c = ctx.widgets.get(WIDGET, 69);
+		return c != null && isFamiliarSummoned() && c.isVisible() && c.interact("Renew");
+	}
+
+	public boolean cast() {
+		final Component c = ctx.widgets.get(WIDGET, 5);
+		return c != null && isFamiliarSummoned() && c.isVisible() && c.interact("Cast");
+	}
+
+	public boolean attack() {
+		final Component c = ctx.widgets.get(WIDGET, 65);
+		return c != null && isFamiliarSummoned() && c.isVisible() && c.interact("Attack");
 	}
 
 	public enum Familiar {
