@@ -116,7 +116,9 @@ public class Bank extends ItemQuery<Item> {
 		final String[] actions = {"Bank", "Bank", null, "Bank"};
 		final String[] options = {null, "Bank booth", null, "Counter"};
 		if (actions[index] == null) {
-			interactive.hover();
+			if (interactive.hover()) {
+				sleep(50, 100);
+			}
 			actions[index] = ctx.menu.indexOf("Open") != -1 ? "Open" : ctx.menu.indexOf("Use") != -1 ? "Use" : null;
 			if (actions[index] == null) {
 				return false;
