@@ -40,7 +40,7 @@ public class Summoning extends MethodProvider {
 	}
 
 	public boolean isFamiliarSummoned() {
-		return getTimeLeft() > 0 && ctx.settings.get(SETTING_POUCH_ID) > 0;
+		return ctx.settings.get(SETTING_NPC_ID) > 0;
 	}
 
 	public boolean select(final Option option) {
