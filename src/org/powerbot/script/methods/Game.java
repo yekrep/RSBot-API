@@ -255,7 +255,7 @@ public class Game extends MethodProvider {
 		int pY = (int) (y * 4 + 2) - (loc.getY() << 9) / 128;
 		Component mapComponent = ctx.widgets.get(1477, 53);
 		int dist = pX * pX + pY * pY;
-		int mapRadius = Math.min(mapComponent.getWidth() / 2, mapComponent.getHeight() / 2) - 8;
+		int mapRadius = Math.min(mapComponent.getWidth() / 2, mapComponent.getHeight() / 2) - 16;
 		if (mapRadius * mapRadius >= dist) {
 			Constants constants = getConstants();
 			int SETTINGS_ON = constants != null ? constants.MINIMAP_SETTINGS_ON : -1;
