@@ -123,7 +123,7 @@ public class Summoning extends MethodProvider {
 
 	public Npc getNpc() {
 		if (!isFamiliarSummoned()) {
-			return null;
+			return ctx.npcs.getNil();
 		}
 		final Player local = ctx.players.local();
 		for (final Npc npc : ctx.npcs.select().select(new Filter<Npc>() {
@@ -135,7 +135,7 @@ public class Summoning extends MethodProvider {
 		}).nearest().first()) {
 			return npc;
 		}
-		return null;
+		return ctx.npcs.getNil();
 	}
 
 	public Familiar getFamiliar() {
