@@ -84,7 +84,7 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 				final Graphics graphics = image.getGraphics();
 				appletContainer.update(graphics);
 				graphics.dispose();
-				resize(BotChrome.PANEL_WIDTH, BotChrome.PANEL_HEIGHT);
+				resize(BotChrome.PANEL_MIN_WIDTH, BotChrome.PANEL_MIN_HEIGHT);
 			}
 		});
 
