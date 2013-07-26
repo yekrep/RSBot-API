@@ -272,7 +272,13 @@ public class Game extends MethodProvider {
 			Point basePoint = mapComponent.getAbsoluteLocation();
 			int screen_x = _x + (int) basePoint.getX() + mapComponent.getWidth() / 2;
 			int screen_y = -_y + (int) basePoint.getY() + mapComponent.getHeight() / 2;
-			return new Point(screen_x, screen_y);
+			Point p = new Point(screen_x, screen_y);
+			for (int i = 17; i <= 18; i++) {
+				if (ctx.widgets.get(1465, i).contains(p)) {
+					return new Point(-1, -1);
+				}
+			}
+			return p;
 		}
 		return new Point(-1, -1);
 	}
