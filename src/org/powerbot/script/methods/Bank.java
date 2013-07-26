@@ -102,7 +102,7 @@ public class Bank extends ItemQuery<Item> {
 			return false;
 		}
 		int index = -1;
-		final int[][] ids = {BANK_NPC_IDS, BANK_BOOTH_IDS, BANK_COUNTER_IDS, BANK_CHEST_IDS};
+		final int[][] ids = {BANK_NPC_IDS, BANK_BOOTH_IDS, BANK_CHEST_IDS, BANK_COUNTER_IDS};
 		for (int i = 0; i < ids.length; i++) {
 			Arrays.sort(ids[i]);
 			if (Arrays.binarySearch(ids[i], id) >= 0) {
