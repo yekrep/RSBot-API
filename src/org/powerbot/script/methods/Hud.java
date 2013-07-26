@@ -113,7 +113,7 @@ public class Hud extends MethodProvider {
 	}
 
 	public Rectangle[] getBounds() {
-		if (TimeUnit.MILLISECONDS.convert(System.nanoTime() - cachedTime, TimeUnit.NANOSECONDS) > 1000) {
+		if (TimeUnit.MILLISECONDS.convert(System.nanoTime() - cachedTime, TimeUnit.NANOSECONDS) < 1000) {
 			if (boundsCache != null) {
 				return boundsCache;
 			}
