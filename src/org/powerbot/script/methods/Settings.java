@@ -42,4 +42,27 @@ public class Settings extends MethodProvider {
 		final int[] arr = getArray();
 		return index < arr.length ? arr[index] : -1;
 	}
+
+	/**
+	 * Gets the value at a given index and applies a given mask to the value.
+	 *
+	 * @param index the index in the settings array
+	 * @param mask  the bitmask
+	 * @return the masked value
+	 */
+	public int get(final int index, final int mask) {
+		return get(index, 0, mask);
+	}
+
+	/**
+	 * Gets the value at a given index, bit shifts it right by a given number of bits and applies a mask.
+	 *
+	 * @param index the index in the settings array
+	 * @param shift the number of bits to right shift
+	 * @param mask  the bitmask
+	 * @return the masked value
+	 */
+	public int get(final int index, final int shift, final int mask) {
+		return (get(index) >>> shift) & mask;
+	}
 }
