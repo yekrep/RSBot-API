@@ -33,6 +33,8 @@ public class ModelCapture implements AbstractModel {
 			face_a = data[0];
 			face_b = data[1];
 			face_c = data[2];
+		} else {
+			return;
 		}
 		numVertices = Math.min(vertex_x.length, Math.min(vertex_y.length, vertex_z.length));
 		numFaces = Math.min(face_a.length, Math.min(face_b.length, face_c.length));
