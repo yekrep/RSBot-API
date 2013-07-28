@@ -114,6 +114,8 @@ public class Sandbox extends SecurityManager {
 					}
 					throw new SecurityException();
 				}
+			} else if ((name.equals("modifyThreadGroup") || name.equals("createClassLoader")) && isScriptThread()) {
+				throw new SecurityException();
 			}
 		} else if (perm instanceof FilePermission) {
 			final FilePermission fp = (FilePermission) perm;
