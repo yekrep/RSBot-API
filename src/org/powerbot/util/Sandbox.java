@@ -11,7 +11,6 @@ import java.util.Map.Entry;
 import java.util.logging.Logger;
 
 import org.powerbot.Configuration;
-import org.powerbot.bot.RSClassLoader;
 import org.powerbot.bot.RSLoader;
 import org.powerbot.service.GameAccounts;
 import org.powerbot.service.NetworkAccount;
@@ -238,17 +237,7 @@ public class Sandbox extends SecurityManager {
 	}
 
 	private boolean isGameThread() {
-		final Class<?>[] context = getClassContext();
-		for (int i = 1; i < Math.min(8, context.length); i++) {
-			if (context[i].isAssignableFrom(Sandbox.class)) {
-				continue;
-			}
-			final ClassLoader loader = context[i].getClassLoader();
-			if (loader != null && loader.getClass().isAssignableFrom(RSClassLoader.class)) {
-				return true;
-			}
-		}
-		return false;
+		return Thread.currentThread().getThreadGroup().getName().endsWith("-game");
 	}
 
 	public static boolean isScriptThread(final Thread t) {
