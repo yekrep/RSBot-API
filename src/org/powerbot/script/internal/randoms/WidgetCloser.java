@@ -11,15 +11,10 @@ import org.powerbot.script.wrappers.Component;
  */
 public class WidgetCloser extends PollingScript implements InternalScript {
 	private static final int[] COMPONENTS = {
-			21 << 16 | 43, // beholding a player's statuette (duellist's cap)
-			1234 << 16 | 15, // membership offers
-			906 << 16 | 378, // email register
 			1252 << 16 | 8, // Squeal of Fortune notification
-			1253 << 16 | 16, // Squeal of Fortune window
-			1218 << 16 | 77, // advanced skill guide
-			1107 << 16 | 157, // clan popups
-			755 << 16 | 44, // world map
-			438 << 16 | 22, //membership refer friend
+			1253 << 16 | 36, // Squeal of Fortune window
+			906 << 16 | 302, // validate email
+			1139 << 16 | 12, // Extras window
 	};
 
 	private Component component;

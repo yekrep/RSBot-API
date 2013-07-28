@@ -1,6 +1,6 @@
 package org.powerbot.client;
 
-public interface Model {
+public interface JavaModel extends AbstractModel {
 	public int[] getXPoints();
 
 	public int[] getYPoints();

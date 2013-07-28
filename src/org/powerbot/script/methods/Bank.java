@@ -37,13 +37,13 @@ public class Bank extends ItemQuery<Item> {
 			2693, 4483, 8981, 12308, 14382, 20607, 21301, 27663, 42192, 57437, 62691, 83634, 81756
 	};
 	public static final int WIDGET = 762;
-	public static final int COMPONENT_BUTTON_CLOSE = 45;
-	public static final int COMPONENT_CONTAINER_ITEMS = 95;
-	public static final int COMPONENT_BUTTON_WITHDRAW_MODE = 20;
-	public static final int COMPONENT_BUTTON_DEPOSIT_INVENTORY = 34;
-	public static final int COMPONENT_BUTTON_DEPOSIT_EQUIPMENT = 38;
-	public static final int COMPONENT_BUTTON_DEPOSIT_FAMILIAR = 40;
-	public static final int COMPONENT_SCROLL_BAR = 116;
+	public static final int COMPONENT_BUTTON_CLOSE = 63;
+	public static final int COMPONENT_CONTAINER_ITEMS = 113;
+	public static final int COMPONENT_BUTTON_WITHDRAW_MODE = 39;
+	public static final int COMPONENT_BUTTON_DEPOSIT_INVENTORY = 54;
+	public static final int COMPONENT_BUTTON_DEPOSIT_EQUIPMENT = 58;
+	public static final int COMPONENT_BUTTON_DEPOSIT_FAMILIAR = 60;
+	public static final int COMPONENT_SCROLL_BAR = 134;
 	public static final int SETTING_BANK_STATE = 110;
 	public static final int SETTING_WITHDRAW_MODE = 160;
 
@@ -82,8 +82,7 @@ public class Bank extends ItemQuery<Item> {
 	}
 
 	public boolean isOpen() {
-		final Widget widget = ctx.widgets.get(WIDGET);
-		return widget != null && widget.isValid();
+		return ctx.widgets.get(WIDGET, COMPONENT_CONTAINER_ITEMS).isValid();
 	}
 
 	public boolean open() {
@@ -103,7 +102,7 @@ public class Bank extends ItemQuery<Item> {
 			return false;
 		}
 		int index = -1;
-		final int[][] ids = {BANK_NPC_IDS, BANK_BOOTH_IDS, BANK_COUNTER_IDS, BANK_CHEST_IDS};
+		final int[][] ids = {BANK_NPC_IDS, BANK_BOOTH_IDS, BANK_CHEST_IDS, BANK_COUNTER_IDS};
 		for (int i = 0; i < ids.length; i++) {
 			Arrays.sort(ids[i]);
 			if (Arrays.binarySearch(ids[i], id) >= 0) {
@@ -117,7 +116,9 @@ public class Bank extends ItemQuery<Item> {
 		final String[] actions = {"Bank", "Bank", null, "Bank"};
 		final String[] options = {null, "Bank booth", null, "Counter"};
 		if (actions[index] == null) {
-			interactive.hover();
+			if (interactive.hover()) {
+				sleep(50, 100);
+			}
 			actions[index] = ctx.menu.indexOf("Open") != -1 ? "Open" : ctx.menu.indexOf("Use") != -1 ? "Use" : null;
 			if (actions[index] == null) {
 				return false;
@@ -216,7 +217,7 @@ public class Bank extends ItemQuery<Item> {
 	}
 
 	public Item getTabItem(final int index) {
-		final Component c = ctx.widgets.get(WIDGET, 63 - (index * 2));
+		final Component c = ctx.widgets.get(WIDGET, 82 - (index * 2));
 		if (c != null && c.isValid()) {
 			return new Item(ctx, c);
 		}
@@ -270,7 +271,7 @@ public class Bank extends ItemQuery<Item> {
 			action = "Withdraw-All but one";
 		}
 
-		final int inv = ctx.inventory.select().count(true);
+		final int inv = ctx.backpack.getMoneyPouch() + ctx.backpack.select().count(true);
 		if (containsAction(c, action)) {
 			if (!c.interact(action)) {
 				return false;
@@ -288,10 +289,10 @@ public class Bank extends ItemQuery<Item> {
 			Delay.sleep(200, 800);
 			ctx.keyboard.sendln(amount + "");
 		}
-		for (int i = 0; i < 25 && ctx.inventory.select().count(true) == inv; i++) {
+		for (int i = 0; i < 25 && ctx.backpack.getMoneyPouch() + ctx.backpack.select().count(true) == inv; i++) {
 			Delay.sleep(100, 200);
 		}
-		return ctx.inventory.select().count(true) != inv || ctx.inventory.count() == 28;
+		return ctx.backpack.getMoneyPouch() + ctx.backpack.select().count(true) != inv;
 	}
 
 	public boolean deposit(int id, Amount amount) {
@@ -299,8 +300,8 @@ public class Bank extends ItemQuery<Item> {
 	}
 
 	public boolean deposit(final int id, final int amount) {
-		Item item = ctx.inventory.select().getNil();
-		for (Item _item : ctx.inventory.id(id).first()) {
+		Item item = ctx.backpack.select().getNil();
+		for (Item _item : ctx.backpack.id(id).first()) {
 			item = _item;
 		}
 
@@ -309,7 +310,7 @@ public class Bank extends ItemQuery<Item> {
 		}
 
 		String action = "Deposit-" + amount;
-		final int c = ctx.inventory.select().id(item.getId()).count(true);
+		final int c = ctx.backpack.select().id(item.getId()).count(true);
 		if (c == 1) {
 			action = "Deposit";
 		} else if (c <= amount || amount == 0) {
@@ -317,7 +318,7 @@ public class Bank extends ItemQuery<Item> {
 		}
 
 		final Component comp = item.getComponent();
-		final int inv = ctx.inventory.select().count(true);
+		final int inv = ctx.backpack.select().count(true);
 		if (containsAction(comp, action)) {
 			if (!comp.interact(action)) {
 				return false;
@@ -335,10 +336,10 @@ public class Bank extends ItemQuery<Item> {
 			Delay.sleep(200, 800);
 			ctx.keyboard.sendln(amount + "");
 		}
-		for (int i = 0; i < 25 && ctx.inventory.select().count(true) == inv; i++) {
+		for (int i = 0; i < 25 && ctx.backpack.select().count(true) == inv; i++) {
 			Delay.sleep(100, 200);
 		}
-		return ctx.inventory.select().count(true) != inv;
+		return ctx.backpack.select().count(true) != inv;
 	}
 
 	public boolean depositInventory() {
@@ -346,7 +347,7 @@ public class Bank extends ItemQuery<Item> {
 		if (c == null || !c.isValid()) {
 			return false;
 		}
-		if (ctx.inventory.select().isEmpty()) {
+		if (ctx.backpack.select().isEmpty()) {
 			return true;
 		}
 		return c.click();
@@ -393,8 +394,8 @@ public class Bank extends ItemQuery<Item> {
 	}
 
 	private boolean isInputWidgetOpen() {
-		final Component child = ctx.widgets.get(752, 3);
-		return child != null && child.isValid() && child.isOnScreen();
+		final Component child = ctx.widgets.get(1469, 1);
+		return child != null && child.isVisible();
 	}
 
 	@Override

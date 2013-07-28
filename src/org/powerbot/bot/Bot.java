@@ -65,7 +65,7 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 
 		account = null;
 
-		final Dimension d = new Dimension(BotChrome.PANEL_WIDTH, BotChrome.PANEL_HEIGHT);
+		final Dimension d = new Dimension(BotChrome.PANEL_MIN_WIDTH, BotChrome.PANEL_MIN_HEIGHT);
 		image = new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_RGB);
 		backBuffer = new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_RGB);
 		paintEvent = new PaintEvent();
@@ -114,7 +114,7 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 		final Graphics graphics = image.getGraphics();
 		appletContainer.update(graphics);
 		graphics.dispose();
-		resize(BotChrome.PANEL_WIDTH, BotChrome.PANEL_HEIGHT);
+		resize(BotChrome.PANEL_MIN_WIDTH, BotChrome.PANEL_MIN_HEIGHT);
 
 		appletContainer.init();
 		if (loader.getBridge().getTransformSpec() == null) {
@@ -320,34 +320,6 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 
 	public ScriptController getScriptController() {
 		return controller;
-	}
-
-	public synchronized void refresh() {
-		if (refreshing.get()) {
-			return;
-		}
-
-		refreshing.set(true);
-		new Thread(threadGroup, new Runnable() {
-			public void run() {
-				log.info("Refreshing environment");
-				if (controller != null) {
-					controller.suspend();
-				}
-
-				terminateApplet();
-				resize(BotChrome.PANEL_WIDTH, BotChrome.PANEL_HEIGHT);
-
-				while (getMethodContext().getClient() == null || getMethodContext().game.getClientState() == -1) {
-					Delay.sleep(1000);
-				}
-				if (controller != null) {
-					controller.resume();
-				}
-
-				refreshing.set(false);
-			}
-		}).start();
 	}
 
 	private final class SafeMode implements Runnable {

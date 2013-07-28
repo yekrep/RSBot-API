@@ -2,7 +2,7 @@ package org.powerbot.script.internal.randoms;
 
 import org.powerbot.script.PollingScript;
 import org.powerbot.script.internal.InternalScript;
-import org.powerbot.script.methods.Game;
+import org.powerbot.script.methods.Hud;
 import org.powerbot.script.util.Random;
 import org.powerbot.script.util.Timer;
 import org.powerbot.script.wrappers.Component;
@@ -18,19 +18,19 @@ public class TicketDestroy extends PollingScript implements InternalScript {
 	private Component component;
 
 	public boolean isValid() {
-		if (!ctx.game.isLoggedIn() || ctx.game.getCurrentTab() != Game.Tab.INVENTORY) {
+		if (!ctx.game.isLoggedIn() || !ctx.hud.isVisible(Hud.Window.BACKPACK) || ctx.backpack.isCollapsed()) {
 			return false;
 		}
 
 		final Player player;
-		if ((player = ctx.players.getLocal()) == null ||
+		if ((player = ctx.players.local()) == null ||
 				player.isInCombat() || player.getAnimation() != -1 || player.getInteracting() != null) {
 			return false;
 		}
 
 		this.component = null;
-		Item item = ctx.inventory.select().getNil();
-		for (Item _item : ctx.inventory.id(ITEM_IDS).first()) {
+		Item item = ctx.backpack.getNil();
+		for (Item _item : ctx.backpack.select().id(ITEM_IDS).first()) {
 			item = _item;
 		}
 		if (item.isValid()) {
@@ -54,6 +54,7 @@ public class TicketDestroy extends PollingScript implements InternalScript {
 		if (((ctx.settings.get(1448) & 0xFF00) >>> 8) < (item.getItemId() == ITEM_IDS[0] ? 10 : 9)) {
 			item.interact("Claim spin");
 			sleep(1500);
+			return -1;
 		}
 
 		if (!item.interact("Destroy")) {

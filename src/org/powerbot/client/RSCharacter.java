@@ -1,7 +1,7 @@
 package org.powerbot.client;
 
 public interface RSCharacter extends RSAnimable {
-	public Model getModel();
+	public AbstractModel getModel();
 
 	public int getInteracting();
 

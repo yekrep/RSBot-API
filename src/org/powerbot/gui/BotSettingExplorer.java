@@ -65,7 +65,8 @@ public class BotSettingExplorer extends JFrame {
 
 	public static void display() {
 		final BotSettingExplorer settingExplorer = getInstance();
-		if (settingExplorer.isVisible()) {
+		boolean visible = settingExplorer.isVisible();
+		if (visible) {
 			settingExplorer.clean();
 		}
 		settingExplorer.setVisible(true);
@@ -73,15 +74,17 @@ public class BotSettingExplorer extends JFrame {
 			settingExplorer.settings_cache = BotChrome.getInstance().getBot().getMethodContext().settings.getArray();
 		} catch (final NullPointerException ignored) {
 		}
-		new Thread(BotChrome.getInstance().getBot().threadGroup, new Runnable() {
-			@Override
-			public void run() {
-				while (settingExplorer.isVisible()) {
-					settingExplorer.update();
-					Delay.sleep(100);
+		if (!visible) {
+			new Thread(BotChrome.getInstance().getBot().threadGroup, new Runnable() {
+				@Override
+				public void run() {
+					while (settingExplorer.isVisible()) {
+						settingExplorer.update();
+						Delay.sleep(100);
+					}
 				}
-			}
-		}).start();
+			}).start();
+		}
 	}
 
 	private void clean() {

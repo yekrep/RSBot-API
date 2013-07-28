@@ -67,8 +67,10 @@ public class Component extends Interactive implements Drawable {
 	}
 
 	public Component getChild(final int index) {
-		final Component[] components = getChildren();
-		return index >= 0 && index < components.length ? components[index] : null;
+		if (index < 0) {
+			throw new IndexOutOfBoundsException(index + " < " + 0);
+		}
+		return new Component(ctx, widget, this, index);
 	}
 
 	public String[] getActions() {
@@ -97,7 +99,7 @@ public class Component extends Interactive implements Drawable {
 		return component != null ? component.getID() : -1;
 	}
 
-	public int getChildIndex() {
+	public int getItemIndex() {
 		final RSInterface component = getInternalComponent();
 		return component != null ? component.getComponentIndex() : -1;
 	}
@@ -407,7 +409,7 @@ public class Component extends Interactive implements Drawable {
 	}
 
 	private Rectangle getInteractRectangle() {
-		return isInScrollableArea() ? getViewportRect() : getBoundingRect();
+		return getViewportRect();
 	}
 
 	private boolean isInScrollableArea() {

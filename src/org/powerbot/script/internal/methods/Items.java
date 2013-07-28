@@ -8,6 +8,7 @@ import org.powerbot.script.methods.MethodProvider;
 
 public class Items extends MethodProvider {
 	public static final int INDEX_INVENTORY = 93;
+	public static final int INDEX_MONEY_POUCH = 623;
 	public static final int INDEX_EQUIPMENT = 670;
 	public static final int INDEX_BANK = 95;
 

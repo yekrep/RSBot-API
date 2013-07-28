@@ -19,11 +19,9 @@ import org.powerbot.client.Render;
 import org.powerbot.client.RenderData;
 import org.powerbot.client.SoftReference;
 import org.powerbot.client.TileData;
-import org.powerbot.script.util.Delay;
-import org.powerbot.script.util.Timer;
 import org.powerbot.script.wrappers.Component;
-import org.powerbot.script.wrappers.Player;
 import org.powerbot.script.wrappers.Tile;
+import org.powerbot.script.wrappers.Widget;
 
 public class Game extends MethodProvider {
 	public static final int INDEX_LOGIN_SCREEN = 3;
@@ -46,35 +44,7 @@ public class Game extends MethodProvider {
 	public final Game.Toolkit toolkit;
 	public final Game.Viewport viewport;
 
-	public enum Tab {
-		NIL("nil"),
-		COMBAT("Combat"),
-		NOTICEBOARD("Noticeboard"),
-		STATS("Stats"),
-		ACADEMY("Combat Academy"),
-		INVENTORY("Inventory"),
-		EQUIPMENT("Worn Equipment"),
-		PRAYER("Prayer List"),
-		ABILITY_BOOK("Ability Book"),
-		EXTRAS("Extras"),
-		FRIENDS("Friends List"),
-		FRIENDS_CHAT("Friends Chat"),
-		CLAN_CHAT("Clan Chat"),
-		OPTIONS("Options"),
-		EMOTES("Emotes"),
-		MUSIC("Music Player"),
-		NOTES("Notes"),
-		LOGOUT("Exit");
-		public final String hint;
-
-		Tab(String hint) {
-			this.hint = hint;
-		}
-
-		public String getName() {
-			return hint;
-		}
-	}
+	public int mapAngle;
 
 	public Game(MethodContext factory) {
 		super(factory);
@@ -82,54 +52,31 @@ public class Game extends MethodProvider {
 		this.viewport = new Viewport();
 	}
 
-	public Tab getCurrentTab() {
-		Component c;
-		for (Tab tab : Tab.values()) {
-			if (tab == Tab.LOGOUT) {
-				continue;
+	public enum Crosshair {
+		NONE, DEFAULT, ACTION
+	}
+
+	public boolean logout(boolean lobby) {
+		if (ctx.widgets.get(1477, 73).getChild(1).interact("Logout")) {
+			Widget widget = ctx.widgets.get(26);
+			for (int i = 0; i < 20; i++) {
+				if (widget.isValid()) {
+					break;
+				}
+				sleep(100, 200);
 			}
-			if ((c = ctx.components.getTab(tab)) != null) {
-				if (c.getTextureId() != -1) {
-					return tab;
+			if (widget.isValid()) {
+				if (widget.getComponent(lobby ? 18 : 11).interact("Select")) {
+					for (int i = 0; i < 10; i++) {
+						if (getClientState() == (lobby ? INDEX_LOBBY_SCREEN : INDEX_LOGIN_SCREEN)) {
+							break;
+						}
+						sleep(700, 1000);
+					}
 				}
 			}
 		}
-		if ((c = ctx.widgets.get(182, 1)) != null && c.isVisible()) {
-			return Tab.LOGOUT;
-		}
-		return Tab.NIL;
-	}
-
-	public boolean openTab(Tab tab) {
-		if (getCurrentTab() == tab) {
-			return true;
-		}
-		final Component c = ctx.components.getTab(tab);
-		if (c != null && c.isValid() && c.click(true)) {
-			final Timer t = new Timer(800);
-			while (t.isRunning() && getCurrentTab() != tab) {
-				Delay.sleep(15);
-			}
-		}
-		return getCurrentTab() == tab;
-	}
-
-	public boolean closeTab() {
-		if (isFixed()) {
-			return false;
-		}
-		final Tab curr;
-		if ((curr = getCurrentTab()) == Tab.NIL) {
-			return true;
-		}
-		final Component c = ctx.components.getTab(curr);
-		if (c != null && c.isValid() && c.click(true)) {
-			final Timer t = new Timer(800);
-			while (t.isRunning() && getCurrentTab() != Tab.NIL) {
-				Delay.sleep(15);
-			}
-		}
-		return getCurrentTab() == Tab.NIL;
+		return getClientState() == (lobby ? INDEX_LOBBY_SCREEN : INDEX_LOGIN_SCREEN);
 	}
 
 	public int getClientState() {
@@ -163,6 +110,15 @@ public class Game extends MethodProvider {
 		return false;
 	}
 
+	public Crosshair getCrosshair() {
+		Client client = ctx.getClient();
+		int type = client != null ? client.getCrossHairType() : -1;
+		if (type < 0 || type > 2) {
+			return Crosshair.NONE;
+		}
+		return Crosshair.values()[type];
+	}
+
 	public Tile getMapBase() {
 		Client client = ctx.getClient();
 		if (client == null) {
@@ -180,14 +136,6 @@ public class Game extends MethodProvider {
 			return -1;
 		}
 		return client.getPlane();
-	}
-
-	public boolean isFixed() {
-		Client client = ctx.getClient();
-		if (client == null) {
-			return false;
-		}
-		return client.getGUIRSInterfaceIndex() != 746;
 	}
 
 	public void setPreferredWorld(final int world) {
@@ -212,22 +160,19 @@ public class Game extends MethodProvider {
 	}
 
 	public boolean isPointOnScreen(final int x, final int y) {
-		final Rectangle r;
-		if (isLoggedIn()) {
-			final Component c = ctx.widgets.get(ActionBar.WIDGET, ActionBar.COMPONENT_BAR);
-			r = c != null && c.isVisible() ? c.getBoundingRect() : null;
-			if (r != null && r.contains(x, y)) {
-				return false;
+		Dimension dimension = getDimensions();
+		if (x > 0 && y > 0) {
+			if (isLoggedIn()) {
+				Rectangle[] rectangles = ctx.hud.getBounds();
+				for (Rectangle rectangle : rectangles) {
+					if (rectangle.contains(x, y)) {
+						return false;
+					}
+				}
 			}
-			if (isFixed()) {
-				return x >= 4 && y >= 54 && x < 516 && y < 388;
-			}
-			Dimension dimension = ctx.game.getDimensions();
-			return x > 0 && y > 0 && x < dimension.getWidth() && y < dimension.getHeight();
-		} else {
-			r = null;
+			return x < dimension.getWidth() && y < dimension.getHeight();
 		}
-		return true;
+		return false;
 	}
 
 	public int tileHeight(final int rX, final int rY, int plane) {
@@ -293,48 +238,47 @@ public class Game extends MethodProvider {
 	}
 
 	public Point tileToMap(double x, double y) {
+		x -= 0.5;
+		y -= 0.5;
 		Client client = ctx.getClient();
 		if (client == null) {
 			return new Point(-1, -1);
 		}
-		final Tile base = getMapBase();
-		final Player player = ctx.players.getLocal();
-		Tile loc;
-		if (base == null || player == null || (loc = player.getLocation()) == null) {
-			return new Point(-1, -1);
-		}
+		Tile base = getMapBase();
 		x -= base.x;
 		y -= base.y;
-		loc = loc.derive(-base.x, -base.y);
-		final int pX = (int) (x * 4 + 2) - (loc.getX() << 9) / 128;
-		final int pY = (int) (y * 4 + 2) - (loc.getY() << 9) / 128;
-		final Component mapComponent = ctx.components.getMap();
-		if (mapComponent == null) {
+		Tile loc = ctx.players.local().getLocation().derive(-base.x, -base.y);
+		if (loc == Tile.NIL) {
 			return new Point(-1, -1);
 		}
-		final int dist = pX * pX + pY * pY;
-		final int mapRadius = Math.max(mapComponent.getWidth() / 2, mapComponent.getHeight() / 2) - 8;
+		int pX = (int) (x * 4 + 2) - (loc.getX() << 9) / 128;
+		int pY = (int) (y * 4 + 2) - (loc.getY() << 9) / 128;
+		Component mapComponent = ctx.widgets.get(1477, 53);
+		int dist = pX * pX + pY * pY;
+		int mapRadius = Math.min(mapComponent.getWidth() / 2, mapComponent.getHeight() / 2) - 16;
 		if (mapRadius * mapRadius >= dist) {
-			final Constants constants = getConstants();
-			final int SETTINGS_ON = constants != null ? constants.MINIMAP_SETTINGS_ON : -1;
-			int angle = 0x3fff & (int) client.getMinimapAngle();
-			final boolean unknown = client.getMinimapSettings() == SETTINGS_ON;
-			if (!unknown) {
-				angle = 0x3fff & client.getMinimapOffset() + (int) client.getMinimapAngle();
-			}
-			int sin = SIN_TABLE[angle];
-			int cos = COS_TABLE[angle];
-			if (!unknown) {
+			Constants constants = getConstants();
+			int SETTINGS_ON = constants != null ? constants.MINIMAP_SETTINGS_ON : -1;
+			boolean flag = client.getMinimapSettings() == SETTINGS_ON;
+			int sin = SIN_TABLE[mapAngle];
+			int cos = COS_TABLE[mapAngle];
+			if (!flag) {
 				final int fact = 0x100 + client.getMinimapScale();
 				sin = 0x100 * sin / fact;
 				cos = 0x100 * cos / fact;
 			}
-			final int _x = cos * pX + sin * pY >> 0xf;
-			final int _y = cos * pY - sin * pX >> 0xf;
-			final Point basePoint = mapComponent.getAbsoluteLocation();
-			final int screen_x = _x + (int) basePoint.getX() + mapComponent.getWidth() / 2;
-			final int screen_y = -_y + (int) basePoint.getY() + mapComponent.getHeight() / 2;
-			return new Point(screen_x, screen_y);
+			int _x = cos * pX + sin * pY >> 0xf;
+			int _y = cos * pY - sin * pX >> 0xf;
+			Point basePoint = mapComponent.getAbsoluteLocation();
+			int screen_x = _x + (int) basePoint.getX() + mapComponent.getWidth() / 2;
+			int screen_y = -_y + (int) basePoint.getY() + mapComponent.getHeight() / 2;
+			Point p = new Point(screen_x, screen_y);
+			for (int i = 17; i <= 18; i++) {
+				if (ctx.widgets.get(1465, i).contains(p)) {
+					return new Point(-1, -1);
+				}
+			}
+			return p;
 		}
 		return new Point(-1, -1);
 	}

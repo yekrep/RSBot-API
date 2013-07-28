@@ -27,7 +27,7 @@ public abstract class GroundItemQuery<K extends Locatable & Identifiable & Namea
 	 */
 	@Override
 	public GroundItemQuery<K> within(double distance) {
-		return within(ctx.players.getLocal(), distance);
+		return within(ctx.players.local(), distance);
 	}
 
 	/**
@@ -43,7 +43,7 @@ public abstract class GroundItemQuery<K extends Locatable & Identifiable & Namea
 	 */
 	@Override
 	public GroundItemQuery<K> nearest() {
-		return nearest(ctx.players.getLocal());
+		return nearest(ctx.players.local());
 	}
 
 	/**

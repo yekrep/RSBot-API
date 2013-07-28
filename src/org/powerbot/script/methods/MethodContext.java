@@ -12,17 +12,17 @@ public class MethodContext {
 	private AtomicReference<Integer> preferredWorld;
 	private AtomicReference<Bot> bot;
 
-	public ActionBar actionBar;
+	public CombatBar combatBar;
 	public Bank bank;
 	public Camera camera;
-	Components components;
 	public DepositBox depositBox;
 	public Environment environment;
 	public Equipment equipment;
 	public Game game;
 	public GroundItems groundItems;
 	public HintArrows hintArrows;
-	public Inventory inventory;
+	public Hud hud;
+	public Backpack backpack;
 	public Keyboard keyboard;
 	public Lobby lobby;
 	public Menu menu;
@@ -31,7 +31,7 @@ public class MethodContext {
 	public Npcs npcs;
 	public Objects objects;
 	public Players players;
-	public Prayer prayer;
+	public Powers powers;
 	public Projectiles projectiles;
 	public Settings settings;
 	public Skills skills;
@@ -46,17 +46,17 @@ public class MethodContext {
 		this.preferredWorld = new AtomicReference<>(-1);
 		this.bot = new AtomicReference<>(bot);
 
-		actionBar = new ActionBar(this);
+		combatBar = new CombatBar(this);
+		backpack = new Backpack(this);
 		bank = new Bank(this);
 		camera = new Camera(this);
-		components = new Components(this);
 		depositBox = new DepositBox(this);
 		environment = new Environment(this);
 		equipment = new Equipment(this);
 		game = new Game(this);
 		groundItems = new GroundItems(this);
 		hintArrows = new HintArrows(this);
-		inventory = new Inventory(this);
+		hud = new Hud(this);
 		keyboard = new Keyboard(this);
 		lobby = new Lobby(this);
 		menu = new Menu(this);
@@ -65,7 +65,7 @@ public class MethodContext {
 		npcs = new Npcs(this);
 		objects = new Objects(this);
 		players = new Players(this);
-		prayer = new Prayer(this);
+		powers = new Powers(this);
 		projectiles = new Projectiles(this);
 		settings = new Settings(this);
 		skills = new Skills(this);
@@ -90,17 +90,17 @@ public class MethodContext {
 		preferredWorld = ctx.preferredWorld;
 		bot = ctx.bot;
 
-		actionBar = ctx.actionBar;
+		combatBar = ctx.combatBar;
+		backpack = ctx.backpack;
 		bank = ctx.bank;
 		camera = ctx.camera;
-		components = ctx.components;
 		depositBox = ctx.depositBox;
 		environment = ctx.environment;
 		equipment = ctx.equipment;
 		game = ctx.game;
 		groundItems = ctx.groundItems;
 		hintArrows = ctx.hintArrows;
-		inventory = ctx.inventory;
+		hud = ctx.hud;
 		keyboard = ctx.keyboard;
 		lobby = ctx.lobby;
 		menu = ctx.menu;
@@ -109,7 +109,7 @@ public class MethodContext {
 		npcs = ctx.npcs;
 		objects = ctx.objects;
 		players = ctx.players;
-		prayer = ctx.prayer;
+		powers = ctx.powers;
 		projectiles = ctx.projectiles;
 		settings = ctx.settings;
 		skills = ctx.skills;

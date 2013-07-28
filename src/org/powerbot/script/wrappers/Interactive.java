@@ -28,9 +28,6 @@ public abstract class Interactive extends MethodProvider implements Targetable, 
 	}
 
 	public boolean click() {
-		if (!isValid()) {
-			return false;
-		}
 		return click(true);
 	}
 
@@ -42,13 +39,13 @@ public abstract class Interactive extends MethodProvider implements Targetable, 
 	}
 
 	public boolean interact(final String action) {
-		if (!isValid()) {
-			return false;
-		}
 		return interact(action, null);
 	}
 
 	public boolean interact(final String action, final String option) {
+		if (!isValid()) {
+			return false;
+		}
 		int a = 0;
 		while (a++ < ATTEMPTS) {
 			if (!isValid()) {

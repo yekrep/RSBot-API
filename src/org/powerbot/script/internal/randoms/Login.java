@@ -1,34 +1,26 @@
 package org.powerbot.script.internal.randoms;
 
-import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.FutureTask;
 
-import org.powerbot.event.PaintListener;
-import org.powerbot.gui.BotChrome;
 import org.powerbot.script.PollingScript;
 import org.powerbot.script.internal.InternalScript;
 import org.powerbot.script.methods.Game;
 import org.powerbot.script.methods.Lobby;
 import org.powerbot.script.util.Random;
-import org.powerbot.script.util.Timer;
 import org.powerbot.script.wrappers.Component;
 
 /**
  * @author Timer
  */
-public class Login extends PollingScript implements InternalScript, PaintListener {
+public class Login extends PollingScript implements InternalScript {
 	private static final int WIDGET = 596;
-	private static final int WIDGET_LOGIN_ERROR = 13;
-	private static final int WIDGET_LOGIN_TRY_AGAIN = 65;
-	private static final int WIDGET_LOGIN_USERNAME_TEXT = 70;
-	private static final int WIDGET_LOGIN_PASSWORD_TEXT = 76;
+	private static final int WIDGET_LOGIN_ERROR = 50;
+	private static final int WIDGET_LOGIN_TRY_AGAIN = 81;
+	private static final int WIDGET_LOGIN_USERNAME_TEXT = 83;
+	private static final int WIDGET_LOGIN_PASSWORD_TEXT = 86;
 	private static final int WIDGET_LOBBY = 906;
-	private static final int WIDGET_LOBBY_ERROR = 249;
-	private static final int WIDGET_LOBBY_TRY_AGAIN = 259;
-	private volatile Timer re_load_timer = null;
+	private static final int WIDGET_LOBBY_TRY_AGAIN = 567;
 
 	public boolean isValid() {
 		int state = ctx.game.getClientState();
@@ -46,35 +38,12 @@ public class Login extends PollingScript implements InternalScript, PaintListene
 
 		int state = ctx.game.getClientState();
 		if ((state == Game.INDEX_LOGIN_SCREEN || state == Game.INDEX_LOGGING_IN) && ctx.getBot().getAccount() != null) {
-			for (final LoginEvent loginEvent : LoginEvent.values()) {
-				final Component Component = ctx.widgets.get(WIDGET, loginEvent.child);
-				if (Component != null && Component.isValid()) {
-					final String text = Component.getText().toLowerCase().trim();
-					ctx.widgets.get(WIDGET, WIDGET_LOGIN_TRY_AGAIN).click(true);
-
-					if (text.contains(loginEvent.message.toLowerCase())) {
-						log.info("Handling login event: " + loginEvent.name());
-						boolean set_timer = loginEvent.equals(LoginEvent.TOKEN_FAILURE);
-
-						if (set_timer && loginEvent.wait > 0) {
-							re_load_timer = new Timer(loginEvent.wait);
-						}
-						if (loginEvent.wait > 0) {
-							sleep(loginEvent.wait);
-						} else if (loginEvent.wait == -1) {
-							getController().stop();
-							return -1;
-						}
-
-						re_load_timer = null;
-						if (loginEvent.task != null) {
-							try {
-								loginEvent.task.get();
-							} catch (final InterruptedException | ExecutionException ignored) {
-							}
-						}
-						return 0;
-					}
+			Component c = ctx.widgets.get(WIDGET, WIDGET_LOGIN_ERROR);
+			if (c.isValid()) {
+				ctx.widgets.get(WIDGET, WIDGET_LOGIN_TRY_AGAIN).click(true);
+				if (c.getText().toLowerCase().contains("password")) {
+					getController().stop();
+					return -1;
 				}
 			}
 
@@ -111,33 +80,6 @@ public class Login extends PollingScript implements InternalScript, PaintListene
 				sleep(Random.nextInt(500, 700));
 			}
 		} else if (state == Game.INDEX_LOBBY_SCREEN && ctx.getBot().getAccount() != null) {
-			for (final LobbyEvent lobbyEvent : LobbyEvent.values()) {
-				final Component Component = ctx.widgets.get(WIDGET_LOBBY, lobbyEvent.child);
-				if (Component != null && Component.isValid()) {
-					final String text = Component.getText().toLowerCase().trim();
-
-					if (text.contains(lobbyEvent.message.toLowerCase())) {
-						log.info("Handling lobby event: " + lobbyEvent.name());
-						ctx.widgets.get(WIDGET_LOBBY, WIDGET_LOBBY_TRY_AGAIN).click(true);
-
-						if (lobbyEvent.wait > 0) {
-							sleep(lobbyEvent.wait);
-						} else if (lobbyEvent.wait == -1) {
-							getController().stop();
-							return -1;
-						}
-
-						if (lobbyEvent.task != null) {
-							try {
-								lobbyEvent.task.get();
-							} catch (final InterruptedException | ExecutionException ignored) {
-							}
-						}
-						return 0;
-					}
-				}
-			}
-
 			final int world = ctx.getPreferredWorld();
 			if (world > 0) {
 				final Lobby.World world_wrapper;
@@ -204,56 +146,6 @@ public class Login extends PollingScript implements InternalScript, PaintListene
 			if (Random.nextInt(0, 2) == 1) {
 				sleep(Random.nextInt(25, 100));
 			}
-		}
-	}
-
-	@Override
-	public void repaint(final Graphics render) {
-		if (re_load_timer != null) {
-			render.setColor(Color.white);
-			render.drawString("Reloading game in: " + re_load_timer.toRemainingString(), 8, 30);
-		}
-	}
-
-	private enum LoginEvent {
-		TOKEN_FAILURE(WIDGET_LOGIN_ERROR, "game session", 1000 * 5 * 60, new FutureTask<>(new Runnable() {
-			@Override
-			public void run() {
-				BotChrome.getInstance().getBot().refresh();
-			}
-		}, true)),
-		INVALID_PASSWORD(WIDGET_LOGIN_ERROR, "Invalid username or password", -1);
-		private final String message;
-		private final int child, wait;
-		private final FutureTask<Boolean> task;
-
-		LoginEvent(final int child, final String message, final int wait, final FutureTask<Boolean> task) {
-			this.child = child;
-			this.message = message;
-			this.wait = wait;
-			this.task = task;
-		}
-
-		LoginEvent(final int child, final String message, final int wait) {
-			this(child, message, wait, null);
-		}
-	}
-
-	private enum LobbyEvent {
-		LOGGED_IN(WIDGET_LOBBY_ERROR, "last session", Random.nextInt(1000, 4000));
-		private final String message;
-		private final int child, wait;
-		private final FutureTask<Boolean> task;
-
-		LobbyEvent(final int child, final String message, final int wait, final FutureTask<Boolean> task) {
-			this.child = child;
-			this.message = message;
-			this.wait = wait;
-			this.task = task;
-		}
-
-		LobbyEvent(final int child, final String message, final int wait) {
-			this(child, message, wait, null);
 		}
 	}
 }

@@ -11,7 +11,7 @@ import org.powerbot.script.lang.PlayerQuery;
 import org.powerbot.script.wrappers.Player;
 
 /**
- * {@link Players} is a static utility which provides access to the {@link Player}s in the game.
+ * {@link Players} is a utility which provides access to the {@link Player}s in the game.
  * <p/>
  * {@link Player}s are only accessible within mini-map's range.
  *
@@ -24,15 +24,12 @@ public class Players extends PlayerQuery<Player> {
 
 	/**
 	 * Returns the game's local player (your player).
-	 * Must be logged in to retrieve.
-	 * <p/>
-	 * Be sure to check for nulls!
 	 *
-	 * @return the local {@link Player}
+	 * @return the local {@link Player} or the value of {@link #getNil()}
 	 */
-	public Player getLocal() {
-		Client client = ctx.getClient();
-		return new Player(ctx, client != null ? client.getMyRSPlayer() : null);
+	public Player local() {
+		final Client client = ctx.getClient();
+		return client == null ? getNil() : new Player(ctx, client.getMyRSPlayer());
 	}
 
 	/**

@@ -38,6 +38,9 @@ public class Sandbox extends SecurityManager {
 
 	@Override
 	public void checkConnect(final String host, final int port, final Object context) {
+		if (isGameThread()) {
+			return;
+		}
 		if (!(port == 80 || port == 443 || port == 53 || port == 43594 || port == -1)) {
 			log.severe("Connection denied to port " + port);
 			throw new SecurityException();
@@ -94,8 +97,15 @@ public class Sandbox extends SecurityManager {
 
 	@Override
 	public void checkPermission(final Permission perm) {
+		final String loadLib = "loadLibrary.";
+
 		if (perm instanceof RuntimePermission) {
 			if (perm.getName().equals("setSecurityManager")) {
+				throw new SecurityException();
+			} else if (perm.getName().startsWith(loadLib) && isGameThread()) {
+				if (!Configuration.FROMJAR) {
+					log.severe("Native library blocked: " + perm.getName().substring(loadLib.length()));
+				}
 				throw new SecurityException();
 			}
 		} else if (perm instanceof FilePermission) {

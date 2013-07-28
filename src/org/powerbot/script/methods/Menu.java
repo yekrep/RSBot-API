@@ -31,9 +31,9 @@ public class Menu extends MethodProvider {
 	}
 
 	public int indexOf(String action, String option) {
-		final List<MenuItemNode> nodes = getMenuItemNodes();
+		List<MenuItemNode> nodes = getMenuItemNodes();
 		int d = 0;
-		for (final MenuItemNode node : nodes) {
+		for (MenuItemNode node : nodes) {
 			String a = node.getAction(), o = node.getOption();
 			a = a != null ? StringUtil.stripHtml(a).toLowerCase() : "";
 			o = o != null ? StringUtil.stripHtml(o).toLowerCase() : "";
@@ -46,11 +46,11 @@ public class Menu extends MethodProvider {
 		return -1;
 	}
 
-	public boolean click(final String action) {
+	public boolean hover(final String action) {
 		return click(action, null);
 	}
 
-	public boolean click(final String action, final String option) {
+	public boolean hover(final String action, final String option) {
 		Client client = ctx.getClient();
 		if (client == null) {
 			return false;
@@ -60,9 +60,6 @@ public class Menu extends MethodProvider {
 			return false;
 		}
 		if (!client.isMenuOpen()) {
-			if (index == 0) {
-				return ctx.mouse.click(true);
-			}
 			if (ctx.mouse.click(false)) {
 				final long m = System.currentTimeMillis();
 				while (System.currentTimeMillis() - m < 100 && !client.isMenuOpen()) {
@@ -79,7 +76,26 @@ public class Menu extends MethodProvider {
 				}
 			}
 		}
-		return clickIndex(client, index);
+		return hoverIndex(client, index);
+	}
+
+	public boolean click(final String action) {
+		return click(action, null);
+	}
+
+	public boolean click(final String action, final String option) {
+		Client client = ctx.getClient();
+		if (client == null) {
+			return false;
+		}
+		int index = indexOf(action, option);
+		if (index == -1) {
+			return false;
+		}
+		if (!client.isMenuOpen() && index == 0) {
+			return ctx.mouse.click(true);
+		}
+		return hover(action, option) && ctx.mouse.click(true);
 	}
 
 	public boolean close() {
@@ -93,7 +109,7 @@ public class Menu extends MethodProvider {
 		return !client.isMenuOpen();
 	}
 
-	private boolean clickIndex(final Client client, int index) {
+	private boolean hoverIndex(final Client client, int index) {
 		int _index = 0, main = 0;
 		final NodeSubQueue menu;
 		collapsed:
@@ -112,7 +128,7 @@ public class Menu extends MethodProvider {
 							if (sub == 0) {
 								break collapsed;
 							} else {
-								return clickSub(client, main, sub);
+								return hoverSub(client, main, sub);
 							}
 						}
 					}
@@ -126,10 +142,10 @@ public class Menu extends MethodProvider {
 		return ctx.mouse.move(
 				client.getMenuX() + Random.nextInt(4, client.getMenuWidth() - 5),
 				client.getMenuY() + (21 + 16 * index + Random.nextInt(3, 12))
-		) && client.isMenuOpen() && ctx.mouse.click(true);
+		) && client.isMenuOpen();
 	}
 
-	private boolean clickSub(final Client client, final int main, final int sub) {
+	private boolean hoverSub(final Client client, final int main, final int sub) {
 		if (ctx.mouse.move(
 				client.getMenuX() + Random.nextInt(4, client.getMenuWidth() - 5),
 				client.getMenuY() + (21 + 16 * main + Random.nextInt(3, 12)))) {
@@ -144,7 +160,7 @@ public class Menu extends MethodProvider {
 						final int subY = client.getSubMenuY();
 						if (ctx.mouse.move(cX, subY + (16 * sub + Random.nextInt(3, 12) + 21))) {
 							Delay.sleep(Random.nextInt(125, 175));
-							return client.isMenuOpen() && ctx.mouse.click(true);
+							return client.isMenuOpen();
 						}
 					}
 				}
@@ -200,11 +216,11 @@ public class Menu extends MethodProvider {
 	}
 
 	public String[] getItems() {
-		final List<MenuItemNode> nodes = getMenuItemNodes();
-		final int len = nodes.size();
+		List<MenuItemNode> nodes = getMenuItemNodes();
+		int len = nodes.size();
 		int d = 0;
-		final String[] arr = new String[len];
-		for (final MenuItemNode node : nodes) {
+		String[] arr = new String[len];
+		for (MenuItemNode node : nodes) {
 			String a = node.getAction(), o = node.getOption();
 			if (a != null) {
 				a = StringUtil.stripHtml(a);

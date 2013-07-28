@@ -25,9 +25,7 @@ import org.powerbot.event.debug.DrawNPCs;
 import org.powerbot.event.debug.DrawObjects;
 import org.powerbot.event.debug.DrawPlayers;
 import org.powerbot.event.debug.MessageLogger;
-import org.powerbot.event.debug.TCamera;
 import org.powerbot.event.debug.TClientState;
-import org.powerbot.event.debug.TCurrentTab;
 import org.powerbot.event.debug.TDestination;
 import org.powerbot.event.debug.TLocation;
 import org.powerbot.event.debug.TMapBase;
@@ -56,11 +54,9 @@ public final class BotMenuView implements ActionListener {//TODO revamp debuggin
 	private static final String MODELS = "Models";
 	private static final String ITEMS = "Items";
 	private static final String ABILTIIES = "Abilities";
-	private static final String TAB = "Tab";
 	private static final String CLIENTSTATE = "Client State";
 	private static final String MENU = "Menu";
 	private static final String PLANE = "Plane";
-	private static final String CAMERA = "Camera";
 	private static final String MAPBASE = "Map Base";
 	private static final String LOCATION = "Location";
 	private static final String DESTINATION = "Destination";
@@ -93,14 +89,12 @@ public final class BotMenuView implements ActionListener {//TODO revamp debuggin
 		map.put(CLIENTSTATE, TClientState.class);
 		map.put(MENU, TMenu.class);
 		map.put(PLANE, TPlane.class);
-		map.put(CAMERA, TCamera.class);
 		map.put(MAPBASE, TMapBase.class);
 		map.put(LOCATION, TLocation.class);
 		map.put(DESTINATION, TDestination.class);
 		map.put(MOUSE, ViewMouse.class);
 		map.put(ITEMS, DrawItems.class);
 		map.put(ABILTIIES, DrawAbilities.class);
-		map.put(TAB, TCurrentTab.class);
 		map.put(MOUSEPOS, TMousePosition.class);
 		map.put(MESSAGES, MessageLogger.class);
 
@@ -114,11 +108,9 @@ public final class BotMenuView implements ActionListener {//TODO revamp debuggin
 		items.add(ITEMS);
 		items.add(ABILTIIES);
 		items.add(SEPERATOR);
-		items.add(TAB);
 		items.add(CLIENTSTATE);
 		items.add(MENU);
 		items.add(PLANE);
-		items.add(CAMERA);
 		items.add(MAPBASE);
 		items.add(LOCATION);
 		items.add(DESTINATION);

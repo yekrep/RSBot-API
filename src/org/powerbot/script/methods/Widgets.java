@@ -175,7 +175,7 @@ public class Widgets extends MethodProvider {
 					break;
 				}
 				if (c.click()) {
-					sleep(50, 300);
+					sleep(50, 150);
 				}
 			}
 		}

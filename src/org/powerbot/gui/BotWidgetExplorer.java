@@ -77,7 +77,7 @@ public class BotWidgetExplorer extends JFrame implements PaintListener {
 					infoArea.removeAll();
 					Component c = null;
 					if (node instanceof ComponentWrapper) {
-						highlightArea = ((ComponentWrapper) node).get().getBoundingRect();
+						highlightArea = ((ComponentWrapper) node).get().getViewportRect();
 						c = ((ComponentWrapper) node).get();
 					}
 					if (c == null) {
@@ -94,7 +94,7 @@ public class BotWidgetExplorer extends JFrame implements PaintListener {
 					addInfo("Type: ", Integer.toString(c.getType()));
 					addInfo("Special type: ", Integer.toString(c.getContentType()));
 					addInfo("Child id: ", Integer.toString(c.getItemId()));
-					addInfo("Child index: ", Integer.toString(c.getChildIndex()));
+					addInfo("Child index: ", Integer.toString(c.getItemIndex()));
 					addInfo("Texture id: ", Integer.toString(c.getTextureId()));
 					addInfo("Text: ", c.getText());
 					addInfo("Text color: ", Integer.toString(c.getTextColor()));

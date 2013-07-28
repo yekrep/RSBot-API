@@ -1,9 +1,11 @@
 package org.powerbot.client;
 
 public interface Callback {
-	public void updateRenderInfo(final Render render);
+	public void updateMinimapAngle(int angle);
 
-	public void notifyMessage(final int id, final String sender, final String message);
+	public void updateRenderInfo(Render render);
 
-	public void notifyObjectDefinitionLoad(final RSObjectDef def);
+	public void notifyMessage(int id, String sender, String message);
+
+	public void notifyObjectDefinitionLoad(RSObjectDef def);
 }

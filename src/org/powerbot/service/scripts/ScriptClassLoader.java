@@ -43,9 +43,6 @@ public final class ScriptClassLoader extends ClassLoader {
 
 	@Override
 	public Class<?> loadClass(final String name) throws ClassNotFoundException {
-		if (files == null) {
-			return super.loadClass(name);
-		}
 		final Class<?> clazz = findLoadedClass(name);
 		if (clazz != null) {
 			return clazz;

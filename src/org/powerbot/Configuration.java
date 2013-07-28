@@ -15,8 +15,8 @@ import org.powerbot.util.io.Resources;
 public class Configuration {
 	public static final String NAME = "RSBot";
 	public static final boolean FROMJAR, SERVEROS;
-	public static final int VERSION = 5000;
-	public static final boolean BETA = true;
+	public static final int VERSION = 5002;
+	public static final boolean BETA = false;
 	public static final OperatingSystem OS;
 	public static final File HOME, TEMP;
 
@@ -41,6 +41,7 @@ public class Configuration {
 		public static final String SCRIPTSAUTH = PROTOCOL + DOMAIN_SITE + "/scripts/api/auth/?{POST}a=%s&id=%s";
 		public static final String SCRIPTSCOLLECTION = PROTOCOL + DOMAIN_SITE + "/scripts/api/collection/?{POST}a=%s";
 		public static final String SCRIPTSSESSION = PROTOCOL + DOMAIN_SITE + "/scripts/api/session/?{POST}a=%s&s=%s&t0=%s&t1=%s";
+		public static final String SIGNIN_PAGE = PROTOCOL + DOMAIN_SITE + "/rsbot/signin/";
 		public static final String SIGNIN = PROTOCOL + DOMAIN_SITE + "/api/login/?{POST}u=%s&p=%s&a=%s";
 		public static final String LINKFILTER = "http://" + DOMAIN_SITE + "/api/safelink/?u=%s";
 
