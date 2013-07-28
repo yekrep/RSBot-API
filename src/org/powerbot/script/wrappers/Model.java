@@ -25,7 +25,12 @@ public abstract class Model extends MethodProvider {
 
 	public Model(MethodContext ctx, final AbstractModel abstractModel) {
 		super(ctx);
-		ModelCapture model = (ModelCapture) abstractModel;
+		ModelCapture model;
+		if (abstractModel instanceof ModelCapture) {
+			model = (ModelCapture) abstractModel;
+		} else {
+			model = (ModelCapture) ModelCapture.updateModel(abstractModel, null);
+		}
 		xPoints = model.getXPoints();
 		yPoints = model.getYPoints();
 		zPoints = model.getZPoints();
