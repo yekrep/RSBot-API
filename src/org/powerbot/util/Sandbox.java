@@ -98,12 +98,12 @@ public class Sandbox extends SecurityManager {
 
 	@Override
 	public void checkPermission(final Permission perm) {
-		final String loadLib = "loadLibrary.";
+		final String loadLib = "loadLibrary.", name = perm.getName();
 
 		if (perm instanceof RuntimePermission) {
-			if (perm.getName().equals("setSecurityManager")) {
+			if (name.equals("setSecurityManager")) {
 				throw new SecurityException();
-			} else if (perm.getName().startsWith(loadLib) && isGameThread()) {
+			} else if (name.startsWith(loadLib) && isGameThread()) {
 				final String lib = perm.getName().substring(loadLib.length());
 				final List<String> whitelist = new ArrayList<>();
 				whitelist.add("unpack");
