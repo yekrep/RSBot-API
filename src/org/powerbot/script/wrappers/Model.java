@@ -6,6 +6,7 @@ import java.awt.Polygon;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import org.powerbot.client.AbstractModel;
 import org.powerbot.client.ModelCapture;
 import org.powerbot.script.methods.Game;
 import org.powerbot.script.methods.MethodContext;
@@ -22,22 +23,17 @@ public abstract class Model extends MethodProvider {
 	protected int[] xPoints;
 	protected int[] zPoints;
 
-	public Model(MethodContext ctx, final org.powerbot.client.Model model) {
+	public Model(MethodContext ctx, final AbstractModel abstractModel) {
 		super(ctx);
+		ModelCapture model = (ModelCapture) abstractModel;
 		xPoints = model.getXPoints();
 		yPoints = model.getYPoints();
 		zPoints = model.getZPoints();
-		faceA = model.getIndices1();
-		faceB = model.getIndices2();
-		faceC = model.getIndices3();
-
-		if (model instanceof ModelCapture) {
-			numVertices = ((ModelCapture) model).getNumVertices();
-			numFaces = ((ModelCapture) model).getNumFaces();
-		} else {
-			numVertices = Math.min(xPoints.length, Math.min(yPoints.length, zPoints.length));
-			numFaces = Math.min(faceA.length, Math.min(faceB.length, faceC.length));
-		}
+		faceA = model.getFaceA();
+		faceB = model.getFaceB();
+		faceC = model.getFaceC();
+		numVertices = model.getNumVertices();
+		numFaces = model.getNumFaces();
 	}
 
 	public abstract int getX();

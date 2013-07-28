@@ -1,12 +1,13 @@
 package org.powerbot.script.wrappers;
 
+import org.powerbot.client.AbstractModel;
 import org.powerbot.client.RSInteractable;
 import org.powerbot.script.methods.MethodContext;
 
 public class RenderableModel extends Model {
 	private final RSInteractable interactable;
 
-	public RenderableModel(MethodContext ctx, final org.powerbot.client.Model model, final RSInteractable interactable) {
+	public RenderableModel(MethodContext ctx, final AbstractModel model, final RSInteractable interactable) {
 		super(ctx, model);
 		this.interactable = interactable;
 	}

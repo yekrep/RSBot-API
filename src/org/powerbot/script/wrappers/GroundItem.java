@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.lang.ref.WeakReference;
 
+import org.powerbot.client.AbstractModel;
 import org.powerbot.client.BaseInfo;
 import org.powerbot.client.Cache;
 import org.powerbot.client.Client;
@@ -71,12 +72,12 @@ public class GroundItem extends Interactive implements Identifiable, Nameable, S
 				final int graphicsIndex = ctx.game.toolkit.graphicsIndex;
 				Object model;
 				if (p != -1 && (model = ctx.game.lookup(table, (long) p | (long) graphicsIndex << 29)) != null &&
-						model instanceof org.powerbot.client.Model) {
-					return new RenderableModel(ctx, (org.powerbot.client.Model) model, itemPile);
+						model instanceof AbstractModel) {
+					return new RenderableModel(ctx, (AbstractModel) model, itemPile);
 				}
 
 				final int[] ids = {itemPile.getID_1(), itemPile.getID_2(), itemPile.getID_3()};
-				final org.powerbot.client.Model[] models = new org.powerbot.client.Model[ids.length];
+				final AbstractModel[] models = new AbstractModel[ids.length];
 
 				int i = 0;
 				for (final int id : ids) {
@@ -84,8 +85,8 @@ public class GroundItem extends Interactive implements Identifiable, Nameable, S
 						continue;
 					}
 					model = ctx.game.lookup(table, (long) id | (long) graphicsIndex << 29);
-					if (model != null && model instanceof org.powerbot.client.Model) {
-						models[i++] = (org.powerbot.client.Model) model;
+					if (model != null && model instanceof AbstractModel) {
+						models[i++] = (AbstractModel) model;
 					}
 				}
 

@@ -1,6 +1,6 @@
 package org.powerbot.client;
 
-public class ModelCapture implements Model {
+public class ModelCapture implements AbstractModel {
 	private int[] vertex_x;
 	private int[] vertex_y;
 	private int[] vertex_z;
@@ -11,22 +11,34 @@ public class ModelCapture implements Model {
 	private int numVertices;
 	private int numFaces;
 
-	private ModelCapture(final Model model) {
-		if (model == null) {
+	private ModelCapture(AbstractModel abstractModel) {
+		if (abstractModel == null) {
 			return;
 		}
-		vertex_x = model.getXPoints().clone();
-		vertex_y = model.getYPoints().clone();
-		vertex_z = model.getZPoints().clone();
-		numVertices = Math.min(vertex_x.length, Math.min(vertex_y.length, vertex_z.length));
 
-		face_a = model.getIndices1().clone();
-		face_b = model.getIndices2().clone();
-		face_c = model.getIndices3().clone();
+		if (abstractModel instanceof JavaModel) {
+			JavaModel model = (JavaModel) abstractModel;
+			vertex_x = model.getXPoints().clone();
+			vertex_y = model.getYPoints().clone();
+			vertex_z = model.getZPoints().clone();
+			face_a = model.getIndices1().clone();
+			face_b = model.getIndices2().clone();
+			face_c = model.getIndices3().clone();
+		} else if (abstractModel instanceof GLModel) {
+			GLModel model = (GLModel) abstractModel;
+			vertex_x = model.getXPoints().clone();
+			vertex_y = model.getYPoints().clone();
+			vertex_z = model.getZPoints().clone();
+			short[][] data = extract(model);
+			face_a = data[0];
+			face_b = data[1];
+			face_c = data[2];
+		}
+		numVertices = Math.min(vertex_x.length, Math.min(vertex_y.length, vertex_z.length));
 		numFaces = Math.min(face_a.length, Math.min(face_b.length, face_c.length));
 	}
 
-	public static Model updateModel(final Model game, Model capture) {
+	public static AbstractModel updateModel(AbstractModel game, AbstractModel capture) {
 		if (capture == null || !(capture instanceof ModelCapture)) {
 			capture = new ModelCapture(game);
 			return capture;
@@ -36,17 +48,39 @@ public class ModelCapture implements Model {
 		return reused_capture;
 	}
 
-	private void update(final Model model) {
-		if (model == null) {
+	private void update(AbstractModel abstractModel) {
+		if (abstractModel == null) {
 			return;
 		}
 
-		final int[] vertices_x = model.getXPoints();
-		final int[] vertices_y = model.getYPoints();
-		final int[] vertices_z = model.getZPoints();
-		final short[] indices1 = model.getIndices1();
-		final short[] indices2 = model.getIndices2();
-		final short[] indices3 = model.getIndices3();
+		int[] vertices_x;
+		int[] vertices_y;
+		int[] vertices_z;
+		short[] indices1;
+		short[] indices2;
+		short[] indices3;
+
+		if (abstractModel instanceof JavaModel) {
+			JavaModel model = (JavaModel) abstractModel;
+			vertices_x = model.getXPoints().clone();
+			vertices_y = model.getYPoints().clone();
+			vertices_z = model.getZPoints().clone();
+			indices1 = model.getIndices1().clone();
+			indices2 = model.getIndices2().clone();
+			indices3 = model.getIndices3().clone();
+		} else if (abstractModel instanceof GLModel) {
+			GLModel model = (GLModel) abstractModel;
+			vertices_x = model.getXPoints().clone();
+			vertices_y = model.getYPoints().clone();
+			vertices_z = model.getZPoints().clone();
+			short[][] data = extract(model);
+			indices1 = data[0];
+			indices2 = data[1];
+			indices3 = data[2];
+		} else {
+			return;
+		}
+
 		final int numVertices = Math.min(vertices_x.length, Math.min(vertices_y.length, vertices_z.length));
 		final int numFaces = Math.min(indices1.length, Math.min(indices2.length, indices3.length));
 		if (numVertices > this.numVertices) {
@@ -86,15 +120,15 @@ public class ModelCapture implements Model {
 		return vertex_z;
 	}
 
-	public short[] getIndices1() {
+	public short[] getFaceA() {
 		return face_a;
 	}
 
-	public short[] getIndices2() {
+	public short[] getFaceB() {
 		return face_b;
 	}
 
-	public short[] getIndices3() {
+	public short[] getFaceC() {
 		return face_c;
 	}
 
@@ -104,5 +138,21 @@ public class ModelCapture implements Model {
 
 	public int getNumFaces() {
 		return numFaces;
+	}
+
+	public short[][] extract(GLModel model) {
+		GLTriangle[] triangles = model.getTriangles();
+		if (triangles != null) {
+			int len = triangles.length;
+			short[][] arr = new short[3][len];
+			for (int i = 0; i < len; i++) {
+				GLTriangle triangle = triangles[i];
+				arr[0][i] = (short) triangle.getAPoint();
+				arr[1][i] = (short) triangle.getBPoint();
+				arr[2][i] = (short) triangle.getCPoint();
+			}
+			return arr;
+		}
+		return new short[3][];
 	}
 }

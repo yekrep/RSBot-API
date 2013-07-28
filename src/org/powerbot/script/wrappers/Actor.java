@@ -2,6 +2,7 @@ package org.powerbot.script.wrappers;
 
 import java.awt.Point;
 
+import org.powerbot.client.AbstractModel;
 import org.powerbot.client.Client;
 import org.powerbot.client.CombatStatus;
 import org.powerbot.client.CombatStatusData;
@@ -32,7 +33,7 @@ public abstract class Actor extends Interactive implements Nameable, Locatable, 
 	public Model getModel() {
 		final RSCharacter character = getAccessor();
 		if (character != null) {
-			final org.powerbot.client.Model model = character.getModel();
+			final AbstractModel model = character.getModel();
 			if (model != null) {
 				return new ActorModel(ctx, model, character);
 			}
