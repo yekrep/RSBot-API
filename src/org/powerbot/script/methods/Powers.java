@@ -267,6 +267,22 @@ public class Powers extends MethodProvider {
 		return isQuickSelection() == quick;
 	}
 
+	public boolean setQuickPrayers(boolean active) {
+		if (isQuickPrayers() == active) {
+			return true;
+		}
+		if (!ctx.widgets.get(CombatBar.WIDGET, CombatBar.COMPONENT_BUTTON_PRAYER).interact(active ? "on" : "off")) {
+			return false;
+		}
+		for (int i = 0; i < 10; i++) {
+			if (isQuickPrayers() == active) {
+				break;
+			}
+			sleep(100, 200);
+		}
+		return isQuickPrayers() == active;
+	}
+
 	public boolean setPrayerActive(Effect effect, boolean active) {
 		if (ctx.skills.getLevel(Skills.PRAYER) < effect.getLevel()) {
 			return false;
