@@ -156,6 +156,7 @@ public class Map extends MethodProvider {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	private RSObject rsObject(GameObject object) {
 		try {
 			Field field = object.getClass().getDeclaredField("object");
