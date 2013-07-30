@@ -54,18 +54,20 @@ public class Bank extends ItemQuery<Item> {
 	}
 
 	private Interactive getBank() {
-		final Filter<Interactive> f = new Filter<Interactive>() {
+		Filter<Interactive> f = new Filter<Interactive>() {
 			@Override
 			public boolean accept(final Interactive interactive) {
 				return interactive.isOnScreen();
 			}
 		};
 
-		final List<Interactive> interactives = new ArrayList<>();
+		List<Interactive> interactives = new ArrayList<>();
 		ctx.npcs.select().id(BANK_NPC_IDS).select(f).nearest().limit(1).addTo(interactives);
-		ctx.objects.select().id(BANK_BOOTH_IDS).select(f).nearest().limit(1).addTo(interactives);
-		ctx.objects.select().id(BANK_COUNTER_IDS).select(f).nearest().limit(1).addTo(interactives);
-		ctx.objects.select().id(BANK_CHEST_IDS).select(f).nearest().limit(1).addTo(interactives);
+		List<GameObject> cache = new ArrayList<>();
+		ctx.objects.select().addTo(cache);
+		ctx.objects.id(BANK_BOOTH_IDS).select(f).nearest().limit(1).addTo(interactives);
+		ctx.objects.select(cache).id(BANK_COUNTER_IDS).select(f).nearest().limit(1).addTo(interactives);
+		ctx.objects.select(cache).id(BANK_CHEST_IDS).select(f).nearest().limit(1).addTo(interactives);
 
 		if (interactives.isEmpty()) {
 			return ctx.objects.getNil();
@@ -75,17 +77,18 @@ public class Bank extends ItemQuery<Item> {
 	}
 
 	public Locatable getNearest() {
-		final List<Locatable> interactives = new ArrayList<>();
-		ctx.npcs.select().id(BANK_NPC_IDS).nearest().limit(1).addTo(interactives);
-		ctx.objects.select().id(BANK_BOOTH_IDS).nearest().limit(1).addTo(interactives);
-		ctx.objects.select().id(BANK_COUNTER_IDS).nearest().limit(1).addTo(interactives);
-		ctx.objects.select().id(BANK_CHEST_IDS).nearest().limit(1).addTo(interactives);
-
-		if (interactives.isEmpty()) {
-			return Tile.NIL;
+		Locatable nearest = Tile.NIL;
+		for (Npc npc : ctx.npcs.select().id(BANK_NPC_IDS).nearest().limit(1)) {
+			nearest = npc;
 		}
-
-		return interactives.get(Random.nextInt(0, interactives.size()));
+		Tile loc = ctx.players.local().getLocation();
+		for (GameObject object : ctx.objects.select().
+				id(BANK_BOOTH_IDS, BANK_COUNTER_IDS, BANK_CHEST_IDS).nearest().limit(1)) {
+			if (loc.distanceTo(object) < loc.distanceTo(nearest)) {
+				nearest = object;
+			}
+		}
+		return nearest;
 	}
 
 	public boolean isPresent() {
