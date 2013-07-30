@@ -82,6 +82,7 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 	}
 
 	public void start() {
+		//TODO: prompt user when this fails.
 		log.info("Loading bot");
 		Crawler crawler = new Crawler();
 		if (!crawler.crawl()) {
