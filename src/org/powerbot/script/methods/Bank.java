@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.powerbot.script.lang.Filter;
 import org.powerbot.script.lang.ItemQuery;
+import org.powerbot.script.lang.Locatable;
 import org.powerbot.script.util.Delay;
 import org.powerbot.script.util.Random;
 import org.powerbot.script.util.Timer;
@@ -16,6 +17,7 @@ import org.powerbot.script.wrappers.GameObject;
 import org.powerbot.script.wrappers.Interactive;
 import org.powerbot.script.wrappers.Item;
 import org.powerbot.script.wrappers.Npc;
+import org.powerbot.script.wrappers.Tile;
 import org.powerbot.script.wrappers.Widget;
 
 public class Bank extends ItemQuery<Item> {
@@ -66,19 +68,32 @@ public class Bank extends ItemQuery<Item> {
 		ctx.objects.select().id(BANK_CHEST_IDS).select(f).nearest().limit(1).addTo(interactives);
 
 		if (interactives.isEmpty()) {
-			return null;
+			return ctx.objects.getNil();
+		}
+
+		return interactives.get(Random.nextInt(0, interactives.size()));
+	}
+
+	public Locatable getNearest() {
+		final List<Locatable> interactives = new ArrayList<>();
+		ctx.npcs.select().id(BANK_NPC_IDS).nearest().limit(1).addTo(interactives);
+		ctx.objects.select().id(BANK_BOOTH_IDS).nearest().limit(1).addTo(interactives);
+		ctx.objects.select().id(BANK_COUNTER_IDS).nearest().limit(1).addTo(interactives);
+		ctx.objects.select().id(BANK_CHEST_IDS).nearest().limit(1).addTo(interactives);
+
+		if (interactives.isEmpty()) {
+			return Tile.NIL;
 		}
 
 		return interactives.get(Random.nextInt(0, interactives.size()));
 	}
 
 	public boolean isPresent() {
-		return getBank() != null;
+		return getNearest() != Tile.NIL;
 	}
 
 	public boolean isOnScreen() {
-		Interactive interactive = getBank();
-		return interactive != null && interactive.isOnScreen();
+		return getBank().isValid();
 	}
 
 	public boolean isOpen() {
@@ -91,10 +106,14 @@ public class Bank extends ItemQuery<Item> {
 		}
 		Interactive interactive = getBank();
 		final int id;
-		if (interactive instanceof Npc) {
-			id = ((Npc) interactive).getId();
-		} else if (interactive instanceof GameObject) {
-			id = ((GameObject) interactive).getId();
+		if (interactive.isValid()) {
+			if (interactive instanceof Npc) {
+				id = ((Npc) interactive).getId();
+			} else if (interactive instanceof GameObject) {
+				id = ((GameObject) interactive).getId();
+			} else {
+				id = -1;
+			}
 		} else {
 			id = -1;
 		}
