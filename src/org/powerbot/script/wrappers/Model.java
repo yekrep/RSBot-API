@@ -14,6 +14,7 @@ import org.powerbot.script.methods.MethodProvider;
 import org.powerbot.script.util.Random;
 
 public abstract class Model extends MethodProvider {
+	private final int height;
 	protected final int[] yPoints;
 	protected final short[] faceA;
 	protected final short[] faceB;
@@ -23,7 +24,11 @@ public abstract class Model extends MethodProvider {
 	protected int[] xPoints;
 	protected int[] zPoints;
 
-	public Model(MethodContext ctx, final AbstractModel abstractModel) {
+	public Model(MethodContext ctx, AbstractModel abstractModel) {
+		this(ctx, abstractModel, 0);
+	}
+
+	public Model(MethodContext ctx, AbstractModel abstractModel, int height) {
 		super(ctx);
 		ModelCapture model;
 		if (abstractModel instanceof ModelCapture) {
@@ -31,6 +36,7 @@ public abstract class Model extends MethodProvider {
 		} else {
 			model = (ModelCapture) ModelCapture.updateModel(abstractModel, null);
 		}
+		this.height = height;
 		xPoints = model.getXPoints();
 		yPoints = model.getYPoints();
 		zPoints = model.getZPoints();
@@ -51,21 +57,21 @@ public abstract class Model extends MethodProvider {
 
 	public int nextTriangle() {
 		update();
-		final int mark = Random.nextInt(0, numFaces);
+		int mark = Random.nextInt(0, numFaces);
 		int index = firstOnScreenIndex(mark, numFaces);
 		return index != -1 ? index : firstOnScreenIndex(0, mark);
 	}
 
-	public Point getCentroid(final int index) {
+	public Point getCentroid(int index) {
 		if (index < 0 || index >= numFaces) {
 			return null;
 		}
 		update();
-		final int x = getX();
-		final int y = getY();
-		final int plane = getPlane();
-		final int height = ctx.game.tileHeight(x, y, plane);
-		final Point localPoint = ctx.game.worldToScreen(
+		int x = getX();
+		int y = getY();
+		int plane = getPlane();
+		int height = ctx.game.tileHeight(x, y, plane) + this.height;
+		Point localPoint = ctx.game.worldToScreen(
 				x + (this.xPoints[this.faceA[index]] + this.xPoints[this.faceB[index]] + this.xPoints[this.faceC[index]]) / 3,
 				height + (this.yPoints[this.faceA[index]] + this.yPoints[this.faceB[index]] + this.yPoints[this.faceC[index]]) / 3,
 				y + (this.zPoints[this.faceA[index]] + this.zPoints[this.faceB[index]] + this.zPoints[this.faceC[index]]) / 3
@@ -84,10 +90,10 @@ public abstract class Model extends MethodProvider {
 		int totalHeightAverage = 0;
 		int index = 0;
 
-		final int x = getX();
-		final int y = getY();
-		final int plane = getPlane();
-		final int height = ctx.game.tileHeight(x, y, plane);
+		int x = getX();
+		int y = getY();
+		int plane = getPlane();
+		int height = ctx.game.tileHeight(x, y, plane) + this.height;
 
 		while (index < numFaces) {
 			totalXAverage += (xPoints[faceA[index]] + xPoints[faceB[index]] + xPoints[faceC[index]]) / 3;
@@ -96,7 +102,7 @@ public abstract class Model extends MethodProvider {
 			index++;
 		}
 
-		final Point averagePoint = ctx.game.worldToScreen(
+		Point averagePoint = ctx.game.worldToScreen(
 				x + totalXAverage / numFaces,
 				height + totalHeightAverage / numFaces,
 				y + totalYAverage / numFaces
@@ -110,21 +116,21 @@ public abstract class Model extends MethodProvider {
 
 	public Point getNextPoint() {
 		update();
-		final int mark = Random.nextInt(0, numFaces);
+		int mark = Random.nextInt(0, numFaces);
 		Point point = firstOnScreenCentroid(mark, numFaces);
 		return point != null ? point : (point = firstOnScreenCentroid(0, mark)) != null ? point : new Point(-1, -1);
 	}
 
 	public Polygon[] getTriangles() {
-		final int[][] points = projectVertices();
-		final ArrayList<Polygon> polygons = new ArrayList<>(numFaces);
+		int[][] points = projectVertices();
+		ArrayList<Polygon> polygons = new ArrayList<>(numFaces);
 		for (int index = 0; index < numFaces; index++) {
-			final int index1 = faceA[index];
-			final int index2 = faceB[index];
-			final int index3 = faceC[index];
+			int index1 = faceA[index];
+			int index2 = faceB[index];
+			int index3 = faceC[index];
 
-			final int xPoints[] = new int[3];
-			final int yPoints[] = new int[3];
+			int xPoints[] = new int[3];
+			int yPoints[] = new int[3];
 
 			xPoints[0] = points[index1][0];
 			yPoints[0] = points[index1][1];
@@ -140,14 +146,14 @@ public abstract class Model extends MethodProvider {
 		return polygons.toArray(new Polygon[polygons.size()]);
 	}
 
-	public boolean contains(final Point point) {
-		final int x = point.x, y = point.y;
-		final int[][] points = projectVertices();
+	public boolean contains(Point point) {
+		int x = point.x, y = point.y;
+		int[][] points = projectVertices();
 		int index = 0;
 		while (index < numFaces) {
-			final int index1 = faceA[index];
-			final int index2 = faceB[index];
-			final int index3 = faceC[index];
+			int index1 = faceA[index];
+			int index2 = faceB[index];
+			int index3 = faceC[index];
 			if (points[index1][2] + points[index2][2] + points[index3][2] == 3 &&
 					barycentric(x, y, points[index1][0], points[index1][1], points[index2][0], points[index2][1], points[index3][0], points[index3][1])) {
 				return true;
@@ -157,8 +163,8 @@ public abstract class Model extends MethodProvider {
 		return false;
 	}
 
-	public void drawWireFrame(final Graphics render) {
-		final int[][] screen = projectVertices();
+	public void drawWireFrame(Graphics render) {
+		int[][] screen = projectVertices();
 
 		for (int index = 0; index < numFaces; index++) {
 			int index1 = faceA[index];
@@ -180,14 +186,14 @@ public abstract class Model extends MethodProvider {
 		}
 	}
 
-	private int firstOnScreenIndex(final int pos, final int length) {
-		final int x = getX();
-		final int y = getY();
-		final int plane = getPlane();
-		final int h = ctx.game.tileHeight(x, y, plane);
+	private int firstOnScreenIndex(int pos, int length) {
+		int x = getX();
+		int y = getY();
+		int plane = getPlane();
+		int h = ctx.game.tileHeight(x, y, plane) + this.height;
 		int index = pos;
 		while (index < length) {
-			final Point point = ctx.game.worldToScreen(
+			Point point = ctx.game.worldToScreen(
 					x + (this.xPoints[this.faceA[index]] + this.xPoints[this.faceB[index]] + this.xPoints[this.faceC[index]]) / 3,
 					h + (this.yPoints[this.faceA[index]] + this.yPoints[this.faceB[index]] + this.yPoints[this.faceC[index]]) / 3,
 					y + (this.zPoints[this.faceA[index]] + this.zPoints[this.faceB[index]] + this.zPoints[this.faceC[index]]) / 3
@@ -200,17 +206,17 @@ public abstract class Model extends MethodProvider {
 		return -1;
 	}
 
-	private Point firstOnScreenCentroid(final int pos, final int length) {
-		final int index = firstOnScreenIndex(pos, length);
+	private Point firstOnScreenCentroid(int pos, int length) {
+		int index = firstOnScreenIndex(pos, length);
 		return index != -1 ? getCentroid(index) : null;
 	}
 
 	private boolean barycentric(int x, int y, int aX, int aY, int bX, int bY, int cX, int cY) {
-		final int v00 = cX - aX, v01 = cY - aY;
-		final int v10 = bX - aX, v11 = bY - aY;
-		final int v20 = x - aX, v21 = y - aY;
-		final int d00 = v00 * v00 + v01 * v01, d01 = v00 * v10 + v01 * v11, d02 = v00 * v20 + v01 * v21;
-		final int d11 = v10 * v10 + v11 * v11, d12 = v10 * v20 + v11 * v21;
+		int v00 = cX - aX, v01 = cY - aY;
+		int v10 = bX - aX, v11 = bY - aY;
+		int v20 = x - aX, v21 = y - aY;
+		int d00 = v00 * v00 + v01 * v01, d01 = v00 * v10 + v01 * v11, d02 = v00 * v20 + v01 * v21;
+		int d11 = v10 * v10 + v11 * v11, d12 = v10 * v20 + v11 * v21;
 		float denom = 1.0f / (d00 * d11 - d01 * d01);
 		float u = (d11 * d02 - d01 * d12) * denom;
 		float v = (d00 * d12 - d01 * d02) * denom;
@@ -218,24 +224,24 @@ public abstract class Model extends MethodProvider {
 	}
 
 	private int[][] projectVertices() {
-		final Game.Toolkit toolkit = ctx.game.toolkit;
-		final Game.Viewport viewport = ctx.game.viewport;
+		Game.Toolkit toolkit = ctx.game.toolkit;
+		Game.Viewport viewport = ctx.game.viewport;
 
 		update();
-		final int locX = getX();
-		final int locY = getY();
-		final int plane = getPlane();
-		final int height = ctx.game.tileHeight(locX, locY, plane);
+		int locX = getX();
+		int locY = getY();
+		int plane = getPlane();
+		int height = ctx.game.tileHeight(locX, locY, plane) + this.height;
 
-		final int[][] screen = new int[numVertices][3];
+		int[][] screen = new int[numVertices][3];
 		for (int index = 0; index < numVertices; index++) {
-			final int x = xPoints[index] + locX;
-			final int y = yPoints[index] + height;
-			final int z = zPoints[index] + locY;
+			int x = xPoints[index] + locX;
+			int y = yPoints[index] + height;
+			int z = zPoints[index] + locY;
 
-			final float _z = (viewport.zOff + (viewport.zX * x + viewport.zY * y + viewport.zZ * z));
-			final float _x = (viewport.xOff + (viewport.xX * x + viewport.xY * y + viewport.xZ * z));
-			final float _y = (viewport.yOff + (viewport.yX * x + viewport.yY * y + viewport.yZ * z));
+			float _z = (viewport.zOff + (viewport.zX * x + viewport.zY * y + viewport.zZ * z));
+			float _x = (viewport.xOff + (viewport.xX * x + viewport.xY * y + viewport.xZ * z));
+			float _y = (viewport.yOff + (viewport.yX * x + viewport.yY * y + viewport.yZ * z));
 
 			if (_x >= -_z && _x <= _z && _y >= -_z && _y <= _z) {
 				screen[index][0] = Math.round(toolkit.absoluteX + (toolkit.xMultiplier * _x) / _z);
@@ -256,11 +262,11 @@ public abstract class Model extends MethodProvider {
 	}
 
 	@Override
-	public boolean equals(final Object o) {
+	public boolean equals(Object o) {
 		if (o == null || !(o instanceof Model)) {
 			return false;
 		}
-		final Model model = (Model) o;
+		Model model = (Model) o;
 		return Arrays.equals(faceA, model.faceA) &&
 				Arrays.equals(xPoints, model.xPoints) && Arrays.equals(yPoints, model.yPoints) && Arrays.equals(zPoints, model.zPoints);
 	}
