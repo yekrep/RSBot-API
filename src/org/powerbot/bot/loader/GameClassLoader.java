@@ -1,4 +1,4 @@
-package org.powerbot.bot.nloader;
+package org.powerbot.bot.loader;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -10,11 +10,11 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
 
-import org.powerbot.bot.nloader.bytecode.AbstractProcessor;
-import org.powerbot.bot.nloader.bytecode.AppletTransform;
-import org.powerbot.bot.nloader.bytecode.ClassLoaderTransform;
-import org.powerbot.bot.nloader.bytecode.ListClassesTransform;
-import org.powerbot.bot.nloader.bytecode.Processor;
+import org.powerbot.bot.loader.bytecode.AbstractProcessor;
+import org.powerbot.bot.loader.bytecode.AppletTransform;
+import org.powerbot.bot.loader.bytecode.ClassLoaderTransform;
+import org.powerbot.bot.loader.bytecode.ListClassesTransform;
+import org.powerbot.bot.loader.bytecode.Processor;
 
 public class GameClassLoader extends ClassLoader {
 	private final Map<String, byte[]> resources = new HashMap<>();

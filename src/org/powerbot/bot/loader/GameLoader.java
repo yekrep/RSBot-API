@@ -1,4 +1,4 @@
-package org.powerbot.bot.nloader;
+package org.powerbot.bot.loader;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -12,7 +12,6 @@ import java.util.concurrent.Callable;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
 
-import org.powerbot.bot.loader.Crawler;
 import org.powerbot.util.io.HttpClient;
 import org.powerbot.util.io.IOHelper;
 

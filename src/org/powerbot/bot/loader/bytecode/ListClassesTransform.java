@@ -1,4 +1,4 @@
-package org.powerbot.bot.nloader.bytecode;
+package org.powerbot.bot.loader.bytecode;
 
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.AbstractInsnNode;
@@ -11,7 +11,7 @@ import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.TypeInsnNode;
 import org.objectweb.asm.tree.VarInsnNode;
-import org.powerbot.bot.nloader.Bridge;
+import org.powerbot.bot.loader.Bridge;
 
 public class ListClassesTransform implements Transform {
 	private AppletTransform parent;

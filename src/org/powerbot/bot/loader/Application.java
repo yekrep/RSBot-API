@@ -1,4 +1,4 @@
-package org.powerbot.bot.nloader;
+package org.powerbot.bot.loader;
 
 public interface Application {
 	public void setBridge(Bridge bridge);

@@ -1,4 +1,4 @@
-package org.powerbot.bot.nloader;
+package org.powerbot.bot.loader;
 
 import java.applet.Applet;
 import java.io.IOException;
