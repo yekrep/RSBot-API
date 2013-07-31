@@ -78,8 +78,8 @@ public class BotChrome extends JFrame implements Closeable {
 
 		final ExecutorService exec = Executors.newFixedThreadPool(1);
 		final List<Future<Boolean>> tasks = new ArrayList<>();
-		tasks.add(exec.submit(new UpdateCheck()));
 		tasks.add(exec.submit(new OSXAdapt()));
+		tasks.add(exec.submit(new UpdateCheck()));
 		exec.shutdown();
 
 		Bot bot = null;
