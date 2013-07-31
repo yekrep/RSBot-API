@@ -1,6 +1,5 @@
 package org.powerbot.script.wrappers;
 
-import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;
 
 import org.powerbot.client.AbstractModel;
@@ -11,10 +10,10 @@ import org.powerbot.script.methods.Game;
 import org.powerbot.script.methods.MethodContext;
 
 class ActorModel extends Model {
-	private final Reference<RSCharacter> character;
+	private final WeakReference<RSCharacter> character;
 	private final int[] x_base, z_base;
 
-	public ActorModel(MethodContext ctx, final AbstractModel model, final RSCharacter character) {
+	public ActorModel(MethodContext ctx, AbstractModel model, RSCharacter character) {
 		super(ctx, model);
 		this.character = new WeakReference<>(character);
 		x_base = xPoints;
@@ -25,9 +24,9 @@ class ActorModel extends Model {
 
 	@Override
 	public int getX() {
-		final RSCharacter character = this.character.get();
-		final RSInteractableData data = character != null ? character.getData() : null;
-		final RSInteractableLocation location = data != null ? data.getLocation() : null;
+		RSCharacter character = this.character.get();
+		RSInteractableData data = character != null ? character.getData() : null;
+		RSInteractableLocation location = data != null ? data.getLocation() : null;
 		if (location != null) {
 			return (int) location.getX();
 		}
@@ -36,9 +35,9 @@ class ActorModel extends Model {
 
 	@Override
 	public int getY() {
-		final RSCharacter character = this.character.get();
-		final RSInteractableData data = character != null ? character.getData() : null;
-		final RSInteractableLocation location = data != null ? data.getLocation() : null;
+		RSCharacter character = this.character.get();
+		RSInteractableData data = character != null ? character.getData() : null;
+		RSInteractableLocation location = data != null ? data.getLocation() : null;
 		if (location != null) {
 			return (int) location.getY();
 		}
@@ -47,20 +46,20 @@ class ActorModel extends Model {
 
 	@Override
 	public byte getPlane() {
-		final RSCharacter character = this.character.get();
+		RSCharacter character = this.character.get();
 		return character != null ? character.getPlane() : -1;
 	}
 
 	@Override
 	public void update() {
-		final RSCharacter character = this.character.get();
+		RSCharacter character = this.character.get();
 		if (character == null) {
 			return;
 		}
 
-		final int theta = character.getOrientation() & 0x3fff;
-		final int sin = Game.SIN_TABLE[theta];
-		final int cos = Game.COS_TABLE[theta];
+		int theta = character.getOrientation() & 0x3fff;
+		int sin = Game.SIN_TABLE[theta];
+		int cos = Game.COS_TABLE[theta];
 		for (int i = 0; i < numVertices; ++i) {
 			xPoints[i] = x_base[i] * cos + z_base[i] * sin >> 15;
 			zPoints[i] = z_base[i] * cos - x_base[i] * sin >> 15;
