@@ -8,6 +8,7 @@ import java.util.Map;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.tree.ClassNode;
 import org.powerbot.bot.loader.transform.adapter.AddFieldAdapter;
 import org.powerbot.bot.loader.transform.adapter.AddGetterAdapter;
 import org.powerbot.bot.loader.transform.adapter.AddInterfaceAdapter;
@@ -207,12 +208,14 @@ public class TransformSpec {
 		}
 	}
 
-	public byte[] process(final String name, final byte[] data) {
-		final ClassReader reader = new ClassReader(data);
-		final ClassVisitor adapter = adapters.get(name);
+	public byte[] process(final byte[] data) {
+		ClassNode node = new ClassNode();
+		ClassReader reader = new ClassReader(data);
+		reader.accept(node, ClassReader.SKIP_DEBUG | ClassReader.SKIP_FRAMES);
+		final ClassVisitor adapter = adapters.get(node.name);
 		if (adapter != null) {
 			reader.accept(adapter, ClassReader.SKIP_FRAMES | ClassReader.SKIP_DEBUG);
-			return writers.get(name).toByteArray();
+			return writers.get(node.name).toByteArray();
 		}
 		return data;
 	}
