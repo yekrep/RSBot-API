@@ -27,7 +27,7 @@ public class RSClassLoader extends ClassLoader {
 	@Override
 	public final Class<?> loadClass(final String name) throws ClassNotFoundException {
 		if (classes.containsKey(name)) {
-			final byte[] buffer = spec.process(name, classes.remove(name));
+			final byte[] buffer = spec.process(classes.remove(name));
 			try {
 				return defineClass(name, buffer, 0, buffer.length, domain);
 			} catch (final Throwable t) {
