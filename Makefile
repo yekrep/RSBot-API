@@ -1,5 +1,5 @@
 CC=javac
-CFLAGS=-g:none -classpath "/Library/Java/JavaVirtualMachines/jdk1.7.0_17.jdk/Contents/Home/jre/lib/jfxrt.jar"
+CFLAGS=-g:none
 
 SRC=src
 LIB=lib

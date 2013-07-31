@@ -1,7 +1,4 @@
 <config>
-	<classpath>
-		<jar name="/Library/Java/JavaVirtualMachines/jdk1.7.0_17.jdk/Contents/Home/jre/lib/jfxrt.jar" />
-	</classpath>
 	<jars>
 		<jar in="RSBot.jar" out="RSBot.jar" />
 	</jars>
