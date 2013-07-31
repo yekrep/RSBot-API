@@ -11,9 +11,9 @@ import java.util.logging.Logger;
 
 import org.powerbot.bot.loader.Crawler;
 import org.powerbot.bot.loader.transform.TransformSpec;
-import org.powerbot.bot.nloader.GameLoader;
-import org.powerbot.bot.nloader.GameStub;
-import org.powerbot.bot.nloader.NRSLoader;
+import org.powerbot.bot.loader.GameLoader;
+import org.powerbot.bot.loader.GameStub;
+import org.powerbot.bot.loader.NRSLoader;
 import org.powerbot.client.Client;
 import org.powerbot.client.Constants;
 import org.powerbot.event.EventMulticaster;
@@ -42,7 +42,6 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 	private final TextPaintEvent textPaintEvent;
 	private final EventMulticaster multicaster;
 	private volatile Applet appletContainer;
-	private volatile BotStub stub;
 	private BufferedImage image;
 	public AtomicBoolean refreshing;
 	private Constants constants;
@@ -56,7 +55,6 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 
 	public Bot() {
 		appletContainer = null;
-		stub = null;
 
 		threadGroup = new ThreadGroup(Bot.class.getName() + "@" + Integer.toHexString(hashCode()) + "-game");
 
@@ -199,16 +197,11 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 	}
 
 	void terminateApplet() {
-		if (stub != null) {
-			log.fine("Terminating stub activities");
-			stub.setActive(false);
-		}
 		if (appletContainer != null) {
 			log.fine("Shutting down applet");
 			appletContainer.stop();
 			appletContainer.destroy();
 			appletContainer = null;
-			stub = null;
 			this.ctx.setClient(null);
 		}
 	}

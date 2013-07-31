@@ -11,7 +11,6 @@ import java.util.Map.Entry;
 import java.util.logging.Logger;
 
 import org.powerbot.Configuration;
-import org.powerbot.bot.RSLoader;
 import org.powerbot.service.GameAccounts;
 import org.powerbot.service.NetworkAccount;
 import org.powerbot.service.scripts.ScriptClassLoader;
@@ -178,10 +177,6 @@ public class Sandbox extends SecurityManager {
 					throw new SecurityException();
 				}
 			}
-		}
-
-		if (isCallingClass(RSLoader.class)) {
-			return;
 		}
 
 		if ((path + File.separator).startsWith(Configuration.HOME.getAbsolutePath()) &&
