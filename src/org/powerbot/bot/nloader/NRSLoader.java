@@ -51,7 +51,7 @@ public class NRSLoader implements Runnable {
 	public void run() {
 		Class<?> code;
 		try {
-			code = classLoader.loadClass("Rs2Applet");
+			code = classLoader.loadClass(gameLoader.getCrawler().clazz);
 		} catch (ClassNotFoundException e) {
 			code = null;
 		}
