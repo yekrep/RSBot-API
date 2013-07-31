@@ -90,7 +90,8 @@ public class Crawler {
 	private String download(final String url, final String referer) {
 		try {
 			final HttpURLConnection con = HttpClient.getHttpConnection(new URL(url));
-			con.addRequestProperty("Referer", referer);
+			con.setRequestProperty("User-Agent", HttpClient.HTTP_USERAGENT_FAKE);
+			con.setRequestProperty("Referer", referer);
 			return IOHelper.readString(HttpClient.getInputStream(con));
 		} catch (final IOException ignored) {
 		}

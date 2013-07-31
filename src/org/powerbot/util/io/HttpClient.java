@@ -55,26 +55,14 @@ public class HttpClient {
 		HTTP_USERAGENT_FAKE = s.toString();
 	}
 
-	public static boolean isGameURL(final URL url) {
-		return url.getHost().equalsIgnoreCase(Configuration.URLs.GAME) || url.getHost().toLowerCase().endsWith(Configuration.URLs.GAME);
-	}
-
-	public static String getHttpUserAgent(final URL url) {
-		return isGameURL(url) ? HTTP_USERAGENT_FAKE : HTTP_USERAGENT_REAL;
-	}
-
 	public static HttpURLConnection getHttpConnection(final URL url) throws IOException {
 		final HttpURLConnection con = (HttpURLConnection) url.openConnection();
 		con.addRequestProperty("Host", url.getHost());
-		con.addRequestProperty("User-Agent", getHttpUserAgent(url));
+		con.addRequestProperty("User-Agent", HTTP_USERAGENT_REAL);
 		con.addRequestProperty("Accept-Encoding", "gzip, deflate");
 		con.addRequestProperty("Accept-Charset", "ISO-8859-1,UTF-8;q=0.7,*;q=0.7");
 		con.addRequestProperty("Accept-Language", "en-us,en;q=0.5");
 		con.addRequestProperty("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
-		if (!isGameURL(url)) {
-			con.addRequestProperty("Connection", "close");
-			con.addRequestProperty("Referer", url.toString());
-		}
 		con.setConnectTimeout(10000);
 		return con;
 	}
