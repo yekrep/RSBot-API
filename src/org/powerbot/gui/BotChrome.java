@@ -18,6 +18,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 import org.powerbot.Configuration;
@@ -97,6 +99,16 @@ public class BotChrome extends JFrame implements Closeable {
 			new Thread(bot.threadGroup, bot).start();
 		}
 		this.bot = bot;
+
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				JOptionPane.showMessageDialog(BotChrome.this,
+						"Ban rates are currently at high levels.\nYou are not advised to play on your main accounts." +
+						"\n\nWe are working hard to mitigate these ban waves.",
+						"Warning", JOptionPane.WARNING_MESSAGE);
+			}
+		});
 
 		System.gc();
 	}
