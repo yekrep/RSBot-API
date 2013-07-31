@@ -1,12 +1,19 @@
 package org.powerbot.bot;
 
+import java.applet.Applet;
 import java.awt.Canvas;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Logger;
 
+import org.powerbot.bot.loader.Crawler;
+import org.powerbot.bot.loader.transform.TransformSpec;
+import org.powerbot.bot.nloader.GameLoader;
+import org.powerbot.bot.nloader.GameStub;
+import org.powerbot.bot.nloader.NRSLoader;
 import org.powerbot.client.Client;
 import org.powerbot.client.Constants;
 import org.powerbot.event.EventMulticaster;
@@ -30,12 +37,11 @@ import org.powerbot.service.GameAccounts;
 public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 	public static final Logger log = Logger.getLogger(Bot.class.getName());
 	private MethodContext ctx;
-	public final Runnable callback;
 	public final ThreadGroup threadGroup;
 	private final PaintEvent paintEvent;
 	private final TextPaintEvent textPaintEvent;
 	private final EventMulticaster multicaster;
-	private volatile RSLoader appletContainer;
+	private volatile Applet appletContainer;
 	private volatile BotStub stub;
 	private BufferedImage image;
 	public AtomicBoolean refreshing;
@@ -46,13 +52,13 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 	private MouseHandler mouseHandler;
 	private InputHandler inputHandler;
 	private ScriptController controller;
+	private boolean stopping;
 
 	public Bot() {
 		appletContainer = null;
-		callback = null;
 		stub = null;
 
-		threadGroup = new ThreadGroup(Bot.class.getName() + "@" + Integer.toHexString(hashCode()));
+		threadGroup = new ThreadGroup(Bot.class.getName() + "@" + Integer.toHexString(hashCode()) + "-game");
 
 		multicaster = new EventMulticaster();
 		panel = null;
@@ -76,26 +82,71 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 	}
 
 	public void start() {
-		log.info("Starting bot");
-		appletContainer = new RSLoader();
-		appletContainer.setCallback(new Runnable() {
-			public void run() {
-				setClient((Client) appletContainer.getClient());
-				final Graphics graphics = image.getGraphics();
-				appletContainer.update(graphics);
-				graphics.dispose();
-				resize(BotChrome.PANEL_MIN_WIDTH, BotChrome.PANEL_MIN_HEIGHT);
-			}
-		});
-
-		if (!appletContainer.load()) {
+		//TODO: prompt user when this fails.
+		log.info("Loading bot");
+		Crawler crawler = new Crawler();
+		if (!crawler.crawl()) {
 			return;
 		}
-		stub = new BotStub(appletContainer, appletContainer.getClientLoader().crawler);
+
+		GameLoader game = new GameLoader(crawler);
+		ClassLoader classLoader = game.call();
+		if (classLoader == null) {
+			return;
+		}
+
+		final NRSLoader loader = new NRSLoader(this, game, classLoader);
+		loader.setCallback(new Runnable() {
+			@Override
+			public void run() {
+				sequence(loader);
+			}
+		});
+		new Thread(threadGroup, loader).start();
+	}
+
+	private void sequence(final NRSLoader loader) {
+		log.info("Loading game");
+		this.appletContainer = loader.getApplet();
+		Crawler crawler = loader.getGameLoader().getCrawler();
+		GameStub stub = new GameStub(crawler.parameters, crawler.archive);
 		appletContainer.setStub(stub);
-		stub.setActive(true);
-		log.info("Starting game");
-		new Thread(threadGroup, appletContainer, "Loader").start();
+
+		final Graphics graphics = image.getGraphics();
+		appletContainer.update(graphics);
+		graphics.dispose();
+		resize(BotChrome.PANEL_MIN_WIDTH, BotChrome.PANEL_MIN_HEIGHT);
+
+		appletContainer.init();
+		if (loader.getBridge().getTransformSpec() == null) {
+			Thread thread = new Thread(new Runnable() {
+				@Override
+				public void run() {
+					for (; ; ) {
+						try {
+							loader.upload(loader.getPackHash());
+							break;
+						} catch (IOException ignored) {
+						} catch (NRSLoader.PendingException p) {
+							//TODO: change to something more informative
+							int d = p.getDelay() / 1000;
+							log.warning("Request pending, trying again in " + (d < 60 ? d + " seconds" : (int) Math.ceil(d / 60) + " minutes"));
+							try {
+								Thread.sleep(p.getDelay());
+							} catch (final InterruptedException ignored) {
+								break;
+							}
+						}
+					}
+				}
+			});
+			thread.setDaemon(false);
+			thread.setPriority(Thread.MAX_PRIORITY);
+			thread.start();
+			return;
+		}
+		setClient((Client) loader.getClient(), loader.getBridge().getTransformSpec());
+		appletContainer.start();
 
 		final Thread t = new Thread(threadGroup, new Runnable() {
 			@Override
@@ -124,7 +175,6 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 
 	@Override
 	public boolean isStopping() {
-		boolean stopping = false;
 		return stopping;
 	}
 
@@ -133,6 +183,7 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 	 */
 	@Override
 	public void stop() {
+		stopping = true;
 		log.info("Unloading environment");
 		for (final Stoppable module : new Stoppable[]{mouseHandler, controller, multicaster}) {
 			if (module != null) {
@@ -182,7 +233,7 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 		return backBuffer;
 	}
 
-	public RSLoader getAppletContainer() {
+	public Applet getAppletContainer() {
 		return appletContainer;
 	}
 
@@ -241,10 +292,10 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 		this.panel = panel;
 	}
 
-	private void setClient(final Client client) {
+	private void setClient(final Client client, TransformSpec spec) {
 		this.ctx.setClient(client);
 		client.setCallback(new AbstractCallback(this));
-		constants = new Constants(appletContainer.getTspec().constants);
+		constants = new Constants(spec.constants);
 		new Thread(threadGroup, new SafeMode(this)).start();
 		mouseHandler = new MouseHandler(appletContainer, client);
 		inputHandler = new InputHandler(appletContainer, client);
