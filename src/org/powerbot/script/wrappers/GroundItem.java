@@ -73,7 +73,7 @@ public class GroundItem extends Interactive implements Identifiable, Nameable, S
 				Object model;
 				if (p != -1 && (model = ctx.game.lookup(table, (long) p | (long) graphicsIndex << 29)) != null &&
 						model instanceof AbstractModel) {
-					return new RenderableModel(ctx, (AbstractModel) model, itemPile);
+					return new PileModel(ctx, (AbstractModel) model, itemPile);
 				}
 
 				final int[] ids = {itemPile.getID_1(), itemPile.getID_2(), itemPile.getID_3()};
@@ -90,7 +90,7 @@ public class GroundItem extends Interactive implements Identifiable, Nameable, S
 					}
 				}
 
-				return i > 0 ? new RenderableModel(ctx, models[Random.nextInt(0, i)], itemPile) : null;
+				return i > 0 ? new PileModel(ctx, models[Random.nextInt(0, i)], itemPile) : null;
 			}
 		}
 		return null;
