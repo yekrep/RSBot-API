@@ -1,5 +1,5 @@
 CC=javac
-CFLAGS=-g:none
+CFLAGS=
 
 SRC=src
 LIB=lib
