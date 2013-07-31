@@ -13,32 +13,31 @@ public class Camera extends MethodProvider {
 		super(factory);
 	}
 
-
 	public int getYaw() {
 		Client client = ctx.getClient();
 		return client != null ? (int) (ctx.game.mapAngle / 45.51) : -1;
 	}
 
-	public void setYaw(final char direction) {
+	public void setAngle(final char direction) {
 		switch (direction) {
 		case 'n':
-			setYaw(0);
+			setAngle(0);
 			break;
 		case 'w':
-			setYaw(90);
+			setAngle(90);
 			break;
 		case 's':
-			setYaw(180);
+			setAngle(180);
 			break;
 		case 'e':
-			setYaw(270);
+			setAngle(270);
 			break;
 		default:
 			throw new RuntimeException("invalid direction " + direction + ", expecting n,w,s,e");
 		}
 	}
 
-	public void setYaw(int degrees) {
+	public void setAngle(int degrees) {
 		degrees %= 360;
 		if (getAngleTo(degrees) > 5) {
 			ctx.keyboard.send("{VK_LEFT down}");
@@ -86,9 +85,9 @@ public class Camera extends MethodProvider {
 	public void turnTo(final Locatable l, final int dev) {
 		final int a = getAngleToLocatable(l);
 		if (dev == 0) {
-			setYaw(a);
+			setAngle(a);
 		} else {
-			setYaw(Random.nextInt(a - dev, a + dev + 1));
+			setAngle(Random.nextInt(a - dev, a + dev + 1));
 		}
 	}
 
