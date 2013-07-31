@@ -110,7 +110,7 @@ public class IOHelper {
 			zip.setMethod(ZipOutputStream.STORED);
 			zip.setLevel(0);
 			for (final Map.Entry<String, byte[]> item : entries.entrySet()) {
-				final ZipEntry entry = new ZipEntry(item.getKey());
+				final ZipEntry entry = new ZipEntry(item.getKey() + ".class");
 				entry.setMethod(ZipEntry.STORED);
 				final byte[] data = item.getValue();
 				entry.setSize(data.length);

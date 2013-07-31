@@ -5,12 +5,12 @@ import java.io.FilePermission;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.security.Permission;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map.Entry;
 import java.util.logging.Logger;
 
 import org.powerbot.Configuration;
+import org.powerbot.bot.RSClassLoader;
+import org.powerbot.bot.RSLoader;
 import org.powerbot.service.GameAccounts;
 import org.powerbot.service.NetworkAccount;
 import org.powerbot.service.scripts.ScriptClassLoader;
@@ -97,23 +97,15 @@ public class Sandbox extends SecurityManager {
 
 	@Override
 	public void checkPermission(final Permission perm) {
-		final String loadLib = "loadLibrary.", name = perm.getName();
+		final String loadLib = "loadLibrary.";
 
 		if (perm instanceof RuntimePermission) {
-			if (name.equals("setSecurityManager")) {
+			if (perm.getName().equals("setSecurityManager")) {
 				throw new SecurityException();
-			} else if (name.startsWith(loadLib) && isGameThread()) {
-				final String lib = perm.getName().substring(loadLib.length());
-				final List<String> whitelist = new ArrayList<>();
-				whitelist.add("unpack");
-				whitelist.add("jsound");
-				if (!whitelist.contains(lib)) {
-					if (!Configuration.FROMJAR) {
-						log.severe("Native library blocked: " + lib);
-					}
-					throw new SecurityException();
+			} else if (perm.getName().startsWith(loadLib) && isGameThread()) {
+				if (!Configuration.FROMJAR) {
+					log.severe("Native library blocked: " + perm.getName().substring(loadLib.length()));
 				}
-			} else if ((name.equals("modifyThreadGroup") || name.equals("createClassLoader")) && isScriptThread()) {
 				throw new SecurityException();
 			}
 		} else if (perm instanceof FilePermission) {
@@ -179,6 +171,10 @@ public class Sandbox extends SecurityManager {
 			}
 		}
 
+		if (isCallingClass(RSLoader.class)) {
+			return;
+		}
+
 		if ((path + File.separator).startsWith(Configuration.HOME.getAbsolutePath()) &&
 				isCallingClass(NetworkAccount.class, GameAccounts.class, Tracker.class)) {
 			return;
@@ -234,7 +230,17 @@ public class Sandbox extends SecurityManager {
 	}
 
 	private boolean isGameThread() {
-		return Thread.currentThread().getThreadGroup().getName().endsWith("-game");
+		final Class<?>[] context = getClassContext();
+		for (int i = 1; i < Math.min(8, context.length); i++) {
+			if (context[i].isAssignableFrom(Sandbox.class)) {
+				continue;
+			}
+			final ClassLoader loader = context[i].getClassLoader();
+			if (loader != null && loader.getClass().isAssignableFrom(RSClassLoader.class)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public static boolean isScriptThread(final Thread t) {
