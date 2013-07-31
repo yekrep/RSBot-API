@@ -112,7 +112,7 @@ public final class NetworkAccount {
 		updated.set(store.lastModified());
 	}
 
-	public boolean login(final String username, final String password, final String auth) throws IOException {
+	public synchronized boolean login(final String username, final String password, final String auth) throws IOException {
 		InputStream is;
 		try {
 			is = HttpClient.openStream(Configuration.URLs.SIGNIN, StringUtil.urlEncode(username), StringUtil.urlEncode(password), StringUtil.urlEncode(auth));
@@ -120,10 +120,6 @@ public final class NetworkAccount {
 			ignored.printStackTrace();
 			return false;
 		}
-		return login(is);
-	}
-
-	public synchronized boolean login(final InputStream is) throws IOException {
 		final boolean success = readData(is);
 		if (success) {
 			updateCache();

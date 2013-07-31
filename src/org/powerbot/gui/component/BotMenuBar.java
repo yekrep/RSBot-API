@@ -7,7 +7,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
@@ -208,16 +207,7 @@ public class BotMenuBar extends JMenuBar implements ActionListener {
 					new BotAccounts(chrome);
 					break;
 				case SIGNIN:
-					if (NetworkAccount.getInstance().isLoggedIn()) {
-						if (JOptionPane.showConfirmDialog(chrome,
-								"Would you like to sign out of " + NetworkAccount.getInstance().getDisplayName(), BotLocale.SIGNOUT,
-								JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE) == JOptionPane.YES_OPTION) {
-							NetworkAccount.getInstance().logout();
-							new BotSignin(chrome);
-						}
-					} else {
-						new BotSignin(chrome);
-					}
+					new BotSignin(chrome);
 					break;
 				case ABOUT:
 					new BotAbout(chrome);
