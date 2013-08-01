@@ -8,8 +8,6 @@ import org.powerbot.client.RSHintArrow;
 import org.powerbot.client.RSNPC;
 import org.powerbot.client.RSNPCNode;
 import org.powerbot.client.RSPlayer;
-import org.powerbot.script.lang.Locatable;
-import org.powerbot.script.lang.Validatable;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.methods.MethodProvider;
 

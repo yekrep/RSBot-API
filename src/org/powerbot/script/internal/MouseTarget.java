@@ -3,7 +3,7 @@ package org.powerbot.script.internal;
 import java.awt.Point;
 
 import org.powerbot.script.lang.Filter;
-import org.powerbot.script.lang.Targetable;
+import org.powerbot.script.wrappers.Targetable;
 import org.powerbot.util.math.Vector3;
 
 public abstract class MouseTarget implements MouseCallback {

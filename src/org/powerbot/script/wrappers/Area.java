@@ -2,8 +2,6 @@ package org.powerbot.script.wrappers;
 
 import java.awt.Polygon;
 
-import org.powerbot.script.lang.Locatable;
-
 public class Area {
 	private final Polygon polygon;
 	private final int plane;

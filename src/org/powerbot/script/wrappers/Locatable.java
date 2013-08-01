@@ -1,8 +1,8 @@
-package org.powerbot.script.lang;
+package org.powerbot.script.wrappers;
 
 import java.util.Comparator;
 
-import org.powerbot.script.wrappers.Tile;
+import org.powerbot.script.lang.Filter;
 
 public interface Locatable {
 	public Tile getLocation();

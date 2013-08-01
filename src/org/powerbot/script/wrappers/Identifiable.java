@@ -1,4 +1,6 @@
-package org.powerbot.script.lang;
+package org.powerbot.script.wrappers;
+
+import org.powerbot.script.lang.Filter;
 
 public interface Identifiable {
 	public int getId();

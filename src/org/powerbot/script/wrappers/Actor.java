@@ -16,9 +16,6 @@ import org.powerbot.client.RSNPC;
 import org.powerbot.client.RSNPCNode;
 import org.powerbot.client.RSPlayer;
 import org.powerbot.client.Sequence;
-import org.powerbot.script.lang.Drawable;
-import org.powerbot.script.lang.Locatable;
-import org.powerbot.script.lang.Nameable;
 import org.powerbot.script.methods.MethodContext;
 
 public abstract class Actor extends Interactive implements Nameable, Locatable, Drawable {

@@ -1,6 +1,9 @@
 package org.powerbot.script.lang;
 
 import org.powerbot.script.methods.MethodContext;
+import org.powerbot.script.wrappers.Identifiable;
+import org.powerbot.script.wrappers.Nameable;
+import org.powerbot.script.wrappers.Stackable;
 
 public abstract class ItemQuery<K extends Identifiable & Nameable & Stackable> extends AbstractQuery<ItemQuery<K>, K>
 		implements Identifiable.Query<ItemQuery<K>>, Nameable.Query<ItemQuery<K>>, Stackable.Query<ItemQuery<K>> {

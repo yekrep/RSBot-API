@@ -2,7 +2,6 @@ package org.powerbot.script.wrappers;
 
 import java.awt.Color;
 
-import org.powerbot.script.lang.Locatable;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.util.Random;
 

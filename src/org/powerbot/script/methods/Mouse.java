@@ -7,7 +7,7 @@ import org.powerbot.client.Client;
 import org.powerbot.script.internal.MouseHandler;
 import org.powerbot.script.internal.MouseTarget;
 import org.powerbot.script.lang.Filter;
-import org.powerbot.script.lang.Targetable;
+import org.powerbot.script.wrappers.Targetable;
 import org.powerbot.script.util.Delay;
 
 public class Mouse extends MethodProvider {

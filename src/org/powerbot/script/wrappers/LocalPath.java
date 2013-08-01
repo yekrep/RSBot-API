@@ -3,7 +3,6 @@ package org.powerbot.script.wrappers;
 import java.util.EnumSet;
 
 import org.powerbot.script.internal.methods.Map;
-import org.powerbot.script.lang.Locatable;
 import org.powerbot.script.methods.MethodContext;
 
 public class LocalPath extends Path {

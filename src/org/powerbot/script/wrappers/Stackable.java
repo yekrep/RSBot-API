@@ -1,4 +1,4 @@
-package org.powerbot.script.lang;
+package org.powerbot.script.wrappers;
 
 public interface Stackable {
 	public int getStackSize();

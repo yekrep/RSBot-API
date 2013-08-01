@@ -5,8 +5,6 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Polygon;
 
-import org.powerbot.script.lang.Drawable;
-import org.powerbot.script.lang.Locatable;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.util.Random;
 

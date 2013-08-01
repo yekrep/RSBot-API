@@ -1,7 +1,5 @@
 package org.powerbot.script.wrappers;
 
-import org.powerbot.script.lang.Identifiable;
-import org.powerbot.script.lang.Validatable;
 import org.powerbot.script.methods.CombatBar;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.methods.MethodProvider;

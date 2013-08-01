@@ -8,7 +8,7 @@ import java.util.List;
 
 import org.powerbot.script.lang.Filter;
 import org.powerbot.script.lang.ItemQuery;
-import org.powerbot.script.lang.Locatable;
+import org.powerbot.script.wrappers.Locatable;
 import org.powerbot.script.util.Delay;
 import org.powerbot.script.util.Random;
 import org.powerbot.script.util.Timer;

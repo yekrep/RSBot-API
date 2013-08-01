@@ -8,7 +8,6 @@ import org.powerbot.client.Client;
 import org.powerbot.client.RSNPC;
 import org.powerbot.client.RSNPCDef;
 import org.powerbot.client.RSNPCNode;
-import org.powerbot.script.lang.Identifiable;
 import org.powerbot.script.methods.MethodContext;
 
 public class Npc extends Actor implements Identifiable {

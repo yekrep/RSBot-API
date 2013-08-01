@@ -3,8 +3,6 @@ package org.powerbot.script.wrappers;
 import java.awt.Point;
 
 import org.powerbot.script.lang.Filter;
-import org.powerbot.script.lang.Targetable;
-import org.powerbot.script.lang.Validatable;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.methods.MethodProvider;
 import org.powerbot.script.util.Delay;

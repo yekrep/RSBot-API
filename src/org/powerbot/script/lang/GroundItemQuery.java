@@ -1,6 +1,10 @@
 package org.powerbot.script.lang;
 
 import org.powerbot.script.methods.MethodContext;
+import org.powerbot.script.wrappers.Identifiable;
+import org.powerbot.script.wrappers.Locatable;
+import org.powerbot.script.wrappers.Nameable;
+import org.powerbot.script.wrappers.Stackable;
 
 public abstract class GroundItemQuery<K extends Locatable & Identifiable & Nameable & Stackable> extends AbstractQuery<GroundItemQuery<K>, K>
 		implements Locatable.Query<GroundItemQuery<K>>, Identifiable.Query<GroundItemQuery<K>>,

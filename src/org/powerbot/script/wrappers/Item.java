@@ -2,9 +2,6 @@ package org.powerbot.script.wrappers;
 
 import java.awt.Point;
 
-import org.powerbot.script.lang.Identifiable;
-import org.powerbot.script.lang.Nameable;
-import org.powerbot.script.lang.Stackable;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.util.StringUtil;
 

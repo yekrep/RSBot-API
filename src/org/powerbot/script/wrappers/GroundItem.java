@@ -16,11 +16,6 @@ import org.powerbot.client.RSInfo;
 import org.powerbot.client.RSItem;
 import org.powerbot.client.RSItemDefLoader;
 import org.powerbot.client.RSItemPile;
-import org.powerbot.script.lang.Drawable;
-import org.powerbot.script.lang.Identifiable;
-import org.powerbot.script.lang.Locatable;
-import org.powerbot.script.lang.Nameable;
-import org.powerbot.script.lang.Stackable;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.util.Random;
 
