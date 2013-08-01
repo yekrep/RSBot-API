@@ -6,6 +6,9 @@ import java.util.concurrent.TimeUnit;
 
 import org.powerbot.script.wrappers.Component;
 
+/**
+ * @author Timer
+ */
 public class Hud extends MethodProvider {
 	public static final int WIDGET_HUD = 1477;
 	public static final int COMPONENT_COMBAT_BAR = 70;
@@ -112,6 +115,11 @@ public class Hud extends MethodProvider {
 		}
 	}
 
+	/**
+	 * Returns an array of all the HUD boundaries blocking game interaction.
+	 *
+	 * @return an array of HUD bounds
+	 */
 	public Rectangle[] getBounds() {
 		if (TimeUnit.MILLISECONDS.convert(System.nanoTime() - cachedTime, TimeUnit.NANOSECONDS) < 1000) {
 			if (boundsCache != null) {
@@ -133,14 +141,35 @@ public class Hud extends MethodProvider {
 		return boundsCache = Arrays.copyOf(arr, index);
 	}
 
+	/**
+	 * Returns if a {@link Window} is open or not.
+	 * Open does not mean visible.
+	 *
+	 * @param window the {@link Window} to check if open
+	 * @return <tt>true</tt> if the window is open; otherwise <tt>false</tt>
+	 */
 	public boolean isOpen(Window window) {
 		return isVisible(window) || getTab(window) != null;
 	}
 
+	/**
+	 * Returns if a {@link Window} is visible or not.
+	 * A tab must be open for it to be visible.
+	 *
+	 * @param window the {@link Window} to check if visible
+	 * @return <tt>true</tt> if the window is visible; otherwise <tt>false</tt>
+	 */
 	public boolean isVisible(Window window) {
 		return ctx.widgets.get(window.getWidget(), window.getComponent()).isVisible();
 	}
 
+	/**
+	 * Opens a {@link Window} if not already open.
+	 * Does not guarantee the desired {@link Window} will be visible.
+	 *
+	 * @param window the {@link Window} desired to be opened
+	 * @return <tt>true</tt> if the window was opened or is already open; otherwise <tt>false</tt>
+	 */
 	public boolean open(Window window) {
 		if (isViewable(window) || window.getMenu() == Menu.NONE) {
 			return true;
@@ -174,6 +203,13 @@ public class Hud extends MethodProvider {
 		return false;
 	}
 
+	/**
+	 * Makes a {@link Window} visible by either opening or switching tabs.
+	 * Does not require {@link Window} to already be open.
+	 *
+	 * @param window the {@link Window} desired to be visible
+	 * @return <tt>true</tt> if the {@link Window} is visible; otherwise <tt>false</tt>
+	 */
 	public boolean view(Window window) {
 		if (isVisible(window)) {
 			return true;
@@ -192,6 +228,12 @@ public class Hud extends MethodProvider {
 		return isVisible(window);
 	}
 
+	/**
+	 * Closes a {@link Window}.
+	 *
+	 * @param window the {@link Window} to be closed
+	 * @return <tt>true</tt> if the {@link Window} was closed; otherwise <tt>false</tt>
+	 */
 	public boolean close(Window window) {
 		if (window.getMenu() == Menu.NONE) {
 			return false;
