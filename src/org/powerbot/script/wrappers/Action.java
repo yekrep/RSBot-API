@@ -4,7 +4,7 @@ import org.powerbot.script.methods.CombatBar;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.methods.MethodProvider;
 
-public class Action extends MethodProvider implements Identifiable, Validatable {
+public class Action extends MethodProvider implements Identifiable, Validatable, Displayable {
 	private final int slot;
 	private final Type type;
 	private final int id;
@@ -51,6 +51,7 @@ public class Action extends MethodProvider implements Identifiable, Validatable 
 		return cooldown.getTextureId() != CombatBar.TEXTURE_COOL_DOWN && action.getTextColor() == 0xFFFFFF;
 	}
 
+	@Override
 	public Component getComponent() {
 		return ctx.widgets.get(CombatBar.WIDGET, CombatBar.COMPONENT_SLOT_ACTION + slot * 4);
 	}

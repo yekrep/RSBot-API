@@ -5,7 +5,7 @@ import java.awt.Point;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.util.StringUtil;
 
-public class Item extends Interactive implements Identifiable, Nameable, Stackable {
+public class Item extends Interactive implements Displayable, Identifiable, Nameable, Stackable {
 	private final int id;
 	private int stack;
 	private final Component component;
@@ -61,6 +61,7 @@ public class Item extends Interactive implements Identifiable, Nameable, Stackab
 		return ItemDefinition.getDef(ctx, getId()).getGroundActions();
 	}
 
+	@Override
 	public Component getComponent() {
 		return component;
 	}

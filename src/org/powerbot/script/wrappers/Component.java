@@ -13,7 +13,7 @@ import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.util.Random;
 import org.powerbot.util.StringUtil;
 
-public class Component extends Interactive implements Drawable {
+public class Component extends Interactive implements Drawable, Displayable {
 	public static final Color TARGET_FILL_COLOR = new Color(0, 0, 0, 50);
 	public static final Color TARGET_STROKE_COLOR = new Color(0, 255, 0, 150);
 	private final Widget widget;
@@ -41,6 +41,11 @@ public class Component extends Interactive implements Drawable {
 
 	public int getIndex() {
 		return this.index;
+	}
+
+	@Override
+	public Component getComponent() {
+		return this;
 	}
 
 	public Component[] getChildren() {
