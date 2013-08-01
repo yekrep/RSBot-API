@@ -5,8 +5,6 @@ import java.io.FilePermission;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.security.Permission;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map.Entry;
 import java.util.logging.Logger;
 
@@ -104,10 +102,8 @@ public class Sandbox extends SecurityManager {
 				throw new SecurityException();
 			} else if (name.startsWith(loadLib) && isGameThread()) {
 				final String lib = perm.getName().substring(loadLib.length());
-				final List<String> whitelist = new ArrayList<>();
-				whitelist.add("unpack");
-				whitelist.add("jsound");
-				if (!whitelist.contains(lib)) {
+
+				if (lib.contains(File.separator)) {
 					if (!Configuration.FROMJAR) {
 						log.severe("Native library blocked: " + lib);
 					}
