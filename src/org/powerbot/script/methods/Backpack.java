@@ -7,9 +7,10 @@ import java.util.List;
 import org.powerbot.script.internal.methods.Items;
 import org.powerbot.script.lang.ItemQuery;
 import org.powerbot.script.wrappers.Component;
+import org.powerbot.script.wrappers.Displayable;
 import org.powerbot.script.wrappers.Item;
 
-public class Backpack extends ItemQuery<Item> {
+public class Backpack extends ItemQuery<Item> implements Resizable {
 	public static final int WIDGET = 1473;
 	public static final int COMPONENT_SCROLL_BAR = 6;
 	public static final int COMPONENT_VIEW = 7;
@@ -45,6 +46,7 @@ public class Backpack extends ItemQuery<Item> {
 		return items;
 	}
 
+	@Override
 	public boolean isCollapsed() {
 		Component component = getComponent();
 		if (!component.isVisible()) {
@@ -56,7 +58,8 @@ public class Backpack extends ItemQuery<Item> {
 		return false;
 	}
 
-	public boolean scroll(Item item) {
+	@Override
+	public boolean scroll(Displayable item) {
 		if (!isCollapsed()) {
 			return true;
 		}
