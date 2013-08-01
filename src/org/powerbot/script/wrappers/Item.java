@@ -61,6 +61,9 @@ public class Item extends Interactive implements Displayable, Identifiable, Name
 		return ItemDefinition.getDef(ctx, getId()).getGroundActions();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Component getComponent() {
 		return component;

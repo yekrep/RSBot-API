@@ -43,6 +43,9 @@ public class Component extends Interactive implements Drawable, Displayable {
 		return this.index;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Component getComponent() {
 		return this;

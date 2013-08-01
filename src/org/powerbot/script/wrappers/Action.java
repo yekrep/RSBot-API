@@ -51,6 +51,9 @@ public class Action extends MethodProvider implements Identifiable, Validatable,
 		return cooldown.getTextureId() != CombatBar.TEXTURE_COOL_DOWN && action.getTextColor() == 0xFFFFFF;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Component getComponent() {
 		return ctx.widgets.get(CombatBar.WIDGET, CombatBar.COMPONENT_SLOT_ACTION + slot * 4);

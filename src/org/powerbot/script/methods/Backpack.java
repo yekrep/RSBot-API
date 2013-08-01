@@ -46,6 +46,9 @@ public class Backpack extends ItemQuery<Item> implements Resizable {
 		return items;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public boolean isCollapsed() {
 		Component component = getComponent();
@@ -58,6 +61,9 @@ public class Backpack extends ItemQuery<Item> implements Resizable {
 		return false;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public boolean scroll(Displayable item) {
 		if (!isCollapsed()) {
