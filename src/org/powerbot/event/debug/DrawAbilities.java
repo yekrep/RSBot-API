@@ -21,11 +21,9 @@ public class DrawAbilities implements PaintListener {
 		render.setFont(new Font("Arial", 0, 10));
 		render.setColor(Color.green);
 		for (Action action : ctx.combatBar.getActions()) {
-			if (action != null) {
-				Component c = action.getComponent();
-				Point p = c.getAbsoluteLocation();
-				render.drawString(action.getId() + " (" + action.getBind() + ")", p.x, p.y);
-			}
+			Component c = action.getComponent();
+			Point p = c.getAbsoluteLocation();
+			render.drawString(action.getId() + " (" + action.getBind() + ")", p.x, p.y);
 		}
 	}
 }
