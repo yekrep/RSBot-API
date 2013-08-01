@@ -3,6 +3,9 @@ package org.powerbot.script.methods;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+/**
+ * @author Timer
+ */
 public class Powers extends MethodProvider {
 	public static final int SETTING_PRAYER_POINTS = 3274;
 	public static final int SETTING_PRAYER_BOOK = 3277;
@@ -71,16 +74,25 @@ public class Powers extends MethodProvider {
 			this.level = level;
 		}
 
+		/**
+		 * {@inheritDoc}
+		 */
 		@Override
 		public int getId() {
 			return id;
 		}
 
+		/**
+		 * {@inheritDoc}
+		 */
 		@Override
 		public int getIndex() {
 			return index;
 		}
 
+		/**
+		 * {@inheritDoc}
+		 */
 		@Override
 		public int getLevel() {
 			return level;
@@ -127,46 +139,99 @@ public class Powers extends MethodProvider {
 			this.level = level;
 		}
 
+		/**
+		 * {@inheritDoc}
+		 */
 		@Override
 		public int getId() {
 			return id;
 		}
 
+		/**
+		 * {@inheritDoc}
+		 */
 		@Override
 		public int getIndex() {
 			return index;
 		}
 
+		/**
+		 * {@inheritDoc}
+		 */
 		@Override
 		public int getLevel() {
 			return level;
 		}
 	}
 
+	/**
+	 * A Prayer-specific power
+	 */
 	public interface Effect {
+		/**
+		 * Returns the id of the prayer.
+		 *
+		 * @return the id of the prayer
+		 */
 		public int getId();
 
+		/**
+		 * Returns the index of the prayer.
+		 *
+		 * @return the index of the prayer
+		 */
 		public int getIndex();
 
+		/**
+		 * Returns the level required to use the prayer.
+		 *
+		 * @return the level required to use the prayer
+		 */
 		public int getLevel();
 	}
 
+	/**
+	 * Returns the current prayer points.
+	 *
+	 * @return the current prayer points
+	 */
 	public int getPrayerPoints() {
 		return (ctx.settings.get(SETTING_PRAYER_POINTS) & 0x7fff) / 10;
 	}
 
+	/**
+	 * Returns the current prayer book.
+	 *
+	 * @return the current prayer book
+	 */
 	public int getPrayerBook() {
 		return ctx.settings.get(SETTING_PRAYER_BOOK) % 2;
 	}
 
+	/**
+	 * Determines if quick prayers selection is active.
+	 *
+	 * @return <tt>true</tt> if quick prayers selection is active; otherwise <tt>false</tt>
+	 */
 	public boolean isQuickSelection() {
 		return ctx.settings.get(SETTING_PRAYERS_SELECTION) == 0x1;
 	}
 
+	/**
+	 * Determines if quick prayers are active.
+	 *
+	 * @return <tt>true</tt> if quick prayers are active; otherwise <tt>false</tt>
+	 */
 	public boolean isQuickPrayers() {
 		return ctx.settings.get(SETTING_PRAYERS_SELECTION) == 0x2;
 	}
 
+	/**
+	 * Determines if a prayer is active.
+	 *
+	 * @param effect the {@link Effect} to check
+	 * @return <tt>true</tt> if prayer is active; otherwise <tt>false</tt>
+	 */
 	public boolean isPrayerActive(Effect effect) {
 		int setting;
 		if (effect instanceof Prayer) {
@@ -179,6 +244,12 @@ public class Powers extends MethodProvider {
 		return ((ctx.settings.get(setting) >>> effect.getIndex()) & 0x1) == 1;
 	}
 
+	/**
+	 * Determines if a prayer is set as a quick prayer.
+	 *
+	 * @param effect the {@link Effect} to check
+	 * @return <tt>true</tt> if set as a quick prayer; otherwise <tt>false</tt>
+	 */
 	public boolean isPrayerQuick(Effect effect) {
 		int setting;
 		if (effect instanceof Prayer) {
@@ -191,6 +262,11 @@ public class Powers extends MethodProvider {
 		return ((ctx.settings.get(setting) >>> effect.getIndex()) & 0x1) == 1;
 	}
 
+	/**
+	 * Returns the prayers currently active.
+	 *
+	 * @return the {@link Effect}s currently active
+	 */
 	public Effect[] getActivePrayers() {
 		int book = getPrayerBook();
 		Effect[] effects;
@@ -215,6 +291,11 @@ public class Powers extends MethodProvider {
 		return active.toArray(new Effect[active.size()]);
 	}
 
+	/**
+	 * Returns the {@link Effect}s set as quick prayers.
+	 *
+	 * @return the {@link Effect}s set as quick prayers
+	 */
 	public Effect[] getQuickPrayers() {
 		int book = getPrayerBook();
 		Effect[] effects;
@@ -239,6 +320,12 @@ public class Powers extends MethodProvider {
 		return quick.toArray(new Effect[quick.size()]);
 	}
 
+	/**
+	 * Toggles quick prayer selection mode.
+	 *
+	 * @param quick {@code true} if desired prayer selection, {@code false} if desired not prayer selection
+	 * @return <tt>true</tt> if toggled selection mode; otherwise <tt>false</tt>
+	 */
 	public boolean setQuickSelection(boolean quick) {
 		if (isQuickSelection() == quick) {
 			return true;
@@ -267,6 +354,12 @@ public class Powers extends MethodProvider {
 		return isQuickSelection() == quick;
 	}
 
+	/**
+	 * Toggles quick prayers.
+	 *
+	 * @param active {@code true} if desired active; {@code false} if desired not active
+	 * @return <tt>true</tt> if quick prayers are toggled; otherwise <tt>false</tt>
+	 */
 	public boolean setQuickPrayers(boolean active) {
 		if (isQuickPrayers() == active) {
 			return true;
@@ -283,6 +376,13 @@ public class Powers extends MethodProvider {
 		return isQuickPrayers() == active;
 	}
 
+	/**
+	 * Toggles an {@link Effect}.
+	 *
+	 * @param effect the {@link Effect} to toggle
+	 * @param active {@code true} if desired active; {@code false} if desired not active
+	 * @return <tt>true</tt> if {@link Effect} is successfully toggled; otherwise <tt>false</tt>
+	 */
 	public boolean setPrayerActive(Effect effect, boolean active) {
 		if (ctx.skills.getLevel(Skills.PRAYER) < effect.getLevel()) {
 			return false;
@@ -296,6 +396,12 @@ public class Powers extends MethodProvider {
 		return isPrayerActive(effect) == active;
 	}
 
+	/**
+	 * Attempts to set quick prayers to the given {@link Effect}s.
+	 *
+	 * @param effects the {@link Effect}s
+	 * @return <tt>true</tt> if selected; otherwise <tt>false</tt>.
+	 */
 	public boolean setQuickPrayers(Effect... effects) {
 		if (!isQuickSelection()) {
 			setQuickSelection(true);
