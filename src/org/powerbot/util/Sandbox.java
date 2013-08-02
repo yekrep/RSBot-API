@@ -109,7 +109,7 @@ public class Sandbox extends SecurityManager {
 					}
 					throw new SecurityException();
 				}
-			} else if ((name.equals("modifyThreadGroup") || name.equals("createClassLoader")) && isScriptThread()) {
+			} else if (name.equals("modifyThreadGroup") && isScriptThread()) {
 				throw new SecurityException();
 			}
 		} else if (perm instanceof FilePermission) {
