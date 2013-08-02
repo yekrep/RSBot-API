@@ -15,7 +15,7 @@ import org.powerbot.util.io.Resources;
 public class Configuration {
 	public static final String NAME = "RSBot";
 	public static final boolean FROMJAR, SERVEROS;
-	public static final int VERSION = 5007;
+	public static final int VERSION = 5008;
 	public static final boolean BETA = false;
 	public static final OperatingSystem OS;
 	public static final File HOME, TEMP;
