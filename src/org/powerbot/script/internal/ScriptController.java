@@ -22,11 +22,10 @@ import org.powerbot.util.Tracker;
 public final class ScriptController implements Runnable, Suspendable, Stoppable, Subscribable<EventListener> {
 	private final MethodContext ctx;
 	private final EventManager events;
-	private ExecutorService executor;
-	private List<Script> scripts;
+	private final ExecutorService executor;
+	private final List<Script> scripts;
 	private final ScriptDefinition def;
-	private AtomicBoolean suspended;
-	private AtomicBoolean stopping;
+	private final AtomicBoolean suspended, stopping;
 
 	public ScriptController(final MethodContext ctx, final EventMulticaster multicaster, final Script script, final ScriptDefinition def) {
 		this.ctx = ctx;
