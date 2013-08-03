@@ -205,7 +205,9 @@ public class ScriptList {
 			return;
 		}
 		final Bot bot = BotChrome.getInstance().getBot();
-		bot.setAccount(GameAccounts.getInstance().get(username));
+		if (username != null) {
+			bot.setAccount(GameAccounts.getInstance().get(username));
+		}
 		final FileLock l = lock;
 		new Thread(new Runnable() {
 			@Override
