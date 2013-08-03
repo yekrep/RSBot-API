@@ -25,6 +25,7 @@ import org.powerbot.script.internal.ScriptController;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.util.StringUtil;
 import org.powerbot.util.io.HttpClient;
+import org.powerbot.util.io.IOHelper;
 
 /**
  * An abstract implementation of {@link Script}.
@@ -224,6 +225,22 @@ public abstract class AbstractScript implements Script {
 	}
 
 	/**
+	 * Returns a {@link java.io.File} from an abstract local file name.
+	 *
+	 * @param name a local file name, which may contain path separators
+	 * @return the fully qualified {@link java.io.File} inside the {@link #getStorageDirectory()}
+	 */
+	public File getFile(final String name) {
+		File f = getStorageDirectory();
+
+		for (final String part : name.split("\\|/")) {
+			f = new File(f, part);
+		}
+
+		return f;
+	}
+
+	/**
 	 * Downloads a file via HTTP/HTTPS. Server side caching is supported to reduce bandwidth.
 	 *
 	 * @param url  the HTTP/HTTPS address of the remote resource to download
@@ -231,11 +248,7 @@ public abstract class AbstractScript implements Script {
 	 * @return the {@link java.io.File} of the downloaded resource
 	 */
 	public File download(final String url, final String name) {
-		File f = getStorageDirectory();
-
-		for (final String part : name.split("\\|/")) {
-			f = new File(f, part);
-		}
+		final File f = getFile(name);
 
 		final URL u;
 		try {
@@ -251,6 +264,22 @@ public abstract class AbstractScript implements Script {
 		}
 
 		return f;
+	}
+
+	/**
+	 * Reads a HTTP/HTTPS resource into a string.
+	 *
+	 * @param url the HTTP/HTTPS address of the remote resource to read
+	 * @return a string representation of the downloaded resource
+	 */
+	public String downloadString(final String url) {
+		final String name = "http-" + Integer.toHexString(url.hashCode());
+		download(url, name);
+		try (final FileInputStream in = new FileInputStream(getFile(name))) {
+			return IOHelper.readString(in);
+		} catch (final IOException ignored) {
+		}
+		return "";
 	}
 
 	/**
