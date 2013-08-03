@@ -74,8 +74,7 @@ public final class GameAccounts extends ArrayList<GameAccounts.Account> {
 
 	public Account get(String username) {
 		username = normaliseUsername(username);
-		for (Iterator<Account> i = iterator(); i.hasNext(); ) {
-			final Account a = i.next();
+		for (final Account a : this) {
 			if (a.username.equalsIgnoreCase(username)) {
 				return a;
 			}
