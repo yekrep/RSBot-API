@@ -191,7 +191,7 @@ public class Map extends MethodProvider {
 			return new Node[0];
 		}
 
-		dijkstra(graph, graph.nodes[startX][startY], graph.nodes[endX][endY]);
+		jps(graph, graph.nodes[startX][startY], graph.nodes[endX][endY]);
 		return path(graph.nodes[endX][endY]);
 	}
 
@@ -206,7 +206,7 @@ public class Map extends MethodProvider {
 			return -1;
 		}
 
-		dijkstra(graph, graph.nodes[startX][startY], graph.nodes[endX][endY]);
+		jps(graph, graph.nodes[startX][startY], graph.nodes[endX][endY]);
 		double d = graph.nodes[endX][endY].g;
 		if (Double.isInfinite(d)) {
 			return -1;
@@ -229,7 +229,7 @@ public class Map extends MethodProvider {
 		return nodes.toArray(path);
 	}
 
-	private void dijkstra(Graph graph, Node source, Node target) {
+	/*private void dijkstra(Graph graph, Node source, Node target) {
 		source.g = 0d;
 		source.f = 0d;
 
@@ -269,6 +269,132 @@ public class Map extends MethodProvider {
 				}
 			}
 		}
+	}*/
+
+	private void jps(Graph graph, Node source, Node target) {
+		source.g = 0d;
+		source.f = 0d;
+
+		Queue<Node> queue = new PriorityQueue<>(8, new Comparator<Node>() {
+			@Override
+			public int compare(Node o1, Node o2) {
+				return Double.compare(o1.f, o2.f);
+			}
+		});
+
+		queue.add(source);
+		source.opened = true;
+		while (!queue.isEmpty()) {
+			Node node = queue.poll();
+			node.closed = true;
+			if (node.equals(target)) {
+				break;
+			}
+
+			for (Node neighbor : neighborsJps(graph, node)) {
+				Node jump = jump(graph, neighbor, node, target);
+				if (jump == null || jump.closed) {
+					continue;
+				}
+
+				double d = Math.sqrt(Math.pow(Math.abs(jump.x - node.x), 2) + Math.pow(Math.abs(jump.y - node.y), 2));
+				double ng = node.g + d;
+
+				if (!jump.opened || ng < jump.g) {
+					jump.g = ng;
+					jump.h = Math.abs(jump.x - target.x) + Math.abs(jump.y - target.y);
+					jump.f = jump.g + jump.h;
+					jump.parent = node;
+
+					if (!jump.opened) {
+						queue.offer(jump);
+						jump.opened = true;
+					}
+				}
+			}
+		}
+	}
+
+	private Node jump(Graph graph, Node node, Node parent, Node target) {
+		if (node.equals(target)) {
+			return target;
+		}
+		int x = node.x, y = node.y;
+		int px = parent.x, py = parent.y;
+		int dx = x - px, dy = y - py;
+
+		List<Node> neighbors = graph.neighbors(node);
+		if (dx != 0 && dy != 0) {
+			if ((neighbors.contains(new Node(x - dx, y + dx)) && !neighbors.contains(new Node(x - dx, y))) ||
+					(neighbors.contains(new Node(x + dx, y - dy)) && !neighbors.contains(new Node(x, y - dy)))) {
+				return node;
+			}
+		} else if (dx != 0) {
+			if ((neighbors.contains(new Node(x + dx, y + 1)) && !neighbors.contains(new Node(x, y + 1))) ||
+					(neighbors.contains(new Node(x + dx, y - 1)) && !neighbors.contains(new Node(x, y - 1)))) {
+				return node;
+			}
+		} else {
+			if ((neighbors.contains(new Node(x + 1, y + dy)) && !neighbors.contains(new Node(x + 1, y))) ||
+					(neighbors.contains(new Node(x - 1, y + dy)) && !neighbors.contains(new Node(x - 1, y)))) {
+				return node;
+			}
+		}
+
+		if (dx != 0 && dy != 0) {
+			Node jx = jump(graph, new Node(x + dx, y), node, target);
+			Node jy = jump(graph, new Node(x, y + dy), node, target);
+			if (jx != null && jy != null) {
+				return node;
+			}
+		}
+
+		if (neighbors.contains(new Node(x + dx, y)) || neighbors.contains(new Node(x, y + dy))) {
+			return jump(graph, new Node(x + dx, y + dy), node, target);
+		}
+		return null;
+	}
+
+	private List<Node> neighborsJps(Graph graph, Node node) {
+		List<Node> neighbors = graph.neighbors(node);
+		if (node.parent == null) {
+			return neighbors;
+		}
+
+		int x = node.x, y = node.y;
+		int px = node.parent.x, py = node.parent.y;
+
+		List<Node> list = new ArrayList<>();
+		int dx = (x - px) / Math.max(Math.abs(x - px), 1);
+		int dy = (y - py) / Math.max(Math.abs(y - py), 1);
+		Node[] nodes;
+		if (dx != 0 && dy != 0) {
+			nodes = new Node[]{
+					new Node(x, y + dy),
+					new Node(x + dx, y),
+					new Node(x + dx, y + dy),
+					new Node(x - dx, y + dy),
+					new Node(x + dx, y - dy),
+			};
+		} else if (dx == 0) {
+			nodes = new Node[]{
+					new Node(x, y + dy),
+					new Node(x + 1, y + dy),
+					new Node(x - 1, y + dy),
+			};
+		} else {
+			nodes = new Node[]{
+					new Node(x + dx, y),
+					new Node(x + dx, y + 1),
+					new Node(x + dx, y - 1),
+			};
+		}
+		for (Node n : nodes) {
+			if (neighbors.contains(n)) {
+				list.add(n);
+			}
+		}
+		return list;
 	}
 
 	private class Graph {
@@ -288,7 +414,7 @@ public class Map extends MethodProvider {
 			}
 		}
 
-		private Iterable<Node> neighbors(Node node) {
+		private List<Node> neighbors(Node node) {
 			List<Node> list = new ArrayList<>(8);
 			int curr_x = node.x;
 			int curr_y = node.y;
