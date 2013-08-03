@@ -59,7 +59,6 @@ public class Timer {
 	}
 
 	public void reset() {
-		start.set(now());
 		end.set(start.get() + period.get());
 	}
 
