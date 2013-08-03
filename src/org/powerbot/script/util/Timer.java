@@ -1,14 +1,14 @@
 package org.powerbot.script.util;
 
+import java.util.concurrent.atomic.AtomicLong;
+
 public class Timer {
-	private final long start;
-	private final long period;
-	private long end;
+	private final AtomicLong start, end, period;
 
 	public Timer(final long period) {
-		this.period = period * 1000000;
-		start = System.nanoTime();
-		end = start + this.period;
+		this.period = new AtomicLong(period * 1000000);
+		start = new AtomicLong(now());
+		end = new AtomicLong(start.get() + this.period.get());
 	}
 
 	public static String format(final long time) {
@@ -46,27 +46,27 @@ public class Timer {
 	}
 
 	public long getElapsed() {
-		return (System.nanoTime() - start) / 1000000;
+		return (now() - start.get()) / 1000000;
 	}
 
 	public long getRemaining() {
 		if (isRunning()) {
-			return (end - System.nanoTime()) / 1000000;
+			return (end.get() - now()) / 1000000;
 		}
 		return 0;
 	}
 
 	public boolean isRunning() {
-		return System.nanoTime() < end;
+		return now() < end.get();
 	}
 
 	public void reset() {
-		end = System.nanoTime() + period;
+		end.set(now() + period.get());
 	}
 
 	public long setEndIn(final long ms) {
-		end = System.nanoTime() + ms * 1000000;
-		return end;
+		end.set(now() + ms * 1000000);
+		return end.get();
 	}
 
 	public String toElapsedString() {
@@ -75,5 +75,9 @@ public class Timer {
 
 	public String toRemainingString() {
 		return format(getRemaining());
+	}
+
+	private long now() {
+		return System.nanoTime();
 	}
 }
