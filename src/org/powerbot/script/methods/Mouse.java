@@ -8,7 +8,6 @@ import org.powerbot.script.internal.MouseHandler;
 import org.powerbot.script.internal.MouseTarget;
 import org.powerbot.script.lang.Filter;
 import org.powerbot.script.wrappers.Targetable;
-import org.powerbot.script.util.Delay;
 
 public class Mouse extends MethodProvider {
 	public Mouse(MethodContext factory) {
@@ -110,7 +109,7 @@ public class Mouse extends MethodProvider {
 		handler.handle(t = new MouseTarget(target, MouseTarget.DUMMY) {
 			@Override
 			public void execute(final MouseHandler handler) {
-				Delay.sleep(0, 350);
+				sleep(0, 350);
 				if (filter.accept(handler.getLocation())) {
 					handler.click(left ? MouseEvent.BUTTON1 : MouseEvent.BUTTON3);
 					handler.complete(this);

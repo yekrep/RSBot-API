@@ -7,7 +7,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.powerbot.script.lang.Filter;
-import org.powerbot.script.util.Delay;
 import org.powerbot.script.util.Random;
 import org.powerbot.script.util.Timer;
 import org.powerbot.script.wrappers.Component;
@@ -104,10 +103,10 @@ public class Lobby extends MethodProvider {
 			if (dialog == Dialog.TRANSFER_COUNTDOWN || (dialog != null && continueDialog())) {
 				t.reset();
 			} else if (dialog != null) {
-				Delay.sleep(500, 1000);
+				sleep(500, 1000);
 				break;
 			}
-			Delay.sleep(5);
+			sleep(5);
 		}
 		return ctx.game.isLoggedIn();
 	}
@@ -221,7 +220,7 @@ public class Lobby extends MethodProvider {
 			return true;
 		}
 		if (child != null && child.isValid() && child.click(true)) {
-			Delay.sleep(Random.nextInt(1200, 2000));
+			sleep(Random.nextInt(1200, 2000));
 			return true;
 		}
 		return false;

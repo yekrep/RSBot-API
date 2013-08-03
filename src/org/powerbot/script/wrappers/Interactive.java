@@ -5,7 +5,6 @@ import java.awt.Point;
 import org.powerbot.script.lang.Filter;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.methods.MethodProvider;
-import org.powerbot.script.util.Delay;
 
 public abstract class Interactive extends MethodProvider implements Targetable, Validatable {
 	private static final int ATTEMPTS = 5;
@@ -53,7 +52,7 @@ public abstract class Interactive extends MethodProvider implements Targetable, 
 				@Override
 				public boolean accept(final Point point) {
 					if (contains(point) && ctx.menu.indexOf(action, option) != -1) {
-						Delay.sleep(0, 80);
+						sleep(10, 80);
 						return contains(point) && ctx.menu.indexOf(action, option) != -1;
 					}
 					return false;

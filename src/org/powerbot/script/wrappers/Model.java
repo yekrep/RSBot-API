@@ -121,6 +121,10 @@ public abstract class Model extends MethodProvider {
 		return point != null ? point : (point = firstOnScreenCentroid(0, mark)) != null ? point : new Point(-1, -1);
 	}
 
+	public short[] getFaceA() {
+		return faceA;
+	}
+
 	public Polygon[] getTriangles() {
 		int[][] points = projectVertices();
 		ArrayList<Polygon> polygons = new ArrayList<>(numFaces);

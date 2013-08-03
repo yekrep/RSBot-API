@@ -14,7 +14,6 @@ import java.util.Hashtable;
 
 import org.powerbot.bot.Bot;
 import org.powerbot.gui.BotChrome;
-import org.powerbot.script.util.Delay;
 
 public class Canvas extends java.awt.Canvas {
 	private static final long serialVersionUID = -2276037172265300477L;
@@ -35,7 +34,10 @@ public class Canvas extends java.awt.Canvas {
 				loader_identified = true;
 			}
 		}
-		Delay.sleep(BotChrome.getInstance().isMinimised() ? MINIMISED_GRAPHICS_DELAY : GRAPHICS_DELAY);
+		try {
+			Thread.sleep(BotChrome.getInstance().isMinimised() ? MINIMISED_GRAPHICS_DELAY : GRAPHICS_DELAY);
+		} catch (InterruptedException ignored) {
+		}
 		return bot.getBufferGraphics();
 	}
 

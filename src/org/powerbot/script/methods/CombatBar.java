@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.powerbot.script.lang.IdQuery;
-import org.powerbot.script.util.Delay;
 import org.powerbot.script.wrappers.Action;
 import org.powerbot.script.wrappers.Component;
 
@@ -75,7 +74,7 @@ public class CombatBar extends IdQuery<Action> {
 		final Component c = ctx.widgets.get(WIDGET_LAYOUT, COMPONENT_BUTTON_TOGGLE).getChild(COMPONENT_BUTTON_TOGGLE_IDX);
 		if (c.isValid() && c.interact(expanded ? "Maximise" : "Minimise")) {
 			for (int i = 0; i < 5 && isExpanded() != expanded; i++) {
-				Delay.sleep(20, 50);
+				sleep(20, 50);
 			}
 		}
 		return isExpanded() == expanded;
@@ -131,7 +130,7 @@ public class CombatBar extends IdQuery<Action> {
 		}
 		if (action.getComponent().hover() && ctx.mouse.drag(c.getInteractPoint(), true)) {
 			for (int i = 0; i < 5 && getActionAt(slot).getId() != -1; i++) {
-				Delay.sleep(100, 200);
+				sleep(100, 200);
 			}
 		}
 		return getActionAt(slot).getId() == -1;
@@ -148,7 +147,7 @@ public class CombatBar extends IdQuery<Action> {
 		final Component c = ctx.widgets.get(WIDGET, COMPONENT_LOCK);
 		if (c.isVisible() && c.interact("lock")) {
 			for (int i = 0; i < 25 && locked != isLocked(); i++) {
-				Delay.sleep(100, 150);
+				sleep(100, 150);
 			}
 		}
 		return isLocked() == locked;
