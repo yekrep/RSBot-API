@@ -247,6 +247,7 @@ public abstract class AbstractScript implements Script {
 		try {
 			HttpClient.download(u, f);
 		} catch (final IOException ignored) {
+			f.delete();
 		}
 
 		return f;
