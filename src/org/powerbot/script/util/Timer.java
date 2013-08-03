@@ -3,10 +3,11 @@ package org.powerbot.script.util;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class Timer {
+	private final long MS_TO_NANOS = 1000000L;
 	private final AtomicLong start, end, period;
 
 	public Timer(final long period) {
-		this.period = new AtomicLong(period * 1000000);
+		this.period = new AtomicLong(period * MS_TO_NANOS);
 		start = new AtomicLong(now());
 		end = new AtomicLong(start.get() + this.period.get());
 	}
@@ -46,12 +47,12 @@ public class Timer {
 	}
 
 	public long getElapsed() {
-		return (now() - start.get()) / 1000000;
+		return (now() - start.get()) / MS_TO_NANOS;
 	}
 
 	public long getRemaining() {
 		if (isRunning()) {
-			return (end.get() - now()) / 1000000;
+			return (end.get() - now()) / MS_TO_NANOS;
 		}
 		return 0;
 	}
@@ -65,7 +66,7 @@ public class Timer {
 	}
 
 	public long setEndIn(final long ms) {
-		end.set(now() + ms * 1000000);
+		end.set(now() + ms * MS_TO_NANOS);
 		return end.get();
 	}
 
