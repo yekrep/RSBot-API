@@ -329,8 +329,11 @@ public final class BotScripts extends JDialog implements ActionListener {
 				return;
 			}
 			for (final Account a : GameAccounts.getInstance()) {
-				hit = username.getText().equalsIgnoreCase(a.toString());
-				final JCheckBoxMenuItem item = new JCheckBoxMenuItem(a.toString(), hit);
+				final boolean s = username.getText().equalsIgnoreCase(a.toString());
+				if (s) {
+					hit = true;
+				}
+				final JCheckBoxMenuItem item = new JCheckBoxMenuItem(a.toString(), s);
 				item.addActionListener(l);
 				accounts.add(item);
 			}
