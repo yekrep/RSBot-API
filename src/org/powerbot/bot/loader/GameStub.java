@@ -14,6 +14,7 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Map;
 
+@SuppressWarnings("unchecked")
 public class GameStub implements AppletStub, AppletContext {
 	private final Map<String, String> params;
 	private final String codeBase;
