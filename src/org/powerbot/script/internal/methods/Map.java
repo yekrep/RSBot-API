@@ -207,7 +207,7 @@ public class Map extends MethodProvider {
 		}
 
 		dijkstra(graph, graph.nodes[startX][startY], graph.nodes[endX][endY]);
-		double d = graph.nodes[endX][endY].dist;
+		double d = graph.nodes[endX][endY].g;
 		if (Double.isInfinite(d)) {
 			return -1;
 		}
@@ -216,12 +216,12 @@ public class Map extends MethodProvider {
 
 	private Node[] path(Node target) {
 		List<Node> nodes = new LinkedList<>();
-		if (Double.isInfinite(target.dist)) {
+		if (Double.isInfinite(target.g)) {
 			return new Node[0];
 		}
 		while (target != null) {
 			nodes.add(target);
-			target = target.prev;
+			target = target.parent;
 		}
 
 		Collections.reverse(nodes);
@@ -230,35 +230,42 @@ public class Map extends MethodProvider {
 	}
 
 	private void dijkstra(Graph graph, Node source, Node target) {
-		source.dist = 0d;
+		source.g = 0d;
+		source.f = 0d;
 
 		Queue<Node> queue = new PriorityQueue<>(8, new Comparator<Node>() {
 			@Override
 			public int compare(Node o1, Node o2) {
-				return Double.compare(o1.dist, o2.dist);
+				return Double.compare(o1.f, o2.f);
 			}
 		});
 
+		double sqrt2 = Math.sqrt(2);
+
 		queue.add(source);
+		source.opened = true;
 		while (!queue.isEmpty()) {
 			Node node = queue.poll();
+			node.closed = true;
 			if (node.equals(target)) {
 				break;
 			}
-			if (node.visited) {
-				continue;
-			}
-			node.visited = true;
 			for (Node neighbor : graph.neighbors(node)) {
-				if (neighbor.visited) {
+				if (neighbor.closed) {
 					continue;
 				}
-				queue.add(neighbor);
+				double ng = node.g + ((neighbor.x - node.x == 0 || neighbor.y - node.y == 0) ? 1d : sqrt2);
 
-				double dist = node.dist + 1d;
-				if (dist < neighbor.dist) {
-					neighbor.dist = dist;
-					neighbor.prev = node;
+				if (!neighbor.opened || ng < neighbor.g) {
+					neighbor.g = ng;
+					neighbor.h = 0;//no heuristic
+					neighbor.f = neighbor.g + neighbor.h;
+					neighbor.parent = node;
+
+					if (!neighbor.opened) {
+						queue.offer(neighbor);
+						neighbor.opened = true;
+					}
 				}
 			}
 		}
@@ -339,9 +346,9 @@ public class Map extends MethodProvider {
 
 	public class Node {
 		public final int x, y;
-		private boolean visited;
-		private Node prev;
-		private double dist;
+		private boolean opened, closed;
+		private Node parent;
+		private double f, g, h;
 		private CollisionFlag flag;
 
 		private Node(int x, int y) {
@@ -351,9 +358,9 @@ public class Map extends MethodProvider {
 		}
 
 		private void reset() {
-			this.visited = false;
-			this.prev = null;
-			this.dist = Double.POSITIVE_INFINITY;
+			this.opened = this.closed = false;
+			this.parent = null;
+			this.f = this.g = this.h = Double.POSITIVE_INFINITY;
 			this.flag = CollisionFlag.PADDING;
 		}
 
