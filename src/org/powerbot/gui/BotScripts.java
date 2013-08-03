@@ -115,7 +115,8 @@ public final class BotScripts extends JDialog implements ActionListener {
 		toolbar.add(locals);
 		toolbar.add(Box.createHorizontalStrut(d));
 
-		username = new JButton(BotLocale.NOACCOUNT);
+		final GameAccounts ga = GameAccounts.getInstance();
+		username = new JButton(ga.size() == 1 ? ga.get(0).toString() : BotLocale.NOACCOUNT);
 		username.setFont(username.getFont().deriveFont(username.getFont().getSize2D() - 1f));
 		username.addActionListener(this);
 		username.setFocusable(false);
