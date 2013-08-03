@@ -1,7 +1,6 @@
 package org.powerbot.script.internal.randoms;
 
 import java.awt.Rectangle;
-import java.util.concurrent.ExecutionException;
 
 import org.powerbot.script.PollingScript;
 import org.powerbot.script.internal.InternalScript;
@@ -19,10 +18,12 @@ public class Login extends PollingScript implements InternalScript {
 	private static final int WIDGET_LOGIN_TRY_AGAIN = 81;
 	private static final int WIDGET_LOGIN_USERNAME_TEXT = 83;
 	private static final int WIDGET_LOGIN_PASSWORD_TEXT = 86;
-	private static final int WIDGET_LOBBY = 906;
-	private static final int WIDGET_LOBBY_TRY_AGAIN = 567;
 
 	public boolean isValid() {
+		if (ctx.getBreakManager().isBreaking()) {
+			return false;
+		}
+
 		int state = ctx.game.getClientState();
 		return (state == -1 || state == Game.INDEX_LOGIN_SCREEN ||
 				state == Game.INDEX_LOBBY_SCREEN ||
