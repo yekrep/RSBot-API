@@ -1,24 +1,27 @@
 package org.powerbot.script.methods;
 
-import java.util.Properties;
+import org.powerbot.service.NetworkAccount;
 
-public class Environment extends MethodProvider {//TODO remove this class entirely
-	private static final Properties properties = new Properties();
+public class Environment extends MethodProvider {
 
 	public Environment(MethodContext factory) {
 		super(factory);
 	}
 
-	public static Properties getProperties() {
-		return properties;
-	}
-
 	public static String getDisplayName() {
-		return properties.getProperty("user.name");
+		final NetworkAccount n = NetworkAccount.getInstance();
+		return n.isLoggedIn() ? n.getDisplayName() : null;
 	}
 
 	public static int getUserId() {
-		final String s = properties.getProperty("user.id");
-		return s == null || s.isEmpty() ? -1 : Integer.parseInt(s);
+		final NetworkAccount n = NetworkAccount.getInstance();
+		if (!n.isLoggedIn()) {
+			return -1;
+		}
+		try {
+			return Integer.parseInt(n.getProp("member_id"));
+		} catch (final NumberFormatException ignored) {
+			return -1;
+		}
 	}
 }
