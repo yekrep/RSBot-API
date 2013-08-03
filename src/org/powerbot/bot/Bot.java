@@ -207,8 +207,8 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 		}
 	}
 
-	public synchronized void startScript(final Script script, final ScriptDefinition def) {
-		controller = new ScriptController(ctx, multicaster, script, def);
+	public synchronized void startScript(final Script script, final ScriptDefinition def, final int timeout) {
+		controller = new ScriptController(ctx, multicaster, script, def, timeout);
 		controller.run();
 	}
 

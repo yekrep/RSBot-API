@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import java.util.zip.Inflater;
@@ -208,14 +209,12 @@ public class ScriptList {
 		if (username != null) {
 			bot.setAccount(GameAccounts.getInstance().get(username));
 		}
-		final FileLock l = lock;
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
 				log.info("Starting script: " + def.getName());
 				final int hours = 1 * (NetworkAccount.getInstance().hasPermission(NetworkAccount.DEVELOPER) ? 3 : 1);
-				//bot.getScriptController().setTimeout(def.local ? (int) TimeUnit.HOURS.toMillis(hours) : 0); // TODO: script timeouts
-				bot.startScript(script, def);
+				bot.startScript(script, def, def.local ? (int) TimeUnit.HOURS.toMillis(hours) : 0);
 			}
 		}).start();
 	}

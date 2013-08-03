@@ -1,11 +1,19 @@
 package org.powerbot.script.internal;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.EventListener;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicReference;
 
+import javax.swing.Timer;
+
+import org.powerbot.Configuration;
 import org.powerbot.event.EventMulticaster;
 import org.powerbot.script.Script;
 import org.powerbot.script.internal.randoms.BankPin;
@@ -16,8 +24,10 @@ import org.powerbot.script.lang.Stoppable;
 import org.powerbot.script.lang.Subscribable;
 import org.powerbot.script.lang.Suspendable;
 import org.powerbot.script.methods.MethodContext;
+import org.powerbot.service.NetworkAccount;
 import org.powerbot.service.scripts.ScriptDefinition;
 import org.powerbot.util.Tracker;
+import org.powerbot.util.io.HttpClient;
 
 public final class ScriptController implements Runnable, Suspendable, Stoppable, Subscribable<EventListener> {
 	private final MethodContext ctx;
@@ -26,8 +36,11 @@ public final class ScriptController implements Runnable, Suspendable, Stoppable,
 	private final List<Script> scripts;
 	private final ScriptDefinition def;
 	private final AtomicBoolean suspended, stopping;
+	private final Timer timeout, login, session;
+	private final AtomicReference<String> auth;
+	private final AtomicLong started;
 
-	public ScriptController(final MethodContext ctx, final EventMulticaster multicaster, final Script script, final ScriptDefinition def) {
+	public ScriptController(final MethodContext ctx, final EventMulticaster multicaster, final Script script, final ScriptDefinition def, final int timeout) {
 		this.ctx = ctx;
 		events = new EventManager(multicaster);
 		executor = new ScriptThreadExecutor(this);
@@ -42,6 +55,46 @@ public final class ScriptController implements Runnable, Suspendable, Stoppable,
 		scripts.add(script);
 
 		this.def = def;
+
+		this.timeout = new Timer(timeout, new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				((Timer) e.getSource()).stop();
+				stop();
+			}
+		});
+		this.timeout.setCoalesce(false);
+
+		auth = new AtomicReference<>(NetworkAccount.getInstance().getAuth());
+
+		login = new Timer(NetworkAccount.REVALIDATE_INTERVAL, new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				final String a = NetworkAccount.getInstance().getAuth();
+				if (!auth.getAndSet(a).equals(a)) {
+					((Timer) e.getSource()).stop();
+					stop();
+				}
+			}
+		});
+		login.setCoalesce(false);
+
+		started = new AtomicLong(0);
+
+		session = new Timer(0, new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				updateSession((int) (System.currentTimeMillis() / 1000L));
+			}
+		});
+		session.setCoalesce(false);
+	}
+
+	public void updateSession(final int time) {
+		try {
+			HttpClient.openStream(Configuration.URLs.SCRIPTSSESSION, NetworkAccount.getInstance().getAuth(), def.getID(), started.get() / 1000L, Integer.toString(time)).close();
+		} catch (final IOException ignored) {
+		}
 	}
 
 	@Override
@@ -53,6 +106,21 @@ public final class ScriptController implements Runnable, Suspendable, Stoppable,
 			if (!s.getExecQueue(Script.State.START).contains(s)) {
 				s.getExecQueue(Script.State.START).add(s);
 			}
+		}
+
+		if (timeout.getDelay() > 0) {
+			timeout.start();
+		}
+
+		login.start();
+
+		started.set(System.currentTimeMillis());
+		if (def.session > 0) {
+			final int d = def.session * 1000;
+			session.setInitialDelay(d);
+			session.setDelay(d);
+			session.start();
+			updateSession((int) (started.get() / 1000L));
 		}
 
 		call(Script.State.START);
@@ -67,6 +135,15 @@ public final class ScriptController implements Runnable, Suspendable, Stoppable,
 	@Override
 	public void stop() {
 		if (stopping.compareAndSet(false, true)) {
+			login.stop();
+			session.stop();
+			new Thread(new Runnable() {
+				@Override
+				public void run() {
+					updateSession(1356998400);
+				}
+			}).start();
+
 			call(Script.State.STOP);
 			events.unsubscribeAll();
 			executor.shutdown();
