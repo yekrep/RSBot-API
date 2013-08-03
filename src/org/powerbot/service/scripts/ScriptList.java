@@ -215,7 +215,7 @@ public class ScriptList {
 				log.info("Starting script: " + def.getName());
 				final int hours = 1 * (NetworkAccount.getInstance().hasPermission(NetworkAccount.DEVELOPER) ? 3 : 1);
 				//bot.getScriptController().setTimeout(def.local ? (int) TimeUnit.HOURS.toMillis(hours) : 0); // TODO: script timeouts
-				bot.startScript(script);
+				bot.startScript(script, def);
 			}
 		}).start();
 	}

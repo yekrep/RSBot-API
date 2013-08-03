@@ -16,16 +16,19 @@ import org.powerbot.script.lang.Stoppable;
 import org.powerbot.script.lang.Subscribable;
 import org.powerbot.script.lang.Suspendable;
 import org.powerbot.script.methods.MethodContext;
+import org.powerbot.service.scripts.ScriptDefinition;
+import org.powerbot.util.Tracker;
 
 public final class ScriptController implements Runnable, Suspendable, Stoppable, Subscribable<EventListener> {
 	private final MethodContext ctx;
 	private final EventManager events;
 	private ExecutorService executor;
 	private List<Script> scripts;
+	private final ScriptDefinition def;
 	private AtomicBoolean suspended;
 	private AtomicBoolean stopping;
 
-	public ScriptController(final MethodContext ctx, final EventMulticaster multicaster, final Script script) {
+	public ScriptController(final MethodContext ctx, final EventMulticaster multicaster, final Script script, final ScriptDefinition def) {
 		this.ctx = ctx;
 		events = new EventManager(multicaster);
 		executor = new ScriptThreadExecutor(this);
@@ -38,6 +41,8 @@ public final class ScriptController implements Runnable, Suspendable, Stoppable,
 		scripts.add(new TicketDestroy());
 		scripts.add(new BankPin());
 		scripts.add(script);
+
+		this.def = def;
 	}
 
 	@Override
@@ -103,6 +108,8 @@ public final class ScriptController implements Runnable, Suspendable, Stoppable,
 	}
 
 	private void call(final Script.State state) {
+		track(state.name().toLowerCase());
+
 		for (final Script s : scripts) {
 			try {
 				executor.execute(new Runnable() {
@@ -119,5 +126,17 @@ public final class ScriptController implements Runnable, Suspendable, Stoppable,
 			} catch (Exception ignored) {
 			}
 		}
+	}
+	private void track(String action) {
+		if (def == null || def.local || def.getID() == null || def.getID().isEmpty() || def.getName() == null) {
+			return;
+		}
+
+		if (action.equals("suspend")) {
+			action = "pause"; // legacy naming conventions
+		}
+
+		final String page = String.format("scripts/%s/%s", def.getID(), action);
+		Tracker.getInstance().trackPage(page, def.getName());
 	}
 }
