@@ -1,7 +1,5 @@
 package org.powerbot.util;
 
-import java.awt.Color;
-import java.awt.Graphics;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
@@ -9,16 +7,6 @@ import java.net.URLEncoder;
 public class StringUtil {
 	public static String stripHtml(final String s) {
 		return s.replaceAll("\\<.*?\\>", "");
-	}
-
-	/**
-	 * Draws a line on the screen at the specified index.
-	 */
-	public static void drawLine(final Graphics render, final int row, final String text) {
-		final int height = render.getFontMetrics().getHeight() + 4;
-		final int x = 7, y = row * height + height + 19 + 50;
-		render.setColor(Color.GREEN);
-		render.drawString(text, x, y);
 	}
 
 	public static String unescapeXmlEntities(String text) {
