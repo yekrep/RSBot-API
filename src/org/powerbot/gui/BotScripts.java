@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
@@ -72,6 +73,8 @@ public final class BotScripts extends JDialog implements ActionListener {
 	private final JTextField search;
 	private volatile boolean init;
 
+	private static AtomicReference<String> lastUsername = new AtomicReference<>(null);
+
 	public BotScripts(final BotChrome parent) {
 		super(parent, BotLocale.SCRIPTS, true);
 
@@ -116,7 +119,8 @@ public final class BotScripts extends JDialog implements ActionListener {
 		toolbar.add(Box.createHorizontalStrut(d));
 
 		final GameAccounts ga = GameAccounts.getInstance();
-		username = new JButton(ga.size() == 1 ? ga.get(0).toString() : BotLocale.NOACCOUNT);
+		username = new JButton(ga.size() == 1 ? ga.get(0).toString() :
+				lastUsername.get() != null && ga.contains(lastUsername.get()) ? lastUsername.get() : BotLocale.NOACCOUNT);
 		username.setFont(username.getFont().deriveFont(username.getFont().getSize2D() - 1f));
 		username.addActionListener(this);
 		username.setFocusable(false);
@@ -322,6 +326,7 @@ public final class BotScripts extends JDialog implements ActionListener {
 			final ActionListener l = new ActionListener() {
 				public void actionPerformed(final ActionEvent e1) {
 					username.setText(((JCheckBoxMenuItem) e1.getSource()).getText());
+					lastUsername.set(username.getText());
 				}
 			};
 			boolean hit = false;
