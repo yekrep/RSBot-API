@@ -98,7 +98,8 @@ public class GameObject extends Interactive implements Locatable, Nameable, Draw
 					base.derive(animable.getX2(), animable.getY2())
 			);
 		}
-		return null;
+		Tile loc = getLocation();
+		return new Area(loc, loc);
 	}
 
 	@Override
