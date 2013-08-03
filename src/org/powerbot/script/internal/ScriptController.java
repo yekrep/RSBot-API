@@ -128,7 +128,7 @@ public final class ScriptController implements Runnable, Suspendable, Stoppable,
 		}
 	}
 	private void track(String action) {
-		if (def == null || def.local || def.getID() == null || def.getID().isEmpty() || def.getName() == null) {
+		if (def == null || def.getName() == null || (!def.local && (def.getID() == null || def.getID().isEmpty()))) {
 			return;
 		}
 
@@ -136,7 +136,7 @@ public final class ScriptController implements Runnable, Suspendable, Stoppable,
 			action = "pause"; // legacy naming conventions
 		}
 
-		final String page = String.format("scripts/%s/%s", def.getID(), action);
+		final String page = String.format("scripts/%s/%s", def.local ? "0/local" : def.getID(), action);
 		Tracker.getInstance().trackPage(page, def.getName());
 	}
 }
