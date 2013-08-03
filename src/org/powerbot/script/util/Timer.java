@@ -51,10 +51,7 @@ public class Timer {
 	}
 
 	public long getRemaining() {
-		if (isRunning()) {
-			return (end.get() - now()) / MS_TO_NANOS;
-		}
-		return 0;
+		return Math.max(0, (end.get() - now()) / MS_TO_NANOS);
 	}
 
 	public boolean isRunning() {
