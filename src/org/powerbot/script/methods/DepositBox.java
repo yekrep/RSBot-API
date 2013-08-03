@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.powerbot.script.lang.ItemQuery;
-import org.powerbot.script.util.Delay;
 import org.powerbot.script.util.Random;
 import org.powerbot.script.util.Timer;
 import org.powerbot.script.wrappers.Component;
@@ -42,7 +41,7 @@ public class DepositBox extends ItemQuery<Item> {
 			if (object.interact("Deposit")) {
 				final Widget bankPin = ctx.widgets.get(13);
 				for (int i = 0; i < 20 && !isOpen() && !bankPin.isValid(); i++) {
-					Delay.sleep(200, 300);
+					sleep(200, 300);
 				}
 			}
 		}
@@ -63,7 +62,7 @@ public class DepositBox extends ItemQuery<Item> {
 			}
 			final Timer t = new Timer(Random.nextInt(1000, 2000));
 			while (t.isRunning() && isOpen()) {
-				Delay.sleep(100);
+				sleep(100);
 			}
 			return !isOpen();
 		}
@@ -141,16 +140,16 @@ public class DepositBox extends ItemQuery<Item> {
 					return false;
 				}
 				for (int i = 0; i < 20 && !isInputWidgetOpen(); i++) {
-					Delay.sleep(100, 200);
+					sleep(100, 200);
 				}
 				if (!isInputWidgetOpen()) {
 					return false;
 				}
-				Delay.sleep(200, 800);
+				sleep(200, 800);
 				ctx.keyboard.sendln(amount + "");
 			}
 			for (int i = 0; i < 25 && ctx.backpack.select().count(true) == inv; i++) {
-				Delay.sleep(100, 200);
+				sleep(100, 200);
 			}
 			return ctx.backpack.select().count(true) != inv;
 		}
@@ -169,7 +168,7 @@ public class DepositBox extends ItemQuery<Item> {
 		final int inv = ctx.backpack.select().count(true);
 		if (c.click()) {
 			for (int i = 0; i < 25 && ctx.backpack.select().count(true) == inv; i++) {
-				Delay.sleep(100, 200);
+				sleep(100, 200);
 			}
 		}
 		return ctx.backpack.select().count(true) != inv;

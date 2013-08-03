@@ -30,7 +30,6 @@ import javax.swing.WindowConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import org.powerbot.script.util.Delay;
 import org.powerbot.util.Tracker;
 import org.powerbot.util.io.Resources;
 
@@ -80,7 +79,10 @@ public class BotSettingExplorer extends JFrame {
 				public void run() {
 					while (settingExplorer.isVisible()) {
 						settingExplorer.update();
-						Delay.sleep(100);
+						try {
+							Thread.sleep(100);
+						} catch (InterruptedException ignored) {
+						}
 					}
 				}
 			}).start();

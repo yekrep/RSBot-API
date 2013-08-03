@@ -10,10 +10,10 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Logger;
 
 import org.powerbot.bot.loader.Crawler;
-import org.powerbot.bot.loader.transform.TransformSpec;
 import org.powerbot.bot.loader.GameLoader;
 import org.powerbot.bot.loader.GameStub;
 import org.powerbot.bot.loader.NRSLoader;
+import org.powerbot.bot.loader.transform.TransformSpec;
 import org.powerbot.client.Client;
 import org.powerbot.client.Constants;
 import org.powerbot.event.EventMulticaster;
@@ -28,7 +28,7 @@ import org.powerbot.script.internal.ScriptController;
 import org.powerbot.script.lang.Stoppable;
 import org.powerbot.script.methods.Game;
 import org.powerbot.script.methods.MethodContext;
-import org.powerbot.script.util.Delay;
+import org.powerbot.script.util.Random;
 import org.powerbot.service.GameAccounts;
 
 /**
@@ -327,7 +327,10 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 			if (bot != null && bot.ctx.getClient() != null) {
 				for (int i = 0; i < 30; i++) {
 					if (!ctx.keyboard.isReady()) {
-						Delay.sleep(500, 1000);
+						try {
+							Thread.sleep(Random.nextInt(500, 1000));
+						} catch (InterruptedException ignored) {
+						}
 					} else {
 						break;
 					}

@@ -10,7 +10,6 @@ import java.util.concurrent.TimeUnit;
 import org.powerbot.client.Client;
 import org.powerbot.client.input.Mouse;
 import org.powerbot.script.lang.Stoppable;
-import org.powerbot.script.util.Delay;
 import org.powerbot.util.math.HeteroMouse;
 import org.powerbot.util.math.Vector3;
 
@@ -37,7 +36,10 @@ public class MouseHandler implements Runnable, Stoppable {
 		}
 		final int x = mouse.getX(), y = mouse.getY();
 		press(x, y, button);
-		Delay.sleep(simulator.getPressDuration());
+		try {
+			Thread.sleep(simulator.getPressDuration());
+		} catch (InterruptedException ignored) {
+		}
 		release(x, y, button);
 	}
 
@@ -121,7 +123,10 @@ public class MouseHandler implements Runnable, Stoppable {
 			}
 			final Mouse mouse;
 			if ((mouse = client.getMouse()) == null) {
-				Delay.sleep(250);
+				try {
+					Thread.sleep(250);
+				} catch (InterruptedException ignored) {
+				}
 				continue;
 			}
 			if (++target.steps > MAX_STEPS) {
@@ -170,7 +175,10 @@ public class MouseHandler implements Runnable, Stoppable {
 
 				final long l = TimeUnit.NANOSECONDS.toMillis(simulator.getAbsoluteDelay(v.z)) - m;
 				if (l > 0) {
-					Delay.sleep(l);
+					try {
+						Thread.sleep(l);
+					} catch (InterruptedException ignored) {
+					}
 				}
 			}
 

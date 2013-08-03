@@ -2,7 +2,6 @@ package org.powerbot.script.methods;
 
 import org.powerbot.client.Client;
 import org.powerbot.script.wrappers.Locatable;
-import org.powerbot.script.util.Delay;
 import org.powerbot.script.util.Random;
 import org.powerbot.script.util.Timer;
 import org.powerbot.script.wrappers.Player;
@@ -48,7 +47,7 @@ public class Camera extends MethodProvider {
 					timer.reset();
 				}
 				prev = ang;
-				Delay.sleep(10, 15);
+				sleep(10, 15);
 			}
 			ctx.keyboard.send("{VK_LEFT up}");
 		} else if (getAngleTo(degrees) < -5) {
@@ -60,7 +59,7 @@ public class Camera extends MethodProvider {
 					timer.reset();
 				}
 				prev = ang;
-				Delay.sleep(10, 15);
+				sleep(10, 15);
 			}
 			ctx.keyboard.send("{VK_RIGHT up}");
 		}

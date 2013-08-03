@@ -8,14 +8,13 @@ import java.util.List;
 
 import org.powerbot.script.lang.Filter;
 import org.powerbot.script.lang.ItemQuery;
-import org.powerbot.script.wrappers.Locatable;
-import org.powerbot.script.util.Delay;
 import org.powerbot.script.util.Random;
 import org.powerbot.script.util.Timer;
 import org.powerbot.script.wrappers.Component;
 import org.powerbot.script.wrappers.GameObject;
 import org.powerbot.script.wrappers.Interactive;
 import org.powerbot.script.wrappers.Item;
+import org.powerbot.script.wrappers.Locatable;
 import org.powerbot.script.wrappers.Npc;
 import org.powerbot.script.wrappers.Tile;
 import org.powerbot.script.wrappers.Widget;
@@ -149,7 +148,7 @@ public class Bank extends ItemQuery<Item> {
 		if (interactive.interact(actions[index], options[index])) {
 			final Widget bankPin = ctx.widgets.get(13);
 			for (int i = 0; i < 20 && !isOpen() && !bankPin.isValid(); i++) {
-				Delay.sleep(200, 300);
+				sleep(200, 300);
 			}
 		}
 		return isOpen();
@@ -169,7 +168,7 @@ public class Bank extends ItemQuery<Item> {
 			}
 			final Timer t = new Timer(Random.nextInt(1000, 2000));
 			while (t.isRunning() && isOpen()) {
-				Delay.sleep(100);
+				sleep(100);
 			}
 			return !isOpen();
 		}
@@ -231,7 +230,7 @@ public class Bank extends ItemQuery<Item> {
 		if (c != null && c.isValid() && c.click(true)) {
 			final Timer timer = new Timer(800);
 			while (timer.isRunning() && getCurrentTab() != index) {
-				Delay.sleep(15);
+				sleep(15);
 			}
 			return getCurrentTab() == index;
 		}
@@ -265,7 +264,7 @@ public class Bank extends ItemQuery<Item> {
 		if (p.y == 0) {
 			for (int i = 0; i < 5 && getCurrentTab() != 0; i++) {
 				if (!setCurrentTab(0)) {
-					Delay.sleep(100, 200);
+					sleep(100, 200);
 				}
 			}
 		}
@@ -279,7 +278,7 @@ public class Bank extends ItemQuery<Item> {
 		}
 		if (!bounds.contains(c.getBoundingRect())) {
 			if (ctx.widgets.scroll(c, scroll, bounds.contains(ctx.mouse.getLocation()))) {
-				Delay.sleep(200, 400);
+				sleep(200, 400);
 			}
 			if (!bounds.contains(c.getBoundingRect())) {
 				return false;
@@ -303,16 +302,16 @@ public class Bank extends ItemQuery<Item> {
 				return false;
 			}
 			for (int i = 0; i < 20 && !isInputWidgetOpen(); i++) {
-				Delay.sleep(100, 200);
+				sleep(100, 200);
 			}
 			if (!isInputWidgetOpen()) {
 				return false;
 			}
-			Delay.sleep(200, 800);
+			sleep(200, 800);
 			ctx.keyboard.sendln(amount + "");
 		}
 		for (int i = 0; i < 25 && ctx.backpack.getMoneyPouch() + ctx.backpack.select().count(true) == inv; i++) {
-			Delay.sleep(100, 200);
+			sleep(100, 200);
 		}
 		return ctx.backpack.getMoneyPouch() + ctx.backpack.select().count(true) != inv;
 	}
@@ -350,16 +349,16 @@ public class Bank extends ItemQuery<Item> {
 				return false;
 			}
 			for (int i = 0; i < 20 && !isInputWidgetOpen(); i++) {
-				Delay.sleep(100, 200);
+				sleep(100, 200);
 			}
 			if (!isInputWidgetOpen()) {
 				return false;
 			}
-			Delay.sleep(200, 800);
+			sleep(200, 800);
 			ctx.keyboard.sendln(amount + "");
 		}
 		for (int i = 0; i < 25 && ctx.backpack.select().count(true) == inv; i++) {
-			Delay.sleep(100, 200);
+			sleep(100, 200);
 		}
 		return ctx.backpack.select().count(true) != inv;
 	}
@@ -390,7 +389,7 @@ public class Bank extends ItemQuery<Item> {
 			final Component c = ctx.widgets.get(WIDGET, COMPONENT_BUTTON_WITHDRAW_MODE);
 			if (c != null && c.isValid() && c.click(true)) {
 				for (int i = 0; i < 20 && isWithdrawModeNoted() != noted; i++) {
-					Delay.sleep(100, 200);
+					sleep(100, 200);
 				}
 			}
 		}

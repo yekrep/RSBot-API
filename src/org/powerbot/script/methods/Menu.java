@@ -12,7 +12,6 @@ import org.powerbot.client.NodeDeque;
 import org.powerbot.client.NodeSubQueue;
 import org.powerbot.script.internal.wrappers.Deque;
 import org.powerbot.script.internal.wrappers.Queue;
-import org.powerbot.script.util.Delay;
 import org.powerbot.script.util.Random;
 import org.powerbot.util.StringUtil;
 
@@ -63,9 +62,9 @@ public class Menu extends MethodProvider {
 			if (ctx.mouse.click(false)) {
 				final long m = System.currentTimeMillis();
 				while (System.currentTimeMillis() - m < 100 && !client.isMenuOpen()) {
-					Delay.sleep(5);
+					sleep(5);
 				}
-				Delay.sleep(0, 300);
+				sleep(0, 300);
 
 				if (!client.isMenuOpen()) {
 					return false;
@@ -149,17 +148,17 @@ public class Menu extends MethodProvider {
 		if (ctx.mouse.move(
 				client.getMenuX() + Random.nextInt(4, client.getMenuWidth() - 5),
 				client.getMenuY() + (21 + 16 * main + Random.nextInt(3, 12)))) {
-			Delay.sleep(Random.nextInt(125, 175));
+			sleep(Random.nextInt(125, 175));
 			if (client.isMenuOpen()) {
 				final Point p = ctx.mouse.getLocation();
 				final int cX;
 				final int subX = client.getSubMenuX();
 				if (ctx.mouse.move(cX = subX + Random.nextInt(4, client.getSubMenuWidth() - 5), p.y)) {
-					Delay.sleep(Random.nextInt(125, 175));
+					sleep(Random.nextInt(125, 175));
 					if (client.isMenuOpen()) {
 						final int subY = client.getSubMenuY();
 						if (ctx.mouse.move(cX, subY + (16 * sub + Random.nextInt(3, 12) + 21))) {
-							Delay.sleep(Random.nextInt(125, 175));
+							sleep(Random.nextInt(125, 175));
 							return client.isMenuOpen();
 						}
 					}

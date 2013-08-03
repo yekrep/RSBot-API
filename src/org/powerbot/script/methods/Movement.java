@@ -5,7 +5,6 @@ import java.awt.Point;
 import org.powerbot.client.Client;
 import org.powerbot.script.wrappers.Locatable;
 import org.powerbot.script.wrappers.Targetable;
-import org.powerbot.script.util.Delay;
 import org.powerbot.script.wrappers.Component;
 import org.powerbot.script.wrappers.LocalPath;
 import org.powerbot.script.wrappers.Tile;
@@ -81,7 +80,7 @@ public class Movement extends MethodProvider {
 			final Component c = ctx.widgets.get(WIDGET_MAP, COMPONENT_RUN);
 			if (c != null && c.click(true)) {
 				for (int i = 0; i < 20 && isRunning() != run; i++) {
-					Delay.sleep(100, 200);
+					sleep(100, 200);
 				}
 			}
 		}
