@@ -2,14 +2,20 @@ package org.powerbot.gui;
 
 import java.awt.Color;
 import java.awt.Desktop;
+import java.awt.Dimension;
+import java.awt.Frame;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.Closeable;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -29,6 +35,8 @@ import org.powerbot.gui.component.BotPanel;
 import org.powerbot.service.UpdateCheck;
 import org.powerbot.util.OSXAdapt;
 import org.powerbot.util.Tracker;
+import org.powerbot.util.io.CryptFile;
+import org.powerbot.util.io.IniParser;
 import org.powerbot.util.io.Resources;
 
 /**
@@ -40,6 +48,7 @@ public class BotChrome extends JFrame implements Closeable {
 	public static final int PANEL_MIN_WIDTH = 800, PANEL_MIN_HEIGHT = 600;
 	public BotPanel panel;
 	private final Bot bot;
+	final CryptFile cache = new CryptFile("window-cache.1.ini", false, BotChrome.class);
 	private static boolean minimised;
 
 	private BotChrome() {
@@ -73,6 +82,7 @@ public class BotChrome extends JFrame implements Closeable {
 		log.log(Level.INFO, "Optimising your experience", "Starting...");
 		pack();
 		setMinimumSize(getSize());
+		setSize(getWindowCache());
 		setLocationRelativeTo(getParent());
 		setVisible(true);
 
@@ -144,9 +154,67 @@ public class BotChrome extends JFrame implements Closeable {
 		}
 	}
 
+	private void saveWindowCache() {
+		final Map<String, String> data = new HashMap<>(2);
+		data.put("w", Integer.toString(getWidth()));
+		data.put("h", Integer.toString(getHeight()));
+		final Map<String, Map<String, String>> map = new HashMap<>(1);
+		map.put(IniParser.EMPTYSECTION, data);
+		try (final OutputStream out = cache.getOutputStream()) {
+			IniParser.serialise(map, out);
+		} catch (final IOException ignored) {
+			ignored.printStackTrace();
+		}
+	}
+
+	private Dimension getWindowCache() {
+		Dimension d = getSize();
+
+		if (!cache.exists()) {
+			return d;
+		}
+
+		Map<String, String> data = null;
+
+		try (final InputStream in = cache.getInputStream()) {
+			data = IniParser.deserialise(in).get(IniParser.EMPTYSECTION);
+		} catch (final IOException ignored) {
+		}
+
+		if (data == null) {
+			return d;
+		}
+
+		int w = d.width, h = d.height;
+
+		if (data.containsKey("w")) {
+			try {
+				w = Integer.parseInt(data.get("w"));
+			} catch (final NumberFormatException ignored) {
+			}
+		}
+
+		if (data.containsKey("h")) {
+			try {
+				h = Integer.parseInt(data.get("h"));
+			} catch (final NumberFormatException ignored) {
+			}
+		}
+
+		return new Dimension(w, h);
+	}
+
 	@Override
 	public void close() {
 		log.info("Shutting down");
+
+		final int s = getExtendedState();
+		final boolean maxed = (s & Frame.MAXIMIZED_VERT) == Frame.MAXIMIZED_VERT || (s & Frame.MAXIMIZED_HORIZ) == Frame.MAXIMIZED_HORIZ;
+
+		if (!maxed) {
+			saveWindowCache();
+		}
+
 		setVisible(false);
 		dispose();
 		System.exit(0);
