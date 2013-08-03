@@ -72,6 +72,16 @@ public final class GameAccounts extends ArrayList<GameAccounts.Account> {
 		}
 	}
 
+	public boolean contains(String username) {
+		username = normaliseUsername(username);
+		for (final Account a : this) {
+			if (a.username.equalsIgnoreCase(username)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public Account get(String username) {
 		username = normaliseUsername(username);
 		for (final Account a : this) {
