@@ -108,7 +108,7 @@ public final class ScriptController implements Runnable, Suspendable, Stoppable,
 	}
 
 	private void call(final Script.State state) {
-		track(state.name().toLowerCase());
+		track(state);
 
 		for (final Script s : scripts) {
 			try {
@@ -127,13 +127,17 @@ public final class ScriptController implements Runnable, Suspendable, Stoppable,
 			}
 		}
 	}
-	private void track(String action) {
+	private void track(final Script.State state) {
 		if (def == null || def.getName() == null || (!def.local && (def.getID() == null || def.getID().isEmpty()))) {
 			return;
 		}
 
-		if (action.equals("suspend")) {
-			action = "pause"; // legacy naming conventions
+		String action = "";
+
+		switch (state) {
+		case SUSPEND: action = "pause"; break;
+		case RESUME: action = "resume"; break;
+		case STOP: action = "stop"; break;
 		}
 
 		final String page = String.format("scripts/%s/%s", def.local ? "0/local" : def.getID(), action);
