@@ -176,7 +176,7 @@ public class Sandbox extends SecurityManager {
 		}
 
 		if ((path + File.separator).startsWith(Configuration.HOME.getAbsolutePath()) &&
-				isCallingClass(NetworkAccount.class, GameAccounts.class, Tracker.class)) {
+				isCallingClass(NetworkAccount.class, GameAccounts.class, Tracker.class, CryptFile.class)) {
 			return;
 		}
 
