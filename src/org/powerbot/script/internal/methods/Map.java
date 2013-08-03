@@ -206,7 +206,7 @@ public class Map extends MethodProvider {
 			return -1;
 		}
 
-		jps(graph, graph.nodes[startX][startY], graph.nodes[endX][endY]);
+		dijkstra(graph, graph.nodes[startX][startY], graph.nodes[endX][endY]);
 		double d = graph.nodes[endX][endY].g;
 		if (Double.isInfinite(d)) {
 			return -1;
@@ -229,7 +229,7 @@ public class Map extends MethodProvider {
 		return nodes.toArray(path);
 	}
 
-	/*private void dijkstra(Graph graph, Node source, Node target) {
+	private void dijkstra(Graph graph, Node source, Node target) {
 		source.g = 0d;
 		source.f = 0d;
 
@@ -269,7 +269,7 @@ public class Map extends MethodProvider {
 				}
 			}
 		}
-	}*/
+	}
 
 	private void jps(Graph graph, Node source, Node target) {
 		source.g = 0d;
