@@ -46,7 +46,7 @@ public class Menu extends MethodProvider {
 	}
 
 	public boolean hover(final String action) {
-		return click(action, null);
+		return hover(action, null);
 	}
 
 	public boolean hover(final String action, final String option) {
