@@ -114,8 +114,8 @@ public class BotChrome extends JFrame implements Closeable {
 			@Override
 			public void run() {
 				JOptionPane.showMessageDialog(BotChrome.this,
-						"Ban rates are currently at high levels.\nYou are not advised to play on your main accounts." +
-						"\n\nWe are working hard to mitigate these ban waves.",
+						"Ban rates are currently at medium-high levels.\nYou are advised to switch your scripts and accounts every few hours." +
+						"\n\nWe are working to mitigate the risks of bans every update.",
 						"Warning", JOptionPane.WARNING_MESSAGE);
 			}
 		});
