@@ -3,10 +3,10 @@ package org.powerbot.script.methods;
 import java.awt.Point;
 
 import org.powerbot.client.Client;
-import org.powerbot.script.wrappers.Locatable;
-import org.powerbot.script.wrappers.Targetable;
 import org.powerbot.script.wrappers.Component;
 import org.powerbot.script.wrappers.LocalPath;
+import org.powerbot.script.wrappers.Locatable;
+import org.powerbot.script.wrappers.Targetable;
 import org.powerbot.script.wrappers.Tile;
 import org.powerbot.script.wrappers.TileMatrix;
 import org.powerbot.script.wrappers.TilePath;
@@ -120,5 +120,25 @@ public class Movement extends MethodProvider {
 		int startX = start.getX(), startY = start.getY();
 		int endX = end.getX(), endY = end.getY();
 		return ctx.map.getDistance(startX, startY, endX, endY, ctx.game.getPlane());
+	}
+
+	public boolean isReachable(Locatable _start, Locatable _end) {
+		Tile start, end;
+		if (_start == null || _end == null) {
+			return false;
+		}
+		start = _start.getLocation();
+		end = _end.getLocation();
+
+		Tile base = ctx.game.getMapBase();
+		if (base == Tile.NIL || start == Tile.NIL || end == Tile.NIL) {
+			return false;
+		}
+		start = start.derive(-base.x, -base.y);
+		end = end.derive(-base.x, -base.y);
+
+		int startX = start.getX(), startY = start.getY();
+		int endX = end.getX(), endY = end.getY();
+		return ctx.map.getPath(startX, startY, endX, endY, ctx.game.getPlane()).length > 0;
 	}
 }
