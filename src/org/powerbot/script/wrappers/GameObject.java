@@ -10,6 +10,7 @@ import org.powerbot.client.AbstractModel;
 import org.powerbot.client.Cache;
 import org.powerbot.client.Client;
 import org.powerbot.client.HashTable;
+import org.powerbot.client.RSAnimable;
 import org.powerbot.client.RSInfo;
 import org.powerbot.client.RSInteractableData;
 import org.powerbot.client.RSInteractableLocation;
@@ -86,6 +87,18 @@ public class GameObject extends Interactive implements Locatable, Nameable, Draw
 		}
 		final Object def = ctx.game.lookup(table, getId());
 		return def != null && def instanceof RSObjectDef ? new ObjectDefinition((RSObjectDef) def) : new ObjectDefinition(null);
+	}
+
+	public Area getArea() {
+		if (object instanceof RSAnimable) {
+			RSAnimable animable = (RSAnimable) object;
+			Tile base = ctx.game.getMapBase();
+			return new Area(
+					base.derive(animable.getX1(), animable.getY1()),
+					base.derive(animable.getX2(), animable.getY2())
+			);
+		}
+		return null;
 	}
 
 	@Override
