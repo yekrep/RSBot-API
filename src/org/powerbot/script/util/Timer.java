@@ -59,7 +59,7 @@ public class Timer {
 	}
 
 	public void reset() {
-		end.set(start.get() + period.get());
+		end.set(now() + period.get());
 	}
 
 	public long setEndIn(final long ms) {
