@@ -1,6 +1,7 @@
 package org.powerbot.script.methods;
 
 import java.awt.Point;
+import java.awt.Rectangle;
 
 import org.powerbot.client.Client;
 import org.powerbot.script.wrappers.Component;
@@ -70,7 +71,9 @@ public class Movement extends MethodProvider {
 
 			@Override
 			public boolean contains(final Point point) {
-				return point.distance(tile.getMapPoint()) < Math.sqrt(3);
+				Point p = tile.getMapPoint();
+				Rectangle t = new Rectangle(p.x - 2, p.y - 2, 4, 4);
+				return t.contains(point);
 			}
 		}, true);
 	}
