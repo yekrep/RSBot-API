@@ -255,7 +255,7 @@ public class Game extends MethodProvider {
 		int pY = (int) (y * 4 + 2) - (loc.getY() << 9) / 128;
 		Component mapComponent = ctx.widgets.get(1477, 53);
 		int dist = pX * pX + pY * pY;
-		int mapRadius = Math.min(mapComponent.getWidth() / 2, mapComponent.getHeight() / 2) - 16;
+		int mapRadius = Math.min(mapComponent.getWidth() / 2, mapComponent.getHeight() / 2);
 		if (mapRadius * mapRadius >= dist) {
 			Constants constants = getConstants();
 			int SETTINGS_ON = constants != null ? constants.MINIMAP_SETTINGS_ON : -1;
@@ -273,8 +273,9 @@ public class Game extends MethodProvider {
 			int screen_x = _x + (int) basePoint.getX() + mapComponent.getWidth() / 2;
 			int screen_y = -_y + (int) basePoint.getY() + mapComponent.getHeight() / 2;
 			Point p = new Point(screen_x, screen_y);
-			for (int i = 17; i <= 18; i++) {
-				if (ctx.widgets.get(1465, i).contains(p)) {
+			for (int i = 17; i <= 21; i++) {
+				Rectangle r = ctx.widgets.get(1465, i).getViewportRect();
+				if (p.x >= r.x && p.x <= r.x + r.width && p.y >= r.y && p.y <= r.y + r.height) {
 					return new Point(-1, -1);
 				}
 			}
