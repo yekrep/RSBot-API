@@ -61,8 +61,8 @@ class ActorModel extends Model {
 		int sin = Game.SIN_TABLE[theta];
 		int cos = Game.COS_TABLE[theta];
 		for (int i = 0; i < numVertices; ++i) {
-			xPoints[i] = x_base[i] * cos + z_base[i] * sin >> 15;
-			zPoints[i] = z_base[i] * cos - x_base[i] * sin >> 15;
+			xPoints[i] = x_base[i] * cos + z_base[i] * sin >> 14;
+			zPoints[i] = z_base[i] * cos - x_base[i] * sin >> 14;
 		}
 	}
 }

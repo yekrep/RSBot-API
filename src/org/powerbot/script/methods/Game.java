@@ -34,10 +34,10 @@ public class Game extends MethodProvider {
 	public static final int[] COS_TABLE = new int[16384];
 
 	static {
-		final double d = 0.00038349519697141029D;
+		final double d = 0.0003834951969714103d;
 		for (int i = 0; i < 16384; i++) {
-			SIN_TABLE[i] = (int) (32768D * Math.sin(i * d));
-			COS_TABLE[i] = (int) (32768D * Math.cos(i * d));
+			SIN_TABLE[i] = (int) (16384d * Math.sin(i * d));
+			COS_TABLE[i] = (int) (16384d * Math.cos(i * d));
 		}
 	}
 
