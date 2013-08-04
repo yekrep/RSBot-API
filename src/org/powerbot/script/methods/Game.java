@@ -253,35 +253,43 @@ public class Game extends MethodProvider {
 		}
 		int pX = (int) (x * 4 + 2) - (loc.getX() << 9) / 128;
 		int pY = (int) (y * 4 + 2) - (loc.getY() << 9) / 128;
-		Component mapComponent = ctx.widgets.get(1477, 53);
+		Component mapComponent = ctx.widgets.get(1465, 12);
 		int dist = pX * pX + pY * pY;
-		int mapRadius = Math.min(mapComponent.getWidth() / 2, mapComponent.getHeight() / 2) - 10;
-		if (mapRadius * mapRadius >= dist) {
-			Constants constants = getConstants();
-			int SETTINGS_ON = constants != null ? constants.MINIMAP_SETTINGS_ON : -1;
-			boolean flag = client.getMinimapSettings() == SETTINGS_ON;
-			int sin = SIN_TABLE[mapAngle];
-			int cos = COS_TABLE[mapAngle];
-			if (!flag) {
-				final int fact = 0x100 + client.getMinimapScale();
-				sin = 0x100 * sin / fact;
-				cos = 0x100 * cos / fact;
-			}
-			int _x = cos * pX + sin * pY >> 0xf;
-			int _y = cos * pY - sin * pX >> 0xf;
-			Point basePoint = mapComponent.getAbsoluteLocation();
-			int screen_x = _x + (int) basePoint.getX() + mapComponent.getWidth() / 2;
-			int screen_y = -_y + (int) basePoint.getY() + mapComponent.getHeight() / 2;
-			Point p = new Point(screen_x, screen_y);
-			Rectangle t = new Rectangle(p.x - 4, p.y - 4, 8, 8);//entire tile sized 'buffer' area
-			for (int i = 17; i <= 21; i++) {
-				if (ctx.widgets.get(1465, i).getViewportRect().intersects(t)) {
-					return new Point(-1, -1);
-				}
-			}
-			return p;
+		int mapRadius = Math.max(mapComponent.getScrollWidth() / 2, mapComponent.getScrollHeight() / 2) + 10;
+		if (dist > mapRadius * mapRadius) {
+			return new Point(-1, -1);
 		}
-		return new Point(-1, -1);
+		Constants constants = getConstants();
+		int SETTINGS_ON = constants != null ? constants.MINIMAP_SETTINGS_ON : -1;
+		boolean flag = client.getMinimapSettings() == SETTINGS_ON;
+		int sin = SIN_TABLE[mapAngle];
+		int cos = COS_TABLE[mapAngle];
+		if (!flag) {
+			int scale = 256 + client.getMinimapScale();
+			sin = 256 * sin / scale;
+			cos = 256 * cos / scale;
+		}
+		int _x = cos * pX + sin * pY >> 14;
+		int _y = cos * pY - sin * pX >> 14;
+		_x += mapComponent.getScrollWidth() / 2;
+		_y *= -1;
+		_y += mapComponent.getScrollHeight() / 2;
+		if (_x <= 4 || _x >= mapComponent.getScrollWidth() - 4 ||
+				_y <= 4 || _y >= mapComponent.getScrollHeight() - 4) {
+			return new Point(-1, -1);
+		}
+
+		Point basePoint = mapComponent.getAbsoluteLocation();
+		int screen_x = _x + (int) basePoint.getX();
+		int screen_y = _y + (int) basePoint.getY();
+		Point p = new Point(screen_x, screen_y);
+		Rectangle t = new Rectangle(p.x - 6, p.y - 6, 12, 12);//entire tile and a half sized 'buffer' area
+		for (int i = 17; i <= 21; i++) {
+			if (ctx.widgets.get(1465, i).getViewportRect().intersects(t)) {
+				return new Point(-1, -1);
+			}
+		}
+		return p;
 	}
 
 	public void updateToolkit(final Render render) {
