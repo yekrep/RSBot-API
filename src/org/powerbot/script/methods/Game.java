@@ -273,9 +273,9 @@ public class Game extends MethodProvider {
 			int screen_x = _x + (int) basePoint.getX() + mapComponent.getWidth() / 2;
 			int screen_y = -_y + (int) basePoint.getY() + mapComponent.getHeight() / 2;
 			Point p = new Point(screen_x, screen_y);
+			Rectangle t = new Rectangle(p.x - 4, p.y - 4, 8, 8);//entire tile sized 'buffer' area
 			for (int i = 17; i <= 21; i++) {
-				Rectangle r = ctx.widgets.get(1465, i).getViewportRect();
-				if (p.x >= r.x && p.x <= r.x + r.width && p.y >= r.y && p.y <= r.y + r.height) {
+				if (ctx.widgets.get(1465, i).getViewportRect().intersects(t)) {
 					return new Point(-1, -1);
 				}
 			}
