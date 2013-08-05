@@ -78,6 +78,40 @@ public class Movement extends MethodProvider {
 		}, true);
 	}
 
+	public Tile getClosestOnMap(Locatable locatable) {
+		Tile local = ctx.players.local().getLocation();
+		Tile tile = locatable.getLocation();
+		if (local == Tile.NIL || tile == Tile.NIL) {
+			return Tile.NIL;
+		}
+		if (tile.getMatrix(ctx).isOnMap()) {
+			return tile;
+		}
+		int x2 = local.x, y2 = local.y, x1 = tile.x, y1 = tile.y;
+		int dx = Math.abs(x2 - x1), dy = Math.abs(y2 - y1);
+		int sx = (x1 < x2) ? 1 : -1, sy = (y1 < y2) ? 1 : -1;
+		int off = dx - dy;
+		for (; ; ) {
+			Tile t = local.derive(x1, y1);
+			if (t.getMatrix(ctx).isOnMap()) {
+				return t;
+			}
+			if (x1 == x2 && y1 == y2) {
+				break;
+			}
+			int e2 = 2 * off;
+			if (e2 > -dy) {
+				off = off - dy;
+				x1 = x1 + sx;
+			}
+			if (e2 < dx) {
+				off = off + dx;
+				y1 = y1 + sy;
+			}
+		}
+		return Tile.NIL;
+	}
+
 	public boolean setRunning(final boolean run) {
 		if (isRunning() != run) {
 			final Component c = ctx.widgets.get(WIDGET_MAP, COMPONENT_RUN);
