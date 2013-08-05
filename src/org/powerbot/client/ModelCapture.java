@@ -26,15 +26,35 @@ public class ModelCapture implements AbstractModel {
 			face_c = model.getIndices3().clone();
 		} else if (abstractModel instanceof GLModel) {
 			GLModel model = (GLModel) abstractModel;
-			vertex_x = model.getXPoints().clone();
-			vertex_y = model.getYPoints().clone();
-			vertex_z = model.getZPoints().clone();
+			vertex_x = model.getXPoints();
+			if (vertex_x != null) {
+				vertex_x = vertex_x.clone();
+			} else {
+				vertex_x = new int[0];
+			}
+			vertex_y = model.getYPoints();
+			if (vertex_y != null) {
+				vertex_y = vertex_y.clone();
+			} else {
+				vertex_y = new int[0];
+			}
+			vertex_z = model.getZPoints();
+			if (vertex_z != null) {
+				vertex_z = vertex_z.clone();
+			} else {
+				vertex_z = new int[0];
+			}
 			short[][] data = extract(model);
 			face_a = data[0];
 			face_b = data[1];
 			face_c = data[2];
 		} else {
-			return;
+			vertex_x = new int[0];
+			vertex_y = new int[0];
+			vertex_z = new int[0];
+			face_a = new short[0];
+			face_b = new short[0];
+			face_c = new short[0];
 		}
 		numVertices = Math.min(vertex_x.length, Math.min(vertex_y.length, vertex_z.length));
 		numFaces = Math.min(face_a.length, Math.min(face_b.length, face_c.length));
@@ -72,9 +92,24 @@ public class ModelCapture implements AbstractModel {
 			indices3 = model.getIndices3().clone();
 		} else if (abstractModel instanceof GLModel) {
 			GLModel model = (GLModel) abstractModel;
-			vertices_x = model.getXPoints().clone();
-			vertices_y = model.getYPoints().clone();
-			vertices_z = model.getZPoints().clone();
+			vertices_x = model.getXPoints();
+			if (vertices_x != null) {
+				vertices_x = vertices_x.clone();
+			} else {
+				vertices_x = new int[0];
+			}
+			vertices_y = model.getYPoints();
+			if (vertices_y != null) {
+				vertices_y = vertices_y.clone();
+			} else {
+				vertices_y = new int[0];
+			}
+			vertices_z = model.getZPoints();
+			if (vertices_z != null) {
+				vertices_z = vertices_z.clone();
+			} else {
+				vertices_z = new int[0];
+			}
 			short[][] data = extract(model);
 			indices1 = data[0];
 			indices2 = data[1];
@@ -154,6 +189,9 @@ public class ModelCapture implements AbstractModel {
 			short[][] arr = new short[3][len];
 			for (int i = 0; i < len; i++) {
 				GLTriangle triangle = triangles[i];
+				if (triangle == null) {
+					continue;
+				}
 				arr[0][i] = (short) triangle.getAPoint();
 				arr[1][i] = (short) triangle.getBPoint();
 				arr[2][i] = (short) triangle.getCPoint();
