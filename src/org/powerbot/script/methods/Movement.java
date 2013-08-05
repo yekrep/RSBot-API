@@ -50,9 +50,13 @@ public class Movement extends MethodProvider {
 	}
 
 	public boolean stepTowards(final Locatable locatable) {
-		final Tile loc = locatable.getLocation();
+		Tile loc = locatable.getLocation();
+		if (!loc.getMatrix(ctx).isOnMap()) {
+			loc = getClosestOnMap(loc);
+		}
+		final Tile t = loc;
 		return ctx.mouse.click(new Targetable() {
-			private TileMatrix tile = loc.getMatrix(ctx);
+			private TileMatrix tile = t.getMatrix(ctx);
 
 			@Override
 			public Point getInteractPoint() {
