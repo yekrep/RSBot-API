@@ -20,7 +20,7 @@ import org.powerbot.client.RenderData;
 import org.powerbot.client.SoftReference;
 import org.powerbot.client.TileData;
 import org.powerbot.script.wrappers.Component;
-import org.powerbot.script.wrappers.Locatable;
+import org.powerbot.script.wrappers.RelativePosition;
 import org.powerbot.script.wrappers.Tile;
 import org.powerbot.script.wrappers.Widget;
 
@@ -238,27 +238,18 @@ public class Game extends MethodProvider {
 		return new Point(-1, -1);
 	}
 
-	public Point tileToMap(Locatable locatable) {
-		Tile tile = locatable.getLocation();
-		return tileToMap(ctx.widgets.get(1465, 12),
-				(double) tile.getX(), (double) tile.getY()
-		);
-	}
-
-	public Point tileToMap(Component component, double x, double y) {
+	public Point tileToMap(Tile tile) {
 		Client client = ctx.getClient();
-		if (client == null) {
-			return new Point(-1, -1);
-		}
+		RelativePosition relative = ctx.players.local().getRelative();
 		Tile base = getMapBase();
-		x -= base.x;
-		y -= base.y;
-		Tile loc = ctx.players.local().getLocation().derive(-base.x, -base.y);
-		if (loc == Tile.NIL) {
+		tile = tile.derive(-base.getX(), -base.getY());
+		if (client == null ||
+				relative == RelativePosition.NIL || tile == Tile.NIL) {
 			return new Point(-1, -1);
 		}
-		int pX = (int) (x * 4) - (loc.getX() << 9) / 128;
-		int pY = (int) (y * 4) - (loc.getY() << 9) / 128;
+		int pX = (int) ((tile.getX() * 4 + 2) - relative.getX() / 128);
+		int pY = (int) ((tile.getY() * 4 + 2) - relative.getY() / 128);
+		Component component = ctx.widgets.get(1465, 12);
 		int dist = pX * pX + pY * pY;
 		int mapRadius = Math.max(component.getScrollWidth() / 2, component.getScrollHeight() / 2) + 10;
 		if (dist > mapRadius * mapRadius) {
