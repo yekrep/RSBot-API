@@ -112,7 +112,6 @@ public class GameObject extends Interactive implements Locatable, Nameable, Draw
 		return Tile.NIL;
 	}
 
-	@Override
 	public RelativeLocation getRelative() {
 		RSObject object = this.object.get();
 		RSInteractableData data = object != null ? object.getData() : null;

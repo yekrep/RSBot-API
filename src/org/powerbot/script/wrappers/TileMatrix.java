@@ -59,11 +59,6 @@ public final class TileMatrix extends Interactive implements Locatable, Drawable
 	}
 
 	@Override
-	public RelativeLocation getRelative() {
-		return new RelativeLocation(tile.getX() << 9, tile.getY() << 9);
-	}
-
-	@Override
 	public boolean isOnScreen() {
 		return isPolygonOnScreen(getBounds());
 	}

@@ -72,7 +72,6 @@ public class HintArrow extends MethodProvider implements Locatable, Validatable 
 		return Tile.NIL;
 	}
 
-	@Override
 	public RelativeLocation getRelative() {
 		RSHintArrow arrow = this.arrow.get();
 		if (arrow != null) {

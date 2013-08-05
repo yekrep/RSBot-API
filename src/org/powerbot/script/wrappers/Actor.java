@@ -190,7 +190,6 @@ public abstract class Actor extends Interactive implements Nameable, Locatable, 
 		return Tile.NIL;
 	}
 
-	@Override
 	public RelativeLocation getRelative() {
 		RSCharacter character = getAccessor();
 		RSInteractableData data = character != null ? character.getData() : null;

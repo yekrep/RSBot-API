@@ -98,9 +98,4 @@ public class Tile implements Locatable {
 	public Tile getLocation() {
 		return this;
 	}
-
-	@Override
-	public RelativeLocation getRelative() {
-		return new RelativeLocation(x << 9, y << 9);
-	}
 }
