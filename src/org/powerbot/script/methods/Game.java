@@ -20,6 +20,7 @@ import org.powerbot.client.RenderData;
 import org.powerbot.client.SoftReference;
 import org.powerbot.client.TileData;
 import org.powerbot.script.wrappers.Component;
+import org.powerbot.script.wrappers.Locatable;
 import org.powerbot.script.wrappers.Tile;
 import org.powerbot.script.wrappers.Widget;
 
@@ -237,9 +238,14 @@ public class Game extends MethodProvider {
 		return new Point(-1, -1);
 	}
 
-	public Point tileToMap(double x, double y) {
-		x -= 0.5;
-		y -= 0.5;
+	public Point tileToMap(Locatable locatable) {
+		Tile tile = locatable.getLocation();
+		return tileToMap(ctx.widgets.get(1465, 12),
+				(double) tile.getX(), (double) tile.getY()
+		);
+	}
+
+	public Point tileToMap(Component component, double x, double y) {
 		Client client = ctx.getClient();
 		if (client == null) {
 			return new Point(-1, -1);
@@ -251,11 +257,10 @@ public class Game extends MethodProvider {
 		if (loc == Tile.NIL) {
 			return new Point(-1, -1);
 		}
-		int pX = (int) (x * 4 + 2) - (loc.getX() << 9) / 128;
-		int pY = (int) (y * 4 + 2) - (loc.getY() << 9) / 128;
-		Component mapComponent = ctx.widgets.get(1465, 12);
+		int pX = (int) (x * 4) - (loc.getX() << 9) / 128;
+		int pY = (int) (y * 4) - (loc.getY() << 9) / 128;
 		int dist = pX * pX + pY * pY;
-		int mapRadius = Math.max(mapComponent.getScrollWidth() / 2, mapComponent.getScrollHeight() / 2) + 10;
+		int mapRadius = Math.max(component.getScrollWidth() / 2, component.getScrollHeight() / 2) + 10;
 		if (dist > mapRadius * mapRadius) {
 			return new Point(-1, -1);
 		}
@@ -271,15 +276,15 @@ public class Game extends MethodProvider {
 		}
 		int _x = cos * pX + sin * pY >> 14;
 		int _y = cos * pY - sin * pX >> 14;
-		_x += mapComponent.getScrollWidth() / 2;
+		_x += component.getScrollWidth() / 2;
 		_y *= -1;
-		_y += mapComponent.getScrollHeight() / 2;
-		if (_x <= 4 || _x >= mapComponent.getScrollWidth() - 4 ||
-				_y <= 4 || _y >= mapComponent.getScrollHeight() - 4) {
+		_y += component.getScrollHeight() / 2;
+		if (_x <= 4 || _x >= component.getScrollWidth() - 4 ||
+				_y <= 4 || _y >= component.getScrollHeight() - 4) {
 			return new Point(-1, -1);
 		}
 
-		Point basePoint = mapComponent.getAbsoluteLocation();
+		Point basePoint = component.getAbsoluteLocation();
 		int screen_x = _x + (int) basePoint.getX();
 		int screen_y = _y + (int) basePoint.getY();
 		Point p = new Point(screen_x, screen_y);
