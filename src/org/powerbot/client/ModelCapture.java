@@ -80,7 +80,12 @@ public class ModelCapture implements AbstractModel {
 			indices2 = data[1];
 			indices3 = data[2];
 		} else {
-			return;
+			vertices_x = new int[0];
+			vertices_y = new int[0];
+			vertices_z = new int[0];
+			indices1 = new short[0];
+			indices2 = new short[0];
+			indices3 = new short[0];
 		}
 
 		final int numVertices = Math.min(vertices_x.length, Math.min(vertices_y.length, vertices_z.length));
