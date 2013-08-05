@@ -7,6 +7,8 @@ import org.powerbot.script.lang.Filter;
 public interface Locatable {
 	public Tile getLocation();
 
+	public RelativeLocation getRelative();
+
 	public interface Query<T> {
 		public T at(Locatable t);
 

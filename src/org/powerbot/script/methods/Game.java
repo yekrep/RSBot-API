@@ -21,7 +21,7 @@ import org.powerbot.client.SoftReference;
 import org.powerbot.client.TileData;
 import org.powerbot.script.wrappers.Component;
 import org.powerbot.script.wrappers.Locatable;
-import org.powerbot.script.wrappers.RelativePosition;
+import org.powerbot.script.wrappers.RelativeLocation;
 import org.powerbot.script.wrappers.Tile;
 import org.powerbot.script.wrappers.Widget;
 
@@ -242,11 +242,11 @@ public class Game extends MethodProvider {
 	public Point tileToMap(Locatable locatable) {
 		Tile tile = locatable.getLocation();
 		Client client = ctx.getClient();
-		RelativePosition relative = ctx.players.local().getRelative();
+		RelativeLocation relative = ctx.players.local().getRelative();
 		Tile base = getMapBase();
 		tile = tile.derive(-base.getX(), -base.getY());
 		if (client == null ||
-				relative == RelativePosition.NIL || tile == Tile.NIL) {
+				relative == RelativeLocation.NIL || tile == Tile.NIL) {
 			return new Point(-1, -1);
 		}
 		int pX = (int) ((tile.getX() * 4 + 2) - relative.getX() / 128);

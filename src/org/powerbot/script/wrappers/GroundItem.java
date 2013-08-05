@@ -122,7 +122,18 @@ public class GroundItem extends Interactive implements Identifiable, Nameable, S
 
 	@Override
 	public Tile getLocation() {
+		if (item.get() == null) {
+			return Tile.NIL;
+		}
 		return tile;
+	}
+
+	@Override
+	public RelativeLocation getRelative() {
+		if (item.get() == null) {
+			return RelativeLocation.NIL;
+		}
+		return new RelativeLocation(tile.getX() << 9, tile.getY() << 9);
 	}
 
 	@Override

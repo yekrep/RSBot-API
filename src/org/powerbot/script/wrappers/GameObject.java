@@ -104,13 +104,23 @@ public class GameObject extends Interactive implements Locatable, Nameable, Draw
 
 	@Override
 	public Tile getLocation() {
-		final RSObject object = this.object.get();
-		final RSInteractableData data = object != null ? object.getData() : null;
-		final RSInteractableLocation location = data != null ? data.getLocation() : null;
-		if (location != null) {
+		RSObject object = this.object.get();
+		RelativeLocation location = getRelative();
+		if (object != null && location != null) {
 			return ctx.game.getMapBase().derive((int) location.getX() >> 9, (int) location.getY() >> 9, object.getPlane());
 		}
 		return Tile.NIL;
+	}
+
+	@Override
+	public RelativeLocation getRelative() {
+		RSObject object = this.object.get();
+		RSInteractableData data = object != null ? object.getData() : null;
+		RSInteractableLocation location = data != null ? data.getLocation() : null;
+		if (location != null) {
+			return new RelativeLocation(location.getX(), location.getY());
+		}
+		return RelativeLocation.NIL;
 	}
 
 	@Override

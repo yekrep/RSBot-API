@@ -73,6 +73,15 @@ public class HintArrow extends MethodProvider implements Locatable, Validatable 
 	}
 
 	@Override
+	public RelativeLocation getRelative() {
+		RSHintArrow arrow = this.arrow.get();
+		if (arrow != null) {
+			return new RelativeLocation(arrow.getX(), arrow.getY());
+		}
+		return RelativeLocation.NIL;
+	}
+
+	@Override
 	public boolean isValid() {
 		Client client = ctx.getClient();
 		if (client == null) {

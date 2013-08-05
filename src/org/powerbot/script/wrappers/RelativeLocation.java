@@ -1,11 +1,11 @@
 package org.powerbot.script.wrappers;
 
-public class RelativePosition {
-	public static final RelativePosition NIL = new RelativePosition(-1f, -1f);
+public class RelativeLocation {
+	public static final RelativeLocation NIL = new RelativeLocation(-1f, -1f);
 	private final float x;
 	private final float y;
 
-	RelativePosition(float x, float y) {
+	RelativeLocation(float x, float y) {
 		this.x = x;
 		this.y = y;
 	}
