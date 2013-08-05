@@ -182,13 +182,22 @@ public abstract class Actor extends Interactive implements Nameable, Locatable, 
 
 	@Override
 	public Tile getLocation() {
-		final RSCharacter character = getAccessor();
-		final RSInteractableData data = character != null ? character.getData() : null;
-		final RSInteractableLocation location = data != null ? data.getLocation() : null;
-		if (location != null) {
-			return ctx.game.getMapBase().derive((int) location.getX() >> 9, (int) location.getY() >> 9, character.getPlane());
+		RSCharacter character = getAccessor();
+		RelativePosition position = getRelative();
+		if (character != null && position != RelativePosition.NIL) {
+			return ctx.game.getMapBase().derive((int) position.getX() >> 9, (int) position.getY() >> 9, character.getPlane());
 		}
 		return Tile.NIL;
+	}
+
+	public RelativePosition getRelative() {
+		RSCharacter character = getAccessor();
+		RSInteractableData data = character != null ? character.getData() : null;
+		RSInteractableLocation location = data != null ? data.getLocation() : null;
+		if (location != null) {
+			return new RelativePosition(location.getX(), location.getY());
+		}
+		return RelativePosition.NIL;
 	}
 
 	@Override
