@@ -18,6 +18,7 @@ public class MethodContext {
 	public CombatBar combatBar;
 	public Bank bank;
 	public Camera camera;
+	public Chat chat;
 	public DepositBox depositBox;
 	public Environment environment;
 	public Equipment equipment;
@@ -55,6 +56,7 @@ public class MethodContext {
 		backpack = new Backpack(this);
 		bank = new Bank(this);
 		camera = new Camera(this);
+		chat = new Chat(this);
 		depositBox = new DepositBox(this);
 		environment = new Environment(this);
 		equipment = new Equipment(this);
@@ -101,6 +103,7 @@ public class MethodContext {
 		backpack = ctx.backpack;
 		bank = ctx.bank;
 		camera = ctx.camera;
+		chat = ctx.chat;
 		depositBox = ctx.depositBox;
 		environment = ctx.environment;
 		equipment = ctx.equipment;
