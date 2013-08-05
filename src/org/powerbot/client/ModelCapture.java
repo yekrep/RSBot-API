@@ -155,6 +155,6 @@ public class ModelCapture implements AbstractModel {
 			}
 			return arr;
 		}
-		return new short[3][];
+		return new short[3][0];
 	}
 }
