@@ -9,7 +9,6 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.methods.MethodProvider;
@@ -24,7 +23,6 @@ import org.powerbot.script.methods.MethodProvider;
 public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends MethodProvider implements Iterable<K>, Nillable<K> {
 	private final ThreadLocal<List<K>> items;
 	private final Method set;
-	private final AtomicBoolean mark;
 
 	/**
 	 * Creates a base {@link AbstractQuery}.
@@ -47,8 +45,6 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends Me
 		} catch (final NoSuchMethodException ignored) {
 		}
 		this.set = set;
-
-		mark = new AtomicBoolean(false);
 	}
 
 	/**
@@ -71,7 +67,6 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends Me
 	 * @return {@code this} for the purpose of chaining
 	 */
 	public T select() {
-		mark.set(false);
 		final List<K> items = this.items.get(), a = get();
 		setArray(items, a);
 		return getThis();
@@ -85,7 +80,6 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends Me
 	 * @return {@code this} for the purpose of chaining
 	 */
 	public T select(final Iterable<K> c) {
-		validate();
 		final List<K> items = this.items.get(), a = new ArrayList<>();
 		for (final K k : c) {
 			a.add(k);
@@ -102,7 +96,6 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends Me
 	 * @return {@code this} for the purpose of chaining
 	 */
 	public T select(final Filter<? super K> f) {
-		validate();
 		final List<K> items = this.items.get(), a = new ArrayList<>(items.size());
 		for (final K k : items) {
 			if (f.accept(k)) {
@@ -120,7 +113,6 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends Me
 	 * @return {@code this} for the purpose of chaining
 	 */
 	public T sort(final Comparator<? super K> c) {
-		validate();
 		final List<K> items = this.items.get(), a = new ArrayList<>(items);
 		Collections.sort(a, c);
 		setArray(items, a);
@@ -133,7 +125,6 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends Me
 	 * @return {@code this} for the purpose of chaining
 	 */
 	public T shuffle() {
-		validate();
 		final List<K> items = this.items.get(), a = new ArrayList<>(items);
 		Collections.shuffle(a);
 		setArray(items, a);
@@ -146,7 +137,6 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends Me
 	 * @return {@code this} for the purpose of chaining
 	 */
 	public T reverse() {
-		validate();
 		final List<K> items = this.items.get(), a = new ArrayList<>(items);
 		Collections.reverse(a);
 		setArray(items, a);
@@ -184,7 +174,6 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends Me
 	 * @return {@code this} for the purpose of chaining
 	 */
 	public T limit(final int offset, final int count) {
-		validate();
 		final List<K> items = this.items.get(), a = new ArrayList<>(count);
 		final int c = Math.min(offset + count, items.size());
 		for (int i = offset; i < c; i++) {
@@ -210,7 +199,6 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends Me
 	 * @return {@code this} for the purpose of chaining
 	 */
 	public T addTo(final Collection<? super K> c) {
-		validate();
 		c.addAll(items.get());
 		return getThis();
 	}
@@ -220,7 +208,6 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends Me
 	 */
 	@Override
 	public Iterator<K> iterator() {
-		validate();
 		return items.get().iterator();
 	}
 
@@ -242,8 +229,6 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends Me
 	 * @return {@code this} for the purpose of chaining
 	 */
 	public T each(final ChainingIterator<K> c, final boolean async) {
-		validate();
-
 		final Runnable r = new Runnable() {
 			@Override
 			public void run() {
@@ -263,23 +248,6 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends Me
 		}
 
 		return getThis();
-	}
-
-	/**
-	 * Marks the cache as stale forcing the next query to load a fresh data set.
-	 *
-	 * @return {@code this} for the purpose of chaining
-	 * @see {@link #select()} ()}
-	 */
-	public T invalidate() {
-		mark.set(true);
-		return getThis();
-	}
-
-	private void validate() {
-		if (mark.compareAndSet(true, false)) {
-			select();
-		}
 	}
 
 	/**
