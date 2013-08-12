@@ -44,7 +44,7 @@ public class InputHandler {
 			@Override
 			public void actionPerformed(final ActionEvent e) {
 				final Timer t = ((Timer) e.getSource());
-				t.setDelay(HardwareSimulator.getDelayFactor() * 2);
+				t.setDelay(HardwareSimulator.getDelayFactor() / 2);
 				if (queue.isEmpty()) {
 					t.stop();
 				} else {
