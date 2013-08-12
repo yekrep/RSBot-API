@@ -4,150 +4,105 @@ public class ModelCapture implements AbstractModel {
 	private int[] vertex_x;
 	private int[] vertex_y;
 	private int[] vertex_z;
+	private int[] face_a;
+	private int[] face_b;
+	private int[] face_c;
+	private int vertices;
+	private int faces;
 
-	private short[] face_a;
-	private short[] face_b;
-	private short[] face_c;
-	private int numVertices;
-	private int numFaces;
-
-	private ModelCapture(AbstractModel abstractModel) {
-		if (abstractModel == null) {
-			return;
-		}
-
-		if (abstractModel instanceof JavaModel) {
-			JavaModel model = (JavaModel) abstractModel;
-			vertex_x = model.getXPoints().clone();
-			vertex_y = model.getYPoints().clone();
-			vertex_z = model.getZPoints().clone();
-			face_a = model.getIndices1().clone();
-			face_b = model.getIndices2().clone();
-			face_c = model.getIndices3().clone();
-		} else if (abstractModel instanceof GLModel) {
-			GLModel model = (GLModel) abstractModel;
-			vertex_x = model.getXPoints();
-			if (vertex_x != null) {
-				vertex_x = vertex_x.clone();
-			} else {
-				vertex_x = new int[0];
-			}
-			vertex_y = model.getYPoints();
-			if (vertex_y != null) {
-				vertex_y = vertex_y.clone();
-			} else {
-				vertex_y = new int[0];
-			}
-			vertex_z = model.getZPoints();
-			if (vertex_z != null) {
-				vertex_z = vertex_z.clone();
-			} else {
-				vertex_z = new int[0];
-			}
-			short[][] data = extract(model);
-			face_a = data[0];
-			face_b = data[1];
-			face_c = data[2];
-		} else {
-			vertex_x = new int[0];
-			vertex_y = new int[0];
-			vertex_z = new int[0];
-			face_a = new short[0];
-			face_b = new short[0];
-			face_c = new short[0];
-		}
-		numVertices = Math.min(vertex_x.length, Math.min(vertex_y.length, vertex_z.length));
-		numFaces = Math.min(face_a.length, Math.min(face_b.length, face_c.length));
+	private ModelCapture() {
+		reset();
 	}
 
-	public static AbstractModel updateModel(AbstractModel game, AbstractModel capture) {
-		if (capture == null || !(capture instanceof ModelCapture)) {
-			capture = new ModelCapture(game);
-			return capture;
+	public static AbstractModel updateModel(AbstractModel model, AbstractModel stored) {
+		if (stored == null || !(stored instanceof ModelCapture)) {
+			stored = new ModelCapture();
 		}
-		final ModelCapture reused_capture = (ModelCapture) capture;
-		reused_capture.update(game);
-		return reused_capture;
+		((ModelCapture) stored).update(model);
+		return stored;
 	}
 
 	private void update(AbstractModel abstractModel) {
 		if (abstractModel == null) {
+			reset();
 			return;
 		}
 
-		int[] vertices_x;
-		int[] vertices_y;
-		int[] vertices_z;
-		short[] indices1;
-		short[] indices2;
-		short[] indices3;
-
+		int[] x, y, z;
+		int[] a, b, c;
 		if (abstractModel instanceof JavaModel) {
 			JavaModel model = (JavaModel) abstractModel;
-			vertices_x = model.getXPoints().clone();
-			vertices_y = model.getYPoints().clone();
-			vertices_z = model.getZPoints().clone();
-			indices1 = model.getIndices1().clone();
-			indices2 = model.getIndices2().clone();
-			indices3 = model.getIndices3().clone();
+			x = model.getXPoints();
+			y = model.getYPoints();
+			z = model.getZPoints();
+			a = ints(model.getIndices1());
+			b = ints(model.getIndices2());
+			c = ints(model.getIndices3());
 		} else if (abstractModel instanceof GLModel) {
 			GLModel model = (GLModel) abstractModel;
-			vertices_x = model.getXPoints();
-			if (vertices_x != null) {
-				vertices_x = vertices_x.clone();
-			} else {
-				vertices_x = new int[0];
+			x = model.getXPoints();
+			y = model.getYPoints();
+			z = model.getZPoints();
+			if (x == null) {
+				x = new int[0];
 			}
-			vertices_y = model.getYPoints();
-			if (vertices_y != null) {
-				vertices_y = vertices_y.clone();
-			} else {
-				vertices_y = new int[0];
+			if (y == null) {
+				y = new int[0];
 			}
-			vertices_z = model.getZPoints();
-			if (vertices_z != null) {
-				vertices_z = vertices_z.clone();
-			} else {
-				vertices_z = new int[0];
+			if (z == null) {
+				z = new int[0];
 			}
-			short[][] data = extract(model);
-			indices1 = data[0];
-			indices2 = data[1];
-			indices3 = data[2];
+			GLTriangle[] triangles = model.getTriangles();
+			a = b = c = new int[0];
+			if (triangles != null) {
+				int len = triangles.length;
+				a = new int[len];
+				b = new int[len];
+				c = new int[len];
+				for (int i = 0; i < len; i++) {
+					GLTriangle triangle = triangles[i];
+					if (triangle == null) {
+						continue;
+					}
+					a[i] = triangle.getAPoint();
+					b[i] = triangle.getBPoint();
+					c[i] = triangle.getCPoint();
+				}
+			}
 		} else {
-			vertices_x = new int[0];
-			vertices_y = new int[0];
-			vertices_z = new int[0];
-			indices1 = new short[0];
-			indices2 = new short[0];
-			indices3 = new short[0];
+			x = y = z = new int[0];
+			a = b = c = new int[0];
 		}
+		int vertices = Math.max(x.length, Math.min(y.length, z.length));
+		int faces = Math.min(a.length, Math.min(b.length, c.length));
+		if (vertices > this.vertices) {
+			vertex_x = x.clone();
+			vertex_y = y.clone();
+			vertex_z = z.clone();
+			this.vertices = vertices;
+		} else {
+			this.vertices = vertices;
+			System.arraycopy(x, 0, vertex_x, 0, vertices);
+			System.arraycopy(y, 0, vertex_y, 0, vertices);
+			System.arraycopy(z, 0, vertex_z, 0, vertices);
+		}
+		if (faces > this.faces) {
+			face_a = a.clone();
+			face_b = b.clone();
+			face_c = c.clone();
+			this.faces = faces;
+		} else {
+			this.faces = faces;
+			System.arraycopy(a, 0, face_a, 0, faces);
+			System.arraycopy(b, 0, face_b, 0, faces);
+			System.arraycopy(c, 0, face_c, 0, faces);
+		}
+	}
 
-		final int numVertices = Math.min(vertices_x.length, Math.min(vertices_y.length, vertices_z.length));
-		final int numFaces = Math.min(indices1.length, Math.min(indices2.length, indices3.length));
-		if (numVertices > this.numVertices) {
-			this.numVertices = numVertices;
-			vertex_x = vertices_x.clone();
-			vertex_y = vertices_y.clone();
-			vertex_z = vertices_z.clone();
-		} else {
-			this.numVertices = numVertices;
-			System.arraycopy(vertices_x, 0, vertex_x, 0, numVertices);
-			System.arraycopy(vertices_y, 0, vertex_y, 0, numVertices);
-			System.arraycopy(vertices_z, 0, vertex_z, 0, numVertices);
-		}
-
-		if (numFaces > this.numFaces) {
-			this.numFaces = numFaces;
-			face_a = indices1.clone();
-			face_b = indices2.clone();
-			face_c = indices3.clone();
-		} else {
-			this.numFaces = numFaces;
-			System.arraycopy(indices1, 0, face_a, 0, numFaces);
-			System.arraycopy(indices2, 0, face_b, 0, numFaces);
-			System.arraycopy(indices3, 0, face_c, 0, numFaces);
-		}
+	private void reset() {
+		vertex_x = vertex_y = vertex_z = new int[0];
+		face_a = face_b = face_c = new int[0];
+		vertices = faces = 0;
 	}
 
 	public int[] getXPoints() {
@@ -162,42 +117,32 @@ public class ModelCapture implements AbstractModel {
 		return vertex_z;
 	}
 
-	public short[] getFaceA() {
+	public int[] getFaceA() {
 		return face_a;
 	}
 
-	public short[] getFaceB() {
+	public int[] getFaceB() {
 		return face_b;
 	}
 
-	public short[] getFaceC() {
+	public int[] getFaceC() {
 		return face_c;
 	}
 
-	public int getNumVertices() {
-		return numVertices;
+	public int getVertices() {
+		return vertices;
 	}
 
-	public int getNumFaces() {
-		return numFaces;
+	public int getFaces() {
+		return faces;
 	}
 
-	public short[][] extract(GLModel model) {
-		GLTriangle[] triangles = model.getTriangles();
-		if (triangles != null) {
-			int len = triangles.length;
-			short[][] arr = new short[3][len];
-			for (int i = 0; i < len; i++) {
-				GLTriangle triangle = triangles[i];
-				if (triangle == null) {
-					continue;
-				}
-				arr[0][i] = (short) triangle.getAPoint();
-				arr[1][i] = (short) triangle.getBPoint();
-				arr[2][i] = (short) triangle.getCPoint();
-			}
-			return arr;
+	private int[] ints(short[] shorts) {
+		int len = shorts.length;
+		int[] arr = new int[len];
+		for (int i = 0; i < len; i++) {
+			arr[i] = shorts[i];
 		}
-		return new short[3][0];
+		return arr;
 	}
 }
