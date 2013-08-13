@@ -176,7 +176,7 @@ public class NRSLoader implements Runnable {
 		final SecretKey key = new SecretKeySpec(b, 0, b.length, keyAlgo);
 
 		final HttpURLConnection bucket = HttpClient.getHttpConnection(new URL(String.format(Configuration.URLs.CLIENTBUCKET, packHash)));
-		bucket.addRequestProperty(String.format("x-%s-cv", Configuration.NAME.toLowerCase()), "100");
+		bucket.addRequestProperty(String.format("x-%s-cv", Configuration.NAME.toLowerCase()), "101");
 		bucket.setInstanceFollowRedirects(false);
 		bucket.connect();
 		r = bucket.getResponseCode();
