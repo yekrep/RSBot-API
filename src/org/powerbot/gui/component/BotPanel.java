@@ -149,7 +149,9 @@ public class BotPanel extends JPanel {
 		}
 		this.bot = bot;
 		getComponent(0).setVisible(bot == null);
+		Dimension d = getSize();
 		if (bot != null) {
+			bot.resize(d.width, d.height);
 			bot.setPanel(this);
 			if (bot.getCanvas() != null) {
 				offset();
