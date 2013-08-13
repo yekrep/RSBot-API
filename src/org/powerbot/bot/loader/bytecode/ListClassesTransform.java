@@ -68,11 +68,16 @@ public class ListClassesTransform implements Transform {
 				Opcodes.INVOKEVIRTUAL,
 				Opcodes.DUP,
 				Opcodes.ASTORE,
-				Opcodes.IFNULL
 		};
 		for (MethodNode method : node.methods) {
 			InsnSearcher searcher = new InsnSearcher(method);
 			while (searcher.getNext(ops) != null) {
+				int branch = searcher.getNext().getOpcode();
+				if (branch != Opcodes.IFNULL &&
+						branch != Opcodes.IF_ACMPEQ) {
+					continue;
+				}
+
 				AbstractInsnNode abstractInsnNode = searcher.getPrevious(Opcodes.INVOKEVIRTUAL);
 				MethodInsnNode methodInsnNode = (MethodInsnNode) abstractInsnNode;
 				if (methodInsnNode.name.equals(methodName) &&
@@ -81,7 +86,7 @@ public class ListClassesTransform implements Transform {
 					* Found the getNextJarEntry invoke.
 					* Retrieve the jump position if the entry is null (no more entries).
 					 */
-					JumpInsnNode jump = (JumpInsnNode) searcher.getNext(Opcodes.IFNULL);
+					JumpInsnNode jump = (JumpInsnNode) searcher.getNext(branch);
 					AbstractInsnNode pos = jump.getPrevious();
 					LabelNode label = jump.label;
 					/*
@@ -95,7 +100,7 @@ public class ListClassesTransform implements Transform {
 					* If entry is null, GOTO the IFNULL label.
 					* This allows us to add more intermediate code (notify EOJ).
 					 */
-					insnList.add(new JumpInsnNode(Opcodes.IFNONNULL, skip));
+					insnList.add(new JumpInsnNode(branch == Opcodes.IFNULL ? Opcodes.IFNONNULL : Opcodes.IF_ACMPNE, skip));
 					insnList.add(new FieldInsnNode(Opcodes.GETSTATIC, parent.getIdentified(), "accessor", "L" + Bridge.class.getName().replace('.', '/') + ";"));
 					insnList.add(new MethodInsnNode(Opcodes.INVOKEINTERFACE, Bridge.class.getName().replace('.', '/'), "end", "()V"));
 					insnList.add(new JumpInsnNode(Opcodes.GOTO, label));
