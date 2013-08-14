@@ -16,9 +16,9 @@ import org.powerbot.script.util.Random;
 public abstract class Model extends MethodProvider {
 	private final int height;
 	protected final int[] yPoints;
-	protected final short[] faceA;
-	protected final short[] faceB;
-	protected final short[] faceC;
+	protected final int[] faceA;
+	protected final int[] faceB;
+	protected final int[] faceC;
 	protected final int numFaces;
 	protected final int numVertices;
 	protected int[] xPoints;
@@ -43,8 +43,8 @@ public abstract class Model extends MethodProvider {
 		faceA = model.getFaceA();
 		faceB = model.getFaceB();
 		faceC = model.getFaceC();
-		numVertices = model.getNumVertices();
-		numFaces = model.getNumFaces();
+		numVertices = model.getVertices();
+		numFaces = model.getFaces();
 	}
 
 	public abstract int getX();
@@ -121,7 +121,7 @@ public abstract class Model extends MethodProvider {
 		return point != null ? point : (point = firstOnScreenCentroid(0, mark)) != null ? point : new Point(-1, -1);
 	}
 
-	public short[] getFaceA() {
+	public int[] getFaceA() {
 		return faceA;
 	}
 
@@ -169,7 +169,6 @@ public abstract class Model extends MethodProvider {
 
 	public void drawWireFrame(Graphics render) {
 		int[][] screen = projectVertices();
-
 		for (int index = 0; index < numFaces; index++) {
 			int index1 = faceA[index];
 			int index2 = faceB[index];
