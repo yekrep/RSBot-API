@@ -11,7 +11,7 @@ import org.powerbot.script.wrappers.Component;
  */
 public class Hud extends MethodProvider {
 	public static final int WIDGET_HUD = 1477;
-	public static final int COMPONENT_COMBAT_BAR = 70;
+	public static final int COMPONENT_COMBAT_BAR = 72;
 	public static final int WIDGET_MENU = 1431;
 	public static final int WIDGET_MENU_BOUNDS = 32;
 	public static final int WIDGET_MENU_WINDOWS = 1432;
