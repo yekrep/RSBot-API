@@ -105,7 +105,7 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 	}
 
 	private void sequence(final NRSLoader loader) {
-		log.info("Loading game");
+		log.info("Loading game (" + loader.getPackHash().substring(0, 6) + ")");
 		this.appletContainer = loader.getApplet();
 		Crawler crawler = loader.getGameLoader().getCrawler();
 		GameStub stub = new GameStub(crawler.parameters, crawler.archive);
