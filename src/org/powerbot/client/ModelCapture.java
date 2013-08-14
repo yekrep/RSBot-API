@@ -4,9 +4,9 @@ public class ModelCapture implements AbstractModel {
 	private int[] vertex_x;
 	private int[] vertex_y;
 	private int[] vertex_z;
-	private int[] face_a;
-	private int[] face_b;
-	private int[] face_c;
+	private short[] face_a;
+	private short[] face_b;
+	private short[] face_c;
 	private int vertices;
 	private int faces;
 
@@ -22,57 +22,20 @@ public class ModelCapture implements AbstractModel {
 		return stored;
 	}
 
-	private void update(AbstractModel abstractModel) {
-		if (abstractModel == null) {
+	private void update(AbstractModel model) {
+		if (model == null) {
 			reset();
 			return;
 		}
 
 		int[] x, y, z;
-		int[] a, b, c;
-		if (abstractModel instanceof JavaModel) {
-			JavaModel model = (JavaModel) abstractModel;
-			x = model.getXPoints();
-			y = model.getYPoints();
-			z = model.getZPoints();
-			a = ints(model.getIndices1());
-			b = ints(model.getIndices2());
-			c = ints(model.getIndices3());
-		} else if (abstractModel instanceof GLModel) {
-			GLModel model = (GLModel) abstractModel;
-			x = model.getXPoints();
-			y = model.getYPoints();
-			z = model.getZPoints();
-			if (x == null) {
-				x = new int[0];
-			}
-			if (y == null) {
-				y = new int[0];
-			}
-			if (z == null) {
-				z = new int[0];
-			}
-			GLTriangle[] triangles = model.getTriangles();
-			a = b = c = new int[0];
-			if (triangles != null) {
-				int len = triangles.length;
-				a = new int[len];
-				b = new int[len];
-				c = new int[len];
-				for (int i = 0; i < len; i++) {
-					GLTriangle triangle = triangles[i];
-					if (triangle == null) {
-						continue;
-					}
-					a[i] = triangle.getAPoint();
-					b[i] = triangle.getBPoint();
-					c[i] = triangle.getCPoint();
-				}
-			}
-		} else {
-			x = y = z = new int[0];
-			a = b = c = new int[0];
-		}
+		short[] a, b, c;
+		x = model.getXPoints();
+		y = model.getYPoints();
+		z = model.getZPoints();
+		a = model.getIndices1();
+		b = model.getIndices2();
+		c = model.getIndices3();
 		int vertices = Math.max(x.length, Math.min(y.length, z.length));
 		int faces = Math.min(a.length, Math.min(b.length, c.length));
 		if (vertices > this.vertices) {
@@ -101,7 +64,7 @@ public class ModelCapture implements AbstractModel {
 
 	private void reset() {
 		vertex_x = vertex_y = vertex_z = new int[0];
-		face_a = face_b = face_c = new int[0];
+		face_a = face_b = face_c = new short[0];
 		vertices = faces = 0;
 	}
 
@@ -117,15 +80,18 @@ public class ModelCapture implements AbstractModel {
 		return vertex_z;
 	}
 
-	public int[] getFaceA() {
+	@Override
+	public short[] getIndices1() {
 		return face_a;
 	}
 
-	public int[] getFaceB() {
+	@Override
+	public short[] getIndices2() {
 		return face_b;
 	}
 
-	public int[] getFaceC() {
+	@Override
+	public short[] getIndices3() {
 		return face_c;
 	}
 
@@ -135,14 +101,5 @@ public class ModelCapture implements AbstractModel {
 
 	public int getFaces() {
 		return faces;
-	}
-
-	private int[] ints(short[] shorts) {
-		int len = shorts.length;
-		int[] arr = new int[len];
-		for (int i = 0; i < len; i++) {
-			arr[i] = shorts[i];
-		}
-		return arr;
 	}
 }

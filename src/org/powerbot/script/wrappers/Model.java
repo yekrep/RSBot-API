@@ -16,9 +16,9 @@ import org.powerbot.script.util.Random;
 public abstract class Model extends MethodProvider {
 	private final int height;
 	protected final int[] yPoints;
-	protected final int[] faceA;
-	protected final int[] faceB;
-	protected final int[] faceC;
+	protected final short[] faceA;
+	protected final short[] faceB;
+	protected final short[] faceC;
 	protected final int numFaces;
 	protected final int numVertices;
 	protected int[] xPoints;
@@ -40,9 +40,9 @@ public abstract class Model extends MethodProvider {
 		xPoints = model.getXPoints();
 		yPoints = model.getYPoints();
 		zPoints = model.getZPoints();
-		faceA = model.getFaceA();
-		faceB = model.getFaceB();
-		faceC = model.getFaceC();
+		faceA = model.getIndices1();
+		faceB = model.getIndices2();
+		faceC = model.getIndices3();
 		numVertices = model.getVertices();
 		numFaces = model.getFaces();
 	}
@@ -119,10 +119,6 @@ public abstract class Model extends MethodProvider {
 		int mark = Random.nextInt(0, numFaces);
 		Point point = firstOnScreenCentroid(mark, numFaces);
 		return point != null ? point : (point = firstOnScreenCentroid(0, mark)) != null ? point : new Point(-1, -1);
-	}
-
-	public int[] getFaceA() {
-		return faceA;
 	}
 
 	public Polygon[] getTriangles() {
