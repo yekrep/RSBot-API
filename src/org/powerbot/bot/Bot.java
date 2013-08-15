@@ -35,7 +35,7 @@ import org.powerbot.service.scripts.ScriptDefinition;
 /**
  * @author Timer
  */
-public final class Bot implements Runnable, Stoppable {//TODO re-write bot
+public final class Bot implements Runnable, Stoppable {
 	public static final Logger log = Logger.getLogger(Bot.class.getName());
 	private MethodContext ctx;
 	public final ThreadGroup threadGroup;
@@ -81,16 +81,17 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 	}
 
 	public void start() {
-		//TODO: prompt user when this fails.
 		log.info("Loading bot");
 		Crawler crawler = new Crawler();
 		if (!crawler.crawl()) {
+			log.severe("Failed to load game");
 			return;
 		}
 
 		GameLoader game = new GameLoader(crawler);
 		ClassLoader classLoader = game.call();
 		if (classLoader == null) {
+			log.severe("Failed to load game");
 			return;
 		}
 
@@ -128,9 +129,8 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 							break;
 						} catch (IOException ignored) {
 						} catch (NRSLoader.PendingException p) {
-							//TODO: change to something more informative
 							int d = p.getDelay() / 1000;
-							log.warning("Request pending, trying again in " + (d < 60 ? d + " seconds" : (int) Math.ceil(d / 60) + " minutes"));
+							log.warning("Your update is being processed, trying again in " + (d < 60 ? d + " seconds" : (int) Math.ceil(d / 60) + " minutes"));
 							try {
 								Thread.sleep(p.getDelay());
 							} catch (final InterruptedException ignored) {

@@ -11,7 +11,7 @@ class ObjectDefinition {
 		this.definition = new WeakReference<>(definition);
 	}
 
-	int getId() {//TODO use or remove??
+	int getId() {
 		final RSObjectDef def = this.definition.get();
 		return def != null ? def.getID() : -1;
 	}

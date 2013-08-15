@@ -32,7 +32,7 @@ class ItemDefinition {
 		return o != null && o instanceof RSItemDef ? new ItemDefinition((RSItemDef) o) : new ItemDefinition(null);
 	}
 
-	int getId() {//TODO use or remove???
+	int getId() {
 		final RSItemDef def = this.def.get();
 		return def != null ? def.getID() : -1;
 	}

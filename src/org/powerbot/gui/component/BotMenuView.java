@@ -41,7 +41,7 @@ import org.powerbot.util.io.Resources;
 /**
  * @author Paris
  */
-public final class BotMenuView implements ActionListener {//TODO revamp debugging options
+public final class BotMenuView implements ActionListener {
 	private final Map<String, Class<? extends EventListener>> map;
 	private static Map<Bot, Map<String, EventListener>> listeners;
 
