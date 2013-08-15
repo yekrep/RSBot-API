@@ -14,10 +14,10 @@ import org.powerbot.script.wrappers.Component;
  */
 public class Login extends PollingScript implements InternalScript {
 	private static final int WIDGET = 596;
-	private static final int WIDGET_LOGIN_ERROR = 50;
-	private static final int WIDGET_LOGIN_TRY_AGAIN = 81;
-	private static final int WIDGET_LOGIN_USERNAME_TEXT = 83;
-	private static final int WIDGET_LOGIN_PASSWORD_TEXT = 86;
+	private static final int WIDGET_LOGIN_ERROR = 57;
+	private static final int WIDGET_LOGIN_TRY_AGAIN = 84;
+	private static final int WIDGET_LOGIN_USERNAME_TEXT = 90;
+	private static final int WIDGET_LOGIN_PASSWORD_TEXT = 93;
 
 	public boolean isValid() {
 		if (ctx.getBreakManager().isBreaking()) {
