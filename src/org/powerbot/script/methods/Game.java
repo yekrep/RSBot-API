@@ -59,7 +59,7 @@ public class Game extends MethodProvider {
 	}
 
 	public boolean logout(boolean lobby) {
-		if (ctx.widgets.get(1477, 73).getChild(1).interact("Logout")) {
+		if (ctx.widgets.get(1477, 75).getChild(1).interact("Logout")) {//TODO: auto detect
 			Widget widget = ctx.widgets.get(26);
 			for (int i = 0; i < 20; i++) {
 				if (widget.isValid()) {

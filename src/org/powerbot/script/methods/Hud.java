@@ -128,8 +128,8 @@ public class Hud extends MethodProvider {
 		}
 		Rectangle[] arr = new Rectangle[Window.values().length + 2];
 		int index = 0;
-		arr[index++] = ctx.widgets.get(WIDGET_MENU, WIDGET_MENU_BOUNDS).getViewportRect();
-		arr[index++] = ctx.widgets.get(WIDGET_HUD, COMPONENT_COMBAT_BAR).getViewportRect();
+		arr[index++] = ctx.widgets.get(WIDGET_MENU, WIDGET_MENU_BOUNDS).getViewportRect();//TODO: auto detect
+		arr[index++] = ctx.widgets.get(WIDGET_HUD, COMPONENT_COMBAT_BAR).getViewportRect();//TODO: auto detect
 		for (Window window : Window.values()) {
 			Component sprite = getSprite(window);
 			if (sprite == null) {
