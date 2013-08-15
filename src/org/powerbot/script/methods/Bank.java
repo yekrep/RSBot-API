@@ -250,7 +250,7 @@ public class Bank extends ItemQuery<Item> {
 		return withdraw(id, amount.getValue());
 	}
 
-	public boolean withdraw(int id, int amount) {
+	public boolean withdraw(int id, int amount) {//TODO: anti pattern
 		Item item = select().getNil();
 		for (Item _item : id(id).first()) {
 			item = _item;

@@ -39,7 +39,7 @@ public abstract class Interactive extends MethodProvider implements Targetable, 
 		return interact(action, null);
 	}
 
-	public boolean interact(final String action, final String option) {
+	public boolean interact(final String action, final String option) {//TODO: anti-pattern
 		if (!isValid()) {
 			return false;
 		}

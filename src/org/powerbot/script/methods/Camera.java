@@ -36,7 +36,7 @@ public class Camera extends MethodProvider {
 		}
 	}
 
-	public void setAngle(int degrees) {
+	public void setAngle(int degrees) {//TODO: anti-pattern
 		degrees %= 360;
 		if (getAngleTo(degrees) > 5) {
 			ctx.keyboard.send("{VK_LEFT down}");
