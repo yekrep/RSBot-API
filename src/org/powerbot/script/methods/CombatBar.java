@@ -11,6 +11,7 @@ public class CombatBar extends IdQuery<Action> {
 	public static final int WIDGET = 1430;
 	public static final int SETTING_ADRENALINE = 679;
 	public static final int COMPONENT_BUTTON_HEAL = 2;
+	public static final int SETTING_RETALIATION = 462;
 	public static final int COMPONENT_BUTTON_RETALIATE = 6;
 	public static final int COMPONENT_BUTTON_PRAYER = 4;
 	public static final int COMPONENT_BUTTON_SUMMONING = 5;
@@ -29,10 +30,27 @@ public class CombatBar extends IdQuery<Action> {
 	public static final int COMPONENT_SLOT_ACTION = 96;
 	public static final int COMPONENT_SLOT_COOL_DOWN = 97;
 	public static final int COMPONENT_SLOT_BIND = 99;
-	public static final int TEXTURE_COOL_DOWN = 14590;
 
 	public CombatBar(MethodContext factory) {
 		super(factory);
+	}
+
+	public boolean healPoison() {
+		return ctx.widgets.get(WIDGET, COMPONENT_BUTTON_HEAL).interact("Heal");
+	}
+
+	public boolean setRealiating(boolean retaliate) {
+		if (retaliate != isRetaliating() &&
+				ctx.widgets.get(WIDGET, COMPONENT_BUTTON_RETALIATE).interact("Toggle")) {
+			for (int i = 0; i < 10 && retaliate != isRetaliating(); i++) {
+				sleep(50, 150);
+			}
+		}
+		return retaliate == isRetaliating();
+	}
+
+	public boolean isRetaliating() {
+		return ctx.settings.get(SETTING_RETALIATION) == 0;
 	}
 
 	public int getHealth() {
