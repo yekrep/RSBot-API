@@ -122,6 +122,7 @@ public final class Bot implements Runnable, Stoppable {//TODO re-write bot
 				@Override
 				public void run() {
 					for (; ; ) {
+						log.warning("Downloading update -- please wait");
 						try {
 							loader.upload(loader.getPackHash());
 							break;

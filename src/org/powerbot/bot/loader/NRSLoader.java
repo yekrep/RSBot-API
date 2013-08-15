@@ -184,7 +184,6 @@ public class NRSLoader implements Runnable {
 		switch (bucket.getResponseCode()) {
 		case HttpURLConnection.HTTP_SEE_OTHER:
 			final String dest = bucket.getHeaderField("Location");
-			//TODO: we're uploading, don't let it die!
 			final HttpURLConnection put = HttpClient.getHttpConnection(new URL(dest));
 			put.setRequestMethod("PUT");
 			put.setDoOutput(true);
