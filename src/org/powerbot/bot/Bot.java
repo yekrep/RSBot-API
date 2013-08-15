@@ -123,7 +123,7 @@ public final class Bot implements Runnable, Stoppable {
 				@Override
 				public void run() {
 					for (; ; ) {
-						log.warning("Downloading update -- please wait");
+						log.warning("Downloading update \u2014 please wait");
 						try {
 							loader.upload(loader.getPackHash());
 							break;
