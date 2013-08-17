@@ -19,7 +19,7 @@ import org.powerbot.client.RSObjectDef;
 import org.powerbot.client.RSObjectDefLoader;
 import org.powerbot.script.methods.MethodContext;
 
-public class GameObject extends Interactive implements Locatable, Nameable, Drawable, Identifiable {
+public class GameObject extends Interactive implements Renderable, Locatable, Nameable, Drawable, Identifiable {
 	private static final Color TARGET_COLOR = new Color(0, 255, 0, 20);
 	private final WeakReference<RSObject> object;
 	private final Type type;
@@ -36,6 +36,7 @@ public class GameObject extends Interactive implements Locatable, Nameable, Draw
 		return type == null ? -1 : type;
 	}
 
+	@Override
 	public Model getModel() {
 		final RSObject object = this.object.get();
 		if (object != null) {
