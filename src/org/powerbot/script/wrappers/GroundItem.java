@@ -19,7 +19,7 @@ import org.powerbot.client.RSItemPile;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.util.Random;
 
-public class GroundItem extends Interactive implements Identifiable, Nameable, Stackable, Locatable, Drawable {
+public class GroundItem extends Interactive implements Renderable, Identifiable, Nameable, Stackable, Locatable, Drawable {
 	public static final Color TARGET_COLOR = new Color(255, 255, 0, 75);
 	private final Tile tile;
 	private final WeakReference<RSItem> item;
@@ -31,6 +31,7 @@ public class GroundItem extends Interactive implements Identifiable, Nameable, S
 		this.item = new WeakReference<>(item);
 	}
 
+	@Override
 	public Model getModel() {
 		return getModel(-1);
 	}
