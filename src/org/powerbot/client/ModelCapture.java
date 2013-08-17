@@ -36,7 +36,7 @@ public class ModelCapture implements AbstractModel {
 		a = model.getIndices1();
 		b = model.getIndices2();
 		c = model.getIndices3();
-		int vertices = Math.max(x.length, Math.min(y.length, z.length));
+		int vertices = Math.min(x.length, Math.min(y.length, z.length));
 		int faces = Math.min(a.length, Math.min(b.length, c.length));
 		if (vertices > this.vertices) {
 			vertex_x = x.clone();
