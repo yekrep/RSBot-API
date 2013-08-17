@@ -53,7 +53,9 @@ public abstract class Interactive extends MethodProvider implements Targetable, 
 				return false;
 			}
 			if (this instanceof Renderable) {
-				antiPattern(this, (Renderable) this);
+				if (antiPattern(this, (Renderable) this)) {
+					continue;
+				}
 			}
 			if (!ctx.mouse.move(this, new Filter<Point>() {
 				@Override
@@ -81,12 +83,12 @@ public abstract class Interactive extends MethodProvider implements Targetable, 
 		return true;
 	}
 
-	private void antiPattern(Targetable targetable, Renderable renderable) {
+	private boolean antiPattern(Targetable targetable, Renderable renderable) {
 		Model model = renderable.getModel();
 		Point m = ctx.mouse.getLocation();
 		Point p = targetable.getInteractPoint();
 		if (model == null || !ctx.game.isPointOnScreen(p)) {
-			return;
+			return false;
 		}
 
 		Area a = new Area();
@@ -110,9 +112,12 @@ public abstract class Interactive extends MethodProvider implements Targetable, 
 				y = m.y + (int) (d * Math.sin(theta));
 
 				if (ctx.mouse.move(x, y) && ctx.menu.indexOf("Walk here") == 0) {
-					ctx.mouse.click(true);
+					if (ctx.mouse.click(true)) {
+						return true;
+					}
 				}
 			}
 		}
+		return false;
 	}
 }
