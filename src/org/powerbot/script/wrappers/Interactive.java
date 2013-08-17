@@ -94,7 +94,7 @@ public abstract class Interactive extends MethodProvider implements Targetable, 
 			a.add(new Area(t));
 		}
 		Rectangle r = a.getBounds();
-		if (r.contains(m)) {
+		if (r.contains(p)) {
 			int w = r.width, h = r.height;
 			int avg = (w + h) >> 1;
 			int min = Math.min(w, h);
