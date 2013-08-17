@@ -18,7 +18,7 @@ import org.powerbot.client.RSPlayer;
 import org.powerbot.client.Sequence;
 import org.powerbot.script.methods.MethodContext;
 
-public abstract class Actor extends Interactive implements Nameable, Locatable, Drawable {
+public abstract class Actor extends Interactive implements Renderable, Nameable, Locatable, Drawable {
 	private int faceIndex = -1;
 
 	public Actor(MethodContext ctx) {
@@ -27,6 +27,7 @@ public abstract class Actor extends Interactive implements Nameable, Locatable, 
 
 	protected abstract RSCharacter getAccessor();
 
+	@Override
 	public Model getModel() {
 		final RSCharacter character = getAccessor();
 		if (character != null) {
