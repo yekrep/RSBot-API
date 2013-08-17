@@ -2,12 +2,13 @@ package org.powerbot.script.wrappers;
 
 import java.awt.Point;
 import java.awt.Polygon;
+import java.awt.Rectangle;
 import java.awt.geom.Area;
-import java.awt.geom.Line2D;
 
 import org.powerbot.script.lang.Filter;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.methods.MethodProvider;
+import org.powerbot.script.util.Random;
 
 public abstract class Interactive extends MethodProvider implements Targetable, Validatable {
 	private static final int ATTEMPTS = 5;
@@ -46,22 +47,6 @@ public abstract class Interactive extends MethodProvider implements Targetable, 
 		if (!isValid()) {
 			return false;
 		}
-
-		if (this instanceof Renderable) {
-			Model model = ((Renderable) this).getModel();
-			if (model != null) {
-				java.awt.geom.Area area = new Area();
-				for (Polygon p : model.getTriangles()) {
-					area.add(new Area(p));
-				}
-
-				Point p = getInteractPoint();
-				if (ctx.game.isPointOnScreen(p) && area.contains(p)) {
-
-				}
-			}
-		}
-
 		int a = 0;
 		while (a++ < ATTEMPTS) {
 			if (!isValid()) {
@@ -108,10 +93,15 @@ public abstract class Interactive extends MethodProvider implements Targetable, 
 		for (Polygon t : model.getTriangles()) {
 			a.add(new Area(t));
 		}
+		Rectangle r = a.getBounds();
+		if (r.contains(m)) {
+			int w = r.width, h = r.height;
+			int avg = (w + h) >> 1;
+			int d = Math.min(w, h);
 
-		if (a.contains(p)) {
-			double theta = Math.atan2(p.x - m.x, p.y - m.y);
+			if (m.distance(p) >= avg + Random.nextInt(-d, d)) {
 
+			}
 		}
 	}
 }
