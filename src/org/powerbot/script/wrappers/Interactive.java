@@ -97,10 +97,21 @@ public abstract class Interactive extends MethodProvider implements Targetable, 
 		if (r.contains(m)) {
 			int w = r.width, h = r.height;
 			int avg = (w + h) >> 1;
-			int d = Math.min(w, h);
+			int min = Math.min(w, h);
 
-			if (m.distance(p) >= avg + Random.nextInt(-d, d)) {
+			double d = m.distance(p);
+			if (d >= avg + Random.nextInt(-min, min)) {
+				d += Random.nextInt(-avg, avg);
 
+				int x;
+				int y;
+				double theta = Math.atan2(p.x - m.x, p.y - m.y);
+				x = m.x + (int) (d * Math.cos(theta));
+				y = m.y + (int) (d * Math.sin(theta));
+
+				if (ctx.mouse.move(x, y) && ctx.menu.indexOf("Walk here") == 0) {
+					ctx.mouse.click(true);
+				}
 			}
 		}
 	}
