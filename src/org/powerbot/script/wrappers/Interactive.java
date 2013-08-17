@@ -43,7 +43,7 @@ public abstract class Interactive extends MethodProvider implements Targetable, 
 		return interact(action, null);
 	}
 
-	public boolean interact(final String action, final String option) {//TODO: anti-pattern
+	public boolean interact(final String action, final String option) {
 		if (!isValid()) {
 			return false;
 		}
@@ -107,7 +107,7 @@ public abstract class Interactive extends MethodProvider implements Targetable, 
 
 				int x;
 				int y;
-				double theta = Math.atan2(p.x - m.x, p.y - m.y);
+				double theta = Math.atan2(p.y - m.y, p.x - m.x);
 				x = m.x + (int) (d * Math.cos(theta));
 				y = m.y + (int) (d * Math.sin(theta));
 
