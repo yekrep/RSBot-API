@@ -97,11 +97,12 @@ public abstract class Interactive extends MethodProvider implements Targetable, 
 		}
 		Rectangle rect = area.getBounds();
 		if (rect.contains(interactPoint)) {
+			double dist = mousePoint.distance(interactPoint);
+
 			int w = rect.width, h = rect.height;
 			int avg = (w + h) >> 1;
-			double dist = mousePoint.distance(interactPoint);
-			if (dist >= avg && Random.nextBoolean()) {
-				int max = Math.max(w, h);
+			int max = Math.max(w, h);
+			if (dist >= avg && (max < Random.nextInt(30, 60) ? Random.nextInt(0, 3) > 0 : Random.nextBoolean())) {
 				dist += Random.nextInt(-max, max);
 
 				int x;
