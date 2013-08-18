@@ -99,11 +99,9 @@ public abstract class Interactive extends MethodProvider implements Targetable, 
 		if (rect.contains(interactPoint)) {
 			int w = rect.width, h = rect.height;
 			int avg = (w + h) >> 1;
-			int min = Math.min(w, h);
-
 			double dist = mousePoint.distance(interactPoint);
-			if (dist >= avg + Random.nextInt(-min, min)) {
 				dist += Random.nextInt(-avg, avg);
+			if (dist >= avg && Random.nextBoolean()) {
 
 				int x;
 				int y;
