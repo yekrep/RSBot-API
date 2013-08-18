@@ -114,14 +114,14 @@ public class Menu extends MethodProvider {
 		collapsed:
 		if (client.isMenuCollapsed()) {
 			if ((menu = client.getCollapsedMenuItems()) != null) {
-				final Queue<MenuGroupNode> groups = new Queue<>(menu);
+				final Queue<MenuGroupNode> groups = new Queue<>(menu, MenuGroupNode.class);
 				for (MenuGroupNode group = groups.getHead(); group != null; group = groups.getNext(), ++main) {
 					int sub = 0;
 					final NodeSubQueue queue;
 					if ((queue = group.getItems()) == null) {
 						continue;
 					}
-					final Queue<MenuItemNode> queue2 = new Queue<>(queue);
+					final Queue<MenuItemNode> queue2 = new Queue<>(queue, MenuItemNode.class);
 					for (MenuItemNode node = queue2.getHead(); node != null; node = queue2.getNext(), ++sub) {
 						if (_index++ == index) {
 							if (sub == 0) {
@@ -183,13 +183,13 @@ public class Menu extends MethodProvider {
 		if (collapsed = client.isMenuCollapsed()) {
 			final NodeSubQueue menu = client.getCollapsedMenuItems();
 			if (menu != null) {
-				final Queue<MenuGroupNode> groups = new Queue<>(menu);
+				final Queue<MenuGroupNode> groups = new Queue<>(menu, MenuGroupNode.class);
 				for (MenuGroupNode group = groups.getHead(); group != null; group = groups.getNext()) {
 					final NodeSubQueue queue;
 					if ((queue = group.getItems()) == null) {
 						continue;
 					}
-					final Queue<MenuItemNode> queue2 = new Queue<>(queue);
+					final Queue<MenuItemNode> queue2 = new Queue<>(queue, MenuItemNode.class);
 					for (MenuItemNode node = queue2.getHead(); node != null; node = queue2.getNext()) {
 						nodes.add(node);
 					}
@@ -198,7 +198,7 @@ public class Menu extends MethodProvider {
 		} else {
 			final NodeDeque menu = client.getMenuItems();
 			if (menu != null) {
-				final Deque<MenuItemNode> deque = new Deque<>(menu);
+				final Deque<MenuItemNode> deque = new Deque<>(menu, MenuItemNode.class);
 				for (MenuItemNode node = deque.getHead(); node != null; node = deque.getNext()) {
 					nodes.add(node);
 				}

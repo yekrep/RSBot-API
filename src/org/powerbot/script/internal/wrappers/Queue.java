@@ -5,10 +5,12 @@ import org.powerbot.client.NodeSubQueue;
 
 public class Queue<N extends NodeSub> {
 	private final NodeSubQueue nl;
+	private final Class<N> type;
 	private NodeSub curr;
 
-	public Queue(final NodeSubQueue nl) {
+	public Queue(NodeSubQueue nl, Class<N> type) {
 		this.nl = nl;
+		this.type = type;
 	}
 
 	public int size() {
@@ -27,7 +29,6 @@ public class Queue<N extends NodeSub> {
 		return s;
 	}
 
-	@SuppressWarnings("unchecked")
 	public N getHead() {
 		NodeSub t = nl.getTail();
 		NodeSub n;
@@ -36,23 +37,22 @@ public class Queue<N extends NodeSub> {
 		} else {
 			n = null;
 		}
-		if (n == null || n == t) {
+		if (n == null || n == t || !type.isInstance(n)) {
 			curr = null;
 			return null;
 		}
 		curr = n.getNextSub();
-		return (N) n;
+		return type.cast(n);
 	}
 
-	@SuppressWarnings("unchecked")
 	public N getNext() {
 		NodeSub t = nl.getTail();
 		NodeSub n = curr;
-		if (t == null || n == null || n == t) {
+		if (t == null || n == null || n == t || !type.isInstance(n)) {
 			curr = null;
 			return null;
 		}
 		curr = n.getNextSub();
-		return (N) n;
+		return type.cast(n);
 	}
 }

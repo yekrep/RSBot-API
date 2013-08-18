@@ -5,13 +5,15 @@ import org.powerbot.client.NodeDeque;
 
 public class Deque<N> {
 	private final NodeDeque nl;
+	private final Class<N> type;
 	private Node curr;
 
-	public Deque(final NodeDeque nl) {
+	public Deque(NodeDeque nl, Class<N> type) {
 		if (nl == null) {
 			throw new IllegalArgumentException();
 		}
 		this.nl = nl;
+		this.type = type;
 	}
 
 	public int size() {
@@ -30,7 +32,6 @@ public class Deque<N> {
 		return s;
 	}
 
-	@SuppressWarnings("unchecked")
 	public N getHead() {
 		Node t = nl.getTail();
 		Node n;
@@ -39,23 +40,22 @@ public class Deque<N> {
 		} else {
 			n = null;
 		}
-		if (n == null || n == t) {
+		if (n == null || n == t || !type.isInstance(n)) {
 			curr = null;
 			return null;
 		}
 		curr = n.getNext();
-		return (N) n;
+		return type.cast(n);
 	}
 
-	@SuppressWarnings("unchecked")
 	public N getNext() {
 		Node t = nl.getTail();
 		Node n = curr;
-		if (t == null || n == null || n == t) {
+		if (t == null || n == null || n == t || !type.isInstance(n)) {
 			curr = null;
 			return null;
 		}
 		curr = n.getNext();
-		return (N) n;
+		return type.cast(n);
 	}
 }
