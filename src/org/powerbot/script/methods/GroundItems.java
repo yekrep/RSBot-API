@@ -49,7 +49,7 @@ public class GroundItems extends GroundItemQuery<GroundItem> {
 				if (cache == null || (deque = cache.getNodeList()) == null) {
 					continue;
 				}
-				final Deque<RSItem> itemStack = new Deque<>(deque);
+				final Deque<RSItem> itemStack = new Deque<>(deque,RSItem.class);
 				for (RSItem item = itemStack.getHead(); item != null; item = itemStack.getNext()) {
 					items.add(new GroundItem(ctx, new Tile(x, y, plane), item));
 				}

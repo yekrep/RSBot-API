@@ -43,7 +43,7 @@ public class Projectiles extends IdQuery<Projectile> {
 			return items;
 		}
 
-		final Deque<Node> nodes = new Deque<>(deque);
+		final Deque<Node> nodes = new Deque<>(deque, Node.class);
 		for (Node node = nodes.getHead(); node != null; node = nodes.getNext()) {
 			final RSProjectile projectile;
 			if (node instanceof RSProjectileNode && (projectile = ((RSProjectileNode) node).getProjectile()) != null) {
