@@ -111,10 +111,9 @@ public abstract class Interactive extends MethodProvider implements Targetable, 
 				x = mousePoint.x + (int) (dist * Math.cos(theta));
 				y = mousePoint.y + (int) (dist * Math.sin(theta));
 
-				if (ctx.mouse.move(x, y) && ctx.menu.indexOf("Walk here") == 0) {
-					if (ctx.mouse.click(true)) {
-						return true;
-					}
+				if (ctx.game.isPointOnScreen(x, y) && ctx.mouse.move(x, y) &&
+						ctx.menu.indexOf("Walk here") == 0 && ctx.mouse.click(true)) {
+					return true;
 				}
 			}
 		}
