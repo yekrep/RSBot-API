@@ -53,7 +53,7 @@ public abstract class Interactive extends MethodProvider implements Targetable, 
 				return false;
 			}
 			if (this instanceof Renderable) {
-				if (antiPattern(this, (Renderable) this)) {
+				if (antipattern(this, (Renderable) this)) {
 					continue;
 				}
 			}
@@ -83,33 +83,33 @@ public abstract class Interactive extends MethodProvider implements Targetable, 
 		return true;
 	}
 
-	private boolean antiPattern(Targetable targetable, Renderable renderable) {
+	private boolean antipattern(Targetable targetable, Renderable renderable) {
 		Model model = renderable.getModel();
-		Point m = ctx.mouse.getLocation();
-		Point p = targetable.getInteractPoint();
-		if (model == null || !ctx.game.isPointOnScreen(p)) {
+		Point mousePoint = ctx.mouse.getLocation();
+		Point interactPoint = targetable.getInteractPoint();
+		if (model == null || !ctx.game.isPointOnScreen(interactPoint)) {
 			return false;
 		}
 
-		Area a = new Area();
-		for (Polygon t : model.getTriangles()) {
-			a.add(new Area(t));
+		Area area = new Area();
+		for (Polygon triangle : model.getTriangles()) {
+			area.add(new Area(triangle));
 		}
-		Rectangle r = a.getBounds();
-		if (r.contains(p)) {
-			int w = r.width, h = r.height;
+		Rectangle rect = area.getBounds();
+		if (rect.contains(interactPoint)) {
+			int w = rect.width, h = rect.height;
 			int avg = (w + h) >> 1;
 			int min = Math.min(w, h);
 
-			double d = m.distance(p);
-			if (d >= avg + Random.nextInt(-min, min)) {
-				d += Random.nextInt(-avg, avg);
+			double dist = mousePoint.distance(interactPoint);
+			if (dist >= avg + Random.nextInt(-min, min)) {
+				dist += Random.nextInt(-avg, avg);
 
 				int x;
 				int y;
-				double theta = Math.atan2(p.y - m.y, p.x - m.x);
-				x = m.x + (int) (d * Math.cos(theta));
-				y = m.y + (int) (d * Math.sin(theta));
+				double theta = Math.atan2(interactPoint.y - mousePoint.y, interactPoint.x - mousePoint.x);
+				x = mousePoint.x + (int) (dist * Math.cos(theta));
+				y = mousePoint.y + (int) (dist * Math.sin(theta));
 
 				if (ctx.mouse.move(x, y) && ctx.menu.indexOf("Walk here") == 0) {
 					if (ctx.mouse.click(true)) {
