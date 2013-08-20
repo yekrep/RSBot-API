@@ -1,5 +1,7 @@
 package org.powerbot.script.golem;
 
+import java.util.EnumSet;
+
 /**
  * A humanised layer which disrupts mathematically recognisable patterns of gameplay actions.
  *
@@ -26,7 +28,7 @@ public abstract class Antipattern {
 		 * Attempt to return back to the prior state.
 		 */
 		STATEFUL,
-	};
+	}
 
 	public Antipattern() {
 	}
@@ -34,7 +36,7 @@ public abstract class Antipattern {
 	/**
 	 * Executes the antipattern routine.
 	 *
-	 * @param preference the preferred assertions
+	 * @param preferences the preferred assertions
 	 */
-	public abstract void run(final Preference preference);
+	public abstract void run(EnumSet<Preference> preferences);
 }
