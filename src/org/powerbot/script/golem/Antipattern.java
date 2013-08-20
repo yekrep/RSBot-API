@@ -2,13 +2,15 @@ package org.powerbot.script.golem;
 
 import java.util.EnumSet;
 
+import org.powerbot.script.methods.MethodContext;
+import org.powerbot.script.methods.MethodProvider;
+
 /**
  * A humanised layer which disrupts mathematically recognisable patterns of gameplay actions.
  *
  * @author Paris
  */
-public abstract class Antipattern {
-
+public abstract class Antipattern extends MethodProvider {
 	/**
 	 * Preferred assertions for execution behaviour.
 	 */
@@ -30,7 +32,8 @@ public abstract class Antipattern {
 		STATEFUL,
 	}
 
-	public Antipattern() {
+	public Antipattern(MethodContext factory) {
+		super(factory);
 	}
 
 	/**
