@@ -96,7 +96,7 @@ public class Movement extends MethodProvider {
 		int sx = (x1 < x2) ? 1 : -1, sy = (y1 < y2) ? 1 : -1;
 		int off = dx - dy;
 		for (; ; ) {
-			Tile t = local.derive(x1, y1);
+			Tile t = new Tile(x1, y1, local.plane);
 			if (t.getMatrix(ctx).isOnMap()) {
 				return t;
 			}
