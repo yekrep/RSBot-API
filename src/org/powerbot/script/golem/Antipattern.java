@@ -15,7 +15,6 @@ public abstract class Antipattern extends MethodProvider {
 	 * Preferred assertions for execution behaviour.
 	 */
 	public enum Preference {
-
 		/**
 		 * Run asynchronously, otherwise no-op.
 		 */
