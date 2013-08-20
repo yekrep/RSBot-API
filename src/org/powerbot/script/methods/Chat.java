@@ -12,6 +12,12 @@ public class Chat extends TextQuery<ChatOption> {
 	private static final int[] COMPONENT_CHAT_OPTIONS = {
 			11, 19, 24, 29, 34
 	};
+	private static final int[][] WIDGET_CONTINUE = {
+			{1189, 11},
+			{1184, 13},
+			{1186, 6},
+			{1191, 12}
+	};
 
 	public Chat(MethodContext factory) {
 		super(factory);
@@ -33,5 +39,25 @@ public class Chat extends TextQuery<ChatOption> {
 	@Override
 	public ChatOption getNil() {
 		return new ChatOption(ctx, -1, null);
+	}
+
+	private Component getContinue() {
+		for (int[] a : WIDGET_CONTINUE) {
+			Component c = ctx.widgets.get(a[0], a[1]);
+			if (!c.isValid()) {
+				continue;
+			}
+			return c;
+		}
+		return null;
+	}
+
+	public boolean isContinue() {
+		return getContinue() != null;
+	}
+
+	public boolean clickContinue() {
+		Component c = getContinue();
+		return c != null && c.click();
 	}
 }
