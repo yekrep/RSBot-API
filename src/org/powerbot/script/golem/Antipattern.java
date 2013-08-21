@@ -21,11 +21,6 @@ public abstract class Antipattern extends MethodProvider {
 		ASYNC,
 
 		/**
-		 * Perform extra aggressive techniques.
-		 */
-		AGGRESSIVE,
-
-		/**
 		 * Attempt to return back to the prior state.
 		 */
 		STATEFUL,
