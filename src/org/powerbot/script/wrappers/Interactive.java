@@ -102,7 +102,8 @@ public abstract class Interactive extends MethodProvider implements Targetable, 
 			int w = rect.width, h = rect.height;
 			int avg = (w + h) >> 1;
 			int max = Math.max(w, h);
-			if (dist >= avg && (max < Random.nextInt(30, 60) ? Random.nextInt(0, 3) > 0 : Random.nextBoolean())) {
+			if (dist >= avg && (max < Random.nextInt(30, 60) ? Random.nextInt(0, 3) > 0 : Random.nextBoolean()) &&
+					(!ctx.players.local().isInMotion() || Random.nextBoolean())) {
 				dist += Random.nextInt(-max, max);
 
 				int x;
