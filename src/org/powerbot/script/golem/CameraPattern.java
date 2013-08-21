@@ -14,7 +14,7 @@ public class CameraPattern extends Antipattern {
 
 	@Override
 	public void run(EnumSet<Preference> preferences) {
-		boolean aggressive = preferences.contains(Preference.AGGRESSIVE);
+		boolean aggressive = System.nanoTime() % 5 == 0;
 		int angle = ctx.camera.getYaw();
 		int c = aggressive ?
 				Random.nextInt(1, 6) :
