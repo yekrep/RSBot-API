@@ -23,9 +23,9 @@ public class CameraPattern extends Antipattern {
 			boolean left = Random.nextBoolean();
 			ctx.keyboard.send(left ? "{VK_LEFT down}" : "{VK_RIGHT down}");
 			if (aggressive) {
-				sleep(100, Random.nextInt(1000, 2000));
+				sleep(100, Random.nextInt(200, 300));
 			} else {
-				sleep(100, 3000);
+				sleep(100, 800);
 			}
 			ctx.keyboard.send(left ? "{VK_LEFT up}" : "{VK_RIGHT up}");
 		}
