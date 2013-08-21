@@ -22,14 +22,14 @@ public class CombatBar extends IdQuery<Action> {
 	public static final int COMPONENT_TEXT = 7;
 
 	public static final int NUM_SLOTS = 12;
-	public static final int COMPONENT_BAR = 76;
+	public static final int COMPONENT_BAR = 77;
 	public static final int COMPONENT_LOCK = 19, COMPONENT_TRASH = 20;
 	public static final int WIDGET_LAYOUT = 1477;
 	public static final int COMPONENT_BUTTON_TOGGLE = 73, COMPONENT_BUTTON_TOGGLE_IDX = 1;
 	public static final int SETTING_ITEM = 811, SETTING_ABILITY = 727;
-	public static final int COMPONENT_SLOT_ACTION = 96;
-	public static final int COMPONENT_SLOT_COOL_DOWN = 97;
-	public static final int COMPONENT_SLOT_BIND = 99;
+	public static final int COMPONENT_SLOT_ACTION = 97;
+	public static final int COMPONENT_SLOT_COOL_DOWN = 98;
+	public static final int COMPONENT_SLOT_BIND = 100;
 
 	public CombatBar(MethodContext factory) {
 		super(factory);
