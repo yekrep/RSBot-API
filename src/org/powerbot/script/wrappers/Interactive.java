@@ -22,6 +22,15 @@ public abstract class Interactive extends MethodProvider implements Targetable, 
 		return ctx.game.isPointOnScreen(getInteractPoint());
 	}
 
+	public static Filter<Interactive> areOnScreen() {
+		return new Filter<Interactive>() {
+			@Override
+			public boolean accept(final Interactive interactive) {
+				return interactive.isOnScreen();
+			}
+		};
+	}
+
 	public boolean hover() {
 		if (!isValid()) {
 			return false;
@@ -42,6 +51,15 @@ public abstract class Interactive extends MethodProvider implements Targetable, 
 
 	public boolean interact(String action) {
 		return interact(action, null);
+	}
+
+	public static ChainingIterator<Interactive> doInteract(final String action) {
+		return new ChainingIterator<Interactive>() {
+			@Override
+			public boolean next(final int index, final Interactive item) {
+				return item.interact(action);
+			}
+		};
 	}
 
 	public boolean interact(final String action, final String option) {
@@ -120,23 +138,5 @@ public abstract class Interactive extends MethodProvider implements Targetable, 
 			}
 		}
 		return false;
-	}
-
-	public static Filter<Interactive> areOnScreen() {
-		return new Filter<Interactive>() {
-			@Override
-			public boolean accept(final Interactive interactive) {
-				return interactive.isOnScreen();
-			}
-		};
-	}
-
-	public static ChainingIterator<Interactive> interactor(final String action) {
-		return new ChainingIterator<Interactive>() {
-			@Override
-			public boolean next(final int index, final Interactive item) {
-				return item.interact(action);
-			}
-		};
 	}
 }

@@ -16,6 +16,7 @@ import org.powerbot.client.RSNPC;
 import org.powerbot.client.RSNPCNode;
 import org.powerbot.client.RSPlayer;
 import org.powerbot.client.Sequence;
+import org.powerbot.script.lang.Filter;
 import org.powerbot.script.methods.MethodContext;
 
 public abstract class Actor extends Interactive implements Renderable, Nameable, Locatable, Drawable {
@@ -96,6 +97,15 @@ public abstract class Actor extends Interactive implements Renderable, Nameable,
 
 	public boolean isInMotion() {
 		return getSpeed() != 0;
+	}
+
+	public static Filter<Actor> areInMotion() {
+		return new Filter<Actor>() {
+			@Override
+			public boolean accept(final Actor actor) {
+				return actor.isInMotion();
+			}
+		};
 	}
 
 	public String getMessage() {
@@ -179,6 +189,15 @@ public abstract class Actor extends Interactive implements Renderable, Nameable,
 		}
 		final CombatStatusData[] data = getBarData();
 		return data != null && data[1] != null && data[1].getLoopCycleStatus() < client.getLoopCycle();
+	}
+
+	public static Filter<Actor> areInCombat() {
+		return new Filter<Actor>() {
+			@Override
+			public boolean accept(final Actor actor) {
+				return actor.isInCombat();
+			}
+		};
 	}
 
 	@Override
