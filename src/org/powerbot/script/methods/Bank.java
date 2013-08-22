@@ -38,6 +38,23 @@ public class Bank extends ItemQuery<Item> {
 	public static final int[] BANK_CHEST_IDS = new int[]{
 			2693, 4483, 8981, 12308, 14382, 20607, 21301, 27663, 42192, 57437, 62691, 83634, 81756
 	};
+	public static final Tile[] UNREACHABLE_BANK_TILES = new Tile[]{
+			new Tile(3191, 3445, 0), new Tile(3180, 3433, 0)
+	};
+	private static final Filter<Interactive> UNREACHABLE_FILTER = new Filter<Interactive>() {
+		@Override
+		public boolean accept(Interactive interactive) {
+			if (interactive instanceof Locatable) {
+				Tile tile = ((Locatable) interactive).getLocation();
+				for (Tile bad : UNREACHABLE_BANK_TILES) {
+					if (tile.equals(bad)) {
+						return false;
+					}
+				}
+			}
+			return true;
+		}
+	};
 	public static final int WIDGET = 762;
 	public static final int COMPONENT_BUTTON_CLOSE = 63;
 	public static final int COMPONENT_CONTAINER_ITEMS = 113;
@@ -62,12 +79,12 @@ public class Bank extends ItemQuery<Item> {
 		};
 
 		List<Interactive> interactives = new ArrayList<>();
-		ctx.npcs.select().id(BANK_NPC_IDS).select(f).nearest().limit(1).addTo(interactives);
+		ctx.npcs.select().id(BANK_NPC_IDS).select(f).select(UNREACHABLE_FILTER).nearest().limit(1).addTo(interactives);
 		List<GameObject> cache = new ArrayList<>();
 		ctx.objects.select().addTo(cache);
-		ctx.objects.id(BANK_BOOTH_IDS).select(f).nearest().limit(1).addTo(interactives);
-		ctx.objects.select(cache).id(BANK_COUNTER_IDS).select(f).nearest().limit(1).addTo(interactives);
-		ctx.objects.select(cache).id(BANK_CHEST_IDS).select(f).nearest().limit(1).addTo(interactives);
+		ctx.objects.id(BANK_BOOTH_IDS).select(f).select(UNREACHABLE_FILTER).nearest().limit(1).addTo(interactives);
+		ctx.objects.select(cache).id(BANK_COUNTER_IDS).select(f).select(UNREACHABLE_FILTER).nearest().limit(1).addTo(interactives);
+		ctx.objects.select(cache).id(BANK_CHEST_IDS).select(f).select(UNREACHABLE_FILTER).nearest().limit(1).addTo(interactives);
 
 		if (interactives.isEmpty()) {
 			return ctx.objects.getNil();
@@ -78,11 +95,11 @@ public class Bank extends ItemQuery<Item> {
 
 	public Locatable getNearest() {
 		Locatable nearest = Tile.NIL;
-		for (Npc npc : ctx.npcs.select().id(BANK_NPC_IDS).nearest().limit(1)) {
+		for (Npc npc : ctx.npcs.select().select(UNREACHABLE_FILTER).id(BANK_NPC_IDS).nearest().limit(1)) {
 			nearest = npc;
 		}
 		Tile loc = ctx.players.local().getLocation();
-		for (GameObject object : ctx.objects.select().
+		for (GameObject object : ctx.objects.select().select(UNREACHABLE_FILTER).
 				id(BANK_BOOTH_IDS, BANK_COUNTER_IDS, BANK_CHEST_IDS).nearest().limit(1)) {
 			if (loc.distanceTo(object) < loc.distanceTo(nearest)) {
 				nearest = object;
