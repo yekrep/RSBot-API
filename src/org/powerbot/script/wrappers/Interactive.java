@@ -60,6 +60,15 @@ public abstract class Interactive extends MethodProvider implements Targetable, 
 		};
 	}
 
+	public static ChainingIterator<Interactive> doInteract(final String action, final String option) {
+		return new ChainingIterator<Interactive>() {
+			@Override
+			public boolean next(final int index, final Interactive item) {
+				return item.interact(action, option);
+			}
+		};
+	}
+
 	public boolean interact(final String action, final String option) {
 		if (!isValid()) {
 			return false;
