@@ -14,7 +14,7 @@ import org.powerbot.util.math.HeteroMouse;
 import org.powerbot.util.math.Vector3;
 
 public class MouseHandler implements Runnable, Stoppable {
-	private static final int MAX_STEPS = 20;
+	private static final int MAX_STEPS = 5;
 	private final MouseSimulator simulator;
 	private final Object LOCK = new Object();
 	private final Applet applet;
