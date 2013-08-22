@@ -137,7 +137,7 @@ public class Map extends MethodProvider {
 					continue;
 				}
 				RSRotatableObject rot = (RSRotatableObject) object;
-				collisionMap.markWall(localX, localY, rot.getType(), rot.getOrientation(), false);
+				collisionMap.markWall(localX, localY, rot.getType(), rot.getOrientation());
 				break;
 			case FLOOR_DECORATION:
 				if (clippingType != 1) {
@@ -150,7 +150,7 @@ public class Map extends MethodProvider {
 				if (clippingType == 0) {
 					continue;
 				}
-				collisionMap.markInteractive(localX, localY, false);
+				collisionMap.markInteractive(localX, localY);
 				break;
 			}
 		}

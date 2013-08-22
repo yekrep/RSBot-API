@@ -12,15 +12,7 @@ public final class CollisionFlag {
 	public static final CollisionFlag OBJECT_BLOCK = new CollisionFlag(0x100, false);
 	public static final CollisionFlag DECORATION_BLOCK = new CollisionFlag(0x40000, false);
 	public static final CollisionFlag DEAD_BLOCK = new CollisionFlag(0x200000, false);
-	public static final CollisionFlag ALLOW_RANGE_NORTHWEST = new CollisionFlag(0x400000, false);
-	public static final CollisionFlag ALLOW_RANGE_NORTH = new CollisionFlag(0x800000, false);
-	public static final CollisionFlag ALLOW_RANGE_NORTHEAST = new CollisionFlag(0x1000000, false);
-	public static final CollisionFlag ALLOW_RANGE_EAST = new CollisionFlag(0x2000000, false);
-	public static final CollisionFlag ALLOW_RANGE_SOUTHEAST = new CollisionFlag(0x4000000, false);
-	public static final CollisionFlag ALLOW_RANGE_SOUTH = new CollisionFlag(0x8000000, false);
-	public static final CollisionFlag ALLOW_RANGE_SOUTHWEST = new CollisionFlag(0x10000000, false);
-	public static final CollisionFlag ALLOW_RANGE_WEST = new CollisionFlag(0x20000000, false);
-	public static final CollisionFlag OBJECT_ALLOW_RANGE = new CollisionFlag(0x40000000, false);
+
 	public static final CollisionFlag PADDING = new CollisionFlag(0xffffffff, false);
 
 	public static CollisionFlag createNewMarkable() {
