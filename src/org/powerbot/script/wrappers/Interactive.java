@@ -12,8 +12,6 @@ import org.powerbot.script.methods.MethodProvider;
 import org.powerbot.script.util.Random;
 
 public abstract class Interactive extends MethodProvider implements Targetable, Validatable {
-	private static final int ATTEMPTS = 5;
-
 	public Interactive(MethodContext ctx) {
 		super(ctx);
 	}
@@ -66,34 +64,24 @@ public abstract class Interactive extends MethodProvider implements Targetable, 
 		if (!isValid()) {
 			return false;
 		}
-		int a = 0;
-		while (a++ < ATTEMPTS) {
-			if (!isValid()) {
+
+		if (this instanceof Renderable) {
+			for (; antipattern(this, (Renderable) this); ) {
+			}
+		}
+		if (ctx.mouse.move(this, new Filter<Point>() {
+			@Override
+			public boolean accept(final Point point) {
+				if (contains(point) && ctx.menu.indexOf(action, option) != -1) {
+					sleep(10, 80);
+					return contains(point) && ctx.menu.indexOf(action, option) != -1;
+				}
 				return false;
 			}
-			if (this instanceof Renderable) {
-				if (antipattern(this, (Renderable) this)) {
-					continue;
-				}
-			}
-			if (!ctx.mouse.move(this, new Filter<Point>() {
-				@Override
-				public boolean accept(final Point point) {
-					if (contains(point) && ctx.menu.indexOf(action, option) != -1) {
-						sleep(10, 80);
-						return contains(point) && ctx.menu.indexOf(action, option) != -1;
-					}
-					return false;
-				}
-			})) {
-				continue;
-			}
-
-			if (ctx.menu.click(action, option)) {
-				return true;
-			}
-			ctx.menu.close();
+		}) && ctx.menu.click(action, option)) {
+			return true;
 		}
+		ctx.menu.close();
 		return false;
 	}
 
