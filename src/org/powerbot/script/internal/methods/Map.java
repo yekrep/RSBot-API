@@ -18,8 +18,8 @@ import org.powerbot.client.RSGroundInfo;
 import org.powerbot.client.RSInfo;
 import org.powerbot.client.RSObject;
 import org.powerbot.client.RSRotatableObject;
-import org.powerbot.script.internal.wrappers.CollisionFlag;
-import org.powerbot.script.internal.wrappers.CollisionMap;
+import org.powerbot.script.wrappers.CollisionFlag;
+import org.powerbot.script.wrappers.CollisionMap;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.methods.MethodProvider;
 import org.powerbot.script.wrappers.GameObject;
@@ -282,7 +282,7 @@ public class Map extends MethodProvider {
 			for (int x = 0; x < width; x++) {
 				for (int y = 0; y < height; y++) {
 					Node node = new Node(x, y);
-					node.flag = map.getClippingValueAtLocal(x, y);
+					node.flag = map.getFlagAt(x, y);
 					nodes[x][y] = node;
 				}
 			}
@@ -297,51 +297,51 @@ public class Map extends MethodProvider {
 				return list;
 			}
 			if (curr_y > 0 &&
-					!nodes[curr_x][curr_y].flag.marked(CollisionFlag.SOUTH) &&
-					!nodes[curr_x][curr_y - 1].flag.marked(CollisionFlag.OBJECT_BLOCK.mark(CollisionFlag.DEAD_BLOCK))) {
+					!nodes[curr_x][curr_y].flag.contains(CollisionFlag.SOUTH) &&
+					!nodes[curr_x][curr_y - 1].flag.contains(CollisionFlag.OBJECT_BLOCK.mark(CollisionFlag.DEAD_BLOCK))) {
 				list.add(nodes[curr_x][curr_y - 1]);
 			}
 			if (curr_x > 0 &&
-					!nodes[curr_x][curr_y].flag.marked(CollisionFlag.WEST) &&
-					!nodes[curr_x - 1][curr_y].flag.marked(CollisionFlag.OBJECT_BLOCK.mark(CollisionFlag.DEAD_BLOCK))) {
+					!nodes[curr_x][curr_y].flag.contains(CollisionFlag.WEST) &&
+					!nodes[curr_x - 1][curr_y].flag.contains(CollisionFlag.OBJECT_BLOCK.mark(CollisionFlag.DEAD_BLOCK))) {
 				list.add(nodes[curr_x - 1][curr_y]);
 			}
 			if (curr_y < height - 1 &&
-					!nodes[curr_x][curr_y].flag.marked(CollisionFlag.NORTH) &&
-					!nodes[curr_x][curr_y + 1].flag.marked(CollisionFlag.OBJECT_BLOCK.mark(CollisionFlag.DEAD_BLOCK))) {
+					!nodes[curr_x][curr_y].flag.contains(CollisionFlag.NORTH) &&
+					!nodes[curr_x][curr_y + 1].flag.contains(CollisionFlag.OBJECT_BLOCK.mark(CollisionFlag.DEAD_BLOCK))) {
 				list.add(nodes[curr_x][curr_y + 1]);
 			}
 			if (curr_x < width - 1 &&
-					!nodes[curr_x][curr_y].flag.marked(CollisionFlag.EAST) &&
-					!nodes[curr_x + 1][curr_y].flag.marked(CollisionFlag.OBJECT_BLOCK.mark(CollisionFlag.DEAD_BLOCK))) {
+					!nodes[curr_x][curr_y].flag.contains(CollisionFlag.EAST) &&
+					!nodes[curr_x + 1][curr_y].flag.contains(CollisionFlag.OBJECT_BLOCK.mark(CollisionFlag.DEAD_BLOCK))) {
 				list.add(nodes[curr_x + 1][curr_y]);
 			}
 			if (curr_x > 0 && curr_y > 0 &&
-					!nodes[curr_x][curr_y].flag.marked(CollisionFlag.SOUTHWEST.mark(CollisionFlag.SOUTH.mark(CollisionFlag.WEST))) &&
-					!nodes[curr_x - 1][curr_y - 1].flag.marked(CollisionFlag.OBJECT_BLOCK.mark(CollisionFlag.DEAD_BLOCK)) &&
-					!nodes[curr_x][curr_y - 1].flag.marked(CollisionFlag.WEST.mark(CollisionFlag.OBJECT_BLOCK.mark(CollisionFlag.DEAD_BLOCK))) &&
-					!nodes[curr_x - 1][curr_y].flag.marked(CollisionFlag.SOUTH.mark(CollisionFlag.OBJECT_BLOCK.mark(CollisionFlag.DEAD_BLOCK)))) {
+					!nodes[curr_x][curr_y].flag.contains(CollisionFlag.SOUTHWEST.mark(CollisionFlag.SOUTH.mark(CollisionFlag.WEST))) &&
+					!nodes[curr_x - 1][curr_y - 1].flag.contains(CollisionFlag.OBJECT_BLOCK.mark(CollisionFlag.DEAD_BLOCK)) &&
+					!nodes[curr_x][curr_y - 1].flag.contains(CollisionFlag.WEST.mark(CollisionFlag.OBJECT_BLOCK.mark(CollisionFlag.DEAD_BLOCK))) &&
+					!nodes[curr_x - 1][curr_y].flag.contains(CollisionFlag.SOUTH.mark(CollisionFlag.OBJECT_BLOCK.mark(CollisionFlag.DEAD_BLOCK)))) {
 				list.add(nodes[curr_x - 1][curr_y - 1]);
 			}
 			if (curr_x > 0 && curr_y < height - 1 &&
-					!nodes[curr_x][curr_y].flag.marked(CollisionFlag.NORTHWEST.mark(CollisionFlag.NORTH.mark(CollisionFlag.WEST))) &&
-					!nodes[curr_x - 1][curr_y + 1].flag.marked(CollisionFlag.OBJECT_BLOCK.mark(CollisionFlag.DEAD_BLOCK)) &&
-					!nodes[curr_x][curr_y + 1].flag.marked(CollisionFlag.WEST.mark(CollisionFlag.OBJECT_BLOCK.mark(CollisionFlag.DEAD_BLOCK))) &&
-					!nodes[curr_x - 1][curr_y].flag.marked(CollisionFlag.NORTH.mark(CollisionFlag.OBJECT_BLOCK.mark(CollisionFlag.DEAD_BLOCK)))) {
+					!nodes[curr_x][curr_y].flag.contains(CollisionFlag.NORTHWEST.mark(CollisionFlag.NORTH.mark(CollisionFlag.WEST))) &&
+					!nodes[curr_x - 1][curr_y + 1].flag.contains(CollisionFlag.OBJECT_BLOCK.mark(CollisionFlag.DEAD_BLOCK)) &&
+					!nodes[curr_x][curr_y + 1].flag.contains(CollisionFlag.WEST.mark(CollisionFlag.OBJECT_BLOCK.mark(CollisionFlag.DEAD_BLOCK))) &&
+					!nodes[curr_x - 1][curr_y].flag.contains(CollisionFlag.NORTH.mark(CollisionFlag.OBJECT_BLOCK.mark(CollisionFlag.DEAD_BLOCK)))) {
 				list.add(nodes[curr_x - 1][curr_y + 1]);
 			}
 			if (curr_x < height - 1 && curr_y > 0 &&
-					!nodes[curr_x][curr_y].flag.marked(CollisionFlag.SOUTHEAST.mark(CollisionFlag.SOUTH.mark(CollisionFlag.EAST))) &&
-					!nodes[curr_x + 1][curr_y - 1].flag.marked(CollisionFlag.OBJECT_BLOCK.mark(CollisionFlag.DEAD_BLOCK)) &&
-					!nodes[curr_x][curr_y - 1].flag.marked(CollisionFlag.EAST.mark(CollisionFlag.OBJECT_BLOCK.mark(CollisionFlag.DEAD_BLOCK))) &&
-					!nodes[curr_x + 1][curr_y].flag.marked(CollisionFlag.SOUTH.mark(CollisionFlag.OBJECT_BLOCK.mark(CollisionFlag.DEAD_BLOCK)))) {
+					!nodes[curr_x][curr_y].flag.contains(CollisionFlag.SOUTHEAST.mark(CollisionFlag.SOUTH.mark(CollisionFlag.EAST))) &&
+					!nodes[curr_x + 1][curr_y - 1].flag.contains(CollisionFlag.OBJECT_BLOCK.mark(CollisionFlag.DEAD_BLOCK)) &&
+					!nodes[curr_x][curr_y - 1].flag.contains(CollisionFlag.EAST.mark(CollisionFlag.OBJECT_BLOCK.mark(CollisionFlag.DEAD_BLOCK))) &&
+					!nodes[curr_x + 1][curr_y].flag.contains(CollisionFlag.SOUTH.mark(CollisionFlag.OBJECT_BLOCK.mark(CollisionFlag.DEAD_BLOCK)))) {
 				list.add(nodes[curr_x + 1][curr_y - 1]);
 			}
 			if (curr_x < width - 1 && curr_y < height - 1 &&
-					!nodes[curr_x][curr_y].flag.marked(CollisionFlag.NORTHEAST.mark(CollisionFlag.NORTH.mark(CollisionFlag.WEST))) &&
-					!nodes[curr_x + 1][curr_y + 1].flag.marked(CollisionFlag.OBJECT_BLOCK.mark(CollisionFlag.DEAD_BLOCK)) &&
-					!nodes[curr_x][curr_y + 1].flag.marked(CollisionFlag.EAST.mark(CollisionFlag.OBJECT_BLOCK.mark(CollisionFlag.DEAD_BLOCK))) &&
-					!nodes[curr_x + 1][curr_y].flag.marked(CollisionFlag.NORTH.mark(CollisionFlag.OBJECT_BLOCK.mark(CollisionFlag.DEAD_BLOCK)))) {
+					!nodes[curr_x][curr_y].flag.contains(CollisionFlag.NORTHEAST.mark(CollisionFlag.NORTH.mark(CollisionFlag.WEST))) &&
+					!nodes[curr_x + 1][curr_y + 1].flag.contains(CollisionFlag.OBJECT_BLOCK.mark(CollisionFlag.DEAD_BLOCK)) &&
+					!nodes[curr_x][curr_y + 1].flag.contains(CollisionFlag.EAST.mark(CollisionFlag.OBJECT_BLOCK.mark(CollisionFlag.DEAD_BLOCK))) &&
+					!nodes[curr_x + 1][curr_y].flag.contains(CollisionFlag.NORTH.mark(CollisionFlag.OBJECT_BLOCK.mark(CollisionFlag.DEAD_BLOCK)))) {
 				list.add(nodes[curr_x + 1][curr_y + 1]);
 			}
 			return list;

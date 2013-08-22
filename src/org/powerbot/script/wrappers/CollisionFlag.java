@@ -1,4 +1,4 @@
-package org.powerbot.script.internal.wrappers;
+package org.powerbot.script.wrappers;
 
 public final class CollisionFlag {
 	public static final CollisionFlag NORTHWEST = new CollisionFlag(0x1, false);
@@ -27,7 +27,7 @@ public final class CollisionFlag {
 	private int type;
 	private boolean markable;
 
-	public boolean marked(CollisionFlag collisionFlag) {
+	public boolean contains(CollisionFlag collisionFlag) {
 		return (type & collisionFlag.type) != 0;
 	}
 
@@ -46,24 +46,6 @@ public final class CollisionFlag {
 			return this;
 		} else {
 			return new CollisionFlag(type & ~collisionFlag.type, true);
-		}
-	}
-
-	public CollisionFlag mark(final int flag) {
-		if (markable) {
-			type |= flag;
-			return this;
-		} else {
-			return new CollisionFlag(type | flag, true);
-		}
-	}
-
-	public CollisionFlag erase(final int flag) {
-		if (markable) {
-			type &= ~flag;
-			return this;
-		} else {
-			return new CollisionFlag(type & ~flag, true);
 		}
 	}
 

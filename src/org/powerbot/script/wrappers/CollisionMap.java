@@ -1,22 +1,32 @@
-package org.powerbot.script.internal.wrappers;
+package org.powerbot.script.wrappers;
 
-import static org.powerbot.script.internal.wrappers.CollisionFlag.*;
+import static org.powerbot.script.wrappers.CollisionFlag.DEAD_BLOCK;
+import static org.powerbot.script.wrappers.CollisionFlag.DECORATION_BLOCK;
+import static org.powerbot.script.wrappers.CollisionFlag.EAST;
+import static org.powerbot.script.wrappers.CollisionFlag.NORTH;
+import static org.powerbot.script.wrappers.CollisionFlag.NORTHEAST;
+import static org.powerbot.script.wrappers.CollisionFlag.NORTHWEST;
+import static org.powerbot.script.wrappers.CollisionFlag.OBJECT_BLOCK;
+import static org.powerbot.script.wrappers.CollisionFlag.SOUTH;
+import static org.powerbot.script.wrappers.CollisionFlag.SOUTHEAST;
+import static org.powerbot.script.wrappers.CollisionFlag.SOUTHWEST;
+import static org.powerbot.script.wrappers.CollisionFlag.WEST;
 
 public final class CollisionMap {
-	public CollisionMap(final int localXSize, final int localYSize) {
+	private final CollisionFlag[][] clipping;
+	private int xOff;
+	private int yOff;
+	private int width;
+	private int height;
+
+	public CollisionMap(int xSize, int ySize) {
 		this.xOff = -1;
 		this.yOff = -1;
-		this.width = localXSize + 6;
-		this.height = localYSize + 6;
+		this.width = xSize + 6;
+		this.height = ySize + 6;
 		this.clipping = new CollisionFlag[width][height];
 		clear();
 	}
-
-	private final CollisionFlag[][] clipping;
-	private final int xOff;
-	private final int yOff;
-	private final int width;
-	private final int height;
 
 	public int getWidth() {
 		return width;
@@ -38,55 +48,25 @@ public final class CollisionMap {
 		}
 	}
 
-	public CollisionFlag getClippingValueAtLocal(final int localX, final int localY) {
-		return clipping[offsetLocalX(localX)][offsetLocalY(localY)];
-	}
-
-	public int offsetLocalX(final int localX) {
-		return localX - xOff;
-	}
-
-	public int offsetLocalY(final int localY) {
-		return localY - yOff;
+	public CollisionFlag getFlagAt(int localX, int localY) {
+		return clipping[localX(localX)][localY(localY)];
 	}
 
 	public void markDecoration(int localX, int localY) {
-		_mark(offsetLocalX(localX), offsetLocalY(localY), DECORATION_BLOCK);
-	}
-
-	private void _mark(final int offsetX, final int offsetY, final CollisionFlag collisionFlag) {
-		clipping[offsetX][offsetY].mark(collisionFlag);
-	}
-
-	public void markInteractiveArea(int localX, int localY, final int xSize, final int ySize) {
-		CollisionFlag collisionFlag = OBJECT_BLOCK;
-		localX = offsetLocalX(localX);
-		localY = offsetLocalY(localY);
-		for (int xPos = localX; xPos < localX + xSize; xPos++) {
-			if ((xPos < 0) || (xPos >= this.width)) {
-				continue;
-			}
-			for (int yPos = localY; yPos < ySize + localY; yPos++) {
-				if ((yPos < 0) || (yPos >= this.height)) {
-					continue;
-				}
-				_mark(xPos, yPos, collisionFlag);
-			}
-		}
+		_mark(localX(localX), localY(localY), DECORATION_BLOCK);
 	}
 
 	public void markInteractive(int localX, int localY) {
-		CollisionFlag collisionFlag = OBJECT_BLOCK;
-		_mark(offsetLocalX(localX), offsetLocalY(localY), collisionFlag);
+		_mark(localX(localX), localY(localY), OBJECT_BLOCK);
 	}
 
 	public void markDeadBlock(int localX, int localY) {
-		_mark(offsetLocalX(localX), offsetLocalY(localY), DEAD_BLOCK);
+		_mark(localX(localX), localY(localY), DEAD_BLOCK);
 	}
 
-	public void markWall(int localX, int localY, final int type, int orientation) {
-		localX = offsetLocalX(localX);
-		localY = offsetLocalY(localY);
+	public void markWall(int localX, int localY, int type, int orientation) {
+		localX = localX(localX);
+		localY = localY(localY);
 		orientation %= 4;
 		switch (type) {
 		case 0:
@@ -155,5 +135,17 @@ public final class CollisionMap {
 			}
 			break;
 		}
+	}
+
+	private void _mark(int offsetX, int offsetY, final CollisionFlag collisionFlag) {
+		clipping[offsetX][offsetY].mark(collisionFlag);
+	}
+
+	private int localX(int localX) {
+		return localX - xOff;
+	}
+
+	private int localY(int localY) {
+		return localY - yOff;
 	}
 }

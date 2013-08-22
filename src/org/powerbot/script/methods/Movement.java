@@ -4,6 +4,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 
 import org.powerbot.client.Client;
+import org.powerbot.script.wrappers.CollisionMap;
 import org.powerbot.script.wrappers.Component;
 import org.powerbot.script.wrappers.LocalPath;
 import org.powerbot.script.wrappers.Locatable;
@@ -141,6 +142,18 @@ public class Movement extends MethodProvider {
 			}
 		}
 		return 0;
+	}
+
+	public CollisionMap getCollisionMap() {
+		return getCollisionMap(ctx.game.getPlane());
+	}
+
+	public CollisionMap getCollisionMap(int plane) {
+		CollisionMap[] planes = ctx.map.getCollisionMaps();
+		if (plane < 0 || plane >= planes.length) {
+			return new CollisionMap(0, 0);
+		}
+		return planes[plane];
 	}
 
 	public int getDistance(Locatable _start, Locatable _end) {
