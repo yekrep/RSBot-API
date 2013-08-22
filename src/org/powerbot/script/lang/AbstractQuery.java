@@ -217,7 +217,7 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends Me
 	 * @param c the handler for each iteration
 	 * @return {@code this} for the purpose of chaining
 	 */
-	public T each(final ChainingIterator<K> c) {
+	public T each(final ChainingIterator<? super K> c) {
 		return each(c, false);
 	}
 
@@ -228,7 +228,7 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends Me
 	 * @param async {@code true} to iterate asynchronously, otherwise {@code false} for blocking execution
 	 * @return {@code this} for the purpose of chaining
 	 */
-	public T each(final ChainingIterator<K> c, final boolean async) {
+	public T each(final ChainingIterator<? super K> c, final boolean async) {
 		final Runnable r = new Runnable() {
 			@Override
 			public void run() {
