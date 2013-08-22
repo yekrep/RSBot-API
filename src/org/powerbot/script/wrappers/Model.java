@@ -197,7 +197,7 @@ public abstract class Model extends MethodProvider {
 					h + (this.yPoints[this.faceA[index]] + this.yPoints[this.faceB[index]] + this.yPoints[this.faceC[index]]) / 3,
 					y + (this.zPoints[this.faceA[index]] + this.zPoints[this.faceB[index]] + this.zPoints[this.faceC[index]]) / 3
 			);
-			if (point.x != -1 && point.y != -1) {
+			if (ctx.game.isPointOnScreen(point.x, point.y)) {
 				return index;
 			}
 			++index;
@@ -246,11 +246,13 @@ public abstract class Model extends MethodProvider {
 				screen[index][0] = Math.round(toolkit.absoluteX + (toolkit.xMultiplier * _x) / _z);
 				screen[index][1] = Math.round(toolkit.absoluteY + (toolkit.yMultiplier * _y) / _z);
 				screen[index][2] = 1;
-			} else {
-				screen[index][0] = -1;
-				screen[index][1] = -1;
-				screen[index][2] = 0;
+				if (ctx.game.isPointOnScreen(screen[index][0], screen[index][1])) {
+					continue;
+				}
 			}
+			screen[index][0] = -1;
+			screen[index][1] = -1;
+			screen[index][2] = 0;
 		}
 		return screen;
 	}
