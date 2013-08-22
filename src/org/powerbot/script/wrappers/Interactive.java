@@ -5,6 +5,7 @@ import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.geom.Area;
 
+import org.powerbot.script.lang.ChainingIterator;
 import org.powerbot.script.lang.Filter;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.methods.MethodProvider;
@@ -119,5 +120,23 @@ public abstract class Interactive extends MethodProvider implements Targetable, 
 			}
 		}
 		return false;
+	}
+
+	public static Filter<Interactive> areOnScreen() {
+		return new Filter<Interactive>() {
+			@Override
+			public boolean accept(final Interactive interactive) {
+				return interactive.isOnScreen();
+			}
+		};
+	}
+
+	public static ChainingIterator<Interactive> interactor(final String action) {
+		return new ChainingIterator<Interactive>() {
+			@Override
+			public boolean next(final int index, final Interactive item) {
+				return item.interact(action);
+			}
+		};
 	}
 }
