@@ -16,10 +16,10 @@ public class Antipatterns extends MethodProvider {
 	public Antipatterns(MethodContext ctx) {
 		super(ctx);
 		this.active = new CopyOnWriteArrayList<>();
-		this.patterns = Arrays.asList(new Antipattern[]{
+		this.patterns = Arrays.asList(
 				new CameraPattern(ctx),
-				new ExaminePattern(ctx),
-		});
+				new ExaminePattern(ctx)
+		);
 
 		reset();
 	}
