@@ -39,7 +39,12 @@ public class CombatBar extends IdQuery<Action> {
 		return ctx.widgets.get(WIDGET, COMPONENT_BUTTON_HEAL).interact("Heal");
 	}
 
+	@Deprecated
 	public boolean setRealiating(boolean retaliate) {
+		return setRetaliating(retaliate);
+	}
+
+	public boolean setRetaliating(boolean retaliate) {
 		if (retaliate != isRetaliating() &&
 				ctx.widgets.get(WIDGET, COMPONENT_BUTTON_RETALIATE).interact("Toggle")) {
 			for (int i = 0; i < 10 && retaliate != isRetaliating(); i++) {
