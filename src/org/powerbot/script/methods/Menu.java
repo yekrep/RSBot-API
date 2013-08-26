@@ -103,7 +103,7 @@ public class Menu extends MethodProvider {
 			return false;
 		}
 		if (client.isMenuOpen()) {
-			ctx.mouse.move(client.getMenuX() - 30 + Random.nextInt(0, 20), client.getMenuY() - 10 + Random.nextInt(0, 20));
+			ctx.mouse.move(client.getMenuX() + Random.nextInt(-30, -10), Math.max(4, client.getMenuY() + Random.nextInt(-10, 10)));
 		}
 		return !client.isMenuOpen();
 	}
