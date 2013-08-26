@@ -1,6 +1,7 @@
 package org.powerbot.script.lang;
 
 import org.powerbot.script.methods.MethodContext;
+import org.powerbot.script.wrappers.Area;
 import org.powerbot.script.wrappers.Locatable;
 
 public abstract class HintArrowQuery<K extends Locatable> extends AbstractQuery<HintArrowQuery<K>, K>
@@ -36,6 +37,14 @@ public abstract class HintArrowQuery<K extends Locatable> extends AbstractQuery<
 	@Override
 	public HintArrowQuery<K> within(Locatable target, double distance) {
 		return select(new Locatable.WithinRange(target, distance));
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public HintArrowQuery<K> within(Area area) {
+		return select(new Locatable.WithinArea(area));
 	}
 
 	/**

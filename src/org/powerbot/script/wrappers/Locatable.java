@@ -14,6 +14,8 @@ public interface Locatable {
 
 		public T within(Locatable t, double d);
 
+		public T within(Area area);
+
 		public T nearest();
 
 		public T nearest(Locatable t);
@@ -48,6 +50,20 @@ public interface Locatable {
 			Tile tile = l != null ? l.getLocation() : null;
 			Tile target = this.target.getLocation();
 			return tile != null && target != null && tile.distanceTo(target) <= distance;
+		}
+	}
+
+	public class WithinArea implements Filter<Locatable> {
+		private final Area area;
+
+		public WithinArea(final Area area) {
+			this.area = area;
+		}
+
+		@Override
+		public boolean accept(final Locatable l) {
+			Tile tile = l != null ? l.getLocation() : null;
+			return tile != null && area.contains(tile);
 		}
 	}
 

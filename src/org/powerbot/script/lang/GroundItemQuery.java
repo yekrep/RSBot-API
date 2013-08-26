@@ -1,6 +1,7 @@
 package org.powerbot.script.lang;
 
 import org.powerbot.script.methods.MethodContext;
+import org.powerbot.script.wrappers.Area;
 import org.powerbot.script.wrappers.Identifiable;
 import org.powerbot.script.wrappers.Locatable;
 import org.powerbot.script.wrappers.Nameable;
@@ -41,6 +42,15 @@ public abstract class GroundItemQuery<K extends Locatable & Identifiable & Namea
 	public GroundItemQuery<K> within(Locatable target, double distance) {
 		return select(new Locatable.WithinRange(target, distance));
 	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public GroundItemQuery<K> within(Area area) {
+		return select(new Locatable.WithinArea(area));
+	}
+
 
 	/**
 	 * {@inheritDoc}
