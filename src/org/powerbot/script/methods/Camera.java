@@ -1,20 +1,67 @@
 package org.powerbot.script.methods;
 
-import org.powerbot.client.Client;
-import org.powerbot.script.wrappers.Locatable;
+import org.powerbot.client.RSInteractableLocation;
 import org.powerbot.script.util.Random;
 import org.powerbot.script.util.Timer;
+import org.powerbot.script.wrappers.Locatable;
 import org.powerbot.script.wrappers.Player;
 import org.powerbot.script.wrappers.Tile;
 
 public class Camera extends MethodProvider {
+	public RSInteractableLocation offset;
+	public RSInteractableLocation center;
+
 	public Camera(MethodContext factory) {
 		super(factory);
+		RSInteractableLocation vector3f = new RSInteractableLocation() {
+			@Override
+			public float getX() {
+				return 0;
+			}
+
+			@Override
+			public float getY() {
+				return 0;
+			}
+
+			@Override
+			public float getZ() {
+				return 0;
+			}
+		};
+		this.offset = vector3f;
+		this.center = vector3f;
+	}
+
+	public int getX() {
+		Tile tile = ctx.game.getMapBase();
+		return (int) (offset.getX() - (tile.getX() << 9));
+	}
+
+	public int getY() {
+		Tile tile = ctx.game.getMapBase();
+		return (int) (offset.getY() - (tile.getY() << 9));
+	}
+
+
+	public int getZ() {
+		return -(int) offset.getZ();
 	}
 
 	public int getYaw() {
-		Client client = ctx.getClient();
-		return client != null ? (int) (ctx.game.mapAngle / 45.51) : -1;
+		float deltaX = offset.getX() - center.getX();
+		float deltaY = offset.getY() - center.getY();
+		float theta = (float) Math.atan2(deltaX, deltaY);
+		return (int) (((int) ((Math.PI - theta) * 2607.5945876176133D) & 0x3FFF) / 45.51);
+	}
+
+	public final int getPitch() {
+		float deltaX = center.getX() - offset.getX();
+		float deltaY = center.getY() - offset.getY();
+		float deltaZ = center.getZ() - offset.getZ();
+		float dist = (float) Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+		float theta = (float) Math.atan2(-deltaZ, dist);
+		return (int) (((int) (theta * 2607.5945876176133D) & 0x3FFF) / 2960f * 100f);
 	}
 
 	public void setAngle(final char direction) {

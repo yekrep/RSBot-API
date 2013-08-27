@@ -4,9 +4,11 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.powerbot.client.Callback;
+import org.powerbot.client.RSInteractableLocation;
 import org.powerbot.client.RSObjectDef;
 import org.powerbot.client.Render;
 import org.powerbot.event.MessageEvent;
+import org.powerbot.script.methods.Camera;
 
 public class AbstractCallback implements Callback {
 	private final Bot bot;
@@ -34,5 +36,12 @@ public class AbstractCallback implements Callback {
 	@Override
 	public void notifyObjectDefinitionLoad(RSObjectDef def) {
 		clippingTypes.put(def.getID(), def.getClippingType());
+	}
+
+	@Override
+	public void updateCamera(RSInteractableLocation offset, RSInteractableLocation center) {
+		Camera camera = bot.getMethodContext().camera;
+		camera.offset = offset;
+		camera.center = center;
 	}
 }
