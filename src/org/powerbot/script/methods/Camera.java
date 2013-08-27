@@ -64,6 +64,41 @@ public class Camera extends MethodProvider {
 		return (int) (((int) (theta * 2607.5945876176133D) & 0x3FFF) / 3096f * 100f);
 	}
 
+	public boolean setPitch(boolean up) {
+		return setPitch(up ? 100 : 0);
+	}
+
+	public boolean setPitch(final int percent) {
+		int curAlt = getPitch();
+		int lastAlt = 0;
+		if (curAlt == percent) {
+			return true;
+		}
+
+		final boolean up = curAlt < percent;
+		ctx.keyboard.send(up ? "{VK_UP down}" : "{VK_DOWN down}");
+
+		final Timer timer = new Timer(100);
+		while (timer.isRunning()) {
+			if (lastAlt != curAlt) {
+				timer.reset();
+			}
+
+			lastAlt = curAlt;
+			sleep(Random.nextInt(5, 10));
+			curAlt = getPitch();
+
+			if (up && curAlt >= percent) {
+				break;
+			} else if (!up && curAlt <= percent) {
+				break;
+			}
+		}
+
+		ctx.keyboard.send(up ? "{VK_UP up}" : "{VK_DOWN up}");
+		return curAlt == percent;
+	}
+
 	public void setAngle(final char direction) {
 		switch (direction) {
 		case 'n':
