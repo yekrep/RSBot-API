@@ -6,6 +6,9 @@
 		<class template="class org.powerbot.Boot">
 			<method template="public main(java.lang.String[])" />
 		</class>
+		<class template="class org.powerbot.script.internal.ScriptController">
+			<method access="protected+" />
+		</class>
 		<class template="class org.powerbot.script.internal.*" stop="true" />
 		<class template="class org.powerbot.bot.loader.*">
 			<field access="protected+" />
