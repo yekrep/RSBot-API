@@ -109,7 +109,6 @@ public class Mouse extends MethodProvider {
 		handler.handle(t = new MouseTarget(target, MouseTarget.DUMMY) {
 			@Override
 			public void execute(final MouseHandler handler) {
-				sleep(0, 350);
 				if (filter.accept(handler.getLocation())) {
 					handler.click(left ? MouseEvent.BUTTON1 : MouseEvent.BUTTON3);
 					handler.complete(this);
