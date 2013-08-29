@@ -1,8 +1,10 @@
 package org.powerbot.script.internal.randoms;
 
+import org.powerbot.bot.Bot;
 import org.powerbot.script.PollingScript;
 import org.powerbot.script.internal.InternalScript;
 import org.powerbot.script.util.Random;
+import org.powerbot.service.GameAccounts;
 
 public class BankPin extends PollingScript implements InternalScript {
 	private static final int SETTING_PIN_STEP = 163;
@@ -33,9 +35,13 @@ public class BankPin extends PollingScript implements InternalScript {
 	}
 
 	private String getPin() {
-		try {
-			return ctx.getBot().getAccount().getPIN();
-		} catch (final Exception ignored) {
+		Bot bot = ctx.getBot();
+		GameAccounts.Account account;
+		if (bot != null && (account = bot.getAccount()) != null) {
+			String pin = account.getPIN();
+			if (pin != null && pin.length() == 4) {
+				return pin;
+			}
 		}
 		return null;
 	}
