@@ -8,6 +8,7 @@ import org.powerbot.script.methods.Game;
 import org.powerbot.script.methods.Lobby;
 import org.powerbot.script.util.Random;
 import org.powerbot.script.wrappers.Component;
+import org.powerbot.service.GameAccounts;
 
 /**
  * @author Timer
@@ -37,61 +38,80 @@ public class Login extends PollingScript implements InternalScript {
 			return -1;
 		}
 
+		GameAccounts.Account account = ctx.getBot().getAccount();
 		int state = ctx.game.getClientState();
-		if ((state == Game.INDEX_LOGIN_SCREEN || state == Game.INDEX_LOGGING_IN) && ctx.getBot().getAccount() != null) {
-			Component c = ctx.widgets.get(WIDGET, WIDGET_LOGIN_ERROR);
-			if (c.isValid()) {
-				ctx.widgets.get(WIDGET, WIDGET_LOGIN_TRY_AGAIN).click(true);
-				if (c.getText().toLowerCase().contains("password")) {
-					getController().stop();
-					return -1;
-				}
-			}
-
-			if (isUsernameCorrect() && isPasswordValid()) {
-				ctx.keyboard.send("\n");
-				sleep(Random.nextInt(1200, 2000));
-			} else if (!isUsernameCorrect()) {
-				final String username = ctx.getBot().getAccount().toString();
-				final Component usernameTextBox = ctx.widgets.get(WIDGET, WIDGET_LOGIN_USERNAME_TEXT);
-				if (!clickLoginInterface(usernameTextBox)) {
-					return 0;
-				}
-				sleep(Random.nextInt(500, 700));
-				final int textLength = usernameTextBox.getText().length();
-				if (textLength > 0) {
-					erase(textLength);
-					return 0;
-				}
-				ctx.keyboard.send(username);
-				sleep(Random.nextInt(500, 700));
-			} else if (!isPasswordValid()) {
-				final String password = ctx.getBot().getAccount().getPassword();
-				final Component passwordTextBox = ctx.widgets.get(WIDGET, WIDGET_LOGIN_PASSWORD_TEXT);
-				if (!clickLoginInterface(passwordTextBox)) {
-					return 0;
-				}
-				sleep(Random.nextInt(500, 700));
-				final int textLength = passwordTextBox.getText().length();
-				if (textLength > 0) {
-					erase(textLength);
-					return 0;
-				}
-				ctx.keyboard.send(password);
-				sleep(Random.nextInt(500, 700));
-			}
-		} else if (state == Game.INDEX_LOBBY_SCREEN && ctx.getBot().getAccount() != null) {
-			final int world = ctx.getPreferredWorld();
+		if (state == Game.INDEX_LOBBY_SCREEN) {
+			int world = ctx.getPreferredWorld();
 			if (world > 0) {
-				final Lobby.World world_wrapper;
+				Lobby.World world_wrapper;
 				if ((world_wrapper = ctx.lobby.getWorld(world)) != null) {
 					ctx.lobby.enterGame(world_wrapper);
 					return 0;
 				}
 			}
 			ctx.lobby.enterGame();
+			return -1;
 		}
-		return 600;
+
+		if (state == Game.INDEX_LOGIN_SCREEN || state == Game.INDEX_LOGGING_IN) {
+			Component error = ctx.widgets.get(WIDGET, WIDGET_LOGIN_ERROR);
+			if (error.isValid()) {
+				if (error.getText().toLowerCase().contains("password")) {
+					getController().stop();
+					return -1;
+				}
+				ctx.widgets.get(WIDGET, WIDGET_LOGIN_TRY_AGAIN).click();
+				return -1;
+			}
+
+			String username = account.toString(), password = account.getPassword();
+			String text;
+			text = getUsernameText();
+			if (!text.equalsIgnoreCase(username)) {
+				if (!clickLoginInterface(ctx.widgets.get(WIDGET, WIDGET_LOGIN_USERNAME_TEXT))) {
+					return -1;
+				}
+				sleep(Random.nextInt(500, 700));
+
+				int length = text.length();
+				if (length > 0) {
+					StringBuilder b = new StringBuilder(length);
+					for (int i = 0; i < length; i++) {
+						b.append('\b');
+					}
+					ctx.keyboard.send(b.toString());
+					return 0;
+				}
+
+				ctx.keyboard.send(username);
+				sleep(Random.nextInt(800, 1200));
+				return 0;
+			}
+
+			text = getPasswordText();
+			if (text.length() != password.length()) {
+				if (!clickLoginInterface(ctx.widgets.get(WIDGET, WIDGET_LOGIN_PASSWORD_TEXT))) {
+					return -1;
+				}
+				sleep(Random.nextInt(500, 700));
+				int length = text.length();
+				if (length > 0) {
+					StringBuilder b = new StringBuilder(length);
+					for (int i = 0; i < length; i++) {
+						b.append('\b');
+					}
+					ctx.keyboard.send(b.toString());
+					return 0;
+				}
+				ctx.keyboard.send(password);
+				return -1;
+			}
+
+			ctx.keyboard.send("\n");
+			sleep(Random.nextInt(600, 1400));
+			return -1;
+		}
+		return -1;//what's going on???
 	}
 
 	private boolean clickLoginInterface(final Component i) {
@@ -131,22 +151,11 @@ public class Login extends PollingScript implements InternalScript {
 		}
 	}
 
-	private boolean isUsernameCorrect() {
-		final String userName = ctx.getBot().getAccount().toString();
-		return ctx.widgets.get(WIDGET, WIDGET_LOGIN_USERNAME_TEXT).getText().toLowerCase().equalsIgnoreCase(userName);
+	private String getUsernameText() {
+		return ctx.widgets.get(WIDGET, WIDGET_LOGIN_USERNAME_TEXT).getText().toLowerCase();
 	}
 
-	private boolean isPasswordValid() {
-		final String s = ctx.getBot().getAccount().getPassword();
-		return ctx.widgets.get(WIDGET, WIDGET_LOGIN_PASSWORD_TEXT).getText().length() == (s == null ? 0 : s.length());
-	}
-
-	private void erase(final int count) {
-		for (int i = 0; i <= count + Random.nextInt(1, 5); i++) {
-			ctx.keyboard.send("\b");
-			if (Random.nextInt(0, 2) == 1) {
-				sleep(Random.nextInt(25, 100));
-			}
-		}
+	public String getPasswordText() {
+		return ctx.widgets.get(WIDGET, WIDGET_LOGIN_PASSWORD_TEXT).getText();
 	}
 }
