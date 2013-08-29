@@ -4,6 +4,7 @@ import java.awt.Rectangle;
 
 import org.powerbot.script.PollingScript;
 import org.powerbot.script.internal.InternalScript;
+import org.powerbot.script.lang.Filter;
 import org.powerbot.script.methods.Game;
 import org.powerbot.script.methods.Lobby;
 import org.powerbot.script.util.Random;
@@ -38,14 +39,24 @@ public class Login extends PollingScript implements InternalScript {
 			return -1;
 		}
 
-		GameAccounts.Account account = ctx.getBot().getAccount();
+		final GameAccounts.Account account = ctx.getBot().getAccount();
 		int state = ctx.game.getClientState();
 		if (state == Game.INDEX_LOBBY_SCREEN) {
 			int world = ctx.getPreferredWorld();
 			if (world > 0) {
 				Lobby.World world_wrapper;
 				if ((world_wrapper = ctx.lobby.getWorld(world)) != null) {
-					ctx.lobby.enterGame(world_wrapper);
+					if (!ctx.lobby.enterGame(world_wrapper)) {
+						Lobby.World[] worlds = ctx.lobby.getWorlds(new Filter<Lobby.World>() {
+							@Override
+							public boolean accept(Lobby.World world) {
+								return world.isMembers() == account.member;
+							}
+						});
+						if (worlds.length > 0) {
+							ctx.game.setPreferredWorld(worlds[Random.nextInt(0, worlds.length)].getNumber());
+						}
+					}
 					return 0;
 				}
 			}
