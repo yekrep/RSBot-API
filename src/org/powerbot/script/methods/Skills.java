@@ -40,6 +40,7 @@ public class Skills extends MethodProvider {
 	public static final int CONSTRUCTION = 22;
 	public static final int SUMMONING = 23;
 	public static final int DUNGEONEERING = 24;
+	public static final int DIVINATION = 25;
 
 	public Skills(MethodContext factory) {
 		super(factory);

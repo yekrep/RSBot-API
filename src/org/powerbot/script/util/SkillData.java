@@ -4,7 +4,7 @@ import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.methods.MethodProvider;
 
 public final class SkillData extends MethodProvider {
-	public static final int NUM_SKILL = 25;
+	public static final int NUM_SKILL = 26;
 	public final int[] initialExp = new int[NUM_SKILL];
 	public final int[] initialLevels = new int[NUM_SKILL];
 	private final Timer timer;
