@@ -21,11 +21,20 @@ public class BankPin extends PollingScript implements InternalScript {
 			return -1;
 		}
 
-		if (ctx.widgets.get(WIDGET, COMPONENT).isVisible()) {
+		if (!ctx.widgets.get(WIDGET, COMPONENT).isVisible()) {
 			return -1;
 		}
 
-		int i, v = Integer.valueOf(String.valueOf(pin.charAt(i = ctx.settings.get(SETTING_PIN_STEP))));
+		int i = ctx.settings.get(SETTING_PIN_STEP);
+		int v;
+		try {
+			v = Integer.valueOf(String.valueOf(pin.charAt(i)));
+		} catch (NumberFormatException ignored) {
+			v = -1;
+		}
+		if (v < 0) {
+			return -1;
+		}
 		if (ctx.widgets.get(WIDGET, v + COMPONENT_PIN_OFFSET).interact("Select")) {
 			for (int d = 0; d < 24 && i == ctx.settings.get(SETTING_PIN_STEP); d++) {
 				sleep(Random.nextInt(80, 100));
