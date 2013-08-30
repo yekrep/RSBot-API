@@ -20,6 +20,7 @@ public class CombatBar extends IdQuery<Action> {
 	public static final int COMPONENT_PRAYER = 88;
 	public static final int COMPONENT_SUMMONING = 94;
 	public static final int COMPONENT_TEXT = 7;
+	public static final int COMPONENT_BOUNDS = 72;
 
 	public static final int NUM_SLOTS = 12;
 	public static final int COMPONENT_BAR = 77;
