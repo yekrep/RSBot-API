@@ -48,7 +48,8 @@ public final class ScriptDefinition implements Comparable<ScriptDefinition> {
 		SMITHING("smith|bars"),
 		SUMMONING("summ"),
 		THIEVING("thief|steal|thiev"),
-		WOODCUTTING("wood|chop");
+		WOODCUTTING("wood|chop"),
+		DIVINATION("div|portent");
 
 		public final String regex;
 
