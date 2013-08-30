@@ -3,6 +3,7 @@ package org.powerbot.script.golem;
 import java.util.EnumSet;
 
 import org.powerbot.script.lang.Filter;
+import org.powerbot.script.methods.Menu;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.util.Random;
 import org.powerbot.script.wrappers.GameObject;
@@ -23,7 +24,7 @@ public class ExaminePattern extends Antipattern {
 		}).shuffle().limit(Random.nextInt(1, aggressive ? 5 : 3))) {
 			boolean repeat = aggressive && System.nanoTime() % 5 == 0;
 			for (; object.hover(); ) {
-				ctx.menu.click("Examine");
+				ctx.menu.click(Menu.filter("Examine"));
 				if (repeat) {
 					repeat = false;
 					continue;

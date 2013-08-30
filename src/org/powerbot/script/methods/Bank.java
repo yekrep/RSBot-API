@@ -158,7 +158,7 @@ public class Bank extends ItemQuery<Item> {
 			if (interactive.hover()) {
 				sleep(50, 100);
 			}
-			actions[index] = ctx.menu.indexOf("Open") != -1 ? "Open" : ctx.menu.indexOf("Use") != -1 ? "Use" : null;
+			actions[index] = ctx.menu.indexOf(Menu.filter("Open")) != -1 ? "Open" : ctx.menu.indexOf(Menu.filter("Use")) != -1 ? "Use" : null;
 			if (actions[index] == null) {
 				return false;
 			}

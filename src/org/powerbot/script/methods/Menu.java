@@ -12,6 +12,7 @@ import org.powerbot.client.NodeDeque;
 import org.powerbot.client.NodeSubQueue;
 import org.powerbot.script.internal.wrappers.Deque;
 import org.powerbot.script.internal.wrappers.Queue;
+import org.powerbot.script.lang.Filter;
 import org.powerbot.script.util.Random;
 import org.powerbot.util.StringUtil;
 
@@ -20,24 +21,42 @@ public class Menu extends MethodProvider {
 		super(factory);
 	}
 
+	public static class Entry {
+		public final String action, option;
+
+		private Entry(MenuItemNode node) {
+			String a = node.getAction(), o = node.getOption();
+			this.action = a != null ? StringUtil.stripHtml(a) : "";
+			this.option = o != null ? StringUtil.stripHtml(o) : "";
+		}
+	}
+
+	public static Filter<Entry> filter(String action) {
+		return filter(action, null);
+	}
+
+	public static Filter<Entry> filter(String action, String option) {
+		final String a = action != null ? action.toLowerCase() : null;
+		final String o = option != null ? option.toLowerCase() : null;
+		return new Filter<Entry>() {
+			@Override
+			public boolean accept(Entry entry) {
+				return (a == null || entry.action.toLowerCase().contains(a)) &&
+						(o == null || entry.option.toLowerCase().contains(o));
+			}
+		};
+	}
+
 	public boolean isOpen() {
 		Client client = ctx.getClient();
 		return client != null && client.isMenuOpen();
 	}
 
-	public int indexOf(final String action) {
-		return indexOf(action, null);
-	}
-
-	public int indexOf(String action, String option) {
+	public int indexOf(Filter<Entry> filter) {
 		List<MenuItemNode> nodes = getMenuItemNodes();
 		int d = 0;
 		for (MenuItemNode node : nodes) {
-			String a = node.getAction(), o = node.getOption();
-			a = a != null ? StringUtil.stripHtml(a).toLowerCase() : "";
-			o = o != null ? StringUtil.stripHtml(o).toLowerCase() : "";
-			if ((action == null || a.contains(action.toLowerCase())) &&
-					(option == null || o.contains(option.toLowerCase()))) {
+			if (filter.accept(new Entry(node))) {
 				return d;
 			}
 			d++;
@@ -45,16 +64,12 @@ public class Menu extends MethodProvider {
 		return -1;
 	}
 
-	public boolean hover(final String action) {
-		return hover(action, null);
-	}
-
-	public boolean hover(final String action, final String option) {
+	public boolean hover(Filter<Entry> filter) {
 		Client client = ctx.getClient();
 		if (client == null) {
 			return false;
 		}
-		int index = indexOf(action, option);
+		int index = indexOf(filter);
 		if (index == -1) {
 			return false;
 		}
@@ -69,7 +84,7 @@ public class Menu extends MethodProvider {
 				if (!client.isMenuOpen()) {
 					return false;
 				}
-				if ((index = indexOf(action, option)) == -1) {
+				if ((index = indexOf(filter)) == -1) {
 					close();
 					return false;
 				}
@@ -78,23 +93,19 @@ public class Menu extends MethodProvider {
 		return hoverIndex(client, index);
 	}
 
-	public boolean click(final String action) {
-		return click(action, null);
-	}
-
-	public boolean click(final String action, final String option) {
+	public boolean click(Filter<Entry> filter) {
 		Client client = ctx.getClient();
 		if (client == null) {
 			return false;
 		}
-		int index = indexOf(action, option);
+		int index = indexOf(filter);
 		if (index == -1) {
 			return false;
 		}
 		if (!client.isMenuOpen() && index == 0) {
 			return ctx.mouse.click(true);
 		}
-		return hover(action, option) && ctx.mouse.click(true);
+		return hover(filter) && ctx.mouse.click(true);
 	}
 
 	public boolean close() {

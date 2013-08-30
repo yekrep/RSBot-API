@@ -7,6 +7,7 @@ import java.awt.geom.Area;
 
 import org.powerbot.script.lang.ChainingIterator;
 import org.powerbot.script.lang.Filter;
+import org.powerbot.script.methods.Menu;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.methods.MethodProvider;
 import org.powerbot.script.util.Random;
@@ -47,10 +48,6 @@ public abstract class Interactive extends MethodProvider implements Targetable, 
 		return ctx.mouse.click(this, left);
 	}
 
-	public boolean interact(String action) {
-		return interact(action, null);
-	}
-
 	public static ChainingIterator<Interactive> doInteract(final String action) {
 		return new ChainingIterator<Interactive>() {
 			@Override
@@ -69,7 +66,15 @@ public abstract class Interactive extends MethodProvider implements Targetable, 
 		};
 	}
 
-	public boolean interact(final String action, final String option) {
+	public boolean interact(String action) {
+		return interact(Menu.filter(action));
+	}
+
+	public boolean interact(String action, String option) {
+		return interact(Menu.filter(action, option));
+	}
+
+	public boolean interact(final Filter<Menu.Entry> f) {
 		if (!isValid()) {
 			return false;
 		}
@@ -81,13 +86,13 @@ public abstract class Interactive extends MethodProvider implements Targetable, 
 		if (ctx.mouse.move(this, new Filter<Point>() {
 			@Override
 			public boolean accept(final Point point) {
-				if (contains(point) && ctx.menu.indexOf(action, option) != -1) {
+				if (contains(point) && ctx.menu.indexOf(f) != -1) {
 					sleep(10, 80);
-					return contains(point) && ctx.menu.indexOf(action, option) != -1;
+					return contains(point) && ctx.menu.indexOf(f) != -1;
 				}
 				return false;
 			}
-		}) && ctx.menu.click(action, option)) {
+		}) && ctx.menu.click(f)) {
 			return true;
 		}
 		ctx.menu.close();
@@ -129,7 +134,7 @@ public abstract class Interactive extends MethodProvider implements Targetable, 
 				y = mousePoint.y + (int) (dist * Math.sin(theta));
 
 				if (ctx.game.isPointOnScreen(x, y) && ctx.mouse.move(x, y) &&
-						ctx.menu.indexOf("Walk here") == 0 && ctx.mouse.click(true)) {
+						ctx.menu.indexOf(Menu.filter("Walk here")) == 0 && ctx.mouse.click(true)) {
 					return true;
 				}
 			}
