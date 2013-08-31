@@ -268,10 +268,7 @@ public class Bank extends ItemQuery<Item> {
 	}
 
 	public boolean withdraw(int id, int amount) {//TODO: anti pattern
-		Item item = select().getNil();
-		for (Item _item : id(id).first()) {
-			item = _item;
-		}
+		Item item = select().id(id).poll();
 		final Component container = ctx.widgets.get(WIDGET, COMPONENT_CONTAINER_ITEMS);
 		if (!item.isValid() || !container.isValid()) {
 			return false;
