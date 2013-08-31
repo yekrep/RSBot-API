@@ -56,13 +56,14 @@ public class Bank extends ItemQuery<Item> {
 		}
 	};
 	public static final int WIDGET = 762;
-	public static final int COMPONENT_BUTTON_CLOSE = 63;
-	public static final int COMPONENT_CONTAINER_ITEMS = 113;
-	public static final int COMPONENT_BUTTON_WITHDRAW_MODE = 39;
-	public static final int COMPONENT_BUTTON_DEPOSIT_INVENTORY = 54;
-	public static final int COMPONENT_BUTTON_DEPOSIT_EQUIPMENT = 58;
-	public static final int COMPONENT_BUTTON_DEPOSIT_FAMILIAR = 60;
-	public static final int COMPONENT_SCROLL_BAR = 134;
+	public static final int COMPONENT_BUTTON_CLOSE = 50;
+	public static final int COMPONENT_CONTAINER_ITEMS = 39;
+	public static final int COMPONENT_BUTTON_WITHDRAW_MODE = 8;
+	public static final int COMPONENT_BUTTON_DEPOSIT_INVENTORY = 11;
+	public static final int COMPONENT_BUTTON_DEPOSIT_MONEY = 13;
+	public static final int COMPONENT_BUTTON_DEPOSIT_EQUIPMENT = 15;
+	public static final int COMPONENT_BUTTON_DEPOSIT_FAMILIAR = 17;
+	public static final int COMPONENT_SCROLL_BAR = 40;
 	public static final int SETTING_BANK_STATE = 110;
 	public static final int SETTING_WITHDRAW_MODE = 160;
 
