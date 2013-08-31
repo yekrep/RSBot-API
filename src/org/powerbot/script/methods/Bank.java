@@ -339,10 +339,7 @@ public class Bank extends ItemQuery<Item> {
 	}
 
 	public boolean deposit(final int id, final int amount) {
-		Item item = ctx.backpack.select().getNil();
-		for (Item _item : ctx.backpack.id(id).first()) {
-			item = _item;
-		}
+		Item item = ctx.backpack.select().id(id).poll();
 
 		if (!isOpen() || amount < 0 || !item.isValid()) {
 			return false;
