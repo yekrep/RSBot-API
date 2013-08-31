@@ -245,7 +245,7 @@ public class Bank extends ItemQuery<Item> {
 	}
 
 	public boolean setCurrentTab(final int index) {
-		final Component c = ctx.widgets.get(WIDGET, 63 - (index * 2));
+		final Component c = ctx.widgets.get(WIDGET, 35 - (index * 2));
 		if (c != null && c.isValid() && c.click(true)) {
 			final Timer timer = new Timer(800);
 			while (timer.isRunning() && getCurrentTab() != index) {
