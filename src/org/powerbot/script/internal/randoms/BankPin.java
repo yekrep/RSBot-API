@@ -15,13 +15,12 @@ public class BankPin extends PollingScript implements InternalScript {
 	@Override
 	public int poll() {
 		final String pin = getPin();
-
-		if (pin == null) {
-			getController().stop();
+		if (!ctx.widgets.get(WIDGET, COMPONENT).isVisible()) {
 			return -1;
 		}
 
-		if (!ctx.widgets.get(WIDGET, COMPONENT).isVisible()) {
+		if (pin == null) {
+			getController().stop();
 			return -1;
 		}
 
