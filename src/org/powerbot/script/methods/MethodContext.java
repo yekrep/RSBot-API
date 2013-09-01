@@ -15,6 +15,7 @@ public class MethodContext {
 
 	private BreakManager breakManager;
 
+	public Antipatterns antipatterns;
 	public CombatBar combatBar;
 	public Bank bank;
 	public Camera camera;
@@ -52,6 +53,7 @@ public class MethodContext {
 
 		this.breakManager = new BreakManager();
 
+		antipatterns = new Antipatterns(this);
 		combatBar = new CombatBar(this);
 		backpack = new Backpack(this);
 		bank = new Bank(this);
@@ -99,6 +101,7 @@ public class MethodContext {
 
 		breakManager = ctx.breakManager;
 
+		antipatterns = ctx.antipatterns;
 		combatBar = ctx.combatBar;
 		backpack = ctx.backpack;
 		bank = ctx.bank;
