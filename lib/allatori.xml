@@ -3,6 +3,10 @@
 		<jar in="RSBot.jar" out="RSBot.jar" />
 	</jars>
 	<keep-names>
+		<class template="class com.eclipsesource.json.*">
+			<field access="protected+" />
+			<method access="protected+" parameters="keep" />
+		</class>
 		<class template="class org.powerbot.Boot">
 			<method template="public main(java.lang.String[])" />
 		</class>
