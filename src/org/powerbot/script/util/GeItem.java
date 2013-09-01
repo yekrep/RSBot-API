@@ -80,6 +80,7 @@ public class GeItem {
 	}
 
 	private static int formatPrice(String s) {
+		s = s.replace(",", "").replace(" ", "").trim();
 		double f = 1;
 		if (s.length() > 1) {
 			final char x = s.charAt(s.length() - 1);
