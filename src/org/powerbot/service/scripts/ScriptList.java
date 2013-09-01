@@ -195,14 +195,12 @@ public class ScriptList {
 		final Script script;
 		try {
 			script = cl.loadClass(def.className).asSubclass(Script.class).newInstance();
-		} catch (final Exception ignored) {
+		} catch (final Exception e) {
 			if (cache != null) {
 				cache.delete();
 			}
 			log.severe("Error loading script");
-			if (!Configuration.FROMJAR) {
-				ignored.printStackTrace();
-			}
+			e.printStackTrace();
 			return;
 		}
 		final Bot bot = BotChrome.getInstance().getBot();
