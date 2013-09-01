@@ -14,21 +14,15 @@ public class ExaminePattern extends Antipattern {
 
 	@Override
 	public void run() {
-		boolean aggressive = isAggressive();
-		for (GameObject object : ctx.objects.select().select(new Filter<GameObject>() {
+		final boolean a = isAggressive();
+		for (final GameObject o : ctx.objects.select().select(new Filter<GameObject>() {
 			@Override
-			public boolean accept(GameObject object) {
-				return object.getType() == GameObject.Type.INTERACTIVE && object.isOnScreen();
+			public boolean accept(final GameObject o) {
+				return o.getType() == GameObject.Type.INTERACTIVE && o.isOnScreen();
 			}
-		}).shuffle().limit(Random.nextInt(1, aggressive ? 5 : 3))) {
-			boolean repeat = aggressive && isAggressive();
-			for (; object.hover(); ) {
+		}).shuffle().limit(Random.nextInt(1, a ? 5 : 3))) {
+			for (int i = a ? 0 : 1; i < 2 && o.hover(); i++) {
 				ctx.menu.click(Menu.filter("Examine"));
-				if (repeat) {
-					repeat = false;
-					continue;
-				}
-				break;
 			}
 		}
 	}

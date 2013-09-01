@@ -11,25 +11,19 @@ public class CameraPattern extends Antipattern {
 
 	@Override
 	public void run() {
-		boolean aggressive = isAggressive();
-		int angle = ctx.camera.getYaw();
-		int c = aggressive ?
-				Random.nextInt(1, 6) :
-				Random.nextInt(1, 3);
+		final boolean a = isAggressive();
+		final int t = ctx.camera.getYaw(), c = Random.nextInt(1, 3) * (a ? 2 : 1);
+
 		for (int i = 0; i < c; i++) {
-			boolean left = Random.nextBoolean();
-			ctx.keyboard.send(left ? "{VK_LEFT down}" : "{VK_RIGHT down}");
-			if (aggressive) {
-				sleep(100, Random.nextInt(200, 300));
-			} else {
-				sleep(100, 800);
-			}
-			ctx.keyboard.send(left ? "{VK_LEFT up}" : "{VK_RIGHT up}");
+			final String k = Random.nextBoolean() ? "LEFT" : "RIGHT";
+			ctx.keyboard.send("{VK_" + k + " down}");
+			sleep(100, a ? Random.nextInt(200, 300) : 800);
+			ctx.keyboard.send("{VK_" + k + " up}");
 		}
 
 		if (isStateful()) {
-			final int dev = 10;
-			ctx.camera.setAngle(angle + Random.nextInt(-dev, dev));
+			final int d = 10;
+			ctx.camera.setAngle(t + Random.nextInt(-d, d));
 		}
 	}
 
