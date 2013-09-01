@@ -12,24 +12,26 @@ import org.powerbot.script.util.Timer;
 import org.powerbot.script.wrappers.Component;
 import org.powerbot.script.wrappers.Widget;
 
+import static org.powerbot.script.util.Constants.getInt;
+
 public class Lobby extends MethodProvider {
-	public static final int STATE_LOBBY_IDLE = 7;
-	public static final int STATE_LOGGING_IN = 9;
-	public static final int LOGIN_DEFAULT_TIMEOUT = 30000;
-	public static final int WIDGET_MAIN_LOBBY = 906;
-	public static final int WIDGET_BUTTON_PLAY_GAME = 202;
-	public static final int WIDGET_BUTTON_LOGOUT = 224;
-	public static final int WIDGET_LABEL_CURRENT_WORLD = 11;
-	public static final int WIDGET_WORLDS_TABLE = 62;
-	public static final int WIDGET_WORLDS_TABLE_SCROLLBAR = 86;
-	public static final int WIDGET_WORLDS_ROWS = 77;
-	public static final int WIDGET_WORLDS_COLUMN_FAVOURITE = 68;
-	public static final int WIDGET_WORLDS_COLUMN_WORLD_NUMBER = 69;
-	public static final int WIDGET_WORLDS_COLUMN_MEMBERS = 70;
-	public static final int WIDGET_WORLDS_COLUMN_PLAYERS = 71;
-	public static final int WIDGET_WORLDS_COLUMN_ACTIVITY = 72;
-	public static final int WIDGET_WORLDS_COLUMN_LOOT_SHARE = 75;
-	public static final int WIDGET_WORLDS_COLUMN_PING = 76;
+	public static final int STATE_LOBBY_IDLE = getInt("lobby.state.lobby.idle");
+	public static final int STATE_LOGGING_IN = getInt("lobby.state.logging.in");
+	public static final int LOGIN_DEFAULT_TIMEOUT = getInt("lobby.login.default.timeout");
+	public static final int WIDGET_MAIN_LOBBY = getInt("lobby.widget.main.lobby");
+	public static final int WIDGET_BUTTON_PLAY_GAME = getInt("lobby.widget.button.play.game");
+	public static final int WIDGET_BUTTON_LOGOUT = getInt("lobby.widget.button.logout");
+	public static final int WIDGET_LABEL_CURRENT_WORLD = getInt("lobby.widget.label.current.world");
+	public static final int WIDGET_WORLDS_TABLE = getInt("lobby.widget.worlds.table");
+	public static final int WIDGET_WORLDS_TABLE_SCROLLBAR = getInt("lobby.widget.worlds.table.scrollbar");
+	public static final int WIDGET_WORLDS_ROWS = getInt("lobby.widget.worlds.rows");
+	public static final int WIDGET_WORLDS_COLUMN_FAVOURITE = getInt("lobby.widget.worlds.column.favourite");
+	public static final int WIDGET_WORLDS_COLUMN_WORLD_NUMBER = getInt("lobby.widget.worlds.column.world.number");
+	public static final int WIDGET_WORLDS_COLUMN_MEMBERS = getInt("lobby.widget.worlds.column.members");
+	public static final int WIDGET_WORLDS_COLUMN_PLAYERS = getInt("lobby.widget.worlds.column.players");
+	public static final int WIDGET_WORLDS_COLUMN_ACTIVITY = getInt("lobby.widget.worlds.column.activity");
+	public static final int WIDGET_WORLDS_COLUMN_LOOT_SHARE = getInt("lobby.widget.worlds.column.loot.share");
+	public static final int WIDGET_WORLDS_COLUMN_PING = getInt("lobby.widget.worlds.column.ping");
 
 	public Lobby(MethodContext factory) {
 		super(factory);

@@ -7,30 +7,35 @@ import org.powerbot.script.lang.IdQuery;
 import org.powerbot.script.wrappers.Action;
 import org.powerbot.script.wrappers.Component;
 
-public class CombatBar extends IdQuery<Action> {
-	public static final int WIDGET = 1430;
-	public static final int SETTING_ADRENALINE = 679;
-	public static final int COMPONENT_BUTTON_HEAL = 2;
-	public static final int SETTING_RETALIATION = 462;
-	public static final int COMPONENT_BUTTON_RETALIATE = 6;
-	public static final int COMPONENT_BUTTON_PRAYER = 4;
-	public static final int COMPONENT_BUTTON_SUMMONING = 5;
-	public static final int COMPONENT_HEALTH = 82;
-	public static final int COMPONENT_ADRENALINE = 92;
-	public static final int COMPONENT_PRAYER = 88;
-	public static final int COMPONENT_SUMMONING = 94;
-	public static final int COMPONENT_TEXT = 7;
-	public static final int COMPONENT_BOUNDS = 72;
+import static org.powerbot.script.util.Constants.getInt;
 
-	public static final int NUM_SLOTS = 12;
-	public static final int COMPONENT_BAR = 77;
-	public static final int COMPONENT_LOCK = 19, COMPONENT_TRASH = 20;
-	public static final int WIDGET_LAYOUT = 1477;
-	public static final int COMPONENT_BUTTON_TOGGLE = 73, COMPONENT_BUTTON_TOGGLE_IDX = 1;
-	public static final int SETTING_ITEM = 811, SETTING_ABILITY = 727;
-	public static final int COMPONENT_SLOT_ACTION = 97;
-	public static final int COMPONENT_SLOT_COOL_DOWN = 98;
-	public static final int COMPONENT_SLOT_BIND = 100;
+public class CombatBar extends IdQuery<Action> {
+	public static final int WIDGET = getInt("combatbar.widget");
+	public static final int SETTING_ADRENALINE = getInt("combatbar.setting.adrenaline");
+	public static final int COMPONENT_BUTTON_HEAL = getInt("combatbar.component.button.heal");
+	public static final int SETTING_RETALIATION = getInt("combatbar.setting.retaliation");
+	public static final int COMPONENT_BUTTON_RETALIATE = getInt("combatbar.component.button.retaliate");
+	public static final int COMPONENT_BUTTON_PRAYER = getInt("combatbar.component.button.prayer");
+	public static final int COMPONENT_BUTTON_SUMMONING = getInt("combatbar.component.button.summoning");
+	public static final int COMPONENT_HEALTH = getInt("combatbar.component.health");
+	public static final int COMPONENT_ADRENALINE = getInt("combatbar.component.adrenaline");
+	public static final int COMPONENT_PRAYER = getInt("combatbar.component.prayer");
+	public static final int COMPONENT_SUMMONING = getInt("combatbar.component.summoning");
+	public static final int COMPONENT_TEXT = getInt("combatbar.component.text");
+	public static final int COMPONENT_BOUNDS = getInt("combatbar.component.bounds");
+
+	public static final int NUM_SLOTS = getInt("combatbar.num.slots");
+	public static final int COMPONENT_BAR = getInt("combatbar.component.bar");
+	public static final int COMPONENT_LOCK = getInt("combatbar.component.lock");
+	public static final int COMPONENT_TRASH = getInt("combatbar.component.trash");
+	public static final int WIDGET_LAYOUT = getInt("combatbar.widget.layout");
+	public static final int COMPONENT_BUTTON_TOGGLE = getInt("combatbar.component.button.toggle");
+	public static final int COMPONENT_BUTTON_TOGGLE_IDX = getInt("combatbar.component.button.toggle.idx");
+	public static final int SETTING_ITEM = getInt("combatbar.setting.item");
+	public static final int SETTING_ABILITY = getInt("combatbar.setting.ability");
+	public static final int COMPONENT_SLOT_ACTION = getInt("combatbar.component.slot.action");
+	public static final int COMPONENT_SLOT_COOL_DOWN = getInt("combatbar.component.slot.cool.down");
+	public static final int COMPONENT_SLOT_BIND = getInt("combatbar.component.slot.bind");
 
 	public CombatBar(MethodContext factory) {
 		super(factory);
