@@ -224,8 +224,9 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends Me
 		if (items.isEmpty()) {
 			return getNil();
 		}
+		final K v = items.get(0);
 		limit(1, items.size() - 1);
-		return items.get(0);
+		return v;
 	}
 
 	/**
