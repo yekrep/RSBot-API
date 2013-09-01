@@ -17,6 +17,7 @@ public class WidgetCloser extends PollingScript implements InternalScript {
 			1139 << 16 | 12, // Extras window
 			438 << 16 | 24,//recruit a friend
 			622 << 16 | 21,//member loyalty
+			204 << 16 | 3,//membership offer
 	};
 
 	private Component component;
