@@ -1,20 +1,17 @@
 package org.powerbot.script.golem;
 
-import java.util.EnumSet;
-
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.util.Random;
 
 public class CameraPattern extends Antipattern {
-	private static final int STANDARD_DEVIATION = 10;
 
-	public CameraPattern(MethodContext factory) {
+	public CameraPattern(final MethodContext factory) {
 		super(factory);
 	}
 
 	@Override
-	public void run(EnumSet<Preference> preferences) {
-		boolean aggressive = System.nanoTime() % 5 == 0;
+	public void run() {
+		boolean aggressive = isAggressive();
 		int angle = ctx.camera.getYaw();
 		int c = aggressive ?
 				Random.nextInt(1, 6) :
@@ -30,8 +27,9 @@ public class CameraPattern extends Antipattern {
 			ctx.keyboard.send(left ? "{VK_LEFT up}" : "{VK_RIGHT up}");
 		}
 
-		if (preferences.contains(Preference.STATEFUL)) {
-			ctx.camera.setAngle(angle + Random.nextInt(-STANDARD_DEVIATION, STANDARD_DEVIATION));
+		if (isStateful()) {
+			final int dev = 10;
+			ctx.camera.setAngle(angle + Random.nextInt(-dev, dev));
 		}
 	}
 }

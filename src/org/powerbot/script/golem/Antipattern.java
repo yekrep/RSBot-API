@@ -1,7 +1,5 @@
 package org.powerbot.script.golem;
 
-import java.util.EnumSet;
-
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.methods.MethodProvider;
 
@@ -10,30 +8,17 @@ import org.powerbot.script.methods.MethodProvider;
  *
  * @author Paris
  */
-public abstract class Antipattern extends MethodProvider {
-	/**
-	 * Preferred assertions for execution behaviour.
-	 */
-	public enum Preference {
-		/**
-		 * Run asynchronously, otherwise no-op.
-		 */
-		ASYNC,
+public abstract class Antipattern extends MethodProvider implements Runnable {
 
-		/**
-		 * Attempt to return back to the prior state.
-		 */
-		STATEFUL,
-	}
-
-	public Antipattern(MethodContext factory) {
+	public Antipattern(final MethodContext factory) {
 		super(factory);
 	}
 
-	/**
-	 * Executes the antipattern routine.
-	 *
-	 * @param preferences the preferred assertions
-	 */
-	public abstract void run(EnumSet<Preference> preferences);
+	protected boolean isStateful() {
+		return true;
+	}
+
+	protected boolean isAggressive() {
+		return System.nanoTime() % 5 == 0;
+	}
 }
