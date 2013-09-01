@@ -1,49 +1,33 @@
 package org.powerbot.script.methods;
 
-import java.util.Arrays;
-import java.util.EnumSet;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.powerbot.script.golem.Antipattern;
 import org.powerbot.script.golem.CameraPattern;
 import org.powerbot.script.golem.ExaminePattern;
 
-public class Antipatterns extends MethodProvider {
-	private final CopyOnWriteArrayList<Antipattern> active;
+public class Antipatterns extends MethodProvider implements Runnable {
 	private final List<Antipattern> patterns;
 
-	public Antipatterns(MethodContext ctx) {
+	public Antipatterns(final MethodContext ctx) {
 		super(ctx);
-		this.active = new CopyOnWriteArrayList<>();
-		this.patterns = Arrays.asList(
-				new CameraPattern(ctx),
-				new ExaminePattern(ctx)
-		);
 
-		reset();
+		patterns = new ArrayList<>();
+		patterns.add(new CameraPattern(ctx));
+		patterns.add(new ExaminePattern(ctx));
 	}
 
-	public void run(EnumSet<Antipattern.Preference> preferences) {
-		for (Antipattern antipattern : active) {
-			antipattern.run(preferences);
+	@Override
+	public void run() {
+		for (final Antipattern a : patterns) {
+			if (a.isValid() && a.isTick()) {
+				a.run();
+			}
 		}
 	}
 
-	public List<Antipattern> getAntipatterns() {
-		return active;
-	}
-
-	public boolean add(Antipattern antipattern) {
-		return active.addIfAbsent(antipattern);
-	}
-
-	public boolean remove(Antipattern antipattern) {
-		return active.remove(antipattern);
-	}
-
-	public void reset() {
-		active.retainAll(patterns);
-		active.addAllAbsent(patterns);
+	public boolean register(final Antipattern a) {
+		return patterns.contains(a) ? false : patterns.add(a);
 	}
 }
