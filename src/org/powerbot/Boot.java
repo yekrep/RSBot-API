@@ -13,6 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.UIManager;
+import javax.tools.ToolProvider;
 
 import org.powerbot.Configuration.OperatingSystem;
 import org.powerbot.gui.BotChrome;
@@ -104,6 +105,13 @@ public class Boot implements Runnable {
 			log.severe("Could not set URL stream handler factory");
 			System.exit(1);
 			return;
+		}
+
+		try {
+			if (ToolProvider.getSystemJavaCompiler() != null) {
+				log.warning("For security reasons please run with JRE (currently using JDK)");
+			}
+		} catch (final Throwable t) {
 		}
 
 		StringUtil.newStringUtf8(null); // prevents ClassCircularityError exceptions
