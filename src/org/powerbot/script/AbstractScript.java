@@ -8,6 +8,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Queue;
@@ -26,6 +27,7 @@ import org.powerbot.script.methods.MethodContext;
 import org.powerbot.util.StringUtil;
 import org.powerbot.util.io.HttpClient;
 import org.powerbot.util.io.IOHelper;
+import org.powerbot.util.io.IniParser;
 
 /**
  * An abstract implementation of {@link Script}.
@@ -88,12 +90,17 @@ public abstract class AbstractScript implements Script {
 		});
 
 		dir = new File(new File(Configuration.TEMP, Configuration.NAME), getClass().getName());
-		final File xml = new File(dir, "settings.xml");
+		final File ini = new File(dir, "settings.1.ini");
 		settings = new Properties();
 
-		if (xml.isFile() && xml.canRead()) {
-			try (final FileInputStream in = new FileInputStream(xml)) {
-				settings.loadFromXML(in);
+		if (ini.isFile() && ini.canRead()) {
+			try {
+				final Map<String, Map<String, String>> data = IniParser.deserialise(ini);
+				if (data != null && data.containsKey(IniParser.EMPTYSECTION)) {
+					for (final Map.Entry<String, String> entry : data.get(IniParser.EMPTYSECTION).entrySet()) {
+						settings.put(entry.getKey(), entry.getValue());
+					}
+				}
 			} catch (final IOException ignored) {
 			}
 		}
@@ -102,15 +109,23 @@ public abstract class AbstractScript implements Script {
 			@Override
 			public void run() {
 				if (settings.isEmpty()) {
-					if (xml.isFile()) {
-						xml.delete();
+					if (ini.isFile()) {
+						ini.delete();
 					}
 				} else {
 					if (!dir.isDirectory()) {
 						dir.mkdirs();
 					}
-					try (final BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(xml))) {
-						settings.storeToXML(out, "");
+					final Map<String, Map<String, String>> data = new HashMap<>(1);
+					synchronized (settings) {
+						final Map<String, String> map = new HashMap<>(settings.size());
+						for (final Map.Entry<Object, Object> entry : settings.entrySet()) {
+							map.put(entry.getKey().toString(), entry.getValue().toString());
+						}
+						data.put(IniParser.EMPTYSECTION, map);
+					}
+					try {
+						IniParser.serialise(data, ini);
 					} catch (final IOException ignored) {
 					}
 				}
