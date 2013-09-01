@@ -25,6 +25,7 @@ import org.powerbot.event.debug.DrawNPCs;
 import org.powerbot.event.debug.DrawObjects;
 import org.powerbot.event.debug.DrawPlayers;
 import org.powerbot.event.debug.MessageLogger;
+import org.powerbot.event.debug.TCamera;
 import org.powerbot.event.debug.TClientState;
 import org.powerbot.event.debug.TDestination;
 import org.powerbot.event.debug.TLocation;
@@ -55,6 +56,7 @@ public final class BotMenuView implements ActionListener {
 	private static final String ITEMS = "Items";
 	private static final String ABILTIIES = "Abilities";
 	private static final String CLIENTSTATE = "Client State";
+	private static final String CAMERA = "Camera";
 	private static final String MENU = "Menu";
 	private static final String PLANE = "Plane";
 	private static final String MAPBASE = "Map Base";
@@ -97,6 +99,7 @@ public final class BotMenuView implements ActionListener {
 		map.put(ABILTIIES, DrawAbilities.class);
 		map.put(MOUSEPOS, TMousePosition.class);
 		map.put(MESSAGES, MessageLogger.class);
+		map.put(CAMERA, TCamera.class);
 
 		final List<String> items = new ArrayList<>(map.size());
 		items.add(MOUSE);
@@ -109,6 +112,7 @@ public final class BotMenuView implements ActionListener {
 		items.add(ABILTIIES);
 		items.add(SEPERATOR);
 		items.add(CLIENTSTATE);
+		items.add(CAMERA);
 		items.add(MENU);
 		items.add(PLANE);
 		items.add(MAPBASE);
