@@ -72,7 +72,8 @@ public class GeItem {
 			}
 		}
 
-		members = json.get("members").asString().equals("true");
+		final JsonValue v = json.get("members");
+		members = json.isBoolean() ? v.asBoolean() : v.asString().equals("true");
 	}
 
 	private static int parsePrice(final JsonValue v) {
