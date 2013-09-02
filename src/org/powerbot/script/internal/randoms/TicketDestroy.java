@@ -17,8 +17,9 @@ public class TicketDestroy extends PollingScript implements InternalScript {
 	private static final int[] ITEM_IDS = {24154, 24155};
 	private Component component;
 
+	@Override
 	public boolean isValid() {
-		if (!ctx.game.isLoggedIn() || !ctx.hud.isVisible(Hud.Window.BACKPACK) || ctx.backpack.isCollapsed()) {
+		if (!ctx.game.isLoggedIn() || !ctx.hud.isVisible(Hud.Window.BACKPACK)) {
 			return false;
 		}
 
@@ -44,7 +45,7 @@ public class TicketDestroy extends PollingScript implements InternalScript {
 		}
 
 		Component item = this.component;
-		if (item == null) {
+		if (item == null || !ctx.backpack.scroll(item)) {
 			return -1;
 		}
 

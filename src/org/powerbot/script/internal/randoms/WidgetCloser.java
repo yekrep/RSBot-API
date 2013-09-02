@@ -52,6 +52,7 @@ public class WidgetCloser extends PollingScript implements InternalScript {
 		return -1;
 	}
 
+	@Override
 	public boolean isValid() {
 		for (final int p : COMPONENTS) {
 			component = ctx.widgets.get(p >> 16, p & 0xffff);

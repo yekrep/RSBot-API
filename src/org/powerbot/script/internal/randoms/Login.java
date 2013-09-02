@@ -21,21 +21,17 @@ public class Login extends PollingScript implements InternalScript {
 	private static final int WIDGET_LOGIN_USERNAME_TEXT = 90;
 	private static final int WIDGET_LOGIN_PASSWORD_TEXT = 93;
 
+	@Override
 	public boolean isValid() {
-		if (ctx.getBreakManager().isBreaking()) {
-			return false;
-		}
-
 		int state = ctx.game.getClientState();
-		return (state == -1 || state == Game.INDEX_LOGIN_SCREEN ||
+		return state == -1 || state == Game.INDEX_LOGIN_SCREEN ||
 				state == Game.INDEX_LOBBY_SCREEN ||
-				state == Game.INDEX_LOGGING_IN) &&
-				ctx.getBot().getAccount() != null;
+				state == Game.INDEX_LOGGING_IN;
 	}
 
 	@Override
 	public int poll() {
-		if (!isValid()) {
+		if (!isValid() || ctx.getBreakManager().isBreaking()) {
 			return -1;
 		}
 
@@ -46,7 +42,7 @@ public class Login extends PollingScript implements InternalScript {
 			if (world > 0) {
 				Lobby.World world_wrapper;
 				if ((world_wrapper = ctx.lobby.getWorld(world)) != null) {
-					if (!ctx.lobby.enterGame(world_wrapper)) {
+					if (!ctx.lobby.enterGame(world_wrapper) && account != null) {
 						Lobby.World[] worlds = ctx.lobby.getWorlds(new Filter<Lobby.World>() {
 							@Override
 							public boolean accept(Lobby.World world) {
@@ -64,7 +60,7 @@ public class Login extends PollingScript implements InternalScript {
 			return -1;
 		}
 
-		if (state == Game.INDEX_LOGIN_SCREEN || state == Game.INDEX_LOGGING_IN) {
+		if (account != null && (state == Game.INDEX_LOGIN_SCREEN || state == Game.INDEX_LOGGING_IN)) {
 			Component error = ctx.widgets.get(WIDGET, WIDGET_LOGIN_ERROR);
 			if (error.isValid()) {
 				if (error.getText().toLowerCase().contains("password")) {
