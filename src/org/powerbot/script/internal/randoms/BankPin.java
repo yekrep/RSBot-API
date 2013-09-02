@@ -58,4 +58,9 @@ public class BankPin extends PollingScript implements InternalScript {
 		}
 		return null;
 	}
+
+	@Override
+	public int getPriority() {
+		return Thread.NORM_PRIORITY;
+	}
 }

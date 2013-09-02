@@ -165,4 +165,9 @@ public class Login extends PollingScript implements InternalScript {
 	public String getPasswordText() {
 		return ctx.widgets.get(WIDGET, WIDGET_LOGIN_PASSWORD_TEXT).getText();
 	}
+
+	@Override
+	public int getPriority() {
+		return Thread.NORM_PRIORITY;
+	}
 }
