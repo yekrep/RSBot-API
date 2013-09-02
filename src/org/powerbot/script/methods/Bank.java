@@ -19,28 +19,17 @@ import org.powerbot.script.wrappers.Npc;
 import org.powerbot.script.wrappers.Tile;
 import org.powerbot.script.wrappers.Widget;
 
+import static org.powerbot.script.util.Constants.getInt;
+import static org.powerbot.script.util.Constants.getIntA;
+import static org.powerbot.script.util.Constants.getObj;
+
 public class Bank extends ItemQuery<Item> {
-	public static final int[] BANK_NPC_IDS = new int[]{
-			44, 45, 166, 494, 495, 496, 497, 498, 499, 553, 909, 953, 958, 1036, 1360, 1702, 2163, 2164, 2354, 2355,
-			2568, 2569, 2570, 2617, 2618, 2619, 2718, 2759, 3046, 3198, 3199, 3293, 3416, 3418, 3824, 4456, 4457,
-			4458, 4459, 4519, 4907, 5257, 5258, 5259, 5260, 5488, 5776, 5777, 5901, 6200, 6362, 7049, 7050, 7605,
-			8948, 9710, 13932, 14707, 14923, 14924, 14925, 15194, 16603, 16602
-	};
-	public static final int[] BANK_BOOTH_IDS = new int[]{
-			782, 2213, 3045, 5276, 6084, 10517, 11338, 11758, 12759, 12798, 12799, 14369, 14370,
-			16700, 19230, 20325, 20326, 20327, 20328, 22819, 24914, 25808, 26972, 29085, 34752, 35647,
-			36262, 36786, 37474, 49018, 49019, 52397, 52589, 76274, 69024, 69023, 69022,
-			83954
-	};
-	public static final int[] BANK_COUNTER_IDS = new int[]{
-			42217, 42377, 42378, 2012, 66665, 66666, 66667
-	};
-	public static final int[] BANK_CHEST_IDS = new int[]{
-			2693, 4483, 8981, 12308, 14382, 20607, 21301, 27663, 42192, 57437, 62691, 83634, 81756
-	};
-	public static final Tile[] UNREACHABLE_BANK_TILES = new Tile[]{
-			new Tile(3191, 3445, 0), new Tile(3180, 3433, 0)
-	};
+	public static final int[] BANK_NPC_IDS = getIntA("bank.npc.ids");
+	public static final int[] BANK_BOOTH_IDS = getIntA("bank.booth.ids");
+	public static final int[] BANK_COUNTER_IDS = getIntA("bank.counter.ids");
+	public static final int[] BANK_CHEST_IDS = getIntA("bank.chest.ids");
+	public static final Tile[] UNREACHABLE_BANK_TILES = getObj("bank.unreachable.tiles", Tile[].class);
+
 	private static final Filter<Interactive> UNREACHABLE_FILTER = new Filter<Interactive>() {
 		@Override
 		public boolean accept(Interactive interactive) {
@@ -55,17 +44,18 @@ public class Bank extends ItemQuery<Item> {
 			return true;
 		}
 	};
-	public static final int WIDGET = 762;
-	public static final int COMPONENT_BUTTON_CLOSE = 50;
-	public static final int COMPONENT_CONTAINER_ITEMS = 39;
-	public static final int COMPONENT_BUTTON_WITHDRAW_MODE = 8;
-	public static final int COMPONENT_BUTTON_DEPOSIT_INVENTORY = 12;
-	public static final int COMPONENT_BUTTON_DEPOSIT_MONEY = 14;
-	public static final int COMPONENT_BUTTON_DEPOSIT_EQUIPMENT = 16;
-	public static final int COMPONENT_BUTTON_DEPOSIT_FAMILIAR = 18;
-	public static final int COMPONENT_SCROLL_BAR = 40;
-	public static final int SETTING_BANK_STATE = 110;
-	public static final int SETTING_WITHDRAW_MODE = 160;
+
+	public static final int WIDGET = getInt("bank.widget");
+	public static final int COMPONENT_BUTTON_CLOSE = getInt("bank.component.button.close");
+	public static final int COMPONENT_CONTAINER_ITEMS = getInt("bank.component.container.items");
+	public static final int COMPONENT_BUTTON_WITHDRAW_MODE = getInt("bank.component.button.withdraw.mode");
+	public static final int COMPONENT_BUTTON_DEPOSIT_INVENTORY = getInt("bank.component.button.deposit.inventory");
+	public static final int COMPONENT_BUTTON_DEPOSIT_MONEY = getInt("bank.component.button.deposit.money");
+	public static final int COMPONENT_BUTTON_DEPOSIT_EQUIPMENT = getInt("bank.component.button.deposit.equipment");
+	public static final int COMPONENT_BUTTON_DEPOSIT_FAMILIAR = getInt("bank.component.button.deposit.familiar");
+	public static final int COMPONENT_SCROLL_BAR = getInt("bank.component.scroll.bar");
+	public static final int SETTING_BANK_STATE = getInt("bank.setting.bank.state");
+	public static final int SETTING_WITHDRAW_MODE = getInt("bank.setting.withdraw.mode");
 
 	public Bank(MethodContext factory) {
 		super(factory);
