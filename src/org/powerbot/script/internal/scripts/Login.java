@@ -1,4 +1,4 @@
-package org.powerbot.script.internal.randoms;
+package org.powerbot.script.internal.scripts;
 
 import java.awt.Rectangle;
 
