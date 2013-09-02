@@ -25,9 +25,4 @@ public class CameraPattern extends Antipattern {
 			ctx.camera.setAngle(t + Random.nextInt(-d, d));
 		}
 	}
-
-	@Override
-	protected boolean isStateful() {
-		return true;
-	}
 }
