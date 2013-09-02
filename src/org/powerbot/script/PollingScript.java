@@ -3,6 +3,7 @@ package org.powerbot.script;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.powerbot.script.internal.YieldableTask;
 import org.powerbot.script.util.Random;
 
 /**
@@ -11,8 +12,9 @@ import org.powerbot.script.util.Random;
  *
  * @author Paris
  */
-public abstract class PollingScript extends AbstractScript {
+public abstract class PollingScript extends AbstractScript implements YieldableTask {
 	private final AtomicBoolean running;
+	private final AtomicBoolean yielding;
 
 	/**
 	 * The sleep bias for {@link #sleep(long)} and {@link #poll()}.
@@ -26,6 +28,7 @@ public abstract class PollingScript extends AbstractScript {
 	 */
 	public PollingScript() {
 		running = new AtomicBoolean(false);
+		yielding = new AtomicBoolean(false);
 		bias = new AtomicInteger(50);
 
 		getExecQueue(State.START).add(new Runnable() {
@@ -72,11 +75,17 @@ public abstract class PollingScript extends AbstractScript {
 		while (!getController().isStopping()) {
 			final int sleep;
 
-			if (getController().isSuspended()) {
+			if (getController().isSuspended() || getController().getPriority() > getPriority()) {
+				yielding.set(true);
 				sleep = delay;
 			} else {
+				yielding.set(false);
 				try {
-					sleep = poll();
+					if (isValid()) {
+						sleep = poll();
+					} else {
+						sleep = delay;
+					}
 				} catch (final Throwable t) {
 					t.printStackTrace();
 					getController().stop();
@@ -88,6 +97,21 @@ public abstract class PollingScript extends AbstractScript {
 		}
 
 		running.set(false);
+	}
+
+	@Override
+	public boolean isValid() {
+		return true;
+	}
+
+	@Override
+	public int getPriority() {
+		return 0;
+	}
+
+	@Override
+	public boolean isYielding() {
+		return running.get() && yielding.get();
 	}
 
 	/**

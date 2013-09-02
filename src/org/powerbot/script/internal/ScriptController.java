@@ -20,6 +20,7 @@ import org.powerbot.script.internal.randoms.BankPin;
 import org.powerbot.script.internal.randoms.Login;
 import org.powerbot.script.internal.randoms.TicketDestroy;
 import org.powerbot.script.internal.randoms.WidgetCloser;
+import org.powerbot.script.lang.Prioritizable;
 import org.powerbot.script.lang.Stoppable;
 import org.powerbot.script.lang.Subscribable;
 import org.powerbot.script.lang.Suspendable;
@@ -29,7 +30,7 @@ import org.powerbot.service.scripts.ScriptDefinition;
 import org.powerbot.util.Tracker;
 import org.powerbot.util.io.HttpClient;
 
-public final class ScriptController implements Runnable, Suspendable, Stoppable, Subscribable<EventListener> {
+public final class ScriptController implements Runnable, Prioritizable, Suspendable, Stoppable, Subscribable<EventListener> {
 	private final MethodContext ctx;
 	private final EventManager events;
 	private final ExecutorService executor;
@@ -125,6 +126,11 @@ public final class ScriptController implements Runnable, Suspendable, Stoppable,
 
 		call(Script.State.START);
 		events.subscribeAll();
+	}
+
+	@Override
+	public int getPriority() {
+		return 0;
 	}
 
 	@Override
