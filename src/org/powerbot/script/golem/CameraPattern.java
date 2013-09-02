@@ -4,7 +4,6 @@ import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.util.Random;
 
 public class CameraPattern extends Antipattern {
-
 	public CameraPattern(final MethodContext factory) {
 		super(factory);
 	}

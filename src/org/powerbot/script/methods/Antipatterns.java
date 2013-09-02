@@ -28,6 +28,6 @@ public class Antipatterns extends MethodProvider implements Runnable {
 	}
 
 	public boolean register(final Antipattern a) {
-		return patterns.contains(a) ? false : patterns.add(a);
+		return !patterns.contains(a) && patterns.add(a);
 	}
 }

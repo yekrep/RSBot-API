@@ -17,6 +17,7 @@ import javax.swing.Timer;
 import org.powerbot.Configuration;
 import org.powerbot.event.EventMulticaster;
 import org.powerbot.script.Script;
+import org.powerbot.script.internal.scripts.Antipattern;
 import org.powerbot.script.internal.scripts.BankPin;
 import org.powerbot.script.internal.scripts.Login;
 import org.powerbot.script.internal.scripts.TicketDestroy;
@@ -52,11 +53,12 @@ public final class ScriptController implements Runnable, Suspendable, Stoppable,
 		suspended = new AtomicBoolean(false);
 		stopping = new AtomicBoolean(false);
 
-		scripts = new PriorityQueue<>(5, new ScriptComparator());
+		scripts = new PriorityQueue<>(6, new ScriptComparator());
 		scripts.add(new Login());
 		scripts.add(new WidgetCloser());
 		scripts.add(new TicketDestroy());
 		scripts.add(new BankPin());
+		scripts.add(new Antipattern());
 		scripts.add(script);
 		priorityManager = new PriorityManager(this);
 
