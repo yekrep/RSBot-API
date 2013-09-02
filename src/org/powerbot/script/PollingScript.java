@@ -108,7 +108,7 @@ public abstract class PollingScript extends AbstractScript implements YieldableT
 
 	@Override
 	public int getPriority() {
-		return 0;
+		return Thread.MIN_PRIORITY;
 	}
 
 	@Override
