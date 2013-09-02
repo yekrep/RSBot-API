@@ -37,7 +37,8 @@ public final class ScriptController implements Runnable, Suspendable, Stoppable,
 	private final MethodContext ctx;
 	private final EventManager events;
 	private final ExecutorService executor;
-	private final Queue<Script> scripts;
+	final Queue<Script> scripts;
+	private final PriorityManager priorityManager;
 	private final ScriptDefinition def;
 	private final AtomicBoolean suspended, stopping;
 	private final Timer timeout, login, session;
@@ -57,6 +58,7 @@ public final class ScriptController implements Runnable, Suspendable, Stoppable,
 		scripts.add(new TicketDestroy());
 		scripts.add(new BankPin());
 		scripts.add(script);
+		priorityManager = new PriorityManager(this);
 
 		this.def = def;
 
@@ -127,6 +129,7 @@ public final class ScriptController implements Runnable, Suspendable, Stoppable,
 			updateSession((int) (started.get() / 1000L));
 		}
 
+		getExecutor().submit(priorityManager);
 		call(Script.State.START);
 		events.subscribeAll();
 	}
@@ -185,12 +188,24 @@ public final class ScriptController implements Runnable, Suspendable, Stoppable,
 
 	@Override
 	public int getPriority() {
-		return 0;
+		return priorityManager.getPriority();
 	}
 
 	@Override
 	public boolean isYielding() {
-		return false;
+		int p = getPriority();
+
+		for (Script script : scripts) {
+			if (!(script instanceof YieldableTask)) {
+				continue;
+			}
+
+			YieldableTask task = (YieldableTask) script;
+			if (p > task.getPriority() && !task.isYielding()) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	public ExecutorService getExecutor() {
