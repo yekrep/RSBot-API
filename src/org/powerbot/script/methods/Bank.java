@@ -59,10 +59,10 @@ public class Bank extends ItemQuery<Item> {
 	public static final int COMPONENT_BUTTON_CLOSE = 50;
 	public static final int COMPONENT_CONTAINER_ITEMS = 39;
 	public static final int COMPONENT_BUTTON_WITHDRAW_MODE = 8;
-	public static final int COMPONENT_BUTTON_DEPOSIT_INVENTORY = 11;
-	public static final int COMPONENT_BUTTON_DEPOSIT_MONEY = 13;
-	public static final int COMPONENT_BUTTON_DEPOSIT_EQUIPMENT = 15;
-	public static final int COMPONENT_BUTTON_DEPOSIT_FAMILIAR = 17;
+	public static final int COMPONENT_BUTTON_DEPOSIT_INVENTORY = 12;
+	public static final int COMPONENT_BUTTON_DEPOSIT_MONEY = 14;
+	public static final int COMPONENT_BUTTON_DEPOSIT_EQUIPMENT = 16;
+	public static final int COMPONENT_BUTTON_DEPOSIT_FAMILIAR = 18;
 	public static final int COMPONENT_SCROLL_BAR = 40;
 	public static final int SETTING_BANK_STATE = 110;
 	public static final int SETTING_WITHDRAW_MODE = 160;
@@ -393,6 +393,11 @@ public class Bank extends ItemQuery<Item> {
 
 	public boolean depositFamiliar() {
 		final Component c = ctx.widgets.get(WIDGET, COMPONENT_BUTTON_DEPOSIT_FAMILIAR);
+		return c != null && c.isValid() && c.click();
+	}
+
+	public boolean depositMoneyPouch() {
+		final Component c = ctx.widgets.get(WIDGET, COMPONENT_BUTTON_DEPOSIT_MONEY);
 		return c != null && c.isValid() && c.click();
 	}
 
