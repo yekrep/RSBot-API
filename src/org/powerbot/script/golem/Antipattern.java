@@ -48,7 +48,7 @@ public abstract class Antipattern extends MethodProvider implements Runnable, Va
 	 */
 	public final boolean isTick() {
 		final int f = freq.get() % 100;
-		return f > 99 ? true : f < 1 ? false : getRandom() % (100 / f) == 0;
+		return f > 99 || (f >= 1 && getRandom() % (100 / f) == 0);
 	}
 
 	/**
@@ -56,8 +56,8 @@ public abstract class Antipattern extends MethodProvider implements Runnable, Va
 	 *
 	 * @return a random number
 	 */
-	protected int getRandom() {
-		return (int) System.nanoTime();
+	protected long getRandom() {
+		return System.nanoTime() >> 10;
 	}
 
 	/**
