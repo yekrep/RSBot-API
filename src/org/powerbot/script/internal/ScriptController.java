@@ -3,9 +3,10 @@ package org.powerbot.script.internal;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.EventListener;
-import java.util.List;
+import java.util.PriorityQueue;
+import java.util.Queue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
@@ -24,17 +25,19 @@ import org.powerbot.script.lang.Prioritizable;
 import org.powerbot.script.lang.Stoppable;
 import org.powerbot.script.lang.Subscribable;
 import org.powerbot.script.lang.Suspendable;
+import org.powerbot.script.lang.Yieldable;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.service.NetworkAccount;
 import org.powerbot.service.scripts.ScriptDefinition;
 import org.powerbot.util.Tracker;
 import org.powerbot.util.io.HttpClient;
 
-public final class ScriptController implements Runnable, Prioritizable, Suspendable, Stoppable, Subscribable<EventListener> {
+public final class ScriptController implements Runnable, Suspendable, Stoppable, Subscribable<EventListener>,
+		Prioritizable, Yieldable {
 	private final MethodContext ctx;
 	private final EventManager events;
 	private final ExecutorService executor;
-	private final List<Script> scripts;
+	private final Queue<Script> scripts;
 	private final ScriptDefinition def;
 	private final AtomicBoolean suspended, stopping;
 	private final Timer timeout, login, session;
@@ -48,7 +51,7 @@ public final class ScriptController implements Runnable, Prioritizable, Suspenda
 		suspended = new AtomicBoolean(false);
 		stopping = new AtomicBoolean(false);
 
-		scripts = new ArrayList<>(5);
+		scripts = new PriorityQueue<>(5, new ScriptComparator());
 		scripts.add(new Login());
 		scripts.add(new WidgetCloser());
 		scripts.add(new TicketDestroy());
@@ -129,11 +132,6 @@ public final class ScriptController implements Runnable, Prioritizable, Suspenda
 	}
 
 	@Override
-	public int getPriority() {
-		return 0;
-	}
-
-	@Override
 	public boolean isStopping() {
 		return stopping.get();
 	}
@@ -185,6 +183,16 @@ public final class ScriptController implements Runnable, Prioritizable, Suspenda
 		events.unsubscribe(l);
 	}
 
+	@Override
+	public int getPriority() {
+		return 0;
+	}
+
+	@Override
+	public boolean isYielding() {
+		return false;
+	}
+
 	public ExecutorService getExecutor() {
 		return this.executor;
 	}
@@ -234,5 +242,19 @@ public final class ScriptController implements Runnable, Prioritizable, Suspenda
 
 		final String page = String.format("scripts/%s/%s", def.local ? "0/local" : def.getID(), action);
 		Tracker.getInstance().trackPage(page, def.getName());
+	}
+
+	private final class ScriptComparator implements Comparator<Script> {
+		@Override
+		public int compare(final Script script1, final Script script2) {
+			int p1 = 0, p2 = 0;
+			if (script1 instanceof Prioritizable) {
+				p1 = ((Prioritizable) script1).getPriority();
+			}
+			if (script2 instanceof Prioritizable) {
+				p2 = ((Prioritizable) script2).getPriority();
+			}
+			return p2 - p1;
+		}
 	}
 }

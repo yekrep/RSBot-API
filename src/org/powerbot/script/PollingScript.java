@@ -3,6 +3,7 @@ package org.powerbot.script;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.powerbot.script.internal.ScriptController;
 import org.powerbot.script.internal.YieldableTask;
 import org.powerbot.script.util.Random;
 
@@ -71,24 +72,25 @@ public abstract class PollingScript extends AbstractScript implements YieldableT
 		}
 
 		final int delay = 600;
+		final ScriptController controller = getController();
 
-		while (!getController().isStopping()) {
+		while (!controller.isStopping()) {
 			final int sleep;
 
-			if (getController().isSuspended() || getController().getPriority() > getPriority()) {
+			if (controller.isSuspended() || controller.getPriority() > getPriority()) {
 				yielding.set(true);
 				sleep = delay;
 			} else {
 				yielding.set(false);
 				try {
-					if (isValid()) {
+					if (isValid() && controller.isYielding()) {
 						sleep = poll();
 					} else {
 						sleep = delay;
 					}
 				} catch (final Throwable t) {
 					t.printStackTrace();
-					getController().stop();
+					controller.stop();
 					break;
 				}
 			}
