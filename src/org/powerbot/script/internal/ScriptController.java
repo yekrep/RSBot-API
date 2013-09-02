@@ -188,7 +188,7 @@ public final class ScriptController implements Runnable, Suspendable, Stoppable,
 
 		for (final Script s : scripts) {
 			try {
-				executor.execute(new Runnable() {
+				executor.submit(new Runnable() {
 					@Override
 					public void run() {
 						for (final Runnable task : s.getExecQueue(state)) {
@@ -203,6 +203,7 @@ public final class ScriptController implements Runnable, Suspendable, Stoppable,
 			}
 		}
 	}
+
 	private void track(final Script.State state) {
 		if (def == null || def.getName() == null || (!def.local && (def.getID() == null || def.getID().isEmpty()))) {
 			return;
@@ -211,9 +212,18 @@ public final class ScriptController implements Runnable, Suspendable, Stoppable,
 		String action = "";
 
 		switch (state) {
-		case SUSPEND: action = "pause"; break;
-		case RESUME: action = "resume"; break;
-		case STOP: action = "stop"; break;
+		case SUSPEND: {
+			action = "pause";
+			break;
+		}
+		case RESUME: {
+			action = "resume";
+			break;
+		}
+		case STOP: {
+			action = "stop";
+			break;
+		}
 		}
 
 		final String page = String.format("scripts/%s/%s", def.local ? "0/local" : def.getID(), action);
