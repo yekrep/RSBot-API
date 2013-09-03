@@ -19,12 +19,16 @@ public class ExaminePattern extends Antipattern {
 				return o.getType() == GameObject.Type.INTERACTIVE && o.isOnScreen();
 			}
 		}).shuffle().limit(Random.nextInt(1, isAggressive() ? 5 : 3))) {
-			boolean a = isAggressive();
-			for (int i = a ? 0 : 1; i < 2 && o.hover(); i++) {
-				sleep(80, 120);
-				if (ctx.menu.click(Menu.filter("Examine")) && a) {
-					sleep(100, 2000);
-				}
+			hover(o);
+		}
+	}
+
+	private void hover(Interactive o) {
+		boolean a = isAggressive();
+		for (int i = a ? 0 : 1; i < 2 && o.hover(); i++) {
+			sleep(80, 120);
+			if (ctx.menu.click(Menu.filter("Examine")) && a) {
+				sleep(100, 2000);
 			}
 		}
 	}
