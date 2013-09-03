@@ -127,10 +127,14 @@ public class Hud extends MethodProvider {
 				return boundsCache;
 			}
 		}
-		Rectangle[] arr = new Rectangle[Window.values().length + 2];
+		Rectangle[] arr = new Rectangle[Window.values().length + 3];
 		int index = 0;
 		arr[index++] = ctx.widgets.get(WIDGET_MENU, WIDGET_MENU_BOUNDS).getViewportRect();//TODO: auto detect
 		arr[index++] = ctx.widgets.get(CombatBar.WIDGET, CombatBar.COMPONENT_BOUNDS).getViewportRect();
+		Component c = ctx.widgets.get(1484, 1);//subscribe
+		if (c.isVisible()) {
+			arr[index++] = c.getViewportRect();
+		}
 		for (Window window : Window.values()) {
 			Component sprite = getSprite(window);
 			if (sprite == null) {
