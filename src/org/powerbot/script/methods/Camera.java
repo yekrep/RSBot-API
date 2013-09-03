@@ -61,7 +61,7 @@ public class Camera extends MethodProvider {
 		float deltaZ = center.getZ() - offset.getZ();
 		float dist = (float) Math.sqrt(deltaX * deltaX + deltaY * deltaY);
 		float theta = (float) Math.atan2(-deltaZ, dist);
-		return (int) (((int) (theta * 2607.5945876176133D) & 0x3FFF) / 3096f * 100f);
+		return (int) (((int) (theta * 2607.5945876176133D) & 0x3FFF) / 4096f * 100f);
 	}
 
 	public boolean setPitch(boolean up) {
