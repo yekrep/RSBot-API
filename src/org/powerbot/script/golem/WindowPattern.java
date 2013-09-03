@@ -9,7 +9,6 @@ import org.powerbot.script.util.Random;
 public class WindowPattern extends Antipattern {
 	public WindowPattern(final MethodContext factory) {
 		super(factory);
-		freq.set(5);
 	}
 
 	@Override
