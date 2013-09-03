@@ -13,13 +13,8 @@ public class BankPin extends PollingScript implements InternalScript {
 	private static final int COMPONENT_PIN_OFFSET = 6;
 
 	@Override
-	public boolean isValid() {
-		return ctx.widgets.get(WIDGET, COMPONENT).isVisible();
-	}
-
-	@Override
 	public int poll() {
-		if (!isValid()) {
+		if (!ctx.widgets.get(WIDGET, COMPONENT).isVisible()) {
 			return -1;
 		}
 
@@ -57,10 +52,5 @@ public class BankPin extends PollingScript implements InternalScript {
 			}
 		}
 		return null;
-	}
-
-	@Override
-	public int getPriority() {
-		return Thread.NORM_PRIORITY;
 	}
 }

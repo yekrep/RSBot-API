@@ -3,7 +3,6 @@ package org.powerbot.script.internal;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.util.Comparator;
 import java.util.EventListener;
 import java.util.PriorityQueue;
 import java.util.Queue;
@@ -22,24 +21,20 @@ import org.powerbot.script.internal.scripts.BankPin;
 import org.powerbot.script.internal.scripts.Login;
 import org.powerbot.script.internal.scripts.TicketDestroy;
 import org.powerbot.script.internal.scripts.WidgetCloser;
-import org.powerbot.script.lang.Prioritizable;
 import org.powerbot.script.lang.Stoppable;
 import org.powerbot.script.lang.Subscribable;
 import org.powerbot.script.lang.Suspendable;
-import org.powerbot.script.lang.Yieldable;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.service.NetworkAccount;
 import org.powerbot.service.scripts.ScriptDefinition;
 import org.powerbot.util.Tracker;
 import org.powerbot.util.io.HttpClient;
 
-public final class ScriptController implements Runnable, Suspendable, Stoppable, Subscribable<EventListener>,
-		Prioritizable, Yieldable {
+public final class ScriptController implements Runnable, Suspendable, Stoppable, Subscribable<EventListener> {
 	private final MethodContext ctx;
 	private final EventManager events;
 	private final ExecutorService executor;
-	final Queue<Script> scripts;
-	private final PriorityManager priorityManager;
+	private final Queue<Script> scripts;
 	private final ScriptDefinition def;
 	private final AtomicBoolean suspended, stopping;
 	private final Timer timeout, login, session;
@@ -53,14 +48,13 @@ public final class ScriptController implements Runnable, Suspendable, Stoppable,
 		suspended = new AtomicBoolean(false);
 		stopping = new AtomicBoolean(false);
 
-		scripts = new PriorityQueue<>(6, new ScriptComparator());
+		scripts = new PriorityQueue<>(6);
 		scripts.add(new Login());
 		scripts.add(new WidgetCloser());
 		scripts.add(new TicketDestroy());
 		scripts.add(new BankPin());
 		scripts.add(new Antipattern());
 		scripts.add(script);
-		priorityManager = new PriorityManager(this);
 
 		this.def = def;
 
@@ -131,7 +125,6 @@ public final class ScriptController implements Runnable, Suspendable, Stoppable,
 			updateSession((int) (started.get() / 1000L));
 		}
 
-		getExecutor().submit(priorityManager);
 		call(Script.State.START);
 		events.subscribeAll();
 	}
@@ -188,28 +181,6 @@ public final class ScriptController implements Runnable, Suspendable, Stoppable,
 		events.unsubscribe(l);
 	}
 
-	@Override
-	public int getPriority() {
-		return priorityManager.getPriority();
-	}
-
-	@Override
-	public boolean isYielding() {
-		int p = getPriority();
-
-		for (Script script : scripts) {
-			if (!(script instanceof YieldableTask)) {
-				continue;
-			}
-
-			YieldableTask task = (YieldableTask) script;
-			if (p > task.getPriority() && !task.isYielding()) {
-				return false;
-			}
-		}
-		return true;
-	}
-
 	public ExecutorService getExecutor() {
 		return this.executor;
 	}
@@ -259,19 +230,5 @@ public final class ScriptController implements Runnable, Suspendable, Stoppable,
 
 		final String page = String.format("scripts/%s/%s", def.local ? "0/local" : def.getID(), action);
 		Tracker.getInstance().trackPage(page, def.getName());
-	}
-
-	private final class ScriptComparator implements Comparator<Script> {
-		@Override
-		public int compare(final Script script1, final Script script2) {
-			int p1 = 0, p2 = 0;
-			if (script1 instanceof Prioritizable) {
-				p1 = ((Prioritizable) script1).getPriority();
-			}
-			if (script2 instanceof Prioritizable) {
-				p2 = ((Prioritizable) script2).getPriority();
-			}
-			return p2 - p1;
-		}
 	}
 }

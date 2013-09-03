@@ -23,6 +23,10 @@ public class WidgetCloser extends PollingScript implements InternalScript {
 	private Component component;
 	private int tries;
 
+	public WidgetCloser() {
+		priority.set(-1);
+	}
+
 	@Override
 	public int poll() {
 		if (!isValid()) {
@@ -52,8 +56,7 @@ public class WidgetCloser extends PollingScript implements InternalScript {
 		return -1;
 	}
 
-	@Override
-	public boolean isValid() {
+	private boolean isValid() {
 		for (final int p : COMPONENTS) {
 			component = ctx.widgets.get(p >> 16, p & 0xffff);
 			if (component != null && component.isVisible()) {
@@ -63,10 +66,5 @@ public class WidgetCloser extends PollingScript implements InternalScript {
 			}
 		}
 		return component != null;
-	}
-
-	@Override
-	public int getPriority() {
-		return Thread.MAX_PRIORITY;
 	}
 }

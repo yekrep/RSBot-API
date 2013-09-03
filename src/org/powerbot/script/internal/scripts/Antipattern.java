@@ -12,23 +12,13 @@ public class Antipattern extends PollingScript implements InternalScript {
 	}
 
 	@Override
-	public boolean isValid() {
-		return !timer.isRunning();
-	}
-
-	@Override
 	public int poll() {
-		if (!isValid()) {
+		if (timer.isRunning()) {
 			return -1;
 		}
 
 		timer.reset();
 		ctx.antipatterns.run();
 		return 0;
-	}
-
-	@Override
-	public int getPriority() {
-		return Thread.NORM_PRIORITY;
 	}
 }

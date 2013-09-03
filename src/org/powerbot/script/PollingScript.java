@@ -3,8 +3,6 @@ package org.powerbot.script;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.powerbot.script.internal.ScriptController;
-import org.powerbot.script.internal.YieldableTask;
 import org.powerbot.script.util.Random;
 
 /**
@@ -13,9 +11,8 @@ import org.powerbot.script.util.Random;
  *
  * @author Paris
  */
-public abstract class PollingScript extends AbstractScript implements YieldableTask {
+public abstract class PollingScript extends AbstractScript {
 	private final AtomicBoolean running;
-	private final AtomicBoolean yielding;
 
 	/**
 	 * The sleep bias for {@link #sleep(long)} and {@link #poll()}.
@@ -29,7 +26,6 @@ public abstract class PollingScript extends AbstractScript implements YieldableT
 	 */
 	public PollingScript() {
 		running = new AtomicBoolean(false);
-		yielding = new AtomicBoolean(false);
 		bias = new AtomicInteger(50);
 
 		getExecQueue(State.START).add(new Runnable() {
@@ -72,25 +68,17 @@ public abstract class PollingScript extends AbstractScript implements YieldableT
 		}
 
 		final int delay = 600;
-		final ScriptController controller = getController();
 
-		while (!controller.isStopping()) {
+		while (!getController().isStopping()) {
 			final int sleep;
 
-			if (controller.isSuspended() || controller.getPriority() > getPriority()) {
-				yielding.set(true);
+			if (getController().isSuspended()) {
 				sleep = delay;
 			} else {
-				yielding.set(false);
 				try {
-					if (isValid() && controller.isYielding()) {
-						sleep = poll();
-					} else {
-						sleep = delay;
-					}
+					sleep = poll();
 				} catch (final Throwable t) {
-					t.printStackTrace();
-					controller.stop();
+					getController().stop();
 					break;
 				}
 			}
@@ -99,21 +87,6 @@ public abstract class PollingScript extends AbstractScript implements YieldableT
 		}
 
 		running.set(false);
-	}
-
-	@Override
-	public boolean isValid() {
-		return true;
-	}
-
-	@Override
-	public int getPriority() {
-		return Thread.MIN_PRIORITY;
-	}
-
-	@Override
-	public boolean isYielding() {
-		return running.get() && yielding.get();
 	}
 
 	/**

@@ -21,8 +21,7 @@ public class Login extends PollingScript implements InternalScript {
 	private static final int WIDGET_LOGIN_USERNAME_TEXT = 90;
 	private static final int WIDGET_LOGIN_PASSWORD_TEXT = 93;
 
-	@Override
-	public boolean isValid() {
+	private boolean isValid() {
 		int state = ctx.game.getClientState();
 		return state == -1 || state == Game.INDEX_LOGIN_SCREEN ||
 				state == Game.INDEX_LOBBY_SCREEN ||
@@ -164,10 +163,5 @@ public class Login extends PollingScript implements InternalScript {
 
 	public String getPasswordText() {
 		return ctx.widgets.get(WIDGET, WIDGET_LOGIN_PASSWORD_TEXT).getText();
-	}
-
-	@Override
-	public int getPriority() {
-		return Thread.NORM_PRIORITY;
 	}
 }

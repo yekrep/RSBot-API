@@ -15,6 +15,8 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.logging.Logger;
 import java.util.zip.Adler32;
@@ -32,7 +34,7 @@ import org.powerbot.util.io.IniParser;
 /**
  * An abstract implementation of {@link Script}.
  */
-public abstract class AbstractScript implements Script {
+public abstract class AbstractScript implements Script, Comparable<AbstractScript> {
 	/**
 	 * The {@link Logger} which should be used to print debugging messages.
 	 */
@@ -42,6 +44,10 @@ public abstract class AbstractScript implements Script {
 	 * The {@link MethodContext} for accessing client data.
 	 */
 	protected final MethodContext ctx;
+
+	private static final AtomicInteger s = new AtomicInteger(0);
+	private final int sq;
+	protected final AtomicInteger priority;
 
 	private ScriptController controller;
 	private final Map<State, Queue<Runnable>> exec;
@@ -64,6 +70,8 @@ public abstract class AbstractScript implements Script {
 			exec.put(state, new ConcurrentLinkedQueue<Runnable>());
 		}
 
+		sq = s.getAndIncrement();
+		priority = new AtomicInteger(0);
 		started = new AtomicLong(System.nanoTime());
 		suspended = new AtomicLong(0);
 		suspensions = new ConcurrentLinkedQueue<>();
@@ -131,6 +139,15 @@ public abstract class AbstractScript implements Script {
 				}
 			}
 		});
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public final int compareTo(final AbstractScript o) {
+		final int r = priority.get() - o.priority.get();
+		return r == 0 ? sq - o.sq : r;
 	}
 
 	/**
