@@ -6,6 +6,7 @@ import java.util.List;
 import org.powerbot.script.golem.Antipattern;
 import org.powerbot.script.golem.CameraPattern;
 import org.powerbot.script.golem.ExaminePattern;
+import org.powerbot.script.golem.WindowPattern;
 
 public class Antipatterns extends MethodProvider implements Runnable {
 	private final List<Antipattern> patterns;
@@ -16,6 +17,7 @@ public class Antipatterns extends MethodProvider implements Runnable {
 		patterns = new ArrayList<>();
 		patterns.add(new CameraPattern(ctx));
 		patterns.add(new ExaminePattern(ctx));
+		patterns.add(new WindowPattern(ctx));
 	}
 
 	@Override
