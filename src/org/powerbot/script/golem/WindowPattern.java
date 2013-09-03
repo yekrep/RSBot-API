@@ -19,7 +19,7 @@ public class WindowPattern extends Antipattern {
 		Hud.Window[] windows = Hud.Window.values();
 		for (int i = 0; i < windows.length; i++) {
 			Hud.Window w = windows[i];
-			if (!ctx.hud.isOpen(w)) {
+			if (!ctx.hud.isOpen(w) || ctx.hud.isVisible(w)) {
 				continue;
 			}
 
