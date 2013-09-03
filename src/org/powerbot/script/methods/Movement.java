@@ -47,7 +47,7 @@ public class Movement extends MethodProvider {
 		}
 		final int dX = client.getDestX(), dY = client.getDestY();
 		if (dX == -1 || dY == -1) {
-			return null;
+			return Tile.NIL;
 		}
 		return ctx.game.getMapBase().derive(dX, dY);
 	}

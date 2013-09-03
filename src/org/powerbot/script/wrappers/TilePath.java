@@ -31,7 +31,7 @@ public class TilePath extends Path {//TODO: anti-pattern
 			if (next.distanceTo(ctx.players.local()) <= 2) {
 				return false;
 			}
-			if (end && (local.isInMotion() || (dest != null && dest.equals(next)))) {
+			if (end && (local.isInMotion() || dest.equals(next))) {
 				return false;
 			}
 			end = true;
@@ -42,7 +42,7 @@ public class TilePath extends Path {//TODO: anti-pattern
 			if (options.contains(TraversalOption.HANDLE_RUN) && !ctx.movement.isRunning() && ctx.movement.getEnergyLevel() > Random.nextInt(45, 60)) {
 				ctx.movement.setRunning(true);
 			}
-			if (options.contains(TraversalOption.SPACE_ACTIONS) && dest != null && local.isInMotion() && dest.distanceTo(last) < 3d) {
+			if (options.contains(TraversalOption.SPACE_ACTIONS) && local.isInMotion() && dest.distanceTo(last) < 3d) {
 				if (dest.distanceTo(ctx.players.local()) > Random.nextGaussian(5000, 9000, 6500, 1500) / 1000d) {
 					return true;
 				}
@@ -75,11 +75,11 @@ public class TilePath extends Path {//TODO: anti-pattern
 			if (!tiles[i].getMatrix(ctx).isOnMap()) {
 				continue;
 			}
-			/* If our destination is null, assume mid path and continue there. */
+			/* If our destination is NIL, assume mid path and continue there. */
 			/* LARGELY SPACED PATH SUPPORT: If the current destination is the tile on the map, return that tile
 			 * as the next one will be coming soon (we hope/assume this, as short spaced paths should never experience
 			 * this condition as one will be on map before it reaches the current target). */
-			if (dest == null || tiles[i].distanceTo(dest) < 3d) {
+			if (dest == Tile.NIL || tiles[i].distanceTo(dest) < 3d) {
 				return tiles[i];
 			}
 			/* Tile is on map and isn't currently "targeted" (dest), let's check it out.
@@ -106,7 +106,7 @@ public class TilePath extends Path {//TODO: anti-pattern
 		 * TELEPORTATION SUPPORT: If destination is set but but we're not moving, assume
 		 * invalid destination tile from teleportation reset and return first tile. */
 		Player p = ctx.players.local();
-		if (p != null && !p.isInMotion() && dest != null) {
+		if (p != null && !p.isInMotion() && dest != Tile.NIL) {
 			for (int i = tiles.length - 1; i >= 0; --i) {
 				if (tiles[i].getMatrix(ctx).isOnMap()) {
 					return tiles[i];
