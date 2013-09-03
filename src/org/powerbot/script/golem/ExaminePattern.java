@@ -5,6 +5,8 @@ import org.powerbot.script.methods.Menu;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.util.Random;
 import org.powerbot.script.wrappers.GameObject;
+import org.powerbot.script.wrappers.Interactive;
+import org.powerbot.script.wrappers.Npc;
 
 public class ExaminePattern extends Antipattern {
 	public ExaminePattern(final MethodContext factory) {
@@ -13,6 +15,19 @@ public class ExaminePattern extends Antipattern {
 
 	@Override
 	public void run() {
+		if (isAggressive()) {
+			for (final Npc n : ctx.npcs.select().select(new Filter<Npc>() {
+				@Override
+				public boolean accept(Npc npc) {
+					return npc.isOnScreen();
+				}
+			}).shuffle().limit(Random.nextInt(1, isAggressive() ? 5 : 3))) {
+				hover(n);
+			}
+
+			return;
+		}
+
 		for (final GameObject o : ctx.objects.select().select(new Filter<GameObject>() {
 			@Override
 			public boolean accept(final GameObject o) {
