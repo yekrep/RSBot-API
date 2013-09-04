@@ -45,6 +45,8 @@ public final class ScriptController implements Runnable, Suspendable, Stoppable 
 	private final AtomicReference<String> auth;
 	private final AtomicLong started;
 
+	private final Runnable suspension;
+
 	public ScriptController(final MethodContext ctx, final EventMulticaster multicaster, final ScriptBundle bundle, final int timeout) {
 		this.ctx = ctx;
 		events = new EventManager(multicaster);
@@ -60,6 +62,18 @@ public final class ScriptController implements Runnable, Suspendable, Stoppable 
 		scripts.add(bundle.script);
 
 		executor = new ThreadPoolExecutor(1, 1, 0L, TimeUnit.NANOSECONDS, queue = new LinkedBlockingDeque<>());
+
+		suspension = new Runnable() {
+			@Override
+			public void run() {
+				while (isSuspended()) {
+					try {
+						Thread.sleep(600);
+					} catch (final InterruptedException ignored) {
+					}
+				}
+			}
+		};
 
 		this.def = bundle.definitiion;
 
@@ -188,6 +202,10 @@ public final class ScriptController implements Runnable, Suspendable, Stoppable 
 				executor.submit(new RunnablePropagator(s.getExecQueue(state)));
 			} catch (final Exception ignored) {
 			}
+		}
+
+		if (state == Script.State.SUSPEND) {
+			queue.offerFirst(suspension);
 		}
 	}
 
