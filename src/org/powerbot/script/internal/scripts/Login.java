@@ -41,6 +41,11 @@ public class Login extends PollingScript implements InternalScript {
 		getController().getExecutor().submit(this);
 		final GameAccounts.Account account = ctx.getBot().getAccount();
 		int state = ctx.game.getClientState();
+
+		if (state == -1) {
+			return 3600;
+		}
+
 		if (state == Game.INDEX_LOBBY_SCREEN) {
 			int world = ctx.getPreferredWorld();
 			if (world > 0) {
