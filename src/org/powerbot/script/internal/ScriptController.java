@@ -205,7 +205,7 @@ public final class ScriptController implements Runnable, Suspendable, Stoppable 
 		}
 
 		if (state == Script.State.SUSPEND) {
-			queue.offerFirst(suspension);
+			queue.offer(suspension);
 		}
 	}
 
