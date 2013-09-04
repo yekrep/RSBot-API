@@ -26,6 +26,7 @@ import org.powerbot.script.lang.Subscribable;
 import org.powerbot.script.lang.Suspendable;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.service.NetworkAccount;
+import org.powerbot.service.scripts.ScriptBundle;
 import org.powerbot.service.scripts.ScriptDefinition;
 import org.powerbot.util.Tracker;
 import org.powerbot.util.io.HttpClient;
@@ -41,7 +42,7 @@ public final class ScriptController implements Runnable, Suspendable, Stoppable,
 	private final AtomicReference<String> auth;
 	private final AtomicLong started;
 
-	public ScriptController(final MethodContext ctx, final EventMulticaster multicaster, final Script script, final ScriptDefinition def, final int timeout) {
+	public ScriptController(final MethodContext ctx, final EventMulticaster multicaster, final ScriptBundle bundle, final int timeout) {
 		this.ctx = ctx;
 		events = new EventManager(multicaster);
 		executor = new ScriptThreadExecutor(this);
@@ -54,9 +55,9 @@ public final class ScriptController implements Runnable, Suspendable, Stoppable,
 		scripts.add(new TicketDestroy());
 		scripts.add(new BankPin());
 		scripts.add(new Antipattern());
-		scripts.add(script);
+		scripts.add(bundle.script);
 
-		this.def = def;
+		this.def = bundle.definitiion;
 
 		this.timeout = new Timer(timeout, new ActionListener() {
 			@Override

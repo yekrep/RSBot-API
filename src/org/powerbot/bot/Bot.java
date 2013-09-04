@@ -30,6 +30,7 @@ import org.powerbot.script.methods.Game;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.util.Random;
 import org.powerbot.service.GameAccounts;
+import org.powerbot.service.scripts.ScriptBundle;
 import org.powerbot.service.scripts.ScriptDefinition;
 
 /**
@@ -208,8 +209,8 @@ public final class Bot implements Runnable, Stoppable {
 		}
 	}
 
-	public synchronized void startScript(final Script script, final ScriptDefinition def, final int timeout) {
-		controller = new ScriptController(ctx, multicaster, script, def, timeout);
+	public synchronized void startScript(final ScriptBundle bundle, final int timeout) {
+		controller = new ScriptController(ctx, multicaster, bundle, timeout);
 		controller.run();
 	}
 

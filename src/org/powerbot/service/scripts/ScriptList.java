@@ -212,7 +212,7 @@ public class ScriptList {
 			public void run() {
 				log.info("Starting script: " + def.getName());
 				final int hours = 1 * (NetworkAccount.getInstance().hasPermission(NetworkAccount.DEVELOPER) ? 3 : 1);
-				bot.startScript(script, def, def.local ? (int) TimeUnit.HOURS.toMillis(hours) : 0);
+				bot.startScript(new ScriptBundle(def, script), def.local ? (int) TimeUnit.HOURS.toMillis(hours) : 0);
 			}
 		}).start();
 	}
