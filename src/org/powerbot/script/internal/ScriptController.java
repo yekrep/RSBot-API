@@ -33,7 +33,7 @@ import org.powerbot.service.scripts.ScriptDefinition;
 import org.powerbot.util.Tracker;
 import org.powerbot.util.io.HttpClient;
 
-public final class ScriptController implements Runnable, Suspendable, Stoppable {
+public final class ScriptController implements Runnable, Script.Controller {
 	private final MethodContext ctx;
 	private final EventManager events;
 	private final BlockingDeque<Runnable> queue;
@@ -124,6 +124,9 @@ public final class ScriptController implements Runnable, Suspendable, Stoppable 
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void run() {
 		for (final Script s : scripts) {
@@ -154,11 +157,17 @@ public final class ScriptController implements Runnable, Suspendable, Stoppable 
 		events.subscribeAll();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public boolean isStopping() {
 		return stopping.get();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void stop() {
 		if (stopping.compareAndSet(false, true)) {
@@ -177,11 +186,17 @@ public final class ScriptController implements Runnable, Suspendable, Stoppable 
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public boolean isSuspended() {
 		return suspended.get();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void suspend() {
 		if (suspended.compareAndSet(false, true)) {
@@ -189,6 +204,9 @@ public final class ScriptController implements Runnable, Suspendable, Stoppable 
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void resume() {
 		if (suspended.compareAndSet(true, false)) {
@@ -196,6 +214,10 @@ public final class ScriptController implements Runnable, Suspendable, Stoppable 
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public BlockingDeque<Runnable> getExecutor() {
 		return queue;
 	}

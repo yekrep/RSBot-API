@@ -2,8 +2,11 @@ package org.powerbot.script;
 
 import java.util.EventListener;
 import java.util.Queue;
+import java.util.concurrent.BlockingDeque;
 
 import org.powerbot.script.internal.ScriptController;
+import org.powerbot.script.lang.Stoppable;
+import org.powerbot.script.lang.Suspendable;
 import org.powerbot.script.methods.MethodContext;
 
 /**
@@ -26,18 +29,18 @@ public interface Script extends Runnable, EventListener {
 	public Queue<Runnable> getExecQueue(State state);
 
 	/**
-	 * Sets a new {@link ScriptController} for this {@link Script}
+	 * Sets a new {@link Controller} for this {@link Script}
 	 *
-	 * @param container the new {@link ScriptController}
+	 * @param controller the new {@link Controller}
 	 */
-	public void setController(ScriptController container);
+	public void setController(Controller controller);
 
 	/**
-	 * Returns the {@link ScriptController} associated with this {@link Script}
+	 * Returns the {@link Controller} associated with this {@link Script}
 	 *
-	 * @return the {@link ScriptController}
+	 * @return the {@link Controller}
 	 */
-	public ScriptController getController();
+	public Controller getController();
 
 	/**
 	 * Sets a new {@link MethodContext} for this {@link Script}
@@ -52,4 +55,16 @@ public interface Script extends Runnable, EventListener {
 	 * @return the {@link MethodContext}
 	 */
 	public MethodContext getContext();
+
+	/**
+	 * A controller for a {@link Script} which invokes and determines state changes.
+	 */
+	public interface Controller extends Suspendable, Stoppable {
+		/**
+		 * Returns the executor queue.
+		 *
+		 * @return the executor queue
+		 */
+		public BlockingDeque<Runnable> getExecutor();
+	}
 }

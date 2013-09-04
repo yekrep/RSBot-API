@@ -49,7 +49,7 @@ public abstract class AbstractScript implements Script, Comparable<AbstractScrip
 	private final int sq;
 	protected final AtomicInteger priority;
 
-	private ScriptController controller;
+	private Controller controller;
 	private final Map<State, Queue<Runnable>> exec;
 	private final AtomicLong started, suspended;
 	private final Queue<Long> suspensions;
@@ -162,7 +162,7 @@ public abstract class AbstractScript implements Script, Comparable<AbstractScrip
 	 * {@inheritDoc}
 	 */
 	@Override
-	public final void setController(final ScriptController controller) {
+	public final void setController(final Controller controller) {
 		this.controller = controller;
 	}
 
@@ -170,7 +170,7 @@ public abstract class AbstractScript implements Script, Comparable<AbstractScrip
 	 * {@inheritDoc}
 	 */
 	@Override
-	public final ScriptController getController() {
+	public final Controller getController() {
 		return controller;
 	}
 
