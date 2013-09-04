@@ -42,7 +42,7 @@ public class Login extends PollingScript implements InternalScript {
 		int state = ctx.game.getClientState();
 
 		if (state == -1) {
-			return 3600;
+			return poll();
 		}
 
 		if (state == Game.INDEX_LOBBY_SCREEN) {
@@ -61,11 +61,11 @@ public class Login extends PollingScript implements InternalScript {
 							ctx.game.setPreferredWorld(worlds[Random.nextInt(0, worlds.length)].getNumber());
 						}
 					}
-					return 0;
+					return poll();
 				}
 			}
 			ctx.lobby.enterGame();
-			return -1;
+			return poll();
 		}
 
 		if (account != null && (state == Game.INDEX_LOGIN_SCREEN || state == Game.INDEX_LOGGING_IN)) {
@@ -76,7 +76,7 @@ public class Login extends PollingScript implements InternalScript {
 					return -1;
 				}
 				ctx.widgets.get(WIDGET, WIDGET_LOGIN_TRY_AGAIN).click();
-				return -1;
+				return poll();
 			}
 
 			String username = account.toString(), password = account.getPassword();
@@ -84,7 +84,7 @@ public class Login extends PollingScript implements InternalScript {
 			text = getUsernameText();
 			if (!text.equalsIgnoreCase(username)) {
 				if (!clickLoginInterface(ctx.widgets.get(WIDGET, WIDGET_LOGIN_USERNAME_TEXT))) {
-					return -1;
+					return poll();
 				}
 				sleep(Random.nextInt(500, 700));
 
@@ -95,18 +95,18 @@ public class Login extends PollingScript implements InternalScript {
 						b.append('\b');
 					}
 					ctx.keyboard.send(b.toString());
-					return 0;
+					return poll();
 				}
 
 				ctx.keyboard.send(username);
 				sleep(Random.nextInt(800, 1200));
-				return 0;
+				return poll();
 			}
 
 			text = getPasswordText();
 			if (text.length() != password.length()) {
 				if (!clickLoginInterface(ctx.widgets.get(WIDGET, WIDGET_LOGIN_PASSWORD_TEXT))) {
-					return -1;
+					return poll();
 				}
 				sleep(Random.nextInt(500, 700));
 				int length = text.length();
@@ -116,17 +116,18 @@ public class Login extends PollingScript implements InternalScript {
 						b.append('\b');
 					}
 					ctx.keyboard.send(b.toString());
-					return 0;
+					return poll();
 				}
 				ctx.keyboard.send(password);
-				return -1;
+				return poll();
 			}
 
 			ctx.keyboard.send("\n");
 			sleep(Random.nextInt(600, 1400));
-			return -1;
+			return poll();
 		}
-		return -1;//what's going on???
+
+		return 3600;
 	}
 
 	private boolean clickLoginInterface(final Component i) {
