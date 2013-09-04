@@ -1,7 +1,5 @@
 package org.powerbot.script.internal.methods;
 
-import java.lang.ref.WeakReference;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -18,10 +16,10 @@ import org.powerbot.client.RSGroundInfo;
 import org.powerbot.client.RSInfo;
 import org.powerbot.client.RSObject;
 import org.powerbot.client.RSRotatableObject;
-import org.powerbot.script.wrappers.CollisionFlag;
-import org.powerbot.script.wrappers.CollisionMap;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.methods.MethodProvider;
+import org.powerbot.script.wrappers.CollisionFlag;
+import org.powerbot.script.wrappers.CollisionMap;
 import org.powerbot.script.wrappers.GameObject;
 
 public class Map extends MethodProvider {
@@ -132,7 +130,7 @@ public class Map extends MethodProvider {
 					continue;
 				}
 
-				RSObject object = rsObject(next);
+				RSObject object = next.getInternal();
 				if (object == null) {
 					continue;
 				}
@@ -154,22 +152,6 @@ public class Map extends MethodProvider {
 				break;
 			}
 		}
-	}
-
-	@SuppressWarnings("unchecked")
-	private RSObject rsObject(GameObject object) {
-		try {
-			Field field = object.getClass().getDeclaredField("object");
-			boolean accessable = field.isAccessible();
-			field.setAccessible(true);
-			WeakReference<RSObject> reference = (WeakReference<RSObject>) field.get(object);
-			if (reference != null) {
-				return reference.get();
-			}
-			field.setAccessible(accessable);
-		} catch (NoSuchFieldException | IllegalAccessException ignored) {
-		}
-		return null;
 	}
 
 	private CollisionMap getCollisionMap(int plane) {

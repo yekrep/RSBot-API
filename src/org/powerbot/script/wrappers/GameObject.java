@@ -72,6 +72,10 @@ public class GameObject extends Interactive implements Renderable, Locatable, Na
 		return object != null ? object.getPlane() : -1;
 	}
 
+	public RSObject getInternal() {
+		return this.object.get();
+	}
+
 	private ObjectDefinition getDefinition() {
 		Client client = ctx.getClient();
 		if (client == null) {
