@@ -1,7 +1,9 @@
 package org.powerbot.script;
 
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
 import org.powerbot.script.util.Random;
 
@@ -13,6 +15,7 @@ import org.powerbot.script.util.Random;
  */
 public abstract class PollingScript extends AbstractScript {
 	private final AtomicBoolean running;
+	private final AtomicLong last, delay;
 
 	/**
 	 * The sleep bias for {@link #sleep(long)} and {@link #poll()}.
@@ -26,6 +29,8 @@ public abstract class PollingScript extends AbstractScript {
 	 */
 	public PollingScript() {
 		running = new AtomicBoolean(false);
+		last = new AtomicLong(0);
+		delay = new AtomicLong(0);
 		bias = new AtomicInteger(50);
 
 		getExecQueue(State.START).add(new Runnable() {
@@ -67,12 +72,18 @@ public abstract class PollingScript extends AbstractScript {
 			return;
 		}
 
-		poll();
+		final long d = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - last.get());
+		if (d < delay.get()) {
+			sleep(delay.get() - d);
+		}
+
+		final int t = poll();
+		delay.set(t < 0 ? 600 : t);
+		last.set(System.nanoTime());
 
 		if (!getController().isStopping()) {
 			getController().getExecutor().submit(this);
 			Thread.yield();
-			// TODO: respect delay if queue is empty to prevent high frequency calls
 		}
 
 		running.set(false);
