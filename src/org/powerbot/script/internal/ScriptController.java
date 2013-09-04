@@ -198,33 +198,16 @@ public final class ScriptController implements Runnable, Suspendable, Stoppable 
 		track(state);
 
 		for (final Script s : scripts) {
-			try {
-				executor.submit(new RunnablePropagator(s.getExecQueue(state)));
-			} catch (final Exception ignored) {
+			for (final Runnable r : s.getExecQueue(state)) {
+				queue.offer(r);
 			}
 		}
 
 		if (state == Script.State.SUSPEND) {
 			queue.offer(suspension);
 		}
-	}
 
-	private static final class RunnablePropagator implements Runnable {
-		private final Iterable<Runnable> tasks;
 
-		public RunnablePropagator(final Iterable<Runnable> tasks) {
-			this.tasks = tasks;
-		}
-
-		@Override
-		public void run() {
-			for (final Runnable task : tasks) {
-				try {
-					task.run();
-				} catch (final Throwable ignored) {
-				}
-			}
-		}
 	}
 
 	private void track(final Script.State state) {
