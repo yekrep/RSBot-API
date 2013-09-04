@@ -9,6 +9,7 @@ public class Antipattern extends PollingScript implements InternalScript {
 
 	public Antipattern() {
 		timer = new Timer(600 << 4);
+		priority.set(1);
 	}
 
 	@Override

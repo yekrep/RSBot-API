@@ -22,7 +22,7 @@ public class Login extends PollingScript implements InternalScript {
 	private static final int WIDGET_LOGIN_PASSWORD_TEXT = 93;
 
 	public Login() {
-		priority.set(2);
+		priority.set(4);
 	}
 
 	private boolean isValid() {
@@ -38,7 +38,6 @@ public class Login extends PollingScript implements InternalScript {
 			return -1;
 		}
 
-		getController().getExecutor().offerFirst(this);
 		final GameAccounts.Account account = ctx.getBot().getAccount();
 		int state = ctx.game.getClientState();
 

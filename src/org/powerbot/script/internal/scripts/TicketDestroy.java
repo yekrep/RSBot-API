@@ -17,6 +17,10 @@ public class TicketDestroy extends PollingScript implements InternalScript {
 	private static final int[] ITEM_IDS = {24154, 24155};
 	private Component component;
 
+	public TicketDestroy(){
+		priority.set(3);
+	}
+
 	private boolean isValid() {
 		if (!ctx.game.isLoggedIn() || !ctx.hud.isVisible(Hud.Window.BACKPACK)) {
 			return false;

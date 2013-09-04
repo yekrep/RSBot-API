@@ -12,6 +12,10 @@ public class BankPin extends PollingScript implements InternalScript {
 	private static final int COMPONENT = 0;
 	private static final int COMPONENT_PIN_OFFSET = 6;
 
+	public BankPin() {
+		priority.set(2);
+	}
+
 	@Override
 	public int poll() {
 		if (!ctx.widgets.get(WIDGET, COMPONENT).isVisible()) {
