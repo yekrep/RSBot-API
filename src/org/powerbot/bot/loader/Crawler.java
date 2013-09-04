@@ -2,7 +2,6 @@ package org.powerbot.bot.loader;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -48,6 +47,9 @@ public class Crawler implements Runnable {
 		url = "http://www." + Configuration.URLs.GAME + "/game";
 		referer = null;
 		html = download(url, referer);
+		if (html == null) {
+			return;
+		}
 		p = Pattern.compile("<iframe id=\"game\" src=\"([^\"]+)\"", Pattern.CASE_INSENSITIVE);
 		m = p.matcher(html);
 		if (!m.find()) {
@@ -57,6 +59,9 @@ public class Crawler implements Runnable {
 		url = m.group(1);
 
 		html = download(url, referer);
+		if (html == null) {
+			return;
+		}
 		game = url;
 		p = Pattern.compile("<applet name=runescape id=game .+\\barchive=(\\S+).+\\bcode=(\\S+)\\.class", Pattern.CASE_INSENSITIVE);
 		m = p.matcher(html);
