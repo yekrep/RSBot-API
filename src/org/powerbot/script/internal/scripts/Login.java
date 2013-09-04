@@ -38,7 +38,7 @@ public class Login extends PollingScript implements InternalScript {
 			return -1;
 		}
 
-		getController().getExecutor().submit(this);
+		getController().getExecutor().offerFirst(this);
 		final GameAccounts.Account account = ctx.getBot().getAccount();
 		int state = ctx.game.getClientState();
 

@@ -5,8 +5,11 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.PriorityQueue;
 import java.util.Queue;
+import java.util.concurrent.BlockingDeque;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
@@ -33,6 +36,7 @@ import org.powerbot.util.io.HttpClient;
 public final class ScriptController implements Runnable, Suspendable, Stoppable {
 	private final MethodContext ctx;
 	private final EventManager events;
+	private final BlockingDeque<Runnable> queue;
 	private final ExecutorService executor;
 	private final Queue<Script> scripts;
 	private final ScriptDefinition def;
@@ -44,7 +48,6 @@ public final class ScriptController implements Runnable, Suspendable, Stoppable 
 	public ScriptController(final MethodContext ctx, final EventMulticaster multicaster, final ScriptBundle bundle, final int timeout) {
 		this.ctx = ctx;
 		events = new EventManager(multicaster);
-		executor = Executors.newSingleThreadExecutor();
 		suspended = new AtomicBoolean(false);
 		stopping = new AtomicBoolean(false);
 
@@ -55,6 +58,8 @@ public final class ScriptController implements Runnable, Suspendable, Stoppable 
 		scripts.add(new BankPin());
 		scripts.add(new Antipattern());
 		scripts.add(bundle.script);
+
+		executor = new ThreadPoolExecutor(1, 1, 0L, TimeUnit.NANOSECONDS, queue = new LinkedBlockingDeque<>());
 
 		this.def = bundle.definitiion;
 
@@ -171,8 +176,8 @@ public final class ScriptController implements Runnable, Suspendable, Stoppable 
 		}
 	}
 
-	public ExecutorService getExecutor() {
-		return executor;
+	public BlockingDeque<Runnable> getExecutor() {
+		return queue;
 	}
 
 	private void call(final Script.State state) {
