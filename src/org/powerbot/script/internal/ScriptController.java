@@ -31,7 +31,7 @@ import org.powerbot.service.scripts.ScriptDefinition;
 import org.powerbot.util.Tracker;
 import org.powerbot.util.io.HttpClient;
 
-public final class ScriptController implements Runnable, Suspendable, Stoppable, Subscribable<EventListener> {
+public final class ScriptController implements Runnable, Suspendable, Stoppable {
 	private final MethodContext ctx;
 	private final EventManager events;
 	private final ExecutorService executor;
@@ -170,16 +170,6 @@ public final class ScriptController implements Runnable, Suspendable, Stoppable,
 		if (suspended.compareAndSet(true, false)) {
 			call(Script.State.RESUME);
 		}
-	}
-
-	@Override
-	public void subscribe(final EventListener l) {
-		events.subscribe(l);
-	}
-
-	@Override
-	public void unsubscribe(final EventListener l) {
-		events.unsubscribe(l);
 	}
 
 	public ExecutorService getExecutor() {
