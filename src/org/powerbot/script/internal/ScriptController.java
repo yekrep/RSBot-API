@@ -182,7 +182,7 @@ public final class ScriptController implements Runnable, Suspendable, Stoppable,
 	}
 
 	public ExecutorService getExecutor() {
-		return this.executor;
+		return executor;
 	}
 
 	private void call(final Script.State state) {
@@ -190,18 +190,26 @@ public final class ScriptController implements Runnable, Suspendable, Stoppable,
 
 		for (final Script s : scripts) {
 			try {
-				executor.submit(new Runnable() {
-					@Override
-					public void run() {
-						for (final Runnable task : s.getExecQueue(state)) {
-							try {
-								task.run();
-							} catch (final Throwable ignored) {
-							}
-						}
-					}
-				});
-			} catch (Exception ignored) {
+				executor.submit(new RunnablePropagator(s.getExecQueue(state)));
+			} catch (final Exception ignored) {
+			}
+		}
+	}
+
+	private static final class RunnablePropagator implements Runnable {
+		private final Iterable<Runnable> tasks;
+
+		public RunnablePropagator(final Iterable<Runnable> tasks) {
+			this.tasks = tasks;
+		}
+
+		@Override
+		public void run() {
+			for (final Runnable task : tasks) {
+				try {
+					task.run();
+				} catch (final Throwable ignored) {
+				}
 			}
 		}
 	}
