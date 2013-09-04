@@ -3,10 +3,10 @@ package org.powerbot.script.internal;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.util.EventListener;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
@@ -22,7 +22,6 @@ import org.powerbot.script.internal.scripts.Login;
 import org.powerbot.script.internal.scripts.TicketDestroy;
 import org.powerbot.script.internal.scripts.WidgetCloser;
 import org.powerbot.script.lang.Stoppable;
-import org.powerbot.script.lang.Subscribable;
 import org.powerbot.script.lang.Suspendable;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.service.NetworkAccount;
@@ -45,7 +44,7 @@ public final class ScriptController implements Runnable, Suspendable, Stoppable 
 	public ScriptController(final MethodContext ctx, final EventMulticaster multicaster, final ScriptBundle bundle, final int timeout) {
 		this.ctx = ctx;
 		events = new EventManager(multicaster);
-		executor = new ScriptThreadExecutor(this);
+		executor = Executors.newSingleThreadExecutor();
 		suspended = new AtomicBoolean(false);
 		stopping = new AtomicBoolean(false);
 

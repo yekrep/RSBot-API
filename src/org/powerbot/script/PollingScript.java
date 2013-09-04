@@ -67,23 +67,12 @@ public abstract class PollingScript extends AbstractScript {
 			return;
 		}
 
-		final int delay = 600;
+		poll();
 
-		while (!getController().isStopping()) {
-			final int sleep;
-
-			if (getController().isSuspended()) {
-				sleep = delay;
-			} else {
-				try {
-					sleep = poll();
-				} catch (final Throwable t) {
-					getController().stop();
-					break;
-				}
-			}
-
-			sleep(Math.max(0, sleep == -1 ? delay : sleep));
+		if (!getController().isStopping()) {
+			getController().getExecutor().submit(this);
+			Thread.yield();
+			// TODO: respect delay if queue is empty to prevent high frequency calls
 		}
 
 		running.set(false);

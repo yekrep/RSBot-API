@@ -21,6 +21,10 @@ public class Login extends PollingScript implements InternalScript {
 	private static final int WIDGET_LOGIN_USERNAME_TEXT = 90;
 	private static final int WIDGET_LOGIN_PASSWORD_TEXT = 93;
 
+	public Login() {
+		priority.set(-2);
+	}
+
 	private boolean isValid() {
 		int state = ctx.game.getClientState();
 		return state == -1 || state == Game.INDEX_LOGIN_SCREEN ||
@@ -34,6 +38,7 @@ public class Login extends PollingScript implements InternalScript {
 			return -1;
 		}
 
+		getController().getExecutor().submit(this);
 		final GameAccounts.Account account = ctx.getBot().getAccount();
 		int state = ctx.game.getClientState();
 		if (state == Game.INDEX_LOBBY_SCREEN) {
