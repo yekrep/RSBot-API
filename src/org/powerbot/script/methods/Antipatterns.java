@@ -8,6 +8,11 @@ import org.powerbot.script.golem.CameraPattern;
 import org.powerbot.script.golem.ExaminePattern;
 import org.powerbot.script.golem.WindowPattern;
 
+/**
+ * Executes anti-patterns to disrupt distinguishable patterns.
+ *
+ * @author Paris
+ */
 public class Antipatterns extends MethodProvider implements Runnable {
 	private final List<Antipattern> patterns;
 
@@ -29,6 +34,12 @@ public class Antipatterns extends MethodProvider implements Runnable {
 		}
 	}
 
+	/**
+	 * Registers (adds) an anti-pattern to the internal executor.
+	 *
+	 * @param a the antipattern
+	 * @return <tt>true</tt> if registered; otherwise <tt>false</tt>
+	 */
 	public boolean register(final Antipattern a) {
 		return !patterns.contains(a) && patterns.add(a);
 	}
