@@ -22,7 +22,7 @@ public class Login extends PollingScript implements InternalScript {
 	private static final int WIDGET_LOGIN_PASSWORD_TEXT = 93;
 
 	public Login() {
-		priority.set(-2);
+		priority.set(2);
 	}
 
 	private boolean isValid() {

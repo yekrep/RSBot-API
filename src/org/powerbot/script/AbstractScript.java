@@ -146,8 +146,8 @@ public abstract class AbstractScript implements Script, Comparable<AbstractScrip
 	 */
 	@Override
 	public final int compareTo(final AbstractScript o) {
-		final int r = priority.get() - o.priority.get();
-		return r == 0 ? sq - o.sq : r;
+		final int r = o.priority.get() - priority.get();
+		return r == 0 ? sq < o.sq ? -1 : 1 : r;
 	}
 
 	/**

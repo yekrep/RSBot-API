@@ -24,7 +24,7 @@ public class WidgetCloser extends PollingScript implements InternalScript {
 	private int tries;
 
 	public WidgetCloser() {
-		priority.set(-1);
+		priority.set(1);
 	}
 
 	@Override
