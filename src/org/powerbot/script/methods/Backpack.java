@@ -12,6 +12,11 @@ import org.powerbot.script.wrappers.Item;
 
 import static org.powerbot.script.util.Constants.getInt;
 
+/**
+ * Utilities pertaining to the in-game backpack.
+ *
+ * @author Timer
+ */
 public class Backpack extends ItemQuery<Item> implements Resizable {
 	public static final int WIDGET = getInt("backpack.widget");
 	public static final int COMPONENT_SCROLL_BAR = getInt("backpack.component.scrollbar");
@@ -30,6 +35,9 @@ public class Backpack extends ItemQuery<Item> implements Resizable {
 		super(factory);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	protected List<Item> get() {
 		List<Item> items = new ArrayList<>(28);
@@ -83,6 +91,11 @@ public class Backpack extends ItemQuery<Item> implements Resizable {
 		return false;
 	}
 
+	/**
+	 * Returns an array of all the items in the inventory.
+	 *
+	 * @return all the items in the inventory
+	 */
 	public Item[] getAllItems() {
 		Item[] items = new Item[28];
 		Component inv = getComponent();
@@ -98,6 +111,12 @@ public class Backpack extends ItemQuery<Item> implements Resizable {
 		return items;
 	}
 
+	/**
+	 * Returns the item at a specific index.
+	 *
+	 * @param index the index of the item
+	 * @return the {@link Item} in the slot given
+	 */
 	public Item getItemAt(final int index) {
 		Component inv = getComponent();
 		int[][] data = ctx.items.getItems(Items.INDEX_INVENTORY);
@@ -107,6 +126,11 @@ public class Backpack extends ItemQuery<Item> implements Resizable {
 		return getNil();
 	}
 
+	/**
+	 * Returns the index of the currently selected item.
+	 *
+	 * @return the index of the selected item
+	 */
 	public int getSelectedItemIndex() {
 		Component inv = getComponent();
 		for (int i = 0; i < 28; i++) {
@@ -117,14 +141,30 @@ public class Backpack extends ItemQuery<Item> implements Resizable {
 		return -1;
 	}
 
+	/**
+	 * Returns the {@link Item} of the currently selected item.
+	 *
+	 * @return the {@link Item} selected
+	 */
 	public Item getSelectedItem() {
 		return getItemAt(getSelectedItemIndex());
 	}
 
+	/**
+	 * Returns if an item is selected or not.
+	 *
+	 * @return <tt>true</tt> if an item is selected; otherwise <tt>false</tt>
+	 */
 	public boolean isItemSelected() {
 		return getSelectedItemIndex() != -1;
 	}
 
+	/**
+	 * Returns the index of the item with the given id, or the first index of it.
+	 *
+	 * @param id the id of the item
+	 * @return the index
+	 */
 	public int indexOf(final int id) {
 		int[][] data = ctx.items.getItems(Items.INDEX_INVENTORY);
 		for (int i = 0; i < 28; i++) {
@@ -139,6 +179,11 @@ public class Backpack extends ItemQuery<Item> implements Resizable {
 		return -1;
 	}
 
+	/**
+	 * Returns the {@link Component} of the inventory
+	 *
+	 * @return the inventory {@link Component}
+	 */
 	public Component getComponent() {
 		Component c;
 		for (final int id : ALTERNATIVE_WIDGETS) {
@@ -149,6 +194,11 @@ public class Backpack extends ItemQuery<Item> implements Resizable {
 		return ctx.widgets.get(WIDGET, COMPONENT_CONTAINER);
 	}
 
+	/**
+	 * Returns the amount of money in the money pouch.
+	 *
+	 * @return the amount of money in the money pouch
+	 */
 	public int getMoneyPouch() {
 		int[][] arrs = ctx.items.getItems(Items.INDEX_MONEY_POUCH);
 		for (int[] arr : arrs) {
@@ -159,6 +209,9 @@ public class Backpack extends ItemQuery<Item> implements Resizable {
 		return 0;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Item getNil() {
 		return new Item(ctx, -1, -1, null);
