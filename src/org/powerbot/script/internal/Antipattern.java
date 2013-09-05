@@ -1,4 +1,4 @@
-package org.powerbot.script.golem;
+package org.powerbot.script.internal;
 
 import java.util.concurrent.atomic.AtomicInteger;
 

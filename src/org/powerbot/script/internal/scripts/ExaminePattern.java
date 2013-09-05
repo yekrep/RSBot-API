@@ -1,5 +1,6 @@
-package org.powerbot.script.golem;
+package org.powerbot.script.internal.scripts;
 
+import org.powerbot.script.internal.Antipattern;
 import org.powerbot.script.lang.Filter;
 import org.powerbot.script.methods.Menu;
 import org.powerbot.script.methods.MethodContext;

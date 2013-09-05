@@ -1,7 +1,8 @@
-package org.powerbot.script.golem;
+package org.powerbot.script.internal.scripts;
 
 import java.util.Arrays;
 
+import org.powerbot.script.internal.Antipattern;
 import org.powerbot.script.methods.Hud;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.util.Random;

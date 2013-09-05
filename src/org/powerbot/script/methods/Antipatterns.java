@@ -3,10 +3,10 @@ package org.powerbot.script.methods;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.powerbot.script.golem.Antipattern;
-import org.powerbot.script.golem.CameraPattern;
-import org.powerbot.script.golem.ExaminePattern;
-import org.powerbot.script.golem.WindowPattern;
+import org.powerbot.script.internal.Antipattern;
+import org.powerbot.script.internal.scripts.CameraPattern;
+import org.powerbot.script.internal.scripts.ExaminePattern;
+import org.powerbot.script.internal.scripts.WindowPattern;
 
 /**
  * Executes anti-patterns to disrupt distinguishable patterns.
