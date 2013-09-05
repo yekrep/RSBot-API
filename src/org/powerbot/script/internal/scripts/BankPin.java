@@ -19,8 +19,10 @@ public class BankPin extends PollingScript implements InternalScript {
 	@Override
 	public int poll() {
 		if (!ctx.widgets.get(WIDGET, COMPONENT).isVisible()) {
+			threshold.set(0);
 			return -1;
 		}
+		threshold.set(priority.get());
 
 		final String pin = getPin();
 		if (pin == null) {

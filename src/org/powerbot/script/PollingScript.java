@@ -1,7 +1,5 @@
 package org.powerbot.script;
 
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -21,9 +19,8 @@ public abstract class PollingScript extends AbstractScript {
 
 	/**
 	 * Blocks other {@link PollingScript}s which have a lower {@link AbstractScript#priority} value.
-	 * Only the head item is considered for comparison.
 	 */
-	protected static final Queue<Integer> threshold = new ConcurrentLinkedQueue<>();
+	protected static final AtomicInteger threshold = new AtomicInteger(0);
 
 	/**
 	 * The sleep bias for {@link #sleep(long)} and {@link #poll()}.
@@ -85,7 +82,7 @@ public abstract class PollingScript extends AbstractScript {
 			sleep(delay.get() - d);
 		}
 
-		final int t = !threshold.isEmpty() && threshold.peek() > priority.get() ? 0 : poll();
+		final int t = threshold.get() > priority.get() ? 0 : poll();
 		delay.set(t < 0 ? 600 : t);
 		last.set(System.nanoTime());
 

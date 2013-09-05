@@ -17,7 +17,7 @@ public class TicketDestroy extends PollingScript implements InternalScript {
 	private static final int[] ITEM_IDS = {24154, 24155};
 	private Component component;
 
-	public TicketDestroy(){
+	public TicketDestroy() {
 		priority.set(3);
 	}
 
@@ -44,8 +44,10 @@ public class TicketDestroy extends PollingScript implements InternalScript {
 	@Override
 	public int poll() {
 		if (!isValid()) {
+			threshold.set(0);
 			return -1;
 		}
+		threshold.set(priority.get());
 
 		Component item = this.component;
 		if (item == null || !ctx.backpack.scroll(item)) {

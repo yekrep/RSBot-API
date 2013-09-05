@@ -34,18 +34,18 @@ public class Login extends PollingScript implements InternalScript {
 
 	@Override
 	public int poll() {
-		if (!isValid() || ctx.getBreakManager().isBreaking()) {
-			threshold.poll();
+		if (!isValid()) {
+			threshold.set(0);
+			return -1;
+		}
+		threshold.set(priority.get());
+
+		if (ctx.getBreakManager().isBreaking()) {
 			return -1;
 		}
 
-		threshold.offer(priority.get());
 		final GameAccounts.Account account = ctx.getBot().getAccount();
 		int state = ctx.game.getClientState();
-
-		if (state == -1) {
-			return 3600;
-		}
 
 		if (state == Game.INDEX_LOBBY_SCREEN) {
 			int world = ctx.getPreferredWorld();
@@ -118,7 +118,7 @@ public class Login extends PollingScript implements InternalScript {
 						b.append('\b');
 					}
 					ctx.keyboard.send(b.toString());
-					return 0;
+					return -1;
 				}
 				ctx.keyboard.send(password);
 				return -1;

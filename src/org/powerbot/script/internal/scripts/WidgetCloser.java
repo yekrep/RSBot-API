@@ -30,8 +30,10 @@ public class WidgetCloser extends PollingScript implements InternalScript {
 	@Override
 	public int poll() {
 		if (!isValid()) {
+			threshold.set(0);
 			return -1;
 		}
+		threshold.set(priority.get());
 
 		Component component = this.component;
 		if (component == null) {
