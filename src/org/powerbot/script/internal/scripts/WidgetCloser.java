@@ -1,9 +1,11 @@
 package org.powerbot.script.internal.scripts;
 
+import java.util.concurrent.Callable;
+
 import org.powerbot.script.PollingScript;
 import org.powerbot.script.internal.InternalScript;
+import org.powerbot.script.util.Condition;
 import org.powerbot.script.util.Random;
-import org.powerbot.script.util.Timer;
 import org.powerbot.script.wrappers.Component;
 
 /**
@@ -35,7 +37,7 @@ public class WidgetCloser extends PollingScript implements InternalScript {
 		}
 		threshold.offer(priority.get());
 
-		Component component = this.component;
+		final Component component = this.component;
 		if (component == null) {
 			return -1;
 		}
@@ -46,11 +48,12 @@ public class WidgetCloser extends PollingScript implements InternalScript {
 		}
 
 		if (component.click(true)) {
-			final Timer timer = new Timer(Random.nextInt(2000, 2500));
-			while (timer.isRunning() && component.isVisible()) {
-				sleep(175);
-			}
-			if (!component.isVisible()) {
+			if (!Condition.wait(new Callable<Boolean>() {
+				@Override
+				public Boolean call() {
+					return !component.isVisible();
+				}
+			}, 175, 15)) {
 				tries = 0;
 			}
 		}

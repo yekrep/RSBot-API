@@ -2,6 +2,14 @@ package org.powerbot.script.util;
 
 import java.util.concurrent.atomic.AtomicLong;
 
+/**
+ * A stopwatch based on wall-clock.
+ *
+ * @author Timer
+ * @deprecated replaced by {@link Condition#wait(java.util.concurrent.Callable)}, consumers should not rely on arbitrary
+ * time delays but events instead
+ */
+@Deprecated
 public class Timer {
 	private final long MS_TO_NANOS = 1000000L;
 	private final AtomicLong start, end, period;
