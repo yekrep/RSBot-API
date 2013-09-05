@@ -35,9 +35,11 @@ public class Login extends PollingScript implements InternalScript {
 	@Override
 	public int poll() {
 		if (!isValid() || ctx.getBreakManager().isBreaking()) {
+			threshold.poll();
 			return -1;
 		}
 
+		threshold.offer(priority.get());
 		final GameAccounts.Account account = ctx.getBot().getAccount();
 		int state = ctx.game.getClientState();
 
