@@ -27,7 +27,7 @@ public class Break extends PollingScript implements InternalScript {
 
 		if (n0 > 30) {
 			log.info("Taking a break for c. " + formatSeconds((int) d));
-			sleep((int) (d * 1000 - bias.get() / 2d));
+			sleep((int) (d * 1000 * (1 - bias.get() / 200d)));
 		}
 
 		return n0 * 60 * 1000;
