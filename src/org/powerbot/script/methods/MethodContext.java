@@ -6,14 +6,11 @@ import org.powerbot.bot.Bot;
 import org.powerbot.client.Client;
 import org.powerbot.script.internal.methods.Items;
 import org.powerbot.script.internal.methods.Map;
-import org.powerbot.script.util.BreakManager;
 
 public class MethodContext {
 	private AtomicReference<Client> client;
 	private AtomicReference<Integer> preferredWorld;
 	private AtomicReference<Bot> bot;
-
-	private BreakManager breakManager;
 
 	public Antipatterns antipatterns;
 	public CombatBar combatBar;
@@ -50,8 +47,6 @@ public class MethodContext {
 		this.client = new AtomicReference<>(null);
 		this.preferredWorld = new AtomicReference<>(-1);
 		this.bot = new AtomicReference<>(bot);
-
-		this.breakManager = new BreakManager();
 
 		antipatterns = new Antipatterns(this);
 		combatBar = new CombatBar(this);
@@ -99,8 +94,6 @@ public class MethodContext {
 		preferredWorld = ctx.preferredWorld;
 		bot = ctx.bot;
 
-		breakManager = ctx.breakManager;
-
 		antipatterns = ctx.antipatterns;
 		combatBar = ctx.combatBar;
 		backpack = ctx.backpack;
@@ -131,10 +124,6 @@ public class MethodContext {
 
 		items = ctx.items;
 		map = ctx.map;
-	}
-
-	public BreakManager getBreakManager() {
-		return breakManager;
 	}
 
 	public void setClient(Client client) {
