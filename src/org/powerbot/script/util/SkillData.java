@@ -3,6 +3,13 @@ package org.powerbot.script.util;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.methods.MethodProvider;
 
+/**
+ * A monitor that tracks skill exp gains by time.
+ *
+ * @author Timer
+ * @deprecated consumers should use their own calculations to determine exp gains and rates
+ */
+@Deprecated
 public final class SkillData extends MethodProvider {
 	public static final int NUM_SKILL = 26;
 	public final int[] initialExp = new int[NUM_SKILL];
