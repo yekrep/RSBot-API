@@ -21,6 +21,7 @@ import org.powerbot.event.EventMulticaster;
 import org.powerbot.script.Script;
 import org.powerbot.script.internal.scripts.Antipattern;
 import org.powerbot.script.internal.scripts.BankPin;
+import org.powerbot.script.internal.scripts.Break;
 import org.powerbot.script.internal.scripts.Login;
 import org.powerbot.script.internal.scripts.TicketDestroy;
 import org.powerbot.script.internal.scripts.WidgetCloser;
@@ -53,13 +54,14 @@ public final class ScriptController implements Runnable, Script.Controller {
 		suspended = new AtomicBoolean(false);
 		stopping = new AtomicBoolean(false);
 
-		scripts = new PriorityQueue<>(6);
+		scripts = new PriorityQueue<>(7);
 		scripts.add(new Login());
 		scripts.add(new WidgetCloser());
 		scripts.add(new TicketDestroy());
 		scripts.add(new BankPin());
 		scripts.add(new Antipattern());
 		scripts.add(bundle.script);
+		scripts.add(new Break());
 
 		executor = new ThreadPoolExecutor(1, 1, 0L, TimeUnit.NANOSECONDS, queue = new LinkedBlockingDeque<>());
 
