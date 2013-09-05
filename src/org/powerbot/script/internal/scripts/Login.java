@@ -34,7 +34,7 @@ public class Login extends PollingScript implements InternalScript {
 
 	@Override
 	public int poll() {
-		if (!isValid() || ctx.getBreakManager().isBreaking()) {
+		if (!isValid()) {
 			threshold.poll();
 			return -1;
 		}
