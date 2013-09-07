@@ -110,12 +110,11 @@ public abstract class Interactive extends MethodProvider implements Targetable, 
 			return true;
 		}
 
-		if (a) {
-			int len = ctx.movement.getDistance(t, ctx.movement.getDestination());
-			if (len < 0 || len > 8) {
-				if (!(t.isOnScreen() && t.interact("Walk here"))) {
-					ctx.movement.stepTowards(t);
-				}
+		Tile d = ctx.movement.getDestination();
+		int len = ctx.movement.getDistance(t, d);
+		if (a && (len > 4 || (len < 0 && d != Tile.NIL))) {
+			if (!(t.isOnScreen() && t.interact("Walk here"))) {
+				ctx.movement.stepTowards(t);
 			}
 		}
 
