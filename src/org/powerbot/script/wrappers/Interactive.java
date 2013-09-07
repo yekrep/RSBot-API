@@ -4,12 +4,15 @@ import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.geom.Area;
+import java.util.concurrent.Callable;
 
 import org.powerbot.script.lang.ChainingIterator;
 import org.powerbot.script.lang.Filter;
+import org.powerbot.script.methods.Game;
 import org.powerbot.script.methods.Menu;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.methods.MethodProvider;
+import org.powerbot.script.util.Condition;
 import org.powerbot.script.util.Random;
 
 public abstract class Interactive extends MethodProvider implements Targetable, Validatable {
@@ -79,8 +82,19 @@ public abstract class Interactive extends MethodProvider implements Targetable, 
 			return false;
 		}
 
+		boolean a = false;
+		TileMatrix t = ctx.players.local().getLocation().getMatrix(ctx);
 		if (this instanceof Renderable) {
 			for (; antipattern(this, (Renderable) this); ) {
+				a = true;
+				if (Condition.wait(new Callable<Boolean>() {
+					@Override
+					public Boolean call() throws Exception {
+						return ctx.game.getCrosshair() == Game.Crosshair.ACTION;
+					}
+				}, 10, 20)) {
+					t.interact("Walk here");
+				}
 			}
 		}
 		if (ctx.mouse.move(this, new Filter<Point>() {
@@ -95,6 +109,16 @@ public abstract class Interactive extends MethodProvider implements Targetable, 
 		}) && ctx.menu.click(f)) {
 			return true;
 		}
+
+		if (a) {
+			int len = ctx.movement.getDistance(t, ctx.movement.getDestination());
+			if (len < 0 || len > 8) {
+				if (!(t.isOnScreen() && t.interact("Walk here"))) {
+					ctx.movement.stepTowards(t);
+				}
+			}
+		}
+
 		ctx.menu.close();
 		return false;
 	}
