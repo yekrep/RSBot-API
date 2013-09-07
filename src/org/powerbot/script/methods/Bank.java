@@ -11,7 +11,6 @@ import org.powerbot.script.lang.Filter;
 import org.powerbot.script.lang.ItemQuery;
 import org.powerbot.script.util.Condition;
 import org.powerbot.script.util.Random;
-import org.powerbot.script.util.Timer;
 import org.powerbot.script.wrappers.Component;
 import org.powerbot.script.wrappers.GameObject;
 import org.powerbot.script.wrappers.Interactive;
@@ -232,15 +231,13 @@ public class Bank extends ItemQuery<Item> {
 	}
 
 	public boolean setCurrentTab(final int index) {
-		final Component c = ctx.widgets.get(WIDGET, 35 - (index * 2));
-		if (c != null && c.isValid() && c.click(true)) {
-			final Timer timer = new Timer(800);
-			while (timer.isRunning() && getCurrentTab() != index) {
-				sleep(15);
+		Component c = ctx.widgets.get(WIDGET, 35 - (index * 2));
+		return c.click() && Condition.wait(new Callable<Boolean>() {
+			@Override
+			public Boolean call() throws Exception {
+				return getCurrentTab() == index;
 			}
-			return getCurrentTab() == index;
-		}
-		return false;
+		}, 100, 8);
 	}
 
 	public Item getTabItem(final int index) {

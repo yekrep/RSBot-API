@@ -1,10 +1,12 @@
 package org.powerbot.script.internal.scripts;
 
+import java.util.concurrent.Callable;
+
 import org.powerbot.script.PollingScript;
 import org.powerbot.script.internal.InternalScript;
 import org.powerbot.script.methods.Hud;
+import org.powerbot.script.util.Condition;
 import org.powerbot.script.util.Random;
-import org.powerbot.script.util.Timer;
 import org.powerbot.script.wrappers.Component;
 import org.powerbot.script.wrappers.Item;
 import org.powerbot.script.wrappers.Player;
@@ -49,7 +51,7 @@ public class TicketDestroy extends PollingScript implements InternalScript {
 		}
 		threshold.offer(priority.get());
 
-		Component item = this.component;
+		final Component item = this.component;
 		if (item == null || !ctx.backpack.scroll(item)) {
 			return -1;
 		}
@@ -64,14 +66,16 @@ public class TicketDestroy extends PollingScript implements InternalScript {
 			return Random.nextInt(1000, 2000);
 		}
 
-		Widget widget = ctx.widgets.get(1183);
-		final Timer timer = new Timer(Random.nextInt(4000, 6000));
-		while (timer.isRunning() && !widget.isValid()) {
-			sleep(150);
-		}
-		if (!widget.isValid()) {
+		final Widget widget = ctx.widgets.get(1183);
+		if (!Condition.wait(new Callable<Boolean>() {
+			@Override
+			public Boolean call() throws Exception {
+				return widget.isValid();
+			}
+		}, Random.nextInt(400, 600), 10)) {
 			return -1;
 		}
+
 		Component component = null;
 		for (final Component c : widget.getComponents()) {
 			if (c.isVisible() && c.getTooltip().trim().equalsIgnoreCase("destroy")) {
@@ -80,10 +84,12 @@ public class TicketDestroy extends PollingScript implements InternalScript {
 			}
 		}
 		if (component != null && component.interact("Destroy")) {
-			final Timer t = new Timer(Random.nextInt(1500, 2000));
-			while (t.isRunning() && item.getItemId() != -1) {
-				sleep(175);
-			}
+			Condition.wait(new Callable<Boolean>() {
+				@Override
+				public Boolean call() throws Exception {
+					return item.getItemId() == -1;
+				}
+			}, Random.nextInt(150, 200), 10);
 		}
 		return -1;
 	}
