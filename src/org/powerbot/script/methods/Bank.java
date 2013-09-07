@@ -5,9 +5,11 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 import org.powerbot.script.lang.Filter;
 import org.powerbot.script.lang.ItemQuery;
+import org.powerbot.script.util.Condition;
 import org.powerbot.script.util.Random;
 import org.powerbot.script.util.Timer;
 import org.powerbot.script.wrappers.Component;
@@ -161,25 +163,22 @@ public class Bank extends ItemQuery<Item> {
 		return isOpen();
 	}
 
-	public boolean close(final boolean wait) {
+	public boolean close(boolean wait) {
 		if (!isOpen()) {
 			return true;
 		}
-		final Component c = ctx.widgets.get(WIDGET, COMPONENT_BUTTON_CLOSE);
-		if (c == null) {
-			return false;
-		}
-		if (c.isValid() && c.interact("Close")) {
-			if (!wait) {
-				return true;
+		Component c = ctx.widgets.get(WIDGET, COMPONENT_BUTTON_CLOSE);
+		if (c.interact("Close")) {
+			if (wait) {
+				Condition.wait(new Callable<Boolean>() {
+					@Override
+					public Boolean call() throws Exception {
+						return !isOpen();
+					}
+				}, Random.nextInt(100, 200), 10);
 			}
-			final Timer t = new Timer(Random.nextInt(1000, 2000));
-			while (t.isRunning() && isOpen()) {
-				sleep(100);
-			}
-			return !isOpen();
 		}
-		return false;
+		return !isOpen();
 	}
 
 	public boolean close() {
