@@ -70,12 +70,12 @@ public class Bank extends ItemQuery<Item> {
 		};
 
 		List<Interactive> interactives = new ArrayList<>();
-		ctx.npcs.select().id(BANK_NPC_IDS).select(f).select(UNREACHABLE_FILTER).nearest().limit(1).addTo(interactives);
+		ctx.npcs.select().id(BANK_NPC_IDS).select(f).select(UNREACHABLE_FILTER).nearest().limit(3).shuffle().limit(1).addTo(interactives);
 		List<GameObject> cache = new ArrayList<>();
 		ctx.objects.select().addTo(cache);
-		ctx.objects.id(BANK_BOOTH_IDS).select(f).select(UNREACHABLE_FILTER).nearest().limit(1).addTo(interactives);
-		ctx.objects.select(cache).id(BANK_COUNTER_IDS).select(f).select(UNREACHABLE_FILTER).nearest().limit(1).addTo(interactives);
-		ctx.objects.select(cache).id(BANK_CHEST_IDS).select(f).select(UNREACHABLE_FILTER).nearest().limit(1).addTo(interactives);
+		ctx.objects.id(BANK_BOOTH_IDS).select(f).select(UNREACHABLE_FILTER).nearest().limit(3).shuffle().limit(1).addTo(interactives);
+		ctx.objects.select(cache).id(BANK_COUNTER_IDS).select(f).select(UNREACHABLE_FILTER).nearest().limit(3).shuffle().limit(1).addTo(interactives);
+		ctx.objects.select(cache).id(BANK_CHEST_IDS).select(f).select(UNREACHABLE_FILTER).nearest().limit(3).shuffle().limit(1).addTo(interactives);
 
 		if (interactives.isEmpty()) {
 			return ctx.objects.getNil();
@@ -85,10 +85,8 @@ public class Bank extends ItemQuery<Item> {
 	}
 
 	public Locatable getNearest() {
-		Locatable nearest = Tile.NIL;
-		for (Npc npc : ctx.npcs.select().select(UNREACHABLE_FILTER).id(BANK_NPC_IDS).nearest().limit(1)) {
-			nearest = npc;
-		}
+		Locatable nearest = ctx.npcs.select().select(UNREACHABLE_FILTER).id(BANK_NPC_IDS).nearest().limit(1).poll();
+
 		Tile loc = ctx.players.local().getLocation();
 		for (GameObject object : ctx.objects.select().select(UNREACHABLE_FILTER).
 				id(BANK_BOOTH_IDS, BANK_COUNTER_IDS, BANK_CHEST_IDS).nearest().limit(1)) {
