@@ -1,7 +1,9 @@
 package org.powerbot.script.internal;
 
+import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import ec.util.MersenneTwister;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.methods.MethodProvider;
 import org.powerbot.script.wrappers.Validatable;
@@ -17,10 +19,12 @@ public abstract class Antipattern extends MethodProvider implements Runnable, Va
 	 * By default this value is 20 (20%).
 	 */
 	protected final AtomicInteger freq;
+	private final Random r;
 
 	public Antipattern(final MethodContext factory) {
 		super(factory);
 		freq = new AtomicInteger(5);
+		r = new MersenneTwister();
 	}
 
 	/**
@@ -57,7 +61,7 @@ public abstract class Antipattern extends MethodProvider implements Runnable, Va
 	 * @return a random number
 	 */
 	protected long getRandom() {
-		return System.nanoTime() >> 10;
+		return r.nextLong();
 	}
 
 	/**
