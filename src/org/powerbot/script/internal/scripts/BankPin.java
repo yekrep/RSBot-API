@@ -20,7 +20,7 @@ public class BankPin extends PollingScript implements InternalScript {
 	public int poll() {
 		if (!ctx.widgets.get(WIDGET, COMPONENT).isVisible()) {
 			threshold.poll();
-			return -1;
+			return 0;
 		}
 		threshold.offer(priority.get());
 

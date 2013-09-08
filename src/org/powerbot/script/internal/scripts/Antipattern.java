@@ -16,7 +16,7 @@ public class Antipattern extends PollingScript implements InternalScript {
 	public int poll() {
 		if (timer.isRunning()) {
 			threshold.poll();
-			return -1;
+			return 0;
 		}
 		threshold.offer(priority.get());
 

@@ -47,7 +47,7 @@ public class TicketDestroy extends PollingScript implements InternalScript {
 	public int poll() {
 		if (!isValid()) {
 			threshold.poll();
-			return -1;
+			return 0;
 		}
 		threshold.offer(priority.get());
 
