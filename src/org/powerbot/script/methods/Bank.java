@@ -24,6 +24,11 @@ import static org.powerbot.script.util.Constants.getInt;
 import static org.powerbot.script.util.Constants.getIntA;
 import static org.powerbot.script.util.Constants.getObj;
 
+/**
+ * Utilities pertaining to the bank.
+ *
+ * @author Timer
+ */
 public class Bank extends ItemQuery<Item> {
 	public static final int[] BANK_NPC_IDS = getIntA("bank.npc.ids");
 	public static final int[] BANK_BOOTH_IDS = getIntA("bank.booth.ids");
@@ -85,6 +90,12 @@ public class Bank extends ItemQuery<Item> {
 		return interactives.get(Random.nextInt(0, interactives.size()));
 	}
 
+	/**
+	 * Returns the absolute nearest bank for walking purposes. Do not use this to open the bank.
+	 *
+	 * @return the {@link Locatable} of the nearest bank or {@link Tile#NIL}
+	 * @see #open()
+	 */
 	public Locatable getNearest() {
 		Locatable nearest = ctx.npcs.select().select(UNREACHABLE_FILTER).id(BANK_NPC_IDS).nearest().limit(1).poll();
 
@@ -98,18 +109,40 @@ public class Bank extends ItemQuery<Item> {
 		return nearest;
 	}
 
+	/**
+	 * Determines if a bank is present in the loaded region.
+	 *
+	 * @return <tt>true</tt> if a bank is present; otherwise <tt>false</tt>
+	 */
 	public boolean isPresent() {
 		return getNearest() != Tile.NIL;
 	}
 
+	/**
+	 * Determines if a bank is on screen.
+	 *
+	 * @return <tt>true</tt> if a bank is in view; otherwise <tt>false</tt>
+	 */
 	public boolean isOnScreen() {
 		return getBank().isValid();
 	}
 
+	/**
+	 * Determines if the bank is open.
+	 *
+	 * @return <tt>true</tt> is the bank is open; otherwise <tt>false</tt>
+	 */
 	public boolean isOpen() {
 		return ctx.widgets.get(WIDGET, COMPONENT_CONTAINER_ITEMS).isValid();
 	}
 
+	/**
+	 * Opens a random on-screen bank.
+	 * <p/>
+	 * Do not continue execution within the current poll after this method so BankPin may activate.
+	 *
+	 * @return <tt>true</tt> if the bank was opened; otherwise <tt>false</tt>
+	 */
 	public boolean open() {
 		if (isOpen()) {
 			return true;
@@ -162,6 +195,12 @@ public class Bank extends ItemQuery<Item> {
 		return isOpen();
 	}
 
+	/**
+	 * Closes the bank by means of walking or the 'X'.
+	 *
+	 * @param walk <tt>true</tt> to close by walking (random), <tt>false</tt> to close by the 'X'.
+	 * @return <tt>true</tt> if the bank was closed; otherwise <tt>false</tt>
+	 */
 	public boolean close(boolean walk) {
 		if (!isOpen()) {
 			return true;
@@ -180,10 +219,18 @@ public class Bank extends ItemQuery<Item> {
 		}, Random.nextInt(100, 200), 10);
 	}
 
+	/**
+	 * Closes the bank by walking or clicking the 'X'.
+	 *
+	 * @return <tt>true</tt> if the bank was closed; otherwise <tt>false</tt>
+	 */
 	public boolean close() {
 		return close(true);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	protected List<Item> get() {
 		final Component c = ctx.widgets.get(WIDGET, COMPONENT_CONTAINER_ITEMS);
@@ -200,18 +247,26 @@ public class Bank extends ItemQuery<Item> {
 		return items;
 	}
 
+	/**
+	 * Grabs the {@link Item} at the provided index.
+	 *
+	 * @param index the index of the item to grab
+	 * @return the {@link Item} at the specified index; or {@link org.powerbot.script.methods.Bank#getNil()}
+	 */
 	public Item getItemAt(final int index) {
-		final Component c = ctx.widgets.get(WIDGET, COMPONENT_CONTAINER_ITEMS);
-		if (c == null || !c.isValid()) {
-			return null;
-		}
-		final Component i = c.getChild(index);
-		if (i != null && i.getItemId() != -1) {
+		final Component i = ctx.widgets.get(WIDGET, COMPONENT_CONTAINER_ITEMS).getChild(index);
+		if (i.getItemId() != -1) {
 			return new Item(ctx, i);
 		}
-		return null;
+		return getNil();
 	}
 
+	/**
+	 * Returns the first index of the provided item id.
+	 *
+	 * @param id the id of the item
+	 * @return the index of the item; otherwise {@code -1}
+	 */
 	public int indexOf(final int id) {
 		final Component items = ctx.widgets.get(WIDGET, COMPONENT_CONTAINER_ITEMS);
 		if (items == null || !items.isValid()) {
@@ -226,10 +281,19 @@ public class Bank extends ItemQuery<Item> {
 		return -1;
 	}
 
+	/**
+	 * @return the index of the current bank tab
+	 */
 	public int getCurrentTab() {
 		return ((ctx.settings.get(SETTING_BANK_STATE) >>> 24) - 136) / 8;
 	}
 
+	/**
+	 * Changes the current tab to the provided index.
+	 *
+	 * @param index the index desired
+	 * @return <tt>true</tt> if the tab was successfully changed; otherwise <tt>false</tt>
+	 */
 	public boolean setCurrentTab(final int index) {
 		Component c = ctx.widgets.get(WIDGET, 35 - (index * 2));
 		return c.click() && Condition.wait(new Callable<Boolean>() {
@@ -240,18 +304,38 @@ public class Bank extends ItemQuery<Item> {
 		}, 100, 8);
 	}
 
+	/**
+	 * Returns the item in the specified tab if it exists.
+	 *
+	 * @param index the tab index
+	 * @return the {@link Item} displayed in the tab; otherwise {@link org.powerbot.script.methods.Bank#getNil()}
+	 */
 	public Item getTabItem(final int index) {
 		final Component c = ctx.widgets.get(WIDGET, 82 - (index * 2));
 		if (c != null && c.isValid()) {
 			return new Item(ctx, c);
 		}
-		return null;
+		return getNil();
 	}
 
+	/**
+	 * Withdraws an item with the provided id and amount.
+	 *
+	 * @param id     the id of the item
+	 * @param amount the amount to withdraw
+	 * @return <tt>true</tt> if the item was withdrew, does not determine if amount was matched; otherwise <tt>false</tt>
+	 */
 	public boolean withdraw(int id, Amount amount) {
 		return withdraw(id, amount.getValue());
 	}
 
+	/**
+	 * Withdraws an item with the provided id and amount.
+	 *
+	 * @param id     the id of the item
+	 * @param amount the amount to withdraw
+	 * @return <tt>true</tt> if the item was withdrew, does not determine if amount was matched; otherwise <tt>false</tt>
+	 */
 	public boolean withdraw(int id, int amount) {//TODO: anti pattern
 		Item item = select().id(id).poll();
 		final Component container = ctx.widgets.get(WIDGET, COMPONENT_CONTAINER_ITEMS);
@@ -316,10 +400,24 @@ public class Bank extends ItemQuery<Item> {
 		return ctx.backpack.getMoneyPouch() + ctx.backpack.select().count(true) != inv;
 	}
 
+	/**
+	 * Deposits an item with the provided id and amount.
+	 *
+	 * @param id     the id of the item
+	 * @param amount the amount to deposit
+	 * @return <tt>true</tt> if the item was deposited, does not determine if amount was matched; otherwise <tt>false</tt>
+	 */
 	public boolean deposit(int id, Amount amount) {
 		return deposit(id, amount.getValue());
 	}
 
+	/**
+	 * Deposits an item with the provided id and amount.
+	 *
+	 * @param id     the id of the item
+	 * @param amount the amount to deposit
+	 * @return <tt>true</tt> if the item was deposited, does not determine if amount was matched; otherwise <tt>false</tt>
+	 */
 	public boolean deposit(final int id, final int amount) {
 		Item item = ctx.backpack.select().id(id).shuffle().poll();
 		if (!isOpen() || amount < 0 || !item.isValid()) {
@@ -359,32 +457,48 @@ public class Bank extends ItemQuery<Item> {
 		return ctx.backpack.select().count(true) != inv;
 	}
 
+	/**
+	 * Deposits the inventory via the button.
+	 *
+	 * @return <tt>true</tt> if the button was clicked, not if the inventory is empty; otherwise <tt>false</tt>
+	 */
 	public boolean depositInventory() {
-		final Component c = ctx.widgets.get(WIDGET, COMPONENT_BUTTON_DEPOSIT_INVENTORY);
-		if (c == null || !c.isValid()) {
-			return false;
-		}
-		if (ctx.backpack.select().isEmpty()) {
-			return true;
-		}
-		return c.click();
+		return ctx.backpack.select().isEmpty() || ctx.widgets.get(WIDGET, COMPONENT_BUTTON_DEPOSIT_INVENTORY).click();
 	}
 
+	/**
+	 * Deposits equipment via the button.
+	 *
+	 * @return <tt>true</tt> if the button was clicked; otherwise <tt>false</tt>
+	 */
 	public boolean depositEquipment() {
-		final Component c = ctx.widgets.get(WIDGET, COMPONENT_BUTTON_DEPOSIT_EQUIPMENT);
-		return c != null && c.isValid() && c.click();
+		return ctx.widgets.get(WIDGET, COMPONENT_BUTTON_DEPOSIT_EQUIPMENT).click();
 	}
 
+	/**
+	 * Deposits familiar inventory via the button.
+	 *
+	 * @return <tt>true</tt> if the button was clicked; otherwise <tt>false</tt>
+	 */
 	public boolean depositFamiliar() {
-		final Component c = ctx.widgets.get(WIDGET, COMPONENT_BUTTON_DEPOSIT_FAMILIAR);
-		return c != null && c.isValid() && c.click();
+		return ctx.widgets.get(WIDGET, COMPONENT_BUTTON_DEPOSIT_FAMILIAR).click();
 	}
 
+	/**
+	 * Deposits the money pouch via the button.
+	 *
+	 * @return <tt>true</tt> if the button was clicked; otherwise <tt>false</tt>
+	 */
 	public boolean depositMoneyPouch() {
-		final Component c = ctx.widgets.get(WIDGET, COMPONENT_BUTTON_DEPOSIT_MONEY);
-		return c != null && c.isValid() && c.click();
+		return ctx.widgets.get(WIDGET, COMPONENT_BUTTON_DEPOSIT_MONEY).click();
 	}
 
+	/**
+	 * Changes the withdraw mode.
+	 *
+	 * @param noted <tt>true</tt> for noted items; otherwise <tt>false</tt>
+	 * @return <tt>true</tt> if the withdraw mode was successfully changed; otherwise <tt>false</tt>
+	 */
 	public boolean setWithdrawMode(final boolean noted) {
 		if (isWithdrawModeNoted() != noted) {
 			final Component c = ctx.widgets.get(WIDGET, COMPONENT_BUTTON_WITHDRAW_MODE);
@@ -397,6 +511,11 @@ public class Bank extends ItemQuery<Item> {
 		return isWithdrawModeNoted() == noted;
 	}
 
+	/**
+	 * Determines if the withdraw mode is noted mode.
+	 *
+	 * @return <tt>true</tt> if withdrawing as notes; otherwise <tt>false</tt>
+	 */
 	public boolean isWithdrawModeNoted() {
 		return ctx.settings.get(SETTING_WITHDRAW_MODE) == 0x1;
 	}
@@ -420,11 +539,17 @@ public class Bank extends ItemQuery<Item> {
 		return child != null && child.isVisible();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Item getNil() {
 		return new Item(ctx, -1, -1, null);
 	}
 
+	/**
+	 * An enumeration providing standard bank amount options.
+	 */
 	public static enum Amount {
 		ONE(1), FIVE(5), TEN(10), ALL_BUT_ONE(-1), ALL(0);
 
