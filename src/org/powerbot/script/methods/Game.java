@@ -33,7 +33,6 @@ public class Game extends MethodProvider {
 	public static final int INDEX_LOGGING_IN = getInt("game.index.logging.in");
 	public static final int INDEX_MAP_LOADED = getInt("game.index.map.loaded");
 	public static final int INDEX_MAP_LOADING = getInt("game.index.map.loading");
-	public static final int[] INDEX_LOGGED_IN = {INDEX_MAP_LOADED, INDEX_MAP_LOADING};
 	public static final int[] SIN_TABLE = new int[16384];
 	public static final int[] COS_TABLE = new int[16384];
 
@@ -56,10 +55,21 @@ public class Game extends MethodProvider {
 		this.viewport = new Viewport();
 	}
 
+	/**
+	 * An enumeration of the possible cross-hairs in game.
+	 *
+	 * @author Timer
+	 */
 	public enum Crosshair {
 		NONE, DEFAULT, ACTION
 	}
 
+	/**
+	 * Logs out of the game into either the lobby or login screen.
+	 *
+	 * @param lobby <tt>true</tt> for the lobby; <tt>false</tt> for the login screen
+	 * @return <tt>true</tt> if successfully logged out; otherwise <tt>false</tt>
+	 */
 	public boolean logout(boolean lobby) {
 		if (ctx.widgets.get(1477, 75).interact("Logout")) {//TODO: auto detect
 			Widget widget = ctx.widgets.get(26);
@@ -83,6 +93,16 @@ public class Game extends MethodProvider {
 		return getClientState() == (lobby ? INDEX_LOBBY_SCREEN : INDEX_LOGIN_SCREEN);
 	}
 
+	/**
+	 * Returns the current client state.
+	 *
+	 * @return the client state
+	 * @see Game#INDEX_LOGIN_SCREEN
+	 * @see Game#INDEX_LOBBY_SCREEN
+	 * @see Game#INDEX_LOGGING_IN
+	 * @see Game#INDEX_MAP_LOADED
+	 * @see Game#INDEX_MAP_LOADING
+	 */
 	public int getClientState() {
 		Client client = ctx.getClient();
 		final Constants constants = getConstants();
@@ -104,16 +124,21 @@ public class Game extends MethodProvider {
 		return -1;
 	}
 
+	/**
+	 * Determines if the player is logged into the game.
+	 *
+	 * @return <tt>true</tt> if logged in; otherwise <tt>false</tt>
+	 */
 	public boolean isLoggedIn() {
-		final int curr = getClientState();
-		for (final int s : INDEX_LOGGED_IN) {
-			if (s == curr) {
-				return true;
-			}
-		}
-		return false;
+		int state = getClientState();
+		return state == INDEX_MAP_LOADED || state == INDEX_MAP_LOADING;
 	}
 
+	/**
+	 * Determines the current {@link Crosshair} displayed.
+	 *
+	 * @return the displayed {@link Crosshair}
+	 */
 	public Crosshair getCrosshair() {
 		Client client = ctx.getClient();
 		int type = client != null ? client.getCrossHairType() : -1;
@@ -123,6 +148,11 @@ public class Game extends MethodProvider {
 		return Crosshair.values()[type];
 	}
 
+	/**
+	 * Determines the base of the loaded region.
+	 *
+	 * @return the {@link Tile} of the base
+	 */
 	public Tile getMapBase() {
 		Client client = ctx.getClient();
 		if (client == null) {
@@ -134,6 +164,11 @@ public class Game extends MethodProvider {
 		return baseInfo != null ? new Tile(baseInfo.getX(), baseInfo.getY(), client.getPlane()) : Tile.NIL;
 	}
 
+	/**
+	 * Determines the current floor level.
+	 *
+	 * @return the current floor level
+	 */
 	public int getPlane() {
 		Client client = ctx.getClient();
 		if (client == null) {
@@ -142,14 +177,29 @@ public class Game extends MethodProvider {
 		return client.getPlane();
 	}
 
+	/**
+	 * Changes the preferred world for auto-login.
+	 *
+	 * @param world the preferred world to login to
+	 */
 	public void setPreferredWorld(final int world) {
 		ctx.setPreferredWorld(world);
 	}
 
+	/**
+	 * Returns the preferred world.
+	 *
+	 * @return the preferred world
+	 */
 	public int getPreferredWorld() {
 		return ctx.getPreferredWorld();
 	}
 
+	/**
+	 * Determines the size of the game space
+	 *
+	 * @return the {@link Dimension}s of the game space
+	 */
 	public Dimension getDimensions() {
 		Client client = ctx.getClient();
 		final Canvas canvas;
@@ -159,10 +209,23 @@ public class Game extends MethodProvider {
 		return new Dimension(canvas.getWidth(), canvas.getHeight());
 	}
 
+	/**
+	 * Determines if a point is on screen.
+	 *
+	 * @param point the point to check
+	 * @return <tt>true</tt> if the point is on screen; otherwise <tt>false</tt>
+	 */
 	public boolean isPointOnScreen(final Point point) {
 		return isPointOnScreen(point.x, point.y);
 	}
 
+	/**
+	 * Determines if a point is on screen.
+	 *
+	 * @param x the x-coordinate
+	 * @param y the y-coordinate
+	 * @return <tt>true</tt> if the point is on screen; otherwise <tt>false</tt>
+	 */
 	public boolean isPointOnScreen(final int x, final int y) {
 		Dimension dimension = getDimensions();
 		if (x > 0 && y > 0) {
@@ -179,6 +242,14 @@ public class Game extends MethodProvider {
 		return false;
 	}
 
+	/**
+	 * Determines the tile height at the provided point in the game region.
+	 *
+	 * @param rX    the relative x
+	 * @param rY    the relative y
+	 * @param plane the plane
+	 * @return the height at the given point
+	 */
 	public int tileHeight(final int rX, final int rY, int plane) {
 		Client client = ctx.getClient();
 		if (client == null) {
@@ -220,6 +291,15 @@ public class Game extends MethodProvider {
 		return 0;
 	}
 
+	/**
+	 * Determines an on-screen point of the given point in the game region.
+	 *
+	 * @param x      the relative x position
+	 * @param y      the relative y position
+	 * @param plane  the plane
+	 * @param height the height offset
+	 * @return the {@link Point} in game space
+	 */
 	public Point groundToScreen(final int x, final int y, final int plane, final int height) {
 		if (x < 512 || y < 512 || x > 52224 || y > 52224) {
 			return new Point(-1, -1);
@@ -228,6 +308,14 @@ public class Game extends MethodProvider {
 		return worldToScreen(x, h, y);
 	}
 
+	/**
+	 * Transforms the given matrix (3D) into a game screen (2D) point.
+	 *
+	 * @param x the x
+	 * @param y the y
+	 * @param z the depth
+	 * @return the {@link Point} in game space, otherwise {@code new Point(-1, -1)}
+	 */
 	public Point worldToScreen(int x, final int y, final int z) {
 		final float _z = (viewport.zOff + (viewport.zX * x + viewport.zY * y + viewport.zZ * z));
 		final float _x = (viewport.xOff + (viewport.xX * x + viewport.xY * y + viewport.xZ * z));
@@ -241,6 +329,12 @@ public class Game extends MethodProvider {
 		return new Point(-1, -1);
 	}
 
+	/**
+	 * Calculates a point on the mini-map.
+	 *
+	 * @param locatable the {@link Locatable} to convert to map point
+	 * @return the map {@link Point}
+	 */
 	public Point tileToMap(Locatable locatable) {
 		Tile tile = locatable.getLocation();
 		Client client = ctx.getClient();
@@ -325,6 +419,13 @@ public class Game extends MethodProvider {
 
 	}
 
+	/**
+	 * Looks up a reference in the provided hash table.
+	 *
+	 * @param nc the hash table
+	 * @param id the reference id
+	 * @return the found reference, or null.
+	 */
 	public Object lookup(final HashTable nc, final long id) {
 		final Node[] buckets;
 		if (nc == null || (buckets = nc.getBuckets()) == null || id < 0) {
