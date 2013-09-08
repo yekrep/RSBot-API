@@ -21,6 +21,11 @@ public class Equipment extends ItemQuery<Item> {
 		super(factory);
 	}
 
+	/**
+	 * An enumeration of equipment slots.
+	 *
+	 * @author Timer
+	 */
 	public static enum Slot {
 		HEAD(0, 0),
 		CAPE(1, 1),
@@ -52,6 +57,9 @@ public class Equipment extends ItemQuery<Item> {
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	protected List<Item> get() {
 		List<Item> items = new ArrayList<>(28);
@@ -68,6 +76,12 @@ public class Equipment extends ItemQuery<Item> {
 		return items;
 	}
 
+	/**
+	 * Returns the {@link Item} at the spcified {@link Slot}.
+	 *
+	 * @param slot the {@link Slot} to get the {@link Item} at
+	 * @return the {@link Item} in the provided slot
+	 */
 	public Item getItemAt(Slot slot) {
 		int index = slot.getStorageIndex();
 		int[][] data = ctx.items.getItems(Items.INDEX_EQUIPMENT);
@@ -78,11 +92,19 @@ public class Equipment extends ItemQuery<Item> {
 		return new Item(ctx, data[index][0], data[index][1], c);
 	}
 
+	/**
+	 * Returns the {@link Component} of the equipment display
+	 *
+	 * @return the {@link Component} of the equipment display
+	 */
 	public Component getComponent() {
 		Component gear = ctx.widgets.get(WIDGET_GEAR, COMPONENT_GEAR_CONTAINER);
 		return gear.isVisible() ? gear : ctx.widgets.get(WIDGET, COMPONENT_CONTAINER);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Item getNil() {
 		return new Item(ctx, -1, -1, null);
