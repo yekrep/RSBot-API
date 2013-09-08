@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.powerbot.script.internal.Antipattern;
-import org.powerbot.script.internal.scripts.CameraPattern;
-import org.powerbot.script.internal.scripts.ExaminePattern;
-import org.powerbot.script.internal.scripts.WindowPattern;
+import org.powerbot.script.internal.scripts.pattern.CameraPattern;
+import org.powerbot.script.internal.scripts.pattern.ExaminePattern;
+import org.powerbot.script.internal.scripts.pattern.WindowPattern;
 
 /**
  * Executes anti-patterns to disrupt distinguishable patterns.

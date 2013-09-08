@@ -1,4 +1,4 @@
-package org.powerbot.script.internal.scripts;
+package org.powerbot.script.internal.scripts.pattern;
 
 import org.powerbot.script.internal.Antipattern;
 import org.powerbot.script.lang.Filter;
@@ -12,6 +12,7 @@ import org.powerbot.script.wrappers.Npc;
 public class ExaminePattern extends Antipattern {
 	public ExaminePattern(final MethodContext factory) {
 		super(factory);
+		freq.set(freq.get() / 5);
 	}
 
 	@Override

@@ -1,4 +1,4 @@
-package org.powerbot.script.internal.scripts;
+package org.powerbot.script.internal.scripts.pattern;
 
 import java.util.Arrays;
 
@@ -10,7 +10,7 @@ import org.powerbot.script.util.Random;
 public class WindowPattern extends Antipattern {
 	public WindowPattern(final MethodContext factory) {
 		super(factory);
-		freq.set(freq.get() / 4);
+		freq.set(freq.get() / 2);
 	}
 
 	@Override

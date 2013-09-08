@@ -20,7 +20,7 @@ public abstract class Antipattern extends MethodProvider implements Runnable, Va
 
 	public Antipattern(final MethodContext factory) {
 		super(factory);
-		freq = new AtomicInteger(20);
+		freq = new AtomicInteger(5);
 	}
 
 	/**

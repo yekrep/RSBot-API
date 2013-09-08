@@ -1,4 +1,4 @@
-package org.powerbot.script.internal.scripts;
+package org.powerbot.script.internal.scripts.pattern;
 
 import org.powerbot.script.internal.Antipattern;
 import org.powerbot.script.methods.MethodContext;
