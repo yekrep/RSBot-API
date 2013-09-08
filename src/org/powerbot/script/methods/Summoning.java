@@ -28,26 +28,58 @@ public class Summoning extends MethodProvider {
 		super(factory);
 	}
 
+	/**
+	 * Returns the current amount of summoning points.
+	 *
+	 * @return the current amount summoning points
+	 */
 	public int getSummoningPoints() {
 		return ctx.skills.getLevel(Skills.SUMMONING);
 	}
 
+	/**
+	 * Returns the time left for the spawned familiar.
+	 *
+	 * @return the time left for the spawned familiar
+	 */
 	public int getTimeLeft() {
 		return (ctx.settings.get(SETTING_TIME_LEFT) >>> 6) * 30;
 	}
 
+	/**
+	 * Returns the current amount of special points.
+	 *
+	 * @return the amount of special points
+	 */
 	public int getSpecialPoints() {
 		return ctx.settings.get(SETTING_SPECIAL_POINTS);
 	}
 
+	/**
+	 * Determines if a familiar is summoned.
+	 *
+	 * @return <tt>true</tt> if a familiar is summoned; otherwise <tt>false</tt>
+	 */
 	public boolean isFamiliarSummoned() {
 		return ctx.settings.get(SETTING_NPC_ID) > 0;
 	}
 
+	/**
+	 * Selects the specified option in the summoning menu.
+	 *
+	 * @param option the desired option to select
+	 * @return <tt>true</tt> if the action was selected; otherwise <tt>false</tt>
+	 */
 	public boolean select(final Option option) {
 		return select(option.getText());
 	}
 
+	/**
+	 * Selects the specified option in the summoning menu.
+	 *
+	 * @param action the desired option to select
+	 * @return <tt>true</tt> if the action was selected; otherwise <tt>false</tt>
+	 */
 	public boolean select(final String action) {
 		Component c = ctx.widgets.get(CombatBar.WIDGET, CombatBar.COMPONENT_BUTTON_SUMMONING);
 		if (Option.RENEW_FAMILIAR.getText().toLowerCase().contains(action.toLowerCase())) {
@@ -73,6 +105,11 @@ public class Summoning extends MethodProvider {
 		return c.interact(action);
 	}
 
+	/**
+	 * Returns the {@link Option} the left click option is set to.
+	 *
+	 * @return the {@link Option} when left clicked
+	 */
 	public Option getLeftClickOption() {
 		int val = ctx.settings.get(SETTING_LEFT_OPTION);
 		for (Option o : Option.values()) {
@@ -83,6 +120,12 @@ public class Summoning extends MethodProvider {
 		return Option.FOLLOWER_DETAILS;
 	}
 
+	/**
+	 * Changes the left click option.
+	 *
+	 * @param option the desired option
+	 * @return <tt>true</tt> if the option was successfully changed; otherwise <tt>false</tt>
+	 */
 	public boolean setLeftClickOption(final Option option) {
 		if (ctx.settings.get(SETTING_LEFT_OPTION) == option.getValue()) {
 			return true;
@@ -122,6 +165,11 @@ public class Summoning extends MethodProvider {
 	}
 
 
+	/**
+	 * Returns the {@link Npc} of the currently summoned familiar.
+	 *
+	 * @return the {@link Npc}; otherwise {@link org.powerbot.script.methods.Npcs#get()}
+	 */
 	public Npc getNpc() {
 		if (!isFamiliarSummoned()) {
 			return ctx.npcs.getNil();
@@ -139,6 +187,11 @@ public class Summoning extends MethodProvider {
 		return ctx.npcs.getNil();
 	}
 
+	/**
+	 * Returns the {@link Familiar} of the currently summoned familiar.
+	 *
+	 * @return the {@link Familiar}
+	 */
 	public Familiar getFamiliar() {
 		if (!isFamiliarSummoned()) {
 			return null;
@@ -151,36 +204,71 @@ public class Summoning extends MethodProvider {
 		return null;
 	}
 
+	/**
+	 * Calls the familiar on the familiar menu.
+	 *
+	 * @return <tt>true</tt> if the action was clicked.
+	 */
 	public boolean callFamiliar() {
 		final Component c = ctx.widgets.get(WIDGET, 49);
 		return c != null && isFamiliarSummoned() && c.isVisible() && c.interact("Call");
 	}
 
+	/**
+	 * Dismisses the familiar on the familiar menu.
+	 *
+	 * @return <tt>true</tt> if the action was clicked.
+	 */
 	public boolean dismissFamiliar() {
 		final Component c = ctx.widgets.get(WIDGET, 51);
 		return c != null && isFamiliarSummoned() && c.isVisible() && c.interact("Dismiss Now");
 	}
 
+	/**
+	 * Selects take bob on the familiar menu.
+	 *
+	 * @return <tt>true</tt> if the action was clicked.
+	 */
 	public boolean takeBoB() {
 		final Component c = ctx.widgets.get(WIDGET, 67);
 		return c != null && isFamiliarSummoned() && c.isVisible() && c.interact("Take");
 	}
 
+	/**
+	 * Renews the familiar on the familiar menu.
+	 *
+	 * @return <tt>true</tt> if the action was clicked.
+	 */
 	public boolean renewFamiliar() {
 		final Component c = ctx.widgets.get(WIDGET, 69);
 		return c != null && isFamiliarSummoned() && c.isVisible() && c.interact("Renew");
 	}
 
+	/**
+	 * Casts on the familiar menu.
+	 *
+	 * @return <tt>true</tt> if the action was clicked.
+	 */
 	public boolean cast() {
 		final Component c = ctx.widgets.get(WIDGET, 5);
 		return c != null && isFamiliarSummoned() && c.isVisible() && c.interact("Cast");
 	}
 
+	/**
+	 * Attacks on the familiar menu.
+	 *
+	 * @return <tt>true</tt> if the action was clicked.
+	 */
 	public boolean attack() {
 		final Component c = ctx.widgets.get(WIDGET, 65);
 		return c != null && isFamiliarSummoned() && c.isVisible() && c.interact("Attack");
 	}
 
+	/**
+	 * An enumeration of possible familiars.
+	 *
+	 * @author Timer
+	 */
 	public enum Familiar {
 		SPIRIT_WOLF(12047, 1, 0, 1, 12533, 3),
 		DREADFOWL(12043, 4, 0, 1, 12445, 3),
@@ -298,6 +386,11 @@ public class Summoning extends MethodProvider {
 		}
 	}
 
+	/**
+	 * An enumeration of game options.
+	 *
+	 * @author Timer
+	 */
 	public enum Option {
 		FOLLOWER_DETAILS("Follower Details", 7, 0x10, 0x0),
 		CAST("Cast", 9, 0x11, 0x1),
