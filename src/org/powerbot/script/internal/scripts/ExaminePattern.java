@@ -22,7 +22,7 @@ public class ExaminePattern extends Antipattern {
 				public boolean accept(Npc npc) {
 					return npc.isOnScreen();
 				}
-			}).shuffle().limit(Random.nextInt(1, isAggressive() ? 5 : 3))) {
+			}).shuffle().limit(isAggressive() ? 1 : Random.nextInt(1, 3))) {
 				hover(n);
 			}
 
@@ -34,7 +34,7 @@ public class ExaminePattern extends Antipattern {
 			public boolean accept(final GameObject o) {
 				return o.getType() == GameObject.Type.INTERACTIVE && o.isOnScreen();
 			}
-		}).shuffle().limit(Random.nextInt(1, isAggressive() ? 5 : 3))) {
+		}).shuffle().limit(isAggressive() ? 1 : Random.nextInt(1, 3))) {
 			hover(o);
 		}
 	}
