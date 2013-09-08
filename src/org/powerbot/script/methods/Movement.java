@@ -26,6 +26,12 @@ public class Movement extends MethodProvider {
 		super(factory);
 	}
 
+	/**
+	 * Creates a new tile path.
+	 *
+	 * @param tiles The array of tiles in the path.
+	 * @return the generated {@link TilePath}
+	 */
 	public TilePath newTilePath(final Tile... tiles) {
 		if (tiles == null) {
 			throw new IllegalArgumentException("tiles are null");
@@ -33,6 +39,12 @@ public class Movement extends MethodProvider {
 		return new TilePath(ctx, tiles);
 	}
 
+	/**
+	 * Creates a local path in the current region.
+	 *
+	 * @param locatable the destination tile
+	 * @return the generated {@link LocalPath}
+	 */
 	public LocalPath findPath(Locatable locatable) {
 		if (locatable == null) {
 			throw new IllegalArgumentException();
@@ -40,6 +52,11 @@ public class Movement extends MethodProvider {
 		return new LocalPath(ctx, ctx.map, locatable);
 	}
 
+	/**
+	 * Determines the current destination of the player.
+	 *
+	 * @return the {@link Tile} destination; or {@link Tile#NIL} if there is no destination
+	 */
 	public Tile getDestination() {
 		Client client = ctx.getClient();
 		if (client == null) {
@@ -52,6 +69,12 @@ public class Movement extends MethodProvider {
 		return ctx.game.getMapBase().derive(dX, dY);
 	}
 
+	/**
+	 * Steps towards the provided {@link Locatable}.
+	 *
+	 * @param locatable the locatable to step towards
+	 * @return <tt>true</tt> if stepped; otherwise <tt>false</tt>
+	 */
 	public boolean stepTowards(final Locatable locatable) {
 		Tile loc = locatable.getLocation();
 		if (!loc.getMatrix(ctx).isOnMap()) {
@@ -85,6 +108,12 @@ public class Movement extends MethodProvider {
 		}, true);
 	}
 
+	/**
+	 * Determines the closest tile on the map to the provided {@link Locatable}.
+	 *
+	 * @param locatable the {@link Locatable}
+	 * @return the closest {@link Tile} on map to the provided {@link Locatable}
+	 */
 	public Tile getClosestOnMap(Locatable locatable) {
 		Tile local = ctx.players.local().getLocation();
 		Tile tile = locatable.getLocation();
@@ -119,6 +148,12 @@ public class Movement extends MethodProvider {
 		return Tile.NIL;
 	}
 
+	/**
+	 * Alters the running state.
+	 *
+	 * @param run <tt>true</tt> to run; otherwise <tt>false</tt>
+	 * @return <tt>true</tt> if the state was successfully changed; otherwise <tt>false</tt>
+	 */
 	public boolean setRunning(final boolean run) {
 		if (isRunning() != run) {
 			final Component c = ctx.widgets.get(WIDGET_MAP, COMPONENT_RUN);
@@ -131,10 +166,20 @@ public class Movement extends MethodProvider {
 		return isRunning() == run;
 	}
 
+	/**
+	 * Determines if the player is currently set to run.
+	 *
+	 * @return <tt>true</tt> if set to be running; otherwise <tt>false</tt>
+	 */
 	public boolean isRunning() {
 		return ctx.settings.get(SETTING_RUN_ENABLED) == 0x1;
 	}
 
+	/**
+	 * Determines the current energy level of the player.
+	 *
+	 * @return the current energy level
+	 */
 	public int getEnergyLevel() {
 		final Component c = ctx.widgets.get(WIDGET_MAP, COMPONENT_RUN_ENERGY);
 		if (c != null && c.isValid()) {
@@ -158,6 +203,13 @@ public class Movement extends MethodProvider {
 		return planes[plane];
 	}
 
+	/**
+	 * Gets the distance between two places in the loaded game region.
+	 *
+	 * @param _start the start position
+	 * @param _end   the end position
+	 * @return the computed path distance
+	 */
 	public int getDistance(Locatable _start, Locatable _end) {
 		Tile start, end;
 		if (_start == null || _end == null) {
@@ -178,6 +230,13 @@ public class Movement extends MethodProvider {
 		return ctx.map.getDistance(startX, startY, endX, endY, ctx.game.getPlane());
 	}
 
+	/**
+	 * Determines if the the end position is reachable from the start position.
+	 *
+	 * @param _start the start position
+	 * @param _end   the end position
+	 * @return <tt>true</tt> if the end is reachable; otherwise <tt>false</tt>
+	 */
 	public boolean isReachable(Locatable _start, Locatable _end) {
 		Tile start, end;
 		if (_start == null || _end == null) {
