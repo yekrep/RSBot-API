@@ -9,6 +9,8 @@ import org.powerbot.script.wrappers.Component;
 import static org.powerbot.script.util.Constants.getInt;
 
 /**
+ * Utilities for manipulating the hud.
+ *
  * @author Timer
  */
 public class Hud extends MethodProvider {
@@ -24,6 +26,11 @@ public class Hud extends MethodProvider {
 		super(factory);
 	}
 
+	/**
+	 * An enumeration of menu options.
+	 *
+	 * @author Timer
+	 */
 	public enum Menu {
 		NONE(-1),
 		OTHER(-1),
@@ -52,6 +59,11 @@ public class Hud extends MethodProvider {
 		}
 	}
 
+	/**
+	 * An enumeration of known possible windows.
+	 *
+	 * @author Timer
+	 */
 	public enum Window {
 		ALL_CHAT(Menu.NONE, 18726, 18754, 137, 82),
 		PRIVATE_CHAT(Menu.NONE, 18727, 18755, 1467, 55),

@@ -18,6 +18,9 @@ public class GroundItems extends GroundItemQuery<GroundItem> {
 		super(factory);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	protected List<GroundItem> get() {
 		final List<GroundItem> items = new ArrayList<>();
@@ -49,7 +52,7 @@ public class GroundItems extends GroundItemQuery<GroundItem> {
 				if (cache == null || (deque = cache.getNodeList()) == null) {
 					continue;
 				}
-				final Deque<RSItem> itemStack = new Deque<>(deque,RSItem.class);
+				final Deque<RSItem> itemStack = new Deque<>(deque, RSItem.class);
 				for (RSItem item = itemStack.getHead(); item != null; item = itemStack.getNext()) {
 					items.add(new GroundItem(ctx, new Tile(x, y, plane), item));
 				}
@@ -58,6 +61,9 @@ public class GroundItems extends GroundItemQuery<GroundItem> {
 		return items;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public GroundItem getNil() {
 		return new GroundItem(ctx, Tile.NIL, null);

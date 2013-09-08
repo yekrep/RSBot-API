@@ -9,7 +9,7 @@ import org.powerbot.script.lang.HintArrowQuery;
 import org.powerbot.script.wrappers.HintArrow;
 
 /**
- * {@link HintArrows} is a static utility which provides access to the game's hint (directional) arrows.
+ * {@link HintArrows} is a utility which provides access to the game's hint (directional) arrows.
  *
  * @author Timer
  */
@@ -19,9 +19,7 @@ public class HintArrows extends HintArrowQuery<HintArrow> {
 	}
 
 	/**
-	 * Returns the loaded {@link HintArrow}s.
-	 *
-	 * @return an array of loaded {@link HintArrow}s
+	 * {@inheritDoc}
 	 */
 	@Override
 	protected List<HintArrow> get() {
@@ -41,6 +39,9 @@ public class HintArrows extends HintArrowQuery<HintArrow> {
 		return items;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public HintArrow getNil() {
 		return new HintArrow(ctx, null);
