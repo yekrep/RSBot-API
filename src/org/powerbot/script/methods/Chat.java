@@ -20,6 +20,9 @@ public class Chat extends TextQuery<ChatOption> {
 		super(factory);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public List<ChatOption> get() {
 		List<ChatOption> options = new ArrayList<>(5);
@@ -33,9 +36,31 @@ public class Chat extends TextQuery<ChatOption> {
 		return options;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public ChatOption getNil() {
 		return new ChatOption(ctx, -1, null);
+	}
+
+	/**
+	 * Determines if the chat is continuable.
+	 *
+	 * @return <tt>true</tt> if the chat is continuable; otherwise <tt>false</tt>
+	 */
+	public boolean isContinue() {
+		return getContinue() != null;
+	}
+
+	/**
+	 * Continues the chat.
+	 *
+	 * @return <tt>true</tt> if the chat was continued; otherwise <tt>false</tt>
+	 */
+	public boolean clickContinue() {
+		Component c = getContinue();
+		return c != null && c.click();
 	}
 
 	private Component getContinue() {
@@ -47,14 +72,5 @@ public class Chat extends TextQuery<ChatOption> {
 			return c;
 		}
 		return null;
-	}
-
-	public boolean isContinue() {
-		return getContinue() != null;
-	}
-
-	public boolean clickContinue() {
-		Component c = getContinue();
-		return c != null && c.click();
 	}
 }
