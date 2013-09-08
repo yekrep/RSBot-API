@@ -76,6 +76,7 @@ public class Hud extends MethodProvider {
 		NOTES(Menu.OPTIONS, 18744, 18779, 1417),
 		MUSIC_PLAYER(Menu.OPTIONS, 18745, 18780, 1416),
 
+		MINIGAMES(Menu.OTHER, 18749, 18788, 939),
 		FAMILIAR(Menu.OTHER, 18748, 18787, Summoning.WIDGET);
 		private final Menu menu;
 		private final int miniTexture;
