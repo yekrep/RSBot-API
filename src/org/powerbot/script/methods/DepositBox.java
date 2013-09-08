@@ -26,7 +26,7 @@ public class DepositBox extends ItemQuery<Item> {
 	public static final int COMPONENT_BUTTON_DEPOSIT_POUCH = getInt("depositbox.component.button.deposit.pouch");
 
 	public DepositBox(MethodContext factory) {
-		super(factory);
+		super(factory);//TODO: document class
 	}
 
 	public boolean isOpen() {
