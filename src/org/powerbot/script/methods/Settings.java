@@ -4,7 +4,7 @@ import org.powerbot.client.Client;
 import org.powerbot.client.PlayerMetaInfo;
 
 /**
- * {@link Settings} is a static utility which provides raw access to the game's varpbits.
+ * {@link Settings} is a utility which provides raw access to the game's varpbits.
  *
  * @author Timer
  */

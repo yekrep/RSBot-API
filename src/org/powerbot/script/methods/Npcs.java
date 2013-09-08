@@ -23,9 +23,7 @@ public class Npcs extends BasicNamedQuery<Npc> {
 	}
 
 	/**
-	 * Returns all the {@link Npc}s in the region.
-	 *
-	 * @return an array of the loaded {@link Npc}s
+	 * {@inheritDoc}
 	 */
 	@Override
 	protected List<Npc> get() {
@@ -58,6 +56,9 @@ public class Npcs extends BasicNamedQuery<Npc> {
 		return items;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Npc getNil() {
 		return new Npc(ctx, null);

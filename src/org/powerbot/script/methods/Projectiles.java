@@ -13,7 +13,7 @@ import org.powerbot.script.lang.IdQuery;
 import org.powerbot.script.wrappers.Projectile;
 
 /**
- * {@link Projectiles} is a static utility which provides access to the game's projectiles.
+ * {@link Projectiles} is a utility which provides access to the game's projectiles.
  * <p/>
  * {@link Projectile}s are game projectiles on the current plane which target an entity.
  *
@@ -25,9 +25,7 @@ public class Projectiles extends IdQuery<Projectile> {
 	}
 
 	/**
-	 * Returns the {@link Projectile}s in the region.
-	 *
-	 * @return an array of loaded {@link Projectile}s
+	 * {@inheritDoc}
 	 */
 	@Override
 	protected List<Projectile> get() {
@@ -53,6 +51,9 @@ public class Projectiles extends IdQuery<Projectile> {
 		return items;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Projectile getNil() {
 		return new Projectile(ctx, null);

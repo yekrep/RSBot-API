@@ -14,11 +14,19 @@ import org.powerbot.client.RSObject;
 import org.powerbot.script.lang.BasicNamedQuery;
 import org.powerbot.script.wrappers.GameObject;
 
+/**
+ * Utilities pertaining to in-game objects.
+ *
+ * @author Timer
+ */
 public class Objects extends BasicNamedQuery<GameObject> {
 	public Objects(MethodContext factory) {
 		super(factory);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	protected List<GameObject> get() {
 		final List<GameObject> items = new ArrayList<>();
@@ -87,6 +95,9 @@ public class Objects extends BasicNamedQuery<GameObject> {
 		return items;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public GameObject getNil() {
 		return new GameObject(ctx, null, GameObject.Type.UNKNOWN);
