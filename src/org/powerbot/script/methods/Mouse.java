@@ -14,6 +14,11 @@ public class Mouse extends MethodProvider {
 		super(factory);
 	}
 
+	/**
+	 * Returns the current position of the mouse.
+	 *
+	 * @return position of the mouse
+	 */
 	public Point getLocation() {
 		Client client = ctx.getClient();
 		final org.powerbot.client.input.Mouse mouse;
@@ -23,6 +28,11 @@ public class Mouse extends MethodProvider {
 		return mouse.getLocation();
 	}
 
+	/**
+	 * Returns the last press location.
+	 *
+	 * @return the press location
+	 */
 	public Point getPressLocation() {
 		Client client = ctx.getClient();
 		final org.powerbot.client.input.Mouse mouse;
@@ -32,6 +42,11 @@ public class Mouse extends MethodProvider {
 		return mouse.getPressLocation();
 	}
 
+	/**
+	 * Returns the last press time.
+	 *
+	 * @return the press time
+	 */
 	public long getPressTime() {
 		Client client = ctx.getClient();
 		final org.powerbot.client.input.Mouse mouse;
@@ -41,18 +56,34 @@ public class Mouse extends MethodProvider {
 		return mouse.getPressTime();
 	}
 
+	/**
+	 * Returns if the mouse is currently pressed.
+	 *
+	 * @return <tt>true</tt> if the mouse is pressed; otherwise <tt>false</tt>
+	 */
 	public boolean isPressed() {
 		Client client = ctx.getClient();
 		final org.powerbot.client.input.Mouse mouse;
 		return !(client == null || (mouse = client.getMouse()) == null) && mouse.isPressed();
 	}
 
+	/**
+	 * Returns if the mouse is currently present.
+	 *
+	 * @return <tt>true</tt> if the mouse is present; otherwise <tt>false</tt>
+	 */
 	public boolean isPresent() {
 		Client client = ctx.getClient();
 		final org.powerbot.client.input.Mouse mouse;
 		return !(client == null || (mouse = client.getMouse()) == null) && mouse.isPresent();
 	}
 
+	/**
+	 * Scrolls by one unit either down or up.
+	 *
+	 * @param down <tt>true</tt> to scroll down; otherwise <tt>false</tt> to scroll up
+	 * @return <tt>true</tt> if scrolled; otherwise <tt>false</tt>
+	 */
 	public boolean scroll(boolean down) {
 		final MouseHandler handler = getMouseHandler();
 		if (handler == null) {
