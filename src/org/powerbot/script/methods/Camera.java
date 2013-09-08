@@ -7,6 +7,11 @@ import org.powerbot.script.wrappers.Locatable;
 import org.powerbot.script.wrappers.Player;
 import org.powerbot.script.wrappers.Tile;
 
+/**
+ * Utilities pertaining to the camera.
+ *
+ * @author Timer
+ */
 public class Camera extends MethodProvider {
 	public RSInteractableLocation offset;
 	public RSInteractableLocation center;
@@ -33,21 +38,40 @@ public class Camera extends MethodProvider {
 		this.center = vector3f;
 	}
 
+	/**
+	 * Returns the camera offset on the x-axis.
+	 *
+	 * @return the offset on the x-axis
+	 */
 	public int getX() {
 		Tile tile = ctx.game.getMapBase();
 		return (int) (offset.getX() - (tile.getX() << 9));
 	}
 
+	/**
+	 * Returns the camera offset on the y-axis.
+	 *
+	 * @return the offset on the y-axis
+	 */
 	public int getY() {
 		Tile tile = ctx.game.getMapBase();
 		return (int) (offset.getY() - (tile.getY() << 9));
 	}
 
-
+	/**
+	 * Returns the camera offset on the z-axis.
+	 *
+	 * @return the offset on the z-axis
+	 */
 	public int getZ() {
 		return -(int) offset.getZ();
 	}
 
+	/**
+	 * Determines the current camera yaw (angle of rotation).
+	 *
+	 * @return the camera yaw
+	 */
 	public int getYaw() {
 		float deltaX = offset.getX() - center.getX();
 		float deltaY = offset.getY() - center.getY();
@@ -55,6 +79,11 @@ public class Camera extends MethodProvider {
 		return (int) (((int) ((Math.PI - theta) * 2607.5945876176133D) & 0x3FFF) / 45.51);
 	}
 
+	/**
+	 * Determines the current camera pitch.
+	 *
+	 * @return the camera pitch
+	 */
 	public final int getPitch() {
 		float deltaX = center.getX() - offset.getX();
 		float deltaY = center.getY() - offset.getY();
@@ -64,10 +93,22 @@ public class Camera extends MethodProvider {
 		return (int) (((int) (theta * 2607.5945876176133D) & 0x3FFF) / 4096f * 100f);
 	}
 
+	/**
+	 * Sets the camera pitch to one absolute, up or down.
+	 *
+	 * @param up <tt>true</tt> to be up; otherwise <tt>false</tt> for down
+	 * @return <tt>true</tt> if the absolute was reached; success is normally guaranteed regardless of return of <tt>false</tt>
+	 */
 	public boolean setPitch(boolean up) {
 		return setPitch(up ? 100 : 0);
 	}
 
+	/**
+	 * Sets the camera pitch the desired percentage.
+	 *
+	 * @param percent the percent to set the pitch to
+	 * @return <tt>true</tt> if the pitch was reached; otherwise <tt>false</tt>
+	 */
 	public boolean setPitch(final int percent) {
 		int curAlt = getPitch();
 		int lastAlt = 0;
@@ -99,26 +140,33 @@ public class Camera extends MethodProvider {
 		return curAlt == percent;
 	}
 
-	public void setAngle(final char direction) {
+	/**
+	 * Changes the yaw (angle) of the camera.
+	 *
+	 * @param direction the direction to set the camera, 'n', 's', 'w', 'e'.     \
+	 * @return <tt>true</tt> if the camera was rotated to the angle; otherwise <tt>false</tt>
+	 */
+	public boolean setAngle(final char direction) {
 		switch (direction) {
 		case 'n':
-			setAngle(0);
-			break;
+			return setAngle(0);
 		case 'w':
-			setAngle(90);
-			break;
+			return setAngle(90);
 		case 's':
-			setAngle(180);
-			break;
+			return setAngle(180);
 		case 'e':
-			setAngle(270);
-			break;
-		default:
-			throw new RuntimeException("invalid direction " + direction + ", expecting n,w,s,e");
+			return setAngle(270);
 		}
+		throw new RuntimeException("invalid direction " + direction + ", expecting n,w,s,e");
 	}
 
-	public void setAngle(int degrees) {//TODO: anti-pattern
+	/**
+	 * Changes the yaw (angle) of the camera.
+	 *
+	 * @param degrees the degrees to set the camera to
+	 * @return <tt>true</tt> if the camera was rotated to the angle; otherwise <tt>false</tt>
+	 */
+	public boolean setAngle(int degrees) {
 		degrees %= 360;
 		if (getAngleTo(degrees) > 5) {
 			ctx.keyboard.send("{VK_LEFT down}");
@@ -145,8 +193,15 @@ public class Camera extends MethodProvider {
 			}
 			ctx.keyboard.send("{VK_RIGHT up}");
 		}
+		return Math.abs(getAngleTo(degrees)) < 15;
 	}
 
+	/**
+	 * Gets the angle change to the specified degrees.
+	 *
+	 * @param degrees the degrees to compute to
+	 * @return the angle change required to be at the provided degrees
+	 */
 	public int getAngleTo(final int degrees) {
 		int ca = getYaw();
 		if (ca < degrees) {
@@ -159,10 +214,21 @@ public class Camera extends MethodProvider {
 		return da;
 	}
 
+	/**
+	 * Turns to the specified {@link Locatable}.
+	 *
+	 * @param l the {@link Locatable} to turn to
+	 */
 	public void turnTo(final Locatable l) {
 		turnTo(l, 0);
 	}
 
+	/**
+	 * Turns to the specified {@link Locatable} with the provided deviation.
+	 *
+	 * @param l   the {@link Locatable} to turn to
+	 * @param dev the yaw deviation
+	 */
 	public void turnTo(final Locatable l, final int dev) {
 		final int a = getAngleToLocatable(l);
 		if (dev == 0) {
