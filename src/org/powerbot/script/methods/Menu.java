@@ -16,6 +16,11 @@ import org.powerbot.script.lang.Filter;
 import org.powerbot.script.util.Random;
 import org.powerbot.util.StringUtil;
 
+/**
+ * Utilities pertaining to the in-game menu.
+ *
+ * @author Timer
+ */
 public class Menu extends MethodProvider {
 	public Menu(MethodContext factory) {
 		super(factory);
@@ -31,10 +36,23 @@ public class Menu extends MethodProvider {
 		}
 	}
 
+	/**
+	 * Creates a filter obeying the provided action.
+	 *
+	 * @param action the action to filter
+	 * @return the filter
+	 */
 	public static Filter<Entry> filter(String action) {
 		return filter(action, null);
 	}
 
+	/**
+	 * Creates a filter obeying the provided action and option.
+	 *
+	 * @param action the action to filter
+	 * @param option the option to filter
+	 * @return the filter
+	 */
 	public static Filter<Entry> filter(String action, String option) {
 		final String a = action != null ? action.toLowerCase() : null;
 		final String o = option != null ? option.toLowerCase() : null;
@@ -47,11 +65,22 @@ public class Menu extends MethodProvider {
 		};
 	}
 
+	/**
+	 * Determines if the menu is open.
+	 *
+	 * @return <tt>true</tt> if the menu is open; otherwise <tt>false</tt>
+	 */
 	public boolean isOpen() {
 		Client client = ctx.getClient();
 		return client != null && client.isMenuOpen();
 	}
 
+	/**
+	 * Determines the first index of a specified filter.
+	 *
+	 * @param filter the filter
+	 * @return the first index found; otherwise -1
+	 */
 	public int indexOf(Filter<Entry> filter) {
 		List<MenuItemNode> nodes = getMenuItemNodes();
 		int d = 0;
@@ -64,6 +93,12 @@ public class Menu extends MethodProvider {
 		return -1;
 	}
 
+	/**
+	 * Hovers the first index of the specified filter.
+	 *
+	 * @param filter the filter
+	 * @return <tt>true</tt> if an entry was hovered, otherwise <tt>false</tt>
+	 */
 	public boolean hover(Filter<Entry> filter) {
 		Client client = ctx.getClient();
 		if (client == null) {
@@ -93,6 +128,12 @@ public class Menu extends MethodProvider {
 		return hoverIndex(client, index);
 	}
 
+	/**
+	 * Clicks the first index of the specified flter.
+	 *
+	 * @param filter the filter
+	 * @return <tt>true</tt> if the entry was clicked; otherwise <tt>false</tt>
+	 */
 	public boolean click(Filter<Entry> filter) {
 		Client client = ctx.getClient();
 		if (client == null) {
@@ -108,6 +149,11 @@ public class Menu extends MethodProvider {
 		return hover(filter) && ctx.mouse.click(true);
 	}
 
+	/**
+	 * Closes the menu.
+	 *
+	 * @return <tt>true</tt> if the menu was closed, otherwise <tt>false</tt>
+	 */
 	public boolean close() {
 		Client client = ctx.getClient();
 		if (client == null) {
@@ -225,6 +271,11 @@ public class Menu extends MethodProvider {
 		return nodes;
 	}
 
+	/**
+	 * Returns an array of all the current menu items ([action_1 option_1, action_2 option_2, ...]).
+	 *
+	 * @return the array of menu items
+	 */
 	public String[] getItems() {
 		List<MenuItemNode> nodes = getMenuItemNodes();
 		int len = nodes.size();
