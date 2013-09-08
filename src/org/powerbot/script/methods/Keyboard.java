@@ -4,7 +4,7 @@ import org.powerbot.script.internal.InputHandler;
 
 public class Keyboard extends MethodProvider {
 	public Keyboard(MethodContext factory) {
-		super(factory);
+		super(factory);//TODO: document
 	}
 
 	public boolean send(final String str) {

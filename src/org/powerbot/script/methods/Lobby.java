@@ -14,6 +14,11 @@ import org.powerbot.script.wrappers.Widget;
 
 import static org.powerbot.script.util.Constants.getInt;
 
+/**
+ * Utilities pertaining to the lobby.
+ *
+ * @author Timer
+ */
 public class Lobby extends MethodProvider {
 	public static final int STATE_LOBBY_IDLE = getInt("lobby.state.lobby.idle");
 	public static final int STATE_LOGGING_IN = getInt("lobby.state.logging.in");
@@ -37,6 +42,11 @@ public class Lobby extends MethodProvider {
 		super(factory);
 	}
 
+	/**
+	 * Determines if the lobby is open.
+	 *
+	 * @return <tt>true</tt> if the lobby is open; otherwise <tt>false</tt>
+	 */
 	public boolean isOpen() {
 		return ctx.game.getClientState() == STATE_LOBBY_IDLE;
 	}
@@ -54,14 +64,34 @@ public class Lobby extends MethodProvider {
 		return child != null && child.isValid() && child.click(true);
 	}
 
+	/**
+	 * Enters the game with default timeout.
+	 *
+	 * @return <tt>true</tt> if the account is logged in; otherwise <tt>false</tt>
+	 * @see #enterGame(org.powerbot.script.methods.Lobby.World, int)
+	 */
 	public boolean enterGame() {
 		return enterGame(LOGIN_DEFAULT_TIMEOUT);
 	}
 
+	/**
+	 * Enters the game with provided timeout.
+	 *
+	 * @param timeout the timeout (in milliseconds)
+	 * @return <tt>true</tt> if the account is logged in; otherwise <tt>false</tt>
+	 * @see #enterGame(org.powerbot.script.methods.Lobby.World, int)
+	 */
 	public boolean enterGame(final int timeout) {
 		return enterGame(null, timeout);
 	}
 
+	/**
+	 * Enters the game in the specified world.
+	 *
+	 * @param world the world to enter
+	 * @return <tt>true</tt> if the account is logged in; otherwise <tt>false</tt>
+	 * @see #enterGame(org.powerbot.script.methods.Lobby.World, int)
+	 */
 	public boolean enterGame(final World world) {
 		return enterGame(world, LOGIN_DEFAULT_TIMEOUT);
 	}
@@ -74,10 +104,10 @@ public class Lobby extends MethodProvider {
 	 * If the login fails, the {@link Dialog} will still be open when the method finishes as it allows the
 	 * developer to diagnose the reason for login failure.
 	 *
-	 * @param world   The world to select before logging in. Can be <tt>null</tt> if no world selection is wanted.
+	 * @param world   The world to select before logging in. Can be <tt>null</tt> if no world selection is wanted
 	 * @param timeout The amount of time (in milliseconds) to wait for the account to login. If the timeout is
-	 *                reached, the method will exit regardless the the current login state.
-	 * @return <tt>true</tt> if the account is logged in; otherwise <tt>false</tt>.
+	 *                reached, the method will exit regardless the the current login state
+	 * @return <tt>true</tt> if the account is logged in; otherwise <tt>false</tt>
 	 */
 	public boolean enterGame(final World world, final int timeout) {
 		if (ctx.game.getClientState() == STATE_LOBBY_IDLE) {
@@ -114,10 +144,10 @@ public class Lobby extends MethodProvider {
 	}
 
 	/**
-	 * Gets the currently selected world on the World Select panel. If the panel cannot be isValidd, the method
+	 * Gets the currently selected world on the World Select panel. If the panel cannot be isValid, the method
 	 * will open the World Select tab in order to isValid it.
 	 *
-	 * @return The currently selected world, or <tt>null</tt> if unable to retrieve world.
+	 * @return he currently selected world, or <tt>null</tt> if unable to retrieve world.
 	 */
 	public World getSelectedWorld() {
 		if (!isOpen() || !closeDialog() || (!ctx.widgets.get(Tab.WORLD_SELECT.getIndex()).isValid() && !openTab(Tab.WORLD_SELECT))) {
@@ -134,6 +164,12 @@ public class Lobby extends MethodProvider {
 		return null;
 	}
 
+	/**
+	 * Returns the {@link World} for the provided number.
+	 *
+	 * @param worldNumber the number of the world
+	 * @return the {@link World} of the number
+	 */
 	public World getWorld(final int worldNumber) {
 		final World[] worlds = getWorlds(new Filter<World>() {
 			@Override
@@ -144,6 +180,11 @@ public class Lobby extends MethodProvider {
 		return worlds.length == 1 ? worlds[0] : null;
 	}
 
+	/**
+	 * Returns all available worlds.
+	 *
+	 * @return the array of {@link World}s
+	 */
 	public World[] getWorlds() {
 		return getWorlds(new Filter<World>() {
 			@Override
@@ -153,6 +194,12 @@ public class Lobby extends MethodProvider {
 		});
 	}
 
+	/**
+	 * Returns all available filtered worlds.
+	 *
+	 * @param filter the filter to open
+	 * @return the array of {@link World}s
+	 */
 	public World[] getWorlds(final Filter<World> filter) {
 		if (!isOpen() || !closeDialog()) {
 			return new World[0];
@@ -172,6 +219,11 @@ public class Lobby extends MethodProvider {
 		return worlds.toArray(new World[worlds.size()]);
 	}
 
+	/**
+	 * Returns the open dialog.
+	 *
+	 * @return the open dialog, or {@code null} if one is not open
+	 */
 	public Dialog getOpenDialog() {
 		for (final Dialog d : Dialog.values()) {
 			Component child = ctx.widgets.get(WIDGET_MAIN_LOBBY, d.getTextIndex());
