@@ -6,6 +6,8 @@ import java.util.Set;
 import static org.powerbot.script.util.Constants.getInt;
 
 /**
+ * API pertaining to in-game powers.
+ *
  * @author Timer
  */
 public class Powers extends MethodProvider {
@@ -28,6 +30,9 @@ public class Powers extends MethodProvider {
 		super(factory);
 	}
 
+	/**
+	 * Effects available in the normal prayer book.
+	 */
 	public enum Prayer implements Effect {
 		THICK_SKIN(0, 0, 1),
 		BURST_OF_STRENGTH(1, 1, 4),
@@ -101,6 +106,9 @@ public class Powers extends MethodProvider {
 		}
 	}
 
+	/**
+	 * Effects available in the curses book.
+	 */
 	public enum Curse implements Effect {
 		PROTECT_ITEM_CURSE(0, 0, 50),
 		SAP_WARRIOR(1, 1, 50),
