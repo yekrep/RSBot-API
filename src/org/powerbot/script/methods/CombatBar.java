@@ -41,15 +41,21 @@ public class CombatBar extends IdQuery<Action> {
 		super(factory);
 	}
 
+	/**
+	 * Uses the heal poison action on the combat bar.
+	 *
+	 * @return <tt>true</tt> if the action was selected; otherwise <tt>fales</tt>
+	 */
 	public boolean healPoison() {
 		return ctx.widgets.get(WIDGET, COMPONENT_BUTTON_HEAL).interact("Heal");
 	}
 
-	@Deprecated
-	public boolean setRealiating(boolean retaliate) {
-		return setRetaliating(retaliate);
-	}
-
+	/**
+	 * Changes the retaliation mode.
+	 *
+	 * @param retaliate <tt>true</tt> to automatically retaliate; otherwise <tt>false</tt>
+	 * @return <tt>true</tt> if the retaliation mode was successfully changed; otherwise <tt>false</tt>
+	 */
 	public boolean setRetaliating(boolean retaliate) {
 		if (retaliate != isRetaliating() &&
 				ctx.widgets.get(WIDGET, COMPONENT_BUTTON_RETALIATE).interact("Toggle")) {
@@ -60,10 +66,20 @@ public class CombatBar extends IdQuery<Action> {
 		return retaliate == isRetaliating();
 	}
 
+	/**
+	 * Determines if you are currently set to auto retaliate.
+	 *
+	 * @return <tt>true</tt> if retaliating; otherwise <tt>false</tt>
+	 */
 	public boolean isRetaliating() {
 		return ctx.settings.get(SETTING_RETALIATION) == 0;
 	}
 
+	/**
+	 * Determines the current health.
+	 *
+	 * @return the current health
+	 */
 	public int getHealth() {
 		String text = ctx.widgets.get(WIDGET, COMPONENT_HEALTH).getChild(COMPONENT_TEXT).getText();
 		int index = text.indexOf('/');
@@ -76,6 +92,12 @@ public class CombatBar extends IdQuery<Action> {
 		return -1;
 	}
 
+
+	/**
+	 * Determines the maximum health.
+	 *
+	 * @return the maximum health
+	 */
 	public int getMaximumHealth() {
 		String text = ctx.widgets.get(WIDGET, COMPONENT_HEALTH).getChild(COMPONENT_TEXT).getText();
 		int index = text.indexOf('/');
@@ -88,14 +110,30 @@ public class CombatBar extends IdQuery<Action> {
 		return -1;
 	}
 
+	/**
+	 * Determines the current level of adrenaline.
+	 *
+	 * @return the current level of adrenaline
+	 */
 	public int getAdrenaline() {
 		return ctx.settings.get(SETTING_ADRENALINE);
 	}
 
+	/**
+	 * Determines if the combat bar is expanded.
+	 *
+	 * @return <tt>true</tt> if expanded; otherwise <tt>false</tt>
+	 */
 	public boolean isExpanded() {
 		return ctx.widgets.get(WIDGET, COMPONENT_BAR).isVisible();
 	}
 
+	/**
+	 * Changes the state of the combat bar's expansion.
+	 *
+	 * @param expanded <tt>true</tt> to be expanded; <tt>false</tt> to be collapsed
+	 * @return <tt>true</tt> if the state was successfully changed; otherwise <tt>false</tt>
+	 */
 	public boolean setExpanded(final boolean expanded) {
 		if (isExpanded() == expanded) {
 			return true;
@@ -109,6 +147,12 @@ public class CombatBar extends IdQuery<Action> {
 		return isExpanded() == expanded;
 	}
 
+	/**
+	 * Returns the action at the specified slot.
+	 *
+	 * @param slot the slot to get the action at
+	 * @return the {@link Action}
+	 */
 	public Action getActionAt(final int slot) {
 		if (slot < 0 || slot >= NUM_SLOTS) {
 			throw new IndexOutOfBoundsException("0 > " + slot + " >= " + NUM_SLOTS);
@@ -126,6 +170,11 @@ public class CombatBar extends IdQuery<Action> {
 		return new Action(ctx, slot, type, id);
 	}
 
+	/**
+	 * Returns an array of all the actions on the combat bar.
+	 *
+	 * @return an array of {@link Action}s
+	 */
 	public Action[] getActions() {
 		final Action[] actions = new Action[NUM_SLOTS];
 		for (int i = 0; i < NUM_SLOTS; i++) {
@@ -134,6 +183,9 @@ public class CombatBar extends IdQuery<Action> {
 		return actions;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	protected List<Action> get() {
 		List<Action> actions = new ArrayList<>(NUM_SLOTS);
@@ -147,6 +199,12 @@ public class CombatBar extends IdQuery<Action> {
 		return actions;
 	}
 
+	/**
+	 * Deletes the provided {@link Action} on the combat bar.
+	 *
+	 * @param action the {@link Action} to delete
+	 * @return <tt>true</tt> if the {@link Action} was deleted; otherwise <tt>false</tt>
+	 */
 	public boolean deleteAction(Action action) {
 		int slot = action.getSlot();
 		action = getActionAt(slot);
@@ -165,10 +223,21 @@ public class CombatBar extends IdQuery<Action> {
 		return getActionAt(slot).getId() == -1;
 	}
 
+	/**
+	 * Determines if the combat bar is locked.
+	 *
+	 * @return <tt>true</tt> if combat bar is locked; otherwise <tt>false</tt>
+	 */
 	public boolean isLocked() {
 		return ((ctx.settings.get(682) >> 4) & 0x1) != 0;
 	}
 
+	/**
+	 * Sets the locked state of the combat bar.
+	 *
+	 * @param locked <tt>true</tt> to be locked; otherwise <tt>false</tt>
+	 * @return <tt>true</tt> if the state was successfully changed; otherwise <tt>false</tt>
+	 */
 	public boolean setLocked(final boolean locked) {
 		if (isLocked() == locked) {
 			return true;
@@ -182,6 +251,9 @@ public class CombatBar extends IdQuery<Action> {
 		return isLocked() == locked;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Action getNil() {
 		return new Action(ctx, 0, Action.Type.UNKNOWN, -1);
