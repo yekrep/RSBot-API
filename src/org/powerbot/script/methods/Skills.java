@@ -40,6 +40,12 @@ public class Skills extends MethodProvider {
 		super(factory);
 	}
 
+	/**
+	 * Returns the current level of the skill at the provided index.
+	 *
+	 * @param index the index of the skill
+	 * @return the current level at the specified index
+	 */
 	public int getLevel(final int index) {
 		final int[] levels = getLevels();
 		if (index >= 0 && index < levels.length) {
@@ -48,6 +54,12 @@ public class Skills extends MethodProvider {
 		return -1;
 	}
 
+	/**
+	 * Returns the real level of the skill at the provided index.
+	 *
+	 * @param index the index of the skill
+	 * @return the real level at the specified index
+	 */
 	public int getRealLevel(final int index) {
 		final int[] levels = getRealLevels();
 		if (index >= 0 && index < levels.length) {
@@ -56,6 +68,12 @@ public class Skills extends MethodProvider {
 		return -1;
 	}
 
+	/**
+	 * Returns the experience of the skill at the provided index.
+	 *
+	 * @param index the index of the skill
+	 * @return the experience at the specified index
+	 */
 	public int getExperience(final int index) {
 		final int[] exps = getExperiences();
 		if (index >= 0 && index < exps.length) {
@@ -115,6 +133,12 @@ public class Skills extends MethodProvider {
 		return new int[0];
 	}
 
+	/**
+	 * Determines the level at the specified amount of exp.
+	 *
+	 * @param exp the exp to convert to level
+	 * @return the level with the given amount of exp
+	 */
 	public int getLevelAt(final int exp) {
 		for (int i = XP_TABLE.length - 1; i > 0; i--) {
 			if (exp > XP_TABLE[i]) {
@@ -124,6 +148,12 @@ public class Skills extends MethodProvider {
 		return 1;
 	}
 
+	/**
+	 * Determines the experience required for the specified level.
+	 *
+	 * @param level the level to get the exp at
+	 * @return the exp at the specified level
+	 */
 	public int getExperienceAt(final int level) {
 		if (level < 0 || level > 120) {
 			return -1;
