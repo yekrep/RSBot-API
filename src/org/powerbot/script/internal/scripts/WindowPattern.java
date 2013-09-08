@@ -24,6 +24,9 @@ public class WindowPattern extends Antipattern {
 			if (!ctx.hud.isOpen(w) || ctx.hud.isVisible(w)) {
 				continue;
 			}
+			if (w.getMenu() == Hud.Menu.NONE) {
+				continue;
+			}
 
 			windows[d++] = w;
 		}
