@@ -19,6 +19,7 @@ public class WidgetCloser extends PollingScript implements InternalScript {
 			438 << 16 | 24,//recruit a friend
 			622 << 16 | 21,//member loyalty
 			204 << 16 | 3,//membership offer
+			149 << 16 | 237,//pickaxe
 			1252 << 16 | 8, // Squeal of Fortune notification
 	};
 
