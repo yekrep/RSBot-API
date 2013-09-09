@@ -27,6 +27,7 @@ import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
@@ -48,6 +49,7 @@ public class BotWidgetExplorer extends JFrame implements PaintListener {
 	private JPanel infoArea;
 	private JTextField searchBox;
 	private Rectangle highlightArea = null;
+	private List<Component> list = new ArrayList<>();
 
 	public BotWidgetExplorer() {
 		super("Widget Explorer");
@@ -67,6 +69,21 @@ public class BotWidgetExplorer extends JFrame implements PaintListener {
 		tree.setRootVisible(false);
 		tree.setEditable(false);
 		tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+		tree.setCellRenderer(new DefaultTreeCellRenderer() {
+			@Override
+			public java.awt.Component getTreeCellRendererComponent(JTree tree,
+			                                                       Object value, boolean selected, boolean expanded,
+			                                                       boolean leaf, int row, boolean hasFocus) {
+				super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+				this.setForeground(Color.black);
+				if (value instanceof ComponentWrapper) {
+					if (((ComponentWrapper) value).isHit()) {
+						this.setForeground(Color.red);
+					}
+				}
+				return this;
+			}
+		});
 		tree.addTreeSelectionListener(new TreeSelectionListener() {
 			public void valueChanged(final TreeSelectionEvent e) {
 				try {
@@ -274,7 +291,8 @@ public class BotWidgetExplorer extends JFrame implements PaintListener {
 
 		public void update(final String search) {
 			widgetWrappers.clear();
-			for (final Widget widget : BotChrome.getInstance().getBot().getMethodContext().widgets.getLoaded()) {
+			Widget[] loaded;
+			for (final Widget widget : loaded = BotChrome.getInstance().getBot().getMethodContext().widgets.getLoaded()) {
 				children:
 				for (final Component Component : widget.getComponents()) {
 					if (search(Component, search)) {
@@ -285,6 +303,21 @@ public class BotWidgetExplorer extends JFrame implements PaintListener {
 						if (search(widgetSubChild, search)) {
 							widgetWrappers.add(new WidgetWrapper(widget));
 							break children;
+						}
+					}
+				}
+			}
+			list.clear();
+			if (search != null && !search.isEmpty()) {
+				for (Widget widget : loaded) {
+					for (Component child : widget.getComponents()) {
+						if (search(child, search)) {
+							list.add(child);
+						}
+						for (Component child2 : child.getChildren()) {
+							if (search(child2, search)) {
+								list.add(child2);
+							}
 						}
 					}
 				}
@@ -324,24 +357,28 @@ public class BotWidgetExplorer extends JFrame implements PaintListener {
 	}
 
 	private final class ComponentWrapper {
-		private final Component Component;
+		private final Component component;
 
-		public ComponentWrapper(final Component Component) {
-			this.Component = Component;
+		public ComponentWrapper(final Component component) {
+			this.component = component;
 		}
 
 		public Component get() {
-			return Component;
+			return component;
+		}
+
+		public boolean isHit() {
+			return list.contains(component);
 		}
 
 		@Override
 		public boolean equals(final Object object) {
-			return object != null && object instanceof ComponentWrapper && Component.equals(((ComponentWrapper) object).get());
+			return object != null && object instanceof ComponentWrapper && component.equals(((ComponentWrapper) object).get());
 		}
 
 		@Override
 		public String toString() {
-			return "Component-" + Component.getIndex();
+			return "Component-" + component.getIndex();
 		}
 	}
 }
