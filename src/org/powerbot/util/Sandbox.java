@@ -1,5 +1,6 @@
 package org.powerbot.util;
 
+import java.awt.Desktop;
 import java.io.File;
 import java.io.FilePermission;
 import java.io.IOException;
@@ -115,6 +116,9 @@ public class Sandbox extends SecurityManager {
 		} else if (perm instanceof FilePermission) {
 			final FilePermission fp = (FilePermission) perm;
 			final String a = fp.getActions();
+			if (isCallingClass(Desktop.class)) {
+				return;
+			}
 			checkFilePath(fp.getName(), a.equalsIgnoreCase("read") || a.equalsIgnoreCase("readlink"));
 		}
 	}
