@@ -25,14 +25,12 @@ import org.powerbot.script.wrappers.RelativeLocation;
 import org.powerbot.script.wrappers.Tile;
 import org.powerbot.script.wrappers.Widget;
 
-import static org.powerbot.script.util.Constants.getInt;
-
 public class Game extends MethodProvider {
-	public static final int INDEX_LOGIN_SCREEN = getInt("game.index.login.screen");
-	public static final int INDEX_LOBBY_SCREEN = getInt("game.index.lobby.screen");
-	public static final int INDEX_LOGGING_IN = getInt("game.index.logging.in");
-	public static final int INDEX_MAP_LOADED = getInt("game.index.map.loaded");
-	public static final int INDEX_MAP_LOADING = getInt("game.index.map.loading");
+	public static final int INDEX_LOGIN_SCREEN = 3;
+	public static final int INDEX_LOBBY_SCREEN = 7;
+	public static final int INDEX_LOGGING_IN = 9;
+	public static final int INDEX_MAP_LOADED = 11;
+	public static final int INDEX_MAP_LOADING = 12;
 	public static final int[] SIN_TABLE = new int[16384];
 	public static final int[] COS_TABLE = new int[16384];
 

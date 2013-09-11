@@ -6,23 +6,22 @@ import org.powerbot.script.wrappers.Component;
 import org.powerbot.script.wrappers.Npc;
 import org.powerbot.script.wrappers.Player;
 
-import static org.powerbot.script.util.Constants.getInt;
-
 public class Summoning extends MethodProvider {
-	public static final int WIDGET = getInt("summoning.widget");
-	public static final int COMPONENT_NAME = getInt("summoning.component.name");
-	public static final int COMPONENT_TAKE_BOB = getInt("summoning.component.take.bob");
-	public static final int COMPONENT_RENEW = getInt("summoning.component.renew");
-	public static final int COMPONENT_CALL = getInt("summoning.component.call");
-	public static final int COMPONENT_DISMISS = getInt("summoning.component.dismiss");
-	public static final int SETTING_NPC_ID = getInt("summoning.setting.npc.id");
-	public static final int SETTING_TIME_LEFT = getInt("summoning.setting.time.left");
-	public static final int SETTING_SPECIAL_POINTS = getInt("summoning.setting.special.points");
-	public static final int SETTING_LEFT_OPTION = getInt("summoning.setting.left.option");
-	public static final int SETTING_LEFT_SELECTED = getInt("summoning.setting.left.selected");
-	public static final int SETTING_POUCH_ID = getInt("summoning.setting.pouch.id");
-	public static final int WIDGET_LEFT_SELECT = getInt("summoning.widget.left.select");
-	public static final int COMPONENT_CONFIRM = getInt("summoning.component.confirm");
+	public static final int WIDGET = 662;
+	public static final int COMPONENT_NAME = 54;
+	public static final int COMPONENT_TAKE_BOB = 68;
+	public static final int COMPONENT_RENEW = 70;
+	public static final int COMPONENT_CALL = 50;
+	public static final int COMPONENT_DISMISS = 52;
+	public static final int SETTING_NPC_ID = 1784;
+	public static final int SETTING_TIME_LEFT = 1786;
+	public static final int SETTING_SPECIAL_POINTS = 1787;
+	public static final int SETTING_LEFT_OPTION = 1789;
+	public static final int SETTING_LEFT_SELECTED = 1790;
+	public static final int SETTING_POUCH_ID = 1831;
+
+	public static final int WIDGET_LEFT_SELECT = 880;
+	public static final int COMPONENT_CONFIRM = 6;
 
 	public Summoning(MethodContext factory) {
 		super(factory);

@@ -7,14 +7,12 @@ import org.powerbot.script.lang.TextQuery;
 import org.powerbot.script.wrappers.ChatOption;
 import org.powerbot.script.wrappers.Component;
 
-import static org.powerbot.script.util.Constants.getInt;
-import static org.powerbot.script.util.Constants.getIntA;
-import static org.powerbot.script.util.Constants.getObj;
-
 public class Chat extends TextQuery<ChatOption> {
-	public static final int WIDGET = getInt("chat.widget");
-	private static final int[] COMPONENT_CHAT_OPTIONS = getIntA("chat.component.chat.options");
-	private static final int[][] WIDGET_CONTINUE = getObj("chat.widget.continue", int[][].class);
+	public static final int WIDGET = 1188;
+	private static final int[] COMPONENT_CHAT_OPTIONS = {
+			11, 19, 24, 29, 34
+	};
+	private static final int[][] WIDGET_CONTINUE = {{1189, 11}, {1184, 13}, {1186, 6}, {1191, 12}};
 
 	public Chat(MethodContext factory) {
 		super(factory);

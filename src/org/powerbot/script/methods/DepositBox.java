@@ -12,18 +12,18 @@ import org.powerbot.script.wrappers.GameObject;
 import org.powerbot.script.wrappers.Item;
 import org.powerbot.script.wrappers.Widget;
 
-import static org.powerbot.script.util.Constants.getInt;
-import static org.powerbot.script.util.Constants.getIntA;
-
 public class DepositBox extends ItemQuery<Item> {
-	public static final int[] DEPOSIT_BOX_IDS = getIntA("depositbox.box.ids");
-	public static final int WIDGET = getInt("depositbox.widget");
-	public static final int COMPONENT_BUTTON_CLOSE = getInt("depositbox.component.button.close");
-	public static final int COMPONENT_CONTAINER_ITEMS = getInt("depositbox.component.container.items");
-	public static final int COMPONENT_BUTTON_DEPOSIT_INVENTORY = getInt("depositbox.component.button.deposit.inventory");
-	public static final int COMPONENT_BUTTON_DEPOSIT_EQUIPMENT = getInt("depositbox.component.button.deposit.equipment");
-	public static final int COMPONENT_BUTTON_DEPOSIT_FAMILIAR = getInt("depositbox.component.button.deposit.familiar");
-	public static final int COMPONENT_BUTTON_DEPOSIT_POUCH = getInt("depositbox.component.button.deposit.pouch");
+	public static final int[] DEPOSIT_BOX_IDS = new int[]{
+			2045, 2133, 6396, 6402, 6404, 6417, 6418, 6453, 6457, 6478, 6836, 9398, 15985, 20228, 24995, 25937, 26969,
+			32924, 32930, 32931, 34755, 36788, 39830, 45079, 66668, 70512, 73268, 79036
+	};
+	public static final int WIDGET = 11;
+	public static final int COMPONENT_BUTTON_CLOSE = 14;
+	public static final int COMPONENT_CONTAINER_ITEMS = 15;
+	public static final int COMPONENT_BUTTON_DEPOSIT_INVENTORY = 17;
+	public static final int COMPONENT_BUTTON_DEPOSIT_EQUIPMENT = 21;
+	public static final int COMPONENT_BUTTON_DEPOSIT_FAMILIAR = 23;
+	public static final int COMPONENT_BUTTON_DEPOSIT_POUCH = 19;
 
 	public DepositBox(MethodContext factory) {
 		super(factory);//TODO: document class

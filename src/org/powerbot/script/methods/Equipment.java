@@ -8,14 +8,12 @@ import org.powerbot.script.lang.ItemQuery;
 import org.powerbot.script.wrappers.Component;
 import org.powerbot.script.wrappers.Item;
 
-import static org.powerbot.script.util.Constants.getInt;
-
 public class Equipment extends ItemQuery<Item> {
-	public static final int WIDGET = getInt("equipment.widget");
-	public static final int COMPONENT_CONTAINER = getInt("equipment.component.container");
-	public static final int WIDGET_GEAR = getInt("equipment.widget.gear");
-	public static final int COMPONENT_GEAR_CONTAINER = getInt("equipment.component.gear.container");
-	public static final int NUM_SLOTS = getInt("equipment.num.slots");
+	public static final int WIDGET = 1464;
+	public static final int COMPONENT_CONTAINER = 28;
+	public static final int WIDGET_GEAR = 1462;
+	public static final int COMPONENT_GEAR_CONTAINER = 13;
+	public static final int NUM_SLOTS = 13;
 
 	public Equipment(MethodContext factory) {
 		super(factory);

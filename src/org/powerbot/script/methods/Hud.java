@@ -6,19 +6,17 @@ import java.util.concurrent.TimeUnit;
 
 import org.powerbot.script.wrappers.Component;
 
-import static org.powerbot.script.util.Constants.getInt;
-
 /**
  * Utilities for manipulating the hud.
  *
  * @author Timer
  */
 public class Hud extends MethodProvider {
-	public static final int WIDGET_HUD = getInt("hud.widget.hud");
-	public static final int WIDGET_MENU = getInt("hud.widget.menu");
-	public static final int WIDGET_MENU_BOUNDS = getInt("hud.widget.menu.bounds");
-	public static final int WIDGET_MENU_WINDOWS = getInt("hud.widget.menu.windows");
-	public static final int COMPONENT_MENU_WINDOWS_LIST = getInt("hud.component.menu.windows.list");
+	public static final int WIDGET_HUD = 1477;
+	public static final int WIDGET_MENU = 1431;
+	public static final int WIDGET_MENU_BOUNDS = 32;
+	public static final int WIDGET_MENU_WINDOWS = 1432;
+	public static final int COMPONENT_MENU_WINDOWS_LIST = 4;
 	private Rectangle[] boundsCache;
 	private long cachedTime;
 

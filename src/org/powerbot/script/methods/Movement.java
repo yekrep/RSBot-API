@@ -13,14 +13,12 @@ import org.powerbot.script.wrappers.Tile;
 import org.powerbot.script.wrappers.TileMatrix;
 import org.powerbot.script.wrappers.TilePath;
 
-import static org.powerbot.script.util.Constants.getInt;
-
 public class Movement extends MethodProvider {
-	public static final int WIDGET_MAP = getInt("movement.widget.map");
-	public static final int COMPONENT_MAP = getInt("movement.component.map");
-	public static final int COMPONENT_RUN = getInt("movement.component.run");
-	public static final int COMPONENT_RUN_ENERGY = getInt("movement.component.run.energy");
-	public static final int SETTING_RUN_ENABLED = getInt("movement.setting.run.enabled");
+	public static final int WIDGET_MAP = 1465;
+	public static final int COMPONENT_MAP = 12;
+	public static final int COMPONENT_RUN = 4;
+	public static final int COMPONENT_RUN_ENERGY = 5;
+	public static final int SETTING_RUN_ENABLED = 463;
 
 	public Movement(MethodContext factory) {
 		super(factory);

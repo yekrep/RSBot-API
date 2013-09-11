@@ -3,28 +3,26 @@ package org.powerbot.script.methods;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import static org.powerbot.script.util.Constants.getInt;
-
 /**
  * API pertaining to in-game powers.
  *
  * @author Timer
  */
 public class Powers extends MethodProvider {
-	public static final int SETTING_PRAYER_POINTS = getInt("powers.setting.prayer.points");
-	public static final int SETTING_PRAYER_BOOK = getInt("powers.setting.prayer.book");
-	public static final int SETTING_PRAYERS = getInt("powers.setting.prayers");
-	public static final int SETTING_CURSES = getInt("powers.setting.curses");
-	public static final int SETTING_PRAYERS_QUICK = getInt("powers.setting.prayers.quick");
-	public static final int SETTING_PRAYERS_SELECTION = getInt("powers.setting.prayers.selection");
-	public static final int SETTING_CURSES_QUICK = getInt("powers.setting.curses.quick");
-	public static final int BOOK_PRAYERS = getInt("powers.book.prayers");
-	public static final int BOOK_CURSES = getInt("powers.book.curses");
-	public static final int WIDGET_PRAYER = getInt("powers.widget.prayer");
-	public static final int COMPONENT_PRAYER_CONTAINER = getInt("powers.component.prayer.container");
-	public static final int COMPONENT_PRAYER_SELECT_CONTAINER = getInt("powers.component.prayer.select.container");
-	public static final int COMPONENT_PRAYER_SELECT_CONFIRM = getInt("powers.component.prayer.select.confirm");
-	public static final int COMPONENT_QUICK_SELECTION = getInt("powers.component.quick.selection");
+	public static final int SETTING_PRAYER_POINTS = 3274;
+	public static final int SETTING_PRAYER_BOOK = 3277;
+	public static final int SETTING_PRAYERS = 3272;
+	public static final int SETTING_CURSES = 3275;
+	public static final int SETTING_PRAYERS_QUICK = 1770;
+	public static final int SETTING_PRAYERS_SELECTION = 1769;
+	public static final int SETTING_CURSES_QUICK = 1768;
+	public static final int BOOK_PRAYERS = 0;
+	public static final int BOOK_CURSES = 1;
+	public static final int WIDGET_PRAYER = 1458;
+	public static final int COMPONENT_PRAYER_CONTAINER = 24;
+	public static final int COMPONENT_PRAYER_SELECT_CONTAINER = 25;
+	public static final int COMPONENT_PRAYER_SELECT_CONFIRM = 4;
+	public static final int COMPONENT_QUICK_SELECTION = 32;
 
 	public Powers(MethodContext factory) {
 		super(factory);
@@ -272,26 +270,26 @@ public class Powers extends MethodProvider {
 		return ((ctx.settings.get(setting) >>> effect.getIndex()) & 0x1) == 1;
 	}
 
-	private Effect[] getCurrentEffects() {
-		int book = getPrayerBook();
-		Effect[] effects;
-		if (book == BOOK_PRAYERS) {
-			effects = Prayer.values();
-		} else if (book == BOOK_CURSES) {
-			effects = Curse.values();
-		} else {
-			effects = new Effect[0];
-		}
-		return effects;
-	}
-
 	/**
 	 * Returns the prayers currently active.
 	 *
 	 * @return the {@link Effect}s currently active
 	 */
 	public Effect[] getActivePrayers() {
-		Effect[] effects = getCurrentEffects();
+		int book = getPrayerBook();
+		Effect[] effects;
+		switch (book) {
+		case BOOK_PRAYERS:
+			effects = Prayer.values();
+			break;
+		case BOOK_CURSES:
+			effects = Curse.values();
+			break;
+		default:
+			effects = new Effect[0];
+			break;
+		}
+
 		Set<Effect> active = new LinkedHashSet<>();
 		for (Effect effect : effects) {
 			if (isPrayerActive(effect)) {
@@ -307,7 +305,20 @@ public class Powers extends MethodProvider {
 	 * @return the {@link Effect}s set as quick prayers
 	 */
 	public Effect[] getQuickPrayers() {
-		Effect[] effects = getCurrentEffects();
+		int book = getPrayerBook();
+		Effect[] effects;
+		switch (book) {
+		case BOOK_PRAYERS:
+			effects = Prayer.values();
+			break;
+		case BOOK_CURSES:
+			effects = Curse.values();
+			break;
+		default:
+			effects = new Effect[0];
+			break;
+		}
+
 		Set<Effect> quick = new LinkedHashSet<>();
 		for (Effect effect : effects) {
 			if (isPrayerQuick(effect)) {
