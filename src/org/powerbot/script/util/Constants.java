@@ -66,7 +66,7 @@ public class Constants {
 		data.put("combatbar.component.button.retaliate", 6);
 		data.put("combatbar.component.button.prayer", 4);
 		data.put("combatbar.component.button.summoning", 5);
-		data.put("combatbar.component.health", 82);
+		data.put("combatbar.component.health", 83);
 		data.put("combatbar.component.adrenaline", 92);
 		data.put("combatbar.component.prayer", 88);
 		data.put("combatbar.component.summoning", 94);
