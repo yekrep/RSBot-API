@@ -11,6 +11,8 @@ public class Condition {
 
 	/**
 	 * Blocks until the specified condition is satisfied (returns {@code true}).
+	 * <p/>
+	 * Defaults to 10 game ticks (6 seconds blocking).
 	 *
 	 * @param cond the condition
 	 * @return {@code true} if the condition was satisfied, otherwise {@code false}
@@ -22,8 +24,8 @@ public class Condition {
 	/**
 	 * Blocks until the specified condition is satisfied (returns {@code true}).
 	 *
-	 * @param cond the condition
-	 * @param freq the polling frequency in milliseconds
+	 * @param cond  the condition
+	 * @param freq  the polling frequency in milliseconds
 	 * @param tries the maximum number of attempts before this method returns {@code false}
 	 * @return if the condition was satisfied, otherwise {@code false}
 	 */
@@ -31,7 +33,7 @@ public class Condition {
 		for (int i = 0; i < tries; i++) {
 			try {
 				Thread.sleep(freq);
-			}  catch (final InterruptedException ignored) {
+			} catch (final InterruptedException ignored) {
 			}
 
 			final boolean r;
