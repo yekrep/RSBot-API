@@ -24,8 +24,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 import org.powerbot.Configuration;
@@ -105,6 +103,7 @@ public class BotChrome extends JFrame implements Closeable {
 			}
 		}
 		if (pass) {
+			setTitle("RuneScape");
 			bot = new Bot();
 			new Thread(bot.threadGroup, bot).start();
 		}
