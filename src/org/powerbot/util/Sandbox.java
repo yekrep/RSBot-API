@@ -96,20 +96,11 @@ public class Sandbox extends SecurityManager {
 
 	@Override
 	public void checkPermission(final Permission perm) {
-		final String loadLib = "loadLibrary.", name = perm.getName();
+		final String name = perm.getName();
 
 		if (perm instanceof RuntimePermission) {
 			if (name.equals("setSecurityManager")) {
 				throw new SecurityException();
-			} else if (name.startsWith(loadLib) && isGameThread()) {
-				final String lib = perm.getName().substring(loadLib.length());
-
-				if (lib.contains(File.separator)) {
-					if (!Configuration.FROMJAR) {
-						log.severe("Native library blocked: " + lib);
-					}
-					throw new SecurityException();
-				}
 			} else if (name.equals("modifyThreadGroup") && isScriptThread()) {
 				throw new SecurityException();
 			}
