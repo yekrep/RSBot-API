@@ -208,34 +208,20 @@ public class Bank extends ItemQuery<Item> {
 	/**
 	 * Closes the bank by means of walking or the 'X'.
 	 *
-	 * @param walk <tt>true</tt> to close by walking (random), <tt>false</tt> to close by the 'X'.
 	 * @return <tt>true</tt> if the bank was closed; otherwise <tt>false</tt>
 	 */
-	public boolean close(boolean walk) {
+	public boolean close() {
 		if (!isOpen()) {
 			return true;
 		}
-		Tile t = ctx.players.local().getLocation().derive(Random.nextInt(-5, 5), Random.nextInt(-5, 5));
-		Component c = ctx.widgets.get(WIDGET, COMPONENT_BUTTON_CLOSE);
-		if (walk && Random.nextBoolean() ? ctx.movement.stepTowards(t) : !c.interact("Close")) {
-			return !isOpen();
-		}
 
-		return Condition.wait(new Callable<Boolean>() {
+		Component c = ctx.widgets.get(WIDGET, COMPONENT_BUTTON_CLOSE);
+		return c.interact("Close") & Condition.wait(new Callable<Boolean>() {
 			@Override
 			public Boolean call() throws Exception {
 				return !isOpen();
 			}
 		}, Random.nextInt(100, 200), 10);
-	}
-
-	/**
-	 * Closes the bank by walking or clicking the 'X'.
-	 *
-	 * @return <tt>true</tt> if the bank was closed; otherwise <tt>false</tt>
-	 */
-	public boolean close() {
-		return close(true);
 	}
 
 	/**
