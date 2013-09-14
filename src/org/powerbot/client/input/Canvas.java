@@ -57,6 +57,11 @@ public class Canvas extends java.awt.Canvas {
 	}
 
 	@Override
+	public final boolean isShowing() {
+		return visible;
+	}
+
+	@Override
 	public final boolean isDisplayable() {
 		return true;
 	}
