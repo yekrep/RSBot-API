@@ -62,7 +62,7 @@ public class TilePath extends Path {//TODO: anti-pattern
 		/* Do not return a tile to walk to while the map is loading.
 		 * This prevents random tile clicking. */
 		int state = ctx.game.getClientState();
-		if (state == Game.INDEX_MAP_LOADING) {
+		if (state != Game.INDEX_MAP_LOADED) {
 			return null;
 		}
 		/* Get current destination */
