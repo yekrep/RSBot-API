@@ -42,7 +42,7 @@ public class Chat extends TextQuery<ChatOption> {
 		return new ChatOption(ctx, -1, null);
 	}
 
-	public boolean inChat() {
+	public boolean isChatting() {
 		if (ctx.widgets.get(WIDGET, 0).isValid()) {
 			return true;
 		}
