@@ -43,11 +43,11 @@ public class Chat extends TextQuery<ChatOption> {
 	}
 
 	public boolean inChat() {
-		if (ctx.widgets.get(WIDGET).isValid()) {
+		if (ctx.widgets.get(WIDGET, 0).isValid()) {
 			return true;
 		}
 		for (int[] arr : WIDGET_CONTINUE) {
-			if (ctx.widgets.get(arr[0]).isValid()) {
+			if (ctx.widgets.get(arr[0], 0).isValid()) {
 				return true;
 			}
 		}
