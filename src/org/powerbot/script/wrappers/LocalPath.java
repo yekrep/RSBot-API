@@ -29,7 +29,7 @@ public class LocalPath extends Path {
 		if (end == null || end == Tile.NIL) {
 			return false;
 		}
-		if (end.equals(tile)) {
+		if (end.equals(tile) && tilePath != null) {
 			return true;
 		}
 		tile = end;
