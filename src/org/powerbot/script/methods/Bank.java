@@ -86,19 +86,19 @@ public class Bank extends ItemQuery<Item> {
 
 		ctx.npcs.select().id(BANK_NPC_IDS).select(f).select(UNREACHABLE_FILTER).nearest();
 		ctx.npcs.limit(3).within(n = ctx.npcs.poll(), 1d).first().addTo(interactives);
-		interactives.add(n);
+		if (n.isValid()) interactives.add(n);
 
 		final List<GameObject> cache = new ArrayList<>();
 		ctx.objects.select().select(f).select(UNREACHABLE_FILTER).nearest().addTo(cache);
 
 		ctx.objects.id(BANK_BOOTH_IDS).limit(3).within(o = ctx.objects.poll(), 1d).first().addTo(interactives);
-		interactives.add(o);
+		if (o.isValid()) interactives.add(o);
 
 		ctx.objects.select(cache).id(BANK_COUNTER_IDS).limit(3).within(o = ctx.objects.poll(), 1d).first().addTo(interactives);
-		interactives.add(o);
+		if (o.isValid()) interactives.add(o);
 
 		ctx.objects.select(cache).id(BANK_CHEST_IDS).limit(3).within(o = ctx.objects.poll(), 1d).first().addTo(interactives);
-		interactives.add(o);
+		if (o.isValid()) interactives.add(o);
 
 		return interactives.isEmpty() ? ctx.objects.getNil() : interactives.get(Random.nextInt(0, interactives.size()));
 	}
