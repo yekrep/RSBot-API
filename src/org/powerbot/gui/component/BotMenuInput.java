@@ -14,15 +14,14 @@ import org.powerbot.gui.BotChrome;
  * @author Paris
  */
 public final class BotMenuInput {
-
 	public BotMenuInput(final JMenu menu) {
 		JCheckBoxMenuItem item;
-		final BotPanel panel = BotChrome.getInstance().panel;
-		final int panelInputMask = panel.getInputMask();
+		final BotChrome chrome = BotChrome.getInstance();
+		final int panelInputMask = chrome.getInputMask();
 
 		final Map<String, Integer> map = new LinkedHashMap<>();
-		map.put(BotLocale.ALLOW, BotPanel.INPUT_MOUSE | BotPanel.INPUT_KEYBOARD);
-		map.put(BotLocale.KEYBOARD, BotPanel.INPUT_KEYBOARD);
+		map.put(BotLocale.ALLOW, BotChrome.INPUT_MOUSE | BotChrome.INPUT_KEYBOARD);
+		map.put(BotLocale.KEYBOARD, BotChrome.INPUT_KEYBOARD);
 		map.put(BotLocale.BLOCK, 0);
 
 		for (final Map.Entry<String, Integer> inputMask : map.entrySet()) {
@@ -30,7 +29,7 @@ public final class BotMenuInput {
 			item = new JCheckBoxMenuItem(inputMask.getKey(), panelInputMask == mask);
 			item.addActionListener(new ActionListener() {
 				public void actionPerformed(final ActionEvent e1) {
-					panel.setInputMask(mask);
+					chrome.setInputMask(mask);
 				}
 			});
 			menu.add(item);

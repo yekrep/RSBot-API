@@ -1,6 +1,8 @@
 package org.powerbot.gui;
 
+import java.awt.AWTEvent;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.Frame;
@@ -26,8 +28,10 @@ import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
+import org.powerbot.bot.BlockingEventQueue;
 import org.powerbot.Configuration;
 import org.powerbot.bot.Bot;
+import org.powerbot.bot.EventCallback;
 import org.powerbot.gui.component.BotMenuBar;
 import org.powerbot.gui.component.BotPanel;
 import org.powerbot.service.UpdateCheck;
@@ -41,13 +45,16 @@ import org.powerbot.util.io.Resources;
  * @author Paris
  */
 public class BotChrome extends JFrame implements Closeable {
-	private static BotChrome instance;
-	private static Logger log = Logger.getLogger(BotChrome.class.getName());
+	private static final Logger log = Logger.getLogger(BotChrome.class.getName());
 	public static final int PANEL_MIN_WIDTH = 800, PANEL_MIN_HEIGHT = 600;
+	public static final int INPUT_MOUSE = 1, INPUT_KEYBOARD = 2;
+
+	private static BotChrome instance;
+	private final CryptFile cache = new CryptFile("window-cache.1.ini", false, BotChrome.class);
+	private boolean minimised;
+	private Bot bot;
 	public BotPanel panel;
-	private final Bot bot;
-	final CryptFile cache = new CryptFile("window-cache.1.ini", false, BotChrome.class);
-	private static boolean minimised;
+	private int inputMask;
 
 	private BotChrome() {
 		setTitle(Configuration.NAME + (Configuration.BETA ? " Beta" : ""));
@@ -76,6 +83,7 @@ public class BotChrome extends JFrame implements Closeable {
 
 		panel = new BotPanel(this);
 		add(panel);
+		this.inputMask = INPUT_MOUSE | INPUT_KEYBOARD;
 
 		log.log(Level.INFO, "Optimising your experience", "Starting...");
 		pack();
@@ -207,5 +215,32 @@ public class BotChrome extends JFrame implements Closeable {
 		setVisible(false);
 		dispose();
 		System.exit(0);
+	}
+
+	public void target(final Component canvas) {
+		BlockingEventQueue.pushBlocking();
+		BlockingEventQueue.getEventQueue().addComponent(canvas, new EventCallback() {
+			@Override
+			public void execute(AWTEvent event) {
+				//TODO: event blocked!
+			}
+		});
+	}
+
+	public void display(Bot bot) {
+		remove(panel);
+		if (this.bot != null) {
+			remove(bot.getAppletContainer());
+		}
+		add(bot.getAppletContainer());
+		revalidate();
+	}
+
+	public int getInputMask() {
+		return inputMask;
+	}
+
+	public void setInputMask(int mask) {
+		this.inputMask = mask;
 	}
 }

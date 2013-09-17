@@ -3,6 +3,9 @@ package org.powerbot.client.input;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import org.powerbot.bot.BlockingEventQueue;
+import org.powerbot.bot.RawAWTEvent;
+
 public abstract class Keyboard extends Focus implements KeyListener {
 	public abstract void _keyPressed(KeyEvent e);
 
@@ -26,21 +29,6 @@ public abstract class Keyboard extends Focus implements KeyListener {
 		if (e == null) {
 			return;
 		}
-		try {
-			switch (e.getID()) {
-			case KeyEvent.KEY_PRESSED:
-				_keyPressed(e);
-				break;
-			case KeyEvent.KEY_RELEASED:
-				_keyReleased(e);
-				break;
-			case KeyEvent.KEY_TYPED:
-				_keyTyped(e);
-				break;
-			default:
-				throw new InternalError(e.toString());
-			}
-		} catch (final Exception ignored) {
-		}
+		BlockingEventQueue.getEventQueue().postEvent(new RawAWTEvent(e));
 	}
 }

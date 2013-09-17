@@ -2,9 +2,6 @@ package org.powerbot.bot;
 
 import java.applet.Applet;
 import java.awt.Canvas;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Logger;
@@ -17,11 +14,7 @@ import org.powerbot.bot.loader.transform.TransformSpec;
 import org.powerbot.client.Client;
 import org.powerbot.client.Constants;
 import org.powerbot.event.EventMulticaster;
-import org.powerbot.event.PaintEvent;
-import org.powerbot.event.TextPaintEvent;
 import org.powerbot.gui.BotChrome;
-import org.powerbot.gui.component.BotPanel;
-import org.powerbot.script.Script;
 import org.powerbot.script.internal.InputHandler;
 import org.powerbot.script.internal.MouseHandler;
 import org.powerbot.script.internal.ScriptController;
@@ -31,7 +24,6 @@ import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.util.Random;
 import org.powerbot.service.GameAccounts;
 import org.powerbot.service.scripts.ScriptBundle;
-import org.powerbot.service.scripts.ScriptDefinition;
 
 /**
  * @author Timer
@@ -40,16 +32,11 @@ public final class Bot implements Runnable, Stoppable {
 	public static final Logger log = Logger.getLogger(Bot.class.getName());
 	private MethodContext ctx;
 	public final ThreadGroup threadGroup;
-	private final PaintEvent paintEvent;
-	private final TextPaintEvent textPaintEvent;
 	private final EventMulticaster multicaster;
 	private volatile Applet appletContainer;
-	private BufferedImage image;
 	public AtomicBoolean refreshing;
 	private Constants constants;
-	private BotPanel panel;
 	private GameAccounts.Account account;
-	private BufferedImage backBuffer;
 	private MouseHandler mouseHandler;
 	private InputHandler inputHandler;
 	private ScriptController controller;
@@ -57,23 +44,11 @@ public final class Bot implements Runnable, Stoppable {
 
 	public Bot() {
 		appletContainer = null;
-
 		threadGroup = new ThreadGroup(Bot.class.getName() + "@" + Integer.toHexString(hashCode()) + "-game");
-
 		multicaster = new EventMulticaster();
-		panel = null;
-
 		account = null;
-
-		final Dimension d = new Dimension(BotChrome.PANEL_MIN_WIDTH, BotChrome.PANEL_MIN_HEIGHT);
-		image = new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_RGB);
-		backBuffer = new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_RGB);
-		paintEvent = new PaintEvent();
-		textPaintEvent = new TextPaintEvent();
-
 		new Thread(threadGroup, multicaster, multicaster.getClass().getName()).start();
 		refreshing = new AtomicBoolean(false);
-
 		ctx = new MethodContext(this);
 	}
 
@@ -113,9 +88,6 @@ public final class Bot implements Runnable, Stoppable {
 		GameStub stub = new GameStub(crawler.parameters, crawler.archive);
 		appletContainer.setStub(stub);
 
-		final Graphics graphics = image.getGraphics();
-		appletContainer.update(graphics);
-		graphics.dispose();
 		resize(BotChrome.PANEL_MIN_WIDTH, BotChrome.PANEL_MIN_HEIGHT);
 
 		appletContainer.init();
@@ -171,7 +143,7 @@ public final class Bot implements Runnable, Stoppable {
 		t.setPriority(Thread.MIN_PRIORITY);
 		t.start();
 
-		BotChrome.getInstance().panel.setBot(this);
+		BotChrome.getInstance().display(this);
 	}
 
 	@Override
@@ -221,14 +193,6 @@ public final class Bot implements Runnable, Stoppable {
 		controller = null;
 	}
 
-	public BufferedImage getImage() {
-		return image;
-	}
-
-	public BufferedImage getBuffer() {
-		return backBuffer;
-	}
-
 	public Applet getAppletContainer() {
 		return appletContainer;
 	}
@@ -250,42 +214,7 @@ public final class Bot implements Runnable, Stoppable {
 	}
 
 	public void resize(final int width, final int height) {
-		backBuffer = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-		image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-
-		if (appletContainer != null) {
-			appletContainer.setSize(width, height);
-			final Graphics buffer = backBuffer.getGraphics();
-			appletContainer.update(buffer);
-			buffer.dispose();
-		}
-	}
-
-	public Graphics getBufferGraphics() {
-		final Graphics back = backBuffer.getGraphics();
-		if (this.ctx.getClient() != null && panel != null && !BotChrome.getInstance().isMinimised()) {
-			paintEvent.graphics = back;
-			textPaintEvent.graphics = back;
-			textPaintEvent.id = 0;
-			try {
-				multicaster.fire(paintEvent);
-				multicaster.fire(textPaintEvent);
-			} catch (final Exception e) {
-				e.printStackTrace();
-			}
-		}
-		back.dispose();
-		final Graphics imageGraphics = image.getGraphics();
-		imageGraphics.drawImage(backBuffer, 0, 0, null);
-		imageGraphics.dispose();
-		if (panel != null) {
-			panel.repaint();
-		}
-		return backBuffer.getGraphics();
-	}
-
-	public void setPanel(final BotPanel panel) {
-		this.panel = panel;
+		appletContainer.setSize(width, height);
 	}
 
 	private void setClient(final Client client, TransformSpec spec) {

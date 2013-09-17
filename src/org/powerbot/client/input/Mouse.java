@@ -7,6 +7,9 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 
+import org.powerbot.bot.BlockingEventQueue;
+import org.powerbot.bot.RawAWTEvent;
+
 public abstract class Mouse extends Focus implements MouseListener, MouseMotionListener, MouseWheelListener {
 	private int clientX;
 	private int clientY;
@@ -143,45 +146,6 @@ public abstract class Mouse extends Focus implements MouseListener, MouseMotionL
 		if (e == null) {
 			return;
 		}
-		try {
-			clientX = e.getX();
-			clientY = e.getY();
-			switch (e.getID()) {
-			case MouseEvent.MOUSE_CLICKED:
-				_mouseClicked(e);
-				break;
-			case MouseEvent.MOUSE_DRAGGED:
-				_mouseDragged(e);
-				break;
-			case MouseEvent.MOUSE_ENTERED:
-				clientPresent = true;
-				_mouseEntered(e);
-				break;
-			case MouseEvent.MOUSE_EXITED:
-				clientPresent = false;
-				_mouseExited(e);
-				break;
-			case MouseEvent.MOUSE_MOVED:
-				_mouseMoved(e);
-				break;
-			case MouseEvent.MOUSE_PRESSED:
-				clientPressX = e.getX();
-				clientPressY = e.getY();
-				clientPressTime = e.getWhen();
-				clientPressed = true;
-				_mousePressed(e);
-				break;
-			case MouseEvent.MOUSE_RELEASED:
-				clientPressed = false;
-				_mouseReleased(e);
-				break;
-			case MouseEvent.MOUSE_WHEEL:
-				_mouseWheelMoved((MouseWheelEvent) e);
-				break;
-			default:
-				throw new InternalError(e.toString());
-			}
-		} catch (final Exception ignored) {
-		}
+		BlockingEventQueue.getEventQueue().postEvent(new RawAWTEvent(e));
 	}
 }
