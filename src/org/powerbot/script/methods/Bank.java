@@ -89,18 +89,15 @@ public class Bank extends ItemQuery<Item> {
 		interactives.add(n);
 
 		final List<GameObject> cache = new ArrayList<>();
-		ctx.objects.select().addTo(cache);
+		ctx.objects.select().select(f).select(UNREACHABLE_FILTER).nearest().addTo(cache);
 
-		ctx.objects.id(BANK_BOOTH_IDS).select(f).select(UNREACHABLE_FILTER).nearest();
-		ctx.objects.limit(3).within(o = ctx.objects.poll(), 1d).first().addTo(interactives);
+		ctx.objects.id(BANK_BOOTH_IDS).limit(3).within(o = ctx.objects.poll(), 1d).first().addTo(interactives);
 		interactives.add(o);
 
-		ctx.objects.select(cache).id(BANK_COUNTER_IDS).select(f).select(UNREACHABLE_FILTER).nearest();
-		ctx.objects.limit(3).within(o = ctx.objects.poll(), 1d).first().addTo(interactives);
+		ctx.objects.select(cache).id(BANK_COUNTER_IDS).limit(3).within(o = ctx.objects.poll(), 1d).first().addTo(interactives);
 		interactives.add(o);
 
-		ctx.objects.select(cache).id(BANK_CHEST_IDS).select(f).select(UNREACHABLE_FILTER).nearest();
-		ctx.objects.limit(3).within(o = ctx.objects.poll(), 1d).first().addTo(interactives);
+		ctx.objects.select(cache).id(BANK_CHEST_IDS).limit(3).within(o = ctx.objects.poll(), 1d).first().addTo(interactives);
 		interactives.add(o);
 
 		return interactives.isEmpty() ? ctx.objects.getNil() : interactives.get(Random.nextInt(0, interactives.size()));
