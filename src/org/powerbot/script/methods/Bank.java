@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.Callable;
 
+import org.powerbot.script.lang.AbstractQuery;
 import org.powerbot.script.lang.Filter;
 import org.powerbot.script.lang.ItemQuery;
 import org.powerbot.script.util.Condition;
@@ -80,29 +81,33 @@ public class Bank extends ItemQuery<Item> {
 	private Interactive getBank() {
 		final Filter<Interactive> f = Interactive.areOnScreen();
 		List<Interactive> interactives = new ArrayList<>();
+		Npc n;
+		GameObject o;
 
-		ctx.npcs.select().id(BANK_NPC_IDS).select(f).select(UNREACHABLE_FILTER).nearest().limit(3);
-		final Npc p = ctx.npcs.poll();
-		ctx.npcs.within(p, 1).shuffle().first().addTo(interactives);
-		interactives.add(p);
+		ctx.npcs.select().id(BANK_NPC_IDS).select(f).select(UNREACHABLE_FILTER).nearest();
+		ctx.npcs.limit(3).within(n = ctx.npcs.poll(), 1d).first().addTo(interactives);
+		interactives.add(n);
 
-		List<GameObject> cache = new ArrayList<>();
+		final List<GameObject> cache = new ArrayList<>();
 		ctx.objects.select().addTo(cache);
 
 		ctx.objects.id(BANK_BOOTH_IDS).select(f).select(UNREACHABLE_FILTER).nearest();
-		ctx.objects.limit(3).within(p, 1d).shuffle().first().addTo(interactives);
+		ctx.objects.limit(3).within(o = ctx.objects.poll(), 1d).first().addTo(interactives);
+		interactives.add(o);
 
 		ctx.objects.select(cache).id(BANK_COUNTER_IDS).select(f).select(UNREACHABLE_FILTER).nearest();
-		ctx.objects.limit(3).within(p, 1d).shuffle().first().addTo(interactives);
+		ctx.objects.limit(3).within(o = ctx.objects.poll(), 1d).first().addTo(interactives);
+		interactives.add(o);
 
 		ctx.objects.select(cache).id(BANK_CHEST_IDS).select(f).select(UNREACHABLE_FILTER).nearest();
-		ctx.objects.limit(3).within(p, 1d).shuffle().first().addTo(interactives);
+		ctx.objects.limit(3).within(o = ctx.objects.poll(), 1d).first().addTo(interactives);
+		interactives.add(o);
 
-		if (interactives.isEmpty()) {
-			return ctx.objects.getNil();
-		}
+		return interactives.isEmpty() ? ctx.objects.getNil() : interactives.get(Random.nextInt(0, interactives.size()));
+	}
 
-		return interactives.get(Random.nextInt(0, interactives.size()));
+	private static void nearestToHead(final AbstractQuery<?, ? extends Locatable> q) {
+		//
 	}
 
 	/**
