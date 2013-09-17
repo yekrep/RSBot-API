@@ -339,12 +339,14 @@ public class Game extends MethodProvider {
 		RelativeLocation relative = ctx.players.local().getRelative();
 		Tile base = getMapBase();
 		tile = tile.derive(-base.getX(), -base.getY());
+		int tx = tile.getX(), ty = tile.getY();
 		if (client == null ||
-				relative == RelativeLocation.NIL || tile == Tile.NIL) {
+				relative == RelativeLocation.NIL || tile == Tile.NIL ||
+				tx < 1 || ty < 1 || tx > 103 || ty > 103) {
 			return new Point(-1, -1);
 		}
-		int pX = (int) ((tile.getX() * 4 + 2) - relative.getX() / 128);
-		int pY = (int) ((tile.getY() * 4 + 2) - relative.getY() / 128);
+		int pX = (int) ((tx * 4 + 2) - relative.getX() / 128);
+		int pY = (int) ((ty * 4 + 2) - relative.getY() / 128);
 		Component component = ctx.widgets.get(1465, 12);
 		int dist = pX * pX + pY * pY;
 		int mapRadius = Math.max(component.getScrollWidth() / 2, component.getScrollHeight() / 2) + 10;
