@@ -78,12 +78,7 @@ public class Bank extends ItemQuery<Item> {
 	}
 
 	private Interactive getBank() {
-		Filter<Interactive> f = new Filter<Interactive>() {
-			@Override
-			public boolean accept(final Interactive interactive) {
-				return interactive.isOnScreen();
-			}
-		};
+		final Filter<Interactive> f = Interactive.areOnScreen();
 		List<Interactive> interactives = new ArrayList<>();
 
 		ctx.npcs.select().id(BANK_NPC_IDS).select(f).select(UNREACHABLE_FILTER).nearest().limit(3);
