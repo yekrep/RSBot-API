@@ -84,14 +84,22 @@ public class Bank extends ItemQuery<Item> {
 				return interactive.isOnScreen();
 			}
 		};
-
 		List<Interactive> interactives = new ArrayList<>();
-		ctx.npcs.select().id(BANK_NPC_IDS).select(f).select(UNREACHABLE_FILTER).nearest().limit(2).shuffle().limit(1).addTo(interactives);
+
+		ctx.npcs.select().id(BANK_NPC_IDS).select(f).select(UNREACHABLE_FILTER).nearest();
+		ctx.npcs.limit(3).within(ctx.npcs.peek(), 1d).first().addTo(interactives);
+
 		List<GameObject> cache = new ArrayList<>();
 		ctx.objects.select().addTo(cache);
-		ctx.objects.id(BANK_BOOTH_IDS).select(f).select(UNREACHABLE_FILTER).nearest().limit(2).shuffle().limit(1).addTo(interactives);
-		ctx.objects.select(cache).id(BANK_COUNTER_IDS).select(f).select(UNREACHABLE_FILTER).nearest().limit(2).shuffle().limit(1).addTo(interactives);
-		ctx.objects.select(cache).id(BANK_CHEST_IDS).select(f).select(UNREACHABLE_FILTER).nearest().limit(2).shuffle().limit(1).addTo(interactives);
+
+		ctx.objects.id(BANK_BOOTH_IDS).select(f).select(UNREACHABLE_FILTER).nearest();
+		ctx.objects.limit(3).within(ctx.npcs.peek(), 1d).first().addTo(interactives);
+
+		ctx.objects.select(cache).id(BANK_COUNTER_IDS).select(f).select(UNREACHABLE_FILTER).nearest();
+		ctx.objects.limit(3).within(ctx.npcs.peek(), 1d).first().addTo(interactives);
+
+		ctx.objects.select(cache).id(BANK_CHEST_IDS).select(f).select(UNREACHABLE_FILTER).nearest();
+		ctx.objects.limit(3).within(ctx.npcs.peek(), 1d).first().addTo(interactives);
 
 		if (interactives.isEmpty()) {
 			return ctx.objects.getNil();
