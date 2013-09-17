@@ -106,10 +106,6 @@ public class Bank extends ItemQuery<Item> {
 		return interactives.isEmpty() ? ctx.objects.getNil() : interactives.get(Random.nextInt(0, interactives.size()));
 	}
 
-	private static void nearestToHead(final AbstractQuery<?, ? extends Locatable> q) {
-		//
-	}
-
 	/**
 	 * Returns the absolute nearest bank for walking purposes. Do not use this to open the bank.
 	 *
