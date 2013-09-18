@@ -33,7 +33,7 @@ public final class Bot implements Runnable, Stoppable {
 	private MethodContext ctx;
 	public final ThreadGroup threadGroup;
 	private final EventMulticaster multicaster;
-	private volatile Applet appletContainer;
+	private Applet applet;
 	public AtomicBoolean refreshing;
 	private Constants constants;
 	private GameAccounts.Account account;
@@ -43,7 +43,7 @@ public final class Bot implements Runnable, Stoppable {
 	private boolean stopping;
 
 	public Bot() {
-		appletContainer = null;
+		applet = null;
 		threadGroup = new ThreadGroup(Bot.class.getName() + "@" + Integer.toHexString(hashCode()) + "-game");
 		multicaster = new EventMulticaster();
 		account = null;
@@ -83,14 +83,14 @@ public final class Bot implements Runnable, Stoppable {
 
 	private void sequence(final NRSLoader loader) {
 		log.info("Loading game (" + loader.getPackHash().substring(0, 6) + ")");
-		this.appletContainer = loader.getApplet();
+		this.applet = loader.getApplet();
 		Crawler crawler = loader.getGameLoader().getCrawler();
 		GameStub stub = new GameStub(crawler.parameters, crawler.archive);
-		appletContainer.setStub(stub);
+		applet.setStub(stub);
 
 		resize(BotChrome.PANEL_MIN_WIDTH, BotChrome.PANEL_MIN_HEIGHT);
 
-		appletContainer.init();
+		applet.init();
 		if (loader.getBridge().getTransformSpec() == null) {
 			Thread thread = new Thread(new Runnable() {
 				@Override
@@ -119,7 +119,7 @@ public final class Bot implements Runnable, Stoppable {
 			return;
 		}
 		setClient((Client) loader.getClient(), loader.getBridge().getTransformSpec());
-		appletContainer.start();
+		applet.start();
 
 		final Thread t = new Thread(threadGroup, new Runnable() {
 			@Override
@@ -172,11 +172,11 @@ public final class Bot implements Runnable, Stoppable {
 	}
 
 	void terminateApplet() {
-		if (appletContainer != null) {
+		if (applet != null) {
 			log.fine("Shutting down applet");
-			appletContainer.stop();
-			appletContainer.destroy();
-			appletContainer = null;
+			applet.stop();
+			applet.destroy();
+			applet = null;
 			this.ctx.setClient(null);
 		}
 	}
@@ -193,8 +193,8 @@ public final class Bot implements Runnable, Stoppable {
 		controller = null;
 	}
 
-	public Applet getAppletContainer() {
-		return appletContainer;
+	public Applet getApplet() {
+		return applet;
 	}
 
 	public MethodContext getMethodContext() {
@@ -214,7 +214,7 @@ public final class Bot implements Runnable, Stoppable {
 	}
 
 	public void resize(final int width, final int height) {
-		appletContainer.setSize(width, height);
+		applet.setSize(width, height);
 	}
 
 	private void setClient(final Client client, TransformSpec spec) {
@@ -222,8 +222,8 @@ public final class Bot implements Runnable, Stoppable {
 		client.setCallback(new AbstractCallback(this));
 		constants = new Constants(spec.constants);
 		new Thread(threadGroup, new SafeMode(this)).start();
-		mouseHandler = new MouseHandler(appletContainer, client);
-		inputHandler = new InputHandler(appletContainer, client);
+		mouseHandler = new MouseHandler(applet, client);
+		inputHandler = new InputHandler(applet, client);
 		new Thread(threadGroup, mouseHandler).start();
 	}
 
