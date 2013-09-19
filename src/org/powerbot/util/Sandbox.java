@@ -20,13 +20,9 @@ import org.powerbot.util.io.CryptFile;
  */
 public class Sandbox extends SecurityManager {
 	private static final Logger log = Logger.getLogger("Sandbox");
-	private static final int PUBLIC_PORT_START = 54700, PUBLIC_PORT_END = 54800;
 
 	@Override
 	public void checkAccept(final String host, final int port) {
-		if (port >= PUBLIC_PORT_START || port <= PUBLIC_PORT_END) {
-			return;
-		}
 		throw new SecurityException();
 	}
 
@@ -39,16 +35,6 @@ public class Sandbox extends SecurityManager {
 	public void checkConnect(final String host, final int port, final Object context) {
 		if (isGameThread()) {
 			return;
-		}
-		if (!(port == 80 || port == 443 || port == 53 || port == 43594 || port == -1)) {
-			log.severe("Connection denied to port " + port);
-			throw new SecurityException();
-		}
-		if (host.equals("localhost") || host.endsWith(".localdomain") || host.startsWith("127.") || host.startsWith("192.168.") || host.startsWith("10.") || host.endsWith("::1")) {
-			if (!isCallingClass(Configuration.class) && Configuration.FROMJAR && !(port >= PUBLIC_PORT_START && port <= PUBLIC_PORT_END)) {
-				log.severe("Connection denied to localhost");
-				throw new SecurityException();
-			}
 		}
 		if (context == null) {
 			super.checkConnect(host, port);
