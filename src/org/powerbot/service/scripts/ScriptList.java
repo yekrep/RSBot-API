@@ -180,8 +180,8 @@ public class ScriptList {
 				return;
 			}
 			if (!t.get("auth").getBool("access")) {
-				String m = t.get("auth").get("message");
-				if (m != null && !m.isEmpty()) {
+				String m = t.get("auth").get("message", "");
+				if (!m.isEmpty()) {
 					m = ": " + m;
 				}
 				log.severe("You are not authorised to run this script" + m);
