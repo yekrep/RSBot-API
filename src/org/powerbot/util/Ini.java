@@ -13,7 +13,6 @@ import java.io.ObjectStreamException;
 import java.io.OutputStream;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -120,10 +119,13 @@ public class Ini implements Serializable {
 	public Ini read(final InputStream is) throws IOException {
 		final BufferedReader br = new BufferedReader(new InputStreamReader(is));
 
-		Map<String, Member> t = new HashMap<>();
 		String k = DEFAULT, line;
-		Member m = new Member();
-		t.put(k, m);
+		Member m;
+		if (table.containsKey(k)) {
+			m = table.get(k);
+		} else {
+			table.put(k, m = new Member());
+		}
 
 		while ((line = br.readLine()) != null) {
 			String l = line.trim();
@@ -132,10 +134,10 @@ public class Ini implements Serializable {
 			}
 			if (l.length() > 1 && l.charAt(0) == '[' && l.charAt(l.length() - 1) == ']') {
 				k = l.length() == 2 ? DEFAULT : l.substring(1, l.length() - 1);
-				if (t.containsKey(k)) {
-					m = t.get(k);
+				if (table.containsKey(k)) {
+					m = table.get(k);
 				} else {
-					t.put(k, m = new Member());
+					table.put(k, m = new Member());
 				}
 			} else {
 				l = getLine(line, br).trim();
@@ -147,7 +149,6 @@ public class Ini implements Serializable {
 			}
 		}
 
-		table.putAll(t);
 		br.close();
 		return this;
 	}
