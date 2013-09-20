@@ -85,7 +85,16 @@ public abstract class PollingScript extends AbstractScript {
 			sleep(delay.get() - d);
 		}
 
-		final int t = !threshold.isEmpty() && threshold.peek() > priority.get() ? 0 : poll();
+		int t;
+
+		try {
+			t = !threshold.isEmpty() && threshold.peek() > priority.get() ? 0 : poll();
+		} catch (final Throwable e) {
+			e.printStackTrace();
+			getController().stop();
+			t = 3000;
+		}
+
 		delay.set(t < 0 ? 600 : t);
 		last.set(System.nanoTime());
 
