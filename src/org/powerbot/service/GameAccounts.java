@@ -1,14 +1,15 @@
 package org.powerbot.service;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.powerbot.util.Ini;
 import org.powerbot.util.io.CryptFile;
-import org.powerbot.util.io.IniParser;
 
 /**
  * @author Paris
@@ -31,43 +32,33 @@ public final class GameAccounts extends ArrayList<GameAccounts.Account> {
 		if (!store.exists()) {
 			return;
 		}
-		Map<String, Map<String, String>> data = null;
-		try {
-			data = IniParser.deserialise(store.getInputStream());
+
+		final Ini t = new Ini();
+
+		try (final InputStream is = store.getInputStream()) {
+			t.read(is);
 		} catch (final IOException ignored) {
-		}
-		if (data == null || data.isEmpty()) {
 			return;
 		}
 
-		for (final Entry<String, Map<String, String>> e : data.entrySet()) {
+		for (final Entry<String, Ini.Member> e : t.entrySet()) {
 			final Account a = new Account(e.getKey());
-			for (final Entry<String, String> p : e.getValue().entrySet()) {
-				final String k = p.getKey(), v = p.getValue();
-				if (k.equalsIgnoreCase("password")) {
-					a.password = v;
-				} else if (k.equalsIgnoreCase("pin")) {
-					a.pin = Integer.parseInt(v);
-				} else if (k.equalsIgnoreCase("member")) {
-					a.member = Integer.parseInt(v) == 1;
-				}
-			}
+			final Ini.Member v = e.getValue();
+			a.password = v.get("password");
+			a.pin = v.getInt("pin", -1);
+			a.member = v.getBool("member");
 			add(a);
 		}
 	}
 
 	public synchronized void save() {
-		final Map<String, Map<String, String>> data = new HashMap<>(size());
+		final Ini t = new Ini();
 		for (final Account a : this) {
-			final Map<String, String> e = new HashMap<>(3);
-			e.put("password", a.password);
-			e.put("pin", Integer.toString(a.pin));
-			e.put("member", a.member ? "1" : "0");
-			data.put(a.toString(), e);
+			t.get(a.toString()).put("password", a.password).put("pin", a.pin).put("member", a.member);
 		}
 
-		try {
-			IniParser.serialise(data, store.getOutputStream());
+		try (final OutputStream os = store.getOutputStream()) {
+			t.write(os);
 		} catch (final IOException ignored) {
 		}
 	}

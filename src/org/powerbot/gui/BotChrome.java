@@ -37,10 +37,10 @@ import org.powerbot.bot.EventCallback;
 import org.powerbot.gui.component.BotMenuBar;
 import org.powerbot.gui.component.BotPanel;
 import org.powerbot.service.UpdateCheck;
+import org.powerbot.util.Ini;
 import org.powerbot.util.OSXAdapt;
 import org.powerbot.util.Tracker;
 import org.powerbot.util.io.CryptFile;
-import org.powerbot.util.io.IniParser;
 import org.powerbot.util.io.Resources;
 
 /**
@@ -155,15 +155,9 @@ public class BotChrome extends JFrame implements Closeable {
 	}
 
 	private void saveWindowCache() {
-		final Map<String, String> data = new HashMap<>(2);
-		data.put("w", Integer.toString(getWidth()));
-		data.put("h", Integer.toString(getHeight()));
-		final Map<String, Map<String, String>> map = new HashMap<>(1);
-		map.put(IniParser.EMPTYSECTION, data);
 		try (final OutputStream out = cache.getOutputStream()) {
-			IniParser.serialise(map, out);
+			new Ini().get().put("w", getWidth()).put("h", getHeight()).parent().write(out);
 		} catch (final IOException ignored) {
-			ignored.printStackTrace();
 		}
 	}
 
@@ -174,34 +168,14 @@ public class BotChrome extends JFrame implements Closeable {
 			return d;
 		}
 
-		Map<String, String> data = null;
-
 		try (final InputStream in = cache.getInputStream()) {
-			data = IniParser.deserialise(in).get(IniParser.EMPTYSECTION);
+			final Ini.Member t = new Ini().read(in).get();
+			return new Dimension(t.getInt("w", d.width), t.getInt("h", d.height));
+
 		} catch (final IOException ignored) {
 		}
 
-		if (data == null) {
-			return d;
-		}
-
-		int w = d.width, h = d.height;
-
-		if (data.containsKey("w")) {
-			try {
-				w = Integer.parseInt(data.get("w"));
-			} catch (final NumberFormatException ignored) {
-			}
-		}
-
-		if (data.containsKey("h")) {
-			try {
-				h = Integer.parseInt(data.get("h"));
-			} catch (final NumberFormatException ignored) {
-			}
-		}
-
-		return new Dimension(w, h);
+		return d;
 	}
 
 	@Override

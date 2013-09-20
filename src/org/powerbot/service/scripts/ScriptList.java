@@ -29,11 +29,11 @@ import org.powerbot.script.Script;
 import org.powerbot.script.internal.InternalScript;
 import org.powerbot.service.GameAccounts;
 import org.powerbot.service.NetworkAccount;
+import org.powerbot.util.Ini;
 import org.powerbot.util.StringUtil;
 import org.powerbot.util.io.CryptFile;
 import org.powerbot.util.io.HttpClient;
 import org.powerbot.util.io.IPCLock;
-import org.powerbot.util.io.IniParser;
 
 /**
  * @author Paris
@@ -61,14 +61,18 @@ public class ScriptList {
 	}
 
 	private static void getNetworkList(final List<ScriptDefinition> list) throws IOException {
-		final Map<String, Map<String, String>> manifests = IniParser.deserialise(NetworkAccount.getInstance().getScriptsList());
+		final Ini t = new Ini();
+		try (final InputStream is = NetworkAccount.getInstance().getScriptsList()) {
+			t.read(is);
+		} catch (final IOException e) {
+			throw(e);
+		}
 
-		for (final Map.Entry<String, Map<String, String>> entry : manifests.entrySet()) {
-			final Map<String, String> params = entry.getValue();
+		for (final Map.Entry<String, Ini.Member> entry : t.entrySet()) {
+			final Ini.Member params = entry.getValue();
 
-
-			final ScriptDefinition def = ScriptDefinition.fromMap(params);
-			if (def != null && params.containsKey("link") && params.containsKey("className") && params.containsKey("key")) {
+			final ScriptDefinition def = ScriptDefinition.fromMap(params.getMap());
+			if (def != null && params.has("link") && params.has("className") && params.has("key")) {
 				def.source = params.get("link");
 				def.className = params.get("className");
 
@@ -79,8 +83,8 @@ public class ScriptList {
 				}
 				def.key = kx;
 
-				if (params.containsKey("session")) {
-					def.session = Integer.parseInt(params.get("session"));
+				if (params.has("session")) {
+					def.session = params.getInt("session");
 				}
 
 				list.add(def);
@@ -164,10 +168,10 @@ public class ScriptList {
 				ignored.printStackTrace();
 				return;
 			}
-			final Map<String, Map<String, String>> data;
+			final Ini t = new Ini();
 			lock = IPCLock.getInstance().getLock(30);
-			try {
-				data = IniParser.deserialise(HttpClient.openStream(Configuration.URLs.SCRIPTSAUTH, NetworkAccount.getInstance().getAuth(), def.getID()));
+			try (final InputStream is = HttpClient.openStream(Configuration.URLs.SCRIPTSAUTH, NetworkAccount.getInstance().getAuth(), def.getID())) {
+				t.read(is);
 			} catch (final IOException ignored) {
 				log.severe("Unable to obtain auth response");
 				return;
@@ -175,15 +179,12 @@ public class ScriptList {
 				log.severe("Could not identify auth server");
 				return;
 			}
-			if (data == null || !data.containsKey("auth")) {
-				log.severe("Error reading auth response");
-				return;
-			}
-			if (!data.get("auth").containsKey("access") || !IniParser.parseBool(data.get("auth").get("access"))) {
-				if (data.get("auth").containsKey("message")) {
-					log.info(data.get("auth").get("message"));
+			if (!t.get("auth").getBool("access")) {
+				String m = t.get("auth").get("message");
+				if (m != null && !m.isEmpty()) {
+					m = ": " + m;
 				}
-				log.severe("You are not authorised to run this script");
+				log.severe("You are not authorised to run this script" + m);
 				return;
 			}
 		}

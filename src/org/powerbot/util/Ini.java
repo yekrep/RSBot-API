@@ -15,6 +15,7 @@ import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -79,6 +80,11 @@ public class Ini implements Serializable {
 		return this;
 	}
 
+	public Ini clear() {
+		table.clear();
+		return this;
+	}
+
 	public Ini write(final File f) {
 		try (final OutputStream os = new FileOutputStream(f)) {
 			write(os);
@@ -103,21 +109,20 @@ public class Ini implements Serializable {
 		write(out);
 	}
 
-	public static Ini read(final File f) {
+	public Ini read(final File f) {
 		try (final InputStream is = new FileInputStream(f)) {
 			return read(is);
 		} catch (final IOException ignored) {
-			return new Ini();
+			return this;
 		}
 	}
 
-	public static Ini read(final InputStream is) throws IOException {
-		final Ini ini = new Ini();
+	public Ini read(final InputStream is) throws IOException {
 		final BufferedReader br = new BufferedReader(new InputStreamReader(is));
 
 		Map<String, Member> t = new HashMap<>();
 		String k = DEFAULT, line;
-		Member m = ini.new Member();
+		Member m = new Member();
 		t.put(k, m);
 
 		while ((line = br.readLine()) != null) {
@@ -126,11 +131,11 @@ public class Ini implements Serializable {
 				continue;
 			}
 			if (l.length() > 1 && l.charAt(0) == '[' && l.charAt(l.length() - 1) == ']') {
-				k = l.length() == 2 ? DEFAULT : l.substring(1, l.length() - 2);
+				k = l.length() == 2 ? DEFAULT : l.substring(1, l.length() - 1);
 				if (t.containsKey(k)) {
 					m = t.get(k);
 				} else {
-					t.put(k, m = ini.new Member());
+					t.put(k, m = new Member());
 				}
 			} else {
 				l = getLine(line, br).trim();
@@ -142,9 +147,9 @@ public class Ini implements Serializable {
 			}
 		}
 
-		ini.table.putAll(t);
+		table.putAll(t);
 		br.close();
-		return ini;
+		return this;
 	}
 
 	private static String getLine(final String line, final BufferedReader br) throws IOException {
@@ -173,6 +178,10 @@ public class Ini implements Serializable {
 	}
 
 	private void readObjectNoData() throws ObjectStreamException {
+	}
+
+	public Set<Map.Entry<String, Member>> entrySet() {
+		return table.entrySet();
 	}
 
 	@Override
@@ -276,7 +285,11 @@ public class Ini implements Serializable {
 		}
 
 		public Member put(final String k, final String v) {
-			values.put(k, v);
+			if (v == null) {
+				values.remove(k);
+			} else {
+				values.put(k, v);
+			}
 			return this;
 		}
 

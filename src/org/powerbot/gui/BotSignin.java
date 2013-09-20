@@ -187,12 +187,7 @@ public final class BotSignin extends JDialog implements ActionListener {
 				new Thread(new Runnable() {
 					@Override
 					public void run() {
-						boolean s = false;
-						try {
-							s = NetworkAccount.getInstance().login(user, pass, "");
-						} catch (final IOException ignored) {
-						}
-						final boolean success = s;
+						final boolean success = NetworkAccount.getInstance().login(user, pass, "");
 						SwingUtilities.invokeLater(new Runnable() {
 							@Override
 							public void run() {

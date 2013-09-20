@@ -1,10 +1,8 @@
 package org.powerbot.script;
 
 import java.awt.image.BufferedImage;
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -15,7 +13,6 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.logging.Logger;
@@ -24,12 +21,11 @@ import java.util.zip.Adler32;
 import javax.imageio.ImageIO;
 
 import org.powerbot.Configuration;
-import org.powerbot.script.internal.ScriptController;
 import org.powerbot.script.methods.MethodContext;
+import org.powerbot.util.Ini;
 import org.powerbot.util.StringUtil;
 import org.powerbot.util.io.HttpClient;
 import org.powerbot.util.io.IOHelper;
-import org.powerbot.util.io.IniParser;
 
 /**
  * An abstract implementation of {@link Script}.
@@ -102,15 +98,7 @@ public abstract class AbstractScript implements Script, Comparable<AbstractScrip
 		settings = new Properties();
 
 		if (ini.isFile() && ini.canRead()) {
-			try {
-				final Map<String, Map<String, String>> data = IniParser.deserialise(ini);
-				if (data != null && data.containsKey(IniParser.EMPTYSECTION)) {
-					for (final Map.Entry<String, String> entry : data.get(IniParser.EMPTYSECTION).entrySet()) {
-						settings.put(entry.getKey(), entry.getValue());
-					}
-				}
-			} catch (final IOException ignored) {
-			}
+			settings.putAll(new Ini().read(ini).get().getMap());
 		}
 
 		exec.get(State.STOP).add(new Runnable() {
@@ -124,18 +112,14 @@ public abstract class AbstractScript implements Script, Comparable<AbstractScrip
 					if (!dir.isDirectory()) {
 						dir.mkdirs();
 					}
-					final Map<String, Map<String, String>> data = new HashMap<>(1);
+
+					final Map<String, String> map = new HashMap<>(settings.size());
 					synchronized (settings) {
-						final Map<String, String> map = new HashMap<>(settings.size());
 						for (final Map.Entry<Object, Object> entry : settings.entrySet()) {
 							map.put(entry.getKey().toString(), entry.getValue().toString());
 						}
-						data.put(IniParser.EMPTYSECTION, map);
 					}
-					try {
-						IniParser.serialise(data, ini);
-					} catch (final IOException ignored) {
-					}
+					new Ini().put(map).write(ini);
 				}
 			}
 		});

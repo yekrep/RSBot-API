@@ -2,17 +2,18 @@ package org.powerbot.service;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.powerbot.Configuration;
+import org.powerbot.util.Ini;
 import org.powerbot.util.StringUtil;
 import org.powerbot.util.io.CryptFile;
 import org.powerbot.util.io.HttpClient;
 import org.powerbot.util.io.IOHelper;
-import org.powerbot.util.io.IniParser;
 
 /**
  * @author Paris
@@ -23,14 +24,13 @@ public final class NetworkAccount {
 	private final static int CACHETTL = 24 * 60 * 60 * 1000;
 	public final static int REVALIDATE_INTERVAL = 5000;
 	private final CryptFile store, scripts;
-	private final Map<String, String> props, response;
+	private final Ini data;
 	private final AtomicLong updated;
 
 	public static final int VIP = 1, DEVELOPER = 2, ADMIN = 4, LOCALSCRIPTS = 8, ORDER = 8;
 
 	private NetworkAccount() {
-		props = new ConcurrentHashMap<>();
-		response = new ConcurrentHashMap<>();
+		data = new Ini();
 		store = new CryptFile(STORENAME, false, NetworkAccount.class);
 		scripts = new CryptFile("scripts.1.ini", NetworkAccount.class);
 		updated = new AtomicLong(0);
@@ -61,7 +61,7 @@ public final class NetworkAccount {
 	}
 
 	public boolean isLoggedIn() {
-		return !props.isEmpty();
+		return data.has(AUTHKEY);
 	}
 
 	public boolean hasPermission(final int permission) {
@@ -74,11 +74,11 @@ public final class NetworkAccount {
 	}
 
 	public String getProp(final String k) {
-		return props.get(k);
+		return data.get(AUTHKEY).get(k);
 	}
 
 	public String getResponse(final String k) {
-		return response.get(k);
+		return data.get(RESPKEY).get(k);
 	}
 
 	public String getAuth() {
@@ -91,20 +91,19 @@ public final class NetworkAccount {
 	}
 
 	public synchronized void revalidate() {
-		props.clear();
+		data.clear();
 
 		if (store.exists()) {
-			try {
-				final Map<String, String> data = IniParser.deserialise(store.getInputStream()).get(IniParser.EMPTYSECTION);
-				if (data.containsKey(CREATEDKEY) && Long.parseLong(data.get(CREATEDKEY)) + CACHETTL > System.currentTimeMillis()) {
-					props.putAll(data);
-				} else {
-					login("", "", data.get(AUTHKEY));
-				}
+			try (final InputStream is = store.getInputStream()) {
+				data.read(is);
 			} catch (final IOException ignored) {
 			}
 
-			if (!isValid(props)) {
+			if (Long.parseLong(data.get(AUTHKEY).get(CREATEDKEY, "0")) + CACHETTL < System.currentTimeMillis()) {
+				login("", "", getAuth());
+			}
+
+			if (!isValid(data.get(AUTHKEY))) {
 				logout();
 			}
 		}
@@ -112,43 +111,23 @@ public final class NetworkAccount {
 		updated.set(store.lastModified());
 	}
 
-	public synchronized boolean login(final String username, final String password, final String auth) throws IOException {
-		InputStream is;
-		try {
-			is = HttpClient.openStream(Configuration.URLs.SIGNIN, StringUtil.urlEncode(username), StringUtil.urlEncode(password), StringUtil.urlEncode(auth));
-		} catch (final NullPointerException ignored) {
-			ignored.printStackTrace();
-			return false;
-		}
-		final boolean success = readData(is);
-		if (success) {
+	public synchronized boolean login(final String username, final String password, final String auth) {
+		try (final InputStream is = HttpClient.openStream(Configuration.URLs.SIGNIN, StringUtil.urlEncode(username), StringUtil.urlEncode(password), StringUtil.urlEncode(auth))) {
+			data.read(is);
 			updateCache();
-		} else {
-			logout();
+			return true;
+		} catch (final IOException ignored) {
 		}
-		return success;
-	}
-
-	private boolean readData(final InputStream is) throws IOException {
-		final Map<String, Map<String, String>> data = IniParser.deserialise(is);
-		if (data == null || data.size() == 0) {
-			return false;
-		}
-		response.putAll(data.get(RESPKEY));
-		if (!data.containsKey(AUTHKEY)) {
-			return false;
-		}
-		props.putAll(data.get(AUTHKEY));
-		return true;
+		return false;
 	}
 
 	public synchronized void logout() {
-		props.clear();
+		data.clear();
 		updateCache();
 	}
 
-	public static boolean isValid(final Map<String, String> data) {
-		if (data.isEmpty() || !data.containsKey("email") || !data.containsKey("name") || !data.containsKey("permissions")) {
+	public static boolean isValid(final Ini.Member data) {
+		if (!data.has("email") || !data.has("name") || !data.has("permissions")) {
 			return false;
 		}
 		final String salt = (data.get("name") + data.get("email")).toUpperCase();
@@ -164,11 +143,9 @@ public final class NetworkAccount {
 
 	private synchronized void updateCache() {
 		if (isLoggedIn()) {
-			props.put(CREATEDKEY, Long.toString(System.currentTimeMillis()));
-			final Map<String, Map<String, String>> map = new HashMap<>();
-			map.put(IniParser.EMPTYSECTION, props);
-			try {
-				IniParser.serialise(map, store.getOutputStream());
+			data.get(AUTHKEY).put(CREATEDKEY, Long.toString(System.currentTimeMillis()));
+			try (final OutputStream os = store.getOutputStream()) {
+				data.write(os);
 			} catch (final IOException ignored) {
 			}
 		} else {
