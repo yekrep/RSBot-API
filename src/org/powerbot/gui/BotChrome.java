@@ -26,11 +26,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.WindowConstants;
 
-import org.powerbot.bot.BlockingEventQueue;
 import org.powerbot.Configuration;
+import org.powerbot.bot.BlockingEventQueue;
 import org.powerbot.bot.Bot;
 import org.powerbot.bot.EventCallback;
 import org.powerbot.gui.component.BotMenuBar;

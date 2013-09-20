@@ -2,6 +2,8 @@ package org.powerbot.bot;
 
 import java.applet.Applet;
 import java.awt.Canvas;
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Logger;
@@ -14,6 +16,8 @@ import org.powerbot.bot.loader.transform.TransformSpec;
 import org.powerbot.client.Client;
 import org.powerbot.client.Constants;
 import org.powerbot.event.EventMulticaster;
+import org.powerbot.event.PaintEvent;
+import org.powerbot.event.TextPaintEvent;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.script.internal.InputHandler;
 import org.powerbot.script.internal.MouseHandler;
@@ -34,6 +38,7 @@ public final class Bot implements Runnable, Stoppable {
 	public final ThreadGroup threadGroup;
 	private final EventMulticaster multicaster;
 	private Applet applet;
+	private BufferedImage game, buffer;
 	public AtomicBoolean refreshing;
 	private Constants constants;
 	private GameAccounts.Account account;
@@ -41,6 +46,9 @@ public final class Bot implements Runnable, Stoppable {
 	private InputHandler inputHandler;
 	private ScriptController controller;
 	private boolean stopping;
+
+	private final PaintEvent paintEvent;
+	private final TextPaintEvent textPaintEvent;
 
 	public Bot() {
 		applet = null;
@@ -50,6 +58,8 @@ public final class Bot implements Runnable, Stoppable {
 		new Thread(threadGroup, multicaster, multicaster.getClass().getName()).start();
 		refreshing = new AtomicBoolean(false);
 		ctx = new MethodContext(this);
+		paintEvent = new PaintEvent();
+		textPaintEvent = new TextPaintEvent();
 	}
 
 	public void run() {
@@ -171,6 +181,27 @@ public final class Bot implements Runnable, Stoppable {
 		}).start();
 	}
 
+	public BufferedImage getBufferImage() {
+		return game;
+	}
+
+	public Graphics getGameBuffer() {
+		Graphics g = game.getGraphics(), b = buffer.getGraphics();
+		b.drawImage(game, 0, 0, null);
+		if (this.ctx.getClient() != null && !BotChrome.getInstance().isMinimised()) {
+			paintEvent.graphics = g;
+			textPaintEvent.graphics = g;
+			textPaintEvent.id = 0;
+			try {
+				multicaster.fire(paintEvent);
+				multicaster.fire(textPaintEvent);
+			} catch (final Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return g;
+	}
+
 	void terminateApplet() {
 		if (applet != null) {
 			log.fine("Shutting down applet");
@@ -215,6 +246,8 @@ public final class Bot implements Runnable, Stoppable {
 
 	public void resize(final int width, final int height) {
 		applet.setSize(width, height);
+		game = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+		buffer = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 	}
 
 	private void setClient(final Client client, TransformSpec spec) {
