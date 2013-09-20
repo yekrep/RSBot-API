@@ -23,14 +23,6 @@ public class Environment extends MethodProvider {
 	 * @return the id of the user
 	 */
 	public static int getUserId() {
-		final NetworkAccount n = NetworkAccount.getInstance();
-		if (!n.isLoggedIn()) {
-			return -1;
-		}
-		try {
-			return Integer.parseInt(n.getProp("member_id"));
-		} catch (final NumberFormatException ignored) {
-			return -1;
-		}
+		return NetworkAccount.getInstance().getUID();
 	}
 }

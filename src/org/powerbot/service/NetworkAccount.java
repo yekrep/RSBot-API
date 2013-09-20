@@ -68,21 +68,20 @@ public final class NetworkAccount {
 		return (data.get(AUTHKEY).getLong("permission") & permission) == permission;
 	}
 
-	public String getProp(final String k) {
-		return data.get(AUTHKEY).get(k);
-	}
-
-	public String getResponse(final String k) {
-		return data.get(RESPKEY).get(k);
-	}
-
 	public String getAuth() {
-		return getProp(AUTHKEY);
+		return data.get(AUTHKEY).get(AUTHKEY);
+	}
+
+	public int getUID() {
+		return data.get(AUTHKEY).getInt("member_id", -1);
 	}
 
 	public String getDisplayName() {
-		final String[] s = {getProp("display"), getProp("name")};
-		return s[s[0] == null || s[0].isEmpty() ? 1 : 0];
+		return data.get(AUTHKEY).get("display");
+	}
+
+	public String getResponse() {
+		return data.get(RESPKEY).get("message");
 	}
 
 	public synchronized void revalidate() {
