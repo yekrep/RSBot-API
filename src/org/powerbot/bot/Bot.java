@@ -98,6 +98,7 @@ public final class Bot implements Runnable, Stoppable {
 		GameStub stub = new GameStub(crawler.parameters, crawler.archive);
 		applet.setStub(stub);
 
+		applet.setSize(BotChrome.PANEL_MIN_WIDTH, BotChrome.PANEL_MIN_HEIGHT);
 		resize(BotChrome.PANEL_MIN_WIDTH, BotChrome.PANEL_MIN_HEIGHT);
 
 		applet.init();
@@ -245,7 +246,6 @@ public final class Bot implements Runnable, Stoppable {
 	}
 
 	public void resize(final int width, final int height) {
-		applet.setSize(width, height);
 		game = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 		buffer = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 	}
