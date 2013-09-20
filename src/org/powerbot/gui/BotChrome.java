@@ -26,6 +26,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.JFrame;
+import javax.swing.JPopupMenu;
 import javax.swing.WindowConstants;
 
 import org.powerbot.bot.BlockingEventQueue;
@@ -61,6 +62,7 @@ public class BotChrome extends JFrame implements Closeable {
 		setIconImage(Resources.getImage(Resources.Paths.ICON));
 		setBackground(Color.BLACK);
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+		JPopupMenu.setDefaultLightWeightPopupEnabled(false);
 
 		addWindowListener(new WindowAdapter() {
 			@Override
