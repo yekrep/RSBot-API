@@ -264,6 +264,21 @@ public class Ini implements Serializable {
 			}
 		}
 
+		public long getLong(final String k) {
+			return getLong(k, 0L);
+		}
+
+		public long getLong(final String k, final long d) {
+			if (!values.containsKey(k)) {
+				return d;
+			}
+			try {
+				return Long.parseLong(values.get(k));
+			} catch (final NumberFormatException ignored) {
+				return d;
+			}
+		}
+
 		public double getDouble(final String k) {
 			return getDouble(k, 0d);
 		}
@@ -300,6 +315,11 @@ public class Ini implements Serializable {
 
 		public Member put(final String k, final int v) {
 			values.put(k, Integer.toString(v));
+			return this;
+		}
+
+		public Member put(final String k, final long v) {
+			values.put(k, Long.toString(v));
 			return this;
 		}
 

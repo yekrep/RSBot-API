@@ -65,12 +65,7 @@ public final class NetworkAccount {
 	}
 
 	public boolean hasPermission(final int permission) {
-		final String s = getProp("permissions");
-		if (s == null || s.isEmpty()) {
-			return false;
-		}
-		final long l = Long.parseLong(s);
-		return (l & permission) == permission;
+		return (data.get(AUTHKEY).getLong("permission") & permission) == permission;
 	}
 
 	public String getProp(final String k) {
@@ -143,7 +138,7 @@ public final class NetworkAccount {
 
 	private synchronized void updateCache() {
 		if (isLoggedIn()) {
-			data.get(AUTHKEY).put(CREATEDKEY, Long.toString(System.currentTimeMillis()));
+			data.get(AUTHKEY).put(CREATEDKEY, System.currentTimeMillis());
 			try (final OutputStream os = store.getOutputStream()) {
 				data.write(os);
 			} catch (final IOException ignored) {
