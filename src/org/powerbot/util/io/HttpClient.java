@@ -69,6 +69,7 @@ public class HttpClient {
 
 	public static HttpURLConnection download(final URL url, final File file) throws IOException {
 		final HttpURLConnection con = getHttpConnection(url);
+		con.addRequestProperty("Connection", "close");
 
 		if (file.exists()) {
 			try {
