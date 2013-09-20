@@ -63,14 +63,9 @@ public class ScriptList {
 	private static void getNetworkList(final List<ScriptDefinition> list) throws IOException {
 		final Map<String, Map<String, String>> manifests = IniParser.deserialise(NetworkAccount.getInstance().getScriptsList());
 
-		final boolean vip = NetworkAccount.getInstance().hasPermission(NetworkAccount.VIP);
-
 		for (final Map.Entry<String, Map<String, String>> entry : manifests.entrySet()) {
 			final Map<String, String> params = entry.getValue();
 
-			if (params.containsKey("vip") && IniParser.parseBool(params.get("vip")) && !vip) {
-				continue;
-			}
 
 			final ScriptDefinition def = ScriptDefinition.fromMap(params);
 			if (def != null && params.containsKey("link") && params.containsKey("className") && params.containsKey("key")) {
