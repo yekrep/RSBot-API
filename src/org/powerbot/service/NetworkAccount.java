@@ -61,7 +61,7 @@ public final class NetworkAccount {
 	}
 
 	public boolean isLoggedIn() {
-		return data.has(AUTHKEY);
+		return data.get(AUTHKEY).has(AUTHKEY);
 	}
 
 	public boolean hasPermission(final int permission) {
