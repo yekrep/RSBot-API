@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.nio.channels.FileLock;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -33,7 +32,6 @@ import org.powerbot.util.Ini;
 import org.powerbot.util.StringUtil;
 import org.powerbot.util.io.CryptFile;
 import org.powerbot.util.io.HttpClient;
-import org.powerbot.util.io.IPCLock;
 
 /**
  * @author Paris
@@ -139,7 +137,6 @@ public class ScriptList {
 		if (!NetworkAccount.getInstance().isLoggedIn()) {
 			return;
 		}
-		FileLock lock = null;
 		CryptFile cache = null;
 		final ClassLoader cl;
 		if (def.local) {
@@ -169,7 +166,6 @@ public class ScriptList {
 				return;
 			}
 			final Ini t = new Ini();
-			lock = IPCLock.getInstance().getLock(30);
 			try (final InputStream is = HttpClient.openStream(Configuration.URLs.SCRIPTSAUTH, NetworkAccount.getInstance().getAuth(), def.getID())) {
 				t.read(is);
 			} catch (final IOException ignored) {
