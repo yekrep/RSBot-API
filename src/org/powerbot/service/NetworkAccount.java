@@ -3,9 +3,6 @@ package org.powerbot.service;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.powerbot.Configuration;
@@ -65,7 +62,7 @@ public final class NetworkAccount {
 	}
 
 	public boolean hasPermission(final int permission) {
-		return (data.get(AUTHKEY).getLong("permission") & permission) == permission;
+		return (data.get(AUTHKEY).getLong("permissions") & permission) == permission;
 	}
 
 	public String getAuth() {

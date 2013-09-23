@@ -63,7 +63,7 @@ public class ScriptList {
 		try (final InputStream is = NetworkAccount.getInstance().getScriptsList()) {
 			t.read(is);
 		} catch (final IOException e) {
-			throw(e);
+			throw e;
 		}
 
 		for (final Map.Entry<String, Ini.Member> entry : t.entrySet()) {
