@@ -1,4 +1,4 @@
 package org.powerbot.client;
 
-public interface JavaModel extends GLModel {
+public interface JavaModel extends AbstractModel {
 }

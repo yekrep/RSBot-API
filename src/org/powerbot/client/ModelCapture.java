@@ -23,7 +23,7 @@ public class ModelCapture implements AbstractModel {
 	}
 
 	private void update(AbstractModel model) {
-		if (model == null) {
+		if (model == null || !(model instanceof JavaModel)) {
 			reset();
 			return;
 		}

@@ -416,7 +416,6 @@ public class Game extends MethodProvider {
 		viewport.zX = data[constants.VIEWPORT_ZX];
 		viewport.zY = data[constants.VIEWPORT_ZY];
 		viewport.zZ = data[constants.VIEWPORT_ZZ];
-
 	}
 
 	/**
