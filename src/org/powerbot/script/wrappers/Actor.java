@@ -31,7 +31,7 @@ public abstract class Actor extends Interactive implements Renderable, Nameable,
 	@Override
 	public Model getModel() {
 		final RSCharacter character = getAccessor();
-		if (character != null) {
+		if (character != null && ctx.game.toolkit.graphicsIndex == 0) {
 			final AbstractModel model = character.getModel();
 			if (model != null) {
 				return new ActorModel(ctx, model, character);
