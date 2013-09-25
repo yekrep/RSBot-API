@@ -38,6 +38,7 @@ public class Npc extends Actor implements Identifiable {
 		return npc != null && (def = npc.getRSNPCDef()) != null ? def.getLevel() : -1;
 	}
 
+	@Override
 	public int getId() {
 		final RSNPC npc = getAccessor();
 		final RSNPCDef def;
@@ -101,5 +102,10 @@ public class Npc extends Actor implements Identifiable {
 		if (m != null) {
 			m.drawWireFrame(render);
 		}
+	}
+
+	@Override
+	public String toString() {
+		return Npc.class.getSimpleName() + "[id=" + getId() + ", name=" + getName() + ", level=" + getLevel() + "]";
 	}
 }
