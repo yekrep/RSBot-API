@@ -59,11 +59,20 @@ public class LocalPath extends Path {
 
 	@Override
 	public Tile getStart() {
-		return null;
+		return Tile.NIL;
 	}
 
 	@Override
 	public Tile getEnd() {
 		return destination.getLocation();
+	}
+
+	public Tile[] toArray() {
+		return isValid() ? tilePath.toArray() : new Tile[0];
+	}
+
+	public LocalPath reset() {
+		tilePath = null;
+		return this;
 	}
 }

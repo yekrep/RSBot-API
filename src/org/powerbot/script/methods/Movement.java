@@ -58,7 +58,7 @@ public class Movement extends MethodProvider {
 	public Tile getDestination() {
 		Client client = ctx.getClient();
 		if (client == null) {
-			return null;
+			return Tile.NIL;
 		}
 		final int dX = client.getDestX(), dY = client.getDestY();
 		if (dX == -1 || dY == -1) {
