@@ -38,7 +38,9 @@ public @interface Manifest {
 	 * The authors.
 	 *
 	 * @return the authors
+	 * @deprecated the RSBot SDN™ author is now used instead
 	 */
+	@Deprecated
 	String[] authors();
 
 	/**
