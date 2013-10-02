@@ -1,11 +1,11 @@
 package org.powerbot.script.methods;
 
-import org.powerbot.client.RSInteractableLocation;
 import org.powerbot.script.util.Random;
 import org.powerbot.script.util.Timer;
 import org.powerbot.script.wrappers.Locatable;
 import org.powerbot.script.wrappers.Player;
 import org.powerbot.script.wrappers.Tile;
+import org.powerbot.util.math.Vector3f;
 
 /**
  * Utilities pertaining to the camera.
@@ -13,29 +13,13 @@ import org.powerbot.script.wrappers.Tile;
  * @author Timer
  */
 public class Camera extends MethodProvider {
-	public RSInteractableLocation offset;
-	public RSInteractableLocation center;
+	public Vector3f offset;
+	public Vector3f center;
 
 	public Camera(MethodContext factory) {
 		super(factory);
-		RSInteractableLocation vector3f = new RSInteractableLocation() {
-			@Override
-			public float getX() {
-				return 0;
-			}
-
-			@Override
-			public float getY() {
-				return 0;
-			}
-
-			@Override
-			public float getZ() {
-				return 0;
-			}
-		};
-		this.offset = vector3f;
-		this.center = vector3f;
+		this.offset = new Vector3f(0, 0, 0);
+		this.center = new Vector3f(0, 0, 0);
 	}
 
 	/**
@@ -45,7 +29,7 @@ public class Camera extends MethodProvider {
 	 */
 	public int getX() {
 		Tile tile = ctx.game.getMapBase();
-		return (int) (offset.getX() - (tile.getX() << 9));
+		return (int) (offset.x - (tile.getX() << 9));
 	}
 
 	/**
@@ -55,7 +39,7 @@ public class Camera extends MethodProvider {
 	 */
 	public int getY() {
 		Tile tile = ctx.game.getMapBase();
-		return (int) (offset.getY() - (tile.getY() << 9));
+		return (int) (offset.y - (tile.getY() << 9));
 	}
 
 	/**
@@ -64,7 +48,7 @@ public class Camera extends MethodProvider {
 	 * @return the offset on the z-axis
 	 */
 	public int getZ() {
-		return -(int) offset.getZ();
+		return -(int) offset.z;
 	}
 
 	/**
@@ -73,8 +57,8 @@ public class Camera extends MethodProvider {
 	 * @return the camera yaw
 	 */
 	public int getYaw() {
-		float deltaX = offset.getX() - center.getX();
-		float deltaY = offset.getY() - center.getY();
+		float deltaX = offset.x - center.x;
+		float deltaY = offset.y - center.y;
 		float theta = (float) Math.atan2(deltaX, deltaY);
 		return (int) (((int) ((Math.PI - theta) * 2607.5945876176133D) & 0x3FFF) / 45.51);
 	}
@@ -85,9 +69,9 @@ public class Camera extends MethodProvider {
 	 * @return the camera pitch
 	 */
 	public final int getPitch() {
-		float deltaX = center.getX() - offset.getX();
-		float deltaY = center.getY() - offset.getY();
-		float deltaZ = center.getZ() - offset.getZ();
+		float deltaX = center.x - offset.x;
+		float deltaY = center.y - offset.y;
+		float deltaZ = center.z - offset.z;
 		float dist = (float) Math.sqrt(deltaX * deltaX + deltaY * deltaY);
 		float theta = (float) Math.atan2(-deltaZ, dist);
 		return (int) (((int) (theta * 2607.5945876176133D) & 0x3FFF) / 4096f * 100f);
