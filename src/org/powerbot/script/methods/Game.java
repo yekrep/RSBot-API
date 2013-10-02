@@ -334,56 +334,65 @@ public class Game extends MethodProvider {
 	 * @return the map {@link Point}
 	 */
 	public Point tileToMap(Locatable locatable) {
-		Tile tile = locatable.getLocation();
+		Point bad = new Point(-1, -1);
 		Client client = ctx.getClient();
-		RelativeLocation relative = ctx.players.local().getRelative();
-		Tile base = getMapBase();
-		tile = tile.derive(-base.getX(), -base.getY());
-		int tx = tile.getX(), ty = tile.getY();
-		if (client == null ||
-				relative == RelativeLocation.NIL || tile == Tile.NIL ||
-				tx < 1 || ty < 1 || tx > 103 || ty > 103) {
-			return new Point(-1, -1);
+		Tile b = ctx.game.getMapBase();
+		Tile t = locatable.getLocation().derive(-b.getX(), -b.getY());
+		int tx = t.getX(), ty = t.getY();
+		if (client == null || tx < 1 || tx > 103 || ty < 1 || ty > 103) {
+			return bad;
 		}
-		int pX = (int) ((tx * 4 + 2) - relative.getX() / 128);
-		int pY = (int) ((ty * 4 + 2) - relative.getY() / 128);
+
+		RelativeLocation r = ctx.players.local().getRelative();
+		int offX = (int) (tx * 4 - r.getX() / 128) + 2;
+		int offY = (int) (ty * 4 - r.getY() / 128) + 2;
+		int d = (int) Math.round(Math.sqrt(Math.pow(offX, 2) + Math.pow(offY, 2)));
+
 		Component component = ctx.widgets.get(1465, 12);
-		int dist = pX * pX + pY * pY;
-		int mapRadius = Math.max(component.getScrollWidth() / 2, component.getScrollHeight() / 2) + 10;
-		if (dist > mapRadius * mapRadius) {
-			return new Point(-1, -1);
+		int w = component.getScrollWidth(), h = component.getScrollHeight();
+		int radius = Math.max(w / 2, h / 2) + 10;
+		if (d >= radius) {
+			return bad;
 		}
+
 		Constants constants = getConstants();
-		int SETTINGS_ON = constants != null ? constants.MINIMAP_SETTINGS_ON : -1;
-		boolean flag = client.getMinimapSettings() == SETTINGS_ON;
-		int sin = SIN_TABLE[mapAngle];
-		int cos = COS_TABLE[mapAngle];
-		if (!flag) {
+		int v = constants != null ? constants.MINIMAP_SETTINGS_ON : -1;
+		boolean f = client.getMinimapSettings() == v;
+
+		double a = (ctx.camera.getYaw() * (Math.PI / 180d)) * 2607.5945876176133d;
+		int i = 0x3fff & (int) a;
+		if (!f) {
+			i = 0x3fff & client.getMinimapOffset() + (int) a;
+		}
+		int sin = SIN_TABLE[i], cos = COS_TABLE[i];
+		if (!f) {
 			int scale = 256 + client.getMinimapScale();
 			sin = 256 * sin / scale;
 			cos = 256 * cos / scale;
 		}
-		int _x = cos * pX + sin * pY >> 14;
-		int _y = cos * pY - sin * pX >> 14;
-		_x += component.getScrollWidth() / 2;
-		_y *= -1;
-		_y += component.getScrollHeight() / 2;
-		if (_x <= 4 || _x >= component.getScrollWidth() - 4 ||
-				_y <= 4 || _y >= component.getScrollHeight() - 4) {
-			return new Point(-1, -1);
+
+		int rotX = cos * offX + sin * offY >> 14;
+		int rotY = cos * offY - sin * offX >> 14;
+		rotX += w / 2;
+		rotY *= -1;
+		rotY += h / 2;
+
+		if (rotX > 4 && rotX < component.getScrollWidth() - 4 &&
+				rotY > 4 && rotY < component.getScrollHeight() - 4) {
+			Point basePoint = component.getAbsoluteLocation();
+			int sX = rotX + (int) basePoint.getX();
+			int sY = rotY + (int) basePoint.getY();
+			Point p = new Point(sX, sY);
+			Rectangle rbuffer = new Rectangle(p.x - 6, p.y - 6, 12, 12);//entire tile and a half sized 'buffer' area
+			for (int pos = 17; pos <= 21; pos++) {
+				if (ctx.widgets.get(1465, pos).getViewportRect().intersects(rbuffer)) {
+					return bad;
+				}
+			}
+			return p;
 		}
 
-		Point basePoint = component.getAbsoluteLocation();
-		int screen_x = _x + (int) basePoint.getX();
-		int screen_y = _y + (int) basePoint.getY();
-		Point p = new Point(screen_x, screen_y);
-		Rectangle t = new Rectangle(p.x - 6, p.y - 6, 12, 12);//entire tile and a half sized 'buffer' area
-		for (int i = 17; i <= 21; i++) {
-			if (ctx.widgets.get(1465, i).getViewportRect().intersects(t)) {
-				return new Point(-1, -1);
-			}
-		}
-		return p;
+		return bad;
 	}
 
 	public void updateToolkit(final Render render) {
