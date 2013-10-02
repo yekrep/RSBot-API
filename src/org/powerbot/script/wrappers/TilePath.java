@@ -7,12 +7,11 @@ import org.powerbot.script.methods.Game;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.util.Random;
 
-public class TilePath extends Path {
-	protected Tile[] orig;
+public class TilePath extends Path {//TODO: anti-pattern
 	protected Tile[] tiles;
-	private Tile last;
-
+	protected Tile[] orig;
 	private boolean end;
+	private Tile last;
 
 	public TilePath(MethodContext ctx, final Tile[] tiles) {
 		super(ctx);
@@ -76,18 +75,13 @@ public class TilePath extends Path {
 			if (!tiles[i].getMatrix(ctx).isOnMap()) {
 				continue;
 			}
-			LocalPath path = ctx.movement.findPath(tiles[Math.min(tiles.length - 1, i + 1)]);
-			Tile[] arr = path.isValid() ? path.toArray() : new Tile[0];
-			if (dest == Tile.NIL) {
-				return arr.length > 0 ? path.getNext() : tiles[i];
-			}
-			if (arr.length < 1 && tiles[i].distanceTo(dest) < 3d) {
+			/* If our destination is NIL, assume mid path and continue there. */
+			/* LARGELY SPACED PATH SUPPORT: If the current destination is the tile on the map, return that tile
+			 * as the next one will be coming soon (we hope/assume this, as short spaced paths should never experience
+			 * this condition as one will be on map before it reaches the current target). */
+			if (dest == Tile.NIL || tiles[i].distanceTo(dest) < 3d) {
 				return tiles[i];
 			}
-			if (arr.length > 0) {
-				return path.getNext();
-			}
-
 			/* Tile is on map and isn't currently "targeted" (dest), let's check it out.
 			 * Iterate over all tiles succeeding it. */
 			for (int a = i - 1; a >= 0; --a) {
