@@ -3,7 +3,9 @@ package org.powerbot.script.methods;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.powerbot.client.Client;
 import org.powerbot.client.RSAnimableNode;
@@ -20,6 +22,8 @@ import org.powerbot.script.wrappers.GameObject;
  * @author Timer
  */
 public class Objects extends BasicNamedQuery<GameObject> {
+	public final Map<Integer, Integer> typeCache = new ConcurrentHashMap<>();
+
 	public Objects(MethodContext factory) {
 		super(factory);
 	}
@@ -101,5 +105,14 @@ public class Objects extends BasicNamedQuery<GameObject> {
 	@Override
 	public GameObject getNil() {
 		return new GameObject(ctx, null, GameObject.Type.UNKNOWN);
+	}
+
+	public void setType(int id, int type) {
+		typeCache.put(id, type);
+	}
+
+	public int getType(int id) {
+		Integer integer = typeCache.get(id);
+		return integer != null ? integer : -1;
 	}
 }

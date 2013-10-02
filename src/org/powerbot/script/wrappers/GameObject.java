@@ -31,11 +31,6 @@ public class GameObject extends Interactive implements Renderable, Locatable, Na
 		this.type = type;
 	}
 
-	public static int clippingTypeForId(int id) {
-		Integer type = AbstractCallback.clippingTypes.get(id);
-		return type == null ? -1 : type;
-	}
-
 	@Override
 	public Model getModel() {
 		final RSObject object = this.object.get();

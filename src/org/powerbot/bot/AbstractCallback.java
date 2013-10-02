@@ -1,8 +1,5 @@
 package org.powerbot.bot;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
 import org.powerbot.client.Callback;
 import org.powerbot.client.RSInteractableLocation;
 import org.powerbot.client.RSObjectDef;
@@ -13,7 +10,6 @@ import org.powerbot.util.math.Vector3f;
 
 public class AbstractCallback implements Callback {
 	private final Bot bot;
-	public static final Map<Integer, Integer> clippingTypes = new ConcurrentHashMap<>();
 
 	public AbstractCallback(final Bot bot) {
 		this.bot = bot;
@@ -36,7 +32,7 @@ public class AbstractCallback implements Callback {
 
 	@Override
 	public void notifyObjectDefinitionLoad(RSObjectDef def) {
-		clippingTypes.put(def.getID(), def.getClippingType());
+		bot.getMethodContext().objects.setType(def.getID(), def.getClippingType());
 	}
 
 	@Override

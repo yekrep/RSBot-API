@@ -123,7 +123,7 @@ public class Map extends MethodProvider {
 	private void readCollision(final CollisionMap collisionMap, final int localX, final int localY, final List<GameObject> objects) {
 		int clippingType;
 		for (GameObject next : objects) {
-			clippingType = GameObject.clippingTypeForId(next.getId());
+			clippingType = ctx.objects.getType(next.getId());
 			switch (next.getType()) {
 			case BOUNDARY:
 				if (clippingType == 0) {
