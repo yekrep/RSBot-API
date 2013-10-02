@@ -83,7 +83,7 @@ public abstract class Interactive extends MethodProvider implements Targetable, 
 		}
 
 		boolean a = false;
-		TileMatrix t = ctx.players.local().getLocation().getMatrix(ctx);
+		TileMatrix c = ctx.players.local().getLocation().getMatrix(ctx);
 		if (this instanceof Renderable) {
 			for (; antipattern(this, (Renderable) this); ) {
 				a = true;
@@ -93,7 +93,7 @@ public abstract class Interactive extends MethodProvider implements Targetable, 
 						return ctx.game.getCrosshair() == Game.Crosshair.ACTION;
 					}
 				}, 10, 20)) {
-					t.interact("Walk here");
+					c.interact("Walk here");
 				}
 			}
 		}
@@ -110,11 +110,19 @@ public abstract class Interactive extends MethodProvider implements Targetable, 
 			return true;
 		}
 
-		Tile d = ctx.movement.getDestination();
-		int len = ctx.movement.getDistance(t, d);
-		if (a && (len > 4 || (len < 0 && d != Tile.NIL))) {
-			if (!(t.isOnScreen() && t.interact("Walk here"))) {
-				ctx.movement.stepTowards(t);
+		Tile tileOfInteractive = Tile.NIL;
+		if (this instanceof Locatable) {
+			tileOfInteractive = ((Locatable) this).getLocation();
+		}
+		Tile dest = ctx.movement.getDestination();
+		int l_d = ctx.movement.getDistance(c, dest);
+		int l_t = ctx.movement.getDistance(c, tileOfInteractive);
+		if (a) {
+			if ((l_d < 0 && dest.getMatrix(ctx).isValid()) ||
+					(l_t != -1 && l_d != -1 && l_d > l_t + 2)) {
+				if (!(c.isOnScreen() && c.interact("Walk here"))) {
+					ctx.movement.stepTowards(c);
+				}
 			}
 		}
 
