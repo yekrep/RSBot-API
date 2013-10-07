@@ -377,8 +377,8 @@ public class Game extends MethodProvider {
 		rotY *= -1;
 		rotY += h / 2;
 
-		if (rotX > 4 && rotX < component.getScrollWidth() - 4 &&
-				rotY > 4 && rotY < component.getScrollHeight() - 4) {
+		if (rotX > 4 && rotX < w - 4 &&
+				rotY > 4 && rotY < h - 4) {
 			Point basePoint = component.getAbsoluteLocation();
 			int sX = rotX + (int) basePoint.getX();
 			int sY = rotY + (int) basePoint.getY();
