@@ -49,9 +49,9 @@ public final class BotMenuView implements ActionListener {
 
 	private static final String ALL = "All";
 	private static final String MOUSE = "Mouse";
-	private static final String BOUNDARIES = "Boundaries";
+	private static final String BOUNDARIES = "Landscape";
 	private static final String PLAYERS = "Players";
-	private static final String NPCS = "NPCs";
+	private static final String NPCS = "Npcs";
 	private static final String GROUND_ITEMS = "Ground Items";
 	private static final String SCENEENTITIES = "Objects";
 	private static final String MODELS = "Models";
