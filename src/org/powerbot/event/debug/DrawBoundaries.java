@@ -47,7 +47,7 @@ public class DrawBoundaries implements PaintListener {
 		}
 
 		CollisionMap map = ctx.movement.getCollisionMap();
-		int mapWidth = map.getWidth(), mapHeight = map.getHeight();
+		int mapWidth = map.getWidth() - 6, mapHeight = map.getHeight() - 6;
 		Point[][] points = new Point[mapWidth][mapHeight];
 		for (int x = 0; x < mapWidth; ++x) {
 			for (int y = 0; y < mapHeight; ++y) {
