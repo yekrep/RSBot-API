@@ -344,8 +344,8 @@ public class Game extends MethodProvider {
 		}
 
 		RelativeLocation r = ctx.players.local().getRelative();
-		int offX = (int) (tx * 4 - r.getX() / 128) + 2;
-		int offY = (int) (ty * 4 - r.getY() / 128) + 2;
+		float offX = (tx * 4 - r.getX() / 128) + 2;
+		float offY = (ty * 4 - r.getY() / 128) + 2;
 		int d = (int) Math.round(Math.sqrt(Math.pow(offX, 2) + Math.pow(offY, 2)));
 
 		Component component = ctx.widgets.get(1465, 12);
@@ -371,8 +371,8 @@ public class Game extends MethodProvider {
 			cos = 256 * cos / scale;
 		}
 
-		int rotX = cos * offX + sin * offY >> 14;
-		int rotY = cos * offY - sin * offX >> 14;
+		int rotX = (int) (cos * offX + sin * offY) >> 14;
+		int rotY = (int) (cos * offY - sin * offX) >> 14;
 		rotX += w / 2;
 		rotY *= -1;
 		rotY += h / 2;
