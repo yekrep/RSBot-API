@@ -18,6 +18,7 @@ import javax.swing.JMenuItem;
 
 import org.powerbot.bot.Bot;
 import org.powerbot.event.debug.DrawAbilities;
+import org.powerbot.event.debug.DrawBoundaries;
 import org.powerbot.event.debug.DrawGroundItems;
 import org.powerbot.event.debug.DrawItems;
 import org.powerbot.event.debug.DrawModels;
@@ -48,6 +49,7 @@ public final class BotMenuView implements ActionListener {
 
 	private static final String ALL = "All";
 	private static final String MOUSE = "Mouse";
+	private static final String BOUNDARIES = "Boundaries";
 	private static final String PLAYERS = "Players";
 	private static final String NPCS = "NPCs";
 	private static final String GROUND_ITEMS = "Ground Items";
@@ -83,6 +85,7 @@ public final class BotMenuView implements ActionListener {
 		}
 
 		map = new LinkedHashMap<>();
+		map.put(BOUNDARIES, DrawBoundaries.class);
 		map.put(MODELS, DrawModels.class);
 		map.put(SCENEENTITIES, DrawObjects.class);
 		map.put(PLAYERS, DrawPlayers.class);
@@ -108,6 +111,7 @@ public final class BotMenuView implements ActionListener {
 		items.add(GROUND_ITEMS);
 		items.add(SCENEENTITIES);
 		items.add(MODELS);
+		items.add(BOUNDARIES);
 		items.add(ITEMS);
 		items.add(ABILTIIES);
 		items.add(SEPERATOR);
