@@ -72,6 +72,11 @@ public class BlockingEventQueue extends EventQueue {
 			/* Block input events */
 			if (event instanceof MouseEvent || event instanceof KeyEvent ||
 					event instanceof WindowEvent || event instanceof FocusEvent) {
+				/* If a mouse event is blocked, dispatch it on our event caster. */
+				if (event instanceof MouseEvent) {
+					BotChrome.getInstance().getBot().getEventMulticaster().dispatch(event);
+				}
+
 				/* Execute a callback for this source when we block an event */
 				EventCallback callback = callbacks.get(source);
 				if (callback != null) {
