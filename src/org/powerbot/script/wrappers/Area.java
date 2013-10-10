@@ -73,10 +73,15 @@ public class Area {
 		return Tile.NIL;
 	}
 
+	public Polygon getPolygon() {
+		return polygon;
+	}
+
 	private Tile[] getTiles() {
 		if (this.tiles != null) {
 			return this.tiles;
 		}
+
 		Rectangle r = polygon.getBounds();
 		int c = 0;
 		Tile[] tiles = new Tile[r.width * r.height];
