@@ -144,7 +144,9 @@ public class Hud extends MethodProvider {
 		arr[index++] = ctx.widgets.get(CombatBar.WIDGET, CombatBar.COMPONENT_BOUNDS).getViewportRect();
 		Component c = ctx.widgets.get(1484, 1);//subscribe
 		if (c.isVisible()) {
-			arr[index++] = c.getViewportRect();
+			Rectangle r = c.getViewportRect();
+			r.grow(5, 5);
+			arr[index++] = r;
 		}
 		for (Window window : Window.values()) {
 			Component sprite = getSprite(window);
