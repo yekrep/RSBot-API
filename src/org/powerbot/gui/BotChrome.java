@@ -15,9 +15,7 @@ import java.io.OutputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -26,7 +24,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.WindowConstants;
 
@@ -49,14 +46,12 @@ import org.powerbot.util.io.Resources;
 public class BotChrome extends JFrame implements Closeable {
 	private static final Logger log = Logger.getLogger(BotChrome.class.getName());
 	public static final int PANEL_MIN_WIDTH = 800, PANEL_MIN_HEIGHT = 600;
-	public static final int INPUT_MOUSE = 1, INPUT_KEYBOARD = 2;
 
 	private static BotChrome instance;
 	private final CryptFile cache = new CryptFile("window-cache.1.ini", false, BotChrome.class);
 	private boolean minimised;
 	private Bot bot;
 	public BotPanel panel;
-	private int inputMask;
 
 	private BotChrome() {
 		setTitle(Configuration.NAME + (Configuration.BETA ? " Beta" : ""));
@@ -86,7 +81,7 @@ public class BotChrome extends JFrame implements Closeable {
 
 		panel = new BotPanel(this);
 		add(panel);
-		this.inputMask = INPUT_MOUSE | INPUT_KEYBOARD;
+		BlockingEventQueue.getEventQueue().setBlocking(true);
 
 		log.log(Level.INFO, "Optimising your experience", "Starting...");
 		pack();
@@ -211,13 +206,5 @@ public class BotChrome extends JFrame implements Closeable {
 		}
 		add(bot.getApplet());
 		revalidate();
-	}
-
-	public int getInputMask() {
-		return inputMask;
-	}
-
-	public void setInputMask(int mask) {
-		this.inputMask = mask;
 	}
 }

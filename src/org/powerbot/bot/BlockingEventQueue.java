@@ -20,8 +20,17 @@ public class BlockingEventQueue extends EventQueue {
 	/* We only want one instance of this -- ever */
 	private static BlockingEventQueue eventQueue = new BlockingEventQueue();
 	private Map<Component, EventCallback> callbacks = new ConcurrentHashMap<>();
+	private boolean blocking;
 
 	private BlockingEventQueue() {
+	}
+
+	public boolean isBlocking() {
+		return blocking;
+	}
+
+	public void setBlocking(boolean blocking) {
+		this.blocking = blocking;
 	}
 
 	public static BlockingEventQueue getEventQueue() {
@@ -60,15 +69,7 @@ public class BlockingEventQueue extends EventQueue {
 
 		Object source = event.getSource();
 		/* Check if event is from a blocked source */
-		statement:
-		if (source != null && callbacks.containsKey(source)) {
-			int mask = BotChrome.getInstance().getInputMask();
-			if (event instanceof MouseEvent && (mask & BotChrome.INPUT_MOUSE) != 0) {
-				break statement;
-			}
-			if (event instanceof KeyEvent && (mask & BotChrome.INPUT_KEYBOARD) != 0) {
-				break statement;
-			}
+		if (source != null && callbacks.containsKey(source) && blocking) {
 			/* Block input events */
 			if (event instanceof MouseEvent || event instanceof KeyEvent ||
 					event instanceof WindowEvent || event instanceof FocusEvent) {

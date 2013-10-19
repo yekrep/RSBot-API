@@ -8,7 +8,7 @@ import java.util.Map;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenu;
 
-import org.powerbot.gui.BotChrome;
+import org.powerbot.bot.BlockingEventQueue;
 
 /**
  * @author Paris
@@ -16,20 +16,18 @@ import org.powerbot.gui.BotChrome;
 public final class BotMenuInput {
 	public BotMenuInput(final JMenu menu) {
 		JCheckBoxMenuItem item;
-		final BotChrome chrome = BotChrome.getInstance();
-		final int panelInputMask = chrome.getInputMask();
+		final BlockingEventQueue eq = BlockingEventQueue.getEventQueue();
 
-		final Map<String, Integer> map = new LinkedHashMap<>();
-		map.put(BotLocale.ALLOW, BotChrome.INPUT_MOUSE | BotChrome.INPUT_KEYBOARD);
-		map.put(BotLocale.KEYBOARD, BotChrome.INPUT_KEYBOARD);
-		map.put(BotLocale.BLOCK, 0);
+		final Map<String, Boolean> map = new LinkedHashMap<>();
+		map.put(BotLocale.ALLOW, false);
+		map.put(BotLocale.BLOCK, true);
 
-		for (final Map.Entry<String, Integer> inputMask : map.entrySet()) {
-			final int mask = inputMask.getValue();
-			item = new JCheckBoxMenuItem(inputMask.getKey(), panelInputMask == mask);
+		for (final Map.Entry<String, Boolean> inputMask : map.entrySet()) {
+			final boolean b = inputMask.getValue();
+			item = new JCheckBoxMenuItem(inputMask.getKey(), eq.isBlocking() == b);
 			item.addActionListener(new ActionListener() {
 				public void actionPerformed(final ActionEvent e1) {
-					chrome.setInputMask(mask);
+					eq.setBlocking(b);
 				}
 			});
 			menu.add(item);

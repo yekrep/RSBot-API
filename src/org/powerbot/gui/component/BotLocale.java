@@ -45,7 +45,6 @@ public final class BotLocale {
 	public static final String BY = "By %s";
 
 	public static final String ALLOW = "Allow";
-	public static final String KEYBOARD = "Keyboard";
 	public static final String BLOCK = "Block";
 
 	public static final String OK = "OK";
