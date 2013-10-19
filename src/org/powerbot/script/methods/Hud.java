@@ -154,6 +154,13 @@ public class Hud extends MethodProvider {
 			arr[index++] = sprite.getParent().getViewportRect();
 		}
 		cachedTime = System.nanoTime();
+		for (Rectangle r : boundsCache) {
+			if (r == null) {
+				break;
+			}
+
+			r.grow(5, 5);
+		}
 		return boundsCache = Arrays.copyOf(arr, index);
 	}
 
