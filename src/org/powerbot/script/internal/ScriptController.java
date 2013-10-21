@@ -83,7 +83,7 @@ public final class ScriptController implements Runnable, Script.Controller {
 			}
 		};
 
-		this.def = bundle.definitiion;
+		this.def = bundle.definition;
 
 		this.timeout = new Timer(timeout, new ActionListener() {
 			@Override
