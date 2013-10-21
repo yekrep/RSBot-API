@@ -224,6 +224,15 @@ public final class ScriptController implements Runnable, Script.Controller {
 		return queue;
 	}
 
+	/**
+	 * Returns the current script definition.
+	 *
+	 * @return the current script definition
+	 */
+	public ScriptDefinition getDefinition() {
+		return def;
+	}
+
 	private void call(final Script.State state) {
 		track(state);
 
