@@ -156,7 +156,7 @@ public class Hud extends MethodProvider {
 			arr[index++] = sprite.getParent().getViewportRect();
 		}
 		cachedTime = System.nanoTime();
-		for (Rectangle r : boundsCache) {
+		for (Rectangle r : arr) {
 			if (r == null) {
 				break;
 			}
