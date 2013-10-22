@@ -31,7 +31,9 @@ public @interface Manifest {
 	 * The version.
 	 *
 	 * @return the version
+	 * @deprecated this detail is no longer shown to end users
 	 */
+	@Deprecated
 	double version() default 1.0;
 
 	/**
