@@ -82,6 +82,7 @@ public final class HeteroMouse implements MouseSimulator {
 			q[0] = q[1];
 		}
 
+		l0.add(b);
 		return l0;
 	}
 
