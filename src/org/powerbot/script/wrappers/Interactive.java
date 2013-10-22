@@ -136,6 +136,10 @@ public abstract class Interactive extends MethodProvider implements Targetable, 
 	}
 
 	private boolean antipattern(Targetable targetable, Renderable renderable) {
+		if (!ctx.antipatterns.isEnabled()) {
+			return false;
+		}
+
 		Model model = renderable.getModel();
 		Point mousePoint = ctx.mouse.getLocation();
 		Point interactPoint = targetable.getInteractPoint();

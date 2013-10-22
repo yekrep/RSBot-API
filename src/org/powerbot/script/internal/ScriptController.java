@@ -83,7 +83,7 @@ public final class ScriptController implements Runnable, Script.Controller {
 			}
 		};
 
-		this.def = bundle.definitiion;
+		this.def = bundle.definition;
 
 		this.timeout = new Timer(timeout, new ActionListener() {
 			@Override
@@ -222,6 +222,15 @@ public final class ScriptController implements Runnable, Script.Controller {
 	@Override
 	public BlockingDeque<Runnable> getExecutor() {
 		return queue;
+	}
+
+	/**
+	 * Returns the current script definition.
+	 *
+	 * @return the current script definition
+	 */
+	public ScriptDefinition getDefinition() {
+		return def;
 	}
 
 	private void call(final Script.State state) {

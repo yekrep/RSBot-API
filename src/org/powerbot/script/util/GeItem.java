@@ -121,7 +121,9 @@ public class GeItem {
 			ge = new GeItem(id);
 		} catch (final IOException ignored) {
 		}
-		cache.put(id, ge);
+		if (ge != null) {
+			cache.put(id, ge);
+		}
 		return ge;
 	}
 
