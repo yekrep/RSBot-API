@@ -114,7 +114,7 @@ public class Menu extends MethodProvider {
 				while (System.currentTimeMillis() - m < 100 && !client.isMenuOpen()) {
 					sleep(5);
 				}
-				sleep(0, 300);
+				sleep(Random.nextInt(0, 300) + 105 * (int) (Math.log(index * 2) / Math.log(2)));
 
 				if (!client.isMenuOpen()) {
 					return false;
@@ -129,7 +129,7 @@ public class Menu extends MethodProvider {
 	}
 
 	/**
-	 * Clicks the first index of the specified flter.
+	 * Clicks the first index of the specified filter.
 	 *
 	 * @param filter the filter
 	 * @return <tt>true</tt> if the entry was clicked; otherwise <tt>false</tt>
