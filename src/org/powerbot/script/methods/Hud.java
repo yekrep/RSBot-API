@@ -298,7 +298,7 @@ public class Hud extends MethodProvider {
 		return null;
 	}
 
-	private Component getMenu(Menu menu) {
+	Component getMenu(Menu menu) {
 		int texture = menu.getTexture();
 		for (Component child : ctx.widgets.get(WIDGET_MENU)) {
 			if (child.getTextureId() == texture && child.isValid()) {
@@ -308,7 +308,7 @@ public class Hud extends MethodProvider {
 		return null;
 	}
 
-	private Component getTab(Window window) {
+	Component getTab(Window window) {
 		int texture = window.getMiniTexture();
 		for (Component child : ctx.widgets.get(WIDGET_HUD)) {
 			for (Component sub : child.getChildren()) {
@@ -320,7 +320,7 @@ public class Hud extends MethodProvider {
 		return null;
 	}
 
-	private Component getSprite(Window window) {
+	Component getSprite(Window window) {
 		int texture = window.getTexture();
 		for (Component child : ctx.widgets.get(WIDGET_HUD)) {
 			for (Component sub : child.getChildren()) {

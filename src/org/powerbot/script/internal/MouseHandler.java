@@ -110,6 +110,7 @@ public class MouseHandler implements Runnable, Stoppable {
 
 		start:
 		while (running) {
+			System.out.println("lock wait");
 			synchronized (LOCK) {
 				if (target == null) {
 					try {
@@ -118,6 +119,7 @@ public class MouseHandler implements Runnable, Stoppable {
 					}
 				}
 			}
+			System.out.println(target);
 			if (target == null) {
 				continue;
 			}
@@ -129,11 +131,13 @@ public class MouseHandler implements Runnable, Stoppable {
 				}
 				continue;
 			}
+			System.out.println(mouse + " " + target.steps);
 			if (++target.steps > MAX_STEPS) {
 				target.failed = true;
 				complete(target);
 				continue;
 			}
+			System.out.println(mouse.getLocation() + " " + target.curr);
 			final Point loc = mouse.getLocation();
 			if (target.curr == null) {
 				target.curr = new Vector3(loc.x, loc.y, 255);
@@ -144,6 +148,7 @@ public class MouseHandler implements Runnable, Stoppable {
 				final Point p = target.targetable.getInteractPoint();
 				target.dest = new Vector3(p.x, p.y, 0);
 			}
+			System.out.println(target.dest);
 			if (target.dest.x == -1 || target.dest.y == -1) {
 				target.failed = true;
 				complete(target);
@@ -174,6 +179,7 @@ public class MouseHandler implements Runnable, Stoppable {
 				m = System.currentTimeMillis() - m;
 
 				final long l = TimeUnit.NANOSECONDS.toMillis(simulator.getAbsoluteDelay(v.z)) - m;
+				System.out.println(l);
 				if (l > 0) {
 					try {
 						Thread.sleep(l);

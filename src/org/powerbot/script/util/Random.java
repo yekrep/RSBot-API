@@ -2,6 +2,7 @@ package org.powerbot.script.util;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.concurrent.TimeUnit;
 
 import ec.util.MersenneTwister;
 import org.powerbot.util.math.HardwareSimulator;
@@ -77,23 +78,25 @@ public class Random {
 	public static int nextGaussian(final int min, final int max, final double sd) {
 		return nextGaussian(min, max, min + (max - min) / 2, sd);
 	}
+
 	/**
 	 * Returns a pseudo-random gaussian distributed number between the given min and max with the provided standard deviation.
 	 *
-	 * @param min the minimum bound
-	 * @param max the maximum bound
-	 *            @param mean the mean value
-	 * @param sd  the standard deviation from the mean
+	 * @param min  the minimum bound
+	 * @param max  the maximum bound
+	 * @param mean the mean value
+	 * @param sd   the standard deviation from the mean
 	 * @return a gaussian distributed number between the provided bounds
 	 */
 	public static int nextGaussian(final int min, final int max, final int mean, final double sd) {
 		if (min == max) {
 			return min;
 		}
+		long mark = System.nanoTime() + TimeUnit.NANOSECONDS.convert(1000, TimeUnit.MILLISECONDS);
 		int rand;
 		do {
 			rand = (int) (random.nextGaussian() * sd + mean);
-		} while (rand < min || rand >= max);
-		return rand;
+		} while ((rand < min || rand >= max) && System.nanoTime() < mark);
+		return System.nanoTime() >= mark ? Random.nextInt(min, max) : rand;
 	}
 }
