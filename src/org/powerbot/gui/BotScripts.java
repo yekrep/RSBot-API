@@ -413,14 +413,13 @@ public final class BotScripts extends JDialog implements ActionListener {
 			name.setFont(name.getFont().deriveFont(Font.BOLD));
 			panelInfo.add(name, BorderLayout.NORTH);
 
-			if (def.getWebsite() != null && !def.getWebsite().isEmpty()) {
+			final String website = def.getWebsite();
+			if (website != null && !website.isEmpty()) {
 				name.setForeground(new Color(0x23, 0x23, 0x8e));
 				name.addMouseListener(new MouseAdapter() {
 					@Override
 					public void mouseClicked(final MouseEvent arg0) {
-						String url = def.getWebsite();
-						url = String.format(Configuration.URLs.LINKFILTER, url.replace("&", "%26"));
-						BotChrome.openURL(url);
+						BotChrome.openURL(website);
 					}
 				});
 				name.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
