@@ -55,7 +55,7 @@ public @interface Manifest {
 	/**
 	 * The powerbot.org forum topic ID.
 	 *
-	 * @return the topic ID
+	 * @return the powerbot.org forum topic ID
 	 */
 	int topic() default 0;
 
