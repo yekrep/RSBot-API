@@ -161,7 +161,7 @@ public class MouseHandler implements Runnable, Stoppable {
 				curr.y = v.y;
 				curr.z = v.z;
 
-				m = System.currentTimeMillis();
+				m = System.nanoTime();
 				final double traverseLength = Math.sqrt(Math.pow(dest.x - curr.x, 2) + Math.pow(dest.y - curr.y, 2));
 				final double mod = 2.5 + Math.sqrt(Math.pow(dest.x - centroid.x, 2) + Math.pow(dest.y - centroid.y, 2));
 				if (traverseLength < mod) {
@@ -171,9 +171,9 @@ public class MouseHandler implements Runnable, Stoppable {
 						continue start;
 					}
 				}
-				m = System.currentTimeMillis() - m;
+				m = System.nanoTime() - m;
 
-				final long l = TimeUnit.NANOSECONDS.toMillis(simulator.getAbsoluteDelay(v.z)) - m;
+				final long l = TimeUnit.NANOSECONDS.toMillis(simulator.getAbsoluteDelay(v.z) - m);
 				if (l > 0) {
 					try {
 						Thread.sleep(l);
