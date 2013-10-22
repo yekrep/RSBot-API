@@ -26,7 +26,7 @@ public final class ScriptDefinition implements Comparable<ScriptDefinition> {
 	public enum Category {
 		AGILITY("course"),
 		AIO(""),
-		COMBAT("fight|kill|duel|soul"),
+		COMBAT("fight|kill|duel|soul|slay"),
 		CONSTRUCTION("constr"),
 		COOKING("cook"),
 		CRAFTING("craft|spin|crush|grind|flax|vial"),
