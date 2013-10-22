@@ -406,7 +406,7 @@ public final class BotScripts extends JDialog implements ActionListener {
 			add(panelInfo);
 
 			final JLabel name = new JLabel(def.getName());
-			name.setToolTipText(String.format("v%s by %s", def.getVersion(), def.getAuthors()));
+			name.setToolTipText(String.format("by %s", def.getAuthors()));
 			name.setFont(name.getFont().deriveFont(Font.BOLD));
 			panelInfo.add(name, BorderLayout.NORTH);
 

@@ -13,7 +13,6 @@ import org.powerbot.util.StringUtil;
  */
 public final class ScriptDefinition implements Comparable<ScriptDefinition> {
 	private final String name, id, description, website;
-	private final double version;
 	private final String[] authors;
 
 	public String className;
@@ -62,20 +61,19 @@ public final class ScriptDefinition implements Comparable<ScriptDefinition> {
 		this(script.getClass().getAnnotation(Manifest.class));
 	}
 
+	@SuppressWarnings("deprecation")
 	public ScriptDefinition(final Manifest manifest) {
 		name = manifest.name();
 		id = null;
 		description = manifest.description();
-		version = manifest.version();
 		authors = manifest.authors();
 		website = manifest.website();
 	}
 
-	public ScriptDefinition(final String name, final String id, final String description, final double version, final String[] authors, final String website) {
+	public ScriptDefinition(final String name, final String id, final String description, final String[] authors, final String website) {
 		this.name = name;
 		this.id = id;
 		this.description = description;
-		this.version = version;
 		this.authors = authors;
 		this.website = website;
 	}
@@ -94,10 +92,6 @@ public final class ScriptDefinition implements Comparable<ScriptDefinition> {
 
 	public String getDescription() {
 		return getCleanText(description);
-	}
-
-	public double getVersion() {
-		return version;
 	}
 
 	public String[] getAllAuthors() {
@@ -171,16 +165,8 @@ public final class ScriptDefinition implements Comparable<ScriptDefinition> {
 		final String description = data.containsKey("description") ? data.get("description") : null;
 		final String website = data.containsKey("website") ? data.get("website") : null;
 		final String[] authors = data.containsKey("authors") ? data.get("authors").split(",") : new String[]{};
-		double version = 1d;
 
-		if (data.containsKey("version")) {
-			try {
-				version = Double.parseDouble(data.get("version"));
-			} catch (final NumberFormatException ignored) {
-			}
-		}
-
-		return name == null || name.isEmpty() ? null : new ScriptDefinition(name, id, description, version, authors, website);
+		return name == null || name.isEmpty() ? null : new ScriptDefinition(name, id, description, authors, website);
 	}
 
 	@Override
