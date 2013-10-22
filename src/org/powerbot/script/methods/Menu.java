@@ -197,14 +197,14 @@ public class Menu extends MethodProvider {
 		}
 		return ctx.mouse.move(
 				client.getMenuX() + Random.nextInt(4, client.getMenuWidth() - 5),
-				client.getMenuY() + (21 + 16 * index + Random.nextInt(3, 12))
+				client.getMenuY() + (21 + 16 * index + Random.nextInt(2, 15))
 		) && client.isMenuOpen();
 	}
 
 	private boolean hoverSub(final Client client, final int main, final int sub) {
 		if (ctx.mouse.move(
 				client.getMenuX() + Random.nextInt(4, client.getMenuWidth() - 5),
-				client.getMenuY() + (21 + 16 * main + Random.nextInt(3, 12)))) {
+				client.getMenuY() + (21 + 16 * main + Random.nextInt(2, 15)))) {
 			sleep(Random.nextInt(125, 175));
 			if (client.isMenuOpen()) {
 				final Point p = ctx.mouse.getLocation();
@@ -214,7 +214,7 @@ public class Menu extends MethodProvider {
 					sleep(Random.nextInt(125, 175));
 					if (client.isMenuOpen()) {
 						final int subY = client.getSubMenuY();
-						if (ctx.mouse.move(cX, subY + (16 * sub + Random.nextInt(3, 12) + 21))) {
+						if (ctx.mouse.move(cX, subY + (16 * sub + Random.nextInt(2, 15) + 21))) {
 							sleep(Random.nextInt(125, 175));
 							return client.isMenuOpen();
 						}
