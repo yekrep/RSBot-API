@@ -1,15 +1,18 @@
 package org.powerbot.script.methods;
 
+import java.awt.Graphics;
 import java.awt.Point;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.powerbot.client.Client;
 import org.powerbot.client.MenuGroupNode;
 import org.powerbot.client.MenuItemNode;
 import org.powerbot.client.NodeDeque;
 import org.powerbot.client.NodeSubQueue;
+import org.powerbot.event.PaintListener;
 import org.powerbot.script.internal.wrappers.Deque;
 import org.powerbot.script.internal.wrappers.Queue;
 import org.powerbot.script.lang.Filter;
@@ -22,6 +25,11 @@ import org.powerbot.util.StringUtil;
  * @author Timer
  */
 public class Menu extends MethodProvider {
+	private AtomicBoolean caching = new AtomicBoolean(false);
+	private final Object LOCK = new Object();
+	private String[] actions = new String[0];
+	private String[] options = new String[0];
+
 	public Menu(MethodContext factory) {
 		super(factory);
 	}
@@ -29,8 +37,7 @@ public class Menu extends MethodProvider {
 	public static class Entry {
 		public final String action, option;
 
-		private Entry(MenuItemNode node) {
-			String a = node.getAction(), o = node.getOption();
+		private Entry(String a, String o) {
 			this.action = a != null ? StringUtil.stripHtml(a) : "";
 			this.option = o != null ? StringUtil.stripHtml(o) : "";
 		}
@@ -82,13 +89,16 @@ public class Menu extends MethodProvider {
 	 * @return the first index found; otherwise -1
 	 */
 	public int indexOf(Filter<Entry> filter) {
-		List<MenuItemNode> nodes = getMenuItemNodes();
-		int d = 0;
-		for (MenuItemNode node : nodes) {
-			if (filter.accept(new Entry(node))) {
-				return d;
+		String[] actions, options;
+		synchronized (LOCK) {
+			actions = this.actions;
+			options = this.options;
+		}
+		int len = Math.min(actions.length, options.length);
+		for (int i = 0; i < len; i++) {
+			if (filter.accept(new Entry(actions[i], options[i]))) {
+				return i;
 			}
-			d++;
 		}
 		return -1;
 	}
@@ -271,25 +281,45 @@ public class Menu extends MethodProvider {
 		return nodes;
 	}
 
+	public void register() {
+		if (!caching.compareAndSet(false, true)) {
+			return;
+		}
+		ctx.getBot().getEventMulticaster().addListener(new PaintListener() {
+			@Override
+			public void repaint(Graphics render) {
+				List<MenuItemNode> items = getMenuItemNodes();
+				int size = items.size();
+				String[] actions = new String[size], options = new String[size];
+				for (int i = 0; i < size; i++) {
+					MenuItemNode node = items.get(i);
+					actions[i] = node.getAction();
+					options[i] = node.getOption();
+				}
+
+				synchronized (LOCK) {
+					Menu.this.actions = actions;
+					Menu.this.options = options;
+				}
+			}
+		});
+	}
+
 	/**
 	 * Returns an array of all the current menu items ([action_1 option_1, action_2 option_2, ...]).
 	 *
 	 * @return the array of menu items
 	 */
 	public String[] getItems() {
-		List<MenuItemNode> nodes = getMenuItemNodes();
-		int len = nodes.size();
-		int d = 0;
+		String[] actions, options;
+		synchronized (LOCK) {
+			actions = this.actions;
+			options = this.options;
+		}
+		int len = Math.min(actions.length, options.length);
 		String[] arr = new String[len];
-		for (MenuItemNode node : nodes) {
-			String a = node.getAction(), o = node.getOption();
-			if (a != null) {
-				a = StringUtil.stripHtml(a);
-			}
-			if (o != null) {
-				o = StringUtil.stripHtml(o);
-			}
-			arr[d++] = a + " " + o;
+		for (int i = 0; i < len; i++) {
+			arr[i] = actions[i] + " " + options[i];
 		}
 		return arr;
 	}

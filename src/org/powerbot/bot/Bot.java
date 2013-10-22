@@ -258,6 +258,7 @@ public final class Bot implements Runnable, Stoppable {
 		mouseHandler = new MouseHandler(applet, client);
 		inputHandler = new InputHandler(applet, client);
 		new Thread(threadGroup, mouseHandler).start();
+		ctx.menu.register();
 	}
 
 	public Canvas getCanvas() {
