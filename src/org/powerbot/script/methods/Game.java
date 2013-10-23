@@ -69,21 +69,24 @@ public class Game extends MethodProvider {
 	 * @return <tt>true</tt> if successfully logged out; otherwise <tt>false</tt>
 	 */
 	public boolean logout(boolean lobby) {
-		if (ctx.widgets.get(1477, 75).interact("Logout")) {//TODO: auto detect
-			Widget widget = ctx.widgets.get(26);
-			for (int i = 0; i < 20; i++) {
-				if (widget.isValid()) {
-					break;
+		if (ctx.hud.isVisible(Hud.Window.MINIMAP)) {
+			Component sprite = ctx.hud.getSprite(Hud.Window.MINIMAP);
+			if (sprite != null && sprite.getParent().getChild(2).interact("Logout")) {
+				Widget widget = ctx.widgets.get(26);
+				for (int i = 0; i < 20; i++) {
+					if (widget.isValid()) {
+						break;
+					}
+					sleep(100, 200);
 				}
-				sleep(100, 200);
-			}
-			if (widget.isValid()) {
-				if (widget.getComponent(lobby ? 18 : 11).interact("Select")) {
-					for (int i = 0; i < 10; i++) {
-						if (getClientState() == (lobby ? INDEX_LOBBY_SCREEN : INDEX_LOGIN_SCREEN)) {
-							break;
+				if (widget.isValid()) {
+					if (widget.getComponent(lobby ? 18 : 11).interact("Select")) {
+						for (int i = 0; i < 10; i++) {
+							if (getClientState() == (lobby ? INDEX_LOBBY_SCREEN : INDEX_LOGIN_SCREEN)) {
+								break;
+							}
+							sleep(700, 1000);
 						}
-						sleep(700, 1000);
 					}
 				}
 			}
