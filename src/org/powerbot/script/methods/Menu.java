@@ -89,6 +89,10 @@ public class Menu extends MethodProvider {
 	 * @return the first index found; otherwise -1
 	 */
 	public int indexOf(Filter<Entry> filter) {
+		if (ctx.game.toolkit.graphicsIndex != 0) {
+			cache();
+		}
+
 		String[] actions, options;
 		synchronized (LOCK) {
 			actions = this.actions;
@@ -288,19 +292,11 @@ public class Menu extends MethodProvider {
 		ctx.getBot().getEventMulticaster().addListener(new PaintListener() {
 			@Override
 			public void repaint(Graphics render) {
-				List<MenuItemNode> items = getMenuItemNodes();
-				int size = items.size();
-				String[] actions = new String[size], options = new String[size];
-				for (int i = 0; i < size; i++) {
-					MenuItemNode node = items.get(i);
-					actions[i] = node.getAction();
-					options[i] = node.getOption();
+				if (ctx.game.toolkit.graphicsIndex != 0) {
+					return;
 				}
 
-				synchronized (LOCK) {
-					Menu.this.actions = actions;
-					Menu.this.options = options;
-				}
+				cache();
 			}
 		});
 	}
@@ -311,6 +307,10 @@ public class Menu extends MethodProvider {
 	 * @return the array of menu items
 	 */
 	public String[] getItems() {
+		if (ctx.game.toolkit.graphicsIndex != 0) {
+			cache();
+		}
+
 		String[] actions, options;
 		synchronized (LOCK) {
 			actions = this.actions;
@@ -322,5 +322,21 @@ public class Menu extends MethodProvider {
 			arr[i] = actions[i] + " " + options[i];
 		}
 		return arr;
+	}
+
+	private void cache() {
+		synchronized (LOCK) {
+			List<MenuItemNode> items = getMenuItemNodes();
+			int size = items.size();
+			String[] actions = new String[size], options = new String[size];
+			for (int i = 0; i < size; i++) {
+				MenuItemNode node = items.get(i);
+				actions[i] = node.getAction();
+				options[i] = node.getOption();
+			}
+
+			Menu.this.actions = actions;
+			Menu.this.options = options;
+		}
 	}
 }
