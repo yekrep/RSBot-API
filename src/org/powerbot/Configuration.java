@@ -95,7 +95,7 @@ public class Configuration {
 		while (e.hasMoreElements()) {
 			byte[] a = null;
 			try {
-				e.nextElement().getHardwareAddress();
+				a = e.nextElement().getHardwareAddress();
 			} catch (final SocketException ignored) {
 			}
 			if (a != null) {
