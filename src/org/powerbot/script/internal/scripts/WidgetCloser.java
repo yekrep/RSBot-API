@@ -47,7 +47,7 @@ public class WidgetCloser extends PollingScript implements InternalScript {
 			return -1;
 		}
 
-		if (++tries > 3) {
+		if (++tries > 5) {
 			time = System.currentTimeMillis() + Random.nextInt(30, 61) * 1000;
 			tries = 0;
 			return 0;
