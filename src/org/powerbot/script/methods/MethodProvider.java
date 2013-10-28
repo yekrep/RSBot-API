@@ -15,6 +15,10 @@ public class MethodProvider {
 	 * @param millis the duration in milliseconds.
 	 */
 	public void sleep(final int millis) {
+		if (millis <= 0) {
+			return;
+		}
+
 		try {
 			Thread.sleep(millis);
 		} catch (final InterruptedException ignored) {
