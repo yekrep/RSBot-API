@@ -35,6 +35,10 @@ public class MouseHandler implements Runnable, Stoppable {
 			return;
 		}
 		final int x = mouse.getX(), y = mouse.getY();
+		try {
+			Thread.sleep(simulator.getPressDuration());
+		} catch (InterruptedException ignored) {
+		}
 		press(x, y, button);
 		try {
 			Thread.sleep(simulator.getPressDuration());
