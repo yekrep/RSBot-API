@@ -31,8 +31,6 @@
 			<method access="protected+" />
 		</class>
 	</keep-names>
-	<property name="synthetize-methods" value="disable" />
-	<property name="synthetize-fields" value="disable" />
 	<property name="log-file" value="allatori-log.xml" />
 	<property name="string-encryption" value="maximum" />
 	<property name="string-encryption-type" value="strong" />
