@@ -29,12 +29,7 @@ public class MouseHandler implements Runnable, Stoppable {
 		target = null;
 	}
 
-	public void click(final int button) {
-		final Mouse mouse;
-		if ((mouse = client.getMouse()) == null) {
-			return;
-		}
-		final int x = mouse.getX(), y = mouse.getY();
+	public void click(final int x, final int y, final int button) {
 		try {
 			Thread.sleep(simulator.getPressDuration());
 		} catch (InterruptedException ignored) {
@@ -45,6 +40,10 @@ public class MouseHandler implements Runnable, Stoppable {
 		} catch (InterruptedException ignored) {
 		}
 		release(x, y, button);
+		try {
+			Thread.sleep(simulator.getPressDuration());
+		} catch (InterruptedException ignored) {
+		}
 	}
 
 	public void scroll(boolean down) {
