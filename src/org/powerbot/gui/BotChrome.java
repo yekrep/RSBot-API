@@ -81,7 +81,7 @@ public class BotChrome extends JFrame implements Closeable {
 
 		panel = new BotPanel(this);
 		add(panel);
-		BlockingEventQueue.getEventQueue().setBlocking(true);
+		BlockingEventQueue.getEventQueue().setBlocking(false);
 
 		log.log(Level.INFO, "Optimising your experience", "Starting...");
 		pack();
