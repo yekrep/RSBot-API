@@ -22,6 +22,10 @@ public class Canvas extends java.awt.Canvas {
 
 	@Override
 	public Graphics getGraphics() {
+		if (bot.getMethodContext().game.toolkit.graphicsIndex != 0) {
+			return super.getGraphics();
+		}
+
 		final Graphics game = bot.getGameBuffer();
 		super.getGraphics().drawImage(bot.getBufferImage(), 0, 0, null);
 		return game;
