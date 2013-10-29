@@ -114,6 +114,20 @@ public class Menu extends MethodProvider {
 	 * @return <tt>true</tt> if an entry was hovered, otherwise <tt>false</tt>
 	 */
 	public boolean hover(Filter<Entry> filter) {
+		return select(filter, false);
+	}
+
+	/**
+	 * Clicks the first index of the specified filter.
+	 *
+	 * @param filter the filter
+	 * @return <tt>true</tt> if the entry was clicked; otherwise <tt>false</tt>
+	 */
+	public boolean click(Filter<Entry> filter) {
+		return select(filter, true);
+	}
+
+	private boolean select(Filter<Entry> filter, boolean click) {
 		Client client = ctx.getClient();
 		if (client == null) {
 			return false;
@@ -122,6 +136,11 @@ public class Menu extends MethodProvider {
 		if (index == -1) {
 			return false;
 		}
+
+		if (click && !client.isMenuOpen() && index == 0) {
+			return ctx.mouse.click(true);
+		}
+
 		if (!client.isMenuOpen()) {
 			if (ctx.mouse.click(false)) {
 				final long m = System.currentTimeMillis();
@@ -139,28 +158,10 @@ public class Menu extends MethodProvider {
 				}
 			}
 		}
-		return hoverIndex(client, index);
-	}
 
-	/**
-	 * Clicks the first index of the specified filter.
-	 *
-	 * @param filter the filter
-	 * @return <tt>true</tt> if the entry was clicked; otherwise <tt>false</tt>
-	 */
-	public boolean click(Filter<Entry> filter) {
-		Client client = ctx.getClient();
-		if (client == null) {
-			return false;
-		}
-		int index = indexOf(filter);
-		if (index == -1) {
-			return false;
-		}
-		if (!client.isMenuOpen() && index == 0) {
-			return ctx.mouse.click(true);
-		}
-		return hover(filter) && ctx.mouse.click(true);
+		Point p = hoverIndex(client, index);
+		return p.getX() != -1 && p.getY() != -1 && ctx.mouse.click(p, true);
+
 	}
 
 	/**
@@ -179,7 +180,7 @@ public class Menu extends MethodProvider {
 		return !client.isMenuOpen();
 	}
 
-	private boolean hoverIndex(final Client client, int index) {
+	private Point hoverIndex(final Client client, int index) {
 		int _index = 0, main = 0;
 		final NodeSubQueue menu;
 		collapsed:
@@ -207,15 +208,16 @@ public class Menu extends MethodProvider {
 			if (client.isMenuOpen()) {
 				close();
 			}
-			return false;
+			return new Point(-1, -1);
 		}
-		return ctx.mouse.move(
+		Point p = new Point(
 				client.getMenuX() + Random.nextInt(4, client.getMenuWidth() - 5),
 				client.getMenuY() + (21 + 16 * index + Random.nextInt(2, 15))
-		) && client.isMenuOpen();
+		);
+		return ctx.mouse.move(p) && client.isMenuOpen() ? p : new Point(-1, -1);
 	}
 
-	private boolean hoverSub(final Client client, final int main, final int sub) {
+	private Point hoverSub(final Client client, final int main, final int sub) {
 		if (ctx.mouse.move(
 				client.getMenuX() + Random.nextInt(4, client.getMenuWidth() - 5),
 				client.getMenuY() + (21 + 16 * main + Random.nextInt(2, 15)))) {
@@ -228,9 +230,10 @@ public class Menu extends MethodProvider {
 					sleep(Random.nextInt(125, 175));
 					if (client.isMenuOpen()) {
 						final int subY = client.getSubMenuY();
-						if (ctx.mouse.move(cX, subY + (16 * sub + Random.nextInt(2, 15) + 21))) {
+						Point p2 = new Point(cX, subY + (16 * sub + Random.nextInt(2, 15) + 21));
+						if (ctx.mouse.move(p2)) {
 							sleep(Random.nextInt(125, 175));
-							return client.isMenuOpen();
+							return client.isMenuOpen() ? p2 : new Point(-1, -1);
 						}
 					}
 				}
@@ -239,7 +242,7 @@ public class Menu extends MethodProvider {
 		if (client.isMenuOpen()) {
 			close();
 		}
-		return false;
+		return new Point(-1, -1);
 	}
 
 	private List<MenuItemNode> getMenuItemNodes() {
