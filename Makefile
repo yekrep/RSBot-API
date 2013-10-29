@@ -31,7 +31,7 @@ obfuscate: bundle
 	cd "$(LIB)"; java -jar allatori.jar allatori.xml
 
 codesign: obfuscate
-	jarsigner -verbose -keystore NONE -storetype PKCS11 -providerClass sun.security.pkcs11.SunPKCS11 -providerArg "$(SIGNCFG)/etoken.cfg" "$(DIST)" "Dequeue Ltd"
+	jarsigner -tsa http://timestamp.digicert.com -keystore "$(SIGNCFG)/jks" -storepass "`cat $(SIGNCFG)/passwd`" "$(DIST)" "`cat $(SIGNCFG)/alias`"
 	jarsigner -verify -certs "$(DIST)"
 
 docs:
