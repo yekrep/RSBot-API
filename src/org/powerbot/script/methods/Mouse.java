@@ -8,6 +8,7 @@ import org.powerbot.script.internal.MouseHandler;
 import org.powerbot.script.internal.MouseTarget;
 import org.powerbot.script.lang.Filter;
 import org.powerbot.script.wrappers.Targetable;
+import org.powerbot.util.math.HardwareSimulator;
 
 public class Mouse extends MethodProvider {
 	public Mouse(MethodContext factory) {
@@ -108,26 +109,35 @@ public class Mouse extends MethodProvider {
 		return true;
 	}
 
-	public boolean click(final int x, final int y, final boolean left) {
-		return move(x, y) && click(left ? MouseEvent.BUTTON1 : MouseEvent.BUTTON3);
-	}
-
-	public boolean click(final boolean left) {
+	public boolean click(boolean left) {
 		return click(left ? MouseEvent.BUTTON1 : MouseEvent.BUTTON3);
 	}
 
-	public boolean click(final int button) {
-		final MouseHandler handler = getMouseHandler();
-		if (handler == null) {
+	public boolean click(int button) {
+		final Client client = ctx.getClient();
+		final org.powerbot.client.input.Mouse mouse;
+		if (client == null || (mouse = client.getMouse()) == null) {
 			return false;
 		}
 
-		handler.click(button);
-		return true;
+		return click(mouse.getX(), mouse.getY(), button);
 	}
 
-	public boolean click(final Point p, final boolean left) {
-		return move(p) && click(left);
+	public boolean click(Point p, boolean left) {
+		return click(p.x, p.y, left);
+	}
+
+	public boolean click(int x, int y, boolean left) {
+		return click(x, y, left ? MouseEvent.BUTTON1 : MouseEvent.BUTTON3);
+	}
+
+	public boolean click(int x, int y, int button) {
+		MouseHandler handler = getMouseHandler();
+		if (handler != null) {
+			handler.click(x, y, button);
+			return true;
+		}
+		return false;
 	}
 
 	public boolean click(final Targetable target, final boolean left) {
@@ -140,8 +150,13 @@ public class Mouse extends MethodProvider {
 		handler.handle(t = new MouseTarget(target, MouseTarget.DUMMY) {
 			@Override
 			public void execute(final MouseHandler handler) {
+				try {
+					Thread.sleep(HardwareSimulator.getDelayFactor());
+				} catch (InterruptedException ignored) {
+				}
+
 				if (filter.accept(handler.getLocation())) {
-					handler.click(left ? MouseEvent.BUTTON1 : MouseEvent.BUTTON3);
+					click(left ? MouseEvent.BUTTON1 : MouseEvent.BUTTON3);
 					handler.complete(this);
 				}
 			}
