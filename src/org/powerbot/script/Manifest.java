@@ -43,7 +43,7 @@ public @interface Manifest {
 	 * @deprecated the RSBot SDN™ author is now used instead
 	 */
 	@Deprecated
-	String[] authors();
+	String[] authors() default "";
 
 	/**
 	 * The website URL.
