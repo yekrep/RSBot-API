@@ -78,7 +78,7 @@ public final class BotScripts extends JDialog implements ActionListener {
 	public BotScripts(final BotChrome parent) {
 		super(parent, BotLocale.SCRIPTS, true);
 
-		if (!NetworkAccount.getInstance().isLoggedIn() && Configuration.FROMJAR) {
+		if (!NetworkAccount.getInstance().isLoggedIn()) {
 			new BotSignin(parent);
 			if (!NetworkAccount.getInstance().isLoggedIn()) {
 				scroll = null;
