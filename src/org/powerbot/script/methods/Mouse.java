@@ -176,9 +176,25 @@ public class Mouse extends MethodProvider {
 
 		Point loc = handler.getLocation();
 		if (loc.equals(p1) || move(p1)) {
+			try {
+				Thread.sleep(handler.simulator.getPressDuration());
+			} catch (InterruptedException ignored) {
+			}
 			handler.press(p1.x, p1.y, button);
+			try {
+				Thread.sleep(handler.simulator.getPressDuration());
+			} catch (InterruptedException ignored) {
+			}
 			if (move(p2)) {
+				try {
+					Thread.sleep(handler.simulator.getPressDuration());
+				} catch (InterruptedException ignored) {
+				}
 				handler.release(p2.x, p2.y, button);
+				try {
+					Thread.sleep(handler.simulator.getPressDuration());
+				} catch (InterruptedException ignored) {
+				}
 				return true;
 			}
 		}
