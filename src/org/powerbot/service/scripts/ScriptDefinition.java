@@ -18,7 +18,6 @@ public final class ScriptDefinition implements Comparable<ScriptDefinition> {
 	public String className;
 	public byte[] key;
 	public String source;
-	public int session;
 	public boolean local = false;
 	private Category category = null;
 

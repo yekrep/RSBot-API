@@ -38,9 +38,7 @@ public class Configuration {
 
 		public static final String CLIENTPATCH = "https://" + DOMAIN_SITE_CDN + "/rsbot/ts/%s.ts";
 		public static final String CLIENTBUCKET = "http://buckets." + DOMAIN + "/process/?hash=%s";
-		public static final String SCRIPTSAUTH = PROTOCOL + DOMAIN_SITE + "/scripts/api/auth/?{POST}a=%s&id=%s";
 		public static final String SCRIPTSCOLLECTION = PROTOCOL + DOMAIN_SITE + "/scripts/api/collection/?{POST}a=%s";
-		public static final String SCRIPTSSESSION = PROTOCOL + DOMAIN_SITE + "/scripts/api/session/?{POST}a=%s&s=%s&t0=%s&t1=%s";
 		public static final String SIGNIN = PROTOCOL + DOMAIN_SITE + "/rsbot/login/?{POST}u=%s&p=%s&a=%s";
 
 		public static final String SITE = "http://" + DOMAIN_SITE + "/";

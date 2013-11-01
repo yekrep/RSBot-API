@@ -81,6 +81,8 @@ public @interface Manifest {
 	 * The maximum number of running instances a user may run this {@link Script}
 	 *
 	 * @return the maximum number of running instances
+	 * @deprecated no longer used by the RSBot SDN™
 	 */
+	@Deprecated
 	int instances() default 4;
 }

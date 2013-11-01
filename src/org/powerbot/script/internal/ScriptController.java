@@ -42,9 +42,8 @@ public final class ScriptController implements Runnable, Script.Controller {
 	private final Queue<Script> scripts;
 	private final ScriptDefinition def;
 	private final AtomicBoolean suspended, stopping;
-	private final Timer timeout, login, session;
+	private final Timer timeout, login;
 	private final AtomicReference<String> auth;
-	private final AtomicLong started;
 
 	private final Runnable empty, suspension;
 
@@ -107,23 +106,6 @@ public final class ScriptController implements Runnable, Script.Controller {
 			}
 		});
 		login.setCoalesce(false);
-
-		started = new AtomicLong(0);
-
-		session = new Timer(0, new ActionListener() {
-			@Override
-			public void actionPerformed(final ActionEvent e) {
-				updateSession((int) (System.currentTimeMillis() / 1000L));
-			}
-		});
-		session.setCoalesce(false);
-	}
-
-	public void updateSession(final int time) {
-		try {
-			HttpClient.openStream(Configuration.URLs.SCRIPTSSESSION, NetworkAccount.getInstance().getAuth(), def.getID(), started.get() / 1000L, Integer.toString(time)).close();
-		} catch (final IOException ignored) {
-		}
 	}
 
 	/**
@@ -146,15 +128,6 @@ public final class ScriptController implements Runnable, Script.Controller {
 
 		login.start();
 
-		started.set(System.currentTimeMillis());
-		if (def.session > 0) {
-			final int d = def.session * 1000;
-			session.setInitialDelay(d);
-			session.setDelay(d);
-			session.start();
-			updateSession((int) (started.get() / 1000L));
-		}
-
 		call(Script.State.START);
 		events.subscribeAll();
 	}
@@ -174,13 +147,6 @@ public final class ScriptController implements Runnable, Script.Controller {
 	public void stop() {
 		if (stopping.compareAndSet(false, true)) {
 			login.stop();
-			session.stop();
-			new Thread(new Runnable() {
-				@Override
-				public void run() {
-					updateSession(1356998400);
-				}
-			}).start();
 
 			call(Script.State.STOP);
 			events.unsubscribeAll();

@@ -81,10 +81,6 @@ public class ScriptList {
 				}
 				def.key = kx;
 
-				if (params.has("session")) {
-					def.session = params.getInt("session");
-				}
-
 				list.add(def);
 			}
 		}
@@ -163,24 +159,6 @@ public class ScriptList {
 			} catch (final Exception ignored) {
 				log.severe("Could not download script");
 				ignored.printStackTrace();
-				return;
-			}
-			final Ini t = new Ini();
-			try (final InputStream is = HttpClient.openStream(Configuration.URLs.SCRIPTSAUTH, NetworkAccount.getInstance().getAuth(), def.getID())) {
-				t.read(is);
-			} catch (final IOException ignored) {
-				log.severe("Unable to obtain auth response");
-				return;
-			} catch (final NullPointerException ignored) {
-				log.severe("Could not identify auth server");
-				return;
-			}
-			if (!t.get("auth").getBool("access")) {
-				String m = t.get("auth").get("message", "");
-				if (!m.isEmpty()) {
-					m = ": " + m;
-				}
-				log.severe("You are not authorised to run this script" + m);
 				return;
 			}
 		}
