@@ -42,6 +42,10 @@ public final class GameAccounts extends ArrayList<GameAccounts.Account> {
 		}
 
 		for (final Entry<String, Ini.Member> e : t.entrySet()) {
+			final String k = e.getKey().trim();
+			if (k.isEmpty()) {
+				continue;
+			}
 			final Account a = new Account(e.getKey());
 			final Ini.Member v = e.getValue();
 			a.password = v.get("password");
