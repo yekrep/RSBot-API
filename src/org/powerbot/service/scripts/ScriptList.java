@@ -19,10 +19,12 @@ import java.util.zip.ZipInputStream;
 import javax.crypto.Cipher;
 import javax.crypto.CipherInputStream;
 import javax.crypto.spec.SecretKeySpec;
+import javax.swing.JOptionPane;
 
 import org.powerbot.Configuration;
 import org.powerbot.bot.Bot;
 import org.powerbot.gui.BotChrome;
+import org.powerbot.gui.component.BotLocale;
 import org.powerbot.script.Manifest;
 import org.powerbot.script.Script;
 import org.powerbot.script.internal.InternalScript;
@@ -183,8 +185,27 @@ public class ScriptList {
 			@Override
 			public void run() {
 				log.info("Starting script: " + def.getName());
-				final int hours = 1 * (NetworkAccount.getInstance().hasPermission(NetworkAccount.DEVELOPER) ? 3 : 1);
-				bot.startScript(new ScriptBundle(def, script), def.local ? (int) TimeUnit.HOURS.toMillis(hours) : 0);
+				int hours = 0;
+				String msg = null;
+
+				if (def.local) {
+					final boolean dev = NetworkAccount.getInstance().hasPermission(NetworkAccount.DEVELOPER);
+					hours = dev ? 3 : 1;
+					if (!dev) {
+						msg = "Apply for a developer account for extended time.";
+					}
+				}
+
+				if (hours != 0) {
+					msg = "The script will automatically stop after " + hours + " hour" + (hours == 1 ? "" : "s") + "." +
+							(msg == null || msg.isEmpty() ? "" : "\n" + msg);
+					if (JOptionPane.showConfirmDialog(BotChrome.getInstance(), msg, "", JOptionPane.OK_CANCEL_OPTION,
+							JOptionPane.PLAIN_MESSAGE) != JOptionPane.OK_OPTION) {
+						return;
+					}
+				}
+
+				bot.startScript(new ScriptBundle(def, script), hours == 0 ? 0 : (int) TimeUnit.HOURS.toMillis(hours));
 			}
 		}).start();
 	}
