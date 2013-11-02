@@ -194,6 +194,9 @@ public class ScriptList {
 					if (!dev) {
 						msg = "Apply for a developer account for extended time.";
 					}
+				} else if (!def.assigned && !NetworkAccount.getInstance().hasPermission(NetworkAccount.VIP)) {
+					hours = 2;
+					msg = "Purchase VIP from the store for no time limits.";
 				}
 
 				if (hours != 0) {

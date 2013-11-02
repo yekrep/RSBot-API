@@ -18,7 +18,7 @@ public final class ScriptDefinition implements Comparable<ScriptDefinition> {
 	public String className;
 	public byte[] key;
 	public String source;
-	public boolean local = false;
+	public boolean local = false, assigned = false;
 	private Category category = null;
 
 	public enum Category {
@@ -160,12 +160,19 @@ public final class ScriptDefinition implements Comparable<ScriptDefinition> {
 
 	public static ScriptDefinition fromMap(final Map<String, String> data) {
 		final String name = data.containsKey("name") ? data.get("name") : null;
+
+		if (name == null || name.isEmpty()) {
+			return null;
+		}
+
 		final String id = data.containsKey("id") ? data.get("id") : null;
 		final String description = data.containsKey("description") ? data.get("description") : null;
 		final String website = data.containsKey("website") ? data.get("website") : null;
 		final String[] authors = data.containsKey("authors") ? data.get("authors").split(",") : new String[]{};
 
-		return name == null || name.isEmpty() ? null : new ScriptDefinition(name, id, description, authors, website);
+		final ScriptDefinition def = new ScriptDefinition(name, id, description, authors, website);
+		def.assigned = data.containsKey("assigned") && !data.get("assigned").equals("0");
+		return def;
 	}
 
 	@Override
