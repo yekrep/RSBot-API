@@ -196,7 +196,7 @@ public class ScriptList {
 					}
 				} else if (!def.assigned && !NetworkAccount.getInstance().hasPermission(NetworkAccount.VIP)) {
 					hours = 2;
-					msg = "Purchase VIP from the store for no time limits.";
+					msg = "VIP subscribers and Premium scripts have no time limits.";
 				}
 
 				if (hours != 0) {
