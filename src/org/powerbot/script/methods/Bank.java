@@ -7,7 +7,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.Callable;
 
-import org.powerbot.script.lang.AbstractQuery;
 import org.powerbot.script.lang.Filter;
 import org.powerbot.script.lang.ItemQuery;
 import org.powerbot.script.util.Condition;
@@ -43,7 +42,7 @@ public class Bank extends ItemQuery<Item> {
 			42217, 42377, 42378, 2012, 66665, 66666, 66667
 	};
 	public static final int[] BANK_CHEST_IDS = new int[]{
-			2693, 4483, 8981, 12308, 14382, 20607, 21301, 27663, 42192, 57437, 62691, 83634, 81756
+			2693, 4483, 8981, 12308, 14382, 20607, 21301, 27663, 42192, 57437, 62691, 83634, 81756, 79036
 	};
 	public static final Tile[] UNREACHABLE_BANK_TILES = new Tile[]{
 			new Tile(3191, 3445, 0), new Tile(3180, 3433, 0)
@@ -86,19 +85,27 @@ public class Bank extends ItemQuery<Item> {
 
 		ctx.npcs.select().id(BANK_NPC_IDS).select(f).select(UNREACHABLE_FILTER).nearest();
 		ctx.npcs.limit(3).within(n = ctx.npcs.poll(), 1d).first().addTo(interactives);
-		if (n.isValid()) interactives.add(n);
+		if (n.isValid()) {
+			interactives.add(n);
+		}
 
 		final List<GameObject> cache = new ArrayList<>();
 		ctx.objects.select().select(f).select(UNREACHABLE_FILTER).nearest().addTo(cache);
 
 		ctx.objects.id(BANK_BOOTH_IDS).limit(3).within(o = ctx.objects.poll(), 1d).first().addTo(interactives);
-		if (o.isValid()) interactives.add(o);
+		if (o.isValid()) {
+			interactives.add(o);
+		}
 
 		ctx.objects.select(cache).id(BANK_COUNTER_IDS).limit(3).within(o = ctx.objects.poll(), 1d).first().addTo(interactives);
-		if (o.isValid()) interactives.add(o);
+		if (o.isValid()) {
+			interactives.add(o);
+		}
 
 		ctx.objects.select(cache).id(BANK_CHEST_IDS).limit(3).within(o = ctx.objects.poll(), 1d).first().addTo(interactives);
-		if (o.isValid()) interactives.add(o);
+		if (o.isValid()) {
+			interactives.add(o);
+		}
 
 		return interactives.isEmpty() ? ctx.objects.getNil() : interactives.get(Random.nextInt(0, interactives.size()));
 	}
