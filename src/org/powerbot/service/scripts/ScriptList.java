@@ -202,7 +202,8 @@ public class ScriptList {
 				if (hours != 0) {
 					msg = "The script will automatically stop after " + hours + " hour" + (hours == 1 ? "" : "s") + "." +
 							(msg == null || msg.isEmpty() ? "" : "\n" + msg);
-					if (JOptionPane.showConfirmDialog(BotChrome.getInstance(), msg, "", JOptionPane.OK_CANCEL_OPTION,
+					log.warning(msg.replace('\n', ' '));
+					if (!def.local && JOptionPane.showConfirmDialog(BotChrome.getInstance(), msg, "", JOptionPane.OK_CANCEL_OPTION,
 							JOptionPane.PLAIN_MESSAGE) != JOptionPane.OK_OPTION) {
 						return;
 					}
