@@ -189,16 +189,6 @@ public class BotChrome extends JFrame implements Closeable {
 		System.exit(0);
 	}
 
-	public void target(final Component canvas) {
-		BlockingEventQueue.pushBlocking();
-		BlockingEventQueue.getEventQueue().addComponent(canvas, new EventCallback() {
-			@Override
-			public void execute(AWTEvent event) {
-				//TODO: event blocked!
-			}
-		});
-	}
-
 	public void display(Bot bot) {
 		remove(panel);
 		if (this.bot != null) {

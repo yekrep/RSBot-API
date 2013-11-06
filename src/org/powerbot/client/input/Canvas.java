@@ -1,9 +1,12 @@
 package org.powerbot.client.input;
 
+import java.awt.AWTEvent;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
+import org.powerbot.bot.BlockingEventQueue;
 import org.powerbot.bot.Bot;
+import org.powerbot.bot.EventCallback;
 import org.powerbot.gui.BotChrome;
 
 public class Canvas extends java.awt.Canvas {
@@ -12,6 +15,13 @@ public class Canvas extends java.awt.Canvas {
 	public Canvas() {
 		super();
 		this.bot = BotChrome.getInstance().getBot();
+
+		BlockingEventQueue.pushBlocking();
+		BlockingEventQueue.getEventQueue().addComponent(this, new EventCallback() {
+			@Override
+			public void execute(final AWTEvent event) {
+			}
+		});
 	}
 
 	@Override
