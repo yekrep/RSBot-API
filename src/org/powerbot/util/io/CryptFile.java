@@ -137,7 +137,6 @@ public final class CryptFile {
 		if (!store.isFile()) {
 			throw new FileNotFoundException(store.toString());
 		}
-		//Files.getFileAttributeView(store.toPath(), BasicFileAttributeView.class).setTimes(null, FileTime.fromMillis(System.currentTimeMillis()), null);
 		if (store.length() == 0L) {
 			return new ByteArrayInputStream(new byte[]{});
 		}
