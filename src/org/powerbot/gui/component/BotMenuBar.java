@@ -161,7 +161,7 @@ public class BotMenuBar extends JMenuBar implements ActionListener {
 			}
 		});
 		if (s.equals(BotLocale.NEWWINDOW)) {
-			Boot.fork(false);
+			Boot.fork();
 		} else if (s.equals(BotLocale.EXIT)) {
 			BotChrome.getInstance().close();
 		} else if (s.equals(BotLocale.SIGNIN)) {

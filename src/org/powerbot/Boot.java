@@ -60,7 +60,7 @@ public class Boot implements Runnable {
 		logger.addHandler(new PrintStreamHandler());
 
 		if (!restarted) {
-			fork(true);
+			fork();
 			return;
 		}
 
@@ -119,7 +119,7 @@ public class Boot implements Runnable {
 		main(new String[]{});
 	}
 
-	public static void fork(final boolean wait) {
+	public static void fork() {
 		final List<String> args = new ArrayList<String>();
 		args.add("java");
 
@@ -159,16 +159,8 @@ public class Boot implements Runnable {
 			}
 		}
 
-		if (wait) {
-			//pb.inheritIO(); // TODO: workaround for inheritIO
-		}
-
 		try {
 			final Process p = pb.start();
-
-			if (wait) {
-				p.waitFor();
-			}
 		} catch (final Exception ignored) {
 			if (!Configuration.FROMJAR) {
 				ignored.printStackTrace();
