@@ -136,7 +136,7 @@ public class CombatBar extends IdQuery<Action> {
 		final Component c = ctx.widgets.get(WIDGET_LAYOUT, COMPONENT_BUTTON_TOGGLE).getChild(COMPONENT_BUTTON_TOGGLE_IDX);
 		if (c.isValid() && c.interact(expanded ? "Maximise" : "Minimise")) {
 			for (int i = 0; i < 5 && isExpanded() != expanded; i++) {
-				sleep(20, 50);
+				sleep(200, 500);
 			}
 		}
 		return isExpanded() == expanded;
