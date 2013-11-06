@@ -29,7 +29,7 @@ public class Projectiles extends IdQuery<Projectile> {
 	 */
 	@Override
 	protected List<Projectile> get() {
-		final List<Projectile> items = new ArrayList<>();
+		final List<Projectile> items = new ArrayList<Projectile>();
 
 		Client client = ctx.getClient();
 		if (client == null) {
@@ -41,7 +41,7 @@ public class Projectiles extends IdQuery<Projectile> {
 			return items;
 		}
 
-		final Deque<Node> nodes = new Deque<>(deque, Node.class);
+		final Deque<Node> nodes = new Deque<Node>(deque, Node.class);
 		for (Node node = nodes.getHead(); node != null; node = nodes.getNext()) {
 			final RSProjectile projectile;
 			if (node instanceof RSProjectileNode && (projectile = ((RSProjectileNode) node).getProjectile()) != null) {

@@ -207,7 +207,7 @@ public class Lobby extends MethodProvider {
 		if (!panel.isValid() && !openTab(Tab.WORLD_SELECT)) {
 			return new World[0];
 		}
-		final ArrayList<World> worlds = new ArrayList<>();
+		final ArrayList<World> worlds = new ArrayList<World>();
 		final Component[] rows = panel.getComponent(WIDGET_WORLDS_ROWS).getChildren();
 		for (final Component row : rows) {
 			final World world = new World(row.getIndex());

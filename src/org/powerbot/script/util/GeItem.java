@@ -21,7 +21,7 @@ import org.powerbot.util.io.IOHelper;
  * @author Paris
  */
 public class GeItem {
-	private final static Map<Integer, GeItem> cache = new ConcurrentHashMap<>();
+	private final static Map<Integer, GeItem> cache = new ConcurrentHashMap<Integer, GeItem>();
 	private final static String PAGE = "http://" + Configuration.URLs.GAME_SERVICES_DOMAIN + "/m=itemdb_rs/api/catalogue/detail.json?item=%s";
 	private final int id;
 	private final URL icons[];
@@ -52,7 +52,7 @@ public class GeItem {
 
 		final List<String> names = json.names();
 
-		prices = new HashMap<>(PriceType.values().length);
+		prices = new HashMap<PriceType, Price>(PriceType.values().length);
 
 		for (final PriceType t : PriceType.values()) {
 			final String n = t.name().toLowerCase();
@@ -62,7 +62,7 @@ public class GeItem {
 			}
 		}
 
-		changes = new HashMap<>(ChangeType.values().length);
+		changes = new HashMap<ChangeType, Change>(ChangeType.values().length);
 
 		for (final ChangeType t : ChangeType.values()) {
 			final String n = t.name().toLowerCase();
@@ -134,12 +134,11 @@ public class GeItem {
 	 * @return the integer value for which {@code -1 <= x <= 1}
 	 */
 	private int trendAsInt(final String s) {
-		switch (s) {
-		case "neutral":
+		if (s.equalsIgnoreCase("neutral")) {
 			return 0;
-		case "positive":
+		} else if (s.equals("positive")) {
 			return 1;
-		case "negative":
+		} else if (s.equals("negative")) {
 			return -1;
 		}
 		return 0;

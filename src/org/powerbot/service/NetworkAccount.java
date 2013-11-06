@@ -85,9 +85,18 @@ public final class NetworkAccount {
 		data.clear();
 
 		if (store.exists()) {
-			try (final InputStream is = store.getInputStream()) {
+			InputStream is = null;
+			try {
+				is = store.getInputStream();
 				data.read(is);
 			} catch (final IOException ignored) {
+			} finally {
+				if (is != null) {
+					try {
+						is.close();
+					} catch (final IOException ignored) {
+					}
+				}
 			}
 
 			if (Long.parseLong(data.get(AUTHKEY).get(CREATEDKEY, "0")) + CACHETTL < System.currentTimeMillis()) {
@@ -103,11 +112,20 @@ public final class NetworkAccount {
 	}
 
 	public synchronized boolean login(final String username, final String password, final String auth) {
-		try (final InputStream is = HttpClient.openStream(Configuration.URLs.SIGNIN, StringUtil.urlEncode(username), StringUtil.urlEncode(password), StringUtil.urlEncode(auth))) {
+		InputStream is = null;
+		try {
+			is = HttpClient.openStream(Configuration.URLs.SIGNIN, StringUtil.urlEncode(username), StringUtil.urlEncode(password), StringUtil.urlEncode(auth));
 			data.read(is);
 			updateCache();
 			return true;
 		} catch (final IOException ignored) {
+		} finally {
+			if (is != null) {
+				try {
+					is.close();
+				} catch (final IOException ignored) {
+				}
+			}
 		}
 		return false;
 	}
@@ -135,9 +153,18 @@ public final class NetworkAccount {
 	private synchronized void updateCache() {
 		if (isLoggedIn()) {
 			data.get(AUTHKEY).put(CREATEDKEY, System.currentTimeMillis());
-			try (final OutputStream os = store.getOutputStream()) {
+			OutputStream os = null;
+			try {
+				os = store.getOutputStream();
 				data.write(os);
 			} catch (final IOException ignored) {
+			} finally {
+				if (os != null) {
+					try {
+						os.close();
+					} catch (final IOException ignored) {
+					}
+				}
 			}
 		} else {
 			store.delete();

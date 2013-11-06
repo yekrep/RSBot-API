@@ -18,7 +18,7 @@ public final class BotMenuInput {
 		JCheckBoxMenuItem item;
 		final BotChrome eq = BotChrome.getInstance();
 
-		final Map<String, Boolean> map = new LinkedHashMap<>();
+		final Map<String, Boolean> map = new LinkedHashMap<String, Boolean>();
 		map.put(BotLocale.ALLOW, false);
 		map.put(BotLocale.BLOCK, true);
 

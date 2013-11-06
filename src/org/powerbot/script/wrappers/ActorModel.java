@@ -15,7 +15,7 @@ class ActorModel extends Model {
 
 	public ActorModel(MethodContext ctx, AbstractModel model, RSCharacter character) {
 		super(ctx, model);
-		this.character = new WeakReference<>(character);
+		this.character = new WeakReference<RSCharacter>(character);
 		x_base = xPoints;
 		z_base = zPoints;
 		xPoints = new int[numVertices];

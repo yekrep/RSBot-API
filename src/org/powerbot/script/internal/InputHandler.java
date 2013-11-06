@@ -73,7 +73,7 @@ public class InputHandler {
 	}
 
 	private Queue<KeyEvent> getKeyEvents(final String sequence) {
-		final Queue<String> list = new LinkedList<>();
+		final Queue<String> list = new LinkedList<String>();
 		boolean braced = false;
 		StringBuilder buf = new StringBuilder();
 
@@ -104,14 +104,16 @@ public class InputHandler {
 	}
 
 	private Queue<KeyEvent> getKeyEvents(final Queue<String> sequence) {
-		final Queue<KeyEvent> queue = new LinkedList<>();
+		final Queue<KeyEvent> queue = new LinkedList<KeyEvent>();
 
 		while (!sequence.isEmpty()) {
 			String s = sequence.poll();
 
+			// TODO: get extended key code for char
+
 			if (s.length() == 1) { // simple letter
 				final char c = s.charAt(0);
-				int vk = KeyEvent.getExtendedKeyCodeForChar((int) c);
+				int vk = 0; // KeyEvent.getExtendedKeyCodeForChar((int) c);
 				if (c == '\r') {
 					continue;
 				}
@@ -125,7 +127,7 @@ public class InputHandler {
 							final String sx = sequence.peek();
 							final char cx;
 							if (sx.length() == 1 && Character.isUpperCase(cx = sx.charAt(0))) {
-								final int vkx = KeyEvent.getExtendedKeyCodeForChar((int) cx);
+								final int vkx = 0 ; //KeyEvent.getExtendedKeyCodeForChar((int) cx);
 								if (vkx != KeyEvent.VK_UNDEFINED) {
 									sequence.poll();
 									pushUpperAlpha(queue, vkx, cx);
@@ -160,17 +162,11 @@ public class InputHandler {
 						}
 						final boolean[] states = {false, false};
 						if (p.length > 1 && p[1] != null && !p[1].isEmpty()) {
-							switch (p[1].trim().toLowerCase()) {
-							case "down":
-							case "press":
-							case "pressed":
+							final String p1 = p[1].trim().toLowerCase();
+							if (p1.equals("down") || p1.equals("press") || p1.equals("pressed")) {
 								states[0] = true;
-								break;
-							case "up":
-							case "release":
-							case "released":
+							} else if (p1.equals("up") || p1.equals("release") || p1.equals("released")) {
 								states[1] = true;
-								break;
 							}
 						} else {
 							states[0] = true;

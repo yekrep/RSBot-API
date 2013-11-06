@@ -16,7 +16,7 @@ public class Npc extends Actor implements Identifiable {
 
 	public Npc(MethodContext ctx, final RSNPC npc) {
 		super(ctx);
-		this.npc = new WeakReference<>(npc);
+		this.npc = new WeakReference<RSNPC>(npc);
 	}
 
 	@Override

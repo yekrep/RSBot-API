@@ -61,7 +61,7 @@ public class NRSLoader implements Runnable {
 		try {
 			Constructor<?> constructor = code.getConstructor((Class[]) null);
 			this.applet = (Applet) constructor.newInstance((Object[]) null);
-		} catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException ignored) {
+		} catch (final Exception ignored) {
 			this.applet = null;
 		}
 		if (applet == null || !(Application.class.isAssignableFrom(code))) {

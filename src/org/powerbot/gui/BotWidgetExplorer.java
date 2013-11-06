@@ -49,7 +49,7 @@ public class BotWidgetExplorer extends JFrame implements PaintListener {
 	private JPanel infoArea;
 	private JTextField searchBox;
 	private Rectangle highlightArea = null;
-	private List<Component> list = new ArrayList<>();
+	private List<Component> list = new ArrayList<Component>();
 
 	public BotWidgetExplorer() {
 		super("Widget Explorer");
@@ -215,8 +215,8 @@ public class BotWidgetExplorer extends JFrame implements PaintListener {
 
 	private final class WidgetTreeModel implements TreeModel {
 		private final Object root = new Object();
-		private final List<TreeModelListener> treeModelListeners = new ArrayList<>();
-		private final List<WidgetWrapper> widgetWrappers = new ArrayList<>();
+		private final List<TreeModelListener> treeModelListeners = new ArrayList<TreeModelListener>();
+		private final List<WidgetWrapper> widgetWrappers = new ArrayList<WidgetWrapper>();
 
 		public Object getRoot() {
 			return root;

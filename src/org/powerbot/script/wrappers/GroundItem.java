@@ -28,7 +28,7 @@ public class GroundItem extends Interactive implements Renderable, Identifiable,
 	public GroundItem(MethodContext ctx, Tile tile, RSItem item) {
 		super(ctx);
 		this.tile = tile;
-		this.item = new WeakReference<>(item);
+		this.item = new WeakReference<RSItem>(item);
 	}
 
 	@Override

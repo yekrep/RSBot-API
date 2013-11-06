@@ -23,7 +23,7 @@ public class HintArrows extends HintArrowQuery<HintArrow> {
 	 */
 	@Override
 	protected List<HintArrow> get() {
-		final List<HintArrow> items = new ArrayList<>();
+		final List<HintArrow> items = new ArrayList<HintArrow>();
 
 		Client client = ctx.getClient();
 		if (client == null) {

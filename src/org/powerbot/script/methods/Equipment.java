@@ -60,7 +60,7 @@ public class Equipment extends ItemQuery<Item> {
 	 */
 	@Override
 	protected List<Item> get() {
-		List<Item> items = new ArrayList<>(28);
+		List<Item> items = new ArrayList<Item>(28);
 		int[][] data = ctx.items.getItems(Items.INDEX_EQUIPMENT);
 		Component component = getComponent();
 		for (Slot slot : Slot.values()) {

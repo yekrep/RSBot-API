@@ -27,7 +27,7 @@ public class Ini implements Serializable {
 	private transient final AtomicBoolean empty;
 
 	public Ini() {
-		table = new ConcurrentHashMap<>();
+		table = new ConcurrentHashMap<String, Member>();
 		empty = new AtomicBoolean(true);
 	}
 
@@ -85,9 +85,18 @@ public class Ini implements Serializable {
 	}
 
 	public Ini write(final File f) {
-		try (final OutputStream os = new FileOutputStream(f)) {
+		OutputStream os = null;
+		try {
+			os = new FileOutputStream(f);
 			write(os);
 		} catch (final IOException ignored) {
+		} finally {
+			if (os != null) {
+				try {
+					os.close();
+				} catch (final IOException ignored) {
+				}
+			}
 		}
 		return this;
 	}
@@ -109,10 +118,19 @@ public class Ini implements Serializable {
 	}
 
 	public Ini read(final File f) {
-		try (final InputStream is = new FileInputStream(f)) {
+		InputStream is = null;
+		try {
+			is = new FileInputStream(f);
 			return read(is);
 		} catch (final IOException ignored) {
 			return this;
+		} finally {
+			if (is != null) {
+				try {
+					is.close();
+				} catch (final IOException ignored) {
+				}
+			}
 		}
 	}
 
@@ -159,7 +177,7 @@ public class Ini implements Serializable {
 		}
 
 		final StringBuilder s = new StringBuilder();
-		final String lf = System.lineSeparator();
+		final String lf = System.getProperty("line.separator");
 
 		String l;
 		while ((l = br.readLine()) != null) {

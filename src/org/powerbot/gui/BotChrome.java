@@ -90,7 +90,7 @@ public class BotChrome extends JFrame implements Closeable {
 		Tracker.getInstance().trackPage("", getTitle());
 
 		final ExecutorService exec = Executors.newFixedThreadPool(1);
-		final List<Future<Boolean>> tasks = new ArrayList<>();
+		final List<Future<Boolean>> tasks = new ArrayList<Future<Boolean>>();
 		tasks.add(exec.submit(new OSXAdapt()));
 		tasks.add(exec.submit(new UpdateCheck()));
 		exec.shutdown();
@@ -102,7 +102,7 @@ public class BotChrome extends JFrame implements Closeable {
 				if (!task.get()) {
 					pass = false;
 				}
-			} catch (final InterruptedException | ExecutionException ignored) {
+			} catch (final Exception ignored) {
 			}
 		}
 		if (pass) {
@@ -147,9 +147,18 @@ public class BotChrome extends JFrame implements Closeable {
 	}
 
 	private void saveWindowCache() {
-		try (final OutputStream out = cache.getOutputStream()) {
+		OutputStream out = null;
+		try {
+			out = cache.getOutputStream();
 			new Ini().get().put("w", getWidth()).put("h", getHeight()).parent().write(out);
 		} catch (final IOException ignored) {
+		} finally {
+			if (out != null) {
+				try {
+					out.close();
+				} catch (final IOException ignored) {
+				}
+			}
 		}
 	}
 
@@ -160,11 +169,19 @@ public class BotChrome extends JFrame implements Closeable {
 			return d;
 		}
 
-		try (final InputStream in = cache.getInputStream()) {
+		InputStream in = null;
+		try {
+			in = cache.getInputStream();
 			final Ini.Member t = new Ini().read(in).get();
 			return new Dimension(t.getInt("w", d.width), t.getInt("h", d.height));
-
 		} catch (final IOException ignored) {
+		} finally {
+			if (in != null) {
+				try {
+					in.close();
+				} catch (final IOException ignored) {
+				}
+			}
 		}
 
 		return d;
@@ -192,7 +209,7 @@ public class BotChrome extends JFrame implements Closeable {
 			remove(bot.getApplet());
 		}
 		add(bot.getApplet());
-		revalidate();
+		invalidate();
 	}
 
 	public boolean isBlocking() {

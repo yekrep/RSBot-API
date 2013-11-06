@@ -56,11 +56,11 @@ public class TransformSpec {
 	}
 
 	public TransformSpec() {
-		adapters = new HashMap<>();
-		writers = new HashMap<>();
-		attributes = new HashMap<>();
-		constants = new HashMap<>();
-		multipliers = new HashMap<>();
+		adapters = new HashMap<String, ClassVisitor>();
+		writers = new HashMap<String, ClassWriter>();
+		attributes = new HashMap<String, String>();
+		constants = new HashMap<Integer, Integer>();
+		multipliers = new HashMap<Integer, Integer>();
 	}
 
 	public String getName() {
@@ -178,7 +178,7 @@ public class TransformSpec {
 				final String name = scanner.readString();
 				final String desc = scanner.readString();
 				count = scanner.readByte();
-				final Map<Integer, byte[]> fragments = new HashMap<>();
+				final Map<Integer, byte[]> fragments = new HashMap<Integer, byte[]>();
 				while (count-- > 0) {
 					final int off = scanner.readShort();
 					final byte[] code = new byte[scanner.readInt()];

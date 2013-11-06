@@ -11,9 +11,6 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.attribute.BasicFileAttributeView;
-import java.nio.file.attribute.FileTime;
 import java.security.GeneralSecurityException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -34,7 +31,7 @@ import org.powerbot.util.StringUtil;
  * @author Paris
  */
 public final class CryptFile {
-	public static final Map<File, Class<?>[]> PERMISSIONS = new ConcurrentHashMap<>();
+	public static final Map<File, Class<?>[]> PERMISSIONS = new ConcurrentHashMap<File, Class<?>[]>();
 	private static final long VECTOR = 0x9e3779b9;
 	private static final String KEY_ALGO = "ARCFOUR", CIPHER_ALGO = "RC4";
 	private final SecretKey key;
@@ -108,9 +105,19 @@ public final class CryptFile {
 		if (s.length > 1) {
 			con.setDoOutput(true);
 			if (s[1] != null && !s[1].isEmpty()) {
-				try (final OutputStreamWriter out = new OutputStreamWriter(con.getOutputStream())) {
+				OutputStreamWriter out = null;
+				try {
+					out = new OutputStreamWriter(con.getOutputStream());
 					out.write(s[1]);
 					out.flush();
+				} catch (final IOException ignored) {
+				} finally {
+					if (out != null) {
+						try {
+							out.close();
+						} catch (final IOException ignored) {
+						}
+					}
 				}
 			}
 		}
@@ -130,7 +137,7 @@ public final class CryptFile {
 		if (!store.isFile()) {
 			throw new FileNotFoundException(store.toString());
 		}
-		Files.getFileAttributeView(store.toPath(), BasicFileAttributeView.class).setTimes(null, FileTime.fromMillis(System.currentTimeMillis()), null);
+		//Files.getFileAttributeView(store.toPath(), BasicFileAttributeView.class).setTimes(null, FileTime.fromMillis(System.currentTimeMillis()), null);
 		if (store.length() == 0L) {
 			return new ByteArrayInputStream(new byte[]{});
 		}

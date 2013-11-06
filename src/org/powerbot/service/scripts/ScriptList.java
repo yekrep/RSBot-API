@@ -42,7 +42,7 @@ public class ScriptList {
 	private final static Logger log = Logger.getLogger(ScriptList.class.getName());
 
 	public static List<ScriptDefinition> getList() throws IOException {
-		final List<ScriptDefinition> list = new ArrayList<>();
+		final List<ScriptDefinition> list = new ArrayList<ScriptDefinition>();
 
 		if (NetworkAccount.getInstance().hasPermission(NetworkAccount.LOCALSCRIPTS)) {
 			for (final String s : System.getProperty("java.class.path").split(Pattern.quote(File.pathSeparator))) {
@@ -62,10 +62,19 @@ public class ScriptList {
 
 	private static void getNetworkList(final List<ScriptDefinition> list) throws IOException {
 		final Ini t = new Ini();
-		try (final InputStream is = NetworkAccount.getInstance().getScriptsList()) {
+		InputStream is = null;
+		try {
+			is = NetworkAccount.getInstance().getScriptsList();
 			t.read(is);
 		} catch (final IOException e) {
 			throw e;
+		} finally {
+			if (is != null) {
+				try {
+					is.close();
+				} catch (final IOException ignored) {
+				}
+			}
 		}
 
 		for (final Map.Entry<String, Ini.Member> entry : t.entrySet()) {
@@ -220,9 +229,18 @@ public class ScriptList {
 		}
 
 		final byte[] data = new byte[512];
-		try (final FileInputStream fis = new FileInputStream(file)) {
+		FileInputStream fis = null;
+		try {
+			fis = new FileInputStream(file);
 			fis.read(data);
 		} catch (final IOException ignored) {
+		} finally {
+			if (fis != null) {
+				try {
+					fis.close();
+				} catch (final IOException ignored) {
+				}
+			}
 		}
 
 		if (data == null || data.length < 12) {

@@ -290,7 +290,7 @@ public class Powers extends MethodProvider {
 			break;
 		}
 
-		Set<Effect> active = new LinkedHashSet<>();
+		Set<Effect> active = new LinkedHashSet<Effect>();
 		for (Effect effect : effects) {
 			if (isPrayerActive(effect)) {
 				active.add(effect);
@@ -319,7 +319,7 @@ public class Powers extends MethodProvider {
 			break;
 		}
 
-		Set<Effect> quick = new LinkedHashSet<>();
+		Set<Effect> quick = new LinkedHashSet<Effect>();
 		for (Effect effect : effects) {
 			if (isPrayerQuick(effect)) {
 				quick.add(effect);

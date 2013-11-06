@@ -53,7 +53,7 @@ public final class ScriptController implements Runnable, Script.Controller {
 		suspended = new AtomicBoolean(false);
 		stopping = new AtomicBoolean(false);
 
-		scripts = new PriorityQueue<>(6);
+		scripts = new PriorityQueue<Script>(6);
 		scripts.add(new Login());
 		scripts.add(new WidgetCloser());
 		scripts.add(new TicketDestroy());
@@ -62,7 +62,7 @@ public final class ScriptController implements Runnable, Script.Controller {
 		scripts.add(bundle.script);
 		//scripts.add(new Break());
 
-		executor = new ThreadPoolExecutor(1, 1, 0L, TimeUnit.NANOSECONDS, queue = new LinkedBlockingDeque<>());
+		executor = new ThreadPoolExecutor(1, 1, 0L, TimeUnit.NANOSECONDS, queue = new LinkedBlockingDeque<Runnable>());
 
 		empty = new Runnable() {
 			@Override
@@ -93,7 +93,7 @@ public final class ScriptController implements Runnable, Script.Controller {
 		});
 		this.timeout.setCoalesce(false);
 
-		auth = new AtomicReference<>(NetworkAccount.getInstance().getAuth());
+		auth = new AtomicReference<String>(NetworkAccount.getInstance().getAuth());
 
 		login = new Timer(NetworkAccount.REVALIDATE_INTERVAL, new ActionListener() {
 			@Override

@@ -38,7 +38,7 @@ public class Backpack extends ItemQuery<Item> implements Resizable {
 	 */
 	@Override
 	protected List<Item> get() {
-		List<Item> items = new ArrayList<>(28);
+		List<Item> items = new ArrayList<Item>(28);
 		Component inv = getComponent();
 		int[][] data = ctx.items.getItems(Items.INDEX_INVENTORY);
 		for (int i = 0; i < 28; i++) {

@@ -37,15 +37,12 @@ public class Boot implements Runnable {
 		boolean restarted = false, debugging = false;
 
 		for (final String arg : args) {
-			switch (arg) {
-			case SWITCH_DEBUG:
+			if (arg.equalsIgnoreCase(SWITCH_DEBUG)) {
 				debugging = true;
 				restarted = true;
-				break;
-			case SWITCH_RESTARTED:
+			} else if (arg.equalsIgnoreCase(SWITCH_RESTARTED)) {
 				restarted = true;
-				break;
-			case SWITCH_VERSION_SHORT:
+			} else if (arg.equalsIgnoreCase(SWITCH_VERSION_SHORT)) {
 				System.out.println(Configuration.VERSION);
 				return;
 			}
@@ -85,16 +82,15 @@ public class Boot implements Runnable {
 			URL.setURLStreamHandlerFactory(new URLStreamHandlerFactory() {
 				@Override
 				public URLStreamHandler createURLStreamHandler(final String protocol) {
-					switch (protocol) {
-					case "http":
+					if (protocol.equals("http")) {
 						return new sun.net.www.protocol.http.Handler();
-					case "https":
+					} else if (protocol.equals("https")) {
 						return new sun.net.www.protocol.https.Handler();
-					case "file":
+					} else if (protocol.equals("file")) {
 						return new sun.net.www.protocol.file.Handler();
-					case "jar":
+					} else if (protocol.equals("jar")) {
 						return new sun.net.www.protocol.jar.Handler();
-					case "ftp":
+					} else if (protocol.equals("ftp")) {
 						return new sun.net.www.protocol.ftp.Handler();
 					}
 					return null;
@@ -122,7 +118,7 @@ public class Boot implements Runnable {
 	}
 
 	public static void fork(final boolean wait) {
-		final List<String> args = new ArrayList<>();
+		final List<String> args = new ArrayList<String>();
 		args.add("java");
 
 		args.add("-Xss6m");
@@ -149,7 +145,7 @@ public class Boot implements Runnable {
 		final ProcessBuilder pb = new ProcessBuilder(args);
 
 		if (wait) {
-			pb.inheritIO();
+			//pb.inheritIO(); // TODO: workaround for inheritIO
 		}
 
 		try {

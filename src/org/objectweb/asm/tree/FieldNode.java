@@ -169,12 +169,12 @@ public class FieldNode extends FieldVisitor {
 		final AnnotationNode an = new AnnotationNode(desc);
 		if (visible) {
 			if (visibleAnnotations == null) {
-				visibleAnnotations = new ArrayList<>(1);
+				visibleAnnotations = new ArrayList<AnnotationNode>(1);
 			}
 			visibleAnnotations.add(an);
 		} else {
 			if (invisibleAnnotations == null) {
-				invisibleAnnotations = new ArrayList<>(1);
+				invisibleAnnotations = new ArrayList<AnnotationNode>(1);
 			}
 			invisibleAnnotations.add(an);
 		}
@@ -184,7 +184,7 @@ public class FieldNode extends FieldVisitor {
 	@Override
 	public void visitAttribute(final Attribute attr) {
 		if (attrs == null) {
-			attrs = new ArrayList<>(1);
+			attrs = new ArrayList<Attribute>(1);
 		}
 		attrs.add(attr);
 	}

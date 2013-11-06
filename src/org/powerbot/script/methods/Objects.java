@@ -22,7 +22,7 @@ import org.powerbot.script.wrappers.GameObject;
  * @author Timer
  */
 public class Objects extends BasicNamedQuery<GameObject> {
-	public final Map<Integer, Integer> typeCache = new ConcurrentHashMap<>();
+	public final Map<Integer, Integer> typeCache = new ConcurrentHashMap<Integer, Integer>();
 
 	public Objects(MethodContext factory) {
 		super(factory);
@@ -33,7 +33,7 @@ public class Objects extends BasicNamedQuery<GameObject> {
 	 */
 	@Override
 	protected List<GameObject> get() {
-		final List<GameObject> items = new ArrayList<>();
+		final List<GameObject> items = new ArrayList<GameObject>();
 
 		Client client = ctx.getClient();
 		if (client == null) {
@@ -61,7 +61,7 @@ public class Objects extends BasicNamedQuery<GameObject> {
 			return items;
 		}
 
-		Set<RSObject> refs = new HashSet<>();
+		Set<RSObject> refs = new HashSet<RSObject>();
 		for (int x = 0; x <= objArr.length - 1; x++) {
 			for (int y = 0; y <= objArr[x].length - 1; y++) {
 				final RSGround ground = objArr[x][y];

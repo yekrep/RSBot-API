@@ -183,7 +183,7 @@ public class CombatBar extends IdQuery<Action> {
 	 */
 	@Override
 	protected List<Action> get() {
-		List<Action> actions = new ArrayList<>(NUM_SLOTS);
+		List<Action> actions = new ArrayList<Action>(NUM_SLOTS);
 		Action[] arr = getActions();
 		for (Action a : arr) {
 			if (a == null) {

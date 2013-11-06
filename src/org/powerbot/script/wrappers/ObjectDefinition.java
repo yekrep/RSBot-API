@@ -8,7 +8,7 @@ class ObjectDefinition {
 	private final WeakReference<RSObjectDef> definition;
 
 	ObjectDefinition(final RSObjectDef definition) {
-		this.definition = new WeakReference<>(definition);
+		this.definition = new WeakReference<RSObjectDef>(definition);
 	}
 
 	int getId() {

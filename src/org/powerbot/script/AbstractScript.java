@@ -61,7 +61,7 @@ public abstract class AbstractScript implements Script, Comparable<AbstractScrip
 	 */
 	public AbstractScript() {
 		ctx = new MethodContext();
-		exec = new ConcurrentHashMap<>(State.values().length);
+		exec = new ConcurrentHashMap<State, Queue<Runnable>>(State.values().length);
 		for (final State state : State.values()) {
 			exec.put(state, new ConcurrentLinkedQueue<Runnable>());
 		}
@@ -70,7 +70,7 @@ public abstract class AbstractScript implements Script, Comparable<AbstractScrip
 		priority = new AtomicInteger(0);
 		started = new AtomicLong(System.nanoTime());
 		suspended = new AtomicLong(0);
-		suspensions = new ConcurrentLinkedQueue<>();
+		suspensions = new ConcurrentLinkedQueue<Long>();
 
 		exec.get(State.START).add(new Runnable() {
 			@Override
@@ -113,7 +113,7 @@ public abstract class AbstractScript implements Script, Comparable<AbstractScrip
 						dir.mkdirs();
 					}
 
-					final Map<String, String> map = new HashMap<>(settings.size());
+					final Map<String, String> map = new HashMap<String, String>(settings.size());
 					synchronized (settings) {
 						for (final Map.Entry<Object, Object> entry : settings.entrySet()) {
 							map.put(entry.getKey().toString(), entry.getValue().toString());
@@ -232,7 +232,7 @@ public abstract class AbstractScript implements Script, Comparable<AbstractScrip
 		final Manifest manifest = getManifest();
 		if (manifest == null) {
 			try {
-				return (double) Manifest.class.getMethod("version").getDefaultValue();
+				return (Double) Manifest.class.getMethod("version").getDefaultValue();
 			} catch (final NoSuchMethodException ignored) {
 				return 1d;
 			}
@@ -291,9 +291,18 @@ public abstract class AbstractScript implements Script, Comparable<AbstractScrip
 	public String downloadString(final String url) {
 		final String name = "http-" + Integer.toHexString(url.hashCode());
 		download(url, name);
-		try (final FileInputStream in = new FileInputStream(getFile(name))) {
+		FileInputStream in = null;
+		try {
+			in = new FileInputStream(getFile(name));
 			return IOHelper.readString(in);
 		} catch (final IOException ignored) {
+		} finally {
+			if (in != null) {
+				try {
+					in.close();
+				} catch (final IOException ignored) {
+				}
+			}
 		}
 		return "";
 	}
