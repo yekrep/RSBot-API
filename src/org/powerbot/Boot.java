@@ -1,7 +1,9 @@
 package org.powerbot;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.lang.management.ManagementFactory;
 import java.net.URL;
 import java.net.URLStreamHandler;
@@ -143,6 +145,19 @@ public class Boot implements Runnable {
 		args.add(SWITCH_RESTARTED);
 
 		final ProcessBuilder pb = new ProcessBuilder(args);
+
+		if (Configuration.OS == OperatingSystem.MAC) {
+			final File java_home = new File("/usr/libexec/java_home");
+			if (java_home.canExecute()) {
+				try {
+					final Process p = Runtime.getRuntime().exec(new String[] {java_home.getPath(), "-v", "1.6"});
+					final BufferedReader stdin = new BufferedReader(new InputStreamReader(p.getInputStream()));
+					pb.environment().put("JAVA_HOME", stdin.readLine());
+					stdin.close();
+				} catch (final IOException ignored) {
+				}
+			}
+		}
 
 		if (wait) {
 			//pb.inheritIO(); // TODO: workaround for inheritIO
