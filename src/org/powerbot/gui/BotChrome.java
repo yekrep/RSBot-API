@@ -26,7 +26,6 @@ import javax.swing.JPopupMenu;
 import javax.swing.WindowConstants;
 
 import org.powerbot.Configuration;
-import org.powerbot.bot.BlockingEventQueue;
 import org.powerbot.bot.Bot;
 import org.powerbot.gui.component.BotMenuBar;
 import org.powerbot.gui.component.BotPanel;
@@ -49,6 +48,8 @@ public class BotChrome extends JFrame implements Closeable {
 	private boolean minimised;
 	private Bot bot;
 	public BotPanel panel;
+
+	private boolean blocking;
 
 	private BotChrome() {
 		setTitle(Configuration.NAME + (Configuration.BETA ? " Beta" : ""));
@@ -78,7 +79,6 @@ public class BotChrome extends JFrame implements Closeable {
 
 		panel = new BotPanel(this);
 		add(panel);
-		BlockingEventQueue.getInstance().setBlocking(false);
 
 		log.log(Level.INFO, "Optimising your experience", "Starting...");
 		pack();
@@ -193,5 +193,13 @@ public class BotChrome extends JFrame implements Closeable {
 		}
 		add(bot.getApplet());
 		revalidate();
+	}
+
+	public boolean isBlocking() {
+		return blocking;
+	}
+
+	public void setBlocking(boolean blocking) {
+		this.blocking = blocking;
 	}
 }
