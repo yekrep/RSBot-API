@@ -15,12 +15,6 @@ public class Canvas extends java.awt.Canvas {
 	}
 
 	@Override
-	public void setVisible(boolean visible) {
-		BotChrome.getInstance().target(this);
-		super.setVisible(visible);
-	}
-
-	@Override
 	public Graphics getGraphics() {
 		if (bot.getMethodContext().game.toolkit.graphicsIndex != 0) {
 			return super.getGraphics();
