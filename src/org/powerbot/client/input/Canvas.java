@@ -16,8 +16,7 @@ public class Canvas extends java.awt.Canvas {
 		super();
 		this.bot = BotChrome.getInstance().getBot();
 
-		BlockingEventQueue.pushBlocking();
-		BlockingEventQueue.getEventQueue().addComponent(this, new EventCallback() {
+		BlockingEventQueue.getInstance().addComponent(this, new EventCallback() {
 			@Override
 			public void execute(final AWTEvent event) {
 			}

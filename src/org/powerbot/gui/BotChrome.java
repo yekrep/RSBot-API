@@ -1,8 +1,6 @@
 package org.powerbot.gui;
 
-import java.awt.AWTEvent;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.Frame;
@@ -30,7 +28,6 @@ import javax.swing.WindowConstants;
 import org.powerbot.Configuration;
 import org.powerbot.bot.BlockingEventQueue;
 import org.powerbot.bot.Bot;
-import org.powerbot.bot.EventCallback;
 import org.powerbot.gui.component.BotMenuBar;
 import org.powerbot.gui.component.BotPanel;
 import org.powerbot.service.UpdateCheck;
@@ -81,7 +78,7 @@ public class BotChrome extends JFrame implements Closeable {
 
 		panel = new BotPanel(this);
 		add(panel);
-		BlockingEventQueue.getEventQueue().setBlocking(false);
+		BlockingEventQueue.getInstance().setBlocking(false);
 
 		log.log(Level.INFO, "Optimising your experience", "Starting...");
 		pack();

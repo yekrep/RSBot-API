@@ -16,7 +16,7 @@ import org.powerbot.bot.BlockingEventQueue;
 public final class BotMenuInput {
 	public BotMenuInput(final JMenu menu) {
 		JCheckBoxMenuItem item;
-		final BlockingEventQueue eq = BlockingEventQueue.getEventQueue();
+		final BlockingEventQueue eq = BlockingEventQueue.getInstance();
 
 		final Map<String, Boolean> map = new LinkedHashMap<>();
 		map.put(BotLocale.ALLOW, false);

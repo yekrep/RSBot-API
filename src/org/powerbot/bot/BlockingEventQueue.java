@@ -18,23 +18,34 @@ import org.powerbot.gui.BotChrome;
  */
 public class BlockingEventQueue extends EventQueue {
 	/* We only want one instance of this -- ever */
-	private static BlockingEventQueue eventQueue = new BlockingEventQueue();
+	private static final BlockingEventQueue instance = new BlockingEventQueue();
 	private Map<Component, EventCallback> callbacks = new ConcurrentHashMap<>();
-	private boolean blocking;
 
 	private BlockingEventQueue() {
 	}
 
 	public boolean isBlocking() {
-		return blocking;
+		return Toolkit.getDefaultToolkit().getSystemEventQueue() instanceof BlockingEventQueue;
 	}
 
 	public void setBlocking(boolean blocking) {
-		this.blocking = blocking;
+		if (isBlocking()) {
+			if (!blocking) {
+				pop();
+			}
+		} else {
+			if (blocking) {
+				Toolkit.getDefaultToolkit().getSystemEventQueue().push(this);
+			}
+		}
 	}
 
-	public static BlockingEventQueue getEventQueue() {
-		return eventQueue;
+	public static BlockingEventQueue getInstance() {
+		return instance;
+	}
+
+	public static EventQueue getEventQueue() {
+		return Toolkit.getDefaultToolkit().getSystemEventQueue();
 	}
 
 	public void addComponent(Component component, EventCallback callback) {
@@ -43,20 +54,6 @@ public class BlockingEventQueue extends EventQueue {
 
 	public void removeComponent(Component component) {
 		callbacks.remove(component);
-	}
-
-	public static void pushBlocking() {
-		if (!isPushed()) {
-			Toolkit.getDefaultToolkit().getSystemEventQueue().push(eventQueue);
-			/* Let's make sure this functionality isn't disabled */
-			if (!isPushed()) {
-				throw new RuntimeException();
-			}
-		}
-	}
-
-	private static boolean isPushed() {
-		return Toolkit.getDefaultToolkit().getSystemEventQueue() instanceof BlockingEventQueue;
 	}
 
 	@Override
@@ -69,7 +66,7 @@ public class BlockingEventQueue extends EventQueue {
 
 		Object source = event.getSource();
 		/* Check if event is from a blocked source */
-		if (source != null && callbacks.containsKey(source) && blocking) {
+		if (source != null && callbacks.containsKey(source)) {
 			/* Block input events */
 			if (event instanceof MouseEvent || event instanceof KeyEvent ||
 					event instanceof WindowEvent || event instanceof FocusEvent) {
