@@ -44,10 +44,6 @@ public class BlockingEventQueue extends EventQueue {
 		return instance;
 	}
 
-	public static EventQueue getEventQueue() {
-		return Toolkit.getDefaultToolkit().getSystemEventQueue();
-	}
-
 	public void addComponent(Component component, EventCallback callback) {
 		callbacks.put(component, callback);
 	}
