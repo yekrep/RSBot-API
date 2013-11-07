@@ -13,7 +13,7 @@ class ItemDefinition {
 	private final WeakReference<RSItemDef> def;
 
 	ItemDefinition(final RSItemDef def) {
-		this.def = new WeakReference<>(def);
+		this.def = new WeakReference<RSItemDef>(def);
 	}
 
 	static ItemDefinition getDef(MethodContext ctx, int id) {

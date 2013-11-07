@@ -23,7 +23,7 @@ public class Antipatterns extends MethodProvider implements Runnable {
 
 		enabled = new AtomicBoolean(true);
 
-		patterns = new ArrayList<>();
+		patterns = new ArrayList<Antipattern>();
 		patterns.add(new CameraPattern(ctx));
 		patterns.add(new ExaminePattern(ctx));
 		patterns.add(new WindowPattern(ctx));

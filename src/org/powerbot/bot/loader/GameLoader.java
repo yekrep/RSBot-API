@@ -21,7 +21,7 @@ public class GameLoader implements Callable<ClassLoader> {
 
 	public GameLoader(Crawler crawler) {
 		this.crawler = crawler;
-		this.resources = new HashMap<>();
+		this.resources = new HashMap<String, byte[]>();
 	}
 
 	@Override

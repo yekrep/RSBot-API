@@ -13,7 +13,7 @@ public class RenderableModel extends Model {
 
 	public RenderableModel(MethodContext ctx, AbstractModel model, RSInteractable interactable) {
 		super(ctx, model);
-		this.interactable = new WeakReference<>(interactable);
+		this.interactable = new WeakReference<RSInteractable>(interactable);
 	}
 
 	@Override

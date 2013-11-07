@@ -34,11 +34,11 @@ public class EventMulticaster implements Runnable, Stoppable {
 	private boolean active, stopping = false;
 
 	public EventMulticaster() {
-		listeners = new CopyOnWriteArrayList<>();
-		listenerMasks = new ConcurrentHashMap<>();
-		queue = new ConcurrentLinkedQueue<>();
+		listeners = new CopyOnWriteArrayList<EventListener>();
+		listenerMasks = new ConcurrentHashMap<EventListener, Long>();
+		queue = new ConcurrentLinkedQueue<EventObject>();
 
-		masks = new HashMap<>();
+		masks = new HashMap<Class<? extends EventListener>, Integer>();
 		masks.put(MouseListener.class, EventMulticaster.MOUSE_EVENT);
 		masks.put(MouseMotionListener.class, EventMulticaster.MOUSE_MOTION_EVENT);
 		masks.put(MouseWheelListener.class, EventMulticaster.MOUSE_WHEEL_EVENT);

@@ -8,7 +8,9 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.Queue;
 
 import javax.swing.Timer;
@@ -20,10 +22,28 @@ import org.powerbot.util.math.HardwareSimulator;
 public class InputHandler {
 	private final Applet applet;
 	private final Client client;
+	private final Map<String, Integer> keyMap = new HashMap<String, Integer>(256);
 
 	public InputHandler(final Applet applet, final Client client) {
 		this.applet = applet;
 		this.client = client;
+
+		final String prefix = "VK_";
+		final Field[] fields = KeyEvent.class.getDeclaredFields();
+		for (Field field : fields) {
+			final String name = field.getName();
+			if (name.startsWith(prefix)) {
+				try {
+					keyMap.put(name.substring(prefix.length()).toUpperCase(), field.getInt(null));
+				} catch (final IllegalAccessException ignored) {
+				}
+			}
+		}
+	}
+
+	private int getExtendedKeyCodeForChar(final char c) {
+		final String s = String.valueOf(Character.toUpperCase(c));
+		return keyMap.containsKey(s) ? keyMap.get(s) : KeyEvent.VK_UNDEFINED;
 	}
 
 	public void send(final String str) {
@@ -73,7 +93,7 @@ public class InputHandler {
 	}
 
 	private Queue<KeyEvent> getKeyEvents(final String sequence) {
-		final Queue<String> list = new LinkedList<>();
+		final Queue<String> list = new LinkedList<String>();
 		boolean braced = false;
 		StringBuilder buf = new StringBuilder();
 
@@ -104,14 +124,14 @@ public class InputHandler {
 	}
 
 	private Queue<KeyEvent> getKeyEvents(final Queue<String> sequence) {
-		final Queue<KeyEvent> queue = new LinkedList<>();
+		final Queue<KeyEvent> queue = new LinkedList<KeyEvent>();
 
 		while (!sequence.isEmpty()) {
 			String s = sequence.poll();
 
 			if (s.length() == 1) { // simple letter
 				final char c = s.charAt(0);
-				int vk = KeyEvent.getExtendedKeyCodeForChar((int) c);
+				int vk = getExtendedKeyCodeForChar(c);
 				if (c == '\r') {
 					continue;
 				}
@@ -125,7 +145,7 @@ public class InputHandler {
 							final String sx = sequence.peek();
 							final char cx;
 							if (sx.length() == 1 && Character.isUpperCase(cx = sx.charAt(0))) {
-								final int vkx = KeyEvent.getExtendedKeyCodeForChar((int) cx);
+								final int vkx = getExtendedKeyCodeForChar(cx);
 								if (vkx != KeyEvent.VK_UNDEFINED) {
 									sequence.poll();
 									pushUpperAlpha(queue, vkx, cx);
@@ -160,17 +180,11 @@ public class InputHandler {
 						}
 						final boolean[] states = {false, false};
 						if (p.length > 1 && p[1] != null && !p[1].isEmpty()) {
-							switch (p[1].trim().toLowerCase()) {
-							case "down":
-							case "press":
-							case "pressed":
+							final String p1 = p[1].trim().toLowerCase();
+							if (p1.equals("down") || p1.equals("press") || p1.equals("pressed")) {
 								states[0] = true;
-								break;
-							case "up":
-							case "release":
-							case "released":
+							} else if (p1.equals("up") || p1.equals("release") || p1.equals("released")) {
 								states[1] = true;
-								break;
 							}
 						} else {
 							states[0] = true;

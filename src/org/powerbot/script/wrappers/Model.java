@@ -123,7 +123,7 @@ public abstract class Model extends MethodProvider {
 
 	public Polygon[] getTriangles() {
 		int[][] points = projectVertices();
-		ArrayList<Polygon> polygons = new ArrayList<>(numFaces);
+		ArrayList<Polygon> polygons = new ArrayList<Polygon>(numFaces);
 		for (int index = 0; index < numFaces; index++) {
 			int index1 = faceA[index];
 			int index2 = faceB[index];

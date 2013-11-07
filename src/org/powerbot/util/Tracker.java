@@ -76,20 +76,31 @@ public final class Tracker {
 	private long[] getTimestamps() {
 		synchronized (timestamps) {
 			if (cacheTime.get() < cache.lastModified()) {
-				try (final DataInputStream in = new DataInputStream(new FileInputStream(cache))) {
+				DataInputStream in = null;
+				try {
+					in = new DataInputStream(new FileInputStream(cache));
 					for (int i = 0; i < timestamps.length; i++) {
 						timestamps[i] = in.readLong();
 					}
 					visits.set(in.readInt());
 					in.close();
 				} catch (final IOException ignored) {
+				} finally {
+					if (in != null) {
+						try {
+							in.close();
+						} catch (final IOException ignored) {
+						}
+					}
 				}
 			}
 
 			final long prev = timestamps[1];
 			timestamps[1] = System.currentTimeMillis() / 1000L;
 
-			try (final DataOutputStream out = new DataOutputStream(new FileOutputStream(cache))) {
+			DataOutputStream out = null;
+			try {
+				out = new DataOutputStream(new FileOutputStream(cache));
 				for (int i = 0; i < timestamps.length; i++) {
 					out.writeLong(timestamps[i]);
 				}
@@ -99,6 +110,13 @@ public final class Tracker {
 				cacheTime.set(mod);
 				cache.setLastModified(mod);
 			} catch (final IOException ignored) {
+			} finally {
+				if (out != null) {
+					try {
+						out.close();
+					} catch (final IOException ignored) {
+					}
+				}
 			}
 
 			return new long[]{timestamps[0], prev, timestamps[1]};

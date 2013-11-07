@@ -84,7 +84,7 @@ public class Map extends MethodProvider {
 	}
 
 	private List<GameObject> getObjects(int x, int y, int plane, RSGround[][][] grounds) {
-		List<GameObject> items = new ArrayList<>();
+		List<GameObject> items = new ArrayList<GameObject>();
 		RSGround ground;
 		if (plane < grounds.length && x < grounds[plane].length && y < grounds[plane][x].length) {
 			ground = grounds[plane][x][y];
@@ -197,7 +197,7 @@ public class Map extends MethodProvider {
 	}
 
 	private Node[] path(Node target) {
-		List<Node> nodes = new LinkedList<>();
+		List<Node> nodes = new LinkedList<Node>();
 		if (Double.isInfinite(target.g)) {
 			return new Node[0];
 		}
@@ -215,7 +215,7 @@ public class Map extends MethodProvider {
 		source.g = 0d;
 		source.f = 0d;
 
-		Queue<Node> queue = new PriorityQueue<>(8, new Comparator<Node>() {
+		Queue<Node> queue = new PriorityQueue<Node>(8, new Comparator<Node>() {
 			@Override
 			public int compare(Node o1, Node o2) {
 				return Double.compare(o1.f, o2.f);
@@ -271,7 +271,7 @@ public class Map extends MethodProvider {
 		}
 
 		private List<Node> neighbors(Node node) {
-			List<Node> list = new ArrayList<>(8);
+			List<Node> list = new ArrayList<Node>(8);
 			int curr_x = node.x;
 			int curr_y = node.y;
 			if (curr_x < 0 || curr_y < 0 ||

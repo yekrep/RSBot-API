@@ -18,7 +18,7 @@ public abstract class AbstractBridge implements Bridge {
 
 	public AbstractBridge(TransformSpec transformSpec) {
 		this.entries = Collections.synchronizedList(new LinkedList<String>());
-		this.loaded = new ConcurrentHashMap<>();
+		this.loaded = new ConcurrentHashMap<String, byte[]>();
 		this.transformSpec = transformSpec;
 	}
 

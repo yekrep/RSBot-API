@@ -16,7 +16,7 @@ public class HintArrow extends MethodProvider implements Locatable, Validatable 
 
 	public HintArrow(MethodContext ctx, final RSHintArrow arrow) {
 		super(ctx);
-		this.arrow = new WeakReference<>(arrow);
+		this.arrow = new WeakReference<RSHintArrow>(arrow);
 	}
 
 	public int getType() {

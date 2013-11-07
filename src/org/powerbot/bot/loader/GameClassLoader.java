@@ -17,14 +17,14 @@ import org.powerbot.bot.loader.bytecode.ListClassesTransform;
 import org.powerbot.bot.loader.bytecode.Processor;
 
 public class GameClassLoader extends ClassLoader {
-	private final Map<String, byte[]> resources = new HashMap<>();
+	private final Map<String, byte[]> resources = new HashMap<String, byte[]>();
 	private final Hashtable<String, Class<?>> loaded;
 	private final ProtectionDomain domain;
 	private Processor processor;
 
 	public GameClassLoader(final Map<String, byte[]> resources) {
 		this.resources.putAll(resources);
-		loaded = new Hashtable<>();
+		loaded = new Hashtable<String, Class<?>>();
 		CodeSource codesource = new CodeSource(null, (java.security.cert.Certificate[]) null);
 		Permissions permissions = new Permissions();
 		permissions.add(new AllPermission());

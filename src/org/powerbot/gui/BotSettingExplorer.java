@@ -43,13 +43,13 @@ public class BotSettingExplorer extends JFrame {
 	private int current = -1;
 	private int[] settings_cache = null;
 	private boolean paused = false;
-	private final HashMap<Integer, String> lastChanges = new HashMap<>();
+	private final HashMap<Integer, String> lastChanges = new HashMap<Integer, String>();
 
 	private String[] lastLabels = null;
 	private JTextArea info = null;
 	private JTextArea changes = null;
 	private JScrollPane changesPane = null;
-	private JList<String> settingsList = null;
+	private JList settingsList = null;
 
 	private BotSettingExplorer() {
 		create();
@@ -161,14 +161,14 @@ public class BotSettingExplorer extends JFrame {
 		westPane.setLayout(new BorderLayout());
 		contentPane.add(westPane, BorderLayout.WEST);
 
-		settingsList = new JList<>();
+		settingsList = new JList();
 		settingsList.setFont(font);
 		settingsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		settingsList.addListSelectionListener(new ListSelectionListener() {
 			@SuppressWarnings("unchecked")
 			public void valueChanged(ListSelectionEvent e) {
 				if (!e.getValueIsAdjusting()) {
-					current = ((JList<String>) e.getSource()).getSelectedIndex();
+					current = ((JList) e.getSource()).getSelectedIndex();
 					if (current >= 0) {
 						final int setting = settings_cache[current];
 						info.setText("");

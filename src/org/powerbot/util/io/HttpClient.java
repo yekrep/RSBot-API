@@ -99,9 +99,19 @@ public class HttpClient {
 		if (s.length > 1) {
 			con.setDoOutput(true);
 			if (s[1] != null && !s[1].isEmpty()) {
-				try (final OutputStreamWriter out = new OutputStreamWriter(con.getOutputStream())) {
+				OutputStreamWriter out = null;
+				try {
+					out = new OutputStreamWriter(con.getOutputStream());
 					out.write(s[1]);
 					out.flush();
+				} catch (final IOException ignored) {
+				} finally {
+					if (out != null) {
+						try {
+							out.close();
+						} catch (final IOException ignored) {
+						}
+					}
 				}
 			}
 		}

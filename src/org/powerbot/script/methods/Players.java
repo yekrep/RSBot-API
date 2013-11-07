@@ -39,7 +39,7 @@ public class Players extends PlayerQuery<Player> {
 	 */
 	@Override
 	protected List<Player> get() {
-		final List<Player> items = new ArrayList<>();
+		final List<Player> items = new ArrayList<Player>();
 
 		Client client = ctx.getClient();
 		if (client == null) {
@@ -52,7 +52,7 @@ public class Players extends PlayerQuery<Player> {
 			return items;
 		}
 
-		final Set<RSPlayer> set = new HashSet<>(indices.length);
+		final Set<RSPlayer> set = new HashSet<RSPlayer>(indices.length);
 		for (final int index : indices) {
 			final RSPlayer player = players[index];
 			if (player != null && !set.contains(player)) {

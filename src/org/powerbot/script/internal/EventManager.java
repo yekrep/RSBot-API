@@ -19,8 +19,8 @@ public class EventManager implements Suspendable, Subscribable<EventListener> {
 
 	public EventManager(final EventMulticaster multicaster) {
 		this.multicaster = multicaster;
-		queue = new ArrayList<>();
-		added = new ArrayList<>();
+		queue = new ArrayList<EventListener>();
+		added = new ArrayList<EventListener>();
 		subscribed = new AtomicBoolean(false);
 	}
 

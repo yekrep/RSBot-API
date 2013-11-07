@@ -17,7 +17,7 @@ import org.powerbot.util.io.IOHelper;
  * @author Paris
  */
 public class Hiscores {
-	private final static Map<String, Hiscores> cache = new ConcurrentHashMap<>();
+	private final static Map<String, Hiscores> cache = new ConcurrentHashMap<String, Hiscores>();
 	private final static String PAGE = "http://" + Configuration.URLs.GAME_SERVICES_DOMAIN + "/m=hiscore/index_lite.ws?player=%s";
 	private final String username;
 	private final Map<Stats, SkillStats> skills;
@@ -34,11 +34,11 @@ public class Hiscores {
 		final String txt = IOHelper.readString(HttpClient.openStream(String.format(PAGE, StringUtil.urlEncode(username.replace(" ", "%A0")))));
 
 		this.username = username;
-		skills = new HashMap<>();
-		activities = new HashMap<>();
+		skills = new HashMap<Stats, SkillStats>();
+		activities = new HashMap<Stats, ActivityStats>();
 		updated = System.currentTimeMillis();
 
-		final Map<Integer, Stats> map = new HashMap<>();
+		final Map<Integer, Stats> map = new HashMap<Integer, Stats>();
 		for (final Stats s : Stats.values()) {
 			map.put(s.ordinal(), s);
 		}

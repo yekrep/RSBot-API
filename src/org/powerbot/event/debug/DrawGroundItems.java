@@ -33,7 +33,7 @@ public class DrawGroundItems implements PaintListener {
 		final FontMetrics metrics = render.getFontMetrics();
 		final int tHeight = metrics.getHeight();
 		final int plane = ctx.game.getPlane();
-		final List<GroundItem> check = new ArrayList<>();
+		final List<GroundItem> check = new ArrayList<GroundItem>();
 		ctx.groundItems.select().addTo(check);
 		for (int x = tile.getX() - 10; x <= tile.getX() + 10; x++) {
 			for (int y = tile.getY() - 10; y <= tile.getY() + 10; y++) {

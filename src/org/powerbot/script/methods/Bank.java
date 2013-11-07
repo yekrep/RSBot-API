@@ -79,7 +79,7 @@ public class Bank extends ItemQuery<Item> {
 
 	private Interactive getBank() {
 		final Filter<Interactive> f = Interactive.areOnScreen();
-		List<Interactive> interactives = new ArrayList<>();
+		List<Interactive> interactives = new ArrayList<Interactive>();
 		Npc n;
 		GameObject o;
 
@@ -89,7 +89,7 @@ public class Bank extends ItemQuery<Item> {
 			interactives.add(n);
 		}
 
-		final List<GameObject> cache = new ArrayList<>();
+		final List<GameObject> cache = new ArrayList<GameObject>();
 		ctx.objects.select().select(f).select(UNREACHABLE_FILTER).nearest().addTo(cache);
 
 		ctx.objects.id(BANK_BOOTH_IDS).limit(3).within(o = ctx.objects.poll(), 1d).first().addTo(interactives);
@@ -241,10 +241,10 @@ public class Bank extends ItemQuery<Item> {
 	protected List<Item> get() {
 		final Component c = ctx.widgets.get(WIDGET, COMPONENT_CONTAINER_ITEMS);
 		if (c == null || !c.isValid()) {
-			return new ArrayList<>();
+			return new ArrayList<Item>();
 		}
 		final Component[] components = c.getChildren();
-		List<Item> items = new ArrayList<>(components.length);
+		List<Item> items = new ArrayList<Item>(components.length);
 		for (final Component i : components) {
 			if (i.getItemId() != -1) {
 				items.add(new Item(ctx, i));

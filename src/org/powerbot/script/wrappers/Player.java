@@ -16,7 +16,7 @@ public class Player extends Actor {
 
 	public Player(MethodContext ctx, final RSPlayer player) {
 		super(ctx);
-		this.player = new WeakReference<>(player);
+		this.player = new WeakReference<RSPlayer>(player);
 	}
 
 	@Override

@@ -23,7 +23,7 @@ public class Chat extends TextQuery<ChatOption> {
 	 */
 	@Override
 	public List<ChatOption> get() {
-		List<ChatOption> options = new ArrayList<>(5);
+		List<ChatOption> options = new ArrayList<ChatOption>(5);
 		for (int i = 0; i < 5; i++) {
 			Component component = ctx.widgets.get(WIDGET, COMPONENT_CHAT_OPTIONS[i]);
 			if (!component.isValid()) {

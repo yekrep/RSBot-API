@@ -180,10 +180,10 @@ public class ClassNode extends ClassVisitor {
 	 */
 	public ClassNode(final int api) {
 		super(api);
-		interfaces = new ArrayList<>();
-		innerClasses = new ArrayList<>();
-		fields = new ArrayList<>();
-		methods = new ArrayList<>();
+		interfaces = new ArrayList<String>();
+		innerClasses = new ArrayList<InnerClassNode>();
+		fields = new ArrayList<FieldNode>();
+		methods = new ArrayList<MethodNode>();
 	}
 
 	// ------------------------------------------------------------------------
@@ -231,12 +231,12 @@ public class ClassNode extends ClassVisitor {
 		final AnnotationNode an = new AnnotationNode(desc);
 		if (visible) {
 			if (visibleAnnotations == null) {
-				visibleAnnotations = new ArrayList<>(1);
+				visibleAnnotations = new ArrayList<AnnotationNode>(1);
 			}
 			visibleAnnotations.add(an);
 		} else {
 			if (invisibleAnnotations == null) {
-				invisibleAnnotations = new ArrayList<>(1);
+				invisibleAnnotations = new ArrayList<AnnotationNode>(1);
 			}
 			invisibleAnnotations.add(an);
 		}
@@ -246,7 +246,7 @@ public class ClassNode extends ClassVisitor {
 	@Override
 	public void visitAttribute(final Attribute attr) {
 		if (attrs == null) {
-			attrs = new ArrayList<>(1);
+			attrs = new ArrayList<Attribute>(1);
 		}
 		attrs.add(attr);
 	}

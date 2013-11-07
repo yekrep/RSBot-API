@@ -27,7 +27,7 @@ public class GameObject extends Interactive implements Renderable, Locatable, Na
 
 	public GameObject(MethodContext ctx, final RSObject object, final Type type) {
 		super(ctx);
-		this.object = new WeakReference<>(object);
+		this.object = new WeakReference<RSObject>(object);
 		this.type = type;
 	}
 

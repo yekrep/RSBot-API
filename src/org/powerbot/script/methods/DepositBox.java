@@ -75,10 +75,10 @@ public class DepositBox extends ItemQuery<Item> {
 	protected List<Item> get() {
 		final Component c = ctx.widgets.get(WIDGET, COMPONENT_CONTAINER_ITEMS);
 		if (c == null || !c.isValid()) {
-			return new ArrayList<>();
+			return new ArrayList<Item>();
 		}
 		final Component[] components = c.getChildren();
-		List<Item> items = new ArrayList<>(components.length);
+		List<Item> items = new ArrayList<Item>(components.length);
 		for (final Component i : components) {
 			if (i.getItemId() != -1) {
 				items.add(new Item(ctx, i));

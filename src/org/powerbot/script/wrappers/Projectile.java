@@ -11,7 +11,7 @@ public class Projectile extends MethodProvider implements Identifiable, Validata
 
 	public Projectile(MethodContext ctx, final RSProjectile projectile) {
 		super(ctx);
-		this.projectile = new WeakReference<>(projectile);
+		this.projectile = new WeakReference<RSProjectile>(projectile);
 	}
 
 	@Override

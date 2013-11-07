@@ -160,36 +160,24 @@ public class BotMenuBar extends JMenuBar implements ActionListener {
 				Tracker.getInstance().trackPage("menu/", s);
 			}
 		});
-		switch (s) {
-		case BotLocale.NEWWINDOW:
-			Boot.fork(false);
-			break;
-		case BotLocale.EXIT:
+		if (s.equals(BotLocale.NEWWINDOW)) {
+			Boot.fork();
+		} else if (s.equals(BotLocale.EXIT)) {
 			BotChrome.getInstance().close();
-			break;
-		case BotLocale.SIGNIN:
+		} else if (s.equals(BotLocale.SIGNIN)) {
 			showDialog(Action.SIGNIN);
-			break;
-		case BotLocale.ACCOUNTS:
+		} else if (s.equals(BotLocale.ACCOUNTS)) {
 			showDialog(Action.ACCOUNTS);
-			break;
-		case BotLocale.PLAYSCRIPT:
-		case BotLocale.PAUSESCRIPT:
-		case BotLocale.RESUMESCRIPT:
+		} else if (s.equals(BotLocale.PLAYSCRIPT) || s.equals(BotLocale.PAUSESCRIPT) || s.equals(BotLocale.RESUMESCRIPT)) {
 			scriptPlayPause();
-			break;
-		case BotLocale.STOPSCRIPT:
+		} else if (s.equals(BotLocale.STOPSCRIPT)) {
 			scriptStop();
-			break;
-		case BotLocale.ABOUT:
+		} else if (s.equals(BotLocale.ABOUT)) {
 			showDialog(Action.ABOUT);
-			break;
-		case BotLocale.LICENSE:
+		} else if (s.equals(BotLocale.LICENSE)) {
 			showDialog(Action.LICENSE);
-			break;
-		case BotLocale.WEBSITE:
+		} else if (s.equals(BotLocale.WEBSITE)) {
 			BotChrome.openURL(Configuration.URLs.SITE);
-			break;
 		}
 	}
 

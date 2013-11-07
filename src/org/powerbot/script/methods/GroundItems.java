@@ -23,7 +23,7 @@ public class GroundItems extends GroundItemQuery<GroundItem> {
 	 */
 	@Override
 	protected List<GroundItem> get() {
-		final List<GroundItem> items = new ArrayList<>();
+		final List<GroundItem> items = new ArrayList<GroundItem>();
 
 		Client client = ctx.getClient();
 		if (client == null) {
@@ -52,7 +52,7 @@ public class GroundItems extends GroundItemQuery<GroundItem> {
 				if (cache == null || (deque = cache.getNodeList()) == null) {
 					continue;
 				}
-				final Deque<RSItem> itemStack = new Deque<>(deque, RSItem.class);
+				final Deque<RSItem> itemStack = new Deque<RSItem>(deque, RSItem.class);
 				for (RSItem item = itemStack.getHead(); item != null; item = itemStack.getNext()) {
 					items.add(new GroundItem(ctx, new Tile(x, y, plane), item));
 				}

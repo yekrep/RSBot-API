@@ -49,18 +49,36 @@ public class IOHelper {
 	}
 
 	public static byte[] read(final URL in) {
-		try (final InputStream is = in.openStream()) {
+		InputStream is = null;
+		try {
+			is = in.openStream();
 			return read(is);
 		} catch (final IOException ignored) {
 			return null;
+		} finally {
+			if (is != null) {
+				try {
+					is.close();
+				} catch (final IOException ignored) {
+				}
+			}
 		}
 	}
 
 	public static byte[] read(final File in) {
-		try (final InputStream is = new FileInputStream(in)) {
+		InputStream is = null;
+		try {
+			is = new FileInputStream(in);
 			return read(is);
 		} catch (final IOException ignored) {
 			return null;
+		} finally {
+			if (is != null) {
+				try {
+					is.close();
+				} catch (final IOException ignored) {
+				}
+			}
 		}
 	}
 
@@ -94,9 +112,18 @@ public class IOHelper {
 	}
 
 	public static void write(final InputStream in, final File out) {
-		try (final OutputStream os = new FileOutputStream(out)) {
+		OutputStream os = null;
+		try {
+			os = new FileOutputStream(out);
 			write(in, os);
 		} catch (final IOException ignored) {
+		} finally {
+			if (os != null) {
+				try {
+					os.close();
+				} catch (final IOException ignored) {
+				}
+			}
 		}
 	}
 
@@ -106,7 +133,9 @@ public class IOHelper {
 	}
 
 	public static void write(final Map<String, byte[]> entries, final File out) {
-		try (final ZipOutputStream zip = new ZipOutputStream(new FileOutputStream(out))) {
+		ZipOutputStream zip = null;
+		try {
+			zip = new ZipOutputStream(new FileOutputStream(out));
 			zip.setMethod(ZipOutputStream.STORED);
 			zip.setLevel(0);
 			for (final Map.Entry<String, byte[]> item : entries.entrySet()) {
@@ -122,26 +151,48 @@ public class IOHelper {
 			}
 			zip.close();
 		} catch (final IOException ignored) {
+		} finally {
+			if (zip != null) {
+				try {
+					zip.close();
+				} catch (final IOException ignored) {
+				}
+			}
 		}
 	}
 
 	public static long crc32(final InputStream in) {
-		try (final CheckedInputStream cis = new CheckedInputStream(in, new CRC32())) {
+		CheckedInputStream cis = null;
+		try {
+			cis = new CheckedInputStream(in, new CRC32());
 			final byte[] buf = new byte[BUFFER_SIZE];
 			while (cis.read(buf) != -1) {
-				;
 			}
 			return cis.getChecksum().getValue();
 		} catch (final IOException ignored) {
 			return -1;
+		} finally {
+			if (cis != null) {
+				try {
+					cis.close();
+				} catch (final IOException ignored) {
+				}
+			}
 		}
 	}
 
 	public static long crc32(final byte[] data) throws IOException {
-		try (final InputStream is = new ByteArrayInputStream(data)) {
+		InputStream is = null;
+		try {
+			is = new ByteArrayInputStream(data);
 			return crc32(is);
-		} catch (final IOException ignored) {
-			return -1;
+		} finally {
+			if (is != null) {
+				try {
+					is.close();
+				} catch (final IOException ignored) {
+				}
+			}
 		}
 	}
 }

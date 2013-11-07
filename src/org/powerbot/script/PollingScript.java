@@ -23,7 +23,7 @@ public abstract class PollingScript extends AbstractScript {
 	 * Blocks other {@link PollingScript}s which have a lower {@link AbstractScript#priority} value.
 	 * Only the head item is considered for comparison.
 	 */
-	protected static final Queue<Integer> threshold = new ConcurrentLinkedQueue<>();
+	protected static final Queue<Integer> threshold = new ConcurrentLinkedQueue<Integer>();
 
 	/**
 	 * The sleep bias for {@link #sleep(long)} and {@link #poll()}.

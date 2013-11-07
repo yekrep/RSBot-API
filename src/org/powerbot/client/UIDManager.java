@@ -16,7 +16,7 @@ public class UIDManager {
 	private static final String separator = "#";
 	private final CryptFile store;
 
-	private final HashMap<String, byte[]> uids = new HashMap<>();
+	private final HashMap<String, byte[]> uids = new HashMap<String, byte[]>();
 	private String lastUsed = "";
 
 	public UIDManager() {

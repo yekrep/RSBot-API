@@ -81,10 +81,10 @@ public final class BotMenuView implements ActionListener {
 		menu.addSeparator();
 
 		if (listeners == null) {
-			listeners = new HashMap<>();
+			listeners = new HashMap<Bot, Map<String, EventListener>>();
 		}
 
-		map = new LinkedHashMap<>();
+		map = new LinkedHashMap<String, Class<? extends EventListener>>();
 		map.put(BOUNDARIES, DrawBoundaries.class);
 		map.put(MODELS, DrawModels.class);
 		map.put(SCENEENTITIES, DrawObjects.class);
@@ -104,7 +104,7 @@ public final class BotMenuView implements ActionListener {
 		map.put(MESSAGES, MessageLogger.class);
 		map.put(CAMERA, TCamera.class);
 
-		final List<String> items = new ArrayList<>(map.size());
+		final List<String> items = new ArrayList<String>(map.size());
 		items.add(MOUSE);
 		items.add(PLAYERS);
 		items.add(NPCS);
@@ -129,7 +129,7 @@ public final class BotMenuView implements ActionListener {
 		final Bot bot = BotChrome.getInstance().getBot();
 		Map<String, EventListener> listeners = BotMenuView.listeners.get(bot);
 		if (listeners == null) {
-			listeners = new HashMap<>();
+			listeners = new HashMap<String, EventListener>();
 			BotMenuView.listeners.put(bot, listeners);
 		}
 
@@ -187,7 +187,7 @@ public final class BotMenuView implements ActionListener {
 		final String name = eventListener.getName();
 		Map<String, EventListener> listeners = BotMenuView.listeners.get(bot);
 		if (listeners == null) {
-			listeners = new HashMap<>();
+			listeners = new HashMap<String, EventListener>();
 			BotMenuView.listeners.put(bot, listeners);
 		}
 		if (!selected) {

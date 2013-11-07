@@ -73,7 +73,7 @@ public final class BotScripts extends JDialog implements ActionListener {
 	private final JTextField search;
 	private volatile boolean init;
 
-	private static AtomicReference<String> lastUsername = new AtomicReference<>(null);
+	private static AtomicReference<String> lastUsername = new AtomicReference<String>(null);
 
 	public BotScripts(final BotChrome parent) {
 		super(parent, BotLocale.SCRIPTS, true);

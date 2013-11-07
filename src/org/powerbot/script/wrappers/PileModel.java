@@ -14,7 +14,7 @@ public class PileModel extends Model {
 
 	public PileModel(MethodContext ctx, AbstractModel model, RSItemPile pile) {
 		super(ctx, model, pile.getHeight() / 2);
-		this.pile = new WeakReference<>(pile);
+		this.pile = new WeakReference<RSItemPile>(pile);
 	}
 
 	@Override

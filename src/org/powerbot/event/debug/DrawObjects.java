@@ -56,7 +56,7 @@ public class DrawObjects implements PaintListener {
 				Field f = object.getClass().getDeclaredField("object");
 				f.setAccessible(true);
 				internalObj = (WeakReference<RSObject>) f.get(object);
-			} catch (IllegalAccessException | NoSuchFieldException e) {
+			} catch (final Exception ignored) {
 				internalObj = null;
 			}
 

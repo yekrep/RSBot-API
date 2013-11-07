@@ -44,9 +44,9 @@ public class MethodContext {
 	Map map;
 
 	public MethodContext(final Bot bot) {
-		this.client = new AtomicReference<>(null);
-		this.preferredWorld = new AtomicReference<>(-1);
-		this.bot = new AtomicReference<>(bot);
+		this.client = new AtomicReference<Client>(null);
+		this.preferredWorld = new AtomicReference<Integer>(-1);
+		this.bot = new AtomicReference<Bot>(bot);
 
 		antipatterns = new Antipatterns(this);
 		combatBar = new CombatBar(this);
@@ -81,9 +81,9 @@ public class MethodContext {
 	}
 
 	public MethodContext() {
-		this.client = new AtomicReference<>(null);
-		this.preferredWorld = new AtomicReference<>(-1);
-		this.bot = new AtomicReference<>(null);
+		this.client = new AtomicReference<Client>(null);
+		this.preferredWorld = new AtomicReference<Integer>(-1);
+		this.bot = new AtomicReference<Bot>(null);
 	}
 
 	public void init(MethodContext ctx) {

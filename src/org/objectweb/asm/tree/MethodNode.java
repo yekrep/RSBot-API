@@ -242,14 +242,14 @@ public class MethodNode extends MethodVisitor {
 		this.name = name;
 		this.desc = desc;
 		this.signature = signature;
-		this.exceptions = new ArrayList<>(exceptions == null
+		this.exceptions = new ArrayList<String>(exceptions == null
 				? 0
 				: exceptions.length);
 		final boolean isAbstract = (access & Opcodes.ACC_ABSTRACT) != 0;
 		if (!isAbstract) {
-			localVariables = new ArrayList<>(5);
+			localVariables = new ArrayList<LocalVariableNode>(5);
 		}
-		tryCatchBlocks = new ArrayList<>();
+		tryCatchBlocks = new ArrayList<TryCatchBlockNode>();
 		if (exceptions != null) {
 			this.exceptions.addAll(Arrays.asList(exceptions));
 		}
@@ -280,12 +280,12 @@ public class MethodNode extends MethodVisitor {
 		final AnnotationNode an = new AnnotationNode(desc);
 		if (visible) {
 			if (visibleAnnotations == null) {
-				visibleAnnotations = new ArrayList<>(1);
+				visibleAnnotations = new ArrayList<AnnotationNode>(1);
 			}
 			visibleAnnotations.add(an);
 		} else {
 			if (invisibleAnnotations == null) {
-				invisibleAnnotations = new ArrayList<>(1);
+				invisibleAnnotations = new ArrayList<AnnotationNode>(1);
 			}
 			invisibleAnnotations.add(an);
 		}
@@ -305,7 +305,7 @@ public class MethodNode extends MethodVisitor {
 				visibleParameterAnnotations = (List<AnnotationNode>[]) new List<?>[params];
 			}
 			if (visibleParameterAnnotations[parameter] == null) {
-				visibleParameterAnnotations[parameter] = new ArrayList<>(1);
+				visibleParameterAnnotations[parameter] = new ArrayList<AnnotationNode>(1);
 			}
 			visibleParameterAnnotations[parameter].add(an);
 		} else {
@@ -314,7 +314,7 @@ public class MethodNode extends MethodVisitor {
 				invisibleParameterAnnotations = (List<AnnotationNode>[]) new List<?>[params];
 			}
 			if (invisibleParameterAnnotations[parameter] == null) {
-				invisibleParameterAnnotations[parameter] = new ArrayList<>(1);
+				invisibleParameterAnnotations[parameter] = new ArrayList<AnnotationNode>(1);
 			}
 			invisibleParameterAnnotations[parameter].add(an);
 		}
@@ -324,7 +324,7 @@ public class MethodNode extends MethodVisitor {
 	@Override
 	public void visitAttribute(final Attribute attr) {
 		if (attrs == null) {
-			attrs = new ArrayList<>(1);
+			attrs = new ArrayList<Attribute>(1);
 		}
 		attrs.add(attr);
 	}

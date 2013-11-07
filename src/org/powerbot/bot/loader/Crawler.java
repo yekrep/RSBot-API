@@ -24,7 +24,7 @@ public class Crawler implements Runnable {
 	public Crawler() {
 		run = new AtomicBoolean(false);
 		passed = new AtomicBoolean(false);
-		parameters = new HashMap<>();
+		parameters = new HashMap<String, String>();
 	}
 
 	public boolean crawl() {

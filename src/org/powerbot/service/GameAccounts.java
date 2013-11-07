@@ -35,10 +35,19 @@ public final class GameAccounts extends ArrayList<GameAccounts.Account> {
 
 		final Ini t = new Ini();
 
-		try (final InputStream is = store.getInputStream()) {
+		InputStream is = null;
+		try {
+			is = store.getInputStream();
 			t.read(is);
 		} catch (final IOException ignored) {
 			return;
+		} finally {
+			if (is != null) {
+				try {
+					is.close();
+				} catch (final IOException ignored) {
+				}
+			}
 		}
 
 		for (final Entry<String, Ini.Member> e : t.entrySet()) {
@@ -61,9 +70,18 @@ public final class GameAccounts extends ArrayList<GameAccounts.Account> {
 			t.get(a.toString()).put("password", a.password).put("pin", a.pin).put("member", a.member);
 		}
 
-		try (final OutputStream os = store.getOutputStream()) {
+		OutputStream os = null;
+		try {
+			os = store.getOutputStream();
 			t.write(os);
 		} catch (final IOException ignored) {
+		} finally {
+			if (os != null) {
+				try {
+					os.close();
+				} catch (final IOException ignored) {
+				}
+			}
 		}
 	}
 
