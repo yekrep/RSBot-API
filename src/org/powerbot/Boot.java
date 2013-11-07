@@ -146,7 +146,7 @@ public class Boot implements Runnable {
 
 		final ProcessBuilder pb = new ProcessBuilder(args);
 
-		if (Configuration.OS == OperatingSystem.MAC) {
+		if (Configuration.JAVA6 && Configuration.OS == OperatingSystem.MAC) {
 			final File java_home = new File("/usr/libexec/java_home");
 			if (java_home.canExecute()) {
 				try {

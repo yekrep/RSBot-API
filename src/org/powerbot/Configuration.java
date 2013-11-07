@@ -20,6 +20,8 @@ public class Configuration {
 	public static final OperatingSystem OS;
 	public static final File HOME, TEMP;
 
+	public static final boolean JAVA6 = false;
+
 	public enum OperatingSystem {
 		MAC, WINDOWS, LINUX, UNKNOWN
 	}
