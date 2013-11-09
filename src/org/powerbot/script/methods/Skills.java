@@ -98,6 +98,9 @@ public class Skills extends MethodProvider {
 		if (info != null && (skills = info.getSkills()) != null) {
 			final int[] levels = new int[skills.length];
 			for (int i = 0; i < skills.length; i++) {
+				if (skills[i] == null) {
+					return new int[0];
+				}
 				levels[i] = skills[i].getLevel();
 			}
 			return levels;
