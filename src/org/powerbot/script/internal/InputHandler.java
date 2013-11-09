@@ -7,6 +7,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -22,26 +24,44 @@ import org.powerbot.util.math.HardwareSimulator;
 public class InputHandler {
 	private final Applet applet;
 	private final Client client;
+	private final Method getVK;
 	private final Map<String, Integer> keyMap = new HashMap<String, Integer>(256);
 
 	public InputHandler(final Applet applet, final Client client) {
 		this.applet = applet;
 		this.client = client;
 
-		final String prefix = "VK_";
-		final Field[] fields = KeyEvent.class.getDeclaredFields();
-		for (Field field : fields) {
-			final String name = field.getName();
-			if (name.startsWith(prefix)) {
-				try {
-					keyMap.put(name.substring(prefix.length()).toUpperCase(), field.getInt(null));
-				} catch (final IllegalAccessException ignored) {
+		Method getVK = null;
+		try {
+			getVK = KeyEvent.class.getDeclaredMethod("getExtendedKeyCodeForChar", char.class);
+		} catch (final NoSuchMethodException ignored) {
+		}
+		this.getVK = getVK;
+
+		if (getVK == null) {
+			final String prefix = "VK_";
+			final Field[] fields = KeyEvent.class.getDeclaredFields();
+			for (Field field : fields) {
+				final String name = field.getName();
+				if (name.startsWith(prefix)) {
+					try {
+						keyMap.put(name.substring(prefix.length()).toUpperCase(), field.getInt(null));
+					} catch (final IllegalAccessException ignored) {
+					}
 				}
 			}
 		}
 	}
 
 	private int getExtendedKeyCodeForChar(final char c) {
+		if (getVK != null) {
+			try {
+				return (Integer) getVK.invoke(null, c);
+			} catch (final InvocationTargetException ignored) {
+			} catch (final IllegalAccessException ignored) {
+			}
+			return KeyEvent.VK_UNDEFINED;
+		}
 		final String s = String.valueOf(Character.toUpperCase(c));
 		return keyMap.containsKey(s) ? keyMap.get(s) : KeyEvent.VK_UNDEFINED;
 	}
