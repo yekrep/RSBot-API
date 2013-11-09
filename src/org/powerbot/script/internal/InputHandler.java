@@ -33,7 +33,7 @@ public class InputHandler {
 
 		Method getVK = null;
 		try {
-			getVK = KeyEvent.class.getDeclaredMethod("getExtendedKeyCodeForChar", char.class);
+			getVK = KeyEvent.class.getDeclaredMethod("getExtendedKeyCodeForChar", int.class);
 		} catch (final NoSuchMethodException ignored) {
 		}
 		this.getVK = getVK;
@@ -56,7 +56,7 @@ public class InputHandler {
 	private int getExtendedKeyCodeForChar(final char c) {
 		if (getVK != null) {
 			try {
-				return (Integer) getVK.invoke(null, c);
+				return (Integer) getVK.invoke(null, (int) c);
 			} catch (final InvocationTargetException ignored) {
 			} catch (final IllegalAccessException ignored) {
 			}
