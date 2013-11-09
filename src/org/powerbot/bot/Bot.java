@@ -189,7 +189,7 @@ public final class Bot implements Runnable, Stoppable {
 	public Graphics getGameBuffer() {
 		Graphics g = game.getGraphics(), b = buffer.getGraphics();
 		b.drawImage(game, 0, 0, null);
-		if (this.ctx.getClient() != null && !BotChrome.getInstance().isMinimised()) {
+		if (this.ctx.getClient() != null) {
 			paintEvent.graphics = g;
 			textPaintEvent.graphics = g;
 			textPaintEvent.id = 0;

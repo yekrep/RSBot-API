@@ -1,6 +1,5 @@
 package org.powerbot.client.input;
 
-import java.awt.AWTEvent;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
