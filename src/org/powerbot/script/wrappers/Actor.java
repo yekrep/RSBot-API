@@ -123,30 +123,31 @@ public abstract class Actor extends Interactive implements Renderable, Nameable,
 	}
 
 	public Actor getInteracting() {
+		final Actor nil = ctx.npcs.getNil();
 		final RSCharacter character = getAccessor();
 		final int index = character != null ? character.getInteracting() : -1;
 		if (index == -1) {
-			return null;
+			return nil;
 		}
 		Client client = ctx.getClient();
 		if (client == null) {
-			return null;
+			return nil;
 		}
 		if (index < 32768) {
 			final Object npcNode = ctx.game.lookup(client.getRSNPCNC(), index);
 			if (npcNode == null) {
-				return null;
+				return nil;
 			}
 			if (npcNode instanceof RSNPCNode) {
 				return new Npc(ctx, ((RSNPCNode) npcNode).getRSNPC());
 			} else if (npcNode instanceof RSNPC) {
 				return new Npc(ctx, (RSNPC) npcNode);
 			}
-			return null;
+			return nil;
 		} else {
 			final int pos = index - 32768;
 			final RSPlayer[] players = client.getRSPlayerArray();
-			return pos >= 0 && pos < players.length ? new Player(ctx, players[pos]) : null;
+			return pos >= 0 && pos < players.length ? new Player(ctx, players[pos]) : nil;
 		}
 	}
 
