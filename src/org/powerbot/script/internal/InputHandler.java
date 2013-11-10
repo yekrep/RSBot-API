@@ -38,32 +38,33 @@ public class InputHandler {
 		}
 		this.getVK = getVK;
 
-		if (getVK == null) {
-			final String prefix = "VK_";
-			final Field[] fields = KeyEvent.class.getDeclaredFields();
-			for (Field field : fields) {
-				final String name = field.getName();
-				if (name.startsWith(prefix)) {
-					try {
-						keyMap.put(name.substring(prefix.length()).toUpperCase(), field.getInt(null));
-					} catch (final IllegalAccessException ignored) {
-					}
+		final String prefix = "VK_";
+		for (final Field f : KeyEvent.class.getFields()) {
+			final int len = prefix.length();
+			if (f.getName().startsWith(prefix) && Modifier.isPublic(f.getModifiers()) &&
+					Modifier.isStatic(f.getModifiers()) && f.getType().equals(int.class) &&
+					f.getName().startsWith(prefix)) {
+				try {
+					keyMap.put(f.getName().substring(len), f.getInt(null));
+				} catch (final IllegalAccessException ignored) {
 				}
 			}
 		}
 	}
 
-	private int getExtendedKeyCodeForChar(final char c) {
-		if (getVK != null) {
+	public int getExtendedKeyCodeForChar(final char c) {
+		if ((c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9') || "\n\b\t".indexOf(c) != -1) {
+			return (int) c;
+		} else if (c >= 'a' && c <= 'z') {
+			return (int) Character.toUpperCase(c);
+		} else if (getVK != null) {
 			try {
 				return (Integer) getVK.invoke(null, (int) c);
 			} catch (final InvocationTargetException ignored) {
 			} catch (final IllegalAccessException ignored) {
 			}
-			return KeyEvent.VK_UNDEFINED;
 		}
-		final String s = String.valueOf(Character.toUpperCase(c));
-		return keyMap.containsKey(s) ? keyMap.get(s) : KeyEvent.VK_UNDEFINED;
+		return KeyEvent.VK_UNDEFINED;
 	}
 
 	public void send(final String str) {
@@ -151,10 +152,10 @@ public class InputHandler {
 
 			if (s.length() == 1) { // simple letter
 				final char c = s.charAt(0);
-				int vk = getExtendedKeyCodeForChar(c);
 				if (c == '\r') {
 					continue;
 				}
+				int vk = getExtendedKeyCodeForChar(c);
 				if (vk == KeyEvent.VK_UNDEFINED) {
 					throw new IllegalArgumentException("invalid keyChar");
 				} else {
@@ -185,38 +186,27 @@ public class InputHandler {
 					s = s.substring(prefix.length());
 				}
 				final String[] p = s.split(" ", 2);
-				s = p[0];
-				for (final Field f : KeyEvent.class.getFields()) {
-					if (f.getName().startsWith(prefix) && Modifier.isPublic(f.getModifiers()) &&
-							Modifier.isStatic(f.getModifiers()) && f.getType().equals(int.class) &&
-							f.getName().equalsIgnoreCase(prefix + s)) {
-						int vk = KeyEvent.VK_UNDEFINED;
-						try {
-							vk = f.getInt(null);
-						} catch (final Exception ignored) {
-						}
-						if (vk == KeyEvent.VK_UNDEFINED) {
-							throw new IllegalArgumentException("invalid keyString");
-						}
-						final boolean[] states = {false, false};
-						if (p.length > 1 && p[1] != null && !p[1].isEmpty()) {
-							final String p1 = p[1].trim().toLowerCase();
-							if (p1.equals("down") || p1.equals("press") || p1.equals("pressed")) {
-								states[0] = true;
-							} else if (p1.equals("up") || p1.equals("release") || p1.equals("released")) {
-								states[1] = true;
-							}
-						} else {
-							states[0] = true;
-							states[1] = true;
-						}
-						if (states[0]) {
-							queue.add(constructKeyEvent(KeyEvent.KEY_PRESSED, vk));
-						}
-						if (states[1]) {
-							queue.add(constructKeyEvent(KeyEvent.KEY_RELEASED, vk));
-						}
+				final int vk = keyMap.containsKey(p[0]) ? keyMap.get(p[0]) : KeyEvent.VK_UNDEFINED;
+				if (vk == KeyEvent.VK_UNDEFINED) {
+					throw new IllegalArgumentException("invalid keyString");
+				}
+				final boolean[] states = {false, false};
+				if (p.length > 1 && p[1] != null && !p[1].isEmpty()) {
+					final String p1 = p[1].trim().toLowerCase();
+					if (p1.equals("down") || p1.equals("press") || p1.equals("pressed")) {
+						states[0] = true;
+					} else if (p1.equals("up") || p1.equals("release") || p1.equals("released")) {
+						states[1] = true;
 					}
+				} else {
+					states[0] = true;
+					states[1] = true;
+				}
+				if (states[0]) {
+					queue.add(constructKeyEvent(KeyEvent.KEY_PRESSED, vk));
+				}
+				if (states[1]) {
+					queue.add(constructKeyEvent(KeyEvent.KEY_RELEASED, vk));
 				}
 			}
 		}
