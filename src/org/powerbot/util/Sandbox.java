@@ -44,22 +44,6 @@ public class Sandbox extends SecurityManager {
 	}
 
 	@Override
-	public void checkExec(final String cmd) {
-		if (isScriptThread()) {
-			throw new SecurityException();
-		}
-		super.checkExec(cmd);
-	}
-
-	@Override
-	public void checkExit(final int status) {
-		if (isScriptThread()) {
-			throw new SecurityException();
-		}
-		super.checkExit(status);
-	}
-
-	@Override
 	public void checkMulticast(final InetAddress maddr) {
 		throw new SecurityException();
 	}
@@ -77,14 +61,16 @@ public class Sandbox extends SecurityManager {
 		if (perm instanceof RuntimePermission) {
 			if (name.equals("setSecurityManager")) {
 				throw new SecurityException(name);
-			} else if (name.equals("modifyThreadGroup") && isScriptThread()) {
-				throw new SecurityException(name);
-			} else if (name.equals("createClassLoader") && isScriptThread()) {
+			} else if (isScriptThread() && (name.equals("modifyThreadGroup") || name.equals("createClassLoader") || name.equals("setFactory") ||
+					name.startsWith("exitVM"))) {
 				throw new SecurityException(name);
 			}
 		} else if (perm instanceof FilePermission) {
 			final FilePermission fp = (FilePermission) perm;
 			final String a = fp.getActions();
+			if (a.equals("execute") && isScriptThread()) {
+				throw new SecurityException(a + ": " + fp.getName());
+			}
 			if (isCallingClass(Desktop.class)) {
 				return;
 			}
@@ -100,14 +86,6 @@ public class Sandbox extends SecurityManager {
 	@Override
 	public void checkPrintJobAccess() {
 		throw new SecurityException();
-	}
-
-	@Override
-	public void checkSetFactory() {
-		if (isScriptThread()) {
-			throw new SecurityException();
-		}
-		super.checkSetFactory();
 	}
 
 	@Override
