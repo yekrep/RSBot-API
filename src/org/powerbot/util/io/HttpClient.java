@@ -58,6 +58,7 @@ public class HttpClient {
 	public static HttpURLConnection getHttpConnection(final URL url) throws IOException {
 		final HttpURLConnection con = (HttpURLConnection) url.openConnection();
 		con.addRequestProperty("Host", url.getHost());
+		con.addRequestProperty("Connection", "close");
 		con.addRequestProperty("User-Agent", HTTP_USERAGENT_REAL);
 		con.addRequestProperty("Accept-Encoding", "gzip, deflate");
 		con.addRequestProperty("Accept-Charset", "ISO-8859-1,UTF-8;q=0.7,*;q=0.7");
@@ -69,7 +70,6 @@ public class HttpClient {
 
 	public static HttpURLConnection download(final URL url, final File file) throws IOException {
 		final HttpURLConnection con = getHttpConnection(url);
-		con.addRequestProperty("Connection", "close");
 
 		if (file.exists()) {
 			try {
