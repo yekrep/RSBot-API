@@ -20,7 +20,6 @@ import org.powerbot.event.PaintEvent;
 import org.powerbot.event.TextPaintEvent;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.script.internal.InputHandler;
-import org.powerbot.script.internal.MouseHandler;
 import org.powerbot.script.internal.ScriptController;
 import org.powerbot.script.lang.Stoppable;
 import org.powerbot.script.methods.Game;

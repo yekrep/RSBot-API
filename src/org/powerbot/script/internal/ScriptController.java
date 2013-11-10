@@ -2,7 +2,6 @@ package org.powerbot.script.internal;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.concurrent.BlockingDeque;
@@ -11,28 +10,22 @@ import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 
 import javax.swing.Timer;
 
-import org.powerbot.Configuration;
 import org.powerbot.event.EventMulticaster;
 import org.powerbot.script.Script;
 import org.powerbot.script.internal.scripts.Antipattern;
 import org.powerbot.script.internal.scripts.BankPin;
-import org.powerbot.script.internal.scripts.Break;
 import org.powerbot.script.internal.scripts.Login;
 import org.powerbot.script.internal.scripts.TicketDestroy;
 import org.powerbot.script.internal.scripts.WidgetCloser;
-import org.powerbot.script.lang.Stoppable;
-import org.powerbot.script.lang.Suspendable;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.service.NetworkAccount;
 import org.powerbot.service.scripts.ScriptBundle;
 import org.powerbot.service.scripts.ScriptDefinition;
 import org.powerbot.util.Tracker;
-import org.powerbot.util.io.HttpClient;
 
 public final class ScriptController implements Runnable, Script.Controller {
 	private final MethodContext ctx;

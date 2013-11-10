@@ -4,7 +4,6 @@ import java.applet.Applet;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.security.GeneralSecurityException;
@@ -20,7 +19,6 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
 import org.powerbot.Configuration;
-import org.powerbot.bot.Bot;
 import org.powerbot.bot.loader.transform.TransformSpec;
 import org.powerbot.util.StringUtil;
 import org.powerbot.util.Tracker;

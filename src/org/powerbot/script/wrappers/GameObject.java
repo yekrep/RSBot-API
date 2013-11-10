@@ -5,7 +5,6 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.lang.ref.WeakReference;
 
-import org.powerbot.bot.AbstractCallback;
 import org.powerbot.client.AbstractModel;
 import org.powerbot.client.Cache;
 import org.powerbot.client.Client;

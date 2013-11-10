@@ -1,7 +1,6 @@
 package org.powerbot.service.scripts;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -24,7 +23,6 @@ import javax.swing.JOptionPane;
 import org.powerbot.Configuration;
 import org.powerbot.bot.Bot;
 import org.powerbot.gui.BotChrome;
-import org.powerbot.gui.component.BotLocale;
 import org.powerbot.script.Manifest;
 import org.powerbot.script.Script;
 import org.powerbot.script.internal.InternalScript;
@@ -33,7 +31,6 @@ import org.powerbot.service.NetworkAccount;
 import org.powerbot.util.Ini;
 import org.powerbot.util.StringUtil;
 import org.powerbot.util.io.CryptFile;
-import org.powerbot.util.io.HttpClient;
 
 /**
  * @author Paris
