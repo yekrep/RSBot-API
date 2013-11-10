@@ -144,6 +144,7 @@ public class ScriptList {
 		if (!NetworkAccount.getInstance().isLoggedIn()) {
 			return;
 		}
+
 		CryptFile cache = null;
 		final ClassLoader cl;
 		if (def.local) {
@@ -173,6 +174,7 @@ public class ScriptList {
 				return;
 			}
 		}
+
 		final Script script;
 		try {
 			script = cl.loadClass(def.className).asSubclass(Script.class).newInstance();
@@ -186,40 +188,37 @@ public class ScriptList {
 			}
 			return;
 		}
+
 		final Bot bot = BotChrome.getInstance().getBot();
 		if (username != null) {
 			bot.setAccount(GameAccounts.getInstance().get(username));
 		}
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				log.info("Starting script: " + def.getName());
-				int hours = 0;
-				String msg = null;
 
-				if (def.local) {
-					final boolean dev = NetworkAccount.getInstance().hasPermission(NetworkAccount.DEVELOPER);
-					hours = dev ? 3 : 1;
-					if (!dev) {
-						msg = "Apply for a developer account for extended time.";
-					}
-				} else if (!def.assigned && !NetworkAccount.getInstance().hasPermission(NetworkAccount.VIP)) {
-					hours = 2;
-					msg = "VIP subscribers and Premium scripts have no time limits.";
-				}
+		log.info("Starting script: " + def.getName());
+		int hours = 0;
+		String msg = null;
 
-				if (hours != 0) {
-					msg = "The script will automatically stop after " + hours + " hour" + (hours == 1 ? "" : "s") + "." +
-							(msg == null || msg.isEmpty() ? "" : "\n" + msg);
-					log.warning(msg.replace('\n', ' '));
-					if (!def.local && JOptionPane.showConfirmDialog(BotChrome.getInstance(), msg, "", JOptionPane.OK_CANCEL_OPTION,
-							JOptionPane.PLAIN_MESSAGE) != JOptionPane.OK_OPTION) {
-						return;
-					}
-				}
-
-				bot.startScript(new ScriptBundle(def, script), hours == 0 ? 0 : (int) TimeUnit.HOURS.toMillis(hours));
+		if (def.local) {
+			final boolean dev = NetworkAccount.getInstance().hasPermission(NetworkAccount.DEVELOPER);
+			hours = dev ? 3 : 1;
+			if (!dev) {
+				msg = "Apply for a developer account for extended time.";
 			}
-		}).start();
+		} else if (!def.assigned && !NetworkAccount.getInstance().hasPermission(NetworkAccount.VIP)) {
+			hours = 2;
+			msg = "VIP subscribers and Premium scripts have no time limits.";
+		}
+
+		if (hours != 0) {
+			msg = "The script will automatically stop after " + hours + " hour" + (hours == 1 ? "" : "s") + "." +
+					(msg == null || msg.isEmpty() ? "" : "\n" + msg);
+			log.warning(msg.replace('\n', ' '));
+			if (!def.local && JOptionPane.showConfirmDialog(BotChrome.getInstance(), msg, "", JOptionPane.OK_CANCEL_OPTION,
+					JOptionPane.PLAIN_MESSAGE) != JOptionPane.OK_OPTION) {
+				return;
+			}
+		}
+
+		bot.startScript(new ScriptBundle(def, script), hours == 0 ? 0 : (int) TimeUnit.HOURS.toMillis(hours));
 	}
 }

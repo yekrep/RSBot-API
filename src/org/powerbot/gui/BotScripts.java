@@ -451,7 +451,12 @@ public final class BotScripts extends JDialog implements ActionListener {
 				public void actionPerformed(final ActionEvent e) {
 					setVisible(false);
 					dispose();
-					ScriptList.load(def, username.getText());
+					new Thread(new Runnable() {
+						@Override
+						public void run() {
+							ScriptList.load(def, username.getText());
+						}
+					}).start();
 				}
 			});
 			act.setFont(act.getFont().deriveFont(Font.BOLD, act.getFont().getSize2D()));
