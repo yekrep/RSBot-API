@@ -41,7 +41,7 @@ public final class ScriptController implements Runnable, Script.Controller {
 	private final ExecutorService executor;
 	private final Queue<Script> scripts;
 	private final ScriptDefinition def;
-	private final AtomicBoolean suspended, stopping;
+	private final AtomicBoolean started, suspended, stopping;
 	private final Timer timeout, login;
 	private final AtomicReference<String> auth;
 
@@ -50,6 +50,7 @@ public final class ScriptController implements Runnable, Script.Controller {
 	public ScriptController(final MethodContext ctx, final EventMulticaster multicaster, final ScriptBundle bundle, final int timeout) {
 		this.ctx = ctx;
 		events = new EventManager(multicaster);
+		started = new AtomicBoolean(false);
 		suspended = new AtomicBoolean(false);
 		stopping = new AtomicBoolean(false);
 
@@ -113,6 +114,10 @@ public final class ScriptController implements Runnable, Script.Controller {
 	 */
 	@Override
 	public void run() {
+		if (!started.compareAndSet(false, true)) {
+			return;
+		}
+
 		for (final Script s : scripts) {
 			s.setController(this);
 			s.setContext(ctx);
