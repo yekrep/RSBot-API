@@ -44,6 +44,16 @@ public class Sandbox extends SecurityManager {
 	}
 
 	@Override
+	public void checkCreateClassLoader() {
+		if (isScriptThread() && !isCallingClass(javax.swing.UIDefaults.class, java.io.ObjectOutputStream.class, java.io.ObjectInputStream.class,
+				java.lang.reflect.Proxy.class)) {
+			log.severe("Creating class loader denied");
+			throw new SecurityException();
+		}
+		super.checkCreateClassLoader();
+	}
+
+	@Override
 	public void checkExec(final String cmd) {
 		if (isScriptThread()) {
 			throw new SecurityException();
@@ -78,8 +88,6 @@ public class Sandbox extends SecurityManager {
 			if (name.equals("setSecurityManager")) {
 				throw new SecurityException(name);
 			} else if (name.equals("modifyThreadGroup") && isScriptThread()) {
-				throw new SecurityException(name);
-			} else if (name.equals("createClassLoader") && isScriptThread()) {
 				throw new SecurityException(name);
 			}
 		} else if (perm instanceof FilePermission) {
