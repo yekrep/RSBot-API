@@ -95,7 +95,7 @@ public class BotMenuBar extends JMenuBar implements ActionListener {
 			public void menuSelected(final MenuEvent e) {
 				final ScriptController controller = BotChrome.getInstance().getBot().getScriptController();
 				final boolean active = controller != null && !controller.isStopping(), running = active && !controller.isSuspended();
-				play.setEnabled(BotChrome.getInstance().getBot().getMethodContext().getClient() != null);
+				play.setEnabled(BotChrome.getInstance().getBot().getMethodContext().getClient() != null && !BotScripts.loading.get());
 				play.setText(running ? BotLocale.PAUSESCRIPT : active ? BotLocale.RESUMESCRIPT : BotLocale.PLAYSCRIPT);
 				play.setIcon(playIcons[running ? 1 : 0]);
 				stop.setEnabled(running);
