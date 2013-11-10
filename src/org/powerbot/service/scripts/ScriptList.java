@@ -107,7 +107,7 @@ public class ScriptList {
 				getLocalList(list, parent, file);
 			} else if (file.isFile()) {
 				final String name = file.getName();
-				if (name.endsWith(".class") && name.indexOf('$') == -1 && !isZKMClassFile(file)) {
+				if (name.endsWith(".class") && name.indexOf('$') == -1) {
 					try {
 						final URL src = parent.getCanonicalFile().toURI().toURL();
 						@SuppressWarnings("resource")
@@ -221,41 +221,5 @@ public class ScriptList {
 				bot.startScript(new ScriptBundle(def, script), hours == 0 ? 0 : (int) TimeUnit.HOURS.toMillis(hours));
 			}
 		}).start();
-	}
-
-	private static boolean isZKMClassFile(final File file) {
-		if (file.getName().length() < 9) {
-			return true;
-		}
-
-		final byte[] data = new byte[512];
-		FileInputStream fis = null;
-		try {
-			fis = new FileInputStream(file);
-			fis.read(data);
-		} catch (final IOException ignored) {
-		} finally {
-			if (fis != null) {
-				try {
-					fis.close();
-				} catch (final IOException ignored) {
-				}
-			}
-		}
-
-		if (data == null || data.length < 12) {
-			return true;
-		}
-		if (data[7] != 0x33) {
-			return true;
-		}
-
-		for (int i = 11; i < data.length - 2; ) {
-			if (data[i++] == 0x5a && data[i++] == 0x4b && data[i++] == 0x4d) {
-				return true;
-			}
-		}
-
-		return false;
 	}
 }
