@@ -46,7 +46,7 @@ public final class HeteroMouse implements MouseSimulator {
 		return (0xff - (z % 0xff)) << 16;
 	}
 
-	private Queue<Vector3> getParabola(final Vector3 a, Vector3 b) {
+	private Queue<Vector3> getParabola(final Vector3 a, final Vector3 b) {
 		final Queue<Vector3> l0 = new ArrayDeque<Vector3>();
 
 		final double d = a.get2DDistanceTo(b);
@@ -74,7 +74,7 @@ public final class HeteroMouse implements MouseSimulator {
 		final int z = (int) Math.log(d) << 2;
 
 		for (int i = 1; i <= z; i++) {
-			float t = 1.0f / z * (float) i;
+			final float t = 1.0f / z * (float) i;
 			q[1] = bezier(t, p);
 			q[0].z = Math.abs(q[0].z % 0xff);
 			q[1].z = Math.abs(q[1].z % 0xff);

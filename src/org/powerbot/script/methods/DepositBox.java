@@ -25,7 +25,7 @@ public class DepositBox extends ItemQuery<Item> {
 	public static final int COMPONENT_BUTTON_DEPOSIT_FAMILIAR = 23;
 	public static final int COMPONENT_BUTTON_DEPOSIT_POUCH = 19;
 
-	public DepositBox(MethodContext factory) {
+	public DepositBox(final MethodContext factory) {
 		super(factory);//TODO: document class
 	}
 
@@ -49,11 +49,11 @@ public class DepositBox extends ItemQuery<Item> {
 		return isOpen();
 	}
 
-	public boolean close(boolean wait) {
+	public boolean close(final boolean wait) {
 		if (!isOpen()) {
 			return true;
 		}
-		Component c = ctx.widgets.get(WIDGET, COMPONENT_BUTTON_CLOSE);
+		final Component c = ctx.widgets.get(WIDGET, COMPONENT_BUTTON_CLOSE);
 		if (c.interact("Close")) {
 			if (wait) {
 				Condition.wait(new Callable<Boolean>() {
@@ -78,7 +78,7 @@ public class DepositBox extends ItemQuery<Item> {
 			return new ArrayList<Item>();
 		}
 		final Component[] components = c.getChildren();
-		List<Item> items = new ArrayList<Item>(components.length);
+		final List<Item> items = new ArrayList<Item>(components.length);
 		for (final Component i : components) {
 			if (i.getItemId() != -1) {
 				items.add(new Item(ctx, i));

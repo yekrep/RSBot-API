@@ -18,7 +18,7 @@ import org.powerbot.script.wrappers.Player;
  * @author Timer
  */
 public class Players extends PlayerQuery<Player> {
-	public Players(MethodContext factory) {
+	public Players(final MethodContext factory) {
 		super(factory);
 	}
 
@@ -41,7 +41,7 @@ public class Players extends PlayerQuery<Player> {
 	protected List<Player> get() {
 		final List<Player> items = new ArrayList<Player>();
 
-		Client client = ctx.getClient();
+		final Client client = ctx.getClient();
 		if (client == null) {
 			return items;
 		}

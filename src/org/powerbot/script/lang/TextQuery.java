@@ -15,7 +15,7 @@ public abstract class TextQuery<K extends Textable> extends AbstractQuery<TextQu
 	}
 
 	@Override
-	public TextQuery<K> text(String... texts) {
+	public TextQuery<K> text(final String... texts) {
 		return select(new Textable.Matcher(texts));
 	}
 }

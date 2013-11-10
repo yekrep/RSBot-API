@@ -163,7 +163,7 @@ public class InputHandler {
 				if (c == '\r') {
 					continue;
 				}
-				int vk = getExtendedKeyCodeForChar(c);
+				final int vk = getExtendedKeyCodeForChar(c);
 				if (vk == KeyEvent.VK_UNDEFINED) {
 					throw new IllegalArgumentException("invalid keyChar");
 				} else {
@@ -237,7 +237,7 @@ public class InputHandler {
 		queue.add(constructKeyEvent(KeyEvent.KEY_RELEASED, vk, c1));
 	}
 
-	public KeyEvent constructKeyEvent(final int id, int vk) {
+	public KeyEvent constructKeyEvent(final int id, final int vk) {
 		return constructKeyEvent(id, vk, KeyEvent.CHAR_UNDEFINED);
 	}
 

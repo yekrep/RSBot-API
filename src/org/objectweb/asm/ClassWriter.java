@@ -1210,7 +1210,7 @@ public class ClassWriter extends ClassVisitor {
 			break;
 		}
 
-		int bootstrapMethodIndex;
+		final int bootstrapMethodIndex;
 		if (result != null) {
 			bootstrapMethodIndex = result.index;
 			bootstrapMethods.length = position; // revert to old position
@@ -1560,7 +1560,8 @@ public class ClassWriter extends ClassVisitor {
 	 *         classes.
 	 */
 	protected String getCommonSuperClass(final String type1, final String type2) {
-		Class<?> c, d;
+		Class<?> c;
+		final Class<?> d;
 		final ClassLoader classLoader = getClass().getClassLoader();
 		try {
 			c = Class.forName(type1.replace('/', '.'), false, classLoader);

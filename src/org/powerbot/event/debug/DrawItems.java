@@ -15,7 +15,7 @@ import org.powerbot.script.wrappers.Item;
 
 public class DrawItems implements PaintListener {
 	public void repaint(final Graphics render) {
-		MethodContext ctx = BotChrome.getInstance().getBot().getMethodContext();
+		final MethodContext ctx = BotChrome.getInstance().getBot().getMethodContext();
 		if (!ctx.game.isLoggedIn()) {
 			return;
 		}
@@ -24,47 +24,47 @@ public class DrawItems implements PaintListener {
 		render.setColor(Color.green);
 
 		if (ctx.bank.isOpen()) {
-			Component container = ctx.widgets.get(Bank.WIDGET, Bank.COMPONENT_CONTAINER_ITEMS);
-			Rectangle r = container.getViewportRect();
+			final Component container = ctx.widgets.get(Bank.WIDGET, Bank.COMPONENT_CONTAINER_ITEMS);
+			final Rectangle r = container.getViewportRect();
 			if (r != null) {
-				for (Item item : ctx.bank.select()) {
-					Component c = item.getComponent();
+				for (final Item item : ctx.bank.select()) {
+					final Component c = item.getComponent();
 					if (c == null) {
 						continue;
 					}
-					Rectangle r2 = c.getBoundingRect();
+					final Rectangle r2 = c.getBoundingRect();
 					if (r2 == null) {
 						continue;
 					}
 					if (c.getRelativeLocation().y == 0 || !r.contains(r2)) {
 						continue;
 					}
-					Point p = c.getAbsoluteLocation();
+					final Point p = c.getAbsoluteLocation();
 					render.drawString(c.getItemId() + "", p.x, p.y + c.getHeight());
 				}
 			}
 		}
 
 		if (ctx.backpack.getComponent().isVisible()) {
-			for (Item item : ctx.backpack.select()) {
-				Component c = item.getComponent();
+			for (final Item item : ctx.backpack.select()) {
+				final Component c = item.getComponent();
 				if (c == null) {
 					continue;
 				}
-				Point p = c.getAbsoluteLocation();
+				final Point p = c.getAbsoluteLocation();
 				render.drawString(c.getItemId() + "", p.x, p.y + c.getHeight());
 			}
 		}
 		if (ctx.equipment.getComponent().isVisible()) {
-			for (Item item : ctx.equipment.select()) {
+			for (final Item item : ctx.equipment.select()) {
 				if (item == null) {
 					continue;
 				}
-				Component c = item.getComponent();
+				final Component c = item.getComponent();
 				if (c == null) {
 					continue;
 				}
-				Point p = c.getAbsoluteLocation();
+				final Point p = c.getAbsoluteLocation();
 				render.drawString(c.getItemId() + "", p.x, p.y + c.getHeight());
 			}
 		}

@@ -13,7 +13,7 @@ public class TilePath extends Path {//TODO: anti-pattern
 	private boolean end;
 	private Tile last;
 
-	public TilePath(MethodContext ctx, final Tile[] tiles) {
+	public TilePath(final MethodContext ctx, final Tile[] tiles) {
 		super(ctx);
 		orig = tiles;
 		this.tiles = Arrays.copyOf(tiles, tiles.length);
@@ -61,12 +61,12 @@ public class TilePath extends Path {//TODO: anti-pattern
 	public Tile getNext() {
 		/* Do not return a tile to walk to while the map is loading.
 		 * This prevents random tile clicking. */
-		int state = ctx.game.getClientState();
+		final int state = ctx.game.getClientState();
 		if (state != Game.INDEX_MAP_LOADED) {
 			return null;
 		}
 		/* Get current destination */
-		Tile dest = ctx.movement.getDestination();
+		final Tile dest = ctx.movement.getDestination();
 		/* Label main loop for continuing purposes */
 		out:
 		/* Iterate over all tiles but the first tile (0) starting with the last (length - 1). */
@@ -105,7 +105,7 @@ public class TilePath extends Path {//TODO: anti-pattern
 		 * we can safely assume lag is being experienced and return null until next call of getNext.
 		 * TELEPORTATION SUPPORT: If destination is set but but we're not moving, assume
 		 * invalid destination tile from teleportation reset and return first tile. */
-		Player p = ctx.players.local();
+		final Player p = ctx.players.local();
 		if (p != null && !p.isInMotion() && dest != Tile.NIL) {
 			for (int i = tiles.length - 1; i >= 0; --i) {
 				if (tiles[i].getMatrix(ctx).isOnMap()) {

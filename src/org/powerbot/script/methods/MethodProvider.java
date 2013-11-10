@@ -5,7 +5,7 @@ import org.powerbot.script.util.Random;
 public class MethodProvider {
 	public MethodContext ctx;
 
-	public MethodProvider(MethodContext factory) {
+	public MethodProvider(final MethodContext factory) {
 		this.ctx = factory;
 	}
 

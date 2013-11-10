@@ -721,7 +721,7 @@ public class Type {
 		Class<?> d = c;
 		while (true) {
 			if (d.isPrimitive()) {
-				char car;
+				final char car;
 				if (d == Integer.TYPE) {
 					car = 'I';
 				} else if (d == Void.TYPE) {

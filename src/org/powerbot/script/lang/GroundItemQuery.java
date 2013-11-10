@@ -23,7 +23,7 @@ public abstract class GroundItemQuery<K extends Locatable & Identifiable & Namea
 	 * {@inheritDoc}
 	 */
 	@Override
-	public GroundItemQuery<K> at(Locatable l) {
+	public GroundItemQuery<K> at(final Locatable l) {
 		return select(new Locatable.Matcher(l));
 	}
 
@@ -31,7 +31,7 @@ public abstract class GroundItemQuery<K extends Locatable & Identifiable & Namea
 	 * {@inheritDoc}
 	 */
 	@Override
-	public GroundItemQuery<K> within(double distance) {
+	public GroundItemQuery<K> within(final double distance) {
 		return within(ctx.players.local(), distance);
 	}
 
@@ -39,7 +39,7 @@ public abstract class GroundItemQuery<K extends Locatable & Identifiable & Namea
 	 * {@inheritDoc}
 	 */
 	@Override
-	public GroundItemQuery<K> within(Locatable target, double distance) {
+	public GroundItemQuery<K> within(final Locatable target, final double distance) {
 		return select(new Locatable.WithinRange(target, distance));
 	}
 
@@ -47,7 +47,7 @@ public abstract class GroundItemQuery<K extends Locatable & Identifiable & Namea
 	 * {@inheritDoc}
 	 */
 	@Override
-	public GroundItemQuery<K> within(Area area) {
+	public GroundItemQuery<K> within(final Area area) {
 		return select(new Locatable.WithinArea(area));
 	}
 
@@ -64,7 +64,7 @@ public abstract class GroundItemQuery<K extends Locatable & Identifiable & Namea
 	 * {@inheritDoc}
 	 */
 	@Override
-	public GroundItemQuery<K> nearest(Locatable target) {
+	public GroundItemQuery<K> nearest(final Locatable target) {
 		return sort(new Locatable.NearestTo(target));
 	}
 
@@ -72,7 +72,7 @@ public abstract class GroundItemQuery<K extends Locatable & Identifiable & Namea
 	 * {@inheritDoc}
 	 */
 	@Override
-	public GroundItemQuery<K> id(int... ids) {
+	public GroundItemQuery<K> id(final int... ids) {
 		return select(new Identifiable.Matcher(ids));
 	}
 
@@ -103,7 +103,7 @@ public abstract class GroundItemQuery<K extends Locatable & Identifiable & Namea
 	 * {@inheritDoc}
 	 */
 	@Override
-	public GroundItemQuery<K> id(Identifiable... identifiables) {
+	public GroundItemQuery<K> id(final Identifiable... identifiables) {
 		return select(new Identifiable.Matcher(identifiables));
 	}
 
@@ -111,7 +111,7 @@ public abstract class GroundItemQuery<K extends Locatable & Identifiable & Namea
 	 * {@inheritDoc}
 	 */
 	@Override
-	public GroundItemQuery<K> name(String... names) {
+	public GroundItemQuery<K> name(final String... names) {
 		return select(new Nameable.Matcher(names));
 	}
 
@@ -119,7 +119,7 @@ public abstract class GroundItemQuery<K extends Locatable & Identifiable & Namea
 	 * {@inheritDoc}
 	 */
 	@Override
-	public GroundItemQuery<K> name(Nameable... names) {
+	public GroundItemQuery<K> name(final Nameable... names) {
 		return select(new Nameable.Matcher(names));
 	}
 
@@ -129,12 +129,12 @@ public abstract class GroundItemQuery<K extends Locatable & Identifiable & Namea
 	}
 
 	@Override
-	public int count(boolean stacks) {
+	public int count(final boolean stacks) {
 		if (!stacks) {
 			return count();
 		}
 		int count = 0;
-		for (Stackable stackable : this) {
+		for (final Stackable stackable : this) {
 			count += stackable.getStackSize();
 		}
 		return count;

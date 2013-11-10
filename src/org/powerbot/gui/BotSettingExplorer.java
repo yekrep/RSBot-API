@@ -64,7 +64,7 @@ public class BotSettingExplorer extends JFrame {
 
 	public static void display() {
 		final BotSettingExplorer settingExplorer = getInstance();
-		boolean visible = settingExplorer.isVisible();
+		final boolean visible = settingExplorer.isVisible();
 		if (visible) {
 			settingExplorer.clean();
 		}
@@ -166,7 +166,7 @@ public class BotSettingExplorer extends JFrame {
 		settingsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		settingsList.addListSelectionListener(new ListSelectionListener() {
 			@SuppressWarnings("unchecked")
-			public void valueChanged(ListSelectionEvent e) {
+			public void valueChanged(final ListSelectionEvent e) {
 				if (!e.getValueIsAdjusting()) {
 					current = ((JList) e.getSource()).getSelectedIndex();
 					if (current >= 0) {
@@ -226,7 +226,7 @@ public class BotSettingExplorer extends JFrame {
 		});
 		gotoField.addFocusListener(new FocusAdapter() {
 			public void focusGained(final FocusEvent e) {
-				String curText = gotoField.getText();
+				final String curText = gotoField.getText();
 				if (curText.equals("Goto...") || curText.equals("Invalid")) {
 					gotoField.setText("");
 				}
@@ -244,7 +244,7 @@ public class BotSettingExplorer extends JFrame {
 		final JButton pauseButton = new JButton("Pause");
 		pauseButton.setPreferredSize(new Dimension(160, 25));
 		pauseButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(final ActionEvent e) {
 				paused = !paused;
 				pauseButton.setText(paused ? "Resume" : "Pause");
 			}

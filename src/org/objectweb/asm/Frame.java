@@ -613,7 +613,7 @@ final class Frame {
 	 * @return the int encoding of the given type.
 	 */
 	private static int type(final ClassWriter cw, final String desc) {
-		String t;
+		final String t;
 		final int index = desc.charAt(0) == '(' ? desc.indexOf(')') + 1 : 0;
 		switch (desc.charAt(index)) {
 		case 'V':
@@ -637,7 +637,7 @@ final class Frame {
 		// case '[':
 		default:
 			// extracts the dimensions and the element type
-			int data;
+			final int data;
 			int dims = index + 1;
 			while (desc.charAt(dims) == '[') {
 				++dims;
@@ -757,7 +757,7 @@ final class Frame {
 	 *         in the basic block, the type corresponding to this constructor.
 	 */
 	private int init(final ClassWriter cw, final int t) {
-		int s;
+		final int s;
 		if (t == UNINITIALIZED_THIS) {
 			s = OBJECT | cw.addType(cw.thisName);
 		} else if ((t & (DIM | BASE_KIND)) == UNINITIALIZED) {
@@ -831,7 +831,10 @@ final class Frame {
 			final int arg,
 			final ClassWriter cw,
 			final Item item) {
-		int t1, t2, t3, t4;
+		final int t1;
+		final int t2;
+		final int t3;
+		final int t4;
 		switch (opcode) {
 		case Opcodes.NOP:
 		case Opcodes.INEG:
@@ -1387,7 +1390,7 @@ final class Frame {
 			types[index] = t;
 			return true;
 		}
-		int v;
+		final int v;
 		if ((u & BASE_KIND) == OBJECT || (u & DIM) != 0) {
 			// if u is a reference type of any dimension
 			if (t == NULL) {

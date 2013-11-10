@@ -14,7 +14,7 @@ import org.powerbot.script.wrappers.HintArrow;
  * @author Timer
  */
 public class HintArrows extends HintArrowQuery<HintArrow> {
-	public HintArrows(MethodContext factory) {
+	public HintArrows(final MethodContext factory) {
 		super(factory);
 	}
 
@@ -25,7 +25,7 @@ public class HintArrows extends HintArrowQuery<HintArrow> {
 	protected List<HintArrow> get() {
 		final List<HintArrow> items = new ArrayList<HintArrow>();
 
-		Client client = ctx.getClient();
+		final Client client = ctx.getClient();
 		if (client == null) {
 			return items;
 		}

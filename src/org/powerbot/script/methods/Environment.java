@@ -3,7 +3,7 @@ package org.powerbot.script.methods;
 import org.powerbot.service.NetworkAccount;
 
 public class Environment extends MethodProvider {
-	public Environment(MethodContext factory) {
+	public Environment(final MethodContext factory) {
 		super(factory);
 	}
 

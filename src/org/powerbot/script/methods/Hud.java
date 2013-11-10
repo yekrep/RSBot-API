@@ -20,7 +20,7 @@ public class Hud extends MethodProvider {
 	private Rectangle[] boundsCache;
 	private long cachedTime;
 
-	public Hud(MethodContext factory) {
+	public Hud(final MethodContext factory) {
 		super(factory);
 	}
 
@@ -43,7 +43,7 @@ public class Hud extends MethodProvider {
 		private final int texture;
 		private final Window[] windows;
 
-		Menu(int texture, Window... windows) {
+		Menu(final int texture, final Window... windows) {
 			this.texture = texture;
 			this.windows = windows;
 		}
@@ -94,11 +94,11 @@ public class Hud extends MethodProvider {
 		private final int widget;
 		private final int component;
 
-		Window(Menu menu, int texture, int miniTexture, int widget) {
+		Window(final Menu menu, final int texture, final int miniTexture, final int widget) {
 			this(menu, texture, miniTexture, widget, 0);
 		}
 
-		Window(Menu menu, int texture, int miniTexture, int widget, int component) {
+		Window(final Menu menu, final int texture, final int miniTexture, final int widget, final int component) {
 			this.menu = menu;
 			this.texture = texture;
 			this.miniTexture = miniTexture;
@@ -138,25 +138,25 @@ public class Hud extends MethodProvider {
 				return boundsCache;
 			}
 		}
-		Rectangle[] arr = new Rectangle[Window.values().length + 3];
+		final Rectangle[] arr = new Rectangle[Window.values().length + 3];
 		int index = 0;
 		arr[index++] = ctx.widgets.get(WIDGET_MENU, WIDGET_MENU_BOUNDS).getViewportRect();//TODO: auto detect
 		arr[index++] = ctx.widgets.get(CombatBar.WIDGET, CombatBar.COMPONENT_BOUNDS).getViewportRect();
-		Component c = ctx.widgets.get(1484, 1);//subscribe
+		final Component c = ctx.widgets.get(1484, 1);//subscribe
 		if (c.isVisible()) {
-			Rectangle r = c.getViewportRect();
+			final Rectangle r = c.getViewportRect();
 			r.grow(5, 5);
 			arr[index++] = r;
 		}
-		for (Window window : Window.values()) {
-			Component sprite = getSprite(window);
+		for (final Window window : Window.values()) {
+			final Component sprite = getSprite(window);
 			if (sprite == null) {
 				continue;
 			}
 			arr[index++] = sprite.getParent().getViewportRect();
 		}
 		cachedTime = System.nanoTime();
-		for (Rectangle r : arr) {
+		for (final Rectangle r : arr) {
 			if (r == null) {
 				break;
 			}
@@ -173,7 +173,7 @@ public class Hud extends MethodProvider {
 	 * @param window the {@link Window} to check if open
 	 * @return <tt>true</tt> if the window is open; otherwise <tt>false</tt>
 	 */
-	public boolean isOpen(Window window) {
+	public boolean isOpen(final Window window) {
 		return isVisible(window) || getTab(window) != null;
 	}
 
@@ -184,7 +184,7 @@ public class Hud extends MethodProvider {
 	 * @param window the {@link Window} to check if visible
 	 * @return <tt>true</tt> if the window is visible; otherwise <tt>false</tt>
 	 */
-	public boolean isVisible(Window window) {
+	public boolean isVisible(final Window window) {
 		return ctx.widgets.get(window.getWidget(), window.getComponent()).isVisible();
 	}
 
@@ -195,16 +195,16 @@ public class Hud extends MethodProvider {
 	 * @param window the {@link Window} desired to be opened
 	 * @return <tt>true</tt> if the window was opened or is already open; otherwise <tt>false</tt>
 	 */
-	public boolean open(Window window) {
+	public boolean open(final Window window) {
 		if (isViewable(window) || window.getMenu() == Menu.NONE) {
 			return true;
 		}
 		if (window.getMenu() == Menu.OTHER) {
 			return false;
 		}
-		Component menu = getMenu(window.getMenu());
+		final Component menu = getMenu(window.getMenu());
 		if (menu != null && (getToggle(window) != null || menu.hover())) {
-			Component list = ctx.widgets.get(WIDGET_MENU_WINDOWS, COMPONENT_MENU_WINDOWS_LIST);
+			final Component list = ctx.widgets.get(WIDGET_MENU_WINDOWS, COMPONENT_MENU_WINDOWS_LIST);
 			for (int i = 0; i < 20; i++) {
 				if (list.isVisible()) {
 					break;
@@ -212,7 +212,7 @@ public class Hud extends MethodProvider {
 				sleep(50, 150);
 			}
 			sleep(300, 700);
-			Component toggle = getToggle(window);
+			final Component toggle = getToggle(window);
 			if (toggle != null && toggle.hover()) {
 				if (toggle.isVisible() && ctx.mouse.click(true)) {
 					for (int i = 0; i < 20; i++) {
@@ -235,12 +235,12 @@ public class Hud extends MethodProvider {
 	 * @param window the {@link Window} desired to be visible
 	 * @return <tt>true</tt> if the {@link Window} is visible; otherwise <tt>false</tt>
 	 */
-	public boolean view(Window window) {
+	public boolean view(final Window window) {
 		if (isVisible(window)) {
 			return true;
 		}
 		if (open(window) && !isVisible(window)) {
-			Component tab = getTab(window);
+			final Component tab = getTab(window);
 			if (tab != null && tab.click()) {
 				for (int i = 0; i < 20; i++) {
 					if (isVisible(window)) {
@@ -259,7 +259,7 @@ public class Hud extends MethodProvider {
 	 * @param window the {@link Window} to be closed
 	 * @return <tt>true</tt> if the {@link Window} was closed; otherwise <tt>false</tt>
 	 */
-	public boolean close(Window window) {
+	public boolean close(final Window window) {
 		if (window.getMenu() == Menu.NONE) {
 			return false;
 		}
@@ -267,7 +267,7 @@ public class Hud extends MethodProvider {
 			return true;
 		}
 		if (view(window)) {
-			Component sprite = getSprite(window);
+			final Component sprite = getSprite(window);
 			if (sprite != null && sprite.getWidget().getComponent(sprite.getParent().getIndex() + 1).getChild(1).interact("Close")) {
 				for (int i = 0; i < 20; i++) {
 					if (!isOpen(window)) {
@@ -280,17 +280,17 @@ public class Hud extends MethodProvider {
 		return !isOpen(window);
 	}
 
-	private boolean isViewable(Window window) {
+	private boolean isViewable(final Window window) {
 		if (!isOpen(window)) {
 			return false;
 		}
-		Component tab = getTab(window);
+		final Component tab = getTab(window);
 		return tab != null && tab.getParent().getViewportRect().contains(tab.getViewportRect());
 	}
 
-	private Component getToggle(Window window) {
-		int texture = window.getMiniTexture();
-		for (Component sub : ctx.widgets.get(WIDGET_MENU_WINDOWS, COMPONENT_MENU_WINDOWS_LIST).getChildren()) {
+	private Component getToggle(final Window window) {
+		final int texture = window.getMiniTexture();
+		for (final Component sub : ctx.widgets.get(WIDGET_MENU_WINDOWS, COMPONENT_MENU_WINDOWS_LIST).getChildren()) {
 			if (sub.getTextureId() == texture && sub.isVisible()) {
 				return sub;
 			}
@@ -298,9 +298,9 @@ public class Hud extends MethodProvider {
 		return null;
 	}
 
-	Component getMenu(Menu menu) {
-		int texture = menu.getTexture();
-		for (Component child : ctx.widgets.get(WIDGET_MENU)) {
+	Component getMenu(final Menu menu) {
+		final int texture = menu.getTexture();
+		for (final Component child : ctx.widgets.get(WIDGET_MENU)) {
 			if (child.getTextureId() == texture && child.isValid()) {
 				return child;
 			}
@@ -308,10 +308,10 @@ public class Hud extends MethodProvider {
 		return null;
 	}
 
-	Component getTab(Window window) {
-		int texture = window.getMiniTexture();
-		for (Component child : ctx.widgets.get(WIDGET_HUD)) {
-			for (Component sub : child.getChildren()) {
+	Component getTab(final Window window) {
+		final int texture = window.getMiniTexture();
+		for (final Component child : ctx.widgets.get(WIDGET_HUD)) {
+			for (final Component sub : child.getChildren()) {
 				if (sub.getTextureId() == texture && sub.isValid()) {
 					return sub;
 				}
@@ -320,10 +320,10 @@ public class Hud extends MethodProvider {
 		return null;
 	}
 
-	Component getSprite(Window window) {
-		int texture = window.getTexture();
-		for (Component child : ctx.widgets.get(WIDGET_HUD)) {
-			for (Component sub : child.getChildren()) {
+	Component getSprite(final Window window) {
+		final int texture = window.getTexture();
+		for (final Component child : ctx.widgets.get(WIDGET_HUD)) {
+			for (final Component sub : child.getChildren()) {
 				if (sub.getTextureId() == texture && sub.isVisible()) {
 					return sub;
 				}

@@ -11,7 +11,7 @@ public class Area {
 	private final int plane;
 	private Tile[] tiles;
 
-	public Area(Tile t1, Tile t2) {
+	public Area(final Tile t1, final Tile t2) {
 		this(
 				new Tile(Math.min(t1.getX(), t2.getX()), Math.min(t1.getY(), t2.getY()), t1.getPlane()),
 				new Tile(Math.max(t1.getX(), t2.getX()), Math.min(t1.getY(), t2.getY()), t1.getPlane()),
@@ -20,13 +20,13 @@ public class Area {
 		);
 	}
 
-	public Area(Tile... tiles) {
+	public Area(final Tile... tiles) {
 		if (tiles.length < 0) {
 			throw new IllegalArgumentException("tiles.length < 0");
 		}
 		this.polygon = new Polygon();
 		this.plane = tiles[0].getPlane();
-		for (Tile tile : tiles) {
+		for (final Tile tile : tiles) {
 			if (tile.getPlane() != this.plane) {
 				throw new IllegalArgumentException("mismatched planes " + plane + " != " + tile.getPlane());
 			}
@@ -35,9 +35,9 @@ public class Area {
 		this.tiles = null;
 	}
 
-	public boolean contains(Locatable... locatables) {
-		for (Locatable locatable : locatables) {
-			Tile tile = locatable.getLocation();
+	public boolean contains(final Locatable... locatables) {
+		for (final Locatable locatable : locatables) {
+			final Tile tile = locatable.getLocation();
 			if (tile.getPlane() != plane || !polygon.contains(tile.getX(), tile.getY())) {
 				return false;
 			}
@@ -50,19 +50,19 @@ public class Area {
 	}
 
 	public Tile getRandomTile() {
-		Tile[] tiles = getTiles();
-		int len = tiles.length;
+		final Tile[] tiles = getTiles();
+		final int len = tiles.length;
 		return len != 0 ? tiles[Random.nextInt(0, len)] : Tile.NIL;
 	}
 
-	public Tile getClosestTo(Locatable locatable) {
-		Tile t = locatable != null ? locatable.getLocation() : Tile.NIL;
+	public Tile getClosestTo(final Locatable locatable) {
+		final Tile t = locatable != null ? locatable.getLocation() : Tile.NIL;
 		if (t != Tile.NIL) {
 			double dist = Double.POSITIVE_INFINITY;
 			Tile tile = Tile.NIL;
-			Tile[] tiles = getTiles();
+			final Tile[] tiles = getTiles();
 			for (int i = 0; i < tiles.length; i++) {
-				double d = t.distanceTo(tiles[i]);
+				final double d = t.distanceTo(tiles[i]);
 				if (d < dist) {
 					dist = d;
 					tile = tiles[i];
@@ -82,13 +82,13 @@ public class Area {
 			return this.tiles;
 		}
 
-		Rectangle r = polygon.getBounds();
+		final Rectangle r = polygon.getBounds();
 		int c = 0;
-		Tile[] tiles = new Tile[r.width * r.height];
+		final Tile[] tiles = new Tile[r.width * r.height];
 		for (int x = 0; x < r.width; x++) {
 			for (int y = 0; y < r.height; y++) {
-				int _x = r.x + x;
-				int _y = r.y + y;
+				final int _x = r.x + x;
+				final int _y = r.y + y;
 				if (polygon.contains(_x, _y)) {
 					tiles[c++] = new Tile(_x, _y, plane);
 				}
@@ -99,7 +99,7 @@ public class Area {
 
 	private double avg(final int... nums) {
 		long total = 0;
-		for (int i : nums) {
+		for (final int i : nums) {
 			total += (long) i;
 		}
 		return (double) total / (double) nums.length;

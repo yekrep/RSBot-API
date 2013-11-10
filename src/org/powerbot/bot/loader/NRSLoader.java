@@ -28,7 +28,6 @@ import org.powerbot.util.io.HttpClient;
 import org.powerbot.util.io.IOHelper;
 
 public class NRSLoader implements Runnable {
-	private final Bot bot;
 	private final GameLoader gameLoader;
 	private final ClassLoader classLoader;
 	private Runnable callback;
@@ -37,13 +36,12 @@ public class NRSLoader implements Runnable {
 	private Object client;
 	private String packHash;
 
-	public NRSLoader(Bot bot, GameLoader gameLoader, ClassLoader classLoader) {
-		this.bot = bot;
+	public NRSLoader(final GameLoader gameLoader, final ClassLoader classLoader) {
 		this.gameLoader = gameLoader;
 		this.classLoader = classLoader;
 	}
 
-	public void setCallback(Runnable callback) {
+	public void setCallback(final Runnable callback) {
 		this.callback = callback;
 	}
 
@@ -59,7 +57,7 @@ public class NRSLoader implements Runnable {
 			return;
 		}
 		try {
-			Constructor<?> constructor = code.getConstructor((Class[]) null);
+			final Constructor<?> constructor = code.getConstructor((Class[]) null);
 			this.applet = (Applet) constructor.newInstance((Object[]) null);
 		} catch (final Exception ignored) {
 			this.applet = null;
@@ -67,11 +65,11 @@ public class NRSLoader implements Runnable {
 		if (applet == null || !(Application.class.isAssignableFrom(code))) {
 			return;
 		}
-		byte[] pack = gameLoader.getResources().get("inner.pack.gz");
+		final byte[] pack = gameLoader.getResources().get("inner.pack.gz");
 		if (pack == null) {
 			return;
 		}
-		MessageDigest digest;
+		final MessageDigest digest;
 		try {
 			digest = MessageDigest.getInstance("SHA-1");
 			packHash = StringUtil.byteArrayToHexString(digest.digest(pack));
@@ -93,7 +91,7 @@ public class NRSLoader implements Runnable {
 
 		((Application) applet).setBridge(bridge = new AbstractBridge(spec) {
 			@Override
-			public void instance(Object client) {
+			public void instance(final Object client) {
 				NRSLoader.this.client = client;
 			}
 		});
@@ -120,9 +118,9 @@ public class NRSLoader implements Runnable {
 		return bridge;
 	}
 
-	private TransformSpec getSpec(String packHash) throws IOException {
+	private TransformSpec getSpec(final String packHash) throws IOException {
 		final String pre = "loader/spec/" + packHash;
-		int r;
+		final int r;
 
 		final byte[] b = new byte[16];
 		final String keyAlgo = "ARCFOUR", cipherAlgo = "RC4", hashAlgo = "SHA1";
@@ -156,7 +154,7 @@ public class NRSLoader implements Runnable {
 		return null;
 	}
 
-	public void upload(String packHash) throws IOException, PendingException {
+	public void upload(final String packHash) throws IOException, PendingException {
 		final int delay = 1000 * 60 * 3 + 30;
 		final String pre = "loader/spec/" + packHash;
 		int r;

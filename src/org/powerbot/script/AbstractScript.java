@@ -228,6 +228,8 @@ public abstract class AbstractScript implements Script, Comparable<AbstractScrip
 	 *
 	 * @return the version of this {@link Script}
 	 */
+	@Deprecated
+	@SuppressWarnings("deprecation")
 	public double getVersion() {
 		final Manifest manifest = getManifest();
 		if (manifest == null) {

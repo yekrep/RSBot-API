@@ -79,7 +79,7 @@ public class TransformSpec {
 		version = scanner.readShort();
 		read:
 		while (true) {
-			String clazz;
+			final String clazz;
 			int count, ptr = 0;
 			final int op = scanner.readByte();
 			switch (op) {
@@ -209,8 +209,8 @@ public class TransformSpec {
 	}
 
 	public byte[] process(final byte[] data) {
-		ClassNode node = new ClassNode();
-		ClassReader reader = new ClassReader(data);
+		final ClassNode node = new ClassNode();
+		final ClassReader reader = new ClassReader(data);
 		reader.accept(node, ClassReader.SKIP_DEBUG | ClassReader.SKIP_FRAMES);
 		final ClassVisitor adapter = adapters.get(node.name);
 		if (adapter != null) {

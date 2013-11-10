@@ -16,11 +16,11 @@ public final class SkillData extends MethodProvider {
 	public final int[] initialLevels = new int[NUM_SKILL];
 	private final Timer timer;
 
-	public SkillData(MethodContext ctx) {
+	public SkillData(final MethodContext ctx) {
 		this(ctx, new Timer(0l));
 	}
 
-	public SkillData(MethodContext ctx, final Timer timer) {
+	public SkillData(final MethodContext ctx, final Timer timer) {
 		super(ctx);
 		for (int index = 0; index < NUM_SKILL; index++) {
 			initialExp[index] = ctx.skills.getExperience(index);

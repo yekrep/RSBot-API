@@ -40,7 +40,7 @@ public class MouseHandler extends MethodProvider {
 		}
 	}
 
-	public void scroll(boolean down) {
+	public void scroll(final boolean down) {
 		final Client client = ctx.getClient();
 		final Mouse mouse;
 		if (client == null || (mouse = client.getMouse()) == null) {
@@ -50,7 +50,7 @@ public class MouseHandler extends MethodProvider {
 			return;
 		}
 		final Component target = getSource();
-		Point location = getLocation();
+		final Point location = getLocation();
 		mouse.sendEvent(new MouseWheelEvent(target, MouseWheelEvent.MOUSE_WHEEL, System.currentTimeMillis(), 0, location.x, location.y, 0, false, MouseWheelEvent.WHEEL_UNIT_SCROLL, 1, down ? 1 : -1));
 	}
 
@@ -105,7 +105,7 @@ public class MouseHandler extends MethodProvider {
 		}
 	}
 
-	public synchronized void handle(MouseTarget target) {
+	public synchronized void handle(final MouseTarget target) {
 		final Client client = ctx.getClient();
 		final Mouse mouse;
 		if (target == null || client == null || (mouse = client.getMouse()) == null) {
@@ -173,7 +173,7 @@ public class MouseHandler extends MethodProvider {
 	}
 
 	public Component getSource() {
-		Applet applet = ctx.getBot().getApplet();
+		final Applet applet = ctx.getBot().getApplet();
 		return applet != null && applet.getComponentCount() > 0 ? applet.getComponent(0) : null;
 	}
 

@@ -31,7 +31,7 @@ public interface Nameable {
 			if (n == null) {
 				return false;
 			}
-			for (String name : names) {
+			for (final String name : names) {
 				if (name != null && name.equalsIgnoreCase(n)) {
 					return true;
 				}

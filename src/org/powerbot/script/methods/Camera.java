@@ -16,7 +16,7 @@ public class Camera extends MethodProvider {
 	public Vector3f offset;
 	public Vector3f center;
 
-	public Camera(MethodContext factory) {
+	public Camera(final MethodContext factory) {
 		super(factory);
 		this.offset = new Vector3f(0, 0, 0);
 		this.center = new Vector3f(0, 0, 0);
@@ -28,7 +28,7 @@ public class Camera extends MethodProvider {
 	 * @return the offset on the x-axis
 	 */
 	public int getX() {
-		Tile tile = ctx.game.getMapBase();
+		final Tile tile = ctx.game.getMapBase();
 		return (int) (offset.x - (tile.getX() << 9));
 	}
 
@@ -38,7 +38,7 @@ public class Camera extends MethodProvider {
 	 * @return the offset on the y-axis
 	 */
 	public int getY() {
-		Tile tile = ctx.game.getMapBase();
+		final Tile tile = ctx.game.getMapBase();
 		return (int) (offset.y - (tile.getY() << 9));
 	}
 
@@ -57,9 +57,9 @@ public class Camera extends MethodProvider {
 	 * @return the camera yaw
 	 */
 	public int getYaw() {
-		float deltaX = offset.x - center.x;
-		float deltaY = offset.y - center.y;
-		float theta = (float) Math.atan2(deltaX, deltaY);
+		final float deltaX = offset.x - center.x;
+		final float deltaY = offset.y - center.y;
+		final float theta = (float) Math.atan2(deltaX, deltaY);
 		return (int) (((int) ((Math.PI - theta) * 2607.5945876176133D) & 0x3FFF) / 45.51);
 	}
 
@@ -69,11 +69,11 @@ public class Camera extends MethodProvider {
 	 * @return the camera pitch
 	 */
 	public final int getPitch() {
-		float deltaX = center.x - offset.x;
-		float deltaY = center.y - offset.y;
-		float deltaZ = center.z - offset.z;
-		float dist = (float) Math.sqrt(deltaX * deltaX + deltaY * deltaY);
-		float theta = (float) Math.atan2(-deltaZ, dist);
+		final float deltaX = center.x - offset.x;
+		final float deltaY = center.y - offset.y;
+		final float deltaZ = center.z - offset.z;
+		final float dist = (float) Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+		final float theta = (float) Math.atan2(-deltaZ, dist);
 		return (int) (((int) (theta * 2607.5945876176133D) & 0x3FFF) / 4096f * 100f);
 	}
 
@@ -83,7 +83,7 @@ public class Camera extends MethodProvider {
 	 * @param up <tt>true</tt> to be up; otherwise <tt>false</tt> for down
 	 * @return <tt>true</tt> if the absolute was reached; success is normally guaranteed regardless of return of <tt>false</tt>
 	 */
-	public boolean setPitch(boolean up) {
+	public boolean setPitch(final boolean up) {
 		return setPitch(up ? 100 : 0);
 	}
 

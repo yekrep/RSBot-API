@@ -9,7 +9,7 @@ public class Action extends MethodProvider implements Identifiable, Validatable,
 	private final Type type;
 	private final int id;
 
-	public Action(MethodContext ctx, final int slot, final Type type, final int id) {
+	public Action(final MethodContext ctx, final int slot, final Type type, final int id) {
 		super(ctx);
 		if (slot < 0 || slot >= CombatBar.NUM_SLOTS || type == null) {
 			throw new IllegalArgumentException();
@@ -46,8 +46,8 @@ public class Action extends MethodProvider implements Identifiable, Validatable,
 	}
 
 	public boolean isReady() {
-		Component cooldown = ctx.widgets.get(CombatBar.WIDGET, CombatBar.COMPONENT_SLOT_COOL_DOWN + slot * 5);
-		Component action = ctx.widgets.get(CombatBar.WIDGET, CombatBar.COMPONENT_SLOT_ACTION + slot * 5);
+		final Component cooldown = ctx.widgets.get(CombatBar.WIDGET, CombatBar.COMPONENT_SLOT_COOL_DOWN + slot * 5);
+		final Component action = ctx.widgets.get(CombatBar.WIDGET, CombatBar.COMPONENT_SLOT_ACTION + slot * 5);
 		return !cooldown.isVisible() && action.getTextColor() == 0xFFFFFF;
 	}
 
@@ -69,7 +69,7 @@ public class Action extends MethodProvider implements Identifiable, Validatable,
 		if (o == null || !(o instanceof Action)) {
 			return false;
 		}
-		Action action = (Action) o;
+		final Action action = (Action) o;
 		return slot == action.slot && type == action.type && id == action.id;
 	}
 

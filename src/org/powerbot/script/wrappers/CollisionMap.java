@@ -19,7 +19,7 @@ public final class CollisionMap {
 	private int width;
 	private int height;
 
-	public CollisionMap(int xSize, int ySize) {
+	public CollisionMap(final int xSize, final int ySize) {
 		this.xOff = -1;
 		this.yOff = -1;
 		this.width = xSize + 6;
@@ -48,23 +48,23 @@ public final class CollisionMap {
 		}
 	}
 
-	public CollisionFlag getFlagAt(int localX, int localY) {
+	public CollisionFlag getFlagAt(final int localX, final int localY) {
 		return clipping[localX(localX)][localY(localY)];
 	}
 
-	public void markDecoration(int localX, int localY) {
+	public void markDecoration(final int localX, final int localY) {
 		_mark(localX(localX), localY(localY), DECORATION_BLOCK);
 	}
 
-	public void markInteractive(int localX, int localY) {
+	public void markInteractive(final int localX, final int localY) {
 		_mark(localX(localX), localY(localY), OBJECT_BLOCK);
 	}
 
-	public void markDeadBlock(int localX, int localY) {
+	public void markDeadBlock(final int localX, final int localY) {
 		_mark(localX(localX), localY(localY), DEAD_BLOCK);
 	}
 
-	public void markWall(int localX, int localY, int type, int orientation) {
+	public void markWall(int localX, int localY, final int type, int orientation) {
 		localX = localX(localX);
 		localY = localY(localY);
 		orientation %= 4;
@@ -137,15 +137,15 @@ public final class CollisionMap {
 		}
 	}
 
-	private void _mark(int offsetX, int offsetY, final CollisionFlag collisionFlag) {
+	private void _mark(final int offsetX, final int offsetY, final CollisionFlag collisionFlag) {
 		clipping[offsetX][offsetY].mark(collisionFlag);
 	}
 
-	private int localX(int localX) {
+	private int localX(final int localX) {
 		return localX - xOff;
 	}
 
-	private int localY(int localY) {
+	private int localY(final int localY) {
 		return localY - yOff;
 	}
 }

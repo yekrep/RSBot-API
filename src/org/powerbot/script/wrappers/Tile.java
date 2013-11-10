@@ -43,7 +43,7 @@ public class Tile implements Locatable {
 	 * @param ctx The context to retrieve the matrix in.
 	 * @return the {@link TileMatrix} of this {@link Tile} with the given context
 	 */
-	public TileMatrix getMatrix(MethodContext ctx) {
+	public TileMatrix getMatrix(final MethodContext ctx) {
 		return new TileMatrix(ctx, this);
 	}
 
@@ -67,7 +67,7 @@ public class Tile implements Locatable {
 	}
 
 	public double distanceTo(final Locatable l) {
-		Tile t = l != null ? l.getLocation() : null;
+		final Tile t = l != null ? l.getLocation() : null;
 		if (t == null || plane != t.plane || plane == NIL.plane) {
 			return Double.POSITIVE_INFINITY;
 		}

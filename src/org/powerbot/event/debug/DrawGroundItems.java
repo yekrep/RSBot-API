@@ -16,7 +16,7 @@ import org.powerbot.script.wrappers.Tile;
 
 public class DrawGroundItems implements PaintListener {
 	public void repaint(final Graphics render) {
-		MethodContext ctx = BotChrome.getInstance().getBot().getMethodContext();
+		final MethodContext ctx = BotChrome.getInstance().getBot().getMethodContext();
 		if (!ctx.game.isLoggedIn()) {
 			return;
 		}
@@ -44,7 +44,7 @@ public class DrawGroundItems implements PaintListener {
 					continue;
 				}
 				for (final GroundItem groundItem : ctx.groundItems.select(check).at(loc)) {
-					String name = groundItem.getName();
+					final String name = groundItem.getName();
 					String s = "";
 					s += groundItem.getId();
 					if (!name.isEmpty()) {

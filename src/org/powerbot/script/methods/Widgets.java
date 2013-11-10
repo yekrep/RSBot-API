@@ -18,7 +18,7 @@ import org.powerbot.script.wrappers.Widget;
 public class Widgets extends MethodProvider {
 	public Widget[] cache;
 
-	public Widgets(MethodContext factory) {
+	public Widgets(final MethodContext factory) {
 		super(factory);
 	}
 
@@ -28,7 +28,7 @@ public class Widgets extends MethodProvider {
 	 * @return an array of {@link Widget}s which are currently loaded
 	 */
 	public Widget[] getLoaded() {
-		Client client = ctx.getClient();
+		final Client client = ctx.getClient();
 		if (client == null) {
 			return new Widget[0];
 		}
@@ -48,7 +48,7 @@ public class Widgets extends MethodProvider {
 	 * @return the {@link Widget} respective to the given index
 	 */
 	public synchronized Widget get(final int widget) {
-		Client client = ctx.getClient();
+		final Client client = ctx.getClient();
 		if (widget < 0) {
 			return null;
 		}
@@ -88,7 +88,7 @@ public class Widgets extends MethodProvider {
 	 * @param bar       the {@link Component} of the scroll bar
 	 * @return {@code true} if visible; otherwise {@code false}
 	 */
-	public boolean scroll(Component component, Component bar, boolean scroll) {
+	public boolean scroll(final Component component, final Component bar, final boolean scroll) {
 		if (component == null || !component.isValid()) {
 			return false;
 		}
@@ -106,7 +106,7 @@ public class Widgets extends MethodProvider {
 		return scroll(component, pane, bar, scroll);
 	}
 
-	public boolean scroll(Component component, Component pane, Component bar, boolean scroll) {
+	public boolean scroll(final Component component, final Component pane, final Component bar, final boolean scroll) {
 		if (component == null || !component.isValid()) {
 			return false;
 		}
@@ -116,19 +116,19 @@ public class Widgets extends MethodProvider {
 		if (pane == null || !pane.isValid() || pane.getScrollHeight() == 0) {
 			return false;
 		}
-		Point view = pane.getAbsoluteLocation();
-		int height = pane.getScrollHeight();
+		final Point view = pane.getAbsoluteLocation();
+		final int height = pane.getScrollHeight();
 		if (view.x < 0 || view.y < 0 || height < 1) {
 			return false;
 		}
-		Point pos = component.getAbsoluteLocation();
-		int length = component.getHeight();
+		final Point pos = component.getAbsoluteLocation();
+		final int length = component.getHeight();
 		if (pos.y >= view.y && pos.y <= view.y + height - length) {
 			return true;
 		}
-		Component thumbHolder = bar.getChild(0);
-		Component thumb = bar.getChild(1);
-		int thumbSize = thumbHolder.getScrollHeight();
+		final Component thumbHolder = bar.getChild(0);
+		final Component thumb = bar.getChild(1);
+		final int thumbSize = thumbHolder.getScrollHeight();
 		int y = (int) ((float) thumbSize / pane.getMaxVerticalScroll() *
 				(component.getRelativeLocation().y + Random.nextInt(-height / 2, height / 2 - length)));
 		if (y < 0) {
@@ -136,7 +136,7 @@ public class Widgets extends MethodProvider {
 		} else if (y >= thumbSize) {
 			y = thumbSize - 1;
 		}
-		Point p = thumbHolder.getAbsoluteLocation();
+		final Point p = thumbHolder.getAbsoluteLocation();
 		p.translate(Random.nextInt(0, thumbHolder.getWidth()), y);
 		if (!scroll) {
 			if (!ctx.mouse.click(p, true)) {
@@ -158,7 +158,7 @@ public class Widgets extends MethodProvider {
 					}
 					sleep(25, 100);
 					if (System.currentTimeMillis() - mark > 2000) {
-						int l = thumb.getAbsoluteLocation().y;
+						final int l = thumb.getAbsoluteLocation().y;
 						if (tY == l) {
 							return scroll(component, pane, bar, false);
 						} else {

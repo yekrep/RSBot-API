@@ -14,7 +14,7 @@ public class Npc extends Actor implements Identifiable {
 	public static final Color TARGET_COLOR = new Color(255, 0, 255, 15);
 	private final WeakReference<RSNPC> npc;
 
-	public Npc(MethodContext ctx, final RSNPC npc) {
+	public Npc(final MethodContext ctx, final RSNPC npc) {
 		super(ctx);
 		this.npc = new WeakReference<RSNPC>(npc);
 	}
@@ -59,7 +59,7 @@ public class Npc extends Actor implements Identifiable {
 
 	@Override
 	public boolean isValid() {
-		Client client = ctx.getClient();
+		final Client client = ctx.getClient();
 		if (client == null) {
 			return false;
 		}

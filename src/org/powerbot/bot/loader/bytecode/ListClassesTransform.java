@@ -16,12 +16,12 @@ import org.powerbot.bot.loader.Bridge;
 public class ListClassesTransform implements Transform {
 	private AppletTransform parent;
 
-	public ListClassesTransform(AppletTransform parent) {
+	public ListClassesTransform(final AppletTransform parent) {
 		this.parent = parent;
 	}
 
 	@Override
-	public void accept(ClassNode node) {
+	public void accept(final ClassNode node) {
 		String methodName = "put";
 		String desc = "(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;";
 		int[] ops = {
@@ -29,27 +29,27 @@ public class ListClassesTransform implements Transform {
 				Opcodes.INVOKEVIRTUAL,
 				Opcodes.POP
 		};
-		for (MethodNode method : node.methods) {
-			InsnSearcher searcher = new InsnSearcher(method);
+		for (final MethodNode method : node.methods) {
+			final InsnSearcher searcher = new InsnSearcher(method);
 			while (searcher.getNext(ops) != null) {
-				AbstractInsnNode abstractInsnNode = searcher.getPrevious();
-				MethodInsnNode methodInsnNode = (MethodInsnNode) abstractInsnNode;
+				final AbstractInsnNode abstractInsnNode = searcher.getPrevious();
+				final MethodInsnNode methodInsnNode = (MethodInsnNode) abstractInsnNode;
 				if (methodInsnNode.name.equals(methodName) &&
 						methodInsnNode.desc.equals(desc)) {
 					/*
 					* Found a put method invoke.
 					* Inject a notify of the key.
 					 */
-					InsnList insnList = new InsnList();
-					int v = ((VarInsnNode) searcher.getPrevious()).var;
+					final InsnList insnList = new InsnList();
+					final int v = ((VarInsnNode) searcher.getPrevious()).var;
 					/*
 					* Verify the value is of a byte array (the correct put).
 					 */
 					insnList.add(new VarInsnNode(Opcodes.ALOAD, v));
 					insnList.add(new TypeInsnNode(Opcodes.INSTANCEOF, "[B"));
-					LabelNode label = new LabelNode();
+					final LabelNode label = new LabelNode();
 					insnList.add(new JumpInsnNode(Opcodes.IFEQ, label));
-					int n = ((VarInsnNode) searcher.getPrevious()).var;
+					final int n = ((VarInsnNode) searcher.getPrevious()).var;
 					/*
 					* Notify of a new entry in the map if the value is of a byte array.
 					 */
@@ -69,32 +69,32 @@ public class ListClassesTransform implements Transform {
 				Opcodes.DUP,
 				Opcodes.ASTORE,
 		};
-		for (MethodNode method : node.methods) {
-			InsnSearcher searcher = new InsnSearcher(method);
+		for (final MethodNode method : node.methods) {
+			final InsnSearcher searcher = new InsnSearcher(method);
 			while (searcher.getNext(ops) != null) {
-				int branch = searcher.getNext().getOpcode();
+				final int branch = searcher.getNext().getOpcode();
 				if (branch != Opcodes.IFNULL &&
 						branch != Opcodes.IF_ACMPEQ) {
 					continue;
 				}
 
-				AbstractInsnNode abstractInsnNode = searcher.getPrevious(Opcodes.INVOKEVIRTUAL);
-				MethodInsnNode methodInsnNode = (MethodInsnNode) abstractInsnNode;
+				final AbstractInsnNode abstractInsnNode = searcher.getPrevious(Opcodes.INVOKEVIRTUAL);
+				final MethodInsnNode methodInsnNode = (MethodInsnNode) abstractInsnNode;
 				if (methodInsnNode.name.equals(methodName) &&
 						methodInsnNode.desc.equals(desc)) {
 					/*
 					* Found the getNextJarEntry invoke.
 					* Retrieve the jump position if the entry is null (no more entries).
 					 */
-					JumpInsnNode jump = (JumpInsnNode) searcher.getNext(branch);
-					AbstractInsnNode pos = jump.getPrevious();
-					LabelNode label = jump.label;
+					final JumpInsnNode jump = (JumpInsnNode) searcher.getNext(branch);
+					final AbstractInsnNode pos = jump.getPrevious();
+					final LabelNode label = jump.label;
 					/*
 					* Remove the jump to the label if the entry is null.
 					 */
 					method.instructions.remove(jump);
-					InsnList insnList = new InsnList();
-					LabelNode skip = new LabelNode();
+					final InsnList insnList = new InsnList();
+					final LabelNode skip = new LabelNode();
 					/*
 					* Now restore functionality, if entry is not null, continue on as normal.
 					* If entry is null, GOTO the IFNULL label.

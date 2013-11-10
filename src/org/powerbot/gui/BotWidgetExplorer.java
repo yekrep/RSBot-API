@@ -71,9 +71,9 @@ public class BotWidgetExplorer extends JFrame implements PaintListener {
 		tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 		tree.setCellRenderer(new DefaultTreeCellRenderer() {
 			@Override
-			public java.awt.Component getTreeCellRendererComponent(JTree tree,
-			                                                       Object value, boolean selected, boolean expanded,
-			                                                       boolean leaf, int row, boolean hasFocus) {
+			public java.awt.Component getTreeCellRendererComponent(final JTree tree,
+			                                                       final Object value, final boolean selected, final boolean expanded,
+			                                                       final boolean leaf, final int row, final boolean hasFocus) {
 				super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
 				this.setForeground(Color.black);
 				if (value instanceof ComponentWrapper) {
@@ -257,7 +257,7 @@ public class BotWidgetExplorer extends JFrame implements PaintListener {
 			}
 		}
 
-		public void valueForPathChanged(TreePath path, Object newValue) {
+		public void valueForPathChanged(final TreePath path, final Object newValue) {
 		}
 
 		public int getIndexOfChild(final Object parent, final Object child) {
@@ -291,7 +291,7 @@ public class BotWidgetExplorer extends JFrame implements PaintListener {
 
 		public void update(final String search) {
 			widgetWrappers.clear();
-			Widget[] loaded;
+			final Widget[] loaded;
 			for (final Widget widget : loaded = BotChrome.getInstance().getBot().getMethodContext().widgets.getLoaded()) {
 				children:
 				for (final Component Component : widget.getComponents()) {
@@ -309,12 +309,12 @@ public class BotWidgetExplorer extends JFrame implements PaintListener {
 			}
 			list.clear();
 			if (search != null && !search.isEmpty()) {
-				for (Widget widget : loaded) {
-					for (Component child : widget.getComponents()) {
+				for (final Widget widget : loaded) {
+					for (final Component child : widget.getComponents()) {
 						if (search(child, search)) {
 							list.add(child);
 						}
-						for (Component child2 : child.getChildren()) {
+						for (final Component child2 : child.getChildren()) {
 							if (search(child2, search)) {
 								list.add(child2);
 							}

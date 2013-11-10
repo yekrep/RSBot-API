@@ -11,15 +11,15 @@ public class InsnSearcher {
 	private final AbstractInsnNode first;
 	private AbstractInsnNode curr;
 
-	public InsnSearcher(MethodNode node) {
+	public InsnSearcher(final MethodNode node) {
 		this(node.instructions);
 	}
 
-	public InsnSearcher(InsnList list) {
+	public InsnSearcher(final InsnList list) {
 		this(list.getFirst());
 	}
 
-	public InsnSearcher(AbstractInsnNode first) {
+	public InsnSearcher(final AbstractInsnNode first) {
 		this.first = first;
 		this.curr = first;
 	}
@@ -28,7 +28,7 @@ public class InsnSearcher {
 		return curr;
 	}
 
-	public void set(AbstractInsnNode curr) {
+	public void set(final AbstractInsnNode curr) {
 		this.curr = curr;
 	}
 
@@ -52,7 +52,7 @@ public class InsnSearcher {
 		return curr;
 	}
 
-	public AbstractInsnNode getNext(int opcode) {
+	public AbstractInsnNode getNext(final int opcode) {
 		AbstractInsnNode node;
 		for (; ; ) {
 			node = getNext();
@@ -63,7 +63,7 @@ public class InsnSearcher {
 		return node;
 	}
 
-	public AbstractInsnNode getPrevious(int opcode) {
+	public AbstractInsnNode getPrevious(final int opcode) {
 		AbstractInsnNode node;
 		for (; ; ) {
 			node = getPrevious();
@@ -74,7 +74,7 @@ public class InsnSearcher {
 		return node;
 	}
 
-	public AbstractInsnNode getNext(int[] opcodes) {
+	public AbstractInsnNode getNext(final int[] opcodes) {
 		if (opcodes.length < 1) {
 			return null;
 		}

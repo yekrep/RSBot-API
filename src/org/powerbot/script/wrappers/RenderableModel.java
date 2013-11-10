@@ -11,16 +11,16 @@ import org.powerbot.script.methods.MethodContext;
 public class RenderableModel extends Model {
 	private final WeakReference<RSInteractable> interactable;
 
-	public RenderableModel(MethodContext ctx, AbstractModel model, RSInteractable interactable) {
+	public RenderableModel(final MethodContext ctx, final AbstractModel model, final RSInteractable interactable) {
 		super(ctx, model);
 		this.interactable = new WeakReference<RSInteractable>(interactable);
 	}
 
 	@Override
 	public int getX() {
-		RSInteractable interactable = this.interactable.get();
-		RSInteractableData data = interactable != null ? interactable.getData() : null;
-		RSInteractableLocation location = data != null ? data.getLocation() : null;
+		final RSInteractable interactable = this.interactable.get();
+		final RSInteractableData data = interactable != null ? interactable.getData() : null;
+		final RSInteractableLocation location = data != null ? data.getLocation() : null;
 		if (location != null) {
 			return (int) location.getX();
 		}
@@ -29,9 +29,9 @@ public class RenderableModel extends Model {
 
 	@Override
 	public int getY() {
-		RSInteractable interactable = this.interactable.get();
-		RSInteractableData data = interactable != null ? interactable.getData() : null;
-		RSInteractableLocation location = data != null ? data.getLocation() : null;
+		final RSInteractable interactable = this.interactable.get();
+		final RSInteractableData data = interactable != null ? interactable.getData() : null;
+		final RSInteractableLocation location = data != null ? data.getLocation() : null;
 		if (location != null) {
 			return (int) location.getY();
 		}
@@ -40,7 +40,7 @@ public class RenderableModel extends Model {
 
 	@Override
 	public byte getPlane() {
-		RSInteractable interactable = this.interactable.get();
+		final RSInteractable interactable = this.interactable.get();
 		return interactable != null ? interactable.getPlane() : -1;
 	}
 

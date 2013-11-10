@@ -11,7 +11,7 @@ import static org.powerbot.event.debug.DebugHelper.drawLine;
 
 public class TMapBase implements TextPaintListener {
 	public int draw(int idx, final Graphics render) {
-		MethodContext ctx = BotChrome.getInstance().getBot().getMethodContext();
+		final MethodContext ctx = BotChrome.getInstance().getBot().getMethodContext();
 		final Tile t = ctx.game.getMapBase();
 		drawLine(render, idx++, "Map base: " + (t != null ? t.toString() : ""));
 		return idx;

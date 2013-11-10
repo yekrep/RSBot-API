@@ -9,7 +9,7 @@ import org.powerbot.script.methods.MethodProvider;
 public class Projectile extends MethodProvider implements Identifiable, Validatable {
 	private final WeakReference<RSProjectile> projectile;
 
-	public Projectile(MethodContext ctx, final RSProjectile projectile) {
+	public Projectile(final MethodContext ctx, final RSProjectile projectile) {
 		super(ctx);
 		this.projectile = new WeakReference<RSProjectile>(projectile);
 	}

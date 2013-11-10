@@ -13,7 +13,7 @@ import static org.powerbot.event.debug.DebugHelper.drawLine;
  */
 public class TPlane implements TextPaintListener {
 	public int draw(int idx, final Graphics render) {
-		MethodContext ctx = BotChrome.getInstance().getBot().getMethodContext();
+		final MethodContext ctx = BotChrome.getInstance().getBot().getMethodContext();
 		drawLine(render, idx++, "Floor: " + ctx.game.getPlane());
 		return idx;
 	}

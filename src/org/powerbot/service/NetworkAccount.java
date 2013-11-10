@@ -140,12 +140,7 @@ public final class NetworkAccount {
 			return false;
 		}
 		final String salt = (data.get("name") + data.get("email")).toUpperCase();
-		final long hash;
-		try {
-			hash = IOHelper.crc32(StringUtil.getBytesUtf8(salt));
-		} catch (final IOException ignored) {
-			return false;
-		}
+		final long hash = IOHelper.crc32(StringUtil.getBytesUtf8(salt));
 		final long perms = Long.parseLong(data.get("permissions"));
 		return perms >> ORDER == hash >> ORDER;
 	}

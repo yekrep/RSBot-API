@@ -7,7 +7,7 @@ public class ChatOption extends MethodProvider implements Textable, Validatable 
 	private int index;
 	private Component option;
 
-	public ChatOption(MethodContext ctx, int index, Component option) {
+	public ChatOption(final MethodContext ctx, final int index, final Component option) {
 		super(ctx);
 		this.index = index;
 		this.option = option;
@@ -29,7 +29,7 @@ public class ChatOption extends MethodProvider implements Textable, Validatable 
 		return select(false);
 	}
 
-	public boolean select(boolean key) {
+	public boolean select(final boolean key) {
 		if (!isValid()) {
 			return false;
 		}

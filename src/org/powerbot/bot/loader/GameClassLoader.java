@@ -25,24 +25,24 @@ public class GameClassLoader extends ClassLoader {
 	public GameClassLoader(final Map<String, byte[]> resources) {
 		this.resources.putAll(resources);
 		loaded = new Hashtable<String, Class<?>>();
-		CodeSource codesource = new CodeSource(null, (java.security.cert.Certificate[]) null);
-		Permissions permissions = new Permissions();
+		final CodeSource codesource = new CodeSource(null, (java.security.cert.Certificate[]) null);
+		final Permissions permissions = new Permissions();
 		permissions.add(new AllPermission());
 		domain = new ProtectionDomain(codesource, permissions);
-		AppletTransform appletTransform = new AppletTransform();
+		final AppletTransform appletTransform = new AppletTransform();
 		processor = new AbstractProcessor(appletTransform,
 				new ClassLoaderTransform(appletTransform), new ListClassesTransform(appletTransform));
 	}
 
 	@Override
-	protected final synchronized Class loadClass(String name, boolean resolve) throws ClassNotFoundException {
+	protected final synchronized Class loadClass(final String name, final boolean resolve) throws ClassNotFoundException {
 		if (loaded.containsKey(name)) {
 			return loaded.get(name);
 		}
 		byte[] bytes = resources.remove(name + ".class");
 		if (bytes != null) {
 			bytes = processor.transform(bytes);
-			Class<?> clazz = defineClass(name, bytes, 0, bytes.length, domain);
+			final Class<?> clazz = defineClass(name, bytes, 0, bytes.length, domain);
 			if (resolve) {
 				resolveClass(clazz);
 			}
@@ -53,8 +53,8 @@ public class GameClassLoader extends ClassLoader {
 	}
 
 	@Override
-	public final InputStream getResourceAsStream(String name) {
-		byte[] resource = resources.get(name);
+	public final InputStream getResourceAsStream(final String name) {
+		final byte[] resource = resources.get(name);
 		if (resource != null) {
 			return new ByteArrayInputStream(resource);
 		}

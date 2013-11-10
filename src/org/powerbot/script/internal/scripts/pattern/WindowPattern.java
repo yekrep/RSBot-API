@@ -20,7 +20,7 @@ public class WindowPattern extends Antipattern {
 		int d = 0;
 		Hud.Window[] windows = Hud.Window.values();
 		for (int i = 0; i < windows.length; i++) {
-			Hud.Window w = windows[i];
+			final Hud.Window w = windows[i];
 			if (!ctx.hud.isOpen(w) || ctx.hud.isVisible(w)) {
 				continue;
 			}
@@ -36,7 +36,7 @@ public class WindowPattern extends Antipattern {
 		}
 
 		for (int i = a ? Random.nextInt(0, 3) : 2; i < 4; i++) {
-			Hud.Window w = windows[Random.nextInt(0, windows.length)];
+			final Hud.Window w = windows[Random.nextInt(0, windows.length)];
 			if (!ctx.hud.view(w)) {
 				break;
 			}

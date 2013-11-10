@@ -26,13 +26,13 @@ public class AbstractCallback implements Callback {
 	}
 
 	@Override
-	public void notifyObjectDefinitionLoad(RSObjectDef def) {
+	public void notifyObjectDefinitionLoad(final RSObjectDef def) {
 		bot.getMethodContext().objects.setType(def.getID(), def.getClippingType());
 	}
 
 	@Override
-	public void updateCamera(RSInteractableLocation offset, RSInteractableLocation center) {
-		Camera camera = bot.getMethodContext().camera;
+	public void updateCamera(final RSInteractableLocation offset, final RSInteractableLocation center) {
+		final Camera camera = bot.getMethodContext().camera;
 		camera.offset = new Vector3f(offset.getX(), offset.getY(), offset.getZ());
 		camera.center = new Vector3f(center.getX(), center.getY(), center.getZ());
 	}

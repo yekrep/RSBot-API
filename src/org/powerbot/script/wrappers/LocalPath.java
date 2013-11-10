@@ -12,14 +12,14 @@ public class LocalPath extends Path {
 
 	private Map map;
 
-	public LocalPath(MethodContext factory, Map map, Locatable destination) {
+	public LocalPath(final MethodContext factory, final Map map, final Locatable destination) {
 		super(factory);
 		this.destination = destination;
 		this.map = map;
 	}
 
 	@Override
-	public boolean traverse(EnumSet<TraversalOption> options) {
+	public boolean traverse(final EnumSet<TraversalOption> options) {
 		return isValid() && tilePath.traverse(options);
 	}
 
@@ -34,15 +34,15 @@ public class LocalPath extends Path {
 		}
 		tile = end;
 		Tile start = ctx.players.local().getLocation();
-		Tile base = ctx.game.getMapBase();
+		final Tile base = ctx.game.getMapBase();
 		if (base == Tile.NIL || start == Tile.NIL || end == Tile.NIL) {
 			return false;
 		}
 		start = start.derive(-base.x, -base.y);
 		end = end.derive(-base.x, -base.y);
-		Map.Node[] path = map.getPath(start.getX(), start.getY(), end.getX(), end.getY(), ctx.game.getPlane());
+		final Map.Node[] path = map.getPath(start.getX(), start.getY(), end.getX(), end.getY(), ctx.game.getPlane());
 		if (path.length > 0) {
-			Tile[] arr = new Tile[path.length];
+			final Tile[] arr = new Tile[path.length];
 			for (int i = 0; i < path.length; i++) {
 				arr[i] = base.derive(path[i].x, path[i].y);
 			}

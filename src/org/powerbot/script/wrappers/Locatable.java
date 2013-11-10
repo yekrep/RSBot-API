@@ -30,8 +30,8 @@ public interface Locatable {
 
 		@Override
 		public boolean accept(final Locatable l) {
-			Tile tile = l != null ? l.getLocation() : null;
-			Tile target = this.target.getLocation();
+			final Tile tile = l != null ? l.getLocation() : null;
+			final Tile target = this.target.getLocation();
 			return tile != null && target != null && target.equals(tile);
 		}
 	}
@@ -47,8 +47,8 @@ public interface Locatable {
 
 		@Override
 		public boolean accept(final Locatable l) {
-			Tile tile = l != null ? l.getLocation() : null;
-			Tile target = this.target.getLocation();
+			final Tile tile = l != null ? l.getLocation() : null;
+			final Tile target = this.target.getLocation();
 			return tile != null && target != null && tile.distanceTo(target) <= distance;
 		}
 	}
@@ -62,7 +62,7 @@ public interface Locatable {
 
 		@Override
 		public boolean accept(final Locatable l) {
-			Tile tile = l != null ? l.getLocation() : null;
+			final Tile tile = l != null ? l.getLocation() : null;
 			return tile != null && area.contains(tile);
 		}
 	}
@@ -76,12 +76,14 @@ public interface Locatable {
 
 		@Override
 		public int compare(final Locatable o1, final Locatable o2) {
-			Tile target = this.target.getLocation();
-			Tile t1 = o1.getLocation(), t2 = o2.getLocation();
+			final Tile target = this.target.getLocation();
+			final Tile t1 = o1.getLocation();
+			final Tile t2 = o2.getLocation();
 			if (target == null || t1 == null || t2 == null) {
 				return Integer.MAX_VALUE;
 			}
-			double d1 = t1.distanceTo(target), d2 = t2.distanceTo(target);
+			final double d1 = t1.distanceTo(target);
+			final double d2 = t2.distanceTo(target);
 			return Double.compare(d1, d2);
 		}
 	}

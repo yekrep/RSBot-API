@@ -26,7 +26,7 @@ public class Login extends PollingScript implements InternalScript {
 	}
 
 	private boolean isValid() {
-		int state = ctx.game.getClientState();
+		final int state = ctx.game.getClientState();
 		return state == -1 || state == Game.INDEX_LOGIN_SCREEN ||
 				state == Game.INDEX_LOBBY_SCREEN ||
 				state == Game.INDEX_LOGGING_IN;
@@ -41,17 +41,17 @@ public class Login extends PollingScript implements InternalScript {
 		threshold.offer(priority.get());
 
 		final GameAccounts.Account account = ctx.getBot().getAccount();
-		int state = ctx.game.getClientState();
+		final int state = ctx.game.getClientState();
 
 		if (state == Game.INDEX_LOBBY_SCREEN) {
-			int world = ctx.getPreferredWorld();
+			final int world = ctx.getPreferredWorld();
 			if (world > 0) {
-				Lobby.World world_wrapper;
+				final Lobby.World world_wrapper;
 				if ((world_wrapper = ctx.lobby.getWorld(world)) != null) {
 					if (!ctx.lobby.enterGame(world_wrapper) && account != null) {
-						Lobby.World[] worlds = ctx.lobby.getWorlds(new Filter<Lobby.World>() {
+						final Lobby.World[] worlds = ctx.lobby.getWorlds(new Filter<Lobby.World>() {
 							@Override
-							public boolean accept(Lobby.World world) {
+							public boolean accept(final Lobby.World world) {
 								return world.isMembers() == account.member;
 							}
 						});
@@ -67,7 +67,7 @@ public class Login extends PollingScript implements InternalScript {
 		}
 
 		if (account != null && (state == Game.INDEX_LOGIN_SCREEN || state == Game.INDEX_LOGGING_IN)) {
-			Component error = ctx.widgets.get(WIDGET, WIDGET_LOGIN_ERROR);
+			final Component error = ctx.widgets.get(WIDGET, WIDGET_LOGIN_ERROR);
 			if (error.isValid()) {
 				if (error.getText().toLowerCase().contains("password")) {
 					getController().stop();
@@ -77,7 +77,8 @@ public class Login extends PollingScript implements InternalScript {
 				return -1;
 			}
 
-			String username = account.toString(), password = account.getPassword();
+			final String username = account.toString();
+			final String password = account.getPassword();
 			String text;
 			text = getUsernameText();
 			if (!text.equalsIgnoreCase(username)) {
@@ -86,9 +87,9 @@ public class Login extends PollingScript implements InternalScript {
 				}
 				sleep(Random.nextInt(500, 700));
 
-				int length = text.length();
+				final int length = text.length();
 				if (length > 0) {
-					StringBuilder b = new StringBuilder(length);
+					final StringBuilder b = new StringBuilder(length);
 					for (int i = 0; i < length; i++) {
 						b.append('\b');
 					}
@@ -107,9 +108,9 @@ public class Login extends PollingScript implements InternalScript {
 					return -1;
 				}
 				sleep(Random.nextInt(500, 700));
-				int length = text.length();
+				final int length = text.length();
 				if (length > 0) {
-					StringBuilder b = new StringBuilder(length);
+					final StringBuilder b = new StringBuilder(length);
 					for (int i = 0; i < length; i++) {
 						b.append('\b');
 					}

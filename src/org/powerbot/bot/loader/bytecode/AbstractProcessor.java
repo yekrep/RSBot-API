@@ -7,28 +7,28 @@ import org.objectweb.asm.tree.ClassNode;
 public class AbstractProcessor implements Processor {
 	private Transform[] transforms;
 
-	public AbstractProcessor(Transform... transforms) {
+	public AbstractProcessor(final Transform... transforms) {
 		this.transforms = transforms;
 	}
 
 	@Override
-	public byte[] transform(byte[] b) {
-		ClassNode node = getNode(b);
-		for (Transform transform : transforms) {
+	public byte[] transform(final byte[] b) {
+		final ClassNode node = getNode(b);
+		for (final Transform transform : transforms) {
 			transform.accept(node);
 		}
 		return getCode(node);
 	}
 
-	private ClassNode getNode(byte[] bytes) {
-		ClassNode node = new ClassNode();
-		ClassReader reader = new ClassReader(bytes);
+	private ClassNode getNode(final byte[] bytes) {
+		final ClassNode node = new ClassNode();
+		final ClassReader reader = new ClassReader(bytes);
 		reader.accept(node, ClassReader.SKIP_FRAMES | ClassReader.SKIP_DEBUG);
 		return node;
 	}
 
-	private byte[] getCode(ClassNode node) {
-		ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS);
+	private byte[] getCode(final ClassNode node) {
+		final ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS);
 		node.accept(writer);
 		return writer.toByteArray();
 	}

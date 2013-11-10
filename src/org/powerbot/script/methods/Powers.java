@@ -24,7 +24,7 @@ public class Powers extends MethodProvider {
 	public static final int COMPONENT_PRAYER_SELECT_CONFIRM = 4;
 	public static final int COMPONENT_QUICK_SELECTION = 32;
 
-	public Powers(MethodContext factory) {
+	public Powers(final MethodContext factory) {
 		super(factory);
 	}
 
@@ -73,7 +73,7 @@ public class Powers extends MethodProvider {
 		private final int index;
 		private final int level;
 
-		Prayer(int id, int index, int level) {
+		Prayer(final int id, final int index, final int level) {
 			this.id = id;
 			this.index = index;
 			this.level = level;
@@ -141,7 +141,7 @@ public class Powers extends MethodProvider {
 		private final int index;
 		private final int level;
 
-		Curse(int id, int index, int level) {
+		Curse(final int id, final int index, final int level) {
 			this.id = id;
 			this.index = index;
 			this.level = level;
@@ -240,8 +240,8 @@ public class Powers extends MethodProvider {
 	 * @param effect the {@link Effect} to check
 	 * @return <tt>true</tt> if prayer is active; otherwise <tt>false</tt>
 	 */
-	public boolean isPrayerActive(Effect effect) {
-		int setting;
+	public boolean isPrayerActive(final Effect effect) {
+		final int setting;
 		if (effect instanceof Prayer) {
 			setting = SETTING_PRAYERS;
 		} else if (effect instanceof Curse) {
@@ -258,8 +258,8 @@ public class Powers extends MethodProvider {
 	 * @param effect the {@link Effect} to check
 	 * @return <tt>true</tt> if set as a quick prayer; otherwise <tt>false</tt>
 	 */
-	public boolean isPrayerQuick(Effect effect) {
-		int setting;
+	public boolean isPrayerQuick(final Effect effect) {
+		final int setting;
 		if (effect instanceof Prayer) {
 			setting = SETTING_PRAYERS_QUICK;
 		} else if (effect instanceof Curse) {
@@ -276,8 +276,8 @@ public class Powers extends MethodProvider {
 	 * @return the {@link Effect}s currently active
 	 */
 	public Effect[] getActivePrayers() {
-		int book = getPrayerBook();
-		Effect[] effects;
+		final int book = getPrayerBook();
+		final Effect[] effects;
 		switch (book) {
 		case BOOK_PRAYERS:
 			effects = Prayer.values();
@@ -290,8 +290,8 @@ public class Powers extends MethodProvider {
 			break;
 		}
 
-		Set<Effect> active = new LinkedHashSet<Effect>();
-		for (Effect effect : effects) {
+		final Set<Effect> active = new LinkedHashSet<Effect>();
+		for (final Effect effect : effects) {
 			if (isPrayerActive(effect)) {
 				active.add(effect);
 			}
@@ -305,8 +305,8 @@ public class Powers extends MethodProvider {
 	 * @return the {@link Effect}s set as quick prayers
 	 */
 	public Effect[] getQuickPrayers() {
-		int book = getPrayerBook();
-		Effect[] effects;
+		final int book = getPrayerBook();
+		final Effect[] effects;
 		switch (book) {
 		case BOOK_PRAYERS:
 			effects = Prayer.values();
@@ -319,8 +319,8 @@ public class Powers extends MethodProvider {
 			break;
 		}
 
-		Set<Effect> quick = new LinkedHashSet<Effect>();
-		for (Effect effect : effects) {
+		final Set<Effect> quick = new LinkedHashSet<Effect>();
+		for (final Effect effect : effects) {
 			if (isPrayerQuick(effect)) {
 				quick.add(effect);
 			}
@@ -334,7 +334,7 @@ public class Powers extends MethodProvider {
 	 * @param quick {@code true} if desired prayer selection, {@code false} if desired not prayer selection
 	 * @return <tt>true</tt> if toggled selection mode; otherwise <tt>false</tt>
 	 */
-	public boolean setQuickSelection(boolean quick) {
+	public boolean setQuickSelection(final boolean quick) {
 		if (isQuickSelection() == quick) {
 			return true;
 		}
@@ -368,7 +368,7 @@ public class Powers extends MethodProvider {
 	 * @param active {@code true} if desired active; {@code false} if desired not active
 	 * @return <tt>true</tt> if quick prayers are toggled; otherwise <tt>false</tt>
 	 */
-	public boolean setQuickPrayers(boolean active) {
+	public boolean setQuickPrayers(final boolean active) {
 		if (isQuickPrayers() == active) {
 			return true;
 		}
@@ -391,7 +391,7 @@ public class Powers extends MethodProvider {
 	 * @param active {@code true} if desired active; {@code false} if desired not active
 	 * @return <tt>true</tt> if {@link Effect} is successfully toggled; otherwise <tt>false</tt>
 	 */
-	public boolean setPrayerActive(Effect effect, boolean active) {
+	public boolean setPrayerActive(final Effect effect, final boolean active) {
 		if (ctx.skills.getLevel(Skills.PRAYER) < effect.getLevel()) {
 			return false;
 		}
@@ -410,12 +410,12 @@ public class Powers extends MethodProvider {
 	 * @param effects the {@link Effect}s
 	 * @return <tt>true</tt> if selected; otherwise <tt>false</tt>.
 	 */
-	public boolean setQuickPrayers(Effect... effects) {
+	public boolean setQuickPrayers(final Effect... effects) {
 		if (!isQuickSelection()) {
 			setQuickSelection(true);
 		}
 		if (isQuickSelection() && ctx.hud.view(Hud.Window.PRAYER_ABILITIES)) {
-			for (Effect effect : effects) {
+			for (final Effect effect : effects) {
 				if (isPrayerQuick(effect)) {
 					continue;
 				}
@@ -424,7 +424,7 @@ public class Powers extends MethodProvider {
 				}
 			}
 
-			for (Effect effect : getQuickPrayers()) {
+			for (final Effect effect : getQuickPrayers()) {
 				if (isPrayerQuick(effect) && !search(effects, effect)) {
 					if (ctx.widgets.get(WIDGET_PRAYER, COMPONENT_PRAYER_SELECT_CONTAINER).getChild(effect.getId()).interact("Deselect")) {
 						sleep(800, 1200);
@@ -442,8 +442,8 @@ public class Powers extends MethodProvider {
 		return !isQuickSelection();
 	}
 
-	private boolean search(Effect[] effects, Effect effect) {
-		for (Effect e : effects) {
+	private boolean search(final Effect[] effects, final Effect effect) {
+		for (final Effect e : effects) {
 			if (e.getId() == effect.getId()) {
 				return true;
 			}

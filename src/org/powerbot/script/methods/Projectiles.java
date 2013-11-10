@@ -20,7 +20,7 @@ import org.powerbot.script.wrappers.Projectile;
  * @author Timer
  */
 public class Projectiles extends IdQuery<Projectile> {
-	public Projectiles(MethodContext factory) {
+	public Projectiles(final MethodContext factory) {
 		super(factory);
 	}
 
@@ -31,7 +31,7 @@ public class Projectiles extends IdQuery<Projectile> {
 	protected List<Projectile> get() {
 		final List<Projectile> items = new ArrayList<Projectile>();
 
-		Client client = ctx.getClient();
+		final Client client = ctx.getClient();
 		if (client == null) {
 			return items;
 		}

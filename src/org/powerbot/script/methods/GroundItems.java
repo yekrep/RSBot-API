@@ -14,7 +14,7 @@ import org.powerbot.script.wrappers.GroundItem;
 import org.powerbot.script.wrappers.Tile;
 
 public class GroundItems extends GroundItemQuery<GroundItem> {
-	public GroundItems(MethodContext factory) {
+	public GroundItems(final MethodContext factory) {
 		super(factory);
 	}
 
@@ -25,26 +25,27 @@ public class GroundItems extends GroundItemQuery<GroundItem> {
 	protected List<GroundItem> get() {
 		final List<GroundItem> items = new ArrayList<GroundItem>();
 
-		Client client = ctx.getClient();
+		final Client client = ctx.getClient();
 		if (client == null) {
 			return items;
 		}
 
-		HashTable table = client.getRSItemHashTable();
+		final HashTable table = client.getRSItemHashTable();
 		if (table == null) {
 			return items;
 		}
 
-		int plane = client.getPlane();
+		final int plane = client.getPlane();
 		long id;
 		NodeListCache cache;
 		NodeDeque deque;
 
-		Tile base = ctx.game.getMapBase();
+		final Tile base = ctx.game.getMapBase();
 		if (base == null) {
 			return items;
 		}
-		int bx = base.getX(), by = base.getY();
+		final int bx = base.getX();
+		final int by = base.getY();
 		for (int x = bx; x < bx + 104; x++) {
 			for (int y = by; y < by + 104; y++) {
 				id = x | y << 14 | plane << 28;

@@ -47,7 +47,7 @@ public class Game extends MethodProvider {
 
 	public int mapAngle;
 
-	public Game(MethodContext factory) {
+	public Game(final MethodContext factory) {
 		super(factory);
 		this.toolkit = new Toolkit();
 		this.viewport = new Viewport();
@@ -68,11 +68,11 @@ public class Game extends MethodProvider {
 	 * @param lobby <tt>true</tt> for the lobby; <tt>false</tt> for the login screen
 	 * @return <tt>true</tt> if successfully logged out; otherwise <tt>false</tt>
 	 */
-	public boolean logout(boolean lobby) {
+	public boolean logout(final boolean lobby) {
 		if (ctx.hud.isVisible(Hud.Window.MINIMAP)) {
-			Component sprite = ctx.hud.getSprite(Hud.Window.MINIMAP);
+			final Component sprite = ctx.hud.getSprite(Hud.Window.MINIMAP);
 			if (sprite != null && sprite.getParent().getChild(2).interact("Logout")) {
-				Widget widget = ctx.widgets.get(26);
+				final Widget widget = ctx.widgets.get(26);
 				for (int i = 0; i < 20; i++) {
 					if (widget.isValid()) {
 						break;
@@ -105,7 +105,7 @@ public class Game extends MethodProvider {
 	 * @see Game#INDEX_MAP_LOADING
 	 */
 	public int getClientState() {
-		Client client = ctx.getClient();
+		final Client client = ctx.getClient();
 		final Constants constants = getConstants();
 		if (client == null || constants == null) {
 			return -1;
@@ -131,7 +131,7 @@ public class Game extends MethodProvider {
 	 * @return <tt>true</tt> if logged in; otherwise <tt>false</tt>
 	 */
 	public boolean isLoggedIn() {
-		int state = getClientState();
+		final int state = getClientState();
 		return state == INDEX_MAP_LOADED || state == INDEX_MAP_LOADING;
 	}
 
@@ -141,8 +141,8 @@ public class Game extends MethodProvider {
 	 * @return the displayed {@link Crosshair}
 	 */
 	public Crosshair getCrosshair() {
-		Client client = ctx.getClient();
-		int type = client != null ? client.getCrossHairType() : -1;
+		final Client client = ctx.getClient();
+		final int type = client != null ? client.getCrossHairType() : -1;
 		if (type < 0 || type > 2) {
 			return Crosshair.NONE;
 		}
@@ -155,7 +155,7 @@ public class Game extends MethodProvider {
 	 * @return the {@link Tile} of the base
 	 */
 	public Tile getMapBase() {
-		Client client = ctx.getClient();
+		final Client client = ctx.getClient();
 		if (client == null) {
 			return Tile.NIL;
 		}
@@ -171,7 +171,7 @@ public class Game extends MethodProvider {
 	 * @return the current floor level
 	 */
 	public int getPlane() {
-		Client client = ctx.getClient();
+		final Client client = ctx.getClient();
 		if (client == null) {
 			return -1;
 		}
@@ -202,7 +202,7 @@ public class Game extends MethodProvider {
 	 * @return the {@link Dimension}s of the game space
 	 */
 	public Dimension getDimensions() {
-		Client client = ctx.getClient();
+		final Client client = ctx.getClient();
 		final Canvas canvas;
 		if (client == null || (canvas = client.getCanvas()) == null) {
 			return new Dimension(0, 0);
@@ -228,11 +228,11 @@ public class Game extends MethodProvider {
 	 * @return <tt>true</tt> if the point is on screen; otherwise <tt>false</tt>
 	 */
 	public boolean isPointOnScreen(final int x, final int y) {
-		Dimension dimension = getDimensions();
+		final Dimension dimension = getDimensions();
 		if (x > 0 && y > 0) {
 			if (isLoggedIn()) {
-				Rectangle[] rectangles = ctx.hud.getBounds();
-				for (Rectangle rectangle : rectangles) {
+				final Rectangle[] rectangles = ctx.hud.getBounds();
+				for (final Rectangle rectangle : rectangles) {
 					if (rectangle.contains(x, y)) {
 						return false;
 					}
@@ -252,39 +252,40 @@ public class Game extends MethodProvider {
 	 * @return the height at the given point
 	 */
 	public int tileHeight(final int rX, final int rY, int plane) {
-		Client client = ctx.getClient();
+		final Client client = ctx.getClient();
 		if (client == null) {
 			return 0;
 		}
 		if (plane == -1) {
 			plane = client.getPlane();
 		}
-		RSInfo world = client.getRSGroundInfo();
-		RSGroundBytes ground = world != null ? world.getGroundBytes() : null;
-		byte[][][] settings = ground != null ? ground.getBytes() : null;
+		final RSInfo world = client.getRSGroundInfo();
+		final RSGroundBytes ground = world != null ? world.getGroundBytes() : null;
+		final byte[][][] settings = ground != null ? ground.getBytes() : null;
 		if (settings != null) {
-			int x = rX >> 9, y = rY >> 9;
+			final int x = rX >> 9;
+			final int y = rY >> 9;
 			if (x < 0 || x > 103 || y < 0 || y > 103) {
 				return 0;
 			}
 			if (plane < 3 && (settings[1][x][y] & 2) != 0) {
 				++plane;
 			}
-			RSGroundInfo worldGround = world.getRSGroundInfo();
-			TileData[] groundPlanes = worldGround != null ? worldGround.getTileData() : null;
+			final RSGroundInfo worldGround = world.getRSGroundInfo();
+			final TileData[] groundPlanes = worldGround != null ? worldGround.getTileData() : null;
 			if (groundPlanes == null || plane < 0 || plane >= groundPlanes.length) {
 				return 0;
 			}
-			TileData groundData = groundPlanes[plane];
+			final TileData groundData = groundPlanes[plane];
 			if (groundData == null) {
 				return 0;
 			}
-			int[][] heights = groundData.getHeights();
+			final int[][] heights = groundData.getHeights();
 			if (heights != null) {
-				int aX = rX & 0x1ff;
-				int aY = rY & 0x1ff;
-				int start_h = heights[x][y] * (512 - aX) + heights[x + 1][y] * aX >> 9;
-				int end_h = heights[x][1 + y] * (512 - aX) + heights[x + 1][y + 1] * aX >> 9;
+				final int aX = rX & 0x1ff;
+				final int aY = rY & 0x1ff;
+				final int start_h = heights[x][y] * (512 - aX) + heights[x + 1][y] * aX >> 9;
+				final int end_h = heights[x][1 + y] * (512 - aX) + heights[x + 1][y + 1] * aX >> 9;
 				return start_h * (512 - aY) + end_h * aY >> 9;
 			}
 		}
@@ -317,7 +318,7 @@ public class Game extends MethodProvider {
 	 * @param z the depth
 	 * @return the {@link Point} in game space, otherwise {@code new Point(-1, -1)}
 	 */
-	public Point worldToScreen(int x, final int y, final int z) {
+	public Point worldToScreen(final int x, final int y, final int z) {
 		final float _z = (viewport.zOff + (viewport.zX * x + viewport.zY * y + viewport.zZ * z));
 		final float _x = (viewport.xOff + (viewport.xX * x + viewport.xY * y + viewport.xZ * z));
 		final float _y = (viewport.yOff + (viewport.yX * x + viewport.yY * y + viewport.yZ * z));
@@ -336,40 +337,42 @@ public class Game extends MethodProvider {
 	 * @param locatable the {@link Locatable} to convert to map point
 	 * @return the map {@link Point}
 	 */
-	public Point tileToMap(Locatable locatable) {
-		Point bad = new Point(-1, -1);
-		Client client = ctx.getClient();
-		Tile b = ctx.game.getMapBase();
-		Tile t = locatable.getLocation().derive(-b.getX(), -b.getY());
-		int tx = t.getX(), ty = t.getY();
+	public Point tileToMap(final Locatable locatable) {
+		final Point bad = new Point(-1, -1);
+		final Client client = ctx.getClient();
+		final Tile b = ctx.game.getMapBase();
+		final Tile t = locatable.getLocation().derive(-b.getX(), -b.getY());
+		final int tx = t.getX();
+		final int ty = t.getY();
 		if (client == null || tx < 1 || tx > 103 || ty < 1 || ty > 103) {
 			return bad;
 		}
 
-		RelativeLocation r = ctx.players.local().getRelative();
-		float offX = (tx * 4 - r.getX() / 128) + 2;
-		float offY = (ty * 4 - r.getY() / 128) + 2;
-		int d = (int) Math.round(Math.sqrt(Math.pow(offX, 2) + Math.pow(offY, 2)));
+		final RelativeLocation r = ctx.players.local().getRelative();
+		final float offX = (tx * 4 - r.getX() / 128) + 2;
+		final float offY = (ty * 4 - r.getY() / 128) + 2;
+		final int d = (int) Math.round(Math.sqrt(Math.pow(offX, 2) + Math.pow(offY, 2)));
 
-		Component component = ctx.widgets.get(1465, 12);
-		int w = component.getScrollWidth(), h = component.getScrollHeight();
-		int radius = Math.max(w / 2, h / 2) + 10;
+		final Component component = ctx.widgets.get(1465, 12);
+		final int w = component.getScrollWidth();
+		final int h = component.getScrollHeight();
+		final int radius = Math.max(w / 2, h / 2) + 10;
 		if (d >= radius) {
 			return bad;
 		}
 
-		Constants constants = getConstants();
-		int v = constants != null ? constants.MINIMAP_SETTINGS_ON : -1;
-		boolean f = client.getMinimapSettings() == v;
+		final Constants constants = getConstants();
+		final int v = constants != null ? constants.MINIMAP_SETTINGS_ON : -1;
+		final boolean f = client.getMinimapSettings() == v;
 
-		double a = (ctx.camera.getYaw() * (Math.PI / 180d)) * 2607.5945876176133d;
+		final double a = (ctx.camera.getYaw() * (Math.PI / 180d)) * 2607.5945876176133d;
 		int i = 0x3fff & (int) a;
 		if (!f) {
 			i = 0x3fff & client.getMinimapOffset() + (int) a;
 		}
 		int sin = SIN_TABLE[i], cos = COS_TABLE[i];
 		if (!f) {
-			int scale = 256 + client.getMinimapScale();
+			final int scale = 256 + client.getMinimapScale();
 			sin = 256 * sin / scale;
 			cos = 256 * cos / scale;
 		}
@@ -382,11 +385,11 @@ public class Game extends MethodProvider {
 
 		if (rotX > 4 && rotX < w - 4 &&
 				rotY > 4 && rotY < h - 4) {
-			Point basePoint = component.getAbsoluteLocation();
-			int sX = rotX + (int) basePoint.getX();
-			int sY = rotY + (int) basePoint.getY();
-			Point p = new Point(sX, sY);
-			Rectangle rbuffer = new Rectangle(p.x - 6, p.y - 6, 12, 12);//entire tile and a half sized 'buffer' area
+			final Point basePoint = component.getAbsoluteLocation();
+			final int sX = rotX + (int) basePoint.getX();
+			final int sY = rotY + (int) basePoint.getY();
+			final Point p = new Point(sX, sY);
+			final Rectangle rbuffer = new Rectangle(p.x - 6, p.y - 6, 12, 12);//entire tile and a half sized 'buffer' area
 			for (int pos = 17; pos <= 21; pos++) {
 				if (ctx.widgets.get(1465, pos).getViewportRect().intersects(rbuffer)) {
 					return bad;
@@ -459,7 +462,7 @@ public class Game extends MethodProvider {
 	}
 
 	private Constants getConstants() {
-		Bot bot = ctx.getBot();
+		final Bot bot = ctx.getBot();
 		return bot != null ? bot.getConstants() : null;
 	}
 

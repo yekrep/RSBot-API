@@ -66,7 +66,7 @@ public class Boot implements Runnable {
 
 		Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
 			@Override
-			public void uncaughtException(Thread t, Throwable e) {
+			public void uncaughtException(final Thread t, final Throwable e) {
 				log.logp(Level.SEVERE, t.getStackTrace()[1].getClassName(), t.getStackTrace()[1].getMethodName(), e.getMessage(), e);
 				e.printStackTrace();
 			}

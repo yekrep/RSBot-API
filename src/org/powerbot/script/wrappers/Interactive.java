@@ -16,7 +16,7 @@ import org.powerbot.script.util.Condition;
 import org.powerbot.script.util.Random;
 
 public abstract class Interactive extends MethodProvider implements Targetable, Validatable {
-	public Interactive(MethodContext ctx) {
+	public Interactive(final MethodContext ctx) {
 		super(ctx);
 	}
 
@@ -44,7 +44,7 @@ public abstract class Interactive extends MethodProvider implements Targetable, 
 		return click(true);
 	}
 
-	public boolean click(boolean left) {
+	public boolean click(final boolean left) {
 		if (!isValid()) {
 			return false;
 		}
@@ -69,11 +69,11 @@ public abstract class Interactive extends MethodProvider implements Targetable, 
 		};
 	}
 
-	public boolean interact(String action) {
+	public boolean interact(final String action) {
 		return interact(Menu.filter(action));
 	}
 
-	public boolean interact(String action, String option) {
+	public boolean interact(final String action, final String option) {
 		return interact(Menu.filter(action, option));
 	}
 
@@ -82,12 +82,12 @@ public abstract class Interactive extends MethodProvider implements Targetable, 
 			return false;
 		}
 
-		TileMatrix m = ctx.players.local().getLocation().getMatrix(ctx);
-		boolean a = overshoot(m);
+		final TileMatrix m = ctx.players.local().getLocation().getMatrix(ctx);
+		final boolean a = overshoot(m);
 
 		final Filter<Point> f2 = new Filter<Point>() {
 			@Override
-			public boolean accept(Point p) {
+			public boolean accept(final Point p) {
 				return ctx.menu.indexOf(f) != -1 && contains(p);
 			}
 		};
@@ -109,7 +109,7 @@ public abstract class Interactive extends MethodProvider implements Targetable, 
 		return true;
 	}
 
-	private boolean overshoot(TileMatrix matrix) {
+	private boolean overshoot(final TileMatrix matrix) {
 		boolean r = false;
 		if (this instanceof Renderable) {
 			for (; antipattern(this, (Renderable) this); ) {
@@ -127,36 +127,37 @@ public abstract class Interactive extends MethodProvider implements Targetable, 
 		return r;
 	}
 
-	private boolean antipattern(Targetable targetable, Renderable renderable) {
+	private boolean antipattern(final Targetable targetable, final Renderable renderable) {
 		if (!ctx.antipatterns.isEnabled()) {
 			return false;
 		}
 
-		Model model = renderable.getModel();
-		Point mousePoint = ctx.mouse.getLocation();
-		Point interactPoint = targetable.getInteractPoint();
+		final Model model = renderable.getModel();
+		final Point mousePoint = ctx.mouse.getLocation();
+		final Point interactPoint = targetable.getInteractPoint();
 		if (model == null || !ctx.game.isPointOnScreen(interactPoint)) {
 			return false;
 		}
 
-		Area area = new Area();
-		for (Polygon triangle : model.getTriangles()) {
+		final Area area = new Area();
+		for (final Polygon triangle : model.getTriangles()) {
 			area.add(new Area(triangle));
 		}
-		Rectangle rect = area.getBounds();
+		final Rectangle rect = area.getBounds();
 		if (rect.contains(interactPoint)) {
 			double dist = mousePoint.distance(interactPoint);
 
-			int w = rect.width, h = rect.height;
-			int avg = (w + h) >> 1;
-			int max = Math.max(w, h);
+			final int w = rect.width;
+			final int h = rect.height;
+			final int avg = (w + h) >> 1;
+			final int max = Math.max(w, h);
 			if (dist >= avg && (max < Random.nextInt(30, 60) ? Random.nextInt(0, 3) > 0 : Random.nextBoolean()) &&
 					(!ctx.players.local().isInMotion() || Random.nextBoolean())) {
 				dist += Random.nextInt(-max, max);
 
-				int x;
-				int y;
-				double theta = Math.atan2(interactPoint.y - mousePoint.y, interactPoint.x - mousePoint.x);
+				final int x;
+				final int y;
+				final double theta = Math.atan2(interactPoint.y - mousePoint.y, interactPoint.x - mousePoint.x);
 				x = mousePoint.x + (int) (dist * Math.cos(theta));
 				y = mousePoint.y + (int) (dist * Math.sin(theta));
 
@@ -169,14 +170,14 @@ public abstract class Interactive extends MethodProvider implements Targetable, 
 		return false;
 	}
 
-	private void correct(TileMatrix c) {
+	private void correct(final TileMatrix c) {
 		Tile tileOfInteractive = Tile.NIL;
 		if (this instanceof Locatable) {
 			tileOfInteractive = ((Locatable) this).getLocation();
 		}
-		Tile dest = ctx.movement.getDestination();
-		int l_d = ctx.movement.getDistance(c, dest);
-		int l_t = ctx.movement.getDistance(c, tileOfInteractive);
+		final Tile dest = ctx.movement.getDestination();
+		final int l_d = ctx.movement.getDistance(c, dest);
+		final int l_t = ctx.movement.getDistance(c, tileOfInteractive);
 		if ((l_d < 0 && dest.getMatrix(ctx).isValid()) ||
 				(l_t != -1 && l_d != -1 && l_d > l_t + 2)) {
 			if (!(c.isOnScreen() && c.interact("Walk here"))) {

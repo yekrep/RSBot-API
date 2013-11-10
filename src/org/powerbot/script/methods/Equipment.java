@@ -15,7 +15,7 @@ public class Equipment extends ItemQuery<Item> {
 	public static final int COMPONENT_GEAR_CONTAINER = 13;
 	public static final int NUM_SLOTS = 13;
 
-	public Equipment(MethodContext factory) {
+	public Equipment(final MethodContext factory) {
 		super(factory);
 	}
 
@@ -41,7 +41,7 @@ public class Equipment extends ItemQuery<Item> {
 		private final int storageIndex;
 		private final int component;
 
-		Slot(int storageIndex, int component) {
+		Slot(final int storageIndex, final int component) {
 			this.storageIndex = storageIndex;
 			this.component = component;
 		}
@@ -60,12 +60,12 @@ public class Equipment extends ItemQuery<Item> {
 	 */
 	@Override
 	protected List<Item> get() {
-		List<Item> items = new ArrayList<Item>(28);
-		int[][] data = ctx.items.getItems(Items.INDEX_EQUIPMENT);
-		Component component = getComponent();
-		for (Slot slot : Slot.values()) {
-			int index = slot.getStorageIndex();
-			Component c = component.getChild(slot.getComponentIndex());
+		final List<Item> items = new ArrayList<Item>(28);
+		final int[][] data = ctx.items.getItems(Items.INDEX_EQUIPMENT);
+		final Component component = getComponent();
+		for (final Slot slot : Slot.values()) {
+			final int index = slot.getStorageIndex();
+			final Component c = component.getChild(slot.getComponentIndex());
 			if (index < 0 || index >= data.length || data[index][0] == -1) {
 				continue;
 			}
@@ -80,10 +80,10 @@ public class Equipment extends ItemQuery<Item> {
 	 * @param slot the {@link Slot} to get the {@link Item} at
 	 * @return the {@link Item} in the provided slot
 	 */
-	public Item getItemAt(Slot slot) {
-		int index = slot.getStorageIndex();
-		int[][] data = ctx.items.getItems(Items.INDEX_EQUIPMENT);
-		Component c = getComponent().getChild(slot.getComponentIndex());
+	public Item getItemAt(final Slot slot) {
+		final int index = slot.getStorageIndex();
+		final int[][] data = ctx.items.getItems(Items.INDEX_EQUIPMENT);
+		final Component c = getComponent().getChild(slot.getComponentIndex());
 		if (index >= data.length || data[index][0] == -1) {
 			return new Item(ctx, -1, -1, c);
 		}
@@ -96,7 +96,7 @@ public class Equipment extends ItemQuery<Item> {
 	 * @return the {@link Component} of the equipment display
 	 */
 	public Component getComponent() {
-		Component gear = ctx.widgets.get(WIDGET_GEAR, COMPONENT_GEAR_CONTAINER);
+		final Component gear = ctx.widgets.get(WIDGET_GEAR, COMPONENT_GEAR_CONTAINER);
 		return gear.isVisible() ? gear : ctx.widgets.get(WIDGET, COMPONENT_CONTAINER);
 	}
 

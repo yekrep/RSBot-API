@@ -16,25 +16,25 @@ public abstract class AbstractBridge implements Bridge {
 	private final TransformSpec transformSpec;
 	private ClassLoader loader;
 
-	public AbstractBridge(TransformSpec transformSpec) {
+	public AbstractBridge(final TransformSpec transformSpec) {
 		this.entries = Collections.synchronizedList(new LinkedList<String>());
 		this.loaded = new ConcurrentHashMap<String, byte[]>();
 		this.transformSpec = transformSpec;
 	}
 
 	@Override
-	public void classLoader(ClassLoader loader) {
+	public void classLoader(final ClassLoader loader) {
 		this.loader = loader;
 	}
 
 	@Override
-	public byte[] classDefined(byte[] bytes) {
+	public byte[] classDefined(final byte[] bytes) {
 		if (transformSpec != null) {
 			return transformSpec.process(bytes);
 		}
 
-		ClassNode node = new ClassNode();
-		ClassReader reader = new ClassReader(bytes);
+		final ClassNode node = new ClassNode();
+		final ClassReader reader = new ClassReader(bytes);
 		reader.accept(node, ClassReader.SKIP_DEBUG | ClassReader.SKIP_FRAMES);
 		loaded.put(node.name, bytes);
 		return bytes;
@@ -57,7 +57,7 @@ public abstract class AbstractBridge implements Bridge {
 			return;
 		}
 
-		for (String entry : entries) {
+		for (final String entry : entries) {
 			try {
 				loader.loadClass(entry);
 			} catch (ClassNotFoundException ignored) {

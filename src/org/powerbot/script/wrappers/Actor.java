@@ -22,7 +22,7 @@ import org.powerbot.script.methods.MethodContext;
 public abstract class Actor extends Interactive implements Renderable, Nameable, Locatable, Drawable {
 	private int faceIndex = -1;
 
-	public Actor(MethodContext ctx) {
+	public Actor(final MethodContext ctx) {
 		super(ctx);
 	}
 
@@ -129,7 +129,7 @@ public abstract class Actor extends Interactive implements Renderable, Nameable,
 		if (index == -1) {
 			return nil;
 		}
-		Client client = ctx.getClient();
+		final Client client = ctx.getClient();
 		if (client == null) {
 			return nil;
 		}
@@ -184,7 +184,7 @@ public abstract class Actor extends Interactive implements Renderable, Nameable,
 	}
 
 	public boolean isInCombat() {
-		Client client = ctx.getClient();
+		final Client client = ctx.getClient();
 		if (client == null) {
 			return false;
 		}
@@ -203,8 +203,8 @@ public abstract class Actor extends Interactive implements Renderable, Nameable,
 
 	@Override
 	public Tile getLocation() {
-		RSCharacter character = getAccessor();
-		RelativeLocation position = getRelative();
+		final RSCharacter character = getAccessor();
+		final RelativeLocation position = getRelative();
 		if (character != null && position != RelativeLocation.NIL) {
 			return ctx.game.getMapBase().derive((int) position.getX() >> 9, (int) position.getY() >> 9, character.getPlane());
 		}
@@ -212,9 +212,9 @@ public abstract class Actor extends Interactive implements Renderable, Nameable,
 	}
 
 	public RelativeLocation getRelative() {
-		RSCharacter character = getAccessor();
-		RSInteractableData data = character != null ? character.getData() : null;
-		RSInteractableLocation location = data != null ? data.getLocation() : null;
+		final RSCharacter character = getAccessor();
+		final RSInteractableData data = character != null ? character.getData() : null;
+		final RSInteractableLocation location = data != null ? data.getLocation() : null;
 		if (location != null) {
 			return new RelativeLocation(location.getX(), location.getY());
 		}
@@ -284,7 +284,9 @@ public abstract class Actor extends Interactive implements Renderable, Nameable,
 			return null;
 		}
 		final LinkedListNode tail = barList.getTail();
-		LinkedListNode health, adrenaline, current;
+		final LinkedListNode health;
+		final LinkedListNode adrenaline;
+		final LinkedListNode current;
 		current = tail.getNext();
 		if (current.getNext() != tail) {
 			adrenaline = current;
@@ -298,24 +300,24 @@ public abstract class Actor extends Interactive implements Renderable, Nameable,
 	}
 
 	private CombatStatusData[] getBarData() {
-		LinkedListNode[] nodes = getBarNodes();
+		final LinkedListNode[] nodes = getBarNodes();
 		if (nodes == null) {
 			return null;
 		}
-		CombatStatusData[] data = new CombatStatusData[nodes.length];
+		final CombatStatusData[] data = new CombatStatusData[nodes.length];
 		for (int i = 0; i < nodes.length; i++) {
 			if (nodes[i] == null || !(nodes[i] instanceof CombatStatus)) {
 				data[i] = null;
 				continue;
 			}
-			CombatStatus status = (CombatStatus) nodes[i];
-			org.powerbot.client.LinkedList statuses = status.getData();
+			final CombatStatus status = (CombatStatus) nodes[i];
+			final org.powerbot.client.LinkedList statuses = status.getData();
 			if (statuses == null) {
 				data[i] = null;
 				continue;
 			}
 
-			LinkedListNode node = statuses.getTail().getNext();
+			final LinkedListNode node = statuses.getTail().getNext();
 			if (node == null || !(node instanceof CombatStatusData)) {
 				data[i] = null;
 				continue;

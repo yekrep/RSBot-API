@@ -23,7 +23,7 @@ import org.powerbot.script.wrappers.CollisionMap;
 import org.powerbot.script.wrappers.GameObject;
 
 public class Map extends MethodProvider {
-	public Map(MethodContext factory) {
+	public Map(final MethodContext factory) {
 		super(factory);
 	}
 
@@ -34,7 +34,7 @@ public class Map extends MethodProvider {
 	};
 
 	public CollisionMap[] getCollisionMaps() {
-		Client client = ctx.getClient();
+		final Client client = ctx.getClient();
 		if (client == null) {
 			return new CollisionMap[0];
 		}
@@ -45,14 +45,14 @@ public class Map extends MethodProvider {
 				(grounds = groundInfo.getRSGroundArray()) == null) {
 			return new CollisionMap[0];
 		}
-		RSGroundBytes ground = info.getGroundBytes();
-		byte[][][] settings = ground != null ? ground.getBytes() : null;
+		final RSGroundBytes ground = info.getGroundBytes();
+		final byte[][][] settings = ground != null ? ground.getBytes() : null;
 		if (settings == null) {
 			return new CollisionMap[0];
 		}
-		CollisionMap[] collisionMaps = new CollisionMap[settings.length];
+		final CollisionMap[] collisionMaps = new CollisionMap[settings.length];
 		for (int plane = 0; plane < collisionMaps.length; plane++) {
-			int width = settings[plane].length;
+			final int width = settings[plane].length;
 			int height = Integer.MAX_VALUE;
 			for (int x = 0; x < width; x++) {
 				height = Math.min(height, settings[plane][x].length);
@@ -60,7 +60,7 @@ public class Map extends MethodProvider {
 			collisionMaps[plane] = new CollisionMap(width, height);
 			for (int locX = 0; locX < width; locX++) {
 				for (int locY = 0; locY < height; locY++) {
-					List<GameObject> objects = getObjects(locX, locY, plane, grounds);
+					final List<GameObject> objects = getObjects(locX, locY, plane, grounds);
 					if ((settings[plane][locX][locY] & 0x1) == 0) {
 						readCollision(collisionMaps[plane], locX, locY, objects);
 						continue;
@@ -83,9 +83,9 @@ public class Map extends MethodProvider {
 		return collisionMaps;
 	}
 
-	private List<GameObject> getObjects(int x, int y, int plane, RSGround[][][] grounds) {
-		List<GameObject> items = new ArrayList<GameObject>();
-		RSGround ground;
+	private List<GameObject> getObjects(final int x, final int y, final int plane, final RSGround[][][] grounds) {
+		final List<GameObject> items = new ArrayList<GameObject>();
+		final RSGround ground;
 		if (plane < grounds.length && x < grounds[plane].length && y < grounds[plane][x].length) {
 			ground = grounds[plane][x][y];
 		} else {
@@ -96,11 +96,11 @@ public class Map extends MethodProvider {
 		}
 
 		for (RSAnimableNode animable = ground.getRSAnimableList(); animable != null; animable = animable.getNext()) {
-			Object node = animable.getRSAnimable();
+			final Object node = animable.getRSAnimable();
 			if (node == null || !(node instanceof RSObject)) {
 				continue;
 			}
-			RSObject obj = (RSObject) node;
+			final RSObject obj = (RSObject) node;
 			if (obj.getId() != -1) {
 				items.add(new GameObject(ctx, obj, GameObject.Type.INTERACTIVE));
 			}
@@ -122,7 +122,7 @@ public class Map extends MethodProvider {
 
 	private void readCollision(final CollisionMap collisionMap, final int localX, final int localY, final List<GameObject> objects) {
 		int clippingType;
-		for (GameObject next : objects) {
+		for (final GameObject next : objects) {
 			clippingType = ctx.objects.getType(next.getId());
 			switch (next.getType()) {
 			case BOUNDARY:
@@ -130,11 +130,11 @@ public class Map extends MethodProvider {
 					continue;
 				}
 
-				RSObject object = next.getInternal();
+				final RSObject object = next.getInternal();
 				if (object == null) {
 					continue;
 				}
-				RSRotatableObject rot = (RSRotatableObject) object;
+				final RSRotatableObject rot = (RSRotatableObject) object;
 				collisionMap.markWall(localX, localY, rot.getType(), rot.getOrientation());
 				break;
 			case FLOOR_DECORATION:
@@ -154,20 +154,20 @@ public class Map extends MethodProvider {
 		}
 	}
 
-	private CollisionMap getCollisionMap(int plane) {
-		CollisionMap[] maps = getCollisionMaps();
+	private CollisionMap getCollisionMap(final int plane) {
+		final CollisionMap[] maps = getCollisionMaps();
 		if (plane < 0 || plane >= maps.length) {
 			return null;
 		}
 		return maps[plane];
 	}
 
-	public Node[] getPath(int startX, int startY, int endX, int endY, int plane) {
-		CollisionMap map = getCollisionMap(plane);
+	public Node[] getPath(final int startX, final int startY, final int endX, final int endY, final int plane) {
+		final CollisionMap map = getCollisionMap(plane);
 		if (map == null) {
 			return new Node[0];
 		}
-		Graph graph = new Graph(map);
+		final Graph graph = new Graph(map);
 		if (startX < 0 || startY < 0 || endX < 0 || endY < 0 ||
 				startX >= graph.width || startY >= graph.height || endX >= graph.width || endY >= graph.height) {
 			return new Node[0];
@@ -177,19 +177,19 @@ public class Map extends MethodProvider {
 		return path(graph.nodes[endX][endY]);
 	}
 
-	public int getDistance(int startX, int startY, int endX, int endY, int plane) {
-		CollisionMap map = getCollisionMap(plane);
+	public int getDistance(final int startX, final int startY, final int endX, final int endY, final int plane) {
+		final CollisionMap map = getCollisionMap(plane);
 		if (map == null) {
 			return -1;
 		}
-		Graph graph = new Graph(map);
+		final Graph graph = new Graph(map);
 		if (startX < 0 || startY < 0 || endX < 0 || endY < 0 ||
 				startX >= graph.width || startY >= graph.height || endX >= graph.width || endY >= graph.height) {
 			return -1;
 		}
 
 		dijkstra(graph, graph.nodes[startX][startY], graph.nodes[endX][endY]);
-		double d = graph.nodes[endX][endY].g;
+		final double d = graph.nodes[endX][endY].g;
 		if (Double.isInfinite(d)) {
 			return -1;
 		}
@@ -197,7 +197,7 @@ public class Map extends MethodProvider {
 	}
 
 	private Node[] path(Node target) {
-		List<Node> nodes = new LinkedList<Node>();
+		final List<Node> nodes = new LinkedList<Node>();
 		if (Double.isInfinite(target.g)) {
 			return new Node[0];
 		}
@@ -207,36 +207,36 @@ public class Map extends MethodProvider {
 		}
 
 		Collections.reverse(nodes);
-		Node[] path = new Node[nodes.size()];
+		final Node[] path = new Node[nodes.size()];
 		return nodes.toArray(path);
 	}
 
-	private void dijkstra(Graph graph, Node source, Node target) {
+	private void dijkstra(final Graph graph, final Node source, final Node target) {
 		source.g = 0d;
 		source.f = 0d;
 
-		Queue<Node> queue = new PriorityQueue<Node>(8, new Comparator<Node>() {
+		final Queue<Node> queue = new PriorityQueue<Node>(8, new Comparator<Node>() {
 			@Override
-			public int compare(Node o1, Node o2) {
+			public int compare(final Node o1, final Node o2) {
 				return Double.compare(o1.f, o2.f);
 			}
 		});
 
-		double sqrt2 = Math.sqrt(2);
+		final double sqrt2 = Math.sqrt(2);
 
 		queue.add(source);
 		source.opened = true;
 		while (!queue.isEmpty()) {
-			Node node = queue.poll();
+			final Node node = queue.poll();
 			node.closed = true;
 			if (node.equals(target)) {
 				break;
 			}
-			for (Node neighbor : graph.neighbors(node)) {
+			for (final Node neighbor : graph.neighbors(node)) {
 				if (neighbor.closed) {
 					continue;
 				}
-				double ng = node.g + ((neighbor.x - node.x == 0 || neighbor.y - node.y == 0) ? 1d : sqrt2);
+				final double ng = node.g + ((neighbor.x - node.x == 0 || neighbor.y - node.y == 0) ? 1d : sqrt2);
 
 				if (!neighbor.opened || ng < neighbor.g) {
 					neighbor.g = ng;
@@ -257,23 +257,23 @@ public class Map extends MethodProvider {
 		private int width, height;
 		private Node[][] nodes;
 
-		private Graph(CollisionMap map) {
+		private Graph(final CollisionMap map) {
 			this.width = map.getWidth() - 6;
 			this.height = map.getHeight() - 6;
 			this.nodes = new Node[width][height];
 			for (int x = 0; x < width; x++) {
 				for (int y = 0; y < height; y++) {
-					Node node = new Node(x, y);
+					final Node node = new Node(x, y);
 					node.flag = map.getFlagAt(x, y);
 					nodes[x][y] = node;
 				}
 			}
 		}
 
-		private List<Node> neighbors(Node node) {
-			List<Node> list = new ArrayList<Node>(8);
-			int curr_x = node.x;
-			int curr_y = node.y;
+		private List<Node> neighbors(final Node node) {
+			final List<Node> list = new ArrayList<Node>(8);
+			final int curr_x = node.x;
+			final int curr_y = node.y;
 			if (curr_x < 0 || curr_y < 0 ||
 					curr_x >= width || curr_y >= height) {
 				return list;
@@ -337,7 +337,7 @@ public class Map extends MethodProvider {
 		private double f, g, h;
 		private CollisionFlag flag;
 
-		private Node(int x, int y) {
+		private Node(final int x, final int y) {
 			this.x = x;
 			this.y = y;
 			reset();
@@ -356,11 +356,11 @@ public class Map extends MethodProvider {
 		}
 
 		@Override
-		public boolean equals(Object o) {
+		public boolean equals(final Object o) {
 			if (o == null || !(o instanceof Node)) {
 				return false;
 			}
-			Node n = (Node) o;
+			final Node n = (Node) o;
 			return x == n.x && y == n.y;
 		}
 	}

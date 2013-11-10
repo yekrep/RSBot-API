@@ -25,7 +25,7 @@ public class GroundItem extends Interactive implements Renderable, Identifiable,
 	private final WeakReference<RSItem> item;
 	private int faceIndex = -1;
 
-	public GroundItem(MethodContext ctx, Tile tile, RSItem item) {
+	public GroundItem(final MethodContext ctx, final Tile tile, final RSItem item) {
 		super(ctx);
 		this.tile = tile;
 		this.item = new WeakReference<RSItem>(item);
@@ -37,7 +37,7 @@ public class GroundItem extends Interactive implements Renderable, Identifiable,
 	}
 
 	public Model getModel(final int p) {
-		Client client = ctx.getClient();
+		final Client client = ctx.getClient();
 		if (client == null || ctx.game.toolkit.graphicsIndex != 0) {
 			return null;
 		}
@@ -94,13 +94,13 @@ public class GroundItem extends Interactive implements Renderable, Identifiable,
 
 	@Override
 	public int getId() {
-		RSItem item = this.item.get();
+		final RSItem item = this.item.get();
 		return item != null ? item.getId() : -1;
 	}
 
 	@Override
 	public int getStackSize() {
-		RSItem item = this.item.get();
+		final RSItem item = this.item.get();
 		return item != null ? item.getStackSize() : -1;
 	}
 
@@ -193,7 +193,8 @@ public class GroundItem extends Interactive implements Renderable, Identifiable,
 		if (!this.tile.equals(g.tile)) {
 			return false;
 		}
-		RSItem item1 = this.item.get(), item2 = g.item.get();
+		final RSItem item1 = this.item.get();
+		final RSItem item2 = g.item.get();
 		return item1 != null && item2 != null && item1 == item2;
 	}
 

@@ -9,7 +9,7 @@ import org.powerbot.client.PlayerMetaInfo;
  * @author Timer
  */
 public class Settings extends MethodProvider {
-	public Settings(MethodContext factory) {
+	public Settings(final MethodContext factory) {
 		super(factory);
 	}
 
@@ -19,7 +19,7 @@ public class Settings extends MethodProvider {
 	 * @return an array of the game's settings
 	 */
 	public int[] getArray() {
-		Client client = ctx.getClient();
+		final Client client = ctx.getClient();
 		final PlayerMetaInfo info;
 		if (client == null || (info = client.getPlayerMetaInfo()) == null) {
 			return new int[0];

@@ -11,7 +11,7 @@ import static org.powerbot.event.debug.DebugHelper.drawLine;
 
 public class TDestination implements TextPaintListener {
 	public int draw(int idx, final Graphics render) {
-		MethodContext ctx = BotChrome.getInstance().getBot().getMethodContext();
+		final MethodContext ctx = BotChrome.getInstance().getBot().getMethodContext();
 		final Tile dest = ctx.movement.getDestination();
 		drawLine(render, idx++, "Destination: " + (dest != null ? dest.toString() : "null"));
 		return idx;

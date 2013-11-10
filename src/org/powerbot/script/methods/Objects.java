@@ -24,7 +24,7 @@ import org.powerbot.script.wrappers.GameObject;
 public class Objects extends BasicNamedQuery<GameObject> {
 	public final Map<Integer, Integer> typeCache = new ConcurrentHashMap<Integer, Integer>();
 
-	public Objects(MethodContext factory) {
+	public Objects(final MethodContext factory) {
 		super(factory);
 	}
 
@@ -35,7 +35,7 @@ public class Objects extends BasicNamedQuery<GameObject> {
 	protected List<GameObject> get() {
 		final List<GameObject> items = new ArrayList<GameObject>();
 
-		Client client = ctx.getClient();
+		final Client client = ctx.getClient();
 		if (client == null) {
 			return items;
 		}
@@ -61,7 +61,7 @@ public class Objects extends BasicNamedQuery<GameObject> {
 			return items;
 		}
 
-		Set<RSObject> refs = new HashSet<RSObject>();
+		final Set<RSObject> refs = new HashSet<RSObject>();
 		for (int x = 0; x <= objArr.length - 1; x++) {
 			for (int y = 0; y <= objArr[x].length - 1; y++) {
 				final RSGround ground = objArr[x][y];
@@ -70,11 +70,11 @@ public class Objects extends BasicNamedQuery<GameObject> {
 				}
 
 				for (RSAnimableNode animable = ground.getRSAnimableList(); animable != null; animable = animable.getNext()) {
-					Object node = animable.getRSAnimable();
+					final Object node = animable.getRSAnimable();
 					if (node == null || !(node instanceof RSObject)) {
 						continue;
 					}
-					RSObject obj = (RSObject) node;
+					final RSObject obj = (RSObject) node;
 					if (obj.getId() != -1 && !refs.contains(obj)) {
 						refs.add(obj);
 						items.add(new GameObject(ctx, obj, GameObject.Type.INTERACTIVE));
@@ -107,12 +107,12 @@ public class Objects extends BasicNamedQuery<GameObject> {
 		return new GameObject(ctx, null, GameObject.Type.UNKNOWN);
 	}
 
-	public void setType(int id, int type) {
+	public void setType(final int id, final int type) {
 		typeCache.put(id, type);
 	}
 
-	public int getType(int id) {
-		Integer integer = typeCache.get(id);
+	public int getType(final int id) {
+		final Integer integer = typeCache.get(id);
 		return integer != null ? integer : -1;
 	}
 }

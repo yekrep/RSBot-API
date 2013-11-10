@@ -22,7 +22,7 @@ public class UIDManager {
 	public UIDManager() {
 		store = new CryptFile("uidmanager", UIDManager.class);
 
-		InputStream is;
+		final InputStream is;
 		try {
 			is = store.getInputStream();
 		} catch (final IOException ignored) {

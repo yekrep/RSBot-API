@@ -42,15 +42,15 @@ public final class BotSignin extends JDialog implements ActionListener {
 		super(parent, BotLocale.SIGNIN + " to " + BotLocale.WEBSITE, true);
 		setFont(getFont().deriveFont(getFont().getSize2D() * 1.5f));
 
-		JLabel labelUsername = new JLabel();
+		final JLabel labelUsername = new JLabel();
 		username = new JTextField();
-		JLabel labelPassword = new JLabel();
+		final JLabel labelPassword = new JLabel();
 		password = new JPasswordField();
 		signin = new JButton();
-		JLabel lostPass = new JLabel();
+		final JLabel lostPass = new JLabel();
 		register = new JLabel();
-		JPanel panelSide = new JPanel();
-		JLabel info = new JLabel();
+		final JPanel panelSide = new JPanel();
+		final JLabel info = new JLabel();
 
 		for (final Component c : new Component[]{labelUsername, username, labelPassword, password, signin, lostPass, register, panelSide, info}) {
 			c.setFont(getFont());

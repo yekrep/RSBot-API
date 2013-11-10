@@ -3,7 +3,7 @@ package org.powerbot.script.methods;
 import org.powerbot.script.internal.InputHandler;
 
 public class Keyboard extends MethodProvider {
-	public Keyboard(MethodContext factory) {
+	public Keyboard(final MethodContext factory) {
 		super(factory);//TODO: document
 	}
 

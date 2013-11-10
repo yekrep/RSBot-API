@@ -5,7 +5,7 @@ public class RelativeLocation {
 	private final float x;
 	private final float y;
 
-	RelativeLocation(float x, float y) {
+	RelativeLocation(final float x, final float y) {
 		this.x = x;
 		this.y = y;
 	}

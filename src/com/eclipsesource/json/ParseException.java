@@ -14,14 +14,14 @@ package com.eclipsesource.json;
 /**
  * An unchecked exception to indicate that an input does not qualify as valid JSON.
  */
-@SuppressWarnings( "serial" ) // use default serial UID
+// use default serial UID
 public class ParseException extends RuntimeException {
 
   private final int offset;
   private final int line;
   private final int column;
 
-  ParseException( String message, int offset, int line, int column ) {
+  ParseException( final String message, final int offset, final int line, final int column ) {
     super( message + " at " + line + ":" + column );
     this.offset = offset;
     this.line = line;

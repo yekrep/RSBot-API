@@ -17,7 +17,6 @@ import org.powerbot.script.wrappers.Widget;
  *
  * @author Timer
  */
-@SuppressWarnings("deprecated")
 public class Lobby extends MethodProvider {
 	public static final int STATE_LOBBY_IDLE = 7;
 	public static final int STATE_LOGGING_IN = 9;
@@ -37,7 +36,7 @@ public class Lobby extends MethodProvider {
 	public static final int WIDGET_WORLDS_COLUMN_LOOT_SHARE = 75;
 	public static final int WIDGET_WORLDS_COLUMN_PING = 76;
 
-	public Lobby(MethodContext factory) {
+	public Lobby(final MethodContext factory) {
 		super(factory);
 	}
 
@@ -225,7 +224,7 @@ public class Lobby extends MethodProvider {
 	 */
 	public Dialog getOpenDialog() {
 		for (final Dialog d : Dialog.values()) {
-			Component child = ctx.widgets.get(WIDGET_MAIN_LOBBY, d.getTextIndex());
+			final Component child = ctx.widgets.get(WIDGET_MAIN_LOBBY, d.getTextIndex());
 			if (child != null && child.isOnScreen()) {
 				final String text = child.getText();
 				if (text != null && text.toLowerCase().contains(d.getText())) {
@@ -258,8 +257,8 @@ public class Lobby extends MethodProvider {
 	}
 
 	public Tab getCurrentTab() {
-		for (Tab tab : Tab.values()) {
-			Component child = ctx.widgets.get(WIDGET_MAIN_LOBBY, tab.getComponent());
+		for (final Tab tab : Tab.values()) {
+			final Component child = ctx.widgets.get(WIDGET_MAIN_LOBBY, tab.getComponent());
 			if (child != null && child.isValid() && child.getTextureId() == 4671) {
 				return tab;
 			}
@@ -267,8 +266,8 @@ public class Lobby extends MethodProvider {
 		return null;
 	}
 
-	public boolean openTab(Tab tab) {
-		Component child = ctx.widgets.get(WIDGET_MAIN_LOBBY, tab.getComponent());
+	public boolean openTab(final Tab tab) {
+		final Component child = ctx.widgets.get(WIDGET_MAIN_LOBBY, tab.getComponent());
 		if (isOpen()) {
 			return true;
 		}
@@ -413,7 +412,7 @@ public class Lobby extends MethodProvider {
 		public int getPlayers() {
 			final int index = getWorldIndex(number);
 			if (index != -1) {
-				Widget panel = ctx.widgets.get(Tab.WORLD_SELECT.getIndex());
+				final Widget panel = ctx.widgets.get(Tab.WORLD_SELECT.getIndex());
 				try {
 					players = Integer.parseInt(panel.getComponent(WIDGET_WORLDS_COLUMN_PLAYERS).getChild(index).getText());
 				} catch (final NumberFormatException ex) {
@@ -426,7 +425,7 @@ public class Lobby extends MethodProvider {
 		public int getPing() {
 			final int index = getWorldIndex(number);
 			if (index != -1) {
-				Widget panel = ctx.widgets.get(Tab.WORLD_SELECT.getIndex());
+				final Widget panel = ctx.widgets.get(Tab.WORLD_SELECT.getIndex());
 				try {
 					ping = Integer.parseInt(panel.getComponent(WIDGET_WORLDS_COLUMN_PING).getChild(index).getText());
 				} catch (final NumberFormatException ex) {
@@ -439,7 +438,7 @@ public class Lobby extends MethodProvider {
 		public boolean isFavorite() {
 			final int index = getWorldIndex(number);
 			if (index != -1) {
-				Widget panel = ctx.widgets.get(Tab.WORLD_SELECT.getIndex());
+				final Widget panel = ctx.widgets.get(Tab.WORLD_SELECT.getIndex());
 				favorite = panel.getComponent(WIDGET_WORLDS_COLUMN_FAVOURITE).getChild(index).getTextureId() == 1541;
 			}
 			return favorite;
@@ -462,7 +461,7 @@ public class Lobby extends MethodProvider {
 			if (index == -1) {
 				return false;
 			}
-			Widget panel = ctx.widgets.get(Tab.WORLD_SELECT.getIndex());
+			final Widget panel = ctx.widgets.get(Tab.WORLD_SELECT.getIndex());
 			final Component table = panel.getComponent(WIDGET_WORLDS_TABLE);
 			final Component row = panel.getComponent(WIDGET_WORLDS_ROWS).getChild(index);
 			if (table != null && table.isValid() && row != null && row.isValid()) {

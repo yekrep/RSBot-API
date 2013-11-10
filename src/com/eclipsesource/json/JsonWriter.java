@@ -21,21 +21,21 @@ class JsonWriter {
 
   protected final Writer writer;
 
-  JsonWriter( Writer writer ) {
+  JsonWriter( final Writer writer ) {
     this.writer = writer;
   }
 
-  void write( String string ) throws IOException {
+  void write( final String string ) throws IOException {
     writer.write( string );
   }
 
-  void writeString( String string ) throws IOException {
+  void writeString( final String string ) throws IOException {
     writer.write( '"' );
-    int length = string.length();
-    char[] chars = new char[ length ];
+    final int length = string.length();
+    final char[] chars = new char[ length ];
     string.getChars( 0, length, chars, 0 );
     for( int i = 0; i < length; i++ ) {
-      char ch = chars[ i ];
+      final char ch = chars[ i ];
       if( ch == '"' || ch == '\\' ) {
         writer.write( '\\' );
         writer.write( ch );
@@ -66,10 +66,10 @@ class JsonWriter {
     writer.write( '"' );
   }
 
-  protected void writeObject( JsonObject object ) throws IOException {
+  protected void writeObject( final JsonObject object ) throws IOException {
     writeBeginObject();
     boolean first = true;
-    for( JsonObject.Member member : object ) {
+    for( final JsonObject.Member member : object ) {
       if( !first ) {
         writeObjectValueSeparator();
       }
@@ -97,10 +97,10 @@ class JsonWriter {
     writer.write( ',' );
   }
 
-  protected void writeArray( JsonArray array ) throws IOException {
+  protected void writeArray( final JsonArray array ) throws IOException {
     writeBeginArray();
     boolean first = true;
-    for( JsonValue value : array ) {
+    for( final JsonValue value : array ) {
       if( !first ) {
         writeArrayValueSeparator();
       }

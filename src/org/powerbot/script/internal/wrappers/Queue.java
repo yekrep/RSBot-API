@@ -8,14 +8,14 @@ public class Queue<N extends NodeSub> {
 	private final Class<N> type;
 	private NodeSub curr;
 
-	public Queue(NodeSubQueue nl, Class<N> type) {
+	public Queue(final NodeSubQueue nl, final Class<N> type) {
 		this.nl = nl;
 		this.type = type;
 	}
 
 	public int size() {
 		int s = 0;
-		NodeSub t = nl.getTail();
+		final NodeSub t = nl.getTail();
 		NodeSub n;
 		if (t != null) {
 			n = t.getNextSub();
@@ -30,8 +30,8 @@ public class Queue<N extends NodeSub> {
 	}
 
 	public N getHead() {
-		NodeSub t = nl.getTail();
-		NodeSub n;
+		final NodeSub t = nl.getTail();
+		final NodeSub n;
 		if (t != null) {
 			n = t.getNextSub();
 		} else {
@@ -46,8 +46,8 @@ public class Queue<N extends NodeSub> {
 	}
 
 	public N getNext() {
-		NodeSub t = nl.getTail();
-		NodeSub n = curr;
+		final NodeSub t = nl.getTail();
+		final NodeSub n = curr;
 		if (t == null || n == null || n == t || !type.isInstance(n)) {
 			curr = null;
 			return null;

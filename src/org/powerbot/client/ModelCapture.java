@@ -14,7 +14,7 @@ public class ModelCapture implements AbstractModel {
 		reset();
 	}
 
-	public static AbstractModel updateModel(AbstractModel model, AbstractModel stored) {
+	public static AbstractModel updateModel(final AbstractModel model, AbstractModel stored) {
 		if (stored == null || !(stored instanceof ModelCapture)) {
 			stored = new ModelCapture();
 		}
@@ -22,22 +22,26 @@ public class ModelCapture implements AbstractModel {
 		return stored;
 	}
 
-	private void update(AbstractModel model) {
+	private void update(final AbstractModel model) {
 		if (model == null || !(model instanceof JavaModel)) {
 			reset();
 			return;
 		}
 
-		int[] x, y, z;
-		short[] a, b, c;
+		final int[] x;
+		final int[] y;
+		final int[] z;
+		final short[] a;
+		final short[] b;
+		final short[] c;
 		x = model.getXPoints();
 		y = model.getYPoints();
 		z = model.getZPoints();
 		a = model.getIndices1();
 		b = model.getIndices2();
 		c = model.getIndices3();
-		int vertices = Math.min(x.length, Math.min(y.length, z.length));
-		int faces = Math.min(a.length, Math.min(b.length, c.length));
+		final int vertices = Math.min(x.length, Math.min(y.length, z.length));
+		final int faces = Math.min(a.length, Math.min(b.length, c.length));
 		if (vertices > this.vertices) {
 			vertex_x = x.clone();
 			vertex_y = y.clone();

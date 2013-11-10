@@ -12,7 +12,7 @@ public interface Textable {
 	public class Matcher implements Filter<Textable> {
 		private final String[] texts;
 
-		public Matcher(String... texts) {
+		public Matcher(final String... texts) {
 			this.texts = new String[texts.length];
 			for (int i = 0; i < texts.length; i++) {
 				this.texts[i] = texts[i].toLowerCase();
@@ -20,13 +20,13 @@ public interface Textable {
 		}
 
 		@Override
-		public boolean accept(Textable t) {
+		public boolean accept(final Textable t) {
 			String str = t.getText();
 			if (str == null) {
 				return false;
 			}
 			str = str.toLowerCase();
-			for (String text : texts) {
+			for (final String text : texts) {
 				if (text != null && text.contains(str)) {
 					return true;
 				}

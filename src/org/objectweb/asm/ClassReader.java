@@ -173,7 +173,7 @@ public class ClassReader {
 		int index = off + 10;
 		for (int i = 1; i < n; ++i) {
 			items[i] = index + 1;
-			int size;
+			final int size;
 			switch (b[index]) {
 			case ClassWriter.FIELD:
 			case ClassWriter.METH:
@@ -285,7 +285,7 @@ public class ClassReader {
 			int index = items[i];
 			final int tag = b[index - 1];
 			final Item item = new Item(i);
-			int nameType;
+			final int nameType;
 			switch (tag) {
 			case ClassWriter.FIELD:
 			case ClassWriter.METH:
@@ -871,7 +871,7 @@ public class ClassReader {
 				u += attrSize;
 			}
 			// reads declared exceptions
-			String[] exceptions;
+			final String[] exceptions;
 			if (w == 0) {
 				exceptions = null;
 			} else {
@@ -1307,7 +1307,9 @@ public class ClassReader {
 						}
 
 						if (frameCount > 0) {
-							int tag, delta, n;
+							final int tag;
+							final int delta;
+							int n;
 							if (zip) {
 								tag = b[stackMap++] & 0xFF;
 							} else {

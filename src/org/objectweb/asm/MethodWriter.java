@@ -580,7 +580,7 @@ class MethodWriter extends MethodVisitor {
 			}
 			endFrame();
 		} else {
-			int delta;
+			final int delta;
 			if (stackMap == null) {
 				stackMap = new ByteVector();
 				delta = code.length;
@@ -723,7 +723,7 @@ class MethodWriter extends MethodVisitor {
 		}
 		if (compute != NOTHING) {
 			// updates max locals
-			int n;
+			final int n;
 			if (opcode == Opcodes.LLOAD || opcode == Opcodes.DLOAD
 					|| opcode == Opcodes.LSTORE || opcode == Opcodes.DSTORE) {
 				n = var + 2;
@@ -736,7 +736,7 @@ class MethodWriter extends MethodVisitor {
 		}
 		// adds the instruction to the bytecode of the method
 		if (var < 4 && opcode != Opcodes.RET) {
-			int opt;
+			final int opt;
 			if (opcode < Opcodes.ISTORE) {
 				/* ILOAD_0 */
 				opt = 26 + (opcode - Opcodes.ILOAD << 2) + var;
@@ -788,7 +788,7 @@ class MethodWriter extends MethodVisitor {
 			if (compute == FRAMES) {
 				currentBlock.frame.execute(opcode, 0, cw, i);
 			} else {
-				int size;
+				final int size;
 				// computes the stack size variation
 				final char c = desc.charAt(0);
 				switch (opcode) {
@@ -847,7 +847,7 @@ class MethodWriter extends MethodVisitor {
 					// not to recompute them in the future
 					i.intVal = argSize;
 				}
-				int size;
+				final int size;
 				if (opcode == Opcodes.INVOKESTATIC) {
 					size = stackSize - (argSize >> 2) + (argSize & 0x03) + 1;
 				} else {
@@ -1069,7 +1069,7 @@ class MethodWriter extends MethodVisitor {
 			if (compute == FRAMES) {
 				currentBlock.frame.execute(Opcodes.LDC, 0, cw, i);
 			} else {
-				int size;
+				final int size;
 				// computes the stack size variation
 				if (i.type == ClassWriter.LONG || i.type == ClassWriter.DOUBLE) {
 					size = stackSize + 2;
@@ -1660,7 +1660,7 @@ class MethodWriter extends MethodVisitor {
 		int localsSize = previousFrame[1];
 		int type = FULL_FRAME;
 		int k = 0;
-		int delta;
+		final int delta;
 		if (frameCount == 0) {
 			delta = frame[0];
 		} else {
@@ -2139,7 +2139,7 @@ class MethodWriter extends MethodVisitor {
 		 */
 		int[] allIndexes = new int[0]; // copy of indexes
 		int[] allSizes = new int[0]; // copy of sizes
-		boolean[] resize; // instructions to be resized
+		final boolean[] resize; // instructions to be resized
 		int newOffset; // future offset of a jump instruction
 
 		resize = new boolean[code.length];

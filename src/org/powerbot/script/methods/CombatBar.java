@@ -32,7 +32,7 @@ public class CombatBar extends IdQuery<Action> {
 	public static final int COMPONENT_SLOT_COOL_DOWN = 98;
 	public static final int COMPONENT_SLOT_BIND = 100;
 
-	public CombatBar(MethodContext factory) {
+	public CombatBar(final MethodContext factory) {
 		super(factory);
 	}
 
@@ -51,7 +51,7 @@ public class CombatBar extends IdQuery<Action> {
 	 * @param retaliate <tt>true</tt> to automatically retaliate; otherwise <tt>false</tt>
 	 * @return <tt>true</tt> if the retaliation mode was successfully changed; otherwise <tt>false</tt>
 	 */
-	public boolean setRetaliating(boolean retaliate) {
+	public boolean setRetaliating(final boolean retaliate) {
 		if (retaliate != isRetaliating() &&
 				ctx.widgets.get(WIDGET, COMPONENT_BUTTON_RETALIATE).interact("Toggle")) {
 			for (int i = 0; i < 10 && retaliate != isRetaliating(); i++) {
@@ -76,8 +76,8 @@ public class CombatBar extends IdQuery<Action> {
 	 * @return the current health
 	 */
 	public int getHealth() {
-		String text = ctx.widgets.get(WIDGET, COMPONENT_HEALTH).getChild(COMPONENT_TEXT).getText();
-		int index = text.indexOf('/');
+		final String text = ctx.widgets.get(WIDGET, COMPONENT_HEALTH).getChild(COMPONENT_TEXT).getText();
+		final int index = text.indexOf('/');
 		if (index != -1) {
 			try {
 				return Integer.parseInt(text.substring(0, index));
@@ -94,8 +94,8 @@ public class CombatBar extends IdQuery<Action> {
 	 * @return the maximum health
 	 */
 	public int getMaximumHealth() {
-		String text = ctx.widgets.get(WIDGET, COMPONENT_HEALTH).getChild(COMPONENT_TEXT).getText();
-		int index = text.indexOf('/');
+		final String text = ctx.widgets.get(WIDGET, COMPONENT_HEALTH).getChild(COMPONENT_TEXT).getText();
+		final int index = text.indexOf('/');
 		if (index != -1) {
 			try {
 				return Integer.parseInt(text.substring(index + 1));
@@ -152,7 +152,7 @@ public class CombatBar extends IdQuery<Action> {
 		if (slot < 0 || slot >= NUM_SLOTS) {
 			throw new IndexOutOfBoundsException("0 > " + slot + " >= " + NUM_SLOTS);
 		}
-		Action.Type type;
+		final Action.Type type;
 		int id = ctx.settings.get(SETTING_ABILITY + slot);
 		if (id > 0) {
 			type = Action.Type.ABILITY;
@@ -183,9 +183,9 @@ public class CombatBar extends IdQuery<Action> {
 	 */
 	@Override
 	protected List<Action> get() {
-		List<Action> actions = new ArrayList<Action>(NUM_SLOTS);
-		Action[] arr = getActions();
-		for (Action a : arr) {
+		final List<Action> actions = new ArrayList<Action>(NUM_SLOTS);
+		final Action[] arr = getActions();
+		for (final Action a : arr) {
 			if (a == null) {
 				continue;
 			}
@@ -201,12 +201,12 @@ public class CombatBar extends IdQuery<Action> {
 	 * @return <tt>true</tt> if the {@link Action} was deleted; otherwise <tt>false</tt>
 	 */
 	public boolean deleteAction(Action action) {
-		int slot = action.getSlot();
+		final int slot = action.getSlot();
 		action = getActionAt(slot);
 		if (action.getId() == -1) {
 			return true;
 		}
-		Component c = ctx.widgets.get(WIDGET, COMPONENT_TRASH);
+		final Component c = ctx.widgets.get(WIDGET, COMPONENT_TRASH);
 		if (!c.isVisible()) {
 			return false;
 		}

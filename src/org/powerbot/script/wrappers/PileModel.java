@@ -12,16 +12,16 @@ import org.powerbot.script.methods.MethodContext;
 public class PileModel extends Model {
 	private final WeakReference<RSItemPile> pile;
 
-	public PileModel(MethodContext ctx, AbstractModel model, RSItemPile pile) {
+	public PileModel(final MethodContext ctx, final AbstractModel model, final RSItemPile pile) {
 		super(ctx, model, pile.getHeight() / 2);
 		this.pile = new WeakReference<RSItemPile>(pile);
 	}
 
 	@Override
 	public int getX() {
-		RSInteractable interactable = this.pile.get();
-		RSInteractableData data = interactable != null ? interactable.getData() : null;
-		RSInteractableLocation location = data != null ? data.getLocation() : null;
+		final RSInteractable interactable = this.pile.get();
+		final RSInteractableData data = interactable != null ? interactable.getData() : null;
+		final RSInteractableLocation location = data != null ? data.getLocation() : null;
 		if (location != null) {
 			return (int) location.getX();
 		}
@@ -30,9 +30,9 @@ public class PileModel extends Model {
 
 	@Override
 	public int getY() {
-		RSInteractable interactable = this.pile.get();
-		RSInteractableData data = interactable != null ? interactable.getData() : null;
-		RSInteractableLocation location = data != null ? data.getLocation() : null;
+		final RSInteractable interactable = this.pile.get();
+		final RSInteractableData data = interactable != null ? interactable.getData() : null;
+		final RSInteractableLocation location = data != null ? data.getLocation() : null;
 		if (location != null) {
 			return (int) location.getY();
 		}
@@ -41,7 +41,7 @@ public class PileModel extends Model {
 
 	@Override
 	public byte getPlane() {
-		RSInteractable interactable = this.pile.get();
+		final RSInteractable interactable = this.pile.get();
 		return interactable != null ? interactable.getPlane() : -1;
 	}
 

@@ -163,7 +163,7 @@ public class BotChrome extends JFrame implements Closeable {
 	}
 
 	private Dimension getWindowCache() {
-		Dimension d = getSize();
+		final Dimension d = getSize();
 
 		if (!cache.exists()) {
 			return d;
@@ -203,7 +203,7 @@ public class BotChrome extends JFrame implements Closeable {
 		System.exit(0);
 	}
 
-	public void display(Bot bot) {
+	public void display(final Bot bot) {
 		remove(panel);
 		if (this.bot != null) {
 			remove(bot.getApplet());
@@ -216,7 +216,7 @@ public class BotChrome extends JFrame implements Closeable {
 		return blocking;
 	}
 
-	public void setBlocking(boolean blocking) {
+	public void setBlocking(final boolean blocking) {
 		this.blocking = blocking;
 	}
 }

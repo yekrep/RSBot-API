@@ -20,7 +20,7 @@ public class ExaminePattern extends Antipattern {
 		if (isAggressive()) {
 			for (final Npc n : ctx.npcs.select().select(new Filter<Npc>() {
 				@Override
-				public boolean accept(Npc npc) {
+				public boolean accept(final Npc npc) {
 					return npc.isOnScreen();
 				}
 			}).shuffle().limit(isAggressive() ? 1 : Random.nextInt(1, 3))) {
@@ -40,8 +40,8 @@ public class ExaminePattern extends Antipattern {
 		}
 	}
 
-	private void hover(Interactive o) {
-		boolean a = isAggressive();
+	private void hover(final Interactive o) {
+		final boolean a = isAggressive();
 		for (int i = a ? 0 : 1; i < 2 && o.hover(); i++) {
 			sleep(80, 120);
 			if (ctx.menu.click(Menu.filter("Examine")) && a) {

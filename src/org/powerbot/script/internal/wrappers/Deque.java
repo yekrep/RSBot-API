@@ -8,7 +8,7 @@ public class Deque<N> {
 	private final Class<N> type;
 	private Node curr;
 
-	public Deque(NodeDeque nl, Class<N> type) {
+	public Deque(final NodeDeque nl, final Class<N> type) {
 		if (nl == null) {
 			throw new IllegalArgumentException();
 		}
@@ -18,7 +18,7 @@ public class Deque<N> {
 
 	public int size() {
 		int s = 0;
-		Node t = nl.getTail();
+		final Node t = nl.getTail();
 		Node n;
 		if (t != null) {
 			n = t.getNext();
@@ -33,8 +33,8 @@ public class Deque<N> {
 	}
 
 	public N getHead() {
-		Node t = nl.getTail();
-		Node n;
+		final Node t = nl.getTail();
+		final Node n;
 		if (t != null) {
 			n = t.getNext();
 		} else {
@@ -49,8 +49,8 @@ public class Deque<N> {
 	}
 
 	public N getNext() {
-		Node t = nl.getTail();
-		Node n = curr;
+		final Node t = nl.getTail();
+		final Node n = curr;
 		if (t == null || n == null || n == t || !type.isInstance(n)) {
 			curr = null;
 			return null;

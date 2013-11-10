@@ -23,7 +23,7 @@ class JsonParser {
   private int offset;
   private int lineOffset;
 
-  JsonParser( Reader reader ) {
+  JsonParser( final Reader reader ) {
     this.reader = reader;
     recorder = new StringBuilder();
   }
@@ -31,7 +31,7 @@ class JsonParser {
   JsonValue parse() throws IOException {
     start();
     skipWhiteSpace();
-    JsonValue result = readValue();
+    final JsonValue result = readValue();
     skipWhiteSpace();
     if( !endOfText() ) {
       throw error( "Unexpected character" );
@@ -79,7 +79,7 @@ class JsonParser {
 
   private JsonArray readArray() throws IOException {
     read();
-    JsonArray array = new JsonArray();
+    final JsonArray array = new JsonArray();
     skipWhiteSpace();
     if( readChar( ']' ) ) {
       return array;
@@ -97,14 +97,14 @@ class JsonParser {
 
   private JsonObject readObject() throws IOException {
     read();
-    JsonObject object = new JsonObject();
+    final JsonObject object = new JsonObject();
     skipWhiteSpace();
     if( readChar( '}' ) ) {
       return object;
     }
     do {
       skipWhiteSpace();
-      String name = readName();
+      final String name = readName();
       skipWhiteSpace();
       if( !readChar( ':' ) ) {
         throw expected( "':'" );
@@ -144,7 +144,7 @@ class JsonParser {
     return JsonValue.FALSE;
   }
 
-  private void readRequiredChar( char ch ) throws IOException {
+  private void readRequiredChar( final char ch ) throws IOException {
     if( !readChar( ch ) ) {
       throw expected( "'" + ch + "'" );
     }
@@ -191,7 +191,7 @@ class JsonParser {
       recorder.append( '\t' );
       break;
     case 'u':
-      char[] hexChars = new char[4];
+      final char[] hexChars = new char[4];
       for( int i = 0; i < 4; i++ ) {
         read();
         if( !isHexDigit( current ) ) {
@@ -210,7 +210,7 @@ class JsonParser {
   private JsonValue readNumber() throws IOException {
     recorder.setLength( 0 );
     readAndAppendChar( '-' );
-    int firstDigit = current;
+    final int firstDigit = current;
     if( !readAndAppendDigit() ) {
       throw expected( "digit" );
     }
@@ -258,7 +258,7 @@ class JsonParser {
     return recorder.toString();
   }
 
-  private boolean readAndAppendChar( char ch ) throws IOException {
+  private boolean readAndAppendChar( final char ch ) throws IOException {
     if( current != ch ) {
       return false;
     }
@@ -267,7 +267,7 @@ class JsonParser {
     return true;
   }
 
-  private boolean readChar( char ch ) throws IOException {
+  private boolean readChar( final char ch ) throws IOException {
     if( current != ch ) {
       return false;
     }
@@ -306,26 +306,26 @@ class JsonParser {
     return current == -1;
   }
 
-  private ParseException expected( String expected ) {
+  private ParseException expected( final String expected ) {
     if( endOfText() ) {
       return error( "Unexpected end of input" );
     }
     return error( "Expected " + expected );
   }
 
-  private ParseException error( String message ) {
+  private ParseException error( final String message ) {
     return new ParseException( message, offset, line, offset - lineOffset );
   }
 
-  private static boolean isWhiteSpace( int ch ) {
+  private static boolean isWhiteSpace( final int ch ) {
     return ch == ' ' || ch == '\t' || ch == '\n' || ch == '\r';
   }
 
-  private static boolean isDigit( int ch ) {
+  private static boolean isDigit( final int ch ) {
     return ch >= '0' && ch <= '9';
   }
 
-  private static boolean isHexDigit( int ch ) {
+  private static boolean isHexDigit( final int ch ) {
     return ch >= '0' && ch <= '9' || ch >= 'a' && ch <= 'f' || ch >= 'A' && ch <= 'F';
   }
 

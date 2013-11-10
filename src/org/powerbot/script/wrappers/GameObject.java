@@ -25,7 +25,7 @@ public class GameObject extends Interactive implements Renderable, Locatable, Na
 	private final Type type;
 	private int faceIndex = -1;
 
-	public GameObject(MethodContext ctx, final RSObject object, final Type type) {
+	public GameObject(final MethodContext ctx, final RSObject object, final Type type) {
 		super(ctx);
 		this.object = new WeakReference<RSObject>(object);
 		this.type = type;
@@ -72,7 +72,7 @@ public class GameObject extends Interactive implements Renderable, Locatable, Na
 	}
 
 	private ObjectDefinition getDefinition() {
-		Client client = ctx.getClient();
+		final Client client = ctx.getClient();
 		if (client == null) {
 			return new ObjectDefinition(null);
 		}
@@ -91,21 +91,21 @@ public class GameObject extends Interactive implements Renderable, Locatable, Na
 
 	public Area getArea() {
 		if (object instanceof RSAnimable) {
-			RSAnimable animable = (RSAnimable) object;
-			Tile base = ctx.game.getMapBase();
+			final RSAnimable animable = (RSAnimable) object;
+			final Tile base = ctx.game.getMapBase();
 			return new Area(
 					base.derive(animable.getX1(), animable.getY1()),
 					base.derive(animable.getX2(), animable.getY2())
 			);
 		}
-		Tile loc = getLocation();
+		final Tile loc = getLocation();
 		return new Area(loc, loc);
 	}
 
 	@Override
 	public Tile getLocation() {
-		RSObject object = this.object.get();
-		RelativeLocation location = getRelative();
+		final RSObject object = this.object.get();
+		final RelativeLocation location = getRelative();
 		if (object != null && location != null) {
 			return ctx.game.getMapBase().derive((int) location.getX() >> 9, (int) location.getY() >> 9, object.getPlane());
 		}
@@ -113,9 +113,9 @@ public class GameObject extends Interactive implements Renderable, Locatable, Na
 	}
 
 	public RelativeLocation getRelative() {
-		RSObject object = this.object.get();
-		RSInteractableData data = object != null ? object.getData() : null;
-		RSInteractableLocation location = data != null ? data.getLocation() : null;
+		final RSObject object = this.object.get();
+		final RSInteractableData data = object != null ? object.getData() : null;
+		final RSInteractableLocation location = data != null ? data.getLocation() : null;
 		if (location != null) {
 			return new RelativeLocation(location.getX(), location.getY());
 		}

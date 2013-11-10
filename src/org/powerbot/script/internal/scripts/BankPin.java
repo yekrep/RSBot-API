@@ -30,7 +30,7 @@ public class BankPin extends PollingScript implements InternalScript {
 			return -1;
 		}
 
-		int i = ctx.settings.get(SETTING_PIN_STEP);
+		final int i = ctx.settings.get(SETTING_PIN_STEP);
 		int v;
 		try {
 			v = Integer.valueOf(String.valueOf(pin.charAt(i)));
@@ -49,10 +49,10 @@ public class BankPin extends PollingScript implements InternalScript {
 	}
 
 	private String getPin() {
-		Bot bot = ctx.getBot();
-		GameAccounts.Account account;
+		final Bot bot = ctx.getBot();
+		final GameAccounts.Account account;
 		if (bot != null && (account = bot.getAccount()) != null) {
-			String pin = account.getPIN();
+			final String pin = account.getPIN();
 			if (pin != null && pin.length() == 4) {
 				return pin;
 			}

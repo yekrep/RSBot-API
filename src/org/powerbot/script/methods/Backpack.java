@@ -29,7 +29,7 @@ public class Backpack extends ItemQuery<Item> implements Resizable {
 			WIDGET_GEAR,
 	};
 
-	public Backpack(MethodContext factory) {
+	public Backpack(final MethodContext factory) {
 		super(factory);
 	}
 
@@ -38,11 +38,11 @@ public class Backpack extends ItemQuery<Item> implements Resizable {
 	 */
 	@Override
 	protected List<Item> get() {
-		List<Item> items = new ArrayList<Item>(28);
-		Component inv = getComponent();
-		int[][] data = ctx.items.getItems(Items.INDEX_INVENTORY);
+		final List<Item> items = new ArrayList<Item>(28);
+		final Component inv = getComponent();
+		final int[][] data = ctx.items.getItems(Items.INDEX_INVENTORY);
 		for (int i = 0; i < 28; i++) {
-			Component comp = inv.getChild(i);
+			final Component comp = inv.getChild(i);
 			if (i >= data.length) {
 				break;
 			}
@@ -59,7 +59,7 @@ public class Backpack extends ItemQuery<Item> implements Resizable {
 	 */
 	@Override
 	public boolean isCollapsed() {
-		Component component = getComponent();
+		final Component component = getComponent();
 		if (!component.isVisible()) {
 			return false;
 		}
@@ -73,14 +73,14 @@ public class Backpack extends ItemQuery<Item> implements Resizable {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public boolean scroll(Displayable item) {
+	public boolean scroll(final Displayable item) {
 		if (!isCollapsed()) {
 			return true;
 		}
-		Component backpack = getComponent();
+		final Component backpack = getComponent();
 		if (backpack.getWidget().getIndex() == WIDGET) {
-			Rectangle view = ctx.widgets.get(WIDGET, COMPONENT_VIEW).getViewportRect();
-			Component c = item.getComponent();
+			final Rectangle view = ctx.widgets.get(WIDGET, COMPONENT_VIEW).getViewportRect();
+			final Component c = item.getComponent();
 			if (!view.contains(c.getBoundingRect())) {
 				ctx.widgets.scroll(c, ctx.widgets.get(WIDGET, COMPONENT_SCROLL_BAR), view.contains(ctx.mouse.getLocation()));
 			}
@@ -95,11 +95,11 @@ public class Backpack extends ItemQuery<Item> implements Resizable {
 	 * @return all the items in the inventory
 	 */
 	public Item[] getAllItems() {
-		Item[] items = new Item[28];
-		Component inv = getComponent();
-		int[][] data = ctx.items.getItems(Items.INDEX_INVENTORY);
+		final Item[] items = new Item[28];
+		final Component inv = getComponent();
+		final int[][] data = ctx.items.getItems(Items.INDEX_INVENTORY);
 		for (int i = 0; i < 28; i++) {
-			Component comp = inv.getChild(i);
+			final Component comp = inv.getChild(i);
 			if (i < data.length) {
 				items[i] = new Item(ctx, data[i][0], data[i][1], comp);
 			} else {
@@ -116,8 +116,8 @@ public class Backpack extends ItemQuery<Item> implements Resizable {
 	 * @return the {@link Item} in the slot given
 	 */
 	public Item getItemAt(final int index) {
-		Component inv = getComponent();
-		int[][] data = ctx.items.getItems(Items.INDEX_INVENTORY);
+		final Component inv = getComponent();
+		final int[][] data = ctx.items.getItems(Items.INDEX_INVENTORY);
 		if (index >= 0 && index < 28 && index < data.length && data[index][0] != -1) {
 			return new Item(ctx, data[index][0], data[index][1], inv.getChild(index));
 		}
@@ -130,7 +130,7 @@ public class Backpack extends ItemQuery<Item> implements Resizable {
 	 * @return the index of the selected item
 	 */
 	public int getSelectedItemIndex() {
-		Component inv = getComponent();
+		final Component inv = getComponent();
 		for (int i = 0; i < 28; i++) {
 			if (inv.getChild(i).getBorderThickness() == 2) {
 				return i;
@@ -164,7 +164,7 @@ public class Backpack extends ItemQuery<Item> implements Resizable {
 	 * @return the index
 	 */
 	public int indexOf(final int id) {
-		int[][] data = ctx.items.getItems(Items.INDEX_INVENTORY);
+		final int[][] data = ctx.items.getItems(Items.INDEX_INVENTORY);
 		for (int i = 0; i < 28; i++) {
 			if (i < data.length) {
 				if (data[i][0] == id) {
@@ -198,8 +198,8 @@ public class Backpack extends ItemQuery<Item> implements Resizable {
 	 * @return the amount of money in the money pouch
 	 */
 	public int getMoneyPouch() {
-		int[][] arrs = ctx.items.getItems(Items.INDEX_MONEY_POUCH);
-		for (int[] arr : arrs) {
+		final int[][] arrs = ctx.items.getItems(Items.INDEX_MONEY_POUCH);
+		for (final int[] arr : arrs) {
 			if (arr[0] == 995) {
 				return arr[1];
 			}

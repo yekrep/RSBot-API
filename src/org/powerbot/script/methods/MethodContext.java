@@ -86,7 +86,7 @@ public class MethodContext {
 		this.bot = new AtomicReference<Bot>(null);
 	}
 
-	public void init(MethodContext ctx) {
+	public void init(final MethodContext ctx) {
 		if (this.client.get() != null) {
 			return;
 		}
@@ -126,7 +126,7 @@ public class MethodContext {
 		map = ctx.map;
 	}
 
-	public void setClient(Client client) {
+	public void setClient(final Client client) {
 		this.client.set(client);
 	}
 
@@ -142,7 +142,7 @@ public class MethodContext {
 		return this.preferredWorld.get();
 	}
 
-	void setPreferredWorld(int world) {
+	void setPreferredWorld(final int world) {
 		this.preferredWorld.set(world);
 	}
 }

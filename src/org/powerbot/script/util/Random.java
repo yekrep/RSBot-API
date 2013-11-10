@@ -92,7 +92,7 @@ public class Random {
 		if (min == max) {
 			return min;
 		}
-		long mark = System.nanoTime() + TimeUnit.NANOSECONDS.convert(1000, TimeUnit.MILLISECONDS);
+		final long mark = System.nanoTime() + TimeUnit.NANOSECONDS.convert(1000, TimeUnit.MILLISECONDS);
 		int rand;
 		do {
 			rand = (int) (random.nextGaussian() * sd + mean);

@@ -19,7 +19,7 @@ public abstract class HintArrowQuery<K extends Locatable> extends AbstractQuery<
 	 * {@inheritDoc}
 	 */
 	@Override
-	public HintArrowQuery<K> at(Locatable l) {
+	public HintArrowQuery<K> at(final Locatable l) {
 		return select(new Locatable.Matcher(l));
 	}
 
@@ -27,7 +27,7 @@ public abstract class HintArrowQuery<K extends Locatable> extends AbstractQuery<
 	 * {@inheritDoc}
 	 */
 	@Override
-	public HintArrowQuery<K> within(double distance) {
+	public HintArrowQuery<K> within(final double distance) {
 		return within(ctx.players.local(), distance);
 	}
 
@@ -35,7 +35,7 @@ public abstract class HintArrowQuery<K extends Locatable> extends AbstractQuery<
 	 * {@inheritDoc}
 	 */
 	@Override
-	public HintArrowQuery<K> within(Locatable target, double distance) {
+	public HintArrowQuery<K> within(final Locatable target, final double distance) {
 		return select(new Locatable.WithinRange(target, distance));
 	}
 
@@ -43,7 +43,7 @@ public abstract class HintArrowQuery<K extends Locatable> extends AbstractQuery<
 	 * {@inheritDoc}
 	 */
 	@Override
-	public HintArrowQuery<K> within(Area area) {
+	public HintArrowQuery<K> within(final Area area) {
 		return select(new Locatable.WithinArea(area));
 	}
 
@@ -59,7 +59,7 @@ public abstract class HintArrowQuery<K extends Locatable> extends AbstractQuery<
 	 * {@inheritDoc}
 	 */
 	@Override
-	public HintArrowQuery<K> nearest(Locatable target) {
+	public HintArrowQuery<K> nearest(final Locatable target) {
 		return sort(new Locatable.NearestTo(target));
 	}
 }

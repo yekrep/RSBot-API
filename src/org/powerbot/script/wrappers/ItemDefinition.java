@@ -16,8 +16,8 @@ class ItemDefinition {
 		this.def = new WeakReference<RSItemDef>(def);
 	}
 
-	static ItemDefinition getDef(MethodContext ctx, int id) {
-		Client client = ctx.getClient();
+	static ItemDefinition getDef(final MethodContext ctx, final int id) {
+		final Client client = ctx.getClient();
 		if (client == null || id <= 0) {
 			return new ItemDefinition(null);
 		}

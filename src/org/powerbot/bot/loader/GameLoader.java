@@ -19,7 +19,7 @@ public class GameLoader implements Callable<ClassLoader> {
 	private final Crawler crawler;
 	private final Map<String, byte[]> resources;
 
-	public GameLoader(Crawler crawler) {
+	public GameLoader(final Crawler crawler) {
 		this.crawler = crawler;
 		this.resources = new HashMap<String, byte[]>();
 	}
@@ -39,10 +39,10 @@ public class GameLoader implements Callable<ClassLoader> {
 		}
 
 		try {
-			JarInputStream jar = new JarInputStream(new ByteArrayInputStream(buffer));
+			final JarInputStream jar = new JarInputStream(new ByteArrayInputStream(buffer));
 			JarEntry entry;
 			while ((entry = jar.getNextJarEntry()) != null) {
-				String entryName = entry.getName();
+				final String entryName = entry.getName();
 				resources.put(entryName, read(jar));
 			}
 		} catch (IOException ignored) {

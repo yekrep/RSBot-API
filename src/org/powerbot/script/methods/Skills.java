@@ -42,7 +42,7 @@ public class Skills extends MethodProvider {
 	public static final int DUNGEONEERING = 24;
 	public static final int DIVINATION = 25;
 
-	public Skills(MethodContext factory) {
+	public Skills(final MethodContext factory) {
 		super(factory);
 	}
 
@@ -89,7 +89,7 @@ public class Skills extends MethodProvider {
 	}
 
 	public int[] getLevels() {
-		Client client = ctx.getClient();
+		final Client client = ctx.getClient();
 		if (client == null) {
 			return new int[0];
 		}
@@ -109,7 +109,7 @@ public class Skills extends MethodProvider {
 	}
 
 	public int[] getRealLevels() {
-		Client client = ctx.getClient();
+		final Client client = ctx.getClient();
 		if (client == null) {
 			return new int[0];
 		}
@@ -126,7 +126,7 @@ public class Skills extends MethodProvider {
 	}
 
 	public int[] getExperiences() {
-		Client client = ctx.getClient();
+		final Client client = ctx.getClient();
 		if (client == null) {
 			return new int[0];
 		}

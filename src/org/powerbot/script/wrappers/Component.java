@@ -20,11 +20,11 @@ public class Component extends Interactive implements Drawable, Displayable {
 	private final Component parent;
 	private final int index;
 
-	public Component(MethodContext ctx, final Widget widget, final int index) {
+	public Component(final MethodContext ctx, final Widget widget, final int index) {
 		this(ctx, widget, null, index);
 	}
 
-	public Component(MethodContext ctx, final Widget widget, final Component parent, final int index) {
+	public Component(final MethodContext ctx, final Widget widget, final Component parent, final int index) {
 		super(ctx);
 		this.widget = widget;
 		this.parent = parent;
@@ -146,7 +146,7 @@ public class Component extends Interactive implements Drawable, Displayable {
 	}
 
 	public int getParentId() {
-		Client client = ctx.getClient();
+		final Client client = ctx.getClient();
 		final RSInterface component = getInternalComponent();
 		if (client == null || component == null) {
 			return -1;
@@ -169,7 +169,7 @@ public class Component extends Interactive implements Drawable, Displayable {
 	}
 
 	public Point getAbsoluteLocation() {
-		Client client = ctx.getClient();
+		final Client client = ctx.getClient();
 		final RSInterface component = getInternalComponent();
 		if (client == null || component == null) {
 			return new Point(-1, -1);
@@ -416,7 +416,7 @@ public class Component extends Interactive implements Drawable, Displayable {
 	}
 
 	private Rectangle getInteractRectangle() {
-		Rectangle r = getViewportRect();
+		final Rectangle r = getViewportRect();
 		r.grow(-1, -1);
 		return r;
 	}
@@ -436,7 +436,7 @@ public class Component extends Interactive implements Drawable, Displayable {
 	}
 
 	private RSInterface getInternalComponent() {
-		RSInterface[] components;
+		final RSInterface[] components;
 		if (parent != null) {
 			final RSInterface parentComponent = parent.getInternalComponent();
 			components = parentComponent != null ? parentComponent.getComponents() : null;

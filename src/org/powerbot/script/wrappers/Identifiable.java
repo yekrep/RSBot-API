@@ -33,7 +33,7 @@ public interface Identifiable {
 			if (x == -1) {
 				return false;
 			}
-			for (int id : ids) {
+			for (final int id : ids) {
 				if (id == x) {
 					return true;
 				}

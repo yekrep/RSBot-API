@@ -14,7 +14,7 @@ import org.powerbot.script.methods.MethodProvider;
 public class HintArrow extends MethodProvider implements Locatable, Validatable {
 	private final WeakReference<RSHintArrow> arrow;
 
-	public HintArrow(MethodContext ctx, final RSHintArrow arrow) {
+	public HintArrow(final MethodContext ctx, final RSHintArrow arrow) {
 		super(ctx);
 		this.arrow = new WeakReference<RSHintArrow>(arrow);
 	}
@@ -36,14 +36,14 @@ public class HintArrow extends MethodProvider implements Locatable, Validatable 
 
 	@Override
 	public Tile getLocation() {
-		Client client = ctx.getClient();
+		final Client client = ctx.getClient();
 		final RSHintArrow arrow = this.arrow.get();
 		if (client == null || arrow == null) {
 			return Tile.NIL;
 		}
 
 		final int type = getType();
-		int target = getTargetId();
+		final int target = getTargetId();
 		if (type == -1 || type == 0) {
 			return Tile.NIL;
 		}
@@ -73,7 +73,7 @@ public class HintArrow extends MethodProvider implements Locatable, Validatable 
 	}
 
 	public RelativeLocation getRelative() {
-		RSHintArrow arrow = this.arrow.get();
+		final RSHintArrow arrow = this.arrow.get();
 		if (arrow != null) {
 			return new RelativeLocation(arrow.getX(), arrow.getY());
 		}
@@ -82,7 +82,7 @@ public class HintArrow extends MethodProvider implements Locatable, Validatable 
 
 	@Override
 	public boolean isValid() {
-		Client client = ctx.getClient();
+		final Client client = ctx.getClient();
 		if (client == null) {
 			return false;
 		}
@@ -94,7 +94,7 @@ public class HintArrow extends MethodProvider implements Locatable, Validatable 
 
 	@Override
 	public int hashCode() {
-		RSHintArrow i;
+		final RSHintArrow i;
 		return (i = this.arrow.get()) != null ? System.identityHashCode(i) : 0;
 	}
 

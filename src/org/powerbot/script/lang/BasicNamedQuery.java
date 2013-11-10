@@ -22,7 +22,7 @@ public abstract class BasicNamedQuery<K extends Locatable & Identifiable & Namea
 	 * {@inheritDoc}
 	 */
 	@Override
-	public BasicNamedQuery<K> at(Locatable l) {
+	public BasicNamedQuery<K> at(final Locatable l) {
 		return select(new Locatable.Matcher(l));
 	}
 
@@ -30,7 +30,7 @@ public abstract class BasicNamedQuery<K extends Locatable & Identifiable & Namea
 	 * {@inheritDoc}
 	 */
 	@Override
-	public BasicNamedQuery<K> within(double distance) {
+	public BasicNamedQuery<K> within(final double distance) {
 		return within(ctx.players.local(), distance);
 	}
 
@@ -38,7 +38,7 @@ public abstract class BasicNamedQuery<K extends Locatable & Identifiable & Namea
 	 * {@inheritDoc}
 	 */
 	@Override
-	public BasicNamedQuery<K> within(Locatable target, double distance) {
+	public BasicNamedQuery<K> within(final Locatable target, final double distance) {
 		return select(new Locatable.WithinRange(target, distance));
 	}
 
@@ -46,7 +46,7 @@ public abstract class BasicNamedQuery<K extends Locatable & Identifiable & Namea
 	 * {@inheritDoc}
 	 */
 	@Override
-	public BasicNamedQuery<K> within(Area area) {
+	public BasicNamedQuery<K> within(final Area area) {
 		return select(new Locatable.WithinArea(area));
 	}
 
@@ -63,7 +63,7 @@ public abstract class BasicNamedQuery<K extends Locatable & Identifiable & Namea
 	 * {@inheritDoc}
 	 */
 	@Override
-	public BasicNamedQuery<K> nearest(Locatable target) {
+	public BasicNamedQuery<K> nearest(final Locatable target) {
 		return sort(new Locatable.NearestTo(target));
 	}
 
@@ -71,7 +71,7 @@ public abstract class BasicNamedQuery<K extends Locatable & Identifiable & Namea
 	 * {@inheritDoc}
 	 */
 	@Override
-	public BasicNamedQuery<K> id(int... ids) {
+	public BasicNamedQuery<K> id(final int... ids) {
 		return select(new Identifiable.Matcher(ids));
 	}
 
@@ -102,7 +102,7 @@ public abstract class BasicNamedQuery<K extends Locatable & Identifiable & Namea
 	 * {@inheritDoc}
 	 */
 	@Override
-	public BasicNamedQuery<K> id(Identifiable... identifiables) {
+	public BasicNamedQuery<K> id(final Identifiable... identifiables) {
 		return select(new Identifiable.Matcher(identifiables));
 	}
 
@@ -110,7 +110,7 @@ public abstract class BasicNamedQuery<K extends Locatable & Identifiable & Namea
 	 * {@inheritDoc}
 	 */
 	@Override
-	public BasicNamedQuery<K> name(String... names) {
+	public BasicNamedQuery<K> name(final String... names) {
 		return select(new Nameable.Matcher(names));
 	}
 
@@ -118,7 +118,7 @@ public abstract class BasicNamedQuery<K extends Locatable & Identifiable & Namea
 	 * {@inheritDoc}
 	 */
 	@Override
-	public BasicNamedQuery<K> name(Nameable... names) {
+	public BasicNamedQuery<K> name(final Nameable... names) {
 		return select(new Nameable.Matcher(names));
 	}
 }

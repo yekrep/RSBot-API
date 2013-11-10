@@ -22,7 +22,7 @@ public class DrawObjects implements PaintListener {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void repaint(final Graphics render) {
-		MethodContext ctx = BotChrome.getInstance().getBot().getMethodContext();
+		final MethodContext ctx = BotChrome.getInstance().getBot().getMethodContext();
 		if (!ctx.game.isLoggedIn()) {
 			return;
 		}
@@ -32,9 +32,9 @@ public class DrawObjects implements PaintListener {
 		}
 		final FontMetrics metrics = render.getFontMetrics();
 		final int textHeight = metrics.getHeight();
-		Tile base = ctx.game.getMapBase();
-		for (GameObject object : ctx.objects.select().within(25)) {
-			Tile t = object.getLocation();
+		final Tile base = ctx.game.getMapBase();
+		for (final GameObject object : ctx.objects.select().within(25)) {
+			final Tile t = object.getLocation();
 			if (t == null) {
 				continue;
 			}
@@ -44,7 +44,7 @@ public class DrawObjects implements PaintListener {
 				continue;
 			}
 
-			Point p2 = p;
+			final Point p2 = p;
 			p = object.getCenterPoint();
 			if (p.x == -1) {
 				continue;
@@ -53,21 +53,24 @@ public class DrawObjects implements PaintListener {
 
 			WeakReference<RSObject> internalObj;
 			try {
-				Field f = object.getClass().getDeclaredField("object");
+				final Field f = object.getClass().getDeclaredField("object");
 				f.setAccessible(true);
 				internalObj = (WeakReference<RSObject>) f.get(object);
 			} catch (final Exception ignored) {
 				internalObj = null;
 			}
 
-			RSObject rsObject = internalObj != null ? internalObj.get() : null;
+			final RSObject rsObject = internalObj != null ? internalObj.get() : null;
 			if (rsObject != null && rsObject instanceof RSAnimable) {
-				RSAnimable animable = (RSAnimable) rsObject;
-				int x1 = animable.getX1(), x2 = animable.getX2(), y1 = animable.getY1(), y2 = animable.getY2();
+				final RSAnimable animable = (RSAnimable) rsObject;
+				final int x1 = animable.getX1();
+				final int x2 = animable.getX2();
+				final int y1 = animable.getY1();
+				final int y2 = animable.getY2();
 
 				for (int _x = x1; _x <= x2; _x++) {
 					for (int _y = y1; _y <= y2; _y++) {
-						Tile _tile = base.derive(_x, _y);
+						final Tile _tile = base.derive(_x, _y);
 						_tile.getMatrix(ctx).draw(render);
 					}
 				}
@@ -81,9 +84,9 @@ public class DrawObjects implements PaintListener {
 			render.setColor(new Color(0, 0, 0, 100));
 			render.drawLine(p.x, p.y, p2.x, p2.y);
 
-			String s = "" + object.getId();
-			int ty = p.y - textHeight / 2;
-			int tx = p.x - metrics.stringWidth(s) / 2;
+			final String s = "" + object.getId();
+			final int ty = p.y - textHeight / 2;
+			final int tx = p.x - metrics.stringWidth(s) / 2;
 			render.setColor(C[object.getType().ordinal()]);
 			render.drawString(s, tx, ty);
 		}

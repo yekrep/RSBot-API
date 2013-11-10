@@ -14,7 +14,7 @@ public class Chat extends TextQuery<ChatOption> {
 	};
 	private static final int[][] WIDGET_CONTINUE = {{1189, 11}, {1184, 11}, {1186, 6}, {1191, 11}};
 
-	public Chat(MethodContext factory) {
+	public Chat(final MethodContext factory) {
 		super(factory);
 	}
 
@@ -23,9 +23,9 @@ public class Chat extends TextQuery<ChatOption> {
 	 */
 	@Override
 	public List<ChatOption> get() {
-		List<ChatOption> options = new ArrayList<ChatOption>(5);
+		final List<ChatOption> options = new ArrayList<ChatOption>(5);
 		for (int i = 0; i < 5; i++) {
-			Component component = ctx.widgets.get(WIDGET, COMPONENT_CHAT_OPTIONS[i]);
+			final Component component = ctx.widgets.get(WIDGET, COMPONENT_CHAT_OPTIONS[i]);
 			if (!component.isValid()) {
 				continue;
 			}
@@ -46,7 +46,7 @@ public class Chat extends TextQuery<ChatOption> {
 		if (ctx.widgets.get(WIDGET, 0).isValid()) {
 			return true;
 		}
-		for (int[] arr : WIDGET_CONTINUE) {
+		for (final int[] arr : WIDGET_CONTINUE) {
 			if (ctx.widgets.get(arr[0], 0).isValid()) {
 				return true;
 			}
@@ -69,13 +69,13 @@ public class Chat extends TextQuery<ChatOption> {
 	 * @return <tt>true</tt> if the chat was continued; otherwise <tt>false</tt>
 	 */
 	public boolean clickContinue() {
-		Component c = getContinue();
+		final Component c = getContinue();
 		return c != null && c.click();
 	}
 
 	private Component getContinue() {
-		for (int[] a : WIDGET_CONTINUE) {
-			Component c = ctx.widgets.get(a[0], a[1]);
+		for (final int[] a : WIDGET_CONTINUE) {
+			final Component c = ctx.widgets.get(a[0], a[1]);
 			if (!c.isValid()) {
 				continue;
 			}

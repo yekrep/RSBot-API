@@ -23,8 +23,8 @@ public class AppletTransform implements Transform {
 	}
 
 	@Override
-	public void accept(ClassNode node) {
-		String super_ = node.superName;
+	public void accept(final ClassNode node) {
+		final String super_ = node.superName;
 		if (super_ == null || !super_.equals(this.super_)) {
 			return;
 		}
@@ -42,7 +42,7 @@ public class AppletTransform implements Transform {
 		* Create set bridge method.
 		* Write basic code to set field.
 		 */
-		MethodVisitor mv = node.visitMethod(
+		final MethodVisitor mv = node.visitMethod(
 				Opcodes.ACC_PUBLIC,
 				"setBridge", "(L" + Bridge.class.getName().replace('.', '/') + ";)V",
 				null, null
@@ -62,18 +62,18 @@ public class AppletTransform implements Transform {
 		final String methodOwner = "java/lang/reflect/Constructor";
 		final String methodName = "newInstance";
 		final String desc = "([Ljava/lang/Object;)Ljava/lang/Object;";
-		for (MethodNode method : node.methods) {
-			InsnSearcher searcher = new InsnSearcher(method);
+		for (final MethodNode method : node.methods) {
+			final InsnSearcher searcher = new InsnSearcher(method);
 			while (searcher.getNext(ops) != null) {
-				FieldInsnNode fieldInsnNode = (FieldInsnNode) searcher.current();
-				MethodInsnNode methodInsnNode = (MethodInsnNode) fieldInsnNode.getPrevious();
+				final FieldInsnNode fieldInsnNode = (FieldInsnNode) searcher.current();
+				final MethodInsnNode methodInsnNode = (MethodInsnNode) fieldInsnNode.getPrevious();
 				if (methodInsnNode.owner.equals(methodOwner) &&
 						methodInsnNode.name.equals(methodName) &&
 						methodInsnNode.desc.equals(desc)) {
 					searcher.getPrevious(Opcodes.ALOAD);
 					searcher.getPrevious(Opcodes.ALOAD);
-					int var = ((VarInsnNode) searcher.current()).var;
-					InsnList insnList = new InsnList();
+					final int var = ((VarInsnNode) searcher.current()).var;
+					final InsnList insnList = new InsnList();
 					insnList.add(new FieldInsnNode(Opcodes.GETSTATIC, identified, "accessor", "L" + Bridge.class.getName().replace('.', '/') + ";"));
 					insnList.add(new VarInsnNode(Opcodes.ALOAD, var));
 					insnList.add(new FieldInsnNode(Opcodes.GETFIELD, fieldInsnNode.owner, fieldInsnNode.name, fieldInsnNode.desc));

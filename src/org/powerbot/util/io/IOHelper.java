@@ -181,7 +181,7 @@ public class IOHelper {
 		}
 	}
 
-	public static long crc32(final byte[] data) throws IOException {
+	public static long crc32(final byte[] data) {
 		InputStream is = null;
 		try {
 			is = new ByteArrayInputStream(data);

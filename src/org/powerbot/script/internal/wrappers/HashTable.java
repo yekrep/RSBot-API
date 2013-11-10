@@ -20,17 +20,17 @@ public class HashTable {
 	}
 
 	public Node getNext() {
-		Node[] b = nc.getBuckets();
+		final Node[] b = nc.getBuckets();
 		if (b == null) {
 			return null;
 		}
 		if (pos > 0 && pos <= b.length && b[pos - 1] != curr) {
-			Node n = curr;
+			final Node n = curr;
 			curr = n.getNext();
 			return n;
 		}
 		while (pos < b.length) {
-			Node n = b[pos++].getNext();
+			final Node n = b[pos++].getNext();
 			if (b[pos - 1] != n) {
 				curr = n.getNext();
 				return n;

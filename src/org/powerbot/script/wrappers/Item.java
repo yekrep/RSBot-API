@@ -10,11 +10,11 @@ public class Item extends Interactive implements Displayable, Identifiable, Name
 	private int stack;
 	private final Component component;
 
-	public Item(MethodContext ctx, Component component) {
+	public Item(final MethodContext ctx, final Component component) {
 		this(ctx, component.getItemId(), component.getItemStackSize(), component);
 	}
 
-	public Item(MethodContext ctx, int id, int stack, Component component) {
+	public Item(final MethodContext ctx, final int id, final int stack, final Component component) {
 		super(ctx);
 		this.id = id;
 		this.stack = stack;
@@ -31,7 +31,7 @@ public class Item extends Interactive implements Displayable, Identifiable, Name
 		if (component == null) {
 			return stack;
 		}
-		int stack = component.getItemStackSize();
+		final int stack = component.getItemStackSize();
 		if (component.isVisible() && component.getItemId() == this.id) {
 			return this.stack = stack;
 		}
@@ -40,7 +40,7 @@ public class Item extends Interactive implements Displayable, Identifiable, Name
 
 	@Override
 	public String getName() {
-		String name;
+		final String name;
 		if (component != null && component.getItemId() == this.id) {
 			name = component.getItemName();
 		} else {
@@ -94,7 +94,7 @@ public class Item extends Interactive implements Displayable, Identifiable, Name
 	}
 
 	@Override
-	public boolean contains(Point point) {
+	public boolean contains(final Point point) {
 		return component != null && component.contains(point);
 	}
 

@@ -14,7 +14,7 @@ public class Widget extends MethodProvider implements Validatable, Iterable<Comp
 	private final Object LOCK;
 	private Component[] cache;
 
-	public Widget(MethodContext ctx, final int index) {
+	public Widget(final MethodContext ctx, final int index) {
 		super(ctx);
 		this.index = index;
 		this.LOCK = new Object();
@@ -66,7 +66,7 @@ public class Widget extends MethodProvider implements Validatable, Iterable<Comp
 	}
 
 	public boolean isValid() {
-		Client client = ctx.getClient();
+		final Client client = ctx.getClient();
 		if (client == null) {
 			return false;
 		}
@@ -76,7 +76,7 @@ public class Widget extends MethodProvider implements Validatable, Iterable<Comp
 	}
 
 	RSInterface[] getInternalComponents() {
-		Client client = ctx.getClient();
+		final Client client = ctx.getClient();
 		if (client == null) {
 			return null;
 		}

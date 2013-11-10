@@ -26,7 +26,7 @@ public class Canvas extends java.awt.Canvas {
 	}
 
 	@Override
-	public void setSize(int w, int h) {
+	public void setSize(final int w, final int h) {
 		super.setSize(w, h);
 		final BufferedImage image = bot.getBufferImage();
 		if (image.getWidth() != w || image.getHeight() != h) {

@@ -12,7 +12,7 @@ import org.powerbot.script.wrappers.Npc;
 
 public class DrawNPCs implements PaintListener {
 	public void repaint(final Graphics render) {
-		MethodContext ctx = BotChrome.getInstance().getBot().getMethodContext();
+		final MethodContext ctx = BotChrome.getInstance().getBot().getMethodContext();
 		if (!ctx.game.isLoggedIn()) {
 			return;
 		}

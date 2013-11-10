@@ -93,7 +93,7 @@ public class HttpClient {
 		return getInputStream(getHttpConnection(url));
 	}
 
-	public static InputStream openStream(String link, final Object... args) throws IOException {
+	public static InputStream openStream(final String link, final Object... args) throws IOException {
 		final String[] s = splitPostURL(link, args);
 		final URLConnection con = HttpClient.getHttpConnection(new URL(s[0]));
 		if (s.length > 1) {
@@ -125,7 +125,8 @@ public class HttpClient {
 			return new String[]{s};
 		}
 		final int o = z + marker.length();
-		String pre = s.substring(0, z), post = o >= s.length() ? "" : s.substring(o);
+		String pre = s.substring(0, z);
+		final String post = o >= s.length() ? "" : s.substring(o);
 		if (pre.length() > 0 && pre.charAt(pre.length() - 1) == '?') {
 			pre = pre.substring(0, pre.length() - 1);
 		}

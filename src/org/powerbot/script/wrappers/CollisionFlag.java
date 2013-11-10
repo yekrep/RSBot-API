@@ -27,7 +27,7 @@ public final class CollisionFlag {
 	private int type;
 	private boolean markable;
 
-	public boolean contains(CollisionFlag collisionFlag) {
+	public boolean contains(final CollisionFlag collisionFlag) {
 		return (type & collisionFlag.type) != 0;
 	}
 
@@ -61,7 +61,7 @@ public final class CollisionFlag {
 		if (!(o instanceof CollisionFlag)) {
 			return false;
 		}
-		CollisionFlag that = (CollisionFlag) o;
+		final CollisionFlag that = (CollisionFlag) o;
 		return type == that.type;
 	}
 

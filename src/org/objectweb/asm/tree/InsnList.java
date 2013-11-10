@@ -497,7 +497,6 @@ public class InsnList {
 	}
 
 	// this class is not generified because it will create bridges
-	@SuppressWarnings("rawtypes")
 	private final class InsnListIterator implements ListIterator/*<AbstractInsnNode>*/ {
 
 		AbstractInsnNode next;

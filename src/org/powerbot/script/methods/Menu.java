@@ -30,14 +30,14 @@ public class Menu extends MethodProvider {
 	private String[] actions = new String[0];
 	private String[] options = new String[0];
 
-	public Menu(MethodContext factory) {
+	public Menu(final MethodContext factory) {
 		super(factory);
 	}
 
 	public static class Entry {
 		public final String action, option;
 
-		private Entry(String a, String o) {
+		private Entry(final String a, final String o) {
 			this.action = a != null ? StringUtil.stripHtml(a) : "";
 			this.option = o != null ? StringUtil.stripHtml(o) : "";
 		}
@@ -49,7 +49,7 @@ public class Menu extends MethodProvider {
 	 * @param action the action to filter
 	 * @return the filter
 	 */
-	public static Filter<Entry> filter(String action) {
+	public static Filter<Entry> filter(final String action) {
 		return filter(action, null);
 	}
 
@@ -60,12 +60,12 @@ public class Menu extends MethodProvider {
 	 * @param option the option to filter
 	 * @return the filter
 	 */
-	public static Filter<Entry> filter(String action, String option) {
+	public static Filter<Entry> filter(final String action, final String option) {
 		final String a = action != null ? action.toLowerCase() : null;
 		final String o = option != null ? option.toLowerCase() : null;
 		return new Filter<Entry>() {
 			@Override
-			public boolean accept(Entry entry) {
+			public boolean accept(final Entry entry) {
 				return (a == null || entry.action.toLowerCase().contains(a)) &&
 						(o == null || entry.option.toLowerCase().contains(o));
 			}
@@ -78,7 +78,7 @@ public class Menu extends MethodProvider {
 	 * @return <tt>true</tt> if the menu is open; otherwise <tt>false</tt>
 	 */
 	public boolean isOpen() {
-		Client client = ctx.getClient();
+		final Client client = ctx.getClient();
 		return client != null && client.isMenuOpen();
 	}
 
@@ -88,17 +88,18 @@ public class Menu extends MethodProvider {
 	 * @param filter the filter
 	 * @return the first index found; otherwise -1
 	 */
-	public int indexOf(Filter<Entry> filter) {
+	public int indexOf(final Filter<Entry> filter) {
 		if (ctx.game.toolkit.graphicsIndex != 0) {
 			cache();
 		}
 
-		String[] actions, options;
+		final String[] actions;
+		final String[] options;
 		synchronized (LOCK) {
 			actions = this.actions;
 			options = this.options;
 		}
-		int len = Math.min(actions.length, options.length);
+		final int len = Math.min(actions.length, options.length);
 		for (int i = 0; i < len; i++) {
 			if (filter.accept(new Entry(actions[i], options[i]))) {
 				return i;
@@ -113,7 +114,7 @@ public class Menu extends MethodProvider {
 	 * @param filter the filter
 	 * @return <tt>true</tt> if an entry was hovered, otherwise <tt>false</tt>
 	 */
-	public boolean hover(Filter<Entry> filter) {
+	public boolean hover(final Filter<Entry> filter) {
 		return select(filter, false);
 	}
 
@@ -123,12 +124,12 @@ public class Menu extends MethodProvider {
 	 * @param filter the filter
 	 * @return <tt>true</tt> if the entry was clicked; otherwise <tt>false</tt>
 	 */
-	public boolean click(Filter<Entry> filter) {
+	public boolean click(final Filter<Entry> filter) {
 		return select(filter, true);
 	}
 
-	private boolean select(Filter<Entry> filter, boolean click) {
-		Client client = ctx.getClient();
+	private boolean select(final Filter<Entry> filter, final boolean click) {
+		final Client client = ctx.getClient();
 		if (client == null) {
 			return false;
 		}
@@ -159,7 +160,7 @@ public class Menu extends MethodProvider {
 			}
 		}
 
-		Point p = hoverIndex(client, index);
+		final Point p = hoverIndex(client, index);
 		return p.getX() != -1 && p.getY() != -1 && ctx.mouse.click(p, true);
 
 	}
@@ -170,7 +171,7 @@ public class Menu extends MethodProvider {
 	 * @return <tt>true</tt> if the menu was closed, otherwise <tt>false</tt>
 	 */
 	public boolean close() {
-		Client client = ctx.getClient();
+		final Client client = ctx.getClient();
 		if (client == null) {
 			return false;
 		}
@@ -180,7 +181,7 @@ public class Menu extends MethodProvider {
 		return !client.isMenuOpen();
 	}
 
-	private Point hoverIndex(final Client client, int index) {
+	private Point hoverIndex(final Client client, final int index) {
 		int _index = 0, main = 0;
 		final NodeSubQueue menu;
 		collapsed:
@@ -210,7 +211,7 @@ public class Menu extends MethodProvider {
 			}
 			return new Point(-1, -1);
 		}
-		Point p = new Point(
+		final Point p = new Point(
 				client.getMenuX() + Random.nextInt(4, client.getMenuWidth() - 5),
 				client.getMenuY() + (21 + 16 * index + Random.nextInt(2, 15))
 		);
@@ -230,7 +231,7 @@ public class Menu extends MethodProvider {
 					sleep(Random.nextInt(125, 175));
 					if (client.isMenuOpen()) {
 						final int subY = client.getSubMenuY();
-						Point p2 = new Point(cX, subY + (16 * sub + Random.nextInt(2, 15) + 21));
+						final Point p2 = new Point(cX, subY + (16 * sub + Random.nextInt(2, 15) + 21));
 						if (ctx.mouse.move(p2)) {
 							sleep(Random.nextInt(125, 175));
 							return client.isMenuOpen() ? p2 : new Point(-1, -1);
@@ -248,7 +249,7 @@ public class Menu extends MethodProvider {
 	private List<MenuItemNode> getMenuItemNodes() {
 		final List<MenuItemNode> nodes = new LinkedList<MenuItemNode>();
 
-		Client client = ctx.getClient();
+		final Client client = ctx.getClient();
 		if (client == null) {
 			return nodes;
 		}
@@ -294,7 +295,7 @@ public class Menu extends MethodProvider {
 		}
 		ctx.getBot().getEventMulticaster().addListener(new PaintListener() {
 			@Override
-			public void repaint(Graphics render) {
+			public void repaint(final Graphics render) {
 				if (ctx.game.toolkit.graphicsIndex != 0) {
 					return;
 				}
@@ -314,13 +315,14 @@ public class Menu extends MethodProvider {
 			cache();
 		}
 
-		String[] actions, options;
+		final String[] actions;
+		final String[] options;
 		synchronized (LOCK) {
 			actions = this.actions;
 			options = this.options;
 		}
-		int len = Math.min(actions.length, options.length);
-		String[] arr = new String[len];
+		final int len = Math.min(actions.length, options.length);
+		final String[] arr = new String[len];
 		for (int i = 0; i < len; i++) {
 			arr[i] = actions[i] + " " + options[i];
 		}
@@ -329,11 +331,12 @@ public class Menu extends MethodProvider {
 
 	private void cache() {
 		synchronized (LOCK) {
-			List<MenuItemNode> items = getMenuItemNodes();
-			int size = items.size();
-			String[] actions = new String[size], options = new String[size];
+			final List<MenuItemNode> items = getMenuItemNodes();
+			final int size = items.size();
+			final String[] actions = new String[size];
+			final String[] options = new String[size];
 			for (int i = 0; i < size; i++) {
-				MenuItemNode node = items.get(i);
+				final MenuItemNode node = items.get(i);
 				actions[i] = node.getAction();
 				options[i] = node.getOption();
 			}

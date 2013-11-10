@@ -19,27 +19,27 @@ public class GameStub implements AppletStub, AppletContext {
 	private final Map<String, String> params;
 	private final String codeBase;
 
-	public GameStub(Map<String, String> params, String codeBase) {
+	public GameStub(final Map<String, String> params, final String codeBase) {
 		this.params = params;
 		this.codeBase = codeBase;
 	}
 
-	public final void showStatus(String s) {
+	public final void showStatus(final String s) {
 		throw new UnsupportedOperationException();
 	}
 
-	public final void showDocument(URL url) {
+	public final void showDocument(final URL url) {
 	}
 
 	public final AppletContext getAppletContext() {
 		return this;
 	}
 
-	public final AudioClip getAudioClip(URL url) {
+	public final AudioClip getAudioClip(final URL url) {
 		throw new UnsupportedOperationException();
 	}
 
-	public final Applet getApplet(String s) {
+	public final Applet getApplet(final String s) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -47,10 +47,10 @@ public class GameStub implements AppletStub, AppletContext {
 		return true;
 	}
 
-	public final void showDocument(URL url, String s) {
+	public final void showDocument(final URL url, final String s) {
 	}
 
-	public final Image getImage(URL url) {
+	public final Image getImage(final URL url) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -62,7 +62,7 @@ public class GameStub implements AppletStub, AppletContext {
 		}
 	}
 
-	public final InputStream getStream(String s) {
+	public final InputStream getStream(final String s) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -78,16 +78,16 @@ public class GameStub implements AppletStub, AppletContext {
 		throw new UnsupportedOperationException();
 	}
 
-	public final void setStream(String s, InputStream inputstream) throws IOException {
+	public final void setStream(final String s, final InputStream inputstream) throws IOException {
 		throw new UnsupportedOperationException();
 	}
 
-	public final String getParameter(String s) {
+	public final String getParameter(final String s) {
 		final String v = params.get(s);
 		return v != null ? v : "";
 	}
 
-	public final void appletResize(int i, int j) {
+	public final void appletResize(final int i, final int j) {
 	}
 
 	public final Enumeration getApplets() {

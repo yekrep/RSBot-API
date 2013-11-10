@@ -18,7 +18,7 @@ import org.powerbot.script.wrappers.Npc;
  * @author Timer
  */
 public class Npcs extends BasicNamedQuery<Npc> {
-	public Npcs(MethodContext factory) {
+	public Npcs(final MethodContext factory) {
 		super(factory);
 	}
 
@@ -29,7 +29,7 @@ public class Npcs extends BasicNamedQuery<Npc> {
 	protected List<Npc> get() {
 		final List<Npc> items = new ArrayList<Npc>();
 
-		Client client = ctx.getClient();
+		final Client client = ctx.getClient();
 		if (client == null) {
 			return items;
 		}

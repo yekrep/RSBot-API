@@ -205,7 +205,7 @@ public strictfp class MersenneTwister extends java.util.Random implements Serial
 	/* We're overriding all internal data, to my knowledge, so this should be okay */
 	public Object clone() {
 		try {
-			MersenneTwister f = (MersenneTwister) (super.clone());
+			final MersenneTwister f = (MersenneTwister) (super.clone());
 			f.mt = (int[]) (mt.clone());
 			f.mag01 = (int[]) (mag01.clone());
 			return f;
@@ -214,11 +214,11 @@ public strictfp class MersenneTwister extends java.util.Random implements Serial
 		} // should never happen
 	}
 
-	public boolean stateEquals(Object o) {
+	public boolean stateEquals(final Object o) {
 		if (o == this) return true;
 		if (o == null || !(o instanceof MersenneTwister))
 			return false;
-		MersenneTwister other = (MersenneTwister) o;
+		final MersenneTwister other = (MersenneTwister) o;
 		if (mti != other.mti) return false;
 		for (int x = 0; x < mag01.length; x++) {
 			if (mag01[x] != other.mag01[x]) return false;
@@ -232,7 +232,7 @@ public strictfp class MersenneTwister extends java.util.Random implements Serial
 	/**
 	 * Reads the entire state of the MersenneTwister RNG from the stream
 	 */
-	public void readState(DataInputStream stream) throws IOException {
+	public void readState(final DataInputStream stream) throws IOException {
 		int len = mt.length;
 		for (int x = 0; x < len; x++) mt[x] = stream.readInt();
 
@@ -247,7 +247,7 @@ public strictfp class MersenneTwister extends java.util.Random implements Serial
 	/**
 	 * Writes the entire state of the MersenneTwister RNG to the stream
 	 */
-	public void writeState(DataOutputStream stream) throws IOException {
+	public void writeState(final DataOutputStream stream) throws IOException {
 		int len = mt.length;
 		for (int x = 0; x < len; x++) stream.writeInt(mt[x]);
 
@@ -271,7 +271,7 @@ public strictfp class MersenneTwister extends java.util.Random implements Serial
 	 * Constructor using a given seed.  Though you pass this seed in
 	 * as a long, it's best to make sure it's actually an integer.
 	 */
-	public MersenneTwister(long seed) {
+	public MersenneTwister(final long seed) {
 		super(seed);    /* just in case */
 		setSeed(seed);
 	}
@@ -282,7 +282,7 @@ public strictfp class MersenneTwister extends java.util.Random implements Serial
 	 * in the array are used; if the array is shorter than this then
 	 * integers are repeatedly used in a wrap-around fashion.
 	 */
-	public MersenneTwister(int[] array) {
+	public MersenneTwister(final int[] array) {
 		super(System.currentTimeMillis());    /* pick something at random just in case */
 		setSeed(array);
 	}
@@ -293,7 +293,7 @@ public strictfp class MersenneTwister extends java.util.Random implements Serial
 	 * only uses the first 32 bits for its seed).
 	 */
 
-	synchronized public void setSeed(long seed) {
+	synchronized public void setSeed(final long seed) {
 		// it's always good style to call super
 		super.setSeed(seed);
 
@@ -329,7 +329,7 @@ public strictfp class MersenneTwister extends java.util.Random implements Serial
 	 * integers are repeatedly used in a wrap-around fashion.
 	 */
 
-	synchronized public void setSeed(int[] array) {
+	synchronized public void setSeed(final int[] array) {
 		if (array.length == 0)
 			throw new IllegalArgumentException("Array length must be greater than zero");
 		int i, j, k;
@@ -364,7 +364,7 @@ public strictfp class MersenneTwister extends java.util.Random implements Serial
 	/**
 	 * Returns an integer with <i>bits</i> bits filled with a random number.
 	 */
-	synchronized protected int next(int bits) {
+	synchronized protected int next(final int bits) {
 		int y;
 
 		if (mti >= N)   // generate N words at one time
@@ -399,13 +399,13 @@ public strictfp class MersenneTwister extends java.util.Random implements Serial
     /* If you've got a truly old version of Java, you can omit these
        two next methods. */
 
-	private synchronized void writeObject(ObjectOutputStream out)
+	private synchronized void writeObject(final ObjectOutputStream out)
 			throws IOException {
 		// just so we're synchronized.
 		out.defaultWriteObject();
 	}
 
-	private synchronized void readObject(ObjectInputStream in)
+	private synchronized void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		// just so we're synchronized.
 		in.defaultReadObject();
@@ -427,7 +427,7 @@ public strictfp class MersenneTwister extends java.util.Random implements Serial
 	 * use this, remember you may need to cast to float first.
 	 */
 
-	public boolean nextBoolean(float probability) {
+	public boolean nextBoolean(final float probability) {
 		if (probability < 0.0f || probability > 1.0f)
 			throw new IllegalArgumentException("probability must be between 0.0 and 1.0 inclusive.");
 		if (probability == 0.0f) return false;            // fix half-open issues
@@ -441,7 +441,7 @@ public strictfp class MersenneTwister extends java.util.Random implements Serial
 	 * be between 0.0 and 1.0, inclusive.
 	 */
 
-	public boolean nextBoolean(double probability) {
+	public boolean nextBoolean(final double probability) {
 		if (probability < 0.0 || probability > 1.0)
 			throw new IllegalArgumentException("probability must be between 0.0 and 1.0 inclusive.");
 		if (probability == 0.0) return false;             // fix half-open issues
@@ -454,7 +454,7 @@ public strictfp class MersenneTwister extends java.util.Random implements Serial
 	 * includes this for us, but what the heck.
 	 */
 
-	public int nextInt(int n) {
+	public int nextInt(final int n) {
 		if (n <= 0)
 			throw new IllegalArgumentException("n must be positive, got: " + n);
 
@@ -476,7 +476,7 @@ public strictfp class MersenneTwister extends java.util.Random implements Serial
 	 * n must be > 0, or an IllegalArgumentException is raised.
 	 */
 
-	public long nextLong(long n) {
+	public long nextLong(final long n) {
 		if (n <= 0)
 			throw new IllegalArgumentException("n must be positive, got: " + n);
 
@@ -512,7 +512,7 @@ public strictfp class MersenneTwister extends java.util.Random implements Serial
 	 * <p/>
 	 * <p>This version preserves all possible random values in the double range.
 	 */
-	public double nextDouble(boolean includeZero, boolean includeOne) {
+	public double nextDouble(final boolean includeZero, final boolean includeOne) {
 		double d = 0.0;
 		do {
 			d = nextDouble();                           // grab a value, initially from half-open [0.0, 1.0)
@@ -546,7 +546,7 @@ public strictfp class MersenneTwister extends java.util.Random implements Serial
 	 * <p/>
 	 * <p>This version preserves all possible random values in the float range.
 	 */
-	public float nextFloat(boolean includeZero, boolean includeOne) {
+	public float nextFloat(final boolean includeZero, final boolean includeOne) {
 		float d = 0.0f;
 		do {
 			d = nextFloat();                            // grab a value, initially from half-open [0.0f, 1.0f)
@@ -564,7 +564,7 @@ public strictfp class MersenneTwister extends java.util.Random implements Serial
 	 * Totally wrong. I've submitted a bug report.
 	 */
 
-	public void nextBytes(byte[] bytes) {
+	public void nextBytes(final byte[] bytes) {
 		for (int x = 0; x < bytes.length; x++) bytes[x] = (byte) next(8);
 	}
 
@@ -612,7 +612,7 @@ public strictfp class MersenneTwister extends java.util.Random implements Serial
 				v2 = 2 * nextDouble() - 1; // between -1.0 and 1.0
 				s = v1 * v1 + v2 * v2;
 			} while (s >= 1 || s == 0);
-			double multiplier = StrictMath.sqrt(-2 * StrictMath.log(s) / s);
+			final double multiplier = StrictMath.sqrt(-2 * StrictMath.log(s) / s);
 			__nextNextGaussian = v2 * multiplier;
 			__haveNextNextGaussian = true;
 			return v1 * multiplier;

@@ -36,8 +36,8 @@ public class CodeReader {
 			labels[i] = new Label();
 		}
 		while (len-- > 0) {
-			Label dflt;
-			Label[] lbls;
+			final Label dflt;
+			final Label[] lbls;
 			int n, ptr = 0;
 			switch (code.readByte()) {
 			case Opcodes.INSN:

@@ -35,7 +35,7 @@ public abstract class Path extends MethodProvider {
 	public static final int WALL_ALLOW_RANGE_WEST = 0x20000000;
 	public static final int OBJECT_ALLOW_RANGE = 0x40000000;
 
-	public Path(MethodContext factory) {
+	public Path(final MethodContext factory) {
 		super(factory);
 	}
 

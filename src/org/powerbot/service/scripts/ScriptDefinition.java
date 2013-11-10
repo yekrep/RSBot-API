@@ -77,7 +77,7 @@ public final class ScriptDefinition implements Comparable<ScriptDefinition> {
 		this.website = website;
 	}
 
-	private String getCleanText(String s) {
+	private String getCleanText(final String s) {
 		return s == null || s.isEmpty() ? "" : StringUtil.stripHtml(s.trim());
 	}
 

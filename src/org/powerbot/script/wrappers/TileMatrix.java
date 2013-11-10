@@ -14,7 +14,7 @@ import org.powerbot.script.util.Random;
 public final class TileMatrix extends Interactive implements Locatable, Drawable {
 	private Tile tile;
 
-	TileMatrix(MethodContext ctx, Tile tile) {
+	TileMatrix(final MethodContext ctx, final Tile tile) {
 		super(ctx);
 		this.tile = tile;
 	}
@@ -29,10 +29,10 @@ public final class TileMatrix extends Interactive implements Locatable, Drawable
 	}
 
 	public Polygon getBounds() {
-		Point tl = getPoint(0.0D, 0.0D, 0);
-		Point tr = getPoint(1.0D, 0.0D, 0);
-		Point br = getPoint(1.0D, 1.0D, 0);
-		Point bl = getPoint(0.0D, 1.0D, 0);
+		final Point tl = getPoint(0.0D, 0.0D, 0);
+		final Point tr = getPoint(1.0D, 0.0D, 0);
+		final Point br = getPoint(1.0D, 1.0D, 0);
+		final Point bl = getPoint(0.0D, 1.0D, 0);
 		return new Polygon(
 				new int[]{tl.x, tr.x, br.x, bl.x},
 				new int[]{tl.y, tr.y, br.y, bl.y},
@@ -63,7 +63,7 @@ public final class TileMatrix extends Interactive implements Locatable, Drawable
 		return isPolygonOnScreen(getBounds());
 	}
 
-	private boolean isPolygonOnScreen(Polygon p) {
+	private boolean isPolygonOnScreen(final Polygon p) {
 		for (int i = 0; i < p.npoints; i++) {
 			if (!ctx.game.isPointOnScreen(p.xpoints[i], p.ypoints[i])) {
 				return false;
@@ -91,7 +91,7 @@ public final class TileMatrix extends Interactive implements Locatable, Drawable
 
 	@Override
 	public boolean contains(final Point point) {
-		Polygon p = getBounds();
+		final Polygon p = getBounds();
 		return isPolygonOnScreen(p) && p.contains(point);
 	}
 
@@ -112,7 +112,7 @@ public final class TileMatrix extends Interactive implements Locatable, Drawable
 
 	@Override
 	public void draw(final Graphics render, final int alpha) {
-		Polygon p = getBounds();
+		final Polygon p = getBounds();
 		if (!isPolygonOnScreen(p)) {
 			return;
 		}

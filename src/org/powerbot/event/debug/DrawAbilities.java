@@ -13,16 +13,16 @@ import org.powerbot.script.wrappers.Component;
 
 public class DrawAbilities implements PaintListener {
 	@Override
-	public void repaint(Graphics render) {
-		MethodContext ctx = BotChrome.getInstance().getBot().getMethodContext();
+	public void repaint(final Graphics render) {
+		final MethodContext ctx = BotChrome.getInstance().getBot().getMethodContext();
 		if (!ctx.game.isLoggedIn()) {
 			return;
 		}
 		render.setFont(new Font("Arial", 0, 10));
 		render.setColor(Color.green);
-		for (Action action : ctx.combatBar.getActions()) {
-			Component c = action.getComponent();
-			Point p = c.getAbsoluteLocation();
+		for (final Action action : ctx.combatBar.getActions()) {
+			final Component c = action.getComponent();
+			final Point p = c.getAbsoluteLocation();
 			render.drawString(action.getId() + " (" + action.getBind() + ")", p.x, p.y);
 		}
 	}

@@ -372,7 +372,7 @@ public class Label {
 		while (i < referenceCount) {
 			final int source = srcAndRefPositions[i++];
 			int reference = srcAndRefPositions[i++];
-			int offset;
+			final int offset;
 			if (source >= 0) {
 				offset = position - source;
 				if (offset < Short.MIN_VALUE || offset > Short.MAX_VALUE) {

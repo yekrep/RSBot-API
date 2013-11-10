@@ -67,20 +67,20 @@ public final class Bot implements Runnable, Stoppable {
 
 	public void start() {
 		log.info("Loading bot");
-		Crawler crawler = new Crawler();
+		final Crawler crawler = new Crawler();
 		if (!crawler.crawl()) {
 			log.severe("Failed to load game");
 			return;
 		}
 
-		GameLoader game = new GameLoader(crawler);
-		ClassLoader classLoader = game.call();
+		final GameLoader game = new GameLoader(crawler);
+		final ClassLoader classLoader = game.call();
 		if (classLoader == null) {
 			log.severe("Failed to load game");
 			return;
 		}
 
-		final NRSLoader loader = new NRSLoader(this, game, classLoader);
+		final NRSLoader loader = new NRSLoader(game, classLoader);
 		loader.setCallback(new Runnable() {
 			@Override
 			public void run() {
@@ -93,8 +93,8 @@ public final class Bot implements Runnable, Stoppable {
 	private void sequence(final NRSLoader loader) {
 		log.info("Loading game (" + loader.getPackHash().substring(0, 6) + ")");
 		this.applet = loader.getApplet();
-		Crawler crawler = loader.getGameLoader().getCrawler();
-		GameStub stub = new GameStub(crawler.parameters, crawler.archive);
+		final Crawler crawler = loader.getGameLoader().getCrawler();
+		final GameStub stub = new GameStub(crawler.parameters, crawler.archive);
 		applet.setStub(stub);
 
 		applet.setSize(BotChrome.PANEL_MIN_WIDTH, BotChrome.PANEL_MIN_HEIGHT);
@@ -102,7 +102,7 @@ public final class Bot implements Runnable, Stoppable {
 
 		applet.init();
 		if (loader.getBridge().getTransformSpec() == null) {
-			Thread thread = new Thread(new Runnable() {
+			final Thread thread = new Thread(new Runnable() {
 				@Override
 				public void run() {
 					for (; ; ) {
@@ -112,7 +112,7 @@ public final class Bot implements Runnable, Stoppable {
 							break;
 						} catch (IOException ignored) {
 						} catch (NRSLoader.PendingException p) {
-							int d = p.getDelay() / 1000;
+							final int d = p.getDelay() / 1000;
 							log.warning("Your update is being processed, trying again in " + (d < 60 ? d + " seconds" : (int) Math.ceil(d / 60) + " minutes"));
 							try {
 								Thread.sleep(p.getDelay());
@@ -135,7 +135,7 @@ public final class Bot implements Runnable, Stoppable {
 			@Override
 			public void run() {
 				for (; ; ) {
-					int s;
+					final int s;
 					if ((s = getMethodContext().game.getClientState()) >= Game.INDEX_LOGIN_SCREEN) {
 						if (s == Game.INDEX_LOGIN_SCREEN) {
 							getMethodContext().keyboard.send("{VK_ESCAPE}");
@@ -186,7 +186,8 @@ public final class Bot implements Runnable, Stoppable {
 	}
 
 	public Graphics getGameBuffer() {
-		Graphics g = game.getGraphics(), b = buffer.getGraphics();
+		final Graphics g = game.getGraphics();
+		final Graphics b = buffer.getGraphics();
 		b.drawImage(game, 0, 0, null);
 		if (this.ctx.getClient() != null) {
 			paintEvent.graphics = g;
@@ -245,7 +246,7 @@ public final class Bot implements Runnable, Stoppable {
 		buffer = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 	}
 
-	private void setClient(final Client client, TransformSpec spec) {
+	private void setClient(final Client client, final TransformSpec spec) {
 		this.ctx.setClient(client);
 		client.setCallback(new AbstractCallback(this));
 		constants = new Constants(spec.constants);

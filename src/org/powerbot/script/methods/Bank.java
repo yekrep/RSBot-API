@@ -49,10 +49,10 @@ public class Bank extends ItemQuery<Item> {
 	};
 	private static final Filter<Interactive> UNREACHABLE_FILTER = new Filter<Interactive>() {
 		@Override
-		public boolean accept(Interactive interactive) {
+		public boolean accept(final Interactive interactive) {
 			if (interactive instanceof Locatable) {
-				Tile tile = ((Locatable) interactive).getLocation();
-				for (Tile bad : UNREACHABLE_BANK_TILES) {
+				final Tile tile = ((Locatable) interactive).getLocation();
+				for (final Tile bad : UNREACHABLE_BANK_TILES) {
 					if (tile.equals(bad)) {
 						return false;
 					}
@@ -73,14 +73,14 @@ public class Bank extends ItemQuery<Item> {
 	public static final int SETTING_BANK_STATE = 110;
 	public static final int SETTING_WITHDRAW_MODE = 160;
 
-	public Bank(MethodContext factory) {
+	public Bank(final MethodContext factory) {
 		super(factory);
 	}
 
 	private Interactive getBank() {
 		final Filter<Interactive> f = Interactive.areOnScreen();
-		List<Interactive> interactives = new ArrayList<Interactive>();
-		Npc n;
+		final List<Interactive> interactives = new ArrayList<Interactive>();
+		final Npc n;
 		GameObject o;
 
 		ctx.npcs.select().id(BANK_NPC_IDS).select(f).select(UNREACHABLE_FILTER).nearest();
@@ -119,8 +119,8 @@ public class Bank extends ItemQuery<Item> {
 	public Locatable getNearest() {
 		Locatable nearest = ctx.npcs.select().select(UNREACHABLE_FILTER).id(BANK_NPC_IDS).nearest().limit(1).poll();
 
-		Tile loc = ctx.players.local().getLocation();
-		for (GameObject object : ctx.objects.select().select(UNREACHABLE_FILTER).
+		final Tile loc = ctx.players.local().getLocation();
+		for (final GameObject object : ctx.objects.select().select(UNREACHABLE_FILTER).
 				id(BANK_BOOTH_IDS, BANK_COUNTER_IDS, BANK_CHEST_IDS).nearest().limit(1)) {
 			if (loc.distanceTo(object) < loc.distanceTo(nearest)) {
 				nearest = object;
@@ -167,7 +167,7 @@ public class Bank extends ItemQuery<Item> {
 		if (isOpen()) {
 			return true;
 		}
-		Interactive interactive = getBank();
+		final Interactive interactive = getBank();
 		final int id;
 		if (interactive.isValid()) {
 			if (interactive instanceof Npc) {
@@ -225,7 +225,7 @@ public class Bank extends ItemQuery<Item> {
 			return true;
 		}
 
-		Component c = ctx.widgets.get(WIDGET, COMPONENT_BUTTON_CLOSE);
+		final Component c = ctx.widgets.get(WIDGET, COMPONENT_BUTTON_CLOSE);
 		return c.interact("Close") & Condition.wait(new Callable<Boolean>() {
 			@Override
 			public Boolean call() throws Exception {
@@ -244,7 +244,7 @@ public class Bank extends ItemQuery<Item> {
 			return new ArrayList<Item>();
 		}
 		final Component[] components = c.getChildren();
-		List<Item> items = new ArrayList<Item>(components.length);
+		final List<Item> items = new ArrayList<Item>(components.length);
 		for (final Component i : components) {
 			if (i.getItemId() != -1) {
 				items.add(new Item(ctx, i));
@@ -301,7 +301,7 @@ public class Bank extends ItemQuery<Item> {
 	 * @return <tt>true</tt> if the tab was successfully changed; otherwise <tt>false</tt>
 	 */
 	public boolean setCurrentTab(final int index) {
-		Component c = ctx.widgets.get(WIDGET, 35 - (index * 2));
+		final Component c = ctx.widgets.get(WIDGET, 35 - (index * 2));
 		return c.click() && Condition.wait(new Callable<Boolean>() {
 			@Override
 			public Boolean call() throws Exception {
@@ -331,7 +331,7 @@ public class Bank extends ItemQuery<Item> {
 	 * @param amount the amount to withdraw
 	 * @return <tt>true</tt> if the item was withdrew, does not determine if amount was matched; otherwise <tt>false</tt>
 	 */
-	public boolean withdraw(int id, Amount amount) {
+	public boolean withdraw(final int id, final Amount amount) {
 		return withdraw(id, amount.getValue());
 	}
 
@@ -342,15 +342,15 @@ public class Bank extends ItemQuery<Item> {
 	 * @param amount the amount to withdraw
 	 * @return <tt>true</tt> if the item was withdrew, does not determine if amount was matched; otherwise <tt>false</tt>
 	 */
-	public boolean withdraw(int id, int amount) {//TODO: anti pattern
-		Item item = select().id(id).poll();
+	public boolean withdraw(final int id, final int amount) {//TODO: anti pattern
+		final Item item = select().id(id).poll();
 		final Component container = ctx.widgets.get(WIDGET, COMPONENT_CONTAINER_ITEMS);
 		if (!item.isValid() || !container.isValid()) {
 			return false;
 		}
 
 		final Component c = item.getComponent();
-		Point p = c.getRelativeLocation();
+		final Point p = c.getRelativeLocation();
 		if (p.y == 0) {
 			for (int i = 0; i < 5 && getCurrentTab() != 0; i++) {
 				if (!setCurrentTab(0)) {
@@ -413,7 +413,7 @@ public class Bank extends ItemQuery<Item> {
 	 * @param amount the amount to deposit
 	 * @return <tt>true</tt> if the item was deposited, does not determine if amount was matched; otherwise <tt>false</tt>
 	 */
-	public boolean deposit(int id, Amount amount) {
+	public boolean deposit(final int id, final Amount amount) {
 		return deposit(id, amount.getValue());
 	}
 
@@ -425,7 +425,7 @@ public class Bank extends ItemQuery<Item> {
 	 * @return <tt>true</tt> if the item was deposited, does not determine if amount was matched; otherwise <tt>false</tt>
 	 */
 	public boolean deposit(final int id, final int amount) {
-		Item item = ctx.backpack.select().id(id).shuffle().poll();
+		final Item item = ctx.backpack.select().id(id).shuffle().poll();
 		if (!isOpen() || amount < 0 || !item.isValid()) {
 			return false;
 		}

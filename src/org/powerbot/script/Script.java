@@ -4,7 +4,6 @@ import java.util.EventListener;
 import java.util.Queue;
 import java.util.concurrent.BlockingDeque;
 
-import org.powerbot.script.internal.ScriptController;
 import org.powerbot.script.lang.Stoppable;
 import org.powerbot.script.lang.Suspendable;
 import org.powerbot.script.methods.MethodContext;

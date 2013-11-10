@@ -23,7 +23,7 @@ public class Summoning extends MethodProvider {
 	public static final int WIDGET_LEFT_SELECT = 880;
 	public static final int COMPONENT_CONFIRM = 6;
 
-	public Summoning(MethodContext factory) {
+	public Summoning(final MethodContext factory) {
 		super(factory);
 	}
 
@@ -80,7 +80,7 @@ public class Summoning extends MethodProvider {
 	 * @return <tt>true</tt> if the action was selected; otherwise <tt>false</tt>
 	 */
 	public boolean select(final String action) {
-		Component c = ctx.widgets.get(CombatBar.WIDGET, CombatBar.COMPONENT_BUTTON_SUMMONING);
+		final Component c = ctx.widgets.get(CombatBar.WIDGET, CombatBar.COMPONENT_BUTTON_SUMMONING);
 		if (Option.RENEW_FAMILIAR.getText().toLowerCase().contains(action.toLowerCase())) {
 			final Familiar familiar = getFamiliar();
 			return familiar != null && familiar.getRequiredPoints() <= getSpecialPoints() &&
@@ -88,7 +88,7 @@ public class Summoning extends MethodProvider {
 		}
 		if (Option.DISMISS.getText().toLowerCase().contains(action.toLowerCase())) {
 			if (c.interact(action)) {
-				Component c2 = ctx.widgets.get(1188, 2);
+				final Component c2 = ctx.widgets.get(1188, 2);
 				for (int i = 0; i < 50 && !c2.isValid(); i++) {
 					sleep(20);
 				}
@@ -110,8 +110,8 @@ public class Summoning extends MethodProvider {
 	 * @return the {@link Option} when left clicked
 	 */
 	public Option getLeftClickOption() {
-		int val = ctx.settings.get(SETTING_LEFT_OPTION);
-		for (Option o : Option.values()) {
+		final int val = ctx.settings.get(SETTING_LEFT_OPTION);
+		for (final Option o : Option.values()) {
 			if (val == o.getValue()) {
 				return o;
 			}
@@ -146,7 +146,7 @@ public class Summoning extends MethodProvider {
 				sleep(100, 200);
 			}
 		}
-		Component confirm = ctx.widgets.get(WIDGET_LEFT_SELECT, COMPONENT_CONFIRM);
+		final Component confirm = ctx.widgets.get(WIDGET_LEFT_SELECT, COMPONENT_CONFIRM);
 		for (int i = 0; i < 3; i++) {
 			if (!confirm.isValid()) {
 				break;
@@ -176,7 +176,7 @@ public class Summoning extends MethodProvider {
 		final Player local = ctx.players.local();
 		for (final Npc npc : ctx.npcs.select().select(new Filter<Npc>() {
 			@Override
-			public boolean accept(Npc npc) {
+			public boolean accept(final Npc npc) {
 				final Actor actor;
 				return npc.getId() == ctx.settings.get(SETTING_NPC_ID) && (actor = npc.getInteracting()) != null && actor.equals(local);
 			}

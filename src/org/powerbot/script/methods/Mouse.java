@@ -13,7 +13,7 @@ import org.powerbot.util.math.HardwareSimulator;
 public class Mouse extends MethodProvider {
 	private MouseHandler handler;
 
-	public Mouse(MethodContext ctx) {
+	public Mouse(final MethodContext ctx) {
 		super(ctx);
 		this.handler = new MouseHandler(ctx);
 	}
@@ -24,7 +24,7 @@ public class Mouse extends MethodProvider {
 	 * @return position of the mouse
 	 */
 	public Point getLocation() {
-		Client client = ctx.getClient();
+		final Client client = ctx.getClient();
 		final org.powerbot.client.input.Mouse mouse;
 		if (client == null || (mouse = client.getMouse()) == null) {
 			return new Point(-1, -1);
@@ -38,7 +38,7 @@ public class Mouse extends MethodProvider {
 	 * @return the press location
 	 */
 	public Point getPressLocation() {
-		Client client = ctx.getClient();
+		final Client client = ctx.getClient();
 		final org.powerbot.client.input.Mouse mouse;
 		if (client == null || (mouse = client.getMouse()) == null) {
 			return new Point(-1, -1);
@@ -52,7 +52,7 @@ public class Mouse extends MethodProvider {
 	 * @return the press time
 	 */
 	public long getPressTime() {
-		Client client = ctx.getClient();
+		final Client client = ctx.getClient();
 		final org.powerbot.client.input.Mouse mouse;
 		if (client == null || (mouse = client.getMouse()) == null) {
 			return -1;
@@ -66,7 +66,7 @@ public class Mouse extends MethodProvider {
 	 * @return <tt>true</tt> if the mouse is pressed; otherwise <tt>false</tt>
 	 */
 	public boolean isPressed() {
-		Client client = ctx.getClient();
+		final Client client = ctx.getClient();
 		final org.powerbot.client.input.Mouse mouse;
 		return !(client == null || (mouse = client.getMouse()) == null) && mouse.isPressed();
 	}
@@ -77,7 +77,7 @@ public class Mouse extends MethodProvider {
 	 * @return <tt>true</tt> if the mouse is present; otherwise <tt>false</tt>
 	 */
 	public boolean isPresent() {
-		Client client = ctx.getClient();
+		final Client client = ctx.getClient();
 		final org.powerbot.client.input.Mouse mouse;
 		return !(client == null || (mouse = client.getMouse()) == null) && mouse.isPresent();
 	}
@@ -88,7 +88,7 @@ public class Mouse extends MethodProvider {
 	 * @param down <tt>true</tt> to scroll down; otherwise <tt>false</tt> to scroll up
 	 * @return <tt>true</tt> if scrolled; otherwise <tt>false</tt>
 	 */
-	public boolean scroll(boolean down) {
+	public boolean scroll(final boolean down) {
 		handler.scroll(down);
 		return true;
 	}
@@ -102,11 +102,11 @@ public class Mouse extends MethodProvider {
 		return true;
 	}
 
-	public boolean click(boolean left) {
+	public boolean click(final boolean left) {
 		return click(left ? MouseEvent.BUTTON1 : MouseEvent.BUTTON3);
 	}
 
-	public boolean click(int button) {
+	public boolean click(final int button) {
 		final Client client = ctx.getClient();
 		final org.powerbot.client.input.Mouse mouse;
 		if (client == null || (mouse = client.getMouse()) == null) {
@@ -116,15 +116,15 @@ public class Mouse extends MethodProvider {
 		return click(mouse.getX(), mouse.getY(), button);
 	}
 
-	public boolean click(Point p, boolean left) {
+	public boolean click(final Point p, final boolean left) {
 		return click(p.x, p.y, left);
 	}
 
-	public boolean click(int x, int y, boolean left) {
+	public boolean click(final int x, final int y, final boolean left) {
 		return click(x, y, left ? MouseEvent.BUTTON1 : MouseEvent.BUTTON3);
 	}
 
-	public boolean click(int x, int y, int button) {
+	public boolean click(final int x, final int y, final int button) {
 		if (move(x, y)) {
 			handler.click(x, y, button);
 			return true;

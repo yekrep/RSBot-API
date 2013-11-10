@@ -20,7 +20,7 @@ public abstract class ItemQuery<K extends Identifiable & Nameable & Stackable> e
 	 * {@inheritDoc}
 	 */
 	@Override
-	public ItemQuery<K> id(int... ids) {
+	public ItemQuery<K> id(final int... ids) {
 		return select(new Identifiable.Matcher(ids));
 	}
 
@@ -51,7 +51,7 @@ public abstract class ItemQuery<K extends Identifiable & Nameable & Stackable> e
 	 * {@inheritDoc}
 	 */
 	@Override
-	public ItemQuery<K> id(Identifiable... identifiables) {
+	public ItemQuery<K> id(final Identifiable... identifiables) {
 		return select(new Identifiable.Matcher(identifiables));
 	}
 
@@ -59,7 +59,7 @@ public abstract class ItemQuery<K extends Identifiable & Nameable & Stackable> e
 	 * {@inheritDoc}
 	 */
 	@Override
-	public ItemQuery<K> name(String... names) {
+	public ItemQuery<K> name(final String... names) {
 		return select(new Nameable.Matcher(names));
 	}
 
@@ -67,7 +67,7 @@ public abstract class ItemQuery<K extends Identifiable & Nameable & Stackable> e
 	 * {@inheritDoc}
 	 */
 	@Override
-	public ItemQuery<K> name(Nameable... names) {
+	public ItemQuery<K> name(final Nameable... names) {
 		return select(new Nameable.Matcher(names));
 	}
 
@@ -77,12 +77,12 @@ public abstract class ItemQuery<K extends Identifiable & Nameable & Stackable> e
 	}
 
 	@Override
-	public int count(boolean stacks) {
+	public int count(final boolean stacks) {
 		if (!stacks) {
 			return count();
 		}
 		int count = 0;
-		for (Stackable stackable : this) {
+		for (final Stackable stackable : this) {
 			count += stackable.getStackSize();
 		}
 		return count;

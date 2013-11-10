@@ -12,26 +12,27 @@ public class Items extends MethodProvider {
 	public static final int INDEX_EQUIPMENT = 670;
 	public static final int INDEX_BANK = 95;
 
-	public Items(MethodContext factory) {
+	public Items(final MethodContext factory) {
 		super(factory);
 	}
 
-	public int[][] getItems(int index) {
-		Client client = ctx.getClient();
+	public int[][] getItems(final int index) {
+		final Client client = ctx.getClient();
 		final HashTable table;
 		if (client == null || (table = client.getItemSlots()) == null) {
 			return new int[0][];
 		}
-		Object n = ctx.game.lookup(table, index);
+		final Object n = ctx.game.lookup(table, index);
 		if (n == null || !(n instanceof ItemSlot)) {
 			return new int[0][];
 		}
 		final ItemSlot slot = (ItemSlot) n;
-		int[] ids = slot.getIds(), stacks = slot.getStackSizes();
+		final int[] ids = slot.getIds();
+		final int[] stacks = slot.getStackSizes();
 		if (ids.length != stacks.length) {
 			return new int[0][];
 		}
-		int[][] data = new int[ids.length][2];
+		final int[][] data = new int[ids.length][2];
 		for (int i = 0; i < ids.length; i++) {
 			data[i] = new int[]{ids[i], stacks[i]};
 		}

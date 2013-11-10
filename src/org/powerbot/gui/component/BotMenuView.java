@@ -197,7 +197,7 @@ public final class BotMenuView implements ActionListener {
 			try {
 				EventListener listener;
 				try {
-					Constructor<?> constructor = eventListener.getConstructor(Bot.class);
+					final Constructor<?> constructor = eventListener.getConstructor(Bot.class);
 					listener = (EventListener) constructor.newInstance(bot);
 				} catch (final Exception ignored) {
 					listener = eventListener.asSubclass(EventListener.class).newInstance();
