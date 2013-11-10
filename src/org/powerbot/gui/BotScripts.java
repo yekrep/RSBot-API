@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Logger;
 
@@ -71,12 +72,14 @@ public final class BotScripts extends JDialog implements ActionListener {
 	private final JToggleButton locals;
 	private final JButton username, refresh;
 	private final JTextField search;
-	private volatile boolean init;
+	private final AtomicBoolean init;
 
 	private static AtomicReference<String> lastUsername = new AtomicReference<String>(null);
 
 	public BotScripts(final BotChrome parent) {
 		super(parent, BotLocale.SCRIPTS, true);
+
+		init = new AtomicBoolean(false);
 
 		if (!NetworkAccount.getInstance().isLoggedIn()) {
 			new BotSignin(parent);
@@ -310,7 +313,7 @@ public final class BotScripts extends JDialog implements ActionListener {
 						table.repaint();
 						filter();
 						refresh.setEnabled(true);
-						init = true;
+						init.set(true);
 					}
 				});
 			}
@@ -491,9 +494,9 @@ public final class BotScripts extends JDialog implements ActionListener {
 			}
 			super.paintComponent(g);
 			adjustViewport();
-			if (init) {
+			if (init.get()) {
 				scroll.getVerticalScrollBar().setValue(0);
-				init = false;
+				init.set(false);
 			}
 		}
 
