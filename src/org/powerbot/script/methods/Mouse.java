@@ -133,7 +133,7 @@ public class Mouse extends MethodProvider {
 
 	public boolean click(int x, int y, int button) {
 		MouseHandler handler = getMouseHandler();
-		if (handler != null) {
+		if (handler != null && move(x, y)) {
 			handler.click(x, y, button);
 			return true;
 		}
