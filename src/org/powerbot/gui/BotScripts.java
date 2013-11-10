@@ -73,6 +73,7 @@ public final class BotScripts extends JDialog implements ActionListener {
 	private final JButton username, refresh;
 	private final JTextField search;
 	private final AtomicBoolean init;
+	private final static AtomicBoolean loading = new AtomicBoolean(false);
 
 	private static AtomicReference<String> lastUsername = new AtomicReference<String>(null);
 
@@ -83,15 +84,16 @@ public final class BotScripts extends JDialog implements ActionListener {
 
 		if (!NetworkAccount.getInstance().isLoggedIn()) {
 			new BotSignin(parent);
-			if (!NetworkAccount.getInstance().isLoggedIn()) {
-				scroll = null;
-				table = null;
-				locals = null;
-				username = refresh = null;
-				search = null;
-				dispose();
-				return;
-			}
+		}
+
+		if (!NetworkAccount.getInstance().isLoggedIn() || loading.get()) {
+			scroll = null;
+			table = null;
+			locals = null;
+			username = refresh = null;
+			search = null;
+			dispose();
+			return;
 		}
 
 		setIconImage(Resources.getImage(Resources.Paths.FILE));
@@ -457,7 +459,9 @@ public final class BotScripts extends JDialog implements ActionListener {
 					new Thread(new Runnable() {
 						@Override
 						public void run() {
+							loading.set(true);
 							ScriptList.load(def, username.getText());
+							loading.set(false);
 						}
 					}).start();
 				}
