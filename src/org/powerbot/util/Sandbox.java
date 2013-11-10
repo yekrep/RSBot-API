@@ -86,9 +86,9 @@ public class Sandbox extends SecurityManager {
 
 		if (perm instanceof RuntimePermission) {
 			if (name.equals("setSecurityManager")) {
-				throw new SecurityException();
+				throw new SecurityException(name);
 			} else if (name.equals("modifyThreadGroup") && isScriptThread()) {
-				throw new SecurityException();
+				throw new SecurityException(name);
 			}
 		} else if (perm instanceof FilePermission) {
 			final FilePermission fp = (FilePermission) perm;
@@ -176,8 +176,7 @@ public class Sandbox extends SecurityManager {
 			return;
 		}
 
-		log.severe((readOnly ? "Read" : "Write") + " denied: " + path + " on " + Thread.currentThread().getName() + "/" + Thread.currentThread().getThreadGroup().getName());
-		throw new SecurityException();
+		throw new SecurityException((readOnly ? "read" : "write") + ": " + path);
 	}
 
 	private static String getCanonicalPath(final File f) {
