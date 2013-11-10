@@ -9,24 +9,19 @@ import java.util.concurrent.TimeUnit;
 
 import org.powerbot.client.Client;
 import org.powerbot.client.input.Mouse;
-import org.powerbot.script.lang.Stoppable;
 import org.powerbot.util.math.HeteroMouse;
 import org.powerbot.util.math.Vector3;
 
-public class MouseHandler implements Runnable, Stoppable {
-	private static final int MAX_STEPS = 5;
+public class MouseHandler {
+	private static final int MAX_ATTEMPTS = 5;
 	public final MouseSimulator simulator;
-	private final Object LOCK = new Object();
 	private final Applet applet;
 	private final Client client;
-	private boolean running, stopping = false;
-	private MouseTarget target;
 
 	public MouseHandler(final Applet applet, final Client client) {
 		this.applet = applet;
 		this.client = client;
 		simulator = new HeteroMouse();
-		target = null;
 	}
 
 	public void click(final int x, final int y, final int button) {
@@ -107,36 +102,19 @@ public class MouseHandler implements Runnable, Stoppable {
 		}
 	}
 
-	@Override
-	public void run() {
-		running = true;
+	public synchronized void handle(MouseTarget target) {
+		final Mouse mouse = client.getMouse();
+		if (target == null || mouse == null) {
+			return;
+		}
 
 		start:
-		while (running) {
-			synchronized (LOCK) {
-				if (target == null) {
-					try {
-						LOCK.wait();
-					} catch (final InterruptedException ignored) {
-					}
-				}
-			}
-			if (target == null) {
-				continue;
-			}
-			final Mouse mouse;
-			if ((mouse = client.getMouse()) == null) {
-				try {
-					Thread.sleep(250);
-				} catch (InterruptedException ignored) {
-				}
-				continue;
-			}
-			if (++target.steps > MAX_STEPS) {
+		for (; ; ) {
+			if (++target.steps > MAX_ATTEMPTS) {
 				target.failed = true;
-				complete(target);
-				continue;
+				break;
 			}
+
 			final Point loc = mouse.getLocation();
 			if (target.curr == null) {
 				target.curr = new Vector3(loc.x, loc.y, 255);
@@ -149,8 +127,7 @@ public class MouseHandler implements Runnable, Stoppable {
 			}
 			if (target.dest.x == -1 || target.dest.y == -1) {
 				target.failed = true;
-				complete(target);
-				continue;
+				break;
 			}
 			final Vector3 curr = target.curr;
 			final Vector3 dest = target.dest;
@@ -170,8 +147,9 @@ public class MouseHandler implements Runnable, Stoppable {
 				if (traverseLength < mod) {
 					final Point pos = curr.to2DPoint();
 					if (target.targetable.contains(pos) && target.filter.accept(pos)) {
-						target.execute(this);
-						continue start;
+						if (target.execute(this)) {
+							break start;
+						}
 					}
 				}
 				m = System.nanoTime() - m;
@@ -190,50 +168,8 @@ public class MouseHandler implements Runnable, Stoppable {
 		}
 	}
 
-	public void handle(final MouseTarget target) {
-		synchronized (LOCK) {
-			boolean notify = false;
-			if (this.target == null) {
-				notify = true;
-			}
-			this.target = target;
-			if (notify) {
-				LOCK.notify();
-			}
-
-			try {
-				LOCK.wait();
-			} catch (final InterruptedException ignored) {
-			}
-		}
-	}
-
-	public void complete(final MouseTarget target) {
-		synchronized (LOCK) {
-			if (target.equals(this.target)) {
-				this.target = null;
-				LOCK.notifyAll();
-			}
-		}
-	}
-
-	@Override
-	public boolean isStopping() {
-		return stopping;
-	}
-
-	@Override
-	public void stop() {
-		stopping = true;
-		running = false;
-	}
-
 	public Component getSource() {
 		return applet.getComponentCount() > 0 ? applet.getComponent(0) : null;
-	}
-
-	public Mouse getMouse() {
-		return client.getMouse();
 	}
 
 	public Point getLocation() {

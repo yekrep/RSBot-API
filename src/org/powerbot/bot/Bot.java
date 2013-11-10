@@ -169,7 +169,7 @@ public final class Bot implements Runnable, Stoppable {
 	public void stop() {
 		stopping = true;
 		log.info("Unloading environment");
-		for (final Stoppable module : new Stoppable[]{mouseHandler, controller, multicaster}) {
+		for (final Stoppable module : new Stoppable[]{controller, multicaster}) {
 			if (module != null) {
 				module.stop();
 			}
@@ -257,7 +257,6 @@ public final class Bot implements Runnable, Stoppable {
 		new Thread(threadGroup, new SafeMode(this)).start();
 		mouseHandler = new MouseHandler(applet, client);
 		inputHandler = new InputHandler(applet, client);
-		new Thread(threadGroup, mouseHandler).start();
 		ctx.menu.register();
 	}
 

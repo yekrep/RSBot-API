@@ -11,8 +11,11 @@ import org.powerbot.script.wrappers.Targetable;
 import org.powerbot.util.math.HardwareSimulator;
 
 public class Mouse extends MethodProvider {
+	private MouseHandler handler;
+
 	public Mouse(MethodContext factory) {
 		super(factory);
+		this.handler = factory.getBot().getMouseHandler();
 	}
 
 	/**
@@ -86,11 +89,6 @@ public class Mouse extends MethodProvider {
 	 * @return <tt>true</tt> if scrolled; otherwise <tt>false</tt>
 	 */
 	public boolean scroll(boolean down) {
-		final MouseHandler handler = getMouseHandler();
-		if (handler == null) {
-			return false;
-		}
-
 		handler.scroll(down);
 		return true;
 	}
@@ -100,11 +98,6 @@ public class Mouse extends MethodProvider {
 	}
 
 	public boolean hop(final int x, final int y) {
-		final MouseHandler handler = getMouseHandler();
-		if (handler == null) {
-			return false;
-		}
-
 		handler.move(x, y);
 		return true;
 	}
@@ -132,8 +125,7 @@ public class Mouse extends MethodProvider {
 	}
 
 	public boolean click(int x, int y, int button) {
-		MouseHandler handler = getMouseHandler();
-		if (handler != null && move(x, y)) {
+		if (move(x, y)) {
 			handler.click(x, y, button);
 			return true;
 		}
@@ -141,24 +133,19 @@ public class Mouse extends MethodProvider {
 	}
 
 	public boolean click(final Targetable target, final boolean left) {
-		final MouseHandler handler = getMouseHandler();
-		if (handler == null) {
-			return false;
-		}
-
 		final MouseTarget t;
 		handler.handle(t = new MouseTarget(target, MouseTarget.DUMMY) {
 			@Override
-			public void execute(final MouseHandler handler) {
+			public boolean execute(final MouseHandler handler) {
 				try {
 					Thread.sleep(HardwareSimulator.getDelayFactor());
 				} catch (InterruptedException ignored) {
 				}
 
 				if (filter.accept(handler.getLocation())) {
-					click(left ? MouseEvent.BUTTON1 : MouseEvent.BUTTON3);
-					handler.complete(this);
+					return click(left ? MouseEvent.BUTTON1 : MouseEvent.BUTTON3);
 				}
+				return false;
 			}
 		});
 		return !t.failed;
@@ -169,12 +156,7 @@ public class Mouse extends MethodProvider {
 	}
 
 	public boolean drag(final Point p1, final Point p2, final int button) {
-		final MouseHandler handler = getMouseHandler();
-		if (handler == null) {
-			return false;
-		}
-
-		Point loc = handler.getLocation();
+		final Point loc = handler.getLocation();
 		if (loc.equals(p1) || move(p1)) {
 			try {
 				Thread.sleep(handler.simulator.getPressDuration());
@@ -230,16 +212,11 @@ public class Mouse extends MethodProvider {
 	}
 
 	public boolean move(final Targetable target, final Filter<Point> filter) {
-		final MouseHandler handler = getMouseHandler();
-		if (handler == null) {
-			return false;
-		}
-
 		final MouseTarget t;
 		handler.handle(t = new MouseTarget(target, filter) {
 			@Override
-			public void execute(final MouseHandler handler) {
-				handler.complete(this);
+			public boolean execute(final MouseHandler handler) {
+				return true;
 			}
 		});
 		return !t.failed;
@@ -250,11 +227,6 @@ public class Mouse extends MethodProvider {
 	}
 
 	public boolean move(final Point p) {
-		final MouseHandler handler = getMouseHandler();
-		if (handler == null) {
-			return false;
-		}
-
 		final MouseTarget t;
 		final Targetable targetable = new Targetable() {
 			@Override
@@ -280,19 +252,10 @@ public class Mouse extends MethodProvider {
 
 		handler.handle(t = new MouseTarget(targetable, MouseTarget.DUMMY) {
 			@Override
-			public void execute(final MouseHandler handler) {
-				handler.complete(this);
+			public boolean execute(final MouseHandler handler) {
+				return true;
 			}
 		});
 		return !t.failed;
-	}
-
-	public boolean isReady() {
-		MouseHandler handler = getMouseHandler();
-		return handler != null && handler.getSource() != null;
-	}
-
-	private MouseHandler getMouseHandler() {
-		return ctx.getBot().getMouseHandler();
 	}
 }
