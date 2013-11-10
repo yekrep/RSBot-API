@@ -42,7 +42,6 @@ public final class Bot implements Runnable, Stoppable {
 	public AtomicBoolean refreshing;
 	private Constants constants;
 	private GameAccounts.Account account;
-	private MouseHandler mouseHandler;
 	private InputHandler inputHandler;
 	private ScriptController controller;
 	private boolean stopping;
@@ -241,10 +240,6 @@ public final class Bot implements Runnable, Stoppable {
 		return inputHandler;
 	}
 
-	public MouseHandler getMouseHandler() {
-		return mouseHandler;
-	}
-
 	public void resize(final int width, final int height) {
 		game = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 		buffer = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
@@ -255,7 +250,6 @@ public final class Bot implements Runnable, Stoppable {
 		client.setCallback(new AbstractCallback(this));
 		constants = new Constants(spec.constants);
 		new Thread(threadGroup, new SafeMode(this)).start();
-		mouseHandler = new MouseHandler(applet, client);
 		inputHandler = new InputHandler(applet, client);
 		ctx.menu.register();
 	}
