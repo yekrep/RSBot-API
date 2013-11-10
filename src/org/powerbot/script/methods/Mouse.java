@@ -3,7 +3,6 @@ package org.powerbot.script.methods;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 
-import org.powerbot.bot.Bot;
 import org.powerbot.client.Client;
 import org.powerbot.script.internal.MouseHandler;
 import org.powerbot.script.internal.MouseTarget;
@@ -16,8 +15,7 @@ public class Mouse extends MethodProvider {
 
 	public Mouse(MethodContext ctx) {
 		super(ctx);
-		final Bot bot = ctx.getBot();
-		this.handler = new MouseHandler(bot.getApplet(), ctx.getClient());
+		this.handler = new MouseHandler(ctx);
 	}
 
 	/**

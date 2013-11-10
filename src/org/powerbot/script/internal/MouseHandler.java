@@ -9,18 +9,17 @@ import java.util.concurrent.TimeUnit;
 
 import org.powerbot.client.Client;
 import org.powerbot.client.input.Mouse;
+import org.powerbot.script.methods.MethodContext;
+import org.powerbot.script.methods.MethodProvider;
 import org.powerbot.util.math.HeteroMouse;
 import org.powerbot.util.math.Vector3;
 
-public class MouseHandler {
+public class MouseHandler extends MethodProvider {
 	private static final int MAX_ATTEMPTS = 5;
 	public final MouseSimulator simulator;
-	private final Applet applet;
-	private final Client client;
 
-	public MouseHandler(final Applet applet, final Client client) {
-		this.applet = applet;
-		this.client = client;
+	public MouseHandler(final MethodContext ctx) {
+		super(ctx);
 		simulator = new HeteroMouse();
 	}
 
@@ -42,8 +41,9 @@ public class MouseHandler {
 	}
 
 	public void scroll(boolean down) {
+		final Client client = ctx.getClient();
 		final Mouse mouse;
-		if ((mouse = client.getMouse()) == null) {
+		if (client == null || (mouse = client.getMouse()) == null) {
 			return;
 		}
 		if (!mouse.isPresent()) {
@@ -55,8 +55,9 @@ public class MouseHandler {
 	}
 
 	public void press(final int x, final int y, final int button) {
+		final Client client = ctx.getClient();
 		final Mouse mouse;
-		if ((mouse = client.getMouse()) == null) {
+		if (client == null || (mouse = client.getMouse()) == null) {
 			return;
 		}
 		if (!mouse.isPresent() || mouse.isPressed()) {
@@ -67,8 +68,9 @@ public class MouseHandler {
 	}
 
 	public void release(final int x, final int y, final int button) {
+		final Client client = ctx.getClient();
 		final Mouse mouse;
-		if ((mouse = client.getMouse()) == null) {
+		if (client == null || (mouse = client.getMouse()) == null) {
 			return;
 		}
 		if (!mouse.isPressed()) {
@@ -83,12 +85,13 @@ public class MouseHandler {
 	}
 
 	public void move(final int x, final int y) {
-		final long mark = System.currentTimeMillis();
-		final Component target = getSource();
+		final Client client = ctx.getClient();
 		final Mouse mouse;
-		if ((mouse = client.getMouse()) == null) {
+		if (client == null || (mouse = client.getMouse()) == null) {
 			return;
 		}
+		final long mark = System.currentTimeMillis();
+		final Component target = getSource();
 		final boolean present = x >= 0 && y >= 0 && x < target.getWidth() && y < target.getHeight();
 		if (!mouse.isPresent() && present) {
 			mouse.sendEvent(new MouseEvent(target, MouseEvent.MOUSE_ENTERED, mark, 0, x, y, 0, false));
@@ -103,8 +106,9 @@ public class MouseHandler {
 	}
 
 	public synchronized void handle(MouseTarget target) {
-		final Mouse mouse = client.getMouse();
-		if (target == null || mouse == null) {
+		final Client client = ctx.getClient();
+		final Mouse mouse;
+		if (target == null || client == null || (mouse = client.getMouse()) == null) {
 			return;
 		}
 
@@ -169,12 +173,14 @@ public class MouseHandler {
 	}
 
 	public Component getSource() {
-		return applet.getComponentCount() > 0 ? applet.getComponent(0) : null;
+		Applet applet = ctx.getBot().getApplet();
+		return applet != null && applet.getComponentCount() > 0 ? applet.getComponent(0) : null;
 	}
 
 	public Point getLocation() {
+		final Client client = ctx.getClient();
 		final Mouse mouse;
-		if ((mouse = client.getMouse()) == null) {
+		if (client == null || (mouse = client.getMouse()) == null) {
 			return new Point(-1, -1);
 		}
 		return mouse.getLocation();
