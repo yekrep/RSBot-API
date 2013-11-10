@@ -25,6 +25,7 @@ public class InputHandler {
 	private final Applet applet;
 	private final Client client;
 	private final Method getVK;
+	private final Field when;
 	private final Map<String, Integer> keyMap = new HashMap<String, Integer>(256);
 
 	public InputHandler(final Applet applet, final Client client) {
@@ -50,6 +51,13 @@ public class InputHandler {
 				}
 			}
 		}
+
+		Field when = null;
+		try {
+			when = InputEvent.class.getDeclaredField("when");
+		} catch (final NoSuchFieldException ignored) {
+		}
+		this.when = when;
 	}
 
 	public int getExtendedKeyCodeForChar(final char c) {
@@ -245,13 +253,14 @@ public class InputHandler {
 	}
 
 	public KeyEvent retimeKeyEvent(final KeyEvent e) {
-		try {
-			final Field f = InputEvent.class.getDeclaredField("when");
-			final boolean a = f.isAccessible();
-			f.setAccessible(true);
-			f.setLong(e, System.currentTimeMillis());
-			f.setAccessible(a);
-		} catch (final Exception ignored) {
+		if (when != null) {
+			try {
+				final boolean a = when.isAccessible();
+				when.setAccessible(true);
+				when.setLong(e, System.currentTimeMillis());
+				when.setAccessible(a);
+			} catch (final IllegalAccessException ignored) {
+			}
 		}
 		return e;
 	}
