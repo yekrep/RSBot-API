@@ -61,8 +61,8 @@ public class Sandbox extends SecurityManager {
 		if (perm instanceof RuntimePermission) {
 			if (name.equals("setSecurityManager")) {
 				throw new SecurityException(name);
-			} else if (isScriptThread() && (name.equals("modifyThreadGroup") || name.equals("createClassLoader") || name.equals("setFactory") ||
-					name.startsWith("exitVM"))) {
+			} else if ((name.equals("modifyThreadGroup") || name.equals("createClassLoader") || name.equals("setFactory") ||
+					name.startsWith("exitVM")) && isScriptThread()) {
 				throw new SecurityException(name);
 			}
 		} else if (perm instanceof FilePermission) {
