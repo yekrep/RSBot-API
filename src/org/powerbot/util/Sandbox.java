@@ -9,6 +9,7 @@ import java.security.Permission;
 import java.util.Map.Entry;
 import java.util.logging.Logger;
 
+import org.powerbot.Boot;
 import org.powerbot.Configuration;
 import org.powerbot.service.GameAccounts;
 import org.powerbot.service.NetworkAccount;
@@ -94,6 +95,9 @@ public class Sandbox extends SecurityManager {
 			final FilePermission fp = (FilePermission) perm;
 			final String a = fp.getActions();
 			if (isCallingClass(Desktop.class)) {
+				return;
+			}
+			if (a.equals("execute") && isCallingClass(Boot.class)) {
 				return;
 			}
 			checkFilePath(fp.getName(), a.equalsIgnoreCase("read") || a.equalsIgnoreCase("readlink"));
