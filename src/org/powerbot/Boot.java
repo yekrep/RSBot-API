@@ -111,6 +111,7 @@ public class Boot implements Runnable {
 		sandbox.checkCreateClassLoader();
 		System.setSecurityManager(sandbox);
 		System.setProperty("java.net.preferIPv4Stack", "true");
+		System.setProperty("http.keepalive", "false");
 
 		BotChrome.getInstance();
 	}
