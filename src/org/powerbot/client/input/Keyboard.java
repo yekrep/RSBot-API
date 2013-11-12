@@ -21,6 +21,7 @@ public abstract class Keyboard extends Focus implements KeyListener {
 
 	public void keyPressed(final KeyEvent e) {
 		if (chrome.isBlocking()) {
+			e.consume();
 			return;
 		}
 		_keyPressed(e);
@@ -28,6 +29,7 @@ public abstract class Keyboard extends Focus implements KeyListener {
 
 	public void keyReleased(final KeyEvent e) {
 		if (chrome.isBlocking()) {
+			e.consume();
 			return;
 		}
 		_keyReleased(e);
@@ -35,6 +37,7 @@ public abstract class Keyboard extends Focus implements KeyListener {
 
 	public void keyTyped(final KeyEvent e) {
 		if (chrome.isBlocking()) {
+			e.consume();
 			return;
 		}
 		_keyTyped(e);

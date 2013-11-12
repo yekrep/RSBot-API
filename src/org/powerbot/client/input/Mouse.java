@@ -86,63 +86,64 @@ public abstract class Mouse extends Focus implements MouseListener, MouseMotionL
 	@Override
 	public final void mouseClicked(final MouseEvent e) {
 		if (chrome.isBlocking()) {
+			e.consume();
 			return;
 		}
 		clientX = e.getX();
 		clientY = e.getY();
 		_mouseClicked(e);
-		e.consume();
 	}
 
 	@Override
 	public final void mouseDragged(final MouseEvent e) {
 		if (chrome.isBlocking()) {
+			e.consume();
 			return;
 		}
 		clientX = e.getX();
 		clientY = e.getY();
 		_mouseDragged(e);
-		e.consume();
 	}
 
 	@Override
 	public final void mouseEntered(final MouseEvent e) {
 		if (chrome.isBlocking()) {
+			e.consume();
 			return;
 		}
 		clientPresent = true;
 		clientX = e.getX();
 		clientY = e.getY();
 		_mouseEntered(e);
-		e.consume();
 	}
 
 	@Override
 	public final void mouseExited(final MouseEvent e) {
 		if (chrome.isBlocking()) {
+			e.consume();
 			return;
 		}
 		clientPresent = false;
 		clientX = e.getX();
 		clientY = e.getY();
 		_mouseExited(e);
-		e.consume();
 	}
 
 	@Override
 	public final void mouseMoved(final MouseEvent e) {
 		if (chrome.isBlocking()) {
+			e.consume();
 			return;
 		}
 		clientX = e.getX();
 		clientY = e.getY();
 		_mouseMoved(e);
-		e.consume();
 	}
 
 	@Override
 	public final void mousePressed(final MouseEvent e) {
 		if (chrome.isBlocking()) {
+			e.consume();
 			return;
 		}
 		clientPressed = true;
@@ -152,12 +153,12 @@ public abstract class Mouse extends Focus implements MouseListener, MouseMotionL
 		clientPressY = e.getY();
 		clientPressTime = System.currentTimeMillis();
 		_mousePressed(e);
-		e.consume();
 	}
 
 	@Override
 	public final void mouseReleased(final MouseEvent e) {
 		if (chrome.isBlocking()) {
+			e.consume();
 			return;
 		}
 		clientX = e.getX();
@@ -165,19 +166,18 @@ public abstract class Mouse extends Focus implements MouseListener, MouseMotionL
 		clientPressed = false;
 
 		_mouseReleased(e);
-		e.consume();
 	}
 
 	@Override
 	public void mouseWheelMoved(final MouseWheelEvent e) {
 		if (chrome.isBlocking()) {
+			e.consume();
 			return;
 		}
 		try {
 			_mouseWheelMoved(e);
 		} catch (final AbstractMethodError ignored) {
 		}
-		e.consume();
 	}
 
 	public final void sendEvent(final MouseEvent e) {
