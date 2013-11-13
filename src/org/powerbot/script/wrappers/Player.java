@@ -41,14 +41,14 @@ public class Player extends Actor {
 		return player != null ? player.getTeam() : -1;
 	}
 
-	public int getPrayerIcon() {
+	public int[] getOverheadArray1() {
 		final RSPlayer player = getAccessor();
-		return player != null ? player.getPrayerIcon() : -1;
+		return player != null ? player.getOverheadArray1() : new int[0];
 	}
 
-	public int getSkullIcon() {
+	public short[] getOverheadArray2() {
 		final RSPlayer player = getAccessor();
-		return player != null ? player.getSkullIcon() : -1;
+		return player != null ? player.getOverheadArray2() : new short[0];
 	}
 
 	public int getNpcId() {

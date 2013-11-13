@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.lang.ref.WeakReference;
 
 import org.powerbot.client.Client;
+import org.powerbot.client.OverheadSprites;
 import org.powerbot.client.RSNPC;
 import org.powerbot.client.RSNPCDef;
 import org.powerbot.client.RSNPCNode;
@@ -51,10 +52,28 @@ public class Npc extends Actor implements Identifiable {
 		return npc != null && (def = npc.getRSNPCDef()) != null ? def.getActions() : new String[0];
 	}
 
-	public int getPrayerIcon() {
+	public int[] getOverheadArray1() {
 		final RSNPC npc = getAccessor();
+		final OverheadSprites sprites = npc != null ? npc.getOverheadSprites() : null;
 		final RSNPCDef def;
-		return npc != null && (def = npc.getRSNPCDef()) != null ? def.getPrayerIcon() : -1;
+		if (sprites != null) {
+			return sprites.getArray1();
+		} else if (npc != null && (def = npc.getRSNPCDef()) != null) {
+			return def.getOverheadArray1();
+		}
+		return new int[0];
+	}
+
+	public short[] getOverheadArray2() {
+		final RSNPC npc = getAccessor();
+		final OverheadSprites sprites = npc != null ? npc.getOverheadSprites() : null;
+		final RSNPCDef def;
+		if (sprites != null) {
+			return sprites.getArray2();
+		} else if (npc != null && (def = npc.getRSNPCDef()) != null) {
+			return def.getOverheadArray2();
+		}
+		return new short[0];
 	}
 
 	@Override

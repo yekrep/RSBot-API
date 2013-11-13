@@ -9,5 +9,7 @@ public interface RSNPCDef {
 
 	public int getLevel();
 
-	public int getPrayerIcon();
+	public int[] getOverheadArray1();
+
+	public short[] getOverheadArray2();
 }

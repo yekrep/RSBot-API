@@ -7,9 +7,9 @@ public interface RSPlayer extends RSCharacter {
 
 	public String getName();
 
-	public int getPrayerIcon();
-
-	public int getSkullIcon();
-
 	public int getLevel();
+
+	public int[] getOverheadArray1();
+
+	public short[] getOverheadArray2();
 }

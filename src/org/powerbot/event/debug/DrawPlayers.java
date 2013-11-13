@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Point;
+import java.util.Arrays;
 
 import org.powerbot.event.PaintListener;
 import org.powerbot.gui.BotChrome;
@@ -29,17 +30,17 @@ public class DrawPlayers implements PaintListener {
 			render.drawString(s, location.x - metrics.stringWidth(s) / 2, location.y - metrics.getHeight() / 2);
 			final String msg = player.getMessage();
 			boolean raised = false;
-			if (player.getAnimation() != -1 || player.getStance() != -1 || player.getNpcId() != -1 || player.getPrayerIcon() != -1 || player.getSkullIcon() != -1) {
+			if (player.getAnimation() != -1 || player.getStance() != -1 || player.getNpcId() != -1) {
 				s = "";
 				s += "(";
 				if (player.getNpcId() != -1) {
 					s += "NPC: " + player.getNpcId() + " | ";
 				}
-				if (player.getPrayerIcon() != -1) {
-					s += "P: " + player.getPrayerIcon() + " | ";
+				if (player.getOverheadArray1().length != 0) {
+					s += "OA1: " + Arrays.toString(player.getOverheadArray1()) + " | ";
 				}
-				if (player.getSkullIcon() != -1) {
-					s += "SK: " + player.getSkullIcon() + " | ";
+				if (player.getOverheadArray2().length != 0) {
+					s += "OA2: " + Arrays.toString(player.getOverheadArray2()) + " | ";
 				}
 				if (player.getAnimation() != -1 || player.getStance() > 0) {
 					s += "A: " + player.getAnimation() + " | ST: " + player.getStance() + " | ";
