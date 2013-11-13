@@ -11,5 +11,5 @@ public interface RSPlayer extends RSCharacter {
 
 	public int[] getOverheadArray1();
 
-	public short[] getOverheadArray2();
+	public int[] getOverheadArray2();
 }
