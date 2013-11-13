@@ -41,12 +41,29 @@ public class Player extends Actor {
 		return player != null ? player.getTeam() : -1;
 	}
 
-	public int[] getOverheadArray1() {
+	public int[] getOverheads() {
+		int[] arr = new int[0];
+		int[] arr1 = getOverheadArray1();
+		int[] arr2 = getOverheadArray2();
+		if (arr1.length != arr2.length) {
+			int c = 0;
+			arr = new int[arr1.length];
+			for (int i = 0; i < arr.length; i++) {
+				if (arr[i] == 440) {
+					arr[c++] = arr2[i];
+				}
+			}
+			arr = Arrays.copyOf(arr, c);
+		}
+		return arr;
+	}
+
+	private int[] getOverheadArray1() {
 		final RSPlayer player = getAccessor();
 		return player != null ? player.getOverheadArray1() : new int[0];
 	}
 
-	public int[] getOverheadArray2() {
+	private int[] getOverheadArray2() {
 		final RSPlayer player = getAccessor();
 		return player != null ? player.getOverheadArray2() : new int[0];
 	}

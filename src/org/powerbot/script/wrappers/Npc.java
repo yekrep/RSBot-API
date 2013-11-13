@@ -3,6 +3,7 @@ package org.powerbot.script.wrappers;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.lang.ref.WeakReference;
+import java.util.Arrays;
 
 import org.powerbot.client.Client;
 import org.powerbot.client.OverheadSprites;
@@ -52,7 +53,24 @@ public class Npc extends Actor implements Identifiable {
 		return npc != null && (def = npc.getRSNPCDef()) != null ? def.getActions() : new String[0];
 	}
 
-	public int[] getOverheadArray1() {
+	public int[] getOverheads() {
+		int[] arr = new int[0];
+		int[] arr1 = getOverheadArray1();
+		short[] arr2 = getOverheadArray2();
+		if (arr1.length != arr2.length) {
+			int c = 0;
+			arr = new int[arr1.length];
+			for (int i = 0; i < arr.length; i++) {
+				if (arr[i] == 440) {
+					arr[c++] = arr2[i];
+				}
+			}
+			arr = Arrays.copyOf(arr, c);
+		}
+		return arr;
+	}
+
+	private int[] getOverheadArray1() {
 		final RSNPC npc = getAccessor();
 		final OverheadSprites sprites = npc != null ? npc.getOverheadSprites() : null;
 		final RSNPCDef def;
@@ -64,7 +82,7 @@ public class Npc extends Actor implements Identifiable {
 		return new int[0];
 	}
 
-	public short[] getOverheadArray2() {
+	private short[] getOverheadArray2() {
 		final RSNPC npc = getAccessor();
 		final OverheadSprites sprites = npc != null ? npc.getOverheadSprites() : null;
 		final RSNPCDef def;

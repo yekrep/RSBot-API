@@ -36,11 +36,8 @@ public class DrawPlayers implements PaintListener {
 				if (player.getNpcId() != -1) {
 					s += "NPC: " + player.getNpcId() + " | ";
 				}
-				if (player.getOverheadArray1().length != 0) {
-					s += "OA1: " + Arrays.toString(player.getOverheadArray1()) + " | ";
-				}
-				if (player.getOverheadArray2().length != 0) {
-					s += "OA2: " + Arrays.toString(player.getOverheadArray2()) + " | ";
+				if (player.getOverheads().length != 0) {
+					s += "OA: " + Arrays.toString(player.getOverheads()) + " | ";
 				}
 				if (player.getAnimation() != -1 || player.getStance() > 0) {
 					s += "A: " + player.getAnimation() + " | ST: " + player.getStance() + " | ";
