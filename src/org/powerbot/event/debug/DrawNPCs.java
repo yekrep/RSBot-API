@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Point;
-import java.util.Arrays;
 
 import org.powerbot.event.PaintListener;
 import org.powerbot.gui.BotChrome;
@@ -33,13 +32,12 @@ public class DrawNPCs implements PaintListener {
 			if (npc.getAnimation() != -1 || npc.getStance() != -1) {
 				s = "";
 				s += "(";
-				if (npc.getOverheads().length != 0) {
-					s += "OA: " + Arrays.toString(npc.getOverheads()) + " | ";
+				if (npc.getPrayerIcon() != -1) {
+					s += "P: " + npc.getPrayerIcon() + " | ";
 				}
 				if (npc.getAnimation() != -1 || npc.getStance() > 0) {
 					s += "A: " + npc.getAnimation() + " | ST: " + npc.getStance() + " | ";
 				}
-
 				s = s.substring(0, s.lastIndexOf(" | "));
 				s += ")";
 

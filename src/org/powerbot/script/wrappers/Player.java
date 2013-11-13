@@ -41,21 +41,23 @@ public class Player extends Actor {
 		return player != null ? player.getTeam() : -1;
 	}
 
-	public int[] getOverheads() {
-		int[] arr = new int[0];
-		int[] arr1 = getOverheadArray1();
-		int[] arr2 = getOverheadArray2();
-		if (arr1.length != arr2.length) {
-			int c = 0;
-			arr = new int[arr1.length];
-			for (int i = 0; i < arr.length; i++) {
-				if (arr[i] == 440) {
-					arr[c++] = arr2[i];
-				}
-			}
-			arr = Arrays.copyOf(arr, c);
+	public int getPrayerIcon() {
+		int[] a1 = getOverheadArray1(), a2 = getOverheadArray2();
+		int len = a1.length;
+		if (len != a2.length) {
+			return -1;
 		}
-		return arr;
+
+		for (int i = 0; i < len; i++) {
+			if (a1[i] == 440) {
+				return a2[i];
+			}
+		}
+		return -1;
+	}
+
+	public int getSkullIcon() {
+		return -1;
 	}
 
 	private int[] getOverheadArray1() {
