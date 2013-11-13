@@ -60,12 +60,24 @@ public class Player extends Actor {
 
 	private int[] getOverheadArray1() {
 		final RSPlayer player = getAccessor();
-		return player != null ? player.getOverheadArray1() : new int[0];
+		if (player != null) {
+			final int[] arr = player.getOverheadArray1();
+			if (arr != null) {
+				return arr;
+			}
+		}
+		return new int[0];
 	}
 
 	private int[] getOverheadArray2() {
 		final RSPlayer player = getAccessor();
-		return player != null ? player.getOverheadArray2() : new int[0];
+		if (player != null) {
+			final int[] arr = player.getOverheadArray2();
+			if (arr != null) {
+				return arr;
+			}
+		}
+		return new int[0];
 	}
 
 	public int getNpcId() {

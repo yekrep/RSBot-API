@@ -72,24 +72,33 @@ public class Npc extends Actor implements Identifiable {
 
 	private int[] getOverheadArray1() {
 		final RSNPC npc = getAccessor();
-		final OverheadSprites sprites = npc != null ? npc.getOverheadSprites() : null;
-		final RSNPCDef def;
-		if (sprites != null) {
-			return sprites.getArray1();
-		} else if (npc != null && (def = npc.getRSNPCDef()) != null) {
-			return def.getOverheadArray1();
+		if (npc != null) {
+			final OverheadSprites sprites = npc.getOverhead();
+			int[] arr;
+			if (sprites != null && (arr = sprites.getArray1()) != null) {
+				return arr;
+			}
+			final RSNPCDef def = npc.getRSNPCDef();
+			if (def != null && (arr = def.getOverheadArray1()) != null) {
+				return arr;
+			}
 		}
 		return new int[0];
 	}
 
+
 	private short[] getOverheadArray2() {
 		final RSNPC npc = getAccessor();
-		final OverheadSprites sprites = npc != null ? npc.getOverheadSprites() : null;
-		final RSNPCDef def;
-		if (sprites != null) {
-			return sprites.getArray2();
-		} else if (npc != null && (def = npc.getRSNPCDef()) != null) {
-			return def.getOverheadArray2();
+		if (npc != null) {
+			final OverheadSprites sprites = npc.getOverhead();
+			short[] arr;
+			if (sprites != null && (arr = sprites.getArray2()) != null) {
+				return arr;
+			}
+			final RSNPCDef def = npc.getRSNPCDef();
+			if (def != null && (arr = def.getOverheadArray2()) != null) {
+				return arr;
+			}
 		}
 		return new short[0];
 	}
