@@ -8,7 +8,7 @@ import java.util.Map;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenu;
 
-import org.powerbot.gui.BotChrome;
+import org.powerbot.bot.SelectiveEventQueue;
 
 /**
  * @author Paris
@@ -16,7 +16,7 @@ import org.powerbot.gui.BotChrome;
 public final class BotMenuInput {
 	public BotMenuInput(final JMenu menu) {
 		JCheckBoxMenuItem item;
-		final BotChrome eq = BotChrome.getInstance();
+		final SelectiveEventQueue eq = SelectiveEventQueue.getInstance();
 
 		final Map<String, Boolean> map = new LinkedHashMap<String, Boolean>();
 		map.put(BotLocale.ALLOW, false);

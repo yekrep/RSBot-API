@@ -7,16 +7,10 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 
-import org.powerbot.gui.BotChrome;
+import org.powerbot.bot.RawAWTEvent;
+import org.powerbot.bot.SelectiveEventQueue;
 
 public abstract class Mouse extends Focus implements MouseListener, MouseMotionListener, MouseWheelListener {
-	private BotChrome chrome;
-
-	public Mouse() {
-		super();
-		chrome = BotChrome.getInstance();
-	}
-
 	private int clientX;
 	private int clientY;
 	private int clientPressX = -1;
@@ -85,10 +79,6 @@ public abstract class Mouse extends Focus implements MouseListener, MouseMotionL
 
 	@Override
 	public final void mouseClicked(final MouseEvent e) {
-		if (chrome.isBlocking()) {
-			e.consume();
-			return;
-		}
 		clientX = e.getX();
 		clientY = e.getY();
 		_mouseClicked(e);
@@ -96,10 +86,6 @@ public abstract class Mouse extends Focus implements MouseListener, MouseMotionL
 
 	@Override
 	public final void mouseDragged(final MouseEvent e) {
-		if (chrome.isBlocking()) {
-			e.consume();
-			return;
-		}
 		clientX = e.getX();
 		clientY = e.getY();
 		_mouseDragged(e);
@@ -107,10 +93,6 @@ public abstract class Mouse extends Focus implements MouseListener, MouseMotionL
 
 	@Override
 	public final void mouseEntered(final MouseEvent e) {
-		if (chrome.isBlocking()) {
-			e.consume();
-			return;
-		}
 		clientPresent = true;
 		clientX = e.getX();
 		clientY = e.getY();
@@ -119,10 +101,6 @@ public abstract class Mouse extends Focus implements MouseListener, MouseMotionL
 
 	@Override
 	public final void mouseExited(final MouseEvent e) {
-		if (chrome.isBlocking()) {
-			e.consume();
-			return;
-		}
 		clientPresent = false;
 		clientX = e.getX();
 		clientY = e.getY();
@@ -131,10 +109,6 @@ public abstract class Mouse extends Focus implements MouseListener, MouseMotionL
 
 	@Override
 	public final void mouseMoved(final MouseEvent e) {
-		if (chrome.isBlocking()) {
-			e.consume();
-			return;
-		}
 		clientX = e.getX();
 		clientY = e.getY();
 		_mouseMoved(e);
@@ -142,10 +116,6 @@ public abstract class Mouse extends Focus implements MouseListener, MouseMotionL
 
 	@Override
 	public final void mousePressed(final MouseEvent e) {
-		if (chrome.isBlocking()) {
-			e.consume();
-			return;
-		}
 		clientPressed = true;
 		clientX = e.getX();
 		clientY = e.getY();
@@ -157,10 +127,6 @@ public abstract class Mouse extends Focus implements MouseListener, MouseMotionL
 
 	@Override
 	public final void mouseReleased(final MouseEvent e) {
-		if (chrome.isBlocking()) {
-			e.consume();
-			return;
-		}
 		clientX = e.getX();
 		clientY = e.getY();
 		clientPressed = false;
@@ -170,10 +136,6 @@ public abstract class Mouse extends Focus implements MouseListener, MouseMotionL
 
 	@Override
 	public void mouseWheelMoved(final MouseWheelEvent e) {
-		if (chrome.isBlocking()) {
-			e.consume();
-			return;
-		}
 		try {
 			_mouseWheelMoved(e);
 		} catch (final AbstractMethodError ignored) {
@@ -184,43 +146,6 @@ public abstract class Mouse extends Focus implements MouseListener, MouseMotionL
 		if (e == null) {
 			return;
 		}
-
-		clientX = e.getX();
-		clientY = e.getY();
-		switch (e.getID()) {
-		case MouseEvent.MOUSE_CLICKED:
-			_mouseClicked(e);
-			break;
-		case MouseEvent.MOUSE_DRAGGED:
-			_mouseDragged(e);
-			break;
-		case MouseEvent.MOUSE_ENTERED:
-			clientPresent = true;
-			_mouseEntered(e);
-			break;
-		case MouseEvent.MOUSE_EXITED:
-			clientPresent = false;
-			_mouseExited(e);
-			break;
-		case MouseEvent.MOUSE_MOVED:
-			_mouseMoved(e);
-			break;
-		case MouseEvent.MOUSE_PRESSED:
-			clientPressX = e.getX();
-			clientPressY = e.getY();
-			clientPressTime = e.getWhen();
-			clientPressed = true;
-			_mousePressed(e);
-			break;
-		case MouseEvent.MOUSE_RELEASED:
-			clientPressed = false;
-			_mouseReleased(e);
-			break;
-		case MouseEvent.MOUSE_WHEEL:
-			_mouseWheelMoved((MouseWheelEvent) e);
-			break;
-		default:
-			throw new InternalError(e.toString());
-		}
+		SelectiveEventQueue.getInstance().postEvent(new RawAWTEvent(e));
 	}
 }
