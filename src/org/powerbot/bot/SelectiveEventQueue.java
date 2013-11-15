@@ -63,7 +63,7 @@ public class SelectiveEventQueue extends EventQueue {
 
 		Object source = event.getSource();
 		/* Check if event is from a blocked source */
-		if (source != null && callbacks.containsKey(source)) {
+		if (source != null && blocking.get() && callbacks.containsKey(source)) {
 		    /* Block input events */
 			if (event instanceof MouseEvent || event instanceof KeyEvent ||
 					event instanceof WindowEvent || event instanceof FocusEvent) {
@@ -79,7 +79,7 @@ public class SelectiveEventQueue extends EventQueue {
 				return;
 			}
 		}
-        /* Otherwise, dispatch events to everything else non-blocked */
+	    /* Otherwise, dispatch events to everything else non-blocked */
 		super.dispatchEvent(event);
 	}
 
