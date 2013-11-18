@@ -67,8 +67,9 @@ public abstract class JsonValue implements Serializable {
    * The JSON literal <code>null</code>.
    */
   public static final JsonValue NULL = new JsonLiteral( "null" );
+	private static final long serialVersionUID = -7145691592652123850L;
 
-  JsonValue() {
+	JsonValue() {
     // prevent subclasses outside of this package
   }
 

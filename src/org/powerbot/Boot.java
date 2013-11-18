@@ -36,13 +36,10 @@ public class Boot implements Runnable {
 			logger.removeHandler(handler);
 		}
 
-		boolean restarted = false, debugging = false;
+		boolean restarted = false;
 
 		for (final String arg : args) {
-			if (arg.equalsIgnoreCase(SWITCH_DEBUG)) {
-				debugging = true;
-				restarted = true;
-			} else if (arg.equalsIgnoreCase(SWITCH_RESTARTED)) {
+			if (arg.equalsIgnoreCase(SWITCH_DEBUG) || arg.equalsIgnoreCase(SWITCH_RESTARTED)) {
 				restarted = true;
 			} else if (arg.equalsIgnoreCase(SWITCH_VERSION_SHORT)) {
 				System.out.println(Configuration.VERSION);
@@ -164,7 +161,7 @@ public class Boot implements Runnable {
 		}
 
 		try {
-			final Process p = pb.start();
+			pb.start();
 		} catch (final Exception ignored) {
 			if (!Configuration.FROMJAR) {
 				ignored.printStackTrace();

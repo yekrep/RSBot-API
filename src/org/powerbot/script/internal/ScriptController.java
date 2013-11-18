@@ -221,6 +221,8 @@ public final class ScriptController implements Runnable, Script.Controller {
 		String action = "";
 
 		switch (state) {
+		case START:
+			break;
 		case SUSPEND: {
 			action = "pause";
 			break;

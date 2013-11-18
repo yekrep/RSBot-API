@@ -29,6 +29,7 @@ import org.powerbot.util.io.Resources;
  * @author Paris
  */
 public class BotMenuBar extends JMenuBar implements ActionListener {
+	private static final long serialVersionUID = -4186554435386744949L;
 	private final JMenuItem signin, play, stop;
 
 	public BotMenuBar() {

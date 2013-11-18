@@ -19,6 +19,8 @@ import org.powerbot.util.io.Resources;
  */
 public final class BotLicense extends JDialog {
 
+	private static final long serialVersionUID = 6709745218034283085L;
+
 	public BotLicense(final Frame owner) {
 		super(owner, BotLocale.LICENSETCS, true);
 

@@ -12,6 +12,7 @@ import org.powerbot.util.math.Vector3f;
  *
  * @author Timer
  */
+@SuppressWarnings("deprecation")
 public class Camera extends MethodProvider {
 	public Vector3f offset;
 	public Vector3f center;

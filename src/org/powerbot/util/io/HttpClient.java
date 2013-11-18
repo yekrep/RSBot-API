@@ -29,6 +29,7 @@ public class HttpClient {
 
 		s.append(Configuration.NAME).append('/').append(Configuration.VERSION).append(" (");
 		switch (Configuration.OS) {
+		case UNKNOWN:
 		case WINDOWS:
 			s.append("Windows NT ").append(System.getProperty("os.version"));
 			if (x64) {

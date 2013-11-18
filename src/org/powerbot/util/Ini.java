@@ -23,6 +23,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public class Ini implements Serializable {
 	private static final String DEFAULT = "";
+	private static final long serialVersionUID = 2162875213770806139L;
 	private transient final Map<String, Member> table;
 	private transient final AtomicBoolean empty;
 
@@ -196,6 +197,7 @@ public class Ini implements Serializable {
 		read(in);
 	}
 
+	@SuppressWarnings("unused")
 	private void readObjectNoData() throws ObjectStreamException {
 	}
 

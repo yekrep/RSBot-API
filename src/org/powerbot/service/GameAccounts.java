@@ -14,6 +14,7 @@ import org.powerbot.util.io.CryptFile;
  */
 public final class GameAccounts extends ArrayList<GameAccounts.Account> {
 	private static final GameAccounts instance = new GameAccounts();
+	private static final long serialVersionUID = -8481913088185494034L;
 	private final CryptFile store;
 
 	private GameAccounts() {

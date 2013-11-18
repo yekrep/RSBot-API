@@ -42,7 +42,7 @@ import org.powerbot.util.io.Resources;
  * @author Timer
  */
 public class BotWidgetExplorer extends JFrame implements PaintListener {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 3674322588956559479L;
 	private static BotWidgetExplorer instance;
 	private final JTree tree;
 	private final WidgetTreeModel treeModel;
@@ -70,6 +70,7 @@ public class BotWidgetExplorer extends JFrame implements PaintListener {
 		tree.setEditable(false);
 		tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 		tree.setCellRenderer(new DefaultTreeCellRenderer() {
+			private static final long serialVersionUID = 2674122583955569479L;
 			@Override
 			public java.awt.Component getTreeCellRendererComponent(final JTree tree,
 			                                                       final Object value, final boolean selected, final boolean expanded,

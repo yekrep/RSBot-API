@@ -36,6 +36,7 @@ import org.powerbot.util.io.Resources;
  * @author Paris
  */
 public final class BotAccounts extends JDialog implements WindowListener {
+	private static final long serialVersionUID = 6263761446645896810L;
 	private final Logger log = Logger.getLogger(BotAccounts.class.getName());
 	private final JTable table;
 	private final JButton delete;

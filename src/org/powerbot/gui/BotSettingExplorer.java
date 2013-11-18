@@ -36,6 +36,7 @@ import org.powerbot.util.io.Resources;
 public class BotSettingExplorer extends JFrame {
 	private static final int FRAME_WIDTH = 595;
 	private static final int FRAME_HEIGHT = 335;
+	private static final long serialVersionUID = -2734139689268786064L;
 
 	private static BotSettingExplorer instance;
 	private final SimpleDateFormat FORMATTER = new SimpleDateFormat("HH:mm:ss");

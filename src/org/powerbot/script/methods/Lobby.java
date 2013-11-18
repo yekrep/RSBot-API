@@ -17,6 +17,7 @@ import org.powerbot.script.wrappers.Widget;
  *
  * @author Timer
  */
+@SuppressWarnings("deprecation")
 public class Lobby extends MethodProvider {
 	public static final int STATE_LOBBY_IDLE = 7;
 	public static final int STATE_LOGGING_IN = 9;

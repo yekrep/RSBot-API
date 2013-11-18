@@ -4,6 +4,7 @@ import org.powerbot.script.PollingScript;
 import org.powerbot.script.internal.InternalScript;
 import org.powerbot.script.util.Timer;
 
+@SuppressWarnings("deprecation")
 public class Antipattern extends PollingScript implements InternalScript {
 	private final Timer timer;
 

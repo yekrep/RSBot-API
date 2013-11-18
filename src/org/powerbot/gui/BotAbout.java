@@ -26,6 +26,8 @@ import org.powerbot.util.Tracker;
 
 public final class BotAbout extends JDialog {
 
+	private static final long serialVersionUID = -4731187001552101473L;
+
 	public BotAbout(final Frame parent) {
 		super(parent, BotLocale.ABOUT, true);
 

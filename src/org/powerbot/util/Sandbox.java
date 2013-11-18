@@ -75,8 +75,8 @@ public class Sandbox extends SecurityManager {
 		throw new SecurityException();
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
+	@SuppressWarnings("deprecation")
 	public void checkMulticast(final InetAddress maddr, final byte ttl) {
 		throw new SecurityException();
 	}
@@ -132,7 +132,7 @@ public class Sandbox extends SecurityManager {
 
 	private void checkFilePath(final String pathRaw, final boolean readOnly) {
 		if (Configuration.OS == Configuration.OperatingSystem.WINDOWS) {
-			final Class[] ctx = getClassContext();
+			final Class<?>[] ctx = getClassContext();
 			int n = 2;
 			for (int i = n; i < ctx.length; i++) {
 				final String a = ctx[i].getName();

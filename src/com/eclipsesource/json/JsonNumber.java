@@ -16,7 +16,8 @@ import java.io.IOException;
 // use default serial UID
 class JsonNumber extends JsonValue {
 
-  private final String string;
+	private static final long serialVersionUID = 7793002624981541023L;
+	private final String string;
 
   JsonNumber( final String string ) {
     if( string == null ) {

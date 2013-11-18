@@ -3,8 +3,6 @@ package org.powerbot.client.input;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
-import org.powerbot.gui.BotChrome;
-
 public abstract class Focus implements FocusListener {
 	public abstract void _focusGained(FocusEvent e);
 

@@ -53,7 +53,8 @@ import java.util.List;
 // use default serial UID
 public class JsonArray extends JsonValue implements Iterable<JsonValue> {
 
-  private final List<JsonValue> values;
+	private static final long serialVersionUID = -1167442016574680901L;
+	private final List<JsonValue> values;
 
   /**
    * Creates a new empty JsonArray.

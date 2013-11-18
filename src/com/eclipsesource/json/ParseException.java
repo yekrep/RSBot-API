@@ -17,7 +17,8 @@ package com.eclipsesource.json;
 // use default serial UID
 public class ParseException extends RuntimeException {
 
-  private final int offset;
+	private static final long serialVersionUID = 7347104248743849063L;
+	private final int offset;
   private final int line;
   private final int column;
 

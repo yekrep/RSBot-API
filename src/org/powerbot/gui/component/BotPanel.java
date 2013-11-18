@@ -17,6 +17,8 @@ import org.powerbot.gui.BotChrome;
 import org.powerbot.util.io.Resources;
 
 public class BotPanel extends JPanel {
+	private static final long serialVersionUID = -8983015619045562434L;
+
 	public BotPanel(final Component parent) {
 		final Dimension d = new Dimension(BotChrome.PANEL_MIN_WIDTH, BotChrome.PANEL_MIN_HEIGHT);
 		setSize(d);

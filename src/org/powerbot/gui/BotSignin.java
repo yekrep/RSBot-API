@@ -32,6 +32,7 @@ import org.powerbot.util.Tracker;
  */
 public final class BotSignin extends JDialog implements ActionListener {
 
+	private static final long serialVersionUID = -5079757502617361896L;
 	private final JButton signin;
 	private final JLabel register;
 	private final JTextField username;

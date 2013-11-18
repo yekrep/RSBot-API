@@ -29,7 +29,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 import javax.swing.Box;
@@ -66,7 +65,7 @@ import org.powerbot.util.io.Resources;
  * @author Paris
  */
 public final class BotScripts extends JDialog implements ActionListener {
-	private static final Logger log = Logger.getLogger(BotScripts.class.getName());
+	private static final long serialVersionUID = 7168019254925627080L;
 	private final JScrollPane scroll;
 	private final JPanel table;
 	private final JToggleButton locals;

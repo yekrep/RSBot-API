@@ -63,7 +63,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
 
-@SuppressWarnings({"unchecked", "RedundantArrayCreation"})
+@SuppressWarnings({"unchecked"})
 public class OSXAdapter implements InvocationHandler {
 
 	protected final Object targetObject;

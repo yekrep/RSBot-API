@@ -10,6 +10,7 @@ import org.powerbot.bot.SelectiveEventQueue;
 import org.powerbot.gui.BotChrome;
 
 public class Canvas extends java.awt.Canvas {
+	private static final long serialVersionUID = -8630774417757577975L;
 	private final Bot bot;
 
 	public Canvas() {

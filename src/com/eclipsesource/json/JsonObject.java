@@ -57,7 +57,8 @@ import com.eclipsesource.json.JsonObject.Member;
 // use default serial UID
 public class JsonObject extends JsonValue implements Iterable<Member> {
 
-  private final List<String> names;
+	private static final long serialVersionUID = 7189561361508416116L;
+	private final List<String> names;
   private final List<JsonValue> values;
   private transient HashIndexTable table;
 

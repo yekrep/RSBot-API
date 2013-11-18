@@ -35,7 +35,7 @@ public class GameClassLoader extends ClassLoader {
 	}
 
 	@Override
-	protected final synchronized Class loadClass(final String name, final boolean resolve) throws ClassNotFoundException {
+	protected final synchronized Class<?> loadClass(final String name, final boolean resolve) throws ClassNotFoundException {
 		if (loaded.containsKey(name)) {
 			return loaded.get(name);
 		}

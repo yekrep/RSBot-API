@@ -421,6 +421,7 @@ public class Component extends Interactive implements Drawable, Displayable {
 		return r;
 	}
 
+	@SuppressWarnings("UnusedDeclaration")
 	private boolean isInScrollableArea() {
 		int pId = getParentId();
 		if (pId == -1) {
