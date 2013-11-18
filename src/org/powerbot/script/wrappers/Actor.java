@@ -192,6 +192,10 @@ public abstract class Actor extends Interactive implements Renderable, Nameable,
 		return data != null && data[1] != null && data[1].getLoopCycleStatus() < client.getLoopCycle();
 	}
 
+	public boolean isIdle() {
+		return getAnimation() == -1 && !isInCombat() && !isInMotion() && !getInteracting().isValid();
+	}
+
 	public static Filter<Actor> areInCombat() {
 		return new Filter<Actor>() {
 			@Override
