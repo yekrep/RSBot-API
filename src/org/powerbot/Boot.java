@@ -153,7 +153,10 @@ public class Boot implements Runnable {
 				try {
 					final Process p = Runtime.getRuntime().exec(new String[] {java_home.getPath(), "-v", "1.6"});
 					final BufferedReader stdin = new BufferedReader(new InputStreamReader(p.getInputStream()));
-					pb.environment().put("JAVA_HOME", stdin.readLine());
+					final String home = stdin.readLine();
+					if (home != null && !home.isEmpty() && new File(home).isDirectory()) {
+						pb.environment().put("JAVA_HOME", home);
+					}
 					stdin.close();
 				} catch (final IOException ignored) {
 				}
