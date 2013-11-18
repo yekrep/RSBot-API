@@ -424,42 +424,44 @@ public class Bank extends ItemQuery<Item> {
 	 * @return <tt>true</tt> if the item was deposited, does not determine if amount was matched; otherwise <tt>false</tt>
 	 */
 	public boolean deposit(final int id, final int amount) {
-		final Item item = ctx.backpack.select().id(id).shuffle().poll();
-		if (!isOpen() || amount < 0 || !item.isValid()) {
+		if (!isOpen() || amount < 0) {
 			return false;
 		}
-
+		final Item item = ctx.backpack.select().id(id).shuffle().poll();
+		if (!item.isValid()) {
+			return false;
+		}
 		String action = "Deposit-" + amount;
-		final int c = ctx.backpack.select().id(item.getId()).count(true);
-		if (c == 1) {
-			action = "Deposit";
-		} else if (c <= amount || amount == 0) {
+		final int count = ctx.backpack.select().id(id).count(true);
+		if (amount == 0 || count <= amount) {
 			action = "Deposit-All";
 		}
-
-		final Component comp = item.getComponent();
-		final int inv = ctx.backpack.select().count(true);
-		if (containsAction(comp, action)) {
-			if (!comp.interact(action)) {
+		final int cache = ctx.backpack.select().count(true);
+		final Component component = item.getComponent();
+		System.out.print(action + " " + containsAction(component, action));
+		if (!containsAction(component, action)) {
+			if (component.interact("Deposit-X") && Condition.wait(new Callable<Boolean>() {
+				@Override
+				public Boolean call() throws Exception {
+					return isInputWidgetOpen();
+				}
+			})) {
+				sleep(Random.nextInt(800, 1200));
+				ctx.keyboard.sendln(amount + "");
+			} else {
 				return false;
 			}
 		} else {
-			if (!comp.interact("Withdraw-X")) {
+			if (!component.interact(action)) {
 				return false;
 			}
-			for (int i = 0; i < 20 && !isInputWidgetOpen(); i++) {
-				sleep(100, 200);
-			}
-			if (!isInputWidgetOpen()) {
-				return false;
-			}
-			sleep(200, 800);
-			ctx.keyboard.sendln(amount + "");
 		}
-		for (int i = 0; i < 25 && ctx.backpack.select().count(true) == inv; i++) {
-			sleep(100, 200);
-		}
-		return ctx.backpack.select().count(true) != inv;
+		return Condition.wait(new Callable<Boolean>() {
+			@Override
+			public Boolean call() throws Exception {
+				return cache != ctx.backpack.select().count(true);
+			}
+		});
 	}
 
 	/**
@@ -540,7 +542,7 @@ public class Bank extends ItemQuery<Item> {
 	}
 
 	private boolean isInputWidgetOpen() {
-		final Component child = ctx.widgets.get(1469, 1);
+		final Component child = ctx.widgets.get(1469, 2);
 		return child != null && child.isVisible();
 	}
 
