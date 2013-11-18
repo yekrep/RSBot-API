@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Logger;
 
-import org.powerbot.Configuration;
 import org.powerbot.bot.loader.Crawler;
 import org.powerbot.bot.loader.GameLoader;
 import org.powerbot.bot.loader.GameStub;
@@ -250,13 +249,7 @@ public final class Bot implements Runnable, Stoppable {
 		this.ctx.setClient(client);
 		client.setCallback(new AbstractCallback(this));
 		constants = new Constants(spec.constants);
-
-		final String jvm = System.getProperty("java.version");
-		if (jvm != null && jvm.startsWith("1.6.") && Configuration.OS == Configuration.OperatingSystem.MAC) {
-		} else {
-			new Thread(threadGroup, new SafeMode(this)).start();
-		}
-
+		new Thread(threadGroup, new SafeMode(this)).start();
 		inputHandler = new InputHandler(applet, client);
 		ctx.menu.register();
 	}
