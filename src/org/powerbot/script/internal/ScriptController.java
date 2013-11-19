@@ -33,6 +33,7 @@ public final class ScriptController implements Runnable, Script.Controller {
 	private final BlockingDeque<Runnable> queue;
 	private final ExecutorService executor;
 	private final Queue<Script> scripts;
+	private final Class<? extends Script>[] daemons;
 	private final ScriptBundle bundle;
 	private final AtomicBoolean started, suspended, stopping;
 	private final Timer timeout, login;
@@ -47,13 +48,14 @@ public final class ScriptController implements Runnable, Script.Controller {
 		suspended = new AtomicBoolean(false);
 		stopping = new AtomicBoolean(false);
 
-		scripts = new PriorityQueue<Script>(6);
-		scripts.add(new Login());
-		scripts.add(new WidgetCloser());
-		scripts.add(new TicketDestroy());
-		scripts.add(new BankPin());
-		scripts.add(new Antipattern());
-		//scripts.add(new Break());
+		daemons = new Class[] {
+				Login.class,
+				WidgetCloser.class,
+				TicketDestroy.class,
+				BankPin.class,
+				Antipattern.class,
+		};
+		scripts = new PriorityQueue<Script>(daemons.length + 1);
 
 		executor = new ThreadPoolExecutor(1, 1, 0L, TimeUnit.NANOSECONDS, queue = new LinkedBlockingDeque<Runnable>());
 
@@ -104,46 +106,61 @@ public final class ScriptController implements Runnable, Script.Controller {
 			return;
 		}
 
-		for (final Script s : scripts) {
-			s.setController(this);
-			s.setContext(ctx);
+		for (final Class<? extends Script> d : daemons) {
+			queue.offer(new ScriptBootstrap(d));
+		}
+
+		queue.offer(new ScriptBootstrap(bundle.script));
+
+		queue.offer(new Runnable() {
+			@Override
+			public void run() {
+				if (timeout.getDelay() > 0) {
+					timeout.start();
+				}
+
+				login.start();
+
+				call(Script.State.START);
+				events.subscribeAll();
+			}
+		});
+
+		executor.submit(queue.poll());
+	}
+
+	private final class ScriptBootstrap implements Runnable {
+		private final Class<? extends Script> clazz;
+
+		public ScriptBootstrap(final Class<? extends Script> clazz) {
+			this.clazz = clazz;
+		}
+
+		@Override
+		public void run() {
+			final Script s;
+			try {
+				new Thread(new Runnable() {
+					@Override
+					public void run() {
+						try {
+							Script.controllerProxy.put(ScriptController.this);
+						} catch (final InterruptedException ignored) {
+						}
+					}
+				}).start();
+				s = clazz.newInstance();
+			} catch (final Exception e) {
+				e.printStackTrace();
+				stop();
+				return;
+			}
+			scripts.add(s);
 			events.add(s);
 			if (!s.getExecQueue(Script.State.START).contains(s)) {
 				s.getExecQueue(Script.State.START).add(s);
 			}
 		}
-
-		executor.submit(new Runnable() {
-			@Override
-			public void run() {
-				final Script s;
-				try {
-					s = bundle.script.newInstance();
-				} catch (final Exception e) {
-					e.printStackTrace();
-					stop();
-					return;
-				}
-				s.setController(ScriptController.this);
-				s.setContext(ctx);
-				events.add(s);
-				if (!s.getExecQueue(Script.State.START).contains(s)) {
-					s.getExecQueue(Script.State.START).add(s);
-				}
-				for (final Runnable r : s.getExecQueue(Script.State.START)) {
-					executor.submit(r);
-				}
-			}
-		});
-
-		if (timeout.getDelay() > 0) {
-			timeout.start();
-		}
-
-		login.start();
-
-		call(Script.State.START);
-		events.subscribeAll();
 	}
 
 	/**
@@ -202,6 +219,14 @@ public final class ScriptController implements Runnable, Script.Controller {
 	@Override
 	public BlockingDeque<Runnable> getExecutor() {
 		return queue;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public MethodContext getContext() {
+		return ctx;
 	}
 
 	/**

@@ -45,7 +45,7 @@ public abstract class AbstractScript implements Script, Comparable<AbstractScrip
 	private final int sq;
 	protected final AtomicInteger priority;
 
-	private Controller controller;
+	private final Controller controller;
 	private final Map<State, Queue<Runnable>> exec;
 	private final AtomicLong started, suspended;
 	private final Queue<Long> suspensions;
@@ -60,7 +60,6 @@ public abstract class AbstractScript implements Script, Comparable<AbstractScrip
 	 * Creates an instance of {@link AbstractScript}.
 	 */
 	public AbstractScript() {
-		ctx = new MethodContext();
 		exec = new ConcurrentHashMap<State, Queue<Runnable>>(State.values().length);
 		for (final State state : State.values()) {
 			exec.put(state, new ConcurrentLinkedQueue<Runnable>());
@@ -123,6 +122,14 @@ public abstract class AbstractScript implements Script, Comparable<AbstractScrip
 				}
 			}
 		});
+
+		try {
+			controller = controllerProxy.take();
+		} catch (final InterruptedException e) {
+			throw new RuntimeException(e);
+		}
+
+		ctx = controller.getContext();
 	}
 
 	/**
@@ -146,30 +153,26 @@ public abstract class AbstractScript implements Script, Comparable<AbstractScrip
 	 * {@inheritDoc}
 	 */
 	@Override
-	public final void setController(final Controller controller) {
-		this.controller = controller;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
 	public final Controller getController() {
 		return controller;
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * Links a new {@link MethodContext}.
+	 *
+	 * @param ctx a new {@link MethodContext}
 	 */
-	@Override
+	@Deprecated
 	public void setContext(final MethodContext ctx) {
 		this.ctx.init(ctx);
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * Returns the linked {@link MethodContext}.
+	 *
+	 * @deprecated use the {@link #ctx} field
 	 */
-	@Override
+	@Deprecated
 	public MethodContext getContext() {
 		return ctx;
 	}

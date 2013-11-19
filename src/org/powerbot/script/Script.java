@@ -3,6 +3,8 @@ package org.powerbot.script;
 import java.util.EventListener;
 import java.util.Queue;
 import java.util.concurrent.BlockingDeque;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.SynchronousQueue;
 
 import org.powerbot.script.lang.Stoppable;
 import org.powerbot.script.lang.Suspendable;
@@ -20,6 +22,13 @@ public interface Script extends Runnable, EventListener {
 	}
 
 	/**
+	 * A reference to {@link Controller} by proxy.
+	 *
+	 * @see {@link org.powerbot.script.Script.Controller#getContext()}
+	 */
+	static final BlockingQueue<Controller> controllerProxy = new SynchronousQueue<Controller>();
+
+	/**
 	 * Returns the execution queue.
 	 *
 	 * @param state the {@link State} to query
@@ -28,32 +37,11 @@ public interface Script extends Runnable, EventListener {
 	public Queue<Runnable> getExecQueue(State state);
 
 	/**
-	 * Sets a new {@link Controller} for this {@link Script}
-	 *
-	 * @param controller the new {@link Controller}
-	 */
-	public void setController(Controller controller);
-
-	/**
 	 * Returns the {@link Controller} associated with this {@link Script}
 	 *
 	 * @return the {@link Controller}
 	 */
 	public Controller getController();
-
-	/**
-	 * Sets a new {@link MethodContext} for this {@link Script}
-	 *
-	 * @param ctx the new {@link MethodContext}
-	 */
-	public void setContext(MethodContext ctx);
-
-	/**
-	 * Returns the {@link MethodContext} associated with this {@link Script}
-	 *
-	 * @return the {@link MethodContext}
-	 */
-	public MethodContext getContext();
 
 	/**
 	 * A controller for a {@link Script} which invokes and determines state changes.
@@ -65,5 +53,12 @@ public interface Script extends Runnable, EventListener {
 		 * @return the executor queue
 		 */
 		public BlockingDeque<Runnable> getExecutor();
+
+		/**
+		 * Returns the linked {@link MethodContext}.
+		 *
+		 * @return the {@link MethodContext}
+		 */
+		public MethodContext getContext();
 	}
 }
