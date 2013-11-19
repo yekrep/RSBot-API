@@ -324,6 +324,7 @@ public abstract class AbstractScript implements Script, Comparable<AbstractScrip
 		try {
 			return ImageIO.read(f);
 		} catch (final IOException ignored) {
+			f.delete();
 			return new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
 		}
 	}
