@@ -99,7 +99,7 @@ public class BotMenuBar extends JMenuBar implements ActionListener {
 				play.setEnabled(BotChrome.getInstance().getBot().getMethodContext().getClient() != null && !BotScripts.loading.get());
 				play.setText(running ? BotLocale.PAUSESCRIPT : active ? BotLocale.RESUMESCRIPT : BotLocale.PLAYSCRIPT);
 				play.setIcon(playIcons[running ? 1 : 0]);
-				stop.setEnabled(running);
+				stop.setEnabled(active);
 			}
 
 			@Override
