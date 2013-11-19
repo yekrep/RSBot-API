@@ -3,6 +3,7 @@ package org.powerbot.service.scripts;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import java.util.zip.Inflater;
@@ -19,6 +21,7 @@ import javax.crypto.Cipher;
 import javax.crypto.CipherInputStream;
 import javax.crypto.spec.SecretKeySpec;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 import org.powerbot.Configuration;
 import org.powerbot.bot.Bot;
@@ -209,9 +212,23 @@ public class ScriptList {
 			msg = "The script will automatically stop after " + hours + " hour" + (hours == 1 ? "" : "s") + "." +
 					(msg == null || msg.isEmpty() ? "" : "\n" + msg);
 			log.warning(msg.replace('\n', ' '));
-			if (!def.local && JOptionPane.showConfirmDialog(BotChrome.getInstance(), msg, "", JOptionPane.OK_CANCEL_OPTION,
-					JOptionPane.PLAIN_MESSAGE) != JOptionPane.OK_OPTION) {
-				return;
+
+			if (!def.local) {
+				final AtomicInteger res = new AtomicInteger(-1);
+				final String txt = msg;
+				try {
+					SwingUtilities.invokeAndWait(new Runnable() {
+						@Override
+						public void run() {
+							res.set(JOptionPane.showConfirmDialog(BotChrome.getInstance(), txt, "", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE));
+						}
+					});
+				} catch (final InterruptedException ignored) {
+				} catch (final InvocationTargetException ignored) {
+				}
+				if (res.get() != JOptionPane.OK_OPTION) {
+					return;
+				}
 			}
 		}
 
