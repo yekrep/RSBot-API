@@ -219,10 +219,8 @@ public class BotMenuBar extends JMenuBar implements ActionListener {
 				final ScriptController script = bot.getScriptController();
 				if (script != null && !script.isStopping()) {
 					if (script.isSuspended()) {
-						Tracker.getInstance().trackEvent("script", "resume");
 						script.resume();
 					} else {
-						Tracker.getInstance().trackEvent("script", "pause");
 						script.suspend();
 					}
 					return;
@@ -247,7 +245,6 @@ public class BotMenuBar extends JMenuBar implements ActionListener {
 				final Bot bot = BotChrome.getInstance().getBot();
 				final ScriptController controller = bot.getScriptController();
 				if (controller != null && !controller.isStopping()) {
-					Tracker.getInstance().trackEvent("script", "stop");
 					bot.stopScript();
 				}
 			}
