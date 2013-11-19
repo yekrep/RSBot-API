@@ -33,7 +33,7 @@ public final class ScriptController implements Runnable, Script.Controller {
 	private final BlockingDeque<Runnable> queue;
 	private final ExecutorService executor;
 	private final Queue<Script> scripts;
-	private final ScriptDefinition def;
+	private final ScriptBundle bundle;
 	private final AtomicBoolean started, suspended, stopping;
 	private final Timer timeout, login;
 	private final AtomicReference<String> auth;
@@ -53,7 +53,6 @@ public final class ScriptController implements Runnable, Script.Controller {
 		scripts.add(new TicketDestroy());
 		scripts.add(new BankPin());
 		scripts.add(new Antipattern());
-		scripts.add(bundle.script);
 		//scripts.add(new Break());
 
 		executor = new ThreadPoolExecutor(1, 1, 0L, TimeUnit.NANOSECONDS, queue = new LinkedBlockingDeque<Runnable>());
@@ -70,7 +69,7 @@ public final class ScriptController implements Runnable, Script.Controller {
 			}
 		};
 
-		this.def = bundle.definition;
+		this.bundle = bundle;
 
 		this.timeout = new Timer(timeout, new ActionListener() {
 			@Override
@@ -113,6 +112,29 @@ public final class ScriptController implements Runnable, Script.Controller {
 				s.getExecQueue(Script.State.START).add(s);
 			}
 		}
+
+		executor.submit(new Runnable() {
+			@Override
+			public void run() {
+				final Script s;
+				try {
+					s = bundle.script.newInstance();
+				} catch (final Exception e) {
+					e.printStackTrace();
+					stop();
+					return;
+				}
+				s.setController(ScriptController.this);
+				s.setContext(ctx);
+				events.add(s);
+				if (!s.getExecQueue(Script.State.START).contains(s)) {
+					s.getExecQueue(Script.State.START).add(s);
+				}
+				for (final Runnable r : s.getExecQueue(Script.State.START)) {
+					executor.submit(r);
+				}
+			}
+		});
 
 		if (timeout.getDelay() > 0) {
 			timeout.start();
@@ -188,7 +210,7 @@ public final class ScriptController implements Runnable, Script.Controller {
 	 * @return the current script definition
 	 */
 	public ScriptDefinition getDefinition() {
-		return def;
+		return bundle.definition;
 	}
 
 	private void call(final Script.State state) {
@@ -210,6 +232,7 @@ public final class ScriptController implements Runnable, Script.Controller {
 	}
 
 	private void track(final Script.State state) {
+		final ScriptDefinition def = getDefinition();
 		if (def == null || def.getName() == null || (!def.local && (def.getID() == null || def.getID().isEmpty()))) {
 			return;
 		}

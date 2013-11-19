@@ -171,9 +171,9 @@ public class ScriptList {
 			}
 		}
 
-		final Script script;
+		final Class<? extends Script> script;
 		try {
-			script = cl.loadClass(def.className).asSubclass(Script.class).newInstance();
+			script = cl.loadClass(def.className).asSubclass(Script.class);
 		} catch (final Exception ignored) {
 			if (cache != null) {
 				cache.delete();

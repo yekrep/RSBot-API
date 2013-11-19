@@ -7,9 +7,9 @@ import org.powerbot.script.Script;
  */
 public class ScriptBundle {
 	public final ScriptDefinition definition;
-	public final Script script;
+	public final Class<? extends Script> script;
 
-	public ScriptBundle(final ScriptDefinition definition, final Script script) {
+	public ScriptBundle(final ScriptDefinition definition, final Class<? extends Script> script) {
 		this.definition = definition;
 		this.script = script;
 	}
