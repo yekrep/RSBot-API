@@ -36,8 +36,7 @@ public final class ScriptController implements Runnable, Script.Controller {
 	private final Class<? extends Script>[] daemons;
 	private final ScriptBundle bundle;
 	private final AtomicBoolean started, suspended, stopping;
-	private final Timer timeout, login;
-	private final AtomicReference<String> auth;
+	private final Timer timeout;
 
 	private final Runnable suspension;
 
@@ -81,20 +80,6 @@ public final class ScriptController implements Runnable, Script.Controller {
 			}
 		});
 		this.timeout.setCoalesce(false);
-
-		auth = new AtomicReference<String>(NetworkAccount.getInstance().getAuth());
-
-		login = new Timer(NetworkAccount.REVALIDATE_INTERVAL, new ActionListener() {
-			@Override
-			public void actionPerformed(final ActionEvent e) {
-				final String a = NetworkAccount.getInstance().getAuth();
-				if (!auth.getAndSet(a).equals(a)) {
-					((Timer) e.getSource()).stop();
-					stop();
-				}
-			}
-		});
-		login.setCoalesce(false);
 	}
 
 	/**
@@ -118,8 +103,6 @@ public final class ScriptController implements Runnable, Script.Controller {
 				if (timeout.getDelay() > 0) {
 					timeout.start();
 				}
-
-				login.start();
 
 				call(Script.State.START);
 				events.subscribeAll();
@@ -177,8 +160,6 @@ public final class ScriptController implements Runnable, Script.Controller {
 	@Override
 	public void stop() {
 		if (stopping.compareAndSet(false, true)) {
-			login.stop();
-
 			call(Script.State.STOP);
 			events.unsubscribeAll();
 			executor.shutdown();

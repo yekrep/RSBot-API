@@ -19,7 +19,6 @@ public final class NetworkAccount {
 	private static NetworkAccount instance = null;
 	private final static String STORENAME = "netacct", RESPKEY = "response", AUTHKEY = "auth", CREATEDKEY = "created";
 	private final static int CACHETTL = 24 * 60 * 60 * 1000;
-	public final static int REVALIDATE_INTERVAL = 5000;
 	private final CryptFile store, scripts;
 	private final Ini data;
 	private final AtomicLong updated;
@@ -32,22 +31,6 @@ public final class NetworkAccount {
 		scripts = new CryptFile("scripts.1.ini", NetworkAccount.class);
 		updated = new AtomicLong(0);
 		revalidate();
-
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				for (; ; ) {
-					final long m = store.lastModified();
-					if (m == 0 ? updated.get() != 0 : updated.get() < m) {
-						revalidate();
-					}
-					try {
-						Thread.sleep(REVALIDATE_INTERVAL);
-					} catch (final InterruptedException ignored) {
-					}
-				}
-			}
-		}).start();
 	}
 
 	public synchronized static NetworkAccount getInstance() {
