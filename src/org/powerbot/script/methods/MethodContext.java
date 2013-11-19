@@ -1,5 +1,6 @@
 package org.powerbot.script.methods;
 
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.powerbot.bot.Bot;
@@ -9,7 +10,7 @@ import org.powerbot.script.internal.methods.Map;
 
 public class MethodContext {
 	private AtomicReference<Client> client;
-	private AtomicReference<Integer> preferredWorld;
+	private AtomicInteger preferredWorld;
 	private AtomicReference<Bot> bot;
 
 	public Antipatterns antipatterns;
@@ -45,7 +46,7 @@ public class MethodContext {
 
 	public MethodContext(final Bot bot) {
 		this.client = new AtomicReference<Client>(null);
-		this.preferredWorld = new AtomicReference<Integer>(-1);
+		this.preferredWorld = new AtomicInteger(-1);
 		this.bot = new AtomicReference<Bot>(bot);
 
 		antipatterns = new Antipatterns(this);
@@ -82,7 +83,7 @@ public class MethodContext {
 
 	public MethodContext() {
 		this.client = new AtomicReference<Client>(null);
-		this.preferredWorld = new AtomicReference<Integer>(-1);
+		this.preferredWorld = new AtomicInteger(-1);
 		this.bot = new AtomicReference<Bot>(null);
 	}
 
