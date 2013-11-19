@@ -324,4 +324,13 @@ public abstract class AbstractScript implements Script, Comparable<AbstractScrip
 			return new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
 		}
 	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String toString() {
+		final String name = getName();
+		return name == null || name.isEmpty() ? getClass().getSimpleName() : name;
+	}
 }
