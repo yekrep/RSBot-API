@@ -295,7 +295,7 @@ public abstract class AbstractScript implements Script, Comparable<AbstractScrip
 	 * @return a string representation of the downloaded resource
 	 */
 	public String downloadString(final String url) {
-		final String name = "http-" + Integer.toHexString(url.hashCode());
+		final String name = "http/" + Integer.toHexString(url.hashCode());
 		download(url, name);
 		FileInputStream in = null;
 		try {
