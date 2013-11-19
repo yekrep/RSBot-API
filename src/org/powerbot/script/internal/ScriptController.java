@@ -38,7 +38,7 @@ public final class ScriptController implements Runnable, Script.Controller {
 	private final Timer timeout, login;
 	private final AtomicReference<String> auth;
 
-	private final Runnable empty, suspension;
+	private final Runnable suspension;
 
 	public ScriptController(final MethodContext ctx, final EventMulticaster multicaster, final ScriptBundle bundle, final int timeout) {
 		this.ctx = ctx;
@@ -58,12 +58,6 @@ public final class ScriptController implements Runnable, Script.Controller {
 
 		executor = new ThreadPoolExecutor(1, 1, 0L, TimeUnit.NANOSECONDS, queue = new LinkedBlockingDeque<Runnable>());
 
-		empty = new Runnable() {
-			@Override
-			public void run() {
-				Thread.yield();
-			}
-		};
 		suspension = new Runnable() {
 			@Override
 			public void run() {
@@ -210,7 +204,9 @@ public final class ScriptController implements Runnable, Script.Controller {
 			queue.offer(suspension);
 		}
 
-		executor.submit(empty);
+		if (!queue.isEmpty()) {
+			executor.submit(queue.poll());
+		}
 	}
 
 	private void track(final Script.State state) {
