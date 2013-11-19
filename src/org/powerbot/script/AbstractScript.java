@@ -257,6 +257,8 @@ public abstract class AbstractScript implements Script, Comparable<AbstractScrip
 			f = new File(f, part);
 		}
 
+		f.getParentFile().mkdirs();
+
 		return f;
 	}
 
