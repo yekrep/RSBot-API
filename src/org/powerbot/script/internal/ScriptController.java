@@ -165,6 +165,12 @@ public final class ScriptController implements Runnable, Script.Controller {
 			call(Script.State.STOP);
 			events.unsubscribeAll();
 			executor.shutdown();
+			try {
+				if (!executor.awaitTermination(10, TimeUnit.SECONDS)) {
+					executor.shutdownNow();
+				}
+			} catch (final InterruptedException ignored) {
+			}
 		}
 	}
 
