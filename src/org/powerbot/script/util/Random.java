@@ -89,14 +89,6 @@ public class Random {
 	 * @return a gaussian distributed number between the provided bounds
 	 */
 	public static int nextGaussian(final int min, final int max, final int mean, final double sd) {
-		if (min == max) {
-			return min;
-		}
-		final long mark = System.nanoTime() + TimeUnit.NANOSECONDS.convert(1000, TimeUnit.MILLISECONDS);
-		int rand;
-		do {
-			rand = (int) (random.nextGaussian() * sd + mean);
-		} while ((rand < min || rand >= max) && System.nanoTime() < mark);
-		return System.nanoTime() >= mark ? Random.nextInt(min, max) : rand;
+		return nextInt(min, max);
 	}
 }
