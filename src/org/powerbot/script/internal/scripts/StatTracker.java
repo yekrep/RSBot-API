@@ -1,6 +1,8 @@
 package org.powerbot.script.internal.scripts;
 
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.powerbot.script.PollingScript;
@@ -14,24 +16,25 @@ import org.powerbot.util.Tracker;
  * @author Paris
  */
 public class StatTracker extends PollingScript implements InternalScript {
-	private static final int UNIT = 10000;
+	private static final int UNIT = 10000, INTERVAL = 15;
+	private final AtomicLong last;
 	private final AtomicBoolean collecting;
 	private final AtomicReference<String> name;
 	private int[] cache = {};
 
 	public StatTracker() {
+		last = new AtomicLong(0L);
 		collecting = new AtomicBoolean(false);
 		name = new AtomicReference<String>("\0");
 	}
 
 	@Override
 	public int poll() {
-		if (!ctx.players.local().isValid()) {
-			return -1;
+		if (ctx.players.local().isValid()) {
+			collect();
 		}
 
-		collect();
-		return 1000 * 60 * 15;
+		return -1;
 	}
 
 	@Override
@@ -40,6 +43,12 @@ public class StatTracker extends PollingScript implements InternalScript {
 	}
 
 	private void collect() {
+		final long v = System.nanoTime();
+		if (TimeUnit.NANOSECONDS.toMinutes(v - last.get()) < INTERVAL) {
+			return;
+		}
+		last.set(v);
+
 		final Player p = ctx.players.local();
 
 		if (!p.isValid()) {
