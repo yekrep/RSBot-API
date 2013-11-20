@@ -262,7 +262,7 @@ public final class ScriptController implements Runnable, Script.Controller {
 		}
 		}
 
-		final String page = String.format("scripts/%s/%s", def.local ? "0/local" : def.getID(), action);
+		final String page = String.format("scripts/%s/%s", def.local ? ScriptDefinition.LOCALID : def.getID(), action);
 		Tracker.getInstance().trackPage(page, def.getName());
 	}
 }

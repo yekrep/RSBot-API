@@ -12,6 +12,7 @@ import org.powerbot.util.StringUtil;
  * @author Paris
  */
 public final class ScriptDefinition implements Comparable<ScriptDefinition> {
+	public static final String LOCALID = "0/local";
 	private final String name, id, description, website;
 	private final String[] authors;
 
