@@ -47,6 +47,8 @@ public class Configuration {
 		public static final String LOSTPASS = "http://" + DOMAIN_SITE_LIVE + "/go/lostpass";
 		public static final String SCRIPTSLIST = "http://" + DOMAIN_SITE_LIVE + "/go/scripts";
 
+		public static final String SCRIPTSICONS = "http://" + DOMAIN_SITE_CDN + "/assets/img/sprites/scripts.png";
+
 		public static final String GAME = "runescape.com";
 		public static final String GAME_SERVICES_DOMAIN = "services." + GAME;
 	}

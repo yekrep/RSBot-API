@@ -24,6 +24,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -59,6 +60,7 @@ import org.powerbot.service.GameAccounts.Account;
 import org.powerbot.service.NetworkAccount;
 import org.powerbot.service.scripts.ScriptDefinition;
 import org.powerbot.service.scripts.ScriptList;
+import org.powerbot.util.io.CryptFile;
 import org.powerbot.util.io.Resources;
 
 /**
@@ -72,6 +74,7 @@ public final class BotScripts extends JDialog implements ActionListener {
 	private final JButton username, refresh;
 	private final JTextField search;
 	private final AtomicBoolean init;
+	private final CryptFile icons;
 	public final static AtomicBoolean loading = new AtomicBoolean(false);
 
 	private static AtomicReference<String> lastUsername = new AtomicReference<String>(null);
@@ -80,6 +83,7 @@ public final class BotScripts extends JDialog implements ActionListener {
 		super(parent, BotLocale.SCRIPTS, true);
 
 		init = new AtomicBoolean(false);
+		icons = new CryptFile("icons.1.png");
 
 		if (!NetworkAccount.getInstance().isLoggedIn()) {
 			new BotSignin(parent);
@@ -273,6 +277,7 @@ public final class BotScripts extends JDialog implements ActionListener {
 			public void run() {
 				final List<ScriptDefinition> scripts;
 				try {
+					icons.download(new URL(Configuration.URLs.SCRIPTSICONS));
 					scripts = ScriptList.getList();
 					Collections.sort(scripts, new Comparator<ScriptDefinition>() {
 						@Override
@@ -472,13 +477,13 @@ public final class BotScripts extends JDialog implements ActionListener {
 		}
 
 		private Image getSkillImage(final int index) {
+			final int w = 32, h = 32;
 			final Image src;
 			try {
-				src = ImageIO.read(Resources.getResourceURL(Resources.Paths.SKILLS));
+				src = ImageIO.read(icons.getInputStream());
 			} catch (final IOException ignored) {
-				return null;
+				return new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
 			}
-			final int w = 32, h = 32;
 			final BufferedImage img = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
 			final Graphics2D g = img.createGraphics();
 			final int y = img.getHeight() * index;
