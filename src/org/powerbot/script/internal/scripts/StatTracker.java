@@ -67,9 +67,9 @@ public class StatTracker extends PollingScript implements InternalScript {
 		}
 
 		final String n = p.getName();
-		if (!n.equalsIgnoreCase(name.get())) {
+		if (n == null || !n.equalsIgnoreCase(name.get())) {
 			cache = new int[]{};
-			name.set(n);
+			name.set("\0");
 		}
 
 		final int[] exp;
