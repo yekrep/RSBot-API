@@ -34,7 +34,7 @@ public class StatTracker extends PollingScript implements InternalScript {
 			collect();
 		}
 
-		return -1;
+		return 0;
 	}
 
 	@Override
