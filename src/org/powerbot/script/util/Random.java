@@ -64,7 +64,7 @@ public class Random {
 	 * @return a gaussian distributed number between the provided bounds
 	 */
 	public static int nextGaussian(final int min, final int max, final double sd) {
-		return nextGaussian(min, max, min + (max - min) / 2, sd);
+		return min + (int) ((random.nextGaussian() * sd) * (max - min));
 	}
 
 	/**
@@ -77,6 +77,6 @@ public class Random {
 	 * @return a gaussian distributed number between the provided bounds
 	 */
 	public static int nextGaussian(final int min, final int max, final int mean, final double sd) {
-		return nextInt(min, max);
+		return min + (int) ((random.nextGaussian() * sd + mean) * (max - min));
 	}
 }
