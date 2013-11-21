@@ -1,9 +1,5 @@
 package org.powerbot.script.util;
 
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
-import java.util.concurrent.TimeUnit;
-
 import ec.util.MersenneTwister;
 import org.powerbot.util.math.HardwareSimulator;
 
@@ -11,15 +7,7 @@ public class Random {
 	private static final java.util.Random random;
 
 	static {
-		final long seed = HardwareSimulator.getRandomSeed();
-		java.util.Random r;
-		try {
-			r = SecureRandom.getInstance("SHA1PRNG");
-			r.setSeed(seed);
-		} catch (NoSuchAlgorithmException ignored) {
-			r = new MersenneTwister(seed & Integer.MAX_VALUE);
-		}
-		random = r;
+		random = new MersenneTwister(HardwareSimulator.getRandomSeed() & Integer.MAX_VALUE);
 	}
 
 	/**
