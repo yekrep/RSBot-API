@@ -34,6 +34,7 @@ public class Condition {
 			try {
 				Thread.sleep(freq);
 			} catch (final InterruptedException ignored) {
+				return false;
 			}
 
 			final boolean r;
