@@ -126,7 +126,7 @@ public abstract class AbstractScript implements Script, Comparable<AbstractScrip
 		try {
 			controller = controllerProxy.take();
 		} catch (final InterruptedException e) {
-			throw new RuntimeException(e);
+			throw new IllegalStateException(e);
 		}
 
 		ctx = controller.getContext();
