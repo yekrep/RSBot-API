@@ -433,7 +433,9 @@ public class Bank extends ItemQuery<Item> {
 		}
 		String action = "Deposit-" + amount;
 		final int count = ctx.backpack.select().id(id).count(true);
-		if (amount == 0 || count <= amount) {
+		if (count == 1) {
+			action = "Deposit";
+		} else if (amount == 0 || count <= amount) {
 			action = "Deposit-All";
 		}
 		final int cache = ctx.backpack.select().count(true);
