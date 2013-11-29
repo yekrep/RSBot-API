@@ -8,19 +8,21 @@ import java.awt.event.FocusEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.powerbot.gui.BotChrome;
 
 public class SelectiveEventQueue extends EventQueue {
 	private static final SelectiveEventQueue instance = new SelectiveEventQueue();
 	private AtomicBoolean blocking;
-	private Map<Component, EventCallback> callbacks = new ConcurrentHashMap<Component, EventCallback>();
+	private AtomicReference<Component> component;
+	private AtomicReference<EventCallback> callback;
 
 	private SelectiveEventQueue() {
 		this.blocking = new AtomicBoolean(false);
+		this.component = new AtomicReference<Component>(null);
+		this.callback = new AtomicReference<EventCallback>(null);
 	}
 
 	public static SelectiveEventQueue getInstance() {
@@ -45,12 +47,20 @@ public class SelectiveEventQueue extends EventQueue {
 		}
 	}
 
-	public void addComponent(Component component, EventCallback callback) {
-		callbacks.put(component, callback);
+	public void block(Component component, EventCallback callback) {
+		this.component.set(component);
+		this.callback.set(callback);
 	}
 
-	public void removeComponent(Component component) {
-		callbacks.remove(component);
+	public void focus() {
+		if (!isBlocking()) {
+			return;
+		}
+
+		final Component component = this.component.get();
+		if (component != null && (!component.isFocusOwner() || !component.isShowing())) {
+			postEvent(new RawAWTEvent(new FocusEvent(component, FocusEvent.FOCUS_GAINED, false, null)));
+		}
 	}
 
 	@Override
@@ -63,7 +73,7 @@ public class SelectiveEventQueue extends EventQueue {
 
 		Object source = event.getSource();
 		/* Check if event is from a blocked source */
-		if (source != null && blocking.get() && callbacks.containsKey(source)) {
+		if (source != null && blocking.get() && source == component.get()) {
 		    /* Block input events */
 			if (event instanceof MouseEvent || event instanceof KeyEvent ||
 					event instanceof WindowEvent || event instanceof FocusEvent) {
@@ -72,14 +82,14 @@ public class SelectiveEventQueue extends EventQueue {
 					BotChrome.getInstance().getBot().getEventMulticaster().dispatch(event);
 				}
 				/* Execute a callback for this source when we block an event */
-				EventCallback callback = callbacks.get(source);
+				EventCallback callback = this.callback.get();
 				if (callback != null) {
 					callback.execute(event);
 				}
 				return;
 			}
 		}
-	    /* Otherwise, dispatch events to everything else non-blocked */
+		/* Otherwise, dispatch events to everything else non-blocked */
 		super.dispatchEvent(event);
 	}
 

@@ -56,6 +56,7 @@ public class BotChrome extends JFrame implements Closeable {
 		setBackground(Color.BLACK);
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		JPopupMenu.setDefaultLightWeightPopupEnabled(false);
+		setFocusTraversalKeysEnabled(false);
 
 		addWindowListener(new WindowAdapter() {
 			@Override
@@ -64,7 +65,13 @@ public class BotChrome extends JFrame implements Closeable {
 			}
 
 			@Override
+			public void windowActivated(final WindowEvent e) {
+				requestFocusInWindow();
+			}
+
+			@Override
 			public void windowDeiconified(final WindowEvent e) {
+				requestFocusInWindow();
 				minimised = false;
 			}
 
