@@ -164,8 +164,7 @@ public class Menu extends MethodProvider {
 		}
 
 		final Point p = hoverIndex(client, index);
-		return p.getX() != -1 && p.getY() != -1 && ctx.mouse.click(p, true);
-
+		return p.getX() != -1 && p.getY() != -1 && (!click || ctx.mouse.click(p, true));
 	}
 
 	/**
