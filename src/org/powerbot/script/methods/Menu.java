@@ -1,10 +1,12 @@
 package org.powerbot.script.methods;
 
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.powerbot.client.Client;
@@ -16,6 +18,7 @@ import org.powerbot.event.PaintListener;
 import org.powerbot.script.internal.wrappers.Deque;
 import org.powerbot.script.internal.wrappers.Queue;
 import org.powerbot.script.lang.Filter;
+import org.powerbot.script.util.Condition;
 import org.powerbot.script.util.Random;
 import org.powerbot.util.StringUtil;
 
@@ -175,10 +178,30 @@ public class Menu extends MethodProvider {
 		if (client == null) {
 			return false;
 		}
-		if (client.isMenuOpen()) {
-			ctx.mouse.move(client.getMenuX() + Random.nextInt(-30, -10), Math.max(4, client.getMenuY() + Random.nextInt(-10, 10)));
+		if (!client.isMenuOpen()) {
+			return true;
 		}
-		return !client.isMenuOpen();
+
+		Dimension d = ctx.game.getDimensions();
+		int mx = client.getMenuX(), my = client.getMenuY();
+		int w = (int) d.getWidth(), h = (int) d.getHeight();
+		int x1, x2, y1, y2;
+		x1 = x2 = mx;
+		y1 = y2 = Math.min(h - 5, Math.max(4, my + Random.nextInt(-10, 10)));
+		x1 = Math.max(4, x1 + Random.nextInt(-30, -10));
+		x2 = x2 + client.getMenuWidth() +
+				(client.isMenuCollapsed() ? client.getSubMenuWidth() : 0) + Random.nextInt(10, 30);
+		if (x2 <= w - 5 && (x1 - mx >= 5 || Random.nextBoolean())) {
+			ctx.mouse.move(x2, y2);
+		} else {
+			ctx.mouse.move(x1, y1);
+		}
+		return Condition.wait(new Callable<Boolean>() {
+			@Override
+			public Boolean call() {
+				return client.isMenuOpen();
+			}
+		}, 10, 50);
 	}
 
 	private Point hoverIndex(final Client client, final int index) {
