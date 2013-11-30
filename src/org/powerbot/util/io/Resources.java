@@ -33,6 +33,7 @@ public class Resources {
 		public static final String PENCIL = ROOT_IMG + "/glyphicons_030_pencil.png";
 		public static final String SETTINGS = ROOT_IMG + "/glyphicons_136_cogwheel.png";
 		public static final String EDIT = ROOT_IMG + "/glyphicons_150_edit.png";
+		public static final String CONFIG = ROOT_IMG + "/glyphicons_280_settings.png";
 	}
 
 	public static URL getResourceURL(final String path) throws MalformedURLException {

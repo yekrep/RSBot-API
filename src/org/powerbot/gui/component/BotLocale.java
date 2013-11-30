@@ -11,6 +11,7 @@ public final class BotLocale {
 	public static final String RESUMESCRIPT = "Resume";
 	public static final String PAUSESCRIPT = "Pause";
 	public static final String STOPSCRIPT = "Stop";
+	public static final String OPTIONS = "Options";
 	public static final String INPUT = "Input";
 	public static final String ACCOUNTS = "Accounts";
 	public static final String SIGNIN = "Sign in";

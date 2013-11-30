@@ -14,12 +14,14 @@ import javax.swing.event.MenuListener;
 import org.powerbot.Boot;
 import org.powerbot.Configuration;
 import org.powerbot.bot.Bot;
+import org.powerbot.event.BotMenuListener;
 import org.powerbot.gui.BotAbout;
 import org.powerbot.gui.BotAccounts;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.gui.BotLicense;
 import org.powerbot.gui.BotScripts;
 import org.powerbot.gui.BotSignin;
+import org.powerbot.script.Script;
 import org.powerbot.script.internal.ScriptController;
 import org.powerbot.service.NetworkAccount;
 import org.powerbot.util.Tracker;
@@ -91,6 +93,73 @@ public class BotMenuBar extends JMenuBar implements ActionListener {
 		stop.setIcon(new ImageIcon(Resources.getImage(Resources.Paths.STOP)));
 		script.add(stop);
 
+		script.addSeparator();
+		final JMenu options = new JMenu(BotLocale.OPTIONS);
+		options.setIcon(new ImageIcon(Resources.getImage(Resources.Paths.CONFIG)));
+		script.add(options);
+
+		options.addMenuListener(new MenuListener() {
+			@Override
+			public void menuSelected(final MenuEvent e) {
+				final JMenu m = (JMenu) e.getSource();
+				m.removeAll();
+
+				final ScriptController c = BotChrome.getInstance().getBot().getScriptController();
+				if (c == null || c.isStopping()) {
+					return;
+				}
+
+				final Script s = c.getScript();
+				if (s == null || !(s instanceof BotMenuListener)) {
+					return;
+				}
+
+				try {
+					((BotMenuListener) s).menuSelected(e);
+				} catch (final Throwable t) {
+					t.printStackTrace();
+				}
+			}
+
+			@Override
+			public void menuDeselected(final MenuEvent e) {
+				final ScriptController c = BotChrome.getInstance().getBot().getScriptController();
+				if (c == null || c.isStopping()) {
+					return;
+				}
+
+				final Script s = c.getScript();
+				if (s == null || !(s instanceof BotMenuListener)) {
+					return;
+				}
+
+				try {
+					((BotMenuListener) s).menuDeselected(e);
+				} catch (final Throwable t) {
+					t.printStackTrace();
+				}
+			}
+
+			@Override
+			public void menuCanceled(final MenuEvent e) {
+				final ScriptController c = BotChrome.getInstance().getBot().getScriptController();
+				if (c == null || c.isStopping()) {
+					return;
+				}
+
+				final Script s = c.getScript();
+				if (s == null || !(s instanceof BotMenuListener)) {
+					return;
+				}
+
+				try {
+					((BotMenuListener) s).menuCanceled(e);
+				} catch (final Throwable t) {
+					t.printStackTrace();
+				}
+			}
+		});
+
 		script.addMenuListener(new MenuListener() {
 			@Override
 			public void menuSelected(final MenuEvent e) {
@@ -100,6 +169,13 @@ public class BotMenuBar extends JMenuBar implements ActionListener {
 				play.setText(running ? BotLocale.PAUSESCRIPT : active ? BotLocale.RESUMESCRIPT : BotLocale.PLAYSCRIPT);
 				play.setIcon(playIcons[running ? 1 : 0]);
 				stop.setEnabled(active);
+
+				if (active) {
+					final Script script = controller.getScript();
+					options.setEnabled(script != null && script instanceof BotMenuListener);
+				} else {
+					options.setEnabled(false);
+				}
 			}
 
 			@Override
