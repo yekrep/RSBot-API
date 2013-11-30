@@ -143,7 +143,7 @@ public abstract class Mouse extends Focus implements MouseListener, MouseMotionL
 	}
 
 	public final void sendEvent(final MouseEvent e) {
-		if (e == null) {
+		if (e == null || !SelectiveEventQueue.getInstance().isBlocking()) {
 			return;
 		}
 		SelectiveEventQueue.getInstance().postEvent(new RawAWTEvent(e));
