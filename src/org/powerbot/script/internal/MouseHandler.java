@@ -7,6 +7,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.util.concurrent.TimeUnit;
 
+import org.powerbot.bot.SelectiveEventQueue;
 import org.powerbot.client.Client;
 import org.powerbot.client.input.Mouse;
 import org.powerbot.script.methods.MethodContext;
@@ -60,11 +61,17 @@ public class MouseHandler extends MethodProvider {
 		if (client == null || (mouse = client.getMouse()) == null) {
 			return;
 		}
-		if (!mouse.isPresent() || mouse.isPressed()) {
+		if (!mouse.isPresent()) {
+			SelectiveEventQueue.getInstance().defocus();
 			return;
 		}
+		if (mouse.isPressed()) {
+			return;
+		}
+
 		final Component target = getSource();
 		mouse.sendEvent(new MouseEvent(target, MouseEvent.MOUSE_PRESSED, System.currentTimeMillis(), 0, x, y, 1, false, button));
+		SelectiveEventQueue.getInstance().focus();
 	}
 
 	public void release(final int x, final int y, final int button) {
@@ -76,6 +83,11 @@ public class MouseHandler extends MethodProvider {
 		if (!mouse.isPressed()) {
 			return;
 		}
+		if (!mouse.isPresent()) {
+			SelectiveEventQueue.getInstance().defocus();
+			return;
+		}
+
 		final long mark = System.currentTimeMillis();
 		final Component target = getSource();
 		mouse.sendEvent(new MouseEvent(target, MouseEvent.MOUSE_RELEASED, mark, 0, x, y, 1, false, button));
