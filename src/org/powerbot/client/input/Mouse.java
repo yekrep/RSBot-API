@@ -79,58 +79,71 @@ public abstract class Mouse extends Focus implements MouseListener, MouseMotionL
 
 	@Override
 	public final void mouseClicked(final MouseEvent e) {
-		clientX = e.getX();
-		clientY = e.getY();
+		if (!SelectiveEventQueue.getInstance().isBlocking()) {
+			clientX = e.getX();
+			clientY = e.getY();
+		}
 		_mouseClicked(e);
 	}
 
 	@Override
 	public final void mouseDragged(final MouseEvent e) {
-		clientX = e.getX();
-		clientY = e.getY();
+		if (!SelectiveEventQueue.getInstance().isBlocking()) {
+			clientX = e.getX();
+			clientY = e.getY();
+		}
 		_mouseDragged(e);
 	}
 
 	@Override
 	public final void mouseEntered(final MouseEvent e) {
-		clientPresent = true;
-		clientX = e.getX();
-		clientY = e.getY();
+		if (!SelectiveEventQueue.getInstance().isBlocking()) {
+			clientPresent = true;
+			clientX = e.getX();
+			clientY = e.getY();
+		}
 		_mouseEntered(e);
 	}
 
 	@Override
 	public final void mouseExited(final MouseEvent e) {
-		clientPresent = false;
-		clientX = e.getX();
-		clientY = e.getY();
+		if (!SelectiveEventQueue.getInstance().isBlocking()) {
+			clientPresent = false;
+			clientX = e.getX();
+			clientY = e.getY();
+		}
 		_mouseExited(e);
 	}
 
 	@Override
 	public final void mouseMoved(final MouseEvent e) {
-		clientX = e.getX();
-		clientY = e.getY();
+		if (!SelectiveEventQueue.getInstance().isBlocking()) {
+			clientX = e.getX();
+			clientY = e.getY();
+		}
 		_mouseMoved(e);
 	}
 
 	@Override
 	public final void mousePressed(final MouseEvent e) {
-		clientPressed = true;
-		clientX = e.getX();
-		clientY = e.getY();
-		clientPressX = e.getX();
-		clientPressY = e.getY();
-		clientPressTime = System.currentTimeMillis();
+		if (!SelectiveEventQueue.getInstance().isBlocking()) {
+			clientPressed = true;
+			clientX = e.getX();
+			clientY = e.getY();
+			clientPressX = e.getX();
+			clientPressY = e.getY();
+			clientPressTime = System.currentTimeMillis();
+		}
 		_mousePressed(e);
 	}
 
 	@Override
 	public final void mouseReleased(final MouseEvent e) {
-		clientX = e.getX();
-		clientY = e.getY();
-		clientPressed = false;
-
+		if (!SelectiveEventQueue.getInstance().isBlocking()) {
+			clientX = e.getX();
+			clientY = e.getY();
+			clientPressed = false;
+		}
 		_mouseReleased(e);
 	}
 
@@ -145,6 +158,26 @@ public abstract class Mouse extends Focus implements MouseListener, MouseMotionL
 	public final void sendEvent(final MouseEvent e) {
 		if (e == null || !SelectiveEventQueue.getInstance().isBlocking()) {
 			return;
+		}
+
+		clientX = e.getX();
+		clientY = e.getY();
+		switch (e.getID()) {
+		case MouseEvent.MOUSE_ENTERED:
+			clientPresent = true;
+			break;
+		case MouseEvent.MOUSE_EXITED:
+			clientPresent = false;
+			break;
+		case MouseEvent.MOUSE_PRESSED:
+			clientPressX = e.getX();
+			clientPressY = e.getY();
+			clientPressTime = e.getWhen();
+			clientPressed = true;
+			break;
+		case MouseEvent.MOUSE_RELEASED:
+			clientPressed = false;
+			break;
 		}
 		SelectiveEventQueue.getInstance().postEvent(new RawAWTEvent(e));
 	}
