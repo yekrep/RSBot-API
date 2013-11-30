@@ -70,7 +70,6 @@ public class SelectiveEventQueue extends EventQueue {
 
 		final Component component = this.component.get();
 		if (component != null && component.isFocusOwner()) {
-			System.out.println("losing focus, purposely.");
 			postEvent(new RawAWTEvent(new FocusEvent(component, FocusEvent.FOCUS_LOST, false, null)));
 			postEvent(new RawAWTEvent(new FocusEvent(component, FocusEvent.FOCUS_LOST, false, null)));
 		}
