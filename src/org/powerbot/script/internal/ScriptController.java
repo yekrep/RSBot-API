@@ -36,6 +36,7 @@ public final class ScriptController implements Runnable, Script.Controller {
 	private final Queue<Script> scripts;
 	private final Class<? extends Script>[] daemons;
 	private final ScriptBundle bundle;
+	private final AtomicReference<Script> script;
 	private final AtomicBoolean started, suspended, stopping;
 	private final Timer timeout;
 
@@ -57,6 +58,7 @@ public final class ScriptController implements Runnable, Script.Controller {
 				StatTracker.class,
 		};
 		scripts = new PriorityQueue<Script>(daemons.length + 1);
+		script = new AtomicReference<Script>(null);
 
 		executor = new ThreadPoolExecutor(1, 1, 0L, TimeUnit.NANOSECONDS, queue = new LinkedBlockingDeque<Runnable>());
 
@@ -135,6 +137,7 @@ public final class ScriptController implements Runnable, Script.Controller {
 					}
 				}).start();
 				s = clazz.newInstance();
+				script.set(s);
 			} catch (final Exception e) {
 				e.printStackTrace();
 				stop();
@@ -225,6 +228,15 @@ public final class ScriptController implements Runnable, Script.Controller {
 	 */
 	public ScriptDefinition getDefinition() {
 		return bundle.definition;
+	}
+
+	/**
+	 * Returns the primary {@link Script}.
+	 *
+	 * @return the primary {@link Script}
+	 */
+	public Script getScript() {
+		return script.get();
 	}
 
 	private void call(final Script.State state) {
