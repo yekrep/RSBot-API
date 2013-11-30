@@ -15,7 +15,7 @@ import org.powerbot.util.io.IOHelper;
 public final class UpdateCheck implements Callable<Boolean> {
 	private static final Logger log = Logger.getLogger(UpdateCheck.class.getName());
 
-	public Boolean call() throws Exception {
+	public Boolean call() {
 		final CryptFile cache = new CryptFile("version.1.txt", UpdateCheck.class);
 		final int version;
 		try {

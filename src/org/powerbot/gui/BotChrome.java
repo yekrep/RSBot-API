@@ -91,26 +91,12 @@ public class BotChrome extends JFrame implements Closeable {
 		setSize(getWindowCache());
 		setLocationRelativeTo(getParent());
 		setVisible(true);
+		new OSXAdapt().run();
 
 		Tracker.getInstance().trackPage("", getTitle());
 
-		final ExecutorService exec = Executors.newFixedThreadPool(1);
-		final List<Future<Boolean>> tasks = new ArrayList<Future<Boolean>>();
-		tasks.add(exec.submit(new OSXAdapt()));
-		tasks.add(exec.submit(new UpdateCheck()));
-		exec.shutdown();
-
 		Bot bot = null;
-		boolean pass = true;
-		for (final Future<Boolean> task : tasks) {
-			try {
-				if (!task.get()) {
-					pass = false;
-				}
-			} catch (final Exception ignored) {
-			}
-		}
-		if (pass) {
+		if (new UpdateCheck().call()) {
 			setTitle("RuneScape");
 			bot = new Bot();
 			new Thread(bot.threadGroup, bot).start();

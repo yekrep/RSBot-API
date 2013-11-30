@@ -15,7 +15,7 @@ import org.powerbot.gui.component.BotMenuBar;
 /**
  * @author Paris
  */
-public class OSXAdapt implements Callable<Boolean> {
+public class OSXAdapt implements Runnable {
 
 	@OSXAdapt.OSXAdapterInfo(mode = 1)
 	public static void about() {
@@ -33,7 +33,7 @@ public class OSXAdapt implements Callable<Boolean> {
 	}
 
 	@Override
-	public Boolean call() throws Exception {
+	public void run() {
 		if (Configuration.OS == Configuration.OperatingSystem.MAC) {
 			for (final Method m : getClass().getDeclaredMethods()) {
 				if (m.isAnnotationPresent(OSXAdapterInfo.class)) {
@@ -51,7 +51,6 @@ public class OSXAdapt implements Callable<Boolean> {
 				}
 			}
 		}
-		return true;
 	}
 
 	@Retention(RetentionPolicy.RUNTIME)
