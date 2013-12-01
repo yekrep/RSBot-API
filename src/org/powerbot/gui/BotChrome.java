@@ -68,18 +68,6 @@ public class BotChrome extends JFrame implements Closeable {
 			public void windowClosing(final WindowEvent e) {
 				close();
 			}
-
-			@Override
-			public void windowActivated(final WindowEvent e) {
-			}
-
-			@Override
-			public void windowDeiconified(final WindowEvent e) {
-			}
-
-			@Override
-			public void windowIconified(final WindowEvent e) {
-			}
 		});
 
 		setJMenuBar(new BotMenuBar());
