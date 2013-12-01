@@ -46,7 +46,7 @@ public class BotChrome extends JFrame implements Closeable {
 	private static final long serialVersionUID = -5535364874897541810L;
 
 	private static BotChrome instance;
-	private final CryptFile cache = new CryptFile("window-cache.1.ini", false, BotChrome.class);
+	private final CryptFile cache;
 	private boolean minimised;
 	private Bot bot;
 	public BotPanel panel;
@@ -94,6 +94,7 @@ public class BotChrome extends JFrame implements Closeable {
 		log.log(Level.INFO, "Optimising your experience", "Starting...");
 		pack();
 		setMinimumSize(getSize());
+		cache = new CryptFile("window-cache.1.ini", false, getClass());
 		setSize(getWindowCache());
 		setLocationRelativeTo(getParent());
 		setVisible(true);
