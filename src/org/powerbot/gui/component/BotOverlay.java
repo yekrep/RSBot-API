@@ -15,6 +15,7 @@ import java.awt.event.MouseWheelListener;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 
+import org.powerbot.Configuration;
 import org.powerbot.bot.Bot;
 import org.powerbot.bot.SelectiveEventQueue;
 import org.powerbot.event.EventMulticaster;
@@ -83,6 +84,9 @@ public class BotOverlay extends JDialog {
 			}
 		});
 
+		final String jre = System.getProperty("java.version");
+		final boolean clear = jre.startsWith("1.6") && Configuration.OS != Configuration.OperatingSystem.WINDOWS;
+
 		final JPanel panel = new JPanel() {
 			@Override
 			public void paintComponent(final Graphics g) {
@@ -91,6 +95,9 @@ public class BotOverlay extends JDialog {
 					if (b != null) {
 						final EventMulticaster m = b.getEventMulticaster();
 						if (m != null) {
+							if (clear) {
+								g.clearRect(0, 0, getWidth(), getHeight());
+							}
 							m.paint(g);
 						}
 					}
