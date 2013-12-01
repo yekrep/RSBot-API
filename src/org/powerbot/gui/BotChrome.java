@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.Frame;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.Closeable;
@@ -99,6 +101,14 @@ public class BotChrome extends JFrame implements Closeable {
 			overlay.setVisible(true);
 		}
 		this.bot = bot;
+
+		addComponentListener(new ComponentAdapter() {
+			@Override
+			public void componentResized(final ComponentEvent e) {
+				super.componentResized(e);
+				overlay.setSize(e.getComponent().getSize());
+			}
+		});
 
 		System.gc();
 	}
