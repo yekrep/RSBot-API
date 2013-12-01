@@ -32,6 +32,7 @@ public class Boot implements Runnable {
 		for (final Handler handler : logger.getHandlers()) {
 			logger.removeHandler(handler);
 		}
+		logger.addHandler(new PrintStreamHandler());
 
 		boolean restarted = false;
 
@@ -50,8 +51,6 @@ public class Boot implements Runnable {
 			} catch (final IOException ignored) {
 			}
 		}
-
-		logger.addHandler(new PrintStreamHandler());
 
 		if (!restarted) {
 			fork();
