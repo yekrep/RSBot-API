@@ -13,7 +13,6 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import org.powerbot.Configuration;
 import org.powerbot.gui.BotChrome;
-import org.powerbot.gui.component.BotOverlay;
 
 public class SelectiveEventQueue extends EventQueue {
 	private static final SelectiveEventQueue instance = new SelectiveEventQueue();
@@ -98,6 +97,7 @@ public class SelectiveEventQueue extends EventQueue {
 		if (source == BotChrome.getInstance().overlay) {
 			if (component != null && Configuration.OS != Configuration.OperatingSystem.WINDOWS) {
 				event.setSource(component);
+				source = component;
 			} else {
 				return;
 			}
