@@ -77,7 +77,7 @@ public class BotChrome extends JFrame implements Closeable {
 		add(panel);
 		SelectiveEventQueue.getInstance().setBlocking(false);
 
-		log.log(Level.INFO, "Optimising your experience", "Starting...");
+		log.log(Level.INFO, "", "Starting...");
 		pack();
 		setMinimumSize(getSize());
 		cache = new CryptFile("window-cache.1.ini", false, getClass());
