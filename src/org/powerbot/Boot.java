@@ -72,7 +72,6 @@ public class Boot implements Runnable {
 		} catch (final Exception ignored) {
 		}
 
-		StringUtil.newStringUtf8(null); // prevents ClassCircularityError exceptions
 		final Sandbox sandbox = new Sandbox();
 		sandbox.checkRead(Resources.Paths.ROOT);
 		sandbox.checkCreateClassLoader();
