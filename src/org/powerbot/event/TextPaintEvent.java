@@ -17,6 +17,7 @@ import java.util.EventListener;
  *
  * @author Timer
  */
+@Deprecated
 public class TextPaintEvent extends AbstractEvent {
 	private static final long serialVersionUID = 7174559879186449999L;
 	public static final int ID = 0x80;
