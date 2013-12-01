@@ -17,13 +17,11 @@ import org.powerbot.gui.component.BotOverlay;
 
 public class SelectiveEventQueue extends EventQueue {
 	private static final SelectiveEventQueue instance = new SelectiveEventQueue();
-	private final BotOverlay overlay;
 	private AtomicBoolean blocking;
 	private AtomicReference<Component> component;
 	private AtomicReference<EventCallback> callback;
 
 	private SelectiveEventQueue() {
-		this.overlay = BotChrome.getInstance().overlay;
 		this.blocking = new AtomicBoolean(false);
 		this.component = new AtomicReference<Component>(null);
 		this.callback = new AtomicReference<EventCallback>(null);
@@ -97,7 +95,7 @@ public class SelectiveEventQueue extends EventQueue {
 		}
 
 		final Component component = this.component.get();
-		if (source == overlay) {
+		if (source == BotChrome.getInstance().overlay) {
 			if (component != null && Configuration.OS != Configuration.OperatingSystem.WINDOWS) {
 				event.setSource(component);
 			} else {
