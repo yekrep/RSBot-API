@@ -1,6 +1,5 @@
 package org.powerbot.event;
 
-import java.awt.Graphics;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
@@ -46,6 +45,8 @@ public class EventMulticaster implements Runnable, Stoppable {
 		masks.put(KeyListener.class, EventMulticaster.KEY_EVENT);
 		masks.put(FocusListener.class, EventMulticaster.FOCUS_EVENT);
 		masks.put(MessageListener.class, MessageEvent.ID);
+		masks.put(PaintListener.class, PaintEvent.ID);
+		masks.put(TextPaintListener.class, TextPaintEvent.ID);
 
 		active = true;
 	}
@@ -60,11 +61,9 @@ public class EventMulticaster implements Runnable, Stoppable {
 			case MouseEvent.MOUSE_ENTERED:
 			case MouseEvent.MOUSE_EXITED:
 				return EventMulticaster.MOUSE_EVENT;
-
 			case MouseEvent.MOUSE_MOVED:
 			case MouseEvent.MOUSE_DRAGGED:
 				return EventMulticaster.MOUSE_MOTION_EVENT;
-
 			case MouseEvent.MOUSE_WHEEL:
 				return EventMulticaster.MOUSE_WHEEL_EVENT;
 			}
@@ -109,18 +108,6 @@ public class EventMulticaster implements Runnable, Stoppable {
 			try {
 				queue.notify();
 			} catch (final IllegalThreadStateException ignored) {
-			}
-		}
-	}
-
-	public void paint(final Graphics g) {
-		int t = 0;
-
-		for (final EventListener l : listeners) {
-			if (l instanceof PaintListener) {
-				((PaintListener) l).repaint(g);
-			} else if (l instanceof TextPaintListener) {
-				t += ((TextPaintListener) l).draw(t, g);
 			}
 		}
 	}

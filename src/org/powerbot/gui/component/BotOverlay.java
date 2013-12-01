@@ -1,24 +1,18 @@
 package org.powerbot.gui.component;
 
-import java.awt.AWTEvent;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Insets;
 import java.awt.Point;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
 
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 
 import org.powerbot.Configuration;
 import org.powerbot.bot.Bot;
-import org.powerbot.bot.SelectiveEventQueue;
 import org.powerbot.event.EventMulticaster;
+import org.powerbot.event.PaintEvent;
+import org.powerbot.event.TextPaintEvent;
 import org.powerbot.gui.BotChrome;
 
 /**
@@ -38,52 +32,6 @@ public class BotOverlay extends JDialog {
 		setBackground(a);
 		setFocusableWindowState(false);
 
-		addMouseMotionListener(new MouseMotionListener() {
-			@Override
-			public void mouseDragged(final MouseEvent e) {
-				redispatch(e);
-			}
-
-			@Override
-			public void mouseMoved(final MouseEvent e) {
-				redispatch(e);
-			}
-		});
-
-		addMouseListener(new MouseListener() {
-			@Override
-			public void mouseClicked(final MouseEvent e) {
-				redispatch(e);
-			}
-
-			@Override
-			public void mousePressed(final MouseEvent e) {
-				redispatch(e);
-			}
-
-			@Override
-			public void mouseReleased(final MouseEvent e) {
-				redispatch(e);
-			}
-
-			@Override
-			public void mouseEntered(final MouseEvent e) {
-				redispatch(e);
-			}
-
-			@Override
-			public void mouseExited(final MouseEvent e) {
-				redispatch(e);
-			}
-		});
-
-		addMouseWheelListener(new MouseWheelListener() {
-			@Override
-			public void mouseWheelMoved(final MouseWheelEvent e) {
-				redispatch(e);
-			}
-		});
-
 		final String jre = System.getProperty("java.version");
 		final boolean clear = jre.startsWith("1.6") && Configuration.OS != Configuration.OperatingSystem.WINDOWS;
 
@@ -92,13 +40,22 @@ public class BotOverlay extends JDialog {
 			public void paintComponent(final Graphics g) {
 				if (g != null) {
 					final Bot b = parent.getBot();
-					if (b != null) {
-						final EventMulticaster m = b.getEventMulticaster();
-						if (m != null) {
-							if (clear) {
-								g.clearRect(0, 0, getWidth(), getHeight());
-							}
-							m.paint(g);
+					final EventMulticaster m;
+					if (b != null && (m = b.getEventMulticaster()) != null) {
+						final PaintEvent paintEvent = b.paintEvent;
+						final TextPaintEvent textPaintEvent = b.textPaintEvent;
+						paintEvent.graphics = g;
+						textPaintEvent.graphics = g;
+						textPaintEvent.id = 0;
+
+						if (clear) {
+							g.clearRect(0, 0, getWidth(), getHeight());
+						}
+						try {
+							m.fire(paintEvent);
+							m.fire(textPaintEvent);
+						} catch (final Exception e) {
+							e.printStackTrace();
 						}
 					}
 				}
@@ -121,33 +78,10 @@ public class BotOverlay extends JDialog {
 						repaint();
 						Thread.sleep(40);
 					} catch (final Exception ignored) {
-						ignored.printStackTrace();
 						break;
 					}
 				}
 			}
 		}).start();
-	}
-
-	private void redispatch(final AWTEvent e) {
-		final SelectiveEventQueue q = SelectiveEventQueue.getInstance();
-
-		if (q.isBlocking()) {
-			// TODO: invoke callbacks
-			return;
-		}
-
-		Component s = parent;
-
-		final Bot b = parent.getBot();
-		if (b != null) {
-			final Component a = b.getCanvas();
-			if (a != null) {
-				s = a;
-			}
-		}
-
-		e.setSource(s);
-		s.dispatchEvent(e);
 	}
 }

@@ -14,11 +14,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -53,7 +48,7 @@ public class BotChrome extends JFrame implements Closeable {
 	private final CryptFile cache;
 	private Bot bot;
 	public BotPanel panel;
-	private final BotOverlay overlay;
+	public final BotOverlay overlay;
 
 	private BotChrome() {
 		try {
