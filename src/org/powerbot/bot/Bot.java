@@ -23,7 +23,6 @@ import org.powerbot.gui.BotChrome;
 import org.powerbot.script.internal.InputHandler;
 import org.powerbot.script.internal.ScriptController;
 import org.powerbot.script.lang.Stoppable;
-import org.powerbot.script.methods.Game;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.util.Condition;
 import org.powerbot.service.GameAccounts;
@@ -215,6 +214,7 @@ public final class Bot implements Runnable, Stoppable {
 	}
 
 	public synchronized void startScript(final ScriptBundle bundle, final int timeout) {
+		SelectiveEventQueue.getInstance().setBlocking(true);
 		controller = new ScriptController(ctx, multicaster, bundle, timeout);
 		controller.run();
 	}
