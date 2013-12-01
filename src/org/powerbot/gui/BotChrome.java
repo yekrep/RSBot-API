@@ -22,6 +22,7 @@ import java.util.logging.Logger;
 
 import javax.swing.JFrame;
 import javax.swing.JPopupMenu;
+import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 
 import org.powerbot.Configuration;
@@ -51,6 +52,11 @@ public class BotChrome extends JFrame implements Closeable {
 	public BotPanel panel;
 
 	private BotChrome() {
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (final Exception ignored) {
+		}
+
 		setTitle(Configuration.NAME + (Configuration.BETA ? " Beta" : ""));
 		setIconImage(Resources.getImage(Resources.Paths.ICON));
 		setBackground(Color.BLACK);

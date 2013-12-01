@@ -11,7 +11,6 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.swing.UIManager;
 import javax.swing.SwingUtilities;
 
 import org.powerbot.Configuration.OperatingSystem;
@@ -68,11 +67,6 @@ public class Boot implements Runnable {
 				e.printStackTrace();
 			}
 		});
-
-		try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (final Exception ignored) {
-		}
 
 		final Sandbox sandbox = new Sandbox();
 		sandbox.checkRead(Resources.Paths.ROOT);
