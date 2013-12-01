@@ -2,6 +2,7 @@ package org.powerbot.gui.component;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Insets;
 import java.awt.Point;
@@ -88,8 +89,15 @@ public class BotOverlay extends JDialog {
 		final Point p = parent.getLocation();
 		final Insets s = parent.getInsets();
 		p.translate(s.left, s.top);
+		final Dimension d = parent.getSize();
+		Dimension d2 = new Dimension(d.width - s.left - s.right, d.height - s.top - s.bottom);
+		if (Configuration.OS != Configuration.OperatingSystem.MAC) {
+			final int h = parent.getJMenuBar().getHeight();
+			p.translate(0, h);
+			d2 = new Dimension(d2.width, d2.height - h);
+		}
 		setLocation(p);
-		setSize(parent.getSize());
+		setSize(d2);
 		panel.setPreferredSize(getSize());
 		pack();
 	}
