@@ -28,6 +28,7 @@ import javax.swing.WindowConstants;
 import org.powerbot.Configuration;
 import org.powerbot.bot.Bot;
 import org.powerbot.bot.SelectiveEventQueue;
+import org.powerbot.gui.component.BotLocale;
 import org.powerbot.gui.component.BotMenuBar;
 import org.powerbot.gui.component.BotPanel;
 import org.powerbot.service.UpdateCheck;
@@ -56,7 +57,7 @@ public class BotChrome extends JFrame implements Closeable {
 		} catch (final Exception ignored) {
 		}
 
-		setTitle(Configuration.NAME + (Configuration.BETA ? " Beta" : ""));
+		setTitle(Configuration.NAME + (Configuration.BETA ? " " + BotLocale.BETA : ""));
 		setIconImage(Resources.getImage(Resources.Paths.ICON));
 		setBackground(Color.BLACK);
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);

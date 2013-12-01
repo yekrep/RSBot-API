@@ -49,6 +49,7 @@ public final class BotLocale {
 	public static final String BLOCK = "Block";
 
 	public static final String OK = "OK";
+	public static final String BETA = "Beta";
 
 	public static final String WEBSITE = Configuration.URLs.DOMAIN;
 	public static final String LICENSE = "License";
