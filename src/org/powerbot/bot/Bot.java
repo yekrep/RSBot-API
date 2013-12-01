@@ -134,28 +134,6 @@ public final class Bot implements Runnable, Stoppable {
 		setClient((Client) loader.getClient(), loader.getBridge().getTransformSpec());
 		applet.start();
 
-		final Thread t = new Thread(threadGroup, new Runnable() {
-			@Override
-			public void run() {
-				for (; ; ) {
-					final int s;
-					if ((s = getMethodContext().game.getClientState()) >= Game.INDEX_LOGIN_SCREEN) {
-						if (s == Game.INDEX_LOGIN_SCREEN) {
-							getMethodContext().keyboard.send("{VK_ESCAPE}");
-						}
-						break;
-					} else {
-						try {
-							Thread.sleep(300);
-						} catch (final InterruptedException ignored) {
-						}
-					}
-				}
-			}
-		});
-		t.setPriority(Thread.MIN_PRIORITY);
-		t.start();
-
 		BotChrome.getInstance().display(this);
 	}
 
