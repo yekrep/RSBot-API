@@ -11,15 +11,19 @@ import java.awt.event.WindowEvent;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
+import org.powerbot.Configuration;
 import org.powerbot.gui.BotChrome;
+import org.powerbot.gui.component.BotOverlay;
 
 public class SelectiveEventQueue extends EventQueue {
 	private static final SelectiveEventQueue instance = new SelectiveEventQueue();
+	private final BotOverlay overlay;
 	private AtomicBoolean blocking;
 	private AtomicReference<Component> component;
 	private AtomicReference<EventCallback> callback;
 
 	private SelectiveEventQueue() {
+		this.overlay = BotChrome.getInstance().overlay;
 		this.blocking = new AtomicBoolean(false);
 		this.component = new AtomicReference<Component>(null);
 		this.callback = new AtomicReference<EventCallback>(null);
@@ -87,11 +91,23 @@ public class SelectiveEventQueue extends EventQueue {
 			((Component) e.getSource()).dispatchEvent(e);
 			return;
 		}
-
 		Object source = event.getSource();
+		if (source == null) {
+			return;
+		}
+
+		final Component component = this.component.get();
+		if (source == overlay) {
+			if (component != null && Configuration.OS != Configuration.OperatingSystem.WINDOWS) {
+				event.setSource(component);
+			} else {
+				return;
+			}
+		}
+
 		/* Check if event is from a blocked source */
-		if (source != null && blocking.get() && source == component.get()) {
-		    /* Block input events */
+		if (blocking.get() && source == component) {
+			/* Block input events */
 			if (event instanceof MouseEvent || event instanceof KeyEvent ||
 					event instanceof WindowEvent || event instanceof FocusEvent) {
 				/* If an input event is blocked, dispatch it on our event caster. */
