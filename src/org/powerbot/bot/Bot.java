@@ -5,6 +5,7 @@ import java.awt.Canvas;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Logger;
 
@@ -24,7 +25,7 @@ import org.powerbot.script.internal.ScriptController;
 import org.powerbot.script.lang.Stoppable;
 import org.powerbot.script.methods.Game;
 import org.powerbot.script.methods.MethodContext;
-import org.powerbot.script.util.Random;
+import org.powerbot.script.util.Condition;
 import org.powerbot.service.GameAccounts;
 import org.powerbot.service.scripts.ScriptBundle;
 
@@ -44,6 +45,7 @@ public final class Bot implements Runnable, Stoppable {
 	private InputHandler inputHandler;
 	private ScriptController controller;
 	private boolean stopping;
+	private AtomicBoolean initiated;
 
 	private final PaintEvent paintEvent;
 	private final TextPaintEvent textPaintEvent;
@@ -55,6 +57,7 @@ public final class Bot implements Runnable, Stoppable {
 		account = null;
 		new Thread(threadGroup, multicaster, multicaster.getClass().getName()).start();
 		refreshing = new AtomicBoolean(false);
+		initiated = new AtomicBoolean(false);
 		ctx = new MethodContext(this);
 		paintEvent = new PaintEvent();
 		textPaintEvent = new TextPaintEvent();
@@ -79,6 +82,7 @@ public final class Bot implements Runnable, Stoppable {
 			return;
 		}
 
+		initiated.set(false);
 		final NRSLoader loader = new NRSLoader(game, classLoader);
 		loader.setCallback(new Runnable() {
 			@Override
@@ -180,6 +184,26 @@ public final class Bot implements Runnable, Stoppable {
 		}).start();
 	}
 
+	public void initiate() {
+		if (!initiated.compareAndSet(false, true)) {
+			return;
+		}
+
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				Condition.wait(new Callable<Boolean>() {
+					@Override
+					public Boolean call() throws Exception {
+						return ctx.getClient().getKeyboard() != null;
+					}
+				});
+
+				ctx.keyboard.send("s");
+			}
+		}).start();
+	}
+
 	public BufferedImage getBufferImage() {
 		return game;
 	}
@@ -249,7 +273,6 @@ public final class Bot implements Runnable, Stoppable {
 		this.ctx.setClient(client);
 		client.setCallback(new AbstractCallback(this));
 		constants = new Constants(spec.constants);
-		new Thread(threadGroup, new SafeMode(this)).start();
 		inputHandler = new InputHandler(applet, client);
 		ctx.menu.register();
 	}
@@ -273,31 +296,5 @@ public final class Bot implements Runnable, Stoppable {
 
 	public ScriptController getScriptController() {
 		return controller;
-	}
-
-	private final class SafeMode implements Runnable {
-		private final Bot bot;
-
-		public SafeMode(final Bot bot) {
-			this.bot = bot;
-		}
-
-		public void run() {
-			if (bot != null && bot.ctx.getClient() != null) {
-				for (int i = 0; i < 30; i++) {
-					if (!ctx.keyboard.isReady()) {
-						try {
-							Thread.sleep(Random.nextInt(500, 1000));
-						} catch (InterruptedException ignored) {
-						}
-					} else {
-						break;
-					}
-				}
-				if (ctx.keyboard.isReady()) {
-					ctx.keyboard.send("s");
-				}
-			}
-		}
 	}
 }

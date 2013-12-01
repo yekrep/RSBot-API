@@ -29,6 +29,8 @@ public class Canvas extends java.awt.Canvas {
 		if (SelectiveEventQueue.getInstance().isBlocking()) {
 			queue.focus();
 		}
+
+		bot.initiate();
 	}
 
 	@Override
