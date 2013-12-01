@@ -103,6 +103,12 @@ public class BotChrome extends JFrame implements Closeable {
 				super.componentResized(e);
 				overlay.adjustSize();
 			}
+
+			@Override
+			public void componentMoved(final ComponentEvent e) {
+				super.componentMoved(e);
+				overlay.adjustSize();
+			}
 		});
 
 		System.gc();
