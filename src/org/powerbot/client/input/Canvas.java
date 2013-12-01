@@ -23,13 +23,11 @@ public class Canvas extends java.awt.Canvas {
 		queue.block(this, new EventCallback() {
 			@Override
 			public void execute(final AWTEvent event) {
-				chrome.requestFocusInWindow();
 			}
 		});
 
 		if (SelectiveEventQueue.getInstance().isBlocking()) {
 			queue.focus();
-			chrome.requestFocusInWindow();
 		}
 	}
 

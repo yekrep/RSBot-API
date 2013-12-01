@@ -48,6 +48,11 @@ public class SelectiveEventQueue extends EventQueue {
 	}
 
 	public void block(Component component, EventCallback callback) {
+		final Component c = this.component.get();
+		if (c != null && c != component) {
+			defocus();
+		}
+
 		this.component.set(component);
 		this.callback.set(callback);
 	}

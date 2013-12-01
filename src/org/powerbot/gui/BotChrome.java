@@ -66,12 +66,10 @@ public class BotChrome extends JFrame implements Closeable {
 
 			@Override
 			public void windowActivated(final WindowEvent e) {
-				requestFocusInWindow();
 			}
 
 			@Override
 			public void windowDeiconified(final WindowEvent e) {
-				requestFocusInWindow();
 				minimised = false;
 			}
 
