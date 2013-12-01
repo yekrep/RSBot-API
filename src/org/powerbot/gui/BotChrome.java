@@ -30,6 +30,7 @@ import org.powerbot.bot.Bot;
 import org.powerbot.bot.SelectiveEventQueue;
 import org.powerbot.gui.component.BotLocale;
 import org.powerbot.gui.component.BotMenuBar;
+import org.powerbot.gui.component.BotOverlay;
 import org.powerbot.gui.component.BotPanel;
 import org.powerbot.service.UpdateCheck;
 import org.powerbot.util.Ini;
@@ -50,6 +51,7 @@ public class BotChrome extends JFrame implements Closeable {
 	private final CryptFile cache;
 	private Bot bot;
 	public BotPanel panel;
+	private final BotOverlay overlay;
 
 	private BotChrome() {
 		try {
@@ -88,11 +90,13 @@ public class BotChrome extends JFrame implements Closeable {
 
 		Tracker.getInstance().trackPage("", getTitle());
 
+		overlay = new BotOverlay(this);
 		Bot bot = null;
 		if (new UpdateCheck().call()) {
 			setTitle("RuneScape");
 			bot = new Bot();
 			new Thread(bot.threadGroup, bot).start();
+			overlay.setVisible(true);
 		}
 		this.bot = bot;
 
