@@ -47,7 +47,6 @@ public class BotChrome extends JFrame implements Closeable {
 
 	private static BotChrome instance;
 	private final CryptFile cache;
-	private boolean minimised;
 	private Bot bot;
 	public BotPanel panel;
 
@@ -76,12 +75,10 @@ public class BotChrome extends JFrame implements Closeable {
 
 			@Override
 			public void windowDeiconified(final WindowEvent e) {
-				minimised = false;
 			}
 
 			@Override
 			public void windowIconified(final WindowEvent e) {
-				minimised = true;
 			}
 		});
 
@@ -122,10 +119,6 @@ public class BotChrome extends JFrame implements Closeable {
 
 	public Bot getBot() {
 		return bot;
-	}
-
-	public boolean isMinimised() {
-		return minimised;
 	}
 
 	public static void openURL(final String url) {
