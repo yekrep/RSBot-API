@@ -12,6 +12,7 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 
 import javax.swing.JDialog;
+import javax.swing.JLabel;
 
 import org.powerbot.bot.Bot;
 import org.powerbot.bot.SelectiveEventQueue;
@@ -79,6 +80,10 @@ public class BotOverlay extends JDialog {
 				redispatch(e);
 			}
 		});
+
+		final JLabel txt = new JLabel("example text");
+		txt.setForeground(Color.ORANGE);
+		add(txt);
 
 		final Point p = parent.getLocation();
 		final Insets s = parent.getInsets();
