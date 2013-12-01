@@ -12,6 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.UIManager;
+import javax.swing.SwingUtilities;
 
 import org.powerbot.Configuration.OperatingSystem;
 import org.powerbot.gui.BotChrome;
@@ -79,7 +80,12 @@ public class Boot implements Runnable {
 		System.setProperty("java.net.preferIPv4Stack", "true");
 		System.setProperty("http.keepalive", "false");
 
-		BotChrome.getInstance();
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				BotChrome.getInstance();
+			}
+		});
 	}
 
 	public void run() {
