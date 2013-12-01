@@ -32,24 +32,5 @@ public class Canvas extends java.awt.Canvas {
 
 		bot.initiate();
 	}
-
-	@Override
-	public Graphics getGraphics() {
-		if (bot.getMethodContext().game.toolkit.graphicsIndex != 0) {
-			return super.getGraphics();
-		}
-
-		final Graphics game = bot.getGameBuffer();
-		super.getGraphics().drawImage(bot.getBufferImage(), 0, 0, null);
-		return game;
-	}
-
-	@Override
-	public void setSize(final int w, final int h) {
-		super.setSize(w, h);
-		final BufferedImage image = bot.getBufferImage();
-		if (image.getWidth() != w || image.getHeight() != h) {
-			bot.resize(w, h);
-		}
 	}
 }

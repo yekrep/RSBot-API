@@ -2,8 +2,6 @@ package org.powerbot.bot;
 
 import java.applet.Applet;
 import java.awt.Canvas;
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -37,7 +35,6 @@ public final class Bot implements Runnable, Stoppable {
 	public final ThreadGroup threadGroup;
 	private final EventMulticaster multicaster;
 	private Applet applet;
-	private BufferedImage game, buffer;
 	public AtomicBoolean refreshing;
 	private Constants constants;
 	private GameAccounts.Account account;
@@ -46,8 +43,8 @@ public final class Bot implements Runnable, Stoppable {
 	private boolean stopping;
 	private AtomicBoolean initiated;
 
-	private final PaintEvent paintEvent;
-	private final TextPaintEvent textPaintEvent;
+	public final PaintEvent paintEvent;
+	public final TextPaintEvent textPaintEvent;
 
 	public Bot() {
 		applet = null;
@@ -98,10 +95,7 @@ public final class Bot implements Runnable, Stoppable {
 		final Crawler crawler = loader.getGameLoader().getCrawler();
 		final GameStub stub = new GameStub(crawler.parameters, crawler.archive);
 		applet.setStub(stub);
-
 		applet.setSize(BotChrome.PANEL_MIN_WIDTH, BotChrome.PANEL_MIN_HEIGHT);
-		resize(BotChrome.PANEL_MIN_WIDTH, BotChrome.PANEL_MIN_HEIGHT);
-
 		applet.init();
 		if (loader.getBridge().getTransformSpec() == null) {
 			final Thread thread = new Thread(new Runnable() {
@@ -175,32 +169,9 @@ public final class Bot implements Runnable, Stoppable {
 						return ctx.getClient().getKeyboard() != null;
 					}
 				});
-
 				ctx.keyboard.send("s");
 			}
 		}).start();
-	}
-
-	public BufferedImage getBufferImage() {
-		return game;
-	}
-
-	public Graphics getGameBuffer() {
-		final Graphics g = game.getGraphics();
-		final Graphics b = buffer.getGraphics();
-		b.drawImage(game, 0, 0, null);
-		if (this.ctx.getClient() != null) {
-			paintEvent.graphics = g;
-			textPaintEvent.graphics = g;
-			textPaintEvent.id = 0;
-			try {
-				multicaster.fire(paintEvent);
-				multicaster.fire(textPaintEvent);
-			} catch (final Exception e) {
-				e.printStackTrace();
-			}
-		}
-		return g;
 	}
 
 	void terminateApplet() {
@@ -240,11 +211,6 @@ public final class Bot implements Runnable, Stoppable {
 
 	public InputHandler getInputHandler() {
 		return inputHandler;
-	}
-
-	public void resize(final int width, final int height) {
-		game = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-		buffer = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 	}
 
 	private void setClient(final Client client, final TransformSpec spec) {
