@@ -1,5 +1,6 @@
 package org.powerbot.gui.component;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Insets;
@@ -20,6 +21,7 @@ import org.powerbot.gui.BotChrome;
  */
 public class BotOverlay extends JDialog {
 	private final BotChrome parent;
+	private final JPanel panel;
 
 	public BotOverlay(final BotChrome parent) {
 		super(parent);
@@ -35,7 +37,7 @@ public class BotOverlay extends JDialog {
 		final String jre = System.getProperty("java.version");
 		final boolean clear = jre.startsWith("1.6") && Configuration.OS != Configuration.OperatingSystem.WINDOWS;
 
-		final JPanel panel = new JPanel() {
+		panel = new JPanel() {
 			@Override
 			public void paintComponent(final Graphics g) {
 				if (g != null) {
@@ -61,14 +63,11 @@ public class BotOverlay extends JDialog {
 				}
 			}
 		};
+		setLayout(new BorderLayout());
 		panel.setBackground(getBackground());
-		add(panel);
+		add(panel, BorderLayout.CENTER);
 
-		final Point p = parent.getLocation();
-		final Insets s = parent.getInsets();
-		p.translate(s.left, s.top);
-		setLocation(p);
-		setSize(parent.getContentPane().getSize());
+		adjustSize();
 
 		new Thread(new Runnable() {
 			@Override
@@ -83,5 +82,15 @@ public class BotOverlay extends JDialog {
 				}
 			}
 		}).start();
+	}
+
+	public void adjustSize() {
+		final Point p = parent.getLocation();
+		final Insets s = parent.getInsets();
+		p.translate(s.left, s.top);
+		setLocation(p);
+		setSize(parent.getSize());
+		panel.setPreferredSize(getSize());
+		pack();
 	}
 }
