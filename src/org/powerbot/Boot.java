@@ -45,10 +45,14 @@ public class Boot implements Runnable {
 			}
 		}
 
-		if (Configuration.OS == OperatingSystem.MAC && !ICON_TMP.isFile()) {
-			try {
-				IOHelper.write(Resources.getResourceURL(Resources.Paths.ICON).openStream(), ICON_TMP);
-			} catch (final IOException ignored) {
+		if (Configuration.OS == OperatingSystem.MAC) {
+			System.setProperty("apple.laf.useScreenMenuBar", "true");
+
+			if (!ICON_TMP.isFile()) {
+				try {
+					IOHelper.write(Resources.getResourceURL(Resources.Paths.ICON).openStream(), ICON_TMP);
+				} catch (final IOException ignored) {
+				}
 			}
 		}
 
@@ -66,9 +70,6 @@ public class Boot implements Runnable {
 		});
 
 		try {
-			if (Configuration.OS == OperatingSystem.MAC) {
-				System.setProperty("apple.laf.useScreenMenuBar", "true");
-			}
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (final Exception ignored) {
 		}
