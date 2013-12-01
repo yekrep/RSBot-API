@@ -26,7 +26,7 @@ public abstract class Keyboard extends Focus implements KeyListener {
 	}
 
 	public final void sendEvent(final KeyEvent e) {
-		if (e == null || !SelectiveEventQueue.getInstance().isBlocking()) {
+		if (e == null) {
 			return;
 		}
 
