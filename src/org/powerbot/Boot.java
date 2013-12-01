@@ -17,7 +17,6 @@ import org.powerbot.Configuration.OperatingSystem;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.util.Sandbox;
 import org.powerbot.util.StringUtil;
-import org.powerbot.util.io.CryptFile;
 import org.powerbot.util.io.IOHelper;
 import org.powerbot.util.io.PrintStreamHandler;
 import org.powerbot.util.io.Resources;
@@ -74,7 +73,6 @@ public class Boot implements Runnable {
 		}
 
 		StringUtil.newStringUtf8(null); // prevents ClassCircularityError exceptions
-		CryptFile.PERMISSIONS.clear();
 		final Sandbox sandbox = new Sandbox();
 		sandbox.checkRead(Resources.Paths.ROOT);
 		sandbox.checkCreateClassLoader();
