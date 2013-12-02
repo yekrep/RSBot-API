@@ -41,6 +41,9 @@ public class Random {
 	 * @return the random number between min and max
 	 */
 	public static double nextDouble(final double min, final double max) {
+		if (max < min) {
+			return max + random.nextDouble() * (min - max);
+		}
 		return min + random.nextDouble() * (max - min);
 	}
 
