@@ -41,6 +41,10 @@ public class BotOverlay extends JDialog {
 		final String s = System.getProperty("apple.laf.useScreenMenuBar");
 		offsetMenu = !(mac && s != null && s.equalsIgnoreCase("true"));
 
+		if (mac) {
+			getRootPane().putClientProperty("apple.awt.draggableWindowBackground", Boolean.FALSE);
+		}
+
 		panel = new JPanel() {
 			@Override
 			public void paintComponent(final Graphics g) {
