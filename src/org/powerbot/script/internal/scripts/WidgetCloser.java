@@ -43,11 +43,11 @@ public class WidgetCloser extends PollingScript implements InternalScript {
 		threshold.offer(priority.get());
 
 		final Component component = this.component;
-		if (component == null || System.currentTimeMillis() < time) {
-			return -1;
+		if (component == null) {
+			return 0;
 		}
 
-		if (++tries > 5) {
+		if (++tries >= 3) {
 			time = System.currentTimeMillis() + Random.nextInt(30, 61) * 1000;
 			tries = 0;
 			return 0;
@@ -68,6 +68,10 @@ public class WidgetCloser extends PollingScript implements InternalScript {
 	}
 
 	private boolean isValid() {
+		if (System.currentTimeMillis() < time) {
+			return false;
+		}
+
 		for (final int p : COMPONENTS) {
 			component = ctx.widgets.get(p >> 16, p & 0xffff);
 			if (component != null && component.isVisible()) {
