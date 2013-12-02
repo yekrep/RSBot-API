@@ -147,7 +147,7 @@ public class Widgets extends MethodProvider {
 		Point a;
 		Component c;
 		int tY = thumb.getAbsoluteLocation().y;
-		long mark = System.currentTimeMillis();
+		long mark = System.nanoTime();
 		int scrolls = 0;
 		while ((a = component.getAbsoluteLocation()).y < view.y || a.y > view.y + height - length) {
 			if (scroll) {
@@ -157,12 +157,12 @@ public class Widgets extends MethodProvider {
 						scrolls = 0;
 					}
 					sleep(25, 100);
-					if (System.currentTimeMillis() - mark > 2000) {
+					if (System.nanoTime() - mark > 2000000000) {
 						final int l = thumb.getAbsoluteLocation().y;
 						if (tY == l) {
 							return scroll(component, pane, bar, false);
 						} else {
-							mark = System.currentTimeMillis();
+							mark = System.nanoTime();
 							tY = l;
 						}
 					}

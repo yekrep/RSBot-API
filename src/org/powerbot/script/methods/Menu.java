@@ -147,10 +147,12 @@ public class Menu extends MethodProvider {
 
 		if (!client.isMenuOpen()) {
 			if (ctx.mouse.click(false)) {
-				final long m = System.currentTimeMillis();
-				while (System.currentTimeMillis() - m < 100 && !client.isMenuOpen()) {
-					sleep(5);
-				}
+				Condition.wait(new Callable<Boolean>() {
+					@Override
+					public Boolean call() throws Exception {
+						return client.isMenuOpen();
+					}
+				}, 5, 20);
 				sleep(Random.nextInt(0, 300) + 105 * (int) (Math.log(index * 2) / Math.log(2)));
 
 				if (!client.isMenuOpen()) {

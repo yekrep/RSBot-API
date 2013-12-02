@@ -1,6 +1,7 @@
 package org.powerbot.script.internal.scripts;
 
 import java.util.concurrent.Callable;
+import java.util.concurrent.TimeUnit;
 
 import org.powerbot.script.PollingScript;
 import org.powerbot.script.internal.InternalScript;
@@ -48,7 +49,7 @@ public class WidgetCloser extends PollingScript implements InternalScript {
 		}
 
 		if (++tries >= 3) {
-			time = System.currentTimeMillis() + Random.nextInt(30, 61) * 1000;
+			time = System.nanoTime() + TimeUnit.NANOSECONDS.convert(Random.nextInt(30, 61), TimeUnit.SECONDS);
 			tries = 0;
 			return 0;
 		}
@@ -68,7 +69,7 @@ public class WidgetCloser extends PollingScript implements InternalScript {
 	}
 
 	private boolean isValid() {
-		if (System.currentTimeMillis() < time) {
+		if (System.nanoTime() < time) {
 			return false;
 		}
 
