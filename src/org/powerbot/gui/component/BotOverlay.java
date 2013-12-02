@@ -23,6 +23,7 @@ import org.powerbot.gui.BotChrome;
 public class BotOverlay extends JDialog {
 	private final BotChrome parent;
 	private final JPanel panel;
+	private final boolean offsetMenu;
 
 	public BotOverlay(final BotChrome parent) {
 		super(parent);
@@ -37,6 +38,8 @@ public class BotOverlay extends JDialog {
 
 		final String jre = System.getProperty("java.version");
 		final boolean clear = jre.startsWith("1.6") && Configuration.OS != Configuration.OperatingSystem.WINDOWS;
+		final String s = System.getProperty("apple.laf.useScreenMenuBar");
+		offsetMenu = !(Configuration.OS == Configuration.OperatingSystem.MAC && s != null && s.equalsIgnoreCase("true"));
 
 		panel = new JPanel() {
 			@Override
@@ -91,7 +94,7 @@ public class BotOverlay extends JDialog {
 		p.translate(s.left, s.top);
 		final Dimension d = parent.getSize();
 		Dimension d2 = new Dimension(d.width - s.left - s.right, d.height - s.top - s.bottom);
-		if (Configuration.OS != Configuration.OperatingSystem.MAC) {
+		if (offsetMenu) {
 			final int h = parent.getJMenuBar().getHeight();
 			p.translate(0, h);
 			d2 = new Dimension(d2.width, d2.height - h);
