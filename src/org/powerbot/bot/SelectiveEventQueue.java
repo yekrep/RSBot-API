@@ -92,10 +92,13 @@ public class SelectiveEventQueue extends EventQueue {
 		if (source == null) {
 			return;
 		}
+		if (event instanceof MouseEvent) {
+			System.out.println(event.paramString());
+		}
 
 		final Component component = this.component.get();
 		if (source == BotChrome.getInstance().overlay) {
-			if (component != null && Configuration.OS != Configuration.OperatingSystem.WINDOWS) {
+			if (component != null) {
 				event.setSource(component);
 				source = component;
 			} else {
