@@ -7,6 +7,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Logger;
 
+import org.powerbot.Configuration;
 import org.powerbot.bot.loader.Crawler;
 import org.powerbot.bot.loader.GameLoader;
 import org.powerbot.bot.loader.GameStub;
@@ -160,18 +161,23 @@ public final class Bot implements Runnable, Stoppable {
 			return;
 		}
 
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				Condition.wait(new Callable<Boolean>() {
-					@Override
-					public Boolean call() throws Exception {
-						return ctx.getClient().getKeyboard() != null;
-					}
-				});
-				ctx.keyboard.send("s");
-			}
-		}).start();
+		final String jre = System.getProperty("java.version");
+		final boolean java6 = jre != null && jre.startsWith("1.6");
+
+		if (!(java6 && Configuration.OS == Configuration.OperatingSystem.MAC)) {
+			new Thread(new Runnable() {
+				@Override
+				public void run() {
+					Condition.wait(new Callable<Boolean>() {
+						@Override
+						public Boolean call() throws Exception {
+							return ctx.getClient().getKeyboard() != null;
+						}
+					});
+					ctx.keyboard.send("s");
+				}
+			}).start();
+		}
 	}
 
 	void terminateApplet() {
