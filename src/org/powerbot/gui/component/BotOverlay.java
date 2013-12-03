@@ -4,8 +4,11 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Insets;
 import java.awt.Point;
+import java.awt.RenderingHints;
+import java.awt.image.BufferedImage;
 
 import javax.swing.JDialog;
 import javax.swing.JPanel;
@@ -21,6 +24,7 @@ import org.powerbot.gui.BotChrome;
 public class BotOverlay extends JDialog {
 	private final BotChrome parent;
 	private final JPanel panel;
+	private volatile BufferedImage bi = null;
 	private final boolean offsetMenu;
 
 	public BotOverlay(final BotChrome parent) {
@@ -45,22 +49,14 @@ public class BotOverlay extends JDialog {
 
 		panel = new JPanel() {
 			@Override
-			public void paintComponent(final Graphics g) {
-				if (g != null) {
-					final Bot b = parent.getBot();
-					final EventMulticaster m;
-					if (b != null && (m = b.getEventMulticaster()) != null) {
-						if (clear) {
-							g.clearRect(0, 0, getWidth(), getHeight());
-						}
-
-						try {
-							m.paint(g);
-						} catch (final Exception e) {
-							e.printStackTrace();
-						}
-					}
+			public void paint(final Graphics g) {
+				if (bi == null) {
+					return;
 				}
+				if (clear) {
+					g.clearRect(0, 0, getWidth(), getHeight());
+				}
+				g.drawImage(bi, 0, 0, null);
 			}
 		};
 		setLayout(new BorderLayout());
@@ -73,6 +69,20 @@ public class BotOverlay extends JDialog {
 			@Override
 			public void run() {
 				while (!Thread.interrupted()) {
+					final Bot b = parent.getBot();
+					final EventMulticaster m;
+					if (b != null && (m = b.getEventMulticaster()) != null) {
+						bi = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
+						final Graphics2D g2 = (Graphics2D) bi.getGraphics();
+						g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+						try {
+							m.paint(g2);
+						} catch (final Exception e) {
+							e.printStackTrace();
+						}
+					}
+
 					try {
 						repaint();
 						Thread.sleep(40);
