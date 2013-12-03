@@ -13,8 +13,6 @@ import javax.swing.JPanel;
 import org.powerbot.Configuration;
 import org.powerbot.bot.Bot;
 import org.powerbot.event.EventMulticaster;
-import org.powerbot.event.PaintEvent;
-import org.powerbot.event.TextPaintEvent;
 import org.powerbot.gui.BotChrome;
 
 /**
@@ -52,18 +50,12 @@ public class BotOverlay extends JDialog {
 					final Bot b = parent.getBot();
 					final EventMulticaster m;
 					if (b != null && (m = b.getEventMulticaster()) != null) {
-						final PaintEvent paintEvent = b.paintEvent;
-						final TextPaintEvent textPaintEvent = b.textPaintEvent;
-						paintEvent.graphics = g;
-						textPaintEvent.graphics = g;
-						textPaintEvent.id = 0;
-
 						if (clear) {
 							g.clearRect(0, 0, getWidth(), getHeight());
 						}
+
 						try {
-							m.fire(paintEvent);
-							m.fire(textPaintEvent);
+							m.paint(g);
 						} catch (final Exception e) {
 							e.printStackTrace();
 						}

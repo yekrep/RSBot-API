@@ -16,8 +16,6 @@ import org.powerbot.bot.loader.transform.TransformSpec;
 import org.powerbot.client.Client;
 import org.powerbot.client.Constants;
 import org.powerbot.event.EventMulticaster;
-import org.powerbot.event.PaintEvent;
-import org.powerbot.event.TextPaintEvent;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.script.internal.InputHandler;
 import org.powerbot.script.internal.ScriptController;
@@ -44,9 +42,6 @@ public final class Bot implements Runnable, Stoppable {
 	private boolean stopping;
 	private AtomicBoolean initiated;
 
-	public final PaintEvent paintEvent;
-	public final TextPaintEvent textPaintEvent;
-
 	public Bot() {
 		applet = null;
 		threadGroup = new ThreadGroup(Bot.class.getName() + "@" + Integer.toHexString(hashCode()) + "-game");
@@ -56,8 +51,6 @@ public final class Bot implements Runnable, Stoppable {
 		refreshing = new AtomicBoolean(false);
 		initiated = new AtomicBoolean(false);
 		ctx = new MethodContext(this);
-		paintEvent = new PaintEvent();
-		textPaintEvent = new TextPaintEvent();
 	}
 
 	public void run() {
