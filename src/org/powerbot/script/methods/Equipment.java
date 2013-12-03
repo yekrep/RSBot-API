@@ -10,10 +10,9 @@ import org.powerbot.script.wrappers.Item;
 
 public class Equipment extends ItemQuery<Item> {
 	public static final int WIDGET = 1464;
-	public static final int COMPONENT_CONTAINER = 28;
+	public static final int COMPONENT_CONTAINER = 14;
 	public static final int WIDGET_GEAR = 1462;
 	public static final int COMPONENT_GEAR_CONTAINER = 13;
-	public static final int NUM_SLOTS = 13;
 
 	public Equipment(final MethodContext factory) {
 		super(factory);
