@@ -27,8 +27,6 @@ public class ViewMouse implements PaintListener {
 		final Point p = mouse.getLocation();
 		final int l = 6;
 
-		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
 		g2.setColor(new Color(255, 200, 0, 180));
 		g2.setStroke(new BasicStroke(2));
 		g2.draw(new Line2D.Float(p.x - l, p.y - l, p.x + l, p.y + l));

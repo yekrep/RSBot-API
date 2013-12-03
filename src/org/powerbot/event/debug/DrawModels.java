@@ -21,7 +21,6 @@ public class DrawModels implements PaintListener {
 	@Override
 	public void repaint(final Graphics render) {
 		final MethodContext ctx = BotChrome.getInstance().getBot().getMethodContext();
-		((Graphics2D) render).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		for (final GameObject obj : ctx.objects.select().within(10)) {
 			if (!obj.isOnScreen()) {
 				continue;
