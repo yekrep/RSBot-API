@@ -152,6 +152,9 @@ public abstract class Actor extends Interactive implements Renderable, Nameable,
 	}
 
 	public int getAdrenalineRatio() {
+		if (!isValid()) {
+			return -1;
+		}
 		final CombatStatusData[] data = getBarData();
 		if (data == null || data[0] == null) {
 			return 0;
@@ -160,6 +163,9 @@ public abstract class Actor extends Interactive implements Renderable, Nameable,
 	}
 
 	public int getHealthRatio() {
+		if (!isValid()) {
+			return -1;
+		}
 		final CombatStatusData[] data = getBarData();
 		if (data == null || data[1] == null) {
 			return 100;
@@ -168,6 +174,9 @@ public abstract class Actor extends Interactive implements Renderable, Nameable,
 	}
 
 	public int getAdrenalinePercent() {
+		if (!isValid()) {
+			return -1;
+		}
 		final CombatStatusData[] data = getBarData();
 		if (data == null || data[0] == null) {
 			return 0;
@@ -176,6 +185,9 @@ public abstract class Actor extends Interactive implements Renderable, Nameable,
 	}
 
 	public int getHealthPercent() {
+		if (!isValid()) {
+			return -1;
+		}
 		final CombatStatusData[] data = getBarData();
 		if (data == null || data[1] == null) {
 			return 100;
