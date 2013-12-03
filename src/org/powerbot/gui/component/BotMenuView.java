@@ -35,6 +35,7 @@ import org.powerbot.event.debug.TMenu;
 import org.powerbot.event.debug.TMousePosition;
 import org.powerbot.event.debug.TPlane;
 import org.powerbot.event.debug.ViewMouse;
+import org.powerbot.event.debug.ViewMouseTrails;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.gui.BotSettingExplorer;
 import org.powerbot.gui.BotWidgetExplorer;
@@ -49,6 +50,7 @@ public final class BotMenuView implements ActionListener {
 
 	private static final String ALL = "All";
 	private static final String MOUSE = "Mouse";
+	private static final String MOUSETRAILS = "Mouse Trails";
 	private static final String BOUNDARIES = "Landscape";
 	private static final String PLAYERS = "Players";
 	private static final String NPCS = "Npcs";
@@ -98,6 +100,7 @@ public final class BotMenuView implements ActionListener {
 		map.put(LOCATION, TLocation.class);
 		map.put(DESTINATION, TDestination.class);
 		map.put(MOUSE, ViewMouse.class);
+		map.put(MOUSETRAILS, ViewMouseTrails.class);
 		map.put(ITEMS, DrawItems.class);
 		map.put(ABILTIIES, DrawAbilities.class);
 		map.put(MOUSEPOS, TMousePosition.class);
@@ -106,6 +109,7 @@ public final class BotMenuView implements ActionListener {
 
 		final List<String> items = new ArrayList<String>(map.size());
 		items.add(MOUSE);
+		items.add(MOUSETRAILS);
 		items.add(PLAYERS);
 		items.add(NPCS);
 		items.add(GROUND_ITEMS);
