@@ -48,7 +48,7 @@ public class Action extends MethodProvider implements Identifiable, Validatable,
 	public boolean isReady() {
 		final Component cooldown = ctx.widgets.get(CombatBar.WIDGET, CombatBar.COMPONENT_SLOT_COOL_DOWN + slot * 5);
 		final Component action = ctx.widgets.get(CombatBar.WIDGET, CombatBar.COMPONENT_SLOT_ACTION + slot * 5);
-		return !cooldown.isVisible() && action.getTextColor() == 0xFFFFFF;
+		return isValid() && !cooldown.isVisible() && action.getTextColor() == 0xFFFFFF;
 	}
 
 	/**
