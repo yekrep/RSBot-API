@@ -91,15 +91,17 @@ public class Boot implements Runnable {
 		final List<String> args = new ArrayList<String>();
 		args.add("java");
 
-		args.add("-Xss6m");
-		final long mem = ((com.sun.management.OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean()).getTotalPhysicalMemorySize() >> 20;
-		args.add("-Xmx" + Math.min(2048, mem / 4) + "m");
-		args.add("-XX:MaxPermSize=256m");
+		args.add("-Xmx384m");
+		args.add("-Xss2m");
+		args.add("-Dsun.java2d.noddraw=true");
+		args.add("-XX:CompileThreshold=1500");
+		args.add("-Xincgc");
+		args.add("-XX:+UseConcMarkSweepGC");
+		args.add("-XX:+UseParNewGC");
 
 		args.add("-XX:+CMSClassUnloadingEnabled");
 		args.add("-XX:+UseCodeCacheFlushing");
 		args.add("-XX:-UseSplitVerifier");
-		args.add("-XX:+UseConcMarkSweepGC");
 
 		if (Configuration.OS == OperatingSystem.MAC) {
 			args.add("-Xdock:name=" + Configuration.NAME);
