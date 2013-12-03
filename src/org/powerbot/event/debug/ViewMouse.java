@@ -1,8 +1,13 @@
 package org.powerbot.event.debug;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.RenderingHints;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Line2D;
 
 import org.powerbot.client.Client;
 import org.powerbot.client.input.Mouse;
@@ -18,16 +23,22 @@ public class ViewMouse implements PaintListener {
 			return;
 		}
 
-		Point loc = mouse.getLocation();
-		render.setColor(Color.yellow.darker());
-		render.drawLine(loc.x - 5, loc.y - 5, loc.x + 5, loc.y + 5);
-		render.drawLine(loc.x + 5, loc.y - 5, loc.x - 5, loc.y + 5);
+		final Graphics2D g2 = (Graphics2D) render;
+		final Point p = mouse.getLocation();
+		final int l = 6;
+
+		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+		g2.setColor(new Color(255, 200, 0, 180));
+		g2.setStroke(new BasicStroke(2));
+		g2.draw(new Line2D.Float(p.x - l, p.y - l, p.x + l, p.y + l));
+		g2.draw(new Line2D.Float(p.x + l, p.y - l, p.x - l, p.y + l));
 
 		if (System.currentTimeMillis() - mouse.getPressTime() < 1000) {
-			loc = mouse.getPressLocation();
-			render.setColor(Color.red.brighter());
-			render.drawLine(loc.x - 5, loc.y - 5, loc.x + 5, loc.y + 5);
-			render.drawLine(loc.x + 5, loc.y - 5, loc.x - 5, loc.y + 5);
+			final Point px = mouse.getPressLocation();
+			g2.setColor(Color.RED);
+			g2.drawLine(px.x - l, px.y - l, px.x + l, px.y + l);
+			g2.drawLine(px.x + l, px.y - l, px.x - l, px.y + l);
 		}
 	}
 }
