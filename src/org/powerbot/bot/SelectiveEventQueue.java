@@ -94,12 +94,13 @@ public class SelectiveEventQueue extends EventQueue {
 		}
 
 		final Component component = this.component.get();
-		if (source == BotChrome.getInstance().overlay) {
+		final BotChrome chrome = BotChrome.getInstance();
+		if (source == chrome.overlay) {
 			if (component != null) {
 				event.setSource(component);
 				source = component;
 			} else {
-				return;
+				event.setSource(chrome);
 			}
 		}
 
