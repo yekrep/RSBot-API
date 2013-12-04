@@ -38,7 +38,7 @@ public final class CryptFile {
 	private final File store;
 
 	public CryptFile(final String name, final Class<?>... parents) {
-		this(name, true);
+		this(name, true, parents);
 	}
 
 	public CryptFile(final String name, final boolean temp, final Class<?>... parents) {
