@@ -143,11 +143,32 @@ public class MethodContext {
 		return this.bot.get();
 	}
 
+	/**
+	 * Gets the preferred world.
+	 *
+	 * @return the requested preferred world (if set)
+	 * @deprecated see {@link #properties}
+	 */
+	@Deprecated
 	public int getPreferredWorld() {
-		return this.preferredWorld.get();
+		int w = -1;
+		if (properties.containsKey("login.world")) {
+			try {
+				w = Integer.parseInt(properties.getProperty("login.world"));
+			} catch (final NumberFormatException ignored) {
+			}
+		}
+		return w;
 	}
 
+	/**
+	 * Sets the preferred world.
+	 *
+	 * @param world the preferred world to log into
+	 * @deprecated see {@link #properties}
+	 */
+	@Deprecated
 	void setPreferredWorld(final int world) {
-		this.preferredWorld.set(world);
+		properties.setProperty("login.world", Integer.toString(world));
 	}
 }

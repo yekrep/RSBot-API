@@ -44,7 +44,15 @@ public class Login extends PollingScript implements InternalScript {
 		final int state = ctx.game.getClientState();
 
 		if (state == Game.INDEX_LOBBY_SCREEN) {
-			final int world = ctx.getPreferredWorld();
+			int world = -1;
+			final String k = "login.world";
+			if (ctx.properties.containsKey(k)) {
+				try {
+					world = Integer.parseInt(ctx.properties.getProperty(k));
+				} catch (final NumberFormatException ignored) {
+				}
+			}
+
 			if (world > 0) {
 				final Lobby.World world_wrapper;
 				if ((world_wrapper = ctx.lobby.getWorld(world)) != null) {
