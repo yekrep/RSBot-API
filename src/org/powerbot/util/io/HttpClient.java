@@ -79,11 +79,16 @@ public class HttpClient {
 			}
 		}
 
-		final long mod = con.getLastModified();
-
-		if (con.getResponseCode() != HttpURLConnection.HTTP_NOT_MODIFIED &&
-				(!file.exists() || mod == 0L || mod > file.lastModified())) {
+		switch (con.getResponseCode()) {
+		case HttpURLConnection.HTTP_OK:
 			IOHelper.write(getInputStream(con), file);
+			break;
+		case HttpURLConnection.HTTP_NOT_FOUND:
+		case HttpURLConnection.HTTP_GONE:
+			if (file.exists()) {
+				file.delete();
+			}
+			break;
 		}
 
 		con.disconnect();

@@ -80,11 +80,14 @@ public final class CryptFile {
 			}
 		}
 
-		final long mod = con.getLastModified();
-
-		if (con.getResponseCode() != HttpURLConnection.HTTP_NOT_MODIFIED &&
-				(!exists() || mod == 0L || mod > store.lastModified())) {
+		switch (con.getResponseCode()) {
+		case HttpURLConnection.HTTP_OK:
 			IOHelper.write(HttpClient.getInputStream(con), getOutputStream());
+			break;
+		case HttpURLConnection.HTTP_NOT_FOUND:
+		case HttpURLConnection.HTTP_GONE:
+			delete();
+			break;
 		}
 
 		con.disconnect();
