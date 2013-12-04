@@ -26,6 +26,10 @@ public class Login extends PollingScript implements InternalScript {
 	}
 
 	private boolean isValid() {
+		if (ctx.properties.getProperty("login.disable", "").trim().equalsIgnoreCase("true")) {
+			return false;
+		}
+
 		final int state = ctx.game.getClientState();
 		return state == -1 || state == Game.INDEX_LOGIN_SCREEN ||
 				state == Game.INDEX_LOBBY_SCREEN ||
