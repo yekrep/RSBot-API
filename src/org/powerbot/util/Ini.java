@@ -164,7 +164,7 @@ public class Ini implements Serializable {
 				if (z == -1) {
 					continue;
 				}
-				m.put(l.substring(0, z), ++z == l.length() ? "" : l.substring(z));
+				m.put(l.substring(0, z).trim(), ++z == l.length() ? "" : l.substring(z).trim());
 			}
 		}
 
