@@ -1,5 +1,6 @@
 package org.powerbot.script.methods;
 
+import java.util.Properties;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -13,6 +14,7 @@ public class MethodContext {
 	private AtomicInteger preferredWorld;
 	private AtomicReference<Bot> bot;
 
+	public Properties properties;
 	public Antipatterns antipatterns;
 	public CombatBar combatBar;
 	public Bank bank;
@@ -49,6 +51,7 @@ public class MethodContext {
 		this.preferredWorld = new AtomicInteger(-1);
 		this.bot = new AtomicReference<Bot>(bot);
 
+		properties = new Properties();
 		antipatterns = new Antipatterns(this);
 		combatBar = new CombatBar(this);
 		backpack = new Backpack(this);
@@ -95,6 +98,7 @@ public class MethodContext {
 		preferredWorld = ctx.preferredWorld;
 		bot = ctx.bot;
 
+		properties = ctx.properties;
 		antipatterns = ctx.antipatterns;
 		combatBar = ctx.combatBar;
 		backpack = ctx.backpack;
