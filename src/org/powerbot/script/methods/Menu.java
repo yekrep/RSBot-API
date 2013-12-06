@@ -88,6 +88,10 @@ public class Menu extends MethodProvider {
 	 * @return the first index found; otherwise -1
 	 */
 	public int indexOf(final Filter<Entry> filter) {
+		if (!ctx.game.isLoggedIn()) {
+			cache();
+		}
+
 		final String[] actions;
 		final String[] options;
 		synchronized (LOCK) {
@@ -311,6 +315,10 @@ public class Menu extends MethodProvider {
 	 * @return the array of menu items
 	 */
 	public String[] getItems() {
+		if (!ctx.game.isLoggedIn()) {
+			cache();
+		}
+
 		final String[] actions;
 		final String[] options;
 		synchronized (LOCK) {

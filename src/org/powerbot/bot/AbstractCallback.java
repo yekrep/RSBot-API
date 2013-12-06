@@ -22,6 +22,10 @@ public class AbstractCallback implements Callback {
 	@Override
 	public void updateRenderInfo(final Render render) {
 		ctx.game.updateToolkit(render);
+		try {
+			ctx.menu.cache();
+		} catch (Throwable ignored) {
+		}
 	}
 
 	@Override
