@@ -50,6 +50,9 @@ public class EventDispatcher extends AbstractCollection<EventListener> implement
 		masks.put(KeyListener.class, EventDispatcher.KEY_EVENT);
 		masks.put(FocusListener.class, EventDispatcher.FOCUS_EVENT);
 		masks.put(MessageListener.class, MessageEvent.ID);
+		masks.put(PaintListener.class, PaintEvent.ID);
+		masks.put(TextPaintListener.class, TextPaintEvent.ID);
+
 
 		active = new AtomicBoolean(true);
 		stopping = new AtomicBoolean(false);
@@ -107,18 +110,6 @@ public class EventDispatcher extends AbstractCollection<EventListener> implement
 
 	public void dispatch(final EventObject event) {
 		queue.offer(event);
-	}
-
-	public void paint(final Graphics g) {
-		int t = 0;
-
-		for (final EventListener l : this) {
-			if (l instanceof PaintListener) {
-				((PaintListener) l).repaint(g);
-			} else if (l instanceof TextPaintListener) {
-				t = ((TextPaintListener) l).draw(t, g);
-			}
-		}
 	}
 
 	public void consume(final EventObject eventObject) {

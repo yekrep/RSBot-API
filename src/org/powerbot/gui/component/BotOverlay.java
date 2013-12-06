@@ -16,6 +16,8 @@ import javax.swing.JPanel;
 import org.powerbot.Configuration;
 import org.powerbot.bot.Bot;
 import org.powerbot.event.EventDispatcher;
+import org.powerbot.event.PaintEvent;
+import org.powerbot.event.TextPaintEvent;
 import org.powerbot.gui.BotChrome;
 
 /**
@@ -26,6 +28,8 @@ public class BotOverlay extends JDialog {
 	private final JPanel panel;
 	private volatile BufferedImage bi = null;
 	private final boolean offsetMenu;
+	private final PaintEvent paintEvent;
+	private final TextPaintEvent textPaintEvent;
 
 	public BotOverlay(final BotChrome parent) {
 		super(parent);
@@ -65,6 +69,9 @@ public class BotOverlay extends JDialog {
 
 		adjustSize();
 
+		paintEvent = new PaintEvent();
+		textPaintEvent = new TextPaintEvent();
+
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -76,8 +83,12 @@ public class BotOverlay extends JDialog {
 						final Graphics2D g2 = (Graphics2D) bi.getGraphics();
 						g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
+						paintEvent.graphics = g2;
+						textPaintEvent.graphics = g2;
+						textPaintEvent.id = 0;
 						try {
-							m.paint(g2);
+							m.consume(paintEvent);
+							m.consume(textPaintEvent);
 						} catch (final Exception e) {
 							e.printStackTrace();
 						}
