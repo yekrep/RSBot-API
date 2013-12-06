@@ -26,7 +26,6 @@ import org.powerbot.script.internal.scripts.StatTracker;
 import org.powerbot.script.internal.scripts.TicketDestroy;
 import org.powerbot.script.internal.scripts.WidgetCloser;
 import org.powerbot.script.methods.MethodContext;
-import org.powerbot.service.NetworkAccount;
 import org.powerbot.service.scripts.ScriptBundle;
 import org.powerbot.service.scripts.ScriptDefinition;
 import org.powerbot.util.Tracker;
