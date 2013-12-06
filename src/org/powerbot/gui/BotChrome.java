@@ -64,13 +64,6 @@ public class BotChrome extends JFrame implements Closeable {
 		JPopupMenu.setDefaultLightWeightPopupEnabled(false);
 		setFocusTraversalKeysEnabled(false);
 
-		addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosing(final WindowEvent e) {
-				close();
-			}
-		});
-
 		setJMenuBar(menuBar = new BotMenuBar(this));
 
 		panel = new BotPanel(this);
@@ -89,14 +82,6 @@ public class BotChrome extends JFrame implements Closeable {
 		Tracker.getInstance().trackPage("", getTitle());
 
 		overlay = new BotOverlay(this);
-		Bot bot = null;
-		if (new UpdateCheck().call()) {
-			setTitle("RuneScape");
-			bot = new Bot(this);
-			new Thread(bot.threadGroup, bot).start();
-			overlay.setVisible(true);
-		}
-		this.bot = bot;
 
 		addComponentListener(new ComponentAdapter() {
 			@Override
@@ -109,6 +94,28 @@ public class BotChrome extends JFrame implements Closeable {
 				overlay.adjustSize();
 			}
 		});
+
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(final WindowEvent e) {
+				close();
+			}
+
+			@Override
+			public void windowDeiconified(final WindowEvent e) {
+				overlay.setVisible(false);
+				overlay.setVisible(true);
+			}
+		});
+
+		Bot bot = null;
+		if (new UpdateCheck().call()) {
+			setTitle("RuneScape");
+			bot = new Bot(this);
+			new Thread(bot.threadGroup, bot).start();
+			overlay.setVisible(true);
+		}
+		this.bot = bot;
 
 		System.gc();
 	}
