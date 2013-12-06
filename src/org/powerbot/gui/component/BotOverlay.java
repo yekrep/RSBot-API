@@ -41,6 +41,7 @@ public class BotOverlay extends JDialog {
 		getContentPane().setBackground(a);
 		setBackground(a);
 		setFocusableWindowState(false);
+		setVisible(false);
 
 		final String jre = System.getProperty("java.version");
 		final boolean mac = Configuration.OS == Configuration.OperatingSystem.MAC, clear = jre != null && jre.startsWith("1.6") && mac;

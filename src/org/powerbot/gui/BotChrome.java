@@ -113,7 +113,6 @@ public class BotChrome extends JFrame implements Closeable {
 			setTitle("RuneScape");
 			bot = new Bot(this);
 			new Thread(bot.threadGroup, bot).start();
-			overlay.setVisible(true);
 		}
 		this.bot = bot;
 
@@ -211,6 +210,7 @@ public class BotChrome extends JFrame implements Closeable {
 		}
 		add(bot.applet);
 		bot.applet.setSize(panel.getSize());
+		overlay.setVisible(bot.applet != null);
 		invalidate();
 		repaint();
 	}
