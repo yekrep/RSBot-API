@@ -98,7 +98,7 @@ public abstract class PollingScript extends AbstractScript {
 		delay.set(t < 0 ? 600 : t);
 		last.set(System.nanoTime());
 
-		if (!getController().isStopping()) {
+		if (!Thread.interrupted() && !getController().isStopping()) {
 			getController().getExecutor().offer(this);
 			Thread.yield();
 		}
