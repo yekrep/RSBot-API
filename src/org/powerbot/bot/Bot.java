@@ -22,7 +22,6 @@ import org.powerbot.script.lang.Stoppable;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.util.Condition;
 import org.powerbot.script.wrappers.Validatable;
-import org.powerbot.service.GameAccounts;
 import org.powerbot.service.scripts.ScriptBundle;
 
 /**
@@ -36,7 +35,6 @@ public final class Bot implements Runnable, Stoppable, Validatable {
 	public final EventDispatcher dispatcher;
 	public Applet applet;
 	public Constants constants;
-	public GameAccounts.Account account;
 	public InputHandler inputHandler;
 	public ScriptController controller;
 	private final AtomicBoolean ready, stopping;

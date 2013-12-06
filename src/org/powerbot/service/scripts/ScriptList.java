@@ -29,6 +29,7 @@ import org.powerbot.gui.BotChrome;
 import org.powerbot.script.Manifest;
 import org.powerbot.script.Script;
 import org.powerbot.script.internal.InternalScript;
+import org.powerbot.script.internal.scripts.Login;
 import org.powerbot.service.GameAccounts;
 import org.powerbot.service.NetworkAccount;
 import org.powerbot.util.Ini;
@@ -190,7 +191,7 @@ public class ScriptList {
 
 		final Bot bot = chrome.getBot();
 		if (username != null) {
-			bot.account = GameAccounts.getInstance().get(username);
+			bot.ctx.properties.setProperty(Login.LOGIN_USER_PROPERTY, username);
 		}
 
 		log.info("Starting script: " + def.getName());
