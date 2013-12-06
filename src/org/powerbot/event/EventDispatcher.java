@@ -210,7 +210,7 @@ public class EventDispatcher extends AbstractCollection<EventListener> implement
 	@Override
 	public void stop() {
 		if (stopping.compareAndSet(false, true)) {
-			active.set(true);
+			active.set(false);
 		}
 	}
 
