@@ -30,6 +30,7 @@ import org.powerbot.service.scripts.ScriptBundle;
  */
 public final class Bot implements Runnable, Stoppable {
 	public static final Logger log = Logger.getLogger(Bot.class.getName());
+	public final BotChrome chrome;
 	private MethodContext ctx;
 	public final ThreadGroup threadGroup;
 	private final EventDispatcher dispatcher;
@@ -42,7 +43,8 @@ public final class Bot implements Runnable, Stoppable {
 	private boolean stopping;
 	private AtomicBoolean initiated;
 
-	public Bot() {
+	public Bot(final BotChrome chrome) {
+		this.chrome = chrome;
 		applet = null;
 		threadGroup = new ThreadGroup(Bot.class.getName() + "@" + Integer.toHexString(hashCode()) + "-game");
 		dispatcher = new EventDispatcher();
@@ -121,7 +123,7 @@ public final class Bot implements Runnable, Stoppable {
 		setClient((Client) loader.getClient(), loader.getBridge().getTransformSpec());
 		applet.start();
 
-		BotChrome.getInstance().display(this);
+		chrome.display(this);
 	}
 
 	@Override
