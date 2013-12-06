@@ -14,6 +14,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import javax.swing.Timer;
 
+import org.powerbot.bot.SelectiveEventQueue;
 import org.powerbot.event.EventMulticaster;
 import org.powerbot.script.Script;
 import org.powerbot.script.internal.scripts.Antipattern;
@@ -95,6 +96,11 @@ public final class ScriptController implements Runnable, Script.Controller {
 			return;
 		}
 
+		final SelectiveEventQueue eq = SelectiveEventQueue.getInstance();
+		if (!eq.isBlocking()) {
+			eq.setBlocking(true);
+		}
+
 		for (final Class<? extends Script> d : daemons) {
 			queue.offer(new ScriptBootstrap(d));
 		}
@@ -174,6 +180,11 @@ public final class ScriptController implements Runnable, Script.Controller {
 				}
 			} catch (final InterruptedException ignored) {
 			}
+
+			final SelectiveEventQueue eq = SelectiveEventQueue.getInstance();
+			if (eq.isBlocking()) {
+				eq.setBlocking(false);
+			}
 		}
 	}
 
@@ -192,6 +203,11 @@ public final class ScriptController implements Runnable, Script.Controller {
 	public void suspend() {
 		if (suspended.compareAndSet(false, true)) {
 			call(Script.State.SUSPEND);
+
+			final SelectiveEventQueue eq = SelectiveEventQueue.getInstance();
+			if (eq.isBlocking()) {
+				eq.setBlocking(false);
+			}
 		}
 	}
 
@@ -202,6 +218,11 @@ public final class ScriptController implements Runnable, Script.Controller {
 	public void resume() {
 		if (suspended.compareAndSet(true, false)) {
 			call(Script.State.RESUME);
+
+			final SelectiveEventQueue eq = SelectiveEventQueue.getInstance();
+			if (!eq.isBlocking()) {
+				eq.setBlocking(true);
+			}
 		}
 	}
 
