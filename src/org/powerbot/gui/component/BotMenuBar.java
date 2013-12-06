@@ -14,7 +14,6 @@ import javax.swing.event.MenuListener;
 import org.powerbot.Boot;
 import org.powerbot.Configuration;
 import org.powerbot.bot.Bot;
-import org.powerbot.bot.SelectiveEventQueue;
 import org.powerbot.event.BotMenuListener;
 import org.powerbot.gui.BotAbout;
 import org.powerbot.gui.BotAccounts;
@@ -323,10 +322,6 @@ public class BotMenuBar extends JMenuBar implements ActionListener {
 				final ScriptController controller = bot.getScriptController();
 				if (controller != null && !controller.isStopping()) {
 					bot.stopScript();
-				}
-				final SelectiveEventQueue eq = SelectiveEventQueue.getInstance();
-				if (eq.isBlocking()) {
-					eq.setBlocking(false);
 				}
 			}
 		}).start();
