@@ -17,10 +17,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Queue;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import org.powerbot.script.lang.Stoppable;
 
@@ -33,14 +33,14 @@ public class EventDispatcher extends AbstractCollection<EventListener> implement
 
 	private final CopyOnWriteArrayList<EventListener> listeners;
 	private final Map<EventListener, Long> bitmasks;
-	private final Queue<EventObject> queue;
+	private final BlockingQueue<EventObject> queue;
 	private final Map<Class<? extends EventListener>, Integer> masks;
 	private boolean active, stopping = false;
 
 	public EventDispatcher() {
 		listeners = new CopyOnWriteArrayList<EventListener>();
 		bitmasks = new ConcurrentHashMap<EventListener, Long>();
-		queue = new ConcurrentLinkedQueue<EventObject>();
+		queue = new LinkedBlockingQueue<EventObject>();
 
 		masks = new HashMap<Class<? extends EventListener>, Integer>();
 		masks.put(MouseListener.class, EventDispatcher.MOUSE_EVENT);
@@ -105,13 +105,6 @@ public class EventDispatcher extends AbstractCollection<EventListener> implement
 
 	public void dispatch(final EventObject event) {
 		queue.offer(event);
-
-		synchronized (queue) {
-			try {
-				queue.notify();
-			} catch (final IllegalThreadStateException ignored) {
-			}
-		}
 	}
 
 	public void paint(final Graphics g) {
@@ -216,13 +209,6 @@ public class EventDispatcher extends AbstractCollection<EventListener> implement
 	public void stop() {
 		stopping = true;
 		active = false;
-
-		synchronized (queue) {
-			try {
-				queue.notify();
-			} catch (final IllegalThreadStateException ignored) {
-			}
-		}
 	}
 
 	/**
@@ -231,22 +217,20 @@ public class EventDispatcher extends AbstractCollection<EventListener> implement
 	@Override
 	public void run() {
 		while (active) {
-			final EventObject event = queue.poll();
-			if (event != null) {
-				try {
-					consume(event);
-				} catch (final Exception ignored) {
-				}
-				continue;
-			}
+			final EventObject o;
 
 			try {
-				synchronized (queue) {
-					queue.wait();
-				}
+				o = queue.take();
 			} catch (final InterruptedException ignored) {
 				stop();
-				return;
+				break;
+			}
+
+			if (o != null) {
+				try {
+					consume(o);
+				} catch (final Exception ignored) {
+				}
 			}
 		}
 	}
