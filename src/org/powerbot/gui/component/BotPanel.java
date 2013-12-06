@@ -38,7 +38,7 @@ import org.powerbot.util.io.Resources;
 public class BotPanel extends JPanel {
 	private static final long serialVersionUID = -8983015619045562434L;
 
-	public BotPanel(final BotChrome parent) {
+	public BotPanel() {
 		final Dimension d = new Dimension(BotChrome.PANEL_MIN_WIDTH, BotChrome.PANEL_MIN_HEIGHT);
 		setSize(d);
 		setPreferredSize(d);
@@ -131,16 +131,6 @@ public class BotPanel extends JPanel {
 							@Override
 							public void mouseClicked(final MouseEvent e) {
 								BotChrome.openURL(link);
-							}
-
-							@Override
-							public void mouseEntered(final MouseEvent e) {
-								parent.overlay.setCursor(label.getCursor());
-							}
-
-							@Override
-							public void mouseExited(final MouseEvent e) {
-								parent.overlay.setCursor(Cursor.getDefaultCursor());
 							}
 						});
 						logo.setBorder(label.getBorder());
