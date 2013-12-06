@@ -185,7 +185,7 @@ public class MouseHandler extends MethodProvider {
 	}
 
 	public Component getSource() {
-		final Applet applet = ctx.getBot().getApplet();
+		final Applet applet = ctx.getBot().applet;
 		return applet != null && applet.getComponentCount() > 0 ? applet.getComponent(0) : null;
 	}
 

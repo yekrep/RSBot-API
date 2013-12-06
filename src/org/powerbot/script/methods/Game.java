@@ -463,7 +463,7 @@ public class Game extends MethodProvider {
 
 	private Constants getConstants() {
 		final Bot bot = ctx.getBot();
-		return bot != null ? bot.getConstants() : null;
+		return bot != null ? bot.constants : null;
 	}
 
 	public class Toolkit {

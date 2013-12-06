@@ -37,7 +37,7 @@ public class DrawBoundaries implements PaintListener {
 		final int h = component.getScrollHeight();
 		final int radius = Math.max(w / 2, h / 2) + 10;
 
-		final Constants constants = ctx.getBot().getConstants();
+		final Constants constants = ctx.getBot().constants;
 		final int v = constants != null ? constants.MINIMAP_SETTINGS_ON : -1;
 		final boolean f = client.getMinimapSettings() == v;
 

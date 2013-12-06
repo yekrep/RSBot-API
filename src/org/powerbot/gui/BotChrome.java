@@ -202,10 +202,10 @@ public class BotChrome extends JFrame implements Closeable {
 	public void display(final Bot bot) {
 		remove(panel);
 		if (this.bot != null) {
-			remove(bot.getApplet());
+			remove(bot.applet);
 		}
-		add(bot.getApplet());
-		bot.getApplet().setSize(panel.getSize());
+		add(bot.applet);
+		bot.applet.setSize(panel.getSize());
 		invalidate();
 		repaint();
 	}

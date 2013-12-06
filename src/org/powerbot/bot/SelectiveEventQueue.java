@@ -111,7 +111,7 @@ public class SelectiveEventQueue extends EventQueue {
 					event instanceof WindowEvent || event instanceof FocusEvent) {
 				/* If an input event is blocked, dispatch it on our event caster. */
 				if (event instanceof MouseEvent || event instanceof KeyEvent) {
-					BotChrome.getInstance().getBot().getEventDispatcher().dispatch(event);
+					BotChrome.getInstance().getBot().dispatcher.dispatch(event);
 				}
 				/* Execute a callback for this source when we block an event */
 				EventCallback callback = this.callback.get();

@@ -11,12 +11,12 @@ import org.powerbot.script.methods.MethodContext;
 import org.powerbot.util.math.Vector3f;
 
 public class AbstractCallback implements Callback {
-	private final EventDispatcher eventDispatcher;
 	private final MethodContext ctx;
+	private final EventDispatcher dispatcher;
 
 	public AbstractCallback(final Bot bot) {
-		this.eventDispatcher = bot.getEventDispatcher();
-		this.ctx = bot.getMethodContext();
+		ctx = bot.ctx;
+		dispatcher = bot.dispatcher;
 	}
 
 	@Override
@@ -30,7 +30,7 @@ public class AbstractCallback implements Callback {
 
 	@Override
 	public void notifyMessage(final int id, final String sender, final String message) {
-		eventDispatcher.dispatch(new MessageEvent(id, sender, message));
+		dispatcher.dispatch(new MessageEvent(id, sender, message));
 	}
 
 	@Override

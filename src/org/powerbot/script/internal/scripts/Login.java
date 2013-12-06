@@ -44,7 +44,7 @@ public class Login extends PollingScript implements InternalScript {
 		}
 		threshold.offer(priority.get());
 
-		final GameAccounts.Account account = ctx.getBot().getAccount();
+		final GameAccounts.Account account = ctx.getBot().account;
 		final int state = ctx.game.getClientState();
 
 		if (state == Game.INDEX_LOBBY_SCREEN) {

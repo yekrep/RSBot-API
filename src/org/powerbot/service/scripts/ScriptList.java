@@ -190,7 +190,7 @@ public class ScriptList {
 
 		final Bot bot = chrome.getBot();
 		if (username != null) {
-			bot.setAccount(GameAccounts.getInstance().get(username));
+			bot.account = GameAccounts.getInstance().get(username);
 		}
 
 		log.info("Starting script: " + def.getName());

@@ -1,7 +1,6 @@
 package org.powerbot.bot;
 
 import java.applet.Applet;
-import java.awt.Canvas;
 import java.io.IOException;
 import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -22,44 +21,37 @@ import org.powerbot.script.internal.ScriptController;
 import org.powerbot.script.lang.Stoppable;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.util.Condition;
+import org.powerbot.script.wrappers.Validatable;
 import org.powerbot.service.GameAccounts;
 import org.powerbot.service.scripts.ScriptBundle;
 
 /**
  * @author Timer
  */
-public final class Bot implements Runnable, Stoppable {
+public final class Bot implements Runnable, Stoppable, Validatable {
 	public static final Logger log = Logger.getLogger(Bot.class.getName());
 	public final BotChrome chrome;
-	private MethodContext ctx;
+	public final MethodContext ctx;
 	public final ThreadGroup threadGroup;
-	private final EventDispatcher dispatcher;
-	private Applet applet;
-	public AtomicBoolean refreshing;
-	private Constants constants;
-	private GameAccounts.Account account;
-	private InputHandler inputHandler;
-	private ScriptController controller;
-	private boolean stopping;
-	private AtomicBoolean initiated;
+	public final EventDispatcher dispatcher;
+	public Applet applet;
+	public Constants constants;
+	public GameAccounts.Account account;
+	public InputHandler inputHandler;
+	public ScriptController controller;
+	private final AtomicBoolean ready, stopping;
 
 	public Bot(final BotChrome chrome) {
 		this.chrome = chrome;
-		applet = null;
-		threadGroup = new ThreadGroup(Bot.class.getName() + "@" + Integer.toHexString(hashCode()) + "-game");
-		dispatcher = new EventDispatcher();
-		account = null;
-		new Thread(threadGroup, dispatcher, dispatcher.getClass().getName()).start();
-		refreshing = new AtomicBoolean(false);
-		initiated = new AtomicBoolean(false);
+		threadGroup = new ThreadGroup(getClass().getName() + "@" + Integer.toHexString(hashCode()) + "-game");
 		ctx = new MethodContext(this);
+		dispatcher = new EventDispatcher();
+		ready = new AtomicBoolean(false);
+		stopping = new AtomicBoolean(false);
 	}
 
+	@Override
 	public void run() {
-		start();
-	}
-
-	public void start() {
 		log.info("Loading bot");
 		final Crawler crawler = new Crawler();
 		if (!crawler.crawl()) {
@@ -70,31 +62,33 @@ public final class Bot implements Runnable, Stoppable {
 		final GameLoader game = new GameLoader(crawler);
 		final ClassLoader classLoader = game.call();
 		if (classLoader == null) {
-			log.severe("Failed to load game");
+			log.severe("Failed to start game");
 			return;
 		}
 
-		initiated.set(false);
+		ready.set(false);
 		final NRSLoader loader = new NRSLoader(game, classLoader);
 		loader.setCallback(new Runnable() {
 			@Override
 			public void run() {
-				sequence(loader);
+				hook(loader);
 			}
 		});
 		new Thread(threadGroup, loader).start();
 	}
 
-	private void sequence(final NRSLoader loader) {
+	private void hook(final NRSLoader loader) {
 		log.info("Loading game (" + loader.getPackHash().substring(0, 6) + ")");
-		this.applet = loader.getApplet();
+
+		applet = loader.getApplet();
 		final Crawler crawler = loader.getGameLoader().getCrawler();
 		final GameStub stub = new GameStub(crawler.parameters, crawler.archive);
 		applet.setStub(stub);
 		applet.setSize(BotChrome.PANEL_MIN_WIDTH, BotChrome.PANEL_MIN_HEIGHT);
 		applet.init();
+
 		if (loader.getBridge().getTransformSpec() == null) {
-			final Thread thread = new Thread(new Runnable() {
+			new Thread(new Runnable() {
 				@Override
 				public void run() {
 					for (; ; ) {
@@ -102,8 +96,8 @@ public final class Bot implements Runnable, Stoppable {
 						try {
 							loader.upload(loader.getPackHash());
 							break;
-						} catch (IOException ignored) {
-						} catch (NRSLoader.PendingException p) {
+						} catch (final IOException ignored) {
+						} catch (final NRSLoader.PendingException p) {
 							final int d = p.getDelay() / 1000;
 							log.warning("Your update is being processed, trying again in " + (d < 60 ? d + " seconds" : (int) Math.ceil(d / 60) + " minutes"));
 							try {
@@ -114,53 +108,19 @@ public final class Bot implements Runnable, Stoppable {
 						}
 					}
 				}
-			});
-			thread.setDaemon(false);
-			thread.setPriority(Thread.MAX_PRIORITY);
-			thread.start();
+			}).start();
 			return;
 		}
+
 		setClient((Client) loader.getClient(), loader.getBridge().getTransformSpec());
 		applet.start();
-
-		chrome.display(this);
-	}
-
-	@Override
-	public boolean isStopping() {
-		return stopping;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void stop() {
-		stopping = true;
-		log.info("Unloading environment");
-		for (final Stoppable module : new Stoppable[]{controller, dispatcher}) {
-			if (module != null) {
-				module.stop();
-			}
-		}
-		new Thread(threadGroup, new Runnable() {
-			@Override
-			public void run() {
-				terminateApplet();
-			}
-		}).start();
-	}
-
-	public void initiate() {
-		if (!initiated.compareAndSet(false, true)) {
-			return;
-		}
+		new Thread(threadGroup, dispatcher, dispatcher.getClass().getName()).start();
 
 		final String jre = System.getProperty("java.version");
 		final boolean java6 = jre != null && jre.startsWith("1.6");
 
 		if (!(java6 && Configuration.OS == Configuration.OperatingSystem.MAC)) {
-			new Thread(new Runnable() {
+			new Thread(threadGroup, new Runnable() {
 				@Override
 				public void run() {
 					Condition.wait(new Callable<Boolean>() {
@@ -173,15 +133,40 @@ public final class Bot implements Runnable, Stoppable {
 				}
 			}).start();
 		}
+
+		chrome.display(this);
 	}
 
-	void terminateApplet() {
+	@Override
+	public boolean isValid() {
+		return ready.get();
+	}
+
+	@Override
+	public boolean isStopping() {
+		return stopping.get();
+	}
+
+	@Override
+	public void stop() {
+		if (!stopping.compareAndSet(false, true)) {
+			return;
+		}
+
+		log.info("Unloading game");
+
+		stopScript();
+		dispatcher.stop();
+
 		if (applet != null) {
-			log.fine("Shutting down applet");
-			applet.stop();
-			applet.destroy();
-			applet = null;
-			this.ctx.setClient(null);
+			new Thread(threadGroup, new Runnable() {
+				@Override
+				public void run() {
+					applet.stop();
+					applet.destroy();
+				}
+			}).start();
+			ctx.setClient(null);
 		}
 	}
 
@@ -197,47 +182,10 @@ public final class Bot implements Runnable, Stoppable {
 		controller = null;
 	}
 
-	public Applet getApplet() {
-		return applet;
-	}
-
-	public MethodContext getMethodContext() {
-		return ctx;
-	}
-
-	public Constants getConstants() {
-		return constants;
-	}
-
-	public InputHandler getInputHandler() {
-		return inputHandler;
-	}
-
 	private void setClient(final Client client, final TransformSpec spec) {
 		this.ctx.setClient(client);
 		client.setCallback(new AbstractCallback(this));
 		constants = new Constants(spec.constants);
 		inputHandler = new InputHandler(applet, client);
-	}
-
-	public Canvas getCanvas() {
-		final Client client = ctx.getClient();
-		return client != null ? client.getCanvas() : null;
-	}
-
-	public EventDispatcher getEventDispatcher() {
-		return dispatcher;
-	}
-
-	public GameAccounts.Account getAccount() {
-		return account;
-	}
-
-	public void setAccount(final GameAccounts.Account account) {
-		this.account = account;
-	}
-
-	public ScriptController getScriptController() {
-		return controller;
 	}
 }

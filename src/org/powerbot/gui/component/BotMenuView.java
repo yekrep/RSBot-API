@@ -129,7 +129,7 @@ public final class BotMenuView implements ActionListener {
 		items.add(SEPERATOR);
 		items.add(MESSAGES);
 
-		final EventDispatcher d = chrome.getBot().getEventDispatcher();
+		final EventDispatcher d = chrome.getBot().dispatcher;
 
 		boolean selectedAll = true;
 
@@ -185,7 +185,7 @@ public final class BotMenuView implements ActionListener {
 			return;
 		}
 
-		final EventDispatcher d = b.getEventDispatcher();
+		final EventDispatcher d = b.dispatcher;
 		final boolean c = d.contains(e);
 
 		if (!s && !c) {
@@ -196,7 +196,7 @@ public final class BotMenuView implements ActionListener {
 					l = e.getConstructor(Bot.class).newInstance(b);
 				} catch (final NoSuchMethodException x) {
 					try {
-						l = e.getConstructor(MethodContext.class).newInstance(b.getMethodContext());
+						l = e.getConstructor(MethodContext.class).newInstance(b.ctx);
 					} catch (final NoSuchMethodException x2) {
 						l = e.newInstance();
 					}

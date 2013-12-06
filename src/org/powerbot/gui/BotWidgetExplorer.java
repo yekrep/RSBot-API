@@ -63,7 +63,7 @@ public class BotWidgetExplorer extends JFrame implements PaintListener {
 			@Override
 			public void windowClosing(final WindowEvent e) {
 				setVisible(false);
-				chrome.getBot().getEventDispatcher().remove(this);
+				chrome.getBot().dispatcher.remove(this);
 				highlightArea = null;
 				dispose();
 				instances.remove(chrome);
@@ -204,11 +204,11 @@ public class BotWidgetExplorer extends JFrame implements PaintListener {
 
 	public void display() {
 		if (isVisible()) {
-			chrome.getBot().getEventDispatcher().remove(this);
+			chrome.getBot().dispatcher.remove(this);
 			highlightArea = null;
 		}
 		treeModel.update("");
-		chrome.getBot().getEventDispatcher().add(this);
+		chrome.getBot().dispatcher.add(this);
 		setVisible(true);
 	}
 
@@ -298,7 +298,7 @@ public class BotWidgetExplorer extends JFrame implements PaintListener {
 		public void update(final String search) {
 			widgetWrappers.clear();
 			final Widget[] loaded;
-			for (final Widget widget : loaded = chrome.getBot().getMethodContext().widgets.getLoaded()) {
+			for (final Widget widget : loaded = chrome.getBot().ctx.widgets.getLoaded()) {
 				children:
 				for (final Component Component : widget.getComponents()) {
 					if (search(Component, search)) {

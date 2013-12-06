@@ -33,6 +33,6 @@ public class Keyboard extends MethodProvider {
 	}
 
 	private InputHandler getInputHandler() {
-		return ctx.getBot().getInputHandler();
+		return ctx.getBot().inputHandler;
 	}
 }

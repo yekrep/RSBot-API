@@ -55,7 +55,7 @@ public class Antipatterns extends MethodProvider implements Runnable {
 	 * @return the enabled state of antipatterns
 	 */
 	public boolean setEnabled(final boolean v) {
-		if (!ctx.getBot().getScriptController().getDefinition().local) {
+		if (!ctx.getBot().controller.getDefinition().local) {
 			return false;
 		}
 		enabled.set(v);

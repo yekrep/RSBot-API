@@ -78,7 +78,7 @@ public class BotOverlay extends JDialog {
 				while (!Thread.interrupted()) {
 					final Bot b = parent.getBot();
 					final EventDispatcher m;
-					if (b != null && (m = b.getEventDispatcher()) != null) {
+					if (b != null && (m = b.dispatcher) != null) {
 						bi = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
 						final Graphics2D g2 = (Graphics2D) bi.getGraphics();
 						g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
