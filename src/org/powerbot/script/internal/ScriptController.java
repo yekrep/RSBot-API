@@ -31,7 +31,6 @@ import org.powerbot.util.Tracker;
 
 public final class ScriptController implements Runnable, Script.Controller {
 	private final MethodContext ctx;
-	private final EventManager events;
 	private final BlockingDeque<Runnable> queue;
 	private final ExecutorService executor;
 	private final Queue<Script> scripts;
@@ -43,9 +42,8 @@ public final class ScriptController implements Runnable, Script.Controller {
 
 	private final Runnable suspension;
 
-	public ScriptController(final MethodContext ctx, final EventMulticaster multicaster, final ScriptBundle bundle, final int timeout) {
+	public ScriptController(final MethodContext ctx, final ScriptBundle bundle, final int timeout) {
 		this.ctx = ctx;
-		events = new EventManager(multicaster);
 		started = new AtomicBoolean(false);
 		suspended = new AtomicBoolean(false);
 		stopping = new AtomicBoolean(false);
@@ -115,7 +113,6 @@ public final class ScriptController implements Runnable, Script.Controller {
 				}
 
 				call(Script.State.START);
-				events.subscribeAll();
 			}
 		});
 
@@ -150,7 +147,6 @@ public final class ScriptController implements Runnable, Script.Controller {
 				return;
 			}
 			scripts.add(s);
-			events.add(s);
 			if (!s.getExecQueue(Script.State.START).contains(s)) {
 				s.getExecQueue(Script.State.START).add(s);
 			}
@@ -172,7 +168,6 @@ public final class ScriptController implements Runnable, Script.Controller {
 	public void stop() {
 		if (stopping.compareAndSet(false, true)) {
 			call(Script.State.STOP);
-			events.unsubscribeAll();
 			executor.shutdown();
 			try {
 				if (!executor.awaitTermination(10, TimeUnit.SECONDS)) {

@@ -185,7 +185,7 @@ public final class Bot implements Runnable, Stoppable {
 
 	public synchronized void startScript(final ScriptBundle bundle, final int timeout) {
 		SelectiveEventQueue.getInstance().setBlocking(true);
-		controller = new ScriptController(ctx, multicaster, bundle, timeout);
+		controller = new ScriptController(ctx, bundle, timeout);
 		controller.run();
 	}
 
