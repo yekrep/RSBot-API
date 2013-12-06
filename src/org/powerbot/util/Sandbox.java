@@ -23,11 +23,6 @@ public class Sandbox extends SecurityManager {
 	private static final Logger log = Logger.getLogger("Sandbox");
 
 	@Override
-	public void checkAccept(final String host, final int port) {
-		throw new SecurityException();
-	}
-
-	@Override
 	public void checkConnect(final String host, final int port) {
 		checkConnect(host, port, null);
 	}
