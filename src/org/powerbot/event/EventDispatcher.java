@@ -20,7 +20,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.powerbot.script.lang.Stoppable;
 
@@ -31,13 +31,14 @@ public class EventDispatcher extends AbstractCollection<EventListener> implement
 	public static final int FOCUS_EVENT = 0x8;
 	public static final int KEY_EVENT = 0x10;
 
+	private final AtomicReference<Thread> thread;
 	private final CopyOnWriteArrayList<EventListener> listeners;
 	private final Map<EventListener, Long> bitmasks;
 	private final BlockingQueue<EventObject> queue;
 	private final Map<Class<? extends EventListener>, Integer> masks;
-	private AtomicBoolean active, stopping;
 
 	public EventDispatcher() {
+		thread = new AtomicReference<Thread>(null);
 		listeners = new CopyOnWriteArrayList<EventListener>();
 		bitmasks = new ConcurrentHashMap<EventListener, Long>();
 		queue = new LinkedBlockingQueue<EventObject>();
@@ -51,10 +52,6 @@ public class EventDispatcher extends AbstractCollection<EventListener> implement
 		masks.put(MessageListener.class, MessageEvent.ID);
 		masks.put(PaintListener.class, PaintEvent.ID);
 		masks.put(TextPaintListener.class, TextPaintEvent.ID);
-
-
-		active = new AtomicBoolean(true);
-		stopping = new AtomicBoolean(false);
 	}
 
 	private static int getType(final EventObject e) {
@@ -116,7 +113,7 @@ public class EventDispatcher extends AbstractCollection<EventListener> implement
 	}
 
 	private void consume(final EventObject eventObject, final int type) {
-		if (!active.get()) {
+		if (Thread.interrupted()) {
 			return;
 		}
 		for (final EventListener listener : this) {
@@ -191,7 +188,7 @@ public class EventDispatcher extends AbstractCollection<EventListener> implement
 	 */
 	@Override
 	public boolean isStopping() {
-		return stopping.get();
+		return Thread.interrupted();
 	}
 
 	/**
@@ -199,8 +196,9 @@ public class EventDispatcher extends AbstractCollection<EventListener> implement
 	 */
 	@Override
 	public void stop() {
-		if (stopping.compareAndSet(false, true)) {
-			active.set(false);
+		final Thread t = thread.get();
+		if (t != null) {
+			t.interrupt();
 		}
 	}
 
@@ -209,23 +207,26 @@ public class EventDispatcher extends AbstractCollection<EventListener> implement
 	 */
 	@Override
 	public void run() {
-		while (active.get()) {
+		if (!thread.compareAndSet(null, Thread.currentThread())) {
+			return;
+		}
+
+		while (!Thread.interrupted()) {
 			final EventObject o;
 
 			try {
 				o = queue.take();
 			} catch (final InterruptedException ignored) {
-				stop();
 				break;
 			}
 
-			if (o != null) {
-				try {
-					consume(o);
-				} catch (final Exception ignored) {
-				}
+			try {
+				consume(o);
+			} catch (final Exception ignored) {
 			}
 		}
+
+		thread.set(null);
 	}
 
 	/**
