@@ -103,8 +103,10 @@ public class BotChrome extends JFrame implements Closeable {
 
 			@Override
 			public void windowDeiconified(final WindowEvent e) {
-				overlay.setVisible(false);
-				overlay.setVisible(true);
+				if (overlay.isVisible()) {
+					overlay.setVisible(false);
+					overlay.setVisible(true);
+				}
 			}
 		});
 
