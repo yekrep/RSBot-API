@@ -21,6 +21,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.powerbot.script.lang.Stoppable;
 
@@ -35,7 +36,7 @@ public class EventDispatcher extends AbstractCollection<EventListener> implement
 	private final Map<EventListener, Long> bitmasks;
 	private final BlockingQueue<EventObject> queue;
 	private final Map<Class<? extends EventListener>, Integer> masks;
-	private boolean active, stopping = false;
+	private AtomicBoolean active, stopping;
 
 	public EventDispatcher() {
 		listeners = new CopyOnWriteArrayList<EventListener>();
@@ -50,7 +51,8 @@ public class EventDispatcher extends AbstractCollection<EventListener> implement
 		masks.put(FocusListener.class, EventDispatcher.FOCUS_EVENT);
 		masks.put(MessageListener.class, MessageEvent.ID);
 
-		active = true;
+		active = new AtomicBoolean(true);
+		stopping = new AtomicBoolean(false);
 	}
 
 	private static int getType(final EventObject e) {
@@ -124,7 +126,7 @@ public class EventDispatcher extends AbstractCollection<EventListener> implement
 	}
 
 	private void consume(final EventObject eventObject, final int type) {
-		if (!active) {
+		if (!active.get()) {
 			return;
 		}
 		for (final EventListener listener : this) {
@@ -199,7 +201,7 @@ public class EventDispatcher extends AbstractCollection<EventListener> implement
 	 */
 	@Override
 	public boolean isStopping() {
-		return stopping;
+		return stopping.get();
 	}
 
 	/**
@@ -207,8 +209,9 @@ public class EventDispatcher extends AbstractCollection<EventListener> implement
 	 */
 	@Override
 	public void stop() {
-		stopping = true;
-		active = false;
+		if (stopping.compareAndSet(false, true)) {
+			active.set(true);
+		}
 	}
 
 	/**
@@ -216,7 +219,7 @@ public class EventDispatcher extends AbstractCollection<EventListener> implement
 	 */
 	@Override
 	public void run() {
-		while (active) {
+		while (active.get()) {
 			final EventObject o;
 
 			try {
