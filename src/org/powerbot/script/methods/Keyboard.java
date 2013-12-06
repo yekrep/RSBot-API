@@ -1,7 +1,5 @@
 package org.powerbot.script.methods;
 
-import org.powerbot.script.internal.InputHandler;
-
 public class Keyboard extends MethodProvider {
 	public Keyboard(final MethodContext factory) {
 		super(factory);//TODO: document
@@ -12,14 +10,13 @@ public class Keyboard extends MethodProvider {
 	}
 
 	public boolean send(String str, final boolean newLine) {
-		final InputHandler inputHandler = getInputHandler();
-		if (inputHandler == null) {
+		if (ctx.inputHandler == null) {
 			return false;
 		}
 		if (newLine) {
 			str += '\n';
 		}
-		inputHandler.send(str);
+		ctx.inputHandler.send(str);
 		return true;
 	}
 
@@ -28,11 +25,6 @@ public class Keyboard extends MethodProvider {
 	}
 
 	public boolean isReady() {
-		final InputHandler inputHandler = getInputHandler();
-		return inputHandler != null && inputHandler.getSource() != null;
-	}
-
-	private InputHandler getInputHandler() {
-		return ctx.getBot().inputHandler;
+		return ctx.inputHandler != null && ctx.inputHandler.getSource() != null;
 	}
 }

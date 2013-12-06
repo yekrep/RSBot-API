@@ -106,7 +106,7 @@ public class Game extends MethodProvider {
 	 */
 	public int getClientState() {
 		final Client client = ctx.getClient();
-		final Constants constants = getConstants();
+		final Constants constants = ctx.constants;
 		if (client == null || constants == null) {
 			return -1;
 		}
@@ -361,7 +361,7 @@ public class Game extends MethodProvider {
 			return bad;
 		}
 
-		final Constants constants = getConstants();
+		final Constants constants = ctx.constants;
 		final int v = constants != null ? constants.MINIMAP_SETTINGS_ON : -1;
 		final boolean f = client.getMinimapSettings() == v;
 
@@ -411,7 +411,7 @@ public class Game extends MethodProvider {
 		toolkit.yMultiplier = render.getYMultiplier();
 		toolkit.graphicsIndex = render.getGraphicsIndex();
 
-		final Constants constants = getConstants();
+		final Constants constants = ctx.constants;
 		final RenderData _viewport = render.getRenderData();
 		final float[] data;
 		if (viewport == null || constants == null || (data = _viewport.getFloats()) == null) {
@@ -459,11 +459,6 @@ public class Game extends MethodProvider {
 			}
 		}
 		return null;
-	}
-
-	private Constants getConstants() {
-		final Bot bot = ctx.getBot();
-		return bot != null ? bot.constants : null;
 	}
 
 	public class Toolkit {

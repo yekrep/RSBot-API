@@ -6,6 +6,8 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import org.powerbot.bot.Bot;
 import org.powerbot.client.Client;
+import org.powerbot.client.Constants;
+import org.powerbot.script.internal.InputHandler;
 import org.powerbot.script.internal.methods.Items;
 import org.powerbot.script.internal.methods.Map;
 
@@ -42,6 +44,9 @@ public class MethodContext {
 	public Skills skills;
 	public Summoning summoning;
 	public Widgets widgets;
+
+	public Constants constants;
+	public InputHandler inputHandler;
 
 	Items items;
 	Map map;

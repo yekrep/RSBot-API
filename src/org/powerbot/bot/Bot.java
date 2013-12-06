@@ -34,8 +34,6 @@ public final class Bot implements Runnable, Stoppable, Validatable {
 	public final ThreadGroup threadGroup;
 	public final EventDispatcher dispatcher;
 	public Applet applet;
-	public Constants constants;
-	public InputHandler inputHandler;
 	public ScriptController controller;
 	private final AtomicBoolean ready, stopping;
 
@@ -183,7 +181,7 @@ public final class Bot implements Runnable, Stoppable, Validatable {
 	private void setClient(final Client client, final TransformSpec spec) {
 		this.ctx.setClient(client);
 		client.setCallback(new AbstractCallback(this));
-		constants = new Constants(spec.constants);
-		inputHandler = new InputHandler(applet, client);
+		ctx.constants = new Constants(spec.constants);
+		ctx.inputHandler = new InputHandler(applet, client);
 	}
 }
