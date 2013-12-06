@@ -294,19 +294,11 @@ public class BotMenuBar extends JMenuBar implements ActionListener {
 			public void run() {
 				final Bot bot = BotChrome.getInstance().getBot();
 				final ScriptController script = bot.getScriptController();
-				final SelectiveEventQueue eq = SelectiveEventQueue.getInstance();
-
 				if (script != null && !script.isStopping()) {
 					if (script.isSuspended()) {
-						if (!eq.isBlocking()) {
-							eq.setBlocking(true);
-						}
 						script.resume();
 					} else {
 						script.suspend();
-						if (eq.isBlocking()) {
-							eq.setBlocking(false);
-						}
 					}
 					return;
 				}
