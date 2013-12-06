@@ -16,6 +16,8 @@ import javax.swing.Timer;
 
 import org.powerbot.bot.SelectiveEventQueue;
 import org.powerbot.event.EventMulticaster;
+import org.powerbot.event.debug.ViewMouse;
+import org.powerbot.event.debug.ViewMouseTrails;
 import org.powerbot.script.Script;
 import org.powerbot.script.internal.scripts.Antipattern;
 import org.powerbot.script.internal.scripts.BankPin;
@@ -31,6 +33,7 @@ import org.powerbot.util.Tracker;
 
 public final class ScriptController implements Runnable, Script.Controller {
 	private final MethodContext ctx;
+	private final EventMulticaster multicaster;
 	private final BlockingDeque<Runnable> queue;
 	private final ExecutorService executor;
 	private final Queue<Script> scripts;
@@ -42,8 +45,9 @@ public final class ScriptController implements Runnable, Script.Controller {
 
 	private final Runnable suspension;
 
-	public ScriptController(final MethodContext ctx, final ScriptBundle bundle, final int timeout) {
+	public ScriptController(final MethodContext ctx, final EventMulticaster multicaster, final ScriptBundle bundle, final int timeout) {
 		this.ctx = ctx;
+		this.multicaster = multicaster;
 		started = new AtomicBoolean(false);
 		suspended = new AtomicBoolean(false);
 		stopping = new AtomicBoolean(false);
@@ -97,6 +101,10 @@ public final class ScriptController implements Runnable, Script.Controller {
 		final SelectiveEventQueue eq = SelectiveEventQueue.getInstance();
 		if (!eq.isBlocking()) {
 			eq.setBlocking(true);
+		}
+
+		if (!(multicaster.containsListener(ViewMouse.class) || multicaster.containsListener(ViewMouseTrails.class))) {
+			multicaster.addListener(new ViewMouseTrails());
 		}
 
 		for (final Class<? extends Script> d : daemons) {
