@@ -11,7 +11,6 @@ import java.awt.event.WindowEvent;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.powerbot.Configuration;
 import org.powerbot.gui.BotChrome;
 
 public class SelectiveEventQueue extends EventQueue {
@@ -98,11 +97,11 @@ public class SelectiveEventQueue extends EventQueue {
 		if (source == chrome.overlay) {
 			if (component != null) {
 				event.setSource(component);
-				source = component;
 			} else {
 				event.setSource(chrome);
 			}
 		}
+		source = event.getSource();
 
 		/* Check if event is from a blocked source */
 		if (blocking.get() && source == component) {
