@@ -112,23 +112,18 @@ public final class Bot implements Runnable, Stoppable, Validatable {
 		applet.start();
 		new Thread(threadGroup, dispatcher, dispatcher.getClass().getName()).start();
 
-		final String jre = System.getProperty("java.version");
-		final boolean java6 = jre != null && jre.startsWith("1.6");
-
-		if (!(java6 && Configuration.OS == Configuration.OperatingSystem.MAC)) {
-			new Thread(threadGroup, new Runnable() {
-				@Override
-				public void run() {
-					Condition.wait(new Callable<Boolean>() {
-						@Override
-						public Boolean call() throws Exception {
-							return ctx.getClient().getKeyboard() != null;
-						}
-					});
-					ctx.keyboard.send("s");
-				}
-			}).start();
-		}
+		new Thread(threadGroup, new Runnable() {
+			@Override
+			public void run() {
+				Condition.wait(new Callable<Boolean>() {
+					@Override
+					public Boolean call() throws Exception {
+						return ctx.getClient().getKeyboard() != null;
+					}
+				});
+				ctx.keyboard.send("s");
+			}
+		}).start();
 
 		chrome.display(this);
 	}
