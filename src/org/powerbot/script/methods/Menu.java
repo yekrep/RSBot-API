@@ -1,20 +1,17 @@
 package org.powerbot.script.methods;
 
 import java.awt.Dimension;
-import java.awt.Graphics;
 import java.awt.Point;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.Callable;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.powerbot.client.Client;
 import org.powerbot.client.MenuGroupNode;
 import org.powerbot.client.MenuItemNode;
 import org.powerbot.client.NodeDeque;
 import org.powerbot.client.NodeSubQueue;
-import org.powerbot.event.PaintListener;
 import org.powerbot.script.internal.wrappers.Deque;
 import org.powerbot.script.internal.wrappers.Queue;
 import org.powerbot.script.lang.Filter;
@@ -28,7 +25,6 @@ import org.powerbot.util.StringUtil;
  * @author Timer
  */
 public class Menu extends MethodProvider {
-	private AtomicBoolean caching = new AtomicBoolean(false);
 	private final Object LOCK = new Object();
 	private String[] actions = new String[0];
 	private String[] options = new String[0];
@@ -92,10 +88,6 @@ public class Menu extends MethodProvider {
 	 * @return the first index found; otherwise -1
 	 */
 	public int indexOf(final Filter<Entry> filter) {
-		if (ctx.game.toolkit.graphicsIndex != 0) {
-			cache();
-		}
-
 		final String[] actions;
 		final String[] options;
 		synchronized (LOCK) {
@@ -313,32 +305,12 @@ public class Menu extends MethodProvider {
 		return nodes;
 	}
 
-	public void register() {
-		if (!caching.compareAndSet(false, true)) {
-			return;
-		}
-		ctx.getBot().getEventDispatcher().add(new PaintListener() {
-			@Override
-			public void repaint(final Graphics render) {
-				if (ctx.game.toolkit.graphicsIndex != 0) {
-					return;
-				}
-
-				cache();
-			}
-		});
-	}
-
 	/**
 	 * Returns an array of all the current menu items ([action_1 option_1, action_2 option_2, ...]).
 	 *
 	 * @return the array of menu items
 	 */
 	public String[] getItems() {
-		if (ctx.game.toolkit.graphicsIndex != 0) {
-			cache();
-		}
-
 		final String[] actions;
 		final String[] options;
 		synchronized (LOCK) {
@@ -353,7 +325,7 @@ public class Menu extends MethodProvider {
 		return arr;
 	}
 
-	private void cache() {
+	public void cache() {
 		synchronized (LOCK) {
 			final List<MenuItemNode> items = getMenuItemNodes();
 			final int size = items.size();

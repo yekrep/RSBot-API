@@ -217,7 +217,6 @@ public final class Bot implements Runnable, Stoppable {
 		client.setCallback(new AbstractCallback(this));
 		constants = new Constants(spec.constants);
 		inputHandler = new InputHandler(applet, client);
-		ctx.menu.register();
 	}
 
 	public Canvas getCanvas() {

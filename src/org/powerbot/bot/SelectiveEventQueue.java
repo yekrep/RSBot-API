@@ -5,6 +5,7 @@ import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.Toolkit;
 import java.awt.event.FocusEvent;
+import java.awt.event.InvocationEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
@@ -120,7 +121,14 @@ public class SelectiveEventQueue extends EventQueue {
 				return;
 			}
 		}
+
 		/* Otherwise, dispatch events to everything else non-blocked */
+		if (event instanceof InvocationEvent) {
+			try {
+				chrome.getBot().getMethodContext().menu.cache();
+			} catch (Throwable ignored) {
+			}
+		}
 		super.dispatchEvent(event);
 	}
 
