@@ -139,7 +139,7 @@ public class ScriptList {
 
 	}
 
-	public static void load(final ScriptDefinition def, final String username) {
+	public static void load(final BotChrome chrome, final ScriptDefinition def, final String username) {
 		if (!NetworkAccount.getInstance().isLoggedIn()) {
 			return;
 		}
@@ -188,7 +188,7 @@ public class ScriptList {
 			return;
 		}
 
-		final Bot bot = BotChrome.getInstance().getBot();
+		final Bot bot = chrome.getBot();
 		if (username != null) {
 			bot.setAccount(GameAccounts.getInstance().get(username));
 		}
@@ -220,7 +220,7 @@ public class ScriptList {
 					SwingUtilities.invokeAndWait(new Runnable() {
 						@Override
 						public void run() {
-							res.set(JOptionPane.showConfirmDialog(BotChrome.getInstance(), txt, "", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE));
+							res.set(JOptionPane.showConfirmDialog(chrome, txt, "", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE));
 						}
 					});
 				} catch (final InterruptedException ignored) {

@@ -69,7 +69,10 @@ public final class BotMenuView implements ActionListener {
 	private static final String MOUSEPOS = "Mouse Position";
 	private static final String SEPERATOR = "-";
 
-	public BotMenuView(final JMenu menu) {
+	private final BotChrome chrome;
+
+	public BotMenuView(final BotChrome chrome, final JMenu menu) {
+		this.chrome = chrome;
 		final JMenuItem widgetExplorer = new JMenuItem(BotLocale.WIDGETEXPLORER);
 		widgetExplorer.addActionListener(this);
 		widgetExplorer.setIcon(new ImageIcon(Resources.Paths.EDIT));
@@ -125,7 +128,7 @@ public final class BotMenuView implements ActionListener {
 		items.add(SEPERATOR);
 		items.add(MESSAGES);
 
-		final EventDispatcher d = BotChrome.getInstance().getBot().getEventDispatcher();
+		final EventDispatcher d = chrome.getBot().getEventDispatcher();
 
 		boolean selectedAll = true;
 
@@ -158,9 +161,9 @@ public final class BotMenuView implements ActionListener {
 	public void actionPerformed(final ActionEvent e) {
 		final String s = e.getActionCommand();
 		if (s.equals(BotLocale.WIDGETEXPLORER)) {
-			BotWidgetExplorer.display();
+			BotWidgetExplorer.getInstance(chrome).display();
 		} else if (s.equals(BotLocale.SETTINGEXPLORER)) {
-			BotSettingExplorer.display();
+			BotSettingExplorer.getInstance(chrome).display();
 		} else {
 			final JCheckBoxMenuItem item = (JCheckBoxMenuItem) e.getSource();
 			item.setSelected(!item.isSelected());
@@ -175,7 +178,7 @@ public final class BotMenuView implements ActionListener {
 	}
 
 	private void setView(final Class<? extends EventListener> e, final boolean s) {
-		final Bot b = BotChrome.getInstance().getBot();
+		final Bot b = chrome.getBot();
 
 		if (b == null) {
 			return;

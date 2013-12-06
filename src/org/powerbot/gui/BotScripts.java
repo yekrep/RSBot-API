@@ -68,6 +68,7 @@ import org.powerbot.util.io.Resources;
  */
 public final class BotScripts extends JDialog implements ActionListener {
 	private static final long serialVersionUID = 7168019254925627080L;
+	private final BotChrome chrome;
 	private final JScrollPane scroll;
 	private final JPanel table;
 	private final JToggleButton locals;
@@ -79,14 +80,15 @@ public final class BotScripts extends JDialog implements ActionListener {
 
 	private static AtomicReference<String> lastUsername = new AtomicReference<String>(null);
 
-	public BotScripts(final BotChrome parent) {
-		super(parent, BotLocale.SCRIPTS, true);
+	public BotScripts(final BotChrome chrome) {
+		super(chrome, BotLocale.SCRIPTS, true);
+		this.chrome = chrome;
 
 		init = new AtomicBoolean(false);
 		icons = new CryptFile("icons.1.png");
 
 		if (!NetworkAccount.getInstance().isLoggedIn()) {
-			new BotSignin(parent);
+			new BotSignin(chrome);
 		}
 
 		if (!NetworkAccount.getInstance().isLoggedIn() || loading.get()) {
@@ -464,7 +466,7 @@ public final class BotScripts extends JDialog implements ActionListener {
 						@Override
 						public void run() {
 							loading.set(true);
-							ScriptList.load(def, username.getText());
+							ScriptList.load(chrome, def, username.getText());
 							loading.set(false);
 						}
 					}).start();

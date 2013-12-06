@@ -49,6 +49,7 @@ public class BotChrome extends JFrame implements Closeable {
 	private Bot bot;
 	public BotPanel panel;
 	public final BotOverlay overlay;
+	public final BotMenuBar menuBar;
 
 	private BotChrome() {
 		try {
@@ -70,7 +71,7 @@ public class BotChrome extends JFrame implements Closeable {
 			}
 		});
 
-		setJMenuBar(new BotMenuBar());
+		setJMenuBar(menuBar = new BotMenuBar(this));
 
 		panel = new BotPanel(this);
 		add(panel);
@@ -83,7 +84,7 @@ public class BotChrome extends JFrame implements Closeable {
 		setSize(getWindowCache());
 		setLocationRelativeTo(getParent());
 		setVisible(true);
-		new OSXAdapt().run();
+		new OSXAdapt(this).run();
 
 		Tracker.getInstance().trackPage("", getTitle());
 

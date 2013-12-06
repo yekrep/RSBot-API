@@ -16,6 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -38,7 +39,8 @@ public class BotSettingExplorer extends JFrame {
 	private static final int FRAME_HEIGHT = 335;
 	private static final long serialVersionUID = -2734139689268786064L;
 
-	private static BotSettingExplorer instance;
+	private static final Map<BotChrome, BotSettingExplorer> instances = new HashMap<BotChrome, BotSettingExplorer>();
+	private final BotChrome chrome;
 	private final SimpleDateFormat FORMATTER = new SimpleDateFormat("HH:mm:ss");
 
 	private int current = -1;
@@ -52,34 +54,33 @@ public class BotSettingExplorer extends JFrame {
 	private JScrollPane changesPane = null;
 	private JList settingsList = null;
 
-	private BotSettingExplorer() {
+	private BotSettingExplorer(final BotChrome chrome) {
+		this.chrome = chrome;
 		create();
 	}
 
-	private static BotSettingExplorer getInstance() {
-		if (instance == null) {
-			instance = new BotSettingExplorer();
+	public static synchronized BotSettingExplorer getInstance(final BotChrome chrome) {
+		if (!instances.containsKey(chrome)) {
+			instances.put(chrome, new BotSettingExplorer(chrome));
 		}
-		return instance;
+		return instances.get(chrome);
 	}
 
-	public static void display() {
-		final BotSettingExplorer settingExplorer = getInstance();
-		final boolean visible = settingExplorer.isVisible();
-		if (visible) {
-			settingExplorer.clean();
+	public void display() {
+		if (isVisible()) {
+			clean();
 		}
-		settingExplorer.setVisible(true);
+		setVisible(true);
 		try {
-			settingExplorer.settings_cache = BotChrome.getInstance().getBot().getMethodContext().settings.getArray();
+			settings_cache = chrome.getBot().getMethodContext().settings.getArray();
 		} catch (final NullPointerException ignored) {
 		}
-		if (!visible) {
-			new Thread(BotChrome.getInstance().getBot().threadGroup, new Runnable() {
+		if (!isVisible()) {
+			new Thread(chrome.getBot().threadGroup, new Runnable() {
 				@Override
 				public void run() {
-					while (settingExplorer.isVisible()) {
-						settingExplorer.update();
+					while (isVisible()) {
+						update();
 						try {
 							Thread.sleep(100);
 						} catch (InterruptedException ignored) {
@@ -95,7 +96,7 @@ public class BotSettingExplorer extends JFrame {
 	}
 
 	private void update() {
-		final int[] settings_clone = BotChrome.getInstance().getBot().getMethodContext().settings.getArray();
+		final int[] settings_clone = chrome.getBot().getMethodContext().settings.getArray();
 		if (settings_cache == null) {
 			settings_cache = settings_clone;
 			return;
@@ -145,10 +146,12 @@ public class BotSettingExplorer extends JFrame {
 			public void windowClosing(final WindowEvent e) {
 				try {
 					clean();
-					setVisible(false);
 				} catch (final Exception dd) {
 					dd.printStackTrace();
 				}
+				setVisible(false);
+				instances.remove(chrome);
+				dispose();
 			}
 		});
 

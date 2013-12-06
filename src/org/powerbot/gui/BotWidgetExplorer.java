@@ -12,7 +12,9 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -43,7 +45,8 @@ import org.powerbot.util.io.Resources;
  */
 public class BotWidgetExplorer extends JFrame implements PaintListener {
 	private static final long serialVersionUID = 3674322588956559479L;
-	private static BotWidgetExplorer instance;
+	private static final Map<BotChrome, BotWidgetExplorer> instances = new HashMap<BotChrome, BotWidgetExplorer>();
+	private final BotChrome chrome;
 	private final JTree tree;
 	private final WidgetTreeModel treeModel;
 	private JPanel infoArea;
@@ -51,16 +54,19 @@ public class BotWidgetExplorer extends JFrame implements PaintListener {
 	private Rectangle highlightArea = null;
 	private List<Component> list = new ArrayList<Component>();
 
-	public BotWidgetExplorer() {
+	private BotWidgetExplorer(final BotChrome chrome) {
 		super("Widget Explorer");
+		this.chrome = chrome;
 		setIconImage(Resources.getImage(Resources.Paths.EDIT));
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(final WindowEvent e) {
 				setVisible(false);
-				BotChrome.getInstance().getBot().getEventDispatcher().remove(this);
+				chrome.getBot().getEventDispatcher().remove(this);
 				highlightArea = null;
+				dispose();
+				instances.remove(chrome);
 			}
 		});
 		treeModel = new WidgetTreeModel();
@@ -189,22 +195,21 @@ public class BotWidgetExplorer extends JFrame implements PaintListener {
 		Tracker.getInstance().trackPage("widgetexplorer/", getTitle());
 	}
 
-	private static BotWidgetExplorer getInstance() {
-		if (instance == null) {
-			instance = new BotWidgetExplorer();
+	public static synchronized BotWidgetExplorer getInstance(final BotChrome chrome) {
+		if (!instances.containsKey(chrome)) {
+			instances.put(chrome, new BotWidgetExplorer(chrome));
 		}
-		return instance;
+		return instances.get(chrome);
 	}
 
-	public static void display() {
-		final BotWidgetExplorer botWidgetExplorer = getInstance();
-		if (botWidgetExplorer.isVisible()) {
-			BotChrome.getInstance().getBot().getEventDispatcher().remove(botWidgetExplorer);
-			botWidgetExplorer.highlightArea = null;
+	public void display() {
+		if (isVisible()) {
+			chrome.getBot().getEventDispatcher().remove(this);
+			highlightArea = null;
 		}
-		botWidgetExplorer.treeModel.update("");
-		BotChrome.getInstance().getBot().getEventDispatcher().add(botWidgetExplorer);
-		botWidgetExplorer.setVisible(true);
+		treeModel.update("");
+		chrome.getBot().getEventDispatcher().add(this);
+		setVisible(true);
 	}
 
 	public void repaint(final Graphics g) {
@@ -293,7 +298,7 @@ public class BotWidgetExplorer extends JFrame implements PaintListener {
 		public void update(final String search) {
 			widgetWrappers.clear();
 			final Widget[] loaded;
-			for (final Widget widget : loaded = BotChrome.getInstance().getBot().getMethodContext().widgets.getLoaded()) {
+			for (final Widget widget : loaded = chrome.getBot().getMethodContext().widgets.getLoaded()) {
 				children:
 				for (final Component Component : widget.getComponents()) {
 					if (search(Component, search)) {

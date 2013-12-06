@@ -32,9 +32,12 @@ import org.powerbot.util.io.Resources;
  */
 public class BotMenuBar extends JMenuBar implements ActionListener {
 	private static final long serialVersionUID = -4186554435386744949L;
+	private final BotChrome chrome;
 	private final JMenuItem signin, play, stop;
 
-	public BotMenuBar() {
+	public BotMenuBar(final BotChrome chrome) {
+		this.chrome = chrome;
+
 		final JMenu file = new JMenu(BotLocale.FILE), edit = new JMenu(BotLocale.EDIT), view = new JMenu(BotLocale.VIEW),
 				script = new JMenu(BotLocale.SCRIPTS), input = new JMenu(BotLocale.INPUT), help = new JMenu(BotLocale.HELP);
 
@@ -73,7 +76,7 @@ public class BotMenuBar extends JMenuBar implements ActionListener {
 			public void menuSelected(final MenuEvent e) {
 				final JMenu menu = (JMenu) e.getSource();
 				menu.removeAll();
-				new BotMenuView(menu);
+				new BotMenuView(chrome, menu);
 			}
 
 			@Override
@@ -104,7 +107,7 @@ public class BotMenuBar extends JMenuBar implements ActionListener {
 				final JMenu m = (JMenu) e.getSource();
 				m.removeAll();
 
-				final ScriptController c = BotChrome.getInstance().getBot().getScriptController();
+				final ScriptController c = chrome.getBot().getScriptController();
 				if (c == null || c.isStopping()) {
 					return;
 				}
@@ -123,7 +126,7 @@ public class BotMenuBar extends JMenuBar implements ActionListener {
 
 			@Override
 			public void menuDeselected(final MenuEvent e) {
-				final ScriptController c = BotChrome.getInstance().getBot().getScriptController();
+				final ScriptController c = chrome.getBot().getScriptController();
 				if (c == null || c.isStopping()) {
 					return;
 				}
@@ -142,7 +145,7 @@ public class BotMenuBar extends JMenuBar implements ActionListener {
 
 			@Override
 			public void menuCanceled(final MenuEvent e) {
-				final ScriptController c = BotChrome.getInstance().getBot().getScriptController();
+				final ScriptController c = chrome.getBot().getScriptController();
 				if (c == null || c.isStopping()) {
 					return;
 				}
@@ -163,9 +166,9 @@ public class BotMenuBar extends JMenuBar implements ActionListener {
 		script.addMenuListener(new MenuListener() {
 			@Override
 			public void menuSelected(final MenuEvent e) {
-				final ScriptController controller = BotChrome.getInstance().getBot().getScriptController();
+				final ScriptController controller = chrome.getBot().getScriptController();
 				final boolean active = controller != null && !controller.isStopping(), running = active && !controller.isSuspended();
-				play.setEnabled(BotChrome.getInstance().getBot().getMethodContext().getClient() != null && !BotScripts.loading.get());
+				play.setEnabled(chrome.getBot().getMethodContext().getClient() != null && !BotScripts.loading.get());
 				play.setText(running ? BotLocale.PAUSESCRIPT : active ? BotLocale.RESUMESCRIPT : BotLocale.PLAYSCRIPT);
 				play.setIcon(playIcons[running ? 1 : 0]);
 				stop.setEnabled(active);
@@ -240,7 +243,7 @@ public class BotMenuBar extends JMenuBar implements ActionListener {
 		if (s.equals(BotLocale.NEWWINDOW)) {
 			Boot.fork();
 		} else if (s.equals(BotLocale.EXIT)) {
-			BotChrome.getInstance().close();
+			chrome.close();
 		} else if (s.equals(BotLocale.SIGNIN)) {
 			showDialog(Action.SIGNIN);
 		} else if (s.equals(BotLocale.ACCOUNTS)) {
@@ -262,8 +265,7 @@ public class BotMenuBar extends JMenuBar implements ActionListener {
 
 	;
 
-	public static void showDialog(final Action action) {
-		final BotChrome chrome = BotChrome.getInstance();
+	public void showDialog(final Action action) {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
@@ -291,7 +293,7 @@ public class BotMenuBar extends JMenuBar implements ActionListener {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				final Bot bot = BotChrome.getInstance().getBot();
+				final Bot bot = chrome.getBot();
 				final ScriptController script = bot.getScriptController();
 				if (script != null && !script.isStopping()) {
 					if (script.isSuspended()) {
@@ -306,7 +308,7 @@ public class BotMenuBar extends JMenuBar implements ActionListener {
 					SwingUtilities.invokeLater(new Runnable() {
 						@Override
 						public void run() {
-							new BotScripts(BotChrome.getInstance());
+							new BotScripts(chrome);
 						}
 					});
 				}
@@ -318,7 +320,7 @@ public class BotMenuBar extends JMenuBar implements ActionListener {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				final Bot bot = BotChrome.getInstance().getBot();
+				final Bot bot = chrome.getBot();
 				final ScriptController controller = bot.getScriptController();
 				if (controller != null && !controller.isStopping()) {
 					bot.stopScript();
