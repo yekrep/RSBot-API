@@ -10,8 +10,13 @@ import org.powerbot.script.wrappers.Tile;
 import static org.powerbot.event.debug.DebugHelper.drawLine;
 
 public class TDestination implements TextPaintListener {
+	protected final MethodContext ctx;
+
+	public TDestination(final MethodContext ctx) {
+		this.ctx = ctx;
+	}
+
 	public int draw(int idx, final Graphics render) {
-		final MethodContext ctx = BotChrome.getInstance().getBot().getMethodContext();
 		final Tile dest = ctx.movement.getDestination();
 		drawLine(render, idx++, "Destination: " + (dest != null ? dest.toString() : "null"));
 		return idx;

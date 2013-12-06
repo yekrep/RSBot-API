@@ -16,9 +16,14 @@ import org.powerbot.script.wrappers.Component;
 import org.powerbot.script.wrappers.RelativeLocation;
 
 public class DrawBoundaries implements PaintListener {
+	protected final MethodContext ctx;
+
+	public DrawBoundaries(final MethodContext ctx) {
+		this.ctx = ctx;
+	}
+
 	@Override
 	public void repaint(final Graphics render) {
-		final MethodContext ctx = BotChrome.getInstance().getBot().getMethodContext();
 		if (!ctx.game.isLoggedIn()) {
 			return;
 		}

@@ -17,10 +17,15 @@ import org.powerbot.script.wrappers.Player;
 public class DrawModels implements PaintListener {
 	private static final Color[] C = {Color.GREEN, Color.WHITE, Color.BLACK, Color.BLUE};
 	private static final int[] A = {25, 40, 255, 50};
+	protected final MethodContext ctx;
+
+	public DrawModels(final MethodContext ctx) {
+		this.ctx = ctx;
+	}
+
 
 	@Override
 	public void repaint(final Graphics render) {
-		final MethodContext ctx = BotChrome.getInstance().getBot().getMethodContext();
 		for (final GameObject obj : ctx.objects.select().within(10)) {
 			if (!obj.isOnScreen()) {
 				continue;

@@ -10,8 +10,13 @@ import org.powerbot.script.methods.MethodContext;
 import static org.powerbot.event.debug.DebugHelper.drawLine;
 
 public class TMousePosition implements TextPaintListener {
+	protected final MethodContext ctx;
+
+	public TMousePosition(final MethodContext ctx) {
+		this.ctx = ctx;
+	}
+
 	public int draw(int idx, final Graphics render) {
-		final MethodContext ctx = BotChrome.getInstance().getBot().getMethodContext();
 		final Point p = ctx.mouse.getLocation();
 		drawLine(render, idx++, "Mouse position: " + (int) p.getX() + "," + (int) p.getY());
 		return idx;

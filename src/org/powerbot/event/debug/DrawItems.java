@@ -14,8 +14,13 @@ import org.powerbot.script.wrappers.Component;
 import org.powerbot.script.wrappers.Item;
 
 public class DrawItems implements PaintListener {
+	protected final MethodContext ctx;
+
+	public DrawItems(final MethodContext ctx) {
+		this.ctx = ctx;
+	}
+
 	public void repaint(final Graphics render) {
-		final MethodContext ctx = BotChrome.getInstance().getBot().getMethodContext();
 		if (!ctx.game.isLoggedIn()) {
 			return;
 		}

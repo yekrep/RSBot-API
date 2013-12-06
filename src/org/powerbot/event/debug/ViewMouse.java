@@ -13,11 +13,18 @@ import org.powerbot.client.Client;
 import org.powerbot.client.input.Mouse;
 import org.powerbot.event.PaintListener;
 import org.powerbot.gui.BotChrome;
+import org.powerbot.script.methods.MethodContext;
 
 public class ViewMouse implements PaintListener {
+	protected final MethodContext ctx;
+
+	public ViewMouse(final MethodContext ctx) {
+		this.ctx = ctx;
+	}
+
 	@Override
 	public void repaint(final Graphics render) {
-		final Client client = BotChrome.getInstance().getBot().getMethodContext().getClient();
+		final Client client = ctx.getClient();
 		final Mouse mouse;
 		if (client == null || (mouse = client.getMouse()) == null) {
 			return;

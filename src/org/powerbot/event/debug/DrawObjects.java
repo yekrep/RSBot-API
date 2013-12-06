@@ -18,11 +18,15 @@ import org.powerbot.script.wrappers.Tile;
 
 public class DrawObjects implements PaintListener {
 	private static final Color[] C = {Color.GREEN, Color.WHITE, Color.BLACK, Color.BLUE};
+	protected final MethodContext ctx;
+
+	public DrawObjects(final MethodContext ctx) {
+		this.ctx = ctx;
+	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public void repaint(final Graphics render) {
-		final MethodContext ctx = BotChrome.getInstance().getBot().getMethodContext();
 		if (!ctx.game.isLoggedIn()) {
 			return;
 		}

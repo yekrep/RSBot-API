@@ -39,6 +39,7 @@ import org.powerbot.event.debug.ViewMouseTrails;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.gui.BotSettingExplorer;
 import org.powerbot.gui.BotWidgetExplorer;
+import org.powerbot.script.methods.MethodContext;
 import org.powerbot.util.io.Resources;
 
 /**
@@ -188,17 +189,23 @@ public final class BotMenuView implements ActionListener {
 		final boolean c = d.contains(e);
 
 		if (!s && !c) {
-			try {
-				EventListener l;
-				try {
-					final Constructor<?> constructor = e.getConstructor(Bot.class);
-					l = (EventListener) constructor.newInstance(b);
-				} catch (final Exception ignored) {
-					l = e.asSubclass(EventListener.class).newInstance();
-				}
+			EventListener l = null;
 
-				d.add(l);
+			try {
+				try {
+					l = e.getConstructor(Bot.class).newInstance(b);
+				} catch (final NoSuchMethodException x) {
+					try {
+						l = e.getConstructor(MethodContext.class).newInstance(b.getMethodContext());
+					} catch (final NoSuchMethodException x2) {
+						l = e.newInstance();
+					}
+				}
 			} catch (final Exception ignored) {
+			}
+
+			if (l != null) {
+				d.add(l);
 			}
 		} else if (s && c) {
 			for (final EventListener l : d) {

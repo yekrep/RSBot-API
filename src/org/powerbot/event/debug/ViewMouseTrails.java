@@ -12,16 +12,22 @@ import org.powerbot.client.Client;
 import org.powerbot.client.input.Mouse;
 import org.powerbot.event.PaintListener;
 import org.powerbot.gui.BotChrome;
+import org.powerbot.script.methods.MethodContext;
 
 /**
  * @author Paris
  */
 public class ViewMouseTrails implements PaintListener {
 	private static final Deque<Point> h = new LinkedList<Point>();
+	protected final MethodContext ctx;
+
+	public ViewMouseTrails(final MethodContext ctx) {
+		this.ctx = ctx;
+	}
 
 	@Override
 	public void repaint(final Graphics g) {
-		final Client c = BotChrome.getInstance().getBot().getMethodContext().getClient();
+		final Client c = ctx.getClient();
 		final Mouse m;
 		if (c == null || (m = c.getMouse()) == null) {
 			return;

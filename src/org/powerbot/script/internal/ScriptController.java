@@ -103,7 +103,7 @@ public final class ScriptController implements Runnable, Script.Controller {
 		}
 
 		if (!(dispatcher.contains(ViewMouse.class) || dispatcher.contains(ViewMouseTrails.class))) {
-			dispatcher.add(new ViewMouseTrails());
+			dispatcher.add(new ViewMouseTrails(ctx));
 		}
 
 		for (final Class<? extends Script> d : daemons) {
