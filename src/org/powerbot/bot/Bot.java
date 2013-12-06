@@ -15,7 +15,7 @@ import org.powerbot.bot.loader.NRSLoader;
 import org.powerbot.bot.loader.transform.TransformSpec;
 import org.powerbot.client.Client;
 import org.powerbot.client.Constants;
-import org.powerbot.event.EventMulticaster;
+import org.powerbot.event.EventDispatcher;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.script.internal.InputHandler;
 import org.powerbot.script.internal.ScriptController;
@@ -32,7 +32,7 @@ public final class Bot implements Runnable, Stoppable {
 	public static final Logger log = Logger.getLogger(Bot.class.getName());
 	private MethodContext ctx;
 	public final ThreadGroup threadGroup;
-	private final EventMulticaster multicaster;
+	private final EventDispatcher dispatcher;
 	private Applet applet;
 	public AtomicBoolean refreshing;
 	private Constants constants;
@@ -45,9 +45,9 @@ public final class Bot implements Runnable, Stoppable {
 	public Bot() {
 		applet = null;
 		threadGroup = new ThreadGroup(Bot.class.getName() + "@" + Integer.toHexString(hashCode()) + "-game");
-		multicaster = new EventMulticaster();
+		dispatcher = new EventDispatcher();
 		account = null;
-		new Thread(threadGroup, multicaster, multicaster.getClass().getName()).start();
+		new Thread(threadGroup, dispatcher, dispatcher.getClass().getName()).start();
 		refreshing = new AtomicBoolean(false);
 		initiated = new AtomicBoolean(false);
 		ctx = new MethodContext(this);
@@ -136,7 +136,7 @@ public final class Bot implements Runnable, Stoppable {
 	public void stop() {
 		stopping = true;
 		log.info("Unloading environment");
-		for (final Stoppable module : new Stoppable[]{controller, multicaster}) {
+		for (final Stoppable module : new Stoppable[]{controller, dispatcher}) {
 			if (module != null) {
 				module.stop();
 			}
@@ -185,7 +185,7 @@ public final class Bot implements Runnable, Stoppable {
 
 	public synchronized void startScript(final ScriptBundle bundle, final int timeout) {
 		SelectiveEventQueue.getInstance().setBlocking(true);
-		controller = new ScriptController(ctx, multicaster, bundle, timeout);
+		controller = new ScriptController(ctx, dispatcher, bundle, timeout);
 		controller.run();
 	}
 
@@ -225,8 +225,8 @@ public final class Bot implements Runnable, Stoppable {
 		return client != null ? client.getCanvas() : null;
 	}
 
-	public EventMulticaster getEventMulticaster() {
-		return multicaster;
+	public EventDispatcher getEventDispatcher() {
+		return dispatcher;
 	}
 
 	public GameAccounts.Account getAccount() {

@@ -10,9 +10,11 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.util.AbstractCollection;
 import java.util.EventListener;
 import java.util.EventObject;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Queue;
@@ -22,32 +24,31 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.powerbot.script.lang.Stoppable;
 
-public class EventMulticaster implements Runnable, Stoppable {
+public class EventDispatcher extends AbstractCollection<EventListener> implements Runnable, Stoppable {
 	public static final int MOUSE_EVENT = 0x1;
 	public static final int MOUSE_MOTION_EVENT = 0x2;
 	public static final int MOUSE_WHEEL_EVENT = 0x4;
 	public static final int FOCUS_EVENT = 0x8;
 	public static final int KEY_EVENT = 0x10;
+
 	private final CopyOnWriteArrayList<EventListener> listeners;
-	private final Map<EventListener, Long> listenerMasks;
+	private final Map<EventListener, Long> bitmasks;
 	private final Queue<EventObject> queue;
 	private final Map<Class<? extends EventListener>, Integer> masks;
 	private boolean active, stopping = false;
 
-	public EventMulticaster() {
+	public EventDispatcher() {
 		listeners = new CopyOnWriteArrayList<EventListener>();
-		listenerMasks = new ConcurrentHashMap<EventListener, Long>();
+		bitmasks = new ConcurrentHashMap<EventListener, Long>();
 		queue = new ConcurrentLinkedQueue<EventObject>();
 
 		masks = new HashMap<Class<? extends EventListener>, Integer>();
-		masks.put(MouseListener.class, EventMulticaster.MOUSE_EVENT);
-		masks.put(MouseMotionListener.class, EventMulticaster.MOUSE_MOTION_EVENT);
-		masks.put(MouseWheelListener.class, EventMulticaster.MOUSE_WHEEL_EVENT);
-		masks.put(KeyListener.class, EventMulticaster.KEY_EVENT);
-		masks.put(FocusListener.class, EventMulticaster.FOCUS_EVENT);
+		masks.put(MouseListener.class, EventDispatcher.MOUSE_EVENT);
+		masks.put(MouseMotionListener.class, EventDispatcher.MOUSE_MOTION_EVENT);
+		masks.put(MouseWheelListener.class, EventDispatcher.MOUSE_WHEEL_EVENT);
+		masks.put(KeyListener.class, EventDispatcher.KEY_EVENT);
+		masks.put(FocusListener.class, EventDispatcher.FOCUS_EVENT);
 		masks.put(MessageListener.class, MessageEvent.ID);
-		//masks.put(PaintListener.class, PaintEvent.ID);
-		//masks.put(TextPaintListener.class, TextPaintEvent.ID);
 
 		active = true;
 	}
@@ -61,19 +62,19 @@ public class EventMulticaster implements Runnable, Stoppable {
 			case MouseEvent.MOUSE_CLICKED:
 			case MouseEvent.MOUSE_ENTERED:
 			case MouseEvent.MOUSE_EXITED:
-				return EventMulticaster.MOUSE_EVENT;
+				return EventDispatcher.MOUSE_EVENT;
 			case MouseEvent.MOUSE_MOVED:
 			case MouseEvent.MOUSE_DRAGGED:
-				return EventMulticaster.MOUSE_MOTION_EVENT;
+				return EventDispatcher.MOUSE_MOTION_EVENT;
 			case MouseEvent.MOUSE_WHEEL:
-				return EventMulticaster.MOUSE_WHEEL_EVENT;
+				return EventDispatcher.MOUSE_WHEEL_EVENT;
 			}
 		} else if (e instanceof FocusEvent) {
 			final FocusEvent fe = (FocusEvent) e;
 			switch (fe.getID()) {
 			case FocusEvent.FOCUS_GAINED:
 			case FocusEvent.FOCUS_LOST:
-				return EventMulticaster.FOCUS_EVENT;
+				return EventDispatcher.FOCUS_EVENT;
 			}
 		} else if (e instanceof KeyEvent) {
 			final KeyEvent ke = (KeyEvent) e;
@@ -81,7 +82,7 @@ public class EventMulticaster implements Runnable, Stoppable {
 			case KeyEvent.KEY_TYPED:
 			case KeyEvent.KEY_PRESSED:
 			case KeyEvent.KEY_RELEASED:
-				return EventMulticaster.KEY_EVENT;
+				return EventDispatcher.KEY_EVENT;
 			}
 		} else if (e instanceof AbstractEvent) {
 			return ((AbstractEvent) e).id;
@@ -90,16 +91,16 @@ public class EventMulticaster implements Runnable, Stoppable {
 		throw new RuntimeException("bad event");
 	}
 
-	private long getMask(final EventListener listener) {
-		long mask = 0;
+	private long getMask(final EventListener e) {
+		long m = 0;
 
 		for (final Entry<Class<? extends EventListener>, Integer> entry : masks.entrySet()) {
-			if (entry.getKey().isInstance(listener)) {
-				mask |= entry.getValue();
+			if (entry.getKey().isInstance(e)) {
+				m |= entry.getValue();
 			}
 		}
 
-		return mask;
+		return m;
 	}
 
 	public void dispatch(final EventObject event) {
@@ -116,7 +117,7 @@ public class EventMulticaster implements Runnable, Stoppable {
 	public void paint(final Graphics g) {
 		int t = 0;
 
-		for (final EventListener l : listeners) {
+		for (final EventListener l : this) {
 			if (l instanceof PaintListener) {
 				((PaintListener) l).repaint(g);
 			} else if (l instanceof TextPaintListener) {
@@ -125,16 +126,16 @@ public class EventMulticaster implements Runnable, Stoppable {
 		}
 	}
 
-	public void fire(final EventObject eventObject) {
-		fire(eventObject, getType(eventObject));
+	public void consume(final EventObject eventObject) {
+		consume(eventObject, getType(eventObject));
 	}
 
-	private void fire(final EventObject eventObject, final int type) {
+	private void consume(final EventObject eventObject, final int type) {
 		if (!active) {
 			return;
 		}
-		for (final EventListener listener : listeners) {
-			final Long mask = listenerMasks.get(listener);
+		for (final EventListener listener : this) {
+			final Long mask = bitmasks.get(listener);
 			if (mask == null) {
 				continue;
 			}
@@ -200,36 +201,17 @@ public class EventMulticaster implements Runnable, Stoppable {
 		}
 	}
 
-	public void addListener(final EventListener eventListener) {
-		if (listeners.addIfAbsent(eventListener)) {
-			listenerMasks.put(eventListener, getMask(eventListener));
-		}
-	}
-
-	public void removeListener(final EventListener eventListener) {
-		listeners.remove(eventListener);
-		listenerMasks.remove(eventListener);
-	}
-
-	public boolean containsListener(final Class<? extends EventListener> o) {
-		for (final EventListener e : listeners) {
-			if (e.getClass().isAssignableFrom(o)) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	public EventListener[] getListeners() {
-		final int size = this.listeners.size();
-		return this.listeners.toArray(new EventListener[size]);
-	}
-
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public boolean isStopping() {
 		return stopping;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void stop() {
 		stopping = true;
@@ -243,13 +225,16 @@ public class EventMulticaster implements Runnable, Stoppable {
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void run() {
 		while (active) {
 			final EventObject event = queue.poll();
 			if (event != null) {
 				try {
-					fire(event);
+					consume(event);
 				} catch (final Exception ignored) {
 				}
 				continue;
@@ -264,5 +249,75 @@ public class EventMulticaster implements Runnable, Stoppable {
 				return;
 			}
 		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Iterator<EventListener> iterator() {
+		final Iterator<EventListener> e = listeners.iterator();
+		return new Iterator<EventListener>() {
+			private volatile EventListener o = null;
+
+			@Override
+			public boolean hasNext() {
+				return e.hasNext();
+			}
+
+			@Override
+			public EventListener next() {
+				o = e.next();
+				return o;
+			}
+
+			@Override
+			public void remove() {
+				if (o == null) {
+					throw new IllegalStateException();
+				}
+				EventDispatcher.this.remove(o);
+				o = null;
+			}
+		};
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public int size() {
+		return listeners.size();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean add(final EventListener e) {
+		if (listeners.addIfAbsent(e)) {
+			bitmasks.put(e, getMask(e));
+			return true;
+		}
+
+		return false;
+	}
+
+	public boolean remove(final EventListener e) {
+		if (listeners.remove(e)) {
+			bitmasks.remove(e);
+			return true;
+		}
+
+		return false;
+	}
+
+	public boolean contains(final Class<? extends EventListener> o) {
+		for (final EventListener e : listeners) {
+			if (e.getClass().isAssignableFrom(o)) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

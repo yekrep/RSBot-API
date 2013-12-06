@@ -22,7 +22,7 @@ public class AbstractCallback implements Callback {
 
 	@Override
 	public void notifyMessage(final int id, final String sender, final String message) {
-		bot.getEventMulticaster().dispatch(new MessageEvent(id, sender, message));
+		bot.getEventDispatcher().dispatch(new MessageEvent(id, sender, message));
 	}
 
 	@Override

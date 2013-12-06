@@ -59,7 +59,7 @@ public class BotWidgetExplorer extends JFrame implements PaintListener {
 			@Override
 			public void windowClosing(final WindowEvent e) {
 				setVisible(false);
-				BotChrome.getInstance().getBot().getEventMulticaster().removeListener(this);
+				BotChrome.getInstance().getBot().getEventDispatcher().remove(this);
 				highlightArea = null;
 			}
 		});
@@ -199,11 +199,11 @@ public class BotWidgetExplorer extends JFrame implements PaintListener {
 	public static void display() {
 		final BotWidgetExplorer botWidgetExplorer = getInstance();
 		if (botWidgetExplorer.isVisible()) {
-			BotChrome.getInstance().getBot().getEventMulticaster().removeListener(botWidgetExplorer);
+			BotChrome.getInstance().getBot().getEventDispatcher().remove(botWidgetExplorer);
 			botWidgetExplorer.highlightArea = null;
 		}
 		botWidgetExplorer.treeModel.update("");
-		BotChrome.getInstance().getBot().getEventMulticaster().addListener(botWidgetExplorer);
+		BotChrome.getInstance().getBot().getEventDispatcher().add(botWidgetExplorer);
 		botWidgetExplorer.setVisible(true);
 	}
 

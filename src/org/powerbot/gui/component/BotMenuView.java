@@ -16,7 +16,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
 import org.powerbot.bot.Bot;
-import org.powerbot.event.EventMulticaster;
+import org.powerbot.event.EventDispatcher;
 import org.powerbot.event.debug.DrawAbilities;
 import org.powerbot.event.debug.DrawBoundaries;
 import org.powerbot.event.debug.DrawGroundItems;
@@ -125,7 +125,7 @@ public final class BotMenuView implements ActionListener {
 		items.add(SEPERATOR);
 		items.add(MESSAGES);
 
-		final EventMulticaster em = BotChrome.getInstance().getBot().getEventMulticaster();
+		final EventDispatcher d = BotChrome.getInstance().getBot().getEventDispatcher();
 
 		boolean selectedAll = true;
 
@@ -133,7 +133,7 @@ public final class BotMenuView implements ActionListener {
 			if (key.equals(SEPERATOR)) {
 				continue;
 			}
-			if (!em.containsListener(map.get(key))) {
+			if (!d.contains(map.get(key))) {
 				selectedAll = false;
 				break;
 			}
@@ -149,7 +149,7 @@ public final class BotMenuView implements ActionListener {
 				menu.addSeparator();
 				continue;
 			}
-			final JCheckBoxMenuItem item = new JCheckBoxMenuItem(key, em.containsListener(map.get(key)));
+			final JCheckBoxMenuItem item = new JCheckBoxMenuItem(key, d.contains(map.get(key)));
 			item.addActionListener(this);
 			menu.add(item);
 		}
@@ -181,8 +181,8 @@ public final class BotMenuView implements ActionListener {
 			return;
 		}
 
-		final EventMulticaster em = b.getEventMulticaster();
-		final boolean c = em.containsListener(e);
+		final EventDispatcher d = b.getEventDispatcher();
+		final boolean c = d.contains(e);
 
 		if (!s && !c) {
 			try {
@@ -194,13 +194,13 @@ public final class BotMenuView implements ActionListener {
 					l = e.asSubclass(EventListener.class).newInstance();
 				}
 
-				em.addListener(l);
+				d.add(l);
 			} catch (final Exception ignored) {
 			}
 		} else if (s && c) {
-			for (final EventListener l : em.getListeners()) {
+			for (final EventListener l : d) {
 				if (l.getClass().isAssignableFrom(e)) {
-					em.removeListener(l);
+					d.remove(l);
 				}
 			}
 		}

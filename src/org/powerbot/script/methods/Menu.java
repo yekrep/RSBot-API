@@ -317,7 +317,7 @@ public class Menu extends MethodProvider {
 		if (!caching.compareAndSet(false, true)) {
 			return;
 		}
-		ctx.getBot().getEventMulticaster().addListener(new PaintListener() {
+		ctx.getBot().getEventDispatcher().add(new PaintListener() {
 			@Override
 			public void repaint(final Graphics render) {
 				if (ctx.game.toolkit.graphicsIndex != 0) {
