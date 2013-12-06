@@ -17,6 +17,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
 import org.powerbot.bot.Bot;
+import org.powerbot.event.EventMulticaster;
 import org.powerbot.event.debug.DrawAbilities;
 import org.powerbot.event.debug.DrawBoundaries;
 import org.powerbot.event.debug.DrawGroundItems;
@@ -46,7 +47,6 @@ import org.powerbot.util.io.Resources;
  */
 public final class BotMenuView implements ActionListener {
 	private final Map<String, Class<? extends EventListener>> map;
-	private static Map<Bot, Map<String, EventListener>> listeners;
 
 	private static final String ALL = "All";
 	private static final String MOUSE = "Mouse";
@@ -81,10 +81,6 @@ public final class BotMenuView implements ActionListener {
 		menu.add(settingExplorer);
 
 		menu.addSeparator();
-
-		if (listeners == null) {
-			listeners = new HashMap<Bot, Map<String, EventListener>>();
-		}
 
 		map = new LinkedHashMap<String, Class<? extends EventListener>>();
 		map.put(BOUNDARIES, DrawBoundaries.class);
@@ -130,12 +126,7 @@ public final class BotMenuView implements ActionListener {
 		items.add(SEPERATOR);
 		items.add(MESSAGES);
 
-		final Bot bot = BotChrome.getInstance().getBot();
-		Map<String, EventListener> listeners = BotMenuView.listeners.get(bot);
-		if (listeners == null) {
-			listeners = new HashMap<String, EventListener>();
-			BotMenuView.listeners.put(bot, listeners);
-		}
+		final EventMulticaster em = BotChrome.getInstance().getBot().getEventMulticaster();
 
 		boolean selectedAll = true;
 
@@ -143,7 +134,7 @@ public final class BotMenuView implements ActionListener {
 			if (key.equals(SEPERATOR)) {
 				continue;
 			}
-			if (!listeners.containsKey(map.get(key).getName())) {
+			if (!em.containsListener(map.get(key))) {
 				selectedAll = false;
 				break;
 			}
@@ -159,9 +150,7 @@ public final class BotMenuView implements ActionListener {
 				menu.addSeparator();
 				continue;
 			}
-			final Class<? extends EventListener> eventListener = map.get(key);
-			final boolean selected = listeners.containsKey(eventListener.getName());
-			final JCheckBoxMenuItem item = new JCheckBoxMenuItem(key, selected);
+			final JCheckBoxMenuItem item = new JCheckBoxMenuItem(key, em.containsListener(map.get(key)));
 			item.addActionListener(this);
 			menu.add(item);
 		}
@@ -186,35 +175,34 @@ public final class BotMenuView implements ActionListener {
 		}
 	}
 
-	private void setView(final Class<? extends EventListener> eventListener, final boolean selected) {
-		final Bot bot = BotChrome.getInstance().getBot();
-		final String name = eventListener.getName();
-		Map<String, EventListener> listeners = BotMenuView.listeners.get(bot);
-		if (listeners == null) {
-			listeners = new HashMap<String, EventListener>();
-			BotMenuView.listeners.put(bot, listeners);
+	private void setView(final Class<? extends EventListener> e, final boolean s) {
+		final Bot b = BotChrome.getInstance().getBot();
+
+		if (b == null) {
+			return;
 		}
-		if (!selected) {
-			if (listeners.containsKey(name)) {
-				return;
-			}
+
+		final EventMulticaster em = b.getEventMulticaster();
+		final boolean c = em.containsListener(e);
+
+		if (!s && !c) {
 			try {
-				EventListener listener;
+				EventListener l;
 				try {
-					final Constructor<?> constructor = eventListener.getConstructor(Bot.class);
-					listener = (EventListener) constructor.newInstance(bot);
+					final Constructor<?> constructor = e.getConstructor(Bot.class);
+					l = (EventListener) constructor.newInstance(b);
 				} catch (final Exception ignored) {
-					listener = eventListener.asSubclass(EventListener.class).newInstance();
+					l = e.asSubclass(EventListener.class).newInstance();
 				}
-				listeners.put(name, listener);
-				bot.getEventMulticaster().addListener(listener);
+
+				em.addListener(l);
 			} catch (final Exception ignored) {
 			}
-		} else {
-			final EventListener listener = listeners.get(name);
-			if (listener != null) {
-				listeners.remove(name);
-				bot.getEventMulticaster().removeListener(listener);
+		} else if (s && c) {
+			for (final EventListener l : em.getListeners()) {
+				if (l.getClass().isAssignableFrom(e)) {
+					em.removeListener(l);
+				}
 			}
 		}
 	}
