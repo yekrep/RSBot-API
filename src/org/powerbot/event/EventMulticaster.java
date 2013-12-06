@@ -211,6 +211,15 @@ public class EventMulticaster implements Runnable, Stoppable {
 		listenerMasks.remove(eventListener);
 	}
 
+	public boolean containsListener(final Class<? extends EventListener> o) {
+		for (final EventListener e : listeners) {
+			if (e.getClass().isAssignableFrom(o)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public EventListener[] getListeners() {
 		final int size = this.listeners.size();
 		return this.listeners.toArray(new EventListener[size]);
