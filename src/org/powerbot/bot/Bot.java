@@ -6,7 +6,6 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Logger;
 
-import org.powerbot.Configuration;
 import org.powerbot.bot.loader.Crawler;
 import org.powerbot.bot.loader.GameLoader;
 import org.powerbot.bot.loader.GameStub;
@@ -22,7 +21,6 @@ import org.powerbot.script.lang.Stoppable;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.util.Condition;
 import org.powerbot.script.wrappers.Validatable;
-import org.powerbot.service.scripts.ScriptBundle;
 
 /**
  * @author Timer
