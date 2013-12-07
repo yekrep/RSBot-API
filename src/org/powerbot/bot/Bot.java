@@ -128,6 +128,7 @@ public final class Bot implements Runnable, Stoppable, Validatable {
 		}).start();
 
 		chrome.display(this);
+		ready.set(true);
 	}
 
 	@Override
