@@ -156,9 +156,12 @@ public final class Bot implements Runnable, Stoppable, Validatable {
 				public void run() {
 					applet.stop();
 					applet.destroy();
+					threadGroup.interrupt();
 				}
 			}).start();
 			ctx.setClient(null);
+		} else {
+			threadGroup.interrupt();
 		}
 	}
 
