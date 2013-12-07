@@ -213,6 +213,11 @@ public class BotChrome extends JFrame implements Closeable {
 		overlay.dispose();
 		dispose();
 
+		if (Configuration.OS == Configuration.OperatingSystem.WINDOWS) {
+			System.exit(0);
+			return;
+		}
+
 		final Thread t = new Thread(new Runnable() {
 			@Override
 			public void run() {
