@@ -212,7 +212,21 @@ public class BotChrome extends JFrame implements Closeable {
 
 		overlay.dispose();
 		dispose();
-		System.exit(0);
+
+		final Thread t = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					Thread.sleep(6000);
+					log.info("Terminating process");
+					System.exit(1);
+				} catch (final InterruptedException ignored) {
+				}
+			}
+		});
+		t.setDaemon(true);
+		t.setPriority(Thread.MIN_PRIORITY);
+		t.start();
 	}
 
 	public void display(final Bot bot) {
