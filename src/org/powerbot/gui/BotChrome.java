@@ -200,6 +200,8 @@ public class BotChrome extends JFrame implements Closeable {
 			saveWindowCache();
 		}
 
+		overlay.dispose();
+
 		setVisible(false);
 		dispose();
 		System.exit(0);
