@@ -192,6 +192,7 @@ public class BotChrome extends JFrame implements Closeable {
 	@Override
 	public void close() {
 		log.info("Shutting down");
+		Tracker.getInstance().close();
 
 		final int s = getExtendedState();
 		final boolean maxed = (s & Frame.MAXIMIZED_VERT) == Frame.MAXIMIZED_VERT || (s & Frame.MAXIMIZED_HORIZ) == Frame.MAXIMIZED_HORIZ;

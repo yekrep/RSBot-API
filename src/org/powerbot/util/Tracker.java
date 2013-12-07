@@ -3,6 +3,7 @@ package org.powerbot.util;
 import java.awt.Dimension;
 import java.awt.GraphicsEnvironment;
 import java.awt.Toolkit;
+import java.io.Closeable;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
@@ -15,7 +16,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Locale;
 import java.util.Random;
-import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
@@ -27,9 +28,9 @@ import org.powerbot.util.io.HttpClient;
 /**
  * @author Paris
  */
-public final class Tracker {
+public final class Tracker implements Closeable {
 	private static Tracker instance;
-	private final Executor exec;
+	private final ExecutorService exec;
 	private static final String TRACKING_ID = "UA-5170375-18", PAGE_PREFIX = "/rsbot/", HOSTNAME = "services.powerbot.org";
 	private final String locale, resolution, colours;
 	private final Random r;
@@ -143,6 +144,10 @@ public final class Tracker {
 	}
 
 	private void track(final String url) {
+		if (exec.isShutdown()) {
+			return;
+		}
+
 		exec.execute(new Runnable() {
 			@Override
 			public void run() {
@@ -189,5 +194,10 @@ public final class Tracker {
 			con.disconnect();
 		} catch (final IOException ignored) {
 		}
+	}
+
+	@Override
+	public void close() {
+		exec.shutdown();
 	}
 }
