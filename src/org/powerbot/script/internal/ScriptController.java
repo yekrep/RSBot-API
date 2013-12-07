@@ -210,6 +210,7 @@ public final class ScriptController implements Runnable, Validatable, Script.Con
 		} catch (final InterruptedException ignored) {
 		}
 		executor.set(null);
+		scripts.clear();
 
 		final SelectiveEventQueue eq = SelectiveEventQueue.getInstance();
 		if (eq.isBlocking()) {
