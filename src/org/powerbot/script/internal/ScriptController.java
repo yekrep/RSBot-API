@@ -77,7 +77,7 @@ public final class ScriptController implements Runnable, Validatable, Script.Con
 
 	@Override
 	public boolean isValid() {
-		return started.get();
+		return started.get() && !stopping.get();
 	}
 
 	@Override
