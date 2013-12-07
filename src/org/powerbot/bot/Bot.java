@@ -73,6 +73,10 @@ public final class Bot implements Runnable, Stoppable, Validatable {
 	}
 
 	private void hook(final NRSLoader loader) {
+		if (stopping.get()) {
+			return;
+		}
+
 		log.info("Loading game (" + loader.getPackHash().substring(0, 6) + ")");
 
 		applet = loader.getApplet();
@@ -86,7 +90,7 @@ public final class Bot implements Runnable, Stoppable, Validatable {
 			new Thread(new Runnable() {
 				@Override
 				public void run() {
-					for (; ; ) {
+					while (!stopping.get()) {
 						log.warning("Downloading update \u2014 please wait");
 						try {
 							loader.upload(loader.getPackHash());
@@ -104,6 +108,10 @@ public final class Bot implements Runnable, Stoppable, Validatable {
 					}
 				}
 			}).start();
+			return;
+		}
+
+		if (stopping.get()) {
 			return;
 		}
 
