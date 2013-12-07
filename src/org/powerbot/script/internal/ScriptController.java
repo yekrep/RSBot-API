@@ -177,6 +177,7 @@ public final class ScriptController implements Runnable, Validatable, Script.Con
 				return;
 			}
 			scripts.add(s);
+			dispatcher.add(s);
 			if (!s.getExecQueue(Script.State.START).contains(s)) {
 				s.getExecQueue(Script.State.START).add(s);
 			}
@@ -200,6 +201,9 @@ public final class ScriptController implements Runnable, Validatable, Script.Con
 		}
 
 		call(Script.State.STOP);
+		for (final Script s : scripts) {
+			dispatcher.remove(s);
+		}
 		executor.get().shutdown();
 		try {
 			if (!executor.get().awaitTermination(10, TimeUnit.SECONDS)) {
