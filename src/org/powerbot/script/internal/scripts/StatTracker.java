@@ -59,7 +59,7 @@ public class StatTracker extends PollingScript implements InternalScript {
 		if (!(c instanceof ScriptController)) {
 			return;
 		}
-		final ScriptDefinition def = ((ScriptController) c).getDefinition();
+		final ScriptDefinition def = ((ScriptController) c).bundle.get().definition;
 		final String id = def.local ? ScriptDefinition.LOCALID : def.getID();
 
 		if (id == null || id.isEmpty()) {

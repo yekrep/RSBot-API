@@ -34,7 +34,7 @@ public final class Bot implements Runnable, Stoppable, Validatable {
 	public final ThreadGroup threadGroup;
 	public final EventDispatcher dispatcher;
 	public Applet applet;
-	public ScriptController controller;
+	public final ScriptController controller;
 	private final AtomicBoolean ready, stopping;
 
 	public Bot(final BotChrome chrome) {
@@ -42,6 +42,7 @@ public final class Bot implements Runnable, Stoppable, Validatable {
 		threadGroup = new ThreadGroup(getClass().getName() + "@" + Integer.toHexString(hashCode()) + "-game");
 		ctx = new MethodContext(this);
 		dispatcher = new EventDispatcher();
+		controller = new ScriptController(ctx, dispatcher);
 		ready = new AtomicBoolean(false);
 		stopping = new AtomicBoolean(false);
 	}
@@ -146,7 +147,7 @@ public final class Bot implements Runnable, Stoppable, Validatable {
 
 		log.info("Unloading game");
 
-		stopScript();
+		controller.stop();
 		dispatcher.stop();
 
 		if (applet != null) {
@@ -159,18 +160,6 @@ public final class Bot implements Runnable, Stoppable, Validatable {
 			}).start();
 			ctx.setClient(null);
 		}
-	}
-
-	public synchronized void startScript(final ScriptBundle bundle, final int timeout) {
-		controller = new ScriptController(ctx, dispatcher, bundle, timeout);
-		controller.run();
-	}
-
-	public synchronized void stopScript() {
-		if (controller != null) {
-			controller.stop();
-		}
-		controller = null;
 	}
 
 	private void setClient(final Client client, final TransformSpec spec) {

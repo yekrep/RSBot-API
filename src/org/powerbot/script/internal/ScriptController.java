@@ -1,7 +1,5 @@
 package org.powerbot.script.internal;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.concurrent.BlockingDeque;
@@ -11,8 +9,6 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
-
-import javax.swing.Timer;
 
 import org.powerbot.bot.SelectiveEventQueue;
 import org.powerbot.event.EventDispatcher;
@@ -26,30 +22,39 @@ import org.powerbot.script.internal.scripts.StatTracker;
 import org.powerbot.script.internal.scripts.TicketDestroy;
 import org.powerbot.script.internal.scripts.WidgetCloser;
 import org.powerbot.script.methods.MethodContext;
+import org.powerbot.script.wrappers.Validatable;
 import org.powerbot.service.scripts.ScriptBundle;
 import org.powerbot.service.scripts.ScriptDefinition;
 import org.powerbot.util.Tracker;
 
-public final class ScriptController implements Runnable, Script.Controller {
+public final class ScriptController implements Runnable, Validatable, Script.Controller {
+	public static final String TIMEOUT_PROPERTY = "script.timeout";
+
 	private final MethodContext ctx;
 	private final EventDispatcher dispatcher;
 	private final BlockingDeque<Runnable> queue;
-	private final ExecutorService executor;
+	private final AtomicReference<ExecutorService> executor;
 	private final Queue<Script> scripts;
 	private final Class<? extends Script>[] daemons;
-	private final ScriptBundle bundle;
-	private final AtomicReference<Script> script;
-	private final AtomicBoolean started, suspended, stopping;
-	private final Timer timeout;
-
+	private final AtomicReference<Thread> timeout;
 	private final Runnable suspension;
+	private final AtomicBoolean started, suspended, stopping;
 
-	public ScriptController(final MethodContext ctx, final EventDispatcher dispatcher, final ScriptBundle bundle, final int timeout) {
+	public final AtomicReference<ScriptBundle> bundle;
+
+
+	public ScriptController(final MethodContext ctx, final EventDispatcher dispatcher) {
 		this.ctx = ctx;
 		this.dispatcher = dispatcher;
+
+		queue = new LinkedBlockingDeque<Runnable>();
+		executor = new AtomicReference<ExecutorService>(null);
+		timeout = new AtomicReference<Thread>(null);
 		started = new AtomicBoolean(false);
 		suspended = new AtomicBoolean(false);
 		stopping = new AtomicBoolean(false);
+
+		bundle = new AtomicReference<ScriptBundle>(null);
 
 		daemons = new Class[] {
 				Login.class,
@@ -60,9 +65,6 @@ public final class ScriptController implements Runnable, Script.Controller {
 				StatTracker.class,
 		};
 		scripts = new PriorityQueue<Script>(daemons.length + 1);
-		script = new AtomicReference<Script>(null);
-
-		executor = new ThreadPoolExecutor(1, 1, 0L, TimeUnit.NANOSECONDS, queue = new LinkedBlockingDeque<Runnable>());
 
 		suspension = new Runnable() {
 			@Override
@@ -75,24 +77,19 @@ public final class ScriptController implements Runnable, Script.Controller {
 				}
 			}
 		};
-
-		this.bundle = bundle;
-
-		this.timeout = new Timer(timeout, new ActionListener() {
-			@Override
-			public void actionPerformed(final ActionEvent e) {
-				((Timer) e.getSource()).stop();
-				stop();
-			}
-		});
-		this.timeout.setCoalesce(false);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+	@Override
+	public boolean isValid() {
+		return started.get();
+	}
+
 	@Override
 	public void run() {
+		if (bundle.get() == null) {
+			throw new IllegalStateException("bundle not set");
+		}
+
 		if (!started.compareAndSet(false, true)) {
 			return;
 		}
@@ -100,6 +97,38 @@ public final class ScriptController implements Runnable, Script.Controller {
 		final SelectiveEventQueue eq = SelectiveEventQueue.getInstance();
 		if (!eq.isBlocking()) {
 			eq.setBlocking(true);
+		}
+
+		executor.set(new ThreadPoolExecutor(1, 1, 0L, TimeUnit.NANOSECONDS, queue));
+
+		final String s = ctx.properties.getProperty(TIMEOUT_PROPERTY, "");
+		if (s != null) {
+			long l = 0;
+			try {
+				l = Long.parseLong(s);
+			} catch (final NumberFormatException ignored) {
+			}
+
+			final long m = l + 1000;
+
+			if (l > 0) {
+				final Thread t = new Thread(new Runnable() {
+					@Override
+					public void run() {
+						try {
+							Thread.sleep(m);
+						} catch (final InterruptedException ignored) {
+							return;
+						}
+						stop();
+					}
+				});
+
+				t.setPriority(Thread.MIN_PRIORITY);
+				t.setDaemon(true);
+				t.start();
+				timeout.set(t);
+			}
 		}
 
 		if (!(dispatcher.contains(ViewMouse.class) || dispatcher.contains(ViewMouseTrails.class))) {
@@ -110,20 +139,16 @@ public final class ScriptController implements Runnable, Script.Controller {
 			queue.offer(new ScriptBootstrap(d));
 		}
 
-		queue.offer(new ScriptBootstrap(bundle.script));
+		queue.offer(new ScriptBootstrap(bundle.get().script));
 
 		queue.offer(new Runnable() {
 			@Override
 			public void run() {
-				if (timeout.getDelay() > 0) {
-					timeout.start();
-				}
-
 				call(Script.State.START);
 			}
 		});
 
-		executor.submit(queue.poll());
+		executor.get().submit(queue.poll());
 	}
 
 	private final class ScriptBootstrap implements Runnable {
@@ -147,7 +172,7 @@ public final class ScriptController implements Runnable, Script.Controller {
 					}
 				}).start();
 				s = clazz.newInstance();
-				script.set(s);
+				bundle.get().instance.set(s);
 			} catch (final Exception e) {
 				e.printStackTrace();
 				stop();
@@ -160,47 +185,47 @@ public final class ScriptController implements Runnable, Script.Controller {
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public boolean isStopping() {
 		return stopping.get();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void stop() {
-		if (stopping.compareAndSet(false, true)) {
-			call(Script.State.STOP);
-			executor.shutdown();
-			try {
-				if (!executor.awaitTermination(10, TimeUnit.SECONDS)) {
-					executor.shutdownNow();
-				}
-			} catch (final InterruptedException ignored) {
-			}
-
-			final SelectiveEventQueue eq = SelectiveEventQueue.getInstance();
-			if (eq.isBlocking()) {
-				eq.setBlocking(false);
-			}
+		if (!(started.get() && stopping.compareAndSet(false, true))) {
+			return;
 		}
+
+		final Thread t = timeout.getAndSet(null);
+		if (t != null) {
+			t.interrupt();
+		}
+
+		call(Script.State.STOP);
+		executor.get().shutdown();
+		try {
+			if (!executor.get().awaitTermination(10, TimeUnit.SECONDS)) {
+				executor.get().shutdownNow();
+			}
+		} catch (final InterruptedException ignored) {
+		}
+		executor.set(null);
+
+		final SelectiveEventQueue eq = SelectiveEventQueue.getInstance();
+		if (eq.isBlocking()) {
+			eq.setBlocking(false);
+		}
+
+		suspended.set(false);
+		stopping.set(false);
+		started.set(false);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public boolean isSuspended() {
 		return suspended.get();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void suspend() {
 		if (suspended.compareAndSet(false, true)) {
@@ -213,9 +238,6 @@ public final class ScriptController implements Runnable, Script.Controller {
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void resume() {
 		if (suspended.compareAndSet(true, false)) {
@@ -228,38 +250,14 @@ public final class ScriptController implements Runnable, Script.Controller {
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public BlockingDeque<Runnable> getExecutor() {
 		return queue;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public MethodContext getContext() {
 		return ctx;
-	}
-
-	/**
-	 * Returns the current script definition.
-	 *
-	 * @return the current script definition
-	 */
-	public ScriptDefinition getDefinition() {
-		return bundle.definition;
-	}
-
-	/**
-	 * Returns the primary {@link Script}.
-	 *
-	 * @return the primary {@link Script}
-	 */
-	public Script getScript() {
-		return script.get();
 	}
 
 	private void call(final Script.State state) {
@@ -276,12 +274,12 @@ public final class ScriptController implements Runnable, Script.Controller {
 		}
 
 		if (!queue.isEmpty()) {
-			executor.submit(queue.poll());
+			executor.get().submit(queue.poll());
 		}
 	}
 
 	private void track(final Script.State state) {
-		final ScriptDefinition def = getDefinition();
+		final ScriptDefinition def = bundle.get().definition;
 		if (def == null || def.getName() == null || (!def.local && (def.getID() == null || def.getID().isEmpty()))) {
 			return;
 		}

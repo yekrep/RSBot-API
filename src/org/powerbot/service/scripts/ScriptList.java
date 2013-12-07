@@ -29,8 +29,8 @@ import org.powerbot.gui.BotChrome;
 import org.powerbot.script.Manifest;
 import org.powerbot.script.Script;
 import org.powerbot.script.internal.InternalScript;
+import org.powerbot.script.internal.ScriptController;
 import org.powerbot.script.internal.scripts.Login;
-import org.powerbot.service.GameAccounts;
 import org.powerbot.service.NetworkAccount;
 import org.powerbot.util.Ini;
 import org.powerbot.util.StringUtil;
@@ -231,8 +231,11 @@ public class ScriptList {
 					return;
 				}
 			}
+
+			bot.ctx.properties.setProperty(ScriptController.TIMEOUT_PROPERTY, Long.toString(TimeUnit.HOURS.toMillis(hours)));
 		}
 
-		bot.startScript(new ScriptBundle(def, script), hours == 0 ? 0 : (int) TimeUnit.HOURS.toMillis(hours));
+		bot.controller.bundle.set(new ScriptBundle(def, script));
+		bot.controller.run();
 	}
 }
