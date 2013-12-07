@@ -116,13 +116,14 @@ public final class Bot implements Runnable, Stoppable, Validatable {
 		new Thread(threadGroup, new Runnable() {
 			@Override
 			public void run() {
-				Condition.wait(new Callable<Boolean>() {
+				if (Condition.wait(new Callable<Boolean>() {
 					@Override
 					public Boolean call() throws Exception {
 						return ctx.getClient().getKeyboard() != null;
 					}
-				});
-				ctx.keyboard.send("s");
+				})) {
+					ctx.keyboard.send("s");
+				}
 			}
 		}).start();
 
