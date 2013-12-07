@@ -52,7 +52,7 @@ public interface Script extends Runnable, EventListener {
 		 *
 		 * @return the executor queue
 		 */
-		public BlockingDeque<Runnable> getExecutor();
+		public BlockingQueue<Runnable> getExecutor();
 
 		/**
 		 * Returns the linked {@link MethodContext}.

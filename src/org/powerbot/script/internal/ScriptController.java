@@ -2,8 +2,7 @@ package org.powerbot.script.internal;
 
 import java.util.PriorityQueue;
 import java.util.Queue;
-import java.util.concurrent.BlockingDeque;
-import java.util.concurrent.ExecutorService;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -32,8 +31,7 @@ public final class ScriptController implements Runnable, Validatable, Script.Con
 
 	private final MethodContext ctx;
 	private final EventDispatcher dispatcher;
-	private final BlockingDeque<Runnable> queue;
-	private final AtomicReference<ExecutorService> executor;
+	private final AtomicReference<ThreadPoolExecutor> executor;
 	private final Queue<Script> scripts;
 	private final Class<? extends Script>[] daemons;
 	private final AtomicReference<Thread> timeout;
@@ -42,13 +40,11 @@ public final class ScriptController implements Runnable, Validatable, Script.Con
 
 	public final AtomicReference<ScriptBundle> bundle;
 
-
 	public ScriptController(final MethodContext ctx, final EventDispatcher dispatcher) {
 		this.ctx = ctx;
 		this.dispatcher = dispatcher;
 
-		queue = new LinkedBlockingDeque<Runnable>();
-		executor = new AtomicReference<ExecutorService>(null);
+		executor = new AtomicReference<ThreadPoolExecutor>(null);
 		timeout = new AtomicReference<Thread>(null);
 		started = new AtomicBoolean(false);
 		suspended = new AtomicBoolean(false);
@@ -99,7 +95,7 @@ public final class ScriptController implements Runnable, Validatable, Script.Con
 			eq.setBlocking(true);
 		}
 
-		executor.set(new ThreadPoolExecutor(1, 1, 0L, TimeUnit.NANOSECONDS, queue));
+		executor.set(new ThreadPoolExecutor(1, 1, 0L, TimeUnit.NANOSECONDS, new LinkedBlockingDeque<Runnable>()));
 
 		final String s = ctx.properties.getProperty(TIMEOUT_PROPERTY, "");
 		if (s != null) {
@@ -134,6 +130,8 @@ public final class ScriptController implements Runnable, Validatable, Script.Con
 		if (!(dispatcher.contains(ViewMouse.class) || dispatcher.contains(ViewMouseTrails.class))) {
 			dispatcher.add(new ViewMouseTrails(ctx));
 		}
+
+		final BlockingQueue<Runnable> queue = executor.get().getQueue();
 
 		for (final Class<? extends Script> d : daemons) {
 			queue.offer(new ScriptBootstrap(d));
@@ -252,8 +250,8 @@ public final class ScriptController implements Runnable, Validatable, Script.Con
 	}
 
 	@Override
-	public BlockingDeque<Runnable> getExecutor() {
-		return queue;
+	public BlockingQueue<Runnable> getExecutor() {
+		return executor.get().getQueue();
 	}
 
 	@Override
@@ -263,6 +261,7 @@ public final class ScriptController implements Runnable, Validatable, Script.Con
 
 	private void call(final Script.State state) {
 		track(state);
+		final BlockingQueue<Runnable> queue = executor.get().getQueue();
 
 		for (final Script s : scripts) {
 			for (final Runnable r : s.getExecQueue(state)) {
