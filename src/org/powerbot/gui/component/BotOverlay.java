@@ -26,6 +26,7 @@ import org.powerbot.gui.BotChrome;
 public class BotOverlay extends JDialog {
 	private final BotChrome parent;
 	private final JPanel panel;
+	private final Thread repaint;
 	private volatile BufferedImage bi = null;
 	private final boolean offsetMenu;
 	private final PaintEvent paintEvent;
@@ -73,7 +74,7 @@ public class BotOverlay extends JDialog {
 		paintEvent = new PaintEvent();
 		textPaintEvent = new TextPaintEvent();
 
-		new Thread(new Runnable() {
+		repaint = new Thread(new Runnable() {
 			@Override
 			public void run() {
 				while (!Thread.interrupted()) {
@@ -103,7 +104,8 @@ public class BotOverlay extends JDialog {
 					}
 				}
 			}
-		}).start();
+		});
+		repaint.start();
 	}
 
 	public void adjustSize() {
@@ -121,5 +123,11 @@ public class BotOverlay extends JDialog {
 		setSize(d2);
 		panel.setPreferredSize(getSize());
 		pack();
+	}
+
+	@Override
+	public void dispose() {
+		super.dispose();
+		repaint.interrupt();
 	}
 }
