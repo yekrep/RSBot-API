@@ -91,7 +91,7 @@ public class Boot implements Runnable {
 		final List<String> args = new ArrayList<String>();
 		args.add("java");
 
-		args.add("-Xmx384m");
+		args.add("-Xmx512m");
 		args.add("-Xss2m");
 		args.add("-Dsun.java2d.noddraw=true");
 		args.add("-XX:CompileThreshold=1500");
