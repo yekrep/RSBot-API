@@ -32,13 +32,15 @@ public class Widgets extends MethodProvider {
 		if (client == null) {
 			return new Widget[0];
 		}
-		final RSInterfaceBase[] containers = client.getRSInterfaceCache().clone();
-		final int len = containers != null ? containers.length : 0;
-		final Widget[] arr = new Widget[len];
-		for (int i = 0; i < len; i++) {
-			arr[i] = new Widget(ctx, i);
+		final RSInterfaceBase[] cache = client.getRSInterfaceCache();
+		if (cache == null || cache.length == 0) {
+			return new Widget[0];
 		}
-		return arr;
+		final Widget[] w = new Widget[cache.length];
+		for (int i = 0; i < w.length; i++) {
+			w[i] = new Widget(ctx, i);
+		}
+		return w;
 	}
 
 	/**
