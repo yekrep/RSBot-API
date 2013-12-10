@@ -67,7 +67,8 @@ public class BotSettingExplorer extends JFrame {
 	}
 
 	public void display() {
-		if (isVisible()) {
+		final boolean visible = isVisible();
+		if (visible) {
 			clean();
 		}
 		setVisible(true);
@@ -75,7 +76,7 @@ public class BotSettingExplorer extends JFrame {
 			settings_cache = chrome.getBot().ctx.settings.getArray();
 		} catch (final NullPointerException ignored) {
 		}
-		if (!isVisible()) {
+		if (!visible) {
 			new Thread(chrome.getBot().threadGroup, new Runnable() {
 				@Override
 				public void run() {
@@ -179,7 +180,7 @@ public class BotSettingExplorer extends JFrame {
 						info.append("Setting: " + current + "\n");
 						info.append("Value: " + setting + "\n");
 						info.append("Hex: 0x" + Integer.toHexString(setting) + "\n");
-						info.append("Binary: " + Integer.toBinaryString(setting) + "\n");
+						info.append("Binary: 0b" + Integer.toBinaryString(setting) + "\n");
 						info.append("Last changed: " + lastChanges.get(current) + "\n");
 						info.repaint();
 					}
