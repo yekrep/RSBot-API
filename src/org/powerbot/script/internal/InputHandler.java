@@ -2,8 +2,6 @@ package org.powerbot.script.internal;
 
 import java.applet.Applet;
 import java.awt.Component;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.lang.reflect.Field;
@@ -15,10 +13,9 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
 
-import javax.swing.Timer;
-
 import org.powerbot.client.Client;
 import org.powerbot.client.input.Keyboard;
+import org.powerbot.script.util.Random;
 import org.powerbot.util.math.HardwareSimulator;
 
 public class InputHandler {
@@ -89,27 +86,27 @@ public class InputHandler {
 			return;
 		}
 
-		final Timer t = new Timer(0, new ActionListener() {
+		final Thread t = new Thread(new Runnable() {
 			@Override
-			public void actionPerformed(final ActionEvent e) {
-				final Timer t = ((Timer) e.getSource());
-				t.setDelay(HardwareSimulator.getDelayFactor() / 2);
-				if (queue.isEmpty()) {
-					t.stop();
-				} else {
+			public void run() {
+				while (!queue.isEmpty()) {
 					keyboard.sendEvent(retimeKeyEvent(queue.poll()));
+					final KeyEvent keyEvent = queue.peek();
+					if (keyEvent != null && keyEvent.getID() != KeyEvent.KEY_TYPED) {
+						try {
+							Thread.sleep((long) (HardwareSimulator.getDelayFactor() * (1 + Random.nextDouble() / 2)));
+						} catch (InterruptedException ignored) {
+						}
+					}
 				}
 			}
 		});
-		t.setCoalesce(false);
 		t.start();
 
 		if (!async) {
-			while (t.isRunning()) {
-				try {
-					Thread.sleep(60);
-				} catch (final Exception ignored) {
-				}
+			try {
+				t.join();
+			} catch (InterruptedException ignored) {
 			}
 		}
 	}
