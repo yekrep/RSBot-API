@@ -34,9 +34,9 @@ public class RenderableCuboid extends Interactive {
 		final int x = Math.round(location.getX()), z = Math.round(location.getY()),
 				y = Math.round(location.getZ()), p = interactable.getPlane();
 		final int h;
-		if (interactable instanceof RSPlayer) {
-			final RSPlayer player = (RSPlayer) interactable;
-			h = player.getHeight();
+		if (interactable instanceof RSCharacter) {
+			final RSCharacter c = (RSCharacter) interactable;
+			h = c.getHeight();
 		} else {
 			h = 0;
 		}
