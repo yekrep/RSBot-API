@@ -6,11 +6,10 @@ import java.awt.Rectangle;
 import java.awt.geom.Area;
 import java.lang.ref.WeakReference;
 
-import org.powerbot.client.RSAnimable;
+import org.powerbot.client.RSCharacter;
 import org.powerbot.client.RSInteractable;
 import org.powerbot.client.RSInteractableData;
 import org.powerbot.client.RSInteractableLocation;
-import org.powerbot.client.RSPlayer;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.util.Random;
 
@@ -43,31 +42,14 @@ public class RenderableCuboid extends Interactive {
 		if (ctx.game.groundToScreen(x, z, p, h / 2).x == -1) {
 			return null;
 		}
-		int ldx = 256, rdx = 256;
-		int ldz = 256, rdz = 256;
-		if (interactable instanceof RSAnimable) {
-			final int tx = x >> 9, ty = z >> 9;
-			final RSAnimable animable = (RSAnimable) interactable;
-			final int x1 = animable.getX1(), y1 = animable.getY1();
-			final int x2 = animable.getX2(), y2 = animable.getY2();
-			int b = Math.abs(x1 - tx);
-			ldx += b * 512;
-			b = Math.abs(x2 - tx);
-			rdx += b * 512;
-			b = Math.abs(y1 - ty);
-			ldz += b * 512;
-			b = Math.abs(y2 - ty);
-			rdz += b * 512;
-		}
-
-		final Point g1 = ctx.game.groundToScreen(x - ldx, z - ldz, p, 0);
-		final Point g2 = ctx.game.groundToScreen(x + rdx, z - ldz, p, 0);
-		final Point g3 = ctx.game.groundToScreen(x + rdx, z + rdz, p, 0);
-		final Point g4 = ctx.game.groundToScreen(x - ldx, z + rdz, p, 0);
-		final Point o1 = ctx.game.groundToScreen(x - ldx, z - ldz, p, h);
-		final Point o2 = ctx.game.groundToScreen(x + rdx, z - ldz, p, h);
-		final Point o3 = ctx.game.groundToScreen(x + rdx, z + rdz, p, h);
-		final Point o4 = ctx.game.groundToScreen(x - ldx, z + rdz, p, h);
+		final Point g1 = ctx.game.groundToScreen(x - 256, z - 256, p, 0);
+		final Point g2 = ctx.game.groundToScreen(x + 256, z - 256, p, 0);
+		final Point g3 = ctx.game.groundToScreen(x + 256, z + 256, p, 0);
+		final Point g4 = ctx.game.groundToScreen(x - 256, z + 256, p, 0);
+		final Point o1 = ctx.game.groundToScreen(x - 256, z - 256, p, h);
+		final Point o2 = ctx.game.groundToScreen(x + 256, z - 256, p, h);
+		final Point o3 = ctx.game.groundToScreen(x + 256, z + 256, p, h);
+		final Point o4 = ctx.game.groundToScreen(x - 256, z + 256, p, h);
 		if (g1.x == -1 || g2.x == -1 || g3.x == -1 || g4.x == -1 ||
 				o1.x == -1 || o2.x == -1 || o3.x == -1 || o4.x == -1) {
 			return null;
