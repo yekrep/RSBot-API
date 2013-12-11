@@ -239,6 +239,11 @@ public abstract class Actor extends Interactive implements Renderable, Nameable,
 
 	@Override
 	public Point getInteractPoint() {
+		final RSCharacter character = getAccessor();
+		if (character == null) {
+			return new Point(-1, -1);
+		}
+
 		final Model model = getModel();
 		if (model != null) {
 			Point point = model.getCentroid(faceIndex);
@@ -250,34 +255,65 @@ public abstract class Actor extends Interactive implements Renderable, Nameable,
 				return point;
 			}
 		}
+		final RenderableCuboid cuboid = new RenderableCuboid(ctx, character);
+		final Point p = cuboid.getInteractPoint();
+		if (p.x != -1 && p.y != -1) {
+			return p;
+		}
 		return getScreenPoint();
 	}
 
 	@Override
 	public Point getNextPoint() {
+		final RSCharacter character = getAccessor();
+		if (character == null) {
+			return new Point(-1, -1);
+		}
+
 		final Model model = getModel();
 		if (model != null) {
 			return model.getNextPoint();
+		}
+		final RenderableCuboid cuboid = new RenderableCuboid(ctx, character);
+		final Point p = cuboid.getNextPoint();
+		if (p.x != -1 && p.y != -1) {
+			return p;
 		}
 		return getScreenPoint();
 	}
 
 	@Override
 	public Point getCenterPoint() {
+		final RSCharacter character = getAccessor();
+		if (character == null) {
+			return new Point(-1, -1);
+		}
+
 		final Model model = getModel();
 		if (model != null) {
 			return model.getCenterPoint();
+		}
+		final RenderableCuboid cuboid = new RenderableCuboid(ctx, character);
+		final Point p = cuboid.getCenterPoint();
+		if (p.x != -1 && p.y != -1) {
+			return p;
 		}
 		return getScreenPoint();
 	}
 
 	@Override
 	public boolean contains(final Point point) {
+		final RSCharacter character = getAccessor();
+		if (character == null) {
+			return false;
+		}
+
 		final Model model = getModel();
 		if (model != null) {
 			return model.contains(point);
 		}
-		return point.distance(getScreenPoint()) < 15d;
+		final RenderableCuboid cuboid = new RenderableCuboid(ctx, character);
+		return cuboid.contains(point) || point.distance(getScreenPoint()) < 15d;
 	}
 
 	private Point getScreenPoint() {
