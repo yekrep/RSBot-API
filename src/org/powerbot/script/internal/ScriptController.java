@@ -26,11 +26,12 @@ import org.powerbot.service.scripts.ScriptBundle;
 import org.powerbot.service.scripts.ScriptDefinition;
 import org.powerbot.util.Tracker;
 
-public final class ScriptController implements Runnable, Validatable, Script.Controller {
+public final class ScriptController implements Runnable, Validatable, Script.Controller, Script.Controller.Executor<Runnable> {
 	public static final String TIMEOUT_PROPERTY = "script.timeout";
 
 	private final MethodContext ctx;
 	private final EventDispatcher dispatcher;
+	private final ThreadGroup group;
 	private final AtomicReference<ThreadPoolExecutor> executor;
 	private final Queue<Script> scripts;
 	private final Class<? extends Script>[] daemons;
@@ -44,6 +45,7 @@ public final class ScriptController implements Runnable, Validatable, Script.Con
 		this.ctx = ctx;
 		this.dispatcher = dispatcher;
 
+		group = new ThreadGroup(ScriptThreadFactory.NAME);
 		executor = new AtomicReference<ThreadPoolExecutor>(null);
 		timeout = new AtomicReference<Thread>(null);
 		started = new AtomicBoolean(false);
@@ -95,7 +97,7 @@ public final class ScriptController implements Runnable, Validatable, Script.Con
 			eq.setBlocking(true);
 		}
 
-		executor.set(new ThreadPoolExecutor(1, 1, 0L, TimeUnit.NANOSECONDS, new LinkedBlockingDeque<Runnable>()));
+		executor.set(new ThreadPoolExecutor(1, 1, 0L, TimeUnit.NANOSECONDS, new LinkedBlockingDeque<Runnable>(), new ScriptThreadFactory(group)));
 
 		final String s = ctx.properties.getProperty(TIMEOUT_PROPERTY, "");
 		if (s != null) {
@@ -160,7 +162,7 @@ public final class ScriptController implements Runnable, Validatable, Script.Con
 		public void run() {
 			final Script s;
 			try {
-				new Thread(new Runnable() {
+				newThread(new Runnable() {
 					@Override
 					public void run() {
 						try {
@@ -254,8 +256,18 @@ public final class ScriptController implements Runnable, Validatable, Script.Con
 	}
 
 	@Override
-	public BlockingQueue<Runnable> getExecutor() {
-		return executor.get().getQueue();
+	public Executor<Runnable> getExecutor() {
+		return this;
+	}
+
+	@Override
+	public boolean offer(final Runnable r) {
+		return executor.get().getQueue().offer(r);
+	}
+
+	@Override
+	public Thread newThread(final Runnable r) {
+		return executor.get().getThreadFactory().newThread(r);
 	}
 
 	@Override

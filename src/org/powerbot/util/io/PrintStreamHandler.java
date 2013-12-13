@@ -57,7 +57,7 @@ public class PrintStreamHandler extends Handler {
 		std.print('[');
 		std.print(record.getLevel().getName());
 		std.print("] ");
-		if (!Configuration.FROMJAR || Sandbox.isScriptThread(Thread.currentThread())) {
+		if (!Configuration.FROMJAR) {
 			std.print(record.getLoggerName());
 			std.print(": ");
 		}

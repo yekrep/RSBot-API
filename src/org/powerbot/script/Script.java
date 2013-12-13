@@ -48,11 +48,34 @@ public interface Script extends Runnable, EventListener {
 	 */
 	public interface Controller extends Suspendable, Stoppable {
 		/**
-		 * Returns the executor queue.
+		 * Returns the executor.
 		 *
-		 * @return the executor queue
+		 * @return the executor
 		 */
-		public BlockingQueue<Runnable> getExecutor();
+		public Executor<Runnable> getExecutor();
+
+		/**
+		 * An execution manager for a {@link org.powerbot.script.Script.Controller}
+		 *
+		 * @param <E> a {@link java.lang.Runnable}
+		 */
+		public interface Executor<E extends Runnable> {
+			/**
+			 * Adds a runnable to the executor.
+			 *
+			 * @param e a runnable to be executed
+			 * @return {@code true} if the runnable was added, otherwise {@code} false
+			 */
+			public boolean offer(E e);
+
+			/**
+			 * Creates a new child thread.
+			 *
+			 * @param e a runnable to be executed by new thread instance
+			 * @return constructed thread
+			 */
+			public Thread newThread(E e);
+		}
 
 		/**
 		 * Returns the linked {@link MethodContext}.

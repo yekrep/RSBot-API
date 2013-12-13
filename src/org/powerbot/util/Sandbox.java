@@ -11,6 +11,8 @@ import java.util.logging.Logger;
 
 import org.powerbot.Boot;
 import org.powerbot.Configuration;
+import org.powerbot.script.internal.InputHandler;
+import org.powerbot.script.internal.ScriptThreadFactory;
 import org.powerbot.service.GameAccounts;
 import org.powerbot.service.NetworkAccount;
 import org.powerbot.service.scripts.ScriptClassLoader;
@@ -21,6 +23,14 @@ import org.powerbot.util.io.CryptFile;
  */
 public class Sandbox extends SecurityManager {
 	private static final Logger log = Logger.getLogger("Sandbox");
+
+	@Override
+	public void checkAccess(final ThreadGroup g) {
+		super.checkAccess(g);
+		if (g.getName().equals(ScriptThreadFactory.NAME) && !isCallingClass(ScriptThreadFactory.class, InputHandler.class)) {
+			throw new SecurityException();
+		}
+	}
 
 	@Override
 	public void checkConnect(final String host, final int port) {
@@ -82,8 +92,6 @@ public class Sandbox extends SecurityManager {
 
 		if (perm instanceof RuntimePermission) {
 			if (name.equals("setSecurityManager")) {
-				throw new SecurityException(name);
-			} else if (name.equals("modifyThreadGroup") && isScriptThread()) {
 				throw new SecurityException(name);
 			}
 		} else if (perm instanceof FilePermission) {
@@ -198,29 +206,10 @@ public class Sandbox extends SecurityManager {
 	}
 
 	private boolean isScriptThread() {
-		final Class<?>[] context = getClassContext();
-		for (int i = 1; i < context.length; i++) {
-			final ClassLoader loader = context[i].getClassLoader();
-			if (loader != null && loader.getClass().isAssignableFrom(ScriptClassLoader.class)) {
-				return true;
-			}
-		}
-		return false;
+		return Thread.currentThread().getThreadGroup().getName().equals(ScriptThreadFactory.NAME);
 	}
 
 	private boolean isGameThread() {
 		return Thread.currentThread().getThreadGroup().getName().endsWith("-game");
-	}
-
-	public static boolean isScriptThread(final Thread t) {
-		final ClassLoader loader = t.getContextClassLoader();
-		return loader != null && loader.getClass().isAssignableFrom(ScriptClassLoader.class);
-	}
-
-	public static void assertNonScript() {
-		final SecurityManager sm = System.getSecurityManager();
-		if (sm == null || !(sm instanceof Sandbox) || ((Sandbox) sm).isScriptThread()) {
-			throw new SecurityException();
-		}
 	}
 }
