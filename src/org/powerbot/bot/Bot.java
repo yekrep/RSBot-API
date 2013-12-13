@@ -27,6 +27,7 @@ import org.powerbot.script.wrappers.Validatable;
  */
 public final class Bot implements Runnable, Stoppable, Validatable {
 	public static final Logger log = Logger.getLogger(Bot.class.getName());
+	public static final String GROUP = "game";
 	public final BotChrome chrome;
 	public final MethodContext ctx;
 	public final ThreadGroup threadGroup;
@@ -37,7 +38,7 @@ public final class Bot implements Runnable, Stoppable, Validatable {
 
 	public Bot(final BotChrome chrome) {
 		this.chrome = chrome;
-		threadGroup = new ThreadGroup(getClass().getName() + "@" + Integer.toHexString(hashCode()) + "-game");
+		threadGroup = new ThreadGroup(GROUP);
 		ctx = new MethodContext(this);
 		dispatcher = new EventDispatcher();
 		controller = new ScriptController(ctx, dispatcher);
