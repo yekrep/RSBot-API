@@ -59,6 +59,12 @@ public class Login extends PollingScript implements InternalScript {
 				}
 			}
 
+			final Component child = ctx.widgets.get(906, 517); // post email validation continue button
+			if (child.isVisible()) {
+				child.click();
+				return -1;
+			}
+
 			if (world > 0) {
 				final Lobby.World world_wrapper;
 				if ((world_wrapper = ctx.lobby.getWorld(world)) != null) {
