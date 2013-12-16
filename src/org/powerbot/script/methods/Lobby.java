@@ -312,7 +312,7 @@ public class Lobby extends MethodProvider {
 		LOGIN_LIMIT_EXCEEDED(260, -1, 253, "Login limit exceeded: too many connections from your address."),
 		MEMBERS_ONLY_WORLD(260, -1, 253, "You need a member's account to log in to this world."),
 		INSUFFICIENT_SKILL_TOTAL(260, -1, 253, "You must have a total skill level of"),
-		//ACCOUNT_BANNED(-1, -1, -1, null), //TODO
+		//ACCOUNT_BANNED(-1, -1, -1, null), //TODO: ?
 		WILDERNESS_WARNING(117, 119, 113, "Warning: This is a High-risk Wilderness world."),
 		VALIDATE_EMAIL(379, 379, 355, "Validate your email now for increased account security"),
 		STANDING_IN_MEMBERS(260, -1, 253, "You are standing in a members-only"),

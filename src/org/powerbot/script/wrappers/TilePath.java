@@ -9,7 +9,7 @@ import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.util.Condition;
 import org.powerbot.script.util.Random;
 
-public class TilePath extends Path {//TODO: anti-pattern
+public class TilePath extends Path {
 	protected Tile[] tiles;
 	protected Tile[] orig;
 	private boolean end;
