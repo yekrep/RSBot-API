@@ -37,12 +37,16 @@ public class Action extends MethodProvider implements Identifiable, Validatable,
 		return c.getText().trim();
 	}
 
-	public boolean select() {//TODO if bind is in-capable, click + add a method for clicking
+	public boolean select() {
+		return select(true);
+	}
+
+	public boolean select(final boolean key) {
 		if (!isValid()) {
 			return false;
 		}
 		final String b = getBind();
-		return b.length() == 1 && ctx.keyboard.send(getBind());
+		return key ? b.length() == 1 && ctx.keyboard.send(getBind()) : getComponent().click();
 	}
 
 	public boolean isReady() {
