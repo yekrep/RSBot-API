@@ -37,10 +37,10 @@ public class Configuration {
 
 		public static final String VERSION = "http://" + DOMAIN_SITE_CDN + "/rsbot/version.txt";
 
-		public static final String CLIENTPATCH = "http://" + DOMAIN_SITE_CDN + "/rsbot/ts/%s.ts";
+		public static final String CLIENTPATCH = "https://" + DOMAIN_SITE_CDN + "/rsbot/ts/%s.ts";
 		public static final String CLIENTBUCKET = "http://buckets." + DOMAIN + "/process/?hash=%s";
-		public static final String SCRIPTSCOLLECTION = "http://" + DOMAIN_SITE + "/scripts/api/collection/?{POST}a=%s";
-		public static final String SIGNIN = "http://" + DOMAIN_SITE + "/rsbot/login/?{POST}u=%s&p=%s&a=%s";
+		public static final String SCRIPTSCOLLECTION = "https://" + DOMAIN_SITE + "/scripts/api/collection/?{POST}a=%s";
+		public static final String SIGNIN = "https://" + DOMAIN_SITE + "/rsbot/login/?{POST}u=%s&p=%s&a=%s";
 
 		public static final String SITE = "http://" + DOMAIN_SITE + "/";
 		public static final String REGISTER = "http://" + DOMAIN_SITE_LIVE + "/go/register";
