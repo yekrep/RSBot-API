@@ -156,20 +156,7 @@ public class DepositBox extends ItemQuery<Item> {
 	}
 
 	public boolean depositInventory() {
-		final Component c = ctx.widgets.get(WIDGET, COMPONENT_BUTTON_DEPOSIT_INVENTORY);
-		if (c == null || !c.isValid()) {
-			return false;
-		}
-		if (ctx.backpack.isEmpty()) {
-			return true;
-		}
-		final int inv = ctx.backpack.select().count(true);
-		if (c.click()) {
-			for (int i = 0; i < 25 && ctx.backpack.select().count(true) == inv; i++) {
-				sleep(100, 200);
-			}
-		}
-		return ctx.backpack.select().count(true) != inv;
+		return select().isEmpty() || ctx.widgets.get(WIDGET, COMPONENT_BUTTON_DEPOSIT_INVENTORY).click();
 	}
 
 	public boolean depositEquipment() {
