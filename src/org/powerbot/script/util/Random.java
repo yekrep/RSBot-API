@@ -82,4 +82,8 @@ public class Random {
 	public static int nextGaussian(final int min, final int max, final int mean, final double sd) {
 		return min + (((int) (random.nextGaussian() * sd + mean)) % (max - min));
 	}
+
+	public static double nextGaussian() {
+		return random.nextGaussian();
+	}
 }
