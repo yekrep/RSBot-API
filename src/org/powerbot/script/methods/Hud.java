@@ -189,6 +189,17 @@ public class Hud extends MethodProvider {
 	}
 
 	/**
+	 * Opens a menu (even if it's already open).
+	 *
+	 * @param menu the menu to open.
+	 * @return <tt>true</tt> if the menu was opened; otherwise <tt>false</tt>
+	 */
+	public boolean open(final Menu menu) {
+		final Component m = getMenu(menu);
+		return m != null && m.click();
+	}
+
+	/**
 	 * Opens a {@link Window} if not already open.
 	 * Does not guarantee the desired {@link Window} will be visible.
 	 *
