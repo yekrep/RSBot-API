@@ -532,9 +532,6 @@ public class Bank extends ItemQuery<Item> {
 	private boolean containsAction(final Component c, String action) {
 		action = action.toLowerCase();
 		final String[] actions = c.getActions();
-		if (action == null) {
-			return false;
-		}
 		for (final String a : actions) {
 			if (a != null && a.toLowerCase().contains(action)) {
 				return true;
