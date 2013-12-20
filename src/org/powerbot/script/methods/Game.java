@@ -4,8 +4,8 @@ import java.awt.Canvas;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.concurrent.Callable;
 
-import org.powerbot.bot.Bot;
 import org.powerbot.client.BaseInfo;
 import org.powerbot.client.Client;
 import org.powerbot.client.Constants;
@@ -19,6 +19,8 @@ import org.powerbot.client.Render;
 import org.powerbot.client.RenderData;
 import org.powerbot.client.SoftReference;
 import org.powerbot.client.TileData;
+import org.powerbot.script.util.Condition;
+import org.powerbot.script.util.Random;
 import org.powerbot.script.wrappers.Component;
 import org.powerbot.script.wrappers.Locatable;
 import org.powerbot.script.wrappers.RelativeLocation;
@@ -69,29 +71,25 @@ public class Game extends MethodProvider {
 	 * @return <tt>true</tt> if successfully logged out; otherwise <tt>false</tt>
 	 */
 	public boolean logout(final boolean lobby) {
-		if (ctx.hud.isVisible(Hud.Window.MINIMAP)) {
-			final Component sprite = ctx.hud.getSprite(Hud.Window.MINIMAP);
-			if (sprite != null && sprite.getParent().getChild(2).interact("Logout")) {
-				final Widget widget = ctx.widgets.get(26);
-				for (int i = 0; i < 20; i++) {
-					if (widget.isValid()) {
-						break;
-					}
-					sleep(100, 200);
+		if (ctx.hud.open(Hud.Menu.OPTIONS)) {
+			final Widget widget = ctx.widgets.get(1433);
+			if (Condition.wait(new Callable<Boolean>() {
+				@Override
+				public Boolean call() throws Exception {
+					return widget.isValid();
 				}
-				if (widget.isValid()) {
-					if (widget.getComponent(lobby ? 18 : 11).interact("Select")) {
-						for (int i = 0; i < 10; i++) {
-							if (getClientState() == (lobby ? INDEX_LOBBY_SCREEN : INDEX_LOGIN_SCREEN)) {
-								break;
-							}
-							sleep(700, 1000);
-						}
-					}
+			}, Random.nextInt(100, 200), 10)) {
+				if (!widget.getComponent(lobby ? 12 : 13).interact("Select")) {
+					return false;
 				}
 			}
 		}
-		return getClientState() == (lobby ? INDEX_LOBBY_SCREEN : INDEX_LOGIN_SCREEN);
+		return Condition.wait(new Callable<Boolean>() {
+			@Override
+			public Boolean call() throws Exception {
+				return getClientState() == (lobby ? INDEX_LOBBY_SCREEN : INDEX_LOGIN_SCREEN);
+			}
+		}, Random.nextInt(600, 1000), Random.nextInt(8, 11));
 	}
 
 	/**
