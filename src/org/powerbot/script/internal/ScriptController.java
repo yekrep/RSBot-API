@@ -23,6 +23,7 @@ import org.powerbot.script.internal.scripts.WidgetCloser;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.wrappers.Validatable;
 import org.powerbot.service.scripts.ScriptBundle;
+import org.powerbot.service.scripts.ScriptClassLoader;
 import org.powerbot.service.scripts.ScriptDefinition;
 import org.powerbot.util.Tracker;
 
@@ -97,7 +98,11 @@ public final class ScriptController implements Runnable, Validatable, Script.Con
 			eq.setBlocking(true);
 		}
 
-		executor.set(new ThreadPoolExecutor(1, 1, 0L, TimeUnit.NANOSECONDS, new LinkedBlockingDeque<Runnable>(), new ScriptThreadFactory(group)));
+		final ClassLoader cl = bundle.get().script.getClassLoader();
+		if (!(cl instanceof ScriptClassLoader)) {
+			throw new SecurityException();
+		}
+		executor.set(new ThreadPoolExecutor(1, 1, 0L, TimeUnit.NANOSECONDS, new LinkedBlockingDeque<Runnable>(), new ScriptThreadFactory(group, cl)));
 
 		final String s = ctx.properties.getProperty(TIMEOUT_PROPERTY, "");
 		if (s != null) {

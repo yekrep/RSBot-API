@@ -26,14 +26,6 @@ public class Sandbox extends SecurityManager {
 	private static final Logger log = Logger.getLogger("Sandbox");
 
 	@Override
-	public void checkAccess(final ThreadGroup g) {
-		super.checkAccess(g);
-		if (g.getName().equals(ScriptThreadFactory.NAME) && !isCallingClass(ScriptThreadFactory.class, InputHandler.class)) {
-			throw new SecurityException();
-		}
-	}
-
-	@Override
 	public void checkConnect(final String host, final int port) {
 		checkConnect(host, port, null);
 	}
@@ -92,7 +84,7 @@ public class Sandbox extends SecurityManager {
 		final String name = perm.getName();
 
 		if (perm instanceof RuntimePermission) {
-			if (name.equals("setSecurityManager")) {
+			if (name.equals("setSecurityManager") || (name.equals("setContextClassLoader") && isScriptThread() && !isCallingClass(ScriptThreadFactory.class))) {
 				throw new SecurityException(name);
 			}
 		} else if (perm instanceof FilePermission) {
@@ -206,8 +198,8 @@ public class Sandbox extends SecurityManager {
 		return false;
 	}
 
-	private boolean isScriptThread() {
-		return Thread.currentThread().getThreadGroup().getName().equals(ScriptThreadFactory.NAME);
+	public boolean isScriptThread() {
+		return Thread.currentThread().getContextClassLoader() instanceof ScriptClassLoader;
 	}
 
 	private boolean isGameThread() {
