@@ -14,6 +14,7 @@ import org.powerbot.Configuration;
 import org.powerbot.bot.Bot;
 import org.powerbot.script.internal.InputHandler;
 import org.powerbot.script.internal.ScriptThreadFactory;
+import org.powerbot.script.methods.Keyboard;
 import org.powerbot.service.GameAccounts;
 import org.powerbot.service.NetworkAccount;
 import org.powerbot.service.scripts.ScriptClassLoader;
@@ -45,7 +46,7 @@ public class Sandbox extends SecurityManager {
 	@Override
 	public void checkCreateClassLoader() {
 		if (isScriptThread() && !isCallingClass(javax.swing.UIDefaults.class, java.io.ObjectOutputStream.class, java.io.ObjectInputStream.class,
-				java.lang.reflect.Proxy.class)) {
+				java.lang.reflect.Proxy.class, Keyboard.class)) {
 			log.severe("Creating class loader denied");
 			throw new SecurityException();
 		}
