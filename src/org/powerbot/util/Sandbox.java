@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 import org.powerbot.Boot;
 import org.powerbot.Configuration;
 import org.powerbot.bot.Bot;
+import org.powerbot.bot.loader.GameClassLoader;
 import org.powerbot.script.internal.InputHandler;
 import org.powerbot.script.internal.ScriptThreadFactory;
 import org.powerbot.script.methods.Keyboard;
@@ -204,6 +205,6 @@ public class Sandbox extends SecurityManager {
 	}
 
 	private boolean isGameThread() {
-		return Thread.currentThread().getThreadGroup().getName().equals(Bot.GROUP);
+		return Thread.currentThread().getContextClassLoader() instanceof GameClassLoader;
 	}
 }

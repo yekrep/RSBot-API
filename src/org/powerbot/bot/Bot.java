@@ -7,6 +7,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Logger;
 
 import org.powerbot.bot.loader.Crawler;
+import org.powerbot.bot.loader.GameClassLoader;
 import org.powerbot.bot.loader.GameLoader;
 import org.powerbot.bot.loader.GameStub;
 import org.powerbot.bot.loader.NRSLoader;
@@ -70,7 +71,9 @@ public final class Bot implements Runnable, Stoppable, Validatable {
 				hook(loader);
 			}
 		});
-		new Thread(threadGroup, loader).start();
+		final Thread t = new Thread(threadGroup, loader);
+		t.setContextClassLoader(classLoader);
+		t.start();
 	}
 
 	private void hook(final NRSLoader loader) {
