@@ -269,7 +269,7 @@ public class Lobby extends MethodProvider {
 
 	public boolean openTab(final Tab tab) {
 		final Component child = ctx.widgets.get(WIDGET_MAIN_LOBBY, tab.getComponent());
-		if (isOpen()) {
+		if (getCurrentTab() == tab) {
 			return true;
 		}
 		if (child != null && child.isValid() && child.click(true)) {
