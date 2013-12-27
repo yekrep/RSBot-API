@@ -2,7 +2,6 @@ package org.powerbot.gui.component;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.EventListener;
 import java.util.LinkedHashMap;
@@ -17,25 +16,7 @@ import javax.swing.JMenuItem;
 
 import org.powerbot.bot.Bot;
 import org.powerbot.event.EventDispatcher;
-import org.powerbot.event.debug.DrawAbilities;
-import org.powerbot.event.debug.DrawBoundaries;
-import org.powerbot.event.debug.DrawGroundItems;
-import org.powerbot.event.debug.DrawItems;
-import org.powerbot.event.debug.DrawModels;
-import org.powerbot.event.debug.DrawNPCs;
-import org.powerbot.event.debug.DrawObjects;
-import org.powerbot.event.debug.DrawPlayers;
-import org.powerbot.event.debug.MessageLogger;
-import org.powerbot.event.debug.TCamera;
-import org.powerbot.event.debug.TClientState;
-import org.powerbot.event.debug.TDestination;
-import org.powerbot.event.debug.TLocation;
-import org.powerbot.event.debug.TMapBase;
-import org.powerbot.event.debug.TMenu;
-import org.powerbot.event.debug.TMousePosition;
-import org.powerbot.event.debug.TPlane;
-import org.powerbot.event.debug.ViewMouse;
-import org.powerbot.event.debug.ViewMouseTrails;
+import org.powerbot.event.debug.*;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.gui.BotSettingExplorer;
 import org.powerbot.gui.BotWidgetExplorer;
@@ -52,6 +33,7 @@ public final class BotMenuView implements ActionListener {
 	private static final String MOUSE = "Mouse";
 	private static final String MOUSETRAILS = "Mouse Trails";
 	private static final String BOUNDARIES = "Landscape";
+	private static final String PROJECTILES = "Projectiles";
 	private static final String PLAYERS = "Players";
 	private static final String NPCS = "Npcs";
 	private static final String GROUND_ITEMS = "Ground Items";
@@ -91,6 +73,7 @@ public final class BotMenuView implements ActionListener {
 		map.put(SCENEENTITIES, DrawObjects.class);
 		map.put(PLAYERS, DrawPlayers.class);
 		map.put(NPCS, DrawNpcs.class);
+		map.put(PROJECTILES, DrawProjectiles.class);
 		map.put(GROUND_ITEMS, DrawGroundItems.class);
 		map.put(CLIENTSTATE, TClientState.class);
 		map.put(MENU, TMenu.class);
@@ -112,6 +95,7 @@ public final class BotMenuView implements ActionListener {
 		items.add(PLAYERS);
 		items.add(NPCS);
 		items.add(GROUND_ITEMS);
+		items.add(PROJECTILES);
 		items.add(SCENEENTITIES);
 		items.add(MODELS);
 		items.add(BOUNDARIES);
