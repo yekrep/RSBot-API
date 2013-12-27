@@ -59,9 +59,17 @@ public class TilePath extends Path {//TODO: anti-pattern
 
 	@Override
 	public Tile getNext() {
-		/* Do not return a tile to walk to while the map is loading.
-		 * This prevents random tile clicking. */
+		/* Wait for map not to be loading */
 		final int state = ctx.game.getClientState();
+		if (state == Game.INDEX_MAP_LOADING) {
+			Condition.wait(new Callable<Boolean>() {
+				@Override
+				public Boolean call() throws Exception {
+					return ctx.game.getClientState() != Game.INDEX_MAP_LOADING;
+				}
+			});
+			return getNext();
+		}
 		if (state != Game.INDEX_MAP_LOADED) {
 			return null;
 		}
