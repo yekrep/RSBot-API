@@ -70,6 +70,18 @@ public class CombatBar extends IdQuery<Action> {
 		return ctx.settings.get(SETTING_RETALIATION) == 0;
 	}
 
+	public int getTargetHealth() {
+		final Component component = ctx.widgets.get(1490, 28);
+		final String text;
+		if (component.isVisible() && !(text = component.getText()).isEmpty()) {
+			try {
+				return Integer.parseInt(text.trim());
+			} catch (NumberFormatException ignored) {
+			}
+		}
+		return -1;
+	}
+
 	/**
 	 * Determines the current health.
 	 *
