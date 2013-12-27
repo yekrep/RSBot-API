@@ -1,6 +1,6 @@
 package org.powerbot.client;
 
-public interface RSProjectile {
+public interface RSProjectile extends RSInteractable {
 	public int getID();
 
 	public int getTargetID();
