@@ -260,8 +260,7 @@ public class Lobby extends MethodProvider {
 
 	public Tab getCurrentTab() {
 		for (final Tab tab : Tab.values()) {
-			final Component child = ctx.widgets.get(WIDGET_MAIN_LOBBY, tab.getComponent());
-			if (child != null && child.isValid() && child.getTextureId() == 4671) {
+			if (ctx.widgets.get(WIDGET_MAIN_LOBBY, tab.getComponent()).getTextureId() == 4671) {
 				return tab;
 			}
 		}
