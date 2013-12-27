@@ -3,11 +3,12 @@ package org.powerbot.script.methods;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.util.ArrayList;
+import java.util.concurrent.Callable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.powerbot.script.lang.Filter;
-import org.powerbot.script.util.Random;
+import org.powerbot.script.util.Condition;
 import org.powerbot.script.util.Timer;
 import org.powerbot.script.wrappers.Component;
 import org.powerbot.script.wrappers.Widget;
@@ -268,15 +269,16 @@ public class Lobby extends MethodProvider {
 	}
 
 	public boolean openTab(final Tab tab) {
-		final Component child = ctx.widgets.get(WIDGET_MAIN_LOBBY, tab.getComponent());
 		if (getCurrentTab() == tab) {
 			return true;
 		}
-		if (child != null && child.isValid() && child.click(true)) {
-			sleep(Random.nextInt(1200, 2000));
-			return true;
-		}
-		return false;
+		final Component child = ctx.widgets.get(WIDGET_MAIN_LOBBY, tab.getComponent());
+		return child.click() && Condition.wait(new Callable<Boolean>() {
+			@Override
+			public Boolean call() throws Exception {
+				return getCurrentTab() == tab;
+			}
+		}, 100, 20);
 	}
 
 	/**
