@@ -2,9 +2,11 @@ package org.powerbot.script.wrappers;
 
 import java.util.Arrays;
 import java.util.EnumSet;
+import java.util.concurrent.Callable;
 
 import org.powerbot.script.methods.Game;
 import org.powerbot.script.methods.MethodContext;
+import org.powerbot.script.util.Condition;
 import org.powerbot.script.util.Random;
 
 public class TilePath extends Path {//TODO: anti-pattern
@@ -43,13 +45,18 @@ public class TilePath extends Path {//TODO: anti-pattern
 				ctx.movement.setRunning(true);
 			}
 			if (options.contains(TraversalOption.SPACE_ACTIONS) && local.isInMotion() && dest.distanceTo(last) < 3d) {
-				if (dest.distanceTo(ctx.players.local()) > (double) Random.nextInt(5, 12)) {
+				if (dest.distanceTo(ctx.players.local()) > (double) Random.nextInt(5, 12)) {//TODO: revise this distance to not be detectable!!!
 					return true;
 				}
 			}
 		}
 		last = next;
-		return ctx.movement.stepTowards(next);
+		return ctx.movement.stepTowards(next) && (next.distanceTo(ctx.players.local()) < 5d || Condition.wait(new Callable<Boolean>() {
+			@Override
+			public Boolean call() throws Exception {
+				return ctx.players.local().isInMotion();
+			}
+		}, Random.nextInt(100, 150), 10));
 	}
 
 	@Override
