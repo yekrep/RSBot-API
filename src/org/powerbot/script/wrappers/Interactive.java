@@ -179,7 +179,7 @@ public abstract class Interactive extends MethodProvider implements Targetable, 
 		final int l_d = ctx.movement.getDistance(c, dest);
 		final int l_t = ctx.movement.getDistance(c, tileOfInteractive);
 		if ((l_d < 0 && dest.getMatrix(ctx).isValid()) ||
-				(l_t != -1 && l_d != -1 && l_d > l_t + 2)) {
+				(l_t != -1 && l_d != -1 && l_d > l_t + 4)) {
 			if (!(c.isOnScreen() && c.interact("Walk here"))) {
 				ctx.movement.stepTowards(c);
 			}
