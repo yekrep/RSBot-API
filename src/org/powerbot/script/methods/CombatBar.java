@@ -82,6 +82,16 @@ public class CombatBar extends IdQuery<Action> {
 		return -1;
 	}
 
+	public int getTargetHealthPercent() {
+		final Component bar = ctx.widgets.get(1490, 27);
+		final Component overlap = ctx.widgets.get(1490, 29);
+		if (!bar.isVisible() || !overlap.isVisible()) {
+			return -1;
+		}
+		double w = bar.getScrollWidth(), p = overlap.getScrollWidth();
+		return w > 0 ? (int) Math.ceil(p / w * 100d) : -1;
+	}
+
 	/**
 	 * Determines the current health.
 	 *
