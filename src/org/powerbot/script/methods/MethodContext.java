@@ -16,7 +16,22 @@ public class MethodContext {
 	private AtomicInteger preferredWorld;
 	private AtomicReference<Bot> bot;
 
+	/**
+	 * <p>A set of properties for the environment.</p>
+	 *
+	 * <table border="1" cellpadding="2">
+	 *     <tr>
+	 *         <th>Key</th>
+	 *         <th>Meaning</th>
+	 *     </tr>
+	 *     <tr>
+	 *         <td>{@code "login.world"}</td>
+	 *         <td>The preferred world to log into.</td>
+	 *     </tr>
+	 * </table>
+	 */
 	public Properties properties;
+
 	public Antipatterns antipatterns;
 	public CombatBar combatBar;
 	public Bank bank;
@@ -151,7 +166,7 @@ public class MethodContext {
 	/**
 	 * Gets the preferred world.
 	 *
-	 * @return the requested preferred world (if set)
+	 * @return the requested preferred world if set, otherwise {@code -1}
 	 * @deprecated see {@link #properties}
 	 */
 	@Deprecated

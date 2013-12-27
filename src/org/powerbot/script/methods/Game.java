@@ -177,19 +177,17 @@ public class Game extends MethodProvider {
 	}
 
 	/**
-	 * Changes the preferred world for auto-login.
-	 *
-	 * @param world the preferred world to login to
+	 * @deprecated see {@link MethodContext#setPreferredWorld(int)}
 	 */
+	@Deprecated
 	public void setPreferredWorld(final int world) {
 		ctx.setPreferredWorld(world);
 	}
 
 	/**
-	 * Returns the preferred world.
-	 *
-	 * @return the preferred world
+	 * @deprecated see {@link MethodContext#getPreferredWorld()}
 	 */
+	@Deprecated
 	public int getPreferredWorld() {
 		return ctx.getPreferredWorld();
 	}
