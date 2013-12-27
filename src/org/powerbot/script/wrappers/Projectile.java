@@ -2,11 +2,13 @@ package org.powerbot.script.wrappers;
 
 import java.lang.ref.WeakReference;
 
+import org.powerbot.client.RSInteractableData;
+import org.powerbot.client.RSInteractableLocation;
 import org.powerbot.client.RSProjectile;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.methods.MethodProvider;
 
-public class Projectile extends MethodProvider implements Identifiable, Validatable {
+public class Projectile extends MethodProvider implements Locatable, Identifiable, Validatable {
 	private final WeakReference<RSProjectile> projectile;
 
 	public Projectile(final MethodContext ctx, final RSProjectile projectile) {
@@ -40,5 +42,25 @@ public class Projectile extends MethodProvider implements Identifiable, Validata
 		final Projectile c = (Projectile) o;
 		final RSProjectile i;
 		return (i = this.projectile.get()) != null && i == c.projectile.get();
+	}
+
+	@Override
+	public Tile getLocation() {
+		final RSProjectile projectile = this.projectile.get();
+		final RelativeLocation position = getRelative();
+		if (projectile != null && position != RelativeLocation.NIL) {
+			return ctx.game.getMapBase().derive((int) position.getX() >> 9, (int) position.getY() >> 9, projectile.getPlane());
+		}
+		return Tile.NIL;
+	}
+
+	public RelativeLocation getRelative() {
+		final RSProjectile projectile = this.projectile.get();
+		final RSInteractableData data = projectile != null ? projectile.getData() : null;
+		final RSInteractableLocation location = data != null ? data.getLocation() : null;
+		if (location != null) {
+			return new RelativeLocation(location.getX(), location.getY());
+		}
+		return RelativeLocation.NIL;
 	}
 }
