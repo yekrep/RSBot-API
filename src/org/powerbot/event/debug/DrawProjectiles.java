@@ -3,12 +3,13 @@ package org.powerbot.event.debug;
 import java.awt.Graphics;
 
 import org.powerbot.event.PaintListener;
+import org.powerbot.event.TextPaintListener;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.wrappers.Projectile;
 import org.powerbot.script.wrappers.Tile;
 import org.powerbot.script.wrappers.TileMatrix;
 
-public class DrawProjectiles implements PaintListener {
+public class DrawProjectiles implements PaintListener, TextPaintListener {
 	protected final MethodContext ctx;
 
 	public DrawProjectiles(final MethodContext ctx) {
@@ -30,5 +31,11 @@ public class DrawProjectiles implements PaintListener {
 
 			m.draw(render);
 		}
+	}
+
+	@Override
+	public int draw(int idx, Graphics render) {
+		DebugHelper.drawLine(render, idx++, "Projectile count: " + ctx.projectiles.size());
+		return idx;
 	}
 }
