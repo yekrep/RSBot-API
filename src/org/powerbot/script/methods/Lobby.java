@@ -487,5 +487,10 @@ public class Lobby extends MethodProvider {
 		public boolean equals(final Object o) {
 			return o instanceof World && ((World) o).number == this.number;
 		}
+
+		@Override
+		public String toString() {
+			return World.class.getSimpleName() + "[number=" + number + ",members=" + members + ",players=" + players + ",ping=" + ping + ",favorite=" + favorite + ",activity=" + activity + ",lootshare=" + lootShare + "]";
+		}
 	}
 }
