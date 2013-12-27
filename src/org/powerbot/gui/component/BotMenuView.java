@@ -90,7 +90,7 @@ public final class BotMenuView implements ActionListener {
 		map.put(MODELS, DrawModels.class);
 		map.put(SCENEENTITIES, DrawObjects.class);
 		map.put(PLAYERS, DrawPlayers.class);
-		map.put(NPCS, DrawNPCs.class);
+		map.put(NPCS, DrawNpcs.class);
 		map.put(GROUND_ITEMS, DrawGroundItems.class);
 		map.put(CLIENTSTATE, TClientState.class);
 		map.put(MENU, TMenu.class);

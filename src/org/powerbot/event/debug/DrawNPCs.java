@@ -10,10 +10,10 @@ import org.powerbot.gui.BotChrome;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.wrappers.Npc;
 
-public class DrawNPCs implements PaintListener {
+public class DrawNpcs implements PaintListener {
 	protected final MethodContext ctx;
 
-	public DrawNPCs(final MethodContext ctx) {
+	public DrawNpcs(final MethodContext ctx) {
 		this.ctx = ctx;
 	}
 
