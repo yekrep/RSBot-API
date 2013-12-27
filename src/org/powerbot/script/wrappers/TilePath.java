@@ -51,12 +51,23 @@ public class TilePath extends Path {//TODO: anti-pattern
 			}
 		}
 		last = next;
-		return ctx.movement.stepTowards(next) && (next.distanceTo(ctx.players.local()) < 5d || Condition.wait(new Callable<Boolean>() {
-			@Override
-			public Boolean call() throws Exception {
-				return ctx.players.local().isInMotion();
+		if (ctx.movement.stepTowards(next)) {
+			if (local.isInMotion()) {
+				return Condition.wait(new Callable<Boolean>() {
+					@Override
+					public Boolean call() {
+						return ctx.movement.getDestination().distanceTo(next) < 3;
+					}
+				}, Random.nextInt(40, 70), 10);
 			}
-		}, Random.nextInt(100, 150), 10));
+			return next.distanceTo(ctx.players.local()) < 5d || Condition.wait(new Callable<Boolean>() {
+				@Override
+				public Boolean call() {
+					return ctx.players.local().isInMotion();
+				}
+			}, Random.nextInt(100, 150), 10);
+		}
+		return false;
 	}
 
 	@Override
