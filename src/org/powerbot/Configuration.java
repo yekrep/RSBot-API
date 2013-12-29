@@ -26,6 +26,8 @@ public class Configuration {
 		MAC, WINDOWS, LINUX, UNKNOWN
 	}
 
+	private static final String PROTO;
+
 	public interface URLs {
 		static final boolean TESTING = false;
 
@@ -37,10 +39,10 @@ public class Configuration {
 
 		public static final String VERSION = "http://" + DOMAIN_SITE_CDN + "/rsbot/version.txt";
 
-		public static final String CLIENTPATCH = "http://" + DOMAIN_SITE_CDN + "/rsbot/ts/%s.ts";
+		public static final String CLIENTPATCH = Configuration.PROTO + DOMAIN_SITE_CDN + "/rsbot/ts/%s.ts";
 		public static final String CLIENTBUCKET = "http://buckets." + DOMAIN + "/process/?hash=%s";
-		public static final String SCRIPTSCOLLECTION = "http://" + DOMAIN_SITE + "/scripts/api/collection/?{POST}a=%s";
-		public static final String SIGNIN = "http://" + DOMAIN_SITE + "/rsbot/login/?{POST}u=%s&p=%s&a=%s";
+		public static final String SCRIPTSCOLLECTION = Configuration.PROTO + DOMAIN_SITE + "/scripts/api/collection/?{POST}a=%s";
+		public static final String SIGNIN = Configuration.PROTO + DOMAIN_SITE + "/rsbot/login/?{POST}u=%s&p=%s&a=%s";
 
 		public static final String SITE = "http://" + DOMAIN_SITE + "/";
 		public static final String REGISTER = "http://" + DOMAIN_SITE_LIVE + "/go/register";
@@ -67,6 +69,9 @@ public class Configuration {
 		} else {
 			OS = OperatingSystem.UNKNOWN;
 		}
+
+		final String jre = System.getProperty("java.version");
+		PROTO = OS == OperatingSystem.MAC && jre != null && jre.startsWith("1.6") ? "http://" : "https://";
 
 		SERVEROS = System.getProperty("os.name").indexOf("erver") != -1;
 
