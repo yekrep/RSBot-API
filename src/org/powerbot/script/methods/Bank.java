@@ -225,7 +225,7 @@ public class Bank extends ItemQuery<Item> {
 		}
 
 		final Component c = ctx.widgets.get(WIDGET, COMPONENT_BUTTON_CLOSE);
-		return c.interact("Close") & Condition.wait(new Callable<Boolean>() {
+		return c.interact("Close") && Condition.wait(new Callable<Boolean>() {
 			@Override
 			public Boolean call() throws Exception {
 				return !isOpen();
