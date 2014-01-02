@@ -495,15 +495,12 @@ public class Bank extends ItemQuery<Item> {
 	 * @return <tt>true</tt> if the withdraw mode was successfully changed; otherwise <tt>false</tt>
 	 */
 	public boolean setWithdrawMode(final boolean noted) {
-		if (isWithdrawModeNoted() != noted) {
-			final Component c = ctx.widgets.get(WIDGET, COMPONENT_BUTTON_WITHDRAW_MODE);
-			if (c != null && c.isValid() && c.click(true)) {
-				for (int i = 0; i < 20 && isWithdrawModeNoted() != noted; i++) {
-					sleep(100, 200);
-				}
+		return isWithdrawModeNoted() == noted || ctx.widgets.get(WIDGET, COMPONENT_BUTTON_WITHDRAW_MODE).click() && Condition.wait(new Callable<Boolean>() {
+			@Override
+			public Boolean call() throws Exception {
+				return isWithdrawModeNoted() == noted;
 			}
-		}
-		return isWithdrawModeNoted() == noted;
+		});
 	}
 
 	/**
