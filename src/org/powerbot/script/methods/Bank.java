@@ -440,7 +440,6 @@ public class Bank extends ItemQuery<Item> {
 		}
 		final int cache = ctx.backpack.select().count(true);
 		final Component component = item.getComponent();
-		System.out.print(action + " " + containsAction(component, action));
 		if (!containsAction(component, action)) {
 			if (component.interact("Deposit-X") && Condition.wait(new Callable<Boolean>() {
 				@Override
