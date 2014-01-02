@@ -1,7 +1,5 @@
 package org.powerbot.script.methods;
 
-import java.awt.Point;
-import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -342,37 +340,27 @@ public class Bank extends ItemQuery<Item> {
 	 * @return <tt>true</tt> if the item was withdrew, does not determine if amount was matched; otherwise <tt>false</tt>
 	 */
 	public boolean withdraw(final int id, final int amount) {//TODO: anti pattern
+		final Component component = ctx.widgets.get(WIDGET, COMPONENT_CONTAINER_ITEMS);
 		final Item item = select().id(id).poll();
-		final Component container = ctx.widgets.get(WIDGET, COMPONENT_CONTAINER_ITEMS);
-		if (!item.isValid() || !container.isValid()) {
+		if (!component.isValid() || !item.isValid()) {
 			return false;
 		}
-
 		final Component c = item.getComponent();
-		final Point p = c.getRelativeLocation();
-		if (p.y == 0) {
-			for (int i = 0; i < 5 && getCurrentTab() != 0; i++) {
-				if (!setCurrentTab(0)) {
-					sleep(100, 200);
-				}
-			}
-		}
 		if (c.getRelativeLocation().y == 0) {
-			return false;
-		}
-		final Rectangle bounds = container.getViewportRect();
-		final Component scroll = ctx.widgets.get(WIDGET, COMPONENT_SCROLL_BAR);
-		if (scroll == null || bounds == null) {
-			return false;
-		}
-		if (!bounds.contains(c.getBoundingRect())) {
-			if (ctx.widgets.scroll(c, scroll, bounds.contains(ctx.mouse.getLocation()))) {
-				sleep(200, 400);
-			}
-			if (!bounds.contains(c.getBoundingRect())) {
+			if (!setCurrentTab(0) && Condition.wait(new Callable<Boolean>() {
+				@Override
+				public Boolean call() throws Exception {
+					return c.getRelativeLocation().y != 0;
+				}
+			}, Random.nextInt(80, 120), 10)) {
 				return false;
 			}
 		}
+		if (!ctx.widgets.scroll(c, ctx.widgets.get(WIDGET, COMPONENT_SCROLL_BAR),
+				component.getViewportRect().contains(ctx.mouse.getLocation()))) {
+			return false;
+		}
+
 		String action = "Withdraw-" + amount;
 		if (amount == 0 ||
 				(item.getStackSize() <= amount && amount != 1 && amount != 5 && amount != 10)) {
@@ -380,29 +368,28 @@ public class Bank extends ItemQuery<Item> {
 		} else if (amount == -1 || amount == (item.getStackSize() - 1)) {
 			action = "Withdraw-All but one";
 		}
-
 		final int inv = ctx.backpack.getMoneyPouch() + ctx.backpack.select().count(true);
-		if (containsAction(c, action)) {
+		if (!containsAction(c, action)) {
+			if (c.interact("Withdraw-X") && Condition.wait(new Callable<Boolean>() {
+				@Override
+				public Boolean call() throws Exception {
+					return isInputWidgetOpen();
+				}
+			})) {
+				sleep(Random.nextInt(800, 1200));
+				ctx.keyboard.sendln(amount + "");
+			}
+		} else {
 			if (!c.interact(action)) {
 				return false;
 			}
-		} else {
-			if (!c.interact("Withdraw-X")) {
-				return false;
-			}
-			for (int i = 0; i < 20 && !isInputWidgetOpen(); i++) {
-				sleep(100, 200);
-			}
-			if (!isInputWidgetOpen()) {
-				return false;
-			}
-			sleep(200, 800);
-			ctx.keyboard.sendln(amount + "");
 		}
-		for (int i = 0; i < 25 && ctx.backpack.getMoneyPouch() + ctx.backpack.select().count(true) == inv; i++) {
-			sleep(100, 200);
-		}
-		return ctx.backpack.getMoneyPouch() + ctx.backpack.select().count(true) != inv;
+		return Condition.wait(new Callable<Boolean>() {
+			@Override
+			public Boolean call() throws Exception {
+				return ctx.backpack.getMoneyPouch() + ctx.backpack.select().count(true) != inv;
+			}
+		});
 	}
 
 	/**
