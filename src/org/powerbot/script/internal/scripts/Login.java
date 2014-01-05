@@ -89,7 +89,8 @@ public class Login extends PollingScript implements InternalScript {
 		if (account != null && (state == Game.INDEX_LOGIN_SCREEN || state == Game.INDEX_LOGGING_IN)) {
 			final Component error = ctx.widgets.get(WIDGET, WIDGET_LOGIN_ERROR);
 			if (error.isVisible()) {
-				if (error.getText().toLowerCase().contains("password")) {
+				if (error.getText().toLowerCase().contains("password") ||
+						error.getText().toLowerCase().contains("ended")) {
 					getController().stop();
 					return -1;
 				}
