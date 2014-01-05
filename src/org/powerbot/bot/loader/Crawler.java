@@ -80,7 +80,7 @@ public class Crawler implements Runnable {
 		}
 		parameters.remove("haveie6");
 
-		p = Pattern.compile("<(title)\\b[^>]*>([^<]+)</\\1>", Pattern.CASE_INSENSITIVE);
+		p = Pattern.compile("<(title)\\b[^>]*>\\s*([^<\\s]+)([^<]*)</\\1>", Pattern.CASE_INSENSITIVE);
 		m = p.matcher(html);
 		if (m.find()) {
 			details.put(m.group(1), m.group(2).trim());
