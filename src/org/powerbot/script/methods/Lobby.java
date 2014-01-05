@@ -52,7 +52,7 @@ public class Lobby extends MethodProvider {
 	}
 
 	/**
-	 * Logs out of RuneScape by clicking the X button in the upper-right corner of the lobby widget.
+	 * Logs out by clicking the X button in the upper-right corner of the lobby widget.
 	 *
 	 * @return <tt>true</tt> if the logout button was clicked; otherwise <tt>false</tt>.
 	 */
