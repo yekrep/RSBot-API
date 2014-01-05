@@ -193,7 +193,7 @@ public final class ScriptController implements Runnable, Validatable, Script.Con
 
 	@Override
 	public boolean isStopping() {
-		return stopping.get();
+		return stopping.get() || executor.get() == null || executor.get().isShutdown();
 	}
 
 	@Override
@@ -212,12 +212,6 @@ public final class ScriptController implements Runnable, Validatable, Script.Con
 			dispatcher.remove(s);
 		}
 		executor.get().shutdown();
-		try {
-			if (!executor.get().awaitTermination(10, TimeUnit.SECONDS)) {
-				executor.get().shutdownNow();
-			}
-		} catch (final InterruptedException ignored) {
-		}
 		executor.set(null);
 		scripts.clear();
 
