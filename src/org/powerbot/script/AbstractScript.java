@@ -164,7 +164,7 @@ public abstract class AbstractScript implements Script, Comparable<AbstractScrip
 	 */
 	@Deprecated
 	public void setContext(final MethodContext ctx) {
-		this.ctx.init(ctx);
+		this.ctx.setClient(ctx.getClient());
 	}
 
 	/**
