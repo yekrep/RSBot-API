@@ -10,7 +10,7 @@ import org.powerbot.client.RSInterface;
 import org.powerbot.client.RSInterfaceNode;
 import org.powerbot.script.internal.wrappers.HashTable;
 import org.powerbot.script.methods.MethodContext;
-import org.powerbot.script.util.Random;
+import org.powerbot.script.util.Calculations;
 import org.powerbot.util.StringUtil;
 
 public class Component extends Interactive implements Drawable, Displayable {
@@ -363,10 +363,12 @@ public class Component extends Interactive implements Drawable, Displayable {
 	@Override
 	public Point getNextPoint() {
 		final Rectangle interact = getInteractRectangle();
-		return interact.getWidth() != -1 && interact.getHeight() != -1 ? new Point(
-				Random.nextGaussian(interact.x, interact.x + interact.width, interact.width / 10),
-				Random.nextGaussian(interact.y, interact.y + interact.height, interact.height / 10)
-		) : new Point(-1, -1);
+		final int x = interact.x, y = interact.y;
+		final int w = interact.width, h = interact.height;
+		if (interact.width != -1 && interact.height != -1) {
+			return Calculations.nextPoint(interact, new Rectangle(x + w / 2, y + h / 2, w / 4, h / 4));
+		}
+		return new Point(-1, -1);
 	}
 
 	@Override
