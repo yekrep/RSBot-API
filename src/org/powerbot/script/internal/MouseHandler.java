@@ -5,6 +5,7 @@ import java.awt.Component;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
+import java.util.concurrent.TimeUnit;
 
 import org.powerbot.bot.SelectiveEventQueue;
 import org.powerbot.client.Client;
@@ -156,7 +157,7 @@ public class MouseHandler extends MethodProvider {
 				final long m = simulator.getAbsoluteDelay(v.z);
 				if (m > 0) {
 					try {
-						Thread.sleep(m);
+						Thread.sleep(TimeUnit.NANOSECONDS.toMillis(m));
 					} catch (final InterruptedException ignored) {
 					}
 				}
