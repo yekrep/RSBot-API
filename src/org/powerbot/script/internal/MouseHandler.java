@@ -5,7 +5,6 @@ import java.awt.Component;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
-import java.util.concurrent.TimeUnit;
 
 import org.powerbot.bot.SelectiveEventQueue;
 import org.powerbot.client.Client;
@@ -124,7 +123,6 @@ public class MouseHandler extends MethodProvider {
 			return;
 		}
 
-		start:
 		for (; ; ) {
 			if (++target.steps > MAX_ATTEMPTS) {
 				target.failed = true;
@@ -148,34 +146,18 @@ public class MouseHandler extends MethodProvider {
 			final Vector3 curr = target.curr;
 			final Vector3 dest = target.dest;
 
-			final Point centroid = target.targetable.getCenterPoint();
-			long m;
 			final Iterable<Vector3> spline = simulator.getPath(curr, dest);
 			for (final Vector3 v : spline) {
 				move(v.x, v.y);
 				curr.x = v.x;
 				curr.y = v.y;
 				curr.z = v.z;
+			}
 
-				m = System.nanoTime();
-				final double traverseLength = Math.sqrt(Math.pow(dest.x - curr.x, 2) + Math.pow(dest.y - curr.y, 2));
-				final double mod = 2.5 + Math.sqrt(Math.pow(dest.x - centroid.x, 2) + Math.pow(dest.y - centroid.y, 2));
-				if (traverseLength < mod) {
-					final Point pos = curr.to2DPoint();
-					if (target.targetable.contains(pos) && target.filter.accept(pos)) {
-						if (target.execute(this)) {
-							break start;
-						}
-					}
-				}
-				m = System.nanoTime() - m;
-
-				final long l = TimeUnit.NANOSECONDS.toMillis(simulator.getAbsoluteDelay(v.z) - m);
-				if (l > 0) {
-					try {
-						Thread.sleep(l);
-					} catch (InterruptedException ignored) {
-					}
+			final Point pos = curr.to2DPoint();
+			if (target.targetable.contains(pos) && target.filter.accept(pos)) {
+				if (target.execute(this)) {
+					break;
 				}
 			}
 
