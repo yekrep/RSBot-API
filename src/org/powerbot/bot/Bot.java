@@ -2,10 +2,12 @@ package org.powerbot.bot;
 
 import java.applet.Applet;
 import java.io.IOException;
+import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Logger;
 
 import org.powerbot.bot.loader.Crawler;
+import org.powerbot.bot.loader.GameClassLoader;
 import org.powerbot.bot.loader.GameLoader;
 import org.powerbot.bot.loader.GameStub;
 import org.powerbot.bot.loader.NRSLoader;
@@ -18,6 +20,7 @@ import org.powerbot.script.internal.InputHandler;
 import org.powerbot.script.internal.ScriptController;
 import org.powerbot.script.lang.Stoppable;
 import org.powerbot.script.methods.MethodContext;
+import org.powerbot.script.util.Condition;
 import org.powerbot.script.wrappers.Validatable;
 
 /**
@@ -124,7 +127,6 @@ public final class Bot implements Runnable, Stoppable, Validatable {
 		applet.start();
 		new Thread(threadGroup, dispatcher, dispatcher.getClass().getName()).start();
 
-/*
 		new Thread(threadGroup, new Runnable() {
 			@Override
 			public void run() {
@@ -138,7 +140,6 @@ public final class Bot implements Runnable, Stoppable, Validatable {
 				}
 			}
 		}).start();
- */
 
 		chrome.display(this);
 		ready.set(true);
