@@ -63,6 +63,10 @@ public final class Bot implements Runnable, Stoppable, Validatable {
 			return;
 		}
 
+		if (crawler.details.containsKey("title")) {
+			chrome.setTitle(crawler.details.get("title"));
+		}
+
 		ready.set(false);
 		final NRSLoader loader = new NRSLoader(game, classLoader);
 		loader.setCallback(new Runnable() {

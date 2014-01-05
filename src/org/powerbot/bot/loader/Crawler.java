@@ -18,13 +18,14 @@ import org.powerbot.util.io.IOHelper;
  */
 public class Crawler implements Runnable {
 	private AtomicBoolean run, passed;
-	public final Map<String, String> parameters;
+	public final Map<String, String> parameters, details;
 	public String game, archive, clazz;
 
 	public Crawler() {
 		run = new AtomicBoolean(false);
 		passed = new AtomicBoolean(false);
 		parameters = new HashMap<String, String>();
+		details = new HashMap<String, String>();
 	}
 
 	public boolean crawl() {
@@ -78,6 +79,12 @@ public class Crawler implements Runnable {
 			parameters.put(m.group(1), m.group(2));
 		}
 		parameters.remove("haveie6");
+
+		p = Pattern.compile("<(title)\\b[^>]*>([^<]+)</\\1>", Pattern.CASE_INSENSITIVE);
+		m = p.matcher(html);
+		if (m.find()) {
+			details.put(m.group(1), m.group(2).trim());
+		}
 
 		passed.set(true);
 	}
