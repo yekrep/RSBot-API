@@ -204,7 +204,7 @@ public class Sandbox extends SecurityManager {
 		return Thread.currentThread().getContextClassLoader() instanceof ScriptClassLoader;
 	}
 
-	private boolean isGameThread() {
+	public boolean isGameThread() {
 		return Thread.currentThread().getContextClassLoader() instanceof GameClassLoader;
 	}
 }
