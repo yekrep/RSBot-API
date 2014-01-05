@@ -49,9 +49,8 @@ public class BankPin extends PollingScript implements InternalScript {
 	}
 
 	private String getPin() {
-		final Bot bot = ctx.getBot();
 		final GameAccounts.Account account = GameAccounts.getInstance().get(ctx.properties.getProperty(Login.LOGIN_USER_PROPERTY));
-		if (bot != null && account != null) {
+		if (account != null) {
 			final String pin = account.getPIN();
 			if (pin != null && pin.length() == 4) {
 				return pin;
