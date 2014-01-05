@@ -10,7 +10,7 @@ public class BankPin extends PollingScript implements InternalScript {
 	private static final int SETTING_PIN_STEP = 163;
 	private static final int WIDGET = 13;
 	private static final int COMPONENT = 0;
-	private static final int COMPONENT_PIN_OFFSET = 6;
+	private static final int COMPONENT_PIN_OFFSET = 7;
 
 	public BankPin() {
 		priority.set(2);
