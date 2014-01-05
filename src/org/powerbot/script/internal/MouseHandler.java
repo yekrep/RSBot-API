@@ -152,6 +152,14 @@ public class MouseHandler extends MethodProvider {
 				curr.x = v.x;
 				curr.y = v.y;
 				curr.z = v.z;
+
+				final long m = simulator.getAbsoluteDelay(v.z);
+				if (m > 0) {
+					try {
+						Thread.sleep(m);
+					} catch (final InterruptedException ignored) {
+					}
+				}
 			}
 
 			final Point pos = curr.to2DPoint();
