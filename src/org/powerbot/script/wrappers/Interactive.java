@@ -82,8 +82,13 @@ public abstract class Interactive extends MethodProvider implements Targetable, 
 			return false;
 		}
 
-		final TileMatrix m = ctx.players.local().getLocation().getMatrix(ctx);
-		final boolean a = overshoot(m);
+		TileMatrix m;
+		if (this instanceof Locatable) {
+			m = ((Locatable) this).getLocation().getMatrix(ctx);
+		} else {
+			m = ctx.players.local().getLocation().getMatrix(ctx);
+		}
+		final boolean a = overshoot(f, m);
 
 		final Filter<Point> f2 = new Filter<Point>() {
 			@Override
@@ -97,7 +102,7 @@ public abstract class Interactive extends MethodProvider implements Targetable, 
 		}
 
 		if (a) {
-			correct(m);
+			correct(ctx.players.local().getLocation().getMatrix(ctx));
 		}
 
 		ctx.menu.close();
@@ -109,7 +114,7 @@ public abstract class Interactive extends MethodProvider implements Targetable, 
 		return true;
 	}
 
-	private boolean overshoot(final TileMatrix matrix) {
+	private boolean overshoot(final Filter<Menu.Entry> f, final TileMatrix matrix) {
 		boolean r = false;
 		if (this instanceof Renderable) {
 			for (; antipattern(this, (Renderable) this); ) {
@@ -120,7 +125,14 @@ public abstract class Interactive extends MethodProvider implements Targetable, 
 						return ctx.game.getCrosshair() == Game.Crosshair.ACTION;
 					}
 				}, 10, 20)) {
-					matrix.interact("Walk here");
+					if (!Condition.wait(new Callable<Boolean>() {
+						@Override
+						public Boolean call() throws Exception {
+							return ctx.menu.indexOf(f) == 0;
+						}
+					}, Random.nextInt(5, 10), 25)) {
+						matrix.interact("Walk here");
+					}
 				}
 			}
 		}
