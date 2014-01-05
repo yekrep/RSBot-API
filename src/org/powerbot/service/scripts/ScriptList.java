@@ -9,6 +9,7 @@ import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -235,6 +236,7 @@ public class ScriptList {
 			bot.ctx.properties.setProperty(ScriptController.TIMEOUT_PROPERTY, Long.toString(TimeUnit.HOURS.toMillis(hours)));
 		}
 
+		bot.ctx.properties.setProperty(ScriptController.LOCAL_PROPERTY, Boolean.toString(def.local));
 		bot.controller.bundle.set(new ScriptBundle(def, script));
 		bot.controller.run();
 	}

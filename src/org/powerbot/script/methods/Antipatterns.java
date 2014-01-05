@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.powerbot.script.internal.Antipattern;
+import org.powerbot.script.internal.ScriptController;
 import org.powerbot.script.internal.scripts.pattern.CameraPattern;
 import org.powerbot.script.internal.scripts.pattern.ExaminePattern;
 import org.powerbot.script.internal.scripts.pattern.WindowPattern;
@@ -55,7 +56,7 @@ public class Antipatterns extends MethodProvider implements Runnable {
 	 * @return the enabled state of antipatterns
 	 */
 	public boolean setEnabled(final boolean v) {
-		if (!ctx.getBot().controller.bundle.get().definition.local) {
+		if (Boolean.parseBoolean(ctx.properties.getProperty(ScriptController.LOCAL_PROPERTY, Boolean.toString(false)))) {
 			return false;
 		}
 		enabled.set(v);

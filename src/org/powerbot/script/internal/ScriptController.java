@@ -28,7 +28,7 @@ import org.powerbot.service.scripts.ScriptDefinition;
 import org.powerbot.util.Tracker;
 
 public final class ScriptController implements Runnable, Validatable, Script.Controller, Script.Controller.Executor<Runnable> {
-	public static final String TIMEOUT_PROPERTY = "script.timeout";
+	public static final String TIMEOUT_PROPERTY = "script.timeout", LOCAL_PROPERTY = "script.local";
 
 	private final MethodContext ctx;
 	private final EventDispatcher dispatcher;
