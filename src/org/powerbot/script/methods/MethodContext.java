@@ -13,7 +13,6 @@ import org.powerbot.script.internal.methods.Map;
 
 public class MethodContext {
 	private AtomicReference<Client> client;
-	private AtomicInteger preferredWorld;
 	private AtomicReference<Bot> bot;
 
 	/**
@@ -68,7 +67,6 @@ public class MethodContext {
 
 	public MethodContext(final Bot bot) {
 		this.client = new AtomicReference<Client>(null);
-		this.preferredWorld = new AtomicInteger(-1);
 		this.bot = new AtomicReference<Bot>(bot);
 
 		properties = new Properties();
@@ -106,7 +104,6 @@ public class MethodContext {
 
 	public MethodContext() {
 		this.client = new AtomicReference<Client>(null);
-		this.preferredWorld = new AtomicInteger(-1);
 		this.bot = new AtomicReference<Bot>(null);
 	}
 
@@ -115,7 +112,6 @@ public class MethodContext {
 			return;
 		}
 		client = ctx.client;
-		preferredWorld = ctx.preferredWorld;
 		bot = ctx.bot;
 
 		properties = ctx.properties;
