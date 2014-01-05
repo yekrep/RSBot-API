@@ -102,6 +102,11 @@ public class MethodContext {
 		map = new Map(this);
 	}
 
+	@Deprecated
+	public void init(final MethodContext ctx) {
+		setClient(ctx.getClient());
+	}
+
 	public void setClient(final Client client) {
 		this.client.set(client);
 	}
