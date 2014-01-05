@@ -63,7 +63,7 @@ public class TilePath extends Path {//TODO: anti-pattern
 			return next.distanceTo(ctx.players.local()) < 5d || Condition.wait(new Callable<Boolean>() {
 				@Override
 				public Boolean call() {
-					return ctx.players.local().isInMotion();
+					return ctx.players.local().isInMotion() && ctx.movement.getDestination().distanceTo(next) < 3;
 				}
 			}, Random.nextInt(100, 150), 10);
 		}
