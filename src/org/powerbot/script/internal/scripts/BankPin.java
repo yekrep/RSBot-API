@@ -42,7 +42,7 @@ public class BankPin extends PollingScript implements InternalScript {
 		}
 		if (ctx.widgets.get(WIDGET, v + COMPONENT_PIN_OFFSET).interact("Select")) {
 			for (int d = 0; d < 24 && i == ctx.settings.get(SETTING_PIN_STEP); d++) {
-				sleep(Random.nextInt(80, 100));
+				sleep(90);
 			}
 		}
 		return i != ctx.settings.get(SETTING_PIN_STEP) ? Random.nextInt(600, 1800) : 100;

@@ -106,7 +106,7 @@ public class Login extends PollingScript implements InternalScript {
 				if (!clickLoginInterface(ctx.widgets.get(WIDGET, WIDGET_LOGIN_USERNAME_TEXT))) {
 					return -1;
 				}
-				sleep(Random.nextInt(500, 700));
+				sleep(600);
 
 				final int length = text.length();
 				if (length > 0) {
@@ -119,7 +119,7 @@ public class Login extends PollingScript implements InternalScript {
 				}
 
 				ctx.keyboard.send(username);
-				sleep(Random.nextInt(800, 1200));
+				sleep(1000);
 				return 0;
 			}
 
@@ -128,7 +128,7 @@ public class Login extends PollingScript implements InternalScript {
 				if (!clickLoginInterface(ctx.widgets.get(WIDGET, WIDGET_LOGIN_PASSWORD_TEXT))) {
 					return -1;
 				}
-				sleep(Random.nextInt(500, 700));
+				sleep(600);
 				final int length = text.length();
 				if (length > 0) {
 					final StringBuilder b = new StringBuilder(length);
@@ -143,7 +143,7 @@ public class Login extends PollingScript implements InternalScript {
 			}
 
 			ctx.keyboard.send("\n");
-			sleep(Random.nextInt(600, 1400));
+			sleep(1200);
 			return -1;
 		}
 		return -1;//what's going on???
