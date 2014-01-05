@@ -107,46 +107,6 @@ public class MethodContext {
 		this.bot = new AtomicReference<Bot>(null);
 	}
 
-	public void init(final MethodContext ctx) {
-		if (this.client.get() != null) {
-			return;
-		}
-		client = ctx.client;
-		bot = ctx.bot;
-
-		properties = ctx.properties;
-		antipatterns = ctx.antipatterns;
-		combatBar = ctx.combatBar;
-		backpack = ctx.backpack;
-		bank = ctx.bank;
-		camera = ctx.camera;
-		chat = ctx.chat;
-		depositBox = ctx.depositBox;
-		environment = ctx.environment;
-		equipment = ctx.equipment;
-		game = ctx.game;
-		groundItems = ctx.groundItems;
-		hintArrows = ctx.hintArrows;
-		hud = ctx.hud;
-		keyboard = ctx.keyboard;
-		lobby = ctx.lobby;
-		menu = ctx.menu;
-		mouse = ctx.mouse;
-		movement = ctx.movement;
-		npcs = ctx.npcs;
-		objects = ctx.objects;
-		players = ctx.players;
-		powers = ctx.powers;
-		projectiles = ctx.projectiles;
-		settings = ctx.settings;
-		skills = ctx.skills;
-		summoning = ctx.summoning;
-		widgets = ctx.widgets;
-
-		items = ctx.items;
-		map = ctx.map;
-	}
-
 	public void setClient(final Client client) {
 		this.client.set(client);
 	}
