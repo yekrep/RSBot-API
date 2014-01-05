@@ -1,5 +1,6 @@
 package org.powerbot.script.methods;
 
+import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -356,8 +357,9 @@ public class Bank extends ItemQuery<Item> {
 				return false;
 			}
 		}
-		if (!ctx.widgets.scroll(c, ctx.widgets.get(WIDGET, COMPONENT_SCROLL_BAR),
-				component.getViewportRect().contains(ctx.mouse.getLocation()))) {
+		final Rectangle vr = component.getViewportRect();
+		if (!vr.contains(c.getViewportRect()) && !ctx.widgets.scroll(c, ctx.widgets.get(WIDGET, COMPONENT_SCROLL_BAR),
+				vr.contains(ctx.mouse.getLocation()))) {
 			return false;
 		}
 
