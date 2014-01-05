@@ -112,6 +112,7 @@ public abstract class PollingScript extends AbstractScript {
 	 *
 	 * @param millis the length of time to sleep in milliseconds
 	 */
+	@Deprecated
 	public final void sleep(final long millis) {
 		try {
 			final int min = (int) millis;
