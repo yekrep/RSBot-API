@@ -6,6 +6,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Logger;
 
+import org.powerbot.Configuration;
 import org.powerbot.bot.loader.Crawler;
 import org.powerbot.bot.loader.GameClassLoader;
 import org.powerbot.bot.loader.GameLoader;
@@ -127,19 +128,12 @@ public final class Bot implements Runnable, Stoppable, Validatable {
 		applet.start();
 		new Thread(threadGroup, dispatcher, dispatcher.getClass().getName()).start();
 
-		new Thread(threadGroup, new Runnable() {
-			@Override
-			public void run() {
-				if (Condition.wait(new Callable<Boolean>() {
-					@Override
-					public Boolean call() throws Exception {
-						return ctx.getClient().getKeyboard() != null;
-					}
-				})) {
-					ctx.keyboard.send("s");
-				}
-			}
-		}).start();
+		boolean safemode;
+		safemode = Configuration.OS == Configuration.OperatingSystem.MAC && !System.getProperty("java.version").startsWith("1.6");
+
+		if (safemode) {
+			new Thread(threadGroup, new SafeMode()).start();
+		}
 
 		chrome.display(this);
 		ready.set(true);
@@ -186,5 +180,20 @@ public final class Bot implements Runnable, Stoppable, Validatable {
 		client.setCallback(new AbstractCallback(this));
 		ctx.constants = new Constants(spec.constants);
 		ctx.inputHandler = new InputHandler(applet, client);
+	}
+
+	private final class SafeMode implements Runnable {
+
+		@Override
+		public void run() {
+			if (Condition.wait(new Callable<Boolean>() {
+				@Override
+				public Boolean call() throws Exception {
+					return ctx.getClient().getKeyboard() != null;
+				}
+			})) {
+				ctx.keyboard.send("s");
+			}
+		}
 	}
 }
