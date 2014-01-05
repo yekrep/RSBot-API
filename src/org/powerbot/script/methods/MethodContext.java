@@ -12,8 +12,8 @@ import org.powerbot.script.internal.methods.Items;
 import org.powerbot.script.internal.methods.Map;
 
 public class MethodContext {
-	private AtomicReference<Client> client;
-	private AtomicReference<Bot> bot;
+	private final AtomicReference<Client> client;
+	private final AtomicReference<Bot> bot;
 
 	/**
 	 * <p>A set of properties for the environment.</p>
@@ -29,41 +29,41 @@ public class MethodContext {
 	 *     </tr>
 	 * </table>
 	 */
-	public Properties properties;
+	public final Properties properties;
 
-	public Antipatterns antipatterns;
-	public CombatBar combatBar;
-	public Bank bank;
-	public Camera camera;
-	public Chat chat;
-	public DepositBox depositBox;
-	public Environment environment;
-	public Equipment equipment;
-	public Game game;
-	public GroundItems groundItems;
-	public HintArrows hintArrows;
-	public Hud hud;
-	public Backpack backpack;
-	public Keyboard keyboard;
-	public Lobby lobby;
-	public Menu menu;
-	public Mouse mouse;
-	public Movement movement;
-	public Npcs npcs;
-	public Objects objects;
-	public Players players;
-	public Powers powers;
-	public Projectiles projectiles;
-	public Settings settings;
-	public Skills skills;
-	public Summoning summoning;
-	public Widgets widgets;
+	public final Antipatterns antipatterns;
+	public final CombatBar combatBar;
+	public final Bank bank;
+	public final Camera camera;
+	public final Chat chat;
+	public final DepositBox depositBox;
+	public final Environment environment;
+	public final Equipment equipment;
+	public final Game game;
+	public final GroundItems groundItems;
+	public final HintArrows hintArrows;
+	public final Hud hud;
+	public final Backpack backpack;
+	public final Keyboard keyboard;
+	public final Lobby lobby;
+	public final Menu menu;
+	public final Mouse mouse;
+	public final Movement movement;
+	public final Npcs npcs;
+	public final Objects objects;
+	public final Players players;
+	public final Powers powers;
+	public final Projectiles projectiles;
+	public final Settings settings;
+	public final Skills skills;
+	public final Summoning summoning;
+	public final Widgets widgets;
 
 	public Constants constants;
 	public InputHandler inputHandler;
 
-	Items items;
-	Map map;
+	final Items items;
+	final Map map;
 
 	public MethodContext(final Bot bot) {
 		this.client = new AtomicReference<Client>(null);
@@ -100,11 +100,6 @@ public class MethodContext {
 
 		items = new Items(this);
 		map = new Map(this);
-	}
-
-	public MethodContext() {
-		this.client = new AtomicReference<Client>(null);
-		this.bot = new AtomicReference<Bot>(null);
 	}
 
 	public void setClient(final Client client) {
