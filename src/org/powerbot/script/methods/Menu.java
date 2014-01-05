@@ -18,6 +18,7 @@ import org.powerbot.script.lang.Filter;
 import org.powerbot.script.util.Condition;
 import org.powerbot.script.util.Random;
 import org.powerbot.util.StringUtil;
+import org.powerbot.util.math.Vector2;
 
 /**
  * Utilities pertaining to the in-game menu.
@@ -239,9 +240,17 @@ public class Menu extends MethodProvider {
 	}
 
 	private Point hoverSub(final Client client, final int main, final int sub) {
-		if (ctx.mouse.move(
+		Vector2 dv = new Vector2(
 				client.getMenuX() + Random.nextInt(4, client.getMenuWidth() - 5),
-				client.getMenuY() + (21 + 16 * main + Random.nextInt(2, 15)))) {
+				client.getMenuY() + (21 + 16 * main + Random.nextInt(2, 15))
+		);
+		Vector2 mv = new Vector2(ctx.mouse.getLocation());
+		if (mv.get2DDistanceTo(dv) > 200) {
+			Vector2 div = dv.add(mv.mul(-1d));
+			div = div.mul(Random.nextDouble(0.45, 0.55));
+			ctx.mouse.move(mv.add(div).to2DPoint());
+		}
+		if (ctx.mouse.move(dv.to2DPoint())) {
 			sleep(Random.nextInt(125, 175));
 			if (client.isMenuOpen()) {
 				final Point p = ctx.mouse.getLocation();
