@@ -298,7 +298,7 @@ public class Bank extends ItemQuery<Item> {
 	 * @return <tt>true</tt> if the tab was successfully changed; otherwise <tt>false</tt>
 	 */
 	public boolean setCurrentTab(final int index) {
-		final Component c = ctx.widgets.get(WIDGET, 35 - (index * 2));
+		final Component c = ctx.widgets.get(WIDGET, 37 - (index * 2));
 		return c.click() && Condition.wait(new Callable<Boolean>() {
 			@Override
 			public Boolean call() throws Exception {
@@ -314,7 +314,7 @@ public class Bank extends ItemQuery<Item> {
 	 * @return the {@link Item} displayed in the tab; otherwise {@link org.powerbot.script.methods.Bank#getNil()}
 	 */
 	public Item getTabItem(final int index) {
-		final Component c = ctx.widgets.get(WIDGET, 82 - (index * 2));
+		final Component c = ctx.widgets.get(WIDGET, 37 - (index * 2));
 		if (c != null && c.isValid()) {
 			return new Item(ctx, c);
 		}
