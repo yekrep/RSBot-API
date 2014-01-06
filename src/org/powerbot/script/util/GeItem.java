@@ -21,7 +21,6 @@ import org.powerbot.util.io.IOHelper;
  */
 public class GeItem {
 	private final static Map<Integer, GeItem> cache = new ConcurrentHashMap<Integer, GeItem>();
-	private final static String PAGE = "http://" + Configuration.URLs.GAME_SERVICES_DOMAIN + "/m=itemdb_rs/api/catalogue/detail.json?item=%s";
 	private final int id;
 	private final URL icons[];
 	private final String category, name, description;
@@ -36,8 +35,13 @@ public class GeItem {
 	 * @throws IOException
 	 */
 	private GeItem(final int id) throws IOException {
-		final String txt = IOHelper.readString(HttpClient.openStream(String.format(PAGE, StringUtil.urlEncode(Integer.toString(id)))));
+		final String txt = download(id);
 
+		if (txt == null || txt.isEmpty()) {
+			throw new IOException();
+		}
+
+		System.out.println(txt);
 		this.id = Integer.parseInt(getValue(txt, "id"));
 
 		icons = new URL[2];
@@ -58,11 +62,37 @@ public class GeItem {
 		changes = new HashMap<ChangeType, Change>(ChangeType.values().length);
 
 		for (final ChangeType t : ChangeType.values()) {
-			final String part = txt.substring(txt.indexOf(t.name().toLowerCase()));
+			final String n = t.name().toLowerCase();
+			int z = txt.indexOf(n);
+			z = z == -1 ? txt.indexOf(n.replace("day", "days")) : z;
+			final String part = txt.substring(z);
 			changes.put(t, new Change(t, trendAsInt(getValue(part, "trend")), Double.parseDouble(getValue(part, "change").replace("%", ""))));
 		}
 
 		members = Boolean.parseBoolean(getValue(txt, "members"));
+	}
+
+	private static String download(final int id) {
+		final String[] urls = {
+				"http://api.rsapi.org/ge/item/%s.json",
+				"http://api.rsapi.net/ge/item/%s.json",
+				"http://" + Configuration.URLs.GAME_SERVICES_DOMAIN + "/m=itemdb_rs/api/catalogue/detail.json?item=%s",
+		};
+
+		for (final String url : urls) {
+			final String txt;
+			try {
+				txt = IOHelper.readString(HttpClient.openStream(String.format(url, StringUtil.urlEncode(Integer.toString(id)))));
+			} catch (final IOException ignored) {
+				continue;
+			}
+
+			if (!txt.isEmpty()) {
+				return txt;
+			}
+		}
+
+		return "";
 	}
 
 	private static String getValue(final String json, final String k) {
@@ -75,7 +105,7 @@ public class GeItem {
 		if (s.length() > 1 && s.charAt(0) == '"' && s.charAt(s.length() - 1) == s.charAt(0)) {
 			s = s.substring(1, s.length() - 2);
 		}
-		return s;
+		return s.replace("\\/", "/");
 	}
 
 	private static int formatPrice(String s) {
