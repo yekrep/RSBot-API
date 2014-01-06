@@ -7,18 +7,26 @@ import java.awt.image.BufferedImage;
 import org.powerbot.bot.Bot;
 import org.powerbot.bot.EventCallback;
 import org.powerbot.bot.SelectiveEventQueue;
+import org.powerbot.event.EventDispatcher;
+import org.powerbot.event.PaintEvent;
+import org.powerbot.event.TextPaintEvent;
 import org.powerbot.gui.BotChrome;
 
 @SuppressWarnings("unused")
 public class Canvas extends java.awt.Canvas {
 	private static final long serialVersionUID = -2284879212465893870L;
 	private BufferedImage real, clean;
+	private final PaintEvent paintEvent;
+	private final TextPaintEvent textPaintEvent;
 	private final Bot bot;
 
 	public Canvas() {
 		bot = BotChrome.getInstance().getBot();
 		final SelectiveEventQueue queue = SelectiveEventQueue.getInstance();
 		SelectiveEventQueue.pushSelectiveQueue();
+
+		paintEvent = new PaintEvent();
+		textPaintEvent = new TextPaintEvent();
 
 		queue.block(this, new EventCallback() {
 			@Override
@@ -33,8 +41,8 @@ public class Canvas extends java.awt.Canvas {
 
 	@Override
 	public Graphics getGraphics() {
-		/* If not in safemode, function normally. */
-		if (bot.ctx.game.toolkit.graphicsIndex != 0) {
+		// only use this buffering on safe mode where overlay is not supported
+		if (bot.ctx.game.toolkit.graphicsIndex != 0 || BotChrome.getInstance().overlay.supported) {
 			return super.getGraphics();
 		}
 
@@ -45,8 +53,18 @@ public class Canvas extends java.awt.Canvas {
 		//Now, we can get the graphics of the real (replaced) image we're working with to draw on.
 		//This was wiped clean by being returned and painted on by the game engine.
 		final Graphics g = real.getGraphics();
-		//TODO: fire paint on g
-		g.drawString("Testing buffer", 5, 20);
+
+		final EventDispatcher m = bot.dispatcher;
+		paintEvent.graphics = g;
+		textPaintEvent.graphics = g;
+		textPaintEvent.id = 0;
+		try {
+			m.consume(paintEvent);
+			m.consume(textPaintEvent);
+		} catch (final Exception e) {
+			e.printStackTrace();
+		}
+
 		//Paint our image onto the original graphics so it is displayed to the user.
 		super.getGraphics().drawImage(real, 0, 0, null);
 		//Give the game our graphics to give us a clean slate (this is what the game paints to).
