@@ -41,7 +41,7 @@ public final class Bot implements Runnable, Stoppable, Validatable {
 	public Bot(final BotChrome chrome) {
 		this.chrome = chrome;
 		threadGroup = new ThreadGroup(GROUP);
-		ctx = new MethodContext(this);
+		ctx = MethodContext.newContext(this);
 		dispatcher = new EventDispatcher();
 		controller = new ScriptController(ctx, dispatcher);
 		ready = new AtomicBoolean(false);
