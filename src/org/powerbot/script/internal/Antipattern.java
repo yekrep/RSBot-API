@@ -1,9 +1,9 @@
 package org.powerbot.script.internal;
 
+import java.security.SecureRandom;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import ec.util.MersenneTwister;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.methods.MethodProvider;
 import org.powerbot.script.wrappers.Validatable;
@@ -24,7 +24,9 @@ public abstract class Antipattern extends MethodProvider implements Runnable, Va
 	public Antipattern(final MethodContext factory) {
 		super(factory);
 		freq = new AtomicInteger(5);
-		r = new MersenneTwister();
+		final SecureRandom sr = new SecureRandom();
+		sr.setSeed(sr.generateSeed(20));
+		r = sr;
 	}
 
 	/**

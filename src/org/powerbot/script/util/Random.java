@@ -1,13 +1,14 @@
 package org.powerbot.script.util;
 
-import ec.util.MersenneTwister;
-import org.powerbot.util.math.HardwareSimulator;
+import java.security.SecureRandom;
 
 public class Random {
 	private static final java.util.Random random;
 
 	static {
-		random = new MersenneTwister(HardwareSimulator.getRandomSeed() & Integer.MAX_VALUE);
+		final SecureRandom r = new SecureRandom();
+		r.setSeed(r.generateSeed(20));
+		random = r;
 	}
 
 	/**
