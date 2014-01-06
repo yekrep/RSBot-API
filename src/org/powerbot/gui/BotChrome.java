@@ -240,7 +240,7 @@ public class BotChrome extends JFrame implements Closeable {
 		}
 		add(bot.applet);
 		bot.applet.setSize(panel.getSize());
-		overlay.setVisible(bot.applet != null);
+		overlay.setVisible(bot.applet != null && overlay.supported);
 		invalidate();
 		repaint();
 	}

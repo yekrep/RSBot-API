@@ -9,6 +9,7 @@ import java.awt.Insets;
 import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
+import java.util.logging.Logger;
 
 import javax.swing.JDialog;
 import javax.swing.JPanel;
@@ -24,6 +25,7 @@ import org.powerbot.gui.BotChrome;
  * @author Paris
  */
 public class BotOverlay extends JDialog {
+	private static final Logger log = Logger.getLogger(BotOverlay.class.getName());
 	private final BotChrome parent;
 	private final JPanel panel;
 	private final Thread repaint;
@@ -31,6 +33,8 @@ public class BotOverlay extends JDialog {
 	private final boolean offsetMenu;
 	private final PaintEvent paintEvent;
 	private final TextPaintEvent textPaintEvent;
+
+	public boolean supported;
 
 	public BotOverlay(final BotChrome parent) {
 		super(parent);
@@ -40,7 +44,16 @@ public class BotOverlay extends JDialog {
 		setUndecorated(true);
 		getRootPane().setOpaque(false);
 		getContentPane().setBackground(a);
-		setBackground(a);
+
+		boolean supported = true;
+		try {
+			setBackground(a);
+		} catch (final UnsupportedOperationException ignored) {
+			log.severe("Transparency is not supported on your system (for paint)");
+			supported = false;
+		}
+		this.supported = supported;
+
 		setFocusableWindowState(false);
 		setVisible(false);
 
