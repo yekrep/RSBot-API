@@ -118,7 +118,10 @@ public class BotOverlay extends JDialog {
 				}
 			}
 		});
-		repaint.start();
+
+		if (supported) {
+			repaint.start();
+		}
 	}
 
 	public void adjustSize() {
