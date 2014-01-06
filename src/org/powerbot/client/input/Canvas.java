@@ -1,15 +1,22 @@
 package org.powerbot.client.input;
 
 import java.awt.AWTEvent;
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
 
+import org.powerbot.bot.Bot;
 import org.powerbot.bot.EventCallback;
 import org.powerbot.bot.SelectiveEventQueue;
+import org.powerbot.gui.BotChrome;
 
 @SuppressWarnings("unused")
 public class Canvas extends java.awt.Canvas {
 	private static final long serialVersionUID = -2284879212465893870L;
+	private BufferedImage real, clean;
+	private final Bot bot;
 
 	public Canvas() {
+		bot = BotChrome.getInstance().getBot();
 		final SelectiveEventQueue queue = SelectiveEventQueue.getInstance();
 		SelectiveEventQueue.pushSelectiveQueue();
 
@@ -21,6 +28,41 @@ public class Canvas extends java.awt.Canvas {
 
 		if (queue.isBlocking()) {
 			queue.focus();
+		}
+	}
+
+	@Override
+	public Graphics getGraphics() {
+		/* If not in safemode, function normally. */
+		if (bot.ctx.game.toolkit.graphicsIndex != 0) {
+			return super.getGraphics();
+		}
+
+		//First and foremost, we need to keep our hands on a clean copy.
+		//Store the clean game image via draw.
+		clean.getGraphics().drawImage(real, 0, 0, null);
+
+		//Now, we can get the graphics of the real (replaced) image we're working with to draw on.
+		//This was wiped clean by being returned and painted on by the game engine.
+		final Graphics g = real.getGraphics();
+		//TODO: fire paint on g
+		g.drawString("Testing buffer", 5, 20);
+		//Paint our image onto the original graphics so it is displayed to the user.
+		super.getGraphics().drawImage(real, 0, 0, null);
+		//Give the game our graphics to give us a clean slate (this is what the game paints to).
+		//Perhaps we should do g.drawImage(real, 0, 0, null) to give
+		//the engine a blank image again after we painted with it to avoid
+		//detection via raster sniffing.  Just a thought.
+		return g;
+	}
+
+	@Override
+	public void setSize(final int width, final int height) {
+		super.setSize(width, height);
+		//Keep the images in-line with the size of the component.
+		if (real == null || real.getWidth() != width || real.getHeight() != height) {
+			real = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+			clean = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 		}
 	}
 }
