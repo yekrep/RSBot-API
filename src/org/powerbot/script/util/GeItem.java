@@ -3,12 +3,11 @@ package org.powerbot.script.util;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-import com.eclipsesource.json.JsonObject;
-import com.eclipsesource.json.JsonValue;
 import org.powerbot.Configuration;
 import org.powerbot.util.StringUtil;
 import org.powerbot.util.io.HttpClient;
@@ -38,46 +37,45 @@ public class GeItem {
 	 */
 	private GeItem(final int id) throws IOException {
 		final String txt = IOHelper.readString(HttpClient.openStream(String.format(PAGE, StringUtil.urlEncode(Integer.toString(id)))));
-		final JsonObject json = JsonObject.readFrom(txt).get("item").asObject();
 
-		this.id = json.get("id").asInt();
+		this.id = Integer.parseInt(getValue(txt, "id"));
 
 		icons = new URL[2];
-		icons[0] = new URL(json.get("icon").asString());
-		icons[1] = new URL(json.get("icon_large").asString());
+		icons[0] = new URL(getValue(txt, "icon"));
+		icons[1] = new URL(getValue(txt, "icon_large"));
 
-		category = json.get("type").asString();
-		name = json.get("name").asString();
-		description = json.get("description").asString();
-
-		final List<String> names = json.names();
+		category = getValue(txt, "type");
+		name = getValue(txt, "name");
+		description = getValue(txt, "description");
 
 		prices = new HashMap<PriceType, Price>(PriceType.values().length);
 
 		for (final PriceType t : PriceType.values()) {
-			final String n = t.name().toLowerCase();
-			if (names.contains(n)) {
-				final JsonObject c = json.get(n).asObject();
-				prices.put(t, new Price(t, trendAsInt(c.get("trend").asString()), parsePrice(c.get("price"))));
-			}
+			final String part = txt.substring(txt.indexOf(t.name().toLowerCase()));
+			prices.put(t, new Price(t, trendAsInt(getValue(part, "trend")), formatPrice(getValue(part, "price"))));
 		}
 
 		changes = new HashMap<ChangeType, Change>(ChangeType.values().length);
 
 		for (final ChangeType t : ChangeType.values()) {
-			final String n = t.name().toLowerCase();
-			if (names.contains(n)) {
-				final JsonObject c = json.get(n).asObject();
-				changes.put(t, new Change(t, trendAsInt(c.get("trend").asString()), Double.parseDouble(c.get("change").asString().replace("%", ""))));
-			}
+			final String part = txt.substring(txt.indexOf(t.name().toLowerCase()));
+			changes.put(t, new Change(t, trendAsInt(getValue(part, "trend")), Double.parseDouble(getValue(part, "change").replace("%", ""))));
 		}
 
-		final JsonValue v = json.get("members");
-		members = json.isBoolean() ? v.asBoolean() : v.asString().equals("true");
+		members = Boolean.parseBoolean(getValue(txt, "members"));
 	}
 
-	private static int parsePrice(final JsonValue v) {
-		return v.isString() ? formatPrice(v.asString()) : v.isNumber() ? v.asInt() : 0;
+	private static String getValue(final String json, final String k) {
+		final Pattern p = Pattern.compile("\"\\Q" + k + "\\E\"\\s*:\\s*(\\d+|true|false|null|\\[[^\\]]*\\]|\"[^\\\"]*\")", Pattern.DOTALL | Pattern.CASE_INSENSITIVE);
+		final Matcher m = p.matcher(json);
+		if (!m.find()) {
+			return "";
+		}
+		String s = m.group(1);
+		if (s.length() > 1 && s.charAt(0) == '"' && s.charAt(s.length() - 1) == s.charAt(0)) {
+			s = s.substring(1, s.length() - 2);
+		}
+		return s;
 	}
 
 	private static int formatPrice(String s) {
