@@ -1,4 +1,4 @@
-package com.timer.rs.os.loader;
+package org.powerbot.os.loader;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;

@@ -1,4 +1,4 @@
-package com.timer.rs.os.loader;
+package org.powerbot.os.loader;
 
 import org.powerbot.bot.loader.transform.TransformSpec;
 

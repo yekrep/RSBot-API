@@ -1,10 +1,10 @@
-package com.timer.rs.os;
+package org.powerbot.os;
 
-import com.timer.rs.os.client.Client;
-import com.timer.rs.os.loader.Crawler;
-import com.timer.rs.os.loader.GameLoader;
-import com.timer.rs.os.loader.GameStub;
-import com.timer.rs.os.loader.OSRSLoader;
+import org.powerbot.os.client.Client;
+import org.powerbot.os.loader.Crawler;
+import org.powerbot.os.loader.GameLoader;
+import org.powerbot.os.loader.GameStub;
+import org.powerbot.os.loader.OSRSLoader;
 
 import javax.swing.*;
 import java.applet.Applet;
