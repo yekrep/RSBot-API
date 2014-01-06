@@ -2,7 +2,6 @@ package org.powerbot.os.client;
 
 import java.applet.Applet;
 import java.awt.Dimension;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.powerbot.os.loader.Crawler;
@@ -15,7 +14,7 @@ import org.powerbot.os.ui.BotChrome;
  * @author Paris
  */
 public class Bot implements Runnable {
-	private static final Logger log = Logger.getLogger(Bot.class.getName());
+	private static final Logger log = Logger.getLogger(Bot.class.getSimpleName());
 	private final BotChrome chrome;
 	private Applet applet;
 	private Client client;

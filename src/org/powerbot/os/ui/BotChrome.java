@@ -17,7 +17,7 @@ import org.powerbot.os.client.Bot;
  * @author Paris
  */
 public class BotChrome extends JFrame implements Closeable {
-	private static final Logger log = Logger.getLogger(BotChrome.class.getName());
+	private static final Logger log = Logger.getLogger(BotChrome.class.getSimpleName());
 
 	public BotChrome() {
 		setTitle("RSBot");
