@@ -35,7 +35,8 @@ public class GeItem {
 	 * @throws IOException
 	 */
 	private GeItem(final int id) throws IOException {
-		final String txt = download(id);
+		final String url = "http://" + Configuration.URLs.GAME_SERVICES_DOMAIN + "/m=itemdb_rs/api/catalogue/detail.json?item=%s";
+		final String txt = IOHelper.readString(HttpClient.openStream(String.format(url, StringUtil.urlEncode(Integer.toString(id)))));
 
 		if (txt == null || txt.isEmpty() || txt.equals("[]") || txt.equals("{}")) {
 			throw new IOException();
@@ -69,29 +70,6 @@ public class GeItem {
 		}
 
 		members = Boolean.parseBoolean(getValue(txt, "members"));
-	}
-
-	private static String download(final int id) {
-		final String[] urls = {
-				"http://api.rsapi.org/ge/item/%s.json",
-				"http://api.rsapi.net/ge/item/%s.json",
-				"http://" + Configuration.URLs.GAME_SERVICES_DOMAIN + "/m=itemdb_rs/api/catalogue/detail.json?item=%s",
-		};
-
-		for (final String url : urls) {
-			final String txt;
-			try {
-				txt = IOHelper.readString(HttpClient.openStream(String.format(url, StringUtil.urlEncode(Integer.toString(id)))));
-			} catch (final IOException ignored) {
-				continue;
-			}
-
-			if (!txt.isEmpty()) {
-				return txt;
-			}
-		}
-
-		return "";
 	}
 
 	private static String getValue(final String json, final String k) {
