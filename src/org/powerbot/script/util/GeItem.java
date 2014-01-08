@@ -21,6 +21,7 @@ import org.powerbot.util.io.IOHelper;
  */
 public class GeItem {
 	private final static Map<Integer, GeItem> cache = new ConcurrentHashMap<Integer, GeItem>();
+	private final static Map<Integer, Integer> quotes = new ConcurrentHashMap<Integer, Integer>();
 	private final int id;
 	private final URL icons[];
 	private final String category, name, description;
@@ -130,6 +131,42 @@ public class GeItem {
 			cache.put(id, ge);
 		}
 		return ge;
+	}
+
+	/**
+	 * Returns the spot (current) price for an item.
+	 *
+	 * @param id the item ID to query
+	 * @return the quote or {@code -1} if none was found
+	 */
+	public static synchronized int getPrice(final int id) {
+		if (quotes.containsKey(id)) {
+			return quotes.get(id);
+		}
+		if (cache.containsKey(id)) {
+			final int p = cache.get(id).getPrice(PriceType.CURRENT).getPrice();
+			quotes.put(id, p);
+			return p;
+		}
+
+		int p = -1;
+		try {
+			final String txt = IOHelper.readString(HttpClient.openStream(new URL(String.format("http://api.rsapi.org/ge/item/%s.json", Integer.toString(id)))));
+			if (txt != null && !txt.isEmpty()) {
+				final String s = getValue(txt, "exact");
+				if (!s.isEmpty()) {
+					try {
+						p = Integer.parseInt(s);
+					} catch (final NumberFormatException ignored) {
+					}
+				}
+			}
+		} catch (final IOException ignored) {
+			p = getProfile(id).getPrice(PriceType.CURRENT).getPrice();
+		}
+
+		quotes.put(id, p);
+		return p;
 	}
 
 	/**
