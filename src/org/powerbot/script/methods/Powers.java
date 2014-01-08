@@ -213,7 +213,7 @@ public class Powers extends MethodProvider {
 	 * @return the current prayer book
 	 */
 	public int getPrayerBook() {
-		return ctx.settings.get(SETTING_PRAYER_BOOK) % 2;
+		return ctx.settings.get(SETTING_PRAYER_BOOK) % 2 != 0 ? BOOK_CURSES : BOOK_PRAYERS;
 	}
 
 	/**
