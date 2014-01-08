@@ -81,7 +81,7 @@ public class GeItem {
 		}
 		String s = m.group(1);
 		if (s.length() > 1 && s.charAt(0) == '"' && s.charAt(s.length() - 1) == s.charAt(0)) {
-			s = s.substring(1, s.length() - 2);
+			s = s.substring(1, s.length() - 1);
 		}
 		return s.replace("\\/", "/");
 	}
