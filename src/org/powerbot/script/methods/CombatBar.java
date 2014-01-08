@@ -31,6 +31,7 @@ public class CombatBar extends IdQuery<Action> {
 	public static final int COMPONENT_SLOT_ACTION = 97;
 	public static final int COMPONENT_SLOT_COOL_DOWN = 98;
 	public static final int COMPONENT_SLOT_BIND = 100;
+	public static final int COMPONENT_SLOT_LENGTH = 6;
 
 	public CombatBar(final MethodContext factory) {
 		super(factory);
