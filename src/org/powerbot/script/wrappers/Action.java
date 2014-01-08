@@ -33,7 +33,7 @@ public class Action extends MethodProvider implements Identifiable, Validatable,
 	}
 
 	public String getBind() {
-		final Component c = ctx.widgets.get(CombatBar.WIDGET, CombatBar.COMPONENT_SLOT_BIND + slot * 5);
+		final Component c = ctx.widgets.get(CombatBar.WIDGET, CombatBar.COMPONENT_SLOT_BIND + slot * 6);
 		return c.getText().trim();
 	}
 
@@ -50,8 +50,8 @@ public class Action extends MethodProvider implements Identifiable, Validatable,
 	}
 
 	public boolean isReady() {
-		final Component cooldown = ctx.widgets.get(CombatBar.WIDGET, CombatBar.COMPONENT_SLOT_COOL_DOWN + slot * 5);
-		final Component action = ctx.widgets.get(CombatBar.WIDGET, CombatBar.COMPONENT_SLOT_ACTION + slot * 5);
+		final Component cooldown = ctx.widgets.get(CombatBar.WIDGET, CombatBar.COMPONENT_SLOT_COOL_DOWN + slot * 6);
+		final Component action = ctx.widgets.get(CombatBar.WIDGET, CombatBar.COMPONENT_SLOT_ACTION + slot * 6);
 		return isValid() && !cooldown.isVisible() && action.getTextColor() == 0xFFFFFF;
 	}
 
@@ -60,7 +60,7 @@ public class Action extends MethodProvider implements Identifiable, Validatable,
 	 */
 	@Override
 	public Component getComponent() {
-		return ctx.widgets.get(CombatBar.WIDGET, CombatBar.COMPONENT_SLOT_ACTION + slot * 5);
+		return ctx.widgets.get(CombatBar.WIDGET, CombatBar.COMPONENT_SLOT_ACTION + slot * 6);
 	}
 
 	@Override
