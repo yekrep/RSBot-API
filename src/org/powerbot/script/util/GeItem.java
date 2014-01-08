@@ -41,7 +41,6 @@ public class GeItem {
 			throw new IOException();
 		}
 
-		System.out.println(txt);
 		this.id = Integer.parseInt(getValue(txt, "id"));
 
 		icons = new URL[2];
