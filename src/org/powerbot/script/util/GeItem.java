@@ -37,7 +37,7 @@ public class GeItem {
 	private GeItem(final int id) throws IOException {
 		final String txt = download(id);
 
-		if (txt == null || txt.isEmpty()) {
+		if (txt == null || txt.isEmpty() || txt.equals("[]") || txt.equals("{}")) {
 			throw new IOException();
 		}
 
