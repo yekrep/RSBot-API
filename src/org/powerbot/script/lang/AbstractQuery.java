@@ -229,6 +229,16 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends Me
 	}
 
 	/**
+	 * Retrieves, but does not remove, the first item in the query cache, or returns the value of {@link #getNil()} if it is empty.
+	 *
+	 * @return the first item in the query cache, or the value of {@link #getNil()} if it is empty
+	 */
+	public K peek() {
+		final List<K> items = this.items.get();
+		return items.isEmpty() ? getNil() : items.get(0);
+	}
+
+	/**
 	 * Enumerates through each item in the query cache.
 	 *
 	 * @param c the handler for each iteration
