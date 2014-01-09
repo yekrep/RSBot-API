@@ -209,9 +209,25 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends Me
 	 */
 	@Override
 	public Iterator<K> iterator() {
-		return items.get().iterator();
-	}
+		final Iterator<K> i = items.get().iterator();
 
+		return new Iterator<K>() {
+			@Override
+			public boolean hasNext() {
+				return i.hasNext();
+			}
+
+			@Override
+			public K next() {
+				return hasNext() ? i.next() : getNil();
+			}
+
+			@Override
+			public void remove() {
+				i.remove();
+			}
+		};
+	}
 
 	/**
 	 * Retrieves and removes the first item in the query cache, or returns the value of {@link #getNil()} if it is empty.
