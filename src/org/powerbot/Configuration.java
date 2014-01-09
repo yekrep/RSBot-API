@@ -73,7 +73,7 @@ public class Configuration {
 		final String jre = System.getProperty("java.version");
 		PROTO = OS == OperatingSystem.MAC && jre != null && jre.startsWith("1.6") ? "http://" : "https://";
 
-		SERVEROS = System.getProperty("os.name").indexOf("erver") != -1;
+		SERVEROS = System.getProperty("os.name").contains("erver");
 
 		if (OS == OperatingSystem.WINDOWS) {
 			HOME = new File(System.getenv("APPDATA"), NAME);
