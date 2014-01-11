@@ -3,6 +3,7 @@ package org.powerbot.gui.component;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Insets;
@@ -91,6 +92,16 @@ public class BotOverlay extends JDialog {
 			@Override
 			public void run() {
 				while (!Thread.interrupted()) {
+					try {
+						Thread.sleep(40);
+					} catch (final InterruptedException ignored) {
+						break;
+					}
+
+					if (!parent.isVisible() || (parent.getExtendedState() & Frame.ICONIFIED) == Frame.ICONIFIED) {
+						continue;
+					}
+
 					final Bot b = parent.getBot();
 					final EventDispatcher m;
 					if (b != null && (m = b.dispatcher) != null) {
@@ -111,7 +122,6 @@ public class BotOverlay extends JDialog {
 
 					try {
 						repaint();
-						Thread.sleep(40);
 					} catch (final Exception ignored) {
 						break;
 					}
