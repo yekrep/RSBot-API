@@ -1,7 +1,12 @@
 package org.powerbot.script.methods;
 
+import java.util.concurrent.Callable;
+
 import org.powerbot.script.lang.Filter;
+import org.powerbot.script.util.Condition;
+import org.powerbot.script.util.Random;
 import org.powerbot.script.wrappers.Actor;
+import org.powerbot.script.wrappers.ChatOption;
 import org.powerbot.script.wrappers.Component;
 import org.powerbot.script.wrappers.Npc;
 import org.powerbot.script.wrappers.Player;
@@ -87,12 +92,24 @@ public class Summoning extends MethodProvider {
 					ctx.backpack.select().id(ctx.settings.get(SETTING_POUCH_ID)).count() > 0 && c.interact(action);
 		}
 		if (Option.DISMISS.getText().toLowerCase().contains(action.toLowerCase())) {
-			if (c.interact(action)) {
-				final Component c2 = ctx.widgets.get(1188, 2);
-				for (int i = 0; i < 50 && !c2.isValid(); i++) {
-					sleep(20);
+			if (c.interact(action) && Condition.wait(new Callable<Boolean>() {
+				@Override
+				public Boolean call() throws Exception {
+					return ctx.chat.select().text("Yes").isEmpty();
 				}
-				return c2.click(true);
+			})) {
+				final ChatOption o = ctx.chat.poll();
+				if (o.select(Random.nextBoolean())) {
+					sleep(100, 800);
+					if (o.select(Random.nextBoolean())) {
+						return Condition.wait(new Callable<Boolean>() {
+							@Override
+							public Boolean call() throws Exception {
+								return !isFamiliarSummoned();
+							}
+						}, Random.nextInt(550, 650), Random.nextInt(4, 12));
+					}
+				}
 			}
 			return false;
 		}
