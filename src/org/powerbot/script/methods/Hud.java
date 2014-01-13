@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
 import org.powerbot.script.wrappers.Component;
+import org.powerbot.script.wrappers.FloatingMessage;
 
 /**
  * Utilities for manipulating the hud.
@@ -289,6 +290,12 @@ public class Hud extends MethodProvider {
 			}
 		}
 		return !isOpen(window);
+	}
+
+	public FloatingMessage getFloatingMessage() {
+		final Component c = ctx.widgets.get(1177, 0);
+		final Component type = c.getChild(0), text = c.getChild(9);
+		return new FloatingMessage(text.getText(), type.getTextureId());
 	}
 
 	private boolean isViewable(final Window window) {
