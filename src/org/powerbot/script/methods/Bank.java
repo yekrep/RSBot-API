@@ -205,7 +205,7 @@ public class Bank extends ItemQuery<Item> {
 		if (action != null ? interactive.interact(actions[index], options[index]) :
 				interactive.interact(new Filter<Menu.Entry>() {
 					@Override
-					public boolean accept(Menu.Entry entry) {
+					public boolean accept(final Menu.Entry entry) {
 						final String s = entry.action;
 						return s.equalsIgnoreCase("Use") || s.equalsIgnoreCase("Open") || s.equalsIgnoreCase("Bank");
 					}

@@ -118,20 +118,20 @@ public class Area {
 		 * @return The centroid of the polygon.
 		 */
 
-		public static Point getCenter(Polygon pg) {
+		public static Point getCenter(final Polygon pg) {
 			if (pg == null) {
 				return null;
 			}
 
-			int N = pg.npoints;
-			Point[] polygon = new Point[N];
+			final int N = pg.npoints;
+			final Point[] polygon = new Point[N];
 
 			for (int q = 0; q < N; q++) {
 				polygon[q] = new Point(pg.xpoints[q], pg.ypoints[q]);
 			}
 
 			double cx = 0, cy = 0;
-			double A = getArea(polygon, N);
+			final double A = getArea(polygon, N);
 			int i, j;
 
 			double factor;
@@ -155,7 +155,7 @@ public class Area {
 		 *                inclusive.
 		 * @return The area of the polygon.
 		 */
-		public static double getArea(Point[] polygon, int N) {
+		public static double getArea(final Point[] polygon, final int N) {
 			int i, j;
 			double area = 0;
 
