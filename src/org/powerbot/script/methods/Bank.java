@@ -199,12 +199,17 @@ public class Bank extends ItemQuery<Item> {
 			if (interactive.hover()) {
 				sleep(80, 200);
 			}
-			actions[index] = ctx.menu.indexOf(Menu.filter("Open")) != -1 ? "Open" : ctx.menu.indexOf(Menu.filter("Use")) != -1 ? "Use" : null;
-			if (actions[index] == null) {
-				return false;
-			}
+
 		}
-		if (interactive.interact(actions[index], options[index])) {
+		final String action = actions[index];
+		if (action != null ? interactive.interact(actions[index], options[index]) :
+				interactive.interact(new Filter<Menu.Entry>() {
+					@Override
+					public boolean accept(Menu.Entry entry) {
+						final String s = entry.action;
+						return s.equalsIgnoreCase("Use") || s.equalsIgnoreCase("Open") || s.equalsIgnoreCase("Bank");
+					}
+				})) {
 			final Widget bankPin = ctx.widgets.get(13);
 			for (int i = 0; i < 20 && !isOpen() && !bankPin.isValid(); i++) {
 				sleep(200, 300);
