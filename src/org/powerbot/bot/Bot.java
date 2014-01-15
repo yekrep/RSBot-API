@@ -8,7 +8,6 @@ import java.util.logging.Logger;
 
 import org.powerbot.Configuration;
 import org.powerbot.bot.loader.Crawler;
-import org.powerbot.bot.loader.GameClassLoader;
 import org.powerbot.bot.loader.GameLoader;
 import org.powerbot.bot.loader.GameStub;
 import org.powerbot.bot.loader.NRSLoader;
@@ -176,14 +175,13 @@ public final class Bot implements Runnable, Stoppable, Validatable {
 	}
 
 	private void setClient(final Client client, final TransformSpec spec) {
-		this.ctx.setClient(client);
+		ctx.setClient(client);
 		client.setCallback(new AbstractCallback(this));
-		ctx.constants = new Constants(spec.constants);
-		ctx.inputHandler = new InputHandler(applet, client);
+		ctx.constants.set(new Constants(spec.constants));
+		ctx.inputHandler.set(new InputHandler(applet, client));
 	}
 
 	private final class SafeMode implements Runnable {
-
 		@Override
 		public void run() {
 			if (Condition.wait(new Callable<Boolean>() {

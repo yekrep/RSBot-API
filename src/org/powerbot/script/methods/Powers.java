@@ -16,8 +16,8 @@ public class Powers extends MethodProvider {
 	public static final int SETTING_PRAYERS_QUICK = 1770;
 	public static final int SETTING_PRAYERS_SELECTION = 1769;
 	public static final int SETTING_CURSES_QUICK = 1768;
-	public static final int BOOK_PRAYERS = 0;
-	public static final int BOOK_CURSES = 1;
+	public static final int BOOK_PRAYERS = 20;
+	public static final int BOOK_CURSES = 21;
 	public static final int WIDGET_PRAYER = 1458;
 	public static final int COMPONENT_PRAYER_CONTAINER = 24;
 	public static final int COMPONENT_PRAYER_SELECT_CONTAINER = 25;

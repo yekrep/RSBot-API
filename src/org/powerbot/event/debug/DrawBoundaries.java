@@ -7,7 +7,6 @@ import java.awt.Point;
 import org.powerbot.client.Client;
 import org.powerbot.client.Constants;
 import org.powerbot.event.PaintListener;
-import org.powerbot.gui.BotChrome;
 import org.powerbot.script.methods.Game;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.wrappers.CollisionFlag;
@@ -37,7 +36,7 @@ public class DrawBoundaries implements PaintListener {
 		final int h = component.getScrollHeight();
 		final int radius = Math.max(w / 2, h / 2) + 10;
 
-		final Constants constants = ctx.constants;
+		final Constants constants = ctx.constants.get();
 		final int v = constants != null ? constants.MINIMAP_SETTINGS_ON : -1;
 		final boolean f = client.getMinimapSettings() == v;
 

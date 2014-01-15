@@ -13,19 +13,21 @@ import org.powerbot.script.internal.methods.Map;
 public class MethodContext {
 	private final AtomicReference<Client> client;
 	private final AtomicReference<Bot> bot;
+	public final AtomicReference<InputHandler> inputHandler;
+	public final AtomicReference<Constants> constants;
 
 	/**
 	 * <p>A set of properties for the environment.</p>
-	 *
+	 * <p/>
 	 * <table border="1" cellpadding="2">
-	 *     <tr>
-	 *         <th>Key</th>
-	 *         <th>Meaning</th>
-	 *     </tr>
-	 *     <tr>
-	 *         <td>{@code "login.world"}</td>
-	 *         <td>The preferred world to log into.</td>
-	 *     </tr>
+	 * <tr>
+	 * <th>Key</th>
+	 * <th>Meaning</th>
+	 * </tr>
+	 * <tr>
+	 * <td>{@code "login.world"}</td>
+	 * <td>The preferred world to log into.</td>
+	 * </tr>
 	 * </table>
 	 */
 	public final Properties properties;
@@ -58,15 +60,14 @@ public class MethodContext {
 	public final Summoning summoning;
 	public final Widgets widgets;
 
-	public Constants constants;
-	public InputHandler inputHandler;
-
 	final Items items;
 	final Map map;
 
 	private MethodContext(final Bot bot) {
-		this.client = new AtomicReference<Client>(null);
+		client = new AtomicReference<Client>(null);
 		this.bot = new AtomicReference<Bot>(bot);
+		inputHandler = new AtomicReference<InputHandler>(null);
+		constants = new AtomicReference<Constants>(null);
 
 		properties = new Properties();
 		antipatterns = new Antipatterns(this);
@@ -108,6 +109,8 @@ public class MethodContext {
 	public MethodContext(final MethodContext ctx) {
 		client = ctx.client;
 		bot = ctx.bot;
+		inputHandler = ctx.inputHandler;
+		constants = ctx.constants;
 
 		properties = ctx.properties;
 		antipatterns = ctx.antipatterns;
@@ -156,11 +159,11 @@ public class MethodContext {
 	}
 
 	public Client getClient() {
-		return this.client.get();
+		return client.get();
 	}
 
 	public Bot getBot() {
-		return this.bot.get();
+		return bot.get();
 	}
 
 	/**
