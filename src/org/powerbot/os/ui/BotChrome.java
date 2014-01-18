@@ -11,6 +11,7 @@ import javax.swing.JFrame;
 import javax.swing.JPopupMenu;
 import javax.swing.WindowConstants;
 
+import org.powerbot.os.Configuration;
 import org.powerbot.os.client.Bot;
 
 /**
@@ -20,7 +21,7 @@ public class BotChrome extends JFrame implements Closeable {
 	private static final Logger log = Logger.getLogger(BotChrome.class.getSimpleName());
 
 	public BotChrome() {
-		setTitle("RSBot");
+		setTitle(Configuration.NAME);
 		setBackground(Color.BLACK);
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		JPopupMenu.setDefaultLightWeightPopupEnabled(false);
