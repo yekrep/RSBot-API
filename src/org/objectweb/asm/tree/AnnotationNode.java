@@ -41,6 +41,7 @@ import org.objectweb.asm.Opcodes;
  * @author Eric Bruneton
  */
 public class AnnotationNode extends AnnotationVisitor {
+
 	/**
 	 * The class descriptor of the annotation class.
 	 */
@@ -53,14 +54,14 @@ public class AnnotationNode extends AnnotationVisitor {
 	 * {@link Short}, {@link Integer}, {@link Long}, {@link Float},
 	 * {@link Double}, {@link String} or {@link org.objectweb.asm.Type}, or an
 	 * two elements String array (for enumeration values), a
-	 * {@link org.objectweb.asm.tree.AnnotationNode}, or a {@link java.util.List} of values of one of the
-	 * preceding types. The list may be <tt>null</tt> if there is no name
-	 * value pair.
+	 * {@link AnnotationNode}, or a {@link List} of values of one of the
+	 * preceding types. The list may be <tt>null</tt> if there is no name value
+	 * pair.
 	 */
 	public List<Object> values;
 
 	/**
-	 * Constructs a new {@link org.objectweb.asm.tree.AnnotationNode}. <i>Subclasses must not use this
+	 * Constructs a new {@link AnnotationNode}. <i>Subclasses must not use this
 	 * constructor</i>. Instead, they must use the
 	 * {@link #AnnotationNode(int, String)} version.
 	 *
@@ -71,7 +72,7 @@ public class AnnotationNode extends AnnotationVisitor {
 	}
 
 	/**
-	 * Constructs a new {@link org.objectweb.asm.tree.AnnotationNode}.
+	 * Constructs a new {@link AnnotationNode}.
 	 *
 	 * @param api  the ASM API version implemented by this visitor. Must be one
 	 *             of {@link Opcodes#ASM4}.
@@ -83,7 +84,7 @@ public class AnnotationNode extends AnnotationVisitor {
 	}
 
 	/**
-	 * Constructs a new {@link org.objectweb.asm.tree.AnnotationNode} to visit an array value.
+	 * Constructs a new {@link AnnotationNode} to visit an array value.
 	 *
 	 * @param values where the visited values must be stored.
 	 */
@@ -99,19 +100,17 @@ public class AnnotationNode extends AnnotationVisitor {
 	@Override
 	public void visit(final String name, final Object value) {
 		if (values == null) {
-			values = new ArrayList<Object>(desc != null ? 2 : 1);
+			values = new ArrayList<Object>(this.desc != null ? 2 : 1);
 		}
-		if (desc != null) {
+		if (this.desc != null) {
 			values.add(name);
 		}
 		values.add(value);
 	}
 
 	@Override
-	public void visitEnum(
-			final String name,
-			final String desc,
-			final String value) {
+	public void visitEnum(final String name, final String desc,
+	                      final String value) {
 		if (values == null) {
 			values = new ArrayList<Object>(this.desc != null ? 2 : 1);
 		}
@@ -122,16 +121,15 @@ public class AnnotationNode extends AnnotationVisitor {
 	}
 
 	@Override
-	public AnnotationVisitor visitAnnotation(
-			final String name,
-			final String desc) {
+	public AnnotationVisitor visitAnnotation(final String name,
+	                                         final String desc) {
 		if (values == null) {
 			values = new ArrayList<Object>(this.desc != null ? 2 : 1);
 		}
 		if (this.desc != null) {
 			values.add(name);
 		}
-		final AnnotationNode annotation = new AnnotationNode(desc);
+		AnnotationNode annotation = new AnnotationNode(desc);
 		values.add(annotation);
 		return annotation;
 	}
@@ -139,12 +137,12 @@ public class AnnotationNode extends AnnotationVisitor {
 	@Override
 	public AnnotationVisitor visitArray(final String name) {
 		if (values == null) {
-			values = new ArrayList<Object>(desc != null ? 2 : 1);
+			values = new ArrayList<Object>(this.desc != null ? 2 : 1);
 		}
-		if (desc != null) {
+		if (this.desc != null) {
 			values.add(name);
 		}
-		final List<Object> array = new ArrayList<Object>();
+		List<Object> array = new ArrayList<Object>();
 		values.add(array);
 		return new AnnotationNode(array);
 	}
@@ -178,8 +176,8 @@ public class AnnotationNode extends AnnotationVisitor {
 		if (av != null) {
 			if (values != null) {
 				for (int i = 0; i < values.size(); i += 2) {
-					final String name = (String) values.get(i);
-					final Object value = values.get(i + 1);
+					String name = (String) values.get(i);
+					Object value = values.get(i + 1);
 					accept(av, name, value);
 				}
 			}
@@ -194,20 +192,18 @@ public class AnnotationNode extends AnnotationVisitor {
 	 * @param name  the value name.
 	 * @param value the actual value.
 	 */
-	static void accept(
-			final AnnotationVisitor av,
-			final String name,
-			final Object value) {
+	static void accept(final AnnotationVisitor av, final String name,
+	                   final Object value) {
 		if (av != null) {
 			if (value instanceof String[]) {
-				final String[] typeconst = (String[]) value;
+				String[] typeconst = (String[]) value;
 				av.visitEnum(name, typeconst[0], typeconst[1]);
 			} else if (value instanceof AnnotationNode) {
-				final AnnotationNode an = (AnnotationNode) value;
+				AnnotationNode an = (AnnotationNode) value;
 				an.accept(av.visitAnnotation(name, an.desc));
 			} else if (value instanceof List) {
-				final AnnotationVisitor v = av.visitArray(name);
-				final List<?> array = (List<?>) value;
+				AnnotationVisitor v = av.visitArray(name);
+				List<?> array = (List<?>) value;
 				for (int j = 0; j < array.size(); ++j) {
 					accept(v, null, array.get(j));
 				}

@@ -40,18 +40,19 @@ import org.objectweb.asm.Opcodes;
  * @author Eric Bruneton
  */
 public class MultiANewArrayInsnNode extends AbstractInsnNode {
+
 	/**
 	 * An array type descriptor (see {@link org.objectweb.asm.Type}).
 	 */
-	public final String desc;
+	public String desc;
 
 	/**
 	 * Number of dimensions of the array to allocate.
 	 */
-	public final int dims;
+	public int dims;
 
 	/**
-	 * Constructs a new {@link org.objectweb.asm.tree.MultiANewArrayInsnNode}.
+	 * Constructs a new {@link MultiANewArrayInsnNode}.
 	 *
 	 * @param desc an array type descriptor (see {@link org.objectweb.asm.Type}).
 	 * @param dims number of dimensions of the array to allocate.

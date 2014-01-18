@@ -30,15 +30,16 @@
 package org.objectweb.asm;
 
 /**
- * A {@link org.objectweb.asm.ClassVisitor} that generates classes in bytecode form. More
+ * A {@link ClassVisitor} that generates classes in bytecode form. More
  * precisely this visitor generates a byte array conforming to the Java class
  * file format. It can be used alone, to generate a Java class "from scratch",
- * or with one or more {@link org.objectweb.asm.ClassReader ClassReader} and adapter class visitor
+ * or with one or more {@link ClassReader ClassReader} and adapter class visitor
  * to generate a modified class from one or more existing Java classes.
  *
  * @author Eric Bruneton
  */
 public class ClassWriter extends ClassVisitor {
+
 	/**
 	 * Flag to automatically compute the maximum stack size and the maximum
 	 * number of local variables of methods. If this flag is set, then the
@@ -65,10 +66,16 @@ public class ClassWriter extends ClassVisitor {
 	public static final int COMPUTE_FRAMES = 2;
 
 	/**
-	 * Pseudo access flag to distinguish between the synthetic attribute and
-	 * the synthetic access flag.
+	 * Pseudo access flag to distinguish between the synthetic attribute and the
+	 * synthetic access flag.
 	 */
 	static final int ACC_SYNTHETIC_ATTRIBUTE = 0x40000;
+
+	/**
+	 * Factor to convert from ACC_SYNTHETIC_ATTRIBUTE to Opcode.ACC_SYNTHETIC.
+	 */
+	static final int TO_ACC_SYNTHETIC = ACC_SYNTHETIC_ATTRIBUTE
+			/ Opcodes.ACC_SYNTHETIC;
 
 	/**
 	 * The type of instructions without any argument.
@@ -237,13 +244,13 @@ public class ClassWriter extends ClassVisitor {
 
 	/**
 	 * The base value for all CONSTANT_MethodHandle constant pool items.
-	 * Internally, ASM store the 9 variations of CONSTANT_MethodHandle into
-	 * 9 different items.
+	 * Internally, ASM store the 9 variations of CONSTANT_MethodHandle into 9
+	 * different items.
 	 */
 	static final int HANDLE_BASE = 20;
 
 	/**
-	 * Normal type Item stored in the ClassWriter {@link org.objectweb.asm.ClassWriter#typeTable},
+	 * Normal type Item stored in the ClassWriter {@link ClassWriter#typeTable},
 	 * instead of the constant pool, in order to avoid clashes with normal
 	 * constant pool items in the ClassWriter constant pool's hash table.
 	 */
@@ -251,23 +258,22 @@ public class ClassWriter extends ClassVisitor {
 
 	/**
 	 * Uninitialized type Item stored in the ClassWriter
-	 * {@link org.objectweb.asm.ClassWriter#typeTable}, instead of the constant pool, in order to
+	 * {@link ClassWriter#typeTable}, instead of the constant pool, in order to
 	 * avoid clashes with normal constant pool items in the ClassWriter constant
 	 * pool's hash table.
 	 */
 	static final int TYPE_UNINIT = 31;
 
 	/**
-	 * Merged type Item stored in the ClassWriter {@link org.objectweb.asm.ClassWriter#typeTable},
+	 * Merged type Item stored in the ClassWriter {@link ClassWriter#typeTable},
 	 * instead of the constant pool, in order to avoid clashes with normal
 	 * constant pool items in the ClassWriter constant pool's hash table.
 	 */
 	static final int TYPE_MERGED = 32;
 
 	/**
-	 * The type of BootstrapMethods items. These items are stored in a
-	 * special class attribute named BootstrapMethods and
-	 * not in the constant pool.
+	 * The type of BootstrapMethods items. These items are stored in a special
+	 * class attribute named BootstrapMethods and not in the constant pool.
 	 */
 	static final int BSM = 33;
 
@@ -326,10 +332,10 @@ public class ClassWriter extends ClassVisitor {
 	 * necessarily be stored in the constant pool. This type table is used by
 	 * the control flow and data flow analysis algorithm used to compute stack
 	 * map frames from scratch. This array associates to each index <tt>i</tt>
-	 * the Item whose index is <tt>i</tt>. All Item objects stored in this
-	 * array are also stored in the {@link #items} hash table. These two arrays
-	 * allow to retrieve an Item from its index or, conversely, to get the index
-	 * of an Item from its value. Each Item stores an internal name in its
+	 * the Item whose index is <tt>i</tt>. All Item objects stored in this array
+	 * are also stored in the {@link #items} hash table. These two arrays allow
+	 * to retrieve an Item from its index or, conversely, to get the index of an
+	 * Item from its value. Each Item stores an internal name in its
 	 * {@link Item#strVal1} field.
 	 */
 	Item[] typeTable;
@@ -438,16 +444,16 @@ public class ClassWriter extends ClassVisitor {
 	/**
 	 * The fields of this class. These fields are stored in a linked list of
 	 * {@link FieldWriter} objects, linked to each other by their
-	 * {@link FieldWriter#fv} field. This field stores the first element of
-	 * this list.
+	 * {@link FieldWriter#fv} field. This field stores the first element of this
+	 * list.
 	 */
 	FieldWriter firstField;
 
 	/**
 	 * The fields of this class. These fields are stored in a linked list of
 	 * {@link FieldWriter} objects, linked to each other by their
-	 * {@link FieldWriter#fv} field. This field stores the last element of
-	 * this list.
+	 * {@link FieldWriter#fv} field. This field stores the last element of this
+	 * list.
 	 */
 	FieldWriter lastField;
 
@@ -462,8 +468,8 @@ public class ClassWriter extends ClassVisitor {
 	/**
 	 * The methods of this class. These methods are stored in a linked list of
 	 * {@link MethodWriter} objects, linked to each other by their
-	 * {@link MethodWriter#mv} field. This field stores the last element of
-	 * this list.
+	 * {@link MethodWriter#mv} field. This field stores the last element of this
+	 * list.
 	 */
 	MethodWriter lastMethod;
 
@@ -471,12 +477,12 @@ public class ClassWriter extends ClassVisitor {
 	 * <tt>true</tt> if the maximum stack size and number of local variables
 	 * must be automatically computed.
 	 */
-	private final boolean computeMaxs;
+	private boolean computeMaxs;
 
 	/**
 	 * <tt>true</tt> if the stack map frames must be recomputed from scratch.
 	 */
-	private final boolean computeFrames;
+	private boolean computeFrames;
 
 	/**
 	 * <tt>true</tt> if the stack map tables of this class are invalid. The
@@ -497,8 +503,8 @@ public class ClassWriter extends ClassVisitor {
 	 */
 	static {
 		int i;
-		final byte[] b = new byte[220];
-		final String s = "AAAAAAAAAAAAAAAABCLMMDDDDDEEEEEEEEEEEEEEEEEEEEAAAAAAAADD"
+		byte[] b = new byte[220];
+		String s = "AAAAAAAAAAAAAAAABCLMMDDDDDEEEEEEEEEEEEEEEEEEEEAAAAAAAADD"
 				+ "DDDEEEEEEEEEEEEEEEEEEEEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
 				+ "AAAAAAAAAAAAAAAAANAAAAAAAAAAAAAAAAAAAAJJJJJJJJJJJJJJJJDOPAA"
 				+ "AAAAGGGGGGGHIFBFAAFFAARQJJKKJJJJJJJJJJJJJJJJJJ";
@@ -581,10 +587,11 @@ public class ClassWriter extends ClassVisitor {
 	// ------------------------------------------------------------------------
 
 	/**
-	 * Constructs a new {@link org.objectweb.asm.ClassWriter} object.
+	 * Constructs a new {@link ClassWriter} object.
 	 *
 	 * @param flags option flags that can be used to modify the default behavior
-	 *              of this class. See {@link #COMPUTE_MAXS}, {@link #COMPUTE_FRAMES}.
+	 *              of this class. See {@link #COMPUTE_MAXS},
+	 *              {@link #COMPUTE_FRAMES}.
 	 */
 	public ClassWriter(final int flags) {
 		super(Opcodes.ASM4);
@@ -596,40 +603,44 @@ public class ClassWriter extends ClassVisitor {
 		key2 = new Item();
 		key3 = new Item();
 		key4 = new Item();
-		computeMaxs = (flags & COMPUTE_MAXS) != 0;
-		computeFrames = (flags & COMPUTE_FRAMES) != 0;
+		this.computeMaxs = (flags & COMPUTE_MAXS) != 0;
+		this.computeFrames = (flags & COMPUTE_FRAMES) != 0;
 	}
 
 	/**
-	 * Constructs a new {@link org.objectweb.asm.ClassWriter} object and enables optimizations for
+	 * Constructs a new {@link ClassWriter} object and enables optimizations for
 	 * "mostly add" bytecode transformations. These optimizations are the
 	 * following:
 	 * <p/>
-	 * <ul> <li>The constant pool from the original class is copied as is in the
-	 * new class, which saves time. New constant pool entries will be added at
-	 * the end if necessary, but unused constant pool entries <i>won't be
-	 * removed</i>.</li> <li>Methods that are not transformed are copied as is
-	 * in the new class, directly from the original class bytecode (i.e. without
-	 * emitting visit events for all the method instructions), which saves a
-	 * <i>lot</i> of time. Untransformed methods are detected by the fact that
-	 * the {@link org.objectweb.asm.ClassReader} receives {@link MethodVisitor} objects that come
-	 * from a {@link org.objectweb.asm.ClassWriter} (and not from any other {@link org.objectweb.asm.ClassVisitor}
-	 * instance).</li> </ul>
+	 * <ul>
+	 * <li>The constant pool from the original class is copied as is in the new
+	 * class, which saves time. New constant pool entries will be added at the
+	 * end if necessary, but unused constant pool entries <i>won't be
+	 * removed</i>.</li>
+	 * <li>Methods that are not transformed are copied as is in the new class,
+	 * directly from the original class bytecode (i.e. without emitting visit
+	 * events for all the method instructions), which saves a <i>lot</i> of
+	 * time. Untransformed methods are detected by the fact that the
+	 * {@link ClassReader} receives {@link MethodVisitor} objects that come from
+	 * a {@link ClassWriter} (and not from any other {@link ClassVisitor}
+	 * instance).</li>
+	 * </ul>
 	 *
-	 * @param classReader the {@link org.objectweb.asm.ClassReader} used to read the original
-	 *                    class. It will be used to copy the entire constant pool from the
+	 * @param classReader the {@link ClassReader} used to read the original class. It
+	 *                    will be used to copy the entire constant pool from the
 	 *                    original class and also to copy other fragments of original
 	 *                    bytecode where applicable.
 	 * @param flags       option flags that can be used to modify the default behavior
-	 *                    of this class. <i>These option flags do not affect methods that
-	 *                    are copied as is in the new class. This means that the maximum
-	 *                    stack size nor the stack frames will be computed for these
-	 *                    methods</i>. See {@link #COMPUTE_MAXS}, {@link #COMPUTE_FRAMES}.
+	 *                    of this class. <i>These option flags do not affect methods
+	 *                    that are copied as is in the new class. This means that the
+	 *                    maximum stack size nor the stack frames will be computed for
+	 *                    these methods</i>. See {@link #COMPUTE_MAXS},
+	 *                    {@link #COMPUTE_FRAMES}.
 	 */
 	public ClassWriter(final ClassReader classReader, final int flags) {
 		this(flags);
 		classReader.copyPool(this);
-		cr = classReader;
+		this.cr = classReader;
 	}
 
 	// ------------------------------------------------------------------------
@@ -637,13 +648,9 @@ public class ClassWriter extends ClassVisitor {
 	// ------------------------------------------------------------------------
 
 	@Override
-	public final void visit(
-			final int version,
-			final int access,
-			final String name,
-			final String signature,
-			final String superName,
-			final String[] interfaces) {
+	public final void visit(final int version, final int access,
+	                        final String name, final String signature, final String superName,
+	                        final String[] interfaces) {
 		this.version = version;
 		this.access = access;
 		this.name = newClass(name);
@@ -672,10 +679,8 @@ public class ClassWriter extends ClassVisitor {
 	}
 
 	@Override
-	public final void visitOuterClass(
-			final String owner,
-			final String name,
-			final String desc) {
+	public final void visitOuterClass(final String owner, final String name,
+	                                  final String desc) {
 		enclosingMethodOwner = newClass(owner);
 		if (name != null && desc != null) {
 			enclosingMethod = newNameType(name, desc);
@@ -683,16 +688,15 @@ public class ClassWriter extends ClassVisitor {
 	}
 
 	@Override
-	public final AnnotationVisitor visitAnnotation(
-			final String desc,
-			final boolean visible) {
+	public final AnnotationVisitor visitAnnotation(final String desc,
+	                                               final boolean visible) {
 		if (!ClassReader.ANNOTATIONS) {
 			return null;
 		}
-		final ByteVector bv = new ByteVector();
+		ByteVector bv = new ByteVector();
 		// write type, and reserve space for values count
 		bv.putShort(newUTF8(desc)).putShort(0);
-		final AnnotationWriter aw = new AnnotationWriter(this, true, bv, bv, 2);
+		AnnotationWriter aw = new AnnotationWriter(this, true, bv, bv, 2);
 		if (visible) {
 			aw.next = anns;
 			anns = aw;
@@ -710,11 +714,8 @@ public class ClassWriter extends ClassVisitor {
 	}
 
 	@Override
-	public final void visitInnerClass(
-			final String name,
-			final String outerName,
-			final String innerName,
-			final int access) {
+	public final void visitInnerClass(final String name,
+	                                  final String outerName, final String innerName, final int access) {
 		if (innerClasses == null) {
 			innerClasses = new ByteVector();
 		}
@@ -726,30 +727,16 @@ public class ClassWriter extends ClassVisitor {
 	}
 
 	@Override
-	public final FieldVisitor visitField(
-			final int access,
-			final String name,
-			final String desc,
-			final String signature,
-			final Object value) {
+	public final FieldVisitor visitField(final int access, final String name,
+	                                     final String desc, final String signature, final Object value) {
 		return new FieldWriter(this, access, name, desc, signature, value);
 	}
 
 	@Override
-	public final MethodVisitor visitMethod(
-			final int access,
-			final String name,
-			final String desc,
-			final String signature,
-			final String[] exceptions) {
-		return new MethodWriter(this,
-				access,
-				name,
-				desc,
-				signature,
-				exceptions,
-				computeMaxs,
-				computeFrames);
+	public final MethodVisitor visitMethod(final int access, final String name,
+	                                       final String desc, final String signature, final String[] exceptions) {
+		return new MethodWriter(this, access, name, desc, signature,
+				exceptions, computeMaxs, computeFrames);
 	}
 
 	@Override
@@ -766,7 +753,7 @@ public class ClassWriter extends ClassVisitor {
 	 * @return the bytecode of the class that was build with this class writer.
 	 */
 	public byte[] toByteArray() {
-		if (index > Short.MAX_VALUE) {
+		if (index > 0xFFFF) {
 			throw new RuntimeException("Class file too large!");
 		}
 		// computes the real size of the bytecode of this class
@@ -786,8 +773,9 @@ public class ClassWriter extends ClassVisitor {
 			mb = (MethodWriter) mb.mv;
 		}
 		int attributeCount = 0;
-		if (bootstrapMethods != null) {  // we put it as first argument in order
-			// to improve a bit ClassReader.copyBootstrapMethods
+		if (bootstrapMethods != null) {
+			// we put it as first attribute in order to improve a bit
+			// ClassReader.copyBootstrapMethods
 			++attributeCount;
 			size += 8 + bootstrapMethods.length;
 			newUTF8("BootstrapMethods");
@@ -817,11 +805,13 @@ public class ClassWriter extends ClassVisitor {
 			size += 6;
 			newUTF8("Deprecated");
 		}
-		if ((access & Opcodes.ACC_SYNTHETIC) != 0
-				&& ((version & 0xFFFF) < Opcodes.V1_5 || (access & ACC_SYNTHETIC_ATTRIBUTE) != 0)) {
-			++attributeCount;
-			size += 6;
-			newUTF8("Synthetic");
+		if ((access & Opcodes.ACC_SYNTHETIC) != 0) {
+			if ((version & 0xFFFF) < Opcodes.V1_5
+					|| (access & ACC_SYNTHETIC_ATTRIBUTE) != 0) {
+				++attributeCount;
+				size += 6;
+				newUTF8("Synthetic");
+			}
 		}
 		if (innerClasses != null) {
 			++attributeCount;
@@ -845,12 +835,11 @@ public class ClassWriter extends ClassVisitor {
 		size += pool.length;
 		// allocates a byte vector of this size, in order to avoid unnecessary
 		// arraycopy operations in the ByteVector.enlarge() method
-		final ByteVector out = new ByteVector(size);
+		ByteVector out = new ByteVector(size);
 		out.putInt(0xCAFEBABE).putInt(version);
 		out.putShort(index).putByteArray(pool.data, 0, pool.length);
-		final int mask = Opcodes.ACC_DEPRECATED
-				| ClassWriter.ACC_SYNTHETIC_ATTRIBUTE
-				| (access & ClassWriter.ACC_SYNTHETIC_ATTRIBUTE) / (ClassWriter.ACC_SYNTHETIC_ATTRIBUTE / Opcodes.ACC_SYNTHETIC);
+		int mask = Opcodes.ACC_DEPRECATED | ACC_SYNTHETIC_ATTRIBUTE
+				| ((access & ACC_SYNTHETIC_ATTRIBUTE) / TO_ACC_SYNTHETIC);
 		out.putShort(access & ~mask).putShort(name).putShort(superName);
 		out.putShort(interfaceCount);
 		for (int i = 0; i < interfaceCount; ++i) {
@@ -869,9 +858,10 @@ public class ClassWriter extends ClassVisitor {
 			mb = (MethodWriter) mb.mv;
 		}
 		out.putShort(attributeCount);
-		if (bootstrapMethods != null) {   // should be the first class attribute ?
+		if (bootstrapMethods != null) {
 			out.putShort(newUTF8("BootstrapMethods"));
-			out.putInt(bootstrapMethods.length + 2).putShort(bootstrapMethodsCount);
+			out.putInt(bootstrapMethods.length + 2).putShort(
+					bootstrapMethodsCount);
 			out.putByteArray(bootstrapMethods.data, 0, bootstrapMethods.length);
 		}
 		if (ClassReader.SIGNATURES && signature != 0) {
@@ -881,7 +871,7 @@ public class ClassWriter extends ClassVisitor {
 			out.putShort(newUTF8("SourceFile")).putInt(2).putShort(sourceFile);
 		}
 		if (sourceDebug != null) {
-			final int len = sourceDebug.length - 2;
+			int len = sourceDebug.length - 2;
 			out.putShort(newUTF8("SourceDebugExtension")).putInt(len);
 			out.putByteArray(sourceDebug.data, 2, len);
 		}
@@ -892,9 +882,11 @@ public class ClassWriter extends ClassVisitor {
 		if ((access & Opcodes.ACC_DEPRECATED) != 0) {
 			out.putShort(newUTF8("Deprecated")).putInt(0);
 		}
-		if ((access & Opcodes.ACC_SYNTHETIC) != 0
-				&& ((version & 0xFFFF) < Opcodes.V1_5 || (access & ACC_SYNTHETIC_ATTRIBUTE) != 0)) {
-			out.putShort(newUTF8("Synthetic")).putInt(0);
+		if ((access & Opcodes.ACC_SYNTHETIC) != 0) {
+			if ((version & 0xFFFF) < Opcodes.V1_5
+					|| (access & ACC_SYNTHETIC_ATTRIBUTE) != 0) {
+				out.putShort(newUTF8("Synthetic")).putInt(0);
+			}
 		}
 		if (innerClasses != null) {
 			out.putShort(newUTF8("InnerClasses"));
@@ -913,9 +905,22 @@ public class ClassWriter extends ClassVisitor {
 			attrs.put(this, null, 0, -1, -1, out);
 		}
 		if (invalidFrames) {
-			final ClassWriter cw = new ClassWriter(COMPUTE_FRAMES);
-			new ClassReader(out.data).accept(cw, ClassReader.SKIP_FRAMES);
-			return cw.toByteArray();
+			anns = null;
+			ianns = null;
+			attrs = null;
+			innerClassesCount = 0;
+			innerClasses = null;
+			bootstrapMethodsCount = 0;
+			bootstrapMethods = null;
+			firstField = null;
+			lastField = null;
+			firstMethod = null;
+			lastMethod = null;
+			computeMaxs = false;
+			computeFrames = true;
+			invalidFrames = false;
+			new ClassReader(out.data).accept(this, ClassReader.SKIP_FRAMES);
+			return toByteArray();
 		}
 		return out.data;
 	}
@@ -936,43 +941,43 @@ public class ClassWriter extends ClassVisitor {
 	 */
 	Item newConstItem(final Object cst) {
 		if (cst instanceof Integer) {
-			final int val = ((Integer) cst).intValue();
+			int val = ((Integer) cst).intValue();
 			return newInteger(val);
 		} else if (cst instanceof Byte) {
-			final int val = ((Byte) cst).intValue();
+			int val = ((Byte) cst).intValue();
 			return newInteger(val);
 		} else if (cst instanceof Character) {
-			final int val = ((Character) cst).charValue();
+			int val = ((Character) cst).charValue();
 			return newInteger(val);
 		} else if (cst instanceof Short) {
-			final int val = ((Short) cst).intValue();
+			int val = ((Short) cst).intValue();
 			return newInteger(val);
 		} else if (cst instanceof Boolean) {
-			final int val = ((Boolean) cst).booleanValue() ? 1 : 0;
+			int val = ((Boolean) cst).booleanValue() ? 1 : 0;
 			return newInteger(val);
 		} else if (cst instanceof Float) {
-			final float val = ((Float) cst).floatValue();
+			float val = ((Float) cst).floatValue();
 			return newFloat(val);
 		} else if (cst instanceof Long) {
-			final long val = ((Long) cst).longValue();
+			long val = ((Long) cst).longValue();
 			return newLong(val);
 		} else if (cst instanceof Double) {
-			final double val = ((Double) cst).doubleValue();
+			double val = ((Double) cst).doubleValue();
 			return newDouble(val);
 		} else if (cst instanceof String) {
 			return newString((String) cst);
 		} else if (cst instanceof Type) {
-			final Type t = (Type) cst;
-			final int s = t.getSort();
-			if (s == Type.ARRAY) {
-				return newClassItem(t.getDescriptor());
-			} else if (s == Type.OBJECT) {
+			Type t = (Type) cst;
+			int s = t.getSort();
+			if (s == Type.OBJECT) {
 				return newClassItem(t.getInternalName());
-			} else { // s == Type.METHOD
+			} else if (s == Type.METHOD) {
 				return newMethodTypeItem(t.getDescriptor());
+			} else { // s == primitive type or array
+				return newClassItem(t.getDescriptor());
 			}
 		} else if (cst instanceof Handle) {
-			final Handle h = (Handle) cst;
+			Handle h = (Handle) cst;
 			return newHandleItem(h.tag, h.owner, h.name, h.desc);
 		} else {
 			throw new IllegalArgumentException("value " + cst);
@@ -982,7 +987,7 @@ public class ClassWriter extends ClassVisitor {
 	/**
 	 * Adds a number or string constant to the constant pool of the class being
 	 * build. Does nothing if the constant pool already contains a similar item.
-	 * <i>This method is intended for {@link org.objectweb.asm.Attribute} sub classes, and is
+	 * <i>This method is intended for {@link Attribute} sub classes, and is
 	 * normally not needed by class generators or adapters.</i>
 	 *
 	 * @param cst the value of the constant to be added to the constant pool.
@@ -998,7 +1003,7 @@ public class ClassWriter extends ClassVisitor {
 	/**
 	 * Adds an UTF8 string to the constant pool of the class being build. Does
 	 * nothing if the constant pool already contains a similar item. <i>This
-	 * method is intended for {@link org.objectweb.asm.Attribute} sub classes, and is normally not
+	 * method is intended for {@link Attribute} sub classes, and is normally not
 	 * needed by class generators or adapters.</i>
 	 *
 	 * @param value the String value.
@@ -1018,7 +1023,7 @@ public class ClassWriter extends ClassVisitor {
 	/**
 	 * Adds a class reference to the constant pool of the class being build.
 	 * Does nothing if the constant pool already contains a similar item.
-	 * <i>This method is intended for {@link org.objectweb.asm.Attribute} sub classes, and is
+	 * <i>This method is intended for {@link Attribute} sub classes, and is
 	 * normally not needed by class generators or adapters.</i>
 	 *
 	 * @param value the internal name of the class.
@@ -1038,7 +1043,7 @@ public class ClassWriter extends ClassVisitor {
 	/**
 	 * Adds a class reference to the constant pool of the class being build.
 	 * Does nothing if the constant pool already contains a similar item.
-	 * <i>This method is intended for {@link org.objectweb.asm.Attribute} sub classes, and is
+	 * <i>This method is intended for {@link Attribute} sub classes, and is
 	 * normally not needed by class generators or adapters.</i>
 	 *
 	 * @param value the internal name of the class.
@@ -1051,7 +1056,7 @@ public class ClassWriter extends ClassVisitor {
 	/**
 	 * Adds a method type reference to the constant pool of the class being
 	 * build. Does nothing if the constant pool already contains a similar item.
-	 * <i>This method is intended for {@link org.objectweb.asm.Attribute} sub classes, and is
+	 * <i>This method is intended for {@link Attribute} sub classes, and is
 	 * normally not needed by class generators or adapters.</i>
 	 *
 	 * @param methodDesc method descriptor of the method type.
@@ -1071,7 +1076,7 @@ public class ClassWriter extends ClassVisitor {
 	/**
 	 * Adds a method type reference to the constant pool of the class being
 	 * build. Does nothing if the constant pool already contains a similar item.
-	 * <i>This method is intended for {@link org.objectweb.asm.Attribute} sub classes, and is
+	 * <i>This method is intended for {@link Attribute} sub classes, and is
 	 * normally not needed by class generators or adapters.</i>
 	 *
 	 * @param methodDesc method descriptor of the method type.
@@ -1085,35 +1090,33 @@ public class ClassWriter extends ClassVisitor {
 	/**
 	 * Adds a handle to the constant pool of the class being build. Does nothing
 	 * if the constant pool already contains a similar item. <i>This method is
-	 * intended for {@link org.objectweb.asm.Attribute} sub classes, and is normally not needed by
+	 * intended for {@link Attribute} sub classes, and is normally not needed by
 	 * class generators or adapters.</i>
 	 *
-	 * @param tag   the kind of this handle. Must be {@link org.objectweb.asm.Opcodes#H_GETFIELD},
-	 *              {@link org.objectweb.asm.Opcodes#H_GETSTATIC}, {@link org.objectweb.asm.Opcodes#H_PUTFIELD},
-	 *              {@link org.objectweb.asm.Opcodes#H_PUTSTATIC}, {@link org.objectweb.asm.Opcodes#H_INVOKEVIRTUAL},
-	 *              {@link org.objectweb.asm.Opcodes#H_INVOKESTATIC}, {@link org.objectweb.asm.Opcodes#H_INVOKESPECIAL},
-	 *              {@link org.objectweb.asm.Opcodes#H_NEWINVOKESPECIAL} or
-	 *              {@link org.objectweb.asm.Opcodes#H_INVOKEINTERFACE}.
+	 * @param tag   the kind of this handle. Must be {@link Opcodes#H_GETFIELD},
+	 *              {@link Opcodes#H_GETSTATIC}, {@link Opcodes#H_PUTFIELD},
+	 *              {@link Opcodes#H_PUTSTATIC}, {@link Opcodes#H_INVOKEVIRTUAL},
+	 *              {@link Opcodes#H_INVOKESTATIC},
+	 *              {@link Opcodes#H_INVOKESPECIAL},
+	 *              {@link Opcodes#H_NEWINVOKESPECIAL} or
+	 *              {@link Opcodes#H_INVOKEINTERFACE}.
 	 * @param owner the internal name of the field or method owner class.
 	 * @param name  the name of the field or method.
 	 * @param desc  the descriptor of the field or method.
 	 * @return a new or an already existing method type reference item.
 	 */
-	Item newHandleItem(
-			final int tag,
-			final String owner,
-			final String name,
-			final String desc) {
+	Item newHandleItem(final int tag, final String owner, final String name,
+	                   final String desc) {
 		key4.set(HANDLE_BASE + tag, owner, name, desc);
 		Item result = get(key4);
 		if (result == null) {
 			if (tag <= Opcodes.H_PUTSTATIC) {
 				put112(HANDLE, tag, newField(owner, name, desc));
 			} else {
-				put112(HANDLE, tag, newMethod(owner,
-						name,
-						desc,
-						tag == Opcodes.H_INVOKEINTERFACE));
+				put112(HANDLE,
+						tag,
+						newMethod(owner, name, desc,
+								tag == Opcodes.H_INVOKEINTERFACE));
 			}
 			result = new Item(index++, key4);
 			put(result);
@@ -1122,35 +1125,33 @@ public class ClassWriter extends ClassVisitor {
 	}
 
 	/**
-	 * Adds a handle to the constant pool of the class being
-	 * build. Does nothing if the constant pool already contains a similar item.
-	 * <i>This method is intended for {@link org.objectweb.asm.Attribute} sub classes, and is
-	 * normally not needed by class generators or adapters.</i>
+	 * Adds a handle to the constant pool of the class being build. Does nothing
+	 * if the constant pool already contains a similar item. <i>This method is
+	 * intended for {@link Attribute} sub classes, and is normally not needed by
+	 * class generators or adapters.</i>
 	 *
-	 * @param tag   the kind of this handle. Must be {@link org.objectweb.asm.Opcodes#H_GETFIELD},
-	 *              {@link org.objectweb.asm.Opcodes#H_GETSTATIC}, {@link org.objectweb.asm.Opcodes#H_PUTFIELD},
-	 *              {@link org.objectweb.asm.Opcodes#H_PUTSTATIC}, {@link org.objectweb.asm.Opcodes#H_INVOKEVIRTUAL},
-	 *              {@link org.objectweb.asm.Opcodes#H_INVOKESTATIC}, {@link org.objectweb.asm.Opcodes#H_INVOKESPECIAL},
-	 *              {@link org.objectweb.asm.Opcodes#H_NEWINVOKESPECIAL} or
-	 *              {@link org.objectweb.asm.Opcodes#H_INVOKEINTERFACE}.
+	 * @param tag   the kind of this handle. Must be {@link Opcodes#H_GETFIELD},
+	 *              {@link Opcodes#H_GETSTATIC}, {@link Opcodes#H_PUTFIELD},
+	 *              {@link Opcodes#H_PUTSTATIC}, {@link Opcodes#H_INVOKEVIRTUAL},
+	 *              {@link Opcodes#H_INVOKESTATIC},
+	 *              {@link Opcodes#H_INVOKESPECIAL},
+	 *              {@link Opcodes#H_NEWINVOKESPECIAL} or
+	 *              {@link Opcodes#H_INVOKEINTERFACE}.
 	 * @param owner the internal name of the field or method owner class.
 	 * @param name  the name of the field or method.
 	 * @param desc  the descriptor of the field or method.
 	 * @return the index of a new or already existing method type reference
 	 * item.
 	 */
-	public int newHandle(
-			final int tag,
-			final String owner,
-			final String name,
-			final String desc) {
+	public int newHandle(final int tag, final String owner, final String name,
+	                     final String desc) {
 		return newHandleItem(tag, owner, name, desc).index;
 	}
 
 	/**
 	 * Adds an invokedynamic reference to the constant pool of the class being
 	 * build. Does nothing if the constant pool already contains a similar item.
-	 * <i>This method is intended for {@link org.objectweb.asm.Attribute} sub classes, and is
+	 * <i>This method is intended for {@link Attribute} sub classes, and is
 	 * normally not needed by class generators or adapters.</i>
 	 *
 	 * @param name    name of the invoked method.
@@ -1159,36 +1160,31 @@ public class ClassWriter extends ClassVisitor {
 	 * @param bsmArgs the bootstrap method constant arguments.
 	 * @return a new or an already existing invokedynamic type reference item.
 	 */
-	Item newInvokeDynamicItem(
-			final String name,
-			final String desc,
-			final Handle bsm,
-			final Object... bsmArgs) {
+	Item newInvokeDynamicItem(final String name, final String desc,
+	                          final Handle bsm, final Object... bsmArgs) {
 		// cache for performance
 		ByteVector bootstrapMethods = this.bootstrapMethods;
 		if (bootstrapMethods == null) {
 			bootstrapMethods = this.bootstrapMethods = new ByteVector();
 		}
 
-		final int position = bootstrapMethods.length; // record current position
+		int position = bootstrapMethods.length; // record current position
 
 		int hashCode = bsm.hashCode();
-		bootstrapMethods.putShort(newHandle(bsm.tag,
-				bsm.owner,
-				bsm.name,
+		bootstrapMethods.putShort(newHandle(bsm.tag, bsm.owner, bsm.name,
 				bsm.desc));
 
-		final int argsLength = bsmArgs.length;
+		int argsLength = bsmArgs.length;
 		bootstrapMethods.putShort(argsLength);
 
 		for (int i = 0; i < argsLength; i++) {
-			final Object bsmArg = bsmArgs[i];
+			Object bsmArg = bsmArgs[i];
 			hashCode ^= bsmArg.hashCode();
 			bootstrapMethods.putShort(newConst(bsmArg));
 		}
 
-		final byte[] data = bootstrapMethods.data;
-		final int length = 1 + 1 + argsLength << 1; // (bsm + argCount + arguments)
+		byte[] data = bootstrapMethods.data;
+		int length = (1 + 1 + argsLength) << 1; // (bsm + argCount + arguments)
 		hashCode &= 0x7FFFFFFF;
 		Item result = items[hashCode % items.length];
 		loop:
@@ -1200,7 +1196,7 @@ public class ClassWriter extends ClassVisitor {
 
 			// because the data encode the size of the argument
 			// we don't need to test if these size are equals
-			final int resultPosition = result.intVal;
+			int resultPosition = result.intVal;
 			for (int p = 0; p < length; p++) {
 				if (data[position + p] != data[resultPosition + p]) {
 					result = result.next;
@@ -1210,7 +1206,7 @@ public class ClassWriter extends ClassVisitor {
 			break;
 		}
 
-		final int bootstrapMethodIndex;
+		int bootstrapMethodIndex;
 		if (result != null) {
 			bootstrapMethodIndex = result.index;
 			bootstrapMethods.length = position; // revert to old position
@@ -1235,21 +1231,18 @@ public class ClassWriter extends ClassVisitor {
 	/**
 	 * Adds an invokedynamic reference to the constant pool of the class being
 	 * build. Does nothing if the constant pool already contains a similar item.
-	 * <i>This method is intended for {@link org.objectweb.asm.Attribute} sub classes, and is
+	 * <i>This method is intended for {@link Attribute} sub classes, and is
 	 * normally not needed by class generators or adapters.</i>
 	 *
 	 * @param name    name of the invoked method.
 	 * @param desc    descriptor of the invoke method.
 	 * @param bsm     the bootstrap method.
 	 * @param bsmArgs the bootstrap method constant arguments.
-	 * @return the index of a new or already existing invokedynamic
-	 * reference item.
+	 * @return the index of a new or already existing invokedynamic reference
+	 * item.
 	 */
-	public int newInvokeDynamic(
-			final String name,
-			final String desc,
-			final Handle bsm,
-			final Object... bsmArgs) {
+	public int newInvokeDynamic(final String name, final String desc,
+	                            final Handle bsm, final Object... bsmArgs) {
 		return newInvokeDynamicItem(name, desc, bsm, bsmArgs).index;
 	}
 
@@ -1276,7 +1269,7 @@ public class ClassWriter extends ClassVisitor {
 	/**
 	 * Adds a field reference to the constant pool of the class being build.
 	 * Does nothing if the constant pool already contains a similar item.
-	 * <i>This method is intended for {@link org.objectweb.asm.Attribute} sub classes, and is
+	 * <i>This method is intended for {@link Attribute} sub classes, and is
 	 * normally not needed by class generators or adapters.</i>
 	 *
 	 * @param owner the internal name of the field's owner class.
@@ -1298,12 +1291,9 @@ public class ClassWriter extends ClassVisitor {
 	 * @param itf   <tt>true</tt> if <tt>owner</tt> is an interface.
 	 * @return a new or already existing method reference item.
 	 */
-	Item newMethodItem(
-			final String owner,
-			final String name,
-			final String desc,
-			final boolean itf) {
-		final int type = itf ? IMETH : METH;
+	Item newMethodItem(final String owner, final String name,
+	                   final String desc, final boolean itf) {
+		int type = itf ? IMETH : METH;
 		key3.set(type, owner, name, desc);
 		Item result = get(key3);
 		if (result == null) {
@@ -1317,7 +1307,7 @@ public class ClassWriter extends ClassVisitor {
 	/**
 	 * Adds a method reference to the constant pool of the class being build.
 	 * Does nothing if the constant pool already contains a similar item.
-	 * <i>This method is intended for {@link org.objectweb.asm.Attribute} sub classes, and is
+	 * <i>This method is intended for {@link Attribute} sub classes, and is
 	 * normally not needed by class generators or adapters.</i>
 	 *
 	 * @param owner the internal name of the method's owner class.
@@ -1326,11 +1316,8 @@ public class ClassWriter extends ClassVisitor {
 	 * @param itf   <tt>true</tt> if <tt>owner</tt> is an interface.
 	 * @return the index of a new or already existing method reference item.
 	 */
-	public int newMethod(
-			final String owner,
-			final String name,
-			final String desc,
-			final boolean itf) {
+	public int newMethod(final String owner, final String name,
+	                     final String desc, final boolean itf) {
 		return newMethodItem(owner, name, desc, itf).index;
 	}
 
@@ -1429,7 +1416,7 @@ public class ClassWriter extends ClassVisitor {
 	/**
 	 * Adds a name and type to the constant pool of the class being build. Does
 	 * nothing if the constant pool already contains a similar item. <i>This
-	 * method is intended for {@link org.objectweb.asm.Attribute} sub classes, and is normally not
+	 * method is intended for {@link Attribute} sub classes, and is normally not
 	 * needed by class generators or adapters.</i>
 	 *
 	 * @param name a name.
@@ -1481,15 +1468,15 @@ public class ClassWriter extends ClassVisitor {
 	 * name and a bytecode offset.
 	 *
 	 * @param type   the internal name to be added to the type table.
-	 * @param offset the bytecode offset of the NEW instruction that created
-	 *               this UNINITIALIZED type value.
+	 * @param offset the bytecode offset of the NEW instruction that created this
+	 *               UNINITIALIZED type value.
 	 * @return the index of this internal name in the type table.
 	 */
 	int addUninitializedType(final String type, final int offset) {
 		key.type = TYPE_UNINIT;
 		key.intVal = offset;
 		key.strVal1 = type;
-		key.hashCode = 0x7FFFFFFF & TYPE_UNINIT + type.hashCode() + offset;
+		key.hashCode = 0x7FFFFFFF & (TYPE_UNINIT + type.hashCode() + offset);
 		Item result = get(key);
 		if (result == null) {
 			result = addType(key);
@@ -1506,13 +1493,13 @@ public class ClassWriter extends ClassVisitor {
 	 */
 	private Item addType(final Item item) {
 		++typeCount;
-		final Item result = new Item(typeCount, key);
+		Item result = new Item(typeCount, key);
 		put(result);
 		if (typeTable == null) {
 			typeTable = new Item[16];
 		}
 		if (typeCount == typeTable.length) {
-			final Item[] newTable = new Item[2 * typeTable.length];
+			Item[] newTable = new Item[2 * typeTable.length];
 			System.arraycopy(typeTable, 0, newTable, 0, typeTable.length);
 			typeTable = newTable;
 		}
@@ -1532,12 +1519,12 @@ public class ClassWriter extends ClassVisitor {
 	 */
 	int getMergedType(final int type1, final int type2) {
 		key2.type = TYPE_MERGED;
-		key2.longVal = type1 | (long) type2 << 32;
-		key2.hashCode = 0x7FFFFFFF & TYPE_MERGED + type1 + type2;
+		key2.longVal = type1 | (((long) type2) << 32);
+		key2.hashCode = 0x7FFFFFFF & (TYPE_MERGED + type1 + type2);
 		Item result = get(key2);
 		if (result == null) {
-			final String t = typeTable[type1].strVal1;
-			final String u = typeTable[type2].strVal1;
+			String t = typeTable[type1].strVal1;
+			String u = typeTable[type2].strVal1;
 			key2.intVal = addType(getCommonSuperClass(t, u));
 			result = new Item((short) 0, key2);
 			put(result);
@@ -1560,13 +1547,12 @@ public class ClassWriter extends ClassVisitor {
 	 * classes.
 	 */
 	protected String getCommonSuperClass(final String type1, final String type2) {
-		Class<?> c;
-		final Class<?> d;
-		final ClassLoader classLoader = getClass().getClassLoader();
+		Class<?> c, d;
+		ClassLoader classLoader = getClass().getClassLoader();
 		try {
 			c = Class.forName(type1.replace('/', '.'), false, classLoader);
 			d = Class.forName(type2.replace('/', '.'), false, classLoader);
-		} catch (final Exception e) {
+		} catch (Exception e) {
 			throw new RuntimeException(e.toString());
 		}
 		if (c.isAssignableFrom(d)) {
@@ -1609,14 +1595,14 @@ public class ClassWriter extends ClassVisitor {
 	 */
 	private void put(final Item i) {
 		if (index + typeCount > threshold) {
-			final int ll = items.length;
-			final int nl = ll * 2 + 1;
-			final Item[] newItems = new Item[nl];
+			int ll = items.length;
+			int nl = ll * 2 + 1;
+			Item[] newItems = new Item[nl];
 			for (int l = ll - 1; l >= 0; --l) {
 				Item j = items[l];
 				while (j != null) {
-					final int index = j.hashCode % newItems.length;
-					final Item k = j.next;
+					int index = j.hashCode % newItems.length;
+					Item k = j.next;
 					j.next = newItems[index];
 					newItems[index] = j;
 					j = k;
@@ -1625,7 +1611,7 @@ public class ClassWriter extends ClassVisitor {
 			items = newItems;
 			threshold = (int) (nl * 0.75);
 		}
-		final int index = i.hashCode % items.length;
+		int index = i.hashCode % items.length;
 		i.next = items[index];
 		items[index] = i;
 	}

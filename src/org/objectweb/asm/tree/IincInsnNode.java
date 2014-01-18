@@ -40,18 +40,19 @@ import org.objectweb.asm.Opcodes;
  * @author Eric Bruneton
  */
 public class IincInsnNode extends AbstractInsnNode {
+
 	/**
 	 * Index of the local variable to be incremented.
 	 */
-	public final int var;
+	public int var;
 
 	/**
 	 * Amount to increment the local variable by.
 	 */
-	public final int incr;
+	public int incr;
 
 	/**
-	 * Constructs a new {@link org.objectweb.asm.tree.IincInsnNode}.
+	 * Constructs a new {@link IincInsnNode}.
 	 *
 	 * @param var  index of the local variable to be incremented.
 	 * @param incr increment amount to increment the local variable by.

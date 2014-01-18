@@ -27,51 +27,84 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.objectweb.asm.tree;
 
-import java.util.Map;
-
-import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
+package org.objectweb.asm;
 
 /**
- * A node that represents an LDC instruction.
+ * Information about a class being parsed in a {@link ClassReader}.
  *
  * @author Eric Bruneton
  */
-public class LdcInsnNode extends AbstractInsnNode {
+class Context {
 
 	/**
-	 * The constant to be loaded on the stack. This parameter must be a non null
-	 * {@link Integer}, a {@link Float}, a {@link Long}, a {@link Double}, a
-	 * {@link String} or a {@link org.objectweb.asm.Type}.
+	 * Prototypes of the attributes that must be parsed for this class.
 	 */
-	public Object cst;
+	Attribute[] attrs;
 
 	/**
-	 * Constructs a new {@link LdcInsnNode}.
-	 *
-	 * @param cst the constant to be loaded on the stack. This parameter must be
-	 *            a non null {@link Integer}, a {@link Float}, a {@link Long}, a
-	 *            {@link Double} or a {@link String}.
+	 * The {@link ClassReader} option flags for the parsing of this class.
 	 */
-	public LdcInsnNode(final Object cst) {
-		super(Opcodes.LDC);
-		this.cst = cst;
-	}
+	int flags;
 
-	@Override
-	public int getType() {
-		return LDC_INSN;
-	}
+	/**
+	 * The buffer used to read strings.
+	 */
+	char[] buffer;
 
-	@Override
-	public void accept(final MethodVisitor mv) {
-		mv.visitLdcInsn(cst);
-	}
+	/**
+	 * The start index of each bootstrap method.
+	 */
+	int[] bootstrapMethods;
 
-	@Override
-	public AbstractInsnNode clone(final Map<LabelNode, LabelNode> labels) {
-		return new LdcInsnNode(cst);
-	}
+	/**
+	 * The access flags of the method currently being parsed.
+	 */
+	int access;
+
+	/**
+	 * The name of the method currently being parsed.
+	 */
+	String name;
+
+	/**
+	 * The descriptor of the method currently being parsed.
+	 */
+	String desc;
+
+	/**
+	 * The offset of the latest stack map frame that has been parsed.
+	 */
+	int offset;
+
+	/**
+	 * The encoding of the latest stack map frame that has been parsed.
+	 */
+	int mode;
+
+	/**
+	 * The number of locals in the latest stack map frame that has been parsed.
+	 */
+	int localCount;
+
+	/**
+	 * The number locals in the latest stack map frame that has been parsed,
+	 * minus the number of locals in the previous frame.
+	 */
+	int localDiff;
+
+	/**
+	 * The local values of the latest stack map frame that has been parsed.
+	 */
+	Object[] local;
+
+	/**
+	 * The stack size of the latest stack map frame that has been parsed.
+	 */
+	int stackCount;
+
+	/**
+	 * The stack values of the latest stack map frame that has been parsed.
+	 */
+	Object[] stack;
 }

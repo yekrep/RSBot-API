@@ -35,6 +35,7 @@ package org.objectweb.asm;
  * @author Eric Bruneton
  */
 final class FieldWriter extends FieldVisitor {
+
 	/**
 	 * The class writer to which this field must be added.
 	 */
@@ -89,22 +90,17 @@ final class FieldWriter extends FieldVisitor {
 	// ------------------------------------------------------------------------
 
 	/**
-	 * Constructs a new {@link org.objectweb.asm.FieldWriter}.
+	 * Constructs a new {@link FieldWriter}.
 	 *
 	 * @param cw        the class writer to which this field must be added.
-	 * @param access    the field's access flags (see {@link org.objectweb.asm.Opcodes}).
+	 * @param access    the field's access flags (see {@link Opcodes}).
 	 * @param name      the field's name.
 	 * @param desc      the field's descriptor (see {@link Type}).
 	 * @param signature the field's signature. May be <tt>null</tt>.
 	 * @param value     the field's constant value. May be <tt>null</tt>.
 	 */
-	FieldWriter(
-			final ClassWriter cw,
-			final int access,
-			final String name,
-			final String desc,
-			final String signature,
-			final Object value) {
+	FieldWriter(final ClassWriter cw, final int access, final String name,
+	            final String desc, final String signature, final Object value) {
 		super(Opcodes.ASM4);
 		if (cw.firstField == null) {
 			cw.firstField = this;
@@ -129,16 +125,15 @@ final class FieldWriter extends FieldVisitor {
 	// ------------------------------------------------------------------------
 
 	@Override
-	public AnnotationVisitor visitAnnotation(
-			final String desc,
-			final boolean visible) {
+	public AnnotationVisitor visitAnnotation(final String desc,
+	                                         final boolean visible) {
 		if (!ClassReader.ANNOTATIONS) {
 			return null;
 		}
-		final ByteVector bv = new ByteVector();
+		ByteVector bv = new ByteVector();
 		// write type, and reserve space for values count
 		bv.putShort(cw.newUTF8(desc)).putShort(0);
-		final AnnotationWriter aw = new AnnotationWriter(cw, true, bv, bv, 2);
+		AnnotationWriter aw = new AnnotationWriter(cw, true, bv, bv, 2);
 		if (visible) {
 			aw.next = anns;
 			anns = aw;
@@ -174,10 +169,12 @@ final class FieldWriter extends FieldVisitor {
 			cw.newUTF8("ConstantValue");
 			size += 8;
 		}
-		if ((access & Opcodes.ACC_SYNTHETIC) != 0
-				&& ((cw.version & 0xFFFF) < Opcodes.V1_5 || (access & ClassWriter.ACC_SYNTHETIC_ATTRIBUTE) != 0)) {
-			cw.newUTF8("Synthetic");
-			size += 6;
+		if ((access & Opcodes.ACC_SYNTHETIC) != 0) {
+			if ((cw.version & 0xFFFF) < Opcodes.V1_5
+					|| (access & ClassWriter.ACC_SYNTHETIC_ATTRIBUTE) != 0) {
+				cw.newUTF8("Synthetic");
+				size += 6;
+			}
 		}
 		if ((access & Opcodes.ACC_DEPRECATED) != 0) {
 			cw.newUTF8("Deprecated");
@@ -207,17 +204,19 @@ final class FieldWriter extends FieldVisitor {
 	 * @param out where the content of this field must be put.
 	 */
 	void put(final ByteVector out) {
-		final int mask = Opcodes.ACC_DEPRECATED
-				| ClassWriter.ACC_SYNTHETIC_ATTRIBUTE
-				| (access & ClassWriter.ACC_SYNTHETIC_ATTRIBUTE) / (ClassWriter.ACC_SYNTHETIC_ATTRIBUTE / Opcodes.ACC_SYNTHETIC);
+		final int FACTOR = ClassWriter.TO_ACC_SYNTHETIC;
+		int mask = Opcodes.ACC_DEPRECATED | ClassWriter.ACC_SYNTHETIC_ATTRIBUTE
+				| ((access & ClassWriter.ACC_SYNTHETIC_ATTRIBUTE) / FACTOR);
 		out.putShort(access & ~mask).putShort(name).putShort(desc);
 		int attributeCount = 0;
 		if (value != 0) {
 			++attributeCount;
 		}
-		if ((access & Opcodes.ACC_SYNTHETIC) != 0
-				&& ((cw.version & 0xFFFF) < Opcodes.V1_5 || (access & ClassWriter.ACC_SYNTHETIC_ATTRIBUTE) != 0)) {
-			++attributeCount;
+		if ((access & Opcodes.ACC_SYNTHETIC) != 0) {
+			if ((cw.version & 0xFFFF) < Opcodes.V1_5
+					|| (access & ClassWriter.ACC_SYNTHETIC_ATTRIBUTE) != 0) {
+				++attributeCount;
+			}
 		}
 		if ((access & Opcodes.ACC_DEPRECATED) != 0) {
 			++attributeCount;
@@ -239,9 +238,11 @@ final class FieldWriter extends FieldVisitor {
 			out.putShort(cw.newUTF8("ConstantValue"));
 			out.putInt(2).putShort(value);
 		}
-		if ((access & Opcodes.ACC_SYNTHETIC) != 0
-				&& ((cw.version & 0xFFFF) < Opcodes.V1_5 || (access & ClassWriter.ACC_SYNTHETIC_ATTRIBUTE) != 0)) {
-			out.putShort(cw.newUTF8("Synthetic")).putInt(0);
+		if ((access & Opcodes.ACC_SYNTHETIC) != 0) {
+			if ((cw.version & 0xFFFF) < Opcodes.V1_5
+					|| (access & ClassWriter.ACC_SYNTHETIC_ATTRIBUTE) != 0) {
+				out.putShort(cw.newUTF8("Synthetic")).putInt(0);
+			}
 		}
 		if ((access & Opcodes.ACC_DEPRECATED) != 0) {
 			out.putShort(cw.newUTF8("Deprecated")).putInt(0);

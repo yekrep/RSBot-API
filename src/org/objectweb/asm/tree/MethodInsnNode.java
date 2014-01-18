@@ -40,38 +40,37 @@ import org.objectweb.asm.MethodVisitor;
  * @author Eric Bruneton
  */
 public class MethodInsnNode extends AbstractInsnNode {
+
 	/**
 	 * The internal name of the method's owner class (see
 	 * {@link org.objectweb.asm.Type#getInternalName() getInternalName}).
 	 */
-	public final String owner;
+	public String owner;
 
 	/**
 	 * The method's name.
 	 */
-	public final String name;
+	public String name;
 
 	/**
 	 * The method's descriptor (see {@link org.objectweb.asm.Type}).
 	 */
-	public final String desc;
+	public String desc;
 
 	/**
-	 * Constructs a new {@link org.objectweb.asm.tree.MethodInsnNode}.
+	 * Constructs a new {@link MethodInsnNode}.
 	 *
 	 * @param opcode the opcode of the type instruction to be constructed. This
 	 *               opcode must be INVOKEVIRTUAL, INVOKESPECIAL, INVOKESTATIC or
 	 *               INVOKEINTERFACE.
 	 * @param owner  the internal name of the method's owner class (see
-	 *               {@link org.objectweb.asm.Type#getInternalName() getInternalName}).
+	 *               {@link org.objectweb.asm.Type#getInternalName()
+	 *               getInternalName}).
 	 * @param name   the method's name.
 	 * @param desc   the method's descriptor (see {@link org.objectweb.asm.Type}).
 	 */
-	public MethodInsnNode(
-			final int opcode,
-			final String owner,
-			final String name,
-			final String desc) {
+	public MethodInsnNode(final int opcode, final String owner,
+	                      final String name, final String desc) {
 		super(opcode);
 		this.owner = owner;
 		this.name = name;
@@ -81,8 +80,8 @@ public class MethodInsnNode extends AbstractInsnNode {
 	/**
 	 * Sets the opcode of this instruction.
 	 *
-	 * @param opcode the new instruction opcode. This opcode must be
-	 *               INVOKEVIRTUAL, INVOKESPECIAL, INVOKESTATIC or INVOKEINTERFACE.
+	 * @param opcode the new instruction opcode. This opcode must be INVOKEVIRTUAL,
+	 *               INVOKESPECIAL, INVOKESTATIC or INVOKEINTERFACE.
 	 */
 	public void setOpcode(final int opcode) {
 		this.opcode = opcode;

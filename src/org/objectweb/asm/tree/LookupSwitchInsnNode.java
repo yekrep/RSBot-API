@@ -44,38 +44,38 @@ import org.objectweb.asm.Opcodes;
  * @author Eric Bruneton
  */
 public class LookupSwitchInsnNode extends AbstractInsnNode {
+
 	/**
 	 * Beginning of the default handler block.
 	 */
-	public final LabelNode dflt;
+	public LabelNode dflt;
 
 	/**
 	 * The values of the keys. This list is a list of {@link Integer} objects.
 	 */
-	public final List<Integer> keys;
+	public List<Integer> keys;
 
 	/**
 	 * Beginnings of the handler blocks. This list is a list of
-	 * {@link org.objectweb.asm.tree.LabelNode} objects.
+	 * {@link LabelNode} objects.
 	 */
-	public final List<LabelNode> labels;
+	public List<LabelNode> labels;
 
 	/**
-	 * Constructs a new {@link org.objectweb.asm.tree.LookupSwitchInsnNode}.
+	 * Constructs a new {@link LookupSwitchInsnNode}.
 	 *
 	 * @param dflt   beginning of the default handler block.
 	 * @param keys   the values of the keys.
-	 * @param labels beginnings of the handler blocks. <tt>labels[i]</tt> is
-	 *               the beginning of the handler block for the <tt>keys[i]</tt> key.
+	 * @param labels beginnings of the handler blocks. <tt>labels[i]</tt> is the
+	 *               beginning of the handler block for the <tt>keys[i]</tt> key.
 	 */
-	public LookupSwitchInsnNode(
-			final LabelNode dflt,
-			final int[] keys,
-			final LabelNode[] labels) {
+	public LookupSwitchInsnNode(final LabelNode dflt, final int[] keys,
+	                            final LabelNode[] labels) {
 		super(Opcodes.LOOKUPSWITCH);
 		this.dflt = dflt;
 		this.keys = new ArrayList<Integer>(keys == null ? 0 : keys.length);
-		this.labels = new ArrayList<LabelNode>(labels == null ? 0 : labels.length);
+		this.labels = new ArrayList<LabelNode>(labels == null ? 0
+				: labels.length);
 		if (keys != null) {
 			for (int i = 0; i < keys.length; ++i) {
 				this.keys.add(new Integer(keys[i]));
@@ -93,11 +93,11 @@ public class LookupSwitchInsnNode extends AbstractInsnNode {
 
 	@Override
 	public void accept(final MethodVisitor mv) {
-		final int[] keys = new int[this.keys.size()];
+		int[] keys = new int[this.keys.size()];
 		for (int i = 0; i < keys.length; ++i) {
 			keys[i] = this.keys.get(i).intValue();
 		}
-		final Label[] labels = new Label[this.labels.size()];
+		Label[] labels = new Label[this.labels.size()];
 		for (int i = 0; i < labels.length; ++i) {
 			labels[i] = this.labels.get(i).getLabel();
 		}
@@ -106,7 +106,7 @@ public class LookupSwitchInsnNode extends AbstractInsnNode {
 
 	@Override
 	public AbstractInsnNode clone(final Map<LabelNode, LabelNode> labels) {
-		final LookupSwitchInsnNode clone = new LookupSwitchInsnNode(clone(dflt,
+		LookupSwitchInsnNode clone = new LookupSwitchInsnNode(clone(dflt,
 				labels), null, clone(this.labels, labels));
 		clone.keys.addAll(keys);
 		return clone;

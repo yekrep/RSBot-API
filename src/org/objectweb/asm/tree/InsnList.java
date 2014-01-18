@@ -35,10 +35,11 @@ import java.util.NoSuchElementException;
 import org.objectweb.asm.MethodVisitor;
 
 /**
- * A doubly linked list of {@link org.objectweb.asm.tree.AbstractInsnNode} objects. <i>This
+ * A doubly linked list of {@link AbstractInsnNode} objects. <i>This
  * implementation is not thread safe</i>.
  */
 public class InsnList {
+
 	/**
 	 * The number of instructions in this list.
 	 */
@@ -72,8 +73,8 @@ public class InsnList {
 	/**
 	 * Returns the first instruction in this list.
 	 *
-	 * @return the first instruction in this list, or <tt>null</tt> if the
-	 * list is empty.
+	 * @return the first instruction in this list, or <tt>null</tt> if the list
+	 * is empty.
 	 */
 	public AbstractInsnNode getFirst() {
 		return first;
@@ -110,8 +111,8 @@ public class InsnList {
 	}
 
 	/**
-	 * Returns <tt>true</tt> if the given instruction belongs to this list.
-	 * This method always scans the instructions of this list until it finds the
+	 * Returns <tt>true</tt> if the given instruction belongs to this list. This
+	 * method always scans the instructions of this list until it finds the
 	 * given instruction or reaches the end of the list.
 	 *
 	 * @param insn an instruction.
@@ -173,7 +174,7 @@ public class InsnList {
 	 * @return an iterator over the instructions in this list.
 	 */
 	@SuppressWarnings("unchecked")
-	public ListIterator<AbstractInsnNode> iterator(final int index) {
+	public ListIterator<AbstractInsnNode> iterator(int index) {
 		return new InsnListIterator(index);
 	}
 
@@ -185,7 +186,7 @@ public class InsnList {
 	public AbstractInsnNode[] toArray() {
 		int i = 0;
 		AbstractInsnNode elem = first;
-		final AbstractInsnNode[] insns = new AbstractInsnNode[size];
+		AbstractInsnNode[] insns = new AbstractInsnNode[size];
 		while (elem != null) {
 			insns[i] = elem;
 			elem.index = i++;
@@ -199,17 +200,17 @@ public class InsnList {
 	 *
 	 * @param location an instruction <i>of this list</i>.
 	 * @param insn     another instruction, <i>which must not belong to any
-	 *                 {@link org.objectweb.asm.tree.InsnList}</i>.
+	 *                 {@link InsnList}</i>.
 	 */
 	public void set(final AbstractInsnNode location, final AbstractInsnNode insn) {
-		final AbstractInsnNode next = location.next;
+		AbstractInsnNode next = location.next;
 		insn.next = next;
 		if (next != null) {
 			next.prev = insn;
 		} else {
 			last = insn;
 		}
-		final AbstractInsnNode prev = location.prev;
+		AbstractInsnNode prev = location.prev;
 		insn.prev = prev;
 		if (prev != null) {
 			prev.next = insn;
@@ -217,7 +218,7 @@ public class InsnList {
 			first = insn;
 		}
 		if (cache != null) {
-			final int index = location.index;
+			int index = location.index;
 			cache[index] = insn;
 			insn.index = index;
 		} else {
@@ -232,7 +233,7 @@ public class InsnList {
 	 * Adds the given instruction to the end of this list.
 	 *
 	 * @param insn an instruction, <i>which must not belong to any
-	 *             {@link org.objectweb.asm.tree.InsnList}</i>.
+	 *             {@link InsnList}</i>.
 	 */
 	public void add(final AbstractInsnNode insn) {
 		++size;
@@ -251,8 +252,8 @@ public class InsnList {
 	/**
 	 * Adds the given instructions to the end of this list.
 	 *
-	 * @param insns an instruction list, which is cleared during the process.
-	 *              This list must be different from 'this'.
+	 * @param insns an instruction list, which is cleared during the process. This
+	 *              list must be different from 'this'.
 	 */
 	public void add(final InsnList insns) {
 		if (insns.size == 0) {
@@ -263,7 +264,7 @@ public class InsnList {
 			first = insns.first;
 			last = insns.last;
 		} else {
-			final AbstractInsnNode elem = insns.first;
+			AbstractInsnNode elem = insns.first;
 			last.next = elem;
 			elem.prev = last;
 			last = insns.last;
@@ -276,7 +277,7 @@ public class InsnList {
 	 * Inserts the given instruction at the begining of this list.
 	 *
 	 * @param insn an instruction, <i>which must not belong to any
-	 *             {@link org.objectweb.asm.tree.InsnList}</i>.
+	 *             {@link InsnList}</i>.
 	 */
 	public void insert(final AbstractInsnNode insn) {
 		++size;
@@ -295,8 +296,8 @@ public class InsnList {
 	/**
 	 * Inserts the given instructions at the begining of this list.
 	 *
-	 * @param insns an instruction list, which is cleared during the process.
-	 *              This list must be different from 'this'.
+	 * @param insns an instruction list, which is cleared during the process. This
+	 *              list must be different from 'this'.
 	 */
 	public void insert(final InsnList insns) {
 		if (insns.size == 0) {
@@ -307,7 +308,7 @@ public class InsnList {
 			first = insns.first;
 			last = insns.last;
 		} else {
-			final AbstractInsnNode elem = insns.last;
+			AbstractInsnNode elem = insns.last;
 			first.prev = elem;
 			elem.next = first;
 			first = insns.first;
@@ -322,11 +323,12 @@ public class InsnList {
 	 * @param location an instruction <i>of this list</i> after which insn must be
 	 *                 inserted.
 	 * @param insn     the instruction to be inserted, <i>which must not belong to
-	 *                 any {@link org.objectweb.asm.tree.InsnList}</i>.
+	 *                 any {@link InsnList}</i>.
 	 */
-	public void insert(final AbstractInsnNode location, final AbstractInsnNode insn) {
+	public void insert(final AbstractInsnNode location,
+	                   final AbstractInsnNode insn) {
 		++size;
-		final AbstractInsnNode next = location.next;
+		AbstractInsnNode next = location.next;
 		if (next == null) {
 			last = insn;
 		} else {
@@ -352,9 +354,9 @@ public class InsnList {
 			return;
 		}
 		size += insns.size;
-		final AbstractInsnNode ifirst = insns.first;
-		final AbstractInsnNode ilast = insns.last;
-		final AbstractInsnNode next = location.next;
+		AbstractInsnNode ifirst = insns.first;
+		AbstractInsnNode ilast = insns.last;
+		AbstractInsnNode next = location.next;
 		if (next == null) {
 			last = ilast;
 		} else {
@@ -373,11 +375,12 @@ public class InsnList {
 	 * @param location an instruction <i>of this list</i> before which insn must be
 	 *                 inserted.
 	 * @param insn     the instruction to be inserted, <i>which must not belong to
-	 *                 any {@link org.objectweb.asm.tree.InsnList}</i>.
+	 *                 any {@link InsnList}</i>.
 	 */
-	public void insertBefore(final AbstractInsnNode location, final AbstractInsnNode insn) {
+	public void insertBefore(final AbstractInsnNode location,
+	                         final AbstractInsnNode insn) {
 		++size;
-		final AbstractInsnNode prev = location.prev;
+		AbstractInsnNode prev = location.prev;
 		if (prev == null) {
 			first = insn;
 		} else {
@@ -393,19 +396,20 @@ public class InsnList {
 	/**
 	 * Inserts the given instructions before the specified instruction.
 	 *
-	 * @param location an instruction <i>of this list</i> before which the instructions
-	 *                 must be inserted.
+	 * @param location an instruction <i>of this list</i> before which the
+	 *                 instructions must be inserted.
 	 * @param insns    the instruction list to be inserted, which is cleared during
 	 *                 the process. This list must be different from 'this'.
 	 */
-	public void insertBefore(final AbstractInsnNode location, final InsnList insns) {
+	public void insertBefore(final AbstractInsnNode location,
+	                         final InsnList insns) {
 		if (insns.size == 0) {
 			return;
 		}
 		size += insns.size;
-		final AbstractInsnNode ifirst = insns.first;
-		final AbstractInsnNode ilast = insns.last;
-		final AbstractInsnNode prev = location.prev;
+		AbstractInsnNode ifirst = insns.first;
+		AbstractInsnNode ilast = insns.last;
+		AbstractInsnNode prev = location.prev;
 		if (prev == null) {
 			first = ifirst;
 		} else {
@@ -418,7 +422,6 @@ public class InsnList {
 		insns.removeAll(false);
 	}
 
-
 	/**
 	 * Removes the given instruction from this list.
 	 *
@@ -426,8 +429,8 @@ public class InsnList {
 	 */
 	public void remove(final AbstractInsnNode insn) {
 		--size;
-		final AbstractInsnNode next = insn.next;
-		final AbstractInsnNode prev = insn.prev;
+		AbstractInsnNode next = insn.next;
+		AbstractInsnNode prev = insn.prev;
 		if (next == null) {
 			if (prev == null) {
 				first = null;
@@ -455,13 +458,13 @@ public class InsnList {
 	 * Removes all of the instructions of this list.
 	 *
 	 * @param mark if the instructions must be marked as no longer belonging to
-	 *             any {@link org.objectweb.asm.tree.InsnList}.
+	 *             any {@link InsnList}.
 	 */
 	void removeAll(final boolean mark) {
 		if (mark) {
 			AbstractInsnNode insn = first;
 			while (insn != null) {
-				final AbstractInsnNode next = insn.next;
+				AbstractInsnNode next = insn.next;
 				insn.index = -1; // insn no longer belongs to an InsnList
 				insn.prev = null;
 				insn.next = null;
@@ -497,13 +500,13 @@ public class InsnList {
 	}
 
 	// this class is not generified because it will create bridges
-	private final class InsnListIterator implements ListIterator/*<AbstractInsnNode>*/ {
+	private final class InsnListIterator implements ListIterator {
 
 		AbstractInsnNode next;
 
 		AbstractInsnNode prev;
 
-		InsnListIterator(final int index) {
+		InsnListIterator(int index) {
 			if (index == size()) {
 				next = null;
 				prev = getLast();
@@ -513,42 +516,36 @@ public class InsnList {
 			}
 		}
 
-		@Override
 		public boolean hasNext() {
 			return next != null;
 		}
 
-		@Override
 		public Object next() {
 			if (next == null) {
 				throw new NoSuchElementException();
 			}
-			final AbstractInsnNode result = next;
+			AbstractInsnNode result = next;
 			prev = result;
 			next = result.next;
 			return result;
 		}
 
-		@Override
 		public void remove() {
 			InsnList.this.remove(prev);
 			prev = prev.prev;
 		}
 
-		@Override
 		public boolean hasPrevious() {
 			return prev != null;
 		}
 
-		@Override
 		public Object previous() {
-			final AbstractInsnNode result = prev;
+			AbstractInsnNode result = prev;
 			next = result;
 			prev = result.prev;
 			return result;
 		}
 
-		@Override
 		public int nextIndex() {
 			if (next == null) {
 				return size();
@@ -559,7 +556,6 @@ public class InsnList {
 			return next.index;
 		}
 
-		@Override
 		public int previousIndex() {
 			if (prev == null) {
 				return -1;
@@ -570,14 +566,12 @@ public class InsnList {
 			return prev.index;
 		}
 
-		@Override
-		public void add(final Object o) {
+		public void add(Object o) {
 			InsnList.this.insertBefore(next, (AbstractInsnNode) o);
 			prev = (AbstractInsnNode) o;
 		}
 
-		@Override
-		public void set(final Object o) {
+		public void set(Object o) {
 			InsnList.this.set(next.prev, (AbstractInsnNode) o);
 			prev = (AbstractInsnNode) o;
 		}

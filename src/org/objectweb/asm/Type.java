@@ -40,6 +40,7 @@ import java.lang.reflect.Method;
  * @author Chris Nokleberg
  */
 public class Type {
+
 	/**
 	 * The sort of the <tt>void</tt> type. See {@link #getSort getSort}.
 	 */
@@ -103,56 +104,56 @@ public class Type {
 	/**
 	 * The <tt>void</tt> type.
 	 */
-	public static final Type VOID_TYPE = new Type(VOID, null, 'V' << 24
-			| 5 << 16 | 0 << 8 | 0, 1);
+	public static final Type VOID_TYPE = new Type(VOID, null, ('V' << 24)
+			| (5 << 16) | (0 << 8) | 0, 1);
 
 	/**
 	 * The <tt>boolean</tt> type.
 	 */
-	public static final Type BOOLEAN_TYPE = new Type(BOOLEAN, null, 'Z' << 24
-			| 0 << 16 | 5 << 8 | 1, 1);
+	public static final Type BOOLEAN_TYPE = new Type(BOOLEAN, null, ('Z' << 24)
+			| (0 << 16) | (5 << 8) | 1, 1);
 
 	/**
 	 * The <tt>char</tt> type.
 	 */
-	public static final Type CHAR_TYPE = new Type(CHAR, null, 'C' << 24
-			| 0 << 16 | 6 << 8 | 1, 1);
+	public static final Type CHAR_TYPE = new Type(CHAR, null, ('C' << 24)
+			| (0 << 16) | (6 << 8) | 1, 1);
 
 	/**
 	 * The <tt>byte</tt> type.
 	 */
-	public static final Type BYTE_TYPE = new Type(BYTE, null, 'B' << 24
-			| 0 << 16 | 5 << 8 | 1, 1);
+	public static final Type BYTE_TYPE = new Type(BYTE, null, ('B' << 24)
+			| (0 << 16) | (5 << 8) | 1, 1);
 
 	/**
 	 * The <tt>short</tt> type.
 	 */
-	public static final Type SHORT_TYPE = new Type(SHORT, null, 'S' << 24
-			| 0 << 16 | 7 << 8 | 1, 1);
+	public static final Type SHORT_TYPE = new Type(SHORT, null, ('S' << 24)
+			| (0 << 16) | (7 << 8) | 1, 1);
 
 	/**
 	 * The <tt>int</tt> type.
 	 */
-	public static final Type INT_TYPE = new Type(INT, null, 'I' << 24
-			| 0 << 16 | 0 << 8 | 1, 1);
+	public static final Type INT_TYPE = new Type(INT, null, ('I' << 24)
+			| (0 << 16) | (0 << 8) | 1, 1);
 
 	/**
 	 * The <tt>float</tt> type.
 	 */
-	public static final Type FLOAT_TYPE = new Type(FLOAT, null, 'F' << 24
-			| 2 << 16 | 2 << 8 | 1, 1);
+	public static final Type FLOAT_TYPE = new Type(FLOAT, null, ('F' << 24)
+			| (2 << 16) | (2 << 8) | 1, 1);
 
 	/**
 	 * The <tt>long</tt> type.
 	 */
-	public static final Type LONG_TYPE = new Type(LONG, null, 'J' << 24
-			| 1 << 16 | 1 << 8 | 2, 1);
+	public static final Type LONG_TYPE = new Type(LONG, null, ('J' << 24)
+			| (1 << 16) | (1 << 8) | 2, 1);
 
 	/**
 	 * The <tt>double</tt> type.
 	 */
-	public static final Type DOUBLE_TYPE = new Type(DOUBLE, null, 'D' << 24
-			| 3 << 16 | 3 << 8 | 2, 1);
+	public static final Type DOUBLE_TYPE = new Type(DOUBLE, null, ('D' << 24)
+			| (3 << 16) | (3 << 8) | 2, 1);
 
 	// ------------------------------------------------------------------------
 	// Fields
@@ -218,7 +219,7 @@ public class Type {
 	 * @return the Java type corresponding to the given internal name.
 	 */
 	public static Type getObjectType(final String internalName) {
-		final char[] buf = internalName.toCharArray();
+		char[] buf = internalName.toCharArray();
 		return new Type(buf[0] == '[' ? ARRAY : OBJECT, buf, 0, buf.length);
 	}
 
@@ -239,9 +240,11 @@ public class Type {
 	 *
 	 * @param returnType    the return type of the method.
 	 * @param argumentTypes the argument types of the method.
-	 * @return the Java type corresponding to the given argument and return types.
+	 * @return the Java type corresponding to the given argument and return
+	 * types.
 	 */
-	public static Type getMethodType(final Type returnType, final Type... argumentTypes) {
+	public static Type getMethodType(final Type returnType,
+	                                 final Type... argumentTypes) {
 		return getType(getMethodDescriptor(returnType, argumentTypes));
 	}
 
@@ -280,7 +283,7 @@ public class Type {
 	/**
 	 * Returns the Java method type corresponding to the given constructor.
 	 *
-	 * @param c a {@link java.lang.reflect.Constructor Constructor} object.
+	 * @param c a {@link Constructor Constructor} object.
 	 * @return the Java method type corresponding to the given constructor.
 	 */
 	public static Type getType(final Constructor<?> c) {
@@ -290,7 +293,7 @@ public class Type {
 	/**
 	 * Returns the Java method type corresponding to the given method.
 	 *
-	 * @param m a {@link java.lang.reflect.Method Method} object.
+	 * @param m a {@link Method Method} object.
 	 * @return the Java method type corresponding to the given method.
 	 */
 	public static Type getType(final Method m) {
@@ -306,11 +309,11 @@ public class Type {
 	 * method descriptor.
 	 */
 	public static Type[] getArgumentTypes(final String methodDescriptor) {
-		final char[] buf = methodDescriptor.toCharArray();
+		char[] buf = methodDescriptor.toCharArray();
 		int off = 1;
 		int size = 0;
 		while (true) {
-			final char car = buf[off++];
+			char car = buf[off++];
 			if (car == ')') {
 				break;
 			} else if (car == 'L') {
@@ -321,7 +324,7 @@ public class Type {
 				++size;
 			}
 		}
-		final Type[] args = new Type[size];
+		Type[] args = new Type[size];
 		off = 1;
 		size = 0;
 		while (buf[off] != ')') {
@@ -341,8 +344,8 @@ public class Type {
 	 * method.
 	 */
 	public static Type[] getArgumentTypes(final Method method) {
-		final Class<?>[] classes = method.getParameterTypes();
-		final Type[] types = new Type[classes.length];
+		Class<?>[] classes = method.getParameterTypes();
+		Type[] types = new Type[classes.length];
 		for (int i = classes.length - 1; i >= 0; --i) {
 			types[i] = getType(classes[i]);
 		}
@@ -358,7 +361,7 @@ public class Type {
 	 * method descriptor.
 	 */
 	public static Type getReturnType(final String methodDescriptor) {
-		final char[] buf = methodDescriptor.toCharArray();
+		char[] buf = methodDescriptor.toCharArray();
 		return getType(buf, methodDescriptor.indexOf(')') + 1);
 	}
 
@@ -381,8 +384,8 @@ public class Type {
 	 * @return the size of the arguments of the method (plus one for the
 	 * implicit this argument), argSize, and the size of its return
 	 * value, retSize, packed into a single int i =
-	 * <tt>(argSize << 2) | retSize</tt> (argSize is therefore equal
-	 * to <tt>i >> 2</tt>, and retSize to <tt>i & 0x03</tt>).
+	 * <tt>(argSize << 2) | retSize</tt> (argSize is therefore equal to
+	 * <tt>i >> 2</tt>, and retSize to <tt>i & 0x03</tt>).
 	 */
 	public static int getArgumentsAndReturnSizes(final String desc) {
 		int n = 1;
@@ -392,7 +395,7 @@ public class Type {
 			if (car == ')') {
 				car = desc.charAt(c);
 				return n << 2
-						| (car == 'V' ? 0 : car == 'D' || car == 'J' ? 2 : 1);
+						| (car == 'V' ? 0 : (car == 'D' || car == 'J' ? 2 : 1));
 			} else if (car == 'L') {
 				while (desc.charAt(c++) != ';') {
 				}
@@ -462,7 +465,7 @@ public class Type {
 			return new Type(OBJECT, buf, off + 1, len - 1);
 		// case '(':
 		default:
-			return new Type(METHOD, buf, 0, buf.length);
+			return new Type(METHOD, buf, off, buf.length - off);
 		}
 	}
 
@@ -473,11 +476,11 @@ public class Type {
 	/**
 	 * Returns the sort of this Java type.
 	 *
-	 * @return {@link #VOID VOID}, {@link #BOOLEAN BOOLEAN},
-	 * {@link #CHAR CHAR}, {@link #BYTE BYTE}, {@link #SHORT SHORT},
-	 * {@link #INT INT}, {@link #FLOAT FLOAT}, {@link #LONG LONG},
-	 * {@link #DOUBLE DOUBLE}, {@link #ARRAY ARRAY},
-	 * {@link #OBJECT OBJECT} or {@link #METHOD METHOD}.
+	 * @return {@link #VOID VOID}, {@link #BOOLEAN BOOLEAN}, {@link #CHAR CHAR},
+	 * {@link #BYTE BYTE}, {@link #SHORT SHORT}, {@link #INT INT},
+	 * {@link #FLOAT FLOAT}, {@link #LONG LONG}, {@link #DOUBLE DOUBLE},
+	 * {@link #ARRAY ARRAY}, {@link #OBJECT OBJECT} or {@link #METHOD
+	 * METHOD}.
 	 */
 	public int getSort() {
 		return sort;
@@ -534,7 +537,7 @@ public class Type {
 		case DOUBLE:
 			return "double";
 		case ARRAY:
-			final StringBuffer b = new StringBuffer(getElementType().getClassName());
+			StringBuffer b = new StringBuffer(getElementType().getClassName());
 			for (int i = getDimensions(); i > 0; --i) {
 				b.append("[]");
 			}
@@ -602,7 +605,7 @@ public class Type {
 	 * @return the descriptor corresponding to this Java type.
 	 */
 	public String getDescriptor() {
-		final StringBuffer buf = new StringBuffer();
+		StringBuffer buf = new StringBuffer();
 		getDescriptor(buf);
 		return buf.toString();
 	}
@@ -616,10 +619,9 @@ public class Type {
 	 * @return the descriptor corresponding to the given argument and return
 	 * types.
 	 */
-	public static String getMethodDescriptor(
-			final Type returnType,
-			final Type... argumentTypes) {
-		final StringBuffer buf = new StringBuffer();
+	public static String getMethodDescriptor(final Type returnType,
+	                                         final Type... argumentTypes) {
+		StringBuffer buf = new StringBuffer();
 		buf.append('(');
 		for (int i = 0; i < argumentTypes.length; ++i) {
 			argumentTypes[i].getDescriptor(buf);
@@ -637,7 +639,8 @@ public class Type {
 	 */
 	private void getDescriptor(final StringBuffer buf) {
 		if (this.buf == null) {
-			// descriptor is in byte 3 of 'off' for primitive types (buf == null)
+			// descriptor is in byte 3 of 'off' for primitive types (buf ==
+			// null)
 			buf.append((char) ((off & 0xFF000000) >>> 24));
 		} else if (sort == OBJECT) {
 			buf.append('L');
@@ -672,7 +675,7 @@ public class Type {
 	 * @return the descriptor corresponding to the given class.
 	 */
 	public static String getDescriptor(final Class<?> c) {
-		final StringBuffer buf = new StringBuffer();
+		StringBuffer buf = new StringBuffer();
 		getDescriptor(buf, c);
 		return buf.toString();
 	}
@@ -680,12 +683,12 @@ public class Type {
 	/**
 	 * Returns the descriptor corresponding to the given constructor.
 	 *
-	 * @param c a {@link java.lang.reflect.Constructor Constructor} object.
+	 * @param c a {@link Constructor Constructor} object.
 	 * @return the descriptor of the given constructor.
 	 */
 	public static String getConstructorDescriptor(final Constructor<?> c) {
-		final Class<?>[] parameters = c.getParameterTypes();
-		final StringBuffer buf = new StringBuffer();
+		Class<?>[] parameters = c.getParameterTypes();
+		StringBuffer buf = new StringBuffer();
 		buf.append('(');
 		for (int i = 0; i < parameters.length; ++i) {
 			getDescriptor(buf, parameters[i]);
@@ -696,12 +699,12 @@ public class Type {
 	/**
 	 * Returns the descriptor corresponding to the given method.
 	 *
-	 * @param m a {@link java.lang.reflect.Method Method} object.
+	 * @param m a {@link Method Method} object.
 	 * @return the descriptor of the given method.
 	 */
 	public static String getMethodDescriptor(final Method m) {
-		final Class<?>[] parameters = m.getParameterTypes();
-		final StringBuffer buf = new StringBuffer();
+		Class<?>[] parameters = m.getParameterTypes();
+		StringBuffer buf = new StringBuffer();
 		buf.append('(');
 		for (int i = 0; i < parameters.length; ++i) {
 			getDescriptor(buf, parameters[i]);
@@ -721,7 +724,7 @@ public class Type {
 		Class<?> d = c;
 		while (true) {
 			if (d.isPrimitive()) {
-				final char car;
+				char car;
 				if (d == Integer.TYPE) {
 					car = 'I';
 				} else if (d == Void.TYPE) {
@@ -748,10 +751,10 @@ public class Type {
 				d = d.getComponentType();
 			} else {
 				buf.append('L');
-				final String name = d.getName();
-				final int len = name.length();
+				String name = d.getName();
+				int len = name.length();
 				for (int i = 0; i < len; ++i) {
-					final char car = name.charAt(i);
+					char car = name.charAt(i);
 					buf.append(car == '.' ? '/' : car);
 				}
 				buf.append(';');
@@ -773,7 +776,7 @@ public class Type {
 	 */
 	public int getSize() {
 		// the size is in byte 0 of 'off' for primitive types (buf == null)
-		return buf == null ? off & 0xFF : 1;
+		return buf == null ? (off & 0xFF) : 1;
 	}
 
 	/**
@@ -781,8 +784,8 @@ public class Type {
 	 * must not be used for method types.
 	 *
 	 * @param opcode a JVM instruction opcode. This opcode must be one of ILOAD,
-	 *               ISTORE, IALOAD, IASTORE, IADD, ISUB, IMUL, IDIV, IREM, INEG, ISHL,
-	 *               ISHR, IUSHR, IAND, IOR, IXOR and IRETURN.
+	 *               ISTORE, IALOAD, IASTORE, IADD, ISUB, IMUL, IDIV, IREM, INEG,
+	 *               ISHL, ISHR, IUSHR, IAND, IOR, IXOR and IRETURN.
 	 * @return an opcode that is similar to the given opcode, but adapted to
 	 * this Java type. For example, if this type is <tt>float</tt> and
 	 * <tt>opcode</tt> is IRETURN, this method returns FRETURN.
@@ -817,7 +820,7 @@ public class Type {
 		if (!(o instanceof Type)) {
 			return false;
 		}
-		final Type t = (Type) o;
+		Type t = (Type) o;
 		if (sort != t.sort) {
 			return false;
 		}

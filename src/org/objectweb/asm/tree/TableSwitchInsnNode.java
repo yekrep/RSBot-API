@@ -44,41 +44,39 @@ import org.objectweb.asm.Opcodes;
  * @author Eric Bruneton
  */
 public class TableSwitchInsnNode extends AbstractInsnNode {
+
 	/**
 	 * The minimum key value.
 	 */
-	public final int min;
+	public int min;
 
 	/**
 	 * The maximum key value.
 	 */
-	public final int max;
+	public int max;
 
 	/**
 	 * Beginning of the default handler block.
 	 */
-	public final LabelNode dflt;
+	public LabelNode dflt;
 
 	/**
 	 * Beginnings of the handler blocks. This list is a list of
-	 * {@link org.objectweb.asm.tree.LabelNode} objects.
+	 * {@link LabelNode} objects.
 	 */
-	public final List<LabelNode> labels;
+	public List<LabelNode> labels;
 
 	/**
-	 * Constructs a new {@link org.objectweb.asm.tree.TableSwitchInsnNode}.
+	 * Constructs a new {@link TableSwitchInsnNode}.
 	 *
 	 * @param min    the minimum key value.
 	 * @param max    the maximum key value.
 	 * @param dflt   beginning of the default handler block.
-	 * @param labels beginnings of the handler blocks. <tt>labels[i]</tt> is
-	 *               the beginning of the handler block for the <tt>min + i</tt> key.
+	 * @param labels beginnings of the handler blocks. <tt>labels[i]</tt> is the
+	 *               beginning of the handler block for the <tt>min + i</tt> key.
 	 */
-	public TableSwitchInsnNode(
-			final int min,
-			final int max,
-			final LabelNode dflt,
-			final LabelNode... labels) {
+	public TableSwitchInsnNode(final int min, final int max,
+	                           final LabelNode dflt, final LabelNode... labels) {
 		super(Opcodes.TABLESWITCH);
 		this.min = min;
 		this.max = max;
@@ -96,7 +94,7 @@ public class TableSwitchInsnNode extends AbstractInsnNode {
 
 	@Override
 	public void accept(final MethodVisitor mv) {
-		final Label[] labels = new Label[this.labels.size()];
+		Label[] labels = new Label[this.labels.size()];
 		for (int i = 0; i < labels.length; ++i) {
 			labels[i] = this.labels.get(i).getLabel();
 		}
@@ -105,9 +103,7 @@ public class TableSwitchInsnNode extends AbstractInsnNode {
 
 	@Override
 	public AbstractInsnNode clone(final Map<LabelNode, LabelNode> labels) {
-		return new TableSwitchInsnNode(min,
-				max,
-				clone(dflt, labels),
-				clone(this.labels, labels));
+		return new TableSwitchInsnNode(min, max, clone(dflt, labels), clone(
+				this.labels, labels));
 	}
 }

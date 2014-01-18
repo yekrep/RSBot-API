@@ -46,6 +46,7 @@ import org.objectweb.asm.Opcodes;
  * @author Eric Bruneton
  */
 public class ClassNode extends ClassVisitor {
+
 	/**
 	 * The class version.
 	 */
@@ -64,15 +65,15 @@ public class ClassNode extends ClassVisitor {
 	public String name;
 
 	/**
-	 * The signature of the class. Mayt be <tt>null</tt>.
+	 * The signature of the class. May be <tt>null</tt>.
 	 */
 	public String signature;
 
 	/**
 	 * The internal of name of the super class (see
 	 * {@link org.objectweb.asm.Type#getInternalName() getInternalName}). For
-	 * interfaces, the super class is {@link Object}. May be <tt>null</tt>,
-	 * but only for the {@link Object} class.
+	 * interfaces, the super class is {@link Object}. May be <tt>null</tt>, but
+	 * only for the {@link Object} class.
 	 */
 	public String superName;
 
@@ -81,7 +82,7 @@ public class ClassNode extends ClassVisitor {
 	 * {@link org.objectweb.asm.Type#getInternalName() getInternalName}). This
 	 * list is a list of {@link String} objects.
 	 */
-	public final List<String> interfaces;
+	public List<String> interfaces;
 
 	/**
 	 * The name of the source file from which this class was compiled. May be
@@ -90,7 +91,7 @@ public class ClassNode extends ClassVisitor {
 	public String sourceFile;
 
 	/**
-	 * Debug information to compute the correspondance between source and
+	 * Debug information to compute the correspondence between source and
 	 * compiled elements of the class. May be <tt>null</tt>.
 	 */
 	public String sourceDebug;
@@ -108,8 +109,8 @@ public class ClassNode extends ClassVisitor {
 	public String outerMethod;
 
 	/**
-	 * The descriptor of the method that contains the class, or <tt>null</tt>
-	 * if the class is not enclosed in a method.
+	 * The descriptor of the method that contains the class, or <tt>null</tt> if
+	 * the class is not enclosed in a method.
 	 */
 	public String outerMethodDesc;
 
@@ -145,7 +146,7 @@ public class ClassNode extends ClassVisitor {
 	 *
 	 * @associates org.objectweb.asm.tree.InnerClassNode
 	 */
-	public final List<InnerClassNode> innerClasses;
+	public List<InnerClassNode> innerClasses;
 
 	/**
 	 * The fields of this class. This list is a list of {@link FieldNode}
@@ -153,7 +154,7 @@ public class ClassNode extends ClassVisitor {
 	 *
 	 * @associates org.objectweb.asm.tree.FieldNode
 	 */
-	public final List<FieldNode> fields;
+	public List<FieldNode> fields;
 
 	/**
 	 * The methods of this class. This list is a list of {@link MethodNode}
@@ -161,10 +162,10 @@ public class ClassNode extends ClassVisitor {
 	 *
 	 * @associates org.objectweb.asm.tree.MethodNode
 	 */
-	public final List<MethodNode> methods;
+	public List<MethodNode> methods;
 
 	/**
-	 * Constructs a new {@link org.objectweb.asm.tree.ClassNode}. <i>Subclasses must not use this
+	 * Constructs a new {@link ClassNode}. <i>Subclasses must not use this
 	 * constructor</i>. Instead, they must use the {@link #ClassNode(int)}
 	 * version.
 	 */
@@ -173,17 +174,17 @@ public class ClassNode extends ClassVisitor {
 	}
 
 	/**
-	 * Constructs a new {@link org.objectweb.asm.tree.ClassNode}.
+	 * Constructs a new {@link ClassNode}.
 	 *
 	 * @param api the ASM API version implemented by this visitor. Must be one
 	 *            of {@link Opcodes#ASM4}.
 	 */
 	public ClassNode(final int api) {
 		super(api);
-		interfaces = new ArrayList<String>();
-		innerClasses = new ArrayList<InnerClassNode>();
-		fields = new ArrayList<FieldNode>();
-		methods = new ArrayList<MethodNode>();
+		this.interfaces = new ArrayList<String>();
+		this.innerClasses = new ArrayList<InnerClassNode>();
+		this.fields = new ArrayList<FieldNode>();
+		this.methods = new ArrayList<MethodNode>();
 	}
 
 	// ------------------------------------------------------------------------
@@ -191,13 +192,9 @@ public class ClassNode extends ClassVisitor {
 	// ------------------------------------------------------------------------
 
 	@Override
-	public void visit(
-			final int version,
-			final int access,
-			final String name,
-			final String signature,
-			final String superName,
-			final String[] interfaces) {
+	public void visit(final int version, final int access, final String name,
+	                  final String signature, final String superName,
+	                  final String[] interfaces) {
 		this.version = version;
 		this.access = access;
 		this.name = name;
@@ -215,20 +212,17 @@ public class ClassNode extends ClassVisitor {
 	}
 
 	@Override
-	public void visitOuterClass(
-			final String owner,
-			final String name,
-			final String desc) {
+	public void visitOuterClass(final String owner, final String name,
+	                            final String desc) {
 		outerClass = owner;
 		outerMethod = name;
 		outerMethodDesc = desc;
 	}
 
 	@Override
-	public AnnotationVisitor visitAnnotation(
-			final String desc,
-			final boolean visible) {
-		final AnnotationNode an = new AnnotationNode(desc);
+	public AnnotationVisitor visitAnnotation(final String desc,
+	                                         final boolean visible) {
+		AnnotationNode an = new AnnotationNode(desc);
 		if (visible) {
 			if (visibleAnnotations == null) {
 				visibleAnnotations = new ArrayList<AnnotationNode>(1);
@@ -252,41 +246,25 @@ public class ClassNode extends ClassVisitor {
 	}
 
 	@Override
-	public void visitInnerClass(
-			final String name,
-			final String outerName,
-			final String innerName,
-			final int access) {
-		final InnerClassNode icn = new InnerClassNode(name,
-				outerName,
-				innerName,
+	public void visitInnerClass(final String name, final String outerName,
+	                            final String innerName, final int access) {
+		InnerClassNode icn = new InnerClassNode(name, outerName, innerName,
 				access);
 		innerClasses.add(icn);
 	}
 
 	@Override
-	public FieldVisitor visitField(
-			final int access,
-			final String name,
-			final String desc,
-			final String signature,
-			final Object value) {
-		final FieldNode fn = new FieldNode(access, name, desc, signature, value);
+	public FieldVisitor visitField(final int access, final String name,
+	                               final String desc, final String signature, final Object value) {
+		FieldNode fn = new FieldNode(access, name, desc, signature, value);
 		fields.add(fn);
 		return fn;
 	}
 
 	@Override
-	public MethodVisitor visitMethod(
-			final int access,
-			final String name,
-			final String desc,
-			final String signature,
-			final String[] exceptions) {
-		final MethodNode mn = new MethodNode(access,
-				name,
-				desc,
-				signature,
+	public MethodVisitor visitMethod(final int access, final String name,
+	                                 final String desc, final String signature, final String[] exceptions) {
+		MethodNode mn = new MethodNode(access, name, desc, signature,
 				exceptions);
 		methods.add(mn);
 		return mn;
@@ -319,7 +297,7 @@ public class ClassNode extends ClassVisitor {
 	 */
 	public void accept(final ClassVisitor cv) {
 		// visits header
-		final String[] interfaces = new String[this.interfaces.size()];
+		String[] interfaces = new String[this.interfaces.size()];
 		this.interfaces.toArray(interfaces);
 		cv.visit(version, access, name, signature, superName, interfaces);
 		// visits source
@@ -334,12 +312,12 @@ public class ClassNode extends ClassVisitor {
 		int i, n;
 		n = visibleAnnotations == null ? 0 : visibleAnnotations.size();
 		for (i = 0; i < n; ++i) {
-			final AnnotationNode an = visibleAnnotations.get(i);
+			AnnotationNode an = visibleAnnotations.get(i);
 			an.accept(cv.visitAnnotation(an.desc, true));
 		}
 		n = invisibleAnnotations == null ? 0 : invisibleAnnotations.size();
 		for (i = 0; i < n; ++i) {
-			final AnnotationNode an = invisibleAnnotations.get(i);
+			AnnotationNode an = invisibleAnnotations.get(i);
 			an.accept(cv.visitAnnotation(an.desc, false));
 		}
 		n = attrs == null ? 0 : attrs.size();

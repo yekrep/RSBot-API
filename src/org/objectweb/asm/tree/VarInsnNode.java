@@ -41,14 +41,15 @@ import org.objectweb.asm.MethodVisitor;
  * @author Eric Bruneton
  */
 public class VarInsnNode extends AbstractInsnNode {
+
 	/**
 	 * The operand of this instruction. This operand is the index of a local
 	 * variable.
 	 */
-	public final int var;
+	public int var;
 
 	/**
-	 * Constructs a new {@link org.objectweb.asm.tree.VarInsnNode}.
+	 * Constructs a new {@link VarInsnNode}.
 	 *
 	 * @param opcode the opcode of the local variable instruction to be
 	 *               constructed. This opcode must be ILOAD, LLOAD, FLOAD, DLOAD,
@@ -64,9 +65,9 @@ public class VarInsnNode extends AbstractInsnNode {
 	/**
 	 * Sets the opcode of this instruction.
 	 *
-	 * @param opcode the new instruction opcode. This opcode must be ILOAD,
-	 *               LLOAD, FLOAD, DLOAD, ALOAD, ISTORE, LSTORE, FSTORE, DSTORE, ASTORE
-	 *               or RET.
+	 * @param opcode the new instruction opcode. This opcode must be ILOAD, LLOAD,
+	 *               FLOAD, DLOAD, ALOAD, ISTORE, LSTORE, FSTORE, DSTORE, ASTORE or
+	 *               RET.
 	 */
 	public void setOpcode(final int opcode) {
 		this.opcode = opcode;

@@ -44,37 +44,38 @@ import org.objectweb.asm.Opcodes;
  * @author Eric Bruneton
  */
 public class FieldNode extends FieldVisitor {
+
 	/**
 	 * The field's access flags (see {@link org.objectweb.asm.Opcodes}). This
 	 * field also indicates if the field is synthetic and/or deprecated.
 	 */
-	public final int access;
+	public int access;
 
 	/**
 	 * The field's name.
 	 */
-	public final String name;
+	public String name;
 
 	/**
 	 * The field's descriptor (see {@link org.objectweb.asm.Type}).
 	 */
-	public final String desc;
+	public String desc;
 
 	/**
 	 * The field's signature. May be <tt>null</tt>.
 	 */
-	public final String signature;
+	public String signature;
 
 	/**
-	 * The field's initial value. This field, which may be <tt>null</tt> if
-	 * the field does not have an initial value, must be an {@link Integer}, a
+	 * The field's initial value. This field, which may be <tt>null</tt> if the
+	 * field does not have an initial value, must be an {@link Integer}, a
 	 * {@link Float}, a {@link Long}, a {@link Double} or a {@link String}.
 	 */
-	public final Object value;
+	public Object value;
 
 	/**
 	 * The runtime visible annotations of this field. This list is a list of
-	 * {@link org.objectweb.asm.tree.AnnotationNode} objects. May be <tt>null</tt>.
+	 * {@link AnnotationNode} objects. May be <tt>null</tt>.
 	 *
 	 * @associates org.objectweb.asm.tree.AnnotationNode
 	 * @label visible
@@ -83,7 +84,7 @@ public class FieldNode extends FieldVisitor {
 
 	/**
 	 * The runtime invisible annotations of this field. This list is a list of
-	 * {@link org.objectweb.asm.tree.AnnotationNode} objects. May be <tt>null</tt>.
+	 * {@link AnnotationNode} objects. May be <tt>null</tt>.
 	 *
 	 * @associates org.objectweb.asm.tree.AnnotationNode
 	 * @label invisible
@@ -92,64 +93,55 @@ public class FieldNode extends FieldVisitor {
 
 	/**
 	 * The non standard attributes of this field. This list is a list of
-	 * {@link org.objectweb.asm.Attribute} objects. May be <tt>null</tt>.
+	 * {@link Attribute} objects. May be <tt>null</tt>.
 	 *
 	 * @associates org.objectweb.asm.Attribute
 	 */
 	public List<Attribute> attrs;
 
 	/**
-	 * Constructs a new {@link org.objectweb.asm.tree.FieldNode}. <i>Subclasses must not use this
+	 * Constructs a new {@link FieldNode}. <i>Subclasses must not use this
 	 * constructor</i>. Instead, they must use the
 	 * {@link #FieldNode(int, int, String, String, String, Object)} version.
 	 *
 	 * @param access    the field's access flags (see
-	 *                  {@link org.objectweb.asm.Opcodes}). This parameter also indicates
-	 *                  if the field is synthetic and/or deprecated.
+	 *                  {@link org.objectweb.asm.Opcodes}). This parameter also
+	 *                  indicates if the field is synthetic and/or deprecated.
 	 * @param name      the field's name.
 	 * @param desc      the field's descriptor (see {@link org.objectweb.asm.Type
 	 *                  Type}).
 	 * @param signature the field's signature.
 	 * @param value     the field's initial value. This parameter, which may be
-	 *                  <tt>null</tt> if the field does not have an initial value, must be
-	 *                  an {@link Integer}, a {@link Float}, a {@link Long}, a
+	 *                  <tt>null</tt> if the field does not have an initial value,
+	 *                  must be an {@link Integer}, a {@link Float}, a {@link Long}, a
 	 *                  {@link Double} or a {@link String}.
 	 */
-	public FieldNode(
-			final int access,
-			final String name,
-			final String desc,
-			final String signature,
-			final Object value) {
+	public FieldNode(final int access, final String name, final String desc,
+	                 final String signature, final Object value) {
 		this(Opcodes.ASM4, access, name, desc, signature, value);
 	}
 
 	/**
-	 * Constructs a new {@link org.objectweb.asm.tree.FieldNode}. <i>Subclasses must not use this
+	 * Constructs a new {@link FieldNode}. <i>Subclasses must not use this
 	 * constructor</i>. Instead, they must use the
 	 * {@link #FieldNode(int, int, String, String, String, Object)} version.
 	 *
 	 * @param api       the ASM API version implemented by this visitor. Must be one
-	 *                  of {@link org.objectweb.asm.Opcodes#ASM4}.
+	 *                  of {@link Opcodes#ASM4}.
 	 * @param access    the field's access flags (see
-	 *                  {@link org.objectweb.asm.Opcodes}). This parameter also indicates
-	 *                  if the field is synthetic and/or deprecated.
+	 *                  {@link org.objectweb.asm.Opcodes}). This parameter also
+	 *                  indicates if the field is synthetic and/or deprecated.
 	 * @param name      the field's name.
 	 * @param desc      the field's descriptor (see {@link org.objectweb.asm.Type
 	 *                  Type}).
 	 * @param signature the field's signature.
 	 * @param value     the field's initial value. This parameter, which may be
-	 *                  <tt>null</tt> if the field does not have an initial value, must be
-	 *                  an {@link Integer}, a {@link Float}, a {@link Long}, a
+	 *                  <tt>null</tt> if the field does not have an initial value,
+	 *                  must be an {@link Integer}, a {@link Float}, a {@link Long}, a
 	 *                  {@link Double} or a {@link String}.
 	 */
-	public FieldNode(
-			final int api,
-			final int access,
-			final String name,
-			final String desc,
-			final String signature,
-			final Object value) {
+	public FieldNode(final int api, final int access, final String name,
+	                 final String desc, final String signature, final Object value) {
 		super(api);
 		this.access = access;
 		this.name = name;
@@ -163,10 +155,9 @@ public class FieldNode extends FieldVisitor {
 	// ------------------------------------------------------------------------
 
 	@Override
-	public AnnotationVisitor visitAnnotation(
-			final String desc,
-			final boolean visible) {
-		final AnnotationNode an = new AnnotationNode(desc);
+	public AnnotationVisitor visitAnnotation(final String desc,
+	                                         final boolean visible) {
+		AnnotationNode an = new AnnotationNode(desc);
 		if (visible) {
 			if (visibleAnnotations == null) {
 				visibleAnnotations = new ArrayList<AnnotationNode>(1);
@@ -203,7 +194,7 @@ public class FieldNode extends FieldVisitor {
 	 * contain elements that were introduced in more recent versions of the ASM
 	 * API than the given version.
 	 *
-	 * @param api an ASM API version. Must be one of {@link org.objectweb.asm.Opcodes#ASM4}.
+	 * @param api an ASM API version. Must be one of {@link Opcodes#ASM4}.
 	 */
 	public void check(final int api) {
 		// nothing to do
@@ -215,19 +206,19 @@ public class FieldNode extends FieldVisitor {
 	 * @param cv a class visitor.
 	 */
 	public void accept(final ClassVisitor cv) {
-		final FieldVisitor fv = cv.visitField(access, name, desc, signature, value);
+		FieldVisitor fv = cv.visitField(access, name, desc, signature, value);
 		if (fv == null) {
 			return;
 		}
 		int i, n;
 		n = visibleAnnotations == null ? 0 : visibleAnnotations.size();
 		for (i = 0; i < n; ++i) {
-			final AnnotationNode an = visibleAnnotations.get(i);
+			AnnotationNode an = visibleAnnotations.get(i);
 			an.accept(fv.visitAnnotation(an.desc, true));
 		}
 		n = invisibleAnnotations == null ? 0 : invisibleAnnotations.size();
 		for (i = 0; i < n; ++i) {
-			final AnnotationNode an = invisibleAnnotations.get(i);
+			AnnotationNode an = invisibleAnnotations.get(i);
 			an.accept(fv.visitAnnotation(an.desc, false));
 		}
 		n = attrs == null ? 0 : attrs.size();

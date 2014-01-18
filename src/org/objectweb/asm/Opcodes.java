@@ -42,6 +42,7 @@ package org.objectweb.asm;
  * @author Eugene Kuleshov
  */
 public interface Opcodes {
+
 	// ASM API versions
 
 	int ASM4 = 4 << 16 | 0 << 8 | 0;

@@ -30,12 +30,13 @@
 package org.objectweb.asm;
 
 /**
- * An {@link org.objectweb.asm.AnnotationVisitor} that generates annotations in bytecode form.
+ * An {@link AnnotationVisitor} that generates annotations in bytecode form.
  *
  * @author Eric Bruneton
  * @author Eugene Kuleshov
  */
 final class AnnotationWriter extends AnnotationVisitor {
+
 	/**
 	 * The class writer to which this annotation must be added.
 	 */
@@ -87,7 +88,7 @@ final class AnnotationWriter extends AnnotationVisitor {
 	// ------------------------------------------------------------------------
 
 	/**
-	 * Constructs a new {@link org.objectweb.asm.AnnotationWriter}.
+	 * Constructs a new {@link AnnotationWriter}.
 	 *
 	 * @param cw     the class writer to which this annotation must be added.
 	 * @param named  <tt>true<tt> if values are named, <tt>false</tt> otherwise.
@@ -96,12 +97,8 @@ final class AnnotationWriter extends AnnotationVisitor {
 	 * @param offset where in <tt>parent</tt> the number of annotation values must
 	 *               be stored.
 	 */
-	AnnotationWriter(
-			final ClassWriter cw,
-			final boolean named,
-			final ByteVector bv,
-			final ByteVector parent,
-			final int offset) {
+	AnnotationWriter(final ClassWriter cw, final boolean named,
+	                 final ByteVector bv, final ByteVector parent, final int offset) {
 		super(Opcodes.ASM4);
 		this.cw = cw;
 		this.named = named;
@@ -125,7 +122,7 @@ final class AnnotationWriter extends AnnotationVisitor {
 		} else if (value instanceof Byte) {
 			bv.put12('B', cw.newInteger(((Byte) value).byteValue()).index);
 		} else if (value instanceof Boolean) {
-			final int v = ((Boolean) value).booleanValue() ? 1 : 0;
+			int v = ((Boolean) value).booleanValue() ? 1 : 0;
 			bv.put12('Z', cw.newInteger(v).index);
 		} else if (value instanceof Character) {
 			bv.put12('C', cw.newInteger(((Character) value).charValue()).index);
@@ -134,64 +131,62 @@ final class AnnotationWriter extends AnnotationVisitor {
 		} else if (value instanceof Type) {
 			bv.put12('c', cw.newUTF8(((Type) value).getDescriptor()));
 		} else if (value instanceof byte[]) {
-			final byte[] v = (byte[]) value;
+			byte[] v = (byte[]) value;
 			bv.put12('[', v.length);
-			for (final byte element : v) {
-				bv.put12('B', cw.newInteger(element).index);
+			for (int i = 0; i < v.length; i++) {
+				bv.put12('B', cw.newInteger(v[i]).index);
 			}
 		} else if (value instanceof boolean[]) {
-			final boolean[] v = (boolean[]) value;
+			boolean[] v = (boolean[]) value;
 			bv.put12('[', v.length);
-			for (final boolean element : v) {
-				bv.put12('Z', cw.newInteger(element ? 1 : 0).index);
+			for (int i = 0; i < v.length; i++) {
+				bv.put12('Z', cw.newInteger(v[i] ? 1 : 0).index);
 			}
 		} else if (value instanceof short[]) {
-			final short[] v = (short[]) value;
+			short[] v = (short[]) value;
 			bv.put12('[', v.length);
-			for (final short element : v) {
-				bv.put12('S', cw.newInteger(element).index);
+			for (int i = 0; i < v.length; i++) {
+				bv.put12('S', cw.newInteger(v[i]).index);
 			}
 		} else if (value instanceof char[]) {
-			final char[] v = (char[]) value;
+			char[] v = (char[]) value;
 			bv.put12('[', v.length);
-			for (final char element : v) {
-				bv.put12('C', cw.newInteger(element).index);
+			for (int i = 0; i < v.length; i++) {
+				bv.put12('C', cw.newInteger(v[i]).index);
 			}
 		} else if (value instanceof int[]) {
-			final int[] v = (int[]) value;
+			int[] v = (int[]) value;
 			bv.put12('[', v.length);
-			for (final int element : v) {
-				bv.put12('I', cw.newInteger(element).index);
+			for (int i = 0; i < v.length; i++) {
+				bv.put12('I', cw.newInteger(v[i]).index);
 			}
 		} else if (value instanceof long[]) {
-			final long[] v = (long[]) value;
+			long[] v = (long[]) value;
 			bv.put12('[', v.length);
-			for (final long element : v) {
-				bv.put12('J', cw.newLong(element).index);
+			for (int i = 0; i < v.length; i++) {
+				bv.put12('J', cw.newLong(v[i]).index);
 			}
 		} else if (value instanceof float[]) {
-			final float[] v = (float[]) value;
+			float[] v = (float[]) value;
 			bv.put12('[', v.length);
-			for (final float element : v) {
-				bv.put12('F', cw.newFloat(element).index);
+			for (int i = 0; i < v.length; i++) {
+				bv.put12('F', cw.newFloat(v[i]).index);
 			}
 		} else if (value instanceof double[]) {
-			final double[] v = (double[]) value;
+			double[] v = (double[]) value;
 			bv.put12('[', v.length);
-			for (final double element : v) {
-				bv.put12('D', cw.newDouble(element).index);
+			for (int i = 0; i < v.length; i++) {
+				bv.put12('D', cw.newDouble(v[i]).index);
 			}
 		} else {
-			final Item i = cw.newConstItem(value);
+			Item i = cw.newConstItem(value);
 			bv.put12(".s.IFJDCS".charAt(i.type), i.index);
 		}
 	}
 
 	@Override
-	public void visitEnum(
-			final String name,
-			final String desc,
-			final String value) {
+	public void visitEnum(final String name, final String desc,
+	                      final String value) {
 		++size;
 		if (named) {
 			bv.putShort(cw.newUTF8(name));
@@ -200,9 +195,8 @@ final class AnnotationWriter extends AnnotationVisitor {
 	}
 
 	@Override
-	public AnnotationVisitor visitAnnotation(
-			final String name,
-			final String desc) {
+	public AnnotationVisitor visitAnnotation(final String name,
+	                                         final String desc) {
 		++size;
 		if (named) {
 			bv.putShort(cw.newUTF8(name));
@@ -226,7 +220,7 @@ final class AnnotationWriter extends AnnotationVisitor {
 	@Override
 	public void visitEnd() {
 		if (parent != null) {
-			final byte[] data = parent.data;
+			byte[] data = parent.data;
 			data[offset] = (byte) (size >>> 8);
 			data[offset + 1] = (byte) size;
 		}
@@ -286,10 +280,8 @@ final class AnnotationWriter extends AnnotationVisitor {
 	 * @param off   index of the first annotation to be written.
 	 * @param out   where the annotations must be put.
 	 */
-	static void put(
-			final AnnotationWriter[] panns,
-			final int off,
-			final ByteVector out) {
+	static void put(final AnnotationWriter[] panns, final int off,
+	                final ByteVector out) {
 		int size = 1 + 2 * (panns.length - off);
 		for (int i = off; i < panns.length; ++i) {
 			size += panns[i] == null ? 0 : panns[i].getSize();

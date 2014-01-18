@@ -37,58 +37,54 @@ import org.objectweb.asm.MethodVisitor;
  * @author Eric Bruneton
  */
 public class LocalVariableNode {
+
 	/**
 	 * The name of a local variable.
 	 */
-	public final String name;
+	public String name;
 
 	/**
 	 * The type descriptor of this local variable.
 	 */
-	public final String desc;
+	public String desc;
 
 	/**
 	 * The signature of this local variable. May be <tt>null</tt>.
 	 */
-	public final String signature;
+	public String signature;
 
 	/**
 	 * The first instruction corresponding to the scope of this local variable
 	 * (inclusive).
 	 */
-	public final LabelNode start;
+	public LabelNode start;
 
 	/**
 	 * The last instruction corresponding to the scope of this local variable
 	 * (exclusive).
 	 */
-	public final LabelNode end;
+	public LabelNode end;
 
 	/**
 	 * The local variable's index.
 	 */
-	public final int index;
+	public int index;
 
 	/**
-	 * Constructs a new {@link org.objectweb.asm.tree.LocalVariableNode}.
+	 * Constructs a new {@link LocalVariableNode}.
 	 *
 	 * @param name      the name of a local variable.
 	 * @param desc      the type descriptor of this local variable.
-	 * @param signature the signature of this local variable. May be
-	 *                  <tt>null</tt>.
-	 * @param start     the first instruction corresponding to the scope of this
-	 *                  local variable (inclusive).
+	 * @param signature the signature of this local variable. May be <tt>null</tt>.
+	 * @param start     the first instruction corresponding to the scope of this local
+	 *                  variable (inclusive).
 	 * @param end       the last instruction corresponding to the scope of this local
 	 *                  variable (exclusive).
 	 * @param index     the local variable's index.
 	 */
-	public LocalVariableNode(
-			final String name,
-			final String desc,
-			final String signature,
-			final LabelNode start,
-			final LabelNode end,
-			final int index) {
+	public LocalVariableNode(final String name, final String desc,
+	                         final String signature, final LabelNode start, final LabelNode end,
+	                         final int index) {
 		this.name = name;
 		this.desc = desc;
 		this.signature = signature;
@@ -103,11 +99,7 @@ public class LocalVariableNode {
 	 * @param mv a method visitor.
 	 */
 	public void accept(final MethodVisitor mv) {
-		mv.visitLocalVariable(name,
-				desc,
-				signature,
-				start.getLabel(),
-				end.getLabel(),
-				index);
+		mv.visitLocalVariable(name, desc, signature, start.getLabel(),
+				end.getLabel(), index);
 	}
 }

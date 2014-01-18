@@ -31,11 +31,12 @@ package org.objectweb.asm;
 
 /**
  * A constant pool item. Constant pool items can be created with the 'newXXX'
- * methods in the {@link org.objectweb.asm.ClassWriter} class.
+ * methods in the {@link ClassWriter} class.
  *
  * @author Eric Bruneton
  */
 final class Item {
+
 	/**
 	 * Index of this item in the constant pool.
 	 */
@@ -44,24 +45,24 @@ final class Item {
 	/**
 	 * Type of this constant pool item. A single class is used to represent all
 	 * constant pool item types, in order to minimize the bytecode size of this
-	 * package. The value of this field is one of {@link org.objectweb.asm.ClassWriter#INT},
-	 * {@link org.objectweb.asm.ClassWriter#LONG}, {@link org.objectweb.asm.ClassWriter#FLOAT},
-	 * {@link org.objectweb.asm.ClassWriter#DOUBLE}, {@link org.objectweb.asm.ClassWriter#UTF8},
-	 * {@link org.objectweb.asm.ClassWriter#STR}, {@link org.objectweb.asm.ClassWriter#CLASS},
-	 * {@link org.objectweb.asm.ClassWriter#NAME_TYPE}, {@link org.objectweb.asm.ClassWriter#FIELD},
-	 * {@link org.objectweb.asm.ClassWriter#METH}, {@link org.objectweb.asm.ClassWriter#IMETH},
-	 * {@link org.objectweb.asm.ClassWriter#MTYPE}, {@link org.objectweb.asm.ClassWriter#INDY}.
+	 * package. The value of this field is one of {@link ClassWriter#INT},
+	 * {@link ClassWriter#LONG}, {@link ClassWriter#FLOAT},
+	 * {@link ClassWriter#DOUBLE}, {@link ClassWriter#UTF8},
+	 * {@link ClassWriter#STR}, {@link ClassWriter#CLASS},
+	 * {@link ClassWriter#NAME_TYPE}, {@link ClassWriter#FIELD},
+	 * {@link ClassWriter#METH}, {@link ClassWriter#IMETH},
+	 * {@link ClassWriter#MTYPE}, {@link ClassWriter#INDY}.
 	 * <p/>
-	 * MethodHandle constant 9 variations are stored using a range
-	 * of 9 values from {@link org.objectweb.asm.ClassWriter#HANDLE_BASE} + 1 to
-	 * {@link org.objectweb.asm.ClassWriter#HANDLE_BASE} + 9.
+	 * MethodHandle constant 9 variations are stored using a range of 9 values
+	 * from {@link ClassWriter#HANDLE_BASE} + 1 to
+	 * {@link ClassWriter#HANDLE_BASE} + 9.
 	 * <p/>
 	 * Special Item types are used for Items that are stored in the ClassWriter
-	 * {@link org.objectweb.asm.ClassWriter#typeTable}, instead of the constant pool, in order to
+	 * {@link ClassWriter#typeTable}, instead of the constant pool, in order to
 	 * avoid clashes with normal constant pool items in the ClassWriter constant
 	 * pool's hash table. These special item types are
-	 * {@link org.objectweb.asm.ClassWriter#TYPE_NORMAL}, {@link org.objectweb.asm.ClassWriter#TYPE_UNINIT} and
-	 * {@link org.objectweb.asm.ClassWriter#TYPE_MERGED}.
+	 * {@link ClassWriter#TYPE_NORMAL}, {@link ClassWriter#TYPE_UNINIT} and
+	 * {@link ClassWriter#TYPE_MERGED}.
 	 */
 	int type;
 
@@ -105,13 +106,13 @@ final class Item {
 	Item next;
 
 	/**
-	 * Constructs an uninitialized {@link org.objectweb.asm.Item}.
+	 * Constructs an uninitialized {@link Item}.
 	 */
 	Item() {
 	}
 
 	/**
-	 * Constructs an uninitialized {@link org.objectweb.asm.Item} for constant pool element at
+	 * Constructs an uninitialized {@link Item} for constant pool element at
 	 * given position.
 	 *
 	 * @param index index of the item to be constructed.
@@ -143,9 +144,9 @@ final class Item {
 	 * @param intVal the value of this item.
 	 */
 	void set(final int intVal) {
-		type = ClassWriter.INT;
+		this.type = ClassWriter.INT;
 		this.intVal = intVal;
-		hashCode = 0x7FFFFFFF & type + intVal;
+		this.hashCode = 0x7FFFFFFF & (type + intVal);
 	}
 
 	/**
@@ -154,9 +155,9 @@ final class Item {
 	 * @param longVal the value of this item.
 	 */
 	void set(final long longVal) {
-		type = ClassWriter.LONG;
+		this.type = ClassWriter.LONG;
 		this.longVal = longVal;
-		hashCode = 0x7FFFFFFF & type + (int) longVal;
+		this.hashCode = 0x7FFFFFFF & (type + (int) longVal);
 	}
 
 	/**
@@ -165,9 +166,9 @@ final class Item {
 	 * @param floatVal the value of this item.
 	 */
 	void set(final float floatVal) {
-		type = ClassWriter.FLOAT;
-		intVal = Float.floatToRawIntBits(floatVal);
-		hashCode = 0x7FFFFFFF & type + (int) floatVal;
+		this.type = ClassWriter.FLOAT;
+		this.intVal = Float.floatToRawIntBits(floatVal);
+		this.hashCode = 0x7FFFFFFF & (type + (int) floatVal);
 	}
 
 	/**
@@ -176,9 +177,9 @@ final class Item {
 	 * @param doubleVal the value of this item.
 	 */
 	void set(final double doubleVal) {
-		type = ClassWriter.DOUBLE;
-		longVal = Double.doubleToRawLongBits(doubleVal);
-		hashCode = 0x7FFFFFFF & type + (int) doubleVal;
+		this.type = ClassWriter.DOUBLE;
+		this.longVal = Double.doubleToRawLongBits(doubleVal);
+		this.hashCode = 0x7FFFFFFF & (type + (int) doubleVal);
 	}
 
 	/**
@@ -189,11 +190,8 @@ final class Item {
 	 * @param strVal2 second part of the value of this item.
 	 * @param strVal3 third part of the value of this item.
 	 */
-	void set(
-			final int type,
-			final String strVal1,
-			final String strVal2,
-			final String strVal3) {
+	void set(final int type, final String strVal1, final String strVal2,
+	         final String strVal3) {
 		this.type = type;
 		this.strVal1 = strVal1;
 		this.strVal2 = strVal2;
@@ -204,19 +202,20 @@ final class Item {
 		case ClassWriter.CLASS:
 		case ClassWriter.MTYPE:
 		case ClassWriter.TYPE_NORMAL:
-			hashCode = 0x7FFFFFFF & type + strVal1.hashCode();
+			hashCode = 0x7FFFFFFF & (type + strVal1.hashCode());
 			return;
-		case ClassWriter.NAME_TYPE:
-			hashCode = 0x7FFFFFFF & type + strVal1.hashCode()
-					* strVal2.hashCode();
+		case ClassWriter.NAME_TYPE: {
+			hashCode = 0x7FFFFFFF & (type + strVal1.hashCode()
+					* strVal2.hashCode());
 			return;
+		}
 		// ClassWriter.FIELD:
 		// ClassWriter.METH:
 		// ClassWriter.IMETH:
 		// ClassWriter.HANDLE_BASE + 1..9
 		default:
-			hashCode = 0x7FFFFFFF & type + strVal1.hashCode()
-					* strVal2.hashCode() * strVal3.hashCode();
+			hashCode = 0x7FFFFFFF & (type + strVal1.hashCode()
+					* strVal2.hashCode() * strVal3.hashCode());
 		}
 	}
 
@@ -227,26 +226,26 @@ final class Item {
 	 * @param desc     invokedynamic's desc.
 	 * @param bsmIndex zero based index into the class attribute BootrapMethods.
 	 */
-	void set(final String name, final String desc, final int bsmIndex) {
-		type = ClassWriter.INDY;
-		longVal = bsmIndex;
-		strVal1 = name;
-		strVal2 = desc;
-		hashCode = 0x7FFFFFFF & ClassWriter.INDY + bsmIndex
-				* strVal1.hashCode() * strVal2.hashCode();
+	void set(String name, String desc, int bsmIndex) {
+		this.type = ClassWriter.INDY;
+		this.longVal = bsmIndex;
+		this.strVal1 = name;
+		this.strVal2 = desc;
+		this.hashCode = 0x7FFFFFFF & (ClassWriter.INDY + bsmIndex
+				* strVal1.hashCode() * strVal2.hashCode());
 	}
 
 	/**
 	 * Sets the item to a BootstrapMethod item.
 	 *
 	 * @param position position in byte in the class attribute BootrapMethods.
-	 * @param hashCode hashcode of the item. This hashcode is processed from
-	 *                 the hashcode of the bootstrap method and the hashcode of
-	 *                 all bootstrap arguments.
+	 * @param hashCode hashcode of the item. This hashcode is processed from the
+	 *                 hashcode of the bootstrap method and the hashcode of all
+	 *                 bootstrap arguments.
 	 */
-	void set(final int position, final int hashCode) {
-		type = ClassWriter.BSM;
-		intVal = position;
+	void set(int position, int hashCode) {
+		this.type = ClassWriter.BSM;
+		this.intVal = position;
 		this.hashCode = hashCode;
 	}
 
@@ -278,10 +277,10 @@ final class Item {
 			return i.intVal == intVal && i.strVal1.equals(strVal1);
 		case ClassWriter.NAME_TYPE:
 			return i.strVal1.equals(strVal1) && i.strVal2.equals(strVal2);
-		case ClassWriter.INDY:
+		case ClassWriter.INDY: {
 			return i.longVal == longVal && i.strVal1.equals(strVal1)
 					&& i.strVal2.equals(strVal2);
-
+		}
 		// case ClassWriter.FIELD:
 		// case ClassWriter.METH:
 		// case ClassWriter.IMETH:

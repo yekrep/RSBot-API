@@ -37,42 +37,40 @@ import org.objectweb.asm.MethodVisitor;
  * @author Eric Bruneton
  */
 public class TryCatchBlockNode {
+
 	/**
 	 * Beginning of the exception handler's scope (inclusive).
 	 */
-	public final LabelNode start;
+	public LabelNode start;
 
 	/**
 	 * End of the exception handler's scope (exclusive).
 	 */
-	public final LabelNode end;
+	public LabelNode end;
 
 	/**
 	 * Beginning of the exception handler's code.
 	 */
-	public final LabelNode handler;
+	public LabelNode handler;
 
 	/**
 	 * Internal name of the type of exceptions handled by the handler. May be
 	 * <tt>null</tt> to catch any exceptions (for "finally" blocks).
 	 */
-	public final String type;
+	public String type;
 
 	/**
-	 * Constructs a new {@link org.objectweb.asm.tree.TryCatchBlockNode}.
+	 * Constructs a new {@link TryCatchBlockNode}.
 	 *
 	 * @param start   beginning of the exception handler's scope (inclusive).
 	 * @param end     end of the exception handler's scope (exclusive).
 	 * @param handler beginning of the exception handler's code.
 	 * @param type    internal name of the type of exceptions handled by the
-	 *                handler, or <tt>null</tt> to catch any exceptions (for "finally"
-	 *                blocks).
+	 *                handler, or <tt>null</tt> to catch any exceptions (for
+	 *                "finally" blocks).
 	 */
-	public TryCatchBlockNode(
-			final LabelNode start,
-			final LabelNode end,
-			final LabelNode handler,
-			final String type) {
+	public TryCatchBlockNode(final LabelNode start, final LabelNode end,
+	                         final LabelNode handler, final String type) {
 		this.start = start;
 		this.end = end;
 		this.handler = handler;
@@ -85,8 +83,7 @@ public class TryCatchBlockNode {
 	 * @param mv a method visitor.
 	 */
 	public void accept(final MethodVisitor mv) {
-		mv.visitTryCatchBlock(start.getLabel(), end.getLabel(), handler == null
-				? null
-				: handler.getLabel(), type);
+		mv.visitTryCatchBlock(start.getLabel(), end.getLabel(),
+				handler == null ? null : handler.getLabel(), type);
 	}
 }

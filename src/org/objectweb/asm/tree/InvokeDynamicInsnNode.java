@@ -41,39 +41,37 @@ import org.objectweb.asm.Opcodes;
  * @author Remi Forax
  */
 public class InvokeDynamicInsnNode extends AbstractInsnNode {
+
 	/**
 	 * Invokedynamic name.
 	 */
-	public final String name;
+	public String name;
 
 	/**
 	 * Invokedynamic descriptor.
 	 */
-	public final String desc;
+	public String desc;
 
 	/**
 	 * Bootstrap method
 	 */
-	public final Handle bsm;
+	public Handle bsm;
 
 	/**
 	 * Bootstrap constant arguments
 	 */
-	public final Object[] bsmArgs;
+	public Object[] bsmArgs;
 
 	/**
-	 * Constructs a new {@link org.objectweb.asm.tree.InvokeDynamicInsnNode}.
+	 * Constructs a new {@link InvokeDynamicInsnNode}.
 	 *
 	 * @param name    invokedynamic name.
 	 * @param desc    invokedynamic descriptor (see {@link org.objectweb.asm.Type}).
 	 * @param bsm     the bootstrap method.
 	 * @param bsmArgs the boostrap constant arguments.
 	 */
-	public InvokeDynamicInsnNode(
-			final String name,
-			final String desc,
-			final Handle bsm,
-			final Object... bsmArgs) {
+	public InvokeDynamicInsnNode(final String name, final String desc,
+	                             final Handle bsm, final Object... bsmArgs) {
 		super(Opcodes.INVOKEDYNAMIC);
 		this.name = name;
 		this.desc = desc;

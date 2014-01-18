@@ -40,19 +40,20 @@ import org.objectweb.asm.MethodVisitor;
  * @author Eric Bruneton
  */
 public class LineNumberNode extends AbstractInsnNode {
+
 	/**
 	 * A line number. This number refers to the source file from which the class
 	 * was compiled.
 	 */
-	public final int line;
+	public int line;
 
 	/**
 	 * The first instruction corresponding to this line number.
 	 */
-	public final LabelNode start;
+	public LabelNode start;
 
 	/**
-	 * Constructs a new {@link org.objectweb.asm.tree.LineNumberNode}.
+	 * Constructs a new {@link LineNumberNode}.
 	 *
 	 * @param line  a line number. This number refers to the source file from
 	 *              which the class was compiled.

@@ -30,16 +30,17 @@
 package org.objectweb.asm;
 
 /**
- * A visitor to visit a Java field. The methods of this class must be called
- * in the following order: ( <tt>visitAnnotation</tt> |
- * <tt>visitAttribute</tt> )* <tt>visitEnd</tt>.
+ * A visitor to visit a Java field. The methods of this class must be called in
+ * the following order: ( <tt>visitAnnotation</tt> | <tt>visitAttribute</tt> )*
+ * <tt>visitEnd</tt>.
  *
  * @author Eric Bruneton
  */
 public abstract class FieldVisitor {
+
 	/**
 	 * The ASM API version implemented by this visitor. The value of this field
-	 * must be one of {@link org.objectweb.asm.Opcodes#ASM4}.
+	 * must be one of {@link Opcodes#ASM4}.
 	 */
 	protected final int api;
 
@@ -50,27 +51,27 @@ public abstract class FieldVisitor {
 	protected FieldVisitor fv;
 
 	/**
-	 * Constructs a new {@link org.objectweb.asm.FieldVisitor}.
+	 * Constructs a new {@link FieldVisitor}.
 	 *
 	 * @param api the ASM API version implemented by this visitor. Must be one
-	 *            of {@link org.objectweb.asm.Opcodes#ASM4}.
+	 *            of {@link Opcodes#ASM4}.
 	 */
 	public FieldVisitor(final int api) {
 		this(api, null);
 	}
 
 	/**
-	 * Constructs a new {@link org.objectweb.asm.FieldVisitor}.
+	 * Constructs a new {@link FieldVisitor}.
 	 *
 	 * @param api the ASM API version implemented by this visitor. Must be one
-	 *            of {@link org.objectweb.asm.Opcodes#ASM4}.
+	 *            of {@link Opcodes#ASM4}.
 	 * @param fv  the field visitor to which this visitor must delegate method
 	 *            calls. May be null.
 	 */
 	public FieldVisitor(final int api, final FieldVisitor fv) {
-		/*if (api != Opcodes.ASM4) {
-					throw new IllegalArgumentException();
-				}*/
+		if (api != Opcodes.ASM4) {
+			throw new IllegalArgumentException();
+		}
 		this.api = api;
 		this.fv = fv;
 	}
@@ -83,7 +84,7 @@ public abstract class FieldVisitor {
 	 * @return a visitor to visit the annotation values, or <tt>null</tt> if
 	 * this visitor is not interested in visiting this annotation.
 	 */
-	public AnnotationVisitor visitAnnotation(final String desc, final boolean visible) {
+	public AnnotationVisitor visitAnnotation(String desc, boolean visible) {
 		if (fv != null) {
 			return fv.visitAnnotation(desc, visible);
 		}
@@ -95,7 +96,7 @@ public abstract class FieldVisitor {
 	 *
 	 * @param attr an attribute.
 	 */
-	public void visitAttribute(final Attribute attr) {
+	public void visitAttribute(Attribute attr) {
 		if (fv != null) {
 			fv.visitAttribute(attr);
 		}

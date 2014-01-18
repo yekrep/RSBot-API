@@ -35,6 +35,7 @@ package org.objectweb.asm;
  * @author Eric Bruneton
  */
 class Handler {
+
 	/**
 	 * Beginning of the exception handler's scope (inclusive).
 	 */
@@ -76,16 +77,16 @@ class Handler {
 	 * @param end   the end of the range to be removed. Maybe null.
 	 * @return the exception handler list with the start-end range removed.
 	 */
-	static Handler remove(Handler h, final Label start, final Label end) {
+	static Handler remove(Handler h, Label start, Label end) {
 		if (h == null) {
 			return null;
 		} else {
 			h.next = remove(h.next, start, end);
 		}
-		final int hstart = h.start.position;
-		final int hend = h.end.position;
-		final int s = start.position;
-		final int e = end == null ? Integer.MAX_VALUE : end.position;
+		int hstart = h.start.position;
+		int hend = h.end.position;
+		int s = start.position;
+		int e = end == null ? Integer.MAX_VALUE : end.position;
 		// if [hstart,hend[ and [s,e[ intervals intersect...
 		if (s < hend && e > hstart) {
 			if (s <= hstart) {
@@ -101,7 +102,7 @@ class Handler {
 				h.end = start;
 			} else {
 				// [hstart,hend[ minus [s,e[ = [hstart,s[ + [e,hend[
-				final Handler g = new Handler();
+				Handler g = new Handler();
 				g.start = end;
 				g.end = h.end;
 				g.handler = h.handler;

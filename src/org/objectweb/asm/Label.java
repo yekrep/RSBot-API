@@ -32,13 +32,14 @@ package org.objectweb.asm;
 /**
  * A label represents a position in the bytecode of a method. Labels are used
  * for jump, goto, and switch instructions, and for try catch blocks. A label
- * designates the <i>instruction</i> that is just after. Note however that
- * there can be other elements between a label and the instruction it
- * designates (such as other labels, stack map frames, line numbers, etc.).
+ * designates the <i>instruction</i> that is just after. Note however that there
+ * can be other elements between a label and the instruction it designates (such
+ * as other labels, stack map frames, line numbers, etc.).
  *
  * @author Eric Bruneton
  */
 public class Label {
+
 	/**
 	 * Indicates if this label is only used for debug attributes. Such a label
 	 * is not the start of a basic block, the target of a jump instruction, or
@@ -59,7 +60,7 @@ public class Label {
 
 	/**
 	 * Indicates if this basic block has been pushed in the basic block stack.
-	 * See {@link org.objectweb.asm.MethodWriter#visitMaxs visitMaxs}.
+	 * See {@link MethodWriter#visitMaxs visitMaxs}.
 	 */
 	static final int PUSHED = 8;
 
@@ -109,8 +110,8 @@ public class Label {
 	/**
 	 * Field used to associate user information to a label. Warning: this field
 	 * is used by the ASM tree package. In order to use it with the ASM tree
-	 * package you must override the {@link
-	 * org.objectweb.asm.tree.MethodNode#getLabelNode} method.
+	 * package you must override the
+	 * {@link org.objectweb.asm.tree.MethodNode#getLabelNode} method.
 	 */
 	public Object info;
 
@@ -161,32 +162,32 @@ public class Label {
 
 	// ------------------------------------------------------------------------
 
-	/*
-	 * Fields for the control flow and data flow graph analysis algorithms (used
-	 * to compute the maximum stack size or the stack map frames). A control
-	 * flow graph contains one node per "basic block", and one edge per "jump"
-	 * from one basic block to another. Each node (i.e., each basic block) is
-	 * represented by the Label object that corresponds to the first instruction
-	 * of this basic block. Each node also stores the list of its successors in
-	 * the graph, as a linked list of Edge objects.
-	 *
-	 * The control flow analysis algorithms used to compute the maximum stack
-	 * size or the stack map frames are similar and use two steps. The first
-	 * step, during the visit of each instruction, builds information about the
-	 * state of the local variables and the operand stack at the end of each
-	 * basic block, called the "output frame", <i>relatively</i> to the frame
-	 * state at the beginning of the basic block, which is called the "input
-	 * frame", and which is <i>unknown</i> during this step. The second step,
-	 * in {@link MethodWriter#visitMaxs}, is a fix point algorithm that
-	 * computes information about the input frame of each basic block, from the
-	 * input state of the first basic block (known from the method signature),
-	 * and by the using the previously computed relative output frames.
-	 *
-	 * The algorithm used to compute the maximum stack size only computes the
-	 * relative output and absolute input stack heights, while the algorithm
-	 * used to compute stack map frames computes relative output frames and
-	 * absolute input frames.
-	 */
+    /*
+     * Fields for the control flow and data flow graph analysis algorithms (used
+     * to compute the maximum stack size or the stack map frames). A control
+     * flow graph contains one node per "basic block", and one edge per "jump"
+     * from one basic block to another. Each node (i.e., each basic block) is
+     * represented by the Label object that corresponds to the first instruction
+     * of this basic block. Each node also stores the list of its successors in
+     * the graph, as a linked list of Edge objects.
+     * 
+     * The control flow analysis algorithms used to compute the maximum stack
+     * size or the stack map frames are similar and use two steps. The first
+     * step, during the visit of each instruction, builds information about the
+     * state of the local variables and the operand stack at the end of each
+     * basic block, called the "output frame", <i>relatively</i> to the frame
+     * state at the beginning of the basic block, which is called the "input
+     * frame", and which is <i>unknown</i> during this step. The second step, in
+     * {@link MethodWriter#visitMaxs}, is a fix point algorithm that computes
+     * information about the input frame of each basic block, from the input
+     * state of the first basic block (known from the method signature), and by
+     * the using the previously computed relative output frames.
+     * 
+     * The algorithm used to compute the maximum stack size only computes the
+     * relative output and absolute input stack heights, while the algorithm
+     * used to compute stack map frames computes relative output frames and
+     * absolute input frames.
+     */
 
 	/**
 	 * Start of the output stack relatively to the input stack. The exact
@@ -213,7 +214,7 @@ public class Label {
 
 	/**
 	 * Information about the input and output stack map frames of this basic
-	 * block. This field is only used when {@link org.objectweb.asm.ClassWriter#COMPUTE_FRAMES}
+	 * block. This field is only used when {@link ClassWriter#COMPUTE_FRAMES}
 	 * option is used.
 	 */
 	Frame frame;
@@ -221,7 +222,7 @@ public class Label {
 	/**
 	 * The successor of this label, in the order they are visited. This linked
 	 * list does not include labels used for debug info only. If
-	 * {@link org.objectweb.asm.ClassWriter#COMPUTE_FRAMES} option is used then, in addition, it
+	 * {@link ClassWriter#COMPUTE_FRAMES} option is used then, in addition, it
 	 * does not contain successive labels that denote the same bytecode position
 	 * (in this case only the first label appears in this list).
 	 */
@@ -240,7 +241,7 @@ public class Label {
 	 * control flow analysis algorithms. It is also used in
 	 * {@link #visitSubroutine} to avoid using a recursive method.
 	 *
-	 * @see org.objectweb.asm.MethodWriter#visitMaxs
+	 * @see MethodWriter#visitMaxs
 	 */
 	Label next;
 
@@ -261,7 +262,7 @@ public class Label {
 	/**
 	 * Returns the offset corresponding to this label. This offset is computed
 	 * from the start of the method's bytecode. <i>This method is intended for
-	 * {@link org.objectweb.asm.Attribute} sub classes, and is normally not needed by class
+	 * {@link Attribute} sub classes, and is normally not needed by class
 	 * generators or adapters.</i>
 	 *
 	 * @return the offset corresponding to this label.
@@ -269,7 +270,8 @@ public class Label {
 	 */
 	public int getOffset() {
 		if ((status & RESOLVED) == 0) {
-			throw new IllegalStateException("Label offset position has not been resolved yet");
+			throw new IllegalStateException(
+					"Label offset position has not been resolved yet");
 		}
 		return position;
 	}
@@ -284,16 +286,12 @@ public class Label {
 	 * @param out        the bytecode of the method.
 	 * @param source     the position of first byte of the bytecode instruction that
 	 *                   contains this label.
-	 * @param wideOffset <tt>true</tt> if the reference must be stored in 4
-	 *                   bytes, or <tt>false</tt> if it must be stored with 2 bytes.
-	 * @throws IllegalArgumentException if this label has not been created by
-	 *                                  the given code writer.
+	 * @param wideOffset <tt>true</tt> if the reference must be stored in 4 bytes, or
+	 *                   <tt>false</tt> if it must be stored with 2 bytes.
+	 * @throws IllegalArgumentException if this label has not been created by the given code writer.
 	 */
-	void put(
-			final MethodWriter owner,
-			final ByteVector out,
-			final int source,
-			final boolean wideOffset) {
+	void put(final MethodWriter owner, final ByteVector out, final int source,
+	         final boolean wideOffset) {
 		if ((status & RESOLVED) == 0) {
 			if (wideOffset) {
 				addReference(-1 - source, out.length);
@@ -317,24 +315,19 @@ public class Label {
 	 * yet. For backward references, the offset of the reference can be, and
 	 * must be, computed and stored directly.
 	 *
-	 * @param sourcePosition    the position of the referencing instruction. This
-	 *                          position will be used to compute the offset of this forward
-	 *                          reference.
-	 * @param referencePosition the position where the offset for this forward
-	 *                          reference must be stored.
+	 * @param sourcePosition    the position of the referencing instruction. This position
+	 *                          will be used to compute the offset of this forward reference.
+	 * @param referencePosition the position where the offset for this forward reference must
+	 *                          be stored.
 	 */
-	private void addReference(
-			final int sourcePosition,
-			final int referencePosition) {
+	private void addReference(final int sourcePosition,
+	                          final int referencePosition) {
 		if (srcAndRefPositions == null) {
 			srcAndRefPositions = new int[6];
 		}
 		if (referenceCount >= srcAndRefPositions.length) {
-			final int[] a = new int[srcAndRefPositions.length + 6];
-			System.arraycopy(srcAndRefPositions,
-					0,
-					a,
-					0,
+			int[] a = new int[srcAndRefPositions.length + 6];
+			System.arraycopy(srcAndRefPositions, 0, a, 0,
 					srcAndRefPositions.length);
 			srcAndRefPositions = a;
 		}
@@ -357,35 +350,33 @@ public class Label {
 	 * opcodes) using an unsigned two bytes offset. These pseudo
 	 * instructions will need to be replaced with true instructions with
 	 * wider offsets (4 bytes instead of 2). This is done in
-	 * {@link org.objectweb.asm.MethodWriter#resizeInstructions}.
-	 * @throws IllegalArgumentException if this label has already been resolved,
-	 *                                  or if it has not been created by the given code writer.
+	 * {@link MethodWriter#resizeInstructions}.
+	 * @throws IllegalArgumentException if this label has already been resolved, or if it has not
+	 *                                  been created by the given code writer.
 	 */
-	boolean resolve(
-			final MethodWriter owner,
-			final int position,
-			final byte[] data) {
+	boolean resolve(final MethodWriter owner, final int position,
+	                final byte[] data) {
 		boolean needUpdate = false;
-		status |= RESOLVED;
+		this.status |= RESOLVED;
 		this.position = position;
 		int i = 0;
 		while (i < referenceCount) {
-			final int source = srcAndRefPositions[i++];
+			int source = srcAndRefPositions[i++];
 			int reference = srcAndRefPositions[i++];
-			final int offset;
+			int offset;
 			if (source >= 0) {
 				offset = position - source;
 				if (offset < Short.MIN_VALUE || offset > Short.MAX_VALUE) {
-					/*
-					 * changes the opcode of the jump instruction, in order to
-					 * be able to find it later (see resizeInstructions in
-					 * MethodWriter). These temporary opcodes are similar to
-					 * jump instruction opcodes, except that the 2 bytes offset
-					 * is unsigned (and can therefore represent values from 0 to
-					 * 65535, which is sufficient since the size of a method is
-					 * limited to 65535 bytes).
-					 */
-					final int opcode = data[reference - 1] & 0xFF;
+	                /*
+                     * changes the opcode of the jump instruction, in order to
+                     * be able to find it later (see resizeInstructions in
+                     * MethodWriter). These temporary opcodes are similar to
+                     * jump instruction opcodes, except that the 2 bytes offset
+                     * is unsigned (and can therefore represent values from 0 to
+                     * 65535, which is sufficient since the size of a method is
+                     * limited to 65535 bytes).
+                     */
+					int opcode = data[reference - 1] & 0xFF;
 					if (opcode <= Opcodes.JSR) {
 						// changes IFEQ ... JSR to opcodes 202 to 217
 						data[reference - 1] = (byte) (opcode + 49);
@@ -478,8 +469,8 @@ public class Label {
 	 * block WITHOUT following any JSR target.
 	 *
 	 * @param JSR           a JSR block that jumps to this subroutine. If this JSR is not
-	 *                      null it is added to the successor of the RET blocks found in the
-	 *                      subroutine.
+	 *                      null it is added to the successor of the RET blocks found in
+	 *                      the subroutine.
 	 * @param id            the id of this subroutine.
 	 * @param nbSubroutines the total number of subroutines in the method.
 	 */
@@ -489,7 +480,7 @@ public class Label {
 		Label stack = this;
 		while (stack != null) {
 			// removes a label l from the stack
-			final Label l = stack;
+			Label l = stack;
 			stack = l.next;
 			l.next = null;
 
@@ -501,7 +492,7 @@ public class Label {
 				// adds JSR to the successors of l, if it is a RET block
 				if ((l.status & RET) != 0) {
 					if (!l.inSameSubroutine(JSR)) {
-						final Edge e = new Edge();
+						Edge e = new Edge();
 						e.info = l.inputStackTop;
 						e.successor = JSR.successors.successor;
 						e.next = l.successors;

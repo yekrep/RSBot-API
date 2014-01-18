@@ -36,6 +36,7 @@ package org.objectweb.asm;
  * @author Eric Bruneton
  */
 public class ByteVector {
+
 	/**
 	 * The content of this vector.
 	 */
@@ -47,7 +48,7 @@ public class ByteVector {
 	int length;
 
 	/**
-	 * Constructs a new {@link org.objectweb.asm.ByteVector ByteVector} with a default initial
+	 * Constructs a new {@link ByteVector ByteVector} with a default initial
 	 * size.
 	 */
 	public ByteVector() {
@@ -55,7 +56,7 @@ public class ByteVector {
 	}
 
 	/**
-	 * Constructs a new {@link org.objectweb.asm.ByteVector ByteVector} with the given initial
+	 * Constructs a new {@link ByteVector ByteVector} with the given initial
 	 * size.
 	 *
 	 * @param initialSize the initial size of the byte vector to be constructed.
@@ -94,7 +95,7 @@ public class ByteVector {
 		if (length + 2 > data.length) {
 			enlarge(2);
 		}
-		final byte[] data = this.data;
+		byte[] data = this.data;
 		data[length++] = (byte) b1;
 		data[length++] = (byte) b2;
 		this.length = length;
@@ -113,7 +114,7 @@ public class ByteVector {
 		if (length + 2 > data.length) {
 			enlarge(2);
 		}
-		final byte[] data = this.data;
+		byte[] data = this.data;
 		data[length++] = (byte) (s >>> 8);
 		data[length++] = (byte) s;
 		this.length = length;
@@ -133,7 +134,7 @@ public class ByteVector {
 		if (length + 3 > data.length) {
 			enlarge(3);
 		}
-		final byte[] data = this.data;
+		byte[] data = this.data;
 		data[length++] = (byte) b;
 		data[length++] = (byte) (s >>> 8);
 		data[length++] = (byte) s;
@@ -153,7 +154,7 @@ public class ByteVector {
 		if (length + 4 > data.length) {
 			enlarge(4);
 		}
-		final byte[] data = this.data;
+		byte[] data = this.data;
 		data[length++] = (byte) (i >>> 24);
 		data[length++] = (byte) (i >>> 16);
 		data[length++] = (byte) (i >>> 8);
@@ -174,7 +175,7 @@ public class ByteVector {
 		if (length + 8 > data.length) {
 			enlarge(8);
 		}
-		final byte[] data = this.data;
+		byte[] data = this.data;
 		int i = (int) (l >>> 32);
 		data[length++] = (byte) (i >>> 24);
 		data[length++] = (byte) (i >>> 16);
@@ -193,11 +194,14 @@ public class ByteVector {
 	 * Puts an UTF8 string into this byte vector. The byte vector is
 	 * automatically enlarged if necessary.
 	 *
-	 * @param s a String.
+	 * @param s a String whose UTF8 encoded length must be less than 65536.
 	 * @return this byte vector.
 	 */
 	public ByteVector putUTF8(final String s) {
-		final int charLength = s.length();
+		int charLength = s.length();
+		if (charLength > 65535) {
+			throw new IllegalArgumentException();
+		}
 		int len = length;
 		if (len + 2 + charLength > data.length) {
 			enlarge(2 + charLength);
@@ -226,6 +230,9 @@ public class ByteVector {
 					} else {
 						byteLength += 2;
 					}
+				}
+				if (byteLength > 65535) {
+					throw new IllegalArgumentException();
 				}
 				data[length] = (byte) (byteLength >>> 8);
 				data[length + 1] = (byte) byteLength;
@@ -282,9 +289,9 @@ public class ByteVector {
 	 *             able to receive.
 	 */
 	private void enlarge(final int size) {
-		final int length1 = 2 * data.length;
-		final int length2 = length + size;
-		final byte[] newData = new byte[length1 > length2 ? length1 : length2];
+		int length1 = 2 * data.length;
+		int length2 = length + size;
+		byte[] newData = new byte[length1 > length2 ? length1 : length2];
 		System.arraycopy(data, 0, newData, 0, length);
 		data = newData;
 	}
