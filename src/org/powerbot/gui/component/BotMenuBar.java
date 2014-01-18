@@ -1,12 +1,19 @@
 package org.powerbot.gui.component;
 
+import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.util.Calendar;
 
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
@@ -15,10 +22,8 @@ import org.powerbot.Boot;
 import org.powerbot.Configuration;
 import org.powerbot.bot.Bot;
 import org.powerbot.event.BotMenuListener;
-import org.powerbot.gui.BotAbout;
 import org.powerbot.gui.BotAccounts;
 import org.powerbot.gui.BotChrome;
-import org.powerbot.gui.BotLicense;
 import org.powerbot.gui.BotScripts;
 import org.powerbot.gui.BotSignin;
 import org.powerbot.misc.NetworkAccount;
@@ -26,6 +31,7 @@ import org.powerbot.misc.Resources;
 import org.powerbot.misc.Tracker;
 import org.powerbot.script.Script;
 import org.powerbot.script.internal.ScriptController;
+import org.powerbot.util.IOUtils;
 
 /**
  * @author Paris
@@ -254,17 +260,15 @@ public class BotMenuBar extends JMenuBar implements ActionListener {
 		} else if (s.equals(BotLocale.STOPSCRIPT)) {
 			scriptStop();
 		} else if (s.equals(BotLocale.ABOUT)) {
-			showDialog(Action.ABOUT);
+			showAbout();
 		} else if (s.equals(BotLocale.LICENSE)) {
-			showDialog(Action.LICENSE);
+			showLicense();
 		} else if (s.equals(BotLocale.WEBSITE)) {
 			BotChrome.openURL(Configuration.URLs.SITE);
 		}
 	}
 
-	public enum Action {ACCOUNTS, SIGNIN, ABOUT, LICENSE}
-
-	;
+	public enum Action {ACCOUNTS, SIGNIN};
 
 	public void showDialog(final Action action) {
 		SwingUtilities.invokeLater(new Runnable() {
@@ -277,17 +281,47 @@ public class BotMenuBar extends JMenuBar implements ActionListener {
 				case SIGNIN:
 					new BotSignin(chrome);
 					break;
-				case ABOUT:
-					new BotAbout(chrome);
-					break;
-				case LICENSE:
-					new BotLicense(chrome);
-					break;
 				default:
 					break;
 				}
 			}
 		});
+	}
+
+	public void showAbout() {
+		final String year = Integer.toString(Calendar.getInstance().get(Calendar.YEAR));
+		final String msg = "<b>" + Configuration.NAME + " " + Integer.toString(Configuration.VERSION) + "</b>\n\n" +
+				"Copyright \u00a9 2011 - " + year + " Dequeue Ltd and its licensors.\n" +
+				"By using this software you agree to be bound by the terms of the license agreement.\n\n" +
+				"RuneScape\u00ae is a trademark of Jagex \u00a9 1999 - " + year + " Jagex Ltd.\n" +
+				"RuneScape content and materials are trademarks and copyrights of Jagex or its licensees.\n" +
+				"This program is issued with no warranty and is not affiliated with Jagex Ltd., nor do they endorse usage of our software.";
+		final JLabel text = new JLabel("<html>" + msg.replace("\n", "<br>") + "</html>");
+		final Font f = text.getFont();
+		text.setFont(new Font(f.getName(), f.getStyle(), f.getSize() - 2));
+		JOptionPane.showMessageDialog(chrome, text, BotLocale.ABOUT, JOptionPane.PLAIN_MESSAGE);
+	}
+
+	public void showLicense() {
+		String license = "Unable to locate license file, please visit " + Configuration.URLs.DOMAIN + " to view license information";
+		String acknowledgements = "To view acknowledgements, please visit " + Configuration.URLs.DOMAIN;
+		try {
+			license = IOUtils.readString(Resources.getResourceURL(Resources.Paths.LICENSE)).trim();
+			acknowledgements = IOUtils.readString(Resources.getResourceURL(Resources.Paths.ACKNOWLEDGEMENTS)).trim();
+		} catch (final IOException ignored) {
+		}
+
+		final String lf = System.getProperty("line.separator");
+		final StringBuilder s = new StringBuilder(license.length() + acknowledgements.length() + lf.length() * 2);
+		s.append(license).append(lf).append(lf).append(acknowledgements);
+
+		final JLabel text = new JLabel(s.insert(0, "<html>").append("</html>").toString().replace("\n", "<br>"));
+		final Font f = text.getFont();
+		text.setFont(new Font(f.getName(), f.getStyle(), f.getSize() - 2));
+		final JScrollPane scroll = new JScrollPane(text);
+		scroll.setBackground(text.getBackground());
+		scroll.setPreferredSize(new Dimension(scroll.getPreferredSize().width, chrome.getGraphics().getFontMetrics(f).getHeight() * 20));
+		JOptionPane.showMessageDialog(chrome, scroll, BotLocale.LICENSE, JOptionPane.PLAIN_MESSAGE);
 	}
 
 	public synchronized void scriptPlayPause() {

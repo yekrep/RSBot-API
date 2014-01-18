@@ -25,7 +25,7 @@ public class OSXAdapt implements Runnable {
 
 	@OSXAdapt.OSXAdapterInfo(mode = 1)
 	public void about() {
-		chrome.menuBar.showDialog(BotMenuBar.Action.ABOUT);
+		chrome.menuBar.showAbout();
 	}
 
 	@OSXAdapt.OSXAdapterInfo(mode = 2)
