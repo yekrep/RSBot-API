@@ -11,7 +11,7 @@ import org.powerbot.client.RSInteractable;
 import org.powerbot.client.RSInteractableData;
 import org.powerbot.client.RSInteractableLocation;
 import org.powerbot.script.methods.MethodContext;
-import org.powerbot.script.util.Random;
+import org.powerbot.script.util.Calculations;
 
 public class RenderableCuboid extends Interactive {
 	private final WeakReference<RSInteractable> interactable;
@@ -21,7 +21,7 @@ public class RenderableCuboid extends Interactive {
 		this.interactable = new WeakReference<RSInteractable>(interactable);
 	}
 
-	private Area cuboid() {
+	private Area cuboid(final int deviation) {
 		final RSInteractable interactable = this.interactable.get();
 		final RSInteractableData data;
 		final RSInteractableLocation location;
@@ -42,14 +42,14 @@ public class RenderableCuboid extends Interactive {
 		if (ctx.game.groundToScreen(x, z, p, h / 2).x == -1) {
 			return null;
 		}
-		final Point g1 = ctx.game.groundToScreen(x - 256, z - 256, p, 0);
-		final Point g2 = ctx.game.groundToScreen(x + 256, z - 256, p, 0);
-		final Point g3 = ctx.game.groundToScreen(x + 256, z + 256, p, 0);
-		final Point g4 = ctx.game.groundToScreen(x - 256, z + 256, p, 0);
-		final Point o1 = ctx.game.groundToScreen(x - 256, z - 256, p, h);
-		final Point o2 = ctx.game.groundToScreen(x + 256, z - 256, p, h);
-		final Point o3 = ctx.game.groundToScreen(x + 256, z + 256, p, h);
-		final Point o4 = ctx.game.groundToScreen(x - 256, z + 256, p, h);
+		final Point g1 = ctx.game.groundToScreen(x - deviation, z - deviation, p, 0);
+		final Point g2 = ctx.game.groundToScreen(x + deviation, z - deviation, p, 0);
+		final Point g3 = ctx.game.groundToScreen(x + deviation, z + deviation, p, 0);
+		final Point g4 = ctx.game.groundToScreen(x - deviation, z + deviation, p, 0);
+		final Point o1 = ctx.game.groundToScreen(x - deviation, z - deviation, p, h);
+		final Point o2 = ctx.game.groundToScreen(x + deviation, z - deviation, p, h);
+		final Point o3 = ctx.game.groundToScreen(x + deviation, z + deviation, p, h);
+		final Point o4 = ctx.game.groundToScreen(x - deviation, z + deviation, p, h);
 		if (g1.x == -1 || g2.x == -1 || g3.x == -1 || g4.x == -1 ||
 				o1.x == -1 || o2.x == -1 || o3.x == -1 || o4.x == -1) {
 			return null;
@@ -75,22 +75,17 @@ public class RenderableCuboid extends Interactive {
 
 	@Override
 	public Point getNextPoint() {
-		final Area area = cuboid();
-		final Rectangle rectangle;
-		if (area != null && (rectangle = area.getBounds()).width > 1 && rectangle.height > 1) {
-			final int x = rectangle.x, y = rectangle.y, w = rectangle.width, h = rectangle.height;
-			Point p;
-			do {
-				p = new Point(x + Random.nextInt(0, w), y + Random.nextInt(0, h));
-			} while (!area.contains(p));
-			return p;
+		final Area area = cuboid(256), inner = cuboid(128);
+		if (area == null || inner == null) {
+			return new Point(-1, -1);
 		}
-		return new Point(-1, -1);
+		final Rectangle r1 = area.getBounds(), r2 = inner.getBounds();
+		return Calculations.nextPoint(r1, r2);
 	}
 
 	@Override
 	public Point getCenterPoint() {
-		final Area area = cuboid();
+		final Area area = cuboid(256);
 		if (area != null) {
 			final Rectangle rectangle = area.getBounds();
 			return new Point((int) rectangle.getCenterX(), (int) rectangle.getCenterY());
@@ -100,12 +95,12 @@ public class RenderableCuboid extends Interactive {
 
 	@Override
 	public boolean contains(final Point point) {
-		final Area area = cuboid();
+		final Area area = cuboid(256);
 		return area != null && area.contains(point);
 	}
 
 	@Override
 	public boolean isValid() {
-		return cuboid() != null;
+		return cuboid(256) != null;
 	}
 }
