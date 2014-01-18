@@ -313,7 +313,7 @@ public abstract class Actor extends Interactive implements Renderable, Nameable,
 			return model.contains(point);
 		}
 		final RenderableCuboid cuboid = new RenderableCuboid(ctx, character);
-		return cuboid.contains(point) || point.distance(getScreenPoint()) < 15d;
+		return cuboid.contains(point);
 	}
 
 	private Point getScreenPoint() {

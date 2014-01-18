@@ -99,7 +99,7 @@ public class RenderableCuboid extends Interactive {
 	}
 
 	@Override
-	public boolean contains(Point point) {
+	public boolean contains(final Point point) {
 		final Area area = cuboid();
 		return area != null && area.contains(point);
 	}
