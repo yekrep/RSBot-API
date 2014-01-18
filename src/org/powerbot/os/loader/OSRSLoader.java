@@ -1,7 +1,5 @@
 package org.powerbot.os.loader;
 
-import org.powerbot.bot.loader.transform.TransformSpec;
-
 import java.applet.Applet;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
@@ -42,15 +40,6 @@ public class OSRSLoader implements Runnable {
         }
         if (applet == null) {
             return;
-        }
-        TransformSpec spec;
-        try {
-            throw new IOException();//TODO: get t-spec
-        } catch (IOException ignored) {
-            spec = null;
-        }
-        if (spec != null) {
-            spec.adapt();
         }
 
         client = applet;

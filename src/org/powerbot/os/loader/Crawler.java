@@ -1,8 +1,8 @@
 package org.powerbot.os.loader;
 
 import org.powerbot.os.Configuration;
-import org.powerbot.util.io.HttpClient;
-import org.powerbot.util.io.IOHelper;
+import org.powerbot.os.util.io.HttpUtils;
+import org.powerbot.os.util.io.IOUtils;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -44,7 +44,7 @@ public class Crawler implements Runnable {
         Matcher m;
         String url, referer, html;
 
-	    url = "http://oldschool." + Configuration.GAME_DOMAIN + "/";
+	    url = "http://oldschool." + Configuration.URLs.GAME_DOMAIN + "/";
 	    html = download(url, null);
 	    if (html == null) {
 		    return;
@@ -89,12 +89,12 @@ public class Crawler implements Runnable {
 
     private String download(final String url, final String referer) {
         try {
-            final HttpURLConnection con = HttpClient.getHttpConnection(new URL(url));
-            con.setRequestProperty("User-Agent", HttpClient.HTTP_USERAGENT_FAKE);
+            final HttpURLConnection con = HttpUtils.getHttpConnection(new URL(url));
+            con.setRequestProperty("User-Agent", HttpUtils.HTTP_USERAGENT_FAKE);
             if (referer != null) {
                 con.setRequestProperty("Referer", referer);
             }
-            return IOHelper.readString(HttpClient.getInputStream(con));
+            return IOUtils.readString(HttpUtils.getInputStream(con));
         } catch (final IOException ignored) {
             ignored.printStackTrace();
             return null;
