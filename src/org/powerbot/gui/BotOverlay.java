@@ -1,4 +1,4 @@
-package org.powerbot.gui.component;
+package org.powerbot.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Canvas;
@@ -22,7 +22,6 @@ import org.powerbot.client.Client;
 import org.powerbot.event.EventDispatcher;
 import org.powerbot.event.PaintEvent;
 import org.powerbot.event.TextPaintEvent;
-import org.powerbot.gui.BotChrome;
 
 public class BotOverlay extends JDialog {
 	private static final Logger log = Logger.getLogger(BotOverlay.class.getName());

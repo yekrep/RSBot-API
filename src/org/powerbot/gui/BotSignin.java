@@ -23,7 +23,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 import org.powerbot.Configuration;
-import org.powerbot.gui.component.BotLocale;
 import org.powerbot.misc.NetworkAccount;
 import org.powerbot.misc.Tracker;
 

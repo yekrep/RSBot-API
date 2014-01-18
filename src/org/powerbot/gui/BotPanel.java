@@ -1,4 +1,4 @@
-package org.powerbot.gui.component;
+package org.powerbot.gui;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -12,7 +12,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import org.powerbot.gui.BotChrome;
 import org.powerbot.misc.Ads;
 import org.powerbot.misc.Resources;
 

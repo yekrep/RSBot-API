@@ -25,7 +25,6 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumnModel;
 
-import org.powerbot.gui.component.BotLocale;
 import org.powerbot.misc.GameAccounts;
 import org.powerbot.misc.GameAccounts.Account;
 import org.powerbot.misc.Tracker;

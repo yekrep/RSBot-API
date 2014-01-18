@@ -53,7 +53,6 @@ import javax.swing.border.AbstractBorder;
 import javax.swing.border.EmptyBorder;
 
 import org.powerbot.Configuration;
-import org.powerbot.gui.component.BotLocale;
 import org.powerbot.misc.CryptFile;
 import org.powerbot.misc.GameAccounts;
 import org.powerbot.misc.GameAccounts.Account;

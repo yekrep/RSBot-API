@@ -8,7 +8,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.powerbot.Configuration;
-import org.powerbot.gui.component.BotLocale;
+import org.powerbot.gui.BotLocale;
 import org.powerbot.util.IOUtils;
 
 public final class UpdateCheck implements Callable<Boolean> {

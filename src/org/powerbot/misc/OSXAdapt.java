@@ -14,7 +14,6 @@ import javax.swing.SwingUtilities;
 import org.powerbot.Configuration;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.gui.BotSignin;
-import org.powerbot.gui.component.BotMenuBar;
 
 public class OSXAdapt implements Runnable {
 	private final BotChrome chrome;

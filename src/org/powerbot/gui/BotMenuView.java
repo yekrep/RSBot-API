@@ -1,4 +1,4 @@
-package org.powerbot.gui.component;
+package org.powerbot.gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,9 +16,6 @@ import javax.swing.JMenuItem;
 import org.powerbot.bot.Bot;
 import org.powerbot.event.EventDispatcher;
 import org.powerbot.event.debug.*;
-import org.powerbot.gui.BotChrome;
-import org.powerbot.gui.BotSettingExplorer;
-import org.powerbot.gui.BotWidgetExplorer;
 import org.powerbot.script.methods.MethodContext;
 
 public final class BotMenuView implements ActionListener {

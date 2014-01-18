@@ -1,4 +1,4 @@
-package org.powerbot.gui.component;
+package org.powerbot.gui;
 
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -19,13 +19,8 @@ import org.powerbot.Boot;
 import org.powerbot.Configuration;
 import org.powerbot.bot.Bot;
 import org.powerbot.event.BotMenuListener;
-import org.powerbot.gui.BotAccounts;
-import org.powerbot.gui.BotChrome;
-import org.powerbot.gui.BotScripts;
-import org.powerbot.gui.BotSignin;
 import org.powerbot.misc.NetworkAccount;
 import org.powerbot.misc.Resources;
-import org.powerbot.misc.Tracker;
 import org.powerbot.script.Script;
 import org.powerbot.script.internal.ScriptController;
 

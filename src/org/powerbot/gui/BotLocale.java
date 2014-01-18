@@ -1,4 +1,4 @@
-package org.powerbot.gui.component;
+package org.powerbot.gui;
 
 import org.powerbot.Configuration;
 

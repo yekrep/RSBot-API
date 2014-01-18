@@ -1,4 +1,4 @@
-package org.powerbot.gui.component;
+package org.powerbot.gui;
 
 import java.awt.Color;
 import java.util.logging.Handler;
@@ -8,7 +8,6 @@ import java.util.logging.LogRecord;
 import javax.swing.JLabel;
 
 import org.powerbot.bot.Bot;
-import org.powerbot.gui.BotChrome;
 import org.powerbot.misc.UpdateCheck;
 
 final class BotPanelLogHandler extends Handler {
