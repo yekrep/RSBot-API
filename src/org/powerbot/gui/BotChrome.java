@@ -33,6 +33,7 @@ import org.powerbot.misc.OSXAdapt;
 import org.powerbot.misc.Resources;
 import org.powerbot.misc.Tracker;
 import org.powerbot.misc.UpdateCheck;
+import org.powerbot.misc.WindowCache;
 import org.powerbot.util.Ini;
 
 /**
@@ -44,11 +45,11 @@ public class BotChrome extends JFrame implements Closeable {
 	private static final long serialVersionUID = -5535364874897541810L;
 
 	private static BotChrome instance;
-	private final CryptFile cache;
 	private Bot bot;
 	public BotPanel panel;
 	public final BotOverlay overlay;
 	public final BotMenuBar menuBar;
+	private final WindowCache cache;
 
 	private BotChrome() {
 		try {
@@ -72,8 +73,8 @@ public class BotChrome extends JFrame implements Closeable {
 		log.log(Level.INFO, "", "Starting...");
 		pack();
 		setMinimumSize(getSize());
-		cache = new CryptFile("window-cache.1.ini", false, getClass());
-		setSize(getWindowCache());
+		cache = new WindowCache(this);
+		cache.run();
 		setLocationRelativeTo(getParent());
 		setVisible(true);
 		new OSXAdapt(this).run();
@@ -146,47 +147,6 @@ public class BotChrome extends JFrame implements Closeable {
 		}
 	}
 
-	private void saveWindowCache() {
-		OutputStream out = null;
-		try {
-			out = cache.getOutputStream();
-			new Ini().get().put("w", getWidth()).put("h", getHeight()).parent().write(out);
-		} catch (final IOException ignored) {
-		} finally {
-			if (out != null) {
-				try {
-					out.close();
-				} catch (final IOException ignored) {
-				}
-			}
-		}
-	}
-
-	private Dimension getWindowCache() {
-		final Dimension d = getSize();
-
-		if (!cache.exists()) {
-			return d;
-		}
-
-		InputStream in = null;
-		try {
-			in = cache.getInputStream();
-			final Ini.Member t = new Ini().read(in).get();
-			return new Dimension(t.getInt("w", d.width), t.getInt("h", d.height));
-		} catch (final IOException ignored) {
-		} finally {
-			if (in != null) {
-				try {
-					in.close();
-				} catch (final IOException ignored) {
-				}
-			}
-		}
-
-		return d;
-	}
-
 	@Override
 	public void close() {
 		log.info("Shutting down");
@@ -196,7 +156,7 @@ public class BotChrome extends JFrame implements Closeable {
 		final boolean maxed = (s & Frame.MAXIMIZED_VERT) == Frame.MAXIMIZED_VERT || (s & Frame.MAXIMIZED_HORIZ) == Frame.MAXIMIZED_HORIZ;
 
 		if (!maxed) {
-			saveWindowCache();
+			cache.close();
 		}
 
 		if (bot != null) {
