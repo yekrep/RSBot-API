@@ -5,7 +5,6 @@ import java.applet.AppletContext;
 import java.applet.AppletStub;
 import java.applet.AudioClip;
 import java.awt.Image;
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -56,7 +55,7 @@ public class GameStub implements AppletStub, AppletContext {
 	public final URL getCodeBase() {
 		try {
 			return new URL(codeBase);
-		} catch (final MalformedURLException malformedurlexception) {
+		} catch (final MalformedURLException ignored) {
 			throw new InvalidParameterException();
 		}
 	}
@@ -68,7 +67,7 @@ public class GameStub implements AppletStub, AppletContext {
 	public final URL getDocumentBase() {
 		try {
 			return new URL(codeBase);
-		} catch (final MalformedURLException malformedurlexception) {
+		} catch (final MalformedURLException ignored) {
 			throw new InvalidParameterException();
 		}
 	}
@@ -77,7 +76,7 @@ public class GameStub implements AppletStub, AppletContext {
 		throw new UnsupportedOperationException();
 	}
 
-	public final void setStream(final String s, final InputStream inputstream) throws IOException {
+	public final void setStream(final String s, final InputStream inputstream) {
 		throw new UnsupportedOperationException();
 	}
 

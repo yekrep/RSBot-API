@@ -29,6 +29,7 @@ public class GameClassLoader extends ClassLoader {
 		if (loaded.containsKey(name)) {
 			return loaded.get(name);
 		}
+
 		final byte[] bytes = resources.remove(name + ".class");
 		if (bytes != null) {
 			//TODO: t-spec this bitch
@@ -39,6 +40,7 @@ public class GameClassLoader extends ClassLoader {
 			loaded.put(name, clazz);
 			return clazz;
 		}
+
 		return super.findSystemClass(name);
 	}
 

@@ -3,7 +3,7 @@ package org.powerbot.os.loader;
 import java.applet.Applet;
 import java.lang.reflect.Constructor;
 
-public class OSRSLoader implements Runnable {
+public class GameBotLoader implements Runnable {
 	private final GameLoader gameLoader;
 	private final ClassLoader classLoader;
 	private Runnable callback;
@@ -11,7 +11,7 @@ public class OSRSLoader implements Runnable {
 	private Object client;
 	private String packHash;
 
-	public OSRSLoader(final GameLoader gameLoader, final ClassLoader classLoader) {
+	public GameBotLoader(final GameLoader gameLoader, final ClassLoader classLoader) {
 		this.gameLoader = gameLoader;
 		this.classLoader = classLoader;
 	}
@@ -24,7 +24,7 @@ public class OSRSLoader implements Runnable {
 	public void run() {
 		Class<?> code;
 		try {
-			code = classLoader.loadClass(gameLoader.getCrawler().clazz);
+			code = classLoader.loadClass(gameLoader.crawler.clazz);
 		} catch (final ClassNotFoundException e) {
 			code = null;
 		}

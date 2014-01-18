@@ -3,16 +3,14 @@ package org.powerbot.os.client;
 import java.applet.Applet;
 import java.awt.Dimension;
 import java.io.Closeable;
-import java.io.IOException;
 import java.util.Map;
-import java.util.logging.Logger;
 
 import javax.swing.SwingUtilities;
 
-import org.powerbot.os.loader.Crawler;
+import org.powerbot.os.loader.GameBotLoader;
+import org.powerbot.os.loader.GameCrawler;
 import org.powerbot.os.loader.GameLoader;
 import org.powerbot.os.loader.GameStub;
-import org.powerbot.os.loader.OSRSLoader;
 import org.powerbot.os.ui.BotChrome;
 
 /**
@@ -31,8 +29,8 @@ public class Bot implements Runnable, Closeable {
 
 	@Override
 	public void run() {
-		final Crawler crawler = new Crawler();
-		if (!crawler.crawl()) {
+		final GameCrawler crawler = new GameCrawler();
+		if (!crawler.call()) {
 			return;
 		}
 
@@ -42,7 +40,7 @@ public class Bot implements Runnable, Closeable {
 			return;
 		}
 
-		final OSRSLoader loader = new OSRSLoader(game, classLoader);
+		final GameBotLoader loader = new GameBotLoader(game, classLoader);
 		loader.setCallback(new Runnable() {
 			@Override
 			public void run() {
@@ -54,10 +52,10 @@ public class Bot implements Runnable, Closeable {
 		t.start();
 	}
 
-	private void hook(final OSRSLoader loader) {
+	private void hook(final GameBotLoader loader) {
 		applet = loader.getApplet();
 		//TODO: client = (Client) loader.getClient();
-		final Crawler crawler = loader.getGameLoader().getCrawler();
+		final GameCrawler crawler = loader.getGameLoader().crawler;
 		final GameStub stub = new GameStub(crawler.parameters, crawler.archive);
 		applet.setStub(stub);
 		applet.init();

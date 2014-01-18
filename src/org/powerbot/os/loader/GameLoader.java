@@ -6,7 +6,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Callable;
@@ -18,60 +17,49 @@ import org.powerbot.os.util.HttpUtils;
 import org.powerbot.os.util.IOUtils;
 
 public class GameLoader implements Callable<ClassLoader> {
-	private final Crawler crawler;
+	public final GameCrawler crawler;
 	private final Map<String, byte[]> resources;
 
-	public GameLoader(final Crawler crawler) {
+	public GameLoader(final GameCrawler crawler) {
 		this.crawler = crawler;
-		this.resources = new HashMap<String, byte[]>();
+		resources = new HashMap<String, byte[]>();
 	}
 
 	@Override
 	public ClassLoader call() {
-		byte[] buffer;
+		byte[] buf = null;
+
 		try {
 			final HttpURLConnection con = HttpUtils.getHttpConnection(new URL(crawler.archive));
 			con.addRequestProperty("Referer", crawler.game);
 			final File cache = new File(Configuration.TEMP, "client.jar");
 			HttpUtils.download(con, cache);
-			buffer = IOUtils.read(cache);
+			buf = IOUtils.read(cache);
 		} catch (final IOException ignored) {
-			buffer = null;
 		}
-		if (buffer == null) {
+
+		if (buf == null) {
 			return null;
 		}
 
 		try {
-			final JarInputStream jar = new JarInputStream(new ByteArrayInputStream(buffer));
-			JarEntry entry;
-			while ((entry = jar.getNextJarEntry()) != null) {
-				final String entryName = entry.getName();
-				resources.put(entryName, read(jar));
+			final JarInputStream jar = new JarInputStream(new ByteArrayInputStream(buf));
+			JarEntry e;
+			while ((e = jar.getNextJarEntry()) != null) {
+				resources.put(e.getName(), read(jar));
 			}
 		} catch (final IOException ignored) {
 		}
+
 		return new GameClassLoader(resources);
 	}
 
-	public Map<String, byte[]> getResources() {
-		return Collections.unmodifiableMap(resources);
-	}
-
-	public Crawler getCrawler() {
-		return crawler;
-	}
-
-	private static byte[] read(final JarInputStream inputStream) throws IOException {
+	private static byte[] read(final JarInputStream in) throws IOException {
 		final ByteArrayOutputStream out = new ByteArrayOutputStream();
-		final byte[] buffer = new byte[2048];
-		int read;
-		while (inputStream.available() > 0) {
-			read = inputStream.read(buffer, 0, buffer.length);
-			if (read < 0) {
-				break;
-			}
-			out.write(buffer, 0, read);
+		final byte[] buf = new byte[2048];
+		int l;
+		while (in.available() > 0 && (l = in.read(buf, 0, buf.length)) != -1) {
+			out.write(buf, 0, l);
 		}
 		return out.toByteArray();
 	}

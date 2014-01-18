@@ -5,10 +5,12 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.powerbot.os.Boot;
 import org.powerbot.os.Configuration;
 import org.powerbot.os.util.HttpUtils;
 import org.powerbot.os.util.IOUtils;
@@ -16,31 +18,17 @@ import org.powerbot.os.util.IOUtils;
 /**
  * @author Paris
  */
-public class Crawler implements Runnable {
-	private AtomicBoolean run, passed;
+public class GameCrawler implements Callable<Boolean> {
 	public final Map<String, String> parameters, properties;
 	public String game, archive, clazz;
 
-	public Crawler() {
-		run = new AtomicBoolean(false);
-		passed = new AtomicBoolean(false);
+	public GameCrawler() {
 		parameters = new HashMap<String, String>();
 		properties = new HashMap<String, String>();
 	}
 
-	public boolean crawl() {
-		if (!run.get()) {
-			run();
-		}
-		return passed.get();
-	}
-
 	@Override
-	public void run() {
-		if (!run.compareAndSet(false, true)) {
-			return;
-		}
-
+	public Boolean call() {
 		Pattern p;
 		Matcher m;
 		String url;
@@ -50,32 +38,32 @@ public class Crawler implements Runnable {
 		url = "http://oldschool." + Configuration.URLs.GAME_DOMAIN + "/";
 		html = download(url, null);
 		if (html == null) {
-			return;
+			return false;
 		}
 		p = Pattern.compile("<a href=\"(http://[^\\\"]+)\">Choose best members only world for me ", Pattern.CASE_INSENSITIVE);
 		m = p.matcher(html);
 		if (!m.find()) {
-			return;
+			return false;
 		}
 
 		referer = url;
 		url = m.group(1);
 		html = download(url, referer);
 		if (html == null) {
-			return;
+			return false;
 		}
 		game = url;
 
 		p = Pattern.compile(".+\\barchive=(\\S+)", Pattern.CASE_INSENSITIVE);
 		m = p.matcher(html);
 		if (!m.find()) {
-			return;
+			return false;
 		}
 		archive = game.substring(0, game.lastIndexOf('/') + 1) + m.group(1);
 		p = Pattern.compile(".+\\bcode=(\\S+).class", Pattern.CASE_INSENSITIVE);
 		m = p.matcher(html);
 		if (!m.find()) {
-			return;
+			return false;
 		}
 		clazz = m.group(1);
 
@@ -98,7 +86,7 @@ public class Crawler implements Runnable {
 			}
 		}
 
-		passed.set(true);
+		return true;
 	}
 
 	private String download(final String url, final String referer) {
