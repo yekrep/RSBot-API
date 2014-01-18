@@ -26,10 +26,17 @@ public class Boot implements Runnable {
 		}
 		logger.addHandler(new PrintStreamHandler());
 
+		if (Configuration.OS == Configuration.OperatingSystem.MAC) {
+			System.setProperty("apple.laf.useScreenMenuBar", "true");
+		}
+
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (final Exception ignored) {
 		}
+
+		System.setProperty("java.net.preferIPv4Stack", "true");
+		System.setProperty("http.keepalive", "false");
 
 		new BotChrome();
 	}
