@@ -55,7 +55,7 @@ public class Bot implements Runnable {
 
 	private void hook(final OSRSLoader loader) {
 		log.info("Loading game");
-		final Dimension d = new Dimension(756, 503);
+		final Dimension d = new Dimension(765, 503);
 		applet = loader.getApplet();
 		//TODO: client = (Client) loader.getClient();
 		final Crawler crawler = loader.getGameLoader().getCrawler();

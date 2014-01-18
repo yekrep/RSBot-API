@@ -34,10 +34,11 @@ public class BotChrome extends JFrame implements Closeable {
 			}
 		});
 
-		setSize(new Dimension(756, 503));
+		setSize(new Dimension(765, 503));
 		setPreferredSize(getSize());
 		setMinimumSize(getSize());
 		setLocationRelativeTo(getParent());
+		setResizable(false);
 		setVisible(true);
 
 		new Thread(new Bot(this)).start();
