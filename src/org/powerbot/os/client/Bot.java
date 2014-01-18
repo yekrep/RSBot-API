@@ -2,6 +2,8 @@ package org.powerbot.os.client;
 
 import java.applet.Applet;
 import java.awt.Dimension;
+import java.io.Closeable;
+import java.io.IOException;
 import java.util.logging.Logger;
 
 import org.powerbot.os.loader.Crawler;
@@ -13,14 +15,16 @@ import org.powerbot.os.ui.BotChrome;
 /**
  * @author Paris
  */
-public class Bot implements Runnable {
+public class Bot implements Runnable, Closeable {
 	private static final Logger log = Logger.getLogger(Bot.class.getSimpleName());
 	private final BotChrome chrome;
+	private final ThreadGroup group;
 	private Applet applet;
 	private Client client;
 
 	public Bot(final BotChrome chrome) {
 		this.chrome = chrome;
+		group = new ThreadGroup(getClass().getSimpleName());
 	}
 
 	@Override
@@ -48,7 +52,7 @@ public class Bot implements Runnable {
 				hook(loader);
 			}
 		});
-		final Thread t = new Thread(loader);
+		final Thread t = new Thread(group, loader);
 		t.setContextClassLoader(classLoader);
 		t.start();
 	}
@@ -66,5 +70,14 @@ public class Bot implements Runnable {
 		chrome.add(applet);
 		applet.init();
 		applet.start();
+	}
+
+	@Override
+	public void close() {
+		if (applet != null) {
+			applet.stop();
+			applet.destroy();
+		}
+		group.interrupt();
 	}
 }

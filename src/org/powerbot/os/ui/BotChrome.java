@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.Closeable;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Logger;
 
 import javax.swing.JFrame;
@@ -19,6 +20,7 @@ import org.powerbot.os.client.Bot;
  */
 public class BotChrome extends JFrame implements Closeable {
 	private static final Logger log = Logger.getLogger(BotChrome.class.getSimpleName());
+	public final AtomicReference<Bot> bot;
 
 	public BotChrome() {
 		setTitle(Configuration.NAME);
@@ -41,12 +43,19 @@ public class BotChrome extends JFrame implements Closeable {
 		setResizable(false);
 		setVisible(true);
 
-		new Thread(new Bot(this)).start();
+		bot = new AtomicReference<Bot>(new Bot(this));
+		new Thread(bot.get()).start();
 	}
 
 	@Override
 	public void close() {
 		log.info("Shutting down");
+		setVisible(false);
+
+		if (bot.get() != null) {
+			bot.get().close();
+		}
+
 		dispose();
 	}
 }
