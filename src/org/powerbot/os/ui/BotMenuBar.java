@@ -11,6 +11,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
+import org.powerbot.os.Boot;
 import org.powerbot.os.Configuration;
 
 /**
@@ -23,6 +24,28 @@ public class BotMenuBar extends JMenuBar {
 		this.chrome = chrome;
 
 		final JMenu file = new JMenu("File"), edit = new JMenu("Edit"), view = new JMenu("View"), help = new JMenu("Help");
+
+		final JMenuItem fork = new JMenuItem("New Window");
+		file.add(fork);
+		fork.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				Boot.fork();
+			}
+		});
+
+		if (Configuration.OS != Configuration.OperatingSystem.MAC) {
+			file.addSeparator();
+
+			final JMenuItem exit = new JMenuItem("Exit");
+			file.add(exit);
+			exit.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(final ActionEvent e) {
+					chrome.close();
+				}
+			});
+		}
 
 		final JMenuItem license = new JMenuItem("License");
 		help.add(license);

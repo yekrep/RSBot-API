@@ -1,11 +1,32 @@
 package org.powerbot.os.util;
 
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 
 /**
  * @author Paris
  */
 public class StringUtils {
+
+	public static String urlEncode(final String text) {
+		if (text == null) {
+			return null;
+		}
+		try {
+			return URLEncoder.encode(text, "UTF-8");
+		} catch (final UnsupportedEncodingException ignored) {
+			return text;
+		}
+	}
+
+	public static String urlDecode(final String text) {
+		try {
+			return URLDecoder.decode(text, "UTF-8");
+		} catch (final Exception ignored) {
+			return text;
+		}
+	}
 
 	public static byte[] getBytesUtf8(final String string) {
 		try {
