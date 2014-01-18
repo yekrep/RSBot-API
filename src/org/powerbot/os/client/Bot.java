@@ -6,6 +6,8 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.util.logging.Logger;
 
+import javax.swing.SwingUtilities;
+
 import org.powerbot.os.loader.Crawler;
 import org.powerbot.os.loader.GameLoader;
 import org.powerbot.os.loader.GameStub;
@@ -16,7 +18,6 @@ import org.powerbot.os.ui.BotChrome;
  * @author Paris
  */
 public class Bot implements Runnable, Closeable {
-	private static final Logger log = Logger.getLogger(Bot.class.getSimpleName());
 	private final BotChrome chrome;
 	private final ThreadGroup group;
 	private Applet applet;
@@ -29,22 +30,17 @@ public class Bot implements Runnable, Closeable {
 
 	@Override
 	public void run() {
-		log.info("Crawling ...");
 		final Crawler crawler = new Crawler();
 		if (!crawler.crawl()) {
-			log.severe("Failed to load game");
 			return;
 		}
 
-		log.info("Downloading game ...");
 		final GameLoader game = new GameLoader(crawler);
 		final ClassLoader classLoader = game.call();
 		if (classLoader == null) {
-			log.severe("Failed to start game");
 			return;
 		}
 
-		log.info("Launching loader ...");
 		final OSRSLoader loader = new OSRSLoader(game, classLoader);
 		loader.setCallback(new Runnable() {
 			@Override
@@ -58,19 +54,23 @@ public class Bot implements Runnable, Closeable {
 	}
 
 	private void hook(final OSRSLoader loader) {
-		log.info("Loading game");
 		final Dimension d = new Dimension(765, 503);
 		applet = loader.getApplet();
 		//TODO: client = (Client) loader.getClient();
 		final Crawler crawler = loader.getGameLoader().getCrawler();
 		final GameStub stub = new GameStub(crawler.parameters, crawler.archive);
 		applet.setStub(stub);
-		applet.setSize(d);
-		applet.setMinimumSize(d);
-		chrome.panel.setProgress(100);
-		chrome.add(applet);
 		applet.init();
-		applet.start();
+
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				applet.setSize(d);
+				applet.setMinimumSize(d);
+				chrome.add(applet);
+				applet.start();
+			}
+		});
 	}
 
 	@Override

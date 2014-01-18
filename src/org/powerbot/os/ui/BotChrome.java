@@ -14,7 +14,6 @@ import javax.swing.WindowConstants;
 
 import org.powerbot.os.Configuration;
 import org.powerbot.os.client.Bot;
-import org.powerbot.os.ui.component.BotPanel;
 
 /**
  * @author Paris
@@ -47,14 +46,12 @@ public class BotChrome extends JFrame implements Closeable {
 		setResizable(false);
 		setVisible(true);
 
-		panel.setProgress(50);
 		bot = new AtomicReference<Bot>(new Bot(this));
 		new Thread(bot.get()).start();
 	}
 
 	@Override
 	public void close() {
-		log.info("Shutting down");
 		setVisible(false);
 
 		if (bot.get() != null) {
