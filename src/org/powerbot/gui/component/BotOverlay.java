@@ -1,7 +1,9 @@
 package org.powerbot.gui.component;
 
 import java.awt.BorderLayout;
+import java.awt.Canvas;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Graphics;
@@ -13,10 +15,10 @@ import java.awt.image.BufferedImage;
 import java.util.logging.Logger;
 
 import javax.swing.JDialog;
-import javax.swing.JPanel;
 
 import org.powerbot.Configuration;
 import org.powerbot.bot.Bot;
+import org.powerbot.client.Client;
 import org.powerbot.event.EventDispatcher;
 import org.powerbot.event.PaintEvent;
 import org.powerbot.event.TextPaintEvent;
@@ -28,7 +30,7 @@ import org.powerbot.gui.BotChrome;
 public class BotOverlay extends JDialog {
 	private static final Logger log = Logger.getLogger(BotOverlay.class.getName());
 	private final BotChrome parent;
-	private final JPanel panel;
+	private final Component panel;
 	private final Thread repaint;
 	private volatile BufferedImage bi = null;
 	private final boolean offsetMenu;
@@ -67,7 +69,7 @@ public class BotOverlay extends JDialog {
 			getRootPane().putClientProperty("apple.awt.draggableWindowBackground", Boolean.FALSE);
 		}
 
-		panel = new JPanel() {
+		panel = new Component() {
 			@Override
 			public void paint(final Graphics g) {
 				if (bi == null) {
@@ -140,25 +142,28 @@ public class BotOverlay extends JDialog {
 		p.translate(s.left, s.top);
 		final Dimension d = parent.getSize();
 		Dimension d2 = new Dimension(d.width - s.left - s.right, d.height - s.top - s.bottom);
+
 		if (offsetMenu) {
 			final int h = parent.getJMenuBar().getHeight();
 			p.translate(0, h);
 			d2 = new Dimension(d2.width, d2.height - h);
 		}
-		if (parent.getBot() != null && parent.getBot().ctx.getClient() != null) {
-			final Point l = parent.getBot().ctx.getClient().getCanvas().getLocation();
+
+		final Bot bot;
+		final Client client;
+		final Canvas canvas;
+		if ((bot = parent.getBot()) != null && (client = bot.ctx.getClient()) != null && (canvas = client.getCanvas()) != null) {
+			final Point l = canvas.getLocation();
 			p.translate(l.x, l.y);
-			d2 = new Dimension(d2.width - l.x, d2.height - l.y);
+			d2 = canvas.getSize();
 		}
 
-		if (!getLocation().equals(p)) {
-			setLocation(p);
-		}
-
-		if (!getSize().equals(d2)) {
-			setSize(d2);
-			panel.setPreferredSize(getSize());
-		}
+		setLocation(p);
+		setSize(d2);
+		setPreferredSize(d2);
+		panel.setSize(d2);
+		panel.setPreferredSize(d2);
+		pack();
 	}
 
 	@Override
