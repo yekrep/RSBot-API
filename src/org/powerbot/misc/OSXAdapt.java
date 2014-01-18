@@ -13,6 +13,7 @@ import javax.swing.SwingUtilities;
 
 import org.powerbot.Configuration;
 import org.powerbot.gui.BotChrome;
+import org.powerbot.gui.BotSignin;
 import org.powerbot.gui.component.BotMenuBar;
 
 public class OSXAdapt implements Runnable {
@@ -50,7 +51,7 @@ public class OSXAdapt implements Runnable {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				chrome.menuBar.showDialog(BotMenuBar.Action.SIGNIN);
+				new BotSignin(chrome);
 			}
 		});
 	}

@@ -29,7 +29,7 @@ import org.powerbot.misc.Tracker;
 import org.powerbot.script.Script;
 import org.powerbot.script.internal.ScriptController;
 
-public class BotMenuBar extends JMenuBar implements ActionListener {
+public class BotMenuBar extends JMenuBar {
 	private static final long serialVersionUID = -4186554435386744949L;
 	private final BotChrome chrome;
 	private final JMenuItem signin, play, stop;
@@ -40,17 +40,43 @@ public class BotMenuBar extends JMenuBar implements ActionListener {
 		final JMenu file = new JMenu(BotLocale.FILE), edit = new JMenu(BotLocale.EDIT), view = new JMenu(BotLocale.VIEW),
 				script = new JMenu(BotLocale.SCRIPTS), input = new JMenu(BotLocale.INPUT), help = new JMenu(BotLocale.HELP);
 
-		final JMenuItem newtab = item(BotLocale.NEWWINDOW);
+		final JMenuItem newtab = new JMenuItem(BotLocale.NEWWINDOW);
 		file.add(newtab);
+		newtab.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				Boot.fork();
+			}
+		});
+
 		if (Configuration.OS != Configuration.OperatingSystem.MAC) {
 			file.addSeparator();
-			file.add(item(BotLocale.EXIT));
+			final JMenuItem exit = new JMenuItem(BotLocale.EXIT);
+			file.add(exit);
+			exit.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(final ActionEvent e) {
+					chrome.close();
+				}
+			});
 		}
 
-		signin = item(BotLocale.SIGNIN);
+		signin = new JMenuItem(BotLocale.SIGNIN);
 		edit.add(signin);
-		final JMenuItem accounts = item(BotLocale.ACCOUNTS);
+		signin.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				new BotSignin(chrome);
+			}
+		});
+		final JMenuItem accounts = new JMenuItem(BotLocale.ACCOUNTS);
 		edit.add(accounts);
+		accounts.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				new BotAccounts(chrome);
+			}
+		});
 
 		edit.addMenuListener(new MenuListener() {
 			@Override
@@ -86,12 +112,24 @@ public class BotMenuBar extends JMenuBar implements ActionListener {
 		});
 
 		final ImageIcon[] playIcons = new ImageIcon[]{new ImageIcon(Resources.getImage(Resources.Paths.PLAY)), new ImageIcon(Resources.getImage(Resources.Paths.PAUSE))};
-		play = item(BotLocale.PLAYSCRIPT);
+		play = new JMenuItem(BotLocale.PLAYSCRIPT);
 		play.setIcon(playIcons[0]);
 		script.add(play);
-		stop = item(BotLocale.STOPSCRIPT);
+		play.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				scriptPlayPause();
+			}
+		});
+		stop = new JMenuItem(BotLocale.STOPSCRIPT);
 		stop.setIcon(new ImageIcon(Resources.getImage(Resources.Paths.STOP)));
 		script.add(stop);
+		stop.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				scriptStop();
+			}
+		});
 
 		script.addSeparator();
 		final JMenu options = new JMenu(BotLocale.OPTIONS);
@@ -207,9 +245,24 @@ public class BotMenuBar extends JMenuBar implements ActionListener {
 		});
 
 		if (Configuration.OS != Configuration.OperatingSystem.MAC) {
-			help.add(item(BotLocale.ABOUT));
+			final JMenuItem about = new JMenuItem(BotLocale.ABOUT);
+			help.add(about);
+			about.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(final ActionEvent e) {
+					showAbout();
+				}
+			});
 		}
-		help.add(item(BotLocale.LICENSE));
+
+		final JMenuItem license = new JMenuItem(BotLocale.LICENSE);
+		help.add(license);
+		license.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				showLicense();
+			}
+		});
 
 		add(file);
 		add(edit);
@@ -217,62 +270,6 @@ public class BotMenuBar extends JMenuBar implements ActionListener {
 		add(script);
 		add(input);
 		add(help);
-	}
-
-	private JMenuItem item(final String s) {
-		final JMenuItem item = new JMenuItem(s);
-		item.addActionListener(this);
-		return item;
-	}
-
-	@Override
-	public void actionPerformed(final ActionEvent e) {
-		final String s = e.getSource() == signin ? BotLocale.SIGNIN : e.getActionCommand();
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				Tracker.getInstance().trackPage("menu/", s);
-			}
-		});
-		if (s.equals(BotLocale.NEWWINDOW)) {
-			Boot.fork();
-		} else if (s.equals(BotLocale.EXIT)) {
-			chrome.close();
-		} else if (s.equals(BotLocale.SIGNIN)) {
-			showDialog(Action.SIGNIN);
-		} else if (s.equals(BotLocale.ACCOUNTS)) {
-			showDialog(Action.ACCOUNTS);
-		} else if (s.equals(BotLocale.PLAYSCRIPT) || s.equals(BotLocale.PAUSESCRIPT) || s.equals(BotLocale.RESUMESCRIPT)) {
-			scriptPlayPause();
-		} else if (s.equals(BotLocale.STOPSCRIPT)) {
-			scriptStop();
-		} else if (s.equals(BotLocale.ABOUT)) {
-			showAbout();
-		} else if (s.equals(BotLocale.LICENSE)) {
-			showLicense();
-		}
-	}
-
-	public enum Action {ACCOUNTS, SIGNIN}
-
-	;
-
-	public void showDialog(final Action action) {
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				switch (action) {
-				case ACCOUNTS:
-					new BotAccounts(chrome);
-					break;
-				case SIGNIN:
-					new BotSignin(chrome);
-					break;
-				default:
-					break;
-				}
-			}
-		});
 	}
 
 	public void showAbout() {
