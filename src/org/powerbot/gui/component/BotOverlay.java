@@ -145,6 +145,11 @@ public class BotOverlay extends JDialog {
 			p.translate(0, h);
 			d2 = new Dimension(d2.width, d2.height - h);
 		}
+		if (parent.getBot() != null && parent.getBot().ctx.getClient() != null) {
+			final Point l = parent.getBot().ctx.getClient().getCanvas().getLocation();
+			p.translate(l.x, l.y);
+			d2 = new Dimension(d2.width - l.x, d2.height - l.y);
+		}
 		setLocation(p);
 		setSize(d2);
 		panel.setPreferredSize(getSize());
