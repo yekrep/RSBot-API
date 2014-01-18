@@ -1,4 +1,4 @@
-package org.powerbot.os.util.io;
+package org.powerbot.os.util;
 
 import java.io.IOException;
 import java.io.InputStream;

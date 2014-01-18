@@ -1,7 +1,7 @@
 package org.powerbot.os.loader;
 
-import org.powerbot.os.util.io.HttpUtils;
-import org.powerbot.os.util.io.IOUtils;
+import org.powerbot.os.util.HttpUtils;
+import org.powerbot.os.util.IOUtils;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
