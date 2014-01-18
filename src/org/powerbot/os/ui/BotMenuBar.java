@@ -41,17 +41,7 @@ public class BotMenuBar extends JMenuBar {
 		about.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent e) {
-				final String year = Integer.toString(Calendar.getInstance().get(Calendar.YEAR));
-				final String msg = "<b>" + Configuration.NAME + " " + Integer.toString(Configuration.VERSION) + "</b>\n\n" +
-						"Copyright \u00a9 2011 - " + year + " Dequeue Ltd and its licensors.\n" +
-						"By using this software you agree to be bound by the terms of the license agreement.\n\n" +
-						"RuneScape\u00ae is a trademark of Jagex \u00a9 1999 - " + year + " Jagex Ltd.\n" +
-						"RuneScape content and materials are trademarks and copyrights of Jagex or its licensees.\n" +
-						"This program is issued with no warranty and is not affiliated with Jagex Ltd., nor do they endorse usage of our software.";
-				final JLabel text = new JLabel("<html>" + msg.replace("\n", "<br>") + "</html>");
-				final Font f = text.getFont();
-				text.setFont(new Font(f.getName(), f.getStyle(), f.getSize() - 2));
-				JOptionPane.showMessageDialog(chrome, text, about.getText(), JOptionPane.PLAIN_MESSAGE);
+				showAbout();
 			}
 		});
 
@@ -60,5 +50,19 @@ public class BotMenuBar extends JMenuBar {
 		add(view);
 		add(input);
 		add(help);
+	}
+
+	public void showAbout() {
+		final String year = Integer.toString(Calendar.getInstance().get(Calendar.YEAR));
+		final String msg = "<b>" + Configuration.NAME + " " + Integer.toString(Configuration.VERSION) + "</b>\n\n" +
+				"Copyright \u00a9 2011 - " + year + " Dequeue Ltd and its licensors.\n" +
+				"By using this software you agree to be bound by the terms of the license agreement.\n\n" +
+				"RuneScape\u00ae is a trademark of Jagex \u00a9 1999 - " + year + " Jagex Ltd.\n" +
+				"RuneScape content and materials are trademarks and copyrights of Jagex or its licensees.\n" +
+				"This program is issued with no warranty and is not affiliated with Jagex Ltd., nor do they endorse usage of our software.";
+		final JLabel text = new JLabel("<html>" + msg.replace("\n", "<br>") + "</html>");
+		final Font f = text.getFont();
+		text.setFont(new Font(f.getName(), f.getStyle(), f.getSize() - 2));
+		JOptionPane.showMessageDialog(chrome, text, "About", JOptionPane.PLAIN_MESSAGE);
 	}
 }

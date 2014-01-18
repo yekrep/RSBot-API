@@ -18,6 +18,7 @@ import javax.swing.WindowConstants;
 
 import org.powerbot.os.Configuration;
 import org.powerbot.os.client.Bot;
+import org.powerbot.os.util.OSXAdapt;
 
 /**
  * @author Paris
@@ -25,6 +26,7 @@ import org.powerbot.os.client.Bot;
 public class BotChrome extends JFrame implements Closeable {
 	private static final Logger log = Logger.getLogger(BotChrome.class.getSimpleName());
 	public final AtomicReference<Bot> bot;
+	public final BotMenuBar menu;
 	public final BotPanel panel;
 
 	public BotChrome() {
@@ -41,8 +43,12 @@ public class BotChrome extends JFrame implements Closeable {
 			}
 		});
 
-		setJMenuBar(new BotMenuBar(this));
+		setJMenuBar(menu = new BotMenuBar(this));
 		add(panel = new BotPanel());
+
+		if (Configuration.OS == Configuration.OperatingSystem.MAC) {
+			new OSXAdapt(this).run();
+		}
 
 		setSize(new Dimension(765, 503));
 		setPreferredSize(getSize());
