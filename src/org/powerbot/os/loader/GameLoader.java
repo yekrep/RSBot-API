@@ -1,9 +1,5 @@
 package org.powerbot.os.loader;
 
-import org.powerbot.os.Configuration;
-import org.powerbot.os.util.HttpUtils;
-import org.powerbot.os.util.IOUtils;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -16,6 +12,10 @@ import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
+
+import org.powerbot.os.Configuration;
+import org.powerbot.os.util.HttpUtils;
+import org.powerbot.os.util.IOUtils;
 
 public class GameLoader implements Callable<ClassLoader> {
 	private final Crawler crawler;
@@ -49,7 +49,7 @@ public class GameLoader implements Callable<ClassLoader> {
 				final String entryName = entry.getName();
 				resources.put(entryName, read(jar));
 			}
-		} catch (IOException ignored) {
+		} catch (final IOException ignored) {
 		}
 		return new GameClassLoader(resources);
 	}

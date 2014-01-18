@@ -9,8 +9,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 
-import org.powerbot.os.util.StringUtils;
-
 /**
  * @author Paris
  */
