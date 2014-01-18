@@ -17,7 +17,7 @@ public class Configuration {
 		MAC, WINDOWS, LINUX, UNKNOWN
 	}
 
-	public final class URLs {
+	public static final class URLs {
 		public static final String DOMAIN = "powerbot.org";
 
 		private static final String SITE_PUBLIC = "http://www." + DOMAIN;
