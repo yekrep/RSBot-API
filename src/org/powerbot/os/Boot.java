@@ -33,10 +33,9 @@ public class Boot implements Runnable {
 
 		if (fork) {
 			fork();
-			return;
+		} else {
+			new Boot().run();
 		}
-
-		SwingUtilities.invokeLater(new Boot());
 	}
 
 	@Override
@@ -51,17 +50,21 @@ public class Boot implements Runnable {
 			System.setProperty("apple.laf.useScreenMenuBar", "true");
 		}
 
-		try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (final Exception ignored) {
-		}
-
 		System.setProperty("java.net.preferIPv4Stack", "true");
 		System.setProperty("http.keepalive", "false");
 
-		new BotChrome();
-	}
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+				} catch (final Exception ignored) {
+				}
 
+				new BotChrome();
+			}
+		});
+	}
 
 	public static void fork() {
 		final List<String> args = new ArrayList<String>();
