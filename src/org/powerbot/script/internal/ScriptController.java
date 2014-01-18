@@ -132,10 +132,6 @@ public final class ScriptController implements Runnable, Validatable, Script.Con
 			}
 		}
 
-		if (!(dispatcher.contains(ViewMouse.class) || dispatcher.contains(ViewMouseTrails.class))) {
-			dispatcher.add(new ViewMouseTrails(ctx));
-		}
-
 		final BlockingQueue<Runnable> queue = executor.get().getQueue();
 
 		for (final Class<? extends Script> d : daemons) {
