@@ -25,7 +25,7 @@ bot:
 
 bundle: bot
 	@if [ -e "$(DIST)" ]; then rm -f "$(DIST)"; fi
-	jar cfm "$(DIST)" "$(MANIFEST)" -C "$(BINDIR)" . "license.txt" "acknowledgements.txt"  "$(IMGDIR)"/*.png
+	jar cfm "$(DIST)" "$(MANIFEST)" -C "$(BINDIR)" . "$(IMGDIR)"/*.png
 
 obfuscate: bundle
 	cd "$(LIB)"; java -jar allatori.jar allatori.xml

@@ -303,25 +303,7 @@ public class BotMenuBar extends JMenuBar implements ActionListener {
 	}
 
 	public void showLicense() {
-		String license = "Unable to locate license file, please visit " + Configuration.URLs.DOMAIN + " to view license information";
-		String acknowledgements = "To view acknowledgements, please visit " + Configuration.URLs.DOMAIN;
-		try {
-			license = IOUtils.readString(Resources.getResourceURL(Resources.Paths.LICENSE)).trim();
-			acknowledgements = IOUtils.readString(Resources.getResourceURL(Resources.Paths.ACKNOWLEDGEMENTS)).trim();
-		} catch (final IOException ignored) {
-		}
-
-		final String lf = System.getProperty("line.separator");
-		final StringBuilder s = new StringBuilder(license.length() + acknowledgements.length() + lf.length() * 2);
-		s.append(license).append(lf).append(lf).append(acknowledgements);
-
-		final JLabel text = new JLabel(s.insert(0, "<html>").append("</html>").toString().replace("\n", "<br>"));
-		final Font f = text.getFont();
-		text.setFont(new Font(f.getName(), f.getStyle(), f.getSize() - 2));
-		final JScrollPane scroll = new JScrollPane(text);
-		scroll.setBackground(text.getBackground());
-		scroll.setPreferredSize(new Dimension(scroll.getPreferredSize().width, chrome.getGraphics().getFontMetrics(f).getHeight() * 20));
-		JOptionPane.showMessageDialog(chrome, scroll, BotLocale.LICENSE, JOptionPane.PLAIN_MESSAGE);
+		BotChrome.openURL(Configuration.URLs.LICENSE);
 	}
 
 	public synchronized void scriptPlayPause() {

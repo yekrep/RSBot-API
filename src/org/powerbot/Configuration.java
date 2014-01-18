@@ -46,6 +46,7 @@ public class Configuration {
 		public static final String REGISTER = "http://" + DOMAIN_SITE_LIVE + "/go/register";
 		public static final String LOSTPASS = "http://" + DOMAIN_SITE_LIVE + "/go/lostpass";
 		public static final String SCRIPTSLIST = "http://" + DOMAIN_SITE_LIVE + "/go/scripts";
+		public static final String LICENSE = "http://" + DOMAIN_SITE_LIVE + "/terms/license/";
 
 		public static final String SCRIPTSICONS = "http://" + DOMAIN_SITE_CDN + "/assets/img/sprites/scripts.png";
 		public static final String ADS = "http://" + DOMAIN_SITE_CDN + "/rsbot/ads.txt";
