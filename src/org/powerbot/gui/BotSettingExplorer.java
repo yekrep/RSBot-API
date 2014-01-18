@@ -31,8 +31,8 @@ import javax.swing.WindowConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import org.powerbot.util.Tracker;
-import org.powerbot.util.io.Resources;
+import org.powerbot.misc.Resources;
+import org.powerbot.misc.Tracker;
 
 public class BotSettingExplorer extends JFrame {
 	private static final int FRAME_WIDTH = 595;

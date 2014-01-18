@@ -1,4 +1,4 @@
-package org.powerbot.util.io;
+package org.powerbot.misc;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -25,6 +25,9 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
 import org.powerbot.Configuration;
+import org.powerbot.util.Base64;
+import org.powerbot.util.HttpUtils;
+import org.powerbot.util.IOUtils;
 import org.powerbot.util.StringUtil;
 
 /**
@@ -69,7 +72,7 @@ public final class CryptFile {
 	}
 
 	public InputStream download(final URL url) throws IOException {
-		return download(HttpClient.getHttpConnection(url));
+		return download(HttpUtils.getHttpConnection(url));
 	}
 
 	public InputStream download(final HttpURLConnection con) throws IOException {
@@ -82,7 +85,7 @@ public final class CryptFile {
 
 		switch (con.getResponseCode()) {
 		case HttpURLConnection.HTTP_OK:
-			IOHelper.write(HttpClient.getInputStream(con), getOutputStream());
+			IOUtils.write(HttpUtils.getInputStream(con), getOutputStream());
 			break;
 		case HttpURLConnection.HTTP_NOT_FOUND:
 		case HttpURLConnection.HTTP_GONE:
@@ -95,8 +98,8 @@ public final class CryptFile {
 	}
 
 	public InputStream download(final String link, final Object... args) throws IOException {
-		final String[] s = HttpClient.splitPostURL(link, args);
-		final HttpURLConnection con = HttpClient.getHttpConnection(new URL(s[0]));
+		final String[] s = HttpUtils.splitPostURL(link, args);
+		final HttpURLConnection con = HttpUtils.getHttpConnection(new URL(s[0]));
 
 		if (store.exists()) {
 			try {
@@ -129,7 +132,7 @@ public final class CryptFile {
 
 		if (con.getResponseCode() != HttpURLConnection.HTTP_NOT_MODIFIED &&
 				(!store.exists() || mod == 0L || mod > store.lastModified())) {
-			IOHelper.write(HttpClient.getInputStream(con), getOutputStream());
+			IOUtils.write(HttpUtils.getInputStream(con), getOutputStream());
 		}
 
 		con.disconnect();

@@ -10,9 +10,9 @@ import javax.swing.JTextArea;
 
 import org.powerbot.Configuration;
 import org.powerbot.gui.component.BotLocale;
-import org.powerbot.util.Tracker;
-import org.powerbot.util.io.IOHelper;
-import org.powerbot.util.io.Resources;
+import org.powerbot.misc.Resources;
+import org.powerbot.misc.Tracker;
+import org.powerbot.util.IOUtils;
 
 /**
  * @author Paris
@@ -27,8 +27,8 @@ public final class BotLicense extends JDialog {
 		String license = "Unable to locate license file, please visit " + Configuration.URLs.DOMAIN + " to view license information";
 		String acknowledgements = "To view acknowledgements, please visit " + Configuration.URLs.DOMAIN;
 		try {
-			license = IOHelper.readString(Resources.getResourceURL(Resources.Paths.LICENSE)).trim();
-			acknowledgements = IOHelper.readString(Resources.getResourceURL(Resources.Paths.ACKNOWLEDGEMENTS)).trim();
+			license = IOUtils.readString(Resources.getResourceURL(Resources.Paths.LICENSE)).trim();
+			acknowledgements = IOUtils.readString(Resources.getResourceURL(Resources.Paths.ACKNOWLEDGEMENTS)).trim();
 		} catch (final IOException ignored) {
 		}
 

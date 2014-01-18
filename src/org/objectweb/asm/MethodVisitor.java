@@ -93,11 +93,11 @@ public abstract class MethodVisitor {
 	 * Visits the default value of this annotation interface method.
 	 *
 	 * @return a visitor to the visit the actual default value of this
-	 *         annotation interface method, or <tt>null</tt> if this visitor
-	 *         is not interested in visiting this default value. The 'name'
-	 *         parameters passed to the methods of this annotation visitor are
-	 *         ignored. Moreover, exacly one visit method must be called on this
-	 *         annotation visitor, followed by visitEnd.
+	 * annotation interface method, or <tt>null</tt> if this visitor
+	 * is not interested in visiting this default value. The 'name'
+	 * parameters passed to the methods of this annotation visitor are
+	 * ignored. Moreover, exacly one visit method must be called on this
+	 * annotation visitor, followed by visitEnd.
 	 */
 	public AnnotationVisitor visitAnnotationDefault() {
 		if (mv != null) {
@@ -112,7 +112,7 @@ public abstract class MethodVisitor {
 	 * @param desc    the class descriptor of the annotation class.
 	 * @param visible <tt>true</tt> if the annotation is visible at runtime.
 	 * @return a visitor to visit the annotation values, or <tt>null</tt> if
-	 *         this visitor is not interested in visiting this annotation.
+	 * this visitor is not interested in visiting this annotation.
 	 */
 	public AnnotationVisitor visitAnnotation(final String desc, final boolean visible) {
 		if (mv != null) {
@@ -128,7 +128,7 @@ public abstract class MethodVisitor {
 	 * @param desc      the class descriptor of the annotation class.
 	 * @param visible   <tt>true</tt> if the annotation is visible at runtime.
 	 * @return a visitor to visit the annotation values, or <tt>null</tt> if
-	 *         this visitor is not interested in visiting this annotation.
+	 * this visitor is not interested in visiting this annotation.
 	 */
 	public AnnotationVisitor visitParameterAnnotation(
 			final int parameter,

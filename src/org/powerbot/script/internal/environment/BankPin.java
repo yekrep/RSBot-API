@@ -1,10 +1,9 @@
-package org.powerbot.script.internal.scripts;
+package org.powerbot.script.internal.environment;
 
-import org.powerbot.bot.Bot;
+import org.powerbot.misc.GameAccounts;
 import org.powerbot.script.PollingScript;
 import org.powerbot.script.internal.InternalScript;
 import org.powerbot.script.util.Random;
-import org.powerbot.service.GameAccounts;
 
 public class BankPin extends PollingScript implements InternalScript {
 	private static final int SETTING_PIN_STEP = 163;

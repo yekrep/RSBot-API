@@ -1,4 +1,4 @@
-package org.powerbot.util.io;
+package org.powerbot.util;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -15,12 +15,10 @@ import java.util.zip.CheckedInputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import org.powerbot.util.StringUtil;
-
 /**
  * @author Paris
  */
-public class IOHelper {
+public class IOUtils {
 	public static final int BUFFER_SIZE = 4096;
 
 	public static byte[] read(final InputStream is) {
@@ -144,7 +142,7 @@ public class IOHelper {
 				final byte[] data = item.getValue();
 				entry.setSize(data.length);
 				entry.setCompressedSize(data.length);
-				entry.setCrc(IOHelper.crc32(data));
+				entry.setCrc(IOUtils.crc32(data));
 				zip.putNextEntry(entry);
 				zip.write(item.getValue());
 				zip.closeEntry();

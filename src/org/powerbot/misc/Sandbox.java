@@ -1,4 +1,4 @@
-package org.powerbot.util;
+package org.powerbot.misc;
 
 import java.awt.Desktop;
 import java.io.File;
@@ -11,15 +11,11 @@ import java.util.logging.Logger;
 
 import org.powerbot.Boot;
 import org.powerbot.Configuration;
-import org.powerbot.bot.Bot;
 import org.powerbot.bot.loader.GameClassLoader;
-import org.powerbot.script.internal.InputHandler;
+import org.powerbot.script.internal.ScriptClassLoader;
 import org.powerbot.script.internal.ScriptThreadFactory;
 import org.powerbot.script.methods.Keyboard;
-import org.powerbot.service.GameAccounts;
-import org.powerbot.service.NetworkAccount;
-import org.powerbot.service.scripts.ScriptClassLoader;
-import org.powerbot.util.io.CryptFile;
+import org.powerbot.util.StringUtil;
 
 /**
  * @author Paris

@@ -1,4 +1,4 @@
-package org.powerbot.service;
+package org.powerbot.misc;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -6,11 +6,10 @@ import java.io.OutputStream;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.powerbot.Configuration;
+import org.powerbot.util.HttpUtils;
+import org.powerbot.util.IOUtils;
 import org.powerbot.util.Ini;
 import org.powerbot.util.StringUtil;
-import org.powerbot.util.io.CryptFile;
-import org.powerbot.util.io.HttpClient;
-import org.powerbot.util.io.IOHelper;
 
 /**
  * @author Paris
@@ -97,7 +96,7 @@ public final class NetworkAccount {
 	public synchronized boolean login(final String username, final String password, final String auth) {
 		InputStream is = null;
 		try {
-			is = HttpClient.openStream(Configuration.URLs.SIGNIN, StringUtil.urlEncode(username), StringUtil.urlEncode(password), StringUtil.urlEncode(auth));
+			is = HttpUtils.openStream(Configuration.URLs.SIGNIN, StringUtil.urlEncode(username), StringUtil.urlEncode(password), StringUtil.urlEncode(auth));
 			data.read(is);
 			updateCache();
 			return true;
@@ -123,7 +122,7 @@ public final class NetworkAccount {
 			return false;
 		}
 		final String salt = (data.get("name") + data.get("email")).toUpperCase();
-		final long hash = IOHelper.crc32(StringUtil.getBytesUtf8(salt));
+		final long hash = IOUtils.crc32(StringUtil.getBytesUtf8(salt));
 		final long perms = Long.parseLong(data.get("permissions"));
 		return perms >> ORDER == hash >> ORDER;
 	}

@@ -989,7 +989,7 @@ public class ClassWriter extends ClassVisitor {
 	 *            This parameter must be an {@link Integer}, a {@link Float}, a
 	 *            {@link Long}, a {@link Double} or a {@link String}.
 	 * @return the index of a new or already existing constant item with the
-	 *         given value.
+	 * given value.
 	 */
 	public int newConst(final Object cst) {
 		return newConstItem(cst).index;
@@ -1076,7 +1076,7 @@ public class ClassWriter extends ClassVisitor {
 	 *
 	 * @param methodDesc method descriptor of the method type.
 	 * @return the index of a new or already existing method type reference
-	 *         item.
+	 * item.
 	 */
 	public int newMethodType(final String methodDesc) {
 		return newMethodTypeItem(methodDesc).index;
@@ -1137,7 +1137,7 @@ public class ClassWriter extends ClassVisitor {
 	 * @param name  the name of the field or method.
 	 * @param desc  the descriptor of the field or method.
 	 * @return the index of a new or already existing method type reference
-	 *         item.
+	 * item.
 	 */
 	public int newHandle(
 			final int tag,
@@ -1243,7 +1243,7 @@ public class ClassWriter extends ClassVisitor {
 	 * @param bsm     the bootstrap method.
 	 * @param bsmArgs the bootstrap method constant arguments.
 	 * @return the index of a new or already existing invokedynamic
-	 *         reference item.
+	 * reference item.
 	 */
 	public int newInvokeDynamic(
 			final String name,
@@ -1502,7 +1502,7 @@ public class ClassWriter extends ClassVisitor {
 	 *
 	 * @param item the value to be added to the type table.
 	 * @return the added Item, which a new Item instance with the same value as
-	 *         the given Item.
+	 * the given Item.
 	 */
 	private Item addType(final Item item) {
 		++typeCount;
@@ -1557,7 +1557,7 @@ public class ClassWriter extends ClassVisitor {
 	 * @param type1 the internal name of a class.
 	 * @param type2 the internal name of another class.
 	 * @return the internal name of the common super class of the two given
-	 *         classes.
+	 * classes.
 	 */
 	protected String getCommonSuperClass(final String type1, final String type2) {
 		Class<?> c;
@@ -1591,7 +1591,7 @@ public class ClassWriter extends ClassVisitor {
 	 *
 	 * @param key a constant pool item.
 	 * @return the constant pool's hash table item which is equal to the given
-	 *         item, or <tt>null</tt> if there is no such item.
+	 * item, or <tt>null</tt> if there is no such item.
 	 */
 	private Item get(final Item key) {
 		Item i = items[key.hashCode % items.length];

@@ -89,11 +89,11 @@ public final class Handle {
 	 * Returns the kind of field or method designated by this handle.
 	 *
 	 * @return {@link org.objectweb.asm.Opcodes#H_GETFIELD}, {@link org.objectweb.asm.Opcodes#H_GETSTATIC},
-	 *         {@link org.objectweb.asm.Opcodes#H_PUTFIELD}, {@link org.objectweb.asm.Opcodes#H_PUTSTATIC},
-	 *         {@link org.objectweb.asm.Opcodes#H_INVOKEVIRTUAL}, {@link org.objectweb.asm.Opcodes#H_INVOKESTATIC},
-	 *         {@link org.objectweb.asm.Opcodes#H_INVOKESPECIAL},
-	 *         {@link org.objectweb.asm.Opcodes#H_NEWINVOKESPECIAL} or
-	 *         {@link org.objectweb.asm.Opcodes#H_INVOKEINTERFACE}.
+	 * {@link org.objectweb.asm.Opcodes#H_PUTFIELD}, {@link org.objectweb.asm.Opcodes#H_PUTSTATIC},
+	 * {@link org.objectweb.asm.Opcodes#H_INVOKEVIRTUAL}, {@link org.objectweb.asm.Opcodes#H_INVOKESTATIC},
+	 * {@link org.objectweb.asm.Opcodes#H_INVOKESPECIAL},
+	 * {@link org.objectweb.asm.Opcodes#H_NEWINVOKESPECIAL} or
+	 * {@link org.objectweb.asm.Opcodes#H_INVOKEINTERFACE}.
 	 */
 	public int getTag() {
 		return tag;
@@ -104,7 +104,7 @@ public final class Handle {
 	 * handle.
 	 *
 	 * @return the internal name of the field or method designed by this
-	 *         handle.
+	 * handle.
 	 */
 	public String getOwner() {
 		return owner;

@@ -2,7 +2,6 @@ package org.powerbot.script;
 
 import java.util.EventListener;
 import java.util.Queue;
-import java.util.concurrent.BlockingDeque;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.SynchronousQueue;
 

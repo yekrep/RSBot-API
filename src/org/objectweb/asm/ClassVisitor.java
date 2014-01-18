@@ -147,7 +147,7 @@ public abstract class ClassVisitor {
 	 * @param desc    the class descriptor of the annotation class.
 	 * @param visible <tt>true</tt> if the annotation is visible at runtime.
 	 * @return a visitor to visit the annotation values, or <tt>null</tt> if
-	 *         this visitor is not interested in visiting this annotation.
+	 * this visitor is not interested in visiting this annotation.
 	 */
 	public AnnotationVisitor visitAnnotation(final String desc, final boolean visible) {
 		if (cv != null) {
@@ -212,8 +212,8 @@ public abstract class ClassVisitor {
 	 *                  initialized through bytecode instructions in constructors or
 	 *                  methods.
 	 * @return a visitor to visit field annotations and attributes, or
-	 *         <tt>null</tt> if this class visitor is not interested in
-	 *         visiting these annotations and attributes.
+	 * <tt>null</tt> if this class visitor is not interested in
+	 * visiting these annotations and attributes.
 	 */
 	public FieldVisitor visitField(
 			final int access,
@@ -244,8 +244,8 @@ public abstract class ClassVisitor {
 	 *                   (see {@link Type#getInternalName() getInternalName}). May be
 	 *                   <tt>null</tt>.
 	 * @return an object to visit the byte code of the method, or <tt>null</tt>
-	 *         if this class visitor is not interested in visiting the code of
-	 *         this method.
+	 * if this class visitor is not interested in visiting the code of
+	 * this method.
 	 */
 	public MethodVisitor visitMethod(
 			final int access,

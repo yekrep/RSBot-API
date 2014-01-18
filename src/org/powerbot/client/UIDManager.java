@@ -5,8 +5,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.HashMap;
 
-import org.powerbot.util.io.CryptFile;
-import org.powerbot.util.io.IOHelper;
+import org.powerbot.misc.CryptFile;
+import org.powerbot.util.IOUtils;
 
 /**
  * @author Timer
@@ -28,7 +28,7 @@ public class UIDManager {
 		} catch (final IOException ignored) {
 			return;
 		}
-		for (final String line : IOHelper.readString(is).split("\n")) {
+		for (final String line : IOUtils.readString(is).split("\n")) {
 			if (!line.isEmpty()) {
 				final String[] data = line.split(separator, 2);
 				if (data.length == 2) {

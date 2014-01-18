@@ -3,7 +3,6 @@ package org.powerbot.event.debug;
 import java.awt.Graphics;
 
 import org.powerbot.event.TextPaintListener;
-import org.powerbot.gui.BotChrome;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.wrappers.Player;
 import org.powerbot.script.wrappers.Tile;

@@ -12,7 +12,6 @@ import org.powerbot.client.Client;
 import org.powerbot.client.input.Mouse;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.methods.MethodProvider;
-import org.powerbot.util.math.HeteroMouse;
 import org.powerbot.util.math.Vector3;
 
 public class MouseHandler extends MethodProvider {

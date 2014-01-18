@@ -33,8 +33,7 @@ public @interface Manifest {
 	 * @return the version
 	 * @deprecated this detail is no longer shown to end users
 	 */
-	@Deprecated
-	double version() default 1.0;
+	@Deprecated double version() default 1.0;
 
 	/**
 	 * The authors.
@@ -42,8 +41,7 @@ public @interface Manifest {
 	 * @return the authors
 	 * @deprecated the RSBot SDN™ author is now used instead
 	 */
-	@Deprecated
-	String[] authors() default "";
+	@Deprecated String[] authors() default "";
 
 	/**
 	 * The website URL.
@@ -51,8 +49,7 @@ public @interface Manifest {
 	 * @return the website URL
 	 * @deprecated see {@link #topic()}
 	 */
-	@Deprecated
-	String website() default "";
+	@Deprecated String website() default "";
 
 	/**
 	 * The powerbot.org forum topic ID.
@@ -67,8 +64,7 @@ public @interface Manifest {
 	 * @return any value
 	 * @deprecated no longer used by the RSBot SDN™
 	 */
-	@Deprecated
-	boolean vip() default false;
+	@Deprecated boolean vip() default false;
 
 	/**
 	 * The hidden status.
@@ -83,6 +79,5 @@ public @interface Manifest {
 	 * @return the maximum number of running instances
 	 * @deprecated no longer used by the RSBot SDN™
 	 */
-	@Deprecated
-	int instances() default 4;
+	@Deprecated int instances() default 4;
 }

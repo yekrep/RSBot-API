@@ -83,7 +83,7 @@ public class Attribute {
 	 * Returns the labels corresponding to this attribute.
 	 *
 	 * @return the labels corresponding to this attribute, or <tt>null</tt> if
-	 *         this attribute is not a code attribute that contains labels.
+	 * this attribute is not a code attribute that contains labels.
 	 */
 	protected Label[] getLabels() {
 		return null;
@@ -113,7 +113,7 @@ public class Attribute {
 	 * @param labels  the labels of the method's code, or <tt>null</tt> if the
 	 *                attribute to be read is not a code attribute.
 	 * @return a <i>new</i> {@link org.objectweb.asm.Attribute} object corresponding to the given
-	 *         bytes.
+	 * bytes.
 	 */
 	protected Attribute read(
 			final ClassReader cr,
@@ -193,7 +193,7 @@ public class Attribute {
 	 *                  corresponding to these code attributes, or -1 if these attributes
 	 *                  are not code attributes.
 	 * @return the size of all the attributes in this attribute list. This size
-	 *         includes the size of the attribute headers.
+	 * includes the size of the attribute headers.
 	 */
 	final int getSize(
 			final ClassWriter cw,

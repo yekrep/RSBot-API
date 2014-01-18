@@ -241,7 +241,7 @@ public class ClassReader {
 	 * super class is {@link Object}.
 	 *
 	 * @return the internal name of super class, or <tt>null</tt> for
-	 *         {@link Object} class.
+	 * {@link Object} class.
 	 * @see org.objectweb.asm.ClassVisitor#visit(int, int, String, String, String, String[])
 	 */
 	public String getSuperName() {
@@ -254,7 +254,7 @@ public class ClassReader {
 	 * {@link Type#getInternalName() getInternalName}).
 	 *
 	 * @return the array of internal names for all implemented interfaces or
-	 *         <tt>null</tt>.
+	 * <tt>null</tt>.
 	 * @see org.objectweb.asm.ClassVisitor#visit(int, int, String, String, String, String[])
 	 */
 	public String[] getInterfaces() {
@@ -1944,7 +1944,7 @@ public class ClassReader {
 	 * @param labels  the labels of the method's code, or <tt>null</tt> if the
 	 *                attribute to be read is not a code attribute.
 	 * @return the attribute that has been read, or <tt>null</tt> to skip this
-	 *         attribute.
+	 * attribute.
 	 */
 	private Attribute readAttribute(
 			final Attribute[] attrs,
@@ -1982,7 +1982,7 @@ public class ClassReader {
 	 *
 	 * @param item the index a constant pool item.
 	 * @return the start index of the constant pool item in {@link #b b}, plus
-	 *         one.
+	 * one.
 	 */
 	public int getItem(final int item) {
 		return items[item];
@@ -1993,7 +1993,7 @@ public class ClassReader {
 	 * of the class.
 	 *
 	 * @return the maximum length of the strings contained in the constant pool
-	 *         of the class.
+	 * of the class.
 	 */
 	public int getMaxStringLength() {
 		return maxStringLength;
@@ -2159,8 +2159,8 @@ public class ClassReader {
 	 * @param buf  buffer to be used to read the item. This buffer must be
 	 *             sufficiently large. It is not automatically resized.
 	 * @return the {@link Integer}, {@link Float}, {@link Long}, {@link Double},
-	 *         {@link String}, {@link Type} or {@link Handle} corresponding to
-	 *         the given constant pool item.
+	 * {@link String}, {@link Type} or {@link Handle} corresponding to
+	 * the given constant pool item.
 	 */
 	public Object readConst(final int item, final char[] buf) {
 		final int index = items[item];

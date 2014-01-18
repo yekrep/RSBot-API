@@ -1,4 +1,4 @@
-package org.powerbot.service.scripts;
+package org.powerbot.misc;
 
 import java.io.File;
 import java.io.IOException;
@@ -9,7 +9,6 @@ import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -30,12 +29,11 @@ import org.powerbot.gui.BotChrome;
 import org.powerbot.script.Manifest;
 import org.powerbot.script.Script;
 import org.powerbot.script.internal.InternalScript;
+import org.powerbot.script.internal.ScriptClassLoader;
 import org.powerbot.script.internal.ScriptController;
-import org.powerbot.script.internal.scripts.Login;
-import org.powerbot.service.NetworkAccount;
+import org.powerbot.script.internal.environment.Login;
 import org.powerbot.util.Ini;
 import org.powerbot.util.StringUtil;
-import org.powerbot.util.io.CryptFile;
 
 /**
  * @author Paris
@@ -43,8 +41,8 @@ import org.powerbot.util.io.CryptFile;
 public class ScriptList {
 	private final static Logger log = Logger.getLogger(ScriptList.class.getName());
 
-	public static List<ScriptDefinition> getList() throws IOException {
-		final List<ScriptDefinition> list = new ArrayList<ScriptDefinition>();
+	public static List<ScriptBundle.Definition> getList() throws IOException {
+		final List<ScriptBundle.Definition> list = new ArrayList<ScriptBundle.Definition>();
 
 		if (NetworkAccount.getInstance().hasPermission(NetworkAccount.LOCALSCRIPTS)) {
 			for (final String s : System.getProperty("java.class.path").split(Pattern.quote(File.pathSeparator))) {
@@ -55,14 +53,12 @@ public class ScriptList {
 			}
 		}
 
-		if (!Configuration.BETA) {
-			getNetworkList(list);
-		}
+		getNetworkList(list);
 
 		return list;
 	}
 
-	private static void getNetworkList(final List<ScriptDefinition> list) throws IOException {
+	private static void getNetworkList(final List<ScriptBundle.Definition> list) throws IOException {
 		final Ini t = new Ini();
 		InputStream is = null;
 		try {
@@ -82,7 +78,7 @@ public class ScriptList {
 		for (final Map.Entry<String, Ini.Member> entry : t.entrySet()) {
 			final Ini.Member params = entry.getValue();
 
-			final ScriptDefinition def = ScriptDefinition.fromMap(params.getMap());
+			final ScriptBundle.Definition def = ScriptBundle.Definition.fromMap(params.getMap());
 			if (def != null && params.has("link") && params.has("className") && params.has("key")) {
 				def.source = params.get("link");
 				def.className = params.get("className");
@@ -99,7 +95,7 @@ public class ScriptList {
 		}
 	}
 
-	public static void getLocalList(final List<ScriptDefinition> list, final File parent, final File dir) {
+	public static void getLocalList(final List<ScriptBundle.Definition> list, final File parent, final File dir) {
 		if (!NetworkAccount.getInstance().hasPermission(NetworkAccount.LOCALSCRIPTS)) {
 			return;
 		}
@@ -126,7 +122,7 @@ public class ScriptList {
 							final Class<? extends Script> script = clazz.asSubclass(Script.class);
 							if (script.isAnnotationPresent(Manifest.class)) {
 								final Manifest m = script.getAnnotation(Manifest.class);
-								final ScriptDefinition def = new ScriptDefinition(m);
+								final ScriptBundle.Definition def = new ScriptBundle.Definition(m);
 								def.source = parent.getCanonicalFile().toString();
 								def.className = className;
 								def.local = true;
@@ -141,7 +137,7 @@ public class ScriptList {
 
 	}
 
-	public static void load(final BotChrome chrome, final ScriptDefinition def, final String username) {
+	public static void load(final BotChrome chrome, final ScriptBundle.Definition def, final String username) {
 		if (!NetworkAccount.getInstance().isLoggedIn()) {
 			return;
 		}

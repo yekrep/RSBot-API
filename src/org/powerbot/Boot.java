@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.lang.management.ManagementFactory;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Handler;
@@ -15,11 +14,11 @@ import javax.swing.SwingUtilities;
 
 import org.powerbot.Configuration.OperatingSystem;
 import org.powerbot.gui.BotChrome;
-import org.powerbot.util.Sandbox;
+import org.powerbot.misc.PrintStreamHandler;
+import org.powerbot.misc.Resources;
+import org.powerbot.misc.Sandbox;
+import org.powerbot.util.IOUtils;
 import org.powerbot.util.StringUtil;
-import org.powerbot.util.io.IOHelper;
-import org.powerbot.util.io.PrintStreamHandler;
-import org.powerbot.util.io.Resources;
 
 public class Boot implements Runnable {
 	private final static Logger log = Logger.getLogger(Boot.class.getName());
@@ -49,7 +48,7 @@ public class Boot implements Runnable {
 
 			if (!ICON_TMP.isFile()) {
 				try {
-					IOHelper.write(Resources.getResourceURL(Resources.Paths.ICON).openStream(), ICON_TMP);
+					IOUtils.write(Resources.getResourceURL(Resources.Paths.ICON).openStream(), ICON_TMP);
 				} catch (final IOException ignored) {
 				}
 			}
@@ -116,11 +115,11 @@ public class Boot implements Runnable {
 
 		final ProcessBuilder pb = new ProcessBuilder(args);
 
-		if (Configuration.JAVA6 && Configuration.OS == OperatingSystem.MAC) {
+		if (Configuration.OS == OperatingSystem.MAC) {
 			final File java_home = new File("/usr/libexec/java_home");
 			if (java_home.canExecute()) {
 				try {
-					final Process p = Runtime.getRuntime().exec(new String[] {java_home.getPath(), "-v", "1.6"});
+					final Process p = Runtime.getRuntime().exec(new String[]{java_home.getPath(), "-v", "1.6"});
 					final BufferedReader stdin = new BufferedReader(new InputStreamReader(p.getInputStream()));
 					final String home = stdin.readLine();
 					if (home != null && !home.isEmpty() && new File(home).isDirectory()) {

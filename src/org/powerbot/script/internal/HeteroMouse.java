@@ -1,4 +1,4 @@
-package org.powerbot.util.math;
+package org.powerbot.script.internal;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -7,7 +7,8 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Random;
 
-import org.powerbot.script.internal.MouseSimulator;
+import org.powerbot.util.math.HardwareSimulator;
+import org.powerbot.util.math.Vector3;
 
 /**
  * A human simulated mouse implementation.

@@ -20,8 +20,8 @@ import org.powerbot.event.debug.*;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.gui.BotSettingExplorer;
 import org.powerbot.gui.BotWidgetExplorer;
+import org.powerbot.misc.Resources;
 import org.powerbot.script.methods.MethodContext;
-import org.powerbot.util.io.Resources;
 
 /**
  * @author Paris

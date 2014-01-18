@@ -6,21 +6,19 @@ import java.net.SocketException;
 import java.util.Enumeration;
 import java.util.zip.Adler32;
 
+import org.powerbot.misc.Resources;
 import org.powerbot.util.StringUtil;
-import org.powerbot.util.io.Resources;
 
 /**
  * @author Paris
  */
 public class Configuration {
 	public static final String NAME = "RSBot";
-	public static final boolean FROMJAR, SERVEROS;
 	public static final int VERSION = 5058;
-	public static final boolean BETA = false;
+
+	public static final boolean FROMJAR;
 	public static final OperatingSystem OS;
 	public static final File HOME, TEMP;
-
-	public static final boolean JAVA6 = true;
 
 	public enum OperatingSystem {
 		MAC, WINDOWS, LINUX, UNKNOWN
@@ -28,7 +26,7 @@ public class Configuration {
 
 	private static final String PROTO;
 
-	public interface URLs {
+	public static final class URLs {
 		static final boolean TESTING = false;
 
 		public static final String DOMAIN = "powerbot.org";
@@ -73,8 +71,6 @@ public class Configuration {
 		final String jre = System.getProperty("java.version");
 		PROTO = OS == OperatingSystem.MAC && jre != null && jre.startsWith("1.6") ? "http://" : "https://";
 
-		SERVEROS = System.getProperty("os.name").contains("erver");
-
 		if (OS == OperatingSystem.WINDOWS) {
 			HOME = new File(System.getenv("APPDATA"), NAME);
 		} else {
@@ -112,5 +108,4 @@ public class Configuration {
 
 		return c.getValue();
 	}
-
 }

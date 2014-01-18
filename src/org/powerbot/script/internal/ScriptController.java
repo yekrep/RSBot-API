@@ -13,19 +13,17 @@ import org.powerbot.bot.SelectiveEventQueue;
 import org.powerbot.event.EventDispatcher;
 import org.powerbot.event.debug.ViewMouse;
 import org.powerbot.event.debug.ViewMouseTrails;
+import org.powerbot.misc.ScriptBundle;
+import org.powerbot.misc.Tracker;
 import org.powerbot.script.Script;
-import org.powerbot.script.internal.scripts.Antipattern;
-import org.powerbot.script.internal.scripts.BankPin;
-import org.powerbot.script.internal.scripts.Login;
-import org.powerbot.script.internal.scripts.StatTracker;
-import org.powerbot.script.internal.scripts.TicketDestroy;
-import org.powerbot.script.internal.scripts.WidgetCloser;
+import org.powerbot.script.internal.environment.Antipattern;
+import org.powerbot.script.internal.environment.BankPin;
+import org.powerbot.script.internal.environment.Login;
+import org.powerbot.script.internal.environment.StatTracker;
+import org.powerbot.script.internal.environment.TicketDestroy;
+import org.powerbot.script.internal.environment.WidgetCloser;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.wrappers.Validatable;
-import org.powerbot.service.scripts.ScriptBundle;
-import org.powerbot.service.scripts.ScriptClassLoader;
-import org.powerbot.service.scripts.ScriptDefinition;
-import org.powerbot.util.Tracker;
 
 public final class ScriptController implements Runnable, Validatable, Script.Controller, Script.Controller.Executor<Runnable> {
 	public static final String TIMEOUT_PROPERTY = "script.timeout", LOCAL_PROPERTY = "script.local";
@@ -55,7 +53,7 @@ public final class ScriptController implements Runnable, Validatable, Script.Con
 
 		bundle = new AtomicReference<ScriptBundle>(null);
 
-		daemons = new Class[] {
+		daemons = new Class[]{
 				Login.class,
 				WidgetCloser.class,
 				TicketDestroy.class,
@@ -294,7 +292,7 @@ public final class ScriptController implements Runnable, Validatable, Script.Con
 	}
 
 	private void track(final Script.State state) {
-		final ScriptDefinition def = bundle.get().definition;
+		final ScriptBundle.Definition def = bundle.get().definition;
 		if (def == null || def.getName() == null || (!def.local && (def.getID() == null || def.getID().isEmpty()))) {
 			return;
 		}
@@ -318,7 +316,7 @@ public final class ScriptController implements Runnable, Validatable, Script.Con
 		}
 		}
 
-		final String page = String.format("scripts/%s/%s", def.local ? ScriptDefinition.LOCALID : def.getID(), action);
+		final String page = String.format("scripts/%s/%s", def.local ? ScriptBundle.Definition.LOCALID : def.getID(), action);
 		Tracker.getInstance().trackPage(page, def.getName());
 	}
 }

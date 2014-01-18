@@ -21,11 +21,11 @@ import org.powerbot.gui.BotChrome;
 import org.powerbot.gui.BotLicense;
 import org.powerbot.gui.BotScripts;
 import org.powerbot.gui.BotSignin;
+import org.powerbot.misc.NetworkAccount;
+import org.powerbot.misc.Resources;
+import org.powerbot.misc.Tracker;
 import org.powerbot.script.Script;
 import org.powerbot.script.internal.ScriptController;
-import org.powerbot.service.NetworkAccount;
-import org.powerbot.util.Tracker;
-import org.powerbot.util.io.Resources;
 
 /**
  * @author Paris

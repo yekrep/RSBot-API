@@ -1,4 +1,4 @@
-package org.powerbot.util.io;
+package org.powerbot.misc;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -9,7 +9,6 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
 import org.powerbot.Configuration;
-import org.powerbot.util.Sandbox;
 
 /**
  * @author Paris

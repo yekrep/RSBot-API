@@ -1,16 +1,16 @@
-package org.powerbot.script.internal.scripts;
+package org.powerbot.script.internal.environment;
 
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 
+import org.powerbot.misc.ScriptBundle;
+import org.powerbot.misc.Tracker;
 import org.powerbot.script.PollingScript;
 import org.powerbot.script.internal.InternalScript;
 import org.powerbot.script.internal.ScriptController;
 import org.powerbot.script.wrappers.Player;
-import org.powerbot.service.scripts.ScriptDefinition;
-import org.powerbot.util.Tracker;
 
 /**
  * @author Paris
@@ -59,8 +59,8 @@ public class StatTracker extends PollingScript implements InternalScript {
 		if (!(c instanceof ScriptController)) {
 			return;
 		}
-		final ScriptDefinition def = ((ScriptController) c).bundle.get().definition;
-		final String id = def.local ? ScriptDefinition.LOCALID : def.getID();
+		final ScriptBundle.Definition def = ((ScriptController) c).bundle.get().definition;
+		final String id = def.local ? ScriptBundle.Definition.LOCALID : def.getID();
 
 		if (id == null || id.isEmpty()) {
 			return;

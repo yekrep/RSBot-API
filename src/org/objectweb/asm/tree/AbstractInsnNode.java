@@ -167,7 +167,7 @@ public abstract class AbstractInsnNode {
 	 * Returns the type of this instruction.
 	 *
 	 * @return the type of this instruction, i.e. one the constants defined in
-	 *         this class.
+	 * this class.
 	 */
 	public abstract int getType();
 
@@ -176,7 +176,7 @@ public abstract class AbstractInsnNode {
 	 * belongs, if any.
 	 *
 	 * @return the previous instruction in the list to which this instruction
-	 *         belongs, if any. May be <tt>null</tt>.
+	 * belongs, if any. May be <tt>null</tt>.
 	 */
 	public AbstractInsnNode getPrevious() {
 		return prev;
@@ -187,7 +187,7 @@ public abstract class AbstractInsnNode {
 	 * belongs, if any.
 	 *
 	 * @return the next instruction in the list to which this instruction
-	 *         belongs, if any. May be <tt>null</tt>.
+	 * belongs, if any. May be <tt>null</tt>.
 	 */
 	public AbstractInsnNode getNext() {
 		return next;
@@ -205,7 +205,7 @@ public abstract class AbstractInsnNode {
 	 *
 	 * @param labels a map from LabelNodes to cloned LabelNodes.
 	 * @return a copy of this instruction. The returned instruction does not
-	 *         belong to any {@link InsnList}.
+	 * belong to any {@link InsnList}.
 	 */
 	public abstract AbstractInsnNode clone(final Map<LabelNode, LabelNode> labels);
 

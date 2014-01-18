@@ -1,4 +1,4 @@
-package org.powerbot.service.scripts;
+package org.powerbot.script.internal;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-import org.powerbot.util.io.IOHelper;
+import org.powerbot.util.IOUtils;
 
 /**
  * @author Paris
@@ -29,7 +29,7 @@ public final class ScriptClassLoader extends ClassLoader {
 		ZipEntry entry;
 		while ((entry = in.getNextEntry()) != null) {
 			final ByteArrayOutputStream out = new ByteArrayOutputStream();
-			final byte[] data = new byte[IOHelper.BUFFER_SIZE];
+			final byte[] data = new byte[IOUtils.BUFFER_SIZE];
 			int len;
 			while ((len = in.read(data)) != -1) {
 				out.write(data, 0, len);
@@ -49,7 +49,7 @@ public final class ScriptClassLoader extends ClassLoader {
 		}
 		try {
 			final String path = name.replace('.', '/') + ".class";
-			final byte[] buf = base == null ? files.get(path) : IOHelper.read(getResourceAsStream(path));
+			final byte[] buf = base == null ? files.get(path) : IOUtils.read(getResourceAsStream(path));
 			return defineClass(name, buf, 0, buf.length);
 		} catch (final Exception ignored) {
 			return super.loadClass(name);

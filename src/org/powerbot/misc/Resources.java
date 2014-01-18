@@ -1,4 +1,4 @@
-package org.powerbot.util.io;
+package org.powerbot.misc;
 
 import java.awt.Image;
 import java.awt.Toolkit;

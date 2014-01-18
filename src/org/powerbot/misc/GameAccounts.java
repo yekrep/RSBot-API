@@ -1,4 +1,4 @@
-package org.powerbot.service;
+package org.powerbot.misc;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Map.Entry;
 
 import org.powerbot.util.Ini;
-import org.powerbot.util.io.CryptFile;
 
 /**
  * @author Paris

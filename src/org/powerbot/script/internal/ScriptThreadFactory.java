@@ -16,7 +16,7 @@ public class ScriptThreadFactory implements ThreadFactory {
 
 	public ScriptThreadFactory(final ThreadGroup group, final ClassLoader cl) {
 		this.group = group;
-		prefix =  "pool-" + pool.getAndIncrement() + "-thread-";
+		prefix = "pool-" + pool.getAndIncrement() + "-thread-";
 		this.cl = cl;
 	}
 

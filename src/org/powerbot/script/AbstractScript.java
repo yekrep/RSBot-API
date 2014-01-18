@@ -22,10 +22,10 @@ import javax.imageio.ImageIO;
 
 import org.powerbot.Configuration;
 import org.powerbot.script.methods.MethodContext;
+import org.powerbot.util.HttpUtils;
+import org.powerbot.util.IOUtils;
 import org.powerbot.util.Ini;
 import org.powerbot.util.StringUtil;
-import org.powerbot.util.io.HttpClient;
-import org.powerbot.util.io.IOHelper;
 
 /**
  * An abstract implementation of {@link Script}.
@@ -280,7 +280,7 @@ public abstract class AbstractScript implements Script, Comparable<AbstractScrip
 		}
 
 		try {
-			HttpClient.download(u, f);
+			HttpUtils.download(u, f);
 		} catch (final IOException ignored) {
 			f.delete();
 		}
@@ -300,7 +300,7 @@ public abstract class AbstractScript implements Script, Comparable<AbstractScrip
 		FileInputStream in = null;
 		try {
 			in = new FileInputStream(getFile(name));
-			return IOHelper.readString(in);
+			return IOUtils.readString(in);
 		} catch (final IOException ignored) {
 		} finally {
 			if (in != null) {

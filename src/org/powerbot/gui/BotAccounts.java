@@ -27,10 +27,10 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumnModel;
 
 import org.powerbot.gui.component.BotLocale;
-import org.powerbot.service.GameAccounts;
-import org.powerbot.service.GameAccounts.Account;
-import org.powerbot.util.Tracker;
-import org.powerbot.util.io.Resources;
+import org.powerbot.misc.GameAccounts;
+import org.powerbot.misc.GameAccounts.Account;
+import org.powerbot.misc.Resources;
+import org.powerbot.misc.Tracker;
 
 /**
  * @author Paris

@@ -1,4 +1,4 @@
-package org.powerbot.util;
+package org.powerbot.misc;
 
 import java.awt.Dimension;
 import java.awt.GraphicsEnvironment;
@@ -22,8 +22,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.powerbot.Configuration;
-import org.powerbot.util.io.CryptFile;
-import org.powerbot.util.io.HttpClient;
+import org.powerbot.util.HttpUtils;
 
 /**
  * @author Paris
@@ -188,7 +187,7 @@ public final class Tracker implements Closeable {
 
 	private static void call(final String url) {
 		try {
-			final HttpURLConnection con = HttpClient.getHttpConnection(new URL(url));
+			final HttpURLConnection con = HttpUtils.getHttpConnection(new URL(url));
 			con.connect();
 			con.getResponseCode();
 			con.disconnect();

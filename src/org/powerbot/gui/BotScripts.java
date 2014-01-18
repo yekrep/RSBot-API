@@ -55,13 +55,13 @@ import javax.swing.border.EmptyBorder;
 
 import org.powerbot.Configuration;
 import org.powerbot.gui.component.BotLocale;
-import org.powerbot.service.GameAccounts;
-import org.powerbot.service.GameAccounts.Account;
-import org.powerbot.service.NetworkAccount;
-import org.powerbot.service.scripts.ScriptDefinition;
-import org.powerbot.service.scripts.ScriptList;
-import org.powerbot.util.io.CryptFile;
-import org.powerbot.util.io.Resources;
+import org.powerbot.misc.CryptFile;
+import org.powerbot.misc.GameAccounts;
+import org.powerbot.misc.GameAccounts.Account;
+import org.powerbot.misc.NetworkAccount;
+import org.powerbot.misc.Resources;
+import org.powerbot.misc.ScriptBundle;
+import org.powerbot.misc.ScriptList;
 
 /**
  * @author Paris
@@ -277,13 +277,13 @@ public final class BotScripts extends JDialog implements ActionListener {
 		table.repaint();
 		new Thread(new Runnable() {
 			public void run() {
-				final List<ScriptDefinition> scripts;
+				final List<ScriptBundle.Definition> scripts;
 				try {
 					icons.download(new URL(Configuration.URLs.SCRIPTSICONS));
 					scripts = ScriptList.getList();
-					Collections.sort(scripts, new Comparator<ScriptDefinition>() {
+					Collections.sort(scripts, new Comparator<ScriptBundle.Definition>() {
 						@Override
-						public int compare(final ScriptDefinition a, final ScriptDefinition b) {
+						public int compare(final ScriptBundle.Definition a, final ScriptBundle.Definition b) {
 							return a.getName().compareToIgnoreCase(b.getName());
 						}
 					});
@@ -314,7 +314,7 @@ public final class BotScripts extends JDialog implements ActionListener {
 				SwingUtilities.invokeLater(new Runnable() {
 					public void run() {
 						table.removeAll();
-						for (final ScriptDefinition def : scripts) {
+						for (final ScriptBundle.Definition def : scripts) {
 							table.add(new ScriptCell(table, def));
 						}
 						table.validate();
@@ -365,7 +365,7 @@ public final class BotScripts extends JDialog implements ActionListener {
 
 	private void filter() {
 		for (final Component c : table.getComponents()) {
-			final ScriptDefinition d = ((ScriptCell) c).getScriptDefinition();
+			final ScriptBundle.Definition d = ((ScriptCell) c).getScriptDefinition();
 			boolean v = true;
 			if (!search.getText().isEmpty() && !search.getText().equals(BotLocale.SEARCH) && !d.matches(search.getText())) {
 				v = false;
@@ -386,10 +386,10 @@ public final class BotScripts extends JDialog implements ActionListener {
 	private final class ScriptCell extends JPanel {
 		private static final long serialVersionUID = 1L;
 		private final Component parent;
-		private final ScriptDefinition def;
+		private final ScriptBundle.Definition def;
 		private final Color[] c = new Color[]{null, null};
 
-		public ScriptCell(final Component parent, final ScriptDefinition def) {
+		public ScriptCell(final Component parent, final ScriptBundle.Definition def) {
 			super();
 			this.parent = parent;
 			this.def = def;
@@ -523,7 +523,7 @@ public final class BotScripts extends JDialog implements ActionListener {
 			return index;
 		}
 
-		public ScriptDefinition getScriptDefinition() {
+		public ScriptBundle.Definition getScriptDefinition() {
 			return def;
 		}
 

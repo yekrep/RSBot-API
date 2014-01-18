@@ -1,4 +1,4 @@
-package org.powerbot.util.io;
+package org.powerbot.util;
 
 import java.util.Arrays;
 

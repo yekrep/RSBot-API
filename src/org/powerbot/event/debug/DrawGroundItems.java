@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.powerbot.event.PaintListener;
-import org.powerbot.gui.BotChrome;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.wrappers.GroundItem;
 import org.powerbot.script.wrappers.Player;

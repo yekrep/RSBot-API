@@ -20,10 +20,10 @@ import javax.crypto.spec.SecretKeySpec;
 
 import org.powerbot.Configuration;
 import org.powerbot.bot.loader.transform.TransformSpec;
+import org.powerbot.misc.Tracker;
+import org.powerbot.util.HttpUtils;
+import org.powerbot.util.IOUtils;
 import org.powerbot.util.StringUtil;
-import org.powerbot.util.Tracker;
-import org.powerbot.util.io.HttpClient;
-import org.powerbot.util.io.IOHelper;
 
 public class NRSLoader implements Runnable {
 	private final GameLoader gameLoader;
@@ -134,7 +134,7 @@ public class NRSLoader implements Runnable {
 		System.arraycopy(md.digest(), 0, b, 0, b.length);
 		final SecretKey key = new SecretKeySpec(b, 0, b.length, keyAlgo);
 
-		final HttpURLConnection con = HttpClient.getHttpConnection(new URL(String.format(Configuration.URLs.CLIENTPATCH, packHash)));
+		final HttpURLConnection con = HttpUtils.getHttpConnection(new URL(String.format(Configuration.URLs.CLIENTPATCH, packHash)));
 		con.setInstanceFollowRedirects(false);
 		con.connect();
 		r = con.getResponseCode();
@@ -147,7 +147,7 @@ public class NRSLoader implements Runnable {
 			} catch (final GeneralSecurityException e) {
 				throw new IOException(e);
 			}
-			return new TransformSpec(IOHelper.read(new CipherInputStream(HttpClient.getInputStream(con), c)));
+			return new TransformSpec(IOUtils.read(new CipherInputStream(HttpUtils.getInputStream(con), c)));
 		}
 		return null;
 	}
@@ -171,7 +171,7 @@ public class NRSLoader implements Runnable {
 		System.arraycopy(md.digest(), 0, b, 0, b.length);
 		final SecretKey key = new SecretKeySpec(b, 0, b.length, keyAlgo);
 
-		final HttpURLConnection bucket = HttpClient.getHttpConnection(new URL(String.format(Configuration.URLs.CLIENTBUCKET, packHash)));
+		final HttpURLConnection bucket = HttpUtils.getHttpConnection(new URL(String.format(Configuration.URLs.CLIENTBUCKET, packHash)));
 		bucket.addRequestProperty(String.format("x-%s-cv", Configuration.NAME.toLowerCase()), "101");
 		bucket.setInstanceFollowRedirects(false);
 		bucket.connect();
@@ -180,7 +180,7 @@ public class NRSLoader implements Runnable {
 		switch (bucket.getResponseCode()) {
 		case HttpURLConnection.HTTP_SEE_OTHER:
 			final String dest = bucket.getHeaderField("Location");
-			final HttpURLConnection put = HttpClient.getHttpConnection(new URL(dest));
+			final HttpURLConnection put = HttpUtils.getHttpConnection(new URL(dest));
 			put.setRequestMethod("PUT");
 			put.setDoOutput(true);
 			final Cipher c;
@@ -198,7 +198,7 @@ public class NRSLoader implements Runnable {
 			put.disconnect();
 			Tracker.getInstance().trackPage(pre + "/bucket/upload", Integer.toString(r));
 			if (r == HttpURLConnection.HTTP_OK) {
-				final HttpURLConnection bucket_notify = HttpClient.getHttpConnection(new URL(String.format(Configuration.URLs.CLIENTBUCKET, packHash)));
+				final HttpURLConnection bucket_notify = HttpUtils.getHttpConnection(new URL(String.format(Configuration.URLs.CLIENTBUCKET, packHash)));
 				bucket_notify.setRequestMethod("PUT");
 				bucket_notify.connect();
 				final int r_notify = bucket_notify.getResponseCode();

@@ -6,12 +6,10 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 
-import org.powerbot.Configuration;
 import org.powerbot.bot.Bot;
 import org.powerbot.gui.BotChrome;
-import org.powerbot.service.UpdateCheck;
+import org.powerbot.misc.UpdateCheck;
 
 /**
  * @author Paris

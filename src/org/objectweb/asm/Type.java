@@ -303,7 +303,7 @@ public class Type {
 	 *
 	 * @param methodDescriptor a method descriptor.
 	 * @return the Java types corresponding to the argument types of the given
-	 *         method descriptor.
+	 * method descriptor.
 	 */
 	public static Type[] getArgumentTypes(final String methodDescriptor) {
 		final char[] buf = methodDescriptor.toCharArray();
@@ -338,7 +338,7 @@ public class Type {
 	 *
 	 * @param method a method.
 	 * @return the Java types corresponding to the argument types of the given
-	 *         method.
+	 * method.
 	 */
 	public static Type[] getArgumentTypes(final Method method) {
 		final Class<?>[] classes = method.getParameterTypes();
@@ -355,7 +355,7 @@ public class Type {
 	 *
 	 * @param methodDescriptor a method descriptor.
 	 * @return the Java type corresponding to the return type of the given
-	 *         method descriptor.
+	 * method descriptor.
 	 */
 	public static Type getReturnType(final String methodDescriptor) {
 		final char[] buf = methodDescriptor.toCharArray();
@@ -368,7 +368,7 @@ public class Type {
 	 *
 	 * @param method a method.
 	 * @return the Java type corresponding to the return type of the given
-	 *         method.
+	 * method.
 	 */
 	public static Type getReturnType(final Method method) {
 		return getType(method.getReturnType());
@@ -379,10 +379,10 @@ public class Type {
 	 *
 	 * @param desc the descriptor of a method.
 	 * @return the size of the arguments of the method (plus one for the
-	 *         implicit this argument), argSize, and the size of its return
-	 *         value, retSize, packed into a single int i =
-	 *         <tt>(argSize << 2) | retSize</tt> (argSize is therefore equal
-	 *         to <tt>i >> 2</tt>, and retSize to <tt>i & 0x03</tt>).
+	 * implicit this argument), argSize, and the size of its return
+	 * value, retSize, packed into a single int i =
+	 * <tt>(argSize << 2) | retSize</tt> (argSize is therefore equal
+	 * to <tt>i >> 2</tt>, and retSize to <tt>i & 0x03</tt>).
 	 */
 	public static int getArgumentsAndReturnSizes(final String desc) {
 		int n = 1;
@@ -474,10 +474,10 @@ public class Type {
 	 * Returns the sort of this Java type.
 	 *
 	 * @return {@link #VOID VOID}, {@link #BOOLEAN BOOLEAN},
-	 *         {@link #CHAR CHAR}, {@link #BYTE BYTE}, {@link #SHORT SHORT},
-	 *         {@link #INT INT}, {@link #FLOAT FLOAT}, {@link #LONG LONG},
-	 *         {@link #DOUBLE DOUBLE}, {@link #ARRAY ARRAY},
-	 *         {@link #OBJECT OBJECT} or {@link #METHOD METHOD}.
+	 * {@link #CHAR CHAR}, {@link #BYTE BYTE}, {@link #SHORT SHORT},
+	 * {@link #INT INT}, {@link #FLOAT FLOAT}, {@link #LONG LONG},
+	 * {@link #DOUBLE DOUBLE}, {@link #ARRAY ARRAY},
+	 * {@link #OBJECT OBJECT} or {@link #METHOD METHOD}.
 	 */
 	public int getSort() {
 		return sort;
@@ -583,10 +583,10 @@ public class Type {
 	 * this type. This method should only be used for method types.
 	 *
 	 * @return the size of the arguments (plus one for the implicit this
-	 *         argument), argSize, and the size of the return value, retSize,
-	 *         packed into a single int i = <tt>(argSize << 2) | retSize</tt>
-	 *         (argSize is therefore equal to <tt>i >> 2</tt>, and retSize to
-	 *         <tt>i & 0x03</tt>).
+	 * argument), argSize, and the size of the return value, retSize,
+	 * packed into a single int i = <tt>(argSize << 2) | retSize</tt>
+	 * (argSize is therefore equal to <tt>i >> 2</tt>, and retSize to
+	 * <tt>i & 0x03</tt>).
 	 */
 	public int getArgumentsAndReturnSizes() {
 		return getArgumentsAndReturnSizes(getDescriptor());
@@ -614,7 +614,7 @@ public class Type {
 	 * @param returnType    the return type of the method.
 	 * @param argumentTypes the argument types of the method.
 	 * @return the descriptor corresponding to the given argument and return
-	 *         types.
+	 * types.
 	 */
 	public static String getMethodDescriptor(
 			final Type returnType,
@@ -769,7 +769,7 @@ public class Type {
 	 * method types.
 	 *
 	 * @return the size of values of this type, i.e., 2 for <tt>long</tt> and
-	 *         <tt>double</tt>, 0 for <tt>void</tt> and 1 otherwise.
+	 * <tt>double</tt>, 0 for <tt>void</tt> and 1 otherwise.
 	 */
 	public int getSize() {
 		// the size is in byte 0 of 'off' for primitive types (buf == null)
@@ -784,8 +784,8 @@ public class Type {
 	 *               ISTORE, IALOAD, IASTORE, IADD, ISUB, IMUL, IDIV, IREM, INEG, ISHL,
 	 *               ISHR, IUSHR, IAND, IOR, IXOR and IRETURN.
 	 * @return an opcode that is similar to the given opcode, but adapted to
-	 *         this Java type. For example, if this type is <tt>float</tt> and
-	 *         <tt>opcode</tt> is IRETURN, this method returns FRETURN.
+	 * this Java type. For example, if this type is <tt>float</tt> and
+	 * <tt>opcode</tt> is IRETURN, this method returns FRETURN.
 	 */
 	public int getOpcode(final int opcode) {
 		if (opcode == Opcodes.IALOAD || opcode == Opcodes.IASTORE) {

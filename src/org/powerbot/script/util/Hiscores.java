@@ -6,9 +6,9 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.powerbot.Configuration;
+import org.powerbot.util.HttpUtils;
+import org.powerbot.util.IOUtils;
 import org.powerbot.util.StringUtil;
-import org.powerbot.util.io.HttpClient;
-import org.powerbot.util.io.IOHelper;
 
 /**
  * Retrieves a player's hiscore profile.
@@ -31,7 +31,7 @@ public class Hiscores {
 	 * @throws IOException
 	 */
 	private Hiscores(final String username) throws IOException {
-		final String txt = IOHelper.readString(HttpClient.openStream(String.format(PAGE, StringUtil.urlEncode(username.replace(" ", "%A0")))));
+		final String txt = IOUtils.readString(HttpUtils.openStream(String.format(PAGE, StringUtil.urlEncode(username.replace(" ", "%A0")))));
 
 		this.username = username;
 		skills = new HashMap<Stats, SkillStats>();

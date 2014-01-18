@@ -1,7 +1,8 @@
-package org.powerbot.script.internal.scripts;
+package org.powerbot.script.internal.environment;
 
 import java.awt.Rectangle;
 
+import org.powerbot.misc.GameAccounts;
 import org.powerbot.script.PollingScript;
 import org.powerbot.script.internal.InternalScript;
 import org.powerbot.script.lang.Filter;
@@ -9,7 +10,6 @@ import org.powerbot.script.methods.Game;
 import org.powerbot.script.methods.Lobby;
 import org.powerbot.script.util.Random;
 import org.powerbot.script.wrappers.Component;
-import org.powerbot.service.GameAccounts;
 
 /**
  * @author Timer

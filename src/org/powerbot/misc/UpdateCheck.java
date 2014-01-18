@@ -1,4 +1,4 @@
-package org.powerbot.service;
+package org.powerbot.misc;
 
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
@@ -9,8 +9,7 @@ import java.util.logging.Logger;
 
 import org.powerbot.Configuration;
 import org.powerbot.gui.component.BotLocale;
-import org.powerbot.util.io.CryptFile;
-import org.powerbot.util.io.IOHelper;
+import org.powerbot.util.IOUtils;
 
 public final class UpdateCheck implements Callable<Boolean> {
 	private static final Logger log = Logger.getLogger(UpdateCheck.class.getName());
@@ -19,7 +18,7 @@ public final class UpdateCheck implements Callable<Boolean> {
 		final CryptFile cache = new CryptFile("version.1.txt", UpdateCheck.class);
 		final int version;
 		try {
-			version = Integer.parseInt(IOHelper.readString(cache.download(new URL(Configuration.URLs.VERSION))).trim());
+			version = Integer.parseInt(IOUtils.readString(cache.download(new URL(Configuration.URLs.VERSION))).trim());
 		} catch (final Exception e) {
 			String msg = "Error reading server data";
 			if (SocketException.class.isAssignableFrom(e.getClass()) || SocketTimeoutException.class.isAssignableFrom(e.getClass())) {

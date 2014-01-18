@@ -1,4 +1,4 @@
-package org.powerbot.util.io;
+package org.powerbot.util;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,7 +20,7 @@ import org.powerbot.Configuration;
 /**
  * @author Paris
  */
-public class HttpClient {
+public class HttpUtils {
 	public static final String HTTP_USERAGENT_FAKE, HTTP_USERAGENT_REAL;
 
 	static {
@@ -81,7 +81,7 @@ public class HttpClient {
 
 		switch (con.getResponseCode()) {
 		case HttpURLConnection.HTTP_OK:
-			IOHelper.write(getInputStream(con), file);
+			IOUtils.write(getInputStream(con), file);
 			break;
 		case HttpURLConnection.HTTP_NOT_FOUND:
 		case HttpURLConnection.HTTP_GONE:
@@ -101,7 +101,7 @@ public class HttpClient {
 
 	public static InputStream openStream(final String link, final Object... args) throws IOException {
 		final String[] s = splitPostURL(link, args);
-		final URLConnection con = HttpClient.getHttpConnection(new URL(s[0]));
+		final URLConnection con = HttpUtils.getHttpConnection(new URL(s[0]));
 		if (s.length > 1) {
 			con.setDoOutput(true);
 			if (s[1] != null && !s[1].isEmpty()) {
@@ -121,7 +121,7 @@ public class HttpClient {
 				}
 			}
 		}
-		return HttpClient.getInputStream(con);
+		return HttpUtils.getInputStream(con);
 	}
 
 	public static String[] splitPostURL(final String link, final Object... args) {

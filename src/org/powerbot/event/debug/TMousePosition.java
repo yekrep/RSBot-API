@@ -4,7 +4,6 @@ import java.awt.Graphics;
 import java.awt.Point;
 
 import org.powerbot.event.TextPaintListener;
-import org.powerbot.gui.BotChrome;
 import org.powerbot.script.methods.MethodContext;
 
 import static org.powerbot.event.debug.DebugHelper.drawLine;

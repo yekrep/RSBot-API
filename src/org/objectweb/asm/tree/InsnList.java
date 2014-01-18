@@ -73,7 +73,7 @@ public class InsnList {
 	 * Returns the first instruction in this list.
 	 *
 	 * @return the first instruction in this list, or <tt>null</tt> if the
-	 *         list is empty.
+	 * list is empty.
 	 */
 	public AbstractInsnNode getFirst() {
 		return first;
@@ -83,7 +83,7 @@ public class InsnList {
 	 * Returns the last instruction in this list.
 	 *
 	 * @return the last instruction in this list, or <tt>null</tt> if the list
-	 *         is empty.
+	 * is empty.
 	 */
 	public AbstractInsnNode getLast() {
 		return last;
@@ -134,9 +134,9 @@ public class InsnList {
 	 *
 	 * @param insn an instruction <i>of this list</i>.
 	 * @return the index of the given instruction in this list. <i>The result of
-	 *         this method is undefined if the given instruction does not belong
-	 *         to this list</i>. Use {@link #contains contains} to test if an
-	 *         instruction belongs to an instruction list or not.
+	 * this method is undefined if the given instruction does not belong
+	 * to this list</i>. Use {@link #contains contains} to test if an
+	 * instruction belongs to an instruction list or not.
 	 */
 	public int indexOf(final AbstractInsnNode insn) {
 		if (cache == null) {

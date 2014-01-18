@@ -754,7 +754,7 @@ final class Frame {
 	 * @param cw the ClassWriter to which this label belongs.
 	 * @param t  a type
 	 * @return t or, if t is one of the types on which a constructor is invoked
-	 *         in the basic block, the type corresponding to this constructor.
+	 * in the basic block, the type corresponding to this constructor.
 	 */
 	private int init(final ClassWriter cw, final int t) {
 		final int s;
@@ -1264,7 +1264,7 @@ final class Frame {
 	 * @param edge  the kind of the {@link Edge} between this label and 'label'.
 	 *              See {@link Edge#info}.
 	 * @return <tt>true</tt> if the input frame of the given label has been
-	 *         changed by this operation.
+	 * changed by this operation.
 	 */
 	boolean merge(final ClassWriter cw, final Frame frame, final int edge) {
 		boolean changed = false;
@@ -1367,7 +1367,7 @@ final class Frame {
 	 * @param types an array of types.
 	 * @param index the index of the type that must be merged in 'types'.
 	 * @return <tt>true</tt> if the type array has been modified by this
-	 *         operation.
+	 * operation.
 	 */
 	private static boolean merge(
 			final ClassWriter cw,

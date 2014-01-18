@@ -12,8 +12,8 @@ import java.util.concurrent.Callable;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
 
-import org.powerbot.util.io.HttpClient;
-import org.powerbot.util.io.IOHelper;
+import org.powerbot.util.HttpUtils;
+import org.powerbot.util.IOUtils;
 
 public class GameLoader implements Callable<ClassLoader> {
 	private final Crawler crawler;
@@ -28,9 +28,9 @@ public class GameLoader implements Callable<ClassLoader> {
 	public ClassLoader call() {
 		byte[] buffer;
 		try {
-			final URLConnection clientConnection = HttpClient.getHttpConnection(new URL(crawler.archive));
+			final URLConnection clientConnection = HttpUtils.getHttpConnection(new URL(crawler.archive));
 			clientConnection.addRequestProperty("Referer", crawler.game);
-			buffer = IOHelper.read(HttpClient.getInputStream(clientConnection));
+			buffer = IOUtils.read(HttpUtils.getInputStream(clientConnection));
 		} catch (IOException ignored) {
 			buffer = null;
 		}

@@ -1,4 +1,4 @@
-package org.powerbot.util;
+package org.powerbot.misc;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
