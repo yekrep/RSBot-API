@@ -1,11 +1,15 @@
 package org.powerbot.os;
 
+import java.io.File;
+
 /**
  * @author Paris
  */
 public class Configuration {
 	public static final String NAME = "RSBot OS Beta";
 	public static final int VERSION = 1000;
+
+	public static final File TEMP;
 
 	public static final OperatingSystem OS;
 
@@ -29,6 +33,11 @@ public class Configuration {
 			OS = OperatingSystem.LINUX;
 		} else {
 			OS = OperatingSystem.UNKNOWN;
+		}
+
+		TEMP = new File(new File(System.getProperty("java.io.tmpdir")), Integer.toHexString(NAME.hashCode()));
+		if (!TEMP.isDirectory()) {
+			TEMP.mkdirs();
 		}
 	}
 }
