@@ -1,10 +1,8 @@
 package org.powerbot.gui.component;
 
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 import java.util.Calendar;
 
 import javax.swing.ImageIcon;
@@ -13,7 +11,6 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
@@ -31,11 +28,7 @@ import org.powerbot.misc.Resources;
 import org.powerbot.misc.Tracker;
 import org.powerbot.script.Script;
 import org.powerbot.script.internal.ScriptController;
-import org.powerbot.util.IOUtils;
 
-/**
- * @author Paris
- */
 public class BotMenuBar extends JMenuBar implements ActionListener {
 	private static final long serialVersionUID = -4186554435386744949L;
 	private final BotChrome chrome;
@@ -268,7 +261,9 @@ public class BotMenuBar extends JMenuBar implements ActionListener {
 		}
 	}
 
-	public enum Action {ACCOUNTS, SIGNIN};
+	public enum Action {ACCOUNTS, SIGNIN}
+
+	;
 
 	public void showDialog(final Action action) {
 		SwingUtilities.invokeLater(new Runnable() {
@@ -295,7 +290,7 @@ public class BotMenuBar extends JMenuBar implements ActionListener {
 				"By using this software you agree to be bound by the terms of the license agreement.\n\n" +
 				"RuneScape\u00ae is a trademark of Jagex \u00a9 1999 - " + year + " Jagex Ltd.\n" +
 				"RuneScape content and materials are trademarks and copyrights of Jagex or its licensees.\n" +
-				"This program is issued with no warranty and is not affiliated with Jagex Ltd., nor do they endorse usage of our software.";
+				"This program is not affiliated with Jagex Ltd., nor do they endorse usage of our software.";
 		final JLabel text = new JLabel("<html>" + msg.replace("\n", "<br>") + "</html>");
 		final Font f = text.getFont();
 		text.setFont(new Font(f.getName(), f.getStyle(), f.getSize() - 2));

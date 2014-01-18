@@ -11,6 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 
 import org.powerbot.Configuration.OperatingSystem;
 import org.powerbot.gui.BotChrome;
@@ -21,51 +22,42 @@ import org.powerbot.util.IOUtils;
 import org.powerbot.util.StringUtil;
 
 public class Boot implements Runnable {
-	private final static Logger log = Logger.getLogger(Boot.class.getName());
-	private final static String SWITCH_RESTARTED = "-restarted", SWITCH_DEBUG = "-debug", SWITCH_VERSION_SHORT = "-v";
-	private final static File ICON_TMP = new File(System.getProperty("java.io.tmpdir"), Configuration.NAME.toLowerCase() + ".ico.png");
+	private final static String SWITCH_RESTARTED = "-restarted", SWITCH_DEBUG = "-debug";
 
 	public static void main(final String[] args) {
+		boolean fork = true;
+
+		for (final String arg : args) {
+			if (arg.equalsIgnoreCase(SWITCH_DEBUG) || arg.equalsIgnoreCase(SWITCH_RESTARTED)) {
+				fork = false;
+			}
+		}
+
+		if (fork) {
+			fork();
+		} else {
+			new Boot().run();
+		}
+	}
+
+	public void run() {
 		final Logger logger = Logger.getLogger("");
 		for (final Handler handler : logger.getHandlers()) {
 			logger.removeHandler(handler);
 		}
 		logger.addHandler(new PrintStreamHandler());
 
-		boolean restarted = false;
-
-		for (final String arg : args) {
-			if (arg.equalsIgnoreCase(SWITCH_DEBUG) || arg.equalsIgnoreCase(SWITCH_RESTARTED)) {
-				restarted = true;
-			} else if (arg.equalsIgnoreCase(SWITCH_VERSION_SHORT)) {
-				System.out.println(Configuration.VERSION);
-				return;
-			}
-		}
-
-		if (Configuration.OS == OperatingSystem.MAC) {
-			System.setProperty("apple.laf.useScreenMenuBar", "true");
-
-			if (!ICON_TMP.isFile()) {
-				try {
-					IOUtils.write(Resources.getResourceURL(Resources.Paths.ICON).openStream(), ICON_TMP);
-				} catch (final IOException ignored) {
-				}
-			}
-		}
-
-		if (!restarted) {
-			fork();
-			return;
-		}
-
 		Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
 			@Override
 			public void uncaughtException(final Thread t, final Throwable e) {
-				log.logp(Level.SEVERE, t.getStackTrace()[1].getClassName(), t.getStackTrace()[1].getMethodName(), e.getMessage(), e);
+				Logger.getLogger("main").logp(Level.SEVERE, t.getStackTrace()[1].getClassName(), t.getStackTrace()[1].getMethodName(), e.getMessage(), e);
 				e.printStackTrace();
 			}
 		});
+
+		if (Configuration.OS == OperatingSystem.MAC) {
+			System.setProperty("apple.laf.useScreenMenuBar", "true");
+		}
 
 		final Sandbox sandbox = new Sandbox();
 		sandbox.checkRead(Resources.Paths.ROOT);
@@ -77,13 +69,14 @@ public class Boot implements Runnable {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
+				try {
+					UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+				} catch (final Exception ignored) {
+				}
+
 				BotChrome.getInstance();
 			}
 		});
-	}
-
-	public void run() {
-		main(new String[]{});
 	}
 
 	public static void fork() {
@@ -104,7 +97,16 @@ public class Boot implements Runnable {
 
 		if (Configuration.OS == OperatingSystem.MAC) {
 			args.add("-Xdock:name=" + Configuration.NAME);
-			args.add("-Xdock:icon=" + ICON_TMP.getAbsolutePath());
+
+			final File icon = new File(Configuration.TEMP, Configuration.NAME.toLowerCase() + ".ico.png");
+			if (!icon.isFile()) {
+				try {
+					IOUtils.write(Resources.getResourceURL(Resources.Paths.ICON).openStream(), icon);
+				} catch (final IOException ignored) {
+				}
+			}
+
+			args.add("-Xdock:icon=" + icon.getAbsolutePath());
 		}
 
 		args.add("-classpath");

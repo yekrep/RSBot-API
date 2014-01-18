@@ -30,9 +30,6 @@ import org.powerbot.util.HttpUtils;
 import org.powerbot.util.IOUtils;
 import org.powerbot.util.StringUtil;
 
-/**
- * @author Paris
- */
 public final class CryptFile {
 	public static final Map<File, Class<?>[]> PERMISSIONS = new ConcurrentHashMap<File, Class<?>[]>();
 	private static final long VECTOR = 0x9e3779b9;

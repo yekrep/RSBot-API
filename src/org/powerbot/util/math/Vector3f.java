@@ -1,8 +1,5 @@
 package org.powerbot.util.math;
 
-/**
- * @author Paris
- */
 public class Vector3f extends Vector2f {
 	public float z;
 

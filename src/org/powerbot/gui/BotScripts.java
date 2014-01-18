@@ -63,9 +63,6 @@ import org.powerbot.misc.Resources;
 import org.powerbot.misc.ScriptBundle;
 import org.powerbot.misc.ScriptList;
 
-/**
- * @author Paris
- */
 public final class BotScripts extends JDialog implements ActionListener {
 	private static final long serialVersionUID = 7168019254925627080L;
 	private final BotChrome chrome;

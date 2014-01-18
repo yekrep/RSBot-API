@@ -3,9 +3,6 @@ package org.powerbot.util.math;
 import java.security.SecureRandom;
 import java.util.Random;
 
-/**
- * @author Paris
- */
 public class HardwareSimulator {
 	private final static double[] pd;
 	private final static Random r;

@@ -2,9 +2,6 @@ package org.powerbot.util.math;
 
 import java.awt.Point;
 
-/**
- * @author Paris
- */
 public class Vector2 {
 	public int x, y;
 

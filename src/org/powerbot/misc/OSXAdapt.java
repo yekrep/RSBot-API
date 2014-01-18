@@ -15,9 +15,6 @@ import org.powerbot.Configuration;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.gui.component.BotMenuBar;
 
-/**
- * @author Paris
- */
 public class OSXAdapt implements Runnable {
 	private final BotChrome chrome;
 

@@ -2,9 +2,6 @@ package org.powerbot.gui.component;
 
 import org.powerbot.Configuration;
 
-/**
- * @author Paris
- */
 public final class BotLocale {
 	public static final String NEWWINDOW = "New Window";
 	public static final String PLAYSCRIPT = "Play";
@@ -48,12 +45,6 @@ public final class BotLocale {
 	public static final String ALLOW = "Allow";
 	public static final String BLOCK = "Block";
 
-	public static final String OK = "OK";
-	public static final String BETA = "Beta";
-
 	public static final String WEBSITE = Configuration.URLs.DOMAIN;
 	public static final String LICENSE = "License";
-	public static final String LICENSETCS = "License Terms and Conditions";
-	public static final String LICENSEMSG = "By using this software you agree to be bound by the terms of the license agreement.";
-	public static final String COPYRIGHT = "Copyright \u00a9 2011 - 2014 Dequeue Ltd and its licensors.";
 }

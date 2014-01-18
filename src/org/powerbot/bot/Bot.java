@@ -23,9 +23,6 @@ import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.util.Condition;
 import org.powerbot.script.wrappers.Validatable;
 
-/**
- * @author Timer
- */
 public final class Bot implements Runnable, Stoppable, Validatable {
 	public static final Logger log = Logger.getLogger(Bot.class.getName());
 	public static final String GROUP = "game";

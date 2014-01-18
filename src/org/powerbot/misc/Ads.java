@@ -27,9 +27,6 @@ import org.powerbot.gui.BotChrome;
 import org.powerbot.util.HttpUtils;
 import org.powerbot.util.Ini;
 
-/**
- * @author Paris
- */
 public class Ads implements Runnable {
 	private final JLabel logo;
 	private final JPanel panel;

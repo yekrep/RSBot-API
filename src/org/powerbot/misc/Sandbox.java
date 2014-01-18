@@ -17,9 +17,6 @@ import org.powerbot.script.internal.ScriptThreadFactory;
 import org.powerbot.script.methods.Keyboard;
 import org.powerbot.util.StringUtil;
 
-/**
- * @author Paris
- */
 public class Sandbox extends SecurityManager {
 	private static final Logger log = Logger.getLogger("Sandbox");
 

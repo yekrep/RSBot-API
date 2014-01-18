@@ -9,9 +9,6 @@ import java.util.zip.Adler32;
 import org.powerbot.misc.Resources;
 import org.powerbot.util.StringUtil;
 
-/**
- * @author Paris
- */
 public class Configuration {
 	public static final String NAME = "RSBot";
 	public static final int VERSION = 5058;

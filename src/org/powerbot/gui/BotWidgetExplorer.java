@@ -40,9 +40,6 @@ import org.powerbot.misc.Tracker;
 import org.powerbot.script.wrappers.Component;
 import org.powerbot.script.wrappers.Widget;
 
-/**
- * @author Timer
- */
 public class BotWidgetExplorer extends JFrame implements PaintListener {
 	private static final long serialVersionUID = 3674322588956559479L;
 	private static final Map<BotChrome, BotWidgetExplorer> instances = new HashMap<BotChrome, BotWidgetExplorer>();

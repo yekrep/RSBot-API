@@ -10,9 +10,6 @@ import javax.swing.JMenu;
 
 import org.powerbot.bot.SelectiveEventQueue;
 
-/**
- * @author Paris
- */
 public final class BotMenuInput {
 	public BotMenuInput(final JMenu menu) {
 		JCheckBoxMenuItem item;

@@ -8,9 +8,6 @@ import java.util.Map.Entry;
 
 import org.powerbot.util.Ini;
 
-/**
- * @author Paris
- */
 public final class GameAccounts extends ArrayList<GameAccounts.Account> {
 	private static final GameAccounts instance = new GameAccounts();
 	private static final long serialVersionUID = -8481913088185494034L;
@@ -18,7 +15,7 @@ public final class GameAccounts extends ArrayList<GameAccounts.Account> {
 
 	private GameAccounts() {
 		super();
-		store = new CryptFile("accounts.1.ini", false, GameAccounts.class);
+		store = new CryptFile("accounts.1.ini", false, getClass());
 		load();
 	}
 

@@ -24,13 +24,10 @@ import java.util.concurrent.atomic.AtomicLong;
 import org.powerbot.Configuration;
 import org.powerbot.util.HttpUtils;
 
-/**
- * @author Paris
- */
 public final class Tracker implements Closeable {
 	private static Tracker instance;
 	private final ExecutorService exec;
-	private static final String TRACKING_ID = "UA-5170375-18", PAGE_PREFIX = "/rsbot/", HOSTNAME = "services.powerbot.org";
+	private static final String TRACKING_ID = "UA-5170375-18", PAGE_PREFIX = "/rsbot/", HOSTNAME = "services." + Configuration.URLs.DOMAIN;
 	private final String locale, resolution, colours;
 	private final Random r;
 	private final File cache;

@@ -3,9 +3,6 @@ package org.powerbot.util.math;
 import java.awt.Point;
 import java.awt.geom.Point2D;
 
-/**
- * @author Paris
- */
 public class Vector2f {
 	public float x, y;
 

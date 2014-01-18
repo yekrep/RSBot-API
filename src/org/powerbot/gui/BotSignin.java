@@ -27,11 +27,7 @@ import org.powerbot.gui.component.BotLocale;
 import org.powerbot.misc.NetworkAccount;
 import org.powerbot.misc.Tracker;
 
-/**
- * @author Paris
- */
 public final class BotSignin extends JDialog implements ActionListener {
-
 	private static final long serialVersionUID = -5079757502617361896L;
 	private final JButton signin;
 	private final JLabel register;

@@ -24,9 +24,6 @@ import org.powerbot.event.PaintEvent;
 import org.powerbot.event.TextPaintEvent;
 import org.powerbot.gui.BotChrome;
 
-/**
- * @author Paris
- */
 public class BotOverlay extends JDialog {
 	private static final Logger log = Logger.getLogger(BotOverlay.class.getName());
 	private final BotChrome parent;

@@ -2,7 +2,6 @@ package org.powerbot.gui;
 
 import java.awt.Color;
 import java.awt.Desktop;
-import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -10,8 +9,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.Closeable;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.logging.Level;
@@ -19,7 +16,6 @@ import java.util.logging.Logger;
 
 import javax.swing.JFrame;
 import javax.swing.JPopupMenu;
-import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 
 import org.powerbot.Configuration;
@@ -28,17 +24,12 @@ import org.powerbot.bot.SelectiveEventQueue;
 import org.powerbot.gui.component.BotMenuBar;
 import org.powerbot.gui.component.BotOverlay;
 import org.powerbot.gui.component.BotPanel;
-import org.powerbot.misc.CryptFile;
 import org.powerbot.misc.OSXAdapt;
 import org.powerbot.misc.Resources;
 import org.powerbot.misc.Tracker;
 import org.powerbot.misc.UpdateCheck;
 import org.powerbot.misc.WindowCache;
-import org.powerbot.util.Ini;
 
-/**
- * @author Paris
- */
 public class BotChrome extends JFrame implements Closeable {
 	private static final Logger log = Logger.getLogger(BotChrome.class.getName());
 	public static final int PANEL_MIN_WIDTH = 800, PANEL_MIN_HEIGHT = 600;
@@ -52,11 +43,6 @@ public class BotChrome extends JFrame implements Closeable {
 	private final WindowCache cache;
 
 	private BotChrome() {
-		try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (final Exception ignored) {
-		}
-
 		setTitle(Configuration.NAME);
 		setIconImage(Resources.getImage(Resources.Paths.ICON));
 		setBackground(Color.BLACK);
@@ -73,7 +59,7 @@ public class BotChrome extends JFrame implements Closeable {
 		log.log(Level.INFO, "", "Starting...");
 		pack();
 		setMinimumSize(getSize());
-		cache = new WindowCache(this);
+		cache = new WindowCache(this, "chrome");
 		cache.run();
 		setLocationRelativeTo(getParent());
 		setVisible(true);

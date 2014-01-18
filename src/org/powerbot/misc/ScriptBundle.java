@@ -9,9 +9,6 @@ import org.powerbot.script.Manifest;
 import org.powerbot.script.Script;
 import org.powerbot.util.StringUtil;
 
-/**
- * @author Paris
- */
 public class ScriptBundle {
 	public final Definition definition;
 	public final Class<? extends Script> script;

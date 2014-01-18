@@ -15,9 +15,6 @@ import java.util.zip.CheckedInputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-/**
- * @author Paris
- */
 public class IOUtils {
 	public static final int BUFFER_SIZE = 4096;
 
@@ -82,10 +79,6 @@ public class IOUtils {
 
 	public static String readString(final InputStream is) {
 		return StringUtil.newStringUtf8(read(is));
-	}
-
-	public static String readString(final URL in) {
-		return StringUtil.newStringUtf8(read(in));
 	}
 
 	public static void write(final InputStream in, final OutputStream out) {

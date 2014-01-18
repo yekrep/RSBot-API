@@ -1,8 +1,5 @@
 package org.powerbot.misc;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.PrintStream;
 import java.util.logging.Handler;
 import java.util.logging.Level;
@@ -10,19 +7,11 @@ import java.util.logging.LogRecord;
 
 import org.powerbot.Configuration;
 
-/**
- * @author Paris
- */
 public class PrintStreamHandler extends Handler {
 	private final PrintStream out, err;
 
 	public PrintStreamHandler() {
 		this(System.out, System.err);
-	}
-
-	public PrintStreamHandler(final File file) throws FileNotFoundException {
-		out = new PrintStream(new FileOutputStream(file));
-		err = out;
 	}
 
 	public PrintStreamHandler(final PrintStream out, final PrintStream err) {

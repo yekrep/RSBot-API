@@ -9,18 +9,13 @@ import java.io.OutputStream;
 
 import org.powerbot.util.Ini;
 
-/**
- * @author Paris
- */
 public class WindowCache implements Runnable, Closeable {
 	private final Window window;
 	private final CryptFile cache;
 
-	public WindowCache(final Window window) {
+	public WindowCache(final Window window, final String name) {
 		this.window = window;
-		final String s;
-		cache = new CryptFile(s = window.getClass().getName() + "-cache.1.ini", false, getClass());
-		System.out.println(s);
+		cache = new CryptFile(name + "-cache.1.ini", false, getClass());
 	}
 
 	@Override

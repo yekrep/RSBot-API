@@ -18,9 +18,6 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-/**
- * @author Paris
- */
 public class Ini implements Serializable {
 	private static final String DEFAULT = "";
 	private static final long serialVersionUID = 2162875213770806139L;

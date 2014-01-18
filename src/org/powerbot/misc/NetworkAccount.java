@@ -11,9 +11,6 @@ import org.powerbot.util.IOUtils;
 import org.powerbot.util.Ini;
 import org.powerbot.util.StringUtil;
 
-/**
- * @author Paris
- */
 public final class NetworkAccount {
 	private static NetworkAccount instance = null;
 	private final static String STORENAME = "netacct", RESPKEY = "response", AUTHKEY = "auth", CREATEDKEY = "created";

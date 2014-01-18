@@ -17,9 +17,6 @@ import java.util.zip.InflaterInputStream;
 
 import org.powerbot.Configuration;
 
-/**
- * @author Paris
- */
 public class HttpUtils {
 	public static final String HTTP_USERAGENT_FAKE, HTTP_USERAGENT_REAL;
 

@@ -23,9 +23,6 @@ import org.powerbot.gui.BotWidgetExplorer;
 import org.powerbot.misc.Resources;
 import org.powerbot.script.methods.MethodContext;
 
-/**
- * @author Paris
- */
 public final class BotMenuView implements ActionListener {
 	private final Map<String, Class<? extends EventListener>> map;
 

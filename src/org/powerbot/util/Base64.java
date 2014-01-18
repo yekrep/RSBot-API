@@ -2,11 +2,6 @@ package org.powerbot.util;
 
 import java.util.Arrays;
 
-/**
- * An efficient, lightweight Base64 utility for encoding and decoding byte arrays.
- *
- * @author Timer
- */
 public class Base64 {
 	private static final char[] CHAR_ARRAY = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/".toCharArray();
 	private static final int[] INT_ARRAY = new int[256];

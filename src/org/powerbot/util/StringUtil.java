@@ -9,15 +9,6 @@ public class StringUtil {
 		return s.replaceAll("\\<.*?\\>", "");
 	}
 
-	public static String unescapeXmlEntities(String text) {
-		text = text.replaceAll("&amp;", "&");
-		text = text.replaceAll("&lt;", "<");
-		text = text.replaceAll("&gt;", ">");
-		text = text.replaceAll("&quot;", "\"");
-		text = text.replaceAll("&apos;", "'");
-		return text;
-	}
-
 	public static String urlEncode(final String text) {
 		if (text == null) {
 			return null;
@@ -35,22 +26,6 @@ public class StringUtil {
 		} catch (final Exception ignored) {
 			return text;
 		}
-	}
-
-	public static String fileNameWithoutExtension(String path) {
-		int z = path.lastIndexOf('/');
-		if (z != -1) {
-			if (++z == path.length()) {
-				return "";
-			} else {
-				path = path.substring(z);
-			}
-		}
-		z = path.indexOf('.');
-		if (z != -1) {
-			path = path.substring(0, z);
-		}
-		return path;
 	}
 
 	public static byte[] getBytesUtf8(final String string) {

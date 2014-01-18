@@ -11,9 +11,6 @@ import org.powerbot.bot.Bot;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.misc.UpdateCheck;
 
-/**
- * @author Paris
- */
 final class BotPanelLogHandler extends Handler {
 	private final JLabel label;
 
