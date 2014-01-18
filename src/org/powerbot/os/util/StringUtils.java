@@ -4,9 +4,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 
-/**
- * @author Paris
- */
 public class StringUtils {
 
 	public static String urlEncode(final String text) {

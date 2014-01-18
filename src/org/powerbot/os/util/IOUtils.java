@@ -9,9 +9,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 
-/**
- * @author Paris
- */
 public class IOUtils {
 	public static final int BUFFER_SIZE = 4096;
 

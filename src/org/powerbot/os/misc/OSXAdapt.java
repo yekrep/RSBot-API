@@ -12,11 +12,8 @@ import java.lang.reflect.Proxy;
 import javax.swing.SwingUtilities;
 
 import org.powerbot.os.Configuration;
-import org.powerbot.os.ui.BotChrome;
+import org.powerbot.os.gui.BotChrome;
 
-/**
- * @author Paris
- */
 public class OSXAdapt implements Runnable {
 	private final BotChrome chrome;
 

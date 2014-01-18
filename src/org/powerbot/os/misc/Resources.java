@@ -8,9 +8,6 @@ import java.net.URL;
 
 import org.powerbot.os.Configuration;
 
-/**
- * @author Paris
- */
 public class Resources {
 	public static final class Paths {
 		public static final String ROOT = "resources";

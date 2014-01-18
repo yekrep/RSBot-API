@@ -7,15 +7,12 @@ import java.util.Map;
 
 import javax.swing.SwingUtilities;
 
-import org.powerbot.os.loader.GameBotLoader;
-import org.powerbot.os.loader.GameCrawler;
-import org.powerbot.os.loader.GameLoader;
-import org.powerbot.os.loader.GameStub;
-import org.powerbot.os.ui.BotChrome;
+import org.powerbot.os.client.loader.GameAppletLoader;
+import org.powerbot.os.client.loader.GameCrawler;
+import org.powerbot.os.client.loader.GameLoader;
+import org.powerbot.os.client.loader.GameStub;
+import org.powerbot.os.gui.BotChrome;
 
-/**
- * @author Paris
- */
 public class Bot implements Runnable, Closeable {
 	private final BotChrome chrome;
 	private final ThreadGroup group;
@@ -40,7 +37,7 @@ public class Bot implements Runnable, Closeable {
 			return;
 		}
 
-		final GameBotLoader loader = new GameBotLoader(game, classLoader);
+		final GameAppletLoader loader = new GameAppletLoader(game, classLoader);
 		loader.setCallback(new Runnable() {
 			@Override
 			public void run() {
@@ -52,7 +49,7 @@ public class Bot implements Runnable, Closeable {
 		t.start();
 	}
 
-	private void hook(final GameBotLoader loader) {
+	private void hook(final GameAppletLoader loader) {
 		applet = loader.getApplet();
 		//TODO: client = (Client) loader.getClient();
 		final GameCrawler crawler = loader.getGameLoader().crawler;

@@ -1,4 +1,4 @@
-package org.powerbot.os.ui;
+package org.powerbot.os.gui;
 
 import java.awt.Color;
 import java.awt.Desktop;
@@ -21,9 +21,6 @@ import org.powerbot.os.client.Bot;
 import org.powerbot.os.misc.OSXAdapt;
 import org.powerbot.os.misc.Resources;
 
-/**
- * @author Paris
- */
 public class BotChrome extends JFrame implements Closeable {
 	private static final Logger log = Logger.getLogger(BotChrome.class.getSimpleName());
 	public final AtomicReference<Bot> bot;

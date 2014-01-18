@@ -5,9 +5,6 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
-/**
- * @author Paris
- */
 public class PrintStreamHandler extends Handler {
 	@Override
 	public void publish(final LogRecord record) {

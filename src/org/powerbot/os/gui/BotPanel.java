@@ -1,4 +1,4 @@
-package org.powerbot.os.ui;
+package org.powerbot.os.gui;
 
 import java.awt.Color;
 import java.awt.GridBagLayout;
@@ -11,9 +11,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-/**
- * @author Paris
- */
 public class BotPanel extends JPanel {
 
 	public BotPanel() {

@@ -1,4 +1,4 @@
-package org.powerbot.os.loader;
+package org.powerbot.os.client.loader;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -6,18 +6,13 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Callable;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.powerbot.os.Boot;
 import org.powerbot.os.Configuration;
 import org.powerbot.os.util.HttpUtils;
 import org.powerbot.os.util.IOUtils;
 
-/**
- * @author Paris
- */
 public class GameCrawler implements Callable<Boolean> {
 	public final Map<String, String> parameters, properties;
 	public String game, archive, clazz;

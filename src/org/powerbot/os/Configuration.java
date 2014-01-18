@@ -4,9 +4,6 @@ import java.io.File;
 
 import org.powerbot.os.misc.Resources;
 
-/**
- * @author Paris
- */
 public class Configuration {
 	public static final String NAME = "RSBot OS Beta";
 	public static final int VERSION = 1000;

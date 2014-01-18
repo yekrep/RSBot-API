@@ -1,4 +1,4 @@
-package org.powerbot.os.loader;
+package org.powerbot.os.client.loader;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

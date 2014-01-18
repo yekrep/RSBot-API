@@ -1,4 +1,4 @@
-package org.powerbot.os.loader;
+package org.powerbot.os.client.loader;
 
 import java.applet.Applet;
 import java.applet.AppletContext;

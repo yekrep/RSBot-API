@@ -14,14 +14,11 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 import org.powerbot.os.misc.Resources;
-import org.powerbot.os.ui.BotChrome;
+import org.powerbot.os.gui.BotChrome;
 import org.powerbot.os.misc.PrintStreamHandler;
 import org.powerbot.os.util.IOUtils;
 import org.powerbot.os.util.StringUtils;
 
-/**
- * @author Paris
- */
 public class Boot implements Runnable {
 	private static final String SWITCH_RESTARTED = "-restarted", SWITCH_DEBUG = "-debug";
 
