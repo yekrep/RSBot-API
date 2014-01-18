@@ -1,10 +1,14 @@
 package org.powerbot.os.ui;
 
 import java.awt.Color;
+import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.Closeable;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Logger;
 
@@ -37,6 +41,7 @@ public class BotChrome extends JFrame implements Closeable {
 			}
 		});
 
+		setJMenuBar(new BotMenuBar(this));
 		add(panel = new BotPanel());
 
 		setSize(new Dimension(765, 503));
@@ -48,6 +53,22 @@ public class BotChrome extends JFrame implements Closeable {
 
 		bot = new AtomicReference<Bot>(new Bot(this));
 		new Thread(bot.get()).start();
+	}
+
+	public static void openURL(final String url) {
+		if (!Desktop.isDesktopSupported() || !Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
+			return;
+		}
+		final URI uri;
+		try {
+			uri = new URI(url);
+		} catch (final URISyntaxException ignored) {
+			return;
+		}
+		try {
+			Desktop.getDesktop().browse(uri);
+		} catch (final IOException ignored) {
+		}
 	}
 
 	@Override

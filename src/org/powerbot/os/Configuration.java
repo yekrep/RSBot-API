@@ -20,6 +20,9 @@ public class Configuration {
 	public final class URLs {
 		public static final String DOMAIN = "powerbot.org";
 
+		private static final String SITE_PUBLIC = "http://www." + DOMAIN;
+		public static final String LICENSE = SITE_PUBLIC + "/terms/license/";
+
 		public static final String GAME_DOMAIN = "runescape.com";
 	}
 
