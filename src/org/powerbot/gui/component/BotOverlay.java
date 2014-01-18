@@ -150,10 +150,15 @@ public class BotOverlay extends JDialog {
 			p.translate(l.x, l.y);
 			d2 = new Dimension(d2.width - l.x, d2.height - l.y);
 		}
-		setLocation(p);
-		setSize(d2);
-		panel.setPreferredSize(getSize());
-		pack();
+
+		if (!getLocation().equals(p)) {
+			setLocation(p);
+		}
+
+		if (!getSize().equals(d2)) {
+			setSize(d2);
+			panel.setPreferredSize(getSize());
+		}
 	}
 
 	@Override
