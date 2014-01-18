@@ -45,7 +45,6 @@ import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
@@ -59,7 +58,6 @@ import org.powerbot.misc.CryptFile;
 import org.powerbot.misc.GameAccounts;
 import org.powerbot.misc.GameAccounts.Account;
 import org.powerbot.misc.NetworkAccount;
-import org.powerbot.misc.Resources;
 import org.powerbot.misc.ScriptBundle;
 import org.powerbot.misc.ScriptList;
 
@@ -68,8 +66,7 @@ public final class BotScripts extends JDialog implements ActionListener {
 	private final BotChrome chrome;
 	private final JScrollPane scroll;
 	private final JPanel table;
-	private final JToggleButton locals;
-	private final JButton username, refresh;
+	private final JButton username;
 	private final JTextField search;
 	private final AtomicBoolean init;
 	private final CryptFile icons;
@@ -91,14 +88,12 @@ public final class BotScripts extends JDialog implements ActionListener {
 		if (!NetworkAccount.getInstance().isLoggedIn() || loading.get()) {
 			scroll = null;
 			table = null;
-			locals = null;
-			username = refresh = null;
+			username = null;
 			search = null;
 			dispose();
 			return;
 		}
 
-		setIconImage(Resources.getImage(Resources.Paths.FILE));
 		final JToolBar toolbar = new JToolBar();
 		final int d = 2;
 		toolbar.setBorder(new EmptyBorder(d, d, d, d));
@@ -109,20 +104,6 @@ public final class BotScripts extends JDialog implements ActionListener {
 		final JPanel panelRight = new JPanel(flow);
 		add(toolbar, BorderLayout.NORTH);
 
-		refresh = new JButton(new ImageIcon(Resources.getImage(Resources.Paths.REFRESH)));
-		refresh.setToolTipText(BotLocale.REFRESH);
-		refresh.addActionListener(new ActionListener() {
-			public void actionPerformed(final ActionEvent e) {
-				refresh();
-			}
-		});
-		refresh.setFocusable(false);
-		toolbar.add(refresh);
-		locals = new JToggleButton(new ImageIcon(Resources.getImage(Resources.Paths.PENCIL)));
-		locals.setToolTipText(BotLocale.LOCALONLY);
-		locals.addActionListener(this);
-		locals.setFocusable(false);
-		toolbar.add(locals);
 		toolbar.add(Box.createHorizontalStrut(d));
 
 		final GameAccounts ga = GameAccounts.getInstance();
@@ -131,7 +112,6 @@ public final class BotScripts extends JDialog implements ActionListener {
 		username.setFont(username.getFont().deriveFont(username.getFont().getSize2D() - 1f));
 		username.addActionListener(this);
 		username.setFocusable(false);
-		username.setIcon(new ImageIcon(Resources.getImage(Resources.Paths.KEYS)));
 		toolbar.add(username);
 
 		search = new JTextField(BotLocale.SEARCH);
@@ -163,7 +143,7 @@ public final class BotScripts extends JDialog implements ActionListener {
 		search.setPreferredSize(new Dimension(150, search.getPreferredSize().height));
 		panelRight.add(search);
 		panelRight.add(Box.createHorizontalStrut(d));
-		final JButton more = new JButton(BotLocale.BROWSE, new ImageIcon(Resources.getImage(Resources.Paths.SEARCH)));
+		final JButton more = new JButton(BotLocale.BROWSE);
 		more.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		more.setToolTipText(BotLocale.BROWSETIP);
 		more.setFont(username.getFont());
@@ -256,7 +236,6 @@ public final class BotScripts extends JDialog implements ActionListener {
 	}
 
 	public void refresh() {
-		refresh.setEnabled(false);
 		table.removeAll();
 		final JPanel panel = new JPanel();
 		panel.setBorder(new EmptyBorder(15, 15, 15, 15));
@@ -291,7 +270,6 @@ public final class BotScripts extends JDialog implements ActionListener {
 							public void run() {
 								table.validate();
 								table.repaint();
-								refresh.setEnabled(true);
 							}
 						});
 						return;
@@ -317,7 +295,6 @@ public final class BotScripts extends JDialog implements ActionListener {
 						table.validate();
 						table.repaint();
 						filter();
-						refresh.setEnabled(true);
 						init.set(true);
 					}
 				});
@@ -367,9 +344,6 @@ public final class BotScripts extends JDialog implements ActionListener {
 			if (!search.getText().isEmpty() && !search.getText().equals(BotLocale.SEARCH) && !d.matches(search.getText())) {
 				v = false;
 			}
-			if (locals.isSelected() && !d.local) {
-				v = false;
-			}
 			c.setVisible(v);
 		}
 		adjustViewport();
@@ -413,7 +387,7 @@ public final class BotScripts extends JDialog implements ActionListener {
 			panelInfo.setBounds(dx, dy, getPreferredCellSize().width - dx - 1, getPreferredCellSize().height - dy * 2);
 			add(panelInfo);
 
-			final JLabel name = new JLabel(def.getName());
+			final JLabel name = new JLabel((def.local ? "[L] " : "") + def.getName());
 			final String authors = def.getAuthors();
 			if (authors != null && !authors.isEmpty()) {
 				name.setToolTipText(String.format("by %s", authors));

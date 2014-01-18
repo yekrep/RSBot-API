@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javax.swing.ImageIcon;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
@@ -20,7 +19,6 @@ import org.powerbot.event.debug.*;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.gui.BotSettingExplorer;
 import org.powerbot.gui.BotWidgetExplorer;
-import org.powerbot.misc.Resources;
 import org.powerbot.script.methods.MethodContext;
 
 public final class BotMenuView implements ActionListener {
@@ -55,11 +53,9 @@ public final class BotMenuView implements ActionListener {
 		this.chrome = chrome;
 		final JMenuItem widgetExplorer = new JMenuItem(BotLocale.WIDGETEXPLORER);
 		widgetExplorer.addActionListener(this);
-		widgetExplorer.setIcon(new ImageIcon(Resources.Paths.EDIT));
 		menu.add(widgetExplorer);
 		final JMenuItem settingExplorer = new JMenuItem(BotLocale.SETTINGEXPLORER);
 		settingExplorer.addActionListener(this);
-		settingExplorer.setIcon(new ImageIcon(Resources.Paths.SETTINGS));
 		menu.add(settingExplorer);
 
 		menu.addSeparator();

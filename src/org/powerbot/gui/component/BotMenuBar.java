@@ -48,10 +48,8 @@ public class BotMenuBar extends JMenuBar implements ActionListener {
 		}
 
 		signin = item(BotLocale.SIGNIN);
-		signin.setIcon(new ImageIcon(Resources.getImage(Resources.Paths.KEYS)));
 		edit.add(signin);
 		final JMenuItem accounts = item(BotLocale.ACCOUNTS);
-		accounts.setIcon(new ImageIcon(Resources.getImage(Resources.Paths.ADDRESS)));
 		edit.add(accounts);
 
 		edit.addMenuListener(new MenuListener() {
@@ -97,7 +95,6 @@ public class BotMenuBar extends JMenuBar implements ActionListener {
 
 		script.addSeparator();
 		final JMenu options = new JMenu(BotLocale.OPTIONS);
-		options.setIcon(new ImageIcon(Resources.getImage(Resources.Paths.CONFIG)));
 		script.add(options);
 
 		options.addMenuListener(new MenuListener() {
@@ -213,9 +210,6 @@ public class BotMenuBar extends JMenuBar implements ActionListener {
 			help.add(item(BotLocale.ABOUT));
 		}
 		help.add(item(BotLocale.LICENSE));
-		final JMenuItem web = item(BotLocale.WEBSITE);
-		web.setIcon(new ImageIcon(Resources.getImage(Resources.Paths.ICON_SMALL)));
-		help.add(web);
 
 		add(file);
 		add(edit);
@@ -256,8 +250,6 @@ public class BotMenuBar extends JMenuBar implements ActionListener {
 			showAbout();
 		} else if (s.equals(BotLocale.LICENSE)) {
 			showLicense();
-		} else if (s.equals(BotLocale.WEBSITE)) {
-			BotChrome.openURL(Configuration.URLs.SITE);
 		}
 	}
 

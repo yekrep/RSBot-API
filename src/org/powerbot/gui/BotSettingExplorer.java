@@ -31,7 +31,6 @@ import javax.swing.WindowConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import org.powerbot.misc.Resources;
 import org.powerbot.misc.Tracker;
 
 public class BotSettingExplorer extends JFrame {
@@ -138,7 +137,6 @@ public class BotSettingExplorer extends JFrame {
 
 	private void create() {
 		setTitle("Setting Explorer");
-		setIconImage(Resources.getImage(Resources.Paths.SETTINGS));
 		setResizable(false);
 		setPreferredSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT));
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);

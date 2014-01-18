@@ -159,7 +159,7 @@ public class ScriptBundle {
 		}
 
 		public boolean matches(final String query) {
-			final String tag = String.format("%s %s %s", getName(), getDescription(), getAuthors()).toLowerCase();
+			final String tag = String.format("%s %s %s %s", local ? "[L]" : "", getName(), getDescription(), getAuthors()).toLowerCase();
 			return tag.contains(query.toLowerCase());
 		}
 

@@ -10,7 +10,6 @@ import java.util.Iterator;
 import java.util.logging.Logger;
 
 import javax.swing.DefaultCellEditor;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
@@ -29,7 +28,6 @@ import javax.swing.table.TableColumnModel;
 import org.powerbot.gui.component.BotLocale;
 import org.powerbot.misc.GameAccounts;
 import org.powerbot.misc.GameAccounts.Account;
-import org.powerbot.misc.Resources;
 import org.powerbot.misc.Tracker;
 
 public final class BotAccounts extends JDialog implements WindowListener {
@@ -40,7 +38,6 @@ public final class BotAccounts extends JDialog implements WindowListener {
 
 	public BotAccounts(final BotChrome parent) {
 		super(parent, BotLocale.ACCOUNTS, true);
-		setIconImage(Resources.getImage(Resources.Paths.ADDRESS));
 
 		final JScrollPane scroll = new JScrollPane();
 
@@ -62,7 +59,7 @@ public final class BotAccounts extends JDialog implements WindowListener {
 
 		final JToolBar bar = new JToolBar();
 		bar.setFloatable(false);
-		final JButton add = new JButton(new ImageIcon(Resources.getImage(Resources.Paths.ADD)));
+		final JButton add = new JButton("+");
 		add.setFocusable(false);
 		add.addActionListener(new ActionListener() {
 			public void actionPerformed(final ActionEvent arg0) {
@@ -79,7 +76,7 @@ public final class BotAccounts extends JDialog implements WindowListener {
 				((AccountTableModel) table.getModel()).fireTableRowsInserted(row, row);
 			}
 		});
-		delete = new JButton(new ImageIcon(Resources.getImage(Resources.Paths.REMOVE)));
+		delete = new JButton("-");
 		delete.setFocusable(false);
 		delete.addActionListener(new ActionListener() {
 			public void actionPerformed(final ActionEvent arg0) {

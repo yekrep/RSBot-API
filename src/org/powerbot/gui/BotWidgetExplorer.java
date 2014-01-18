@@ -35,7 +35,6 @@ import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
 import org.powerbot.event.PaintListener;
-import org.powerbot.misc.Resources;
 import org.powerbot.misc.Tracker;
 import org.powerbot.script.wrappers.Component;
 import org.powerbot.script.wrappers.Widget;
@@ -54,7 +53,6 @@ public class BotWidgetExplorer extends JFrame implements PaintListener {
 	private BotWidgetExplorer(final BotChrome chrome) {
 		super("Widget Explorer");
 		this.chrome = chrome;
-		setIconImage(Resources.getImage(Resources.Paths.EDIT));
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter() {
 			@Override
