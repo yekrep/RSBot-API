@@ -19,6 +19,7 @@ import javax.swing.WindowConstants;
 import org.powerbot.os.Configuration;
 import org.powerbot.os.client.Bot;
 import org.powerbot.os.misc.OSXAdapt;
+import org.powerbot.os.misc.Resources;
 
 /**
  * @author Paris
@@ -32,6 +33,7 @@ public class BotChrome extends JFrame implements Closeable {
 	public BotChrome() {
 		setTitle(Configuration.NAME);
 		setBackground(Color.BLACK);
+		setIconImage(Resources.getImage(Resources.Paths.ICON));
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		JPopupMenu.setDefaultLightWeightPopupEnabled(false);
 		setFocusTraversalKeysEnabled(false);

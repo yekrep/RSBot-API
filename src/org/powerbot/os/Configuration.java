@@ -2,6 +2,8 @@ package org.powerbot.os;
 
 import java.io.File;
 
+import org.powerbot.os.misc.Resources;
+
 /**
  * @author Paris
  */

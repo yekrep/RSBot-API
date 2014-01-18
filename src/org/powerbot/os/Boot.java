@@ -2,6 +2,7 @@ package org.powerbot.os;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -12,8 +13,10 @@ import java.util.logging.Logger;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
+import org.powerbot.os.misc.Resources;
 import org.powerbot.os.ui.BotChrome;
 import org.powerbot.os.misc.PrintStreamHandler;
+import org.powerbot.os.util.IOUtils;
 import org.powerbot.os.util.StringUtils;
 
 /**
@@ -81,7 +84,16 @@ public class Boot implements Runnable {
 
 		if (Configuration.OS == Configuration.OperatingSystem.MAC) {
 			args.add("-Xdock:name=" + Configuration.NAME);
-			//args.add("-Xdock:icon=" + ICON_TMP.getAbsolutePath());
+
+			final File icon = new File(Configuration.TEMP, "ico");
+			if (!icon.isFile()) {
+				try {
+					IOUtils.write(Resources.getResourceURL(Resources.Paths.ICON).openStream(), new FileOutputStream(icon));
+				} catch (final IOException ignored) {
+				}
+			}
+
+			args.add("-Xdock:icon=" + icon.getAbsolutePath());
 		}
 
 		args.add("-classpath");
