@@ -85,8 +85,8 @@ public class Bank extends ItemQuery<Item> {
 		ctx.objects.select().id(BANK_BOOTH_IDS, BANK_COUNTER_IDS, BANK_CHEST_IDS).select(f).select(UNREACHABLE_FILTER).nearest();
 		final double dist = Math.min(t.distanceTo(ctx.npcs.peek()), t.distanceTo(ctx.objects.peek()));
 		final List<Interactive> interactives = new ArrayList<Interactive>();
-		ctx.npcs.within(dist + Random.nextInt(2, 5));
-		ctx.objects.within(dist + Random.nextInt(2, 5));
+		ctx.npcs.within(dist + Random.nextInt(2, 5)).within(ctx.npcs.peek(), 2d);
+		ctx.objects.within(dist + Random.nextInt(2, 5)).within(ctx.objects.peek(), 2d);
 		ctx.npcs.addTo(interactives);
 		ctx.objects.addTo(interactives);
 		final int len = interactives.size();

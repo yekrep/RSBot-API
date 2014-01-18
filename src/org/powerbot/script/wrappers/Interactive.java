@@ -82,7 +82,7 @@ public abstract class Interactive extends MethodProvider implements Targetable, 
 			return false;
 		}
 
-		TileMatrix m;
+		final TileMatrix m;
 		if (this instanceof Locatable) {
 			m = ((Locatable) this).getLocation().getMatrix(ctx);
 		} else {
