@@ -1,5 +1,6 @@
 package org.powerbot.os.loader;
 
+import org.powerbot.os.Configuration;
 import org.powerbot.util.io.HttpClient;
 import org.powerbot.util.io.IOHelper;
 
@@ -43,8 +44,19 @@ public class Crawler implements Runnable {
         Matcher m;
         String url, referer, html;
 
-        url = "http://oldschool69.runescape.com/j1";
-        referer = null;
+	    url = "http://oldschool." + Configuration.GAME_DOMAIN + "/";
+	    html = download(url, null);
+	    if (html == null) {
+		    return;
+	    }
+	    p = Pattern.compile("<a href=\"(http://[^\\\"]+)\">Choose best members only world for me ", Pattern.CASE_INSENSITIVE);
+	    m = p.matcher(html);
+	    if (!m.find()) {
+		    return;
+	    }
+
+	    referer = url;
+        url = m.group(1);
         html = download(url, referer);
         if (html == null) {
             return;
