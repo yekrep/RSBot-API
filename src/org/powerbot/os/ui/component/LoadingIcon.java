@@ -12,33 +12,37 @@ import javax.swing.JPanel;
  * @author Paris
  */
 public class LoadingIcon extends JPanel {
-	public final AtomicInteger progress;
+	private final AtomicInteger progress, target;
+	private final Thread worker;
 
 	public LoadingIcon() {
 		progress = new AtomicInteger(0);
+		target = new AtomicInteger(progress.get());
 		setBackground(Color.BLACK);
 		setForeground(Color.GRAY);
 
-		final Thread t = new Thread(new Runnable() {
+		worker = new Thread(new Runnable() {
 			@Override
 			public void run() {
-				while (!Thread.interrupted() && progress.get() < 101) {
+				while (progress.incrementAndGet() <= target.get() && !Thread.interrupted()) {
 					try {
 						Thread.sleep(40);
 					} catch (final InterruptedException ignored) {
-					}
-
-					if (!isVisible()) {
-						continue;
 					}
 
 					repaint();
 				}
 			}
 		});
-		t.setDaemon(true);
-		t.setPriority(Thread.MIN_PRIORITY);
-		t.start();
+		worker.setDaemon(true);
+		worker.setPriority(Thread.MIN_PRIORITY);
+	}
+
+	public void setProgress(final int p) {
+		if (target.get() < p) {
+			target.set(p);
+			worker.start();
+		}
 	}
 
 	@Override

@@ -24,6 +24,6 @@ public class BotPanel extends JPanel {
 	}
 
 	public void setProgress(final int p) {
-		loading.progress.set(p);
+		loading.setProgress(p);
 	}
 }

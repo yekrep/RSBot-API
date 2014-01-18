@@ -47,6 +47,7 @@ public class BotChrome extends JFrame implements Closeable {
 		setResizable(false);
 		setVisible(true);
 
+		panel.setProgress(50);
 		bot = new AtomicReference<Bot>(new Bot(this));
 		new Thread(bot.get()).start();
 	}
