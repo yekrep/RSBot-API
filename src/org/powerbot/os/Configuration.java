@@ -9,6 +9,7 @@ public class Configuration {
 	public static final String NAME = "RSBot OS Beta";
 	public static final int VERSION = 1000;
 
+	public static final boolean FROMJAR;
 	public static final File TEMP;
 
 	public static final OperatingSystem OS;
@@ -27,6 +28,8 @@ public class Configuration {
 	}
 
 	static {
+		FROMJAR = Configuration.class.getClassLoader().getResource(Resources.Paths.ICON) != null;
+
 		final String os = System.getProperty("os.name");
 		if (os.contains("Mac")) {
 			OS = OperatingSystem.MAC;
