@@ -67,6 +67,7 @@ public class Bot implements Runnable, Closeable {
 		applet.setStub(stub);
 		applet.setSize(d);
 		applet.setMinimumSize(d);
+		chrome.panel.setProgress(100);
 		chrome.add(applet);
 		applet.init();
 		applet.start();

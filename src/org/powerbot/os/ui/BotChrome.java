@@ -14,6 +14,7 @@ import javax.swing.WindowConstants;
 
 import org.powerbot.os.Configuration;
 import org.powerbot.os.client.Bot;
+import org.powerbot.os.ui.component.BotPanel;
 
 /**
  * @author Paris
@@ -21,6 +22,7 @@ import org.powerbot.os.client.Bot;
 public class BotChrome extends JFrame implements Closeable {
 	private static final Logger log = Logger.getLogger(BotChrome.class.getSimpleName());
 	public final AtomicReference<Bot> bot;
+	public final BotPanel panel;
 
 	public BotChrome() {
 		setTitle(Configuration.NAME);
@@ -35,6 +37,8 @@ public class BotChrome extends JFrame implements Closeable {
 				close();
 			}
 		});
+
+		add(panel = new BotPanel());
 
 		setSize(new Dimension(765, 503));
 		setPreferredSize(getSize());
