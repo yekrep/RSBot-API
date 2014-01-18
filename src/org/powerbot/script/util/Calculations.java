@@ -16,6 +16,9 @@ public class Calculations {
 	public static Point nextPoint(final Rectangle b, final Rectangle o) {
 		//boundary data
 		final double[] d = {b.x, b.y, b.width, b.height, o.width, o.height};
+		if (Math.min(b.width, Math.min(b.height, Math.min(o.width, o.height))) < 1) {
+			return new Point(-1, -1);
+		}
 
 		//uniform ellipse distribution
 		final double rho = Math.sqrt(Random.nextDouble());
