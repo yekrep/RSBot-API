@@ -42,10 +42,10 @@ final class BotPanelLogHandler extends Handler {
 		}
 
 		Color c = new Color(200, 200, 200);
-		if (record.getLevel() == Level.SEVERE || record.getLevel() == Level.WARNING) {
+		if (record.getLevel().intValue() >= Level.WARNING.intValue()) {
 			c = new Color(255, 87, 71);
 		}
 		label.setForeground(c);
-		label.setText(record.getMessage());
+		label.setText(record.getLevel().intValue() <= Level.WARNING.intValue() ? "" : record.getMessage());
 	}
 }
