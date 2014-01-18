@@ -22,8 +22,7 @@ public class BotMenuBar extends JMenuBar {
 	public BotMenuBar(final BotChrome chrome) {
 		this.chrome = chrome;
 
-		final JMenu file = new JMenu("File"), edit = new JMenu("Edit"), view = new JMenu("View"),
-				input = new JMenu("Input"), help = new JMenu("Help");
+		final JMenu file = new JMenu("File"), edit = new JMenu("Edit"), view = new JMenu("View"), help = new JMenu("Help");
 
 		final JMenuItem license = new JMenuItem("License");
 		help.add(license);
@@ -48,7 +47,6 @@ public class BotMenuBar extends JMenuBar {
 		add(file);
 		add(edit);
 		add(view);
-		add(input);
 		add(help);
 	}
 
