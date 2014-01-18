@@ -1,13 +1,15 @@
 package org.powerbot.os.loader;
 
+import org.powerbot.os.Configuration;
 import org.powerbot.os.util.HttpUtils;
 import org.powerbot.os.util.IOUtils;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,10 +30,12 @@ public class GameLoader implements Callable<ClassLoader> {
 	public ClassLoader call() {
 		byte[] buffer;
 		try {
-			final URLConnection clientConnection = HttpUtils.getHttpConnection(new URL(crawler.archive));
-			clientConnection.addRequestProperty("Referer", crawler.game);
-			buffer = IOUtils.read(HttpUtils.getInputStream(clientConnection));
-		} catch (IOException ignored) {
+			final HttpURLConnection con = HttpUtils.getHttpConnection(new URL(crawler.archive));
+			con.addRequestProperty("Referer", crawler.game);
+			final File cache = new File(Configuration.TEMP, "client.jar");
+			HttpUtils.download(con, cache);
+			buffer = IOUtils.read(cache);
+		} catch (final IOException ignored) {
 			buffer = null;
 		}
 		if (buffer == null) {

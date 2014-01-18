@@ -1,5 +1,6 @@
 package org.powerbot.os.util;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -52,6 +53,29 @@ public class HttpUtils {
 		}
 		s.append("Trident/6.0)");
 		HTTP_USERAGENT_FAKE = s.toString();
+	}
+
+	public static void download(final HttpURLConnection con, final File file) throws IOException {
+		if (file.exists()) {
+			try {
+				con.setIfModifiedSince(file.lastModified());
+			} catch (final IllegalStateException ignored) {
+			}
+		}
+
+		switch (con.getResponseCode()) {
+		case HttpURLConnection.HTTP_OK:
+			IOUtils.write(getInputStream(con), file);
+			break;
+		case HttpURLConnection.HTTP_NOT_FOUND:
+		case HttpURLConnection.HTTP_GONE:
+			if (file.exists()) {
+				file.delete();
+			}
+			break;
+		}
+
+		con.disconnect();
 	}
 
 	public static HttpURLConnection getHttpConnection(final URL url) throws IOException {
