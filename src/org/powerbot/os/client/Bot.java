@@ -4,6 +4,7 @@ import java.applet.Applet;
 import java.awt.Dimension;
 import java.io.Closeable;
 import java.io.IOException;
+import java.util.Map;
 import java.util.logging.Logger;
 
 import javax.swing.SwingUtilities;
@@ -54,7 +55,6 @@ public class Bot implements Runnable, Closeable {
 	}
 
 	private void hook(final OSRSLoader loader) {
-		final Dimension d = new Dimension(765, 503);
 		applet = loader.getApplet();
 		//TODO: client = (Client) loader.getClient();
 		final Crawler crawler = loader.getGameLoader().getCrawler();
@@ -65,6 +65,16 @@ public class Bot implements Runnable, Closeable {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
+				Dimension d = null;
+				final Map<String, String> p = crawler.properties;
+				if (p.containsKey("width") && p.containsKey("height")) {
+					try {
+						d = new Dimension(Integer.parseInt(p.get("width")), Integer.parseInt(p.get("height")));
+					} catch (final NumberFormatException ignored) {
+					}
+				}
+				d = d == null ? chrome.getSize() : d;
+
 				applet.setSize(d);
 				applet.setMinimumSize(d);
 				chrome.add(applet);
