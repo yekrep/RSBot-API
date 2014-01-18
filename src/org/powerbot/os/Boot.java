@@ -13,7 +13,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 import org.powerbot.os.ui.BotChrome;
-import org.powerbot.os.util.PrintStreamHandler;
+import org.powerbot.os.misc.PrintStreamHandler;
 import org.powerbot.os.util.StringUtils;
 
 /**

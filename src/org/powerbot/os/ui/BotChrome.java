@@ -18,7 +18,7 @@ import javax.swing.WindowConstants;
 
 import org.powerbot.os.Configuration;
 import org.powerbot.os.client.Bot;
-import org.powerbot.os.util.OSXAdapt;
+import org.powerbot.os.misc.OSXAdapt;
 
 /**
  * @author Paris
