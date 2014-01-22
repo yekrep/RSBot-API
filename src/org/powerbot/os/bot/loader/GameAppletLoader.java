@@ -1,4 +1,4 @@
-package org.powerbot.os.client.loader;
+package org.powerbot.os.bot.loader;
 
 import java.applet.Applet;
 import java.lang.reflect.Constructor;
@@ -9,7 +9,6 @@ public class GameAppletLoader implements Runnable {
 	private Runnable callback;
 	private Applet applet;
 	private Object client;
-	private String packHash;
 
 	public GameAppletLoader(final GameLoader gameLoader, final ClassLoader classLoader) {
 		this.gameLoader = gameLoader;

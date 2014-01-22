@@ -1,4 +1,4 @@
-package org.powerbot.os.client.loader;
+package org.powerbot.os.bot.loader;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;

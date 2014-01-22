@@ -1,4 +1,4 @@
-package org.powerbot.os.client;
+package org.powerbot.os.bot;
 
 import java.applet.Applet;
 import java.awt.Dimension;
@@ -7,10 +7,11 @@ import java.util.Map;
 
 import javax.swing.SwingUtilities;
 
-import org.powerbot.os.client.loader.GameAppletLoader;
-import org.powerbot.os.client.loader.GameCrawler;
-import org.powerbot.os.client.loader.GameLoader;
-import org.powerbot.os.client.loader.GameStub;
+import org.powerbot.os.client.Client;
+import org.powerbot.os.bot.loader.GameAppletLoader;
+import org.powerbot.os.bot.loader.GameCrawler;
+import org.powerbot.os.bot.loader.GameLoader;
+import org.powerbot.os.bot.loader.GameStub;
 import org.powerbot.os.gui.BotChrome;
 
 public class Bot implements Runnable, Closeable {
