@@ -1,0 +1,17 @@
+package org.powerbot.os.client;
+
+public interface Actor {
+	public int getAnimation();
+
+	public int getSpeed();
+
+	public int getHealthRatio();
+
+	public int getCycleEnd();
+
+	public String getOverheadMessage();
+
+	public int getOrientation();
+
+	public int getInteractingIndex();
+}
