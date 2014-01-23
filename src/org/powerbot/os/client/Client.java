@@ -69,7 +69,7 @@ public interface Client {
 
 	public HashTable getWidgetTable();
 
-	public NodeDeque getGroundItems();
+	public NodeDeque[][][] getGroundItems();
 
 	public int[] getVarpbits();
 }
