@@ -25,4 +25,8 @@ public class Tile {
 	public int getFloor() {
 		return floor;
 	}
+
+	public Tile derive(final int x, final int y) {
+		return new Tile(this.x + x, this.y + y, floor);
+	}
 }
