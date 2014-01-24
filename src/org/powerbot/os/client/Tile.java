@@ -9,7 +9,7 @@ public interface Tile {
 
 	public FloorObject getFloorObject();
 
-	public GameObject[] getObjectArray();
+	public GameObject[] getGameObjects();
 
-	public int getObjectArrayPosition();
+	public int getGameObjectLength();
 }
