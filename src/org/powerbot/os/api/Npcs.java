@@ -16,7 +16,7 @@ public class Npcs extends MethodProvider {
 		final List<Npc> r = new CopyOnWriteArrayList<Npc>();
 		final Client client = ctx.getClient();
 		if (client == null) return r;
-		final int[] indices = client.getNpcIndicies();
+		final int[] indices = client.getNpcIndices();
 		final org.powerbot.os.client.Npc[] npcs = client.getNpcs();
 		if (indices == null || npcs == null) return r;
 		final Npc[] arr = new Npc[indices.length];

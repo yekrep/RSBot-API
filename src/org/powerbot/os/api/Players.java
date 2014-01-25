@@ -16,7 +16,7 @@ public class Players extends MethodProvider {
 		final List<Player> r = new CopyOnWriteArrayList<Player>();
 		final Client client = ctx.getClient();
 		if (client == null) return r;
-		final int[] indices = client.getPlayerIndicies();
+		final int[] indices = client.getPlayerIndices();
 		final org.powerbot.os.client.Player[] players = client.getPlayers();
 		if (indices == null || players == null) return r;
 		final Player[] arr = new Player[indices.length];
