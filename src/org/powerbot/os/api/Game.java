@@ -6,7 +6,7 @@ import org.powerbot.os.client.Client;
 
 import java.awt.*;
 
-public class Calculations extends MethodProvider {
+public class Game extends MethodProvider {
 	private static final int[] ARRAY_SIN = new int[2048];
 	private static final int[] ARRAY_COS = new int[2048];
 
@@ -17,7 +17,7 @@ public class Calculations extends MethodProvider {
 		}
 	}
 
-	public Calculations(final MethodContext ctx) {
+	public Game(final MethodContext ctx) {
 		super(ctx);
 	}
 

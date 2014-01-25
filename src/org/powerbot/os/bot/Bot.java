@@ -1,28 +1,34 @@
 package org.powerbot.os.bot;
 
-import java.applet.Applet;
-import java.awt.Dimension;
-import java.io.Closeable;
-import java.util.Map;
-
-import javax.swing.SwingUtilities;
-
-import org.powerbot.os.client.Client;
+import org.powerbot.os.api.MethodContext;
 import org.powerbot.os.bot.loader.GameAppletLoader;
 import org.powerbot.os.bot.loader.GameCrawler;
 import org.powerbot.os.bot.loader.GameLoader;
 import org.powerbot.os.bot.loader.GameStub;
+import org.powerbot.os.client.Client;
+import org.powerbot.os.event.EventDispatcher;
+import org.powerbot.os.event.PaintListener;
 import org.powerbot.os.gui.BotChrome;
+
+import javax.swing.*;
+import java.applet.Applet;
+import java.awt.*;
+import java.io.Closeable;
+import java.util.Map;
 
 public class Bot implements Runnable, Closeable {
 	private final BotChrome chrome;
 	private final ThreadGroup group;
+	private final EventDispatcher dispatcher;
+	public final MethodContext ctx;
 	private Applet applet;
 	private Client client;
 
 	public Bot(final BotChrome chrome) {
 		this.chrome = chrome;
 		group = new ThreadGroup(getClass().getSimpleName());
+		dispatcher = new EventDispatcher();
+		ctx = MethodContext.newContext(this);
 	}
 
 	@Override
@@ -52,7 +58,7 @@ public class Bot implements Runnable, Closeable {
 
 	private void hook(final GameAppletLoader loader) {
 		applet = loader.getApplet();
-		//TODO: client = (Client) loader.getClient();
+		client = (Client) loader.getClient();
 		final GameCrawler crawler = loader.getGameLoader().crawler;
 		final GameStub stub = new GameStub(crawler.parameters, crawler.archive);
 		applet.setStub(stub);
@@ -78,6 +84,32 @@ public class Bot implements Runnable, Closeable {
 				applet.start();
 			}
 		});
+
+		debug();
+	}
+
+	private void debug() {
+		new Thread(group, dispatcher, dispatcher.getClass().getName()).start();
+		ctx.setClient(client);
+		dispatcher.add(new PaintListener() {
+			@Override
+			public void repaint(final Graphics render) {
+
+			}
+		});
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				for (; ; ) {
+					try {
+						Thread.sleep(5000);
+					} catch (InterruptedException ignored) {
+					}
+					System.out.println(ctx.players.getLoaded());
+					System.out.println(ctx.npcs.getLoaded());
+				}
+			}
+		}).start();
 	}
 
 	@Override
