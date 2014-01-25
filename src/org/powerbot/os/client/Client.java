@@ -21,11 +21,11 @@ public interface Client {
 
 	public Player[] getPlayers();
 
-	public int[] getPlayerIndicies();
+	public int[] getPlayerIndices();
 
 	public Npc[] getNpcs();
 
-	public int[] getNpcIndicies();
+	public int[] getNpcIndices();
 
 	public int getOffsetX();
 
