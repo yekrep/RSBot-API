@@ -8,9 +8,10 @@ import org.powerbot.script.lang.ItemQuery;
 import org.powerbot.script.util.Condition;
 import org.powerbot.script.util.Random;
 import org.powerbot.script.wrappers.Component;
-import org.powerbot.script.wrappers.GameObject;
+import org.powerbot.script.wrappers.Interactive;
 import org.powerbot.script.wrappers.Item;
-import org.powerbot.script.wrappers.Widget;
+import org.powerbot.script.wrappers.Locatable;
+import org.powerbot.script.wrappers.Tile;
 
 public class DepositBox extends ItemQuery<Item> {
 	public static final int[] DEPOSIT_BOX_IDS = new int[]{
@@ -29,22 +30,56 @@ public class DepositBox extends ItemQuery<Item> {
 		super(factory);//TODO: document class
 	}
 
+
+	private Interactive getBank() {
+		return ctx.objects.select().id(DEPOSIT_BOX_IDS).select(Interactive.areOnScreen()).nearest().poll();
+	}
+
+	/**
+	 * Returns the absolute nearest bank for walking purposes. Do not use this to open the bank.
+	 *
+	 * @return the {@link org.powerbot.script.wrappers.Locatable} of the nearest bank or {@link Tile#NIL}
+	 * @see #open()
+	 */
+	public Locatable getNearest() {
+		return ctx.objects.select().id(DEPOSIT_BOX_IDS).nearest().poll().getLocation();
+	}
+
+	/**
+	 * Determines if a bank is present in the loaded region.
+	 *
+	 * @return <tt>true</tt> if a bank is present; otherwise <tt>false</tt>
+	 */
+	public boolean isPresent() {
+		return getNearest() != Tile.NIL;
+	}
+
+	/**
+	 * Determines if a bank is on screen.
+	 *
+	 * @return <tt>true</tt> if a bank is in view; otherwise <tt>false</tt>
+	 */
+	public boolean isOnScreen() {
+		return getBank().isValid();
+	}
+
 	public boolean isOpen() {
-		final Widget widget = ctx.widgets.get(WIDGET);
-		return widget != null && widget.isValid();
+		return ctx.widgets.get(WIDGET).isValid();
 	}
 
 	public boolean open() {
 		if (isOpen()) {
 			return true;
 		}
-		for (final GameObject object : ctx.objects.select().id(DEPOSIT_BOX_IDS).nearest().limit(1)) {
-			if (object.interact("Deposit")) {
-				final Widget bankPin = ctx.widgets.get(13);
-				for (int i = 0; i < 20 && !isOpen() && !bankPin.isValid(); i++) {
-					sleep(200, 300);
-				}
-			}
+		if (getBank().interact("Deposit")) {
+			do {
+				Condition.wait(new Callable<Boolean>() {
+					@Override
+					public Boolean call() throws Exception {
+						return ctx.widgets.get(13).isValid() || isOpen();
+					}
+				}, Random.nextInt(100, 200), 15);
+			} while (ctx.players.local().isInMotion());
 		}
 		return isOpen();
 	}
@@ -156,23 +191,40 @@ public class DepositBox extends ItemQuery<Item> {
 		});
 	}
 
+	/**
+	 * Deposits the inventory via the button.
+	 *
+	 * @return <tt>true</tt> if the button was clicked, not if the inventory is empty; otherwise <tt>false</tt>
+	 */
 	public boolean depositInventory() {
-		return select().isEmpty() || ctx.widgets.get(WIDGET, COMPONENT_BUTTON_DEPOSIT_INVENTORY).click();
+		return ctx.backpack.select().isEmpty() || ctx.widgets.get(WIDGET, COMPONENT_BUTTON_DEPOSIT_INVENTORY).click();
 	}
 
+	/**
+	 * Deposits equipment via the button.
+	 *
+	 * @return <tt>true</tt> if the button was clicked; otherwise <tt>false</tt>
+	 */
 	public boolean depositEquipment() {
-		final Component c = ctx.widgets.get(WIDGET, COMPONENT_BUTTON_DEPOSIT_EQUIPMENT);
-		return c != null && c.isValid() && c.click();
+		return ctx.widgets.get(WIDGET, COMPONENT_BUTTON_DEPOSIT_EQUIPMENT).click();
 	}
 
+	/**
+	 * Deposits familiar inventory via the button.
+	 *
+	 * @return <tt>true</tt> if the button was clicked; otherwise <tt>false</tt>
+	 */
 	public boolean depositFamiliar() {
-		final Component c = ctx.widgets.get(WIDGET, COMPONENT_BUTTON_DEPOSIT_FAMILIAR);
-		return c != null && c.isValid() && c.click();
+		return ctx.widgets.get(WIDGET, COMPONENT_BUTTON_DEPOSIT_FAMILIAR).click();
 	}
 
-	public boolean depositPouch() {
-		final Component c = ctx.widgets.get(WIDGET, COMPONENT_BUTTON_DEPOSIT_POUCH);
-		return c != null && c.isValid() && c.click();
+	/**
+	 * Deposits the money pouch via the button.
+	 *
+	 * @return <tt>true</tt> if the button was clicked; otherwise <tt>false</tt>
+	 */
+	public boolean depositMoneyPouch() {
+		return ctx.backpack.getMoneyPouch() == 0 || ctx.widgets.get(WIDGET, COMPONENT_BUTTON_DEPOSIT_POUCH).click();
 	}
 
 	private boolean containsAction(final Component c, String action) {
@@ -187,8 +239,7 @@ public class DepositBox extends ItemQuery<Item> {
 	}
 
 	private boolean isInputWidgetOpen() {
-		final Component child = ctx.widgets.get(1469, 2);
-		return child != null && child.isVisible();
+		return ctx.widgets.get(1469, 2).isVisible();
 	}
 
 	@Override

@@ -18,7 +18,6 @@ import org.powerbot.script.wrappers.Locatable;
 import org.powerbot.script.wrappers.Npc;
 import org.powerbot.script.wrappers.Player;
 import org.powerbot.script.wrappers.Tile;
-import org.powerbot.script.wrappers.Widget;
 
 /**
  * Utilities pertaining to the bank.
@@ -195,26 +194,25 @@ public class Bank extends ItemQuery<Item> {
 						return s.equalsIgnoreCase("Use") || s.equalsIgnoreCase("Open") || s.equalsIgnoreCase("Bank");
 					}
 				})) {
-			final Widget bankPin = ctx.widgets.get(13);
-			for (int i = 0; i < 20 && !isOpen() && !bankPin.isValid(); i++) {
-				sleep(200, 300);
-			}
+			do {
+				Condition.wait(new Callable<Boolean>() {
+					@Override
+					public Boolean call() throws Exception {
+						return ctx.widgets.get(13).isValid() || isOpen();
+					}
+				}, Random.nextInt(100, 200), 15);
+			} while (ctx.players.local().isInMotion());
 		}
 		return isOpen();
 	}
 
 	/**
-	 * Closes the bank by means of walking or the 'X'.
+	 * Closes the bank by the 'X'.
 	 *
 	 * @return <tt>true</tt> if the bank was closed; otherwise <tt>false</tt>
 	 */
 	public boolean close() {
-		if (!isOpen()) {
-			return true;
-		}
-
-		final Component c = ctx.widgets.get(WIDGET, COMPONENT_BUTTON_CLOSE);
-		return c.interact("Close") && Condition.wait(new Callable<Boolean>() {
+		return !isOpen() || ctx.widgets.get(WIDGET, COMPONENT_BUTTON_CLOSE).interact("Close") && Condition.wait(new Callable<Boolean>() {
 			@Override
 			public Boolean call() throws Exception {
 				return !isOpen();
@@ -477,7 +475,7 @@ public class Bank extends ItemQuery<Item> {
 	 * @return <tt>true</tt> if the button was clicked; otherwise <tt>false</tt>
 	 */
 	public boolean depositMoneyPouch() {
-		return ctx.widgets.get(WIDGET, COMPONENT_BUTTON_DEPOSIT_MONEY).click();
+		return ctx.backpack.getMoneyPouch() == 0 || ctx.widgets.get(WIDGET, COMPONENT_BUTTON_DEPOSIT_MONEY).click();
 	}
 
 	/**
@@ -516,8 +514,7 @@ public class Bank extends ItemQuery<Item> {
 	}
 
 	private boolean isInputWidgetOpen() {
-		final Component child = ctx.widgets.get(1469, 2);
-		return child != null && child.isVisible();
+		return ctx.widgets.get(1469, 2).isVisible();
 	}
 
 	/**
