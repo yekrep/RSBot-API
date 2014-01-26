@@ -13,9 +13,9 @@ import java.util.logging.Logger;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
-import org.powerbot.os.misc.Resources;
 import org.powerbot.os.gui.BotChrome;
 import org.powerbot.os.misc.PrintStreamHandler;
+import org.powerbot.os.misc.Resources;
 import org.powerbot.os.util.IOUtils;
 import org.powerbot.os.util.StringUtils;
 
@@ -59,7 +59,7 @@ public class Boot implements Runnable {
 		System.setProperty("java.net.preferIPv4Stack", "true");
 		System.setProperty("http.keepalive", "false");
 
-		new BotChrome();
+		BotChrome.getInstance();
 	}
 
 
@@ -105,7 +105,7 @@ public class Boot implements Runnable {
 			final File java_home = new File("/usr/libexec/java_home");
 			if (java_home.canExecute()) {
 				try {
-					final Process p = Runtime.getRuntime().exec(new String[] {java_home.getPath(), "-v", "1.6"});
+					final Process p = Runtime.getRuntime().exec(new String[]{java_home.getPath(), "-v", "1.6"});
 					final BufferedReader stdin = new BufferedReader(new InputStreamReader(p.getInputStream()));
 					final String home = stdin.readLine();
 					if (home != null && !home.isEmpty() && new File(home).isDirectory()) {

@@ -23,11 +23,12 @@ import org.powerbot.os.misc.Resources;
 
 public class BotChrome extends JFrame implements Closeable {
 	private static final Logger log = Logger.getLogger(BotChrome.class.getSimpleName());
+	private static BotChrome instance;
 	public final AtomicReference<Bot> bot;
 	public final BotMenuBar menu;
 	public final BotPanel panel;
 
-	public BotChrome() {
+	private BotChrome() {
 		setTitle(Configuration.NAME);
 		setBackground(Color.BLACK);
 		setIconImage(Resources.getImage(Resources.Paths.ICON));
@@ -58,6 +59,13 @@ public class BotChrome extends JFrame implements Closeable {
 
 		bot = new AtomicReference<Bot>(new Bot(this));
 		new Thread(bot.get()).start();
+	}
+
+	public static BotChrome getInstance() {
+		if (instance == null) {
+			instance = new BotChrome();
+		}
+		return instance;
 	}
 
 	public static void openURL(final String url) {
