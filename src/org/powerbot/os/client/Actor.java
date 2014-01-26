@@ -1,6 +1,10 @@
 package org.powerbot.os.client;
 
 public interface Actor {
+	public int getX();
+
+	public int getZ();
+
 	public int getAnimation();
 
 	public int getSpeed();
