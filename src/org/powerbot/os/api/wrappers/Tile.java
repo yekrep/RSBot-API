@@ -29,4 +29,9 @@ public class Tile {
 	public Tile derive(final int x, final int y) {
 		return new Tile(this.x + x, this.y + y, floor);
 	}
+
+	@Override
+	public String toString() {
+		return String.format("%s[x=%d/y=%d/floor=%d]", Tile.class.getName(), x, y, floor);
+	}
 }
