@@ -40,7 +40,16 @@ public class CombatBar extends IdQuery<Action> {
 	/**
 	 * Uses the heal poison action on the combat bar.
 	 *
-	 * @return <tt>true</tt> if the action was selected; otherwise <tt>fales</tt>
+	 * @return <tt>true</tt> if the action was selected; otherwise <tt>false</tt>
+	 */
+	public boolean regenerate() {
+		return ctx.widgets.get(WIDGET, COMPONENT_BUTTON_HEAL).interact("Regenerate");
+	}
+
+	/**
+	 * Uses the heal poison action on the combat bar.
+	 *
+	 * @return <tt>true</tt> if the action was selected; otherwise <tt>false</tt>
 	 */
 	public boolean healPoison() {
 		return ctx.widgets.get(WIDGET, COMPONENT_BUTTON_HEAL).interact("Heal");
@@ -77,7 +86,7 @@ public class CombatBar extends IdQuery<Action> {
 		if (component.isVisible() && !(text = component.getText()).isEmpty()) {
 			try {
 				return Integer.parseInt(text.trim());
-			} catch (NumberFormatException ignored) {
+			} catch (final NumberFormatException ignored) {
 			}
 		}
 		return -1;
@@ -89,7 +98,7 @@ public class CombatBar extends IdQuery<Action> {
 		if (!bar.isVisible() || !overlap.isVisible()) {
 			return -1;
 		}
-		double w = bar.getScrollWidth(), p = overlap.getScrollWidth();
+		final double w = bar.getScrollWidth(), p = overlap.getScrollWidth();
 		return w > 0 ? (int) Math.ceil(p / w * 100d) : -1;
 	}
 
