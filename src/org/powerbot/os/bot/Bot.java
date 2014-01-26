@@ -1,6 +1,8 @@
 package org.powerbot.os.bot;
 
 import org.powerbot.os.api.MethodContext;
+import org.powerbot.os.api.wrappers.Player;
+import org.powerbot.os.api.wrappers.Tile;
 import org.powerbot.os.bot.loader.GameAppletLoader;
 import org.powerbot.os.bot.loader.GameCrawler;
 import org.powerbot.os.bot.loader.GameLoader;
@@ -19,7 +21,7 @@ import java.util.Map;
 public class Bot implements Runnable, Closeable {
 	private final BotChrome chrome;
 	private final ThreadGroup group;
-	private final EventDispatcher dispatcher;
+	public final EventDispatcher dispatcher;
 	public final MethodContext ctx;
 	private Applet applet;
 	private Client client;
@@ -94,22 +96,12 @@ public class Bot implements Runnable, Closeable {
 		dispatcher.add(new PaintListener() {
 			@Override
 			public void repaint(final Graphics render) {
-
-			}
-		});
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				for (; ; ) {
-					try {
-						Thread.sleep(5000);
-					} catch (InterruptedException ignored) {
-					}
-					System.out.println(ctx.players.getLoaded());
-					System.out.println(ctx.npcs.getLoaded());
+				final java.util.List<Player> players = ctx.players.getLoaded();
+				for (final Player p : players) {
+					final Tile t = p.getLocation();
 				}
 			}
-		}).start();
+		});
 	}
 
 	@Override
