@@ -25,7 +25,7 @@ public class Game extends MethodProvider {
 		final Point r = new Point(-1, -1);
 		final Client client = ctx.getClient();
 		if (client == null) return r;
-		final RelativePosition rel = new RelativePosition(0, 0);//TODO this
+		final RelativePosition rel = ctx.players.getLocal().getRelativePosition();
 		final int angle = client.getMinimapScale() + client.getMinimapAngle() & 0x7ff;
 		final int[] d = {tile.x, tile.y, ARRAY_SIN[angle], ARRAY_COS[angle]};
 		d[0] = (d[0] - client.getOffsetX()) * 4 + 2 - rel.x / 32;
