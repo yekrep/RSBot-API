@@ -1,6 +1,10 @@
-package org.powerbot.os.client.loader;
+package org.powerbot.os.bot.loader;
+
+import org.powerbot.os.bot.loader.transform.TransformSpec;
+import org.powerbot.os.util.IOUtils;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.InputStream;
 import java.security.AllPermission;
 import java.security.CodeSource;
@@ -14,6 +18,7 @@ public class GameClassLoader extends ClassLoader {
 	private final Map<String, byte[]> resources = new HashMap<String, byte[]>();
 	private final Hashtable<String, Class<?>> loaded;
 	private final ProtectionDomain domain;
+	private final TransformSpec spec;
 
 	public GameClassLoader(final Map<String, byte[]> resources) {
 		this.resources.putAll(resources);
@@ -22,6 +27,8 @@ public class GameClassLoader extends ClassLoader {
 		final Permissions permissions = new Permissions();
 		permissions.add(new AllPermission());
 		domain = new ProtectionDomain(codesource, permissions);
+		spec = new TransformSpec(IOUtils.read(new File("C:\\Users\\Joe\\Desktop\\07.tspec")));
+		spec.adapt();
 	}
 
 	@Override
@@ -29,10 +36,9 @@ public class GameClassLoader extends ClassLoader {
 		if (loaded.containsKey(name)) {
 			return loaded.get(name);
 		}
-
-		final byte[] bytes = resources.remove(name + ".class");
-		if (bytes != null) {
-			//TODO: t-spec this bitch
+		final byte[] bytes_ = resources.remove(name + ".class");
+		if (bytes_ != null) {
+			final byte[] bytes = spec.process(bytes_);
 			final Class<?> clazz = defineClass(name, bytes, 0, bytes.length, domain);
 			if (resolve) {
 				resolveClass(clazz);

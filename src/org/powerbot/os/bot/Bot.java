@@ -1,27 +1,36 @@
-package org.powerbot.os.client;
+package org.powerbot.os.bot;
 
+import org.powerbot.os.api.MethodContext;
+import org.powerbot.os.api.wrappers.Player;
+import org.powerbot.os.api.wrappers.Tile;
+import org.powerbot.os.bot.loader.GameAppletLoader;
+import org.powerbot.os.bot.loader.GameCrawler;
+import org.powerbot.os.bot.loader.GameLoader;
+import org.powerbot.os.bot.loader.GameStub;
+import org.powerbot.os.client.Client;
+import org.powerbot.os.event.EventDispatcher;
+import org.powerbot.os.event.PaintListener;
+import org.powerbot.os.gui.BotChrome;
+
+import javax.swing.*;
 import java.applet.Applet;
-import java.awt.Dimension;
+import java.awt.*;
 import java.io.Closeable;
 import java.util.Map;
-
-import javax.swing.SwingUtilities;
-
-import org.powerbot.os.client.loader.GameAppletLoader;
-import org.powerbot.os.client.loader.GameCrawler;
-import org.powerbot.os.client.loader.GameLoader;
-import org.powerbot.os.client.loader.GameStub;
-import org.powerbot.os.gui.BotChrome;
 
 public class Bot implements Runnable, Closeable {
 	private final BotChrome chrome;
 	private final ThreadGroup group;
+	public final EventDispatcher dispatcher;
+	public final MethodContext ctx;
 	private Applet applet;
 	private Client client;
 
 	public Bot(final BotChrome chrome) {
 		this.chrome = chrome;
 		group = new ThreadGroup(getClass().getSimpleName());
+		dispatcher = new EventDispatcher();
+		ctx = MethodContext.newContext(this);
 	}
 
 	@Override
@@ -51,7 +60,7 @@ public class Bot implements Runnable, Closeable {
 
 	private void hook(final GameAppletLoader loader) {
 		applet = loader.getApplet();
-		//TODO: client = (Client) loader.getClient();
+		client = (Client) loader.getClient();
 		final GameCrawler crawler = loader.getGameLoader().crawler;
 		final GameStub stub = new GameStub(crawler.parameters, crawler.archive);
 		applet.setStub(stub);
@@ -73,7 +82,24 @@ public class Bot implements Runnable, Closeable {
 				applet.setSize(d);
 				applet.setMinimumSize(d);
 				chrome.add(applet);
+				chrome.panel.setVisible(false);
 				applet.start();
+			}
+		});
+
+		debug();
+	}
+
+	private void debug() {
+		new Thread(group, dispatcher, dispatcher.getClass().getName()).start();
+		ctx.setClient(client);
+		dispatcher.add(new PaintListener() {
+			@Override
+			public void repaint(final Graphics render) {
+				final java.util.List<Player> players = ctx.players.getLoaded();
+				for (final Player p : players) {
+					final Tile t = p.getLocation();
+				}
 			}
 		});
 	}
