@@ -61,12 +61,13 @@ public class Boot implements Runnable {
 				} catch (final Exception ignored) {
 				}
 
-		System.setProperty("java.net.preferIPv4Stack", "true");
-		System.setProperty("http.keepalive", "false");
+				System.setProperty("java.net.preferIPv4Stack", "true");
+				System.setProperty("http.keepalive", "false");
 
-		BotChrome.getInstance();
+				BotChrome.getInstance();
+			}
+		});
 	}
-
 
 	public static void fork() {
 		final List<String> args = new ArrayList<String>();
