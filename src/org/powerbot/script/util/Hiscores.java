@@ -1,6 +1,7 @@
 package org.powerbot.script.util;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -31,7 +32,7 @@ public class Hiscores {
 	 * @throws IOException
 	 */
 	private Hiscores(final String username) throws IOException {
-		final String txt = IOUtils.readString(HttpUtils.openStream(String.format(PAGE, StringUtils.urlEncode(username).replace("+", "%A0"))));
+		final String txt = IOUtils.readString(HttpUtils.openStream(new URL(String.format(PAGE, StringUtils.urlEncode(username).replace("+", "%A0")))));
 
 		this.username = username;
 		skills = new HashMap<Stats, SkillStats>();
