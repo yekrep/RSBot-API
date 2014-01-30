@@ -25,7 +25,6 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
 import org.powerbot.Configuration;
-import org.powerbot.util.Base64;
 import org.powerbot.util.HttpUtils;
 import org.powerbot.util.IOUtils;
 import org.powerbot.util.StringUtil;
@@ -176,8 +175,10 @@ public final class CryptFile {
 			for (int i = 0; i < 8; i++) {
 				md.update((byte) ((uid >> (i << 3)) & 0xff));
 			}
-			hash = StringUtil.newStringUtf8(Base64.encode(md.digest()));
-			hash = "etilqs_" + hash.replaceAll("[^A-Za-z0-0]", "").substring(0, 15);
+			hash = StringUtil.byteArrayToHexString(md.digest()).replaceAll("[^A-Za-z0-9]", "").substring(0, 15);
+			if (Configuration.OS == Configuration.OperatingSystem.WINDOWS) {
+				hash = "etilqs_" + hash;
+			}
 		} catch (final NoSuchAlgorithmException ignored) {
 			final Adler32 c = new Adler32();
 			c.update(StringUtil.getBytesUtf8(name));
