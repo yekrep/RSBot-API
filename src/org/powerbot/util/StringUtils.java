@@ -9,6 +9,20 @@ public class StringUtils {
 		return s.replaceAll("\\<.*?\\>", "");
 	}
 
+	public static String toDisplayCase(final String s) {
+		final String d = " '-_/";
+		final StringBuilder b = new StringBuilder();
+		boolean n = true;
+
+		for (char c : s.toCharArray()) {
+			c = n ? Character.toUpperCase(c) : Character.toLowerCase(c);
+			b.append(c);
+			n = d.indexOf(c) >= 0;
+		}
+
+		return b.toString();
+	}
+
 	public static String urlEncode(final String text) {
 		if (text == null) {
 			return null;
