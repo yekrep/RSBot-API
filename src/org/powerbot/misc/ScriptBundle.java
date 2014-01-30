@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 
 import org.powerbot.script.Manifest;
 import org.powerbot.script.Script;
-import org.powerbot.util.StringUtil;
+import org.powerbot.util.StringUtils;
 
 public class ScriptBundle {
 	public final Definition definition;
@@ -88,7 +88,7 @@ public class ScriptBundle {
 		}
 
 		private String getCleanText(final String s) {
-			return s == null || s.isEmpty() ? "" : StringUtil.stripHtml(s.trim());
+			return s == null || s.isEmpty() ? "" : StringUtils.stripHtml(s.trim());
 		}
 
 		public String getName() {
@@ -117,7 +117,7 @@ public class ScriptBundle {
 				if (i != 0) {
 					sb.append(", ");
 				}
-				sb.append(StringUtil.stripHtml(authors[i].trim()));
+				sb.append(StringUtils.stripHtml(authors[i].trim()));
 			}
 			return sb.toString();
 		}

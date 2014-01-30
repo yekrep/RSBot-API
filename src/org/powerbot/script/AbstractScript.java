@@ -25,7 +25,7 @@ import org.powerbot.script.methods.MethodContext;
 import org.powerbot.util.HttpUtils;
 import org.powerbot.util.IOUtils;
 import org.powerbot.util.Ini;
-import org.powerbot.util.StringUtil;
+import org.powerbot.util.StringUtils;
 
 /**
  * An abstract implementation of {@link Script}.
@@ -321,7 +321,7 @@ public abstract class AbstractScript implements Script, Comparable<AbstractScrip
 	 */
 	public BufferedImage downloadImage(final String url) {
 		final Adler32 c = new Adler32();
-		c.update(StringUtil.getBytesUtf8(url));
+		c.update(StringUtils.getBytesUtf8(url));
 		final File f = download(url, "images/" + Long.toHexString(c.getValue()));
 		try {
 			return ImageIO.read(f);

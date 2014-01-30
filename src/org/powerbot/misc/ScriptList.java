@@ -33,7 +33,7 @@ import org.powerbot.script.internal.ScriptClassLoader;
 import org.powerbot.script.internal.ScriptController;
 import org.powerbot.script.internal.environment.Login;
 import org.powerbot.util.Ini;
-import org.powerbot.util.StringUtil;
+import org.powerbot.util.StringUtils;
 
 public class ScriptList {
 	private final static Logger log = Logger.getLogger(ScriptList.class.getName());
@@ -80,7 +80,7 @@ public class ScriptList {
 				def.source = params.get("link");
 				def.className = params.get("className");
 
-				final byte[] key = StringUtil.hexStringToByteArray(params.get("key")), kx = new byte[key.length * 2];
+				final byte[] key = StringUtils.hexStringToByteArray(params.get("key")), kx = new byte[key.length * 2];
 				new SecureRandom().nextBytes(kx);
 				for (int i = 0; i < key.length; i++) {
 					kx[i * 2] = key[i];

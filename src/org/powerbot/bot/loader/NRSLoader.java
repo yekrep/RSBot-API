@@ -23,7 +23,7 @@ import org.powerbot.bot.loader.transform.TransformSpec;
 import org.powerbot.misc.Tracker;
 import org.powerbot.util.HttpUtils;
 import org.powerbot.util.IOUtils;
-import org.powerbot.util.StringUtil;
+import org.powerbot.util.StringUtils;
 
 public class NRSLoader implements Runnable {
 	private final GameLoader gameLoader;
@@ -70,7 +70,7 @@ public class NRSLoader implements Runnable {
 		final MessageDigest digest;
 		try {
 			digest = MessageDigest.getInstance("SHA-1");
-			packHash = StringUtil.byteArrayToHexString(digest.digest(pack));
+			packHash = StringUtils.byteArrayToHexString(digest.digest(pack));
 		} catch (NoSuchAlgorithmException ignored) {
 			packHash = null;
 		}
@@ -130,7 +130,7 @@ public class NRSLoader implements Runnable {
 			return null;
 		}
 
-		md.update(StringUtil.getBytesUtf8(packHash));
+		md.update(StringUtils.getBytesUtf8(packHash));
 		System.arraycopy(md.digest(), 0, b, 0, b.length);
 		final SecretKey key = new SecretKeySpec(b, 0, b.length, keyAlgo);
 
@@ -167,7 +167,7 @@ public class NRSLoader implements Runnable {
 			return;
 		}
 
-		md.update(StringUtil.getBytesUtf8(packHash));
+		md.update(StringUtils.getBytesUtf8(packHash));
 		System.arraycopy(md.digest(), 0, b, 0, b.length);
 		final SecretKey key = new SecretKeySpec(b, 0, b.length, keyAlgo);
 

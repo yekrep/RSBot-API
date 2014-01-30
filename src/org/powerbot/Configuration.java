@@ -7,7 +7,7 @@ import java.util.Enumeration;
 import java.util.zip.Adler32;
 
 import org.powerbot.misc.Resources;
-import org.powerbot.util.StringUtil;
+import org.powerbot.util.StringUtils;
 
 public class Configuration {
 	public static final String NAME = "RSBot";
@@ -84,7 +84,7 @@ public class Configuration {
 
 	public static long getUID() {
 		final Adler32 c = new Adler32();
-		c.update(StringUtil.getBytesUtf8(Configuration.NAME));
+		c.update(StringUtils.getBytesUtf8(Configuration.NAME));
 
 		final Enumeration<NetworkInterface> e;
 		try {

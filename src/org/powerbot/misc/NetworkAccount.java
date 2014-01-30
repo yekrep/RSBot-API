@@ -9,7 +9,7 @@ import org.powerbot.Configuration;
 import org.powerbot.util.HttpUtils;
 import org.powerbot.util.IOUtils;
 import org.powerbot.util.Ini;
-import org.powerbot.util.StringUtil;
+import org.powerbot.util.StringUtils;
 
 public final class NetworkAccount {
 	private static NetworkAccount instance = null;
@@ -93,7 +93,7 @@ public final class NetworkAccount {
 	public synchronized boolean login(final String username, final String password, final String auth) {
 		InputStream is = null;
 		try {
-			is = HttpUtils.openStream(Configuration.URLs.SIGNIN, StringUtil.urlEncode(username), StringUtil.urlEncode(password), StringUtil.urlEncode(auth));
+			is = HttpUtils.openStream(Configuration.URLs.SIGNIN, StringUtils.urlEncode(username), StringUtils.urlEncode(password), StringUtils.urlEncode(auth));
 			data.read(is);
 			updateCache();
 			return true;
@@ -119,7 +119,7 @@ public final class NetworkAccount {
 			return false;
 		}
 		final String salt = (data.get("name") + data.get("email")).toUpperCase();
-		final long hash = IOUtils.crc32(StringUtil.getBytesUtf8(salt));
+		final long hash = IOUtils.crc32(StringUtils.getBytesUtf8(salt));
 		final long perms = Long.parseLong(data.get("permissions"));
 		return perms >> ORDER == hash >> ORDER;
 	}

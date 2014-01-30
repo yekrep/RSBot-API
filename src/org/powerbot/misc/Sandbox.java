@@ -15,7 +15,7 @@ import org.powerbot.bot.loader.GameClassLoader;
 import org.powerbot.script.internal.ScriptClassLoader;
 import org.powerbot.script.internal.ScriptThreadFactory;
 import org.powerbot.script.methods.Keyboard;
-import org.powerbot.util.StringUtil;
+import org.powerbot.util.StringUtils;
 
 public class Sandbox extends SecurityManager {
 	private static final Logger log = Logger.getLogger("Sandbox");
@@ -137,13 +137,13 @@ public class Sandbox extends SecurityManager {
 			}
 		}
 
-		final String path = getCanonicalPath(new File(StringUtil.urlDecode(pathRaw))), tmp = getCanonicalPath(Configuration.TEMP);
+		final String path = getCanonicalPath(new File(StringUtils.urlDecode(pathRaw))), tmp = getCanonicalPath(Configuration.TEMP);
 		// permission controls for crypt files
 		for (final Entry<File, Class<?>[]> entry : CryptFile.PERMISSIONS.entrySet()) {
 			final Class<?>[] entries = new Class<?>[entry.getValue().length + 1];
 			entries[0] = CryptFile.class;
 			System.arraycopy(entry.getValue(), 0, entries, 1, entries.length - 1);
-			final String pathDecoded = getCanonicalPath(new File(StringUtil.urlDecode(entry.getKey().getAbsolutePath())));
+			final String pathDecoded = getCanonicalPath(new File(StringUtils.urlDecode(entry.getKey().getAbsolutePath())));
 			if (pathDecoded.equals(path)) {
 				if (!isCallingClass(entries)) {
 					throw new SecurityException();

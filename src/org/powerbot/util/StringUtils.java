@@ -4,7 +4,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 
-public class StringUtil {
+public class StringUtils {
 	public static String stripHtml(final String s) {
 		return s.replaceAll("\\<.*?\\>", "");
 	}

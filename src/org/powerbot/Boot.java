@@ -19,7 +19,7 @@ import org.powerbot.misc.PrintStreamHandler;
 import org.powerbot.misc.Resources;
 import org.powerbot.misc.Sandbox;
 import org.powerbot.util.IOUtils;
-import org.powerbot.util.StringUtil;
+import org.powerbot.util.StringUtils;
 
 public class Boot implements Runnable {
 	private final static String SWITCH_RESTARTED = "-restarted", SWITCH_DEBUG = "-debug";
@@ -111,7 +111,7 @@ public class Boot implements Runnable {
 
 		args.add("-classpath");
 		final String location = Boot.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-		args.add(StringUtil.urlDecode(location).replaceAll("\\\\", "/"));
+		args.add(StringUtils.urlDecode(location).replaceAll("\\\\", "/"));
 		args.add(Boot.class.getCanonicalName());
 		args.add(SWITCH_RESTARTED);
 

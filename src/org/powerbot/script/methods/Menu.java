@@ -17,7 +17,7 @@ import org.powerbot.script.internal.wrappers.Queue;
 import org.powerbot.script.lang.Filter;
 import org.powerbot.script.util.Condition;
 import org.powerbot.script.util.Random;
-import org.powerbot.util.StringUtil;
+import org.powerbot.util.StringUtils;
 import org.powerbot.util.math.Vector2;
 
 /**
@@ -38,8 +38,8 @@ public class Menu extends MethodProvider {
 		public final String action, option;
 
 		private Entry(final String a, final String o) {
-			this.action = a != null ? StringUtil.stripHtml(a) : "";
-			this.option = o != null ? StringUtil.stripHtml(o) : "";
+			this.action = a != null ? StringUtils.stripHtml(a) : "";
+			this.option = o != null ? StringUtils.stripHtml(o) : "";
 		}
 	}
 
@@ -311,7 +311,7 @@ public class Menu extends MethodProvider {
 		if (nodes.size() > 1) {
 			final MenuItemNode node = nodes.get(0);
 			final String action = node.getAction();
-			if (action != null && StringUtil.stripHtml(action).equalsIgnoreCase(collapsed ? "Walk here" : "Cancel")) {
+			if (action != null && StringUtils.stripHtml(action).equalsIgnoreCase(collapsed ? "Walk here" : "Cancel")) {
 				Collections.reverse(nodes);
 			}
 		}

@@ -78,7 +78,7 @@ public class IOUtils {
 	}
 
 	public static String readString(final InputStream is) {
-		return StringUtil.newStringUtf8(read(is));
+		return StringUtils.newStringUtf8(read(is));
 	}
 
 	public static void write(final InputStream in, final OutputStream out) {
@@ -119,7 +119,7 @@ public class IOUtils {
 	}
 
 	public static void write(final String s, final File out) {
-		final ByteArrayInputStream in = new ByteArrayInputStream(StringUtil.getBytesUtf8(s));
+		final ByteArrayInputStream in = new ByteArrayInputStream(StringUtils.getBytesUtf8(s));
 		write(in, out);
 	}
 

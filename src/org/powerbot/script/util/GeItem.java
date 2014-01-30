@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 import org.powerbot.Configuration;
 import org.powerbot.util.HttpUtils;
 import org.powerbot.util.IOUtils;
-import org.powerbot.util.StringUtil;
+import org.powerbot.util.StringUtils;
 
 /**
  * Retrieves information about an item on the Grand Exchange.
@@ -37,7 +37,7 @@ public class GeItem {
 	 */
 	private GeItem(final int id) throws IOException {
 		final String url = "http://" + Configuration.URLs.GAME_SERVICES_DOMAIN + "/m=itemdb_rs/api/catalogue/detail.json?item=%s";
-		final String txt = IOUtils.readString(HttpUtils.openStream(String.format(url, StringUtil.urlEncode(Integer.toString(id)))));
+		final String txt = IOUtils.readString(HttpUtils.openStream(String.format(url, StringUtils.urlEncode(Integer.toString(id)))));
 
 		if (txt == null || txt.isEmpty() || txt.equals("[]") || txt.equals("{}")) {
 			throw new IOException();

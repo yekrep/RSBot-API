@@ -3,7 +3,7 @@ package org.powerbot.script.wrappers;
 import java.awt.Point;
 
 import org.powerbot.script.methods.MethodContext;
-import org.powerbot.util.StringUtil;
+import org.powerbot.util.StringUtils;
 
 public class Item extends Interactive implements Displayable, Identifiable, Nameable, Stackable {
 	private final int id;
@@ -46,7 +46,7 @@ public class Item extends Interactive implements Displayable, Identifiable, Name
 		} else {
 			name = ItemDefinition.getDef(ctx, this.id).getName();
 		}
-		return StringUtil.stripHtml(name);
+		return StringUtils.stripHtml(name);
 	}
 
 	public boolean isMembers() {

@@ -27,7 +27,7 @@ import javax.crypto.spec.SecretKeySpec;
 import org.powerbot.Configuration;
 import org.powerbot.util.HttpUtils;
 import org.powerbot.util.IOUtils;
-import org.powerbot.util.StringUtil;
+import org.powerbot.util.StringUtils;
 
 public final class CryptFile {
 	public static final Map<File, Class<?>[]> PERMISSIONS = new ConcurrentHashMap<File, Class<?>[]>();
@@ -171,17 +171,17 @@ public final class CryptFile {
 		final MessageDigest md;
 		try {
 			md = MessageDigest.getInstance("SHA-1");
-			md.update(StringUtil.getBytesUtf8(name));
+			md.update(StringUtils.getBytesUtf8(name));
 			for (int i = 0; i < 8; i++) {
 				md.update((byte) ((uid >> (i << 3)) & 0xff));
 			}
-			hash = StringUtil.byteArrayToHexString(md.digest()).replaceAll("[^A-Za-z0-9]", "").substring(0, 15);
+			hash = StringUtils.byteArrayToHexString(md.digest()).replaceAll("[^A-Za-z0-9]", "").substring(0, 15);
 			if (Configuration.OS == Configuration.OperatingSystem.WINDOWS) {
 				hash = "etilqs_" + hash;
 			}
 		} catch (final NoSuchAlgorithmException ignored) {
 			final Adler32 c = new Adler32();
-			c.update(StringUtil.getBytesUtf8(name));
+			c.update(StringUtils.getBytesUtf8(name));
 			c.update((int) (uid & Integer.MAX_VALUE));
 			c.update((int) (uid >> 32));
 			hash = Long.toHexString(c.getValue());

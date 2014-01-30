@@ -11,7 +11,7 @@ import org.powerbot.client.RSInterfaceNode;
 import org.powerbot.script.internal.wrappers.HashTable;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.util.Calculations;
-import org.powerbot.util.StringUtil;
+import org.powerbot.util.StringUtils;
 
 public class Component extends Interactive implements Drawable, Displayable {
 	public static final Color TARGET_FILL_COLOR = new Color(0, 0, 0, 50);
@@ -117,7 +117,7 @@ public class Component extends Interactive implements Drawable, Displayable {
 		if (component != null && (name = component.getComponentName()) == null) {
 			name = "";
 		}
-		return StringUtil.stripHtml(name);
+		return StringUtils.stripHtml(name);
 	}
 
 	public int getItemId() {
