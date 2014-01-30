@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Handler;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.SwingUtilities;
@@ -45,6 +46,14 @@ public class Boot implements Runnable {
 			logger.removeHandler(handler);
 		}
 		logger.addHandler(new PrintStreamHandler());
+
+		Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
+			@Override
+			public void uncaughtException(final Thread t, final Throwable e) {
+				Logger.getLogger("main").logp(Level.SEVERE, t.getStackTrace()[1].getClassName(), t.getStackTrace()[1].getMethodName(), e.getMessage(), e);
+				e.printStackTrace();
+			}
+		});
 
 		if (Configuration.OS == Configuration.OperatingSystem.MAC) {
 			System.setProperty("apple.laf.useScreenMenuBar", "true");
