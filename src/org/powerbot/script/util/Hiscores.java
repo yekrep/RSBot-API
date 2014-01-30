@@ -203,6 +203,27 @@ public class Hiscores {
 	}
 
 	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String toString() {
+		final StringBuilder s = new StringBuilder();
+		final String lf = System.getProperty("line.separator"), d = " * ";
+		s.append(username).append(" (").append(totalxp).append(")").append(lf);
+
+		for (final SkillStats t : skills.values()) {
+			s.append(d).append(t.toString()).append(lf);
+		}
+
+		for (final ActivityStats t : activities.values()) {
+			s.append(d).append(t.toString()).append(lf);
+		}
+
+		s.setLength(s.length() - lf.length());
+		return s.toString();
+	}
+
+	/**
 	 * The type of {@link Hiscores.Stats}.
 	 */
 	public enum StatsType {
@@ -331,6 +352,17 @@ public class Hiscores {
 		public int getRank() {
 			return rank;
 		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public String toString() {
+			final StringBuilder s = new StringBuilder();
+			s.append(StringUtils.toDisplayCase(stats.toString())).append(": ").append(level);
+			s.append(" (").append(xp).append(") #").append(rank);
+			return s.toString();
+		}
 	}
 
 	/**
@@ -379,6 +411,13 @@ public class Hiscores {
 		 */
 		public int getRank() {
 			return rank;
+		}
+
+		@Override
+		public String toString() {
+			final StringBuilder s = new StringBuilder();
+			s.append(StringUtils.toDisplayCase(stats.toString())).append(": ").append(score).append(" #").append(rank);
+			return s.toString();
 		}
 	}
 }
