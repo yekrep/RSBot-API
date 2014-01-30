@@ -6,7 +6,9 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Queue;
@@ -21,6 +23,7 @@ import java.util.zip.Adler32;
 import javax.imageio.ImageIO;
 
 import org.powerbot.Configuration;
+import org.powerbot.gui.BotChrome;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.util.HttpUtils;
 import org.powerbot.util.IOUtils;
@@ -328,6 +331,26 @@ public abstract class AbstractScript implements Script, Comparable<AbstractScrip
 		} catch (final IOException ignored) {
 			f.delete();
 			return new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
+		}
+	}
+
+	public void openURL(final String url) {
+		final String host;
+		try {
+			host = "." + new URL(url).getHost();
+		} catch (final MalformedURLException ignored) {
+			return;
+		}
+
+		final List<String> whitelist = new ArrayList<String>();
+		whitelist.add(Configuration.URLs.DOMAIN);
+		whitelist.add(Configuration.URLs.GAME);
+
+		for (final String w : whitelist) {
+			if (host.endsWith("." + w)) {
+				BotChrome.openURL(url);
+				return;
+			}
 		}
 	}
 
