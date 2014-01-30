@@ -23,7 +23,7 @@ public class Hiscores {
 	private final String username;
 	private final Map<Stats, SkillStats> skills;
 	private final Map<Stats, ActivityStats> activities;
-	private final long updated;
+	private final long totalxp, updated;
 
 	/**
 	 * Downloads and parses a hiscore profile.
@@ -38,6 +38,7 @@ public class Hiscores {
 		skills = new HashMap<Stats, SkillStats>();
 		activities = new HashMap<Stats, ActivityStats>();
 		updated = System.currentTimeMillis();
+		long totalxp = 0L;
 
 		final Map<Integer, Stats> map = new HashMap<Integer, Stats>();
 		for (final Stats s : Stats.values()) {
@@ -54,18 +55,29 @@ public class Hiscores {
 				case SKILL:
 					if (parts.length == 3) {
 						final int[] x = new int[3];
-						try {
-							for (int j = 0; j < x.length; j++) {
+						for (int j = 0; j < x.length; j++) {
+							try {
 								x[j] = Integer.parseInt(parts[j]);
+							} catch (final NumberFormatException ignored) {
+								if (s == Stats.OVERALL && j == 2) {
+									x[j] = Integer.MAX_VALUE;
+								} else {
+									ignored.printStackTrace();
+									break;
+								}
 							}
-						} catch (final NumberFormatException ignored) {
-							if (s == Stats.OVERALL) {
-								continue;
+
+							if (j == x.length - 1) {
+								if (s == Stats.OVERALL) {
+									try {
+										totalxp = Long.parseLong(parts[j]);
+									} catch (final NumberFormatException ignored) {
+										totalxp = x[2];
+									}
+								}
+								skills.put(s, new SkillStats(s, x[1], x[2], x[0]));
 							}
-							ignored.printStackTrace();
-							break;
 						}
-						skills.put(s, new SkillStats(s, x[1], x[2], x[0]));
 					}
 					break;
 
@@ -85,6 +97,8 @@ public class Hiscores {
 				}
 			}
 		}
+
+		this.totalxp = totalxp;
 	}
 
 	/**
@@ -161,6 +175,15 @@ public class Hiscores {
 	 */
 	public ActivityStats getActivity(final Stats key) {
 		return activities.get(key);
+	}
+
+	/**
+	 * Returns the overall total experience points, which may be truncated in {@link #getSkill(org.powerbot.script.util.Hiscores.Stats)}.
+	 *
+	 * @return the overal total experience points
+	 */
+	public long getTotalXp() {
+		return totalxp;
 	}
 
 	/**
