@@ -284,8 +284,8 @@ public class Lobby extends MethodProvider {
 	 * Representation of the lobby tabs.
 	 */
 	public static enum Tab {
-		PLAYER_INFO(234, 907), WORLD_SELECT(32, 910), FRIENDS(31, 909),
-		FRIENDS_CHAT(247, 589), CLAN_CHAT(30, 912), OPTIONS(29, 911);
+		PLAYER_INFO(235, 907), WORLD_SELECT(32, 910), FRIENDS(31, 909),
+		FRIENDS_CHAT(248, 589), CLAN_CHAT(30, 912), OPTIONS(29, 978);
 		private final int widgetTabIndex;
 		private final int widgetPanelIndex;
 
