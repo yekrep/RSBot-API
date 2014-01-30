@@ -1,5 +1,6 @@
 package org.powerbot.misc;
 
+import java.awt.AWTPermission;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.FilePermission;
@@ -12,6 +13,7 @@ import java.util.logging.Logger;
 import org.powerbot.Boot;
 import org.powerbot.Configuration;
 import org.powerbot.bot.loader.GameClassLoader;
+import org.powerbot.gui.BotChrome;
 import org.powerbot.script.internal.ScriptClassLoader;
 import org.powerbot.script.internal.ScriptThreadFactory;
 import org.powerbot.script.methods.Keyboard;
@@ -81,6 +83,10 @@ public class Sandbox extends SecurityManager {
 		if (perm instanceof RuntimePermission) {
 			if (name.equals("setSecurityManager") || (name.equals("setContextClassLoader") && isScriptThread() && !isCallingClass(ScriptThreadFactory.class))) {
 				throw new SecurityException(name);
+			}
+		} else if (perm instanceof AWTPermission) {
+			if (name.equals("showWindowWithoutWarningBanner") && !isCallingClass(BotChrome.class)) {
+				throw new SecurityException();
 			}
 		} else if (perm instanceof FilePermission) {
 			final FilePermission fp = (FilePermission) perm;
