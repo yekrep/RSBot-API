@@ -59,6 +59,9 @@ public class Hiscores {
 								x[j] = Integer.parseInt(parts[j]);
 							}
 						} catch (final NumberFormatException ignored) {
+							if (s == Stats.OVERALL) {
+								continue;
+							}
 							ignored.printStackTrace();
 							break;
 						}
