@@ -18,8 +18,8 @@ import org.powerbot.os.bot.loader.GameCrawler;
 import org.powerbot.os.bot.loader.GameLoader;
 import org.powerbot.os.bot.loader.GameStub;
 import org.powerbot.os.client.Client;
-import org.powerbot.os.event.EventDispatcher;
-import org.powerbot.os.event.PaintListener;
+import org.powerbot.os.bot.event.EventDispatcher;
+import org.powerbot.os.bot.event.PaintListener;
 import org.powerbot.os.gui.BotChrome;
 
 public class Bot implements Runnable, Closeable {

@@ -1,4 +1,4 @@
-package org.powerbot.os.event;
+package org.powerbot.os.bot.event;
 
 import java.util.EventListener;
 import java.util.EventObject;

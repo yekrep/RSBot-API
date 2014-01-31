@@ -1,8 +1,8 @@
 package org.powerbot.os.client.input;
 
 import org.powerbot.os.bot.Bot;
-import org.powerbot.os.event.EventDispatcher;
-import org.powerbot.os.event.PaintEvent;
+import org.powerbot.os.bot.event.EventDispatcher;
+import org.powerbot.os.bot.event.PaintEvent;
 import org.powerbot.os.gui.BotChrome;
 
 import java.awt.*;
