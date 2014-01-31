@@ -2,7 +2,6 @@ package org.powerbot.os.api.wrappers;
 
 import java.awt.Point;
 
-import org.powerbot.os.api.Interactive;
 import org.powerbot.os.api.MethodContext;
 import org.powerbot.os.client.Client;
 
@@ -45,6 +44,10 @@ public abstract class Actor extends Interactive implements Locatable, Validatabl
 		return new RelativePosition(x, z);
 	}
 
+	public ActorCuboid getCuboid() {//TODO: REMOVE
+		return new ActorCuboid(ctx, getActor());
+	}
+
 	@Override
 	public Tile getLocation() {
 		final Client client = ctx.getClient();
@@ -57,12 +60,63 @@ public abstract class Actor extends Interactive implements Locatable, Validatabl
 	}
 
 	@Override
+	public Point getInteractPoint() {
+		final org.powerbot.os.client.Actor actor = getActor();
+		if (actor == null) {
+			return new Point(-1, -1);
+		}
+		final ActorCuboid cuboid = new ActorCuboid(ctx, actor);
+		final Point p = cuboid.getInteractPoint();
+		if (p.x != -1 && p.y != -1) {
+			return p;
+		}
+		return getScreenPoint();
+	}
+
+	@Override
+	public Point getNextPoint() {
+		final org.powerbot.os.client.Actor actor = getActor();
+		if (actor == null) {
+			return new Point(-1, -1);
+		}
+		final ActorCuboid cuboid = new ActorCuboid(ctx, actor);
+		final Point p = cuboid.getNextPoint();
+		if (p.x != -1 && p.y != -1) {
+			return p;
+		}
+		return getScreenPoint();
+	}
+
+	@Override
 	public Point getCenterPoint() {
 		final org.powerbot.os.client.Actor actor = getActor();
-		if (actor != null) {
-			return ctx.game.worldToScreen(actor.getX(), actor.getZ(), 0);
+		if (actor == null) {
+			return new Point(-1, -1);
 		}
-		return new Point(-1, -1);
+		final ActorCuboid cuboid = new ActorCuboid(ctx, actor);
+		final Point p = cuboid.getCenterPoint();
+		if (p.x != -1 && p.y != -1) {
+			return p;
+		}
+		return getScreenPoint();
+	}
+
+	@Override
+	public boolean contains(final Point point) {
+		final org.powerbot.os.client.Actor actor = getActor();
+		if (actor == null) {
+			return false;
+		}
+		final ActorCuboid cuboid = new ActorCuboid(ctx, actor);
+		return cuboid.contains(point);
+	}
+
+	private Point getScreenPoint() {
+		final org.powerbot.os.client.Actor actor = getActor();
+		if (actor == null) {
+			return new Point(-1, -1);
+		}
+		return ctx.game.worldToScreen(actor.getX(), actor.getZ(), 0);
 	}
 
 	@Override
