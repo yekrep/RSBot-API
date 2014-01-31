@@ -2,6 +2,7 @@ package org.powerbot.os.bot.loader;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.security.AllPermission;
@@ -29,13 +30,11 @@ public class GameClassLoader extends ClassLoader {
 		final Permissions permissions = new Permissions();
 		permissions.add(new AllPermission());
 		domain = new ProtectionDomain(codesource, permissions);
-		URI uri;
 		try {
-			uri = Resources.getResourceURL(Resources.Paths.TRANSFORM_SPEC).toURI();
-		} catch (final Exception e) {
-			throw new RuntimeException("bad resource");
+			spec = new TransformSpec(Resources.getResourceURL(Resources.Paths.TRANSFORM_SPEC).openStream());
+		} catch (final IOException e) {
+			throw new RuntimeException("bad resource", e);
 		}
-		spec = new TransformSpec(IOUtils.read(new File(uri)));
 		spec.adapt();
 	}
 
