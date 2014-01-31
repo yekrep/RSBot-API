@@ -33,7 +33,7 @@ public class GameClassLoader extends ClassLoader {
 		try {
 			spec = new TransformSpec(Resources.getResourceURL(Resources.Paths.TRANSFORM_SPEC).openStream());
 		} catch (final IOException e) {
-			throw new RuntimeException("bad resource", e);
+			throw new IllegalStateException("bad resource", e);
 		}
 		spec.adapt();
 	}

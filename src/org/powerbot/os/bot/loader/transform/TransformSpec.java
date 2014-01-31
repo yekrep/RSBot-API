@@ -73,7 +73,7 @@ public class TransformSpec {
 
 	public void adapt() {
 		if (scanner.readInt() != TransformSpec.MAGIC) {
-			throw new RuntimeException("invalid patch format");
+			throw new IllegalStateException("invalid patch format");
 		}
 		name = scanner.readString();
 		version = scanner.readShort();

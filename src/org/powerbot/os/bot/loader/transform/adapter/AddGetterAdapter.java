@@ -111,6 +111,6 @@ public class AddGetterAdapter extends ClassVisitor implements Opcodes {
 		case 'D':
 			return DRETURN;
 		}
-		throw new RuntimeException("bad_return");
+		throw new IllegalArgumentException("bad_return");
 	}
 }

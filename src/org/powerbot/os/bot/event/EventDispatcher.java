@@ -72,7 +72,7 @@ public class EventDispatcher extends AbstractCollection<EventListener> implement
 			return ((AbstractEvent) e).id;
 		}
 
-		throw new RuntimeException("bad event");
+		throw new IllegalArgumentException("bad event");
 	}
 
 	private long getMask(final EventListener e) {
