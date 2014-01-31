@@ -50,7 +50,9 @@ public class BotChrome extends JFrame implements Closeable {
 			new OSXAdapt(this).run();
 		}
 
-		setSize(new Dimension(765, 503));
+		final Dimension d = new Dimension(765, 503);
+		panel.setPreferredSize(d);
+		pack();
 		setPreferredSize(getSize());
 		setMinimumSize(getSize());
 		setLocationRelativeTo(getParent());
