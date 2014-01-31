@@ -71,5 +71,11 @@ public interface Client {
 
 	public NodeDeque[][][] getGroundItems();
 
+	public CollisionMap[] getCollisionMaps();
+
 	public int[] getVarpbits();
+
+	public int getClientState();
+
+	public int getCrosshairIndex();
 }
