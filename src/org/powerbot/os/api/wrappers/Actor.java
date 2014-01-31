@@ -1,10 +1,12 @@
 package org.powerbot.os.api.wrappers;
 
+import java.awt.Point;
+
+import org.powerbot.os.api.Interactive;
 import org.powerbot.os.api.MethodContext;
-import org.powerbot.os.api.MethodProvider;
 import org.powerbot.os.client.Client;
 
-public abstract class Actor extends MethodProvider implements Locatable, Validatable {
+public abstract class Actor extends Interactive implements Locatable, Validatable {
 	public Actor(final MethodContext ctx) {
 		super(ctx);
 	}
@@ -37,7 +39,9 @@ public abstract class Actor extends MethodProvider implements Locatable, Validat
 		if (actor != null) {
 			x = actor.getX();
 			z = actor.getZ();
-		} else x = z = 0;
+		} else {
+			x = z = 0;
+		}
 		return new RelativePosition(x, z);
 	}
 
@@ -47,7 +51,18 @@ public abstract class Actor extends MethodProvider implements Locatable, Validat
 		final org.powerbot.os.client.Actor actor = getActor();
 		if (client != null && actor != null) {
 			return new Tile(client.getOffsetX() + (actor.getX() >> 7), client.getOffsetY() + (actor.getZ() >> 7), client.getFloor());
-		} else return new Tile(-1, -1, -1);
+		} else {
+			return new Tile(-1, -1, -1);
+		}
+	}
+
+	@Override
+	public Point getCenterPoint() {
+		final org.powerbot.os.client.Actor actor = getActor();
+		if (actor != null) {
+			return ctx.game.worldToScreen(actor.getX(), actor.getZ(), 0);
+		}
+		return new Point(-1, -1);
 	}
 
 	@Override
