@@ -1,11 +1,9 @@
 package org.powerbot.os.bot.loader;
 
-import org.powerbot.os.bot.loader.transform.TransformSpec;
-import org.powerbot.os.util.IOUtils;
-
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.InputStream;
+import java.net.URI;
 import java.security.AllPermission;
 import java.security.CodeSource;
 import java.security.Permissions;
@@ -13,6 +11,10 @@ import java.security.ProtectionDomain;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
+
+import org.powerbot.os.bot.loader.transform.TransformSpec;
+import org.powerbot.os.misc.Resources;
+import org.powerbot.os.util.IOUtils;
 
 public class GameClassLoader extends ClassLoader {
 	private final Map<String, byte[]> resources = new HashMap<String, byte[]>();
@@ -27,7 +29,13 @@ public class GameClassLoader extends ClassLoader {
 		final Permissions permissions = new Permissions();
 		permissions.add(new AllPermission());
 		domain = new ProtectionDomain(codesource, permissions);
-		spec = new TransformSpec(IOUtils.read(new File("C:\\Users\\Joe\\Desktop\\07.tspec")));
+		URI uri;
+		try {
+			uri = Resources.getResourceURL(Resources.Paths.TRANSFORM_SPEC).toURI();
+		} catch (final Exception e) {
+			throw new RuntimeException("bad resource");
+		}
+		spec = new TransformSpec(IOUtils.read(new File(uri)));
 		spec.adapt();
 	}
 
