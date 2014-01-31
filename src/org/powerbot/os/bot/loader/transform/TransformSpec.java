@@ -1,15 +1,22 @@
 package org.powerbot.os.bot.loader.transform;
 
-import org.objectweb.asm.ClassReader;
-import org.objectweb.asm.ClassVisitor;
-import org.objectweb.asm.ClassWriter;
-import org.objectweb.asm.tree.ClassNode;
-import org.powerbot.os.bot.loader.transform.adapter.*;
-
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.ClassVisitor;
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.tree.ClassNode;
+import org.powerbot.os.bot.loader.transform.adapter.AddFieldAdapter;
+import org.powerbot.os.bot.loader.transform.adapter.AddGetterAdapter;
+import org.powerbot.os.bot.loader.transform.adapter.AddInterfaceAdapter;
+import org.powerbot.os.bot.loader.transform.adapter.AddMethodAdapter;
+import org.powerbot.os.bot.loader.transform.adapter.InsertCodeAdapter;
+import org.powerbot.os.bot.loader.transform.adapter.OverrideClassAdapter;
+import org.powerbot.os.bot.loader.transform.adapter.SetSignatureAdapter;
+import org.powerbot.os.bot.loader.transform.adapter.SetSuperAdapter;
 
 public class TransformSpec {
 	private final Map<String, ClassVisitor> adapters;
@@ -21,7 +28,7 @@ public class TransformSpec {
 	private String name;
 	private int version;
 
-	public static interface Headers {
+	public interface Headers {
 		int ATTRIBUTE = 1;
 		int GET_STATIC = 2;
 		int GET_FIELD = 3;
@@ -70,6 +77,8 @@ public class TransformSpec {
 		}
 		name = scanner.readString();
 		version = scanner.readShort();
+
+		adapters.put("bs", new SetSuperAdapter(delegate("bs"), "org/powerbot/os/client/input/Canvas"));
 		read:
 		while (true) {
 			final String clazz;
