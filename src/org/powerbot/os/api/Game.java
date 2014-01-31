@@ -1,5 +1,6 @@
 package org.powerbot.os.api;
 
+import org.powerbot.os.api.wrappers.HintArrow;
 import org.powerbot.os.api.wrappers.RelativePosition;
 import org.powerbot.os.api.wrappers.Tile;
 import org.powerbot.os.client.Client;
@@ -19,6 +20,13 @@ public class Game extends MethodProvider {
 
 	public Game(final MethodContext ctx) {
 		super(ctx);
+	}
+
+	public HintArrow getHintArrow() {
+		final HintArrow r = new HintArrow();
+		final Client client = ctx.getClient();
+		if (client == null) return r;
+		return r;
 	}
 
 	private Point tileToMap(final Tile tile) {
