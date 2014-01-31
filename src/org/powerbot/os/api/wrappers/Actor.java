@@ -46,7 +46,7 @@ public abstract class Actor extends MethodProvider implements Locatable, Validat
 		final Client client = ctx.getClient();
 		final org.powerbot.os.client.Actor actor = getActor();
 		if (client != null && actor != null) {
-			return new Tile(client.getOffsetX() + actor.getX() >> 7, client.getOffsetY() + actor.getZ() >> 7, client.getFloor());
+			return new Tile(client.getOffsetX() + (actor.getX() >> 7), client.getOffsetY() + (actor.getZ() >> 7), client.getFloor());
 		} else return new Tile(-1, -1, -1);
 	}
 
