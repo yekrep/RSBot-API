@@ -1,8 +1,18 @@
 package org.powerbot.os.bot;
 
+import java.applet.Applet;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Point;
+import java.io.Closeable;
+import java.util.List;
+import java.util.Map;
+
+import javax.swing.SwingUtilities;
+
 import org.powerbot.os.api.MethodContext;
-import org.powerbot.os.api.wrappers.Player;
-import org.powerbot.os.api.wrappers.Tile;
+import org.powerbot.os.api.wrappers.Actor;
 import org.powerbot.os.bot.loader.GameAppletLoader;
 import org.powerbot.os.bot.loader.GameCrawler;
 import org.powerbot.os.bot.loader.GameLoader;
@@ -11,12 +21,6 @@ import org.powerbot.os.client.Client;
 import org.powerbot.os.event.EventDispatcher;
 import org.powerbot.os.event.PaintListener;
 import org.powerbot.os.gui.BotChrome;
-
-import javax.swing.*;
-import java.applet.Applet;
-import java.awt.*;
-import java.io.Closeable;
-import java.util.Map;
 
 public class Bot implements Runnable, Closeable {
 	private final BotChrome chrome;
@@ -96,9 +100,24 @@ public class Bot implements Runnable, Closeable {
 		dispatcher.add(new PaintListener() {
 			@Override
 			public void repaint(final Graphics render) {
-				final java.util.List<Player> players = ctx.players.getLoaded();
-				for (final Player p : players) {
-					final Tile t = p.getLocation();
+				List<? extends Actor> actors;
+				render.setColor(Color.red);
+				actors = ctx.players.getLoaded();
+				for (final Actor a : actors) {
+					final Point p = a.getCenterPoint();
+					if (p.x == -1) {
+						continue;
+					}
+					render.drawRect(p.x - 5, p.y - 5, 10, 10);
+				}
+				render.setColor(Color.cyan);
+				actors = ctx.npcs.getLoaded();
+				for (final Actor a : actors) {
+					final Point p = a.getCenterPoint();
+					if (p.x == -1) {
+						continue;
+					}
+					render.drawRect(p.x - 5, p.y - 5, 10, 10);
 				}
 			}
 		});
