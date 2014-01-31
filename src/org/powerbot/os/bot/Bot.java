@@ -4,7 +4,8 @@ import java.applet.Applet;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Point;
+import java.awt.Graphics2D;
+import java.awt.geom.Area;
 import java.io.Closeable;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +14,7 @@ import javax.swing.SwingUtilities;
 
 import org.powerbot.os.api.MethodContext;
 import org.powerbot.os.api.wrappers.Actor;
+import org.powerbot.os.api.wrappers.ActorCuboid;
 import org.powerbot.os.bot.loader.GameAppletLoader;
 import org.powerbot.os.bot.loader.GameCrawler;
 import org.powerbot.os.bot.loader.GameLoader;
@@ -104,20 +106,29 @@ public class Bot implements Runnable, Closeable {
 				render.setColor(Color.red);
 				actors = ctx.players.getLoaded();
 				for (final Actor a : actors) {
-					final Point p = a.getCenterPoint();
-					if (p.x == -1) {
+					final ActorCuboid cuboid = a.getCuboid();
+					final Area area = cuboid.cuboid(64);
+					if (area == null) {
 						continue;
 					}
-					render.drawRect(p.x - 5, p.y - 5, 10, 10);
+					((Graphics2D) render).draw(area);
 				}
+				render.setColor(Color.green);
+				final ActorCuboid c_me = ctx.players.getLocal().getCuboid();
+				final Area c_area = c_me.cuboid(64);
+				if (c_area != null) {
+					((Graphics2D) render).draw(c_area);
+				}
+
 				render.setColor(Color.cyan);
 				actors = ctx.npcs.getLoaded();
 				for (final Actor a : actors) {
-					final Point p = a.getCenterPoint();
-					if (p.x == -1) {
+					final ActorCuboid cuboid = a.getCuboid();
+					final Area area = cuboid.cuboid(64);
+					if (area == null) {
 						continue;
 					}
-					render.drawRect(p.x - 5, p.y - 5, 10, 10);
+					((Graphics2D) render).draw(area);
 				}
 			}
 		});
