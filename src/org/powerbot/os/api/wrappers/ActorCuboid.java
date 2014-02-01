@@ -24,18 +24,18 @@ public class ActorCuboid extends Interactive {
 			return null;
 		}
 		final int x = actor.getX(), z = actor.getZ();
-		final int h = 0;
+		final int y = ctx.game.getHeight(x, z), h = actor.getHeight();
 		if (ctx.game.worldToScreen(x, z, h / 2).x == -1) {
 			return null;
 		}
-		final Point g1 = ctx.game.worldToScreen(x - deviation, z - deviation, 0);
-		final Point g2 = ctx.game.worldToScreen(x + deviation, z - deviation, 0);
-		final Point g3 = ctx.game.worldToScreen(x + deviation, z + deviation, 0);
-		final Point g4 = ctx.game.worldToScreen(x - deviation, z + deviation, 0);
-		final Point o1 = ctx.game.worldToScreen(x - deviation, z - deviation, h);
-		final Point o2 = ctx.game.worldToScreen(x + deviation, z - deviation, h);
-		final Point o3 = ctx.game.worldToScreen(x + deviation, z + deviation, h);
-		final Point o4 = ctx.game.worldToScreen(x - deviation, z + deviation, h);
+		final Point g1 = ctx.game.worldToScreen(x - deviation, y, z - deviation, 0);
+		final Point g2 = ctx.game.worldToScreen(x + deviation, y, z - deviation, 0);
+		final Point g3 = ctx.game.worldToScreen(x + deviation, y, z + deviation, 0);
+		final Point g4 = ctx.game.worldToScreen(x - deviation, y, z + deviation, 0);
+		final Point o1 = ctx.game.worldToScreen(x - deviation, y, z - deviation, h);
+		final Point o2 = ctx.game.worldToScreen(x + deviation, y, z - deviation, h);
+		final Point o3 = ctx.game.worldToScreen(x + deviation, y, z + deviation, h);
+		final Point o4 = ctx.game.worldToScreen(x - deviation, y, z + deviation, h);
 		if (g1.x == -1 || g2.x == -1 || g3.x == -1 || g4.x == -1 ||
 				o1.x == -1 || o2.x == -1 || o3.x == -1 || o4.x == -1) {
 			return null;
