@@ -49,11 +49,15 @@ public class Game extends MethodProvider {
 		return new Point(643 + d[4], 83 + d[5]);
 	}
 
-	public int getHeight(final int relativeX, final int relativeY, int floor) {
+	public int getHeight(final int relativeX, final int relativeY) {
 		final Client client = ctx.getClient();
+		if (client == null) {
+			return 0;
+		}
+		int floor = client.getFloor();
 		int x = relativeX >> 7;
 		int y = relativeY >> 7;
-		if (client == null || x < 0 || y < 0 || x > 103 || y > 103 ||
+		if (x < 0 || y < 0 || x > 103 || y > 103 ||
 				floor < 0 || floor > 3) {
 			return 0;
 		}
@@ -73,19 +77,27 @@ public class Game extends MethodProvider {
 		return y * heightEnd + heightStart * (128 - y) >> 7;
 	}
 
-	public Point worldToScreen(final int relativeX, final int relativeY, final int h) {
+	public Point worldToScreen(final int relativeX, final int relativeZ, final int h) {
+		final Client client = ctx.getClient();
+		if (client == null) {
+			return new Point(-1, -1);
+		}
+		return worldToScreen(relativeX, getHeight(relativeX, relativeZ), relativeZ, h);
+	}
+
+	public Point worldToScreen(final int relativeX, final int relativeY, final int relativeZ, final int h) {
 		final Client client = ctx.getClient();
 		final Point r = new Point(-1, -1);
 		if (relativeX < 128 || relativeX > 13056 ||
-				relativeY < 128 || relativeY > 13056) {
+				relativeZ < 128 || relativeZ > 13056) {
 			return r;
 		}
 		final int floor = client.getFloor();
 		if (floor < 0) {
 			return r;
 		}
-		final int height = getHeight(relativeX, relativeY, floor) - h;
-		final int projectedX = relativeX - client.getCameraX(), projectedZ = relativeY - client.getCameraZ(),
+		final int height = relativeY - h;
+		final int projectedX = relativeX - client.getCameraX(), projectedZ = relativeZ - client.getCameraZ(),
 				projectedY = height - client.getCameraY();
 		final int pitch = client.getCameraPitch(), yaw = client.getCameraYaw();
 		final int[] c = {ARRAY_SIN[yaw], ARRAY_COS[yaw], ARRAY_SIN[pitch], ARRAY_COS[pitch]};
