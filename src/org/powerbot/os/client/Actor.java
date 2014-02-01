@@ -5,6 +5,8 @@ public interface Actor {
 
 	public int getZ();
 
+	public int getHeight();
+
 	public int getAnimation();
 
 	public int getSpeed();
