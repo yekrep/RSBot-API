@@ -29,7 +29,9 @@ public class Condition {
 	 * @param tries the maximum number of attempts before this method returns {@code false}
 	 * @return if the condition was satisfied, otherwise {@code false}
 	 */
-	public static boolean wait(final Callable<Boolean> cond, final int freq, final int tries) {
+	public static boolean wait(final Callable<Boolean> cond, final int freq, int tries) {
+		tries = Math.max(1, tries + Random.nextInt(-1, 2));
+
 		for (int i = 0; i < tries; i++) {
 			try {
 				final double f = freq * Random.nextDouble(0.85d, 1.5d);
