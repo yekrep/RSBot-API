@@ -1,9 +1,10 @@
 package org.powerbot.os.api.util;
 
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
 import org.powerbot.os.client.Node;
 import org.powerbot.os.client.NodeDeque;
-
-import java.util.Iterator;
 
 public class Deque<N> implements Iterator<N>, Iterable<N> {
 	private final NodeDeque deque;
@@ -12,7 +13,9 @@ public class Deque<N> implements Iterator<N>, Iterable<N> {
 	private Node next;
 
 	public Deque(final NodeDeque deque, final Class<N> type) {
-		if (deque == null || type == null) throw new IllegalArgumentException();
+		if (deque == null || type == null) {
+			throw new IllegalArgumentException();
+		}
 		this.deque = deque;
 		this.type = type;
 	}
@@ -28,7 +31,9 @@ public class Deque<N> implements Iterator<N>, Iterable<N> {
 			return true;
 		}
 		final Node sentinel = deque.getSentinel();
-		if (sentinel == null) return false;
+		if (sentinel == null) {
+			return false;
+		}
 		if (curr == null) {
 			curr = sentinel;
 		}
@@ -43,7 +48,9 @@ public class Deque<N> implements Iterator<N>, Iterable<N> {
 
 	@Override
 	public N next() {
-		if (!hasNext()) return null;
+		if (!hasNext()) {
+			throw new NoSuchElementException();
+		}
 		final N n = type.cast(next);
 		next = null;
 		return n;
