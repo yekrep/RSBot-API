@@ -32,7 +32,8 @@ public class Condition {
 	public static boolean wait(final Callable<Boolean> cond, final int freq, final int tries) {
 		for (int i = 0; i < tries; i++) {
 			try {
-				Thread.sleep(freq);
+				final double f = freq * Random.nextDouble(0.85d, 1.5d);
+				Thread.sleep(Math.max(100, (int) f));
 			} catch (final InterruptedException ignored) {
 				return false;
 			}
