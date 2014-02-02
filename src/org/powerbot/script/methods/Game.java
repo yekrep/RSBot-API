@@ -207,23 +207,32 @@ public class Game extends MethodProvider {
 	}
 
 	/**
-	 * Determines if a point is on screen.
+	 * Determines if a point is in the viewport.
 	 *
 	 * @param point the point to check
-	 * @return <tt>true</tt> if the point is on screen; otherwise <tt>false</tt>
+	 * @return <tt>true</tt> if the point is in the viewport; otherwise <tt>false</tt>
 	 */
-	public boolean isPointOnScreen(final Point point) {
-		return isPointOnScreen(point.x, point.y);
+	public boolean isPointInViewport(final Point point) {
+		return isPointInViewport(point.x, point.y);
 	}
 
 	/**
-	 * Determines if a point is on screen.
+	 * @see {@link #isPointInViewport(java.awt.Point)}
+	 */
+	@Deprecated
+	@SuppressWarnings("unused")
+	public boolean isPointOnScreen(final Point point) {
+		return isPointOnScreen(point);
+	}
+
+	/**
+	 * Determines if a point is in the viewport.
 	 *
 	 * @param x the x-coordinate
 	 * @param y the y-coordinate
-	 * @return <tt>true</tt> if the point is on screen; otherwise <tt>false</tt>
+	 * @return <tt>true</tt> if the point is in the viewport; otherwise <tt>false</tt>
 	 */
-	public boolean isPointOnScreen(final int x, final int y) {
+	public boolean isPointInViewport(final int x, final int y) {
 		final Dimension dimension = getDimensions();
 		if (x > 0 && y > 0) {
 			if (isLoggedIn()) {
@@ -237,6 +246,15 @@ public class Game extends MethodProvider {
 			return x < dimension.getWidth() && y < dimension.getHeight();
 		}
 		return false;
+	}
+
+	/**
+	 * @see {@link #isPointInViewport(int, int)}
+	 */
+	@Deprecated
+	@SuppressWarnings("unused")
+	public boolean isPointOnScreen(final int x, final int y) {
+		return isPointInViewport(x, y);
 	}
 
 	/**

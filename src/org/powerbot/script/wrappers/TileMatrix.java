@@ -59,13 +59,13 @@ public final class TileMatrix extends Interactive implements Locatable, Drawable
 	}
 
 	@Override
-	public boolean isOnScreen() {
-		return isPolygonOnScreen(getBounds());
+	public boolean isInViewport() {
+		return isPolygonInViewport(getBounds());
 	}
 
-	private boolean isPolygonOnScreen(final Polygon p) {
+	private boolean isPolygonInViewport(final Polygon p) {
 		for (int i = 0; i < p.npoints; i++) {
-			if (!ctx.game.isPointOnScreen(p.xpoints[i], p.ypoints[i])) {
+			if (!ctx.game.isPointInViewport(p.xpoints[i], p.ypoints[i])) {
 				return false;
 			}
 		}
@@ -92,7 +92,7 @@ public final class TileMatrix extends Interactive implements Locatable, Drawable
 	@Override
 	public boolean contains(final Point point) {
 		final Polygon p = getBounds();
-		return isPolygonOnScreen(p) && p.contains(point);
+		return isPolygonInViewport(p) && p.contains(point);
 	}
 
 	@Override
@@ -113,7 +113,7 @@ public final class TileMatrix extends Interactive implements Locatable, Drawable
 	@Override
 	public void draw(final Graphics render, final int alpha) {
 		final Polygon p = getBounds();
-		if (!isPolygonOnScreen(p)) {
+		if (!isPolygonInViewport(p)) {
 			return;
 		}
 

@@ -58,8 +58,8 @@ public abstract class Model extends MethodProvider {
 	public int nextTriangle() {
 		update();
 		final int mark = Random.nextInt(0, numFaces);
-		final int index = firstOnScreenIndex(mark, numFaces);
-		return index != -1 ? index : firstOnScreenIndex(0, mark);
+		final int index = firstInViewportIndex(mark, numFaces);
+		return index != -1 ? index : firstInViewportIndex(0, mark);
 	}
 
 	public Point getCentroid(final int index) {
@@ -76,7 +76,7 @@ public abstract class Model extends MethodProvider {
 				height + (this.yPoints[this.faceA[index]] + this.yPoints[this.faceB[index]] + this.yPoints[this.faceC[index]]) / 3,
 				y + (this.zPoints[this.faceA[index]] + this.zPoints[this.faceB[index]] + this.zPoints[this.faceC[index]]) / 3
 		);
-		return ctx.game.isPointOnScreen(localPoint) ? localPoint : new Point(-1, -1);
+		return ctx.game.isPointInViewport(localPoint) ? localPoint : new Point(-1, -1);
 	}
 
 	public Point getCenterPoint() {
@@ -108,7 +108,7 @@ public abstract class Model extends MethodProvider {
 				y + totalYAverage / numFaces
 		);
 
-		if (ctx.game.isPointOnScreen(averagePoint)) {
+		if (ctx.game.isPointInViewport(averagePoint)) {
 			return averagePoint;
 		}
 		return new Point(-1, -1);
@@ -117,8 +117,8 @@ public abstract class Model extends MethodProvider {
 	public Point getNextPoint() {
 		update();
 		final int mark = Random.nextInt(0, numFaces);
-		Point point = firstOnScreenCentroid(mark, numFaces);
-		return point != null ? point : (point = firstOnScreenCentroid(0, mark)) != null ? point : new Point(-1, -1);
+		Point point = firstInViewportCentroid(mark, numFaces);
+		return point != null ? point : (point = firstInViewportCentroid(0, mark)) != null ? point : new Point(-1, -1);
 	}
 
 	public Polygon[] getTriangles() {
@@ -186,7 +186,7 @@ public abstract class Model extends MethodProvider {
 		}
 	}
 
-	private int firstOnScreenIndex(final int pos, final int length) {
+	private int firstInViewportIndex(final int pos, final int length) {
 		final int x = getX();
 		final int y = getY();
 		final int plane = getPlane();
@@ -198,7 +198,7 @@ public abstract class Model extends MethodProvider {
 					h + (this.yPoints[this.faceA[index]] + this.yPoints[this.faceB[index]] + this.yPoints[this.faceC[index]]) / 3,
 					y + (this.zPoints[this.faceA[index]] + this.zPoints[this.faceB[index]] + this.zPoints[this.faceC[index]]) / 3
 			);
-			if (ctx.game.isPointOnScreen(point.x, point.y)) {
+			if (ctx.game.isPointInViewport(point.x, point.y)) {
 				return index;
 			}
 			++index;
@@ -206,8 +206,8 @@ public abstract class Model extends MethodProvider {
 		return -1;
 	}
 
-	private Point firstOnScreenCentroid(final int pos, final int length) {
-		final int index = firstOnScreenIndex(pos, length);
+	private Point firstInViewportCentroid(final int pos, final int length) {
+		final int index = firstInViewportIndex(pos, length);
 		return index != -1 ? getCentroid(index) : null;
 	}
 
@@ -253,7 +253,7 @@ public abstract class Model extends MethodProvider {
 				screen[index][0] = Math.round(toolkit.absoluteX + (toolkit.xMultiplier * _x) / _z);
 				screen[index][1] = Math.round(toolkit.absoluteY + (toolkit.yMultiplier * _y) / _z);
 				screen[index][2] = 1;
-				if (ctx.game.isPointOnScreen(screen[index][0], screen[index][1])) {
+				if (ctx.game.isPointInViewport(screen[index][0], screen[index][1])) {
 					continue;
 				}
 			}

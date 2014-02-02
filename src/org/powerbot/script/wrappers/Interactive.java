@@ -20,17 +20,32 @@ public abstract class Interactive extends MethodProvider implements Targetable, 
 		super(ctx);
 	}
 
-	public boolean isOnScreen() {
-		return ctx.game.isPointOnScreen(getInteractPoint());
+	public boolean isInViewport() {
+		return ctx.game.isPointInViewport(getInteractPoint());
 	}
 
-	public static Filter<Interactive> areOnScreen() {
+	/**
+	 * @see {@link #isInViewport()}
+	 */
+	@Deprecated
+	@SuppressWarnings("unused")
+	public boolean isOnScreen() {
+		return isInViewport();
+	}
+
+	public static Filter<Interactive> areInViewport() {
 		return new Filter<Interactive>() {
 			@Override
 			public boolean accept(final Interactive interactive) {
-				return interactive.isOnScreen();
+				return interactive.isInViewport();
 			}
 		};
+	}
+
+	@Deprecated
+	@SuppressWarnings("unused")
+	public static Filter<Interactive> areOnScreen() {
+		return areInViewport();
 	}
 
 	public boolean hover() {
@@ -152,7 +167,7 @@ public abstract class Interactive extends MethodProvider implements Targetable, 
 		final Model model = renderable.getModel();
 		final Point mousePoint = ctx.mouse.getLocation();
 		final Point interactPoint = targetable.getInteractPoint();
-		if (model == null || !ctx.game.isPointOnScreen(interactPoint)) {
+		if (model == null || !ctx.game.isPointInViewport(interactPoint)) {
 			return false;
 		}
 
@@ -178,7 +193,7 @@ public abstract class Interactive extends MethodProvider implements Targetable, 
 				x = mousePoint.x + (int) (dist * Math.cos(theta));
 				y = mousePoint.y + (int) (dist * Math.sin(theta));
 
-				if (ctx.game.isPointOnScreen(x, y) && ctx.mouse.move(x, y)) {
+				if (ctx.game.isPointInViewport(x, y) && ctx.mouse.move(x, y)) {
 					sleep(50, 180);
 					if (ctx.menu.indexOf(Menu.filter("Walk here")) == 0 && ctx.mouse.click(true)) {
 						return true;
@@ -199,7 +214,7 @@ public abstract class Interactive extends MethodProvider implements Targetable, 
 		final int l_t = ctx.movement.getDistance(c, tileOfInteractive);
 		if ((l_d < 0 && dest.getMatrix(ctx).isValid()) ||
 				(l_t != -1 && l_d != -1 && l_d > l_t + 4)) {
-			if (!(c.isOnScreen() && c.interact("Walk here"))) {
+			if (!(c.isInViewport() && c.interact("Walk here"))) {
 				ctx.movement.stepTowards(c);
 			}
 		}

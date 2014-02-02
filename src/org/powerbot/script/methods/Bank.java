@@ -78,7 +78,7 @@ public class Bank extends ItemQuery<Item> {
 	private Interactive getBank() {
 		final Player p = ctx.players.local();
 		final Tile t = p.getLocation();
-		final Filter<Interactive> f = Interactive.areOnScreen();
+		final Filter<Interactive> f = Interactive.areInViewport();
 
 		ctx.npcs.select().id(BANK_NPC_IDS).select(f).select(UNREACHABLE_FILTER).nearest();
 		ctx.objects.select().id(BANK_BOOTH_IDS, BANK_COUNTER_IDS, BANK_CHEST_IDS).select(f).select(UNREACHABLE_FILTER).nearest();
@@ -125,8 +125,17 @@ public class Bank extends ItemQuery<Item> {
 	 *
 	 * @return <tt>true</tt> if a bank is in view; otherwise <tt>false</tt>
 	 */
-	public boolean isOnScreen() {
+	public boolean isInViewport() {
 		return getBank().isValid();
+	}
+
+	/**
+	 * @deprecated see {@link #isInViewport()}
+	 */
+	@Deprecated
+	@SuppressWarnings("unused")
+	public boolean isOnScreen() {
+		return isInViewport();
 	}
 
 	/**

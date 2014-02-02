@@ -227,7 +227,7 @@ public class Lobby extends MethodProvider {
 	public Dialog getOpenDialog() {
 		for (final Dialog d : Dialog.values()) {
 			final Component child = ctx.widgets.get(WIDGET_MAIN_LOBBY, d.getTextIndex());
-			if (child != null && child.isOnScreen()) {
+			if (child != null && child.isInViewport()) {
 				final String text = child.getText();
 				if (text != null && text.toLowerCase().contains(d.getText())) {
 					return d;
@@ -246,7 +246,7 @@ public class Lobby extends MethodProvider {
 			return false;
 		}
 		final Component child = ctx.widgets.get(WIDGET_MAIN_LOBBY, dialog.getBackIndex());
-		return child != null && child.isOnScreen() && child.click(true);
+		return child != null && child.isInViewport() && child.click(true);
 	}
 
 	private boolean continueDialog() {
@@ -255,7 +255,7 @@ public class Lobby extends MethodProvider {
 			return false;
 		}
 		final Component child = ctx.widgets.get(WIDGET_MAIN_LOBBY, dialog.getContinueIndex());
-		return child != null && child.isOnScreen() && child.click(true);
+		return child != null && child.isInViewport() && child.click(true);
 	}
 
 	public Tab getCurrentTab() {

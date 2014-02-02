@@ -32,7 +32,7 @@ public class DepositBox extends ItemQuery<Item> {
 
 
 	private Interactive getBank() {
-		return ctx.objects.select().id(DEPOSIT_BOX_IDS).select(Interactive.areOnScreen()).nearest().poll();
+		return ctx.objects.select().id(DEPOSIT_BOX_IDS).select(Interactive.areInViewport()).nearest().poll();
 	}
 
 	/**
@@ -55,12 +55,21 @@ public class DepositBox extends ItemQuery<Item> {
 	}
 
 	/**
-	 * Determines if a bank is on screen.
+	 * Determines if a bank is in the viewport.
 	 *
-	 * @return <tt>true</tt> if a bank is in view; otherwise <tt>false</tt>
+	 * @return <tt>true</tt> if a bank is in the viewport; otherwise <tt>false</tt>
 	 */
-	public boolean isOnScreen() {
+	public boolean isInViewport() {
 		return getBank().isValid();
+	}
+
+	/**
+	 * @see {@link #isInViewport()}
+	 */
+	@Deprecated
+	@SuppressWarnings("unused")
+	public boolean isOnScreen() {
+		return isInViewport();
 	}
 
 	public boolean isOpen() {
