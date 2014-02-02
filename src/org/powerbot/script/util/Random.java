@@ -58,6 +58,16 @@ public class Random {
 	}
 
 	/**
+	 * Returns the next pseudorandom, Gaussian ("normally") distributed {@code double} value with mean {@code 0.0} and
+	 * standard deviation {@code 1.0}.
+	 *
+	 * @return a gaussian distributed number
+	 */
+	public static double nextGaussian() {
+		return random.nextGaussian();
+	}
+
+	/**
 	 * Returns a pseudo-random gaussian distributed number between the given min and max with the provided standard deviation.
 	 * <p/>
 	 * Mean defaults as {@code (max - min) / 2}.
@@ -82,9 +92,5 @@ public class Random {
 	 */
 	public static int nextGaussian(final int min, final int max, final int mean, final double sd) {
 		return min + Math.abs(((int) (random.nextGaussian() * sd + mean)) % (max - min));
-	}
-
-	public static double nextGaussian() {
-		return random.nextGaussian();
 	}
 }
