@@ -49,14 +49,14 @@ public class Game extends MethodProvider {
 		return new Point(643 + d[4], 83 + d[5]);
 	}
 
-	public int getHeight(final int relativeX, final int relativeY) {
+	public int getHeight(final int relativeX, final int relativeZ) {
 		final Client client = ctx.getClient();
 		if (client == null) {
 			return 0;
 		}
 		int floor = client.getFloor();
 		int x = relativeX >> 7;
-		int y = relativeY >> 7;
+		int y = relativeZ >> 7;
 		if (x < 0 || y < 0 || x > 103 || y > 103 ||
 				floor < 0 || floor > 3) {
 			return 0;

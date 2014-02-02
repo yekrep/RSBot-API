@@ -15,13 +15,13 @@ import javax.swing.SwingUtilities;
 import org.powerbot.os.api.MethodContext;
 import org.powerbot.os.api.wrappers.Actor;
 import org.powerbot.os.api.wrappers.ActorCuboid;
+import org.powerbot.os.bot.event.EventDispatcher;
+import org.powerbot.os.bot.event.PaintListener;
 import org.powerbot.os.bot.loader.GameAppletLoader;
 import org.powerbot.os.bot.loader.GameCrawler;
 import org.powerbot.os.bot.loader.GameLoader;
 import org.powerbot.os.bot.loader.GameStub;
 import org.powerbot.os.client.Client;
-import org.powerbot.os.bot.event.EventDispatcher;
-import org.powerbot.os.bot.event.PaintListener;
 import org.powerbot.os.gui.BotChrome;
 
 public class Bot implements Runnable, Closeable {
@@ -103,32 +103,34 @@ public class Bot implements Runnable, Closeable {
 			@Override
 			public void repaint(final Graphics render) {
 				List<? extends Actor> actors;
+				final int[] arr = {64, 32, 16, 8};
 				render.setColor(Color.red);
 				actors = ctx.players.getLoaded();
 				for (final Actor a : actors) {
 					final ActorCuboid cuboid = a.getCuboid();
-					final Area area = cuboid.cuboid(64);
-					if (area == null) {
-						continue;
+					render.setColor(Color.red);
+					for (final int d : arr) {
+						final Area area = cuboid.getArea(d);
+						((Graphics2D) render).draw(area);
+						render.setColor(render.getColor().darker());
 					}
-					((Graphics2D) render).draw(area);
 				}
-				render.setColor(Color.green);
 				final ActorCuboid c_me = ctx.players.getLocal().getCuboid();
-				final Area c_area = c_me.cuboid(64);
-				if (c_area != null) {
+				for (final int d : arr) {
+					final Area c_area = c_me.getArea(d);
 					((Graphics2D) render).draw(c_area);
+					render.setColor(render.getColor().darker());
 				}
 
-				render.setColor(Color.cyan);
 				actors = ctx.npcs.getLoaded();
 				for (final Actor a : actors) {
 					final ActorCuboid cuboid = a.getCuboid();
-					final Area area = cuboid.cuboid(64);
-					if (area == null) {
-						continue;
+					render.setColor(Color.cyan);
+					for (final int d : arr) {
+						final Area area = cuboid.getArea(d);
+						((Graphics2D) render).draw(area);
+						render.setColor(render.getColor().darker());
 					}
-					((Graphics2D) render).draw(area);
 				}
 			}
 		});
