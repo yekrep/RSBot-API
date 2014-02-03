@@ -7,7 +7,7 @@ import org.powerbot.os.api.wrappers.RelativePosition;
 import org.powerbot.os.api.wrappers.Tile;
 import org.powerbot.os.client.Client;
 
-public class Game extends MethodProvider {
+public class Game extends ClientAccessor {
 	private static final int[] ARRAY_SIN = new int[2048];
 	private static final int[] ARRAY_COS = new int[2048];
 
@@ -18,13 +18,13 @@ public class Game extends MethodProvider {
 		}
 	}
 
-	public Game(final MethodContext ctx) {
+	public Game(final ClientContext ctx) {
 		super(ctx);
 	}
 
 	public HintArrow getHintArrow() {
 		final HintArrow r = new HintArrow();
-		final Client client = ctx.getClient();
+		final Client client = ctx.client();
 		if (client == null) {
 			return r;
 		}
@@ -32,11 +32,11 @@ public class Game extends MethodProvider {
 	}
 
 	public Point tileToMap(final Tile tile) {
-		final Client client = ctx.getClient();
+		final Client client = ctx.client();
 		if (client == null) {
 			return new Point(-1, -1);
 		}
-		final RelativePosition rel = ctx.players.getLocal().getRelativePosition();
+		final RelativePosition rel = ctx.players.local().getRelativePosition();
 		final int angle = client.getMinimapScale() + client.getMinimapAngle() & 0x7ff;
 		final int[] d = {tile.x, tile.y, ARRAY_SIN[angle], ARRAY_COS[angle], -1, -1};
 		d[0] = (d[0] - client.getOffsetX()) * 4 + 2 - rel.x / 32;
@@ -50,7 +50,7 @@ public class Game extends MethodProvider {
 	}
 
 	public int getHeight(final int relativeX, final int relativeZ) {
-		final Client client = ctx.getClient();
+		final Client client = ctx.client();
 		if (client == null) {
 			return 0;
 		}
@@ -78,7 +78,7 @@ public class Game extends MethodProvider {
 	}
 
 	public Point worldToScreen(final int relativeX, final int relativeZ, final int h) {
-		final Client client = ctx.getClient();
+		final Client client = ctx.client();
 		if (client == null) {
 			return new Point(-1, -1);
 		}
@@ -86,7 +86,7 @@ public class Game extends MethodProvider {
 	}
 
 	public Point worldToScreen(final int relativeX, final int relativeY, final int relativeZ, final int h) {
-		final Client client = ctx.getClient();
+		final Client client = ctx.client();
 		final Point r = new Point(-1, -1);
 		if (relativeX < 128 || relativeX > 13056 ||
 				relativeZ < 128 || relativeZ > 13056) {

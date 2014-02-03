@@ -3,13 +3,13 @@ package org.powerbot.os.api.wrappers;
 import java.awt.Rectangle;
 import java.lang.ref.WeakReference;
 
-import org.powerbot.os.api.MethodContext;
+import org.powerbot.os.api.ClientContext;
 import org.powerbot.os.client.Actor;
 
 public class ActorCuboid extends Cuboid {
 	private final WeakReference<org.powerbot.os.client.Actor> actor;
 
-	public ActorCuboid(final MethodContext ctx, final Actor actor) {
+	public ActorCuboid(final ClientContext ctx, final Actor actor) {
 		super(ctx);
 		this.actor = new WeakReference<Actor>(actor);
 	}

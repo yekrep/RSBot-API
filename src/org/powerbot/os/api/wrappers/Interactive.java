@@ -2,11 +2,11 @@ package org.powerbot.os.api.wrappers;
 
 import java.awt.Point;
 
-import org.powerbot.os.api.MethodContext;
-import org.powerbot.os.api.MethodProvider;
+import org.powerbot.os.api.ClientAccessor;
+import org.powerbot.os.api.ClientContext;
 
-public abstract class Interactive extends MethodProvider implements Validatable {
-	public Interactive(MethodContext ctx) {
+public abstract class Interactive extends ClientAccessor implements Validatable {
+	public Interactive(ClientContext ctx) {
 		super(ctx);
 	}
 

@@ -5,11 +5,11 @@ import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.geom.Area;
 
-import org.powerbot.os.api.MethodContext;
+import org.powerbot.os.api.ClientContext;
 import org.powerbot.os.api.util.Calculations;
 
 abstract class Cuboid extends Interactive {
-	public Cuboid(MethodContext ctx) {
+	public Cuboid(ClientContext ctx) {
 		super(ctx);
 	}
 

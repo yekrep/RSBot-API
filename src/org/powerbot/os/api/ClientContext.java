@@ -5,15 +5,16 @@ import org.powerbot.os.client.Client;
 
 import java.util.concurrent.atomic.AtomicReference;
 
-public class MethodContext {
+public class ClientContext {
 	private final AtomicReference<Client> client;
 	private final AtomicReference<Bot> bot;
+
 	public final Game game;
 	public final GroundItems groundItems;
 	public final Npcs npcs;
 	public final Players players;
 
-	private MethodContext(final Bot bot) {
+	private ClientContext(final Bot bot) {
 		client = new AtomicReference<Client>(null);
 		this.bot = new AtomicReference<Bot>(bot);
 
@@ -23,11 +24,11 @@ public class MethodContext {
 		players = new Players(this);
 	}
 
-	public static MethodContext newContext(final Bot bot) {
-		return new MethodContext(bot);
+	public static ClientContext newContext(final Bot bot) {
+		return new ClientContext(bot);
 	}
 
-	public MethodContext(final MethodContext ctx) {
+	public ClientContext(final ClientContext ctx) {
 		client = ctx.client;
 		bot = ctx.bot;
 
@@ -41,11 +42,11 @@ public class MethodContext {
 		this.client.set(client);
 	}
 
-	public Client getClient() {
+	public Client client() {
 		return client.get();
 	}
 
-	public Bot getBot() {
+	public Bot bot() {
 		return bot.get();
 	}
 }

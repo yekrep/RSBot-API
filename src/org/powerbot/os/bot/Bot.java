@@ -12,7 +12,7 @@ import java.util.Map;
 
 import javax.swing.SwingUtilities;
 
-import org.powerbot.os.api.MethodContext;
+import org.powerbot.os.api.ClientContext;
 import org.powerbot.os.api.wrappers.Actor;
 import org.powerbot.os.api.wrappers.ActorCuboid;
 import org.powerbot.os.bot.event.EventDispatcher;
@@ -28,7 +28,7 @@ public class Bot implements Runnable, Closeable {
 	private final BotChrome chrome;
 	private final ThreadGroup group;
 	public final EventDispatcher dispatcher;
-	public final MethodContext ctx;
+	public final ClientContext ctx;
 	private Applet applet;
 	private Client client;
 
@@ -36,7 +36,7 @@ public class Bot implements Runnable, Closeable {
 		this.chrome = chrome;
 		group = new ThreadGroup(getClass().getSimpleName());
 		dispatcher = new EventDispatcher();
-		ctx = MethodContext.newContext(this);
+		ctx = ClientContext.newContext(this);
 	}
 
 	@Override
@@ -105,7 +105,7 @@ public class Bot implements Runnable, Closeable {
 				List<? extends Actor> actors;
 				final int[] arr = {64, 32, 16, 8};
 				render.setColor(Color.red);
-				actors = ctx.players.getLoaded();
+				actors = ctx.players.get();
 				for (final Actor a : actors) {
 					final ActorCuboid cuboid = a.getCuboid();
 					render.setColor(Color.red);
@@ -115,14 +115,14 @@ public class Bot implements Runnable, Closeable {
 						render.setColor(render.getColor().darker());
 					}
 				}
-				final ActorCuboid c_me = ctx.players.getLocal().getCuboid();
+				final ActorCuboid c_me = ctx.players.local().getCuboid();
 				for (final int d : arr) {
 					final Area c_area = c_me.getArea(d);
 					((Graphics2D) render).draw(c_area);
 					render.setColor(render.getColor().darker());
 				}
 
-				actors = ctx.npcs.getLoaded();
+				actors = ctx.npcs.get();
 				for (final Actor a : actors) {
 					final ActorCuboid cuboid = a.getCuboid();
 					render.setColor(Color.cyan);

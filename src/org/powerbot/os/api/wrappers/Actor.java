@@ -2,11 +2,11 @@ package org.powerbot.os.api.wrappers;
 
 import java.awt.Point;
 
-import org.powerbot.os.api.MethodContext;
+import org.powerbot.os.api.ClientContext;
 import org.powerbot.os.client.Client;
 
 public abstract class Actor extends Interactive implements Locatable, Validatable {
-	public Actor(final MethodContext ctx) {
+	public Actor(final ClientContext ctx) {
 		super(ctx);
 	}
 
@@ -50,7 +50,7 @@ public abstract class Actor extends Interactive implements Locatable, Validatabl
 
 	@Override
 	public Tile getLocation() {
-		final Client client = ctx.getClient();
+		final Client client = ctx.client();
 		final org.powerbot.os.client.Actor actor = getActor();
 		if (client != null && actor != null) {
 			return new Tile(client.getOffsetX() + (actor.getX() >> 7), client.getOffsetY() + (actor.getZ() >> 7), client.getFloor());

@@ -1,6 +1,6 @@
 package org.powerbot.os.api.wrappers;
 
-import org.powerbot.os.api.MethodContext;
+import org.powerbot.os.api.ClientContext;
 import org.powerbot.os.client.Client;
 import org.powerbot.os.client.NpcConfig;
 
@@ -9,7 +9,7 @@ import java.lang.ref.SoftReference;
 public class Npc extends Actor implements Identifiable {
 	private final SoftReference<org.powerbot.os.client.Npc> npc;
 
-	public Npc(final MethodContext ctx, final org.powerbot.os.client.Npc npc) {
+	public Npc(final ClientContext ctx, final org.powerbot.os.client.Npc npc) {
 		super(ctx);
 		this.npc = new SoftReference<org.powerbot.os.client.Npc>(npc);
 	}
@@ -57,7 +57,7 @@ public class Npc extends Actor implements Identifiable {
 
 	@Override
 	public boolean isValid() {
-		final Client client = ctx.getClient();
+		final Client client = ctx.client();
 		final org.powerbot.os.client.Npc npc = this.npc.get();
 		if (client == null || npc == null) return false;
 		final org.powerbot.os.client.Npc[] arr = client.getNpcs();
