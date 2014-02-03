@@ -10,53 +10,52 @@ import java.util.EventListener;
  * @author Timer
  */
 public class PaintEvent extends AbstractEvent {
+	public static final int PAINT_EVENT = 0x40;
 	private static final long serialVersionUID = 4772234942045737667L;
-	public static final int ID = 0x40;
 	public Graphics graphics;
 
 	public PaintEvent() {
-		setId(ID);
-		this.graphics = null;
+		super(PAINT_EVENT);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void dispatch(final EventListener eventListener) {
+	public void call(final EventListener e) {
 		if (graphics == null) {
 			try {
-				((PaintListener) eventListener).repaint(null);
+				((PaintListener) e).repaint(null);
 			} catch (final Exception ignored) {
 			}
 			return;
 		}
-		final Graphics2D graphics2D = (Graphics2D) graphics;
+		final Graphics2D g2 = (Graphics2D) graphics;
 
-		final Color s_background = graphics2D.getBackground();
-		final Shape s_clip = graphics2D.getClip();
-		final Color s_color = graphics2D.getColor();
-		final Composite s_composite = graphics2D.getComposite();
-		final Font s_font = graphics2D.getFont();
-		final Paint s_paint = graphics2D.getPaint();
-		final RenderingHints s_renderingHints = graphics2D.getRenderingHints();
-		final Stroke s_stroke = graphics2D.getStroke();
-		final AffineTransform s_transform = graphics2D.getTransform();
+		final Color b = g2.getBackground();
+		final Shape l = g2.getClip();
+		final Color c = g2.getColor();
+		final Composite m = g2.getComposite();
+		final Font f = g2.getFont();
+		final Paint p = g2.getPaint();
+		final RenderingHints r = g2.getRenderingHints();
+		final Stroke s = g2.getStroke();
+		final AffineTransform t = g2.getTransform();
 
 		try {
-			((PaintListener) eventListener).repaint(graphics);
-		} catch (final Throwable e) {
-			e.printStackTrace();
+			((PaintListener) e).repaint(graphics);
+		} catch (final Exception ex) {
+			ex.printStackTrace();
 		}
 
-		graphics2D.setBackground(s_background);
-		graphics2D.setClip(s_clip);
-		graphics2D.setColor(s_color);
-		graphics2D.setComposite(s_composite);
-		graphics2D.setFont(s_font);
-		graphics2D.setPaint(s_paint);
-		graphics2D.setRenderingHints(s_renderingHints);
-		graphics2D.setStroke(s_stroke);
-		graphics2D.setTransform(s_transform);
+		g2.setBackground(b);
+		g2.setClip(l);
+		g2.setColor(c);
+		g2.setComposite(m);
+		g2.setFont(f);
+		g2.setPaint(p);
+		g2.setRenderingHints(r);
+		g2.setStroke(s);
+		g2.setTransform(t);
 	}
 }

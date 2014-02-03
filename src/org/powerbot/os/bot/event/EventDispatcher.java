@@ -34,7 +34,7 @@ public class EventDispatcher extends AbstractCollection<EventListener> implement
 		masks.put(MouseWheelListener.class, EventDispatcher.MOUSE_WHEEL_EVENT);
 		masks.put(KeyListener.class, EventDispatcher.KEY_EVENT);
 		masks.put(FocusListener.class, EventDispatcher.FOCUS_EVENT);
-		masks.put(PaintListener.class, PaintEvent.ID);
+		masks.put(PaintListener.class, PaintEvent.PAINT_EVENT);
 	}
 
 	private static int getType(final EventObject e) {
@@ -161,7 +161,7 @@ public class EventDispatcher extends AbstractCollection<EventListener> implement
 					break;
 				}
 			} else if (eventObject instanceof AbstractEvent) {
-				((AbstractEvent) eventObject).dispatch(listener);
+				((AbstractEvent) eventObject).call(listener);
 			}
 		}
 	}
