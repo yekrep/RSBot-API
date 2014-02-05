@@ -100,7 +100,8 @@ public abstract class AbstractScript implements Script, Comparable<AbstractScrip
 		final String[] ids = {null, getName(), getClass().getName()};
 		String id = "-";
 
-		final ScriptBundle bundle = ((ScriptController) getController()).bundle.get();
+		final ScriptController c = ((ScriptController) getController());
+		final ScriptBundle bundle = c.bundle != null ? c.bundle.get() : null;
 		if (bundle != null && bundle.definition != null) {
 			ids[0] = bundle.definition.getID().replace('/', '-');
 		}
