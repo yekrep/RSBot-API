@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.geom.Area;
 import java.io.Closeable;
 import java.util.List;
@@ -15,6 +16,9 @@ import javax.swing.SwingUtilities;
 import org.powerbot.os.api.ClientContext;
 import org.powerbot.os.api.wrappers.Actor;
 import org.powerbot.os.api.wrappers.ActorCuboid;
+import org.powerbot.os.api.wrappers.GameObject;
+import org.powerbot.os.api.wrappers.Npc;
+import org.powerbot.os.api.wrappers.RelativePosition;
 import org.powerbot.os.bot.event.EventDispatcher;
 import org.powerbot.os.bot.event.PaintListener;
 import org.powerbot.os.bot.loader.GameAppletLoader;
@@ -131,6 +135,20 @@ public class Bot implements Runnable, Closeable {
 						((Graphics2D) render).draw(area);
 						render.setColor(render.getColor().darker());
 					}
+					render.setColor(Color.green);
+					final Point p = a.getCenterPoint();
+					render.drawString(String.format("%d", ((Npc) a).getId()), p.x, p.y);
+				}
+
+				final List<GameObject> list = ctx.objects.getLoaded();
+				for (final GameObject o : list) {
+					render.setColor(Color.green);
+					for (int i = 0; i < o.getType(); i++) {
+						render.setColor(render.getColor().darker());
+					}
+					final RelativePosition r = o.getRelativePosition();
+					final Point p = ctx.game.worldToScreen(r.x, r.z, 0);
+					render.drawString(String.format("%d", o.getId()), p.x, p.y);
 				}
 			}
 		});
