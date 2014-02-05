@@ -1,11 +1,11 @@
-package org.powerbot.event.debug;
+package org.powerbot.bot.event.debug;
 
 import java.awt.Graphics;
 
 import org.powerbot.event.TextPaintListener;
 import org.powerbot.script.methods.MethodContext;
 
-import static org.powerbot.event.debug.DebugHelper.drawLine;
+import static org.powerbot.bot.event.debug.DebugHelper.drawLine;
 
 public class TMenu implements TextPaintListener {
 	protected final MethodContext ctx;

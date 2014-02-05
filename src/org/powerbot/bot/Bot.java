@@ -14,7 +14,7 @@ import org.powerbot.bot.loader.NRSLoader;
 import org.powerbot.bot.loader.transform.TransformSpec;
 import org.powerbot.client.Client;
 import org.powerbot.client.Constants;
-import org.powerbot.event.EventDispatcher;
+import org.powerbot.bot.event.EventDispatcher;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.script.internal.InputHandler;
 import org.powerbot.script.internal.ScriptController;

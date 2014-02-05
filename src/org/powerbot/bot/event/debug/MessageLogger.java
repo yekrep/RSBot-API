@@ -1,8 +1,8 @@
-package org.powerbot.event.debug;
+package org.powerbot.bot.event.debug;
 
 import java.util.logging.Logger;
 
-import org.powerbot.event.MessageEvent;
+import org.powerbot.bot.event.MessageEvent;
 import org.powerbot.event.MessageListener;
 
 public class MessageLogger implements MessageListener {

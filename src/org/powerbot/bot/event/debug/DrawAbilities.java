@@ -1,4 +1,4 @@
-package org.powerbot.event.debug;
+package org.powerbot.bot.event.debug;
 
 import java.awt.Color;
 import java.awt.Font;

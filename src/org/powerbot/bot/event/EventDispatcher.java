@@ -1,4 +1,4 @@
-package org.powerbot.event;
+package org.powerbot.bot.event;
 
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
@@ -22,6 +22,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicReference;
 
+import org.powerbot.event.MessageListener;
+import org.powerbot.event.PaintListener;
+import org.powerbot.event.TextPaintListener;
 import org.powerbot.script.lang.Stoppable;
 
 public class EventDispatcher extends AbstractCollection<EventListener> implements Runnable, Stoppable {
