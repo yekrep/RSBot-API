@@ -222,7 +222,7 @@ public class Game extends MethodProvider {
 	@Deprecated
 	@SuppressWarnings("unused")
 	public boolean isPointOnScreen(final Point point) {
-		return isPointOnScreen(point);
+		return isPointInViewport(point);
 	}
 
 	/**
