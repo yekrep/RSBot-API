@@ -22,7 +22,18 @@ public class Game extends ClientAccessor {
 		super(ctx);
 	}
 
+	public int getClientState() {
+		final Client client = ctx.client();
+		return client != null ? client.getClientState() : -1;
+	}
+
+	public int getCrosshairIndex() {
+		final Client client = ctx.client();
+		return client != null ? client.getCrosshairIndex() : -1;
+	}
+
 	public HintArrow getHintArrow() {
+		//TODO: hint arrow
 		final HintArrow r = new HintArrow();
 		final Client client = ctx.client();
 		if (client == null) {
