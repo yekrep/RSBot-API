@@ -24,10 +24,10 @@ public class GroundItems extends ClientAccessor {
 	public List<GroundItem> get(final int floor) {
 		final List<GroundItem> r = new CopyOnWriteArrayList<GroundItem>();
 		final Client client = ctx.client();
-		if (client == null) {
+		final NodeDeque[][][] dequeArray;
+		if (client == null || (dequeArray = client.getGroundItems()) == null) {
 			return r;
 		}
-		final NodeDeque[][][] dequeArray = client.getGroundItems();
 		final NodeDeque[][] rows;
 		if (floor > -1 && floor < dequeArray.length) {
 			rows = dequeArray[floor];
