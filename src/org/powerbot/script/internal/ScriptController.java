@@ -10,9 +10,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.powerbot.bot.SelectiveEventQueue;
-import org.powerbot.event.EventDispatcher;
-import org.powerbot.event.debug.ViewMouse;
-import org.powerbot.event.debug.ViewMouseTrails;
+import org.powerbot.bot.event.EventDispatcher;
 import org.powerbot.misc.ScriptBundle;
 import org.powerbot.misc.Tracker;
 import org.powerbot.script.Script;

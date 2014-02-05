@@ -1,4 +1,4 @@
-package org.powerbot.event.debug;
+package org.powerbot.bot.event.debug;
 
 import java.awt.Graphics;
 import java.awt.Point;
@@ -6,7 +6,7 @@ import java.awt.Point;
 import org.powerbot.event.TextPaintListener;
 import org.powerbot.script.methods.MethodContext;
 
-import static org.powerbot.event.debug.DebugHelper.drawLine;
+import static org.powerbot.bot.event.debug.DebugHelper.drawLine;
 
 public class TMousePosition implements TextPaintListener {
 	protected final MethodContext ctx;

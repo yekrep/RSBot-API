@@ -1,4 +1,4 @@
-package org.powerbot.event;
+package org.powerbot.bot.event;
 
 import java.awt.Color;
 import java.awt.Composite;
@@ -12,17 +12,21 @@ import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
 import java.util.EventListener;
 
+import org.powerbot.event.PaintListener;
+import org.powerbot.event.TextPaintListener;
+
 /**
  * An event that is dispatched when the game requests the graphic buffer.
  *
  * @author Timer
  */
-public class PaintEvent extends AbstractEvent {
-	private static final long serialVersionUID = 4772234942045737667L;
-	public static final int ID = 0x40;
+public class TextPaintEvent extends AbstractEvent {
+	private static final long serialVersionUID = 7174559879186449999L;
+	public static final int ID = 0x80;
 	public Graphics graphics;
+	public int id = 0;
 
-	public PaintEvent() {
+	public TextPaintEvent() {
 		setId(ID);
 		this.graphics = null;
 	}
@@ -35,7 +39,7 @@ public class PaintEvent extends AbstractEvent {
 		if (graphics == null) {
 			try {
 				((PaintListener) eventListener).repaint(null);
-			} catch (final Exception ignored) {
+			} catch (NullPointerException ignored) {
 			}
 			return;
 		}
@@ -51,11 +55,7 @@ public class PaintEvent extends AbstractEvent {
 		final Stroke s_stroke = graphics2D.getStroke();
 		final AffineTransform s_transform = graphics2D.getTransform();
 
-		try {
-			((PaintListener) eventListener).repaint(graphics);
-		} catch (final Throwable e) {
-			e.printStackTrace();
-		}
+		id = ((TextPaintListener) eventListener).draw(id, graphics);
 
 		graphics2D.setBackground(s_background);
 		graphics2D.setClip(s_clip);

@@ -19,9 +19,9 @@ import javax.swing.JDialog;
 import org.powerbot.Configuration;
 import org.powerbot.bot.Bot;
 import org.powerbot.client.Client;
-import org.powerbot.event.EventDispatcher;
-import org.powerbot.event.PaintEvent;
-import org.powerbot.event.TextPaintEvent;
+import org.powerbot.bot.event.EventDispatcher;
+import org.powerbot.bot.event.PaintEvent;
+import org.powerbot.bot.event.TextPaintEvent;
 
 public class BotOverlay extends JDialog {
 	private static final Logger log = Logger.getLogger(BotOverlay.class.getName());

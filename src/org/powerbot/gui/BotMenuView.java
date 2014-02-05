@@ -14,8 +14,8 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
 import org.powerbot.bot.Bot;
-import org.powerbot.event.EventDispatcher;
-import org.powerbot.event.debug.*;
+import org.powerbot.bot.event.EventDispatcher;
+import org.powerbot.bot.event.debug.*;
 import org.powerbot.script.methods.MethodContext;
 
 public final class BotMenuView implements ActionListener {

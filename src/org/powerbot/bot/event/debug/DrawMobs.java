@@ -1,4 +1,4 @@
-package org.powerbot.event.debug;
+package org.powerbot.bot.event.debug;
 
 import java.awt.Color;
 import java.awt.FontMetrics;
@@ -7,12 +7,12 @@ import java.awt.Point;
 
 import org.powerbot.event.PaintListener;
 import org.powerbot.script.methods.MethodContext;
-import org.powerbot.script.wrappers.Player;
+import org.powerbot.script.wrappers.Npc;
 
-public class DrawPlayers implements PaintListener {
+public class DrawMobs implements PaintListener {
 	protected final MethodContext ctx;
 
-	public DrawPlayers(final MethodContext ctx) {
+	public DrawMobs(final MethodContext ctx) {
 		this.ctx = ctx;
 	}
 
@@ -21,34 +21,27 @@ public class DrawPlayers implements PaintListener {
 			return;
 		}
 		final FontMetrics metrics = render.getFontMetrics();
-		for (final Player player : ctx.players.select()) {
-			final Point location = player.getCenterPoint();
+		for (final Npc npc : ctx.npcs.select()) {
+			final Point location = npc.getCenterPoint();
 			if (location.x == -1 || location.y == -1) {
 				continue;
 			}
-			render.setColor(Color.RED);
+			render.setColor(Color.red);
 			render.fillRect((int) location.getX() - 1, (int) location.getY() - 1, 2, 2);
-			String s = player.getName() + " (" + player.getLevel() + ")";
-			render.setColor(player.isInCombat() ? Color.RED : player.isInMotion() ? Color.GREEN : Color.WHITE);
+			String s = npc.getName() + " (" + npc.getLevel() + ") - " + npc.getId();
+			render.setColor(npc.isInCombat() ? Color.RED : npc.isInMotion() ? Color.GREEN : Color.WHITE);
 			render.drawString(s, location.x - metrics.stringWidth(s) / 2, location.y - metrics.getHeight() / 2);
-			final String msg = player.getMessage();
+			final String msg = npc.getMessage();
 			boolean raised = false;
-			if (player.getAnimation() != -1 || player.getStance() != -1 || player.getNpcId() != -1) {
+			if (npc.getAnimation() != -1 || npc.getStance() != -1) {
 				s = "";
 				s += "(";
-				if (player.getNpcId() != -1) {
-					s += "NPC: " + player.getNpcId() + " | ";
+				if (npc.getPrayerIcon() != -1) {
+					s += "P: " + npc.getPrayerIcon() + " | ";
 				}
-				if (player.getPrayerIcon() != -1) {
-					s += "P: " + player.getPrayerIcon() + " | ";
+				if (npc.getAnimation() != -1 || npc.getStance() > 0) {
+					s += "A: " + npc.getAnimation() + " | ST: " + npc.getStance() + " | ";
 				}
-				if (player.getSkullIcon() != -1) {
-					s += "SK: " + player.getSkullIcon() + " | ";
-				}
-				if (player.getAnimation() != -1 || player.getStance() > 0) {
-					s += "A: " + player.getAnimation() + " | ST: " + player.getStance() + " | ";
-				}
-
 				s = s.substring(0, s.lastIndexOf(" | "));
 				s += ")";
 
