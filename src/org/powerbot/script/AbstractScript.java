@@ -97,6 +97,14 @@ public abstract class AbstractScript implements Script, Comparable<AbstractScrip
 			}
 		});
 
+		try {
+			controller = controllerProxy.take();
+		} catch (final InterruptedException e) {
+			throw new IllegalStateException(e);
+		}
+
+		ctx = controller.getContext();
+
 		final String[] ids = {null, getName(), getClass().getName()};
 		String id = "-";
 
@@ -143,14 +151,6 @@ public abstract class AbstractScript implements Script, Comparable<AbstractScrip
 				}
 			}
 		});
-
-		try {
-			controller = controllerProxy.take();
-		} catch (final InterruptedException e) {
-			throw new IllegalStateException(e);
-		}
-
-		ctx = controller.getContext();
 	}
 
 	/**
