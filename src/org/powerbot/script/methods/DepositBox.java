@@ -236,11 +236,10 @@ public class DepositBox extends ItemQuery<Item> {
 		return ctx.backpack.getMoneyPouch() == 0 || ctx.widgets.get(WIDGET, COMPONENT_BUTTON_DEPOSIT_POUCH).click();
 	}
 
-	private boolean containsAction(final Component c, String action) {
-		action = action.toLowerCase();
+	private boolean containsAction(final Component c, final String action) {
 		final String[] actions = c.getActions();
 		for (final String a : actions) {
-			if (a != null && a.toLowerCase().contains(action)) {
+			if (a != null && a.trim().equalsIgnoreCase(action)) {
 				return true;
 			}
 		}

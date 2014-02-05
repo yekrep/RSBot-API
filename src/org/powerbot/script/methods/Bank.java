@@ -511,11 +511,10 @@ public class Bank extends ItemQuery<Item> {
 		return ctx.settings.get(SETTING_WITHDRAW_MODE) == 0x1;
 	}
 
-	private boolean containsAction(final Component c, String action) {
-		action = action.toLowerCase();
+	private boolean containsAction(final Component c, final String action) {
 		final String[] actions = c.getActions();
 		for (final String a : actions) {
-			if (a != null && a.toLowerCase().contains(action)) {
+			if (a != null && a.trim().equalsIgnoreCase(action)) {
 				return true;
 			}
 		}
