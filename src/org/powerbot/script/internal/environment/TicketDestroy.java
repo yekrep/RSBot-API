@@ -34,7 +34,7 @@ public class TicketDestroy extends PollingScript implements InternalScript {
 		}
 
 		if (((ctx.settings.get(1448) & 0xFF00) >>> 8) < (item.getId() == ITEM_IDS[0] ? 10 : 9)) {
-			item.interact("Claim spin");
+			item.interact("Take");
 			return 1500;
 		}
 		if (!item.interact("Destroy")) {
