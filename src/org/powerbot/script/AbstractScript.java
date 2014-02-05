@@ -24,6 +24,8 @@ import javax.imageio.ImageIO;
 
 import org.powerbot.Configuration;
 import org.powerbot.gui.BotChrome;
+import org.powerbot.misc.ScriptBundle;
+import org.powerbot.script.internal.ScriptController;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.util.HttpUtils;
 import org.powerbot.util.IOUtils;
@@ -95,7 +97,22 @@ public abstract class AbstractScript implements Script, Comparable<AbstractScrip
 			}
 		});
 
-		dir = new File(new File(Configuration.TEMP, Configuration.NAME), getClass().getName());
+		final String[] ids = {null, getName(), getClass().getName()};
+		String id = "-";
+
+		final ScriptBundle bundle = ((ScriptController) getController()).bundle.get();
+		if (bundle != null && bundle.definition != null) {
+			ids[0] = bundle.definition.getID().replace('/', '-');
+		}
+
+		for (final String n : ids) {
+			if (n != null && !n.isEmpty()) {
+				id = n.replace("[^\\w\\s]", "_").trim();
+				break;
+			}
+		}
+
+		dir = new File(new File(Configuration.TEMP, Configuration.NAME), id);
 		final File ini = new File(dir, "settings.1.ini");
 		settings = new Properties();
 
