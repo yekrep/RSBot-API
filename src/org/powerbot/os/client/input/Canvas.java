@@ -1,12 +1,12 @@
 package org.powerbot.os.client.input;
 
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+
 import org.powerbot.os.bot.Bot;
 import org.powerbot.os.bot.event.EventDispatcher;
 import org.powerbot.os.bot.event.PaintEvent;
 import org.powerbot.os.gui.BotChrome;
-
-import java.awt.*;
-import java.awt.image.BufferedImage;
 
 @SuppressWarnings("unused")
 public class Canvas extends java.awt.Canvas {
@@ -41,9 +41,6 @@ public class Canvas extends java.awt.Canvas {
 		//Paint our image onto the original graphics so it is displayed to the user.
 		super.getGraphics().drawImage(real, 0, 0, null);
 		//Give the game our graphics to give us a clean slate (this is what the game paints to).
-		//Perhaps we should do g.drawImage(real, 0, 0, null) to give
-		//the engine a blank image again after we painted with it to avoid
-		//detection via raster sniffing.  Just a thought.
 		return g;
 	}
 
