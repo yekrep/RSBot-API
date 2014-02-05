@@ -1,9 +1,9 @@
 package org.powerbot.os.api;
 
+import java.util.concurrent.atomic.AtomicReference;
+
 import org.powerbot.os.bot.Bot;
 import org.powerbot.os.client.Client;
-
-import java.util.concurrent.atomic.AtomicReference;
 
 public class ClientContext {
 	private final AtomicReference<Client> client;
@@ -12,6 +12,7 @@ public class ClientContext {
 	public final Game game;
 	public final GroundItems groundItems;
 	public final Npcs npcs;
+	public final Objects objects;
 	public final Players players;
 
 	private ClientContext(final Bot bot) {
@@ -21,6 +22,7 @@ public class ClientContext {
 		game = new Game(this);
 		groundItems = new GroundItems(this);
 		npcs = new Npcs(this);
+		objects = new Objects(this);
 		players = new Players(this);
 	}
 
@@ -35,6 +37,7 @@ public class ClientContext {
 		game = ctx.game;
 		groundItems = ctx.groundItems;
 		npcs = ctx.npcs;
+		objects = ctx.objects;
 		players = ctx.players;
 	}
 
