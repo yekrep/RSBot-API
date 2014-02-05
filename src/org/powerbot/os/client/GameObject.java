@@ -1,13 +1,9 @@
 package org.powerbot.os.client;
 
-public interface GameObject {
+public interface GameObject extends BasicObject {
 	public int getX();
 
 	public int getZ();
-
-	public int getUid();
-
-	public int getMeta();
 
 	public int getX1();
 

@@ -1,7 +1,4 @@
 package org.powerbot.os.client;
 
-public interface FloorObject {
-	public int getUid();
-
-	public int getMeta();
+public interface FloorObject extends BasicObject {
 }
