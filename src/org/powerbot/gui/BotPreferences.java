@@ -21,6 +21,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.plaf.basic.BasicComboBoxRenderer;
 
+import org.powerbot.Configuration;
 import org.powerbot.misc.GameAccounts;
 import org.powerbot.misc.NetworkAccount;
 import org.powerbot.misc.ScriptBundle;
@@ -503,7 +504,8 @@ public class BotPreferences extends JDialog implements Runnable {
 				account.getActionListeners()[0].actionPerformed(new ActionEvent(account, 0, null));
 
 				getRootPane().setDefaultButton(l ? play : signin);
-				panel.setBorder(BorderFactory.createEmptyBorder(0, PAD, PAD * 2, PAD));
+				final int p = Configuration.OS == Configuration.OperatingSystem.MAC || l ? 0 : PAD;
+				panel.setBorder(BorderFactory.createEmptyBorder(0, PAD, PAD * 2 + p, PAD + p));
 				pack();
 			}
 		});
