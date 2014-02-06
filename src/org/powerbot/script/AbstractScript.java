@@ -108,10 +108,12 @@ public abstract class AbstractScript implements Script, Comparable<AbstractScrip
 		final String[] ids = {null, getName(), getClass().getName()};
 		String id = "-";
 
-		final ScriptController c = ((ScriptController) getController());
-		final ScriptBundle bundle = c.bundle != null ? c.bundle.get() : null;
-		if (bundle != null && bundle.definition != null) {
-			ids[0] = bundle.definition.getID().replace('/', '-');
+		if (controller instanceof ScriptController) {
+			final ScriptController c = ((ScriptController) controller);
+			final ScriptBundle bundle = c.bundle != null ? c.bundle.get() : null;
+			if (bundle != null && bundle.definition != null) {
+				ids[0] = bundle.definition.getID().replace('/', '-');
+			}
 		}
 
 		for (final String n : ids) {
