@@ -273,6 +273,8 @@ public class BotPreferences extends JDialog implements Runnable {
 					c.setVisible(a != null);
 				}
 
+				final Tracker t = Tracker.getInstance();
+
 				if (i == z - 1) {
 					final String s = JOptionPane.showInputDialog(BotPreferences.this, "Enter username:", "New Account", JOptionPane.PLAIN_MESSAGE);
 					if (s != null) {
@@ -286,6 +288,7 @@ public class BotPreferences extends JDialog implements Runnable {
 					}
 					accountIndex.set(0);
 					actionPerformed(e);
+					t.trackPage("accounts/add/", BotLocale.ADD);
 				} else if (i == z - 2) {
 					final int j = accountIndex.get();
 					final GameAccounts.Account b = j > 0 && j < z - 2 ? g.get(j - 1) : null;
@@ -296,8 +299,14 @@ public class BotPreferences extends JDialog implements Runnable {
 					account.setSelectedIndex(0);
 					accountIndex.set(0);
 					actionPerformed(e);
+					t.trackPage("accounts/remove/", BotLocale.REMOVE);
 				} else {
 					accountIndex.set(i);
+					if (i == 0) {
+						t.trackPage("accounts/none/", BotLocale.NOACCOUNT);
+					} else {
+						t.trackPage("accounts/", "");
+					}
 				}
 			}
 		});
