@@ -113,7 +113,7 @@ public abstract class Interactive extends MethodProvider implements Targetable, 
 					public Boolean call() {
 						return ctx.menu.indexOf(f) != -1;
 					}
-				}, Random.nextInt(8, 20), 10) && contains(p);
+				}, 10, 10) && contains(p);
 			}
 		};
 
@@ -150,7 +150,7 @@ public abstract class Interactive extends MethodProvider implements Targetable, 
 						public Boolean call() throws Exception {
 							return ctx.menu.indexOf(f) == 0;
 						}
-					}, Random.nextInt(5, 10), 25)) {
+					}, 10, 25)) {
 						matrix.interact("Walk here");
 					}
 				}

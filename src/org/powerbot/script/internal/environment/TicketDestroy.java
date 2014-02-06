@@ -47,7 +47,7 @@ public class TicketDestroy extends PollingScript implements InternalScript {
 			public Boolean call() throws Exception {
 				return widget.isValid();
 			}
-		}, Random.nextInt(400, 600), 10)) {
+		})) {
 			return -1;
 		}
 
@@ -64,7 +64,7 @@ public class TicketDestroy extends PollingScript implements InternalScript {
 				public Boolean call() throws Exception {
 					return item.getComponent().getItemId() == -1;
 				}
-			}, Random.nextInt(150, 200), 10);
+			}, 175);
 		}
 		return -1;
 	}

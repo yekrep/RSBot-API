@@ -58,14 +58,14 @@ public class TilePath extends Path {
 					public Boolean call() {
 						return ctx.movement.getDestination().distanceTo(next) < 3;
 					}
-				}, Random.nextInt(40, 70), 10);
+				}, 60, 10);
 			}
 			return next.distanceTo(ctx.players.local()) < 5d || Condition.wait(new Callable<Boolean>() {
 				@Override
 				public Boolean call() {
 					return ctx.players.local().isInMotion() && ctx.movement.getDestination().distanceTo(next) < 3;
 				}
-			}, Random.nextInt(100, 150), 10);
+			}, 125, 10);
 		}
 		return false;
 	}

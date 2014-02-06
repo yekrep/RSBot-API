@@ -78,7 +78,7 @@ public class Game extends MethodProvider {
 				public Boolean call() throws Exception {
 					return widget.isValid();
 				}
-			}, Random.nextInt(100, 200), 10)) {
+			}, 100, 10)) {
 				if (!widget.getComponent(lobby ? 12 : 13).interact("Select")) {
 					return false;
 				}
@@ -89,7 +89,7 @@ public class Game extends MethodProvider {
 			public Boolean call() throws Exception {
 				return getClientState() == (lobby ? INDEX_LOBBY_SCREEN : INDEX_LOGIN_SCREEN);
 			}
-		}, Random.nextInt(600, 1000), Random.nextInt(8, 11));
+		});
 	}
 
 	/**

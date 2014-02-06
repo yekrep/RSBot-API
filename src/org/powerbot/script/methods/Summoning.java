@@ -107,7 +107,7 @@ public class Summoning extends MethodProvider {
 							public Boolean call() throws Exception {
 								return !isFamiliarSummoned();
 							}
-						}, Random.nextInt(550, 650), Random.nextInt(4, 12));
+						});
 					}
 				}
 			}

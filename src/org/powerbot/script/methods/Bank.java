@@ -209,7 +209,7 @@ public class Bank extends ItemQuery<Item> {
 					public Boolean call() throws Exception {
 						return ctx.widgets.get(13).isValid() || isOpen();
 					}
-				}, Random.nextInt(100, 200), 15);
+				}, 150, 15);
 			} while (ctx.players.local().isInMotion());
 		}
 		return isOpen();
@@ -226,7 +226,7 @@ public class Bank extends ItemQuery<Item> {
 			public Boolean call() throws Exception {
 				return !isOpen();
 			}
-		}, Random.nextInt(100, 200), 10);
+		}, 150);
 	}
 
 	/**
@@ -350,7 +350,7 @@ public class Bank extends ItemQuery<Item> {
 				public Boolean call() throws Exception {
 					return c.getRelativeLocation().y != 0;
 				}
-			}, Random.nextInt(80, 120), 10)) {
+			}, 100, 10)) {
 				return false;
 			}
 		}

@@ -60,7 +60,7 @@ public class WidgetCloser extends PollingScript implements InternalScript {
 				public Boolean call() {
 					return !component.isVisible();
 				}
-			}, 175, 15)) {
+			}, 175)) {
 				tries = 0;
 			}
 		}

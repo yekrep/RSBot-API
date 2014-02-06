@@ -87,7 +87,7 @@ public class DepositBox extends ItemQuery<Item> {
 					public Boolean call() throws Exception {
 						return ctx.widgets.get(13).isValid() || isOpen();
 					}
-				}, Random.nextInt(100, 200), 15);
+				}, 150, 15);
 			} while (ctx.players.local().isInMotion());
 		}
 		return isOpen();
@@ -105,7 +105,7 @@ public class DepositBox extends ItemQuery<Item> {
 					public Boolean call() throws Exception {
 						return !isOpen();
 					}
-				}, Random.nextInt(100, 200), 10);
+				}, 150, 10);
 			}
 		}
 		return !isOpen();
