@@ -33,16 +33,11 @@ public class Configuration {
 		static final String DOMAIN_SITE = TESTING ? DOMAIN_SITE_TESTING : DOMAIN_SITE_LIVE;
 
 		public static final String VERSION = "http://" + DOMAIN_SITE_CDN + "/rsbot/version.txt";
-
 		public static final String CLIENTPATCH = Configuration.PROTO + DOMAIN_SITE_CDN + "/rsbot/ts/%s.ts";
 		public static final String CLIENTBUCKET = "http://buckets." + DOMAIN + "/process/?hash=%s";
 		public static final String SCRIPTSCOLLECTION = Configuration.PROTO + DOMAIN_SITE + "/scripts/api/collection/?{POST}a=%s";
 		public static final String SIGNIN = Configuration.PROTO + DOMAIN_SITE + "/rsbot/login/?{POST}u=%s&p=%s&a=%s";
-
-		public static final String SCRIPTSLIST = "http://" + DOMAIN_SITE_LIVE + "/go/scripts";
 		public static final String LICENSE = "http://" + DOMAIN_SITE_LIVE + "/terms/license/";
-
-		public static final String SCRIPTSICONS = "http://" + DOMAIN_SITE_CDN + "/assets/img/sprites/scripts.png";
 		public static final String ADS = "http://" + DOMAIN_SITE_CDN + "/rsbot/ads.txt";
 
 		public static final String GAME = "runescape.com";

@@ -32,9 +32,6 @@ public final class BotLocale {
 	public static final String INVALIDCREDENTIALS = "Invalid username or password.";
 	public static final String SCRIPTS = "Scripts";
 
-	public static final String SEARCH = "Search";
-	public static final String BROWSE = "Browse";
-	public static final String BROWSETIP = "Browse the full list of scripts";
 	public static final String NOACCOUNT = "No account";
 	public static final String ADD = "Add";
 	public static final String REMOVE = "Remove";
