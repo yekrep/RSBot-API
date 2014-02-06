@@ -1,11 +1,11 @@
 package org.powerbot.os.bot.loader;
 
+import org.powerbot.os.Configuration;
 import org.powerbot.os.util.HttpUtils;
 import org.powerbot.os.util.IOUtils;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
+import java.io.*;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.HashMap;
@@ -25,26 +25,34 @@ public class GameLoader implements Callable<ClassLoader> {
 
 	@Override
 	public ClassLoader call() {
-		byte[] buffer = null;
+		final File cache = new File(Configuration.TEMP, "game.jar");
 
 		try {
-			final URLConnection clientConnection = HttpUtils.getHttpConnection(new URL(crawler.archive));
-			clientConnection.addRequestProperty("Referer", crawler.game);
-			buffer = IOUtils.read(HttpUtils.getInputStream(clientConnection));
+			final HttpURLConnection con = HttpUtils.getHttpConnection(new URL(crawler.archive));
+			con.addRequestProperty("Referer", crawler.game);
+			HttpUtils.download(con, cache);
 		} catch (final IOException ignored) {
 		}
 
-		if (buffer == null) {
+		if (!cache.exists()) {
 			return null;
 		}
 
+		JarInputStream jar = null;
 		try {
-			final JarInputStream jar = new JarInputStream(new ByteArrayInputStream(buffer));
+			jar = new JarInputStream(new FileInputStream(cache));
 			JarEntry e;
 			while ((e = jar.getNextJarEntry()) != null) {
 				resources.put(e.getName(), read(jar));
 			}
 		} catch (final IOException ignored) {
+		} finally {
+			if (jar != null) {
+				try {
+					jar.close();
+				} catch (final IOException ignored) {
+				}
+			}
 		}
 
 		return new GameClassLoader(resources);
