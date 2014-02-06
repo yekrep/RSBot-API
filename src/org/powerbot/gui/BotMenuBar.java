@@ -251,6 +251,7 @@ public class BotMenuBar extends JMenuBar {
 
 	public void showLicense() {
 		BotChrome.openURL(Configuration.URLs.LICENSE);
+		Tracker.getInstance().trackPage("license/", BotLocale.LICENSE);
 	}
 
 	public synchronized void scriptPlayPause() {
