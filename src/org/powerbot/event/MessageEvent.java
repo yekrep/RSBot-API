@@ -1,7 +1,8 @@
-package org.powerbot.bot.event;
+package org.powerbot.event;
 
 import java.util.EventListener;
 
+import org.powerbot.bot.event.AbstractEvent;
 import org.powerbot.event.MessageListener;
 
 /**

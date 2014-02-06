@@ -5,7 +5,7 @@ import org.powerbot.client.RSInteractableLocation;
 import org.powerbot.client.RSObjectDef;
 import org.powerbot.client.Render;
 import org.powerbot.bot.event.EventDispatcher;
-import org.powerbot.bot.event.MessageEvent;
+import org.powerbot.event.MessageEvent;
 import org.powerbot.script.methods.Camera;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.util.math.Vector3f;
