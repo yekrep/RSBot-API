@@ -177,6 +177,11 @@ public class Sandbox extends SecurityManager {
 			return;
 		}
 
+		// allow jrebel for debugging
+		if (!Configuration.FROMJAR && new File(path).getParentFile().getName().equals(".jrebel")) {
+			return;
+		}
+
 		throw new SecurityException((readOnly ? "read" : "write") + ": " + path);
 	}
 
