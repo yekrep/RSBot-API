@@ -39,9 +39,6 @@ public class Configuration {
 		public static final String SCRIPTSCOLLECTION = Configuration.PROTO + DOMAIN_SITE + "/scripts/api/collection/?{POST}a=%s";
 		public static final String SIGNIN = Configuration.PROTO + DOMAIN_SITE + "/rsbot/login/?{POST}u=%s&p=%s&a=%s";
 
-		public static final String SITE = "http://" + DOMAIN_SITE + "/";
-		public static final String REGISTER = "http://" + DOMAIN_SITE_LIVE + "/go/register";
-		public static final String LOSTPASS = "http://" + DOMAIN_SITE_LIVE + "/go/lostpass";
 		public static final String SCRIPTSLIST = "http://" + DOMAIN_SITE_LIVE + "/go/scripts";
 		public static final String LICENSE = "http://" + DOMAIN_SITE_LIVE + "/terms/license/";
 

@@ -23,13 +23,10 @@ public final class BotLocale {
 	public static final String HELP = "Help";
 
 	public static final String USERNAME = "Username";
-	public static final String USERNAME_OR_EMAIL = USERNAME + " or email";
 	public static final String PASSWORD = "Password";
-	public static final String FORGOTPASS = "I've forgotten my password";
 	public static final String PIN = "PIN";
 	public static final String MEMBER = "Member";
 
-	public static final String REGISTER = "Register";
 	public static final String ERROR = "Error";
 	public static final String INVALIDCREDENTIALS = "Invalid username or password.";
 	public static final String SCRIPTS = "Scripts";
