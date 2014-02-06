@@ -9,11 +9,14 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import org.powerbot.Configuration;
 import org.powerbot.gui.BotChrome;
-import org.powerbot.gui.BotSignin;
+import org.powerbot.gui.BotLocale;
+import org.powerbot.gui.BotPreferences;
+import org.powerbot.script.internal.ScriptController;
 
 public class OSXAdapt implements Runnable {
 	private final BotChrome chrome;
@@ -50,7 +53,22 @@ public class OSXAdapt implements Runnable {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				new BotSignin(chrome);
+				if (BotPreferences.loading.get()) {
+					return;
+				}
+
+				final ScriptController c = chrome.getBot().controller;
+				final boolean active = c.isValid() && !c.isStopping();
+
+				if (active) {
+					if (JOptionPane.showConfirmDialog(chrome, "Would you like to stop the current script?", BotLocale.SCRIPTS, JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE) == JOptionPane.YES_OPTION) {
+						chrome.menuBar.scriptStop();
+					} else {
+						return;
+					}
+				}
+
+				new BotPreferences(chrome);
 			}
 		});
 	}

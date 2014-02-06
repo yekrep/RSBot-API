@@ -27,13 +27,13 @@ import org.powerbot.script.internal.ScriptController;
 public class BotMenuBar extends JMenuBar {
 	private static final long serialVersionUID = -4186554435386744949L;
 	private final BotChrome chrome;
-	private final JMenuItem signin, play, stop;
+	private final JMenuItem play, stop;
 
 	public BotMenuBar(final BotChrome chrome) {
 		this.chrome = chrome;
 
 		final JMenu file = new JMenu(BotLocale.FILE), edit = new JMenu(BotLocale.EDIT), view = new JMenu(BotLocale.VIEW),
-				script = new JMenu(BotLocale.SCRIPTS), input = new JMenu(BotLocale.INPUT), help = new JMenu(BotLocale.HELP);
+				input = new JMenu(BotLocale.INPUT), help = new JMenu(BotLocale.HELP);
 
 		final JMenuItem newtab = new JMenuItem(BotLocale.NEWWINDOW);
 		file.add(newtab);
@@ -56,39 +56,6 @@ public class BotMenuBar extends JMenuBar {
 			});
 		}
 
-		signin = new JMenuItem(BotLocale.SIGNIN);
-		edit.add(signin);
-		signin.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(final ActionEvent e) {
-				new BotSignin(chrome);
-			}
-		});
-		final JMenuItem accounts = new JMenuItem(BotLocale.ACCOUNTS);
-		edit.add(accounts);
-		accounts.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(final ActionEvent e) {
-				new BotAccounts(chrome);
-			}
-		});
-
-		edit.addMenuListener(new MenuListener() {
-			@Override
-			public void menuSelected(final MenuEvent e) {
-				final NetworkAccount account = NetworkAccount.getInstance();
-				signin.setText(account.isLoggedIn() ? account.getDisplayName() + "..." : BotLocale.SIGNIN);
-			}
-
-			@Override
-			public void menuDeselected(final MenuEvent e) {
-			}
-
-			@Override
-			public void menuCanceled(final MenuEvent e) {
-			}
-		});
-
 		view.addMenuListener(new MenuListener() {
 			@Override
 			public void menuSelected(final MenuEvent e) {
@@ -109,7 +76,7 @@ public class BotMenuBar extends JMenuBar {
 		final ImageIcon[] playIcons = new ImageIcon[]{new ImageIcon(Resources.getImage(Resources.Paths.PLAY)), new ImageIcon(Resources.getImage(Resources.Paths.PAUSE))};
 		play = new JMenuItem(BotLocale.PLAYSCRIPT);
 		play.setIcon(playIcons[0]);
-		script.add(play);
+		edit.add(play);
 		play.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent e) {
@@ -118,7 +85,7 @@ public class BotMenuBar extends JMenuBar {
 		});
 		stop = new JMenuItem(BotLocale.STOPSCRIPT);
 		stop.setIcon(new ImageIcon(Resources.getImage(Resources.Paths.STOP)));
-		script.add(stop);
+		edit.add(stop);
 		stop.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent e) {
@@ -126,9 +93,9 @@ public class BotMenuBar extends JMenuBar {
 			}
 		});
 
-		script.addSeparator();
+		edit.addSeparator();
 		final JMenu options = new JMenu(BotLocale.OPTIONS);
-		script.add(options);
+		edit.add(options);
 
 		options.addMenuListener(new MenuListener() {
 			@Override
@@ -192,7 +159,7 @@ public class BotMenuBar extends JMenuBar {
 			}
 		});
 
-		script.addMenuListener(new MenuListener() {
+		edit.addMenuListener(new MenuListener() {
 			@Override
 			public void menuSelected(final MenuEvent e) {
 				final ScriptController c = chrome.getBot().controller;
@@ -262,7 +229,6 @@ public class BotMenuBar extends JMenuBar {
 		add(file);
 		add(edit);
 		add(view);
-		add(script);
 		add(input);
 		add(help);
 	}
