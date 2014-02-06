@@ -24,9 +24,8 @@ import java.util.concurrent.atomic.AtomicLong;
 import org.powerbot.Configuration;
 import org.powerbot.util.HttpUtils;
 
-public final class Tracker implements Closeable {
+public final class Tracker {
 	private static Tracker instance;
-	private final ExecutorService exec;
 	private static final String TRACKING_ID = "UA-5170375-18", PAGE_PREFIX = "/rsbot/", HOSTNAME = "services." + Configuration.URLs.DOMAIN;
 	private final String locale, resolution, colours;
 	private final Random r;
@@ -37,8 +36,6 @@ public final class Tracker implements Closeable {
 	private final AtomicInteger visits;
 
 	private Tracker() {
-		exec = Executors.newSingleThreadExecutor();
-
 		final Locale l = Locale.getDefault();
 		locale = (l.getLanguage() + (l.getCountry().length() != 0 ? "-" + l.getCountry() : "")).toLowerCase();
 
@@ -140,16 +137,12 @@ public final class Tracker implements Closeable {
 	}
 
 	private void track(final String url) {
-		if (exec.isShutdown()) {
-			return;
-		}
-
-		exec.execute(new Runnable() {
+		new Thread(new Runnable() {
 			@Override
 			public void run() {
 				call(url);
 			}
-		});
+		}).start();
 	}
 
 	private StringBuilder getBase() {
@@ -190,10 +183,5 @@ public final class Tracker implements Closeable {
 			con.disconnect();
 		} catch (final IOException ignored) {
 		}
-	}
-
-	@Override
-	public void close() {
-		exec.shutdown();
 	}
 }
