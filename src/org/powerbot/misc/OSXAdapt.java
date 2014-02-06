@@ -53,7 +53,7 @@ public class OSXAdapt implements Runnable {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				if (BotPreferences.loading.get()) {
+				if (BotPreferences.loading.get() || chrome.getBot().ctx.getClient() == null) {
 					return;
 				}
 
