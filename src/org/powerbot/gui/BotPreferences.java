@@ -440,9 +440,8 @@ public class BotPreferences extends JDialog implements Runnable {
 
 		pack();
 		setLocationRelativeTo(getParent());
-		setVisible(true);
-
 		new Thread(this).start();
+		setVisible(true);
 	}
 
 	@Override
