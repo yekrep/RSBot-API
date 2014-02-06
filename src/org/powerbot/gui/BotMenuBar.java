@@ -21,6 +21,7 @@ import org.powerbot.bot.Bot;
 import org.powerbot.event.BotMenuListener;
 import org.powerbot.misc.NetworkAccount;
 import org.powerbot.misc.Resources;
+import org.powerbot.misc.Tracker;
 import org.powerbot.script.Script;
 import org.powerbot.script.internal.ScriptController;
 
@@ -245,6 +246,7 @@ public class BotMenuBar extends JMenuBar {
 		final Font f = text.getFont();
 		text.setFont(new Font(f.getName(), f.getStyle(), f.getSize() - 2));
 		JOptionPane.showMessageDialog(chrome, text, BotLocale.ABOUT, JOptionPane.PLAIN_MESSAGE);
+		Tracker.getInstance().trackPage("about/", BotLocale.ABOUT);
 	}
 
 	public void showLicense() {
