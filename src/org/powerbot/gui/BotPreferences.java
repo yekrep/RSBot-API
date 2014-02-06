@@ -448,8 +448,9 @@ public class BotPreferences extends JDialog implements Runnable {
 	@Override
 	public synchronized void run() {
 		final NetworkAccount n = NetworkAccount.getInstance();
+		final boolean l = n.isLoggedIn();
 		list.clear();
-		if (n.isLoggedIn()) {
+		if (l) {
 			try {
 				list.addAll(ScriptList.getList());
 			} catch (final IOException ignored) {
@@ -459,7 +460,6 @@ public class BotPreferences extends JDialog implements Runnable {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				final boolean l = n.isLoggedIn();
 				setTitle(l ? BotLocale.SCRIPTS : BotLocale.SIGNIN);
 
 				labelUsername.setVisible(!l);
