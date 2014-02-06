@@ -4,6 +4,7 @@ import java.util.concurrent.Callable;
 
 /**
  * An event-driven blocking utility.
+ * Frequencies are randomly adjusted by 85-150% to provide a basic antipattern.
  *
  * @author Paris
  */
@@ -11,8 +12,7 @@ public class Condition {
 
 	/**
 	 * Blocks until the specified condition is satisfied (returns {@code true}).
-	 * <p/>
-	 * Defaults to 10 game ticks (6 seconds blocking).
+	 * This uses a frequency of 600ms for up to 10 tries, i.e. attempting a maximum of 6 seconds.
 	 *
 	 * @param cond the condition
 	 * @return {@code true} if the condition was satisfied, otherwise {@code false}
@@ -23,9 +23,21 @@ public class Condition {
 
 	/**
 	 * Blocks until the specified condition is satisfied (returns {@code true}).
+	 * This uses the specified frequency interval and retries for up to 6 seconds.
 	 *
-	 * @param cond  the condition
-	 * @param freq  the polling frequency in milliseconds
+	 * @param cond the condition
+	 * @param freq the polling frequency in milliseconds
+	 * @return {@code true} if the condition was satisfied, otherwise {@code false}
+	 */
+	public static boolean wait(final Callable<Boolean> cond, final int freq) {
+		return wait(cond, freq, Math.max(2, 6000 / freq));
+	}
+
+	/**
+	 * Blocks until the specified condition is satisfied (returns {@code true}).
+	 *
+	 * @param cond the condition
+	 * @param freq the polling frequency in milliseconds
 	 * @param tries the maximum number of attempts before this method returns {@code false}
 	 * @return if the condition was satisfied, otherwise {@code false}
 	 */
