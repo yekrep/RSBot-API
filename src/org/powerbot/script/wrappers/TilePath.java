@@ -97,7 +97,7 @@ public class TilePath extends Path {
 		out:
 		/* Iterate over all tiles but the first tile (0) starting with the last (length - 1). */
 		for (int i = tiles.length - 1; i > 0; --i) {
-			/* The tiles not on screen, go to the next. */
+			/* The tiles not in view, go to the next. */
 			if (!tiles[i].getMatrix(ctx).isOnMap()) {
 				continue;
 			}

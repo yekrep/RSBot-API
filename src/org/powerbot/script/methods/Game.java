@@ -308,7 +308,7 @@ public class Game extends MethodProvider {
 	}
 
 	/**
-	 * Determines an on-screen point of the given point in the game region.
+	 * Determines an in-view point of the given point in the game region.
 	 *
 	 * @param x      the relative x position
 	 * @param y      the relative y position

@@ -121,7 +121,7 @@ public class Bank extends ItemQuery<Item> {
 	}
 
 	/**
-	 * Determines if a bank is on screen.
+	 * Determines if a bank is in view.
 	 *
 	 * @return <tt>true</tt> if a bank is in view; otherwise <tt>false</tt>
 	 */
@@ -148,7 +148,7 @@ public class Bank extends ItemQuery<Item> {
 	}
 
 	/**
-	 * Opens a random on-screen bank.
+	 * Opens a random in-view bank.
 	 * <p/>
 	 * Do not continue execution within the current poll after this method so BankPin may activate.
 	 *
