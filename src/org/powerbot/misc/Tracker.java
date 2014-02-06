@@ -3,7 +3,6 @@ package org.powerbot.misc;
 import java.awt.Dimension;
 import java.awt.GraphicsEnvironment;
 import java.awt.Toolkit;
-import java.io.Closeable;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
@@ -16,8 +15,6 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Locale;
 import java.util.Random;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -95,8 +92,8 @@ public final class Tracker {
 			DataOutputStream out = null;
 			try {
 				out = new DataOutputStream(new FileOutputStream(cache));
-				for (int i = 0; i < timestamps.length; i++) {
-					out.writeLong(timestamps[i]);
+				for (final long t : timestamps) {
+					out.writeLong(t);
 				}
 				out.writeInt(visits.incrementAndGet());
 				out.close();
