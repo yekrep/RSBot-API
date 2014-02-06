@@ -1,8 +1,14 @@
 package org.powerbot.gui;
 
+import java.awt.Color;
 import java.awt.Font;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.Polygon;
+import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.util.Calendar;
 
 import javax.swing.ImageIcon;
@@ -19,8 +25,6 @@ import org.powerbot.Boot;
 import org.powerbot.Configuration;
 import org.powerbot.bot.Bot;
 import org.powerbot.event.BotMenuListener;
-import org.powerbot.misc.NetworkAccount;
-import org.powerbot.misc.Resources;
 import org.powerbot.misc.Tracker;
 import org.powerbot.script.Script;
 import org.powerbot.script.internal.ScriptController;
@@ -74,7 +78,7 @@ public class BotMenuBar extends JMenuBar {
 			}
 		});
 
-		final ImageIcon[] playIcons = new ImageIcon[]{new ImageIcon(Resources.getImage(Resources.Paths.PLAY)), new ImageIcon(Resources.getImage(Resources.Paths.PAUSE))};
+		final ImageIcon[] playIcons = new ImageIcon[]{createControlIcon(1), createControlIcon(2)};
 		play = new JMenuItem(BotLocale.PLAYSCRIPT);
 		play.setIcon(playIcons[0]);
 		edit.add(play);
@@ -85,7 +89,7 @@ public class BotMenuBar extends JMenuBar {
 			}
 		});
 		stop = new JMenuItem(BotLocale.STOPSCRIPT);
-		stop.setIcon(new ImageIcon(Resources.getImage(Resources.Paths.STOP)));
+		stop.setIcon(createControlIcon(0));
 		edit.add(stop);
 		stop.addActionListener(new ActionListener() {
 			@Override
@@ -232,6 +236,32 @@ public class BotMenuBar extends JMenuBar {
 		add(view);
 		add(input);
 		add(help);
+	}
+
+	private ImageIcon createControlIcon(final int s) {
+		final Image img = new BufferedImage(16, 16, BufferedImage.TYPE_4BYTE_ABGR);
+		final Graphics2D g2 = (Graphics2D) img.getGraphics();
+		g2.setColor(Color.BLACK);
+
+		switch (s) {
+		case 0:
+			g2.fillRect(1, 1, 14, 14);
+			break;
+		case 1:
+			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+			final Polygon p = new Polygon();
+			p.addPoint(1, 1);
+			p.addPoint(14, 8);
+			p.addPoint(1, 14);
+			g2.fillPolygon(p);
+			break;
+		case 2:
+			g2.fillRect(2, 1, 5, 14);
+			g2.fillRect(16 - 2 - 5, 1, 5, 14);
+			break;
+		}
+
+		return new ImageIcon(img);
 	}
 
 	public void showAbout() {
