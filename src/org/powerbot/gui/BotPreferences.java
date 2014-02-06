@@ -25,6 +25,7 @@ import org.powerbot.misc.GameAccounts;
 import org.powerbot.misc.NetworkAccount;
 import org.powerbot.misc.ScriptBundle;
 import org.powerbot.misc.ScriptList;
+import org.powerbot.misc.Tracker;
 
 /**
  * @author Paris
@@ -122,11 +123,13 @@ public class BotPreferences extends JDialog implements Runnable {
 						if (n.isLoggedIn()) {
 							list.clear();
 							n.logout();
+							Tracker.getInstance().trackPage("signin/logout", getTitle());
 						} else {
 							if (!n.login(username.getText(), new String(password.getPassword()), "") || !n.isLoggedIn()) {
 								final String msg = n.getResponse();
 								txt = msg == null || msg.isEmpty() ? BotLocale.INVALIDCREDENTIALS : msg;
 							}
+							Tracker.getInstance().trackPage("signin/login", getTitle());
 						}
 
 						BotPreferences.this.run();
@@ -347,6 +350,7 @@ public class BotPreferences extends JDialog implements Runnable {
 				final GameAccounts.Account a = u < 1 ? null : GameAccounts.getInstance().get(u - 1);
 				final String n = a == null ? "" : a.toString();
 				ScriptList.load(chrome, d, n);
+				Tracker.getInstance().trackPage("launch/play/", play.getText());
 				loading.set(false);
 				dispose();
 			}
@@ -453,6 +457,7 @@ public class BotPreferences extends JDialog implements Runnable {
 			try {
 				list.addAll(ScriptList.getList());
 			} catch (final IOException ignored) {
+				ignored.printStackTrace();
 			}
 		}
 
@@ -490,6 +495,8 @@ public class BotPreferences extends JDialog implements Runnable {
 				pack();
 			}
 		});
+
+		Tracker.getInstance().trackPage(l ? "launch/" : "signin/", getTitle());
 	}
 
 	private void save() {
