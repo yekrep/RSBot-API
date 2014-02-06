@@ -111,6 +111,20 @@ public final class GameAccounts extends ArrayList<GameAccounts.Account> {
 		return account;
 	}
 
+	public int find(String username) {
+		username = normaliseUsername(username);
+		int i = 0;
+
+		for (final Account a : this) {
+			if (a.username.equals(username)) {
+				return i;
+			}
+			i++;
+		}
+
+		return -1;
+	}
+
 	public final class Account {
 		private String username;
 		private String password;

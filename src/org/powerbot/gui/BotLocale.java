@@ -23,8 +23,9 @@ public final class BotLocale {
 	public static final String HELP = "Help";
 
 	public static final String USERNAME = "Username";
+	public static final String USERNAME_OR_EMAIL = USERNAME + " or email";
 	public static final String PASSWORD = "Password";
-	public static final String PIN = "PIN";
+	public static final String PIN = "Bank PIN";
 	public static final String MEMBER = "Member";
 
 	public static final String ERROR = "Error";
@@ -35,6 +36,8 @@ public final class BotLocale {
 	public static final String BROWSE = "Browse";
 	public static final String BROWSETIP = "Browse the full list of scripts";
 	public static final String NOACCOUNT = "No account";
+	public static final String ADD = "Add";
+	public static final String REMOVE = "Remove";
 	public static final String BY = "By %s";
 
 	public static final String ALLOW = "Allow";

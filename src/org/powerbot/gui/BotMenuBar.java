@@ -198,7 +198,7 @@ public class BotMenuBar extends JMenuBar {
 				final ScriptController c = chrome.getBot().controller;
 				final boolean active = c.isValid() && !c.isStopping(), running = active && !c.isSuspended();
 
-				play.setEnabled(chrome.getBot().ctx.getClient() != null && !BotScripts.loading.get());
+				play.setEnabled(chrome.getBot().ctx.getClient() != null && !BotPreferences.loading.get());
 				play.setText(running ? BotLocale.PAUSESCRIPT : active ? BotLocale.RESUMESCRIPT : BotLocale.PLAYSCRIPT);
 				play.setIcon(playIcons[running ? 1 : 0]);
 				stop.setEnabled(active);
@@ -303,7 +303,7 @@ public class BotMenuBar extends JMenuBar {
 						SwingUtilities.invokeLater(new Runnable() {
 							@Override
 							public void run() {
-								new BotScripts(chrome);
+								new BotPreferences(chrome);
 							}
 						});
 					}
