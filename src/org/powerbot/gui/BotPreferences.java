@@ -503,7 +503,7 @@ public class BotPreferences extends JDialog implements Runnable {
 				account.getActionListeners()[0].actionPerformed(new ActionEvent(account, 0, null));
 
 				getRootPane().setDefaultButton(l ? play : signin);
-				panel.setBorder(l ? BorderFactory.createEmptyBorder(0, PAD, PAD * 2, PAD) : BorderFactory.createEmptyBorder(0, PAD, PAD, PAD));
+				panel.setBorder(BorderFactory.createEmptyBorder(0, PAD, PAD * 2, PAD));
 				pack();
 			}
 		});
