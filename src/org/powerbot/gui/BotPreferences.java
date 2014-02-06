@@ -176,10 +176,15 @@ public class BotPreferences extends JDialog implements Runnable {
 				play.setEnabled(d != null);
 
 				String s = d == null ? "" : d.getDescription();
-				if (s.length() > 63) {
-					s = s.substring(0, 63) + "\u2026";
+				final int w = username.getWidth() + password.getWidth();
+				int n = 0;
+
+				while (description.getFontMetrics(description.getFont()).stringWidth(s) >  w) {
+					s = s.substring(0, s.length() - 1);
+					n++;
 				}
-				description.setText(s);
+
+				description.setText(s + (n > 1 ? "\u2026" : ""));
 			}
 		});
 		script.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
