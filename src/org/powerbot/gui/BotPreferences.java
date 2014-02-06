@@ -46,11 +46,12 @@ public class BotPreferences extends JDialog implements Runnable {
 	private final Component[] itemsAccount;
 	private final List<ScriptBundle.Definition> list;
 
-	public static AtomicBoolean loading = new AtomicBoolean(false);
+	public static AtomicBoolean loading = new AtomicBoolean(false), visible = new AtomicBoolean(false);
 
 	public BotPreferences(final BotChrome chrome) {
 		super(chrome, true);
 		this.chrome = chrome;
+		visible.set(true);
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		setResizable(false);
 
@@ -61,6 +62,7 @@ public class BotPreferences extends JDialog implements Runnable {
 			public void windowClosing(final WindowEvent e) {
 				setVisible(false);
 				GameAccounts.getInstance().save();
+				visible.set(false);
 				dispose();
 			}
 		});
@@ -361,6 +363,7 @@ public class BotPreferences extends JDialog implements Runnable {
 				ScriptList.load(chrome, d, n);
 				Tracker.getInstance().trackPage("launch/play/", play.getText());
 				loading.set(false);
+				visible.set(false);
 				dispose();
 			}
 		});
