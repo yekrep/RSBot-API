@@ -48,7 +48,7 @@ public class BotPreferences extends JDialog implements Runnable {
 	public static AtomicBoolean loading = new AtomicBoolean(false);
 
 	public BotPreferences(final BotChrome chrome) {
-		super(chrome);
+		super(chrome, true);
 		this.chrome = chrome;
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		setResizable(false);
