@@ -14,6 +14,7 @@ public class ClientContext {
 	public final Npcs npcs;
 	public final Objects objects;
 	public final Players players;
+	public final Varpbits varpbits;
 
 	private ClientContext(final Bot bot) {
 		client = new AtomicReference<Client>(null);
@@ -24,6 +25,7 @@ public class ClientContext {
 		npcs = new Npcs(this);
 		objects = new Objects(this);
 		players = new Players(this);
+		varpbits = new Varpbits(this);
 	}
 
 	public static ClientContext newContext(final Bot bot) {
@@ -39,6 +41,7 @@ public class ClientContext {
 		npcs = ctx.npcs;
 		objects = ctx.objects;
 		players = ctx.players;
+		varpbits = ctx.varpbits;
 	}
 
 	public void setClient(final Client client) {
