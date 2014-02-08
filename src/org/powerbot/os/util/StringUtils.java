@@ -5,6 +5,9 @@ import java.net.URLDecoder;
 import java.net.URLEncoder;
 
 public class StringUtils {
+	public static String stripHtml(final String s) {
+		return s.replaceAll("\\<.*?\\>", "");
+	}
 
 	public static String urlEncode(final String text) {
 		if (text == null) {
