@@ -157,6 +157,17 @@ public class DepositBox extends ItemQuery<Item> {
 		return -1;
 	}
 
+	/**
+	 * Deposits an item with the provided id and amount.
+	 *
+	 * @param id     the id of the item
+	 * @param amount the amount to deposit
+	 * @return <tt>true</tt> if the item was deposited, does not determine if amount was matched; otherwise <tt>false</tt>
+	 */
+	public boolean deposit(final int id, final Amount amount) {
+		return deposit(id, amount.getValue());
+	}
+
 	public boolean deposit(final int id, final int amount) {
 		if (!isOpen() || amount < 0) {
 			return false;
@@ -253,5 +264,22 @@ public class DepositBox extends ItemQuery<Item> {
 	@Override
 	public Item getNil() {
 		return new Item(ctx, -1, -1, null);
+	}
+
+	/**
+	 * An enumeration providing standard bank amount options.
+	 */
+	public static enum Amount {
+		ONE(1), FIVE(5), TEN(10), ALL_BUT_ONE(-1), ALL(0);
+
+		private final int value;
+
+		private Amount(final int value) {
+			this.value = value;
+		}
+
+		public int getValue() {
+			return value;
+		}
 	}
 }
