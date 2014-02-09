@@ -54,12 +54,12 @@ public class LocalPath extends Path {
 
 	@Override
 	public Tile getNext() {
-		return isValid() ? tilePath.getNext() : null;
+		return isValid() ? tilePath.getNext() : Tile.NIL;
 	}
 
 	@Override
 	public Tile getStart() {
-		return null;
+		return Tile.NIL;
 	}
 
 	@Override
