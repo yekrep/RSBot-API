@@ -50,8 +50,8 @@ public class RenderableCuboid extends Interactive {
 		final Point o2 = ctx.game.groundToScreen(x + deviation, z - deviation, p, h);
 		final Point o3 = ctx.game.groundToScreen(x + deviation, z + deviation, p, h);
 		final Point o4 = ctx.game.groundToScreen(x - deviation, z + deviation, p, h);
-		if (g1.x == -1 || g2.x == -1 || g3.x == -1 || g4.x == -1 ||
-				o1.x == -1 || o2.x == -1 || o3.x == -1 || o4.x == -1) {
+		if (!ctx.game.isPointInViewport(g1) || !ctx.game.isPointInViewport(g2) || !ctx.game.isPointInViewport(g3) || !ctx.game.isPointInViewport(g4) ||
+				!ctx.game.isPointInViewport(o1) || !ctx.game.isPointInViewport(o2) || !ctx.game.isPointInViewport(o3) || !ctx.game.isPointInViewport(o4)) {
 			return null;
 		}
 		final Polygon g = new Polygon(new int[]{g1.x, g2.x, g3.x, g4.x}, new int[]{g1.y, g2.y, g3.y, g4.y}, 4);
