@@ -256,11 +256,7 @@ public abstract class Actor extends Interactive implements Renderable, Nameable,
 			}
 		}
 		final RenderableCuboid cuboid = new RenderableCuboid(ctx, character);
-		final Point p = cuboid.getInteractPoint();
-		if (p.x != -1 && p.y != -1) {
-			return p;
-		}
-		return getScreenPoint();
+		return cuboid.getInteractPoint();
 	}
 
 	@Override
@@ -275,11 +271,7 @@ public abstract class Actor extends Interactive implements Renderable, Nameable,
 			return model.getNextPoint();
 		}
 		final RenderableCuboid cuboid = new RenderableCuboid(ctx, character);
-		final Point p = cuboid.getNextPoint();
-		if (p.x != -1 && p.y != -1) {
-			return p;
-		}
-		return getScreenPoint();
+		return cuboid.getNextPoint();
 	}
 
 	@Override
@@ -294,11 +286,7 @@ public abstract class Actor extends Interactive implements Renderable, Nameable,
 			return model.getCenterPoint();
 		}
 		final RenderableCuboid cuboid = new RenderableCuboid(ctx, character);
-		final Point p = cuboid.getCenterPoint();
-		if (p.x != -1 && p.y != -1) {
-			return p;
-		}
-		return getScreenPoint();
+		return cuboid.getCenterPoint();
 	}
 
 	@Override
