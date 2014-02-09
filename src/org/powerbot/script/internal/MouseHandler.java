@@ -26,17 +26,17 @@ public class MouseHandler extends MethodProvider {
 	public void click(final int x, final int y, final int button) {
 		try {
 			Thread.sleep(simulator.getPressDuration());
-		} catch (InterruptedException ignored) {
+		} catch (final InterruptedException ignored) {
 		}
 		press(x, y, button);
 		try {
 			Thread.sleep(simulator.getPressDuration());
-		} catch (InterruptedException ignored) {
+		} catch (final InterruptedException ignored) {
 		}
 		release(x, y, button);
 		try {
 			Thread.sleep(simulator.getPressDuration());
-		} catch (InterruptedException ignored) {
+		} catch (final InterruptedException ignored) {
 		}
 	}
 

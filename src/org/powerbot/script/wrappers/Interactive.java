@@ -95,7 +95,7 @@ public abstract class Interactive extends MethodProvider implements Targetable, 
 		final Filter<Point> f2 = new Filter<Point>() {
 			@Override
 			public boolean accept(final Point p) {
-				return contains(p) && Condition.wait(new Callable<Boolean>() {
+				return Condition.wait(new Callable<Boolean>() {
 					@Override
 					public Boolean call() {
 						return ctx.menu.indexOf(f) != -1;

@@ -11,11 +11,11 @@ import org.powerbot.script.wrappers.Targetable;
 import org.powerbot.util.math.HardwareSimulator;
 
 public class Mouse extends MethodProvider {
-	private MouseHandler handler;
+	private final MouseHandler handler;
 
 	public Mouse(final MethodContext ctx) {
 		super(ctx);
-		this.handler = new MouseHandler(ctx);
+		handler = new MouseHandler(ctx);
 	}
 
 	/**
@@ -139,13 +139,10 @@ public class Mouse extends MethodProvider {
 			public boolean execute(final MouseHandler handler) {
 				try {
 					Thread.sleep(HardwareSimulator.getDelayFactor());
-				} catch (InterruptedException ignored) {
+				} catch (final InterruptedException ignored) {
 				}
 
-				if (filter.accept(handler.getLocation())) {
-					return click(left ? MouseEvent.BUTTON1 : MouseEvent.BUTTON3);
-				}
-				return false;
+				return filter.accept(handler.getLocation()) && click(left ? MouseEvent.BUTTON1 : MouseEvent.BUTTON3);
 			}
 		});
 		return !t.failed;
@@ -160,22 +157,22 @@ public class Mouse extends MethodProvider {
 		if (loc.equals(p1) || move(p1)) {
 			try {
 				Thread.sleep(handler.simulator.getPressDuration());
-			} catch (InterruptedException ignored) {
+			} catch (final InterruptedException ignored) {
 			}
 			handler.press(p1.x, p1.y, button);
 			try {
 				Thread.sleep(handler.simulator.getPressDuration());
-			} catch (InterruptedException ignored) {
+			} catch (final InterruptedException ignored) {
 			}
 			if (move(p2)) {
 				try {
 					Thread.sleep(handler.simulator.getPressDuration());
-				} catch (InterruptedException ignored) {
+				} catch (final InterruptedException ignored) {
 				}
 				handler.release(p2.x, p2.y, button);
 				try {
 					Thread.sleep(handler.simulator.getPressDuration());
-				} catch (InterruptedException ignored) {
+				} catch (final InterruptedException ignored) {
 				}
 				return true;
 			}
