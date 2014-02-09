@@ -153,10 +153,15 @@ public class MouseHandler extends MethodProvider {
 				curr.y = v.y;
 				curr.z = v.z;
 
-				final long m = simulator.getAbsoluteDelay(v.z);
-				if (m > 0) {
+
+				final long m = System.nanoTime();
+				if (!target.targetable.contains(new Point(dest.x, dest.y))) {
+					break;
+				}
+				final long d = Math.max(0, simulator.getAbsoluteDelay(v.z) - Math.abs(System.nanoTime() - m));
+				if (d > 0) {
 					try {
-						Thread.sleep(TimeUnit.NANOSECONDS.toMillis(m));
+						Thread.sleep(TimeUnit.NANOSECONDS.toMillis(d));
 					} catch (final InterruptedException ignored) {
 					}
 				}
