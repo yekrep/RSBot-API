@@ -192,7 +192,6 @@ public class Bank extends ItemQuery<Item> {
 			if (interactive.hover()) {
 				sleep(80, 200);
 			}
-
 		}
 		final String action = actions[index];
 		if (action != null ? interactive.interact(actions[index], options[index]) :
@@ -211,6 +210,13 @@ public class Bank extends ItemQuery<Item> {
 					}
 				}, 150, 15);
 			} while (ctx.players.local().isInMotion());
+
+			Condition.wait(new Callable<Boolean>() {
+				@Override
+				public Boolean call() throws Exception {
+					return ctx.widgets.get(13).isValid() || isOpen();
+				}
+			}, 100, 15);
 		}
 		return isOpen();
 	}
