@@ -37,9 +37,14 @@ public class Menu extends MethodProvider {
 	public static class Entry {
 		public final String action, option;
 
-		private Entry(final String a, final String o) {
-			this.action = a != null ? StringUtils.stripHtml(a) : "";
-			this.option = o != null ? StringUtils.stripHtml(o) : "";
+		protected Entry(final String a, final String o) {
+			action = a != null ? StringUtils.stripHtml(a) : "";
+			option = o != null ? StringUtils.stripHtml(o) : "";
+		}
+
+		@Override
+		public String toString() {
+			return String.format("%s %s", action, option).trim();
 		}
 	}
 
@@ -67,7 +72,7 @@ public class Menu extends MethodProvider {
 			@Override
 			public boolean accept(final Entry entry) {
 				return (a == null || entry.action.toLowerCase().contains(a)) &&
-						(o == null || entry.option.toLowerCase().contains(o));
+						(o == null || o.equalsIgnoreCase("null") || entry.option.toLowerCase().contains(o));
 			}
 		};
 	}
@@ -180,10 +185,11 @@ public class Menu extends MethodProvider {
 			return true;
 		}
 
-		Dimension d = ctx.game.getDimensions();
-		int mx = client.getMenuX(), my = client.getMenuY();
-		int w = (int) d.getWidth(), h = (int) d.getHeight();
-		int x1, x2, y1, y2;
+		final Dimension d = ctx.game.getDimensions();
+		final int mx = client.getMenuX(), my = client.getMenuY();
+		final int w = (int) d.getWidth(), h = (int) d.getHeight();
+		int x1, x2;
+		final int y1, y2;
 		x1 = x2 = mx;
 		y1 = y2 = Math.min(h - 5, Math.max(4, my + Random.nextInt(-10, 10)));
 		x1 = Math.max(4, x1 + Random.nextInt(-30, -10));
@@ -240,11 +246,11 @@ public class Menu extends MethodProvider {
 	}
 
 	private Point hoverSub(final Client client, final int main, final int sub) {
-		Vector2 dv = new Vector2(
+		final Vector2 dv = new Vector2(
 				client.getMenuX() + Random.nextInt(4, client.getMenuWidth() - 5),
 				client.getMenuY() + (21 + 16 * main + Random.nextInt(2, 15))
 		);
-		Vector2 mv = new Vector2(ctx.mouse.getLocation());
+		final Vector2 mv = new Vector2(ctx.mouse.getLocation());
 		if (mv.get2DDistanceTo(dv) > 200) {
 			Vector2 div = dv.add(mv.mul(-1d));
 			div = div.mul(Random.nextDouble(0.45, 0.55));
@@ -338,6 +344,7 @@ public class Menu extends MethodProvider {
 		final String[] arr = new String[len];
 		for (int i = 0; i < len; i++) {
 			arr[i] = actions[i] + " " + options[i];
+			arr[i] = arr[i].trim();
 		}
 		return arr;
 	}
