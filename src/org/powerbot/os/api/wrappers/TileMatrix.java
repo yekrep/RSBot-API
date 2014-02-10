@@ -23,7 +23,7 @@ public final class TileMatrix extends Interactive implements Locatable {
 
 	public Point getPoint(final double modX, final double modY, final int height) {
 		final Tile base = ctx.game.getMapOffset();
-		return base != null ? ctx.game.worldToScreen((int) ((tile.x - base.x + modX) * 512d), (int) ((tile.y - base.y + modY) * 512d), height) : new Point(-1, -1);
+		return base != null ? ctx.game.worldToScreen((int) ((tile.x - base.x + modX) * 128d), (int) ((tile.y - base.y + modY) * 128d), height) : new Point(-1, -1);
 	}
 
 	public Polygon getBounds() {
