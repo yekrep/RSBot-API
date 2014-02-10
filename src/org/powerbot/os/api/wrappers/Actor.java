@@ -48,10 +48,6 @@ public abstract class Actor extends Interactive implements Locatable, Validatabl
 		return new RelativePosition(x, z);
 	}
 
-	public ActorCuboid getCuboid() {//TODO: REMOVE
-		return new ActorCuboid(ctx, getActor());
-	}
-
 	@Override
 	public Tile getLocation() {
 		final Client client = ctx.client();
