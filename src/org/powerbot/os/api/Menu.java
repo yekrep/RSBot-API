@@ -81,6 +81,16 @@ public class Menu extends ClientAccessor {
 		return false;//TODO check if menu is open
 	}
 
+	public boolean click(final Filter<Entry> filter) {
+		final Client client = ctx.client();
+		final int idx;
+		if (client == null || !hover(filter) || (idx = indexOf(filter)) == -1) {
+			return false;
+		}
+		final Rectangle rectangle = new Rectangle(client.getMenuX(), client.getMenuY() + 19 + idx * 15, client.getMenuWidth(), 15);
+		return false;//TODO: check if mouse in rectangle, if so, click.
+	}
+
 	private void register() {
 		if (!this.registered.compareAndSet(false, true)) {
 			return;
