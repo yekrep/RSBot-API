@@ -6,7 +6,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.Callable;
 
-import org.powerbot.script.lang.BasicNamedQuery;
 import org.powerbot.script.lang.Filter;
 import org.powerbot.script.lang.ItemQuery;
 import org.powerbot.script.util.Condition;
@@ -17,6 +16,7 @@ import org.powerbot.script.wrappers.Interactive;
 import org.powerbot.script.wrappers.Item;
 import org.powerbot.script.wrappers.Locatable;
 import org.powerbot.script.wrappers.Npc;
+import org.powerbot.script.wrappers.Player;
 import org.powerbot.script.wrappers.Tile;
 
 /**
@@ -76,14 +76,26 @@ public class Bank extends ItemQuery<Item> {
 	}
 
 	private Interactive getBank() {
-		final BasicNamedQuery<GameObject> q = ctx.npcs.select().union(ctx.objects.select());
-		q.id(BANK_NPC_IDS, BANK_BOOTH_IDS, BANK_COUNTER_IDS, BANK_CHEST_IDS).select(Interactive.areInViewport()).select(UNREACHABLE_FILTER).nearest();
+		final Player p = ctx.players.local();
+		final Tile t = p.getLocation();
+		final Filter<Interactive> f = Interactive.areInViewport();
 
+		ctx.npcs.select().id(BANK_NPC_IDS).select(f).select(UNREACHABLE_FILTER).nearest();
+		ctx.objects.select().id(BANK_BOOTH_IDS, BANK_COUNTER_IDS, BANK_CHEST_IDS).select(f).select(UNREACHABLE_FILTER).nearest();
 		if (ctx.properties.getProperty("bank.antipattern", "").trim().equalsIgnoreCase("disable")) {
-			return q.poll();
+			final Npc npc = ctx.npcs.poll();
+			final GameObject object = ctx.objects.poll();
+			return t.distanceTo(npc) < t.distanceTo(object) ? npc : object;
 		}
-
-		return q.limit(3).shuffle().poll();
+		final double dist = Math.min(t.distanceTo(ctx.npcs.peek()), t.distanceTo(ctx.objects.peek()));
+		final double d2 = Math.min(2d, Math.max(0d, dist - 1d));
+		final List<Interactive> interactives = new ArrayList<Interactive>();
+		ctx.npcs.within(dist + Random.nextInt(2, 5)).within(ctx.npcs.peek(), d2);
+		ctx.objects.within(dist + Random.nextInt(2, 5)).within(ctx.objects.peek(), d2);
+		ctx.npcs.addTo(interactives);
+		ctx.objects.addTo(interactives);
+		final int len = interactives.size();
+		return len == 0 ? ctx.npcs.getNil() : interactives.get(Random.nextInt(0, len));
 	}
 
 	/**
@@ -93,9 +105,16 @@ public class Bank extends ItemQuery<Item> {
 	 * @see #open()
 	 */
 	public Locatable getNearest() {
-		return ctx.npcs.select().union(ctx.objects.select())
-				.id(BANK_NPC_IDS, BANK_BOOTH_IDS, BANK_COUNTER_IDS, BANK_CHEST_IDS)
-				.select(UNREACHABLE_FILTER).nearest().poll();
+		Locatable nearest = ctx.npcs.select().select(UNREACHABLE_FILTER).id(BANK_NPC_IDS).nearest().poll();
+
+		final Tile loc = ctx.players.local().getLocation();
+		for (final GameObject object : ctx.objects.select().select(UNREACHABLE_FILTER).
+				id(BANK_BOOTH_IDS, BANK_COUNTER_IDS, BANK_CHEST_IDS).nearest().limit(1)) {
+			if (loc.distanceTo(object) < loc.distanceTo(nearest)) {
+				nearest = object;
+			}
+		}
+		return nearest;
 	}
 
 	/**
