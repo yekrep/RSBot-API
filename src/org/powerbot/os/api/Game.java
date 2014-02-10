@@ -13,8 +13,8 @@ public class Game extends ClientAccessor {
 
 	static {
 		for (int i = 0; i < 2048; i++) {
-			ARRAY_SIN[i] = (int) (65536.0d * Math.sin(i * 0.0030679615d));
-			ARRAY_COS[i] = (int) (65536.0d * Math.cos(i * 0.0030679615d));
+			ARRAY_SIN[i] = (int) (65536d * Math.sin(i * 0.0030679615d));
+			ARRAY_COS[i] = (int) (65536d * Math.cos(i * 0.0030679615d));
 		}
 	}
 

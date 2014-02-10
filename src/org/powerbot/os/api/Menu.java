@@ -37,6 +37,11 @@ public class Menu extends ClientAccessor {
 		};
 	}
 
+	public boolean isOpen() {
+		final Client client = ctx.client();
+		return client != null && client.isMenuOpen();
+	}
+
 	public int indexOf(final Filter<Entry> filter) {
 		final String[] actions = this.actions.get(), options = this.options.get();
 		final int len;
