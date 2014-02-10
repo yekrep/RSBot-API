@@ -32,6 +32,15 @@ public class Game extends ClientAccessor {
 		return client != null ? client.getCrosshairIndex() : -1;
 	}
 
+
+	public boolean isPointInViewport(final Point p) {
+		return isPointInViewport(p.x, p.y);
+	}
+
+	public boolean isPointInViewport(final int x, final int y) {
+		return x >= 4 && y >= 4 && x <= 515 && y <= 337;
+	}
+
 	public HintArrow getHintArrow() {
 		//TODO: hint arrow
 		final HintArrow r = new HintArrow();
