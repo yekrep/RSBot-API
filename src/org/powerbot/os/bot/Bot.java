@@ -101,16 +101,7 @@ public class Bot implements Runnable, Closeable {
 		dispatcher.add(new PaintListener() {
 			@Override
 			public void repaint(final Graphics render) {
-				final List<GameObject> list = ctx.objects.getLoaded();
-				for (final GameObject o : list) {
-					render.setColor(Color.green);
-					for (int i = 0; i < o.getType(); i++) {
-						render.setColor(render.getColor().darker());
-					}
-					final RelativePosition r = o.getRelativePosition();
-					final Point p = ctx.game.worldToScreen(r.x, r.z, 0);
-					render.drawString(String.format("%d", o.getId()), p.x, p.y);
-				}
+
 			}
 		});
 	}
