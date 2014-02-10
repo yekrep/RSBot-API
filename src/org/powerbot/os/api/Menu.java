@@ -1,9 +1,12 @@
 package org.powerbot.os.api;
 
 import java.awt.Graphics;
+import java.awt.Rectangle;
+import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
+import org.powerbot.os.api.util.Condition;
 import org.powerbot.os.api.util.Filter;
 import org.powerbot.os.bot.event.PaintListener;
 import org.powerbot.os.client.Client;
@@ -54,6 +57,28 @@ public class Menu extends ClientAccessor {
 			}
 		}
 		return -1;
+	}
+
+	public boolean hover(final Filter<Entry> filter) {
+		final Client client = ctx.client();
+		if (client == null || indexOf(filter) == -1) {
+			return false;
+		}
+		if (!client.isMenuOpen()) {
+			//TODO: right click.
+		}
+		final int idx;
+		if (!Condition.wait(new Callable<Boolean>() {
+			@Override
+			public Boolean call() {
+				return client.isMenuOpen();
+			}
+		}, 15, 10) || (idx = indexOf(filter)) == -1) {
+			return false;
+		}
+		final Rectangle rectangle = new Rectangle(client.getMenuX(), client.getMenuY() + 19 + idx * 15, client.getMenuWidth(), 15);
+		//TODO: move mouse
+		return false;//TODO check if menu is open
 	}
 
 	private void register() {
