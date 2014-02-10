@@ -258,9 +258,9 @@ public class Map extends MethodProvider {
 		private Node[][] nodes;
 
 		private Graph(final CollisionMap map) {
-			this.width = map.getWidth() - 6;
-			this.height = map.getHeight() - 6;
-			this.nodes = new Node[width][height];
+			width = map.getWidth() - 6;
+			height = map.getHeight() - 6;
+			nodes = new Node[width][height];
 			for (int x = 0; x < width; x++) {
 				for (int y = 0; y < height; y++) {
 					final Node node = new Node(x, y);
@@ -320,7 +320,7 @@ public class Map extends MethodProvider {
 				list.add(nodes[curr_x + 1][curr_y - 1]);
 			}
 			if (curr_x < width - 1 && curr_y < height - 1 &&
-					!nodes[curr_x][curr_y].flag.contains(CollisionFlag.NORTHEAST.mark(CollisionFlag.NORTH.mark(CollisionFlag.WEST))) &&
+					!nodes[curr_x][curr_y].flag.contains(CollisionFlag.NORTHEAST.mark(CollisionFlag.NORTH.mark(CollisionFlag.EAST))) &&
 					!nodes[curr_x + 1][curr_y + 1].flag.contains(CollisionFlag.OBJECT_BLOCK.mark(CollisionFlag.DEAD_BLOCK)) &&
 					!nodes[curr_x][curr_y + 1].flag.contains(CollisionFlag.EAST.mark(CollisionFlag.OBJECT_BLOCK.mark(CollisionFlag.DEAD_BLOCK))) &&
 					!nodes[curr_x + 1][curr_y].flag.contains(CollisionFlag.NORTH.mark(CollisionFlag.OBJECT_BLOCK.mark(CollisionFlag.DEAD_BLOCK)))) {
