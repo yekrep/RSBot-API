@@ -32,6 +32,13 @@ public class Game extends ClientAccessor {
 		return client != null ? client.getCrosshairIndex() : -1;
 	}
 
+	public Tile getMapOffset() {
+		final Client client = ctx.client();
+		if (client == null) {
+			return Tile.NIL;
+		}
+		return new Tile(client.getOffsetX(), client.getOffsetY());
+	}
 
 	public boolean isPointInViewport(final Point p) {
 		return isPointInViewport(p.x, p.y);
