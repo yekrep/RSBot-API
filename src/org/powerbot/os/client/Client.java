@@ -39,6 +39,8 @@ public interface Client {
 
 	public int[][][] getTileHeights();
 
+	public boolean isMenuOpen();
+
 	public int getMenuX();
 
 	public int getMenuY();
