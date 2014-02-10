@@ -10,6 +10,8 @@ import java.util.PriorityQueue;
 import java.util.Queue;
 
 import org.powerbot.os.api.ClientContext;
+import org.powerbot.os.client.Client;
+import org.powerbot.os.client.CollisionMap;
 
 public class LocalPath extends Path {
 	private final Locatable destination;
@@ -58,7 +60,18 @@ public class LocalPath extends Path {
 		}
 		start = start.derive(-base.x, -base.y);
 		end = end.derive(-base.x, -base.y);
-		final Node[] path = new Node[0];//TODO: this
+
+		final Graph graph = getGraph();
+		final Node[] path;
+		final Node nodeStart, nodeStop;
+		if (graph != null &&
+				(nodeStart = graph.getNode(start.x, start.y)) != null &&
+				(nodeStop = graph.getNode(end.x, end.y)) != null) {
+			dijkstra(graph, nodeStart, nodeStop);
+			path = follow(nodeStop);
+		} else {
+			path = new Node[0];
+		}
 		if (path.length > 0) {
 			final Tile[] arr = new Tile[path.length];
 			for (int i = 0; i < path.length; i++) {
@@ -70,6 +83,20 @@ public class LocalPath extends Path {
 		return false;
 	}
 
+	private Graph getGraph() {
+		final Client client = ctx.client();
+		if (client == null) {
+			return null;
+		}
+		final int floor = client.getFloor();
+		final CollisionMap[] maps = client.getCollisionMaps();
+		final CollisionMap map;
+		if (maps == null || floor < 0 || floor >= maps.length || (map = maps[floor]) == null) {
+			return null;
+		}
+		final int[][] arr = map.getFlags();
+		return arr != null ? new Graph(arr, map.getOffsetX(), map.getOffsetY()) : null;
+	}
 
 	private void dijkstra(final Graph graph, final Node source, final Node target) {
 		source.g = 0d;
