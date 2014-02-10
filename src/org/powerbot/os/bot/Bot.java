@@ -1,19 +1,14 @@
 package org.powerbot.os.bot;
 
 import java.applet.Applet;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Point;
 import java.io.Closeable;
-import java.util.List;
 import java.util.Map;
 
 import javax.swing.SwingUtilities;
 
 import org.powerbot.os.api.ClientContext;
-import org.powerbot.os.api.wrappers.GameObject;
-import org.powerbot.os.api.wrappers.RelativePosition;
 import org.powerbot.os.bot.event.EventDispatcher;
 import org.powerbot.os.bot.event.PaintListener;
 import org.powerbot.os.bot.loader.GameAppletLoader;
