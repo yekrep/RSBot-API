@@ -78,7 +78,7 @@ public class TransformSpec {
 		name = scanner.readString();
 		version = scanner.readShort();
 
-		adapters.put("bs", new SetSuperAdapter(delegate("bs"), "org/powerbot/os/client/input/Canvas"));
+		adapters.put("bp", new SetSuperAdapter(delegate("bp"), "org/powerbot/os/client/input/Canvas"));
 		read:
 		while (true) {
 			final String clazz;
