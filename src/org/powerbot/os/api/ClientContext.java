@@ -11,6 +11,7 @@ public class ClientContext {
 
 	public final Game game;
 	public final GroundItems groundItems;
+	public final Movement movement;
 	public final Npcs npcs;
 	public final Objects objects;
 	public final Players players;
@@ -22,6 +23,7 @@ public class ClientContext {
 
 		game = new Game(this);
 		groundItems = new GroundItems(this);
+		movement = new Movement(this);
 		npcs = new Npcs(this);
 		objects = new Objects(this);
 		players = new Players(this);
@@ -38,6 +40,7 @@ public class ClientContext {
 
 		game = ctx.game;
 		groundItems = ctx.groundItems;
+		movement = ctx.movement;
 		npcs = ctx.npcs;
 		objects = ctx.objects;
 		players = ctx.players;
