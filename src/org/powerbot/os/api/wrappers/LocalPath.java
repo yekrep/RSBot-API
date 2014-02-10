@@ -10,8 +10,10 @@ import java.util.PriorityQueue;
 import java.util.Queue;
 
 import org.powerbot.os.api.ClientContext;
+import org.powerbot.os.api.util.Random;
 import org.powerbot.os.client.Client;
 import org.powerbot.os.client.CollisionMap;
+import org.powerbot.os.client.Landscape;
 
 public class LocalPath extends Path {
 	private final Locatable destination;
@@ -95,7 +97,44 @@ public class LocalPath extends Path {
 			return null;
 		}
 		final int[][] arr = map.getFlags();
-		return arr != null ? new Graph(arr, map.getOffsetX(), map.getOffsetY()) : null;
+		final double[][] costs = getCosts(arr.length, arr.length);
+		return arr != null ? new Graph(arr, costs, map.getOffsetX(), map.getOffsetY()) : null;
+	}
+
+	private double[][] getCosts(final int w, final int h) {
+		final Client client = ctx.client();
+		final Landscape landscape = client.getLandscape();
+		final org.powerbot.os.client.Tile[][][] tiles;
+		final int floor = client.getFloor();
+		final org.powerbot.os.client.Tile[][] rows;
+		if (landscape == null || (tiles = landscape.getTiles()) == null ||
+				floor < 0 || floor > tiles.length || (rows = tiles[floor]) == null) {
+			return new double[0][0];
+		}
+		final double[][] arr = new double[w][h];
+		for (int x = 0; x < Math.min(w, rows.length); x++) {
+			final org.powerbot.os.client.Tile[] row = rows[x];
+			if (row == null) {
+				continue;
+			}
+			final int h2 = row.length;
+			for (int y = 0; y < Math.min(h, h2); y++) {
+				final org.powerbot.os.client.Tile tile = row[y];
+				if (tile == null) {
+					continue;
+				}
+
+				if (tile.getGameObjectLength() > 0 ||
+						tile.getBoundaryObject() != null || tile.getWallObject() != null) {
+					for (int dx = Math.max(0, x - 1); dx <= Math.min(w - 1, x + 1); dx++) {
+						for (int dy = Math.max(0, y - 1); dy <= Math.min(h - 1, y + 1); dy++) {
+							arr[dx][dy] += Random.nextDouble();
+						}
+					}
+				}
+			}
+		}
+		return arr;
 	}
 
 	private void dijkstra(final Graph graph, final Node source, final Node target) {
@@ -126,7 +165,7 @@ public class LocalPath extends Path {
 				final double ng = node.g + ((neighbor.x - node.x == 0 || neighbor.y - node.y == 0) ? 1d : sqrt2);
 
 				if (!neighbor.opened || ng < neighbor.g) {
-					neighbor.g = ng;
+					neighbor.g = ng + graph.getNodeCost(node.x, node.y);
 					neighbor.h = 0;//no heuristic
 					neighbor.f = neighbor.g + neighbor.h;
 					neighbor.parent = node;
@@ -156,14 +195,16 @@ public class LocalPath extends Path {
 	}
 
 	private class Graph {
-		private int offX, offY;
+		private final int offX, offY;
+		private final double[][] costs;
+		private final Node[][] nodes;
 		private int width, height;
-		private Node[][] nodes;
 
-		private Graph(final int[][] flags, final int offX, final int offY) {
+		private Graph(final int[][] flags, final double[][] costs, final int offX, final int offY) {
 			this.offX = offX;
 			this.offY = offY;
 			this.nodes = new Node[flags.length][];
+			this.costs = costs;
 			width = flags.length;
 			height = flags.length;
 			for (int x = 0; x < flags.length; x++) {
@@ -176,10 +217,18 @@ public class LocalPath extends Path {
 			}
 		}
 
+		private double getNodeCost(final int x, final int y) {
+			final int ox = x + offX, oy = y + offY;
+			if (ox >= 0 && oy >= 0 && ox < costs.length && oy < costs[ox].length) {
+				return costs[ox][oy];
+			}
+			return 0d;
+		}
+
 		private Node getNode(final int x, final int y) {
 			final int ox = x - offX, oy = y - offY;
 			if (ox >= 0 && oy >= 0 && ox < nodes.length && oy < nodes[ox].length) {
-				return nodes[x - offX][y - offY];
+				return nodes[ox][oy];
 			}
 			return null;
 		}
