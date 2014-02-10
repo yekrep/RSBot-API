@@ -32,6 +32,10 @@ public abstract class Actor extends Interactive implements Locatable, Validatabl
 		return str != null ? str : "";
 	}
 
+	public boolean isInMotion() {
+		return getSpeed() > 0;
+	}
+
 	public RelativePosition getRelativePosition() {
 		final org.powerbot.os.client.Actor actor = getActor();
 		final int x, z;
