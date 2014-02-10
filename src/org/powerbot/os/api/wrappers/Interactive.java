@@ -10,6 +10,10 @@ public abstract class Interactive extends ClientAccessor implements Validatable 
 		super(ctx);
 	}
 
+	public boolean isInViewport() {
+		return ctx.game.isPointInViewport(getInteractPoint());
+	}
+
 	public abstract Point getInteractPoint();
 
 	public abstract Point getNextPoint();
