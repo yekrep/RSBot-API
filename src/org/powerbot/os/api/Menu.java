@@ -24,18 +24,18 @@ public class Menu extends ClientAccessor {
 		this.options = new AtomicReference<String[]>(e);
 	}
 
-	public static Filter<Entry> filter(final String action) {
+	public static Filter<Command> filter(final String action) {
 		return filter(action, null);
 	}
 
-	public static Filter<Entry> filter(final String action, final String option) {
+	public static Filter<Command> filter(final String action, final String option) {
 		final String a = action != null ? action.toLowerCase() : null;
 		final String o = option != null ? option.toLowerCase() : null;
-		return new Filter<Entry>() {
+		return new Filter<Command>() {
 			@Override
-			public boolean accept(final Entry entry) {
-				return (a == null || entry.action.toLowerCase().contains(a)) &&
-						(o == null || entry.option.toLowerCase().contains(o));
+			public boolean accept(final Command command) {
+				return (a == null || command.action.toLowerCase().contains(a)) &&
+						(o == null || command.option.toLowerCase().contains(o));
 			}
 		};
 	}
@@ -45,21 +45,21 @@ public class Menu extends ClientAccessor {
 		return client != null && client.isMenuOpen();
 	}
 
-	public int indexOf(final Filter<Entry> filter) {
+	public int indexOf(final Filter<Command> filter) {
 		final String[] actions = this.actions.get(), options = this.options.get();
 		final int len;
 		if ((len = actions.length) != options.length) {
 			return -1;
 		}
 		for (int i = 0; i < len; i++) {
-			if (filter.accept(new Entry(actions[i], options[i]))) {
+			if (filter.accept(new Command(actions[i], options[i]))) {
 				return i;
 			}
 		}
 		return -1;
 	}
 
-	public boolean hover(final Filter<Entry> filter) {
+	public boolean hover(final Filter<Command> filter) {
 		final Client client = ctx.client();
 		if (client == null || indexOf(filter) == -1) {
 			return false;
@@ -81,7 +81,7 @@ public class Menu extends ClientAccessor {
 		return false;//TODO check if menu is open
 	}
 
-	public boolean click(final Filter<Entry> filter) {
+	public boolean click(final Filter<Command> filter) {
 		final Client client = ctx.client();
 		final int idx;
 		if (client == null || !hover(filter) || (idx = indexOf(filter)) == -1) {
@@ -112,10 +112,10 @@ public class Menu extends ClientAccessor {
 		});
 	}
 
-	public static class Entry {
+	public static class Command {
 		public final String action, option;
 
-		private Entry(final String a, final String o) {
+		private Command(final String a, final String o) {
 			this.action = a != null ? StringUtils.stripHtml(a) : "";
 			this.option = o != null ? StringUtils.stripHtml(o) : "";
 		}
