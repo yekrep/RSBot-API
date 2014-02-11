@@ -361,14 +361,21 @@ public class BotPreferences extends JDialog implements Runnable {
 			public void actionPerformed(final ActionEvent e) {
 				loading.set(true);
 				setVisible(false);
-				GameAccounts.getInstance().save();
-				final int s = script.getSelectedIndex(), u = account.getSelectedIndex();
-				final ScriptBundle.Definition d = s < 0 || s > list.size() ? null : list.get(s);
-				final GameAccounts.Account a = u < 1 ? null : GameAccounts.getInstance().get(u - 1);
-				final String n = a == null ? "" : a.toString();
-				ScriptList.load(chrome, d, n);
-				Tracker.getInstance().trackPage("launch/play/", play.getText());
-				loading.set(false);
+
+				new Thread(new Runnable() {
+					@Override
+					public void run() {
+						GameAccounts.getInstance().save();
+						final int s = script.getSelectedIndex(), u = account.getSelectedIndex();
+						final ScriptBundle.Definition d = s < 0 || s > list.size() ? null : list.get(s);
+						final GameAccounts.Account a = u < 1 ? null : GameAccounts.getInstance().get(u - 1);
+						final String n = a == null ? "" : a.toString();
+						ScriptList.load(chrome, d, n);
+						Tracker.getInstance().trackPage("launch/play/", play.getText());
+						loading.set(false);
+					}
+				}).start();
+
 				visible.set(false);
 				dispose();
 			}
