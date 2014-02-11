@@ -211,16 +211,24 @@ public class ScriptList {
 			if (!def.local) {
 				final AtomicInteger res = new AtomicInteger(-1);
 				final String txt = msg;
-				try {
-					SwingUtilities.invokeAndWait(new Runnable() {
-						@Override
-						public void run() {
-							res.set(JOptionPane.showConfirmDialog(chrome, txt, "", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE));
-						}
-					});
-				} catch (final InterruptedException ignored) {
-				} catch (final InvocationTargetException ignored) {
+				final Runnable r = new Runnable() {
+					@Override
+					public void run() {
+						res.set(JOptionPane.showConfirmDialog(chrome, txt, "", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE));
+					}
+				};
+
+
+				if (SwingUtilities.isEventDispatchThread()) {
+					r.run();
+				} else {
+					try {
+						SwingUtilities.invokeAndWait(r);
+					} catch (final InterruptedException ignored) {
+					} catch (final InvocationTargetException ignored) {
+					}
 				}
+
 				if (res.get() != JOptionPane.OK_OPTION) {
 					return;
 				}
