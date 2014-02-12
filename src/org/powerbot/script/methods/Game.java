@@ -9,8 +9,11 @@ import java.util.concurrent.Callable;
 import org.powerbot.client.BaseInfo;
 import org.powerbot.client.Client;
 import org.powerbot.client.Constants;
+import org.powerbot.client.DXRender;
+import org.powerbot.client.GLRender;
 import org.powerbot.client.HardReference;
 import org.powerbot.client.HashTable;
+import org.powerbot.client.JavaRender;
 import org.powerbot.client.Node;
 import org.powerbot.client.RSGroundBytes;
 import org.powerbot.client.RSGroundInfo;
@@ -20,7 +23,6 @@ import org.powerbot.client.RenderData;
 import org.powerbot.client.SoftReference;
 import org.powerbot.client.TileData;
 import org.powerbot.script.util.Condition;
-import org.powerbot.script.util.Random;
 import org.powerbot.script.wrappers.Component;
 import org.powerbot.script.wrappers.Locatable;
 import org.powerbot.script.wrappers.RelativeLocation;
@@ -424,6 +426,15 @@ public class Game extends MethodProvider {
 		toolkit.xMultiplier = render.getXMultiplier();
 		toolkit.yMultiplier = render.getYMultiplier();
 		toolkit.graphicsIndex = render.getGraphicsIndex();
+		if (render instanceof DXRender) {
+			toolkit.gameMode = 2;
+		} else if (render instanceof GLRender) {
+			toolkit.gameMode = 1;
+		} else if (render instanceof JavaRender) {
+			toolkit.gameMode = 0;
+		} else {
+			toolkit.gameMode = -1;
+		}
 
 		final Constants constants = ctx.constants.get();
 		final RenderData _viewport = render.getRenderData();
@@ -478,7 +489,7 @@ public class Game extends MethodProvider {
 	public class Toolkit {
 		public float absoluteX, absoluteY;
 		public float xMultiplier, yMultiplier;
-		public int graphicsIndex;
+		public int gameMode, graphicsIndex;
 	}
 
 	public class Viewport {

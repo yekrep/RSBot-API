@@ -33,7 +33,7 @@ public class GameObject extends Interactive implements Renderable, Locatable, Na
 	@Override
 	public Model getModel() {
 		final RSObject object = this.object.get();
-		if (object != null && ctx.game.toolkit.graphicsIndex == 0) {
+		if (object != null && ctx.game.toolkit.gameMode == 0) {
 			final AbstractModel model = object.getModel();
 			if (model != null) {
 				return new RenderableModel(ctx, model, object);

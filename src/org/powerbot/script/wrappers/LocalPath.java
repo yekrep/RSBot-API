@@ -6,7 +6,7 @@ import org.powerbot.script.internal.methods.Map;
 import org.powerbot.script.methods.MethodContext;
 
 public class LocalPath extends Path {
-	private Locatable destination;
+	private final Locatable destination;
 	private Tile tile;
 	private TilePath tilePath;
 
