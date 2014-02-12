@@ -1,18 +1,19 @@
 package org.powerbot.os.bot.loader;
 
-import org.powerbot.os.Configuration;
-import org.powerbot.os.util.HttpUtils;
-import org.powerbot.os.util.IOUtils;
-
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
+
+import org.powerbot.os.Configuration;
+import org.powerbot.os.util.HttpUtils;
 
 public class GameLoader implements Callable<ClassLoader> {
 	public final GameCrawler crawler;

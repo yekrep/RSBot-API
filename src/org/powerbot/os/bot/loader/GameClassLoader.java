@@ -1,10 +1,8 @@
 package org.powerbot.os.bot.loader;
 
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
 import java.security.AllPermission;
 import java.security.CodeSource;
 import java.security.Permissions;
@@ -15,7 +13,6 @@ import java.util.Map;
 
 import org.powerbot.os.bot.loader.transform.TransformSpec;
 import org.powerbot.os.misc.Resources;
-import org.powerbot.os.util.IOUtils;
 
 public class GameClassLoader extends ClassLoader {
 	private final Map<String, byte[]> resources = new HashMap<String, byte[]>();

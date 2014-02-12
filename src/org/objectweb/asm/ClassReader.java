@@ -854,7 +854,7 @@ public class ClassReader {
 					}
 				}
 				if (sameExceptions) {
-	                /*
+		            /*
                      * we do not copy directly the code into MethodWriter to
                      * save a byte array copy operation. The real copy will be
                      * done in ClassWriter.toByteArray().

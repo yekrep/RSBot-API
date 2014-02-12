@@ -367,7 +367,7 @@ public class Label {
 			if (source >= 0) {
 				offset = position - source;
 				if (offset < Short.MIN_VALUE || offset > Short.MAX_VALUE) {
-	                /*
+		            /*
                      * changes the opcode of the jump instruction, in order to
                      * be able to find it later (see resizeInstructions in
                      * MethodWriter). These temporary opcodes are similar to

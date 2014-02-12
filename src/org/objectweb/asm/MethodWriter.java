@@ -722,7 +722,7 @@ class MethodWriter extends MethodVisitor {
 		if (var < 4 && opcode != Opcodes.RET) {
 			int opt;
 			if (opcode < Opcodes.ISTORE) {
-	            /* ILOAD_0 */
+		        /* ILOAD_0 */
 				opt = 26 + ((opcode - Opcodes.ILOAD) << 2) + var;
 			} else {
                 /* ISTORE_0 */

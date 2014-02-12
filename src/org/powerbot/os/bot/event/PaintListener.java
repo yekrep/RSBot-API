@@ -1,6 +1,6 @@
 package org.powerbot.os.bot.event;
 
-import java.awt.*;
+import java.awt.Graphics;
 import java.util.EventListener;
 
 /**

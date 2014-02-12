@@ -1,10 +1,10 @@
 package org.powerbot.os.api.wrappers;
 
+import java.lang.ref.SoftReference;
+
 import org.powerbot.os.api.methods.ClientContext;
 import org.powerbot.os.client.Client;
 import org.powerbot.os.client.NpcConfig;
-
-import java.lang.ref.SoftReference;
 
 public class Npc extends Actor implements Identifiable {
 	private final SoftReference<org.powerbot.os.client.Npc> npc;
@@ -41,7 +41,9 @@ public class Npc extends Actor implements Identifiable {
 	public String[] getActions() {
 		final NpcConfig config = getConfig();
 		final String[] arr = config != null ? config.getActions() : new String[0];
-		if (arr == null) return new String[0];
+		if (arr == null) {
+			return new String[0];
+		}
 		final String[] arr_ = new String[arr.length];
 		int c = 0;
 		for (final String str : arr) {
@@ -59,10 +61,14 @@ public class Npc extends Actor implements Identifiable {
 	public boolean isValid() {
 		final Client client = ctx.client();
 		final org.powerbot.os.client.Npc npc = this.npc.get();
-		if (client == null || npc == null) return false;
+		if (client == null || npc == null) {
+			return false;
+		}
 		final org.powerbot.os.client.Npc[] arr = client.getNpcs();
 		for (final org.powerbot.os.client.Npc a : arr) {
-			if (a == npc) return true;
+			if (a == npc) {
+				return true;
+			}
 		}
 		return false;
 	}

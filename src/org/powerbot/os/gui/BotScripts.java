@@ -12,6 +12,5 @@ public class BotScripts extends JDialog {
 		setLayout(null);
 
 
-
 	}
 }

@@ -2,7 +2,6 @@ package org.powerbot.os.bot.event;
 
 import java.util.EventListener;
 import java.util.EventObject;
-import java.util.concurrent.Callable;
 
 public abstract class AbstractEvent extends EventObject {
 	protected final int id;

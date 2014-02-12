@@ -1,10 +1,10 @@
 package org.powerbot.os.api.wrappers;
 
+import java.lang.ref.SoftReference;
+
 import org.powerbot.os.api.methods.ClientContext;
 import org.powerbot.os.client.Client;
 import org.powerbot.os.client.PlayerComposite;
-
-import java.lang.ref.SoftReference;
 
 public class Player extends Actor {
 	private final SoftReference<org.powerbot.os.client.Player> player;
@@ -48,10 +48,14 @@ public class Player extends Actor {
 	public boolean isValid() {
 		final Client client = ctx.client();
 		final org.powerbot.os.client.Player player = this.player.get();
-		if (client == null || player == null) return false;
+		if (client == null || player == null) {
+			return false;
+		}
 		final org.powerbot.os.client.Player[] arr = client.getPlayers();
 		for (final org.powerbot.os.client.Player a : arr) {
-			if (a == player) return true;
+			if (a == player) {
+				return true;
+			}
 		}
 		return false;
 	}
