@@ -11,17 +11,18 @@ import java.awt.event.WindowEvent;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
+import org.powerbot.os.api.internal.InputEngine;
 import org.powerbot.os.gui.BotChrome;
 
 public class SelectiveEventQueue extends EventQueue {
 	private static final SelectiveEventQueue instance = new SelectiveEventQueue();
 	private final AtomicBoolean blocking;
-	private final AtomicReference<Component> component;
+	private final AtomicReference<InputEngine> engine;
 	private final AtomicReference<EventCallback> callback;
 
 	private SelectiveEventQueue() {
 		blocking = new AtomicBoolean(false);
-		component = new AtomicReference<Component>(null);
+		engine = new AtomicReference<InputEngine>(null);
 		callback = new AtomicReference<EventCallback>(null);
 	}
 
@@ -48,39 +49,22 @@ public class SelectiveEventQueue extends EventQueue {
 
 	public void setBlocking(final boolean blocking) {
 		this.blocking.set(blocking);
-		pushSelectiveQueue();
+		if (!blocking) {
+			final InputEngine e = engine.get();
+			e.destroy();
+			engine.set(null);
+		} else {
+			pushSelectiveQueue();
+		}
 	}
 
 	public void block(final Component component, final EventCallback callback) {
-		final Component c = this.component.get();
+		final InputEngine engine = this.engine.get();
+		final Component c = engine != null ? engine.getComponent() : null;
 		if (c != null && c != component) {
-			defocus();
-		}
-
-		this.component.set(component);
-		this.callback.set(callback);
-	}
-
-	public void focus() {
-		if (!isBlocking()) {
-			return;
-		}
-
-		final Component component = this.component.get();
-		if (component != null && (!component.isFocusOwner() || !component.isShowing())) {
-			postEvent(new RawAWTEvent(new FocusEvent(component, FocusEvent.FOCUS_GAINED, false, null)));
-		}
-	}
-
-	public void defocus() {
-		if (!isBlocking()) {
-			return;
-		}
-
-		final Component component = this.component.get();
-		if (component != null && component.isFocusOwner()) {
-			postEvent(new RawAWTEvent(new FocusEvent(component, FocusEvent.FOCUS_LOST, false, null)));
-			postEvent(new RawAWTEvent(new FocusEvent(component, FocusEvent.FOCUS_LOST, false, null)));
+			engine.defocus();
+			this.engine.set(new InputEngine(component));
+			this.callback.set(callback);
 		}
 	}
 
@@ -95,7 +79,8 @@ public class SelectiveEventQueue extends EventQueue {
 		if (source == null) {
 			return;
 		}
-		final Component component = this.component.get();
+		final InputEngine engine = this.engine.get();
+		final Component component = engine != null ? engine.getComponent() : null;
 		/* Check if event is from a blocked source */
 		if (blocking.get() && source == component) {
 			/* Block input events */
