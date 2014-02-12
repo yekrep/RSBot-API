@@ -5,7 +5,7 @@ import org.powerbot.os.api.wrappers.Tile;
 import org.powerbot.os.client.Client;
 
 public class Movement extends ClientAccessor {
-	public Movement(ClientContext ctx) {
+	public Movement(final ClientContext ctx) {
 		super(ctx);
 	}
 

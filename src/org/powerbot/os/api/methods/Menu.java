@@ -16,12 +16,12 @@ public class Menu extends ClientAccessor {
 	private final AtomicBoolean registered;
 	private final AtomicReference<String[]> actions, options;
 
-	public Menu(ClientContext ctx) {
+	public Menu(final ClientContext ctx) {
 		super(ctx);
-		this.registered = new AtomicBoolean(false);
+		registered = new AtomicBoolean(false);
 		final String[] e = new String[0];
-		this.actions = new AtomicReference<String[]>(e);
-		this.options = new AtomicReference<String[]>(e);
+		actions = new AtomicReference<String[]>(e);
+		options = new AtomicReference<String[]>(e);
 	}
 
 	public static Filter<Command> filter(final String action) {
@@ -92,7 +92,7 @@ public class Menu extends ClientAccessor {
 	}
 
 	private void register() {
-		if (!this.registered.compareAndSet(false, true)) {
+		if (!registered.compareAndSet(false, true)) {
 			return;
 		}
 		ctx.bot().dispatcher.add(new PaintListener() {
@@ -116,8 +116,8 @@ public class Menu extends ClientAccessor {
 		public final String action, option;
 
 		private Command(final String a, final String o) {
-			this.action = a != null ? StringUtils.stripHtml(a) : "";
-			this.option = o != null ? StringUtils.stripHtml(o) : "";
+			action = a != null ? StringUtils.stripHtml(a) : "";
+			option = o != null ? StringUtils.stripHtml(o) : "";
 		}
 	}
 }

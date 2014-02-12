@@ -10,7 +10,7 @@ import org.powerbot.os.api.util.Random;
  * An interactive tile matrix.
  */
 public final class TileMatrix extends Interactive implements Locatable {
-	private Tile tile;
+	private final Tile tile;
 
 	TileMatrix(final ClientContext ctx, final Tile tile) {
 		super(ctx);

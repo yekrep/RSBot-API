@@ -9,7 +9,7 @@ import org.powerbot.os.api.methods.ClientContext;
 import org.powerbot.os.api.util.Calculations;
 
 abstract class Cuboid extends Interactive {
-	public Cuboid(ClientContext ctx) {
+	public Cuboid(final ClientContext ctx) {
 		super(ctx);
 	}
 
@@ -57,7 +57,7 @@ abstract class Cuboid extends Interactive {
 		final Polygon f4 = new Polygon(new int[]{g4.x, g1.x, o1.x, o4.x}, new int[]{g4.y, g1.y, o1.y, o4.y}, 4);
 		final Area area = new Area();
 		final Polygon[] arr = {g, o, f1, f2, f3, f4};
-		for (Polygon poly : arr) {
+		for (final Polygon poly : arr) {
 			area.add(new Area(poly));
 		}
 		return area;

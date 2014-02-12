@@ -127,8 +127,8 @@ public class OSXAdapt implements Runnable {
 
 		protected OSXAdapter(final String proxySignature, final Object target, final Method handler) {
 			this.proxySignature = proxySignature;
-			this.targetObject = target;
-			this.targetMethod = handler;
+			targetObject = target;
+			targetMethod = handler;
 		}
 
 		public boolean callTarget(final Object appleEvent) throws InvocationTargetException, IllegalAccessException {

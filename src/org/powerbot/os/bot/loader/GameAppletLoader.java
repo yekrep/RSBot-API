@@ -32,9 +32,9 @@ public class GameAppletLoader implements Runnable {
 		}
 		try {
 			final Constructor<?> constructor = code.getConstructor((Class[]) null);
-			this.applet = (Applet) constructor.newInstance((Object[]) null);
+			applet = (Applet) constructor.newInstance((Object[]) null);
 		} catch (final Exception ignored) {
-			this.applet = null;
+			applet = null;
 		}
 		if (applet == null) {
 			return;

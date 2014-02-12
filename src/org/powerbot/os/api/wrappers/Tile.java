@@ -45,7 +45,7 @@ public class Tile implements Locatable {
 	}
 
 	public Tile derive(final int x, final int y) {
-		return derive(x, y, this.floor);
+		return derive(x, y, floor);
 	}
 
 	public Tile derive(final int x, final int y, final int plane) {

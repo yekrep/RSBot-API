@@ -8,7 +8,7 @@ import org.powerbot.os.api.methods.Menu;
 import org.powerbot.os.api.util.Filter;
 
 public abstract class Interactive extends ClientAccessor implements Targetable, Validatable {
-	public Interactive(ClientContext ctx) {
+	public Interactive(final ClientContext ctx) {
 		super(ctx);
 	}
 

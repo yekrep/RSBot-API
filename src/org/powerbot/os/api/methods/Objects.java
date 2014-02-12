@@ -11,7 +11,7 @@ import org.powerbot.os.client.Landscape;
 import org.powerbot.os.client.Tile;
 
 public class Objects extends ClientAccessor {
-	public Objects(ClientContext ctx) {
+	public Objects(final ClientContext ctx) {
 		super(ctx);
 	}
 

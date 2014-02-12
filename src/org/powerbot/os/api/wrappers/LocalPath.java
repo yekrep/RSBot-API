@@ -198,12 +198,12 @@ public class LocalPath extends Path {
 		private final int offX, offY;
 		private final double[][] costs;
 		private final Node[][] nodes;
-		private int width, height;
+		private final int width, height;
 
 		private Graph(final int[][] flags, final double[][] costs, final int offX, final int offY) {
 			this.offX = offX;
 			this.offY = offY;
-			this.nodes = new Node[flags.length][];
+			nodes = new Node[flags.length][];
 			this.costs = costs;
 			width = flags.length;
 			height = flags.length;
@@ -309,9 +309,9 @@ public class LocalPath extends Path {
 		}
 
 		private void reset() {
-			this.opened = this.closed = false;
-			this.parent = null;
-			this.f = this.g = this.h = Double.POSITIVE_INFINITY;
+			opened = closed = false;
+			parent = null;
+			f = g = h = Double.POSITIVE_INFINITY;
 		}
 
 		@Override

@@ -18,7 +18,7 @@ public class Vector3 extends Vector2 {
 
 	public Vector3(final int[] v) {
 		super(v[0], v[1]);
-		this.z = v[2];
+		z = v[2];
 	}
 
 	public Vector3(final Vector2 v, final int z) {
