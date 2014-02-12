@@ -1,4 +1,4 @@
-package org.powerbot.os.api;
+package org.powerbot.os.api.methods;
 
 import org.powerbot.os.api.wrappers.Locatable;
 import org.powerbot.os.api.wrappers.Tile;

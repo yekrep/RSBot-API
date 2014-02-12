@@ -1,4 +1,4 @@
-package org.powerbot.os.api;
+package org.powerbot.os.api.methods;
 
 public class ClientAccessor {
 	public final ClientContext ctx;

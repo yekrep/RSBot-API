@@ -1,6 +1,6 @@
 package org.powerbot.os.api.wrappers;
 
-import org.powerbot.os.api.ClientContext;
+import org.powerbot.os.api.methods.ClientContext;
 import org.powerbot.os.client.Client;
 import org.powerbot.os.client.PlayerComposite;
 

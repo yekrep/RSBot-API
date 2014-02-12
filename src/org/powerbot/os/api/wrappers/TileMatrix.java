@@ -3,7 +3,7 @@ package org.powerbot.os.api.wrappers;
 import java.awt.Point;
 import java.awt.Polygon;
 
-import org.powerbot.os.api.ClientContext;
+import org.powerbot.os.api.methods.ClientContext;
 import org.powerbot.os.api.util.Random;
 
 /**

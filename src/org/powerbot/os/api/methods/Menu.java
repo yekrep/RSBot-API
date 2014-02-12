@@ -1,4 +1,4 @@
-package org.powerbot.os.api;
+package org.powerbot.os.api.methods;
 
 import java.awt.Graphics;
 import java.awt.Rectangle;

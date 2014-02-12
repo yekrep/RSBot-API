@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
-import org.powerbot.os.api.ClientContext;
+import org.powerbot.os.api.methods.ClientContext;
 import org.powerbot.os.api.util.Random;
 import org.powerbot.os.client.Client;
 import org.powerbot.os.client.CollisionMap;

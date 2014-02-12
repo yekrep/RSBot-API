@@ -2,7 +2,7 @@ package org.powerbot.os.api.wrappers;
 
 import java.awt.Color;
 
-import org.powerbot.os.api.ClientContext;
+import org.powerbot.os.api.methods.ClientContext;
 import org.powerbot.os.api.util.Random;
 
 public class Tile implements Locatable {

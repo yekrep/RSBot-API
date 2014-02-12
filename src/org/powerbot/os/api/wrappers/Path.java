@@ -2,8 +2,8 @@ package org.powerbot.os.api.wrappers;
 
 import java.util.EnumSet;
 
-import org.powerbot.os.api.ClientAccessor;
-import org.powerbot.os.api.ClientContext;
+import org.powerbot.os.api.methods.ClientAccessor;
+import org.powerbot.os.api.methods.ClientContext;
 
 public abstract class Path extends ClientAccessor implements Validatable {
 	public static final int WALL_NORTHWEST = 0x1;

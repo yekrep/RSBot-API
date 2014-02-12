@@ -2,9 +2,9 @@ package org.powerbot.os.api.wrappers;
 
 import java.awt.Point;
 
-import org.powerbot.os.api.ClientAccessor;
-import org.powerbot.os.api.ClientContext;
-import org.powerbot.os.api.Menu;
+import org.powerbot.os.api.methods.ClientAccessor;
+import org.powerbot.os.api.methods.ClientContext;
+import org.powerbot.os.api.methods.Menu;
 import org.powerbot.os.api.util.Filter;
 
 public abstract class Interactive extends ClientAccessor implements Targetable, Validatable {
