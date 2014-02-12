@@ -206,7 +206,7 @@ public class LocalPath extends Path {
 			nodes = new Node[flags.length][];
 			this.costs = costs;
 			width = flags.length;
-			height = flags.length;
+			int height = flags.length;
 			for (int x = 0; x < flags.length; x++) {
 				final int[] arr = flags[x];
 				nodes[x] = new Node[arr.length];
@@ -215,6 +215,7 @@ public class LocalPath extends Path {
 					nodes[x][y] = new Node(x, y, flags[x][y]);
 				}
 			}
+			this.height = height;
 		}
 
 		private double getNodeCost(final int x, final int y) {
