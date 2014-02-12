@@ -59,20 +59,6 @@ public abstract class Actor extends Interactive implements Locatable, Validatabl
 	}
 
 	@Override
-	public Point getInteractPoint() {
-		final org.powerbot.os.client.Actor actor = getActor();
-		if (actor == null) {
-			return new Point(-1, -1);
-		}
-		final ActorCuboid cuboid = new ActorCuboid(ctx, actor);
-		final Point p = cuboid.getInteractPoint();
-		if (p.x != -1 && p.y != -1) {
-			return p;
-		}
-		return getScreenPoint();
-	}
-
-	@Override
 	public Point getNextPoint() {
 		final org.powerbot.os.client.Actor actor = getActor();
 		if (actor == null) {

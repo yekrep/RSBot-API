@@ -64,11 +64,6 @@ abstract class Cuboid extends Interactive {
 	}
 
 	@Override
-	public Point getInteractPoint() {
-		return getNextPoint();
-	}
-
-	@Override
 	public Point getNextPoint() {
 		final Area area = getCuboid(64), inner = getCuboid(32);
 		if (area == null || inner == null) {

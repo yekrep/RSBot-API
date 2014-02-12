@@ -67,15 +67,10 @@ public final class TileMatrix extends Interactive implements Locatable {
 	}
 
 	@Override
-	public Point getInteractPoint() {
+	public Point getNextPoint() {
 		final int x = Random.nextGaussian(0, 100, 5);
 		final int y = Random.nextGaussian(0, 100, 5);
 		return getPoint(x / 100.0D, y / 100.0D, 0);
-	}
-
-	@Override
-	public Point getNextPoint() {
-		return getPoint(Random.nextDouble(0.0D, 1.0D), Random.nextDouble(0.0D, 1.0D), 0);
 	}
 
 	@Override
