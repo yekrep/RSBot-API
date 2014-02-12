@@ -1,5 +1,7 @@
 package org.powerbot.os.api.wrappers;
 
+import java.awt.Point;
+
 import org.powerbot.os.api.ClientAccessor;
 import org.powerbot.os.api.ClientContext;
 import org.powerbot.os.api.Menu;
@@ -13,6 +15,8 @@ public abstract class Interactive extends ClientAccessor implements Targetable, 
 	public boolean isInViewport() {
 		return ctx.game.isPointInViewport(getNextPoint());
 	}
+
+	public abstract Point getCenterPoint();
 
 	public final boolean click(final Filter<Menu.Command> f) {
 		return false;//TODO: this
