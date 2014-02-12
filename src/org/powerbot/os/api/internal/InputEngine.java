@@ -6,7 +6,7 @@ import java.awt.event.MouseEvent;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class InputEngine {//TODO: handle component focus!!!
+public class InputEngine {//TODO: handle component focus!!!  Track click count [same mouse button].
 	private final Component component;
 	private final AtomicBoolean mousePresent;
 	private final AtomicBoolean[] mousePressed;
@@ -27,7 +27,8 @@ public class InputEngine {//TODO: handle component focus!!!
 		if (!(mousePresent.get() || isDragging()) || mousePressed[button].get()) {
 			return;
 		}
-		final MouseEvent e = new MouseEvent(component, MouseEvent.MOUSE_PRESSED, System.currentTimeMillis(), getMask(button), mouseX.get(), mouseY.get(), 1, false, button);
+		final int m = getMask(button, true);
+		final MouseEvent e = new MouseEvent(component, MouseEvent.MOUSE_PRESSED, System.currentTimeMillis(), m, mouseX.get(), mouseY.get(), 1, false, button);
 		mousePressed[button].set(true);
 		System.out.println(e.paramString());
 		//TODO: dispatch
@@ -40,7 +41,8 @@ public class InputEngine {//TODO: handle component focus!!!
 		if (!mousePressed[button].get()) {
 			return;
 		}
-		final MouseEvent e = new MouseEvent(component, MouseEvent.MOUSE_RELEASED, System.currentTimeMillis(), getMask(button), mouseX.get(), mouseY.get(), 1, false, button);
+		final int m = getMask(button, false);
+		final MouseEvent e = new MouseEvent(component, MouseEvent.MOUSE_RELEASED, System.currentTimeMillis(), m, mouseX.get(), mouseY.get(), 1, false, button);
 		mousePressed[button].set(false);
 		System.out.println(e.paramString());
 		//TODO: dispatch
@@ -82,14 +84,26 @@ public class InputEngine {//TODO: handle component focus!!!
 	}
 
 	private int getMask() {
-		return getMask(MouseEvent.NOBUTTON);
+		return getMask(MouseEvent.NOBUTTON, false);
 	}
 
-	private int getMask(final int button) {
+	private int getMask(final int button, final boolean press) {
+		final int[] buttons = {MouseEvent.BUTTON1, MouseEvent.BUTTON2, MouseEvent.BUTTON3};
+		final int[] down = {InputEvent.BUTTON1_DOWN_MASK, InputEvent.BUTTON2_DOWN_MASK, InputEvent.BUTTON3_DOWN_MASK};
+		final int[] up = {InputEvent.BUTTON1_MASK, InputEvent.BUTTON2_MASK, InputEvent.BUTTON3_MASK};
+		final int[] extra = {0, InputEvent.ALT_MASK, InputEvent.META_MASK};
 		int m = 0;
-		m |= mousePressed[MouseEvent.BUTTON1].get() || button == MouseEvent.BUTTON1 ? InputEvent.BUTTON1_DOWN_MASK : 0;
-		m |= mousePressed[MouseEvent.BUTTON2].get() || button == MouseEvent.BUTTON2 ? InputEvent.BUTTON2_DOWN_MASK | InputEvent.ALT_MASK : 0;
-		m |= mousePressed[MouseEvent.BUTTON3].get() || button == MouseEvent.BUTTON3 ? InputEvent.BUTTON3_DOWN_MASK | InputEvent.META_MASK : 0;
+		for (int i = 0; i < buttons.length; i++) {
+			final int b = buttons[i];
+			if (mousePressed[b].get() || button == b) {
+				if (button != b || press) {
+					m |= down[i];
+				} else {
+					m |= up[i];
+				}
+				m |= extra[i];
+			}
+		}
 		//TODO: account for keyboard alt, shift, ctrl
 		//TODO: InputEvent.ALT_DOWN_MASK;
 		//TODO: InputEvent.CTRL_DOWN_MASK;
@@ -111,7 +125,8 @@ public class InputEngine {//TODO: handle component focus!!!
 		if (!isDragging()) {
 			return;
 		}
-		final MouseEvent e = new MouseEvent(component, MouseEvent.MOUSE_DRAGGED, System.currentTimeMillis(), getMask(), x, y, 0, false);
+		final int m = getMask();
+		final MouseEvent e = new MouseEvent(component, MouseEvent.MOUSE_DRAGGED, System.currentTimeMillis(), m, x, y, 0, false);
 		mouseX.set(x);
 		mouseY.set(y);
 		System.out.println(e.paramString());
