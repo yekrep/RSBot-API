@@ -1,0 +1,33 @@
+package org.powerbot.os.gui;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JMenu;
+
+import org.powerbot.os.bot.SelectiveEventQueue;
+
+public final class BotMenuInput {
+	public BotMenuInput(final JMenu menu) {
+		JCheckBoxMenuItem item;
+		final SelectiveEventQueue eq = SelectiveEventQueue.getInstance();
+
+		final Map<String, Boolean> map = new LinkedHashMap<String, Boolean>();
+		map.put("Allow", false);
+		map.put("Block", true);
+
+		for (final Map.Entry<String, Boolean> inputMask : map.entrySet()) {
+			final boolean b = inputMask.getValue();
+			item = new JCheckBoxMenuItem(inputMask.getKey(), eq.isBlocking() == b);
+			item.addActionListener(new ActionListener() {
+				public void actionPerformed(final ActionEvent e1) {
+					eq.setBlocking(b);
+				}
+			});
+			menu.add(item);
+		}
+	}
+}

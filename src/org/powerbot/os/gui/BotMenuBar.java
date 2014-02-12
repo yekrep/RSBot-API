@@ -10,6 +10,8 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuListener;
 
 import org.powerbot.os.Boot;
 import org.powerbot.os.Configuration;
@@ -20,7 +22,7 @@ public class BotMenuBar extends JMenuBar {
 	public BotMenuBar(final BotChrome chrome) {
 		this.chrome = chrome;
 
-		final JMenu file = new JMenu("File"), edit = new JMenu("Edit"), view = new JMenu("View"), help = new JMenu("Help");
+		final JMenu file = new JMenu("File"), edit = new JMenu("Edit"), input = new JMenu("Input"), view = new JMenu("View"), help = new JMenu("Help");
 
 		final JMenuItem fork = new JMenuItem("New Window");
 		file.add(fork);
@@ -44,6 +46,25 @@ public class BotMenuBar extends JMenuBar {
 			});
 		}
 
+		input.addMenuListener(new MenuListener() {
+			@Override
+			public void menuSelected(final MenuEvent e) {
+				final JMenu menu = (JMenu) e.getSource();
+				if (menu.getItemCount() != 0) {
+					menu.removeAll();
+				}
+				new BotMenuInput(menu);
+			}
+
+			@Override
+			public void menuDeselected(final MenuEvent e) {
+			}
+
+			@Override
+			public void menuCanceled(final MenuEvent e) {
+			}
+		});
+
 		final JMenuItem license = new JMenuItem("License");
 		help.add(license);
 		license.addActionListener(new ActionListener() {
@@ -66,6 +87,7 @@ public class BotMenuBar extends JMenuBar {
 
 		add(file);
 		add(edit);
+		add(input);
 		add(view);
 		add(help);
 	}

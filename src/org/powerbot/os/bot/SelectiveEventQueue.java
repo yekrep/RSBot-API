@@ -19,11 +19,13 @@ public class SelectiveEventQueue extends EventQueue {
 	private final AtomicBoolean blocking;
 	private final AtomicReference<InputEngine> engine;
 	private final AtomicReference<EventCallback> callback;
+	private final AtomicReference<Component> component;
 
 	private SelectiveEventQueue() {
 		blocking = new AtomicBoolean(false);
 		engine = new AtomicReference<InputEngine>(null);
 		callback = new AtomicReference<EventCallback>(null);
+		component = new AtomicReference<Component>(null);
 	}
 
 	public static SelectiveEventQueue getInstance() {
@@ -56,6 +58,11 @@ public class SelectiveEventQueue extends EventQueue {
 			}
 			engine.set(null);
 		} else {
+			final InputEngine e = engine.get();
+			final Component component = this.component.get();
+			if (e == null && component != null) {
+				engine.set(new InputEngine(component));
+			}
 			pushSelectiveQueue();
 		}
 	}
@@ -69,6 +76,7 @@ public class SelectiveEventQueue extends EventQueue {
 		final boolean b = isBlocking() || engine == null;
 		setBlocking(false);
 		this.engine.set(new InputEngine(component));
+		this.component.set(component);
 		this.callback.set(callback);
 		final BotChrome chrome = BotChrome.getInstance();
 		if (b) {
