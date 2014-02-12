@@ -12,7 +12,7 @@ import org.powerbot.os.api.util.Random;
 import org.powerbot.os.bot.RawAWTEvent;
 import org.powerbot.os.bot.SelectiveEventQueue;
 
-public class InputEngine {//TODO: handle component focus!!!  Track click count [same mouse button].
+public class InputEngine {//TODO: Track click count [same mouse button].
 	private final AtomicBoolean focused, mousePresent;
 	private final AtomicBoolean[] mousePressed;
 	private final AtomicInteger mouseX, mouseY;
