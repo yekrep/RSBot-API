@@ -101,7 +101,7 @@ public abstract class Actor extends Interactive implements Locatable, Validatabl
 		if (actor == null) {
 			return new Point(-1, -1);
 		}
-		return ctx.game.worldToScreen(actor.getX(), actor.getZ(), actor.getHeight());
+		return ctx.game.worldToScreen(actor.getX(), actor.getZ(), actor.getHeight() / 2);
 	}
 
 	@Override
