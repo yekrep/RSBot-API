@@ -1,9 +1,12 @@
 package org.powerbot.os.client.input;
 
+import java.awt.AWTEvent;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 import org.powerbot.os.bot.Bot;
+import org.powerbot.os.bot.EventCallback;
+import org.powerbot.os.bot.SelectiveEventQueue;
 import org.powerbot.os.bot.event.EventDispatcher;
 import org.powerbot.os.bot.event.PaintEvent;
 import org.powerbot.os.gui.BotChrome;
@@ -11,13 +14,21 @@ import org.powerbot.os.gui.BotChrome;
 @SuppressWarnings("unused")
 public class Canvas extends java.awt.Canvas {
 	private static final long serialVersionUID = -2284879212465893870L;
-	private BufferedImage game, clean;
 	private final PaintEvent paintEvent;
 	private final Bot bot;
+	private BufferedImage game, clean;
 
 	public Canvas() {
-		bot = BotChrome.getInstance().bot.get();
+		final BotChrome chrome = BotChrome.getInstance();
+		bot = chrome.bot.get();
 		paintEvent = new PaintEvent();
+
+		SelectiveEventQueue.getInstance().block(this, new EventCallback() {
+			@Override
+			public void execute(final AWTEvent event) {
+				chrome.requestFocusInWindow();
+			}
+		});
 	}
 
 	@Override

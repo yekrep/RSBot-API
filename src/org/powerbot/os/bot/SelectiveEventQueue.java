@@ -51,7 +51,9 @@ public class SelectiveEventQueue extends EventQueue {
 		this.blocking.set(blocking);
 		if (!blocking) {
 			final InputEngine e = engine.get();
-			e.destroy();
+			if (e != null) {
+				e.destroy();
+			}
 			engine.set(null);
 		} else {
 			pushSelectiveQueue();
@@ -61,10 +63,17 @@ public class SelectiveEventQueue extends EventQueue {
 	public void block(final Component component, final EventCallback callback) {
 		final InputEngine engine = this.engine.get();
 		final Component c = engine != null ? engine.getComponent() : null;
-		if (c != null && c != component) {
-			engine.defocus();
-			this.engine.set(new InputEngine(component));
-			this.callback.set(callback);
+		if (c == component) {
+			return;
+		}
+		final boolean b = isBlocking() || engine == null;
+		setBlocking(false);
+		this.engine.set(new InputEngine(component));
+		this.callback.set(callback);
+		final BotChrome chrome = BotChrome.getInstance();
+		if (b) {
+			setBlocking(true);
+			chrome.requestFocusInWindow();
 		}
 	}
 
