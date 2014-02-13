@@ -67,7 +67,11 @@ public class SelectiveEventQueue extends EventQueue {
 		}
 	}
 
-	public void block(final Component component, final EventCallback callback) {
+	public InputEngine getEngine() {
+		return engine.get();
+	}
+
+	public void target(final Component component, final EventCallback callback) {
 		final InputEngine engine = this.engine.get();
 		final Component c = engine != null ? engine.getComponent() : null;
 		if (c == component) {

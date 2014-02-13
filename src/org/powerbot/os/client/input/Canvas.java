@@ -22,7 +22,7 @@ public class Canvas extends java.awt.Canvas {
 		final BotChrome chrome = BotChrome.getInstance();
 		bot = chrome.bot.get();
 		paintEvent = new PaintEvent();
-		SelectiveEventQueue.getInstance().block(this, new EventCallback() {
+		SelectiveEventQueue.getInstance().target(this, new EventCallback() {
 			@Override
 			public void execute(final AWTEvent event) {
 				chrome.requestFocusInWindow();

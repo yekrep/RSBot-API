@@ -1,28 +1,93 @@
 package org.powerbot.os.api.methods;
 
 import java.awt.Point;
+import java.awt.event.MouseEvent;
 import java.util.concurrent.TimeUnit;
 
 import org.powerbot.os.api.internal.HeteroMouse;
+import org.powerbot.os.api.internal.InputEngine;
 import org.powerbot.os.api.internal.MouseSimulator;
 import org.powerbot.os.api.util.Filter;
 import org.powerbot.os.api.wrappers.Targetable;
+import org.powerbot.os.bot.SelectiveEventQueue;
 import org.powerbot.os.util.math.Vector3;
 
 public class Mouse extends ClientAccessor {
+	private final SelectiveEventQueue queue;
 	private final MouseSimulator simulator;
 
 	public Mouse(final ClientContext ctx) {
 		super(ctx);
+		queue = SelectiveEventQueue.getInstance();
 		simulator = new HeteroMouse();
 	}
 
 	public Point getLocation() {
-		return new Point(-1, -1);//TODO this
+		final InputEngine engine = queue.getEngine();
+		return engine != null ? engine.getLocation() : new Point(-1, -1);
 	}
 
-	public void hop(final int x, final int y) {
-		//TODO: this
+	public boolean click(final boolean left) {
+		return click(left ? MouseEvent.BUTTON1 : MouseEvent.BUTTON3);
+	}
+
+	public boolean click(final int button) {
+		final InputEngine engine = queue.getEngine();
+		if (engine == null) {
+			return false;
+		}
+		try {
+			Thread.sleep(simulator.getPressDuration());
+		} catch (final InterruptedException ignored) {
+		}
+		engine.press(button);
+		try {
+			Thread.sleep(simulator.getPressDuration());
+		} catch (final InterruptedException ignored) {
+		}
+		//TODO: Maybe move mouse accidentially.
+		//TODO: return false -- or re-click?  probably the latter.
+		engine.release(button);
+		try {
+			Thread.sleep(simulator.getPressDuration());
+		} catch (final InterruptedException ignored) {
+		}
+		return true;
+	}
+
+	public boolean hop(final Point p) {
+		return hop(p.x, p.y);
+	}
+
+	public boolean hop(final int x, final int y) {
+		final InputEngine engine = queue.getEngine();
+		return engine != null && engine.move(x, y);
+	}
+
+	public boolean move(final int x, final int y) {
+		return move(new Point(x, y));
+	}
+
+	public boolean move(final Point p) {
+		return apply(
+				new Targetable() {
+					@Override
+					public Point getNextPoint() {
+						return p;
+					}
+
+					@Override
+					public boolean contains(final Point point) {
+						return p.equals(point);
+					}
+				},
+				new Filter<Point>() {
+					@Override
+					public boolean accept(final Point point) {
+						return p.equals(point);
+					}
+				}
+		);
 	}
 
 	public boolean apply(final Targetable targetable, final Filter<Point> filter) {

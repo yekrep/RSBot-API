@@ -76,6 +76,10 @@ public class InputEngine {//TODO: Track click count [same mouse button].
 		component = null;
 	}
 
+	public Point getLocation() {
+		return new Point(mouseX.get(), mouseY.get());
+	}
+
 	public void press(final int button) {
 		if (component == null || button < 1 || button >= mousePressed.length) {
 			return;
@@ -104,15 +108,16 @@ public class InputEngine {//TODO: Track click count [same mouse button].
 		if (!mousePressed[button].get()) {
 			return;
 		}
+		//TODO: CLICKED EVENT?!?!?
 		final int m = getMask(button, false);
 		final MouseEvent e = new MouseEvent(component, MouseEvent.MOUSE_RELEASED, System.currentTimeMillis(), m, mouseX.get(), mouseY.get(), 1, false, button);
 		mousePressed[button].set(false);
 		SelectiveEventQueue.getInstance().postEvent(new RawAWTEvent(e));
 	}
 
-	public void move(final int x, final int y) {
+	public boolean move(final int x, final int y) {
 		if (component == null) {
-			return;
+			return false;
 		}
 		final boolean in = x >= 0 && y >= 0 && x < component.getWidth() && y < component.getHeight();
 		final int m = getMask();
@@ -143,6 +148,7 @@ public class InputEngine {//TODO: Track click count [same mouse button].
 		} else {
 			postDrag(x, y);
 		}
+		return true;
 	}
 
 	private int getMask() {
