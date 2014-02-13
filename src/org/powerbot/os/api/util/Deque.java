@@ -1,5 +1,6 @@
 package org.powerbot.os.api.util;
 
+import java.lang.ref.WeakReference;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -7,16 +8,16 @@ import org.powerbot.os.client.Node;
 import org.powerbot.os.client.NodeDeque;
 
 public class Deque<N> implements Iterator<N>, Iterable<N> {
-	private final NodeDeque deque;
+	private final WeakReference<NodeDeque> deque;
 	private final Class<N> type;
 	private Node curr;
 	private Node next;
 
 	public Deque(final NodeDeque deque, final Class<N> type) {
-		if (deque == null || type == null) {
+		if (type == null) {
 			throw new IllegalArgumentException();
 		}
-		this.deque = deque;
+		this.deque = new WeakReference<NodeDeque>(deque);
 		this.type = type;
 	}
 
@@ -30,7 +31,8 @@ public class Deque<N> implements Iterator<N>, Iterable<N> {
 		if (next != null) {
 			return true;
 		}
-		final Node sentinel = deque.getSentinel();
+		final NodeDeque deque = this.deque.get();
+		final Node sentinel = deque != null ? deque.getSentinel() : null;
 		if (sentinel == null) {
 			return false;
 		}
