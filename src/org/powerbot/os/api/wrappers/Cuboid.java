@@ -65,7 +65,7 @@ abstract class Cuboid extends Interactive {
 
 	@Override
 	public Point getNextPoint() {
-		final Area area = getCuboid(64), inner = getCuboid(32);
+		final Area area = getCuboid(48), inner = getCuboid(32);
 		if (area == null || inner == null) {
 			return new Point(-1, -1);
 		}
@@ -75,7 +75,7 @@ abstract class Cuboid extends Interactive {
 
 	@Override
 	public Point getCenterPoint() {
-		final Area area = getCuboid(64);
+		final Area area = getCuboid(48);
 		if (area != null) {
 			final Rectangle rectangle = area.getBounds();
 			return new Point((int) rectangle.getCenterX(), (int) rectangle.getCenterY());
@@ -85,7 +85,7 @@ abstract class Cuboid extends Interactive {
 
 	@Override
 	public boolean contains(final Point point) {
-		final Area area = getCuboid(64);
+		final Area area = getCuboid(48);
 		return area != null && area.contains(point);
 	}
 
