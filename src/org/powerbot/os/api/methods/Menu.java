@@ -139,7 +139,7 @@ public class Menu extends ClientAccessor {
 		}, 10, 50);
 	}
 
-	private void register() {
+	public void register() {
 		if (!registered.compareAndSet(false, true)) {
 			return;
 		}
@@ -152,10 +152,22 @@ public class Menu extends ClientAccessor {
 				}
 
 				final String[] actions = client.getMenuActions(), options = client.getMenuOptions();
-				if (actions != null && options != null && actions.length == options.length) {
-					Menu.this.actions.set(actions);
-					Menu.this.options.set(options);
+				if (actions == null || options == null) {
+					Menu.this.actions.set(new String[0]);
+					Menu.this.options.set(new String[0]);
+					return;
 				}
+				final int count = client.getMenuCount();
+				final String[] actions2 = new String[count], options2 = new String[count];
+				int d = 0;
+				for (int i = Math.min(count, Math.min(actions.length, options.length)) - 1; i >= 0; --i) {
+					actions2[d] = actions[i];
+					options2[d] = options[i];
+					++d;
+				}
+
+				Menu.this.actions.set(actions2);
+				Menu.this.options.set(options2);
 			}
 		});
 	}
