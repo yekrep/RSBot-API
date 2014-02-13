@@ -1,5 +1,6 @@
 package org.powerbot.os.api.wrappers;
 
+import java.awt.Color;
 import java.lang.ref.SoftReference;
 
 import org.powerbot.os.api.methods.ClientContext;
@@ -7,6 +8,7 @@ import org.powerbot.os.client.Client;
 import org.powerbot.os.client.NpcConfig;
 
 public class Npc extends Actor implements Identifiable {
+	public static final Color TARGET_COLOR = new Color(255, 0, 255, 15);
 	private final SoftReference<org.powerbot.os.client.Npc> npc;
 
 	public Npc(final ClientContext ctx, final org.powerbot.os.client.Npc npc) {

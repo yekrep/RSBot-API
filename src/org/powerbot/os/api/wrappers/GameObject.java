@@ -1,5 +1,6 @@
 package org.powerbot.os.api.wrappers;
 
+import java.awt.Color;
 import java.lang.ref.WeakReference;
 
 import org.powerbot.os.api.methods.ClientAccessor;
@@ -8,6 +9,7 @@ import org.powerbot.os.client.BasicObject;
 import org.powerbot.os.client.Client;
 
 public class GameObject extends ClientAccessor implements Locatable, Identifiable {
+	private static final Color TARGET_COLOR = new Color(0, 255, 0, 20);
 	private final WeakReference<BasicObject> object;
 
 	public GameObject(final ClientContext ctx, final BasicObject object) {
