@@ -91,7 +91,7 @@ public class Menu extends ClientAccessor {
 		final Rectangle rectangle = new Rectangle(client.getMenuX(), client.getMenuY() + 19 + idx * 15, client.getMenuWidth(), 15);
 		return ctx.mouse.move(
 				Random.nextInt(rectangle.x, rectangle.x + rectangle.width),
-				Random.nextInt(rectangle.y, rectangle.y + rectangle.y)
+				Random.nextInt(rectangle.y, rectangle.y + rectangle.height)
 		) && client.isMenuOpen();
 	}
 
