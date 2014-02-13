@@ -2,6 +2,8 @@ package org.powerbot.os.api.methods;
 
 import java.awt.Point;
 
+import org.powerbot.os.api.ClientAccessor;
+import org.powerbot.os.api.ClientContext;
 import org.powerbot.os.api.wrappers.HintArrow;
 import org.powerbot.os.api.wrappers.RelativePosition;
 import org.powerbot.os.api.wrappers.Tile;

@@ -4,6 +4,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import org.powerbot.os.api.ClientAccessor;
+import org.powerbot.os.api.ClientContext;
 import org.powerbot.os.api.wrappers.GameObject;
 import org.powerbot.os.client.BasicObject;
 import org.powerbot.os.client.Client;

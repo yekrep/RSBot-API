@@ -1,5 +1,7 @@
 package org.powerbot.os.api.methods;
 
+import org.powerbot.os.api.ClientAccessor;
+import org.powerbot.os.api.ClientContext;
 import org.powerbot.os.api.wrappers.Locatable;
 import org.powerbot.os.api.wrappers.Tile;
 import org.powerbot.os.client.Client;

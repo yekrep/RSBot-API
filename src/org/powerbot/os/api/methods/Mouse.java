@@ -7,8 +7,10 @@ import java.awt.event.MouseEvent;
 import java.lang.reflect.Field;
 import java.util.concurrent.TimeUnit;
 
+import org.powerbot.os.api.ClientAccessor;
+import org.powerbot.os.api.ClientContext;
+import org.powerbot.os.api.internal.InputSimulator;
 import org.powerbot.os.api.internal.MouseSimulator;
-import org.powerbot.os.api.internal.InputEngine;
 import org.powerbot.os.api.util.Filter;
 import org.powerbot.os.api.wrappers.Targetable;
 import org.powerbot.os.bot.SelectiveEventQueue;
@@ -27,7 +29,7 @@ public class Mouse extends ClientAccessor {
 	}
 
 	public Point getLocation() {
-		final InputEngine engine = queue.getEngine();
+		final InputSimulator engine = queue.getEngine();
 		return engine != null ? engine.getLocation() : new Point(-1, -1);
 	}
 
@@ -36,7 +38,7 @@ public class Mouse extends ClientAccessor {
 	}
 
 	public boolean click(final int button) {
-		final InputEngine engine = queue.getEngine();
+		final InputSimulator engine = queue.getEngine();
 		if (engine == null) {
 			return false;
 		}
@@ -64,7 +66,7 @@ public class Mouse extends ClientAccessor {
 	}
 
 	public boolean hop(final int x, final int y) {
-		final InputEngine engine = queue.getEngine();
+		final InputSimulator engine = queue.getEngine();
 		return engine != null && engine.move(x, y);
 	}
 

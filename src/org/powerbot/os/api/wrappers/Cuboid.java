@@ -5,7 +5,7 @@ import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.geom.Area;
 
-import org.powerbot.os.api.methods.ClientContext;
+import org.powerbot.os.api.ClientContext;
 import org.powerbot.os.api.util.Calculations;
 
 abstract class Cuboid extends Interactive {

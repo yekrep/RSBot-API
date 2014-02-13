@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.concurrent.Callable;
 
-import org.powerbot.os.api.methods.ClientContext;
+import org.powerbot.os.api.ClientContext;
 import org.powerbot.os.api.methods.Game;
 import org.powerbot.os.api.util.Condition;
 import org.powerbot.os.api.util.Random;

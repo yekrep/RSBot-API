@@ -8,7 +8,7 @@ import java.util.Map;
 
 import javax.swing.SwingUtilities;
 
-import org.powerbot.os.api.methods.ClientContext;
+import org.powerbot.os.api.ClientContext;
 import org.powerbot.os.bot.event.EventDispatcher;
 import org.powerbot.os.bot.event.PaintListener;
 import org.powerbot.os.bot.loader.GameAppletLoader;

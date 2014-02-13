@@ -3,8 +3,8 @@ package org.powerbot.os.api.wrappers;
 import java.awt.Color;
 import java.util.Arrays;
 
-import org.powerbot.os.api.methods.ClientAccessor;
-import org.powerbot.os.api.methods.ClientContext;
+import org.powerbot.os.api.ClientAccessor;
+import org.powerbot.os.api.ClientContext;
 import org.powerbot.os.api.util.HashTable;
 import org.powerbot.os.client.Client;
 import org.powerbot.os.client.WidgetNode;

@@ -11,19 +11,19 @@ import java.awt.event.WindowEvent;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.powerbot.os.api.internal.InputEngine;
+import org.powerbot.os.api.internal.InputSimulator;
 import org.powerbot.os.gui.BotChrome;
 
 public class SelectiveEventQueue extends EventQueue {
 	private static final SelectiveEventQueue instance = new SelectiveEventQueue();
 	private final AtomicBoolean blocking;
-	private final AtomicReference<InputEngine> engine;
+	private final AtomicReference<InputSimulator> engine;
 	private final AtomicReference<EventCallback> callback;
 	private final AtomicReference<Component> component;
 
 	private SelectiveEventQueue() {
 		blocking = new AtomicBoolean(false);
-		engine = new AtomicReference<InputEngine>(null);
+		engine = new AtomicReference<InputSimulator>(null);
 		callback = new AtomicReference<EventCallback>(null);
 		component = new AtomicReference<Component>(null);
 	}
@@ -52,34 +52,34 @@ public class SelectiveEventQueue extends EventQueue {
 	public void setBlocking(final boolean blocking) {
 		this.blocking.set(blocking);
 		if (!blocking) {
-			final InputEngine e = engine.get();
+			final InputSimulator e = engine.get();
 			if (e != null) {
 				e.destroy();
 			}
 			engine.set(null);
 		} else {
-			final InputEngine e = engine.get();
+			final InputSimulator e = engine.get();
 			final Component component = this.component.get();
 			if (e == null && component != null) {
-				engine.set(new InputEngine(component));
+				engine.set(new InputSimulator(component));
 			}
 			pushSelectiveQueue();
 		}
 	}
 
-	public InputEngine getEngine() {
+	public InputSimulator getEngine() {
 		return engine.get();
 	}
 
 	public void target(final Component component, final EventCallback callback) {
-		final InputEngine engine = this.engine.get();
+		final InputSimulator engine = this.engine.get();
 		final Component c = engine != null ? engine.getComponent() : null;
 		if (c == component) {
 			return;
 		}
 		final boolean b = isBlocking() || engine == null;
 		setBlocking(false);
-		this.engine.set(new InputEngine(component));
+		this.engine.set(new InputSimulator(component));
 		this.component.set(component);
 		this.callback.set(callback);
 		final BotChrome chrome = BotChrome.getInstance();
@@ -100,7 +100,7 @@ public class SelectiveEventQueue extends EventQueue {
 		if (source == null) {
 			return;
 		}
-		final InputEngine engine = this.engine.get();
+		final InputSimulator engine = this.engine.get();
 		final Component component = engine != null ? engine.getComponent() : null;
 		/* Check if event is from a blocked source */
 		if (blocking.get() && source == component) {

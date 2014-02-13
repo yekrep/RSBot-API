@@ -1,7 +1,8 @@
-package org.powerbot.os.api.methods;
+package org.powerbot.os.api;
 
 import java.util.concurrent.atomic.AtomicReference;
 
+import org.powerbot.os.api.methods.*;
 import org.powerbot.os.bot.Bot;
 import org.powerbot.os.client.Client;
 

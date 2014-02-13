@@ -9,7 +9,9 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.powerbot.os.api.internal.InputEngine;
+import org.powerbot.os.api.ClientAccessor;
+import org.powerbot.os.api.ClientContext;
+import org.powerbot.os.api.internal.InputSimulator;
 import org.powerbot.os.api.util.Condition;
 import org.powerbot.os.api.util.Filter;
 import org.powerbot.os.api.util.Random;
@@ -123,7 +125,7 @@ public class Menu extends ClientAccessor {
 			return true;
 		}
 
-		final InputEngine e = SelectiveEventQueue.getInstance().getEngine();
+		final InputSimulator e = SelectiveEventQueue.getInstance().getEngine();
 		final Component c = e != null ? e.getComponent() : null;
 		final Dimension d = new Dimension(c != null ? c.getWidth() : 0, c != null ? c.getHeight() : 0);
 		final int mx = client.getMenuX(), my = client.getMenuY();
