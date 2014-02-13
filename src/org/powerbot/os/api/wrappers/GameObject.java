@@ -1,14 +1,14 @@
 package org.powerbot.os.api.wrappers;
 
 import java.awt.Color;
+import java.awt.Point;
 import java.lang.ref.WeakReference;
 
-import org.powerbot.os.api.methods.ClientAccessor;
 import org.powerbot.os.api.methods.ClientContext;
 import org.powerbot.os.client.BasicObject;
 import org.powerbot.os.client.Client;
 
-public class GameObject extends ClientAccessor implements Locatable, Identifiable {
+public class GameObject extends Interactive implements Locatable, Identifiable {
 	private static final Color TARGET_COLOR = new Color(0, 255, 0, 20);
 	private final WeakReference<BasicObject> object;
 
@@ -60,5 +60,20 @@ public class GameObject extends ClientAccessor implements Locatable, Identifiabl
 			return new Tile(client.getOffsetX() + (r.x >> 7), client.getOffsetY() + (r.z >> 7), client.getFloor());
 		}
 		return new Tile(-1, -1, -1);
+	}
+
+	@Override
+	public Point getCenterPoint() {
+		return getLocation().getMatrix(ctx).getCenterPoint();
+	}
+
+	@Override
+	public Point getNextPoint() {
+		return getLocation().getMatrix(ctx).getNextPoint();
+	}
+
+	@Override
+	public boolean contains(final Point point) {
+		return getLocation().getMatrix(ctx).contains(point);
 	}
 }
