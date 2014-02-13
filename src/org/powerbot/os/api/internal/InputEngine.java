@@ -16,6 +16,7 @@ public class InputEngine {//TODO: Track click count [same mouse button].
 	private final AtomicBoolean focused, mousePresent;
 	private final AtomicBoolean[] mousePressed;
 	private final AtomicInteger mouseX, mouseY;
+	private final Point[] mousePressPoints;
 	private Component component;
 
 	public InputEngine(final Component component) {
@@ -25,6 +26,7 @@ public class InputEngine {//TODO: Track click count [same mouse button].
 		mousePressed = new AtomicBoolean[]{null, new AtomicBoolean(false), new AtomicBoolean(false), new AtomicBoolean(false)};
 		mouseX = new AtomicInteger(0);
 		mouseY = new AtomicInteger(0);
+		mousePressPoints = new Point[]{null, new Point(-1, -1), new Point(-1, -1), new Point(-1, -1)};
 
 		if (component.isFocusOwner() && component.isShowing()) {
 			mousePresent.set(true);
@@ -88,8 +90,10 @@ public class InputEngine {//TODO: Track click count [same mouse button].
 			return;
 		}
 		final int m = getMask(button, true);
-		final MouseEvent e = new MouseEvent(component, MouseEvent.MOUSE_PRESSED, System.currentTimeMillis(), m, mouseX.get(), mouseY.get(), 1, false, button);
+		final int x = mouseX.get(), y = mouseY.get();
+		final MouseEvent e = new MouseEvent(component, MouseEvent.MOUSE_PRESSED, System.currentTimeMillis(), m, x, y, 1, false, button);
 		mousePressed[button].set(true);
+		mousePressPoints[button].move(x, y);
 		SelectiveEventQueue.getInstance().postEvent(new RawAWTEvent(e));
 		if (!focused.get()) {
 			try {
@@ -110,9 +114,16 @@ public class InputEngine {//TODO: Track click count [same mouse button].
 		}
 		//TODO: CLICKED EVENT?!?!?
 		final int m = getMask(button, false);
-		final MouseEvent e = new MouseEvent(component, MouseEvent.MOUSE_RELEASED, System.currentTimeMillis(), m, mouseX.get(), mouseY.get(), 1, false, button);
+		final int x = mouseX.get(), y = mouseY.get();
+		final long t = System.currentTimeMillis();
+		final MouseEvent e = new MouseEvent(component, MouseEvent.MOUSE_RELEASED, t, m, x, y, 1, false, button);
 		mousePressed[button].set(false);
 		SelectiveEventQueue.getInstance().postEvent(new RawAWTEvent(e));
+		final Point p = mousePressPoints[button].getLocation();
+		if (p.x == x && p.y == y) {
+			final MouseEvent e2 = new MouseEvent(component, MouseEvent.MOUSE_CLICKED, t, m, x, y, 1, false, button);
+			SelectiveEventQueue.getInstance().postEvent(new RawAWTEvent(e2));
+		}
 	}
 
 	public boolean move(final int x, final int y) {
