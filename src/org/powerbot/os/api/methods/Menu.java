@@ -107,7 +107,36 @@ public class Menu extends ClientAccessor {
 	}
 
 	public boolean close() {
-		return false;//TODO
+		final Client client = ctx.client();
+		if (client == null) {
+			return false;
+		}
+		if (!client.isMenuOpen()) {
+			return true;
+		}
+
+		final InputEngine e = SelectiveEventQueue.getInstance().getEngine();
+		final Component c = e != null ? e.getComponent() : null;
+		final Dimension d = new Dimension(c != null ? c.getWidth() : 0, c != null ? c.getHeight() : 0);
+		final int mx = client.getMenuX(), my = client.getMenuY();
+		final int w = (int) d.getWidth(), h = (int) d.getHeight();
+		int x1, x2;
+		final int y1, y2;
+		x1 = x2 = mx;
+		y1 = y2 = Math.min(h - 5, Math.max(4, my + Random.nextInt(-10, 10)));
+		x1 = Math.max(4, x1 + Random.nextInt(-30, -10));
+		x2 = x2 + client.getMenuWidth() + +Random.nextInt(10, 30);
+		if (x2 <= w - 5 && (x1 - mx >= 5 || Random.nextBoolean())) {
+			ctx.mouse.move(x2, y2);
+		} else {
+			ctx.mouse.move(x1, y1);
+		}
+		return Condition.wait(new Callable<Boolean>() {
+			@Override
+			public Boolean call() {
+				return client.isMenuOpen();
+			}
+		}, 10, 50);
 	}
 
 	private void register() {
