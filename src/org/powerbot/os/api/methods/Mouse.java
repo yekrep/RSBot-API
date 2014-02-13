@@ -1,7 +1,10 @@
 package org.powerbot.os.api.methods;
 
+import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
+import java.lang.reflect.Field;
 import java.util.concurrent.TimeUnit;
 
 import org.powerbot.os.api.internal.HeteroMouse;
@@ -10,6 +13,8 @@ import org.powerbot.os.api.internal.MouseSimulator;
 import org.powerbot.os.api.util.Filter;
 import org.powerbot.os.api.wrappers.Targetable;
 import org.powerbot.os.bot.SelectiveEventQueue;
+import org.powerbot.os.bot.event.EventDispatcher;
+import org.powerbot.os.bot.event.PaintListener;
 import org.powerbot.os.util.math.Vector3;
 
 public class Mouse extends ClientAccessor {
@@ -91,6 +96,20 @@ public class Mouse extends ClientAccessor {
 	}
 
 	public boolean apply(final Targetable targetable, final Filter<Point> filter) {
+		final Point target_point = new Point(-1, -1);
+		final Color c = getStroke(targetable.getClass());
+		final PaintListener l = new PaintListener() {
+			@Override
+			public void repaint(final Graphics render) {
+				if (target_point.x == -1 || target_point.y == -1) {
+					return;
+				}
+				render.setColor(c);
+				render.fillOval(target_point.x - 5, target_point.y - 5, 10, 10);
+			}
+		};
+		final EventDispatcher dispatcher = ctx.bot().dispatcher;
+		dispatcher.add(l);
 		final int STANDARD_ATTEMPTS = 3;
 		for (int i = 0; i < STANDARD_ATTEMPTS; i++) {
 			final Point mp = getLocation();
@@ -99,6 +118,7 @@ public class Mouse extends ClientAccessor {
 			if (p.x == -1 || p.y == -1) {
 				continue;
 			}
+			target_point.move(p.x, p.y);
 			final Vector3 end = new Vector3(p.x, p.y, 0);
 			final Iterable<Vector3> spline = simulator.getPath(start, end);
 			for (final Vector3 v : spline) {
@@ -119,9 +139,27 @@ public class Mouse extends ClientAccessor {
 
 			final Point p2 = getLocation(), ep = end.to2DPoint();
 			if (p2.equals(ep) && filter.accept(ep)) {
+				dispatcher.remove(l);
 				return true;
 			}
 		}
+		dispatcher.remove(l);
 		return false;
+	}
+
+	private Color getStroke(final Class<?> clazz) {
+		final Field f;
+		try {
+			f = clazz.getField("TARGET_STROKE_COLOR");
+			if (f != null) {
+				final Object o = f.get(null);
+				if (o instanceof Color) {
+					return (Color) o;
+				}
+			}
+		} catch (final NoSuchFieldException ignored) {
+		} catch (final IllegalAccessException ignored) {
+		}
+		return new Color(0, 0, 0, 50);
 	}
 }
