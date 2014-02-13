@@ -12,14 +12,14 @@ import org.powerbot.os.api.util.Random;
 import org.powerbot.os.bot.RawAWTEvent;
 import org.powerbot.os.bot.SelectiveEventQueue;
 
-public class InputEngine {//TODO: Track click count [same mouse button].
+public class InputSimulator {//TODO: Track click count [same mouse button].
 	private final AtomicBoolean focused, mousePresent;
 	private final AtomicBoolean[] mousePressed;
 	private final AtomicInteger mouseX, mouseY;
 	private final Point[] mousePressPoints;
 	private Component component;
 
-	public InputEngine(final Component component) {
+	public InputSimulator(final Component component) {
 		this.component = component;
 		focused = new AtomicBoolean(false);
 		mousePresent = new AtomicBoolean(false);
