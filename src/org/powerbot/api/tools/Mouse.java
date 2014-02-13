@@ -15,7 +15,7 @@ import org.powerbot.api.util.Filter;
 import org.powerbot.bot.SelectiveEventQueue;
 import org.powerbot.bot.event.EventDispatcher;
 import org.powerbot.bot.event.PaintListener;
-import org.powerbot.util.math.Vector3;
+import org.powerbot.api.internal.util.math.Vector3;
 
 public class Mouse extends ClientAccessor {
 	private final SelectiveEventQueue queue;

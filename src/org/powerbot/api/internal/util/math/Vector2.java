@@ -1,4 +1,4 @@
-package org.powerbot.util.math;
+package org.powerbot.api.internal.util.math;
 
 import java.awt.Point;
 

@@ -7,8 +7,8 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Random;
 
-import org.powerbot.util.math.HardwareSimulator;
-import org.powerbot.util.math.Vector3;
+import org.powerbot.api.internal.util.math.HardwareSimulator;
+import org.powerbot.api.internal.util.math.Vector3;
 
 public final class MouseSimulator {
 	private final static int SHORT_DISTANCE = 250;
