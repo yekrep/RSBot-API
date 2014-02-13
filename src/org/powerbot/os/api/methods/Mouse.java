@@ -36,7 +36,7 @@ public class Mouse extends ClientAccessor {
 		if (engine == null) {
 			return false;
 		}
-		try {
+		try {//TODO: do we need this delay...?
 			Thread.sleep(simulator.getPressDuration());
 		} catch (final InterruptedException ignored) {
 		}
