@@ -91,6 +91,7 @@ public class Bot implements Runnable, Closeable {
 	}
 
 	private void debug() {
+		ctx.menu.register();
 		new Thread(group, dispatcher, dispatcher.getClass().getName()).start();
 		ctx.setClient(client);
 		dispatcher.add(new PaintListener() {
