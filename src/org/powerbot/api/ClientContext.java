@@ -2,7 +2,7 @@ package org.powerbot.api;
 
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.powerbot.api.tools.*;
+import org.powerbot.api.os.tools.*;
 import org.powerbot.bot.Bot;
 import org.powerbot.bot.client.Client;
 
