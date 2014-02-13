@@ -51,7 +51,7 @@ public class GroundItems extends ClientAccessor {
 				}
 				final Deque<ItemNode> deque = new Deque<ItemNode>(nodeDeque, ItemNode.class);
 				for (final ItemNode node : deque) {
-					list.add(new GroundItem(tile.derive(x, y), node));
+					list.add(new GroundItem(ctx, tile.derive(x, y), node));
 				}
 			}
 
