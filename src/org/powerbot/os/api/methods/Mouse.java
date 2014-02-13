@@ -7,9 +7,8 @@ import java.awt.event.MouseEvent;
 import java.lang.reflect.Field;
 import java.util.concurrent.TimeUnit;
 
-import org.powerbot.os.api.internal.HeteroMouse;
-import org.powerbot.os.api.internal.InputEngine;
 import org.powerbot.os.api.internal.MouseSimulator;
+import org.powerbot.os.api.internal.InputEngine;
 import org.powerbot.os.api.util.Filter;
 import org.powerbot.os.api.wrappers.Targetable;
 import org.powerbot.os.bot.SelectiveEventQueue;
@@ -24,7 +23,7 @@ public class Mouse extends ClientAccessor {
 	public Mouse(final ClientContext ctx) {
 		super(ctx);
 		queue = SelectiveEventQueue.getInstance();
-		simulator = new HeteroMouse();
+		simulator = new MouseSimulator();
 	}
 
 	public Point getLocation() {
