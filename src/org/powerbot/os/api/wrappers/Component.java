@@ -5,7 +5,9 @@ import java.util.Arrays;
 
 import org.powerbot.os.api.methods.ClientAccessor;
 import org.powerbot.os.api.methods.ClientContext;
+import org.powerbot.os.api.util.HashTable;
 import org.powerbot.os.client.Client;
+import org.powerbot.os.client.WidgetNode;
 
 public class Component extends ClientAccessor {
 	public static final Color TARGET_STROKE_COLOR = new Color(0, 255, 0, 150);
@@ -51,6 +53,31 @@ public class Component extends ClientAccessor {
 		final org.powerbot.os.client.Widget w = getInternal();
 		final org.powerbot.os.client.Widget[] arr = w != null ? w.getChildren() : null;
 		return arr != null ? arr.length : 0;
+	}
+
+	public int getId() {
+		final org.powerbot.os.client.Widget w = getInternal();
+		return w != null ? w.getId() : -1;
+	}
+
+	public int getParentId() {
+		final Client client = ctx.client();
+		final org.powerbot.os.client.Widget w = getInternal();
+		if (client == null || w == null) {
+			return -1;
+		}
+		final int p = w.getParentId();
+		if (p != -1) {
+			return p;
+		}
+
+		final int uid = getId() >>> 16;
+		for (final WidgetNode node : new HashTable<WidgetNode>(client.getWidgetTable(), WidgetNode.class)) {
+			if (uid == node.getUid()) {
+				return (int) node.getId();
+			}
+		}
+		return -1;
 	}
 
 	private org.powerbot.os.client.Widget getInternal() {
