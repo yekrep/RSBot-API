@@ -25,7 +25,12 @@ public abstract class Interactive extends ClientAccessor implements Targetable, 
 		return ctx.mouse.apply(this, new Filter<Point>() {
 			@Override
 			public boolean accept(final Point point) {
-				return ctx.menu.indexOf(f) == 0 && ctx.mouse.click(true);
+				return Condition.wait(new Callable<Boolean>() {
+					@Override
+					public Boolean call() {
+						return ctx.menu.indexOf(f) == 0;
+					}
+				}, 5, 10) && ctx.mouse.click(true);
 			}
 		});
 	}
