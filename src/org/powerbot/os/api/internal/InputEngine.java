@@ -28,9 +28,9 @@ public class InputEngine {//TODO: Track click count [same mouse button].
 		mouseY = new AtomicInteger(0);
 		mousePressPoints = new Point[]{null, new Point(-1, -1), new Point(-1, -1), new Point(-1, -1)};
 
-		if (component.isFocusOwner() && component.isShowing()) {
+		final Point p = component.getMousePosition();
+		if (p!=null&&component.isFocusOwner() && component.isShowing()) {
 			mousePresent.set(true);
-			final Point p = component.getMousePosition();
 			mouseX.set(p.x);
 			mouseY.set(p.y);
 			focused.set(true);
