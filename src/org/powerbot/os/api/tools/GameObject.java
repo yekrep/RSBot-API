@@ -5,8 +5,8 @@ import java.awt.Point;
 import java.lang.ref.WeakReference;
 
 import org.powerbot.os.api.ClientContext;
-import org.powerbot.os.client.BasicObject;
-import org.powerbot.os.client.Client;
+import org.powerbot.os.bot.client.BasicObject;
+import org.powerbot.os.bot.client.Client;
 
 public class GameObject extends Interactive implements Locatable, Identifiable {
 	private static final Color TARGET_COLOR = new Color(0, 255, 0, 20);
@@ -37,8 +37,8 @@ public class GameObject extends Interactive implements Locatable, Identifiable {
 		final BasicObject object = this.object.get();
 		final int x, z;
 		if (object != null) {
-			if (object instanceof org.powerbot.os.client.GameObject) {
-				final org.powerbot.os.client.GameObject o2 = (org.powerbot.os.client.GameObject) object;
+			if (object instanceof org.powerbot.os.bot.client.GameObject) {
+				final org.powerbot.os.bot.client.GameObject o2 = (org.powerbot.os.bot.client.GameObject) object;
 				x = o2.getX();
 				z = o2.getZ();
 			} else {

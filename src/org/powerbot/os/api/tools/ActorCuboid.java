@@ -4,10 +4,10 @@ import java.awt.Rectangle;
 import java.lang.ref.WeakReference;
 
 import org.powerbot.os.api.ClientContext;
-import org.powerbot.os.client.Actor;
+import org.powerbot.os.bot.client.Actor;
 
 public class ActorCuboid extends Cuboid {
-	private final WeakReference<org.powerbot.os.client.Actor> actor;
+	private final WeakReference<org.powerbot.os.bot.client.Actor> actor;
 
 	public ActorCuboid(final ClientContext ctx, final Actor actor) {
 		super(ctx);

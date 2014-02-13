@@ -6,7 +6,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.powerbot.os.api.ClientAccessor;
 import org.powerbot.os.api.ClientContext;
-import org.powerbot.os.client.Client;
+import org.powerbot.os.bot.client.Client;
 
 public class Npcs extends ClientAccessor {
 	public Npcs(final ClientContext ctx) {
@@ -20,14 +20,14 @@ public class Npcs extends ClientAccessor {
 			return r;
 		}
 		final int[] indices = client.getNpcIndices();
-		final org.powerbot.os.client.Npc[] npcs = client.getNpcs();
+		final org.powerbot.os.bot.client.Npc[] npcs = client.getNpcs();
 		if (indices == null || npcs == null) {
 			return r;
 		}
 		final Npc[] arr = new Npc[indices.length];
 		int d = 0;
 		for (final int k : indices) {
-			final org.powerbot.os.client.Npc p = npcs[k];
+			final org.powerbot.os.bot.client.Npc p = npcs[k];
 			if (p != null) {
 				arr[d++] = new Npc(ctx, p);
 			}

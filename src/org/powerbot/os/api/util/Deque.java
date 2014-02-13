@@ -4,8 +4,8 @@ import java.lang.ref.WeakReference;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import org.powerbot.os.client.Node;
-import org.powerbot.os.client.NodeDeque;
+import org.powerbot.os.bot.client.Node;
+import org.powerbot.os.bot.client.NodeDeque;
 
 public class Deque<N> implements Iterator<N>, Iterable<N> {
 	private final WeakReference<NodeDeque> deque;

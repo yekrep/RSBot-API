@@ -4,7 +4,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import org.powerbot.os.api.tools.*;
 import org.powerbot.os.bot.Bot;
-import org.powerbot.os.client.Client;
+import org.powerbot.os.bot.client.Client;
 
 public class ClientContext {
 	public final Game game;

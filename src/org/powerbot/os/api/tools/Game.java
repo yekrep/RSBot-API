@@ -4,7 +4,7 @@ import java.awt.Point;
 
 import org.powerbot.os.api.ClientAccessor;
 import org.powerbot.os.api.ClientContext;
-import org.powerbot.os.client.Client;
+import org.powerbot.os.bot.client.Client;
 
 public class Game extends ClientAccessor {
 	private static final int[] ARRAY_SIN = new int[2048];

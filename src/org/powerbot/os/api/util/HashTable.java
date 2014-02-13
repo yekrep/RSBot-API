@@ -4,20 +4,20 @@ import java.lang.ref.WeakReference;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import org.powerbot.os.client.Node;
+import org.powerbot.os.bot.client.Node;
 
 public class HashTable<N> implements Iterator<N>, Iterable<N> {
-	private final WeakReference<org.powerbot.os.client.HashTable> table;
+	private final WeakReference<org.powerbot.os.bot.client.HashTable> table;
 	private final Class<N> type;
 	private int bucket_index = 0;
 	private Node curr;
 	private Node next;
 
-	public HashTable(final org.powerbot.os.client.HashTable table, final Class<N> type) {
+	public HashTable(final org.powerbot.os.bot.client.HashTable table, final Class<N> type) {
 		if (type == null) {
 			throw new IllegalArgumentException();
 		}
-		this.table = new WeakReference<org.powerbot.os.client.HashTable>(table);
+		this.table = new WeakReference<org.powerbot.os.bot.client.HashTable>(table);
 		this.type = type;
 	}
 
@@ -31,7 +31,7 @@ public class HashTable<N> implements Iterator<N>, Iterable<N> {
 		if (next != null) {
 			return true;
 		}
-		final org.powerbot.os.client.HashTable table = this.table.get();
+		final org.powerbot.os.bot.client.HashTable table = this.table.get();
 		final Node[] buckets = table != null ? table.getBuckets() : null;
 		if (buckets == null || curr == null || bucket_index >= buckets.length) {
 			return false;

@@ -15,7 +15,7 @@ import org.powerbot.os.bot.loader.GameAppletLoader;
 import org.powerbot.os.bot.loader.GameCrawler;
 import org.powerbot.os.bot.loader.GameLoader;
 import org.powerbot.os.bot.loader.GameStub;
-import org.powerbot.os.client.Client;
+import org.powerbot.os.bot.client.Client;
 import org.powerbot.os.gui.BotChrome;
 
 public class Bot implements Runnable, Closeable {

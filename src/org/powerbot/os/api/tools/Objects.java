@@ -6,10 +6,10 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.powerbot.os.api.ClientAccessor;
 import org.powerbot.os.api.ClientContext;
-import org.powerbot.os.client.BasicObject;
-import org.powerbot.os.client.Client;
-import org.powerbot.os.client.Landscape;
-import org.powerbot.os.client.Tile;
+import org.powerbot.os.bot.client.BasicObject;
+import org.powerbot.os.bot.client.Client;
+import org.powerbot.os.bot.client.Landscape;
+import org.powerbot.os.bot.client.Tile;
 
 public class Objects extends ClientAccessor {
 	public Objects(final ClientContext ctx) {
@@ -43,7 +43,7 @@ public class Objects extends ClientAccessor {
 				final BasicObject[] fo = {tile.getBoundaryObject(), tile.getFloorObject(), tile.getWallObject()};
 				final BasicObject[] arr = new BasicObject[3 + len];
 				System.arraycopy(fo, 0, arr, 0, 3);
-				final org.powerbot.os.client.GameObject[] interactive = tile.getGameObjects();
+				final org.powerbot.os.bot.client.GameObject[] interactive = tile.getGameObjects();
 				if (interactive != null) {
 					System.arraycopy(interactive, 0, arr, 3, Math.min(len, interactive.length));
 				}

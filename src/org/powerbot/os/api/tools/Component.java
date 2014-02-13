@@ -6,8 +6,8 @@ import java.util.Arrays;
 import org.powerbot.os.api.ClientAccessor;
 import org.powerbot.os.api.ClientContext;
 import org.powerbot.os.api.util.HashTable;
-import org.powerbot.os.client.Client;
-import org.powerbot.os.client.WidgetNode;
+import org.powerbot.os.bot.client.Client;
+import org.powerbot.os.bot.client.WidgetNode;
 
 public class Component extends ClientAccessor {
 	public static final Color TARGET_STROKE_COLOR = new Color(0, 255, 0, 150);
@@ -50,19 +50,19 @@ public class Component extends ClientAccessor {
 	}
 
 	public synchronized int getComponentCount() {
-		final org.powerbot.os.client.Widget w = getInternal();
-		final org.powerbot.os.client.Widget[] arr = w != null ? w.getChildren() : null;
+		final org.powerbot.os.bot.client.Widget w = getInternal();
+		final org.powerbot.os.bot.client.Widget[] arr = w != null ? w.getChildren() : null;
 		return arr != null ? arr.length : 0;
 	}
 
 	public int getId() {
-		final org.powerbot.os.client.Widget w = getInternal();
+		final org.powerbot.os.bot.client.Widget w = getInternal();
 		return w != null ? w.getId() : -1;
 	}
 
 	public int getParentId() {
 		final Client client = ctx.client();
-		final org.powerbot.os.client.Widget w = getInternal();
+		final org.powerbot.os.bot.client.Widget w = getInternal();
 		if (client == null || w == null) {
 			return -1;
 		}
@@ -80,20 +80,20 @@ public class Component extends ClientAccessor {
 		return -1;
 	}
 
-	private org.powerbot.os.client.Widget getInternal() {
+	private org.powerbot.os.bot.client.Widget getInternal() {
 		final int wi = widget.getIndex();
 		if (component != null) {
-			final org.powerbot.os.client.Widget _i = component.getInternal();
-			final org.powerbot.os.client.Widget[] arr = _i != null ? _i.getChildren() : null;
+			final org.powerbot.os.bot.client.Widget _i = component.getInternal();
+			final org.powerbot.os.bot.client.Widget[] arr = _i != null ? _i.getChildren() : null;
 			if (arr != null && index < arr.length) {
 				return arr[index];
 			}
 			return null;
 		}
 		final Client client = ctx.client();
-		final org.powerbot.os.client.Widget[][] arr = client != null ? client.getWidgets() : null;
+		final org.powerbot.os.bot.client.Widget[][] arr = client != null ? client.getWidgets() : null;
 		if (arr != null && wi < arr.length) {
-			final org.powerbot.os.client.Widget[] comps = arr[wi];
+			final org.powerbot.os.bot.client.Widget[] comps = arr[wi];
 			return comps != null && index < comps.length ? comps[index] : null;
 		}
 		return null;

@@ -1,4 +1,4 @@
-package org.powerbot.os.client.input;
+package org.powerbot.os.bot.client.input;
 
 import java.awt.AWTEvent;
 import java.awt.Graphics;

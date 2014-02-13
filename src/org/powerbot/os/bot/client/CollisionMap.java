@@ -1,4 +1,4 @@
-package org.powerbot.os.client;
+package org.powerbot.os.bot.client;
 
 public interface CollisionMap {
 	public int[][] getFlags();
