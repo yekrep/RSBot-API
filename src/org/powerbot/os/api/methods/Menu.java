@@ -1,6 +1,7 @@
 package org.powerbot.os.api.methods;
 
 import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -8,6 +9,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import org.powerbot.os.api.util.Condition;
 import org.powerbot.os.api.util.Filter;
+import org.powerbot.os.api.util.Random;
 import org.powerbot.os.bot.event.PaintListener;
 import org.powerbot.os.client.Client;
 import org.powerbot.os.util.StringUtils;
@@ -73,7 +75,9 @@ public class Menu extends ClientAccessor {
 			return false;
 		}
 		if (!client.isMenuOpen()) {
-			//TODO: right click.
+			if (!ctx.mouse.click(false)) {
+				return false;
+			}
 		}
 		final int idx;
 		if (!Condition.wait(new Callable<Boolean>() {
@@ -85,8 +89,10 @@ public class Menu extends ClientAccessor {
 			return false;
 		}
 		final Rectangle rectangle = new Rectangle(client.getMenuX(), client.getMenuY() + 19 + idx * 15, client.getMenuWidth(), 15);
-		//TODO: move mouse
-		return false;//TODO check if menu is open
+		return ctx.mouse.move(
+				Random.nextInt(rectangle.x, rectangle.x + rectangle.width),
+				Random.nextInt(rectangle.y, rectangle.y + rectangle.y)
+		) && client.isMenuOpen();
 	}
 
 	public boolean click(final Filter<Command> filter) {
@@ -96,7 +102,12 @@ public class Menu extends ClientAccessor {
 			return false;
 		}
 		final Rectangle rectangle = new Rectangle(client.getMenuX(), client.getMenuY() + 19 + idx * 15, client.getMenuWidth(), 15);
-		return false;//TODO: check if mouse in rectangle, if so, click.
+		final Point p = ctx.mouse.getLocation();
+		return client.isMenuOpen() && rectangle.contains(p) && ctx.mouse.click(true);
+	}
+
+	public boolean close() {
+		return false;//TODO
 	}
 
 	private void register() {
