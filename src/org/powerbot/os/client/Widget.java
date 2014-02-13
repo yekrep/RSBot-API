@@ -13,6 +13,8 @@ public interface Widget {
 
 	public int getType();
 
+	public int getId();
+
 	public int getParentId();
 
 	public Widget[] getChildren();
