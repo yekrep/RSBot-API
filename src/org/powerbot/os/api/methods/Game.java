@@ -18,8 +18,8 @@ public class Game extends ClientAccessor {
 		}
 	}
 
-	public static final int INDEX_MAP_LOADED = 30;//TODO verify
-	public static final int INDEX_MAP_LOADING = 25;//TODO verify
+	public static final int INDEX_MAP_LOADED = 30;
+	public static final int INDEX_MAP_LOADING = 25;
 
 	public Game(final ClientContext ctx) {
 		super(ctx);
