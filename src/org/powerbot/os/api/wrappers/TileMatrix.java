@@ -1,5 +1,6 @@
 package org.powerbot.os.api.wrappers;
 
+import java.awt.Color;
 import java.awt.Point;
 import java.awt.Polygon;
 
@@ -10,6 +11,7 @@ import org.powerbot.os.api.util.Random;
  * An interactive tile matrix.
  */
 public final class TileMatrix extends Interactive implements Locatable {
+	public static final Color TARGET_STROKE_COLOR = new Color(255, 0, 0, 75);
 	private final Tile tile;
 
 	TileMatrix(final ClientContext ctx, final Tile tile) {

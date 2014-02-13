@@ -8,7 +8,7 @@ import org.powerbot.os.client.Client;
 import org.powerbot.os.client.NpcConfig;
 
 public class Npc extends Actor implements Identifiable {
-	public static final Color TARGET_COLOR = new Color(255, 0, 255, 15);
+	public static final Color TARGET_STROKE_COLOR = new Color(255, 0, 255, 15);
 	private final SoftReference<org.powerbot.os.client.Npc> npc;
 
 	public Npc(final ClientContext ctx, final org.powerbot.os.client.Npc npc) {

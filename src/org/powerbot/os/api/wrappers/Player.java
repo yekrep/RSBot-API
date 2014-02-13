@@ -8,7 +8,7 @@ import org.powerbot.os.client.Client;
 import org.powerbot.os.client.PlayerComposite;
 
 public class Player extends Actor {
-	public static final Color TARGET_COLOR = new Color(255, 0, 0, 15);
+	public static final Color TARGET_STROKE_COLOR = new Color(255, 0, 0, 15);
 	private final SoftReference<org.powerbot.os.client.Player> player;
 
 	public Player(final ClientContext ctx, final org.powerbot.os.client.Player player) {
