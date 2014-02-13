@@ -112,7 +112,6 @@ public class InputEngine {//TODO: Track click count [same mouse button].
 		if (!mousePressed[button].get()) {
 			return;
 		}
-		//TODO: CLICKED EVENT?!?!?
 		final int m = getMask(button, false);
 		final int x = mouseX.get(), y = mouseY.get();
 		final long t = System.currentTimeMillis();
