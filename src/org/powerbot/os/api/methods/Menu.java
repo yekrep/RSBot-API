@@ -1,5 +1,7 @@
 package org.powerbot.os.api.methods;
 
+import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -7,9 +9,11 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
+import org.powerbot.os.api.internal.InputEngine;
 import org.powerbot.os.api.util.Condition;
 import org.powerbot.os.api.util.Filter;
 import org.powerbot.os.api.util.Random;
+import org.powerbot.os.bot.SelectiveEventQueue;
 import org.powerbot.os.bot.event.PaintListener;
 import org.powerbot.os.client.Client;
 import org.powerbot.os.util.StringUtils;
@@ -89,6 +93,10 @@ public class Menu extends ClientAccessor {
 			return false;
 		}
 		final Rectangle rectangle = new Rectangle(client.getMenuX(), client.getMenuY() + 19 + idx * 15, client.getMenuWidth(), 15);
+		try {
+			Thread.sleep(Random.nextInt(0, 300) + 105 * (int) (Math.log(idx * 2) / Math.log(2)));
+		} catch (final InterruptedException ignored) {
+		}
 		return ctx.mouse.move(
 				Random.nextInt(rectangle.x, rectangle.x + rectangle.width),
 				Random.nextInt(rectangle.y, rectangle.y + rectangle.height)
