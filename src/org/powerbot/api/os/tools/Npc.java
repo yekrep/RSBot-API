@@ -11,7 +11,7 @@ public class Npc extends Actor implements Identifiable {
 	public static final Color TARGET_STROKE_COLOR = new Color(255, 0, 255, 15);
 	private final SoftReference<org.powerbot.bot.client.Npc> npc;
 
-	public Npc(final ClientContext ctx, final org.powerbot.bot.client.Npc npc) {
+	Npc(final ClientContext ctx, final org.powerbot.bot.client.Npc npc) {
 		super(ctx);
 		this.npc = new SoftReference<org.powerbot.bot.client.Npc>(npc);
 	}

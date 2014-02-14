@@ -11,7 +11,7 @@ public class Player extends Actor {
 	public static final Color TARGET_STROKE_COLOR = new Color(255, 0, 0, 15);
 	private final SoftReference<org.powerbot.bot.client.Player> player;
 
-	public Player(final ClientContext ctx, final org.powerbot.bot.client.Player player) {
+	Player(final ClientContext ctx, final org.powerbot.bot.client.Player player) {
 		super(ctx);
 		this.player = new SoftReference<org.powerbot.bot.client.Player>(player);
 	}

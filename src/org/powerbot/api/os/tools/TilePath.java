@@ -14,7 +14,7 @@ public class TilePath extends Path {
 	private boolean end;
 	private Tile last;
 
-	public TilePath(final ClientContext ctx, final Tile[] tiles) {
+	TilePath(final ClientContext ctx, final Tile[] tiles) {
 		super(ctx);
 		orig = tiles;
 		this.tiles = Arrays.copyOf(tiles, tiles.length);

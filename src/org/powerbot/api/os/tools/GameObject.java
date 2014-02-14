@@ -12,7 +12,7 @@ public class GameObject extends Interactive implements Locatable, Identifiable {
 	private static final Color TARGET_COLOR = new Color(0, 255, 0, 20);
 	private final WeakReference<BasicObject> object;
 
-	public GameObject(final ClientContext ctx, final BasicObject object) {
+	GameObject(final ClientContext ctx, final BasicObject object) {
 		super(ctx);
 		this.object = new WeakReference<BasicObject>(object);
 	}

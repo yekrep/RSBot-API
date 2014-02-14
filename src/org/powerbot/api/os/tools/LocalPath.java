@@ -20,7 +20,7 @@ public class LocalPath extends Path {
 	private TilePath tilePath;
 	private Tile tile;
 
-	public LocalPath(final ClientContext ctx, final Locatable destination) {
+	LocalPath(final ClientContext ctx, final Locatable destination) {
 		super(ctx);
 		this.destination = destination;
 	}

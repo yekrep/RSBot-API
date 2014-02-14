@@ -6,7 +6,7 @@ import org.powerbot.api.ClientContext;
 import org.powerbot.bot.client.Client;
 
 public abstract class Actor extends Interactive implements Locatable, Validatable {
-	public Actor(final ClientContext ctx) {
+	Actor(final ClientContext ctx) {
 		super(ctx);
 	}
 

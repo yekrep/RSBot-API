@@ -19,11 +19,11 @@ public class Component extends ClientAccessor {
 
 	private Component[] sparseCache;
 
-	public Component(final ClientContext ctx, final Widget widget, final int index) {
+	Component(final ClientContext ctx, final Widget widget, final int index) {
 		this(ctx, widget, null, index);
 	}
 
-	public Component(final ClientContext ctx, final Widget widget, final Component component, final int index) {
+	Component(final ClientContext ctx, final Widget widget, final Component component, final int index) {
 		super(ctx);
 		this.widget = widget;
 		this.component = component;

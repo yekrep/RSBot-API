@@ -12,7 +12,7 @@ public class GroundItem extends Interactive implements Locatable,Identifiable, V
 	private final Tile tile;
 	private final WeakReference<ItemNode> node;
 
-	public GroundItem(final ClientContext ctx, final Tile tile, final ItemNode node) {
+	GroundItem(final ClientContext ctx, final Tile tile, final ItemNode node) {
 		super(ctx);
 		this.tile = tile;
 		this.node = new WeakReference<ItemNode>(node);
