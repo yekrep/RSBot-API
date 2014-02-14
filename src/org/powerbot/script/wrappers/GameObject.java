@@ -122,6 +122,11 @@ public class GameObject extends Interactive implements Renderable, Locatable, Na
 	}
 
 	@Override
+	public boolean isInViewport() {
+		return getLocation().getMatrix(ctx).isInViewport();
+	}
+
+	@Override
 	public Point getInteractPoint() {
 		final Model model = getModel();
 		if (model != null) {
@@ -134,8 +139,7 @@ public class GameObject extends Interactive implements Renderable, Locatable, Na
 				return point;
 			}
 		}
-		final Tile tile = getLocation();
-		return tile != null ? tile.getMatrix(ctx).getInteractPoint() : new Point(-1, -1);
+		return isInViewport() ? getLocation().getMatrix(ctx).getInteractPoint() : new Point(-1, -1);
 	}
 
 	@Override
@@ -144,8 +148,7 @@ public class GameObject extends Interactive implements Renderable, Locatable, Na
 		if (model != null) {
 			return model.getNextPoint();
 		}
-		final Tile tile = getLocation();
-		return tile != null ? tile.getMatrix(ctx).getNextPoint() : new Point(-1, -1);
+		return isInViewport() ? getLocation().getMatrix(ctx).getNextPoint() : new Point(-1, -1);
 	}
 
 	@Override
@@ -154,8 +157,7 @@ public class GameObject extends Interactive implements Renderable, Locatable, Na
 		if (model != null) {
 			return model.getCenterPoint();
 		}
-		final Tile tile = getLocation();
-		return tile != null ? tile.getMatrix(ctx).getCenterPoint() : new Point(-1, -1);
+		return isInViewport() ? getLocation().getMatrix(ctx).getCenterPoint() : new Point(-1, -1);
 	}
 
 	@Override
@@ -164,19 +166,18 @@ public class GameObject extends Interactive implements Renderable, Locatable, Na
 		if (model != null) {
 			return model.contains(point);
 		}
-		final Tile tile = getLocation();
-		return tile != null && tile.getMatrix(ctx).contains(point);
+		return getLocation().getMatrix(ctx).contains(point);
 	}
 
 	@Override
 	public boolean isValid() {
-		return this.object.get() != null && ctx.objects.select().contains(this);
+		return object.get() != null && ctx.objects.select().contains(this);
 	}
 
 	@Override
 	public int hashCode() {
 		final RSObject i;
-		return (i = this.object.get()) != null ? System.identityHashCode(i) : 0;
+		return (i = object.get()) != null ? System.identityHashCode(i) : 0;
 	}
 
 	@Override
@@ -186,7 +187,7 @@ public class GameObject extends Interactive implements Renderable, Locatable, Na
 		}
 		final GameObject g = (GameObject) o;
 		final RSObject i;
-		return (i = this.object.get()) != null && i == g.object.get();
+		return (i = object.get()) != null && i == g.object.get();
 	}
 
 	@Override
