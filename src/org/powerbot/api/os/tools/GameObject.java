@@ -33,7 +33,7 @@ public class GameObject extends Interactive implements Locatable, Identifiable {
 		return object != null ? object.getMeta() & 0x3f : 0;
 	}
 
-	public RelativePosition getRelativePosition() {
+	public int getRelativePosition() {
 		final BasicObject object = this.object.get();
 		final int x, z;
 		if (object != null) {
@@ -49,15 +49,16 @@ public class GameObject extends Interactive implements Locatable, Identifiable {
 		} else {
 			x = z = 0;
 		}
-		return new RelativePosition(x, z);
+		return (x << 16) | z;
 	}
 
 	@Override
 	public Tile getLocation() {
 		final Client client = ctx.client();
-		final RelativePosition r = getRelativePosition();
-		if (client != null && r.x != 0 && r.z != 0) {
-			return new Tile(client.getOffsetX() + (r.x >> 7), client.getOffsetY() + (r.z >> 7), client.getFloor());
+		final int r = getRelativePosition();
+		final int rx = r >> 16, rz = r & 0xffff;
+		if (client != null && rx != 0 && rz != 0) {
+			return new Tile(client.getOffsetX() + (rx >> 7), client.getOffsetY() + (rz >> 7), client.getFloor());
 		}
 		return new Tile(-1, -1, -1);
 	}

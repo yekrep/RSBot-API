@@ -36,7 +36,7 @@ public abstract class Actor extends Interactive implements Locatable, Validatabl
 		return getSpeed() > 0;
 	}
 
-	public RelativePosition getRelativePosition() {
+	public int getRelativePosition() {
 		final org.powerbot.bot.client.Actor actor = getActor();
 		final int x, z;
 		if (actor != null) {
@@ -45,7 +45,7 @@ public abstract class Actor extends Interactive implements Locatable, Validatabl
 		} else {
 			x = z = 0;
 		}
-		return new RelativePosition(x, z);
+		return (x << 16) | z;
 	}
 
 	@Override

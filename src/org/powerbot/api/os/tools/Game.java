@@ -7,6 +7,8 @@ import org.powerbot.api.ClientContext;
 import org.powerbot.bot.client.Client;
 
 public class Game extends ClientAccessor {
+	public static final int INDEX_MAP_LOADED = 30;
+	public static final int INDEX_MAP_LOADING = 25;
 	private static final int[] ARRAY_SIN = new int[2048];
 	private static final int[] ARRAY_COS = new int[2048];
 
@@ -16,9 +18,6 @@ public class Game extends ClientAccessor {
 			ARRAY_COS[i] = (int) (65536d * Math.cos(i * 0.0030679615d));
 		}
 	}
-
-	public static final int INDEX_MAP_LOADED = 30;
-	public static final int INDEX_MAP_LOADING = 25;
 
 	public Game(final ClientContext ctx) {
 		super(ctx);
@@ -65,11 +64,11 @@ public class Game extends ClientAccessor {
 		if (client == null) {
 			return new Point(-1, -1);
 		}
-		final RelativePosition rel = ctx.players.local().getRelativePosition();
+		final int rel = ctx.players.local().getRelativePosition();
 		final int angle = client.getMinimapScale() + client.getMinimapAngle() & 0x7ff;
 		final int[] d = {tile.x, tile.y, ARRAY_SIN[angle], ARRAY_COS[angle], -1, -1};
-		d[0] = (d[0] - client.getOffsetX()) * 4 + 2 - rel.x / 32;
-		d[1] = (d[1] - client.getOffsetY()) * 4 + 2 - rel.z / 32;
+		d[0] = (d[0] - client.getOffsetX()) * 4 + 2 - (rel >> 16) / 32;
+		d[1] = (d[1] - client.getOffsetY()) * 4 + 2 - (rel & 0xffff) / 32;
 		final int offset = client.getMinimapOffset();
 		d[2] = d[2] << 8 / (offset + 256);
 		d[3] = d[3] << 8 / (offset + 256);
