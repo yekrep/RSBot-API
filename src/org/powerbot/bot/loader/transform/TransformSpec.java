@@ -9,6 +9,7 @@ import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.tree.ClassNode;
+import org.powerbot.bot.client.input.Canvas;
 import org.powerbot.bot.loader.transform.adapter.AddFieldAdapter;
 import org.powerbot.bot.loader.transform.adapter.AddGetterAdapter;
 import org.powerbot.bot.loader.transform.adapter.AddInterfaceAdapter;
@@ -78,7 +79,7 @@ public class TransformSpec {
 		name = scanner.readString();
 		version = scanner.readShort();
 
-		adapters.put("bp", new SetSuperAdapter(delegate("bp"), "org/powerbot/bot/client/input/Canvas"));
+		adapters.put("bp", new SetSuperAdapter(delegate("bp"), Canvas.class.getCanonicalName().replace('.', '/')));
 		read:
 		while (true) {
 			final String clazz;
