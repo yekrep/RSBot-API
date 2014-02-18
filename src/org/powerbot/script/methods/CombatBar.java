@@ -26,7 +26,6 @@ public class CombatBar extends IdQuery<Action> {
 	public static final int COMPONENT_BAR = 77;
 	public static final int COMPONENT_LOCK = 19, COMPONENT_TRASH = 20;
 	public static final int WIDGET_LAYOUT = 1477;
-	public static final int COMPONENT_BUTTON_TOGGLE = 77, COMPONENT_BUTTON_TOGGLE_IDX = 1;
 	public static final int SETTING_ITEM = 811, SETTING_ABILITY = 727;
 	public static final int COMPONENT_SLOT_ACTION = 97;
 	public static final int COMPONENT_SLOT_COOL_DOWN = 98;
@@ -165,8 +164,17 @@ public class CombatBar extends IdQuery<Action> {
 		if (isExpanded() == expanded) {
 			return true;
 		}
-		final Component c = ctx.widgets.get(WIDGET_LAYOUT, COMPONENT_BUTTON_TOGGLE).getChild(COMPONENT_BUTTON_TOGGLE_IDX);
-		if (c.isValid() && c.interact(expanded ? "Maximise" : "Minimise")) {
+		Component comp = null;
+		for (final Component c : ctx.widgets.get(WIDGET_LAYOUT)) {
+			if (c.getChildrenCount() != 2) {
+				continue;
+			}
+			if (c.getChild(1).getTextureId() == 18612) {
+				comp = c.getChild(1);
+				break;
+			}
+		}
+		if (comp != null && comp.interact(expanded ? "Maximise" : "Minimise")) {
 			for (int i = 0; i < 5 && isExpanded() != expanded; i++) {
 				sleep(200, 500);
 			}

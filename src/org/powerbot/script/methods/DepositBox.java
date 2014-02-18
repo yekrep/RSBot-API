@@ -31,7 +31,7 @@ public class DepositBox extends ItemQuery<Item> {
 	}
 
 
-	private Interactive getBank() {
+	private Interactive getBox() {
 		return ctx.objects.select().id(DEPOSIT_BOX_IDS).select(Interactive.areInViewport()).nearest().poll();
 	}
 
@@ -60,7 +60,7 @@ public class DepositBox extends ItemQuery<Item> {
 	 * @return <tt>true</tt> if a bank is in the viewport; otherwise <tt>false</tt>
 	 */
 	public boolean isInViewport() {
-		return getBank().isValid();
+		return getBox().isValid();
 	}
 
 	/**
@@ -80,7 +80,7 @@ public class DepositBox extends ItemQuery<Item> {
 		if (isOpen()) {
 			return true;
 		}
-		if (getBank().interact("Deposit")) {
+		if (getBox().interact("Deposit")) {
 			do {
 				Condition.wait(new Callable<Boolean>() {
 					@Override
