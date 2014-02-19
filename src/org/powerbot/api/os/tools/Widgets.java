@@ -10,6 +10,7 @@ public class Widgets extends ClientAccessor {
 
 	public Widgets(final ClientContext ctx) {
 		super(ctx);
+		sparseCache = new Widget[0];
 	}
 
 	public synchronized Widget get(final int index) {

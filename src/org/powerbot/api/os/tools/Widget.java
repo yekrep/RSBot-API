@@ -13,6 +13,7 @@ public class Widget extends ClientAccessor {
 	Widget(final ClientContext ctx, final int index) {
 		super(ctx);
 		this.index = index;
+		sparseCache = new Component[0];
 	}
 
 	public int getIndex() {

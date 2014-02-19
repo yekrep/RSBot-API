@@ -2,7 +2,16 @@ package org.powerbot.api;
 
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.powerbot.api.os.tools.*;
+import org.powerbot.api.os.tools.Game;
+import org.powerbot.api.os.tools.GroundItems;
+import org.powerbot.api.os.tools.Menu;
+import org.powerbot.api.os.tools.Mouse;
+import org.powerbot.api.os.tools.Movement;
+import org.powerbot.api.os.tools.Npcs;
+import org.powerbot.api.os.tools.Objects;
+import org.powerbot.api.os.tools.Players;
+import org.powerbot.api.os.tools.Varpbits;
+import org.powerbot.api.os.tools.Widgets;
 import org.powerbot.bot.Bot;
 import org.powerbot.bot.client.Client;
 
@@ -16,6 +25,7 @@ public class ClientContext {
 	public final Objects objects;
 	public final Players players;
 	public final Varpbits varpbits;
+	public final Widgets widgets;
 	private final AtomicReference<Client> client;
 	private final AtomicReference<Bot> bot;
 
@@ -32,6 +42,7 @@ public class ClientContext {
 		objects = new Objects(this);
 		players = new Players(this);
 		varpbits = new Varpbits(this);
+		widgets = new Widgets(this);
 	}
 
 	public ClientContext(final ClientContext ctx) {
@@ -47,6 +58,7 @@ public class ClientContext {
 		objects = ctx.objects;
 		players = ctx.players;
 		varpbits = ctx.varpbits;
+		widgets = ctx.widgets;
 	}
 
 	public static ClientContext newContext(final Bot bot) {
