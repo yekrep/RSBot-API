@@ -41,7 +41,7 @@ public class Scanner {
 	}
 
 	public String readString() {
-		return new String(readSegment());
+		return new String(readSegment()).replaceAll("org/powerbot/os","org/powerbot/bot");
 	}
 
 	public byte[] readSegment() {

@@ -79,7 +79,7 @@ public class TransformSpec {
 		name = scanner.readString();
 		version = scanner.readShort();
 
-		adapters.put("bp", new SetSuperAdapter(delegate("bp"), Canvas.class.getCanonicalName().replace('.', '/')));
+		adapters.put("bh", new SetSuperAdapter(delegate("bh"), Canvas.class.getCanonicalName().replace('.', '/')));
 		read:
 		while (true) {
 			final String clazz;
