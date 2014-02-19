@@ -65,11 +65,7 @@ public abstract class Actor extends Interactive implements Locatable, Validatabl
 			return new Point(-1, -1);
 		}
 		final ActorCuboid cuboid = new ActorCuboid(ctx, actor);
-		final Point p = cuboid.getNextPoint();
-		if (p.x != -1 && p.y != -1) {
-			return p;
-		}
-		return getScreenPoint();
+		return cuboid.getNextPoint();
 	}
 
 	@Override
@@ -79,11 +75,7 @@ public abstract class Actor extends Interactive implements Locatable, Validatabl
 			return new Point(-1, -1);
 		}
 		final ActorCuboid cuboid = new ActorCuboid(ctx, actor);
-		final Point p = cuboid.getCenterPoint();
-		if (p.x != -1 && p.y != -1) {
-			return p;
-		}
-		return getScreenPoint();
+		return cuboid.getCenterPoint();
 	}
 
 	@Override
@@ -94,14 +86,6 @@ public abstract class Actor extends Interactive implements Locatable, Validatabl
 		}
 		final ActorCuboid cuboid = new ActorCuboid(ctx, actor);
 		return cuboid.contains(point);
-	}
-
-	private Point getScreenPoint() {
-		final org.powerbot.bot.client.Actor actor = getActor();
-		if (actor == null) {
-			return new Point(-1, -1);
-		}
-		return ctx.game.worldToScreen(actor.getX(), actor.getZ(), actor.getHeight() / 2);
 	}
 
 	@Override
