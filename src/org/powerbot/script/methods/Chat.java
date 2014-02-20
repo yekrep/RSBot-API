@@ -69,8 +69,18 @@ public class Chat extends TextQuery<ChatOption> {
 	 * @return <tt>true</tt> if the chat was continued; otherwise <tt>false</tt>
 	 */
 	public boolean clickContinue() {
+		return clickContinue(false);
+	}
+
+	/**
+	 * Continues the chat.
+	 *
+	 * @param key <tt>true</tt> to press space; <tt>false</tt> to use the mouse.
+	 * @return <tt>true</tt> if the chat was continued; otherwise <tt>false</tt>
+	 */
+	public boolean clickContinue(final boolean key) {
 		final Component c = getContinue();
-		return c != null && c.click();
+		return c != null && (key ? ctx.keyboard.send(" ") : c.click());
 	}
 
 	private Component getContinue() {
