@@ -137,7 +137,7 @@ public class MouseHandler extends MethodProvider {
 			target.curr.y = loc.y;
 			if (target.dest == null) {
 				final Point p = target.targetable.getInteractPoint();
-				target.dest = new Vector3(p.x, p.y, 0);
+				target.dest = new Vector3(p.x, p.y, ctx.players.local().isInMotion() ? 192 : 0);
 			}
 			if (target.dest.x == -1 || target.dest.y == -1) {
 				target.failed = true;
