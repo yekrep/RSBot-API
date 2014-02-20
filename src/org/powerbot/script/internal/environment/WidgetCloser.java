@@ -69,7 +69,7 @@ public class WidgetCloser extends PollingScript implements InternalScript {
 	}
 
 	private boolean isValid() {
-		if (System.nanoTime() < time) {
+		if (System.nanoTime() < time || ctx.bank.isOpen()) {
 			return false;
 		}
 
