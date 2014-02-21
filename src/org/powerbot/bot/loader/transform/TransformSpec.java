@@ -46,16 +46,8 @@ public class TransformSpec {
 
 	private static final int MAGIC = 0xFADFAD;
 
-	public TransformSpec(final byte[] data) {
-		this(new ByteArrayInputStream(data));
-	}
-
 	public TransformSpec(final InputStream data) {
-		this();
 		scanner = new Scanner(data);
-	}
-
-	public TransformSpec() {
 		adapters = new HashMap<String, ClassVisitor>();
 		writers = new HashMap<String, ClassWriter>();
 		attributes = new HashMap<String, String>();
