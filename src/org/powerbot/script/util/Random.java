@@ -33,10 +33,8 @@ public class Random {
 	 * @return the random number between min and max (inclusive, exclusive)
 	 */
 	public static int nextInt(final int min, final int max) {
-		if (max < min) {
-			return max + random.nextInt(min - max);
-		}
-		return min + (max == min ? 0 : random.nextInt(max - min));
+		final int a = min < max ? min : max, b = max > min ? max : min;
+		return a + (b == a ? 0 : random.nextInt(b - a));
 	}
 
 	/**
@@ -47,10 +45,8 @@ public class Random {
 	 * @return the random number between min and max
 	 */
 	public static double nextDouble(final double min, final double max) {
-		if (max < min) {
-			return max + random.nextDouble() * (min - max);
-		}
-		return min + random.nextDouble() * (max - min);
+		final double a = min < max ? min : max, b = max > min ? max : min;
+		return a + random.nextDouble() * (b - a);
 	}
 
 	/**
@@ -96,6 +92,6 @@ public class Random {
 	 * @return a gaussian distributed number between the provided bounds
 	 */
 	public static int nextGaussian(final int min, final int max, final int mean, final double sd) {
-		return min + Math.abs(((int) (random.nextGaussian() * sd + mean)) % (max - min));
+		return min + Math.abs(((int) (nextGaussian() * sd + mean)) % (max - min));
 	}
 }
