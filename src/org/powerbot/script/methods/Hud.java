@@ -139,15 +139,19 @@ public class Hud extends MethodProvider {
 				return boundsCache;
 			}
 		}
-		final Rectangle[] arr = new Rectangle[Window.values().length + 3];
+
+		final Rectangle[] arr = new Rectangle[Window.values().length + 5];
 		int index = 0;
 		arr[index++] = ctx.widgets.get(WIDGET_MENU, WIDGET_MENU_BOUNDS).getViewportRect();//TODO: auto detect
 		arr[index++] = ctx.widgets.get(CombatBar.WIDGET, CombatBar.COMPONENT_BOUNDS).getViewportRect();
-		final Component c = ctx.widgets.get(1484, 1);//subscribe
-		if (c.isVisible()) {
-			final Rectangle r = c.getViewportRect();
-			r.grow(5, 5);
-			arr[index++] = r;
+		final int[][] indexArr = {{1484, 1}, {1189, 6}, {1184, 1}};
+		//subscribe, chat, chat
+		for (final int[] pair : indexArr) {
+			final Component c = ctx.widgets.get(pair[0], pair[1]);
+			if (!c.isVisible()) {
+				continue;
+			}
+			arr[index++] = c.getViewportRect();
 		}
 		for (final Window window : Window.values()) {
 			final Component sprite = getSprite(window);
