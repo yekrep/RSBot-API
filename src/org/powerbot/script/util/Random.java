@@ -6,8 +6,13 @@ public class Random {
 	private static final java.util.Random random;
 
 	static {
-		final SecureRandom r = new SecureRandom();
-		r.setSeed(r.generateSeed(20));
+		java.util.Random r;
+		try {
+			r = SecureRandom.getInstance("SHA1PRNG", "SUN");
+		} catch (final Exception ignored) {
+			r = new java.util.Random();
+		}
+		r.setSeed(r.nextLong());
 		random = r;
 	}
 
