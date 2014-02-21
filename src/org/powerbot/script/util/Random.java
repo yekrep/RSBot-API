@@ -1,9 +1,11 @@
 package org.powerbot.script.util;
 
 import java.security.SecureRandom;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class Random {
 	private static final java.util.Random random;
+	private static final AtomicLong seeded;
 
 	static {
 		java.util.Random r;
@@ -13,7 +15,15 @@ public class Random {
 			r = new java.util.Random();
 		}
 		r.setSeed(r.nextLong());
+		seeded = new AtomicLong(System.nanoTime());
 		random = r;
+	}
+
+	private static void reseed() {
+		if (System.nanoTime() - seeded.get() > 35 * 60 * 1e+9) {
+			seeded.set(System.nanoTime());
+			random.setSeed(random.nextLong());
+		}
 	}
 
 	/**
@@ -65,6 +75,7 @@ public class Random {
 	 * @return a gaussian distributed number
 	 */
 	public static double nextGaussian() {
+		reseed();
 		return random.nextGaussian();
 	}
 
