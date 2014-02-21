@@ -135,6 +135,7 @@ public class GeItem {
 
 	/**
 	 * Returns the spot (current) price for an item.
+	 * The results are cached and may be stale, but give a useful fast quote.
 	 *
 	 * @param id the item ID to query
 	 * @return the quote or {@code -1} if none was found
