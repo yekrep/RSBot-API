@@ -126,8 +126,8 @@ public class NRSLoader implements Runnable {
 		final MessageDigest md;
 		try {
 			md = MessageDigest.getInstance(hashAlgo);
-		} catch (final NoSuchAlgorithmException ignored) {
-			return null;
+		} catch (final NoSuchAlgorithmException e) {
+			throw new IOException(e);
 		}
 
 		md.update(StringUtils.getBytesUtf8(packHash));
@@ -147,9 +147,14 @@ public class NRSLoader implements Runnable {
 			} catch (final GeneralSecurityException e) {
 				throw new IOException(e);
 			}
-			return new TransformSpec(IOUtils.read(new CipherInputStream(HttpUtils.getInputStream(con), c)));
+			try {
+				return new TransformSpec(new CipherInputStream(HttpUtils.getInputStream(con), c));
+			} catch (final NullPointerException e) {
+				throw new IOException(e);
+			}
 		}
-		return null;
+
+		throw new IOException(new IllegalStateException());
 	}
 
 	public void upload(final String packHash) throws IOException, PendingException {
