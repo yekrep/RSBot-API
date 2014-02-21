@@ -112,7 +112,7 @@ public class CombatBar extends IdQuery<Action> {
 		if (index != -1) {
 			try {
 				return Integer.parseInt(text.substring(0, index));
-			} catch (NumberFormatException ignored) {
+			} catch (final NumberFormatException ignored) {
 			}
 		}
 		return -1;
@@ -130,7 +130,7 @@ public class CombatBar extends IdQuery<Action> {
 		if (index != -1) {
 			try {
 				return Integer.parseInt(text.substring(index + 1));
-			} catch (NumberFormatException ignored) {
+			} catch (final NumberFormatException ignored) {
 			}
 		}
 		return -1;

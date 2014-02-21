@@ -72,9 +72,9 @@ public abstract class Model extends MethodProvider {
 		final int plane = getPlane();
 		final int height = ctx.game.tileHeight(x, y, plane) + this.height;
 		final Point localPoint = ctx.game.worldToScreen(
-				x + (this.xPoints[this.faceA[index]] + this.xPoints[this.faceB[index]] + this.xPoints[this.faceC[index]]) / 3,
-				height + (this.yPoints[this.faceA[index]] + this.yPoints[this.faceB[index]] + this.yPoints[this.faceC[index]]) / 3,
-				y + (this.zPoints[this.faceA[index]] + this.zPoints[this.faceB[index]] + this.zPoints[this.faceC[index]]) / 3
+				x + (xPoints[faceA[index]] + xPoints[faceB[index]] + xPoints[faceC[index]]) / 3,
+				height + (yPoints[faceA[index]] + yPoints[faceB[index]] + yPoints[faceC[index]]) / 3,
+				y + (zPoints[faceA[index]] + zPoints[faceB[index]] + zPoints[faceC[index]]) / 3
 		);
 		return ctx.game.isPointInViewport(localPoint) ? localPoint : new Point(-1, -1);
 	}
