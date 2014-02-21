@@ -5,17 +5,17 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.lang.ref.WeakReference;
 
-import org.powerbot.client.AbstractModel;
-import org.powerbot.client.BaseInfo;
-import org.powerbot.client.Cache;
-import org.powerbot.client.Client;
-import org.powerbot.client.HashTable;
-import org.powerbot.client.RSGround;
-import org.powerbot.client.RSGroundInfo;
-import org.powerbot.client.RSInfo;
-import org.powerbot.client.RSItem;
-import org.powerbot.client.RSItemDefLoader;
-import org.powerbot.client.RSItemPile;
+import org.powerbot.bot.client.AbstractModel;
+import org.powerbot.bot.client.BaseInfo;
+import org.powerbot.bot.client.Cache;
+import org.powerbot.bot.client.Client;
+import org.powerbot.bot.client.HashTable;
+import org.powerbot.bot.client.RSGround;
+import org.powerbot.bot.client.RSGroundInfo;
+import org.powerbot.bot.client.RSInfo;
+import org.powerbot.bot.client.RSItem;
+import org.powerbot.bot.client.RSItemDefLoader;
+import org.powerbot.bot.client.RSItemPile;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.util.Random;
 

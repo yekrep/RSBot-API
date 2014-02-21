@@ -5,17 +5,17 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.lang.ref.WeakReference;
 
-import org.powerbot.client.AbstractModel;
-import org.powerbot.client.Cache;
-import org.powerbot.client.Client;
-import org.powerbot.client.HashTable;
-import org.powerbot.client.RSAnimable;
-import org.powerbot.client.RSInfo;
-import org.powerbot.client.RSInteractableData;
-import org.powerbot.client.RSInteractableLocation;
-import org.powerbot.client.RSObject;
-import org.powerbot.client.RSObjectDef;
-import org.powerbot.client.RSObjectDefLoader;
+import org.powerbot.bot.client.AbstractModel;
+import org.powerbot.bot.client.Cache;
+import org.powerbot.bot.client.Client;
+import org.powerbot.bot.client.HashTable;
+import org.powerbot.bot.client.RSAnimable;
+import org.powerbot.bot.client.RSInfo;
+import org.powerbot.bot.client.RSInteractableData;
+import org.powerbot.bot.client.RSInteractableLocation;
+import org.powerbot.bot.client.RSObject;
+import org.powerbot.bot.client.RSObjectDef;
+import org.powerbot.bot.client.RSObjectDefLoader;
 import org.powerbot.script.methods.MethodContext;
 
 public class GameObject extends Interactive implements Renderable, Locatable, Nameable, Drawable, Identifiable {

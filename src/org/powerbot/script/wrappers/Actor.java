@@ -2,20 +2,20 @@ package org.powerbot.script.wrappers;
 
 import java.awt.Point;
 
-import org.powerbot.client.AbstractModel;
-import org.powerbot.client.Client;
-import org.powerbot.client.CombatStatus;
-import org.powerbot.client.CombatStatusData;
-import org.powerbot.client.LinkedListNode;
-import org.powerbot.client.RSAnimator;
-import org.powerbot.client.RSCharacter;
-import org.powerbot.client.RSInteractableData;
-import org.powerbot.client.RSInteractableLocation;
-import org.powerbot.client.RSMessageData;
-import org.powerbot.client.RSNPC;
-import org.powerbot.client.RSNPCNode;
-import org.powerbot.client.RSPlayer;
-import org.powerbot.client.Sequence;
+import org.powerbot.bot.client.AbstractModel;
+import org.powerbot.bot.client.Client;
+import org.powerbot.bot.client.CombatStatus;
+import org.powerbot.bot.client.CombatStatusData;
+import org.powerbot.bot.client.LinkedListNode;
+import org.powerbot.bot.client.RSAnimator;
+import org.powerbot.bot.client.RSCharacter;
+import org.powerbot.bot.client.RSInteractableData;
+import org.powerbot.bot.client.RSInteractableLocation;
+import org.powerbot.bot.client.RSMessageData;
+import org.powerbot.bot.client.RSNPC;
+import org.powerbot.bot.client.RSNPCNode;
+import org.powerbot.bot.client.RSPlayer;
+import org.powerbot.bot.client.Sequence;
 import org.powerbot.script.lang.Filter;
 import org.powerbot.script.methods.MethodContext;
 
@@ -319,7 +319,7 @@ public abstract class Actor extends Interactive implements Renderable, Nameable,
 		if (accessor == null) {
 			return null;
 		}
-		final org.powerbot.client.LinkedList barList = accessor.getCombatStatusList();
+		final org.powerbot.bot.client.LinkedList barList = accessor.getCombatStatusList();
 		if (barList == null) {
 			return null;
 		}
@@ -351,7 +351,7 @@ public abstract class Actor extends Interactive implements Renderable, Nameable,
 				continue;
 			}
 			final CombatStatus status = (CombatStatus) nodes[i];
-			final org.powerbot.client.LinkedList statuses = status.getData();
+			final org.powerbot.bot.client.LinkedList statuses = status.getData();
 			if (statuses == null) {
 				data[i] = null;
 				continue;

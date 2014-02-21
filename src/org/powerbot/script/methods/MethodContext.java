@@ -4,8 +4,8 @@ import java.util.Properties;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.powerbot.bot.Bot;
-import org.powerbot.client.Client;
-import org.powerbot.client.Constants;
+import org.powerbot.bot.client.Client;
+import org.powerbot.bot.client.Constants;
 import org.powerbot.script.internal.InputHandler;
 import org.powerbot.script.internal.methods.Items;
 import org.powerbot.script.internal.methods.Map;

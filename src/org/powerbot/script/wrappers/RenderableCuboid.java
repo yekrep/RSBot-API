@@ -6,10 +6,10 @@ import java.awt.Rectangle;
 import java.awt.geom.Area;
 import java.lang.ref.WeakReference;
 
-import org.powerbot.client.RSCharacter;
-import org.powerbot.client.RSInteractable;
-import org.powerbot.client.RSInteractableData;
-import org.powerbot.client.RSInteractableLocation;
+import org.powerbot.bot.client.RSCharacter;
+import org.powerbot.bot.client.RSInteractable;
+import org.powerbot.bot.client.RSInteractableData;
+import org.powerbot.bot.client.RSInteractableLocation;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.util.Calculations;
 

@@ -1,7 +1,7 @@
 package org.powerbot.script.internal.wrappers;
 
-import org.powerbot.client.Node;
-import org.powerbot.client.NodeDeque;
+import org.powerbot.bot.client.Node;
+import org.powerbot.bot.client.NodeDeque;
 
 public class Deque<N> {
 	private final NodeDeque nl;

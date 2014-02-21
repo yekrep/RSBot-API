@@ -4,11 +4,11 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.lang.ref.WeakReference;
 
-import org.powerbot.client.Client;
-import org.powerbot.client.OverheadSprites;
-import org.powerbot.client.RSNPC;
-import org.powerbot.client.RSNPCDef;
-import org.powerbot.client.RSNPCNode;
+import org.powerbot.bot.client.Client;
+import org.powerbot.bot.client.OverheadSprites;
+import org.powerbot.bot.client.RSNPC;
+import org.powerbot.bot.client.RSNPCDef;
+import org.powerbot.bot.client.RSNPCNode;
 import org.powerbot.script.methods.MethodContext;
 
 public class Npc extends Actor implements Identifiable {
@@ -110,7 +110,7 @@ public class Npc extends Actor implements Identifiable {
 		final RSNPC npc = getAccessor();
 		if (npc != null) {
 			final int[] indices = client.getRSNPCIndexArray();
-			final org.powerbot.client.HashTable npcTable = client.getRSNPCNC();
+			final org.powerbot.bot.client.HashTable npcTable = client.getRSNPCNC();
 			for (final int index : indices) {
 				Object node = ctx.game.lookup(npcTable, index);
 				if (node == null) {

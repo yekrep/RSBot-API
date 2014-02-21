@@ -6,8 +6,8 @@ import java.awt.Polygon;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import org.powerbot.client.AbstractModel;
-import org.powerbot.client.ModelCapture;
+import org.powerbot.bot.client.AbstractModel;
+import org.powerbot.bot.client.ModelCapture;
 import org.powerbot.script.methods.Game;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.methods.MethodProvider;

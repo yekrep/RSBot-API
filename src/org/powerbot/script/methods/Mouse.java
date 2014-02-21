@@ -3,7 +3,7 @@ package org.powerbot.script.methods;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 
-import org.powerbot.client.Client;
+import org.powerbot.bot.client.Client;
 import org.powerbot.script.internal.MouseHandler;
 import org.powerbot.script.internal.MouseTarget;
 import org.powerbot.script.lang.Filter;
@@ -25,7 +25,7 @@ public class Mouse extends MethodProvider {
 	 */
 	public Point getLocation() {
 		final Client client = ctx.getClient();
-		final org.powerbot.client.input.Mouse mouse;
+		final org.powerbot.bot.client.input.Mouse mouse;
 		if (client == null || (mouse = client.getMouse()) == null) {
 			return new Point(-1, -1);
 		}
@@ -39,7 +39,7 @@ public class Mouse extends MethodProvider {
 	 */
 	public Point getPressLocation() {
 		final Client client = ctx.getClient();
-		final org.powerbot.client.input.Mouse mouse;
+		final org.powerbot.bot.client.input.Mouse mouse;
 		if (client == null || (mouse = client.getMouse()) == null) {
 			return new Point(-1, -1);
 		}
@@ -53,7 +53,7 @@ public class Mouse extends MethodProvider {
 	 */
 	public long getPressTime() {
 		final Client client = ctx.getClient();
-		final org.powerbot.client.input.Mouse mouse;
+		final org.powerbot.bot.client.input.Mouse mouse;
 		if (client == null || (mouse = client.getMouse()) == null) {
 			return -1;
 		}
@@ -67,7 +67,7 @@ public class Mouse extends MethodProvider {
 	 */
 	public boolean isPressed() {
 		final Client client = ctx.getClient();
-		final org.powerbot.client.input.Mouse mouse;
+		final org.powerbot.bot.client.input.Mouse mouse;
 		return !(client == null || (mouse = client.getMouse()) == null) && mouse.isPressed();
 	}
 
@@ -78,7 +78,7 @@ public class Mouse extends MethodProvider {
 	 */
 	public boolean isPresent() {
 		final Client client = ctx.getClient();
-		final org.powerbot.client.input.Mouse mouse;
+		final org.powerbot.bot.client.input.Mouse mouse;
 		return !(client == null || (mouse = client.getMouse()) == null) && mouse.isPresent();
 	}
 
@@ -108,7 +108,7 @@ public class Mouse extends MethodProvider {
 
 	public boolean click(final int button) {
 		final Client client = ctx.getClient();
-		final org.powerbot.client.input.Mouse mouse;
+		final org.powerbot.bot.client.input.Mouse mouse;
 		if (client == null || (mouse = client.getMouse()) == null) {
 			return false;
 		}

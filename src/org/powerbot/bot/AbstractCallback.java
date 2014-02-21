@@ -1,10 +1,10 @@
 package org.powerbot.bot;
 
 import org.powerbot.bot.event.EventDispatcher;
-import org.powerbot.client.Callback;
-import org.powerbot.client.RSInteractableLocation;
-import org.powerbot.client.RSObjectDef;
-import org.powerbot.client.Render;
+import org.powerbot.bot.client.Callback;
+import org.powerbot.bot.client.RSInteractableLocation;
+import org.powerbot.bot.client.RSObjectDef;
+import org.powerbot.bot.client.Render;
 import org.powerbot.event.MessageEvent;
 import org.powerbot.script.methods.Camera;
 import org.powerbot.script.methods.MethodContext;

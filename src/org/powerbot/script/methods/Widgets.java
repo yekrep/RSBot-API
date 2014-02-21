@@ -3,8 +3,8 @@ package org.powerbot.script.methods;
 import java.awt.Point;
 import java.util.Arrays;
 
-import org.powerbot.client.Client;
-import org.powerbot.client.RSInterfaceBase;
+import org.powerbot.bot.client.Client;
+import org.powerbot.bot.client.RSInterfaceBase;
 import org.powerbot.script.util.Random;
 import org.powerbot.script.wrappers.Component;
 import org.powerbot.script.wrappers.Widget;

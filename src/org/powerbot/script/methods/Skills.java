@@ -1,8 +1,8 @@
 package org.powerbot.script.methods;
 
-import org.powerbot.client.Client;
-import org.powerbot.client.PlayerMetaInfo;
-import org.powerbot.client.Skill;
+import org.powerbot.bot.client.Client;
+import org.powerbot.bot.client.PlayerMetaInfo;
+import org.powerbot.bot.client.Skill;
 
 public class Skills extends MethodProvider {
 	public static final int[] XP_TABLE = {0, 0, 83, 174, 276, 388, 512, 650, 801, 969, 1154, 1358, 1584, 1833, 2107,

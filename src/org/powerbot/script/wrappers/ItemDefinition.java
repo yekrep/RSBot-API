@@ -2,11 +2,11 @@ package org.powerbot.script.wrappers;
 
 import java.lang.ref.WeakReference;
 
-import org.powerbot.client.Cache;
-import org.powerbot.client.Client;
-import org.powerbot.client.HashTable;
-import org.powerbot.client.RSItemDef;
-import org.powerbot.client.RSItemDefLoader;
+import org.powerbot.bot.client.Cache;
+import org.powerbot.bot.client.Client;
+import org.powerbot.bot.client.HashTable;
+import org.powerbot.bot.client.RSItemDef;
+import org.powerbot.bot.client.RSItemDefLoader;
 import org.powerbot.script.methods.MethodContext;
 
 class ItemDefinition {

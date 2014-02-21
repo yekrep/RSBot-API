@@ -5,8 +5,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.powerbot.client.Client;
-import org.powerbot.client.RSPlayer;
+import org.powerbot.bot.client.Client;
+import org.powerbot.bot.client.RSPlayer;
 import org.powerbot.script.lang.PlayerQuery;
 import org.powerbot.script.wrappers.Player;
 

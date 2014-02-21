@@ -7,11 +7,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.Callable;
 
-import org.powerbot.client.Client;
-import org.powerbot.client.MenuGroupNode;
-import org.powerbot.client.MenuItemNode;
-import org.powerbot.client.NodeDeque;
-import org.powerbot.client.NodeSubQueue;
+import org.powerbot.bot.client.Client;
+import org.powerbot.bot.client.MenuGroupNode;
+import org.powerbot.bot.client.MenuItemNode;
+import org.powerbot.bot.client.NodeDeque;
+import org.powerbot.bot.client.NodeSubQueue;
 import org.powerbot.script.internal.wrappers.Deque;
 import org.powerbot.script.internal.wrappers.Queue;
 import org.powerbot.script.lang.Filter;

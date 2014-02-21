@@ -3,11 +3,11 @@ package org.powerbot.script.methods;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.powerbot.client.Client;
-import org.powerbot.client.HashTable;
-import org.powerbot.client.NodeDeque;
-import org.powerbot.client.NodeListCache;
-import org.powerbot.client.RSItem;
+import org.powerbot.bot.client.Client;
+import org.powerbot.bot.client.HashTable;
+import org.powerbot.bot.client.NodeDeque;
+import org.powerbot.bot.client.NodeListCache;
+import org.powerbot.bot.client.RSItem;
 import org.powerbot.script.internal.wrappers.Deque;
 import org.powerbot.script.lang.GroundItemQuery;
 import org.powerbot.script.wrappers.GroundItem;

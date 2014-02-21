@@ -8,8 +8,8 @@ import java.awt.event.MouseWheelEvent;
 import java.util.concurrent.TimeUnit;
 
 import org.powerbot.bot.SelectiveEventQueue;
-import org.powerbot.client.Client;
-import org.powerbot.client.input.Mouse;
+import org.powerbot.bot.client.Client;
+import org.powerbot.bot.client.input.Mouse;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.methods.MethodProvider;
 import org.powerbot.util.math.Vector3;

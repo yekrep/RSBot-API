@@ -7,12 +7,12 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.powerbot.client.Client;
-import org.powerbot.client.RSAnimableNode;
-import org.powerbot.client.RSGround;
-import org.powerbot.client.RSGroundInfo;
-import org.powerbot.client.RSInfo;
-import org.powerbot.client.RSObject;
+import org.powerbot.bot.client.Client;
+import org.powerbot.bot.client.RSAnimableNode;
+import org.powerbot.bot.client.RSGround;
+import org.powerbot.bot.client.RSGroundInfo;
+import org.powerbot.bot.client.RSInfo;
+import org.powerbot.bot.client.RSObject;
 import org.powerbot.script.lang.BasicNamedQuery;
 import org.powerbot.script.wrappers.GameObject;
 

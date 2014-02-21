@@ -5,9 +5,9 @@ import java.awt.Graphics;
 import java.lang.ref.WeakReference;
 import java.util.Arrays;
 
-import org.powerbot.client.Client;
-import org.powerbot.client.RSPlayer;
-import org.powerbot.client.RSPlayerComposite;
+import org.powerbot.bot.client.Client;
+import org.powerbot.bot.client.RSPlayer;
+import org.powerbot.bot.client.RSPlayerComposite;
 import org.powerbot.script.methods.MethodContext;
 
 public class Player extends Actor {

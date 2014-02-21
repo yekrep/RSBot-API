@@ -1,7 +1,7 @@
 package org.powerbot.script.methods;
 
-import org.powerbot.client.Client;
-import org.powerbot.client.PlayerMetaInfo;
+import org.powerbot.bot.client.Client;
+import org.powerbot.bot.client.PlayerMetaInfo;
 
 /**
  * {@link Settings} is a utility which provides raw access to the game's varpbits.
@@ -24,7 +24,7 @@ public class Settings extends MethodProvider {
 		if (client == null || (info = client.getPlayerMetaInfo()) == null) {
 			return new int[0];
 		}
-		final org.powerbot.client.Settings settings;
+		final org.powerbot.bot.client.Settings settings;
 		final int[] data;
 		if ((settings = info.getSettings()) == null || (data = settings.getData()) == null) {
 			return new int[0];

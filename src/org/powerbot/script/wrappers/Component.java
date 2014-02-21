@@ -5,9 +5,9 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
 
-import org.powerbot.client.Client;
-import org.powerbot.client.RSInterface;
-import org.powerbot.client.RSInterfaceNode;
+import org.powerbot.bot.client.Client;
+import org.powerbot.bot.client.RSInterface;
+import org.powerbot.bot.client.RSInterfaceNode;
 import org.powerbot.script.internal.wrappers.HashTable;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.util.Calculations;

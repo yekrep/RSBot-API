@@ -3,7 +3,7 @@ package org.powerbot.script.methods;
 import java.awt.Point;
 import java.awt.Rectangle;
 
-import org.powerbot.client.Client;
+import org.powerbot.bot.client.Client;
 import org.powerbot.script.wrappers.CollisionMap;
 import org.powerbot.script.wrappers.Component;
 import org.powerbot.script.wrappers.LocalPath;

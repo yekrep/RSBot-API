@@ -2,7 +2,7 @@ package org.powerbot.script.wrappers;
 
 import java.lang.ref.WeakReference;
 
-import org.powerbot.client.RSObjectDef;
+import org.powerbot.bot.client.RSObjectDef;
 
 class ObjectDefinition {
 	private final WeakReference<RSObjectDef> definition;

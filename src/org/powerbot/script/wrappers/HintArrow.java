@@ -3,11 +3,11 @@ package org.powerbot.script.wrappers;
 import java.lang.ref.WeakReference;
 import java.util.Arrays;
 
-import org.powerbot.client.Client;
-import org.powerbot.client.RSHintArrow;
-import org.powerbot.client.RSNPC;
-import org.powerbot.client.RSNPCNode;
-import org.powerbot.client.RSPlayer;
+import org.powerbot.bot.client.Client;
+import org.powerbot.bot.client.RSHintArrow;
+import org.powerbot.bot.client.RSNPC;
+import org.powerbot.bot.client.RSNPCNode;
+import org.powerbot.bot.client.RSPlayer;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.methods.MethodProvider;
 

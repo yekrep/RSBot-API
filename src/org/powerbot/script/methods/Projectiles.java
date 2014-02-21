@@ -3,11 +3,11 @@ package org.powerbot.script.methods;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.powerbot.client.Client;
-import org.powerbot.client.Node;
-import org.powerbot.client.NodeDeque;
-import org.powerbot.client.RSProjectile;
-import org.powerbot.client.RSProjectileNode;
+import org.powerbot.bot.client.Client;
+import org.powerbot.bot.client.Node;
+import org.powerbot.bot.client.NodeDeque;
+import org.powerbot.bot.client.RSProjectile;
+import org.powerbot.bot.client.RSProjectileNode;
 import org.powerbot.script.internal.wrappers.Deque;
 import org.powerbot.script.lang.IdQuery;
 import org.powerbot.script.wrappers.Projectile;

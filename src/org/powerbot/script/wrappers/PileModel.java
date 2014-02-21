@@ -2,11 +2,11 @@ package org.powerbot.script.wrappers;
 
 import java.lang.ref.WeakReference;
 
-import org.powerbot.client.AbstractModel;
-import org.powerbot.client.RSInteractable;
-import org.powerbot.client.RSInteractableData;
-import org.powerbot.client.RSInteractableLocation;
-import org.powerbot.client.RSItemPile;
+import org.powerbot.bot.client.AbstractModel;
+import org.powerbot.bot.client.RSInteractable;
+import org.powerbot.bot.client.RSInteractableData;
+import org.powerbot.bot.client.RSInteractableLocation;
+import org.powerbot.bot.client.RSItemPile;
 import org.powerbot.script.methods.MethodContext;
 
 public class PileModel extends Model {

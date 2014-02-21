@@ -16,7 +16,7 @@
 			<method access="protected+" parameters="keep" />
 		</class>
 		<class template="class org.powerbot.bot.Bot" />
-		<class template="class org.powerbot.client.*">
+		<class template="class org.powerbot.bot.client.*">
 			<field access="protected+" />
 			<method access="protected+" />
 		</class>

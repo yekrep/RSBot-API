@@ -18,7 +18,7 @@ import javax.swing.JDialog;
 
 import org.powerbot.Configuration;
 import org.powerbot.bot.Bot;
-import org.powerbot.client.Client;
+import org.powerbot.bot.client.Client;
 import org.powerbot.bot.event.EventDispatcher;
 import org.powerbot.bot.event.PaintEvent;
 import org.powerbot.bot.event.TextPaintEvent;

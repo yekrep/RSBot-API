@@ -7,8 +7,8 @@ import java.awt.Point;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
 
-import org.powerbot.client.RSAnimable;
-import org.powerbot.client.RSObject;
+import org.powerbot.bot.client.RSAnimable;
+import org.powerbot.bot.client.RSObject;
 import org.powerbot.event.PaintListener;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.wrappers.GameObject;

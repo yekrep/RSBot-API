@@ -2,9 +2,9 @@ package org.powerbot.script.wrappers;
 
 import java.lang.ref.WeakReference;
 
-import org.powerbot.client.RSInteractableData;
-import org.powerbot.client.RSInteractableLocation;
-import org.powerbot.client.RSProjectile;
+import org.powerbot.bot.client.RSInteractableData;
+import org.powerbot.bot.client.RSInteractableLocation;
+import org.powerbot.bot.client.RSProjectile;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.methods.MethodProvider;
 

@@ -7,8 +7,8 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.geom.Line2D;
 
-import org.powerbot.client.Client;
-import org.powerbot.client.input.Mouse;
+import org.powerbot.bot.client.Client;
+import org.powerbot.bot.client.input.Mouse;
 import org.powerbot.event.PaintListener;
 import org.powerbot.script.methods.MethodContext;
 

@@ -3,10 +3,10 @@ package org.powerbot.script.methods;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.powerbot.client.Client;
-import org.powerbot.client.HashTable;
-import org.powerbot.client.RSNPC;
-import org.powerbot.client.RSNPCNode;
+import org.powerbot.bot.client.Client;
+import org.powerbot.bot.client.HashTable;
+import org.powerbot.bot.client.RSNPC;
+import org.powerbot.bot.client.RSNPCNode;
 import org.powerbot.script.lang.BasicNamedQuery;
 import org.powerbot.script.wrappers.Npc;
 

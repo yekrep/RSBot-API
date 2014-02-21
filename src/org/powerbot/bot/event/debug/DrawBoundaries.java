@@ -4,8 +4,8 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 
-import org.powerbot.client.Client;
-import org.powerbot.client.Constants;
+import org.powerbot.bot.client.Client;
+import org.powerbot.bot.client.Constants;
 import org.powerbot.event.PaintListener;
 import org.powerbot.script.methods.Game;
 import org.powerbot.script.methods.MethodContext;

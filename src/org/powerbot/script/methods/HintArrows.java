@@ -3,8 +3,8 @@ package org.powerbot.script.methods;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.powerbot.client.Client;
-import org.powerbot.client.RSHintArrow;
+import org.powerbot.bot.client.Client;
+import org.powerbot.bot.client.RSHintArrow;
 import org.powerbot.script.lang.HintArrowQuery;
 import org.powerbot.script.wrappers.HintArrow;
 
