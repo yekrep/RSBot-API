@@ -8,8 +8,8 @@
 		</class>
 		<class template="class org.powerbot.script.internal.*" stop="true" />
 		<class template="class org.powerbot.bot.loader.*">
-			<field access="protected+" />
-			<method access="protected+" parameters="keep" />
+			<field access="public" />
+			<method access="public" />
 		</class>
 		<class template="class org.powerbot.script.*">
 			<field access="protected+" />
