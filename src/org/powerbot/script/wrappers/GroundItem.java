@@ -32,6 +32,21 @@ public class GroundItem extends Interactive implements Renderable, Identifiable,
 	}
 
 	@Override
+	public void setBounds(final int x1, final int x2, final int y1, final int y2, final int z1, final int z2) {
+		boundingModel.set(new BoundingModel(ctx, x1, x2, y1, y2, z1, z2) {
+			@Override
+			public int getX() {
+				return tile.getX() * 512 + 256;
+			}
+
+			@Override
+			public int getZ() {
+				return tile.getY() * 512 + 256;
+			}
+		});
+	}
+
+	@Override
 	public Model getModel() {
 		return getModel(-1);
 	}
@@ -147,6 +162,10 @@ public class GroundItem extends Interactive implements Renderable, Identifiable,
 				return point;
 			}
 		}
+		final BoundingModel model2 = boundingModel.get();
+		if (model2 != null) {
+			return model2.getNextPoint();
+		}
 		return tile.getMatrix(ctx).getInteractPoint();
 	}
 
@@ -155,6 +174,10 @@ public class GroundItem extends Interactive implements Renderable, Identifiable,
 		final Model model = getModel(getId());
 		if (model != null) {
 			return model.getNextPoint();
+		}
+		final BoundingModel model2 = boundingModel.get();
+		if (model2 != null) {
+			return model2.getNextPoint();
 		}
 		return tile.getMatrix(ctx).getNextPoint();
 	}
@@ -165,11 +188,23 @@ public class GroundItem extends Interactive implements Renderable, Identifiable,
 		if (model != null) {
 			return model.getCenterPoint();
 		}
+		final BoundingModel model2 = boundingModel.get();
+		if (model2 != null) {
+			return model2.getCenterPoint();
+		}
 		return tile.getMatrix(ctx).getCenterPoint();
 	}
 
 	@Override
 	public boolean contains(final Point point) {
+		final Model model = getModel(getId());
+		if (model != null) {
+			return model.contains(point);
+		}
+		final BoundingModel model2 = boundingModel.get();
+		if (model2 != null) {
+			return model2.contains(point);
+		}
 		return tile.getMatrix(ctx).contains(point);
 	}
 

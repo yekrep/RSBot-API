@@ -2,6 +2,7 @@ package org.powerbot.script.wrappers;
 
 import java.awt.Point;
 import java.util.concurrent.Callable;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.powerbot.script.lang.ChainingIterator;
 import org.powerbot.script.lang.Filter;
@@ -11,8 +12,11 @@ import org.powerbot.script.methods.MethodProvider;
 import org.powerbot.script.util.Condition;
 
 public abstract class Interactive extends MethodProvider implements Targetable, Validatable {
+	protected final AtomicReference<BoundingModel> boundingModel;
+
 	public Interactive(final MethodContext ctx) {
 		super(ctx);
+		this.boundingModel = new AtomicReference<BoundingModel>(null);
 	}
 
 	public boolean isInViewport() {
@@ -111,6 +115,8 @@ public abstract class Interactive extends MethodProvider implements Targetable, 
 		ctx.menu.close();
 		return false;
 	}
+
+	public abstract void setBounds(final int x1, final int x2, final int y1, final int y2, final int z1, final int z2);
 
 	@Override
 	public boolean isValid() {

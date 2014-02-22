@@ -19,6 +19,21 @@ public final class TileMatrix extends Interactive implements Locatable, Drawable
 		this.tile = tile;
 	}
 
+	@Override
+	public void setBounds(final int x1, final int x2, final int y1, final int y2, final int z1, final int z2) {
+		boundingModel.set(new BoundingModel(ctx, x1, x2, y1, y2, z1, z2) {
+			@Override
+			public int getX() {
+				return tile.getX() * 512 + 256;
+			}
+
+			@Override
+			public int getZ() {
+				return tile.getY() * 512 + 256;
+			}
+		});
+	}
+
 	public Point getPoint(final int height) {
 		return getPoint(0.5d, 0.5d, height);
 	}
@@ -60,6 +75,10 @@ public final class TileMatrix extends Interactive implements Locatable, Drawable
 
 	@Override
 	public boolean isInViewport() {
+		final BoundingModel model2 = boundingModel.get();
+		if (model2 != null) {
+			return ctx.game.isPointInViewport(getInteractPoint());
+		}
 		return isPolygonInViewport(getBounds());
 	}
 
@@ -74,6 +93,10 @@ public final class TileMatrix extends Interactive implements Locatable, Drawable
 
 	@Override
 	public Point getInteractPoint() {
+		final BoundingModel model2 = boundingModel.get();
+		if (model2 != null) {
+			return model2.getNextPoint();
+		}
 		final int x = Random.nextGaussian(0, 100, 5);
 		final int y = Random.nextGaussian(0, 100, 5);
 		return getPoint(x / 100.0D, y / 100.0D, 0);
@@ -81,16 +104,28 @@ public final class TileMatrix extends Interactive implements Locatable, Drawable
 
 	@Override
 	public Point getNextPoint() {
+		final BoundingModel model2 = boundingModel.get();
+		if (model2 != null) {
+			return model2.getNextPoint();
+		}
 		return getPoint(Random.nextDouble(0.0D, 1.0D), Random.nextDouble(0.0D, 1.0D), 0);
 	}
 
 	@Override
 	public Point getCenterPoint() {
+		final BoundingModel model2 = boundingModel.get();
+		if (model2 != null) {
+			return model2.getCenterPoint();
+		}
 		return getPoint(0);
 	}
 
 	@Override
 	public boolean contains(final Point point) {
+		final BoundingModel model2 = boundingModel.get();
+		if (model2 != null) {
+			return model2.contains(point);
+		}
 		final Polygon p = getBounds();
 		return isPolygonInViewport(p) && p.contains(point);
 	}

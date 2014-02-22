@@ -22,6 +22,10 @@ public class Item extends Interactive implements Displayable, Identifiable, Name
 	}
 
 	@Override
+	public void setBounds(final int x1, final int x2, final int y1, final int y2, final int z1, final int z2) {
+	}
+
+	@Override
 	public int getId() {
 		return this.id;
 	}

@@ -29,6 +29,23 @@ public abstract class Actor extends Interactive implements Renderable, Nameable,
 	protected abstract RSCharacter getAccessor();
 
 	@Override
+	public void setBounds(final int x1, final int x2, final int y1, final int y2, final int z1, final int z2) {
+		boundingModel.set(new BoundingModel(ctx, x1, x2, y1, y2, z1, z2) {
+			@Override
+			public int getX() {
+				final RelativeLocation r = getRelative();
+				return (int) r.getX();
+			}
+
+			@Override
+			public int getZ() {
+				final RelativeLocation r = getRelative();
+				return (int) r.getY();
+			}
+		});
+	}
+
+	@Override
 	public Model getModel() {
 		final RSCharacter character = getAccessor();
 		if (character != null && ctx.game.toolkit.gameMode == 0) {
@@ -255,7 +272,11 @@ public abstract class Actor extends Interactive implements Renderable, Nameable,
 				return point;
 			}
 		}
-		final RenderableCuboid cuboid = new RenderableCuboid(ctx, character);
+		final BoundingModel model2 = boundingModel.get();
+		if (model2 != null) {
+			return model2.getNextPoint();
+		}
+		final TileCuboid cuboid = new TileCuboid(ctx, character);
 		return cuboid.getInteractPoint();
 	}
 
@@ -270,7 +291,11 @@ public abstract class Actor extends Interactive implements Renderable, Nameable,
 		if (model != null) {
 			return model.getNextPoint();
 		}
-		final RenderableCuboid cuboid = new RenderableCuboid(ctx, character);
+		final BoundingModel model2 = boundingModel.get();
+		if (model2 != null) {
+			return model2.getNextPoint();
+		}
+		final TileCuboid cuboid = new TileCuboid(ctx, character);
 		return cuboid.getNextPoint();
 	}
 
@@ -285,7 +310,11 @@ public abstract class Actor extends Interactive implements Renderable, Nameable,
 		if (model != null) {
 			return model.getCenterPoint();
 		}
-		final RenderableCuboid cuboid = new RenderableCuboid(ctx, character);
+		final BoundingModel model2 = boundingModel.get();
+		if (model2 != null) {
+			return model2.getCenterPoint();
+		}
+		final TileCuboid cuboid = new TileCuboid(ctx, character);
 		return cuboid.getCenterPoint();
 	}
 
@@ -300,7 +329,11 @@ public abstract class Actor extends Interactive implements Renderable, Nameable,
 		if (model != null) {
 			return model.contains(point);
 		}
-		final RenderableCuboid cuboid = new RenderableCuboid(ctx, character);
+		final BoundingModel model2 = boundingModel.get();
+		if (model2 != null) {
+			return model2.contains(point);
+		}
+		final TileCuboid cuboid = new TileCuboid(ctx, character);
 		return cuboid.contains(point);
 	}
 

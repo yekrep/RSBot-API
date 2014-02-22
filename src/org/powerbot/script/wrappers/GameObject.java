@@ -31,6 +31,23 @@ public class GameObject extends Interactive implements Renderable, Locatable, Na
 	}
 
 	@Override
+	public void setBounds(final int x1, final int x2, final int y1, final int y2, final int z1, final int z2) {
+		boundingModel.set(new BoundingModel(ctx, x1, x2, y1, y2, z1, z2) {
+			@Override
+			public int getX() {
+				final RelativeLocation r = getRelative();
+				return (int) r.getX();
+			}
+
+			@Override
+			public int getZ() {
+				final RelativeLocation r = getRelative();
+				return (int) r.getY();
+			}
+		});
+	}
+
+	@Override
 	public Model getModel() {
 		final RSObject object = this.object.get();
 		if (object != null && ctx.game.toolkit.gameMode == 0) {
@@ -139,6 +156,10 @@ public class GameObject extends Interactive implements Renderable, Locatable, Na
 				return point;
 			}
 		}
+		final BoundingModel model2 = boundingModel.get();
+		if (model2 != null) {
+			return model2.getNextPoint();
+		}
 		return isInViewport() ? getLocation().getMatrix(ctx).getInteractPoint() : new Point(-1, -1);
 	}
 
@@ -147,6 +168,10 @@ public class GameObject extends Interactive implements Renderable, Locatable, Na
 		final Model model = getModel();
 		if (model != null) {
 			return model.getNextPoint();
+		}
+		final BoundingModel model2 = boundingModel.get();
+		if (model2 != null) {
+			return model2.getNextPoint();
 		}
 		return isInViewport() ? getLocation().getMatrix(ctx).getNextPoint() : new Point(-1, -1);
 	}
@@ -157,6 +182,10 @@ public class GameObject extends Interactive implements Renderable, Locatable, Na
 		if (model != null) {
 			return model.getCenterPoint();
 		}
+		final BoundingModel model2 = boundingModel.get();
+		if (model2 != null) {
+			return model2.getCenterPoint();
+		}
 		return isInViewport() ? getLocation().getMatrix(ctx).getCenterPoint() : new Point(-1, -1);
 	}
 
@@ -165,6 +194,10 @@ public class GameObject extends Interactive implements Renderable, Locatable, Na
 		final Model model = getModel();
 		if (model != null) {
 			return model.contains(point);
+		}
+		final BoundingModel model2 = boundingModel.get();
+		if (model2 != null) {
+			return model2.contains(point);
 		}
 		return getLocation().getMatrix(ctx).contains(point);
 	}

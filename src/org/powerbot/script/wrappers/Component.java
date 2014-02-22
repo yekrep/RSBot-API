@@ -43,6 +43,10 @@ public class Component extends Interactive implements Drawable, Displayable {
 		return this.index;
 	}
 
+	@Override
+	public void setBounds(final int x1, final int x2, final int y1, final int y2, final int z1, final int z2) {
+	}
+
 	/**
 	 * {@inheritDoc}
 	 */

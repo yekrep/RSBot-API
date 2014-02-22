@@ -13,12 +13,16 @@ import org.powerbot.bot.client.RSInteractableLocation;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.util.Calculations;
 
-public class RenderableCuboid extends Interactive {
+public class TileCuboid extends Interactive {
 	private final WeakReference<RSInteractable> interactable;
 
-	public RenderableCuboid(final MethodContext ctx, final RSInteractable interactable) {
+	public TileCuboid(final MethodContext ctx, final RSInteractable interactable) {
 		super(ctx);
 		this.interactable = new WeakReference<RSInteractable>(interactable);
+	}
+
+	@Override
+	public void setBounds(final int x1, final int x2, final int y1, final int y2, final int z1, final int z2) {
 	}
 
 	private Area cuboid(final int deviation) {
