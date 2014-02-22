@@ -10,13 +10,14 @@ import org.powerbot.script.methods.Menu;
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.methods.MethodProvider;
 import org.powerbot.script.util.Condition;
+import org.powerbot.util.math.Vector3;
 
 public abstract class Interactive extends MethodProvider implements Targetable, Validatable {
 	protected final AtomicReference<BoundingModel> boundingModel;
 
 	public Interactive(final MethodContext ctx) {
 		super(ctx);
-		this.boundingModel = new AtomicReference<BoundingModel>(null);
+		boundingModel = new AtomicReference<BoundingModel>(null);
 	}
 
 	public boolean isInViewport() {
@@ -114,6 +115,10 @@ public abstract class Interactive extends MethodProvider implements Targetable, 
 
 		ctx.menu.close();
 		return false;
+	}
+
+	public final void setBounds(final Vector3 start, final Vector3 end) {
+		setBounds(start.x, end.x, start.y, end.y, start.z, end.z);
 	}
 
 	public abstract void setBounds(final int x1, final int x2, final int y1, final int y2, final int z1, final int z2);

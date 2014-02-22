@@ -1,5 +1,6 @@
 package org.powerbot.script.wrappers;
 
+import java.awt.Graphics;
 import java.awt.Point;
 
 import org.powerbot.script.methods.MethodContext;
@@ -10,6 +11,10 @@ import org.powerbot.util.math.Vector3;
 public abstract class BoundingModel extends MethodProvider {
 	private final Vector3 start, end;
 	private int[][][] triangles;
+
+	public BoundingModel(final MethodContext ctx, final Vector3 start, final Vector3 end) {
+		this(ctx, start.x, end.x, start.y, end.y, start.z, end.z);
+	}
 
 	public BoundingModel(final MethodContext ctx, final int x1, final int x2, final int y1, final int y2, final int z1, final int z2) {
 		super(ctx);
@@ -76,15 +81,42 @@ public abstract class BoundingModel extends MethodProvider {
 	public boolean contains(final Point p) {
 		final int px = p.x, py = p.y;
 		final int x = getX(), z = getZ(), y = ctx.game.tileHeight(x, z, ctx.game.getPlane());
+		loop:
 		for (final int[][] triangle : triangles) {
 			final Point[] arr = {
 					ctx.game.worldToScreen(x + triangle[0][0], y + triangle[0][1], z + triangle[0][2]),
 					ctx.game.worldToScreen(x + triangle[1][0], y + triangle[1][1], z + triangle[1][2]),
 					ctx.game.worldToScreen(x + triangle[2][0], y + triangle[2][1], z + triangle[2][2]),
 			};
+			for (final Point p2 : arr) {
+				if (!ctx.game.isPointInViewport(p2)) {
+					continue loop;
+				}
+			}
 			if (barycentric(px, py, arr[0].x, arr[0].y, arr[1].x, arr[1].y, arr[2].x, arr[2].y)) {
 				return true;
 			}
+		}
+		return false;
+	}
+
+	public boolean drawWireFrame(final Graphics graphics) {
+		final int x = getX(), z = getZ(), y = ctx.game.tileHeight(x, z, ctx.game.getPlane());
+		loop:
+		for (final int[][] triangle : triangles) {
+			final Point[] arr = {
+					ctx.game.worldToScreen(x + triangle[0][0], y + triangle[0][1], z + triangle[0][2]),
+					ctx.game.worldToScreen(x + triangle[1][0], y + triangle[1][1], z + triangle[1][2]),
+					ctx.game.worldToScreen(x + triangle[2][0], y + triangle[2][1], z + triangle[2][2]),
+			};
+			for (final Point p2 : arr) {
+				if (!ctx.game.isPointInViewport(p2)) {
+					continue loop;
+				}
+			}
+			graphics.drawLine(arr[0].x, arr[0].y, arr[1].x, arr[1].y);
+			graphics.drawLine(arr[1].x, arr[1].y, arr[2].x, arr[2].y);
+			graphics.drawLine(arr[2].x, arr[2].y, arr[0].x, arr[0].y);
 		}
 		return false;
 	}
@@ -167,5 +199,6 @@ public abstract class BoundingModel extends MethodProvider {
 				model[i][2] = v3.toMatrix();
 			}
 		}
+		this.triangles = model;
 	}
 }

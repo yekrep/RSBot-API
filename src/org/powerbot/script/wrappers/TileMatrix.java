@@ -12,7 +12,7 @@ import org.powerbot.script.util.Random;
  * An interactive tile matrix.
  */
 public final class TileMatrix extends Interactive implements Locatable, Drawable {
-	private Tile tile;
+	private final Tile tile;
 
 	TileMatrix(final MethodContext ctx, final Tile tile) {
 		super(ctx);
@@ -24,12 +24,14 @@ public final class TileMatrix extends Interactive implements Locatable, Drawable
 		boundingModel.set(new BoundingModel(ctx, x1, x2, y1, y2, z1, z2) {
 			@Override
 			public int getX() {
-				return tile.getX() * 512 + 256;
+				final Tile base = ctx.game.getMapBase();
+				return ((tile.x - base.x) * 512) + 256;
 			}
 
 			@Override
 			public int getZ() {
-				return tile.getY() * 512 + 256;
+				final Tile base = ctx.game.getMapBase();
+				return ((tile.y - base.y) * 512) + 256;
 			}
 		});
 	}
