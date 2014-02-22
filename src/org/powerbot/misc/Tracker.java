@@ -165,6 +165,9 @@ public final class Tracker {
 	}
 
 	private String encode(final String s) {
+		if (s == null || s.isEmpty()) {
+			return "";
+		}
 		try {
 			return URLEncoder.encode(s, "UTF-8").replace("+", "%20");
 		} catch (final UnsupportedEncodingException ignored) {
