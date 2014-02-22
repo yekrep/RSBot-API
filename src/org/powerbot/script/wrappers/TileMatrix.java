@@ -160,6 +160,11 @@ public final class TileMatrix extends Interactive implements Locatable, Drawable
 			c = new Color((rgb >> 16) & 0xff, (rgb >> 8) & 0xff, rgb & 0xff, alpha);
 		}
 		render.setColor(c);
+		final BoundingModel m2 = boundingModel.get();
+		if (m2 != null) {
+			m2.drawWireFrame(render);
+			return;
+		}
 		render.drawPolygon(p);
 		render.setColor(new Color(0, 0, 0, 20));
 		render.fillPolygon(p);

@@ -251,6 +251,11 @@ public class GroundItem extends Interactive implements Renderable, Identifiable,
 		final Model m = getModel();
 		if (m != null) {
 			m.drawWireFrame(render);
+		} else {
+			final BoundingModel m2 = boundingModel.get();
+			if (m2 != null) {
+				m2.drawWireFrame(render);
+			}
 		}
 	}
 }
