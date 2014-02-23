@@ -258,4 +258,9 @@ public class GroundItem extends Interactive implements Renderable, Identifiable,
 			}
 		}
 	}
+
+	@Override
+	public String toString() {
+		return GroundItem.class.getSimpleName() + "[id=" + getId() + ",stacksize=" + getStackSize() + ",name=" + getName() + "]";
+	}
 }

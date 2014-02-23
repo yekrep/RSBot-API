@@ -155,6 +155,6 @@ public class Npc extends Actor implements Identifiable {
 
 	@Override
 	public String toString() {
-		return Npc.class.getSimpleName() + "[id=" + getId() + ", name=" + getName() + ", level=" + getLevel() + "]";
+		return Npc.class.getSimpleName() + "[id=" + getId() + ",name=" + getName() + ",level=" + getLevel() + "]";
 	}
 }

@@ -139,4 +139,9 @@ public class Player extends Actor {
 			}
 		}
 	}
+
+	@Override
+	public String toString() {
+		return Player.class.getSimpleName() + "[name=" + getName() + ",level=" + getLevel() + "]";
+	}
 }

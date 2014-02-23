@@ -2,13 +2,11 @@ package org.powerbot.gui;
 
 import java.awt.Graphics;
 import java.awt.Point;
-import java.awt.Toolkit;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
@@ -43,7 +41,7 @@ import org.powerbot.script.wrappers.Renderable;
 import org.powerbot.script.wrappers.Tile;
 import org.powerbot.script.wrappers.TileMatrix;
 
-public class BotBoundingUtility extends JFrame implements PaintListener, MouseListener {
+public class BotBoundingUtility extends JFrame implements PaintListener, MouseListener, MouseMotionListener {
 	private static final AtomicReference<BotBoundingUtility> instance = new AtomicReference<BotBoundingUtility>(null);
 	private final JLabel labelTarget;
 	private final SpinnerNumberModel
@@ -55,6 +53,7 @@ public class BotBoundingUtility extends JFrame implements PaintListener, MouseLi
 			modelZ2 = new SpinnerNumberModel(256, -5120, 5120, 4);
 	private final AtomicBoolean selecting;
 	private final Point point;
+	private final ChangeListener l;
 	private TargetSelection<Interactive> selection;
 	private Interactive target;
 
@@ -81,7 +80,7 @@ public class BotBoundingUtility extends JFrame implements PaintListener, MouseLi
 		labelTarget = new JLabel("Target: null");
 
 		final JComboBox comboBoxTarget = new JComboBox();
-		comboBoxTarget.setModel(new DefaultComboBoxModel(new TargetSelection[]{
+		final DefaultComboBoxModel m = new DefaultComboBoxModel(new TargetSelection[]{
 				new TargetSelection<Player>("Player", new Callable<Player>() {
 					@Override
 					public Player call() {
@@ -124,7 +123,11 @@ public class BotBoundingUtility extends JFrame implements PaintListener, MouseLi
 						return (TileMatrix) nearest(list);
 					}
 				})
-		}));
+		});
+		comboBoxTarget.setModel(m);
+		final Object o = m.getElementAt(0);
+		m.setSelectedItem(o);
+		selection = (TargetSelection<Interactive>) o;
 		comboBoxTarget.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent actionEvent) {
@@ -133,7 +136,7 @@ public class BotBoundingUtility extends JFrame implements PaintListener, MouseLi
 			}
 		});
 
-		final ChangeListener l = new ChangeListener() {
+		l = new ChangeListener() {
 			@Override
 			public void stateChanged(final ChangeEvent changeEvent) {
 				if (target != null) {
@@ -193,7 +196,7 @@ public class BotBoundingUtility extends JFrame implements PaintListener, MouseLi
 			@Override
 			public void windowClosing(final WindowEvent e) {
 				setVisible(false);
-				chrome.getBot().dispatcher.remove(this);
+				chrome.getBot().dispatcher.remove(BotBoundingUtility.this);
 				dispose();
 				instance.set(null);
 			}
@@ -299,11 +302,11 @@ public class BotBoundingUtility extends JFrame implements PaintListener, MouseLi
 	}
 
 	private void set(final Interactive interactive) {
-		if (interactive == null || !(interactive instanceof Renderable)) {
+		if (interactive == null) {
 			return;
 		}
-		final Model m = ((Renderable) interactive).getModel();
-		if (m != null) {
+		final Model m;
+		if (interactive instanceof Renderable && (m = ((Renderable) interactive).getModel()) != null) {
 			m.update();
 			int x1 = 0, y1 = 0, z1 = 0;
 			int x2 = 0, y2 = 0, z2 = 0;
@@ -324,13 +327,14 @@ public class BotBoundingUtility extends JFrame implements PaintListener, MouseLi
 			modelZ1.setValue(z1);
 			modelZ2.setValue(z2);
 		} else {
-			modelX1.setValue(-256);
-			modelX2.setValue(256);
-			modelY1.setValue(-512);
+			modelX1.setValue(-128);
+			modelX2.setValue(128);
+			modelY1.setValue(-256);
 			modelY2.setValue(0);
-			modelZ1.setValue(-256);
-			modelZ2.setValue(256);
+			modelZ1.setValue(-128);
+			modelZ2.setValue(128);
 		}
+		l.stateChanged(null);
 	}
 
 	@Override
@@ -341,15 +345,37 @@ public class BotBoundingUtility extends JFrame implements PaintListener, MouseLi
 	}
 
 	@Override
-	public void mouseClicked(final MouseEvent mouseEvent) {
+	public void mouseClicked(final MouseEvent e) {
 	}
 
 	@Override
-	public void mousePressed(final MouseEvent mouseEvent) {
-		if (!selecting.compareAndSet(true, false)) {
+	public void mousePressed(final MouseEvent e) {
+		mouseMoved(e);
+		selecting.set(false);
+	}
+
+	@Override
+	public void mouseReleased(final MouseEvent e) {
+	}
+
+	@Override
+	public void mouseEntered(final MouseEvent e) {
+	}
+
+	@Override
+	public void mouseExited(final MouseEvent e) {
+	}
+
+	@Override
+	public void mouseDragged(final MouseEvent e) {
+	}
+
+	@Override
+	public void mouseMoved(final MouseEvent e) {
+		if (!selecting.get()) {
 			return;
 		}
-		point.move(mouseEvent.getX(), mouseEvent.getY());
+		point.move(e.getX(), e.getY());
 		if (selection != null) {
 			try {
 				target = selection.callable.call();
@@ -357,20 +383,9 @@ public class BotBoundingUtility extends JFrame implements PaintListener, MouseLi
 				target = null;
 			}
 			labelTarget.setText("Target: " + target);
+			pack();
 			set(target);
 		}
-	}
-
-	@Override
-	public void mouseReleased(final MouseEvent mouseEvent) {
-	}
-
-	@Override
-	public void mouseEntered(final MouseEvent mouseEvent) {
-	}
-
-	@Override
-	public void mouseExited(final MouseEvent mouseEvent) {
 	}
 
 	private final class TargetSelection<K> {
