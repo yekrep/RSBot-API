@@ -108,21 +108,20 @@ public abstract class Interactive extends MethodProvider implements Targetable, 
 		return false;
 	}
 
-	public final void setBounds(final int[] start, final int[] end) {
-		if (start == null || start.length != 3
-				|| end == null || end.length != 3) {
-			throw new IllegalArgumentException("array must be 3 in length");
+	public final void setBounds(final int[] arr) {
+		if (arr == null || arr.length != 6) {
+			throw new IllegalArgumentException("length is not 6 (x1, x2, y1, y2, z1, z2)");
 		}
-		setBounds(start[0], end[0], start[1], end[1], start[2], end[2]);
+		setBounds(arr[0], arr[1], arr[2], arr[3], arr[4], arr[5]);
 	}
 
 	public abstract void setBounds(final int x1, final int x2, final int y1, final int y2, final int z1, final int z2);
 
-	public static ChainingIterator<Interactive> doSetBounds(final int x1, final int x2, final int y1, final int y2, final int z1, final int z2) {
+	public static ChainingIterator<Interactive> doSetBounds(final int[] arr) {
 		return new ChainingIterator<Interactive>() {
 			@Override
 			public boolean next(final int index, final Interactive item) {
-				item.setBounds(x1, x2, y1, y2, z1, z2);
+				item.setBounds(arr);
 				return true;
 			}
 		};
