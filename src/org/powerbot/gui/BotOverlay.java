@@ -57,7 +57,8 @@ public class BotOverlay extends JDialog {
 		setVisible(false);
 
 		final String jre = System.getProperty("java.version");
-		final boolean mac = Configuration.OS == Configuration.OperatingSystem.MAC, clear = jre != null && jre.startsWith("1.6") && mac;
+		final boolean mac = Configuration.OS == Configuration.OperatingSystem.MAC;
+		final boolean clear = Configuration.OS == Configuration.OperatingSystem.LINUX || (jre != null && jre.startsWith("1.6") && mac);
 		final String s = System.getProperty("apple.laf.useScreenMenuBar");
 		offsetMenu = !(mac && s != null && s.equalsIgnoreCase("true"));
 
