@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.management.ManagementFactory;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Handler;
@@ -41,6 +42,14 @@ public class Boot implements Runnable {
 	}
 
 	public void run() {
+		if (Configuration.FROMJAR) {
+			for (final String arg : ManagementFactory.getRuntimeMXBean().getInputArguments()) {
+				if (arg.contains("-javaagent:")) {
+					return;
+				}
+			}
+		}
+
 		final Logger logger = Logger.getLogger("");
 		for (final Handler handler : logger.getHandlers()) {
 			logger.removeHandler(handler);
