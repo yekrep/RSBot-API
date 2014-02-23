@@ -2,6 +2,7 @@ package org.powerbot.gui;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.FontMetrics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -177,7 +178,8 @@ public class BotPreferences extends JDialog implements Runnable {
 				final int w = Math.min(375, username.getWidth() + password.getWidth());
 				int n = 0;
 
-				while (description.getFontMetrics(description.getFont()).stringWidth(s) >  w) {
+				final FontMetrics f = description.getFontMetrics(description.getFont());
+				while (f.stringWidth(s) > w) {
 					s = s.substring(0, s.length() - 1);
 					n++;
 				}
