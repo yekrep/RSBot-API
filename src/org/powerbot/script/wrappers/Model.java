@@ -15,14 +15,14 @@ import org.powerbot.script.util.Random;
 
 public abstract class Model extends MethodProvider {
 	private final int height;
-	protected final int[] yPoints;
-	protected final short[] faceA;
-	protected final short[] faceB;
-	protected final short[] faceC;
-	protected final int numFaces;
-	protected final int numVertices;
-	protected int[] xPoints;
-	protected int[] zPoints;
+	public final int[] yPoints;
+	public final short[] faceA;
+	public final short[] faceB;
+	public final short[] faceC;
+	public final int numFaces;
+	public final int numVertices;
+	public int[] xPoints;
+	public int[] zPoints;
 
 	public Model(final MethodContext ctx, final AbstractModel abstractModel) {
 		this(ctx, abstractModel, 0);

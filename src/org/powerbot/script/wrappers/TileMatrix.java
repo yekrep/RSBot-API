@@ -169,4 +169,9 @@ public final class TileMatrix extends Interactive implements Locatable, Drawable
 		render.setColor(new Color(0, 0, 0, 20));
 		render.fillPolygon(p);
 	}
+
+	@Override
+	public String toString() {
+		return tile.toString();
+	}
 }

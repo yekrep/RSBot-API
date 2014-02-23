@@ -248,13 +248,13 @@ public class GroundItem extends Interactive implements Renderable, Identifiable,
 			c = new Color((rgb >> 16) & 0xff, (rgb >> 8) & 0xff, rgb & 0xff, alpha);
 		}
 		render.setColor(c);
-		final Model m = getModel();
-		if (m != null) {
-			m.drawWireFrame(render);
+		final BoundingModel m2 = boundingModel.get();
+		if (m2 != null) {
+			m2.drawWireFrame(render);
 		} else {
-			final BoundingModel m2 = boundingModel.get();
-			if (m2 != null) {
-				m2.drawWireFrame(render);
+			final Model m = getModel();
+			if (m != null) {
+				m.drawWireFrame(render);
 			}
 		}
 	}
