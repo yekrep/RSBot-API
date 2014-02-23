@@ -174,7 +174,7 @@ public class BotPreferences extends JDialog implements Runnable {
 				play.setEnabled(d != null);
 
 				String s = d == null ? "" : d.getDescription();
-				final int w = username.getWidth() + password.getWidth();
+				final int w = Math.min(375, username.getWidth() + password.getWidth());
 				int n = 0;
 
 				while (description.getFontMetrics(description.getFont()).stringWidth(s) >  w) {
