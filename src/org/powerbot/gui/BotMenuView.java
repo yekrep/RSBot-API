@@ -143,7 +143,7 @@ final class BotMenuView implements ActionListener {
 		} else if (s.equals(BotLocale.SETTINGEXPLORER)) {
 			BotSettingExplorer.getInstance(chrome).display();
 		} else if (s.equals(BotLocale.BOUNDINGUTILITY)) {
-			new BotBoundingUtility(chrome).setVisible(true);
+			BotBoundingUtility.getInstance(chrome).setVisible(true);
 		} else {
 			final JCheckBoxMenuItem item = (JCheckBoxMenuItem) e.getSource();
 			item.setSelected(!item.isSelected());

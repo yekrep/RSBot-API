@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.logging.Logger;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
@@ -42,6 +44,7 @@ import org.powerbot.script.wrappers.Tile;
 import org.powerbot.script.wrappers.TileMatrix;
 
 public class BotBoundingUtility extends JFrame implements PaintListener, MouseListener {
+	private static final AtomicReference<BotBoundingUtility> instance = new AtomicReference<BotBoundingUtility>(null);
 	private final JLabel labelTarget;
 	private final SpinnerNumberModel
 			modelX1 = new SpinnerNumberModel(-256, -5120, 5120, 4),
@@ -55,7 +58,14 @@ public class BotBoundingUtility extends JFrame implements PaintListener, MouseLi
 	private TargetSelection<Interactive> selection;
 	private Interactive target;
 
-	public BotBoundingUtility(final BotChrome chrome) {
+	public static synchronized BotBoundingUtility getInstance(final BotChrome chrome) {
+		if (instance.get() == null) {
+			instance.set(new BotBoundingUtility(chrome));
+		}
+		return instance.get();
+	}
+
+	private BotBoundingUtility(final BotChrome chrome) {
 		selecting = new AtomicBoolean(false);
 		point = new Point(-1, -1);
 		selection = null;
@@ -198,9 +208,11 @@ public class BotBoundingUtility extends JFrame implements PaintListener, MouseLi
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(final WindowEvent e) {
+				setVisible(false);
 				chrome.getBot().dispatcher.remove(this);
 				el.actionPerformed(null);
 				dispose();
+				instance.set(null);
 			}
 		});
 
