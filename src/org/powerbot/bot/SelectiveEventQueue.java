@@ -15,9 +15,9 @@ import org.powerbot.gui.BotChrome;
 
 public class SelectiveEventQueue extends EventQueue {
 	private static final SelectiveEventQueue instance = new SelectiveEventQueue();
-	private AtomicBoolean blocking;
-	private AtomicReference<Component> component;
-	private AtomicReference<EventCallback> callback;
+	private final AtomicBoolean blocking;
+	private final AtomicReference<Component> component;
+	private final AtomicReference<EventCallback> callback;
 
 	private SelectiveEventQueue() {
 		this.blocking = new AtomicBoolean(false);
@@ -33,7 +33,7 @@ public class SelectiveEventQueue extends EventQueue {
 		return blocking.get();
 	}
 
-	public void setBlocking(boolean blocking) {
+	public void setBlocking(final boolean blocking) {
 		this.blocking.set(blocking);
 		pushSelectiveQueue();
 	}
@@ -47,7 +47,7 @@ public class SelectiveEventQueue extends EventQueue {
 		}
 	}
 
-	public void block(Component component, EventCallback callback) {
+	public void block(final Component component, final EventCallback callback) {
 		final Component c = this.component.get();
 		if (c != null && c != component) {
 			defocus();
@@ -81,9 +81,9 @@ public class SelectiveEventQueue extends EventQueue {
 	}
 
 	@Override
-	protected final void dispatchEvent(AWTEvent event) {
+	protected final void dispatchEvent(final AWTEvent event) {
 		if (event instanceof RawAWTEvent) {
-			AWTEvent e = ((RawAWTEvent) event).getEvent();
+			final AWTEvent e = ((RawAWTEvent) event).getEvent();
 			((Component) e.getSource()).dispatchEvent(e);
 			return;
 		}
@@ -113,7 +113,7 @@ public class SelectiveEventQueue extends EventQueue {
 					BotChrome.getInstance().getBot().dispatcher.dispatch(event);
 				}
 				/* Execute a callback for this source when we block an event */
-				EventCallback callback = this.callback.get();
+				final EventCallback callback = this.callback.get();
 				if (callback != null) {
 					callback.execute(event);
 				}

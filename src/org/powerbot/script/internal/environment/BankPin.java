@@ -33,7 +33,7 @@ public class BankPin extends PollingScript implements InternalScript {
 		int v;
 		try {
 			v = Integer.valueOf(String.valueOf(pin.charAt(i)));
-		} catch (NumberFormatException ignored) {
+		} catch (final NumberFormatException ignored) {
 			v = -1;
 		}
 		if (v < 0) {

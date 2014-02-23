@@ -3,7 +3,7 @@ package org.powerbot.script.methods;
 import org.powerbot.script.util.Random;
 
 public class MethodProvider {
-	public MethodContext ctx;
+	public final MethodContext ctx;
 
 	public MethodProvider(final MethodContext factory) {
 		this.ctx = factory;

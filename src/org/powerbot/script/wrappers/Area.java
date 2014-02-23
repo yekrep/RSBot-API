@@ -63,11 +63,11 @@ public class Area {
 			double dist = Double.POSITIVE_INFINITY;
 			Tile tile = Tile.NIL;
 			final Tile[] tiles = getTiles();
-			for (int i = 0; i < tiles.length; i++) {
-				final double d = t.distanceTo(tiles[i]);
+			for (final Tile item : tiles) {
+				final double d = t.distanceTo(item);
 				if (d < dist) {
 					dist = d;
-					tile = tiles[i];
+					tile = item;
 				}
 			}
 			return tile;

@@ -194,7 +194,7 @@ public class Ini implements Serializable {
 		read(in);
 	}
 
-	@SuppressWarnings("unused")
+	@SuppressWarnings({"EmptyMethod", "RedundantThrows"})
 	private void readObjectNoData() throws ObjectStreamException {
 	}
 

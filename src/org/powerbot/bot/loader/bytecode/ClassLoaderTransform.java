@@ -13,7 +13,7 @@ import org.powerbot.bot.loader.Bridge;
 
 public class ClassLoaderTransform implements Transform {
 	private final String super_;
-	private AppletTransform parent;
+	private final AppletTransform parent;
 
 	public ClassLoaderTransform(final AppletTransform parent) {
 		this.super_ = ClassLoader.class.getName().replace('.', '/');
@@ -57,7 +57,7 @@ public class ClassLoaderTransform implements Transform {
 					* Rewind to before the first instruction.
 					* Store position.
 					 */
-					for (int i = 0; i < ops.length; i++) {
+					for (final int ignored : ops) {
 						searcher.getPrevious();
 					}
 					final AbstractInsnNode pos = searcher.current();

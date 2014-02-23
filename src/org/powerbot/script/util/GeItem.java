@@ -242,16 +242,20 @@ public class GeItem {
 	}
 
 	/**
-	 * @param type
-	 * @return
+	 * Returns the price.
+	 *
+	 * @param type the {@link GeItem.PriceType}
+	 * @return the price
 	 */
 	public Price getPrice(final PriceType type) {
 		return prices.get(type);
 	}
 
 	/**
-	 * @param type
-	 * @return
+	 * Returns the change.
+	 *
+	 * @param type the {@link GeItem.ChangeType}
+	 * @return the change
 	 */
 	public Change getChange(final ChangeType type) {
 		return changes.get(type);
@@ -271,15 +275,13 @@ public class GeItem {
 	 */
 	@Override
 	public String toString() {
-		final StringBuilder s = new StringBuilder();
 		final String lf = "\r\n";
-		s.append(getName()).append(" (").append(getId()).append(')').append(lf).append(getDescription()).append(lf).append(lf);
-		s.append("Current Price:\t").append(getPrice(PriceType.CURRENT).getPrice()).append(lf);
-		s.append("Today's Change:\t").append(getPrice(PriceType.TODAY).getPrice()).append(lf);
-		s.append("30-Day Change:\t").append(getChange(ChangeType.DAY30).getChange()).append('%').append(lf);
-		s.append("90-Day Change:\t").append(getChange(ChangeType.DAY90).getChange()).append('%').append(lf);
-		s.append("180-Day Change:\t").append(getChange(ChangeType.DAY180).getChange()).append('%').append(lf);
-		return s.toString();
+		return getName() + " (" + getId() + ')' + lf + getDescription() + lf + lf
+				+ "Current Price:\t" + getPrice(PriceType.CURRENT).getPrice() + lf
+				+ "Today's Change:\t" + getPrice(PriceType.TODAY).getPrice() + lf
+				+ "30-Day Change:\t" + getChange(ChangeType.DAY30).getChange() + '%'+ lf
+				+ "90-Day Change:\t" + getChange(ChangeType.DAY90).getChange() + '%' + lf
+				+ "180-Day Change:\t" + getChange(ChangeType.DAY180).getChange() + '%' + lf;
 	}
 
 	/**

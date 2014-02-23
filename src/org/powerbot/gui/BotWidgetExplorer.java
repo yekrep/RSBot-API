@@ -48,7 +48,7 @@ public class BotWidgetExplorer extends JFrame implements PaintListener {
 	private JPanel infoArea;
 	private JTextField searchBox;
 	private Rectangle highlightArea = null;
-	private List<Component> list = new ArrayList<Component>();
+	private final List<Component> list = new ArrayList<Component>();
 
 	private BotWidgetExplorer(final BotChrome chrome) {
 		super("Widget Explorer");
@@ -225,55 +225,43 @@ public class BotWidgetExplorer extends JFrame implements PaintListener {
 		}
 
 		public Object getChild(final Object parent, final int index) {
-			try {
-				if (parent == root) {
-					return widgetWrappers.get(index);
-				} else if (parent instanceof WidgetWrapper) {
-					return new ComponentWrapper(((WidgetWrapper) parent).get().getComponents()[index]);
-				} else if (parent instanceof ComponentWrapper) {
-					return new ComponentWrapper(((ComponentWrapper) parent).get().getChildren()[index]);
-				}
-				return null;
-			} finally {
+			if (parent == root) {
+				return widgetWrappers.get(index);
+			} else if (parent instanceof WidgetWrapper) {
+				return new ComponentWrapper(((WidgetWrapper) parent).get().getComponents()[index]);
+			} else if (parent instanceof ComponentWrapper) {
+				return new ComponentWrapper(((ComponentWrapper) parent).get().getChildren()[index]);
 			}
+			return null;
 		}
 
 		public int getChildCount(final Object parent) {
-			try {
-				if (parent == root) {
-					return widgetWrappers.size();
-				} else if (parent instanceof WidgetWrapper) {
-					return ((WidgetWrapper) parent).get().getComponents().length;
-				} else if (parent instanceof ComponentWrapper) {
-					return ((ComponentWrapper) parent).get().getChildren().length;
-				}
-				return 0;
-			} finally {
+			if (parent == root) {
+				return widgetWrappers.size();
+			} else if (parent instanceof WidgetWrapper) {
+				return ((WidgetWrapper) parent).get().getComponents().length;
+			} else if (parent instanceof ComponentWrapper) {
+				return ((ComponentWrapper) parent).get().getChildren().length;
 			}
+			return 0;
 		}
 
 		public boolean isLeaf(final Object node) {
-			try {
-				return node instanceof ComponentWrapper && ((ComponentWrapper) node).get().getChildren().length == 0;
-			} finally {
-			}
+			return node instanceof ComponentWrapper && ((ComponentWrapper) node).get().getChildren().length == 0;
 		}
 
 		public void valueForPathChanged(final TreePath path, final Object newValue) {
 		}
 
 		public int getIndexOfChild(final Object parent, final Object child) {
-			try {
-				if (parent == root) {
-					return widgetWrappers.indexOf(child);
-				} else if (parent instanceof WidgetWrapper) {
-					return Arrays.asList(((WidgetWrapper) parent).get().getComponents()).indexOf(((ComponentWrapper) child).get());
-				} else if (parent instanceof ComponentWrapper) {
-					return Arrays.asList(((ComponentWrapper) parent).get().getChildren()).indexOf(((ComponentWrapper) child).get());
-				}
-				return -1;
-			} finally {
+			if (parent == root) {
+				return widgetWrappers.indexOf(child);
+			} else if (parent instanceof WidgetWrapper) {
+				return Arrays.asList(((WidgetWrapper) parent).get().getComponents()).indexOf(((ComponentWrapper) child).get());
+			} else if (parent instanceof ComponentWrapper) {
+				return Arrays.asList(((ComponentWrapper) parent).get().getChildren()).indexOf(((ComponentWrapper) child).get());
 			}
+			return -1;
 		}
 
 		public void addTreeModelListener(final TreeModelListener l) {

@@ -20,7 +20,7 @@ public class GameClassLoader extends ClassLoader {
 	private final Map<String, byte[]> resources = new HashMap<String, byte[]>();
 	private final Hashtable<String, Class<?>> loaded;
 	private final ProtectionDomain domain;
-	private Processor processor;
+	private final Processor processor;
 
 	public GameClassLoader(final Map<String, byte[]> resources) {
 		this.resources.putAll(resources);

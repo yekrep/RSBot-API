@@ -31,7 +31,7 @@ public class GameLoader implements Callable<ClassLoader> {
 			final URLConnection clientConnection = HttpUtils.getHttpConnection(new URL(crawler.archive));
 			clientConnection.addRequestProperty("Referer", crawler.game);
 			buffer = IOUtils.read(HttpUtils.getInputStream(clientConnection));
-		} catch (IOException ignored) {
+		} catch (final IOException ignored) {
 			buffer = null;
 		}
 		if (buffer == null) {
@@ -45,7 +45,7 @@ public class GameLoader implements Callable<ClassLoader> {
 				final String entryName = entry.getName();
 				resources.put(entryName, read(jar));
 			}
-		} catch (IOException ignored) {
+		} catch (final IOException ignored) {
 		}
 		return new GameClassLoader(resources);
 	}

@@ -76,7 +76,7 @@ public class Login extends PollingScript implements InternalScript {
 							}
 						});
 						if (worlds.length > 0) {
-							ctx.game.setPreferredWorld(worlds[Random.nextInt(0, worlds.length)].getNumber());
+							ctx.properties.setProperty("login.world", Integer.toString(worlds[Random.nextInt(0, worlds.length)].getNumber()));
 						}
 					}
 					return 0;

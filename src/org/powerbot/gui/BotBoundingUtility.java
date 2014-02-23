@@ -42,7 +42,6 @@ import org.powerbot.script.wrappers.Tile;
 import org.powerbot.script.wrappers.TileMatrix;
 
 public class BotBoundingUtility extends JDialog implements PaintListener, MouseListener {
-	private final BotChrome chrome;
 	private final JLabel labelTarget;
 	private final SpinnerNumberModel
 			modelX1 = new SpinnerNumberModel(-256, -5120, 5120, 4),
@@ -57,7 +56,6 @@ public class BotBoundingUtility extends JDialog implements PaintListener, MouseL
 	private Interactive target;
 
 	public BotBoundingUtility(final BotChrome chrome) {
-		this.chrome = chrome;
 		this.selecting = new AtomicBoolean(false);
 		this.point = new Point(-1, -1);
 		this.selection = null;
@@ -119,6 +117,7 @@ public class BotBoundingUtility extends JDialog implements PaintListener, MouseL
 		comboBoxTarget.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent actionEvent) {
+				//noinspection unchecked
 				selection = (TargetSelection<Interactive>) comboBoxTarget.getSelectedItem();
 			}
 		});

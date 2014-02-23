@@ -42,8 +42,8 @@ public class Player extends Actor {
 	}
 
 	public int getPrayerIcon() {
-		int[] a1 = getOverheadArray1(), a2 = getOverheadArray2();
-		int len = a1.length;
+		final int[] a1 = getOverheadArray1(), a2 = getOverheadArray2();
+		final int len = a1.length;
 		if (len != a2.length) {
 			return -1;
 		}

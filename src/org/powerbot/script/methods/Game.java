@@ -222,7 +222,6 @@ public class Game extends MethodProvider {
 	 * @see {@link #isPointInViewport(java.awt.Point)}
 	 */
 	@Deprecated
-	@SuppressWarnings("unused")
 	public boolean isPointOnScreen(final Point point) {
 		return isPointInViewport(point);
 	}
@@ -254,7 +253,6 @@ public class Game extends MethodProvider {
 	 * @see {@link #isPointInViewport(int, int)}
 	 */
 	@Deprecated
-	@SuppressWarnings("unused")
 	public boolean isPointOnScreen(final int x, final int y) {
 		return isPointInViewport(x, y);
 	}

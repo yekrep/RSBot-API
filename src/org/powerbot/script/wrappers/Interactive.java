@@ -28,7 +28,6 @@ public abstract class Interactive extends MethodProvider implements Targetable, 
 	 * @see {@link #isInViewport()}
 	 */
 	@Deprecated
-	@SuppressWarnings("unused")
 	public boolean isOnScreen() {
 		return isInViewport();
 	}
@@ -43,16 +42,12 @@ public abstract class Interactive extends MethodProvider implements Targetable, 
 	}
 
 	@Deprecated
-	@SuppressWarnings("unused")
 	public static Filter<Interactive> areOnScreen() {
 		return areInViewport();
 	}
 
 	public boolean hover() {
-		if (!isValid()) {
-			return false;
-		}
-		return ctx.mouse.move(this);
+		return isValid() && ctx.mouse.move(this);
 	}
 
 	public boolean click() {
@@ -60,10 +55,7 @@ public abstract class Interactive extends MethodProvider implements Targetable, 
 	}
 
 	public boolean click(final boolean left) {
-		if (!isValid()) {
-			return false;
-		}
-		return ctx.mouse.click(this, left);
+		return isValid() && ctx.mouse.click(this, left);
 	}
 
 	public static ChainingIterator<Interactive> doInteract(final String action) {

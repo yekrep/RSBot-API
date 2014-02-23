@@ -254,8 +254,8 @@ public class Map extends MethodProvider {
 	}
 
 	private class Graph {
-		private int width, height;
-		private Node[][] nodes;
+		private final int width, height;
+		private final Node[][] nodes;
 
 		private Graph(final CollisionMap map) {
 			width = map.getWidth() - 6;

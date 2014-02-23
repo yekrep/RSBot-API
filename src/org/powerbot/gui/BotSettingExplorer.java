@@ -83,7 +83,7 @@ public class BotSettingExplorer extends JFrame {
 						update();
 						try {
 							Thread.sleep(100);
-						} catch (InterruptedException ignored) {
+						} catch (final InterruptedException ignored) {
 						}
 					}
 				}
@@ -168,7 +168,6 @@ public class BotSettingExplorer extends JFrame {
 		settingsList.setFont(font);
 		settingsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		settingsList.addListSelectionListener(new ListSelectionListener() {
-			@SuppressWarnings("unchecked")
 			public void valueChanged(final ListSelectionEvent e) {
 				if (!e.getValueIsAdjusting()) {
 					current = ((JList) e.getSource()).getSelectedIndex();
@@ -219,7 +218,7 @@ public class BotSettingExplorer extends JFrame {
 						}
 						settingsList.ensureIndexIsVisible(current);
 						settingsList.setSelectedIndex(current);
-					} catch (Exception ex) {
+					} catch (final Exception ex) {
 						invalid = true;
 						gotoField.setText("Invalid");
 						gotoField.setForeground(Color.RED);

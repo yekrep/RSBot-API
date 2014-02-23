@@ -22,7 +22,6 @@ import org.powerbot.Configuration;
 import org.powerbot.bot.loader.transform.TransformSpec;
 import org.powerbot.misc.Tracker;
 import org.powerbot.util.HttpUtils;
-import org.powerbot.util.IOUtils;
 import org.powerbot.util.StringUtils;
 
 public class NRSLoader implements Runnable {
@@ -48,7 +47,7 @@ public class NRSLoader implements Runnable {
 		Class<?> code;
 		try {
 			code = classLoader.loadClass("Rs2Applet");
-		} catch (ClassNotFoundException e) {
+		} catch (final ClassNotFoundException e) {
 			code = null;
 		}
 		if (code == null || !(Applet.class.isAssignableFrom(code))) {
@@ -71,7 +70,7 @@ public class NRSLoader implements Runnable {
 		try {
 			digest = MessageDigest.getInstance("SHA-1");
 			packHash = StringUtils.byteArrayToHexString(digest.digest(pack));
-		} catch (NoSuchAlgorithmException ignored) {
+		} catch (final NoSuchAlgorithmException ignored) {
 			packHash = null;
 		}
 		if (packHash == null) {
@@ -80,7 +79,7 @@ public class NRSLoader implements Runnable {
 		TransformSpec spec;
 		try {
 			spec = getSpec(packHash);
-		} catch (IOException ignored) {
+		} catch (final IOException ignored) {
 			spec = null;
 		}
 		if (spec != null) {
@@ -228,11 +227,9 @@ public class NRSLoader implements Runnable {
 		final int MAGIC = 0xC1A5700F, END_OF_FILE = 0x1;
 		writeInt(MAGIC, out);
 
-		synchronized (classes) {
-			for (final byte[] data : classes.values()) {
-				writeInt(data.length, out);
-				out.write(data);
-			}
+		for (final byte[] data : classes.values()) {
+			writeInt(data.length, out);
+			out.write(data);
 		}
 
 		writeInt(END_OF_FILE, out);

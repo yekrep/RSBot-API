@@ -17,7 +17,7 @@ import org.powerbot.util.IOUtils;
  * @author Paris
  */
 public class Crawler implements Runnable {
-	private AtomicBoolean run, passed;
+	private final AtomicBoolean run, passed;
 	public final Map<String, String> parameters, details;
 	public String game, archive, clazz;
 

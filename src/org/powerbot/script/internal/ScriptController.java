@@ -51,6 +51,7 @@ public final class ScriptController implements Runnable, Validatable, Script.Con
 
 		bundle = new AtomicReference<ScriptBundle>(null);
 
+		//noinspection unchecked
 		daemons = new Class[]{
 				Login.class,
 				WidgetCloser.class,

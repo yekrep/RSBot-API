@@ -14,7 +14,7 @@ import org.objectweb.asm.tree.VarInsnNode;
 import org.powerbot.bot.loader.Bridge;
 
 public class ListClassesTransform implements Transform {
-	private AppletTransform parent;
+	private final AppletTransform parent;
 
 	public ListClassesTransform(final AppletTransform parent) {
 		this.parent = parent;

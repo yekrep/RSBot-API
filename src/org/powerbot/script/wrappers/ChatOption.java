@@ -4,8 +4,8 @@ import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.methods.MethodProvider;
 
 public class ChatOption extends MethodProvider implements Textable, Validatable {
-	private int index;
-	private Component option;
+	private final int index;
+	private final Component option;
 
 	public ChatOption(final MethodContext ctx, final int index, final Component option) {
 		super(ctx);

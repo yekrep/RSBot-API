@@ -102,10 +102,7 @@ public class Widgets extends MethodProvider {
 		while (pane.getMaxVerticalScroll() == 0 && (id = pane.getParentId()) != -1) {
 			pane = ctx.widgets.get(id >> 16, id & 0xffff);
 		}
-		if (pane.getMaxVerticalScroll() == 0) {
-			return false;
-		}
-		return scroll(component, pane, bar, scroll);
+		return pane.getMaxVerticalScroll() != 0 && scroll(component, pane, bar, scroll);
 	}
 
 	public boolean scroll(final Component component, final Component pane, final Component bar, final boolean scroll) {

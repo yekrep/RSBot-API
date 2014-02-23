@@ -10,7 +10,7 @@ public class LocalPath extends Path {
 	private Tile tile;
 	private TilePath tilePath;
 
-	private Map map;
+	private final Map map;
 
 	public LocalPath(final MethodContext factory, final Map map, final Locatable destination) {
 		super(factory);

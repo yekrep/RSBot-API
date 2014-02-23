@@ -17,7 +17,7 @@ public class DrawProjectiles implements PaintListener, TextPaintListener {
 	}
 
 	@Override
-	public void repaint(Graphics render) {
+	public void repaint(final Graphics render) {
 		if (!ctx.game.isLoggedIn()) {
 			return;
 		}
@@ -34,7 +34,7 @@ public class DrawProjectiles implements PaintListener, TextPaintListener {
 	}
 
 	@Override
-	public int draw(int idx, Graphics render) {
+	public int draw(int idx, final Graphics render) {
 		DebugHelper.drawLine(render, idx++, "Projectile count: " + ctx.projectiles.size());
 		return idx;
 	}

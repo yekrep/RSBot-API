@@ -80,7 +80,7 @@ public class Movement extends MethodProvider {
 		}
 		final Tile t = loc;
 		return ctx.mouse.click(new Targetable() {
-			private TileMatrix tile = t.getMatrix(ctx);
+			private final TileMatrix tile = t.getMatrix(ctx);
 
 			@Override
 			public Point getInteractPoint() {

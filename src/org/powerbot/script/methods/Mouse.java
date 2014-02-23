@@ -109,11 +109,8 @@ public class Mouse extends MethodProvider {
 	public boolean click(final int button) {
 		final Client client = ctx.getClient();
 		final org.powerbot.bot.client.input.Mouse mouse;
-		if (client == null || (mouse = client.getMouse()) == null) {
-			return false;
-		}
+		return !(client == null || (mouse = client.getMouse()) == null) && click(mouse.getX(), mouse.getY(), button);
 
-		return click(mouse.getX(), mouse.getY(), button);
 	}
 
 	public boolean click(final Point p, final boolean left) {

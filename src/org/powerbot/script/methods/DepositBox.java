@@ -67,7 +67,6 @@ public class DepositBox extends ItemQuery<Item> {
 	 * @see {@link #isInViewport()}
 	 */
 	@Deprecated
-	@SuppressWarnings("unused")
 	public boolean isOnScreen() {
 		return isInViewport();
 	}

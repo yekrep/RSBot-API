@@ -358,10 +358,7 @@ public class Hiscores {
 		 */
 		@Override
 		public String toString() {
-			final StringBuilder s = new StringBuilder();
-			s.append(StringUtils.toDisplayCase(stats.toString())).append(": ").append(level);
-			s.append(" (").append(xp).append(") #").append(rank);
-			return s.toString();
+			return StringUtils.toDisplayCase(stats.toString()) + ": " + level + " (" + xp + ") #" + rank;
 		}
 	}
 
@@ -415,9 +412,7 @@ public class Hiscores {
 
 		@Override
 		public String toString() {
-			final StringBuilder s = new StringBuilder();
-			s.append(StringUtils.toDisplayCase(stats.toString())).append(": ").append(score).append(" #").append(rank);
-			return s.toString();
+			return StringUtils.toDisplayCase(stats.toString()) + ": " + score + " #" + rank;
 		}
 	}
 }

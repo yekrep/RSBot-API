@@ -63,7 +63,7 @@ public final class ScriptClassLoader extends ClassLoader {
 		}
 		try {
 			return new URL(base, name).openStream();
-		} catch (IOException ignored) {
+		} catch (final IOException ignored) {
 			return null;
 		}
 	}

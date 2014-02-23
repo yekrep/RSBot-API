@@ -25,7 +25,7 @@ public final class CollisionFlag {
 	}
 
 	private int type;
-	private boolean markable;
+	private final boolean markable;
 
 	public boolean contains(final CollisionFlag collisionFlag) {
 		return (type & collisionFlag.type) != 0;

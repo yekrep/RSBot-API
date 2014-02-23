@@ -5,7 +5,7 @@ import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.tree.ClassNode;
 
 public class AbstractProcessor implements Processor {
-	private Transform[] transforms;
+	private final Transform[] transforms;
 
 	public AbstractProcessor(final Transform... transforms) {
 		this.transforms = transforms;

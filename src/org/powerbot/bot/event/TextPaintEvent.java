@@ -39,7 +39,7 @@ public class TextPaintEvent extends AbstractEvent {
 		if (graphics == null) {
 			try {
 				((PaintListener) eventListener).repaint(null);
-			} catch (NullPointerException ignored) {
+			} catch (final NullPointerException ignored) {
 			}
 			return;
 		}

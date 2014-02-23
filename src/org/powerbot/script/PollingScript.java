@@ -15,6 +15,7 @@ import org.powerbot.script.util.Random;
  *
  * @author Paris
  */
+@SuppressWarnings("EmptyMethod")
 public abstract class PollingScript extends AbstractScript {
 	private final AtomicBoolean running;
 	private final AtomicLong last, delay;
@@ -33,7 +34,7 @@ public abstract class PollingScript extends AbstractScript {
 	 * @deprecated see {@link org.powerbot.script.util.Condition#wait(java.util.concurrent.Callable)}
 	 */
 	@Deprecated
-	protected final AtomicInteger bias;
+	protected final AtomicInteger bias = new AtomicInteger(50);
 
 	/**
 	 * Creates an instance of a {@link PollingScript}.
@@ -42,7 +43,6 @@ public abstract class PollingScript extends AbstractScript {
 		running = new AtomicBoolean(false);
 		last = new AtomicLong(0);
 		delay = new AtomicLong(0);
-		bias = new AtomicInteger(50);
 
 		getExecQueue(State.START).add(new Runnable() {
 			@Override
@@ -85,7 +85,10 @@ public abstract class PollingScript extends AbstractScript {
 
 		final long d = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - last.get());
 		if (d < delay.get()) {
-			sleep(delay.get() - d);
+			try {
+				Thread.sleep(delay.get() - d);
+			} catch (final InterruptedException ignored) {
+			}
 		}
 
 		int t;

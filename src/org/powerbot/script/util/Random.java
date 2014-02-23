@@ -81,8 +81,6 @@ public class Random {
 
 	/**
 	 * Returns a pseudo-random gaussian distributed number between the given min and max with the provided standard deviation.
-	 * <p/>
-	 * Mean defaults as {@code (max - min) / 2}.
 	 *
 	 * @param min the minimum bound
 	 * @param max the maximum bound

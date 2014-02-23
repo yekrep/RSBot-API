@@ -1,6 +1,5 @@
 package org.powerbot.bot.loader.transform;
 
-import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,7 +23,7 @@ public class TransformSpec {
 	public final Map<String, String> attributes;
 	public final Map<Integer, Integer> constants;
 	public final Map<Integer, Integer> multipliers;
-	private Scanner scanner;
+	private final Scanner scanner;
 	private String name;
 	private int version;
 

@@ -126,7 +126,7 @@ public final class GameAccounts extends ArrayList<GameAccounts.Account> {
 	}
 
 	public final class Account {
-		private String username;
+		private final String username;
 		private String password;
 		public int pin = -1;
 		public boolean member = false;

@@ -33,11 +33,10 @@ import org.powerbot.misc.Tracker;
  */
 public class BotPreferences extends JDialog implements Runnable {
 	private static final int PAD = 5;
-	private final BotChrome chrome;
 	private final JPanel panel;
 	private final JComboBox account;
 	private final JPasswordField password, accountPassword;
-	private final JLabel description, labelAccountPassword, labelPassword, labelPin, labelUsername;
+	private final JLabel description, labelPassword, labelUsername;
 	private final JCheckBox members;
 	private final JTextField username, pin;
 	private final JButton signin, play;
@@ -47,11 +46,10 @@ public class BotPreferences extends JDialog implements Runnable {
 	private final Component[] itemsAccount;
 	private final List<ScriptBundle.Definition> list;
 
-	public static AtomicBoolean loading = new AtomicBoolean(false), visible = new AtomicBoolean(false);
+	public static final AtomicBoolean loading = new AtomicBoolean(false), visible = new AtomicBoolean(false);
 
 	public BotPreferences(final BotChrome chrome) {
 		super(chrome, true);
-		this.chrome = chrome;
 		visible.set(true);
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		setResizable(false);
@@ -76,9 +74,9 @@ public class BotPreferences extends JDialog implements Runnable {
 		scrollScript = new JScrollPane();
 		script = new JList();
 		account = new JComboBox();
-		labelAccountPassword = new JLabel();
+		final JLabel labelAccountPassword = new JLabel();
 		accountPassword = new JPasswordField();
-		labelPin = new JLabel();
+		final JLabel labelPin = new JLabel();
 		pin = new JTextField();
 		members = new JCheckBox();
 		play = new JButton();

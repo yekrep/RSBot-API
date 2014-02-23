@@ -61,8 +61,6 @@ public class ScriptList {
 		try {
 			is = NetworkAccount.getInstance().getScriptsList();
 			t.read(is);
-		} catch (final IOException e) {
-			throw e;
 		} finally {
 			if (is != null) {
 				try {

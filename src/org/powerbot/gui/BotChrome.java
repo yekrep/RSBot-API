@@ -33,8 +33,8 @@ public class BotChrome extends JFrame implements Closeable {
 	private static final long serialVersionUID = -5535364874897541810L;
 
 	private static BotChrome instance;
-	private Bot bot;
-	public BotPanel panel;
+	private final Bot bot;
+	public final BotPanel panel;
 	public final BotOverlay overlay;
 	public final BotMenuBar menuBar;
 	private final WindowCache cache;

@@ -57,7 +57,7 @@ public class GameStub implements AppletStub, AppletContext {
 	public final URL getCodeBase() {
 		try {
 			return new URL(codeBase);
-		} catch (MalformedURLException malformedurlexception) {
+		} catch (final MalformedURLException malformedurlexception) {
 			throw new InvalidParameterException();
 		}
 	}
@@ -69,7 +69,7 @@ public class GameStub implements AppletStub, AppletContext {
 	public final URL getDocumentBase() {
 		try {
 			return new URL(codeBase);
-		} catch (MalformedURLException malformedurlexception) {
+		} catch (final MalformedURLException malformedurlexception) {
 			throw new InvalidParameterException();
 		}
 	}

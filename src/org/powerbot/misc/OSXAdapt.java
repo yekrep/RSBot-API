@@ -26,7 +26,6 @@ public class OSXAdapt implements Runnable {
 	}
 
 	@OSXAdapt.OSXAdapterInfo(mode = 1)
-	@SuppressWarnings("unused")
 	public void about() {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
@@ -37,7 +36,6 @@ public class OSXAdapt implements Runnable {
 	}
 
 	@OSXAdapt.OSXAdapterInfo(mode = 2)
-	@SuppressWarnings("unused")
 	public void quit() {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
@@ -48,7 +46,6 @@ public class OSXAdapt implements Runnable {
 	}
 
 	@OSXAdapt.OSXAdapterInfo(mode = 3)
-	@SuppressWarnings("unused")
 	public void preferences() {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
@@ -156,7 +153,7 @@ public class OSXAdapt implements Runnable {
 			this.targetMethod = handler;
 		}
 
-		public boolean callTarget(final Object e) throws InvocationTargetException, IllegalAccessException {
+		public boolean callTarget() throws InvocationTargetException, IllegalAccessException {
 			final Object result = targetMethod.invoke(targetObject, (Object[]) null);
 			if (result == null) {
 				return true;
@@ -166,7 +163,7 @@ public class OSXAdapt implements Runnable {
 
 		public Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
 			if (isCorrectMethod(method, args)) {
-				setApplicationEventHandled(args[0], callTarget(args[0]));
+				setApplicationEventHandled(args[0], callTarget());
 			}
 			return null;
 		}

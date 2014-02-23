@@ -95,7 +95,7 @@ public class InputHandler {
 					if (keyEvent != null && keyEvent.getID() != KeyEvent.KEY_TYPED) {
 						try {
 							Thread.sleep((long) (HardwareSimulator.getDelayFactor() * (1 + Random.nextDouble() / 2)));
-						} catch (InterruptedException ignored) {
+						} catch (final InterruptedException ignored) {
 						}
 					}
 				}
@@ -106,7 +106,7 @@ public class InputHandler {
 		if (!async) {
 			try {
 				t.join();
-			} catch (InterruptedException ignored) {
+			} catch (final InterruptedException ignored) {
 			}
 		}
 	}

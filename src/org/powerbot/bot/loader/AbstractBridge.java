@@ -60,7 +60,7 @@ public abstract class AbstractBridge implements Bridge {
 		for (final String entry : entries) {
 			try {
 				loader.loadClass(entry);
-			} catch (ClassNotFoundException ignored) {
+			} catch (final ClassNotFoundException ignored) {
 			}
 		}
 	}

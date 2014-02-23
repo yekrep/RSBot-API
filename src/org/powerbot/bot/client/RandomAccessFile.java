@@ -9,7 +9,6 @@ import org.powerbot.gui.BotChrome;
 /**
  * @author Timer
  */
-@SuppressWarnings("unused")
 public class RandomAccessFile {
 	private UIDManager uidData = null;
 	private java.io.RandomAccessFile raf = null;

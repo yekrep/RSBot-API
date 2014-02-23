@@ -139,7 +139,6 @@ public class Bank extends ItemQuery<Item> {
 	 * @deprecated see {@link #isInViewport()}
 	 */
 	@Deprecated
-	@SuppressWarnings("unused")
 	public boolean isOnScreen() {
 		return isInViewport();
 	}

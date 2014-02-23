@@ -35,7 +35,7 @@ public class BotOverlay extends JDialog {
 	private final PaintEvent paintEvent;
 	private final TextPaintEvent textPaintEvent;
 
-	public boolean supported;
+	public final boolean supported;
 
 	public BotOverlay(final BotChrome parent) {
 		super(parent);

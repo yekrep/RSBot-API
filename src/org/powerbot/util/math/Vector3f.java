@@ -1,7 +1,7 @@
 package org.powerbot.util.math;
 
 public class Vector3f extends Vector2f {
-	public float z;
+	public final float z;
 
 	public Vector3f() {
 		super();

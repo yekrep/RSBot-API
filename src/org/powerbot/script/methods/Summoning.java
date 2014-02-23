@@ -191,16 +191,13 @@ public class Summoning extends MethodProvider {
 			return ctx.npcs.getNil();
 		}
 		final Player local = ctx.players.local();
-		for (final Npc npc : ctx.npcs.select().select(new Filter<Npc>() {
+		return ctx.npcs.select().select(new Filter<Npc>() {
 			@Override
 			public boolean accept(final Npc npc) {
 				final Actor actor;
 				return npc.getId() == ctx.settings.get(SETTING_NPC_ID) && (actor = npc.getInteracting()) != null && actor.equals(local);
 			}
-		}).nearest().first()) {
-			return npc;
-		}
-		return ctx.npcs.getNil();
+		}).nearest().poll();
 	}
 
 	/**

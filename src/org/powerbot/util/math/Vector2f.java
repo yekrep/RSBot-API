@@ -4,7 +4,7 @@ import java.awt.Point;
 import java.awt.geom.Point2D;
 
 public class Vector2f {
-	public float x, y;
+	public final float x, y;
 
 	public Vector2f() {
 		x = 0;

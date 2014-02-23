@@ -12,7 +12,6 @@ import org.powerbot.bot.event.PaintEvent;
 import org.powerbot.bot.event.TextPaintEvent;
 import org.powerbot.gui.BotChrome;
 
-@SuppressWarnings("unused")
 public class Canvas extends java.awt.Canvas {
 	private static final long serialVersionUID = -2284879212465893870L;
 	private BufferedImage real, clean;

@@ -125,7 +125,7 @@ public final class Bot implements Runnable, Stoppable, Validatable {
 		applet.start();
 		new Thread(threadGroup, dispatcher, dispatcher.getClass().getName()).start();
 
-		boolean safemode;
+		final boolean safemode;
 		safemode = Configuration.OS == Configuration.OperatingSystem.MAC && !System.getProperty("java.version").startsWith("1.6");
 
 		if (safemode) {

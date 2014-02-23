@@ -27,10 +27,6 @@ public class IOUtils {
 				buffer.write(temp, 0, read);
 			}
 		} catch (final IOException ignored) {
-			try {
-				buffer.close();
-			} catch (final IOException ignored2) {
-			}
 			buffer = null;
 		} finally {
 			try {

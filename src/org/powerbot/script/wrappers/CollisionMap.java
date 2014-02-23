@@ -14,10 +14,10 @@ import static org.powerbot.script.wrappers.CollisionFlag.WEST;
 
 public final class CollisionMap {
 	private final CollisionFlag[][] clipping;
-	private int xOff;
-	private int yOff;
-	private int width;
-	private int height;
+	private final int xOff;
+	private final int yOff;
+	private final int width;
+	private final int height;
 
 	public CollisionMap(final int xSize, final int ySize) {
 		this.xOff = -1;
