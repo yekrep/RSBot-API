@@ -90,7 +90,7 @@ public class ScriptList {
 		}
 	}
 
-	public static void getLocalList(final List<ScriptBundle.Definition> list, final File parent, final File dir) {
+	private static void getLocalList(final List<ScriptBundle.Definition> list, final File parent, final File dir) {
 		if (!NetworkAccount.getInstance().hasPermission(NetworkAccount.LOCALSCRIPTS)) {
 			return;
 		}

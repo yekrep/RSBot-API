@@ -10,9 +10,9 @@ public class ScriptThreadFactory implements ThreadFactory {
 	public static final String NAME = "script";
 	private static final AtomicInteger pool = new AtomicInteger(1);
 	private final AtomicInteger thread = new AtomicInteger(1);
-	protected final ThreadGroup group;
-	protected final String prefix;
-	protected final ClassLoader cl;
+	private final ThreadGroup group;
+	private final String prefix;
+	private final ClassLoader cl;
 
 	public ScriptThreadFactory(final ThreadGroup group, final ClassLoader cl) {
 		this.group = group;

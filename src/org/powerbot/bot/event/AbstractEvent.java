@@ -8,7 +8,7 @@ public abstract class AbstractEvent extends EventObject {
 	private static final Object SOURCE = new Object();
 	public int id = -1;
 
-	public AbstractEvent() {
+	protected AbstractEvent() {
 		super(SOURCE);
 	}
 

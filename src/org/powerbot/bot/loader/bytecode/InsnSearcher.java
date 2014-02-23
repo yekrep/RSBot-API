@@ -7,7 +7,7 @@ import org.objectweb.asm.tree.MethodNode;
 /**
  * @author Timer
  */
-public class InsnSearcher {
+class InsnSearcher {
 	private final AbstractInsnNode first;
 	private AbstractInsnNode curr;
 
@@ -15,11 +15,11 @@ public class InsnSearcher {
 		this(node.instructions);
 	}
 
-	public InsnSearcher(final InsnList list) {
+	private InsnSearcher(final InsnList list) {
 		this(list.getFirst());
 	}
 
-	public InsnSearcher(final AbstractInsnNode first) {
+	private InsnSearcher(final AbstractInsnNode first) {
 		this.first = first;
 		this.curr = first;
 	}
@@ -28,7 +28,7 @@ public class InsnSearcher {
 		return curr;
 	}
 
-	public void set(final AbstractInsnNode curr) {
+	void set(final AbstractInsnNode curr) {
 		this.curr = curr;
 	}
 

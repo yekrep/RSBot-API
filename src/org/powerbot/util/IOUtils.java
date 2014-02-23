@@ -148,7 +148,7 @@ public class IOUtils {
 		}
 	}
 
-	public static long crc32(final InputStream in) {
+	private static long crc32(final InputStream in) {
 		CheckedInputStream cis = null;
 		try {
 			cis = new CheckedInputStream(in, new CRC32());

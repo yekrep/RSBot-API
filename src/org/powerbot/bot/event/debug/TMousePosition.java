@@ -9,7 +9,7 @@ import org.powerbot.script.methods.MethodContext;
 import static org.powerbot.bot.event.debug.DebugHelper.drawLine;
 
 public class TMousePosition implements TextPaintListener {
-	protected final MethodContext ctx;
+	private final MethodContext ctx;
 
 	public TMousePosition(final MethodContext ctx) {
 		this.ctx = ctx;

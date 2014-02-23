@@ -14,7 +14,7 @@ public class PrintStreamHandler extends Handler {
 		this(System.out, System.err);
 	}
 
-	public PrintStreamHandler(final PrintStream out, final PrintStream err) {
+	private PrintStreamHandler(final PrintStream out, final PrintStream err) {
 		this.out = out;
 		this.err = err;
 	}

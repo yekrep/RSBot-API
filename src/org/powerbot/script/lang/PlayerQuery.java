@@ -7,7 +7,7 @@ import org.powerbot.script.wrappers.Nameable;
 
 public abstract class PlayerQuery<K extends Locatable & Nameable> extends AbstractQuery<PlayerQuery<K>, K>
 		implements Locatable.Query<PlayerQuery<K>>, Nameable.Query<PlayerQuery<K>> {
-	public PlayerQuery(final MethodContext factory) {
+	protected PlayerQuery(final MethodContext factory) {
 		super(factory);
 	}
 

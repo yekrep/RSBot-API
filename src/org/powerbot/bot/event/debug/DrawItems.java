@@ -13,7 +13,7 @@ import org.powerbot.script.wrappers.Component;
 import org.powerbot.script.wrappers.Item;
 
 public class DrawItems implements PaintListener {
-	protected final MethodContext ctx;
+	private final MethodContext ctx;
 
 	public DrawItems(final MethodContext ctx) {
 		this.ctx = ctx;

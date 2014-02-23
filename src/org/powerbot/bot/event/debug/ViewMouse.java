@@ -13,7 +13,7 @@ import org.powerbot.event.PaintListener;
 import org.powerbot.script.methods.MethodContext;
 
 public class ViewMouse implements PaintListener {
-	protected final MethodContext ctx;
+	private final MethodContext ctx;
 
 	public ViewMouse(final MethodContext ctx) {
 		this.ctx = ctx;

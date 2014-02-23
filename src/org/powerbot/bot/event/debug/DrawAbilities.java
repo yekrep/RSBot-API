@@ -11,7 +11,7 @@ import org.powerbot.script.wrappers.Action;
 import org.powerbot.script.wrappers.Component;
 
 public class DrawAbilities implements PaintListener {
-	protected final MethodContext ctx;
+	private final MethodContext ctx;
 
 	public DrawAbilities(final MethodContext ctx) {
 		this.ctx = ctx;

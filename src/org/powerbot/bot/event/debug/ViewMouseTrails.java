@@ -18,7 +18,7 @@ import org.powerbot.script.methods.MethodContext;
  */
 public class ViewMouseTrails implements PaintListener {
 	private static final Deque<Point> h = new LinkedList<Point>();
-	protected final MethodContext ctx;
+	private final MethodContext ctx;
 
 	public ViewMouseTrails(final MethodContext ctx) {
 		this.ctx = ctx;

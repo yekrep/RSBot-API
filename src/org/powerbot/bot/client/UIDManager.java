@@ -11,7 +11,7 @@ import org.powerbot.util.IOUtils;
 /**
  * @author Timer
  */
-public class UIDManager {
+class UIDManager {
 	private static final String newline = System.getProperty("line.separator");
 	private static final String separator = "#";
 	private final CryptFile store;

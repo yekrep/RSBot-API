@@ -11,7 +11,7 @@ import org.objectweb.asm.tree.ClassNode;
 import org.powerbot.bot.loader.transform.TransformSpec;
 
 public abstract class AbstractBridge implements Bridge {
-	public final List<String> entries;
+	private final List<String> entries;
 	public final Map<String, byte[]> loaded;
 	private final TransformSpec transformSpec;
 	private ClassLoader loader;

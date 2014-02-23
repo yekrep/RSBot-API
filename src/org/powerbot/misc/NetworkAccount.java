@@ -44,7 +44,7 @@ public final class NetworkAccount {
 		return (data.get(AUTHKEY).getLong("permissions") & permission) == permission;
 	}
 
-	public String getAuth() {
+	String getAuth() {
 		return data.get(AUTHKEY).get(AUTHKEY);
 	}
 
@@ -60,7 +60,7 @@ public final class NetworkAccount {
 		return data.get(RESPKEY).get("message");
 	}
 
-	public synchronized void revalidate() {
+	synchronized void revalidate() {
 		data.clear();
 
 		if (store.exists()) {
@@ -114,7 +114,7 @@ public final class NetworkAccount {
 		updateCache();
 	}
 
-	public static boolean isValid(final Ini.Member data) {
+	private static boolean isValid(final Ini.Member data) {
 		if (!data.has("email") || !data.has("name") || !data.has("permissions")) {
 			return false;
 		}

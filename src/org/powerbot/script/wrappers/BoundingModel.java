@@ -8,7 +8,7 @@ import org.powerbot.script.methods.MethodProvider;
 import org.powerbot.script.util.Random;
 import org.powerbot.util.math.Vector3;
 
-public abstract class BoundingModel extends MethodProvider {
+abstract class BoundingModel extends MethodProvider {
 	private final Vector3 start, end;
 	private int[][][] triangles;
 
@@ -36,7 +36,7 @@ public abstract class BoundingModel extends MethodProvider {
 
 	public abstract int getZ();
 
-	public Point getCentroid(final int index) {
+	Point getCentroid(final int index) {
 		if (index < 0 || index >= triangles.length) {
 			return new Point(-1, -1);
 		}

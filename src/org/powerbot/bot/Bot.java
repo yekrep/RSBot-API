@@ -25,9 +25,9 @@ import org.powerbot.script.util.Condition;
 import org.powerbot.script.wrappers.Validatable;
 
 public final class Bot implements Runnable, Stoppable, Validatable {
-	public static final Logger log = Logger.getLogger(Bot.class.getName());
-	public static final String GROUP = "game";
-	public final BotChrome chrome;
+	private static final Logger log = Logger.getLogger(Bot.class.getName());
+	private static final String GROUP = "game";
+	private final BotChrome chrome;
 	public final MethodContext ctx;
 	public final ThreadGroup threadGroup;
 	public final EventDispatcher dispatcher;

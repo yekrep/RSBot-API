@@ -15,7 +15,7 @@ import org.powerbot.script.wrappers.Component;
 import org.powerbot.script.wrappers.RelativeLocation;
 
 public class DrawBoundaries implements PaintListener {
-	protected final MethodContext ctx;
+	private final MethodContext ctx;
 
 	public DrawBoundaries(final MethodContext ctx) {
 		this.ctx = ctx;
@@ -81,7 +81,7 @@ public class DrawBoundaries implements PaintListener {
 		}
 	}
 
-	public Point map(final int tx, final int ty, final float rx, final float ry, final int w, final int h, final int radius, final int sin, final int cos, final Point abs) {
+	Point map(final int tx, final int ty, final float rx, final float ry, final int w, final int h, final int radius, final int sin, final int cos, final Point abs) {
 		final float offX = (tx * 4 - rx / 128);
 		final float offY = (ty * 4 - ry / 128);
 		final int d = (int) Math.round(Math.sqrt(Math.pow(offX, 2) + Math.pow(offY, 2)));

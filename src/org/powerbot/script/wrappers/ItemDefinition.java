@@ -12,7 +12,7 @@ import org.powerbot.script.methods.MethodContext;
 class ItemDefinition {
 	private final WeakReference<RSItemDef> def;
 
-	ItemDefinition(final RSItemDef def) {
+	private ItemDefinition(final RSItemDef def) {
 		this.def = new WeakReference<RSItemDef>(def);
 	}
 

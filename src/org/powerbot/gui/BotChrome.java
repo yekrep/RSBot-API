@@ -34,7 +34,7 @@ public class BotChrome extends JFrame implements Closeable {
 
 	private static BotChrome instance;
 	private final Bot bot;
-	public final BotPanel panel;
+	private final BotPanel panel;
 	public final BotOverlay overlay;
 	public final BotMenuBar menuBar;
 	private final WindowCache cache;

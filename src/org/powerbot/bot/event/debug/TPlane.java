@@ -11,7 +11,7 @@ import static org.powerbot.bot.event.debug.DebugHelper.drawLine;
  * @author Timer
  */
 public class TPlane implements TextPaintListener {
-	protected final MethodContext ctx;
+	private final MethodContext ctx;
 
 	public TPlane(final MethodContext ctx) {
 		this.ctx = ctx;

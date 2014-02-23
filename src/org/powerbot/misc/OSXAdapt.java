@@ -100,10 +100,10 @@ public class OSXAdapt implements Runnable {
 	}
 
 	private static final class OSXReflecetionAdapter implements InvocationHandler {
-		protected final Object targetObject;
-		protected final Method targetMethod;
-		protected final String proxySignature;
-		protected static Object app;
+		final Object targetObject;
+		final Method targetMethod;
+		final String proxySignature;
+		static Object app;
 
 		public static void setQuitHandler(final Object target, final Method quitHandler) {
 			setHandler(new OSXReflecetionAdapter("handleQuit", target, quitHandler));
@@ -147,7 +147,7 @@ public class OSXAdapt implements Runnable {
 			}
 		}
 
-		protected OSXReflecetionAdapter(final String proxySignature, final Object target, final Method handler) {
+		OSXReflecetionAdapter(final String proxySignature, final Object target, final Method handler) {
 			this.proxySignature = proxySignature;
 			this.targetObject = target;
 			this.targetMethod = handler;
@@ -168,11 +168,11 @@ public class OSXAdapt implements Runnable {
 			return null;
 		}
 
-		protected boolean isCorrectMethod(final Method method, final Object[] args) {
+		boolean isCorrectMethod(final Method method, final Object[] args) {
 			return (targetMethod != null && proxySignature.equals(method.getName()) && args.length == 1);
 		}
 
-		protected void setApplicationEventHandled(final Object event, final boolean handled) {
+		void setApplicationEventHandled(final Object event, final boolean handled) {
 			if (event != null) {
 				try {
 					final Method m = event.getClass().getDeclaredMethod("setHandled", new Class[]{boolean.class});

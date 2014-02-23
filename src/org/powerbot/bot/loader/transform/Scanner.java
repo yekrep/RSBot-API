@@ -10,7 +10,7 @@ import org.powerbot.bot.client.Client;
 /**
  * @author Paris
  */
-public class Scanner {
+class Scanner {
 	private final static int EOL = 0xA;
 	private final InputStream in;
 

@@ -9,7 +9,7 @@ import org.powerbot.script.wrappers.Tile;
 import static org.powerbot.bot.event.debug.DebugHelper.drawLine;
 
 public class TMapBase implements TextPaintListener {
-	protected final MethodContext ctx;
+	private final MethodContext ctx;
 
 	public TMapBase(final MethodContext ctx) {
 		this.ctx = ctx;

@@ -8,7 +8,7 @@ import org.powerbot.script.methods.MethodContext;
 import static org.powerbot.bot.event.debug.DebugHelper.drawLine;
 
 public class TCamera implements TextPaintListener {
-	protected final MethodContext ctx;
+	private final MethodContext ctx;
 
 	public TCamera(final MethodContext ctx) {
 		this.ctx = ctx;

@@ -10,7 +10,7 @@ import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.wrappers.Player;
 
 public class DrawPlayers implements PaintListener {
-	protected final MethodContext ctx;
+	private final MethodContext ctx;
 
 	public DrawPlayers(final MethodContext ctx) {
 		this.ctx = ctx;

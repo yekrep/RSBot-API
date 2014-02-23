@@ -17,7 +17,7 @@ import org.powerbot.script.wrappers.Tile;
 
 public class DrawObjects implements PaintListener {
 	private static final Color[] C = {Color.GREEN, Color.WHITE, Color.BLACK, Color.BLUE};
-	protected final MethodContext ctx;
+	private final MethodContext ctx;
 
 	public DrawObjects(final MethodContext ctx) {
 		this.ctx = ctx;

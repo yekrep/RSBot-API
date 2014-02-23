@@ -17,7 +17,7 @@ import org.powerbot.util.IOUtils;
  */
 public final class ScriptClassLoader extends ClassLoader {
 	private final URL base;
-	final Map<String, byte[]> files;
+	private final Map<String, byte[]> files;
 
 	public ScriptClassLoader(final URL base) {
 		this.base = base;

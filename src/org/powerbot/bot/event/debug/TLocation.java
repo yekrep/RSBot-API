@@ -10,7 +10,7 @@ import org.powerbot.script.wrappers.Tile;
 import static org.powerbot.bot.event.debug.DebugHelper.drawLine;
 
 public class TLocation implements TextPaintListener {
-	protected final MethodContext ctx;
+	private final MethodContext ctx;
 
 	public TLocation(final MethodContext ctx) {
 		this.ctx = ctx;

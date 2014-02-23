@@ -10,7 +10,7 @@ import org.powerbot.script.wrappers.Tile;
 import org.powerbot.script.wrappers.TileMatrix;
 
 public class DrawProjectiles implements PaintListener, TextPaintListener {
-	protected final MethodContext ctx;
+	private final MethodContext ctx;
 
 	public DrawProjectiles(final MethodContext ctx) {
 		this.ctx = ctx;
