@@ -13,6 +13,8 @@ import javax.swing.JSpinner;
 import javax.swing.JToggleButton;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.WindowConstants;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import org.powerbot.event.PaintListener;
 import org.powerbot.script.wrappers.Drawable;
@@ -37,12 +39,36 @@ public class BotBoundingUtility extends JDialog implements PaintListener {
 		final JComboBox comboBoxTarget = new JComboBox();
 
 		final int min = -5120, max = 5120, step = 4;
-		final JSpinner jSpinner1 = new JSpinner(new SpinnerNumberModel(-1, min, max, step));
-		final JSpinner jSpinner2 = new JSpinner(new SpinnerNumberModel(-2, min, max, step));
-		final JSpinner jSpinner3 = new JSpinner(new SpinnerNumberModel(-3, min, max, step));
-		final JSpinner jSpinner4 = new JSpinner(new SpinnerNumberModel(1, min, max, step));
-		final JSpinner jSpinner5 = new JSpinner(new SpinnerNumberModel(2, min, max, step));
-		final JSpinner jSpinner6 = new JSpinner(new SpinnerNumberModel(3, min, max, step));
+		final SpinnerNumberModel
+				modelX1 = new SpinnerNumberModel(-256, min, max, step),
+				modelY1 = new SpinnerNumberModel(0, min, max, step),
+				modelZ1 = new SpinnerNumberModel(-256, min, max, step),
+				modelX2 = new SpinnerNumberModel(256, min, max, step),
+				modelY2 = new SpinnerNumberModel(512, min, max, step),
+				modelZ2 = new SpinnerNumberModel(256, min, max, step);
+		final ChangeListener l = new ChangeListener() {
+			@Override
+			public void stateChanged(final ChangeEvent changeEvent) {
+				if (target != null) {
+					target.setBounds(
+							modelX1.getNumber().intValue(), modelY1.getNumber().intValue(), modelZ1.getNumber().intValue(),
+							modelX2.getNumber().intValue(), modelY2.getNumber().intValue(), modelZ2.getNumber().intValue()
+					);
+				}
+			}
+		};
+		final JSpinner spinnerStartX = new JSpinner(modelX1);
+		spinnerStartX.addChangeListener(l);
+		final JSpinner spinnerStartY = new JSpinner(modelY1);
+		spinnerStartY.addChangeListener(l);
+		final JSpinner spinnerStartZ = new JSpinner(modelZ1);
+		spinnerStartZ.addChangeListener(l);
+		final JSpinner spinnerEndX = new JSpinner(modelX2);
+		spinnerEndX.addChangeListener(l);
+		final JSpinner spinnerEndY = new JSpinner(modelY2);
+		spinnerEndY.addChangeListener(l);
+		final JSpinner spinnerEndZ = new JSpinner(modelZ2);
+		spinnerEndZ.addChangeListener(l);
 
 		final JButton buttonExit = new JButton("Exit");
 		final JButton buttonCopy = new JButton("Copy to Clipboard");
@@ -88,24 +114,24 @@ public class BotBoundingUtility extends JDialog implements PaintListener {
 																		.addGroup(layout.createSequentialGroup()
 																				.addComponent(labelY)
 																				.addGap(18, 18, 18)
-																				.addComponent(jSpinner2, GroupLayout.PREFERRED_SIZE, 75, GroupLayout.PREFERRED_SIZE))
+																				.addComponent(spinnerStartY, GroupLayout.PREFERRED_SIZE, 75, GroupLayout.PREFERRED_SIZE))
 																		.addGroup(layout.createSequentialGroup()
 																				.addComponent(labelZ)
 																				.addGap(18, 18, 18)
-																				.addComponent(jSpinner3, GroupLayout.PREFERRED_SIZE, 75, GroupLayout.PREFERRED_SIZE))
+																				.addComponent(spinnerStartZ, GroupLayout.PREFERRED_SIZE, 75, GroupLayout.PREFERRED_SIZE))
 																		.addGroup(layout.createSequentialGroup()
 																				.addComponent(labelX)
 																				.addGap(18, 18, 18)
 																				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
 																						.addComponent(labelStart)
-																						.addComponent(jSpinner1, GroupLayout.PREFERRED_SIZE, 75, GroupLayout.PREFERRED_SIZE))))
+																						.addComponent(spinnerStartX, GroupLayout.PREFERRED_SIZE, 75, GroupLayout.PREFERRED_SIZE))))
 																.addGap(18, 18, 18)
 																.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
 																		.addComponent(labelStop)
 																		.addComponent(labelTarget)
-																		.addComponent(jSpinner4, GroupLayout.PREFERRED_SIZE, 75, GroupLayout.PREFERRED_SIZE)
-																		.addComponent(jSpinner5, GroupLayout.PREFERRED_SIZE, 75, GroupLayout.PREFERRED_SIZE)
-																		.addComponent(jSpinner6, GroupLayout.PREFERRED_SIZE, 75, GroupLayout.PREFERRED_SIZE))))
+																		.addComponent(spinnerEndX, GroupLayout.PREFERRED_SIZE, 75, GroupLayout.PREFERRED_SIZE)
+																		.addComponent(spinnerEndY, GroupLayout.PREFERRED_SIZE, 75, GroupLayout.PREFERRED_SIZE)
+																		.addComponent(spinnerEndZ, GroupLayout.PREFERRED_SIZE, 75, GroupLayout.PREFERRED_SIZE))))
 												.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
 		);
 		layout.setVerticalGroup(
@@ -124,18 +150,18 @@ public class BotBoundingUtility extends JDialog implements PaintListener {
 								.addGap(18, 18, 18)
 								.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
 										.addComponent(labelX)
-										.addComponent(jSpinner1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-										.addComponent(jSpinner4, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+										.addComponent(spinnerStartX, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+										.addComponent(spinnerEndX, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 								.addGap(18, 18, 18)
 								.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
 										.addComponent(labelY)
-										.addComponent(jSpinner2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-										.addComponent(jSpinner5, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+										.addComponent(spinnerStartY, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+										.addComponent(spinnerEndY, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 								.addGap(18, 18, 18)
 								.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
 										.addComponent(labelZ)
-										.addComponent(jSpinner3, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-										.addComponent(jSpinner6, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+										.addComponent(spinnerStartZ, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+										.addComponent(spinnerEndZ, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 								.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 								.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
 										.addComponent(buttonExit)
