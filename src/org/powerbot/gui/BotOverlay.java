@@ -12,9 +12,11 @@ import java.awt.Insets;
 import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
 
 import javax.swing.JDialog;
+import javax.swing.SwingUtilities;
 
 import org.powerbot.Configuration;
 import org.powerbot.bot.Bot;
@@ -86,6 +88,7 @@ public class BotOverlay extends JDialog {
 
 		paintEvent = new PaintEvent();
 		textPaintEvent = new TextPaintEvent();
+		final AtomicInteger c = new AtomicInteger(0);
 
 		repaint = new Thread(new Runnable() {
 			@Override
@@ -95,6 +98,15 @@ public class BotOverlay extends JDialog {
 						Thread.sleep(40);
 					} catch (final InterruptedException ignored) {
 						break;
+					}
+
+					if (c.getAndIncrement() % 5 == 0) {
+						SwingUtilities.invokeLater(new Runnable() {
+							@Override
+							public void run() {
+								adjustSize();
+							}
+						});
 					}
 
 					if (!parent.isVisible() || (parent.getExtendedState() & Frame.ICONIFIED) == Frame.ICONIFIED) {
@@ -155,12 +167,14 @@ public class BotOverlay extends JDialog {
 			d2 = canvas.getSize();
 		}
 
-		setLocation(p);
-		setSize(d2);
-		setPreferredSize(d2);
-		panel.setSize(d2);
-		panel.setPreferredSize(d2);
-		pack();
+		if (!p.equals(getLocation()) || !d2.equals(getSize())) {
+			setLocation(p);
+			setSize(d2);
+			setPreferredSize(d2);
+			panel.setSize(d2);
+			panel.setPreferredSize(d2);
+			pack();
+		}
 	}
 
 	@Override
