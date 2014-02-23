@@ -58,7 +58,7 @@ public class BotWidgetExplorer extends JFrame implements PaintListener {
 			@Override
 			public void windowClosing(final WindowEvent e) {
 				setVisible(false);
-				chrome.getBot().dispatcher.remove(this);
+				chrome.getBot().dispatcher.remove(BotWidgetExplorer.this);
 				highlightArea = null;
 				dispose();
 				instances.remove(chrome);

@@ -1,160 +1,157 @@
 package org.powerbot.gui;
 
+import java.awt.Graphics;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
+import javax.swing.GroupLayout;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JSpinner;
+import javax.swing.JToggleButton;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.WindowConstants;
 
-public class BotBoundingUtility extends JDialog {
-	private final BotChrome parent;
+import org.powerbot.event.PaintListener;
+import org.powerbot.script.wrappers.Drawable;
+import org.powerbot.script.wrappers.Interactive;
 
-	public BotBoundingUtility(final BotChrome parent) {
-		this.parent = parent;
+public class BotBoundingUtility extends JDialog implements PaintListener {
+	private final BotChrome chrome;
+	private Interactive target;
 
-		javax.swing.JButton jButton1;
-		javax.swing.JButton jButton2;
-		javax.swing.JButton jButton3;
-		javax.swing.JComboBox jComboBox1;
-		javax.swing.JLabel jLabel1;
-		javax.swing.JLabel jLabel3;
-		javax.swing.JLabel jLabel4;
-		javax.swing.JLabel jLabel5;
-		javax.swing.JLabel jLabel6;
-		javax.swing.JLabel jLabel7;
-		javax.swing.JLabel jLabel8;
-		javax.swing.JSpinner jSpinner1;
-		javax.swing.JSpinner jSpinner2;
-		javax.swing.JSpinner jSpinner3;
-		javax.swing.JSpinner jSpinner4;
-		javax.swing.JSpinner jSpinner5;
-		javax.swing.JSpinner jSpinner6;
-		javax.swing.JToggleButton jToggleButton1;
+	public BotBoundingUtility(final BotChrome chrome) {
+		this.chrome = chrome;
+		target = null;
 
-		jLabel1 = new javax.swing.JLabel();
-		jComboBox1 = new javax.swing.JComboBox();
-		jButton1 = new javax.swing.JButton();
-		jButton2 = new javax.swing.JButton();
-		jToggleButton1 = new javax.swing.JToggleButton();
-		jLabel3 = new javax.swing.JLabel();
-		jLabel4 = new javax.swing.JLabel();
-		jLabel5 = new javax.swing.JLabel();
-		jLabel6 = new javax.swing.JLabel();
-		jLabel7 = new javax.swing.JLabel();
-		jLabel8 = new javax.swing.JLabel();
-		jSpinner1 = new javax.swing.JSpinner();
-		jSpinner2 = new javax.swing.JSpinner();
-		jSpinner3 = new javax.swing.JSpinner();
-		jSpinner4 = new javax.swing.JSpinner();
-		jSpinner5 = new javax.swing.JSpinner();
-		jSpinner6 = new javax.swing.JSpinner();
-		jButton3 = new javax.swing.JButton();
+		final JLabel labelType = new JLabel("Choose type:");
+		final JLabel labelX = new JLabel("X");
+		final JLabel labelY = new JLabel("Y");
+		final JLabel labelZ = new JLabel("Z");
+		final JLabel labelStart = new JLabel("Start");
+		final JLabel labelStop = new JLabel("Stop");
+		final JLabel labelTarget = new JLabel("Target: unknown");
 
-		setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+		final JComboBox comboBoxTarget = new JComboBox();
 
-		jLabel1.setText("Choose type:");
+		final int min = -5120, max = 5120, step = 4;
+		final JSpinner jSpinner1 = new JSpinner(new SpinnerNumberModel(-1, min, max, step));
+		final JSpinner jSpinner2 = new JSpinner(new SpinnerNumberModel(-2, min, max, step));
+		final JSpinner jSpinner3 = new JSpinner(new SpinnerNumberModel(-3, min, max, step));
+		final JSpinner jSpinner4 = new JSpinner(new SpinnerNumberModel(1, min, max, step));
+		final JSpinner jSpinner5 = new JSpinner(new SpinnerNumberModel(2, min, max, step));
+		final JSpinner jSpinner6 = new JSpinner(new SpinnerNumberModel(3, min, max, step));
 
-		jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"Item 1", "Item 2", "Item 3", "Item 4"}));
+		final JButton buttonExit = new JButton("Exit");
+		final JButton buttonCopy = new JButton("Copy to Clipboard");
+		final JToggleButton buttonSelectMode = new JToggleButton("Toggle Select");
+		final JButton buttonReset = new JButton("Reset");
 
-		jButton1.setText("Exit");
+		chrome.getBot().dispatcher.add(this);
+		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(final WindowEvent e) {
+				setVisible(false);
+				chrome.getBot().dispatcher.remove(BotBoundingUtility.this);
+				dispose();
+			}
+		});
 
-		jButton2.setLabel("Copy to Clipboard");
+		comboBoxTarget.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"Item 1", "Item 2", "Item 3", "Item 4"}));
 
-		jToggleButton1.setText("Toggle Select");
-
-		jLabel3.setText("X");
-
-		jLabel4.setText("Y");
-
-		jLabel5.setText("Z");
-
-		jLabel6.setText("Start");
-
-		jLabel7.setText("Stop");
-
-		jLabel8.setText("Target: unknown");
-
-		jButton3.setText("Reset");
-
-		javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+		final GroupLayout layout = new GroupLayout(getContentPane());
 		getContentPane().setLayout(layout);
 		layout.setHorizontalGroup(
-				layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+				layout.createParallelGroup(GroupLayout.Alignment.LEADING)
 						.addGroup(layout.createSequentialGroup()
 								.addContainerGap()
-								.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-										.addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+								.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+										.addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
 												.addGap(0, 0, Short.MAX_VALUE)
-												.addComponent(jButton3)
+												.addComponent(buttonReset)
 												.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-												.addComponent(jToggleButton1)
+												.addComponent(buttonSelectMode)
 												.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-												.addComponent(jButton2)
+												.addComponent(buttonCopy)
 												.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-												.addComponent(jButton1)
+												.addComponent(buttonExit)
 												.addGap(10, 10, 10))
 										.addGroup(layout.createSequentialGroup()
-												.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-														.addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+												.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+														.addComponent(comboBoxTarget, GroupLayout.PREFERRED_SIZE, 100, GroupLayout.PREFERRED_SIZE)
 														.addGroup(layout.createSequentialGroup()
-																.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-																		.addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+																.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+																		.addComponent(labelType, GroupLayout.PREFERRED_SIZE, 100, GroupLayout.PREFERRED_SIZE)
 																		.addGroup(layout.createSequentialGroup()
-																				.addComponent(jLabel4)
+																				.addComponent(labelY)
 																				.addGap(18, 18, 18)
-																				.addComponent(jSpinner2, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
+																				.addComponent(jSpinner2, GroupLayout.PREFERRED_SIZE, 75, GroupLayout.PREFERRED_SIZE))
 																		.addGroup(layout.createSequentialGroup()
-																				.addComponent(jLabel5)
+																				.addComponent(labelZ)
 																				.addGap(18, 18, 18)
-																				.addComponent(jSpinner3, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
+																				.addComponent(jSpinner3, GroupLayout.PREFERRED_SIZE, 75, GroupLayout.PREFERRED_SIZE))
 																		.addGroup(layout.createSequentialGroup()
-																				.addComponent(jLabel3)
+																				.addComponent(labelX)
 																				.addGap(18, 18, 18)
-																				.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-																						.addComponent(jLabel6)
-																						.addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))))
+																				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+																						.addComponent(labelStart)
+																						.addComponent(jSpinner1, GroupLayout.PREFERRED_SIZE, 75, GroupLayout.PREFERRED_SIZE))))
 																.addGap(18, 18, 18)
-																.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-																		.addComponent(jLabel7)
-																		.addComponent(jLabel8)
-																		.addComponent(jSpinner4, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-																		.addComponent(jSpinner5, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-																		.addComponent(jSpinner6, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))))
-												.addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+																.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+																		.addComponent(labelStop)
+																		.addComponent(labelTarget)
+																		.addComponent(jSpinner4, GroupLayout.PREFERRED_SIZE, 75, GroupLayout.PREFERRED_SIZE)
+																		.addComponent(jSpinner5, GroupLayout.PREFERRED_SIZE, 75, GroupLayout.PREFERRED_SIZE)
+																		.addComponent(jSpinner6, GroupLayout.PREFERRED_SIZE, 75, GroupLayout.PREFERRED_SIZE))))
+												.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
 		);
 		layout.setVerticalGroup(
-				layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+				layout.createParallelGroup(GroupLayout.Alignment.LEADING)
 						.addGroup(layout.createSequentialGroup()
 								.addContainerGap()
-								.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-										.addComponent(jLabel1)
-										.addComponent(jLabel8))
+								.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+										.addComponent(labelType)
+										.addComponent(labelTarget))
 								.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-								.addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+								.addComponent(comboBoxTarget, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 								.addGap(18, 18, 18)
-								.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-										.addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addComponent(jLabel7))
+								.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+										.addComponent(labelStart, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
+										.addComponent(labelStop))
 								.addGap(18, 18, 18)
-								.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-										.addComponent(jLabel3)
-										.addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addComponent(jSpinner4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+								.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+										.addComponent(labelX)
+										.addComponent(jSpinner1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+										.addComponent(jSpinner4, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 								.addGap(18, 18, 18)
-								.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-										.addComponent(jLabel4)
-										.addComponent(jSpinner2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addComponent(jSpinner5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+								.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+										.addComponent(labelY)
+										.addComponent(jSpinner2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+										.addComponent(jSpinner5, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 								.addGap(18, 18, 18)
-								.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-										.addComponent(jLabel5)
-										.addComponent(jSpinner3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addComponent(jSpinner6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-								.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-								.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-										.addComponent(jButton1)
-										.addComponent(jButton2)
-										.addComponent(jToggleButton1)
-										.addComponent(jButton3))
+								.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+										.addComponent(labelZ)
+										.addComponent(jSpinner3, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+										.addComponent(jSpinner6, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+								.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+								.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+										.addComponent(buttonExit)
+										.addComponent(buttonCopy)
+										.addComponent(buttonSelectMode)
+										.addComponent(buttonReset))
 								.addContainerGap())
 		);
 
 		pack();
+	}
+
+	@Override
+	public void repaint(final Graphics render) {
+		if (target != null && target instanceof Drawable) {
+			((Drawable) target).draw(render);
+		}
 	}
 }

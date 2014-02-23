@@ -54,6 +54,9 @@ public final class BotMenuView implements ActionListener {
 		final JMenuItem settingExplorer = new JMenuItem(BotLocale.SETTINGEXPLORER);
 		settingExplorer.addActionListener(this);
 		menu.add(settingExplorer);
+		final JMenuItem boundingUtility = new JMenuItem(BotLocale.BOUNDINGUTILITY);
+		boundingUtility.addActionListener(this);
+		menu.add(boundingUtility);
 
 		menu.addSeparator();
 
@@ -139,6 +142,8 @@ public final class BotMenuView implements ActionListener {
 			BotWidgetExplorer.getInstance(chrome).display();
 		} else if (s.equals(BotLocale.SETTINGEXPLORER)) {
 			BotSettingExplorer.getInstance(chrome).display();
+		} else if (s.equals(BotLocale.BOUNDINGUTILITY)) {
+			new BotBoundingUtility(chrome).setVisible(true);
 		} else {
 			final JCheckBoxMenuItem item = (JCheckBoxMenuItem) e.getSource();
 			item.setSelected(!item.isSelected());
