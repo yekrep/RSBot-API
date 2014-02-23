@@ -34,6 +34,7 @@ public final class Bot implements Runnable, Stoppable, Validatable {
 	public Applet applet;
 	public final ScriptController controller;
 	private final AtomicBoolean ready, stopping;
+	public final AtomicBoolean pending;
 
 	public Bot(final BotChrome chrome) {
 		this.chrome = chrome;
@@ -43,6 +44,7 @@ public final class Bot implements Runnable, Stoppable, Validatable {
 		controller = new ScriptController(ctx, dispatcher);
 		ready = new AtomicBoolean(false);
 		stopping = new AtomicBoolean(false);
+		pending = new AtomicBoolean(false);
 	}
 
 	@Override
@@ -98,6 +100,7 @@ public final class Bot implements Runnable, Stoppable, Validatable {
 				public void run() {
 					while (!stopping.get()) {
 						log.warning("Downloading update \u2014 please wait");
+						pending.set(true);
 						try {
 							loader.upload(loader.getPackHash());
 							break;
@@ -111,6 +114,7 @@ public final class Bot implements Runnable, Stoppable, Validatable {
 								break;
 							}
 						}
+						pending.set(false);
 					}
 				}
 			}).start();

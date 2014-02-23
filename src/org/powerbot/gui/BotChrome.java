@@ -11,6 +11,7 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -141,7 +142,9 @@ public class BotChrome extends JFrame implements Closeable {
 			cache.close();
 		}
 
+		boolean pending = false;
 		if (bot != null) {
+			pending = bot.pending.get();
 			new Thread(new Runnable() {
 				@Override
 				public void run() {
@@ -158,11 +161,12 @@ public class BotChrome extends JFrame implements Closeable {
 			return;
 		}
 
+		final long timeout = TimeUnit.SECONDS.toMillis(pending ? 120 : 6);
 		final Thread t = new Thread(new Runnable() {
 			@Override
 			public void run() {
 				try {
-					Thread.sleep(6000);
+					Thread.sleep(timeout);
 					log.info("Terminating process");
 					System.exit(1);
 				} catch (final InterruptedException ignored) {
