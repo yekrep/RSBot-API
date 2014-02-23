@@ -183,12 +183,6 @@ public class BotBoundingUtility extends JFrame implements PaintListener, MouseLi
 		buttonReset.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent actionEvent) {
-				modelX1.setValue(-256);
-				modelX2.setValue(256);
-				modelY1.setValue(-512);
-				modelY2.setValue(0);
-				modelZ1.setValue(-256);
-				modelZ2.setValue(256);
 				set(target);
 			}
 		});
@@ -329,6 +323,13 @@ public class BotBoundingUtility extends JFrame implements PaintListener, MouseLi
 			modelY2.setValue(y2);
 			modelZ1.setValue(z1);
 			modelZ2.setValue(z2);
+		} else {
+			modelX1.setValue(-256);
+			modelX2.setValue(256);
+			modelY1.setValue(-512);
+			modelY2.setValue(0);
+			modelZ1.setValue(-256);
+			modelZ2.setValue(256);
 		}
 	}
 
