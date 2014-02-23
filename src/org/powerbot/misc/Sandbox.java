@@ -85,7 +85,7 @@ public class Sandbox extends SecurityManager {
 				throw new SecurityException(name);
 			}
 		} else if (perm instanceof AWTPermission) {
-			if (name.equals("showWindowWithoutWarningBanner") && !isCallingClass(BotChrome.class)) {
+			if (name.equals("showWindowWithoutWarningBanner") && isScriptThread()) {
 				throw new SecurityException();
 			}
 		} else if (perm instanceof FilePermission) {
