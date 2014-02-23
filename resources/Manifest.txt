@@ -2,7 +2,7 @@ Main-Class: org.powerbot.Boot
 
 Name: org/powerbot/
 Sealed: true
-Specification-Title: "RSBot"
-Specification-Vendor:  "org.powerbot"
-Implementation-Title: "RSBot"
-Implementation-Vendor: "org.powerbot"
+Specification-Title: RSBot
+Specification-Vendor: Dequeue Ltd t/a powerbot
+Implementation-Title: RSBot
+Implementation-Vendor: Dequeue Ltd t/a powerbot
