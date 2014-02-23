@@ -164,7 +164,7 @@ public class BotBoundingUtility extends JFrame implements PaintListener, MouseLi
 			@Override
 			public void actionPerformed(final ActionEvent actionEvent) {
 				final String str = String.format(
-						"final Vector3 start = new Vector3(%s, %s, %s); final Vector3 end = new Vector3(%s, %s, %s);",
+						"final int[] start = {%s, %s, %s}; final int[] end = {%s, %s, %s};",
 						modelX1.getNumber().intValue(), modelY1.getNumber().intValue(), modelZ1.getNumber().intValue(),
 						modelX2.getNumber().intValue(), modelY2.getNumber().intValue(), modelZ2.getNumber().intValue()
 				);
