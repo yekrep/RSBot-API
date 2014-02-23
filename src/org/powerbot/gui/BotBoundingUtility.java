@@ -159,16 +159,6 @@ public class BotBoundingUtility extends JFrame implements PaintListener, MouseLi
 		spinnerEndZ.addChangeListener(l);
 		l.stateChanged(null);
 
-		final ActionListener el = new ActionListener() {
-			@Override
-			public void actionPerformed(final ActionEvent actionEvent) {
-				setVisible(false);
-				chrome.getBot().dispatcher.remove(BotBoundingUtility.this);
-				dispose();
-			}
-		};
-		final JButton buttonExit = new JButton("Exit");
-		buttonExit.addActionListener(el);
 		final JButton buttonCopy = new JButton("Output");
 		buttonCopy.addActionListener(new ActionListener() {
 			@Override
@@ -210,7 +200,6 @@ public class BotBoundingUtility extends JFrame implements PaintListener, MouseLi
 			public void windowClosing(final WindowEvent e) {
 				setVisible(false);
 				chrome.getBot().dispatcher.remove(this);
-				el.actionPerformed(null);
 				dispose();
 				instance.set(null);
 			}
@@ -231,7 +220,6 @@ public class BotBoundingUtility extends JFrame implements PaintListener, MouseLi
 												.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
 												.addComponent(buttonCopy)
 												.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-												.addComponent(buttonExit)
 												.addGap(10, 10, 10))
 										.addGroup(layout.createSequentialGroup()
 												.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -292,7 +280,6 @@ public class BotBoundingUtility extends JFrame implements PaintListener, MouseLi
 										.addComponent(spinnerEndZ, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 								.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 								.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-										.addComponent(buttonExit)
 										.addComponent(buttonCopy)
 										.addComponent(buttonSelect)
 										.addComponent(buttonReset))
