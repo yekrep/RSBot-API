@@ -70,8 +70,8 @@ public class BotBoundingUtility extends JFrame implements PaintListener, MouseLi
 		final JLabel labelStop = new JLabel("Stop");
 		labelTarget = new JLabel("Target: null");
 
-		final JComboBox<TargetSelection> comboBoxTarget = new JComboBox<TargetSelection>();
-		comboBoxTarget.setModel(new DefaultComboBoxModel<TargetSelection>(new TargetSelection[]{
+		final JComboBox comboBoxTarget = new JComboBox();
+		comboBoxTarget.setModel(new DefaultComboBoxModel(new TargetSelection[]{
 				new TargetSelection<Player>("Player", new Callable<Player>() {
 					@Override
 					public Player call() {
