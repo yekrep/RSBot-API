@@ -1,6 +1,6 @@
 Main-Class: org.powerbot.Boot
 
-Name: org/powerbot
+Name: org/powerbot/
 Sealed: true
 Specification-Title: "RSBot"
 Specification-Vendor:  "org.powerbot"
