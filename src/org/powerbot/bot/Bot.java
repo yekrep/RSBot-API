@@ -16,6 +16,7 @@ import org.powerbot.bot.client.Client;
 import org.powerbot.bot.client.Constants;
 import org.powerbot.bot.event.EventDispatcher;
 import org.powerbot.gui.BotChrome;
+import org.powerbot.misc.Sandbox;
 import org.powerbot.script.internal.InputHandler;
 import org.powerbot.script.internal.ScriptController;
 import org.powerbot.script.lang.Stoppable;
@@ -147,6 +148,11 @@ public final class Bot implements Runnable, Stoppable, Validatable {
 
 	@Override
 	public void stop() {
+		if (Sandbox.isScriptThread()) {
+			controller.stop();
+			return;
+		}
+
 		if (!stopping.compareAndSet(false, true)) {
 			return;
 		}
