@@ -2,6 +2,9 @@ package org.powerbot.gui;
 
 import java.awt.Graphics;
 import java.awt.Point;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -31,14 +34,23 @@ import org.powerbot.script.wrappers.Drawable;
 import org.powerbot.script.wrappers.GameObject;
 import org.powerbot.script.wrappers.GroundItem;
 import org.powerbot.script.wrappers.Interactive;
+import org.powerbot.script.wrappers.Model;
 import org.powerbot.script.wrappers.Npc;
 import org.powerbot.script.wrappers.Player;
+import org.powerbot.script.wrappers.Renderable;
 import org.powerbot.script.wrappers.Tile;
 import org.powerbot.script.wrappers.TileMatrix;
 
 public class BotBoundingUtility extends JDialog implements PaintListener, MouseListener {
 	private final BotChrome chrome;
 	private final JLabel labelTarget;
+	private final SpinnerNumberModel
+			modelX1 = new SpinnerNumberModel(-256, -5120, 5120, 4),
+			modelY1 = new SpinnerNumberModel(-512, -5120, 5120, 4),
+			modelZ1 = new SpinnerNumberModel(-256, -5120, 5120, 4),
+			modelX2 = new SpinnerNumberModel(256, -5120, 5120, 4),
+			modelY2 = new SpinnerNumberModel(0, -5120, 5120, 4),
+			modelZ2 = new SpinnerNumberModel(256, -5120, 5120, 4);
 	private final AtomicBoolean selecting;
 	private final Point point;
 	private TargetSelection<Interactive> selection;
@@ -111,14 +123,6 @@ public class BotBoundingUtility extends JDialog implements PaintListener, MouseL
 			}
 		});
 
-		final int min = -5120, max = 5120, step = 4;
-		final SpinnerNumberModel
-				modelX1 = new SpinnerNumberModel(-256, min, max, step),
-				modelY1 = new SpinnerNumberModel(-512, min, max, step),
-				modelZ1 = new SpinnerNumberModel(-256, min, max, step),
-				modelX2 = new SpinnerNumberModel(256, min, max, step),
-				modelY2 = new SpinnerNumberModel(0, min, max, step),
-				modelZ2 = new SpinnerNumberModel(256, min, max, step);
 		final ChangeListener l = new ChangeListener() {
 			@Override
 			public void stateChanged(final ChangeEvent changeEvent) {
@@ -145,8 +149,31 @@ public class BotBoundingUtility extends JDialog implements PaintListener, MouseL
 		spinnerEndZ.addChangeListener(l);
 		l.stateChanged(null);
 
+		final ActionListener el = new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent actionEvent) {
+				setVisible(false);
+				chrome.getBot().dispatcher.remove(BotBoundingUtility.this);
+				dispose();
+			}
+		};
 		final JButton buttonExit = new JButton("Exit");
+		buttonExit.addActionListener(el);
 		final JButton buttonCopy = new JButton("Copy to Clipboard");
+		buttonCopy.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent actionEvent) {
+				final String str = String.format(
+						"final Vector3 start = new Vector3(%s, %s, %s); final Vector3 end = new Vector3(%s, %s, %s);",
+						modelX1.getNumber().intValue(), modelY1.getNumber().intValue(), modelZ1.getNumber().intValue(),
+						modelX2.getNumber().intValue(), modelY2.getNumber().intValue(), modelZ2.getNumber().intValue()
+				);
+				final Clipboard c = Toolkit.getDefaultToolkit().getSystemClipboard();
+				if (c != null) {
+					c.setContents(new StringSelection(str), null);
+				}
+			}
+		});
 		final JButton buttonSelect = new JButton("Begin Select");
 		buttonSelect.addActionListener(new ActionListener() {
 			@Override
@@ -164,6 +191,7 @@ public class BotBoundingUtility extends JDialog implements PaintListener, MouseL
 				modelY2.setValue(0);
 				modelZ1.setValue(-256);
 				modelZ2.setValue(256);
+				set(target);
 			}
 		});
 
@@ -172,9 +200,7 @@ public class BotBoundingUtility extends JDialog implements PaintListener, MouseL
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(final WindowEvent e) {
-				setVisible(false);
-				chrome.getBot().dispatcher.remove(BotBoundingUtility.this);
-				dispose();
+				el.actionPerformed(null);
 			}
 		});
 
@@ -278,10 +304,38 @@ public class BotBoundingUtility extends JDialog implements PaintListener, MouseL
 		return r;
 	}
 
+	private void set(final Interactive interactive) {
+		if (interactive == null || !(interactive instanceof Renderable)) {
+			return;
+		}
+		final Model m = ((Renderable) interactive).getModel();
+		if (m != null) {
+			m.update();
+			int x1 = 0, y1 = 0, z1 = 0;
+			int x2 = 0, y2 = 0, z2 = 0;
+			for (int i = 0; i < m.numFaces; i++) {
+				final int a = m.faceA[i], b = m.faceB[i], c = m.faceC[i];
+				final int x = m.xPoints[a], y = m.yPoints[b], z = m.zPoints[c];
+				x1 = Math.min(x1, x);
+				x2 = Math.max(x2, x);
+				y1 = Math.min(y1, y);
+				y2 = Math.max(y2, y);
+				z1 = Math.min(z1, z);
+				z2 = Math.max(z2, z);
+			}
+			modelX1.setValue(x1);
+			modelX2.setValue(x2);
+			modelY1.setValue(y1);
+			modelY2.setValue(y2);
+			modelZ1.setValue(z1);
+			modelZ2.setValue(z2);
+		}
+	}
+
 	@Override
 	public void repaint(final Graphics render) {
 		if (target != null && target instanceof Drawable) {
-			((Drawable) target).draw(render);
+			((Drawable) target).draw(render, 64);
 		}
 	}
 
@@ -302,6 +356,7 @@ public class BotBoundingUtility extends JDialog implements PaintListener, MouseL
 				target = null;
 			}
 			labelTarget.setText("Target: " + target);
+			set(target);
 		}
 	}
 
