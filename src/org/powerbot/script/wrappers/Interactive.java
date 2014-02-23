@@ -118,6 +118,16 @@ public abstract class Interactive extends MethodProvider implements Targetable, 
 
 	public abstract void setBounds(final int x1, final int x2, final int y1, final int y2, final int z1, final int z2);
 
+	public static ChainingIterator<Interactive> doSetBounds(final int x1, final int x2, final int y1, final int y2, final int z1, final int z2) {
+		return new ChainingIterator<Interactive>() {
+			@Override
+			public boolean next(final int index, final Interactive item) {
+				item.setBounds(x1, x2, y1, y2, z1, z2);
+				return true;
+			}
+		};
+	}
+
 	@Override
 	public boolean isValid() {
 		return true;
