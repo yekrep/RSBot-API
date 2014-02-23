@@ -20,7 +20,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
@@ -41,7 +41,7 @@ import org.powerbot.script.wrappers.Renderable;
 import org.powerbot.script.wrappers.Tile;
 import org.powerbot.script.wrappers.TileMatrix;
 
-public class BotBoundingUtility extends JDialog implements PaintListener, MouseListener {
+public class BotBoundingUtility extends JFrame implements PaintListener, MouseListener {
 	private final JLabel labelTarget;
 	private final SpinnerNumberModel
 			modelX1 = new SpinnerNumberModel(-256, -5120, 5120, 4),
@@ -56,11 +56,12 @@ public class BotBoundingUtility extends JDialog implements PaintListener, MouseL
 	private Interactive target;
 
 	public BotBoundingUtility(final BotChrome chrome) {
-		this.selecting = new AtomicBoolean(false);
-		this.point = new Point(-1, -1);
-		this.selection = null;
+		selecting = new AtomicBoolean(false);
+		point = new Point(-1, -1);
+		selection = null;
 		target = null;
 
+		setTitle("Bounding Utility");
 		final JLabel labelType = new JLabel("Choose type:");
 		final JLabel labelX = new JLabel("X");
 		final JLabel labelY = new JLabel("Y");
@@ -69,8 +70,8 @@ public class BotBoundingUtility extends JDialog implements PaintListener, MouseL
 		final JLabel labelStop = new JLabel("Stop");
 		labelTarget = new JLabel("Target: null");
 
-		final JComboBox comboBoxTarget = new JComboBox();
-		comboBoxTarget.setModel(new DefaultComboBoxModel(new TargetSelection[]{
+		final JComboBox<TargetSelection> comboBoxTarget = new JComboBox<TargetSelection>();
+		comboBoxTarget.setModel(new DefaultComboBoxModel<TargetSelection>(new TargetSelection[]{
 				new TargetSelection<Player>("Player", new Callable<Player>() {
 					@Override
 					public Player call() {
@@ -287,6 +288,7 @@ public class BotBoundingUtility extends JDialog implements PaintListener, MouseL
 		);
 
 		pack();
+		setLocationRelativeTo(chrome);
 	}
 
 	private Interactive nearest(final Iterable<? extends Interactive> list) {
