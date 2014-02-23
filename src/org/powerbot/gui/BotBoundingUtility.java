@@ -201,7 +201,9 @@ public class BotBoundingUtility extends JFrame implements PaintListener, MouseLi
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(final WindowEvent e) {
+				chrome.getBot().dispatcher.remove(this);
 				el.actionPerformed(null);
+				dispose();
 			}
 		});
 
