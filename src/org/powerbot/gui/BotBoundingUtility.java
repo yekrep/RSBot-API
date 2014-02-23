@@ -51,8 +51,9 @@ public class BotBoundingUtility extends JDialog implements PaintListener {
 			public void stateChanged(final ChangeEvent changeEvent) {
 				if (target != null) {
 					target.setBounds(
-							modelX1.getNumber().intValue(), modelY1.getNumber().intValue(), modelZ1.getNumber().intValue(),
-							modelX2.getNumber().intValue(), modelY2.getNumber().intValue(), modelZ2.getNumber().intValue()
+							modelX1.getNumber().intValue(), modelX2.getNumber().intValue(),
+							modelY1.getNumber().intValue(), modelY2.getNumber().intValue(),
+							modelZ1.getNumber().intValue(), modelZ2.getNumber().intValue()
 					);
 				}
 			}
