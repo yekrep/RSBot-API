@@ -159,7 +159,7 @@ public class BotBoundingUtility extends JFrame implements PaintListener, MouseLi
 		};
 		final JButton buttonExit = new JButton("Exit");
 		buttonExit.addActionListener(el);
-		final JButton buttonCopy = new JButton("Copy to Clipboard");
+		final JButton buttonCopy = new JButton("Output");
 		buttonCopy.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent actionEvent) {
@@ -169,10 +169,7 @@ public class BotBoundingUtility extends JFrame implements PaintListener, MouseLi
 						modelY1.getNumber().intValue(), modelY2.getNumber().intValue(),
 						modelZ1.getNumber().intValue(), modelZ2.getNumber().intValue()
 				);
-				final Clipboard c = Toolkit.getDefaultToolkit().getSystemClipboard();
-				if (c != null) {
-					c.setContents(new StringSelection(str), null);
-				}
+				Logger.getLogger(getTitle()).info(str);
 			}
 		});
 		final JButton buttonSelect = new JButton("Begin Select");
