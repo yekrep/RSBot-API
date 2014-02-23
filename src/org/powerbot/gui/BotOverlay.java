@@ -100,6 +100,11 @@ public class BotOverlay extends JDialog {
 						break;
 					}
 
+					if (!parent.isVisible() || ((parent.getExtendedState() & Frame.ICONIFIED) == Frame.ICONIFIED)
+							|| getWidth() == 0 || getHeight() == 0) {
+						continue;
+					}
+
 					if (c.getAndIncrement() % 5 == 0) {
 						SwingUtilities.invokeLater(new Runnable() {
 							@Override
@@ -107,10 +112,6 @@ public class BotOverlay extends JDialog {
 								adjustSize();
 							}
 						});
-					}
-
-					if (!parent.isVisible() || (parent.getExtendedState() & Frame.ICONIFIED) == Frame.ICONIFIED) {
-						continue;
 					}
 
 					final Bot b = parent.getBot();
