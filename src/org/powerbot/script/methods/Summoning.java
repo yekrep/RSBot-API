@@ -149,11 +149,13 @@ public class Summoning extends MethodProvider {
 		if (!ctx.widgets.get(CombatBar.WIDGET, CombatBar.COMPONENT_BUTTON_SUMMONING).interact("Select")) {
 			return false;
 		}
-		for (int i = 0; i < 20; i++) {
-			if (ctx.widgets.get(WIDGET_LEFT_SELECT).isValid()) {
-				break;
+		if (!Condition.wait(new Callable<Boolean>() {
+			@Override
+			public Boolean call() throws Exception {
+				return ctx.widgets.get(WIDGET_LEFT_SELECT).isValid();
 			}
-			sleep(100, 200);
+		}, 30, 100)) {
+			return false;
 		}
 		if (ctx.widgets.get(WIDGET_LEFT_SELECT, option.getId()).interact("Select")) {
 			for (int i = 0; i < 20; i++) {
@@ -412,7 +414,7 @@ public class Summoning extends MethodProvider {
 		DISMISS("Dismiss", 15, 0x14, 0x4),
 		TAKE_BOB("Take BoB", 17, 0x15, 0x5),
 		RENEW_FAMILIAR("Renew Familiar", 19, 0x16, 0x6),
-		INTERACT("Interact", 25, 0x17, 0x7);
+		INTERACT("Interact", 22, 0x17, 0x7);
 		private final String text;
 		private final int id, setting, set;
 
