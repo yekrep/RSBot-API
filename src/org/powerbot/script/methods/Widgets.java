@@ -1,10 +1,13 @@
 package org.powerbot.script.methods;
 
 import java.awt.Point;
+import java.awt.event.MouseEvent;
 import java.util.Arrays;
+import java.util.concurrent.Callable;
 
 import org.powerbot.bot.client.Client;
 import org.powerbot.bot.client.RSInterfaceBase;
+import org.powerbot.script.util.Condition;
 import org.powerbot.script.util.Random;
 import org.powerbot.script.wrappers.Component;
 import org.powerbot.script.wrappers.Widget;
@@ -173,8 +176,17 @@ public class Widgets extends MethodProvider {
 				if (c == null) {
 					break;
 				}
-				if (c.click()) {
-					sleep(50, 150);
+				if (c.hover()) {
+					final Point p2 = ctx.mouse.getLocation();
+					ctx.mouse.handler.press(p2.x, p2.y, MouseEvent.BUTTON1);
+					Condition.wait(new Callable<Boolean>() {
+						@Override
+						public Boolean call() throws Exception {
+							final Point a = component.getAbsoluteLocation();
+							return a.y >= view.y && a.y <= view.y + height - length;
+						}
+					}, 500, 10);
+					ctx.mouse.handler.release(p2.x, p2.y, MouseEvent.BUTTON1);
 				}
 			}
 		}

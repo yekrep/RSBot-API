@@ -11,7 +11,7 @@ import org.powerbot.script.wrappers.Targetable;
 import org.powerbot.util.math.HardwareSimulator;
 
 public class Mouse extends MethodProvider {
-	private final MouseHandler handler;
+	final MouseHandler handler;
 
 	public Mouse(final MethodContext ctx) {
 		super(ctx);

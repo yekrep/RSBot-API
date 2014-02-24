@@ -161,7 +161,7 @@ public class Lobby extends MethodProvider {
 				return getWorld(Integer.parseInt(m.group(1)));
 			}
 		}
-		return null;
+		return new World(-1);
 	}
 
 	/**
@@ -177,7 +177,7 @@ public class Lobby extends MethodProvider {
 				return world.getNumber() == worldNumber;
 			}
 		});
-		return worlds.length == 1 ? worlds[0] : null;
+		return worlds.length == 1 ? worlds[0] : new World(-1);
 	}
 
 	/**
@@ -211,9 +211,12 @@ public class Lobby extends MethodProvider {
 		final ArrayList<World> worlds = new ArrayList<World>();
 		final Component[] rows = panel.getComponent(WIDGET_WORLDS_ROWS).getChildren();
 		for (final Component row : rows) {
-			final World world = new World(row.getIndex());
-			if (filter.accept(world)) {
-				worlds.add(world);
+			try {
+				final World world = new World(row.getIndex());
+				if (filter.accept(world)) {
+					worlds.add(world);
+				}
+			} catch (final Exception ignored) {
 			}
 		}
 		return worlds.toArray(new World[worlds.size()]);
@@ -380,14 +383,21 @@ public class Lobby extends MethodProvider {
 		private boolean favorite;
 
 		private World(final int widgetIndex) {
+			if (widgetIndex == -1) {
+				number = -1;
+				members = false;
+				activity = "";
+				lootShare = false;
+				return;
+			}
 			final Widget panel = ctx.widgets.get(Tab.WORLD_SELECT.getIndex());
-			this.number = Integer.parseInt(panel.getComponent(WIDGET_WORLDS_COLUMN_WORLD_NUMBER).getChild(widgetIndex).getText());
-			this.members = panel.getComponent(WIDGET_WORLDS_COLUMN_MEMBERS).getChild(widgetIndex).getTextureId() == 1531;
-			this.activity = panel.getComponent(WIDGET_WORLDS_COLUMN_ACTIVITY).getChild(widgetIndex).getText();
-			this.lootShare = panel.getComponent(WIDGET_WORLDS_COLUMN_LOOT_SHARE).getChild(widgetIndex).getTextureId() == 699;
-			this.players = getPlayers();
-			this.ping = getPing();
-			this.favorite = isFavorite();
+			number = Integer.parseInt(panel.getComponent(WIDGET_WORLDS_COLUMN_WORLD_NUMBER).getChild(widgetIndex).getText());
+			members = panel.getComponent(WIDGET_WORLDS_COLUMN_MEMBERS).getChild(widgetIndex).getTextureId() == 1531;
+			activity = panel.getComponent(WIDGET_WORLDS_COLUMN_ACTIVITY).getChild(widgetIndex).getText();
+			lootShare = panel.getComponent(WIDGET_WORLDS_COLUMN_LOOT_SHARE).getChild(widgetIndex).getTextureId() == 699;
+			players = getPlayers();
+			ping = getPing();
+			favorite = isFavorite();
 		}
 
 		public int getNumber() {
