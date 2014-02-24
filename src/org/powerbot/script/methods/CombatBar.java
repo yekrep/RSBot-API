@@ -2,34 +2,36 @@ package org.powerbot.script.methods;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 import org.powerbot.script.lang.IdQuery;
+import org.powerbot.script.util.Condition;
 import org.powerbot.script.wrappers.Action;
 import org.powerbot.script.wrappers.Component;
 
 public class CombatBar extends IdQuery<Action> {
 	public static final int WIDGET = 1430;
 	public static final int SETTING_ADRENALINE = 679;
-	public static final int COMPONENT_BUTTON_HEAL = 2;
+	public static final int COMPONENT_BUTTON_HEAL = 103;
 	public static final int SETTING_RETALIATION = 462;
-	public static final int COMPONENT_BUTTON_RETALIATE = 6;
-	public static final int COMPONENT_BUTTON_PRAYER = 4;
-	public static final int COMPONENT_BUTTON_SUMMONING = 5;
-	public static final int COMPONENT_HEALTH = 83;
-	public static final int COMPONENT_ADRENALINE = 92;
-	public static final int COMPONENT_PRAYER = 88;
-	public static final int COMPONENT_SUMMONING = 94;
+	public static final int COMPONENT_BUTTON_RETALIATE = 113;
+	public static final int COMPONENT_BUTTON_PRAYER = 107;
+	public static final int COMPONENT_BUTTON_SUMMONING = 109;
+	public static final int COMPONENT_HEALTH = 104;
+	public static final int COMPONENT_ADRENALINE = 114;
+	public static final int COMPONENT_PRAYER = 110;
+	public static final int COMPONENT_SUMMONING = 116;
 	public static final int COMPONENT_TEXT = 7;
-	public static final int COMPONENT_BOUNDS = 72;
+	public static final int COMPONENT_BOUNDS = 93;
 
 	public static final int NUM_SLOTS = 12;
-	public static final int COMPONENT_BAR = 77;
-	public static final int COMPONENT_LOCK = 19, COMPONENT_TRASH = 20;
+	public static final int COMPONENT_BAR = 98;
+	public static final int COMPONENT_LOCK = 25;
 	public static final int WIDGET_LAYOUT = 1477;
 	public static final int SETTING_ITEM = 811, SETTING_ABILITY = 727;
-	public static final int COMPONENT_SLOT_ACTION = 97;
-	public static final int COMPONENT_SLOT_COOL_DOWN = 98;
-	public static final int COMPONENT_SLOT_BIND = 100;
+	public static final int COMPONENT_SLOT_ACTION = 118;
+	public static final int COMPONENT_SLOT_COOL_DOWN = 119;
+	public static final int COMPONENT_SLOT_BIND = 121;
 	public static final int COMPONENT_SLOT_LENGTH = 6;
 
 	public CombatBar(final MethodContext factory) {
@@ -241,21 +243,21 @@ public class CombatBar extends IdQuery<Action> {
 	 * @return <tt>true</tt> if the {@link Action} was deleted; otherwise <tt>false</tt>
 	 */
 	public boolean deleteAction(Action action) {
+		if (!setExpanded(true)) {
+			return false;
+		}
 		final int slot = action.getSlot();
 		action = getActionAt(slot);
 		if (action.getId() == -1) {
 			return true;
 		}
-		final Component c = ctx.widgets.get(WIDGET, COMPONENT_TRASH);
-		if (!c.isVisible()) {
-			return false;
-		}
-		if (action.getComponent().hover() && ctx.mouse.drag(c.getInteractPoint(), true)) {
-			for (int i = 0; i < 5 && getActionAt(slot).getId() != -1; i++) {
-				sleep(100, 200);
-			}
-		}
-		return getActionAt(slot).getId() == -1;
+		return action.getComponent().hover() && ctx.mouse.drag(ctx.players.local().getNextPoint(), true) &&
+				Condition.wait(new Callable<Boolean>() {
+					@Override
+					public Boolean call() {
+						return getActionAt(slot).getId() == -1;
+					}
+				}, 20, 20);
 	}
 
 	/**
