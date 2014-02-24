@@ -25,7 +25,7 @@ public class Lobby extends MethodProvider {
 	public static final int LOGIN_DEFAULT_TIMEOUT = 30000;
 	public static final int WIDGET_MAIN_LOBBY = 906;
 	public static final int WIDGET_BUTTON_PLAY_GAME = 201;
-	public static final int WIDGET_BUTTON_LOGOUT = 225;
+	public static final int WIDGET_BUTTON_LOGOUT = 226;
 	public static final int WIDGET_LABEL_CURRENT_WORLD = 11;
 	public static final int WIDGET_WORLDS_TABLE = 64;
 	public static final int WIDGET_WORLDS_TABLE_SCROLLBAR = 86;
