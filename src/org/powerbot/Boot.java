@@ -26,6 +26,10 @@ public class Boot implements Runnable {
 	private final static String SWITCH_RESTARTED = "-restarted", SWITCH_DEBUG = "-debug";
 
 	public static void main(final String[] args) {
+		if (System.getProperty("os.name").contains("Mac")) {
+			System.setProperty("apple.awt.UIElement", "true");
+		}
+
 		boolean fork = true;
 
 		for (final String arg : args) {
@@ -66,6 +70,7 @@ public class Boot implements Runnable {
 
 		if (Configuration.OS == OperatingSystem.MAC) {
 			System.setProperty("apple.laf.useScreenMenuBar", "true");
+			System.setProperty("apple.awt.UIElement", "false");
 		}
 
 		final Sandbox sandbox = new Sandbox();
