@@ -14,6 +14,7 @@ import org.powerbot.script.wrappers.Component;
  */
 public class WidgetCloser extends PollingScript implements InternalScript {
 	private static final int[] COMPONENTS = {
+			906 << 16 | 545,//transaction
 			335 << 16 | 3,//trade window
 			1422 << 16 | 18, //world map
 			1253 << 16 | 36, // Squeal of Fortune window
