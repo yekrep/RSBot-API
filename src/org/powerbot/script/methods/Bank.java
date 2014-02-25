@@ -18,6 +18,7 @@ import org.powerbot.script.wrappers.Locatable;
 import org.powerbot.script.wrappers.Npc;
 import org.powerbot.script.wrappers.Player;
 import org.powerbot.script.wrappers.Tile;
+import org.powerbot.util.StringUtils;
 
 /**
  * Utilities pertaining to the bank.
@@ -525,7 +526,7 @@ public class Bank extends ItemQuery<Item> {
 	private boolean containsAction(final Component c, final String action) {
 		final String[] actions = c.getActions();
 		for (final String a : actions) {
-			if (a != null && a.trim().equalsIgnoreCase(action)) {
+			if (a != null && StringUtils.stripHtml(a).trim().equalsIgnoreCase(action)) {
 				return true;
 			}
 		}

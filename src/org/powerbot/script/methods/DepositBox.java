@@ -12,6 +12,7 @@ import org.powerbot.script.wrappers.Interactive;
 import org.powerbot.script.wrappers.Item;
 import org.powerbot.script.wrappers.Locatable;
 import org.powerbot.script.wrappers.Tile;
+import org.powerbot.util.StringUtils;
 
 public class DepositBox extends ItemQuery<Item> {
 	public static final int[] DEPOSIT_BOX_IDS = new int[]{
@@ -249,7 +250,8 @@ public class DepositBox extends ItemQuery<Item> {
 	private boolean containsAction(final Component c, final String action) {
 		final String[] actions = c.getActions();
 		for (final String a : actions) {
-			if (a != null && a.trim().equalsIgnoreCase(action)) {
+			System.out.println(a);
+			if (a != null && StringUtils.stripHtml(a).trim().equalsIgnoreCase(action)) {
 				return true;
 			}
 		}
@@ -269,7 +271,7 @@ public class DepositBox extends ItemQuery<Item> {
 	 * An enumeration providing standard bank amount options.
 	 */
 	public static enum Amount {
-		ONE(1), FIVE(5), TEN(10), ALL_BUT_ONE(-1), ALL(0);
+		ONE(1), FIVE(5), TEN(10), ALL(0);
 
 		private final int value;
 
