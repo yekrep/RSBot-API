@@ -55,6 +55,10 @@ public class BotPreferences extends JDialog implements Runnable {
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		setResizable(false);
 
+		if (Configuration.OS == Configuration.OperatingSystem.MAC) {
+			getRootPane().putClientProperty("Window.style", "small");
+		}
+
 		list = new ArrayList<ScriptBundle.Definition>();
 
 		addWindowListener(new WindowAdapter() {
