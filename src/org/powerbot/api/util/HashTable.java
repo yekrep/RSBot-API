@@ -33,22 +33,23 @@ public class HashTable<N> implements Iterator<N>, Iterable<N> {
 		}
 		final org.powerbot.bot.client.HashTable table = this.table.get();
 		final Node[] buckets = table != null ? table.getBuckets() : null;
-		if (buckets == null || curr == null || bucket_index >= buckets.length) {
+		if (buckets == null) {
 			return false;
 		}
-		if (bucket_index > 0 && buckets[bucket_index - 1] != curr) {
+		if (bucket_index > 0 && bucket_index <= buckets.length && buckets[bucket_index - 1] != curr) {
 			next = curr;
 			curr = curr.getNext();
 			return true;
 		}
 		while (bucket_index < buckets.length) {
 			final Node n = buckets[bucket_index++].getNext();
-			if (n != null && buckets[bucket_index - 1] != n) {
-				curr = n.getNext();
+			if (buckets[bucket_index - 1] != n) {
 				next = n;
+				curr = n.getNext();
+				return true;
 			}
 		}
-		return true;
+		return false;
 	}
 
 	@Override
