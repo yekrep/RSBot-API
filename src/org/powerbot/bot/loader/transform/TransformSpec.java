@@ -20,32 +20,15 @@ import org.powerbot.bot.loader.transform.adapter.SetSignatureAdapter;
 import org.powerbot.bot.loader.transform.adapter.SetSuperAdapter;
 
 public class TransformSpec {
-	private final Map<String, ClassVisitor> adapters;
-	private final Map<String, ClassWriter> writers;
+	private static final int MAGIC = 0xFADFAD;
 	public final Map<String, String> attributes;
 	public final Map<Integer, Integer> constants;
 	public final Map<Integer, Integer> multipliers;
+	private final Map<String, ClassVisitor> adapters;
+	private final Map<String, ClassWriter> writers;
 	private Scanner scanner;
 	private String name;
 	private int version;
-
-	public interface Headers {
-		int ATTRIBUTE = 1;
-		int GET_STATIC = 2;
-		int GET_FIELD = 3;
-		int ADD_FIELD = 4;
-		int ADD_METHOD = 5;
-		int ADD_INTERFACE = 6;
-		int SET_SUPER = 7;
-		int SET_SIGNATURE = 8;
-		int INSERT_CODE = 9;
-		int OVERRIDE_CLASS = 10;
-		int CONSTANT = 11;
-		int MULTIPLIER = 12;
-		int END_OF_FILE = 13;
-	}
-
-	private static final int MAGIC = 0xFADFAD;
 
 	public TransformSpec(final byte[] data) {
 		this(new ByteArrayInputStream(data));
@@ -79,7 +62,7 @@ public class TransformSpec {
 		name = scanner.readString();
 		version = scanner.readShort();
 
-		adapters.put("bh", new SetSuperAdapter(delegate("bh"), Canvas.class.getCanonicalName().replace('.', '/')));
+		adapters.put("bx", new SetSuperAdapter(delegate("bx"), Canvas.class.getCanonicalName().replace('.', '/')));
 		read:
 		while (true) {
 			final String clazz;
@@ -231,5 +214,21 @@ public class TransformSpec {
 			return writer;
 		}
 		return delegate;
+	}
+
+	public interface Headers {
+		int ATTRIBUTE = 1;
+		int GET_STATIC = 2;
+		int GET_FIELD = 3;
+		int ADD_FIELD = 4;
+		int ADD_METHOD = 5;
+		int ADD_INTERFACE = 6;
+		int SET_SUPER = 7;
+		int SET_SIGNATURE = 8;
+		int INSERT_CODE = 9;
+		int OVERRIDE_CLASS = 10;
+		int CONSTANT = 11;
+		int MULTIPLIER = 12;
+		int END_OF_FILE = 13;
 	}
 }
