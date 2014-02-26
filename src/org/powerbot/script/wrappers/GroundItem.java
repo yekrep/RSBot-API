@@ -147,11 +147,6 @@ public class GroundItem extends Interactive implements Renderable, Identifiable,
 	}
 
 	@Override
-	public boolean isInViewport() {
-		return tile.getMatrix(ctx).isInViewport() && ctx.game.isPointInViewport(getInteractPoint());
-	}
-
-	@Override
 	public Point getInteractPoint() {
 		final Model model = getModel(getId());
 		if (model != null) {

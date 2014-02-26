@@ -1,5 +1,8 @@
 package org.powerbot.script.methods;
 
+import java.util.concurrent.Callable;
+
+import org.powerbot.script.util.Condition;
 import org.powerbot.script.util.Random;
 import org.powerbot.script.util.Timer;
 import org.powerbot.script.wrappers.Locatable;
@@ -19,8 +22,8 @@ public class Camera extends MethodProvider {
 
 	public Camera(final MethodContext factory) {
 		super(factory);
-		this.offset = new Vector3f(0, 0, 0);
-		this.center = new Vector3f(0, 0, 0);
+		offset = new Vector3f(0, 0, 0);
+		center = new Vector3f(0, 0, 0);
 	}
 
 	/**
@@ -103,7 +106,6 @@ public class Camera extends MethodProvider {
 
 		final boolean up = curAlt < percent;
 		ctx.keyboard.send(up ? "{VK_UP down}" : "{VK_DOWN down}");
-
 		final Timer timer = new Timer(100);
 		while (timer.isRunning()) {
 			if (lastAlt != curAlt) {

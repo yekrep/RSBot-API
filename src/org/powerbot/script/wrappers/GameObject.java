@@ -84,7 +84,7 @@ public class GameObject extends Interactive implements Renderable, Locatable, Na
 	}
 
 	public RSObject getInternal() {
-		return this.object.get();
+		return object.get();
 	}
 
 	private ObjectDefinition getDefinition() {
@@ -136,11 +136,6 @@ public class GameObject extends Interactive implements Renderable, Locatable, Na
 			return new RelativeLocation(location.getX(), location.getY());
 		}
 		return RelativeLocation.NIL;
-	}
-
-	@Override
-	public boolean isInViewport() {
-		return getLocation().getMatrix(ctx).isInViewport();
 	}
 
 	@Override
