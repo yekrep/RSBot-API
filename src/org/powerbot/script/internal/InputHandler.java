@@ -87,7 +87,7 @@ public class InputHandler {
 			final KeyEvent keyEvent = queue.peek();
 			if (keyEvent != null && keyEvent.getID() != KeyEvent.KEY_TYPED) {
 				try {
-					Thread.sleep((long) (HardwareSimulator.getDelayFactor() * (1 + Random.nextDouble() / 2)));
+					Thread.sleep((long) (HardwareSimulator.getDelayFactor() * (1D + Random.nextDouble() / 2D)));
 				} catch (final InterruptedException ignored) {
 				}
 			}
