@@ -46,30 +46,20 @@ public class Component extends ClientAccessor {
 			return new Point(-1, -1);
 		}
 		final int uid = getParentId();
-		final int index = uid >> 16, index2 = uid & 0xffff;
-		int x, y;
 		if (uid != -1) {
-			final Point p = ctx.widgets.get(index).getComponent(index2).getScreenLocation();
-			x = p.x;
-			y = p.y;
-		} else {
-			final int bid = widget.getBoundsIndex();
-			final int[] arrX = client.getWidgetBoundsX(), arrY = client.getWidgetBoundsY();
-			if (arrX != null && arrY != null && bid >= 0 &&
-					bid < arrX.length && bid < arrY.length) {
-				return new Point(arrX[bid], arrY[bid]);
-			}
-			x = y = 0;//TODO: master x and y
-		}
-		if (uid != -1) {
-			final Component c = ctx.widgets.get(index).getComponent(index2);
-			final int w = c.getScrollWidth(), h = c.getScrollHeight();
-			if (w > 0 || h > 0) {
-				x -= c.getScrollX();
-				y -= c.getScrollY();
+			final Component c = ctx.widgets.get(uid >> 16).getComponent(uid & 0xffff);
+			final Point p = c.getScreenLocation();
+			if (p.x != -1 && p.y != -1) {
+				return new Point(p.x + widget.getX(), p.y + widget.getY());
 			}
 		}
-		return new Point(x + widget.getX(), y + widget.getY());
+		final int[] boundsX = client.getWidgetBoundsX(), boundsY = client.getWidgetBoundsY();
+		final int bounds = getBoundsIndex();
+		if (boundsX != null && boundsY != null && bounds >= 0 && bounds < boundsX.length && bounds < boundsY.length) {
+			final int x = boundsX[bounds], y = boundsY[bounds];
+			return new Point(x - widget.getScrollX(), y - widget.getScrollY());
+		}
+		return new Point(-1, -1);
 	}
 
 	public int getRelativeX() {
