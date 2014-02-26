@@ -73,40 +73,23 @@ public class InputHandler {
 	}
 
 	public void send(final String str) {
-		send(str, false);
+		send(getKeyEvents(str));
 	}
 
-	public void send(final String str, final boolean async) {
-		send(getKeyEvents(str), async);
-	}
-
-	public void send(final Queue<KeyEvent> queue, final boolean async) {
+	public void send(final Queue<KeyEvent> queue) {
 		final Keyboard keyboard = client.getKeyboard();
 		if (keyboard == null) {
 			return;
 		}
 
-		final Thread t = new Thread(new Runnable() {
-			@Override
-			public void run() {
-				while (!queue.isEmpty()) {
-					keyboard.sendEvent(retimeKeyEvent(queue.poll()));
-					final KeyEvent keyEvent = queue.peek();
-					if (keyEvent != null && keyEvent.getID() != KeyEvent.KEY_TYPED) {
-						try {
-							Thread.sleep((long) (HardwareSimulator.getDelayFactor() * (1 + Random.nextDouble() / 2)));
-						} catch (final InterruptedException ignored) {
-						}
-					}
+		while (!queue.isEmpty()) {
+			keyboard.sendEvent(retimeKeyEvent(queue.poll()));
+			final KeyEvent keyEvent = queue.peek();
+			if (keyEvent != null && keyEvent.getID() != KeyEvent.KEY_TYPED) {
+				try {
+					Thread.sleep((long) (HardwareSimulator.getDelayFactor() * (1 + Random.nextDouble() / 2)));
+				} catch (final InterruptedException ignored) {
 				}
-			}
-		});
-		t.start();
-
-		if (!async) {
-			try {
-				t.join();
-			} catch (final InterruptedException ignored) {
 			}
 		}
 	}
