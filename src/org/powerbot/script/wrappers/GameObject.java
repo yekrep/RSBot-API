@@ -155,7 +155,7 @@ public class GameObject extends Interactive implements Renderable, Locatable, Na
 		if (model2 != null) {
 			return model2.getNextPoint();
 		}
-		return isInViewport() ? getLocation().getMatrix(ctx).getInteractPoint() : new Point(-1, -1);
+		return getLocation().getMatrix(ctx).getInteractPoint();
 	}
 
 	@Override
@@ -168,7 +168,7 @@ public class GameObject extends Interactive implements Renderable, Locatable, Na
 		if (model2 != null) {
 			return model2.getNextPoint();
 		}
-		return isInViewport() ? getLocation().getMatrix(ctx).getNextPoint() : new Point(-1, -1);
+		return getLocation().getMatrix(ctx).getNextPoint();
 	}
 
 	@Override
@@ -181,7 +181,7 @@ public class GameObject extends Interactive implements Renderable, Locatable, Na
 		if (model2 != null) {
 			return model2.getCenterPoint();
 		}
-		return isInViewport() ? getLocation().getMatrix(ctx).getCenterPoint() : new Point(-1, -1);
+		return getLocation().getMatrix(ctx).getCenterPoint();
 	}
 
 	@Override

@@ -20,7 +20,7 @@ public abstract class Interactive extends MethodProvider implements Targetable, 
 	}
 
 	public boolean isInViewport() {
-		return ctx.game.isPointInViewport(getInteractPoint());
+		return ctx.game.isPointInViewport(getNextPoint());
 	}
 
 	/**
