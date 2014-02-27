@@ -8,7 +8,7 @@ import java.util.logging.LogRecord;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 
-import org.powerbot.bot.Bot;
+import org.powerbot.bot.rs3.Bot;
 import org.powerbot.misc.UpdateCheck;
 
 final class BotPanelLogHandler extends Handler {

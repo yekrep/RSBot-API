@@ -13,10 +13,10 @@ import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
-import org.powerbot.bot.Bot;
-import org.powerbot.bot.event.EventDispatcher;
-import org.powerbot.bot.event.debug.*;
-import org.powerbot.script.tools.MethodContext;
+import org.powerbot.bot.rs3.Bot;
+import org.powerbot.bot.rs3.event.EventDispatcher;
+import org.powerbot.bot.rs3.event.debug.*;
+import org.powerbot.script.rs3.tools.MethodContext;
 
 final class BotMenuView implements ActionListener {
 	private final Map<String, Class<? extends EventListener>> map;

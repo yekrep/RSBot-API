@@ -12,10 +12,10 @@ import java.util.logging.Logger;
 
 import org.powerbot.Boot;
 import org.powerbot.Configuration;
-import org.powerbot.bot.loader.GameClassLoader;
+import org.powerbot.bot.rs3.loader.GameClassLoader;
 import org.powerbot.script.internal.ScriptClassLoader;
 import org.powerbot.script.internal.ScriptThreadFactory;
-import org.powerbot.script.tools.Keyboard;
+import org.powerbot.script.rs3.tools.Keyboard;
 import org.powerbot.util.StringUtils;
 
 public class Sandbox extends SecurityManager {

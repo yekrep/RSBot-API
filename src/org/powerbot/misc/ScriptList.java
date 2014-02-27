@@ -24,7 +24,7 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import org.powerbot.Configuration;
-import org.powerbot.bot.Bot;
+import org.powerbot.bot.rs3.Bot;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.script.Manifest;
 import org.powerbot.script.Script;

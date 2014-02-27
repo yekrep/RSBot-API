@@ -8,19 +8,19 @@ import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
-import org.powerbot.bot.client.Client;
-import org.powerbot.bot.client.RSAnimableNode;
-import org.powerbot.bot.client.RSGround;
-import org.powerbot.bot.client.RSGroundBytes;
-import org.powerbot.bot.client.RSGroundInfo;
-import org.powerbot.bot.client.RSInfo;
-import org.powerbot.bot.client.RSObject;
-import org.powerbot.bot.client.RSRotatableObject;
-import org.powerbot.script.tools.MethodContext;
-import org.powerbot.script.tools.MethodProvider;
-import org.powerbot.script.tools.CollisionFlag;
-import org.powerbot.script.tools.CollisionMap;
-import org.powerbot.script.tools.GameObject;
+import org.powerbot.bot.rs3.client.Client;
+import org.powerbot.bot.rs3.client.RSAnimableNode;
+import org.powerbot.bot.rs3.client.RSGround;
+import org.powerbot.bot.rs3.client.RSGroundBytes;
+import org.powerbot.bot.rs3.client.RSGroundInfo;
+import org.powerbot.bot.rs3.client.RSInfo;
+import org.powerbot.bot.rs3.client.RSObject;
+import org.powerbot.bot.rs3.client.RSRotatableObject;
+import org.powerbot.script.rs3.tools.MethodContext;
+import org.powerbot.script.rs3.tools.MethodProvider;
+import org.powerbot.script.rs3.tools.CollisionFlag;
+import org.powerbot.script.rs3.tools.CollisionMap;
+import org.powerbot.script.rs3.tools.GameObject;
 
 public class Map extends MethodProvider {
 	public Map(final MethodContext factory) {

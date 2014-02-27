@@ -2,12 +2,12 @@ package org.powerbot.script.internal.environment.pattern;
 
 import org.powerbot.script.internal.Antipattern;
 import org.powerbot.script.lang.Filter;
-import org.powerbot.script.tools.Menu;
-import org.powerbot.script.tools.MethodContext;
+import org.powerbot.script.rs3.tools.Menu;
+import org.powerbot.script.rs3.tools.MethodContext;
 import org.powerbot.script.util.Random;
-import org.powerbot.script.tools.GameObject;
-import org.powerbot.script.tools.Interactive;
-import org.powerbot.script.tools.Npc;
+import org.powerbot.script.rs3.tools.GameObject;
+import org.powerbot.script.rs3.tools.Interactive;
+import org.powerbot.script.rs3.tools.Npc;
 
 public class ExaminePattern extends Antipattern {
 	public ExaminePattern(final MethodContext factory) {

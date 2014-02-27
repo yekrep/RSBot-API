@@ -23,7 +23,7 @@ import javax.swing.event.MenuListener;
 
 import org.powerbot.Boot;
 import org.powerbot.Configuration;
-import org.powerbot.bot.Bot;
+import org.powerbot.bot.rs3.Bot;
 import org.powerbot.script.event.BotMenuListener;
 import org.powerbot.misc.Tracker;
 import org.powerbot.script.Script;

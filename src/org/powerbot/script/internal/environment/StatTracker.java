@@ -10,7 +10,7 @@ import org.powerbot.misc.Tracker;
 import org.powerbot.script.PollingScript;
 import org.powerbot.script.internal.InternalScript;
 import org.powerbot.script.internal.ScriptController;
-import org.powerbot.script.tools.Player;
+import org.powerbot.script.rs3.tools.Player;
 
 /**
  * @author Paris

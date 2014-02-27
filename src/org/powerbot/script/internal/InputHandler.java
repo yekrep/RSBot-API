@@ -13,8 +13,8 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
 
-import org.powerbot.bot.client.Client;
-import org.powerbot.bot.client.input.Keyboard;
+import org.powerbot.bot.rs3.client.Client;
+import org.powerbot.bot.rs3.client.input.Keyboard;
 import org.powerbot.script.util.Random;
 import org.powerbot.util.math.HardwareSimulator;
 

@@ -3,8 +3,8 @@ package org.powerbot.script.internal.environment.pattern;
 import java.util.Arrays;
 
 import org.powerbot.script.internal.Antipattern;
-import org.powerbot.script.tools.Hud;
-import org.powerbot.script.tools.MethodContext;
+import org.powerbot.script.rs3.tools.Hud;
+import org.powerbot.script.rs3.tools.MethodContext;
 import org.powerbot.script.util.Random;
 
 public class WindowPattern extends Antipattern {

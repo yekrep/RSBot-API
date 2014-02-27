@@ -6,10 +6,10 @@ import org.powerbot.misc.GameAccounts;
 import org.powerbot.script.PollingScript;
 import org.powerbot.script.internal.InternalScript;
 import org.powerbot.script.lang.Filter;
-import org.powerbot.script.tools.Game;
-import org.powerbot.script.tools.Lobby;
+import org.powerbot.script.rs3.tools.Game;
+import org.powerbot.script.rs3.tools.Lobby;
 import org.powerbot.script.util.Random;
-import org.powerbot.script.tools.Component;
+import org.powerbot.script.rs3.tools.Component;
 
 /**
  * @author Timer

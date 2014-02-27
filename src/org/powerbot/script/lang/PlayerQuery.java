@@ -1,9 +1,9 @@
 package org.powerbot.script.lang;
 
-import org.powerbot.script.tools.MethodContext;
-import org.powerbot.script.tools.Area;
-import org.powerbot.script.tools.Locatable;
-import org.powerbot.script.tools.Nameable;
+import org.powerbot.script.rs3.tools.MethodContext;
+import org.powerbot.script.rs3.tools.Area;
+import org.powerbot.script.rs3.tools.Locatable;
+import org.powerbot.script.rs3.tools.Nameable;
 
 public abstract class PlayerQuery<K extends Locatable & Nameable> extends AbstractQuery<PlayerQuery<K>, K>
 		implements Locatable.Query<PlayerQuery<K>>, Nameable.Query<PlayerQuery<K>> {

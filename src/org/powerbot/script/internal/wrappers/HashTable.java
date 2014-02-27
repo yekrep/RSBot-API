@@ -1,13 +1,13 @@
 package org.powerbot.script.internal.wrappers;
 
-import org.powerbot.bot.client.Node;
+import org.powerbot.bot.rs3.client.Node;
 
 public class HashTable {
-	private final org.powerbot.bot.client.HashTable nc;
+	private final org.powerbot.bot.rs3.client.HashTable nc;
 	private Node curr;
 	private int pos = 0;
 
-	public HashTable(final org.powerbot.bot.client.HashTable nc) {
+	public HashTable(final org.powerbot.bot.rs3.client.HashTable nc) {
 		if (nc == null) {
 			throw new IllegalArgumentException();
 		}

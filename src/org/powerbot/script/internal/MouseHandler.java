@@ -8,10 +8,10 @@ import java.awt.event.MouseWheelEvent;
 import java.util.concurrent.TimeUnit;
 
 import org.powerbot.bot.SelectiveEventQueue;
-import org.powerbot.bot.client.Client;
-import org.powerbot.bot.client.input.Mouse;
-import org.powerbot.script.tools.MethodContext;
-import org.powerbot.script.tools.MethodProvider;
+import org.powerbot.bot.rs3.client.Client;
+import org.powerbot.bot.rs3.client.input.Mouse;
+import org.powerbot.script.rs3.tools.MethodContext;
+import org.powerbot.script.rs3.tools.MethodProvider;
 import org.powerbot.util.math.Vector3;
 
 public class MouseHandler extends MethodProvider {

@@ -10,7 +10,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.powerbot.bot.SelectiveEventQueue;
-import org.powerbot.bot.event.EventDispatcher;
+import org.powerbot.bot.rs3.event.EventDispatcher;
 import org.powerbot.misc.ScriptBundle;
 import org.powerbot.misc.Tracker;
 import org.powerbot.script.Script;
@@ -20,8 +20,8 @@ import org.powerbot.script.internal.environment.Login;
 import org.powerbot.script.internal.environment.StatTracker;
 import org.powerbot.script.internal.environment.TicketDestroy;
 import org.powerbot.script.internal.environment.WidgetCloser;
-import org.powerbot.script.tools.MethodContext;
-import org.powerbot.script.tools.Validatable;
+import org.powerbot.script.rs3.tools.MethodContext;
+import org.powerbot.script.rs3.tools.Validatable;
 
 public final class ScriptController implements Runnable, Validatable, Script.Controller, Script.Controller.Executor<Runnable> {
 	public static final String TIMEOUT_PROPERTY = "script.timeout", LOCAL_PROPERTY = "script.local";

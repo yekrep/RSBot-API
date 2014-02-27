@@ -10,8 +10,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import org.powerbot.script.tools.MethodContext;
-import org.powerbot.script.tools.MethodProvider;
+import org.powerbot.script.rs3.tools.MethodContext;
+import org.powerbot.script.rs3.tools.MethodProvider;
 
 /**
  * An abstract implementation of a chaining query-based data set filter which is thread safe.

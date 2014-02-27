@@ -1,7 +1,7 @@
 package org.powerbot.script.internal.wrappers;
 
-import org.powerbot.bot.client.NodeSub;
-import org.powerbot.bot.client.NodeSubQueue;
+import org.powerbot.bot.rs3.client.NodeSub;
+import org.powerbot.bot.rs3.client.NodeSubQueue;
 
 public class Queue<N extends NodeSub> {
 	private final NodeSubQueue nl;

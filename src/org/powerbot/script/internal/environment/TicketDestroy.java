@@ -4,12 +4,12 @@ import java.util.concurrent.Callable;
 
 import org.powerbot.script.PollingScript;
 import org.powerbot.script.internal.InternalScript;
-import org.powerbot.script.tools.Hud;
+import org.powerbot.script.rs3.tools.Hud;
 import org.powerbot.script.util.Condition;
 import org.powerbot.script.util.Random;
-import org.powerbot.script.tools.Component;
-import org.powerbot.script.tools.Item;
-import org.powerbot.script.tools.Widget;
+import org.powerbot.script.rs3.tools.Component;
+import org.powerbot.script.rs3.tools.Item;
+import org.powerbot.script.rs3.tools.Widget;
 
 /**
  * @author Timer
