@@ -10,7 +10,7 @@ import java.util.LinkedList;
 
 import org.powerbot.bot.client.Client;
 import org.powerbot.bot.client.input.Mouse;
-import org.powerbot.event.PaintListener;
+import org.powerbot.script.event.PaintListener;
 import org.powerbot.script.tools.MethodContext;
 
 /**

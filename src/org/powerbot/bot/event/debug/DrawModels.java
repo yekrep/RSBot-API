@@ -3,7 +3,7 @@ package org.powerbot.bot.event.debug;
 import java.awt.Color;
 import java.awt.Graphics;
 
-import org.powerbot.event.PaintListener;
+import org.powerbot.script.event.PaintListener;
 import org.powerbot.script.tools.MethodContext;
 import org.powerbot.script.tools.GameObject;
 import org.powerbot.script.tools.GroundItem;

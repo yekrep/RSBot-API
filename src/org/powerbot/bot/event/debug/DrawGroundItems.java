@@ -7,7 +7,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.powerbot.event.PaintListener;
+import org.powerbot.script.event.PaintListener;
 import org.powerbot.script.tools.MethodContext;
 import org.powerbot.script.tools.GroundItem;
 import org.powerbot.script.tools.Player;

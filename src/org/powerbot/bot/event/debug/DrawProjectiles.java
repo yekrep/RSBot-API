@@ -2,8 +2,8 @@ package org.powerbot.bot.event.debug;
 
 import java.awt.Graphics;
 
-import org.powerbot.event.PaintListener;
-import org.powerbot.event.TextPaintListener;
+import org.powerbot.script.event.PaintListener;
+import org.powerbot.script.event.TextPaintListener;
 import org.powerbot.script.tools.MethodContext;
 import org.powerbot.script.tools.Projectile;
 import org.powerbot.script.tools.Tile;

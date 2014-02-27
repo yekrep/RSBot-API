@@ -5,7 +5,7 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Point;
 
-import org.powerbot.event.PaintListener;
+import org.powerbot.script.event.PaintListener;
 import org.powerbot.script.tools.MethodContext;
 import org.powerbot.script.tools.Npc;
 

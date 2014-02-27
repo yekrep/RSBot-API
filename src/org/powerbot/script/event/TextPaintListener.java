@@ -1,4 +1,4 @@
-package org.powerbot.event;
+package org.powerbot.script.event;
 
 import java.awt.Graphics;
 import java.util.EventListener;

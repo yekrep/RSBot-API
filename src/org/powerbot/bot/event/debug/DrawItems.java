@@ -6,7 +6,7 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
 
-import org.powerbot.event.PaintListener;
+import org.powerbot.script.event.PaintListener;
 import org.powerbot.script.tools.Bank;
 import org.powerbot.script.tools.MethodContext;
 import org.powerbot.script.tools.Component;

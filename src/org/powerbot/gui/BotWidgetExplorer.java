@@ -34,7 +34,7 @@ import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
-import org.powerbot.event.PaintListener;
+import org.powerbot.script.event.PaintListener;
 import org.powerbot.misc.Tracker;
 import org.powerbot.script.tools.Component;
 import org.powerbot.script.tools.Widget;

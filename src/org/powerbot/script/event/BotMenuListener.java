@@ -1,4 +1,4 @@
-package org.powerbot.event;
+package org.powerbot.script.event;
 
 import javax.swing.event.MenuListener;
 
