@@ -14,7 +14,6 @@ import org.powerbot.script.event.PaintListener;
 import org.powerbot.script.rs3.tools.MethodContext;
 
 /**
- * @author Paris
  */
 public class ViewMouseTrails implements PaintListener {
 	private static final Deque<Point> h = new LinkedList<Point>();

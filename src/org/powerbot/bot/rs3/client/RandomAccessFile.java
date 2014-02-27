@@ -7,7 +7,6 @@ import java.io.IOException;
 import org.powerbot.gui.BotChrome;
 
 /**
- * @author Timer
  */
 public class RandomAccessFile {
 	private UIDManager uidData = null;

@@ -9,7 +9,6 @@ import org.powerbot.misc.CryptFile;
 import org.powerbot.util.IOUtils;
 
 /**
- * @author Timer
  */
 class UIDManager {
 	private static final String newline = System.getProperty("line.separator");

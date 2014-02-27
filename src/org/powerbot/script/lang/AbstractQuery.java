@@ -18,7 +18,6 @@ import org.powerbot.script.rs3.tools.MethodProvider;
  *
  * @param <T> the super class
  * @param <K> the subject type
- * @author Paris
  */
 public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends MethodProvider implements Iterable<K>, Nillable<K> {
 	private final ThreadLocal<List<K>> items;

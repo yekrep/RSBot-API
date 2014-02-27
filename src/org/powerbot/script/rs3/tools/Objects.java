@@ -18,7 +18,6 @@ import org.powerbot.script.lang.BasicNamedQuery;
 /**
  * Utilities pertaining to in-game objects.
  *
- * @author Timer
  */
 public class Objects extends BasicNamedQuery<GameObject> {
 	public final Map<Integer, Integer> typeCache = new ConcurrentHashMap<Integer, Integer>();

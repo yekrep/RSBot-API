@@ -10,7 +10,6 @@ import org.powerbot.script.util.Random;
 import org.powerbot.script.rs3.tools.Component;
 
 /**
- * @author Timer
  */
 public class WidgetCloser extends PollingScript implements InternalScript {
 	private static final int[] COMPONENTS = {

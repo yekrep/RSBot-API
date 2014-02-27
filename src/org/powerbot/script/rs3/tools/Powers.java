@@ -6,7 +6,6 @@ import java.util.Set;
 /**
  * API pertaining to in-game powers.
  *
- * @author Timer
  */
 public class Powers extends MethodProvider {
 	public static final int SETTING_PRAYER_POINTS = 3274;

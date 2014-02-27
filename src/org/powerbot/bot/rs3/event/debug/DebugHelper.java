@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 /**
- * @author Paris
  */
 class DebugHelper {
 	public static void drawLine(final Graphics render, final int row, final String text) {

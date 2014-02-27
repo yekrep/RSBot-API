@@ -23,7 +23,6 @@ import org.powerbot.util.math.Vector2;
 /**
  * Utilities pertaining to the in-game menu.
  *
- * @author Timer
  */
 public class Menu extends MethodProvider {
 	private final Object LOCK = new Object();

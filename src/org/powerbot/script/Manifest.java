@@ -8,7 +8,6 @@ import java.lang.annotation.Target;
 /**
  * A descriptor of a {@link Script} for the RSBot SDN™.
  *
- * @author Paris
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE})

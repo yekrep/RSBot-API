@@ -13,7 +13,6 @@ import org.powerbot.script.util.Random;
  * An implementation of {@link AbstractScript} which polls (or "loops")
  * indefinitely at intervals returned by the last run.
  *
- * @author Paris
  */
 @SuppressWarnings("EmptyMethod")
 public abstract class PollingScript extends AbstractScript {

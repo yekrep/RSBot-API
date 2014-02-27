@@ -10,7 +10,6 @@ import org.powerbot.script.lang.ItemQuery;
 /**
  * Utilities pertaining to the in-game backpack.
  *
- * @author Timer
  */
 public class Backpack extends ItemQuery<Item> implements Resizable {
 	public static final int WIDGET = 1473;

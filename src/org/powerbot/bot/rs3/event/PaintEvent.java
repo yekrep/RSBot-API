@@ -17,7 +17,6 @@ import org.powerbot.script.event.PaintListener;
 /**
  * An event that is dispatched when the game requests the graphic buffer.
  *
- * @author Timer
  */
 public class PaintEvent extends AbstractEvent {
 	private static final long serialVersionUID = 4772234942045737667L;

@@ -5,7 +5,6 @@ import org.objectweb.asm.tree.InsnList;
 import org.objectweb.asm.tree.MethodNode;
 
 /**
- * @author Timer
  */
 class InsnSearcher {
 	private final AbstractInsnNode first;

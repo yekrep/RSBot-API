@@ -7,7 +7,6 @@ import org.powerbot.bot.rs3.event.AbstractEvent;
 /**
  * A message event that is dispatched when a new message is dispatched in the game.
  *
- * @author Timer
  */
 public class MessageEvent extends AbstractEvent {
 	private static final long serialVersionUID = 4178447203851407187L;

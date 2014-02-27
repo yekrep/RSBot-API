@@ -13,7 +13,6 @@ import org.powerbot.util.math.Vector3;
 /**
  * A human simulated mouse implementation.
  *
- * @author Paris
  */
 public final class MouseSpline {
 	private final Random r;

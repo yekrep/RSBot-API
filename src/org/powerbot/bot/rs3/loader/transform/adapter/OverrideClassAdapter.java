@@ -7,7 +7,6 @@ import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
 /**
- * @author Huan
  */
 public class OverrideClassAdapter extends ClassVisitor {
 	private final String old_clazz;

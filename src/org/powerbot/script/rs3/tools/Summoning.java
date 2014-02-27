@@ -277,7 +277,6 @@ public class Summoning extends MethodProvider {
 	/**
 	 * An enumeration of possible familiars.
 	 *
-	 * @author Timer
 	 */
 	public enum Familiar {
 		SPIRIT_WOLF(12047, 1, 0, 1, 12533, 3),
@@ -399,7 +398,6 @@ public class Summoning extends MethodProvider {
 	/**
 	 * An enumeration of game options.
 	 *
-	 * @author Timer
 	 */
 	public enum Option {
 		FOLLOWER_DETAILS("Follower Details", 7, 0x10, 0x0),

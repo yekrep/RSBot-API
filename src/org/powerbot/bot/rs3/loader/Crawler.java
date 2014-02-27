@@ -14,7 +14,6 @@ import org.powerbot.util.HttpUtils;
 import org.powerbot.util.IOUtils;
 
 /**
- * @author Paris
  */
 public class Crawler implements Runnable {
 	private final AtomicBoolean run, passed;

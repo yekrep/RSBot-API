@@ -7,7 +7,6 @@ import org.powerbot.util.math.Vector3f;
 /**
  * Utilities pertaining to the camera.
  *
- * @author Timer
  */
 @SuppressWarnings("deprecation")
 public class Camera extends MethodProvider {

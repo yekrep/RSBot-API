@@ -8,7 +8,6 @@ import java.io.InputStream;
 import org.powerbot.bot.rs3.client.Client;
 
 /**
- * @author Paris
  */
 class Scanner {
 	private final static int EOL = 0xA;

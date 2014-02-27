@@ -14,7 +14,6 @@ import org.powerbot.script.util.Timer;
 /**
  * Utilities pertaining to the lobby.
  *
- * @author Timer
  */
 @SuppressWarnings("deprecation")
 public class Lobby extends MethodProvider {

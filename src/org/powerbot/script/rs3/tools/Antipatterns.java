@@ -13,7 +13,6 @@ import org.powerbot.bot.script.environment.WindowPattern;
 /**
  * Executes anti-patterns to disrupt distinguishable patterns.
  *
- * @author Paris
  */
 public class Antipatterns extends MethodProvider implements Runnable {
 	private final List<Antipattern> patterns;

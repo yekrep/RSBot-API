@@ -13,7 +13,6 @@ import org.powerbot.bot.script.ScriptController;
 import org.powerbot.script.rs3.tools.Player;
 
 /**
- * @author Paris
  */
 public class StatTracker extends PollingScript implements InternalScript {
 	private static final int UNIT = 10000, INTERVAL = 15;

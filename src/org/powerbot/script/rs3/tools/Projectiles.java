@@ -16,7 +16,6 @@ import org.powerbot.script.lang.IdQuery;
  * <p/>
  * {@link Projectile}s are game projectiles on the current plane which target an entity.
  *
- * @author Timer
  */
 public class Projectiles extends IdQuery<Projectile> {
 	public Projectiles(final MethodContext factory) {

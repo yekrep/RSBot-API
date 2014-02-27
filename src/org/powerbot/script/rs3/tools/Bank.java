@@ -15,7 +15,6 @@ import org.powerbot.util.StringUtils;
 /**
  * Utilities pertaining to the bank.
  *
- * @author Timer
  */
 public class Bank extends ItemQuery<Item> {
 	public static final int[] BANK_NPC_IDS = new int[]{

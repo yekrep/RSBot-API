@@ -17,7 +17,6 @@ import org.powerbot.util.StringUtils;
  * Retrieves information about an item on the Grand Exchange.
  * Results are cached.
  *
- * @author Paris
  */
 public class GeItem {
 	private final static Map<Integer, GeItem> cache = new ConcurrentHashMap<Integer, GeItem>();

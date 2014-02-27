@@ -12,7 +12,6 @@ import org.powerbot.script.util.Random;
 import org.powerbot.script.rs3.tools.Component;
 
 /**
- * @author Timer
  */
 public class Login extends PollingScript implements InternalScript {
 	private static final int WIDGET = 596;

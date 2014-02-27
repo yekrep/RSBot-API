@@ -19,7 +19,6 @@ public class Equipment extends ItemQuery<Item> {
 	/**
 	 * An enumeration of equipment slots.
 	 *
-	 * @author Timer
 	 */
 	public static enum Slot {
 		HEAD(0, 0),

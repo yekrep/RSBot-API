@@ -7,7 +7,6 @@ import java.util.concurrent.TimeUnit;
 /**
  * Utilities for manipulating the hud.
  *
- * @author Timer
  */
 public class Hud extends MethodProvider {
 	public static final int WIDGET_HUD = 1477;
@@ -25,7 +24,6 @@ public class Hud extends MethodProvider {
 	/**
 	 * An enumeration of menu options.
 	 *
-	 * @author Timer
 	 */
 	public enum Menu {
 		NONE(-1),
@@ -58,7 +56,6 @@ public class Hud extends MethodProvider {
 	/**
 	 * An enumeration of known possible windows.
 	 *
-	 * @author Timer
 	 */
 	public enum Window {
 		ALL_CHAT(Menu.NONE, 18726, 18754, 137, 82),

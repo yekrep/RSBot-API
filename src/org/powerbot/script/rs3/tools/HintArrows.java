@@ -10,7 +10,6 @@ import org.powerbot.script.lang.HintArrowQuery;
 /**
  * {@link HintArrows} is a utility which provides access to the game's hint (directional) arrows.
  *
- * @author Timer
  */
 public class HintArrows extends HintArrowQuery<HintArrow> {
 	public HintArrows(final MethodContext factory) {

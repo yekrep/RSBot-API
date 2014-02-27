@@ -30,7 +30,6 @@ import org.powerbot.misc.ScriptList;
 import org.powerbot.misc.Tracker;
 
 /**
- * @author Paris
  */
 public class BotPreferences extends JDialog implements Runnable {
 	private static final int PAD = 5;

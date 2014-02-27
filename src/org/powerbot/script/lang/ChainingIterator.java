@@ -4,7 +4,6 @@ package org.powerbot.script.lang;
  * An atomic iteration handler.
  *
  * @param <T> the type being enumerated
- * @author Paris
  */
 public interface ChainingIterator<T> {
 

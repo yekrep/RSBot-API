@@ -8,7 +8,6 @@ import org.powerbot.script.rs3.tools.MethodContext;
 import static org.powerbot.bot.rs3.event.debug.DebugHelper.drawLine;
 
 /**
- * @author Timer
  */
 public class TPlane implements TextPaintListener {
 	private final MethodContext ctx;

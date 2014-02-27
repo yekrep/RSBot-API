@@ -4,7 +4,6 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * @author Paris
  */
 public class ScriptThreadFactory implements ThreadFactory {
 	public static final String NAME = "script";

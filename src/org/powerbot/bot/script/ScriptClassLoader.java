@@ -13,7 +13,6 @@ import java.util.zip.ZipInputStream;
 import org.powerbot.util.IOUtils;
 
 /**
- * @author Paris
  */
 public final class ScriptClassLoader extends ClassLoader {
 	private final URL base;

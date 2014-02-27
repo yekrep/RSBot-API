@@ -14,7 +14,6 @@ import org.powerbot.script.lang.PlayerQuery;
  * <p/>
  * {@link Player}s are only accessible within mini-map's range.
  *
- * @author Timer
  */
 public class Players extends PlayerQuery<Player> {
 	public Players(final MethodContext factory) {

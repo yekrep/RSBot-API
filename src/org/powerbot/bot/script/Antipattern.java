@@ -11,7 +11,6 @@ import org.powerbot.script.rs3.tools.Validatable;
 /**
  * A humanised layer which disrupts mathematically recognisable patterns of gameplay actions.
  *
- * @author Paris
  */
 public abstract class Antipattern extends MethodProvider implements Runnable, Validatable {
 	/**

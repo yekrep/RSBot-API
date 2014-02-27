@@ -12,7 +12,6 @@ import org.powerbot.script.rs3.tools.Item;
 import org.powerbot.script.rs3.tools.Widget;
 
 /**
- * @author Timer
  */
 public class TicketDestroy extends PollingScript implements InternalScript {
 	private static final int[] ITEM_IDS = {24154, 24155};

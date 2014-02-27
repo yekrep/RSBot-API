@@ -6,7 +6,6 @@ import java.util.concurrent.Callable;
  * An event-driven blocking utility.
  * Frequencies are randomly adjusted by 85-150% to provide a basic antipattern.
  *
- * @author Paris
  */
 public class Condition {
 	/**

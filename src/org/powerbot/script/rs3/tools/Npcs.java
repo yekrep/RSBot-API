@@ -14,7 +14,6 @@ import org.powerbot.script.lang.BasicNamedQuery;
  * <p/>
  * {@link Npc}s are only accessible within the mini-map's range.
  *
- * @author Timer
  */
 public class Npcs extends BasicNamedQuery<Npc> {
 	public Npcs(final MethodContext factory) {

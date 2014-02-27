@@ -15,7 +15,6 @@ import org.powerbot.util.StringUtils;
  * Retrieves a player's hiscore profile.
  * Results are cached.
  *
- * @author Paris
  */
 public class Hiscores {
 	private final static Map<String, Hiscores> cache = new ConcurrentHashMap<String, Hiscores>();

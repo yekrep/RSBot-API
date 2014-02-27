@@ -5,7 +5,6 @@ import java.util.concurrent.atomic.AtomicLong;
 /**
  * A stopwatch based on wall-clock.
  *
- * @author Timer
  * @deprecated replaced by {@link Condition#wait(java.util.concurrent.Callable)}, consumers should not rely on arbitrary
  * time delays but events instead
  */

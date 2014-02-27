@@ -55,7 +55,6 @@ public class Game extends MethodProvider {
 	/**
 	 * An enumeration of the possible cross-hairs in game.
 	 *
-	 * @author Timer
 	 */
 	public enum Crosshair {
 		NONE, DEFAULT, ACTION
