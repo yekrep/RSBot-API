@@ -235,6 +235,13 @@ public class ScriptList {
 			bot.ctx.properties.setProperty(ScriptController.TIMEOUT_PROPERTY, Long.toString(TimeUnit.HOURS.toMillis(hours)));
 		}
 
+		final NetworkAccount n = NetworkAccount.getInstance();
+		if (n.isLoggedIn()) {
+			bot.ctx.properties.setProperty("user.id", Integer.toString(n.getUID()));
+			bot.ctx.properties.setProperty("user.name", n.getDisplayName());
+			bot.ctx.properties.setProperty("user.vip", Boolean.toString(n.hasPermission(NetworkAccount.VIP)));
+		}
+
 		bot.ctx.properties.setProperty(ScriptController.LOCAL_PROPERTY, Boolean.toString(def.local));
 		bot.controller.bundle.set(new ScriptBundle(def, script));
 		bot.controller.run();
