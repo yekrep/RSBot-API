@@ -1,8 +1,8 @@
-package org.powerbot.script.internal.environment;
+package org.powerbot.bot.script.environment;
 
 import org.powerbot.misc.GameAccounts;
 import org.powerbot.script.PollingScript;
-import org.powerbot.script.internal.InternalScript;
+import org.powerbot.bot.script.InternalScript;
 import org.powerbot.script.util.Random;
 
 public class BankPin extends PollingScript implements InternalScript {

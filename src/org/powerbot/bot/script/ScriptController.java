@@ -1,4 +1,4 @@
-package org.powerbot.script.internal;
+package org.powerbot.bot.script;
 
 import java.util.PriorityQueue;
 import java.util.Queue;
@@ -14,12 +14,12 @@ import org.powerbot.bot.rs3.event.EventDispatcher;
 import org.powerbot.misc.ScriptBundle;
 import org.powerbot.misc.Tracker;
 import org.powerbot.script.Script;
-import org.powerbot.script.internal.environment.Antipattern;
-import org.powerbot.script.internal.environment.BankPin;
-import org.powerbot.script.internal.environment.Login;
-import org.powerbot.script.internal.environment.StatTracker;
-import org.powerbot.script.internal.environment.TicketDestroy;
-import org.powerbot.script.internal.environment.WidgetCloser;
+import org.powerbot.bot.script.environment.Antipattern;
+import org.powerbot.bot.script.environment.BankPin;
+import org.powerbot.bot.script.environment.Login;
+import org.powerbot.bot.script.environment.StatTracker;
+import org.powerbot.bot.script.environment.TicketDestroy;
+import org.powerbot.bot.script.environment.WidgetCloser;
 import org.powerbot.script.rs3.tools.MethodContext;
 import org.powerbot.script.rs3.tools.Validatable;
 

@@ -1,6 +1,6 @@
-package org.powerbot.script.internal.environment.pattern;
+package org.powerbot.bot.script.environment.pattern;
 
-import org.powerbot.script.internal.Antipattern;
+import org.powerbot.bot.script.Antipattern;
 import org.powerbot.script.rs3.tools.MethodContext;
 import org.powerbot.script.util.Random;
 

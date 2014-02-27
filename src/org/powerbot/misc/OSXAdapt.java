@@ -16,7 +16,7 @@ import org.powerbot.Configuration;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.gui.BotLocale;
 import org.powerbot.gui.BotPreferences;
-import org.powerbot.script.internal.ScriptController;
+import org.powerbot.bot.script.ScriptController;
 
 public class OSXAdapt implements Runnable {
 	private final BotChrome chrome;

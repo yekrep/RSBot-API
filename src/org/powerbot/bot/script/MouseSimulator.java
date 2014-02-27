@@ -1,4 +1,4 @@
-package org.powerbot.script.internal;
+package org.powerbot.bot.script;
 
 import org.powerbot.util.math.Vector3;
 

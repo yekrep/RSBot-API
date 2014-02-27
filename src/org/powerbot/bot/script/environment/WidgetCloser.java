@@ -1,10 +1,10 @@
-package org.powerbot.script.internal.environment;
+package org.powerbot.bot.script.environment;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
 import org.powerbot.script.PollingScript;
-import org.powerbot.script.internal.InternalScript;
+import org.powerbot.bot.script.InternalScript;
 import org.powerbot.script.util.Condition;
 import org.powerbot.script.util.Random;
 import org.powerbot.script.rs3.tools.Component;

@@ -1,10 +1,10 @@
-package org.powerbot.script.internal.environment;
+package org.powerbot.bot.script.environment;
 
 import java.awt.Rectangle;
 
 import org.powerbot.misc.GameAccounts;
 import org.powerbot.script.PollingScript;
-import org.powerbot.script.internal.InternalScript;
+import org.powerbot.bot.script.InternalScript;
 import org.powerbot.script.lang.Filter;
 import org.powerbot.script.rs3.tools.Game;
 import org.powerbot.script.rs3.tools.Lobby;

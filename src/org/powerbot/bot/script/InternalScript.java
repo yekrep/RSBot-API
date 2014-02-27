@@ -1,4 +1,4 @@
-package org.powerbot.script.internal;
+package org.powerbot.bot.script;
 
 /**
  * @author Paris

@@ -1,4 +1,4 @@
-package org.powerbot.script.internal.wrappers;
+package org.powerbot.bot.script.wrappers;
 
 import org.powerbot.bot.rs3.client.NodeSub;
 import org.powerbot.bot.rs3.client.NodeSubQueue;

@@ -2,7 +2,7 @@ package org.powerbot.script.rs3.tools;
 
 import java.util.EnumSet;
 
-import org.powerbot.script.internal.methods.Map;
+import org.powerbot.bot.script.methods.Map;
 
 public class LocalPath extends Path {
 	private final Locatable destination;

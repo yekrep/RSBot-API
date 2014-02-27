@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.powerbot.script.internal.Antipattern;
-import org.powerbot.script.internal.ScriptController;
-import org.powerbot.script.internal.environment.pattern.CameraPattern;
-import org.powerbot.script.internal.environment.pattern.ExaminePattern;
-import org.powerbot.script.internal.environment.pattern.WindowPattern;
+import org.powerbot.bot.script.Antipattern;
+import org.powerbot.bot.script.ScriptController;
+import org.powerbot.bot.script.environment.pattern.CameraPattern;
+import org.powerbot.bot.script.environment.pattern.ExaminePattern;
+import org.powerbot.bot.script.environment.pattern.WindowPattern;
 
 /**
  * Executes anti-patterns to disrupt distinguishable patterns.

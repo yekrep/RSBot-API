@@ -6,9 +6,9 @@ import java.util.concurrent.atomic.AtomicReference;
 import org.powerbot.bot.rs3.Bot;
 import org.powerbot.bot.rs3.client.Client;
 import org.powerbot.bot.rs3.client.Constants;
-import org.powerbot.script.internal.InputHandler;
-import org.powerbot.script.internal.methods.Items;
-import org.powerbot.script.internal.methods.Map;
+import org.powerbot.bot.script.InputHandler;
+import org.powerbot.bot.script.methods.Items;
+import org.powerbot.bot.script.methods.Map;
 
 public class MethodContext {
 	private final AtomicReference<Client> client;

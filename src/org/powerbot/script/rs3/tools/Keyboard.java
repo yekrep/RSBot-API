@@ -1,6 +1,6 @@
 package org.powerbot.script.rs3.tools;
 
-import org.powerbot.script.internal.InputHandler;
+import org.powerbot.bot.script.InputHandler;
 
 public class Keyboard extends MethodProvider {
 	public Keyboard(final MethodContext factory) {

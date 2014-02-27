@@ -27,7 +27,7 @@ import org.powerbot.bot.rs3.Bot;
 import org.powerbot.script.event.BotMenuListener;
 import org.powerbot.misc.Tracker;
 import org.powerbot.script.Script;
-import org.powerbot.script.internal.ScriptController;
+import org.powerbot.bot.script.ScriptController;
 
 public class BotMenuBar extends JMenuBar {
 	private static final long serialVersionUID = -4186554435386744949L;

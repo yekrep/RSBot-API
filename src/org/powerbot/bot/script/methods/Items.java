@@ -1,4 +1,4 @@
-package org.powerbot.script.internal.methods;
+package org.powerbot.bot.script.methods;
 
 import org.powerbot.bot.rs3.client.Client;
 import org.powerbot.bot.rs3.client.HashTable;

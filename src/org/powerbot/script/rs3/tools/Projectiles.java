@@ -8,7 +8,7 @@ import org.powerbot.bot.rs3.client.Node;
 import org.powerbot.bot.rs3.client.NodeDeque;
 import org.powerbot.bot.rs3.client.RSProjectile;
 import org.powerbot.bot.rs3.client.RSProjectileNode;
-import org.powerbot.script.internal.wrappers.Deque;
+import org.powerbot.bot.script.wrappers.Deque;
 import org.powerbot.script.lang.IdQuery;
 
 /**

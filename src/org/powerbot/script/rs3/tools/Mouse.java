@@ -4,8 +4,8 @@ import java.awt.Point;
 import java.awt.event.MouseEvent;
 
 import org.powerbot.bot.rs3.client.Client;
-import org.powerbot.script.internal.MouseHandler;
-import org.powerbot.script.internal.MouseTarget;
+import org.powerbot.bot.script.MouseHandler;
+import org.powerbot.bot.script.MouseTarget;
 import org.powerbot.script.lang.Filter;
 import org.powerbot.util.math.HardwareSimulator;
 

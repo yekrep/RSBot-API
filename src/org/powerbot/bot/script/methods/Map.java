@@ -1,4 +1,4 @@
-package org.powerbot.script.internal.methods;
+package org.powerbot.bot.script.methods;
 
 import java.util.ArrayList;
 import java.util.Collections;

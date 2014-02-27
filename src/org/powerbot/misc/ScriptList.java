@@ -28,10 +28,10 @@ import org.powerbot.bot.rs3.Bot;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.script.Manifest;
 import org.powerbot.script.Script;
-import org.powerbot.script.internal.InternalScript;
-import org.powerbot.script.internal.ScriptClassLoader;
-import org.powerbot.script.internal.ScriptController;
-import org.powerbot.script.internal.environment.Login;
+import org.powerbot.bot.script.InternalScript;
+import org.powerbot.bot.script.ScriptClassLoader;
+import org.powerbot.bot.script.ScriptController;
+import org.powerbot.bot.script.environment.Login;
 import org.powerbot.util.Ini;
 import org.powerbot.util.StringUtils;
 
