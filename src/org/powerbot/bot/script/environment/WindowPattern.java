@@ -1,4 +1,4 @@
-package org.powerbot.bot.script.environment.pattern;
+package org.powerbot.bot.script.environment;
 
 import java.util.Arrays;
 
