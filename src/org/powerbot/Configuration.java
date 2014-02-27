@@ -64,7 +64,13 @@ public class Configuration {
 		if (OS == OperatingSystem.WINDOWS) {
 			HOME = new File(System.getenv("APPDATA"), NAME);
 		} else {
-			HOME = new File(System.getProperty("user.home"), "." + NAME.toLowerCase());
+			final String user = System.getProperty("user.home");
+			final File lib = new File(user, "/Library/");
+			if (OS == OperatingSystem.MAC && lib.isDirectory()) {
+				HOME = new File(lib, NAME);
+			} else {
+				HOME = new File(System.getProperty("user.home"), "." + NAME.toLowerCase());
+			}
 		}
 
 		if (!HOME.isDirectory()) {
