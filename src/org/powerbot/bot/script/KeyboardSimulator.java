@@ -18,14 +18,14 @@ import org.powerbot.bot.rs3.client.input.Keyboard;
 import org.powerbot.script.util.Random;
 import org.powerbot.util.math.HardwareSimulator;
 
-public class InputHandler {
+public class KeyboardSimulator {
 	private final Applet applet;
 	private final Client client;
 	private final Method getVK;
 	private final Field when;
 	private final Map<String, Integer> keyMap = new HashMap<String, Integer>(256);
 
-	public InputHandler(final Applet applet, final Client client) {
+	public KeyboardSimulator(final Applet applet, final Client client) {
 		this.applet = applet;
 		this.client = client;
 

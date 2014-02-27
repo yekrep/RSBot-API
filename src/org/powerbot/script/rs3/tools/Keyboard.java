@@ -1,6 +1,6 @@
 package org.powerbot.script.rs3.tools;
 
-import org.powerbot.bot.script.InputHandler;
+import org.powerbot.bot.script.KeyboardSimulator;
 
 public class Keyboard extends MethodProvider {
 	public Keyboard(final MethodContext factory) {
@@ -12,7 +12,7 @@ public class Keyboard extends MethodProvider {
 	}
 
 	public boolean send(String str, final boolean newLine) {
-		final InputHandler h = ctx.inputHandler.get();
+		final KeyboardSimulator h = ctx.inputHandler.get();
 		if (h == null) {
 			return false;
 		}
@@ -28,7 +28,7 @@ public class Keyboard extends MethodProvider {
 	}
 
 	public boolean isReady() {
-		final InputHandler h = ctx.inputHandler.get();
+		final KeyboardSimulator h = ctx.inputHandler.get();
 		return h != null && h.getSource() != null;
 	}
 }

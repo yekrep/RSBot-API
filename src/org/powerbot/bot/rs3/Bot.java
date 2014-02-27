@@ -15,9 +15,9 @@ import org.powerbot.bot.rs3.loader.transform.TransformSpec;
 import org.powerbot.bot.rs3.client.Client;
 import org.powerbot.bot.rs3.client.Constants;
 import org.powerbot.bot.rs3.event.EventDispatcher;
+import org.powerbot.bot.script.KeyboardSimulator;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.misc.Sandbox;
-import org.powerbot.bot.script.InputHandler;
 import org.powerbot.bot.script.ScriptController;
 import org.powerbot.script.lang.Stoppable;
 import org.powerbot.script.rs3.tools.MethodContext;
@@ -185,7 +185,7 @@ public final class Bot implements Runnable, Stoppable, Validatable {
 		ctx.setClient(client);
 		client.setCallback(new AbstractCallback(this));
 		ctx.constants.set(new Constants(spec.constants));
-		ctx.inputHandler.set(new InputHandler(applet, client));
+		ctx.inputHandler.set(new KeyboardSimulator(applet, client));
 	}
 
 	private final class SafeMode implements Runnable {

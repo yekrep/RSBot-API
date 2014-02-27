@@ -4,17 +4,17 @@ import java.awt.Point;
 import java.awt.event.MouseEvent;
 
 import org.powerbot.bot.rs3.client.Client;
-import org.powerbot.bot.script.MouseHandler;
+import org.powerbot.bot.script.MouseSimulator;
 import org.powerbot.bot.script.MouseTarget;
 import org.powerbot.script.lang.Filter;
 import org.powerbot.util.math.HardwareSimulator;
 
 public class Mouse extends MethodProvider {
-	final MouseHandler handler;
+	final MouseSimulator handler;
 
 	public Mouse(final MethodContext ctx) {
 		super(ctx);
-		handler = new MouseHandler(ctx);
+		handler = new MouseSimulator(ctx);
 	}
 
 	/**
@@ -132,7 +132,7 @@ public class Mouse extends MethodProvider {
 		final MouseTarget t;
 		handler.handle(t = new MouseTarget(target, MouseTarget.DUMMY) {
 			@Override
-			public boolean execute(final MouseHandler handler) {
+			public boolean execute(final MouseSimulator handler) {
 				try {
 					Thread.sleep(HardwareSimulator.getDelayFactor());
 				} catch (final InterruptedException ignored) {
@@ -208,7 +208,7 @@ public class Mouse extends MethodProvider {
 		final MouseTarget t;
 		handler.handle(t = new MouseTarget(target, filter) {
 			@Override
-			public boolean execute(final MouseHandler handler) {
+			public boolean execute(final MouseSimulator handler) {
 				return true;
 			}
 		});
@@ -245,7 +245,7 @@ public class Mouse extends MethodProvider {
 
 		handler.handle(t = new MouseTarget(targetable, MouseTarget.DUMMY) {
 			@Override
-			public boolean execute(final MouseHandler handler) {
+			public boolean execute(final MouseSimulator handler) {
 				return true;
 			}
 		});

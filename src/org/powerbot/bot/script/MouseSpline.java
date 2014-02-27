@@ -15,34 +15,22 @@ import org.powerbot.util.math.Vector3;
  *
  * @author Paris
  */
-public final class HeteroMouse implements MouseSimulator {
+public final class MouseSpline {
 	private final Random r;
 	private final static int SHORT_DISTANCE = 250;
 
-	public HeteroMouse() {
+	public MouseSpline() {
 		r = HardwareSimulator.getRandomGenerator();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
 	public int getPressDuration() {
 		return HardwareSimulator.getDelayFactor();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
 	public Iterable<Vector3> getPath(final Vector3 a, final Vector3 b) {
 		return getParabola(a, b);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
 	public long getAbsoluteDelay(final int z) {
 		return (0xff - (z % 0xff)) << 16;
 	}

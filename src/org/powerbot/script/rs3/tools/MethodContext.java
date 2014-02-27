@@ -6,14 +6,14 @@ import java.util.concurrent.atomic.AtomicReference;
 import org.powerbot.bot.rs3.Bot;
 import org.powerbot.bot.rs3.client.Client;
 import org.powerbot.bot.rs3.client.Constants;
-import org.powerbot.bot.script.InputHandler;
+import org.powerbot.bot.script.KeyboardSimulator;
 import org.powerbot.bot.rs3.tools.Items;
 import org.powerbot.bot.rs3.tools.Map;
 
 public class MethodContext {
 	private final AtomicReference<Client> client;
 	private final AtomicReference<Bot> bot;
-	public final AtomicReference<InputHandler> inputHandler;
+	public final AtomicReference<KeyboardSimulator> inputHandler;
 	public final AtomicReference<Constants> constants;
 
 	/**
@@ -66,7 +66,7 @@ public class MethodContext {
 	private MethodContext(final Bot bot) {
 		client = new AtomicReference<Client>(null);
 		this.bot = new AtomicReference<Bot>(bot);
-		inputHandler = new AtomicReference<InputHandler>(null);
+		inputHandler = new AtomicReference<KeyboardSimulator>(null);
 		constants = new AtomicReference<Constants>(null);
 
 		properties = new Properties();
