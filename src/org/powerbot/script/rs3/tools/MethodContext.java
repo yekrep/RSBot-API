@@ -7,8 +7,8 @@ import org.powerbot.bot.rs3.Bot;
 import org.powerbot.bot.rs3.client.Client;
 import org.powerbot.bot.rs3.client.Constants;
 import org.powerbot.bot.script.InputHandler;
-import org.powerbot.bot.script.methods.Items;
-import org.powerbot.bot.script.methods.Map;
+import org.powerbot.bot.rs3.tools.Items;
+import org.powerbot.bot.rs3.tools.Map;
 
 public class MethodContext {
 	private final AtomicReference<Client> client;

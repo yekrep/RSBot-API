@@ -1,4 +1,4 @@
-package org.powerbot.bot.script.methods;
+package org.powerbot.bot.rs3.tools;
 
 import java.util.ArrayList;
 import java.util.Collections;

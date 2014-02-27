@@ -4,7 +4,7 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.powerbot.bot.script.methods.Items;
+import org.powerbot.bot.rs3.tools.Items;
 import org.powerbot.script.lang.ItemQuery;
 
 /**

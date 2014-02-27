@@ -3,7 +3,7 @@ package org.powerbot.script.rs3.tools;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.powerbot.bot.script.methods.Items;
+import org.powerbot.bot.rs3.tools.Items;
 import org.powerbot.script.lang.ItemQuery;
 
 public class Equipment extends ItemQuery<Item> {
