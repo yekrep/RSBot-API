@@ -36,8 +36,8 @@ import javax.swing.tree.TreeSelectionModel;
 
 import org.powerbot.event.PaintListener;
 import org.powerbot.misc.Tracker;
-import org.powerbot.script.wrappers.Component;
-import org.powerbot.script.wrappers.Widget;
+import org.powerbot.script.tools.Component;
+import org.powerbot.script.tools.Widget;
 
 public class BotWidgetExplorer extends JFrame implements PaintListener {
 	private static final long serialVersionUID = 3674322588956559479L;

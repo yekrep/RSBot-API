@@ -7,7 +7,7 @@ import java.util.concurrent.SynchronousQueue;
 
 import org.powerbot.script.lang.Stoppable;
 import org.powerbot.script.lang.Suspendable;
-import org.powerbot.script.methods.MethodContext;
+import org.powerbot.script.tools.MethodContext;
 
 /**
  * The base interface of a script.

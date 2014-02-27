@@ -7,12 +7,12 @@ import java.awt.Point;
 import org.powerbot.bot.client.Client;
 import org.powerbot.bot.client.Constants;
 import org.powerbot.event.PaintListener;
-import org.powerbot.script.methods.Game;
-import org.powerbot.script.methods.MethodContext;
-import org.powerbot.script.wrappers.CollisionFlag;
-import org.powerbot.script.wrappers.CollisionMap;
-import org.powerbot.script.wrappers.Component;
-import org.powerbot.script.wrappers.RelativeLocation;
+import org.powerbot.script.tools.Game;
+import org.powerbot.script.tools.MethodContext;
+import org.powerbot.script.tools.CollisionFlag;
+import org.powerbot.script.tools.CollisionMap;
+import org.powerbot.script.tools.Component;
+import org.powerbot.script.tools.RelativeLocation;
 
 public class DrawBoundaries implements PaintListener {
 	private final MethodContext ctx;

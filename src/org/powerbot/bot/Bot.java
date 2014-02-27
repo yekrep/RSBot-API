@@ -20,9 +20,9 @@ import org.powerbot.misc.Sandbox;
 import org.powerbot.script.internal.InputHandler;
 import org.powerbot.script.internal.ScriptController;
 import org.powerbot.script.lang.Stoppable;
-import org.powerbot.script.methods.MethodContext;
+import org.powerbot.script.tools.MethodContext;
 import org.powerbot.script.util.Condition;
-import org.powerbot.script.wrappers.Validatable;
+import org.powerbot.script.tools.Validatable;
 
 public final class Bot implements Runnable, Stoppable, Validatable {
 	private static final Logger log = Logger.getLogger(Bot.class.getName());

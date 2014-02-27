@@ -3,8 +3,8 @@ package org.powerbot.script.internal.methods;
 import org.powerbot.bot.client.Client;
 import org.powerbot.bot.client.HashTable;
 import org.powerbot.bot.client.ItemSlot;
-import org.powerbot.script.methods.MethodContext;
-import org.powerbot.script.methods.MethodProvider;
+import org.powerbot.script.tools.MethodContext;
+import org.powerbot.script.tools.MethodProvider;
 
 public class Items extends MethodProvider {
 	public static final int INDEX_INVENTORY = 93;

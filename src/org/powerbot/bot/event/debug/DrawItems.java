@@ -7,10 +7,10 @@ import java.awt.Point;
 import java.awt.Rectangle;
 
 import org.powerbot.event.PaintListener;
-import org.powerbot.script.methods.Bank;
-import org.powerbot.script.methods.MethodContext;
-import org.powerbot.script.wrappers.Component;
-import org.powerbot.script.wrappers.Item;
+import org.powerbot.script.tools.Bank;
+import org.powerbot.script.tools.MethodContext;
+import org.powerbot.script.tools.Component;
+import org.powerbot.script.tools.Item;
 
 public class DrawItems implements PaintListener {
 	private final MethodContext ctx;

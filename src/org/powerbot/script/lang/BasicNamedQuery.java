@@ -1,10 +1,10 @@
 package org.powerbot.script.lang;
 
-import org.powerbot.script.methods.MethodContext;
-import org.powerbot.script.wrappers.Area;
-import org.powerbot.script.wrappers.Identifiable;
-import org.powerbot.script.wrappers.Locatable;
-import org.powerbot.script.wrappers.Nameable;
+import org.powerbot.script.tools.MethodContext;
+import org.powerbot.script.tools.Area;
+import org.powerbot.script.tools.Identifiable;
+import org.powerbot.script.tools.Locatable;
+import org.powerbot.script.tools.Nameable;
 
 public abstract class BasicNamedQuery<K extends Locatable & Identifiable & Nameable> extends AbstractQuery<BasicNamedQuery<K>, K>
 		implements Locatable.Query<BasicNamedQuery<K>>, Identifiable.Query<BasicNamedQuery<K>>,

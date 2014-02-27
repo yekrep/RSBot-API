@@ -20,8 +20,8 @@ import org.powerbot.script.internal.environment.Login;
 import org.powerbot.script.internal.environment.StatTracker;
 import org.powerbot.script.internal.environment.TicketDestroy;
 import org.powerbot.script.internal.environment.WidgetCloser;
-import org.powerbot.script.methods.MethodContext;
-import org.powerbot.script.wrappers.Validatable;
+import org.powerbot.script.tools.MethodContext;
+import org.powerbot.script.tools.Validatable;
 
 public final class ScriptController implements Runnable, Validatable, Script.Controller, Script.Controller.Executor<Runnable> {
 	public static final String TIMEOUT_PROPERTY = "script.timeout", LOCAL_PROPERTY = "script.local";

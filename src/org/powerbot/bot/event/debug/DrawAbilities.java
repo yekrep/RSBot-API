@@ -6,9 +6,9 @@ import java.awt.Graphics;
 import java.awt.Point;
 
 import org.powerbot.event.PaintListener;
-import org.powerbot.script.methods.MethodContext;
-import org.powerbot.script.wrappers.Action;
-import org.powerbot.script.wrappers.Component;
+import org.powerbot.script.tools.MethodContext;
+import org.powerbot.script.tools.Action;
+import org.powerbot.script.tools.Component;
 
 public class DrawAbilities implements PaintListener {
 	private final MethodContext ctx;

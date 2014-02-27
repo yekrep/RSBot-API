@@ -1,7 +1,7 @@
 package org.powerbot.script.lang;
 
-import org.powerbot.script.methods.MethodContext;
-import org.powerbot.script.wrappers.Identifiable;
+import org.powerbot.script.tools.MethodContext;
+import org.powerbot.script.tools.Identifiable;
 
 public abstract class IdQuery<K extends Identifiable> extends AbstractQuery<IdQuery<K>, K>
 		implements Identifiable.Query<IdQuery<K>> {

@@ -15,7 +15,7 @@ import org.powerbot.Configuration;
 import org.powerbot.bot.loader.GameClassLoader;
 import org.powerbot.script.internal.ScriptClassLoader;
 import org.powerbot.script.internal.ScriptThreadFactory;
-import org.powerbot.script.methods.Keyboard;
+import org.powerbot.script.tools.Keyboard;
 import org.powerbot.util.StringUtils;
 
 public class Sandbox extends SecurityManager {

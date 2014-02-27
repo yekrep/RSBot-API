@@ -10,7 +10,7 @@ import java.awt.geom.Line2D;
 import org.powerbot.bot.client.Client;
 import org.powerbot.bot.client.input.Mouse;
 import org.powerbot.event.PaintListener;
-import org.powerbot.script.methods.MethodContext;
+import org.powerbot.script.tools.MethodContext;
 
 public class ViewMouse implements PaintListener {
 	private final MethodContext ctx;

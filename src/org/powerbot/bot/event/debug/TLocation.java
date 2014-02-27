@@ -3,9 +3,9 @@ package org.powerbot.bot.event.debug;
 import java.awt.Graphics;
 
 import org.powerbot.event.TextPaintListener;
-import org.powerbot.script.methods.MethodContext;
-import org.powerbot.script.wrappers.Player;
-import org.powerbot.script.wrappers.Tile;
+import org.powerbot.script.tools.MethodContext;
+import org.powerbot.script.tools.Player;
+import org.powerbot.script.tools.Tile;
 
 import static org.powerbot.bot.event.debug.DebugHelper.drawLine;
 

@@ -7,7 +7,7 @@ import org.powerbot.script.PollingScript;
 import org.powerbot.script.internal.InternalScript;
 import org.powerbot.script.util.Condition;
 import org.powerbot.script.util.Random;
-import org.powerbot.script.wrappers.Component;
+import org.powerbot.script.tools.Component;
 
 /**
  * @author Timer

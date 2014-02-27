@@ -1,8 +1,8 @@
 package org.powerbot.script.lang;
 
-import org.powerbot.script.methods.MethodContext;
-import org.powerbot.script.wrappers.Area;
-import org.powerbot.script.wrappers.Locatable;
+import org.powerbot.script.tools.MethodContext;
+import org.powerbot.script.tools.Area;
+import org.powerbot.script.tools.Locatable;
 
 public abstract class HintArrowQuery<K extends Locatable> extends AbstractQuery<HintArrowQuery<K>, K>
 		implements Locatable.Query<HintArrowQuery<K>> {

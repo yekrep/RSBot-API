@@ -4,9 +4,9 @@ import java.security.SecureRandom;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.powerbot.script.methods.MethodContext;
-import org.powerbot.script.methods.MethodProvider;
-import org.powerbot.script.wrappers.Validatable;
+import org.powerbot.script.tools.MethodContext;
+import org.powerbot.script.tools.MethodProvider;
+import org.powerbot.script.tools.Validatable;
 
 /**
  * A humanised layer which disrupts mathematically recognisable patterns of gameplay actions.

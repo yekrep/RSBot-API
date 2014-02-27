@@ -6,8 +6,8 @@ import java.awt.Graphics;
 import java.awt.Point;
 
 import org.powerbot.event.PaintListener;
-import org.powerbot.script.methods.MethodContext;
-import org.powerbot.script.wrappers.Player;
+import org.powerbot.script.tools.MethodContext;
+import org.powerbot.script.tools.Player;
 
 public class DrawPlayers implements PaintListener {
 	private final MethodContext ctx;

@@ -1,7 +1,7 @@
 package org.powerbot.script.internal.environment.pattern;
 
 import org.powerbot.script.internal.Antipattern;
-import org.powerbot.script.methods.MethodContext;
+import org.powerbot.script.tools.MethodContext;
 import org.powerbot.script.util.Random;
 
 public class CameraPattern extends Antipattern {
