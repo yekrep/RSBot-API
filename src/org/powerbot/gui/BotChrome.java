@@ -22,7 +22,6 @@ import javax.swing.WindowConstants;
 import org.powerbot.Configuration;
 import org.powerbot.bot.rs3.Bot;
 import org.powerbot.bot.SelectiveEventQueue;
-import org.powerbot.misc.OSXAdapt;
 import org.powerbot.misc.Resources;
 import org.powerbot.misc.Tracker;
 import org.powerbot.misc.UpdateCheck;

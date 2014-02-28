@@ -39,7 +39,7 @@ import org.powerbot.misc.Tracker;
 import org.powerbot.script.rs3.tools.Component;
 import org.powerbot.script.rs3.tools.Widget;
 
-public class BotWidgetExplorer extends JFrame implements PaintListener {
+class BotWidgetExplorer extends JFrame implements PaintListener {
 	private static final long serialVersionUID = 3674322588956559479L;
 	private static final Map<BotChrome, BotWidgetExplorer> instances = new HashMap<BotChrome, BotWidgetExplorer>();
 	private final BotChrome chrome;

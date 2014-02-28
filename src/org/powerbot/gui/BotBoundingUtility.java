@@ -41,7 +41,7 @@ import org.powerbot.script.rs3.tools.Renderable;
 import org.powerbot.script.rs3.tools.Tile;
 import org.powerbot.script.rs3.tools.TileMatrix;
 
-public class BotBoundingUtility extends JFrame implements PaintListener, MouseListener, MouseMotionListener {
+class BotBoundingUtility extends JFrame implements PaintListener, MouseListener, MouseMotionListener {
 	private static final AtomicReference<BotBoundingUtility> instance = new AtomicReference<BotBoundingUtility>(null);
 	private final JLabel labelTarget;
 	private final SpinnerNumberModel

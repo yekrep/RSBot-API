@@ -1,4 +1,4 @@
-package org.powerbot.misc;
+package org.powerbot.gui;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -13,12 +13,9 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import org.powerbot.Configuration;
-import org.powerbot.gui.BotChrome;
-import org.powerbot.gui.BotLocale;
-import org.powerbot.gui.BotPreferences;
 import org.powerbot.bot.script.ScriptController;
 
-public class OSXAdapt implements Runnable {
+class OSXAdapt implements Runnable {
 	private final BotChrome chrome;
 
 	public OSXAdapt(final BotChrome chrome) {

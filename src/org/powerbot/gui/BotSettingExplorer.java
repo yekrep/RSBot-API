@@ -33,7 +33,7 @@ import javax.swing.event.ListSelectionListener;
 
 import org.powerbot.misc.Tracker;
 
-public class BotSettingExplorer extends JFrame {
+class BotSettingExplorer extends JFrame {
 	private static final int FRAME_WIDTH = 595;
 	private static final int FRAME_HEIGHT = 335;
 	private static final long serialVersionUID = -2734139689268786064L;

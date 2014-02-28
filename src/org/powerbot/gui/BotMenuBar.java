@@ -29,7 +29,7 @@ import org.powerbot.misc.Tracker;
 import org.powerbot.script.Script;
 import org.powerbot.bot.script.ScriptController;
 
-public class BotMenuBar extends JMenuBar {
+class BotMenuBar extends JMenuBar {
 	private static final long serialVersionUID = -4186554435386744949L;
 	private final BotChrome chrome;
 	private final JMenuItem play, stop;

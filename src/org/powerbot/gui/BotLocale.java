@@ -2,7 +2,7 @@ package org.powerbot.gui;
 
 import org.powerbot.Configuration;
 
-public final class BotLocale {
+final class BotLocale {
 	public static final String NEWWINDOW = "New Window";
 	public static final String PLAYSCRIPT = "Play";
 	public static final String RESUMESCRIPT = "Resume";

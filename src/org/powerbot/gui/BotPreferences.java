@@ -31,7 +31,7 @@ import org.powerbot.misc.Tracker;
 
 /**
  */
-public class BotPreferences extends JDialog implements Runnable {
+class BotPreferences extends JDialog implements Runnable {
 	private static final int PAD = 5;
 	private final JPanel panel;
 	private final JComboBox account;

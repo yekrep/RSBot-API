@@ -14,7 +14,7 @@ import javax.swing.JPanel;
 
 import org.powerbot.misc.Resources;
 
-public class BotPanel extends JPanel {
+class BotPanel extends JPanel {
 	private static final long serialVersionUID = -8983015619045562434L;
 
 	public BotPanel() {
