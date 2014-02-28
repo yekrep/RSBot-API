@@ -12,7 +12,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import org.powerbot.misc.Ads;
 import org.powerbot.misc.Resources;
 
 public class BotPanel extends JPanel {
@@ -43,6 +42,6 @@ public class BotPanel extends JPanel {
 		add(panel);
 		Logger.getLogger("").addHandler(new BotPanelLogHandler(status));
 
-		new Thread(new Ads(logo, panel)).start();
+		new Thread(new AdPanel(logo, panel)).start();
 	}
 }

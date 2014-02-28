@@ -1,4 +1,4 @@
-package org.powerbot.misc;
+package org.powerbot.gui;
 
 import java.awt.Cursor;
 import java.awt.GridBagConstraints;
@@ -24,14 +24,16 @@ import javax.swing.SwingUtilities;
 
 import org.powerbot.Configuration;
 import org.powerbot.gui.BotChrome;
+import org.powerbot.misc.CryptFile;
+import org.powerbot.misc.NetworkAccount;
 import org.powerbot.util.HttpUtils;
 import org.powerbot.util.Ini;
 
-public class Ads implements Runnable {
+class AdPanel implements Runnable {
 	private final JLabel logo;
 	private final JPanel panel;
 
-	public Ads(final JLabel logo, final JPanel panel) {
+	public AdPanel(final JLabel logo, final JPanel panel) {
 		this.logo = logo;
 		this.panel = panel;
 	}
