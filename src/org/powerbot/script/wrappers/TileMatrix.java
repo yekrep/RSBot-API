@@ -135,7 +135,7 @@ public final class TileMatrix extends Interactive implements Locatable, Drawable
 	@Override
 	public boolean isValid() {
 		final Tile t = ctx.game.getMapBase();
-		if (t == null) {
+		if (t == null || tile == Tile.NIL) {
 			return false;
 		}
 		final int x = tile.x - t.x, y = tile.y - t.y;
