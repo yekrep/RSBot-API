@@ -2,6 +2,7 @@ package org.powerbot.script.wrappers;
 
 import java.awt.Graphics;
 import java.awt.Point;
+import java.util.Arrays;
 
 import org.powerbot.script.methods.MethodContext;
 import org.powerbot.script.methods.MethodProvider;
@@ -10,7 +11,6 @@ import org.powerbot.util.math.Vector3;
 
 abstract class BoundingModel extends MethodProvider {
 	private final Vector3 start, end;
-	private int[][][] triangles;
 
 	public BoundingModel(final MethodContext ctx, final Vector3 start, final Vector3 end) {
 		this(ctx, start.x, end.x, start.y, end.y, start.z, end.z);
@@ -28,8 +28,6 @@ abstract class BoundingModel extends MethodProvider {
 				y1 > y2 ? y1 : y2,
 				z1 > z2 ? z1 : z2
 		);
-		triangles = new int[0][][];
-		compute();
 	}
 
 	public abstract int getX();
@@ -37,6 +35,7 @@ abstract class BoundingModel extends MethodProvider {
 	public abstract int getZ();
 
 	Point getCentroid(final int index) {
+		final int[][][] triangles = project();
 		if (index < 0 || index >= triangles.length) {
 			return new Point(-1, -1);
 		}
@@ -50,14 +49,16 @@ abstract class BoundingModel extends MethodProvider {
 	}
 
 	public Point getNextPoint() {
+		final int[][][] triangles = project();
 		final int faces = triangles.length;
 		final int mark = Random.nextInt(0, faces);
-		Point point = firstInViewportCentroid(mark, faces);
-		return point != null ? point : (point = firstInViewportCentroid(0, mark)) != null ? point : new Point(-1, -1);
+		Point point = firstInViewportCentroid(triangles, mark, faces);
+		return point != null ? point : (point = firstInViewportCentroid(triangles, 0, mark)) != null ? point : new Point(-1, -1);
 	}
 
 
 	public Point getCenterPoint() {
+		final int[][][] triangles = project();
 		final int faces = triangles.length;
 		int avgX = 0;
 		int avgY = 0;
@@ -79,6 +80,7 @@ abstract class BoundingModel extends MethodProvider {
 	}
 
 	public boolean contains(final Point p) {
+		final int[][][] triangles = project();
 		final int px = p.x, py = p.y;
 		final int x = getX(), z = getZ(), y = ctx.game.tileHeight(x, z, ctx.game.getPlane());
 		loop:
@@ -101,6 +103,7 @@ abstract class BoundingModel extends MethodProvider {
 	}
 
 	public boolean drawWireFrame(final Graphics graphics) {
+		final int[][][] triangles = project();
 		final int x = getX(), z = getZ(), y = ctx.game.tileHeight(x, z, ctx.game.getPlane());
 		loop:
 		for (final int[][] triangle : triangles) {
@@ -121,7 +124,7 @@ abstract class BoundingModel extends MethodProvider {
 		return false;
 	}
 
-	private int firstInViewportIndex(final int pos, final int length) {
+	private int firstInViewportIndex(final int[][][] triangles, final int pos, final int length) {
 		final int x = getX(), z = getZ(), y = ctx.game.tileHeight(x, z, ctx.game.getPlane());
 		int index = pos;
 		while (index < length) {
@@ -138,8 +141,8 @@ abstract class BoundingModel extends MethodProvider {
 		return -1;
 	}
 
-	private Point firstInViewportCentroid(final int pos, final int length) {
-		final int index = firstInViewportIndex(pos, length);
+	private Point firstInViewportCentroid(final int[][][] triangles, final int pos, final int length) {
+		final int index = firstInViewportIndex(triangles, pos, length);
 		return index != -1 ? getCentroid(index) : null;
 	}
 
@@ -161,10 +164,7 @@ abstract class BoundingModel extends MethodProvider {
 		return u >= 0 && v >= 0 && u + v < 1;
 	}
 
-	private void compute() {
-		if (triangles.length != 0) {
-			return;
-		}
+	private int[][][] project() {
 		final Vector3[] verticies = {
 				new Vector3(start.x, start.y, start.z),
 				new Vector3(start.x, start.y, end.z),
@@ -187,18 +187,25 @@ abstract class BoundingModel extends MethodProvider {
 				{0, 1, 3},
 				{2, 3, 1},
 		};
+		int faces = 0;
 		final int[][][] model = new int[sides.length * triangles.length][3][3];
-		for (int s = 0; s < sides.length; s++) {
-			final int[] side = sides[s];
-			for (int t = 0; t < triangles.length; t++) {
-				final int[] triangle = triangles[t];
+		for (final int[] side : sides) {
+			for (final int[] triangle : triangles) {
 				final Vector3 v1 = verticies[side[triangle[0]]], v2 = verticies[side[triangle[1]]], v3 = verticies[side[triangle[2]]];
-				final int i = s * 2 + t;
-				model[i][0] = v1.toMatrix();
-				model[i][1] = v2.toMatrix();
-				model[i][2] = v3.toMatrix();
+				model[faces][0] = v1.toMatrix();
+				model[faces][1] = v2.toMatrix();
+				model[faces++][2] = v3.toMatrix();
+				/*
+				final Vector3f cam = ctx.camera.center.add(ctx.camera.offset.mul(-1));
+				final Vector3f camera = cam.add(new Vector3f(v1.mul(512).mul(-1)));
+				final Vector3f c1 = new Vector3f(v2.add(v1.mul(-1))), c2 = new Vector3f(v3.add(v1.mul(-1)));
+				final Vector3f v = c1.cross(c2).normalize();
+				final Vector3f vc = camera.mul(v);
+				final float f = vc.x + vc.y + vc.z;
+				if (f > 0f) {
+				 */
 			}
 		}
-		this.triangles = model;
+		return Arrays.copyOf(model, faces);
 	}
 }
