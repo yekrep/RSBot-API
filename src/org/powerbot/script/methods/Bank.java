@@ -115,7 +115,10 @@ public class Bank extends ItemQuery<Item> {
 				nearest = object;
 			}
 		}
-		return nearest;
+		if (nearest.getLocation() != Tile.NIL) {
+			return nearest;
+		}
+		return Tile.NIL;
 	}
 
 	/**
