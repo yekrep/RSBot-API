@@ -173,22 +173,6 @@ public class Game extends ClientAccessor {
 	}
 
 	/**
-	 * @deprecated see {@link ClientContext#setPreferredWorld(int)}
-	 */
-	@Deprecated
-	public void setPreferredWorld(final int world) {
-		ctx.setPreferredWorld(world);
-	}
-
-	/**
-	 * @deprecated see {@link ClientContext#getPreferredWorld()}
-	 */
-	@Deprecated
-	public int getPreferredWorld() {
-		return ctx.getPreferredWorld();
-	}
-
-	/**
 	 * Determines the size of the game space
 	 *
 	 * @return the {@link Dimension}s of the game space

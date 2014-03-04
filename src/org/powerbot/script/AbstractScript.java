@@ -181,16 +181,6 @@ public abstract class AbstractScript implements Script, Comparable<AbstractScrip
 	}
 
 	/**
-	 * Links a new {@link org.powerbot.script.rs3.tools.ClientContext}.
-	 *
-	 * @param ctx a new {@link org.powerbot.script.rs3.tools.ClientContext}
-	 */
-	@Deprecated
-	public void setContext(final ClientContext ctx) {
-		this.ctx.init(ctx);
-	}
-
-	/**
 	 * Returns the linked {@link org.powerbot.script.rs3.tools.ClientContext}.
 	 *
 	 * @deprecated use the {@link #ctx} field

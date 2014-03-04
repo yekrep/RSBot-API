@@ -142,15 +142,6 @@ public class ClientContext {
 		map = ctx.map;
 	}
 
-	/**
-	 * @deprecated see {@link #ClientContext(ClientContext)}
-	 */
-	@Deprecated
-	public void init(final ClientContext ctx) {
-		bot.set(ctx.getBot());
-		setClient(ctx.getClient());
-	}
-
 	public void setClient(final Client client) {
 		this.client.set(client);
 	}
@@ -161,34 +152,5 @@ public class ClientContext {
 
 	public Bot getBot() {
 		return bot.get();
-	}
-
-	/**
-	 * Gets the preferred world.
-	 *
-	 * @return the requested preferred world if set, otherwise {@code -1}
-	 * @deprecated see {@link #properties}
-	 */
-	@Deprecated
-	public int getPreferredWorld() {
-		int w = -1;
-		if (properties.containsKey("login.world")) {
-			try {
-				w = Integer.parseInt(properties.getProperty("login.world"));
-			} catch (final NumberFormatException ignored) {
-			}
-		}
-		return w;
-	}
-
-	/**
-	 * Sets the preferred world.
-	 *
-	 * @param world the preferred world to log into
-	 * @deprecated see {@link #properties}
-	 */
-	@Deprecated
-	void setPreferredWorld(final int world) {
-		properties.setProperty("login.world", Integer.toString(world));
 	}
 }
