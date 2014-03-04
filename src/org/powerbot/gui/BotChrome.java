@@ -9,8 +9,11 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.Closeable;
 import java.io.IOException;
+import java.net.SocketException;
+import java.net.SocketTimeoutException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,9 +25,10 @@ import javax.swing.WindowConstants;
 import org.powerbot.Configuration;
 import org.powerbot.bot.rs3.Bot;
 import org.powerbot.bot.SelectiveEventQueue;
+import org.powerbot.misc.CryptFile;
 import org.powerbot.misc.Resources;
 import org.powerbot.misc.Tracker;
-import org.powerbot.misc.UpdateCheck;
+import org.powerbot.util.IOUtils;
 
 public class BotChrome extends JFrame implements Closeable {
 	private static final Logger log = Logger.getLogger(BotChrome.class.getName());
@@ -93,7 +97,7 @@ public class BotChrome extends JFrame implements Closeable {
 		});
 
 		Bot bot = null;
-		if (new UpdateCheck().call()) {
+		if (!isLatestVersion()) {
 			bot = new Bot(this);
 			new Thread(bot.threadGroup, bot).start();
 		}
@@ -111,6 +115,26 @@ public class BotChrome extends JFrame implements Closeable {
 
 	public Bot getBot() {
 		return bot;
+	}
+
+	private Boolean isLatestVersion() {
+		final CryptFile cache = new CryptFile("version.1.txt", getClass());
+		final int version;
+		try {
+			version = Integer.parseInt(IOUtils.readString(cache.download(new URL(Configuration.URLs.VERSION))).trim());
+		} catch (final Exception e) {
+			String msg = "Error reading server data";
+			if (SocketException.class.isAssignableFrom(e.getClass()) || SocketTimeoutException.class.isAssignableFrom(e.getClass())) {
+				msg = "Could not connect to " + Configuration.URLs.DOMAIN + " server";
+			}
+			log.log(Level.SEVERE, msg, BotLocale.ERROR);
+			return false;
+		}
+		if (version > Configuration.VERSION) {
+			log.log(Level.SEVERE, String.format("A newer version is available, please download from %s", BotLocale.WEBSITE), "Update");
+			return false;
+		}
+		return true;
 	}
 
 	public static void openURL(final String url) {

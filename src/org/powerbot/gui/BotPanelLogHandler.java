@@ -9,7 +9,6 @@ import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 
 import org.powerbot.bot.rs3.Bot;
-import org.powerbot.misc.UpdateCheck;
 
 final class BotPanelLogHandler extends Handler {
 	private final JLabel label;
@@ -36,8 +35,7 @@ final class BotPanelLogHandler extends Handler {
 		if (x > 0) {
 			src = src.substring(0, x);
 		}
-		if (!(src.equals(BotChrome.class.getName()) || src.equals(UpdateCheck.class.getName()) ||
-				src.equals(Bot.class.getName()))) {
+		if (!(src.equals(BotChrome.class.getName()) || src.equals(Bot.class.getName()))) {
 			return;
 		}
 
