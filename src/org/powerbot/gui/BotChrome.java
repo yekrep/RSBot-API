@@ -25,7 +25,6 @@ import org.powerbot.bot.SelectiveEventQueue;
 import org.powerbot.misc.Resources;
 import org.powerbot.misc.Tracker;
 import org.powerbot.misc.UpdateCheck;
-import org.powerbot.misc.WindowCache;
 
 public class BotChrome extends JFrame implements Closeable {
 	private static final Logger log = Logger.getLogger(BotChrome.class.getName());

@@ -1,4 +1,4 @@
-package org.powerbot.misc;
+package org.powerbot.gui;
 
 import java.awt.Dimension;
 import java.awt.Window;
@@ -7,9 +7,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import org.powerbot.misc.CryptFile;
 import org.powerbot.util.Ini;
 
-public class WindowCache implements Runnable, Closeable {
+class WindowCache implements Runnable, Closeable {
 	private final Window window;
 	private final CryptFile cache;
 
