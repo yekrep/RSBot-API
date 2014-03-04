@@ -4,7 +4,6 @@ import java.awt.Point;
 import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.powerbot.script.lang.ChainingIterator;
 import org.powerbot.script.lang.Filter;
 import org.powerbot.script.util.Condition;
 
@@ -54,19 +53,19 @@ public abstract class Interactive extends MethodProvider implements Targetable, 
 		return isValid() && ctx.mouse.click(this, left);
 	}
 
-	public static ChainingIterator<Interactive> doInteract(final String action) {
-		return new ChainingIterator<Interactive>() {
+	public static Filter<Interactive> doInteract(final String action) {
+		return new Filter<Interactive>() {
 			@Override
-			public boolean next(final int index, final Interactive item) {
+			public boolean accept(final Interactive item) {
 				return item.interact(action);
 			}
 		};
 	}
 
-	public static ChainingIterator<Interactive> doInteract(final String action, final String option) {
-		return new ChainingIterator<Interactive>() {
+	public static Filter<Interactive> doInteract(final String action, final String option) {
+		return new Filter<Interactive>() {
 			@Override
-			public boolean next(final int index, final Interactive item) {
+			public boolean accept(final Interactive item) {
 				return item.interact(action, option);
 			}
 		};
@@ -114,10 +113,10 @@ public abstract class Interactive extends MethodProvider implements Targetable, 
 
 	public abstract void setBounds(final int x1, final int x2, final int y1, final int y2, final int z1, final int z2);
 
-	public static ChainingIterator<Interactive> doSetBounds(final int[] arr) {
-		return new ChainingIterator<Interactive>() {
+	public static Filter<Interactive> doSetBounds(final int[] arr) {
+		return new Filter<Interactive>() {
 			@Override
-			public boolean next(final int index, final Interactive item) {
+			public boolean accept(final Interactive item) {
 				item.setBounds(arr);
 				return true;
 			}

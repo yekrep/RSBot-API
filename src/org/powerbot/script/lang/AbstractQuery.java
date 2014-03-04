@@ -256,13 +256,12 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends Me
 	/**
 	 * Enumerates through each item in the query cache.
 	 *
-	 * @param c the handler for each iteration
+	 * @param c the handler for each iteration, which should return {@code false} to break iteration
 	 * @return {@code this} for the purpose of chaining
 	 */
-	public T each(final ChainingIterator<? super K> c) {
-		int i = 0;
+	public T each(final Filter<? super K> c) {
 		for (final K k : this) {
-			if (!c.next(i++, k)) {
+			if (!c.accept(k)) {
 				break;
 			}
 		}
