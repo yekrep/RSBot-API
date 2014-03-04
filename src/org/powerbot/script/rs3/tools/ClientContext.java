@@ -9,6 +9,7 @@ import org.powerbot.bot.rs3.client.Constants;
 import org.powerbot.bot.script.KeyboardSimulator;
 import org.powerbot.bot.rs3.tools.Items;
 import org.powerbot.bot.rs3.tools.Map;
+import org.powerbot.bot.script.ScriptController;
 import org.powerbot.script.Script;
 
 public class ClientContext {
@@ -70,7 +71,7 @@ public class ClientContext {
 		constants = new AtomicReference<Constants>(null);
 
 		properties = new Properties();
-		controller = bot.controller;
+		controller = new ScriptController(this);
 		antipatterns = new Antipatterns(this);
 		combatBar = new CombatBar(this);
 		backpack = new Backpack(this);

@@ -243,7 +243,8 @@ public class ScriptList {
 		}
 
 		bot.ctx.properties.setProperty(ScriptController.LOCAL_PROPERTY, Boolean.toString(def.local));
-		bot.controller.bundle.set(new ScriptBundle(def, script));
-		bot.controller.run();
+		final ScriptController c = (ScriptController) bot.ctx.controller;
+		c.bundle.set(new ScriptBundle(def, script));
+		c.run();
 	}
 }

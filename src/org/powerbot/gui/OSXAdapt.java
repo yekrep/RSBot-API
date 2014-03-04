@@ -51,7 +51,7 @@ class OSXAdapt implements Runnable {
 					return;
 				}
 
-				final ScriptController c = chrome.getBot().controller;
+				final ScriptController c = (ScriptController) chrome.getBot().ctx.controller;
 				final boolean active = c.isValid() && !c.isStopping();
 
 				if (active) {

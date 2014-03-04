@@ -32,7 +32,6 @@ public final class Bot implements Runnable, Stoppable, Validatable {
 	public final ThreadGroup threadGroup;
 	public final EventDispatcher dispatcher;
 	public Applet applet;
-	public final ScriptController controller;
 	private final AtomicBoolean ready, stopping;
 	public final AtomicBoolean pending;
 
@@ -41,7 +40,6 @@ public final class Bot implements Runnable, Stoppable, Validatable {
 		threadGroup = new ThreadGroup(GROUP);
 		ctx = ClientContext.newContext(this);
 		dispatcher = new EventDispatcher();
-		controller = new ScriptController(ctx, dispatcher);
 		ready = new AtomicBoolean(false);
 		stopping = new AtomicBoolean(false);
 		pending = new AtomicBoolean(false);
@@ -153,7 +151,7 @@ public final class Bot implements Runnable, Stoppable, Validatable {
 	@Override
 	public void stop() {
 		if (Sandbox.isScriptThread()) {
-			controller.stop();
+			ctx.controller.stop();
 			return;
 		}
 
@@ -163,7 +161,7 @@ public final class Bot implements Runnable, Stoppable, Validatable {
 
 		log.info("Unloading game");
 
-		controller.stop();
+		ctx.controller.stop();
 		dispatcher.stop();
 
 		if (applet != null) {

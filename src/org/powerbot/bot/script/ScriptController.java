@@ -21,14 +21,13 @@ import org.powerbot.bot.script.daemon.Login;
 import org.powerbot.bot.script.daemon.StatTracker;
 import org.powerbot.bot.script.daemon.TicketDestroy;
 import org.powerbot.bot.script.daemon.WidgetCloser;
+import org.powerbot.script.rs3.tools.ClientAccessor;
 import org.powerbot.script.rs3.tools.ClientContext;
 import org.powerbot.script.rs3.tools.Validatable;
 
-public final class ScriptController implements Runnable, Validatable, Script.Controller {
+public final class ScriptController extends ClientAccessor implements Runnable, Validatable, Script.Controller {
 	public static final String TIMEOUT_PROPERTY = "script.timeout", LOCAL_PROPERTY = "script.local";
 
-	private final ClientContext ctx;
-	private final EventDispatcher dispatcher;
 	private final ThreadGroup group;
 	private final AtomicReference<ThreadPoolExecutor> executor;
 	private final Queue<Script> scripts;
@@ -39,9 +38,8 @@ public final class ScriptController implements Runnable, Validatable, Script.Con
 
 	public final AtomicReference<ScriptBundle> bundle;
 
-	public ScriptController(final ClientContext ctx, final EventDispatcher dispatcher) {
-		this.ctx = ctx;
-		this.dispatcher = dispatcher;
+	public ScriptController(final ClientContext ctx) {
+		super(ctx);
 
 		group = new ThreadGroup(ScriptThreadFactory.NAME);
 		executor = new AtomicReference<ThreadPoolExecutor>(null);
@@ -178,7 +176,7 @@ public final class ScriptController implements Runnable, Validatable, Script.Con
 				return;
 			}
 			scripts.add(s);
-			dispatcher.add(s);
+			ctx.getBot().dispatcher.add(s);
 			if (!s.getExecQueue(Script.State.START).contains(s)) {
 				s.getExecQueue(Script.State.START).add(s);
 			}
@@ -203,7 +201,7 @@ public final class ScriptController implements Runnable, Validatable, Script.Con
 
 		call(Script.State.STOP);
 		for (final Script s : scripts) {
-			dispatcher.remove(s);
+			ctx.getBot().dispatcher.remove(s);
 		}
 		executor.get().shutdown();
 		executor.set(null);
