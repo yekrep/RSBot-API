@@ -16,6 +16,7 @@ import org.powerbot.bot.rs3.client.Client;
 import org.powerbot.bot.rs3.client.Constants;
 import org.powerbot.bot.rs3.event.EventDispatcher;
 import org.powerbot.bot.script.KeyboardSimulator;
+import org.powerbot.bot.script.ScriptClassLoader;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.misc.Sandbox;
 import org.powerbot.bot.script.ScriptController;
@@ -150,7 +151,7 @@ public final class Bot implements Runnable, Stoppable, Validatable {
 
 	@Override
 	public void stop() {
-		if (Sandbox.isScriptThread()) {
+		if (Thread.currentThread().getContextClassLoader() instanceof ScriptClassLoader) {
 			ctx.controller.stop();
 			return;
 		}

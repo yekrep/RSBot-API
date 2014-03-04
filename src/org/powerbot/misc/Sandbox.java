@@ -203,11 +203,11 @@ public class Sandbox extends SecurityManager {
 		return false;
 	}
 
-	public static boolean isScriptThread() {
+	private static boolean isScriptThread() {
 		return Thread.currentThread().getContextClassLoader() instanceof ScriptClassLoader;
 	}
 
-	public static boolean isGameThread() {
+	private static boolean isGameThread() {
 		return Thread.currentThread().getContextClassLoader() instanceof GameClassLoader;
 	}
 }
