@@ -1,4 +1,4 @@
-package org.powerbot.bot.script.environment;
+package org.powerbot.bot.script.daemon;
 
 import org.powerbot.bot.script.Antipattern;
 import org.powerbot.script.rs3.tools.MethodContext;

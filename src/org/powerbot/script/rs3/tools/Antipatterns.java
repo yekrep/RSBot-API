@@ -6,9 +6,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.powerbot.bot.script.Antipattern;
 import org.powerbot.bot.script.ScriptController;
-import org.powerbot.bot.script.environment.CameraPattern;
-import org.powerbot.bot.script.environment.ExaminePattern;
-import org.powerbot.bot.script.environment.WindowPattern;
+import org.powerbot.bot.script.daemon.CameraPattern;
+import org.powerbot.bot.script.daemon.ExaminePattern;
+import org.powerbot.bot.script.daemon.WindowPattern;
 
 /**
  * Executes anti-patterns to disrupt distinguishable patterns.

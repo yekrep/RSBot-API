@@ -31,7 +31,7 @@ import org.powerbot.script.Script;
 import org.powerbot.bot.script.InternalScript;
 import org.powerbot.bot.script.ScriptClassLoader;
 import org.powerbot.bot.script.ScriptController;
-import org.powerbot.bot.script.environment.Login;
+import org.powerbot.bot.script.daemon.Login;
 import org.powerbot.util.Ini;
 import org.powerbot.util.StringUtils;
 

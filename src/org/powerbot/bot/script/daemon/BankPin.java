@@ -1,4 +1,4 @@
-package org.powerbot.bot.script.environment;
+package org.powerbot.bot.script.daemon;
 
 import org.powerbot.misc.GameAccounts;
 import org.powerbot.script.PollingScript;

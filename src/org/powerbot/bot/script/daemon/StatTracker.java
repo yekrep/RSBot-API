@@ -1,4 +1,4 @@
-package org.powerbot.bot.script.environment;
+package org.powerbot.bot.script.daemon;
 
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
