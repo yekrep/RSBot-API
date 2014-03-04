@@ -24,7 +24,7 @@ import org.powerbot.bot.script.daemon.WidgetCloser;
 import org.powerbot.script.rs3.tools.ClientContext;
 import org.powerbot.script.rs3.tools.Validatable;
 
-public final class ScriptController implements Runnable, Validatable, Script.Controller, Script.Controller.Executor<Runnable> {
+public final class ScriptController implements Runnable, Validatable, Script.Controller {
 	public static final String TIMEOUT_PROPERTY = "script.timeout", LOCAL_PROPERTY = "script.local";
 
 	private final ClientContext ctx;
@@ -246,11 +246,6 @@ public final class ScriptController implements Runnable, Validatable, Script.Con
 				eq.setBlocking(true);
 			}
 		}
-	}
-
-	@Override
-	public Executor<Runnable> getExecutor() {
-		return this;
 	}
 
 	@Override

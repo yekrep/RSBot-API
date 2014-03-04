@@ -10,6 +10,7 @@ import org.powerbot.script.lang.Suspendable;
  * The base interface of a script.
  */
 public interface Script extends Runnable, EventListener {
+
 	/**
 	 * The representative states of a {@link Script}
 	 */
@@ -21,7 +22,7 @@ public interface Script extends Runnable, EventListener {
 	 * Returns the execution queue.
 	 *
 	 * @param state the {@link State} to query
-	 * @return a {@link Queue} of {@link Runnable}s in this {@link Script}s execution queue
+	 * @return a {@link Queue} of {@link java.lang.Runnable}s in this {@link Script}s execution queue
 	 */
 	public Queue<Runnable> getExecQueue(State state);
 
@@ -29,26 +30,14 @@ public interface Script extends Runnable, EventListener {
 	 * A controller for a {@link Script} which invokes and determines state changes.
 	 */
 	public interface Controller extends Suspendable, Stoppable {
-		/**
-		 * Returns the executor.
-		 *
-		 * @return the executor
-		 */
-		public Executor<Runnable> getExecutor();
 
 		/**
-		 * An execution manager for a {@link org.powerbot.script.Script.Controller}
+		 * Adds a {@link java.lang.Runnable} to the executor.
 		 *
-		 * @param <E> a {@link java.lang.Runnable}
+		 * @param e a runnable to be executed
+		 * @param <E> a type that extends {@link java.lang.Runnable}
+		 * @return {@code true} if the runnable was added, otherwise {@code false}
 		 */
-		public interface Executor<E extends Runnable> {
-			/**
-			 * Adds a runnable to the executor.
-			 *
-			 * @param e a runnable to be executed
-			 * @return {@code true} if the runnable was added, otherwise {@code} false
-			 */
-			public boolean offer(E e);
-		}
+		public <E extends Runnable> boolean offer(E e);
 	}
 }
