@@ -240,24 +240,6 @@ public abstract class AbstractScript implements Script, Comparable<AbstractScrip
 	}
 
 	/**
-	 * Returns the version of this {@link Script} as determined by its {@link Manifest}.
-	 *
-	 * @return the version of this {@link Script}
-	 */
-	@Deprecated
-	public double getVersion() {
-		final Manifest manifest = getManifest();
-		if (manifest == null) {
-			try {
-				return (Double) Manifest.class.getMethod("version").getDefaultValue();
-			} catch (final NoSuchMethodException ignored) {
-				return 1d;
-			}
-		}
-		return manifest.version();
-	}
-
-	/**
 	 * Returns a {@link java.io.File} from an abstract local file name.
 	 *
 	 * @param name a local file name, which may contain path separators
