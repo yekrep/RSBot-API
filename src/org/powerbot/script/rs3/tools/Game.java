@@ -24,7 +24,7 @@ import org.powerbot.bot.rs3.client.SoftReference;
 import org.powerbot.bot.rs3.client.TileData;
 import org.powerbot.script.util.Condition;
 
-public class Game extends MethodProvider {
+public class Game extends ClientAccessor {
 	public static final int INDEX_LOGIN_SCREEN = 3;
 	public static final int INDEX_LOBBY_SCREEN = 7;
 	public static final int INDEX_LOGGING_IN = 9;
@@ -46,7 +46,7 @@ public class Game extends MethodProvider {
 
 	public int mapAngle;
 
-	public Game(final MethodContext factory) {
+	public Game(final ClientContext factory) {
 		super(factory);
 		this.toolkit = new Toolkit();
 		this.viewport = new Viewport();
@@ -173,7 +173,7 @@ public class Game extends MethodProvider {
 	}
 
 	/**
-	 * @deprecated see {@link MethodContext#setPreferredWorld(int)}
+	 * @deprecated see {@link ClientContext#setPreferredWorld(int)}
 	 */
 	@Deprecated
 	public void setPreferredWorld(final int world) {
@@ -181,7 +181,7 @@ public class Game extends MethodProvider {
 	}
 
 	/**
-	 * @deprecated see {@link MethodContext#getPreferredWorld()}
+	 * @deprecated see {@link ClientContext#getPreferredWorld()}
 	 */
 	@Deprecated
 	public int getPreferredWorld() {

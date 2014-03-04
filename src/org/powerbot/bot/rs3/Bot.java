@@ -20,7 +20,7 @@ import org.powerbot.gui.BotChrome;
 import org.powerbot.misc.Sandbox;
 import org.powerbot.bot.script.ScriptController;
 import org.powerbot.script.lang.Stoppable;
-import org.powerbot.script.rs3.tools.MethodContext;
+import org.powerbot.script.rs3.tools.ClientContext;
 import org.powerbot.script.util.Condition;
 import org.powerbot.script.rs3.tools.Validatable;
 
@@ -28,7 +28,7 @@ public final class Bot implements Runnable, Stoppable, Validatable {
 	private static final Logger log = Logger.getLogger(Bot.class.getName());
 	private static final String GROUP = "game";
 	private final BotChrome chrome;
-	public final MethodContext ctx;
+	public final ClientContext ctx;
 	public final ThreadGroup threadGroup;
 	public final EventDispatcher dispatcher;
 	public Applet applet;
@@ -39,7 +39,7 @@ public final class Bot implements Runnable, Stoppable, Validatable {
 	public Bot(final BotChrome chrome) {
 		this.chrome = chrome;
 		threadGroup = new ThreadGroup(GROUP);
-		ctx = MethodContext.newContext(this);
+		ctx = ClientContext.newContext(this);
 		dispatcher = new EventDispatcher();
 		controller = new ScriptController(ctx, dispatcher);
 		ready = new AtomicBoolean(false);

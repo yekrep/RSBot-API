@@ -9,11 +9,11 @@ public class Item extends Interactive implements Displayable, Identifiable, Name
 	private int stack;
 	private final Component component;
 
-	public Item(final MethodContext ctx, final Component component) {
+	public Item(final ClientContext ctx, final Component component) {
 		this(ctx, component.getItemId(), component.getItemStackSize(), component);
 	}
 
-	public Item(final MethodContext ctx, final int id, final int stack, final Component component) {
+	public Item(final ClientContext ctx, final int id, final int stack, final Component component) {
 		super(ctx);
 		this.id = id;
 		this.stack = stack;

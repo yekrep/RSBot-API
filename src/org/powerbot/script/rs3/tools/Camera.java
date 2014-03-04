@@ -9,11 +9,11 @@ import org.powerbot.util.math.Vector3f;
  *
  */
 @SuppressWarnings("deprecation")
-public class Camera extends MethodProvider {
+public class Camera extends ClientAccessor {
 	public Vector3f offset;
 	public Vector3f center;
 
-	public Camera(final MethodContext factory) {
+	public Camera(final ClientContext factory) {
 		super(factory);
 		offset = new Vector3f(0, 0, 0);
 		center = new Vector3f(0, 0, 0);

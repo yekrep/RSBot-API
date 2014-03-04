@@ -9,10 +9,10 @@ import org.powerbot.bot.rs3.client.RSNPC;
 import org.powerbot.bot.rs3.client.RSNPCNode;
 import org.powerbot.bot.rs3.client.RSPlayer;
 
-public class HintArrow extends MethodProvider implements Locatable, Validatable {
+public class HintArrow extends ClientAccessor implements Locatable, Validatable {
 	private final WeakReference<RSHintArrow> arrow;
 
-	public HintArrow(final MethodContext ctx, final RSHintArrow arrow) {
+	public HintArrow(final ClientContext ctx, final RSHintArrow arrow) {
 		super(ctx);
 		this.arrow = new WeakReference<RSHintArrow>(arrow);
 	}

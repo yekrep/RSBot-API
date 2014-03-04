@@ -8,15 +8,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.powerbot.script.event.PaintListener;
-import org.powerbot.script.rs3.tools.MethodContext;
+import org.powerbot.script.rs3.tools.ClientContext;
 import org.powerbot.script.rs3.tools.GroundItem;
 import org.powerbot.script.rs3.tools.Player;
 import org.powerbot.script.rs3.tools.Tile;
 
 public class DrawGroundItems implements PaintListener {
-	private final MethodContext ctx;
+	private final ClientContext ctx;
 
-	public DrawGroundItems(final MethodContext ctx) {
+	public DrawGroundItems(final ClientContext ctx) {
 		this.ctx = ctx;
 	}
 

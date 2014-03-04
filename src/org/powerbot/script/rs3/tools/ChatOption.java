@@ -1,10 +1,10 @@
 package org.powerbot.script.rs3.tools;
 
-public class ChatOption extends MethodProvider implements Textable, Validatable {
+public class ChatOption extends ClientAccessor implements Textable, Validatable {
 	private final int index;
 	private final Component option;
 
-	public ChatOption(final MethodContext ctx, final int index, final Component option) {
+	public ChatOption(final ClientContext ctx, final int index, final Component option) {
 		super(ctx);
 		this.index = index;
 		this.option = option;

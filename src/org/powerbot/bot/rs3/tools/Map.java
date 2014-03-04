@@ -16,14 +16,14 @@ import org.powerbot.bot.rs3.client.RSGroundInfo;
 import org.powerbot.bot.rs3.client.RSInfo;
 import org.powerbot.bot.rs3.client.RSObject;
 import org.powerbot.bot.rs3.client.RSRotatableObject;
-import org.powerbot.script.rs3.tools.MethodContext;
-import org.powerbot.script.rs3.tools.MethodProvider;
+import org.powerbot.script.rs3.tools.ClientAccessor;
+import org.powerbot.script.rs3.tools.ClientContext;
 import org.powerbot.script.rs3.tools.CollisionFlag;
 import org.powerbot.script.rs3.tools.CollisionMap;
 import org.powerbot.script.rs3.tools.GameObject;
 
-public class Map extends MethodProvider {
-	public Map(final MethodContext factory) {
+public class Map extends ClientAccessor {
+	public Map(final ClientContext factory) {
 		super(factory);
 	}
 

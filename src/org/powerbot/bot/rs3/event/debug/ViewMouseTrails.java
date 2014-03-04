@@ -11,15 +11,15 @@ import java.util.LinkedList;
 import org.powerbot.bot.rs3.client.Client;
 import org.powerbot.bot.rs3.client.input.Mouse;
 import org.powerbot.script.event.PaintListener;
-import org.powerbot.script.rs3.tools.MethodContext;
+import org.powerbot.script.rs3.tools.ClientContext;
 
 /**
  */
 public class ViewMouseTrails implements PaintListener {
 	private static final Deque<Point> h = new LinkedList<Point>();
-	private final MethodContext ctx;
+	private final ClientContext ctx;
 
-	public ViewMouseTrails(final MethodContext ctx) {
+	public ViewMouseTrails(final ClientContext ctx) {
 		this.ctx = ctx;
 	}
 

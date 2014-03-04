@@ -11,7 +11,7 @@ import org.powerbot.bot.rs3.client.RSItemPile;
 public class PileModel extends Model {
 	private final WeakReference<RSItemPile> pile;
 
-	public PileModel(final MethodContext ctx, final AbstractModel model, final RSItemPile pile) {
+	public PileModel(final ClientContext ctx, final AbstractModel model, final RSItemPile pile) {
 		super(ctx, model, pile.getHeight() / 2);
 		this.pile = new WeakReference<RSItemPile>(pile);
 	}

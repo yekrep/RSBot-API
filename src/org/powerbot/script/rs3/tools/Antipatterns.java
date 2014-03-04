@@ -14,11 +14,11 @@ import org.powerbot.bot.script.daemon.WindowPattern;
  * Executes anti-patterns to disrupt distinguishable patterns.
  *
  */
-public class Antipatterns extends MethodProvider implements Runnable {
+public class Antipatterns extends ClientAccessor implements Runnable {
 	private final List<Antipattern> patterns;
 	private final AtomicBoolean enabled;
 
-	public Antipatterns(final MethodContext ctx) {
+	public Antipatterns(final ClientContext ctx) {
 		super(ctx);
 
 		enabled = new AtomicBoolean(true);

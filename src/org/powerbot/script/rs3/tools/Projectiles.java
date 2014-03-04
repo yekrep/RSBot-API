@@ -18,7 +18,7 @@ import org.powerbot.script.lang.IdQuery;
  *
  */
 public class Projectiles extends IdQuery<Projectile> {
-	public Projectiles(final MethodContext factory) {
+	public Projectiles(final ClientContext factory) {
 		super(factory);
 	}
 

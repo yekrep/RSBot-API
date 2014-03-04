@@ -1,12 +1,12 @@
 package org.powerbot.script.lang;
 
-import org.powerbot.script.rs3.tools.MethodContext;
+import org.powerbot.script.rs3.tools.ClientContext;
 import org.powerbot.script.rs3.tools.Area;
 import org.powerbot.script.rs3.tools.Locatable;
 
 public abstract class HintArrowQuery<K extends Locatable> extends AbstractQuery<HintArrowQuery<K>, K>
 		implements Locatable.Query<HintArrowQuery<K>> {
-	public HintArrowQuery(final MethodContext factory) {
+	public HintArrowQuery(final ClientContext factory) {
 		super(factory);
 	}
 

@@ -10,7 +10,7 @@ import org.powerbot.bot.rs3.client.AbstractModel;
 import org.powerbot.bot.rs3.client.ModelCapture;
 import org.powerbot.script.util.Random;
 
-public abstract class Model extends MethodProvider {
+public abstract class Model extends ClientAccessor {
 	private final int height;
 	public final int[] yPoints;
 	public final short[] faceA;
@@ -21,11 +21,11 @@ public abstract class Model extends MethodProvider {
 	public int[] xPoints;
 	public int[] zPoints;
 
-	public Model(final MethodContext ctx, final AbstractModel abstractModel) {
+	public Model(final ClientContext ctx, final AbstractModel abstractModel) {
 		this(ctx, abstractModel, 0);
 	}
 
-	public Model(final MethodContext ctx, final AbstractModel abstractModel, final int height) {
+	public Model(final ClientContext ctx, final AbstractModel abstractModel, final int height) {
 		super(ctx);
 		final ModelCapture model;
 		if (abstractModel instanceof ModelCapture) {

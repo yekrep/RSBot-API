@@ -16,7 +16,7 @@ import org.powerbot.script.lang.BasicNamedQuery;
  *
  */
 public class Npcs extends BasicNamedQuery<Npc> {
-	public Npcs(final MethodContext factory) {
+	public Npcs(final ClientContext factory) {
 		super(factory);
 	}
 

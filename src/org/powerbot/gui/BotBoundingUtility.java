@@ -29,7 +29,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import org.powerbot.script.event.PaintListener;
-import org.powerbot.script.rs3.tools.MethodContext;
+import org.powerbot.script.rs3.tools.ClientContext;
 import org.powerbot.script.rs3.tools.Drawable;
 import org.powerbot.script.rs3.tools.GameObject;
 import org.powerbot.script.rs3.tools.GroundItem;
@@ -84,35 +84,35 @@ class BotBoundingUtility extends JFrame implements PaintListener, MouseListener,
 				new TargetSelection<Player>("Player", new Callable<Player>() {
 					@Override
 					public Player call() {
-						final MethodContext ctx = chrome.getBot().ctx;
+						final ClientContext ctx = chrome.getBot().ctx;
 						return (Player) nearest(ctx.players.select());
 					}
 				}),
 				new TargetSelection<Npc>("Npc", new Callable<Npc>() {
 					@Override
 					public Npc call() {
-						final MethodContext ctx = chrome.getBot().ctx;
+						final ClientContext ctx = chrome.getBot().ctx;
 						return (Npc) nearest(ctx.npcs.select());
 					}
 				}),
 				new TargetSelection<GameObject>("Object", new Callable<GameObject>() {
 					@Override
 					public GameObject call() {
-						final MethodContext ctx = chrome.getBot().ctx;
+						final ClientContext ctx = chrome.getBot().ctx;
 						return (GameObject) nearest(ctx.objects.select());
 					}
 				}),
 				new TargetSelection<GroundItem>("Ground Item", new Callable<GroundItem>() {
 					@Override
 					public GroundItem call() {
-						final MethodContext ctx = chrome.getBot().ctx;
+						final ClientContext ctx = chrome.getBot().ctx;
 						return (GroundItem) nearest(ctx.groundItems.select());
 					}
 				}),
 				new TargetSelection<TileMatrix>("Tile", new Callable<TileMatrix>() {
 					@Override
 					public TileMatrix call() {
-						final MethodContext ctx = chrome.getBot().ctx;
+						final ClientContext ctx = chrome.getBot().ctx;
 						final List<TileMatrix> list = new ArrayList<TileMatrix>();
 						final Tile t = ctx.players.local().getLocation();
 						for (int x = -20; x <= 20; x++) {

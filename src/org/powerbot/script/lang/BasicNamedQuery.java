@@ -1,6 +1,6 @@
 package org.powerbot.script.lang;
 
-import org.powerbot.script.rs3.tools.MethodContext;
+import org.powerbot.script.rs3.tools.ClientContext;
 import org.powerbot.script.rs3.tools.Area;
 import org.powerbot.script.rs3.tools.Identifiable;
 import org.powerbot.script.rs3.tools.Locatable;
@@ -9,7 +9,7 @@ import org.powerbot.script.rs3.tools.Nameable;
 public abstract class BasicNamedQuery<K extends Locatable & Identifiable & Nameable> extends AbstractQuery<BasicNamedQuery<K>, K>
 		implements Locatable.Query<BasicNamedQuery<K>>, Identifiable.Query<BasicNamedQuery<K>>,
 		Nameable.Query<BasicNamedQuery<K>> {
-	public BasicNamedQuery(final MethodContext factory) {
+	public BasicNamedQuery(final ClientContext factory) {
 		super(factory);
 	}
 

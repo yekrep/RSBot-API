@@ -2,8 +2,8 @@ package org.powerbot.script.rs3.tools;
 
 import java.util.EnumSet;
 
-public abstract class Path extends MethodProvider {
-	public Path(final MethodContext factory) {
+public abstract class Path extends ClientAccessor {
+	public Path(final ClientContext factory) {
 		super(factory);
 	}
 

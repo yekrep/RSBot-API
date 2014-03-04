@@ -16,7 +16,7 @@ import javax.swing.JMenuItem;
 import org.powerbot.bot.rs3.Bot;
 import org.powerbot.bot.rs3.event.EventDispatcher;
 import org.powerbot.bot.rs3.event.debug.*;
-import org.powerbot.script.rs3.tools.MethodContext;
+import org.powerbot.script.rs3.tools.ClientContext;
 
 final class BotMenuView implements ActionListener {
 	private final Map<String, Class<? extends EventListener>> map;
@@ -175,7 +175,7 @@ final class BotMenuView implements ActionListener {
 					l = e.getConstructor(Bot.class).newInstance(b);
 				} catch (final NoSuchMethodException x) {
 					try {
-						l = e.getConstructor(MethodContext.class).newInstance(b.ctx);
+						l = e.getConstructor(ClientContext.class).newInstance(b.ctx);
 					} catch (final NoSuchMethodException x2) {
 						l = e.newInstance();
 					}

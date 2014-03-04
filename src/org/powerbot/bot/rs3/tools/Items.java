@@ -3,16 +3,16 @@ package org.powerbot.bot.rs3.tools;
 import org.powerbot.bot.rs3.client.Client;
 import org.powerbot.bot.rs3.client.HashTable;
 import org.powerbot.bot.rs3.client.ItemSlot;
-import org.powerbot.script.rs3.tools.MethodContext;
-import org.powerbot.script.rs3.tools.MethodProvider;
+import org.powerbot.script.rs3.tools.ClientAccessor;
+import org.powerbot.script.rs3.tools.ClientContext;
 
-public class Items extends MethodProvider {
+public class Items extends ClientAccessor {
 	public static final int INDEX_INVENTORY = 93;
 	public static final int INDEX_MONEY_POUCH = 623;
 	public static final int INDEX_EQUIPMENT = 670;
 	public static final int INDEX_BANK = 95;
 
-	public Items(final MethodContext factory) {
+	public Items(final ClientContext factory) {
 		super(factory);
 	}
 

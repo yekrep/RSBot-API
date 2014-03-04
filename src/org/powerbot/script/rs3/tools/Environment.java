@@ -7,8 +7,8 @@ import org.powerbot.misc.NetworkAccount;
  * This class is now deprecated in favour of the properties prefixed with <i>user</i>.
  */
 @Deprecated
-public class Environment extends MethodProvider {
-	public Environment(final MethodContext factory) {
+public class Environment extends ClientAccessor {
+	public Environment(final ClientContext factory) {
 		super(factory);
 	}
 
@@ -17,7 +17,7 @@ public class Environment extends MethodProvider {
 	 *
 	 * @return the display name
 	 * @deprecated use the property <i>user.name</i>
-	 * @see org.powerbot.script.rs3.tools.MethodContext#properties
+	 * @see ClientContext#properties
 	 */
 	@Deprecated
 	public static String getDisplayName() {
@@ -30,7 +30,7 @@ public class Environment extends MethodProvider {
 	 *
 	 * @return the id of the user
 	 * @deprecated use the property <i>user.id</i>
-	 * @see org.powerbot.script.rs3.tools.MethodContext#properties
+	 * @see ClientContext#properties
 	 */
 	@Deprecated
 	public static int getUserId() {

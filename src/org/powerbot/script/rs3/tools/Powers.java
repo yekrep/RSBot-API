@@ -7,7 +7,7 @@ import java.util.Set;
  * API pertaining to in-game powers.
  *
  */
-public class Powers extends MethodProvider {
+public class Powers extends ClientAccessor {
 	public static final int SETTING_PRAYER_POINTS = 3274;
 	public static final int SETTING_PRAYER_BOOK = 3277;
 	public static final int SETTING_PRAYERS = 3272;
@@ -23,7 +23,7 @@ public class Powers extends MethodProvider {
 	public static final int COMPONENT_PRAYER_SELECT_CONFIRM = 4;
 	public static final int COMPONENT_QUICK_SELECTION = 32;
 
-	public Powers(final MethodContext factory) {
+	public Powers(final ClientContext factory) {
 		super(factory);
 	}
 

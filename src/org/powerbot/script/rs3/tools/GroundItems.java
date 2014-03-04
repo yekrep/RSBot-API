@@ -12,7 +12,7 @@ import org.powerbot.bot.rs3.tools.Deque;
 import org.powerbot.script.lang.GroundItemQuery;
 
 public class GroundItems extends GroundItemQuery<GroundItem> {
-	public GroundItems(final MethodContext factory) {
+	public GroundItems(final ClientContext factory) {
 		super(factory);
 	}
 

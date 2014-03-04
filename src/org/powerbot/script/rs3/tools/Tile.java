@@ -42,7 +42,7 @@ public class Tile implements Locatable {
 	 * @param ctx The context to retrieve the matrix in.
 	 * @return the {@link TileMatrix} of this {@link Tile} with the given context
 	 */
-	public TileMatrix getMatrix(final MethodContext ctx) {
+	public TileMatrix getMatrix(final ClientContext ctx) {
 		return new TileMatrix(ctx, this);
 	}
 

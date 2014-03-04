@@ -6,10 +6,10 @@ import org.powerbot.bot.rs3.client.RSInteractableData;
 import org.powerbot.bot.rs3.client.RSInteractableLocation;
 import org.powerbot.bot.rs3.client.RSProjectile;
 
-public class Projectile extends MethodProvider implements Locatable, Identifiable, Validatable {
+public class Projectile extends ClientAccessor implements Locatable, Identifiable, Validatable {
 	private final WeakReference<RSProjectile> projectile;
 
-	public Projectile(final MethodContext ctx, final RSProjectile projectile) {
+	public Projectile(final ClientContext ctx, final RSProjectile projectile) {
 		super(ctx);
 		this.projectile = new WeakReference<RSProjectile>(projectile);
 	}

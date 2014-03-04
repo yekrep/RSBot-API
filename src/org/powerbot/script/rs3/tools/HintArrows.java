@@ -12,7 +12,7 @@ import org.powerbot.script.lang.HintArrowQuery;
  *
  */
 public class HintArrows extends HintArrowQuery<HintArrow> {
-	public HintArrows(final MethodContext factory) {
+	public HintArrows(final ClientContext factory) {
 		super(factory);
 	}
 

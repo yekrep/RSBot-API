@@ -3,16 +3,16 @@ package org.powerbot.bot.rs3.event.debug;
 import java.awt.Graphics;
 
 import org.powerbot.script.event.TextPaintListener;
-import org.powerbot.script.rs3.tools.MethodContext;
+import org.powerbot.script.rs3.tools.ClientContext;
 
 import static org.powerbot.bot.rs3.event.debug.DebugHelper.drawLine;
 
 /**
  */
 public class TClientState implements TextPaintListener {
-	private final MethodContext ctx;
+	private final ClientContext ctx;
 
-	public TClientState(final MethodContext ctx) {
+	public TClientState(final ClientContext ctx) {
 		this.ctx = ctx;
 	}
 

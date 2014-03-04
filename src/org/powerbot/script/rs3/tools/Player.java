@@ -13,7 +13,7 @@ public class Player extends Actor {
 	public static final Color TARGET_COLOR = new Color(255, 0, 0, 15);
 	private final WeakReference<RSPlayer> player;
 
-	public Player(final MethodContext ctx, final RSPlayer player) {
+	public Player(final ClientContext ctx, final RSPlayer player) {
 		super(ctx);
 		this.player = new WeakReference<RSPlayer>(player);
 	}

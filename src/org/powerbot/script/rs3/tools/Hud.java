@@ -8,7 +8,7 @@ import java.util.concurrent.TimeUnit;
  * Utilities for manipulating the hud.
  *
  */
-public class Hud extends MethodProvider {
+public class Hud extends ClientAccessor {
 	public static final int WIDGET_HUD = 1477;
 	public static final int WIDGET_MENU = 1431;
 	public static final int WIDGET_MENU_BOUNDS = 32;
@@ -17,7 +17,7 @@ public class Hud extends MethodProvider {
 	private Rectangle[] boundsCache;
 	private long cachedTime;
 
-	public Hud(final MethodContext factory) {
+	public Hud(final ClientContext factory) {
 		super(factory);
 	}
 

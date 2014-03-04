@@ -3,12 +3,12 @@ package org.powerbot.bot.script.daemon;
 import java.util.Arrays;
 
 import org.powerbot.bot.script.Antipattern;
+import org.powerbot.script.rs3.tools.ClientContext;
 import org.powerbot.script.rs3.tools.Hud;
-import org.powerbot.script.rs3.tools.MethodContext;
 import org.powerbot.script.util.Random;
 
 public class WindowPattern extends Antipattern {
-	public WindowPattern(final MethodContext factory) {
+	public WindowPattern(final ClientContext factory) {
 		super(factory);
 		freq.set(freq.get() / 2);
 	}

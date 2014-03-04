@@ -6,15 +6,15 @@ import java.awt.Point;
 import org.powerbot.script.util.Random;
 import org.powerbot.util.math.Vector3;
 
-abstract class BoundingModel extends MethodProvider {
+abstract class BoundingModel extends ClientAccessor {
 	private final Vector3 start, end;
 	private int[][][] triangles;
 
-	public BoundingModel(final MethodContext ctx, final Vector3 start, final Vector3 end) {
+	public BoundingModel(final ClientContext ctx, final Vector3 start, final Vector3 end) {
 		this(ctx, start.x, end.x, start.y, end.y, start.z, end.z);
 	}
 
-	public BoundingModel(final MethodContext ctx, final int x1, final int x2, final int y1, final int y2, final int z1, final int z2) {
+	public BoundingModel(final ClientContext ctx, final int x1, final int x2, final int y1, final int y2, final int z1, final int z2) {
 		super(ctx);
 		start = new Vector3(
 				x1 < x2 ? x1 : x2,

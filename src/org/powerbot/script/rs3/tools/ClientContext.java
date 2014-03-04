@@ -10,7 +10,7 @@ import org.powerbot.bot.script.KeyboardSimulator;
 import org.powerbot.bot.rs3.tools.Items;
 import org.powerbot.bot.rs3.tools.Map;
 
-public class MethodContext {
+public class ClientContext {
 	private final AtomicReference<Client> client;
 	private final AtomicReference<Bot> bot;
 	public final AtomicReference<KeyboardSimulator> inputHandler;
@@ -63,7 +63,7 @@ public class MethodContext {
 	final Items items;
 	final Map map;
 
-	private MethodContext(final Bot bot) {
+	private ClientContext(final Bot bot) {
 		client = new AtomicReference<Client>(null);
 		this.bot = new AtomicReference<Bot>(bot);
 		inputHandler = new AtomicReference<KeyboardSimulator>(null);
@@ -102,11 +102,11 @@ public class MethodContext {
 		map = new Map(this);
 	}
 
-	public static MethodContext newContext(final Bot bot) {
-		return new MethodContext(bot);
+	public static ClientContext newContext(final Bot bot) {
+		return new ClientContext(bot);
 	}
 
-	public MethodContext(final MethodContext ctx) {
+	public ClientContext(final ClientContext ctx) {
 		client = ctx.client;
 		bot = ctx.bot;
 		inputHandler = ctx.inputHandler;
@@ -146,10 +146,10 @@ public class MethodContext {
 	}
 
 	/**
-	 * @deprecated see {@link #MethodContext(MethodContext)}
+	 * @deprecated see {@link #ClientContext(ClientContext)}
 	 */
 	@Deprecated
-	public void init(final MethodContext ctx) {
+	public void init(final ClientContext ctx) {
 		bot.set(ctx.getBot());
 		setClient(ctx.getClient());
 	}

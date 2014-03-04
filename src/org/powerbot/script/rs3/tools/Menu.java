@@ -24,12 +24,12 @@ import org.powerbot.util.math.Vector2;
  * Utilities pertaining to the in-game menu.
  *
  */
-public class Menu extends MethodProvider {
+public class Menu extends ClientAccessor {
 	private final Object LOCK = new Object();
 	private String[] actions = new String[0];
 	private String[] options = new String[0];
 
-	public Menu(final MethodContext factory) {
+	public Menu(final ClientContext factory) {
 		super(factory);
 	}
 

@@ -22,7 +22,7 @@ import org.powerbot.script.lang.BasicNamedQuery;
 public class Objects extends BasicNamedQuery<GameObject> {
 	public final Map<Integer, Integer> typeCache = new ConcurrentHashMap<Integer, Integer>();
 
-	public Objects(final MethodContext factory) {
+	public Objects(final ClientContext factory) {
 		super(factory);
 	}
 

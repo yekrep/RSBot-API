@@ -7,10 +7,10 @@ import java.util.concurrent.atomic.AtomicReference;
 import org.powerbot.script.lang.Filter;
 import org.powerbot.script.util.Condition;
 
-public abstract class Interactive extends MethodProvider implements Targetable, Validatable {
+public abstract class Interactive extends ClientAccessor implements Targetable, Validatable {
 	protected final AtomicReference<BoundingModel> boundingModel;
 
-	public Interactive(final MethodContext ctx) {
+	public Interactive(final ClientContext ctx) {
 		super(ctx);
 		boundingModel = new AtomicReference<BoundingModel>(null);
 	}

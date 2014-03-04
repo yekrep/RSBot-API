@@ -7,11 +7,11 @@ import org.powerbot.bot.rs3.client.RSObjectDef;
 import org.powerbot.bot.rs3.client.Render;
 import org.powerbot.script.event.MessageEvent;
 import org.powerbot.script.rs3.tools.Camera;
-import org.powerbot.script.rs3.tools.MethodContext;
+import org.powerbot.script.rs3.tools.ClientContext;
 import org.powerbot.util.math.Vector3f;
 
 public class AbstractCallback implements Callback {
-	private final MethodContext ctx;
+	private final ClientContext ctx;
 	private final EventDispatcher dispatcher;
 
 	public AbstractCallback(final Bot bot) {

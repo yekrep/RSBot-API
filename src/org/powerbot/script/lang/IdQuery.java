@@ -1,11 +1,11 @@
 package org.powerbot.script.lang;
 
-import org.powerbot.script.rs3.tools.MethodContext;
+import org.powerbot.script.rs3.tools.ClientContext;
 import org.powerbot.script.rs3.tools.Identifiable;
 
 public abstract class IdQuery<K extends Identifiable> extends AbstractQuery<IdQuery<K>, K>
 		implements Identifiable.Query<IdQuery<K>> {
-	public IdQuery(final MethodContext factory) {
+	public IdQuery(final ClientContext factory) {
 		super(factory);
 	}
 

@@ -1,11 +1,11 @@
 package org.powerbot.script.lang;
 
-import org.powerbot.script.rs3.tools.MethodContext;
+import org.powerbot.script.rs3.tools.ClientContext;
 import org.powerbot.script.rs3.tools.Textable;
 
 public abstract class TextQuery<K extends Textable> extends AbstractQuery<TextQuery<K>, K>
 		implements Textable.Query<TextQuery<K>> {
-	public TextQuery(final MethodContext factory) {
+	public TextQuery(final ClientContext factory) {
 		super(factory);
 	}
 

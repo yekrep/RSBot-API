@@ -23,7 +23,7 @@ public class GameObject extends Interactive implements Renderable, Locatable, Na
 	private final Type type;
 	private int faceIndex = -1;
 
-	public GameObject(final MethodContext ctx, final RSObject object, final Type type) {
+	public GameObject(final ClientContext ctx, final RSObject object, final Type type) {
 		super(ctx);
 		this.object = new WeakReference<RSObject>(object);
 		this.type = type;

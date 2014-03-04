@@ -20,13 +20,13 @@ import org.powerbot.bot.script.daemon.Login;
 import org.powerbot.bot.script.daemon.StatTracker;
 import org.powerbot.bot.script.daemon.TicketDestroy;
 import org.powerbot.bot.script.daemon.WidgetCloser;
-import org.powerbot.script.rs3.tools.MethodContext;
+import org.powerbot.script.rs3.tools.ClientContext;
 import org.powerbot.script.rs3.tools.Validatable;
 
 public final class ScriptController implements Runnable, Validatable, Script.Controller, Script.Controller.Executor<Runnable> {
 	public static final String TIMEOUT_PROPERTY = "script.timeout", LOCAL_PROPERTY = "script.local";
 
-	private final MethodContext ctx;
+	private final ClientContext ctx;
 	private final EventDispatcher dispatcher;
 	private final ThreadGroup group;
 	private final AtomicReference<ThreadPoolExecutor> executor;
@@ -38,7 +38,7 @@ public final class ScriptController implements Runnable, Validatable, Script.Con
 
 	public final AtomicReference<ScriptBundle> bundle;
 
-	public ScriptController(final MethodContext ctx, final EventDispatcher dispatcher) {
+	public ScriptController(final ClientContext ctx, final EventDispatcher dispatcher) {
 		this.ctx = ctx;
 		this.dispatcher = dispatcher;
 
@@ -263,7 +263,7 @@ public final class ScriptController implements Runnable, Validatable, Script.Con
 	}
 
 	@Override
-	public MethodContext getContext() {
+	public ClientContext getContext() {
 		return ctx;
 	}
 

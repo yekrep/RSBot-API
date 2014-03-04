@@ -11,7 +11,7 @@ class ActorModel extends Model {
 	private final WeakReference<RSCharacter> character;
 	private final int[] x_base, z_base;
 
-	public ActorModel(final MethodContext ctx, final AbstractModel model, final RSCharacter character) {
+	public ActorModel(final ClientContext ctx, final AbstractModel model, final RSCharacter character) {
 		super(ctx, model);
 		this.character = new WeakReference<RSCharacter>(character);
 		x_base = xPoints;

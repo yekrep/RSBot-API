@@ -12,7 +12,7 @@ public class Equipment extends ItemQuery<Item> {
 	public static final int WIDGET_GEAR = 1462;
 	public static final int COMPONENT_GEAR_CONTAINER = 13;
 
-	public Equipment(final MethodContext factory) {
+	public Equipment(final ClientContext factory) {
 		super(factory);
 	}
 

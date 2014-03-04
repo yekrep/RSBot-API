@@ -15,7 +15,7 @@ import org.powerbot.script.util.Calculations;
 public class TileCuboid extends Interactive {
 	private final WeakReference<RSInteractable> interactable;
 
-	public TileCuboid(final MethodContext ctx, final RSInteractable interactable) {
+	public TileCuboid(final ClientContext ctx, final RSInteractable interactable) {
 		super(ctx);
 		this.interactable = new WeakReference<RSInteractable>(interactable);
 	}

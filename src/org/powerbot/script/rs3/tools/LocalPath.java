@@ -11,7 +11,7 @@ public class LocalPath extends Path {
 
 	private final Map map;
 
-	public LocalPath(final MethodContext factory, final Map map, final Locatable destination) {
+	public LocalPath(final ClientContext factory, final Map map, final Locatable destination) {
 		super(factory);
 		this.destination = destination;
 		this.map = map;

@@ -4,7 +4,7 @@ import org.powerbot.bot.rs3.client.Client;
 import org.powerbot.bot.rs3.client.PlayerMetaInfo;
 import org.powerbot.bot.rs3.client.Skill;
 
-public class Skills extends MethodProvider {
+public class Skills extends ClientAccessor {
 	public static final int[] XP_TABLE = {0, 0, 83, 174, 276, 388, 512, 650, 801, 969, 1154, 1358, 1584, 1833, 2107,
 			2411, 2746, 3115, 3523, 3973, 4470, 5018, 5624, 6291, 7028, 7842, 8740, 9730, 10824, 12031, 13363, 14833,
 			16456, 18247, 20224, 22406, 24815, 27473, 30408, 33648, 37224, 41171, 45529, 50339, 55649, 61512, 67983,
@@ -42,7 +42,7 @@ public class Skills extends MethodProvider {
 	public static final int DUNGEONEERING = 24;
 	public static final int DIVINATION = 25;
 
-	public Skills(final MethodContext factory) {
+	public Skills(final ClientContext factory) {
 		super(factory);
 	}
 

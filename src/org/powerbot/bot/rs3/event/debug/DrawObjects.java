@@ -10,16 +10,16 @@ import java.lang.reflect.Field;
 import org.powerbot.bot.rs3.client.RSAnimable;
 import org.powerbot.bot.rs3.client.RSObject;
 import org.powerbot.script.event.PaintListener;
-import org.powerbot.script.rs3.tools.MethodContext;
+import org.powerbot.script.rs3.tools.ClientContext;
 import org.powerbot.script.rs3.tools.GameObject;
 import org.powerbot.script.rs3.tools.Player;
 import org.powerbot.script.rs3.tools.Tile;
 
 public class DrawObjects implements PaintListener {
 	private static final Color[] C = {Color.GREEN, Color.WHITE, Color.BLACK, Color.BLUE};
-	private final MethodContext ctx;
+	private final ClientContext ctx;
 
-	public DrawObjects(final MethodContext ctx) {
+	public DrawObjects(final ClientContext ctx) {
 		this.ctx = ctx;
 	}
 

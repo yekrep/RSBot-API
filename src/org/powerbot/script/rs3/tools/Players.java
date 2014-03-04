@@ -16,7 +16,7 @@ import org.powerbot.script.lang.PlayerQuery;
  *
  */
 public class Players extends PlayerQuery<Player> {
-	public Players(final MethodContext factory) {
+	public Players(final ClientContext factory) {
 		super(factory);
 	}
 

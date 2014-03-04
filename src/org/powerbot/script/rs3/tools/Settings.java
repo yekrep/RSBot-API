@@ -7,8 +7,8 @@ import org.powerbot.bot.rs3.client.PlayerMetaInfo;
  * {@link Settings} is a utility which provides raw access to the game's varpbits.
  *
  */
-public class Settings extends MethodProvider {
-	public Settings(final MethodContext factory) {
+public class Settings extends ClientAccessor {
+	public Settings(final ClientContext factory) {
 		super(factory);
 	}
 

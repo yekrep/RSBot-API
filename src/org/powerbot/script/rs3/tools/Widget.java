@@ -7,12 +7,12 @@ import org.powerbot.bot.rs3.client.Client;
 import org.powerbot.bot.rs3.client.RSInterface;
 import org.powerbot.bot.rs3.client.RSInterfaceBase;
 
-public class Widget extends MethodProvider implements Validatable, Iterable<Component> {
+public class Widget extends ClientAccessor implements Validatable, Iterable<Component> {
 	private final int index;
 	private final Object LOCK;
 	private Component[] cache;
 
-	public Widget(final MethodContext ctx, final int index) {
+	public Widget(final ClientContext ctx, final int index) {
 		super(ctx);
 		this.index = index;
 		this.LOCK = new Object();

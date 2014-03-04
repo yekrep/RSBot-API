@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 import org.powerbot.script.event.PaintListener;
-import org.powerbot.script.rs3.tools.MethodContext;
+import org.powerbot.script.rs3.tools.ClientContext;
 import org.powerbot.script.rs3.tools.GameObject;
 import org.powerbot.script.rs3.tools.GroundItem;
 import org.powerbot.script.rs3.tools.Model;
@@ -14,9 +14,9 @@ import org.powerbot.script.rs3.tools.Player;
 public class DrawModels implements PaintListener {
 	private static final Color[] C = {Color.GREEN, Color.WHITE, Color.BLACK, Color.BLUE};
 	private static final int[] A = {25, 40, 255, 50};
-	private final MethodContext ctx;
+	private final ClientContext ctx;
 
-	public DrawModels(final MethodContext ctx) {
+	public DrawModels(final ClientContext ctx) {
 		this.ctx = ctx;
 	}
 

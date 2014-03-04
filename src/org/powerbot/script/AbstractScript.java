@@ -26,7 +26,7 @@ import org.powerbot.Configuration;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.misc.ScriptBundle;
 import org.powerbot.bot.script.ScriptController;
-import org.powerbot.script.rs3.tools.MethodContext;
+import org.powerbot.script.rs3.tools.ClientContext;
 import org.powerbot.util.HttpUtils;
 import org.powerbot.util.IOUtils;
 import org.powerbot.util.Ini;
@@ -42,9 +42,9 @@ public abstract class AbstractScript implements Script, Comparable<AbstractScrip
 	public final Logger log = Logger.getLogger(getClass().getName());
 
 	/**
-	 * The {@link MethodContext} for accessing client data.
+	 * The {@link org.powerbot.script.rs3.tools.ClientContext} for accessing client data.
 	 */
-	protected final MethodContext ctx;
+	protected final ClientContext ctx;
 
 	private static final AtomicInteger s = new AtomicInteger(0);
 	private final int sq;
@@ -181,22 +181,22 @@ public abstract class AbstractScript implements Script, Comparable<AbstractScrip
 	}
 
 	/**
-	 * Links a new {@link MethodContext}.
+	 * Links a new {@link org.powerbot.script.rs3.tools.ClientContext}.
 	 *
-	 * @param ctx a new {@link MethodContext}
+	 * @param ctx a new {@link org.powerbot.script.rs3.tools.ClientContext}
 	 */
 	@Deprecated
-	public void setContext(final MethodContext ctx) {
+	public void setContext(final ClientContext ctx) {
 		this.ctx.init(ctx);
 	}
 
 	/**
-	 * Returns the linked {@link MethodContext}.
+	 * Returns the linked {@link org.powerbot.script.rs3.tools.ClientContext}.
 	 *
 	 * @deprecated use the {@link #ctx} field
 	 */
 	@Deprecated
-	public MethodContext getContext() {
+	public ClientContext getContext() {
 		return ctx;
 	}
 

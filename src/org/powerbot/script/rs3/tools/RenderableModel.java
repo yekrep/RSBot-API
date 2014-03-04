@@ -10,7 +10,7 @@ import org.powerbot.bot.rs3.client.RSInteractableLocation;
 public class RenderableModel extends Model {
 	private final WeakReference<RSInteractable> interactable;
 
-	public RenderableModel(final MethodContext ctx, final AbstractModel model, final RSInteractable interactable) {
+	public RenderableModel(final ClientContext ctx, final AbstractModel model, final RSInteractable interactable) {
 		super(ctx, model);
 		this.interactable = new WeakReference<RSInteractable>(interactable);
 	}

@@ -6,13 +6,13 @@ import java.awt.Graphics;
 import java.awt.Point;
 
 import org.powerbot.script.event.PaintListener;
-import org.powerbot.script.rs3.tools.MethodContext;
+import org.powerbot.script.rs3.tools.ClientContext;
 import org.powerbot.script.rs3.tools.Npc;
 
 public class DrawMobs implements PaintListener {
-	private final MethodContext ctx;
+	private final ClientContext ctx;
 
-	public DrawMobs(final MethodContext ctx) {
+	public DrawMobs(final ClientContext ctx) {
 		this.ctx = ctx;
 	}
 

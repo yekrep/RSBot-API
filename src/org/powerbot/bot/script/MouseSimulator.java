@@ -10,15 +10,15 @@ import java.util.concurrent.TimeUnit;
 import org.powerbot.bot.SelectiveEventQueue;
 import org.powerbot.bot.rs3.client.Client;
 import org.powerbot.bot.rs3.client.input.Mouse;
-import org.powerbot.script.rs3.tools.MethodContext;
-import org.powerbot.script.rs3.tools.MethodProvider;
+import org.powerbot.script.rs3.tools.ClientAccessor;
+import org.powerbot.script.rs3.tools.ClientContext;
 import org.powerbot.util.math.Vector3;
 
-public class MouseSimulator extends MethodProvider {
+public class MouseSimulator extends ClientAccessor {
 	private static final int MAX_ATTEMPTS = 5;
 	public final MouseSpline simulator;
 
-	public MouseSimulator(final MethodContext ctx) {
+	public MouseSimulator(final ClientContext ctx) {
 		super(ctx);
 		simulator = new MouseSpline();
 	}

@@ -2,11 +2,11 @@ package org.powerbot.script.rs3.tools;
 
 import org.powerbot.script.util.Random;
 
-public class MethodProvider {
-	public final MethodContext ctx;
+public class ClientAccessor {
+	public final ClientContext ctx;
 
-	public MethodProvider(final MethodContext factory) {
-		this.ctx = factory;
+	public ClientAccessor(final ClientContext ctx) {
+		this.ctx = ctx;
 	}
 
 	/**

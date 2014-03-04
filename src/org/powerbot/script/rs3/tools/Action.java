@@ -1,11 +1,11 @@
 package org.powerbot.script.rs3.tools;
 
-public class Action extends MethodProvider implements Identifiable, Validatable, Displayable {
+public class Action extends ClientAccessor implements Identifiable, Validatable, Displayable {
 	private final int slot;
 	private final Type type;
 	private final int id;
 
-	public Action(final MethodContext ctx, final int slot, final Type type, final int id) {
+	public Action(final ClientContext ctx, final int slot, final Type type, final int id) {
 		super(ctx);
 		if (slot < 0 || slot >= CombatBar.NUM_SLOTS || type == null) {
 			throw new IllegalArgumentException();

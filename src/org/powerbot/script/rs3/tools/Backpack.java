@@ -25,7 +25,7 @@ public class Backpack extends ItemQuery<Item> implements Resizable {
 			WIDGET_GEAR,
 	};
 
-	public Backpack(final MethodContext factory) {
+	public Backpack(final ClientContext factory) {
 		super(factory);
 	}
 

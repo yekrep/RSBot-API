@@ -5,14 +5,14 @@ import java.awt.Rectangle;
 
 import org.powerbot.bot.rs3.client.Client;
 
-public class Movement extends MethodProvider {
+public class Movement extends ClientAccessor {
 	public static final int WIDGET_MAP = 1465;
 	public static final int COMPONENT_MAP = 12;
 	public static final int COMPONENT_RUN = 4;
 	public static final int COMPONENT_RUN_ENERGY = 5;
 	public static final int SETTING_RUN_ENABLED = 463;
 
-	public Movement(final MethodContext factory) {
+	public Movement(final ClientContext factory) {
 		super(factory);
 	}
 

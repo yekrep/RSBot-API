@@ -16,10 +16,10 @@ import org.powerbot.script.util.Random;
  * {@link Widget}s are cached and are available at all times, even when not present in game.
  * {@link Widget}s must be validated before use.
  */
-public class Widgets extends MethodProvider {
+public class Widgets extends ClientAccessor {
 	public Widget[] cache;
 
-	public Widgets(final MethodContext factory) {
+	public Widgets(final ClientContext factory) {
 		super(factory);
 	}
 

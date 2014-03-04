@@ -6,7 +6,7 @@ import org.powerbot.script.lang.Filter;
 import org.powerbot.script.util.Condition;
 import org.powerbot.script.util.Random;
 
-public class Summoning extends MethodProvider {
+public class Summoning extends ClientAccessor {
 	public static final int WIDGET = 662;
 	public static final int COMPONENT_NAME = 54;
 	public static final int COMPONENT_TAKE_BOB = 68;
@@ -23,7 +23,7 @@ public class Summoning extends MethodProvider {
 	public static final int WIDGET_LEFT_SELECT = 880;
 	public static final int COMPONENT_CONFIRM = 6;
 
-	public Summoning(final MethodContext factory) {
+	public Summoning(final ClientContext factory) {
 		super(factory);
 	}
 

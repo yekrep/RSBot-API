@@ -12,7 +12,7 @@ public class Chat extends TextQuery<ChatOption> {
 	};
 	private static final int[][] WIDGET_CONTINUE = {{1189, 11}, {1184, 11}, {1186, 6}, {1191, 11}};
 
-	public Chat(final MethodContext factory) {
+	public Chat(final ClientContext factory) {
 		super(factory);
 	}
 

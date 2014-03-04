@@ -21,7 +21,7 @@ import org.powerbot.script.lang.Filter;
 public abstract class Actor extends Interactive implements Renderable, Nameable, Locatable, Drawable {
 	private int faceIndex = -1;
 
-	public Actor(final MethodContext ctx) {
+	public Actor(final ClientContext ctx) {
 		super(ctx);
 	}
 

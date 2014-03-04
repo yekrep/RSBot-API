@@ -9,10 +9,10 @@ import org.powerbot.bot.script.MouseTarget;
 import org.powerbot.script.lang.Filter;
 import org.powerbot.util.math.HardwareSimulator;
 
-public class Mouse extends MethodProvider {
+public class Mouse extends ClientAccessor {
 	final MouseSimulator handler;
 
-	public Mouse(final MethodContext ctx) {
+	public Mouse(final ClientContext ctx) {
 		super(ctx);
 		handler = new MouseSimulator(ctx);
 	}

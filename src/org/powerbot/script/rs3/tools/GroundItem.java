@@ -24,7 +24,7 @@ public class GroundItem extends Interactive implements Renderable, Identifiable,
 	private final WeakReference<RSItem> item;
 	private int faceIndex = -1;
 
-	public GroundItem(final MethodContext ctx, final Tile tile, final RSItem item) {
+	public GroundItem(final ClientContext ctx, final Tile tile, final RSItem item) {
 		super(ctx);
 		this.tile = tile;
 		this.item = new WeakReference<RSItem>(item);

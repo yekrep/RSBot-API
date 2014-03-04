@@ -16,7 +16,7 @@ import org.powerbot.script.util.Timer;
  *
  */
 @SuppressWarnings("deprecation")
-public class Lobby extends MethodProvider {
+public class Lobby extends ClientAccessor {
 	public static final int STATE_LOBBY_IDLE = 7;
 	public static final int STATE_LOGGING_IN = 9;
 	public static final int LOGIN_DEFAULT_TIMEOUT = 30000;
@@ -35,7 +35,7 @@ public class Lobby extends MethodProvider {
 	public static final int WIDGET_WORLDS_COLUMN_LOOT_SHARE = 75;
 	public static final int WIDGET_WORLDS_COLUMN_PING = 76;
 
-	public Lobby(final MethodContext factory) {
+	public Lobby(final ClientContext factory) {
 		super(factory);
 	}
 

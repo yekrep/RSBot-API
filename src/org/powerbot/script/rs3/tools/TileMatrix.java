@@ -13,7 +13,7 @@ import org.powerbot.script.util.Random;
 public final class TileMatrix extends Interactive implements Locatable, Drawable {
 	private final Tile tile;
 
-	TileMatrix(final MethodContext ctx, final Tile tile) {
+	TileMatrix(final ClientContext ctx, final Tile tile) {
 		super(ctx);
 		this.tile = tile;
 	}

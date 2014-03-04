@@ -7,7 +7,7 @@ import java.util.concurrent.SynchronousQueue;
 
 import org.powerbot.script.lang.Stoppable;
 import org.powerbot.script.lang.Suspendable;
-import org.powerbot.script.rs3.tools.MethodContext;
+import org.powerbot.script.rs3.tools.ClientContext;
 
 /**
  * The base interface of a script.
@@ -77,10 +77,10 @@ public interface Script extends Runnable, EventListener {
 		}
 
 		/**
-		 * Returns the linked {@link MethodContext}.
+		 * Returns the linked {@link org.powerbot.script.rs3.tools.ClientContext}.
 		 *
-		 * @return the {@link MethodContext}
+		 * @return the {@link org.powerbot.script.rs3.tools.ClientContext}
 		 */
-		public MethodContext getContext();
+		public ClientContext getContext();
 	}
 }
