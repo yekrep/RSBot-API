@@ -5,7 +5,6 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 import org.powerbot.bot.rs3.Bot;
-import org.powerbot.bot.EventCallback;
 import org.powerbot.bot.SelectiveEventQueue;
 import org.powerbot.bot.rs3.event.EventDispatcher;
 import org.powerbot.bot.rs3.event.PaintEvent;
@@ -27,7 +26,7 @@ public class Canvas extends java.awt.Canvas {
 		paintEvent = new PaintEvent();
 		textPaintEvent = new TextPaintEvent();
 
-		queue.block(this, new EventCallback() {
+		queue.block(this, new SelectiveEventQueue.EventCallback() {
 			@Override
 			public void execute(final AWTEvent event) {
 			}

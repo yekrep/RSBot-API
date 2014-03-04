@@ -3,7 +3,6 @@ package org.powerbot.bot.rs3.client.input;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-import org.powerbot.bot.RawAWTEvent;
 import org.powerbot.bot.SelectiveEventQueue;
 
 public abstract class Keyboard extends Focus implements KeyListener {
@@ -32,6 +31,6 @@ public abstract class Keyboard extends Focus implements KeyListener {
 
 		final SelectiveEventQueue eq = SelectiveEventQueue.getInstance();
 		eq.focus();
-		eq.postEvent(new RawAWTEvent(e));
+		eq.postEvent(new SelectiveEventQueue.RawAWTEvent(e));
 	}
 }

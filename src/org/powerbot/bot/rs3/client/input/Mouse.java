@@ -7,7 +7,6 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 
-import org.powerbot.bot.RawAWTEvent;
 import org.powerbot.bot.SelectiveEventQueue;
 
 public abstract class Mouse extends Focus implements MouseListener, MouseMotionListener, MouseWheelListener {
@@ -179,6 +178,6 @@ public abstract class Mouse extends Focus implements MouseListener, MouseMotionL
 			clientPressed = false;
 			break;
 		}
-		SelectiveEventQueue.getInstance().postEvent(new RawAWTEvent(e));
+		SelectiveEventQueue.getInstance().postEvent(new SelectiveEventQueue.RawAWTEvent(e));
 	}
 }
