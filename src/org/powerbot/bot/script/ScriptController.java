@@ -160,11 +160,11 @@ public final class ScriptController implements Runnable, Validatable, Script.Con
 		public void run() {
 			final Script s;
 			try {
-				newThread(new Runnable() {
+				executor.get().getThreadFactory().newThread(new Runnable() {
 					@Override
 					public void run() {
 						try {
-							Script.controllerProxy.put(ScriptController.this);
+							Script.contextProxy.put(ctx);
 						} catch (final InterruptedException ignored) {
 						}
 					}
@@ -255,16 +255,6 @@ public final class ScriptController implements Runnable, Validatable, Script.Con
 	@Override
 	public boolean offer(final Runnable r) {
 		return executor.get().getQueue().offer(r);
-	}
-
-	@Override
-	public Thread newThread(final Runnable r) {
-		return executor.get().getThreadFactory().newThread(r);
-	}
-
-	@Override
-	public ClientContext getContext() {
-		return ctx;
 	}
 
 	private void call(final Script.State state) {

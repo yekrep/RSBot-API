@@ -25,7 +25,7 @@ public class BankPin extends PollingScript implements InternalScript {
 
 		final String pin = getPin();
 		if (pin == null) {
-			getController().stop();
+			ctx.controller.stop();
 			return -1;
 		}
 

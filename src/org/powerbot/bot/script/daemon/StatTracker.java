@@ -54,7 +54,7 @@ public class StatTracker extends PollingScript implements InternalScript {
 			return;
 		}
 
-		final Controller c = getController();
+		final Controller c = ctx.controller;
 		if (!(c instanceof ScriptController)) {
 			return;
 		}

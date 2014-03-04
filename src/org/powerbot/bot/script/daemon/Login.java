@@ -90,7 +90,7 @@ public class Login extends PollingScript implements InternalScript {
 			if (error.isVisible()) {
 				if (error.getText().toLowerCase().contains("password") ||
 						error.getText().toLowerCase().contains("ended")) {
-					getController().stop();
+					ctx.controller.stop();
 					return -1;
 				}
 				ctx.widgets.get(WIDGET, WIDGET_LOGIN_TRY_AGAIN).click();

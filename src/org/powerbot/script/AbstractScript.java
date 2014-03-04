@@ -50,7 +50,6 @@ public abstract class AbstractScript implements Script, Comparable<AbstractScrip
 	private final int sq;
 	protected final AtomicInteger priority;
 
-	private final Controller controller;
 	private final Map<State, Queue<Runnable>> exec;
 	private final AtomicLong started, suspended;
 	private final Queue<Long> suspensions;
@@ -98,18 +97,16 @@ public abstract class AbstractScript implements Script, Comparable<AbstractScrip
 		});
 
 		try {
-			controller = controllerProxy.take();
+			ctx = contextProxy.take();
 		} catch (final InterruptedException e) {
 			throw new IllegalStateException(e);
 		}
 
-		ctx = controller.getContext();
-
 		final String[] ids = {null, getName(), getClass().getName()};
 		String id = "-";
 
-		if (controller instanceof ScriptController) {
-			final ScriptController c = ((ScriptController) controller);
+		if (ctx.controller instanceof ScriptController) {
+			final ScriptController c = ((ScriptController) ctx.controller);
 			final ScriptBundle bundle = c.bundle != null ? c.bundle.get() : null;
 			if (bundle != null && bundle.definition != null) {
 				ids[0] = bundle.definition.getID().replace('/', '-');
@@ -170,24 +167,6 @@ public abstract class AbstractScript implements Script, Comparable<AbstractScrip
 	@Override
 	public final Queue<Runnable> getExecQueue(final State state) {
 		return exec.get(state);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public final Controller getController() {
-		return controller;
-	}
-
-	/**
-	 * Returns the linked {@link org.powerbot.script.rs3.tools.ClientContext}.
-	 *
-	 * @deprecated use the {@link #ctx} field
-	 */
-	@Deprecated
-	public ClientContext getContext() {
-		return ctx;
 	}
 
 	/**

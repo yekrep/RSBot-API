@@ -20,12 +20,7 @@ public interface Script extends Runnable, EventListener {
 		START, SUSPEND, RESUME, STOP
 	}
 
-	/**
-	 * A reference to {@link Controller} by proxy.
-	 *
-	 * @see {@link org.powerbot.script.Script.Controller#getContext()}
-	 */
-	static final BlockingQueue<Controller> controllerProxy = new SynchronousQueue<Controller>();
+	static final BlockingQueue<ClientContext> contextProxy = new SynchronousQueue<ClientContext>();
 
 	/**
 	 * Returns the execution queue.
@@ -34,13 +29,6 @@ public interface Script extends Runnable, EventListener {
 	 * @return a {@link Queue} of {@link Runnable}s in this {@link Script}s execution queue
 	 */
 	public Queue<Runnable> getExecQueue(State state);
-
-	/**
-	 * Returns the {@link Controller} associated with this {@link Script}
-	 *
-	 * @return the {@link Controller}
-	 */
-	public Controller getController();
 
 	/**
 	 * A controller for a {@link Script} which invokes and determines state changes.
@@ -66,21 +54,6 @@ public interface Script extends Runnable, EventListener {
 			 * @return {@code true} if the runnable was added, otherwise {@code} false
 			 */
 			public boolean offer(E e);
-
-			/**
-			 * Creates a new child thread.
-			 *
-			 * @param e a runnable to be executed by new thread instance
-			 * @return constructed thread
-			 */
-			public Thread newThread(E e);
 		}
-
-		/**
-		 * Returns the linked {@link org.powerbot.script.rs3.tools.ClientContext}.
-		 *
-		 * @return the {@link org.powerbot.script.rs3.tools.ClientContext}
-		 */
-		public ClientContext getContext();
 	}
 }
