@@ -19,7 +19,6 @@ import javax.swing.UIManager;
 import org.powerbot.Configuration.OperatingSystem;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.misc.Resources;
-import org.powerbot.misc.Sandbox;
 import org.powerbot.util.IOUtils;
 import org.powerbot.util.StringUtils;
 

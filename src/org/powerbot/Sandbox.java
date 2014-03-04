@@ -1,4 +1,4 @@
-package org.powerbot.misc;
+package org.powerbot;
 
 import java.awt.AWTPermission;
 import java.awt.Desktop;
@@ -15,10 +15,14 @@ import org.powerbot.Configuration;
 import org.powerbot.bot.rs3.loader.GameClassLoader;
 import org.powerbot.bot.script.ScriptClassLoader;
 import org.powerbot.bot.script.ScriptThreadFactory;
+import org.powerbot.misc.CryptFile;
+import org.powerbot.misc.GameAccounts;
+import org.powerbot.misc.NetworkAccount;
+import org.powerbot.misc.Tracker;
 import org.powerbot.script.rs3.tools.Keyboard;
 import org.powerbot.util.StringUtils;
 
-public class Sandbox extends SecurityManager {
+class Sandbox extends SecurityManager {
 	private static final Logger log = Logger.getLogger("Sandbox");
 
 	@Override
