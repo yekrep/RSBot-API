@@ -26,16 +26,6 @@ public abstract class PollingScript extends AbstractScript {
 	protected static final Queue<Integer> threshold = new ConcurrentLinkedQueue<Integer>();
 
 	/**
-	 * The sleep bias for {@link #sleep(long)}.
-	 * The absolute sleep value is defined by {@code millis * (1 + ((bias % 100) / 100))}.
-	 * By default this value is 50 i.e. +50%.
-	 *
-	 * @deprecated see {@link org.powerbot.script.util.Condition#wait(java.util.concurrent.Callable)}
-	 */
-	@Deprecated
-	protected final AtomicInteger bias = new AtomicInteger(50);
-
-	/**
 	 * Creates an instance of a {@link PollingScript}.
 	 */
 	public PollingScript() {
@@ -121,9 +111,7 @@ public abstract class PollingScript extends AbstractScript {
 	@Deprecated
 	public final void sleep(final long millis) {
 		try {
-			final int min = (int) millis;
-			final int max = min * (1 + ((bias.get() % 100) / 100));
-			Thread.sleep(Random.nextInt(min, max));
+			Thread.sleep(millis);
 		} catch (final InterruptedException ignored) {
 		}
 	}
