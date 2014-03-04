@@ -4,11 +4,13 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintStream;
 import java.lang.management.ManagementFactory;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Handler;
 import java.util.logging.Level;
+import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
 import javax.swing.SwingUtilities;
@@ -16,7 +18,6 @@ import javax.swing.UIManager;
 
 import org.powerbot.Configuration.OperatingSystem;
 import org.powerbot.gui.BotChrome;
-import org.powerbot.misc.PrintStreamHandler;
 import org.powerbot.misc.Resources;
 import org.powerbot.misc.Sandbox;
 import org.powerbot.util.IOUtils;
@@ -58,7 +59,42 @@ public class Boot implements Runnable {
 		for (final Handler handler : logger.getHandlers()) {
 			logger.removeHandler(handler);
 		}
-		logger.addHandler(new PrintStreamHandler());
+		logger.addHandler(new Handler() {
+			@Override
+			public void publish(LogRecord record) {
+				if (record == null || record.getMessage() == null) {
+					return;
+				}
+				final String text = record.getMessage().trim();
+				if (text.length() == 0) {
+					return;
+				}
+				final int level = record.getLevel().intValue();
+				final PrintStream std = level >= Level.WARNING.intValue() ? System.err : System.out;
+				std.print('[');
+				std.print(record.getLevel().getName());
+				std.print("] ");
+				if (!Configuration.FROMJAR) {
+					std.print(record.getLoggerName());
+					std.print(": ");
+				}
+				std.print(text);
+				final Throwable throwable = record.getThrown();
+				if (throwable != null) {
+					throwable.printStackTrace(std);
+				} else {
+					std.println();
+				}
+			}
+
+			@Override
+			public void flush() {
+			}
+
+			@Override
+			public void close() {
+			}
+		});
 
 		Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
 			@Override
