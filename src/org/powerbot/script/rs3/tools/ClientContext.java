@@ -38,7 +38,6 @@ public class ClientContext {
 	public final Camera camera;
 	public final Chat chat;
 	public final DepositBox depositBox;
-	public final Environment environment;
 	public final Equipment equipment;
 	public final Game game;
 	public final GroundItems groundItems;
@@ -77,7 +76,6 @@ public class ClientContext {
 		camera = new Camera(this);
 		chat = new Chat(this);
 		depositBox = new DepositBox(this);
-		environment = new Environment(this);
 		equipment = new Equipment(this);
 		game = new Game(this);
 		groundItems = new GroundItems(this);
@@ -120,7 +118,6 @@ public class ClientContext {
 		camera = ctx.camera;
 		chat = ctx.chat;
 		depositBox = ctx.depositBox;
-		environment = ctx.environment;
 		equipment = ctx.equipment;
 		game = ctx.game;
 		groundItems = ctx.groundItems;
