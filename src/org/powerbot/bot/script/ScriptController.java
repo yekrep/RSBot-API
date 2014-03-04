@@ -13,6 +13,7 @@ import org.powerbot.bot.SelectiveEventQueue;
 import org.powerbot.bot.rs3.event.EventDispatcher;
 import org.powerbot.misc.ScriptBundle;
 import org.powerbot.misc.Tracker;
+import org.powerbot.script.AbstractScript;
 import org.powerbot.script.Script;
 import org.powerbot.bot.script.daemon.Antipattern;
 import org.powerbot.bot.script.daemon.BankPin;
@@ -164,7 +165,7 @@ public final class ScriptController implements Runnable, Validatable, Script.Con
 					@Override
 					public void run() {
 						try {
-							Script.contextProxy.put(ctx);
+							AbstractScript.contextProxy.put(ctx);
 						} catch (final InterruptedException ignored) {
 						}
 					}

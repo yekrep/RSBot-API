@@ -12,8 +12,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Queue;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
@@ -46,6 +48,7 @@ public abstract class AbstractScript implements Script, Comparable<AbstractScrip
 	 */
 	protected final ClientContext ctx;
 
+	public static final BlockingQueue<ClientContext> contextProxy = new SynchronousQueue<ClientContext>();
 	private static final AtomicInteger s = new AtomicInteger(0);
 	private final int sq;
 	protected final AtomicInteger priority;

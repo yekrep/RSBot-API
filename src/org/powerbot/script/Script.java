@@ -2,12 +2,9 @@ package org.powerbot.script;
 
 import java.util.EventListener;
 import java.util.Queue;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.SynchronousQueue;
 
 import org.powerbot.script.lang.Stoppable;
 import org.powerbot.script.lang.Suspendable;
-import org.powerbot.script.rs3.tools.ClientContext;
 
 /**
  * The base interface of a script.
@@ -19,8 +16,6 @@ public interface Script extends Runnable, EventListener {
 	public enum State {
 		START, SUSPEND, RESUME, STOP
 	}
-
-	static final BlockingQueue<ClientContext> contextProxy = new SynchronousQueue<ClientContext>();
 
 	/**
 	 * Returns the execution queue.
