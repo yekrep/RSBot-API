@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Random;
 
-import org.powerbot.util.math.Vector3;
+import org.powerbot.script.util.math.Vector3;
 
 /**
  * A human simulated mouse implementation.

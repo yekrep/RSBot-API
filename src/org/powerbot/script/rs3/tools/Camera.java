@@ -2,7 +2,7 @@ package org.powerbot.script.rs3.tools;
 
 import org.powerbot.script.util.Random;
 import org.powerbot.script.util.Timer;
-import org.powerbot.util.math.Vector3f;
+import org.powerbot.script.util.math.Vector3f;
 
 /**
  * Utilities pertaining to the camera.

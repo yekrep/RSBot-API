@@ -1,4 +1,4 @@
-package org.powerbot.util.math;
+package org.powerbot.script.util.math;
 
 public class Vector3f extends Vector2f {
 	public final float z;

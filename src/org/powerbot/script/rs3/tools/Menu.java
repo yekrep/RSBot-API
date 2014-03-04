@@ -18,7 +18,7 @@ import org.powerbot.script.lang.Filter;
 import org.powerbot.script.util.Condition;
 import org.powerbot.script.util.Random;
 import org.powerbot.util.StringUtils;
-import org.powerbot.util.math.Vector2;
+import org.powerbot.script.util.math.Vector2;
 
 /**
  * Utilities pertaining to the in-game menu.

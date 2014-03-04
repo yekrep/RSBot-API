@@ -4,7 +4,7 @@ import java.awt.Point;
 
 import org.powerbot.script.lang.Filter;
 import org.powerbot.script.rs3.tools.Targetable;
-import org.powerbot.util.math.Vector3;
+import org.powerbot.script.util.math.Vector3;
 
 public abstract class MouseTarget {
 	public static final Filter<Point> DUMMY = new Filter<Point>() {

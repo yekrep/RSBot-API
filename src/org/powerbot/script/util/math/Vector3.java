@@ -1,4 +1,4 @@
-package org.powerbot.util.math;
+package org.powerbot.script.util.math;
 
 public class Vector3 extends Vector2 {
 	public int z;

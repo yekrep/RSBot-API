@@ -4,7 +4,7 @@ import java.awt.Graphics;
 import java.awt.Point;
 
 import org.powerbot.script.util.Random;
-import org.powerbot.util.math.Vector3;
+import org.powerbot.script.util.math.Vector3;
 
 abstract class BoundingModel extends ClientAccessor {
 	private final Vector3 start, end;
