@@ -18,8 +18,6 @@ import org.powerbot.bot.rs3.event.EventDispatcher;
 import org.powerbot.bot.script.KeyboardSimulator;
 import org.powerbot.bot.script.ScriptClassLoader;
 import org.powerbot.gui.BotChrome;
-import org.powerbot.misc.Sandbox;
-import org.powerbot.bot.script.ScriptController;
 import org.powerbot.script.lang.Stoppable;
 import org.powerbot.script.rs3.tools.ClientContext;
 import org.powerbot.script.util.Condition;
