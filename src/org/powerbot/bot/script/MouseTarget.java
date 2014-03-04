@@ -6,7 +6,7 @@ import org.powerbot.script.lang.Filter;
 import org.powerbot.script.rs3.tools.Targetable;
 import org.powerbot.util.math.Vector3;
 
-public abstract class MouseTarget implements MouseCallback {
+public abstract class MouseTarget {
 	public static final Filter<Point> DUMMY = new Filter<Point>() {
 		@Override
 		public boolean accept(final Point point) {
@@ -28,4 +28,6 @@ public abstract class MouseTarget implements MouseCallback {
 		this.steps = 0;
 		this.failed = false;
 	}
+
+	public abstract boolean execute(final MouseSimulator handler);
 }
