@@ -7,7 +7,7 @@ import org.powerbot.bot.rs3.client.Client;
 import org.powerbot.bot.script.MouseSimulator;
 import org.powerbot.bot.script.MouseTarget;
 import org.powerbot.script.lang.Filter;
-import org.powerbot.util.math.HardwareSimulator;
+import org.powerbot.script.util.Random;
 
 public class Mouse extends ClientAccessor {
 	final MouseSimulator handler;
@@ -134,7 +134,7 @@ public class Mouse extends ClientAccessor {
 			@Override
 			public boolean execute(final MouseSimulator handler) {
 				try {
-					Thread.sleep(HardwareSimulator.getDelayFactor());
+					Thread.sleep(Random.getDelay());
 				} catch (final InterruptedException ignored) {
 				}
 

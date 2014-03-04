@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Random;
 
-import org.powerbot.util.math.HardwareSimulator;
 import org.powerbot.util.math.Vector3;
 
 /**
@@ -19,11 +18,12 @@ public final class MouseSpline {
 	private final static int SHORT_DISTANCE = 250;
 
 	public MouseSpline() {
-		r = HardwareSimulator.getRandomGenerator();
+		r = new Random();
+		r.setSeed(r.nextLong());
 	}
 
 	public int getPressDuration() {
-		return HardwareSimulator.getDelayFactor();
+		return org.powerbot.script.util.Random.getDelay();
 	}
 
 	public Iterable<Vector3> getPath(final Vector3 a, final Vector3 b) {

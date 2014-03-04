@@ -16,7 +16,6 @@ import java.util.Queue;
 import org.powerbot.bot.rs3.client.Client;
 import org.powerbot.bot.rs3.client.input.Keyboard;
 import org.powerbot.script.util.Random;
-import org.powerbot.util.math.HardwareSimulator;
 
 public class KeyboardSimulator {
 	private final Applet applet;
@@ -87,7 +86,7 @@ public class KeyboardSimulator {
 			final KeyEvent keyEvent = queue.peek();
 			if (keyEvent != null && keyEvent.getID() != KeyEvent.KEY_TYPED) {
 				try {
-					Thread.sleep((long) (HardwareSimulator.getDelayFactor() * (1D + Random.nextDouble() / 2D)));
+					Thread.sleep((long) (Random.getDelay() * (1d + Random.nextDouble() / 2d)));
 				} catch (final InterruptedException ignored) {
 				}
 			}
