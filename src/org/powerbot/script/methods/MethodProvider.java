@@ -14,6 +14,7 @@ public class MethodProvider {
 	 *
 	 * @param millis the duration in milliseconds.
 	 */
+	@Deprecated
 	public void sleep(final int millis) {
 		if (millis <= 0) {
 			return;
@@ -31,6 +32,7 @@ public class MethodProvider {
 	 * @param min the minimum duration (inclusive)
 	 * @param max the maximum duration (exclusive)
 	 */
+	@Deprecated
 	public void sleep(final int min, final int max) {
 		sleep(Random.nextInt(min, max));
 	}
