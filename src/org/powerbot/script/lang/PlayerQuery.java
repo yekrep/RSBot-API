@@ -11,6 +11,9 @@ public abstract class PlayerQuery<K extends Locatable & Nameable> extends Abstra
 		super(factory);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	protected PlayerQuery<K> getThis() {
 		return this;

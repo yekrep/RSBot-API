@@ -11,6 +11,9 @@ public abstract class ItemQuery<K extends Identifiable & Nameable & Stackable> e
 		super(factory);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	protected ItemQuery<K> getThis() {
 		return this;
@@ -71,11 +74,17 @@ public abstract class ItemQuery<K extends Identifiable & Nameable & Stackable> e
 		return select(new Nameable.Matcher(names));
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public int count() {
 		return size();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public int count(final boolean stacks) {
 		if (!stacks) {

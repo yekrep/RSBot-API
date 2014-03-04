@@ -9,6 +9,9 @@ public abstract class IdQuery<K extends Identifiable> extends AbstractQuery<IdQu
 		super(factory);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	protected IdQuery<K> getThis() {
 		return this;

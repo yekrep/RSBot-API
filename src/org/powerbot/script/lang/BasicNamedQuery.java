@@ -13,6 +13,9 @@ public abstract class BasicNamedQuery<K extends Locatable & Identifiable & Namea
 		super(factory);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	protected BasicNamedQuery<K> getThis() {
 		return this;
@@ -49,7 +52,6 @@ public abstract class BasicNamedQuery<K extends Locatable & Identifiable & Namea
 	public BasicNamedQuery<K> within(final Area area) {
 		return select(new Locatable.WithinArea(area));
 	}
-
 
 	/**
 	 * {@inheritDoc}

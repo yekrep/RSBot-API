@@ -14,6 +14,9 @@ public abstract class GroundItemQuery<K extends Locatable & Identifiable & Namea
 		super(factory);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	protected GroundItemQuery<K> getThis() {
 		return this;
@@ -123,11 +126,17 @@ public abstract class GroundItemQuery<K extends Locatable & Identifiable & Namea
 		return select(new Nameable.Matcher(names));
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public int count() {
 		return size();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public int count(final boolean stacks) {
 		if (!stacks) {

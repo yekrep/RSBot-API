@@ -10,6 +10,9 @@ public abstract class HintArrowQuery<K extends Locatable> extends AbstractQuery<
 		super(factory);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	protected HintArrowQuery<K> getThis() {
 		return this;
