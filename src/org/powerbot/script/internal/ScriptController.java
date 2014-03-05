@@ -17,7 +17,6 @@ import org.powerbot.script.Script;
 import org.powerbot.script.internal.environment.Antipattern;
 import org.powerbot.script.internal.environment.BankPin;
 import org.powerbot.script.internal.environment.Login;
-import org.powerbot.script.internal.environment.StatTracker;
 import org.powerbot.script.internal.environment.TicketDestroy;
 import org.powerbot.script.internal.environment.WidgetCloser;
 import org.powerbot.script.methods.MethodContext;
@@ -58,7 +57,6 @@ public final class ScriptController implements Runnable, Validatable, Script.Con
 				TicketDestroy.class,
 				BankPin.class,
 				Antipattern.class,
-				StatTracker.class,
 		};
 		scripts = new PriorityQueue<Script>(daemons.length + 1);
 
