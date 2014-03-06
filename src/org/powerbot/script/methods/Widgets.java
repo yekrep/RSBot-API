@@ -7,10 +7,12 @@ import java.util.concurrent.Callable;
 
 import org.powerbot.bot.client.Client;
 import org.powerbot.bot.client.RSInterfaceBase;
+import org.powerbot.script.internal.HeteroUtil;
 import org.powerbot.script.util.Condition;
 import org.powerbot.script.util.Random;
 import org.powerbot.script.wrappers.Component;
 import org.powerbot.script.wrappers.Widget;
+import org.powerbot.util.math.HardwareSimulator;
 
 /**
  * {@link Widgets} is a static utility which provides access to the game's {@link Component}s by means of {@link Widget}s.
@@ -144,7 +146,7 @@ public class Widgets extends MethodProvider {
 			if (!ctx.mouse.click(p, true)) {
 				return false;
 			}
-			sleep(200, 400);
+			HeteroUtil.react();
 		}
 		Point a;
 		Component c;
@@ -155,10 +157,13 @@ public class Widgets extends MethodProvider {
 			if (scroll) {
 				if (ctx.mouse.scroll(a.y > view.y)) {
 					if (++scrolls >= Random.nextInt(5, 9)) {
-						sleep(200, 700);
+						HeteroUtil.react();
 						scrolls = 0;
 					}
-					sleep(25, 100);
+					try {
+						Thread.sleep(HardwareSimulator.getDelayFactor());
+					} catch (final InterruptedException ignored) {
+					}
 					if (System.nanoTime() - mark > 2000000000) {
 						final int l = thumb.getAbsoluteLocation().y;
 						if (tY == l) {

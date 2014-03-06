@@ -9,7 +9,6 @@ import java.util.regex.Pattern;
 
 import org.powerbot.script.lang.Filter;
 import org.powerbot.script.util.Condition;
-import org.powerbot.script.util.Timer;
 import org.powerbot.script.wrappers.Component;
 import org.powerbot.script.wrappers.Widget;
 
@@ -132,16 +131,16 @@ public class Lobby extends MethodProvider {
 				return false;
 			}
 		}
-		final Timer t = new Timer(timeout);
-		while (t.isRunning() && !ctx.game.isLoggedIn()) {
-			final Dialog dialog = getOpenDialog();
-			if (dialog == Dialog.TRANSFER_COUNTDOWN || (dialog != null && continueDialog())) {
-				t.reset();
-			} else if (dialog != null) {
-				sleep(500, 1000);
+		while (!ctx.game.isLoggedIn()) {
+			if (!Condition.wait(new Callable<Boolean>() {
+				@Override
+				public Boolean call() throws Exception {
+					final Dialog d = getOpenDialog();
+					return d == Dialog.TRANSFER_COUNTDOWN || (d != null && continueDialog()) || ctx.game.isLoggedIn();
+				}
+			}, timeout)) {
 				break;
 			}
-			sleep(5);
 		}
 		return ctx.game.isLoggedIn();
 	}

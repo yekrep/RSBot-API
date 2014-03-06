@@ -2,6 +2,7 @@ package org.powerbot.script.methods;
 
 import java.util.concurrent.Callable;
 
+import org.powerbot.script.internal.HeteroUtil;
 import org.powerbot.script.lang.Filter;
 import org.powerbot.script.util.Condition;
 import org.powerbot.script.util.Random;
@@ -100,7 +101,7 @@ public class Summoning extends MethodProvider {
 			})) {
 				final ChatOption o = ctx.chat.poll();
 				if (o.select(Random.nextBoolean())) {
-					sleep(100, 800);
+					HeteroUtil.react();
 					if (o.select(Random.nextBoolean())) {
 						return Condition.wait(new Callable<Boolean>() {
 							@Override

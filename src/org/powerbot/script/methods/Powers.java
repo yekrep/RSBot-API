@@ -4,6 +4,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.concurrent.Callable;
 
+import org.powerbot.script.internal.HeteroUtil;
 import org.powerbot.script.util.Condition;
 
 /**
@@ -421,14 +422,14 @@ public class Powers extends MethodProvider {
 					continue;
 				}
 				if (ctx.widgets.get(WIDGET_PRAYER, COMPONENT_PRAYER_SELECT_CONTAINER).getChild(effect.getId()).interact("Select")) {
-					sleep(800, 1200);
+					HeteroUtil.react();
 				}
 			}
 
 			for (final Effect effect : getQuickPrayers()) {
 				if (isPrayerQuick(effect) && !search(effects, effect)) {
 					if (ctx.widgets.get(WIDGET_PRAYER, COMPONENT_PRAYER_SELECT_CONTAINER).getChild(effect.getId()).interact("Deselect")) {
-						sleep(800, 1200);
+						HeteroUtil.react();
 					}
 				}
 			}
