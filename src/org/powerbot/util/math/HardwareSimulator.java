@@ -27,6 +27,10 @@ public class HardwareSimulator {
 	}
 
 	public static int getDelayFactor() {
-		return (int) ((-1 + 2 * r.nextDouble()) * pd[1] + pd[0]);
+		return getDelayFactor(1d);
+	}
+
+	public static int getDelayFactor(final double scale) {
+		return (int) (((-1 + 2 * r.nextDouble()) * pd[1] + pd[0]) * scale);
 	}
 }
