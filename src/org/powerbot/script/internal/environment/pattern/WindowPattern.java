@@ -42,7 +42,10 @@ public class WindowPattern extends Antipattern {
 			}
 
 			if (a) {
-				sleep(Random.nextInt(0, Random.nextInt(1000, 2000)));
+				try {
+					Thread.sleep(Random.nextInt(0, Random.nextInt(1000, 2000)));
+				} catch (final InterruptedException ignored) {
+				}
 			}
 		}
 	}
