@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 
+import org.powerbot.script.internal.HeteroUtil;
 import org.powerbot.script.lang.ItemQuery;
 import org.powerbot.script.util.Condition;
-import org.powerbot.script.util.Random;
 import org.powerbot.script.wrappers.Component;
 import org.powerbot.script.wrappers.Interactive;
 import org.powerbot.script.wrappers.Item;
@@ -196,7 +196,7 @@ public class DepositBox extends ItemQuery<Item> {
 					return isInputWidgetOpen();
 				}
 			})) {
-				sleep(Random.nextInt(800, 1200));
+				HeteroUtil.react();
 				ctx.keyboard.sendln(amount + "");
 			} else {
 				return false;

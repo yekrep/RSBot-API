@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.Callable;
 
+import org.powerbot.script.internal.HeteroUtil;
 import org.powerbot.script.lang.Filter;
 import org.powerbot.script.lang.ItemQuery;
 import org.powerbot.script.util.Condition;
@@ -396,7 +397,7 @@ public class Bank extends ItemQuery<Item> {
 					return isInputWidgetOpen();
 				}
 			})) {
-				sleep(Random.nextInt(800, 1200));
+				HeteroUtil.react();
 				ctx.keyboard.sendln(amount + "");
 			}
 		} else {
@@ -454,7 +455,7 @@ public class Bank extends ItemQuery<Item> {
 					return isInputWidgetOpen();
 				}
 			})) {
-				sleep(Random.nextInt(800, 1200));
+				HeteroUtil.react();
 				ctx.keyboard.sendln(amount + "");
 			} else {
 				return false;

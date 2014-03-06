@@ -12,6 +12,7 @@ import org.powerbot.bot.client.MenuGroupNode;
 import org.powerbot.bot.client.MenuItemNode;
 import org.powerbot.bot.client.NodeDeque;
 import org.powerbot.bot.client.NodeSubQueue;
+import org.powerbot.script.internal.HeteroUtil;
 import org.powerbot.script.internal.wrappers.Deque;
 import org.powerbot.script.internal.wrappers.Queue;
 import org.powerbot.script.lang.Filter;
@@ -155,7 +156,7 @@ public class Menu extends MethodProvider {
 						return client.isMenuOpen();
 					}
 				}, 5, 20);
-				sleep(Random.nextInt(0, 300) + 105 * (int) (Math.log(index * 2) / Math.log(2)));
+				HeteroUtil.hicks(index);
 
 				if (!client.isMenuOpen()) {
 					return false;
@@ -257,18 +258,18 @@ public class Menu extends MethodProvider {
 			ctx.mouse.move(mv.add(div).to2DPoint());
 		}
 		if (ctx.mouse.move(dv.to2DPoint())) {
-			sleep(Random.nextInt(125, 175));
+			HeteroUtil.react();
 			if (client.isMenuOpen()) {
 				final Point p = ctx.mouse.getLocation();
 				final int cX;
 				final int subX = client.getSubMenuX();
 				if (ctx.mouse.move(cX = subX + Random.nextInt(4, client.getSubMenuWidth() - 5), p.y)) {
-					sleep(Random.nextInt(125, 175));
+					HeteroUtil.react();
 					if (client.isMenuOpen()) {
 						final int subY = client.getSubMenuY();
 						final Point p2 = new Point(cX, subY + (16 * sub + Random.nextInt(2, 15) + 21));
 						if (ctx.mouse.move(p2)) {
-							sleep(Random.nextInt(125, 175));
+							HeteroUtil.react();
 							return client.isMenuOpen() ? p2 : new Point(-1, -1);
 						}
 					}
