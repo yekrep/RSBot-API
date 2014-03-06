@@ -4,7 +4,6 @@ import java.util.concurrent.Callable;
 
 import org.powerbot.script.util.Condition;
 import org.powerbot.script.util.Random;
-import org.powerbot.script.util.Timer;
 import org.powerbot.script.wrappers.Locatable;
 import org.powerbot.script.wrappers.Player;
 import org.powerbot.script.wrappers.Tile;
@@ -98,33 +97,30 @@ public class Camera extends MethodProvider {
 	 * @return <tt>true</tt> if the pitch was reached; otherwise <tt>false</tt>
 	 */
 	public boolean setPitch(final int percent) {
-		int curAlt = getPitch();
-		int lastAlt = 0;
-		if (curAlt == percent) {
+		if (percent == getPitch()) {
 			return true;
 		}
-
-		final boolean up = curAlt < percent;
+		final boolean up = getPitch() < percent;
 		ctx.keyboard.send(up ? "{VK_UP down}" : "{VK_DOWN down}");
-		final Timer timer = new Timer(100);
-		while (timer.isRunning()) {
-			if (lastAlt != curAlt) {
-				timer.reset();
-			}
-
-			lastAlt = curAlt;
-			sleep(Random.nextInt(5, 10));
-			curAlt = getPitch();
-
-			if (up && curAlt >= percent) {
+		for (; ; ) {
+			final int tp = getPitch();
+			if (!Condition.wait(new Callable<Boolean>() {
+				@Override
+				public Boolean call() throws Exception {
+					return getPitch() != tp;
+				}
+			}, 10, 10)) {
 				break;
-			} else if (!up && curAlt <= percent) {
+			}
+			final int p = getPitch();
+			if (up && p >= percent) {
+				break;
+			} else if (!up && p <= percent) {
 				break;
 			}
 		}
-
 		ctx.keyboard.send(up ? "{VK_UP up}" : "{VK_DOWN up}");
-		return curAlt == percent;
+		return Math.abs(percent - getPitch()) <= 8;
 	}
 
 	/**
@@ -153,34 +149,32 @@ public class Camera extends MethodProvider {
 	 * @param degrees the degrees to set the camera to
 	 * @return <tt>true</tt> if the camera was rotated to the angle; otherwise <tt>false</tt>
 	 */
-	public boolean setAngle(int degrees) {
-		degrees %= 360;
-		if (getAngleTo(degrees) > 5) {
-			ctx.keyboard.send("{VK_LEFT down}");
-			final Timer timer = new Timer(500);
-			int ang, prev = -1;
-			while ((ang = getAngleTo(degrees)) > 15 && timer.isRunning()) {
-				if (ang != prev) {
-					timer.reset();
-				}
-				prev = ang;
-				sleep(10, 15);
-			}
-			ctx.keyboard.send("{VK_LEFT up}");
-		} else if (getAngleTo(degrees) < -5) {
-			ctx.keyboard.send("{VK_RIGHT down}");
-			final Timer timer = new Timer(500);
-			int ang, prev = -1;
-			while ((ang = getAngleTo(degrees)) < -15 && timer.isRunning()) {
-				if (ang != prev) {
-					timer.reset();
-				}
-				prev = ang;
-				sleep(10, 15);
-			}
-			ctx.keyboard.send("{VK_RIGHT up}");
+	public boolean setAngle(final int degrees) {
+		final int d = degrees % 360;
+		final int a = getAngleTo(d);
+		if (Math.abs(a) <= 5) {
+			return true;
 		}
-		return Math.abs(getAngleTo(degrees)) < 15;
+		final boolean l = a > 5;
+
+
+		ctx.keyboard.send(l ? "{VK_LEFT down}" : "{VK_RIGHT down}");
+		for (; ; ) {
+			final int a2 = getAngleTo(d);
+			if (!Condition.wait(new Callable<Boolean>() {
+				@Override
+				public Boolean call() throws Exception {
+					return getAngleTo(d) != a2;
+				}
+			}, 10, 10)) {
+				break;
+			}
+			if (Math.abs(getAngleTo(d)) <= 15) {
+				break;
+			}
+		}
+		ctx.keyboard.send(l ? "{VK_LEFT up}" : "{VK_RIGHT up}");
+		return Math.abs(getAngleTo(d)) <= 15;
 	}
 
 	/**
