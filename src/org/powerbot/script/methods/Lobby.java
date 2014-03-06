@@ -122,9 +122,12 @@ public class Lobby extends MethodProvider {
 			if (!(child != null && child.isValid() && child.click(true))) {
 				return false;
 			}
-			for (int i = 0; i < 30 && ctx.game.getClientState() == STATE_LOBBY_IDLE; i++) {
-				sleep(50, 100);
-			}
+			Condition.wait(new Callable<Boolean>() {
+				@Override
+				public Boolean call() throws Exception {
+					return ctx.game.getClientState() != STATE_LOBBY_IDLE;
+				}
+			}, 80, 30);
 			if (ctx.game.getClientState() == STATE_LOBBY_IDLE) {
 				return false;
 			}

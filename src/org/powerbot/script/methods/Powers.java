@@ -2,6 +2,9 @@ package org.powerbot.script.methods;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.concurrent.Callable;
+
+import org.powerbot.script.util.Condition;
 
 /**
  * API pertaining to in-game powers.
@@ -353,13 +356,12 @@ public class Powers extends MethodProvider {
 				return false;
 			}
 		}
-		for (int i = 0; i < 20; i++) {
-			if (isQuickSelection() == quick) {
-				break;
+		return Condition.wait(new Callable<Boolean>() {
+			@Override
+			public Boolean call() throws Exception {
+				return isQuickSelection() == quick;
 			}
-			sleep(100, 200);
-		}
-		return isQuickSelection() == quick;
+		}, 150, 10);
 	}
 
 	/**
@@ -375,13 +377,12 @@ public class Powers extends MethodProvider {
 		if (!ctx.widgets.get(CombatBar.WIDGET, CombatBar.COMPONENT_BUTTON_PRAYER).interact(active ? "on" : "off")) {
 			return false;
 		}
-		for (int i = 0; i < 10; i++) {
-			if (isQuickPrayers() == active) {
-				break;
+		return Condition.wait(new Callable<Boolean>() {
+			@Override
+			public Boolean call() throws Exception {
+				return isQuickPrayers() == active;
 			}
-			sleep(100, 200);
-		}
-		return isQuickPrayers() == active;
+		}, 150, 10);
 	}
 
 	/**

@@ -158,12 +158,12 @@ public class Summoning extends MethodProvider {
 			return false;
 		}
 		if (ctx.widgets.get(WIDGET_LEFT_SELECT, option.getId()).interact("Select")) {
-			for (int i = 0; i < 20; i++) {
-				if (ctx.settings.get(SETTING_LEFT_SELECTED) == option.getTentative()) {
-					break;
+			Condition.wait(new Callable<Boolean>() {
+				@Override
+				public Boolean call() throws Exception {
+					return ctx.settings.get(SETTING_LEFT_SELECTED) == option.getTentative();
 				}
-				sleep(100, 200);
-			}
+			}, 150, 20);
 		}
 		final Component confirm = ctx.widgets.get(WIDGET_LEFT_SELECT, COMPONENT_CONFIRM);
 		for (int i = 0; i < 3; i++) {
@@ -171,12 +171,12 @@ public class Summoning extends MethodProvider {
 				break;
 			}
 			if (confirm.interact("Confirm")) {
-				for (int i2 = 0; i2 < 20; i2++) {
-					if (ctx.settings.get(SETTING_LEFT_OPTION) == option.getValue()) {
-						break;
+				Condition.wait(new Callable<Boolean>() {
+					@Override
+					public Boolean call() throws Exception {
+						return ctx.settings.get(SETTING_LEFT_OPTION) == option.getValue();
 					}
-					sleep(100, 200);
-				}
+				}, 150, 20);
 			}
 		}
 		return ctx.settings.get(SETTING_LEFT_OPTION) == option.getValue();

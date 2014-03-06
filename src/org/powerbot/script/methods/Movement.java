@@ -2,8 +2,10 @@ package org.powerbot.script.methods;
 
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.concurrent.Callable;
 
 import org.powerbot.bot.client.Client;
+import org.powerbot.script.util.Condition;
 import org.powerbot.script.wrappers.CollisionMap;
 import org.powerbot.script.wrappers.Component;
 import org.powerbot.script.wrappers.LocalPath;
@@ -158,15 +160,13 @@ public class Movement extends MethodProvider {
 	 * @return <tt>true</tt> if the state was successfully changed; otherwise <tt>false</tt>
 	 */
 	public boolean setRunning(final boolean run) {
-		if (isRunning() != run) {
-			final Component c = ctx.widgets.get(WIDGET_MAP, COMPONENT_RUN);
-			if (c != null && c.click(true)) {
-				for (int i = 0; i < 20 && isRunning() != run; i++) {
-					sleep(100, 200);
-				}
-			}
-		}
-		return isRunning() == run;
+		return isRunning() == run || (ctx.widgets.get(WIDGET_MAP, COMPONENT_RUN).click() &&
+				Condition.wait(new Callable<Boolean>() {
+					@Override
+					public Boolean call() throws Exception {
+						return isRunning() == run;
+					}
+				}, 300, 10));
 	}
 
 	/**
