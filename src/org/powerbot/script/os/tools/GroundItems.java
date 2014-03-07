@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import org.powerbot.bot.os.tools.NodeQueue;
 import org.powerbot.script.ClientAccessor;
 import org.powerbot.script.ClientContext;
 import org.powerbot.bot.os.client.Client;
@@ -44,8 +45,8 @@ public class GroundItems extends ClientAccessor {
 				continue;
 			}
 			for (int y = 0; y < row.length; y++) {
-				for (final ItemNode node : new Deque<ItemNode>(row[y])) {
-					list.add(new GroundItem(ctx, tile.derive(x, y), node));
+				for (final ItemNode n : NodeQueue.get(row[y], ItemNode.class)) {
+					list.add(new GroundItem(ctx, tile.derive(x, y), n));
 				}
 			}
 
