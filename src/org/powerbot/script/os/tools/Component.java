@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Point;
 import java.util.Arrays;
 
+import org.powerbot.bot.os.client.HashTable;
+import org.powerbot.bot.os.client.Node;
 import org.powerbot.script.ClientAccessor;
 import org.powerbot.script.ClientContext;
 import org.powerbot.bot.os.client.Client;
@@ -108,11 +110,15 @@ public class Component extends ClientAccessor {
 		}
 
 		final int uid = getId() >>> 16;
-		for (final WidgetNode node : new HashTable<WidgetNode>(client.getWidgetTable(), WidgetNode.class)) {
-			if (uid == node.getUid()) {
-				return (int) node.getId();
+		final HashTable table = client.getWidgetTable();
+		if (table != null) {
+			for (final Node n : table.getBuckets()) {
+				if (n instanceof WidgetNode && ((WidgetNode) n).getUid() == uid) {
+					return uid;
+				}
 			}
 		}
+
 		return -1;
 	}
 
