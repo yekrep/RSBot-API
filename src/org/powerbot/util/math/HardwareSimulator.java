@@ -4,7 +4,6 @@ import java.security.SecureRandom;
 import java.util.Random;
 
 public class HardwareSimulator {
-	private static final int SCALE_HUMAN_REACTION = 10;
 	private final static double[] pd;
 	private final static Random r;
 
@@ -37,7 +36,7 @@ public class HardwareSimulator {
 
 	public static void react() {
 		try {
-			Thread.sleep(getDelayFactor(SCALE_HUMAN_REACTION));
+			Thread.sleep(getDelayFactor(10));
 		} catch (final InterruptedException ignored) {
 		}
 	}
