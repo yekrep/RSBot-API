@@ -20,7 +20,7 @@ public class Canvas extends java.awt.Canvas {
 
 	public Canvas() {
 		final BotChrome chrome = BotChrome.getInstance();
-		bot = chrome.bot.get();
+		bot = null;
 		paintEvent = new PaintEvent();
 		SelectiveEventQueue.getInstance().block(this, new SelectiveEventQueue.EventCallback() {
 			@Override
