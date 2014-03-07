@@ -16,7 +16,6 @@ import org.powerbot.script.util.Random;
  */
 @SuppressWarnings("EmptyMethod")
 public abstract class PollingScript extends AbstractScript implements Runnable {
-	private final AtomicBoolean running;
 
 	/**
 	 * Blocks other {@link PollingScript}s which have a lower {@link AbstractScript#priority} value.
@@ -28,8 +27,6 @@ public abstract class PollingScript extends AbstractScript implements Runnable {
 	 * Creates an instance of a {@link PollingScript}.
 	 */
 	public PollingScript() {
-		running = new AtomicBoolean(false);
-
 		getExecQueue(State.START).add(new Runnable() {
 			@Override
 			public void run() {
@@ -64,10 +61,6 @@ public abstract class PollingScript extends AbstractScript implements Runnable {
 
 	@Override
 	public final void run() {
-		if (!running.compareAndSet(false, true)) {
-			return;
-		}
-
 		if (threshold.isEmpty() || priority.get() <= threshold.peek()) {
 			try {
 				poll();
@@ -81,8 +74,6 @@ public abstract class PollingScript extends AbstractScript implements Runnable {
 			ctx.controller.offer(this);
 			Thread.yield();
 		}
-
-		running.set(false);
 	}
 
 	/**
