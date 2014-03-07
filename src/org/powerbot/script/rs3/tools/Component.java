@@ -6,9 +6,10 @@ import java.awt.Point;
 import java.awt.Rectangle;
 
 import org.powerbot.bot.rs3.client.Client;
+import org.powerbot.bot.rs3.client.HashTable;
+import org.powerbot.bot.rs3.client.Node;
 import org.powerbot.bot.rs3.client.RSInterface;
 import org.powerbot.bot.rs3.client.RSInterfaceNode;
-import org.powerbot.bot.rs3.tools.HashTable;
 import org.powerbot.script.util.Calculations;
 import org.powerbot.util.StringUtils;
 
@@ -161,10 +162,12 @@ public class Component extends Interactive implements Drawable, Displayable {
 		}
 
 		final int containerId = getId() >>> 16;
-		final HashTable ncI = new HashTable(client.getRSInterfaceNC());
-		for (RSInterfaceNode node = (RSInterfaceNode) ncI.getFirst(); node != null; node = (RSInterfaceNode) ncI.getNext()) {
-			if (containerId == node.getMainID()) {
-				return (int) node.getId();
+		final HashTable table = client.getRSInterfaceNC();
+		if (table != null) {
+			for (final Node n : table.getBuckets()) {
+				if (n instanceof RSInterfaceNode && n.getId() == containerId) {
+					return containerId;
+				}
 			}
 		}
 
