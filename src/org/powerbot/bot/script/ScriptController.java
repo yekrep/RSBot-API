@@ -175,9 +175,6 @@ public final class ScriptController extends ClientAccessor implements Runnable, 
 			}
 			scripts.add(s);
 			ctx.getBot().dispatcher.add(s);
-			if (!s.getExecQueue(Script.State.START).contains(s)) {
-				s.getExecQueue(Script.State.START).add(s);
-			}
 		}
 	}
 

@@ -9,7 +9,7 @@ import org.powerbot.script.lang.Suspendable;
 /**
  * The base interface of a script.
  */
-public interface Script extends Runnable, EventListener {
+public interface Script extends EventListener {
 
 	/**
 	 * The representative states of a {@link Script}

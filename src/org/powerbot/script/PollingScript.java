@@ -15,7 +15,7 @@ import org.powerbot.script.util.Random;
  *
  */
 @SuppressWarnings("EmptyMethod")
-public abstract class PollingScript extends AbstractScript {
+public abstract class PollingScript extends AbstractScript implements Runnable {
 	private final AtomicBoolean running;
 
 	/**
@@ -36,6 +36,7 @@ public abstract class PollingScript extends AbstractScript {
 				start();
 			}
 		});
+		getExecQueue(State.START).add(this);
 		getExecQueue(State.STOP).add(new Runnable() {
 			@Override
 			public void run() {
