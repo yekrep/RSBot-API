@@ -102,21 +102,6 @@ public abstract class PollingScript extends AbstractScript {
 	}
 
 	/**
-	 * Causes the currently executing thread to sleep (temporarily cease
-	 * execution) for the specified number of milliseconds.
-	 *
-	 * @param millis the length of time to sleep in milliseconds
-	 * @deprecated see {@link org.powerbot.script.util.Condition#wait(java.util.concurrent.Callable)}
-	 */
-	@Deprecated
-	public final void sleep(final long millis) {
-		try {
-			Thread.sleep(millis);
-		} catch (final InterruptedException ignored) {
-		}
-	}
-
-	/**
 	 * Called on {@link org.powerbot.script.Script.State#START}.
 	 * This method can either be overridden or ignored.
 	 */

@@ -119,7 +119,10 @@ public class Login extends PollingScript implements InternalScript {
 				if (!clickLoginInterface(ctx.widgets.get(WIDGET, WIDGET_LOGIN_USERNAME_TEXT))) {
 					return -1;
 				}
-				sleep(600);
+				try {
+					Thread.sleep(600);
+				} catch (final InterruptedException ignored) {
+				}
 
 				final int length = text.length();
 				if (length > 0) {
@@ -132,7 +135,10 @@ public class Login extends PollingScript implements InternalScript {
 				}
 
 				ctx.keyboard.send(username);
-				sleep(1000);
+				try {
+					Thread.sleep(1000);
+				} catch (final InterruptedException ignored) {
+				}
 				return 0;
 			}
 
@@ -141,7 +147,10 @@ public class Login extends PollingScript implements InternalScript {
 				if (!clickLoginInterface(ctx.widgets.get(WIDGET, WIDGET_LOGIN_PASSWORD_TEXT))) {
 					return -1;
 				}
-				sleep(600);
+				try {
+					Thread.sleep(600);
+				} catch (final InterruptedException ignored) {
+				}
 				final int length = text.length();
 				if (length > 0) {
 					final StringBuilder b = new StringBuilder(length);
@@ -156,7 +165,10 @@ public class Login extends PollingScript implements InternalScript {
 			}
 
 			ctx.keyboard.send("\n");
-			sleep(1200);
+			try {
+				Thread.sleep(1200);
+			} catch (final InterruptedException ignored) {
+			}
 			return -1;
 		}
 		return -1;//what's going on???
