@@ -10,9 +10,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import org.powerbot.script.util.Random;
 
 /**
- * An implementation of {@link AbstractScript} which polls (or "loops")
- * indefinitely at intervals returned by the last run.
- *
+ * An implementation of {@link AbstractScript} which polls (or "loops") indefinitely.
  */
 @SuppressWarnings("EmptyMethod")
 public abstract class PollingScript extends AbstractScript implements Runnable {
