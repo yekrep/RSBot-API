@@ -142,7 +142,7 @@ public class Widgets extends ClientAccessor {
 			if (!ctx.mouse.click(p, true)) {
 				return false;
 			}
-			sleep(200, 400);
+			Random.sleep();
 		}
 		Point a;
 		Component c;
@@ -153,10 +153,13 @@ public class Widgets extends ClientAccessor {
 			if (scroll) {
 				if (ctx.mouse.scroll(a.y > view.y)) {
 					if (++scrolls >= Random.nextInt(5, 9)) {
-						sleep(200, 700);
+						Random.sleep();
 						scrolls = 0;
 					}
-					sleep(25, 100);
+					try {
+						Thread.sleep(Random.getDelay());
+					} catch (final InterruptedException ignored) {
+					}
 					if (System.nanoTime() - mark > 2000000000) {
 						final int l = thumb.getAbsoluteLocation().y;
 						if (tY == l) {

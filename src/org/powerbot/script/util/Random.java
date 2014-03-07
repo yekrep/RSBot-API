@@ -7,6 +7,7 @@ public class Random {
 	private static final java.util.Random random;
 	private static final AtomicLong seeded;
 	private static final double[] pd;
+	private static final double ln2 = Math.log(2);
 
 	static {
 		java.util.Random r;
@@ -41,6 +42,21 @@ public class Random {
 	 */
 	public static int getDelay() {
 		return (int) ((-1 + 2 * nextDouble()) * pd[1] + pd[0]);
+	}
+
+	public static void sleep() {
+		try {
+			Thread.sleep(getDelay() * 10);
+		} catch (final InterruptedException ignored) {
+		}
+	}
+
+	public static void sleepHicks(final int depth) {
+		final int d = 105 * (int) (Math.log(depth * 2) / ln2);
+		try {
+			Thread.sleep(d);
+		} catch (final InterruptedException ignored) {
+		}
 	}
 
 	/**

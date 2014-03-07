@@ -38,7 +38,11 @@ public class DepositBox extends ItemQuery<Item> {
 	 * @see #open()
 	 */
 	public Locatable getNearest() {
-		return ctx.objects.select().id(DEPOSIT_BOX_IDS).nearest().poll().getLocation();
+		final Locatable l = ctx.objects.select().id(DEPOSIT_BOX_IDS).nearest().poll();
+		if (l.getLocation() != Tile.NIL) {
+			return l;
+		}
+		return Tile.NIL;
 	}
 
 	/**
@@ -187,7 +191,7 @@ public class DepositBox extends ItemQuery<Item> {
 					return isInputWidgetOpen();
 				}
 			})) {
-				sleep(Random.nextInt(800, 1200));
+				Random.sleep();
 				ctx.keyboard.sendln(amount + "");
 			} else {
 				return false;

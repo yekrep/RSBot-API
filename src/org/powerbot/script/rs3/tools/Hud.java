@@ -2,7 +2,11 @@ package org.powerbot.script.rs3.tools;
 
 import java.awt.Rectangle;
 import java.util.Arrays;
+import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
+
+import org.powerbot.script.util.Condition;
+import org.powerbot.script.util.Random;
 
 /**
  * Utilities for manipulating the hud.
@@ -218,23 +222,22 @@ public class Hud extends ClientAccessor {
 			if (list == null) {
 				return false;
 			}
-			for (int i = 0; i < 20; i++) {
-				if (list.isVisible()) {
-					break;
+			Condition.wait(new Callable<Boolean>() {
+				@Override
+				public Boolean call() throws Exception {
+					return list.isVisible();
 				}
-				sleep(50, 150);
-			}
-			sleep(300, 700);
+			}, 100, 20);
+			Random.sleep();
 			final Component toggle = getToggle(window);
 			if (toggle != null && toggle.hover()) {
 				if (toggle.isVisible() && ctx.mouse.click(true)) {
-					for (int i = 0; i < 20; i++) {
-						if (isVisible(window)) {
-							break;
+					return Condition.wait(new Callable<Boolean>() {
+						@Override
+						public Boolean call() throws Exception {
+							return isVisible(window);
 						}
-						sleep(50, 150);
-					}
-					return isViewable(window);
+					}, 100, 20);
 				}
 			}
 		}
@@ -255,12 +258,12 @@ public class Hud extends ClientAccessor {
 		if (open(window) && !isVisible(window)) {
 			final Component tab = getTab(window);
 			if (tab != null && tab.click()) {
-				for (int i = 0; i < 20; i++) {
-					if (isVisible(window)) {
-						break;
+				Condition.wait(new Callable<Boolean>() {
+					@Override
+					public Boolean call() throws Exception {
+						return isVisible(window);
 					}
-					sleep(50, 150);
-				}
+				}, 100, 20);
 			}
 		}
 		return isVisible(window);
@@ -282,12 +285,12 @@ public class Hud extends ClientAccessor {
 		if (view(window)) {
 			final Component sprite = getSprite(window);
 			if (sprite != null && sprite.getWidget().getComponent(sprite.getParent().getIndex() + 1).getChild(1).interact("Close")) {
-				for (int i = 0; i < 20; i++) {
-					if (!isOpen(window)) {
-						break;
+				return Condition.wait(new Callable<Boolean>() {
+					@Override
+					public Boolean call() throws Exception {
+						return !isOpen(window);
 					}
-					sleep(100, 150);
-				}
+				}, 125, 20);
 			}
 		}
 		return !isOpen(window);

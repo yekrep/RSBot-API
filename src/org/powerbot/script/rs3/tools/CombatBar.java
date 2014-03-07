@@ -61,13 +61,13 @@ public class CombatBar extends IdQuery<Action> {
 	 * @return <tt>true</tt> if the retaliation mode was successfully changed; otherwise <tt>false</tt>
 	 */
 	public boolean setRetaliating(final boolean retaliate) {
-		if (retaliate != isRetaliating() &&
-				ctx.widgets.get(WIDGET, COMPONENT_BUTTON_RETALIATE).interact("Toggle")) {
-			for (int i = 0; i < 10 && retaliate != isRetaliating(); i++) {
-				sleep(50, 150);
-			}
-		}
-		return retaliate == isRetaliating();
+		return retaliate == isRetaliating() || (ctx.widgets.get(WIDGET, COMPONENT_BUTTON_RETALIATE).interact("Toggle") &&
+				Condition.wait(new Callable<Boolean>() {
+					@Override
+					public Boolean call() throws Exception {
+						return isRetaliating() == retaliate;
+					}
+				}, 200, 10));
 	}
 
 	/**
@@ -174,12 +174,13 @@ public class CombatBar extends IdQuery<Action> {
 				break;
 			}
 		}
-		if (comp != null && comp.interact(expanded ? "Maximise" : "Minimise")) {
-			for (int i = 0; i < 5 && isExpanded() != expanded; i++) {
-				sleep(200, 500);
-			}
-		}
-		return isExpanded() == expanded;
+		return comp != null && comp.interact(expanded ? "Maximise" : "Minimise") &&
+				Condition.wait(new Callable<Boolean>() {
+					@Override
+					public Boolean call() throws Exception {
+						return isExpanded() == expanded;
+					}
+				}, 300, 10);
 	}
 
 	/**
@@ -278,12 +279,13 @@ public class CombatBar extends IdQuery<Action> {
 			return true;
 		}
 		final Component c = ctx.widgets.get(WIDGET, COMPONENT_LOCK);
-		if (c.isVisible() && c.interact("lock")) {
-			for (int i = 0; i < 25 && locked != isLocked(); i++) {
-				sleep(100, 150);
-			}
-		}
-		return isLocked() == locked;
+		return c.isVisible() && c.interact("lock") &&
+				Condition.wait(new Callable<Boolean>() {
+					@Override
+					public Boolean call() throws Exception {
+						return isLocked() == locked;
+					}
+				}, 300, 10);
 	}
 
 	/**

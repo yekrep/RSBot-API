@@ -106,7 +106,10 @@ public class Bank extends ItemQuery<Item> {
 				nearest = object;
 			}
 		}
-		return nearest;
+		if (nearest.getLocation() != Tile.NIL) {
+			return nearest;
+		}
+		return Tile.NIL;
 	}
 
 	/**
@@ -183,22 +186,28 @@ public class Bank extends ItemQuery<Item> {
 		if (index == -1) {
 			return false;
 		}
+		final Filter<Menu.Entry> f = new Filter<Menu.Entry>() {
+			@Override
+			public boolean accept(final Menu.Entry entry) {
+				final String s = entry.action;
+				return s.equalsIgnoreCase("Use") || s.equalsIgnoreCase("Open") || s.equalsIgnoreCase("Bank");
+			}
+		};
 		final String[] actions = {"Bank", "Bank", null, "Bank"};
 		final String[] options = {null, "Bank booth", null, "Counter"};
 		if (actions[index] == null) {
 			if (interactive.hover()) {
-				sleep(80, 200);
+				Condition.wait(new Callable<Boolean>() {
+					@Override
+					public Boolean call() throws Exception {
+						return ctx.menu.indexOf(f) != -1;
+					}
+				}, 100, 3);
 			}
 		}
 		final String action = actions[index];
 		if (action != null ? interactive.interact(actions[index], options[index]) :
-				interactive.interact(new Filter<Menu.Entry>() {
-					@Override
-					public boolean accept(final Menu.Entry entry) {
-						final String s = entry.action;
-						return s.equalsIgnoreCase("Use") || s.equalsIgnoreCase("Open") || s.equalsIgnoreCase("Bank");
-					}
-				})) {
+				interactive.interact(f)) {
 			do {
 				Condition.wait(new Callable<Boolean>() {
 					@Override
@@ -378,7 +387,7 @@ public class Bank extends ItemQuery<Item> {
 					return isInputWidgetOpen();
 				}
 			})) {
-				sleep(Random.nextInt(800, 1200));
+				Random.sleep();
 				ctx.keyboard.sendln(amount + "");
 			}
 		} else {
@@ -436,7 +445,7 @@ public class Bank extends ItemQuery<Item> {
 					return isInputWidgetOpen();
 				}
 			})) {
-				sleep(Random.nextInt(800, 1200));
+				Random.sleep();
 				ctx.keyboard.sendln(amount + "");
 			} else {
 				return false;

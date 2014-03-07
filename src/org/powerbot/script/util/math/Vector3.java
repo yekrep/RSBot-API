@@ -39,8 +39,8 @@ public class Vector3 extends Vector2 {
 		return new Vector3(super.mul(u), (int) (z * u));
 	}
 
-	public Vector3 mul(final Vector3 U) {
-		return new Vector3(super.mul(U), z * U.z);
+	public Vector3 mul(final Vector3 u) {
+		return new Vector3(super.mul(u), z * u.z);
 	}
 
 	public double get3DDistanceTo(final Vector3 v) {

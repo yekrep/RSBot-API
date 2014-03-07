@@ -9,7 +9,6 @@ import java.util.regex.Pattern;
 
 import org.powerbot.script.lang.Filter;
 import org.powerbot.script.util.Condition;
-import org.powerbot.script.util.Timer;
 
 /**
  * Utilities pertaining to the lobby.
@@ -119,23 +118,26 @@ public class Lobby extends ClientAccessor {
 			if (!(child != null && child.isValid() && child.click(true))) {
 				return false;
 			}
-			for (int i = 0; i < 30 && ctx.game.getClientState() == STATE_LOBBY_IDLE; i++) {
-				sleep(50, 100);
-			}
+			Condition.wait(new Callable<Boolean>() {
+				@Override
+				public Boolean call() throws Exception {
+					return ctx.game.getClientState() != STATE_LOBBY_IDLE;
+				}
+			}, 80, 30);
 			if (ctx.game.getClientState() == STATE_LOBBY_IDLE) {
 				return false;
 			}
 		}
-		final Timer t = new Timer(timeout);
-		while (t.isRunning() && !ctx.game.isLoggedIn()) {
-			final Dialog dialog = getOpenDialog();
-			if (dialog == Dialog.TRANSFER_COUNTDOWN || (dialog != null && continueDialog())) {
-				t.reset();
-			} else if (dialog != null) {
-				sleep(500, 1000);
+		while (!ctx.game.isLoggedIn()) {
+			if (!Condition.wait(new Callable<Boolean>() {
+				@Override
+				public Boolean call() throws Exception {
+					final Dialog d = getOpenDialog();
+					return d == Dialog.TRANSFER_COUNTDOWN || (d != null && continueDialog()) || ctx.game.isLoggedIn();
+				}
+			}, timeout)) {
 				break;
 			}
-			sleep(5);
 		}
 		return ctx.game.isLoggedIn();
 	}

@@ -3,6 +3,7 @@ package org.powerbot.bot.script.daemon;
 import java.awt.Rectangle;
 
 import org.powerbot.misc.GameAccounts;
+import org.powerbot.misc.Tracker;
 import org.powerbot.script.PollingScript;
 import org.powerbot.bot.script.InternalScript;
 import org.powerbot.script.lang.Filter;
@@ -88,11 +89,24 @@ public class Login extends PollingScript implements InternalScript {
 		if (account != null && (state == Game.INDEX_LOGIN_SCREEN || state == Game.INDEX_LOGGING_IN)) {
 			final Component error = ctx.widgets.get(WIDGET, WIDGET_LOGIN_ERROR);
 			if (error.isVisible()) {
-				if (error.getText().toLowerCase().contains("password") ||
-						error.getText().toLowerCase().contains("ended")) {
+				final String pre = "scripts/0/login/", txt = error.getText().toLowerCase();
+				boolean stop = false;
+
+				if (txt.contains("your ban will be lifted in")) {
+					Tracker.getInstance().trackPage(pre + "ban", txt);
+					stop = true;
+				} else if (txt.contains("account has been disabled")) {
+					Tracker.getInstance().trackPage(pre + "disabled", txt);
+					stop = true;
+				} else if (txt.contains("password") || txt.contains("ended")) {
+					stop = true;
+				}
+
+				if (stop) {
 					ctx.controller.stop();
 					return -1;
 				}
+
 				ctx.widgets.get(WIDGET, WIDGET_LOGIN_TRY_AGAIN).click();
 				return -1;
 			}

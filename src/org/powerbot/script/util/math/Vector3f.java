@@ -16,6 +16,10 @@ public class Vector3f extends Vector2f {
 		this(v, 0);
 	}
 
+	public Vector3f(final Vector3 v) {
+		this(v.x, v.y, v.z);
+	}
+
 	public Vector3f(final float[] v) {
 		super(v[0], v[1]);
 		this.z = v[2];
@@ -49,6 +53,22 @@ public class Vector3f extends Vector2f {
 
 	public float[] toMatrix() {
 		return new float[]{x, y, z};
+	}
+
+	public Vector3f cross(final Vector3f u) {
+		return new Vector3f(y * u.z - z * u.y, z * u.x - z * u.z, x * u.y - y * u.x);
+	}
+
+	public float length() {
+		return (float) Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2) + Math.pow(z, 2));
+	}
+
+	public Vector3f scale(final float s) {
+		return new Vector3f(x * s, y * s, z * s);
+	}
+
+	public Vector3f normalize() {
+		return scale(1f / length());
 	}
 
 	@Override

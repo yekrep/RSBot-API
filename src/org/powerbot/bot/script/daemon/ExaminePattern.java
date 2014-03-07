@@ -43,9 +43,11 @@ public class ExaminePattern extends Antipattern {
 	private void hover(final Interactive o) {
 		final boolean a = isAggressive();
 		for (int i = a ? 0 : 1; i < 2 && o.hover(); i++) {
-			sleep(80, 120);
 			if (ctx.menu.click(Menu.filter("Examine")) && a) {
-				sleep(100, 2000);
+				try {
+					Thread.sleep(300, 2000);
+				} catch (final InterruptedException ignored) {
+				}
 			}
 		}
 	}
