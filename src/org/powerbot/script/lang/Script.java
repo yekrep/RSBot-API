@@ -1,4 +1,4 @@
-package org.powerbot.script;
+package org.powerbot.script.lang;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,16 +7,13 @@ import java.lang.annotation.Target;
 import java.util.EventListener;
 import java.util.Queue;
 
-import org.powerbot.script.lang.Stoppable;
-import org.powerbot.script.lang.Suspendable;
-
 /**
  * The base interface of a script.
  */
 public interface Script extends EventListener {
 
 	/**
-	 * The representative states of a {@link Script}
+	 * The representative states of a {@link org.powerbot.script.lang.Script}
 	 */
 	public enum State {
 		START, SUSPEND, RESUME, STOP
@@ -25,13 +22,13 @@ public interface Script extends EventListener {
 	/**
 	 * Returns the execution queue.
 	 *
-	 * @param state the {@link State} to query
-	 * @return a {@link Queue} of {@link java.lang.Runnable}s in this {@link Script}s execution queue
+	 * @param state the {@link org.powerbot.script.lang.Script.State} to query
+	 * @return a {@link Queue} of {@link java.lang.Runnable}s in this {@link org.powerbot.script.lang.Script}s execution queue
 	 */
 	public Queue<Runnable> getExecQueue(State state);
 
 	/**
-	 * A controller for a {@link Script} which invokes and determines state changes.
+	 * A controller for a {@link org.powerbot.script.lang.Script} which invokes and determines state changes.
 	 */
 	public interface Controller extends Suspendable, Stoppable {
 
@@ -46,11 +43,11 @@ public interface Script extends EventListener {
 	}
 
 	/**
-	 * A {@link org.powerbot.script.Script} descriptor.
+	 * A {@link Script} descriptor.
 	 */
 	@Retention(RetentionPolicy.RUNTIME)
 	@Target({ElementType.TYPE})
-	@interface Manifest {
+	public @interface Manifest {
 		/**
 		 * The human-friendly name.
 		 *

@@ -11,11 +11,10 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.powerbot.bot.SelectiveEventQueue;
-import org.powerbot.bot.rs3.event.EventDispatcher;
 import org.powerbot.misc.ScriptBundle;
 import org.powerbot.misc.Tracker;
 import org.powerbot.script.AbstractScript;
-import org.powerbot.script.Script;
+import org.powerbot.script.lang.Script;
 import org.powerbot.bot.script.daemon.Antipattern;
 import org.powerbot.bot.script.daemon.BankPin;
 import org.powerbot.bot.script.daemon.Login;

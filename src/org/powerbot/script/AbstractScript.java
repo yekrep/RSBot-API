@@ -28,6 +28,7 @@ import org.powerbot.Configuration;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.misc.ScriptBundle;
 import org.powerbot.bot.script.ScriptController;
+import org.powerbot.script.lang.Script;
 import org.powerbot.script.rs3.tools.ClientContext;
 import org.powerbot.util.HttpUtils;
 import org.powerbot.util.IOUtils;
@@ -35,7 +36,7 @@ import org.powerbot.util.Ini;
 import org.powerbot.util.StringUtils;
 
 /**
- * An abstract implementation of {@link Script}.
+ * An abstract implementation of {@link org.powerbot.script.lang.Script}.
  */
 public abstract class AbstractScript implements Script, Comparable<AbstractScript> {
 	/**
@@ -53,8 +54,8 @@ public abstract class AbstractScript implements Script, Comparable<AbstractScrip
 	private final int sq;
 
 	/**
-	 * The priority of this {@link org.powerbot.script.Script} as a {@link java.lang.Runnable}.
-	 * @see {@link #getExecQueue(org.powerbot.script.Script.State)}
+	 * The priority of this {@link org.powerbot.script.lang.Script} as a {@link java.lang.Runnable}.
+	 * @see {@link #getExecQueue(org.powerbot.script.lang.Script.State)}
 	 */
 	public final AtomicInteger priority;
 
