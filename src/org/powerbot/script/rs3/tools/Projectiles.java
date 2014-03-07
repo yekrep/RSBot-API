@@ -4,11 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.powerbot.bot.rs3.client.Client;
-import org.powerbot.bot.rs3.client.Node;
-import org.powerbot.bot.rs3.client.NodeDeque;
 import org.powerbot.bot.rs3.client.RSProjectile;
 import org.powerbot.bot.rs3.client.RSProjectileNode;
-import org.powerbot.bot.rs3.tools.Deque;
+import org.powerbot.bot.rs3.tools.NodeQueue;
 import org.powerbot.script.lang.IdQuery;
 
 /**
@@ -34,18 +32,13 @@ public class Projectiles extends IdQuery<Projectile> {
 			return items;
 		}
 
-		final NodeDeque deque = client.getProjectileDeque();
-		if (deque == null) {
-			return items;
-		}
-
-		final Deque<Node> nodes = new Deque<Node>(deque, Node.class);
-		for (Node node = nodes.getHead(); node != null; node = nodes.getNext()) {
-			final RSProjectile projectile;
-			if (node instanceof RSProjectileNode && (projectile = ((RSProjectileNode) node).getProjectile()) != null) {
-				items.add(new Projectile(ctx, projectile));
+		for (final RSProjectileNode n : NodeQueue.get(client.getProjectileDeque(), RSProjectileNode.class)) {
+			final RSProjectile p = n.getProjectile();
+			if (p != null) {
+				items.add(new Projectile(ctx, p));
 			}
 		}
+
 		return items;
 	}
 

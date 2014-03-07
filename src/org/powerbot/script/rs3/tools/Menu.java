@@ -10,10 +10,7 @@ import java.util.concurrent.Callable;
 import org.powerbot.bot.rs3.client.Client;
 import org.powerbot.bot.rs3.client.MenuGroupNode;
 import org.powerbot.bot.rs3.client.MenuItemNode;
-import org.powerbot.bot.rs3.client.NodeDeque;
-import org.powerbot.bot.rs3.client.NodeSubQueue;
-import org.powerbot.bot.rs3.tools.Deque;
-import org.powerbot.bot.rs3.tools.Queue;
+import org.powerbot.bot.rs3.tools.NodeQueue;
 import org.powerbot.script.lang.Filter;
 import org.powerbot.script.util.Condition;
 import org.powerbot.script.util.Random;
@@ -209,29 +206,23 @@ public class Menu extends ClientAccessor {
 
 	private Point hoverIndex(final Client client, final int index) {
 		int _index = 0, main = 0;
-		final NodeSubQueue menu;
+
 		collapsed:
 		if (client.isMenuCollapsed()) {
-			if ((menu = client.getCollapsedMenuItems()) != null) {
-				final Queue<MenuGroupNode> groups = new Queue<MenuGroupNode>(menu, MenuGroupNode.class);
-				for (MenuGroupNode group = groups.getHead(); group != null; group = groups.getNext(), ++main) {
-					int sub = 0;
-					final NodeSubQueue queue;
-					if ((queue = group.getItems()) == null) {
-						continue;
-					}
-					final Queue<MenuItemNode> queue2 = new Queue<MenuItemNode>(queue, MenuItemNode.class);
-					for (MenuItemNode node = queue2.getHead(); node != null; node = queue2.getNext(), ++sub) {
-						if (_index++ == index) {
-							if (sub == 0) {
-								break collapsed;
-							} else {
-								return hoverSub(client, main, sub);
-							}
+			for (final MenuGroupNode g : NodeQueue.get(client.getCollapsedMenuItems(), MenuGroupNode.class)) {
+				final List<MenuItemNode> t = NodeQueue.get(g.getItems(), MenuItemNode.class);
+				for (int i = 0; i < t.size(); i++) {
+					if (_index++ == index) {
+						if (i == 0) {
+							break collapsed;
+						} else {
+							return hoverSub(client, main, i);
 						}
 					}
 				}
+
 			}
+
 			if (client.isMenuOpen()) {
 				close();
 			}
@@ -290,28 +281,11 @@ public class Menu extends ClientAccessor {
 
 		final boolean collapsed;
 		if (collapsed = client.isMenuCollapsed()) {
-			final NodeSubQueue menu = client.getCollapsedMenuItems();
-			if (menu != null) {
-				final Queue<MenuGroupNode> groups = new Queue<MenuGroupNode>(menu, MenuGroupNode.class);
-				for (MenuGroupNode group = groups.getHead(); group != null; group = groups.getNext()) {
-					final NodeSubQueue queue;
-					if ((queue = group.getItems()) == null) {
-						continue;
-					}
-					final Queue<MenuItemNode> queue2 = new Queue<MenuItemNode>(queue, MenuItemNode.class);
-					for (MenuItemNode node = queue2.getHead(); node != null; node = queue2.getNext()) {
-						nodes.add(node);
-					}
-				}
+			for (final MenuGroupNode n : NodeQueue.get(client.getCollapsedMenuItems(), MenuGroupNode.class)) {
+				nodes.addAll(NodeQueue.get(n.getItems(), MenuItemNode.class));
 			}
 		} else {
-			final NodeDeque menu = client.getMenuItems();
-			if (menu != null) {
-				final Deque<MenuItemNode> deque = new Deque<MenuItemNode>(menu, MenuItemNode.class);
-				for (MenuItemNode node = deque.getHead(); node != null; node = deque.getNext()) {
-					nodes.add(node);
-				}
-			}
+			nodes.addAll(NodeQueue.get(client.getMenuItems(), MenuItemNode.class));
 		}
 		if (nodes.size() > 1) {
 			final MenuItemNode node = nodes.get(0);
