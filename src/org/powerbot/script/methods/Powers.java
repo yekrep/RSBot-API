@@ -422,14 +422,14 @@ public class Powers extends MethodProvider {
 					continue;
 				}
 				if (ctx.widgets.get(WIDGET_PRAYER, COMPONENT_PRAYER_SELECT_CONTAINER).getChild(effect.getId()).interact("Select")) {
-					HardwareSimulator.react();
+					HardwareSimulator.sleep();
 				}
 			}
 
 			for (final Effect effect : getQuickPrayers()) {
 				if (isPrayerQuick(effect) && !search(effects, effect)) {
 					if (ctx.widgets.get(WIDGET_PRAYER, COMPONENT_PRAYER_SELECT_CONTAINER).getChild(effect.getId()).interact("Deselect")) {
-						HardwareSimulator.react();
+						HardwareSimulator.sleep();
 					}
 				}
 			}

@@ -145,7 +145,7 @@ public class Widgets extends MethodProvider {
 			if (!ctx.mouse.click(p, true)) {
 				return false;
 			}
-			HardwareSimulator.react();
+			HardwareSimulator.sleep();
 		}
 		Point a;
 		Component c;
@@ -156,7 +156,7 @@ public class Widgets extends MethodProvider {
 			if (scroll) {
 				if (ctx.mouse.scroll(a.y > view.y)) {
 					if (++scrolls >= Random.nextInt(5, 9)) {
-						HardwareSimulator.react();
+						HardwareSimulator.sleep();
 						scrolls = 0;
 					}
 					try {

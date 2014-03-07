@@ -397,7 +397,7 @@ public class Bank extends ItemQuery<Item> {
 					return isInputWidgetOpen();
 				}
 			})) {
-				HardwareSimulator.react();
+				HardwareSimulator.sleep();
 				ctx.keyboard.sendln(amount + "");
 			}
 		} else {
@@ -455,7 +455,7 @@ public class Bank extends ItemQuery<Item> {
 					return isInputWidgetOpen();
 				}
 			})) {
-				HardwareSimulator.react();
+				HardwareSimulator.sleep();
 				ctx.keyboard.sendln(amount + "");
 			} else {
 				return false;

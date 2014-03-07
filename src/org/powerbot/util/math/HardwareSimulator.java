@@ -34,14 +34,14 @@ public class HardwareSimulator {
 		return (int) (((-1 + 2 * r.nextDouble()) * pd[1] + pd[0]) * scale);
 	}
 
-	public static void react() {
+	public static void sleep() {
 		try {
 			Thread.sleep(getDelayFactor(10));
 		} catch (final InterruptedException ignored) {
 		}
 	}
 
-	public static void hicks(final int depth) {
+	public static void sleepHicks(final int depth) {
 		final int d = 105 * (int) (Math.log(depth * 2) / Math.log(2));
 		try {
 			Thread.sleep(d);

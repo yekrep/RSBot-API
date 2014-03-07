@@ -196,7 +196,7 @@ public class DepositBox extends ItemQuery<Item> {
 					return isInputWidgetOpen();
 				}
 			})) {
-				HardwareSimulator.react();
+				HardwareSimulator.sleep();
 				ctx.keyboard.sendln(amount + "");
 			} else {
 				return false;

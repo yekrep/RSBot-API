@@ -156,7 +156,7 @@ public class Menu extends MethodProvider {
 						return client.isMenuOpen();
 					}
 				}, 5, 20);
-				HardwareSimulator.hicks(index);
+				HardwareSimulator.sleepHicks(index);
 
 				if (!client.isMenuOpen()) {
 					return false;
@@ -258,18 +258,18 @@ public class Menu extends MethodProvider {
 			ctx.mouse.move(mv.add(div).to2DPoint());
 		}
 		if (ctx.mouse.move(dv.to2DPoint())) {
-			HardwareSimulator.react();
+			HardwareSimulator.sleep();
 			if (client.isMenuOpen()) {
 				final Point p = ctx.mouse.getLocation();
 				final int cX;
 				final int subX = client.getSubMenuX();
 				if (ctx.mouse.move(cX = subX + Random.nextInt(4, client.getSubMenuWidth() - 5), p.y)) {
-					HardwareSimulator.react();
+					HardwareSimulator.sleep();
 					if (client.isMenuOpen()) {
 						final int subY = client.getSubMenuY();
 						final Point p2 = new Point(cX, subY + (16 * sub + Random.nextInt(2, 15) + 21));
 						if (ctx.mouse.move(p2)) {
-							HardwareSimulator.react();
+							HardwareSimulator.sleep();
 							return client.isMenuOpen() ? p2 : new Point(-1, -1);
 						}
 					}

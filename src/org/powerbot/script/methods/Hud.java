@@ -233,7 +233,7 @@ public class Hud extends MethodProvider {
 					return list.isVisible();
 				}
 			}, 100, 20);
-			HardwareSimulator.react();
+			HardwareSimulator.sleep();
 			final Component toggle = getToggle(window);
 			if (toggle != null && toggle.hover()) {
 				if (toggle.isVisible() && ctx.mouse.click(true)) {
