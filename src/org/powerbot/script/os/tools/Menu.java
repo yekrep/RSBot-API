@@ -15,7 +15,6 @@ import org.powerbot.bot.script.InputSimulator;
 import org.powerbot.script.lang.Filter;
 import org.powerbot.script.util.Condition;
 import org.powerbot.script.util.Random;
-import org.powerbot.bot.SelectiveEventQueue;
 import org.powerbot.bot.os.event.PaintListener;
 import org.powerbot.bot.os.client.Client;
 import org.powerbot.util.StringUtils;
@@ -125,7 +124,7 @@ public class Menu extends ClientAccessor {
 			return true;
 		}
 
-		final InputSimulator e = SelectiveEventQueue.getInstance().getEngine();
+		final InputSimulator e = ctx.input;
 		final Component c = e != null ? e.getComponent() : null;
 		final Dimension d = new Dimension(c != null ? c.getWidth() : 0, c != null ? c.getHeight() : 0);
 		final int mx = client.getMenuX(), my = client.getMenuY();

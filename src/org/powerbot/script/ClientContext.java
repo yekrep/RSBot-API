@@ -2,6 +2,7 @@ package org.powerbot.script;
 
 import java.util.concurrent.atomic.AtomicReference;
 
+import org.powerbot.bot.script.InputSimulator;
 import org.powerbot.script.os.tools.Game;
 import org.powerbot.script.os.tools.GroundItems;
 import org.powerbot.script.os.tools.Menu;
@@ -26,6 +27,7 @@ public class ClientContext {
 	public final Players players;
 	public final Varpbits varpbits;
 	public final Widgets widgets;
+	public final InputSimulator input;
 	private final AtomicReference<Client> client;
 	private final AtomicReference<Bot> bot;
 
@@ -43,6 +45,7 @@ public class ClientContext {
 		players = new Players(this);
 		varpbits = new Varpbits(this);
 		widgets = new Widgets(this);
+		input = new InputSimulator(null);
 	}
 
 	public ClientContext(final ClientContext ctx) {
@@ -59,6 +62,7 @@ public class ClientContext {
 		players = ctx.players;
 		varpbits = ctx.varpbits;
 		widgets = ctx.widgets;
+		input = ctx.input;
 	}
 
 	public static ClientContext newContext(final Bot bot) {

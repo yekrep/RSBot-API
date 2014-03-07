@@ -11,24 +11,21 @@ import org.powerbot.bot.script.MouseSimulator;
 import org.powerbot.script.ClientAccessor;
 import org.powerbot.script.ClientContext;
 import org.powerbot.bot.script.InputSimulator;
-import org.powerbot.bot.SelectiveEventQueue;
 import org.powerbot.bot.os.event.EventDispatcher;
 import org.powerbot.bot.os.event.PaintListener;
 import org.powerbot.script.lang.Filter;
 import org.powerbot.script.util.math.Vector3;
 
 public class Mouse extends ClientAccessor {
-	private final SelectiveEventQueue queue;
 	private final MouseSimulator simulator;
 
 	public Mouse(final ClientContext ctx) {
 		super(ctx);
-		queue = SelectiveEventQueue.getInstance();
-		simulator = new MouseSimulator();
+		simulator = new MouseSimulator(null);
 	}
 
 	public Point getLocation() {
-		final InputSimulator engine = queue.getEngine();
+		final InputSimulator engine = ctx.input;
 		return engine != null ? engine.getLocation() : new Point(-1, -1);
 	}
 
@@ -37,7 +34,7 @@ public class Mouse extends ClientAccessor {
 	}
 
 	public boolean click(final int button) {
-		final InputSimulator engine = queue.getEngine();
+		final InputSimulator engine = ctx.input;
 		if (engine == null) {
 			return false;
 		}
@@ -65,7 +62,7 @@ public class Mouse extends ClientAccessor {
 	}
 
 	public boolean hop(final int x, final int y) {
-		final InputSimulator engine = queue.getEngine();
+		final InputSimulator engine = ctx.input;
 		return engine != null && engine.move(x, y);
 	}
 
