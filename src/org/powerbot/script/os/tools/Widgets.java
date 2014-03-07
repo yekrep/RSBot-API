@@ -2,9 +2,6 @@ package org.powerbot.script.os.tools;
 
 import java.util.Arrays;
 
-import org.powerbot.script.ClientAccessor;
-import org.powerbot.script.ClientContext;
-
 public class Widgets extends ClientAccessor {
 	private Widget[] sparseCache;
 

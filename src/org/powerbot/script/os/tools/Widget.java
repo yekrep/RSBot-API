@@ -2,8 +2,6 @@ package org.powerbot.script.os.tools;
 
 import java.util.Arrays;
 
-import org.powerbot.script.ClientAccessor;
-import org.powerbot.script.ClientContext;
 import org.powerbot.bot.os.client.Client;
 
 public class Widget extends ClientAccessor {

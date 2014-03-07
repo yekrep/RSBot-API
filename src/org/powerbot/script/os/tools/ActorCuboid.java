@@ -3,7 +3,6 @@ package org.powerbot.script.os.tools;
 import java.awt.Rectangle;
 import java.lang.ref.WeakReference;
 
-import org.powerbot.script.ClientContext;
 import org.powerbot.bot.os.client.Actor;
 
 public class ActorCuboid extends Cuboid {

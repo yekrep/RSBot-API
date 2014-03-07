@@ -1,22 +1,12 @@
-package org.powerbot.script;
+package org.powerbot.script.os.tools;
 
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.powerbot.bot.script.InputSimulator;
-import org.powerbot.script.os.tools.Game;
-import org.powerbot.script.os.tools.GroundItems;
-import org.powerbot.script.os.tools.Menu;
-import org.powerbot.script.os.tools.Mouse;
-import org.powerbot.script.os.tools.Movement;
-import org.powerbot.script.os.tools.Npcs;
-import org.powerbot.script.os.tools.Objects;
-import org.powerbot.script.os.tools.Players;
-import org.powerbot.script.os.tools.Varpbits;
-import org.powerbot.script.os.tools.Widgets;
 import org.powerbot.bot.os.Bot;
 import org.powerbot.bot.os.client.Client;
 
-public class ClientContext {
+public class ClientContext implements org.powerbot.script.lang.ClientContext {
 	public final Game game;
 	public final GroundItems groundItems;
 	public final Menu menu;

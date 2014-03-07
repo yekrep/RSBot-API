@@ -6,8 +6,6 @@ import java.util.Arrays;
 
 import org.powerbot.bot.os.client.HashTable;
 import org.powerbot.bot.os.client.Node;
-import org.powerbot.script.ClientAccessor;
-import org.powerbot.script.ClientContext;
 import org.powerbot.bot.os.client.Client;
 import org.powerbot.bot.os.client.WidgetNode;
 

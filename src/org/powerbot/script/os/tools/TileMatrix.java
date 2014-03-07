@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Point;
 import java.awt.Polygon;
 
-import org.powerbot.script.ClientContext;
 import org.powerbot.script.util.Random;
 
 /**

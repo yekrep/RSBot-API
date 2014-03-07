@@ -2,7 +2,6 @@ package org.powerbot.script.os.tools;
 
 import java.awt.Point;
 
-import org.powerbot.script.ClientContext;
 import org.powerbot.bot.os.client.Client;
 
 public abstract class Actor extends Interactive implements Locatable, Validatable {

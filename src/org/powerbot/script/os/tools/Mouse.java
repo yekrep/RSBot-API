@@ -8,8 +8,6 @@ import java.lang.reflect.Field;
 import java.util.concurrent.TimeUnit;
 
 import org.powerbot.bot.script.MouseSimulator;
-import org.powerbot.script.ClientAccessor;
-import org.powerbot.script.ClientContext;
 import org.powerbot.bot.script.InputSimulator;
 import org.powerbot.bot.os.event.EventDispatcher;
 import org.powerbot.bot.os.event.PaintListener;

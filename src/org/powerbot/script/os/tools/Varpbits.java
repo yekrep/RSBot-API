@@ -1,7 +1,5 @@
 package org.powerbot.script.os.tools;
 
-import org.powerbot.script.ClientAccessor;
-import org.powerbot.script.ClientContext;
 import org.powerbot.bot.os.client.Client;
 
 public class Varpbits extends ClientAccessor {

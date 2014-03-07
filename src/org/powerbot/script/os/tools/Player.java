@@ -3,7 +3,6 @@ package org.powerbot.script.os.tools;
 import java.awt.Color;
 import java.lang.ref.SoftReference;
 
-import org.powerbot.script.ClientContext;
 import org.powerbot.bot.os.client.Client;
 import org.powerbot.bot.os.client.PlayerComposite;
 

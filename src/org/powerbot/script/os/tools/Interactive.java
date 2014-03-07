@@ -4,8 +4,6 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.concurrent.Callable;
 
-import org.powerbot.script.ClientAccessor;
-import org.powerbot.script.ClientContext;
 import org.powerbot.script.lang.Filter;
 import org.powerbot.script.util.Condition;
 

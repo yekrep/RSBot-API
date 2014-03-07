@@ -1,6 +1,5 @@
 package org.powerbot.script.os.tools;
 
-import org.powerbot.script.ClientContext;
 import org.powerbot.script.util.Random;
 
 public class Tile implements Locatable {

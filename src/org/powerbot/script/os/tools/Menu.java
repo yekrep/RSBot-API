@@ -9,8 +9,6 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.powerbot.script.ClientAccessor;
-import org.powerbot.script.ClientContext;
 import org.powerbot.bot.script.InputSimulator;
 import org.powerbot.script.lang.Filter;
 import org.powerbot.script.util.Condition;

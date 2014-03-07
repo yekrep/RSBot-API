@@ -12,7 +12,7 @@ import org.powerbot.bot.rs3.tools.Map;
 import org.powerbot.bot.script.ScriptController;
 import org.powerbot.script.Script;
 
-public class ClientContext {
+public class ClientContext implements org.powerbot.script.lang.ClientContext {
 	private final AtomicReference<Client> client;
 	private final AtomicReference<Bot> bot;
 	public final AtomicReference<KeyboardSimulator> inputHandler;

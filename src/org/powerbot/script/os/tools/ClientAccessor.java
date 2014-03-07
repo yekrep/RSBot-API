@@ -1,4 +1,4 @@
-package org.powerbot.script.rs3.tools;
+package org.powerbot.script.os.tools;
 
 public abstract class ClientAccessor extends org.powerbot.script.lang.ClientAccessor<ClientContext> {
 

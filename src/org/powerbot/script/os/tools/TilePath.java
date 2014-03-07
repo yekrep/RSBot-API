@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.concurrent.Callable;
 
-import org.powerbot.script.ClientContext;
 import org.powerbot.script.util.Condition;
 import org.powerbot.script.util.Random;
 
