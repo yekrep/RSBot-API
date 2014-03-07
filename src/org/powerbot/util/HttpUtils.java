@@ -67,8 +67,10 @@ public class HttpUtils {
 	}
 
 	public static HttpURLConnection download(final URL url, final File file) throws IOException {
-		final HttpURLConnection con = getHttpConnection(url);
+		return download(getHttpConnection(url), file);
+	}
 
+	public static HttpURLConnection download(final HttpURLConnection con, final File file) throws IOException {
 		if (file.exists()) {
 			try {
 				con.setIfModifiedSince(file.lastModified());
