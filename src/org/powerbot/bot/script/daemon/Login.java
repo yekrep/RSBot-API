@@ -39,10 +39,10 @@ public class Login extends PollingScript implements InternalScript {
 	}
 
 	@Override
-	public int poll() {
+	public void poll() {
 		if (!isValid()) {
 			threshold.poll();
-			return 0;
+			return;
 		}
 		threshold.offer(priority.get());
 
@@ -62,7 +62,7 @@ public class Login extends PollingScript implements InternalScript {
 			final Component child = ctx.widgets.get(906, 517); // post email validation continue button
 			if (child.isVisible()) {
 				child.click();
-				return -1;
+				return;
 			}
 
 			if (world > 0) {
@@ -79,11 +79,11 @@ public class Login extends PollingScript implements InternalScript {
 							ctx.properties.setProperty("login.world", Integer.toString(worlds[Random.nextInt(0, worlds.length)].getNumber()));
 						}
 					}
-					return 0;
+					return;
 				}
 			}
 			ctx.lobby.enterGame();
-			return -1;
+			return;
 		}
 
 		if (account != null && (state == Game.INDEX_LOGIN_SCREEN || state == Game.INDEX_LOGGING_IN)) {
@@ -104,11 +104,11 @@ public class Login extends PollingScript implements InternalScript {
 
 				if (stop) {
 					ctx.controller.stop();
-					return -1;
+					return;
 				}
 
 				ctx.widgets.get(WIDGET, WIDGET_LOGIN_TRY_AGAIN).click();
-				return -1;
+				return;
 			}
 
 			final String username = account.toString();
@@ -117,7 +117,7 @@ public class Login extends PollingScript implements InternalScript {
 			text = getUsernameText();
 			if (!text.equalsIgnoreCase(username)) {
 				if (!clickLoginInterface(ctx.widgets.get(WIDGET, WIDGET_LOGIN_USERNAME_TEXT))) {
-					return -1;
+					return;
 				}
 				try {
 					Thread.sleep(600);
@@ -131,7 +131,7 @@ public class Login extends PollingScript implements InternalScript {
 						b.append('\b');
 					}
 					ctx.keyboard.send(b.toString());
-					return 0;
+					return;
 				}
 
 				ctx.keyboard.send(username);
@@ -139,13 +139,13 @@ public class Login extends PollingScript implements InternalScript {
 					Thread.sleep(1000);
 				} catch (final InterruptedException ignored) {
 				}
-				return 0;
+				return;
 			}
 
 			text = getPasswordText();
 			if (text.length() != password.length()) {
 				if (!clickLoginInterface(ctx.widgets.get(WIDGET, WIDGET_LOGIN_PASSWORD_TEXT))) {
-					return -1;
+					return;
 				}
 				try {
 					Thread.sleep(600);
@@ -158,10 +158,10 @@ public class Login extends PollingScript implements InternalScript {
 						b.append('\b');
 					}
 					ctx.keyboard.send(b.toString());
-					return -1;
+					return;
 				}
 				ctx.keyboard.send(password);
-				return -1;
+				return;
 			}
 
 			ctx.keyboard.send("\n");
@@ -169,9 +169,7 @@ public class Login extends PollingScript implements InternalScript {
 				Thread.sleep(1200);
 			} catch (final InterruptedException ignored) {
 			}
-			return -1;
 		}
-		return -1;//what's going on???
 	}
 
 	private boolean clickLoginInterface(final Component i) {

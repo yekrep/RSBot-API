@@ -16,17 +16,17 @@ public class BankPin extends PollingScript implements InternalScript {
 	}
 
 	@Override
-	public int poll() {
+	public void poll() {
 		if (!ctx.widgets.get(WIDGET, COMPONENT).isVisible()) {
 			threshold.poll();
-			return 0;
+			return;
 		}
 		threshold.offer(priority.get());
 
 		final String pin = getPin();
 		if (pin == null) {
 			ctx.controller.stop();
-			return -1;
+			return;
 		}
 
 		final int i = ctx.settings.get(SETTING_PIN_STEP);
@@ -37,7 +37,7 @@ public class BankPin extends PollingScript implements InternalScript {
 			v = -1;
 		}
 		if (v < 0) {
-			return -1;
+			return;
 		}
 		if (ctx.widgets.get(WIDGET, v + COMPONENT_PIN_OFFSET).interact("Select")) {
 			for (int d = 0; d < 24 && i == ctx.settings.get(SETTING_PIN_STEP); d++) {
@@ -47,7 +47,6 @@ public class BankPin extends PollingScript implements InternalScript {
 				}
 			}
 		}
-		return i != ctx.settings.get(SETTING_PIN_STEP) ? Random.nextInt(600, 1800) : 100;
 	}
 
 	private String getPin() {

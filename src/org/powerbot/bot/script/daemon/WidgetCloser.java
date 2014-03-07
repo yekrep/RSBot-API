@@ -36,22 +36,22 @@ public class WidgetCloser extends PollingScript implements InternalScript {
 	}
 
 	@Override
-	public int poll() {
+	public void poll() {
 		if (!isValid()) {
 			threshold.poll();
-			return 0;
+			return;
 		}
 		threshold.offer(priority.get());
 
 		final Component component = this.component;
 		if (component == null) {
-			return 0;
+			return;
 		}
 
 		if (++tries >= 3) {
 			time = System.nanoTime() + TimeUnit.NANOSECONDS.convert(Random.nextInt(30, 61), TimeUnit.SECONDS);
 			tries = 0;
-			return 0;
+			return;
 		}
 
 		if (component.click(true)) {
@@ -64,8 +64,6 @@ public class WidgetCloser extends PollingScript implements InternalScript {
 				tries = 0;
 			}
 		}
-
-		return -1;
 	}
 
 	private boolean isValid() {

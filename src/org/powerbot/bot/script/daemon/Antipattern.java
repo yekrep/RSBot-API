@@ -14,15 +14,14 @@ public class Antipattern extends PollingScript implements InternalScript {
 	}
 
 	@Override
-	public int poll() {
+	public void poll() {
 		if (timer.isRunning()) {
 			threshold.poll();
-			return 0;
+			return;
 		}
 		threshold.offer(priority.get());
 
 		timer.reset();
 		ctx.antipatterns.run();
-		return 0;
 	}
 }

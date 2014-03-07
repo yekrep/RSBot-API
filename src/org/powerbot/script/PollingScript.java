@@ -17,7 +17,6 @@ import org.powerbot.script.util.Random;
 @SuppressWarnings("EmptyMethod")
 public abstract class PollingScript extends AbstractScript {
 	private final AtomicBoolean running;
-	private final AtomicLong last, delay;
 
 	/**
 	 * Blocks other {@link PollingScript}s which have a lower {@link AbstractScript#priority} value.
@@ -30,8 +29,6 @@ public abstract class PollingScript extends AbstractScript {
 	 */
 	public PollingScript() {
 		running = new AtomicBoolean(false);
-		last = new AtomicLong(0);
-		delay = new AtomicLong(0);
 
 		getExecQueue(State.START).add(new Runnable() {
 			@Override
@@ -61,10 +58,8 @@ public abstract class PollingScript extends AbstractScript {
 
 	/**
 	 * The main body of this {@link PollingScript}, which is called in a single-threaded loop.
-	 *
-	 * @return the delay in milliseconds before calling this method again
 	 */
-	public abstract int poll();
+	public abstract void poll();
 
 	@Override
 	public final void run() {
@@ -72,26 +67,14 @@ public abstract class PollingScript extends AbstractScript {
 			return;
 		}
 
-		final long d = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - last.get());
-		if (d < delay.get()) {
+		if (threshold.isEmpty() || priority.get() <= threshold.peek()) {
 			try {
-				Thread.sleep(delay.get() - d);
-			} catch (final InterruptedException ignored) {
+				poll();
+			} catch (final Throwable e) {
+				ctx.controller.stop();
+				e.printStackTrace();
 			}
 		}
-
-		int t;
-
-		try {
-			t = !threshold.isEmpty() && threshold.peek() > priority.get() ? 0 : poll();
-		} catch (final Throwable e) {
-			e.printStackTrace();
-			ctx.controller.stop();
-			t = 3000;
-		}
-
-		delay.set(t < 0 ? 600 : t);
-		last.set(System.nanoTime());
 
 		if (!Thread.interrupted() && !ctx.controller.isStopping()) {
 			ctx.controller.offer(this);

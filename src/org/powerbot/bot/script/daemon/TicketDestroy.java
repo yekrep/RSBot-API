@@ -21,23 +21,23 @@ public class TicketDestroy extends PollingScript implements InternalScript {
 	}
 
 	@Override
-	public int poll() {
+	public void poll() {
 		final Item item = ctx.backpack.select().id(ITEM_IDS).poll();
 		if (!item.isValid() || !ctx.hud.isVisible(Hud.Window.BACKPACK) || !ctx.players.local().isIdle()) {
 			threshold.poll();
-			return 0;
+			return;
 		}
 		threshold.offer(priority.get());
 		if (!ctx.backpack.scroll(item)) {
-			return -1;
+			return;
 		}
 
 		if (((ctx.settings.get(1448) & 0xFF00) >>> 8) < (item.getId() == ITEM_IDS[0] ? 10 : 9)) {
 			item.interact("Claim");
-			return 1500;
+			return;
 		}
 		if (!item.interact("Destroy")) {
-			return Random.nextInt(1000, 2000);
+			return;
 		}
 
 		final Widget widget = ctx.widgets.get(1183);
@@ -47,7 +47,7 @@ public class TicketDestroy extends PollingScript implements InternalScript {
 				return widget.isValid();
 			}
 		})) {
-			return -1;
+			return;
 		}
 
 		Component component = null;
@@ -65,6 +65,6 @@ public class TicketDestroy extends PollingScript implements InternalScript {
 				}
 			}, 175);
 		}
-		return -1;
+		return;
 	}
 }
