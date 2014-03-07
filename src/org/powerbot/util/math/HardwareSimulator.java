@@ -6,6 +6,7 @@ import java.util.Random;
 public class HardwareSimulator {
 	private final static double[] pd;
 	private final static Random r;
+	private static final double ln2 = Math.log(2);
 
 	static {
 		final SecureRandom sr = new SecureRandom();
@@ -42,7 +43,7 @@ public class HardwareSimulator {
 	}
 
 	public static void sleepHicks(final int depth) {
-		final int d = 105 * (int) (Math.log(depth * 2) / Math.log(2));
+		final int d = 105 * (int) (Math.log(depth * 2) / ln2);
 		try {
 			Thread.sleep(d);
 		} catch (final InterruptedException ignored) {
