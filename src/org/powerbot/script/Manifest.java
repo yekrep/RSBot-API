@@ -26,16 +26,9 @@ public @interface Manifest {
 	String description();
 
 	/**
-	 * The forum topic ID.
+	 * A series of key=value pairs separated by semicolons (;) or newlines.
 	 *
-	 * @return the forum topic ID
+	 * @return the properties
 	 */
-	int topic() default 0;
-
-	/**
-	 * The hidden status.
-	 *
-	 * @return the hidden status
-	 */
-	boolean hidden() default false;
+	String properties() default "";
 }
