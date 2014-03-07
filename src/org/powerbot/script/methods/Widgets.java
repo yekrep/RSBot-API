@@ -7,7 +7,6 @@ import java.util.concurrent.Callable;
 
 import org.powerbot.bot.client.Client;
 import org.powerbot.bot.client.RSInterfaceBase;
-import org.powerbot.script.internal.HeteroUtil;
 import org.powerbot.script.util.Condition;
 import org.powerbot.script.util.Random;
 import org.powerbot.script.wrappers.Component;
@@ -146,7 +145,7 @@ public class Widgets extends MethodProvider {
 			if (!ctx.mouse.click(p, true)) {
 				return false;
 			}
-			HeteroUtil.react();
+			HardwareSimulator.react();
 		}
 		Point a;
 		Component c;
@@ -157,7 +156,7 @@ public class Widgets extends MethodProvider {
 			if (scroll) {
 				if (ctx.mouse.scroll(a.y > view.y)) {
 					if (++scrolls >= Random.nextInt(5, 9)) {
-						HeteroUtil.react();
+						HardwareSimulator.react();
 						scrolls = 0;
 					}
 					try {

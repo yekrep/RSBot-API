@@ -4,8 +4,8 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.concurrent.Callable;
 
-import org.powerbot.script.internal.HeteroUtil;
 import org.powerbot.script.util.Condition;
+import org.powerbot.util.math.HardwareSimulator;
 
 /**
  * API pertaining to in-game powers.
@@ -422,14 +422,14 @@ public class Powers extends MethodProvider {
 					continue;
 				}
 				if (ctx.widgets.get(WIDGET_PRAYER, COMPONENT_PRAYER_SELECT_CONTAINER).getChild(effect.getId()).interact("Select")) {
-					HeteroUtil.react();
+					HardwareSimulator.react();
 				}
 			}
 
 			for (final Effect effect : getQuickPrayers()) {
 				if (isPrayerQuick(effect) && !search(effects, effect)) {
 					if (ctx.widgets.get(WIDGET_PRAYER, COMPONENT_PRAYER_SELECT_CONTAINER).getChild(effect.getId()).interact("Deselect")) {
-						HeteroUtil.react();
+						HardwareSimulator.react();
 					}
 				}
 			}

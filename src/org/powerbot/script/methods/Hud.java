@@ -5,10 +5,10 @@ import java.util.Arrays;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
-import org.powerbot.script.internal.HeteroUtil;
 import org.powerbot.script.util.Condition;
 import org.powerbot.script.wrappers.Component;
 import org.powerbot.script.wrappers.FloatingMessage;
+import org.powerbot.util.math.HardwareSimulator;
 
 /**
  * Utilities for manipulating the hud.
@@ -233,7 +233,7 @@ public class Hud extends MethodProvider {
 					return list.isVisible();
 				}
 			}, 100, 20);
-			HeteroUtil.react();
+			HardwareSimulator.react();
 			final Component toggle = getToggle(window);
 			if (toggle != null && toggle.hover()) {
 				if (toggle.isVisible() && ctx.mouse.click(true)) {

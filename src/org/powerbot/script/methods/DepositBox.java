@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 
-import org.powerbot.script.internal.HeteroUtil;
 import org.powerbot.script.lang.ItemQuery;
 import org.powerbot.script.util.Condition;
 import org.powerbot.script.wrappers.Component;
@@ -13,6 +12,7 @@ import org.powerbot.script.wrappers.Item;
 import org.powerbot.script.wrappers.Locatable;
 import org.powerbot.script.wrappers.Tile;
 import org.powerbot.util.StringUtils;
+import org.powerbot.util.math.HardwareSimulator;
 
 public class DepositBox extends ItemQuery<Item> {
 	public static final int[] DEPOSIT_BOX_IDS = new int[]{
@@ -196,7 +196,7 @@ public class DepositBox extends ItemQuery<Item> {
 					return isInputWidgetOpen();
 				}
 			})) {
-				HeteroUtil.react();
+				HardwareSimulator.react();
 				ctx.keyboard.sendln(amount + "");
 			} else {
 				return false;

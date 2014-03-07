@@ -2,7 +2,6 @@ package org.powerbot.script.methods;
 
 import java.util.concurrent.Callable;
 
-import org.powerbot.script.internal.HeteroUtil;
 import org.powerbot.script.lang.Filter;
 import org.powerbot.script.util.Condition;
 import org.powerbot.script.util.Random;
@@ -11,6 +10,7 @@ import org.powerbot.script.wrappers.ChatOption;
 import org.powerbot.script.wrappers.Component;
 import org.powerbot.script.wrappers.Npc;
 import org.powerbot.script.wrappers.Player;
+import org.powerbot.util.math.HardwareSimulator;
 
 public class Summoning extends MethodProvider {
 	public static final int WIDGET = 662;
@@ -101,7 +101,7 @@ public class Summoning extends MethodProvider {
 			})) {
 				final ChatOption o = ctx.chat.poll();
 				if (o.select(Random.nextBoolean())) {
-					HeteroUtil.react();
+					HardwareSimulator.react();
 					if (o.select(Random.nextBoolean())) {
 						return Condition.wait(new Callable<Boolean>() {
 							@Override

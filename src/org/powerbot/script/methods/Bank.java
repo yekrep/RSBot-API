@@ -6,7 +6,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.Callable;
 
-import org.powerbot.script.internal.HeteroUtil;
 import org.powerbot.script.lang.Filter;
 import org.powerbot.script.lang.ItemQuery;
 import org.powerbot.script.util.Condition;
@@ -20,6 +19,7 @@ import org.powerbot.script.wrappers.Npc;
 import org.powerbot.script.wrappers.Player;
 import org.powerbot.script.wrappers.Tile;
 import org.powerbot.util.StringUtils;
+import org.powerbot.util.math.HardwareSimulator;
 
 /**
  * Utilities pertaining to the bank.
@@ -397,7 +397,7 @@ public class Bank extends ItemQuery<Item> {
 					return isInputWidgetOpen();
 				}
 			})) {
-				HeteroUtil.react();
+				HardwareSimulator.react();
 				ctx.keyboard.sendln(amount + "");
 			}
 		} else {
@@ -455,7 +455,7 @@ public class Bank extends ItemQuery<Item> {
 					return isInputWidgetOpen();
 				}
 			})) {
-				HeteroUtil.react();
+				HardwareSimulator.react();
 				ctx.keyboard.sendln(amount + "");
 			} else {
 				return false;
