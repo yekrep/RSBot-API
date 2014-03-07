@@ -11,9 +11,9 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import org.powerbot.script.ClientAccessor;
 import org.powerbot.script.ClientContext;
-import org.powerbot.script.internal.InputSimulator;
+import org.powerbot.bot.script.InputSimulator;
+import org.powerbot.script.lang.Filter;
 import org.powerbot.script.util.Condition;
-import org.powerbot.script.util.Filter;
 import org.powerbot.script.util.Random;
 import org.powerbot.bot.SelectiveEventQueue;
 import org.powerbot.bot.os.event.PaintListener;

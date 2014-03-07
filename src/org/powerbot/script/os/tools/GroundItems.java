@@ -6,7 +6,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.powerbot.script.ClientAccessor;
 import org.powerbot.script.ClientContext;
-import org.powerbot.script.util.Deque;
 import org.powerbot.bot.os.client.Client;
 import org.powerbot.bot.os.client.ItemNode;
 import org.powerbot.bot.os.client.NodeDeque;
@@ -45,7 +44,7 @@ public class GroundItems extends ClientAccessor {
 				continue;
 			}
 			for (int y = 0; y < row.length; y++) {
-				for (final ItemNode node : new Deque<ItemNode>(row[y], ItemNode.class)) {
+				for (final ItemNode node : new Deque<ItemNode>(row[y])) {
 					list.add(new GroundItem(ctx, tile.derive(x, y), node));
 				}
 			}

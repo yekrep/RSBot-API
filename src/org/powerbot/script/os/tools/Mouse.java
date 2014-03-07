@@ -7,15 +7,15 @@ import java.awt.event.MouseEvent;
 import java.lang.reflect.Field;
 import java.util.concurrent.TimeUnit;
 
+import org.powerbot.bot.script.MouseSimulator;
 import org.powerbot.script.ClientAccessor;
 import org.powerbot.script.ClientContext;
-import org.powerbot.script.internal.InputSimulator;
-import org.powerbot.script.internal.MouseSimulator;
+import org.powerbot.bot.script.InputSimulator;
 import org.powerbot.bot.SelectiveEventQueue;
 import org.powerbot.bot.os.event.EventDispatcher;
 import org.powerbot.bot.os.event.PaintListener;
-import org.powerbot.script.internal.util.math.Vector3;
 import org.powerbot.script.lang.Filter;
+import org.powerbot.script.util.math.Vector3;
 
 public class Mouse extends ClientAccessor {
 	private final SelectiveEventQueue queue;
@@ -42,19 +42,19 @@ public class Mouse extends ClientAccessor {
 			return false;
 		}
 		try {//TODO: do we need this delay...?
-			Thread.sleep(simulator.getPressDuration());
+			Thread.sleep(simulator.simulator.getPressDuration());
 		} catch (final InterruptedException ignored) {
 		}
 		engine.press(button);
 		try {
-			Thread.sleep(simulator.getPressDuration());
+			Thread.sleep(simulator.simulator.getPressDuration());
 		} catch (final InterruptedException ignored) {
 		}
 		//TODO: Maybe move mouse accidentially.
 		//TODO: return false -- or re-click?  probably the latter.
 		engine.release(button);
 		try {
-			Thread.sleep(simulator.getPressDuration());
+			Thread.sleep(simulator.simulator.getPressDuration());
 		} catch (final InterruptedException ignored) {
 		}
 		return true;
@@ -120,7 +120,7 @@ public class Mouse extends ClientAccessor {
 			}
 			target_point.move(p.x, p.y);
 			final Vector3 end = new Vector3(p.x, p.y, 0);
-			final Iterable<Vector3> spline = simulator.getPath(start, end);
+			final Iterable<Vector3> spline = simulator.simulator.getPath(start, end);
 			for (final Vector3 v : spline) {
 				hop(v.x, v.y);
 
@@ -128,7 +128,7 @@ public class Mouse extends ClientAccessor {
 				if (!targetable.contains(new Point(end.x, end.y))) {
 					break;
 				}
-				final long d = Math.max(0, simulator.getAbsoluteDelay(v.z) - Math.abs(System.nanoTime() - m));
+				final long d = Math.max(0, simulator.simulator.getAbsoluteDelay(v.z) - Math.abs(System.nanoTime() - m));
 				if (d > 0) {
 					try {
 						Thread.sleep(TimeUnit.NANOSECONDS.toMillis(d));
