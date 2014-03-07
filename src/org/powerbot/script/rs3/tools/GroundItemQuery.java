@@ -1,13 +1,8 @@
-package org.powerbot.script.lang;
+package org.powerbot.script.rs3.tools;
 
-import org.powerbot.script.rs3.tools.ClientContext;
-import org.powerbot.script.rs3.tools.Area;
-import org.powerbot.script.rs3.tools.Identifiable;
-import org.powerbot.script.rs3.tools.Locatable;
-import org.powerbot.script.rs3.tools.Nameable;
-import org.powerbot.script.rs3.tools.Stackable;
+import org.powerbot.script.lang.AbstractQuery;
 
-public abstract class GroundItemQuery<K extends Locatable & Identifiable & Nameable & Stackable> extends AbstractQuery<GroundItemQuery<K>, K>
+public abstract class GroundItemQuery<K extends Locatable & Identifiable & Nameable & Stackable> extends AbstractQuery<GroundItemQuery<K>, K, ClientContext>
 		implements Locatable.Query<GroundItemQuery<K>>, Identifiable.Query<GroundItemQuery<K>>,
 		Nameable.Query<GroundItemQuery<K>>, Stackable.Query<GroundItemQuery<K>> {
 	public GroundItemQuery(final ClientContext factory) {

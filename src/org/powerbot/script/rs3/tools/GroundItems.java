@@ -8,7 +8,6 @@ import org.powerbot.bot.rs3.client.HashTable;
 import org.powerbot.bot.rs3.client.NodeListCache;
 import org.powerbot.bot.rs3.client.RSItem;
 import org.powerbot.bot.rs3.tools.NodeQueue;
-import org.powerbot.script.lang.GroundItemQuery;
 
 public class GroundItems extends GroundItemQuery<GroundItem> {
 	public GroundItems(final ClientContext factory) {

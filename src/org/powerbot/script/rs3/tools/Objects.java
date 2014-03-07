@@ -13,7 +13,6 @@ import org.powerbot.bot.rs3.client.RSGround;
 import org.powerbot.bot.rs3.client.RSGroundInfo;
 import org.powerbot.bot.rs3.client.RSInfo;
 import org.powerbot.bot.rs3.client.RSObject;
-import org.powerbot.script.lang.BasicNamedQuery;
 
 /**
  * Utilities pertaining to in-game objects.

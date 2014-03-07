@@ -3,8 +3,6 @@ package org.powerbot.script.rs3.tools;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.powerbot.script.lang.TextQuery;
-
 public class Chat extends TextQuery<ChatOption> {
 	public static final int WIDGET = 1188;
 	private static final int[] COMPONENT_CHAT_OPTIONS = {

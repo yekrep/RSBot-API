@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.powerbot.bot.rs3.tools.Items;
-import org.powerbot.script.lang.ItemQuery;
 
 public class Equipment extends ItemQuery<Item> {
 	public static final int WIDGET = 1464;

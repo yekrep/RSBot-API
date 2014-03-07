@@ -10,26 +10,24 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import org.powerbot.script.rs3.tools.ClientAccessor;
-import org.powerbot.script.rs3.tools.ClientContext;
-
 /**
  * An abstract implementation of a chaining query-based data set filter which is thread safe.
  *
  * @param <T> the super class
  * @param <K> the subject type
+ * @param <C> the {@link org.powerbot.script.lang.ClientContext}
  */
-public abstract class AbstractQuery<T extends AbstractQuery<T, K>, K> extends ClientAccessor implements Iterable<K>, Nillable<K> {
+public abstract class AbstractQuery<T extends AbstractQuery<T, K, C>, K, C extends ClientContext> extends org.powerbot.script.lang.ClientAccessor<C> implements Iterable<K>, Nillable<K> {
 	private final ThreadLocal<List<K>> items;
 	private final Method set;
 
 	/**
 	 * Creates a base {@link AbstractQuery}.
 	 *
-	 * @param factory the {@link org.powerbot.script.rs3.tools.ClientContext} to associate with
+	 * @param ctx the {@link org.powerbot.script.rs3.tools.ClientContext} to associate with
 	 */
-	public AbstractQuery(final ClientContext factory) {
-		super(factory);
+	public AbstractQuery(final C ctx) {
+		super(ctx);
 
 		items = new ThreadLocal<List<K>>() {
 			@Override

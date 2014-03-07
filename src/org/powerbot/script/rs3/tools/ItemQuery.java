@@ -1,14 +1,12 @@
-package org.powerbot.script.lang;
+package org.powerbot.script.rs3.tools;
 
-import org.powerbot.script.rs3.tools.ClientContext;
-import org.powerbot.script.rs3.tools.Identifiable;
-import org.powerbot.script.rs3.tools.Nameable;
-import org.powerbot.script.rs3.tools.Stackable;
+import org.powerbot.script.lang.AbstractQuery;
 
-public abstract class ItemQuery<K extends Identifiable & Nameable & Stackable> extends AbstractQuery<ItemQuery<K>, K>
+public abstract class ItemQuery<K extends Identifiable & Nameable & Stackable> extends AbstractQuery<ItemQuery<K>, K, ClientContext>
 		implements Identifiable.Query<ItemQuery<K>>, Nameable.Query<ItemQuery<K>>, Stackable.Query<ItemQuery<K>> {
-	public ItemQuery(final ClientContext factory) {
-		super(factory);
+
+	public ItemQuery(final ClientContext ctx) {
+		super(ctx);
 	}
 
 	/**

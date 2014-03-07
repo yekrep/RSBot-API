@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.powerbot.bot.rs3.tools.Items;
-import org.powerbot.script.lang.ItemQuery;
 
 /**
  * Utilities pertaining to the in-game backpack.

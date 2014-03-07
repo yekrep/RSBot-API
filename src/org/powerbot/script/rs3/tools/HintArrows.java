@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.powerbot.bot.rs3.client.Client;
 import org.powerbot.bot.rs3.client.RSHintArrow;
-import org.powerbot.script.lang.HintArrowQuery;
 
 /**
  * {@link HintArrows} is a utility which provides access to the game's hint (directional) arrows.

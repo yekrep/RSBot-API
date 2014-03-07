@@ -7,7 +7,6 @@ import org.powerbot.bot.rs3.client.Client;
 import org.powerbot.bot.rs3.client.HashTable;
 import org.powerbot.bot.rs3.client.RSNPC;
 import org.powerbot.bot.rs3.client.RSNPCNode;
-import org.powerbot.script.lang.BasicNamedQuery;
 
 /**
  * {@link Npcs} is a static utility which provides access to {@link Npc}s in the game.

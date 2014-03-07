@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 
-import org.powerbot.script.lang.IdQuery;
 import org.powerbot.script.util.Condition;
 
 public class CombatBar extends IdQuery<Action> {

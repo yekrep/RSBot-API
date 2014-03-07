@@ -7,7 +7,6 @@ import java.util.Set;
 
 import org.powerbot.bot.rs3.client.Client;
 import org.powerbot.bot.rs3.client.RSPlayer;
-import org.powerbot.script.lang.PlayerQuery;
 
 /**
  * {@link Players} is a utility which provides access to the {@link Player}s in the game.
