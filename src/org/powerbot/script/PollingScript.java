@@ -72,8 +72,9 @@ public abstract class PollingScript extends AbstractScript implements Runnable {
 
 		if (!Thread.interrupted() && !ctx.controller.isStopping()) {
 			ctx.controller.offer(this);
-			Thread.yield();
 		}
+
+		Thread.yield();
 	}
 
 	/**
