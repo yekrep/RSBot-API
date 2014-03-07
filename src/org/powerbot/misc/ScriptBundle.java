@@ -3,7 +3,6 @@ package org.powerbot.misc;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.powerbot.script.Manifest;
 import org.powerbot.script.Script;
 import org.powerbot.util.StringUtils;
 
@@ -27,7 +26,7 @@ public class ScriptBundle {
 		public String source;
 		public boolean local = false, assigned = false;
 
-		public Definition(final Manifest manifest) {
+		public Definition(final Script.Manifest manifest) {
 			name = manifest.name();
 			id = null;
 			description = manifest.description();

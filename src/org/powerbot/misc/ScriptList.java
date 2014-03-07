@@ -26,7 +26,6 @@ import javax.swing.SwingUtilities;
 import org.powerbot.Configuration;
 import org.powerbot.bot.rs3.Bot;
 import org.powerbot.gui.BotChrome;
-import org.powerbot.script.Manifest;
 import org.powerbot.script.Script;
 import org.powerbot.bot.script.InternalScript;
 import org.powerbot.bot.script.ScriptClassLoader;
@@ -115,8 +114,8 @@ public class ScriptList {
 						}
 						if (Script.class.isAssignableFrom(clazz) && !InternalScript.class.isAssignableFrom(clazz)) {
 							final Class<? extends Script> script = clazz.asSubclass(Script.class);
-							if (script.isAnnotationPresent(Manifest.class)) {
-								final Manifest m = script.getAnnotation(Manifest.class);
+							if (script.isAnnotationPresent(Script.Manifest.class)) {
+								final Script.Manifest m = script.getAnnotation(Script.Manifest.class);
 								final ScriptBundle.Definition def = new ScriptBundle.Definition(m);
 								def.source = parent.getCanonicalFile().toString();
 								def.className = className;

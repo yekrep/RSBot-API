@@ -1,5 +1,9 @@
 package org.powerbot.script;
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 import java.util.EventListener;
 import java.util.Queue;
 
@@ -39,5 +43,33 @@ public interface Script extends EventListener {
 		 * @return {@code true} if the runnable was added, otherwise {@code false}
 		 */
 		public <E extends Runnable> boolean offer(E e);
+	}
+
+	/**
+	 * A {@link org.powerbot.script.Script} descriptor.
+	 */
+	@Retention(RetentionPolicy.RUNTIME)
+	@Target({ElementType.TYPE})
+	@interface Manifest {
+		/**
+		 * The human-friendly name.
+		 *
+		 * @return the name
+		 */
+		String name();
+
+		/**
+		 * The description, which should be 140 characters or less.
+		 *
+		 * @return the description
+		 */
+		String description();
+
+		/**
+		 * A series of key=value pairs separated by semicolons (;) or newlines.
+		 *
+		 * @return the properties
+		 */
+		String properties() default "";
 	}
 }
