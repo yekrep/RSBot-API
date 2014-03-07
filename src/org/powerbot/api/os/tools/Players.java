@@ -6,7 +6,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.powerbot.api.ClientAccessor;
 import org.powerbot.api.ClientContext;
-import org.powerbot.bot.client.Client;
+import org.powerbot.bot.os.client.Client;
 
 public class Players extends ClientAccessor {
 	public Players(final ClientContext ctx) {
@@ -20,14 +20,14 @@ public class Players extends ClientAccessor {
 			return r;
 		}
 		final int[] indices = client.getPlayerIndices();
-		final org.powerbot.bot.client.Player[] players = client.getPlayers();
+		final org.powerbot.bot.os.client.Player[] players = client.getPlayers();
 		if (indices == null || players == null) {
 			return r;
 		}
 		final Player[] arr = new Player[indices.length];
 		int d = 0;
 		for (final int k : indices) {
-			final org.powerbot.bot.client.Player p = players[k];
+			final org.powerbot.bot.os.client.Player p = players[k];
 			if (p != null) {
 				arr[d++] = new Player(ctx, p);
 			}

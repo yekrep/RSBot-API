@@ -12,8 +12,8 @@ import org.powerbot.api.os.tools.Objects;
 import org.powerbot.api.os.tools.Players;
 import org.powerbot.api.os.tools.Varpbits;
 import org.powerbot.api.os.tools.Widgets;
-import org.powerbot.bot.Bot;
-import org.powerbot.bot.client.Client;
+import org.powerbot.bot.os.Bot;
+import org.powerbot.bot.os.client.Client;
 
 public class ClientContext {
 	public final Game game;

@@ -16,8 +16,8 @@ import org.powerbot.api.util.Condition;
 import org.powerbot.api.util.Filter;
 import org.powerbot.api.util.Random;
 import org.powerbot.bot.SelectiveEventQueue;
-import org.powerbot.bot.event.PaintListener;
-import org.powerbot.bot.client.Client;
+import org.powerbot.bot.os.event.PaintListener;
+import org.powerbot.bot.os.client.Client;
 import org.powerbot.util.StringUtils;
 
 public class Menu extends ClientAccessor {

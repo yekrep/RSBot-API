@@ -11,9 +11,9 @@ import java.util.Queue;
 
 import org.powerbot.api.ClientContext;
 import org.powerbot.api.util.Random;
-import org.powerbot.bot.client.Client;
-import org.powerbot.bot.client.CollisionMap;
-import org.powerbot.bot.client.Landscape;
+import org.powerbot.bot.os.client.Client;
+import org.powerbot.bot.os.client.CollisionMap;
+import org.powerbot.bot.os.client.Landscape;
 
 public class LocalPath extends Path {
 	private final Locatable destination;
@@ -104,22 +104,22 @@ public class LocalPath extends Path {
 	private double[][] getCosts(final int w, final int h) {
 		final Client client = ctx.client();
 		final Landscape landscape = client.getLandscape();
-		final org.powerbot.bot.client.Tile[][][] tiles;
+		final org.powerbot.bot.os.client.Tile[][][] tiles;
 		final int floor = client.getFloor();
-		final org.powerbot.bot.client.Tile[][] rows;
+		final org.powerbot.bot.os.client.Tile[][] rows;
 		if (landscape == null || (tiles = landscape.getTiles()) == null ||
 				floor < 0 || floor > tiles.length || (rows = tiles[floor]) == null) {
 			return new double[0][0];
 		}
 		final double[][] arr = new double[w][h];
 		for (int x = 0; x < Math.min(w, rows.length); x++) {
-			final org.powerbot.bot.client.Tile[] row = rows[x];
+			final org.powerbot.bot.os.client.Tile[] row = rows[x];
 			if (row == null) {
 				continue;
 			}
 			final int h2 = row.length;
 			for (int y = 0; y < Math.min(h, h2); y++) {
-				final org.powerbot.bot.client.Tile tile = row[y];
+				final org.powerbot.bot.os.client.Tile tile = row[y];
 				if (tile == null) {
 					continue;
 				}

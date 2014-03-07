@@ -7,9 +7,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import org.powerbot.api.ClientAccessor;
 import org.powerbot.api.ClientContext;
 import org.powerbot.api.util.Deque;
-import org.powerbot.bot.client.Client;
-import org.powerbot.bot.client.ItemNode;
-import org.powerbot.bot.client.NodeDeque;
+import org.powerbot.bot.os.client.Client;
+import org.powerbot.bot.os.client.ItemNode;
+import org.powerbot.bot.os.client.NodeDeque;
 
 public class GroundItems extends ClientAccessor {
 	public GroundItems(final ClientContext ctx) {

@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 import org.powerbot.api.ClientAccessor;
 import org.powerbot.api.ClientContext;
-import org.powerbot.bot.client.Client;
+import org.powerbot.bot.os.client.Client;
 
 public class Widget extends ClientAccessor {
 	private final int index;
@@ -33,9 +33,9 @@ public class Widget extends ClientAccessor {
 
 	public int getComponentCount() {
 		final Client client = ctx.client();
-		final org.powerbot.bot.client.Widget[][] arr = client != null ? client.getWidgets() : null;
+		final org.powerbot.bot.os.client.Widget[][] arr = client != null ? client.getWidgets() : null;
 		if (arr != null && index < arr.length) {
-			final org.powerbot.bot.client.Widget[] comps = arr[index];
+			final org.powerbot.bot.os.client.Widget[] comps = arr[index];
 			return comps != null ? comps.length : 0;
 		}
 		return 0;

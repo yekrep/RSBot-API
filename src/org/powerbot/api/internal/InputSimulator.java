@@ -9,7 +9,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.powerbot.api.util.Random;
-import org.powerbot.bot.RawAWTEvent;
+import org.powerbot.bot.os.RawAWTEvent;
 import org.powerbot.bot.SelectiveEventQueue;
 
 public class InputSimulator {//TODO: Track click count [same mouse button].

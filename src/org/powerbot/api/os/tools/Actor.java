@@ -3,31 +3,31 @@ package org.powerbot.api.os.tools;
 import java.awt.Point;
 
 import org.powerbot.api.ClientContext;
-import org.powerbot.bot.client.Client;
+import org.powerbot.bot.os.client.Client;
 
 public abstract class Actor extends Interactive implements Locatable, Validatable {
 	Actor(final ClientContext ctx) {
 		super(ctx);
 	}
 
-	protected abstract org.powerbot.bot.client.Actor getActor();
+	protected abstract org.powerbot.bot.os.client.Actor getActor();
 
 	public abstract String getName();
 
 	public abstract int getCombatLevel();
 
 	public int getAnimation() {
-		final org.powerbot.bot.client.Actor actor = getActor();
+		final org.powerbot.bot.os.client.Actor actor = getActor();
 		return actor != null ? actor.getAnimation() : -1;
 	}
 
 	public int getSpeed() {
-		final org.powerbot.bot.client.Actor actor = getActor();
+		final org.powerbot.bot.os.client.Actor actor = getActor();
 		return actor != null ? actor.getSpeed() : -1;
 	}
 
 	public String getOverheadMessage() {
-		final org.powerbot.bot.client.Actor actor = getActor();
+		final org.powerbot.bot.os.client.Actor actor = getActor();
 		final String str = actor != null ? actor.getOverheadMessage() : "";
 		return str != null ? str : "";
 	}
@@ -37,7 +37,7 @@ public abstract class Actor extends Interactive implements Locatable, Validatabl
 	}
 
 	public int getRelativePosition() {
-		final org.powerbot.bot.client.Actor actor = getActor();
+		final org.powerbot.bot.os.client.Actor actor = getActor();
 		final int x, z;
 		if (actor != null) {
 			x = actor.getX();
@@ -51,7 +51,7 @@ public abstract class Actor extends Interactive implements Locatable, Validatabl
 	@Override
 	public Tile getLocation() {
 		final Client client = ctx.client();
-		final org.powerbot.bot.client.Actor actor = getActor();
+		final org.powerbot.bot.os.client.Actor actor = getActor();
 		if (client != null && actor != null) {
 			return new Tile(client.getOffsetX() + (actor.getX() >> 7), client.getOffsetY() + (actor.getZ() >> 7), client.getFloor());
 		}
@@ -60,7 +60,7 @@ public abstract class Actor extends Interactive implements Locatable, Validatabl
 
 	@Override
 	public Point getNextPoint() {
-		final org.powerbot.bot.client.Actor actor = getActor();
+		final org.powerbot.bot.os.client.Actor actor = getActor();
 		if (actor == null) {
 			return new Point(-1, -1);
 		}
@@ -70,7 +70,7 @@ public abstract class Actor extends Interactive implements Locatable, Validatabl
 
 	@Override
 	public Point getCenterPoint() {
-		final org.powerbot.bot.client.Actor actor = getActor();
+		final org.powerbot.bot.os.client.Actor actor = getActor();
 		if (actor == null) {
 			return new Point(-1, -1);
 		}
@@ -80,7 +80,7 @@ public abstract class Actor extends Interactive implements Locatable, Validatabl
 
 	@Override
 	public boolean contains(final Point point) {
-		final org.powerbot.bot.client.Actor actor = getActor();
+		final org.powerbot.bot.os.client.Actor actor = getActor();
 		if (actor == null) {
 			return false;
 		}
@@ -90,7 +90,7 @@ public abstract class Actor extends Interactive implements Locatable, Validatabl
 
 	@Override
 	public int hashCode() {
-		final org.powerbot.bot.client.Actor actor = getActor();
+		final org.powerbot.bot.os.client.Actor actor = getActor();
 		return actor != null ? System.identityHashCode(actor) : super.hashCode();
 	}
 

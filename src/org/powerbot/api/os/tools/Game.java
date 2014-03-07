@@ -4,7 +4,7 @@ import java.awt.Point;
 
 import org.powerbot.api.ClientAccessor;
 import org.powerbot.api.ClientContext;
-import org.powerbot.bot.client.Client;
+import org.powerbot.bot.os.client.Client;
 
 public class Game extends ClientAccessor {
 	public static final int INDEX_MAP_LOADED = 30;

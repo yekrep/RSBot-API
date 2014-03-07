@@ -5,7 +5,7 @@ import java.awt.Point;
 import java.lang.ref.WeakReference;
 
 import org.powerbot.api.ClientContext;
-import org.powerbot.bot.client.ItemNode;
+import org.powerbot.bot.os.client.ItemNode;
 
 public class GroundItem extends Interactive implements Locatable,Identifiable, Validatable {
 	public static final Color TARGET_COLOR = new Color(255, 255, 0, 75);

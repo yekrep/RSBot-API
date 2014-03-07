@@ -4,20 +4,20 @@ import java.awt.Color;
 import java.lang.ref.SoftReference;
 
 import org.powerbot.api.ClientContext;
-import org.powerbot.bot.client.Client;
-import org.powerbot.bot.client.NpcConfig;
+import org.powerbot.bot.os.client.Client;
+import org.powerbot.bot.os.client.NpcConfig;
 
 public class Npc extends Actor implements Identifiable {
 	public static final Color TARGET_STROKE_COLOR = new Color(255, 0, 255, 15);
-	private final SoftReference<org.powerbot.bot.client.Npc> npc;
+	private final SoftReference<org.powerbot.bot.os.client.Npc> npc;
 
-	Npc(final ClientContext ctx, final org.powerbot.bot.client.Npc npc) {
+	Npc(final ClientContext ctx, final org.powerbot.bot.os.client.Npc npc) {
 		super(ctx);
-		this.npc = new SoftReference<org.powerbot.bot.client.Npc>(npc);
+		this.npc = new SoftReference<org.powerbot.bot.os.client.Npc>(npc);
 	}
 
 	@Override
-	protected org.powerbot.bot.client.Actor getActor() {
+	protected org.powerbot.bot.os.client.Actor getActor() {
 		return npc.get();
 	}
 
@@ -55,19 +55,19 @@ public class Npc extends Actor implements Identifiable {
 	}
 
 	private NpcConfig getConfig() {
-		final org.powerbot.bot.client.Npc npc = this.npc.get();
+		final org.powerbot.bot.os.client.Npc npc = this.npc.get();
 		return npc != null ? npc.getConfig() : null;
 	}
 
 	@Override
 	public boolean isValid() {
 		final Client client = ctx.client();
-		final org.powerbot.bot.client.Npc npc = this.npc.get();
+		final org.powerbot.bot.os.client.Npc npc = this.npc.get();
 		if (client == null || npc == null) {
 			return false;
 		}
-		final org.powerbot.bot.client.Npc[] arr = client.getNpcs();
-		for (final org.powerbot.bot.client.Npc a : arr) {
+		final org.powerbot.bot.os.client.Npc[] arr = client.getNpcs();
+		for (final org.powerbot.bot.os.client.Npc a : arr) {
 			if (a == npc) {
 				return true;
 			}

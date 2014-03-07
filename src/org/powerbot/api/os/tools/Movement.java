@@ -2,7 +2,7 @@ package org.powerbot.api.os.tools;
 
 import org.powerbot.api.ClientAccessor;
 import org.powerbot.api.ClientContext;
-import org.powerbot.bot.client.Client;
+import org.powerbot.bot.os.client.Client;
 
 public class Movement extends ClientAccessor {
 	public Movement(final ClientContext ctx) {

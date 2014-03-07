@@ -13,8 +13,8 @@ import org.powerbot.api.internal.InputSimulator;
 import org.powerbot.api.internal.MouseSimulator;
 import org.powerbot.api.util.Filter;
 import org.powerbot.bot.SelectiveEventQueue;
-import org.powerbot.bot.event.EventDispatcher;
-import org.powerbot.bot.event.PaintListener;
+import org.powerbot.bot.os.event.EventDispatcher;
+import org.powerbot.bot.os.event.PaintListener;
 import org.powerbot.api.internal.util.math.Vector3;
 
 public class Mouse extends ClientAccessor {
