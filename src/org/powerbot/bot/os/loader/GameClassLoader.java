@@ -28,7 +28,7 @@ public class GameClassLoader extends ClassLoader {
 		permissions.add(new AllPermission());
 		domain = new ProtectionDomain(codesource, permissions);
 		try {
-			spec = new TransformSpec(Resources.getResourceURL(Resources.Paths.TRANSFORM_SPEC).openStream());
+			spec = new TransformSpec(Resources.getResourceURL(Resources.Paths.TSPEC_OS).openStream());
 		} catch (final IOException e) {
 			throw new IllegalStateException("bad resource", e);
 		}

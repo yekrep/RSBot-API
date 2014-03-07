@@ -133,7 +133,7 @@ public class NRSLoader implements Runnable {
 		System.arraycopy(md.digest(), 0, b, 0, b.length);
 		final SecretKey key = new SecretKeySpec(b, 0, b.length, keyAlgo);
 
-		final HttpURLConnection con = HttpUtils.getHttpConnection(new URL(String.format(Configuration.URLs.CLIENTPATCH, packHash)));
+		final HttpURLConnection con = HttpUtils.getHttpConnection(new URL(String.format(Configuration.URLs.TSPEC_RS3, packHash)));
 		con.setInstanceFollowRedirects(false);
 		con.connect();
 		r = con.getResponseCode();
@@ -175,7 +175,7 @@ public class NRSLoader implements Runnable {
 		System.arraycopy(md.digest(), 0, b, 0, b.length);
 		final SecretKey key = new SecretKeySpec(b, 0, b.length, keyAlgo);
 
-		final HttpURLConnection bucket = HttpUtils.getHttpConnection(new URL(String.format(Configuration.URLs.CLIENTBUCKET, packHash)));
+		final HttpURLConnection bucket = HttpUtils.getHttpConnection(new URL(String.format(Configuration.URLs.TSPEC_RS3_BUCKETS, packHash)));
 		bucket.addRequestProperty(String.format("x-%s-cv", Configuration.NAME.toLowerCase()), "101");
 		bucket.setInstanceFollowRedirects(false);
 		bucket.connect();
@@ -202,7 +202,7 @@ public class NRSLoader implements Runnable {
 			put.disconnect();
 			Tracker.getInstance().trackPage(pre + "/bucket/upload", Integer.toString(r));
 			if (r == HttpURLConnection.HTTP_OK) {
-				final HttpURLConnection bucket_notify = HttpUtils.getHttpConnection(new URL(String.format(Configuration.URLs.CLIENTBUCKET, packHash)));
+				final HttpURLConnection bucket_notify = HttpUtils.getHttpConnection(new URL(String.format(Configuration.URLs.TSPEC_RS3_BUCKETS, packHash)));
 				bucket_notify.setRequestMethod("PUT");
 				bucket_notify.connect();
 				final int r_notify = bucket_notify.getResponseCode();
