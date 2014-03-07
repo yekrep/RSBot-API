@@ -11,7 +11,7 @@ import java.awt.event.WindowEvent;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.powerbot.api.internal.InputSimulator;
+import org.powerbot.script.internal.InputSimulator;
 import org.powerbot.bot.os.EventCallback;
 import org.powerbot.bot.os.RawAWTEvent;
 import org.powerbot.gui.BotChrome;
