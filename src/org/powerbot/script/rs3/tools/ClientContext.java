@@ -34,7 +34,6 @@ public class ClientContext {
 	 */
 	public final Properties properties;
 	public final Script.Controller controller;
-	public final Antipatterns antipatterns;
 	public final CombatBar combatBar;
 	public final Bank bank;
 	public final Camera camera;
@@ -72,7 +71,6 @@ public class ClientContext {
 
 		properties = new Properties();
 		controller = new ScriptController(this);
-		antipatterns = new Antipatterns(this);
 		combatBar = new CombatBar(this);
 		backpack = new Backpack(this);
 		bank = new Bank(this);
@@ -115,7 +113,6 @@ public class ClientContext {
 
 		properties = ctx.properties;
 		controller = ctx.controller;
-		antipatterns = ctx.antipatterns;
 		combatBar = ctx.combatBar;
 		backpack = ctx.backpack;
 		bank = ctx.bank;

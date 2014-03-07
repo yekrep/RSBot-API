@@ -2,15 +2,14 @@ package org.powerbot.bot.script.daemon;
 
 import java.util.Arrays;
 
-import org.powerbot.bot.script.Antipattern;
 import org.powerbot.script.rs3.tools.ClientContext;
 import org.powerbot.script.rs3.tools.Hud;
 import org.powerbot.script.util.Random;
 
-public class WindowPattern extends Antipattern {
-	public WindowPattern(final ClientContext factory) {
-		super(factory);
-		freq.set(freq.get() / 2);
+public class WindowPattern extends Antipattern.Module {
+	public WindowPattern(final ClientContext ctx) {
+		super(ctx);
+		freq.set(15);
 	}
 
 	@Override

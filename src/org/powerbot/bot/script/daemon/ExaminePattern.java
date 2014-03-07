@@ -1,6 +1,5 @@
 package org.powerbot.bot.script.daemon;
 
-import org.powerbot.bot.script.Antipattern;
 import org.powerbot.script.lang.Filter;
 import org.powerbot.script.rs3.tools.ClientContext;
 import org.powerbot.script.rs3.tools.Menu;
@@ -9,10 +8,11 @@ import org.powerbot.script.rs3.tools.GameObject;
 import org.powerbot.script.rs3.tools.Interactive;
 import org.powerbot.script.rs3.tools.Npc;
 
-public class ExaminePattern extends Antipattern {
-	public ExaminePattern(final ClientContext factory) {
-		super(factory);
-		freq.set(freq.get() / 5);
+public class ExaminePattern extends Antipattern.Module {
+
+	public ExaminePattern(final ClientContext ctx) {
+		super(ctx);
+		freq.set(1);
 	}
 
 	@Override

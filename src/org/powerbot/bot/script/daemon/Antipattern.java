@@ -1,26 +1,55 @@
 package org.powerbot.bot.script.daemon;
 
-import org.powerbot.script.PollingScript;
-import org.powerbot.bot.script.InternalScript;
-import org.powerbot.script.util.Timer;
+import java.util.concurrent.atomic.AtomicInteger;
 
-@SuppressWarnings("deprecation")
+import org.powerbot.bot.script.InternalScript;
+import org.powerbot.script.PollingScript;
+import org.powerbot.script.rs3.tools.ClientAccessor;
+import org.powerbot.script.rs3.tools.ClientContext;
+import org.powerbot.script.util.Random;
+
 public class Antipattern extends PollingScript implements InternalScript {
-	private final Timer timer;
+	private final Module[] modules;
 
 	public Antipattern() {
-		timer = new Timer(600 << 4);
+		modules = new Module[]{
+				new ExaminePattern(ctx),
+				new CameraPattern(ctx),
+				new WindowPattern(ctx),
+		};
 	}
 
 	@Override
 	public void poll() {
-		if (timer.isRunning()) {
-			priority.set(0);
-			return;
+		for (final Module m : modules) {
+			if (m.isTick()) {
+				m.run();
+			}
 		}
-		priority.set(1);
+	}
 
-		timer.reset();
-		ctx.antipatterns.run();
+	public static abstract class Module extends ClientAccessor implements Runnable {
+		protected final AtomicInteger freq;
+		private long when = 0L;
+
+		public Module(final ClientContext ctx) {
+			super(ctx);
+			freq = new AtomicInteger(30);
+			isTick();
+		}
+
+		public boolean isTick() {
+			final boolean r = when != 0L && System.nanoTime() > when;
+			when = System.nanoTime() + (long) (freq.get() * 60 * 1e9 * Random.nextDouble(1d, 3d));
+			return r;
+		}
+
+		public boolean isAggressive() {
+			return System.currentTimeMillis() % 5 == 0;
+		}
+
+		public boolean isStateful() {
+			return !isAggressive();
+		}
 	}
 }

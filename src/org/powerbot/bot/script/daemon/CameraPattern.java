@@ -1,12 +1,11 @@
 package org.powerbot.bot.script.daemon;
 
-import org.powerbot.bot.script.Antipattern;
 import org.powerbot.script.rs3.tools.ClientContext;
 import org.powerbot.script.util.Random;
 
-public class CameraPattern extends Antipattern {
-	public CameraPattern(final ClientContext factory) {
-		super(factory);
+public class CameraPattern extends Antipattern.Module {
+	public CameraPattern(final ClientContext ctx) {
+		super(ctx);
 	}
 
 	@Override
