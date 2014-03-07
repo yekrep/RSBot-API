@@ -51,7 +51,12 @@ public abstract class AbstractScript implements Script, Comparable<AbstractScrip
 	public static final BlockingQueue<ClientContext> contextProxy = new SynchronousQueue<ClientContext>();
 	private static final AtomicInteger s = new AtomicInteger(0);
 	private final int sq;
-	protected final AtomicInteger priority;
+
+	/**
+	 * The priority of this {@link org.powerbot.script.Script} as a {@link java.lang.Runnable}.
+	 * @see {@link #getExecQueue(org.powerbot.script.Script.State)}
+	 */
+	public final AtomicInteger priority;
 
 	private final Map<State, Queue<Runnable>> exec;
 	private final AtomicLong started, suspended;

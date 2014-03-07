@@ -16,18 +16,14 @@ import org.powerbot.script.rs3.tools.Widget;
 public class TicketDestroy extends PollingScript implements InternalScript {
 	private static final int[] ITEM_IDS = {24154, 24155};
 
-	public TicketDestroy() {
-		priority.set(3);
-	}
-
 	@Override
 	public void poll() {
 		final Item item = ctx.backpack.select().id(ITEM_IDS).poll();
 		if (!item.isValid() || !ctx.hud.isVisible(Hud.Window.BACKPACK) || !ctx.players.local().isIdle()) {
-			threshold.poll();
+			priority.set(0);
 			return;
 		}
-		threshold.offer(priority.get());
+		priority.set(3);
 		if (!ctx.backpack.scroll(item)) {
 			return;
 		}

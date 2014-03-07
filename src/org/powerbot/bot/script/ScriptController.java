@@ -1,9 +1,10 @@
 package org.powerbot.bot.script;
 
+import java.util.Comparator;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.PriorityBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -96,7 +97,17 @@ public final class ScriptController extends ClientAccessor implements Runnable, 
 		if (!(cl instanceof ScriptClassLoader)) {
 			throw new SecurityException();
 		}
-		executor.set(new ThreadPoolExecutor(1, 1, 0L, TimeUnit.NANOSECONDS, new LinkedBlockingDeque<Runnable>(), new ScriptThreadFactory(group, cl)));
+
+		final BlockingQueue q = new PriorityBlockingQueue<Runnable>((daemons.length + 1) * 4, new Comparator<Runnable>() {
+			@Override
+			public int compare(final Runnable a, final Runnable b) {
+				final int x = a instanceof AbstractScript ? ((AbstractScript) a).priority.get() : 0
+						, y = b instanceof AbstractScript ? ((AbstractScript) b).priority.get() : 0;
+				return x - y;
+			}
+		});
+
+		executor.set(new ThreadPoolExecutor(1, 1, 0L, TimeUnit.NANOSECONDS, q, new ScriptThreadFactory(group, cl)));
 
 		final String s = ctx.properties.getProperty(TIMEOUT_PROPERTY, "");
 		if (s != null) {

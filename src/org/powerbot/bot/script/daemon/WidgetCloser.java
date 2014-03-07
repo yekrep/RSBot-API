@@ -31,17 +31,16 @@ public class WidgetCloser extends PollingScript implements InternalScript {
 	private int tries;
 
 	public WidgetCloser() {
-		priority.set(5);
 		time = 0;
 	}
 
 	@Override
 	public void poll() {
 		if (!isValid()) {
-			threshold.poll();
+			priority.set(0);
 			return;
 		}
-		threshold.offer(priority.get());
+		priority.set(5);
 
 		final Component component = this.component;
 		if (component == null) {

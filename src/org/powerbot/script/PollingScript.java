@@ -1,24 +1,9 @@
 package org.powerbot.script;
 
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicLong;
-
-import org.powerbot.script.util.Random;
-
 /**
  * An implementation of {@link AbstractScript} which polls (or "loops") indefinitely.
  */
 public abstract class PollingScript extends AbstractScript implements Runnable {
-
-	/**
-	 * Blocks other {@link PollingScript}s which have a lower {@link AbstractScript#priority} value.
-	 * Only the head item is considered for comparison.
-	 */
-	protected static final Queue<Integer> threshold = new ConcurrentLinkedQueue<Integer>();
 
 	/**
 	 * Creates an instance of a {@link PollingScript}.
@@ -58,17 +43,14 @@ public abstract class PollingScript extends AbstractScript implements Runnable {
 
 	@Override
 	public final void run() {
-		if (threshold.isEmpty() || priority.get() <= threshold.peek()) {
-			try {
-				poll();
-			} catch (final Throwable e) {
-				ctx.controller.stop();
-				e.printStackTrace();
+		try {
+			poll();
+			if (!Thread.interrupted()) {
+				ctx.controller.offer(this);
 			}
-		}
-
-		if (!Thread.interrupted() && !ctx.controller.isStopping()) {
-			ctx.controller.offer(this);
+		} catch (final Throwable e) {
+			ctx.controller.stop();
+			e.printStackTrace();
 		}
 
 		Thread.yield();
