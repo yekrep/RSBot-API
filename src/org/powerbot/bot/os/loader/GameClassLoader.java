@@ -1,8 +1,10 @@
 package org.powerbot.bot.os.loader;
 
 import java.io.ByteArrayInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.security.AllPermission;
 import java.security.CodeSource;
 import java.security.Permissions;
@@ -11,8 +13,11 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
 
+import org.powerbot.Configuration;
 import org.powerbot.bot.os.loader.transform.TransformSpec;
+import org.powerbot.misc.CryptFile;
 import org.powerbot.misc.Resources;
+import org.powerbot.util.HttpUtils;
 
 public class GameClassLoader extends ClassLoader {
 	private final Map<String, byte[]> resources = new HashMap<String, byte[]>();
@@ -27,11 +32,20 @@ public class GameClassLoader extends ClassLoader {
 		final Permissions permissions = new Permissions();
 		permissions.add(new AllPermission());
 		domain = new ProtectionDomain(codesource, permissions);
+
+		TransformSpec spec;
 		try {
-			spec = new TransformSpec(Resources.getResourceURL(Resources.Paths.TSPEC_OS).openStream());
+			try {
+				spec = new TransformSpec(Resources.getResourceURL(Resources.Paths.TSPEC_OS).openStream());
+			} catch (final FileNotFoundException ignored) {
+				final CryptFile cache = new CryptFile(Resources.Paths.TSPEC_OS, getClass());
+				spec = new TransformSpec(cache.download(HttpUtils.getHttpConnection(new URL(Configuration.URLs.TSPEC_OS))));
+			}
 		} catch (final IOException e) {
 			throw new IllegalStateException("bad resource", e);
 		}
+
+		this.spec = spec;
 		spec.adapt();
 	}
 

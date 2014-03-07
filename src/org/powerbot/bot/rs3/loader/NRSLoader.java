@@ -20,6 +20,7 @@ import javax.crypto.spec.SecretKeySpec;
 
 import org.powerbot.Configuration;
 import org.powerbot.bot.rs3.loader.transform.TransformSpec;
+import org.powerbot.misc.Resources;
 import org.powerbot.misc.Tracker;
 import org.powerbot.util.HttpUtils;
 import org.powerbot.util.StringUtils;
@@ -116,6 +117,11 @@ public class NRSLoader implements Runnable {
 	}
 
 	private TransformSpec getSpec(final String packHash) throws IOException {
+		try {
+			return new TransformSpec(Resources.getResourceURL(String.format(Resources.Paths.TSPEC_RS3, packHash)).openStream());
+		} catch (final IOException ignored) {
+		}
+
 		final String pre = "loader/spec/" + packHash;
 		final int r;
 
