@@ -1,4 +1,4 @@
-package org.powerbot.bot.script;
+package org.powerbot.bot;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;

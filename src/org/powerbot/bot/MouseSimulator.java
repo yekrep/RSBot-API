@@ -1,4 +1,4 @@
-package org.powerbot.bot.script;
+package org.powerbot.bot;
 
 import java.applet.Applet;
 import java.awt.Component;
@@ -7,7 +7,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.util.concurrent.TimeUnit;
 
-import org.powerbot.bot.SelectiveEventQueue;
 import org.powerbot.bot.rs3.client.Client;
 import org.powerbot.bot.rs3.client.input.Mouse;
 import org.powerbot.script.rs3.tools.ClientAccessor;

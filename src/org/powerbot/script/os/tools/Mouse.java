@@ -7,9 +7,9 @@ import java.awt.event.MouseEvent;
 import java.lang.reflect.Field;
 import java.util.concurrent.TimeUnit;
 
-import org.powerbot.bot.script.EventDispatcher;
-import org.powerbot.bot.script.MouseSimulator;
-import org.powerbot.bot.script.InputSimulator;
+import org.powerbot.bot.EventDispatcher;
+import org.powerbot.bot.MouseSimulator;
+import org.powerbot.bot.InputSimulator;
 import org.powerbot.bot.os.event.PaintListener;
 import org.powerbot.script.Filter;
 import org.powerbot.script.Vector3;

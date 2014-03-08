@@ -7,7 +7,7 @@ import java.awt.image.BufferedImage;
 import org.powerbot.bot.os.Bot;
 import org.powerbot.bot.SelectiveEventQueue;
 import org.powerbot.bot.os.event.PaintEvent;
-import org.powerbot.bot.script.EventDispatcher;
+import org.powerbot.bot.EventDispatcher;
 import org.powerbot.gui.BotChrome;
 
 @SuppressWarnings("unused")

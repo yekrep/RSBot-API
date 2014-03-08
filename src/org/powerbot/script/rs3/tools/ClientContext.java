@@ -12,8 +12,8 @@ import org.powerbot.bot.rs3.daemon.TicketDestroy;
 import org.powerbot.bot.rs3.daemon.WidgetCloser;
 import org.powerbot.bot.rs3.tools.Items;
 import org.powerbot.bot.rs3.tools.Map;
-import org.powerbot.bot.script.KeyboardSimulator;
-import org.powerbot.bot.script.ScriptController;
+import org.powerbot.bot.KeyboardSimulator;
+import org.powerbot.bot.ScriptController;
 import org.powerbot.script.Script;
 
 public class ClientContext extends org.powerbot.script.ClientContext {

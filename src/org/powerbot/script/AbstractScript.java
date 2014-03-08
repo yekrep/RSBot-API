@@ -27,7 +27,7 @@ import javax.imageio.ImageIO;
 import org.powerbot.Configuration;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.misc.ScriptBundle;
-import org.powerbot.bot.script.ScriptController;
+import org.powerbot.bot.ScriptController;
 import org.powerbot.util.HttpUtils;
 import org.powerbot.util.IOUtils;
 import org.powerbot.util.Ini;

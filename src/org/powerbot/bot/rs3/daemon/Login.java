@@ -5,7 +5,7 @@ import java.awt.Rectangle;
 import org.powerbot.misc.GameAccounts;
 import org.powerbot.misc.Tracker;
 import org.powerbot.script.PollingScript;
-import org.powerbot.bot.script.InternalScript;
+import org.powerbot.bot.InternalScript;
 import org.powerbot.script.Filter;
 import org.powerbot.script.rs3.tools.ClientContext;
 import org.powerbot.script.rs3.tools.Game;

@@ -17,7 +17,7 @@ import org.powerbot.script.MessageListener;
 import org.powerbot.script.PaintListener;
 import org.powerbot.script.TextPaintListener;
 
-public class EventDispatcher extends org.powerbot.bot.script.EventDispatcher {
+public class EventDispatcher extends org.powerbot.bot.EventDispatcher {
 	public static final int MOUSE_EVENT = 0x1;
 	public static final int MOUSE_MOTION_EVENT = 0x2;
 	public static final int MOUSE_WHEEL_EVENT = 0x4;

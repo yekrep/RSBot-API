@@ -3,7 +3,7 @@ package org.powerbot.script;
 import java.applet.Applet;
 import java.io.Closeable;
 
-import org.powerbot.bot.script.EventDispatcher;
+import org.powerbot.bot.EventDispatcher;
 import org.powerbot.gui.BotChrome;
 
 public abstract class Bot implements Runnable, Closeable {

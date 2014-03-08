@@ -2,10 +2,10 @@ package org.powerbot.script.os.tools;
 
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.powerbot.bot.script.InputSimulator;
+import org.powerbot.bot.InputSimulator;
 import org.powerbot.bot.os.Bot;
 import org.powerbot.bot.os.client.Client;
-import org.powerbot.bot.script.ScriptController;
+import org.powerbot.bot.ScriptController;
 import org.powerbot.script.Script;
 
 public class ClientContext extends org.powerbot.script.ClientContext {

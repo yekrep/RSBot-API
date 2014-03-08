@@ -1,6 +1,6 @@
 package org.powerbot.script.rs3.tools;
 
-import org.powerbot.bot.script.KeyboardSimulator;
+import org.powerbot.bot.KeyboardSimulator;
 
 public class Keyboard extends ClientAccessor {
 	public Keyboard(final ClientContext factory) {

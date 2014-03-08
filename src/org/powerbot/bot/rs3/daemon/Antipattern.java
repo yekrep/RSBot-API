@@ -2,7 +2,7 @@ package org.powerbot.bot.rs3.daemon;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.powerbot.bot.script.InternalScript;
+import org.powerbot.bot.InternalScript;
 import org.powerbot.script.PollingScript;
 import org.powerbot.script.rs3.tools.ClientAccessor;
 import org.powerbot.script.rs3.tools.ClientContext;

@@ -13,7 +13,7 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import org.powerbot.Configuration;
-import org.powerbot.bot.script.ScriptController;
+import org.powerbot.bot.ScriptController;
 
 class OSXAdapt implements Runnable {
 	private final BotChrome chrome;

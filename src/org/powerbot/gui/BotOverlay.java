@@ -23,7 +23,7 @@ import org.powerbot.bot.rs3.Bot;
 import org.powerbot.bot.rs3.client.Client;
 import org.powerbot.bot.rs3.event.PaintEvent;
 import org.powerbot.bot.rs3.event.TextPaintEvent;
-import org.powerbot.bot.script.EventDispatcher;
+import org.powerbot.bot.EventDispatcher;
 
 public class BotOverlay extends JDialog {
 	private static final Logger log = Logger.getLogger(BotOverlay.class.getName());

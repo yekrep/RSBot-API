@@ -10,11 +10,9 @@ import java.security.Permission;
 import java.util.Map.Entry;
 import java.util.logging.Logger;
 
-import org.powerbot.Boot;
-import org.powerbot.Configuration;
 import org.powerbot.bot.rs3.loader.GameClassLoader;
-import org.powerbot.bot.script.ScriptClassLoader;
-import org.powerbot.bot.script.ScriptThreadFactory;
+import org.powerbot.bot.ScriptClassLoader;
+import org.powerbot.bot.ScriptThreadFactory;
 import org.powerbot.misc.CryptFile;
 import org.powerbot.misc.GameAccounts;
 import org.powerbot.misc.NetworkAccount;

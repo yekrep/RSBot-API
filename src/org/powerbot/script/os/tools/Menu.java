@@ -9,7 +9,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.powerbot.bot.script.InputSimulator;
+import org.powerbot.bot.InputSimulator;
 import org.powerbot.script.Filter;
 import org.powerbot.script.Condition;
 import org.powerbot.script.Random;

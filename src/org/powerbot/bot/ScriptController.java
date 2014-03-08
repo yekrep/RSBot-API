@@ -1,4 +1,4 @@
-package org.powerbot.bot.script;
+package org.powerbot.bot;
 
 import java.util.Comparator;
 import java.util.PriorityQueue;
@@ -10,7 +10,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.powerbot.bot.SelectiveEventQueue;
 import org.powerbot.misc.ScriptBundle;
 import org.powerbot.misc.Tracker;
 import org.powerbot.script.AbstractScript;
