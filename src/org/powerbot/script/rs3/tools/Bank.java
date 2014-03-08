@@ -73,8 +73,7 @@ public class Bank extends ItemQuery<Item> {
 
 		ctx.npcs.select().id(BANK_NPC_IDS).select(f).select(UNREACHABLE_FILTER).nearest();
 		ctx.objects.select().id(BANK_BOOTH_IDS, BANK_COUNTER_IDS, BANK_CHEST_IDS).select(f).select(UNREACHABLE_FILTER).nearest();
-		final String opt = ctx.properties.containsKey("bank.antipattern") ? ctx.properties.get("bank.antipattern") : "";
-		if (opt.equalsIgnoreCase("disable")) {
+		if (!ctx.property("bank.antipattern").equals("disable")) {
 			final Npc npc = ctx.npcs.poll();
 			final GameObject object = ctx.objects.poll();
 			return t.distanceTo(npc) < t.distanceTo(object) ? npc : object;

@@ -19,4 +19,16 @@ public abstract class ClientContext {
 	}
 
 	public abstract Script.Controller controller();
+
+	public final String property(final String k) {
+		return property(k, "");
+	}
+
+	public final String property(final String k, final String d) {
+		if (k == null || k.isEmpty()) {
+			return "";
+		}
+		final String v = properties.get(k);
+		return v == null || v.isEmpty() ? d : v;
+	}
 }

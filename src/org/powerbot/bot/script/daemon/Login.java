@@ -25,7 +25,7 @@ public class Login extends PollingScript<ClientContext> implements InternalScrip
 	public static final String LOGIN_USER_PROPERTY = "login.account.username";
 
 	private boolean isValid() {
-		if (ctx.properties.getProperty("login.disable", "").trim().equalsIgnoreCase("true")) {
+		if (ctx.property("login.disable").equals("true")) {
 			return false;
 		}
 
@@ -43,17 +43,15 @@ public class Login extends PollingScript<ClientContext> implements InternalScrip
 		}
 		priority.set(4);
 
-		final GameAccounts.Account account = GameAccounts.getInstance().get(ctx.properties.getProperty(LOGIN_USER_PROPERTY));
+		final GameAccounts.Account account = GameAccounts.getInstance().get(ctx.property(LOGIN_USER_PROPERTY));
 		final int state = ctx.game.getClientState();
 
 		if (state == Game.INDEX_LOBBY_SCREEN) {
 			int world = -1;
-			final String k = "login.world";
-			if (ctx.properties.containsKey(k)) {
-				try {
-					world = Integer.parseInt(ctx.properties.getProperty(k));
-				} catch (final NumberFormatException ignored) {
-				}
+			final String w = ctx.property("login.world", "-1");
+			try {
+				world = Integer.parseInt(w);
+			} catch (final NumberFormatException ignored) {
 			}
 
 			final Component child = ctx.widgets.get(906, 517); // post email validation continue button
@@ -73,7 +71,7 @@ public class Login extends PollingScript<ClientContext> implements InternalScrip
 							}
 						});
 						if (worlds.length > 0) {
-							ctx.properties.setProperty("login.world", Integer.toString(worlds[Random.nextInt(0, worlds.length)].getNumber()));
+							ctx.properties.put("login.world", Integer.toString(worlds[Random.nextInt(0, worlds.length)].getNumber()));
 						}
 					}
 					return;
