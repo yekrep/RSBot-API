@@ -109,7 +109,7 @@ class BotMenuBar extends JMenuBar {
 				final JMenu m = (JMenu) e.getSource();
 				m.removeAll();
 
-				final ScriptController c = (ScriptController) chrome.getBot().ctx().controller();
+				final ScriptController c = (ScriptController) chrome.bot.get().ctx().controller();
 				if (!c.isValid()) {
 					return;
 				}
@@ -128,7 +128,7 @@ class BotMenuBar extends JMenuBar {
 
 			@Override
 			public void menuDeselected(final MenuEvent e) {
-				final ScriptController c = (ScriptController) chrome.getBot().ctx().controller();
+				final ScriptController c = (ScriptController) chrome.bot.get().ctx().controller();
 				if (!c.isValid()) {
 					return;
 				}
@@ -147,7 +147,7 @@ class BotMenuBar extends JMenuBar {
 
 			@Override
 			public void menuCanceled(final MenuEvent e) {
-				final ScriptController c = (ScriptController) chrome.getBot().ctx().controller();
+				final ScriptController c = (ScriptController) chrome.bot.get().ctx().controller();
 				if (!c.isValid()) {
 					return;
 				}
@@ -168,10 +168,10 @@ class BotMenuBar extends JMenuBar {
 		edit.addMenuListener(new MenuListener() {
 			@Override
 			public void menuSelected(final MenuEvent e) {
-				final ScriptController c = (ScriptController) chrome.getBot().ctx().controller();
+				final ScriptController c = (ScriptController) chrome.bot.get().ctx().controller();
 				final boolean active = c.isValid() && !c.isStopping(), running = active && !c.isSuspended();
 
-				play.setEnabled(chrome.getBot().ctx().client() != null && !BotPreferences.loading.get());
+				play.setEnabled(chrome.bot.get().ctx().client() != null && !BotPreferences.loading.get());
 				play.setText(running ? BotLocale.PAUSESCRIPT : active ? BotLocale.RESUMESCRIPT : BotLocale.PLAYSCRIPT);
 				play.setIcon(playIcons[running ? 1 : 0]);
 				stop.setEnabled(active);
@@ -289,8 +289,8 @@ class BotMenuBar extends JMenuBar {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				final Bot bot = chrome.getBot();
-				final ScriptController c = (ScriptController) chrome.getBot().ctx().controller();
+				final Bot bot = chrome.bot.get();
+				final ScriptController c = (ScriptController) chrome.bot.get().ctx().controller();
 
 				if (c.isValid()) {
 					if (c.isSuspended()) {
@@ -316,7 +316,7 @@ class BotMenuBar extends JMenuBar {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				chrome.getBot().ctx().controller().stop();
+				chrome.bot.get().ctx().controller().stop();
 			}
 		}).start();
 	}

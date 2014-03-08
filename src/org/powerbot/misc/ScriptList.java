@@ -180,7 +180,7 @@ public class ScriptList {
 			return;
 		}
 
-		final Bot bot = chrome.getBot();
+		final Bot bot = chrome.bot.get();
 		if (username != null) {
 			bot.ctx().properties.put(Login.LOGIN_USER_PROPERTY, username);
 		}

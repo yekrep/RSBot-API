@@ -73,11 +73,11 @@ class BotSettingExplorer extends JFrame {
 		}
 		setVisible(true);
 		try {
-			settings_cache = ((ClientContext) chrome.getBot().ctx()).settings.getArray();
+			settings_cache = ((ClientContext) chrome.bot.get().ctx()).settings.getArray();
 		} catch (final NullPointerException ignored) {
 		}
 		if (!visible) {
-			new Thread(chrome.getBot().threadGroup, new Runnable() {
+			new Thread(chrome.bot.get().threadGroup, new Runnable() {
 				@Override
 				public void run() {
 					while (isVisible()) {
@@ -97,7 +97,7 @@ class BotSettingExplorer extends JFrame {
 	}
 
 	private void update() {
-		final int[] settings_clone = ((ClientContext) chrome.getBot().ctx()).settings.getArray();
+		final int[] settings_clone = ((ClientContext) chrome.bot.get().ctx()).settings.getArray();
 		if (settings_cache == null) {
 			settings_cache = settings_clone;
 			return;

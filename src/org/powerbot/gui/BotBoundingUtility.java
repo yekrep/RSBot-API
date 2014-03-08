@@ -84,35 +84,35 @@ class BotBoundingUtility extends JFrame implements PaintListener, MouseListener,
 				new TargetSelection<Player>("Player", new Callable<Player>() {
 					@Override
 					public Player call() {
-						final ClientContext ctx = (ClientContext) chrome.getBot().ctx();
+						final ClientContext ctx = (ClientContext) chrome.bot.get().ctx();
 						return (Player) nearest(ctx.players.select());
 					}
 				}),
 				new TargetSelection<Npc>("Npc", new Callable<Npc>() {
 					@Override
 					public Npc call() {
-						final ClientContext ctx = (ClientContext) chrome.getBot().ctx();
+						final ClientContext ctx = (ClientContext) chrome.bot.get().ctx();
 						return (Npc) nearest(ctx.npcs.select());
 					}
 				}),
 				new TargetSelection<GameObject>("Object", new Callable<GameObject>() {
 					@Override
 					public GameObject call() {
-						final ClientContext ctx = (ClientContext) chrome.getBot().ctx();
+						final ClientContext ctx = (ClientContext) chrome.bot.get().ctx();
 						return (GameObject) nearest(ctx.objects.select());
 					}
 				}),
 				new TargetSelection<GroundItem>("Ground Item", new Callable<GroundItem>() {
 					@Override
 					public GroundItem call() {
-						final ClientContext ctx = (ClientContext) chrome.getBot().ctx();
+						final ClientContext ctx = (ClientContext) chrome.bot.get().ctx();
 						return (GroundItem) nearest(ctx.groundItems.select());
 					}
 				}),
 				new TargetSelection<TileMatrix>("Tile", new Callable<TileMatrix>() {
 					@Override
 					public TileMatrix call() {
-						final ClientContext ctx = (ClientContext) chrome.getBot().ctx();
+						final ClientContext ctx = (ClientContext) chrome.bot.get().ctx();
 						final List<TileMatrix> list = new ArrayList<TileMatrix>();
 						final Tile t = ctx.players.local().getLocation();
 						for (int x = -20; x <= 20; x++) {
@@ -190,13 +190,13 @@ class BotBoundingUtility extends JFrame implements PaintListener, MouseListener,
 			}
 		});
 
-		chrome.getBot().dispatcher.add(this);
+		chrome.bot.get().dispatcher.add(this);
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(final WindowEvent e) {
 				setVisible(false);
-				chrome.getBot().dispatcher.remove(BotBoundingUtility.this);
+				chrome.bot.get().dispatcher.remove(BotBoundingUtility.this);
 				dispose();
 				instance.set(null);
 			}

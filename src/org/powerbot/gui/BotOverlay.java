@@ -114,7 +114,7 @@ public class BotOverlay extends JDialog {
 						});
 					}
 
-					final Bot b = parent.getBot();
+					final Bot b = parent.bot.get();
 					final EventDispatcher m;
 					if (b != null && (m = b.dispatcher) != null) {
 						bi = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
@@ -162,7 +162,7 @@ public class BotOverlay extends JDialog {
 		final Bot bot;
 		final Client client;
 		final Canvas canvas;
-		if ((bot = parent.getBot()) != null && (client = bot.ctx().client()) != null
+		if ((bot = parent.bot.get()) != null && (client = bot.ctx().client()) != null
 				&& (canvas = ((org.powerbot.bot.rs3.client.Client) client).getCanvas()) != null) {
 			final Point l = canvas.getLocation();
 			p.translate(l.x, l.y);

@@ -15,6 +15,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -36,7 +37,7 @@ public class BotChrome extends JFrame implements Closeable {
 	private static final long serialVersionUID = -5535364874897541810L;
 
 	private static BotChrome instance;
-	private final Bot bot;
+	public final AtomicReference<Bot> bot;
 	private final BotPanel panel;
 	public final BotOverlay overlay;
 	public final BotMenuBar menuBar;
@@ -50,13 +51,11 @@ public class BotChrome extends JFrame implements Closeable {
 		JPopupMenu.setDefaultLightWeightPopupEnabled(false);
 		setFocusTraversalKeysEnabled(false);
 
+		bot = new AtomicReference<Bot>(null);
+		add(panel = new BotPanel(this));
 		setJMenuBar(menuBar = new BotMenuBar(this));
-
-		panel = new BotPanel();
-		add(panel);
 		SelectiveEventQueue.getInstance().setBlocking(false);
 
-		log.log(Level.INFO, "", "Starting...");
 		pack();
 		setMinimumSize(getSize());
 		cache = new WindowCache(this, "chrome");
@@ -96,13 +95,6 @@ public class BotChrome extends JFrame implements Closeable {
 			}
 		});
 
-		Bot bot = null;
-		if (isLatestVersion()) {
-			bot = new org.powerbot.bot.rs3.Bot(this);
-			new Thread(bot.threadGroup, bot).start();
-		}
-		this.bot = bot;
-
 		System.gc();
 	}
 
@@ -111,10 +103,6 @@ public class BotChrome extends JFrame implements Closeable {
 			instance = new BotChrome();
 		}
 		return instance;
-	}
-
-	public Bot getBot() {
-		return bot;
 	}
 
 	private Boolean isLatestVersion() {
@@ -165,12 +153,12 @@ public class BotChrome extends JFrame implements Closeable {
 		}
 
 		boolean pending = false;
-		if (bot != null) {
-			pending = bot.pending.get();
+		if (bot.get() != null) {
+			pending = bot.get().pending.get();
 			new Thread(new Runnable() {
 				@Override
 				public void run() {
-					bot.close();
+					bot.get().close();
 				}
 			}).start();
 		}

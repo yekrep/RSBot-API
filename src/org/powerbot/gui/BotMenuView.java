@@ -106,7 +106,7 @@ final class BotMenuView implements ActionListener {
 		items.add(SEPERATOR);
 		items.add(MESSAGES);
 
-		final EventDispatcher d = chrome.getBot().dispatcher;
+		final EventDispatcher d = chrome.bot.get().dispatcher;
 
 		boolean selectedAll = true;
 
@@ -158,7 +158,7 @@ final class BotMenuView implements ActionListener {
 	}
 
 	private void setView(final Class<? extends EventListener> e, final boolean s) {
-		final Bot b = chrome.getBot();
+		final Bot b = chrome.bot.get();
 
 		if (b == null) {
 			return;
