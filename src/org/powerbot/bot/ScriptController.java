@@ -94,8 +94,8 @@ public final class ScriptController<C extends ClientContext> extends ClientAcces
 
 		executor.set(new ThreadPoolExecutor(1, 1, 0L, TimeUnit.NANOSECONDS, q, new ScriptThreadFactory(group, cl)));
 
-		final String s = ctx.properties.containsKey(TIMEOUT_PROPERTY) ? ctx.properties.get(TIMEOUT_PROPERTY) : "";
-		if (s != null) {
+		final String s = ctx.property(TIMEOUT_PROPERTY);
+		if (!s.isEmpty()) {
 			long l = 0;
 			try {
 				l = Long.parseLong(s);
