@@ -14,6 +14,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
+import java.util.zip.GZIPInputStream;
 import java.util.zip.Inflater;
 import java.util.zip.ZipInputStream;
 
@@ -34,6 +35,7 @@ import org.powerbot.script.internal.ScriptController;
 import org.powerbot.script.internal.environment.Login;
 import org.powerbot.util.Ini;
 import org.powerbot.util.StringUtils;
+import org.powerbot.util.TarReader;
 
 public class ScriptList {
 	private final static Logger log = Logger.getLogger(ScriptList.class.getName());
@@ -159,7 +161,7 @@ public class ScriptList {
 				c.init(Cipher.DECRYPT_MODE, new SecretKeySpec(key, 0, key.length, "ARCFOUR"));
 				cache = new CryptFile("script.1-" + def.getID().replace('/', '-'), ScriptList.class, ScriptClassLoader.class);
 				final InputStream in = cache.download(new URL(def.source));
-				cl = new ScriptClassLoader(new ZipInputStream(new CipherInputStream(in, c)));
+				cl = new ScriptClassLoader(new TarReader(new GZIPInputStream(new CipherInputStream(in, c))));
 			} catch (final Exception ignored) {
 				log.severe("Could not download script");
 				ignored.printStackTrace();
