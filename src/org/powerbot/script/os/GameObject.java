@@ -6,10 +6,26 @@ import java.lang.ref.WeakReference;
 
 import org.powerbot.bot.os.client.BasicObject;
 import org.powerbot.bot.os.client.Client;
+import org.powerbot.bot.os.client.MRUCache;
+import org.powerbot.bot.os.client.Node;
+import org.powerbot.bot.os.client.ObjConfig;
+import org.powerbot.bot.os.client.VarBit;
+import org.powerbot.script.os.tools.HashTable;
+import org.powerbot.script.rs3.Nameable;
 
-public class GameObject extends Interactive implements Locatable, Identifiable {
+public class GameObject extends Interactive implements Nameable, Locatable, Identifiable {
 	private static final Color TARGET_COLOR = new Color(0, 255, 0, 20);
 	private final WeakReference<BasicObject> object;
+	private static final int[] lookup;
+
+	static {
+		lookup = new int[32];
+		int i = 2;
+		for (int j = 0; j < 32; j++) {
+			lookup[j] = i - 1;
+			i += i;
+		}
+	}
 
 	GameObject(final ClientContext ctx, final BasicObject object) {
 		super(ctx);
@@ -18,8 +34,56 @@ public class GameObject extends Interactive implements Locatable, Identifiable {
 
 	@Override
 	public int getId() {
+		final Client client = ctx.client();
 		final BasicObject object = this.object.get();
-		return object != null ? (object.getUid() >> 14) & 0xffff : -1;
+		final int id = object != null ? (object.getUid() >> 14) & 0xffff : -1;
+		final ObjConfig config = null;//TODO
+		if (client != null && config != null && id != -1) {
+			if (config != null) {
+				final int varbit = config.getVarBit(), si = config.getSettingsIndex();
+				int index = -1;
+				if (varbit != -1) {
+					final MRUCache cache = client.getVarBitMRUCache();
+					for (final VarBit varBit : new HashTable<VarBit>(cache != null ? cache.getHashTable() : null, VarBit.class)) {
+						if (varBit.getId() == varbit) {//TODO
+							final int mask = lookup[varBit.getEndBit() - varBit.getStartBit()];
+							index = ctx.varpbits.getVarpbit(varBit.getIndex()) >> varBit.getStartBit() & mask;
+							break;
+						}
+					}
+				} else if (si != -1) {
+					index = ctx.varpbits.getVarpbit(si);
+				}
+				if (index >= 0) {
+					final int[] configs = config.getConfigs();
+					if (configs != null && index < configs.length && configs[index] != -1) {
+						return configs[index];
+					}
+				}
+			}
+		}
+		return id;
+	}
+
+	@Override
+	public String getName() {
+		final ObjConfig config = getConfig();
+		final String str = config != null ? config.getName() : "";
+		return str != null ? str : "";
+	}
+
+	public String[] getActions() {
+		final ObjConfig config = getConfig();
+		final String[] arr = config != null ? config.getActions() : new String[0];
+		if (arr == null) {
+			return new String[0];
+		}
+		final String[] arr_ = new String[arr.length];
+		int c = 0;
+		for (final String str : arr) {
+			arr_[c++] = str != null ? str : "";
+		}
+		return arr_;
 	}
 
 	public int getOrientation() {
@@ -49,6 +113,21 @@ public class GameObject extends Interactive implements Locatable, Identifiable {
 			x = z = 0;
 		}
 		return (x << 16) | z;
+	}
+
+	private ObjConfig getConfig() {
+		final Client client = ctx.client();
+		final BasicObject object = this.object.get();
+		final int id = object != null ? (object.getUid() >> 14) & 0xffff : -1, uid = getId();
+		if (id != uid) {
+			final MRUCache cache = client.getNPCConfigMRUCache();
+			for (final ObjConfig c : new HashTable<ObjConfig>(cache != null ? cache.getHashTable() : null, ObjConfig.class)) {
+				if (((Node) c).getId() == uid) {//TODO
+					return c;
+				}
+			}
+		}
+		return null;//TODO this
 	}
 
 	@Override
