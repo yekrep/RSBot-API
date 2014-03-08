@@ -24,8 +24,8 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import org.powerbot.Configuration;
-import org.powerbot.bot.rs3.Bot;
 import org.powerbot.gui.BotChrome;
+import org.powerbot.script.Bot;
 import org.powerbot.script.Script;
 import org.powerbot.bot.InternalScript;
 import org.powerbot.bot.ScriptClassLoader;
@@ -182,7 +182,7 @@ public class ScriptList {
 
 		final Bot bot = chrome.getBot();
 		if (username != null) {
-			bot.ctx.properties.put(Login.LOGIN_USER_PROPERTY, username);
+			bot.ctx().properties.put(Login.LOGIN_USER_PROPERTY, username);
 		}
 
 		log.info("Starting script: " + def.getName());
@@ -231,18 +231,18 @@ public class ScriptList {
 				}
 			}
 
-			bot.ctx.properties.put(ScriptController.TIMEOUT_PROPERTY, Long.toString(TimeUnit.HOURS.toMillis(hours)));
+			bot.ctx().properties.put(ScriptController.TIMEOUT_PROPERTY, Long.toString(TimeUnit.HOURS.toMillis(hours)));
 		}
 
 		final NetworkAccount n = NetworkAccount.getInstance();
 		if (n.isLoggedIn()) {
-			bot.ctx.properties.put("user.id", Integer.toString(n.getUID()));
-			bot.ctx.properties.put("user.name", n.getDisplayName());
-			bot.ctx.properties.put("user.vip", Boolean.toString(n.hasPermission(NetworkAccount.VIP)));
+			bot.ctx().properties.put("user.id", Integer.toString(n.getUID()));
+			bot.ctx().properties.put("user.name", n.getDisplayName());
+			bot.ctx().properties.put("user.vip", Boolean.toString(n.hasPermission(NetworkAccount.VIP)));
 		}
 
-		bot.ctx.properties.put(ScriptController.LOCAL_PROPERTY, Boolean.toString(def.local));
-		final ScriptController c = (ScriptController) bot.ctx.controller;
+		bot.ctx().properties.put(ScriptController.LOCAL_PROPERTY, Boolean.toString(def.local));
+		final ScriptController c = (ScriptController) bot.ctx().controller();
 		c.bundle.set(new ScriptBundle(def, script));
 		c.run();
 	}

@@ -34,7 +34,7 @@ public class HintArrow extends ClientAccessor implements Locatable, Validatable 
 
 	@Override
 	public Tile getLocation() {
-		final Client client = ctx.getClient();
+		final Client client = ctx.client();
 		final RSHintArrow arrow = this.arrow.get();
 		if (client == null || arrow == null) {
 			return Tile.NIL;
@@ -80,7 +80,7 @@ public class HintArrow extends ClientAccessor implements Locatable, Validatable 
 
 	@Override
 	public boolean isValid() {
-		final Client client = ctx.getClient();
+		final Client client = ctx.client();
 		if (client == null) {
 			return false;
 		}

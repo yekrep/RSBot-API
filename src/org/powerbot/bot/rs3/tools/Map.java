@@ -34,7 +34,7 @@ public class Map extends ClientAccessor {
 	};
 
 	public CollisionMap[] getCollisionMaps() {
-		final Client client = ctx.getClient();
+		final Client client = ctx.client();
 		if (client == null) {
 			return new CollisionMap[0];
 		}

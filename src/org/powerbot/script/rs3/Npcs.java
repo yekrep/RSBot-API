@@ -26,7 +26,7 @@ public class Npcs extends BasicNamedQuery<Npc> {
 	protected List<Npc> get() {
 		final List<Npc> items = new ArrayList<Npc>();
 
-		final Client client = ctx.getClient();
+		final Client client = ctx.client();
 		if (client == null) {
 			return items;
 		}

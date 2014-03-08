@@ -38,7 +38,7 @@ public class RandomAccessFile {
 
 	private void checkData() {
 		if (uidData != null) {
-			client = BotChrome.getInstance().getBot().ctx.getClient();
+			client = (Client) BotChrome.getInstance().getBot().ctx().client();
 			final String accountName = client != null ? client.getCurrentUsername() : "";
 
 			if (!uidData.getLastUsed().equals(accountName) && data != null) {

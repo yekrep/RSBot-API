@@ -16,8 +16,7 @@ import org.powerbot.bot.KeyboardSimulator;
 import org.powerbot.bot.ScriptController;
 import org.powerbot.script.Script;
 
-public class ClientContext extends org.powerbot.script.ClientContext {
-	private final AtomicReference<Client> client;
+public class ClientContext extends org.powerbot.script.ClientContext<Client> {
 	public final AtomicReference<KeyboardSimulator> inputHandler;
 	public final AtomicReference<Constants> constants;
 
@@ -54,7 +53,6 @@ public class ClientContext extends org.powerbot.script.ClientContext {
 
 	private ClientContext(final Bot bot) {
 		super(bot);
-		client = new AtomicReference<Client>(null);
 		inputHandler = new AtomicReference<KeyboardSimulator>(null);
 		constants = new AtomicReference<Constants>(null);
 
@@ -104,7 +102,6 @@ public class ClientContext extends org.powerbot.script.ClientContext {
 	public ClientContext(final ClientContext ctx) {
 		super(ctx.bot());
 
-		client = ctx.client;
 		inputHandler = ctx.inputHandler;
 		constants = ctx.constants;
 
@@ -138,14 +135,6 @@ public class ClientContext extends org.powerbot.script.ClientContext {
 
 		items = ctx.items;
 		map = ctx.map;
-	}
-
-	public void setClient(final Client client) {
-		this.client.set(client);
-	}
-
-	public Client getClient() {
-		return client.get();
 	}
 
 	public final Script.Controller controller() {

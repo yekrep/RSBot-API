@@ -18,7 +18,7 @@ public class Settings extends ClientAccessor {
 	 * @return an array of the game's settings
 	 */
 	public int[] getArray() {
-		final Client client = ctx.getClient();
+		final Client client = ctx.client();
 		final PlayerMetaInfo info;
 		if (client == null || (info = client.getPlayerMetaInfo()) == null) {
 			return new int[0];

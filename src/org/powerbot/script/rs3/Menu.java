@@ -79,7 +79,7 @@ public class Menu extends ClientAccessor {
 	 * @return <tt>true</tt> if the menu is open; otherwise <tt>false</tt>
 	 */
 	public boolean isOpen() {
-		final Client client = ctx.getClient();
+		final Client client = ctx.client();
 		return client != null && client.isMenuOpen();
 	}
 
@@ -130,7 +130,7 @@ public class Menu extends ClientAccessor {
 	}
 
 	private boolean select(final Filter<Entry> filter, final boolean click) {
-		final Client client = ctx.getClient();
+		final Client client = ctx.client();
 		if (client == null) {
 			return false;
 		}
@@ -173,7 +173,7 @@ public class Menu extends ClientAccessor {
 	 * @return <tt>true</tt> if the menu was closed, otherwise <tt>false</tt>
 	 */
 	public boolean close() {
-		final Client client = ctx.getClient();
+		final Client client = ctx.client();
 		if (client == null) {
 			return false;
 		}
@@ -274,7 +274,7 @@ public class Menu extends ClientAccessor {
 	private List<MenuItemNode> getMenuItemNodes() {
 		final List<MenuItemNode> nodes = new LinkedList<MenuItemNode>();
 
-		final Client client = ctx.getClient();
+		final Client client = ctx.client();
 		if (client == null) {
 			return nodes;
 		}

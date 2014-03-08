@@ -106,7 +106,7 @@ public class Player extends Actor {
 
 	@Override
 	public boolean isValid() {
-		final Client client = ctx.getClient();
+		final Client client = ctx.client();
 		if (client == null) {
 			return false;
 		}

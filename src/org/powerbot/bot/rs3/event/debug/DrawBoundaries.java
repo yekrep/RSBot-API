@@ -27,7 +27,7 @@ public class DrawBoundaries implements PaintListener {
 			return;
 		}
 
-		final Client client = ctx.getClient();
+		final Client client = ctx.client();
 		final RelativeLocation r = ctx.players.local().getRelative();
 		final float rx = r.getX();
 		final float ry = r.getY();

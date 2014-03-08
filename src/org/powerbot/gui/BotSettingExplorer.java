@@ -32,6 +32,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import org.powerbot.misc.Tracker;
+import org.powerbot.script.rs3.ClientContext;
 
 class BotSettingExplorer extends JFrame {
 	private static final int FRAME_WIDTH = 595;
@@ -72,7 +73,7 @@ class BotSettingExplorer extends JFrame {
 		}
 		setVisible(true);
 		try {
-			settings_cache = chrome.getBot().ctx.settings.getArray();
+			settings_cache = ((ClientContext) chrome.getBot().ctx()).settings.getArray();
 		} catch (final NullPointerException ignored) {
 		}
 		if (!visible) {
@@ -96,7 +97,7 @@ class BotSettingExplorer extends JFrame {
 	}
 
 	private void update() {
-		final int[] settings_clone = chrome.getBot().ctx.settings.getArray();
+		final int[] settings_clone = ((ClientContext) chrome.getBot().ctx()).settings.getArray();
 		if (settings_cache == null) {
 			settings_cache = settings_clone;
 			return;

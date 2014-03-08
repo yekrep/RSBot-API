@@ -25,7 +25,7 @@ public class Players extends PlayerQuery<Player> {
 	 * @return the local {@link Player} or the value of {@link #getNil()}
 	 */
 	public Player local() {
-		final Client client = ctx.getClient();
+		final Client client = ctx.client();
 		return client == null ? getNil() : new Player(ctx, client.getMyRSPlayer());
 	}
 
@@ -38,7 +38,7 @@ public class Players extends PlayerQuery<Player> {
 	protected List<Player> get() {
 		final List<Player> items = new ArrayList<Player>();
 
-		final Client client = ctx.getClient();
+		final Client client = ctx.client();
 		if (client == null) {
 			return items;
 		}

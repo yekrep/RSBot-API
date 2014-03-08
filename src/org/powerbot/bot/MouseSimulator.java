@@ -40,7 +40,7 @@ public class MouseSimulator extends ClientAccessor {
 	}
 
 	public void scroll(final boolean down) {
-		final Client client = ctx.getClient();
+		final Client client = ctx.client();
 		final Mouse mouse;
 		if (client == null || (mouse = client.getMouse()) == null) {
 			return;
@@ -54,7 +54,7 @@ public class MouseSimulator extends ClientAccessor {
 	}
 
 	public void press(final int x, final int y, final int button) {
-		final Client client = ctx.getClient();
+		final Client client = ctx.client();
 		final Mouse mouse;
 		if (client == null || (mouse = client.getMouse()) == null) {
 			return;
@@ -73,7 +73,7 @@ public class MouseSimulator extends ClientAccessor {
 	}
 
 	public void release(final int x, final int y, final int button) {
-		final Client client = ctx.getClient();
+		final Client client = ctx.client();
 		final Mouse mouse;
 		if (client == null || (mouse = client.getMouse()) == null) {
 			return;
@@ -95,7 +95,7 @@ public class MouseSimulator extends ClientAccessor {
 	}
 
 	public void move(final int x, final int y) {
-		final Client client = ctx.getClient();
+		final Client client = ctx.client();
 		final Mouse mouse;
 		if (client == null || (mouse = client.getMouse()) == null) {
 			return;
@@ -116,7 +116,7 @@ public class MouseSimulator extends ClientAccessor {
 	}
 
 	public synchronized void handle(final MouseTarget target) {
-		final Client client = ctx.getClient();
+		final Client client = ctx.client();
 		final Mouse mouse;
 		if (target == null || client == null || (mouse = client.getMouse()) == null) {
 			return;
@@ -184,7 +184,7 @@ public class MouseSimulator extends ClientAccessor {
 	}
 
 	public Point getLocation() {
-		final Client client = ctx.getClient();
+		final Client client = ctx.client();
 		final Mouse mouse;
 		if (client == null || (mouse = client.getMouse()) == null) {
 			return new Point(-1, -1);

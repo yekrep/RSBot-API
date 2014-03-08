@@ -17,7 +17,7 @@ public class Items extends ClientAccessor {
 	}
 
 	public int[][] getItems(final int index) {
-		final Client client = ctx.getClient();
+		final Client client = ctx.client();
 		final HashTable table;
 		if (client == null || (table = client.getItemSlots()) == null) {
 			return new int[0][];

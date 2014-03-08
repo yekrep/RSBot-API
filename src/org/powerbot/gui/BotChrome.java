@@ -98,7 +98,7 @@ public class BotChrome extends JFrame implements Closeable {
 
 		Bot bot = null;
 		if (isLatestVersion()) {
-			bot = new Bot(this);
+			bot = new org.powerbot.bot.rs3.Bot(this);
 			new Thread(bot.threadGroup, bot).start();
 		}
 		this.bot = bot;

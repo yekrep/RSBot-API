@@ -21,7 +21,7 @@ public class ViewMouse implements PaintListener {
 
 	@Override
 	public void repaint(final Graphics render) {
-		final Client client = ctx.getClient();
+		final Client client = ctx.client();
 		final Mouse mouse;
 		if (client == null || (mouse = client.getMouse()) == null) {
 			return;

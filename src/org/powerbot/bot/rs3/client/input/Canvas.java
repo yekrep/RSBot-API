@@ -19,7 +19,7 @@ public class Canvas extends java.awt.Canvas {
 	private final Bot bot;
 
 	public Canvas() {
-		bot = BotChrome.getInstance().getBot();
+		bot = (Bot) BotChrome.getInstance().getBot();
 		final SelectiveEventQueue queue = SelectiveEventQueue.getInstance();
 		SelectiveEventQueue.pushSelectiveQueue();
 

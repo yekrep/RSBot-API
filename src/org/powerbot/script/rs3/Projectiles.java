@@ -26,7 +26,7 @@ public class Projectiles extends IdQuery<Projectile> {
 	protected List<Projectile> get() {
 		final List<Projectile> items = new ArrayList<Projectile>();
 
-		final Client client = ctx.getClient();
+		final Client client = ctx.client();
 		if (client == null) {
 			return items;
 		}

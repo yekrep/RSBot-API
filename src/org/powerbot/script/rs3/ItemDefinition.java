@@ -16,7 +16,7 @@ class ItemDefinition {
 	}
 
 	static ItemDefinition getDef(final ClientContext ctx, final int id) {
-		final Client client = ctx.getClient();
+		final Client client = ctx.client();
 		if (client == null || id <= 0) {
 			return new ItemDefinition(null);
 		}

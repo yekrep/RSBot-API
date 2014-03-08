@@ -102,7 +102,7 @@ public class Npc extends Actor implements Identifiable {
 
 	@Override
 	public boolean isValid() {
-		final Client client = ctx.getClient();
+		final Client client = ctx.client();
 		if (client == null) {
 			return false;
 		}

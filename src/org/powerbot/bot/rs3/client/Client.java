@@ -6,7 +6,7 @@ import java.awt.Rectangle;
 import org.powerbot.bot.rs3.client.input.Keyboard;
 import org.powerbot.bot.rs3.client.input.Mouse;
 
-public interface Client {
+public interface Client extends org.powerbot.script.Client {
 	public Callback getCallback();
 
 	public int getLoopCycle();

@@ -1,16 +1,12 @@
 package org.powerbot.script.os;
 
-import java.util.concurrent.atomic.AtomicReference;
-
 import org.powerbot.bot.InputSimulator;
+import org.powerbot.bot.ScriptController;
 import org.powerbot.bot.os.Bot;
 import org.powerbot.bot.os.client.Client;
-import org.powerbot.bot.ScriptController;
 import org.powerbot.script.Script;
 
-public class ClientContext extends org.powerbot.script.ClientContext {
-	private final AtomicReference<Client> client;
-
+public class ClientContext extends org.powerbot.script.ClientContext<Client> {
 	public final Script.Controller controller;
 
 	public final Game game;
@@ -27,7 +23,6 @@ public class ClientContext extends org.powerbot.script.ClientContext {
 
 	private ClientContext(final Bot bot) {
 		super(bot);
-		client = new AtomicReference<Client>(null);
 
 		controller = new ScriptController<ClientContext>(this);
 
@@ -51,8 +46,6 @@ public class ClientContext extends org.powerbot.script.ClientContext {
 	public ClientContext(final ClientContext ctx) {
 		super(ctx.bot());
 
-		client = ctx.client;
-
 		controller = ctx.controller;
 
 		game = ctx.game;
@@ -66,14 +59,6 @@ public class ClientContext extends org.powerbot.script.ClientContext {
 		varpbits = ctx.varpbits;
 		widgets = ctx.widgets;
 		input = ctx.input;
-	}
-
-	public void setClient(final Client client) {
-		this.client.set(client);
-	}
-
-	public Client client() {
-		return client.get();
 	}
 
 	public Script.Controller controller() {

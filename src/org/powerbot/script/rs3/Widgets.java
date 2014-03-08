@@ -29,7 +29,7 @@ public class Widgets extends ClientAccessor {
 	 * @return an array of {@link Widget}s which are currently loaded
 	 */
 	public Widget[] getLoaded() {
-		final Client client = ctx.getClient();
+		final Client client = ctx.client();
 		if (client == null) {
 			return new Widget[0];
 		}
@@ -51,7 +51,7 @@ public class Widgets extends ClientAccessor {
 	 * @return the {@link Widget} respective to the given index
 	 */
 	public synchronized Widget get(final int widget) {
-		final Client client = ctx.getClient();
+		final Client client = ctx.client();
 		if (widget < 0) {
 			return null;
 		}

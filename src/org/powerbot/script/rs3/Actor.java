@@ -145,7 +145,7 @@ public abstract class Actor extends Interactive implements Renderable, Nameable,
 		if (index == -1) {
 			return nil;
 		}
-		final Client client = ctx.getClient();
+		final Client client = ctx.client();
 		if (client == null) {
 			return nil;
 		}
@@ -212,7 +212,7 @@ public abstract class Actor extends Interactive implements Renderable, Nameable,
 	}
 
 	public boolean isInCombat() {
-		final Client client = ctx.getClient();
+		final Client client = ctx.client();
 		if (client == null) {
 			return false;
 		}

@@ -2,6 +2,7 @@ package org.powerbot.script;
 
 import java.applet.Applet;
 import java.io.Closeable;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.powerbot.bot.EventDispatcher;
 import org.powerbot.bot.ScriptClassLoader;
@@ -12,11 +13,13 @@ public abstract class Bot implements Runnable, Closeable {
 	public final EventDispatcher dispatcher;
 	public final ThreadGroup threadGroup;
 	public Applet applet;
+	public final AtomicBoolean pending;
 
 	public Bot(final BotChrome chrome, final EventDispatcher dispatcher) {
 		this.chrome = chrome;
 		this.dispatcher = dispatcher;
 		threadGroup = new ThreadGroup("game"); // TODO: mask in live mode
+		pending = new AtomicBoolean(false);
 	}
 
 	public abstract ClientContext ctx();
@@ -39,7 +42,8 @@ public abstract class Bot implements Runnable, Closeable {
 					threadGroup.interrupt();
 				}
 			}).start();
-
+			//noinspection unchecked
+			ctx().client(null);
 		} else {
 			threadGroup.interrupt();
 		}

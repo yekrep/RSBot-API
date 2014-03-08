@@ -64,7 +64,7 @@ public class Widget extends ClientAccessor implements Validatable, Iterable<Comp
 	}
 
 	public boolean isValid() {
-		final Client client = ctx.getClient();
+		final Client client = ctx.client();
 		if (client == null) {
 			return false;
 		}
@@ -74,7 +74,7 @@ public class Widget extends ClientAccessor implements Validatable, Iterable<Comp
 	}
 
 	RSInterface[] getInternalComponents() {
-		final Client client = ctx.getClient();
+		final Client client = ctx.client();
 		if (client == null) {
 			return null;
 		}

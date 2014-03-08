@@ -26,6 +26,11 @@ public class Bot extends org.powerbot.script.Bot {
 	}
 
 	@Override
+	public ClientContext ctx() {
+		return ctx;
+	}
+
+	@Override
 	public void run() {
 		final GameCrawler crawler = new GameCrawler();
 		if (!crawler.call()) {
@@ -84,21 +89,12 @@ public class Bot extends org.powerbot.script.Bot {
 	private void debug() {
 		ctx.menu.register();
 		new Thread(threadGroup, dispatcher, dispatcher.getClass().getName()).start();
-		ctx.setClient(client);
+		ctx.client(client);
 		dispatcher.add(new PaintListener() {
 			@Override
 			public void repaint(final Graphics render) {
 
 			}
 		});
-	}
-
-	@Override
-	public void close() {
-		if (applet != null) {
-			applet.stop();
-			applet.destroy();
-		}
-		threadGroup.interrupt();
 	}
 }

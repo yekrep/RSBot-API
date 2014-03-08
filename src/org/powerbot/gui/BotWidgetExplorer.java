@@ -36,6 +36,7 @@ import javax.swing.tree.TreeSelectionModel;
 
 import org.powerbot.script.PaintListener;
 import org.powerbot.misc.Tracker;
+import org.powerbot.script.rs3.ClientContext;
 import org.powerbot.script.rs3.Component;
 import org.powerbot.script.rs3.Widget;
 
@@ -282,7 +283,7 @@ class BotWidgetExplorer extends JFrame implements PaintListener {
 		public void update(final String search) {
 			widgetWrappers.clear();
 			final Widget[] loaded;
-			for (final Widget widget : loaded = chrome.getBot().ctx.widgets.getLoaded()) {
+			for (final Widget widget : loaded = ((ClientContext) chrome.getBot().ctx()).widgets.getLoaded()) {
 				children:
 				for (final Component Component : widget.getComponents()) {
 					if (search(Component, search)) {

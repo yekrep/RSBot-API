@@ -150,7 +150,7 @@ public class Component extends Interactive implements Drawable, Displayable {
 	}
 
 	public int getParentId() {
-		final Client client = ctx.getClient();
+		final Client client = ctx.client();
 		final RSInterface component = getInternalComponent();
 		if (client == null || component == null) {
 			return -1;
@@ -175,7 +175,7 @@ public class Component extends Interactive implements Drawable, Displayable {
 	}
 
 	public Point getAbsoluteLocation() {
-		final Client client = ctx.getClient();
+		final Client client = ctx.client();
 		final RSInterface component = getInternalComponent();
 		if (client == null || component == null) {
 			return new Point(-1, -1);

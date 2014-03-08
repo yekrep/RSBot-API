@@ -99,7 +99,7 @@ public class Game extends ClientAccessor {
 	 * @see Game#INDEX_MAP_LOADING
 	 */
 	public int getClientState() {
-		final Client client = ctx.getClient();
+		final Client client = ctx.client();
 		final Constants constants = ctx.constants.get();
 		if (client == null || constants == null) {
 			return -1;
@@ -135,7 +135,7 @@ public class Game extends ClientAccessor {
 	 * @return the displayed {@link Crosshair}
 	 */
 	public Crosshair getCrosshair() {
-		final Client client = ctx.getClient();
+		final Client client = ctx.client();
 		final int type = client != null ? client.getCrossHairType() : -1;
 		if (type < 0 || type > 2) {
 			return Crosshair.NONE;
@@ -149,7 +149,7 @@ public class Game extends ClientAccessor {
 	 * @return the {@link Tile} of the base
 	 */
 	public Tile getMapBase() {
-		final Client client = ctx.getClient();
+		final Client client = ctx.client();
 		if (client == null) {
 			return Tile.NIL;
 		}
@@ -165,7 +165,7 @@ public class Game extends ClientAccessor {
 	 * @return the current floor level
 	 */
 	public int getPlane() {
-		final Client client = ctx.getClient();
+		final Client client = ctx.client();
 		if (client == null) {
 			return -1;
 		}
@@ -178,7 +178,7 @@ public class Game extends ClientAccessor {
 	 * @return the {@link Dimension}s of the game space
 	 */
 	public Dimension getDimensions() {
-		final Client client = ctx.getClient();
+		final Client client = ctx.client();
 		final Canvas canvas;
 		if (client == null || (canvas = client.getCanvas()) == null) {
 			return new Dimension(0, 0);
@@ -244,7 +244,7 @@ public class Game extends ClientAccessor {
 	 * @return the height at the given point
 	 */
 	public int tileHeight(final int rX, final int rY, int plane) {
-		final Client client = ctx.getClient();
+		final Client client = ctx.client();
 		if (client == null) {
 			return 0;
 		}
@@ -331,7 +331,7 @@ public class Game extends ClientAccessor {
 	 */
 	public Point tileToMap(final Locatable locatable) {
 		final Point bad = new Point(-1, -1);
-		final Client client = ctx.getClient();
+		final Client client = ctx.client();
 		final Tile b = ctx.game.getMapBase();
 		final Tile t = locatable.getLocation().derive(-b.getX(), -b.getY());
 		final int tx = t.getX();

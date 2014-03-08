@@ -84,35 +84,35 @@ class BotBoundingUtility extends JFrame implements PaintListener, MouseListener,
 				new TargetSelection<Player>("Player", new Callable<Player>() {
 					@Override
 					public Player call() {
-						final ClientContext ctx = chrome.getBot().ctx;
+						final ClientContext ctx = (ClientContext) chrome.getBot().ctx();
 						return (Player) nearest(ctx.players.select());
 					}
 				}),
 				new TargetSelection<Npc>("Npc", new Callable<Npc>() {
 					@Override
 					public Npc call() {
-						final ClientContext ctx = chrome.getBot().ctx;
+						final ClientContext ctx = (ClientContext) chrome.getBot().ctx();
 						return (Npc) nearest(ctx.npcs.select());
 					}
 				}),
 				new TargetSelection<GameObject>("Object", new Callable<GameObject>() {
 					@Override
 					public GameObject call() {
-						final ClientContext ctx = chrome.getBot().ctx;
+						final ClientContext ctx = (ClientContext) chrome.getBot().ctx();
 						return (GameObject) nearest(ctx.objects.select());
 					}
 				}),
 				new TargetSelection<GroundItem>("Ground Item", new Callable<GroundItem>() {
 					@Override
 					public GroundItem call() {
-						final ClientContext ctx = chrome.getBot().ctx;
+						final ClientContext ctx = (ClientContext) chrome.getBot().ctx();
 						return (GroundItem) nearest(ctx.groundItems.select());
 					}
 				}),
 				new TargetSelection<TileMatrix>("Tile", new Callable<TileMatrix>() {
 					@Override
 					public TileMatrix call() {
-						final ClientContext ctx = chrome.getBot().ctx;
+						final ClientContext ctx = (ClientContext) chrome.getBot().ctx();
 						final List<TileMatrix> list = new ArrayList<TileMatrix>();
 						final Tile t = ctx.players.local().getLocation();
 						for (int x = -20; x <= 20; x++) {

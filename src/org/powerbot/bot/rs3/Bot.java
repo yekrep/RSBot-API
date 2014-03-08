@@ -15,26 +15,24 @@ import org.powerbot.bot.rs3.client.Client;
 import org.powerbot.bot.rs3.client.Constants;
 import org.powerbot.bot.rs3.event.EventDispatcher;
 import org.powerbot.bot.KeyboardSimulator;
-import org.powerbot.bot.ScriptClassLoader;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.script.rs3.ClientContext;
 import org.powerbot.script.Condition;
-import org.powerbot.script.rs3.tools.Validatable;
 
-public final class Bot extends org.powerbot.script.Bot implements Validatable {
+public final class Bot extends org.powerbot.script.Bot {
 	private static final Logger log = Logger.getLogger(Bot.class.getName());
 	private final BotChrome chrome;
 	public final ClientContext ctx;
-	private final AtomicBoolean ready, stopping;
-	public final AtomicBoolean pending;
 
 	public Bot(final BotChrome chrome) {
 		super(chrome, new EventDispatcher());
 		this.chrome = chrome;
 		ctx = ClientContext.newContext(this);
-		ready = new AtomicBoolean(false);
-		stopping = new AtomicBoolean(false);
-		pending = new AtomicBoolean(false);
+	}
+
+	@Override
+	public ClientContext ctx() {
+		return ctx;
 	}
 
 	@Override
@@ -57,7 +55,6 @@ public final class Bot extends org.powerbot.script.Bot implements Validatable {
 			chrome.setTitle(crawler.details.get("title"));
 		}
 
-		ready.set(false);
 		final NRSLoader loader = new NRSLoader(game, classLoader);
 		loader.setCallback(new Runnable() {
 			@Override
@@ -71,7 +68,7 @@ public final class Bot extends org.powerbot.script.Bot implements Validatable {
 	}
 
 	private void hook(final NRSLoader loader) {
-		if (stopping.get()) {
+		if (Thread.interrupted()) {
 			return;
 		}
 
@@ -88,7 +85,7 @@ public final class Bot extends org.powerbot.script.Bot implements Validatable {
 			new Thread(new Runnable() {
 				@Override
 				public void run() {
-					while (!stopping.get()) {
+					for (;;) {
 						log.warning("Downloading update \u2014 please wait");
 						pending.set(true);
 						try {
@@ -111,10 +108,6 @@ public final class Bot extends org.powerbot.script.Bot implements Validatable {
 			return;
 		}
 
-		if (stopping.get()) {
-			return;
-		}
-
 		setClient((Client) loader.getClient(), loader.getBridge().getTransformSpec());
 		applet.start();
 		new Thread(threadGroup, dispatcher, dispatcher.getClass().getName()).start();
@@ -127,51 +120,10 @@ public final class Bot extends org.powerbot.script.Bot implements Validatable {
 		}
 
 		chrome.display(this);
-		ready.set(true);
-	}
-
-	@Override
-	public boolean isValid() {
-		return ready.get();
-	}
-
-	public boolean isStopping() {
-		return stopping.get();
-	}
-
-	@Override
-	public void close() {
-		if (Thread.currentThread().getContextClassLoader() instanceof ScriptClassLoader) {
-			ctx.controller.stop();
-			return;
-		}
-
-		if (!stopping.compareAndSet(false, true)) {
-			return;
-		}
-
-		log.info("Unloading game");
-
-		ctx.controller.stop();
-		dispatcher.close();
-
-		if (applet != null) {
-			new Thread(threadGroup, new Runnable() {
-				@Override
-				public void run() {
-					applet.stop();
-					applet.destroy();
-					threadGroup.interrupt();
-				}
-			}).start();
-			ctx.setClient(null);
-		} else {
-			threadGroup.interrupt();
-		}
 	}
 
 	private void setClient(final Client client, final TransformSpec spec) {
-		ctx.setClient(client);
+		ctx.client(client);
 		client.setCallback(new AbstractCallback(this));
 		ctx.constants.set(new Constants(spec.constants));
 		ctx.inputHandler.set(new KeyboardSimulator(applet, client));
@@ -183,7 +135,7 @@ public final class Bot extends org.powerbot.script.Bot implements Validatable {
 			if (Condition.wait(new Callable<Boolean>() {
 				@Override
 				public Boolean call() throws Exception {
-					return ctx.getClient().getKeyboard() != null;
+					return ctx.client().getKeyboard() != null;
 				}
 			})) {
 				ctx.keyboard.send("s");

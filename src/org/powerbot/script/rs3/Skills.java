@@ -89,7 +89,7 @@ public class Skills extends ClientAccessor {
 	}
 
 	public int[] getLevels() {
-		final Client client = ctx.getClient();
+		final Client client = ctx.client();
 		if (client == null) {
 			return new int[0];
 		}
@@ -109,7 +109,7 @@ public class Skills extends ClientAccessor {
 	}
 
 	public int[] getRealLevels() {
-		final Client client = ctx.getClient();
+		final Client client = ctx.client();
 		if (client == null) {
 			return new int[0];
 		}
@@ -126,7 +126,7 @@ public class Skills extends ClientAccessor {
 	}
 
 	public int[] getExperiences() {
-		final Client client = ctx.getClient();
+		final Client client = ctx.client();
 		if (client == null) {
 			return new int[0];
 		}

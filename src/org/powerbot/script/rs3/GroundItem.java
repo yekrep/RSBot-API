@@ -53,7 +53,7 @@ public class GroundItem extends Interactive implements Renderable, Identifiable,
 	}
 
 	public Model getModel(final int p) {
-		final Client client = ctx.getClient();
+		final Client client = ctx.client();
 		if (client == null || ctx.game.toolkit.gameMode != 0) {
 			return null;
 		}

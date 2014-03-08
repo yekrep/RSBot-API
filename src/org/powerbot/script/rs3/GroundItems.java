@@ -21,7 +21,7 @@ public class GroundItems extends GroundItemQuery<GroundItem> {
 	protected List<GroundItem> get() {
 		final List<GroundItem> items = new ArrayList<GroundItem>();
 
-		final Client client = ctx.getClient();
+		final Client client = ctx.client();
 		if (client == null) {
 			return items;
 		}

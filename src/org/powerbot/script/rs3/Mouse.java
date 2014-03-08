@@ -23,7 +23,7 @@ public class Mouse extends ClientAccessor {
 	 * @return position of the mouse
 	 */
 	public Point getLocation() {
-		final Client client = ctx.getClient();
+		final Client client = ctx.client();
 		final org.powerbot.bot.rs3.client.input.Mouse mouse;
 		if (client == null || (mouse = client.getMouse()) == null) {
 			return new Point(-1, -1);
@@ -37,7 +37,7 @@ public class Mouse extends ClientAccessor {
 	 * @return the press location
 	 */
 	public Point getPressLocation() {
-		final Client client = ctx.getClient();
+		final Client client = ctx.client();
 		final org.powerbot.bot.rs3.client.input.Mouse mouse;
 		if (client == null || (mouse = client.getMouse()) == null) {
 			return new Point(-1, -1);
@@ -51,7 +51,7 @@ public class Mouse extends ClientAccessor {
 	 * @return the press time
 	 */
 	public long getPressTime() {
-		final Client client = ctx.getClient();
+		final Client client = ctx.client();
 		final org.powerbot.bot.rs3.client.input.Mouse mouse;
 		if (client == null || (mouse = client.getMouse()) == null) {
 			return -1;
@@ -65,7 +65,7 @@ public class Mouse extends ClientAccessor {
 	 * @return <tt>true</tt> if the mouse is pressed; otherwise <tt>false</tt>
 	 */
 	public boolean isPressed() {
-		final Client client = ctx.getClient();
+		final Client client = ctx.client();
 		final org.powerbot.bot.rs3.client.input.Mouse mouse;
 		return !(client == null || (mouse = client.getMouse()) == null) && mouse.isPressed();
 	}
@@ -76,7 +76,7 @@ public class Mouse extends ClientAccessor {
 	 * @return <tt>true</tt> if the mouse is present; otherwise <tt>false</tt>
 	 */
 	public boolean isPresent() {
-		final Client client = ctx.getClient();
+		final Client client = ctx.client();
 		final org.powerbot.bot.rs3.client.input.Mouse mouse;
 		return !(client == null || (mouse = client.getMouse()) == null) && mouse.isPresent();
 	}
@@ -106,7 +106,7 @@ public class Mouse extends ClientAccessor {
 	}
 
 	public boolean click(final int button) {
-		final Client client = ctx.getClient();
+		final Client client = ctx.client();
 		final org.powerbot.bot.rs3.client.input.Mouse mouse;
 		return !(client == null || (mouse = client.getMouse()) == null) && click(mouse.getX(), mouse.getY(), button);
 

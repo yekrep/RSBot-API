@@ -1,6 +1,6 @@
 package org.powerbot.bot.os.client;
 
-public interface Client {
+public interface Client extends org.powerbot.script.Client {
 	public int getCameraX();
 
 	public int getCameraY();

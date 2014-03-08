@@ -50,7 +50,7 @@ public class Movement extends ClientAccessor {
 	 * @return the {@link Tile} destination; or {@link Tile#NIL} if there is no destination
 	 */
 	public Tile getDestination() {
-		final Client client = ctx.getClient();
+		final Client client = ctx.client();
 		if (client == null) {
 			return null;
 		}

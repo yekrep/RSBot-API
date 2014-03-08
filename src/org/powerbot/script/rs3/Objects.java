@@ -32,7 +32,7 @@ public class Objects extends BasicNamedQuery<GameObject> {
 	protected List<GameObject> get() {
 		final List<GameObject> items = new ArrayList<GameObject>();
 
-		final Client client = ctx.getClient();
+		final Client client = ctx.client();
 		if (client == null) {
 			return items;
 		}

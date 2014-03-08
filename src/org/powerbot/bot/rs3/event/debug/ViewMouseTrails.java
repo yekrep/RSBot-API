@@ -25,7 +25,7 @@ public class ViewMouseTrails implements PaintListener {
 
 	@Override
 	public void repaint(final Graphics g) {
-		final Client c = ctx.getClient();
+		final Client c = ctx.client();
 		final Mouse m;
 		if (c == null || (m = c.getMouse()) == null) {
 			return;
