@@ -15,6 +15,6 @@ public abstract class Bot implements Runnable, Closeable {
 	public Bot(final BotChrome chrome, final EventDispatcher dispatcher) {
 		this.chrome = chrome;
 		this.dispatcher = dispatcher;
-		threadGroup = new ThreadGroup("game");
+		threadGroup = new ThreadGroup("game"); // TODO: mask in live mode
 	}
 }
