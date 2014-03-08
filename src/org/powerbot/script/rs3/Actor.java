@@ -137,7 +137,7 @@ public abstract class Actor extends Interactive implements Renderable, Nameable,
 	}
 
 	public Actor getInteracting() {
-		final Actor nil = ctx.npcs.getNil();
+		final Actor nil = ctx.npcs.nil();
 		final RSCharacter character = getAccessor();
 		final int index = character != null ? character.getInteracting() : -1;
 		if (index == -1) {
@@ -252,7 +252,7 @@ public abstract class Actor extends Interactive implements Renderable, Nameable,
 	}
 
 	@Override
-	public Point getNextPoint() {
+	public Point nextPoint() {
 		final RSCharacter character = getAccessor();
 		if (character == null) {
 			return new Point(-1, -1);
@@ -267,7 +267,7 @@ public abstract class Actor extends Interactive implements Renderable, Nameable,
 			return model2.getNextPoint();
 		}
 		final TileCuboid cuboid = new TileCuboid(ctx, character);
-		return cuboid.getNextPoint();
+		return cuboid.nextPoint();
 	}
 
 	public Point getCenterPoint() {

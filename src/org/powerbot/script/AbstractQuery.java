@@ -216,7 +216,7 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K, C>, K, C exten
 
 			@Override
 			public K next() {
-				return hasNext() ? i.next() : getNil();
+				return hasNext() ? i.next() : nil();
 			}
 
 			@Override
@@ -227,14 +227,14 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K, C>, K, C exten
 	}
 
 	/**
-	 * Retrieves and removes the first item in the query cache, or returns the value of {@link #getNil()} if it is empty.
+	 * Retrieves and removes the first item in the query cache, or returns the value of {@link #nil()} if it is empty.
 	 *
-	 * @return the first item in the query cache, or the value of {@link #getNil()} if it is empty
+	 * @return the first item in the query cache, or the value of {@link #nil()} if it is empty
 	 */
 	public K poll() {
 		final List<K> items = this.items.get();
 		if (items.isEmpty()) {
-			return getNil();
+			return nil();
 		}
 		final K v = items.get(0);
 		limit(1, items.size() - 1);
@@ -242,13 +242,13 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K, C>, K, C exten
 	}
 
 	/**
-	 * Retrieves, but does not remove, the first item in the query cache, or returns the value of {@link #getNil()} if it is empty.
+	 * Retrieves, but does not remove, the first item in the query cache, or returns the value of {@link #nil()} if it is empty.
 	 *
-	 * @return the first item in the query cache, or the value of {@link #getNil()} if it is empty
+	 * @return the first item in the query cache, or the value of {@link #nil()} if it is empty
 	 */
 	public K peek() {
 		final List<K> items = this.items.get();
-		return items.isEmpty() ? getNil() : items.get(0);
+		return items.isEmpty() ? nil() : items.get(0);
 	}
 
 	/**

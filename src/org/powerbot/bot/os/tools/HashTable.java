@@ -1,4 +1,4 @@
-package org.powerbot.script.os;
+package org.powerbot.bot.os.tools;
 
 import java.lang.ref.WeakReference;
 import java.util.Iterator;

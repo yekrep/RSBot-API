@@ -249,7 +249,7 @@ public class CombatBar extends IdQuery<Action> {
 		if (action.getId() == -1) {
 			return true;
 		}
-		return action.getComponent().hover() && ctx.mouse.drag(ctx.players.local().getNextPoint(), true) &&
+		return action.getComponent().hover() && ctx.mouse.drag(ctx.players.local().nextPoint(), true) &&
 				Condition.wait(new Callable<Boolean>() {
 					@Override
 					public Boolean call() {
@@ -291,7 +291,7 @@ public class CombatBar extends IdQuery<Action> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Action getNil() {
+	public Action nil() {
 		return new Action(ctx, 0, Action.Type.UNKNOWN, -1);
 	}
 }

@@ -48,15 +48,15 @@ public class Menu extends ClientAccessor {
 		};
 	}
 
-	public Rectangle getBounds() {
+	public Rectangle bounds() {
 		final Client client = ctx.client();
-		if (client == null || !isOpen()) {
+		if (client == null || !open()) {
 			return new Rectangle(-1, -1, -1, -1);
 		}
 		return new Rectangle(client.getMenuX(), client.getMenuY(), client.getMenuWidth(), client.getMenuHeight());
 	}
 
-	public boolean isOpen() {
+	public boolean open() {
 		final Client client = ctx.client();
 		return client != null && client.isMenuOpen();
 	}

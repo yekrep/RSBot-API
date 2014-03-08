@@ -21,24 +21,24 @@ public class Player extends Actor {
 	}
 
 	@Override
-	public String getName() {
+	public String name() {
 		final org.powerbot.bot.os.client.Player player = this.player.get();
 		final String str = player != null ? player.getName() : "";
 		return str != null ? str : "";
 	}
 
 	@Override
-	public int getCombatLevel() {
+	public int combatLevel() {
 		final org.powerbot.bot.os.client.Player player = this.player.get();
 		return player != null ? player.getCombatLevel() : -1;
 	}
 
-	public int getTeam() {
+	public int team() {
 		final org.powerbot.bot.os.client.Player player = this.player.get();
 		return player != null ? player.getTeam() : -1;
 	}
 
-	public int[] getAppearance() {
+	public int[] appearance() {
 		final org.powerbot.bot.os.client.Player player = this.player.get();
 		final PlayerComposite composite = player != null ? player.getComposite() : null;
 		final int[] arr = composite != null ? composite.getAppearance() : new int[0];
@@ -46,7 +46,7 @@ public class Player extends Actor {
 	}
 
 	@Override
-	public boolean isValid() {
+	public boolean valid() {
 		final Client client = ctx.client();
 		final org.powerbot.bot.os.client.Player player = this.player.get();
 		if (client == null || player == null) {
@@ -64,6 +64,6 @@ public class Player extends Actor {
 	@Override
 	public String toString() {
 		return String.format("%s[name=%s/level=%d/team=%d]",
-				Player.class.getName(), getName(), getCombatLevel(), getTeam());
+				Player.class.getName(), name(), combatLevel(), team());
 	}
 }

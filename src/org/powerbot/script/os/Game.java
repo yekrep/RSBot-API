@@ -21,17 +21,17 @@ public class Game extends ClientAccessor {
 		super(ctx);
 	}
 
-	public int getClientState() {
+	public int clientState() {
 		final Client client = ctx.client();
 		return client != null ? client.getClientState() : -1;
 	}
 
-	public int getCrosshairIndex() {
+	public int crosshairIndex() {
 		final Client client = ctx.client();
 		return client != null ? client.getCrosshairIndex() : -1;
 	}
 
-	public Tile getMapOffset() {
+	public Tile mapOffset() {
 		final Client client = ctx.client();
 		if (client == null) {
 			return Tile.NIL;
@@ -39,15 +39,15 @@ public class Game extends ClientAccessor {
 		return new Tile(client.getOffsetX(), client.getOffsetY());
 	}
 
-	public boolean isPointInViewport(final Point p) {
-		return isPointInViewport(p.x, p.y);
+	public boolean pointInViewport(final Point p) {
+		return pointInViewport(p.x, p.y);
 	}
 
-	public boolean isPointInViewport(final int x, final int y) {
+	public boolean pointInViewport(final int x, final int y) {
 		return x >= 4 && y >= 4 && x <= 515 && y <= 337;
 	}
 
-	public HintArrow getHintArrow() {
+	public HintArrow hintArrow() {
 		//TODO: hint arrow
 		final HintArrow r = new HintArrow();
 		final Client client = ctx.client();
@@ -62,9 +62,9 @@ public class Game extends ClientAccessor {
 		if (client == null) {
 			return new Point(-1, -1);
 		}
-		final int rel = ctx.players.local().getRelativePosition();
+		final int rel = ctx.players.local().relativePosition();
 		final int angle = client.getMinimapScale() + client.getMinimapAngle() & 0x7ff;
-		final int[] d = {tile.x, tile.y, ARRAY_SIN[angle], ARRAY_COS[angle], -1, -1};
+		final int[] d = {tile.x(), tile.y(), ARRAY_SIN[angle], ARRAY_COS[angle], -1, -1};
 		d[0] = (d[0] - client.getOffsetX()) * 4 + 2 - (rel >> 16) / 32;
 		d[1] = (d[1] - client.getOffsetY()) * 4 + 2 - (rel & 0xffff) / 32;
 		final int offset = client.getMinimapOffset();
@@ -75,7 +75,7 @@ public class Game extends ClientAccessor {
 		return new Point(643 + d[4], 83 + d[5]);
 	}
 
-	public int getHeight(final int relativeX, final int relativeZ) {
+	public int tileHeight(final int relativeX, final int relativeZ) {
 		final Client client = ctx.client();
 		if (client == null) {
 			return 0;
@@ -108,7 +108,7 @@ public class Game extends ClientAccessor {
 		if (client == null) {
 			return new Point(-1, -1);
 		}
-		return worldToScreen(relativeX, getHeight(relativeX, relativeZ), relativeZ, h);
+		return worldToScreen(relativeX, tileHeight(relativeX, relativeZ), relativeZ, h);
 	}
 
 	public Point worldToScreen(final int relativeX, final int relativeY, final int relativeZ, final int h) {

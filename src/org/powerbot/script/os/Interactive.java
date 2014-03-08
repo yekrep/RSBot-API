@@ -13,11 +13,11 @@ public abstract class Interactive extends ClientAccessor implements Targetable, 
 		super(ctx);
 	}
 
-	public boolean isInViewport() {
-		return ctx.game.isPointInViewport(getNextPoint());
+	public boolean inViewport() {
+		return ctx.game.pointInViewport(nextPoint());
 	}
 
-	public abstract Point getCenterPoint();
+	public abstract Point centerPoint();
 
 	public final boolean click(final Filter<Menu.Command> f) {
 		return ctx.mouse.apply(this, new Filter<Point>() {
@@ -40,10 +40,10 @@ public abstract class Interactive extends ClientAccessor implements Targetable, 
 			if (!ctx.mouse.apply(this, new Filter<Point>() {
 				@Override
 				public boolean accept(final Point point) {
-					return !(c.contains(point) && ctx.menu.isOpen()) && ctx.mouse.click(false) && Condition.wait(new Callable<Boolean>() {
+					return !(c.contains(point) && ctx.menu.open()) && ctx.mouse.click(false) && Condition.wait(new Callable<Boolean>() {
 						@Override
 						public Boolean call() {
-							return ctx.menu.isOpen() && !ctx.menu.getBounds().equals(c);
+							return ctx.menu.open() && !ctx.menu.bounds().equals(c);
 						}
 					}, 20, 10);
 				}
@@ -54,8 +54,8 @@ public abstract class Interactive extends ClientAccessor implements Targetable, 
 			if (ctx.menu.click(f)) {
 				return true;
 			}
-			r = ctx.menu.getBounds();
-			if (r.contains(getNextPoint())) {
+			r = ctx.menu.bounds();
+			if (r.contains(nextPoint())) {
 				ctx.menu.close();
 			}
 		}
@@ -64,7 +64,7 @@ public abstract class Interactive extends ClientAccessor implements Targetable, 
 	}
 
 	@Override
-	public boolean isValid() {
+	public boolean valid() {
 		return true;
 	}
 }

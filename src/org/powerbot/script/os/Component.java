@@ -6,6 +6,7 @@ import java.util.Arrays;
 
 import org.powerbot.bot.os.client.Client;
 import org.powerbot.bot.os.client.WidgetNode;
+import org.powerbot.bot.os.tools.HashTable;
 
 public class Component extends ClientAccessor {
 	public static final Color TARGET_STROKE_COLOR = new Color(0, 255, 0, 150);
@@ -28,30 +29,30 @@ public class Component extends ClientAccessor {
 		this.index = index;
 	}
 
-	public Widget getWidget() {
+	public Widget widget() {
 		return widget;
 	}
 
-	public int getIndex() {
+	public int index() {
 		return index;
 	}
 
-	public Point getScreenLocation() {
+	public Point screenLocation() {
 		final Client client = ctx.client();
 		final org.powerbot.bot.os.client.Widget widget = getInternal();
 		if (client == null || widget == null) {
 			return new Point(-1, -1);
 		}
-		final int uid = getParentId();
+		final int uid = parentId();
 		if (uid != -1) {
-			final Component c = ctx.widgets.get(uid >> 16).getComponent(uid & 0xffff);
-			final Point p = c.getScreenLocation();
+			final Component c = ctx.widgets.get(uid >> 16).component(uid & 0xffff);
+			final Point p = c.screenLocation();
 			if (p.x != -1 && p.y != -1) {
 				return new Point(p.x + widget.getX(), p.y + widget.getY());
 			}
 		}
 		final int[] boundsX = client.getWidgetBoundsX(), boundsY = client.getWidgetBoundsY();
-		final int bounds = getBoundsIndex();
+		final int bounds = boundsIndex();
 		if (boundsX != null && boundsY != null && bounds >= 0 && bounds < boundsX.length && bounds < boundsY.length) {
 			final int x = boundsX[bounds], y = boundsY[bounds];
 			return new Point(x - widget.getScrollX(), y - widget.getScrollY());
@@ -59,42 +60,42 @@ public class Component extends ClientAccessor {
 		return new Point(-1, -1);
 	}
 
-	public int getRelativeX() {
+	public int relativeX() {
 		final org.powerbot.bot.os.client.Widget w = getInternal();
 		return w != null ? w.getX() : -1;
 	}
 
-	public int getRelativeY() {
+	public int relativeY() {
 		final org.powerbot.bot.os.client.Widget w = getInternal();
 		return w != null ? w.getY() : -1;
 	}
 
-	public int getWidth() {
+	public int width() {
 		final org.powerbot.bot.os.client.Widget w = getInternal();
 		return w != null ? w.getWidth() : -1;
 	}
 
-	public int getHeight() {
+	public int height() {
 		final org.powerbot.bot.os.client.Widget w = getInternal();
 		return w != null ? w.getHeight() : -1;
 	}
 
-	public int getBorderThickness() {
+	public int borderThickness() {
 		final org.powerbot.bot.os.client.Widget w = getInternal();
 		return w != null ? w.getBorderThickness() : -1;
 	}
 
-	public int getType() {
+	public int type() {
 		final org.powerbot.bot.os.client.Widget w = getInternal();
 		return w != null ? w.getType() : -1;
 	}
 
-	public int getId() {
+	public int id() {
 		final org.powerbot.bot.os.client.Widget w = getInternal();
 		return w != null ? w.getId() : -1;
 	}
 
-	public int getParentId() {
+	public int parentId() {
 		final Client client = ctx.client();
 		final org.powerbot.bot.os.client.Widget w = getInternal();
 		if (client == null || w == null) {
@@ -105,7 +106,7 @@ public class Component extends ClientAccessor {
 			return p;
 		}
 
-		final int uid = getId() >>> 16;
+		final int uid = id() >>> 16;
 		for (final WidgetNode node : new HashTable<WidgetNode>(client.getWidgetTable(), WidgetNode.class)) {
 			if (uid == node.getUid()) {
 				return (int) node.getId();
@@ -114,7 +115,7 @@ public class Component extends ClientAccessor {
 		return -1;
 	}
 
-	public synchronized Component getComponent(final int index) {
+	public synchronized Component component(final int index) {
 		if (index < sparseCache.length && sparseCache[index] != null) {
 			return sparseCache[index];
 		}
@@ -125,33 +126,33 @@ public class Component extends ClientAccessor {
 		return sparseCache[index] = c;
 	}
 
-	public synchronized int getComponentCount() {
+	public synchronized int componentCount() {
 		final org.powerbot.bot.os.client.Widget w = getInternal();
 		final org.powerbot.bot.os.client.Widget[] arr = w != null ? w.getChildren() : null;
 		return arr != null ? arr.length : 0;
 	}
 
-	public int getContentType() {
+	public int contentType() {
 		final org.powerbot.bot.os.client.Widget w = getInternal();
 		return w != null ? w.getContentType() : -1;
 	}
 
-	public int getModelId() {
+	public int modelId() {
 		final org.powerbot.bot.os.client.Widget w = getInternal();
 		return w != null ? w.getModelId() : -1;
 	}
 
-	public int getModelType() {
+	public int modelType() {
 		final org.powerbot.bot.os.client.Widget w = getInternal();
 		return w != null ? w.getModelType() : -1;
 	}
 
-	public int getModelZoom() {
+	public int modelZoom() {
 		final org.powerbot.bot.os.client.Widget w = getInternal();
 		return w != null ? w.getModelZoom() : -1;
 	}
 
-	public String[] getActions() {
+	public String[] actions() {
 		final org.powerbot.bot.os.client.Widget w = getInternal();
 		final String[] arr = w != null ? w.getActions() : new String[0];
 		for (int i = 0; i < (arr != null ? arr.length : 0); i++) {
@@ -162,64 +163,64 @@ public class Component extends ClientAccessor {
 		return arr != null ? arr : new String[0];
 	}
 
-	public int getAngleX() {
+	public int angleX() {
 		final org.powerbot.bot.os.client.Widget w = getInternal();
 		return w != null ? w.getAngleX() : -1;
 	}
 
-	public int getAngleY() {
+	public int angleY() {
 		final org.powerbot.bot.os.client.Widget w = getInternal();
 		return w != null ? w.getAngleY() : -1;
 	}
 
-	public int getAngleZ() {
+	public int angleZ() {
 		final org.powerbot.bot.os.client.Widget w = getInternal();
 		return w != null ? w.getAngleZ() : -1;
 	}
 
-	public String getText() {
+	public String text() {
 		final org.powerbot.bot.os.client.Widget w = getInternal();
 		final String str = w != null ? w.getText() : "";
 		return str != null ? str : "";
 	}
 
-	public int getTextColor() {
+	public int textColor() {
 		final org.powerbot.bot.os.client.Widget w = getInternal();
 		return w != null ? w.getTextColor() : -1;
 	}
 
-	public int getScrollX() {
+	public int scrollX() {
 		final org.powerbot.bot.os.client.Widget w = getInternal();
 		return w != null ? w.getScrollX() : -1;
 	}
 
-	public int getScrollY() {
+	public int scrollY() {
 		final org.powerbot.bot.os.client.Widget w = getInternal();
 		return w != null ? w.getScrollY() : -1;
 	}
 
-	public int getScrollWidth() {
+	public int scrollWidth() {
 		final org.powerbot.bot.os.client.Widget w = getInternal();
 		return w != null ? w.getScrollWidth() : -1;
 	}
 
-	public int getScrollHeight() {
+	public int scrollHeight() {
 		final org.powerbot.bot.os.client.Widget w = getInternal();
 		return w != null ? w.getScrollHeight() : -1;
 	}
 
-	public int getBoundsIndex() {
+	public int boundsIndex() {
 		final org.powerbot.bot.os.client.Widget w = getInternal();
 		return w != null ? w.getBoundsIndex() : -1;
 	}
 
-	public int getTextureId() {
+	public int textureId() {
 		final org.powerbot.bot.os.client.Widget w = getInternal();
 		return w != null ? w.getTextureId() : -1;
 	}
 
 	private org.powerbot.bot.os.client.Widget getInternal() {
-		final int wi = widget.getIndex();
+		final int wi = widget.index();
 		if (component != null) {
 			final org.powerbot.bot.os.client.Widget _i = component.getInternal();
 			final org.powerbot.bot.os.client.Widget[] arr = _i != null ? _i.getChildren() : null;

@@ -54,7 +54,7 @@ public class GroundItems extends BasicQuery<GroundItem> {
 	}
 
 	@Override
-	public GroundItem getNil() {
+	public GroundItem nil() {
 		return new GroundItem(ctx, Tile.NIL, null);
 	}
 }

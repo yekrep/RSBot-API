@@ -40,7 +40,7 @@ public class HintArrows extends HintArrowQuery<HintArrow> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public HintArrow getNil() {
+	public HintArrow nil() {
 		return new HintArrow(ctx, null);
 	}
 }

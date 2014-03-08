@@ -17,7 +17,7 @@ public abstract class Interactive extends ClientAccessor implements Targetable, 
 	}
 
 	public boolean isInViewport() {
-		return ctx.game.isPointInViewport(getNextPoint());
+		return ctx.game.isPointInViewport(nextPoint());
 	}
 
 	/**

@@ -99,7 +99,7 @@ public class Equipment extends ItemQuery<Item> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Item getNil() {
+	public Item nil() {
 		return new Item(ctx, -1, -1, null);
 	}
 }

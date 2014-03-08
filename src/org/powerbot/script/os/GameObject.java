@@ -9,6 +9,7 @@ import org.powerbot.bot.os.client.Client;
 import org.powerbot.bot.os.client.MRUCache;
 import org.powerbot.bot.os.client.ObjectConfig;
 import org.powerbot.bot.os.client.Varbit;
+import org.powerbot.bot.os.tools.HashTable;
 
 public class GameObject extends Interactive implements Nameable, Locatable, Identifiable {
 	private static final Color TARGET_COLOR = new Color(0, 255, 0, 20);
@@ -30,7 +31,7 @@ public class GameObject extends Interactive implements Nameable, Locatable, Iden
 	}
 
 	@Override
-	public int getId() {
+	public int id() {
 		final Client client = ctx.client();
 		if (client == null) {
 			return -1;
@@ -46,10 +47,10 @@ public class GameObject extends Interactive implements Nameable, Locatable, Iden
 				final Varbit varBit = (Varbit) HashTable.lookup(cache, varbit);
 				if (varBit != null) {
 					final int mask = lookup[varBit.getEndBit() - varBit.getStartBit()];
-					index = ctx.varpbits.getVarpbit(varBit.getIndex()) >> varBit.getStartBit() & mask;
+					index = ctx.varpbits.varpbit(varBit.getIndex()) >> varBit.getStartBit() & mask;
 				}
 			} else if (si != -1) {
-				index = ctx.varpbits.getVarpbit(si);
+				index = ctx.varpbits.varpbit(si);
 			}
 			if (index >= 0) {
 				final int[] configs = config.getConfigs();
@@ -62,13 +63,13 @@ public class GameObject extends Interactive implements Nameable, Locatable, Iden
 	}
 
 	@Override
-	public String getName() {
+	public String name() {
 		final ObjectConfig config = getConfig();
 		final String str = config != null ? config.getName() : "";
 		return str != null ? str : "";
 	}
 
-	public String[] getActions() {
+	public String[] actions() {
 		final ObjectConfig config = getConfig();
 		final String[] arr = config != null ? config.getActions() : new String[0];
 		if (arr == null) {
@@ -82,17 +83,17 @@ public class GameObject extends Interactive implements Nameable, Locatable, Iden
 		return arr_;
 	}
 
-	public int getOrientation() {
+	public int orientation() {
 		final BasicObject object = this.object.get();
 		return object != null ? object.getMeta() >> 6 : 0;
 	}
 
-	public int getType() {
+	public int type() {
 		final BasicObject object = this.object.get();
 		return object != null ? object.getMeta() & 0x3f : 0;
 	}
 
-	public int getRelativePosition() {
+	public int relativePosition() {
 		final BasicObject object = this.object.get();
 		final int x, z;
 		if (object != null) {
@@ -117,7 +118,7 @@ public class GameObject extends Interactive implements Nameable, Locatable, Iden
 			return null;
 		}
 		final BasicObject object = this.object.get();
-		final int id = object != null ? (object.getUid() >> 14) & 0xffff : -1, uid = getId();
+		final int id = object != null ? (object.getUid() >> 14) & 0xffff : -1, uid = id();
 		if (id != uid) {
 			final ObjectConfig alt = (ObjectConfig) HashTable.lookup(client.getObjectConfigCache(), uid);
 			if (alt != null) {
@@ -128,9 +129,9 @@ public class GameObject extends Interactive implements Nameable, Locatable, Iden
 	}
 
 	@Override
-	public Tile getLocation() {
+	public Tile tile() {
 		final Client client = ctx.client();
-		final int r = getRelativePosition();
+		final int r = relativePosition();
 		final int rx = r >> 16, rz = r & 0xffff;
 		if (client != null && rx != 0 && rz != 0) {
 			return new Tile(client.getOffsetX() + (rx >> 7), client.getOffsetY() + (rz >> 7), client.getFloor());
@@ -139,17 +140,17 @@ public class GameObject extends Interactive implements Nameable, Locatable, Iden
 	}
 
 	@Override
-	public Point getCenterPoint() {
-		return getLocation().getMatrix(ctx).getCenterPoint();
+	public Point centerPoint() {
+		return tile().matrix(ctx).centerPoint();
 	}
 
 	@Override
-	public Point getNextPoint() {
-		return getLocation().getMatrix(ctx).getNextPoint();
+	public Point nextPoint() {
+		return tile().matrix(ctx).nextPoint();
 	}
 
 	@Override
 	public boolean contains(final Point point) {
-		return getLocation().getMatrix(ctx).contains(point);
+		return tile().matrix(ctx).contains(point);
 	}
 }

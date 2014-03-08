@@ -145,7 +145,7 @@ public class GroundItem extends Interactive implements Renderable, Identifiable,
 	}
 
 	@Override
-	public Point getNextPoint() {
+	public Point nextPoint() {
 		final Model model = getModel(getId());
 		if (model != null) {
 			return model.getNextPoint();
@@ -154,7 +154,7 @@ public class GroundItem extends Interactive implements Renderable, Identifiable,
 		if (model2 != null) {
 			return model2.getNextPoint();
 		}
-		return tile.getMatrix(ctx).getNextPoint();
+		return tile.getMatrix(ctx).nextPoint();
 	}
 
 	public Point getCenterPoint() {

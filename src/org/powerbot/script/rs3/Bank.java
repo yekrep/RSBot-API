@@ -86,7 +86,7 @@ public class Bank extends ItemQuery<Item> {
 		ctx.npcs.addTo(interactives);
 		ctx.objects.addTo(interactives);
 		final int len = interactives.size();
-		return len == 0 ? ctx.npcs.getNil() : interactives.get(Random.nextInt(0, len));
+		return len == 0 ? ctx.npcs.nil() : interactives.get(Random.nextInt(0, len));
 	}
 
 	/**
@@ -263,14 +263,14 @@ public class Bank extends ItemQuery<Item> {
 	 * Grabs the {@link Item} at the provided index.
 	 *
 	 * @param index the index of the item to grab
-	 * @return the {@link Item} at the specified index; or {@link org.powerbot.script.rs3.Bank#getNil()}
+	 * @return the {@link Item} at the specified index; or {@link org.powerbot.script.rs3.Bank#nil()}
 	 */
 	public Item getItemAt(final int index) {
 		final Component i = ctx.widgets.get(WIDGET, COMPONENT_CONTAINER_ITEMS).getChild(index);
 		if (i.getItemId() != -1) {
 			return new Item(ctx, i);
 		}
-		return getNil();
+		return nil();
 	}
 
 	/**
@@ -320,14 +320,14 @@ public class Bank extends ItemQuery<Item> {
 	 * Returns the item in the specified tab if it exists.
 	 *
 	 * @param index the tab index
-	 * @return the {@link Item} displayed in the tab; otherwise {@link org.powerbot.script.rs3.Bank#getNil()}
+	 * @return the {@link Item} displayed in the tab; otherwise {@link org.powerbot.script.rs3.Bank#nil()}
 	 */
 	public Item getTabItem(final int index) {
 		final Component c = ctx.widgets.get(WIDGET, 37 - (index * 2));
 		if (c != null && c.isValid()) {
 			return new Item(ctx, c);
 		}
-		return getNil();
+		return nil();
 	}
 
 	/**
@@ -540,7 +540,7 @@ public class Bank extends ItemQuery<Item> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Item getNil() {
+	public Item nil() {
 		return new Item(ctx, -1, -1, null);
 	}
 

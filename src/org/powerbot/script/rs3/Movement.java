@@ -85,7 +85,7 @@ public class Movement extends ClientAccessor {
 			private final TileMatrix tile = t.getMatrix(ctx);
 
 			@Override
-			public Point getNextPoint() {
+			public Point nextPoint() {
 				return tile.getMapPoint();
 			}
 

@@ -7,6 +7,7 @@ import org.powerbot.bot.os.client.Client;
 import org.powerbot.bot.os.client.MRUCache;
 import org.powerbot.bot.os.client.NpcConfig;
 import org.powerbot.bot.os.client.Varbit;
+import org.powerbot.bot.os.tools.HashTable;
 
 public class Npc extends Actor implements Identifiable {
 	public static final Color TARGET_STROKE_COLOR = new Color(255, 0, 255, 15);
@@ -33,20 +34,20 @@ public class Npc extends Actor implements Identifiable {
 	}
 
 	@Override
-	public String getName() {
+	public String name() {
 		final NpcConfig config = getConfig();
 		final String str = config != null ? config.getName() : "";
 		return str != null ? str : "";
 	}
 
 	@Override
-	public int getCombatLevel() {
+	public int combatLevel() {
 		final NpcConfig config = getConfig();
 		return config != null ? config.getLevel() : -1;
 	}
 
 	@Override
-	public int getId() {
+	public int id() {
 		final Client client = ctx.client();
 		if (client == null) {
 			return -1;
@@ -61,10 +62,10 @@ public class Npc extends Actor implements Identifiable {
 				final Varbit varBit = (Varbit) HashTable.lookup(cache, varbit);
 				if (varBit != null) {
 					final int mask = lookup[varBit.getEndBit() - varBit.getStartBit()];
-					index = ctx.varpbits.getVarpbit(varBit.getIndex()) >> varBit.getStartBit() & mask;
+					index = ctx.varpbits.varpbit(varBit.getIndex()) >> varBit.getStartBit() & mask;
 				}
 			} else if (si != -1) {
-				index = ctx.varpbits.getVarpbit(si);
+				index = ctx.varpbits.varpbit(si);
 			}
 			if (index >= 0) {
 				final int[] configs = config.getConfigs();
@@ -77,7 +78,7 @@ public class Npc extends Actor implements Identifiable {
 		return -1;
 	}
 
-	public String[] getActions() {
+	public String[] actions() {
 		final NpcConfig config = getConfig();
 		final String[] arr = config != null ? config.getActions() : new String[0];
 		if (arr == null) {
@@ -98,7 +99,7 @@ public class Npc extends Actor implements Identifiable {
 		if (client == null || config == null) {
 			return null;
 		}
-		final int id = config.getId(), uid = getId();
+		final int id = config.getId(), uid = id();
 		if (id != uid) {
 			final NpcConfig c = (NpcConfig) HashTable.lookup(client.getNpcConfigCache(), uid);
 			if (c != null) {
@@ -109,7 +110,7 @@ public class Npc extends Actor implements Identifiable {
 	}
 
 	@Override
-	public boolean isValid() {
+	public boolean valid() {
 		final Client client = ctx.client();
 		final org.powerbot.bot.os.client.Npc npc = this.npc.get();
 		if (client == null || npc == null) {
@@ -127,6 +128,6 @@ public class Npc extends Actor implements Identifiable {
 	@Override
 	public String toString() {
 		return String.format("%s[id=%d/name=%s/level=%d]",
-				Npc.class.getName(), getId(), getName(), getCombatLevel());
+				Npc.class.getName(), id(), name(), combatLevel());
 	}
 }

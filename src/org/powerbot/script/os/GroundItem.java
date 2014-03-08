@@ -18,38 +18,38 @@ public class GroundItem extends Interactive implements Nameable, Locatable, Iden
 	}
 
 	@Override
-	public int getId() {
+	public int id() {
 		final ItemNode node = this.node.get();
 		return node != null ? node.getItemId() : -1;
 	}
 
-	public int getStackSize() {
+	public int stackSize() {
 		final ItemNode node = this.node.get();
 		return node != null ? node.getStackSize() : -1;
 	}
 
 	@Override
-	public String getName() {
+	public String name() {
 		return "";//TODO
 	}
 
 	@Override
-	public Point getCenterPoint() {
-		return tile.getMatrix(ctx).getCenterPoint();
+	public Point centerPoint() {
+		return tile.matrix(ctx).centerPoint();
 	}
 
 	@Override
-	public Point getNextPoint() {
-		return tile.getMatrix(ctx).getNextPoint();
+	public Point nextPoint() {
+		return tile.matrix(ctx).nextPoint();
 	}
 
 	@Override
 	public boolean contains(final Point point) {
-		return tile.getMatrix(ctx).contains(point);
+		return tile.matrix(ctx).contains(point);
 	}
 
 	@Override
-	public Tile getLocation() {
+	public Tile tile() {
 		return tile;
 	}
 }

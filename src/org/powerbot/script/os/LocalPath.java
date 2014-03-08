@@ -26,27 +26,27 @@ public class LocalPath extends Path {
 
 	@Override
 	public boolean traverse(final EnumSet<TraversalOption> options) {
-		return isValid() && tilePath.traverse(options);
+		return valid() && tilePath.traverse(options);
 	}
 
 	@Override
 	public Tile next() {
-		return isValid() ? tilePath.next() : Tile.NIL;
+		return valid() ? tilePath.next() : Tile.NIL;
 	}
 
 	@Override
 	public Tile start() {
-		return ctx.players.local().getLocation();
+		return ctx.players.local().tile();
 	}
 
 	@Override
 	public Tile end() {
-		return destination.getLocation();
+		return destination.tile();
 	}
 
 	@Override
-	public boolean isValid() {
-		Tile end = destination.getLocation();
+	public boolean valid() {
+		Tile end = destination.tile();
 		if (end == null || end == Tile.NIL) {
 			return false;
 		}
@@ -54,20 +54,20 @@ public class LocalPath extends Path {
 			return true;
 		}
 		tile = end;
-		Tile start = ctx.players.local().getLocation();
-		final Tile base = ctx.game.getMapOffset();
+		Tile start = ctx.players.local().tile();
+		final Tile base = ctx.game.mapOffset();
 		if (base == Tile.NIL || start == Tile.NIL || end == Tile.NIL) {
 			return false;
 		}
-		start = start.derive(-base.x, -base.y);
-		end = end.derive(-base.x, -base.y);
+		start = start.derive(-base.x(), -base.y());
+		end = end.derive(-base.x(), -base.y());
 
 		final Graph graph = getGraph();
 		final Node[] path;
 		final Node nodeStart, nodeStop;
 		if (graph != null &&
-				(nodeStart = graph.getNode(start.x, start.y)) != null &&
-				(nodeStop = graph.getNode(end.x, end.y)) != null) {
+				(nodeStart = graph.getNode(start.x(), start.y())) != null &&
+				(nodeStop = graph.getNode(end.x(), end.y())) != null) {
 			dijkstra(graph, nodeStart, nodeStop);
 			path = follow(nodeStop);
 		} else {

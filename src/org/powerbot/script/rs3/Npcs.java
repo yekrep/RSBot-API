@@ -57,7 +57,7 @@ public class Npcs extends MobileIdNameQuery<Npc> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Npc getNil() {
+	public Npc nil() {
 		return new Npc(ctx, null);
 	}
 }

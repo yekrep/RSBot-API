@@ -11,31 +11,31 @@ public abstract class Actor extends Interactive implements Locatable, Nameable, 
 
 	protected abstract org.powerbot.bot.os.client.Actor getActor();
 
-	public abstract String getName();
+	public abstract String name();
 
-	public abstract int getCombatLevel();
+	public abstract int combatLevel();
 
-	public int getAnimation() {
+	public int animation() {
 		final org.powerbot.bot.os.client.Actor actor = getActor();
 		return actor != null ? actor.getAnimation() : -1;
 	}
 
-	public int getSpeed() {
+	public int speed() {
 		final org.powerbot.bot.os.client.Actor actor = getActor();
 		return actor != null ? actor.getSpeed() : -1;
 	}
 
-	public String getOverheadMessage() {
+	public String overheadMessage() {
 		final org.powerbot.bot.os.client.Actor actor = getActor();
 		final String str = actor != null ? actor.getOverheadMessage() : "";
 		return str != null ? str : "";
 	}
 
-	public boolean isInMotion() {
-		return getSpeed() > 0;
+	public boolean inMotion() {
+		return speed() > 0;
 	}
 
-	public int getRelativePosition() {
+	public int relativePosition() {
 		final org.powerbot.bot.os.client.Actor actor = getActor();
 		final int x, z;
 		if (actor != null) {
@@ -48,7 +48,7 @@ public abstract class Actor extends Interactive implements Locatable, Nameable, 
 	}
 
 	@Override
-	public Tile getLocation() {
+	public Tile tile() {
 		final Client client = ctx.client();
 		final org.powerbot.bot.os.client.Actor actor = getActor();
 		if (client != null && actor != null) {
@@ -58,23 +58,23 @@ public abstract class Actor extends Interactive implements Locatable, Nameable, 
 	}
 
 	@Override
-	public Point getNextPoint() {
+	public Point nextPoint() {
 		final org.powerbot.bot.os.client.Actor actor = getActor();
 		if (actor == null) {
 			return new Point(-1, -1);
 		}
 		final ActorCuboid cuboid = new ActorCuboid(ctx, actor);
-		return cuboid.getNextPoint();
+		return cuboid.nextPoint();
 	}
 
 	@Override
-	public Point getCenterPoint() {
+	public Point centerPoint() {
 		final org.powerbot.bot.os.client.Actor actor = getActor();
 		if (actor == null) {
 			return new Point(-1, -1);
 		}
 		final ActorCuboid cuboid = new ActorCuboid(ctx, actor);
-		return cuboid.getCenterPoint();
+		return cuboid.centerPoint();
 	}
 
 	@Override

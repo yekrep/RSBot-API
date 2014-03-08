@@ -360,7 +360,7 @@ public class Component extends Interactive implements Drawable, Displayable {
 	}
 
 	@Override
-	public Point getNextPoint() {
+	public Point nextPoint() {
 		final Rectangle interact = getInteractRectangle();
 		final int x = interact.x, y = interact.y;
 		final int w = interact.width, h = interact.height;

@@ -14,11 +14,11 @@ public class Widget extends ClientAccessor {
 		sparseCache = new Component[0];
 	}
 
-	public int getIndex() {
+	public int index() {
 		return index;
 	}
 
-	public synchronized Component getComponent(final int index) {
+	public synchronized Component component(final int index) {
 		if (index < sparseCache.length && sparseCache[index] != null) {
 			return sparseCache[index];
 		}
@@ -29,7 +29,7 @@ public class Widget extends ClientAccessor {
 		return sparseCache[index] = c;
 	}
 
-	public int getComponentCount() {
+	public int componentCount() {
 		final Client client = ctx.client();
 		final org.powerbot.bot.os.client.Widget[][] arr = client != null ? client.getWidgets() : null;
 		if (arr != null && index < arr.length) {

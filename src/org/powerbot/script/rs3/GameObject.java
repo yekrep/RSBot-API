@@ -138,7 +138,7 @@ public class GameObject extends Interactive implements Renderable, Locatable, Na
 	}
 
 	@Override
-	public Point getNextPoint() {
+	public Point nextPoint() {
 		final Model model = getModel();
 		if (model != null) {
 			return model.getNextPoint();
@@ -147,7 +147,7 @@ public class GameObject extends Interactive implements Renderable, Locatable, Na
 		if (model2 != null) {
 			return model2.getNextPoint();
 		}
-		return getLocation().getMatrix(ctx).getNextPoint();
+		return getLocation().getMatrix(ctx).nextPoint();
 	}
 
 	public Point getCenterPoint() {

@@ -41,7 +41,7 @@ public class Players extends PlayerQuery<Player> {
 	}
 
 	@Override
-	public Player getNil() {
+	public Player nil() {
 		return new Player(ctx, null);
 	}
 }

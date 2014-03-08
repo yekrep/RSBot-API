@@ -4,9 +4,9 @@ import org.powerbot.script.Random;
 
 public class Tile implements Locatable {
 	public static final Tile NIL = new Tile(-1, -1, -1);
-	public final int x;
-	public final int y;
-	public final int floor;
+	private final int x;
+	private final int y;
+	private final int floor;
 
 	public Tile(final int x, final int y) {
 		this(x, y, 0);
@@ -18,15 +18,15 @@ public class Tile implements Locatable {
 		this.floor = floor;
 	}
 
-	public int getX() {
+	public int x() {
 		return x;
 	}
 
-	public int getY() {
+	public int y() {
 		return y;
 	}
 
-	public int getFloor() {
+	public int floor() {
 		return floor;
 	}
 
@@ -36,7 +36,7 @@ public class Tile implements Locatable {
 	 * @param ctx The context to retrieve the matrix in.
 	 * @return the {@link TileMatrix} of this {@link Tile} with the given context
 	 */
-	public TileMatrix getMatrix(final ClientContext ctx) {
+	public TileMatrix matrix(final ClientContext ctx) {
 		return new TileMatrix(ctx, this);
 	}
 
@@ -60,7 +60,7 @@ public class Tile implements Locatable {
 	}
 
 	public double distanceTo(final Locatable l) {
-		final Tile t = l != null ? l.getLocation() : null;
+		final Tile t = l != null ? l.tile() : null;
 		if (t == null || floor != t.floor || floor == NIL.floor) {
 			return Double.POSITIVE_INFINITY;
 		}
@@ -88,7 +88,7 @@ public class Tile implements Locatable {
 	}
 
 	@Override
-	public Tile getLocation() {
+	public Tile tile() {
 		return this;
 	}
 }

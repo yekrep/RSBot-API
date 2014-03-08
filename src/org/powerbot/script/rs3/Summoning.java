@@ -185,7 +185,7 @@ public class Summoning extends ClientAccessor {
 	 */
 	public Npc getNpc() {
 		if (!isFamiliarSummoned()) {
-			return ctx.npcs.getNil();
+			return ctx.npcs.nil();
 		}
 		final Player local = ctx.players.local();
 		return ctx.npcs.select().select(new Filter<Npc>() {

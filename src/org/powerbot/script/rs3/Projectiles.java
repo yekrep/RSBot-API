@@ -45,7 +45,7 @@ public class Projectiles extends IdQuery<Projectile> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Projectile getNil() {
+	public Projectile nil() {
 		return new Projectile(ctx, null);
 	}
 }

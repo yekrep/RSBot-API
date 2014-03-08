@@ -34,7 +34,7 @@ public class Chat extends TextQuery<ChatOption> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public ChatOption getNil() {
+	public ChatOption nil() {
 		return new ChatOption(ctx, -1, null);
 	}
 

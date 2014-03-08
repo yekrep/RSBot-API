@@ -12,18 +12,18 @@ abstract class Cuboid extends Interactive {
 		super(ctx);
 	}
 
-	public abstract int getX();
+	public abstract int x();
 
-	public abstract int getZ();
+	public abstract int z();
 
-	public abstract int getHeight();
+	public abstract int height();
 
-	public abstract Rectangle getBounds();
+	public abstract Rectangle bounds();
 
 	protected Area getCuboid(final int d) {
-		final Rectangle rectangle = getBounds();
-		final int x = getX(), z = getZ(), h = getHeight();
-		final int y = ctx.game.getHeight(x, z);
+		final Rectangle rectangle = bounds();
+		final int x = x(), z = z(), h = height();
+		final int y = ctx.game.tileHeight(x, z);
 		final Point p = ctx.game.worldToScreen(x, y, z, h);
 		if (rectangle.x == -1 || rectangle.y == -1 || x == -1 || z == -1 ||
 				p.x == -1 || p.y == -1) {
@@ -44,8 +44,8 @@ abstract class Cuboid extends Interactive {
 		final Point o2 = ctx.game.worldToScreen(x - d - gox1, y, z + d + goy2, h);
 		final Point o3 = ctx.game.worldToScreen(x + d + gox2, y, z + d + goy2, h);
 		final Point o4 = ctx.game.worldToScreen(x + d + gox2, y, z - d - goy1, h);
-		if (!(ctx.game.isPointInViewport(g1) && ctx.game.isPointInViewport(g2) && ctx.game.isPointInViewport(g3) && ctx.game.isPointInViewport(g4)) ||
-				!(ctx.game.isPointInViewport(o1) && ctx.game.isPointInViewport(o2) && ctx.game.isPointInViewport(o3) && ctx.game.isPointInViewport(o4))) {
+		if (!(ctx.game.pointInViewport(g1) && ctx.game.pointInViewport(g2) && ctx.game.pointInViewport(g3) && ctx.game.pointInViewport(g4)) ||
+				!(ctx.game.pointInViewport(o1) && ctx.game.pointInViewport(o2) && ctx.game.pointInViewport(o3) && ctx.game.pointInViewport(o4))) {
 			return null;
 		}
 		final Polygon g = new Polygon(new int[]{g1.x, g2.x, g3.x, g4.x}, new int[]{g1.y, g2.y, g3.y, g4.y}, 4);
@@ -63,7 +63,7 @@ abstract class Cuboid extends Interactive {
 	}
 
 	@Override
-	public Point getNextPoint() {
+	public Point nextPoint() {
 		final Area area = getCuboid(48), inner = getCuboid(32);
 		if (area == null || inner == null) {
 			return new Point(-1, -1);
@@ -73,7 +73,7 @@ abstract class Cuboid extends Interactive {
 	}
 
 	@Override
-	public Point getCenterPoint() {
+	public Point centerPoint() {
 		final Area area = getCuboid(48);
 		if (area != null) {
 			final Rectangle rectangle = area.getBounds();
@@ -89,7 +89,7 @@ abstract class Cuboid extends Interactive {
 	}
 
 	@Override
-	public boolean isValid() {
+	public boolean valid() {
 		return getCuboid(64) != null;
 	}
 }

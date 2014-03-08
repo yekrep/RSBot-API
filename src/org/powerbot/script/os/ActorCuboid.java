@@ -14,26 +14,26 @@ public class ActorCuboid extends Cuboid {
 	}
 
 	@Override
-	public int getX() {
+	public int x() {
 		final Actor actor = this.actor.get();
 		return actor != null ? actor.getX() : -1;
 	}
 
 	@Override
-	public int getZ() {
+	public int z() {
 		final Actor actor = this.actor.get();
 		return actor != null ? actor.getZ() : -1;
 	}
 
 	@Override
-	public int getHeight() {
+	public int height() {
 		final Actor actor = this.actor.get();
 		return actor != null ? actor.getHeight() : -1;
 	}
 
 	@Override
-	public Rectangle getBounds() {
-		final int x = getX(), z = getZ();
+	public Rectangle bounds() {
+		final int x = x(), z = z();
 		if (x == -1 || z == -1) {
 			return new Rectangle(-1, -1, -1, -1);
 		}

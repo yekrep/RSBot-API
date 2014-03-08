@@ -7,7 +7,7 @@ public class Varpbits extends ClientAccessor {
 		super(ctx);
 	}
 
-	public int[] getArray() {
+	public int[] array() {
 		final int[] c = new int[0];
 		final Client client = ctx.client();
 		if (client == null) {
@@ -17,8 +17,8 @@ public class Varpbits extends ClientAccessor {
 		return varpbits != null ? varpbits.clone() : c;
 	}
 
-	public int getVarpbit(final int index) {
-		final int[] arr = getArray();
+	public int varpbit(final int index) {
+		final int[] arr = array();
 		return index > -1 && index < arr.length ? arr[index] : -1;
 	}
 }

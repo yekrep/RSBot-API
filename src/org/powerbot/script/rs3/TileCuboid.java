@@ -72,7 +72,7 @@ public class TileCuboid extends Interactive {
 	}
 
 	@Override
-	public Point getNextPoint() {
+	public Point nextPoint() {
 		final Area area = cuboid(256), inner = cuboid(128);
 		if (area == null || inner == null) {
 			return new Point(-1, -1);

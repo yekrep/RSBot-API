@@ -5,7 +5,7 @@ import java.util.Comparator;
 import org.powerbot.script.Filter;
 
 public interface Locatable {
-	public Tile getLocation();
+	public Tile tile();
 
 	public interface Query<T> {
 		public T at(Locatable t);
@@ -28,8 +28,8 @@ public interface Locatable {
 
 		@Override
 		public boolean accept(final Locatable l) {
-			final Tile tile = l != null ? l.getLocation() : null;
-			final Tile target = this.target.getLocation();
+			final Tile tile = l != null ? l.tile() : null;
+			final Tile target = this.target.tile();
 			return tile != null && target != null && target.equals(tile);
 		}
 	}
@@ -45,8 +45,8 @@ public interface Locatable {
 
 		@Override
 		public boolean accept(final Locatable l) {
-			final Tile tile = l != null ? l.getLocation() : null;
-			final Tile target = this.target.getLocation();
+			final Tile tile = l != null ? l.tile() : null;
+			final Tile target = this.target.tile();
 			return tile != null && target != null && tile.distanceTo(target) <= distance;
 		}
 	}
@@ -60,9 +60,9 @@ public interface Locatable {
 
 		@Override
 		public int compare(final Locatable o1, final Locatable o2) {
-			final Tile target = this.target.getLocation();
-			final Tile t1 = o1.getLocation();
-			final Tile t2 = o2.getLocation();
+			final Tile target = this.target.tile();
+			final Tile t1 = o1.tile();
+			final Tile t2 = o2.tile();
 			if (target == null || t1 == null || t2 == null) {
 				return Integer.MAX_VALUE;
 			}

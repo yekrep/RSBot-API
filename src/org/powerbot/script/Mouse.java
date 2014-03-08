@@ -109,7 +109,7 @@ public class Mouse extends org.powerbot.script.ClientAccessor {
 		return apply(
 				new Targetable() {
 					@Override
-					public Point getNextPoint() {
+					public Point nextPoint() {
 						return p;
 					}
 
@@ -133,7 +133,7 @@ public class Mouse extends org.powerbot.script.ClientAccessor {
 		for (int i = 0; i < STANDARD_ATTEMPTS; i++) {
 			final Point mp = getLocation();
 			final Vector3 start = new Vector3(mp.x, mp.y, 255);
-			final Point p = targetable.getNextPoint();
+			final Point p = targetable.nextPoint();
 			if (p.x == -1 || p.y == -1) {
 				continue;
 			}

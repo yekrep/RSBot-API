@@ -22,11 +22,11 @@ public class Players extends PlayerQuery<Player> {
 	/**
 	 * Returns the game's local player (your player).
 	 *
-	 * @return the local {@link Player} or the value of {@link #getNil()}
+	 * @return the local {@link Player} or the value of {@link #nil()}
 	 */
 	public Player local() {
 		final Client client = ctx.client();
-		return client == null ? getNil() : new Player(ctx, client.getMyRSPlayer());
+		return client == null ? nil() : new Player(ctx, client.getMyRSPlayer());
 	}
 
 	/**
@@ -63,7 +63,7 @@ public class Players extends PlayerQuery<Player> {
 	}
 
 	@Override
-	public Player getNil() {
+	public Player nil() {
 		return new Player(ctx, null);
 	}
 }

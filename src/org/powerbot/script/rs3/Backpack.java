@@ -94,7 +94,7 @@ public class Backpack extends ItemQuery<Item> implements Resizable {
 			if (i < data.length) {
 				items[i] = new Item(ctx, data[i][0], data[i][1], comp);
 			} else {
-				items[i] = getNil();
+				items[i] = nil();
 			}
 		}
 		return items;
@@ -112,7 +112,7 @@ public class Backpack extends ItemQuery<Item> implements Resizable {
 		if (index >= 0 && index < 28 && index < data.length && data[index][0] != -1) {
 			return new Item(ctx, data[index][0], data[index][1], inv.getChild(index));
 		}
-		return getNil();
+		return nil();
 	}
 
 	/**
@@ -202,7 +202,7 @@ public class Backpack extends ItemQuery<Item> implements Resizable {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Item getNil() {
+	public Item nil() {
 		return new Item(ctx, -1, -1, null);
 	}
 }

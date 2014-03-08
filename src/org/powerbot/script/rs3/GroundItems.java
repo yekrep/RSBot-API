@@ -60,7 +60,7 @@ public class GroundItems extends GroundItemQuery<GroundItem> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public GroundItem getNil() {
+	public GroundItem nil() {
 		return new GroundItem(ctx, Tile.NIL, null);
 	}
 }

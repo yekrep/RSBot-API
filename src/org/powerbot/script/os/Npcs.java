@@ -32,7 +32,7 @@ public class Npcs extends BasicQuery<Npc> {
 	}
 
 	@Override
-	public Npc getNil() {
+	public Npc nil() {
 		return new Npc(ctx, null);
 	}
 }

@@ -16,12 +16,12 @@ public class Movement extends ClientAccessor {
 		if (dX == -1 || dY == -1) {
 			return Tile.NIL;
 		}
-		return ctx.game.getMapOffset().derive(dX, dY);
+		return ctx.game.mapOffset().derive(dX, dY);
 	}
 
 	public boolean stepTowards(final Locatable locatable) {
-		Tile loc = locatable.getLocation();
-		if (!loc.getMatrix(ctx).isOnMap()) {
+		Tile loc = locatable.tile();
+		if (!loc.matrix(ctx).onMap()) {
 			loc = getClosestOnMap(loc);
 		}
 		final Tile t = loc;
@@ -29,26 +29,26 @@ public class Movement extends ClientAccessor {
 	}
 
 	public Tile getClosestOnMap(final Locatable locatable) {
-		final Tile local = ctx.players.local().getLocation();
-		final Tile tile = locatable.getLocation();
+		final Tile local = ctx.players.local().tile();
+		final Tile tile = locatable.tile();
 		if (local == Tile.NIL || tile == Tile.NIL) {
 			return Tile.NIL;
 		}
-		if (tile.getMatrix(ctx).isOnMap()) {
+		if (tile.matrix(ctx).onMap()) {
 			return tile;
 		}
-		final int x2 = local.x;
-		final int y2 = local.y;
-		int x1 = tile.x;
-		int y1 = tile.y;
+		final int x2 = local.x();
+		final int y2 = local.y();
+		int x1 = tile.x();
+		int y1 = tile.y();
 		final int dx = Math.abs(x2 - x1);
 		final int dy = Math.abs(y2 - y1);
 		final int sx = (x1 < x2) ? 1 : -1;
 		final int sy = (y1 < y2) ? 1 : -1;
 		int off = dx - dy;
 		for (; ; ) {
-			final Tile t = new Tile(x1, y1, local.floor);
-			if (t.getMatrix(ctx).isOnMap()) {
+			final Tile t = new Tile(x1, y1, local.floor());
+			if (t.matrix(ctx).onMap()) {
 				return t;
 			}
 			if (x1 == x2 && y1 == y2) {

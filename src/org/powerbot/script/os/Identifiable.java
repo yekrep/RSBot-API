@@ -3,7 +3,7 @@ package org.powerbot.script.os;
 import org.powerbot.script.Filter;
 
 public interface Identifiable {
-	public int getId();
+	public int id();
 
 	public interface Query<T> {
 		public T id(int... ids);
@@ -23,13 +23,13 @@ public interface Identifiable {
 		public Matcher(final Identifiable... ids) {
 			this.ids = new int[ids.length];
 			for (int i = 0; i < ids.length; i++) {
-				this.ids[i] = ids[i].getId();
+				this.ids[i] = ids[i].id();
 			}
 		}
 
 		@Override
 		public boolean accept(final Identifiable i) {
-			final int x = i != null ? i.getId() : -1;
+			final int x = i != null ? i.id() : -1;
 			if (x == -1) {
 				return false;
 			}

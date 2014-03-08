@@ -260,7 +260,7 @@ public class DepositBox extends ItemQuery<Item> {
 	}
 
 	@Override
-	public Item getNil() {
+	public Item nil() {
 		return new Item(ctx, -1, -1, null);
 	}
 

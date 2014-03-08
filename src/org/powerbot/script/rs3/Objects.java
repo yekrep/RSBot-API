@@ -100,7 +100,7 @@ public class Objects extends MobileIdNameQuery<GameObject> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public GameObject getNil() {
+	public GameObject nil() {
 		return new GameObject(ctx, null, GameObject.Type.UNKNOWN);
 	}
 
