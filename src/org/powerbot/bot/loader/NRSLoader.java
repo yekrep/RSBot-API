@@ -156,6 +156,13 @@ public class NRSLoader implements Runnable {
 		throw new IOException(new IllegalStateException());
 	}
 
+	private HttpURLConnection getBucketConnection() throws IOException {
+		final HttpURLConnection b = HttpUtils.getHttpConnection(new URL(String.format(Configuration.URLs.CLIENTBUCKET, packHash)));
+		b.addRequestProperty(String.format("x-%s-cv", Configuration.NAME.toLowerCase()), "201");
+		b.addRequestProperty(String.format("x-%s-gv", Configuration.NAME.toLowerCase()), "6");
+		return b;
+	}
+
 	public void upload(final String packHash) throws IOException, PendingException {
 		final int delay = 1000 * 60 * 3 + 30;
 		final String pre = "loader/spec/" + packHash;
@@ -175,9 +182,7 @@ public class NRSLoader implements Runnable {
 		System.arraycopy(md.digest(), 0, b, 0, b.length);
 		final SecretKey key = new SecretKeySpec(b, 0, b.length, keyAlgo);
 
-		final HttpURLConnection bucket = HttpUtils.getHttpConnection(new URL(String.format(Configuration.URLs.CLIENTBUCKET, packHash)));
-		bucket.addRequestProperty(String.format("x-%s-cv", Configuration.NAME.toLowerCase()), "201");
-		bucket.addRequestProperty(String.format("x-%s-gv", Configuration.NAME.toLowerCase()), "6");
+		final HttpURLConnection bucket = getBucketConnection();
 		bucket.setInstanceFollowRedirects(false);
 		bucket.connect();
 		r = bucket.getResponseCode();
@@ -203,7 +208,7 @@ public class NRSLoader implements Runnable {
 			put.disconnect();
 			Tracker.getInstance().trackPage(pre + "/bucket/upload", Integer.toString(r));
 			if (r == HttpURLConnection.HTTP_OK) {
-				final HttpURLConnection bucket_notify = HttpUtils.getHttpConnection(new URL(String.format(Configuration.URLs.CLIENTBUCKET, packHash)));
+				final HttpURLConnection bucket_notify = getBucketConnection();
 				bucket_notify.setRequestMethod("PUT");
 				bucket_notify.connect();
 				final int r_notify = bucket_notify.getResponseCode();
