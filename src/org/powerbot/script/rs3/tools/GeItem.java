@@ -1,4 +1,4 @@
-package org.powerbot.script.util;
+package org.powerbot.script.rs3.tools;
 
 import java.io.IOException;
 import java.net.URL;

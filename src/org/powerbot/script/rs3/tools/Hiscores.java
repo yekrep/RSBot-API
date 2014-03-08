@@ -1,4 +1,4 @@
-package org.powerbot.script.util;
+package org.powerbot.script.rs3.tools;
 
 import java.io.IOException;
 import java.net.URL;
@@ -177,7 +177,7 @@ public class Hiscores {
 	}
 
 	/**
-	 * Returns the overall total experience points, which may be truncated in {@link #getSkill(org.powerbot.script.util.Hiscores.Stats)}.
+	 * Returns the overall total experience points, which may be truncated in {@link #getSkill(Hiscores.Stats)}.
 	 *
 	 * @return the overal total experience points
 	 */
