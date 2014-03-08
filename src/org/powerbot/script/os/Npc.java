@@ -6,7 +6,7 @@ import java.lang.ref.SoftReference;
 import org.powerbot.bot.os.client.Client;
 import org.powerbot.bot.os.client.MRUCache;
 import org.powerbot.bot.os.client.NpcConfig;
-import org.powerbot.bot.os.client.VarBit;
+import org.powerbot.bot.os.client.Varbit;
 
 public class Npc extends Actor implements Identifiable {
 	public static final Color TARGET_STROKE_COLOR = new Color(255, 0, 255, 15);
@@ -58,7 +58,7 @@ public class Npc extends Actor implements Identifiable {
 			int index = -1;
 			if (varbit != -1) {
 				final MRUCache cache = client.getVarbitCache();
-				final VarBit varBit = (VarBit) HashTable.lookup(cache, varbit);
+				final Varbit varBit = (Varbit) HashTable.lookup(cache, varbit);
 				if (varBit != null) {
 					final int mask = lookup[varBit.getEndBit() - varBit.getStartBit()];
 					index = ctx.varpbits.getVarpbit(varBit.getIndex()) >> varBit.getStartBit() & mask;

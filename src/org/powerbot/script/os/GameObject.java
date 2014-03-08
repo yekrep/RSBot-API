@@ -8,7 +8,7 @@ import org.powerbot.bot.os.client.BasicObject;
 import org.powerbot.bot.os.client.Client;
 import org.powerbot.bot.os.client.MRUCache;
 import org.powerbot.bot.os.client.ObjectConfig;
-import org.powerbot.bot.os.client.VarBit;
+import org.powerbot.bot.os.client.Varbit;
 
 public class GameObject extends Interactive implements Nameable, Locatable, Identifiable {
 	private static final Color TARGET_COLOR = new Color(0, 255, 0, 20);
@@ -43,7 +43,7 @@ public class GameObject extends Interactive implements Nameable, Locatable, Iden
 			final int varbit = config.getVarBit(), si = config.getSettingsIndex();
 			if (varbit != -1) {
 				final MRUCache cache = client.getVarbitCache();
-				final VarBit varBit = (VarBit) HashTable.lookup(cache, varbit);
+				final Varbit varBit = (Varbit) HashTable.lookup(cache, varbit);
 				if (varBit != null) {
 					final int mask = lookup[varBit.getEndBit() - varBit.getStartBit()];
 					index = ctx.varpbits.getVarpbit(varBit.getIndex()) >> varBit.getStartBit() & mask;

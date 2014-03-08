@@ -1,6 +1,6 @@
 package org.powerbot.bot.os.client;
 
-public interface VarBit extends Node {
+public interface Varbit extends Node {
 	public int getIndex();
 
 	public int getStartBit();
