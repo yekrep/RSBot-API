@@ -7,7 +7,6 @@ import org.powerbot.bot.os.client.Node;
 import org.powerbot.bot.os.client.NodeDeque;
 
 public class NodeQueue {
-
 	public static <E extends Node> List<E> get(final NodeDeque q, final Class<E> type) {
 		final List<E> list = new ArrayList<E>();
 		Node e;

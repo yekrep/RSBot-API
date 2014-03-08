@@ -8,4 +8,10 @@ public interface NpcConfig {
 	public String getName();
 
 	public String[] getActions();
+
+	public int[] getConfigs();
+
+	public int getSettingsIndex();
+
+	public int getVarBit();
 }

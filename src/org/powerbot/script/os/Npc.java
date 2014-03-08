@@ -4,9 +4,22 @@ import java.awt.Color;
 import java.lang.ref.SoftReference;
 
 import org.powerbot.bot.os.client.Client;
+import org.powerbot.bot.os.client.MRUCache;
 import org.powerbot.bot.os.client.NpcConfig;
+import org.powerbot.bot.os.client.VarBit;
 
 public class Npc extends Actor implements Identifiable {
+	private static final int[] lookup;
+
+	static {
+		lookup = new int[32];
+		int i = 2;
+		for (int j = 0; j < 32; j++) {
+			lookup[j] = i - 1;
+			i += i;
+		}
+	}
+
 	public static final Color TARGET_STROKE_COLOR = new Color(255, 0, 255, 15);
 	private final SoftReference<org.powerbot.bot.os.client.Npc> npc;
 
@@ -35,8 +48,36 @@ public class Npc extends Actor implements Identifiable {
 
 	@Override
 	public int getId() {
-		final NpcConfig config = getConfig();
-		return config != null ? config.getId() : -1;
+		final Client client = ctx.client();
+		if (client == null) {
+			return -1;
+		}
+		final org.powerbot.bot.os.client.Npc npc = this.npc.get();
+		final NpcConfig config = npc != null ? npc.getConfig() : null;
+		if (config != null) {
+			final int varbit = config.getVarBit(), si = config.getSettingsIndex();
+			int index = -1;
+			if (varbit != -1) {
+				final MRUCache cache = client.getVarBitMRUCache();
+				for (final VarBit varBit : new HashTable<VarBit>(cache != null ? cache.getHashTable() : null, VarBit.class)) {
+					if (varBit.getId() == varbit) {//TODO
+						final int mask = lookup[varBit.getEndBit() - varBit.getStartBit()];
+						index = ctx.varpbits.getVarpbit(varBit.getIndex()) >> varBit.getStartBit() & mask;
+						break;
+					}
+				}
+			} else if (si != -1) {
+				index = ctx.varpbits.getVarpbit(si);
+			}
+			if (index >= 0) {
+				final int[] configs = config.getConfigs();
+				if (configs != null && index < configs.length && configs[index] != -1) {
+					return configs[index];
+				}
+			}
+			return config.getId();
+		}
+		return -1;
 	}
 
 	public String[] getActions() {
@@ -54,8 +95,22 @@ public class Npc extends Actor implements Identifiable {
 	}
 
 	private NpcConfig getConfig() {
+		final Client client = ctx.client();
 		final org.powerbot.bot.os.client.Npc npc = this.npc.get();
-		return npc != null ? npc.getConfig() : null;
+		final NpcConfig config = npc != null ? npc.getConfig() : null;
+		if (client == null || config == null) {
+			return null;
+		}
+		final int id = config.getId(), uid = getId();
+		if (id != uid) {
+			final MRUCache cache = client.getNPCConfigMRUCache();
+			for (final NpcConfig c : new HashTable<NpcConfig>(cache != null ? cache.getHashTable() : null, NpcConfig.class)) {
+				if (c.getId() == uid) {
+					return c;
+				}
+			}
+		}
+		return config;
 	}
 
 	@Override

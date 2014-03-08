@@ -15,12 +15,12 @@ public class Widget extends ClientAccessor implements Validatable, Iterable<Comp
 	public Widget(final ClientContext ctx, final int index) {
 		super(ctx);
 		this.index = index;
-		this.LOCK = new Object();
-		this.cache = new Component[0];
+		LOCK = new Object();
+		cache = new Component[0];
 	}
 
 	public int getIndex() {
-		return this.index;
+		return index;
 	}
 
 	public int getComponentCount() {
@@ -116,7 +116,7 @@ public class Widget extends ClientAccessor implements Validatable, Iterable<Comp
 
 	@Override
 	public int hashCode() {
-		return this.index;
+		return index;
 	}
 
 	@Override
@@ -125,6 +125,6 @@ public class Widget extends ClientAccessor implements Validatable, Iterable<Comp
 			return false;
 		}
 		final Widget w = (Widget) o;
-		return w.index == this.index;
+		return w.index == index;
 	}
 }

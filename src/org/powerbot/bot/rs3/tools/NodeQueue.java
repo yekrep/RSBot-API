@@ -9,7 +9,6 @@ import org.powerbot.bot.rs3.client.NodeSub;
 import org.powerbot.bot.rs3.client.NodeSubQueue;
 
 public class NodeQueue {
-
 	public static <E> List<E> get(final NodeDeque q, final Class<E> type) {
 		final List<E> list = new ArrayList<E>();
 		Node e;
