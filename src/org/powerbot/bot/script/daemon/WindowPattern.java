@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 import org.powerbot.script.rs3.tools.ClientContext;
 import org.powerbot.script.rs3.tools.Hud;
-import org.powerbot.script.util.Random;
+import org.powerbot.script.Random;
 
 public class WindowPattern extends Antipattern.Module {
 	public WindowPattern(final ClientContext ctx) {

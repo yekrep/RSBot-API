@@ -28,17 +28,15 @@ import org.powerbot.Configuration;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.misc.ScriptBundle;
 import org.powerbot.bot.script.ScriptController;
-import org.powerbot.script.lang.ClientContext;
-import org.powerbot.script.lang.Script;
 import org.powerbot.util.HttpUtils;
 import org.powerbot.util.IOUtils;
 import org.powerbot.util.Ini;
 import org.powerbot.util.StringUtils;
 
 /**
- * An abstract implementation of {@link org.powerbot.script.lang.Script}.
+ * An abstract implementation of {@link Script}.
  */
-public abstract class AbstractScript<C extends org.powerbot.script.lang.ClientContext> implements Script, Comparable<AbstractScript> {
+public abstract class AbstractScript<C extends ClientContext> implements Script, Comparable<AbstractScript> {
 	/**
 	 * The {@link Logger} which should be used to print debugging messages.
 	 */
@@ -54,8 +52,8 @@ public abstract class AbstractScript<C extends org.powerbot.script.lang.ClientCo
 	private final int sq;
 
 	/**
-	 * The priority of this {@link org.powerbot.script.lang.Script} as a {@link java.lang.Runnable}.
-	 * @see {@link #getExecQueue(org.powerbot.script.lang.Script.State)}
+	 * The priority of this {@link Script} as a {@link java.lang.Runnable}.
+	 * @see {@link #getExecQueue(Script.State)}
 	 */
 	public final AtomicInteger priority;
 

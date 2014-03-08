@@ -16,7 +16,7 @@ import org.powerbot.bot.os.loader.GameStub;
 import org.powerbot.bot.os.client.Client;
 import org.powerbot.gui.BotChrome;
 
-public class Bot extends org.powerbot.script.lang.Bot {
+public class Bot extends org.powerbot.script.Bot {
 	public final ClientContext ctx;
 	private Client client;
 

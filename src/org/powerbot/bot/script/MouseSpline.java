@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Random;
 
-import org.powerbot.script.util.math.Vector3;
+import org.powerbot.script.Vector3;
 
 /**
  * A human simulated mouse implementation.
@@ -23,7 +23,7 @@ public final class MouseSpline {
 	}
 
 	public int getPressDuration() {
-		return org.powerbot.script.util.Random.getDelay();
+		return org.powerbot.script.Random.getDelay();
 	}
 
 	public Iterable<Vector3> getPath(final Vector3 a, final Vector3 b) {

@@ -6,11 +6,11 @@ import org.powerbot.misc.GameAccounts;
 import org.powerbot.misc.Tracker;
 import org.powerbot.script.PollingScript;
 import org.powerbot.bot.script.InternalScript;
-import org.powerbot.script.lang.Filter;
+import org.powerbot.script.Filter;
 import org.powerbot.script.rs3.tools.ClientContext;
 import org.powerbot.script.rs3.tools.Game;
 import org.powerbot.script.rs3.tools.Lobby;
-import org.powerbot.script.util.Random;
+import org.powerbot.script.Random;
 import org.powerbot.script.rs3.tools.Component;
 
 /**

@@ -4,8 +4,8 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.concurrent.Callable;
 
-import org.powerbot.script.util.Condition;
-import org.powerbot.script.util.Random;
+import org.powerbot.script.Condition;
+import org.powerbot.script.Random;
 
 /**
  * API pertaining to in-game powers.

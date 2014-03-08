@@ -6,8 +6,8 @@ import java.util.concurrent.TimeUnit;
 import org.powerbot.script.PollingScript;
 import org.powerbot.bot.script.InternalScript;
 import org.powerbot.script.rs3.tools.ClientContext;
-import org.powerbot.script.util.Condition;
-import org.powerbot.script.util.Random;
+import org.powerbot.script.Condition;
+import org.powerbot.script.Random;
 import org.powerbot.script.rs3.tools.Component;
 
 /**

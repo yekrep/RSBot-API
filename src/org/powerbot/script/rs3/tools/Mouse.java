@@ -6,8 +6,8 @@ import java.awt.event.MouseEvent;
 import org.powerbot.bot.rs3.client.Client;
 import org.powerbot.bot.script.MouseSimulator;
 import org.powerbot.bot.script.MouseTarget;
-import org.powerbot.script.lang.Filter;
-import org.powerbot.script.util.Random;
+import org.powerbot.script.Filter;
+import org.powerbot.script.Random;
 
 public class Mouse extends ClientAccessor {
 	final MouseSimulator handler;

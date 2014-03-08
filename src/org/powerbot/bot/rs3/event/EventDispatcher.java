@@ -9,24 +9,13 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
-import java.util.AbstractCollection;
 import java.util.EventListener;
 import java.util.EventObject;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.atomic.AtomicReference;
 
-import org.powerbot.script.event.MessageEvent;
-import org.powerbot.script.event.MessageListener;
-import org.powerbot.script.event.PaintListener;
-import org.powerbot.script.event.TextPaintListener;
-import org.powerbot.script.lang.Stoppable;
+import org.powerbot.script.MessageEvent;
+import org.powerbot.script.MessageListener;
+import org.powerbot.script.PaintListener;
+import org.powerbot.script.TextPaintListener;
 
 public class EventDispatcher extends org.powerbot.bot.script.EventDispatcher {
 	public static final int MOUSE_EVENT = 0x1;

@@ -1,6 +1,6 @@
 package org.powerbot.script.rs3.tools;
 
-import org.powerbot.script.lang.AbstractQuery;
+import org.powerbot.script.AbstractQuery;
 
 public abstract class TextQuery<K extends Textable> extends AbstractQuery<TextQuery<K>, K, ClientContext>
 		implements Textable.Query<TextQuery<K>> {

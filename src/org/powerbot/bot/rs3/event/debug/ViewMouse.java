@@ -9,7 +9,7 @@ import java.awt.geom.Line2D;
 
 import org.powerbot.bot.rs3.client.Client;
 import org.powerbot.bot.rs3.client.input.Mouse;
-import org.powerbot.script.event.PaintListener;
+import org.powerbot.script.PaintListener;
 import org.powerbot.script.rs3.tools.ClientContext;
 
 public class ViewMouse implements PaintListener {

@@ -7,8 +7,8 @@ import java.util.concurrent.Callable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.powerbot.script.lang.Filter;
-import org.powerbot.script.util.Condition;
+import org.powerbot.script.Filter;
+import org.powerbot.script.Condition;
 
 /**
  * Utilities pertaining to the lobby.

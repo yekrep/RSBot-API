@@ -5,7 +5,7 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Polygon;
 
-import org.powerbot.script.util.Random;
+import org.powerbot.script.Random;
 
 /**
  * An interactive tile matrix.

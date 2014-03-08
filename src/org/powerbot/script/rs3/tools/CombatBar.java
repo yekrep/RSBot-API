@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 
-import org.powerbot.script.util.Condition;
+import org.powerbot.script.Condition;
 
 public class CombatBar extends IdQuery<Action> {
 	public static final int WIDGET = 1430;

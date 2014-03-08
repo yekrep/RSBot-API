@@ -16,7 +16,7 @@ import org.powerbot.bot.rs3.client.RSNPC;
 import org.powerbot.bot.rs3.client.RSNPCNode;
 import org.powerbot.bot.rs3.client.RSPlayer;
 import org.powerbot.bot.rs3.client.Sequence;
-import org.powerbot.script.lang.Filter;
+import org.powerbot.script.Filter;
 
 public abstract class Actor extends Interactive implements Renderable, Nameable, Locatable, Drawable {
 	private int faceIndex = -1;

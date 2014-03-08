@@ -10,9 +10,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.powerbot.bot.script.InputSimulator;
-import org.powerbot.script.lang.Filter;
-import org.powerbot.script.util.Condition;
-import org.powerbot.script.util.Random;
+import org.powerbot.script.Filter;
+import org.powerbot.script.Condition;
+import org.powerbot.script.Random;
 import org.powerbot.bot.os.event.PaintListener;
 import org.powerbot.bot.os.client.Client;
 import org.powerbot.util.StringUtils;

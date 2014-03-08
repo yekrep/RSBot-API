@@ -9,9 +9,9 @@ import org.powerbot.bot.rs3.tools.Items;
 import org.powerbot.bot.rs3.tools.Map;
 import org.powerbot.bot.script.KeyboardSimulator;
 import org.powerbot.bot.script.ScriptController;
-import org.powerbot.script.lang.Script;
+import org.powerbot.script.Script;
 
-public class ClientContext extends org.powerbot.script.lang.ClientContext {
+public class ClientContext extends org.powerbot.script.ClientContext {
 	private final AtomicReference<Client> client;
 	public final AtomicReference<KeyboardSimulator> inputHandler;
 	public final AtomicReference<Constants> constants;

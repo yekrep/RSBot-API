@@ -4,8 +4,8 @@ import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.concurrent.Callable;
 
-import org.powerbot.script.util.Condition;
-import org.powerbot.script.util.Random;
+import org.powerbot.script.Condition;
+import org.powerbot.script.Random;
 
 public class TilePath extends Path {
 	protected Tile[] tiles;

@@ -6,7 +6,7 @@ import java.awt.Point;
 
 import org.powerbot.bot.rs3.client.Client;
 import org.powerbot.bot.rs3.client.Constants;
-import org.powerbot.script.event.PaintListener;
+import org.powerbot.script.PaintListener;
 import org.powerbot.script.rs3.tools.ClientContext;
 import org.powerbot.script.rs3.tools.Game;
 import org.powerbot.script.rs3.tools.CollisionFlag;

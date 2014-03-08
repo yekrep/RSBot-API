@@ -6,9 +6,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.Callable;
 
-import org.powerbot.script.lang.Filter;
-import org.powerbot.script.util.Condition;
-import org.powerbot.script.util.Random;
+import org.powerbot.script.Filter;
+import org.powerbot.script.Condition;
+import org.powerbot.script.Random;
 import org.powerbot.util.StringUtils;
 
 /**

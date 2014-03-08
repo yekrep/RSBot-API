@@ -15,7 +15,7 @@ import java.util.Queue;
 
 import org.powerbot.bot.rs3.client.Client;
 import org.powerbot.bot.rs3.client.input.Keyboard;
-import org.powerbot.script.util.Random;
+import org.powerbot.script.Random;
 
 public class KeyboardSimulator {
 	private final Applet applet;

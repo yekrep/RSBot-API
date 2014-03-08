@@ -22,7 +22,7 @@ import org.powerbot.bot.rs3.client.Render;
 import org.powerbot.bot.rs3.client.RenderData;
 import org.powerbot.bot.rs3.client.SoftReference;
 import org.powerbot.bot.rs3.client.TileData;
-import org.powerbot.script.util.Condition;
+import org.powerbot.script.Condition;
 
 public class Game extends ClientAccessor {
 	public static final int INDEX_LOGIN_SCREEN = 3;

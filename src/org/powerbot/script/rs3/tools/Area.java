@@ -5,7 +5,7 @@ import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.util.Arrays;
 
-import org.powerbot.script.util.Random;
+import org.powerbot.script.Random;
 
 public class Area {
 	private final Polygon polygon;

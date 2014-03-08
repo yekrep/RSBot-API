@@ -1,6 +1,6 @@
 package org.powerbot.script.rs3.tools;
 
-import org.powerbot.script.lang.Filter;
+import org.powerbot.script.Filter;
 
 public interface Textable {
 	public String getText();

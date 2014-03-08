@@ -3,7 +3,7 @@ package org.powerbot.misc;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.powerbot.script.lang.Script;
+import org.powerbot.script.Script;
 import org.powerbot.util.StringUtils;
 
 public class ScriptBundle {

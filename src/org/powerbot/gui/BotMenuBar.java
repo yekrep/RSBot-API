@@ -25,9 +25,9 @@ import org.powerbot.Boot;
 import org.powerbot.Configuration;
 import org.powerbot.bot.rs3.Bot;
 import org.powerbot.misc.ScriptBundle;
-import org.powerbot.script.event.BotMenuListener;
+import org.powerbot.script.BotMenuListener;
 import org.powerbot.misc.Tracker;
-import org.powerbot.script.lang.Script;
+import org.powerbot.script.Script;
 import org.powerbot.bot.script.ScriptController;
 
 class BotMenuBar extends JMenuBar {

@@ -5,8 +5,8 @@ import java.util.Arrays;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
-import org.powerbot.script.util.Condition;
-import org.powerbot.script.util.Random;
+import org.powerbot.script.Condition;
+import org.powerbot.script.Random;
 
 /**
  * Utilities for manipulating the hud.

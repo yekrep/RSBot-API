@@ -1,4 +1,4 @@
-package org.powerbot.script.lang;
+package org.powerbot.script;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -15,9 +15,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
  *
  * @param <T> the super class
  * @param <K> the subject type
- * @param <C> the {@link org.powerbot.script.lang.ClientContext}
+ * @param <C> the {@link ClientContext}
  */
-public abstract class AbstractQuery<T extends AbstractQuery<T, K, C>, K, C extends ClientContext> extends org.powerbot.script.lang.ClientAccessor<C> implements Iterable<K>, Nillable<K> {
+public abstract class AbstractQuery<T extends AbstractQuery<T, K, C>, K, C extends ClientContext> extends ClientAccessor<C> implements Iterable<K>, Nillable<K> {
 	private final ThreadLocal<List<K>> items;
 	private final Method set;
 

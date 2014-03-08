@@ -1,4 +1,4 @@
-package org.powerbot.script.util.math;
+package org.powerbot.script;
 
 import java.awt.Point;
 import java.awt.geom.Point2D;

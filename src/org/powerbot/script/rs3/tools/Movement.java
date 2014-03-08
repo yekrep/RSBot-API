@@ -5,7 +5,7 @@ import java.awt.Rectangle;
 import java.util.concurrent.Callable;
 
 import org.powerbot.bot.rs3.client.Client;
-import org.powerbot.script.util.Condition;
+import org.powerbot.script.Condition;
 
 public class Movement extends ClientAccessor {
 	public static final int WIDGET_MAP = 1465;

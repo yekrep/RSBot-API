@@ -4,7 +4,6 @@ import org.powerbot.misc.GameAccounts;
 import org.powerbot.script.PollingScript;
 import org.powerbot.bot.script.InternalScript;
 import org.powerbot.script.rs3.tools.ClientContext;
-import org.powerbot.script.util.Random;
 
 public class BankPin extends PollingScript<ClientContext> implements InternalScript {
 	private static final int SETTING_PIN_STEP = 163;

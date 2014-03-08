@@ -4,8 +4,8 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.concurrent.Callable;
 
-import org.powerbot.script.lang.Filter;
-import org.powerbot.script.util.Condition;
+import org.powerbot.script.Filter;
+import org.powerbot.script.Condition;
 
 public abstract class Interactive extends ClientAccessor implements Targetable, Validatable {
 	public Interactive(final ClientContext ctx) {

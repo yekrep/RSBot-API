@@ -2,8 +2,8 @@ package org.powerbot.bot.rs3.event.debug;
 
 import java.awt.Graphics;
 
-import org.powerbot.script.event.PaintListener;
-import org.powerbot.script.event.TextPaintListener;
+import org.powerbot.script.PaintListener;
+import org.powerbot.script.TextPaintListener;
 import org.powerbot.script.rs3.tools.ClientContext;
 import org.powerbot.script.rs3.tools.Projectile;
 import org.powerbot.script.rs3.tools.Tile;

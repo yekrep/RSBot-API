@@ -7,8 +7,8 @@ import java.util.concurrent.Callable;
 
 import org.powerbot.bot.rs3.client.Client;
 import org.powerbot.bot.rs3.client.RSInterfaceBase;
-import org.powerbot.script.util.Condition;
-import org.powerbot.script.util.Random;
+import org.powerbot.script.Condition;
+import org.powerbot.script.Random;
 
 /**
  * {@link Widgets} is a static utility which provides access to the game's {@link Component}s by means of {@link Widget}s.

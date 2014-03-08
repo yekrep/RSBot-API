@@ -16,7 +16,7 @@ import org.powerbot.bot.rs3.client.RSInfo;
 import org.powerbot.bot.rs3.client.RSItem;
 import org.powerbot.bot.rs3.client.RSItemDefLoader;
 import org.powerbot.bot.rs3.client.RSItemPile;
-import org.powerbot.script.util.Random;
+import org.powerbot.script.Random;
 
 public class GroundItem extends Interactive implements Renderable, Identifiable, Nameable, Stackable, Locatable, Drawable {
 	public static final Color TARGET_COLOR = new Color(255, 255, 0, 75);

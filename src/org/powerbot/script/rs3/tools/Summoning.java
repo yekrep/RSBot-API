@@ -2,9 +2,9 @@ package org.powerbot.script.rs3.tools;
 
 import java.util.concurrent.Callable;
 
-import org.powerbot.script.lang.Filter;
-import org.powerbot.script.util.Condition;
-import org.powerbot.script.util.Random;
+import org.powerbot.script.Filter;
+import org.powerbot.script.Condition;
+import org.powerbot.script.Random;
 
 public class Summoning extends ClientAccessor {
 	public static final int WIDGET = 662;

@@ -1,6 +1,6 @@
 package org.powerbot.script.rs3.tools;
 
-import org.powerbot.script.lang.AbstractQuery;
+import org.powerbot.script.AbstractQuery;
 
 public abstract class HintArrowQuery<K extends Locatable> extends AbstractQuery<HintArrowQuery<K>, K, ClientContext>
 		implements Locatable.Query<HintArrowQuery<K>> {

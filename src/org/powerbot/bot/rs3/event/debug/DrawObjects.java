@@ -9,7 +9,7 @@ import java.lang.reflect.Field;
 
 import org.powerbot.bot.rs3.client.RSAnimable;
 import org.powerbot.bot.rs3.client.RSObject;
-import org.powerbot.script.event.PaintListener;
+import org.powerbot.script.PaintListener;
 import org.powerbot.script.rs3.tools.ClientContext;
 import org.powerbot.script.rs3.tools.GameObject;
 import org.powerbot.script.rs3.tools.Player;

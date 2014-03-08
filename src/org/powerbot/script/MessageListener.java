@@ -1,4 +1,4 @@
-package org.powerbot.script.event;
+package org.powerbot.script;
 
 import java.util.EventListener;
 

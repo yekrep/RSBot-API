@@ -10,7 +10,7 @@ import org.powerbot.bot.rs3.client.RSCharacter;
 import org.powerbot.bot.rs3.client.RSInteractable;
 import org.powerbot.bot.rs3.client.RSInteractableData;
 import org.powerbot.bot.rs3.client.RSInteractableLocation;
-import org.powerbot.script.util.Calculations;
+import org.powerbot.script.Calculations;
 
 public class TileCuboid extends Interactive {
 	private final WeakReference<RSInteractable> interactable;

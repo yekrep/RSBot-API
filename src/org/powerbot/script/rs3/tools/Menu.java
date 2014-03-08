@@ -11,11 +11,11 @@ import org.powerbot.bot.rs3.client.Client;
 import org.powerbot.bot.rs3.client.MenuGroupNode;
 import org.powerbot.bot.rs3.client.MenuItemNode;
 import org.powerbot.bot.rs3.tools.NodeQueue;
-import org.powerbot.script.lang.Filter;
-import org.powerbot.script.util.Condition;
-import org.powerbot.script.util.Random;
+import org.powerbot.script.Filter;
+import org.powerbot.script.Condition;
+import org.powerbot.script.Random;
 import org.powerbot.util.StringUtils;
-import org.powerbot.script.util.math.Vector2;
+import org.powerbot.script.Vector2;
 
 /**
  * Utilities pertaining to the in-game menu.

@@ -1,4 +1,4 @@
-package org.powerbot.script.lang;
+package org.powerbot.script;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -13,7 +13,7 @@ import java.util.Queue;
 public interface Script extends EventListener {
 
 	/**
-	 * The representative states of a {@link org.powerbot.script.lang.Script}
+	 * The representative states of a {@link Script}
 	 */
 	public enum State {
 		START, SUSPEND, RESUME, STOP
@@ -22,13 +22,13 @@ public interface Script extends EventListener {
 	/**
 	 * Returns the execution queue.
 	 *
-	 * @param state the {@link org.powerbot.script.lang.Script.State} to query
-	 * @return a {@link Queue} of {@link java.lang.Runnable}s in this {@link org.powerbot.script.lang.Script}s execution queue
+	 * @param state the {@link Script.State} to query
+	 * @return a {@link Queue} of {@link java.lang.Runnable}s in this {@link Script}s execution queue
 	 */
 	public Queue<Runnable> getExecQueue(State state);
 
 	/**
-	 * A controller for a {@link org.powerbot.script.lang.Script} which invokes and determines state changes.
+	 * A controller for a {@link Script} which invokes and determines state changes.
 	 */
 	public interface Controller extends Suspendable, Stoppable {
 

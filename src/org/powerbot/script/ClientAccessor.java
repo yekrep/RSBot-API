@@ -1,4 +1,4 @@
-package org.powerbot.script.lang;
+package org.powerbot.script;
 
 public abstract class ClientAccessor<T extends ClientContext> {
 	public final T ctx;

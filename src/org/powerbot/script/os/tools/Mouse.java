@@ -11,8 +11,8 @@ import org.powerbot.bot.script.EventDispatcher;
 import org.powerbot.bot.script.MouseSimulator;
 import org.powerbot.bot.script.InputSimulator;
 import org.powerbot.bot.os.event.PaintListener;
-import org.powerbot.script.lang.Filter;
-import org.powerbot.script.util.math.Vector3;
+import org.powerbot.script.Filter;
+import org.powerbot.script.Vector3;
 
 public class Mouse extends ClientAccessor {
 	private final MouseSimulator simulator;

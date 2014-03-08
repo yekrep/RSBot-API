@@ -1,4 +1,4 @@
-package org.powerbot.script.lang;
+package org.powerbot.script;
 
 import java.applet.Applet;
 import java.io.Closeable;

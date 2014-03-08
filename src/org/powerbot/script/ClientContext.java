@@ -1,4 +1,4 @@
-package org.powerbot.script.lang;
+package org.powerbot.script;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

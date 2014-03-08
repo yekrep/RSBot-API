@@ -18,10 +18,10 @@ import org.powerbot.bot.script.KeyboardSimulator;
 import org.powerbot.bot.script.ScriptClassLoader;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.script.rs3.tools.ClientContext;
-import org.powerbot.script.util.Condition;
+import org.powerbot.script.Condition;
 import org.powerbot.script.rs3.tools.Validatable;
 
-public final class Bot extends org.powerbot.script.lang.Bot implements Validatable {
+public final class Bot extends org.powerbot.script.Bot implements Validatable {
 	private static final Logger log = Logger.getLogger(Bot.class.getName());
 	private final BotChrome chrome;
 	public final ClientContext ctx;

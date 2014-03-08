@@ -26,7 +26,7 @@ import javax.swing.SwingUtilities;
 import org.powerbot.Configuration;
 import org.powerbot.bot.rs3.Bot;
 import org.powerbot.gui.BotChrome;
-import org.powerbot.script.lang.Script;
+import org.powerbot.script.Script;
 import org.powerbot.bot.script.InternalScript;
 import org.powerbot.bot.script.ScriptClassLoader;
 import org.powerbot.bot.script.ScriptController;

@@ -1,6 +1,6 @@
 package org.powerbot.script.os.tools;
 
-import org.powerbot.script.util.Random;
+import org.powerbot.script.Random;
 
 public class Tile implements Locatable {
 	public static final Tile NIL = new Tile(-1, -1, -1);

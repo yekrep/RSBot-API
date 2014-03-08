@@ -6,7 +6,7 @@ import org.powerbot.bot.script.InternalScript;
 import org.powerbot.script.PollingScript;
 import org.powerbot.script.rs3.tools.ClientAccessor;
 import org.powerbot.script.rs3.tools.ClientContext;
-import org.powerbot.script.util.Random;
+import org.powerbot.script.Random;
 
 public class Antipattern extends PollingScript<ClientContext> implements InternalScript {
 	private final Module[] modules;

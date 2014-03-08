@@ -2,7 +2,7 @@ package org.powerbot.script.rs3.tools;
 
 import java.awt.Color;
 
-import org.powerbot.script.util.Random;
+import org.powerbot.script.Random;
 
 /**
  * Represents a position in three-dimensional game space.

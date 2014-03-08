@@ -2,9 +2,9 @@ package org.powerbot.script.rs3.tools;
 
 import java.util.concurrent.Callable;
 
-import org.powerbot.script.util.Condition;
-import org.powerbot.script.util.Random;
-import org.powerbot.script.util.math.Vector3f;
+import org.powerbot.script.Condition;
+import org.powerbot.script.Random;
+import org.powerbot.script.Vector3f;
 
 /**
  * Utilities pertaining to the camera.

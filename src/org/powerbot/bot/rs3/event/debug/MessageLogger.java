@@ -2,8 +2,8 @@ package org.powerbot.bot.rs3.event.debug;
 
 import java.util.logging.Logger;
 
-import org.powerbot.script.event.MessageEvent;
-import org.powerbot.script.event.MessageListener;
+import org.powerbot.script.MessageEvent;
+import org.powerbot.script.MessageListener;
 
 public class MessageLogger implements MessageListener {
 	private static final Logger log = Logger.getLogger("Messages");

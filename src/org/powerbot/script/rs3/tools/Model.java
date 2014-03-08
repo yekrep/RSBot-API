@@ -8,7 +8,7 @@ import java.util.Arrays;
 
 import org.powerbot.bot.rs3.client.AbstractModel;
 import org.powerbot.bot.rs3.client.ModelCapture;
-import org.powerbot.script.util.Random;
+import org.powerbot.script.Random;
 
 public abstract class Model extends ClientAccessor {
 	private final int height;
