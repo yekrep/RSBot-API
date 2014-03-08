@@ -28,8 +28,8 @@ import org.powerbot.Configuration;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.misc.ScriptBundle;
 import org.powerbot.bot.script.ScriptController;
+import org.powerbot.script.lang.ClientContext;
 import org.powerbot.script.lang.Script;
-import org.powerbot.script.rs3.tools.ClientContext;
 import org.powerbot.util.HttpUtils;
 import org.powerbot.util.IOUtils;
 import org.powerbot.util.Ini;
@@ -38,7 +38,7 @@ import org.powerbot.util.StringUtils;
 /**
  * An abstract implementation of {@link org.powerbot.script.lang.Script}.
  */
-public abstract class AbstractScript implements Script, Comparable<AbstractScript> {
+public abstract class AbstractScript<C extends org.powerbot.script.lang.ClientContext> implements Script, Comparable<AbstractScript> {
 	/**
 	 * The {@link Logger} which should be used to print debugging messages.
 	 */
@@ -47,7 +47,7 @@ public abstract class AbstractScript implements Script, Comparable<AbstractScrip
 	/**
 	 * The {@link org.powerbot.script.rs3.tools.ClientContext} for accessing client data.
 	 */
-	protected final ClientContext ctx;
+	protected final C ctx;
 
 	public static final BlockingQueue<ClientContext> contextProxy = new SynchronousQueue<ClientContext>();
 	private static final AtomicInteger s = new AtomicInteger(0);
@@ -106,7 +106,7 @@ public abstract class AbstractScript implements Script, Comparable<AbstractScrip
 		});
 
 		try {
-			ctx = contextProxy.take();
+			ctx = (C) contextProxy.take();
 		} catch (final InterruptedException e) {
 			throw new IllegalStateException(e);
 		}
@@ -114,9 +114,10 @@ public abstract class AbstractScript implements Script, Comparable<AbstractScrip
 		final String[] ids = {null, getName(), getClass().getName()};
 		String id = "-";
 
-		if (ctx.controller instanceof ScriptController) {
-			final ScriptController c = ((ScriptController) ctx.controller);
-			final ScriptBundle bundle = c.bundle != null ? c.bundle.get() : null;
+		final Controller c = ctx.controller();
+		if (c instanceof ScriptController) {
+			final ScriptController sc = ((ScriptController) c);
+			final ScriptBundle bundle = sc.bundle != null ? (ScriptBundle) sc.bundle.get() : null;
 			if (bundle != null && bundle.definition != null) {
 				ids[0] = bundle.definition.getID().replace('/', '-');
 			}

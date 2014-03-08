@@ -1,9 +1,7 @@
 package org.powerbot.bot.os;
 
-import java.applet.Applet;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.io.Closeable;
 import java.util.Map;
 
 import javax.swing.SwingUtilities;
@@ -18,18 +16,12 @@ import org.powerbot.bot.os.loader.GameStub;
 import org.powerbot.bot.os.client.Client;
 import org.powerbot.gui.BotChrome;
 
-public class Bot implements Runnable, Closeable {
-	public final EventDispatcher dispatcher;
+public class Bot extends org.powerbot.script.lang.Bot {
 	public final ClientContext ctx;
-	private final BotChrome chrome;
-	private final ThreadGroup group;
-	private Applet applet;
 	private Client client;
 
 	public Bot(final BotChrome chrome) {
-		this.chrome = chrome;
-		group = new ThreadGroup(getClass().getSimpleName());
-		dispatcher = new EventDispatcher();
+		super(chrome, new EventDispatcher());
 		ctx = ClientContext.newContext(this);
 	}
 
@@ -53,7 +45,7 @@ public class Bot implements Runnable, Closeable {
 				hook(loader);
 			}
 		});
-		final Thread t = new Thread(group, loader);
+		final Thread t = new Thread(threadGroup, loader);
 		t.setContextClassLoader(classLoader);
 		t.start();
 	}
@@ -91,7 +83,7 @@ public class Bot implements Runnable, Closeable {
 
 	private void debug() {
 		ctx.menu.register();
-		new Thread(group, dispatcher, dispatcher.getClass().getName()).start();
+		new Thread(threadGroup, dispatcher, dispatcher.getClass().getName()).start();
 		ctx.setClient(client);
 		dispatcher.add(new PaintListener() {
 			@Override
@@ -107,6 +99,6 @@ public class Bot implements Runnable, Closeable {
 			applet.stop();
 			applet.destroy();
 		}
-		group.interrupt();
+		threadGroup.interrupt();
 	}
 }

@@ -24,6 +24,7 @@ import javax.swing.event.MenuListener;
 import org.powerbot.Boot;
 import org.powerbot.Configuration;
 import org.powerbot.bot.rs3.Bot;
+import org.powerbot.misc.ScriptBundle;
 import org.powerbot.script.event.BotMenuListener;
 import org.powerbot.misc.Tracker;
 import org.powerbot.script.lang.Script;
@@ -113,7 +114,7 @@ class BotMenuBar extends JMenuBar {
 					return;
 				}
 
-				final Script s = c.bundle.get().instance.get();
+				final Script s = ((ScriptBundle) c.bundle.get()).instance.get();
 				if (s == null || !(s instanceof BotMenuListener)) {
 					return;
 				}
@@ -132,7 +133,7 @@ class BotMenuBar extends JMenuBar {
 					return;
 				}
 
-				final Script s = c.bundle.get().instance.get();
+				final Script s = ((ScriptBundle) c.bundle.get()).instance.get();
 				if (s == null || !(s instanceof BotMenuListener)) {
 					return;
 				}
@@ -151,7 +152,7 @@ class BotMenuBar extends JMenuBar {
 					return;
 				}
 
-				final Script s = c.bundle.get().instance.get();
+				final Script s = ((ScriptBundle) c.bundle.get()).instance.get();
 				if (s == null || !(s instanceof BotMenuListener)) {
 					return;
 				}
@@ -176,7 +177,7 @@ class BotMenuBar extends JMenuBar {
 				stop.setEnabled(active);
 
 				if (active) {
-					final Script script = c.bundle.get().instance.get();
+					final Script script = ((ScriptBundle) c.bundle.get()).instance.get();
 					options.setEnabled(script != null && script instanceof BotMenuListener);
 				} else {
 					options.setEnabled(false);

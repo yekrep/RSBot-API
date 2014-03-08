@@ -14,17 +14,17 @@ import org.powerbot.bot.SelectiveEventQueue;
 import org.powerbot.misc.ScriptBundle;
 import org.powerbot.misc.Tracker;
 import org.powerbot.script.AbstractScript;
+import org.powerbot.script.lang.ClientAccessor;
+import org.powerbot.script.lang.ClientContext;
 import org.powerbot.script.lang.Script;
 import org.powerbot.bot.script.daemon.Antipattern;
 import org.powerbot.bot.script.daemon.BankPin;
 import org.powerbot.bot.script.daemon.Login;
 import org.powerbot.bot.script.daemon.TicketDestroy;
 import org.powerbot.bot.script.daemon.WidgetCloser;
-import org.powerbot.script.rs3.tools.ClientAccessor;
-import org.powerbot.script.rs3.tools.ClientContext;
 import org.powerbot.script.rs3.tools.Validatable;
 
-public final class ScriptController extends ClientAccessor implements Runnable, Validatable, Script.Controller {
+public final class ScriptController<C extends ClientContext> extends ClientAccessor<C> implements Runnable, Validatable, Script.Controller {
 	public static final String TIMEOUT_PROPERTY = "script.timeout", LOCAL_PROPERTY = "script.local";
 
 	private final ThreadGroup group;
@@ -37,7 +37,7 @@ public final class ScriptController extends ClientAccessor implements Runnable, 
 
 	public final AtomicReference<ScriptBundle> bundle;
 
-	public ScriptController(final ClientContext ctx) {
+	public ScriptController(final C ctx) {
 		super(ctx);
 
 		group = new ThreadGroup(ScriptThreadFactory.NAME);
@@ -108,7 +108,7 @@ public final class ScriptController extends ClientAccessor implements Runnable, 
 
 		executor.set(new ThreadPoolExecutor(1, 1, 0L, TimeUnit.NANOSECONDS, q, new ScriptThreadFactory(group, cl)));
 
-		final String s = ctx.properties.getProperty(TIMEOUT_PROPERTY, "");
+		final String s = ctx.properties.containsKey(TIMEOUT_PROPERTY) ? ctx.properties.get(TIMEOUT_PROPERTY) : "";
 		if (s != null) {
 			long l = 0;
 			try {
@@ -184,7 +184,7 @@ public final class ScriptController extends ClientAccessor implements Runnable, 
 				return;
 			}
 			scripts.add(s);
-			ctx.getBot().dispatcher.add(s);
+			ctx.bot().dispatcher.add(s);
 		}
 	}
 
@@ -206,7 +206,7 @@ public final class ScriptController extends ClientAccessor implements Runnable, 
 
 		call(Script.State.STOP);
 		for (final Script s : scripts) {
-			ctx.getBot().dispatcher.remove(s);
+			ctx.bot().dispatcher.remove(s);
 		}
 		executor.get().shutdown();
 		executor.set(null);

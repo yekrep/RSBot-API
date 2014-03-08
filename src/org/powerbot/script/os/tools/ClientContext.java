@@ -5,8 +5,14 @@ import java.util.concurrent.atomic.AtomicReference;
 import org.powerbot.bot.script.InputSimulator;
 import org.powerbot.bot.os.Bot;
 import org.powerbot.bot.os.client.Client;
+import org.powerbot.bot.script.ScriptController;
+import org.powerbot.script.lang.Script;
 
-public class ClientContext implements org.powerbot.script.lang.ClientContext {
+public class ClientContext extends org.powerbot.script.lang.ClientContext {
+	private final AtomicReference<Client> client;
+
+	public final Script.Controller controller;
+
 	public final Game game;
 	public final GroundItems groundItems;
 	public final Menu menu;
@@ -18,12 +24,12 @@ public class ClientContext implements org.powerbot.script.lang.ClientContext {
 	public final Varpbits varpbits;
 	public final Widgets widgets;
 	public final InputSimulator input;
-	private final AtomicReference<Client> client;
-	private final AtomicReference<Bot> bot;
 
 	private ClientContext(final Bot bot) {
+		super(bot);
 		client = new AtomicReference<Client>(null);
-		this.bot = new AtomicReference<Bot>(bot);
+
+		controller = new ScriptController<ClientContext>(this);
 
 		game = new Game(this);
 		groundItems = new GroundItems(this);
@@ -38,9 +44,16 @@ public class ClientContext implements org.powerbot.script.lang.ClientContext {
 		input = new InputSimulator(null);
 	}
 
+	public static ClientContext newContext(final Bot bot) {
+		return new ClientContext(bot);
+	}
+
 	public ClientContext(final ClientContext ctx) {
+		super(ctx.bot());
+
 		client = ctx.client;
-		bot = ctx.bot;
+
+		controller = ctx.controller;
 
 		game = ctx.game;
 		groundItems = ctx.groundItems;
@@ -55,10 +68,6 @@ public class ClientContext implements org.powerbot.script.lang.ClientContext {
 		input = ctx.input;
 	}
 
-	public static ClientContext newContext(final Bot bot) {
-		return new ClientContext(bot);
-	}
-
 	public void setClient(final Client client) {
 		this.client.set(client);
 	}
@@ -67,7 +76,7 @@ public class ClientContext implements org.powerbot.script.lang.ClientContext {
 		return client.get();
 	}
 
-	public Bot bot() {
-		return bot.get();
+	public Script.Controller controller() {
+		return controller;
 	}
 }

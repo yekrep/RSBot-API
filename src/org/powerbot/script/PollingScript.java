@@ -1,9 +1,11 @@
 package org.powerbot.script;
 
+import org.powerbot.script.lang.ClientContext;
+
 /**
  * An implementation of {@link AbstractScript} which polls (or "loops") indefinitely.
  */
-public abstract class PollingScript extends AbstractScript implements Runnable {
+public abstract class PollingScript<C extends ClientContext> extends AbstractScript<C> implements Runnable {
 
 	/**
 	 * Creates an instance of a {@link PollingScript}.
@@ -46,10 +48,10 @@ public abstract class PollingScript extends AbstractScript implements Runnable {
 		try {
 			poll();
 			if (!Thread.interrupted()) {
-				ctx.controller.offer(this);
+				ctx.controller().offer(this);
 			}
 		} catch (final Throwable e) {
-			ctx.controller.stop();
+			ctx.controller().stop();
 			e.printStackTrace();
 		}
 

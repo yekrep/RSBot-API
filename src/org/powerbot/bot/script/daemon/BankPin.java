@@ -3,9 +3,10 @@ package org.powerbot.bot.script.daemon;
 import org.powerbot.misc.GameAccounts;
 import org.powerbot.script.PollingScript;
 import org.powerbot.bot.script.InternalScript;
+import org.powerbot.script.rs3.tools.ClientContext;
 import org.powerbot.script.util.Random;
 
-public class BankPin extends PollingScript implements InternalScript {
+public class BankPin extends PollingScript<ClientContext> implements InternalScript {
 	private static final int SETTING_PIN_STEP = 163;
 	private static final int WIDGET = 13;
 	private static final int COMPONENT = 0;

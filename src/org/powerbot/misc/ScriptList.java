@@ -182,7 +182,7 @@ public class ScriptList {
 
 		final Bot bot = chrome.getBot();
 		if (username != null) {
-			bot.ctx.properties.setProperty(Login.LOGIN_USER_PROPERTY, username);
+			bot.ctx.properties.put(Login.LOGIN_USER_PROPERTY, username);
 		}
 
 		log.info("Starting script: " + def.getName());
@@ -231,17 +231,17 @@ public class ScriptList {
 				}
 			}
 
-			bot.ctx.properties.setProperty(ScriptController.TIMEOUT_PROPERTY, Long.toString(TimeUnit.HOURS.toMillis(hours)));
+			bot.ctx.properties.put(ScriptController.TIMEOUT_PROPERTY, Long.toString(TimeUnit.HOURS.toMillis(hours)));
 		}
 
 		final NetworkAccount n = NetworkAccount.getInstance();
 		if (n.isLoggedIn()) {
-			bot.ctx.properties.setProperty("user.id", Integer.toString(n.getUID()));
-			bot.ctx.properties.setProperty("user.name", n.getDisplayName());
-			bot.ctx.properties.setProperty("user.vip", Boolean.toString(n.hasPermission(NetworkAccount.VIP)));
+			bot.ctx.properties.put("user.id", Integer.toString(n.getUID()));
+			bot.ctx.properties.put("user.name", n.getDisplayName());
+			bot.ctx.properties.put("user.vip", Boolean.toString(n.hasPermission(NetworkAccount.VIP)));
 		}
 
-		bot.ctx.properties.setProperty(ScriptController.LOCAL_PROPERTY, Boolean.toString(def.local));
+		bot.ctx.properties.put(ScriptController.LOCAL_PROPERTY, Boolean.toString(def.local));
 		final ScriptController c = (ScriptController) bot.ctx.controller;
 		c.bundle.set(new ScriptBundle(def, script));
 		c.run();

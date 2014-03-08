@@ -7,6 +7,7 @@ import org.powerbot.misc.Tracker;
 import org.powerbot.script.PollingScript;
 import org.powerbot.bot.script.InternalScript;
 import org.powerbot.script.lang.Filter;
+import org.powerbot.script.rs3.tools.ClientContext;
 import org.powerbot.script.rs3.tools.Game;
 import org.powerbot.script.rs3.tools.Lobby;
 import org.powerbot.script.util.Random;
@@ -14,7 +15,7 @@ import org.powerbot.script.rs3.tools.Component;
 
 /**
  */
-public class Login extends PollingScript implements InternalScript {
+public class Login extends PollingScript<ClientContext> implements InternalScript {
 	private static final int WIDGET = 596;
 	private static final int WIDGET_LOGIN_ERROR = 57;
 	private static final int WIDGET_LOGIN_TRY_AGAIN = 84;

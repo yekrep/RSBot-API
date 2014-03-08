@@ -5,13 +5,14 @@ import java.util.concurrent.TimeUnit;
 
 import org.powerbot.script.PollingScript;
 import org.powerbot.bot.script.InternalScript;
+import org.powerbot.script.rs3.tools.ClientContext;
 import org.powerbot.script.util.Condition;
 import org.powerbot.script.util.Random;
 import org.powerbot.script.rs3.tools.Component;
 
 /**
  */
-public class WidgetCloser extends PollingScript implements InternalScript {
+public class WidgetCloser extends PollingScript<ClientContext> implements InternalScript {
 	private static final int[] COMPONENTS = {
 			906 << 16 | 545,//transaction
 			335 << 16 | 3,//trade window

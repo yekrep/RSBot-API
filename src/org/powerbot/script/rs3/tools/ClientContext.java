@@ -1,39 +1,23 @@
 package org.powerbot.script.rs3.tools;
 
-import java.util.Properties;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.powerbot.bot.rs3.Bot;
 import org.powerbot.bot.rs3.client.Client;
 import org.powerbot.bot.rs3.client.Constants;
-import org.powerbot.bot.script.KeyboardSimulator;
 import org.powerbot.bot.rs3.tools.Items;
 import org.powerbot.bot.rs3.tools.Map;
+import org.powerbot.bot.script.KeyboardSimulator;
 import org.powerbot.bot.script.ScriptController;
 import org.powerbot.script.lang.Script;
 
-public class ClientContext implements org.powerbot.script.lang.ClientContext {
+public class ClientContext extends org.powerbot.script.lang.ClientContext {
 	private final AtomicReference<Client> client;
-	private final AtomicReference<Bot> bot;
 	public final AtomicReference<KeyboardSimulator> inputHandler;
 	public final AtomicReference<Constants> constants;
 
-	/**
-	 * <p>A set of properties for the environment.</p>
-	 * <p/>
-	 * <table border="1" cellpadding="2">
-	 * <tr>
-	 * <th>Key</th>
-	 * <th>Meaning</th>
-	 * </tr>
-	 * <tr>
-	 * <td>{@code "login.world"}</td>
-	 * <td>The preferred world to log into.</td>
-	 * </tr>
-	 * </table>
-	 */
-	public final Properties properties;
 	public final Script.Controller controller;
+
 	public final CombatBar combatBar;
 	public final Bank bank;
 	public final Camera camera;
@@ -64,13 +48,13 @@ public class ClientContext implements org.powerbot.script.lang.ClientContext {
 	final Map map;
 
 	private ClientContext(final Bot bot) {
+		super(bot);
 		client = new AtomicReference<Client>(null);
-		this.bot = new AtomicReference<Bot>(bot);
 		inputHandler = new AtomicReference<KeyboardSimulator>(null);
 		constants = new AtomicReference<Constants>(null);
 
-		properties = new Properties();
-		controller = new ScriptController(this);
+		controller = new ScriptController<ClientContext>(this);
+
 		combatBar = new CombatBar(this);
 		backpack = new Backpack(this);
 		bank = new Bank(this);
@@ -106,13 +90,14 @@ public class ClientContext implements org.powerbot.script.lang.ClientContext {
 	}
 
 	public ClientContext(final ClientContext ctx) {
+		super(ctx.bot());
+
 		client = ctx.client;
-		bot = ctx.bot;
 		inputHandler = ctx.inputHandler;
 		constants = ctx.constants;
 
-		properties = ctx.properties;
 		controller = ctx.controller;
+
 		combatBar = ctx.combatBar;
 		backpack = ctx.backpack;
 		bank = ctx.bank;
@@ -151,7 +136,7 @@ public class ClientContext implements org.powerbot.script.lang.ClientContext {
 		return client.get();
 	}
 
-	public Bot getBot() {
-		return bot.get();
+	public final Script.Controller controller() {
+		return controller;
 	}
 }

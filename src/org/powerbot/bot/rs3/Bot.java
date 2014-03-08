@@ -1,6 +1,5 @@
 package org.powerbot.bot.rs3;
 
-import java.applet.Applet;
 import java.io.IOException;
 import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -18,27 +17,21 @@ import org.powerbot.bot.rs3.event.EventDispatcher;
 import org.powerbot.bot.script.KeyboardSimulator;
 import org.powerbot.bot.script.ScriptClassLoader;
 import org.powerbot.gui.BotChrome;
-import org.powerbot.script.lang.Stoppable;
 import org.powerbot.script.rs3.tools.ClientContext;
 import org.powerbot.script.util.Condition;
 import org.powerbot.script.rs3.tools.Validatable;
 
-public final class Bot implements Runnable, Stoppable, Validatable {
+public final class Bot extends org.powerbot.script.lang.Bot implements Validatable {
 	private static final Logger log = Logger.getLogger(Bot.class.getName());
-	private static final String GROUP = "game";
 	private final BotChrome chrome;
 	public final ClientContext ctx;
-	public final ThreadGroup threadGroup;
-	public final EventDispatcher dispatcher;
-	public Applet applet;
 	private final AtomicBoolean ready, stopping;
 	public final AtomicBoolean pending;
 
 	public Bot(final BotChrome chrome) {
+		super(chrome, new EventDispatcher());
 		this.chrome = chrome;
-		threadGroup = new ThreadGroup(GROUP);
 		ctx = ClientContext.newContext(this);
-		dispatcher = new EventDispatcher();
 		ready = new AtomicBoolean(false);
 		stopping = new AtomicBoolean(false);
 		pending = new AtomicBoolean(false);
@@ -142,13 +135,12 @@ public final class Bot implements Runnable, Stoppable, Validatable {
 		return ready.get();
 	}
 
-	@Override
 	public boolean isStopping() {
 		return stopping.get();
 	}
 
 	@Override
-	public void stop() {
+	public void close() {
 		if (Thread.currentThread().getContextClassLoader() instanceof ScriptClassLoader) {
 			ctx.controller.stop();
 			return;
@@ -161,7 +153,7 @@ public final class Bot implements Runnable, Stoppable, Validatable {
 		log.info("Unloading game");
 
 		ctx.controller.stop();
-		dispatcher.stop();
+		dispatcher.close();
 
 		if (applet != null) {
 			new Thread(threadGroup, new Runnable() {

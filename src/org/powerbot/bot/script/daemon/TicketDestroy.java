@@ -4,6 +4,7 @@ import java.util.concurrent.Callable;
 
 import org.powerbot.script.PollingScript;
 import org.powerbot.bot.script.InternalScript;
+import org.powerbot.script.rs3.tools.ClientContext;
 import org.powerbot.script.rs3.tools.Hud;
 import org.powerbot.script.util.Condition;
 import org.powerbot.script.util.Random;
@@ -13,7 +14,7 @@ import org.powerbot.script.rs3.tools.Widget;
 
 /**
  */
-public class TicketDestroy extends PollingScript implements InternalScript {
+public class TicketDestroy extends PollingScript<ClientContext> implements InternalScript {
 	private static final int[] ITEM_IDS = {24154, 24155};
 
 	@Override

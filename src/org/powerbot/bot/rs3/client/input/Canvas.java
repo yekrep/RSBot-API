@@ -6,9 +6,9 @@ import java.awt.image.BufferedImage;
 
 import org.powerbot.bot.rs3.Bot;
 import org.powerbot.bot.SelectiveEventQueue;
-import org.powerbot.bot.rs3.event.EventDispatcher;
 import org.powerbot.bot.rs3.event.PaintEvent;
 import org.powerbot.bot.rs3.event.TextPaintEvent;
+import org.powerbot.bot.script.EventDispatcher;
 import org.powerbot.gui.BotChrome;
 
 public class Canvas extends java.awt.Canvas {

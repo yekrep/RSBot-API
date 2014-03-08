@@ -180,7 +180,7 @@ public class MouseSimulator extends ClientAccessor {
 	}
 
 	public Component getSource() {
-		final Applet applet = ctx.getBot().applet;
+		final Applet applet = ctx.bot().applet;
 		return applet != null && applet.getComponentCount() > 0 ? applet.getComponent(0) : null;
 	}
 
