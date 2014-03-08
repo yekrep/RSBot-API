@@ -47,23 +47,29 @@ public class TarReader implements Iterator<Map.Entry<String, byte[]>>, Iterable<
 	}
 
 	private Map.Entry<String, byte[]> getNext() throws IOException {
-		int r;
 		final byte[] name = new byte[100];
-		r = in.read(name);
+		in.read(name);
 		if (name[0] == 0) {
 			in.close();
 			return null;
 		}
 
-		r += in.skip(124 - r);
+		in.skip(24);
 		final byte[] size = new byte[12];
-		r += in.read(size);
+		in.read(size);
 
-		int l = Integer.parseInt(newString(size).trim(), 8), x = (int) (Math.ceil(l / 512d) * 512d);
-		r += in.skip(512 - r);
+		int l = Integer.parseInt(newString(size).trim(), 8);
+		in.skip(512 - 136);
 		final byte[] d = new byte[l];
-		r += in.read(d);
-		in.skip(x - l);
+		l = 0;
+		while (l < d.length) {
+			l += in.read(d, l, d.length - l);
+		}
+
+		l = 512 - (l % 512);
+		if (l > 0) {
+			in.skip(l);
+		}
 
 		return new AbstractMap.SimpleImmutableEntry<String, byte[]>(newString(name), d);
 	}
