@@ -7,7 +7,6 @@ import java.lang.ref.WeakReference;
 import org.powerbot.bot.os.client.BasicObject;
 import org.powerbot.bot.os.client.Client;
 import org.powerbot.bot.os.client.MRUCache;
-import org.powerbot.bot.os.client.Node;
 import org.powerbot.bot.os.client.ObjConfig;
 import org.powerbot.bot.os.client.VarBit;
 import org.powerbot.script.os.tools.HashTable;
@@ -35,30 +34,29 @@ public class GameObject extends Interactive implements Nameable, Locatable, Iden
 	@Override
 	public int getId() {
 		final Client client = ctx.client();
+		if (client == null) {
+			return -1;
+		}
 		final BasicObject object = this.object.get();
 		final int id = object != null ? (object.getUid() >> 14) & 0xffff : -1;
-		final ObjConfig config = null;//TODO
-		if (client != null && config != null && id != -1) {
-			if (config != null) {
-				final int varbit = config.getVarBit(), si = config.getSettingsIndex();
-				int index = -1;
-				if (varbit != -1) {
-					final MRUCache cache = client.getVarBitMRUCache();
-					for (final VarBit varBit : new HashTable<VarBit>(cache != null ? cache.getHashTable() : null, VarBit.class)) {
-						if (varBit.getId() == varbit) {//TODO
-							final int mask = lookup[varBit.getEndBit() - varBit.getStartBit()];
-							index = ctx.varpbits.getVarpbit(varBit.getIndex()) >> varBit.getStartBit() & mask;
-							break;
-						}
-					}
-				} else if (si != -1) {
-					index = ctx.varpbits.getVarpbit(si);
+		final ObjConfig config = (ObjConfig) HashTable.lookup(client.getObjConfigMRUCache(), id);
+		if (config != null) {
+			int index = -1;
+			final int varbit = config.getVarBit(), si = config.getSettingsIndex();
+			if (varbit != -1) {
+				final MRUCache cache = client.getVarBitMRUCache();
+				final VarBit varBit = (VarBit) HashTable.lookup(cache, varbit);
+				if (varBit != null) {
+					final int mask = lookup[varBit.getEndBit() - varBit.getStartBit()];
+					index = ctx.varpbits.getVarpbit(varBit.getIndex()) >> varBit.getStartBit() & mask;
 				}
-				if (index >= 0) {
-					final int[] configs = config.getConfigs();
-					if (configs != null && index < configs.length && configs[index] != -1) {
-						return configs[index];
-					}
+			} else if (si != -1) {
+				index = ctx.varpbits.getVarpbit(si);
+			}
+			if (index >= 0) {
+				final int[] configs = config.getConfigs();
+				if (configs != null && index < configs.length && configs[index] != -1) {
+					return configs[index];
 				}
 			}
 		}
@@ -117,17 +115,18 @@ public class GameObject extends Interactive implements Nameable, Locatable, Iden
 
 	private ObjConfig getConfig() {
 		final Client client = ctx.client();
+		if (client == null) {
+			return null;
+		}
 		final BasicObject object = this.object.get();
 		final int id = object != null ? (object.getUid() >> 14) & 0xffff : -1, uid = getId();
 		if (id != uid) {
-			final MRUCache cache = client.getNPCConfigMRUCache();
-			for (final ObjConfig c : new HashTable<ObjConfig>(cache != null ? cache.getHashTable() : null, ObjConfig.class)) {
-				if (((Node) c).getId() == uid) {//TODO
-					return c;
-				}
+			final ObjConfig alt = (ObjConfig) HashTable.lookup(client.getObjConfigMRUCache(), uid);
+			if (alt != null) {
+				return alt;
 			}
 		}
-		return null;//TODO this
+		return (ObjConfig) HashTable.lookup(client.getObjConfigMRUCache(), id);
 	}
 
 	@Override

@@ -59,12 +59,10 @@ public class Npc extends Actor implements Identifiable {
 			int index = -1;
 			if (varbit != -1) {
 				final MRUCache cache = client.getVarBitMRUCache();
-				for (final VarBit varBit : new HashTable<VarBit>(cache != null ? cache.getHashTable() : null, VarBit.class)) {
-					if (varBit.getId() == varbit) {//TODO
-						final int mask = lookup[varBit.getEndBit() - varBit.getStartBit()];
-						index = ctx.varpbits.getVarpbit(varBit.getIndex()) >> varBit.getStartBit() & mask;
-						break;
-					}
+				final VarBit varBit = (VarBit) HashTable.lookup(cache, varbit);
+				if (varBit != null) {
+					final int mask = lookup[varBit.getEndBit() - varBit.getStartBit()];
+					index = ctx.varpbits.getVarpbit(varBit.getIndex()) >> varBit.getStartBit() & mask;
 				}
 			} else if (si != -1) {
 				index = ctx.varpbits.getVarpbit(si);
@@ -103,11 +101,9 @@ public class Npc extends Actor implements Identifiable {
 		}
 		final int id = config.getId(), uid = getId();
 		if (id != uid) {
-			final MRUCache cache = client.getNPCConfigMRUCache();
-			for (final NpcConfig c : new HashTable<NpcConfig>(cache != null ? cache.getHashTable() : null, NpcConfig.class)) {
-				if (c.getId() == uid) {
-					return c;
-				}
+			final NpcConfig c = (NpcConfig) HashTable.lookup(client.getNPCConfigMRUCache(), uid);
+			if (c != null) {
+				return c;
 			}
 		}
 		return config;
