@@ -4,10 +4,10 @@ import java.awt.Graphics;
 
 import org.powerbot.script.PaintListener;
 import org.powerbot.script.TextPaintListener;
-import org.powerbot.script.rs3.tools.ClientContext;
-import org.powerbot.script.rs3.tools.Projectile;
-import org.powerbot.script.rs3.tools.Tile;
-import org.powerbot.script.rs3.tools.TileMatrix;
+import org.powerbot.script.rs3.ClientContext;
+import org.powerbot.script.rs3.Projectile;
+import org.powerbot.script.rs3.Tile;
+import org.powerbot.script.rs3.TileMatrix;
 
 public class DrawProjectiles implements PaintListener, TextPaintListener {
 	private final ClientContext ctx;

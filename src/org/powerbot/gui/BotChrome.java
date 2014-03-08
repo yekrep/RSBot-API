@@ -23,11 +23,11 @@ import javax.swing.JPopupMenu;
 import javax.swing.WindowConstants;
 
 import org.powerbot.Configuration;
-import org.powerbot.bot.rs3.Bot;
 import org.powerbot.bot.SelectiveEventQueue;
 import org.powerbot.misc.CryptFile;
 import org.powerbot.misc.Resources;
 import org.powerbot.misc.Tracker;
+import org.powerbot.script.Bot;
 import org.powerbot.util.IOUtils;
 
 public class BotChrome extends JFrame implements Closeable {

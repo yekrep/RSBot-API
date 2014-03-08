@@ -17,7 +17,7 @@ import org.powerbot.misc.CryptFile;
 import org.powerbot.misc.GameAccounts;
 import org.powerbot.misc.NetworkAccount;
 import org.powerbot.misc.Tracker;
-import org.powerbot.script.rs3.tools.Keyboard;
+import org.powerbot.script.rs3.Keyboard;
 import org.powerbot.util.StringUtils;
 
 class Sandbox extends SecurityManager {

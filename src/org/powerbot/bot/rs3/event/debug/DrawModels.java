@@ -4,12 +4,12 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 import org.powerbot.script.PaintListener;
-import org.powerbot.script.rs3.tools.ClientContext;
-import org.powerbot.script.rs3.tools.GameObject;
-import org.powerbot.script.rs3.tools.GroundItem;
-import org.powerbot.script.rs3.tools.Model;
-import org.powerbot.script.rs3.tools.Npc;
-import org.powerbot.script.rs3.tools.Player;
+import org.powerbot.script.rs3.ClientContext;
+import org.powerbot.script.rs3.GameObject;
+import org.powerbot.script.rs3.GroundItem;
+import org.powerbot.script.rs3.Model;
+import org.powerbot.script.rs3.Npc;
+import org.powerbot.script.rs3.Player;
 
 public class DrawModels implements PaintListener {
 	private static final Color[] C = {Color.GREEN, Color.WHITE, Color.BLACK, Color.BLUE};

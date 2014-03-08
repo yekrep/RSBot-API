@@ -17,7 +17,7 @@ import org.powerbot.bot.rs3.event.EventDispatcher;
 import org.powerbot.bot.KeyboardSimulator;
 import org.powerbot.bot.ScriptClassLoader;
 import org.powerbot.gui.BotChrome;
-import org.powerbot.script.rs3.tools.ClientContext;
+import org.powerbot.script.rs3.ClientContext;
 import org.powerbot.script.Condition;
 import org.powerbot.script.rs3.tools.Validatable;
 

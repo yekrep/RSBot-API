@@ -4,8 +4,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.powerbot.bot.InternalScript;
 import org.powerbot.script.PollingScript;
-import org.powerbot.script.rs3.tools.ClientAccessor;
-import org.powerbot.script.rs3.tools.ClientContext;
+import org.powerbot.script.rs3.ClientAccessor;
+import org.powerbot.script.rs3.ClientContext;
 import org.powerbot.script.Random;
 
 public class Antipattern extends PollingScript<ClientContext> implements InternalScript {

@@ -2,8 +2,8 @@ package org.powerbot.bot.rs3.daemon;
 
 import java.util.Arrays;
 
-import org.powerbot.script.rs3.tools.ClientContext;
-import org.powerbot.script.rs3.tools.Hud;
+import org.powerbot.script.rs3.ClientContext;
+import org.powerbot.script.rs3.Hud;
 import org.powerbot.script.Random;
 
 public class WindowPattern extends Antipattern.Module {

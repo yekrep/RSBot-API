@@ -4,12 +4,12 @@ import java.util.concurrent.Callable;
 
 import org.powerbot.script.PollingScript;
 import org.powerbot.bot.InternalScript;
-import org.powerbot.script.rs3.tools.ClientContext;
-import org.powerbot.script.rs3.tools.Hud;
+import org.powerbot.script.rs3.ClientContext;
+import org.powerbot.script.rs3.Hud;
 import org.powerbot.script.Condition;
-import org.powerbot.script.rs3.tools.Component;
-import org.powerbot.script.rs3.tools.Item;
-import org.powerbot.script.rs3.tools.Widget;
+import org.powerbot.script.rs3.Component;
+import org.powerbot.script.rs3.Item;
+import org.powerbot.script.rs3.Widget;
 
 /**
  */

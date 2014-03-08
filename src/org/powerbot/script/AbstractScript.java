@@ -43,7 +43,7 @@ public abstract class AbstractScript<C extends ClientContext> implements Script,
 	public final Logger log = Logger.getLogger(getClass().getName());
 
 	/**
-	 * The {@link org.powerbot.script.rs3.tools.ClientContext} for accessing client data.
+	 * The {@link org.powerbot.script.rs3.ClientContext} for accessing client data.
 	 */
 	protected final C ctx;
 

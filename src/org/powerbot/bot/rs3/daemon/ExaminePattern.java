@@ -1,12 +1,12 @@
 package org.powerbot.bot.rs3.daemon;
 
 import org.powerbot.script.Filter;
-import org.powerbot.script.rs3.tools.ClientContext;
-import org.powerbot.script.rs3.tools.Menu;
+import org.powerbot.script.rs3.ClientContext;
+import org.powerbot.script.rs3.Menu;
 import org.powerbot.script.Random;
-import org.powerbot.script.rs3.tools.GameObject;
-import org.powerbot.script.rs3.tools.Interactive;
-import org.powerbot.script.rs3.tools.Npc;
+import org.powerbot.script.rs3.GameObject;
+import org.powerbot.script.rs3.Interactive;
+import org.powerbot.script.rs3.Npc;
 
 public class ExaminePattern extends Antipattern.Module {
 

@@ -6,8 +6,8 @@ import org.powerbot.bot.rs3.client.RSObjectDef;
 import org.powerbot.bot.rs3.client.Render;
 import org.powerbot.bot.EventDispatcher;
 import org.powerbot.script.MessageEvent;
-import org.powerbot.script.rs3.tools.Camera;
-import org.powerbot.script.rs3.tools.ClientContext;
+import org.powerbot.script.rs3.Camera;
+import org.powerbot.script.rs3.ClientContext;
 import org.powerbot.script.Vector3f;
 
 public class AbstractCallback implements Callback {

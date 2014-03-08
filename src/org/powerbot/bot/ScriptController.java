@@ -16,7 +16,7 @@ import org.powerbot.script.AbstractScript;
 import org.powerbot.script.ClientAccessor;
 import org.powerbot.script.ClientContext;
 import org.powerbot.script.Script;
-import org.powerbot.script.rs3.tools.Validatable;
+import org.powerbot.script.rs3.Validatable;
 
 public final class ScriptController<C extends ClientContext> extends ClientAccessor<C> implements Runnable, Validatable, Script.Controller {
 	public static final String TIMEOUT_PROPERTY = "script.timeout", LOCAL_PROPERTY = "script.local";

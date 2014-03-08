@@ -16,7 +16,7 @@ import javax.swing.JMenuItem;
 import org.powerbot.bot.rs3.Bot;
 import org.powerbot.bot.rs3.event.debug.*;
 import org.powerbot.bot.EventDispatcher;
-import org.powerbot.script.rs3.tools.ClientContext;
+import org.powerbot.script.rs3.ClientContext;
 
 final class BotMenuView implements ActionListener {
 	private final Map<String, Class<? extends EventListener>> map;

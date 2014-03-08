@@ -1,6 +1,6 @@
 package org.powerbot.bot.rs3.daemon;
 
-import org.powerbot.script.rs3.tools.ClientContext;
+import org.powerbot.script.rs3.ClientContext;
 import org.powerbot.script.Random;
 
 public class CameraPattern extends Antipattern.Module {

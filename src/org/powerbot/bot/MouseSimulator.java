@@ -9,8 +9,8 @@ import java.util.concurrent.TimeUnit;
 
 import org.powerbot.bot.rs3.client.Client;
 import org.powerbot.bot.rs3.client.input.Mouse;
-import org.powerbot.script.rs3.tools.ClientAccessor;
-import org.powerbot.script.rs3.tools.ClientContext;
+import org.powerbot.script.rs3.ClientAccessor;
+import org.powerbot.script.rs3.ClientContext;
 import org.powerbot.script.Vector3;
 
 public class MouseSimulator extends ClientAccessor {

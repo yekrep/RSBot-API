@@ -3,8 +3,8 @@ package org.powerbot.bot.rs3.tools;
 import org.powerbot.bot.rs3.client.Client;
 import org.powerbot.bot.rs3.client.HashTable;
 import org.powerbot.bot.rs3.client.ItemSlot;
-import org.powerbot.script.rs3.tools.ClientAccessor;
-import org.powerbot.script.rs3.tools.ClientContext;
+import org.powerbot.script.rs3.ClientAccessor;
+import org.powerbot.script.rs3.ClientContext;
 
 public class Items extends ClientAccessor {
 	public static final int INDEX_INVENTORY = 93;

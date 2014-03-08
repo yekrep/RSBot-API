@@ -3,9 +3,9 @@ package org.powerbot.bot.rs3.event.debug;
 import java.awt.Graphics;
 
 import org.powerbot.script.TextPaintListener;
-import org.powerbot.script.rs3.tools.ClientContext;
-import org.powerbot.script.rs3.tools.Player;
-import org.powerbot.script.rs3.tools.Tile;
+import org.powerbot.script.rs3.ClientContext;
+import org.powerbot.script.rs3.Player;
+import org.powerbot.script.rs3.Tile;
 
 import static org.powerbot.bot.rs3.event.debug.DebugHelper.drawLine;
 

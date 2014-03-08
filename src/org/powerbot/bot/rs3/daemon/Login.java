@@ -7,11 +7,11 @@ import org.powerbot.misc.Tracker;
 import org.powerbot.script.PollingScript;
 import org.powerbot.bot.InternalScript;
 import org.powerbot.script.Filter;
-import org.powerbot.script.rs3.tools.ClientContext;
-import org.powerbot.script.rs3.tools.Game;
-import org.powerbot.script.rs3.tools.Lobby;
+import org.powerbot.script.rs3.ClientContext;
+import org.powerbot.script.rs3.Game;
+import org.powerbot.script.rs3.Lobby;
 import org.powerbot.script.Random;
-import org.powerbot.script.rs3.tools.Component;
+import org.powerbot.script.rs3.Component;
 
 /**
  */

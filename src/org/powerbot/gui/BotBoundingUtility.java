@@ -29,17 +29,17 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import org.powerbot.script.PaintListener;
-import org.powerbot.script.rs3.tools.ClientContext;
-import org.powerbot.script.rs3.tools.Drawable;
-import org.powerbot.script.rs3.tools.GameObject;
-import org.powerbot.script.rs3.tools.GroundItem;
-import org.powerbot.script.rs3.tools.Interactive;
-import org.powerbot.script.rs3.tools.Model;
-import org.powerbot.script.rs3.tools.Npc;
-import org.powerbot.script.rs3.tools.Player;
-import org.powerbot.script.rs3.tools.Renderable;
-import org.powerbot.script.rs3.tools.Tile;
-import org.powerbot.script.rs3.tools.TileMatrix;
+import org.powerbot.script.rs3.ClientContext;
+import org.powerbot.script.rs3.Drawable;
+import org.powerbot.script.rs3.GameObject;
+import org.powerbot.script.rs3.GroundItem;
+import org.powerbot.script.rs3.Interactive;
+import org.powerbot.script.rs3.Model;
+import org.powerbot.script.rs3.Npc;
+import org.powerbot.script.rs3.Player;
+import org.powerbot.script.rs3.Renderable;
+import org.powerbot.script.rs3.Tile;
+import org.powerbot.script.rs3.TileMatrix;
 
 class BotBoundingUtility extends JFrame implements PaintListener, MouseListener, MouseMotionListener {
 	private static final AtomicReference<BotBoundingUtility> instance = new AtomicReference<BotBoundingUtility>(null);

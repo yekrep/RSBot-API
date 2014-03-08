@@ -5,10 +5,10 @@ import java.util.concurrent.TimeUnit;
 
 import org.powerbot.script.PollingScript;
 import org.powerbot.bot.InternalScript;
-import org.powerbot.script.rs3.tools.ClientContext;
+import org.powerbot.script.rs3.ClientContext;
 import org.powerbot.script.Condition;
 import org.powerbot.script.Random;
-import org.powerbot.script.rs3.tools.Component;
+import org.powerbot.script.rs3.Component;
 
 /**
  */

@@ -11,7 +11,7 @@ import java.util.LinkedList;
 import org.powerbot.bot.rs3.client.Client;
 import org.powerbot.bot.rs3.client.input.Mouse;
 import org.powerbot.script.PaintListener;
-import org.powerbot.script.rs3.tools.ClientContext;
+import org.powerbot.script.rs3.ClientContext;
 
 /**
  */

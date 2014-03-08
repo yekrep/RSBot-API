@@ -3,7 +3,7 @@ package org.powerbot.bot;
 import java.awt.Point;
 
 import org.powerbot.script.Filter;
-import org.powerbot.script.rs3.tools.Targetable;
+import org.powerbot.script.rs3.Targetable;
 import org.powerbot.script.Vector3;
 
 public abstract class MouseTarget {

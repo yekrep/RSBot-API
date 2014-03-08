@@ -7,10 +7,10 @@ import java.awt.Point;
 import java.awt.Rectangle;
 
 import org.powerbot.script.PaintListener;
-import org.powerbot.script.rs3.tools.Bank;
-import org.powerbot.script.rs3.tools.ClientContext;
-import org.powerbot.script.rs3.tools.Component;
-import org.powerbot.script.rs3.tools.Item;
+import org.powerbot.script.rs3.Bank;
+import org.powerbot.script.rs3.ClientContext;
+import org.powerbot.script.rs3.Component;
+import org.powerbot.script.rs3.Item;
 
 public class DrawItems implements PaintListener {
 	private final ClientContext ctx;
