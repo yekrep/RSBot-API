@@ -25,7 +25,7 @@ public final class ScriptClassLoader extends ClassLoader {
 		files = null;
 	}
 
-	public ScriptClassLoader(final TarReader in) {
+	public ScriptClassLoader(final Iterable<Map.Entry<String, byte[]>> in) {
 		files = new HashMap<String, byte[]>();
 		for (final Map.Entry<String, byte[]> e : in) {
 			files.put(e.getKey(), e.getValue());
