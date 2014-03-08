@@ -4,6 +4,7 @@ import java.lang.ref.WeakReference;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+import org.powerbot.bot.os.client.MRUCache;
 import org.powerbot.bot.os.client.Node;
 
 public class HashTable<N> implements Iterator<N>, Iterable<N> {
@@ -65,6 +66,24 @@ public class HashTable<N> implements Iterator<N>, Iterable<N> {
 	@Override
 	public void remove() {
 		throw new UnsupportedOperationException();
+	}
+
+	public static Object lookup(final MRUCache table, final long id) {
+		return lookup(table != null ? table.getHashTable() : null, id);
+	}
+
+	public static Object lookup(final org.powerbot.bot.os.client.HashTable table, final long id) {
+		final Node[] buckets;
+		if (table == null || (buckets = table.getBuckets()) == null || id < 0) {
+			return null;
+		}
+		final Node n = buckets[(int) (id & buckets.length - 1)];
+		for (Node node = n.getNext(); node != n && node != null; node = node.getNext()) {
+			if (node.getId() == id) {
+				return node;
+			}
+		}
+		return null;
 	}
 }
 
