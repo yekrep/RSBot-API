@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 import org.powerbot.bot.EventDispatcher;
+import org.powerbot.bot.InputSimulator;
 import org.powerbot.bot.SelectiveEventQueue;
 import org.powerbot.bot.os.Bot;
 import org.powerbot.bot.os.event.PaintEvent;
@@ -29,8 +30,9 @@ public class Canvas extends java.awt.Canvas {
 				chrome.requestFocusInWindow();
 			}
 		});
-		if (queue.isBlocking()) {
-			//TODO: FOCUS
+		final InputSimulator s = queue.getEngine();
+		if (s != null) {
+			s.focus();
 		}
 	}
 

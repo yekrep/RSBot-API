@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenu;
 
+import org.powerbot.bot.InputSimulator;
 import org.powerbot.bot.SelectiveEventQueue;
 
 final class BotMenuInput {
@@ -25,7 +26,10 @@ final class BotMenuInput {
 			item.addActionListener(new ActionListener() {
 				public void actionPerformed(final ActionEvent e1) {
 					eq.setBlocking(b);
-					//TODO focus if blocking
+					final InputSimulator s = eq.getEngine();
+					if (s != null) {
+						s.focus();
+					}
 				}
 			});
 			menu.add(item);
