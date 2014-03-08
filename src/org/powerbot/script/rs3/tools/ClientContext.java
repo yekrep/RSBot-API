@@ -5,6 +5,11 @@ import java.util.concurrent.atomic.AtomicReference;
 import org.powerbot.bot.rs3.Bot;
 import org.powerbot.bot.rs3.client.Client;
 import org.powerbot.bot.rs3.client.Constants;
+import org.powerbot.bot.rs3.daemon.Antipattern;
+import org.powerbot.bot.rs3.daemon.BankPin;
+import org.powerbot.bot.rs3.daemon.Login;
+import org.powerbot.bot.rs3.daemon.TicketDestroy;
+import org.powerbot.bot.rs3.daemon.WidgetCloser;
 import org.powerbot.bot.rs3.tools.Items;
 import org.powerbot.bot.rs3.tools.Map;
 import org.powerbot.bot.script.KeyboardSimulator;
@@ -54,6 +59,13 @@ public class ClientContext extends org.powerbot.script.ClientContext {
 		constants = new AtomicReference<Constants>(null);
 
 		controller = new ScriptController<ClientContext>(this);
+		((ScriptController) controller).daemons = new Class[]{
+				Login.class,
+				WidgetCloser.class,
+				TicketDestroy.class,
+				BankPin.class,
+				Antipattern.class,
+		};
 
 		combatBar = new CombatBar(this);
 		backpack = new Backpack(this);

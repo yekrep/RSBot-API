@@ -17,11 +17,6 @@ import org.powerbot.script.AbstractScript;
 import org.powerbot.script.ClientAccessor;
 import org.powerbot.script.ClientContext;
 import org.powerbot.script.Script;
-import org.powerbot.bot.rs3.daemon.Antipattern;
-import org.powerbot.bot.rs3.daemon.BankPin;
-import org.powerbot.bot.rs3.daemon.Login;
-import org.powerbot.bot.rs3.daemon.TicketDestroy;
-import org.powerbot.bot.rs3.daemon.WidgetCloser;
 import org.powerbot.script.rs3.tools.Validatable;
 
 public final class ScriptController<C extends ClientContext> extends ClientAccessor<C> implements Runnable, Validatable, Script.Controller {
@@ -30,11 +25,11 @@ public final class ScriptController<C extends ClientContext> extends ClientAcces
 	private final ThreadGroup group;
 	private final AtomicReference<ThreadPoolExecutor> executor;
 	private final Queue<Script> scripts;
-	private final Class<? extends Script>[] daemons;
 	private final AtomicReference<Thread> timeout;
 	private final Runnable suspension;
 	private final AtomicBoolean started, suspended, stopping;
 
+	public Class<? extends Script>[] daemons;
 	public final AtomicReference<ScriptBundle> bundle;
 
 	public ScriptController(final C ctx) {
@@ -47,16 +42,9 @@ public final class ScriptController<C extends ClientContext> extends ClientAcces
 		suspended = new AtomicBoolean(false);
 		stopping = new AtomicBoolean(false);
 
-		bundle = new AtomicReference<ScriptBundle>(null);
-
 		//noinspection unchecked
-		daemons = new Class[]{
-				Login.class,
-				WidgetCloser.class,
-				TicketDestroy.class,
-				BankPin.class,
-				Antipattern.class,
-		};
+		daemons = new Class[]{};
+		bundle = new AtomicReference<ScriptBundle>(null);
 		scripts = new PriorityQueue<Script>(daemons.length + 1);
 
 		suspension = new Runnable() {
