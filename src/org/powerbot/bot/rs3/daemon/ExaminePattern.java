@@ -1,4 +1,4 @@
-package org.powerbot.bot.script.daemon;
+package org.powerbot.bot.rs3.daemon;
 
 import org.powerbot.script.Filter;
 import org.powerbot.script.rs3.tools.ClientContext;

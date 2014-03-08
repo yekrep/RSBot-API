@@ -1,4 +1,4 @@
-package org.powerbot.bot.script.daemon;
+package org.powerbot.bot.rs3.daemon;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
