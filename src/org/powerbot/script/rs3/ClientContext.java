@@ -2,6 +2,8 @@ package org.powerbot.script.rs3;
 
 import java.util.concurrent.atomic.AtomicReference;
 
+import org.powerbot.bot.KeyboardSimulator;
+import org.powerbot.bot.ScriptController;
 import org.powerbot.bot.rs3.Bot;
 import org.powerbot.bot.rs3.client.Client;
 import org.powerbot.bot.rs3.client.Constants;
@@ -12,8 +14,7 @@ import org.powerbot.bot.rs3.daemon.TicketDestroy;
 import org.powerbot.bot.rs3.daemon.WidgetCloser;
 import org.powerbot.bot.rs3.tools.Items;
 import org.powerbot.bot.rs3.tools.Map;
-import org.powerbot.bot.KeyboardSimulator;
-import org.powerbot.bot.ScriptController;
+import org.powerbot.script.Mouse;
 import org.powerbot.script.Script;
 
 public class ClientContext extends org.powerbot.script.ClientContext<Client> {

@@ -25,7 +25,7 @@ final class BotMenuInput {
 			item.addActionListener(new ActionListener() {
 				public void actionPerformed(final ActionEvent e1) {
 					eq.setBlocking(b);
-					eq.focus();
+					//TODO focus if blocking
 				}
 			});
 			menu.add(item);

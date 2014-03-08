@@ -12,6 +12,8 @@ import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
 import java.util.EventListener;
 
+import org.powerbot.script.PaintListener;
+
 /**
  * An event that is dispatched when the game requests the graphic buffer.
  *

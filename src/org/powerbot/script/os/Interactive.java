@@ -6,6 +6,7 @@ import java.util.concurrent.Callable;
 
 import org.powerbot.script.Filter;
 import org.powerbot.script.Condition;
+import org.powerbot.script.Targetable;
 
 public abstract class Interactive extends ClientAccessor implements Targetable, Validatable {
 	public Interactive(final ClientContext ctx) {

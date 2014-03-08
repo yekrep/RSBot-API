@@ -19,8 +19,6 @@ import org.powerbot.bot.rs3.client.Sequence;
 import org.powerbot.script.Filter;
 
 public abstract class Actor extends Interactive implements Renderable, Nameable, Locatable, Drawable {
-	private int faceIndex = -1;
-
 	public Actor(final ClientContext ctx) {
 		super(ctx);
 	}
@@ -254,32 +252,6 @@ public abstract class Actor extends Interactive implements Renderable, Nameable,
 	}
 
 	@Override
-	public Point getInteractPoint() {
-		final RSCharacter character = getAccessor();
-		if (character == null) {
-			return new Point(-1, -1);
-		}
-
-		final Model model = getModel();
-		if (model != null) {
-			Point point = model.getCentroid(faceIndex);
-			if (point != null) {
-				return point;
-			}
-			point = model.getCentroid(faceIndex = model.nextTriangle());
-			if (point != null) {
-				return point;
-			}
-		}
-		final BoundingModel model2 = boundingModel.get();
-		if (model2 != null) {
-			return model2.getNextPoint();
-		}
-		final TileCuboid cuboid = new TileCuboid(ctx, character);
-		return cuboid.getInteractPoint();
-	}
-
-	@Override
 	public Point getNextPoint() {
 		final RSCharacter character = getAccessor();
 		if (character == null) {
@@ -298,7 +270,6 @@ public abstract class Actor extends Interactive implements Renderable, Nameable,
 		return cuboid.getNextPoint();
 	}
 
-	@Override
 	public Point getCenterPoint() {
 		final RSCharacter character = getAccessor();
 		if (character == null) {

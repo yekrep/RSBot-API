@@ -3,9 +3,6 @@ package org.powerbot.bot.rs3.client;
 import java.awt.Canvas;
 import java.awt.Rectangle;
 
-import org.powerbot.bot.rs3.client.input.Keyboard;
-import org.powerbot.bot.rs3.client.input.Mouse;
-
 public interface Client extends org.powerbot.script.Client {
 	public Callback getCallback();
 
@@ -36,8 +33,6 @@ public interface Client extends org.powerbot.script.Client {
 	public boolean isMenuOpen();
 
 	public float getMinimapAngle();
-
-	public Mouse getMouse();
 
 	public int getLoginIndex();
 
@@ -74,8 +69,6 @@ public interface Client extends org.powerbot.script.Client {
 	public int getMenuX();
 
 	public int getGUIRSInterfaceIndex();
-
-	public Keyboard getKeyboard();
 
 	public String getSelectedItemName();
 

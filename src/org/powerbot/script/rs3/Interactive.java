@@ -4,8 +4,9 @@ import java.awt.Point;
 import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.powerbot.script.Filter;
 import org.powerbot.script.Condition;
+import org.powerbot.script.Filter;
+import org.powerbot.script.Targetable;
 
 public abstract class Interactive extends ClientAccessor implements Targetable, Validatable {
 	protected final AtomicReference<BoundingModel> boundingModel;
@@ -42,7 +43,12 @@ public abstract class Interactive extends ClientAccessor implements Targetable, 
 	}
 
 	public boolean hover() {
-		return isValid() && ctx.mouse.move(this);
+		return isValid() && ctx.mouse.apply(this, new Filter<Point>() {
+			@Override
+			public boolean accept(final Point point) {
+				return true;
+			}
+		});
 	}
 
 	public boolean click() {
@@ -50,7 +56,7 @@ public abstract class Interactive extends ClientAccessor implements Targetable, 
 	}
 
 	public boolean click(final boolean left) {
-		return isValid() && ctx.mouse.click(this, left);
+		return hover() && ctx.mouse.click(left);
 	}
 
 	public static Filter<Interactive> doInteract(final String action) {
@@ -96,7 +102,7 @@ public abstract class Interactive extends ClientAccessor implements Targetable, 
 			}
 		};
 
-		if (ctx.mouse.move(this, f2) && ctx.menu.click(f)) {
+		if (ctx.mouse.apply(this, f2) && ctx.menu.click(f)) {
 			return true;
 		}
 

@@ -138,26 +138,6 @@ public class GameObject extends Interactive implements Renderable, Locatable, Na
 	}
 
 	@Override
-	public Point getInteractPoint() {
-		final Model model = getModel();
-		if (model != null) {
-			Point point = model.getCentroid(faceIndex);
-			if (point != null) {
-				return point;
-			}
-			point = model.getCentroid(faceIndex = model.nextTriangle());
-			if (point != null) {
-				return point;
-			}
-		}
-		final BoundingModel model2 = boundingModel.get();
-		if (model2 != null) {
-			return model2.getNextPoint();
-		}
-		return getLocation().getMatrix(ctx).getInteractPoint();
-	}
-
-	@Override
 	public Point getNextPoint() {
 		final Model model = getModel();
 		if (model != null) {
@@ -170,7 +150,6 @@ public class GameObject extends Interactive implements Renderable, Locatable, Na
 		return getLocation().getMatrix(ctx).getNextPoint();
 	}
 
-	@Override
 	public Point getCenterPoint() {
 		final Model model = getModel();
 		if (model != null) {

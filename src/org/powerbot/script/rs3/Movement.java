@@ -6,6 +6,8 @@ import java.util.concurrent.Callable;
 
 import org.powerbot.bot.rs3.client.Client;
 import org.powerbot.script.Condition;
+import org.powerbot.script.Filter;
+import org.powerbot.script.Targetable;
 
 public class Movement extends ClientAccessor {
 	public static final int WIDGET_MAP = 1465;
@@ -73,21 +75,17 @@ public class Movement extends ClientAccessor {
 			loc = getClosestOnMap(loc);
 		}
 		final Tile t = loc;
-		return ctx.mouse.click(new Targetable() {
+		final Filter<Point> f = new Filter<Point>() {
+			@Override
+			public boolean accept(final Point point) {
+				return ctx.mouse.click(true);
+			}
+		};
+		return ctx.mouse.apply(new Targetable() {
 			private final TileMatrix tile = t.getMatrix(ctx);
 
 			@Override
-			public Point getInteractPoint() {
-				return tile.getMapPoint();
-			}
-
-			@Override
 			public Point getNextPoint() {
-				return tile.getMapPoint();
-			}
-
-			@Override
-			public Point getCenterPoint() {
 				return tile.getMapPoint();
 			}
 
@@ -97,7 +95,7 @@ public class Movement extends ClientAccessor {
 				final Rectangle t = new Rectangle(p.x - 2, p.y - 2, 4, 4);
 				return t.contains(point);
 			}
-		}, true);
+		}, f);
 	}
 
 	/**

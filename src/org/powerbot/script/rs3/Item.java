@@ -73,14 +73,6 @@ public class Item extends Interactive implements Displayable, Identifiable, Name
 	}
 
 	@Override
-	public Point getInteractPoint() {
-		if (component == null) {
-			return new Point(-1, -1);
-		}
-		return component.getInteractPoint();
-	}
-
-	@Override
 	public Point getNextPoint() {
 		if (component == null) {
 			return new Point(-1, -1);
@@ -88,7 +80,6 @@ public class Item extends Interactive implements Displayable, Identifiable, Name
 		return component.getNextPoint();
 	}
 
-	@Override
 	public Point getCenterPoint() {
 		if (component == null) {
 			return new Point(-1, -1);

@@ -40,7 +40,7 @@ public class Component extends Interactive implements Drawable, Displayable {
 	}
 
 	public int getIndex() {
-		return this.index;
+		return index;
 	}
 
 	@Override
@@ -192,8 +192,6 @@ public class Component extends Interactive implements Drawable, Displayable {
 			if (bounds != null && index > 0 && index < bounds.length && bounds[index] != null) {
 				return new Point(bounds[index].x, bounds[index].y);
 			}
-			//x = getMasterX();
-			//y = getMasterY();
 		}
 		if (pId != -1) {
 			final Component child = ctx.widgets.get(pId >> 16, pId & 0xffff);
@@ -362,11 +360,6 @@ public class Component extends Interactive implements Drawable, Displayable {
 	}
 
 	@Override
-	public Point getInteractPoint() {
-		return getNextPoint();
-	}
-
-	@Override
 	public Point getNextPoint() {
 		final Rectangle interact = getInteractRectangle();
 		final int x = interact.x, y = interact.y;
@@ -377,7 +370,6 @@ public class Component extends Interactive implements Drawable, Displayable {
 		return new Point(-1, -1);
 	}
 
-	@Override
 	public Point getCenterPoint() {
 		final Rectangle interact = getInteractRectangle();
 		return interact.getWidth() != -1 && interact.getHeight() != -1 ? new Point((int) interact.getCenterX(), (int) interact.getCenterY()) : new Point(-1, -1);

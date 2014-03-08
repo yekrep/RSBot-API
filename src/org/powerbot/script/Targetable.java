@@ -1,4 +1,4 @@
-package org.powerbot.script.os;
+package org.powerbot.script;
 
 import java.awt.Point;
 

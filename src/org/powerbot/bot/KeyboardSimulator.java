@@ -14,7 +14,6 @@ import java.util.Map;
 import java.util.Queue;
 
 import org.powerbot.bot.rs3.client.Client;
-import org.powerbot.bot.rs3.client.input.Keyboard;
 import org.powerbot.script.Random;
 
 public class KeyboardSimulator {
@@ -76,13 +75,8 @@ public class KeyboardSimulator {
 	}
 
 	public void send(final Queue<KeyEvent> queue) {
-		final Keyboard keyboard = client.getKeyboard();
-		if (keyboard == null) {
-			return;
-		}
-
 		while (!queue.isEmpty()) {
-			keyboard.sendEvent(retimeKeyEvent(queue.poll()));
+			send(queue.poll());
 			final KeyEvent keyEvent = queue.peek();
 			if (keyEvent != null && keyEvent.getID() != KeyEvent.KEY_TYPED) {
 				try {
@@ -94,10 +88,7 @@ public class KeyboardSimulator {
 	}
 
 	public void send(final KeyEvent e) {
-		final Keyboard keyboard = client.getKeyboard();
-		if (keyboard != null) {
-			keyboard.sendEvent(e);
-		}
+		SelectiveEventQueue.getInstance().postEvent(new SelectiveEventQueue.RawAWTEvent(retimeKeyEvent(e)));
 	}
 
 	private Queue<KeyEvent> getKeyEvents(final String sequence) {

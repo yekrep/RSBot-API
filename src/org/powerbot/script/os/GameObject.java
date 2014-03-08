@@ -9,7 +9,6 @@ import org.powerbot.bot.os.client.Client;
 import org.powerbot.bot.os.client.MRUCache;
 import org.powerbot.bot.os.client.ObjectConfig;
 import org.powerbot.bot.os.client.VarBit;
-import org.powerbot.script.os.tools.HashTable;
 import org.powerbot.script.rs3.Nameable;
 
 public class GameObject extends Interactive implements Nameable, Locatable, Identifiable {

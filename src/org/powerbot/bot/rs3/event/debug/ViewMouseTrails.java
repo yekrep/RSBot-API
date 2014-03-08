@@ -8,8 +8,6 @@ import java.util.Deque;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-import org.powerbot.bot.rs3.client.Client;
-import org.powerbot.bot.rs3.client.input.Mouse;
 import org.powerbot.script.PaintListener;
 import org.powerbot.script.rs3.ClientContext;
 
@@ -25,13 +23,7 @@ public class ViewMouseTrails implements PaintListener {
 
 	@Override
 	public void repaint(final Graphics g) {
-		final Client c = ctx.client();
-		final Mouse m;
-		if (c == null || (m = c.getMouse()) == null) {
-			return;
-		}
-
-		h.offerFirst(m.getLocation());
+		h.offerFirst(ctx.mouse.getLocation());
 		if (h.size() < 3) {
 			return;
 		}

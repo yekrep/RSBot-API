@@ -6,15 +6,15 @@ import java.util.Map;
 
 import javax.swing.SwingUtilities;
 
-import org.powerbot.script.os.ClientContext;
+import org.powerbot.bot.os.client.Client;
 import org.powerbot.bot.os.event.EventDispatcher;
-import org.powerbot.bot.os.event.PaintListener;
 import org.powerbot.bot.os.loader.GameAppletLoader;
 import org.powerbot.bot.os.loader.GameCrawler;
 import org.powerbot.bot.os.loader.GameLoader;
 import org.powerbot.bot.os.loader.GameStub;
-import org.powerbot.bot.os.client.Client;
 import org.powerbot.gui.BotChrome;
+import org.powerbot.script.PaintListener;
+import org.powerbot.script.os.ClientContext;
 
 public class Bot extends org.powerbot.script.Bot {
 	public final ClientContext ctx;
@@ -93,7 +93,7 @@ public class Bot extends org.powerbot.script.Bot {
 		dispatcher.add(new PaintListener() {
 			@Override
 			public void repaint(final Graphics render) {
-
+				//TODO: ??
 			}
 		});
 	}

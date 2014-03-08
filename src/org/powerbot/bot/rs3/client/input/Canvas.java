@@ -4,11 +4,11 @@ import java.awt.AWTEvent;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
-import org.powerbot.bot.rs3.Bot;
+import org.powerbot.bot.EventDispatcher;
 import org.powerbot.bot.SelectiveEventQueue;
+import org.powerbot.bot.rs3.Bot;
 import org.powerbot.bot.rs3.event.PaintEvent;
 import org.powerbot.bot.rs3.event.TextPaintEvent;
-import org.powerbot.bot.EventDispatcher;
 import org.powerbot.gui.BotChrome;
 
 public class Canvas extends java.awt.Canvas {
@@ -19,21 +19,21 @@ public class Canvas extends java.awt.Canvas {
 	private final Bot bot;
 
 	public Canvas() {
-		bot = (Bot) BotChrome.getInstance().bot.get();
-		final SelectiveEventQueue queue = SelectiveEventQueue.getInstance();
-		SelectiveEventQueue.pushSelectiveQueue();
-
+		final BotChrome chrome = BotChrome.getInstance();
+		bot = (Bot) chrome.bot.get();
 		paintEvent = new PaintEvent();
 		textPaintEvent = new TextPaintEvent();
 
-		queue.block(this, new SelectiveEventQueue.EventCallback() {
+		SelectiveEventQueue.pushSelectiveQueue();
+		final SelectiveEventQueue queue = SelectiveEventQueue.getInstance();
+		queue.target(this, new SelectiveEventQueue.EventCallback() {
 			@Override
 			public void execute(final AWTEvent event) {
+				chrome.requestFocusInWindow();
 			}
 		});
-
 		if (queue.isBlocking()) {
-			queue.focus();
+			//TODO: FOCUS
 		}
 	}
 

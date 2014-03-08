@@ -1,30 +1,52 @@
-package org.powerbot.script.os;
+package org.powerbot.script;
 
-import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
-import java.lang.reflect.Field;
 import java.util.concurrent.TimeUnit;
 
-import org.powerbot.bot.EventDispatcher;
-import org.powerbot.bot.MouseSimulator;
 import org.powerbot.bot.InputSimulator;
-import org.powerbot.bot.os.event.PaintListener;
-import org.powerbot.script.Filter;
-import org.powerbot.script.Vector3;
+import org.powerbot.bot.MouseSpline;
+import org.powerbot.bot.SelectiveEventQueue;
 
-public class Mouse extends ClientAccessor {
-	private final MouseSimulator simulator;
+public class Mouse extends org.powerbot.script.ClientAccessor {
+	private final SelectiveEventQueue queue;
+	private final MouseSpline simulator;
 
-	public Mouse(final ClientContext ctx) {
+	public Mouse(final ClientContext<?> ctx) {
 		super(ctx);
-		simulator = new MouseSimulator(null);
+		queue = SelectiveEventQueue.getInstance();
+		simulator = new MouseSpline();
 	}
 
 	public Point getLocation() {
-		final InputSimulator engine = ctx.input;
+		final InputSimulator engine = queue.getEngine();
 		return engine != null ? engine.getLocation() : new Point(-1, -1);
+	}
+
+	public Point getPressLocation() {
+		final InputSimulator engine = queue.getEngine();
+		return engine != null ? engine.getPressLocation() : new Point(-1, -1);
+	}
+
+	public long getPressWhen() {
+		final InputSimulator engine = queue.getEngine();
+		return engine != null ? engine.getPressWhen() : -1;
+	}
+
+	public boolean click(final int x, final int y, final int button) {
+		return click(new Point(x, y), button);
+	}
+
+	public boolean click(final int x, final int y, final boolean left) {
+		return click(new Point(x, y), left);
+	}
+
+	public boolean click(final Point point, final int button) {
+		return move(point) && click(button);
+	}
+
+	public boolean click(final Point point, final boolean left) {
+		return move(point) && click(left);
 	}
 
 	public boolean click(final boolean left) {
@@ -32,27 +54,42 @@ public class Mouse extends ClientAccessor {
 	}
 
 	public boolean click(final int button) {
-		final InputSimulator engine = ctx.input;
+		final InputSimulator engine = queue.getEngine();
 		if (engine == null) {
 			return false;
 		}
 		try {//TODO: do we need this delay...?
-			Thread.sleep(simulator.simulator.getPressDuration());
+			Thread.sleep(simulator.getPressDuration());
 		} catch (final InterruptedException ignored) {
 		}
 		engine.press(button);
 		try {
-			Thread.sleep(simulator.simulator.getPressDuration());
+			Thread.sleep(simulator.getPressDuration());
 		} catch (final InterruptedException ignored) {
 		}
 		//TODO: Maybe move mouse accidentially.
 		//TODO: return false -- or re-click?  probably the latter.
 		engine.release(button);
 		try {
-			Thread.sleep(simulator.simulator.getPressDuration());
+			Thread.sleep(simulator.getPressDuration());
 		} catch (final InterruptedException ignored) {
 		}
 		return true;
+	}
+
+	public boolean drag(final Point p, final boolean left) {
+		return drag(p, left ? MouseEvent.BUTTON1 : MouseEvent.BUTTON3);
+	}
+
+	public boolean drag(final Point p, final int button) {
+		final InputSimulator engine = queue.getEngine();
+		if (engine == null) {
+			return false;
+		}
+		engine.press(button);
+		final boolean b = move(p);
+		engine.release(button);
+		return b;
 	}
 
 	public boolean hop(final Point p) {
@@ -60,7 +97,7 @@ public class Mouse extends ClientAccessor {
 	}
 
 	public boolean hop(final int x, final int y) {
-		final InputSimulator engine = ctx.input;
+		final InputSimulator engine = queue.getEngine();
 		return engine != null && engine.move(x, y);
 	}
 
@@ -92,19 +129,6 @@ public class Mouse extends ClientAccessor {
 
 	public boolean apply(final Targetable targetable, final Filter<Point> filter) {
 		final Point target_point = new Point(-1, -1);
-		final Color c = getStroke(targetable.getClass());
-		final PaintListener l = new PaintListener() {
-			@Override
-			public void repaint(final Graphics render) {
-				if (target_point.x == -1 || target_point.y == -1) {
-					return;
-				}
-				render.setColor(c);
-				render.fillOval(target_point.x - 5, target_point.y - 5, 10, 10);
-			}
-		};
-		final EventDispatcher dispatcher = ctx.bot().dispatcher;
-		dispatcher.add(l);
 		final int STANDARD_ATTEMPTS = 3;
 		for (int i = 0; i < STANDARD_ATTEMPTS; i++) {
 			final Point mp = getLocation();
@@ -115,7 +139,7 @@ public class Mouse extends ClientAccessor {
 			}
 			target_point.move(p.x, p.y);
 			final Vector3 end = new Vector3(p.x, p.y, 0);
-			final Iterable<Vector3> spline = simulator.simulator.getPath(start, end);
+			final Iterable<Vector3> spline = simulator.getPath(start, end);
 			for (final Vector3 v : spline) {
 				hop(v.x, v.y);
 
@@ -123,7 +147,7 @@ public class Mouse extends ClientAccessor {
 				if (!targetable.contains(new Point(end.x, end.y))) {
 					break;
 				}
-				final long d = Math.max(0, simulator.simulator.getAbsoluteDelay(v.z) - Math.abs(System.nanoTime() - m));
+				final long d = Math.max(0, simulator.getAbsoluteDelay(v.z) - Math.abs(System.nanoTime() - m));
 				if (d > 0) {
 					try {
 						Thread.sleep(TimeUnit.NANOSECONDS.toMillis(d));
@@ -134,27 +158,18 @@ public class Mouse extends ClientAccessor {
 
 			final Point p2 = getLocation(), ep = end.to2DPoint();
 			if (p2.equals(ep) && filter.accept(ep)) {
-				dispatcher.remove(l);
 				return true;
 			}
 		}
-		dispatcher.remove(l);
 		return false;
 	}
 
-	private Color getStroke(final Class<?> clazz) {
-		final Field f;
-		try {
-			f = clazz.getField("TARGET_STROKE_COLOR");
-			if (f != null) {
-				final Object o = f.get(null);
-				if (o instanceof Color) {
-					return (Color) o;
-				}
-			}
-		} catch (final NoSuchFieldException ignored) {
-		} catch (final IllegalAccessException ignored) {
-		}
-		return new Color(0, 0, 0, 50);
+	public boolean scroll() {
+		return scroll(true);
+	}
+
+	public boolean scroll(final boolean down) {
+		final InputSimulator simulator = queue.getEngine();
+		return simulator != null && simulator.scroll(down);
 	}
 }

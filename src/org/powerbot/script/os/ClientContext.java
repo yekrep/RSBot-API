@@ -1,9 +1,9 @@
 package org.powerbot.script.os;
 
-import org.powerbot.bot.InputSimulator;
 import org.powerbot.bot.ScriptController;
 import org.powerbot.bot.os.Bot;
 import org.powerbot.bot.os.client.Client;
+import org.powerbot.script.Mouse;
 import org.powerbot.script.Script;
 
 public class ClientContext extends org.powerbot.script.ClientContext<Client> {
@@ -19,7 +19,6 @@ public class ClientContext extends org.powerbot.script.ClientContext<Client> {
 	public final Players players;
 	public final Varpbits varpbits;
 	public final Widgets widgets;
-	public final InputSimulator input;
 
 	private ClientContext(final Bot bot) {
 		super(bot);
@@ -36,7 +35,6 @@ public class ClientContext extends org.powerbot.script.ClientContext<Client> {
 		players = new Players(this);
 		varpbits = new Varpbits(this);
 		widgets = new Widgets(this);
-		input = new InputSimulator(null);
 	}
 
 	public static ClientContext newContext(final Bot bot) {
@@ -58,7 +56,6 @@ public class ClientContext extends org.powerbot.script.ClientContext<Client> {
 		players = ctx.players;
 		varpbits = ctx.varpbits;
 		widgets = ctx.widgets;
-		input = ctx.input;
 	}
 
 	public Script.Controller controller() {

@@ -6,7 +6,6 @@ import java.util.Arrays;
 
 import org.powerbot.bot.os.client.Client;
 import org.powerbot.bot.os.client.WidgetNode;
-import org.powerbot.script.os.tools.HashTable;
 
 public class Component extends ClientAccessor {
 	public static final Color TARGET_STROKE_COLOR = new Color(0, 255, 0, 150);

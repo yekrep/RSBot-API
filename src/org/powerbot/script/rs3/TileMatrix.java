@@ -78,7 +78,7 @@ public final class TileMatrix extends Interactive implements Locatable, Drawable
 	public boolean isInViewport() {
 		final BoundingModel model2 = boundingModel.get();
 		if (model2 != null) {
-			return ctx.game.isPointInViewport(getInteractPoint());
+			return ctx.game.isPointInViewport(getNextPoint());
 		}
 		return isPolygonInViewport(getBounds());
 	}
@@ -93,7 +93,7 @@ public final class TileMatrix extends Interactive implements Locatable, Drawable
 	}
 
 	@Override
-	public Point getInteractPoint() {
+	public Point getNextPoint() {
 		final BoundingModel model2 = boundingModel.get();
 		if (model2 != null) {
 			return model2.getNextPoint();
@@ -103,16 +103,6 @@ public final class TileMatrix extends Interactive implements Locatable, Drawable
 		return getPoint(x / 100.0D, y / 100.0D, 0);
 	}
 
-	@Override
-	public Point getNextPoint() {
-		final BoundingModel model2 = boundingModel.get();
-		if (model2 != null) {
-			return model2.getNextPoint();
-		}
-		return getPoint(Random.nextDouble(0.0D, 1.0D), Random.nextDouble(0.0D, 1.0D), 0);
-	}
-
-	@Override
 	public Point getCenterPoint() {
 		final BoundingModel model2 = boundingModel.get();
 		if (model2 != null) {

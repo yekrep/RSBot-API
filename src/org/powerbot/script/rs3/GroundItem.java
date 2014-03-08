@@ -22,7 +22,6 @@ public class GroundItem extends Interactive implements Renderable, Identifiable,
 	public static final Color TARGET_COLOR = new Color(255, 255, 0, 75);
 	private final Tile tile;
 	private final WeakReference<RSItem> item;
-	private int faceIndex = -1;
 
 	public GroundItem(final ClientContext ctx, final Tile tile, final RSItem item) {
 		super(ctx);
@@ -146,26 +145,6 @@ public class GroundItem extends Interactive implements Renderable, Identifiable,
 	}
 
 	@Override
-	public Point getInteractPoint() {
-		final Model model = getModel(getId());
-		if (model != null) {
-			Point point = model.getCentroid(faceIndex);
-			if (point != null) {
-				return point;
-			}
-			point = model.getCentroid(faceIndex = model.nextTriangle());
-			if (point != null) {
-				return point;
-			}
-		}
-		final BoundingModel model2 = boundingModel.get();
-		if (model2 != null) {
-			return model2.getNextPoint();
-		}
-		return tile.getMatrix(ctx).getInteractPoint();
-	}
-
-	@Override
 	public Point getNextPoint() {
 		final Model model = getModel(getId());
 		if (model != null) {
@@ -178,7 +157,6 @@ public class GroundItem extends Interactive implements Renderable, Identifiable,
 		return tile.getMatrix(ctx).getNextPoint();
 	}
 
-	@Override
 	public Point getCenterPoint() {
 		final Model model = getModel(getId());
 		if (model != null) {

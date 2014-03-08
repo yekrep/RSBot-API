@@ -4,13 +4,12 @@ import java.awt.AWTEvent;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
-import org.powerbot.bot.os.Bot;
-import org.powerbot.bot.SelectiveEventQueue;
-import org.powerbot.bot.os.event.PaintEvent;
 import org.powerbot.bot.EventDispatcher;
+import org.powerbot.bot.SelectiveEventQueue;
+import org.powerbot.bot.os.Bot;
+import org.powerbot.bot.os.event.PaintEvent;
 import org.powerbot.gui.BotChrome;
 
-@SuppressWarnings("unused")
 public class Canvas extends java.awt.Canvas {
 	private static final long serialVersionUID = -2284879212465893870L;
 	private final PaintEvent paintEvent;
@@ -19,14 +18,20 @@ public class Canvas extends java.awt.Canvas {
 
 	public Canvas() {
 		final BotChrome chrome = BotChrome.getInstance();
-		bot = null;
+		bot = (Bot) chrome.bot.get();
 		paintEvent = new PaintEvent();
-		SelectiveEventQueue.getInstance().block(this, new SelectiveEventQueue.EventCallback() {
+
+		SelectiveEventQueue.pushSelectiveQueue();
+		final SelectiveEventQueue queue = SelectiveEventQueue.getInstance();
+		queue.target(this, new SelectiveEventQueue.EventCallback() {
 			@Override
 			public void execute(final AWTEvent event) {
 				chrome.requestFocusInWindow();
 			}
 		});
+		if (queue.isBlocking()) {
+			//TODO: FOCUS
+		}
 	}
 
 	@Override

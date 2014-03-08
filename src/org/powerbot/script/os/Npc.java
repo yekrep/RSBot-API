@@ -7,7 +7,6 @@ import org.powerbot.bot.os.client.Client;
 import org.powerbot.bot.os.client.MRUCache;
 import org.powerbot.bot.os.client.NpcConfig;
 import org.powerbot.bot.os.client.VarBit;
-import org.powerbot.script.os.tools.HashTable;
 
 public class Npc extends Actor implements Identifiable {
 	public static final Color TARGET_STROKE_COLOR = new Color(255, 0, 255, 15);

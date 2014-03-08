@@ -2,22 +2,21 @@ package org.powerbot.bot.rs3;
 
 import java.io.IOException;
 import java.util.concurrent.Callable;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Logger;
 
 import org.powerbot.Configuration;
+import org.powerbot.bot.KeyboardSimulator;
+import org.powerbot.bot.rs3.client.Client;
+import org.powerbot.bot.rs3.client.Constants;
+import org.powerbot.bot.rs3.event.EventDispatcher;
 import org.powerbot.bot.rs3.loader.Crawler;
 import org.powerbot.bot.rs3.loader.GameLoader;
 import org.powerbot.bot.rs3.loader.GameStub;
 import org.powerbot.bot.rs3.loader.NRSLoader;
 import org.powerbot.bot.rs3.loader.transform.TransformSpec;
-import org.powerbot.bot.rs3.client.Client;
-import org.powerbot.bot.rs3.client.Constants;
-import org.powerbot.bot.rs3.event.EventDispatcher;
-import org.powerbot.bot.KeyboardSimulator;
 import org.powerbot.gui.BotChrome;
-import org.powerbot.script.rs3.ClientContext;
 import org.powerbot.script.Condition;
+import org.powerbot.script.rs3.ClientContext;
 
 public final class Bot extends org.powerbot.script.Bot {
 	private static final Logger log = Logger.getLogger(Bot.class.getName());
@@ -85,7 +84,7 @@ public final class Bot extends org.powerbot.script.Bot {
 			new Thread(new Runnable() {
 				@Override
 				public void run() {
-					for (;;) {
+					for (; ; ) {
 						log.warning("Downloading update \u2014 please wait");
 						pending.set(true);
 						try {
@@ -135,7 +134,8 @@ public final class Bot extends org.powerbot.script.Bot {
 			if (Condition.wait(new Callable<Boolean>() {
 				@Override
 				public Boolean call() throws Exception {
-					return ctx.client().getKeyboard() != null;
+					final java.awt.Component c = ctx.client().getCanvas();
+					return c != null && c.getKeyListeners().length > 0;//TODO: ??
 				}
 			})) {
 				ctx.keyboard.send("s");

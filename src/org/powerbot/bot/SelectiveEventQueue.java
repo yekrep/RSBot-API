@@ -16,26 +16,19 @@ import org.powerbot.gui.BotChrome;
 public class SelectiveEventQueue extends EventQueue {
 	private static final SelectiveEventQueue instance = new SelectiveEventQueue();
 	private final AtomicBoolean blocking;
-	private final AtomicReference<Component> component;
+	private final AtomicReference<InputSimulator> engine;
 	private final AtomicReference<EventCallback> callback;
+	private final AtomicReference<Component> component;
 
 	private SelectiveEventQueue() {
-		this.blocking = new AtomicBoolean(false);
-		this.component = new AtomicReference<Component>(null);
-		this.callback = new AtomicReference<EventCallback>(null);
+		blocking = new AtomicBoolean(false);
+		engine = new AtomicReference<InputSimulator>(null);
+		callback = new AtomicReference<EventCallback>(null);
+		component = new AtomicReference<Component>(null);
 	}
 
 	public static SelectiveEventQueue getInstance() {
 		return instance;
-	}
-
-	public boolean isBlocking() {
-		return blocking.get();
-	}
-
-	public void setBlocking(final boolean blocking) {
-		this.blocking.set(blocking);
-		pushSelectiveQueue();
 	}
 
 	public static void pushSelectiveQueue() {
@@ -47,36 +40,51 @@ public class SelectiveEventQueue extends EventQueue {
 		}
 	}
 
-	public void block(final Component component, final EventCallback callback) {
-		final Component c = this.component.get();
-		if (c != null && c != component) {
-			defocus();
-		}
+	private static boolean isPushed() {
+		return Toolkit.getDefaultToolkit().getSystemEventQueue() instanceof SelectiveEventQueue;
+	}
 
+	public boolean isBlocking() {
+		return blocking.get();
+	}
+
+	public void setBlocking(final boolean blocking) {
+		this.blocking.set(blocking);
+		if (!blocking) {
+			final InputSimulator e = engine.get();
+			if (e != null) {
+				e.destroy();
+			}
+			engine.set(null);
+		} else {
+			final InputSimulator e = engine.get();
+			final Component component = this.component.get();
+			if (e == null && component != null) {
+				engine.set(new InputSimulator(component));
+			}
+			pushSelectiveQueue();
+		}
+	}
+
+	public InputSimulator getEngine() {
+		return engine.get();
+	}
+
+	public void target(final Component component, final EventCallback callback) {
+		final InputSimulator engine = this.engine.get();
+		final Component c = engine != null ? engine.getComponent() : null;
+		if (c == component) {
+			return;
+		}
+		final boolean b = isBlocking() || engine == null;
+		setBlocking(false);
+		this.engine.set(new InputSimulator(component));
 		this.component.set(component);
 		this.callback.set(callback);
-	}
-
-	public void focus() {
-		if (!isBlocking()) {
-			return;
-		}
-
-		final Component component = this.component.get();
-		if (component != null && (!component.isFocusOwner() || !component.isShowing())) {
-			postEvent(new RawAWTEvent(new FocusEvent(component, FocusEvent.FOCUS_GAINED, false, null)));
-		}
-	}
-
-	public void defocus() {
-		if (!isBlocking()) {
-			return;
-		}
-
-		final Component component = this.component.get();
-		if (component != null && component.isFocusOwner()) {
-			postEvent(new RawAWTEvent(new FocusEvent(component, FocusEvent.FOCUS_LOST, false, null)));
-			postEvent(new RawAWTEvent(new FocusEvent(component, FocusEvent.FOCUS_LOST, false, null)));
+		final BotChrome chrome = BotChrome.getInstance();
+		if (b) {
+			setBlocking(true);
+			chrome.requestFocusInWindow();
 		}
 	}
 
@@ -87,22 +95,12 @@ public class SelectiveEventQueue extends EventQueue {
 			((Component) e.getSource()).dispatchEvent(e);
 			return;
 		}
-		Object source = event.getSource();
+		final Object source = event.getSource();
 		if (source == null) {
 			return;
 		}
-
-		final Component component = this.component.get();
-		final BotChrome chrome = BotChrome.getInstance();
-		if (source == chrome.overlay) {
-			if (component != null) {
-				event.setSource(component);
-			} else {
-				event.setSource(chrome);
-			}
-		}
-		source = event.getSource();
-
+		final InputSimulator engine = this.engine.get();
+		final Component component = engine != null ? engine.getComponent() : null;
 		/* Check if event is from a blocked source */
 		if (blocking.get() && source == component) {
 			/* Block input events */
@@ -125,15 +123,6 @@ public class SelectiveEventQueue extends EventQueue {
 		super.dispatchEvent(event);
 	}
 
-
-	private static boolean isPushed() {
-		return Toolkit.getDefaultToolkit().getSystemEventQueue() instanceof SelectiveEventQueue;
-	}
-
-	public static interface EventCallback {
-		public void execute(AWTEvent event);
-	}
-
 	public static final class RawAWTEvent extends AWTEvent {
 		private static final long serialVersionUID = -1409783285345666039L;
 		private final AWTEvent event;
@@ -146,5 +135,9 @@ public class SelectiveEventQueue extends EventQueue {
 		public AWTEvent getEvent() {
 			return event;
 		}
+	}
+
+	public static interface EventCallback {
+		public void execute(final AWTEvent event);
 	}
 }

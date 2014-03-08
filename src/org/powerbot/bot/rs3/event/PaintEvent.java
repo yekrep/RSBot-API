@@ -25,7 +25,7 @@ public class PaintEvent extends AbstractEvent {
 
 	public PaintEvent() {
 		setId(ID);
-		this.graphics = null;
+		graphics = null;
 	}
 
 	/**

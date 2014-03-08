@@ -5,6 +5,8 @@ import java.awt.event.MouseEvent;
 import java.util.Arrays;
 import java.util.concurrent.Callable;
 
+import org.powerbot.bot.InputSimulator;
+import org.powerbot.bot.SelectiveEventQueue;
 import org.powerbot.bot.rs3.client.Client;
 import org.powerbot.bot.rs3.client.RSInterfaceBase;
 import org.powerbot.script.Condition;
@@ -178,16 +180,18 @@ public class Widgets extends ClientAccessor {
 					break;
 				}
 				if (c.hover()) {
-					final Point p2 = ctx.mouse.getLocation();
-					ctx.mouse.handler.press(p2.x, p2.y, MouseEvent.BUTTON1);
-					Condition.wait(new Callable<Boolean>() {
-						@Override
-						public Boolean call() throws Exception {
-							final Point a = component.getAbsoluteLocation();
-							return a.y >= view.y && a.y <= view.y + height - length;
-						}
-					}, 500, 10);
-					ctx.mouse.handler.release(p2.x, p2.y, MouseEvent.BUTTON1);
+					final InputSimulator engine = SelectiveEventQueue.getInstance().getEngine();
+					if (engine != null) {
+						engine.press(MouseEvent.BUTTON1);
+						Condition.wait(new Callable<Boolean>() {
+							@Override
+							public Boolean call() throws Exception {
+								final Point a = component.getAbsoluteLocation();
+								return a.y >= view.y && a.y <= view.y + height - length;
+							}
+						}, 500, 10);
+						engine.release(MouseEvent.BUTTON1);
+					}
 				}
 			}
 		}

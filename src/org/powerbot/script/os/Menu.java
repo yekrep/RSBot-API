@@ -10,19 +10,22 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.powerbot.bot.InputSimulator;
-import org.powerbot.script.Filter;
-import org.powerbot.script.Condition;
-import org.powerbot.script.Random;
-import org.powerbot.bot.os.event.PaintListener;
+import org.powerbot.bot.SelectiveEventQueue;
 import org.powerbot.bot.os.client.Client;
+import org.powerbot.script.Condition;
+import org.powerbot.script.Filter;
+import org.powerbot.script.PaintListener;
+import org.powerbot.script.Random;
 import org.powerbot.util.StringUtils;
 
 public class Menu extends ClientAccessor {
+	private final SelectiveEventQueue queue;
 	private final AtomicBoolean registered;
 	private final AtomicReference<String[]> actions, options;
 
 	public Menu(final ClientContext ctx) {
 		super(ctx);
+		queue = SelectiveEventQueue.getInstance();
 		registered = new AtomicBoolean(false);
 		final String[] e = new String[0];
 		actions = new AtomicReference<String[]>(e);
@@ -122,7 +125,7 @@ public class Menu extends ClientAccessor {
 			return true;
 		}
 
-		final InputSimulator e = ctx.input;
+		final InputSimulator e = queue.getEngine();
 		final Component c = e != null ? e.getComponent() : null;
 		final Dimension d = new Dimension(c != null ? c.getWidth() : 0, c != null ? c.getHeight() : 0);
 		final int mx = client.getMenuX(), my = client.getMenuY();
