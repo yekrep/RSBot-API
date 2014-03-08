@@ -1,6 +1,6 @@
 package org.powerbot.bot.os.client;
 
-public interface ObjConfig {
+public interface ObjectConfig {
 	public String getName();
 
 	public String[] getActions();

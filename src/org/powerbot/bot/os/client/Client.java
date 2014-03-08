@@ -81,9 +81,9 @@ public interface Client extends org.powerbot.script.Client {
 
 	public int getCrosshairIndex();
 
-	public MRUCache getVarBitMRUCache();
+	public MRUCache getVarbitCache();
 
-	public MRUCache getNPCConfigMRUCache();
+	public MRUCache getNpcConfigCache();
 
-	public MRUCache getObjConfigMRUCache();
+	public MRUCache getObjectConfigCache();
 }

@@ -7,7 +7,7 @@ import java.lang.ref.WeakReference;
 import org.powerbot.bot.os.client.BasicObject;
 import org.powerbot.bot.os.client.Client;
 import org.powerbot.bot.os.client.MRUCache;
-import org.powerbot.bot.os.client.ObjConfig;
+import org.powerbot.bot.os.client.ObjectConfig;
 import org.powerbot.bot.os.client.VarBit;
 import org.powerbot.script.os.tools.HashTable;
 import org.powerbot.script.rs3.Nameable;
@@ -39,12 +39,12 @@ public class GameObject extends Interactive implements Nameable, Locatable, Iden
 		}
 		final BasicObject object = this.object.get();
 		final int id = object != null ? (object.getUid() >> 14) & 0xffff : -1;
-		final ObjConfig config = (ObjConfig) HashTable.lookup(client.getObjConfigMRUCache(), id);
+		final ObjectConfig config = (ObjectConfig) HashTable.lookup(client.getObjectConfigCache(), id);
 		if (config != null) {
 			int index = -1;
 			final int varbit = config.getVarBit(), si = config.getSettingsIndex();
 			if (varbit != -1) {
-				final MRUCache cache = client.getVarBitMRUCache();
+				final MRUCache cache = client.getVarbitCache();
 				final VarBit varBit = (VarBit) HashTable.lookup(cache, varbit);
 				if (varBit != null) {
 					final int mask = lookup[varBit.getEndBit() - varBit.getStartBit()];
@@ -65,13 +65,13 @@ public class GameObject extends Interactive implements Nameable, Locatable, Iden
 
 	@Override
 	public String getName() {
-		final ObjConfig config = getConfig();
+		final ObjectConfig config = getConfig();
 		final String str = config != null ? config.getName() : "";
 		return str != null ? str : "";
 	}
 
 	public String[] getActions() {
-		final ObjConfig config = getConfig();
+		final ObjectConfig config = getConfig();
 		final String[] arr = config != null ? config.getActions() : new String[0];
 		if (arr == null) {
 			return new String[0];
@@ -113,7 +113,7 @@ public class GameObject extends Interactive implements Nameable, Locatable, Iden
 		return (x << 16) | z;
 	}
 
-	private ObjConfig getConfig() {
+	private ObjectConfig getConfig() {
 		final Client client = ctx.client();
 		if (client == null) {
 			return null;
@@ -121,12 +121,12 @@ public class GameObject extends Interactive implements Nameable, Locatable, Iden
 		final BasicObject object = this.object.get();
 		final int id = object != null ? (object.getUid() >> 14) & 0xffff : -1, uid = getId();
 		if (id != uid) {
-			final ObjConfig alt = (ObjConfig) HashTable.lookup(client.getObjConfigMRUCache(), uid);
+			final ObjectConfig alt = (ObjectConfig) HashTable.lookup(client.getObjectConfigCache(), uid);
 			if (alt != null) {
 				return alt;
 			}
 		}
-		return (ObjConfig) HashTable.lookup(client.getObjConfigMRUCache(), id);
+		return (ObjectConfig) HashTable.lookup(client.getObjectConfigCache(), id);
 	}
 
 	@Override

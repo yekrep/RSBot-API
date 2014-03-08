@@ -69,7 +69,7 @@ public class HashTable<N> implements Iterator<N>, Iterable<N> {
 	}
 
 	public static Object lookup(final MRUCache table, final long id) {
-		return lookup(table != null ? table.getHashTable() : null, id);
+		return lookup(table != null ? table.getTable() : null, id);
 	}
 
 	public static Object lookup(final org.powerbot.bot.os.client.HashTable table, final long id) {

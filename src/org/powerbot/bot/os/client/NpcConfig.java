@@ -11,7 +11,7 @@ public interface NpcConfig {
 
 	public int[] getConfigs();
 
-	public int getSettingsIndex();
+	public int getVarpbitIndex();
 
 	public int getVarBit();
 }

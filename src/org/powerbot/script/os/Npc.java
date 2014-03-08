@@ -55,10 +55,10 @@ public class Npc extends Actor implements Identifiable {
 		final org.powerbot.bot.os.client.Npc npc = this.npc.get();
 		final NpcConfig config = npc != null ? npc.getConfig() : null;
 		if (config != null) {
-			final int varbit = config.getVarBit(), si = config.getSettingsIndex();
+			final int varbit = config.getVarBit(), si = config.getVarpbitIndex();
 			int index = -1;
 			if (varbit != -1) {
-				final MRUCache cache = client.getVarBitMRUCache();
+				final MRUCache cache = client.getVarbitCache();
 				final VarBit varBit = (VarBit) HashTable.lookup(cache, varbit);
 				if (varBit != null) {
 					final int mask = lookup[varBit.getEndBit() - varBit.getStartBit()];
@@ -101,7 +101,7 @@ public class Npc extends Actor implements Identifiable {
 		}
 		final int id = config.getId(), uid = getId();
 		if (id != uid) {
-			final NpcConfig c = (NpcConfig) HashTable.lookup(client.getNPCConfigMRUCache(), uid);
+			final NpcConfig c = (NpcConfig) HashTable.lookup(client.getNpcConfigCache(), uid);
 			if (c != null) {
 				return c;
 			}
