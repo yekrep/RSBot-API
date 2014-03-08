@@ -4,7 +4,7 @@ import java.awt.Point;
 
 import org.powerbot.bot.os.client.Client;
 
-public abstract class Actor extends Interactive implements Locatable, Validatable {
+public abstract class Actor extends Interactive implements Locatable, Nameable, Validatable {
 	Actor(final ClientContext ctx) {
 		super(ctx);
 	}

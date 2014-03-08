@@ -1,16 +1,16 @@
 package org.powerbot.script.os;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.powerbot.bot.os.client.Client;
 
-public class Players extends ClientAccessor {
+public class Players extends PlayerQuery<Player> {
 	public Players(final ClientContext ctx) {
 		super(ctx);
 	}
 
+	@Override
 	public List<Player> get() {
 		final List<Player> r = new CopyOnWriteArrayList<Player>();
 		final Client client = ctx.client();
@@ -22,15 +22,13 @@ public class Players extends ClientAccessor {
 		if (indices == null || players == null) {
 			return r;
 		}
-		final Player[] arr = new Player[indices.length];
-		int d = 0;
 		for (final int k : indices) {
 			final org.powerbot.bot.os.client.Player p = players[k];
 			if (p != null) {
-				arr[d++] = new Player(ctx, p);
+				r.add(new Player(ctx, p));
 			}
 		}
-		return new CopyOnWriteArrayList<Player>(Arrays.copyOf(arr, d));
+		return r;
 	}
 
 	public Player local() {
@@ -40,5 +38,10 @@ public class Players extends ClientAccessor {
 			return r;
 		}
 		return new Player(ctx, client.getPlayer());
+	}
+
+	@Override
+	public Player getNil() {
+		return new Player(ctx, null);
 	}
 }

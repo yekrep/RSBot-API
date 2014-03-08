@@ -6,7 +6,7 @@ import java.lang.ref.WeakReference;
 
 import org.powerbot.bot.os.client.ItemNode;
 
-public class GroundItem extends Interactive implements Locatable,Identifiable, Validatable {
+public class GroundItem extends Interactive implements Nameable, Locatable, Identifiable, Validatable {
 	public static final Color TARGET_COLOR = new Color(255, 255, 0, 75);
 	private final Tile tile;
 	private final WeakReference<ItemNode> node;
@@ -26,6 +26,11 @@ public class GroundItem extends Interactive implements Locatable,Identifiable, V
 	public int getStackSize() {
 		final ItemNode node = this.node.get();
 		return node != null ? node.getStackSize() : -1;
+	}
+
+	@Override
+	public String getName() {
+		return "";//TODO
 	}
 
 	@Override

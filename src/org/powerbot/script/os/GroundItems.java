@@ -4,22 +4,23 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import org.powerbot.bot.os.tools.NodeQueue;
 import org.powerbot.bot.os.client.Client;
 import org.powerbot.bot.os.client.ItemNode;
 import org.powerbot.bot.os.client.NodeDeque;
+import org.powerbot.bot.os.tools.NodeQueue;
 
-public class GroundItems extends ClientAccessor {
+public class GroundItems extends BasicQuery<GroundItem> {
 	public GroundItems(final ClientContext ctx) {
 		super(ctx);
 	}
 
+	@Override
 	public List<GroundItem> get() {
 		final Client client = ctx.client();
 		return get(client != null ? client.getFloor() : -1);
 	}
 
-	public List<GroundItem> get(final int floor) {
+	private List<GroundItem> get(final int floor) {
 		final List<GroundItem> r = new CopyOnWriteArrayList<GroundItem>();
 		final Client client = ctx.client();
 		final NodeDeque[][][] dequeArray;
@@ -49,6 +50,11 @@ public class GroundItems extends ClientAccessor {
 			}
 
 		}
-		return new CopyOnWriteArrayList<GroundItem>(list);
+		return list;
+	}
+
+	@Override
+	public GroundItem getNil() {
+		return new GroundItem(ctx, Tile.NIL, null);
 	}
 }

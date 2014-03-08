@@ -18,7 +18,7 @@ import org.powerbot.bot.rs3.client.RSObject;
  * Utilities pertaining to in-game objects.
  *
  */
-public class Objects extends BasicNamedQuery<GameObject> {
+public class Objects extends MobileIdNameQuery<GameObject> {
 	public final Map<Integer, Integer> typeCache = new ConcurrentHashMap<Integer, Integer>();
 
 	public Objects(final ClientContext factory) {

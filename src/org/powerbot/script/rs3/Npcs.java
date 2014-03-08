@@ -14,7 +14,7 @@ import org.powerbot.bot.rs3.client.RSNPCNode;
  * {@link Npc}s are only accessible within the mini-map's range.
  *
  */
-public class Npcs extends BasicNamedQuery<Npc> {
+public class Npcs extends MobileIdNameQuery<Npc> {
 	public Npcs(final ClientContext factory) {
 		super(factory);
 	}

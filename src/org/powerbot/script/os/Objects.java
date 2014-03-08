@@ -9,12 +9,13 @@ import org.powerbot.bot.os.client.Client;
 import org.powerbot.bot.os.client.Landscape;
 import org.powerbot.bot.os.client.Tile;
 
-public class Objects extends ClientAccessor {
+public class Objects extends BasicQuery<GameObject> {
 	public Objects(final ClientContext ctx) {
 		super(ctx);
 	}
 
-	public List<GameObject> getLoaded() {
+	@Override
+	public List<GameObject> get() {
 		final List<GameObject> r = new CopyOnWriteArrayList<GameObject>();
 		final Client client = ctx.client();
 		if (client == null) {
@@ -53,6 +54,11 @@ public class Objects extends ClientAccessor {
 				}
 			}
 		}
-		return new CopyOnWriteArrayList<GameObject>(list);
+		return list;
+	}
+
+	@Override
+	public GameObject getNil() {
+		return new GameObject(ctx, null);
 	}
 }
