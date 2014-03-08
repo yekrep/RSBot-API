@@ -163,7 +163,7 @@ public class NRSLoader implements Runnable {
 	}
 
 	private HttpURLConnection getBucketConnection() throws IOException {
-		final HttpURLConnection b = HttpUtils.getHttpConnection(new URL(String.format(Configuration.URLs.CLIENTBUCKET, packHash)));
+		final HttpURLConnection b = HttpUtils.getHttpConnection(new URL(String.format(Configuration.URLs.TSPEC_RS3_BUCKETS, packHash)));
 		b.addRequestProperty(String.format("x-%s-cv", Configuration.NAME.toLowerCase()), "201");
 		b.addRequestProperty(String.format("x-%s-gv", Configuration.NAME.toLowerCase()), "6");
 		return b;
