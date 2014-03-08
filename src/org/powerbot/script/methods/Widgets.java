@@ -56,7 +56,7 @@ public class Widgets extends MethodProvider {
 	public synchronized Widget get(final int widget) {
 		final Client client = ctx.getClient();
 		if (widget < 0) {
-			return null;
+			throw new RuntimeException("bad widget");
 		}
 
 		if (cache == null) {
