@@ -5,6 +5,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.powerbot.bot.os.client.Client;
+
 /**
  * @author Paris
  */
@@ -41,7 +43,11 @@ public class Scanner {
 	}
 
 	public String readString() {
-		return new String(readSegment()).replaceAll("org/powerbot/os","org/powerbot/bot");
+		return normalize(new String(readSegment()));
+	}
+
+	private String normalize(final String s) {
+		return s.replace("org/powerbot/os/client", Client.class.getPackage().getName().replace('.', '/'));
 	}
 
 	public byte[] readSegment() {
