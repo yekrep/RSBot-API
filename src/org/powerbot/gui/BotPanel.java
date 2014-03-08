@@ -73,6 +73,9 @@ class BotPanel extends JPanel implements ActionListener {
 		final JButton b = (JButton) e.getSource();
 		mode.setVisible(false);
 		final Bot bot = b == os ? new org.powerbot.bot.os.Bot(chrome) : new org.powerbot.bot.rs3.Bot(chrome);
+		if (b == os) {
+			chrome.overlay.dispose();
+		}
 		chrome.bot.set(bot);
 		Logger.getLogger(BotChrome.class.getName()).info("Starting...");
 		new Thread(bot.threadGroup, bot).start();
