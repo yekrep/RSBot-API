@@ -121,7 +121,7 @@ class Sandbox extends SecurityManager {
 
 	@Override
 	public void checkSystemClipboardAccess() {
-		if (isCallingClass(java.awt.event.InputEvent.class)) {
+		if (isCallingClass(java.awt.event.InputEvent.class) || isGameThread()) {
 			return;
 		}
 		throw new SecurityException();
