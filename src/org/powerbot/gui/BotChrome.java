@@ -47,6 +47,7 @@ public class BotChrome extends JFrame implements Closeable {
 		setTitle(Configuration.NAME);
 		setIconImage(Resources.getImage(Resources.Paths.ICON));
 		setBackground(Color.BLACK);
+		getContentPane().setBackground(getBackground());
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		JPopupMenu.setDefaultLightWeightPopupEnabled(false);
 		setFocusTraversalKeysEnabled(false);
