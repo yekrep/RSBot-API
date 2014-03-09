@@ -81,6 +81,7 @@ public class Bot extends org.powerbot.script.Bot {
 		final int s = chrome.getExtendedState(), x = s & ~JFrame.MAXIMIZED_BOTH;
 		if (s != x) {
 			chrome.setExtendedState(x);
+			chrome.setLocationRelativeTo(chrome.getParent());
 		}
 
 		chrome.setResizable(false);
