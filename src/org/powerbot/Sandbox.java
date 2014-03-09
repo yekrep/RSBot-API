@@ -10,7 +10,6 @@ import java.security.Permission;
 import java.util.Map.Entry;
 import java.util.logging.Logger;
 
-import org.powerbot.bot.rs3.loader.GameClassLoader;
 import org.powerbot.bot.ScriptClassLoader;
 import org.powerbot.bot.ScriptThreadFactory;
 import org.powerbot.misc.CryptFile;
@@ -210,6 +209,7 @@ class Sandbox extends SecurityManager {
 	}
 
 	private static boolean isGameThread() {
-		return Thread.currentThread().getContextClassLoader() instanceof GameClassLoader;
+		final ClassLoader c = Thread.currentThread().getContextClassLoader();
+		return c instanceof org.powerbot.bot.rs3.loader.GameClassLoader || c instanceof org.powerbot.bot.os.loader.GameClassLoader;
 	}
 }
