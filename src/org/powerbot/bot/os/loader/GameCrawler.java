@@ -72,6 +72,7 @@ public class GameCrawler implements Callable<Boolean> {
 
 		final int z = html.indexOf("id=game");
 		if (z != -1) {
+			html = html.substring(z);
 			for (final String k : new String[]{"width", "height"}) {
 				p = Pattern.compile("\\b" + k + "=(?:['|\\\"])?(\\d+)", Pattern.CASE_INSENSITIVE);
 				m = p.matcher(html);
