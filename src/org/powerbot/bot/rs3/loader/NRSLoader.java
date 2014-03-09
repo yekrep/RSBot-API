@@ -1,6 +1,7 @@
 package org.powerbot.bot.rs3.loader;
 
 import java.applet.Applet;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.reflect.Constructor;
@@ -118,7 +119,11 @@ public class NRSLoader implements Runnable {
 
 	private TransformSpec getSpec(final String packHash) throws IOException {
 		try {
-			return new TransformSpec(Resources.getResourceURL(String.format(Resources.Paths.TSPEC_RS3, packHash)).openStream());
+			final URL url = Resources.getResourceURL(String.format(Resources.Paths.TSPEC_RS3, packHash));
+			if (url == null) {
+				throw new FileNotFoundException();
+			}
+			return new TransformSpec(url.openStream());
 		} catch (final IOException ignored) {
 		}
 
