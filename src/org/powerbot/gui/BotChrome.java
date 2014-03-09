@@ -135,7 +135,7 @@ public class BotChrome extends JFrame implements Closeable {
 		final int s = getExtendedState();
 		final boolean maxed = (s & Frame.MAXIMIZED_VERT) == Frame.MAXIMIZED_VERT || (s & Frame.MAXIMIZED_HORIZ) == Frame.MAXIMIZED_HORIZ;
 
-		if (!maxed) {
+		if (!maxed && (bot.get() == null || !(bot.get() instanceof org.powerbot.bot.os.Bot))) {
 			cache.close();
 		}
 
