@@ -70,6 +70,16 @@ public class GameCrawler implements Callable<Boolean> {
 		}
 		parameters.remove("haveie6");
 
+		p = Pattern.compile("<(title)\\b[^>]*>\\s*([^<]*)</\\1>", Pattern.CASE_INSENSITIVE);
+		m = p.matcher(html);
+		if (m.find()) {
+			String t = m.group(2), s = "Game";
+			if (t.endsWith(s)) {
+				t = t.substring(0, t.length() - s.length());
+			}
+			properties.put(m.group(1), t.trim());
+		}
+
 		final int z = html.indexOf("id=game");
 		if (z != -1) {
 			html = html.substring(z);
