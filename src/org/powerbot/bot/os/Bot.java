@@ -72,6 +72,12 @@ public class Bot extends org.powerbot.script.Bot {
 		display();
 	}
 
+	@Override
+	public void display() {
+		super.display();
+		chrome.setResizable(false);
+	}
+
 	private void debug() {
 		ctx.menu.register();
 		new Thread(threadGroup, dispatcher, dispatcher.getClass().getName()).start();
