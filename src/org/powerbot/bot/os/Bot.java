@@ -4,6 +4,8 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.util.Map;
 
+import javax.swing.JFrame;
+
 import org.powerbot.bot.os.client.Client;
 import org.powerbot.bot.os.event.EventDispatcher;
 import org.powerbot.bot.os.loader.GameAppletLoader;
@@ -75,6 +77,12 @@ public class Bot extends org.powerbot.script.Bot {
 	@Override
 	public void display() {
 		super.display();
+
+		final int s = chrome.getExtendedState(), x = s & ~JFrame.MAXIMIZED_BOTH;
+		if (s != x) {
+			chrome.setExtendedState(x);
+		}
+
 		chrome.setResizable(false);
 	}
 
