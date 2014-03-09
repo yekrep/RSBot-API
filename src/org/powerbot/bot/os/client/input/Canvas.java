@@ -9,11 +9,13 @@ import org.powerbot.bot.InputSimulator;
 import org.powerbot.bot.SelectiveEventQueue;
 import org.powerbot.bot.os.Bot;
 import org.powerbot.bot.os.event.PaintEvent;
+import org.powerbot.bot.os.event.TextPaintEvent;
 import org.powerbot.gui.BotChrome;
 
 public class Canvas extends java.awt.Canvas {
 	private static final long serialVersionUID = -2284879212465893870L;
 	private final PaintEvent paintEvent;
+	private final TextPaintEvent textPaintEvent;
 	private final Bot bot;
 	private BufferedImage game, clean;
 
@@ -21,6 +23,7 @@ public class Canvas extends java.awt.Canvas {
 		final BotChrome chrome = BotChrome.getInstance();
 		bot = (Bot) chrome.bot.get();
 		paintEvent = new PaintEvent();
+		textPaintEvent = new TextPaintEvent();
 
 		SelectiveEventQueue.pushSelectiveQueue();
 		final SelectiveEventQueue queue = SelectiveEventQueue.getInstance();
@@ -44,9 +47,12 @@ public class Canvas extends java.awt.Canvas {
 		final Graphics g = game.getGraphics();
 		final EventDispatcher m = bot.dispatcher;
 		paintEvent.graphics = g;
+		textPaintEvent.graphics = g;
+		textPaintEvent.index = 0;
 		try {
 			m.consume(paintEvent);
-		} catch (final Exception e) {
+			m.consume(textPaintEvent);
+		} catch (final Throwable e) {
 			e.printStackTrace();
 		}
 		//Display the painted-on game image onto the canvas.

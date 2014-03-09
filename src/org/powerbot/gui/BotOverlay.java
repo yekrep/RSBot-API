@@ -125,7 +125,7 @@ class BotOverlay extends JDialog {
 
 						paintEvent.graphics = g2;
 						textPaintEvent.graphics = g2;
-						textPaintEvent.id = 0;
+						textPaintEvent.index = 0;
 						try {
 							m.consume(paintEvent);
 							m.consume(textPaintEvent);

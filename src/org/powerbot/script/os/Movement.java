@@ -13,7 +13,7 @@ public class Movement extends ClientAccessor {
 			return null;
 		}
 		final int dX = client.getDestinationX(), dY = client.getDestinationY();
-		if (dX == -1 || dY == -1) {
+		if (dX <= 0 || dY <= 0) {
 			return Tile.NIL;
 		}
 		return ctx.game.mapOffset().derive(dX, dY);

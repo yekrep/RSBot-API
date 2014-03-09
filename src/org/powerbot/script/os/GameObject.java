@@ -41,7 +41,7 @@ public class GameObject extends Interactive implements Nameable, Locatable, Iden
 		final ObjectConfig config = (ObjectConfig) HashTable.lookup(client.getObjectConfigCache(), id);
 		if (config != null) {
 			int index = -1;
-			final int varbit = config.getVarBit(), si = config.getSettingsIndex();
+			final int varbit = config.getVarbit(), si = config.getVarpbitIndex();
 			if (varbit != -1) {
 				final MRUCache cache = client.getVarbitCache();
 				final Varbit varBit = (Varbit) HashTable.lookup(cache, varbit);

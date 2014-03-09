@@ -55,7 +55,7 @@ public class Npc extends Actor implements Identifiable {
 		final org.powerbot.bot.os.client.Npc npc = this.npc.get();
 		final NpcConfig config = npc != null ? npc.getConfig() : null;
 		if (config != null) {
-			final int varbit = config.getVarBit(), si = config.getVarpbitIndex();
+			final int varbit = config.getVarbit(), si = config.getVarpbitIndex();
 			int index = -1;
 			if (varbit != -1) {
 				final MRUCache cache = client.getVarbitCache();

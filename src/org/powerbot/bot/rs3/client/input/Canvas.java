@@ -57,7 +57,7 @@ public class Canvas extends java.awt.Canvas {
 		final EventDispatcher m = bot.dispatcher;
 		paintEvent.graphics = g;
 		textPaintEvent.graphics = g;
-		textPaintEvent.id = 0;
+		textPaintEvent.index = 0;
 		try {
 			m.consume(paintEvent);
 			m.consume(textPaintEvent);

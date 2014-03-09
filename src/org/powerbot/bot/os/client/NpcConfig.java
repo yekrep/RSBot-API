@@ -13,5 +13,5 @@ public interface NpcConfig {
 
 	public int getVarpbitIndex();
 
-	public int getVarBit();
+	public int getVarbit();
 }

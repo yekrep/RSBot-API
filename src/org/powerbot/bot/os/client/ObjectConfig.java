@@ -7,7 +7,7 @@ public interface ObjectConfig {
 
 	public int[] getConfigs();
 
-	public int getSettingsIndex();
+	public int getVarpbitIndex();
 
-	public int getVarBit();
+	public int getVarbit();
 }

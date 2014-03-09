@@ -23,12 +23,12 @@ import javax.swing.event.MenuListener;
 
 import org.powerbot.Boot;
 import org.powerbot.Configuration;
+import org.powerbot.bot.ScriptController;
 import org.powerbot.misc.ScriptBundle;
+import org.powerbot.misc.Tracker;
 import org.powerbot.script.Bot;
 import org.powerbot.script.BotMenuListener;
-import org.powerbot.misc.Tracker;
 import org.powerbot.script.Script;
-import org.powerbot.bot.ScriptController;
 
 class BotMenuBar extends JMenuBar {
 	private static final long serialVersionUID = -4186554435386744949L;
@@ -67,8 +67,14 @@ class BotMenuBar extends JMenuBar {
 			public void menuSelected(final MenuEvent e) {
 				final JMenu menu = (JMenu) e.getSource();
 				menu.removeAll();
-				if (chrome.bot.get() != null) {
-					new BotMenuView(chrome, menu);
+				final Bot bot = chrome.bot.get();
+				if (bot != null) {
+					final boolean os = bot instanceof org.powerbot.bot.os.Bot;
+					if (os) {
+						new OSBotMenuView(chrome, menu);
+					} else {
+						new RS3BotMenuView(chrome, menu);
+					}
 				}
 			}
 

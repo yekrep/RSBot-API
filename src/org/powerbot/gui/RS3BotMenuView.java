@@ -16,9 +16,8 @@ import javax.swing.JMenuItem;
 import org.powerbot.bot.EventDispatcher;
 import org.powerbot.bot.rs3.event.debug.*;
 import org.powerbot.script.Bot;
-import org.powerbot.script.ClientContext;
 
-final class BotMenuView implements ActionListener {
+final class RS3BotMenuView implements ActionListener {
 	private final Map<String, Class<? extends EventListener>> map;
 
 	private static final String ALL = "All";
@@ -46,7 +45,7 @@ final class BotMenuView implements ActionListener {
 
 	private final BotChrome chrome;
 
-	public BotMenuView(final BotChrome chrome, final JMenu menu) {
+	public RS3BotMenuView(final BotChrome chrome, final JMenu menu) {
 		this.chrome = chrome;
 		final Bot b = chrome.bot.get();
 
@@ -66,6 +65,7 @@ final class BotMenuView implements ActionListener {
 		menu.addSeparator();
 
 		map = new LinkedHashMap<String, Class<? extends EventListener>>();
+		//RS3
 		map.put(BOUNDARIES, DrawBoundaries.class);
 		map.put(MODELS, DrawModels.class);
 		map.put(SCENEENTITIES, DrawObjects.class);

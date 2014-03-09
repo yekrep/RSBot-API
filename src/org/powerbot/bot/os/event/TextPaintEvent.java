@@ -1,4 +1,4 @@
-package org.powerbot.bot.rs3.event;
+package org.powerbot.bot.os.event;
 
 import java.awt.Color;
 import java.awt.Composite;
@@ -17,24 +17,22 @@ import org.powerbot.script.TextPaintListener;
 
 /**
  * An event that is dispatched when the game requests the graphic buffer.
- *
  */
 public class TextPaintEvent extends AbstractEvent {
 	private static final long serialVersionUID = 7174559879186449999L;
-	public static final int ID = 0x80;
+	public static final int TEXT_PAINT_EVENT = 0x80;
 	public Graphics graphics;
 	public int index = 0;
 
 	public TextPaintEvent() {
-		setId(ID);
-		this.graphics = null;
+		super(TEXT_PAINT_EVENT);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void dispatch(final EventListener eventListener) {
+	public void call(final EventListener eventListener) {
 		if (graphics == null) {
 			try {
 				((PaintListener) eventListener).repaint(null);
