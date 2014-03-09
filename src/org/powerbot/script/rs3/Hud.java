@@ -210,6 +210,9 @@ public class Hud extends ClientAccessor {
 	 * @return <tt>true</tt> if the window was opened or is already open; otherwise <tt>false</tt>
 	 */
 	public boolean open(final Window window) {
+		if (window == null) {
+			return false;
+		}
 		if (isViewable(window) || window.getMenu() == Menu.NONE) {
 			return true;
 		}
@@ -311,6 +314,9 @@ public class Hud extends ClientAccessor {
 	}
 
 	private Component getToggle(final Window window) {
+		if (window == null) {
+			return null;
+		}
 		final int texture = window.getMiniTexture();
 		for (final Component sub : ctx.widgets.get(WIDGET_MENU_WINDOWS, COMPONENT_MENU_WINDOWS_LIST).getChildren()) {
 			if (sub.getTextureId() == texture && sub.isVisible()) {
@@ -321,6 +327,9 @@ public class Hud extends ClientAccessor {
 	}
 
 	Component getMenu(final Menu menu) {
+		if (menu == null) {
+			return null;
+		}
 		final int texture = menu.getTexture();
 		for (final Component child : ctx.widgets.get(WIDGET_MENU)) {
 			if (child.getTextureId() == texture && child.isValid()) {
@@ -331,6 +340,9 @@ public class Hud extends ClientAccessor {
 	}
 
 	Component getTab(final Window window) {
+		if (window == null) {
+			return null;
+		}
 		final int texture = window.getMiniTexture();
 		for (final Component child : ctx.widgets.get(WIDGET_HUD)) {
 			for (final Component sub : child.getChildren()) {
@@ -343,6 +355,9 @@ public class Hud extends ClientAccessor {
 	}
 
 	Component getSprite(final Window window) {
+		if (window == null) {
+			return null;
+		}
 		final int texture = window.getTexture();
 		for (final Component child : ctx.widgets.get(WIDGET_HUD)) {
 			for (final Component sub : child.getChildren()) {

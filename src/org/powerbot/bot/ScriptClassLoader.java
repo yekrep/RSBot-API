@@ -11,6 +11,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 import org.powerbot.util.IOUtils;
+import org.powerbot.util.TarReader;
 
 /**
  */
@@ -23,20 +24,11 @@ public final class ScriptClassLoader extends ClassLoader {
 		files = null;
 	}
 
-	public ScriptClassLoader(final ZipInputStream in) throws IOException {
+	public ScriptClassLoader(final Iterable<Map.Entry<String, byte[]>> in) {
 		files = new HashMap<String, byte[]>();
-		ZipEntry entry;
-		while ((entry = in.getNextEntry()) != null) {
-			final ByteArrayOutputStream out = new ByteArrayOutputStream();
-			final byte[] data = new byte[IOUtils.BUFFER_SIZE];
-			int len;
-			while ((len = in.read(data)) != -1) {
-				out.write(data, 0, len);
-			}
-			files.put(entry.getName(), out.toByteArray());
-			in.closeEntry();
+		for (final Map.Entry<String, byte[]> e : in) {
+			files.put(e.getKey(), e.getValue());
 		}
-		in.close();
 		base = null;
 	}
 

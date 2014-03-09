@@ -55,7 +55,7 @@ public class Widgets extends ClientAccessor {
 	public synchronized Widget get(final int widget) {
 		final Client client = ctx.client();
 		if (widget < 0) {
-			return null;
+			throw new RuntimeException("bad widget");
 		}
 
 		if (cache == null) {
