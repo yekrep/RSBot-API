@@ -1,5 +1,6 @@
 package org.powerbot.script;
 
+import java.awt.Component;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.util.concurrent.TimeUnit;
@@ -20,7 +21,12 @@ public class Mouse extends org.powerbot.script.ClientAccessor {
 
 	public Point getLocation() {
 		final InputSimulator engine = queue.getEngine();
-		return engine != null ? engine.getLocation() : new Point(-1, -1);
+		if (engine != null) {
+			return engine.getLocation();
+		}
+		final Component c = queue.getComponent();
+		final Point p = c != null ? c.getMousePosition() : null;
+		return p != null ? p : new Point(-1, -1);
 	}
 
 	public Point getPressLocation() {

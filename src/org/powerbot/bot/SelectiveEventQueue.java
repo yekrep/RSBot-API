@@ -70,6 +70,10 @@ public class SelectiveEventQueue extends EventQueue {
 		return engine.get();
 	}
 
+	public Component getComponent() {
+		return component.get();
+	}
+
 	public void target(final Component component, final EventCallback callback) {
 		final InputSimulator engine = this.engine.get();
 		final Component c = engine != null ? engine.getComponent() : null;
