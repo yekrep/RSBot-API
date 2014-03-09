@@ -78,6 +78,7 @@ public final class Bot extends org.powerbot.script.Bot {
 		final GameStub stub = new GameStub(crawler.parameters, crawler.archive);
 		applet.setStub(stub);
 		applet.setSize(BotChrome.PANEL_MIN_WIDTH, BotChrome.PANEL_MIN_HEIGHT);
+		applet.setMinimumSize(applet.getSize());
 		applet.init();
 
 		if (loader.getBridge().getTransformSpec() == null) {
