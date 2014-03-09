@@ -79,6 +79,9 @@ public class Canvas extends java.awt.Canvas {
 		super.setSize(width, height);
 		//Keep the images in-line with the size of the component.
 		if (real == null || real.getWidth() != width || real.getHeight() != height) {
+			if (width <= 0 || height <= 0) {
+				return;
+			}
 			real = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 			clean = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 		}
