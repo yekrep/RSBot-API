@@ -145,6 +145,7 @@ class BotOverlay extends JDialog {
 
 		if (supported) {
 			repaint.start();
+			setVisible(true);
 
 			parent.addComponentListener(new ComponentAdapter() {
 				@Override
