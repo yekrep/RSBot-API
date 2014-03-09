@@ -1,6 +1,8 @@
 package org.powerbot.script;
 
 import java.applet.Applet;
+import java.awt.Dimension;
+import java.awt.Insets;
 import java.io.Closeable;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -27,8 +29,10 @@ public abstract class Bot implements Runnable, Closeable {
 	protected void display() {
 		chrome.getContentPane().removeAll();
 		chrome.add(applet);
-		chrome.invalidate();
-		chrome.repaint();
+		final Dimension d = applet.getMinimumSize();
+		final Insets s = chrome.getInsets();
+		chrome.setMinimumSize(new Dimension(d.width + s.right + s.left, d.height + s.top + s.bottom));
+		chrome.pack();
 	}
 
 	@Override
