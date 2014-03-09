@@ -184,8 +184,8 @@ public class Menu extends ClientAccessor {
 				final String[] actions2 = new String[count], options2 = new String[count];
 				int d = 0;
 				for (int i = Math.min(count, Math.min(actions.length, options.length)) - 1; i >= 0; --i) {
-					actions2[d] = actions[i];
-					options2[d] = options[i];
+					actions2[d] = StringUtils.stripHtml(actions[i]);
+					options2[d] = StringUtils.stripHtml(options[i]);
 					++d;
 				}
 
