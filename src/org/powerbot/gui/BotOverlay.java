@@ -11,6 +11,10 @@ import java.awt.Graphics2D;
 import java.awt.Insets;
 import java.awt.Point;
 import java.awt.RenderingHints;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
@@ -143,6 +147,28 @@ public class BotOverlay extends JDialog {
 
 		if (supported) {
 			repaint.start();
+
+			parent.addComponentListener(new ComponentAdapter() {
+				@Override
+				public void componentResized(final ComponentEvent e) {
+					adjustSize();
+				}
+
+				@Override
+				public void componentMoved(final ComponentEvent e) {
+					adjustSize();
+				}
+			});
+
+			parent.addWindowListener(new WindowAdapter() {
+				@Override
+				public void windowDeiconified(final WindowEvent e) {
+					if (isVisible()) {
+						setVisible(false);
+						setVisible(true);
+					}
+				}
+			});
 		}
 	}
 
