@@ -44,6 +44,7 @@ public class Bot extends org.powerbot.script.Bot {
 		}
 
 		final GameAppletLoader loader = new GameAppletLoader(game, classLoader);
+		Thread.currentThread().setContextClassLoader(classLoader);
 		loader.setCallback(new Runnable() {
 			@Override
 			public void run() {
