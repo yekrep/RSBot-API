@@ -36,7 +36,7 @@ codesign: obfuscate
 
 docs:
 	@if [ -d "$(DOCSDIR)" ]; then rm -rf "$(DOCSDIR)"; fi
-	javadoc -d "$(DOCSDIR)" -version -author -windowtitle "RSBot API Documentation" -header "RSBot&trade; API" -footer "`cat $(DOCSCFG)/footer.txt`" -bottom "`cat $(DOCSCFG)/bottom.txt`" -charset "utf-8" -docencoding "utf-8" -classpath src -subpackages `cat $(DOCSCFG)/packages.txt` -exclude `cat $(DOCSCFG)/packages-exclude.txt`
+	javadoc -d "$(DOCSDIR)" -version -author -windowtitle "RSBot API Documentation" -header "RSBot&trade; API" -footer "`cat $(DOCSCFG)/footer.txt`" -bottom "`cat $(DOCSCFG)/bottom.txt`" -charset "utf-8" -docencoding "utf-8" -classpath src -subpackages `cat $(DOCSCFG)/packages.txt`
 
 clean:
 	@rm -f "$(DIST)"
