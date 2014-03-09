@@ -26,6 +26,11 @@ public class Game extends ClientAccessor {
 		return client != null ? client.getClientState() : -1;
 	}
 
+	public int floor() {
+		final Client client = ctx.client();
+		return client != null ? client.getFloor() : -1;
+	}
+
 	public int crosshairIndex() {
 		final Client client = ctx.client();
 		return client != null ? client.getCrosshairIndex() : -1;
