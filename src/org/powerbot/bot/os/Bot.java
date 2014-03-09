@@ -13,6 +13,7 @@ import org.powerbot.bot.os.loader.GameStub;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.script.PaintListener;
 import org.powerbot.script.os.ClientContext;
+import org.powerbot.util.Ini;
 
 public class Bot extends org.powerbot.script.Bot {
 	public final ClientContext ctx;
@@ -62,20 +63,11 @@ public class Bot extends org.powerbot.script.Bot {
 		applet.setStub(stub);
 		applet.init();
 
-		Dimension d = null;
-		final Map<String, String> p = crawler.properties;
-		if (p.containsKey("width") && p.containsKey("height")) {
-			try {
-				d = new Dimension(Integer.parseInt(p.get("width")), Integer.parseInt(p.get("height")));
-			} catch (final NumberFormatException ignored) {
-			}
-		}
-		d = d == null ? chrome.getSize() : d;
+		final Ini.Member p = new Ini().put(crawler.properties).get();
+		applet.setSize(new Dimension(p.getInt("width", 765), p.getInt("height", 503)));
+		applet.setMinimumSize(applet.getSize());
 
-		applet.setSize(d);
-		applet.setMinimumSize(d);
 		applet.start();
-
 		debug();
 		display();
 	}
