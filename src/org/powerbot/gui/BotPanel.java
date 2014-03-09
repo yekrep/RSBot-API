@@ -1,6 +1,5 @@
 package org.powerbot.gui;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -17,15 +16,19 @@ import javax.swing.JPanel;
 
 import org.powerbot.misc.Resources;
 import org.powerbot.script.Bot;
+import org.powerbot.script.Filter;
 
 class BotPanel extends JPanel implements ActionListener {
 	private static final long serialVersionUID = -8983015619045562434L;
 	private final BotChrome chrome;
+	private final Filter<Bot> callback;
 	private final JPanel mode;
 	private final JButton rs3, os;
 
-	public BotPanel(final BotChrome chrome) {
+	public BotPanel(final BotChrome chrome, final Filter<Bot> callback) {
 		this.chrome = chrome;
+		this.callback = callback;
+
 		final Dimension d = new Dimension(BotChrome.PANEL_MIN_WIDTH, BotChrome.PANEL_MIN_HEIGHT);
 		setSize(d);
 		setPreferredSize(d);
@@ -73,10 +76,7 @@ class BotPanel extends JPanel implements ActionListener {
 		final JButton b = (JButton) e.getSource();
 		mode.setVisible(false);
 		final Bot bot = b == os ? new org.powerbot.bot.os.Bot(chrome) : new org.powerbot.bot.rs3.Bot(chrome);
-		if (b == os) {
-			chrome.overlay.dispose();
-		}
-		chrome.bot.set(bot);
+		callback.accept(bot);
 		Logger.getLogger(BotChrome.class.getName()).info("Starting...");
 		new Thread(bot.threadGroup, bot).start();
 	}

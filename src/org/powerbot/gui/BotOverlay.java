@@ -23,13 +23,13 @@ import javax.swing.JDialog;
 import javax.swing.SwingUtilities;
 
 import org.powerbot.Configuration;
+import org.powerbot.bot.EventDispatcher;
 import org.powerbot.bot.rs3.event.PaintEvent;
 import org.powerbot.bot.rs3.event.TextPaintEvent;
-import org.powerbot.bot.EventDispatcher;
 import org.powerbot.script.Bot;
 import org.powerbot.script.Client;
 
-public class BotOverlay extends JDialog {
+class BotOverlay extends JDialog {
 	private static final Logger log = Logger.getLogger(BotOverlay.class.getName());
 	private final BotChrome parent;
 	private final Component panel;
@@ -38,8 +38,6 @@ public class BotOverlay extends JDialog {
 	private final boolean offsetMenu;
 	private final PaintEvent paintEvent;
 	private final TextPaintEvent textPaintEvent;
-
-	public final boolean supported;
 
 	public BotOverlay(final BotChrome parent) {
 		super(parent);
@@ -57,7 +55,7 @@ public class BotOverlay extends JDialog {
 			log.severe("Transparency is not supported on your system (for paint)");
 			supported = false;
 		}
-		this.supported = supported;
+		System.setProperty("swing.transparency", Boolean.toString(supported));
 
 		setFocusableWindowState(false);
 		setVisible(false);

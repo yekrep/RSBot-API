@@ -118,7 +118,7 @@ public final class Bot extends org.powerbot.script.Bot {
 			new Thread(threadGroup, new SafeMode()).start();
 		}
 
-		chrome.display(this);
+		display();
 	}
 
 	private void setClient(final Client client, final TransformSpec spec) {

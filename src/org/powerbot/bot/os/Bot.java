@@ -4,8 +4,6 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.util.Map;
 
-import javax.swing.SwingUtilities;
-
 import org.powerbot.bot.os.client.Client;
 import org.powerbot.bot.os.event.EventDispatcher;
 import org.powerbot.bot.os.loader.GameAppletLoader;
@@ -64,27 +62,22 @@ public class Bot extends org.powerbot.script.Bot {
 		applet.setStub(stub);
 		applet.init();
 
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				Dimension d = null;
-				final Map<String, String> p = crawler.properties;
-				if (p.containsKey("width") && p.containsKey("height")) {
-					try {
-						d = new Dimension(Integer.parseInt(p.get("width")), Integer.parseInt(p.get("height")));
-					} catch (final NumberFormatException ignored) {
-					}
-				}
-				d = d == null ? chrome.getSize() : d;
-
-				applet.setSize(d);
-				applet.setMinimumSize(d);
-				chrome.add(applet);
-				applet.start();
+		Dimension d = null;
+		final Map<String, String> p = crawler.properties;
+		if (p.containsKey("width") && p.containsKey("height")) {
+			try {
+				d = new Dimension(Integer.parseInt(p.get("width")), Integer.parseInt(p.get("height")));
+			} catch (final NumberFormatException ignored) {
 			}
-		});
+		}
+		d = d == null ? chrome.getSize() : d;
+
+		applet.setSize(d);
+		applet.setMinimumSize(d);
+		applet.start();
 
 		debug();
+		display();
 	}
 
 	private void debug() {

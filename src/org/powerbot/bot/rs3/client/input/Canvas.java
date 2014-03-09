@@ -42,7 +42,7 @@ public class Canvas extends java.awt.Canvas {
 	@Override
 	public Graphics getGraphics() {
 		// only use this buffering on safe mode where overlay is not supported
-		if (bot.ctx.game.toolkit.gameMode != 0 || BotChrome.getInstance().overlay.supported) {
+		if (bot.ctx.game.toolkit.gameMode != 0 || Boolean.parseBoolean(System.getProperty("swing.transparency", "true"))) {
 			return super.getGraphics();
 		}
 

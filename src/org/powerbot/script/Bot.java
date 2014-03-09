@@ -24,6 +24,12 @@ public abstract class Bot implements Runnable, Closeable {
 
 	public abstract ClientContext ctx();
 
+	protected void display() {
+		chrome.add(applet);
+		chrome.invalidate();
+		chrome.repaint();
+	}
+
 	@Override
 	public void close() {
 		ctx().controller().stop();

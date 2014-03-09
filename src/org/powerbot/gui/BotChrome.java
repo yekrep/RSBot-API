@@ -29,6 +29,7 @@ import org.powerbot.misc.CryptFile;
 import org.powerbot.misc.Resources;
 import org.powerbot.misc.Tracker;
 import org.powerbot.script.Bot;
+import org.powerbot.script.Filter;
 import org.powerbot.util.IOUtils;
 
 public class BotChrome extends JFrame implements Closeable {
@@ -38,9 +39,8 @@ public class BotChrome extends JFrame implements Closeable {
 
 	private static BotChrome instance;
 	public final AtomicReference<Bot> bot;
-	private final BotPanel panel;
-	public final BotOverlay overlay;
 	public final BotMenuBar menuBar;
+	private final AtomicReference<BotOverlay> overlay;
 	private final WindowCache cache;
 
 	private BotChrome() {
@@ -52,7 +52,16 @@ public class BotChrome extends JFrame implements Closeable {
 		setFocusTraversalKeysEnabled(false);
 
 		bot = new AtomicReference<Bot>(null);
-		add(panel = new BotPanel(this));
+		overlay = new AtomicReference<BotOverlay>(null);
+		add(new BotPanel(this, new Filter<Bot>() {
+			@Override
+			public boolean accept(final Bot bot) {
+				if (bot instanceof org.powerbot.bot.rs3.Bot) {
+					overlay.set(new BotOverlay(BotChrome.this));
+				}
+				return BotChrome.this.bot.compareAndSet(null, bot);
+			}
+		}));
 		setJMenuBar(menuBar = new BotMenuBar(this));
 		SelectiveEventQueue.getInstance().setBlocking(false);
 
@@ -63,10 +72,7 @@ public class BotChrome extends JFrame implements Closeable {
 		setLocationRelativeTo(getParent());
 		setVisible(true);
 		new OSXAdapt(this).run();
-
 		Tracker.getInstance().trackPage("", getTitle());
-
-		overlay = new BotOverlay(this);
 
 		addWindowListener(new WindowAdapter() {
 			@Override
@@ -143,7 +149,9 @@ public class BotChrome extends JFrame implements Closeable {
 			}).start();
 		}
 
-		overlay.dispose();
+		if (overlay.get() != null) {
+			overlay.getAndSet(null).dispose();
+		}
 		dispose();
 
 		if (Configuration.OS == Configuration.OperatingSystem.WINDOWS) {
@@ -166,17 +174,5 @@ public class BotChrome extends JFrame implements Closeable {
 		t.setDaemon(true);
 		t.setPriority(Thread.MIN_PRIORITY);
 		t.start();
-	}
-
-	public void display(final Bot bot) {
-		remove(panel);
-		if (this.bot != null) {
-			remove(bot.applet);
-		}
-		add(bot.applet);
-		bot.applet.setSize(panel.getSize());
-		overlay.setVisible(bot.applet != null && overlay.supported);
-		invalidate();
-		repaint();
 	}
 }
