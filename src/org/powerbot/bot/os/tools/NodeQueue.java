@@ -14,8 +14,9 @@ public class NodeQueue {
 		if (q == null || (e = q.getSentinel()) == null) {
 			return list;
 		}
+		e = e.getNext();
 
-		for (; type.isInstance(e); e = e.getNext()) {
+		for (; e != null && type.isInstance(e); e = e.getNext()) {
 			list.add(type.cast(e));
 		}
 

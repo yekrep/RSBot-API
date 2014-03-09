@@ -16,8 +16,9 @@ public class NodeQueue {
 		if (q == null || (e = q.getTail()) == null) {
 			return list;
 		}
+		e = e.getNext();
 
-		for (; type.isInstance(e); e = e.getNext()) {
+		for (; e != null && type.isInstance(e); e = e.getNext()) {
 			list.add(type.cast(e));
 		}
 
@@ -31,8 +32,9 @@ public class NodeQueue {
 		if (q == null || (e = q.getTail()) == null) {
 			return list;
 		}
+		e = e.getNextSub();
 
-		for (; type.isInstance(e); e = e.getNextSub()) {
+		for (; e != null && type.isInstance(e); e = e.getNextSub()) {
 			list.add(type.cast(e));
 		}
 
