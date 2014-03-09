@@ -36,7 +36,11 @@ public class GameClassLoader extends ClassLoader {
 		TransformSpec spec;
 		try {
 			try {
-				spec = new TransformSpec(Resources.getResourceURL(Resources.Paths.TSPEC_OS).openStream());
+				final URL url = Resources.getResourceURL(Resources.Paths.TSPEC_OS);
+				if (url == null) {
+					throw new FileNotFoundException();
+				}
+				spec = new TransformSpec(url.openStream());
 			} catch (final FileNotFoundException ignored) {
 				final CryptFile cache = new CryptFile(Resources.Paths.TSPEC_OS, getClass());
 				spec = new TransformSpec(cache.download(HttpUtils.getHttpConnection(new URL(Configuration.URLs.TSPEC_OS))));
