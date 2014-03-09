@@ -67,7 +67,9 @@ class BotMenuBar extends JMenuBar {
 			public void menuSelected(final MenuEvent e) {
 				final JMenu menu = (JMenu) e.getSource();
 				menu.removeAll();
-				new BotMenuView(chrome, menu);
+				if (chrome.bot.get() != null) {
+					new BotMenuView(chrome, menu);
+				}
 			}
 
 			@Override
@@ -109,8 +111,8 @@ class BotMenuBar extends JMenuBar {
 				final JMenu m = (JMenu) e.getSource();
 				m.removeAll();
 
-				final ScriptController c = (ScriptController) chrome.bot.get().ctx().controller();
-				if (!c.isValid()) {
+				final ScriptController c = chrome.bot.get() == null ? null : (ScriptController) chrome.bot.get().ctx().controller();
+				if (c == null || !c.isValid()) {
 					return;
 				}
 
@@ -128,8 +130,8 @@ class BotMenuBar extends JMenuBar {
 
 			@Override
 			public void menuDeselected(final MenuEvent e) {
-				final ScriptController c = (ScriptController) chrome.bot.get().ctx().controller();
-				if (!c.isValid()) {
+				final ScriptController c = chrome.bot.get() == null ? null : (ScriptController) chrome.bot.get().ctx().controller();
+				if (c == null || !c.isValid()) {
 					return;
 				}
 
@@ -147,8 +149,8 @@ class BotMenuBar extends JMenuBar {
 
 			@Override
 			public void menuCanceled(final MenuEvent e) {
-				final ScriptController c = (ScriptController) chrome.bot.get().ctx().controller();
-				if (!c.isValid()) {
+				final ScriptController c = chrome.bot.get() == null ? null : (ScriptController) chrome.bot.get().ctx().controller();
+				if (c == null || !c.isValid()) {
 					return;
 				}
 
@@ -168,10 +170,10 @@ class BotMenuBar extends JMenuBar {
 		edit.addMenuListener(new MenuListener() {
 			@Override
 			public void menuSelected(final MenuEvent e) {
-				final ScriptController c = (ScriptController) chrome.bot.get().ctx().controller();
-				final boolean active = c.isValid() && !c.isStopping(), running = active && !c.isSuspended();
+				final ScriptController c = chrome.bot.get() == null ? null : (ScriptController) chrome.bot.get().ctx().controller();
+				final boolean active = c != null && c.isValid() && !c.isStopping(), running = active && !c.isSuspended();
 
-				play.setEnabled(chrome.bot.get().ctx().client() != null && !BotPreferences.loading.get());
+				play.setEnabled(chrome.bot.get() != null && chrome.bot.get().ctx().client() != null && !BotPreferences.loading.get());
 				play.setText(running ? BotLocale.PAUSESCRIPT : active ? BotLocale.RESUMESCRIPT : BotLocale.PLAYSCRIPT);
 				play.setIcon(playIcons[running ? 1 : 0]);
 				stop.setEnabled(active);
