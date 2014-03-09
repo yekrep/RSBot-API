@@ -71,9 +71,6 @@ public class BotChrome extends JFrame implements Closeable {
 		cache = new WindowCache(this, "chrome");
 		cache.run();
 		setLocationRelativeTo(getParent());
-		setVisible(true);
-		new OSXAdapt(this).run();
-		Tracker.getInstance().trackPage("", getTitle());
 
 		addWindowListener(new WindowAdapter() {
 			@Override
@@ -82,6 +79,9 @@ public class BotChrome extends JFrame implements Closeable {
 			}
 		});
 
+		setVisible(true);
+		new OSXAdapt(this).run();
+		Tracker.getInstance().trackPage("", getTitle());
 		System.gc();
 	}
 
