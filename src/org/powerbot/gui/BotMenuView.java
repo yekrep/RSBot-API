@@ -13,8 +13,8 @@ import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
-import org.powerbot.bot.rs3.event.debug.*;
 import org.powerbot.bot.EventDispatcher;
+import org.powerbot.bot.rs3.event.debug.*;
 import org.powerbot.script.Bot;
 import org.powerbot.script.ClientContext;
 
@@ -48,15 +48,20 @@ final class BotMenuView implements ActionListener {
 
 	public BotMenuView(final BotChrome chrome, final JMenu menu) {
 		this.chrome = chrome;
+		final Bot b = chrome.bot.get();
+
 		final JMenuItem widgetExplorer = new JMenuItem(BotLocale.WIDGETEXPLORER);
 		widgetExplorer.addActionListener(this);
 		menu.add(widgetExplorer);
 		final JMenuItem settingExplorer = new JMenuItem(BotLocale.SETTINGEXPLORER);
 		settingExplorer.addActionListener(this);
 		menu.add(settingExplorer);
-		final JMenuItem boundingUtility = new JMenuItem(BotLocale.BOUNDINGUTILITY);
-		boundingUtility.addActionListener(this);
-		menu.add(boundingUtility);
+
+		if (b instanceof org.powerbot.bot.rs3.Bot) {
+			final JMenuItem boundingUtility = new JMenuItem(BotLocale.BOUNDINGUTILITY);
+			boundingUtility.addActionListener(this);
+			menu.add(boundingUtility);
+		}
 
 		menu.addSeparator();
 
@@ -106,7 +111,7 @@ final class BotMenuView implements ActionListener {
 		items.add(SEPERATOR);
 		items.add(MESSAGES);
 
-		final EventDispatcher d = chrome.bot.get().dispatcher;
+		final EventDispatcher d = b.dispatcher;
 
 		boolean selectedAll = true;
 
