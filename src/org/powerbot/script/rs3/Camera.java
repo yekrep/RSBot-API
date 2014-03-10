@@ -4,7 +4,6 @@ import java.util.concurrent.Callable;
 
 import org.powerbot.script.Condition;
 import org.powerbot.script.Random;
-import org.powerbot.script.Vector3f;
 
 /**
  * Utilities pertaining to the camera.
@@ -12,13 +11,12 @@ import org.powerbot.script.Vector3f;
  */
 @SuppressWarnings("deprecation")
 public class Camera extends ClientAccessor {
-	public Vector3f offset;
-	public Vector3f center;
+	public float[] offset, center;
 
 	public Camera(final ClientContext factory) {
 		super(factory);
-		offset = new Vector3f(0, 0, 0);
-		center = new Vector3f(0, 0, 0);
+		offset = new float[3];
+		center = new float[3];
 	}
 
 	/**
@@ -28,7 +26,7 @@ public class Camera extends ClientAccessor {
 	 */
 	public int getX() {
 		final Tile tile = ctx.game.getMapBase();
-		return (int) (offset.x - (tile.getX() << 9));
+		return (int) (offset[0] - (tile.getX() << 9));
 	}
 
 	/**
@@ -38,7 +36,7 @@ public class Camera extends ClientAccessor {
 	 */
 	public int getY() {
 		final Tile tile = ctx.game.getMapBase();
-		return (int) (offset.y - (tile.getY() << 9));
+		return (int) (offset[1] - (tile.getY() << 9));
 	}
 
 	/**
@@ -47,7 +45,7 @@ public class Camera extends ClientAccessor {
 	 * @return the offset on the z-axis
 	 */
 	public int getZ() {
-		return -(int) offset.z;
+		return -(int) offset[2];
 	}
 
 	/**
@@ -56,10 +54,10 @@ public class Camera extends ClientAccessor {
 	 * @return the camera yaw
 	 */
 	public int getYaw() {
-		final float deltaX = offset.x - center.x;
-		final float deltaY = offset.y - center.y;
-		final float theta = (float) Math.atan2(deltaX, deltaY);
-		return (int) (((int) ((Math.PI - theta) * 2607.5945876176133D) & 0x3FFF) / 45.51);
+		final float dx = offset[0] - center[0];
+		final float dy = offset[1] - center[1];
+		final float t = (float) Math.atan2(dx, dy);
+		return (int) (((int) ((Math.PI - t) * 2607.5945876176133D) & 0x3fff) / 45.51);
 	}
 
 	/**
@@ -68,12 +66,12 @@ public class Camera extends ClientAccessor {
 	 * @return the camera pitch
 	 */
 	public final int getPitch() {
-		final float deltaX = center.x - offset.x;
-		final float deltaY = center.y - offset.y;
-		final float deltaZ = center.z - offset.z;
-		final float dist = (float) Math.sqrt(deltaX * deltaX + deltaY * deltaY);
-		final float theta = (float) Math.atan2(-deltaZ, dist);
-		return (int) (((int) (theta * 2607.5945876176133D) & 0x3FFF) / 4096f * 100f);
+		final float dx = center[0] - offset[0];
+		final float dy = center[1] - offset[1];
+		final float dz = center[2] - offset[2];
+		final float s = (float) Math.sqrt(dx * dx + dy * dy);
+		final float t = (float) Math.atan2(-dz, s);
+		return (int) (((int) (t * 2607.5945876176133D) & 0x3fff) / 4096f * 100f);
 	}
 
 	/**

@@ -8,7 +8,6 @@ import org.powerbot.bot.EventDispatcher;
 import org.powerbot.script.MessageEvent;
 import org.powerbot.script.rs3.Camera;
 import org.powerbot.script.rs3.ClientContext;
-import org.powerbot.script.Vector3f;
 
 public class AbstractCallback implements Callback {
 	private final ClientContext ctx;
@@ -41,7 +40,7 @@ public class AbstractCallback implements Callback {
 	@Override
 	public void updateCamera(final RSInteractableLocation offset, final RSInteractableLocation center) {
 		final Camera camera = ctx.camera;
-		camera.offset = new Vector3f(offset.getX(), offset.getY(), offset.getZ());
-		camera.center = new Vector3f(center.getX(), center.getY(), center.getZ());
+		camera.offset = new float[]{offset.getX(), offset.getY(), offset.getZ()};
+		camera.center = new float[]{center.getX(), center.getY(), center.getZ()};
 	}
 }
