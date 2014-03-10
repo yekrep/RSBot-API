@@ -63,7 +63,8 @@ public interface Script extends EventListener {
 		String description();
 
 		/**
-		 * A series of key=value pairs separated by semicolons (;) or newlines.
+		 * A series of key=value pairs separated by semicolons (;) or newlines,
+		 * e.g. {@code "hidden=true;topic=1234"}.
 		 *
 		 * @return the properties
 		 */
