@@ -24,7 +24,7 @@ public class DrawModels implements PaintListener {
 	@Override
 	public void repaint(final Graphics render) {
 		for (final GameObject obj : ctx.objects.select().within(10)) {
-			if (!obj.isInViewport()) {
+			if (!obj.inViewport()) {
 				continue;
 			}
 			final Model m = obj.getModel();
@@ -38,14 +38,14 @@ public class DrawModels implements PaintListener {
 		}
 
 		for (final Player actor : ctx.players.select()) {
-			if (!actor.isInViewport()) {
+			if (!actor.inViewport()) {
 				continue;
 			}
 			actor.draw(render, 10);
 		}
 
 		for (final Npc actor : ctx.npcs.select()) {
-			if (!actor.isInViewport()) {
+			if (!actor.inViewport()) {
 				continue;
 			}
 			actor.draw(render, 20);

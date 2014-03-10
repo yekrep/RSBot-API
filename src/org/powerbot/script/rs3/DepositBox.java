@@ -6,9 +6,10 @@ import java.util.concurrent.Callable;
 
 import org.powerbot.script.Condition;
 import org.powerbot.script.Random;
+import org.powerbot.script.Viewport;
 import org.powerbot.util.StringUtils;
 
-public class DepositBox extends ItemQuery<Item> {
+public class DepositBox extends ItemQuery<Item> implements Viewport {
 	public static final int[] DEPOSIT_BOX_IDS = new int[]{
 			2045, 2133, 6396, 6402, 6404, 6417, 6418, 6453, 6457, 6478, 6836, 9398, 15985, 20228, 24995, 25937, 26969,
 			32924, 32930, 32931, 34755, 36788, 39830, 45079, 66668, 70512, 73268, 79036
@@ -54,11 +55,9 @@ public class DepositBox extends ItemQuery<Item> {
 	}
 
 	/**
-	 * Determines if a bank is in the viewport.
-	 *
-	 * @return <tt>true</tt> if a bank is in the viewport; otherwise <tt>false</tt>
+	 * {@inheritDoc}
 	 */
-	public boolean isInViewport() {
+	public boolean inViewport() {
 		return getBox().isValid();
 	}
 

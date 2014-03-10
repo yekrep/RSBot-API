@@ -9,13 +9,14 @@ import java.util.concurrent.Callable;
 import org.powerbot.script.Filter;
 import org.powerbot.script.Condition;
 import org.powerbot.script.Random;
+import org.powerbot.script.Viewport;
 import org.powerbot.util.StringUtils;
 
 /**
  * Utilities pertaining to the bank.
  *
  */
-public class Bank extends ItemQuery<Item> {
+public class Bank extends ItemQuery<Item> implements Viewport {
 	public static final int[] BANK_NPC_IDS = new int[]{
 			44, 45, 166, 494, 495, 496, 497, 498, 499, 553, 909, 953, 958, 1036, 1360, 1702, 2163, 2164, 2354, 2355,
 			2568, 2569, 2570, 2617, 2618, 2619, 2718, 2759, 3046, 3198, 3199, 3293, 3416, 3418, 3824, 4456, 4457,
@@ -121,11 +122,9 @@ public class Bank extends ItemQuery<Item> {
 	}
 
 	/**
-	 * Determines if a bank is in view.
-	 *
-	 * @return <tt>true</tt> if a bank is in view; otherwise <tt>false</tt>
+	 * {@inheritDoc}
 	 */
-	public boolean isInViewport() {
+	public boolean inViewport() {
 		return getBank().isValid();
 	}
 

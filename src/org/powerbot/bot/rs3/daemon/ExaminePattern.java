@@ -21,7 +21,7 @@ public class ExaminePattern extends Antipattern.Module {
 			for (final Npc n : ctx.npcs.select().select(new Filter<Npc>() {
 				@Override
 				public boolean accept(final Npc npc) {
-					return npc.isInViewport();
+					return npc.inViewport();
 				}
 			}).shuffle().limit(isAggressive() ? 1 : Random.nextInt(1, 3))) {
 				hover(n);
@@ -33,7 +33,7 @@ public class ExaminePattern extends Antipattern.Module {
 		for (final GameObject o : ctx.objects.select().select(new Filter<GameObject>() {
 			@Override
 			public boolean accept(final GameObject o) {
-				return o.getType() == GameObject.Type.INTERACTIVE && o.isInViewport();
+				return o.getType() == GameObject.Type.INTERACTIVE && o.inViewport();
 			}
 		}).shuffle().limit(isAggressive() ? 1 : Random.nextInt(1, 3))) {
 			hover(o);

@@ -74,8 +74,11 @@ public final class TileMatrix extends Interactive implements Locatable, Drawable
 		return tile;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public boolean isInViewport() {
+	public boolean inViewport() {
 		final BoundingModel model2 = boundingModel.get();
 		if (model2 != null) {
 			return ctx.game.isPointInViewport(nextPoint());

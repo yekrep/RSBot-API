@@ -53,6 +53,9 @@ public final class TileMatrix extends Interactive implements Locatable {
 		return tile;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public boolean inViewport() {
 		return isPolygonInViewport(getBounds());

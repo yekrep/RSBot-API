@@ -229,7 +229,7 @@ public class Lobby extends ClientAccessor {
 	public Dialog getOpenDialog() {
 		for (final Dialog d : Dialog.values()) {
 			final Component child = ctx.widgets.get(WIDGET_MAIN_LOBBY, d.getTextIndex());
-			if (child != null && child.isInViewport()) {
+			if (child != null && child.inViewport()) {
 				final String text = child.getText();
 				if (text != null && text.toLowerCase().contains(d.getText())) {
 					return d;
@@ -248,7 +248,7 @@ public class Lobby extends ClientAccessor {
 			return false;
 		}
 		final Component child = ctx.widgets.get(WIDGET_MAIN_LOBBY, dialog.getBackIndex());
-		return child != null && child.isInViewport() && child.click(true);
+		return child != null && child.inViewport() && child.click(true);
 	}
 
 	private boolean continueDialog() {
@@ -257,7 +257,7 @@ public class Lobby extends ClientAccessor {
 			return false;
 		}
 		final Component child = ctx.widgets.get(WIDGET_MAIN_LOBBY, dialog.getContinueIndex());
-		return child != null && child.isInViewport() && child.click(true);
+		return child != null && child.inViewport() && child.click(true);
 	}
 
 	public Tab getCurrentTab() {

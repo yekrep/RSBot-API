@@ -7,8 +7,9 @@ import java.util.concurrent.atomic.AtomicReference;
 import org.powerbot.script.Condition;
 import org.powerbot.script.Filter;
 import org.powerbot.script.Targetable;
+import org.powerbot.script.Viewport;
 
-public abstract class Interactive extends ClientAccessor implements Targetable, Validatable {
+public abstract class Interactive extends ClientAccessor implements Targetable, Validatable, Viewport {
 	protected final AtomicReference<BoundingModel> boundingModel;
 
 	public Interactive(final ClientContext ctx) {
@@ -16,7 +17,11 @@ public abstract class Interactive extends ClientAccessor implements Targetable, 
 		boundingModel = new AtomicReference<BoundingModel>(null);
 	}
 
-	public boolean isInViewport() {
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean inViewport() {
 		return ctx.game.isPointInViewport(nextPoint());
 	}
 
@@ -24,7 +29,7 @@ public abstract class Interactive extends ClientAccessor implements Targetable, 
 		return new Filter<Interactive>() {
 			@Override
 			public boolean accept(final Interactive interactive) {
-				return interactive.isInViewport();
+				return interactive.inViewport();
 			}
 		};
 	}

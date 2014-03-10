@@ -7,12 +7,17 @@ import java.util.concurrent.Callable;
 import org.powerbot.script.Filter;
 import org.powerbot.script.Condition;
 import org.powerbot.script.Targetable;
+import org.powerbot.script.Viewport;
 
-public abstract class Interactive extends ClientAccessor implements Targetable, Validatable {
+public abstract class Interactive extends ClientAccessor implements Targetable, Validatable, Viewport {
 	public Interactive(final ClientContext ctx) {
 		super(ctx);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public boolean inViewport() {
 		return ctx.game.pointInViewport(nextPoint());
 	}
