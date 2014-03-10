@@ -53,7 +53,6 @@ public abstract class AbstractScript<C extends ClientContext> implements Script,
 
 	/**
 	 * The priority of this {@link Script} as a {@link java.lang.Runnable}.
-	 * @see {@link #getExecQueue(Script.State)}
 	 */
 	public final AtomicInteger priority;
 
@@ -208,16 +207,16 @@ public abstract class AbstractScript<C extends ClientContext> implements Script,
 	}
 
 	/**
-	 * Returns the {@link Manifest} attached to this {@link Script} if present.
+	 * Returns the {@link org.powerbot.script.Script.Manifest} attached to this {@link Script} if present.
 	 *
-	 * @return the attached {@link Manifest} if it exists, or {@code null} otherwise
+	 * @return the attached {@link org.powerbot.script.Script.Manifest} if it exists, or {@code null} otherwise
 	 */
 	public Manifest getManifest() {
 		return getClass().isAnnotationPresent(Manifest.class) ? getClass().getAnnotation(Manifest.class) : null;
 	}
 
 	/**
-	 * Returns the name of this {@link Script} as determined by its {@link Manifest}.
+	 * Returns the name of this {@link Script} as determined by its {@link org.powerbot.script.Script.Manifest}.
 	 *
 	 * @return the name of this {@link Script}
 	 */
