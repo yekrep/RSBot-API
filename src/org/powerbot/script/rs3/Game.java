@@ -197,14 +197,6 @@ public class Game extends ClientAccessor {
 	}
 
 	/**
-	 * @see {@link #isPointInViewport(java.awt.Point)}
-	 */
-	@Deprecated
-	public boolean isPointOnScreen(final Point point) {
-		return isPointInViewport(point);
-	}
-
-	/**
 	 * Determines if a point is in the viewport.
 	 *
 	 * @param x the x-coordinate
@@ -225,14 +217,6 @@ public class Game extends ClientAccessor {
 			return x < dimension.getWidth() && y < dimension.getHeight();
 		}
 		return false;
-	}
-
-	/**
-	 * @see {@link #isPointInViewport(int, int)}
-	 */
-	@Deprecated
-	public boolean isPointOnScreen(final int x, final int y) {
-		return isPointInViewport(x, y);
 	}
 
 	/**

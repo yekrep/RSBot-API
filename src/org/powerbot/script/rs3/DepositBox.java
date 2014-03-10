@@ -62,14 +62,6 @@ public class DepositBox extends ItemQuery<Item> {
 		return getBox().isValid();
 	}
 
-	/**
-	 * @see {@link #isInViewport()}
-	 */
-	@Deprecated
-	public boolean isOnScreen() {
-		return isInViewport();
-	}
-
 	public boolean isOpen() {
 		return ctx.widgets.get(WIDGET).isValid();
 	}

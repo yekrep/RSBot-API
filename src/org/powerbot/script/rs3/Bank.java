@@ -130,14 +130,6 @@ public class Bank extends ItemQuery<Item> {
 	}
 
 	/**
-	 * @deprecated see {@link #isInViewport()}
-	 */
-	@Deprecated
-	public boolean isOnScreen() {
-		return isInViewport();
-	}
-
-	/**
 	 * Determines if the bank is open.
 	 *
 	 * @return <tt>true</tt> is the bank is open; otherwise <tt>false</tt>

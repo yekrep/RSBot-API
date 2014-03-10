@@ -20,14 +20,6 @@ public abstract class Interactive extends ClientAccessor implements Targetable, 
 		return ctx.game.isPointInViewport(nextPoint());
 	}
 
-	/**
-	 * @see {@link #isInViewport()}
-	 */
-	@Deprecated
-	public boolean isOnScreen() {
-		return isInViewport();
-	}
-
 	public static Filter<Interactive> areInViewport() {
 		return new Filter<Interactive>() {
 			@Override
@@ -35,11 +27,6 @@ public abstract class Interactive extends ClientAccessor implements Targetable, 
 				return interactive.isInViewport();
 			}
 		};
-	}
-
-	@Deprecated
-	public static Filter<Interactive> areOnScreen() {
-		return areInViewport();
 	}
 
 	public boolean hover() {
