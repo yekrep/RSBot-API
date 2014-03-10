@@ -5,7 +5,6 @@ import java.util.concurrent.Callable;
 /**
  * An event-driven blocking utility.
  * Frequencies are randomly adjusted by 85-150% to provide a basic antipattern.
- *
  */
 public class Condition {
 	/**
@@ -62,5 +61,20 @@ public class Condition {
 		}
 
 		return false;
+	}
+
+	/**
+	 * Sleeps the current thread.
+	 *
+	 * @param ms the length of time to sleep in milliseconds, which is adjusted by an 85-150% random variance
+	 * @return the actual amount of time slept in milliseconds, which is subject to system clock accuracy
+	 */
+	public static int sleep(final int ms) {
+		final long s = System.nanoTime();
+		try {
+			Thread.sleep((long) (ms * Random.nextDouble(0.85d, 1.5d)));
+		} catch (final InterruptedException ignored) {
+		}
+		return (int) (System.nanoTime() - s);
 	}
 }
