@@ -27,7 +27,7 @@ public class DrawAbilities implements PaintListener {
 		for (final Action action : ctx.combatBar.getActions()) {
 			final Component c = action.getComponent();
 			final Point p = c.getAbsoluteLocation();
-			render.drawString(action.getId() + " (" + action.getBind() + ")", p.x, p.y);
+			render.drawString(action.id() + " (" + action.getBind() + ")", p.x, p.y);
 		}
 	}
 }

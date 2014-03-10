@@ -52,7 +52,7 @@ class OSXAdapt implements Runnable {
 				}
 
 				final ScriptController c = (ScriptController) chrome.bot.get().ctx().controller();
-				final boolean active = c.isValid() && !c.isStopping();
+				final boolean active = c.valid() && !c.isStopping();
 
 				if (active) {
 					if (JOptionPane.showConfirmDialog(chrome, "Would you like to stop the current script?", BotLocale.SCRIPTS, JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE) == JOptionPane.YES_OPTION) {

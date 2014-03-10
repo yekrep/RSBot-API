@@ -57,7 +57,7 @@ public class Lobby extends ClientAccessor {
 			return false;
 		}
 		final Component child = ctx.widgets.get(WIDGET_MAIN_LOBBY, WIDGET_BUTTON_LOGOUT);
-		return child != null && child.isValid() && child.click(true);
+		return child != null && child.valid() && child.click(true);
 	}
 
 	/**
@@ -115,7 +115,7 @@ public class Lobby extends ClientAccessor {
 				return false;
 			}
 			final Component child = ctx.widgets.get(WIDGET_MAIN_LOBBY, WIDGET_BUTTON_PLAY_GAME);
-			if (!(child != null && child.isValid() && child.click(true))) {
+			if (!(child != null && child.valid() && child.click(true))) {
 				return false;
 			}
 			Condition.wait(new Callable<Boolean>() {
@@ -149,11 +149,11 @@ public class Lobby extends ClientAccessor {
 	 * @return he currently selected world, or <tt>null</tt> if unable to retrieve world.
 	 */
 	public World getSelectedWorld() {
-		if (!isOpen() || !closeDialog() || (!ctx.widgets.get(Tab.WORLD_SELECT.getIndex()).isValid() && !openTab(Tab.WORLD_SELECT))) {
+		if (!isOpen() || !closeDialog() || (!ctx.widgets.get(Tab.WORLD_SELECT.getIndex()).valid() && !openTab(Tab.WORLD_SELECT))) {
 			return null;
 		}
 		final Widget panel = ctx.widgets.get(Tab.WORLD_SELECT.getIndex());
-		final String text = panel.isValid() ? panel.getComponent(WIDGET_LABEL_CURRENT_WORLD).getText() : null;
+		final String text = panel.valid() ? panel.getComponent(WIDGET_LABEL_CURRENT_WORLD).getText() : null;
 		if (text != null) {
 			final Matcher m = Pattern.compile("^World\\s(\\d*)$").matcher(text);
 			if (m.find()) {
@@ -204,7 +204,7 @@ public class Lobby extends ClientAccessor {
 			return new World[0];
 		}
 		final Widget panel = ctx.widgets.get(Tab.WORLD_SELECT.getIndex());
-		if (!panel.isValid() && !openTab(Tab.WORLD_SELECT)) {
+		if (!panel.valid() && !openTab(Tab.WORLD_SELECT)) {
 			return new World[0];
 		}
 		final ArrayList<World> worlds = new ArrayList<World>();
@@ -361,7 +361,7 @@ public class Lobby extends ClientAccessor {
 
 	private int getWorldIndex(final int worldNumber) {
 		final Widget panel = ctx.widgets.get(Tab.WORLD_SELECT.getIndex());
-		if (panel == null || !panel.isValid()) {
+		if (panel == null || !panel.valid()) {
 			return -1;
 		}
 		for (final Component child : panel.getComponent(WIDGET_WORLDS_COLUMN_WORLD_NUMBER).getChildren()) {
@@ -475,7 +475,7 @@ public class Lobby extends ClientAccessor {
 			final Widget panel = ctx.widgets.get(Tab.WORLD_SELECT.getIndex());
 			final Component table = panel.getComponent(WIDGET_WORLDS_TABLE);
 			final Component row = panel.getComponent(WIDGET_WORLDS_ROWS).getChild(index);
-			if (table != null && table.isValid() && row != null && row.isValid()) {
+			if (table != null && table.valid() && row != null && row.valid()) {
 				final Rectangle visibleBounds = new Rectangle(
 						table.getAbsoluteLocation(),
 						new Dimension(table.getWidth(), table.getHeight() - row.getHeight())

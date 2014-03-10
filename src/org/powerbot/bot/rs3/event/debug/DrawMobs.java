@@ -28,7 +28,7 @@ public class DrawMobs implements PaintListener {
 			}
 			render.setColor(Color.red);
 			render.fillRect((int) location.getX() - 1, (int) location.getY() - 1, 2, 2);
-			String s = npc.getName() + " (" + npc.getLevel() + ") - " + npc.getId();
+			String s = npc.name() + " (" + npc.getLevel() + ") - " + npc.id();
 			render.setColor(npc.isInCombat() ? Color.RED : npc.isInMotion() ? Color.GREEN : Color.WHITE);
 			render.drawString(s, location.x - metrics.stringWidth(s) / 2, location.y - metrics.getHeight() / 2);
 			final String msg = npc.getMessage();

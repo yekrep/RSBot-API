@@ -306,7 +306,7 @@ class BotBoundingUtility extends JFrame implements PaintListener, MouseListener,
 			return;
 		}
 		final Model m;
-		if (interactive instanceof Renderable && (m = ((Renderable) interactive).getModel()) != null) {
+		if (interactive instanceof Renderable && (m = ((Renderable) interactive).model()) != null) {
 			m.update();
 			int x1 = 0, y1 = 0, z1 = 0;
 			int x2 = 0, y2 = 0, z2 = 0;

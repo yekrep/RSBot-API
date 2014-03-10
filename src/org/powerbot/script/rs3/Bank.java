@@ -125,7 +125,7 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 	 * {@inheritDoc}
 	 */
 	public boolean inViewport() {
-		return getBank().isValid();
+		return getBank().valid();
 	}
 
 	/**
@@ -134,7 +134,7 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 	 * @return <tt>true</tt> is the bank is open; otherwise <tt>false</tt>
 	 */
 	public boolean isOpen() {
-		return ctx.widgets.get(WIDGET, COMPONENT_CONTAINER_ITEMS).isValid();
+		return ctx.widgets.get(WIDGET, COMPONENT_CONTAINER_ITEMS).valid();
 	}
 
 	/**
@@ -150,11 +150,11 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 		}
 		final Interactive interactive = getBank();
 		final int id;
-		if (interactive.isValid()) {
+		if (interactive.valid()) {
 			if (interactive instanceof Npc) {
-				id = ((Npc) interactive).getId();
+				id = ((Npc) interactive).id();
 			} else if (interactive instanceof GameObject) {
-				id = ((GameObject) interactive).getId();
+				id = ((GameObject) interactive).id();
 			} else {
 				id = -1;
 			}
@@ -202,7 +202,7 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 				Condition.wait(new Callable<Boolean>() {
 					@Override
 					public Boolean call() throws Exception {
-						return ctx.widgets.get(13).isValid() || isOpen();
+						return ctx.widgets.get(13).valid() || isOpen();
 					}
 				}, 150, 15);
 			} while (ctx.players.local().isInMotion());
@@ -210,7 +210,7 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 			Condition.wait(new Callable<Boolean>() {
 				@Override
 				public Boolean call() throws Exception {
-					return ctx.widgets.get(13).isValid() || isOpen();
+					return ctx.widgets.get(13).valid() || isOpen();
 				}
 			}, 100, 15);
 		}
@@ -237,7 +237,7 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 	@Override
 	protected List<Item> get() {
 		final Component c = ctx.widgets.get(WIDGET, COMPONENT_CONTAINER_ITEMS);
-		if (c == null || !c.isValid()) {
+		if (c == null || !c.valid()) {
 			return new ArrayList<Item>();
 		}
 		final Component[] components = c.getChildren();
@@ -272,7 +272,7 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 	 */
 	public int indexOf(final int id) {
 		final Component items = ctx.widgets.get(WIDGET, COMPONENT_CONTAINER_ITEMS);
-		if (items == null || !items.isValid()) {
+		if (items == null || !items.valid()) {
 			return -1;
 		}
 		final Component[] comps = items.getChildren();
@@ -315,7 +315,7 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 	 */
 	public Item getTabItem(final int index) {
 		final Component c = ctx.widgets.get(WIDGET, 37 - (index * 2));
-		if (c != null && c.isValid()) {
+		if (c != null && c.valid()) {
 			return new Item(ctx, c);
 		}
 		return nil();
@@ -342,7 +342,7 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 	public boolean withdraw(final int id, final int amount) {//TODO: anti pattern
 		final Component component = ctx.widgets.get(WIDGET, COMPONENT_CONTAINER_ITEMS);
 		final Item item = select().id(id).poll();
-		if (!component.isValid() || !item.isValid()) {
+		if (!component.valid() || !item.valid()) {
 			return false;
 		}
 		final Component c = item.getComponent();
@@ -416,7 +416,7 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 			return false;
 		}
 		final Item item = ctx.backpack.select().id(id).shuffle().poll();
-		if (!item.isValid()) {
+		if (!item.valid()) {
 			return false;
 		}
 		String action = "Deposit-" + amount;

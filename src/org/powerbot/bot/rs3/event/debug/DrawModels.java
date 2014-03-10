@@ -27,7 +27,7 @@ public class DrawModels implements PaintListener {
 			if (!obj.inViewport()) {
 				continue;
 			}
-			final Model m = obj.getModel();
+			final Model m = obj.model();
 			if (m == null) {
 				continue;
 			}

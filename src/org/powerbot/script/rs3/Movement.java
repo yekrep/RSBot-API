@@ -175,7 +175,7 @@ public class Movement extends ClientAccessor {
 	 */
 	public int getEnergyLevel() {
 		final Component c = ctx.widgets.get(WIDGET_MAP, COMPONENT_RUN_ENERGY);
-		if (c != null && c.isValid()) {
+		if (c != null && c.valid()) {
 			try {
 				return Integer.parseInt(c.getText().replace('%', ' ').trim());
 			} catch (final NumberFormatException ignored) {

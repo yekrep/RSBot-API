@@ -168,7 +168,7 @@ public class Login extends PollingScript<ClientContext> implements InternalScrip
 	}
 
 	private boolean clickLoginInterface(final Component i) {
-		if (!i.isValid()) {
+		if (!i.valid()) {
 			return false;
 		}
 		final Rectangle pos = i.getBoundingRect();

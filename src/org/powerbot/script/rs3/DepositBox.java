@@ -58,11 +58,11 @@ public class DepositBox extends ItemQuery<Item> implements Viewport {
 	 * {@inheritDoc}
 	 */
 	public boolean inViewport() {
-		return getBox().isValid();
+		return getBox().valid();
 	}
 
 	public boolean isOpen() {
-		return ctx.widgets.get(WIDGET).isValid();
+		return ctx.widgets.get(WIDGET).valid();
 	}
 
 	public boolean open() {
@@ -74,7 +74,7 @@ public class DepositBox extends ItemQuery<Item> implements Viewport {
 				Condition.wait(new Callable<Boolean>() {
 					@Override
 					public Boolean call() throws Exception {
-						return ctx.widgets.get(13).isValid() || isOpen();
+						return ctx.widgets.get(13).valid() || isOpen();
 					}
 				}, 150, 15);
 			} while (ctx.players.local().isInMotion());
@@ -107,7 +107,7 @@ public class DepositBox extends ItemQuery<Item> implements Viewport {
 	@Override
 	protected List<Item> get() {
 		final Component c = ctx.widgets.get(WIDGET, COMPONENT_CONTAINER_ITEMS);
-		if (c == null || !c.isValid()) {
+		if (c == null || !c.valid()) {
 			return new ArrayList<Item>();
 		}
 		final Component[] components = c.getChildren();
@@ -122,7 +122,7 @@ public class DepositBox extends ItemQuery<Item> implements Viewport {
 
 	public Item getItemAt(final int index) {
 		final Component c = ctx.widgets.get(WIDGET, COMPONENT_CONTAINER_ITEMS);
-		if (c == null || !c.isValid()) {
+		if (c == null || !c.valid()) {
 			return null;
 		}
 		final Component i = c.getChild(index);
@@ -134,7 +134,7 @@ public class DepositBox extends ItemQuery<Item> implements Viewport {
 
 	public int indexOf(final int id) {
 		final Component items = ctx.widgets.get(WIDGET, COMPONENT_CONTAINER_ITEMS);
-		if (items == null || !items.isValid()) {
+		if (items == null || !items.valid()) {
 			return -1;
 		}
 		final Component[] comps = items.getChildren();
@@ -162,7 +162,7 @@ public class DepositBox extends ItemQuery<Item> implements Viewport {
 			return false;
 		}
 		final Item item = select().id(id).shuffle().poll();
-		if (!item.isValid()) {
+		if (!item.valid()) {
 			return false;
 		}
 		String action = "Deposit-" + amount;

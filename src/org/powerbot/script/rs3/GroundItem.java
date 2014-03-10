@@ -16,6 +16,8 @@ import org.powerbot.bot.rs3.client.RSInfo;
 import org.powerbot.bot.rs3.client.RSItem;
 import org.powerbot.bot.rs3.client.RSItemDefLoader;
 import org.powerbot.bot.rs3.client.RSItemPile;
+import org.powerbot.script.Identifiable;
+import org.powerbot.script.Nameable;
 import org.powerbot.script.Random;
 
 public class GroundItem extends Interactive implements Renderable, Identifiable, Nameable, Stackable, Locatable, Drawable {
@@ -47,7 +49,7 @@ public class GroundItem extends Interactive implements Renderable, Identifiable,
 	}
 
 	@Override
-	public Model getModel() {
+	public Model model() {
 		return getModel(-1);
 	}
 
@@ -108,7 +110,7 @@ public class GroundItem extends Interactive implements Renderable, Identifiable,
 	}
 
 	@Override
-	public int getId() {
+	public int id() {
 		final RSItem item = this.item.get();
 		return item != null ? item.getId() : -1;
 	}
@@ -120,20 +122,20 @@ public class GroundItem extends Interactive implements Renderable, Identifiable,
 	}
 
 	@Override
-	public String getName() {
-		return ItemDefinition.getDef(ctx, getId()).getName();
+	public String name() {
+		return ItemDefinition.getDef(ctx, id()).getName();
 	}
 
 	public boolean isMembers() {
-		return ItemDefinition.getDef(ctx, getId()).isMembers();
+		return ItemDefinition.getDef(ctx, id()).isMembers();
 	}
 
 	public String[] getActions() {
-		return ItemDefinition.getDef(ctx, getId()).getActions();
+		return ItemDefinition.getDef(ctx, id()).getActions();
 	}
 
 	public String[] getGroundActions() {
-		return ItemDefinition.getDef(ctx, getId()).getGroundActions();
+		return ItemDefinition.getDef(ctx, id()).getGroundActions();
 	}
 
 	@Override
@@ -146,7 +148,7 @@ public class GroundItem extends Interactive implements Renderable, Identifiable,
 
 	@Override
 	public Point nextPoint() {
-		final Model model = getModel(getId());
+		final Model model = getModel(id());
 		if (model != null) {
 			return model.getNextPoint();
 		}
@@ -158,7 +160,7 @@ public class GroundItem extends Interactive implements Renderable, Identifiable,
 	}
 
 	public Point getCenterPoint() {
-		final Model model = getModel(getId());
+		final Model model = getModel(id());
 		if (model != null) {
 			return model.getCenterPoint();
 		}
@@ -171,7 +173,7 @@ public class GroundItem extends Interactive implements Renderable, Identifiable,
 
 	@Override
 	public boolean contains(final Point point) {
-		final Model model = getModel(getId());
+		final Model model = getModel(id());
 		if (model != null) {
 			return model.contains(point);
 		}
@@ -183,7 +185,7 @@ public class GroundItem extends Interactive implements Renderable, Identifiable,
 	}
 
 	@Override
-	public boolean isValid() {
+	public boolean valid() {
 		return ctx.groundItems.select().contains(this);
 	}
 
@@ -224,7 +226,7 @@ public class GroundItem extends Interactive implements Renderable, Identifiable,
 		if (m2 != null) {
 			m2.drawWireFrame(render);
 		} else {
-			final Model m = getModel();
+			final Model m = model();
 			if (m != null) {
 				m.drawWireFrame(render);
 			}
@@ -233,6 +235,6 @@ public class GroundItem extends Interactive implements Renderable, Identifiable,
 
 	@Override
 	public String toString() {
-		return GroundItem.class.getSimpleName() + "[id=" + getId() + ",stacksize=" + getStackSize() + ",name=" + getName() + "]";
+		return GroundItem.class.getSimpleName() + "[id=" + id() + ",stacksize=" + getStackSize() + ",name=" + name() + "]";
 	}
 }

@@ -6,6 +6,7 @@ import java.util.Iterator;
 import org.powerbot.bot.rs3.client.Client;
 import org.powerbot.bot.rs3.client.RSInterface;
 import org.powerbot.bot.rs3.client.RSInterfaceBase;
+import org.powerbot.script.Validatable;
 
 public class Widget extends ClientAccessor implements Validatable, Iterable<Component> {
 	private final int index;
@@ -63,7 +64,7 @@ public class Widget extends ClientAccessor implements Validatable, Iterable<Comp
 		}
 	}
 
-	public boolean isValid() {
+	public boolean valid() {
 		final Client client = ctx.client();
 		if (client == null) {
 			return false;
@@ -94,7 +95,7 @@ public class Widget extends ClientAccessor implements Validatable, Iterable<Comp
 			@Override
 			public boolean hasNext() {
 				final int count = getComponentCount();
-				return nextId < count && isValid();
+				return nextId < count && valid();
 			}
 
 			@Override

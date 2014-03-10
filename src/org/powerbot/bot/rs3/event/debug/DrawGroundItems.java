@@ -48,9 +48,9 @@ public class DrawGroundItems implements PaintListener {
 					continue;
 				}
 				for (final GroundItem groundItem : ctx.groundItems.select(check).at(loc)) {
-					final String name = groundItem.getName();
+					final String name = groundItem.name();
 					String s = "";
-					s += groundItem.getId();
+					s += groundItem.id();
 					if (!name.isEmpty()) {
 						s += " " + name;
 					}

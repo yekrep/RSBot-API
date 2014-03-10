@@ -1,5 +1,8 @@
 package org.powerbot.script.rs3;
 
+import org.powerbot.script.Textable;
+import org.powerbot.script.Validatable;
+
 public class ChatOption extends ClientAccessor implements Textable, Validatable {
 	private final int index;
 	private final Component option;
@@ -15,7 +18,7 @@ public class ChatOption extends ClientAccessor implements Textable, Validatable 
 	}
 
 	@Override
-	public String getText() {
+	public String text() {
 		if (option == null) {
 			return "";
 		}
@@ -27,7 +30,7 @@ public class ChatOption extends ClientAccessor implements Textable, Validatable 
 	}
 
 	public boolean select(final boolean key) {
-		if (!isValid()) {
+		if (!valid()) {
 			return false;
 		}
 		if (key) {
@@ -37,7 +40,7 @@ public class ChatOption extends ClientAccessor implements Textable, Validatable 
 	}
 
 	@Override
-	public boolean isValid() {
-		return index >= 0 && index < 5 && option != null && option.isValid();
+	public boolean valid() {
+		return index >= 0 && index < 5 && option != null && option.valid();
 	}
 }

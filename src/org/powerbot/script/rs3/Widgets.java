@@ -94,10 +94,10 @@ public class Widgets extends ClientAccessor {
 	 * @return {@code true} if visible; otherwise {@code false}
 	 */
 	public boolean scroll(final Component component, final Component bar, final boolean scroll) {
-		if (component == null || !component.isValid()) {
+		if (component == null || !component.valid()) {
 			return false;
 		}
-		if (bar == null || !bar.isValid() || bar.getChildrenCount() != 6) {
+		if (bar == null || !bar.valid() || bar.getChildrenCount() != 6) {
 			return false;
 		}
 		Component pane = component;
@@ -109,13 +109,13 @@ public class Widgets extends ClientAccessor {
 	}
 
 	public boolean scroll(final Component component, final Component pane, final Component bar, final boolean scroll) {
-		if (component == null || !component.isValid()) {
+		if (component == null || !component.valid()) {
 			return false;
 		}
-		if (bar == null || !bar.isValid() || bar.getChildrenCount() != 6) {
+		if (bar == null || !bar.valid() || bar.getChildrenCount() != 6) {
 			return false;
 		}
-		if (pane == null || !pane.isValid() || pane.getScrollHeight() == 0) {
+		if (pane == null || !pane.valid() || pane.getScrollHeight() == 0) {
 			return false;
 		}
 		final Point view = pane.getAbsoluteLocation();

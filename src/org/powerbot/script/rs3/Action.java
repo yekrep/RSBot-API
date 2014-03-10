@@ -1,5 +1,8 @@
 package org.powerbot.script.rs3;
 
+import org.powerbot.script.Identifiable;
+import org.powerbot.script.Validatable;
+
 public class Action extends ClientAccessor implements Identifiable, Validatable, Displayable {
 	private final int slot;
 	private final Type type;
@@ -24,7 +27,7 @@ public class Action extends ClientAccessor implements Identifiable, Validatable,
 	}
 
 	@Override
-	public int getId() {
+	public int id() {
 		return id;
 	}
 
@@ -38,7 +41,7 @@ public class Action extends ClientAccessor implements Identifiable, Validatable,
 	}
 
 	public boolean select(final boolean key) {
-		if (!isValid()) {
+		if (!valid()) {
 			return false;
 		}
 		final String b = getBind();
@@ -48,7 +51,7 @@ public class Action extends ClientAccessor implements Identifiable, Validatable,
 	public boolean isReady() {
 		final Component cooldown = ctx.widgets.get(CombatBar.WIDGET, CombatBar.COMPONENT_SLOT_COOL_DOWN + slot * CombatBar.COMPONENT_SLOT_LENGTH);
 		final Component action = ctx.widgets.get(CombatBar.WIDGET, CombatBar.COMPONENT_SLOT_ACTION + slot * CombatBar.COMPONENT_SLOT_LENGTH);
-		return isValid() && !cooldown.isVisible() && action.getTextColor() == 0xFFFFFF;
+		return valid() && !cooldown.isVisible() && action.getTextColor() == 0xFFFFFF;
 	}
 
 	/**
@@ -74,7 +77,7 @@ public class Action extends ClientAccessor implements Identifiable, Validatable,
 	}
 
 	@Override
-	public boolean isValid() {
+	public boolean valid() {
 		return this.type != Type.UNKNOWN && this.id == (this.type == Type.ABILITY ?
 				ctx.settings.get(CombatBar.SETTING_ABILITY + this.slot) :
 				ctx.settings.get(CombatBar.SETTING_ITEM + this.slot));

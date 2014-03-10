@@ -246,14 +246,14 @@ public class CombatBar extends IdQuery<Action> {
 		}
 		final int slot = action.getSlot();
 		action = getActionAt(slot);
-		if (action.getId() == -1) {
+		if (action.id() == -1) {
 			return true;
 		}
 		return action.getComponent().hover() && ctx.mouse.drag(ctx.players.local().nextPoint(), true) &&
 				Condition.wait(new Callable<Boolean>() {
 					@Override
 					public Boolean call() {
-						return getActionAt(slot).getId() == -1;
+						return getActionAt(slot).id() == -1;
 					}
 				}, 20, 20);
 	}

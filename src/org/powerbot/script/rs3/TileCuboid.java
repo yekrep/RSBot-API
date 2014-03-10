@@ -97,7 +97,7 @@ public class TileCuboid extends Interactive {
 	}
 
 	@Override
-	public boolean isValid() {
+	public boolean valid() {
 		return cuboid(256) != null;
 	}
 }

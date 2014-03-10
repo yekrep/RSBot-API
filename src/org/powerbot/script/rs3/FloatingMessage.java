@@ -1,5 +1,7 @@
 package org.powerbot.script.rs3;
 
+import org.powerbot.script.Validatable;
+
 public class FloatingMessage implements Validatable {
 	public static final int TEXTURE_INFO = 8515;
 	public static final int TEXTURE_WARNING = 8524;
@@ -21,7 +23,7 @@ public class FloatingMessage implements Validatable {
 	}
 
 	@Override
-	public boolean isValid() {
+	public boolean valid() {
 		return !(text.isEmpty() || texture == -1);
 	}
 }

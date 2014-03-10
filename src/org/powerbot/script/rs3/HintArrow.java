@@ -8,6 +8,7 @@ import org.powerbot.bot.rs3.client.RSHintArrow;
 import org.powerbot.bot.rs3.client.RSNPC;
 import org.powerbot.bot.rs3.client.RSNPCNode;
 import org.powerbot.bot.rs3.client.RSPlayer;
+import org.powerbot.script.Validatable;
 
 public class HintArrow extends ClientAccessor implements Locatable, Validatable {
 	private final WeakReference<RSHintArrow> arrow;
@@ -79,7 +80,7 @@ public class HintArrow extends ClientAccessor implements Locatable, Validatable 
 	}
 
 	@Override
-	public boolean isValid() {
+	public boolean valid() {
 		final Client client = ctx.client();
 		if (client == null) {
 			return false;

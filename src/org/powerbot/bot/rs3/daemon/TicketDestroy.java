@@ -19,7 +19,7 @@ public class TicketDestroy extends PollingScript<ClientContext> implements Inter
 	@Override
 	public void poll() {
 		final Item item = ctx.backpack.select().id(ITEM_IDS).poll();
-		if (!item.isValid() || !ctx.hud.isVisible(Hud.Window.BACKPACK) || !ctx.players.local().isIdle()) {
+		if (!item.valid() || !ctx.hud.isVisible(Hud.Window.BACKPACK) || !ctx.players.local().isIdle()) {
 			priority.set(0);
 			return;
 		}
@@ -28,7 +28,7 @@ public class TicketDestroy extends PollingScript<ClientContext> implements Inter
 			return;
 		}
 
-		if (((ctx.settings.get(1448) & 0xFF00) >>> 8) < (item.getId() == ITEM_IDS[0] ? 10 : 9)) {
+		if (((ctx.settings.get(1448) & 0xFF00) >>> 8) < (item.id() == ITEM_IDS[0] ? 10 : 9)) {
 			item.interact("Claim");
 			return;
 		}
@@ -40,7 +40,7 @@ public class TicketDestroy extends PollingScript<ClientContext> implements Inter
 		if (!Condition.wait(new Callable<Boolean>() {
 			@Override
 			public Boolean call() throws Exception {
-				return widget.isValid();
+				return widget.valid();
 			}
 		})) {
 			return;

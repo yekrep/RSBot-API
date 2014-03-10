@@ -22,7 +22,7 @@ public class Chat extends TextQuery<ChatOption> {
 		final List<ChatOption> options = new ArrayList<ChatOption>(5);
 		for (int i = 0; i < 5; i++) {
 			final Component component = ctx.widgets.get(WIDGET, COMPONENT_CHAT_OPTIONS[i]);
-			if (!component.isValid()) {
+			if (!component.valid()) {
 				continue;
 			}
 			options.add(new ChatOption(ctx, i, component));
@@ -39,11 +39,11 @@ public class Chat extends TextQuery<ChatOption> {
 	}
 
 	public boolean isChatting() {
-		if (ctx.widgets.get(WIDGET, 0).isValid()) {
+		if (ctx.widgets.get(WIDGET, 0).valid()) {
 			return true;
 		}
 		for (final int[] arr : WIDGET_CONTINUE) {
-			if (ctx.widgets.get(arr[0], 0).isValid()) {
+			if (ctx.widgets.get(arr[0], 0).valid()) {
 				return true;
 			}
 		}
@@ -82,7 +82,7 @@ public class Chat extends TextQuery<ChatOption> {
 	private Component getContinue() {
 		for (final int[] a : WIDGET_CONTINUE) {
 			final Component c = ctx.widgets.get(a[0], a[1]);
-			if (!c.isValid()) {
+			if (!c.valid()) {
 				continue;
 			}
 			return c;

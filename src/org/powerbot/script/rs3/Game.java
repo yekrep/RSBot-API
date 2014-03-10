@@ -72,7 +72,7 @@ public class Game extends ClientAccessor {
 			if (Condition.wait(new Callable<Boolean>() {
 				@Override
 				public Boolean call() throws Exception {
-					return widget.isValid();
+					return widget.valid();
 				}
 			}, 100, 10)) {
 				if (!widget.getComponent(lobby ? 12 : 13).interact("Select")) {

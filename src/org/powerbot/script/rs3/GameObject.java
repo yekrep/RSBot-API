@@ -16,6 +16,8 @@ import org.powerbot.bot.rs3.client.RSInteractableLocation;
 import org.powerbot.bot.rs3.client.RSObject;
 import org.powerbot.bot.rs3.client.RSObjectDef;
 import org.powerbot.bot.rs3.client.RSObjectDefLoader;
+import org.powerbot.script.Identifiable;
+import org.powerbot.script.Nameable;
 
 public class GameObject extends Interactive implements Renderable, Locatable, Nameable, Drawable, Identifiable {
 	private static final Color TARGET_COLOR = new Color(0, 255, 0, 20);
@@ -47,7 +49,7 @@ public class GameObject extends Interactive implements Renderable, Locatable, Na
 	}
 
 	@Override
-	public Model getModel() {
+	public Model model() {
 		final RSObject object = this.object.get();
 		if (object != null && ctx.game.toolkit.gameMode == 0) {
 			final AbstractModel model = object.getModel();
@@ -59,7 +61,7 @@ public class GameObject extends Interactive implements Renderable, Locatable, Na
 	}
 
 	@Override
-	public int getId() {
+	public int id() {
 		final RSObject object = this.object.get();
 		return object != null ? object.getId() : -1;
 	}
@@ -69,7 +71,7 @@ public class GameObject extends Interactive implements Renderable, Locatable, Na
 	}
 
 	@Override
-	public String getName() {
+	public String name() {
 		return getDefinition().getName();
 	}
 
@@ -100,7 +102,7 @@ public class GameObject extends Interactive implements Renderable, Locatable, Na
 				(cache = loader.getCache()) == null || (table = cache.getTable()) == null) {
 			return new ObjectDefinition(null);
 		}
-		final Object def = ctx.game.lookup(table, getId());
+		final Object def = ctx.game.lookup(table, id());
 		return def != null && def instanceof RSObjectDef ? new ObjectDefinition((RSObjectDef) def) : new ObjectDefinition(null);
 	}
 
@@ -139,7 +141,7 @@ public class GameObject extends Interactive implements Renderable, Locatable, Na
 
 	@Override
 	public Point nextPoint() {
-		final Model model = getModel();
+		final Model model = model();
 		if (model != null) {
 			return model.getNextPoint();
 		}
@@ -151,7 +153,7 @@ public class GameObject extends Interactive implements Renderable, Locatable, Na
 	}
 
 	public Point getCenterPoint() {
-		final Model model = getModel();
+		final Model model = model();
 		if (model != null) {
 			return model.getCenterPoint();
 		}
@@ -164,7 +166,7 @@ public class GameObject extends Interactive implements Renderable, Locatable, Na
 
 	@Override
 	public boolean contains(final Point point) {
-		final Model model = getModel();
+		final Model model = model();
 		if (model != null) {
 			return model.contains(point);
 		}
@@ -176,7 +178,7 @@ public class GameObject extends Interactive implements Renderable, Locatable, Na
 	}
 
 	@Override
-	public boolean isValid() {
+	public boolean valid() {
 		return object.get() != null && ctx.objects.select().contains(this);
 	}
 
@@ -213,7 +215,7 @@ public class GameObject extends Interactive implements Renderable, Locatable, Na
 		if (m2 != null) {
 			m2.drawWireFrame(render);
 		} else {
-			final Model m = getModel();
+			final Model m = model();
 			if (m != null) {
 				m.drawWireFrame(render);
 			}
@@ -222,7 +224,7 @@ public class GameObject extends Interactive implements Renderable, Locatable, Na
 
 	@Override
 	public String toString() {
-		return GameObject.class.getSimpleName() + "[id=" + getId() + ",name=" + getName() + "]";
+		return GameObject.class.getSimpleName() + "[id=" + id() + ",name=" + name() + "]";
 	}
 
 	public static enum Type {

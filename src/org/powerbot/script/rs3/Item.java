@@ -2,6 +2,8 @@ package org.powerbot.script.rs3;
 
 import java.awt.Point;
 
+import org.powerbot.script.Identifiable;
+import org.powerbot.script.Nameable;
 import org.powerbot.util.StringUtils;
 
 public class Item extends Interactive implements Displayable, Identifiable, Nameable, Stackable {
@@ -25,7 +27,7 @@ public class Item extends Interactive implements Displayable, Identifiable, Name
 	}
 
 	@Override
-	public int getId() {
+	public int id() {
 		return this.id;
 	}
 
@@ -42,7 +44,7 @@ public class Item extends Interactive implements Displayable, Identifiable, Name
 	}
 
 	@Override
-	public String getName() {
+	public String name() {
 		final String name;
 		if (component != null && component.getItemId() == this.id) {
 			name = component.getItemName();
@@ -53,15 +55,15 @@ public class Item extends Interactive implements Displayable, Identifiable, Name
 	}
 
 	public boolean isMembers() {
-		return ItemDefinition.getDef(ctx, getId()).isMembers();
+		return ItemDefinition.getDef(ctx, id()).isMembers();
 	}
 
 	public String[] getActions() {
-		return ItemDefinition.getDef(ctx, getId()).getActions();
+		return ItemDefinition.getDef(ctx, id()).getActions();
 	}
 
 	public String[] getGroundActions() {
-		return ItemDefinition.getDef(ctx, getId()).getGroundActions();
+		return ItemDefinition.getDef(ctx, id()).getGroundActions();
 	}
 
 	/**
@@ -93,8 +95,8 @@ public class Item extends Interactive implements Displayable, Identifiable, Name
 	}
 
 	@Override
-	public boolean isValid() {
-		return this.id != -1 && this.component != null && this.component.isValid() &&
+	public boolean valid() {
+		return this.id != -1 && this.component != null && this.component.valid() &&
 				(!this.component.isVisible() || this.component.getItemId() == this.id);
 	}
 

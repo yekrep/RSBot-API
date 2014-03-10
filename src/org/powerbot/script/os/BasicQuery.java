@@ -1,6 +1,8 @@
 package org.powerbot.script.os;
 
 import org.powerbot.script.AbstractQuery;
+import org.powerbot.script.Identifiable;
+import org.powerbot.script.Nameable;
 
 public abstract class BasicQuery<K extends Locatable & Identifiable & Nameable> extends AbstractQuery<BasicQuery<K>, K, org.powerbot.script.os.ClientContext>
 		implements Locatable.Query<BasicQuery<K>>, Identifiable.Query<BasicQuery<K>>,

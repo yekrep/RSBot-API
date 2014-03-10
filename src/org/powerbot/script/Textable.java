@@ -1,9 +1,7 @@
-package org.powerbot.script.rs3;
-
-import org.powerbot.script.Filter;
+package org.powerbot.script;
 
 public interface Textable {
-	public String getText();
+	public String text();
 
 	public interface Query<T> {
 		public T text(String... texts);
@@ -21,7 +19,7 @@ public interface Textable {
 
 		@Override
 		public boolean accept(final Textable t) {
-			String str = t.getText();
+			String str = t.text();
 			if (str == null) {
 				return false;
 			}

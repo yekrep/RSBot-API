@@ -331,7 +331,7 @@ public class Component extends Interactive implements Drawable, Displayable {
 	public boolean isVisible() {
 		final RSInterface internal = getInternalComponent();
 		int id = 0;
-		if (internal != null && isValid() && !internal.isHidden()) {
+		if (internal != null && valid() && !internal.isHidden()) {
 			id = getParentId();
 		}
 		return id == -1 || (id != 0 && ctx.widgets.get(id >> 16, id & 0xffff).isVisible());
@@ -381,7 +381,7 @@ public class Component extends Interactive implements Drawable, Displayable {
 	}
 
 	@Override
-	public boolean isValid() {
+	public boolean valid() {
 		final RSInterface internal = getInternalComponent();
 		return internal != null && (parent == null || parent.isVisible()) &&
 				getId() != -1 && internal.getBoundsArrayIndex() != -1;

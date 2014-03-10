@@ -87,7 +87,7 @@ public class DrawObjects implements PaintListener {
 			render.setColor(new Color(0, 0, 0, 100));
 			render.drawLine(p.x, p.y, p2.x, p2.y);
 
-			final String s = "" + object.getId();
+			final String s = "" + object.id();
 			final int ty = p.y - textHeight / 2;
 			final int tx = p.x - metrics.stringWidth(s) / 2;
 			render.setColor(C[object.getType().ordinal()]);

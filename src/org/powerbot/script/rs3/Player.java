@@ -24,7 +24,7 @@ public class Player extends Actor {
 	}
 
 	@Override
-	public String getName() {
+	public String name() {
 		final RSPlayer player = getAccessor();
 		return player != null ? player.getName() : "";
 	}
@@ -105,7 +105,7 @@ public class Player extends Actor {
 	}
 
 	@Override
-	public boolean isValid() {
+	public boolean valid() {
 		final Client client = ctx.client();
 		if (client == null) {
 			return false;
@@ -132,7 +132,7 @@ public class Player extends Actor {
 		if (m2 != null) {
 			m2.drawWireFrame(render);
 		} else {
-			final Model m = getModel();
+			final Model m = model();
 			if (m != null) {
 				m.drawWireFrame(render);
 			}
@@ -141,6 +141,6 @@ public class Player extends Actor {
 
 	@Override
 	public String toString() {
-		return Player.class.getSimpleName() + "[name=" + getName() + ",level=" + getLevel() + "]";
+		return Player.class.getSimpleName() + "[name=" + name() + ",level=" + getLevel() + "]";
 	}
 }

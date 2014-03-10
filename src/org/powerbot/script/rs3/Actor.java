@@ -17,6 +17,7 @@ import org.powerbot.bot.rs3.client.RSNPCNode;
 import org.powerbot.bot.rs3.client.RSPlayer;
 import org.powerbot.bot.rs3.client.Sequence;
 import org.powerbot.script.Filter;
+import org.powerbot.script.Nameable;
 
 public abstract class Actor extends Interactive implements Renderable, Nameable, Locatable, Drawable {
 	public Actor(final ClientContext ctx) {
@@ -43,7 +44,7 @@ public abstract class Actor extends Interactive implements Renderable, Nameable,
 	}
 
 	@Override
-	public Model getModel() {
+	public Model model() {
 		final RSCharacter character = getAccessor();
 		if (character != null && ctx.game.toolkit.gameMode == 0) {
 			final AbstractModel model = character.getModel();
@@ -166,7 +167,7 @@ public abstract class Actor extends Interactive implements Renderable, Nameable,
 	}
 
 	public int getAdrenalineRatio() {
-		if (!isValid()) {
+		if (!valid()) {
 			return -1;
 		}
 		final CombatStatusData[] data = getBarData();
@@ -177,7 +178,7 @@ public abstract class Actor extends Interactive implements Renderable, Nameable,
 	}
 
 	public int getHealthRatio() {
-		if (!isValid()) {
+		if (!valid()) {
 			return -1;
 		}
 		final CombatStatusData[] data = getBarData();
@@ -188,7 +189,7 @@ public abstract class Actor extends Interactive implements Renderable, Nameable,
 	}
 
 	public int getAdrenalinePercent() {
-		if (!isValid()) {
+		if (!valid()) {
 			return -1;
 		}
 		final CombatStatusData[] data = getBarData();
@@ -199,7 +200,7 @@ public abstract class Actor extends Interactive implements Renderable, Nameable,
 	}
 
 	public int getHealthPercent() {
-		if (!isValid()) {
+		if (!valid()) {
 			return -1;
 		}
 		final CombatStatusData[] data = getBarData();
@@ -219,7 +220,7 @@ public abstract class Actor extends Interactive implements Renderable, Nameable,
 	}
 
 	public boolean isIdle() {
-		return getAnimation() == -1 && !isInCombat() && !isInMotion() && !getInteracting().isValid();
+		return getAnimation() == -1 && !isInCombat() && !isInMotion() && !getInteracting().valid();
 	}
 
 	public static Filter<Actor> areInCombat() {
@@ -258,7 +259,7 @@ public abstract class Actor extends Interactive implements Renderable, Nameable,
 			return new Point(-1, -1);
 		}
 
-		final Model model = getModel();
+		final Model model = model();
 		if (model != null) {
 			return model.getNextPoint();
 		}
@@ -276,7 +277,7 @@ public abstract class Actor extends Interactive implements Renderable, Nameable,
 			return new Point(-1, -1);
 		}
 
-		final Model model = getModel();
+		final Model model = model();
 		if (model != null) {
 			return model.getCenterPoint();
 		}
@@ -295,7 +296,7 @@ public abstract class Actor extends Interactive implements Renderable, Nameable,
 			return false;
 		}
 
-		final Model model = getModel();
+		final Model model = model();
 		if (model != null) {
 			return model.contains(point);
 		}

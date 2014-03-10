@@ -147,7 +147,7 @@ public class Summoning extends ClientAccessor {
 		if (!Condition.wait(new Callable<Boolean>() {
 			@Override
 			public Boolean call() throws Exception {
-				return ctx.widgets.get(WIDGET_LEFT_SELECT).isValid();
+				return ctx.widgets.get(WIDGET_LEFT_SELECT).valid();
 			}
 		}, 30, 100)) {
 			return false;
@@ -162,7 +162,7 @@ public class Summoning extends ClientAccessor {
 		}
 		final Component confirm = ctx.widgets.get(WIDGET_LEFT_SELECT, COMPONENT_CONFIRM);
 		for (int i = 0; i < 3; i++) {
-			if (!confirm.isValid()) {
+			if (!confirm.valid()) {
 				break;
 			}
 			if (confirm.interact("Confirm")) {
@@ -192,7 +192,7 @@ public class Summoning extends ClientAccessor {
 			@Override
 			public boolean accept(final Npc npc) {
 				final Actor actor;
-				return npc.getId() == ctx.settings.get(SETTING_NPC_ID) && (actor = npc.getInteracting()) != null && actor.equals(local);
+				return npc.id() == ctx.settings.get(SETTING_NPC_ID) && (actor = npc.getInteracting()) != null && actor.equals(local);
 			}
 		}).nearest().poll();
 	}

@@ -1,9 +1,7 @@
-package org.powerbot.script.rs3;
-
-import org.powerbot.script.Filter;
+package org.powerbot.script;
 
 public interface Nameable {
-	public String getName();
+	public String name();
 
 	public interface Query<T> {
 		public T name(String... names);
@@ -21,13 +19,13 @@ public interface Nameable {
 		public Matcher(final Nameable... names) {
 			this.names = new String[names.length];
 			for (int i = 0; i < names.length; i++) {
-				this.names[i] = names[i].getName();
+				this.names[i] = names[i].name();
 			}
 		}
 
 		@Override
 		public boolean accept(final Nameable i) {
-			final String n = i.getName();
+			final String n = i.name();
 			if (n == null) {
 				return false;
 			}

@@ -16,7 +16,7 @@ import org.powerbot.script.AbstractScript;
 import org.powerbot.script.ClientAccessor;
 import org.powerbot.script.ClientContext;
 import org.powerbot.script.Script;
-import org.powerbot.script.rs3.Validatable;
+import org.powerbot.script.Validatable;
 
 public final class ScriptController<C extends ClientContext> extends ClientAccessor<C> implements Runnable, Validatable, Script.Controller {
 	public static final String TIMEOUT_PROPERTY = "script.timeout", LOCAL_PROPERTY = "script.local";
@@ -60,7 +60,7 @@ public final class ScriptController<C extends ClientContext> extends ClientAcces
 	}
 
 	@Override
-	public boolean isValid() {
+	public boolean valid() {
 		return started.get() && !stopping.get();
 	}
 

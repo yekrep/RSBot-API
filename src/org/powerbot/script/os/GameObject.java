@@ -10,6 +10,8 @@ import org.powerbot.bot.os.client.MRUCache;
 import org.powerbot.bot.os.client.ObjectConfig;
 import org.powerbot.bot.os.client.Varbit;
 import org.powerbot.bot.os.tools.HashTable;
+import org.powerbot.script.Identifiable;
+import org.powerbot.script.Nameable;
 
 public class GameObject extends Interactive implements Nameable, Locatable, Identifiable {
 	private static final Color TARGET_COLOR = new Color(0, 255, 0, 20);

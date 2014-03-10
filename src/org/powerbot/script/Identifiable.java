@@ -1,6 +1,4 @@
-package org.powerbot.script.os;
-
-import org.powerbot.script.Filter;
+package org.powerbot.script;
 
 public interface Identifiable {
 	public int id();

@@ -1,6 +1,7 @@
 package org.powerbot.script.rs3;
 
 import org.powerbot.script.AbstractQuery;
+import org.powerbot.script.Identifiable;
 
 public abstract class IdQuery<K extends Identifiable> extends AbstractQuery<IdQuery<K>, K, ClientContext>
 		implements Identifiable.Query<IdQuery<K>> {

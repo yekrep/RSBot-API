@@ -332,7 +332,7 @@ public class Hud extends ClientAccessor {
 		}
 		final int texture = menu.getTexture();
 		for (final Component child : ctx.widgets.get(WIDGET_MENU)) {
-			if (child.getTextureId() == texture && child.isValid()) {
+			if (child.getTextureId() == texture && child.valid()) {
 				return child;
 			}
 		}
@@ -346,7 +346,7 @@ public class Hud extends ClientAccessor {
 		final int texture = window.getMiniTexture();
 		for (final Component child : ctx.widgets.get(WIDGET_HUD)) {
 			for (final Component sub : child.getChildren()) {
-				if (sub.getTextureId() == texture && sub.isValid()) {
+				if (sub.getTextureId() == texture && sub.valid()) {
 					return sub;
 				}
 			}

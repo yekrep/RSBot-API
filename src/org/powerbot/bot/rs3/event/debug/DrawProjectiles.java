@@ -25,7 +25,7 @@ public class DrawProjectiles implements PaintListener, TextPaintListener {
 		for (final Projectile projectile : ctx.projectiles.select()) {
 			final Tile t = projectile.getLocation();
 			final TileMatrix m = t.getMatrix(ctx);
-			if (!m.isValid()) {
+			if (!m.valid()) {
 				continue;
 			}
 

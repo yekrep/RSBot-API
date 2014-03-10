@@ -7,6 +7,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import org.powerbot.script.Condition;
 import org.powerbot.script.Filter;
 import org.powerbot.script.Targetable;
+import org.powerbot.script.Validatable;
 import org.powerbot.script.Viewport;
 
 public abstract class Interactive extends ClientAccessor implements Targetable, Validatable, Viewport {
@@ -35,7 +36,7 @@ public abstract class Interactive extends ClientAccessor implements Targetable, 
 	}
 
 	public boolean hover() {
-		return isValid() && ctx.mouse.apply(this, new Filter<Point>() {
+		return valid() && ctx.mouse.apply(this, new Filter<Point>() {
 			@Override
 			public boolean accept(final Point point) {
 				return true;
@@ -78,7 +79,7 @@ public abstract class Interactive extends ClientAccessor implements Targetable, 
 	}
 
 	public boolean interact(final Filter<Menu.Entry> f) {
-		if (!isValid()) {
+		if (!valid()) {
 			return false;
 		}
 
@@ -122,7 +123,7 @@ public abstract class Interactive extends ClientAccessor implements Targetable, 
 	}
 
 	@Override
-	public boolean isValid() {
+	public boolean valid() {
 		return true;
 	}
 }

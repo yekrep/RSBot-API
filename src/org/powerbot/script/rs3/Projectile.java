@@ -5,6 +5,8 @@ import java.lang.ref.WeakReference;
 import org.powerbot.bot.rs3.client.RSInteractableData;
 import org.powerbot.bot.rs3.client.RSInteractableLocation;
 import org.powerbot.bot.rs3.client.RSProjectile;
+import org.powerbot.script.Identifiable;
+import org.powerbot.script.Validatable;
 
 public class Projectile extends ClientAccessor implements Locatable, Identifiable, Validatable {
 	private final WeakReference<RSProjectile> projectile;
@@ -15,13 +17,13 @@ public class Projectile extends ClientAccessor implements Locatable, Identifiabl
 	}
 
 	@Override
-	public int getId() {
+	public int id() {
 		final RSProjectile projectile = this.projectile.get();
 		return projectile != null ? projectile.getID() : -1;
 	}
 
 	@Override
-	public boolean isValid() {
+	public boolean valid() {
 		final RSProjectile projectile = this.projectile.get();
 		return projectile != null && ctx.projectiles.select().contains(this);
 	}

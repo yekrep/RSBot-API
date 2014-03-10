@@ -9,6 +9,7 @@ import org.powerbot.bot.rs3.client.OverheadSprites;
 import org.powerbot.bot.rs3.client.RSNPC;
 import org.powerbot.bot.rs3.client.RSNPCDef;
 import org.powerbot.bot.rs3.client.RSNPCNode;
+import org.powerbot.script.Identifiable;
 
 public class Npc extends Actor implements Identifiable {
 	public static final Color TARGET_COLOR = new Color(255, 0, 255, 15);
@@ -25,7 +26,7 @@ public class Npc extends Actor implements Identifiable {
 	}
 
 	@Override
-	public String getName() {
+	public String name() {
 		final RSNPC npc = getAccessor();
 		final RSNPCDef def;
 		return npc != null && (def = npc.getRSNPCDef()) != null ? def.getName() : "";
@@ -39,7 +40,7 @@ public class Npc extends Actor implements Identifiable {
 	}
 
 	@Override
-	public int getId() {
+	public int id() {
 		final RSNPC npc = getAccessor();
 		final RSNPCDef def;
 		return npc != null && (def = npc.getRSNPCDef()) != null ? def.getID() : -1;
@@ -101,7 +102,7 @@ public class Npc extends Actor implements Identifiable {
 	}
 
 	@Override
-	public boolean isValid() {
+	public boolean valid() {
 		final Client client = ctx.client();
 		if (client == null) {
 			return false;
@@ -145,7 +146,7 @@ public class Npc extends Actor implements Identifiable {
 		if (m2 != null) {
 			m2.drawWireFrame(render);
 		} else {
-			final Model m = getModel();
+			final Model m = model();
 			if (m != null) {
 				m.drawWireFrame(render);
 			}
@@ -154,6 +155,6 @@ public class Npc extends Actor implements Identifiable {
 
 	@Override
 	public String toString() {
-		return Npc.class.getSimpleName() + "[id=" + getId() + ",name=" + getName() + ",level=" + getLevel() + "]";
+		return Npc.class.getSimpleName() + "[id=" + id() + ",name=" + name() + ",level=" + getLevel() + "]";
 	}
 }
