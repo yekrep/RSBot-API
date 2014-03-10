@@ -162,7 +162,7 @@ public class Mouse extends org.powerbot.script.ClientAccessor {
 				}
 			}
 
-			final Point p2 = getLocation(), ep = end.to2DPoint();
+			final Point p2 = getLocation(), ep = end.toPoint2D();
 			if (p2.equals(ep) && filter.accept(ep)) {
 				return true;
 			}

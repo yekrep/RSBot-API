@@ -37,7 +37,7 @@ public final class MouseSpline {
 	private Queue<Vector3> getParabola(final Vector3 a, final Vector3 b) {
 		final Queue<Vector3> l0 = new ArrayDeque<Vector3>();
 
-		final double d = a.get2DDistanceTo(b);
+		final double d = a.distanceTo2D(b);
 		final int g0 = (int) d >> 2, g1 = g0 * 2 + 1;
 
 		if (d < SHORT_DISTANCE) {
@@ -53,7 +53,7 @@ public final class MouseSpline {
 		p[0] = a;
 		p[p.length - 1] = b;
 		for (int i = 1; i < p.length - 1; i++) {
-			p[i] = p[i % 2 == 0 ? p.length - 1 : 0].mul((r.nextDouble() - .5d) / (4 - o) + 1.0d);
+			p[i] = p[i % 2 == 0 ? p.length - 1 : 0].dot((r.nextDouble() - .5d) / (4 - o) + 1.0d);
 			p[i].x += -g0 + r.nextInt(g1);
 			p[i].y += -g0 + r.nextInt(g1);
 		}
@@ -74,7 +74,7 @@ public final class MouseSpline {
 	}
 
 	private Collection<Vector3> impulse(final Vector3 a, final Vector3 b) {
-		final double g = a.get2DGradientTo(b), d = a.get2DDistanceTo(b);
+		final double g = a.gradientTo2D(b), d = a.distanceTo2D(b);
 		int c = (int) d >> 3;
 		if (isBetween(g, -5, -1) || isBetween(g, 1, 5)) {
 			c = 0;
@@ -89,7 +89,7 @@ public final class MouseSpline {
 	private Collection<Vector3> impulse(final Vector3 a, final Vector3 b, final int c) {
 		final List<Vector3> l = new ArrayList<Vector3>();
 
-		final double r = a.get2DAngleTo(b), m = Math.PI * 1.5d;
+		final double r = a.angleTo2D(b), m = Math.PI * 1.5d;
 		final boolean h = isBetween(r, 0, Math.PI / 4) || isBetween(r, 3 * Math.PI / 4, Math.PI) || isBetween(r, Math.PI, 5 * Math.PI / 4) || isBetween(r, 7 * Math.PI / 4, 2 * Math.PI);
 		final double dx = b.x - a.x, dy = b.y - a.y;
 
@@ -121,11 +121,11 @@ public final class MouseSpline {
 	private static Vector3 bezier(final double t, final Vector3... p) {
 		final double u = 1 - t;
 		final int n = p.length - 1;
-		Vector3 q = p[0].mul(Math.pow(u, n));
+		Vector3 q = p[0].dot(Math.pow(u, n));
 		for (int i = 1; i < n; i++) {
-			q = q.add(p[i].mul(3 * Math.pow(u, n - i) * Math.pow(t, i)));
+			q = q.add(p[i].dot(3 * Math.pow(u, n - i) * Math.pow(t, i)));
 		}
-		q = q.add(p[n].mul(Math.pow(t, n)));
+		q = q.add(p[n].dot(Math.pow(t, n)));
 		return q;
 	}
 }

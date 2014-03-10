@@ -241,12 +241,12 @@ public class Menu extends ClientAccessor {
 				client.getMenuY() + (21 + 16 * main + Random.nextInt(2, 15))
 		);
 		final Vector2 mv = new Vector2(ctx.mouse.getLocation());
-		if (mv.get2DDistanceTo(dv) > 200) {
-			Vector2 div = dv.add(mv.mul(-1d));
-			div = div.mul(Random.nextDouble(0.45, 0.55));
-			ctx.mouse.move(mv.add(div).to2DPoint());
+		if (mv.distanceTo(dv) > 200) {
+			Vector2 div = dv.add(mv.dot(-1d));
+			div = div.dot(Random.nextDouble(0.45, 0.55));
+			ctx.mouse.move(mv.add(div).toPoint());
 		}
-		if (ctx.mouse.move(dv.to2DPoint())) {
+		if (ctx.mouse.move(dv.toPoint())) {
 			Random.sleep();
 			if (client.isMenuOpen()) {
 				final Point p = ctx.mouse.getLocation();
