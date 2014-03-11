@@ -17,7 +17,7 @@ public class BankPin extends PollingScript<ClientContext> implements InternalScr
 
 	@Override
 	public void poll() {
-		if (!ctx.widgets.get(WIDGET, COMPONENT).isVisible()) {
+		if (!ctx.widgets.component(WIDGET, COMPONENT).visible()) {
 			priority.set(0);
 			return;
 		}
@@ -29,7 +29,7 @@ public class BankPin extends PollingScript<ClientContext> implements InternalScr
 			return;
 		}
 
-		final int i = ctx.settings.get(SETTING_PIN_STEP);
+		final int i = ctx.varpbits.varpbit(SETTING_PIN_STEP);
 		int v;
 		try {
 			v = Integer.valueOf(String.valueOf(pin.charAt(i)));
@@ -39,8 +39,8 @@ public class BankPin extends PollingScript<ClientContext> implements InternalScr
 		if (v < 0) {
 			return;
 		}
-		if (ctx.widgets.get(WIDGET, v + COMPONENT_PIN_OFFSET).interact("Select")) {
-			for (int d = 0; d < 24 && i == ctx.settings.get(SETTING_PIN_STEP); d++) {
+		if (ctx.widgets.component(WIDGET, v + COMPONENT_PIN_OFFSET).interact("Select")) {
+			for (int d = 0; d < 24 && i == ctx.varpbits.varpbit(SETTING_PIN_STEP); d++) {
 				try {
 					Thread.sleep(90);
 				} catch (final InterruptedException ignored) {

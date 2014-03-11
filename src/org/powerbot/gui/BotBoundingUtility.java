@@ -140,7 +140,7 @@ class BotBoundingUtility extends JFrame implements PaintListener, MouseListener,
 			@Override
 			public void stateChanged(final ChangeEvent changeEvent) {
 				if (target != null) {
-					target.setBounds(
+					target.bounds(
 							modelX1.getNumber().intValue(), modelX2.getNumber().intValue(),
 							modelY1.getNumber().intValue(), modelY2.getNumber().intValue(),
 							modelZ1.getNumber().intValue(), modelZ2.getNumber().intValue()

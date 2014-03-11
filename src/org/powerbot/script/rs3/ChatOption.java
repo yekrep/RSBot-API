@@ -22,7 +22,7 @@ public class ChatOption extends ClientAccessor implements Textable, Validatable 
 		if (option == null) {
 			return "";
 		}
-		return option.getText();
+		return option.text();
 	}
 
 	public boolean select() {

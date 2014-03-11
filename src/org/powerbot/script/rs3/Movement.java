@@ -53,7 +53,7 @@ public class Movement extends ClientAccessor {
 	 *
 	 * @return the {@link Tile} destination; or {@link Tile#NIL} if there is no destination
 	 */
-	public Tile getDestination() {
+	public Tile destination() {
 		final Client client = ctx.client();
 		if (client == null) {
 			return null;
@@ -62,7 +62,7 @@ public class Movement extends ClientAccessor {
 		if (dX == -1 || dY == -1) {
 			return Tile.NIL;
 		}
-		return ctx.game.getMapBase().derive(dX, dY);
+		return ctx.game.mapOffset().derive(dX, dY);
 	}
 
 	/**
@@ -71,10 +71,10 @@ public class Movement extends ClientAccessor {
 	 * @param locatable the locatable to step towards
 	 * @return <tt>true</tt> if stepped; otherwise <tt>false</tt>
 	 */
-	public boolean stepTowards(final Locatable locatable) {
+	public boolean step(final Locatable locatable) {
 		Tile loc = locatable.tile();
-		if (!new TileMatrix(ctx, loc).isOnMap()) {
-			loc = getClosestOnMap(loc);
+		if (!new TileMatrix(ctx, loc).onMap()) {
+			loc = closestOnMap(loc);
 		}
 		final Tile t = loc;
 		final Filter<Point> f = new Filter<Point>() {
@@ -88,12 +88,12 @@ public class Movement extends ClientAccessor {
 
 			@Override
 			public Point nextPoint() {
-				return tile.getMapPoint();
+				return tile.mapPoint();
 			}
 
 			@Override
 			public boolean contains(final Point point) {
-				final Point p = tile.getMapPoint();
+				final Point p = tile.mapPoint();
 				final Rectangle t = new Rectangle(p.x - 2, p.y - 2, 4, 4);
 				return t.contains(point);
 			}
@@ -106,13 +106,13 @@ public class Movement extends ClientAccessor {
 	 * @param locatable the {@link Locatable}
 	 * @return the closest {@link Tile} on map to the provided {@link Locatable}
 	 */
-	public Tile getClosestOnMap(final Locatable locatable) {
+	public Tile closestOnMap(final Locatable locatable) {
 		final Tile local = ctx.players.local().tile();
 		final Tile tile = locatable.tile();
 		if (local == Tile.NIL || tile == Tile.NIL) {
 			return Tile.NIL;
 		}
-		if (new TileMatrix(ctx, tile).isOnMap()) {
+		if (new TileMatrix(ctx, tile).onMap()) {
 			return tile;
 		}
 		final int x2 = local.x();
@@ -126,7 +126,7 @@ public class Movement extends ClientAccessor {
 		int off = dx - dy;
 		for (; ; ) {
 			final Tile t = new Tile(x1, y1, local.z());
-			if (new TileMatrix(ctx, t).isOnMap()) {
+			if (new TileMatrix(ctx, t).onMap()) {
 				return t;
 			}
 			if (x1 == x2 && y1 == y2) {
@@ -151,12 +151,12 @@ public class Movement extends ClientAccessor {
 	 * @param run <tt>true</tt> to run; otherwise <tt>false</tt>
 	 * @return <tt>true</tt> if the state was successfully changed; otherwise <tt>false</tt>
 	 */
-	public boolean setRunning(final boolean run) {
-		return isRunning() == run || (ctx.widgets.get(WIDGET_MAP, COMPONENT_RUN).click() &&
+	public boolean running(final boolean run) {
+		return running() == run || (ctx.widgets.component(WIDGET_MAP, COMPONENT_RUN).click() &&
 				Condition.wait(new Callable<Boolean>() {
 					@Override
 					public Boolean call() throws Exception {
-						return isRunning() == run;
+						return running() == run;
 					}
 				}, 300, 10));
 	}
@@ -166,8 +166,8 @@ public class Movement extends ClientAccessor {
 	 *
 	 * @return <tt>true</tt> if set to be running; otherwise <tt>false</tt>
 	 */
-	public boolean isRunning() {
-		return ctx.settings.get(SETTING_RUN_ENABLED) == 0x1;
+	public boolean running() {
+		return ctx.varpbits.varpbit(SETTING_RUN_ENABLED) == 0x1;
 	}
 
 	/**
@@ -175,22 +175,22 @@ public class Movement extends ClientAccessor {
 	 *
 	 * @return the current energy level
 	 */
-	public int getEnergyLevel() {
-		final Component c = ctx.widgets.get(WIDGET_MAP, COMPONENT_RUN_ENERGY);
+	public int energyLevel() {
+		final Component c = ctx.widgets.component(WIDGET_MAP, COMPONENT_RUN_ENERGY);
 		if (c != null && c.valid()) {
 			try {
-				return Integer.parseInt(c.getText().replace('%', ' ').trim());
+				return Integer.parseInt(c.text().replace('%', ' ').trim());
 			} catch (final NumberFormatException ignored) {
 			}
 		}
 		return 0;
 	}
 
-	public CollisionMap getCollisionMap() {
-		return getCollisionMap(ctx.game.getPlane());
+	public CollisionMap collisionMap() {
+		return collisionMap(ctx.game.floor());
 	}
 
-	public CollisionMap getCollisionMap(final int plane) {
+	public CollisionMap collisionMap(final int plane) {
 		final CollisionMap[] planes = ctx.map.getCollisionMaps();
 		if (plane < 0 || plane >= planes.length) {
 			return new CollisionMap(0, 0);
@@ -205,7 +205,7 @@ public class Movement extends ClientAccessor {
 	 * @param _end   the end position
 	 * @return the computed path distance
 	 */
-	public int getDistance(final Locatable _start, final Locatable _end) {
+	public int distance(final Locatable _start, final Locatable _end) {
 		Tile start, end;
 		if (_start == null || _end == null) {
 			return -1;
@@ -213,7 +213,7 @@ public class Movement extends ClientAccessor {
 		start = _start.tile();
 		end = _end.tile();
 
-		final Tile base = ctx.game.getMapBase();
+		final Tile base = ctx.game.mapOffset();
 		if (base == Tile.NIL || start == Tile.NIL || end == Tile.NIL) {
 			return -1;
 		}
@@ -224,7 +224,7 @@ public class Movement extends ClientAccessor {
 		final int startY = start.y();
 		final int endX = end.x();
 		final int endY = end.y();
-		return ctx.map.getDistance(startX, startY, endX, endY, ctx.game.getPlane());
+		return ctx.map.getDistance(startX, startY, endX, endY, ctx.game.floor());
 	}
 
 	/**
@@ -234,7 +234,7 @@ public class Movement extends ClientAccessor {
 	 * @param _end   the end position
 	 * @return <tt>true</tt> if the end is reachable; otherwise <tt>false</tt>
 	 */
-	public boolean isReachable(final Locatable _start, final Locatable _end) {
+	public boolean reachable(final Locatable _start, final Locatable _end) {
 		Tile start, end;
 		if (_start == null || _end == null) {
 			return false;
@@ -242,7 +242,7 @@ public class Movement extends ClientAccessor {
 		start = _start.tile();
 		end = _end.tile();
 
-		final Tile base = ctx.game.getMapBase();
+		final Tile base = ctx.game.mapOffset();
 		if (base == Tile.NIL || start == Tile.NIL || end == Tile.NIL) {
 			return false;
 		}
@@ -253,6 +253,6 @@ public class Movement extends ClientAccessor {
 		final int startY = start.y();
 		final int endX = end.x();
 		final int endY = end.y();
-		return ctx.map.getPath(startX, startY, endX, endY, ctx.game.getPlane()).length > 0;
+		return ctx.map.getPath(startX, startY, endX, endY, ctx.game.floor()).length > 0;
 	}
 }

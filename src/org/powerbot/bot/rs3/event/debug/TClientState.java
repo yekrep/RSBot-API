@@ -17,7 +17,7 @@ public class TClientState implements TextPaintListener {
 	}
 
 	public int draw(int idx, final Graphics render) {
-		drawLine(render, idx++, "Client state: " + ctx.game.getClientState());
+		drawLine(render, idx++, "Client state: " + ctx.game.clientState());
 		return idx;
 	}
 }

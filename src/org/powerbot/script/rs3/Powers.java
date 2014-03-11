@@ -86,7 +86,7 @@ public class Powers extends ClientAccessor {
 		 * {@inheritDoc}
 		 */
 		@Override
-		public int getId() {
+		public int id() {
 			return id;
 		}
 
@@ -94,7 +94,7 @@ public class Powers extends ClientAccessor {
 		 * {@inheritDoc}
 		 */
 		@Override
-		public int getIndex() {
+		public int index() {
 			return index;
 		}
 
@@ -102,7 +102,7 @@ public class Powers extends ClientAccessor {
 		 * {@inheritDoc}
 		 */
 		@Override
-		public int getLevel() {
+		public int level() {
 			return level;
 		}
 	}
@@ -154,7 +154,7 @@ public class Powers extends ClientAccessor {
 		 * {@inheritDoc}
 		 */
 		@Override
-		public int getId() {
+		public int id() {
 			return id;
 		}
 
@@ -162,7 +162,7 @@ public class Powers extends ClientAccessor {
 		 * {@inheritDoc}
 		 */
 		@Override
-		public int getIndex() {
+		public int index() {
 			return index;
 		}
 
@@ -170,7 +170,7 @@ public class Powers extends ClientAccessor {
 		 * {@inheritDoc}
 		 */
 		@Override
-		public int getLevel() {
+		public int level() {
 			return level;
 		}
 	}
@@ -184,21 +184,21 @@ public class Powers extends ClientAccessor {
 		 *
 		 * @return the id of the prayer
 		 */
-		public int getId();
+		public int id();
 
 		/**
 		 * Returns the index of the prayer.
 		 *
 		 * @return the index of the prayer
 		 */
-		public int getIndex();
+		public int index();
 
 		/**
 		 * Returns the level required to use the prayer.
 		 *
 		 * @return the level required to use the prayer
 		 */
-		public int getLevel();
+		public int level();
 	}
 
 	/**
@@ -206,8 +206,8 @@ public class Powers extends ClientAccessor {
 	 *
 	 * @return the current prayer points
 	 */
-	public int getPrayerPoints() {
-		return (ctx.settings.get(SETTING_PRAYER_POINTS) & 0x7fff) / 10;
+	public int prayerPoints() {
+		return (ctx.varpbits.varpbit(SETTING_PRAYER_POINTS) & 0x7fff) / 10;
 	}
 
 	/**
@@ -215,8 +215,8 @@ public class Powers extends ClientAccessor {
 	 *
 	 * @return the current prayer book
 	 */
-	public int getPrayerBook() {
-		return ctx.settings.get(SETTING_PRAYER_BOOK) % 2 != 0 ? BOOK_CURSES : BOOK_PRAYERS;
+	public int prayerBook() {
+		return ctx.varpbits.varpbit(SETTING_PRAYER_BOOK) % 2 != 0 ? BOOK_CURSES : BOOK_PRAYERS;
 	}
 
 	/**
@@ -224,8 +224,8 @@ public class Powers extends ClientAccessor {
 	 *
 	 * @return <tt>true</tt> if quick prayers selection is active; otherwise <tt>false</tt>
 	 */
-	public boolean isQuickSelection() {
-		return ctx.settings.get(SETTING_PRAYERS_SELECTION) == 0x1;
+	public boolean quickSelectionActive() {
+		return ctx.varpbits.varpbit(SETTING_PRAYERS_SELECTION) == 0x1;
 	}
 
 	/**
@@ -233,8 +233,8 @@ public class Powers extends ClientAccessor {
 	 *
 	 * @return <tt>true</tt> if quick prayers are active; otherwise <tt>false</tt>
 	 */
-	public boolean isQuickPrayers() {
-		return ctx.settings.get(SETTING_PRAYERS_SELECTION) == 0x2;
+	public boolean quickPrayersActive() {
+		return ctx.varpbits.varpbit(SETTING_PRAYERS_SELECTION) == 0x2;
 	}
 
 	/**
@@ -243,7 +243,7 @@ public class Powers extends ClientAccessor {
 	 * @param effect the {@link Effect} to check
 	 * @return <tt>true</tt> if prayer is active; otherwise <tt>false</tt>
 	 */
-	public boolean isPrayerActive(final Effect effect) {
+	public boolean prayerActive(final Effect effect) {
 		final int setting;
 		if (effect instanceof Prayer) {
 			setting = SETTING_PRAYERS;
@@ -252,7 +252,7 @@ public class Powers extends ClientAccessor {
 		} else {
 			setting = -1;
 		}
-		return ((ctx.settings.get(setting) >>> effect.getIndex()) & 0x1) == 1;
+		return ((ctx.varpbits.varpbit(setting) >>> effect.index()) & 0x1) == 1;
 	}
 
 	/**
@@ -261,7 +261,7 @@ public class Powers extends ClientAccessor {
 	 * @param effect the {@link Effect} to check
 	 * @return <tt>true</tt> if set as a quick prayer; otherwise <tt>false</tt>
 	 */
-	public boolean isPrayerQuick(final Effect effect) {
+	public boolean prayerQuick(final Effect effect) {
 		final int setting;
 		if (effect instanceof Prayer) {
 			setting = SETTING_PRAYERS_QUICK;
@@ -270,7 +270,7 @@ public class Powers extends ClientAccessor {
 		} else {
 			setting = -1;
 		}
-		return ((ctx.settings.get(setting) >>> effect.getIndex()) & 0x1) == 1;
+		return ((ctx.varpbits.varpbit(setting) >>> effect.index()) & 0x1) == 1;
 	}
 
 	/**
@@ -278,8 +278,8 @@ public class Powers extends ClientAccessor {
 	 *
 	 * @return the {@link Effect}s currently active
 	 */
-	public Effect[] getActivePrayers() {
-		final int book = getPrayerBook();
+	public Effect[] activePrayers() {
+		final int book = prayerBook();
 		final Effect[] effects;
 		switch (book) {
 		case BOOK_PRAYERS:
@@ -295,7 +295,7 @@ public class Powers extends ClientAccessor {
 
 		final Set<Effect> active = new LinkedHashSet<Effect>();
 		for (final Effect effect : effects) {
-			if (isPrayerActive(effect)) {
+			if (prayerActive(effect)) {
 				active.add(effect);
 			}
 		}
@@ -307,8 +307,8 @@ public class Powers extends ClientAccessor {
 	 *
 	 * @return the {@link Effect}s set as quick prayers
 	 */
-	public Effect[] getQuickPrayers() {
-		final int book = getPrayerBook();
+	public Effect[] quickPrayers() {
+		final int book = prayerBook();
 		final Effect[] effects;
 		switch (book) {
 		case BOOK_PRAYERS:
@@ -324,7 +324,7 @@ public class Powers extends ClientAccessor {
 
 		final Set<Effect> quick = new LinkedHashSet<Effect>();
 		for (final Effect effect : effects) {
-			if (isPrayerQuick(effect)) {
+			if (prayerQuick(effect)) {
 				quick.add(effect);
 			}
 		}
@@ -337,29 +337,29 @@ public class Powers extends ClientAccessor {
 	 * @param quick {@code true} if desired prayer selection, {@code false} if desired not prayer selection
 	 * @return <tt>true</tt> if toggled selection mode; otherwise <tt>false</tt>
 	 */
-	public boolean setQuickSelection(final boolean quick) {
-		if (isQuickSelection() == quick) {
+	public boolean quickSelection(final boolean quick) {
+		if (quickSelectionActive() == quick) {
 			return true;
 		}
 		if (ctx.hud.isVisible(Hud.Window.PRAYER_ABILITIES)) {
 			if (quick) {
-				if (!ctx.widgets.get(WIDGET_PRAYER, COMPONENT_QUICK_SELECTION).interact("Select quick")) {
+				if (!ctx.widgets.component(WIDGET_PRAYER, COMPONENT_QUICK_SELECTION).interact("Select quick")) {
 					return false;
 				}
 			} else {
-				if (!ctx.widgets.get(WIDGET_PRAYER, COMPONENT_PRAYER_SELECT_CONFIRM).interact("Confirm")) {
+				if (!ctx.widgets.component(WIDGET_PRAYER, COMPONENT_PRAYER_SELECT_CONFIRM).interact("Confirm")) {
 					return false;
 				}
 			}
 		} else {
-			if (!ctx.widgets.get(CombatBar.WIDGET, CombatBar.COMPONENT_BUTTON_PRAYER).interact(quick ? "Select quick" : "Finish")) {
+			if (!ctx.widgets.component(CombatBar.WIDGET, CombatBar.COMPONENT_BUTTON_PRAYER).interact(quick ? "Select quick" : "Finish")) {
 				return false;
 			}
 		}
 		return Condition.wait(new Callable<Boolean>() {
 			@Override
 			public Boolean call() throws Exception {
-				return isQuickSelection() == quick;
+				return quickSelectionActive() == quick;
 			}
 		}, 150, 10);
 	}
@@ -370,17 +370,17 @@ public class Powers extends ClientAccessor {
 	 * @param active {@code true} if desired active; {@code false} if desired not active
 	 * @return <tt>true</tt> if quick prayers are toggled; otherwise <tt>false</tt>
 	 */
-	public boolean setQuickPrayers(final boolean active) {
-		if (isQuickPrayers() == active) {
+	public boolean quickPrayers(final boolean active) {
+		if (quickPrayersActive() == active) {
 			return true;
 		}
-		if (!ctx.widgets.get(CombatBar.WIDGET, CombatBar.COMPONENT_BUTTON_PRAYER).interact(active ? "on" : "off")) {
+		if (!ctx.widgets.component(CombatBar.WIDGET, CombatBar.COMPONENT_BUTTON_PRAYER).interact(active ? "on" : "off")) {
 			return false;
 		}
 		return Condition.wait(new Callable<Boolean>() {
 			@Override
 			public Boolean call() throws Exception {
-				return isQuickPrayers() == active;
+				return quickPrayersActive() == active;
 			}
 		}, 150, 10);
 	}
@@ -392,17 +392,17 @@ public class Powers extends ClientAccessor {
 	 * @param active {@code true} if desired active; {@code false} if desired not active
 	 * @return <tt>true</tt> if {@link Effect} is successfully toggled; otherwise <tt>false</tt>
 	 */
-	public boolean setPrayerActive(final Effect effect, final boolean active) {
-		if (ctx.skills.getLevel(Skills.PRAYER) < effect.getLevel()) {
+	public boolean prayer(final Effect effect, final boolean active) {
+		if (ctx.skills.level(Skills.PRAYER) < effect.level()) {
 			return false;
 		}
-		if (isPrayerActive(effect) == active) {
+		if (prayerActive(effect) == active) {
 			return true;
 		}
 		if (ctx.hud.view(Hud.Window.PRAYER_ABILITIES)) {
-			return ctx.widgets.get(WIDGET_PRAYER, COMPONENT_PRAYER_CONTAINER).getChild(effect.getId()).interact(active ? "Activate" : "Deactivate");
+			return ctx.widgets.component(WIDGET_PRAYER, COMPONENT_PRAYER_CONTAINER).component(effect.id()).interact(active ? "Activate" : "Deactivate");
 		}
-		return isPrayerActive(effect) == active;
+		return prayerActive(effect) == active;
 	}
 
 	/**
@@ -411,23 +411,23 @@ public class Powers extends ClientAccessor {
 	 * @param effects the {@link Effect}s
 	 * @return <tt>true</tt> if selected; otherwise <tt>false</tt>.
 	 */
-	public boolean setQuickPrayers(final Effect... effects) {
-		if (!isQuickSelection()) {
-			setQuickSelection(true);
+	public boolean quickPrayers(final Effect... effects) {
+		if (!quickSelectionActive()) {
+			quickSelection(true);
 		}
-		if (isQuickSelection() && ctx.hud.view(Hud.Window.PRAYER_ABILITIES)) {
+		if (quickSelectionActive() && ctx.hud.view(Hud.Window.PRAYER_ABILITIES)) {
 			for (final Effect effect : effects) {
-				if (isPrayerQuick(effect)) {
+				if (prayerQuick(effect)) {
 					continue;
 				}
-				if (ctx.widgets.get(WIDGET_PRAYER, COMPONENT_PRAYER_SELECT_CONTAINER).getChild(effect.getId()).interact("Select")) {
+				if (ctx.widgets.component(WIDGET_PRAYER, COMPONENT_PRAYER_SELECT_CONTAINER).component(effect.id()).interact("Select")) {
 					Random.sleep();
 				}
 			}
 
-			for (final Effect effect : getQuickPrayers()) {
-				if (isPrayerQuick(effect) && !search(effects, effect)) {
-					if (ctx.widgets.get(WIDGET_PRAYER, COMPONENT_PRAYER_SELECT_CONTAINER).getChild(effect.getId()).interact("Deselect")) {
+			for (final Effect effect : quickPrayers()) {
+				if (prayerQuick(effect) && !search(effects, effect)) {
+					if (ctx.widgets.component(WIDGET_PRAYER, COMPONENT_PRAYER_SELECT_CONTAINER).component(effect.id()).interact("Deselect")) {
 						Random.sleep();
 					}
 				}
@@ -435,17 +435,17 @@ public class Powers extends ClientAccessor {
 		}
 
 		for (int i = 0; i < 3; i++) {
-			if (!isQuickSelection()) {
+			if (!quickSelectionActive()) {
 				break;
 			}
-			setQuickSelection(false);
+			quickSelection(false);
 		}
-		return !isQuickSelection();
+		return !quickSelectionActive();
 	}
 
 	private boolean search(final Effect[] effects, final Effect effect) {
 		for (final Effect e : effects) {
-			if (e.getId() == effect.getId()) {
+			if (e.id() == effect.id()) {
 				return true;
 			}
 		}

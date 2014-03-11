@@ -26,9 +26,4 @@ public class Keyboard extends ClientAccessor {
 	public boolean sendln(final String str) {
 		return send(str, true);
 	}
-
-	public boolean isReady() {
-		final KeyboardSimulator h = ctx.inputHandler.get();
-		return h != null && h.getSource() != null;
-	}
 }

@@ -30,7 +30,7 @@ public class Widgets extends ClientAccessor {
 	 *
 	 * @return an array of {@link Widget}s which are currently loaded
 	 */
-	public Widget[] getLoaded() {
+	public Widget[] array() {
 		final Client client = ctx.client();
 		if (client == null) {
 			return new Widget[0];
@@ -52,7 +52,7 @@ public class Widgets extends ClientAccessor {
 	 * @param widget the index of the desired {@link Widget}
 	 * @return the {@link Widget} respective to the given index
 	 */
-	public synchronized Widget get(final int widget) {
+	public synchronized Widget widget(final int widget) {
 		final Client client = ctx.client();
 		if (widget < 0) {
 			throw new RuntimeException("bad widget");
@@ -82,8 +82,8 @@ public class Widgets extends ClientAccessor {
 	 * @param componentIndex the index of the desired {@link Component} of the given {@link Widget}
 	 * @return the {@link Component} belonging to the {@link Widget} requested
 	 */
-	public Component get(final int index, final int componentIndex) {
-		return get(index).getComponent(componentIndex);
+	public Component component(final int index, final int componentIndex) {
+		return widget(index).component(componentIndex);
 	}
 
 	/**
@@ -97,49 +97,49 @@ public class Widgets extends ClientAccessor {
 		if (component == null || !component.valid()) {
 			return false;
 		}
-		if (bar == null || !bar.valid() || bar.getChildrenCount() != 6) {
+		if (bar == null || !bar.valid() || bar.childrenCount() != 6) {
 			return false;
 		}
 		Component pane = component;
 		int id;
-		while (pane.getMaxVerticalScroll() == 0 && (id = pane.getParentId()) != -1) {
-			pane = ctx.widgets.get(id >> 16, id & 0xffff);
+		while (pane.scrollHeightMax() == 0 && (id = pane.parentId()) != -1) {
+			pane = ctx.widgets.component(id >> 16, id & 0xffff);
 		}
-		return pane.getMaxVerticalScroll() != 0 && scroll(component, pane, bar, scroll);
+		return pane.scrollHeightMax() != 0 && scroll(component, pane, bar, scroll);
 	}
 
 	public boolean scroll(final Component component, final Component pane, final Component bar, final boolean scroll) {
 		if (component == null || !component.valid()) {
 			return false;
 		}
-		if (bar == null || !bar.valid() || bar.getChildrenCount() != 6) {
+		if (bar == null || !bar.valid() || bar.childrenCount() != 6) {
 			return false;
 		}
-		if (pane == null || !pane.valid() || pane.getScrollHeight() == 0) {
+		if (pane == null || !pane.valid() || pane.scrollHeight() == 0) {
 			return false;
 		}
-		final Point view = pane.getAbsoluteLocation();
-		final int height = pane.getScrollHeight();
+		final Point view = pane.screenPoint();
+		final int height = pane.scrollHeight();
 		if (view.x < 0 || view.y < 0 || height < 1) {
 			return false;
 		}
-		final Point pos = component.getAbsoluteLocation();
-		final int length = component.getHeight();
+		final Point pos = component.screenPoint();
+		final int length = component.height();
 		if (pos.y >= view.y && pos.y <= view.y + height - length) {
 			return true;
 		}
-		final Component thumbHolder = bar.getChild(0);
-		final Component thumb = bar.getChild(1);
-		final int thumbSize = thumbHolder.getScrollHeight();
-		int y = (int) ((float) thumbSize / pane.getMaxVerticalScroll() *
-				(component.getRelativeLocation().y + Random.nextInt(-height / 2, height / 2 - length)));
+		final Component thumbHolder = bar.component(0);
+		final Component thumb = bar.component(1);
+		final int thumbSize = thumbHolder.scrollHeight();
+		int y = (int) ((float) thumbSize / pane.scrollHeightMax() *
+				(component.relativePoint().y + Random.nextInt(-height / 2, height / 2 - length)));
 		if (y < 0) {
 			y = 0;
 		} else if (y >= thumbSize) {
 			y = thumbSize - 1;
 		}
-		final Point p = thumbHolder.getAbsoluteLocation();
-		p.translate(Random.nextInt(0, thumbHolder.getWidth()), y);
+		final Point p = thumbHolder.screenPoint();
+		p.translate(Random.nextInt(0, thumbHolder.width()), y);
 		if (!scroll) {
 			if (!ctx.mouse.click(p, true)) {
 				return false;
@@ -148,10 +148,10 @@ public class Widgets extends ClientAccessor {
 		}
 		Point a;
 		Component c;
-		int tY = thumb.getAbsoluteLocation().y;
+		int tY = thumb.screenPoint().y;
 		long mark = System.nanoTime();
 		int scrolls = 0;
-		while ((a = component.getAbsoluteLocation()).y < view.y || a.y > view.y + height - length) {
+		while ((a = component.screenPoint()).y < view.y || a.y > view.y + height - length) {
 			if (scroll) {
 				if (ctx.mouse.scroll(a.y > view.y)) {
 					if (++scrolls >= Random.nextInt(5, 9)) {
@@ -163,7 +163,7 @@ public class Widgets extends ClientAccessor {
 					} catch (final InterruptedException ignored) {
 					}
 					if (System.nanoTime() - mark > 2000000000) {
-						final int l = thumb.getAbsoluteLocation().y;
+						final int l = thumb.screenPoint().y;
 						if (tY == l) {
 							return scroll(component, pane, bar, false);
 						} else {
@@ -175,7 +175,7 @@ public class Widgets extends ClientAccessor {
 					break;
 				}
 			} else {
-				c = bar.getChild(a.y < view.y ? 4 : 5);
+				c = bar.component(a.y < view.y ? 4 : 5);
 				if (c == null) {
 					break;
 				}
@@ -186,7 +186,7 @@ public class Widgets extends ClientAccessor {
 						Condition.wait(new Callable<Boolean>() {
 							@Override
 							public Boolean call() throws Exception {
-								final Point a = component.getAbsoluteLocation();
+								final Point a = component.screenPoint();
 								return a.y >= view.y && a.y <= view.y + height - length;
 							}
 						}, 500, 10);

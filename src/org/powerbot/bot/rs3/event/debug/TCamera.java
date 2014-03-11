@@ -15,9 +15,9 @@ public class TCamera implements TextPaintListener {
 	}
 
 	public int draw(int idx, final Graphics render) {
-		drawLine(render, idx++, String.format("X: %d, Y: %d, Z: %d", ctx.camera.getX(), ctx.camera.getY(), ctx.camera.getZ()));
-		drawLine(render, idx++, "Yaw: " + ctx.camera.getYaw());
-		drawLine(render, idx++, "Pitch: " + ctx.camera.getPitch());
+		drawLine(render, idx++, String.format("X: %d, Y: %d, Z: %d", ctx.camera.x(), ctx.camera.y(), ctx.camera.z()));
+		drawLine(render, idx++, "Yaw: " + ctx.camera.yaw());
+		drawLine(render, idx++, "Pitch: " + ctx.camera.pitch());
 		return idx;
 	}
 }

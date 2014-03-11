@@ -50,7 +50,7 @@ public class Hiscores {
 				final String[] parts = groups[i].split(",");
 				final Stats s = map.get(i);
 
-				switch (s.getType()) {
+				switch (s.type()) {
 				case SKILL:
 					if (parts.length == 3) {
 						final int[] x = new int[3];
@@ -106,7 +106,7 @@ public class Hiscores {
 	 * @param username the player username
 	 * @return a {@link Hiscores} profile or {@code null} if none was found
 	 */
-	public static synchronized Hiscores getProfile(String username) {
+	public static synchronized Hiscores profile(String username) {
 		username = normaliseUsername(username);
 		if (cache.containsKey(username)) {
 			return cache.get(username);
@@ -152,7 +152,7 @@ public class Hiscores {
 	 *
 	 * @return the username of this player profile
 	 */
-	public String getUsername() {
+	public String username() {
 		return username;
 	}
 
@@ -162,7 +162,7 @@ public class Hiscores {
 	 * @param key the {@link Hiscores.Stats} to lookup
 	 * @return the associated {@link Hiscores.SkillStats}
 	 */
-	public SkillStats getSkill(final Stats key) {
+	public SkillStats skill(final Stats key) {
 		return skills.get(key);
 	}
 
@@ -172,16 +172,16 @@ public class Hiscores {
 	 * @param key the {@link Hiscores.Stats} to lookup
 	 * @return the associated {@link Hiscores.ActivityStats}
 	 */
-	public ActivityStats getActivity(final Stats key) {
+	public ActivityStats activity(final Stats key) {
 		return activities.get(key);
 	}
 
 	/**
-	 * Returns the overall total experience points, which may be truncated in {@link #getSkill(Hiscores.Stats)}.
+	 * Returns the overall total experience points, which may be truncated in {@link #skill(Hiscores.Stats)}.
 	 *
 	 * @return the overal total experience points
 	 */
-	public long getTotalXp() {
+	public long totalXp() {
 		return totalxp;
 	}
 
@@ -190,7 +190,7 @@ public class Hiscores {
 	 *
 	 * @return the time (in milliseconds)
 	 */
-	public long getUpdated() {
+	public long updated() {
 		return updated;
 	}
 
@@ -287,7 +287,7 @@ public class Hiscores {
 		 *
 		 * @return the type
 		 */
-		public StatsType getType() {
+		public StatsType type() {
 			return ordinal() > 25 ? StatsType.ACTIVITY : StatsType.SKILL;
 		}
 	}
@@ -321,7 +321,7 @@ public class Hiscores {
 		 *
 		 * @return the type of stat
 		 */
-		public Stats getStats() {
+		public Stats stats() {
 			return stats;
 		}
 
@@ -330,7 +330,7 @@ public class Hiscores {
 		 *
 		 * @return the level
 		 */
-		public int getLevel() {
+		public int level() {
 			return level;
 		}
 
@@ -339,7 +339,7 @@ public class Hiscores {
 		 *
 		 * @return the total number of experience points
 		 */
-		public int getTotalXp() {
+		public int totalXp() {
 			return xp;
 		}
 
@@ -348,7 +348,7 @@ public class Hiscores {
 		 *
 		 * @return the global rank
 		 */
-		public int getRank() {
+		public int rank() {
 			return rank;
 		}
 
@@ -387,7 +387,7 @@ public class Hiscores {
 		 *
 		 * @return the type of stat
 		 */
-		public Stats getStats() {
+		public Stats stats() {
 			return stats;
 		}
 
@@ -396,7 +396,7 @@ public class Hiscores {
 		 *
 		 * @return the score
 		 */
-		public int getScore() {
+		public int score() {
 			return score;
 		}
 
@@ -405,7 +405,7 @@ public class Hiscores {
 		 *
 		 * @return the global rank
 		 */
-		public int getRank() {
+		public int rank() {
 			return rank;
 		}
 

@@ -98,7 +98,7 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 	 * @return the {@link Locatable} of the nearest bank or {@link Tile#NIL}
 	 * @see #open()
 	 */
-	public Locatable getNearest() {
+	public Locatable nearest() {
 		Locatable nearest = ctx.npcs.select().select(UNREACHABLE_FILTER).id(BANK_NPC_IDS).nearest().poll();
 
 		final Tile loc = ctx.players.local().tile();
@@ -119,8 +119,8 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 	 *
 	 * @return <tt>true</tt> if a bank is present; otherwise <tt>false</tt>
 	 */
-	public boolean isPresent() {
-		return getNearest() != Tile.NIL;
+	public boolean present() {
+		return nearest() != Tile.NIL;
 	}
 
 	/**
@@ -135,8 +135,8 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 	 *
 	 * @return <tt>true</tt> is the bank is open; otherwise <tt>false</tt>
 	 */
-	public boolean isOpen() {
-		return ctx.widgets.get(WIDGET, COMPONENT_CONTAINER_ITEMS).valid();
+	public boolean displayed() {
+		return ctx.widgets.component(WIDGET, COMPONENT_CONTAINER_ITEMS).valid();
 	}
 
 	/**
@@ -147,7 +147,7 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 	 * @return <tt>true</tt> if the bank was opened; otherwise <tt>false</tt>
 	 */
 	public boolean open() {
-		if (isOpen()) {
+		if (displayed()) {
 			return true;
 		}
 		final Interactive interactive = getBank();
@@ -204,19 +204,19 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 				Condition.wait(new Callable<Boolean>() {
 					@Override
 					public Boolean call() throws Exception {
-						return ctx.widgets.get(13).valid() || isOpen();
+						return ctx.widgets.widget(13).valid() || displayed();
 					}
 				}, 150, 15);
-			} while (ctx.players.local().isInMotion());
+			} while (ctx.players.local().inMotion());
 
 			Condition.wait(new Callable<Boolean>() {
 				@Override
 				public Boolean call() throws Exception {
-					return ctx.widgets.get(13).valid() || isOpen();
+					return ctx.widgets.widget(13).valid() || displayed();
 				}
 			}, 100, 15);
 		}
-		return isOpen();
+		return displayed();
 	}
 
 	/**
@@ -225,10 +225,10 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 	 * @return <tt>true</tt> if the bank was closed; otherwise <tt>false</tt>
 	 */
 	public boolean close() {
-		return !isOpen() || ctx.widgets.get(WIDGET, COMPONENT_BUTTON_CLOSE).interact("Close") && Condition.wait(new Callable<Boolean>() {
+		return !displayed() || ctx.widgets.component(WIDGET, COMPONENT_BUTTON_CLOSE).interact("Close") && Condition.wait(new Callable<Boolean>() {
 			@Override
 			public Boolean call() throws Exception {
-				return !isOpen();
+				return !displayed();
 			}
 		}, 150);
 	}
@@ -238,14 +238,14 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 	 */
 	@Override
 	protected List<Item> get() {
-		final Component c = ctx.widgets.get(WIDGET, COMPONENT_CONTAINER_ITEMS);
+		final Component c = ctx.widgets.component(WIDGET, COMPONENT_CONTAINER_ITEMS);
 		if (c == null || !c.valid()) {
 			return new ArrayList<Item>();
 		}
-		final Component[] components = c.getChildren();
+		final Component[] components = c.children();
 		final List<Item> items = new ArrayList<Item>(components.length);
 		for (final Component i : components) {
-			if (i.getItemId() != -1) {
+			if (i.itemId() != -1) {
 				items.add(new Item(ctx, i));
 			}
 		}
@@ -258,9 +258,9 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 	 * @param index the index of the item to grab
 	 * @return the {@link Item} at the specified index; or {@link org.powerbot.script.rs3.Bank#nil()}
 	 */
-	public Item getItemAt(final int index) {
-		final Component i = ctx.widgets.get(WIDGET, COMPONENT_CONTAINER_ITEMS).getChild(index);
-		if (i.getItemId() != -1) {
+	public Item itemAt(final int index) {
+		final Component i = ctx.widgets.component(WIDGET, COMPONENT_CONTAINER_ITEMS).component(index);
+		if (i.itemId() != -1) {
 			return new Item(ctx, i);
 		}
 		return nil();
@@ -273,13 +273,13 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 	 * @return the index of the item; otherwise {@code -1}
 	 */
 	public int indexOf(final int id) {
-		final Component items = ctx.widgets.get(WIDGET, COMPONENT_CONTAINER_ITEMS);
+		final Component items = ctx.widgets.component(WIDGET, COMPONENT_CONTAINER_ITEMS);
 		if (items == null || !items.valid()) {
 			return -1;
 		}
-		final Component[] comps = items.getChildren();
+		final Component[] comps = items.children();
 		for (int i = 0; i < comps.length; i++) {
-			if (comps[i].getItemId() == id) {
+			if (comps[i].itemId() == id) {
 				return i;
 			}
 		}
@@ -289,8 +289,8 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 	/**
 	 * @return the index of the current bank tab
 	 */
-	public int getCurrentTab() {
-		return ((ctx.settings.get(SETTING_BANK_STATE) >>> 24) - 136) / 8;
+	public int currentTab() {
+		return ((ctx.varpbits.varpbit(SETTING_BANK_STATE) >>> 24) - 136) / 8;
 	}
 
 	/**
@@ -299,12 +299,12 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 	 * @param index the index desired
 	 * @return <tt>true</tt> if the tab was successfully changed; otherwise <tt>false</tt>
 	 */
-	public boolean setCurrentTab(final int index) {
-		final Component c = ctx.widgets.get(WIDGET, 37 - (index * 2));
+	public boolean currentTab(final int index) {
+		final Component c = ctx.widgets.component(WIDGET, 37 - (index * 2));
 		return c.click() && Condition.wait(new Callable<Boolean>() {
 			@Override
 			public Boolean call() throws Exception {
-				return getCurrentTab() == index;
+				return currentTab() == index;
 			}
 		}, 100, 8);
 	}
@@ -315,8 +315,8 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 	 * @param index the tab index
 	 * @return the {@link Item} displayed in the tab; otherwise {@link org.powerbot.script.rs3.Bank#nil()}
 	 */
-	public Item getTabItem(final int index) {
-		final Component c = ctx.widgets.get(WIDGET, 37 - (index * 2));
+	public Item tabItem(final int index) {
+		final Component c = ctx.widgets.component(WIDGET, 37 - (index * 2));
 		if (c != null && c.valid()) {
 			return new Item(ctx, c);
 		}
@@ -342,36 +342,36 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 	 * @return <tt>true</tt> if the item was withdrew, does not determine if amount was matched; otherwise <tt>false</tt>
 	 */
 	public boolean withdraw(final int id, final int amount) {//TODO: anti pattern
-		final Component component = ctx.widgets.get(WIDGET, COMPONENT_CONTAINER_ITEMS);
+		final Component component = ctx.widgets.component(WIDGET, COMPONENT_CONTAINER_ITEMS);
 		final Item item = select().id(id).poll();
 		if (!component.valid() || !item.valid()) {
 			return false;
 		}
-		final Component c = item.getComponent();
-		if (c.getRelativeLocation().y == 0) {
-			if (!setCurrentTab(0) && Condition.wait(new Callable<Boolean>() {
+		final Component c = item.component();
+		if (c.relativePoint().y == 0) {
+			if (!currentTab(0) && Condition.wait(new Callable<Boolean>() {
 				@Override
 				public Boolean call() throws Exception {
-					return c.getRelativeLocation().y != 0;
+					return c.relativePoint().y != 0;
 				}
 			}, 100, 10)) {
 				return false;
 			}
 		}
-		final Rectangle vr = component.getViewportRect();
-		if (!vr.contains(c.getViewportRect()) && !ctx.widgets.scroll(c, ctx.widgets.get(WIDGET, COMPONENT_SCROLL_BAR),
+		final Rectangle vr = component.viewportRect();
+		if (!vr.contains(c.viewportRect()) && !ctx.widgets.scroll(c, ctx.widgets.component(WIDGET, COMPONENT_SCROLL_BAR),
 				vr.contains(ctx.mouse.getLocation()))) {
 			return false;
 		}
 
 		String action = "Withdraw-" + amount;
 		if (amount == 0 ||
-				(item.getStackSize() <= amount && amount != 1 && amount != 5 && amount != 10)) {
+				(item.stackSize() <= amount && amount != 1 && amount != 5 && amount != 10)) {
 			action = "Withdraw-All";
-		} else if (amount == -1 || amount == (item.getStackSize() - 1)) {
+		} else if (amount == -1 || amount == (item.stackSize() - 1)) {
 			action = "Withdraw-All but one";
 		}
-		final int inv = ctx.backpack.getMoneyPouch() + ctx.backpack.select().count(true);
+		final int inv = ctx.backpack.moneyPouchCount() + ctx.backpack.select().count(true);
 		if (!containsAction(c, action)) {
 			if (c.interact("Withdraw-X") && Condition.wait(new Callable<Boolean>() {
 				@Override
@@ -390,7 +390,7 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 		return Condition.wait(new Callable<Boolean>() {
 			@Override
 			public Boolean call() throws Exception {
-				return ctx.backpack.getMoneyPouch() + ctx.backpack.select().count(true) != inv;
+				return ctx.backpack.moneyPouchCount() + ctx.backpack.select().count(true) != inv;
 			}
 		});
 	}
@@ -414,7 +414,7 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 	 * @return <tt>true</tt> if the item was deposited, does not determine if amount was matched; otherwise <tt>false</tt>
 	 */
 	public boolean deposit(final int id, final int amount) {
-		if (!isOpen() || amount < 0) {
+		if (!displayed() || amount < 0) {
 			return false;
 		}
 		final Item item = ctx.backpack.select().id(id).shuffle().poll();
@@ -429,7 +429,7 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 			action = "Deposit-All";
 		}
 		final int cache = ctx.backpack.select().count(true);
-		final Component component = item.getComponent();
+		final Component component = item.component();
 		if (!containsAction(component, action)) {
 			if (component.interact("Deposit-X") && Condition.wait(new Callable<Boolean>() {
 				@Override
@@ -461,7 +461,7 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 	 * @return <tt>true</tt> if the button was clicked, not if the inventory is empty; otherwise <tt>false</tt>
 	 */
 	public boolean depositInventory() {
-		return ctx.backpack.select().isEmpty() || ctx.widgets.get(WIDGET, COMPONENT_BUTTON_DEPOSIT_INVENTORY).click();
+		return ctx.backpack.select().isEmpty() || ctx.widgets.component(WIDGET, COMPONENT_BUTTON_DEPOSIT_INVENTORY).click();
 	}
 
 	/**
@@ -470,7 +470,7 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 	 * @return <tt>true</tt> if the button was clicked; otherwise <tt>false</tt>
 	 */
 	public boolean depositEquipment() {
-		return ctx.widgets.get(WIDGET, COMPONENT_BUTTON_DEPOSIT_EQUIPMENT).click();
+		return ctx.widgets.component(WIDGET, COMPONENT_BUTTON_DEPOSIT_EQUIPMENT).click();
 	}
 
 	/**
@@ -479,7 +479,7 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 	 * @return <tt>true</tt> if the button was clicked; otherwise <tt>false</tt>
 	 */
 	public boolean depositFamiliar() {
-		return ctx.widgets.get(WIDGET, COMPONENT_BUTTON_DEPOSIT_FAMILIAR).click();
+		return ctx.widgets.component(WIDGET, COMPONENT_BUTTON_DEPOSIT_FAMILIAR).click();
 	}
 
 	/**
@@ -488,7 +488,7 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 	 * @return <tt>true</tt> if the button was clicked; otherwise <tt>false</tt>
 	 */
 	public boolean depositMoneyPouch() {
-		return ctx.backpack.getMoneyPouch() == 0 || ctx.widgets.get(WIDGET, COMPONENT_BUTTON_DEPOSIT_MONEY).click();
+		return ctx.backpack.moneyPouchCount() == 0 || ctx.widgets.component(WIDGET, COMPONENT_BUTTON_DEPOSIT_MONEY).click();
 	}
 
 	/**
@@ -497,11 +497,11 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 	 * @param noted <tt>true</tt> for noted items; otherwise <tt>false</tt>
 	 * @return <tt>true</tt> if the withdraw mode was successfully changed; otherwise <tt>false</tt>
 	 */
-	public boolean setWithdrawMode(final boolean noted) {
-		return isWithdrawModeNoted() == noted || ctx.widgets.get(WIDGET, COMPONENT_BUTTON_WITHDRAW_MODE).click() && Condition.wait(new Callable<Boolean>() {
+	public boolean withdrawMode(final boolean noted) {
+		return withdrawMode() == noted || ctx.widgets.component(WIDGET, COMPONENT_BUTTON_WITHDRAW_MODE).click() && Condition.wait(new Callable<Boolean>() {
 			@Override
 			public Boolean call() throws Exception {
-				return isWithdrawModeNoted() == noted;
+				return withdrawMode() == noted;
 			}
 		});
 	}
@@ -511,12 +511,12 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 	 *
 	 * @return <tt>true</tt> if withdrawing as notes; otherwise <tt>false</tt>
 	 */
-	public boolean isWithdrawModeNoted() {
-		return ctx.settings.get(SETTING_WITHDRAW_MODE) == 0x1;
+	public boolean withdrawMode() {
+		return ctx.varpbits.varpbit(SETTING_WITHDRAW_MODE) == 0x1;
 	}
 
 	private boolean containsAction(final Component c, final String action) {
-		final String[] actions = c.getActions();
+		final String[] actions = c.actions();
 		for (final String a : actions) {
 			if (a != null && StringUtils.stripHtml(a).trim().equalsIgnoreCase(action)) {
 				return true;
@@ -526,7 +526,7 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 	}
 
 	private boolean isInputWidgetOpen() {
-		return ctx.widgets.get(1469, 2).isVisible();
+		return ctx.widgets.component(1469, 2).visible();
 	}
 
 	/**

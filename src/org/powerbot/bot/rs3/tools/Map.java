@@ -123,14 +123,14 @@ public class Map extends ClientAccessor {
 	private void readCollision(final CollisionMap collisionMap, final int localX, final int localY, final List<GameObject> objects) {
 		int clippingType;
 		for (final GameObject next : objects) {
-			clippingType = ctx.objects.getType(next.id());
-			switch (next.getType()) {
+			clippingType = ctx.objects.type(next.id());
+			switch (next.type()) {
 			case BOUNDARY:
 				if (clippingType == 0) {
 					continue;
 				}
 
-				final RSObject object = next.getInternal();
+				final RSObject object = next.internal();
 				if (object == null) {
 					continue;
 				}
@@ -258,13 +258,13 @@ public class Map extends ClientAccessor {
 		private final Node[][] nodes;
 
 		private Graph(final CollisionMap map) {
-			width = map.getWidth() - 6;
-			height = map.getHeight() - 6;
+			width = map.width() - 6;
+			height = map.height() - 6;
 			nodes = new Node[width][height];
 			for (int x = 0; x < width; x++) {
 				for (int y = 0; y < height; y++) {
 					final Node node = new Node(x, y);
-					node.flag = map.getFlagAt(x, y);
+					node.flag = map.flagAt(x, y);
 					nodes[x][y] = node;
 				}
 			}

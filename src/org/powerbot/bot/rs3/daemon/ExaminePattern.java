@@ -33,7 +33,7 @@ public class ExaminePattern extends Antipattern.Module {
 		for (final GameObject o : ctx.objects.select().select(new Filter<GameObject>() {
 			@Override
 			public boolean accept(final GameObject o) {
-				return o.getType() == GameObject.Type.INTERACTIVE && o.inViewport();
+				return o.type() == GameObject.Type.INTERACTIVE && o.inViewport();
 			}
 		}).shuffle().limit(isAggressive() ? 1 : Random.nextInt(1, 3))) {
 			hover(o);

@@ -23,16 +23,16 @@ public class TilePath extends Path {
 	@Override
 	public boolean traverse(final EnumSet<TraversalOption> options) {
 		final Player local = ctx.players.local();
-		final Tile next = getNext();
+		final Tile next = next();
 		if (next == null || local == null) {
 			return false;
 		}
-		final Tile dest = ctx.movement.getDestination();
-		if (next.equals(getEnd())) {
+		final Tile dest = ctx.movement.destination();
+		if (next.equals(end())) {
 			if (next.distanceTo(ctx.players.local()) <= 2) {
 				return false;
 			}
-			if (end && (local.isInMotion() || dest.equals(next))) {
+			if (end && (local.inMotion() || dest.equals(next))) {
 				return false;
 			}
 			end = true;
@@ -40,29 +40,29 @@ public class TilePath extends Path {
 			end = false;
 		}
 		if (options != null) {
-			if (options.contains(TraversalOption.HANDLE_RUN) && !ctx.movement.isRunning() && ctx.movement.getEnergyLevel() > Random.nextInt(45, 60)) {
-				ctx.movement.setRunning(true);
+			if (options.contains(TraversalOption.HANDLE_RUN) && !ctx.movement.running() && ctx.movement.energyLevel() > Random.nextInt(45, 60)) {
+				ctx.movement.running(true);
 			}
-			if (options.contains(TraversalOption.SPACE_ACTIONS) && local.isInMotion() && dest.distanceTo(last) < 3d) {
+			if (options.contains(TraversalOption.SPACE_ACTIONS) && local.inMotion() && dest.distanceTo(last) < 3d) {
 				if (dest.distanceTo(ctx.players.local()) > (double) Random.nextInt(5, 12)) {//TODO: revise this distance to not be detectable!!!
 					return true;
 				}
 			}
 		}
 		last = next;
-		if (ctx.movement.stepTowards(next)) {
-			if (local.isInMotion()) {
+		if (ctx.movement.step(next)) {
+			if (local.inMotion()) {
 				return Condition.wait(new Callable<Boolean>() {
 					@Override
 					public Boolean call() {
-						return ctx.movement.getDestination().distanceTo(next) < 3;
+						return ctx.movement.destination().distanceTo(next) < 3;
 					}
 				}, 60, 10);
 			}
 			return next.distanceTo(ctx.players.local()) < 5d || Condition.wait(new Callable<Boolean>() {
 				@Override
 				public Boolean call() {
-					return ctx.players.local().isInMotion() && ctx.movement.getDestination().distanceTo(next) < 3;
+					return ctx.players.local().inMotion() && ctx.movement.destination().distanceTo(next) < 3;
 				}
 			}, 125, 10);
 		}
@@ -70,34 +70,34 @@ public class TilePath extends Path {
 	}
 
 	@Override
-	public boolean isValid() {
-		return tiles.length > 0 && getNext() != null && getEnd().distanceTo(ctx.players.local()) > Math.sqrt(2);
+	public boolean valid() {
+		return tiles.length > 0 && next() != null && end().distanceTo(ctx.players.local()) > Math.sqrt(2);
 	}
 
 	@Override
-	public Tile getNext() {
+	public Tile next() {
 		/* Wait for map not to be loading */
-		final int state = ctx.game.getClientState();
+		final int state = ctx.game.clientState();
 		if (state == Game.INDEX_MAP_LOADING) {
 			Condition.wait(new Callable<Boolean>() {
 				@Override
 				public Boolean call() throws Exception {
-					return ctx.game.getClientState() != Game.INDEX_MAP_LOADING;
+					return ctx.game.clientState() != Game.INDEX_MAP_LOADING;
 				}
 			});
-			return getNext();
+			return next();
 		}
 		if (state != Game.INDEX_MAP_LOADED) {
 			return null;
 		}
 		/* Get current destination */
-		final Tile dest = ctx.movement.getDestination();
+		final Tile dest = ctx.movement.destination();
 		/* Label main loop for continuing purposes */
 		out:
 		/* Iterate over all tiles but the first tile (0) starting with the last (length - 1). */
 		for (int i = tiles.length - 1; i > 0; --i) {
 			/* The tiles not in view, go to the next. */
-			if (!new TileMatrix(ctx, tiles[i]).isOnMap()) {
+			if (!new TileMatrix(ctx, tiles[i]).onMap()) {
 				continue;
 			}
 			/* If our destination is NIL, assume mid path and continue there. */
@@ -114,7 +114,7 @@ public class TilePath extends Path {
 				 * Explanation: Path wraps around something and must be followed.
 				 * We cannot suddenly click out of a "pathable" region (104x104).
 				 * In these cases, we can assume a better tile will become available. */
-				if (!new TileMatrix(ctx, tiles[a]).isOnMap()) {
+				if (!new TileMatrix(ctx, tiles[a]).onMap()) {
 					continue out;
 				}
 				/* If a tile (successor) is currently targeted, return the tile that was the "best"
@@ -131,26 +131,26 @@ public class TilePath extends Path {
 		 * TELEPORTATION SUPPORT: If destination is set but but we're not moving, assume
 		 * invalid destination tile from teleportation reset and return first tile. */
 		final Player p = ctx.players.local();
-		if (p != null && !p.isInMotion() && dest != Tile.NIL) {
+		if (p != null && !p.inMotion() && dest != Tile.NIL) {
 			for (int i = tiles.length - 1; i >= 0; --i) {
-				if (new TileMatrix(ctx, tiles[i]).isOnMap()) {
+				if (new TileMatrix(ctx, tiles[i]).onMap()) {
 					return tiles[i];
 				}
 			}
 		}
-		if (tiles.length == 0 || !new TileMatrix(ctx, tiles[0]).isOnMap()) {
+		if (tiles.length == 0 || !new TileMatrix(ctx, tiles[0]).onMap()) {
 			return null;
 		}
 		return tiles[0];
 	}
 
 	@Override
-	public Tile getStart() {
+	public Tile start() {
 		return tiles[0];
 	}
 
 	@Override
-	public Tile getEnd() {
+	public Tile end() {
 		return tiles[tiles.length - 1];
 	}
 
@@ -175,7 +175,7 @@ public class TilePath extends Path {
 		return this;
 	}
 
-	public Tile[] toArray() {
+	public Tile[] array() {
 		final Tile[] a = new Tile[tiles.length];
 		System.arraycopy(tiles, 0, a, 0, tiles.length);
 		return a;

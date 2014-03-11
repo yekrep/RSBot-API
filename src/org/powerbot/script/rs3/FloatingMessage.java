@@ -14,11 +14,11 @@ public class FloatingMessage implements Validatable {
 		this.texture = texture;
 	}
 
-	public String getText() {
+	public String text() {
 		return text;
 	}
 
-	public int getTexture() {
+	public int texture() {
 		return texture;
 	}
 

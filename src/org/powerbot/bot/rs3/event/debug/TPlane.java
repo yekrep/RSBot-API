@@ -17,7 +17,7 @@ public class TPlane implements TextPaintListener {
 	}
 
 	public int draw(int idx, final Graphics render) {
-		drawLine(render, idx++, "Floor: " + ctx.game.getPlane());
+		drawLine(render, idx++, "Floor: " + ctx.game.floor());
 		return idx;
 	}
 }

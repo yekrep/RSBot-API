@@ -44,7 +44,7 @@ public class ClientContext extends org.powerbot.script.ClientContext<Client> {
 	public final Players players;
 	public final Powers powers;
 	public final Projectiles projectiles;
-	public final Settings settings;
+	public final Varpbits varpbits;
 	public final Skills skills;
 	public final Summoning summoning;
 	public final Widgets widgets;
@@ -87,7 +87,7 @@ public class ClientContext extends org.powerbot.script.ClientContext<Client> {
 		players = new Players(this);
 		powers = new Powers(this);
 		projectiles = new Projectiles(this);
-		settings = new Settings(this);
+		varpbits = new Varpbits(this);
 		skills = new Skills(this);
 		summoning = new Summoning(this);
 		widgets = new Widgets(this);
@@ -129,7 +129,7 @@ public class ClientContext extends org.powerbot.script.ClientContext<Client> {
 		players = ctx.players;
 		powers = ctx.powers;
 		projectiles = ctx.projectiles;
-		settings = ctx.settings;
+		varpbits = ctx.varpbits;
 		skills = ctx.skills;
 		summoning = ctx.summoning;
 		widgets = ctx.widgets;

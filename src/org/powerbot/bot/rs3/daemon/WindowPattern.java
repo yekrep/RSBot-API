@@ -23,7 +23,7 @@ public class WindowPattern extends Antipattern.Module {
 			if (!ctx.hud.isOpen(w) || ctx.hud.isVisible(w)) {
 				continue;
 			}
-			if (w.getMenu() == Hud.Menu.NONE) {
+			if (w.menu() == Hud.Menu.NONE) {
 				continue;
 			}
 

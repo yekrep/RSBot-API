@@ -28,11 +28,11 @@ public final class CollisionMap {
 		clear();
 	}
 
-	public int getWidth() {
+	public int width() {
 		return width;
 	}
 
-	public int getHeight() {
+	public int height() {
 		return height;
 	}
 
@@ -48,7 +48,7 @@ public final class CollisionMap {
 		}
 	}
 
-	public CollisionFlag getFlagAt(final int localX, final int localY) {
+	public CollisionFlag flagAt(final int localX, final int localY) {
 		return clipping[localX(localX)][localY(localY)];
 	}
 

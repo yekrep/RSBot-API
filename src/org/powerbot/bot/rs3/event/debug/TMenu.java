@@ -16,7 +16,7 @@ public class TMenu implements TextPaintListener {
 
 	public int draw(int idx, final Graphics render) {
 		drawLine(render, idx++, "Menu");
-		final String[] menuItems = ctx.menu.getItems();
+		final String[] menuItems = ctx.menu.items();
 		for (final String menuItem : menuItems) {
 			drawLine(render, idx++, " -> " + menuItem);
 		}

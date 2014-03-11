@@ -78,7 +78,7 @@ public class Menu extends ClientAccessor {
 	 *
 	 * @return <tt>true</tt> if the menu is open; otherwise <tt>false</tt>
 	 */
-	public boolean isOpen() {
+	public boolean displayed() {
 		final Client client = ctx.client();
 		return client != null && client.isMenuOpen();
 	}
@@ -90,7 +90,7 @@ public class Menu extends ClientAccessor {
 	 * @return the first index found; otherwise -1
 	 */
 	public int indexOf(final Filter<Entry> filter) {
-		if (!ctx.game.isLoggedIn()) {
+		if (!ctx.game.loggedIn()) {
 			cache();
 		}
 
@@ -181,7 +181,7 @@ public class Menu extends ClientAccessor {
 			return true;
 		}
 
-		final Dimension d = ctx.game.getDimensions();
+		final Dimension d = ctx.game.dimensions();
 		final int mx = client.getMenuX(), my = client.getMenuY();
 		final int w = (int) d.getWidth(), h = (int) d.getHeight();
 		int x1, x2;
@@ -302,8 +302,8 @@ public class Menu extends ClientAccessor {
 	 *
 	 * @return the array of menu items
 	 */
-	public String[] getItems() {
-		if (!ctx.game.isLoggedIn()) {
+	public String[] items() {
+		if (!ctx.game.loggedIn()) {
 			cache();
 		}
 

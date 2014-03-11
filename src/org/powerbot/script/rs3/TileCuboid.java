@@ -21,7 +21,7 @@ public class TileCuboid extends Interactive {
 	}
 
 	@Override
-	public void setBounds(final int x1, final int x2, final int y1, final int y2, final int z1, final int z2) {
+	public void bounds(final int x1, final int x2, final int y1, final int y2, final int z1, final int z2) {
 	}
 
 	private Area cuboid(final int deviation) {
@@ -53,8 +53,8 @@ public class TileCuboid extends Interactive {
 		final Point o2 = ctx.game.groundToScreen(x + deviation, z - deviation, p, h);
 		final Point o3 = ctx.game.groundToScreen(x + deviation, z + deviation, p, h);
 		final Point o4 = ctx.game.groundToScreen(x - deviation, z + deviation, p, h);
-		if (!ctx.game.isPointInViewport(g1) || !ctx.game.isPointInViewport(g2) || !ctx.game.isPointInViewport(g3) || !ctx.game.isPointInViewport(g4) ||
-				!ctx.game.isPointInViewport(o1) || !ctx.game.isPointInViewport(o2) || !ctx.game.isPointInViewport(o3) || !ctx.game.isPointInViewport(o4)) {
+		if (!ctx.game.inViewport(g1) || !ctx.game.inViewport(g2) || !ctx.game.inViewport(g3) || !ctx.game.inViewport(g4) ||
+				!ctx.game.inViewport(o1) || !ctx.game.inViewport(o2) || !ctx.game.inViewport(o3) || !ctx.game.inViewport(o4)) {
 			return null;
 		}
 		final Polygon g = new Polygon(new int[]{g1.x, g2.x, g3.x, g4.x}, new int[]{g1.y, g2.y, g3.y, g4.y}, 4);
@@ -81,7 +81,7 @@ public class TileCuboid extends Interactive {
 		return Calculations.nextPoint(r1, r2);
 	}
 
-	public Point getCenterPoint() {
+	public Point centerPoint() {
 		final Area area = cuboid(256);
 		if (area != null) {
 			final Rectangle rectangle = area.getBounds();

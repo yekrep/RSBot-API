@@ -16,7 +16,7 @@ public class TMapBase implements TextPaintListener {
 	}
 
 	public int draw(int idx, final Graphics render) {
-		final Tile t = ctx.game.getMapBase();
+		final Tile t = ctx.game.mapOffset();
 		drawLine(render, idx++, "Map base: " + (t != null ? t.toString() : ""));
 		return idx;
 	}

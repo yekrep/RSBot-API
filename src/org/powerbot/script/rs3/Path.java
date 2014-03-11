@@ -15,13 +15,13 @@ public abstract class Path extends ClientAccessor {
 		return traverse(EnumSet.of(TraversalOption.HANDLE_RUN, TraversalOption.SPACE_ACTIONS));
 	}
 
-	public abstract boolean isValid();
+	public abstract boolean valid();
 
-	public abstract Tile getNext();
+	public abstract Tile next();
 
-	public abstract Tile getStart();
+	public abstract Tile start();
 
-	public abstract Tile getEnd();
+	public abstract Tile end();
 
 	public static enum TraversalOption {
 		HANDLE_RUN, SPACE_ACTIONS

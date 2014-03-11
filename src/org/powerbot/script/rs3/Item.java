@@ -12,7 +12,7 @@ public class Item extends Interactive implements Displayable, Identifiable, Name
 	private final Component component;
 
 	public Item(final ClientContext ctx, final Component component) {
-		this(ctx, component.getItemId(), component.getItemStackSize(), component);
+		this(ctx, component.itemId(), component.itemStackSize(), component);
 	}
 
 	public Item(final ClientContext ctx, final int id, final int stack, final Component component) {
@@ -23,7 +23,7 @@ public class Item extends Interactive implements Displayable, Identifiable, Name
 	}
 
 	@Override
-	public void setBounds(final int x1, final int x2, final int y1, final int y2, final int z1, final int z2) {
+	public void bounds(final int x1, final int x2, final int y1, final int y2, final int z1, final int z2) {
 	}
 
 	@Override
@@ -32,12 +32,12 @@ public class Item extends Interactive implements Displayable, Identifiable, Name
 	}
 
 	@Override
-	public int getStackSize() {
+	public int stackSize() {
 		if (component == null) {
 			return stack;
 		}
-		final int stack = component.getItemStackSize();
-		if (component.isVisible() && component.getItemId() == this.id) {
+		final int stack = component.itemStackSize();
+		if (component.visible() && component.itemId() == this.id) {
 			return this.stack = stack;
 		}
 		return this.stack;
@@ -46,23 +46,23 @@ public class Item extends Interactive implements Displayable, Identifiable, Name
 	@Override
 	public String name() {
 		final String name;
-		if (component != null && component.getItemId() == this.id) {
-			name = component.getItemName();
+		if (component != null && component.itemId() == this.id) {
+			name = component.itemName();
 		} else {
 			name = ItemDefinition.getDef(ctx, this.id).getName();
 		}
 		return StringUtils.stripHtml(name);
 	}
 
-	public boolean isMembers() {
+	public boolean members() {
 		return ItemDefinition.getDef(ctx, id()).isMembers();
 	}
 
-	public String[] getActions() {
+	public String[] actions() {
 		return ItemDefinition.getDef(ctx, id()).getActions();
 	}
 
-	public String[] getGroundActions() {
+	public String[] groundActions() {
 		return ItemDefinition.getDef(ctx, id()).getGroundActions();
 	}
 
@@ -70,7 +70,7 @@ public class Item extends Interactive implements Displayable, Identifiable, Name
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Component getComponent() {
+	public Component component() {
 		return component;
 	}
 
@@ -82,11 +82,11 @@ public class Item extends Interactive implements Displayable, Identifiable, Name
 		return component.nextPoint();
 	}
 
-	public Point getCenterPoint() {
+	public Point centerPoint() {
 		if (component == null) {
 			return new Point(-1, -1);
 		}
-		return component.getCenterPoint();
+		return component.centerPoint();
 	}
 
 	@Override
@@ -97,7 +97,7 @@ public class Item extends Interactive implements Displayable, Identifiable, Name
 	@Override
 	public boolean valid() {
 		return this.id != -1 && this.component != null && this.component.valid() &&
-				(!this.component.isVisible() || this.component.getItemId() == this.id);
+				(!this.component.visible() || this.component.itemId() == this.id);
 	}
 
 	@Override

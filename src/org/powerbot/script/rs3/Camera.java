@@ -26,8 +26,8 @@ public class Camera extends ClientAccessor {
 	 *
 	 * @return the offset on the x-axis
 	 */
-	public int getX() {
-		final Tile tile = ctx.game.getMapBase();
+	public int x() {
+		final Tile tile = ctx.game.mapOffset();
 		return (int) (offset[0] - (tile.x() << 9));
 	}
 
@@ -36,8 +36,8 @@ public class Camera extends ClientAccessor {
 	 *
 	 * @return the offset on the y-axis
 	 */
-	public int getY() {
-		final Tile tile = ctx.game.getMapBase();
+	public int y() {
+		final Tile tile = ctx.game.mapOffset();
 		return (int) (offset[1] - (tile.y() << 9));
 	}
 
@@ -46,7 +46,7 @@ public class Camera extends ClientAccessor {
 	 *
 	 * @return the offset on the z-axis
 	 */
-	public int getZ() {
+	public int z() {
 		return -(int) offset[2];
 	}
 
@@ -55,7 +55,7 @@ public class Camera extends ClientAccessor {
 	 *
 	 * @return the camera yaw
 	 */
-	public int getYaw() {
+	public int yaw() {
 		final float dx = offset[0] - center[0];
 		final float dy = offset[1] - center[1];
 		final float t = (float) Math.atan2(dx, dy);
@@ -67,7 +67,7 @@ public class Camera extends ClientAccessor {
 	 *
 	 * @return the camera pitch
 	 */
-	public final int getPitch() {
+	public final int pitch() {
 		final float dx = center[0] - offset[0];
 		final float dy = center[1] - offset[1];
 		final float dz = center[2] - offset[2];
@@ -82,8 +82,8 @@ public class Camera extends ClientAccessor {
 	 * @param up <tt>true</tt> to be up; otherwise <tt>false</tt> for down
 	 * @return <tt>true</tt> if the absolute was reached; success is normally guaranteed regardless of return of <tt>false</tt>
 	 */
-	public boolean setPitch(final boolean up) {
-		return setPitch(up ? 100 : 0);
+	public boolean pitch(final boolean up) {
+		return pitch(up ? 100 : 0);
 	}
 
 	/**
@@ -92,23 +92,23 @@ public class Camera extends ClientAccessor {
 	 * @param percent the percent to set the pitch to
 	 * @return <tt>true</tt> if the pitch was reached; otherwise <tt>false</tt>
 	 */
-	public boolean setPitch(final int percent) {
-		if (percent == getPitch()) {
+	public boolean pitch(final int percent) {
+		if (percent == pitch()) {
 			return true;
 		}
-		final boolean up = getPitch() < percent;
+		final boolean up = pitch() < percent;
 		ctx.keyboard.send(up ? "{VK_UP down}" : "{VK_DOWN down}");
 		for (; ; ) {
-			final int tp = getPitch();
+			final int tp = pitch();
 			if (!Condition.wait(new Callable<Boolean>() {
 				@Override
 				public Boolean call() throws Exception {
-					return getPitch() != tp;
+					return pitch() != tp;
 				}
 			}, 10, 10)) {
 				break;
 			}
-			final int p = getPitch();
+			final int p = pitch();
 			if (up && p >= percent) {
 				break;
 			} else if (!up && p <= percent) {
@@ -116,7 +116,7 @@ public class Camera extends ClientAccessor {
 			}
 		}
 		ctx.keyboard.send(up ? "{VK_UP up}" : "{VK_DOWN up}");
-		return Math.abs(percent - getPitch()) <= 8;
+		return Math.abs(percent - pitch()) <= 8;
 	}
 
 	/**
@@ -125,16 +125,16 @@ public class Camera extends ClientAccessor {
 	 * @param direction the direction to set the camera, 'n', 's', 'w', 'e'.     \
 	 * @return <tt>true</tt> if the camera was rotated to the angle; otherwise <tt>false</tt>
 	 */
-	public boolean setAngle(final char direction) {
+	public boolean angle(final char direction) {
 		switch (direction) {
 		case 'n':
-			return setAngle(0);
+			return angle(0);
 		case 'w':
-			return setAngle(90);
+			return angle(90);
 		case 's':
-			return setAngle(180);
+			return angle(180);
 		case 'e':
-			return setAngle(270);
+			return angle(270);
 		}
 		throw new RuntimeException("invalid direction " + direction + ", expecting n,w,s,e");
 	}
@@ -145,9 +145,9 @@ public class Camera extends ClientAccessor {
 	 * @param degrees the degrees to set the camera to
 	 * @return <tt>true</tt> if the camera was rotated to the angle; otherwise <tt>false</tt>
 	 */
-	public boolean setAngle(final int degrees) {
+	public boolean angle(final int degrees) {
 		final int d = degrees % 360;
-		final int a = getAngleTo(d);
+		final int a = angleTo(d);
 		if (Math.abs(a) <= 5) {
 			return true;
 		}
@@ -156,21 +156,21 @@ public class Camera extends ClientAccessor {
 
 		ctx.keyboard.send(l ? "{VK_LEFT down}" : "{VK_RIGHT down}");
 		for (; ; ) {
-			final int a2 = getAngleTo(d);
+			final int a2 = angleTo(d);
 			if (!Condition.wait(new Callable<Boolean>() {
 				@Override
 				public Boolean call() throws Exception {
-					return getAngleTo(d) != a2;
+					return angleTo(d) != a2;
 				}
 			}, 10, 10)) {
 				break;
 			}
-			if (Math.abs(getAngleTo(d)) <= 15) {
+			if (Math.abs(angleTo(d)) <= 15) {
 				break;
 			}
 		}
 		ctx.keyboard.send(l ? "{VK_LEFT up}" : "{VK_RIGHT up}");
-		return Math.abs(getAngleTo(d)) <= 15;
+		return Math.abs(angleTo(d)) <= 15;
 	}
 
 	/**
@@ -179,8 +179,8 @@ public class Camera extends ClientAccessor {
 	 * @param degrees the degrees to compute to
 	 * @return the angle change required to be at the provided degrees
 	 */
-	public int getAngleTo(final int degrees) {
-		int ca = getYaw();
+	public int angleTo(final int degrees) {
+		int ca = yaw();
 		if (ca < degrees) {
 			ca += 360;
 		}
@@ -209,9 +209,9 @@ public class Camera extends ClientAccessor {
 	public void turnTo(final Locatable l, final int dev) {
 		final int a = getAngleToLocatable(l);
 		if (dev == 0) {
-			setAngle(a);
+			angle(a);
 		} else {
-			setAngle(Random.nextInt(a - dev, a + dev + 1));
+			angle(Random.nextInt(a - dev, a + dev + 1));
 		}
 	}
 

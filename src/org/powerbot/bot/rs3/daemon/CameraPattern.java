@@ -11,7 +11,7 @@ public class CameraPattern extends Antipattern.Module {
 	@Override
 	public void run() {
 		final boolean a = isAggressive();
-		final int t = ctx.camera.getYaw(), c = Random.nextInt(1, 3) * (a ? 2 : 1);
+		final int t = ctx.camera.yaw(), c = Random.nextInt(1, 3) * (a ? 2 : 1);
 
 		for (int i = 0; i < c; i++) {
 			final String k = Random.nextBoolean() ? "LEFT" : "RIGHT";
@@ -25,7 +25,7 @@ public class CameraPattern extends Antipattern.Module {
 
 		if (isStateful()) {
 			final int d = 10;
-			ctx.camera.setAngle(t + Random.nextInt(-d, d));
+			ctx.camera.angle(t + Random.nextInt(-d, d));
 		}
 	}
 }

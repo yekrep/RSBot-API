@@ -18,11 +18,11 @@ public class Action extends ClientAccessor implements Identifiable, Validatable,
 		this.id = id;
 	}
 
-	public int getSlot() {
+	public int slot() {
 		return slot;
 	}
 
-	public Type getType() {
+	public Type type() {
 		return this.type;
 	}
 
@@ -31,9 +31,9 @@ public class Action extends ClientAccessor implements Identifiable, Validatable,
 		return id;
 	}
 
-	public String getBind() {
-		final Component c = ctx.widgets.get(CombatBar.WIDGET, CombatBar.COMPONENT_SLOT_BIND + slot * CombatBar.COMPONENT_SLOT_LENGTH);
-		return c.getText().trim();
+	public String bind() {
+		final Component c = ctx.widgets.component(CombatBar.WIDGET, CombatBar.COMPONENT_SLOT_BIND + slot * CombatBar.COMPONENT_SLOT_LENGTH);
+		return c.text().trim();
 	}
 
 	public boolean select() {
@@ -44,22 +44,22 @@ public class Action extends ClientAccessor implements Identifiable, Validatable,
 		if (!valid()) {
 			return false;
 		}
-		final String b = getBind();
-		return key ? b.length() == 1 && ctx.keyboard.send(getBind()) : getComponent().click();
+		final String b = bind();
+		return key ? b.length() == 1 && ctx.keyboard.send(bind()) : component().click();
 	}
 
-	public boolean isReady() {
-		final Component cooldown = ctx.widgets.get(CombatBar.WIDGET, CombatBar.COMPONENT_SLOT_COOL_DOWN + slot * CombatBar.COMPONENT_SLOT_LENGTH);
-		final Component action = ctx.widgets.get(CombatBar.WIDGET, CombatBar.COMPONENT_SLOT_ACTION + slot * CombatBar.COMPONENT_SLOT_LENGTH);
-		return valid() && !cooldown.isVisible() && action.getTextColor() == 0xFFFFFF;
+	public boolean ready() {
+		final Component cooldown = ctx.widgets.component(CombatBar.WIDGET, CombatBar.COMPONENT_SLOT_COOL_DOWN + slot * CombatBar.COMPONENT_SLOT_LENGTH);
+		final Component action = ctx.widgets.component(CombatBar.WIDGET, CombatBar.COMPONENT_SLOT_ACTION + slot * CombatBar.COMPONENT_SLOT_LENGTH);
+		return valid() && !cooldown.visible() && action.textColor() == 0xFFFFFF;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Component getComponent() {
-		return ctx.widgets.get(CombatBar.WIDGET, CombatBar.COMPONENT_SLOT_ACTION + slot * CombatBar.COMPONENT_SLOT_LENGTH);
+	public Component component() {
+		return ctx.widgets.component(CombatBar.WIDGET, CombatBar.COMPONENT_SLOT_ACTION + slot * CombatBar.COMPONENT_SLOT_LENGTH);
 	}
 
 	@Override
@@ -79,8 +79,8 @@ public class Action extends ClientAccessor implements Identifiable, Validatable,
 	@Override
 	public boolean valid() {
 		return this.type != Type.UNKNOWN && this.id == (this.type == Type.ABILITY ?
-				ctx.settings.get(CombatBar.SETTING_ABILITY + this.slot) :
-				ctx.settings.get(CombatBar.SETTING_ITEM + this.slot));
+				ctx.varpbits.varpbit(CombatBar.SETTING_ABILITY + this.slot) :
+				ctx.varpbits.varpbit(CombatBar.SETTING_ITEM + this.slot));
 	}
 
 	public static enum Type {

@@ -23,7 +23,7 @@ public abstract class Interactive extends ClientAccessor implements Targetable, 
 	 */
 	@Override
 	public boolean inViewport() {
-		return ctx.game.isPointInViewport(nextPoint());
+		return ctx.game.inViewport(nextPoint());
 	}
 
 	public static Filter<Interactive> areInViewport() {
@@ -103,20 +103,20 @@ public abstract class Interactive extends ClientAccessor implements Targetable, 
 		return false;
 	}
 
-	public final void setBounds(final int[] arr) {
+	public final void bounds(final int[] arr) {
 		if (arr == null || arr.length != 6) {
 			throw new IllegalArgumentException("length is not 6 (x1, x2, y1, y2, z1, z2)");
 		}
-		setBounds(arr[0], arr[1], arr[2], arr[3], arr[4], arr[5]);
+		bounds(arr[0], arr[1], arr[2], arr[3], arr[4], arr[5]);
 	}
 
-	public abstract void setBounds(final int x1, final int x2, final int y1, final int y2, final int z1, final int z2);
+	public abstract void bounds(final int x1, final int x2, final int y1, final int y2, final int z1, final int z2);
 
 	public static Filter<Interactive> doSetBounds(final int[] arr) {
 		return new Filter<Interactive>() {
 			@Override
 			public boolean accept(final Interactive item) {
-				item.setBounds(arr);
+				item.bounds(arr);
 				return true;
 			}
 		};

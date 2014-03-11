@@ -30,17 +30,17 @@ public class Player extends Actor {
 	}
 
 	@Override
-	public int getLevel() {
+	public int combatLevel() {
 		final RSPlayer player = getAccessor();
 		return player != null ? player.getLevel() : -1;
 	}
 
-	public int getTeam() {
+	public int team() {
 		final RSPlayer player = getAccessor();
 		return player != null ? player.getTeam() : -1;
 	}
 
-	public int getPrayerIcon() {
+	public int prayerIcon() {
 		final int[] a1 = getOverheadArray1(), a2 = getOverheadArray2();
 		final int len = a1.length;
 		if (len != a2.length) {
@@ -55,7 +55,7 @@ public class Player extends Actor {
 		return -1;
 	}
 
-	public int getSkullIcon() {
+	public int skullIcon() {
 		return -1;
 	}
 
@@ -81,13 +81,13 @@ public class Player extends Actor {
 		return new int[0];
 	}
 
-	public int getNpcId() {
+	public int npcId() {
 		final RSPlayer player = getAccessor();
 		final RSPlayerComposite composite;
 		return player != null && (composite = player.getComposite()) != null ? composite.getNPCID() : -1;
 	}
 
-	public int[] getAppearance() {
+	public int[] appearance() {
 		final RSPlayer player = getAccessor();
 		final RSPlayerComposite composite = player != null ? player.getComposite() : null;
 		if (composite != null) {
@@ -141,6 +141,6 @@ public class Player extends Actor {
 
 	@Override
 	public String toString() {
-		return Player.class.getSimpleName() + "[name=" + name() + ",level=" + getLevel() + "]";
+		return Player.class.getSimpleName() + "[name=" + name() + ",level=" + combatLevel() + "]";
 	}
 }

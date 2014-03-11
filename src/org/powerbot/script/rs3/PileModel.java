@@ -17,7 +17,7 @@ public class PileModel extends Model {
 	}
 
 	@Override
-	public int getX() {
+	public int x() {
 		final RSInteractable interactable = this.pile.get();
 		final RSInteractableData data = interactable != null ? interactable.getData() : null;
 		final RSInteractableLocation location = data != null ? data.getLocation() : null;
@@ -28,7 +28,7 @@ public class PileModel extends Model {
 	}
 
 	@Override
-	public int getY() {
+	public int z() {
 		final RSInteractable interactable = this.pile.get();
 		final RSInteractableData data = interactable != null ? interactable.getData() : null;
 		final RSInteractableLocation location = data != null ? data.getLocation() : null;
@@ -39,7 +39,7 @@ public class PileModel extends Model {
 	}
 
 	@Override
-	public byte getPlane() {
+	public byte floor() {
 		final RSInteractable interactable = this.pile.get();
 		return interactable != null ? interactable.getPlane() : -1;
 	}

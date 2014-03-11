@@ -32,8 +32,8 @@ public class Summoning extends ClientAccessor {
 	 *
 	 * @return the current amount summoning points
 	 */
-	public int getSummoningPoints() {
-		return ctx.skills.getLevel(Skills.SUMMONING);
+	public int points() {
+		return ctx.skills.level(Skills.SUMMONING);
 	}
 
 	/**
@@ -41,8 +41,8 @@ public class Summoning extends ClientAccessor {
 	 *
 	 * @return the time left for the spawned familiar
 	 */
-	public int getTimeLeft() {
-		return (ctx.settings.get(SETTING_TIME_LEFT) >>> 6) * 30;
+	public int timeLeft() {
+		return (ctx.varpbits.varpbit(SETTING_TIME_LEFT) >>> 6) * 30;
 	}
 
 	/**
@@ -50,8 +50,8 @@ public class Summoning extends ClientAccessor {
 	 *
 	 * @return the amount of special points
 	 */
-	public int getSpecialPoints() {
-		return ctx.settings.get(SETTING_SPECIAL_POINTS);
+	public int specialPoints() {
+		return ctx.varpbits.varpbit(SETTING_SPECIAL_POINTS);
 	}
 
 	/**
@@ -59,8 +59,8 @@ public class Summoning extends ClientAccessor {
 	 *
 	 * @return <tt>true</tt> if a familiar is summoned; otherwise <tt>false</tt>
 	 */
-	public boolean isFamiliarSummoned() {
-		return ctx.settings.get(SETTING_NPC_ID) > 0;
+	public boolean summoned() {
+		return ctx.varpbits.varpbit(SETTING_NPC_ID) > 0;
 	}
 
 	/**
@@ -70,7 +70,7 @@ public class Summoning extends ClientAccessor {
 	 * @return <tt>true</tt> if the action was selected; otherwise <tt>false</tt>
 	 */
 	public boolean select(final Option option) {
-		return select(option.getText());
+		return select(option.text());
 	}
 
 	/**
@@ -80,13 +80,13 @@ public class Summoning extends ClientAccessor {
 	 * @return <tt>true</tt> if the action was selected; otherwise <tt>false</tt>
 	 */
 	public boolean select(final String action) {
-		final Component c = ctx.widgets.get(CombatBar.WIDGET, CombatBar.COMPONENT_BUTTON_SUMMONING);
-		if (Option.RENEW_FAMILIAR.getText().toLowerCase().contains(action.toLowerCase())) {
-			final Familiar familiar = getFamiliar();
-			return familiar != null && familiar.getRequiredPoints() <= getSpecialPoints() &&
-					ctx.backpack.select().id(ctx.settings.get(SETTING_POUCH_ID)).count() > 0 && c.interact(action);
+		final Component c = ctx.widgets.component(CombatBar.WIDGET, CombatBar.COMPONENT_BUTTON_SUMMONING);
+		if (Option.RENEW_FAMILIAR.text().toLowerCase().contains(action.toLowerCase())) {
+			final Familiar familiar = familiar();
+			return familiar != null && familiar.requiredPoints() <= specialPoints() &&
+					ctx.backpack.select().id(ctx.varpbits.varpbit(SETTING_POUCH_ID)).count() > 0 && c.interact(action);
 		}
-		if (Option.DISMISS.getText().toLowerCase().contains(action.toLowerCase())) {
+		if (Option.DISMISS.text().toLowerCase().contains(action.toLowerCase())) {
 			if (c.interact(action) && Condition.wait(new Callable<Boolean>() {
 				@Override
 				public Boolean call() throws Exception {
@@ -100,7 +100,7 @@ public class Summoning extends ClientAccessor {
 						return Condition.wait(new Callable<Boolean>() {
 							@Override
 							public Boolean call() throws Exception {
-								return !isFamiliarSummoned();
+								return !summoned();
 							}
 						});
 					}
@@ -108,9 +108,9 @@ public class Summoning extends ClientAccessor {
 			}
 			return false;
 		}
-		if (Option.CAST.getText().toLowerCase().contains(action.toLowerCase())) {
-			final Familiar familiar = getFamiliar();
-			return familiar != null && familiar.getRequiredSpecialPoints() <= getSpecialPoints()
+		if (Option.CAST.text().toLowerCase().contains(action.toLowerCase())) {
+			final Familiar familiar = familiar();
+			return familiar != null && familiar.requiredSpecialPoints() <= specialPoints()
 					&& c.interact(action);
 		}
 		return c.interact(action);
@@ -121,10 +121,10 @@ public class Summoning extends ClientAccessor {
 	 *
 	 * @return the {@link Option} when left clicked
 	 */
-	public Option getLeftClickOption() {
-		final int val = ctx.settings.get(SETTING_LEFT_OPTION);
+	public Option clickOption() {
+		final int val = ctx.varpbits.varpbit(SETTING_LEFT_OPTION);
 		for (final Option o : Option.values()) {
-			if (val == o.getValue()) {
+			if (val == o.value()) {
 				return o;
 			}
 		}
@@ -137,30 +137,30 @@ public class Summoning extends ClientAccessor {
 	 * @param option the desired option
 	 * @return <tt>true</tt> if the option was successfully changed; otherwise <tt>false</tt>
 	 */
-	public boolean setLeftClickOption(final Option option) {
-		if (ctx.settings.get(SETTING_LEFT_OPTION) == option.getValue()) {
+	public boolean clickOption(final Option option) {
+		if (ctx.varpbits.varpbit(SETTING_LEFT_OPTION) == option.value()) {
 			return true;
 		}
-		if (!ctx.widgets.get(CombatBar.WIDGET, CombatBar.COMPONENT_BUTTON_SUMMONING).interact("Select")) {
+		if (!ctx.widgets.component(CombatBar.WIDGET, CombatBar.COMPONENT_BUTTON_SUMMONING).interact("Select")) {
 			return false;
 		}
 		if (!Condition.wait(new Callable<Boolean>() {
 			@Override
 			public Boolean call() throws Exception {
-				return ctx.widgets.get(WIDGET_LEFT_SELECT).valid();
+				return ctx.widgets.widget(WIDGET_LEFT_SELECT).valid();
 			}
 		}, 30, 100)) {
 			return false;
 		}
-		if (ctx.widgets.get(WIDGET_LEFT_SELECT, option.getId()).interact("Select")) {
+		if (ctx.widgets.component(WIDGET_LEFT_SELECT, option.id()).interact("Select")) {
 			Condition.wait(new Callable<Boolean>() {
 				@Override
 				public Boolean call() throws Exception {
-					return ctx.settings.get(SETTING_LEFT_SELECTED) == option.getTentative();
+					return ctx.varpbits.varpbit(SETTING_LEFT_SELECTED) == option.tentative();
 				}
 			}, 150, 20);
 		}
-		final Component confirm = ctx.widgets.get(WIDGET_LEFT_SELECT, COMPONENT_CONFIRM);
+		final Component confirm = ctx.widgets.component(WIDGET_LEFT_SELECT, COMPONENT_CONFIRM);
 		for (int i = 0; i < 3; i++) {
 			if (!confirm.valid()) {
 				break;
@@ -169,12 +169,12 @@ public class Summoning extends ClientAccessor {
 				Condition.wait(new Callable<Boolean>() {
 					@Override
 					public Boolean call() throws Exception {
-						return ctx.settings.get(SETTING_LEFT_OPTION) == option.getValue();
+						return ctx.varpbits.varpbit(SETTING_LEFT_OPTION) == option.value();
 					}
 				}, 150, 20);
 			}
 		}
-		return ctx.settings.get(SETTING_LEFT_OPTION) == option.getValue();
+		return ctx.varpbits.varpbit(SETTING_LEFT_OPTION) == option.value();
 	}
 
 
@@ -183,8 +183,8 @@ public class Summoning extends ClientAccessor {
 	 *
 	 * @return the {@link Npc}; otherwise {@link org.powerbot.script.rs3.Npcs#get()}
 	 */
-	public Npc getNpc() {
-		if (!isFamiliarSummoned()) {
+	public Npc npc() {
+		if (!summoned()) {
 			return ctx.npcs.nil();
 		}
 		final Player local = ctx.players.local();
@@ -192,7 +192,7 @@ public class Summoning extends ClientAccessor {
 			@Override
 			public boolean accept(final Npc npc) {
 				final Actor actor;
-				return npc.id() == ctx.settings.get(SETTING_NPC_ID) && (actor = npc.getInteracting()) != null && actor.equals(local);
+				return npc.id() == ctx.varpbits.varpbit(SETTING_NPC_ID) && (actor = npc.interacting()) != null && actor.equals(local);
 			}
 		}).nearest().poll();
 	}
@@ -202,12 +202,12 @@ public class Summoning extends ClientAccessor {
 	 *
 	 * @return the {@link Familiar}
 	 */
-	public Familiar getFamiliar() {
-		if (!isFamiliarSummoned()) {
+	public Familiar familiar() {
+		if (!summoned()) {
 			return null;
 		}
 		for (final Familiar f : Familiar.values()) {
-			if (f.getPouchId() == ctx.settings.get(SETTING_POUCH_ID)) {
+			if (f.pouchId() == ctx.varpbits.varpbit(SETTING_POUCH_ID)) {
 				return f;
 			}
 		}
@@ -219,9 +219,9 @@ public class Summoning extends ClientAccessor {
 	 *
 	 * @return <tt>true</tt> if the action was clicked.
 	 */
-	public boolean callFamiliar() {
-		final Component c = ctx.widgets.get(WIDGET, 49);
-		return c != null && isFamiliarSummoned() && c.isVisible() && c.interact("Call");
+	public boolean call() {
+		final Component c = ctx.widgets.component(WIDGET, 49);
+		return c != null && summoned() && c.visible() && c.interact("Call");
 	}
 
 	/**
@@ -229,9 +229,9 @@ public class Summoning extends ClientAccessor {
 	 *
 	 * @return <tt>true</tt> if the action was clicked.
 	 */
-	public boolean dismissFamiliar() {
-		final Component c = ctx.widgets.get(WIDGET, 51);
-		return c != null && isFamiliarSummoned() && c.isVisible() && c.interact("Dismiss Now");
+	public boolean dismiss() {
+		final Component c = ctx.widgets.component(WIDGET, 51);
+		return c != null && summoned() && c.visible() && c.interact("Dismiss Now");
 	}
 
 	/**
@@ -240,8 +240,8 @@ public class Summoning extends ClientAccessor {
 	 * @return <tt>true</tt> if the action was clicked.
 	 */
 	public boolean takeBoB() {
-		final Component c = ctx.widgets.get(WIDGET, 67);
-		return c != null && isFamiliarSummoned() && c.isVisible() && c.interact("Take");
+		final Component c = ctx.widgets.component(WIDGET, 67);
+		return c != null && summoned() && c.visible() && c.interact("Take");
 	}
 
 	/**
@@ -249,9 +249,9 @@ public class Summoning extends ClientAccessor {
 	 *
 	 * @return <tt>true</tt> if the action was clicked.
 	 */
-	public boolean renewFamiliar() {
-		final Component c = ctx.widgets.get(WIDGET, 69);
-		return c != null && isFamiliarSummoned() && c.isVisible() && c.interact("Renew");
+	public boolean renew() {
+		final Component c = ctx.widgets.component(WIDGET, 69);
+		return c != null && summoned() && c.visible() && c.interact("Renew");
 	}
 
 	/**
@@ -260,8 +260,8 @@ public class Summoning extends ClientAccessor {
 	 * @return <tt>true</tt> if the action was clicked.
 	 */
 	public boolean cast() {
-		final Component c = ctx.widgets.get(WIDGET, 5);
-		return c != null && isFamiliarSummoned() && c.isVisible() && c.interact("Cast");
+		final Component c = ctx.widgets.component(WIDGET, 5);
+		return c != null && summoned() && c.visible() && c.interact("Cast");
 	}
 
 	/**
@@ -270,8 +270,8 @@ public class Summoning extends ClientAccessor {
 	 * @return <tt>true</tt> if the action was clicked.
 	 */
 	public boolean attack() {
-		final Component c = ctx.widgets.get(WIDGET, 65);
-		return c != null && isFamiliarSummoned() && c.isVisible() && c.interact("Attack");
+		final Component c = ctx.widgets.component(WIDGET, 65);
+		return c != null && summoned() && c.visible() && c.interact("Attack");
 	}
 
 	/**
@@ -370,27 +370,27 @@ public class Summoning extends ClientAccessor {
 			this.scroll = scroll;
 		}
 
-		public int getPouchId() {
+		public int pouchId() {
 			return this.pouch;
 		}
 
-		public int getRequiredLevel() {
+		public int requiredLevel() {
 			return this.level;
 		}
 
-		public int getBoBSpace() {
+		public int bobSpace() {
 			return this.space;
 		}
 
-		public int getRequiredPoints() {
+		public int requiredPoints() {
 			return this.points;
 		}
 
-		public int getScrollId() {
+		public int scrollId() {
 			return this.scroll;
 		}
 
-		public int getRequiredSpecialPoints() {
+		public int requiredSpecialPoints() {
 			return this.special;
 		}
 	}
@@ -418,19 +418,19 @@ public class Summoning extends ClientAccessor {
 			this.set = set;
 		}
 
-		public String getText() {
+		public String text() {
 			return this.text;
 		}
 
-		public int getId() {
+		public int id() {
 			return id;
 		}
 
-		public int getValue() {
+		public int value() {
 			return setting;
 		}
 
-		public int getTentative() {
+		public int tentative() {
 			return set;
 		}
 	}

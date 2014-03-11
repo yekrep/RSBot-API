@@ -29,18 +29,18 @@ public abstract class Actor extends Interactive implements Renderable, Nameable,
 	protected abstract RSCharacter getAccessor();
 
 	@Override
-	public void setBounds(final int x1, final int x2, final int y1, final int y2, final int z1, final int z2) {
+	public void bounds(final int x1, final int x2, final int y1, final int y2, final int z1, final int z2) {
 		boundingModel.set(new BoundingModel(ctx, x1, x2, y1, y2, z1, z2) {
 			@Override
-			public int getX() {
-				final RelativeLocation r = getRelative();
-				return (int) r.getX();
+			public int x() {
+				final RelativeLocation r = relative();
+				return (int) r.x();
 			}
 
 			@Override
-			public int getZ() {
-				final RelativeLocation r = getRelative();
-				return (int) r.getY();
+			public int z() {
+				final RelativeLocation r = relative();
+				return (int) r.z();
 			}
 		});
 	}
@@ -57,19 +57,19 @@ public abstract class Actor extends Interactive implements Renderable, Nameable,
 		return null;
 	}
 
-	public abstract int getLevel();
+	public abstract int combatLevel();
 
-	public int getOrientation() {
+	public int orientation() {
 		final RSCharacter character = getAccessor();
 		return character != null ? (630 - character.getOrientation() * 45 / 2048) % 360 : 0;
 	}
 
-	public int getHeight() {
+	public int height() {
 		final RSCharacter character = getAccessor();
 		return character != null ? character.getHeight() : 0;
 	}
 
-	public int getAnimation() {
+	public int animation() {
 		final RSCharacter character = getAccessor();
 		if (character == null) {
 			return -1;
@@ -83,7 +83,7 @@ public abstract class Actor extends Interactive implements Renderable, Nameable,
 		return sequence.getID();
 	}
 
-	public int getStance() {
+	public int stance() {
 		final RSCharacter character = getAccessor();
 		if (character == null) {
 			return -1;
@@ -97,7 +97,7 @@ public abstract class Actor extends Interactive implements Renderable, Nameable,
 		return sequence.getID();
 	}
 
-	public int[] getAnimationQueue() {
+	public int[] animationQueue() {
 		final RSCharacter character = getAccessor();
 		if (character == null) {
 			return new int[0];
@@ -107,25 +107,25 @@ public abstract class Actor extends Interactive implements Renderable, Nameable,
 		return arr != null ? arr : new int[0];
 	}
 
-	public int getSpeed() {
+	public int speed() {
 		final RSCharacter character = getAccessor();
 		return character != null ? character.isMoving() : 0;
 	}
 
-	public boolean isInMotion() {
-		return getSpeed() != 0;
+	public boolean inMotion() {
+		return speed() != 0;
 	}
 
 	public static Filter<Actor> areInMotion() {
 		return new Filter<Actor>() {
 			@Override
 			public boolean accept(final Actor actor) {
-				return actor.isInMotion();
+				return actor.inMotion();
 			}
 		};
 	}
 
-	public String getMessage() {
+	public String overheadMessage() {
 		final RSCharacter character = getAccessor();
 		if (character == null) {
 			return "";
@@ -139,7 +139,7 @@ public abstract class Actor extends Interactive implements Renderable, Nameable,
 		return message;
 	}
 
-	public Actor getInteracting() {
+	public Actor interacting() {
 		final Actor nil = ctx.npcs.nil();
 		final RSCharacter character = getAccessor();
 		final int index = character != null ? character.getInteracting() : -1;
@@ -168,7 +168,7 @@ public abstract class Actor extends Interactive implements Renderable, Nameable,
 		}
 	}
 
-	public int getAdrenalineRatio() {
+	public int adrenalineRatio() {
 		if (!valid()) {
 			return -1;
 		}
@@ -179,7 +179,7 @@ public abstract class Actor extends Interactive implements Renderable, Nameable,
 		return data[0].getHPRatio();
 	}
 
-	public int getHealthRatio() {
+	public int healthRatio() {
 		if (!valid()) {
 			return -1;
 		}
@@ -190,7 +190,7 @@ public abstract class Actor extends Interactive implements Renderable, Nameable,
 		return data[1].getHPRatio();
 	}
 
-	public int getAdrenalinePercent() {
+	public int adrenalinePercent() {
 		if (!valid()) {
 			return -1;
 		}
@@ -201,7 +201,7 @@ public abstract class Actor extends Interactive implements Renderable, Nameable,
 		return toPercent(data[0].getHPRatio());
 	}
 
-	public int getHealthPercent() {
+	public int healthPercent() {
 		if (!valid()) {
 			return -1;
 		}
@@ -212,7 +212,7 @@ public abstract class Actor extends Interactive implements Renderable, Nameable,
 		return toPercent(data[1].getHPRatio());
 	}
 
-	public boolean isInCombat() {
+	public boolean inCombat() {
 		final Client client = ctx.client();
 		if (client == null) {
 			return false;
@@ -221,15 +221,15 @@ public abstract class Actor extends Interactive implements Renderable, Nameable,
 		return data != null && data[1] != null && data[1].getLoopCycleStatus() < client.getLoopCycle();
 	}
 
-	public boolean isIdle() {
-		return getAnimation() == -1 && !isInCombat() && !isInMotion() && !getInteracting().valid();
+	public boolean idle() {
+		return animation() == -1 && !inCombat() && !inMotion() && !interacting().valid();
 	}
 
 	public static Filter<Actor> areInCombat() {
 		return new Filter<Actor>() {
 			@Override
 			public boolean accept(final Actor actor) {
-				return actor.isInCombat();
+				return actor.inCombat();
 			}
 		};
 	}
@@ -237,14 +237,14 @@ public abstract class Actor extends Interactive implements Renderable, Nameable,
 	@Override
 	public Tile tile() {
 		final RSCharacter character = getAccessor();
-		final RelativeLocation position = getRelative();
+		final RelativeLocation position = relative();
 		if (character != null && position != RelativeLocation.NIL) {
-			return ctx.game.getMapBase().derive((int) position.getX() >> 9, (int) position.getY() >> 9, character.getPlane());
+			return ctx.game.mapOffset().derive((int) position.x() >> 9, (int) position.z() >> 9, character.getPlane());
 		}
 		return Tile.NIL;
 	}
 
-	public RelativeLocation getRelative() {
+	public RelativeLocation relative() {
 		final RSCharacter character = getAccessor();
 		final RSInteractableData data = character != null ? character.getData() : null;
 		final RSInteractableLocation location = data != null ? data.getLocation() : null;
@@ -263,17 +263,17 @@ public abstract class Actor extends Interactive implements Renderable, Nameable,
 
 		final Model model = model();
 		if (model != null) {
-			return model.getNextPoint();
+			return model.nextPoint();
 		}
 		final BoundingModel model2 = boundingModel.get();
 		if (model2 != null) {
-			return model2.getNextPoint();
+			return model2.nextPoint();
 		}
 		final TileCuboid cuboid = new TileCuboid(ctx, character);
 		return cuboid.nextPoint();
 	}
 
-	public Point getCenterPoint() {
+	public Point centerPoint() {
 		final RSCharacter character = getAccessor();
 		if (character == null) {
 			return new Point(-1, -1);
@@ -281,14 +281,14 @@ public abstract class Actor extends Interactive implements Renderable, Nameable,
 
 		final Model model = model();
 		if (model != null) {
-			return model.getCenterPoint();
+			return model.centerPoint();
 		}
 		final BoundingModel model2 = boundingModel.get();
 		if (model2 != null) {
-			return model2.getCenterPoint();
+			return model2.centerPoint();
 		}
 		final TileCuboid cuboid = new TileCuboid(ctx, character);
-		return cuboid.getCenterPoint();
+		return cuboid.centerPoint();
 	}
 
 	@Override
@@ -308,16 +308,6 @@ public abstract class Actor extends Interactive implements Renderable, Nameable,
 		}
 		final TileCuboid cuboid = new TileCuboid(ctx, character);
 		return cuboid.contains(point);
-	}
-
-	private Point getScreenPoint() {
-		final RSCharacter character = getAccessor();
-		final RSInteractableData data = character != null ? character.getData() : null;
-		final RSInteractableLocation location = data != null ? data.getLocation() : null;
-		if (location != null) {
-			return ctx.game.groundToScreen((int) location.getX(), (int) location.getY(), character.getPlane(), character.getHeight() / 2);
-		}
-		return new Point(-1, -1);
 	}
 
 	private LinkedListNode[] getBarNodes() {

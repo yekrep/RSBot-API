@@ -143,7 +143,7 @@ public abstract class GroundItemQuery<K extends Locatable & Identifiable & Namea
 		}
 		int count = 0;
 		for (final Stackable stackable : this) {
-			count += stackable.getStackSize();
+			count += stackable.stackSize();
 		}
 		return count;
 	}

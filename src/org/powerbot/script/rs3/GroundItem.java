@@ -34,17 +34,17 @@ public class GroundItem extends Interactive implements Renderable, Identifiable,
 	}
 
 	@Override
-	public void setBounds(final int x1, final int x2, final int y1, final int y2, final int z1, final int z2) {
+	public void bounds(final int x1, final int x2, final int y1, final int y2, final int z1, final int z2) {
 		boundingModel.set(new BoundingModel(ctx, x1, x2, y1, y2, z1, z2) {
 			@Override
-			public int getX() {
-				final Tile base = ctx.game.getMapBase();
+			public int x() {
+				final Tile base = ctx.game.mapOffset();
 				return ((tile.x() - base.x()) * 512) + 256;
 			}
 
 			@Override
-			public int getZ() {
-				final Tile base = ctx.game.getMapBase();
+			public int z() {
+				final Tile base = ctx.game.mapOffset();
 				return ((tile.y() - base.y()) * 512) + 256;
 			}
 		});
@@ -52,10 +52,10 @@ public class GroundItem extends Interactive implements Renderable, Identifiable,
 
 	@Override
 	public Model model() {
-		return getModel(-1);
+		return model(-1);
 	}
 
-	public Model getModel(final int p) {
+	public Model model(final int p) {
 		final Client client = ctx.client();
 		if (client == null || ctx.game.toolkit.gameMode != 0) {
 			return null;
@@ -118,7 +118,7 @@ public class GroundItem extends Interactive implements Renderable, Identifiable,
 	}
 
 	@Override
-	public int getStackSize() {
+	public int stackSize() {
 		final RSItem item = this.item.get();
 		return item != null ? item.getStackSize() : -1;
 	}
@@ -128,15 +128,15 @@ public class GroundItem extends Interactive implements Renderable, Identifiable,
 		return ItemDefinition.getDef(ctx, id()).getName();
 	}
 
-	public boolean isMembers() {
+	public boolean members() {
 		return ItemDefinition.getDef(ctx, id()).isMembers();
 	}
 
-	public String[] getActions() {
+	public String[] actions() {
 		return ItemDefinition.getDef(ctx, id()).getActions();
 	}
 
-	public String[] getGroundActions() {
+	public String[] groundActions() {
 		return ItemDefinition.getDef(ctx, id()).getGroundActions();
 	}
 
@@ -150,32 +150,32 @@ public class GroundItem extends Interactive implements Renderable, Identifiable,
 
 	@Override
 	public Point nextPoint() {
-		final Model model = getModel(id());
+		final Model model = model(id());
 		if (model != null) {
-			return model.getNextPoint();
+			return model.nextPoint();
 		}
 		final BoundingModel model2 = boundingModel.get();
 		if (model2 != null) {
-			return model2.getNextPoint();
+			return model2.nextPoint();
 		}
 		return new TileMatrix(ctx, tile).nextPoint();
 	}
 
-	public Point getCenterPoint() {
-		final Model model = getModel(id());
+	public Point centerPoint() {
+		final Model model = model(id());
 		if (model != null) {
-			return model.getCenterPoint();
+			return model.centerPoint();
 		}
 		final BoundingModel model2 = boundingModel.get();
 		if (model2 != null) {
-			return model2.getCenterPoint();
+			return model2.centerPoint();
 		}
-		return new TileMatrix(ctx, tile).getCenterPoint();
+		return new TileMatrix(ctx, tile).centerPoint();
 	}
 
 	@Override
 	public boolean contains(final Point point) {
-		final Model model = getModel(id());
+		final Model model = model(id());
 		if (model != null) {
 			return model.contains(point);
 		}
@@ -237,6 +237,6 @@ public class GroundItem extends Interactive implements Renderable, Identifiable,
 
 	@Override
 	public String toString() {
-		return GroundItem.class.getSimpleName() + "[id=" + id() + ",stacksize=" + getStackSize() + ",name=" + name() + "]";
+		return GroundItem.class.getSimpleName() + "[id=" + id() + ",stacksize=" + stackSize() + ",name=" + name() + "]";
 	}
 }

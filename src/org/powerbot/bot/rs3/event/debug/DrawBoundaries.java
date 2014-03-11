@@ -23,24 +23,24 @@ public class DrawBoundaries implements PaintListener {
 
 	@Override
 	public void repaint(final Graphics render) {
-		if (!ctx.game.isLoggedIn()) {
+		if (!ctx.game.loggedIn()) {
 			return;
 		}
 
 		final Client client = ctx.client();
-		final RelativeLocation r = ctx.players.local().getRelative();
-		final float rx = r.getX();
-		final float ry = r.getY();
-		final Component component = ctx.widgets.get(1465, 12);
-		final int w = component.getScrollWidth();
-		final int h = component.getScrollHeight();
+		final RelativeLocation r = ctx.players.local().relative();
+		final float rx = r.x();
+		final float ry = r.z();
+		final Component component = ctx.widgets.component(1465, 12);
+		final int w = component.scrollWidth();
+		final int h = component.scrollHeight();
 		final int radius = Math.max(w / 2, h / 2) + 10;
 
 		final Constants constants = ctx.constants.get();
 		final int v = constants != null ? constants.MINIMAP_SETTINGS_ON : -1;
 		final boolean f = client.getMinimapSettings() == v;
 
-		final double a = (ctx.camera.getYaw() * (Math.PI / 180d)) * 2607.5945876176133d;
+		final double a = (ctx.camera.yaw() * (Math.PI / 180d)) * 2607.5945876176133d;
 		int i = 0x3fff & (int) a;
 		if (!f) {
 			i = 0x3fff & client.getMinimapOffset() + (int) a;
@@ -52,13 +52,13 @@ public class DrawBoundaries implements PaintListener {
 			cos = 256 * cos / scale;
 		}
 
-		final CollisionMap map = ctx.movement.getCollisionMap();
-		final int mapWidth = map.getWidth() - 6;
-		final int mapHeight = map.getHeight() - 6;
+		final CollisionMap map = ctx.movement.collisionMap();
+		final int mapWidth = map.width() - 6;
+		final int mapHeight = map.height() - 6;
 		final Point[][] points = new Point[mapWidth][mapHeight];
 		for (int x = 0; x < mapWidth; ++x) {
 			for (int y = 0; y < mapHeight; ++y) {
-				Point p = map(x, y, rx, ry, w, h, radius, sin, cos, component.getAbsoluteLocation());
+				Point p = map(x, y, rx, ry, w, h, radius, sin, cos, component.screenPoint());
 				if (p.x == -1 || p.y == -1) {
 					p = null;
 				}
@@ -74,7 +74,7 @@ public class DrawBoundaries implements PaintListener {
 				final Point br = points[x + 1][y + 1];
 				final Point bl = points[x][y + 1];
 				if (tl != null && tr != null && br != null && bl != null) {
-					render.setColor(map.getFlagAt(x, y).contains(collisionFlag) ? new Color(255, 0, 0, 50) : new Color(0, 255, 0, 50));
+					render.setColor(map.flagAt(x, y).contains(collisionFlag) ? new Color(255, 0, 0, 50) : new Color(0, 255, 0, 50));
 					render.fillPolygon(new int[]{tl.x, tr.x, br.x, bl.x}, new int[]{tl.y, tr.y, br.y, bl.y}, 4);
 				}
 			}

@@ -17,36 +17,36 @@ public class DrawPlayers implements PaintListener {
 	}
 
 	public void repaint(final Graphics render) {
-		if (!ctx.game.isLoggedIn()) {
+		if (!ctx.game.loggedIn()) {
 			return;
 		}
 		final FontMetrics metrics = render.getFontMetrics();
 		for (final Player player : ctx.players.select()) {
-			final Point location = player.getCenterPoint();
+			final Point location = player.centerPoint();
 			if (location.x == -1 || location.y == -1) {
 				continue;
 			}
 			render.setColor(Color.RED);
 			render.fillRect((int) location.getX() - 1, (int) location.getY() - 1, 2, 2);
-			String s = player.name() + " (" + player.getLevel() + ")";
-			render.setColor(player.isInCombat() ? Color.RED : player.isInMotion() ? Color.GREEN : Color.WHITE);
+			String s = player.name() + " (" + player.combatLevel() + ")";
+			render.setColor(player.inCombat() ? Color.RED : player.inMotion() ? Color.GREEN : Color.WHITE);
 			render.drawString(s, location.x - metrics.stringWidth(s) / 2, location.y - metrics.getHeight() / 2);
-			final String msg = player.getMessage();
+			final String msg = player.overheadMessage();
 			boolean raised = false;
-			if (player.getAnimation() != -1 || player.getStance() != -1 || player.getNpcId() != -1) {
+			if (player.animation() != -1 || player.stance() != -1 || player.npcId() != -1) {
 				s = "";
 				s += "(";
-				if (player.getNpcId() != -1) {
-					s += "NPC: " + player.getNpcId() + " | ";
+				if (player.npcId() != -1) {
+					s += "NPC: " + player.npcId() + " | ";
 				}
-				if (player.getPrayerIcon() != -1) {
-					s += "P: " + player.getPrayerIcon() + " | ";
+				if (player.prayerIcon() != -1) {
+					s += "P: " + player.prayerIcon() + " | ";
 				}
-				if (player.getSkullIcon() != -1) {
-					s += "SK: " + player.getSkullIcon() + " | ";
+				if (player.skullIcon() != -1) {
+					s += "SK: " + player.skullIcon() + " | ";
 				}
-				if (player.getAnimation() != -1 || player.getStance() > 0) {
-					s += "A: " + player.getAnimation() + " | ST: " + player.getStance() + " | ";
+				if (player.animation() != -1 || player.stance() > 0) {
+					s += "A: " + player.animation() + " | ST: " + player.stance() + " | ";
 				}
 
 				s = s.substring(0, s.lastIndexOf(" | "));

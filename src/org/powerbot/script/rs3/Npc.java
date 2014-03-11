@@ -33,7 +33,7 @@ public class Npc extends Actor implements Identifiable {
 	}
 
 	@Override
-	public int getLevel() {
+	public int combatLevel() {
 		final RSNPC npc = getAccessor();
 		final RSNPCDef def;
 		return npc != null && (def = npc.getRSNPCDef()) != null ? def.getLevel() : -1;
@@ -46,13 +46,13 @@ public class Npc extends Actor implements Identifiable {
 		return npc != null && (def = npc.getRSNPCDef()) != null ? def.getID() : -1;
 	}
 
-	public String[] getActions() {
+	public String[] actions() {
 		final RSNPC npc = getAccessor();
 		final RSNPCDef def;
 		return npc != null && (def = npc.getRSNPCDef()) != null ? def.getActions() : new String[0];
 	}
 
-	public int getPrayerIcon() {
+	public int prayerIcon() {
 		final int[] a1 = getOverheadArray1();
 		final short[] a2 = getOverheadArray2();
 		final int len = a1.length;
@@ -155,6 +155,6 @@ public class Npc extends Actor implements Identifiable {
 
 	@Override
 	public String toString() {
-		return Npc.class.getSimpleName() + "[id=" + id() + ",name=" + name() + ",level=" + getLevel() + "]";
+		return Npc.class.getSimpleName() + "[id=" + id() + ",name=" + name() + ",level=" + combatLevel() + "]";
 	}
 }

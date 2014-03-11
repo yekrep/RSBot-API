@@ -29,7 +29,7 @@ public class Login extends PollingScript<ClientContext> implements InternalScrip
 			return false;
 		}
 
-		final int state = ctx.game.getClientState();
+		final int state = ctx.game.clientState();
 		return state == -1 || state == Game.INDEX_LOGIN_SCREEN ||
 				state == Game.INDEX_LOBBY_SCREEN ||
 				state == Game.INDEX_LOGGING_IN;
@@ -44,7 +44,7 @@ public class Login extends PollingScript<ClientContext> implements InternalScrip
 		priority.set(4);
 
 		final GameAccounts.Account account = GameAccounts.getInstance().get(ctx.property(LOGIN_USER_PROPERTY));
-		final int state = ctx.game.getClientState();
+		final int state = ctx.game.clientState();
 
 		if (state == Game.INDEX_LOBBY_SCREEN) {
 			int world = -1;
@@ -54,24 +54,24 @@ public class Login extends PollingScript<ClientContext> implements InternalScrip
 			} catch (final NumberFormatException ignored) {
 			}
 
-			final Component child = ctx.widgets.get(906, 517); // post email validation continue button
-			if (child.isVisible()) {
+			final Component child = ctx.widgets.component(906, 517); // post email validation continue button
+			if (child.visible()) {
 				child.click();
 				return;
 			}
 
 			if (world > 0) {
 				final Lobby.World world_wrapper;
-				if ((world_wrapper = ctx.lobby.getWorld(world)) != null) {
+				if ((world_wrapper = ctx.lobby.world(world)) != null) {
 					if (!ctx.lobby.enterGame(world_wrapper) && account != null) {
-						final Lobby.World[] worlds = ctx.lobby.getWorlds(new Filter<Lobby.World>() {
+						final Lobby.World[] worlds = ctx.lobby.worlds(new Filter<Lobby.World>() {
 							@Override
 							public boolean accept(final Lobby.World world) {
-								return world.isMembers() == account.member;
+								return world.members() == account.member;
 							}
 						});
 						if (worlds.length > 0) {
-							ctx.properties.put("login.world", Integer.toString(worlds[Random.nextInt(0, worlds.length)].getNumber()));
+							ctx.properties.put("login.world", Integer.toString(worlds[Random.nextInt(0, worlds.length)].number()));
 						}
 					}
 					return;
@@ -82,9 +82,9 @@ public class Login extends PollingScript<ClientContext> implements InternalScrip
 		}
 
 		if (account != null && (state == Game.INDEX_LOGIN_SCREEN || state == Game.INDEX_LOGGING_IN)) {
-			final Component error = ctx.widgets.get(WIDGET, WIDGET_LOGIN_ERROR);
-			if (error.isVisible()) {
-				final String pre = "scripts/0/login/", txt = error.getText().toLowerCase();
+			final Component error = ctx.widgets.component(WIDGET, WIDGET_LOGIN_ERROR);
+			if (error.visible()) {
+				final String pre = "scripts/0/login/", txt = error.text().toLowerCase();
 				boolean stop = false;
 
 				if (txt.contains("your ban will be lifted in")) {
@@ -102,7 +102,7 @@ public class Login extends PollingScript<ClientContext> implements InternalScrip
 					return;
 				}
 
-				ctx.widgets.get(WIDGET, WIDGET_LOGIN_TRY_AGAIN).click();
+				ctx.widgets.component(WIDGET, WIDGET_LOGIN_TRY_AGAIN).click();
 				return;
 			}
 
@@ -111,7 +111,7 @@ public class Login extends PollingScript<ClientContext> implements InternalScrip
 			String text;
 			text = getUsernameText();
 			if (!text.equalsIgnoreCase(username)) {
-				if (!clickLoginInterface(ctx.widgets.get(WIDGET, WIDGET_LOGIN_USERNAME_TEXT))) {
+				if (!clickLoginInterface(ctx.widgets.component(WIDGET, WIDGET_LOGIN_USERNAME_TEXT))) {
 					return;
 				}
 				try {
@@ -139,7 +139,7 @@ public class Login extends PollingScript<ClientContext> implements InternalScrip
 
 			text = getPasswordText();
 			if (text.length() != password.length()) {
-				if (!clickLoginInterface(ctx.widgets.get(WIDGET, WIDGET_LOGIN_PASSWORD_TEXT))) {
+				if (!clickLoginInterface(ctx.widgets.component(WIDGET, WIDGET_LOGIN_PASSWORD_TEXT))) {
 					return;
 				}
 				try {
@@ -171,7 +171,7 @@ public class Login extends PollingScript<ClientContext> implements InternalScrip
 		if (!i.valid()) {
 			return false;
 		}
-		final Rectangle pos = i.getBoundingRect();
+		final Rectangle pos = i.boundingRect();
 		if (pos.x == -1 || pos.y == -1 || pos.width == -1 || pos.height == -1) {
 			return false;
 		}
@@ -188,13 +188,13 @@ public class Login extends PollingScript<ClientContext> implements InternalScrip
 
 	private int getPasswordX(final Component a) {
 		int x = 0;
-		final Rectangle pos = a.getBoundingRect();
+		final Rectangle pos = a.boundingRect();
 		final int dx = (int) (pos.getWidth() - 4) / 2;
 		final int midx = (int) (pos.getMinX() + pos.getWidth() / 2);
 		if (pos.x == -1 || pos.y == -1 || pos.width == -1 || pos.height == -1) {
 			return 0;
 		}
-		for (int i = 0; i < ctx.widgets.get(WIDGET, WIDGET_LOGIN_PASSWORD_TEXT).getText().length(); i++) {
+		for (int i = 0; i < ctx.widgets.component(WIDGET, WIDGET_LOGIN_PASSWORD_TEXT).text().length(); i++) {
 			x += 11;
 		}
 		if (x > 44) {
@@ -205,10 +205,10 @@ public class Login extends PollingScript<ClientContext> implements InternalScrip
 	}
 
 	private String getUsernameText() {
-		return ctx.widgets.get(WIDGET, WIDGET_LOGIN_USERNAME_TEXT).getText().toLowerCase();
+		return ctx.widgets.component(WIDGET, WIDGET_LOGIN_USERNAME_TEXT).text().toLowerCase();
 	}
 
 	public String getPasswordText() {
-		return ctx.widgets.get(WIDGET, WIDGET_LOGIN_PASSWORD_TEXT).getText();
+		return ctx.widgets.component(WIDGET, WIDGET_LOGIN_PASSWORD_TEXT).text();
 	}
 }

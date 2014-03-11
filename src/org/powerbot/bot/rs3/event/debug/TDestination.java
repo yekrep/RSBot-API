@@ -16,7 +16,7 @@ public class TDestination implements TextPaintListener {
 	}
 
 	public int draw(int idx, final Graphics render) {
-		final Tile dest = ctx.movement.getDestination();
+		final Tile dest = ctx.movement.destination();
 		drawLine(render, idx++, "Destination: " + (dest != null ? dest.toString() : "null"));
 		return idx;
 	}

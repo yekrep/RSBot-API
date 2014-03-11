@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.powerbot.bot.rs3.tools.Items;
 
-public class Equipment extends ItemQuery<Item> {
+public class Equipment extends ItemQuery<Item> implements Displayable {
 	public static final int WIDGET = 1464;
 	public static final int COMPONENT_CONTAINER = 14;
 	public static final int WIDGET_GEAR = 1462;
@@ -17,7 +17,6 @@ public class Equipment extends ItemQuery<Item> {
 
 	/**
 	 * An enumeration of equipment slots.
-	 *
 	 */
 	public static enum Slot {
 		HEAD(0, 0),
@@ -57,10 +56,10 @@ public class Equipment extends ItemQuery<Item> {
 	protected List<Item> get() {
 		final List<Item> items = new ArrayList<Item>(28);
 		final int[][] data = ctx.items.getItems(Items.INDEX_EQUIPMENT);
-		final Component component = getComponent();
+		final Component component = component();
 		for (final Slot slot : Slot.values()) {
 			final int index = slot.getStorageIndex();
-			final Component c = component.getChild(slot.getComponentIndex());
+			final Component c = component.component(slot.getComponentIndex());
 			if (index < 0 || index >= data.length || data[index][0] == -1) {
 				continue;
 			}
@@ -75,10 +74,10 @@ public class Equipment extends ItemQuery<Item> {
 	 * @param slot the {@link Slot} to get the {@link Item} at
 	 * @return the {@link Item} in the provided slot
 	 */
-	public Item getItemAt(final Slot slot) {
+	public Item itemAt(final Slot slot) {
 		final int index = slot.getStorageIndex();
 		final int[][] data = ctx.items.getItems(Items.INDEX_EQUIPMENT);
-		final Component c = getComponent().getChild(slot.getComponentIndex());
+		final Component c = component().component(slot.getComponentIndex());
 		if (index >= data.length || data[index][0] == -1) {
 			return new Item(ctx, -1, -1, c);
 		}
@@ -90,9 +89,9 @@ public class Equipment extends ItemQuery<Item> {
 	 *
 	 * @return the {@link Component} of the equipment display
 	 */
-	public Component getComponent() {
-		final Component gear = ctx.widgets.get(WIDGET_GEAR, COMPONENT_GEAR_CONTAINER);
-		return gear.isVisible() ? gear : ctx.widgets.get(WIDGET, COMPONENT_CONTAINER);
+	public Component component() {
+		final Component gear = ctx.widgets.component(WIDGET_GEAR, COMPONENT_GEAR_CONTAINER);
+		return gear.visible() ? gear : ctx.widgets.component(WIDGET, COMPONENT_CONTAINER);
 	}
 
 	/**

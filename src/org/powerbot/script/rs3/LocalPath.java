@@ -21,11 +21,11 @@ public class LocalPath extends Path {
 
 	@Override
 	public boolean traverse(final EnumSet<TraversalOption> options) {
-		return isValid() && tilePath.traverse(options);
+		return valid() && tilePath.traverse(options);
 	}
 
 	@Override
-	public boolean isValid() {
+	public boolean valid() {
 		Tile end = destination.tile();
 		if (end == null || end == Tile.NIL) {
 			return false;
@@ -35,13 +35,13 @@ public class LocalPath extends Path {
 		}
 		tile = end;
 		Tile start = ctx.players.local().tile();
-		final Tile base = ctx.game.getMapBase();
+		final Tile base = ctx.game.mapOffset();
 		if (base == Tile.NIL || start == Tile.NIL || end == Tile.NIL) {
 			return false;
 		}
 		start = start.derive(-base.x(), -base.y());
 		end = end.derive(-base.x(), -base.y());
-		final Map.Node[] path = map.getPath(start.x(), start.y(), end.x(), end.y(), ctx.game.getPlane());
+		final Map.Node[] path = map.getPath(start.x(), start.y(), end.x(), end.y(), ctx.game.floor());
 		if (path.length > 0) {
 			final Tile[] arr = new Tile[path.length];
 			for (int i = 0; i < path.length; i++) {
@@ -54,17 +54,17 @@ public class LocalPath extends Path {
 	}
 
 	@Override
-	public Tile getNext() {
-		return isValid() ? tilePath.getNext() : Tile.NIL;
+	public Tile next() {
+		return valid() ? tilePath.next() : Tile.NIL;
 	}
 
 	@Override
-	public Tile getStart() {
+	public Tile start() {
 		return Tile.NIL;
 	}
 
 	@Override
-	public Tile getEnd() {
+	public Tile end() {
 		return destination.tile();
 	}
 }

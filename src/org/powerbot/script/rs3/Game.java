@@ -70,14 +70,14 @@ public class Game extends ClientAccessor {
 	 */
 	public boolean logout(final boolean lobby) {
 		if (ctx.hud.open(Hud.Menu.OPTIONS)) {
-			final Widget widget = ctx.widgets.get(1433);
+			final Widget widget = ctx.widgets.widget(1433);
 			if (Condition.wait(new Callable<Boolean>() {
 				@Override
 				public Boolean call() throws Exception {
 					return widget.valid();
 				}
 			}, 100, 10)) {
-				if (!widget.getComponent(lobby ? 12 : 13).interact("Select")) {
+				if (!widget.component(lobby ? 12 : 13).interact("Select")) {
 					return false;
 				}
 			}
@@ -85,7 +85,7 @@ public class Game extends ClientAccessor {
 		return Condition.wait(new Callable<Boolean>() {
 			@Override
 			public Boolean call() throws Exception {
-				return getClientState() == (lobby ? INDEX_LOBBY_SCREEN : INDEX_LOGIN_SCREEN);
+				return clientState() == (lobby ? INDEX_LOBBY_SCREEN : INDEX_LOGIN_SCREEN);
 			}
 		});
 	}
@@ -100,7 +100,7 @@ public class Game extends ClientAccessor {
 	 * @see Game#INDEX_MAP_LOADED
 	 * @see Game#INDEX_MAP_LOADING
 	 */
-	public int getClientState() {
+	public int clientState() {
 		final Client client = ctx.client();
 		final Constants constants = ctx.constants.get();
 		if (client == null || constants == null) {
@@ -126,8 +126,8 @@ public class Game extends ClientAccessor {
 	 *
 	 * @return <tt>true</tt> if logged in; otherwise <tt>false</tt>
 	 */
-	public boolean isLoggedIn() {
-		final int state = getClientState();
+	public boolean loggedIn() {
+		final int state = clientState();
 		return state == INDEX_MAP_LOADED || state == INDEX_MAP_LOADING;
 	}
 
@@ -136,7 +136,7 @@ public class Game extends ClientAccessor {
 	 *
 	 * @return the displayed {@link Crosshair}
 	 */
-	public Crosshair getCrosshair() {
+	public Crosshair crosshair() {
 		final Client client = ctx.client();
 		final int type = client != null ? client.getCrossHairType() : -1;
 		if (type < 0 || type > 2) {
@@ -150,7 +150,7 @@ public class Game extends ClientAccessor {
 	 *
 	 * @return the {@link Tile} of the base
 	 */
-	public Tile getMapBase() {
+	public Tile mapOffset() {
 		final Client client = ctx.client();
 		if (client == null) {
 			return Tile.NIL;
@@ -166,7 +166,7 @@ public class Game extends ClientAccessor {
 	 *
 	 * @return the current floor level
 	 */
-	public int getPlane() {
+	public int floor() {
 		final Client client = ctx.client();
 		if (client == null) {
 			return -1;
@@ -179,7 +179,7 @@ public class Game extends ClientAccessor {
 	 *
 	 * @return the {@link Dimension}s of the game space
 	 */
-	public Dimension getDimensions() {
+	public Dimension dimensions() {
 		final Client client = ctx.client();
 		final Canvas canvas;
 		if (client == null || (canvas = client.getCanvas()) == null) {
@@ -194,8 +194,8 @@ public class Game extends ClientAccessor {
 	 * @param point the point to check
 	 * @return <tt>true</tt> if the point is in the viewport; otherwise <tt>false</tt>
 	 */
-	public boolean isPointInViewport(final Point point) {
-		return isPointInViewport(point.x, point.y);
+	public boolean inViewport(final Point point) {
+		return inViewport(point.x, point.y);
 	}
 
 	/**
@@ -205,11 +205,11 @@ public class Game extends ClientAccessor {
 	 * @param y the y-coordinate
 	 * @return <tt>true</tt> if the point is in the viewport; otherwise <tt>false</tt>
 	 */
-	public boolean isPointInViewport(final int x, final int y) {
-		final Dimension dimension = getDimensions();
+	public boolean inViewport(final int x, final int y) {
+		final Dimension dimension = dimensions();
 		if (x > 0 && y > 0) {
-			if (isLoggedIn()) {
-				final Rectangle[] rectangles = ctx.hud.getBounds();
+			if (loggedIn()) {
+				final Rectangle[] rectangles = ctx.hud.bounds();
 				for (final Rectangle rectangle : rectangles) {
 					if (rectangle.contains(x, y)) {
 						return false;
@@ -318,7 +318,7 @@ public class Game extends ClientAccessor {
 	public Point tileToMap(final Locatable locatable) {
 		final Point bad = new Point(-1, -1);
 		final Client client = ctx.client();
-		final Tile b = ctx.game.getMapBase();
+		final Tile b = ctx.game.mapOffset();
 		final Tile t = locatable.tile().derive(-b.x(), -b.y());
 		final int tx = t.x();
 		final int ty = t.y();
@@ -326,14 +326,14 @@ public class Game extends ClientAccessor {
 			return bad;
 		}
 
-		final RelativeLocation r = ctx.players.local().getRelative();
-		final float offX = (tx * 4 - r.getX() / 128) + 2;
-		final float offY = (ty * 4 - r.getY() / 128) + 2;
+		final RelativeLocation r = ctx.players.local().relative();
+		final float offX = (tx * 4 - r.x() / 128) + 2;
+		final float offY = (ty * 4 - r.z() / 128) + 2;
 		final int d = (int) Math.round(Math.sqrt(Math.pow(offX, 2) + Math.pow(offY, 2)));
 
-		final Component component = ctx.widgets.get(1465, 12);
-		final int w = component.getScrollWidth();
-		final int h = component.getScrollHeight();
+		final Component component = ctx.widgets.component(1465, 12);
+		final int w = component.scrollWidth();
+		final int h = component.scrollHeight();
 		final int radius = Math.max(w / 2, h / 2) + 10;
 		if (d >= radius) {
 			return bad;
@@ -343,7 +343,7 @@ public class Game extends ClientAccessor {
 		final int v = constants != null ? constants.MINIMAP_SETTINGS_ON : -1;
 		final boolean f = client.getMinimapSettings() == v;
 
-		final double a = (ctx.camera.getYaw() * (Math.PI / 180d)) * 2607.5945876176133d;
+		final double a = (ctx.camera.yaw() * (Math.PI / 180d)) * 2607.5945876176133d;
 		int i = 0x3fff & (int) a;
 		if (!f) {
 			i = 0x3fff & client.getMinimapOffset() + (int) a;
@@ -363,13 +363,13 @@ public class Game extends ClientAccessor {
 
 		if (rotX > 4 && rotX < w - 4 &&
 				rotY > 4 && rotY < h - 4) {
-			final Point basePoint = component.getAbsoluteLocation();
+			final Point basePoint = component.screenPoint();
 			final int sX = rotX + (int) basePoint.getX();
 			final int sY = rotY + (int) basePoint.getY();
 			final Point p = new Point(sX, sY);
 			final Rectangle rbuffer = new Rectangle(p.x - 6, p.y - 6, 12, 12);//entire tile and a half sized 'buffer' area
 			for (int pos = 17; pos <= 21; pos++) {
-				if (ctx.widgets.get(1465, pos).getViewportRect().intersects(rbuffer)) {
+				if (ctx.widgets.component(1465, pos).viewportRect().intersects(rbuffer)) {
 					return bad;
 				}
 			}

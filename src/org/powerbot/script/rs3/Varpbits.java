@@ -4,11 +4,11 @@ import org.powerbot.bot.rs3.client.Client;
 import org.powerbot.bot.rs3.client.PlayerMetaInfo;
 
 /**
- * {@link Settings} is a utility which provides raw access to the game's varpbits.
+ * {@link Varpbits} is a utility which provides raw access to the game's varpbits.
  *
  */
-public class Settings extends ClientAccessor {
-	public Settings(final ClientContext factory) {
+public class Varpbits extends ClientAccessor {
+	public Varpbits(final ClientContext factory) {
 		super(factory);
 	}
 
@@ -17,7 +17,7 @@ public class Settings extends ClientAccessor {
 	 *
 	 * @return an array of the game's settings
 	 */
-	public int[] getArray() {
+	public int[] array() {
 		final Client client = ctx.client();
 		final PlayerMetaInfo info;
 		if (client == null || (info = client.getPlayerMetaInfo()) == null) {
@@ -37,8 +37,8 @@ public class Settings extends ClientAccessor {
 	 * @param index the index of the setting
 	 * @return the setting for the specified index
 	 */
-	public int get(final int index) {
-		final int[] arr = getArray();
+	public int varpbit(final int index) {
+		final int[] arr = array();
 		return index < arr.length ? arr[index] : -1;
 	}
 
@@ -49,8 +49,8 @@ public class Settings extends ClientAccessor {
 	 * @param mask  the bitmask
 	 * @return the masked value
 	 */
-	public int get(final int index, final int mask) {
-		return get(index, 0, mask);
+	public int varpbit(final int index, final int mask) {
+		return varpbit(index, 0, mask);
 	}
 
 	/**
@@ -61,7 +61,7 @@ public class Settings extends ClientAccessor {
 	 * @param mask  the bitmask
 	 * @return the masked value
 	 */
-	public int get(final int index, final int shift, final int mask) {
-		return (get(index) >>> shift) & mask;
+	public int varpbit(final int index, final int shift, final int mask) {
+		return (varpbit(index) >>> shift) & mask;
 	}
 }

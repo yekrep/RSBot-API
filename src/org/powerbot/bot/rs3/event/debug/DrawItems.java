@@ -20,56 +20,56 @@ public class DrawItems implements PaintListener {
 	}
 
 	public void repaint(final Graphics render) {
-		if (!ctx.game.isLoggedIn()) {
+		if (!ctx.game.loggedIn()) {
 			return;
 		}
 
 		render.setFont(new Font("Arial", 0, 10));
 		render.setColor(Color.green);
 
-		if (ctx.bank.isOpen()) {
-			final Component container = ctx.widgets.get(Bank.WIDGET, Bank.COMPONENT_CONTAINER_ITEMS);
-			final Rectangle r = container.getViewportRect();
+		if (ctx.bank.displayed()) {
+			final Component container = ctx.widgets.component(Bank.WIDGET, Bank.COMPONENT_CONTAINER_ITEMS);
+			final Rectangle r = container.viewportRect();
 			if (r != null) {
 				for (final Item item : ctx.bank.select()) {
-					final Component c = item.getComponent();
+					final Component c = item.component();
 					if (c == null) {
 						continue;
 					}
-					final Rectangle r2 = c.getBoundingRect();
+					final Rectangle r2 = c.boundingRect();
 					if (r2 == null) {
 						continue;
 					}
-					if (c.getRelativeLocation().y == 0 || !r.contains(r2)) {
+					if (c.relativePoint().y == 0 || !r.contains(r2)) {
 						continue;
 					}
-					final Point p = c.getAbsoluteLocation();
-					render.drawString(c.getItemId() + "", p.x, p.y + c.getHeight());
+					final Point p = c.screenPoint();
+					render.drawString(c.itemId() + "", p.x, p.y + c.height());
 				}
 			}
 		}
 
-		if (ctx.backpack.getComponent().isVisible()) {
+		if (ctx.backpack.component().visible()) {
 			for (final Item item : ctx.backpack.select()) {
-				final Component c = item.getComponent();
+				final Component c = item.component();
 				if (c == null) {
 					continue;
 				}
-				final Point p = c.getAbsoluteLocation();
-				render.drawString(c.getItemId() + "", p.x, p.y + c.getHeight());
+				final Point p = c.screenPoint();
+				render.drawString(c.itemId() + "", p.x, p.y + c.height());
 			}
 		}
-		if (ctx.equipment.getComponent().isVisible()) {
+		if (ctx.equipment.component().visible()) {
 			for (final Item item : ctx.equipment.select()) {
 				if (item == null) {
 					continue;
 				}
-				final Component c = item.getComponent();
+				final Component c = item.component();
 				if (c == null) {
 					continue;
 				}
-				final Point p = c.getAbsoluteLocation();
-				render.drawString(c.getItemId() + "", p.x, p.y + c.getHeight());
+				final Point p = c.screenPoint();
+				render.drawString(c.itemId() + "", p.x, p.y + c.height());
 			}
 		}
 	}

@@ -36,7 +36,7 @@ public class GroundItems extends GroundItemQuery<GroundItem> {
 		long id;
 		NodeListCache cache;
 
-		final Tile base = ctx.game.getMapBase();
+		final Tile base = ctx.game.mapOffset();
 		if (base == null) {
 			return items;
 		}

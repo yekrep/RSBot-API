@@ -98,7 +98,7 @@ class BotWidgetExplorer extends JFrame implements PaintListener {
 					infoArea.removeAll();
 					Component c = null;
 					if (node instanceof ComponentWrapper) {
-						highlightArea = ((ComponentWrapper) node).get().getViewportRect();
+						highlightArea = ((ComponentWrapper) node).get().viewportRect();
 						c = ((ComponentWrapper) node).get();
 					}
 					if (c == null) {
@@ -106,35 +106,35 @@ class BotWidgetExplorer extends JFrame implements PaintListener {
 					}
 					addInfo("Index: ", Integer.toString(c.getIndex()));
 					addInfo("Validated: ", Boolean.toString(c.valid()));
-					addInfo("Visible: ", Boolean.toString(c.isVisible()));
-					addInfo("Absolute location: ", c.getAbsoluteLocation().toString());
-					addInfo("Relative location: ", c.getRelativeLocation().toString());
-					addInfo("Width: ", Integer.toString(c.getWidth()));
-					addInfo("Height: ", Integer.toString(c.getHeight()));
-					addInfo("Id: ", Integer.toString(c.getId()));
-					addInfo("Type: ", Integer.toString(c.getType()));
-					addInfo("Special type: ", Integer.toString(c.getContentType()));
-					addInfo("Child id: ", Integer.toString(c.getItemId()));
-					addInfo("Child index: ", Integer.toString(c.getItemIndex()));
-					addInfo("Texture id: ", Integer.toString(c.getTextureId()));
-					addInfo("Text: ", c.getText());
-					addInfo("Text color: ", Integer.toString(c.getTextColor()));
-					addInfo("Shadow color: ", Integer.toString(c.getShadowColor()));
-					addInfo("Tooltip: ", c.getTooltip());
-					addInfo("Border thickness: ", Integer.toString(c.getBorderThickness()));
-					addInfo("Selected action: ", c.getSelectedAction());
-					addInfo("Model id: ", Integer.toString(c.getModelId()));
-					addInfo("Model type: ", Integer.toString(c.getModelType()));
-					addInfo("Model zoom: ", Integer.toString(c.getModelZoom()));
-					addInfo("Inventory: ", Boolean.toString(c.isInventory()));
-					addInfo("Child stack size: ", Integer.toString(c.getItemStackSize()));
-					addInfo("Parent id: ", Integer.toString(c.getParentId()));
-					addInfo("getHorizontalScrollPosition: ", Integer.toString(c.getScrollX()));
-					addInfo("getVerticalScrollPosition: ", Integer.toString(c.getScrollY()));
-					addInfo("getScrollableContentWidth: ", Integer.toString(c.getMaxHorizontalScroll()));
-					addInfo("getScrollableContentHeight: ", Integer.toString(c.getMaxVerticalScroll()));
-					addInfo("getHorizontalScrollThumbSize: ", Integer.toString(c.getScrollWidth()));
-					addInfo("getVerticalScrollThumbSize: ", Integer.toString(c.getScrollHeight()));
+					addInfo("Visible: ", Boolean.toString(c.visible()));
+					addInfo("Absolute location: ", c.screenPoint().toString());
+					addInfo("Relative location: ", c.relativePoint().toString());
+					addInfo("Width: ", Integer.toString(c.width()));
+					addInfo("Height: ", Integer.toString(c.height()));
+					addInfo("Id: ", Integer.toString(c.id()));
+					addInfo("Type: ", Integer.toString(c.type()));
+					addInfo("Special type: ", Integer.toString(c.contentType()));
+					addInfo("Child id: ", Integer.toString(c.itemId()));
+					addInfo("Child index: ", Integer.toString(c.itemIndex()));
+					addInfo("Texture id: ", Integer.toString(c.textureId()));
+					addInfo("Text: ", c.text());
+					addInfo("Text color: ", Integer.toString(c.textColor()));
+					addInfo("Shadow color: ", Integer.toString(c.shadowColor()));
+					addInfo("Tooltip: ", c.tooltip());
+					addInfo("Border thickness: ", Integer.toString(c.borderThickness()));
+					addInfo("Selected action: ", c.selectedAction());
+					addInfo("Model id: ", Integer.toString(c.modelId()));
+					addInfo("Model type: ", Integer.toString(c.modelType()));
+					addInfo("Model zoom: ", Integer.toString(c.modelZoom()));
+					addInfo("Inventory: ", Boolean.toString(c.inventory()));
+					addInfo("Child stack size: ", Integer.toString(c.itemStackSize()));
+					addInfo("Parent id: ", Integer.toString(c.parentId()));
+					addInfo("getHorizontalScrollPosition: ", Integer.toString(c.scrollX()));
+					addInfo("getVerticalScrollPosition: ", Integer.toString(c.scrollY()));
+					addInfo("getScrollableContentWidth: ", Integer.toString(c.scrollWidthMax()));
+					addInfo("getScrollableContentHeight: ", Integer.toString(c.scrollHeightMax()));
+					addInfo("getHorizontalScrollThumbSize: ", Integer.toString(c.scrollWidth()));
+					addInfo("getVerticalScrollThumbSize: ", Integer.toString(c.scrollHeight()));
 					infoArea.validate();
 					infoArea.repaint();
 				} catch (final Exception ignored) {
@@ -229,9 +229,9 @@ class BotWidgetExplorer extends JFrame implements PaintListener {
 			if (parent == root) {
 				return widgetWrappers.get(index);
 			} else if (parent instanceof WidgetWrapper) {
-				return new ComponentWrapper(((WidgetWrapper) parent).get().getComponents()[index]);
+				return new ComponentWrapper(((WidgetWrapper) parent).get().components()[index]);
 			} else if (parent instanceof ComponentWrapper) {
-				return new ComponentWrapper(((ComponentWrapper) parent).get().getChildren()[index]);
+				return new ComponentWrapper(((ComponentWrapper) parent).get().children()[index]);
 			}
 			return null;
 		}
@@ -240,15 +240,15 @@ class BotWidgetExplorer extends JFrame implements PaintListener {
 			if (parent == root) {
 				return widgetWrappers.size();
 			} else if (parent instanceof WidgetWrapper) {
-				return ((WidgetWrapper) parent).get().getComponents().length;
+				return ((WidgetWrapper) parent).get().components().length;
 			} else if (parent instanceof ComponentWrapper) {
-				return ((ComponentWrapper) parent).get().getChildren().length;
+				return ((ComponentWrapper) parent).get().children().length;
 			}
 			return 0;
 		}
 
 		public boolean isLeaf(final Object node) {
-			return node instanceof ComponentWrapper && ((ComponentWrapper) node).get().getChildren().length == 0;
+			return node instanceof ComponentWrapper && ((ComponentWrapper) node).get().children().length == 0;
 		}
 
 		public void valueForPathChanged(final TreePath path, final Object newValue) {
@@ -258,9 +258,9 @@ class BotWidgetExplorer extends JFrame implements PaintListener {
 			if (parent == root) {
 				return widgetWrappers.indexOf(child);
 			} else if (parent instanceof WidgetWrapper) {
-				return Arrays.asList(((WidgetWrapper) parent).get().getComponents()).indexOf(((ComponentWrapper) child).get());
+				return Arrays.asList(((WidgetWrapper) parent).get().components()).indexOf(((ComponentWrapper) child).get());
 			} else if (parent instanceof ComponentWrapper) {
-				return Arrays.asList(((ComponentWrapper) parent).get().getChildren()).indexOf(((ComponentWrapper) child).get());
+				return Arrays.asList(((ComponentWrapper) parent).get().children()).indexOf(((ComponentWrapper) child).get());
 			}
 			return -1;
 		}
@@ -283,14 +283,14 @@ class BotWidgetExplorer extends JFrame implements PaintListener {
 		public void update(final String search) {
 			widgetWrappers.clear();
 			final Widget[] loaded;
-			for (final Widget widget : loaded = ((ClientContext) chrome.bot.get().ctx()).widgets.getLoaded()) {
+			for (final Widget widget : loaded = ((ClientContext) chrome.bot.get().ctx()).widgets.array()) {
 				children:
-				for (final Component Component : widget.getComponents()) {
+				for (final Component Component : widget.components()) {
 					if (search(Component, search)) {
 						widgetWrappers.add(new WidgetWrapper(widget));
 						break;
 					}
-					for (final Component widgetSubChild : Component.getChildren()) {
+					for (final Component widgetSubChild : Component.children()) {
 						if (search(widgetSubChild, search)) {
 							widgetWrappers.add(new WidgetWrapper(widget));
 							break children;
@@ -301,11 +301,11 @@ class BotWidgetExplorer extends JFrame implements PaintListener {
 			list.clear();
 			if (search != null && !search.isEmpty()) {
 				for (final Widget widget : loaded) {
-					for (final Component child : widget.getComponents()) {
+					for (final Component child : widget.components()) {
 						if (search(child, search)) {
 							list.add(child);
 						}
-						for (final Component child2 : child.getChildren()) {
+						for (final Component child2 : child.children()) {
 							if (search(child2, search)) {
 								list.add(child2);
 							}
@@ -318,7 +318,7 @@ class BotWidgetExplorer extends JFrame implements PaintListener {
 
 		private boolean search(final Component child, final String string) {
 			try {
-				return child.getText().toLowerCase().contains(string.toLowerCase());
+				return child.text().toLowerCase().contains(string.toLowerCase());
 			} catch (final NullPointerException ignored) {
 				return false;
 			}
@@ -343,7 +343,7 @@ class BotWidgetExplorer extends JFrame implements PaintListener {
 
 		@Override
 		public String toString() {
-			return "Widget-" + widget.getIndex();
+			return "Widget-" + widget.index();
 		}
 	}
 

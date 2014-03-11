@@ -27,7 +27,7 @@ public class DrawObjects implements PaintListener {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void repaint(final Graphics render) {
-		if (!ctx.game.isLoggedIn()) {
+		if (!ctx.game.loggedIn()) {
 			return;
 		}
 		final Player player = ctx.players.local();
@@ -36,20 +36,20 @@ public class DrawObjects implements PaintListener {
 		}
 		final FontMetrics metrics = render.getFontMetrics();
 		final int textHeight = metrics.getHeight();
-		final Tile base = ctx.game.getMapBase();
+		final Tile base = ctx.game.mapOffset();
 		for (final GameObject object : ctx.objects.select().within(25)) {
 			final Tile t = object.tile();
 			if (t == null) {
 				continue;
 			}
 
-			Point p = new TileMatrix(ctx, t).getCenterPoint();
+			Point p = new TileMatrix(ctx, t).centerPoint();
 			if (p.x == -1) {
 				continue;
 			}
 
 			final Point p2 = p;
-			p = object.getCenterPoint();
+			p = object.centerPoint();
 			if (p.x == -1) {
 				continue;
 			}
@@ -91,7 +91,7 @@ public class DrawObjects implements PaintListener {
 			final String s = "" + object.id();
 			final int ty = p.y - textHeight / 2;
 			final int tx = p.x - metrics.stringWidth(s) / 2;
-			render.setColor(C[object.getType().ordinal()]);
+			render.setColor(C[object.type().ordinal()]);
 			render.drawString(s, tx, ty);
 		}
 	}

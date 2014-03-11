@@ -49,14 +49,14 @@ public class Projectile extends ClientAccessor implements Locatable, Identifiabl
 	@Override
 	public Tile tile() {
 		final RSProjectile projectile = this.projectile.get();
-		final RelativeLocation position = getRelative();
+		final RelativeLocation position = relative();
 		if (projectile != null && position != RelativeLocation.NIL) {
-			return ctx.game.getMapBase().derive((int) position.getX() >> 9, (int) position.getY() >> 9, projectile.getPlane());
+			return ctx.game.mapOffset().derive((int) position.x() >> 9, (int) position.z() >> 9, projectile.getPlane());
 		}
 		return Tile.NIL;
 	}
 
-	public RelativeLocation getRelative() {
+	public RelativeLocation relative() {
 		final RSProjectile projectile = this.projectile.get();
 		final RSInteractableData data = projectile != null ? projectile.getData() : null;
 		final RSInteractableLocation location = data != null ? data.getLocation() : null;

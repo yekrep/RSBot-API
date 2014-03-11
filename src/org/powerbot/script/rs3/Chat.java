@@ -21,7 +21,7 @@ public class Chat extends TextQuery<ChatOption> {
 	public List<ChatOption> get() {
 		final List<ChatOption> options = new ArrayList<ChatOption>(5);
 		for (int i = 0; i < 5; i++) {
-			final Component component = ctx.widgets.get(WIDGET, COMPONENT_CHAT_OPTIONS[i]);
+			final Component component = ctx.widgets.component(WIDGET, COMPONENT_CHAT_OPTIONS[i]);
 			if (!component.valid()) {
 				continue;
 			}
@@ -38,12 +38,12 @@ public class Chat extends TextQuery<ChatOption> {
 		return new ChatOption(ctx, -1, null);
 	}
 
-	public boolean isChatting() {
-		if (ctx.widgets.get(WIDGET, 0).valid()) {
+	public boolean chatting() {
+		if (ctx.widgets.component(WIDGET, 0).valid()) {
 			return true;
 		}
 		for (final int[] arr : WIDGET_CONTINUE) {
-			if (ctx.widgets.get(arr[0], 0).valid()) {
+			if (ctx.widgets.component(arr[0], 0).valid()) {
 				return true;
 			}
 		}
@@ -55,7 +55,7 @@ public class Chat extends TextQuery<ChatOption> {
 	 *
 	 * @return <tt>true</tt> if the chat is continuable; otherwise <tt>false</tt>
 	 */
-	public boolean isContinue() {
+	public boolean queryContinue() {
 		return getContinue() != null;
 	}
 
@@ -81,7 +81,7 @@ public class Chat extends TextQuery<ChatOption> {
 
 	private Component getContinue() {
 		for (final int[] a : WIDGET_CONTINUE) {
-			final Component c = ctx.widgets.get(a[0], a[1]);
+			final Component c = ctx.widgets.component(a[0], a[1]);
 			if (!c.valid()) {
 				continue;
 			}

@@ -48,11 +48,11 @@ public class Hud extends ClientAccessor {
 			this.windows = windows;
 		}
 
-		public int getTexture() {
+		public int texture() {
 			return texture;
 		}
 
-		public Window[] getWindows() {
+		public Window[] windows() {
 			return windows;
 		}
 	}
@@ -105,23 +105,23 @@ public class Hud extends ClientAccessor {
 			this.component = component;
 		}
 
-		public Menu getMenu() {
+		public Menu menu() {
 			return menu;
 		}
 
-		public int getTexture() {
+		public int texture() {
 			return texture;
 		}
 
-		public int getMiniTexture() {
+		public int miniTexture() {
 			return miniTexture;
 		}
 
-		public int getWidget() {
+		public int widget() {
 			return widget;
 		}
 
-		private int getComponent() {
+		private int component() {
 			return component;
 		}
 	}
@@ -131,7 +131,7 @@ public class Hud extends ClientAccessor {
 	 *
 	 * @return an array of HUD bounds
 	 */
-	public Rectangle[] getBounds() {
+	public Rectangle[] bounds() {
 		if (TimeUnit.MILLISECONDS.convert(System.nanoTime() - cachedTime, TimeUnit.NANOSECONDS) < 1000) {
 			if (boundsCache != null) {
 				return boundsCache;
@@ -141,22 +141,22 @@ public class Hud extends ClientAccessor {
 		final int[][] indexArr = {{1484, 1}, {1189, 6}, {1184, 1}, {1490, 10}};
 		final Rectangle[] arr = new Rectangle[Window.values().length + 2 + indexArr.length];
 		int index = 0;
-		arr[index++] = ctx.widgets.get(WIDGET_MENU, WIDGET_MENU_BOUNDS).getViewportRect();//TODO: auto detect
-		arr[index++] = ctx.widgets.get(CombatBar.WIDGET, CombatBar.COMPONENT_BOUNDS).getViewportRect();
+		arr[index++] = ctx.widgets.component(WIDGET_MENU, WIDGET_MENU_BOUNDS).viewportRect();//TODO: auto detect
+		arr[index++] = ctx.widgets.component(CombatBar.WIDGET, CombatBar.COMPONENT_BOUNDS).viewportRect();
 		//subscribe, chat, chat
 		for (final int[] pair : indexArr) {
-			final Component c = ctx.widgets.get(pair[0], pair[1]);
-			if (!c.isVisible()) {
+			final Component c = ctx.widgets.component(pair[0], pair[1]);
+			if (!c.visible()) {
 				continue;
 			}
-			arr[index++] = c.getViewportRect();
+			arr[index++] = c.viewportRect();
 		}
 		for (final Window window : Window.values()) {
 			final Component sprite = getSprite(window);
 			if (sprite == null) {
 				continue;
 			}
-			arr[index++] = sprite.getParent().getViewportRect();
+			arr[index++] = sprite.parent().viewportRect();
 		}
 		cachedTime = System.nanoTime();
 		for (final Rectangle r : arr) {
@@ -188,7 +188,7 @@ public class Hud extends ClientAccessor {
 	 * @return <tt>true</tt> if the window is visible; otherwise <tt>false</tt>
 	 */
 	public boolean isVisible(final Window window) {
-		return ctx.widgets.get(window.getWidget(), window.getComponent()).isVisible();
+		return ctx.widgets.component(window.widget(), window.component()).visible();
 	}
 
 	/**
@@ -213,28 +213,28 @@ public class Hud extends ClientAccessor {
 		if (window == null) {
 			return false;
 		}
-		if (isViewable(window) || window.getMenu() == Menu.NONE) {
+		if (isViewable(window) || window.menu() == Menu.NONE) {
 			return true;
 		}
-		if (window.getMenu() == Menu.OTHER) {
+		if (window.menu() == Menu.OTHER) {
 			return false;
 		}
-		final Component menu = getMenu(window.getMenu());
+		final Component menu = getMenu(window.menu());
 		if (menu != null && (getToggle(window) != null || menu.hover())) {
-			final Component list = ctx.widgets.get(WIDGET_MENU_WINDOWS, COMPONENT_MENU_WINDOWS_LIST);
+			final Component list = ctx.widgets.component(WIDGET_MENU_WINDOWS, COMPONENT_MENU_WINDOWS_LIST);
 			if (list == null) {
 				return false;
 			}
 			Condition.wait(new Callable<Boolean>() {
 				@Override
 				public Boolean call() throws Exception {
-					return list.isVisible();
+					return list.visible();
 				}
 			}, 100, 20);
 			Random.sleep();
 			final Component toggle = getToggle(window);
 			if (toggle != null && toggle.hover()) {
-				if (toggle.isVisible() && ctx.mouse.click(true)) {
+				if (toggle.visible() && ctx.mouse.click(true)) {
 					return Condition.wait(new Callable<Boolean>() {
 						@Override
 						public Boolean call() throws Exception {
@@ -279,7 +279,7 @@ public class Hud extends ClientAccessor {
 	 * @return <tt>true</tt> if the {@link Window} was closed; otherwise <tt>false</tt>
 	 */
 	public boolean close(final Window window) {
-		if (window.getMenu() == Menu.NONE) {
+		if (window.menu() == Menu.NONE) {
 			return false;
 		}
 		if (!isOpen(window)) {
@@ -287,7 +287,7 @@ public class Hud extends ClientAccessor {
 		}
 		if (view(window)) {
 			final Component sprite = getSprite(window);
-			if (sprite != null && sprite.getWidget().getComponent(sprite.getParent().getIndex() + 1).getChild(1).interact("Close")) {
+			if (sprite != null && sprite.widget().component(sprite.parent().getIndex() + 1).component(1).interact("Close")) {
 				return Condition.wait(new Callable<Boolean>() {
 					@Override
 					public Boolean call() throws Exception {
@@ -299,10 +299,10 @@ public class Hud extends ClientAccessor {
 		return !isOpen(window);
 	}
 
-	public FloatingMessage getFloatingMessage() {
-		final Component c = ctx.widgets.get(1177, 0);
-		final Component type = c.getChild(0), text = c.getChild(9);
-		return new FloatingMessage(text.getText(), type.getTextureId());
+	public FloatingMessage floatingMessage() {
+		final Component c = ctx.widgets.component(1177, 0);
+		final Component type = c.component(0), text = c.component(9);
+		return new FloatingMessage(text.text(), type.textureId());
 	}
 
 	private boolean isViewable(final Window window) {
@@ -310,16 +310,16 @@ public class Hud extends ClientAccessor {
 			return false;
 		}
 		final Component tab = getTab(window);
-		return tab != null && tab.getParent().getViewportRect().contains(tab.getViewportRect());
+		return tab != null && tab.parent().viewportRect().contains(tab.viewportRect());
 	}
 
 	private Component getToggle(final Window window) {
 		if (window == null) {
 			return null;
 		}
-		final int texture = window.getMiniTexture();
-		for (final Component sub : ctx.widgets.get(WIDGET_MENU_WINDOWS, COMPONENT_MENU_WINDOWS_LIST).getChildren()) {
-			if (sub.getTextureId() == texture && sub.isVisible()) {
+		final int texture = window.miniTexture();
+		for (final Component sub : ctx.widgets.component(WIDGET_MENU_WINDOWS, COMPONENT_MENU_WINDOWS_LIST).children()) {
+			if (sub.textureId() == texture && sub.visible()) {
 				return sub;
 			}
 		}
@@ -330,9 +330,9 @@ public class Hud extends ClientAccessor {
 		if (menu == null) {
 			return null;
 		}
-		final int texture = menu.getTexture();
-		for (final Component child : ctx.widgets.get(WIDGET_MENU)) {
-			if (child.getTextureId() == texture && child.valid()) {
+		final int texture = menu.texture();
+		for (final Component child : ctx.widgets.widget(WIDGET_MENU)) {
+			if (child.textureId() == texture && child.valid()) {
 				return child;
 			}
 		}
@@ -343,10 +343,10 @@ public class Hud extends ClientAccessor {
 		if (window == null) {
 			return null;
 		}
-		final int texture = window.getMiniTexture();
-		for (final Component child : ctx.widgets.get(WIDGET_HUD)) {
-			for (final Component sub : child.getChildren()) {
-				if (sub.getTextureId() == texture && sub.valid()) {
+		final int texture = window.miniTexture();
+		for (final Component child : ctx.widgets.widget(WIDGET_HUD)) {
+			for (final Component sub : child.children()) {
+				if (sub.textureId() == texture && sub.valid()) {
 					return sub;
 				}
 			}
@@ -358,10 +358,10 @@ public class Hud extends ClientAccessor {
 		if (window == null) {
 			return null;
 		}
-		final int texture = window.getTexture();
-		for (final Component child : ctx.widgets.get(WIDGET_HUD)) {
-			for (final Component sub : child.getChildren()) {
-				if (sub.getTextureId() == texture && sub.isVisible()) {
+		final int texture = window.texture();
+		for (final Component child : ctx.widgets.widget(WIDGET_HUD)) {
+			for (final Component sub : child.children()) {
+				if (sub.textureId() == texture && sub.visible()) {
 					return sub;
 				}
 			}

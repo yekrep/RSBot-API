@@ -8,9 +8,8 @@ import org.powerbot.bot.rs3.tools.Items;
 
 /**
  * Utilities pertaining to the in-game backpack.
- *
  */
-public class Backpack extends ItemQuery<Item> implements Resizable {
+public class Backpack extends ItemQuery<Item> implements Resizable, Displayable {
 	public static final int WIDGET = 1473;
 	public static final int COMPONENT_SCROLL_BAR = 6;
 	public static final int COMPONENT_VIEW = 7;
@@ -34,10 +33,10 @@ public class Backpack extends ItemQuery<Item> implements Resizable {
 	@Override
 	protected List<Item> get() {
 		final List<Item> items = new ArrayList<Item>(28);
-		final Component inv = getComponent();
+		final Component inv = component();
 		final int[][] data = ctx.items.getItems(Items.INDEX_INVENTORY);
 		for (int i = 0; i < 28; i++) {
-			final Component comp = inv.getChild(i);
+			final Component comp = inv.component(i);
 			if (i >= data.length) {
 				break;
 			}
@@ -53,11 +52,11 @@ public class Backpack extends ItemQuery<Item> implements Resizable {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public boolean isCollapsed() {
-		final Component component = getComponent();
-		return component.isVisible()
-				&& component.getWidget().getIndex() == WIDGET
-				&& ctx.widgets.get(WIDGET, COMPONENT_SCROLL_BAR).getRelativeLocation().getX() != 0;
+	public boolean collapsed() {
+		final Component component = component();
+		return component.visible()
+				&& component.widget().index() == WIDGET
+				&& ctx.widgets.component(WIDGET, COMPONENT_SCROLL_BAR).relativePoint().getX() != 0;
 	}
 
 	/**
@@ -65,17 +64,17 @@ public class Backpack extends ItemQuery<Item> implements Resizable {
 	 */
 	@Override
 	public boolean scroll(final Displayable item) {
-		if (!isCollapsed()) {
+		if (!collapsed()) {
 			return true;
 		}
-		final Component backpack = getComponent();
-		if (backpack.getWidget().getIndex() == WIDGET) {
-			final Rectangle view = ctx.widgets.get(WIDGET, COMPONENT_VIEW).getViewportRect();
-			final Component c = item.getComponent();
-			if (!view.contains(c.getBoundingRect())) {
-				ctx.widgets.scroll(c, ctx.widgets.get(WIDGET, COMPONENT_SCROLL_BAR), view.contains(ctx.mouse.getLocation()));
+		final Component backpack = component();
+		if (backpack.widget().index() == WIDGET) {
+			final Rectangle view = ctx.widgets.component(WIDGET, COMPONENT_VIEW).viewportRect();
+			final Component c = item.component();
+			if (!view.contains(c.boundingRect())) {
+				ctx.widgets.scroll(c, ctx.widgets.component(WIDGET, COMPONENT_SCROLL_BAR), view.contains(ctx.mouse.getLocation()));
 			}
-			return view.contains(c.getBoundingRect());
+			return view.contains(c.boundingRect());
 		}
 		return false;
 	}
@@ -85,12 +84,12 @@ public class Backpack extends ItemQuery<Item> implements Resizable {
 	 *
 	 * @return all the items in the inventory
 	 */
-	public Item[] getAllItems() {
+	public Item[] items() {
 		final Item[] items = new Item[28];
-		final Component inv = getComponent();
+		final Component inv = component();
 		final int[][] data = ctx.items.getItems(Items.INDEX_INVENTORY);
 		for (int i = 0; i < 28; i++) {
-			final Component comp = inv.getChild(i);
+			final Component comp = inv.component(i);
 			if (i < data.length) {
 				items[i] = new Item(ctx, data[i][0], data[i][1], comp);
 			} else {
@@ -106,11 +105,11 @@ public class Backpack extends ItemQuery<Item> implements Resizable {
 	 * @param index the index of the item
 	 * @return the {@link Item} in the slot given
 	 */
-	public Item getItemAt(final int index) {
-		final Component inv = getComponent();
+	public Item itemAt(final int index) {
+		final Component inv = component();
 		final int[][] data = ctx.items.getItems(Items.INDEX_INVENTORY);
 		if (index >= 0 && index < 28 && index < data.length && data[index][0] != -1) {
-			return new Item(ctx, data[index][0], data[index][1], inv.getChild(index));
+			return new Item(ctx, data[index][0], data[index][1], inv.component(index));
 		}
 		return nil();
 	}
@@ -120,10 +119,10 @@ public class Backpack extends ItemQuery<Item> implements Resizable {
 	 *
 	 * @return the index of the selected item
 	 */
-	public int getSelectedItemIndex() {
-		final Component inv = getComponent();
+	public int selectedItemIndex() {
+		final Component inv = component();
 		for (int i = 0; i < 28; i++) {
-			if (inv.getChild(i).getBorderThickness() == 2) {
+			if (inv.component(i).borderThickness() == 2) {
 				return i;
 			}
 		}
@@ -131,21 +130,12 @@ public class Backpack extends ItemQuery<Item> implements Resizable {
 	}
 
 	/**
-	 * Returns the {@link Item} of the currently selected item.
-	 *
-	 * @return the {@link Item} selected
-	 */
-	public Item getSelectedItem() {
-		return getItemAt(getSelectedItemIndex());
-	}
-
-	/**
 	 * Returns if an item is selected or not.
 	 *
 	 * @return <tt>true</tt> if an item is selected; otherwise <tt>false</tt>
 	 */
-	public boolean isItemSelected() {
-		return getSelectedItemIndex() != -1;
+	public boolean itemSelected() {
+		return selectedItemIndex() != -1;
 	}
 
 	/**
@@ -173,14 +163,15 @@ public class Backpack extends ItemQuery<Item> implements Resizable {
 	 *
 	 * @return the inventory {@link Component}
 	 */
-	public Component getComponent() {
+	@Override
+	public Component component() {
 		Component c;
 		for (final int id : ALTERNATIVE_WIDGETS) {
-			if ((c = ctx.widgets.get(id >> 16, id & 0xffff)) != null && c.isVisible()) {
+			if ((c = ctx.widgets.component(id >> 16, id & 0xffff)) != null && c.visible()) {
 				return c;
 			}
 		}
-		return ctx.widgets.get(WIDGET, COMPONENT_CONTAINER);
+		return ctx.widgets.component(WIDGET, COMPONENT_CONTAINER);
 	}
 
 	/**
@@ -188,7 +179,7 @@ public class Backpack extends ItemQuery<Item> implements Resizable {
 	 *
 	 * @return the amount of money in the money pouch
 	 */
-	public int getMoneyPouch() {
+	public int moneyPouchCount() {
 		final int[][] arrs = ctx.items.getItems(Items.INDEX_MONEY_POUCH);
 		for (final int[] arr : arrs) {
 			if (arr[0] == 995) {

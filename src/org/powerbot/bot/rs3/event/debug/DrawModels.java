@@ -31,7 +31,7 @@ public class DrawModels implements PaintListener {
 			if (m == null) {
 				continue;
 			}
-			final int o = obj.getType().ordinal();
+			final int o = obj.type().ordinal();
 			final int rgb = C[o].getRGB();
 			render.setColor(new Color((rgb >> 16) & 0xff, (rgb >> 8) & 0xff, rgb & 0xff, A[o]));
 			m.drawWireFrame(render);

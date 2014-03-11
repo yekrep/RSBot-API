@@ -20,17 +20,17 @@ public class HintArrow extends ClientAccessor implements Locatable, Validatable 
 		this.arrow = new WeakReference<RSHintArrow>(arrow);
 	}
 
-	public int getType() {
+	public int type() {
 		final RSHintArrow arrow = this.arrow.get();
 		return arrow != null ? arrow.getType() : -1;
 	}
 
-	public int getTargetId() {
+	public int targetId() {
 		final RSHintArrow arrow = this.arrow.get();
 		return arrow != null ? arrow.getTargetID() : -1;
 	}
 
-	public int getPlane() {
+	public int floor() {
 		final RSHintArrow arrow = this.arrow.get();
 		return arrow != null ? arrow.getPlane() : -1;
 	}
@@ -43,8 +43,8 @@ public class HintArrow extends ClientAccessor implements Locatable, Validatable 
 			return Tile.NIL;
 		}
 
-		final int type = getType();
-		final int target = getTargetId();
+		final int type = type();
+		final int target = targetId();
 		if (type == -1 || type == 0) {
 			return Tile.NIL;
 		}
@@ -60,7 +60,7 @@ public class HintArrow extends ClientAccessor implements Locatable, Validatable 
 			}
 			return npc != null ? npc.tile() : Tile.NIL;
 		} else if (type == 2) {
-			return ctx.game.getMapBase().derive(arrow.getX() >> 9, arrow.getY() >> 9, getPlane());
+			return ctx.game.mapOffset().derive(arrow.getX() >> 9, arrow.getY() >> 9, floor());
 		}
 		final RSPlayer[] players = client.getRSPlayerArray();
 		if (type != 10 || target < 0 || target >= players.length) {
@@ -73,7 +73,7 @@ public class HintArrow extends ClientAccessor implements Locatable, Validatable 
 		return Tile.NIL;
 	}
 
-	public RelativeLocation getRelative() {
+	public RelativeLocation relative() {
 		final RSHintArrow arrow = this.arrow.get();
 		if (arrow != null) {
 			return new RelativeLocation(arrow.getX(), arrow.getY());

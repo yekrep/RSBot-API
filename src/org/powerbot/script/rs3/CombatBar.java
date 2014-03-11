@@ -41,7 +41,7 @@ public class CombatBar extends IdQuery<Action> {
 	 * @return <tt>true</tt> if the action was selected; otherwise <tt>false</tt>
 	 */
 	public boolean regenerate() {
-		return ctx.widgets.get(WIDGET, COMPONENT_BUTTON_HEAL).interact("Regenerate");
+		return ctx.widgets.component(WIDGET, COMPONENT_BUTTON_HEAL).interact("Regenerate");
 	}
 
 	/**
@@ -50,7 +50,7 @@ public class CombatBar extends IdQuery<Action> {
 	 * @return <tt>true</tt> if the action was selected; otherwise <tt>false</tt>
 	 */
 	public boolean healPoison() {
-		return ctx.widgets.get(WIDGET, COMPONENT_BUTTON_HEAL).interact("Heal");
+		return ctx.widgets.component(WIDGET, COMPONENT_BUTTON_HEAL).interact("Heal");
 	}
 
 	/**
@@ -59,12 +59,12 @@ public class CombatBar extends IdQuery<Action> {
 	 * @param retaliate <tt>true</tt> to automatically retaliate; otherwise <tt>false</tt>
 	 * @return <tt>true</tt> if the retaliation mode was successfully changed; otherwise <tt>false</tt>
 	 */
-	public boolean setRetaliating(final boolean retaliate) {
-		return retaliate == isRetaliating() || (ctx.widgets.get(WIDGET, COMPONENT_BUTTON_RETALIATE).interact("Toggle") &&
+	public boolean retaliating(final boolean retaliate) {
+		return retaliate == retaliating() || (ctx.widgets.component(WIDGET, COMPONENT_BUTTON_RETALIATE).interact("Toggle") &&
 				Condition.wait(new Callable<Boolean>() {
 					@Override
 					public Boolean call() throws Exception {
-						return isRetaliating() == retaliate;
+						return retaliating() == retaliate;
 					}
 				}, 200, 10));
 	}
@@ -74,14 +74,14 @@ public class CombatBar extends IdQuery<Action> {
 	 *
 	 * @return <tt>true</tt> if retaliating; otherwise <tt>false</tt>
 	 */
-	public boolean isRetaliating() {
-		return ctx.settings.get(SETTING_RETALIATION) == 0;
+	public boolean retaliating() {
+		return ctx.varpbits.varpbit(SETTING_RETALIATION) == 0;
 	}
 
-	public int getTargetHealth() {
-		final Component component = ctx.widgets.get(1490, 28);
+	public int targetHealth() {
+		final Component component = ctx.widgets.component(1490, 28);
 		final String text;
-		if (component.isVisible() && !(text = component.getText()).isEmpty()) {
+		if (component.visible() && !(text = component.text()).isEmpty()) {
 			try {
 				return Integer.parseInt(text.trim());
 			} catch (final NumberFormatException ignored) {
@@ -90,13 +90,13 @@ public class CombatBar extends IdQuery<Action> {
 		return -1;
 	}
 
-	public int getTargetHealthPercent() {
-		final Component bar = ctx.widgets.get(1490, 27);
-		final Component overlap = ctx.widgets.get(1490, 29);
-		if (!bar.isVisible() || !overlap.isVisible()) {
+	public int targetHealthPercent() {
+		final Component bar = ctx.widgets.component(1490, 27);
+		final Component overlap = ctx.widgets.component(1490, 29);
+		if (!bar.visible() || !overlap.visible()) {
 			return -1;
 		}
-		final double w = bar.getScrollWidth(), p = overlap.getScrollWidth();
+		final double w = bar.scrollWidth(), p = overlap.scrollWidth();
 		return w > 0 ? (int) Math.ceil(p / w * 100d) : -1;
 	}
 
@@ -105,8 +105,8 @@ public class CombatBar extends IdQuery<Action> {
 	 *
 	 * @return the current health
 	 */
-	public int getHealth() {
-		final String text = ctx.widgets.get(WIDGET, COMPONENT_HEALTH).getChild(COMPONENT_TEXT).getText();
+	public int health() {
+		final String text = ctx.widgets.component(WIDGET, COMPONENT_HEALTH).component(COMPONENT_TEXT).text();
 		final int index = text.indexOf('/');
 		if (index != -1) {
 			try {
@@ -123,8 +123,8 @@ public class CombatBar extends IdQuery<Action> {
 	 *
 	 * @return the maximum health
 	 */
-	public int getMaximumHealth() {
-		final String text = ctx.widgets.get(WIDGET, COMPONENT_HEALTH).getChild(COMPONENT_TEXT).getText();
+	public int maximumHealth() {
+		final String text = ctx.widgets.component(WIDGET, COMPONENT_HEALTH).component(COMPONENT_TEXT).text();
 		final int index = text.indexOf('/');
 		if (index != -1) {
 			try {
@@ -140,8 +140,8 @@ public class CombatBar extends IdQuery<Action> {
 	 *
 	 * @return the current level of adrenaline
 	 */
-	public int getAdrenaline() {
-		return ctx.settings.get(SETTING_ADRENALINE);
+	public int adrenaline() {
+		return ctx.varpbits.varpbit(SETTING_ADRENALINE);
 	}
 
 	/**
@@ -149,8 +149,8 @@ public class CombatBar extends IdQuery<Action> {
 	 *
 	 * @return <tt>true</tt> if expanded; otherwise <tt>false</tt>
 	 */
-	public boolean isExpanded() {
-		return ctx.widgets.get(WIDGET, COMPONENT_BAR).isVisible();
+	public boolean expanded() {
+		return ctx.widgets.component(WIDGET, COMPONENT_BAR).visible();
 	}
 
 	/**
@@ -159,17 +159,17 @@ public class CombatBar extends IdQuery<Action> {
 	 * @param expanded <tt>true</tt> to be expanded; <tt>false</tt> to be collapsed
 	 * @return <tt>true</tt> if the state was successfully changed; otherwise <tt>false</tt>
 	 */
-	public boolean setExpanded(final boolean expanded) {
-		if (isExpanded() == expanded) {
+	public boolean expanded(final boolean expanded) {
+		if (expanded() == expanded) {
 			return true;
 		}
 		Component comp = null;
-		for (final Component c : ctx.widgets.get(WIDGET_LAYOUT)) {
-			if (c.getChildrenCount() != 2) {
+		for (final Component c : ctx.widgets.widget(WIDGET_LAYOUT)) {
+			if (c.childrenCount() != 2) {
 				continue;
 			}
-			if (c.getChild(1).getTextureId() == 18612) {
-				comp = c.getChild(1);
+			if (c.component(1).textureId() == 18612) {
+				comp = c.component(1);
 				break;
 			}
 		}
@@ -177,7 +177,7 @@ public class CombatBar extends IdQuery<Action> {
 				Condition.wait(new Callable<Boolean>() {
 					@Override
 					public Boolean call() throws Exception {
-						return isExpanded() == expanded;
+						return expanded() == expanded;
 					}
 				}, 300, 10);
 	}
@@ -188,15 +188,15 @@ public class CombatBar extends IdQuery<Action> {
 	 * @param slot the slot to get the action at
 	 * @return the {@link Action}
 	 */
-	public Action getActionAt(final int slot) {
+	public Action actionAt(final int slot) {
 		if (slot < 0 || slot >= NUM_SLOTS) {
 			throw new IndexOutOfBoundsException("0 > " + slot + " >= " + NUM_SLOTS);
 		}
 		final Action.Type type;
-		int id = ctx.settings.get(SETTING_ABILITY + slot);
+		int id = ctx.varpbits.varpbit(SETTING_ABILITY + slot);
 		if (id > 0) {
 			type = Action.Type.ABILITY;
-		} else if ((id = ctx.settings.get(SETTING_ITEM + slot)) > 0) {
+		} else if ((id = ctx.varpbits.varpbit(SETTING_ITEM + slot)) > 0) {
 			type = Action.Type.ITEM;
 		} else {
 			type = Action.Type.UNKNOWN;
@@ -210,10 +210,10 @@ public class CombatBar extends IdQuery<Action> {
 	 *
 	 * @return an array of {@link Action}s
 	 */
-	public Action[] getActions() {
+	public Action[] actions() {
 		final Action[] actions = new Action[NUM_SLOTS];
 		for (int i = 0; i < NUM_SLOTS; i++) {
-			actions[i] = getActionAt(i);
+			actions[i] = actionAt(i);
 		}
 		return actions;
 	}
@@ -224,7 +224,7 @@ public class CombatBar extends IdQuery<Action> {
 	@Override
 	protected List<Action> get() {
 		final List<Action> actions = new ArrayList<Action>(NUM_SLOTS);
-		final Action[] arr = getActions();
+		final Action[] arr = actions();
 		for (final Action a : arr) {
 			if (a == null) {
 				continue;
@@ -241,19 +241,19 @@ public class CombatBar extends IdQuery<Action> {
 	 * @return <tt>true</tt> if the {@link Action} was deleted; otherwise <tt>false</tt>
 	 */
 	public boolean deleteAction(Action action) {
-		if (!setExpanded(true)) {
+		if (!expanded(true)) {
 			return false;
 		}
-		final int slot = action.getSlot();
-		action = getActionAt(slot);
+		final int slot = action.slot();
+		action = actionAt(slot);
 		if (action.id() == -1) {
 			return true;
 		}
-		return action.getComponent().hover() && ctx.mouse.drag(ctx.players.local().nextPoint(), true) &&
+		return action.component().hover() && ctx.mouse.drag(ctx.players.local().nextPoint(), true) &&
 				Condition.wait(new Callable<Boolean>() {
 					@Override
 					public Boolean call() {
-						return getActionAt(slot).id() == -1;
+						return actionAt(slot).id() == -1;
 					}
 				}, 20, 20);
 	}
@@ -263,8 +263,8 @@ public class CombatBar extends IdQuery<Action> {
 	 *
 	 * @return <tt>true</tt> if combat bar is locked; otherwise <tt>false</tt>
 	 */
-	public boolean isLocked() {
-		return ((ctx.settings.get(682) >> 4) & 0x1) != 0;
+	public boolean locked() {
+		return ((ctx.varpbits.varpbit(682) >> 4) & 0x1) != 0;
 	}
 
 	/**
@@ -273,16 +273,16 @@ public class CombatBar extends IdQuery<Action> {
 	 * @param locked <tt>true</tt> to be locked; otherwise <tt>false</tt>
 	 * @return <tt>true</tt> if the state was successfully changed; otherwise <tt>false</tt>
 	 */
-	public boolean setLocked(final boolean locked) {
-		if (isLocked() == locked) {
+	public boolean locked(final boolean locked) {
+		if (locked() == locked) {
 			return true;
 		}
-		final Component c = ctx.widgets.get(WIDGET, COMPONENT_LOCK);
-		return c.isVisible() && c.interact("lock") &&
+		final Component c = ctx.widgets.component(WIDGET, COMPONENT_LOCK);
+		return c.visible() && c.interact("lock") &&
 				Condition.wait(new Callable<Boolean>() {
 					@Override
 					public Boolean call() throws Exception {
-						return isLocked() == locked;
+						return locked() == locked;
 					}
 				}, 300, 10);
 	}

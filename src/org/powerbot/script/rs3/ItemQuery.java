@@ -92,7 +92,7 @@ public abstract class ItemQuery<K extends Identifiable & Nameable & Stackable> e
 		}
 		int count = 0;
 		for (final Stackable stackable : this) {
-			count += stackable.getStackSize();
+			count += stackable.stackSize();
 		}
 		return count;
 	}

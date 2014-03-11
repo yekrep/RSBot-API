@@ -52,8 +52,8 @@ public class Skills extends ClientAccessor {
 	 * @param index the index of the skill
 	 * @return the current level at the specified index
 	 */
-	public int getLevel(final int index) {
-		final int[] levels = getLevels();
+	public int level(final int index) {
+		final int[] levels = levels();
 		if (index >= 0 && index < levels.length) {
 			return levels[index];
 		}
@@ -66,8 +66,8 @@ public class Skills extends ClientAccessor {
 	 * @param index the index of the skill
 	 * @return the real level at the specified index
 	 */
-	public int getRealLevel(final int index) {
-		final int[] levels = getRealLevels();
+	public int realLevel(final int index) {
+		final int[] levels = realLevels();
 		if (index >= 0 && index < levels.length) {
 			return levels[index];
 		}
@@ -80,15 +80,15 @@ public class Skills extends ClientAccessor {
 	 * @param index the index of the skill
 	 * @return the experience at the specified index
 	 */
-	public int getExperience(final int index) {
-		final int[] exps = getExperiences();
+	public int experience(final int index) {
+		final int[] exps = experiences();
 		if (index >= 0 && index < exps.length) {
 			return exps[index];
 		}
 		return -1;
 	}
 
-	public int[] getLevels() {
+	public int[] levels() {
 		final Client client = ctx.client();
 		if (client == null) {
 			return new int[0];
@@ -108,7 +108,7 @@ public class Skills extends ClientAccessor {
 		return new int[0];
 	}
 
-	public int[] getRealLevels() {
+	public int[] realLevels() {
 		final Client client = ctx.client();
 		if (client == null) {
 			return new int[0];
@@ -125,7 +125,7 @@ public class Skills extends ClientAccessor {
 		return new int[0];
 	}
 
-	public int[] getExperiences() {
+	public int[] experiences() {
 		final Client client = ctx.client();
 		if (client == null) {
 			return new int[0];
@@ -148,7 +148,7 @@ public class Skills extends ClientAccessor {
 	 * @param exp the exp to convert to level
 	 * @return the level with the given amount of exp
 	 */
-	public int getLevelAt(final int exp) {
+	public int levelAt(final int exp) {
 		for (int i = XP_TABLE.length - 1; i > 0; i--) {
 			if (exp > XP_TABLE[i]) {
 				return i;
@@ -163,7 +163,7 @@ public class Skills extends ClientAccessor {
 	 * @param level the level to get the exp at
 	 * @return the exp at the specified level
 	 */
-	public int getExperienceAt(final int level) {
+	public int experienceAt(final int level) {
 		if (level < 0 || level > 120) {
 			return -1;
 		}

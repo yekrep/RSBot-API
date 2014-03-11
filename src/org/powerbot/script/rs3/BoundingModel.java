@@ -28,25 +28,25 @@ abstract class BoundingModel extends ClientAccessor {
 		);
 	}
 
-	public abstract int getX();
+	public abstract int x();
 
-	public abstract int getZ();
+	public abstract int z();
 
-	Point getCentroid(final int index) {
+	Point centroid(final int index) {
 		final int[][][] triangles = project();
 		if (index < 0 || index >= triangles.length) {
 			return new Point(-1, -1);
 		}
-		final int x = getX(), z = getZ(), y = ctx.game.tileHeight(x, z, ctx.game.getPlane());
+		final int x = x(), z = z(), y = ctx.game.tileHeight(x, z, ctx.game.floor());
 		final Point p = ctx.game.worldToScreen(
 				x + (triangles[index][0][0] + triangles[index][1][0] + triangles[index][2][0]) / 3,
 				y + (triangles[index][0][1] + triangles[index][1][1] + triangles[index][2][1]) / 3,
 				z + (triangles[index][0][2] + triangles[index][1][2] + triangles[index][2][2]) / 3
 		);
-		return ctx.game.isPointInViewport(p) ? p : new Point(-1, -1);
+		return ctx.game.inViewport(p) ? p : new Point(-1, -1);
 	}
 
-	public Point getNextPoint() {
+	public Point nextPoint() {
 		final int[][][] triangles = project();
 		final int faces = triangles.length;
 		final int mark = Random.nextInt(0, faces);
@@ -55,14 +55,14 @@ abstract class BoundingModel extends ClientAccessor {
 	}
 
 
-	public Point getCenterPoint() {
+	public Point centerPoint() {
 		final int[][][] triangles = project();
 		final int faces = triangles.length;
 		int avgX = 0;
 		int avgY = 0;
 		int avgZ = 0;
 		int index = 0;
-		final int x = getX(), z = getZ(), y = ctx.game.tileHeight(x, z, ctx.game.getPlane());
+		final int x = x(), z = z(), y = ctx.game.tileHeight(x, z, ctx.game.floor());
 		while (index < faces) {
 			avgX += (triangles[index][0][0] + triangles[index][1][0] + triangles[index][2][0]) / 3;
 			avgY += (triangles[index][0][1] + triangles[index][1][1] + triangles[index][2][1]) / 3;
@@ -74,13 +74,13 @@ abstract class BoundingModel extends ClientAccessor {
 				y + avgY / faces,
 				z + avgZ / faces
 		);
-		return ctx.game.isPointInViewport(p) ? p : new Point(-1, -1);
+		return ctx.game.inViewport(p) ? p : new Point(-1, -1);
 	}
 
 	public boolean contains(final Point p) {
 		final int[][][] triangles = project();
 		final int px = p.x, py = p.y;
-		final int x = getX(), z = getZ(), y = ctx.game.tileHeight(x, z, ctx.game.getPlane());
+		final int x = x(), z = z(), y = ctx.game.tileHeight(x, z, ctx.game.floor());
 		loop:
 		for (final int[][] triangle : triangles) {
 			final Point[] arr = {
@@ -89,7 +89,7 @@ abstract class BoundingModel extends ClientAccessor {
 					ctx.game.worldToScreen(x + triangle[2][0], y + triangle[2][1], z + triangle[2][2]),
 			};
 			for (final Point p2 : arr) {
-				if (!ctx.game.isPointInViewport(p2)) {
+				if (!ctx.game.inViewport(p2)) {
 					continue loop;
 				}
 			}
@@ -102,7 +102,7 @@ abstract class BoundingModel extends ClientAccessor {
 
 	public boolean drawWireFrame(final Graphics graphics) {
 		final int[][][] triangles = project();
-		final int x = getX(), z = getZ(), y = ctx.game.tileHeight(x, z, ctx.game.getPlane());
+		final int x = x(), z = z(), y = ctx.game.tileHeight(x, z, ctx.game.floor());
 		loop:
 		for (final int[][] triangle : triangles) {
 			final Point[] arr = {
@@ -111,7 +111,7 @@ abstract class BoundingModel extends ClientAccessor {
 					ctx.game.worldToScreen(x + triangle[2][0], y + triangle[2][1], z + triangle[2][2]),
 			};
 			for (final Point p2 : arr) {
-				if (!ctx.game.isPointInViewport(p2)) {
+				if (!ctx.game.inViewport(p2)) {
 					continue loop;
 				}
 			}
@@ -123,7 +123,7 @@ abstract class BoundingModel extends ClientAccessor {
 	}
 
 	private int firstInViewportIndex(final int[][][] triangles, final int pos, final int length) {
-		final int x = getX(), z = getZ(), y = ctx.game.tileHeight(x, z, ctx.game.getPlane());
+		final int x = x(), z = z(), y = ctx.game.tileHeight(x, z, ctx.game.floor());
 		int index = pos;
 		while (index < length) {
 			final Point p = ctx.game.worldToScreen(
@@ -131,7 +131,7 @@ abstract class BoundingModel extends ClientAccessor {
 					y + (triangles[index][0][1] + triangles[index][1][1] + triangles[index][2][1]) / 3,
 					z + (triangles[index][0][2] + triangles[index][1][2] + triangles[index][2][2]) / 3
 			);
-			if (ctx.game.isPointInViewport(p)) {
+			if (ctx.game.inViewport(p)) {
 				return index;
 			}
 			++index;
@@ -141,7 +141,7 @@ abstract class BoundingModel extends ClientAccessor {
 
 	private Point firstInViewportCentroid(final int[][][] triangles, final int pos, final int length) {
 		final int index = firstInViewportIndex(triangles, pos, length);
-		return index != -1 ? getCentroid(index) : null;
+		return index != -1 ? centroid(index) : null;
 	}
 
 	private boolean barycentric(final int x, final int y, final int aX, final int aY, final int bX, final int bY, final int cX, final int cY) {

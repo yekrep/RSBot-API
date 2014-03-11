@@ -104,11 +104,11 @@ public class Objects extends MobileIdNameQuery<GameObject> {
 		return new GameObject(ctx, null, GameObject.Type.UNKNOWN);
 	}
 
-	public void setType(final int id, final int type) {
+	public void mapType(final int id, final int type) {
 		typeCache.put(id, type);
 	}
 
-	public int getType(final int id) {
+	public int type(final int id) {
 		final Integer integer = typeCache.get(id);
 		return integer != null ? integer : -1;
 	}

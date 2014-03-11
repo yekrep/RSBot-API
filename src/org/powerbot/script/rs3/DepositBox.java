@@ -39,7 +39,7 @@ public class DepositBox extends ItemQuery<Item> implements Viewport {
 	 * @return the {@link org.powerbot.script.Locatable} of the nearest bank or {@link Tile#NIL}
 	 * @see #open()
 	 */
-	public Locatable getNearest() {
+	public Locatable nearest() {
 		final Locatable l = ctx.objects.select().id(DEPOSIT_BOX_IDS).nearest().poll();
 		if (l.tile() != Tile.NIL) {
 			return l;
@@ -52,8 +52,8 @@ public class DepositBox extends ItemQuery<Item> implements Viewport {
 	 *
 	 * @return <tt>true</tt> if a bank is present; otherwise <tt>false</tt>
 	 */
-	public boolean isPresent() {
-		return getNearest() != Tile.NIL;
+	public boolean present() {
+		return nearest() != Tile.NIL;
 	}
 
 	/**
@@ -63,12 +63,12 @@ public class DepositBox extends ItemQuery<Item> implements Viewport {
 		return getBox().valid();
 	}
 
-	public boolean isOpen() {
-		return ctx.widgets.get(WIDGET).valid();
+	public boolean displayed() {
+		return ctx.widgets.widget(WIDGET).valid();
 	}
 
 	public boolean open() {
-		if (isOpen()) {
+		if (displayed()) {
 			return true;
 		}
 		if (getBox().interact("Deposit")) {
@@ -76,30 +76,30 @@ public class DepositBox extends ItemQuery<Item> implements Viewport {
 				Condition.wait(new Callable<Boolean>() {
 					@Override
 					public Boolean call() throws Exception {
-						return ctx.widgets.get(13).valid() || isOpen();
+						return ctx.widgets.widget(13).valid() || displayed();
 					}
 				}, 150, 15);
-			} while (ctx.players.local().isInMotion());
+			} while (ctx.players.local().inMotion());
 		}
-		return isOpen();
+		return displayed();
 	}
 
 	public boolean close(final boolean wait) {
-		if (!isOpen()) {
+		if (!displayed()) {
 			return true;
 		}
-		final Component c = ctx.widgets.get(WIDGET, COMPONENT_BUTTON_CLOSE);
+		final Component c = ctx.widgets.component(WIDGET, COMPONENT_BUTTON_CLOSE);
 		if (c.interact("Close")) {
 			if (wait) {
 				Condition.wait(new Callable<Boolean>() {
 					@Override
 					public Boolean call() throws Exception {
-						return !isOpen();
+						return !displayed();
 					}
 				}, 150, 10);
 			}
 		}
-		return !isOpen();
+		return !displayed();
 	}
 
 	public boolean close() {
@@ -108,40 +108,40 @@ public class DepositBox extends ItemQuery<Item> implements Viewport {
 
 	@Override
 	protected List<Item> get() {
-		final Component c = ctx.widgets.get(WIDGET, COMPONENT_CONTAINER_ITEMS);
+		final Component c = ctx.widgets.component(WIDGET, COMPONENT_CONTAINER_ITEMS);
 		if (c == null || !c.valid()) {
 			return new ArrayList<Item>();
 		}
-		final Component[] components = c.getChildren();
+		final Component[] components = c.children();
 		final List<Item> items = new ArrayList<Item>(components.length);
 		for (final Component i : components) {
-			if (i.getItemId() != -1) {
+			if (i.itemId() != -1) {
 				items.add(new Item(ctx, i));
 			}
 		}
 		return items;
 	}
 
-	public Item getItemAt(final int index) {
-		final Component c = ctx.widgets.get(WIDGET, COMPONENT_CONTAINER_ITEMS);
+	public Item itemAt(final int index) {
+		final Component c = ctx.widgets.component(WIDGET, COMPONENT_CONTAINER_ITEMS);
 		if (c == null || !c.valid()) {
 			return null;
 		}
-		final Component i = c.getChild(index);
-		if (i != null && i.getItemId() != -1) {
+		final Component i = c.component(index);
+		if (i != null && i.itemId() != -1) {
 			return new Item(ctx, i);
 		}
 		return null;
 	}
 
 	public int indexOf(final int id) {
-		final Component items = ctx.widgets.get(WIDGET, COMPONENT_CONTAINER_ITEMS);
+		final Component items = ctx.widgets.component(WIDGET, COMPONENT_CONTAINER_ITEMS);
 		if (items == null || !items.valid()) {
 			return -1;
 		}
-		final Component[] comps = items.getChildren();
+		final Component[] comps = items.children();
 		for (int i = 0; i < comps.length; i++) {
-			if (comps[i].getItemId() == id) {
+			if (comps[i].itemId() == id) {
 				return i;
 			}
 		}
@@ -160,7 +160,7 @@ public class DepositBox extends ItemQuery<Item> implements Viewport {
 	}
 
 	public boolean deposit(final int id, final int amount) {
-		if (!isOpen() || amount < 0) {
+		if (!displayed() || amount < 0) {
 			return false;
 		}
 		final Item item = select().id(id).shuffle().poll();
@@ -175,7 +175,7 @@ public class DepositBox extends ItemQuery<Item> implements Viewport {
 			action = "Deposit-All";
 		}
 		final int cache = select().count(true);
-		final Component component = item.getComponent();
+		final Component component = item.component();
 		if (!containsAction(component, action)) {
 			if (component.interact("Deposit-X") && Condition.wait(new Callable<Boolean>() {
 				@Override
@@ -207,7 +207,7 @@ public class DepositBox extends ItemQuery<Item> implements Viewport {
 	 * @return <tt>true</tt> if the button was clicked, not if the inventory is empty; otherwise <tt>false</tt>
 	 */
 	public boolean depositInventory() {
-		return ctx.backpack.select().isEmpty() || ctx.widgets.get(WIDGET, COMPONENT_BUTTON_DEPOSIT_INVENTORY).click();
+		return ctx.backpack.select().isEmpty() || ctx.widgets.component(WIDGET, COMPONENT_BUTTON_DEPOSIT_INVENTORY).click();
 	}
 
 	/**
@@ -216,7 +216,7 @@ public class DepositBox extends ItemQuery<Item> implements Viewport {
 	 * @return <tt>true</tt> if the button was clicked; otherwise <tt>false</tt>
 	 */
 	public boolean depositEquipment() {
-		return ctx.widgets.get(WIDGET, COMPONENT_BUTTON_DEPOSIT_EQUIPMENT).click();
+		return ctx.widgets.component(WIDGET, COMPONENT_BUTTON_DEPOSIT_EQUIPMENT).click();
 	}
 
 	/**
@@ -225,7 +225,7 @@ public class DepositBox extends ItemQuery<Item> implements Viewport {
 	 * @return <tt>true</tt> if the button was clicked; otherwise <tt>false</tt>
 	 */
 	public boolean depositFamiliar() {
-		return ctx.widgets.get(WIDGET, COMPONENT_BUTTON_DEPOSIT_FAMILIAR).click();
+		return ctx.widgets.component(WIDGET, COMPONENT_BUTTON_DEPOSIT_FAMILIAR).click();
 	}
 
 	/**
@@ -234,11 +234,11 @@ public class DepositBox extends ItemQuery<Item> implements Viewport {
 	 * @return <tt>true</tt> if the button was clicked; otherwise <tt>false</tt>
 	 */
 	public boolean depositMoneyPouch() {
-		return ctx.backpack.getMoneyPouch() == 0 || ctx.widgets.get(WIDGET, COMPONENT_BUTTON_DEPOSIT_POUCH).click();
+		return ctx.backpack.moneyPouchCount() == 0 || ctx.widgets.component(WIDGET, COMPONENT_BUTTON_DEPOSIT_POUCH).click();
 	}
 
 	private boolean containsAction(final Component c, final String action) {
-		final String[] actions = c.getActions();
+		final String[] actions = c.actions();
 		for (final String a : actions) {
 			System.out.println(a);
 			if (a != null && StringUtils.stripHtml(a).trim().equalsIgnoreCase(action)) {
@@ -249,7 +249,7 @@ public class DepositBox extends ItemQuery<Item> implements Viewport {
 	}
 
 	private boolean isInputWidgetOpen() {
-		return ctx.widgets.get(1469, 2).isVisible();
+		return ctx.widgets.component(1469, 2).visible();
 	}
 
 	@Override

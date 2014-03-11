@@ -44,11 +44,11 @@ public abstract class Model extends ClientAccessor {
 		numFaces = model.getFaces();
 	}
 
-	public abstract int getX();
+	public abstract int x();
 
-	public abstract int getY();
+	public abstract int z();
 
-	public abstract byte getPlane();
+	public abstract byte floor();
 
 	public abstract void update();
 
@@ -59,24 +59,24 @@ public abstract class Model extends ClientAccessor {
 		return index != -1 ? index : firstInViewportIndex(0, mark);
 	}
 
-	public Point getCentroid(final int index) {
+	public Point centroid(final int index) {
 		if (index < 0 || index >= numFaces) {
 			return null;
 		}
 		update();
-		final int x = getX();
-		final int y = getY();
-		final int plane = getPlane();
+		final int x = x();
+		final int y = z();
+		final int plane = floor();
 		final int height = ctx.game.tileHeight(x, y, plane) + this.height;
 		final Point localPoint = ctx.game.worldToScreen(
 				x + (xPoints[faceA[index]] + xPoints[faceB[index]] + xPoints[faceC[index]]) / 3,
 				height + (yPoints[faceA[index]] + yPoints[faceB[index]] + yPoints[faceC[index]]) / 3,
 				y + (zPoints[faceA[index]] + zPoints[faceB[index]] + zPoints[faceC[index]]) / 3
 		);
-		return ctx.game.isPointInViewport(localPoint) ? localPoint : new Point(-1, -1);
+		return ctx.game.inViewport(localPoint) ? localPoint : new Point(-1, -1);
 	}
 
-	public Point getCenterPoint() {
+	public Point centerPoint() {
 		if (numFaces < 1) {
 			return new Point(-1, -1);
 		}
@@ -87,9 +87,9 @@ public abstract class Model extends ClientAccessor {
 		int totalHeightAverage = 0;
 		int index = 0;
 
-		final int x = getX();
-		final int y = getY();
-		final int plane = getPlane();
+		final int x = x();
+		final int y = z();
+		final int plane = floor();
 		final int height = ctx.game.tileHeight(x, y, plane) + this.height;
 
 		while (index < numFaces) {
@@ -105,20 +105,20 @@ public abstract class Model extends ClientAccessor {
 				y + totalYAverage / numFaces
 		);
 
-		if (ctx.game.isPointInViewport(averagePoint)) {
+		if (ctx.game.inViewport(averagePoint)) {
 			return averagePoint;
 		}
 		return new Point(-1, -1);
 	}
 
-	public Point getNextPoint() {
+	public Point nextPoint() {
 		update();
 		final int mark = Random.nextInt(0, numFaces);
 		Point point = firstInViewportCentroid(mark, numFaces);
 		return point != null ? point : (point = firstInViewportCentroid(0, mark)) != null ? point : new Point(-1, -1);
 	}
 
-	public Polygon[] getTriangles() {
+	public Polygon[] triangles() {
 		final int[][] points = projectVertices();
 		final ArrayList<Polygon> polygons = new ArrayList<Polygon>(numFaces);
 		for (int index = 0; index < numFaces; index++) {
@@ -184,9 +184,9 @@ public abstract class Model extends ClientAccessor {
 	}
 
 	private int firstInViewportIndex(final int pos, final int length) {
-		final int x = getX();
-		final int y = getY();
-		final int plane = getPlane();
+		final int x = x();
+		final int y = z();
+		final int plane = floor();
 		final int h = ctx.game.tileHeight(x, y, plane) + height;
 		int index = pos;
 		while (index < length) {
@@ -195,7 +195,7 @@ public abstract class Model extends ClientAccessor {
 					h + (yPoints[faceA[index]] + yPoints[faceB[index]] + yPoints[faceC[index]]) / 3,
 					y + (zPoints[faceA[index]] + zPoints[faceB[index]] + zPoints[faceC[index]]) / 3
 			);
-			if (ctx.game.isPointInViewport(point.x, point.y)) {
+			if (ctx.game.inViewport(point.x, point.y)) {
 				return index;
 			}
 			++index;
@@ -205,7 +205,7 @@ public abstract class Model extends ClientAccessor {
 
 	private Point firstInViewportCentroid(final int pos, final int length) {
 		final int index = firstInViewportIndex(pos, length);
-		return index != -1 ? getCentroid(index) : null;
+		return index != -1 ? centroid(index) : null;
 	}
 
 	private boolean barycentric(final int x, final int y, final int aX, final int aY, final int bX, final int bY, final int cX, final int cY) {
@@ -231,9 +231,9 @@ public abstract class Model extends ClientAccessor {
 		final Game.Viewport viewport = ctx.game.viewport;
 
 		update();
-		final int locX = getX();
-		final int locY = getY();
-		final int plane = getPlane();
+		final int locX = x();
+		final int locY = z();
+		final int plane = floor();
 		final int height = ctx.game.tileHeight(locX, locY, plane) + this.height;
 
 		final int[][] screen = new int[numVertices][3];
@@ -250,7 +250,7 @@ public abstract class Model extends ClientAccessor {
 				screen[index][0] = Math.round(toolkit.absoluteX + (toolkit.xMultiplier * _x) / _z);
 				screen[index][1] = Math.round(toolkit.absoluteY + (toolkit.yMultiplier * _y) / _z);
 				screen[index][2] = 1;
-				if (ctx.game.isPointInViewport(screen[index][0], screen[index][1])) {
+				if (ctx.game.inViewport(screen[index][0], screen[index][1])) {
 					continue;
 				}
 			}

@@ -17,30 +17,30 @@ public class DrawMobs implements PaintListener {
 	}
 
 	public void repaint(final Graphics render) {
-		if (!ctx.game.isLoggedIn()) {
+		if (!ctx.game.loggedIn()) {
 			return;
 		}
 		final FontMetrics metrics = render.getFontMetrics();
 		for (final Npc npc : ctx.npcs.select()) {
-			final Point location = npc.getCenterPoint();
+			final Point location = npc.centerPoint();
 			if (location.x == -1 || location.y == -1) {
 				continue;
 			}
 			render.setColor(Color.red);
 			render.fillRect((int) location.getX() - 1, (int) location.getY() - 1, 2, 2);
-			String s = npc.name() + " (" + npc.getLevel() + ") - " + npc.id();
-			render.setColor(npc.isInCombat() ? Color.RED : npc.isInMotion() ? Color.GREEN : Color.WHITE);
+			String s = npc.name() + " (" + npc.combatLevel() + ") - " + npc.id();
+			render.setColor(npc.inCombat() ? Color.RED : npc.inMotion() ? Color.GREEN : Color.WHITE);
 			render.drawString(s, location.x - metrics.stringWidth(s) / 2, location.y - metrics.getHeight() / 2);
-			final String msg = npc.getMessage();
+			final String msg = npc.overheadMessage();
 			boolean raised = false;
-			if (npc.getAnimation() != -1 || npc.getStance() != -1) {
+			if (npc.animation() != -1 || npc.stance() != -1) {
 				s = "";
 				s += "(";
-				if (npc.getPrayerIcon() != -1) {
-					s += "P: " + npc.getPrayerIcon() + " | ";
+				if (npc.prayerIcon() != -1) {
+					s += "P: " + npc.prayerIcon() + " | ";
 				}
-				if (npc.getAnimation() != -1 || npc.getStance() > 0) {
-					s += "A: " + npc.getAnimation() + " | ST: " + npc.getStance() + " | ";
+				if (npc.animation() != -1 || npc.stance() > 0) {
+					s += "A: " + npc.animation() + " | ST: " + npc.stance() + " | ";
 				}
 				s = s.substring(0, s.lastIndexOf(" | "));
 				s += ")";

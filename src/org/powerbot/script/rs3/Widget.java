@@ -20,16 +20,16 @@ public class Widget extends ClientAccessor implements Validatable, Iterable<Comp
 		cache = new Component[0];
 	}
 
-	public int getIndex() {
+	public int index() {
 		return index;
 	}
 
-	public int getComponentCount() {
+	public int componentCount() {
 		final RSInterface[] internal = getInternalComponents();
 		return internal != null ? internal.length : 0;
 	}
 
-	public Component[] getComponents() {
+	public Component[] components() {
 		synchronized (LOCK) {
 			final RSInterface[] components = getInternalComponents();
 			if (components == null) {
@@ -46,7 +46,7 @@ public class Widget extends ClientAccessor implements Validatable, Iterable<Comp
 		}
 	}
 
-	public Component getComponent(final int index) {
+	public Component component(final int index) {
 		synchronized (LOCK) {
 			if (index < cache.length) {
 				return cache[index];
@@ -64,6 +64,7 @@ public class Widget extends ClientAccessor implements Validatable, Iterable<Comp
 		}
 	}
 
+	@Override
 	public boolean valid() {
 		final Client client = ctx.client();
 		if (client == null) {
@@ -94,13 +95,13 @@ public class Widget extends ClientAccessor implements Validatable, Iterable<Comp
 
 			@Override
 			public boolean hasNext() {
-				final int count = getComponentCount();
+				final int count = componentCount();
 				return nextId < count && valid();
 			}
 
 			@Override
 			public Component next() {
-				return getComponent(nextId++);
+				return component(nextId++);
 			}
 
 			@Override

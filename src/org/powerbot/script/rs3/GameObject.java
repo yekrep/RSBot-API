@@ -35,18 +35,18 @@ public class GameObject extends Interactive implements Renderable, Locatable, Na
 	}
 
 	@Override
-	public void setBounds(final int x1, final int x2, final int y1, final int y2, final int z1, final int z2) {
+	public void bounds(final int x1, final int x2, final int y1, final int y2, final int z1, final int z2) {
 		boundingModel.set(new BoundingModel(ctx, x1, x2, y1, y2, z1, z2) {
 			@Override
-			public int getX() {
-				final RelativeLocation r = getRelative();
-				return (int) r.getX();
+			public int x() {
+				final RelativeLocation r = relative();
+				return (int) r.x();
 			}
 
 			@Override
-			public int getZ() {
-				final RelativeLocation r = getRelative();
-				return (int) r.getY();
+			public int z() {
+				final RelativeLocation r = relative();
+				return (int) r.z();
 			}
 		});
 	}
@@ -69,7 +69,7 @@ public class GameObject extends Interactive implements Renderable, Locatable, Na
 		return object != null ? object.getId() : -1;
 	}
 
-	public Type getType() {
+	public Type type() {
 		return type;
 	}
 
@@ -78,16 +78,16 @@ public class GameObject extends Interactive implements Renderable, Locatable, Na
 		return getDefinition().getName();
 	}
 
-	public String[] getActions() {
+	public String[] actions() {
 		return getDefinition().getActions();
 	}
 
-	public int getPlane() {
+	public int floor() {
 		final RSObject object = this.object.get();
 		return object != null ? object.getPlane() : -1;
 	}
 
-	public RSObject getInternal() {
+	public RSObject internal() {
 		return object.get();
 	}
 
@@ -109,10 +109,10 @@ public class GameObject extends Interactive implements Renderable, Locatable, Na
 		return def != null && def instanceof RSObjectDef ? new ObjectDefinition((RSObjectDef) def) : new ObjectDefinition(null);
 	}
 
-	public Area getArea() {
+	public Area area() {
 		if (object instanceof RSAnimable) {
 			final RSAnimable animable = (RSAnimable) object;
-			final Tile base = ctx.game.getMapBase();
+			final Tile base = ctx.game.mapOffset();
 			return new Area(
 					base.derive(animable.getX1(), animable.getY1()),
 					base.derive(animable.getX2(), animable.getY2())
@@ -125,14 +125,14 @@ public class GameObject extends Interactive implements Renderable, Locatable, Na
 	@Override
 	public Tile tile() {
 		final RSObject object = this.object.get();
-		final RelativeLocation location = getRelative();
+		final RelativeLocation location = relative();
 		if (object != null && location != null) {
-			return ctx.game.getMapBase().derive((int) location.getX() >> 9, (int) location.getY() >> 9, object.getPlane());
+			return ctx.game.mapOffset().derive((int) location.x() >> 9, (int) location.z() >> 9, object.getPlane());
 		}
 		return Tile.NIL;
 	}
 
-	public RelativeLocation getRelative() {
+	public RelativeLocation relative() {
 		final RSObject object = this.object.get();
 		final RSInteractableData data = object != null ? object.getData() : null;
 		final RSInteractableLocation location = data != null ? data.getLocation() : null;
@@ -146,25 +146,25 @@ public class GameObject extends Interactive implements Renderable, Locatable, Na
 	public Point nextPoint() {
 		final Model model = model();
 		if (model != null) {
-			return model.getNextPoint();
+			return model.nextPoint();
 		}
 		final BoundingModel model2 = boundingModel.get();
 		if (model2 != null) {
-			return model2.getNextPoint();
+			return model2.nextPoint();
 		}
 		return new TileMatrix(ctx, tile()).nextPoint();
 	}
 
-	public Point getCenterPoint() {
+	public Point centerPoint() {
 		final Model model = model();
 		if (model != null) {
-			return model.getCenterPoint();
+			return model.centerPoint();
 		}
 		final BoundingModel model2 = boundingModel.get();
 		if (model2 != null) {
-			return model2.getCenterPoint();
+			return model2.centerPoint();
 		}
-		return new TileMatrix(ctx, tile()).getCenterPoint();
+		return new TileMatrix(ctx, tile()).centerPoint();
 	}
 
 	@Override

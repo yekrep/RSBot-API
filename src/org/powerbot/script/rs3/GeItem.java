@@ -117,7 +117,7 @@ public class GeItem {
 	 * @param id the item ID to query
 	 * @return a {@link GeItem} profile or {@code null} if none was found
 	 */
-	public static synchronized GeItem getProfile(final int id) {
+	public static synchronized GeItem profile(final int id) {
 		if (cache.containsKey(id)) {
 			return cache.get(id);
 		}
@@ -139,12 +139,12 @@ public class GeItem {
 	 * @param id the item ID to query
 	 * @return the quote or {@code -1} if none was found
 	 */
-	public static synchronized int getPrice(final int id) {
+	public static synchronized int price(final int id) {
 		if (quotes.containsKey(id)) {
 			return quotes.get(id);
 		}
 		if (cache.containsKey(id)) {
-			final int p = cache.get(id).getPrice(PriceType.CURRENT).getPrice();
+			final int p = cache.get(id).price(PriceType.CURRENT).price();
 			quotes.put(id, p);
 			return p;
 		}
@@ -162,7 +162,7 @@ public class GeItem {
 				}
 			}
 		} catch (final IOException ignored) {
-			p = getProfile(id).getPrice(PriceType.CURRENT).getPrice();
+			p = profile(id).price(PriceType.CURRENT).price();
 		}
 
 		quotes.put(id, p);
@@ -191,7 +191,7 @@ public class GeItem {
 	 *
 	 * @return the item ID
 	 */
-	public int getId() {
+	public int id() {
 		return id;
 	}
 
@@ -200,7 +200,7 @@ public class GeItem {
 	 *
 	 * @return a {@link java.net.URL} to the icon of the item
 	 */
-	public URL getIcon() {
+	public URL icon() {
 		return icons[0];
 	}
 
@@ -209,7 +209,7 @@ public class GeItem {
 	 *
 	 * @return {@link java.net.URL} to the large icon of the item
 	 */
-	public URL getLargeIcon() {
+	public URL largeIcon() {
 		return icons[1];
 	}
 
@@ -218,7 +218,7 @@ public class GeItem {
 	 *
 	 * @return the named category of the item
 	 */
-	public String getCategory() {
+	public String category() {
 		return category;
 	}
 
@@ -227,7 +227,7 @@ public class GeItem {
 	 *
 	 * @return the name of the item
 	 */
-	public String getName() {
+	public String name() {
 		return name;
 	}
 
@@ -236,7 +236,7 @@ public class GeItem {
 	 *
 	 * @return the description of the item
 	 */
-	public String getDescription() {
+	public String description() {
 		return description;
 	}
 
@@ -246,7 +246,7 @@ public class GeItem {
 	 * @param type the {@link GeItem.PriceType}
 	 * @return the price
 	 */
-	public Price getPrice(final PriceType type) {
+	public Price price(final PriceType type) {
 		return prices.get(type);
 	}
 
@@ -256,7 +256,7 @@ public class GeItem {
 	 * @param type the {@link GeItem.ChangeType}
 	 * @return the change
 	 */
-	public Change getChange(final ChangeType type) {
+	public Change change(final ChangeType type) {
 		return changes.get(type);
 	}
 
@@ -265,7 +265,7 @@ public class GeItem {
 	 *
 	 * @return {@code true} if the item is members, otherwise {@code false}
 	 */
-	public boolean isMembers() {
+	public boolean members() {
 		return members;
 	}
 
@@ -275,12 +275,12 @@ public class GeItem {
 	@Override
 	public String toString() {
 		final String lf = "\r\n";
-		return getName() + " (" + getId() + ')' + lf + getDescription() + lf + lf
-				+ "Current Price:\t" + getPrice(PriceType.CURRENT).getPrice() + lf
-				+ "Today's Change:\t" + getPrice(PriceType.TODAY).getPrice() + lf
-				+ "30-Day Change:\t" + getChange(ChangeType.DAY30).getChange() + '%'+ lf
-				+ "90-Day Change:\t" + getChange(ChangeType.DAY90).getChange() + '%' + lf
-				+ "180-Day Change:\t" + getChange(ChangeType.DAY180).getChange() + '%' + lf;
+		return name() + " (" + id() + ')' + lf + description() + lf + lf
+				+ "Current Price:\t" + price(PriceType.CURRENT).price() + lf
+				+ "Today's Change:\t" + price(PriceType.TODAY).price() + lf
+				+ "30-Day Change:\t" + change(ChangeType.DAY30).change() + '%'+ lf
+				+ "90-Day Change:\t" + change(ChangeType.DAY90).change() + '%' + lf
+				+ "180-Day Change:\t" + change(ChangeType.DAY180).change() + '%' + lf;
 	}
 
 	/**
@@ -329,7 +329,7 @@ public class GeItem {
 		 *
 		 * @return the type
 		 */
-		public PriceType getType() {
+		public PriceType type() {
 			return type;
 		}
 
@@ -338,7 +338,7 @@ public class GeItem {
 		 *
 		 * @return {@code -1} for negative, {@code 0} for neutral or {@code 1} for positive
 		 */
-		public int getTrend() {
+		public int trend() {
 			return trend;
 		}
 
@@ -347,7 +347,7 @@ public class GeItem {
 		 *
 		 * @return the price
 		 */
-		public int getPrice() {
+		public int price() {
 			return price;
 		}
 	}
@@ -378,7 +378,7 @@ public class GeItem {
 		 *
 		 * @return the type
 		 */
-		public ChangeType getType() {
+		public ChangeType type() {
 			return type;
 		}
 
@@ -387,7 +387,7 @@ public class GeItem {
 		 *
 		 * @return {@code -1} for negative, {@code 0} for neutral or {@code 1} for positive
 		 */
-		public int getTrend() {
+		public int trend() {
 			return trend;
 		}
 
@@ -396,7 +396,7 @@ public class GeItem {
 		 *
 		 * @return the change as a relative percentage
 		 */
-		public double getChange() {
+		public double change() {
 			return change;
 		}
 	}

@@ -18,7 +18,7 @@ public class DrawProjectiles implements PaintListener, TextPaintListener {
 
 	@Override
 	public void repaint(final Graphics render) {
-		if (!ctx.game.isLoggedIn()) {
+		if (!ctx.game.loggedIn()) {
 			return;
 		}
 

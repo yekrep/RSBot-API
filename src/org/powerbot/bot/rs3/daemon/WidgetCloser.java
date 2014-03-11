@@ -58,7 +58,7 @@ public class WidgetCloser extends PollingScript<ClientContext> implements Intern
 			if (Condition.wait(new Callable<Boolean>() {
 				@Override
 				public Boolean call() {
-					return !component.isVisible();
+					return !component.visible();
 				}
 			}, 175)) {
 				tries = 0;
@@ -67,13 +67,13 @@ public class WidgetCloser extends PollingScript<ClientContext> implements Intern
 	}
 
 	private boolean isValid() {
-		if (System.nanoTime() < time || ctx.bank.isOpen()) {
+		if (System.nanoTime() < time || ctx.bank.displayed()) {
 			return false;
 		}
 
 		for (final int p : COMPONENTS) {
-			component = ctx.widgets.get(p >> 16, p & 0xffff);
-			if (component != null && component.isVisible()) {
+			component = ctx.widgets.component(p >> 16, p & 0xffff);
+			if (component != null && component.visible()) {
 				break;
 			} else {
 				component = null;

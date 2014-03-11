@@ -6,7 +6,7 @@ public interface Resizable {
 	 *
 	 * @return <tt>true</tt> if the target is collapsed; otherwise <tt>false</tt>
 	 */
-	public boolean isCollapsed();
+	public boolean collapsed();
 
 	/**
 	 * Scrolls the object into view.

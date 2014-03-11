@@ -19,7 +19,7 @@ public class TicketDestroy extends PollingScript<ClientContext> implements Inter
 	@Override
 	public void poll() {
 		final Item item = ctx.backpack.select().id(ITEM_IDS).poll();
-		if (!item.valid() || !ctx.hud.isVisible(Hud.Window.BACKPACK) || !ctx.players.local().isIdle()) {
+		if (!item.valid() || !ctx.hud.isVisible(Hud.Window.BACKPACK) || !ctx.players.local().idle()) {
 			priority.set(0);
 			return;
 		}
@@ -28,7 +28,7 @@ public class TicketDestroy extends PollingScript<ClientContext> implements Inter
 			return;
 		}
 
-		if (((ctx.settings.get(1448) & 0xFF00) >>> 8) < (item.id() == ITEM_IDS[0] ? 10 : 9)) {
+		if (((ctx.varpbits.varpbit(1448) & 0xFF00) >>> 8) < (item.id() == ITEM_IDS[0] ? 10 : 9)) {
 			item.interact("Claim");
 			return;
 		}
@@ -36,7 +36,7 @@ public class TicketDestroy extends PollingScript<ClientContext> implements Inter
 			return;
 		}
 
-		final Widget widget = ctx.widgets.get(1183);
+		final Widget widget = ctx.widgets.widget(1183);
 		if (!Condition.wait(new Callable<Boolean>() {
 			@Override
 			public Boolean call() throws Exception {
@@ -47,8 +47,8 @@ public class TicketDestroy extends PollingScript<ClientContext> implements Inter
 		}
 
 		Component component = null;
-		for (final Component c : widget.getComponents()) {
-			if (c.isVisible() && c.getTooltip().trim().equalsIgnoreCase("destroy")) {
+		for (final Component c : widget.components()) {
+			if (c.visible() && c.tooltip().trim().equalsIgnoreCase("destroy")) {
 				component = c;
 				break;
 			}
@@ -57,7 +57,7 @@ public class TicketDestroy extends PollingScript<ClientContext> implements Inter
 			Condition.wait(new Callable<Boolean>() {
 				@Override
 				public Boolean call() throws Exception {
-					return item.getComponent().getItemId() == -1;
+					return item.component().itemId() == -1;
 				}
 			}, 175);
 		}

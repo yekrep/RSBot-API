@@ -22,7 +22,7 @@ public class DrawGroundItems implements PaintListener {
 	}
 
 	public void repaint(final Graphics render) {
-		if (!ctx.game.isLoggedIn()) {
+		if (!ctx.game.loggedIn()) {
 			return;
 		}
 
@@ -37,14 +37,14 @@ public class DrawGroundItems implements PaintListener {
 
 		final FontMetrics metrics = render.getFontMetrics();
 		final int tHeight = metrics.getHeight();
-		final int plane = ctx.game.getPlane();
+		final int plane = ctx.game.floor();
 		final List<GroundItem> check = new ArrayList<GroundItem>();
 		ctx.groundItems.select().addTo(check);
 		for (int x = tile.x() - 10; x <= tile.x() + 10; x++) {
 			for (int y = tile.y() - 10; y <= tile.y() + 10; y++) {
 				int d = 0;
 				final Tile loc = new Tile(x, y, plane);
-				final Point screen = new TileMatrix(ctx, loc).getCenterPoint();
+				final Point screen = new TileMatrix(ctx, loc).centerPoint();
 				if (screen.x == -1 || screen.y == -1) {
 					continue;
 				}
@@ -55,9 +55,9 @@ public class DrawGroundItems implements PaintListener {
 					if (!name.isEmpty()) {
 						s += " " + name;
 					}
-					final int stack = groundItem.getStackSize();
+					final int stack = groundItem.stackSize();
 					if (stack > 1) {
-						s += " (" + groundItem.getStackSize() + ")";
+						s += " (" + groundItem.stackSize() + ")";
 					}
 					final int ty = screen.y - tHeight * (++d) + tHeight / 2;
 					final int tx = screen.x - metrics.stringWidth(s) / 2;

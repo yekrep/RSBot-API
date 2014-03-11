@@ -21,7 +21,7 @@ class ActorModel extends Model {
 	}
 
 	@Override
-	public int getX() {
+	public int x() {
 		final RSCharacter character = this.character.get();
 		final RSInteractableData data = character != null ? character.getData() : null;
 		final RSInteractableLocation location = data != null ? data.getLocation() : null;
@@ -32,7 +32,7 @@ class ActorModel extends Model {
 	}
 
 	@Override
-	public int getY() {
+	public int z() {
 		final RSCharacter character = this.character.get();
 		final RSInteractableData data = character != null ? character.getData() : null;
 		final RSInteractableLocation location = data != null ? data.getLocation() : null;
@@ -43,7 +43,7 @@ class ActorModel extends Model {
 	}
 
 	@Override
-	public byte getPlane() {
+	public byte floor() {
 		final RSCharacter character = this.character.get();
 		return character != null ? character.getPlane() : -1;
 	}

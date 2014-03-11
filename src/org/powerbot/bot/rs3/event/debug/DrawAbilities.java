@@ -19,15 +19,15 @@ public class DrawAbilities implements PaintListener {
 
 	@Override
 	public void repaint(final Graphics render) {
-		if (!ctx.game.isLoggedIn()) {
+		if (!ctx.game.loggedIn()) {
 			return;
 		}
 		render.setFont(new Font("Arial", 0, 10));
 		render.setColor(Color.green);
-		for (final Action action : ctx.combatBar.getActions()) {
-			final Component c = action.getComponent();
-			final Point p = c.getAbsoluteLocation();
-			render.drawString(action.id() + " (" + action.getBind() + ")", p.x, p.y);
+		for (final Action action : ctx.combatBar.actions()) {
+			final Component c = action.component();
+			final Point p = c.screenPoint();
+			render.drawString(action.id() + " (" + action.bind() + ")", p.x, p.y);
 		}
 	}
 }
