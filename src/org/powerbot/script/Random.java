@@ -53,6 +53,9 @@ public class Random {
 
 	public static void sleepHicks(final int depth) {
 		final int d = 105 * (int) (Math.log(depth * 2) / ln2);
+		if (d <= 0) {
+			return;
+		}
 		try {
 			Thread.sleep(d);
 		} catch (final InterruptedException ignored) {

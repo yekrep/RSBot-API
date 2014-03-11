@@ -95,10 +95,7 @@ public class Menu extends ClientAccessor {
 			return false;
 		}
 		final Rectangle rectangle = new Rectangle(client.getMenuX(), client.getMenuY() + 19 + idx * 15, client.getMenuWidth(), 15);
-		try {
-			Thread.sleep(Random.nextInt(0, 300) + 105 * (int) (Math.log(idx * 2) / Math.log(2)));
-		} catch (final InterruptedException ignored) {
-		}
+		Random.sleepHicks(idx);
 		return ctx.mouse.move(
 				Random.nextInt(rectangle.x, rectangle.x + rectangle.width),
 				Random.nextInt(rectangle.y, rectangle.y + rectangle.height)
