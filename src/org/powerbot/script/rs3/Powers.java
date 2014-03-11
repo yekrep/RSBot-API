@@ -9,7 +9,6 @@ import org.powerbot.script.Random;
 
 /**
  * API pertaining to in-game powers.
- *
  */
 public class Powers extends ClientAccessor {
 	public static final int SETTING_PRAYER_POINTS = 3274;
@@ -341,7 +340,7 @@ public class Powers extends ClientAccessor {
 		if (quickSelectionActive() == quick) {
 			return true;
 		}
-		if (ctx.hud.isVisible(Hud.Window.PRAYER_ABILITIES)) {
+		if (ctx.hud.opened(Hud.Window.PRAYER_ABILITIES)) {
 			if (quick) {
 				if (!ctx.widgets.component(WIDGET_PRAYER, COMPONENT_QUICK_SELECTION).interact("Select quick")) {
 					return false;
@@ -399,7 +398,7 @@ public class Powers extends ClientAccessor {
 		if (prayerActive(effect) == active) {
 			return true;
 		}
-		if (ctx.hud.view(Hud.Window.PRAYER_ABILITIES)) {
+		if (ctx.hud.open(Hud.Window.PRAYER_ABILITIES)) {
 			return ctx.widgets.component(WIDGET_PRAYER, COMPONENT_PRAYER_CONTAINER).component(effect.id()).interact(active ? "Activate" : "Deactivate");
 		}
 		return prayerActive(effect) == active;
@@ -415,7 +414,7 @@ public class Powers extends ClientAccessor {
 		if (!quickSelectionActive()) {
 			quickSelection(true);
 		}
-		if (quickSelectionActive() && ctx.hud.view(Hud.Window.PRAYER_ABILITIES)) {
+		if (quickSelectionActive() && ctx.hud.open(Hud.Window.PRAYER_ABILITIES)) {
 			for (final Effect effect : effects) {
 				if (prayerQuick(effect)) {
 					continue;

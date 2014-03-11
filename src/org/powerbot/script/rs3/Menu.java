@@ -78,7 +78,7 @@ public class Menu extends ClientAccessor {
 	 *
 	 * @return <tt>true</tt> if the menu is open; otherwise <tt>false</tt>
 	 */
-	public boolean displayed() {
+	public boolean opened() {
 		final Client client = ctx.client();
 		return client != null && client.isMenuOpen();
 	}

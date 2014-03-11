@@ -2,12 +2,12 @@ package org.powerbot.bot.rs3.daemon;
 
 import java.util.concurrent.Callable;
 
-import org.powerbot.script.PollingScript;
 import org.powerbot.bot.InternalScript;
-import org.powerbot.script.rs3.ClientContext;
-import org.powerbot.script.rs3.Hud;
 import org.powerbot.script.Condition;
+import org.powerbot.script.PollingScript;
+import org.powerbot.script.rs3.ClientContext;
 import org.powerbot.script.rs3.Component;
+import org.powerbot.script.rs3.Hud;
 import org.powerbot.script.rs3.Item;
 import org.powerbot.script.rs3.Widget;
 
@@ -19,7 +19,7 @@ public class TicketDestroy extends PollingScript<ClientContext> implements Inter
 	@Override
 	public void poll() {
 		final Item item = ctx.backpack.select().id(ITEM_IDS).poll();
-		if (!item.valid() || !ctx.hud.isVisible(Hud.Window.BACKPACK) || !ctx.players.local().idle()) {
+		if (!item.valid() || !ctx.hud.opened(Hud.Window.BACKPACK) || !ctx.players.local().idle()) {
 			priority.set(0);
 			return;
 		}

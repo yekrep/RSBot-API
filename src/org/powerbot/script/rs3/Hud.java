@@ -10,7 +10,6 @@ import org.powerbot.script.Random;
 
 /**
  * Utilities for manipulating the hud.
- *
  */
 public class Hud extends ClientAccessor {
 	public static final int WIDGET_HUD = 1477;
@@ -27,7 +26,6 @@ public class Hud extends ClientAccessor {
 
 	/**
 	 * An enumeration of menu options.
-	 *
 	 */
 	public enum Menu {
 		NONE(-1),
@@ -59,7 +57,6 @@ public class Hud extends ClientAccessor {
 
 	/**
 	 * An enumeration of known possible windows.
-	 *
 	 */
 	public enum Window {
 		ALL_CHAT(Menu.NONE, 18726, 18754, 137, 82),
@@ -169,6 +166,10 @@ public class Hud extends ClientAccessor {
 		return boundsCache = Arrays.copyOf(arr, index);
 	}
 
+	public boolean floating(final Window window) {
+		return getTab(window) != null;
+	}
+
 	/**
 	 * Returns if a {@link Window} is open or not.
 	 * Open does not mean visible.
@@ -176,18 +177,7 @@ public class Hud extends ClientAccessor {
 	 * @param window the {@link Window} to check if open
 	 * @return <tt>true</tt> if the window is open; otherwise <tt>false</tt>
 	 */
-	public boolean isOpen(final Window window) {
-		return isVisible(window) || getTab(window) != null;
-	}
-
-	/**
-	 * Returns if a {@link Window} is visible or not.
-	 * A tab must be open for it to be visible.
-	 *
-	 * @param window the {@link Window} to check if visible
-	 * @return <tt>true</tt> if the window is visible; otherwise <tt>false</tt>
-	 */
-	public boolean isVisible(final Window window) {
+	public boolean opened(final Window window) {
 		return ctx.widgets.component(window.widget(), window.component()).visible();
 	}
 
@@ -203,22 +193,29 @@ public class Hud extends ClientAccessor {
 	}
 
 	/**
-	 * Opens a {@link Window} if not already open.
-	 * Does not guarantee the desired {@link Window} will be visible.
+	 * Opens a {@link Window}.
 	 *
 	 * @param window the {@link Window} desired to be opened
 	 * @return <tt>true</tt> if the window was opened or is already open; otherwise <tt>false</tt>
 	 */
 	public boolean open(final Window window) {
-		if (window == null) {
+		if (window == null || window.menu() == Menu.OTHER) {
 			return false;
 		}
-		if (isViewable(window) || window.menu() == Menu.NONE) {
+		if (opened(window) || window.menu() == Menu.NONE) {
 			return true;
 		}
-		if (window.menu() == Menu.OTHER) {
-			return false;
+
+		if (IsTabInBar(window)) {
+			final Component tab = getTab(window);
+			return tab != null && tab.click() && Condition.wait(new Callable<Boolean>() {
+				@Override
+				public Boolean call() throws Exception {
+					return opened(window);
+				}
+			}, 100, 20);
 		}
+
 		final Component menu = getMenu(window.menu());
 		if (menu != null && (getToggle(window) != null || menu.hover())) {
 			final Component list = ctx.widgets.component(WIDGET_MENU_WINDOWS, COMPONENT_MENU_WINDOWS_LIST);
@@ -238,38 +235,13 @@ public class Hud extends ClientAccessor {
 					return Condition.wait(new Callable<Boolean>() {
 						@Override
 						public Boolean call() throws Exception {
-							return isVisible(window);
+							return opened(window);
 						}
 					}, 100, 20);
 				}
 			}
 		}
 		return false;
-	}
-
-	/**
-	 * Makes a {@link Window} visible by either opening or switching tabs.
-	 * Does not require {@link Window} to already be open.
-	 *
-	 * @param window the {@link Window} desired to be visible
-	 * @return <tt>true</tt> if the {@link Window} is visible; otherwise <tt>false</tt>
-	 */
-	public boolean view(final Window window) {
-		if (isVisible(window)) {
-			return true;
-		}
-		if (open(window) && !isVisible(window)) {
-			final Component tab = getTab(window);
-			if (tab != null && tab.click()) {
-				Condition.wait(new Callable<Boolean>() {
-					@Override
-					public Boolean call() throws Exception {
-						return isVisible(window);
-					}
-				}, 100, 20);
-			}
-		}
-		return isVisible(window);
 	}
 
 	/**
@@ -282,21 +254,21 @@ public class Hud extends ClientAccessor {
 		if (window.menu() == Menu.NONE) {
 			return false;
 		}
-		if (!isOpen(window)) {
+		if (!floating(window)) {
 			return true;
 		}
-		if (view(window)) {
+		if (open(window)) {
 			final Component sprite = getSprite(window);
 			if (sprite != null && sprite.widget().component(sprite.parent().getIndex() + 1).component(1).interact("Close")) {
 				return Condition.wait(new Callable<Boolean>() {
 					@Override
 					public Boolean call() throws Exception {
-						return !isOpen(window);
+						return !opened(window);
 					}
 				}, 125, 20);
 			}
 		}
-		return !isOpen(window);
+		return !opened(window);
 	}
 
 	public FloatingMessage floatingMessage() {
@@ -305,8 +277,8 @@ public class Hud extends ClientAccessor {
 		return new FloatingMessage(text.text(), type.textureId());
 	}
 
-	private boolean isViewable(final Window window) {
-		if (!isOpen(window)) {
+	private boolean IsTabInBar(final Window window) {
+		if (!opened(window)) {
 			return false;
 		}
 		final Component tab = getTab(window);

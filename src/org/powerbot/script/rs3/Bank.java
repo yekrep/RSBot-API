@@ -135,7 +135,7 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 	 *
 	 * @return <tt>true</tt> is the bank is open; otherwise <tt>false</tt>
 	 */
-	public boolean displayed() {
+	public boolean opened() {
 		return ctx.widgets.component(WIDGET, COMPONENT_CONTAINER_ITEMS).valid();
 	}
 
@@ -147,7 +147,7 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 	 * @return <tt>true</tt> if the bank was opened; otherwise <tt>false</tt>
 	 */
 	public boolean open() {
-		if (displayed()) {
+		if (opened()) {
 			return true;
 		}
 		final Interactive interactive = getBank();
@@ -204,7 +204,7 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 				Condition.wait(new Callable<Boolean>() {
 					@Override
 					public Boolean call() throws Exception {
-						return ctx.widgets.widget(13).valid() || displayed();
+						return ctx.widgets.widget(13).valid() || opened();
 					}
 				}, 150, 15);
 			} while (ctx.players.local().inMotion());
@@ -212,11 +212,11 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 			Condition.wait(new Callable<Boolean>() {
 				@Override
 				public Boolean call() throws Exception {
-					return ctx.widgets.widget(13).valid() || displayed();
+					return ctx.widgets.widget(13).valid() || opened();
 				}
 			}, 100, 15);
 		}
-		return displayed();
+		return opened();
 	}
 
 	/**
@@ -225,10 +225,10 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 	 * @return <tt>true</tt> if the bank was closed; otherwise <tt>false</tt>
 	 */
 	public boolean close() {
-		return !displayed() || ctx.widgets.component(WIDGET, COMPONENT_BUTTON_CLOSE).interact("Close") && Condition.wait(new Callable<Boolean>() {
+		return !opened() || ctx.widgets.component(WIDGET, COMPONENT_BUTTON_CLOSE).interact("Close") && Condition.wait(new Callable<Boolean>() {
 			@Override
 			public Boolean call() throws Exception {
-				return !displayed();
+				return !opened();
 			}
 		}, 150);
 	}
@@ -414,7 +414,7 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 	 * @return <tt>true</tt> if the item was deposited, does not determine if amount was matched; otherwise <tt>false</tt>
 	 */
 	public boolean deposit(final int id, final int amount) {
-		if (!displayed() || amount < 0) {
+		if (!opened() || amount < 0) {
 			return false;
 		}
 		final Item item = ctx.backpack.select().id(id).shuffle().poll();

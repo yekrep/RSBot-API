@@ -67,7 +67,7 @@ public class WidgetCloser extends PollingScript<ClientContext> implements Intern
 	}
 
 	private boolean isValid() {
-		if (System.nanoTime() < time || ctx.bank.displayed()) {
+		if (System.nanoTime() < time || ctx.bank.opened()) {
 			return false;
 		}
 

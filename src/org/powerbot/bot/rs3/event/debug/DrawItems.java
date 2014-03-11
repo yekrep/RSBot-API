@@ -27,7 +27,7 @@ public class DrawItems implements PaintListener {
 		render.setFont(new Font("Arial", 0, 10));
 		render.setColor(Color.green);
 
-		if (ctx.bank.displayed()) {
+		if (ctx.bank.opened()) {
 			final Component container = ctx.widgets.component(Bank.WIDGET, Bank.COMPONENT_CONTAINER_ITEMS);
 			final Rectangle r = container.viewportRect();
 			if (r != null) {

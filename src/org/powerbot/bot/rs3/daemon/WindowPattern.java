@@ -2,9 +2,9 @@ package org.powerbot.bot.rs3.daemon;
 
 import java.util.Arrays;
 
+import org.powerbot.script.Random;
 import org.powerbot.script.rs3.ClientContext;
 import org.powerbot.script.rs3.Hud;
-import org.powerbot.script.Random;
 
 public class WindowPattern extends Antipattern.Module {
 	public WindowPattern(final ClientContext ctx) {
@@ -20,7 +20,7 @@ public class WindowPattern extends Antipattern.Module {
 		Hud.Window[] windows = Hud.Window.values();
 		for (int i = 0; i < windows.length; i++) {
 			final Hud.Window w = windows[i];
-			if (!ctx.hud.isOpen(w) || ctx.hud.isVisible(w)) {
+			if (!ctx.hud.floating(w) || ctx.hud.opened(w)) {
 				continue;
 			}
 			if (w.menu() == Hud.Menu.NONE) {
@@ -36,7 +36,7 @@ public class WindowPattern extends Antipattern.Module {
 
 		for (int i = a ? Random.nextInt(0, 3) : 2; i < 4; i++) {
 			final Hud.Window w = windows[Random.nextInt(0, windows.length)];
-			if (!ctx.hud.view(w)) {
+			if (!ctx.hud.open(w)) {
 				break;
 			}
 
