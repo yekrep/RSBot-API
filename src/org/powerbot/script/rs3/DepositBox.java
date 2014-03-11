@@ -5,7 +5,9 @@ import java.util.List;
 import java.util.concurrent.Callable;
 
 import org.powerbot.script.Condition;
+import org.powerbot.script.Locatable;
 import org.powerbot.script.Random;
+import org.powerbot.script.Tile;
 import org.powerbot.script.Viewport;
 import org.powerbot.util.StringUtils;
 
@@ -34,12 +36,12 @@ public class DepositBox extends ItemQuery<Item> implements Viewport {
 	/**
 	 * Returns the absolute nearest bank for walking purposes. Do not use this to open the bank.
 	 *
-	 * @return the {@link Locatable} of the nearest bank or {@link Tile#NIL}
+	 * @return the {@link org.powerbot.script.Locatable} of the nearest bank or {@link Tile#NIL}
 	 * @see #open()
 	 */
 	public Locatable getNearest() {
 		final Locatable l = ctx.objects.select().id(DEPOSIT_BOX_IDS).nearest().poll();
-		if (l.getLocation() != Tile.NIL) {
+		if (l.tile() != Tile.NIL) {
 			return l;
 		}
 		return Tile.NIL;

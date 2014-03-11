@@ -4,7 +4,9 @@ import java.awt.Color;
 import java.awt.Point;
 import java.awt.Polygon;
 
+import org.powerbot.script.Locatable;
 import org.powerbot.script.Random;
+import org.powerbot.script.Tile;
 
 /**
  * An interactive tile matrix.
@@ -13,7 +15,7 @@ public final class TileMatrix extends Interactive implements Locatable {
 	public static final Color TARGET_STROKE_COLOR = new Color(255, 0, 0, 75);
 	private final Tile tile;
 
-	TileMatrix(final ClientContext ctx, final Tile tile) {
+	public TileMatrix(final ClientContext ctx, final Tile tile) {
 		super(ctx);
 		this.tile = tile;
 	}

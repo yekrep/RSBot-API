@@ -2,7 +2,7 @@ package org.powerbot.script;
 
 import java.awt.Point;
 
-public class Vector3 {
+public class Vector3 implements Comparable<Vector3> {
 	public int x, y, z;
 
 	public Vector3() {
@@ -51,6 +51,10 @@ public class Vector3 {
 		return a;
 	}
 
+	public long toLong2D() {
+		return (long) x << 32 | y & 0xffffffffL;
+	}
+
 	public int[] toMatrix() {
 		return new int[]{x, y, z};
 	}
@@ -60,7 +64,26 @@ public class Vector3 {
 	}
 
 	@Override
+	public int compareTo(final Vector3 o) {
+		final long a, b;
+		return z < o.z ? -1 : z > o.z ? 1 : (a = toLong2D()) < (b = o.toLong2D()) ? -1 : a > b ? 1 :0;
+	}
+
+	@Override
 	public String toString() {
 		return String.format("(%s, %s, %s)", x, y, z);
+	}
+
+	@Override
+	public boolean equals(final Object o) {
+		final Vector2 v2;
+		final Vector3 v3;
+		return o instanceof Vector2 ? z == 0 && (v2 = (Vector2) o).y == y && v2.x == x
+				: o instanceof Vector3 && (v3 = (Vector3) o).z == z && v3.y == y && v3.x == x;
+	}
+
+	@Override
+	public int hashCode() {
+		return ((z & 0x80) << 30) | ((y & 0x7fff) << 16) | (x & 0x7fff);
 	}
 }

@@ -2,6 +2,8 @@ package org.powerbot.script.rs3;
 
 import java.util.EnumSet;
 
+import org.powerbot.script.Tile;
+
 public abstract class Path extends ClientAccessor {
 	public Path(final ClientContext factory) {
 		super(factory);

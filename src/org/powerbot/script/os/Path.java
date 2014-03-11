@@ -2,6 +2,7 @@ package org.powerbot.script.os;
 
 import java.util.EnumSet;
 
+import org.powerbot.script.Tile;
 import org.powerbot.script.Validatable;
 
 public abstract class Path extends ClientAccessor implements Validatable {

@@ -17,8 +17,10 @@ import org.powerbot.bot.rs3.client.RSItem;
 import org.powerbot.bot.rs3.client.RSItemDefLoader;
 import org.powerbot.bot.rs3.client.RSItemPile;
 import org.powerbot.script.Identifiable;
+import org.powerbot.script.Locatable;
 import org.powerbot.script.Nameable;
 import org.powerbot.script.Random;
+import org.powerbot.script.Tile;
 
 public class GroundItem extends Interactive implements Renderable, Identifiable, Nameable, Stackable, Locatable, Drawable {
 	public static final Color TARGET_COLOR = new Color(255, 255, 0, 75);
@@ -37,13 +39,13 @@ public class GroundItem extends Interactive implements Renderable, Identifiable,
 			@Override
 			public int getX() {
 				final Tile base = ctx.game.getMapBase();
-				return ((tile.x - base.x) * 512) + 256;
+				return ((tile.x() - base.x()) * 512) + 256;
 			}
 
 			@Override
 			public int getZ() {
 				final Tile base = ctx.game.getMapBase();
-				return ((tile.y - base.y) * 512) + 256;
+				return ((tile.y() - base.y()) * 512) + 256;
 			}
 		});
 	}
@@ -66,7 +68,7 @@ public class GroundItem extends Interactive implements Renderable, Identifiable,
 				(groundInfo = info.getRSGroundInfo()) == null || (grounds = groundInfo.getRSGroundArray()) == null) {
 			return null;
 		}
-		final int x = tile.getX() - baseInfo.getX(), y = tile.getY() - baseInfo.getY();
+		final int x = tile.x() - baseInfo.getX(), y = tile.y() - baseInfo.getY();
 		final int plane = client.getPlane();
 		final RSGround ground = plane > -1 && plane < grounds.length &&
 				x > -1 && x < grounds[plane].length &&
@@ -139,7 +141,7 @@ public class GroundItem extends Interactive implements Renderable, Identifiable,
 	}
 
 	@Override
-	public Tile getLocation() {
+	public Tile tile() {
 		if (item.get() == null) {
 			return Tile.NIL;
 		}
@@ -156,7 +158,7 @@ public class GroundItem extends Interactive implements Renderable, Identifiable,
 		if (model2 != null) {
 			return model2.getNextPoint();
 		}
-		return tile.getMatrix(ctx).nextPoint();
+		return new TileMatrix(ctx, tile).nextPoint();
 	}
 
 	public Point getCenterPoint() {
@@ -168,7 +170,7 @@ public class GroundItem extends Interactive implements Renderable, Identifiable,
 		if (model2 != null) {
 			return model2.getCenterPoint();
 		}
-		return tile.getMatrix(ctx).getCenterPoint();
+		return new TileMatrix(ctx, tile).getCenterPoint();
 	}
 
 	@Override
@@ -181,7 +183,7 @@ public class GroundItem extends Interactive implements Renderable, Identifiable,
 		if (model2 != null) {
 			return model2.contains(point);
 		}
-		return tile.getMatrix(ctx).contains(point);
+		return new TileMatrix(ctx, tile).contains(point);
 	}
 
 	@Override

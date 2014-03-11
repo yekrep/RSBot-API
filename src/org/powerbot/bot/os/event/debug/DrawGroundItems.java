@@ -8,11 +8,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.powerbot.script.PaintListener;
+import org.powerbot.script.Tile;
 import org.powerbot.script.os.ClientContext;
 import org.powerbot.script.os.Game;
 import org.powerbot.script.os.GroundItem;
 import org.powerbot.script.os.Player;
-import org.powerbot.script.os.Tile;
+import org.powerbot.script.os.TileMatrix;
 
 public class DrawGroundItems implements PaintListener {
 	private final ClientContext ctx;
@@ -44,7 +45,7 @@ public class DrawGroundItems implements PaintListener {
 			for (int y = tile.y() - 10; y <= tile.y() + 10; y++) {
 				int d = 0;
 				final Tile loc = new Tile(x, y, plane);
-				final Point screen = loc.matrix(ctx).centerPoint();
+				final Point screen = new TileMatrix(ctx, loc).centerPoint();
 				if (screen.x == -1 || screen.y == -1) {
 					continue;
 				}

@@ -1,6 +1,8 @@
 package org.powerbot.script.os;
 
 import org.powerbot.script.AbstractQuery;
+import org.powerbot.script.Area;
+import org.powerbot.script.Locatable;
 import org.powerbot.script.Nameable;
 
 public abstract class PlayerQuery<K extends Locatable & Nameable> extends AbstractQuery<PlayerQuery<K>, K, org.powerbot.script.os.ClientContext>
@@ -39,6 +41,14 @@ public abstract class PlayerQuery<K extends Locatable & Nameable> extends Abstra
 	@Override
 	public PlayerQuery<K> within(final Locatable target, final double distance) {
 		return select(new Locatable.WithinRange(target, distance));
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public PlayerQuery<K> within(final Area area) {
+		return select(new Locatable.WithinArea(area));
 	}
 
 	/**

@@ -3,6 +3,7 @@ package org.powerbot.script.os;
 import java.awt.Point;
 
 import org.powerbot.bot.os.client.Client;
+import org.powerbot.script.Tile;
 
 public class Game extends ClientAccessor {
 	public static final int INDEX_MAP_LOADED = 30;

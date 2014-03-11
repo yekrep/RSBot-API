@@ -7,7 +7,9 @@ import java.util.concurrent.Callable;
 import org.powerbot.bot.rs3.client.Client;
 import org.powerbot.script.Condition;
 import org.powerbot.script.Filter;
+import org.powerbot.script.Locatable;
 import org.powerbot.script.Targetable;
+import org.powerbot.script.Tile;
 
 public class Movement extends ClientAccessor {
 	public static final int WIDGET_MAP = 1465;
@@ -70,8 +72,8 @@ public class Movement extends ClientAccessor {
 	 * @return <tt>true</tt> if stepped; otherwise <tt>false</tt>
 	 */
 	public boolean stepTowards(final Locatable locatable) {
-		Tile loc = locatable.getLocation();
-		if (!loc.getMatrix(ctx).isOnMap()) {
+		Tile loc = locatable.tile();
+		if (!new TileMatrix(ctx, loc).isOnMap()) {
 			loc = getClosestOnMap(loc);
 		}
 		final Tile t = loc;
@@ -82,7 +84,7 @@ public class Movement extends ClientAccessor {
 			}
 		};
 		return ctx.mouse.apply(new Targetable() {
-			private final TileMatrix tile = t.getMatrix(ctx);
+			private final TileMatrix tile = new TileMatrix(ctx, t);
 
 			@Override
 			public Point nextPoint() {
@@ -105,26 +107,26 @@ public class Movement extends ClientAccessor {
 	 * @return the closest {@link Tile} on map to the provided {@link Locatable}
 	 */
 	public Tile getClosestOnMap(final Locatable locatable) {
-		final Tile local = ctx.players.local().getLocation();
-		final Tile tile = locatable.getLocation();
+		final Tile local = ctx.players.local().tile();
+		final Tile tile = locatable.tile();
 		if (local == Tile.NIL || tile == Tile.NIL) {
 			return Tile.NIL;
 		}
-		if (tile.getMatrix(ctx).isOnMap()) {
+		if (new TileMatrix(ctx, tile).isOnMap()) {
 			return tile;
 		}
-		final int x2 = local.x;
-		final int y2 = local.y;
-		int x1 = tile.x;
-		int y1 = tile.y;
+		final int x2 = local.x();
+		final int y2 = local.y();
+		int x1 = tile.x();
+		int y1 = tile.y();
 		final int dx = Math.abs(x2 - x1);
 		final int dy = Math.abs(y2 - y1);
 		final int sx = (x1 < x2) ? 1 : -1;
 		final int sy = (y1 < y2) ? 1 : -1;
 		int off = dx - dy;
 		for (; ; ) {
-			final Tile t = new Tile(x1, y1, local.plane);
-			if (t.getMatrix(ctx).isOnMap()) {
+			final Tile t = new Tile(x1, y1, local.z());
+			if (new TileMatrix(ctx, t).isOnMap()) {
 				return t;
 			}
 			if (x1 == x2 && y1 == y2) {
@@ -208,20 +210,20 @@ public class Movement extends ClientAccessor {
 		if (_start == null || _end == null) {
 			return -1;
 		}
-		start = _start.getLocation();
-		end = _end.getLocation();
+		start = _start.tile();
+		end = _end.tile();
 
 		final Tile base = ctx.game.getMapBase();
 		if (base == Tile.NIL || start == Tile.NIL || end == Tile.NIL) {
 			return -1;
 		}
-		start = start.derive(-base.x, -base.y);
-		end = end.derive(-base.x, -base.y);
+		start = start.derive(-base.x(), -base.y());
+		end = end.derive(-base.x(), -base.y());
 
-		final int startX = start.getX();
-		final int startY = start.getY();
-		final int endX = end.getX();
-		final int endY = end.getY();
+		final int startX = start.x();
+		final int startY = start.y();
+		final int endX = end.x();
+		final int endY = end.y();
 		return ctx.map.getDistance(startX, startY, endX, endY, ctx.game.getPlane());
 	}
 
@@ -237,20 +239,20 @@ public class Movement extends ClientAccessor {
 		if (_start == null || _end == null) {
 			return false;
 		}
-		start = _start.getLocation();
-		end = _end.getLocation();
+		start = _start.tile();
+		end = _end.tile();
 
 		final Tile base = ctx.game.getMapBase();
 		if (base == Tile.NIL || start == Tile.NIL || end == Tile.NIL) {
 			return false;
 		}
-		start = start.derive(-base.x, -base.y);
-		end = end.derive(-base.x, -base.y);
+		start = start.derive(-base.x(), -base.y());
+		end = end.derive(-base.x(), -base.y());
 
-		final int startX = start.getX();
-		final int startY = start.getY();
-		final int endX = end.getX();
-		final int endY = end.getY();
+		final int startX = start.x();
+		final int startY = start.y();
+		final int endX = end.x();
+		final int endY = end.y();
 		return ctx.map.getPath(startX, startY, endX, endY, ctx.game.getPlane()).length > 0;
 	}
 }

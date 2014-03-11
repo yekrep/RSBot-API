@@ -1,11 +1,9 @@
-package org.powerbot.script.rs3;
+package org.powerbot.script;
 
 import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.util.Arrays;
-
-import org.powerbot.script.Random;
 
 public class Area {
 	private final Polygon polygon;
@@ -14,10 +12,10 @@ public class Area {
 
 	public Area(final Tile t1, final Tile t2) {
 		this(
-				new Tile(Math.min(t1.getX(), t2.getX()), Math.min(t1.getY(), t2.getY()), t1.getPlane()),
-				new Tile(Math.max(t1.getX(), t2.getX()), Math.min(t1.getY(), t2.getY()), t1.getPlane()),
-				new Tile(Math.max(t1.getX(), t2.getX()), Math.max(t1.getY(), t2.getY()), t2.getPlane()),
-				new Tile(Math.min(t1.getX(), t2.getX()), Math.max(t1.getY(), t2.getY()), t2.getPlane())
+				new Tile(Math.min(t1.x(), t2.x()), Math.min(t1.y(), t2.y()), t1.z()),
+				new Tile(Math.max(t1.x(), t2.x()), Math.min(t1.y(), t2.y()), t1.z()),
+				new Tile(Math.max(t1.x(), t2.x()), Math.max(t1.y(), t2.y()), t2.z()),
+				new Tile(Math.min(t1.x(), t2.x()), Math.max(t1.y(), t2.y()), t2.z())
 		);
 	}
 
@@ -26,20 +24,20 @@ public class Area {
 			throw new IllegalArgumentException("tiles.length < 0");
 		}
 		this.polygon = new Polygon();
-		this.plane = tiles[0].getPlane();
+		this.plane = tiles[0].z();
 		for (final Tile tile : tiles) {
-			if (tile.getPlane() != this.plane) {
-				throw new IllegalArgumentException("mismatched planes " + plane + " != " + tile.getPlane());
+			if (tile.z() != this.plane) {
+				throw new IllegalArgumentException("mismatched planes " + plane + " != " + tile.z());
 			}
-			polygon.addPoint(tile.getX(), tile.getY());
+			polygon.addPoint(tile.x(), tile.y());
 		}
 		this.tiles = null;
 	}
 
 	public boolean contains(final Locatable... locatables) {
 		for (final Locatable locatable : locatables) {
-			final Tile tile = locatable.getLocation();
-			if (tile.getPlane() != plane || !polygon.contains(tile.getX(), tile.getY())) {
+			final Tile tile = locatable.tile();
+			if (tile.z() != plane || !polygon.contains(tile.x(), tile.y())) {
 				return false;
 			}
 		}
@@ -58,7 +56,7 @@ public class Area {
 	}
 
 	public Tile getClosestTo(final Locatable locatable) {
-		final Tile t = locatable != null ? locatable.getLocation() : Tile.NIL;
+		final Tile t = locatable != null ? locatable.tile() : Tile.NIL;
 		if (t != Tile.NIL) {
 			double dist = Double.POSITIVE_INFINITY;
 			Tile tile = Tile.NIL;

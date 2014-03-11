@@ -3,7 +3,9 @@ package org.powerbot.script.rs3;
 import java.util.concurrent.Callable;
 
 import org.powerbot.script.Condition;
+import org.powerbot.script.Locatable;
 import org.powerbot.script.Random;
+import org.powerbot.script.Tile;
 
 /**
  * Utilities pertaining to the camera.
@@ -26,7 +28,7 @@ public class Camera extends ClientAccessor {
 	 */
 	public int getX() {
 		final Tile tile = ctx.game.getMapBase();
-		return (int) (offset[0] - (tile.getX() << 9));
+		return (int) (offset[0] - (tile.x() << 9));
 	}
 
 	/**
@@ -36,7 +38,7 @@ public class Camera extends ClientAccessor {
 	 */
 	public int getY() {
 		final Tile tile = ctx.game.getMapBase();
-		return (int) (offset[1] - (tile.getY() << 9));
+		return (int) (offset[1] - (tile.y() << 9));
 	}
 
 	/**
@@ -190,9 +192,9 @@ public class Camera extends ClientAccessor {
 	}
 
 	/**
-	 * Turns to the specified {@link Locatable}.
+	 * Turns to the specified {@link org.powerbot.script.Locatable}.
 	 *
-	 * @param l the {@link Locatable} to turn to
+	 * @param l the {@link org.powerbot.script.Locatable} to turn to
 	 */
 	public void turnTo(final Locatable l) {
 		turnTo(l, 0);
@@ -215,8 +217,8 @@ public class Camera extends ClientAccessor {
 
 	private int getAngleToLocatable(final Locatable mobile) {
 		final Player local = ctx.players.local();
-		final Tile t1 = local != null ? local.getLocation() : null;
-		final Tile t2 = mobile.getLocation();
-		return t1 != null && t2 != null ? ((int) Math.toDegrees(Math.atan2(t2.getY() - t1.getY(), t2.getX() - t1.getX()))) - 90 : 0;
+		final Tile t1 = local != null ? local.tile() : null;
+		final Tile t2 = mobile.tile();
+		return t1 != null && t2 != null ? ((int) Math.toDegrees(Math.atan2(t2.y() - t1.y(), t2.x() - t1.x()))) - 90 : 0;
 	}
 }

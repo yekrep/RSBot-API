@@ -1,6 +1,8 @@
 package org.powerbot.script.os;
 
 import org.powerbot.bot.os.client.Client;
+import org.powerbot.script.Locatable;
+import org.powerbot.script.Tile;
 
 public class Movement extends ClientAccessor {
 	public Movement(final ClientContext ctx) {
@@ -21,7 +23,7 @@ public class Movement extends ClientAccessor {
 
 	public boolean stepTowards(final Locatable locatable) {
 		Tile loc = locatable.tile();
-		if (!loc.matrix(ctx).onMap()) {
+		if (!new TileMatrix(ctx, loc).onMap()) {
 			loc = getClosestOnMap(loc);
 		}
 		final Tile t = loc;
@@ -34,7 +36,7 @@ public class Movement extends ClientAccessor {
 		if (local == Tile.NIL || tile == Tile.NIL) {
 			return Tile.NIL;
 		}
-		if (tile.matrix(ctx).onMap()) {
+		if (new TileMatrix(ctx, tile).onMap()) {
 			return tile;
 		}
 		final int x2 = local.x();
@@ -47,8 +49,8 @@ public class Movement extends ClientAccessor {
 		final int sy = (y1 < y2) ? 1 : -1;
 		int off = dx - dy;
 		for (; ; ) {
-			final Tile t = new Tile(x1, y1, local.floor());
-			if (t.matrix(ctx).onMap()) {
+			final Tile t = new Tile(x1, y1, local.z());
+			if (new TileMatrix(ctx, t).onMap()) {
 				return t;
 			}
 			if (x1 == x2 && y1 == y2) {

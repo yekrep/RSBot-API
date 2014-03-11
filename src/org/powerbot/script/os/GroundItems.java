@@ -8,6 +8,7 @@ import org.powerbot.bot.os.client.Client;
 import org.powerbot.bot.os.client.ItemNode;
 import org.powerbot.bot.os.client.NodeDeque;
 import org.powerbot.bot.os.tools.NodeQueue;
+import org.powerbot.script.Tile;
 
 public class GroundItems extends BasicQuery<GroundItem> {
 	public GroundItems(final ClientContext ctx) {

@@ -8,6 +8,8 @@ import org.powerbot.bot.rs3.client.RSHintArrow;
 import org.powerbot.bot.rs3.client.RSNPC;
 import org.powerbot.bot.rs3.client.RSNPCNode;
 import org.powerbot.bot.rs3.client.RSPlayer;
+import org.powerbot.script.Locatable;
+import org.powerbot.script.Tile;
 import org.powerbot.script.Validatable;
 
 public class HintArrow extends ClientAccessor implements Locatable, Validatable {
@@ -34,7 +36,7 @@ public class HintArrow extends ClientAccessor implements Locatable, Validatable 
 	}
 
 	@Override
-	public Tile getLocation() {
+	public Tile tile() {
 		final Client client = ctx.client();
 		final RSHintArrow arrow = this.arrow.get();
 		if (client == null || arrow == null) {
@@ -56,7 +58,7 @@ public class HintArrow extends ClientAccessor implements Locatable, Validatable 
 					npc = new Npc(ctx, (RSNPC) node);
 				}
 			}
-			return npc != null ? npc.getLocation() : Tile.NIL;
+			return npc != null ? npc.tile() : Tile.NIL;
 		} else if (type == 2) {
 			return ctx.game.getMapBase().derive(arrow.getX() >> 9, arrow.getY() >> 9, getPlane());
 		}
@@ -66,7 +68,7 @@ public class HintArrow extends ClientAccessor implements Locatable, Validatable 
 		}
 		final RSPlayer localPlayer = players[target];
 		if (localPlayer != null) {
-			return new Player(ctx, localPlayer).getLocation();
+			return new Player(ctx, localPlayer).tile();
 		}
 		return Tile.NIL;
 	}

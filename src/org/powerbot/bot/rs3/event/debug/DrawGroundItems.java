@@ -8,10 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.powerbot.script.PaintListener;
+import org.powerbot.script.Tile;
 import org.powerbot.script.rs3.ClientContext;
 import org.powerbot.script.rs3.GroundItem;
 import org.powerbot.script.rs3.Player;
-import org.powerbot.script.rs3.Tile;
+import org.powerbot.script.rs3.TileMatrix;
 
 public class DrawGroundItems implements PaintListener {
 	private final ClientContext ctx;
@@ -29,7 +30,7 @@ public class DrawGroundItems implements PaintListener {
 		if (player == null) {
 			return;
 		}
-		final Tile tile = player.getLocation();
+		final Tile tile = player.tile();
 		if (tile == null) {
 			return;
 		}
@@ -39,11 +40,11 @@ public class DrawGroundItems implements PaintListener {
 		final int plane = ctx.game.getPlane();
 		final List<GroundItem> check = new ArrayList<GroundItem>();
 		ctx.groundItems.select().addTo(check);
-		for (int x = tile.getX() - 10; x <= tile.getX() + 10; x++) {
-			for (int y = tile.getY() - 10; y <= tile.getY() + 10; y++) {
+		for (int x = tile.x() - 10; x <= tile.x() + 10; x++) {
+			for (int y = tile.y() - 10; y <= tile.y() + 10; y++) {
 				int d = 0;
 				final Tile loc = new Tile(x, y, plane);
-				final Point screen = loc.getMatrix(ctx).getCenterPoint();
+				final Point screen = new TileMatrix(ctx, loc).getCenterPoint();
 				if (screen.x == -1 || screen.y == -1) {
 					continue;
 				}

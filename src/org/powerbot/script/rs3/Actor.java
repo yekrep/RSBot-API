@@ -17,7 +17,9 @@ import org.powerbot.bot.rs3.client.RSNPCNode;
 import org.powerbot.bot.rs3.client.RSPlayer;
 import org.powerbot.bot.rs3.client.Sequence;
 import org.powerbot.script.Filter;
+import org.powerbot.script.Locatable;
 import org.powerbot.script.Nameable;
+import org.powerbot.script.Tile;
 
 public abstract class Actor extends Interactive implements Renderable, Nameable, Locatable, Drawable {
 	public Actor(final ClientContext ctx) {
@@ -233,7 +235,7 @@ public abstract class Actor extends Interactive implements Renderable, Nameable,
 	}
 
 	@Override
-	public Tile getLocation() {
+	public Tile tile() {
 		final RSCharacter character = getAccessor();
 		final RelativeLocation position = getRelative();
 		if (character != null && position != RelativeLocation.NIL) {

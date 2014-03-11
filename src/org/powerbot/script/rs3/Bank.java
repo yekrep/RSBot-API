@@ -8,7 +8,9 @@ import java.util.concurrent.Callable;
 
 import org.powerbot.script.Filter;
 import org.powerbot.script.Condition;
+import org.powerbot.script.Locatable;
 import org.powerbot.script.Random;
+import org.powerbot.script.Tile;
 import org.powerbot.script.Viewport;
 import org.powerbot.util.StringUtils;
 
@@ -41,7 +43,7 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 		@Override
 		public boolean accept(final Interactive interactive) {
 			if (interactive instanceof Locatable) {
-				final Tile tile = ((Locatable) interactive).getLocation();
+				final Tile tile = ((Locatable) interactive).tile();
 				for (final Tile bad : UNREACHABLE_BANK_TILES) {
 					if (tile.equals(bad)) {
 						return false;
@@ -69,7 +71,7 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 
 	private Interactive getBank() {
 		final Player p = ctx.players.local();
-		final Tile t = p.getLocation();
+		final Tile t = p.tile();
 		final Filter<Interactive> f = Interactive.areInViewport();
 
 		ctx.npcs.select().id(BANK_NPC_IDS).select(f).select(UNREACHABLE_FILTER).nearest();
@@ -99,14 +101,14 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 	public Locatable getNearest() {
 		Locatable nearest = ctx.npcs.select().select(UNREACHABLE_FILTER).id(BANK_NPC_IDS).nearest().poll();
 
-		final Tile loc = ctx.players.local().getLocation();
+		final Tile loc = ctx.players.local().tile();
 		for (final GameObject object : ctx.objects.select().select(UNREACHABLE_FILTER).
 				id(BANK_BOOTH_IDS, BANK_COUNTER_IDS, BANK_CHEST_IDS).nearest().limit(1)) {
 			if (loc.distanceTo(object) < loc.distanceTo(nearest)) {
 				nearest = object;
 			}
 		}
-		if (nearest.getLocation() != Tile.NIL) {
+		if (nearest.tile() != Tile.NIL) {
 			return nearest;
 		}
 		return Tile.NIL;

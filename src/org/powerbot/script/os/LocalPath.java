@@ -9,10 +9,12 @@ import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
+import org.powerbot.script.Locatable;
 import org.powerbot.script.Random;
 import org.powerbot.bot.os.client.Client;
 import org.powerbot.bot.os.client.CollisionMap;
 import org.powerbot.bot.os.client.Landscape;
+import org.powerbot.script.Tile;
 
 public class LocalPath extends Path {
 	private final Locatable destination;

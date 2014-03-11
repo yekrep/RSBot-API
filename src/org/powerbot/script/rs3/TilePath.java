@@ -6,6 +6,7 @@ import java.util.concurrent.Callable;
 
 import org.powerbot.script.Condition;
 import org.powerbot.script.Random;
+import org.powerbot.script.Tile;
 
 public class TilePath extends Path {
 	protected Tile[] tiles;
@@ -96,7 +97,7 @@ public class TilePath extends Path {
 		/* Iterate over all tiles but the first tile (0) starting with the last (length - 1). */
 		for (int i = tiles.length - 1; i > 0; --i) {
 			/* The tiles not in view, go to the next. */
-			if (!tiles[i].getMatrix(ctx).isOnMap()) {
+			if (!new TileMatrix(ctx, tiles[i]).isOnMap()) {
 				continue;
 			}
 			/* If our destination is NIL, assume mid path and continue there. */
@@ -113,7 +114,7 @@ public class TilePath extends Path {
 				 * Explanation: Path wraps around something and must be followed.
 				 * We cannot suddenly click out of a "pathable" region (104x104).
 				 * In these cases, we can assume a better tile will become available. */
-				if (!tiles[a].getMatrix(ctx).isOnMap()) {
+				if (!new TileMatrix(ctx, tiles[a]).isOnMap()) {
 					continue out;
 				}
 				/* If a tile (successor) is currently targeted, return the tile that was the "best"
@@ -132,12 +133,12 @@ public class TilePath extends Path {
 		final Player p = ctx.players.local();
 		if (p != null && !p.isInMotion() && dest != Tile.NIL) {
 			for (int i = tiles.length - 1; i >= 0; --i) {
-				if (tiles[i].getMatrix(ctx).isOnMap()) {
+				if (new TileMatrix(ctx, tiles[i]).isOnMap()) {
 					return tiles[i];
 				}
 			}
 		}
-		if (tiles.length == 0 || !tiles[0].getMatrix(ctx).isOnMap()) {
+		if (tiles.length == 0 || !new TileMatrix(ctx, tiles[0]).isOnMap()) {
 			return null;
 		}
 		return tiles[0];

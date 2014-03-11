@@ -4,9 +4,9 @@ import java.awt.Graphics;
 
 import org.powerbot.script.PaintListener;
 import org.powerbot.script.TextPaintListener;
+import org.powerbot.script.Tile;
 import org.powerbot.script.rs3.ClientContext;
 import org.powerbot.script.rs3.Projectile;
-import org.powerbot.script.rs3.Tile;
 import org.powerbot.script.rs3.TileMatrix;
 
 public class DrawProjectiles implements PaintListener, TextPaintListener {
@@ -23,8 +23,8 @@ public class DrawProjectiles implements PaintListener, TextPaintListener {
 		}
 
 		for (final Projectile projectile : ctx.projectiles.select()) {
-			final Tile t = projectile.getLocation();
-			final TileMatrix m = t.getMatrix(ctx);
+			final Tile t = projectile.tile();
+			final TileMatrix m = new TileMatrix(ctx, t);
 			if (!m.valid()) {
 				continue;
 			}

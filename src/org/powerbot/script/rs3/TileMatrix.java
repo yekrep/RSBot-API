@@ -5,7 +5,9 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Polygon;
 
+import org.powerbot.script.Locatable;
 import org.powerbot.script.Random;
+import org.powerbot.script.Tile;
 
 /**
  * An interactive tile matrix.
@@ -13,7 +15,7 @@ import org.powerbot.script.Random;
 public final class TileMatrix extends Interactive implements Locatable, Drawable {
 	private final Tile tile;
 
-	TileMatrix(final ClientContext ctx, final Tile tile) {
+	public TileMatrix(final ClientContext ctx, final Tile tile) {
 		super(ctx);
 		this.tile = tile;
 	}
@@ -24,13 +26,13 @@ public final class TileMatrix extends Interactive implements Locatable, Drawable
 			@Override
 			public int getX() {
 				final Tile base = ctx.game.getMapBase();
-				return ((tile.x - base.x) * 512) + 256;
+				return ((tile.x() - base.x()) * 512) + 256;
 			}
 
 			@Override
 			public int getZ() {
 				final Tile base = ctx.game.getMapBase();
-				return ((tile.y - base.y) * 512) + 256;
+				return ((tile.y() - base.y()) * 512) + 256;
 			}
 		});
 	}
@@ -41,7 +43,7 @@ public final class TileMatrix extends Interactive implements Locatable, Drawable
 
 	public Point getPoint(final double modX, final double modY, final int height) {
 		final Tile base = ctx.game.getMapBase();
-		return base != null ? ctx.game.groundToScreen((int) ((tile.x - base.x + modX) * 512d), (int) ((tile.y - base.y + modY) * 512d), tile.plane, height) : new Point(-1, -1);
+		return base != null ? ctx.game.groundToScreen((int) ((tile.x() - base.x() + modX) * 512d), (int) ((tile.y() - base.y() + modY) * 512d), tile.z(), height) : new Point(-1, -1);
 	}
 
 	public Polygon getBounds() {
@@ -66,11 +68,11 @@ public final class TileMatrix extends Interactive implements Locatable, Drawable
 	}
 
 	public boolean isReachable() {
-		return ctx.movement.isReachable(ctx.players.local().getLocation(), tile);
+		return ctx.movement.isReachable(ctx.players.local().tile(), tile);
 	}
 
 	@Override
-	public Tile getLocation() {
+	public Tile tile() {
 		return tile;
 	}
 
@@ -130,7 +132,7 @@ public final class TileMatrix extends Interactive implements Locatable, Drawable
 		if (t == null || tile == Tile.NIL) {
 			return false;
 		}
-		final int x = tile.x - t.x, y = tile.y - t.y;
+		final int x = tile.x() - t.x(), y = tile.y() - t.y();
 		return x >= 0 && y >= 0 && x < 104 && y < 104;
 	}
 

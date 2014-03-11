@@ -6,11 +6,12 @@ import java.awt.Graphics;
 import java.awt.Point;
 
 import org.powerbot.script.PaintListener;
+import org.powerbot.script.Tile;
 import org.powerbot.script.os.ClientContext;
 import org.powerbot.script.os.Game;
 import org.powerbot.script.os.GameObject;
 import org.powerbot.script.os.Player;
-import org.powerbot.script.os.Tile;
+import org.powerbot.script.os.TileMatrix;
 
 public class DrawObjects implements PaintListener {
 	private static final Color[] C = {Color.GREEN, Color.WHITE, Color.BLACK, Color.BLUE};
@@ -38,7 +39,7 @@ public class DrawObjects implements PaintListener {
 				continue;
 			}
 
-			Point p = t.matrix(ctx).centerPoint();
+			Point p = new TileMatrix(ctx, t).centerPoint();
 			if (p.x == -1) {
 				continue;
 			}

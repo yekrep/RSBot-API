@@ -1,8 +1,6 @@
-package org.powerbot.script.os;
+package org.powerbot.script;
 
 import java.util.Comparator;
-
-import org.powerbot.script.Filter;
 
 public interface Locatable {
 	public Tile tile();
@@ -13,6 +11,8 @@ public interface Locatable {
 		public T within(double d);
 
 		public T within(Locatable t, double d);
+
+		public T within(Area area);
 
 		public T nearest();
 
@@ -48,6 +48,20 @@ public interface Locatable {
 			final Tile tile = l != null ? l.tile() : null;
 			final Tile target = this.target.tile();
 			return tile != null && target != null && tile.distanceTo(target) <= distance;
+		}
+	}
+
+	public class WithinArea implements Filter<Locatable> {
+		private final Area area;
+
+		public WithinArea(final Area area) {
+			this.area = area;
+		}
+
+		@Override
+		public boolean accept(final Locatable l) {
+			final Tile tile = l != null ? l.tile() : null;
+			return tile != null && area.contains(tile);
 		}
 	}
 

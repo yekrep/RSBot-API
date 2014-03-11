@@ -6,6 +6,8 @@ import org.powerbot.bot.rs3.client.RSInteractableData;
 import org.powerbot.bot.rs3.client.RSInteractableLocation;
 import org.powerbot.bot.rs3.client.RSProjectile;
 import org.powerbot.script.Identifiable;
+import org.powerbot.script.Locatable;
+import org.powerbot.script.Tile;
 import org.powerbot.script.Validatable;
 
 public class Projectile extends ClientAccessor implements Locatable, Identifiable, Validatable {
@@ -45,7 +47,7 @@ public class Projectile extends ClientAccessor implements Locatable, Identifiabl
 	}
 
 	@Override
-	public Tile getLocation() {
+	public Tile tile() {
 		final RSProjectile projectile = this.projectile.get();
 		final RelativeLocation position = getRelative();
 		if (projectile != null && position != RelativeLocation.NIL) {

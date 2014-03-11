@@ -16,8 +16,11 @@ import org.powerbot.bot.rs3.client.RSInteractableLocation;
 import org.powerbot.bot.rs3.client.RSObject;
 import org.powerbot.bot.rs3.client.RSObjectDef;
 import org.powerbot.bot.rs3.client.RSObjectDefLoader;
+import org.powerbot.script.Area;
 import org.powerbot.script.Identifiable;
+import org.powerbot.script.Locatable;
 import org.powerbot.script.Nameable;
+import org.powerbot.script.Tile;
 
 public class GameObject extends Interactive implements Renderable, Locatable, Nameable, Drawable, Identifiable {
 	private static final Color TARGET_COLOR = new Color(0, 255, 0, 20);
@@ -115,12 +118,12 @@ public class GameObject extends Interactive implements Renderable, Locatable, Na
 					base.derive(animable.getX2(), animable.getY2())
 			);
 		}
-		final Tile loc = getLocation();
+		final Tile loc = tile();
 		return new Area(loc, loc);
 	}
 
 	@Override
-	public Tile getLocation() {
+	public Tile tile() {
 		final RSObject object = this.object.get();
 		final RelativeLocation location = getRelative();
 		if (object != null && location != null) {
@@ -149,7 +152,7 @@ public class GameObject extends Interactive implements Renderable, Locatable, Na
 		if (model2 != null) {
 			return model2.getNextPoint();
 		}
-		return getLocation().getMatrix(ctx).nextPoint();
+		return new TileMatrix(ctx, tile()).nextPoint();
 	}
 
 	public Point getCenterPoint() {
@@ -161,7 +164,7 @@ public class GameObject extends Interactive implements Renderable, Locatable, Na
 		if (model2 != null) {
 			return model2.getCenterPoint();
 		}
-		return getLocation().getMatrix(ctx).getCenterPoint();
+		return new TileMatrix(ctx, tile()).getCenterPoint();
 	}
 
 	@Override
@@ -174,7 +177,7 @@ public class GameObject extends Interactive implements Renderable, Locatable, Na
 		if (model2 != null) {
 			return model2.contains(point);
 		}
-		return getLocation().getMatrix(ctx).contains(point);
+		return new TileMatrix(ctx, tile()).contains(point);
 	}
 
 	@Override

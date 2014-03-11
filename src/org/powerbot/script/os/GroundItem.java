@@ -6,7 +6,9 @@ import java.lang.ref.WeakReference;
 
 import org.powerbot.bot.os.client.ItemNode;
 import org.powerbot.script.Identifiable;
+import org.powerbot.script.Locatable;
 import org.powerbot.script.Nameable;
+import org.powerbot.script.Tile;
 import org.powerbot.script.Validatable;
 
 public class GroundItem extends Interactive implements Nameable, Locatable, Identifiable, Validatable {
@@ -38,17 +40,17 @@ public class GroundItem extends Interactive implements Nameable, Locatable, Iden
 
 	@Override
 	public Point centerPoint() {
-		return tile.matrix(ctx).centerPoint();
+		return new TileMatrix(ctx, tile).centerPoint();
 	}
 
 	@Override
 	public Point nextPoint() {
-		return tile.matrix(ctx).nextPoint();
+		return new TileMatrix(ctx, tile).nextPoint();
 	}
 
 	@Override
 	public boolean contains(final Point point) {
-		return tile.matrix(ctx).contains(point);
+		return new TileMatrix(ctx, tile).contains(point);
 	}
 
 	@Override

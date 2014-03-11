@@ -29,6 +29,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import org.powerbot.script.PaintListener;
+import org.powerbot.script.Tile;
 import org.powerbot.script.rs3.ClientContext;
 import org.powerbot.script.rs3.Drawable;
 import org.powerbot.script.rs3.GameObject;
@@ -38,7 +39,6 @@ import org.powerbot.script.rs3.Model;
 import org.powerbot.script.rs3.Npc;
 import org.powerbot.script.rs3.Player;
 import org.powerbot.script.rs3.Renderable;
-import org.powerbot.script.rs3.Tile;
 import org.powerbot.script.rs3.TileMatrix;
 
 class BotBoundingUtility extends JFrame implements PaintListener, MouseListener, MouseMotionListener {
@@ -114,10 +114,10 @@ class BotBoundingUtility extends JFrame implements PaintListener, MouseListener,
 					public TileMatrix call() {
 						final ClientContext ctx = (ClientContext) chrome.bot.get().ctx();
 						final List<TileMatrix> list = new ArrayList<TileMatrix>();
-						final Tile t = ctx.players.local().getLocation();
+						final Tile t = ctx.players.local().tile();
 						for (int x = -20; x <= 20; x++) {
 							for (int y = -20; y <= 20; y++) {
-								list.add(t.derive(x, y).getMatrix(ctx));
+								list.add(new TileMatrix(ctx, t.derive(x, y)));
 							}
 						}
 						return (TileMatrix) nearest(list);

@@ -11,7 +11,9 @@ import org.powerbot.bot.os.client.ObjectConfig;
 import org.powerbot.bot.os.client.Varbit;
 import org.powerbot.bot.os.tools.HashTable;
 import org.powerbot.script.Identifiable;
+import org.powerbot.script.Locatable;
 import org.powerbot.script.Nameable;
+import org.powerbot.script.Tile;
 
 public class GameObject extends Interactive implements Nameable, Locatable, Identifiable {
 	private static final Color TARGET_COLOR = new Color(0, 255, 0, 20);
@@ -143,16 +145,16 @@ public class GameObject extends Interactive implements Nameable, Locatable, Iden
 
 	@Override
 	public Point centerPoint() {
-		return tile().matrix(ctx).centerPoint();
+		return new TileMatrix(ctx, tile()).centerPoint();
 	}
 
 	@Override
 	public Point nextPoint() {
-		return tile().matrix(ctx).nextPoint();
+		return new TileMatrix(ctx, tile()).nextPoint();
 	}
 
 	@Override
 	public boolean contains(final Point point) {
-		return tile().matrix(ctx).contains(point);
+		return new TileMatrix(ctx, tile()).contains(point);
 	}
 }

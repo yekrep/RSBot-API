@@ -3,6 +3,8 @@ package org.powerbot.script.rs3;
 import java.util.EnumSet;
 
 import org.powerbot.bot.rs3.tools.Map;
+import org.powerbot.script.Locatable;
+import org.powerbot.script.Tile;
 
 public class LocalPath extends Path {
 	private final Locatable destination;
@@ -24,7 +26,7 @@ public class LocalPath extends Path {
 
 	@Override
 	public boolean isValid() {
-		Tile end = destination.getLocation();
+		Tile end = destination.tile();
 		if (end == null || end == Tile.NIL) {
 			return false;
 		}
@@ -32,14 +34,14 @@ public class LocalPath extends Path {
 			return true;
 		}
 		tile = end;
-		Tile start = ctx.players.local().getLocation();
+		Tile start = ctx.players.local().tile();
 		final Tile base = ctx.game.getMapBase();
 		if (base == Tile.NIL || start == Tile.NIL || end == Tile.NIL) {
 			return false;
 		}
-		start = start.derive(-base.x, -base.y);
-		end = end.derive(-base.x, -base.y);
-		final Map.Node[] path = map.getPath(start.getX(), start.getY(), end.getX(), end.getY(), ctx.game.getPlane());
+		start = start.derive(-base.x(), -base.y());
+		end = end.derive(-base.x(), -base.y());
+		final Map.Node[] path = map.getPath(start.x(), start.y(), end.x(), end.y(), ctx.game.getPlane());
 		if (path.length > 0) {
 			final Tile[] arr = new Tile[path.length];
 			for (int i = 0; i < path.length; i++) {
@@ -63,6 +65,6 @@ public class LocalPath extends Path {
 
 	@Override
 	public Tile getEnd() {
-		return destination.getLocation();
+		return destination.tile();
 	}
 }

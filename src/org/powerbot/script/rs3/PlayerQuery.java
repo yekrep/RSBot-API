@@ -1,6 +1,8 @@
 package org.powerbot.script.rs3;
 
 import org.powerbot.script.AbstractQuery;
+import org.powerbot.script.Area;
+import org.powerbot.script.Locatable;
 import org.powerbot.script.Nameable;
 
 public abstract class PlayerQuery<K extends Locatable & Nameable> extends AbstractQuery<PlayerQuery<K>, K, ClientContext>

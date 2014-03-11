@@ -23,6 +23,8 @@ import org.powerbot.bot.rs3.client.RenderData;
 import org.powerbot.bot.rs3.client.SoftReference;
 import org.powerbot.bot.rs3.client.TileData;
 import org.powerbot.script.Condition;
+import org.powerbot.script.Locatable;
+import org.powerbot.script.Tile;
 
 public class Game extends ClientAccessor {
 	public static final int INDEX_LOGIN_SCREEN = 3;
@@ -310,16 +312,16 @@ public class Game extends ClientAccessor {
 	/**
 	 * Calculates a point on the mini-map.
 	 *
-	 * @param locatable the {@link Locatable} to convert to map point
+	 * @param locatable the {@link org.powerbot.script.Locatable} to convert to map point
 	 * @return the map {@link Point}
 	 */
 	public Point tileToMap(final Locatable locatable) {
 		final Point bad = new Point(-1, -1);
 		final Client client = ctx.client();
 		final Tile b = ctx.game.getMapBase();
-		final Tile t = locatable.getLocation().derive(-b.getX(), -b.getY());
-		final int tx = t.getX();
-		final int ty = t.getY();
+		final Tile t = locatable.tile().derive(-b.x(), -b.y());
+		final int tx = t.x();
+		final int ty = t.y();
 		if (client == null || tx < 1 || tx > 103 || ty < 1 || ty > 103) {
 			return bad;
 		}

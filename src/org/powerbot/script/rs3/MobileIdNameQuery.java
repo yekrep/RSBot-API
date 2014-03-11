@@ -1,7 +1,9 @@
 package org.powerbot.script.rs3;
 
 import org.powerbot.script.AbstractQuery;
+import org.powerbot.script.Area;
 import org.powerbot.script.Identifiable;
+import org.powerbot.script.Locatable;
 import org.powerbot.script.Nameable;
 
 public abstract class MobileIdNameQuery<K extends Locatable & Identifiable & Nameable> extends AbstractQuery<MobileIdNameQuery<K>, K, ClientContext>

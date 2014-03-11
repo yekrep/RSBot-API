@@ -10,10 +10,11 @@ import java.lang.reflect.Field;
 import org.powerbot.bot.rs3.client.RSAnimable;
 import org.powerbot.bot.rs3.client.RSObject;
 import org.powerbot.script.PaintListener;
+import org.powerbot.script.Tile;
 import org.powerbot.script.rs3.ClientContext;
 import org.powerbot.script.rs3.GameObject;
 import org.powerbot.script.rs3.Player;
-import org.powerbot.script.rs3.Tile;
+import org.powerbot.script.rs3.TileMatrix;
 
 public class DrawObjects implements PaintListener {
 	private static final Color[] C = {Color.GREEN, Color.WHITE, Color.BLACK, Color.BLUE};
@@ -37,12 +38,12 @@ public class DrawObjects implements PaintListener {
 		final int textHeight = metrics.getHeight();
 		final Tile base = ctx.game.getMapBase();
 		for (final GameObject object : ctx.objects.select().within(25)) {
-			final Tile t = object.getLocation();
+			final Tile t = object.tile();
 			if (t == null) {
 				continue;
 			}
 
-			Point p = t.getMatrix(ctx).getCenterPoint();
+			Point p = new TileMatrix(ctx, t).getCenterPoint();
 			if (p.x == -1) {
 				continue;
 			}
@@ -74,7 +75,7 @@ public class DrawObjects implements PaintListener {
 				for (int _x = x1; _x <= x2; _x++) {
 					for (int _y = y1; _y <= y2; _y++) {
 						final Tile _tile = base.derive(_x, _y);
-						_tile.getMatrix(ctx).draw(render);
+						new TileMatrix(ctx, _tile).draw(render);
 					}
 				}
 			}

@@ -8,6 +8,7 @@ import org.powerbot.bot.rs3.client.HashTable;
 import org.powerbot.bot.rs3.client.NodeListCache;
 import org.powerbot.bot.rs3.client.RSItem;
 import org.powerbot.bot.rs3.tools.NodeQueue;
+import org.powerbot.script.Tile;
 
 public class GroundItems extends GroundItemQuery<GroundItem> {
 	public GroundItems(final ClientContext factory) {
@@ -39,8 +40,8 @@ public class GroundItems extends GroundItemQuery<GroundItem> {
 		if (base == null) {
 			return items;
 		}
-		final int bx = base.getX();
-		final int by = base.getY();
+		final int bx = base.x();
+		final int by = base.y();
 		for (int x = bx; x < bx + 104; x++) {
 			for (int y = by; y < by + 104; y++) {
 				id = x | y << 14 | plane << 28;
