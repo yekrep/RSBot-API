@@ -40,6 +40,14 @@ public class Tile implements Locatable, Nillable<Tile>, Comparable<Tile> {
 		return new Tile(p.x + x, p.y + y, z);
 	}
 
+	public org.powerbot.script.os.TileMatrix matrix(final org.powerbot.script.os.ClientContext ctx) {
+		return new org.powerbot.script.os.TileMatrix(ctx, this);
+	}
+
+	public org.powerbot.script.rs3.TileMatrix matrix(final org.powerbot.script.rs3.ClientContext ctx) {
+		return new org.powerbot.script.rs3.TileMatrix(ctx, this);
+	}
+
 	@Override
 	public Tile tile() {
 		return this;
