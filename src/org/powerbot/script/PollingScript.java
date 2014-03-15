@@ -45,7 +45,7 @@ public abstract class PollingScript<C extends ClientContext> extends AbstractScr
 	public final void run() {
 		try {
 			poll();
-			if (!Thread.interrupted()) {
+			if (!Thread.interrupted() && !ctx.controller().isStopping()) {
 				ctx.controller().offer(this);
 			}
 		} catch (final Throwable e) {
