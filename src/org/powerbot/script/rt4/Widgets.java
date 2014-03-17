@@ -2,6 +2,8 @@ package org.powerbot.script.rt4;
 
 import java.util.Arrays;
 
+import org.powerbot.bot.rt4.client.Client;
+
 public class Widgets extends ClientAccessor {
 	private Widget[] sparseCache;
 
@@ -20,4 +22,16 @@ public class Widgets extends ClientAccessor {
 		}
 		return sparseCache[index] = c;
 	}
+
+	public Widget[] array() {
+		final Client client = ctx.client();
+		final org.powerbot.bot.rt4.client.Widget[][] a = client != null ? client.getWidgets() : null;
+		final int len = a != null ? a.length : 0;
+		if (len <= 0) {
+			return new Widget[0];
+		}
+		get(len - 1);
+		return Arrays.copyOf(sparseCache, len);
+	}
+
 }

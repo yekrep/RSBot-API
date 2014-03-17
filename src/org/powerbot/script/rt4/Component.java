@@ -7,8 +7,9 @@ import java.util.Arrays;
 import org.powerbot.bot.rt4.client.Client;
 import org.powerbot.bot.rt4.client.WidgetNode;
 import org.powerbot.bot.rt4.tools.HashTable;
+import org.powerbot.script.Validatable;
 
-public class Component extends ClientAccessor {
+public class Component extends ClientAccessor implements Validatable {
 	public static final Color TARGET_STROKE_COLOR = new Color(0, 255, 0, 150);
 	public static final Color TARGET_FILL_COLOR = new Color(0, 0, 0, 50);
 
@@ -37,7 +38,7 @@ public class Component extends ClientAccessor {
 		return index;
 	}
 
-	public Point screenLocation() {
+	public Point screenPoint() {
 		final Client client = ctx.client();
 		final org.powerbot.bot.rt4.client.Widget widget = getInternal();
 		if (client == null || widget == null) {
@@ -46,7 +47,7 @@ public class Component extends ClientAccessor {
 		final int uid = parentId();
 		if (uid != -1) {
 			final Component c = ctx.widgets.get(uid >> 16).component(uid & 0xffff);
-			final Point p = c.screenLocation();
+			final Point p = c.screenPoint();
 			if (p.x != -1 && p.y != -1) {
 				return new Point(p.x + widget.getX(), p.y + widget.getY());
 			}
@@ -130,6 +131,15 @@ public class Component extends ClientAccessor {
 		final org.powerbot.bot.rt4.client.Widget w = getInternal();
 		final org.powerbot.bot.rt4.client.Widget[] arr = w != null ? w.getChildren() : null;
 		return arr != null ? arr.length : 0;
+	}
+
+	public Component[] components() {
+		final int len = componentCount();
+		if (len <= 0) {
+			return new Component[0];
+		}
+		component(len - 1);
+		return Arrays.copyOf(sparseCache, len);
 	}
 
 	public int contentType() {
@@ -217,6 +227,22 @@ public class Component extends ClientAccessor {
 	public int textureId() {
 		final org.powerbot.bot.rt4.client.Widget w = getInternal();
 		return w != null ? w.getTextureId() : -1;
+	}
+
+	@Override
+	public boolean valid() {
+		final org.powerbot.bot.rt4.client.Widget internal = getInternal();
+		return internal != null && (component == null || component.visible()) &&
+				id() != -1 && internal.getBoundsIndex() != -1;
+	}
+
+	public boolean visible() {
+		final org.powerbot.bot.rt4.client.Widget internal = getInternal();
+		int id = 0;
+		if (internal != null && valid() && !internal.isHidden()) {
+			id = parentId();
+		}
+		return id == -1 || (id != 0 && ctx.widgets.get(id >> 16).component(id & 0xffff).visible());
 	}
 
 	private org.powerbot.bot.rt4.client.Widget getInternal() {

@@ -38,4 +38,14 @@ public class Widget extends ClientAccessor {
 		}
 		return 0;
 	}
+
+	public Component[] components() {
+		final int len = componentCount();
+		if (len <= 0) {
+			return new Component[0];
+		}
+		component(len - 1);
+		return Arrays.copyOf(sparseCache, len);
+	}
+
 }
