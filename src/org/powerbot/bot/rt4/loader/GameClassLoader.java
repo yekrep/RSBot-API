@@ -33,9 +33,10 @@ public class GameClassLoader extends ClassLoader {
 		permissions.add(new AllPermission());
 		domain = new ProtectionDomain(codesource, permissions);
 
+		final String packid = "";
 		try {
 			final CryptFile cache = new CryptFile("rt4.ts", getClass());
-			spec = new TransformSpec(cache.download(HttpUtils.getHttpConnection(new URL(Configuration.URLs.TSPEC_OS))));
+			spec = new TransformSpec(cache.download(HttpUtils.getHttpConnection(new URL(String.format(Configuration.URLs.TSPEC, "4", packid)))));
 		} catch (final IOException e) {
 			throw new IllegalStateException("bad resource", e);
 		}

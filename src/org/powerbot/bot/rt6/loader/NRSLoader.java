@@ -1,7 +1,6 @@
 package org.powerbot.bot.rt6.loader;
 
 import java.applet.Applet;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.reflect.Constructor;
@@ -21,7 +20,6 @@ import javax.crypto.spec.SecretKeySpec;
 
 import org.powerbot.Configuration;
 import org.powerbot.bot.rt6.loader.transform.TransformSpec;
-import org.powerbot.misc.Resources;
 import org.powerbot.misc.Tracker;
 import org.powerbot.util.HttpUtils;
 import org.powerbot.util.StringUtils;
@@ -135,7 +133,7 @@ public class NRSLoader implements Runnable {
 		System.arraycopy(md.digest(), 0, b, 0, b.length);
 		final SecretKey key = new SecretKeySpec(b, 0, b.length, keyAlgo);
 
-		final HttpURLConnection con = HttpUtils.getHttpConnection(new URL(String.format(Configuration.URLs.TSPEC_RS3, packHash)));
+		final HttpURLConnection con = HttpUtils.getHttpConnection(new URL(String.format(Configuration.URLs.TSPEC, "6", packHash)));
 		con.setInstanceFollowRedirects(false);
 		con.connect();
 		r = con.getResponseCode();
@@ -159,7 +157,7 @@ public class NRSLoader implements Runnable {
 	}
 
 	private HttpURLConnection getBucketConnection() throws IOException {
-		final HttpURLConnection b = HttpUtils.getHttpConnection(new URL(String.format(Configuration.URLs.TSPEC_RS3_BUCKETS, packHash)));
+		final HttpURLConnection b = HttpUtils.getHttpConnection(new URL(String.format(Configuration.URLs.TSPEC_BUCKETS, packHash)));
 		b.addRequestProperty(String.format("x-%s-cv", Configuration.NAME.toLowerCase()), "201");
 		b.addRequestProperty(String.format("x-%s-gv", Configuration.NAME.toLowerCase()), "6");
 		return b;
