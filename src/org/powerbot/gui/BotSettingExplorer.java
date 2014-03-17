@@ -32,7 +32,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import org.powerbot.misc.Tracker;
-import org.powerbot.script.rt6.ClientContext;
+import org.powerbot.script.ClientContext;
 
 class BotSettingExplorer extends JFrame {
 	private static final int FRAME_WIDTH = 595;
@@ -73,7 +73,14 @@ class BotSettingExplorer extends JFrame {
 		}
 		setVisible(true);
 		try {
-			settings_cache = ((ClientContext) chrome.bot.get().ctx()).varpbits.array();
+			final ClientContext<?> c = chrome.bot.get().ctx();
+			if (c instanceof org.powerbot.script.rt4.ClientContext) {
+				settings_cache = ((org.powerbot.script.rt4.ClientContext) c).varpbits.array();
+			} else if (c instanceof org.powerbot.script.rt6.ClientContext) {
+				settings_cache = ((org.powerbot.script.rt6.ClientContext) c).varpbits.array();
+			} else {
+				settings_cache = new int[0];
+			}
 		} catch (final NullPointerException ignored) {
 		}
 		if (!visible) {
@@ -97,7 +104,16 @@ class BotSettingExplorer extends JFrame {
 	}
 
 	private void update() {
-		final int[] settings_clone = ((ClientContext) chrome.bot.get().ctx()).varpbits.array();
+		final int[] settings_clone;
+		final ClientContext<?> c = chrome.bot.get().ctx();
+		if (c instanceof org.powerbot.script.rt4.ClientContext) {
+			settings_clone = ((org.powerbot.script.rt4.ClientContext) c).varpbits.array();
+		} else if (c instanceof org.powerbot.script.rt6.ClientContext) {
+			settings_clone = ((org.powerbot.script.rt6.ClientContext) c).varpbits.array();
+		} else {
+			settings_clone = new int[0];
+		}
+
 		if (settings_cache == null) {
 			settings_cache = settings_clone;
 			return;
@@ -137,7 +153,7 @@ class BotSettingExplorer extends JFrame {
 	}
 
 	private void create() {
-		setTitle("Setting Explorer");
+		setTitle("Varpbit Explorer");
 		setResizable(false);
 		setPreferredSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT));
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
