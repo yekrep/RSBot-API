@@ -11,7 +11,7 @@ import org.powerbot.bot.rt6.client.Constants;
 import org.powerbot.bot.rt6.event.EventDispatcher;
 import org.powerbot.bot.rt6.loader.Crawler;
 import org.powerbot.bot.rt6.loader.GameLoader;
-import org.powerbot.bot.rt6.loader.GameStub;
+import org.powerbot.bot.loader.GameStub;
 import org.powerbot.bot.rt6.loader.NRSLoader;
 import org.powerbot.bot.loader.transform.TransformSpec;
 import org.powerbot.gui.BotChrome;

@@ -1,10 +1,11 @@
-package org.powerbot.bot.rt4.loader;
+package org.powerbot.bot.loader;
 
 import java.applet.Applet;
 import java.applet.AppletContext;
 import java.applet.AppletStub;
 import java.applet.AudioClip;
 import java.awt.Image;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -13,6 +14,7 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Map;
 
+@SuppressWarnings("unchecked")
 public class GameStub implements AppletStub, AppletContext {
 	private final Map<String, String> params;
 	private final String codeBase;
@@ -55,7 +57,7 @@ public class GameStub implements AppletStub, AppletContext {
 	public final URL getCodeBase() {
 		try {
 			return new URL(codeBase);
-		} catch (final MalformedURLException ignored) {
+		} catch (final MalformedURLException malformedurlexception) {
 			throw new InvalidParameterException();
 		}
 	}
@@ -67,7 +69,7 @@ public class GameStub implements AppletStub, AppletContext {
 	public final URL getDocumentBase() {
 		try {
 			return new URL(codeBase);
-		} catch (final MalformedURLException ignored) {
+		} catch (final MalformedURLException malformedurlexception) {
 			throw new InvalidParameterException();
 		}
 	}
@@ -76,7 +78,7 @@ public class GameStub implements AppletStub, AppletContext {
 		throw new UnsupportedOperationException();
 	}
 
-	public final void setStream(final String s, final InputStream inputstream) {
+	public final void setStream(final String s, final InputStream inputstream) throws IOException {
 		throw new UnsupportedOperationException();
 	}
 
