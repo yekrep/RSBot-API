@@ -16,7 +16,7 @@ import org.powerbot.misc.CryptFile;
 import org.powerbot.misc.GameAccounts;
 import org.powerbot.misc.NetworkAccount;
 import org.powerbot.misc.Tracker;
-import org.powerbot.script.rs3.Keyboard;
+import org.powerbot.script.rt6.Keyboard;
 import org.powerbot.util.StringUtils;
 
 class Sandbox extends SecurityManager {
@@ -210,6 +210,6 @@ class Sandbox extends SecurityManager {
 
 	private static boolean isGameThread() {
 		final ClassLoader c = Thread.currentThread().getContextClassLoader();
-		return c instanceof org.powerbot.bot.rs3.loader.GameClassLoader || c instanceof org.powerbot.bot.os.loader.GameClassLoader;
+		return c instanceof org.powerbot.bot.rt6.loader.GameClassLoader || c instanceof org.powerbot.bot.rt4.loader.GameClassLoader;
 	}
 }

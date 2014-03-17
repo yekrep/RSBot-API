@@ -24,8 +24,8 @@ import javax.swing.SwingUtilities;
 
 import org.powerbot.Configuration;
 import org.powerbot.bot.EventDispatcher;
-import org.powerbot.bot.rs3.event.PaintEvent;
-import org.powerbot.bot.rs3.event.TextPaintEvent;
+import org.powerbot.bot.rt6.event.PaintEvent;
+import org.powerbot.bot.rt6.event.TextPaintEvent;
 import org.powerbot.script.Bot;
 import org.powerbot.script.Client;
 
@@ -188,7 +188,7 @@ class BotOverlay extends JDialog {
 		final Client client;
 		final Canvas canvas;
 		if ((bot = parent.bot.get()) != null && (client = bot.ctx().client()) != null
-				&& (canvas = ((org.powerbot.bot.rs3.client.Client) client).getCanvas()) != null) {
+				&& (canvas = ((org.powerbot.bot.rt6.client.Client) client).getCanvas()) != null) {
 			final Point l = canvas.getLocation();
 			p.translate(l.x, l.y);
 			d2 = canvas.getSize();

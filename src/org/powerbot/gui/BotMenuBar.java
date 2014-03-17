@@ -69,11 +69,11 @@ class BotMenuBar extends JMenuBar {
 				menu.removeAll();
 				final Bot bot = chrome.bot.get();
 				if (bot != null) {
-					final boolean os = bot instanceof org.powerbot.bot.os.Bot;
+					final boolean os = bot instanceof org.powerbot.bot.rt4.Bot;
 					if (os) {
-						new OSBotMenuView(chrome, menu);
+						new RT4BotMenuView(chrome, menu);
 					} else {
-						new RS3BotMenuView(chrome, menu);
+						new RT6BotMenuView(chrome, menu);
 					}
 				}
 			}

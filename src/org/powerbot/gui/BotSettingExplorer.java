@@ -32,7 +32,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import org.powerbot.misc.Tracker;
-import org.powerbot.script.rs3.ClientContext;
+import org.powerbot.script.rt6.ClientContext;
 
 class BotSettingExplorer extends JFrame {
 	private static final int FRAME_WIDTH = 595;

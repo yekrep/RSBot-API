@@ -13,7 +13,7 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
 
-import org.powerbot.bot.rs3.client.Client;
+import org.powerbot.bot.rt6.client.Client;
 import org.powerbot.script.Random;
 
 public class KeyboardSimulator {

@@ -16,7 +16,6 @@ import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.Inflater;
-import java.util.zip.ZipInputStream;
 
 import javax.crypto.Cipher;
 import javax.crypto.CipherInputStream;
@@ -31,7 +30,7 @@ import org.powerbot.script.Script;
 import org.powerbot.bot.InternalScript;
 import org.powerbot.bot.ScriptClassLoader;
 import org.powerbot.bot.ScriptController;
-import org.powerbot.bot.rs3.daemon.Login;
+import org.powerbot.bot.rt6.daemon.Login;
 import org.powerbot.util.Ini;
 import org.powerbot.util.StringUtils;
 import org.powerbot.util.TarReader;

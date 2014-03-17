@@ -55,7 +55,7 @@ public class BotChrome extends JFrame implements Closeable {
 		add(new BotPanel(this, new Filter<Bot>() {
 			@Override
 			public boolean accept(final Bot bot) {
-				if (bot instanceof org.powerbot.bot.rs3.Bot) {
+				if (bot instanceof org.powerbot.bot.rt6.Bot) {
 					overlay.set(new BotOverlay(BotChrome.this));
 				}
 				return BotChrome.this.bot.compareAndSet(null, bot);
@@ -134,7 +134,7 @@ public class BotChrome extends JFrame implements Closeable {
 		final int s = getExtendedState();
 		final boolean maxed = (s & Frame.MAXIMIZED_VERT) == Frame.MAXIMIZED_VERT || (s & Frame.MAXIMIZED_HORIZ) == Frame.MAXIMIZED_HORIZ;
 
-		if (!maxed && (bot.get() == null || !(bot.get() instanceof org.powerbot.bot.os.Bot))) {
+		if (!maxed && (bot.get() == null || !(bot.get() instanceof org.powerbot.bot.rt4.Bot))) {
 			cache.close();
 		}
 
