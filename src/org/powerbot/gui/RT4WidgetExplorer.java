@@ -34,15 +34,15 @@ import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
-import org.powerbot.script.PaintListener;
 import org.powerbot.misc.Tracker;
-import org.powerbot.script.rt6.ClientContext;
-import org.powerbot.script.rt6.Component;
-import org.powerbot.script.rt6.Widget;
+import org.powerbot.script.PaintListener;
+import org.powerbot.script.rt4.ClientContext;
+import org.powerbot.script.rt4.Component;
+import org.powerbot.script.rt4.Widget;
 
-class BotWidgetExplorer extends JFrame implements PaintListener {
+class RT4WidgetExplorer extends JFrame implements PaintListener {
 	private static final long serialVersionUID = 3674322588956559479L;
-	private static final Map<BotChrome, BotWidgetExplorer> instances = new HashMap<BotChrome, BotWidgetExplorer>();
+	private static final Map<BotChrome, RT4WidgetExplorer> instances = new HashMap<BotChrome, RT4WidgetExplorer>();
 	private final BotChrome chrome;
 	private final JTree tree;
 	private final WidgetTreeModel treeModel;
@@ -51,7 +51,7 @@ class BotWidgetExplorer extends JFrame implements PaintListener {
 	private Rectangle highlightArea = null;
 	private final List<Component> list = new ArrayList<Component>();
 
-	private BotWidgetExplorer(final BotChrome chrome) {
+	private RT4WidgetExplorer(final BotChrome chrome) {
 		super("Widget Explorer");
 		this.chrome = chrome;
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -59,7 +59,7 @@ class BotWidgetExplorer extends JFrame implements PaintListener {
 			@Override
 			public void windowClosing(final WindowEvent e) {
 				setVisible(false);
-				chrome.bot.get().dispatcher.remove(BotWidgetExplorer.this);
+				chrome.bot.get().dispatcher.remove(RT4WidgetExplorer.this);
 				highlightArea = null;
 				dispose();
 				instances.remove(chrome);
@@ -98,43 +98,33 @@ class BotWidgetExplorer extends JFrame implements PaintListener {
 					infoArea.removeAll();
 					Component c = null;
 					if (node instanceof ComponentWrapper) {
-						highlightArea = ((ComponentWrapper) node).get().viewportRect();
 						c = ((ComponentWrapper) node).get();
+						highlightArea = new Rectangle(c.screenPoint().x, c.screenPoint().y, c.width(), c.height());
 					}
 					if (c == null) {
 						return;
 					}
-					addInfo("Index: ", Integer.toString(c.getIndex()));
+					addInfo("Index: ", Integer.toString(c.index()));
 					addInfo("Validated: ", Boolean.toString(c.valid()));
 					addInfo("Visible: ", Boolean.toString(c.visible()));
-					addInfo("Absolute location: ", c.screenPoint().toString());
-					addInfo("Relative location: ", c.relativePoint().toString());
+					addInfo("Screen point: ", c.screenPoint().toString());
 					addInfo("Width: ", Integer.toString(c.width()));
 					addInfo("Height: ", Integer.toString(c.height()));
 					addInfo("Id: ", Integer.toString(c.id()));
 					addInfo("Type: ", Integer.toString(c.type()));
 					addInfo("Special type: ", Integer.toString(c.contentType()));
-					addInfo("Child id: ", Integer.toString(c.itemId()));
-					addInfo("Child index: ", Integer.toString(c.itemIndex()));
 					addInfo("Texture id: ", Integer.toString(c.textureId()));
 					addInfo("Text: ", c.text());
 					addInfo("Text color: ", Integer.toString(c.textColor()));
-					addInfo("Shadow color: ", Integer.toString(c.shadowColor()));
-					addInfo("Tooltip: ", c.tooltip());
 					addInfo("Border thickness: ", Integer.toString(c.borderThickness()));
-					addInfo("Selected action: ", c.selectedAction());
 					addInfo("Model id: ", Integer.toString(c.modelId()));
 					addInfo("Model type: ", Integer.toString(c.modelType()));
 					addInfo("Model zoom: ", Integer.toString(c.modelZoom()));
-					addInfo("Inventory: ", Boolean.toString(c.inventory()));
-					addInfo("Child stack size: ", Integer.toString(c.itemStackSize()));
 					addInfo("Parent id: ", Integer.toString(c.parentId()));
-					addInfo("getHorizontalScrollPosition: ", Integer.toString(c.scrollX()));
-					addInfo("getVerticalScrollPosition: ", Integer.toString(c.scrollY()));
-					addInfo("getScrollableContentWidth: ", Integer.toString(c.scrollWidthMax()));
-					addInfo("getScrollableContentHeight: ", Integer.toString(c.scrollHeightMax()));
-					addInfo("getHorizontalScrollThumbSize: ", Integer.toString(c.scrollWidth()));
-					addInfo("getVerticalScrollThumbSize: ", Integer.toString(c.scrollHeight()));
+					addInfo("Scroll x: ", Integer.toString(c.scrollX()));
+					addInfo("Scroll y: ", Integer.toString(c.scrollY()));
+					addInfo("Scroll width: ", Integer.toString(c.scrollWidth()));
+					addInfo("Scroll height: ", Integer.toString(c.scrollHeight()));
 					infoArea.validate();
 					infoArea.repaint();
 				} catch (final Exception ignored) {
@@ -192,9 +182,9 @@ class BotWidgetExplorer extends JFrame implements PaintListener {
 		Tracker.getInstance().trackPage("widgetexplorer/", getTitle());
 	}
 
-	public static synchronized BotWidgetExplorer getInstance(final BotChrome chrome) {
+	public static synchronized RT4WidgetExplorer getInstance(final BotChrome chrome) {
 		if (!instances.containsKey(chrome)) {
-			instances.put(chrome, new BotWidgetExplorer(chrome));
+			instances.put(chrome, new RT4WidgetExplorer(chrome));
 		}
 		return instances.get(chrome);
 	}
@@ -231,7 +221,7 @@ class BotWidgetExplorer extends JFrame implements PaintListener {
 			} else if (parent instanceof WidgetWrapper) {
 				return new ComponentWrapper(((WidgetWrapper) parent).get().components()[index]);
 			} else if (parent instanceof ComponentWrapper) {
-				return new ComponentWrapper(((ComponentWrapper) parent).get().children()[index]);
+				return new ComponentWrapper(((ComponentWrapper) parent).get().components()[index]);
 			}
 			return null;
 		}
@@ -242,13 +232,13 @@ class BotWidgetExplorer extends JFrame implements PaintListener {
 			} else if (parent instanceof WidgetWrapper) {
 				return ((WidgetWrapper) parent).get().components().length;
 			} else if (parent instanceof ComponentWrapper) {
-				return ((ComponentWrapper) parent).get().children().length;
+				return ((ComponentWrapper) parent).get().components().length;
 			}
 			return 0;
 		}
 
 		public boolean isLeaf(final Object node) {
-			return node instanceof ComponentWrapper && ((ComponentWrapper) node).get().children().length == 0;
+			return node instanceof ComponentWrapper && ((ComponentWrapper) node).get().components().length == 0;
 		}
 
 		public void valueForPathChanged(final TreePath path, final Object newValue) {
@@ -260,7 +250,7 @@ class BotWidgetExplorer extends JFrame implements PaintListener {
 			} else if (parent instanceof WidgetWrapper) {
 				return Arrays.asList(((WidgetWrapper) parent).get().components()).indexOf(((ComponentWrapper) child).get());
 			} else if (parent instanceof ComponentWrapper) {
-				return Arrays.asList(((ComponentWrapper) parent).get().children()).indexOf(((ComponentWrapper) child).get());
+				return Arrays.asList(((ComponentWrapper) parent).get().components()).indexOf(((ComponentWrapper) child).get());
 			}
 			return -1;
 		}
@@ -290,7 +280,7 @@ class BotWidgetExplorer extends JFrame implements PaintListener {
 						widgetWrappers.add(new WidgetWrapper(widget));
 						break;
 					}
-					for (final Component widgetSubChild : Component.children()) {
+					for (final Component widgetSubChild : Component.components()) {
 						if (search(widgetSubChild, search)) {
 							widgetWrappers.add(new WidgetWrapper(widget));
 							break children;
@@ -305,7 +295,7 @@ class BotWidgetExplorer extends JFrame implements PaintListener {
 						if (search(child, search)) {
 							list.add(child);
 						}
-						for (final Component child2 : child.children()) {
+						for (final Component child2 : child.components()) {
 							if (search(child2, search)) {
 								list.add(child2);
 							}
@@ -369,7 +359,7 @@ class BotWidgetExplorer extends JFrame implements PaintListener {
 
 		@Override
 		public String toString() {
-			return "Component-" + component.getIndex();
+			return "Component-" + component.index();
 		}
 	}
 }
