@@ -50,4 +50,10 @@ public interface Widget {
 	public int getBoundsIndex();
 
 	public int getTextureId();
+
+	public int[] getItemIds();
+
+	public int[] getItemStackSizes();
+
+	public boolean isHidden();
 }
