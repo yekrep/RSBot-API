@@ -15,7 +15,7 @@ final class BotLocale {
 	public static final String SIGNOUT = "Sign out";
 	public static final String VIEW = "View";
 	public static final String WIDGETEXPLORER = "Widgets";
-	public static final String SETTINGEXPLORER = "Settings";
+	public static final String SETTINGEXPLORER = "Varpbits";
 	public static final String BOUNDINGUTILITY = "Modeling";
 	public static final String ABOUT = "About";
 	public static final String EXIT = "Exit";
