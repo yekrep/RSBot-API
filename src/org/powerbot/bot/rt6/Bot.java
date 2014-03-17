@@ -13,7 +13,7 @@ import org.powerbot.bot.rt6.loader.Crawler;
 import org.powerbot.bot.rt6.loader.GameLoader;
 import org.powerbot.bot.rt6.loader.GameStub;
 import org.powerbot.bot.rt6.loader.NRSLoader;
-import org.powerbot.bot.rt6.loader.transform.TransformSpec;
+import org.powerbot.bot.loader.transform.TransformSpec;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.script.Condition;
 import org.powerbot.script.rt6.ClientContext;

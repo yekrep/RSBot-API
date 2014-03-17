@@ -1,4 +1,4 @@
-package org.powerbot.bot.rt4.loader.transform.adapter;
+package org.powerbot.bot.loader.transform.adapter;
 
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
@@ -71,11 +71,13 @@ public class AddGetterAdapter extends ClassVisitor implements Opcodes {
 			} else if (overflow_val >= Short.MIN_VALUE && overflow_val <= Short.MAX_VALUE) {
 				mv.visitIntInsn(Opcodes.SIPUSH, (int) overflow_val);
 			} else {
+				//noinspection UnnecessaryBoxing
 				mv.visitLdcInsn(new Integer((int) overflow_val));
 			}
 			mv.visitInsn(Opcodes.IMUL);
 			break;
 		case 2:
+			//noinspection UnnecessaryBoxing
 			mv.visitLdcInsn(new Long(overflow_val));
 			mv.visitInsn(Opcodes.LMUL);
 			break;
@@ -111,6 +113,6 @@ public class AddGetterAdapter extends ClassVisitor implements Opcodes {
 		case 'D':
 			return DRETURN;
 		}
-		throw new IllegalArgumentException("bad_return");
+		throw new RuntimeException("bad_return");
 	}
 }

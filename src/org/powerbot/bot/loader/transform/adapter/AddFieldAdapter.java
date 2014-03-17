@@ -1,4 +1,4 @@
-package org.powerbot.bot.rt6.loader.transform.adapter;
+package org.powerbot.bot.loader.transform.adapter;
 
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.Opcodes;

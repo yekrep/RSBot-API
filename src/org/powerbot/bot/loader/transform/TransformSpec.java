@@ -1,4 +1,4 @@
-package org.powerbot.bot.rt6.loader.transform;
+package org.powerbot.bot.loader.transform;
 
 import java.io.InputStream;
 import java.util.HashMap;
@@ -8,14 +8,14 @@ import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.tree.ClassNode;
-import org.powerbot.bot.rt6.loader.transform.adapter.AddFieldAdapter;
-import org.powerbot.bot.rt6.loader.transform.adapter.AddGetterAdapter;
-import org.powerbot.bot.rt6.loader.transform.adapter.AddInterfaceAdapter;
-import org.powerbot.bot.rt6.loader.transform.adapter.AddMethodAdapter;
-import org.powerbot.bot.rt6.loader.transform.adapter.InsertCodeAdapter;
-import org.powerbot.bot.rt6.loader.transform.adapter.OverrideClassAdapter;
-import org.powerbot.bot.rt6.loader.transform.adapter.SetSignatureAdapter;
-import org.powerbot.bot.rt6.loader.transform.adapter.SetSuperAdapter;
+import org.powerbot.bot.loader.transform.adapter.AddFieldAdapter;
+import org.powerbot.bot.loader.transform.adapter.AddGetterAdapter;
+import org.powerbot.bot.loader.transform.adapter.AddInterfaceAdapter;
+import org.powerbot.bot.loader.transform.adapter.AddMethodAdapter;
+import org.powerbot.bot.loader.transform.adapter.InsertCodeAdapter;
+import org.powerbot.bot.loader.transform.adapter.OverrideClassAdapter;
+import org.powerbot.bot.loader.transform.adapter.SetSignatureAdapter;
+import org.powerbot.bot.loader.transform.adapter.SetSuperAdapter;
 
 public class TransformSpec {
 	private final Map<String, ClassVisitor> adapters;

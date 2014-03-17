@@ -1,7 +1,6 @@
 package org.powerbot.bot.rt4.loader;
 
 import java.io.ByteArrayInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -14,9 +13,8 @@ import java.util.Hashtable;
 import java.util.Map;
 
 import org.powerbot.Configuration;
-import org.powerbot.bot.rt4.loader.transform.TransformSpec;
+import org.powerbot.bot.loader.transform.TransformSpec;
 import org.powerbot.misc.CryptFile;
-import org.powerbot.misc.Resources;
 import org.powerbot.util.HttpUtils;
 
 public class GameClassLoader extends ClassLoader {
