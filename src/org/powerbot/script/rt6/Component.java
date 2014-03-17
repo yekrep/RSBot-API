@@ -39,7 +39,7 @@ public class Component extends Interactive implements Drawable, Displayable {
 		return this.parent;
 	}
 
-	public int getIndex() {
+	public int index() {
 		return index;
 	}
 
@@ -55,7 +55,7 @@ public class Component extends Interactive implements Drawable, Displayable {
 		return this;
 	}
 
-	public Component[] children() {
+	public Component[] components() {
 		final RSInterface component = getInternalComponent();
 		final RSInterface[] interfaces;
 		if (component != null && (interfaces = component.getComponents()) != null) {

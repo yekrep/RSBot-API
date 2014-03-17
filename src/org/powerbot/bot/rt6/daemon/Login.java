@@ -180,7 +180,7 @@ public class Login extends PollingScript<ClientContext> implements InternalScrip
 		final int midx = (int) pos.getCenterX();
 		final int h = (int) pos.getHeight();
 		final int midy = (int) (pos.getMinY() + (h == 0 ? 27 : h) / 2);
-		if (i.getIndex() == WIDGET_LOGIN_PASSWORD_TEXT) {
+		if (i.index() == WIDGET_LOGIN_PASSWORD_TEXT) {
 			return ctx.mouse.click(getPasswordX(i), midy + Random.nextInt(-dy, dy), true);
 		}
 		return ctx.mouse.click(midx + Random.nextInt(1, maxRandomX), midy + Random.nextInt(-dy, dy), true);

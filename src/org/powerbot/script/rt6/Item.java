@@ -110,7 +110,7 @@ public class Item extends Interactive implements Displayable, Identifiable, Name
 		if (component == null) {
 			return -1;
 		}
-		return this.id * 31 + this.component.getIndex();
+		return this.id * 31 + this.component.index();
 	}
 
 	@Override

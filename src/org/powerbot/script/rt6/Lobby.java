@@ -207,10 +207,10 @@ public class Lobby extends ClientAccessor {
 			return new World[0];
 		}
 		final ArrayList<World> worlds = new ArrayList<World>();
-		final Component[] rows = panel.component(WIDGET_WORLDS_ROWS).children();
+		final Component[] rows = panel.component(WIDGET_WORLDS_ROWS).components();
 		for (final Component row : rows) {
 			try {
-				final World world = new World(row.getIndex());
+				final World world = new World(row.index());
 				if (filter.accept(world)) {
 					worlds.add(world);
 				}
@@ -363,9 +363,9 @@ public class Lobby extends ClientAccessor {
 		if (panel == null || !panel.valid()) {
 			return -1;
 		}
-		for (final Component child : panel.component(WIDGET_WORLDS_COLUMN_WORLD_NUMBER).children()) {
+		for (final Component child : panel.component(WIDGET_WORLDS_COLUMN_WORLD_NUMBER).components()) {
 			if (child.text().equals(String.valueOf(worldNumber))) {
-				return child.getIndex();
+				return child.index();
 			}
 		}
 		return -1;

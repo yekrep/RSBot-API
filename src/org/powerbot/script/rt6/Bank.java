@@ -242,7 +242,7 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 		if (c == null || !c.valid()) {
 			return new ArrayList<Item>();
 		}
-		final Component[] components = c.children();
+		final Component[] components = c.components();
 		final List<Item> items = new ArrayList<Item>(components.length);
 		for (final Component i : components) {
 			if (i.itemId() != -1) {
@@ -277,7 +277,7 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 		if (items == null || !items.valid()) {
 			return -1;
 		}
-		final Component[] comps = items.children();
+		final Component[] comps = items.components();
 		for (int i = 0; i < comps.length; i++) {
 			if (comps[i].itemId() == id) {
 				return i;

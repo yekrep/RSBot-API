@@ -259,7 +259,7 @@ public class Hud extends ClientAccessor {
 		}
 		if (open(window)) {
 			final Component sprite = getSprite(window);
-			if (sprite != null && sprite.widget().component(sprite.parent().getIndex() + 1).component(1).interact("Close")) {
+			if (sprite != null && sprite.widget().component(sprite.parent().index() + 1).component(1).interact("Close")) {
 				return Condition.wait(new Callable<Boolean>() {
 					@Override
 					public Boolean call() throws Exception {
@@ -290,7 +290,7 @@ public class Hud extends ClientAccessor {
 			return null;
 		}
 		final int texture = window.miniTexture();
-		for (final Component sub : ctx.widgets.component(WIDGET_MENU_WINDOWS, COMPONENT_MENU_WINDOWS_LIST).children()) {
+		for (final Component sub : ctx.widgets.component(WIDGET_MENU_WINDOWS, COMPONENT_MENU_WINDOWS_LIST).components()) {
 			if (sub.textureId() == texture && sub.visible()) {
 				return sub;
 			}
@@ -317,7 +317,7 @@ public class Hud extends ClientAccessor {
 		}
 		final int texture = window.miniTexture();
 		for (final Component child : ctx.widgets.widget(WIDGET_HUD)) {
-			for (final Component sub : child.children()) {
+			for (final Component sub : child.components()) {
 				if (sub.textureId() == texture && sub.valid()) {
 					return sub;
 				}
@@ -332,7 +332,7 @@ public class Hud extends ClientAccessor {
 		}
 		final int texture = window.texture();
 		for (final Component child : ctx.widgets.widget(WIDGET_HUD)) {
-			for (final Component sub : child.children()) {
+			for (final Component sub : child.components()) {
 				if (sub.textureId() == texture && sub.visible()) {
 					return sub;
 				}
