@@ -33,23 +33,13 @@ public class GameClassLoader extends ClassLoader {
 		permissions.add(new AllPermission());
 		domain = new ProtectionDomain(codesource, permissions);
 
-		TransformSpec spec;
 		try {
-			try {
-				final URL url = Resources.getResourceURL(Resources.Paths.TSPEC_OS);
-				if (url == null) {
-					throw new FileNotFoundException();
-				}
-				spec = new TransformSpec(url.openStream());
-			} catch (final FileNotFoundException ignored) {
-				final CryptFile cache = new CryptFile(Resources.Paths.TSPEC_OS, getClass());
-				spec = new TransformSpec(cache.download(HttpUtils.getHttpConnection(new URL(Configuration.URLs.TSPEC_OS))));
-			}
+			final CryptFile cache = new CryptFile("rt4.ts", getClass());
+			spec = new TransformSpec(cache.download(HttpUtils.getHttpConnection(new URL(Configuration.URLs.TSPEC_OS))));
 		} catch (final IOException e) {
 			throw new IllegalStateException("bad resource", e);
 		}
 
-		this.spec = spec;
 		spec.adapt();
 	}
 

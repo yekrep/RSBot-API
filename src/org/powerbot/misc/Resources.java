@@ -14,8 +14,6 @@ public class Resources {
 		public static final String ROOT_IMG = ROOT + "/images";
 		public static final String ICON = ROOT_IMG + "/icon.png";
 		public static final String ARROWS = ROOT_IMG + "/arrows.png";
-		public static final String TSPEC_RS3 = ROOT + "/%s.ts";
-		public static final String TSPEC_OS = ROOT + "/os.ts";
 	}
 
 	public static URL getResourceURL(final String path) throws MalformedURLException {
