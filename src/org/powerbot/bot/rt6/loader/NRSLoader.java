@@ -44,6 +44,8 @@ public class NRSLoader implements Runnable {
 
 	@Override
 	public void run() {
+		// TODO: tidy up this spaghetti code and make loading process abstract for both rt's
+
 		Class<?> code;
 		try {
 			code = classLoader.loadClass("Rs2Applet");
