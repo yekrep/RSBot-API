@@ -1,4 +1,4 @@
-package org.powerbot.bot.rt4.loader;
+package org.powerbot.bot.rt4;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;

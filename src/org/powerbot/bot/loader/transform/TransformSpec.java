@@ -8,6 +8,7 @@ import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.tree.ClassNode;
+import org.powerbot.bot.loader.Transformer;
 import org.powerbot.bot.loader.transform.adapter.AddFieldAdapter;
 import org.powerbot.bot.loader.transform.adapter.AddGetterAdapter;
 import org.powerbot.bot.loader.transform.adapter.AddInterfaceAdapter;
@@ -17,7 +18,7 @@ import org.powerbot.bot.loader.transform.adapter.OverrideClassAdapter;
 import org.powerbot.bot.loader.transform.adapter.SetSignatureAdapter;
 import org.powerbot.bot.loader.transform.adapter.SetSuperAdapter;
 
-public class TransformSpec {
+public class TransformSpec implements Transformer {
 	private final Map<String, ClassVisitor> adapters;
 	private final Map<String, ClassWriter> writers;
 	public final Map<String, String> attributes;
@@ -199,7 +200,7 @@ public class TransformSpec {
 		}
 	}
 
-	public byte[] process(final byte[] data) {
+	public byte[] transform(final byte[] data) {
 		final ClassNode node = new ClassNode();
 		final ClassReader reader = new ClassReader(data);
 		reader.accept(node, ClassReader.SKIP_DEBUG | ClassReader.SKIP_FRAMES);

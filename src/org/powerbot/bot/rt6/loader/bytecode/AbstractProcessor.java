@@ -3,8 +3,9 @@ package org.powerbot.bot.rt6.loader.bytecode;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.tree.ClassNode;
+import org.powerbot.bot.loader.Transformer;
 
-public class AbstractProcessor implements Processor {
+public class AbstractProcessor implements Transformer {
 	private final Transform[] transforms;
 
 	public AbstractProcessor(final Transform... transforms) {

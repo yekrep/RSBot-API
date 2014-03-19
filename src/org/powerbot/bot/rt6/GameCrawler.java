@@ -1,4 +1,4 @@
-package org.powerbot.bot.rt6.loader;
+package org.powerbot.bot.rt6;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -13,14 +13,12 @@ import org.powerbot.Configuration;
 import org.powerbot.util.HttpUtils;
 import org.powerbot.util.IOUtils;
 
-/**
- */
-public class Crawler implements Runnable {
+public class GameCrawler implements Runnable {
 	private final AtomicBoolean run, passed;
 	public final Map<String, String> parameters, details;
 	public String game, archive, clazz;
 
-	public Crawler() {
+	public GameCrawler() {
 		run = new AtomicBoolean(false);
 		passed = new AtomicBoolean(false);
 		parameters = new HashMap<String, String>();

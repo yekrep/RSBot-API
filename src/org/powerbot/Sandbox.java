@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 
 import org.powerbot.bot.ScriptClassLoader;
 import org.powerbot.bot.ScriptThreadFactory;
+import org.powerbot.bot.loader.GameClassLoader;
 import org.powerbot.misc.CryptFile;
 import org.powerbot.misc.GameAccounts;
 import org.powerbot.misc.NetworkAccount;
@@ -210,6 +211,6 @@ class Sandbox extends SecurityManager {
 
 	private static boolean isGameThread() {
 		final ClassLoader c = Thread.currentThread().getContextClassLoader();
-		return c instanceof org.powerbot.bot.rt6.loader.GameClassLoader || c instanceof org.powerbot.bot.rt4.loader.GameClassLoader;
+		return c instanceof GameClassLoader;
 	}
 }

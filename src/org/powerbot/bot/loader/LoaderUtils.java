@@ -1,9 +1,7 @@
-package org.powerbot.bot.rt6.loader;
+package org.powerbot.bot.loader;
 
-import java.applet.Applet;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.lang.reflect.Constructor;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.security.GeneralSecurityException;
@@ -24,101 +22,19 @@ import org.powerbot.misc.Tracker;
 import org.powerbot.util.HttpUtils;
 import org.powerbot.util.StringUtils;
 
-public class NRSLoader implements Runnable {
-	private final GameLoader gameLoader;
-	private final ClassLoader classLoader;
-	private Runnable callback;
-	private Applet applet;
-	private AbstractBridge bridge;
-	private Object client;
-	private String packHash;
-
-	public NRSLoader(final GameLoader gameLoader, final ClassLoader classLoader) {
-		this.gameLoader = gameLoader;
-		this.classLoader = classLoader;
-	}
-
-	public void setCallback(final Runnable callback) {
-		this.callback = callback;
-	}
-
-	@Override
-	public void run() {
-		// TODO: tidy up this spaghetti code and make loading process abstract for both rt's
-
-		Class<?> code;
-		try {
-			code = classLoader.loadClass("Rs2Applet");
-		} catch (final ClassNotFoundException e) {
-			code = null;
-		}
-		if (code == null || !(Applet.class.isAssignableFrom(code))) {
-			return;
-		}
-		try {
-			final Constructor<?> constructor = code.getConstructor((Class[]) null);
-			this.applet = (Applet) constructor.newInstance((Object[]) null);
-		} catch (final Exception ignored) {
-			this.applet = null;
-		}
-		if (applet == null || !(Application.class.isAssignableFrom(code))) {
-			return;
-		}
-		final byte[] pack = gameLoader.getResources().get("inner.pack.gz");
-		if (pack == null) {
-			return;
-		}
+public class LoaderUtils {
+	public static String hash(final byte[] bytes) {
 		final MessageDigest digest;
 		try {
 			digest = MessageDigest.getInstance("SHA-1");
-			packHash = StringUtils.byteArrayToHexString(digest.digest(pack));
+			return StringUtils.byteArrayToHexString(digest.digest(bytes));
 		} catch (final NoSuchAlgorithmException ignored) {
-			packHash = null;
+			return null;
 		}
-		if (packHash == null) {
-			return;
-		}
-		TransformSpec spec;
-		try {
-			spec = getSpec(packHash);
-		} catch (final IOException ignored) {
-			spec = null;
-		}
-		if (spec != null) {
-			spec.adapt();
-		}
-
-		((Application) applet).setBridge(bridge = new AbstractBridge(spec) {
-			@Override
-			public void instance(final Object client) {
-				NRSLoader.this.client = client;
-			}
-		});
-		callback.run();
 	}
 
-	public GameLoader getGameLoader() {
-		return gameLoader;
-	}
-
-	public Applet getApplet() {
-		return applet;
-	}
-
-	public Object getClient() {
-		return client;
-	}
-
-	public String getPackHash() {
-		return packHash;
-	}
-
-	public AbstractBridge getBridge() {
-		return bridge;
-	}
-
-	private TransformSpec getSpec(final String packHash) throws IOException {
-		final String pre = "loader/spec/" + packHash;
+	public static TransformSpec get(final String hash) throws IOException {
+		final String pre = "loader/spec/" + hash;
 		final int r;
 
 		final byte[] b = new byte[16];
@@ -131,11 +47,11 @@ public class NRSLoader implements Runnable {
 			throw new IOException(e);
 		}
 
-		md.update(StringUtils.getBytesUtf8(packHash));
+		md.update(StringUtils.getBytesUtf8(hash));
 		System.arraycopy(md.digest(), 0, b, 0, b.length);
 		final SecretKey key = new SecretKeySpec(b, 0, b.length, keyAlgo);
 
-		final HttpURLConnection con = HttpUtils.getHttpConnection(new URL(String.format(Configuration.URLs.TSPEC, "6", packHash)));
+		final HttpURLConnection con = HttpUtils.getHttpConnection(new URL(String.format(Configuration.URLs.TSPEC, "6", hash)));
 		con.setInstanceFollowRedirects(false);
 		con.connect();
 		r = con.getResponseCode();
@@ -158,16 +74,16 @@ public class NRSLoader implements Runnable {
 		throw new IOException(new IllegalStateException());
 	}
 
-	private HttpURLConnection getBucketConnection() throws IOException {
-		final HttpURLConnection b = HttpUtils.getHttpConnection(new URL(String.format(Configuration.URLs.TSPEC_BUCKETS, packHash)));
+	private static HttpURLConnection getBucketConnection(final String hash) throws IOException {
+		final HttpURLConnection b = HttpUtils.getHttpConnection(new URL(String.format(Configuration.URLs.TSPEC_BUCKETS, hash)));
 		b.addRequestProperty(String.format("x-%s-cv", Configuration.NAME.toLowerCase()), "201");
 		b.addRequestProperty(String.format("x-%s-gv", Configuration.NAME.toLowerCase()), "6");
 		return b;
 	}
 
-	public void upload(final String packHash) throws IOException, PendingException {
+	public static void upload(final String hash, final Map<String, byte[]> classes) throws IOException, PendingException {
 		final int delay = 1000 * 60 * 3 + 30;
-		final String pre = "loader/spec/" + packHash;
+		final String pre = "loader/spec/" + hash;
 		int r;
 
 		final byte[] b = new byte[16];
@@ -180,11 +96,11 @@ public class NRSLoader implements Runnable {
 			return;
 		}
 
-		md.update(StringUtils.getBytesUtf8(packHash));
+		md.update(StringUtils.getBytesUtf8(hash));
 		System.arraycopy(md.digest(), 0, b, 0, b.length);
 		final SecretKey key = new SecretKeySpec(b, 0, b.length, keyAlgo);
 
-		final HttpURLConnection bucket = getBucketConnection();
+		final HttpURLConnection bucket = getBucketConnection(hash);
 		bucket.setInstanceFollowRedirects(false);
 		bucket.connect();
 		r = bucket.getResponseCode();
@@ -203,14 +119,14 @@ public class NRSLoader implements Runnable {
 				throw new IOException(e);
 			}
 			final OutputStream out = new CipherOutputStream(new GZIPOutputStream(put.getOutputStream()), c);
-			writePack(getBridge().loaded, out);
+			writePack(classes, out);
 			out.flush();
 			out.close();
 			r = put.getResponseCode();
 			put.disconnect();
 			Tracker.getInstance().trackPage(pre + "/bucket/upload", Integer.toString(r));
 			if (r == HttpURLConnection.HTTP_OK) {
-				final HttpURLConnection bucket_notify = getBucketConnection();
+				final HttpURLConnection bucket_notify = getBucketConnection(hash);
 				bucket_notify.setRequestMethod("PUT");
 				bucket_notify.connect();
 				final int r_notify = bucket_notify.getResponseCode();
@@ -231,7 +147,7 @@ public class NRSLoader implements Runnable {
 		}
 	}
 
-	private void writePack(final Map<String, byte[]> classes, final OutputStream out) throws IOException {
+	private static void writePack(final Map<String, byte[]> classes, final OutputStream out) throws IOException {
 		final int MAGIC = 0xC1A5700F, END_OF_FILE = 0x1;
 		writeInt(MAGIC, out);
 
@@ -243,7 +159,7 @@ public class NRSLoader implements Runnable {
 		writeInt(END_OF_FILE, out);
 	}
 
-	private void writeInt(final int v, final OutputStream o) throws IOException {
+	private static void writeInt(final int v, final OutputStream o) throws IOException {
 		final int m = 0xff;
 		o.write(v >>> 24);
 		o.write(v >>> 16 & m);
@@ -251,7 +167,7 @@ public class NRSLoader implements Runnable {
 		o.write(v & m);
 	}
 
-	public final class PendingException extends Exception {
+	public static final class PendingException extends Exception {
 		private static final long serialVersionUID = -6937383190630297216L;
 		private final int delay;
 
