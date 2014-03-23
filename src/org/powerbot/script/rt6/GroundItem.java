@@ -20,6 +20,7 @@ import org.powerbot.script.Identifiable;
 import org.powerbot.script.Locatable;
 import org.powerbot.script.Nameable;
 import org.powerbot.script.Random;
+import org.powerbot.script.Stackable;
 import org.powerbot.script.Tile;
 
 public class GroundItem extends Interactive implements Renderable, Identifiable, Nameable, Stackable, Locatable, Drawable {

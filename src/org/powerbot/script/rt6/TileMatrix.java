@@ -43,7 +43,7 @@ public final class TileMatrix extends Interactive implements Locatable, Drawable
 
 	public Point point(final double modX, final double modY, final int height) {
 		final Tile base = ctx.game.mapOffset();
-		return base != null ? ctx.game.groundToScreen((int) ((tile.x() - base.x() + modX) * 512d), (int) ((tile.y() - base.y() + modY) * 512d), tile.z(), height) : new Point(-1, -1);
+		return base != null ? ctx.game.groundToScreen((int) ((tile.x() - base.x() + modX) * 512d), (int) ((tile.y() - base.y() + modY) * 512d), tile.floor(), height) : new Point(-1, -1);
 	}
 
 	public Polygon bounds() {

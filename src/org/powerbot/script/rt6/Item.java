@@ -4,6 +4,7 @@ import java.awt.Point;
 
 import org.powerbot.script.Identifiable;
 import org.powerbot.script.Nameable;
+import org.powerbot.script.Stackable;
 import org.powerbot.util.StringUtils;
 
 public class Item extends Interactive implements Displayable, Identifiable, Nameable, Stackable {

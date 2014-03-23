@@ -125,7 +125,7 @@ public class Movement extends ClientAccessor {
 		final int sy = (y1 < y2) ? 1 : -1;
 		int off = dx - dy;
 		for (; ; ) {
-			final Tile t = new Tile(x1, y1, local.z());
+			final Tile t = new Tile(x1, y1, local.floor());
 			if (new TileMatrix(ctx, t).onMap()) {
 				return t;
 			}

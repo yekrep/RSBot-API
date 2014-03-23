@@ -1,4 +1,4 @@
-package org.powerbot.script.rt6;
+package org.powerbot.script;
 
 public interface Stackable {
 	public int stackSize();

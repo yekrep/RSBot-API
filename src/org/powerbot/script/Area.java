@@ -12,10 +12,10 @@ public class Area {
 
 	public Area(final Tile t1, final Tile t2) {
 		this(
-				new Tile(Math.min(t1.x(), t2.x()), Math.min(t1.y(), t2.y()), t1.z()),
-				new Tile(Math.max(t1.x(), t2.x()), Math.min(t1.y(), t2.y()), t1.z()),
-				new Tile(Math.max(t1.x(), t2.x()), Math.max(t1.y(), t2.y()), t2.z()),
-				new Tile(Math.min(t1.x(), t2.x()), Math.max(t1.y(), t2.y()), t2.z())
+				new Tile(Math.min(t1.x(), t2.x()), Math.min(t1.y(), t2.y()), t1.floor()),
+				new Tile(Math.max(t1.x(), t2.x()), Math.min(t1.y(), t2.y()), t1.floor()),
+				new Tile(Math.max(t1.x(), t2.x()), Math.max(t1.y(), t2.y()), t2.floor()),
+				new Tile(Math.min(t1.x(), t2.x()), Math.max(t1.y(), t2.y()), t2.floor())
 		);
 	}
 
@@ -24,10 +24,10 @@ public class Area {
 			throw new IllegalArgumentException("tiles.length < 0");
 		}
 		this.polygon = new Polygon();
-		this.plane = tiles[0].z();
+		this.plane = tiles[0].floor();
 		for (final Tile tile : tiles) {
-			if (tile.z() != this.plane) {
-				throw new IllegalArgumentException("mismatched planes " + plane + " != " + tile.z());
+			if (tile.floor() != this.plane) {
+				throw new IllegalArgumentException("mismatched planes " + plane + " != " + tile.floor());
 			}
 			polygon.addPoint(tile.x(), tile.y());
 		}
@@ -37,7 +37,7 @@ public class Area {
 	public boolean contains(final Locatable... locatables) {
 		for (final Locatable locatable : locatables) {
 			final Tile tile = locatable.tile();
-			if (tile.z() != plane || !polygon.contains(tile.x(), tile.y())) {
+			if (tile.floor() != plane || !polygon.contains(tile.x(), tile.y())) {
 				return false;
 			}
 		}

@@ -23,7 +23,7 @@ public class Tile implements Locatable, Nillable<Tile>, Comparable<Tile> {
 		return p.y;
 	}
 
-	public int z() {
+	public int floor() {
 		return p.z;
 	}
 
