@@ -7,7 +7,6 @@ import java.util.concurrent.Callable;
 import java.util.logging.Logger;
 
 import org.powerbot.Configuration;
-import org.powerbot.bot.KeyboardSimulator;
 import org.powerbot.bot.loader.GameAppletLoader;
 import org.powerbot.bot.loader.GameLoader;
 import org.powerbot.bot.loader.GameStub;
@@ -160,7 +159,6 @@ public final class Bot extends org.powerbot.script.Bot {
 		ctx.client(client);
 		client.setCallback(new AbstractCallback(this));
 		ctx.constants.set(new Constants(spec.constants));
-		ctx.inputHandler.set(new KeyboardSimulator(applet, client));
 	}
 
 	private final class SafeMode implements Runnable {

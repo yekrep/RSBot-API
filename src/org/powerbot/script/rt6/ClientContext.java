@@ -2,7 +2,6 @@ package org.powerbot.script.rt6;
 
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.powerbot.bot.KeyboardSimulator;
 import org.powerbot.bot.ScriptController;
 import org.powerbot.bot.rt6.Bot;
 import org.powerbot.bot.rt6.client.Client;
@@ -14,11 +13,11 @@ import org.powerbot.bot.rt6.daemon.TicketDestroy;
 import org.powerbot.bot.rt6.daemon.WidgetCloser;
 import org.powerbot.bot.rt6.tools.Items;
 import org.powerbot.bot.rt6.tools.Map;
+import org.powerbot.script.Keyboard;
 import org.powerbot.script.Mouse;
 import org.powerbot.script.Script;
 
 public class ClientContext extends org.powerbot.script.ClientContext<Client> {
-	public final AtomicReference<KeyboardSimulator> inputHandler;
 	public final AtomicReference<Constants> constants;
 
 	public final Script.Controller controller;
@@ -54,7 +53,6 @@ public class ClientContext extends org.powerbot.script.ClientContext<Client> {
 
 	private ClientContext(final Bot bot) {
 		super(bot);
-		inputHandler = new AtomicReference<KeyboardSimulator>(null);
 		constants = new AtomicReference<Constants>(null);
 
 		controller = new ScriptController<ClientContext>(this);
@@ -103,7 +101,6 @@ public class ClientContext extends org.powerbot.script.ClientContext<Client> {
 	public ClientContext(final ClientContext ctx) {
 		super(ctx.bot());
 
-		inputHandler = ctx.inputHandler;
 		constants = ctx.constants;
 
 		controller = ctx.controller;
