@@ -91,6 +91,7 @@ public final class Bot extends org.powerbot.script.Bot {
 		try {
 			spec = LoaderUtils.get(h);
 		} catch (final IOException ignored) {
+			log.severe("Failed to load transform specification");
 			return;
 		}
 		spec.adapt();
