@@ -121,8 +121,12 @@ public class Component extends ClientAccessor implements Validatable {
 			return sparseCache[index];
 		}
 		final Component c = new Component(ctx, widget, this, index);
-		if (index >= sparseCache.length) {
+		final int l = sparseCache.length;
+		if (index >= l) {
 			sparseCache = Arrays.copyOf(sparseCache, index + 1);
+			for (int i = l; i < index + 1; i++) {
+				sparseCache[i] = new Component(ctx, widget, this, i);
+			}
 		}
 		return sparseCache[index] = c;
 	}

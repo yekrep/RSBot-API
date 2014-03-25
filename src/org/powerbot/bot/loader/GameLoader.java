@@ -18,16 +18,18 @@ public abstract class GameLoader implements Callable<ClassLoader> {
 	private final String archive;
 	private final String referer;
 	private final Map<String, byte[]> resources;
+	protected final Map<String, byte[]> classes;
 	protected String hash;
 
 	public GameLoader(final String archive, final String referer) {
 		this.archive = archive;
 		this.referer = referer;
 		resources = new ConcurrentHashMap<String, byte[]>();
+		classes = new ConcurrentHashMap<String, byte[]>();
 	}
 
 	@Override
-	public ClassLoader call() {
+	public ClassLoader call() throws Exception {
 		byte[] b;
 		try {
 			final URLConnection clientConnection = HttpUtils.getHttpConnection(new URL(archive));
@@ -45,7 +47,12 @@ public abstract class GameLoader implements Callable<ClassLoader> {
 			j = new JarInputStream(new ByteArrayInputStream(b));
 			JarEntry e;
 			while ((e = j.getNextJarEntry()) != null) {
-				resources.put(e.getName(), stream(j));
+				final String n = e.getName();
+				resources.put(n, stream(j));
+				final int p = n.indexOf(".class");
+				if (p != -1) {
+					classes.put(n.substring(0, p), resources.get(n));
+				}
 			}
 		} catch (final IOException ignored) {
 		} finally {

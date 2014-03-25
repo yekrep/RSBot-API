@@ -8,6 +8,7 @@ import java.security.GeneralSecurityException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Map;
+import java.util.logging.Logger;
 import java.util.zip.GZIPOutputStream;
 
 import javax.crypto.Cipher;
@@ -33,7 +34,7 @@ public class LoaderUtils {
 		}
 	}
 
-	public static TransformSpec get(final String hash) throws IOException {
+	public static TransformSpec get(final String gv, final String hash) throws IOException {
 		final String pre = "loader/spec/" + hash;
 		final int r;
 
@@ -51,7 +52,7 @@ public class LoaderUtils {
 		System.arraycopy(md.digest(), 0, b, 0, b.length);
 		final SecretKey key = new SecretKeySpec(b, 0, b.length, keyAlgo);
 
-		final HttpURLConnection con = HttpUtils.getHttpConnection(new URL(String.format(Configuration.URLs.TSPEC, "6", hash)));
+		final HttpURLConnection con = HttpUtils.getHttpConnection(new URL(String.format(Configuration.URLs.TSPEC, gv, hash)));
 		con.setInstanceFollowRedirects(false);
 		con.connect();
 		r = con.getResponseCode();
@@ -69,19 +70,21 @@ public class LoaderUtils {
 			} catch (final NullPointerException e) {
 				throw new IOException(e);
 			}
+		} else if (r == HttpURLConnection.HTTP_FORBIDDEN || r == HttpURLConnection.HTTP_NOT_FOUND) {
+			throw new IOException(new IllegalStateException());
 		}
 
-		throw new IOException(new IllegalStateException());
+		throw new IOException(new RuntimeException());
 	}
 
-	private static HttpURLConnection getBucketConnection(final String hash) throws IOException {
+	private static HttpURLConnection getBucketConnection(final String gv, final String hash) throws IOException {
 		final HttpURLConnection b = HttpUtils.getHttpConnection(new URL(String.format(Configuration.URLs.TSPEC_BUCKETS, hash)));
 		b.addRequestProperty(String.format("x-%s-cv", Configuration.NAME.toLowerCase()), "201");
-		b.addRequestProperty(String.format("x-%s-gv", Configuration.NAME.toLowerCase()), "6");
+		b.addRequestProperty(String.format("x-%s-gv", Configuration.NAME.toLowerCase()), gv);
 		return b;
 	}
 
-	public static void upload(final String hash, final Map<String, byte[]> classes) throws IOException, PendingException {
+	public static void upload(final String gv, final String hash, final Map<String, byte[]> classes) throws IOException, PendingException {
 		final int delay = 1000 * 60 * 3 + 30;
 		final String pre = "loader/spec/" + hash;
 		int r;
@@ -100,7 +103,7 @@ public class LoaderUtils {
 		System.arraycopy(md.digest(), 0, b, 0, b.length);
 		final SecretKey key = new SecretKeySpec(b, 0, b.length, keyAlgo);
 
-		final HttpURLConnection bucket = getBucketConnection(hash);
+		final HttpURLConnection bucket = getBucketConnection(gv, hash);
 		bucket.setInstanceFollowRedirects(false);
 		bucket.connect();
 		r = bucket.getResponseCode();
@@ -126,7 +129,7 @@ public class LoaderUtils {
 			put.disconnect();
 			Tracker.getInstance().trackPage(pre + "/bucket/upload", Integer.toString(r));
 			if (r == HttpURLConnection.HTTP_OK) {
-				final HttpURLConnection bucket_notify = getBucketConnection(hash);
+				final HttpURLConnection bucket_notify = getBucketConnection(gv, hash);
 				bucket_notify.setRequestMethod("PUT");
 				bucket_notify.connect();
 				final int r_notify = bucket_notify.getResponseCode();
@@ -144,6 +147,25 @@ public class LoaderUtils {
 		case HttpURLConnection.HTTP_BAD_REQUEST:
 			Tracker.getInstance().trackPage(pre + "/bucket/failure", "");
 			throw new IOException("bad request");
+		}
+	}
+
+	public static void submit(final Logger log, final String gv, final String hash, final Map<String, byte[]> classes) {
+		for (; ; ) {
+			log.warning("Downloading update \u2014 please wait");
+			try {
+				LoaderUtils.upload(gv, hash, classes);
+				break;
+			} catch (final IOException ignored) {
+			} catch (final LoaderUtils.PendingException p) {
+				final int d = p.getDelay() / 1000;
+				log.warning("Your update is being processed, trying again in " + (d < 60 ? d + " seconds" : (int) Math.ceil(d / 60) + " minutes"));
+				try {
+					Thread.sleep(p.getDelay());
+				} catch (final InterruptedException ignored) {
+					break;
+				}
+			}
 		}
 	}
 

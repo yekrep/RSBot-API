@@ -2,7 +2,6 @@ package org.powerbot.bot.rt6;
 
 import java.applet.Applet;
 import java.io.IOException;
-import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.logging.Logger;
 
@@ -27,6 +26,7 @@ import org.powerbot.script.Condition;
 import org.powerbot.script.rt6.ClientContext;
 
 public final class Bot extends org.powerbot.script.Bot {
+	private static final String GV = "6";
 	private static final Logger log = Logger.getLogger(Bot.class.getName());
 	private final BotChrome chrome;
 	public final ClientContext ctx;
@@ -60,7 +60,13 @@ public final class Bot extends org.powerbot.script.Bot {
 				);
 			}
 		};
-		final ClassLoader loader = game.call();
+
+		final ClassLoader loader;
+		try {
+			loader = game.call();
+		} catch (final Exception ignored) {
+			return;
+		}
 		if (loader == null) {
 			log.severe("Failed to load game");
 			return;
@@ -86,14 +92,17 @@ public final class Bot extends org.powerbot.script.Bot {
 		if (inner == null || (h = LoaderUtils.hash(inner)) == null) {
 			return;
 		}
-		final TransformSpec spec;
+		TransformSpec spec;
 		try {
-			spec = LoaderUtils.get(h);
-		} catch (final IOException ignored) {
-			log.severe("Failed to load transform specification");
-			return;
+			spec = LoaderUtils.get(GV, h);
+			spec.adapt();
+		} catch (final IOException e) {
+			if (!(e.getCause() instanceof IllegalStateException)) {
+				log.severe("Failed to load transform specification");
+				return;
+			}
+			spec = null;
 		}
-		spec.adapt();
 
 		final AbstractBridge bridge = new AbstractBridge(spec) {
 			@Override
@@ -111,7 +120,12 @@ public final class Bot extends org.powerbot.script.Bot {
 		applet.init();
 
 		if (spec == null) {
-			submit(h, bridge.loaded);
+			new Thread(new Runnable() {
+				@Override
+				public void run() {
+					LoaderUtils.submit(log, GV, h, bridge.loaded);
+				}
+			}).start();
 			return;
 		}
 
@@ -127,32 +141,6 @@ public final class Bot extends org.powerbot.script.Bot {
 		}
 
 		display();
-	}
-
-	private void submit(final String hash, final Map<String, byte[]> classes) {
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				for (; ; ) {
-					log.warning("Downloading update \u2014 please wait");
-					pending.set(true);
-					try {
-						LoaderUtils.upload(hash, classes);
-						break;
-					} catch (final IOException ignored) {
-					} catch (final LoaderUtils.PendingException p) {
-						final int d = p.getDelay() / 1000;
-						log.warning("Your update is being processed, trying again in " + (d < 60 ? d + " seconds" : (int) Math.ceil(d / 60) + " minutes"));
-						try {
-							Thread.sleep(p.getDelay());
-						} catch (final InterruptedException ignored) {
-							break;
-						}
-					}
-					pending.set(false);
-				}
-			}
-		}).start();
 	}
 
 	private void setClient(final Client client, final TransformSpec spec) {

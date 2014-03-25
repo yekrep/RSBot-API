@@ -8,8 +8,6 @@ import java.util.logging.LogRecord;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 
-import org.powerbot.bot.rt6.Bot;
-
 final class BotPanelLogHandler extends Handler {
 	private final JLabel label;
 
@@ -35,7 +33,7 @@ final class BotPanelLogHandler extends Handler {
 		if (x > 0) {
 			src = src.substring(0, x);
 		}
-		if (!(src.equals(BotChrome.class.getName()) || src.equals(Bot.class.getName()))) {
+		if (!(src.equals(BotChrome.class.getName()) || src.equals(org.powerbot.bot.rt6.Bot.class.getName()) || src.equals(org.powerbot.bot.rt4.Bot.class.getName()))) {
 			return;
 		}
 

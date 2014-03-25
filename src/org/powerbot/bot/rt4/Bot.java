@@ -4,26 +4,24 @@ import java.applet.Applet;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.io.IOException;
-import java.net.URL;
 import java.util.logging.Logger;
 
 import javax.swing.JFrame;
 
-import org.powerbot.Configuration;
 import org.powerbot.bot.loader.GameAppletLoader;
 import org.powerbot.bot.loader.GameLoader;
 import org.powerbot.bot.loader.GameStub;
+import org.powerbot.bot.loader.LoaderUtils;
 import org.powerbot.bot.loader.Transformer;
 import org.powerbot.bot.loader.transform.TransformSpec;
 import org.powerbot.bot.rt4.client.Client;
 import org.powerbot.bot.rt4.event.EventDispatcher;
 import org.powerbot.gui.BotChrome;
-import org.powerbot.misc.CryptFile;
 import org.powerbot.script.rt4.ClientContext;
-import org.powerbot.util.HttpUtils;
 import org.powerbot.util.Ini;
 
 public class Bot extends org.powerbot.script.Bot {
+	private static final String GV = "4";
 	private static final Logger log = Logger.getLogger(Bot.class.getName());
 	public final ClientContext ctx;
 	private Client client;
@@ -50,18 +48,37 @@ public class Bot extends org.powerbot.script.Bot {
 		final GameLoader game = new GameLoader(crawler.archive, crawler.game) {
 			@Override
 			protected Transformer transformer() {
-				final TransformSpec spec;
+				TransformSpec spec;
 				try {
-					final CryptFile cache = new CryptFile("rt4.ts", getClass());
-					spec = new TransformSpec(cache.download(HttpUtils.getHttpConnection(new URL(String.format(Configuration.URLs.TSPEC, "4", hash)))));
+					spec = LoaderUtils.get(GV, hash);
+					spec.adapt();
 				} catch (final IOException e) {
-					throw new IllegalStateException("bad resource", e);
+					if (!(e.getCause() instanceof IllegalStateException)) {
+						log.severe("Failed to load transform specification");
+						throw new IllegalStateException();
+					}
+					spec = null;
 				}
-				spec.adapt();
+
+				if (spec == null) {
+					new Thread(new Runnable() {
+						@Override
+						public void run() {
+							LoaderUtils.submit(log, GV, hash, classes);
+						}
+					}).start();
+
+					throw new IllegalStateException();
+				}
 				return spec;
 			}
 		};
-		final ClassLoader loader = game.call();
+		final ClassLoader loader;
+		try {
+			loader = game.call();
+		} catch (final Exception ignored) {
+			return;
+		}
 		if (loader == null) {
 			log.severe("Failed to load game");
 			return;

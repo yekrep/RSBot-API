@@ -79,10 +79,10 @@ class RT4WidgetExplorer extends JFrame implements PaintListener {
 			                                                       final Object value, final boolean selected, final boolean expanded,
 			                                                       final boolean leaf, final int row, final boolean hasFocus) {
 				super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
-				this.setForeground(Color.black);
+				setForeground(Color.black);
 				if (value instanceof ComponentWrapper) {
 					if (((ComponentWrapper) value).isHit()) {
-						this.setForeground(Color.red);
+						setForeground(Color.red);
 					}
 				}
 				return this;
@@ -275,12 +275,12 @@ class RT4WidgetExplorer extends JFrame implements PaintListener {
 			final Widget[] loaded;
 			for (final Widget widget : loaded = ((ClientContext) chrome.bot.get().ctx()).widgets.array()) {
 				children:
-				for (final Component Component : widget.components()) {
-					if (search(Component, search)) {
+				for (final Component component : widget.components()) {
+					if (search(component, search)) {
 						widgetWrappers.add(new WidgetWrapper(widget));
 						break;
 					}
-					for (final Component widgetSubChild : Component.components()) {
+					for (final Component widgetSubChild : component.components()) {
 						if (search(widgetSubChild, search)) {
 							widgetWrappers.add(new WidgetWrapper(widget));
 							break children;

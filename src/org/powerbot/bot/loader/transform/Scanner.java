@@ -5,8 +5,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.powerbot.bot.rt6.client.Client;
-
 class Scanner {
 	private final static int EOL = 0xA;
 	private final InputStream in;
@@ -59,6 +57,7 @@ class Scanner {
 	}
 
 	private String normalize(final String s) {
-		return s.replace("org/powerbot/game/client", Client.class.getPackage().getName().replace('.', '/')).replace("org/powerbot/os/client", Client.class.getPackage().getName().replace('.', '/'));
+		return s.replace("org/powerbot/game/client", org.powerbot.bot.rt6.client.Client.class.getPackage().getName().replace('.', '/')).
+				replace("org/powerbot/os/client", org.powerbot.bot.rt4.client.Client.class.getPackage().getName().replace('.', '/'));
 	}
 }

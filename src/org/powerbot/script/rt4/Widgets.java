@@ -17,8 +17,12 @@ public class Widgets extends ClientAccessor {
 			return sparseCache[index];
 		}
 		final Widget c = new Widget(ctx, index);
-		if (index >= sparseCache.length) {
+		final int l = sparseCache.length;
+		if (index >= l) {
 			sparseCache = Arrays.copyOf(sparseCache, index + 1);
+			for (int i = l; i < index + 1; i++) {
+				sparseCache[i] = new Widget(ctx, i);
+			}
 		}
 		return sparseCache[index] = c;
 	}
