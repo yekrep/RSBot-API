@@ -70,7 +70,14 @@ public class Movement extends ClientAccessor {
 	}
 
 	public int getEnergyLevel() {
-		return 100;//TODO
+		final Component c = ctx.widgets.get(WIDGET_MAP).component(COMPONENT_RUN_ENERGY);
+		if (c != null && c.valid()) {
+			try {
+				return Integer.parseInt(c.text().trim());
+			} catch (final NumberFormatException ignored) {
+			}
+		}
+		return 0;
 	}
 
 	public boolean isRunning() {
