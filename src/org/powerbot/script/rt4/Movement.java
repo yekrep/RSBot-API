@@ -5,6 +5,10 @@ import org.powerbot.script.Locatable;
 import org.powerbot.script.Tile;
 
 public class Movement extends ClientAccessor {
+	private static final int WIDGET_MAP = 548;
+	private static final int COMPONENT_RUN_ENERGY = 94;
+	private static final int VARPBIT_RUNNING = 173;
+
 	public Movement(final ClientContext ctx) {
 		super(ctx);
 	}
@@ -81,7 +85,7 @@ public class Movement extends ClientAccessor {
 	}
 
 	public boolean isRunning() {
-		return true;//TODO
+		return ctx.varpbits.varpbit(VARPBIT_RUNNING) == 0x1;
 	}
 
 	public boolean setRunning(final boolean running) {
