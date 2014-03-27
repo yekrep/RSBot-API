@@ -13,7 +13,7 @@ public class Movement extends ClientAccessor {
 		super(ctx);
 	}
 
-	public Tile getDestination() {
+	public Tile destination() {
 		final Client client = ctx.client();
 		if (client == null) {
 			return null;
@@ -25,16 +25,16 @@ public class Movement extends ClientAccessor {
 		return ctx.game.mapOffset().derive(dX, dY);
 	}
 
-	public boolean stepTowards(final Locatable locatable) {
+	public boolean step(final Locatable locatable) {
 		Tile loc = locatable.tile();
 		if (!new TileMatrix(ctx, loc).onMap()) {
-			loc = getClosestOnMap(loc);
+			loc = closestOnMap(loc);
 		}
 		final Tile t = loc;
 		return false;//TODO: this
 	}
 
-	public Tile getClosestOnMap(final Locatable locatable) {
+	public Tile closestOnMap(final Locatable locatable) {
 		final Tile local = ctx.players.local().tile();
 		final Tile tile = locatable.tile();
 		if (local == Tile.NIL || tile == Tile.NIL) {
@@ -73,7 +73,7 @@ public class Movement extends ClientAccessor {
 		return Tile.NIL;
 	}
 
-	public int getEnergyLevel() {
+	public int energyLevel() {
 		final Component c = ctx.widgets.get(WIDGET_MAP).component(COMPONENT_RUN_ENERGY);
 		if (c != null && c.valid()) {
 			try {
@@ -84,11 +84,11 @@ public class Movement extends ClientAccessor {
 		return 0;
 	}
 
-	public boolean isRunning() {
+	public boolean running() {
 		return ctx.varpbits.varpbit(VARPBIT_RUNNING) == 0x1;
 	}
 
-	public boolean setRunning(final boolean running) {
+	public boolean running(final boolean running) {//TODO
 		//TODO
 		return true;
 	}

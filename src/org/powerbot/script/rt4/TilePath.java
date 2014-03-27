@@ -27,7 +27,7 @@ public class TilePath extends Path {
 		if (next == null || local == null) {
 			return false;
 		}
-		final Tile dest = ctx.movement.getDestination();
+		final Tile dest = ctx.movement.destination();
 		if (next.equals(end())) {
 			if (next.distanceTo(ctx.players.local()) <= 2) {
 				return false;
@@ -40,8 +40,8 @@ public class TilePath extends Path {
 			end = false;
 		}
 		if (options != null) {
-			if (options.contains(TraversalOption.HANDLE_RUN) && !ctx.movement.isRunning() && ctx.movement.getEnergyLevel() > Random.nextInt(45, 60)) {
-				ctx.movement.setRunning(true);
+			if (options.contains(TraversalOption.HANDLE_RUN) && !ctx.movement.running() && ctx.movement.energyLevel() > Random.nextInt(45, 60)) {
+				ctx.movement.running(true);
 			}
 			if (options.contains(TraversalOption.SPACE_ACTIONS) && local.inMotion() && dest.distanceTo(last) < 3d) {
 				if (dest.distanceTo(ctx.players.local()) > (double) Random.nextInt(5, 12)) {//TODO: revise this distance to not be detectable!!!
@@ -50,19 +50,19 @@ public class TilePath extends Path {
 			}
 		}
 		last = next;
-		if (ctx.movement.stepTowards(next)) {
+		if (ctx.movement.step(next)) {
 			if (local.inMotion()) {
 				return Condition.wait(new Callable<Boolean>() {
 					@Override
 					public Boolean call() {
-						return ctx.movement.getDestination().distanceTo(next) < 3;
+						return ctx.movement.destination().distanceTo(next) < 3;
 					}
 				}, 60, 10);
 			}
 			return next.distanceTo(ctx.players.local()) < 5d || Condition.wait(new Callable<Boolean>() {
 				@Override
 				public Boolean call() {
-					return ctx.players.local().inMotion() && ctx.movement.getDestination().distanceTo(next) < 3;
+					return ctx.players.local().inMotion() && ctx.movement.destination().distanceTo(next) < 3;
 				}
 			}, 125, 10);
 		}
@@ -91,7 +91,7 @@ public class TilePath extends Path {
 			return null;
 		}
 		/* Get current destination */
-		final Tile dest = ctx.movement.getDestination();
+		final Tile dest = ctx.movement.destination();
 		/* Label main loop for continuing purposes */
 		out:
 		/* Iterate over all tiles but the first tile (0) starting with the last (length - 1). */
