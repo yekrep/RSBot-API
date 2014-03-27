@@ -28,6 +28,8 @@ public class Component extends ClientAccessor implements Validatable {
 		this.widget = widget;
 		this.component = component;
 		this.index = index;
+
+		sparseCache = new Component[0];
 	}
 
 	public Widget widget() {
