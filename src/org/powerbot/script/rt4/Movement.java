@@ -1,7 +1,11 @@
 package org.powerbot.script.rt4;
 
+import java.awt.Point;
+import java.awt.Rectangle;
 import org.powerbot.bot.rt4.client.Client;
+import org.powerbot.script.Filter;
 import org.powerbot.script.Locatable;
+import org.powerbot.script.Targetable;
 import org.powerbot.script.Tile;
 
 public class Movement extends ClientAccessor {
@@ -31,7 +35,27 @@ public class Movement extends ClientAccessor {
 			loc = closestOnMap(loc);
 		}
 		final Tile t = loc;
-		return false;//TODO: this
+		final Filter<Point> f = new Filter<Point>() {
+			@Override
+			public boolean accept(final Point point) {
+				return ctx.mouse.click(true);
+			}
+		};
+		return ctx.mouse.apply(new Targetable() {
+			private final TileMatrix tile = new TileMatrix(ctx, t);
+
+			@Override
+			public Point nextPoint() {
+				return tile.mapPoint();
+			}
+
+			@Override
+			public boolean contains(final Point point) {
+				final Point p = tile.mapPoint();
+				final Rectangle t = new Rectangle(p.x - 2, p.y - 2, 4, 4);
+				return t.contains(point);
+			}
+		}, f);
 	}
 
 	public Tile closestOnMap(final Locatable locatable) {
