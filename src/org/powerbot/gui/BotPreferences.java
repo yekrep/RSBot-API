@@ -28,11 +28,13 @@ import org.powerbot.misc.NetworkAccount;
 import org.powerbot.misc.ScriptBundle;
 import org.powerbot.misc.ScriptList;
 import org.powerbot.misc.Tracker;
+import org.powerbot.script.ClientContext;
 
 /**
  */
 class BotPreferences extends JDialog implements Runnable {
 	private static final int PAD = 5;
+	private final BotChrome chrome;
 	private final JPanel panel;
 	private final JComboBox account;
 	private final JPasswordField password, accountPassword;
@@ -50,6 +52,7 @@ class BotPreferences extends JDialog implements Runnable {
 
 	public BotPreferences(final BotChrome chrome) {
 		super(chrome, true);
+		this.chrome = chrome;
 		visible.set(true);
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		setResizable(false);
@@ -482,10 +485,19 @@ class BotPreferences extends JDialog implements Runnable {
 		final boolean l = n.isLoggedIn();
 		list.clear();
 		if (l) {
+			final List<ScriptBundle.Definition> s;
 			try {
-				list.addAll(ScriptList.getList());
+				s = ScriptList.getList();
 			} catch (final IOException ignored) {
 				ignored.printStackTrace();
+				return;
+			}
+			final Class<? extends ClientContext> c = chrome.bot.get().ctx().getClass();
+			for (final ScriptBundle.Definition e : s) {
+				if (e.client != null && !c.isAssignableFrom((Class<?>) e.client)) {
+					continue;
+				}
+				list.add(e);
 			}
 		}
 
