@@ -73,6 +73,16 @@ public class ScriptBundle {
 
 			final Definition def = new Definition(name, id, description);
 			def.assigned = data.containsKey("assigned") && !data.get("assigned").equals("0");
+
+			if (data.containsKey("type")) {
+				final String t = data.get("type");
+				if (t.equals("6")) {
+					def.client = org.powerbot.script.rt6.ClientContext.class;
+				} else if (t.equals("4")) {
+					def.client = org.powerbot.script.rt4.ClientContext.class;
+				}
+			}
+
 			return def;
 		}
 
