@@ -94,8 +94,12 @@ public class ScriptList {
 		if (!NetworkAccount.getInstance().hasPermission(NetworkAccount.LOCALSCRIPTS)) {
 			return;
 		}
+		final File[] files = (dir == null ? parent : dir).listFiles();
+		if (files == null || files.length == 0) {
+			return;
+		}
 
-		for (final File file : (dir == null ? parent : dir).listFiles()) {
+		for (final File file : files) {
 			if (file.isDirectory()) {
 				getLocalList(list, parent, file);
 			} else if (file.isFile()) {
