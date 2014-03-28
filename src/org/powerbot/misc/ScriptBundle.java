@@ -1,5 +1,6 @@
 package org.powerbot.misc;
 
+import java.lang.reflect.Type;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -25,6 +26,7 @@ public class ScriptBundle {
 		public byte[] key;
 		public String source;
 		public boolean local = false, assigned = false;
+		public Type client;
 
 		public Definition(final Script.Manifest manifest) {
 			name = manifest.name();

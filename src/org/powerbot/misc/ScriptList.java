@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.security.SecureRandom;
@@ -25,6 +27,7 @@ import javax.swing.SwingUtilities;
 
 import org.powerbot.Configuration;
 import org.powerbot.gui.BotChrome;
+import org.powerbot.script.AbstractScript;
 import org.powerbot.script.Bot;
 import org.powerbot.script.Script;
 import org.powerbot.bot.InternalScript;
@@ -117,14 +120,23 @@ public class ScriptList {
 						} catch (final Throwable ignored) {
 							continue;
 						}
-						if (Script.class.isAssignableFrom(clazz) && !InternalScript.class.isAssignableFrom(clazz)) {
-							final Class<? extends Script> script = clazz.asSubclass(Script.class);
+						if (AbstractScript.class.isAssignableFrom(clazz) && !InternalScript.class.isAssignableFrom(clazz)) {
+							final Class<? extends AbstractScript> script = clazz.asSubclass(AbstractScript.class);
 							if (script.isAnnotationPresent(Script.Manifest.class)) {
 								final Script.Manifest m = script.getAnnotation(Script.Manifest.class);
 								final ScriptBundle.Definition def = new ScriptBundle.Definition(m);
 								def.source = parent.getCanonicalFile().toString();
 								def.className = className;
 								def.local = true;
+
+								final ParameterizedType pt = ((ParameterizedType) script.getGenericSuperclass());
+								if (pt != null) {
+									final Type[] t = pt.getActualTypeArguments();
+									if (t != null && t.length > 0) {
+										def.client = t[0];
+									}
+								}
+
 								list.add(def);
 							}
 						}
