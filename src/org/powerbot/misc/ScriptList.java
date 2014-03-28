@@ -29,6 +29,7 @@ import org.powerbot.Configuration;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.script.AbstractScript;
 import org.powerbot.script.Bot;
+import org.powerbot.script.PollingScript;
 import org.powerbot.script.Script;
 import org.powerbot.bot.InternalScript;
 import org.powerbot.bot.ScriptClassLoader;
@@ -129,9 +130,15 @@ public class ScriptList {
 								def.className = className;
 								def.local = true;
 
-								final ParameterizedType pt = ((ParameterizedType) script.getGenericSuperclass());
-								if (pt != null) {
-									final Type[] t = pt.getActualTypeArguments();
+								final Class<?>[] superClass = {script, null};
+								while ((superClass[1] = superClass[0].getSuperclass()) != AbstractScript.class
+										&& superClass[1] != PollingScript.class && superClass[1] != Object.class) {
+									superClass[0] = superClass[1];
+								}
+
+								final Type pt = superClass[0].getGenericSuperclass();
+								if (pt instanceof ParameterizedType) {
+									final Type[] t = ((ParameterizedType) pt).getActualTypeArguments();
 									if (t != null && t.length > 0) {
 										def.client = t[0];
 									}
