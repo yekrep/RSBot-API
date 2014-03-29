@@ -82,11 +82,11 @@ public class SelectiveEventQueue extends EventQueue {
 		}
 		final boolean b = isBlocking() || engine == null;
 		setBlocking(false);
-		this.engine.set(new InputSimulator(component));
 		this.component.set(component);
 		this.callback.set(callback);
 		final BotChrome chrome = BotChrome.getInstance();
 		if (b) {
+			this.engine.set(new InputSimulator(component));
 			setBlocking(true);
 			chrome.requestFocusInWindow();
 		}
