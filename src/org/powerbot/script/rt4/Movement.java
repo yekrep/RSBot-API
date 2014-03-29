@@ -2,7 +2,10 @@ package org.powerbot.script.rt4;
 
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.concurrent.Callable;
+
 import org.powerbot.bot.rt4.client.Client;
+import org.powerbot.script.Condition;
 import org.powerbot.script.Filter;
 import org.powerbot.script.Locatable;
 import org.powerbot.script.Targetable;
@@ -112,8 +115,13 @@ public class Movement extends ClientAccessor {
 		return ctx.varpbits.varpbit(VARPBIT_RUNNING) == 0x1;
 	}
 
-	public boolean running(final boolean running) {//TODO
-		//TODO
-		return true;
+	public boolean running(final boolean running) {
+		return running() == running() || (ctx.widgets.get(WIDGET_MAP).component(COMPONENT_RUN_ENERGY - 1).interact(Menu.filter("Toggle Run")) &&
+				Condition.wait(new Callable<Boolean>() {
+					@Override
+					public Boolean call() {
+						return running() == running;
+					}
+				}, 20, 10));
 	}
 }
