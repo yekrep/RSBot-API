@@ -62,7 +62,6 @@ public class BotChrome extends JFrame implements Closeable {
 			}
 		}));
 		setJMenuBar(menuBar = new BotMenuBar(this));
-		SelectiveEventQueue.getInstance().setBlocking(false);
 
 		pack();
 		setMinimumSize(getSize());
