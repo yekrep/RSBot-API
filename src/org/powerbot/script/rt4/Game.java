@@ -1,8 +1,10 @@
 package org.powerbot.script.rt4;
 
 import java.awt.Point;
+import java.util.concurrent.Callable;
 
 import org.powerbot.bot.rt4.client.Client;
+import org.powerbot.script.Condition;
 import org.powerbot.script.Tile;
 
 public class Game extends ClientAccessor {
@@ -16,6 +18,64 @@ public class Game extends ClientAccessor {
 			ARRAY_SIN[i] = (int) (65536d * Math.sin(i * 0.0030679615d));
 			ARRAY_COS[i] = (int) (65536d * Math.cos(i * 0.0030679615d));
 		}
+	}
+
+	public enum Tab {
+		ATTACK("Combat Options", 168),
+		STATS("Stats", 898),
+		QUESTS("Quest List", 776),
+		INVENTORY("Inventory", 884),
+		EQUIPMENT("Worn Equipment", 901),
+		PRAYER("Prayer", 902),
+		MAGIC("Magic", 903),
+		CLAN_CHAT("Clan Chat", 895),
+		FRIENDS_LIST("Friends List", 904),
+		IGNORED_LIST("Ignored List", 905),
+		LOGOUT("Logout", 906),
+		OPTIONS("Options", 907),
+		EMOTES("Emotes", 908),
+		MUSIC("Music Player", 909),
+		NONE("", -1);
+		public final String tip;
+		public final int texture;
+
+		Tab(final String tip, final int texture) {
+			this.tip = tip;
+			this.texture = texture;
+		}
+	}
+
+	public boolean tab(final Tab tab) {
+		final Component c = getByTexture(tab.texture);
+		return c != null && c.click() && Condition.wait(new Callable<Boolean>() {
+			@Override
+			public Boolean call() {
+				return tab() == tab;
+			}
+		}, 50, 10);
+	}
+
+	public Tab tab() {
+		final Component c = getByTexture(1026);
+		if (c != null) {
+			final int t = c.widget().component(c.index() + 7).textureId();
+			for (final Tab tab : Tab.values()) {
+				if (tab.texture == t) {
+					return tab;
+				}
+			}
+		}
+		return Tab.NONE;
+	}
+
+	private Component getByTexture(final int texture) {
+		final Widget w = ctx.widgets.get(548);
+		for (final Component c : w.components()) {
+			if (c.textureId() == texture) {
+				return c;
+			}
+		}
+		return null;
 	}
 
 	public Game(final ClientContext ctx) {
