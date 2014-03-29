@@ -19,7 +19,7 @@ import org.powerbot.bot.loader.transform.adapter.SetSignatureAdapter;
 import org.powerbot.bot.loader.transform.adapter.SetSuperAdapter;
 
 public class TransformSpec implements Transformer {
-	private final Map<String, ClassVisitor> adapters;
+	public final Map<String, ClassVisitor> adapters;
 	private final Map<String, ClassWriter> writers;
 	public final Map<String, String> attributes;
 	public final Map<Integer, Integer> constants;
@@ -212,7 +212,7 @@ public class TransformSpec implements Transformer {
 		return data;
 	}
 
-	private ClassVisitor delegate(final String clazz) {
+	public ClassVisitor delegate(final String clazz) {
 		final ClassVisitor delegate = adapters.get(clazz);
 		if (delegate == null) {
 			final ClassWriter writer = new ClassWriter(0);
