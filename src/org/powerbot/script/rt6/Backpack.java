@@ -54,9 +54,8 @@ public class Backpack extends ItemQuery<Item> implements Resizable, Displayable 
 	@Override
 	public boolean collapsed() {
 		final Component component = component();
-		return component.visible()
-				&& component.widget().index() == WIDGET
-				&& ctx.widgets.component(WIDGET, COMPONENT_SCROLL_BAR).relativePoint().getX() != 0;
+		return component.visible() && component.widget().index() == WIDGET &&
+				ctx.widgets.component(WIDGET, COMPONENT_SCROLL_BAR).relativePoint().getX() != 0;
 	}
 
 	/**
