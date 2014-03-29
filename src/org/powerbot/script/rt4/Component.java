@@ -2,6 +2,7 @@ package org.powerbot.script.rt4;
 
 import java.awt.Color;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.util.Arrays;
 
 import org.powerbot.bot.rt4.client.Client;
@@ -81,6 +82,11 @@ public class Component extends ClientAccessor implements Validatable {
 	public int height() {
 		final org.powerbot.bot.rt4.client.Widget w = getInternal();
 		return w != null ? w.getHeight() : -1;
+	}
+
+	public Rectangle getRect() {
+		final Point p = screenPoint();
+		return new Rectangle(p.x, p.y, width(), height());
 	}
 
 	public int borderThickness() {
@@ -202,7 +208,8 @@ public class Component extends ClientAccessor implements Validatable {
 
 	public int textColor() {
 		final org.powerbot.bot.rt4.client.Widget w = getInternal();
-		return w != null ? w.getTextColor() : -1;
+		//return w != null ? w.getTextColor() : -1;
+		return -1;//TODO
 	}
 
 	public int scrollX() {
