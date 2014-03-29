@@ -10,7 +10,7 @@ import org.powerbot.bot.rt6.client.RSNPCNode;
 
 /**
  * {@link Npcs} is a static utility which provides access to {@link Npc}s in the game.
- * <p/>
+ *
  * {@link Npc}s are only accessible within the mini-map's range.
  *
  */

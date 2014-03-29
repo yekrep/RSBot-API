@@ -95,7 +95,7 @@ public class Lobby extends ClientAccessor {
 	 * Attempts to login to the game from the lobby. It will close any open dialogs prior to logging in. This is
 	 * a blocking method; it will wait until the account is logged in, or the timeout is reached, before the
 	 * method exits.
-	 * <p/>
+	 *
 	 * If the login fails, the {@link Dialog} will still be open when the method finishes as it allows the
 	 * developer to diagnose the reason for login failure.
 	 *

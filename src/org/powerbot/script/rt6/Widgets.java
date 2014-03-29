@@ -14,7 +14,7 @@ import org.powerbot.script.Random;
 
 /**
  * {@link Widgets} is a static utility which provides access to the game's {@link Component}s by means of {@link Widget}s.
- * <p/>
+ *
  * {@link Widget}s are cached and are available at all times, even when not present in game.
  * {@link Widget}s must be validated before use.
  */
@@ -91,6 +91,7 @@ public class Widgets extends ClientAccessor {
 	 *
 	 * @param component the {@link Component} which is desired to be visible
 	 * @param bar       the {@link Component} of the scroll bar
+	 * @param scroll    the scroll switch
 	 * @return {@code true} if visible; otherwise {@code false}
 	 */
 	public boolean scroll(final Component component, final Component bar, final boolean scroll) {

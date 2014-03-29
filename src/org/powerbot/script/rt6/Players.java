@@ -10,7 +10,7 @@ import org.powerbot.bot.rt6.client.RSPlayer;
 
 /**
  * {@link Players} is a utility which provides access to the {@link Player}s in the game.
- * <p/>
+ *
  * {@link Player}s are only accessible within mini-map's range.
  *
  */

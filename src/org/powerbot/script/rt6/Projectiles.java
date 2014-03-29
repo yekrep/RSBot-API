@@ -10,7 +10,7 @@ import org.powerbot.bot.rt6.tools.NodeQueue;
 
 /**
  * {@link Projectiles} is a utility which provides access to the game's projectiles.
- * <p/>
+ *
  * {@link Projectile}s are game projectiles on the current plane which target an entity.
  *
  */
