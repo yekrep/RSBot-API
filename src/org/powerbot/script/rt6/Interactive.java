@@ -1,6 +1,7 @@
 package org.powerbot.script.rt6;
 
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -52,22 +53,26 @@ public abstract class Interactive extends ClientAccessor implements Targetable, 
 		return hover() && ctx.mouse.click(left);
 	}
 
-	public static Filter<Interactive> doInteract(final String action) {
-		return new Filter<Interactive>() {
-			@Override
-			public boolean accept(final Interactive item) {
-				return item.interact(action);
-			}
-		};
+	public boolean click(final String action) {
+		return interact(Menu.filter(action));
 	}
 
-	public static Filter<Interactive> doInteract(final String action, final String option) {
-		return new Filter<Interactive>() {
+	public boolean click(final String action, final String option) {
+		return interact(Menu.filter(action, option));
+	}
+
+	public final boolean click(final Filter<Menu.Entry> f) {
+		return ctx.mouse.apply(this, new Filter<Point>() {
 			@Override
-			public boolean accept(final Interactive item) {
-				return item.interact(action, option);
+			public boolean accept(final Point point) {
+				return Condition.wait(new Callable<Boolean>() {
+					@Override
+					public Boolean call() {
+						return ctx.menu.indexOf(f) == 0;
+					}
+				}, 5, 10) && ctx.mouse.click(true);
 			}
-		};
+		});
 	}
 
 	public boolean interact(final String action) {
@@ -78,27 +83,32 @@ public abstract class Interactive extends ClientAccessor implements Targetable, 
 		return interact(Menu.filter(action, option));
 	}
 
-	public boolean interact(final Filter<Menu.Entry> f) {
-		if (!valid()) {
-			return false;
-		}
-
-		final Filter<Point> f2 = new Filter<Point>() {
-			@Override
-			public boolean accept(final Point p) {
-				return Condition.wait(new Callable<Boolean>() {
-					@Override
-					public Boolean call() {
-						return ctx.menu.indexOf(f) != -1;
-					}
-				}, 15, 10);
+	public final boolean interact(final Filter<Menu.Entry> f) {
+		Rectangle r = new Rectangle(-1, -1, -1, -1);
+		for (int i = 0; i < 3; i++) {
+			final Rectangle c = r;
+			if (!ctx.mouse.apply(this, new Filter<Point>() {
+				@Override
+				public boolean accept(final Point point) {
+					return !(c.contains(point) && ctx.menu.opened()) && ctx.mouse.click(false) && Condition.wait(new Callable<Boolean>() {
+						@Override
+						public Boolean call() {
+							return ctx.menu.opened() && !ctx.menu.bounds().equals(c);
+						}
+					}, 20, 10);
+				}
+			})) {
+				continue;
 			}
-		};
 
-		if (ctx.mouse.apply(this, f2) && ctx.menu.click(f)) {
-			return true;
+			if (ctx.menu.click(f)) {
+				return true;
+			}
+			r = ctx.menu.bounds();
+			if (r.contains(nextPoint())) {
+				ctx.menu.close();
+			}
 		}
-
 		ctx.menu.close();
 		return false;
 	}

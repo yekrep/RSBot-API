@@ -52,6 +52,14 @@ public abstract class Interactive extends ClientAccessor implements Targetable, 
 		});
 	}
 
+	public boolean click(final String action) {
+		return interact(Menu.filter(action));
+	}
+
+	public boolean click(final String action, final String option) {
+		return interact(Menu.filter(action, option));
+	}
+
 	public final boolean click(final Filter<Menu.Command> f) {
 		return ctx.mouse.apply(this, new Filter<Point>() {
 			@Override
@@ -66,6 +74,14 @@ public abstract class Interactive extends ClientAccessor implements Targetable, 
 		});
 	}
 
+	public boolean interact(final String action) {
+		return interact(Menu.filter(action));
+	}
+
+	public boolean interact(final String action, final String option) {
+		return interact(Menu.filter(action, option));
+	}
+
 	public final boolean interact(final Filter<Menu.Command> f) {
 		Rectangle r = new Rectangle(-1, -1, -1, -1);
 		for (int i = 0; i < 3; i++) {
@@ -73,10 +89,10 @@ public abstract class Interactive extends ClientAccessor implements Targetable, 
 			if (!ctx.mouse.apply(this, new Filter<Point>() {
 				@Override
 				public boolean accept(final Point point) {
-					return !(c.contains(point) && ctx.menu.open()) && ctx.mouse.click(false) && Condition.wait(new Callable<Boolean>() {
+					return !(c.contains(point) && ctx.menu.opened()) && ctx.mouse.click(false) && Condition.wait(new Callable<Boolean>() {
 						@Override
 						public Boolean call() {
-							return ctx.menu.open() && !ctx.menu.bounds().equals(c);
+							return ctx.menu.opened() && !ctx.menu.bounds().equals(c);
 						}
 					}, 20, 10);
 				}

@@ -2,6 +2,7 @@ package org.powerbot.script.rt6;
 
 import java.awt.Dimension;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -11,15 +12,14 @@ import org.powerbot.bot.rt6.client.Client;
 import org.powerbot.bot.rt6.client.MenuGroupNode;
 import org.powerbot.bot.rt6.client.MenuItemNode;
 import org.powerbot.bot.rt6.tools.NodeQueue;
-import org.powerbot.script.Filter;
 import org.powerbot.script.Condition;
+import org.powerbot.script.Filter;
 import org.powerbot.script.Random;
-import org.powerbot.util.StringUtils;
 import org.powerbot.script.Vector2;
+import org.powerbot.util.StringUtils;
 
 /**
  * Utilities pertaining to the in-game menu.
- *
  */
 public class Menu extends ClientAccessor {
 	private final Object LOCK = new Object();
@@ -203,6 +203,15 @@ public class Menu extends ClientAccessor {
 			}
 		}, 10, 50);
 	}
+
+	public Rectangle bounds() {
+		final Client client = ctx.client();
+		if (client == null || !opened()) {
+			return new Rectangle(-1, -1, -1, -1);
+		}
+		return new Rectangle(client.getMenuX(), client.getMenuY(), client.getMenuWidth(), client.getMenuHeight());
+	}
+
 
 	private Point hoverIndex(final Client client, final int index) {
 		int _index = 0, main = 0;
