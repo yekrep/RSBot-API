@@ -29,6 +29,7 @@ import org.powerbot.Configuration;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.script.AbstractScript;
 import org.powerbot.script.Bot;
+import org.powerbot.script.ClientContext;
 import org.powerbot.script.PollingScript;
 import org.powerbot.script.Script;
 import org.powerbot.bot.InternalScript;
@@ -268,7 +269,7 @@ public class ScriptList {
 		}
 
 		properties.put(ScriptController.LOCAL_PROPERTY, Boolean.toString(def.local));
-		final ScriptController c = (ScriptController) bot.ctx().controller();
+		final ScriptController<? extends ClientContext> c = (ScriptController<? extends ClientContext>) bot.ctx().controller();
 		c.bundle.set(new ScriptBundle(def, script));
 		c.run();
 	}

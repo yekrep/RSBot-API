@@ -3,10 +3,10 @@ package org.powerbot.script;
 import org.powerbot.bot.InputSimulator;
 import org.powerbot.bot.SelectiveEventQueue;
 
-public class Keyboard extends org.powerbot.script.ClientAccessor {
+public class Keyboard<C extends ClientContext> extends ClientAccessor<C> {
 	private final SelectiveEventQueue queue;
 
-	public Keyboard(final ClientContext<?> ctx) {
+	public Keyboard(final C ctx) {
 		super(ctx);//TODO: document
 		queue = SelectiveEventQueue.getInstance();
 	}

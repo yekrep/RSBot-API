@@ -1,6 +1,8 @@
 package org.powerbot.bot;
 
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.concurrent.BlockingQueue;
@@ -28,7 +30,7 @@ public final class ScriptController<C extends ClientContext> extends ClientAcces
 	private final Runnable suspension;
 	private final AtomicBoolean started, suspended, stopping;
 
-	public Class<? extends Script>[] daemons;
+	public final List<Class<? extends Script>> daemons;
 	public final AtomicReference<ScriptBundle> bundle;
 
 	public ScriptController(final C ctx) {
@@ -41,10 +43,9 @@ public final class ScriptController<C extends ClientContext> extends ClientAcces
 		suspended = new AtomicBoolean(false);
 		stopping = new AtomicBoolean(false);
 
-		//noinspection unchecked
-		daemons = new Class[]{};
 		bundle = new AtomicReference<ScriptBundle>(null);
-		scripts = new PriorityQueue<Script>(daemons.length + 1);
+		daemons = new ArrayList<Class<? extends Script>>();
+		scripts = new PriorityQueue<Script>(daemons.size() + 1);
 
 		suspension = new Runnable() {
 			@Override
@@ -84,7 +85,7 @@ public final class ScriptController<C extends ClientContext> extends ClientAcces
 			throw new SecurityException();
 		}
 
-		final BlockingQueue<Runnable> q = new PriorityBlockingQueue<Runnable>((daemons.length + 1) * 4, new Comparator<Runnable>() {
+		final BlockingQueue<Runnable> q = new PriorityBlockingQueue<Runnable>((daemons.size() + 1) * 4, new Comparator<Runnable>() {
 			@Override
 			public int compare(final Runnable a, final Runnable b) {
 				final int x = a instanceof AbstractScript ? ((AbstractScript) a).priority.get() : 0, y = b instanceof AbstractScript ? ((AbstractScript) b).priority.get() : 0;

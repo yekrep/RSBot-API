@@ -33,10 +33,10 @@ public class ClientContext extends org.powerbot.script.ClientContext<Client> {
 	public final HintArrows hintArrows;
 	public final Hud hud;
 	public final Backpack backpack;
-	public final Keyboard keyboard;
+	public final Keyboard<ClientContext> keyboard;
 	public final Lobby lobby;
 	public final Menu menu;
-	public final Mouse mouse;
+	public final Mouse<ClientContext> mouse;
 	public final Movement movement;
 	public final Npcs npcs;
 	public final Objects objects;
@@ -55,14 +55,13 @@ public class ClientContext extends org.powerbot.script.ClientContext<Client> {
 		super(bot);
 		constants = new AtomicReference<Constants>(null);
 
-		controller = new ScriptController<ClientContext>(this);
-		((ScriptController) controller).daemons = new Class[]{
-				Login.class,
-				WidgetCloser.class,
-				TicketDestroy.class,
-				BankPin.class,
-				Antipattern.class,
-		};
+		final ScriptController<ClientContext> controller = new ScriptController<ClientContext>(this);
+		this.controller = controller;
+		controller.daemons.add(Login.class);
+		controller.daemons.add(WidgetCloser.class);
+		controller.daemons.add(TicketDestroy.class);
+		controller.daemons.add(BankPin.class);
+		controller.daemons.add(Antipattern.class);
 
 		combatBar = new CombatBar(this);
 		backpack = new Backpack(this);
@@ -75,10 +74,10 @@ public class ClientContext extends org.powerbot.script.ClientContext<Client> {
 		groundItems = new GroundItems(this);
 		hintArrows = new HintArrows(this);
 		hud = new Hud(this);
-		keyboard = new Keyboard(this);
+		keyboard = new Keyboard<ClientContext>(this);
 		lobby = new Lobby(this);
 		menu = new Menu(this);
-		mouse = new Mouse(this);
+		mouse = new Mouse<ClientContext>(this);
 		movement = new Movement(this);
 		npcs = new Npcs(this);
 		objects = new Objects(this);

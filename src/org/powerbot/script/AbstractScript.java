@@ -103,7 +103,9 @@ public abstract class AbstractScript<C extends ClientContext> implements Script,
 		});
 
 		try {
-			ctx = (C) contextProxy.take();
+			@SuppressWarnings("unchecked")
+			final C ctx = (C) contextProxy.take();
+			this.ctx = ctx;
 		} catch (final InterruptedException e) {
 			throw new IllegalStateException(e);
 		}

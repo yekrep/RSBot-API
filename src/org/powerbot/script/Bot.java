@@ -24,7 +24,7 @@ public abstract class Bot implements Runnable, Closeable {
 		pending = new AtomicBoolean(false);
 	}
 
-	public abstract ClientContext ctx();
+	public abstract ClientContext<? extends Client> ctx();
 
 	protected void display() {
 		chrome.getContentPane().removeAll();
@@ -53,7 +53,6 @@ public abstract class Bot implements Runnable, Closeable {
 					threadGroup.interrupt();
 				}
 			}).start();
-			//noinspection unchecked
 			ctx().client(null);
 		} else {
 			threadGroup.interrupt();

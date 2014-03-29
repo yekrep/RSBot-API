@@ -9,11 +9,11 @@ import org.powerbot.bot.InputSimulator;
 import org.powerbot.bot.MouseSpline;
 import org.powerbot.bot.SelectiveEventQueue;
 
-public class Mouse extends org.powerbot.script.ClientAccessor {
+public class Mouse<C extends ClientContext> extends ClientAccessor<C> {
 	private final SelectiveEventQueue queue;
 	private final MouseSpline simulator;
 
-	public Mouse(final ClientContext<?> ctx) {
+	public Mouse(final C ctx) {
 		super(ctx);
 		queue = SelectiveEventQueue.getInstance();
 		simulator = new MouseSpline();

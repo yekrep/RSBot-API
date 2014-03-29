@@ -64,6 +64,7 @@ class BotBoundingUtility extends JFrame implements PaintListener, MouseListener,
 		return instance.get();
 	}
 
+	@SuppressWarnings("unchecked")
 	private BotBoundingUtility(final BotChrome chrome) {
 		selecting = new AtomicBoolean(false);
 		point = new Point(-1, -1);
@@ -131,7 +132,6 @@ class BotBoundingUtility extends JFrame implements PaintListener, MouseListener,
 		comboBoxTarget.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent actionEvent) {
-				//noinspection unchecked
 				selection = (TargetSelection<Interactive>) comboBoxTarget.getSelectedItem();
 			}
 		});
