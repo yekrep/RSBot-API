@@ -125,6 +125,8 @@ class RT4WidgetExplorer extends JFrame implements PaintListener {
 					addInfo("Scroll y: ", Integer.toString(c.scrollY()));
 					addInfo("Scroll width: ", Integer.toString(c.scrollWidth()));
 					addInfo("Scroll height: ", Integer.toString(c.scrollHeight()));
+					addInfo("Ids: ", Arrays.toString(c.itemIds()));
+					addInfo("Stacks: ", Arrays.toString(c.itemStackSizes()));
 					infoArea.validate();
 					infoArea.repaint();
 				} catch (final Exception ignored) {

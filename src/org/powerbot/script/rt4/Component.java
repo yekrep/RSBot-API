@@ -242,6 +242,18 @@ public class Component extends ClientAccessor implements Validatable {
 		return w != null ? w.getTextureId() : -1;
 	}
 
+	public int[] itemIds() {
+		final org.powerbot.bot.rt4.client.Widget w = getInternal();
+		final int[] a = w != null ? w.getItemIds() : new int[0];
+		return a != null ? a : new int[0];
+	}
+
+	public int[] itemStackSizes() {
+		final org.powerbot.bot.rt4.client.Widget w = getInternal();
+		final int a[] = w != null ? w.getItemStackSizes() : new int[0];
+		return a != null ? a : new int[0];
+	}
+
 	@Override
 	public boolean valid() {
 		final org.powerbot.bot.rt4.client.Widget internal = getInternal();
