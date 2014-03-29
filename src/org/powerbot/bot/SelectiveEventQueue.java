@@ -105,10 +105,6 @@ public class SelectiveEventQueue extends EventQueue {
 		final Object t = event.getSource();
 		if (t == chrome.overlay.get()) {
 			event.setSource(component);
-			System.out.println(event.getSource());
-		}
-		if (event instanceof FocusEvent) {
-			System.out.println(event.paramString());
 		}
 
 		final Object s = event.getSource();
@@ -118,7 +114,6 @@ public class SelectiveEventQueue extends EventQueue {
 			super.dispatchEvent(event);
 			return;
 		}
-		System.out.println("blocked");
 		if (event instanceof MouseEvent || event instanceof KeyEvent) {
 			BotChrome.getInstance().bot.get().dispatcher.dispatch(event);
 		}
