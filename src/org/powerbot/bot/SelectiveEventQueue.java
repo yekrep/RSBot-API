@@ -99,32 +99,33 @@ public class SelectiveEventQueue extends EventQueue {
 			((Component) e.getSource()).dispatchEvent(e);
 			return;
 		}
-		final Object source = event.getSource();
-		if (source == null) {
-			return;
+
+		final BotChrome chrome = BotChrome.getInstance();
+		final Component component = this.component.get();
+		final Object t = event.getSource();
+		if (t == chrome.overlay.get()) {
+			event.setSource(component);
+			System.out.println(event.getSource());
 		}
-		final InputSimulator engine = this.engine.get();
-		final Component component = engine != null ? engine.getComponent() : null;
-		/* Check if event is from a blocked source */
-		if (blocking.get() && source == component) {
-			/* Block input events */
-			if (event instanceof MouseEvent || event instanceof KeyEvent ||
-					event instanceof WindowEvent || event instanceof FocusEvent) {
-				/* If an input event is blocked, dispatch it on our event caster. */
-				if (event instanceof MouseEvent || event instanceof KeyEvent) {
-					BotChrome.getInstance().bot.get().dispatcher.dispatch(event);
-				}
-				/* Execute a callback for this source when we block an event */
-				final EventCallback callback = this.callback.get();
-				if (callback != null) {
-					callback.execute(event);
-				}
-				return;
-			}
+		if (event instanceof FocusEvent) {
+			System.out.println(event.paramString());
 		}
 
-		/* Otherwise, dispatch events to everything else non-blocked */
-		super.dispatchEvent(event);
+		final Object s = event.getSource();
+		if (!blocking.get() || s != component ||
+				!(event instanceof MouseEvent || event instanceof KeyEvent ||
+						event instanceof WindowEvent || event instanceof FocusEvent)) {
+			super.dispatchEvent(event);
+			return;
+		}
+		System.out.println("blocked");
+		if (event instanceof MouseEvent || event instanceof KeyEvent) {
+			BotChrome.getInstance().bot.get().dispatcher.dispatch(event);
+		}
+		final EventCallback callback = this.callback.get();
+		if (callback != null) {
+			callback.execute(event);
+		}
 	}
 
 	public static final class RawAWTEvent extends AWTEvent {
