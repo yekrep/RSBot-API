@@ -22,6 +22,11 @@ public class Game extends ClientAccessor {
 		super(ctx);
 	}
 
+	public boolean loggedIn() {
+		final int c = clientState();
+		return c == INDEX_MAP_LOADED || c == INDEX_MAP_LOADING;
+	}
+
 	public int clientState() {
 		final Client client = ctx.client();
 		return client != null ? client.getClientState() : -1;

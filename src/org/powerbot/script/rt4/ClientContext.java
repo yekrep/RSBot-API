@@ -11,6 +11,7 @@ public class ClientContext extends org.powerbot.script.ClientContext<Client> {
 
 	public final Game game;
 	public final GroundItems groundItems;
+	public final Inventory inventory;
 	public final Menu menu;
 	public final Mouse mouse;
 	public final Movement movement;
@@ -27,6 +28,7 @@ public class ClientContext extends org.powerbot.script.ClientContext<Client> {
 
 		game = new Game(this);
 		groundItems = new GroundItems(this);
+		inventory = new Inventory(this);
 		menu = new Menu(this);
 		mouse = new Mouse(this);
 		movement = new Movement(this);
@@ -48,6 +50,7 @@ public class ClientContext extends org.powerbot.script.ClientContext<Client> {
 
 		game = ctx.game;
 		groundItems = ctx.groundItems;
+		inventory = ctx.inventory;
 		menu = ctx.menu;
 		mouse = ctx.mouse;
 		movement = ctx.movement;

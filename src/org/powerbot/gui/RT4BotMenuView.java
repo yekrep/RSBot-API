@@ -15,6 +15,7 @@ import javax.swing.JMenuItem;
 
 import org.powerbot.bot.EventDispatcher;
 import org.powerbot.bot.rt4.event.debug.DrawGroundItems;
+import org.powerbot.bot.rt4.event.debug.DrawItems;
 import org.powerbot.bot.rt4.event.debug.DrawMobs;
 import org.powerbot.bot.rt4.event.debug.DrawObjects;
 import org.powerbot.bot.rt4.event.debug.DrawPlayers;
@@ -37,6 +38,7 @@ final class RT4BotMenuView implements ActionListener {
 	private static final String MOUSETRAILS = "Mouse Trails";
 	private static final String PLAYERS = "Players";
 	private static final String NPCS = "Npcs";
+	private static final String ITEMS = "Items";
 	private static final String GROUND_ITEMS = "Ground Items";
 	private static final String SCENEENTITIES = "Objects";
 	private static final String CLIENTSTATE = "Client State";
@@ -73,6 +75,7 @@ final class RT4BotMenuView implements ActionListener {
 		map.put(SCENEENTITIES, DrawObjects.class);
 		map.put(PLAYERS, DrawPlayers.class);
 		map.put(NPCS, DrawMobs.class);
+		map.put(ITEMS, DrawItems.class);
 		map.put(GROUND_ITEMS, DrawGroundItems.class);
 		map.put(CLIENTSTATE, TClientState.class);
 		map.put(MENU, TMenu.class);
@@ -89,6 +92,7 @@ final class RT4BotMenuView implements ActionListener {
 		items.add(MOUSETRAILS);
 		items.add(PLAYERS);
 		items.add(NPCS);
+		items.add(ITEMS);
 		items.add(GROUND_ITEMS);
 		items.add(SCENEENTITIES);
 		items.add(SEPERATOR);
