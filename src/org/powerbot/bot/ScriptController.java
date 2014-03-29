@@ -84,7 +84,7 @@ public final class ScriptController<C extends ClientContext> extends ClientAcces
 			throw new SecurityException();
 		}
 
-		final BlockingQueue q = new PriorityBlockingQueue<Runnable>((daemons.length + 1) * 4, new Comparator<Runnable>() {
+		final BlockingQueue<Runnable> q = new PriorityBlockingQueue<Runnable>((daemons.length + 1) * 4, new Comparator<Runnable>() {
 			@Override
 			public int compare(final Runnable a, final Runnable b) {
 				final int x = a instanceof AbstractScript ? ((AbstractScript) a).priority.get() : 0, y = b instanceof AbstractScript ? ((AbstractScript) b).priority.get() : 0;
