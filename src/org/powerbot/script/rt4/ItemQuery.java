@@ -1,4 +1,4 @@
-package org.powerbot.script.rt6;
+package org.powerbot.script.rt4;
 
 import org.powerbot.script.AbstractQuery;
 import org.powerbot.script.Identifiable;
