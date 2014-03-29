@@ -4,8 +4,8 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.concurrent.Callable;
 
-import org.powerbot.script.Filter;
 import org.powerbot.script.Condition;
+import org.powerbot.script.Filter;
 import org.powerbot.script.Targetable;
 import org.powerbot.script.Validatable;
 import org.powerbot.script.Viewport;
@@ -24,6 +24,33 @@ public abstract class Interactive extends ClientAccessor implements Targetable, 
 	}
 
 	public abstract Point centerPoint();
+
+	public final boolean hover() {
+		return ctx.mouse.apply(this, new Filter<Point>() {
+			@Override
+			public boolean accept(final Point point) {
+				return true;
+			}
+		});
+	}
+
+	public final boolean click() {
+		return ctx.mouse.apply(this, new Filter<Point>() {
+			@Override
+			public boolean accept(final Point point) {
+				return ctx.mouse.click(true);
+			}
+		});
+	}
+
+	public final boolean click(final boolean left) {
+		return ctx.mouse.apply(this, new Filter<Point>() {
+			@Override
+			public boolean accept(final Point point) {
+				return ctx.mouse.click(left);
+			}
+		});
+	}
 
 	public final boolean click(final Filter<Menu.Command> f) {
 		return ctx.mouse.apply(this, new Filter<Point>() {
