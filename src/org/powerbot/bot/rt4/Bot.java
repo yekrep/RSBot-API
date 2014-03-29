@@ -97,8 +97,10 @@ public class Bot extends org.powerbot.script.Bot {
 				applet.init();
 
 				final Ini.Member p = new Ini().put(crawler.properties).get();
-				applet.setSize(new Dimension(p.getInt("width", 765), p.getInt("height", 503)));
-				applet.setMinimumSize(applet.getSize());
+				final Dimension d = new Dimension(p.getInt("width", 765), p.getInt("height", 503));
+				applet.setSize(d);
+				applet.setPreferredSize(d);
+				applet.setMinimumSize(d);
 
 				applet.start();
 				initialize();
