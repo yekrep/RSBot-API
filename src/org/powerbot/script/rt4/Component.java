@@ -8,9 +8,9 @@ import java.util.Arrays;
 import org.powerbot.bot.rt4.client.Client;
 import org.powerbot.bot.rt4.client.WidgetNode;
 import org.powerbot.bot.rt4.tools.HashTable;
-import org.powerbot.script.Validatable;
+import org.powerbot.script.Random;
 
-public class Component extends ClientAccessor implements Validatable {
+public class Component extends Interactive {
 	public static final Color TARGET_STROKE_COLOR = new Color(0, 255, 0, 150);
 	public static final Color TARGET_FILL_COLOR = new Color(0, 0, 0, 50);
 
@@ -252,6 +252,27 @@ public class Component extends ClientAccessor implements Validatable {
 		final org.powerbot.bot.rt4.client.Widget w = getInternal();
 		final int a[] = w != null ? w.getItemStackSizes() : new int[0];
 		return a != null ? a : new int[0];
+	}
+
+	@Override
+	public Point centerPoint() {
+		final Point p = screenPoint();
+		p.translate(width() / 2, height() / 2);
+		return p;
+	}
+
+	@Override
+	public Point nextPoint() {
+		final Point p = screenPoint();
+		p.translate(org.powerbot.script.Random.nextInt(0, width()), Random.nextInt(0, height()));
+		return p;
+	}
+
+	@Override
+	public boolean contains(final Point point) {
+		final Point p = screenPoint();
+		final Rectangle r = new Rectangle(p.x, p.y, width(), height());
+		return r.contains(point);
 	}
 
 	@Override
