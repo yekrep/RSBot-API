@@ -5,12 +5,14 @@ import java.awt.Dimension;
 import java.awt.Insets;
 import java.io.Closeable;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.logging.Logger;
 
 import org.powerbot.bot.EventDispatcher;
 import org.powerbot.bot.ScriptClassLoader;
 import org.powerbot.gui.BotChrome;
 
 public abstract class Bot<C extends ClientContext<? extends Client>> implements Runnable, Closeable {
+	protected final Logger log = Logger.getLogger(getClass().getName());
 	public final C ctx;
 	protected final BotChrome chrome;
 	public final EventDispatcher dispatcher;

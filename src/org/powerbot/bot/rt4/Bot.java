@@ -23,7 +23,6 @@ import org.powerbot.util.Ini;
 
 public class Bot extends org.powerbot.script.Bot<ClientContext> {
 	private static final String GV = "4";
-	private static final Logger log = Logger.getLogger(Bot.class.getName());
 
 	public Bot(final BotChrome chrome) {
 		super(chrome, new EventDispatcher());
