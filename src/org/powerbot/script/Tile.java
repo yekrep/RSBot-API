@@ -70,7 +70,7 @@ public class Tile implements Locatable, Nillable<Tile>, Comparable<Tile> {
 
 	@Override
 	public boolean equals(final Object o) {
-		return p.equals(o);
+		return o instanceof Tile && p.equals(((Tile) o).p);
 	}
 
 	@Override

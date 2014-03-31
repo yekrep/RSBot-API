@@ -66,7 +66,7 @@ public class Vector3 implements Comparable<Vector3> {
 	@Override
 	public int compareTo(final Vector3 o) {
 		final long a, b;
-		return z < o.z ? -1 : z > o.z ? 1 : (a = toLong2D()) < (b = o.toLong2D()) ? -1 : a > b ? 1 :0;
+		return z < o.z ? -1 : z > o.z ? 1 : (a = toLong2D()) < (b = o.toLong2D()) ? -1 : a > b ? 1 : 0;
 	}
 
 	@Override
