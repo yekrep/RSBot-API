@@ -64,6 +64,14 @@ public class ClientContext extends org.powerbot.script.ClientContext<Client> {
 		widgets = ctx.widgets;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String rtv() {
+		return "4";
+	}
+
 	public Script.Controller controller() {
 		return controller;
 	}

@@ -26,7 +26,6 @@ import org.powerbot.script.Condition;
 import org.powerbot.script.rt6.ClientContext;
 
 public final class Bot extends org.powerbot.script.Bot<ClientContext> {
-	private static final String GV = "6";
 
 	public Bot(final BotChrome chrome) {
 		super(chrome, new EventDispatcher());
@@ -88,7 +87,7 @@ public final class Bot extends org.powerbot.script.Bot<ClientContext> {
 		}
 		TransformSpec spec;
 		try {
-			spec = LoaderUtils.get(GV, h);
+			spec = LoaderUtils.get(ctx.rtv(), h);
 			spec.adapt();
 		} catch (final IOException e) {
 			if (!(e.getCause() instanceof IllegalStateException)) {
@@ -117,7 +116,7 @@ public final class Bot extends org.powerbot.script.Bot<ClientContext> {
 			new Thread(new Runnable() {
 				@Override
 				public void run() {
-					LoaderUtils.submit(log, GV, h, bridge.loaded);
+					LoaderUtils.submit(log, ctx.rtv(), h, bridge.loaded);
 				}
 			}).start();
 			return;

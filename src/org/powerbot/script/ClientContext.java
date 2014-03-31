@@ -16,6 +16,8 @@ public abstract class ClientContext<C extends Client> {
 		properties = new ConcurrentHashMap<String, String>();
 	}
 
+	public abstract String rtv();
+
 	public final Bot bot() {
 		return bot.get();
 	}

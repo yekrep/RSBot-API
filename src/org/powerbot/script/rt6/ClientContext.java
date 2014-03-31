@@ -134,6 +134,14 @@ public class ClientContext extends org.powerbot.script.ClientContext<Client> {
 		map = ctx.map;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String rtv() {
+		return "6";
+	}
+
 	public final Script.Controller controller() {
 		return controller;
 	}
