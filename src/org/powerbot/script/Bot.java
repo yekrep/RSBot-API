@@ -33,9 +33,9 @@ public abstract class Bot<C extends ClientContext<? extends Client>> implements 
 	protected void display() {
 		chrome.getContentPane().removeAll();
 		chrome.add(applet);
-		final Dimension d = applet.getMinimumSize();
+		final Dimension d = applet.getMinimumSize(), d2 = chrome.getJMenuBar().getSize();
 		final Insets s = chrome.getInsets();
-		chrome.setMinimumSize(new Dimension(d.width + s.right + s.left, d.height + s.top + s.bottom));
+		chrome.setMinimumSize(new Dimension(d.width + s.right + s.left, d.height + s.top + s.bottom + d2.height));
 		chrome.pack();
 	}
 
