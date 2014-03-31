@@ -33,7 +33,7 @@ public class Tile implements Locatable, Nillable<Tile>, Comparable<Tile> {
 	}
 
 	public Tile derive(final int x, final int y) {
-		return new Tile(x, y, p.z);
+		return new Tile(p.x + x, p.y + y, p.z);
 	}
 
 	public Tile derive(final int x, final int y, final int z) {
