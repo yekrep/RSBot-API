@@ -87,6 +87,8 @@ public interface Client extends org.powerbot.script.Client {
 
 	public MRUCache getObjectConfigCache();
 
+	public MRUCache getItemConfigCache();
+
 	public int[] getEffectiveLevels();
 
 	public int[] getLevels();
