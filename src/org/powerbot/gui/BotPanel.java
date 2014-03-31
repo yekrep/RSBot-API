@@ -6,6 +6,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.concurrent.Callable;
 import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
@@ -25,7 +26,7 @@ class BotPanel extends JPanel implements ActionListener {
 	private final JPanel mode;
 	private final JButton rs3, os;
 
-	public BotPanel(final BotChrome chrome, final Filter<Bot> callback) {
+	public BotPanel(final BotChrome chrome, final Callable<Boolean> pre, final Filter<Bot> callback) {
 		this.chrome = chrome;
 		this.callback = callback;
 
@@ -43,6 +44,7 @@ class BotPanel extends JPanel implements ActionListener {
 		panel.add(logo, new GridBagConstraints());
 
 		mode = new JPanel();
+		mode.setVisible(false);
 		mode.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
 		mode.setBackground(getBackground());
 		rs3 = new JButton("RS3");
@@ -65,7 +67,17 @@ class BotPanel extends JPanel implements ActionListener {
 		add(panel);
 		Logger.getLogger("").addHandler(new BotPanelLogHandler(status));
 
-		new Thread(new AdPanel(logo, panel)).start();
+		boolean success = false;
+		try {
+			success = pre.call();
+		} catch (final Exception e) {
+			e.printStackTrace();
+		}
+
+		if (success) {
+			new Thread(new AdPanel(logo, panel)).start();
+			mode.setVisible(true);
+		}
 	}
 
 	@Override

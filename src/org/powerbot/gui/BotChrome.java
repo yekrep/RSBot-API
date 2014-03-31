@@ -12,6 +12,7 @@ import java.net.SocketTimeoutException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
@@ -52,7 +53,12 @@ public class BotChrome extends JFrame implements Closeable {
 
 		bot = new AtomicReference<Bot>(null);
 		overlay = new AtomicReference<BotOverlay>(null);
-		add(new BotPanel(this, new Filter<Bot>() {
+		add(new BotPanel(this, new Callable<Boolean>() {
+			@Override
+			public Boolean call() throws Exception {
+				return isLatestVersion();
+			}
+		}, new Filter<Bot>() {
 			@Override
 			public boolean accept(final Bot bot) {
 				if (bot instanceof org.powerbot.bot.rt6.Bot) {
@@ -79,7 +85,6 @@ public class BotChrome extends JFrame implements Closeable {
 		setVisible(true);
 		new OSXAdapt(this).run();
 		Tracker.getInstance().trackPage("", getTitle());
-		log.info("Welcome to " + Configuration.NAME + ", please select your game version");
 		System.gc();
 	}
 
@@ -90,7 +95,7 @@ public class BotChrome extends JFrame implements Closeable {
 		return instance;
 	}
 
-	private Boolean isLatestVersion() {
+	private boolean isLatestVersion() {
 		final CryptFile cache = new CryptFile("version.1.txt", getClass());
 		final int version;
 		try {
@@ -107,6 +112,7 @@ public class BotChrome extends JFrame implements Closeable {
 			log.log(Level.SEVERE, String.format("A newer version is available, please download from %s", BotLocale.WEBSITE), "Update");
 			return false;
 		}
+		log.info("Welcome to " + Configuration.NAME + ", please select your game version");
 		return true;
 	}
 
