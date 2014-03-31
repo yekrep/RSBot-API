@@ -4,6 +4,9 @@ import java.awt.Color;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Point;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.powerbot.script.PaintListener;
 import org.powerbot.script.Tile;
@@ -33,20 +36,25 @@ public class DrawObjects implements PaintListener {
 		}
 		final FontMetrics metrics = render.getFontMetrics();
 		final int textHeight = metrics.getHeight();
+
+		final Map<Tile, AtomicInteger> counts = new HashMap<Tile, AtomicInteger>();
 		for (final GameObject object : ctx.objects.select().within(25)) {
 			final Tile t = object.tile();
 			if (t == null) {
 				continue;
 			}
+			if (!counts.containsKey(t)) {
+				counts.put(t, new AtomicInteger(0));
+			}
 
 			Point p = new TileMatrix(ctx, t).centerPoint();
-			if (p.x == -1) {
+			if (!ctx.game.pointInViewport(p)) {
 				continue;
 			}
 
 			final Point p2 = p;
 			p = object.centerPoint();
-			if (p.x == -1) {
+			if (!ctx.game.pointInViewport(p)) {
 				continue;
 			}
 
@@ -58,12 +66,11 @@ public class DrawObjects implements PaintListener {
 			render.setColor(new Color(0, 0, 0, 100));
 			render.drawLine(p.x, p.y, p2.x, p2.y);
 
-			final String s = "" + object.id();
+			final String s = Integer.toString(object.id());
 			final int ty = p.y - textHeight / 2;
 			final int tx = p.x - metrics.stringWidth(s) / 2;
-			//render.setColor(C[object.type()]);
-			render.setColor(Color.green);
-			render.drawString(s, tx, ty);
+			render.setColor(C[object.type().ordinal()]);
+			render.drawString(s, tx, ty - textHeight * counts.get(t).getAndIncrement());
 		}
 	}
 }
