@@ -257,7 +257,7 @@ public final class ScriptController<C extends ClientContext> extends ClientAcces
 			queue.offer(suspension);
 		}
 
-		if (!queue.isEmpty()) {
+		while (!queue.isEmpty()) {
 			executor.get().submit(queue.poll());
 		}
 	}
