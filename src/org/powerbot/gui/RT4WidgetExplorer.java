@@ -115,6 +115,7 @@ class RT4WidgetExplorer extends JFrame implements PaintListener {
 					addInfo("Special type: ", Integer.toString(c.contentType()));
 					addInfo("Texture id: ", Integer.toString(c.textureId()));
 					addInfo("Text: ", c.text());
+					addInfo("Tooltip: ", c.tooltip());
 					addInfo("Text color: ", Integer.toString(c.textColor()));
 					addInfo("Border thickness: ", Integer.toString(c.borderThickness()));
 					addInfo("Model id: ", Integer.toString(c.modelId()));

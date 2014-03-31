@@ -206,10 +206,15 @@ public class Component extends Interactive {
 		return str != null ? str : "";
 	}
 
+	public String tooltip() {
+		final org.powerbot.bot.rt4.client.Widget w = getInternal();
+		final String str = w != null ? w.getTooltip() : "";
+		return str != null ? str : "";
+	}
+
 	public int textColor() {
 		final org.powerbot.bot.rt4.client.Widget w = getInternal();
-		//return w != null ? w.getTextColor() : -1;
-		return -1;//TODO
+		return w != null ? w.getTextColor() : -1;
 	}
 
 	public int scrollX() {
