@@ -142,7 +142,7 @@ public class GameObject extends Interactive implements Nameable, Locatable, Iden
 		if (client != null && rx != 0 && rz != 0) {
 			return new Tile(client.getOffsetX() + (rx >> 7), client.getOffsetY() + (rz >> 7), client.getFloor());
 		}
-		return new Tile(-1, -1, -1);
+		return Tile.NIL;
 	}
 
 	@Override
