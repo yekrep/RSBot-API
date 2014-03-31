@@ -79,7 +79,7 @@ public class BotChrome extends JFrame implements Closeable {
 		setVisible(true);
 		new OSXAdapt(this).run();
 		Tracker.getInstance().trackPage("", getTitle());
-		log.info("Welcome to v6 beta, this is for developer testing only :)");
+		log.info("Welcome to " + Configuration.NAME + ", please select your game version");
 		System.gc();
 	}
 
