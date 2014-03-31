@@ -107,7 +107,7 @@ public class Game extends ClientAccessor {
 		if (client == null) {
 			return Tile.NIL;
 		}
-		return new Tile(client.getOffsetX(), client.getOffsetY());
+		return new Tile(client.getOffsetX(), client.getOffsetY(), client.getFloor());
 	}
 
 	public boolean pointInViewport(final Point p) {
