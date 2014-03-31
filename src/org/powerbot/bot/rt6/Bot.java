@@ -71,8 +71,8 @@ public final class Bot extends org.powerbot.script.Bot {
 			log.severe("Failed to load game");
 			return;
 		}
-		if (gameCrawler.parameters.containsKey("title")) {
-			chrome.setTitle(gameCrawler.parameters.get("title"));
+		if (gameCrawler.properties.containsKey("title")) {
+			chrome.setTitle(gameCrawler.properties.get("title"));
 		}
 		final GameAppletLoader bootstrap = new GameAppletLoader(loader, gameCrawler.clazz) {
 			@Override
