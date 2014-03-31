@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
+import org.powerbot.Configuration;
 import org.powerbot.bot.loader.GameAppletLoader;
 import org.powerbot.bot.loader.GameLoader;
 import org.powerbot.bot.loader.GameStub;
@@ -130,7 +131,10 @@ public class Bot extends org.powerbot.script.Bot<ClientContext> {
 			chrome.setLocationRelativeTo(chrome.getParent());
 		}
 
-		chrome.setResizable(false);
+		// Windows specific bug so don't set fixed size
+		if (Configuration.OS != Configuration.OperatingSystem.WINDOWS) {
+			chrome.setResizable(false);
+		}
 	}
 
 	private void initialize() {
