@@ -18,6 +18,7 @@ import org.powerbot.script.Tile;
 public class GameObject extends Interactive implements Nameable, Locatable, Identifiable {
 	private static final Color TARGET_COLOR = new Color(0, 255, 0, 20);
 	private final WeakReference<BasicObject> object;
+	private final int hash;
 	private static final int[] lookup;
 
 	static {
@@ -32,6 +33,7 @@ public class GameObject extends Interactive implements Nameable, Locatable, Iden
 	GameObject(final ClientContext ctx, final BasicObject object) {
 		super(ctx);
 		this.object = new WeakReference<BasicObject>(object);
+		hash = System.identityHashCode(object);
 	}
 
 	@Override
@@ -156,5 +158,19 @@ public class GameObject extends Interactive implements Nameable, Locatable, Iden
 	@Override
 	public boolean contains(final Point point) {
 		return new TileMatrix(ctx, tile()).contains(point);
+	}
+
+	@Override
+	public int hashCode() {
+		return hash;
+	}
+
+	@Override
+	public boolean equals(final Object o) {
+		if (!(o instanceof GameObject)) {
+			return false;
+		}
+		final BasicObject obj = object.get();
+		return obj != null && obj == ((GameObject) o).object.get();
 	}
 }
