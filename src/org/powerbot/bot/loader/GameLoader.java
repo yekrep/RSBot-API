@@ -15,8 +15,7 @@ import org.powerbot.util.HttpUtils;
 import org.powerbot.util.IOUtils;
 
 public abstract class GameLoader implements Callable<ClassLoader> {
-	private final String archive;
-	private final String referer;
+	private final String archive, referer;
 	private final Map<String, byte[]> resources;
 	protected final Map<String, byte[]> classes;
 	protected String hash;
