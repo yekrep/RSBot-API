@@ -47,6 +47,11 @@ public class Bot extends org.powerbot.script.Bot {
 
 		final GameLoader game = new GameLoader(crawler.archive, crawler.game) {
 			@Override
+			protected boolean cache() {
+				return true;
+			}
+
+			@Override
 			protected Transformer transformer() {
 				TransformSpec spec;
 				try {
