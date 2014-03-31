@@ -6,6 +6,9 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.powerbot.bot.rt6.client.RSAnimable;
 import org.powerbot.bot.rt6.client.RSObject;
@@ -37,10 +40,15 @@ public class DrawObjects implements PaintListener {
 		final FontMetrics metrics = render.getFontMetrics();
 		final int textHeight = metrics.getHeight();
 		final Tile base = ctx.game.mapOffset();
+
+		final Map<Tile, AtomicInteger> counts = new HashMap<Tile, AtomicInteger>();
 		for (final GameObject object : ctx.objects.select().within(25)) {
 			final Tile t = object.tile();
 			if (t == null) {
 				continue;
+			}
+			if (!counts.containsKey(t)) {
+				counts.put(t, new AtomicInteger(0));
 			}
 
 			Point p = new TileMatrix(ctx, t).centerPoint();
@@ -92,7 +100,7 @@ public class DrawObjects implements PaintListener {
 			final int ty = p.y - textHeight / 2;
 			final int tx = p.x - metrics.stringWidth(s) / 2;
 			render.setColor(C[object.type().ordinal()]);
-			render.drawString(s, tx, ty);
+			render.drawString(s, tx, ty - textHeight * counts.get(t).getAndIncrement());
 		}
 	}
 }
