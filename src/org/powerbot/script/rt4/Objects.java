@@ -1,6 +1,7 @@
 package org.powerbot.script.rt4;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -29,7 +30,7 @@ public class Objects extends BasicQuery<GameObject> {
 				floor < 0 || floor > tiles.length || (rows = tiles[floor]) == null) {
 			return r;
 		}
-		final LinkedList<GameObject> list = new LinkedList<GameObject>();
+		final HashSet<GameObject> set = new HashSet<GameObject>();
 		for (final Tile[] row : rows) {
 			if (row == null) {
 				continue;
@@ -62,12 +63,12 @@ public class Objects extends BasicQuery<GameObject> {
 						} else {
 							type = GameObject.Type.UNKNOWN;
 						}
-						list.add(new GameObject(ctx, o));
+						set.add(new GameObject(ctx, o, type));
 					}
 				}
 			}
 		}
-		return list;
+		return new ArrayList<GameObject>(set);
 	}
 
 	@Override
