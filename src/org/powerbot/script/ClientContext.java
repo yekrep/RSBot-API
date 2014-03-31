@@ -5,20 +5,20 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
 
 public abstract class ClientContext<C extends Client> {
-	private final AtomicReference<Bot> bot;
+	private final AtomicReference<Bot<? extends ClientContext<C>>> bot;
 	private final AtomicReference<C> client;
 
 	public final Map<String, String> properties;
 
-	protected ClientContext(final Bot bot) {
-		this.bot = new AtomicReference<Bot>(bot);
+	protected ClientContext(final Bot<? extends ClientContext<C>> bot) {
+		this.bot = new AtomicReference<Bot<? extends ClientContext<C>>>(bot);
 		client = new AtomicReference<C>(null);
 		properties = new ConcurrentHashMap<String, String>();
 	}
 
 	public abstract String rtv();
 
-	public final Bot bot() {
+	public final Bot<? extends ClientContext<C>> bot() {
 		return bot.get();
 	}
 
