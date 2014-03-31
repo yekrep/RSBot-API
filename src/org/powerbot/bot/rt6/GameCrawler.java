@@ -15,14 +15,14 @@ import org.powerbot.util.IOUtils;
 
 public class GameCrawler implements Runnable {
 	private final AtomicBoolean run, passed;
-	public final Map<String, String> parameters, details;
+	public final Map<String, String> parameters, properties;
 	public String game, archive, clazz;
 
 	public GameCrawler() {
 		run = new AtomicBoolean(false);
 		passed = new AtomicBoolean(false);
 		parameters = new HashMap<String, String>();
-		details = new HashMap<String, String>();
+		properties = new HashMap<String, String>();
 	}
 
 	public boolean crawl() {
@@ -80,7 +80,7 @@ public class GameCrawler implements Runnable {
 		p = Pattern.compile("<(title)\\b[^>]*>\\s*([^<\\s]+)([^<]*)</\\1>", Pattern.CASE_INSENSITIVE);
 		m = p.matcher(html);
 		if (m.find()) {
-			details.put(m.group(1), m.group(2).trim());
+			properties.put(m.group(1), m.group(2).trim());
 		}
 
 		passed.set(true);
