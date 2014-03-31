@@ -25,7 +25,6 @@ public class Bot extends org.powerbot.script.Bot {
 	private static final String GV = "4";
 	private static final Logger log = Logger.getLogger(Bot.class.getName());
 	public final ClientContext ctx;
-	private Client client;
 
 	public Bot(final BotChrome chrome) {
 		super(chrome, new EventDispatcher());
@@ -92,7 +91,7 @@ public class Bot extends org.powerbot.script.Bot {
 			protected void sequence(final Applet applet) {
 				log.info("Loading game");
 				Bot.this.applet = applet;
-				client = (Client) applet;
+				ctx.client((Client) applet);
 				final GameStub stub = new GameStub(crawler.parameters, crawler.archive);
 				applet.setStub(stub);
 				applet.init();
@@ -136,6 +135,5 @@ public class Bot extends org.powerbot.script.Bot {
 	private void initialize() {
 		ctx.menu.register();
 		new Thread(threadGroup, dispatcher, dispatcher.getClass().getName()).start();
-		ctx.client(client);
 	}
 }

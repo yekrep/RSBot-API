@@ -29,7 +29,6 @@ public final class Bot extends org.powerbot.script.Bot {
 	private static final String GV = "6";
 	private static final Logger log = Logger.getLogger(Bot.class.getName());
 	public final ClientContext ctx;
-	private Client client;
 
 	public Bot(final BotChrome chrome) {
 		super(chrome, new EventDispatcher());
@@ -105,7 +104,7 @@ public final class Bot extends org.powerbot.script.Bot {
 		final AbstractBridge bridge = new AbstractBridge(spec) {
 			@Override
 			public void instance(final Object client) {
-				Bot.this.client = (Client) client;
+				ctx.client((Client) client);
 			}
 		};
 		((Application) applet).setBridge(bridge);
@@ -127,7 +126,7 @@ public final class Bot extends org.powerbot.script.Bot {
 			return;
 		}
 
-		setClient(client, spec);
+		setClient(ctx.client(), spec);
 		applet.start();
 		new Thread(threadGroup, dispatcher, dispatcher.getClass().getName()).start();
 
