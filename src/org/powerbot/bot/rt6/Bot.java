@@ -32,7 +32,7 @@ public final class Bot extends org.powerbot.script.Bot<ClientContext> {
 	}
 
 	@Override
-	protected ClientContext ctx() {
+	protected ClientContext newContext() {
 		return ClientContext.newContext(this);
 	}
 

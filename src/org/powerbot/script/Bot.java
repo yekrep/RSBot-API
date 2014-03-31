@@ -25,10 +25,10 @@ public abstract class Bot<C extends ClientContext<? extends Client>> implements 
 		this.dispatcher = dispatcher;
 		threadGroup = new ThreadGroup("game"); // TODO: mask in live mode
 		pending = new AtomicBoolean(false);
-		ctx = ctx();
+		ctx = newContext();
 	}
 
-	protected abstract C ctx();
+	protected abstract C newContext();
 
 	protected void display() {
 		chrome.getContentPane().removeAll();
@@ -41,7 +41,7 @@ public abstract class Bot<C extends ClientContext<? extends Client>> implements 
 
 	@Override
 	public void close() {
-		ctx().controller().stop();
+		newContext().controller().stop();
 		if (Thread.currentThread().getContextClassLoader() instanceof ScriptClassLoader) {
 			return;
 		}
@@ -57,7 +57,7 @@ public abstract class Bot<C extends ClientContext<? extends Client>> implements 
 					threadGroup.interrupt();
 				}
 			}).start();
-			ctx().client(null);
+			newContext().client(null);
 		} else {
 			threadGroup.interrupt();
 		}
