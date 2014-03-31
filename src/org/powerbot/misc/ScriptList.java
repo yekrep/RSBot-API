@@ -206,7 +206,7 @@ public class ScriptList {
 		}
 
 		final Bot bot = chrome.bot.get();
-		final Map<String, String> properties = bot.ctx().properties;
+		final Map<String, String> properties = bot.ctx.properties;
 
 		if (username != null) {
 			properties.put(Login.LOGIN_USER_PROPERTY, username);
@@ -269,7 +269,7 @@ public class ScriptList {
 		}
 
 		properties.put(ScriptController.LOCAL_PROPERTY, Boolean.toString(def.local));
-		final ScriptController<? extends ClientContext> c = (ScriptController<? extends ClientContext>) bot.ctx().controller();
+		final ScriptController<? extends ClientContext> c = (ScriptController<? extends ClientContext>) bot.ctx.controller();
 		c.bundle.set(new ScriptBundle(def, script));
 		c.run();
 	}

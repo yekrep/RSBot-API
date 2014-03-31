@@ -170,7 +170,7 @@ final class RT4BotMenuView implements ActionListener {
 			EventListener l = null;
 
 			try {
-				l = e.getConstructor(b.ctx().getClass()).newInstance(b.ctx());
+				l = e.getConstructor(b.ctx.getClass()).newInstance(b.ctx);
 			} catch (final Exception ignored) {
 			}
 

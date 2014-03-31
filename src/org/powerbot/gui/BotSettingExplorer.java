@@ -73,7 +73,7 @@ class BotSettingExplorer extends JFrame {
 		}
 		setVisible(true);
 		try {
-			final ClientContext<?> c = chrome.bot.get().ctx();
+			final ClientContext<?> c = chrome.bot.get().ctx;
 			if (c instanceof org.powerbot.script.rt4.ClientContext) {
 				settings_cache = ((org.powerbot.script.rt4.ClientContext) c).varpbits.array();
 			} else if (c instanceof org.powerbot.script.rt6.ClientContext) {
@@ -105,7 +105,7 @@ class BotSettingExplorer extends JFrame {
 
 	private void update() {
 		final int[] settings_clone;
-		final ClientContext<?> c = chrome.bot.get().ctx();
+		final ClientContext<?> c = chrome.bot.get().ctx;
 		if (c instanceof org.powerbot.script.rt4.ClientContext) {
 			settings_clone = ((org.powerbot.script.rt4.ClientContext) c).varpbits.array();
 		} else if (c instanceof org.powerbot.script.rt6.ClientContext) {

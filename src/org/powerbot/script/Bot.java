@@ -10,7 +10,8 @@ import org.powerbot.bot.EventDispatcher;
 import org.powerbot.bot.ScriptClassLoader;
 import org.powerbot.gui.BotChrome;
 
-public abstract class Bot implements Runnable, Closeable {
+public abstract class Bot<C extends ClientContext<? extends Client>> implements Runnable, Closeable {
+	public final C ctx;
 	protected final BotChrome chrome;
 	public final EventDispatcher dispatcher;
 	public final ThreadGroup threadGroup;
@@ -22,9 +23,10 @@ public abstract class Bot implements Runnable, Closeable {
 		this.dispatcher = dispatcher;
 		threadGroup = new ThreadGroup("game"); // TODO: mask in live mode
 		pending = new AtomicBoolean(false);
+		ctx = ctx();
 	}
 
-	public abstract ClientContext<? extends Client> ctx();
+	protected abstract C ctx();
 
 	protected void display() {
 		chrome.getContentPane().removeAll();

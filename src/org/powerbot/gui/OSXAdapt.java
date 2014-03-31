@@ -47,11 +47,11 @@ class OSXAdapt implements Runnable {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				if (BotPreferences.loading.get() || BotPreferences.visible.get() || chrome.bot.get().ctx().client() == null) {
+				if (BotPreferences.loading.get() || BotPreferences.visible.get() || chrome.bot.get().ctx.client() == null) {
 					return;
 				}
 
-				final ScriptController c = (ScriptController) chrome.bot.get().ctx().controller();
+				final ScriptController c = (ScriptController) chrome.bot.get().ctx.controller();
 				final boolean active = c.valid() && !c.isStopping();
 
 				if (active) {

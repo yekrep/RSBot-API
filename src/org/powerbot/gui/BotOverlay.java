@@ -187,7 +187,7 @@ class BotOverlay extends JDialog {
 		final Bot bot;
 		final Client client;
 		final Canvas canvas;
-		if ((bot = parent.bot.get()) != null && (client = bot.ctx().client()) != null
+		if ((bot = parent.bot.get()) != null && (client = bot.ctx.client()) != null
 				&& (canvas = ((org.powerbot.bot.rt6.client.Client) client).getCanvas()) != null) {
 			final Point l = canvas.getLocation();
 			p.translate(l.x, l.y);

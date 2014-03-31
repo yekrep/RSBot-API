@@ -25,19 +25,17 @@ import org.powerbot.gui.BotChrome;
 import org.powerbot.script.Condition;
 import org.powerbot.script.rt6.ClientContext;
 
-public final class Bot extends org.powerbot.script.Bot {
+public final class Bot extends org.powerbot.script.Bot<ClientContext> {
 	private static final String GV = "6";
 	private static final Logger log = Logger.getLogger(Bot.class.getName());
-	public final ClientContext ctx;
 
 	public Bot(final BotChrome chrome) {
 		super(chrome, new EventDispatcher());
-		ctx = ClientContext.newContext(this);
 	}
 
 	@Override
-	public ClientContext ctx() {
-		return ctx;
+	protected ClientContext ctx() {
+		return ClientContext.newContext(this);
 	}
 
 	@Override

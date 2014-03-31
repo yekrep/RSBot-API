@@ -492,7 +492,7 @@ class BotPreferences extends JDialog implements Runnable {
 				ignored.printStackTrace();
 				return;
 			}
-			final Class<? extends ClientContext> c = chrome.bot.get().ctx().getClass();
+			final Class<? extends ClientContext> c = chrome.bot.get().ctx.getClass();
 			for (final ScriptBundle.Definition e : s) {
 				if (e.client != null && !c.isAssignableFrom((Class<?>) e.client)) {
 					continue;

@@ -276,7 +276,7 @@ class RT4WidgetExplorer extends JFrame implements PaintListener {
 		public void update(final String search) {
 			widgetWrappers.clear();
 			final Widget[] loaded;
-			for (final Widget widget : loaded = ((ClientContext) chrome.bot.get().ctx()).widgets.array()) {
+			for (final Widget widget : loaded = ((ClientContext) chrome.bot.get().ctx).widgets.array()) {
 				children:
 				for (final Component component : widget.components()) {
 					if (search(component, search)) {
