@@ -92,4 +92,6 @@ public interface Client extends org.powerbot.script.Client {
 	public int[] getLevels();
 
 	public int[] getExperiences();
+
+	public int getCycleCount();
 }
