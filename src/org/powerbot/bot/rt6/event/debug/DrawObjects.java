@@ -17,7 +17,7 @@ import org.powerbot.script.rt6.Player;
 import org.powerbot.script.rt6.TileMatrix;
 
 public class DrawObjects implements PaintListener {
-	private static final Color[] C = {Color.GREEN, Color.WHITE, Color.BLACK, Color.BLUE};
+	private static final Color[] C = {Color.GREEN, Color.WHITE, Color.BLACK, Color.BLUE, Color.PINK};
 	private final ClientContext ctx;
 
 	public DrawObjects(final ClientContext ctx) {
