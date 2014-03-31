@@ -28,13 +28,11 @@ import org.powerbot.script.rt6.ClientContext;
 public final class Bot extends org.powerbot.script.Bot {
 	private static final String GV = "6";
 	private static final Logger log = Logger.getLogger(Bot.class.getName());
-	private final BotChrome chrome;
 	public final ClientContext ctx;
 	private Client client;
 
 	public Bot(final BotChrome chrome) {
 		super(chrome, new EventDispatcher());
-		this.chrome = chrome;
 		ctx = ClientContext.newContext(this);
 	}
 
