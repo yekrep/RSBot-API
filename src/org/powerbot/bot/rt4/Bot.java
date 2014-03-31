@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.logging.Logger;
 
 import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 
 import org.powerbot.bot.loader.GameAppletLoader;
 import org.powerbot.bot.loader.GameLoader;
@@ -105,7 +106,12 @@ public class Bot extends org.powerbot.script.Bot<ClientContext> {
 
 				applet.start();
 				initialize();
-				display();
+				SwingUtilities.invokeLater(new Runnable() {
+					@Override
+					public void run() {
+						display();
+					}
+				});
 			}
 		};
 		Thread.currentThread().setContextClassLoader(loader);

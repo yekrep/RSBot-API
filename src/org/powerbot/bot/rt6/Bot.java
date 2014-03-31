@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.util.concurrent.Callable;
 import java.util.logging.Logger;
 
+import javax.swing.SwingUtilities;
+
 import org.powerbot.Configuration;
 import org.powerbot.bot.loader.GameAppletLoader;
 import org.powerbot.bot.loader.GameLoader;
@@ -133,7 +135,12 @@ public final class Bot extends org.powerbot.script.Bot<ClientContext> {
 			new Thread(threadGroup, new SafeMode()).start();
 		}
 
-		display();
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				display();
+			}
+		});
 	}
 
 	private void setClient(final Client client, final TransformSpec spec) {
