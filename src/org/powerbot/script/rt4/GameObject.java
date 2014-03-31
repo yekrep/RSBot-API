@@ -18,6 +18,7 @@ import org.powerbot.script.Tile;
 public class GameObject extends Interactive implements Nameable, Locatable, Identifiable {
 	private static final Color TARGET_COLOR = new Color(0, 255, 0, 20);
 	private final WeakReference<BasicObject> object;
+	private final Type type;
 	private final int hash;
 	private static final int[] lookup;
 
@@ -30,9 +31,14 @@ public class GameObject extends Interactive implements Nameable, Locatable, Iden
 		}
 	}
 
-	GameObject(final ClientContext ctx, final BasicObject object) {
+	public static enum Type {
+		INTERACTIVE, BOUNDARY, WALL_DECORATION, FLOOR_DECORATION, UNKNOWN
+	}
+
+	GameObject(final ClientContext ctx, final BasicObject object, final Type type) {
 		super(ctx);
 		this.object = new WeakReference<BasicObject>(object);
+		this.type = type;
 		hash = System.identityHashCode(object);
 	}
 
@@ -94,9 +100,12 @@ public class GameObject extends Interactive implements Nameable, Locatable, Iden
 		return object != null ? object.getMeta() >> 6 : 0;
 	}
 
-	public int type() {
+	public Type type() {
+		/*
 		final BasicObject object = this.object.get();
 		return object != null ? object.getMeta() & 0x3f : 0;
+		 */
+		return type;
 	}
 
 	public int relativePosition() {

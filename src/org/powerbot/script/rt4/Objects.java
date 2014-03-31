@@ -49,6 +49,19 @@ public class Objects extends BasicQuery<GameObject> {
 
 				for (final BasicObject o : arr) {
 					if (o != null) {
+						final int t = o.getMeta() & 0x3f;
+						final GameObject.Type type;
+						if (t == 0 || t == 1 || t == 9) {
+							type = GameObject.Type.BOUNDARY;
+						} else if (t == 2 || t == 3 || t == 4 || t == 5 || t == 6 || t == 7 || t == 8) {
+							type = GameObject.Type.WALL_DECORATION;
+						} else if (t == 10 || t == 11) {
+							type = GameObject.Type.INTERACTIVE;
+						} else if (t == 22) {
+							type = GameObject.Type.FLOOR_DECORATION;
+						} else {
+							type = GameObject.Type.UNKNOWN;
+						}
 						list.add(new GameObject(ctx, o));
 					}
 				}
@@ -59,6 +72,6 @@ public class Objects extends BasicQuery<GameObject> {
 
 	@Override
 	public GameObject nil() {
-		return new GameObject(ctx, null);
+		return new GameObject(ctx, null, GameObject.Type.UNKNOWN);
 	}
 }
