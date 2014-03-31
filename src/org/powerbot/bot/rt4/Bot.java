@@ -53,7 +53,6 @@ public class Bot extends org.powerbot.script.Bot {
 				try {
 					spec = LoaderUtils.get(GV, hash);
 					spec.adapt();
-					spec.adapters.put("bq", new SetSuperAdapter(spec.delegate("bq"), org.powerbot.bot.rt4.client.input.Canvas.class.getName().replace('.', '/')));
 				} catch (final IOException e) {
 					if (!(e.getCause() instanceof IllegalStateException)) {
 						log.severe("Failed to load transform specification");
