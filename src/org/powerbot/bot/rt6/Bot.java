@@ -47,7 +47,7 @@ public final class Bot extends org.powerbot.script.Bot {
 	public void run() {
 		log.info("Loading bot");
 		final GameCrawler gameCrawler = new GameCrawler();
-		if (!gameCrawler.crawl()) {
+		if (!gameCrawler.call()) {
 			log.severe("Failed to crawl game");
 			return;
 		}

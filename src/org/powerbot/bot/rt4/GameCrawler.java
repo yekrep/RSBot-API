@@ -1,34 +1,17 @@
 package org.powerbot.bot.rt4;
 
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.Callable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.powerbot.Configuration;
-import org.powerbot.util.HttpUtils;
-import org.powerbot.util.IOUtils;
 
-public class GameCrawler implements Callable<Boolean> {
-	public final Map<String, String> parameters, properties;
-	public String game, archive, clazz;
-
-	public GameCrawler() {
-		parameters = new HashMap<String, String>();
-		properties = new HashMap<String, String>();
-	}
+class GameCrawler extends org.powerbot.bot.loader.GameCrawler {
 
 	@Override
 	public Boolean call() {
 		Pattern p;
 		Matcher m;
-		String url;
-		final String referer;
-		String html;
+		String url, referer, html;
 
 		url = "http://oldschool." + Configuration.URLs.GAME + "/";
 		html = download(url, null);
@@ -93,19 +76,5 @@ public class GameCrawler implements Callable<Boolean> {
 		}
 
 		return true;
-	}
-
-	private String download(final String url, final String referer) {
-		try {
-			final HttpURLConnection con = HttpUtils.getHttpConnection(new URL(url));
-			con.setRequestProperty("User-Agent", HttpUtils.HTTP_USERAGENT_FAKE);
-			if (referer != null) {
-				con.setRequestProperty("Referer", referer);
-			}
-			return IOUtils.readString(HttpUtils.getInputStream(con));
-		} catch (final IOException ignored) {
-			ignored.printStackTrace();
-			return null;
-		}
 	}
 }
