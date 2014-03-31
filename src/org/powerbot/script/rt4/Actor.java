@@ -58,7 +58,7 @@ public abstract class Actor extends Interactive implements Locatable, Nameable, 
 		if (client != null && actor != null) {
 			return new Tile(client.getOffsetX() + (actor.getX() >> 7), client.getOffsetY() + (actor.getZ() >> 7), client.getFloor());
 		}
-		return new Tile(-1, -1, -1);
+		return Tile.NIL;
 	}
 
 	@Override
