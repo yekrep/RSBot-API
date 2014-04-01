@@ -58,4 +58,8 @@ public interface Widget {
 	public boolean isHidden();
 
 	public String getTooltip();
+
+	public int getItemId();
+
+	public int getItemStackSize();
 }
