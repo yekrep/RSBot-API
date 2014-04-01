@@ -303,6 +303,32 @@ public class InputSimulator {//TODO: Track click count [same mouse button].
 			} catch (final InvocationTargetException ignored) {
 			} catch (final IllegalAccessException ignored) {
 			}
+		} else {
+			switch (c) {
+			case '@': return KeyEvent.VK_AT;
+			case '.': return KeyEvent.VK_PERIOD;
+			case ' ': return KeyEvent.VK_SPACE;
+			case '!': return KeyEvent.VK_EXCLAMATION_MARK;
+			case '/': return KeyEvent.VK_SLASH;
+			case '\\': return KeyEvent.VK_BACK_SLASH;
+			case '`': return KeyEvent.VK_BACK_QUOTE;
+			case '\'': return KeyEvent.VK_QUOTE;
+			case '"': return KeyEvent.VK_QUOTEDBL;
+			case '-': return KeyEvent.VK_MINUS;
+			case '+': return KeyEvent.VK_PLUS;
+			case '$': return KeyEvent.VK_DOLLAR;
+			case '_': return KeyEvent.VK_UNDERSCORE;
+			case '(': return KeyEvent.VK_LEFT_PARENTHESIS;
+			case ')': return KeyEvent.VK_RIGHT_PARENTHESIS;
+			case '*': return KeyEvent.VK_ASTERISK;
+			case '=': return KeyEvent.VK_EQUALS;
+			case ':': return KeyEvent.VK_COLON;
+			case ';': return KeyEvent.VK_SEMICOLON;
+			case '<': return KeyEvent.VK_LESS;
+			case '>': return KeyEvent.VK_GREATER;
+			case '{': return KeyEvent.VK_BRACELEFT;
+			case '}': return KeyEvent.VK_BRACERIGHT;
+			}
 		}
 		return KeyEvent.VK_UNDEFINED;
 	}
