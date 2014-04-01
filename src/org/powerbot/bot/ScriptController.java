@@ -271,21 +271,17 @@ public final class ScriptController<C extends ClientContext> extends ClientAcces
 		String action = "";
 
 		switch (state) {
-		case START: {
+		case START:
 			break;
-		}
-		case SUSPEND: {
+		case SUSPEND:
 			action = "pause";
 			break;
-		}
-		case RESUME: {
+		case RESUME:
 			action = "resume";
 			break;
-		}
-		case STOP: {
+		case STOP:
 			action = "stop";
 			break;
-		}
 		}
 
 		final String page = String.format("scripts/%s/%s", def.local ? ScriptBundle.Definition.LOCALID : def.getID(), action);
