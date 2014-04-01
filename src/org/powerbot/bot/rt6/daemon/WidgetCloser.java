@@ -32,16 +32,17 @@ public class WidgetCloser extends PollingScript<ClientContext> implements Intern
 	private int tries;
 
 	public WidgetCloser() {
+		priority.set(5);
 		time = 0;
 	}
 
 	@Override
 	public void poll() {
 		if (!isValid()) {
-			priority.set(0);
+			threshold.poll();
 			return;
 		}
-		priority.set(5);
+		threshold.offer(priority.get());
 
 		final Component component = this.component;
 		if (component == null) {

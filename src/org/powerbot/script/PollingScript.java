@@ -1,9 +1,18 @@
 package org.powerbot.script;
 
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
+
 /**
  * An implementation of {@link AbstractScript} which polls (or "loops") indefinitely.
  */
 public abstract class PollingScript<C extends ClientContext> extends AbstractScript<C> implements Runnable {
+
+	/**
+	 * Blocks other {@link PollingScript}s which have a lower {@link AbstractScript#priority} value.
+	 * Only the head item is considered for comparison.
+	 */
+	protected static final Queue<Integer> threshold = new ConcurrentLinkedQueue<Integer>();
 
 	/**
 	 * Creates an instance of a {@link PollingScript}.
@@ -43,14 +52,17 @@ public abstract class PollingScript<C extends ClientContext> extends AbstractScr
 
 	@Override
 	public final void run() {
-		try {
-			poll();
-			if (!Thread.interrupted() && !ctx.controller().isStopping()) {
-				ctx.controller().offer(this);
+		if (threshold.isEmpty() || priority.get() <= threshold.peek()) {
+			try {
+				poll();
+			} catch (final Throwable e) {
+				ctx.controller().stop();
+				e.printStackTrace();
 			}
-		} catch (final Throwable e) {
-			ctx.controller().stop();
-			e.printStackTrace();
+		}
+
+		if (!Thread.interrupted() && !ctx.controller().isStopping()) {
+			ctx.controller().offer(this);
 		}
 
 		Thread.yield();

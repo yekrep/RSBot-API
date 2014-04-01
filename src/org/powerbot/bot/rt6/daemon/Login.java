@@ -24,6 +24,10 @@ public class Login extends PollingScript<ClientContext> implements InternalScrip
 
 	public static final String LOGIN_USER_PROPERTY = "login.account.username";
 
+	public Login() {
+		priority.set(4);
+	}
+
 	private boolean isValid() {
 		if (ctx.property("login.disable").equals("true")) {
 			return false;
@@ -38,10 +42,10 @@ public class Login extends PollingScript<ClientContext> implements InternalScrip
 	@Override
 	public void poll() {
 		if (!isValid()) {
-			priority.set(0);
+			threshold.poll();
 			return;
 		}
-		priority.set(4);
+		threshold.offer(priority.get());
 
 		final GameAccounts.Account account = GameAccounts.getInstance().get(ctx.property(LOGIN_USER_PROPERTY));
 		final int state = ctx.game.clientState();

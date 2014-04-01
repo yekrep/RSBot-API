@@ -18,10 +18,10 @@ public class BankPin extends PollingScript<ClientContext> implements InternalScr
 	@Override
 	public void poll() {
 		if (!ctx.widgets.component(WIDGET, COMPONENT).visible()) {
-			priority.set(0);
+			threshold.poll();
 			return;
 		}
-		priority.set(2);
+		threshold.offer(priority.get());
 
 		final String pin = getPin();
 		if (pin == null) {

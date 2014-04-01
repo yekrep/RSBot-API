@@ -1,12 +1,11 @@
 package org.powerbot.bot;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.PriorityBlockingQueue;
+import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -85,16 +84,8 @@ public final class ScriptController<C extends ClientContext<? extends Client>> e
 		if (!(cl instanceof ScriptClassLoader)) {
 			throw new SecurityException();
 		}
+		executor.set(new ThreadPoolExecutor(1, 1, 0L, TimeUnit.NANOSECONDS, new LinkedBlockingDeque<Runnable>(), new ScriptThreadFactory(group, cl)));
 
-		final BlockingQueue<Runnable> q = new PriorityBlockingQueue<Runnable>((daemons.size() + 1) * 4, new Comparator<Runnable>() {
-			@Override
-			public int compare(final Runnable a, final Runnable b) {
-				final int x = a instanceof AbstractScript ? ((AbstractScript) a).priority.get() : 0, y = b instanceof AbstractScript ? ((AbstractScript) b).priority.get() : 0;
-				return x - y;
-			}
-		});
-
-		executor.set(new ThreadPoolExecutor(1, 1, 0L, TimeUnit.NANOSECONDS, q, new ScriptThreadFactory(group, cl)));
 
 		final String s = ctx.property(TIMEOUT_PROPERTY);
 		if (!s.isEmpty()) {
