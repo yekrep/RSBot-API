@@ -37,6 +37,10 @@ public class Component extends Interactive {
 		return widget;
 	}
 
+	public Component parent() {
+		return component;
+	}
+
 	public int index() {
 		return index;
 	}
@@ -84,7 +88,7 @@ public class Component extends Interactive {
 		return w != null ? w.getHeight() : -1;
 	}
 
-	public Rectangle getRect() {
+	public Rectangle boundingRect() {
 		final Point p = screenPoint();
 		return new Rectangle(p.x, p.y, width(), height());
 	}
@@ -313,5 +317,10 @@ public class Component extends Interactive {
 			return comps != null && index < comps.length ? comps[index] : null;
 		}
 		return null;
+	}
+
+	@Override
+	public String toString() {
+		return String.format("%s (%s)[%s]", widget, component, index);
 	}
 }

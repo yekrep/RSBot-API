@@ -99,7 +99,7 @@ class RT4WidgetExplorer extends JFrame implements PaintListener {
 					Component c = null;
 					if (node instanceof ComponentWrapper) {
 						c = ((ComponentWrapper) node).get();
-						highlightArea = c.getRect();
+						highlightArea = c.boundingRect();
 					}
 					if (c == null) {
 						return;
