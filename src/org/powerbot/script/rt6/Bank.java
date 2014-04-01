@@ -6,8 +6,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.Callable;
 
-import org.powerbot.script.Filter;
 import org.powerbot.script.Condition;
+import org.powerbot.script.Filter;
 import org.powerbot.script.Locatable;
 import org.powerbot.script.Random;
 import org.powerbot.script.Tile;
@@ -16,7 +16,6 @@ import org.powerbot.util.StringUtils;
 
 /**
  * Utilities pertaining to the bank.
- *
  */
 public class Bank extends ItemQuery<Item> implements Viewport {
 	public static final int[] BANK_NPC_IDS = new int[]{
@@ -141,7 +140,7 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 
 	/**
 	 * Opens a random in-view bank.
-	 *
+	 * <p/>
 	 * Do not continue execution within the current poll after this method so BankPin may activate.
 	 *
 	 * @return <tt>true</tt> if the bank was opened; otherwise <tt>false</tt>
@@ -204,7 +203,7 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 				Condition.wait(new Callable<Boolean>() {
 					@Override
 					public Boolean call() throws Exception {
-						return ctx.widgets.widget(13).valid() || opened();
+						return ctx.widgets.widget(13).component(0).visible() || opened();
 					}
 				}, 150, 15);
 			} while (ctx.players.local().inMotion());
@@ -212,7 +211,7 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 			Condition.wait(new Callable<Boolean>() {
 				@Override
 				public Boolean call() throws Exception {
-					return ctx.widgets.widget(13).valid() || opened();
+					return ctx.widgets.widget(13).component(0).visible() || opened();
 				}
 			}, 100, 15);
 		}

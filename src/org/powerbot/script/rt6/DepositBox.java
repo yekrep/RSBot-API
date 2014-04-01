@@ -76,7 +76,7 @@ public class DepositBox extends ItemQuery<Item> implements Viewport {
 				Condition.wait(new Callable<Boolean>() {
 					@Override
 					public Boolean call() throws Exception {
-						return ctx.widgets.widget(13).valid() || opened();
+						return ctx.widgets.widget(13).component(0).valid() || opened();
 					}
 				}, 150, 15);
 			} while (ctx.players.local().inMotion());
