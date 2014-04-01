@@ -1,4 +1,4 @@
-package org.powerbot.bot.rt6.loader.bytecode;
+package org.powerbot.bot.rt6.loader;
 
 import java.applet.Applet;
 
@@ -10,8 +10,6 @@ import org.objectweb.asm.tree.InsnList;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.VarInsnNode;
-import org.powerbot.bot.rt6.loader.Application;
-import org.powerbot.bot.rt6.loader.Bridge;
 
 public class AppletTransform implements Transform {
 	private final String super_;

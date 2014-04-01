@@ -1,4 +1,4 @@
-package org.powerbot.bot.rt6.loader.bytecode;
+package org.powerbot.bot.rt6.loader;
 
 import org.objectweb.asm.tree.ClassNode;
 
