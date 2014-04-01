@@ -89,11 +89,11 @@ public interface Client extends org.powerbot.script.Client {
 
 	public MRUCache getItemConfigCache();
 
-	public int[] getEffectiveLevels();
+	public int[] getSkillLevels1();
 
-	public int[] getLevels();
+	public int[] getSkillLevels2();
 
-	public int[] getExperiences();
+	public int[] getSkillExps();
 
 	public int getCycleCount();
 }
