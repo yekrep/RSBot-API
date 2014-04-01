@@ -80,13 +80,15 @@ public class SelectiveEventQueue extends EventQueue {
 		if (c == component) {
 			return;
 		}
+		final boolean b = isBlocking() || engine == null;
+		setBlocking(false);
 		this.component.set(component);
 		this.callback.set(callback);
-		if (engine == null) {
+		final BotChrome chrome = BotChrome.getInstance();
+		if (b) {
 			this.engine.set(new InputSimulator(component));
-		}
-		if (isBlocking()) {
-			BotChrome.getInstance().requestFocusInWindow();
+			setBlocking(true);
+			chrome.requestFocusInWindow();
 		}
 	}
 
