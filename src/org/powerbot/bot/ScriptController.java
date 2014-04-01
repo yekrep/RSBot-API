@@ -15,12 +15,13 @@ import java.util.concurrent.atomic.AtomicReference;
 import org.powerbot.misc.ScriptBundle;
 import org.powerbot.misc.Tracker;
 import org.powerbot.script.AbstractScript;
+import org.powerbot.script.Client;
 import org.powerbot.script.ClientAccessor;
 import org.powerbot.script.ClientContext;
 import org.powerbot.script.Script;
 import org.powerbot.script.Validatable;
 
-public final class ScriptController<C extends ClientContext> extends ClientAccessor<C> implements Runnable, Validatable, Script.Controller {
+public final class ScriptController<C extends ClientContext<? extends Client>> extends ClientAccessor<C> implements Runnable, Validatable, Script.Controller {
 	public static final String TIMEOUT_PROPERTY = "script.timeout", LOCAL_PROPERTY = "script.local";
 
 	private final ThreadGroup group;
