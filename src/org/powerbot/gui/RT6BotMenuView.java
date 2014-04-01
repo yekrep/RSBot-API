@@ -14,7 +14,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
 import org.powerbot.bot.EventDispatcher;
-import org.powerbot.bot.rt6.event.debug.*;
+import org.powerbot.bot.rt6.activation.*;
 import org.powerbot.script.Bot;
 
 final class RT6BotMenuView implements ActionListener {

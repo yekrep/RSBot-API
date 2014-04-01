@@ -24,8 +24,8 @@ import javax.swing.SwingUtilities;
 
 import org.powerbot.Configuration;
 import org.powerbot.bot.EventDispatcher;
-import org.powerbot.bot.rt6.event.PaintEvent;
-import org.powerbot.bot.rt6.event.TextPaintEvent;
+import org.powerbot.bot.rt6.activation.PaintEvent;
+import org.powerbot.bot.rt6.activation.TextPaintEvent;
 import org.powerbot.script.Bot;
 import org.powerbot.script.Client;
 

@@ -35,7 +35,7 @@ import org.powerbot.script.Script;
 import org.powerbot.bot.InternalScript;
 import org.powerbot.bot.ScriptClassLoader;
 import org.powerbot.bot.ScriptController;
-import org.powerbot.bot.rt6.daemon.Login;
+import org.powerbot.bot.rt6.activation.Login;
 import org.powerbot.util.Ini;
 import org.powerbot.util.StringUtils;
 import org.powerbot.util.TarReader;

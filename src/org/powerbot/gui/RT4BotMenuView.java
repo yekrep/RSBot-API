@@ -14,20 +14,20 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
 import org.powerbot.bot.EventDispatcher;
-import org.powerbot.bot.rt4.event.debug.DrawGroundItems;
-import org.powerbot.bot.rt4.event.debug.DrawItems;
-import org.powerbot.bot.rt4.event.debug.DrawMobs;
-import org.powerbot.bot.rt4.event.debug.DrawObjects;
-import org.powerbot.bot.rt4.event.debug.DrawPlayers;
-import org.powerbot.bot.rt4.event.debug.TClientState;
-import org.powerbot.bot.rt4.event.debug.TDestination;
-import org.powerbot.bot.rt4.event.debug.TFloor;
-import org.powerbot.bot.rt4.event.debug.TLocation;
-import org.powerbot.bot.rt4.event.debug.TMapBase;
-import org.powerbot.bot.rt4.event.debug.TMenu;
-import org.powerbot.bot.rt4.event.debug.TMousePosition;
-import org.powerbot.bot.rt4.event.debug.ViewMouse;
-import org.powerbot.bot.rt4.event.debug.ViewMouseTrails;
+import org.powerbot.bot.rt4.activation.DrawGroundItems;
+import org.powerbot.bot.rt4.activation.DrawItems;
+import org.powerbot.bot.rt4.activation.DrawMobs;
+import org.powerbot.bot.rt4.activation.DrawObjects;
+import org.powerbot.bot.rt4.activation.DrawPlayers;
+import org.powerbot.bot.rt4.activation.TClientState;
+import org.powerbot.bot.rt4.activation.TDestination;
+import org.powerbot.bot.rt4.activation.TFloor;
+import org.powerbot.bot.rt4.activation.TLocation;
+import org.powerbot.bot.rt4.activation.TMapBase;
+import org.powerbot.bot.rt4.activation.TMenu;
+import org.powerbot.bot.rt4.activation.TMousePosition;
+import org.powerbot.bot.rt4.activation.ViewMouse;
+import org.powerbot.bot.rt4.activation.ViewMouseTrails;
 import org.powerbot.script.Bot;
 
 final class RT4BotMenuView implements ActionListener {
