@@ -145,6 +145,16 @@ public class ScriptList {
 									}
 								}
 
+								final Map<String, String> t = ScriptBundle.parseProperties(m.properties());
+								if (t.containsKey("client")) {
+									final String c = t.get("client");
+									if (c.equals("6")) {
+										def.client = org.powerbot.script.rt6.ClientContext.class;
+									} else if (c.equals("4")) {
+										def.client = org.powerbot.script.rt4.ClientContext.class;
+									}
+								}
+
 								list.add(def);
 							}
 						}
