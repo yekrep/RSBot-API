@@ -3,6 +3,7 @@ package org.powerbot.misc;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URL;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.powerbot.Configuration;
@@ -93,7 +94,7 @@ public final class NetworkAccount {
 	public synchronized boolean login(final String username, final String password, final String auth) {
 		InputStream is = null;
 		try {
-			is = HttpUtils.openStream(Configuration.URLs.SIGNIN, StringUtils.urlEncode(username), StringUtils.urlEncode(password), StringUtils.urlEncode(auth));
+			is = HttpUtils.openStream(new URL(String.format(Configuration.URLs.SIGNIN, StringUtils.urlEncode(username), StringUtils.urlEncode(password), StringUtils.urlEncode(auth))));
 			data.read(is);
 			updateCache();
 			return true;
@@ -147,6 +148,6 @@ public final class NetworkAccount {
 	}
 
 	public synchronized InputStream getScriptsList() throws IOException {
-		return scripts.download(Configuration.URLs.SCRIPTSCOLLECTION, getAuth());
+		return scripts.download(new URL(String.format(Configuration.URLs.SCRIPTSCOLLECTION, getAuth())));
 	}
 }

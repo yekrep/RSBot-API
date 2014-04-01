@@ -97,46 +97,6 @@ public class HttpUtils {
 		return getInputStream(getHttpConnection(url));
 	}
 
-	public static InputStream openStream(final String link, final Object... args) throws IOException {
-		final String[] s = splitPostURL(link, args);
-		final URLConnection con = HttpUtils.getHttpConnection(new URL(s[0]));
-		if (s.length > 1) {
-			con.setDoOutput(true);
-			if (s[1] != null && !s[1].isEmpty()) {
-				OutputStreamWriter out = null;
-				try {
-					out = new OutputStreamWriter(con.getOutputStream());
-					out.write(s[1]);
-					out.flush();
-				} catch (final IOException ignored) {
-				} finally {
-					if (out != null) {
-						try {
-							out.close();
-						} catch (final IOException ignored) {
-						}
-					}
-				}
-			}
-		}
-		return HttpUtils.getInputStream(con);
-	}
-
-	public static String[] splitPostURL(final String link, final Object... args) {
-		final String s = String.format(link, args), marker = "{POST}";
-		final int z = s.indexOf(marker);
-		if (z == -1) {
-			return new String[]{s};
-		}
-		final int o = z + marker.length();
-		String pre = s.substring(0, z);
-		final String post = o >= s.length() ? "" : s.substring(o);
-		if (pre.length() > 0 && pre.charAt(pre.length() - 1) == '?') {
-			pre = pre.substring(0, pre.length() - 1);
-		}
-		return new String[]{pre, post};
-	}
-
 	public static InputStream getInputStream(final URLConnection con) throws IOException {
 		return getInputStream(con.getInputStream(), con.getHeaderField("Content-Encoding"));
 	}
@@ -151,17 +111,5 @@ public class HttpUtils {
 			return new InflaterInputStream(in, new Inflater(true));
 		}
 		return in;
-	}
-
-	public static OutputStream getOutputStream(final OutputStream out, final String encoding) throws IOException {
-		if (encoding == null || encoding.isEmpty()) {
-			return out;
-		}
-		if (encoding.equalsIgnoreCase("gzip")) {
-			return new GZIPOutputStream(out);
-		} else if (encoding.equals("deflate")) {
-			return new DeflaterOutputStream(out, new Deflater(4, true));
-		}
-		return out;
 	}
 }

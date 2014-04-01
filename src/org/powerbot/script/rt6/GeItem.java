@@ -36,7 +36,7 @@ public class GeItem {
 	 */
 	private GeItem(final int id) throws IOException {
 		final String url = "http://" + Configuration.URLs.GAME_SERVICES_DOMAIN + "/m=itemdb_rs/api/catalogue/detail.json?item=%s";
-		final String txt = IOUtils.readString(HttpUtils.openStream(String.format(url, StringUtils.urlEncode(Integer.toString(id)))));
+		final String txt = IOUtils.readString(HttpUtils.openStream(new URL(String.format(url, StringUtils.urlEncode(Integer.toString(id))))));
 
 		if (txt == null || txt.isEmpty() || txt.equals("[]") || txt.equals("{}")) {
 			throw new IOException();

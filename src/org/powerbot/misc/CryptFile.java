@@ -93,48 +93,6 @@ public final class CryptFile {
 		return getInputStream();
 	}
 
-	public InputStream download(final String link, final Object... args) throws IOException {
-		final String[] s = HttpUtils.splitPostURL(link, args);
-		final HttpURLConnection con = HttpUtils.getHttpConnection(new URL(s[0]));
-
-		if (store.exists()) {
-			try {
-				con.setIfModifiedSince(store.lastModified());
-			} catch (final IllegalStateException ignored) {
-			}
-		}
-
-		if (s.length > 1) {
-			con.setDoOutput(true);
-			if (s[1] != null && !s[1].isEmpty()) {
-				OutputStreamWriter out = null;
-				try {
-					out = new OutputStreamWriter(con.getOutputStream());
-					out.write(s[1]);
-					out.flush();
-				} catch (final IOException ignored) {
-				} finally {
-					if (out != null) {
-						try {
-							out.close();
-						} catch (final IOException ignored) {
-						}
-					}
-				}
-			}
-		}
-
-		final long mod = con.getLastModified();
-
-		if (con.getResponseCode() != HttpURLConnection.HTTP_NOT_MODIFIED &&
-				(!store.exists() || mod == 0L || mod > store.lastModified())) {
-			IOUtils.write(HttpUtils.getInputStream(con), getOutputStream());
-		}
-
-		con.disconnect();
-		return getInputStream();
-	}
-
 	public InputStream getInputStream() throws IOException {
 		if (!store.isFile()) {
 			throw new FileNotFoundException(store.toString());

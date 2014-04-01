@@ -35,8 +35,8 @@ public class Configuration {
 		public static final String VERSION = "http://" + DOMAIN_SITE_CDN + "/rsbot/version.txt";
 		public static final String TSPEC = Configuration.PROTO + DOMAIN_SITE_CDN + "/rsbot/ts%s/%s.ts";
 		public static final String TSPEC_BUCKETS = "http://buckets." + DOMAIN + "/process/?hash=%s";
-		public static final String SCRIPTSCOLLECTION = Configuration.PROTO + DOMAIN_SITE + "/scripts/api/collection/?{POST}a=%s";
-		public static final String SIGNIN = Configuration.PROTO + DOMAIN_SITE + "/rsbot/login/?{POST}u=%s&p=%s&a=%s";
+		public static final String SCRIPTSCOLLECTION = Configuration.PROTO + DOMAIN_SITE + "/scripts/api/collection/?a=%s";
+		public static final String SIGNIN = Configuration.PROTO + DOMAIN_SITE + "/rsbot/login/?u=%s&p=%s&a=%s";
 		public static final String LICENSE = "http://" + DOMAIN_SITE_LIVE + "/terms/license/";
 		public static final String ADS = "http://" + DOMAIN_SITE_CDN + "/rsbot/ads.txt";
 
