@@ -92,8 +92,12 @@ public class InputSimulator {//TODO: Track click count [same mouse button].
 		}
 		if (!component.isFocusOwner() || !component.isShowing()) {
 			SelectiveEventQueue.getInstance().postEvent(new SelectiveEventQueue.RawAWTEvent(new FocusEvent(component, FocusEvent.FOCUS_GAINED, false, null)));
+			try {
+				Thread.sleep(Random.nextInt(100, 200));
+			} catch (final InterruptedException ignored) {
+			}
 		}
-		focused.set(true);
+		focused.set(component.isFocusOwner() && component.isShowing());
 	}
 
 	public void defocus() {
@@ -104,6 +108,10 @@ public class InputSimulator {//TODO: Track click count [same mouse button].
 		eq.postEvent(new SelectiveEventQueue.RawAWTEvent(new FocusEvent(component, FocusEvent.FOCUS_LOST, false, null)));
 		eq.postEvent(new SelectiveEventQueue.RawAWTEvent(new FocusEvent(component, FocusEvent.FOCUS_LOST, false, null)));
 		focused.set(true);
+		try {
+			Thread.sleep(Random.nextInt(100, 200));
+		} catch (final InterruptedException ignored) {
+		}
 	}
 
 	public void destroy() {
@@ -139,7 +147,11 @@ public class InputSimulator {//TODO: Track click count [same mouse button].
 		if (component == null || button < 1 || button >= mousePressed.length) {
 			return;
 		}
-		if (!(mousePresent.get() || isDragging()) || mousePressed[button].get()) {
+		if (!mousePresent.get()) {
+			defocus();
+			return;
+		}
+		if (!isDragging() || mousePressed[button].get()) {
 			return;
 		}
 		final int m = getMouseMask(button, true);
@@ -163,6 +175,10 @@ public class InputSimulator {//TODO: Track click count [same mouse button].
 
 	public void release(final int button) {
 		if (component == null || button < 1 || button >= mousePressed.length) {
+			return;
+		}
+		if (!mousePresent.get()) {
+			defocus();
 			return;
 		}
 		if (!mousePressed[button].get()) {
@@ -309,6 +325,7 @@ public class InputSimulator {//TODO: Track click count [same mouse button].
 	}
 
 	public void send(final KeyEvent e) {
+		focus();
 		SelectiveEventQueue.getInstance().postEvent(new SelectiveEventQueue.RawAWTEvent(retimeKeyEvent(e)));
 	}
 
