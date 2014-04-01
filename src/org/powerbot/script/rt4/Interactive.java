@@ -26,7 +26,7 @@ public abstract class Interactive extends ClientAccessor implements Targetable, 
 	public abstract Point centerPoint();
 
 	public final boolean hover() {
-		return ctx.mouse.apply(this, new Filter<Point>() {
+		return valid() && ctx.mouse.apply(this, new Filter<Point>() {
 			@Override
 			public boolean accept(final Point point) {
 				return true;
@@ -35,7 +35,7 @@ public abstract class Interactive extends ClientAccessor implements Targetable, 
 	}
 
 	public final boolean click() {
-		return ctx.mouse.apply(this, new Filter<Point>() {
+		return valid() && ctx.mouse.apply(this, new Filter<Point>() {
 			@Override
 			public boolean accept(final Point point) {
 				return ctx.mouse.click(true);
@@ -44,7 +44,7 @@ public abstract class Interactive extends ClientAccessor implements Targetable, 
 	}
 
 	public final boolean click(final boolean left) {
-		return ctx.mouse.apply(this, new Filter<Point>() {
+		return valid() && ctx.mouse.apply(this, new Filter<Point>() {
 			@Override
 			public boolean accept(final Point point) {
 				return ctx.mouse.click(left);
@@ -52,16 +52,25 @@ public abstract class Interactive extends ClientAccessor implements Targetable, 
 		});
 	}
 
+	public final boolean click(final int button) {
+		return valid() && ctx.mouse.apply(this, new Filter<Point>() {
+			@Override
+			public boolean accept(final Point point) {
+				return ctx.mouse.click(button);
+			}
+		});
+	}
+
 	public boolean click(final String action) {
-		return interact(Menu.filter(action));
+		return click(Menu.filter(action));
 	}
 
 	public boolean click(final String action, final String option) {
-		return interact(Menu.filter(action, option));
+		return click(Menu.filter(action, option));
 	}
 
 	public final boolean click(final Filter<Menu.Command> f) {
-		return ctx.mouse.apply(this, new Filter<Point>() {
+		return valid() && ctx.mouse.apply(this, new Filter<Point>() {
 			@Override
 			public boolean accept(final Point point) {
 				return Condition.wait(new Callable<Boolean>() {
@@ -75,18 +84,45 @@ public abstract class Interactive extends ClientAccessor implements Targetable, 
 	}
 
 	public boolean interact(final String action) {
-		return interact(Menu.filter(action));
+		return interact(true, action);
 	}
 
 	public boolean interact(final String action, final String option) {
-		return interact(Menu.filter(action, option));
+		return interact(true, action, option);
 	}
 
 	public final boolean interact(final Filter<Menu.Command> f) {
+		return interact(true, f);
+	}
+
+	public boolean interact(final boolean auto, final String action) {
+		return interact(auto, Menu.filter(action));
+	}
+
+	public boolean interact(final boolean auto, final String action, final String option) {
+		return interact(auto, Menu.filter(action, option));
+	}
+
+	public final boolean interact(final boolean auto, final Filter<Menu.Command> f) {
+		if (!valid()) {
+			return false;
+		}
+		final Filter<Point> f_auto = new Filter<Point>() {
+			@Override
+			public boolean accept(final Point point) {
+				return Condition.wait(new Callable<Boolean>() {
+					@Override
+					public Boolean call() {
+						return ctx.menu.indexOf(f) != -1;
+					}
+				}, 15, 10);
+			}
+		};
+
 		Rectangle r = new Rectangle(-1, -1, -1, -1);
 		for (int i = 0; i < 3; i++) {
 			final Rectangle c = r;
-			if (!ctx.mouse.apply(this, new Filter<Point>() {
+			if (!ctx.mouse.apply(this, auto ? f_auto : new Filter<Point>() {
 				@Override
 				public boolean accept(final Point point) {
 					return !(c.contains(point) && ctx.menu.opened()) && ctx.mouse.click(false) && Condition.wait(new Callable<Boolean>() {
@@ -104,7 +140,7 @@ public abstract class Interactive extends ClientAccessor implements Targetable, 
 				return true;
 			}
 			r = ctx.menu.bounds();
-			if (r.contains(nextPoint())) {
+			if (auto || r.contains(nextPoint())) {
 				ctx.menu.close();
 			}
 		}
