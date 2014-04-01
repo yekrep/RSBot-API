@@ -53,7 +53,6 @@ public abstract class AbstractScript<C extends ClientContext> implements Script,
 
 	/**
 	 * The priority of this {@link org.powerbot.script.Script} as a {@link java.lang.Runnable}.
-	 * @see {@link #getExecQueue(org.powerbot.script.Script.State)}
 	 */
 	public final AtomicInteger priority;
 
