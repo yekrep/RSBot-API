@@ -80,7 +80,7 @@ public class SelectiveEventQueue extends EventQueue {
 		if (c == component) {
 			return;
 		}
-		final boolean b = isBlocking() || engine == null;
+		final boolean b = isBlocking();
 		setBlocking(false);
 		this.component.set(component);
 		this.callback.set(callback);
