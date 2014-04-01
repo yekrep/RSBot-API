@@ -26,7 +26,6 @@ public class GameObject extends Interactive implements Renderable, Locatable, Na
 	private static final Color TARGET_COLOR = new Color(0, 255, 0, 20);
 	private final WeakReference<RSObject> object;
 	private final Type type;
-	private int faceIndex = -1;
 
 	public GameObject(final ClientContext ctx, final RSObject object, final Type type) {
 		super(ctx);
