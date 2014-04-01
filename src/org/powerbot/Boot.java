@@ -134,15 +134,11 @@ public class Boot implements Runnable {
 
 		args.add("-Xmx512m");
 		args.add("-Xss2m");
-		args.add("-Dsun.java2d.noddraw=true");
-		args.add("-XX:CompileThreshold=1500");
-		args.add("-Xincgc");
 		args.add("-XX:+UseConcMarkSweepGC");
-		args.add("-XX:+UseParNewGC");
 
-		args.add("-XX:+CMSClassUnloadingEnabled");
-		args.add("-XX:+UseCodeCacheFlushing");
-		args.add("-XX:-UseSplitVerifier");
+		if (Configuration.OS == OperatingSystem.WINDOWS) {
+			args.add("-Dsun.java2d.noddraw=true");
+		}
 
 		if (Configuration.OS == OperatingSystem.MAC) {
 			args.add("-Xdock:name=" + Configuration.NAME);
