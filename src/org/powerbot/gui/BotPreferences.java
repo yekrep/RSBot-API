@@ -545,12 +545,11 @@ class BotPreferences extends JDialog implements Runnable {
 		}
 
 		a.setPassword(new String(accountPassword.getPassword()));
+		final String p = pin.getText().trim();
 		try {
-			final int n = Integer.parseInt(pin.getText().trim());
-			if (n >= 0 && n <= 9999) {
-				a.pin = n;
-			}
+			a.pin = Integer.parseInt(p);
 		} catch (final NumberFormatException ignored) {
+			a.pin = -1;
 		}
 		a.member = members.isSelected();
 	}
