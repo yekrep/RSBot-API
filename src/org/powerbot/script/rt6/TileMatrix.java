@@ -103,6 +103,9 @@ public final class TileMatrix extends Interactive implements Locatable, Drawable
 		if (model2 != null) {
 			return model2.nextPoint();
 		}
+		if (!inViewport()) {
+			return new Point(-1, -1);
+		}
 		final int x = Random.nextGaussian(0, 100, 5);
 		final int y = Random.nextGaussian(0, 100, 5);
 		return point(x / 100.0D, y / 100.0D, 0);
@@ -112,6 +115,9 @@ public final class TileMatrix extends Interactive implements Locatable, Drawable
 		final BoundingModel model2 = boundingModel.get();
 		if (model2 != null) {
 			return model2.centerPoint();
+		}
+		if (!inViewport()) {
+			return new Point(-1, -1);
 		}
 		return point(0);
 	}
