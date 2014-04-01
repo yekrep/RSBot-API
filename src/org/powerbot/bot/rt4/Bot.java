@@ -7,13 +7,12 @@ import java.io.IOException;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
-import org.powerbot.Configuration;
 import org.powerbot.bot.loader.GameAppletLoader;
 import org.powerbot.bot.loader.GameLoader;
 import org.powerbot.bot.loader.GameStub;
 import org.powerbot.bot.loader.LoaderUtils;
 import org.powerbot.bot.loader.Transformer;
-import org.powerbot.bot.loader.transform.TransformSpec;
+import org.powerbot.bot.loader.TransformSpec;
 import org.powerbot.bot.rt4.client.Client;
 import org.powerbot.bot.rt4.event.EventDispatcher;
 import org.powerbot.gui.BotChrome;

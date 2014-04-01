@@ -1,10 +1,10 @@
-package org.powerbot.bot.loader.transform.adapter;
+package org.powerbot.bot.loader;
 
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
-public class AddGetterAdapter extends ClassVisitor implements Opcodes {
+class AddGetterAdapter extends ClassVisitor implements Opcodes {
 	public static class Field {
 		public int getter_access;
 		public String getter_name;

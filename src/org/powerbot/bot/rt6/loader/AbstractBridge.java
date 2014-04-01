@@ -8,7 +8,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.tree.ClassNode;
-import org.powerbot.bot.loader.transform.TransformSpec;
+import org.powerbot.bot.loader.TransformSpec;
 
 public abstract class AbstractBridge implements Bridge {
 	private final List<String> entries;

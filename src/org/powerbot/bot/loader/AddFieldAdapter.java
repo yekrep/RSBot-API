@@ -1,9 +1,9 @@
-package org.powerbot.bot.loader.transform.adapter;
+package org.powerbot.bot.loader;
 
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.Opcodes;
 
-public class AddFieldAdapter extends ClassVisitor {
+class AddFieldAdapter extends ClassVisitor {
 	public static class Field {
 		public int access;
 		public String name;

@@ -1,10 +1,10 @@
-package org.powerbot.bot.loader.transform;
+package org.powerbot.bot.loader;
 
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Type;
 
-public class CodeReader {
+class CodeReader {
 	static interface Opcodes {
 		int INSN = 1;
 		int INT_INSN = 2;

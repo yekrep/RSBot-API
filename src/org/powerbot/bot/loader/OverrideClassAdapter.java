@@ -1,4 +1,4 @@
-package org.powerbot.bot.loader.transform.adapter;
+package org.powerbot.bot.loader;
 
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.FieldVisitor;
@@ -8,7 +8,7 @@ import org.objectweb.asm.Opcodes;
 
 /**
  */
-public class OverrideClassAdapter extends ClassVisitor {
+class OverrideClassAdapter extends ClassVisitor {
 	private final String old_clazz;
 	private final String new_clazz;
 

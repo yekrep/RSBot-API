@@ -1,10 +1,10 @@
-package org.powerbot.bot.loader.transform.adapter;
+package org.powerbot.bot.loader;
 
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
-public class SetSignatureAdapter extends ClassVisitor {
+class SetSignatureAdapter extends ClassVisitor {
 	public static class Signature {
 		public String name;
 		public String desc;

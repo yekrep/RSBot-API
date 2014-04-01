@@ -3,7 +3,6 @@ package org.powerbot.bot.rt6;
 import java.applet.Applet;
 import java.io.IOException;
 import java.util.concurrent.Callable;
-import java.util.logging.Logger;
 
 import javax.swing.SwingUtilities;
 
@@ -13,7 +12,7 @@ import org.powerbot.bot.loader.GameLoader;
 import org.powerbot.bot.loader.GameStub;
 import org.powerbot.bot.loader.LoaderUtils;
 import org.powerbot.bot.loader.Transformer;
-import org.powerbot.bot.loader.transform.TransformSpec;
+import org.powerbot.bot.loader.TransformSpec;
 import org.powerbot.bot.rt6.client.Client;
 import org.powerbot.bot.rt6.client.Constants;
 import org.powerbot.bot.rt6.event.EventDispatcher;

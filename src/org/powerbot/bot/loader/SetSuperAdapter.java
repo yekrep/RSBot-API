@@ -1,10 +1,10 @@
-package org.powerbot.bot.loader.transform.adapter;
+package org.powerbot.bot.loader;
 
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
-public class SetSuperAdapter extends ClassVisitor {
+class SetSuperAdapter extends ClassVisitor {
 	private String superName;
 	private final String newSuperName;
 

@@ -18,7 +18,6 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
 import org.powerbot.Configuration;
-import org.powerbot.bot.loader.transform.TransformSpec;
 import org.powerbot.misc.Tracker;
 import org.powerbot.util.HttpUtils;
 import org.powerbot.util.StringUtils;

@@ -1,9 +1,9 @@
-package org.powerbot.bot.loader.transform.adapter;
+package org.powerbot.bot.loader;
 
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.Opcodes;
 
-public class AddInterfaceAdapter extends ClassVisitor {
+class AddInterfaceAdapter extends ClassVisitor {
 	private final String inter;
 
 	public AddInterfaceAdapter(final ClassVisitor delegate, final String inter) {

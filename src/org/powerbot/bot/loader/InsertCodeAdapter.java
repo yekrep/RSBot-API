@@ -1,4 +1,4 @@
-package org.powerbot.bot.loader.transform.adapter;
+package org.powerbot.bot.loader;
 
 import java.util.Map;
 
@@ -6,9 +6,8 @@ import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
-import org.powerbot.bot.loader.transform.CodeReader;
 
-public class InsertCodeAdapter extends ClassVisitor {
+class InsertCodeAdapter extends ClassVisitor {
 	private final String method_name;
 	private final String method_desc;
 	private final Map<Integer, byte[]> fragments;

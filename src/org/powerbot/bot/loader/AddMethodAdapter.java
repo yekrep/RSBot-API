@@ -1,11 +1,10 @@
-package org.powerbot.bot.loader.transform.adapter;
+package org.powerbot.bot.loader;
 
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
-import org.powerbot.bot.loader.transform.CodeReader;
 
-public class AddMethodAdapter extends ClassVisitor {
+class AddMethodAdapter extends ClassVisitor {
 	public static class Method {
 		public int access;
 		public String name;
