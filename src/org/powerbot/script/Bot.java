@@ -41,7 +41,7 @@ public abstract class Bot<C extends ClientContext<? extends Client>> implements 
 
 	@Override
 	public void close() {
-		newContext().controller().stop();
+		ctx.controller().stop();
 		if (Thread.currentThread().getContextClassLoader() instanceof ScriptClassLoader) {
 			return;
 		}
@@ -57,7 +57,7 @@ public abstract class Bot<C extends ClientContext<? extends Client>> implements 
 					threadGroup.interrupt();
 				}
 			}).start();
-			newContext().client(null);
+			ctx.client(null);
 		} else {
 			threadGroup.interrupt();
 		}

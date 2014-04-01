@@ -271,8 +271,9 @@ public final class ScriptController<C extends ClientContext> extends ClientAcces
 		String action = "";
 
 		switch (state) {
-		case START:
+		case START: {
 			break;
+		}
 		case SUSPEND: {
 			action = "pause";
 			break;

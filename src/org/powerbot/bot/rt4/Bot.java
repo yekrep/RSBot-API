@@ -2,9 +2,7 @@ package org.powerbot.bot.rt4;
 
 import java.applet.Applet;
 import java.awt.Dimension;
-import java.awt.Point;
 import java.io.IOException;
-import java.util.logging.Logger;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
@@ -16,7 +14,6 @@ import org.powerbot.bot.loader.GameStub;
 import org.powerbot.bot.loader.LoaderUtils;
 import org.powerbot.bot.loader.Transformer;
 import org.powerbot.bot.loader.transform.TransformSpec;
-import org.powerbot.bot.loader.transform.adapter.SetSuperAdapter;
 import org.powerbot.bot.rt4.client.Client;
 import org.powerbot.bot.rt4.event.EventDispatcher;
 import org.powerbot.gui.BotChrome;
@@ -24,7 +21,6 @@ import org.powerbot.script.rt4.ClientContext;
 import org.powerbot.util.Ini;
 
 public class Bot extends org.powerbot.script.Bot<ClientContext> {
-
 	public Bot(final BotChrome chrome) {
 		super(chrome, new EventDispatcher());
 	}
