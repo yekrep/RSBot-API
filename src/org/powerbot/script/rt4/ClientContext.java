@@ -10,6 +10,7 @@ import org.powerbot.script.Script;
 public class ClientContext extends org.powerbot.script.ClientContext<Client> {
 	public final Script.Controller controller;
 
+	public final Bank bank;
 	public final Game game;
 	public final GroundItems groundItems;
 	public final Inventory inventory;
@@ -29,6 +30,7 @@ public class ClientContext extends org.powerbot.script.ClientContext<Client> {
 
 		controller = new ScriptController<ClientContext>(this);
 
+		bank = new Bank(this);
 		game = new Game(this);
 		groundItems = new GroundItems(this);
 		inventory = new Inventory(this);
@@ -53,6 +55,7 @@ public class ClientContext extends org.powerbot.script.ClientContext<Client> {
 
 		controller = ctx.controller;
 
+		bank = ctx.bank;
 		game = ctx.game;
 		groundItems = ctx.groundItems;
 		inventory = ctx.inventory;
