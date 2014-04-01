@@ -107,15 +107,15 @@ public class SelectiveEventQueue extends EventQueue {
 			event.setSource(component);
 		}
 
+		if (event instanceof MouseEvent || event instanceof KeyEvent) {
+			BotChrome.getInstance().bot.get().dispatcher.dispatch(event);
+		}
 		final Object s = event.getSource();
 		if (!blocking.get() || s != component ||
 				!(event instanceof MouseEvent || event instanceof KeyEvent ||
 						event instanceof WindowEvent || event instanceof FocusEvent)) {
 			super.dispatchEvent(event);
 			return;
-		}
-		if (event instanceof MouseEvent || event instanceof KeyEvent) {
-			BotChrome.getInstance().bot.get().dispatcher.dispatch(event);
 		}
 		final EventCallback callback = this.callback.get();
 		if (callback != null) {
