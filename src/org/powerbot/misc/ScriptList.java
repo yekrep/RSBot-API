@@ -140,7 +140,7 @@ public class ScriptList {
 								final Type pt = superClass[0].getGenericSuperclass();
 								if (pt instanceof ParameterizedType) {
 									final Type[] t = ((ParameterizedType) pt).getActualTypeArguments();
-									if (t != null && t.length > 0) {
+									if (t != null && t.length > 0 && t[0] instanceof Class) {
 										def.client = t[0];
 									}
 								}
