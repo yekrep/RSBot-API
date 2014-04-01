@@ -126,11 +126,6 @@ public class Bot extends org.powerbot.script.Bot<ClientContext> {
 			chrome.setExtendedState(x);
 			chrome.setLocationRelativeTo(chrome.getParent());
 		}
-
-		// Windows specific bug so don't set fixed size
-		if (Configuration.OS != Configuration.OperatingSystem.WINDOWS) {
-			chrome.setResizable(false);
-		}
 	}
 
 	private void initialize() {
