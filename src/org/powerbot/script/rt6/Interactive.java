@@ -81,7 +81,7 @@ public abstract class Interactive extends ClientAccessor implements Targetable, 
 		return click(Menu.filter(action, option));
 	}
 
-	public final boolean click(final Filter<Menu.Entry> f) {
+	public final boolean click(final Filter<Menu.Command> f) {
 		return valid() && ctx.mouse.apply(this, new Filter<Point>() {
 			@Override
 			public boolean accept(final Point point) {
@@ -103,7 +103,7 @@ public abstract class Interactive extends ClientAccessor implements Targetable, 
 		return interact(true, action, option);
 	}
 
-	public final boolean interact(final Filter<Menu.Entry> f) {
+	public final boolean interact(final Filter<Menu.Command> f) {
 		return interact(true, f);
 	}
 
@@ -115,7 +115,7 @@ public abstract class Interactive extends ClientAccessor implements Targetable, 
 		return interact(auto, Menu.filter(action, option));
 	}
 
-	public final boolean interact(final boolean auto, final Filter<Menu.Entry> f) {
+	public final boolean interact(final boolean auto, final Filter<Menu.Command> f) {
 		if (!valid()) {
 			return false;
 		}

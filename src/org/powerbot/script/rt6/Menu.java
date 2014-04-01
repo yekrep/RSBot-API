@@ -30,10 +30,10 @@ public class Menu extends ClientAccessor {
 		super(factory);
 	}
 
-	public static class Entry {
+	public static class Command {
 		public final String action, option;
 
-		protected Entry(final String a, final String o) {
+		protected Command(final String a, final String o) {
 			action = a != null ? StringUtils.stripHtml(a) : "";
 			option = o != null ? StringUtils.stripHtml(o) : "";
 		}
@@ -50,7 +50,7 @@ public class Menu extends ClientAccessor {
 	 * @param action the action to filter
 	 * @return the filter
 	 */
-	public static Filter<Entry> filter(final String action) {
+	public static Filter<Command> filter(final String action) {
 		return filter(action, null);
 	}
 
@@ -61,14 +61,14 @@ public class Menu extends ClientAccessor {
 	 * @param option the option to filter
 	 * @return the filter
 	 */
-	public static Filter<Entry> filter(final String action, final String option) {
+	public static Filter<Command> filter(final String action, final String option) {
 		final String a = action != null ? action.toLowerCase() : null;
 		final String o = option != null ? option.toLowerCase() : null;
-		return new Filter<Entry>() {
+		return new Filter<Command>() {
 			@Override
-			public boolean accept(final Entry entry) {
-				return (a == null || entry.action.toLowerCase().contains(a)) &&
-						(o == null || o.equalsIgnoreCase("null") || entry.option.toLowerCase().contains(o));
+			public boolean accept(final Command command) {
+				return (a == null || command.action.toLowerCase().contains(a)) &&
+						(o == null || o.equalsIgnoreCase("null") || command.option.toLowerCase().contains(o));
 			}
 		};
 	}
@@ -89,7 +89,7 @@ public class Menu extends ClientAccessor {
 	 * @param filter the filter
 	 * @return the first index found; otherwise -1
 	 */
-	public int indexOf(final Filter<Entry> filter) {
+	public int indexOf(final Filter<Command> filter) {
 		if (!ctx.game.loggedIn()) {
 			cache();
 		}
@@ -102,7 +102,7 @@ public class Menu extends ClientAccessor {
 		}
 		final int len = Math.min(actions.length, options.length);
 		for (int i = 0; i < len; i++) {
-			if (filter.accept(new Entry(actions[i], options[i]))) {
+			if (filter.accept(new Command(actions[i], options[i]))) {
 				return i;
 			}
 		}
@@ -115,7 +115,7 @@ public class Menu extends ClientAccessor {
 	 * @param filter the filter
 	 * @return <tt>true</tt> if an entry was hovered, otherwise <tt>false</tt>
 	 */
-	public boolean hover(final Filter<Entry> filter) {
+	public boolean hover(final Filter<Command> filter) {
 		return select(filter, false);
 	}
 
@@ -125,11 +125,11 @@ public class Menu extends ClientAccessor {
 	 * @param filter the filter
 	 * @return <tt>true</tt> if the entry was clicked; otherwise <tt>false</tt>
 	 */
-	public boolean click(final Filter<Entry> filter) {
+	public boolean click(final Filter<Command> filter) {
 		return select(filter, true);
 	}
 
-	private boolean select(final Filter<Entry> filter, final boolean click) {
+	private boolean select(final Filter<Command> filter, final boolean click) {
 		final Client client = ctx.client();
 		if (client == null) {
 			return false;

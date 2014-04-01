@@ -178,9 +178,9 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 		if (index == -1) {
 			return false;
 		}
-		final Filter<Menu.Entry> f = new Filter<Menu.Entry>() {
+		final Filter<Menu.Command> f = new Filter<Menu.Command>() {
 			@Override
-			public boolean accept(final Menu.Entry entry) {
+			public boolean accept(final Menu.Command entry) {
 				final String s = entry.action;
 				return s.equalsIgnoreCase("Use") || s.equalsIgnoreCase("Open") || s.equalsIgnoreCase("Bank");
 			}

@@ -32,6 +32,20 @@ public class Menu extends ClientAccessor {
 		options = new AtomicReference<String[]>(e);
 	}
 
+	public static class Command {
+		public final String action, option;
+
+		protected Command(final String a, final String o) {
+			action = a != null ? StringUtils.stripHtml(a) : "";
+			option = o != null ? StringUtils.stripHtml(o) : "";
+		}
+
+		@Override
+		public String toString() {
+			return String.format("%s %s", action, option).trim();
+		}
+	}
+
 	public static Filter<Command> filter(final String action) {
 		return filter(action, null);
 	}
@@ -190,14 +204,5 @@ public class Menu extends ClientAccessor {
 				Menu.this.options.set(options2);
 			}
 		});
-	}
-
-	public static class Command {
-		public final String action, option;
-
-		private Command(final String a, final String o) {
-			action = a != null ? StringUtils.stripHtml(a) : "";
-			option = o != null ? StringUtils.stripHtml(o) : "";
-		}
 	}
 }
