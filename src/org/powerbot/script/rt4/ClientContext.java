@@ -3,6 +3,7 @@ package org.powerbot.script.rt4;
 import org.powerbot.bot.ScriptController;
 import org.powerbot.bot.rt4.Bot;
 import org.powerbot.bot.rt4.client.Client;
+import org.powerbot.script.Keyboard;
 import org.powerbot.script.Mouse;
 import org.powerbot.script.Script;
 
@@ -12,6 +13,7 @@ public class ClientContext extends org.powerbot.script.ClientContext<Client> {
 	public final Game game;
 	public final GroundItems groundItems;
 	public final Inventory inventory;
+	public final Keyboard<ClientContext> keyboard;
 	public final Menu menu;
 	public final Mouse<ClientContext> mouse;
 	public final Movement movement;
@@ -30,6 +32,7 @@ public class ClientContext extends org.powerbot.script.ClientContext<Client> {
 		game = new Game(this);
 		groundItems = new GroundItems(this);
 		inventory = new Inventory(this);
+		keyboard = new Keyboard<ClientContext>(this);
 		menu = new Menu(this);
 		mouse = new Mouse<ClientContext>(this);
 		movement = new Movement(this);
@@ -53,6 +56,7 @@ public class ClientContext extends org.powerbot.script.ClientContext<Client> {
 		game = ctx.game;
 		groundItems = ctx.groundItems;
 		inventory = ctx.inventory;
+		keyboard = ctx.keyboard;
 		menu = ctx.menu;
 		mouse = ctx.mouse;
 		movement = ctx.movement;
