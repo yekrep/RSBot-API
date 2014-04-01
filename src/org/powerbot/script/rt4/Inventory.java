@@ -11,7 +11,7 @@ public class Inventory extends ItemQuery<Item> {
 	@Override
 	protected List<Item> get() {
 		final List<Item> items = new ArrayList<Item>(28);
-		final Component c = ctx.widgets.get(149).component(0);
+		final Component c = ctx.widgets.widget(149).component(0);
 		final int[] ids = c.itemIds(), stacks = c.itemStackSizes();
 		for (int i = 0; i < Math.min(ids != null ? ids.length : -1, stacks != null ? stacks.length : -1); i++) {
 			final int id = ids[i], stack = stacks[i];

@@ -69,7 +69,7 @@ public class Game extends ClientAccessor {
 	}
 
 	private Component getByTexture(final int texture) {
-		final Widget w = ctx.widgets.get(548);
+		final Widget w = ctx.widgets.widget(548);
 		for (final Component c : w.components()) {
 			if (c.textureId() == texture) {
 				return c;

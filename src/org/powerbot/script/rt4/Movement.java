@@ -101,7 +101,7 @@ public class Movement extends ClientAccessor {
 	}
 
 	public int energyLevel() {
-		final Component c = ctx.widgets.get(WIDGET_MAP).component(COMPONENT_RUN_ENERGY);
+		final Component c = ctx.widgets.widget(WIDGET_MAP).component(COMPONENT_RUN_ENERGY);
 		if (c != null && c.valid()) {
 			try {
 				return Integer.parseInt(c.text().trim());
@@ -116,7 +116,7 @@ public class Movement extends ClientAccessor {
 	}
 
 	public boolean running(final boolean running) {
-		return running() == running() || (ctx.widgets.get(WIDGET_MAP).component(COMPONENT_RUN_ENERGY - 1).interact(Menu.filter("Toggle Run")) &&
+		return running() == running() || (ctx.widgets.widget(WIDGET_MAP).component(COMPONENT_RUN_ENERGY - 1).interact(Menu.filter("Toggle Run")) &&
 				Condition.wait(new Callable<Boolean>() {
 					@Override
 					public Boolean call() {

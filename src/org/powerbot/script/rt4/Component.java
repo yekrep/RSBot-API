@@ -53,7 +53,7 @@ public class Component extends Interactive {
 		}
 		final int uid = parentId();
 		if (uid != -1) {
-			final Component c = ctx.widgets.get(uid >> 16).component(uid & 0xffff);
+			final Component c = ctx.widgets.widget(uid >> 16).component(uid & 0xffff);
 			final Point p = c.screenPoint();
 			if (p.x != -1 && p.y != -1) {
 				return new Point(p.x + widget.getX(), p.y + widget.getY());
@@ -297,7 +297,7 @@ public class Component extends Interactive {
 		if (internal != null && valid() && !internal.isHidden()) {
 			id = parentId();
 		}
-		return id == -1 || (id != 0 && ctx.widgets.get(id >> 16).component(id & 0xffff).visible());
+		return id == -1 || (id != 0 && ctx.widgets.widget(id >> 16).component(id & 0xffff).visible());
 	}
 
 	private org.powerbot.bot.rt4.client.Widget getInternal() {

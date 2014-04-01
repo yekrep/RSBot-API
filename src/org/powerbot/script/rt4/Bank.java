@@ -18,11 +18,11 @@ public class Bank extends ClientAccessor {
 	}
 
 	public boolean opened() {
-		return ctx.widgets.get(WIDGET).component(COMPONENT_WINDOW).visible();
+		return ctx.widgets.widget(WIDGET).component(COMPONENT_WINDOW).visible();
 	}
 
 	public boolean close() {
-		return !opened() || (ctx.widgets.get(WIDGET).component(COMPONENT_CLOSE).interact("Close") && Condition.wait(new Callable<Boolean>() {
+		return !opened() || (ctx.widgets.widget(WIDGET).component(COMPONENT_CLOSE).interact("Close") && Condition.wait(new Callable<Boolean>() {
 			@Override
 			public Boolean call() {
 				return !opened();
@@ -76,7 +76,7 @@ public class Bank extends ClientAccessor {
 			if (!Condition.wait(new Callable<Boolean>() {
 				@Override
 				public Boolean call() throws Exception {
-					return ctx.widgets.get(548).component(122).visible();
+					return ctx.widgets.widget(548).component(122).visible();
 				}
 			})) {
 				return false;
@@ -98,7 +98,7 @@ public class Bank extends ClientAccessor {
 	}
 
 	public boolean withdrawModeNoted(final boolean noted) {
-		return withdrawModeNoted() == noted || (ctx.widgets.get(WIDGET).component(noted ? COMPONENT_W_NOTE : COMPONENT_W_ITEM).interact(noted ? "Note" : "Item") && Condition.wait(new Callable<Boolean>() {
+		return withdrawModeNoted() == noted || (ctx.widgets.widget(WIDGET).component(noted ? COMPONENT_W_NOTE : COMPONENT_W_ITEM).interact(noted ? "Note" : "Item") && Condition.wait(new Callable<Boolean>() {
 			@Override
 			public Boolean call() {
 				return withdrawModeNoted() == noted;
@@ -107,11 +107,11 @@ public class Bank extends ClientAccessor {
 	}
 
 	public boolean depositInventory() {
-		return ctx.widgets.get(WIDGET).component(COMPONENT_D_INVENTORY).interact("Deposit");
+		return ctx.widgets.widget(WIDGET).component(COMPONENT_D_INVENTORY).interact("Deposit");
 	}
 
 	public boolean depositEquipment() {
-		return ctx.widgets.get(WIDGET).component(COMPONENT_D_EQUIPMENT).interact("Deposit");
+		return ctx.widgets.widget(WIDGET).component(COMPONENT_D_EQUIPMENT).interact("Deposit");
 	}
 
 	/**

@@ -12,7 +12,7 @@ public class Widgets extends ClientAccessor {
 		sparseCache = new Widget[0];
 	}
 
-	public synchronized Widget get(final int index) {
+	public synchronized Widget widget(final int index) {
 		if (index < sparseCache.length && sparseCache[index] != null) {
 			return sparseCache[index];
 		}
@@ -34,7 +34,7 @@ public class Widgets extends ClientAccessor {
 		if (len <= 0) {
 			return new Widget[0];
 		}
-		get(len - 1);
+		widget(len - 1);
 		return Arrays.copyOf(sparseCache, len);
 	}
 
