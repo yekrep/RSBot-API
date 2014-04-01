@@ -96,4 +96,14 @@ public interface Client extends org.powerbot.script.Client {
 	public int[] getSkillExps();
 
 	public int getCycleCount();
+
+	public int getHintArrowNpcUid();
+
+	public int getHintArrowPlayerUid();
+
+	public int getHintArrowType();
+
+	public int getHintArrowX();
+
+	public int getHintArrowY();
 }
