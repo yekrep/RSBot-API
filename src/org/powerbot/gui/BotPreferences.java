@@ -44,6 +44,7 @@ class BotPreferences extends JDialog implements Runnable {
 	private final JButton signin, play;
 	private final JList script;
 	private final JScrollPane scrollScript;
+	private final AtomicBoolean blocksave = new AtomicBoolean(false);
 
 	private final Component[] itemsAccount;
 	private final List<ScriptBundle.Definition> list;
@@ -269,6 +270,7 @@ class BotPreferences extends JDialog implements Runnable {
 				final GameAccounts g = GameAccounts.getInstance();
 				final GameAccounts.Account a = i > 0 && i < z - 2 ? g.get(i - 1) : null;
 
+				blocksave.set(true);
 				if (a == null) {
 					members.setSelected(false);
 					accountPassword.setText("");
@@ -279,6 +281,7 @@ class BotPreferences extends JDialog implements Runnable {
 					final String p = a.getPIN();
 					pin.setText(p == null || p.isEmpty() || p.indexOf('-') == 0 ? "          " : p + "  ");
 				}
+				blocksave.set(false);
 
 				for (final Component c : itemsAccount) {
 					c.setVisible(a != null);
@@ -538,6 +541,10 @@ class BotPreferences extends JDialog implements Runnable {
 	}
 
 	private void save() {
+		if (blocksave.get()) {
+			return;
+		}
+
 		final int s = account.getSelectedIndex();
 		final GameAccounts.Account a = s > 0 && s < account.getModel().getSize() - 2 ? GameAccounts.getInstance().get(s - 1) : null;
 		if (a == null) {
