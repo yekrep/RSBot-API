@@ -373,7 +373,7 @@ public class InputSimulator {//TODO: Track click count [same mouse button].
 				}
 				final int vk = getExtendedKeyCodeForChar(c);
 				if (vk == KeyEvent.VK_UNDEFINED) {
-					throw new IllegalArgumentException("invalid keyChar");
+					throw new IllegalArgumentException("invalid keyChar (" + c + ")");
 				} else {
 					if (Character.isUpperCase(c)) {
 						queue.add(constructKeyEvent(KeyEvent.KEY_PRESSED, KeyEvent.VK_SHIFT));
