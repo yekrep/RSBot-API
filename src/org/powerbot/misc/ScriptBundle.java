@@ -1,6 +1,7 @@
 package org.powerbot.misc;
 
 import java.lang.reflect.Type;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -91,5 +92,17 @@ public class ScriptBundle {
 			final String a = getID(), b = o.getID();
 			return a == null || b == null ? 0 : a.compareTo(b);
 		}
+	}
+
+	public static Map<String, String> parseProperties(final String s) {
+		final Map<String, String> items = new HashMap<String, String>();
+		final String[] p = s.split("(?<!\\\\);");
+
+		for (final String x : p) {
+			final String[] e = x.split("(?<!\\\\)=", 2);
+			items.put(e[0].trim(), e.length > 1 ? e[1].trim() : "");
+		}
+
+		return items;
 	}
 }
