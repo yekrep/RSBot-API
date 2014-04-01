@@ -94,7 +94,7 @@ public final class NetworkAccount {
 	public synchronized boolean login(final String username, final String password, final String auth) {
 		InputStream is = null;
 		try {
-			is = HttpUtils.openStream(new URL(String.format(Configuration.URLs.SIGNIN, StringUtils.urlEncode(username), StringUtils.urlEncode(password), StringUtils.urlEncode(auth))));
+			is = HttpUtils.openStream(new URL(String.format(Configuration.URLs.LOGIN, StringUtils.urlEncode(username), StringUtils.urlEncode(password), StringUtils.urlEncode(auth))));
 			data.read(is);
 			updateCache();
 			return true;
@@ -148,6 +148,6 @@ public final class NetworkAccount {
 	}
 
 	public synchronized InputStream getScriptsList() throws IOException {
-		return scripts.download(new URL(String.format(Configuration.URLs.SCRIPTSCOLLECTION, getAuth())));
+		return scripts.download(new URL(String.format(Configuration.URLs.SCRIPTS, getAuth())));
 	}
 }
