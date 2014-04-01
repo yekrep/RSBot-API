@@ -147,11 +147,11 @@ public class InputSimulator {//TODO: Track click count [same mouse button].
 		if (component == null || button < 1 || button >= mousePressed.length) {
 			return;
 		}
-		if (!mousePresent.get()) {
+		if (!mousePresent.get() && !isDragging()) {
 			defocus();
 			return;
 		}
-		if (!isDragging() || mousePressed[button].get()) {
+		if (!(mousePresent.get() || isDragging()) || mousePressed[button].get()) {
 			return;
 		}
 		final int m = getMouseMask(button, true);
@@ -174,11 +174,8 @@ public class InputSimulator {//TODO: Track click count [same mouse button].
 	}
 
 	public void release(final int button) {
+		//TODO: defocus on out?
 		if (component == null || button < 1 || button >= mousePressed.length) {
-			return;
-		}
-		if (!mousePresent.get()) {
-			defocus();
 			return;
 		}
 		if (!mousePressed[button].get()) {
