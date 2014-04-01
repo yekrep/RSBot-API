@@ -7,19 +7,19 @@ public class Skills extends ClientAccessor {
 		super(ctx);
 	}
 
-	public int[] getLevels() {
+	public int[] levels() {
 		final Client c = ctx.client();
 		final int[] arr = c != null ? c.getLevels() : new int[0];
 		return arr != null ? arr : new int[0];
 	}
 
-	public int[] getEffectiveLevels() {
+	public int[] effectiveLevels() {
 		final Client c = ctx.client();
 		final int[] arr = c != null ? c.getEffectiveLevels() : new int[0];
 		return arr != null ? arr : new int[0];
 	}
 
-	public int[] getExperiences() {
+	public int[] experiences() {
 		final Client c = ctx.client();
 		final int[] arr = c != null ? c.getExperiences() : new int[0];
 		return arr != null ? arr : new int[0];
