@@ -22,7 +22,6 @@ public abstract class GameCrawler implements Callable<Boolean> {
 	protected final String download(final String url, final String referer) {
 		try {
 			final HttpURLConnection con = HttpUtils.getHttpConnection(new URL(url));
-			con.setRequestProperty("User-Agent", HttpUtils.HTTP_USERAGENT_FAKE);
 			if (referer != null) {
 				con.setRequestProperty("Referer", referer);
 			}
