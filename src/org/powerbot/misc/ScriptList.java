@@ -216,6 +216,7 @@ public class ScriptList {
 		}
 
 		final Bot bot = chrome.bot.get();
+		@SuppressWarnings("unchecked")
 		final Map<String, String> properties = bot.ctx.properties;
 
 		if (username != null) {
