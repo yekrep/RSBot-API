@@ -276,7 +276,8 @@ class BotPreferences extends JDialog implements Runnable {
 				} else {
 					members.setSelected(a.member);
 					accountPassword.setText(a.getPassword());
-					pin.setText(a.getPIN());
+					final String p = a.getPIN();
+					pin.setText(p == null || p.isEmpty() || p.indexOf('-') == 0 ? "          " : p + "  ");
 				}
 
 				for (final Component c : itemsAccount) {
@@ -346,7 +347,7 @@ class BotPreferences extends JDialog implements Runnable {
 
 		labelPin.setText(BotLocale.PIN + ":");
 
-		pin.setText("0000 ");
+		pin.setText("          ");
 		pin.getDocument().addDocumentListener(docAccount);
 
 		members.setText(BotLocale.MEMBER);
