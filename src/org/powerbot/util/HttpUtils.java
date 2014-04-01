@@ -58,9 +58,8 @@ public class HttpUtils {
 		con.addRequestProperty("Host", url.getHost());
 		con.addRequestProperty("Connection", "close");
 		con.addRequestProperty("User-Agent", url.getHost().endsWith("." + Configuration.URLs.DOMAIN) || url.getHost().equals(Configuration.URLs.DOMAIN) ? HTTP_USERAGENT_REAL : HTTP_USERAGENT_FAKE);
-		con.addRequestProperty("Accept-Encoding", "gzip, deflate");
-		con.addRequestProperty("Accept-Charset", "ISO-8859-1,UTF-8;q=0.7,*;q=0.7");
-		con.addRequestProperty("Accept-Language", "en-us,en;q=0.5");
+		con.addRequestProperty("Accept-Encoding", "gzip,deflate");
+		con.addRequestProperty("Accept-Language", "en-US,en;q=0.8");
 		con.addRequestProperty("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
 		con.setConnectTimeout(10000);
 		return con;
