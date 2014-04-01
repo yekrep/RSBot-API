@@ -140,7 +140,7 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 
 	/**
 	 * Opens a random in-view bank.
-	 * <p/>
+	 *
 	 * Do not continue execution within the current poll after this method so BankPin may activate.
 	 *
 	 * @return <tt>true</tt> if the bank was opened; otherwise <tt>false</tt>
