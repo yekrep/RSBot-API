@@ -41,7 +41,7 @@ public abstract class GameLoader implements Callable<ClassLoader> {
 	public ClassLoader call() throws Exception {
 		byte[] b;
 		try {
-			final HttpURLConnection con = HttpUtils.getHttpConnection(new URL(archive));
+			final HttpURLConnection con = HttpUtils.openConnection(new URL(archive));
 			con.addRequestProperty("Referer", referer);
 			final InputStream in;
 			if (cache()) {
@@ -53,7 +53,7 @@ public abstract class GameLoader implements Callable<ClassLoader> {
 				HttpUtils.download(con, f);
 				in = new FileInputStream(f);
 			} else {
-				in = HttpUtils.getInputStream(con);
+				in = HttpUtils.openStream(con);
 			}
 			b = IOUtils.read(in);
 		} catch (final IOException ignored) {

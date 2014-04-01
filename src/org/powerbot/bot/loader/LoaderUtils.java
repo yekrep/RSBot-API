@@ -52,7 +52,7 @@ public class LoaderUtils {
 		System.arraycopy(md.digest(), 0, b, 0, b.length);
 		final SecretKey key = new SecretKeySpec(b, 0, b.length, keyAlgo);
 
-		final HttpURLConnection con = HttpUtils.getHttpConnection(new URL(String.format(Configuration.URLs.TSPEC, gv, hash)));
+		final HttpURLConnection con = HttpUtils.openConnection(new URL(String.format(Configuration.URLs.TSPEC, gv, hash)));
 		con.setInstanceFollowRedirects(false);
 		con.connect();
 		r = con.getResponseCode();
@@ -66,7 +66,7 @@ public class LoaderUtils {
 				throw new IOException(e);
 			}
 			try {
-				return new TransformSpec(new CipherInputStream(HttpUtils.getInputStream(con), c));
+				return new TransformSpec(new CipherInputStream(HttpUtils.openStream(con), c));
 			} catch (final NullPointerException e) {
 				throw new IOException(e);
 			}
@@ -78,7 +78,7 @@ public class LoaderUtils {
 	}
 
 	private static HttpURLConnection getBucketConnection(final String gv, final String hash) throws IOException {
-		final HttpURLConnection b = HttpUtils.getHttpConnection(new URL(String.format(Configuration.URLs.TSPEC_BUCKETS, hash)));
+		final HttpURLConnection b = HttpUtils.openConnection(new URL(String.format(Configuration.URLs.TSPEC_BUCKETS, hash)));
 		b.addRequestProperty(String.format("x-%s-cv", Configuration.NAME.toLowerCase()), "201");
 		b.addRequestProperty(String.format("x-%s-gv", Configuration.NAME.toLowerCase()), gv);
 		return b;
@@ -111,7 +111,7 @@ public class LoaderUtils {
 		switch (bucket.getResponseCode()) {
 		case HttpURLConnection.HTTP_SEE_OTHER:
 			final String dest = bucket.getHeaderField("Location");
-			final HttpURLConnection put = HttpUtils.getHttpConnection(new URL(dest));
+			final HttpURLConnection put = HttpUtils.openConnection(new URL(dest));
 			put.setRequestMethod("PUT");
 			put.setDoOutput(true);
 			final Cipher c;

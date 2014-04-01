@@ -3,15 +3,10 @@ package org.powerbot.util;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.zip.Deflater;
-import java.util.zip.DeflaterOutputStream;
 import java.util.zip.GZIPInputStream;
-import java.util.zip.GZIPOutputStream;
 import java.util.zip.Inflater;
 import java.util.zip.InflaterInputStream;
 
@@ -53,7 +48,7 @@ public class HttpUtils {
 		HTTP_USERAGENT_FAKE = s.toString();
 	}
 
-	public static HttpURLConnection getHttpConnection(final URL url) throws IOException {
+	public static HttpURLConnection openConnection(final URL url) throws IOException {
 		final HttpURLConnection con = (HttpURLConnection) url.openConnection();
 		con.addRequestProperty("Host", url.getHost());
 		con.addRequestProperty("Connection", "close");
@@ -66,7 +61,7 @@ public class HttpUtils {
 	}
 
 	public static HttpURLConnection download(final URL url, final File file) throws IOException {
-		return download(getHttpConnection(url), file);
+		return download(openConnection(url), file);
 	}
 
 	public static HttpURLConnection download(final HttpURLConnection con, final File file) throws IOException {
@@ -79,7 +74,7 @@ public class HttpUtils {
 
 		switch (con.getResponseCode()) {
 		case HttpURLConnection.HTTP_OK:
-			IOUtils.write(getInputStream(con), file);
+			IOUtils.write(openStream(con), file);
 			break;
 		case HttpURLConnection.HTTP_NOT_FOUND:
 		case HttpURLConnection.HTTP_GONE:
@@ -94,20 +89,18 @@ public class HttpUtils {
 	}
 
 	public static InputStream openStream(final URL url) throws IOException {
-		return getInputStream(getHttpConnection(url));
+		return openStream(openConnection(url));
 	}
 
-	public static InputStream getInputStream(final URLConnection con) throws IOException {
-		return getInputStream(con.getInputStream(), con.getHeaderField("Content-Encoding"));
-	}
-
-	public static InputStream getInputStream(final InputStream in, final String encoding) throws IOException {
-		if (encoding == null || encoding.isEmpty()) {
+	public static InputStream openStream(final URLConnection con) throws IOException {
+		final InputStream in = con.getInputStream();
+		final String e = con.getHeaderField("Content-Encoding");
+		if (e == null || e.isEmpty()) {
 			return in;
 		}
-		if (encoding.equalsIgnoreCase("gzip")) {
+		if (e.equalsIgnoreCase("gzip")) {
 			return new GZIPInputStream(in);
-		} else if (encoding.equalsIgnoreCase("deflate")) {
+		} else if (e.equalsIgnoreCase("deflate")) {
 			return new InflaterInputStream(in, new Inflater(true));
 		}
 		return in;

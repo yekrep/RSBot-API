@@ -177,7 +177,7 @@ public final class Tracker {
 
 	private static void call(final String url) {
 		try {
-			final HttpURLConnection con = HttpUtils.getHttpConnection(new URL(url));
+			final HttpURLConnection con = HttpUtils.openConnection(new URL(url));
 			con.connect();
 			con.getResponseCode();
 			con.disconnect();

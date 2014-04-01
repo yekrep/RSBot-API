@@ -8,7 +8,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.security.GeneralSecurityException;
@@ -68,7 +67,7 @@ public final class CryptFile {
 	}
 
 	public InputStream download(final URL url) throws IOException {
-		return download(HttpUtils.getHttpConnection(url));
+		return download(HttpUtils.openConnection(url));
 	}
 
 	public InputStream download(final HttpURLConnection con) throws IOException {
@@ -81,7 +80,7 @@ public final class CryptFile {
 
 		switch (con.getResponseCode()) {
 		case HttpURLConnection.HTTP_OK:
-			IOUtils.write(HttpUtils.getInputStream(con), getOutputStream());
+			IOUtils.write(HttpUtils.openStream(con), getOutputStream());
 			break;
 		case HttpURLConnection.HTTP_NOT_FOUND:
 		case HttpURLConnection.HTTP_GONE:
