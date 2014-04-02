@@ -26,6 +26,7 @@ import org.powerbot.bot.rt4.activation.TLocation;
 import org.powerbot.bot.rt4.activation.TMapBase;
 import org.powerbot.bot.rt4.activation.TMenu;
 import org.powerbot.bot.rt4.activation.TMousePosition;
+import org.powerbot.bot.rt4.activation.TPlayer;
 import org.powerbot.bot.rt4.activation.ViewMouse;
 import org.powerbot.bot.rt4.activation.ViewMouseTrails;
 import org.powerbot.script.Bot;
@@ -37,6 +38,7 @@ final class RT4BotMenuView implements ActionListener {
 	private static final String MOUSE = "Mouse";
 	private static final String MOUSETRAILS = "Mouse Trails";
 	private static final String PLAYERS = "Players";
+	private static final String PLAYER = "Player";
 	private static final String NPCS = "Npcs";
 	private static final String ITEMS = "Items";
 	private static final String GROUND_ITEMS = "Ground Items";
@@ -74,6 +76,7 @@ final class RT4BotMenuView implements ActionListener {
 		map = new LinkedHashMap<String, Class<? extends EventListener>>();
 		map.put(SCENEENTITIES, DrawObjects.class);
 		map.put(PLAYERS, DrawPlayers.class);
+		map.put(PLAYER, TPlayer.class);
 		map.put(NPCS, DrawMobs.class);
 		map.put(ITEMS, DrawItems.class);
 		map.put(GROUND_ITEMS, DrawGroundItems.class);
@@ -91,6 +94,7 @@ final class RT4BotMenuView implements ActionListener {
 		items.add(MOUSE);
 		items.add(MOUSETRAILS);
 		items.add(PLAYERS);
+		items.add(PLAYER);
 		items.add(NPCS);
 		items.add(ITEMS);
 		items.add(GROUND_ITEMS);
