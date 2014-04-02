@@ -20,6 +20,32 @@ public class Movement extends ClientAccessor {
 		super(ctx);
 	}
 
+	/**
+	 * Creates a new tile path.
+	 *
+	 * @param tiles The array of tiles in the path.
+	 * @return the generated {@link TilePath}
+	 */
+	public TilePath newTilePath(final Tile... tiles) {
+		if (tiles == null) {
+			throw new IllegalArgumentException("tiles are null");
+		}
+		return new TilePath(ctx, tiles);
+	}
+
+	/**
+	 * Creates a local path in the current region.
+	 *
+	 * @param locatable the destination tile
+	 * @return the generated {@link LocalPath}
+	 */
+	public LocalPath findPath(final Locatable locatable) {
+		if (locatable == null) {
+			throw new IllegalArgumentException();
+		}
+		return new LocalPath(ctx, locatable);
+	}
+
 	public Tile destination() {
 		final Client client = ctx.client();
 		if (client == null) {
