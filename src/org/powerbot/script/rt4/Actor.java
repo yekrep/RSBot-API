@@ -39,6 +39,12 @@ public abstract class Actor extends Interactive implements Locatable, Nameable, 
 		return speed() > 0;
 	}
 
+	public boolean inCombat() {
+		final Client client = ctx.client();
+		final org.powerbot.bot.rt4.client.Actor actor = getActor();
+		return !(client == null || actor == null) && actor.getCycleEnd() > client.getCycle();
+	}
+
 	public int relativePosition() {
 		final org.powerbot.bot.rt4.client.Actor actor = getActor();
 		final int x, z;
