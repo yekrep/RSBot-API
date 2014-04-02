@@ -303,9 +303,11 @@ public class Hud extends ClientAccessor {
 			return null;
 		}
 		final int texture = menu.texture();
-		for (final Component child : ctx.widgets.widget(WIDGET_MENU)) {
-			if (child.textureId() == texture && child.valid()) {
-				return child;
+		for (final Component c : ctx.widgets.widget(WIDGET_MENU)) {
+			for (final Component child : c.components()) {
+				if (child.textureId() == texture && child.valid()) {
+					return child;
+				}
 			}
 		}
 		return null;
