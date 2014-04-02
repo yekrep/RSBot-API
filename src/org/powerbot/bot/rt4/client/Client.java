@@ -81,13 +81,13 @@ public interface Client extends org.powerbot.script.Client {
 
 	public int getCrosshairIndex();
 
-	public MRUCache getVarbitCache();
+	public Cache getVarbitCache();
 
-	public MRUCache getNpcConfigCache();
+	public Cache getNpcConfigCache();
 
-	public MRUCache getObjectConfigCache();
+	public Cache getObjectConfigCache();
 
-	public MRUCache getItemConfigCache();
+	public Cache getItemConfigCache();
 
 	public int[] getSkillLevels1();
 
@@ -95,7 +95,7 @@ public interface Client extends org.powerbot.script.Client {
 
 	public int[] getSkillExps();
 
-	public int getCycleCount();
+	public int getCycle();
 
 	public int getHintArrowNpcUid();
 

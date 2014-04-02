@@ -4,7 +4,7 @@ import java.lang.ref.WeakReference;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import org.powerbot.bot.rt4.client.MRUCache;
+import org.powerbot.bot.rt4.client.Cache;
 import org.powerbot.bot.rt4.client.Node;
 
 public class HashTable<N> implements Iterator<N>, Iterable<N> {
@@ -68,7 +68,7 @@ public class HashTable<N> implements Iterator<N>, Iterable<N> {
 		throw new UnsupportedOperationException();
 	}
 
-	public static Object lookup(final MRUCache table, final long id) {
+	public static Object lookup(final Cache table, final long id) {
 		return lookup(table != null ? table.getTable() : null, id);
 	}
 

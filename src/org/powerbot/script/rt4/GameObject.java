@@ -5,8 +5,8 @@ import java.awt.Point;
 import java.lang.ref.WeakReference;
 
 import org.powerbot.bot.rt4.client.BasicObject;
+import org.powerbot.bot.rt4.client.Cache;
 import org.powerbot.bot.rt4.client.Client;
-import org.powerbot.bot.rt4.client.MRUCache;
 import org.powerbot.bot.rt4.client.ObjectConfig;
 import org.powerbot.bot.rt4.client.Varbit;
 import org.powerbot.bot.rt4.tools.HashTable;
@@ -55,7 +55,7 @@ public class GameObject extends Interactive implements Nameable, Locatable, Iden
 			int index = -1;
 			final int varbit = config.getVarbit(), si = config.getVarpbitIndex();
 			if (varbit != -1) {
-				final MRUCache cache = client.getVarbitCache();
+				final Cache cache = client.getVarbitCache();
 				final Varbit varBit = (Varbit) HashTable.lookup(cache, varbit);
 				if (varBit != null) {
 					final int mask = lookup[varBit.getEndBit() - varBit.getStartBit()];
