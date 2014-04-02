@@ -45,6 +45,29 @@ public abstract class Actor extends Interactive implements Locatable, Nameable, 
 		return !(client == null || actor == null) && actor.getCycleEnd() > client.getCycle();
 	}
 
+
+	public Actor interacting() {
+		final Actor nil = ctx.npcs.nil();
+		final org.powerbot.bot.rt4.client.Actor actor = getActor();
+		final int index = actor != null ? actor.getInteractingIndex() : -1;
+		if (index == -1) {
+			return nil;
+		}
+		final Client client = ctx.client();
+		if (client == null) {
+			return nil;
+		}
+		if (index < 32768) {
+			final org.powerbot.bot.rt4.client.Npc[] npcs = client.getNpcs();
+			return index >= 0 && index < npcs.length ? new Npc(ctx, npcs[index]) : nil;
+		} else {
+			final int pos = index - 32768;
+			final org.powerbot.bot.rt4.client.Player[] players = client.getPlayers();
+			return pos >= 0 && pos < players.length ? new Player(ctx, players[pos]) : nil;
+		}
+	}
+
+
 	public int relativePosition() {
 		final org.powerbot.bot.rt4.client.Actor actor = getActor();
 		final int x, z;
