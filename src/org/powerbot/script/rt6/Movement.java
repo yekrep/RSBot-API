@@ -56,7 +56,7 @@ public class Movement extends ClientAccessor {
 	public Tile destination() {
 		final Client client = ctx.client();
 		if (client == null) {
-			return null;
+			return Tile.NIL;
 		}
 		final int dX = client.getDestX(), dY = client.getDestY();
 		if (dX == -1 || dY == -1) {
