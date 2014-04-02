@@ -19,6 +19,7 @@ import org.powerbot.bot.rt4.activation.DrawItems;
 import org.powerbot.bot.rt4.activation.DrawMobs;
 import org.powerbot.bot.rt4.activation.DrawObjects;
 import org.powerbot.bot.rt4.activation.DrawPlayers;
+import org.powerbot.bot.rt4.activation.TCamera;
 import org.powerbot.bot.rt4.activation.TClientState;
 import org.powerbot.bot.rt4.activation.TDestination;
 import org.powerbot.bot.rt4.activation.TFloor;
@@ -44,6 +45,7 @@ final class RT4BotMenuView implements ActionListener {
 	private static final String GROUND_ITEMS = "Ground Items";
 	private static final String SCENEENTITIES = "Objects";
 	private static final String CLIENTSTATE = "Client State";
+	private static final String CAMERA = "Camera";
 	private static final String MENU = "Menu";
 	private static final String FLOOR = "Floor";
 	private static final String MAPBASE = "Map Base";
@@ -81,6 +83,7 @@ final class RT4BotMenuView implements ActionListener {
 		map.put(ITEMS, DrawItems.class);
 		map.put(GROUND_ITEMS, DrawGroundItems.class);
 		map.put(CLIENTSTATE, TClientState.class);
+		map.put(CAMERA, TCamera.class);
 		map.put(MENU, TMenu.class);
 		map.put(FLOOR, TFloor.class);
 		map.put(MAPBASE, TMapBase.class);
@@ -101,6 +104,7 @@ final class RT4BotMenuView implements ActionListener {
 		items.add(SCENEENTITIES);
 		items.add(SEPERATOR);
 		items.add(CLIENTSTATE);
+		items.add(CAMERA);
 		items.add(MENU);
 		items.add(FLOOR);
 		items.add(MAPBASE);
