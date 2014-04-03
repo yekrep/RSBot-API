@@ -99,6 +99,7 @@ public class ClientContext extends org.powerbot.script.ClientContext<Client> {
 
 	public ClientContext(final ClientContext ctx) {
 		super(ctx.bot());
+		client(ctx.client());
 
 		constants = ctx.constants;
 
