@@ -174,7 +174,7 @@ public class LoaderUtils {
 			} catch (final IOException ignored) {
 			} catch (final LoaderUtils.PendingException p) {
 				final int d = p.getDelay() / 1000;
-				log.warning("Your update is being processed, trying again in " + (d < 60 ? d + " seconds" : (int) Math.ceil(d / 60) + " minutes"));
+				log.warning("Your update (" + hash.substring(0, 6) + ") is being processed, trying again in " + (d < 60 ? d + " seconds" : (int) Math.ceil(d / 60) + " minutes"));
 				try {
 					Thread.sleep(p.getDelay());
 				} catch (final InterruptedException ignored) {
