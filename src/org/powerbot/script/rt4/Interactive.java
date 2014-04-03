@@ -23,6 +23,15 @@ public abstract class Interactive extends ClientAccessor implements Targetable, 
 		return ctx.game.pointInViewport(nextPoint());
 	}
 
+	public static Filter<Interactive> areInViewport() {
+		return new Filter<Interactive>() {
+			@Override
+			public boolean accept(final Interactive interactive) {
+				return interactive.inViewport();
+			}
+		};
+	}
+
 	public abstract Point centerPoint();
 
 	public final boolean hover() {
