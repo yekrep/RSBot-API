@@ -62,7 +62,7 @@ public abstract class GameLoader implements Callable<ClassLoader> {
 		if (b == null) {
 			return null;
 		}
-		hash = LoaderUtils.hash(b);
+
 		JarInputStream j = null;
 		try {
 			j = new JarInputStream(new ByteArrayInputStream(b));
@@ -85,6 +85,8 @@ public abstract class GameLoader implements Callable<ClassLoader> {
 				}
 			}
 		}
+
+		hash = LoaderUtils.hash(classes);
 		return new GameClassLoader(resources, transformer());
 	}
 

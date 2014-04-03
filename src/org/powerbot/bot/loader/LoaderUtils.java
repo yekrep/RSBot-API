@@ -8,6 +8,8 @@ import java.security.GeneralSecurityException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Map;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import java.util.logging.Logger;
 import java.util.zip.GZIPOutputStream;
 
@@ -23,6 +25,20 @@ import org.powerbot.util.HttpUtils;
 import org.powerbot.util.StringUtils;
 
 public class LoaderUtils {
+	public static String hash(final Map<String, byte[]> map) {
+		final MessageDigest md;
+		try {
+			md = MessageDigest.getInstance("SHA-1");
+		} catch (final NoSuchAlgorithmException e) {
+			throw new RuntimeException(e);
+		}
+		final SortedSet<String> keys = new TreeSet<String>(map.keySet());
+		for (final String k : keys) {
+			md.digest(map.get(k));
+		}
+		return StringUtils.byteArrayToHexString(md.digest());
+	}
+
 	public static String hash(final byte[] bytes) {
 		final MessageDigest digest;
 		try {
