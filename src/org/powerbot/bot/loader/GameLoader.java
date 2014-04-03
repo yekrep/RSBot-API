@@ -75,7 +75,8 @@ public abstract class GameLoader implements Callable<ClassLoader> {
 					classes.put(n.substring(0, p), resources.get(n));
 				}
 			}
-		} catch (final IOException ignored) {
+		} catch (final IOException e) {
+			return null;
 		} finally {
 			if (j != null) {
 				try {
