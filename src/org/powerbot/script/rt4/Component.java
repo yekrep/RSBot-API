@@ -263,6 +263,16 @@ public class Component extends Interactive {
 		return a != null ? a : new int[0];
 	}
 
+	public int itemId() {
+		final org.powerbot.bot.rt4.client.Widget w = getInternal();
+		return w != null ? w.getItemId() : -1;
+	}
+
+	public int itemStackSize() {
+		final org.powerbot.bot.rt4.client.Widget w = getInternal();
+		return w != null ? w.getItemStackSize() : -1;
+	}
+
 	@Override
 	public Point centerPoint() {
 		final Point p = screenPoint();
