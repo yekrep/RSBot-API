@@ -7,6 +7,7 @@ import java.io.IOException;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
+import org.powerbot.Configuration;
 import org.powerbot.bot.loader.GameAppletLoader;
 import org.powerbot.bot.loader.GameLoader;
 import org.powerbot.bot.loader.GameStub;
@@ -119,6 +120,10 @@ public class Bot extends org.powerbot.script.Bot<ClientContext> {
 		if (s != x) {
 			chrome.setExtendedState(x);
 			chrome.setLocationRelativeTo(chrome.getParent());
+		}
+
+		if (Configuration.OS != Configuration.OperatingSystem.WINDOWS) {
+			chrome.setResizable(false);
 		}
 	}
 
