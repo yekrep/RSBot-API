@@ -11,10 +11,10 @@ import org.powerbot.bot.loader.GameAppletLoader;
 import org.powerbot.bot.loader.GameLoader;
 import org.powerbot.bot.loader.GameStub;
 import org.powerbot.bot.loader.LoaderUtils;
-import org.powerbot.bot.loader.Transformer;
 import org.powerbot.bot.loader.TransformSpec;
-import org.powerbot.bot.rt4.client.Client;
+import org.powerbot.bot.loader.Transformer;
 import org.powerbot.bot.rt4.activation.EventDispatcher;
+import org.powerbot.bot.rt4.client.Client;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.script.rt4.ClientContext;
 import org.powerbot.util.Ini;
@@ -39,11 +39,6 @@ public class Bot extends org.powerbot.script.Bot<ClientContext> {
 		}
 
 		final GameLoader game = new GameLoader(crawler.archive, crawler.game) {
-			@Override
-			protected boolean cache() {
-				return true;
-			}
-
 			@Override
 			protected Transformer transformer() {
 				TransformSpec spec;

@@ -2,10 +2,7 @@ package org.powerbot.bot.loader;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Map;
@@ -13,12 +10,9 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
-import java.util.zip.Adler32;
 
-import org.powerbot.Configuration;
 import org.powerbot.util.HttpUtils;
 import org.powerbot.util.IOUtils;
-import org.powerbot.util.StringUtils;
 
 public abstract class GameLoader implements Callable<ClassLoader> {
 	private final String archive, referer;
@@ -33,29 +27,13 @@ public abstract class GameLoader implements Callable<ClassLoader> {
 		classes = new ConcurrentHashMap<String, byte[]>();
 	}
 
-	protected boolean cache() {
-		return false;
-	}
-
 	@Override
 	public ClassLoader call() throws Exception {
 		byte[] b;
 		try {
 			final HttpURLConnection con = HttpUtils.openConnection(new URL(archive));
 			con.addRequestProperty("Referer", referer);
-			final InputStream in;
-			if (cache()) {
-				final Adler32 a = new Adler32();
-				String p = con.getURL().getPath().substring(1);
-				p = p.substring(0, p.indexOf('_'));
-				a.update(StringUtils.getBytesUtf8(p));
-				final File f = new File(Configuration.TEMP, Long.toHexString(a.getValue()));
-				HttpUtils.download(con, f);
-				in = new FileInputStream(f);
-			} else {
-				in = HttpUtils.openStream(con);
-			}
-			b = IOUtils.read(in);
+			b = IOUtils.read(HttpUtils.openStream(con));
 		} catch (final IOException ignored) {
 			b = null;
 		}
