@@ -132,9 +132,9 @@ public class Lobby extends ClientAccessor {
 				@Override
 				public Boolean call() throws Exception {
 					final Dialog d = dialog();
-					return d == Dialog.TRANSFER_COUNTDOWN || (d != null && continueDialog()) || ctx.game.loggedIn();
+					return d == Dialog.TRANSFER_COUNTDOWN || (d != null && continueDialog()) || ctx.game.clientState() == Game.INDEX_MAP_LOADED;
 				}
-			}, timeout)) {
+			}, 600, timeout / 600)) {
 				break;
 			}
 		}
