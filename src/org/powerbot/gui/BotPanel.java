@@ -48,9 +48,11 @@ class BotPanel extends JPanel implements ActionListener {
 		mode.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
 		mode.setBackground(getBackground());
 		rs3 = new JButton("RS3");
+		rs3.setBackground(getBackground());
 		rs3.addActionListener(this);
 		mode.add(rs3, new GridBagConstraints());
 		os = new JButton("OS");
+		os.setBackground(getBackground());
 		os.addActionListener(this);
 		mode.add(os, new GridBagConstraints());
 		final GridBagConstraints c = new GridBagConstraints();
