@@ -1,5 +1,7 @@
 package org.powerbot.script.rt4;
 
+import java.applet.Applet;
+import java.awt.Dimension;
 import java.awt.Point;
 import java.util.concurrent.Callable;
 
@@ -85,6 +87,11 @@ public class Game extends ClientAccessor {
 	public boolean loggedIn() {
 		final int c = clientState();
 		return c == INDEX_MAP_LOADED || c == INDEX_MAP_LOADING;
+	}
+
+	public Dimension dimensions() {
+		final Applet applet = ctx.bot().applet;
+		return applet != null ? new Dimension(applet.getWidth(), applet.getHeight()) : new Dimension(-1, -1);
 	}
 
 	public int clientState() {
