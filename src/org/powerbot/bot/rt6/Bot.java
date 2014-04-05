@@ -1,6 +1,7 @@
 package org.powerbot.bot.rt6;
 
 import java.applet.Applet;
+import java.awt.Dimension;
 import java.io.IOException;
 import java.util.concurrent.Callable;
 
@@ -11,15 +12,15 @@ import org.powerbot.bot.loader.GameAppletLoader;
 import org.powerbot.bot.loader.GameLoader;
 import org.powerbot.bot.loader.GameStub;
 import org.powerbot.bot.loader.LoaderUtils;
-import org.powerbot.bot.loader.Transformer;
 import org.powerbot.bot.loader.TransformSpec;
+import org.powerbot.bot.loader.Transformer;
+import org.powerbot.bot.rt6.activation.EventDispatcher;
 import org.powerbot.bot.rt6.client.Client;
 import org.powerbot.bot.rt6.client.Constants;
-import org.powerbot.bot.rt6.activation.EventDispatcher;
 import org.powerbot.bot.rt6.loader.AbstractBridge;
-import org.powerbot.bot.rt6.loader.Application;
 import org.powerbot.bot.rt6.loader.AbstractProcessor;
 import org.powerbot.bot.rt6.loader.AppletTransform;
+import org.powerbot.bot.rt6.loader.Application;
 import org.powerbot.bot.rt6.loader.ClassLoaderTransform;
 import org.powerbot.bot.rt6.loader.ListClassesTransform;
 import org.powerbot.gui.BotChrome;
@@ -110,7 +111,7 @@ public final class Bot extends org.powerbot.script.Bot<ClientContext> {
 		final GameStub stub = new GameStub(gameCrawler.parameters, gameCrawler.archive);
 		applet.setStub(stub);
 		applet.setSize(BotChrome.PANEL_MIN_WIDTH, BotChrome.PANEL_MIN_HEIGHT);
-		applet.setMinimumSize(applet.getSize());
+		applet.setMinimumSize(new Dimension(BotChrome.PANEL_MIN_WIDTH, BotChrome.PANEL_MIN_HEIGHT));
 		applet.init();
 
 		if (spec == null) {
