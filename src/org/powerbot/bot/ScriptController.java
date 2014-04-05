@@ -184,6 +184,8 @@ public final class ScriptController<C extends ClientContext<? extends Client>> e
 		}
 
 		call(Script.State.STOP);
+		ctx.bot().dispatcher.removeAll(ctx.dispatcher());
+		ctx.dispatcher().clear();
 		for (final Script s : scripts) {
 			ctx.bot().dispatcher.remove(s);
 		}
