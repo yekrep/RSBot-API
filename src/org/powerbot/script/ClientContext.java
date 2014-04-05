@@ -16,6 +16,12 @@ public abstract class ClientContext<C extends Client> {
 		properties = new ConcurrentHashMap<String, String>();
 	}
 
+	protected ClientContext(final ClientContext<C> ctx) {
+		bot = ctx.bot;
+		client = ctx.client;
+		properties = ctx.properties;
+	}
+
 	public abstract String rtv();
 
 	public final Bot<? extends ClientContext<C>> bot() {

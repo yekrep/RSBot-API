@@ -4,13 +4,13 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import org.powerbot.bot.ScriptController;
 import org.powerbot.bot.rt6.Bot;
-import org.powerbot.bot.rt6.client.Client;
-import org.powerbot.bot.rt6.client.Constants;
 import org.powerbot.bot.rt6.activation.Antipattern;
 import org.powerbot.bot.rt6.activation.BankPin;
 import org.powerbot.bot.rt6.activation.Login;
 import org.powerbot.bot.rt6.activation.TicketDestroy;
 import org.powerbot.bot.rt6.activation.WidgetCloser;
+import org.powerbot.bot.rt6.client.Client;
+import org.powerbot.bot.rt6.client.Constants;
 import org.powerbot.bot.rt6.tools.Items;
 import org.powerbot.bot.rt6.tools.Map;
 import org.powerbot.script.Keyboard;
@@ -98,9 +98,7 @@ public class ClientContext extends org.powerbot.script.ClientContext<Client> {
 	}
 
 	public ClientContext(final ClientContext ctx) {
-		super(ctx.bot());
-		client(ctx.client());
-
+		super(ctx);
 		constants = ctx.constants;
 
 		controller = ctx.controller;
