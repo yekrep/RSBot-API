@@ -11,7 +11,7 @@ import org.powerbot.bot.rt4.tools.HashTable;
 import org.powerbot.script.Identifiable;
 
 public class Npc extends Actor implements Identifiable {
-	public static final Color TARGET_STROKE_COLOR = new Color(255, 0, 255, 15);
+	public static final Color TARGET_COLOR = new Color(255, 0, 255, 15);
 	private final SoftReference<org.powerbot.bot.rt4.client.Npc> npc;
 	private static final int[] lookup;
 

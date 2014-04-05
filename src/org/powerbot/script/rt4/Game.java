@@ -117,7 +117,7 @@ public class Game extends ClientAccessor {
 		return new Tile(client.getOffsetX(), client.getOffsetY(), client.getFloor());
 	}
 
-	public boolean pointInViewport(final Point p) {
+	public boolean inViewport(final Point p) {
 		return pointInViewport(p.x, p.y);
 	}
 
@@ -140,7 +140,7 @@ public class Game extends ClientAccessor {
 		if (client == null) {
 			return new Point(-1, -1);
 		}
-		final int rel = ctx.players.local().relativePosition();
+		final int rel = ctx.players.local().relative();
 		final int angle = client.getMinimapScale() + client.getMinimapAngle() & 0x7ff;
 		final int[] d = {tile.x(), tile.y(), ARRAY_SIN[angle], ARRAY_COS[angle], -1, -1};
 		d[0] = (d[0] - client.getOffsetX()) * 4 + 2 - (rel >> 16) / 32;

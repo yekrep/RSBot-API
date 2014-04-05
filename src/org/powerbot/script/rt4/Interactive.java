@@ -1,18 +1,26 @@
 package org.powerbot.script.rt4;
 
+import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.lang.reflect.Field;
 import java.util.concurrent.Callable;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.powerbot.script.Condition;
+import org.powerbot.script.Drawable;
 import org.powerbot.script.Filter;
 import org.powerbot.script.Targetable;
 import org.powerbot.script.Validatable;
 import org.powerbot.script.Viewport;
 
-public abstract class Interactive extends ClientAccessor implements Targetable, Validatable, Viewport {
+public abstract class Interactive extends ClientAccessor implements Targetable, Validatable, Viewport, Drawable {
+	protected AtomicReference<BoundingModel> boundingModel;
+
 	public Interactive(final ClientContext ctx) {
 		super(ctx);
+		boundingModel = new AtomicReference<BoundingModel>(null);
 	}
 
 	/**
@@ -20,7 +28,7 @@ public abstract class Interactive extends ClientAccessor implements Targetable, 
 	 */
 	@Override
 	public boolean inViewport() {
-		return ctx.game.pointInViewport(nextPoint());
+		return ctx.game.inViewport(nextPoint());
 	}
 
 	public static Filter<Interactive> areInViewport() {
@@ -157,8 +165,59 @@ public abstract class Interactive extends ClientAccessor implements Targetable, 
 		return false;
 	}
 
+	public final void bounds(final int[] arr) {
+		if (arr == null || arr.length != 6) {
+			throw new IllegalArgumentException("length is not 6 (x1, x2, y1, y2, z1, z2)");
+		}
+		bounds(arr[0], arr[1], arr[2], arr[3], arr[4], arr[5]);
+	}
+
+	public abstract void bounds(final int x1, final int x2, final int y1, final int y2, final int z1, final int z2);
+
+	public static Filter<Interactive> doSetBounds(final int[] arr) {
+		return new Filter<Interactive>() {
+			@Override
+			public boolean accept(final Interactive item) {
+				item.bounds(arr);
+				return true;
+			}
+		};
+	}
+
 	@Override
 	public boolean valid() {
 		return true;
+	}
+
+	@Override
+	public void draw(final Graphics render) {
+		draw(render, 15);
+	}
+
+	@Override
+	public void draw(final Graphics render, final int alpha) {
+		final Field f;
+		try {
+			f = getClass().getDeclaredField("TARGET_COLOR");
+		} catch (final NoSuchFieldException ignored) {
+			return;
+		}
+		f.setAccessible(true);
+		Color c;
+		try {
+			c = (Color) f.get(null);
+		} catch (final IllegalAccessException ignored) {
+			return;
+		}
+
+		final int rgb = c.getRGB();
+		if (((rgb >> 24) & 0xff) != alpha) {
+			c = new Color((rgb >> 16) & 0xff, (rgb >> 8) & 0xff, rgb & 0xff, alpha);
+		}
+		render.setColor(c);
+		final BoundingModel m = boundingModel.get();
+		if (m != null) {
+			m.drawWireFrame(render);
+		}
 	}
 }

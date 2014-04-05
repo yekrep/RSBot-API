@@ -16,6 +16,7 @@ import org.powerbot.bot.rt6.client.RSInfo;
 import org.powerbot.bot.rt6.client.RSItem;
 import org.powerbot.bot.rt6.client.RSItemDefLoader;
 import org.powerbot.bot.rt6.client.RSItemPile;
+import org.powerbot.script.Drawable;
 import org.powerbot.script.Identifiable;
 import org.powerbot.script.Locatable;
 import org.powerbot.script.Nameable;
@@ -25,30 +26,18 @@ import org.powerbot.script.Tile;
 
 public class GroundItem extends Interactive implements Renderable, Identifiable, Nameable, Stackable, Locatable, Drawable {
 	public static final Color TARGET_COLOR = new Color(255, 255, 0, 75);
-	private final Tile tile;
+	private final TileMatrix tile;
 	private final WeakReference<RSItem> item;
 
 	public GroundItem(final ClientContext ctx, final Tile tile, final RSItem item) {
 		super(ctx);
-		this.tile = tile;
+		this.tile = tile.matrix(ctx);
 		this.item = new WeakReference<RSItem>(item);
 	}
 
 	@Override
 	public void bounds(final int x1, final int x2, final int y1, final int y2, final int z1, final int z2) {
-		boundingModel.set(new BoundingModel(ctx, x1, x2, y1, y2, z1, z2) {
-			@Override
-			public int x() {
-				final Tile base = ctx.game.mapOffset();
-				return ((tile.x() - base.x()) * 512) + 256;
-			}
-
-			@Override
-			public int z() {
-				final Tile base = ctx.game.mapOffset();
-				return ((tile.y() - base.y()) * 512) + 256;
-			}
-		});
+		tile.bounds(x1, x2, y1, y2, z1, z2);
 	}
 
 	@Override
@@ -69,6 +58,7 @@ public class GroundItem extends Interactive implements Renderable, Identifiable,
 				(groundInfo = info.getRSGroundInfo()) == null || (grounds = groundInfo.getRSGroundArray()) == null) {
 			return null;
 		}
+		final Tile tile = this.tile.tile();
 		final int x = tile.x() - baseInfo.getX(), y = tile.y() - baseInfo.getY();
 		final int plane = client.getPlane();
 		final RSGround ground = plane > -1 && plane < grounds.length &&
@@ -143,10 +133,7 @@ public class GroundItem extends Interactive implements Renderable, Identifiable,
 
 	@Override
 	public Tile tile() {
-		if (item.get() == null) {
-			return Tile.NIL;
-		}
-		return tile;
+		return tile.tile();
 	}
 
 	@Override
@@ -155,11 +142,7 @@ public class GroundItem extends Interactive implements Renderable, Identifiable,
 		if (model != null) {
 			return model.nextPoint();
 		}
-		final BoundingModel model2 = boundingModel.get();
-		if (model2 != null) {
-			return model2.nextPoint();
-		}
-		return new TileMatrix(ctx, tile).nextPoint();
+		return  tile.nextPoint();
 	}
 
 	public Point centerPoint() {
@@ -167,11 +150,7 @@ public class GroundItem extends Interactive implements Renderable, Identifiable,
 		if (model != null) {
 			return model.centerPoint();
 		}
-		final BoundingModel model2 = boundingModel.get();
-		if (model2 != null) {
-			return model2.centerPoint();
-		}
-		return new TileMatrix(ctx, tile).centerPoint();
+		return tile.centerPoint();
 	}
 
 	@Override
@@ -180,11 +159,7 @@ public class GroundItem extends Interactive implements Renderable, Identifiable,
 		if (model != null) {
 			return model.contains(point);
 		}
-		final BoundingModel model2 = boundingModel.get();
-		if (model2 != null) {
-			return model2.contains(point);
-		}
-		return new TileMatrix(ctx, tile).contains(point);
+		return  tile.contains(point);
 	}
 
 	@Override
@@ -195,7 +170,7 @@ public class GroundItem extends Interactive implements Renderable, Identifiable,
 	@Override
 	public int hashCode() {
 		final RSItem i;
-		return (i = this.item.get()) != null ? System.identityHashCode(i) : 0;
+		return (i = item.get()) != null ? System.identityHashCode(i) : 0;
 	}
 
 	@Override
@@ -204,10 +179,10 @@ public class GroundItem extends Interactive implements Renderable, Identifiable,
 			return false;
 		}
 		final GroundItem g = (GroundItem) o;
-		if (!this.tile.equals(g.tile)) {
+		if (!tile.equals(g.tile)) {
 			return false;
 		}
-		final RSItem item1 = this.item.get();
+		final RSItem item1 = item.get();
 		final RSItem item2 = g.item.get();
 		return item1 != null && item2 != null && item1 == item2;
 	}

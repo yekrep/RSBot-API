@@ -28,6 +28,10 @@ public class Item extends Interactive implements Identifiable, Nameable, Stackab
 	}
 
 	@Override
+	public void bounds(final int x1, final int x2, final int y1, final int y2, final int z1, final int z2) {
+	}
+
+	@Override
 	public int id() {
 		return id;
 	}

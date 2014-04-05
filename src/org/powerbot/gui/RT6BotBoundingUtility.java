@@ -31,7 +31,7 @@ import javax.swing.event.ChangeListener;
 import org.powerbot.script.PaintListener;
 import org.powerbot.script.Tile;
 import org.powerbot.script.rt6.ClientContext;
-import org.powerbot.script.rt6.Drawable;
+import org.powerbot.script.Drawable;
 import org.powerbot.script.rt6.GameObject;
 import org.powerbot.script.rt6.GroundItem;
 import org.powerbot.script.rt6.Interactive;
@@ -41,8 +41,8 @@ import org.powerbot.script.rt6.Player;
 import org.powerbot.script.rt6.Renderable;
 import org.powerbot.script.rt6.TileMatrix;
 
-class BotBoundingUtility extends JFrame implements PaintListener, MouseListener, MouseMotionListener {
-	private static final AtomicReference<BotBoundingUtility> instance = new AtomicReference<BotBoundingUtility>(null);
+class RT6BotBoundingUtility extends JFrame implements PaintListener, MouseListener, MouseMotionListener {
+	private static final AtomicReference<RT6BotBoundingUtility> instance = new AtomicReference<RT6BotBoundingUtility>(null);
 	private final JLabel labelTarget;
 	private final SpinnerNumberModel
 			modelX1 = new SpinnerNumberModel(-256, -5120, 5120, 4),
@@ -57,15 +57,15 @@ class BotBoundingUtility extends JFrame implements PaintListener, MouseListener,
 	private TargetSelection<Interactive> selection;
 	private Interactive target;
 
-	public static synchronized BotBoundingUtility getInstance(final BotChrome chrome) {
+	public static synchronized RT6BotBoundingUtility getInstance(final BotChrome chrome) {
 		if (instance.get() == null) {
-			instance.set(new BotBoundingUtility(chrome));
+			instance.set(new RT6BotBoundingUtility(chrome));
 		}
 		return instance.get();
 	}
 
 	@SuppressWarnings("unchecked")
-	private BotBoundingUtility(final BotChrome chrome) {
+	private RT6BotBoundingUtility(final BotChrome chrome) {
 		selecting = new AtomicBoolean(false);
 		point = new Point(-1, -1);
 		selection = null;
@@ -196,7 +196,7 @@ class BotBoundingUtility extends JFrame implements PaintListener, MouseListener,
 			@Override
 			public void windowClosing(final WindowEvent e) {
 				setVisible(false);
-				chrome.bot.get().dispatcher.remove(BotBoundingUtility.this);
+				chrome.bot.get().dispatcher.remove(RT6BotBoundingUtility.this);
 				dispose();
 				instance.set(null);
 			}

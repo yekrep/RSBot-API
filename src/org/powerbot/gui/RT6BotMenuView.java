@@ -56,11 +56,9 @@ final class RT6BotMenuView implements ActionListener {
 		settingExplorer.addActionListener(this);
 		menu.add(settingExplorer);
 
-		if (b instanceof org.powerbot.bot.rt6.Bot) {
 			final JMenuItem boundingUtility = new JMenuItem(BotLocale.BOUNDINGUTILITY);
 			boundingUtility.addActionListener(this);
 			menu.add(boundingUtility);
-		}
 
 		menu.addSeparator();
 
@@ -148,7 +146,7 @@ final class RT6BotMenuView implements ActionListener {
 		} else if (s.equals(BotLocale.SETTINGEXPLORER)) {
 			BotSettingExplorer.getInstance(chrome).display();
 		} else if (s.equals(BotLocale.BOUNDINGUTILITY)) {
-			BotBoundingUtility.getInstance(chrome).setVisible(true);
+			RT6BotBoundingUtility.getInstance(chrome).setVisible(true);
 		} else {
 			final JCheckBoxMenuItem item = (JCheckBoxMenuItem) e.getSource();
 			item.setSelected(!item.isSelected());

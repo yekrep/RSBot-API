@@ -17,6 +17,7 @@ import org.powerbot.bot.rt6.client.RSObject;
 import org.powerbot.bot.rt6.client.RSObjectDef;
 import org.powerbot.bot.rt6.client.RSObjectDefLoader;
 import org.powerbot.script.Area;
+import org.powerbot.script.Drawable;
 import org.powerbot.script.Identifiable;
 import org.powerbot.script.Locatable;
 import org.powerbot.script.Nameable;

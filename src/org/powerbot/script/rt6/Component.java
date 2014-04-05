@@ -10,6 +10,7 @@ import org.powerbot.bot.rt6.client.RSInterface;
 import org.powerbot.bot.rt6.client.RSInterfaceNode;
 import org.powerbot.bot.rt6.tools.HashTable;
 import org.powerbot.script.Calculations;
+import org.powerbot.script.Drawable;
 import org.powerbot.util.StringUtils;
 
 public class Component extends Interactive implements Drawable, Displayable {

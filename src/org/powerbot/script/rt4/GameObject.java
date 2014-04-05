@@ -40,6 +40,24 @@ public class GameObject extends Interactive implements Nameable, Locatable, Iden
 		this.object = new WeakReference<BasicObject>(object);
 		this.type = type;
 		hash = System.identityHashCode(object);
+		bounds(-64, 64, -128, 0, -64, 64);
+	}
+
+	@Override
+	public void bounds(final int x1, final int x2, final int y1, final int y2, final int z1, final int z2) {
+		boundingModel.set(new BoundingModel(ctx, x1, x2, y1, y2, z1, z2) {
+			@Override
+			public int x() {
+				final int r = relative();
+				return r >> 16;
+			}
+
+			@Override
+			public int z() {
+				final int r = relative();
+				return r & 0xffff;
+			}
+		});
 	}
 
 	@Override
@@ -108,7 +126,7 @@ public class GameObject extends Interactive implements Nameable, Locatable, Iden
 		return type;
 	}
 
-	public int relativePosition() {
+	public int relative() {
 		final BasicObject object = this.object.get();
 		final int x, z;
 		if (object != null) {
@@ -146,7 +164,7 @@ public class GameObject extends Interactive implements Nameable, Locatable, Iden
 	@Override
 	public Tile tile() {
 		final Client client = ctx.client();
-		final int r = relativePosition();
+		final int r = relative();
 		final int rx = r >> 16, rz = r & 0xffff;
 		if (client != null && rx != 0 && rz != 0) {
 			return new Tile(client.getOffsetX() + (rx >> 7), client.getOffsetY() + (rz >> 7), client.getFloor());

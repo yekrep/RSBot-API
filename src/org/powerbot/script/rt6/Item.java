@@ -29,7 +29,7 @@ public class Item extends Interactive implements Displayable, Identifiable, Name
 
 	@Override
 	public int id() {
-		return this.id;
+		return id;
 	}
 
 	@Override
@@ -38,7 +38,7 @@ public class Item extends Interactive implements Displayable, Identifiable, Name
 			return stack;
 		}
 		final int stack = component.itemStackSize();
-		if (component.visible() && component.itemId() == this.id) {
+		if (component.visible() && component.itemId() == id) {
 			return this.stack = stack;
 		}
 		return this.stack;
@@ -47,10 +47,10 @@ public class Item extends Interactive implements Displayable, Identifiable, Name
 	@Override
 	public String name() {
 		final String name;
-		if (component != null && component.itemId() == this.id) {
+		if (component != null && component.itemId() == id) {
 			name = component.itemName();
 		} else {
-			name = ItemDefinition.getDef(ctx, this.id).getName();
+			name = ItemDefinition.getDef(ctx, id).getName();
 		}
 		return StringUtils.stripHtml(name);
 	}
@@ -97,8 +97,8 @@ public class Item extends Interactive implements Displayable, Identifiable, Name
 
 	@Override
 	public boolean valid() {
-		return this.id != -1 && this.component != null && this.component.valid() &&
-				(!this.component.visible() || this.component.itemId() == this.id);
+		return id != -1 && component != null && component.valid() &&
+				(!component.visible() || component.itemId() == id);
 	}
 
 	@Override
@@ -111,7 +111,7 @@ public class Item extends Interactive implements Displayable, Identifiable, Name
 		if (component == null) {
 			return -1;
 		}
-		return this.id * 31 + this.component.index();
+		return id * 31 + component.index();
 	}
 
 	@Override
@@ -120,8 +120,8 @@ public class Item extends Interactive implements Displayable, Identifiable, Name
 			return false;
 		}
 		final Item i = (Item) o;
-		return this.id == i.id &&
-				((this.component != null && this.component.equals(i.component))
-						|| (this.component == null && i.component == null));
+		return id == i.id &&
+				((component != null && component.equals(i.component))
+						|| (component == null && i.component == null));
 	}
 }

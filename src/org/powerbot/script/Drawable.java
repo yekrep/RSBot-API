@@ -1,4 +1,4 @@
-package org.powerbot.script.rt6;
+package org.powerbot.script;
 
 import java.awt.Graphics;
 

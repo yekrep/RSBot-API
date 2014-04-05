@@ -56,7 +56,6 @@ public class Game extends ClientAccessor {
 
 	/**
 	 * An enumeration of the possible cross-hairs in game.
-	 *
 	 */
 	public enum Crosshair {
 		NONE, DEFAULT, ACTION

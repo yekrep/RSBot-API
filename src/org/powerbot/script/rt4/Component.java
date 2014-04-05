@@ -33,6 +33,10 @@ public class Component extends Interactive {
 		sparseCache = new Component[0];
 	}
 
+	@Override
+	public void bounds(final int x1, final int x2, final int y1, final int y2, final int z1, final int z2) {
+	}
+
 	public Widget widget() {
 		return widget;
 	}

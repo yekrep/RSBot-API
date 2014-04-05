@@ -12,12 +12,29 @@ import org.powerbot.script.Tile;
  * An interactive tile matrix.
  */
 public final class TileMatrix extends Interactive implements Locatable {
-	public static final Color TARGET_STROKE_COLOR = new Color(255, 0, 0, 75);
+	public static final Color TARGET_COLOR = new Color(255, 0, 0, 75);
 	private final Tile tile;
 
 	public TileMatrix(final ClientContext ctx, final Tile tile) {
 		super(ctx);
 		this.tile = tile;
+	}
+
+	@Override
+	public void bounds(final int x1, final int x2, final int y1, final int y2, final int z1, final int z2) {
+		boundingModel.set(new BoundingModel(ctx, x1, x2, y1, y2, z1, z2) {
+			@Override
+			public int x() {
+				final Tile base = ctx.game.mapOffset();
+				return ((tile.x() - base.x()) * 128) + 64;
+			}
+
+			@Override
+			public int z() {
+				final Tile base = ctx.game.mapOffset();
+				return ((tile.y() - base.y()) * 128) + 64;
+			}
+		});
 	}
 
 	public Point point(final int height) {
@@ -74,6 +91,10 @@ public final class TileMatrix extends Interactive implements Locatable {
 
 	@Override
 	public Point nextPoint() {
+		final BoundingModel model2 = boundingModel.get();
+		if (model2 != null) {
+			return model2.nextPoint();
+		}
 		final int x = Random.nextGaussian(0, 100, 5);
 		final int y = Random.nextGaussian(0, 100, 5);
 		return point(x / 100.0D, y / 100.0D, 0);
@@ -81,11 +102,19 @@ public final class TileMatrix extends Interactive implements Locatable {
 
 	@Override
 	public Point centerPoint() {
+		final BoundingModel model2 = boundingModel.get();
+		if (model2 != null) {
+			return model2.centerPoint();
+		}
 		return point(0);
 	}
 
 	@Override
 	public boolean contains(final Point point) {
+		final BoundingModel model2 = boundingModel.get();
+		if (model2 != null) {
+			return model2.contains(point);
+		}
 		final Polygon p = getBounds();
 		return isPolygonInViewport(p) && p.contains(point);
 	}

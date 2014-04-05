@@ -16,6 +16,7 @@ import org.powerbot.bot.rt6.client.RSNPC;
 import org.powerbot.bot.rt6.client.RSNPCNode;
 import org.powerbot.bot.rt6.client.RSPlayer;
 import org.powerbot.bot.rt6.client.Sequence;
+import org.powerbot.script.Drawable;
 import org.powerbot.script.Filter;
 import org.powerbot.script.Locatable;
 import org.powerbot.script.Nameable;
@@ -269,8 +270,7 @@ public abstract class Actor extends Interactive implements Renderable, Nameable,
 		if (model2 != null) {
 			return model2.nextPoint();
 		}
-		final TileCuboid cuboid = new TileCuboid(ctx, character);
-		return cuboid.nextPoint();
+		return new Point(-1, -1);
 	}
 
 	public Point centerPoint() {
@@ -287,8 +287,7 @@ public abstract class Actor extends Interactive implements Renderable, Nameable,
 		if (model2 != null) {
 			return model2.centerPoint();
 		}
-		final TileCuboid cuboid = new TileCuboid(ctx, character);
-		return cuboid.centerPoint();
+		return new Point(-1, -1);
 	}
 
 	@Override
@@ -303,11 +302,7 @@ public abstract class Actor extends Interactive implements Renderable, Nameable,
 			return model.contains(point);
 		}
 		final BoundingModel model2 = boundingModel.get();
-		if (model2 != null) {
-			return model2.contains(point);
-		}
-		final TileCuboid cuboid = new TileCuboid(ctx, character);
-		return cuboid.contains(point);
+		return model2 != null && model2.contains(point);
 	}
 
 	private LinkedListNode[] getBarNodes() {
@@ -370,7 +365,7 @@ public abstract class Actor extends Interactive implements Renderable, Nameable,
 	@Override
 	public int hashCode() {
 		final RSCharacter i;
-		return (i = this.getAccessor()) != null ? System.identityHashCode(i) : 0;
+		return (i = getAccessor()) != null ? System.identityHashCode(i) : 0;
 	}
 
 	@Override
@@ -380,6 +375,6 @@ public abstract class Actor extends Interactive implements Renderable, Nameable,
 		}
 		final Actor c = (Actor) o;
 		final RSCharacter i;
-		return (i = this.getAccessor()) != null && i == c.getAccessor();
+		return (i = getAccessor()) != null && i == c.getAccessor();
 	}
 }

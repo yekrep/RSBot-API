@@ -240,7 +240,6 @@ public class DepositBox extends ItemQuery<Item> implements Viewport {
 	private boolean containsAction(final Component c, final String action) {
 		final String[] actions = c.actions();
 		for (final String a : actions) {
-			System.out.println(a);
 			if (a != null && StringUtils.stripHtml(a).trim().equalsIgnoreCase(action)) {
 				return true;
 			}

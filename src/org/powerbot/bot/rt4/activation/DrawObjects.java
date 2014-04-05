@@ -48,13 +48,13 @@ public class DrawObjects implements PaintListener {
 			}
 
 			Point p = new TileMatrix(ctx, t).centerPoint();
-			if (!ctx.game.pointInViewport(p)) {
+			if (!ctx.game.inViewport(p)) {
 				continue;
 			}
 
 			final Point p2 = p;
 			p = object.centerPoint();
-			if (!ctx.game.pointInViewport(p)) {
+			if (!ctx.game.inViewport(p)) {
 				continue;
 			}
 

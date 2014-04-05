@@ -13,13 +13,20 @@ import org.powerbot.script.Validatable;
 
 public class GroundItem extends Interactive implements Nameable, Locatable, Identifiable, Validatable {
 	public static final Color TARGET_COLOR = new Color(255, 255, 0, 75);
-	private final Tile tile;
+	private final TileMatrix tile;
 	private final WeakReference<ItemNode> node;
 
 	GroundItem(final ClientContext ctx, final Tile tile, final ItemNode node) {
 		super(ctx);
-		this.tile = tile;
+		this.tile = tile.matrix(ctx);
+		boundingModel = this.tile.boundingModel;
 		this.node = new WeakReference<ItemNode>(node);
+		bounds(-16, 16, -16, 0, -16, 16);
+	}
+
+	@Override
+	public void bounds(final int x1, final int x2, final int y1, final int y2, final int z1, final int z2) {
+		tile.bounds(x1, x2, y1, y2, z1, z2);
 	}
 
 	@Override
@@ -40,21 +47,21 @@ public class GroundItem extends Interactive implements Nameable, Locatable, Iden
 
 	@Override
 	public Point centerPoint() {
-		return new TileMatrix(ctx, tile).centerPoint();
+		return tile.centerPoint();
 	}
 
 	@Override
 	public Point nextPoint() {
-		return new TileMatrix(ctx, tile).nextPoint();
+		return tile.nextPoint();
 	}
 
 	@Override
 	public boolean contains(final Point point) {
-		return new TileMatrix(ctx, tile).contains(point);
+		return tile.contains(point);
 	}
 
 	@Override
 	public Tile tile() {
-		return tile;
+		return tile.tile();
 	}
 }

@@ -36,6 +36,7 @@ public abstract class Interactive extends ClientAccessor implements Targetable, 
 		};
 	}
 
+	public abstract Point centerPoint();
 
 	public final boolean hover() {
 		return valid() && ctx.mouse.apply(this, new Filter<Point>() {

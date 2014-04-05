@@ -11,6 +11,24 @@ import org.powerbot.script.Validatable;
 public abstract class Actor extends Interactive implements Locatable, Nameable, Validatable {
 	Actor(final ClientContext ctx) {
 		super(ctx);
+		bounds(new int[]{-48, 48, -192, 0, -48, 48});
+	}
+
+	@Override
+	public void bounds(final int x1, final int x2, final int y1, final int y2, final int z1, final int z2) {
+		boundingModel.set(new BoundingModel(ctx, x1, x2, y1, y2, z1, z2) {
+			@Override
+			public int x() {
+				final int r = relative();
+				return r >> 16;
+			}
+
+			@Override
+			public int z() {
+				final int r = relative();
+				return r & 0xffff;
+			}
+		});
 	}
 
 	protected abstract org.powerbot.bot.rt4.client.Actor getActor();
@@ -72,7 +90,7 @@ public abstract class Actor extends Interactive implements Locatable, Nameable, 
 	}
 
 
-	public int relativePosition() {
+	public int relative() {
 		final org.powerbot.bot.rt4.client.Actor actor = getActor();
 		final int x, z;
 		if (actor != null) {
@@ -97,31 +115,28 @@ public abstract class Actor extends Interactive implements Locatable, Nameable, 
 	@Override
 	public Point nextPoint() {
 		final org.powerbot.bot.rt4.client.Actor actor = getActor();
-		if (actor == null) {
-			return new Point(-1, -1);
+		final BoundingModel model2 = boundingModel.get();
+		if (actor != null && model2 != null) {
+			return model2.nextPoint();
 		}
-		final ActorCuboid cuboid = new ActorCuboid(ctx, actor);
-		return cuboid.nextPoint();
+		return new Point(-1, -1);
 	}
 
 	@Override
 	public Point centerPoint() {
 		final org.powerbot.bot.rt4.client.Actor actor = getActor();
-		if (actor == null) {
-			return new Point(-1, -1);
+		final BoundingModel model2 = boundingModel.get();
+		if (actor != null && model2 != null) {
+			return model2.centerPoint();
 		}
-		final ActorCuboid cuboid = new ActorCuboid(ctx, actor);
-		return cuboid.centerPoint();
+		return new Point(-1, -1);
 	}
 
 	@Override
 	public boolean contains(final Point point) {
 		final org.powerbot.bot.rt4.client.Actor actor = getActor();
-		if (actor == null) {
-			return false;
-		}
-		final ActorCuboid cuboid = new ActorCuboid(ctx, actor);
-		return cuboid.contains(point);
+		final BoundingModel model2 = boundingModel.get();
+		return actor != null && model2 != null && model2.contains(point);
 	}
 
 	@Override
