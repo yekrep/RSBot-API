@@ -70,7 +70,7 @@ public class DrawObjects implements PaintListener {
 			final int ty = p.y - textHeight / 2;
 			final int tx = p.x - metrics.stringWidth(s) / 2;
 			render.setColor(C[object.type().ordinal()]);
-			render.drawString(s, tx, ty - textHeight * counts.get(t).getAndIncrement());
+			render.drawString(s + " (" + object.name() + ")", tx, ty - textHeight * counts.get(t).getAndIncrement());
 		}
 	}
 }
