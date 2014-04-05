@@ -29,7 +29,7 @@ public class DrawPlayers implements PaintListener {
 			}
 			render.setColor(Color.RED);
 			render.fillRect((int) location.getX() - 1, (int) location.getY() - 1, 2, 2);
-			String s = player.name() + " (" + player.combatLevel() + ")";
+			String s = player.name() + " (" + player.combatLevel() + " [" + player.health() + "])";
 			render.setColor(player.inCombat() ? Color.RED : player.inMotion() ? Color.GREEN : Color.WHITE);
 			render.drawString(s, location.x - metrics.stringWidth(s) / 2, location.y - metrics.getHeight() / 2);
 			final String msg = player.overheadMessage();
