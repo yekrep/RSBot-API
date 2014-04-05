@@ -40,7 +40,6 @@ public class BotChrome extends JFrame implements Closeable {
 	public final AtomicReference<Bot> bot;
 	public final BotMenuBar menuBar;
 	public final AtomicReference<BotOverlay> overlay;
-	private final WindowCache cache;
 
 	private BotChrome() {
 		setTitle(Configuration.NAME);
@@ -71,8 +70,6 @@ public class BotChrome extends JFrame implements Closeable {
 
 		pack();
 		setMinimumSize(getSize());
-		cache = new WindowCache(this, "chrome");
-		cache.run();
 		setLocationRelativeTo(getParent());
 
 		addWindowListener(new WindowAdapter() {
@@ -135,13 +132,6 @@ public class BotChrome extends JFrame implements Closeable {
 	@Override
 	public void close() {
 		log.info("Shutting down");
-
-		final int s = getExtendedState();
-		final boolean maxed = (s & Frame.MAXIMIZED_VERT) == Frame.MAXIMIZED_VERT || (s & Frame.MAXIMIZED_HORIZ) == Frame.MAXIMIZED_HORIZ;
-
-		if (!maxed && (bot.get() == null || !(bot.get() instanceof org.powerbot.bot.rt4.Bot))) {
-			cache.close();
-		}
 
 		boolean pending = false;
 		if (bot.get() != null) {
