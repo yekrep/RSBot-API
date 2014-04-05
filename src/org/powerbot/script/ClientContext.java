@@ -1,5 +1,7 @@
 package org.powerbot.script;
 
+import java.util.Collection;
+import java.util.EventListener;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
@@ -37,6 +39,10 @@ public abstract class ClientContext<C extends Client> {
 	}
 
 	public abstract Script.Controller controller();
+
+	public final Collection<EventListener> dispatcher() {
+		return bot.get().dispatcher;
+	}
 
 	public final String property(final String k) {
 		return property(k, "");
