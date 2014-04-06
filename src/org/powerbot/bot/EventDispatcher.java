@@ -69,7 +69,7 @@ public abstract class EventDispatcher extends AbstractCollection<EventListener> 
 
 			try {
 				consume(o);
-			} catch (final Exception ignored) {
+			} catch (final Throwable ignored) {
 			}
 		}
 
