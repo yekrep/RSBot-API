@@ -8,6 +8,7 @@ import java.util.concurrent.Callable;
 import javax.swing.SwingUtilities;
 
 import org.powerbot.Configuration;
+import org.powerbot.bot.SelectiveEventQueue;
 import org.powerbot.bot.loader.GameAppletLoader;
 import org.powerbot.bot.loader.GameLoader;
 import org.powerbot.bot.loader.GameStub;
@@ -159,7 +160,11 @@ public final class Bot extends org.powerbot.script.Bot<ClientContext> {
 					return c != null && c.getKeyListeners().length > 0;//TODO: ??
 				}
 			})) {
+				final SelectiveEventQueue queue = SelectiveEventQueue.getInstance();
+				final boolean b = queue.isBlocking();
+				queue.setBlocking(true);
 				ctx.keyboard.send("s");
+				queue.setBlocking(b);
 			}
 		}
 	}
