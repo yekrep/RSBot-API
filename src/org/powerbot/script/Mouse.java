@@ -46,6 +46,24 @@ public class Mouse<C extends ClientContext> extends ClientAccessor<C> {
 		return engine != null ? engine.getPressWhen() : -1;
 	}
 
+	public boolean press(final int button) {
+		final InputSimulator engine = queue.getEngine();
+		if (engine == null) {
+			return false;
+		}
+		engine.press(button);
+		return true;
+	}
+
+	public boolean release(final int button) {
+		final InputSimulator engine = queue.getEngine();
+		if (engine == null) {
+			return false;
+		}
+		engine.release(button);
+		return true;
+	}
+
 	public boolean click(final int x, final int y, final int button) {
 		return click(new Point(x, y), button);
 	}
