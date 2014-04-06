@@ -86,68 +86,28 @@ public class EventDispatcher extends org.powerbot.bot.EventDispatcher {
 				final MouseEvent me = (MouseEvent) e;
 				switch (me.getID()) {
 				case MouseEvent.MOUSE_PRESSED:
-					exec.submit(new Runnable() {
-						@Override
-						public void run() {
-							((MouseListener) listener).mousePressed(me);
-						}
-					});
+					((MouseListener) listener).mousePressed(me);
 					break;
 				case MouseEvent.MOUSE_RELEASED:
-					exec.submit(new Runnable() {
-						@Override
-						public void run() {
-							((MouseListener) listener).mouseReleased(me);
-						}
-					});
+					((MouseListener) listener).mouseReleased(me);
 					break;
 				case MouseEvent.MOUSE_CLICKED:
-					exec.submit(new Runnable() {
-						@Override
-						public void run() {
-							((MouseListener) listener).mouseClicked(me);
-						}
-					});
+					((MouseListener) listener).mouseClicked(me);
 					break;
 				case MouseEvent.MOUSE_ENTERED:
-					exec.submit(new Runnable() {
-						@Override
-						public void run() {
-							((MouseListener) listener).mouseEntered(me);
-						}
-					});
+					((MouseListener) listener).mouseEntered(me);
 					break;
 				case MouseEvent.MOUSE_EXITED:
-					exec.submit(new Runnable() {
-						@Override
-						public void run() {
-							((MouseListener) listener).mouseExited(me);
-						}
-					});
+					((MouseListener) listener).mouseExited(me);
 					break;
 				case MouseEvent.MOUSE_MOVED:
-					exec.submit(new Runnable() {
-						@Override
-						public void run() {
-							((MouseMotionListener) listener).mouseMoved(me);
-						}
-					});
+					((MouseMotionListener) listener).mouseMoved(me);
 					break;
 				case MouseEvent.MOUSE_DRAGGED:
-					exec.submit(new Runnable() {
-						@Override
-						public void run() {
-							((MouseMotionListener) listener).mouseDragged(me);
-						}
-					});
+					((MouseMotionListener) listener).mouseDragged(me);
 					break;
 				case MouseEvent.MOUSE_WHEEL:
-					exec.submit(new Runnable() {
-						@Override
-						public void run() {
-							((MouseWheelListener) listener).mouseWheelMoved((MouseWheelEvent) me);
-						}
-					});
+					((MouseWheelListener) listener).mouseWheelMoved((MouseWheelEvent) me);
 					break;
 				}
 				break;
@@ -155,57 +115,27 @@ public class EventDispatcher extends org.powerbot.bot.EventDispatcher {
 				final FocusEvent focusEvent = (FocusEvent) listener;
 				switch (focusEvent.getID()) {
 				case FocusEvent.FOCUS_GAINED:
-					exec.submit(new Runnable() {
-						@Override
-						public void run() {
-							((FocusListener) listener).focusGained(focusEvent);
-						}
-					});
+					((FocusListener) listener).focusGained(focusEvent);
 					break;
 				case FocusEvent.FOCUS_LOST:
-					exec.submit(new Runnable() {
-						@Override
-						public void run() {
-							((FocusListener) listener).focusLost(focusEvent);
-						}
-					});
+					((FocusListener) listener).focusLost(focusEvent);
 					break;
 				}
 			} else if (e instanceof KeyEvent) {
 				final KeyEvent ke = (KeyEvent) e;
 				switch (ke.getID()) {
 				case KeyEvent.KEY_TYPED:
-					exec.submit(new Runnable() {
-						@Override
-						public void run() {
-							((KeyListener) listener).keyTyped(ke);
-						}
-					});
+					((KeyListener) listener).keyTyped(ke);
 					break;
 				case KeyEvent.KEY_PRESSED:
-					exec.submit(new Runnable() {
-						@Override
-						public void run() {
-							((KeyListener) listener).keyPressed(ke);
-						}
-					});
+					((KeyListener) listener).keyPressed(ke);
 					break;
 				case KeyEvent.KEY_RELEASED:
-					exec.submit(new Runnable() {
-						@Override
-						public void run() {
-							((KeyListener) listener).keyReleased(ke);
-						}
-					});
+					((KeyListener) listener).keyReleased(ke);
 					break;
 				}
 			} else if (e instanceof AbstractEvent) {
-				exec.submit(new Runnable() {
-					@Override
-					public void run() {
-						((AbstractEvent) e).call(listener);
-					}
-				});
+				((AbstractEvent) e).call(listener);
 			}
 		}
 	}
