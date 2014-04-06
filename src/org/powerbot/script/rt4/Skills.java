@@ -37,8 +37,8 @@ public class Skills extends ClientAccessor {
 	 * @param index the index of the skill
 	 * @return the current level at the specified index
 	 */
-	public int level(final int index) {
-		final int[] levels = levels();
+	public int realLevel(final int index) {
+		final int[] levels = realLevels();
 		if (index >= 0 && index < levels.length) {
 			return levels[index];
 		}
@@ -46,13 +46,13 @@ public class Skills extends ClientAccessor {
 	}
 
 	/**
-	 * Returns the level of the skill at the provided index.
+	 * Returns the effective level of the skill at the provided index.
 	 *
 	 * @param index the index of the skill
 	 * @return the real level at the specified index
 	 */
-	public int effectiveLevel(final int index) {
-		final int[] levels = effectiveLevels();
+	public int level(final int index) {
+		final int[] levels = levels();
 		if (index >= 0 && index < levels.length) {
 			return levels[index];
 		}
@@ -73,13 +73,13 @@ public class Skills extends ClientAccessor {
 		return -1;
 	}
 
-	public int[] levels() {
+	public int[] realLevels() {
 		final Client c = ctx.client();
 		final int[] arr = c != null ? c.getSkillLevels2() : new int[0];
 		return arr != null ? arr : new int[0];
 	}
 
-	public int[] effectiveLevels() {
+	public int[] levels() {
 		final Client c = ctx.client();
 		final int[] arr = c != null ? c.getSkillLevels1() : new int[0];
 		return arr != null ? arr : new int[0];
