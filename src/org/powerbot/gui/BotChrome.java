@@ -2,7 +2,6 @@ package org.powerbot.gui;
 
 import java.awt.Color;
 import java.awt.Desktop;
-import java.awt.Frame;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.Closeable;
@@ -50,6 +49,9 @@ public class BotChrome extends JFrame implements Closeable {
 		JPopupMenu.setDefaultLightWeightPopupEnabled(false);
 		setFocusTraversalKeysEnabled(false);
 
+		SelectiveEventQueue.pushSelectiveQueue();
+		SelectiveEventQueue.getInstance().setBlocking(false);
+
 		bot = new AtomicReference<Bot>(null);
 		overlay = new AtomicReference<BotOverlay>(null);
 		add(new BotPanel(this, new Callable<Boolean>() {
@@ -65,7 +67,8 @@ public class BotChrome extends JFrame implements Closeable {
 				}
 				return BotChrome.this.bot.compareAndSet(null, bot);
 			}
-		}));
+		}
+		));
 		setJMenuBar(menuBar = new BotMenuBar(this));
 
 		pack();
