@@ -7,6 +7,9 @@ import org.powerbot.script.Keyboard;
 import org.powerbot.script.Mouse;
 import org.powerbot.script.Script;
 
+/**
+ * {@inheritDoc}
+ */
 public class ClientContext extends org.powerbot.script.ClientContext<Client> {
 	public final Script.Controller controller;
 
@@ -47,11 +50,21 @@ public class ClientContext extends org.powerbot.script.ClientContext<Client> {
 		varpbits = new Varpbits(this);
 		widgets = new Widgets(this);
 	}
-
+	/**
+	 * Creates a new context for the given {@link org.powerbot.bot.rt4.Bot}.
+	 *
+	 * @param bot the bot to associate with
+	 * @return a new context
+	 */
 	public static ClientContext newContext(final Bot bot) {
 		return new ClientContext(bot);
 	}
 
+	/**
+	 * Creates a new chained context.
+	 *
+	 * @param ctx the parent context
+	 */
 	public ClientContext(final ClientContext ctx) {
 		super(ctx);
 		controller = ctx.controller;
@@ -81,6 +94,10 @@ public class ClientContext extends org.powerbot.script.ClientContext<Client> {
 		return "4";
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public Script.Controller controller() {
 		return controller;
 	}
