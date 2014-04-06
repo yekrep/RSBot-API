@@ -12,6 +12,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.powerbot.gui.BotChrome;
+import org.powerbot.script.Bot;
 
 public class SelectiveEventQueue extends EventQueue {
 	private static final SelectiveEventQueue instance = new SelectiveEventQueue();
@@ -108,7 +109,10 @@ public class SelectiveEventQueue extends EventQueue {
 		}
 
 		if (event instanceof MouseEvent || event instanceof KeyEvent) {
-			BotChrome.getInstance().bot.get().dispatcher.dispatch(event);
+			final Bot<?> bot = chrome.bot.get();
+			if (bot != null && bot.dispatcher != null) {
+				bot.dispatcher.dispatch(event);
+			}
 		}
 		final Object s = event.getSource();
 		if (!blocking.get() || s != component ||
