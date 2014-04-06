@@ -10,6 +10,8 @@ import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -19,6 +21,7 @@ public abstract class EventDispatcher extends AbstractCollection<EventListener> 
 	protected final Map<EventListener, Long> bitmasks;
 	protected final BlockingQueue<EventObject> queue;
 	protected final Map<Class<? extends EventListener>, Integer> masks;
+	protected final ExecutorService exec;
 
 	public EventDispatcher() {
 		thread = new AtomicReference<Thread>(null);
@@ -26,6 +29,7 @@ public abstract class EventDispatcher extends AbstractCollection<EventListener> 
 		bitmasks = new ConcurrentHashMap<EventListener, Long>();
 		queue = new LinkedBlockingQueue<EventObject>();
 		masks = new HashMap<Class<? extends EventListener>, Integer>();
+		exec = Executors.newSingleThreadExecutor();
 	}
 
 	private final long getMask(final EventListener e) {
@@ -82,6 +86,7 @@ public abstract class EventDispatcher extends AbstractCollection<EventListener> 
 		if (t != null) {
 			t.interrupt();
 		}
+		exec.shutdown();
 	}
 
 	@Override
