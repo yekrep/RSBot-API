@@ -317,7 +317,7 @@ class RT4BotBoundingUtility extends JFrame implements PaintListener, MouseListen
 			modelY2.setValue(0);
 			modelZ1.setValue(-64);
 			modelZ2.setValue(64);
-		}else if (interactive instanceof GroundItem) {
+		} else if (interactive instanceof GroundItem) {
 			modelX1.setValue(-16);
 			modelX2.setValue(16);
 			modelY1.setValue(-16);
@@ -325,12 +325,12 @@ class RT4BotBoundingUtility extends JFrame implements PaintListener, MouseListen
 			modelZ1.setValue(-16);
 			modelZ2.setValue(16);
 		} else {
-			modelX1.setValue(-64);
-			modelX2.setValue(64);
-			modelY1.setValue(-32);
+			modelX1.setValue(-32);
+			modelX2.setValue(32);
+			modelY1.setValue(-64);
 			modelY2.setValue(0);
-			modelZ1.setValue(-64);
-			modelZ2.setValue(64);
+			modelZ1.setValue(-32);
+			modelZ2.setValue(32);
 		}
 		l.stateChanged(null);
 	}
