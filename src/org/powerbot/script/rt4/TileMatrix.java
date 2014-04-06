@@ -64,7 +64,7 @@ public final class TileMatrix extends Interactive implements Locatable {
 
 	public boolean onMap() {
 		final Point p = mapPoint();
-		return p.x != -1 && p.y != -1;
+		return Math.pow(643 - p.x, 2) + Math.pow(83 - p.y, 2) < Math.pow(60, 2);
 	}
 
 	@Override
