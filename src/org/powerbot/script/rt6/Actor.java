@@ -25,6 +25,7 @@ import org.powerbot.script.Tile;
 public abstract class Actor extends Interactive implements Renderable, Nameable, Locatable, Drawable {
 	public Actor(final ClientContext ctx) {
 		super(ctx);
+		bounds(-192, 192, -768, 0, -192, 192);
 	}
 
 	protected abstract RSCharacter getAccessor();

@@ -32,7 +32,9 @@ public class GroundItem extends Interactive implements Renderable, Identifiable,
 	public GroundItem(final ClientContext ctx, final Tile tile, final RSItem item) {
 		super(ctx);
 		this.tile = tile.matrix(ctx);
+		boundingModel = this.tile.boundingModel;
 		this.item = new WeakReference<RSItem>(item);
+		bounds(-64, 64, -64, 0, -64, 64);
 	}
 
 	@Override
@@ -142,7 +144,7 @@ public class GroundItem extends Interactive implements Renderable, Identifiable,
 		if (model != null) {
 			return model.nextPoint();
 		}
-		return  tile.nextPoint();
+		return tile.nextPoint();
 	}
 
 	public Point centerPoint() {
@@ -159,7 +161,7 @@ public class GroundItem extends Interactive implements Renderable, Identifiable,
 		if (model != null) {
 			return model.contains(point);
 		}
-		return  tile.contains(point);
+		return tile.contains(point);
 	}
 
 	@Override

@@ -12,7 +12,7 @@ import org.powerbot.script.Validatable;
 import org.powerbot.script.Viewport;
 
 public abstract class Interactive extends ClientAccessor implements Targetable, Validatable, Viewport {
-	protected final AtomicReference<BoundingModel> boundingModel;
+	protected AtomicReference<BoundingModel> boundingModel;
 
 	public Interactive(final ClientContext ctx) {
 		super(ctx);
