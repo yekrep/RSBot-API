@@ -134,4 +134,9 @@ public final class TileMatrix extends Interactive implements Locatable {
 		final int x = tile.x() - t.x(), y = tile.y() - t.y();
 		return x >= 0 && y >= 0 && x < 104 && y < 104;
 	}
+
+	@Override
+	public boolean equals(final Object o) {
+		return o instanceof TileMatrix && ((TileMatrix) o).tile.equals(tile);
+	}
 }

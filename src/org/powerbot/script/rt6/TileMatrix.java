@@ -175,4 +175,9 @@ public final class TileMatrix extends Interactive implements Locatable, Drawable
 	public String toString() {
 		return tile.toString();
 	}
+
+	@Override
+	public boolean equals(final Object o) {
+		return o instanceof TileMatrix && ((TileMatrix) o).tile.equals(tile);
+	}
 }
