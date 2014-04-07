@@ -1,15 +1,13 @@
 package org.powerbot.bot;
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
 
+import org.powerbot.script.ClientContext;
 import org.powerbot.util.IOUtils;
 import org.powerbot.util.TarReader;
 
@@ -18,13 +16,16 @@ import org.powerbot.util.TarReader;
 public final class ScriptClassLoader extends ClassLoader {
 	private final URL base;
 	private final Map<String, byte[]> files;
+	public final ClientContext ctx;
 
-	public ScriptClassLoader(final URL base) {
+	public ScriptClassLoader(final ClientContext ctx, final URL base) {
+		this.ctx = ctx;
 		this.base = base;
 		files = null;
 	}
 
-	public ScriptClassLoader(final TarReader in) {
+	public ScriptClassLoader(final ClientContext ctx, final TarReader in) {
+		this.ctx = ctx;
 		files = new HashMap<String, byte[]>();
 		for (final Map.Entry<String, byte[]> e : in) {
 			files.put(e.getKey(), e.getValue());

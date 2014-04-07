@@ -13,7 +13,6 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import org.powerbot.misc.ScriptBundle;
 import org.powerbot.misc.Tracker;
-import org.powerbot.script.AbstractScript;
 import org.powerbot.script.Client;
 import org.powerbot.script.ClientAccessor;
 import org.powerbot.script.ClientContext;
@@ -146,15 +145,6 @@ public final class ScriptController<C extends ClientContext<? extends Client>> e
 		public void run() {
 			final Script s;
 			try {
-				executor.get().getThreadFactory().newThread(new Runnable() {
-					@Override
-					public void run() {
-						try {
-							AbstractScript.contextProxy.put(ctx);
-						} catch (final InterruptedException ignored) {
-						}
-					}
-				}).start();
 				s = clazz.newInstance();
 				bundle.get().instance.set(s);
 			} catch (final Exception e) {

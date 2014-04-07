@@ -26,16 +26,15 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import org.powerbot.Configuration;
-import org.powerbot.gui.BotChrome;
-import org.powerbot.script.AbstractScript;
-import org.powerbot.script.Bot;
-import org.powerbot.script.ClientContext;
-import org.powerbot.script.PollingScript;
-import org.powerbot.script.Script;
 import org.powerbot.bot.InternalScript;
 import org.powerbot.bot.ScriptClassLoader;
 import org.powerbot.bot.ScriptController;
 import org.powerbot.bot.rt6.activation.Login;
+import org.powerbot.gui.BotChrome;
+import org.powerbot.script.AbstractScript;
+import org.powerbot.script.ClientContext;
+import org.powerbot.script.PollingScript;
+import org.powerbot.script.Script;
 import org.powerbot.util.Ini;
 import org.powerbot.util.StringUtils;
 import org.powerbot.util.TarReader;
@@ -171,11 +170,13 @@ public class ScriptList {
 			return;
 		}
 
+		final ClientContext ctx = chrome.bot.get().ctx;
+
 		CryptFile cache = null;
 		final ClassLoader cl;
 		if (def.local) {
 			try {
-				cl = new ScriptClassLoader(new File(def.source).toURI().toURL());
+				cl = new ScriptClassLoader(ctx, new File(def.source).toURI().toURL());
 			} catch (final Exception ignored) {
 				return;
 			}
@@ -193,7 +194,7 @@ public class ScriptList {
 				c.init(Cipher.DECRYPT_MODE, new SecretKeySpec(key, 0, key.length, "ARCFOUR"));
 				cache = new CryptFile("script.1-" + def.getID().replace('/', '-'), ScriptList.class, ScriptClassLoader.class);
 				final InputStream in = cache.download(new URL(def.source));
-				cl = new ScriptClassLoader(new TarReader(new GZIPInputStream(new CipherInputStream(in, c))));
+				cl = new ScriptClassLoader(ctx, new TarReader(new GZIPInputStream(new CipherInputStream(in, c))));
 			} catch (final Exception ignored) {
 				log.severe("Could not download script");
 				ignored.printStackTrace();
@@ -215,9 +216,8 @@ public class ScriptList {
 			return;
 		}
 
-		final Bot bot = chrome.bot.get();
 		@SuppressWarnings("unchecked")
-		final Map<String, String> properties = bot.ctx.properties;
+		final Map<String, String> properties = ctx.properties;
 
 		if (username != null) {
 			properties.put(Login.LOGIN_USER_PROPERTY, username);
@@ -280,7 +280,7 @@ public class ScriptList {
 		}
 
 		properties.put(ScriptController.LOCAL_PROPERTY, Boolean.toString(def.local));
-		final ScriptController<? extends ClientContext> c = (ScriptController<? extends ClientContext>) bot.ctx.controller();
+		final ScriptController<? extends ClientContext> c = (ScriptController<? extends ClientContext>) ctx.controller();
 		c.bundle.set(new ScriptBundle(def, script));
 		c.run();
 	}

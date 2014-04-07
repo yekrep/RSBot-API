@@ -12,9 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
@@ -24,6 +22,7 @@ import java.util.zip.Adler32;
 import javax.imageio.ImageIO;
 
 import org.powerbot.Configuration;
+import org.powerbot.bot.ScriptClassLoader;
 import org.powerbot.bot.ScriptController;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.misc.ScriptBundle;
@@ -46,7 +45,6 @@ public abstract class AbstractScript<C extends ClientContext> implements Script,
 	 */
 	protected final C ctx;
 
-	public static final BlockingQueue<ClientContext> contextProxy = new SynchronousQueue<ClientContext>();
 	private static final AtomicInteger s = new AtomicInteger(0);
 	private final int sq;
 
@@ -100,13 +98,12 @@ public abstract class AbstractScript<C extends ClientContext> implements Script,
 			}
 		});
 
-		try {
-			@SuppressWarnings("unchecked")
-			final C ctx = (C) contextProxy.take();
-			this.ctx = ctx;
-		} catch (final InterruptedException e) {
-			throw new IllegalStateException(e);
+		@SuppressWarnings("unchecked")
+		final C ctx = (C) ((ScriptClassLoader) Thread.currentThread().getContextClassLoader()).ctx;
+		if (ctx == null) {
+			throw new IllegalStateException("context unset");
 		}
+		this.ctx = ctx;
 
 		final String[] ids = {null, getName(), getClass().getName()};
 		String id = "-";
