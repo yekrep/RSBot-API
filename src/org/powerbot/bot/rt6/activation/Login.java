@@ -39,10 +39,14 @@ public class Login extends PollingScript<ClientContext> {
 	@Override
 	public void poll() {
 		if (!isValid()) {
-			threshold.poll();
+			if (threshold.contains(this)) {
+				threshold.remove(this);
+			}
 			return;
 		}
-		threshold.offer(priority.get());
+		if (!threshold.contains(this)) {
+			threshold.add(this);
+		}
 
 		final GameAccounts.Account account = GameAccounts.getInstance().get(ctx.property(LOGIN_USER_PROPERTY));
 		final int state = ctx.game.clientState();

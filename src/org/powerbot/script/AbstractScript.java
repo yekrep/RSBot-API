@@ -48,11 +48,6 @@ public abstract class AbstractScript<C extends ClientContext> implements Script,
 	private static final AtomicInteger s = new AtomicInteger(0);
 	private final int sq;
 
-	/**
-	 * The priority of this {@link org.powerbot.script.Script} as a {@link java.lang.Runnable}.
-	 */
-	public final AtomicInteger priority;
-
 	private final List<Runnable>[] exec;
 	private final AtomicLong started, suspended, suspension;
 	private final File dir;
@@ -74,7 +69,6 @@ public abstract class AbstractScript<C extends ClientContext> implements Script,
 		}
 
 		sq = s.getAndIncrement();
-		priority = new AtomicInteger(0);
 		started = new AtomicLong(System.nanoTime());
 		suspended = new AtomicLong(0L);
 		suspension = new AtomicLong(0L);
@@ -161,8 +155,7 @@ public abstract class AbstractScript<C extends ClientContext> implements Script,
 	 */
 	@Override
 	public final int compareTo(final AbstractScript o) {
-		final int r = o.priority.get() - priority.get();
-		return r == 0 ? sq < o.sq ? -1 : 1 : r;
+		return sq - o.sq;
 	}
 
 	/**

@@ -1,7 +1,9 @@
 package org.powerbot.script;
 
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.Comparator;
+import java.util.NavigableSet;
+import java.util.concurrent.ConcurrentSkipListSet;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * An implementation of {@link AbstractScript} which polls (or "loops") indefinitely.
@@ -9,15 +11,24 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public abstract class PollingScript<C extends ClientContext> extends AbstractScript<C> implements Runnable {
 
 	/**
-	 * Blocks other {@link PollingScript}s which have a lower {@link AbstractScript#priority} value.
-	 * Only the head item is considered for comparison.
+	 * The priority of this {@link org.powerbot.script.PollingScript} with respect to others.
 	 */
-	protected static final Queue<Integer> threshold = new ConcurrentLinkedQueue<Integer>();
+	public final AtomicInteger priority;
+	/**
+	 * Blocks other {@link org.powerbot.script.PollingScript}s with a lower {@link #priority} value
+	 */
+	protected static final NavigableSet<PollingScript> threshold = new ConcurrentSkipListSet<PollingScript>(new Comparator<PollingScript>() {
+		@Override
+		public int compare(final PollingScript o1, final PollingScript o2) {
+			return o1.priority.get() - o2.priority.get();
+		}
+	});
 
 	/**
 	 * Creates an instance of a {@link PollingScript}.
 	 */
 	public PollingScript() {
+		priority = new AtomicInteger(0);
 		getExecQueue(State.START).add(new Runnable() {
 			@Override
 			public void run() {
@@ -52,7 +63,7 @@ public abstract class PollingScript<C extends ClientContext> extends AbstractScr
 
 	@Override
 	public final void run() {
-		if (threshold.isEmpty() || priority.get() <= threshold.peek()) {
+		if (threshold.isEmpty() || threshold.first().priority.get() <= priority.get()) {
 			try {
 				poll();
 			} catch (final Throwable e) {

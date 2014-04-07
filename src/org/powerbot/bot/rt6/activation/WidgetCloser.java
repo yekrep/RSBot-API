@@ -36,10 +36,14 @@ public class WidgetCloser extends PollingScript<ClientContext> {
 	@Override
 	public void poll() {
 		if (!isValid()) {
-			threshold.poll();
+			if (threshold.contains(this)) {
+				threshold.remove(this);
+			}
 			return;
 		}
-		threshold.offer(priority.get());
+		if (!threshold.contains(this)) {
+			threshold.add(this);
+		}
 
 		final Component component = this.component;
 		if (component == null) {
