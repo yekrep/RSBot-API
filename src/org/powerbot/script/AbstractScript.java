@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,9 +26,9 @@ import java.util.zip.Adler32;
 import javax.imageio.ImageIO;
 
 import org.powerbot.Configuration;
+import org.powerbot.bot.ScriptController;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.misc.ScriptBundle;
-import org.powerbot.bot.ScriptController;
 import org.powerbot.util.HttpUtils;
 import org.powerbot.util.IOUtils;
 import org.powerbot.util.Ini;
@@ -218,13 +219,37 @@ public abstract class AbstractScript<C extends ClientContext> implements Script,
 	}
 
 	/**
-	 * Returns the name of this {@link Script} as determined by its {@link org.powerbot.script.Script.Manifest}.
+	 * Returns the name of this class as determined by its {@link org.powerbot.script.Script.Manifest}.
 	 *
-	 * @return the name of this {@link Script}
+	 * @return the name
 	 */
 	public String getName() {
 		final Manifest manifest = getManifest();
 		return manifest == null || manifest.name() == null ? "" : manifest.name();
+	}
+
+	/**
+	 * Returns the description of this class as determined by its {@link org.powerbot.script.Script.Manifest}.
+	 *
+	 * @return the description
+	 */
+	public String getDescription() {
+		final Manifest m = getManifest();
+		return m == null || m.description() == null ? "" : m.description();
+	}
+
+	/**
+	 * Returns the properties of this class as determined by its {@link org.powerbot.script.Script.Manifest}.
+	 *
+	 * @return the key/value pair of properties
+	 */
+	public Map<String, String> getProperties() {
+		final Manifest m = getManifest();
+		final String s;
+		if (m == null || (s = m.properties()) == null) {
+			return Collections.emptyMap();
+		}
+		return ScriptBundle.parseProperties(s);
 	}
 
 	/**
