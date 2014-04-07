@@ -13,7 +13,7 @@ import java.util.Queue;
 public interface Script extends EventListener {
 
 	/**
-	 * The representative states of a {@link Script}
+	 * The possible states.
 	 */
 	public enum State {
 		START, SUSPEND, RESUME, STOP
@@ -22,8 +22,8 @@ public interface Script extends EventListener {
 	/**
 	 * Returns the execution queue.
 	 *
-	 * @param state the {@link Script.State} to query
-	 * @return a {@link Queue} of {@link java.lang.Runnable}s in this {@link Script}s execution queue
+	 * @param state the state being invoked
+	 * @return a sequence of {@link java.lang.Runnable} items to process
 	 */
 	public Queue<Runnable> getExecQueue(State state);
 
