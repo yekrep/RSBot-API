@@ -174,17 +174,29 @@ public class GameObject extends Interactive implements Nameable, Locatable, Iden
 
 	@Override
 	public Point centerPoint() {
-		return new TileMatrix(ctx, tile()).centerPoint();
+		final BasicObject o = object.get();
+		final BoundingModel model = boundingModel.get();
+		if (o != null && model != null) {
+			return model.centerPoint();
+		}
+		return new Point(-1, -1);
 	}
 
 	@Override
 	public Point nextPoint() {
-		return new TileMatrix(ctx, tile()).nextPoint();
+		final BasicObject o = object.get();
+		final BoundingModel model = boundingModel.get();
+		if (o != null && model != null) {
+			return model.nextPoint();
+		}
+		return new Point(-1, -1);
 	}
 
 	@Override
 	public boolean contains(final Point point) {
-		return new TileMatrix(ctx, tile()).contains(point);
+		final BasicObject o = object.get();
+		final BoundingModel model = boundingModel.get();
+		return o != null && model != null && model.contains(point);
 	}
 
 	@Override
