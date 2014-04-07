@@ -149,11 +149,12 @@ public class GameObject extends Interactive implements Renderable, Locatable, Na
 		if (model != null) {
 			return model.nextPoint();
 		}
+		final RSObject o = object.get();
 		final BoundingModel model2 = boundingModel.get();
-		if (model2 != null) {
-			return model2.nextPoint();
+		if (o != null && model2 != null) {
+			return model2.centerPoint();
 		}
-		return new TileMatrix(ctx, tile()).nextPoint();
+		return new Point(-1, -1);
 	}
 
 	public Point centerPoint() {
@@ -161,11 +162,12 @@ public class GameObject extends Interactive implements Renderable, Locatable, Na
 		if (model != null) {
 			return model.centerPoint();
 		}
+		final RSObject o = object.get();
 		final BoundingModel model2 = boundingModel.get();
-		if (model2 != null) {
+		if (o != null && model2 != null) {
 			return model2.centerPoint();
 		}
-		return new TileMatrix(ctx, tile()).centerPoint();
+		return new Point(-1, -1);
 	}
 
 	@Override
@@ -174,11 +176,9 @@ public class GameObject extends Interactive implements Renderable, Locatable, Na
 		if (model != null) {
 			return model.contains(point);
 		}
+		final RSObject o = object.get();
 		final BoundingModel model2 = boundingModel.get();
-		if (model2 != null) {
-			return model2.contains(point);
-		}
-		return new TileMatrix(ctx, tile()).contains(point);
+		return o != null && model2 != null && model2.contains(point);
 	}
 
 	@Override
