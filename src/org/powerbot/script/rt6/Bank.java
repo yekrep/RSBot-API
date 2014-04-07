@@ -53,14 +53,14 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 		}
 	};
 	public static final int WIDGET = 762;
-	public static final int COMPONENT_BUTTON_CLOSE = 50;
-	public static final int COMPONENT_CONTAINER_ITEMS = 39;
-	public static final int COMPONENT_BUTTON_WITHDRAW_MODE = 8;
-	public static final int COMPONENT_BUTTON_DEPOSIT_INVENTORY = 12;
-	public static final int COMPONENT_BUTTON_DEPOSIT_MONEY = 14;
-	public static final int COMPONENT_BUTTON_DEPOSIT_EQUIPMENT = 16;
-	public static final int COMPONENT_BUTTON_DEPOSIT_FAMILIAR = 18;
-	public static final int COMPONENT_SCROLL_BAR = 40;
+	public static final int COMPONENT_BUTTON_CLOSE = 52;
+	public static final int COMPONENT_CONTAINER_ITEMS = 35;
+	public static final int COMPONENT_BUTTON_WITHDRAW_MODE = 172;
+	public static final int COMPONENT_BUTTON_DEPOSIT_INVENTORY = 187;
+	public static final int COMPONENT_BUTTON_DEPOSIT_MONEY = 193;
+	public static final int COMPONENT_BUTTON_DEPOSIT_EQUIPMENT = 189;
+	public static final int COMPONENT_BUTTON_DEPOSIT_FAMILIAR = 191;
+	public static final int COMPONENT_SCROLL_BAR = 31;
 	public static final int SETTING_BANK_STATE = 110;
 	public static final int SETTING_WITHDRAW_MODE = 160;
 
@@ -299,7 +299,7 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 	 * @return <tt>true</tt> if the tab was successfully changed; otherwise <tt>false</tt>
 	 */
 	public boolean currentTab(final int index) {
-		final Component c = ctx.widgets.component(WIDGET, 37 - (index * 2));
+		final Component c = ctx.widgets.component(WIDGET, 20 - (index * 2));
 		return c.click() && Condition.wait(new Callable<Boolean>() {
 			@Override
 			public Boolean call() throws Exception {
@@ -315,7 +315,7 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 	 * @return the {@link Item} displayed in the tab; otherwise {@link org.powerbot.script.rt6.Bank#nil()}
 	 */
 	public Item tabItem(final int index) {
-		final Component c = ctx.widgets.component(WIDGET, 37 - (index * 2));
+		final Component c = ctx.widgets.component(WIDGET, 20 - (index * 2));
 		if (c != null && c.valid()) {
 			return new Item(ctx, c);
 		}
