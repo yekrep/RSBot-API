@@ -24,6 +24,7 @@ class BotPanel extends JPanel implements ActionListener {
 	private final BotChrome chrome;
 	private final Filter<Bot> callback;
 	private final JPanel mode;
+	private final JLabel logo;
 	private final JButton rs3, os;
 
 	public BotPanel(final BotChrome chrome, final Callable<Boolean> pre, final Filter<Bot> callback) {
@@ -40,7 +41,7 @@ class BotPanel extends JPanel implements ActionListener {
 		final JPanel panel = new JPanel();
 		panel.setLayout(getLayout());
 		panel.setBackground(getBackground());
-		final JLabel logo = new JLabel(new ImageIcon(Resources.getImage(Resources.Paths.ARROWS)));
+		logo = new JLabel(new ImageIcon(Resources.getImage(Resources.Paths.ARROWS)));
 		panel.add(logo, new GridBagConstraints());
 
 		mode = new JPanel();
@@ -79,6 +80,7 @@ class BotPanel extends JPanel implements ActionListener {
 		}
 
 		if (success) {
+			new Thread(new GameButtons(logo, rs3, os)).start();
 			new Thread(new AdPanel(logo, panel)).start();
 			mode.setVisible(true);
 		}
@@ -91,6 +93,7 @@ class BotPanel extends JPanel implements ActionListener {
 		}
 		final JButton b = (JButton) e.getSource();
 		mode.setVisible(false);
+		logo.setVisible(true);
 		final Bot bot = b == os ? new org.powerbot.bot.rt4.Bot(chrome) : new org.powerbot.bot.rt6.Bot(chrome);
 		callback.accept(bot);
 		Logger.getLogger(BotChrome.class.getName()).info("Starting...");
