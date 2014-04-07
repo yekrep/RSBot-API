@@ -106,4 +106,6 @@ public interface Client extends org.powerbot.script.Client {
 	public int getHintArrowX();
 
 	public int getHintArrowY();
+
+	public void setCallback(Callback callback);
 }

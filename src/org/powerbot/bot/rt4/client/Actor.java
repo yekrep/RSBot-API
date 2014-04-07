@@ -11,7 +11,9 @@ public interface Actor {
 
 	public int getSpeed();
 
-	public int getHealthRatio();
+	public int getCurrentHealth();
+
+	public int getMaxHealth();
 
 	public int getCycleEnd();
 
