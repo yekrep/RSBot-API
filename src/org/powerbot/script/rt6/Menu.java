@@ -151,7 +151,7 @@ public class Menu extends ClientAccessor {
 						return client.isMenuOpen();
 					}
 				}, 5, 20);
-				Random.sleepHicks(index);
+				Condition.sleep(Random.hicks(index));
 
 				if (!client.isMenuOpen()) {
 					return false;

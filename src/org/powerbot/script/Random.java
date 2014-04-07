@@ -44,15 +44,14 @@ public class Random {
 		return (int) ((-1 + 2 * nextDouble()) * pd[1] + pd[0]);
 	}
 
-	public static void sleepHicks(final int depth) {
-		final int d = 105 * (int) (Math.log(depth * 2) / ln2);
-		if (d <= 0) {
-			return;
-		}
-		try {
-			Thread.sleep(d);
-		} catch (final InterruptedException ignored) {
-		}
+	/**
+	 * Returns the hicks value.
+	 *
+	 * @param a the depth argument
+	 * @return the computed hicks value
+	 */
+	public static int hicks(final int a) {
+		return 105 * (int) (Math.log(a * 2) / ln2);
 	}
 
 	/**
