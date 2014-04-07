@@ -35,87 +35,68 @@ import org.powerbot.script.Bot;
 final class RT4BotMenuView implements ActionListener {
 	private final Map<String, Class<? extends EventListener>> map;
 
-	private static final String ALL = "All";
-	private static final String MOUSE = "Mouse";
-	private static final String MOUSETRAILS = "Mouse Trails";
-	private static final String PLAYERS = "Players";
-	private static final String PLAYER = "Player";
-	private static final String NPCS = "Npcs";
-	private static final String ITEMS = "Items";
-	private static final String GROUND_ITEMS = "Ground Items";
-	private static final String SCENEENTITIES = "Objects";
-	private static final String CLIENTSTATE = "Client State";
-	private static final String CAMERA = "Camera";
-	private static final String MENU = "Menu";
-	private static final String FLOOR = "Floor";
-	private static final String MAPBASE = "Map Base";
-	private static final String LOCATION = "Location";
-	private static final String DESTINATION = "Destination";
-	private static final String MOUSEPOS = "Mouse Position";
-	private static final String SEPERATOR = "-";
-
 	private final BotChrome chrome;
 
 	public RT4BotMenuView(final BotChrome chrome, final JMenu menu) {
 		this.chrome = chrome;
 		final Bot b = chrome.bot.get();
 
-		final JMenuItem widgetExplorer = new JMenuItem(BotLocale.WIDGETEXPLORER);
+		final JMenuItem widgetExplorer = new JMenuItem(BotLocale.UTIL_WIDGET);
 		widgetExplorer.addActionListener(this);
 		menu.add(widgetExplorer);
-		final JMenuItem settingExplorer = new JMenuItem(BotLocale.SETTINGEXPLORER);
+		final JMenuItem settingExplorer = new JMenuItem(BotLocale.UTIL_VARPBITS);
 		settingExplorer.addActionListener(this);
 		menu.add(settingExplorer);
 
-		final JMenuItem boundingUtility = new JMenuItem(BotLocale.BOUNDINGUTILITY);
+		final JMenuItem boundingUtility = new JMenuItem(BotLocale.UTIL_MODELING);
 		boundingUtility.addActionListener(this);
 		menu.add(boundingUtility);
 
 		menu.addSeparator();
 
 		map = new LinkedHashMap<String, Class<? extends EventListener>>();
-		map.put(SCENEENTITIES, DrawObjects.class);
-		map.put(PLAYERS, DrawPlayers.class);
-		map.put(PLAYER, TPlayer.class);
-		map.put(NPCS, DrawMobs.class);
-		map.put(ITEMS, DrawItems.class);
-		map.put(GROUND_ITEMS, DrawGroundItems.class);
-		map.put(CLIENTSTATE, TClientState.class);
-		map.put(CAMERA, TCamera.class);
-		map.put(MENU, TMenu.class);
-		map.put(FLOOR, TFloor.class);
-		map.put(MAPBASE, TMapBase.class);
-		map.put(LOCATION, TLocation.class);
-		map.put(DESTINATION, TDestination.class);
-		map.put(MOUSE, ViewMouse.class);
-		map.put(MOUSETRAILS, ViewMouseTrails.class);
-		map.put(MOUSEPOS, TMousePosition.class);
+		map.put(BotLocale.VIEW_SCENE_ENTITIES, DrawObjects.class);
+		map.put(BotLocale.VIEW_PLAYERS, DrawPlayers.class);
+		map.put(BotLocale.VIEW_PLAYER, TPlayer.class);
+		map.put(BotLocale.VIEW_NPCS, DrawMobs.class);
+		map.put(BotLocale.VIEW_ITEMS, DrawItems.class);
+		map.put(BotLocale.VIEW_GROUND_ITEMS, DrawGroundItems.class);
+		map.put(BotLocale.VIEW_CLIENT_STATE, TClientState.class);
+		map.put(BotLocale.VIEW_CAMERA, TCamera.class);
+		map.put(BotLocale.VIEW_MENU, TMenu.class);
+		map.put(BotLocale.VIEW_FLOOR, TFloor.class);
+		map.put(BotLocale.VIEW_MAP_BASE, TMapBase.class);
+		map.put(BotLocale.VIEW_LOCATION, TLocation.class);
+		map.put(BotLocale.VIEW_DESTINATION, TDestination.class);
+		map.put(BotLocale.VIEW_MOUSE, ViewMouse.class);
+		map.put(BotLocale.VIEW_MOUSE_TRAILS, ViewMouseTrails.class);
+		map.put(BotLocale.VIEW_MOUSE_POSITION, TMousePosition.class);
 
 		final List<String> items = new ArrayList<String>(map.size());
-		items.add(MOUSE);
-		items.add(MOUSETRAILS);
-		items.add(PLAYERS);
-		items.add(PLAYER);
-		items.add(NPCS);
-		items.add(ITEMS);
-		items.add(GROUND_ITEMS);
-		items.add(SCENEENTITIES);
-		items.add(SEPERATOR);
-		items.add(CLIENTSTATE);
-		items.add(CAMERA);
-		items.add(MENU);
-		items.add(FLOOR);
-		items.add(MAPBASE);
-		items.add(LOCATION);
-		items.add(DESTINATION);
-		items.add(MOUSEPOS);
+		items.add(BotLocale.VIEW_MOUSE);
+		items.add(BotLocale.VIEW_MOUSE_TRAILS);
+		items.add(BotLocale.VIEW_PLAYERS);
+		items.add(BotLocale.VIEW_PLAYER);
+		items.add(BotLocale.VIEW_NPCS);
+		items.add(BotLocale.VIEW_ITEMS);
+		items.add(BotLocale.VIEW_GROUND_ITEMS);
+		items.add(BotLocale.VIEW_SCENE_ENTITIES);
+		items.add(BotLocale.SEPARATOR);
+		items.add(BotLocale.VIEW_CLIENT_STATE);
+		items.add(BotLocale.VIEW_CAMERA);
+		items.add(BotLocale.VIEW_MENU);
+		items.add(BotLocale.VIEW_FLOOR);
+		items.add(BotLocale.VIEW_MAP_BASE);
+		items.add(BotLocale.VIEW_LOCATION);
+		items.add(BotLocale.VIEW_DESTINATION);
+		items.add(BotLocale.VIEW_MOUSE_POSITION);
 
 		final EventDispatcher d = b.dispatcher;
 
 		boolean selectedAll = true;
 
 		for (final String key : items) {
-			if (key.equals(SEPERATOR)) {
+			if (key.equals(BotLocale.SEPARATOR)) {
 				continue;
 			}
 			if (!d.contains(map.get(key))) {
@@ -124,13 +105,13 @@ final class RT4BotMenuView implements ActionListener {
 			}
 		}
 
-		final JCheckBoxMenuItem all = new JCheckBoxMenuItem(ALL, selectedAll);
+		final JCheckBoxMenuItem all = new JCheckBoxMenuItem(BotLocale.VIEW_ALL, selectedAll);
 		all.addActionListener(this);
 		menu.add(all);
 		menu.addSeparator();
 
 		for (final String key : items) {
-			if (key.equals(SEPERATOR)) {
+			if (key.equals(BotLocale.SEPARATOR)) {
 				menu.addSeparator();
 				continue;
 			}
@@ -142,16 +123,16 @@ final class RT4BotMenuView implements ActionListener {
 
 	public void actionPerformed(final ActionEvent e) {
 		final String s = e.getActionCommand();
-		if (s.equals(BotLocale.WIDGETEXPLORER)) {
+		if (s.equals(BotLocale.UTIL_WIDGET)) {
 			RT4WidgetExplorer.getInstance(chrome).display();
-		} else if (s.equals(BotLocale.SETTINGEXPLORER)) {
+		} else if (s.equals(BotLocale.UTIL_VARPBITS)) {
 			BotSettingExplorer.getInstance(chrome).display();
-		} else if (s.equals(BotLocale.BOUNDINGUTILITY)) {
+		} else if (s.equals(BotLocale.UTIL_MODELING)) {
 			RT4BotBoundingUtility.getInstance(chrome).setVisible(true);
 		} else {
 			final JCheckBoxMenuItem item = (JCheckBoxMenuItem) e.getSource();
 			item.setSelected(!item.isSelected());
-			if (item.getText().equals(ALL)) {
+			if (item.getText().equals(BotLocale.VIEW_ALL)) {
 				for (final Entry<String, Class<? extends EventListener>> entry : map.entrySet()) {
 					setView(entry.getValue(), item.isSelected());
 				}

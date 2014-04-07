@@ -3,20 +3,19 @@ package org.powerbot.gui;
 import org.powerbot.Configuration;
 
 final class BotLocale {
-	public static final String NEWWINDOW = "New Window";
-	public static final String PLAYSCRIPT = "Play";
-	public static final String RESUMESCRIPT = "Resume";
-	public static final String PAUSESCRIPT = "Pause";
-	public static final String STOPSCRIPT = "Stop";
+	public static final String NEW_WINDOW = "New Window";
+	public static final String SCRIPT_PLAY = "Play";
+	public static final String SCRIPT_RESUME = "Resume";
+	public static final String SCRIPT_PAUSE = "Pause";
+	public static final String SCRIPT_STOP = "Stop";
 	public static final String OPTIONS = "Options";
 	public static final String INPUT = "Input";
-	public static final String ACCOUNTS = "Accounts";
-	public static final String SIGNIN = "Sign in";
-	public static final String SIGNOUT = "Sign out";
+	public static final String SIGN_IN = "Sign in";
+	public static final String SIGN_OUT = "Sign out";
 	public static final String VIEW = "View";
-	public static final String WIDGETEXPLORER = "Widgets";
-	public static final String SETTINGEXPLORER = "Varpbits";
-	public static final String BOUNDINGUTILITY = "Modeling";
+	public static final String UTIL_WIDGET = "Widgets";
+	public static final String UTIL_VARPBITS = "Varpbits";
+	public static final String UTIL_MODELING = "Modeling";
 	public static final String ABOUT = "About";
 	public static final String EXIT = "Exit";
 	public static final String FILE = "File";
@@ -30,13 +29,38 @@ final class BotLocale {
 	public static final String MEMBER = "Member";
 
 	public static final String ERROR = "Error";
-	public static final String INVALIDCREDENTIALS = "Invalid username or password.";
+	public static final String INVALID_CREDENTIALS = "Invalid username or password.";
 	public static final String SCRIPTS = "Scripts";
 
-	public static final String NOACCOUNT = "No account";
+	public static final String NO_ACCOUNT = "No account";
 	public static final String ADD = "Add";
 	public static final String REMOVE = "Remove";
 	public static final String BY = "By %s";
+
+	public static final String VIEW_ALL = "All";
+	public static final String VIEW_MOUSE = "Mouse";
+	public static final String VIEW_MOUSE_TRAILS = "Mouse Trails";
+	public static final String VIEW_LANDSCAPE = "Landscape";
+	public static final String VIEW_PROJECTILES = "Projectiles";
+	public static final String VIEW_PLAYERS = "Players";
+	public static final String VIEW_PLAYER = "Player";
+	public static final String VIEW_NPCS = "Npcs";
+	public static final String VIEW_GROUND_ITEMS = "Ground Items";
+	public static final String VIEW_SCENE_ENTITIES = "Objects";
+	public static final String VIEW_MODELS = "Models";
+	public static final String VIEW_ITEMS = "Items";
+	public static final String VIEW_ABILITIES = "Abilities";
+	public static final String VIEW_CLIENT_STATE = "Client State";
+	public static final String VIEW_CAMERA = "Camera";
+	public static final String VIEW_MENU = "Menu";
+	public static final String VIEW_PLANE = "Plane";
+	public static final String VIEW_FLOOR = "Floor";
+	public static final String VIEW_MAP_BASE = "Map Base";
+	public static final String VIEW_LOCATION = "Location";
+	public static final String VIEW_DESTINATION = "Destination";
+	public static final String VIEW_MESSAGES = "Messages";
+	public static final String VIEW_MOUSE_POSITION = "Mouse Position";
+	public static final String SEPARATOR = "-";
 
 	public static final String ALLOW = "Allow";
 	public static final String BLOCK = "Block";

@@ -113,7 +113,7 @@ class BotPreferences extends JDialog implements Runnable {
 		password.enableInputMethods(true);
 		password.getDocument().addDocumentListener(docSignin);
 
-		signin.setText(BotLocale.SIGNIN);
+		signin.setText(BotLocale.SIGN_IN);
 		signin.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent e) {
@@ -132,7 +132,7 @@ class BotPreferences extends JDialog implements Runnable {
 						} else {
 							if (!n.login(username.getText(), new String(password.getPassword()), "") || !n.isLoggedIn()) {
 								final String msg = n.getResponse();
-								txt = msg == null || msg.isEmpty() ? BotLocale.INVALIDCREDENTIALS : msg;
+								txt = msg == null || msg.isEmpty() ? BotLocale.INVALID_CREDENTIALS : msg;
 							}
 							Tracker.getInstance().trackPage("signin/login", getTitle());
 						}
@@ -195,7 +195,7 @@ class BotPreferences extends JDialog implements Runnable {
 		scrollScript.setViewportView(script);
 
 		account.setModel(new ComboBoxModel() {
-			private final String[] pre = {BotLocale.NOACCOUNT}
+			private final String[] pre = {BotLocale.NO_ACCOUNT}
 					,
 					post = {BotLocale.REMOVE, BotLocale.ADD};
 			private Object selected;
@@ -317,7 +317,7 @@ class BotPreferences extends JDialog implements Runnable {
 				} else {
 					accountIndex.set(i);
 					if (i == 0) {
-						t.trackPage("accounts/none/", BotLocale.NOACCOUNT);
+						t.trackPage("accounts/none/", BotLocale.NO_ACCOUNT);
 					} else {
 						t.trackPage("accounts/", "");
 					}
@@ -361,7 +361,7 @@ class BotPreferences extends JDialog implements Runnable {
 			}
 		});
 
-		play.setText(BotLocale.PLAYSCRIPT);
+		play.setText(BotLocale.SCRIPT_PLAY);
 		play.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent e) {
@@ -504,7 +504,7 @@ class BotPreferences extends JDialog implements Runnable {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				setTitle(l ? BotLocale.SCRIPTS : BotLocale.SIGNIN);
+				setTitle(l ? BotLocale.SCRIPTS : BotLocale.SIGN_IN);
 
 				labelUsername.setVisible(!l);
 				username.setText(l ? n.getDisplayName() : "");
@@ -512,7 +512,7 @@ class BotPreferences extends JDialog implements Runnable {
 				labelPassword.setVisible(!l);
 				password.setText(l ? "********" : "");
 				password.setEnabled(!l);
-				signin.setText(l ? BotLocale.SIGNOUT : BotLocale.SIGNIN);
+				signin.setText(l ? BotLocale.SIGN_OUT : BotLocale.SIGN_IN);
 
 				script.setEnabled(l);
 				scrollScript.setVisible(l);

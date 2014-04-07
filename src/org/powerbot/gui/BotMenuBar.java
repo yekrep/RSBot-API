@@ -41,7 +41,7 @@ class BotMenuBar extends JMenuBar {
 		final JMenu file = new JMenu(BotLocale.FILE), edit = new JMenu(BotLocale.EDIT), view = new JMenu(BotLocale.VIEW),
 				input = new JMenu(BotLocale.INPUT), help = new JMenu(BotLocale.HELP);
 
-		final JMenuItem newtab = new JMenuItem(BotLocale.NEWWINDOW);
+		final JMenuItem newtab = new JMenuItem(BotLocale.NEW_WINDOW);
 		file.add(newtab);
 		newtab.addActionListener(new ActionListener() {
 			@Override
@@ -88,7 +88,7 @@ class BotMenuBar extends JMenuBar {
 		});
 
 		final ImageIcon[] playIcons = new ImageIcon[]{createControlIcon(1), createControlIcon(2)};
-		play = new JMenuItem(BotLocale.PLAYSCRIPT);
+		play = new JMenuItem(BotLocale.SCRIPT_PLAY);
 		play.setIcon(playIcons[0]);
 		edit.add(play);
 		play.addActionListener(new ActionListener() {
@@ -97,7 +97,7 @@ class BotMenuBar extends JMenuBar {
 				scriptPlayPause();
 			}
 		});
-		stop = new JMenuItem(BotLocale.STOPSCRIPT);
+		stop = new JMenuItem(BotLocale.SCRIPT_STOP);
 		stop.setIcon(createControlIcon(0));
 		edit.add(stop);
 		stop.addActionListener(new ActionListener() {
@@ -180,7 +180,7 @@ class BotMenuBar extends JMenuBar {
 				final boolean active = c != null && c.valid() && !c.isStopping(), running = active && !c.isSuspended();
 
 				play.setEnabled(chrome.bot.get() != null && chrome.bot.get().ctx.client() != null && !BotPreferences.loading.get());
-				play.setText(running ? BotLocale.PAUSESCRIPT : active ? BotLocale.RESUMESCRIPT : BotLocale.PLAYSCRIPT);
+				play.setText(running ? BotLocale.SCRIPT_PAUSE : active ? BotLocale.SCRIPT_RESUME : BotLocale.SCRIPT_PLAY);
 				play.setIcon(playIcons[running ? 1 : 0]);
 				stop.setEnabled(active);
 
