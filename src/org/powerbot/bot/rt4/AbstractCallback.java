@@ -13,7 +13,6 @@ public class AbstractCallback implements Callback {
 
 	@Override
 	public void onMessage(final int id, final String sender, final String message) {
-		System.out.println(String.format("[%d] %s: %s", id, sender, message));
 		dispatcher.dispatch(new MessageEvent(id, sender, message));
 	}
 }
