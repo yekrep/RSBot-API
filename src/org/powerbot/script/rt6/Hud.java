@@ -278,9 +278,6 @@ public class Hud extends ClientAccessor {
 	}
 
 	private boolean IsTabInBar(final Window window) {
-		if (!opened(window)) {
-			return false;
-		}
 		final Component tab = getTab(window);
 		return tab != null && tab.parent().viewportRect().contains(tab.viewportRect());
 	}
