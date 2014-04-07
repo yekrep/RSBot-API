@@ -5,7 +5,6 @@ import java.util.Set;
 import java.util.concurrent.Callable;
 
 import org.powerbot.script.Condition;
-import org.powerbot.script.Random;
 
 /**
  * API pertaining to in-game powers.
@@ -420,14 +419,14 @@ public class Powers extends ClientAccessor {
 					continue;
 				}
 				if (ctx.widgets.component(WIDGET_PRAYER, COMPONENT_PRAYER_SELECT_CONTAINER).component(effect.id()).interact("Select")) {
-					Random.sleep();
+					Condition.sleep();
 				}
 			}
 
 			for (final Effect effect : quickPrayers()) {
 				if (prayerQuick(effect) && !search(effects, effect)) {
 					if (ctx.widgets.component(WIDGET_PRAYER, COMPONENT_PRAYER_SELECT_CONTAINER).component(effect.id()).interact("Deselect")) {
-						Random.sleep();
+						Condition.sleep();
 					}
 				}
 			}

@@ -6,7 +6,6 @@ import java.util.concurrent.Callable;
 
 import org.powerbot.script.Condition;
 import org.powerbot.script.Locatable;
-import org.powerbot.script.Random;
 import org.powerbot.script.Tile;
 import org.powerbot.script.Viewport;
 import org.powerbot.util.StringUtils;
@@ -183,7 +182,7 @@ public class DepositBox extends ItemQuery<Item> implements Viewport {
 					return isInputWidgetOpen();
 				}
 			})) {
-				Random.sleep();
+				Condition.sleep();
 				ctx.keyboard.sendln(amount + "");
 			} else {
 				return false;

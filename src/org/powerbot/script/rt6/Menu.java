@@ -256,18 +256,18 @@ public class Menu extends ClientAccessor {
 			ctx.mouse.move(mv.add(div).toPoint());
 		}
 		if (ctx.mouse.move(dv.toPoint())) {
-			Random.sleep();
+			Condition.sleep();
 			if (client.isMenuOpen()) {
 				final Point p = ctx.mouse.getLocation();
 				final int cX;
 				final int subX = client.getSubMenuX();
 				if (ctx.mouse.move(cX = subX + Random.nextInt(4, client.getSubMenuWidth() - 5), p.y)) {
-					Random.sleep();
+					Condition.sleep();
 					if (client.isMenuOpen()) {
 						final int subY = client.getSubMenuY();
 						final Point p2 = new Point(cX, subY + (16 * sub + Random.nextInt(2, 15) + 21));
 						if (ctx.mouse.move(p2)) {
-							Random.sleep();
+							Condition.sleep();
 							return client.isMenuOpen() ? p2 : new Point(-1, -1);
 						}
 					}

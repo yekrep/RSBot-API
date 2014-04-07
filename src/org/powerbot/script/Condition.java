@@ -77,4 +77,11 @@ public class Condition {
 		}
 		return (int) (System.nanoTime() - s);
 	}
+
+	/**
+	 * Sleeps the current thread for a duration that is 10 times the value of {@link Random#getDelay()}.
+	 */
+	public static void sleep() {
+		sleep(Random.getDelay() * 10);
+	}
 }

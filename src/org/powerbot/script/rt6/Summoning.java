@@ -95,7 +95,7 @@ public class Summoning extends ClientAccessor {
 			})) {
 				final ChatOption o = ctx.chat.poll();
 				if (o.select(Random.nextBoolean())) {
-					Random.sleep();
+					Condition.sleep();
 					if (o.select(Random.nextBoolean())) {
 						return Condition.wait(new Callable<Boolean>() {
 							@Override

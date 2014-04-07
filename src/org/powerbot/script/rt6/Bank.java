@@ -378,7 +378,7 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 					return isInputWidgetOpen();
 				}
 			})) {
-				Random.sleep();
+				Condition.sleep();
 				ctx.keyboard.sendln(amount + "");
 			}
 		} else {
@@ -436,7 +436,7 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 					return isInputWidgetOpen();
 				}
 			})) {
-				Random.sleep();
+				Condition.sleep();
 				ctx.keyboard.sendln(amount + "");
 			} else {
 				return false;

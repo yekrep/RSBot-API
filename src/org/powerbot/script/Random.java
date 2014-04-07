@@ -44,13 +44,6 @@ public class Random {
 		return (int) ((-1 + 2 * nextDouble()) * pd[1] + pd[0]);
 	}
 
-	public static void sleep() {
-		try {
-			Thread.sleep(getDelay() * 10);
-		} catch (final InterruptedException ignored) {
-		}
-	}
-
 	public static void sleepHicks(final int depth) {
 		final int d = 105 * (int) (Math.log(depth * 2) / ln2);
 		if (d <= 0) {

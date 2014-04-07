@@ -145,7 +145,7 @@ public class Widgets extends ClientAccessor {
 			if (!ctx.mouse.click(p, true)) {
 				return false;
 			}
-			Random.sleep();
+			Condition.sleep();
 		}
 		Point a;
 		Component c;
@@ -156,7 +156,7 @@ public class Widgets extends ClientAccessor {
 			if (scroll) {
 				if (ctx.mouse.scroll(a.y > view.y)) {
 					if (++scrolls >= Random.nextInt(5, 9)) {
-						Random.sleep();
+						Condition.sleep();
 						scrolls = 0;
 					}
 					try {

@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.concurrent.Callable;
 
 import org.powerbot.script.Condition;
-import org.powerbot.script.Random;
 
 public class Bank extends ItemQuery<Item> {
 	private static final int WIDGET = 12;
@@ -107,7 +106,7 @@ public class Bank extends ItemQuery<Item> {
 			})) {
 				return false;
 			}
-			Random.sleep();
+			Condition.sleep();
 			ctx.keyboard.sendln(amount + "");
 		}
 		return Condition.wait(new Callable<Boolean>() {
@@ -171,7 +170,7 @@ public class Bank extends ItemQuery<Item> {
 			})) {
 				return false;
 			}
-			Random.sleep();
+			Condition.sleep();
 			ctx.keyboard.sendln(amount + "");
 		}
 		return Condition.wait(new Callable<Boolean>() {

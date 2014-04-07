@@ -6,7 +6,6 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
 import org.powerbot.script.Condition;
-import org.powerbot.script.Random;
 
 /**
  * Utilities for manipulating the hud.
@@ -228,7 +227,7 @@ public class Hud extends ClientAccessor {
 					return list.visible();
 				}
 			}, 100, 20);
-			Random.sleep();
+			Condition.sleep();
 			final Component toggle = getToggle(window);
 			if (toggle != null && toggle.hover()) {
 				if (toggle.visible() && ctx.mouse.click(true)) {
