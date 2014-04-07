@@ -65,7 +65,11 @@ public abstract class PollingScript<C extends ClientContext> extends AbstractScr
 			ctx.controller().offer(this);
 		}
 
-		Thread.yield();
+		try {
+			Thread.sleep(60);
+		} catch (final InterruptedException ignored) {
+			Thread.yield();
+		}
 	}
 
 	/**
