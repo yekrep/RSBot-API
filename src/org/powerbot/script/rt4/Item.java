@@ -7,6 +7,7 @@ import org.powerbot.script.Identifiable;
 import org.powerbot.script.Nameable;
 import org.powerbot.script.Random;
 import org.powerbot.script.Stackable;
+import org.powerbot.util.StringUtils;
 
 public class Item extends Interactive implements Identifiable, Nameable, Stackable {
 	private static final int BASE_X = 560, BASE_Y = 210;
@@ -47,12 +48,16 @@ public class Item extends Interactive implements Identifiable, Nameable, Stackab
 
 	@Override
 	public String name() {
-		return "";
+		return StringUtils.stripHtml(ItemConfig.getDef(ctx, id).getName());
 	}
 
 	@Override
 	public int stackSize() {
 		return stack;
+	}
+
+	public boolean members() {
+		return ItemConfig.getDef(ctx, id).isMembers();
 	}
 
 	@Override
