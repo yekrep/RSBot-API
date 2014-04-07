@@ -57,8 +57,7 @@ public abstract class AbstractScript<C extends ClientContext> implements Script,
 	public final AtomicInteger priority;
 
 	private final Queue<Runnable>[] exec;
-	private final AtomicLong started, suspended;
-	private final Queue<Long> suspensions;
+	private final AtomicLong started, suspended, suspension;
 	private final File dir;
 
 	/**
@@ -80,8 +79,8 @@ public abstract class AbstractScript<C extends ClientContext> implements Script,
 		sq = s.getAndIncrement();
 		priority = new AtomicInteger(0);
 		started = new AtomicLong(System.nanoTime());
-		suspended = new AtomicLong(0);
-		suspensions = new ConcurrentLinkedQueue<Long>();
+		suspended = new AtomicLong(0L);
+		suspension = new AtomicLong(0L);
 
 		exec[State.START.ordinal()].add(new Runnable() {
 			@Override
@@ -89,18 +88,16 @@ public abstract class AbstractScript<C extends ClientContext> implements Script,
 				started.set(System.nanoTime());
 			}
 		});
-
 		exec[State.SUSPEND.ordinal()].add(new Runnable() {
 			@Override
 			public void run() {
-				suspensions.offer(System.nanoTime());
+				suspension.set(System.nanoTime());
 			}
 		});
-
 		exec[State.RESUME.ordinal()].add(new Runnable() {
 			@Override
 			public void run() {
-				suspended.addAndGet(System.nanoTime() - suspensions.poll());
+				suspended.addAndGet(System.nanoTime() - suspension.getAndSet(0L));
 			}
 		});
 
