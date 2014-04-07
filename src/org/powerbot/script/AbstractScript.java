@@ -12,9 +12,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.Queue;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -56,7 +55,7 @@ public abstract class AbstractScript<C extends ClientContext> implements Script,
 	 */
 	public final AtomicInteger priority;
 
-	private final Queue<Runnable>[] exec;
+	private final List<Runnable>[] exec;
 	private final AtomicLong started, suspended, suspension;
 	private final File dir;
 
@@ -70,10 +69,10 @@ public abstract class AbstractScript<C extends ClientContext> implements Script,
 	 */
 	public AbstractScript() {
 		@SuppressWarnings("unchecked")
-		final Queue<Runnable>[] q = new Queue[State.values().length];
+		final List<Runnable>[] q = (List<Runnable>[]) new List[State.values().length];
 		exec = q;
 		for (int i = 0; i < exec.length; i++) {
-			exec[i] = new ConcurrentLinkedQueue<Runnable>();
+			exec[i] = new CopyOnWriteArrayList<Runnable>();
 		}
 
 		sq = s.getAndIncrement();
@@ -173,7 +172,7 @@ public abstract class AbstractScript<C extends ClientContext> implements Script,
 	 * {@inheritDoc}
 	 */
 	@Override
-	public final Queue<Runnable> getExecQueue(final State state) {
+	public final List<Runnable> getExecQueue(final State state) {
 		return exec[state.ordinal()];
 	}
 

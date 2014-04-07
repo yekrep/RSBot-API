@@ -5,7 +5,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.util.EventListener;
-import java.util.Queue;
+import java.util.List;
 
 /**
  * The base interface of a script.
@@ -25,7 +25,7 @@ public interface Script extends EventListener {
 	 * @param state the state being invoked
 	 * @return a sequence of {@link java.lang.Runnable} items to process
 	 */
-	public Queue<Runnable> getExecQueue(State state);
+	public List<Runnable> getExecQueue(State state);
 
 	/**
 	 * A controller for a {@link Script} which invokes and determines state changes.
