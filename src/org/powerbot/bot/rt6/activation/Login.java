@@ -5,7 +5,6 @@ import java.awt.Rectangle;
 import org.powerbot.misc.GameAccounts;
 import org.powerbot.misc.Tracker;
 import org.powerbot.script.PollingScript;
-import org.powerbot.bot.InternalScript;
 import org.powerbot.script.Filter;
 import org.powerbot.script.rt6.ClientContext;
 import org.powerbot.script.rt6.Game;
@@ -13,9 +12,7 @@ import org.powerbot.script.rt6.Lobby;
 import org.powerbot.script.Random;
 import org.powerbot.script.rt6.Component;
 
-/**
- */
-public class Login extends PollingScript<ClientContext> implements InternalScript {
+public class Login extends PollingScript<ClientContext> {
 	private static final int WIDGET = 596;
 	private static final int WIDGET_LOGIN_ERROR = 57;
 	private static final int WIDGET_LOGIN_TRY_AGAIN = 84;

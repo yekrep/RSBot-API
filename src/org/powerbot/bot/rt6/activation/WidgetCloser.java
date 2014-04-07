@@ -3,16 +3,13 @@ package org.powerbot.bot.rt6.activation;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
-import org.powerbot.script.PollingScript;
-import org.powerbot.bot.InternalScript;
-import org.powerbot.script.rt6.ClientContext;
 import org.powerbot.script.Condition;
+import org.powerbot.script.PollingScript;
 import org.powerbot.script.Random;
+import org.powerbot.script.rt6.ClientContext;
 import org.powerbot.script.rt6.Component;
 
-/**
- */
-public class WidgetCloser extends PollingScript<ClientContext> implements InternalScript {
+public class WidgetCloser extends PollingScript<ClientContext> {
 	private static final int[] COMPONENTS = {
 			906 << 16 | 545,//transaction
 			335 << 16 | 3,//trade window

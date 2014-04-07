@@ -2,7 +2,6 @@ package org.powerbot.bot.rt6.activation;
 
 import java.util.concurrent.Callable;
 
-import org.powerbot.bot.InternalScript;
 import org.powerbot.script.Condition;
 import org.powerbot.script.PollingScript;
 import org.powerbot.script.rt6.ClientContext;
@@ -11,9 +10,7 @@ import org.powerbot.script.rt6.Hud;
 import org.powerbot.script.rt6.Item;
 import org.powerbot.script.rt6.Widget;
 
-/**
- */
-public class TicketDestroy extends PollingScript<ClientContext> implements InternalScript {
+public class TicketDestroy extends PollingScript<ClientContext> {
 	private static final int[] ITEM_IDS = {24154, 24155};
 
 	@Override

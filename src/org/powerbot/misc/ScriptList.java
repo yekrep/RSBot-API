@@ -26,7 +26,6 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import org.powerbot.Configuration;
-import org.powerbot.bot.InternalScript;
 import org.powerbot.bot.ScriptClassLoader;
 import org.powerbot.bot.ScriptController;
 import org.powerbot.bot.rt6.activation.Login;
@@ -121,7 +120,7 @@ public class ScriptList {
 						} catch (final Throwable ignored) {
 							continue;
 						}
-						if (AbstractScript.class.isAssignableFrom(clazz) && !InternalScript.class.isAssignableFrom(clazz)) {
+						if (AbstractScript.class.isAssignableFrom(clazz)) {
 							final Class<? extends AbstractScript> script = clazz.asSubclass(AbstractScript.class);
 							if (script.isAnnotationPresent(Script.Manifest.class)) {
 								final Script.Manifest m = script.getAnnotation(Script.Manifest.class);

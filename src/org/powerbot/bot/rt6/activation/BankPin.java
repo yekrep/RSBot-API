@@ -2,10 +2,9 @@ package org.powerbot.bot.rt6.activation;
 
 import org.powerbot.misc.GameAccounts;
 import org.powerbot.script.PollingScript;
-import org.powerbot.bot.InternalScript;
 import org.powerbot.script.rt6.ClientContext;
 
-public class BankPin extends PollingScript<ClientContext> implements InternalScript {
+public class BankPin extends PollingScript<ClientContext> {
 	private static final int SETTING_PIN_STEP = 163;
 	private static final int WIDGET = 13;
 	private static final int COMPONENT = 0;
