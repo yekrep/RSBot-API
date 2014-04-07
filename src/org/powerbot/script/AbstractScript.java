@@ -14,7 +14,6 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Queue;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.TimeUnit;
@@ -57,7 +56,7 @@ public abstract class AbstractScript<C extends ClientContext> implements Script,
 	 */
 	public final AtomicInteger priority;
 
-	private final Map<State, Queue<Runnable>> exec;
+	private final Queue<Runnable>[] exec;
 	private final AtomicLong started, suspended;
 	private final Queue<Long> suspensions;
 	private final File dir;
@@ -71,9 +70,11 @@ public abstract class AbstractScript<C extends ClientContext> implements Script,
 	 * Creates an instance of {@link AbstractScript}.
 	 */
 	public AbstractScript() {
-		exec = new ConcurrentHashMap<State, Queue<Runnable>>(State.values().length);
-		for (final State state : State.values()) {
-			exec.put(state, new ConcurrentLinkedQueue<Runnable>());
+		@SuppressWarnings("unchecked")
+		final Queue<Runnable>[] q = new Queue[State.values().length];
+		exec = q;
+		for (int i = 0; i < exec.length; i++) {
+			exec[i] = new ConcurrentLinkedQueue<Runnable>();
 		}
 
 		sq = s.getAndIncrement();
@@ -82,21 +83,21 @@ public abstract class AbstractScript<C extends ClientContext> implements Script,
 		suspended = new AtomicLong(0);
 		suspensions = new ConcurrentLinkedQueue<Long>();
 
-		exec.get(State.START).add(new Runnable() {
+		exec[State.START.ordinal()].add(new Runnable() {
 			@Override
 			public void run() {
 				started.set(System.nanoTime());
 			}
 		});
 
-		exec.get(State.SUSPEND).add(new Runnable() {
+		exec[State.SUSPEND.ordinal()].add(new Runnable() {
 			@Override
 			public void run() {
 				suspensions.offer(System.nanoTime());
 			}
 		});
 
-		exec.get(State.RESUME).add(new Runnable() {
+		exec[State.RESUME.ordinal()].add(new Runnable() {
 			@Override
 			public void run() {
 				suspended.addAndGet(System.nanoTime() - suspensions.poll());
@@ -138,7 +139,7 @@ public abstract class AbstractScript<C extends ClientContext> implements Script,
 			settings.putAll(new Ini().read(ini).get().getMap());
 		}
 
-		exec.get(State.STOP).add(new Runnable() {
+		exec[State.STOP.ordinal()].add(new Runnable() {
 			@Override
 			public void run() {
 				if (settings.isEmpty()) {
@@ -176,7 +177,7 @@ public abstract class AbstractScript<C extends ClientContext> implements Script,
 	 */
 	@Override
 	public final Queue<Runnable> getExecQueue(final State state) {
-		return exec.get(state);
+		return exec[state.ordinal()];
 	}
 
 	/**
