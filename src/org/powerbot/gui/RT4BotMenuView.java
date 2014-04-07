@@ -109,7 +109,6 @@ final class RT4BotMenuView implements ActionListener {
 		items.add(LOCATION);
 		items.add(DESTINATION);
 		items.add(MOUSEPOS);
-		items.add(SEPERATOR);
 
 		final EventDispatcher d = b.dispatcher;
 
