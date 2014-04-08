@@ -19,6 +19,7 @@ import org.powerbot.bot.rt4.activation.DrawItems;
 import org.powerbot.bot.rt4.activation.DrawMobs;
 import org.powerbot.bot.rt4.activation.DrawObjects;
 import org.powerbot.bot.rt4.activation.DrawPlayers;
+import org.powerbot.bot.rt4.activation.MessageLogger;
 import org.powerbot.bot.rt4.activation.TCamera;
 import org.powerbot.bot.rt4.activation.TClientState;
 import org.powerbot.bot.rt4.activation.TDestination;
@@ -71,6 +72,7 @@ final class RT4BotMenuView implements ActionListener {
 		map.put(BotLocale.VIEW_MOUSE, ViewMouse.class);
 		map.put(BotLocale.VIEW_MOUSE_TRAILS, ViewMouseTrails.class);
 		map.put(BotLocale.VIEW_MOUSE_POSITION, TMousePosition.class);
+		map.put(BotLocale.VIEW_MESSAGES, MessageLogger.class);
 
 		final List<String> items = new ArrayList<String>(map.size());
 		items.add(BotLocale.VIEW_MOUSE);
@@ -90,6 +92,8 @@ final class RT4BotMenuView implements ActionListener {
 		items.add(BotLocale.VIEW_LOCATION);
 		items.add(BotLocale.VIEW_DESTINATION);
 		items.add(BotLocale.VIEW_MOUSE_POSITION);
+		items.add(BotLocale.SEPARATOR);
+		items.add(BotLocale.VIEW_MESSAGES);
 
 		final EventDispatcher d = b.dispatcher;
 
