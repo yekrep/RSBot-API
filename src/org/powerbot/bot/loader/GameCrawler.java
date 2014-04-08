@@ -22,7 +22,7 @@ public abstract class GameCrawler implements Callable<Boolean> {
 	protected final String download(final String url, final String referer) {
 		try {
 			final HttpURLConnection con = HttpUtils.openConnection(new URL(url));
-			if (referer != null) {
+			if (referer != null && !referer.isEmpty()) {
 				con.setRequestProperty("Referer", referer);
 			}
 			return IOUtils.readString(HttpUtils.openStream(con));
