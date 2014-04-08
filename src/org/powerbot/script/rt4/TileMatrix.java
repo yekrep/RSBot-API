@@ -67,6 +67,10 @@ public final class TileMatrix extends Interactive implements Locatable {
 		return Math.pow(643 - p.x, 2) + Math.pow(83 - p.y, 2) < Math.pow(60, 2);
 	}
 
+	public boolean reachable() {
+		return ctx.movement.reachable(ctx.players.local().tile(), tile);
+	}
+
 	@Override
 	public Tile tile() {
 		return tile;
