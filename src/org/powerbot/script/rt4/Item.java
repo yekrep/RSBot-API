@@ -48,7 +48,7 @@ public class Item extends Interactive implements Identifiable, Nameable, Stackab
 
 	@Override
 	public String name() {
-		return StringUtils.stripHtml(ItemConfig.getDef(ctx, id).getName());
+		return StringUtils.stripHtml(ItemConfig.getDef(ctx, inventory_index != -1 ? id : id - 1).getName());
 	}
 
 	@Override
@@ -57,7 +57,7 @@ public class Item extends Interactive implements Identifiable, Nameable, Stackab
 	}
 
 	public boolean members() {
-		return ItemConfig.getDef(ctx, id).isMembers();
+		return ItemConfig.getDef(ctx, inventory_index != -1 ? id : id - 1).isMembers();
 	}
 
 	@Override
