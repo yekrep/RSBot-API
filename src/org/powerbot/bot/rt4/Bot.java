@@ -71,6 +71,7 @@ public class Bot extends org.powerbot.script.Bot<ClientContext> {
 		try {
 			loader = game.call();
 		} catch (final Exception ignored) {
+			log.severe("Failed to load game");
 			return;
 		}
 		if (loader == null) {
@@ -105,6 +106,11 @@ public class Bot extends org.powerbot.script.Bot<ClientContext> {
 						display();
 					}
 				});
+			}
+
+			@Override
+			protected void error() {
+				log.severe("Something bad happened.");
 			}
 		};
 		Thread.currentThread().setContextClassLoader(loader);

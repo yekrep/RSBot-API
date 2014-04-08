@@ -21,6 +21,7 @@ public abstract class GameAppletLoader implements Runnable {
 			code = null;
 		}
 		if (code == null || !(Applet.class.isAssignableFrom(code))) {
+			error();
 			return;
 		}
 		final Applet applet;
@@ -28,10 +29,13 @@ public abstract class GameAppletLoader implements Runnable {
 			final Constructor<?> constructor = code.getConstructor((Class[]) null);
 			applet = (Applet) constructor.newInstance((Object[]) null);
 		} catch (final Exception ignored) {
+			error();
 			return;
 		}
 		sequence(applet);
 	}
 
 	protected abstract void sequence(final Applet applet);
+
+	protected abstract void error();
 }
