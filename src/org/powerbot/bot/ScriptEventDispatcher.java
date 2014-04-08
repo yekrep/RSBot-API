@@ -20,6 +20,11 @@ public class ScriptEventDispatcher<C extends Client, E extends EventListener> ex
 	}
 
 	@Override
+	public boolean add(final E e) {
+		return c.add(e);
+	}
+
+	@Override
 	public Iterator<E> iterator() {
 		return new ListIterator<C, E>(ctx, c.iterator());
 	}
