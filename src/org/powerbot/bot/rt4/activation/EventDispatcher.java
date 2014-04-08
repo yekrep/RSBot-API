@@ -12,6 +12,8 @@ import java.awt.event.MouseWheelListener;
 import java.util.EventListener;
 import java.util.EventObject;
 
+import org.powerbot.script.MessageEvent;
+import org.powerbot.script.MessageListener;
 import org.powerbot.script.PaintListener;
 import org.powerbot.script.TextPaintListener;
 
@@ -28,6 +30,7 @@ public class EventDispatcher extends org.powerbot.bot.EventDispatcher {
 		masks.put(MouseWheelListener.class, MOUSE_WHEEL_EVENT);
 		masks.put(KeyListener.class, KEY_EVENT);
 		masks.put(FocusListener.class, FOCUS_EVENT);
+		masks.put(MessageListener.class, MessageEvent.MESSAGE_EVENT);
 		masks.put(PaintListener.class, PaintEvent.PAINT_EVENT);
 		masks.put(TextPaintListener.class, TextPaintEvent.TEXT_PAINT_EVENT);
 	}
