@@ -1,8 +1,9 @@
-package org.powerbot.script;
+package org.powerbot.bot.rt4.activation;
 
 import java.util.EventListener;
 
 import org.powerbot.bot.rt6.activation.AbstractEvent;
+import org.powerbot.script.rt4.MessageListener;
 
 /**
  * A message event that is dispatched when a new message is dispatched in the game.

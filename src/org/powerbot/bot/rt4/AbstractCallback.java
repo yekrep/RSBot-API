@@ -1,8 +1,8 @@
 package org.powerbot.bot.rt4;
 
 import org.powerbot.bot.EventDispatcher;
+import org.powerbot.bot.rt4.activation.MessageEvent;
 import org.powerbot.bot.rt4.client.Callback;
-import org.powerbot.script.MessageEvent;
 
 public class AbstractCallback implements Callback {
 	private final EventDispatcher dispatcher;

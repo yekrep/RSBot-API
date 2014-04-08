@@ -12,10 +12,9 @@ import java.awt.event.MouseWheelListener;
 import java.util.EventListener;
 import java.util.EventObject;
 
-import org.powerbot.script.MessageEvent;
-import org.powerbot.script.MessageListener;
 import org.powerbot.script.PaintListener;
 import org.powerbot.script.TextPaintListener;
+import org.powerbot.script.rt4.MessageListener;
 
 public class EventDispatcher extends org.powerbot.bot.EventDispatcher {
 	public static final int MOUSE_EVENT = 0x1;

@@ -2,9 +2,8 @@ package org.powerbot.bot.rt4.activation;
 
 import java.util.logging.Logger;
 
-import org.powerbot.script.MessageEvent;
-import org.powerbot.script.MessageListener;
 import org.powerbot.script.rt4.ClientContext;
+import org.powerbot.script.rt4.MessageListener;
 
 public class MessageLogger implements MessageListener {
 	private static final Logger log = Logger.getLogger("Messages");

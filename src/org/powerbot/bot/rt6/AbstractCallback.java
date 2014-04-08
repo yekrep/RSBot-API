@@ -1,11 +1,11 @@
 package org.powerbot.bot.rt6;
 
+import org.powerbot.bot.EventDispatcher;
+import org.powerbot.bot.rt6.activation.MessageEvent;
 import org.powerbot.bot.rt6.client.Callback;
 import org.powerbot.bot.rt6.client.RSInteractableLocation;
 import org.powerbot.bot.rt6.client.RSObjectDef;
 import org.powerbot.bot.rt6.client.Render;
-import org.powerbot.bot.EventDispatcher;
-import org.powerbot.script.MessageEvent;
 import org.powerbot.script.rt6.Camera;
 import org.powerbot.script.rt6.ClientContext;
 

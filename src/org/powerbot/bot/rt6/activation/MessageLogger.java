@@ -2,10 +2,9 @@ package org.powerbot.bot.rt6.activation;
 
 import java.util.logging.Logger;
 
-import org.powerbot.script.MessageEvent;
-import org.powerbot.script.MessageListener;
 import org.powerbot.script.rt6.ClientAccessor;
 import org.powerbot.script.rt6.ClientContext;
+import org.powerbot.script.rt6.MessageListener;
 
 public class MessageLogger extends ClientAccessor implements MessageListener {
 	private static final Logger log = Logger.getLogger("Messages");
