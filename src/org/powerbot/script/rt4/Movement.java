@@ -180,4 +180,8 @@ public class Movement extends ClientAccessor {
 	public int distance(final Locatable l) {
 		return distance(ctx.players.local(), l);
 	}
+
+	public boolean reachable(final Locatable l1, final Locatable l2) {
+		return distance(l1, l2) > 0;
+	}
 }
