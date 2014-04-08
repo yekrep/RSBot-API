@@ -70,6 +70,10 @@ public class Condition {
 	 * @return the actual amount of time slept in milliseconds, which is subject to system clock accuracy
 	 */
 	public static int sleep(final int ms) {
+		if (ms <= 0) {
+			Thread.yield();
+			return 0;
+		}
 		final long s = System.nanoTime();
 		try {
 			Thread.sleep((long) (ms * Random.nextDouble(0.85d, 1.5d)));
