@@ -152,15 +152,16 @@ public class Movement extends ClientAccessor {
 	}
 
 	public int distance(final Locatable l1, final Locatable l2) {
-		final Tile b = ctx.game.mapOffset(), t1, t2;
+		final Tile b = ctx.game.mapOffset();
+		Tile t1, t2;
 		if (b == null ||
 				l1 == null || (t1 = l1.tile()) == null ||
 				l2 == null || (t2 = l2.tile()) == null ||
 				b == Tile.NIL || t1 == Tile.NIL || t2 == Tile.NIL) {
 			return -1;
 		}
-		t1.derive(-b.x(), -b.y());
-		t2.derive(-b.x(), -b.y());
+		t1 = t1.derive(-b.x(), -b.y());
+		t2 = t2.derive(-b.x(), -b.y());
 
 		final LocalPath.Graph graph = LocalPath.getGraph(ctx);
 		final LocalPath.Node[] path;
