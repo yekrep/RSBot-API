@@ -2,7 +2,6 @@ package org.powerbot.bot.rt4.activation;
 
 import java.util.EventListener;
 
-import org.powerbot.bot.rt6.activation.AbstractEvent;
 import org.powerbot.script.rt4.MessageListener;
 
 /**
@@ -15,7 +14,7 @@ public class MessageEvent extends AbstractEvent {
 	private final String sender, message;
 
 	public MessageEvent(final int id, final String sender, final String message) {
-		setId(MESSAGE_EVENT);
+		super(MESSAGE_EVENT);
 		this.id = id;
 		this.sender = sender;
 		this.message = message;
@@ -25,7 +24,7 @@ public class MessageEvent extends AbstractEvent {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void dispatch(final EventListener eventListener) {
+	public void call(final EventListener eventListener) {
 		((MessageListener) eventListener).messaged(this);
 	}
 
