@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.util.Arrays;
 
 import org.powerbot.script.TextPaintListener;
+import org.powerbot.script.rt4.ClientAccessor;
 import org.powerbot.script.rt4.ClientContext;
 import org.powerbot.script.rt4.Player;
 
@@ -11,11 +12,10 @@ import static org.powerbot.bot.DebugHelper.drawLine;
 
 /**
  */
-public class TPlayer implements TextPaintListener {
-	private final ClientContext ctx;
+public class TPlayer extends ClientAccessor implements TextPaintListener {
 
 	public TPlayer(final ClientContext ctx) {
-		this.ctx = ctx;
+		super(ctx);
 	}
 
 	public int draw(int idx, final Graphics render) {

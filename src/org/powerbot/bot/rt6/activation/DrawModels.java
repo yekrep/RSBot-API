@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 import org.powerbot.script.PaintListener;
+import org.powerbot.script.rt6.ClientAccessor;
 import org.powerbot.script.rt6.ClientContext;
 import org.powerbot.script.rt6.GameObject;
 import org.powerbot.script.rt6.GroundItem;
@@ -11,13 +12,12 @@ import org.powerbot.script.rt6.Model;
 import org.powerbot.script.rt6.Npc;
 import org.powerbot.script.rt6.Player;
 
-public class DrawModels implements PaintListener {
+public class DrawModels extends ClientAccessor implements PaintListener {
 	private static final Color[] C = {Color.GREEN, Color.WHITE, Color.BLACK, Color.BLUE};
 	private static final int[] A = {25, 40, 255, 50};
-	private final ClientContext ctx;
 
 	public DrawModels(final ClientContext ctx) {
-		this.ctx = ctx;
+		super(ctx);
 	}
 
 

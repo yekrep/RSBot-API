@@ -5,17 +5,17 @@ import java.awt.Graphics;
 import org.powerbot.script.PaintListener;
 import org.powerbot.script.TextPaintListener;
 import org.powerbot.script.Tile;
+import org.powerbot.script.rt6.ClientAccessor;
 import org.powerbot.script.rt6.ClientContext;
 import org.powerbot.script.rt6.Projectile;
 import org.powerbot.script.rt6.TileMatrix;
 
 import static org.powerbot.bot.DebugHelper.drawLine;
 
-public class DrawProjectiles implements PaintListener, TextPaintListener {
-	private final ClientContext ctx;
+public class DrawProjectiles extends ClientAccessor implements PaintListener, TextPaintListener {
 
 	public DrawProjectiles(final ClientContext ctx) {
-		this.ctx = ctx;
+		super(ctx);
 	}
 
 	@Override

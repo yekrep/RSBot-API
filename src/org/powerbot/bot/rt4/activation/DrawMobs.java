@@ -6,15 +6,15 @@ import java.awt.Graphics;
 import java.awt.Point;
 
 import org.powerbot.script.PaintListener;
+import org.powerbot.script.rt4.ClientAccessor;
 import org.powerbot.script.rt4.ClientContext;
 import org.powerbot.script.rt4.Game;
 import org.powerbot.script.rt4.Npc;
 
-public class DrawMobs implements PaintListener {
-	private final ClientContext ctx;
+public class DrawMobs extends ClientAccessor implements PaintListener {
 
 	public DrawMobs(final ClientContext ctx) {
-		this.ctx = ctx;
+		super(ctx);
 	}
 
 	public void repaint(final Graphics render) {

@@ -8,13 +8,13 @@ import java.awt.Point;
 import java.awt.geom.Line2D;
 
 import org.powerbot.script.PaintListener;
+import org.powerbot.script.rt4.ClientAccessor;
 import org.powerbot.script.rt4.ClientContext;
 
-public class ViewMouse implements PaintListener {
-	private final ClientContext ctx;
+public class ViewMouse extends ClientAccessor implements PaintListener {
 
 	public ViewMouse(final ClientContext ctx) {
-		this.ctx = ctx;
+		super(ctx);
 	}
 
 	@Override

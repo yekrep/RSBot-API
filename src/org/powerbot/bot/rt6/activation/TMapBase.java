@@ -4,15 +4,15 @@ import java.awt.Graphics;
 
 import org.powerbot.script.TextPaintListener;
 import org.powerbot.script.Tile;
+import org.powerbot.script.rt6.ClientAccessor;
 import org.powerbot.script.rt6.ClientContext;
 
 import static org.powerbot.bot.DebugHelper.drawLine;
 
-public class TMapBase implements TextPaintListener {
-	private final ClientContext ctx;
+public class TMapBase extends ClientAccessor implements TextPaintListener {
 
 	public TMapBase(final ClientContext ctx) {
-		this.ctx = ctx;
+		super(ctx);
 	}
 
 	public int draw(int idx, final Graphics render) {

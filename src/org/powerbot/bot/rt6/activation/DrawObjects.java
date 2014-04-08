@@ -14,17 +14,17 @@ import org.powerbot.bot.rt6.client.RSAnimable;
 import org.powerbot.bot.rt6.client.RSObject;
 import org.powerbot.script.PaintListener;
 import org.powerbot.script.Tile;
+import org.powerbot.script.rt6.ClientAccessor;
 import org.powerbot.script.rt6.ClientContext;
 import org.powerbot.script.rt6.GameObject;
 import org.powerbot.script.rt6.Player;
 import org.powerbot.script.rt6.TileMatrix;
 
-public class DrawObjects implements PaintListener {
+public class DrawObjects extends ClientAccessor implements PaintListener {
 	private static final Color[] C = {Color.GREEN, Color.WHITE, Color.BLACK, Color.BLUE, Color.PINK};
-	private final ClientContext ctx;
 
 	public DrawObjects(final ClientContext ctx) {
-		this.ctx = ctx;
+		super(ctx);
 	}
 
 	@SuppressWarnings("unchecked")

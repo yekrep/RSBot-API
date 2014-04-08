@@ -10,18 +10,18 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.powerbot.script.PaintListener;
 import org.powerbot.script.Tile;
+import org.powerbot.script.rt4.ClientAccessor;
 import org.powerbot.script.rt4.ClientContext;
 import org.powerbot.script.rt4.Game;
 import org.powerbot.script.rt4.GameObject;
 import org.powerbot.script.rt4.Player;
 import org.powerbot.script.rt4.TileMatrix;
 
-public class DrawObjects implements PaintListener {
+public class DrawObjects extends ClientAccessor implements PaintListener {
 	private static final Color[] C = {Color.GREEN, Color.WHITE, Color.BLACK, Color.BLUE, Color.PINK};
-	private final ClientContext ctx;
 
 	public DrawObjects(final ClientContext ctx) {
-		this.ctx = ctx;
+		super(ctx);
 	}
 
 	@SuppressWarnings("unchecked")

@@ -9,16 +9,16 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 import org.powerbot.script.PaintListener;
+import org.powerbot.script.rt6.ClientAccessor;
 import org.powerbot.script.rt6.ClientContext;
 
 /**
  */
-public class ViewMouseTrails implements PaintListener {
+public class ViewMouseTrails extends ClientAccessor implements PaintListener {
 	private static final Deque<Point> h = new LinkedList<Point>();
-	private final ClientContext ctx;
 
 	public ViewMouseTrails(final ClientContext ctx) {
-		this.ctx = ctx;
+		super(ctx);
 	}
 
 	@Override

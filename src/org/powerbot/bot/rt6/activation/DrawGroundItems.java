@@ -9,16 +9,16 @@ import java.util.List;
 
 import org.powerbot.script.PaintListener;
 import org.powerbot.script.Tile;
+import org.powerbot.script.rt6.ClientAccessor;
 import org.powerbot.script.rt6.ClientContext;
 import org.powerbot.script.rt6.GroundItem;
 import org.powerbot.script.rt6.Player;
 import org.powerbot.script.rt6.TileMatrix;
 
-public class DrawGroundItems implements PaintListener {
-	private final ClientContext ctx;
+public class DrawGroundItems extends ClientAccessor implements PaintListener {
 
 	public DrawGroundItems(final ClientContext ctx) {
-		this.ctx = ctx;
+		super(ctx);
 	}
 
 	public void repaint(final Graphics render) {

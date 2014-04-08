@@ -7,6 +7,7 @@ import java.awt.Point;
 import org.powerbot.bot.rt6.client.Client;
 import org.powerbot.bot.rt6.client.Constants;
 import org.powerbot.script.PaintListener;
+import org.powerbot.script.rt6.ClientAccessor;
 import org.powerbot.script.rt6.ClientContext;
 import org.powerbot.script.rt6.Game;
 import org.powerbot.script.rt6.CollisionFlag;
@@ -14,11 +15,10 @@ import org.powerbot.script.rt6.CollisionMap;
 import org.powerbot.script.rt6.Component;
 import org.powerbot.script.rt6.RelativeLocation;
 
-public class DrawBoundaries implements PaintListener {
-	private final ClientContext ctx;
+public class DrawBoundaries extends ClientAccessor implements PaintListener {
 
 	public DrawBoundaries(final ClientContext ctx) {
-		this.ctx = ctx;
+		super(ctx);
 	}
 
 	@Override

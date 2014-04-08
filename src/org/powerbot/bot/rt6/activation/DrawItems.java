@@ -8,15 +8,15 @@ import java.awt.Rectangle;
 
 import org.powerbot.script.PaintListener;
 import org.powerbot.script.rt6.Bank;
+import org.powerbot.script.rt6.ClientAccessor;
 import org.powerbot.script.rt6.ClientContext;
 import org.powerbot.script.rt6.Component;
 import org.powerbot.script.rt6.Item;
 
-public class DrawItems implements PaintListener {
-	private final ClientContext ctx;
+public class DrawItems extends ClientAccessor implements PaintListener {
 
 	public DrawItems(final ClientContext ctx) {
-		this.ctx = ctx;
+		super(ctx);
 	}
 
 	public void repaint(final Graphics render) {

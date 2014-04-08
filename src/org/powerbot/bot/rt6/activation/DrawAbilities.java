@@ -6,15 +6,15 @@ import java.awt.Graphics;
 import java.awt.Point;
 
 import org.powerbot.script.PaintListener;
+import org.powerbot.script.rt6.ClientAccessor;
 import org.powerbot.script.rt6.ClientContext;
 import org.powerbot.script.rt6.Action;
 import org.powerbot.script.rt6.Component;
 
-public class DrawAbilities implements PaintListener {
-	private final ClientContext ctx;
+public class DrawAbilities extends ClientAccessor implements PaintListener {
 
 	public DrawAbilities(final ClientContext ctx) {
-		this.ctx = ctx;
+		super(ctx);
 	}
 
 	@Override
