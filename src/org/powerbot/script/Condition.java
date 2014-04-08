@@ -79,7 +79,7 @@ public class Condition {
 			Thread.sleep((long) (ms * Random.nextDouble(0.85d, 1.5d)));
 		} catch (final InterruptedException ignored) {
 		}
-		return (int) (System.nanoTime() - s);
+		return (int) ((System.nanoTime() - s) / 1000000L);
 	}
 
 	/**
