@@ -12,6 +12,7 @@ import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
 import java.util.EventListener;
 
+import org.powerbot.bot.AbstractEvent;
 import org.powerbot.script.PaintListener;
 import org.powerbot.script.TextPaintListener;
 
@@ -26,15 +27,15 @@ public class TextPaintEvent extends AbstractEvent {
 	public int index = 0;
 
 	public TextPaintEvent() {
-		setId(TEXT_PAINT_EVENT);
-		this.graphics = null;
+		super(TEXT_PAINT_EVENT);
+		graphics = null;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void dispatch(final EventListener eventListener) {
+	public void call(final EventListener eventListener) {
 		if (graphics == null) {
 			try {
 				((PaintListener) eventListener).repaint(null);

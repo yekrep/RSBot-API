@@ -12,11 +12,11 @@ import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
 import java.util.EventListener;
 
+import org.powerbot.bot.AbstractEvent;
 import org.powerbot.script.PaintListener;
 
 /**
  * An event that is dispatched when the game requests the graphic buffer.
- *
  */
 public class PaintEvent extends AbstractEvent {
 	private static final long serialVersionUID = 4772234942045737667L;
@@ -24,7 +24,7 @@ public class PaintEvent extends AbstractEvent {
 	public Graphics graphics;
 
 	public PaintEvent() {
-		setId(PAINT_EVENT);
+		super(PAINT_EVENT);
 		graphics = null;
 	}
 
@@ -32,7 +32,7 @@ public class PaintEvent extends AbstractEvent {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void dispatch(final EventListener eventListener) {
+	public void call(final EventListener eventListener) {
 		if (graphics == null) {
 			try {
 				((PaintListener) eventListener).repaint(null);

@@ -1,8 +1,8 @@
-package org.powerbot.bot.rt4.activation;
+package org.powerbot.script;
 
 import java.util.EventListener;
 
-import org.powerbot.script.rt4.MessageListener;
+import org.powerbot.bot.AbstractEvent;
 
 /**
  * A message event that is dispatched when a new message is dispatched in the game.
@@ -11,12 +11,12 @@ public class MessageEvent extends AbstractEvent {
 	private static final long serialVersionUID = 4178447203851407187L;
 	public static final int MESSAGE_EVENT = 0x20;
 	private final int id;
-	private final String sender, message;
+	private final String source, message;
 
-	public MessageEvent(final int id, final String sender, final String message) {
+	public MessageEvent(final int id, final String source, final String message) {
 		super(MESSAGE_EVENT);
 		this.id = id;
-		this.sender = sender;
+		this.source = source;
 		this.message = message;
 	}
 
@@ -28,24 +28,39 @@ public class MessageEvent extends AbstractEvent {
 		((MessageListener) eventListener).messaged(this);
 	}
 
-	/**
-	 * @return The Id of this message (id).
-	 */
+	@Deprecated
 	public int getId() {
+		return type();
+	}
+
+	/**
+	 * @return the id of this message.
+	 */
+	public int type() {
 		return id;
 	}
 
-	/**
-	 * @return The name of the sender of this message.
-	 */
+	@Deprecated
 	public String getSender() {
-		return sender;
+		return source;
 	}
 
 	/**
-	 * @return The contents of this message.
+	 * @return the name of the sender of this message
 	 */
+	public String source() {
+		return source;
+	}
+
+	@Deprecated
 	public String getMessage() {
+		return message;
+	}
+
+	/**
+	 * @return the contents of this message
+	 */
+	public String text() {
 		return message;
 	}
 }
