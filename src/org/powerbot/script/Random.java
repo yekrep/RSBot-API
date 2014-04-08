@@ -51,7 +51,7 @@ public class Random {
 	 * @return the computed hicks value
 	 */
 	public static int hicks(final int a) {
-		return 105 * (int) (Math.log(a * 2) / ln2);
+		return Math.max(0, 105 * (int) (Math.log(a * 2) / ln2));
 	}
 
 	/**
