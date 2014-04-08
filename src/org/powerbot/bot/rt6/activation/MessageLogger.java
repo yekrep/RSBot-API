@@ -4,14 +4,14 @@ import java.util.logging.Logger;
 
 import org.powerbot.script.MessageEvent;
 import org.powerbot.script.MessageListener;
+import org.powerbot.script.rt6.ClientAccessor;
 import org.powerbot.script.rt6.ClientContext;
 
-public class MessageLogger implements MessageListener {
+public class MessageLogger extends ClientAccessor implements MessageListener {
 	private static final Logger log = Logger.getLogger("Messages");
-	private final ClientContext ctx;
 
 	public MessageLogger(final ClientContext ctx) {
-		this.ctx = ctx;
+		super(ctx);
 	}
 
 	public void messaged(final MessageEvent e) {
