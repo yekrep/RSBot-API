@@ -150,4 +150,34 @@ public class Movement extends ClientAccessor {
 					}
 				}, 20, 10));
 	}
+
+	public int distance(final Locatable l1, final Locatable l2) {
+		final Tile b = ctx.game.mapOffset(), t1, t2;
+		if (b == null ||
+				l1 == null || (t1 = l1.tile()) == null ||
+				l2 == null || (t2 = l2.tile()) == null ||
+				b == Tile.NIL || t1 == Tile.NIL || t2 == Tile.NIL) {
+			return -1;
+		}
+		t1.derive(-b.x(), -b.y());
+		t2.derive(-b.x(), -b.y());
+
+		final LocalPath.Graph graph = LocalPath.getGraph(ctx);
+		final LocalPath.Node[] path;
+		final LocalPath.Node nodeStart, nodeStop;
+		if (graph != null &&
+				(nodeStart = graph.getNode(t1.x(), t1.y())) != null &&
+				(nodeStop = graph.getNode(t2.x(), t2.y())) != null) {
+			LocalPath.dijkstra(graph, nodeStart, nodeStop);
+			path = LocalPath.follow(nodeStop);
+		} else {
+			path = new LocalPath.Node[0];
+		}
+		final int l = path.length;
+		return l > 0 ? l : -1;
+	}
+
+	public int distance(final Locatable l) {
+		return distance(ctx.players.local(), l);
+	}
 }
