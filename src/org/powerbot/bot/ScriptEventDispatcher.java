@@ -34,7 +34,7 @@ public class ScriptEventDispatcher<C extends Client, E extends EventListener> ex
 		return c.size();
 	}
 
-	private final class ListIterator<Ca extends Client, Ea> implements Iterator<Ea> {
+	private final class ListIterator<Ca extends Client, Ea extends E> implements Iterator<Ea> {
 		private final ClientContext<Ca> ctx;
 		private final Iterator<Ea> iterator;
 		private final AtomicReference<Ea> ref;
