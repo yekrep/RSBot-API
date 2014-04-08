@@ -21,7 +21,7 @@ public class ScriptEventDispatcher<C extends Client, E extends EventListener> ex
 
 	@Override
 	public boolean add(final E e) {
-		return c.add(e);
+		return ctx.bot().dispatcher.add(e) && c.add(e);
 	}
 
 	@Override
