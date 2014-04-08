@@ -4,9 +4,14 @@ import java.util.concurrent.Callable;
 
 /**
  * An event-driven blocking utility.
- * Frequencies are randomly adjusted by 85-150% to provide a basic antipattern.
+ * Frequencies are randomly adjusted to provide a basic antipattern.
  */
 public class Condition {
+	/**
+	 * The random adjustment variance, 0.85-1.50.
+	 */
+	public static final double VARIANCE[] = {.85d, 1.5d};
+
 	/**
 	 * Blocks until the specified condition is satisfied (returns {@code true}).
 	 * This uses a frequency of 600ms for up to 10 tries, i.e. attempting a maximum of 6 seconds.
@@ -43,7 +48,7 @@ public class Condition {
 
 		for (int i = 0; i < tries; i++) {
 			try {
-				final double f = freq * Random.nextDouble(0.85d, 1.5d);
+				final double f = freq * Random.nextDouble(VARIANCE[0], VARIANCE[1]);
 				Thread.sleep(Math.max(5, (int) f));
 			} catch (final InterruptedException ignored) {
 				return false;
@@ -66,7 +71,7 @@ public class Condition {
 	/**
 	 * Sleeps the current thread.
 	 *
-	 * @param ms the length of time to sleep in milliseconds, which is adjusted by an 85-150% random variance
+	 * @param ms the length of time to sleep in milliseconds, which is adjusted by a random variance
 	 * @return the actual amount of time slept in milliseconds, which is subject to system clock accuracy
 	 */
 	public static int sleep(final int ms) {
@@ -76,7 +81,7 @@ public class Condition {
 		}
 		final long s = System.nanoTime();
 		try {
-			Thread.sleep((long) (ms * Random.nextDouble(0.85d, 1.5d)));
+			Thread.sleep((long) (ms * Random.nextDouble(VARIANCE[0], VARIANCE[1])));
 		} catch (final InterruptedException ignored) {
 		}
 		return (int) ((System.nanoTime() - s) / 1000000L);
