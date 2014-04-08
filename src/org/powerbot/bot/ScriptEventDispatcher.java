@@ -34,15 +34,15 @@ public class ScriptEventDispatcher<C extends Client, E extends EventListener> ex
 		return c.size();
 	}
 
-	private final class ListIterator<Ca extends Client, Ea extends E> implements Iterator<Ea> {
-		private final ClientContext<Ca> ctx;
-		private final Iterator<Ea> iterator;
-		private final AtomicReference<Ea> ref;
+	private final class ListIterator<C1 extends C, E1 extends E> implements Iterator<E1> {
+		private final ClientContext<C1> ctx;
+		private final Iterator<E1> iterator;
+		private final AtomicReference<E1> ref;
 
-		public ListIterator(final ClientContext<Ca> ctx, final Iterator<Ea> iterator) {
+		public ListIterator(final ClientContext<C1> ctx, final Iterator<E1> iterator) {
 			this.ctx = ctx;
 			this.iterator = iterator;
-			ref = new AtomicReference<Ea>(null);
+			ref = new AtomicReference<E1>(null);
 		}
 
 		@Override
@@ -51,7 +51,7 @@ public class ScriptEventDispatcher<C extends Client, E extends EventListener> ex
 		}
 
 		@Override
-		public Ea next() {
+		public E1 next() {
 			ref.set(iterator.next());
 			return ref.get();
 		}
