@@ -21,12 +21,12 @@ import org.powerbot.script.TextPaintListener;
  */
 public class TextPaintEvent extends AbstractEvent {
 	private static final long serialVersionUID = 7174559879186449999L;
-	public static final int ID = 0x80;
+	public static final int TEXT_PAINT_EVENT = 0x80;
 	public Graphics graphics;
 	public int index = 0;
 
 	public TextPaintEvent() {
-		setId(ID);
+		setId(TEXT_PAINT_EVENT);
 		this.graphics = null;
 	}
 

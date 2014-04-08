@@ -20,11 +20,11 @@ import org.powerbot.script.PaintListener;
  */
 public class PaintEvent extends AbstractEvent {
 	private static final long serialVersionUID = 4772234942045737667L;
-	public static final int ID = 0x40;
+	public static final int PAINT_EVENT = 0x40;
 	public Graphics graphics;
 
 	public PaintEvent() {
-		setId(ID);
+		setId(PAINT_EVENT);
 		graphics = null;
 	}
 

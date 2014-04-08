@@ -30,9 +30,9 @@ public class EventDispatcher extends org.powerbot.bot.EventDispatcher {
 		masks.put(MouseWheelListener.class, MOUSE_WHEEL_EVENT);
 		masks.put(KeyListener.class, KEY_EVENT);
 		masks.put(FocusListener.class, FOCUS_EVENT);
-		masks.put(MessageListener.class, MessageEvent.ID);
-		masks.put(PaintListener.class, PaintEvent.ID);
-		masks.put(TextPaintListener.class, TextPaintEvent.ID);
+		masks.put(MessageListener.class, MessageEvent.MESSAGE_EVENT);
+		masks.put(PaintListener.class, PaintEvent.PAINT_EVENT);
+		masks.put(TextPaintListener.class, TextPaintEvent.TEXT_PAINT_EVENT);
 	}
 
 	@Override

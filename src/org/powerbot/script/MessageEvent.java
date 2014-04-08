@@ -9,12 +9,12 @@ import org.powerbot.bot.rt6.activation.AbstractEvent;
  */
 public class MessageEvent extends AbstractEvent {
 	private static final long serialVersionUID = 4178447203851407187L;
-	public static final int ID = 0x20;
+	public static final int MESSAGE_EVENT = 0x20;
 	private final int id;
 	private final String sender, message;
 
 	public MessageEvent(final int id, final String sender, final String message) {
-		setId(ID);
+		setId(MESSAGE_EVENT);
 		this.id = id;
 		this.sender = sender;
 		this.message = message;
