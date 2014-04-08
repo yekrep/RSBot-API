@@ -9,11 +9,11 @@ import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
-import org.powerbot.script.Locatable;
-import org.powerbot.script.Random;
 import org.powerbot.bot.rt4.client.Client;
 import org.powerbot.bot.rt4.client.CollisionMap;
 import org.powerbot.bot.rt4.client.Landscape;
+import org.powerbot.script.Locatable;
+import org.powerbot.script.Random;
 import org.powerbot.script.Tile;
 
 public class LocalPath extends Path {
@@ -64,7 +64,7 @@ public class LocalPath extends Path {
 		start = start.derive(-base.x(), -base.y());
 		end = end.derive(-base.x(), -base.y());
 
-		final Graph graph = getGraph();
+		final Graph graph = getGraph(ctx);
 		final Node[] path;
 		final Node nodeStart, nodeStop;
 		if (graph != null &&
@@ -86,7 +86,7 @@ public class LocalPath extends Path {
 		return false;
 	}
 
-	private Graph getGraph() {
+	static Graph getGraph(final ClientContext ctx) {
 		final Client client = ctx.client();
 		if (client == null) {
 			return null;
@@ -98,11 +98,11 @@ public class LocalPath extends Path {
 			return null;
 		}
 		final int[][] arr = map.getFlags();
-		final double[][] costs = getCosts(arr.length, arr.length);
+		final double[][] costs = getCosts(ctx, arr.length, arr.length);
 		return arr != null ? new Graph(arr, costs, map.getOffsetX(), map.getOffsetY()) : null;
 	}
 
-	private double[][] getCosts(final int w, final int h) {
+	static double[][] getCosts(final ClientContext ctx, final int w, final int h) {
 		final Client client = ctx.client();
 		final Landscape landscape = client.getLandscape();
 		final org.powerbot.bot.rt4.client.Tile[][][] tiles;
@@ -138,7 +138,7 @@ public class LocalPath extends Path {
 		return arr;
 	}
 
-	private void dijkstra(final Graph graph, final Node source, final Node target) {
+	static void dijkstra(final Graph graph, final Node source, final Node target) {
 		source.g = 0d;
 		source.f = 0d;
 
@@ -180,7 +180,7 @@ public class LocalPath extends Path {
 		}
 	}
 
-	private Node[] follow(Node target) {
+	static Node[] follow(Node target) {
 		final List<Node> nodes = new LinkedList<Node>();
 		if (Double.isInfinite(target.g)) {
 			return new Node[0];
@@ -195,7 +195,7 @@ public class LocalPath extends Path {
 		return nodes.toArray(path);
 	}
 
-	private class Graph {
+	static final class Graph {
 		private final int offX, offY;
 		private final double[][] costs;
 		private final Node[][] nodes;
@@ -227,7 +227,7 @@ public class LocalPath extends Path {
 			return 0d;
 		}
 
-		private Node getNode(final int x, final int y) {
+		Node getNode(final int x, final int y) {
 			final int ox = x - offX, oy = y - offY;
 			if (ox >= 0 && oy >= 0 && ox < nodes.length && oy < nodes[ox].length) {
 				return nodes[ox][oy];
@@ -296,7 +296,7 @@ public class LocalPath extends Path {
 		}
 	}
 
-	private class Node {
+	static final class Node {
 		public final int x, y;
 		public final int flag;
 		private boolean opened, closed;
