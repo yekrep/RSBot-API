@@ -5,7 +5,7 @@ import java.awt.Graphics;
 import org.powerbot.script.TextPaintListener;
 import org.powerbot.script.rt4.ClientContext;
 
-import static org.powerbot.bot.rt4.activation.DebugHelper.drawLine;
+import static org.powerbot.bot.DebugHelper.drawLine;
 
 /**
  */

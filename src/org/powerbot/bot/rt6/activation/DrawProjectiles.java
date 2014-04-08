@@ -9,6 +9,8 @@ import org.powerbot.script.rt6.ClientContext;
 import org.powerbot.script.rt6.Projectile;
 import org.powerbot.script.rt6.TileMatrix;
 
+import static org.powerbot.bot.DebugHelper.drawLine;
+
 public class DrawProjectiles implements PaintListener, TextPaintListener {
 	private final ClientContext ctx;
 
@@ -35,7 +37,7 @@ public class DrawProjectiles implements PaintListener, TextPaintListener {
 
 	@Override
 	public int draw(int idx, final Graphics render) {
-		DebugHelper.drawLine(render, idx++, "Projectile count: " + ctx.projectiles.size());
+		drawLine(render, idx++, "Projectile count: " + ctx.projectiles.size());
 		return idx;
 	}
 }

@@ -6,7 +6,7 @@ import java.awt.Point;
 import org.powerbot.script.TextPaintListener;
 import org.powerbot.script.rt6.ClientContext;
 
-import static org.powerbot.bot.rt6.activation.DebugHelper.drawLine;
+import static org.powerbot.bot.DebugHelper.drawLine;
 
 public class TMousePosition implements TextPaintListener {
 	private final ClientContext ctx;
