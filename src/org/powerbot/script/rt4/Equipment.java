@@ -59,7 +59,7 @@ public class Equipment extends ItemQuery<Item> {
 			if (id <= 0 || stack <= 0) {
 				continue;
 			}
-			items.add(new Item(ctx, ctx.widgets.widget(WIDGET).component(slot.getComponentIndex()), id, stack));
+			items.add(new Item(ctx, ctx.widgets.widget(WIDGET).component(slot.getComponentIndex()), id - 1, stack));
 		}
 		return items;
 	}
@@ -81,7 +81,7 @@ public class Equipment extends ItemQuery<Item> {
 		if (id <= 0 || stack <= 0) {
 			return nil();
 		}
-		return new Item(ctx, ctx.widgets.widget(WIDGET).component(slot.getComponentIndex()), id, stack);
+		return new Item(ctx, ctx.widgets.widget(WIDGET).component(slot.getComponentIndex()), id - 1, stack);
 	}
 
 	/**
