@@ -184,7 +184,7 @@ public class Component extends Interactive {
 
 	public String[] actions() {
 		final org.powerbot.bot.rt4.client.Widget w = getInternal();
-		final String[] arr = w != null ? w.getActions() : new String[0];
+		final String[] arr = (w != null ? w.getActions() : new String[0]).clone();
 		for (int i = 0; i < (arr != null ? arr.length : 0); i++) {
 			if (arr[i] == null) {
 				arr[i] = "";
@@ -258,13 +258,17 @@ public class Component extends Interactive {
 	public int[] itemIds() {
 		final org.powerbot.bot.rt4.client.Widget w = getInternal();
 		final int[] a = w != null ? w.getItemIds() : new int[0];
-		return a != null ? a : new int[0];
+		final int[] a2 = (a != null ? a : new int[0]).clone();
+		for (int i = 0; i < a2.length; i++) {
+			a2[i]--;
+		}
+		return a2;
 	}
 
 	public int[] itemStackSizes() {
 		final org.powerbot.bot.rt4.client.Widget w = getInternal();
 		final int a[] = w != null ? w.getItemStackSizes() : new int[0];
-		return a != null ? a : new int[0];
+		return (a != null ? a : new int[0]).clone();
 	}
 
 	public int itemId() {

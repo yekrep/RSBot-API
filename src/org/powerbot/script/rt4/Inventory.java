@@ -33,7 +33,7 @@ public class Inventory extends ItemQuery<Item> {
 			if (id <= 0) {
 				continue;
 			}
-			items.add(new Item(ctx, c, i, id - 1, stack));
+			items.add(new Item(ctx, c, i, id, stack));
 
 		}
 		return items;

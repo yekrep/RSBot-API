@@ -92,7 +92,7 @@ public class Component extends Interactive implements Drawable, Displayable {
 				actions = new String[0];
 			}
 		}
-		return actions;
+		return actions.clone();
 	}
 
 	public int textureId() {
