@@ -2,8 +2,10 @@ package org.powerbot.bot.loader;
 
 import java.applet.Applet;
 import java.lang.reflect.Constructor;
+import java.util.concurrent.Callable;
+import java.util.logging.Logger;
 
-public abstract class GameAppletLoader implements Runnable {
+public abstract class GameAppletLoader implements Callable<Void> {
 	private final ClassLoader loader;
 	private final String codesource;
 
@@ -13,29 +15,32 @@ public abstract class GameAppletLoader implements Runnable {
 	}
 
 	@Override
-	public void run() {
-		Class<?> code;
-		try {
-			code = loader.loadClass(codesource);
-		} catch (final ClassNotFoundException e) {
-			code = null;
+	public Void call() throws Exception {
+		final Class<?> code = loader.loadClass(codesource);
+		if (!(Applet.class.isAssignableFrom(code))) {
+			throw new IllegalArgumentException();
 		}
-		if (code == null || !(Applet.class.isAssignableFrom(code))) {
-			error();
-			return;
-		}
-		final Applet applet;
-		try {
-			final Constructor<?> constructor = code.getConstructor((Class[]) null);
-			applet = (Applet) constructor.newInstance((Object[]) null);
-		} catch (final Exception ignored) {
-			error();
-			return;
-		}
+		final Constructor<?> ctor = code.getConstructor((Class[]) null);
+		final Applet applet = (Applet) ctor.newInstance((Object[]) null);
 		sequence(applet);
+		return null;
+	}
+
+	public Thread getLoaderThread(final ThreadGroup g) {
+		final Thread t = new Thread(g, new Runnable() {
+			@Override
+			public void run() {
+				try {
+					call();
+				} catch (final Exception e) {
+					Logger.getLogger(getClass().getName()).severe("Failed to load game");
+					e.printStackTrace();
+				}
+			}
+		});
+		t.setContextClassLoader(loader);
+		return t;
 	}
 
 	protected abstract void sequence(final Applet applet);
-
-	protected abstract void error();
 }

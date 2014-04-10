@@ -107,16 +107,9 @@ public class Bot extends org.powerbot.script.Bot<ClientContext> {
 					}
 				});
 			}
-
-			@Override
-			protected void error() {
-				log.severe("Something bad happened.");
-			}
 		};
 		Thread.currentThread().setContextClassLoader(loader);
-		final Thread t = new Thread(threadGroup, bootstrap);
-		t.setContextClassLoader(loader);
-		t.start();
+		bootstrap.getLoaderThread(threadGroup).start();
 	}
 
 	@Override

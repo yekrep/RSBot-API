@@ -76,16 +76,9 @@ public final class Bot extends org.powerbot.script.Bot<ClientContext> {
 			protected void sequence(final Applet applet) {
 				Bot.this.sequence(game, gameCrawler, applet);
 			}
-
-			@Override
-			protected void error() {
-				log.severe("Something bad happened.");
-			}
 		};
 		Thread.currentThread().setContextClassLoader(loader);
-		final Thread t = new Thread(threadGroup, bootstrap);
-		t.setContextClassLoader(loader);
-		t.start();
+		bootstrap.getLoaderThread(threadGroup).start();
 	}
 
 	private void sequence(final GameLoader game, final GameCrawler gameCrawler, final Applet applet) {
