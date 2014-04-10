@@ -73,7 +73,7 @@ public final class Bot extends org.powerbot.script.Bot<ClientContext> {
 		}
 		final GameAppletLoader bootstrap = new GameAppletLoader(loader, gameCrawler.clazz) {
 			@Override
-			protected void sequence(final Applet applet) {
+			protected void load(final Applet applet) {
 				Bot.this.sequence(game, gameCrawler, applet);
 			}
 		};

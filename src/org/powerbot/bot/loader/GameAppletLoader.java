@@ -22,7 +22,7 @@ public abstract class GameAppletLoader implements Callable<Void> {
 		}
 		final Constructor<?> ctor = code.getConstructor((Class[]) null);
 		final Applet applet = (Applet) ctor.newInstance((Object[]) null);
-		sequence(applet);
+		load(applet);
 		return null;
 	}
 
@@ -42,5 +42,5 @@ public abstract class GameAppletLoader implements Callable<Void> {
 		return t;
 	}
 
-	protected abstract void sequence(final Applet applet);
+	protected abstract void load(final Applet applet);
 }
