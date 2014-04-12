@@ -34,7 +34,7 @@ public class LoaderUtils {
 		}
 		final SortedSet<String> keys = new TreeSet<String>(map.keySet());
 		for (final String k : keys) {
-			md.digest(map.get(k));
+			md.update(map.get(k));
 		}
 		return StringUtils.byteArrayToHexString(md.digest());
 	}
