@@ -29,16 +29,12 @@ public abstract class GameLoader implements Callable<ClassLoader> {
 
 	@Override
 	public ClassLoader call() throws Exception {
-		byte[] b;
-		try {
-			final HttpURLConnection con = HttpUtils.openConnection(new URL(archive));
-			con.addRequestProperty("Referer", referer);
-			b = IOUtils.read(HttpUtils.openStream(con));
-		} catch (final IOException ignored) {
-			b = null;
-		}
-		if (b == null) {
-			return null;
+		final HttpURLConnection con = HttpUtils.openConnection(new URL(archive));
+		con.addRequestProperty("Referer", referer);
+		final byte[] b = IOUtils.read(HttpUtils.openStream(con));
+
+		if (b == null || b.length == 0) {
+			throw new IOException();
 		}
 
 		JarInputStream j = null;
@@ -53,8 +49,6 @@ public abstract class GameLoader implements Callable<ClassLoader> {
 					classes.put(n.substring(0, p), resources.get(n));
 				}
 			}
-		} catch (final IOException e) {
-			return null;
 		} finally {
 			if (j != null) {
 				try {
