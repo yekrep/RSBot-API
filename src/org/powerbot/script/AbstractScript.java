@@ -14,7 +14,6 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.logging.Logger;
 import java.util.zip.Adler32;
@@ -34,7 +33,7 @@ import org.powerbot.util.StringUtils;
 /**
  * An abstract implementation of {@link Script}.
  */
-public abstract class AbstractScript<C extends ClientContext> implements Script, Comparable<AbstractScript> {
+public abstract class AbstractScript<C extends ClientContext> implements Script {
 	/**
 	 * The {@link Logger} which should be used to print debugging messages.
 	 */
@@ -44,9 +43,6 @@ public abstract class AbstractScript<C extends ClientContext> implements Script,
 	 * The {@link org.powerbot.script.rt6.ClientContext} for accessing client data.
 	 */
 	protected final C ctx;
-
-	private static final AtomicInteger s = new AtomicInteger(0);
-	private final int sq;
 
 	private final List<Runnable>[] exec;
 	private final AtomicLong started, suspended, suspension;
@@ -68,7 +64,6 @@ public abstract class AbstractScript<C extends ClientContext> implements Script,
 			exec[i] = new CopyOnWriteArrayList<Runnable>();
 		}
 
-		sq = s.getAndIncrement();
 		started = new AtomicLong(System.nanoTime());
 		suspended = new AtomicLong(0L);
 		suspension = new AtomicLong(0L);
@@ -148,14 +143,6 @@ public abstract class AbstractScript<C extends ClientContext> implements Script,
 				}
 			}
 		});
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public final int compareTo(final AbstractScript o) {
-		return sq - o.sq;
 	}
 
 	/**
