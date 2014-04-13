@@ -131,9 +131,9 @@ public abstract class BoundingModel extends ClientAccessor {
 		while (index < length) {
 			final int[][] triangle = triangles[index++];
 			final Point[] arr = {
-					ctx.game.worldToScreen(x + triangle[0][0], y + triangle[0][1], z + triangle[0][2]),
-					ctx.game.worldToScreen(x + triangle[1][0], y + triangle[1][1], z + triangle[1][2]),
-					ctx.game.worldToScreen(x + triangle[2][0], y + triangle[2][1], z + triangle[2][2]),
+					ctx.game.worldToScreen(x + triangle[0][0], y + triangle[0][1], z + triangle[0][2], 0),
+					ctx.game.worldToScreen(x + triangle[1][0], y + triangle[1][1], z + triangle[1][2], 0),
+					ctx.game.worldToScreen(x + triangle[2][0], y + triangle[2][1], z + triangle[2][2], 0),
 			};
 			for (final Point p2 : arr) {
 				if (!ctx.game.inViewport(p2)) {
