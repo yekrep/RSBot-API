@@ -2,8 +2,6 @@ package org.powerbot.bot;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.PriorityQueue;
-import java.util.Queue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -25,7 +23,7 @@ public final class ScriptController<C extends ClientContext<? extends Client>> e
 
 	private final ThreadGroup group;
 	private final AtomicReference<ThreadPoolExecutor> executor;
-	private final Queue<Script> scripts;
+	private final List<Script> scripts;
 	private final AtomicReference<Thread> timeout;
 	private final Runnable suspension;
 	private final AtomicBoolean started, suspended, stopping;
@@ -47,7 +45,7 @@ public final class ScriptController<C extends ClientContext<? extends Client>> e
 
 		bundle = new AtomicReference<ScriptBundle>(null);
 		daemons = new ArrayList<Class<? extends Script>>();
-		scripts = new PriorityQueue<Script>(daemons.size() + 1);
+		scripts = new ArrayList<Script>(daemons.size() + 1);
 
 		suspension = new Runnable() {
 			@Override
