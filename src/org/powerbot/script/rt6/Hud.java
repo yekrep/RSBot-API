@@ -205,7 +205,7 @@ public class Hud extends ClientAccessor {
 			return true;
 		}
 
-		if (IsTabInBar(window)) {
+		if (isTabInBar(window)) {
 			final Component tab = getTab(window);
 			return tab != null && tab.click() && Condition.wait(new Callable<Boolean>() {
 				@Override
@@ -276,7 +276,7 @@ public class Hud extends ClientAccessor {
 		return new FloatingMessage(text.text(), type.textureId());
 	}
 
-	private boolean IsTabInBar(final Window window) {
+	private boolean isTabInBar(final Window window) {
 		final Component tab = getTab(window);
 		return tab != null && tab.parent().viewportRect().contains(tab.viewportRect());
 	}
