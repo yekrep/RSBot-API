@@ -166,7 +166,7 @@ public class Hud extends ClientAccessor {
 	}
 
 	public boolean floating(final Window window) {
-		return getTab(window) != null;
+		return getSprite(window) != null || getTab(window) != null;
 	}
 
 	/**
