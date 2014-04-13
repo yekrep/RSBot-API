@@ -152,7 +152,7 @@ public class GameObject extends Interactive implements Renderable, Locatable, Na
 		final RSObject o = object.get();
 		final BoundingModel model2 = boundingModel.get();
 		if (o != null && model2 != null) {
-			return model2.centerPoint();
+			return model2.nextPoint();
 		}
 		return new Point(-1, -1);
 	}
