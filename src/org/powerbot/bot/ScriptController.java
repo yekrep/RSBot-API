@@ -56,6 +56,8 @@ public final class ScriptController<C extends ClientContext<? extends Client>> e
 					try {
 						Thread.sleep(600);
 					} catch (final InterruptedException ignored) {
+						Thread.yield();
+						break;
 					}
 				}
 			}
