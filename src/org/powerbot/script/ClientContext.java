@@ -6,7 +6,9 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
 
+import org.powerbot.bot.ScriptController;
 import org.powerbot.bot.ScriptEventDispatcher;
+import org.powerbot.misc.ScriptBundle;
 
 /**
  * A context class which interlinks all core classes for a {@link org.powerbot.script.Bot}.
@@ -91,6 +93,28 @@ public abstract class ClientContext<C extends Client> {
 	 * @return the script controller
 	 */
 	public abstract Script.Controller controller();
+
+	/**
+	 * Returns the primary script.
+	 *
+	 * @param <T> the type of script
+	 * @return the primary script, or {@code null} if one is not attached
+	 */
+	@SuppressWarnings("unchecked")
+	public final <T extends AbstractScript<? extends ClientContext<C>>> T script() {
+		final Script.Controller c = controller();
+		if (c instanceof ScriptController) {
+			final ScriptBundle b = ((ScriptController<? extends ClientContext<C>>) c).bundle.get();
+			if (b != null && b.instance.get() != null) {
+				try {
+					return (T) b.instance.get();
+				} catch (final ClassCastException ignored) {
+				}
+			}
+		}
+
+		return null;
+	}
 
 	/**
 	 * Returns the property value for the specified key, or an empty string as the default value.
