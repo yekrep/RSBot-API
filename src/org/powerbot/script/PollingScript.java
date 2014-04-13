@@ -60,14 +60,14 @@ public abstract class PollingScript<C extends ClientContext> extends AbstractScr
 					}
 				}
 
-				if (!Thread.interrupted() && !ctx.controller().isStopping()) {
-					ctx.controller().offer(this);
-				}
-
 				try {
 					Thread.sleep(60);
 				} catch (final InterruptedException ignored) {
 					Thread.yield();
+				}
+
+				if (!Thread.interrupted() && !ctx.controller().isStopping()) {
+					ctx.controller().offer(this);
 				}
 			}
 		});
