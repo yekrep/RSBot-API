@@ -38,7 +38,7 @@ final class BotPanelLogHandler extends Handler {
 		}
 
 		final Color c = record.getLevel().intValue() >= Level.WARNING.intValue() ? new Color(255, 87, 71) : new Color(200, 200, 200);
-		final String txt = record.getMessage();
+		final String txt = "<html><div style=\"text-align: center;\">" + record.getMessage().replace("\n", "<br>") + "</div></html>";
 
 		if (SwingUtilities.isEventDispatchThread()) {
 			label.setForeground(c);
