@@ -112,7 +112,9 @@ public class BotChrome extends JFrame implements Closeable {
 			log.log(Level.SEVERE, String.format("A newer version is available, please download from %s", BotLocale.WEBSITE), "Update");
 			return false;
 		}
-		log.info("Welcome to " + Configuration.NAME + ", please select your game version");
+		log.info("Welcome to " + Configuration.NAME + ", please select your game version\r\n" +
+				"To play a script click " + BotLocale.EDIT + " > " + BotLocale.SCRIPT_PLAY +
+				(Configuration.OS == Configuration.OperatingSystem.MAC ? " (\u2318,)" : ""));
 		return true;
 	}
 
