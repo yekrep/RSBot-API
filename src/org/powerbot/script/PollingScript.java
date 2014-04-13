@@ -1,5 +1,6 @@
 package org.powerbot.script;
 
+import java.util.Comparator;
 import java.util.NavigableSet;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -7,7 +8,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * An implementation of {@link AbstractScript} which polls (or "loops") indefinitely.
  */
-public abstract class PollingScript<C extends ClientContext> extends AbstractScript<C> implements Comparable<PollingScript<C>> {
+public abstract class PollingScript<C extends ClientContext> extends AbstractScript<C> {
 
 	/**
 	 * The priority of this {@link org.powerbot.script.PollingScript} with respect to others.
@@ -16,7 +17,12 @@ public abstract class PollingScript<C extends ClientContext> extends AbstractScr
 	/**
 	 * Blocks other {@link org.powerbot.script.PollingScript}s with a lower {@link #priority} value
 	 */
-	protected static final NavigableSet<PollingScript> threshold = new ConcurrentSkipListSet<PollingScript>();
+	protected static final NavigableSet<PollingScript> threshold = new ConcurrentSkipListSet<PollingScript>(new Comparator<PollingScript>() {
+		@Override
+		public int compare(final PollingScript o1, final PollingScript o2) {
+			return o1.priority.get() - o2.priority.get();
+		}
+	});
 
 	/**
 	 * Creates an instance of a {@link PollingScript}.
@@ -71,14 +77,6 @@ public abstract class PollingScript<C extends ClientContext> extends AbstractScr
 				}
 			}
 		});
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public final int compareTo(final PollingScript<C> o) {
-		return o.priority.get() - priority.get();
 	}
 
 	/**
