@@ -7,6 +7,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * An implementation of {@link AbstractScript} which polls (or "loops") indefinitely.
+ *
+ * @param <C> the type of client
  */
 public abstract class PollingScript<C extends ClientContext> extends AbstractScript<C> {
 
@@ -15,7 +17,7 @@ public abstract class PollingScript<C extends ClientContext> extends AbstractScr
 	 */
 	public final AtomicInteger priority;
 	/**
-	 * Blocks other {@link org.powerbot.script.PollingScript}s with a lower {@link #priority} value
+	 * Blocks other {@link org.powerbot.script.PollingScript}s with a lower {@link #priority} value.
 	 */
 	protected static final NavigableSet<PollingScript> threshold = new ConcurrentSkipListSet<PollingScript>(new Comparator<PollingScript>() {
 		@Override

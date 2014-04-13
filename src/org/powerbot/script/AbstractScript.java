@@ -32,6 +32,8 @@ import org.powerbot.util.StringUtils;
 
 /**
  * An abstract implementation of {@link Script}.
+ *
+ * @param <C> the type of client
  */
 public abstract class AbstractScript<C extends ClientContext> implements Script {
 	/**
@@ -40,7 +42,7 @@ public abstract class AbstractScript<C extends ClientContext> implements Script 
 	public final Logger log = Logger.getLogger(getClass().getName());
 
 	/**
-	 * The {@link org.powerbot.script.rt6.ClientContext} for accessing client data.
+	 * The {@link org.powerbot.script.ClientContext} for accessing client data.
 	 */
 	protected final C ctx;
 
