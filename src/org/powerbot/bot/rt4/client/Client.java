@@ -108,4 +108,12 @@ public interface Client extends org.powerbot.script.Client {
 	public int getHintArrowY();
 
 	public void setCallback(Callback callback);
+
+	public int getSelectionType();
+
+	public int getSelectionIndex();
+
+	public String getUsername();
+
+	public String getPassword();
 }
