@@ -9,6 +9,7 @@ import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.powerbot.misc.ScriptBundle;
@@ -28,6 +29,7 @@ public final class ScriptController<C extends ClientContext<? extends Client>> e
 	private final AtomicReference<Thread> timeout;
 	private final Runnable suspension;
 	private final AtomicBoolean started, suspended, stopping;
+	public final AtomicLong[] times;
 
 	public final List<Class<? extends Script>> daemons;
 	public final AtomicReference<ScriptBundle> bundle;
@@ -41,6 +43,7 @@ public final class ScriptController<C extends ClientContext<? extends Client>> e
 		started = new AtomicBoolean(false);
 		suspended = new AtomicBoolean(false);
 		stopping = new AtomicBoolean(false);
+		times = new AtomicLong[]{new AtomicLong(), new AtomicLong(), new AtomicLong()};
 
 		bundle = new AtomicReference<ScriptBundle>(null);
 		daemons = new ArrayList<Class<? extends Script>>();
@@ -228,6 +231,18 @@ public final class ScriptController<C extends ClientContext<? extends Client>> e
 	}
 
 	private void call(final Script.State state) {
+		switch (state) {
+		case START:
+			times[0].set(System.nanoTime());
+			break;
+		case SUSPEND:
+			times[2].set(System.nanoTime());
+			break;
+		case RESUME:
+			times[1].addAndGet(System.nanoTime() - times[2].getAndAdd(0L));
+			break;
+		}
+
 		track(state);
 		final BlockingQueue<Runnable> queue = executor.get().getQueue();
 

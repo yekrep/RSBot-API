@@ -45,7 +45,6 @@ public abstract class AbstractScript<C extends ClientContext> implements Script 
 	protected final C ctx;
 
 	private final List<Runnable>[] exec;
-	private final AtomicLong started, suspended, suspension;
 	private final File dir;
 
 	/**
@@ -63,29 +62,6 @@ public abstract class AbstractScript<C extends ClientContext> implements Script 
 		for (int i = 0; i < exec.length; i++) {
 			exec[i] = new CopyOnWriteArrayList<Runnable>();
 		}
-
-		started = new AtomicLong(System.nanoTime());
-		suspended = new AtomicLong(0L);
-		suspension = new AtomicLong(0L);
-
-		exec[State.START.ordinal()].add(new Runnable() {
-			@Override
-			public void run() {
-				started.set(System.nanoTime());
-			}
-		});
-		exec[State.SUSPEND.ordinal()].add(new Runnable() {
-			@Override
-			public void run() {
-				suspension.set(System.nanoTime());
-			}
-		});
-		exec[State.RESUME.ordinal()].add(new Runnable() {
-			@Override
-			public void run() {
-				suspended.addAndGet(System.nanoTime() - suspension.getAndSet(0L));
-			}
-		});
 
 		@SuppressWarnings("unchecked")
 		final C ctx = (C) ((ScriptClassLoader) Thread.currentThread().getContextClassLoader()).ctx;
@@ -159,7 +135,8 @@ public abstract class AbstractScript<C extends ClientContext> implements Script 
 	 * @return the total runtime so far in milliseconds (including pauses)
 	 */
 	public long getTotalRuntime() {
-		return TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - started.get());
+		final AtomicLong[] times = ((ScriptController) ctx.controller()).times;
+		return TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - times[0].get());
 	}
 
 	/**
@@ -168,7 +145,8 @@ public abstract class AbstractScript<C extends ClientContext> implements Script 
 	 * @return the actual runtime so far in milliseconds
 	 */
 	public long getRuntime() {
-		return TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - started.get() - suspended.get());
+		final AtomicLong[] times = ((ScriptController) ctx.controller()).times;
+		return TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - times[0].get() - times[1].get());
 	}
 
 	/**
