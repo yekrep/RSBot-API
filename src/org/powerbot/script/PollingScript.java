@@ -87,28 +87,24 @@ public abstract class PollingScript<C extends ClientContext> extends AbstractScr
 
 	/**
 	 * Called on {@link Script.State#START}.
-	 * This method can either be overridden or ignored.
 	 */
 	public void start() {
 	}
 
 	/**
 	 * Called on {@link Script.State#STOP}.
-	 * This method can either be overridden or ignored.
 	 */
 	public void stop() {
 	}
 
 	/**
 	 * Called on {@link Script.State#SUSPEND}.
-	 * This method can either be overridden or ignored.
 	 */
 	public void suspend() {
 	}
 
 	/**
 	 * Called on {@link Script.State#RESUME}.
-	 * This method can either be overridden or ignored.
 	 */
 	public void resume() {
 	}
