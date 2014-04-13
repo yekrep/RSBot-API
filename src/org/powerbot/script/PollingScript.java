@@ -7,7 +7,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * An implementation of {@link AbstractScript} which polls (or "loops") indefinitely.
  */
-public abstract class PollingScript<C extends ClientContext> extends AbstractScript<C> implements Runnable, Comparable<PollingScript<C>> {
+public abstract class PollingScript<C extends ClientContext> extends AbstractScript<C> implements Comparable<PollingScript<C>> {
 
 	/**
 	 * The priority of this {@link org.powerbot.script.PollingScript} with respect to others.
@@ -29,7 +29,6 @@ public abstract class PollingScript<C extends ClientContext> extends AbstractScr
 				start();
 			}
 		});
-		getExecQueue(State.START).add(this);
 		getExecQueue(State.STOP).add(new Runnable() {
 			@Override
 			public void run() {
@@ -48,6 +47,30 @@ public abstract class PollingScript<C extends ClientContext> extends AbstractScr
 				resume();
 			}
 		});
+
+		getExecQueue(State.START).add(new Runnable() {
+			@Override
+			public void run() {
+				if (threshold.isEmpty() || threshold.first().priority.get() <= priority.get()) {
+					try {
+						poll();
+					} catch (final Throwable e) {
+						ctx.controller().stop();
+						e.printStackTrace();
+					}
+				}
+
+				if (!Thread.interrupted() && !ctx.controller().isStopping()) {
+					ctx.controller().offer(this);
+				}
+
+				try {
+					Thread.sleep(60);
+				} catch (final InterruptedException ignored) {
+					Thread.yield();
+				}
+			}
+		});
 	}
 
 	/**
@@ -62,28 +85,6 @@ public abstract class PollingScript<C extends ClientContext> extends AbstractScr
 	 * The main body of this {@link PollingScript}, which is called in a single-threaded loop.
 	 */
 	public abstract void poll();
-
-	@Override
-	public final void run() {
-		if (threshold.isEmpty() || threshold.first().priority.get() <= priority.get()) {
-			try {
-				poll();
-			} catch (final Throwable e) {
-				ctx.controller().stop();
-				e.printStackTrace();
-			}
-		}
-
-		if (!Thread.interrupted() && !ctx.controller().isStopping()) {
-			ctx.controller().offer(this);
-		}
-
-		try {
-			Thread.sleep(60);
-		} catch (final InterruptedException ignored) {
-			Thread.yield();
-		}
-	}
 
 	/**
 	 * Called on {@link Script.State#START}.
