@@ -43,7 +43,7 @@ public final class ScriptController<C extends ClientContext<? extends Client>> e
 		started = new AtomicBoolean(false);
 		suspended = new AtomicBoolean(false);
 		stopping = new AtomicBoolean(false);
-		times = new AtomicLong[]{new AtomicLong(), new AtomicLong(), new AtomicLong()};
+		times = new AtomicLong[]{new AtomicLong(), new AtomicLong(), new AtomicLong(), new AtomicLong()};
 
 		bundle = new AtomicReference<ScriptBundle>(null);
 		daemons = new ArrayList<Class<? extends Script>>();
@@ -235,13 +235,13 @@ public final class ScriptController<C extends ClientContext<? extends Client>> e
 	private void call(final Script.State state) {
 		switch (state) {
 		case START:
-			times[0].set(System.nanoTime());
-			break;
+			times[Script.State.STOP.ordinal()].set(0L);
 		case SUSPEND:
-			times[2].set(System.nanoTime());
+		case STOP:
+			times[state.ordinal()].set(System.nanoTime());
 			break;
 		case RESUME:
-			times[1].addAndGet(System.nanoTime() - times[2].getAndAdd(0L));
+			times[state.ordinal()].addAndGet(System.nanoTime() - times[Script.State.SUSPEND.ordinal()].getAndSet(0L));
 			break;
 		}
 

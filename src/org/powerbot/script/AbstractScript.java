@@ -138,7 +138,8 @@ public abstract class AbstractScript<C extends ClientContext> implements Script 
 	 */
 	public long getTotalRuntime() {
 		final AtomicLong[] times = ((ScriptController) ctx.controller()).times;
-		return TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - times[0].get());
+		final long s = times[State.STOP.ordinal()].get();
+		return TimeUnit.NANOSECONDS.toMillis((s == 0L ? System.nanoTime() : s) - times[State.START.ordinal()].get());
 	}
 
 	/**
@@ -148,7 +149,8 @@ public abstract class AbstractScript<C extends ClientContext> implements Script 
 	 */
 	public long getRuntime() {
 		final AtomicLong[] times = ((ScriptController) ctx.controller()).times;
-		return TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - times[0].get() - times[1].get());
+		final long s = times[State.STOP.ordinal()].get();
+		return TimeUnit.NANOSECONDS.toMillis((s == 0L ? System.nanoTime() : s) - times[State.START.ordinal()].get() - times[State.RESUME.ordinal()].get());
 	}
 
 	/**
