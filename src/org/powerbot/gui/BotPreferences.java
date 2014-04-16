@@ -534,6 +534,16 @@ class BotPreferences extends JDialog implements Runnable {
 				final int p = Configuration.OS == Configuration.OperatingSystem.MAC || l ? 0 : PAD;
 				panel.setBorder(BorderFactory.createEmptyBorder(0, PAD, PAD * 2 + p, PAD + p));
 				pack();
+
+				if (n.isLoggedIn() && list.isEmpty()) {
+					final int r = JOptionPane.showConfirmDialog(BotPreferences.this,
+							"You have no scripts added to your collection." + System.getProperty("line.separator") +
+									"Would you like to browse " + Configuration.URLs.DOMAIN + " for scripts?", "",
+							JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, null);
+					if (r == JOptionPane.YES_OPTION)  {
+						BotChrome.openURL(Configuration.URLs.SCRIPTS_BROWSE);
+					}
+				}
 			}
 		});
 
