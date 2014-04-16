@@ -23,7 +23,12 @@ public class ViewMouseTrails extends ClientAccessor implements PaintListener {
 
 	@Override
 	public void repaint(final Graphics g) {
-		h.offerFirst(ctx.mouse.getLocation());
+		final Point p = ctx.mouse.getLocation();
+		if (p.x == -1 && p.y == -1) {
+			return;
+		}
+
+		h.offerFirst(p);
 		if (h.size() < 3) {
 			return;
 		}
