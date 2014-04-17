@@ -3,6 +3,7 @@
 /.idea
 /.project
 /.settings/
+/*.srv.*
 /bin
 /docs/
 /sbin/
