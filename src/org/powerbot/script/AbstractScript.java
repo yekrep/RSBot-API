@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ import org.powerbot.bot.ScriptClassLoader;
 import org.powerbot.bot.ScriptController;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.misc.ScriptBundle;
+import org.powerbot.misc.ScriptList;
 import org.powerbot.util.HttpUtils;
 import org.powerbot.util.IOUtils;
 import org.powerbot.util.Ini;
@@ -65,12 +67,27 @@ public abstract class AbstractScript<C extends ClientContext> implements Script 
 			exec[i] = new CopyOnWriteArrayList<Runnable>();
 		}
 
-		@SuppressWarnings("unchecked")
-		final C ctx = (C) ((ScriptClassLoader) Thread.currentThread().getContextClassLoader()).ctx;
-		if (ctx == null) {
-			throw new IllegalStateException("context unset");
+		final ClientContext x = ((ScriptClassLoader) Thread.currentThread().getContextClassLoader()).ctx;
+		final Class<?>[] o = {(Class<?>) ScriptList.getScriptTypeArg(getClass()), null};
+		o[1] = ScriptList.getPrimaryClientContext(o[0]);
+		if (o[0] != o[1]) {
+			final Constructor<?> ctor;
+			try {
+				ctor = o[0].getConstructor(o[1]);
+				@SuppressWarnings("unchecked")
+				final C ctx = (C) ctor.newInstance(x);
+				this.ctx = ctx;
+			} catch (final Exception e) {
+				throw new IllegalStateException(e);
+			}
+		} else {
+			@SuppressWarnings("unchecked")
+			final C ctx = (C) x;
+			if (ctx == null) {
+				throw new IllegalStateException("context unset");
+			}
+			this.ctx = ctx;
 		}
-		this.ctx = ctx;
 
 		final String[] ids = {null, getName(), getClass().getName()};
 		String id = "-";
