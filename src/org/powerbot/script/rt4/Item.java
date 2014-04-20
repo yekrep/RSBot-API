@@ -60,6 +60,14 @@ public class Item extends Interactive implements Identifiable, Nameable, Stackab
 		return ItemConfig.getDef(ctx, id).isMembers();
 	}
 
+	public String[] actions() {
+		return ItemConfig.getDef(ctx, id).getActions();
+	}
+
+	public String[] groundActions() {
+		return ItemConfig.getDef(ctx, id).getGroundActions();
+	}
+
 	@Override
 	public Point nextPoint() {
 		if (inventory_index != -1) {

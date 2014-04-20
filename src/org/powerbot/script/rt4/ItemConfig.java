@@ -34,4 +34,22 @@ class ItemConfig {
 		final org.powerbot.bot.rt4.client.ItemConfig def = this.def.get();
 		return def != null && def.isMembers();
 	}
+
+	String[] getActions() {
+		final org.powerbot.bot.rt4.client.ItemConfig def = this.def.get();
+		String[] actions = new String[0];
+		if (def != null && (actions = def.getActions1()) == null) {
+			actions = new String[0];
+		}
+		return actions;
+	}
+
+	String[] getGroundActions() {
+		final org.powerbot.bot.rt4.client.ItemConfig def = this.def.get();
+		String[] actions = new String[0];
+		if (def != null && (actions = def.getActions2()) == null) {
+			actions = new String[0];
+		}
+		return actions;
+	}
 }
