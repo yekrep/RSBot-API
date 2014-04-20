@@ -128,20 +128,7 @@ public class ScriptList {
 								def.source = parent.getCanonicalFile().toString();
 								def.className = className;
 								def.local = true;
-
-								final Class<?>[] superClass = {script, null};
-								while ((superClass[1] = superClass[0].getSuperclass()) != AbstractScript.class
-										&& superClass[1] != PollingScript.class && superClass[1] != Object.class) {
-									superClass[0] = superClass[1];
-								}
-
-								final Type pt = superClass[0].getGenericSuperclass();
-								if (pt instanceof ParameterizedType) {
-									final Type[] t = ((ParameterizedType) pt).getActualTypeArguments();
-									if (t != null && t.length > 0 && t[0] instanceof Class) {
-										def.client = t[0];
-									}
-								}
+								def.client = getScriptTypeArg(script);
 
 								final Map<String, String> t = ScriptBundle.parseProperties(m.properties());
 								if (t.containsKey("client")) {
@@ -162,6 +149,31 @@ public class ScriptList {
 			}
 		}
 
+	}
+
+	public static Type getScriptTypeArg(final Class<? extends AbstractScript> c) {
+		final Class<?>[] s = {c, null};
+		while ((s[1] = s[0].getSuperclass()) != AbstractScript.class && s[1] != PollingScript.class && s[1] != Object.class) {
+			s[0] = s[1];
+		}
+
+		final Type p = s[0].getGenericSuperclass();
+		if (p instanceof ParameterizedType) {
+			final Type[] t = ((ParameterizedType) p).getActualTypeArguments();
+			if (t != null && t.length > 0 && t[0] instanceof Class) {
+				return t[0];
+			}
+		}
+
+		return null;
+	}
+
+	public static Class<?> getPrimaryClientContext(Class<?> c) {
+		while (c != org.powerbot.script.rt6.ClientContext.class && c != org.powerbot.script.rt4.ClientContext.class && c != Object.class) {
+			c = c.getSuperclass();
+		}
+
+		return c;
 	}
 
 	public static void load(final BotChrome chrome, final ScriptBundle.Definition def, final String username) {

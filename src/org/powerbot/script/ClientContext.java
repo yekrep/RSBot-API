@@ -104,7 +104,7 @@ public abstract class ClientContext<C extends Client> {
 	public final <T extends AbstractScript<? extends ClientContext<C>>> T script() {
 		final Script.Controller c = controller();
 		if (c instanceof ScriptController) {
-			final ScriptBundle b = ((ScriptController<? extends ClientContext<C>>) c).bundle.get();
+			final ScriptBundle b = (ScriptBundle) ((ScriptController) c).bundle.get();
 			if (b != null && b.instance.get() != null) {
 				try {
 					return (T) b.instance.get();
