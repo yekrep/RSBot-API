@@ -58,13 +58,11 @@ public class Game extends ClientAccessor {
 	}
 
 	public Tab tab() {
-		final Component c = getByTexture(1026);
-		if (c != null) {
-			final int t = c.widget().component(c.index() + 7).textureId();
-			for (final Tab tab : Tab.values()) {
-				if (tab.texture == t) {
-					return tab;
-				}
+		for (final Tab tab : Tab.values()) {
+			final Component c = getByTexture(tab.texture);
+			final Component c2 = ctx.widgets.widget(c.widget().index()).component(c.index() - 7);
+			if (c2.textureId() != -1) {
+				return tab;
 			}
 		}
 		return Tab.NONE;
