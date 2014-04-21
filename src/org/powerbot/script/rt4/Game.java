@@ -49,7 +49,7 @@ public class Game extends ClientAccessor {
 
 	public boolean tab(final Tab tab) {
 		final Component c = getByTexture(tab.texture);
-		return c != null && c.click() && Condition.wait(new Callable<Boolean>() {
+		return c != null && c.click(tab.tip) && Condition.wait(new Callable<Boolean>() {
 			@Override
 			public Boolean call() {
 				return tab() == tab;
