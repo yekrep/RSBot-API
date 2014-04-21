@@ -32,7 +32,7 @@ public class GameObject extends Interactive implements Renderable, Locatable, Na
 		super(ctx);
 		this.object = new WeakReference<RSObject>(object);
 		this.type = type;
-		bounds(-256, 256, -512, 0, -256, 256);
+		bounds(-128, 128, -256, 0, -128, 128);
 	}
 
 	@Override

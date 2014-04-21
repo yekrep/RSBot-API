@@ -40,7 +40,7 @@ public class GameObject extends Interactive implements Nameable, Locatable, Iden
 		this.object = new WeakReference<BasicObject>(object);
 		this.type = type;
 		hash = System.identityHashCode(object);
-		bounds(-64, 64, -128, 0, -64, 64);
+		bounds(-32, 32, -64, 0, -32, 32);
 	}
 
 	@Override
