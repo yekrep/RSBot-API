@@ -101,7 +101,7 @@ class RT6BotBoundingUtility extends JFrame implements PaintListener, MouseListen
 					@Override
 					public GameObject call() {
 						final ClientContext ctx = (ClientContext) chrome.bot.get().ctx;
-						return (GameObject) nearest(ctx.objects.select());
+						return (GameObject) nearest(ctx.objects.select().within(15d));
 					}
 				}),
 				new TargetSelection<GroundItem>("Ground Item", new Callable<GroundItem>() {
