@@ -48,21 +48,28 @@ class BotOverlay extends JDialog {
 		getRootPane().setOpaque(false);
 		getContentPane().setBackground(a);
 
+		final boolean jre6 = System.getProperty("java.version").startsWith("1.6");
 		boolean supported = true;
-		try {
-			setBackground(a);
-		} catch (final UnsupportedOperationException ignored) {
-			log.severe("Transparency is not supported on your system (for paint)");
+
+		if (Configuration.OS != Configuration.OperatingSystem.MAC && jre6) {
 			supported = false;
+		}
+
+		if (supported) {
+			try {
+				setBackground(a);
+			} catch (final UnsupportedOperationException ignored) {
+				log.severe("Transparency is not supported on your system (for paint)");
+				supported = false;
+			}
 		}
 		System.setProperty("swing.transparency", Boolean.toString(supported));
 
 		setFocusableWindowState(false);
 		setVisible(false);
 
-		final String jre = System.getProperty("java.version");
 		final boolean mac = Configuration.OS == Configuration.OperatingSystem.MAC;
-		final boolean clear = Configuration.OS == Configuration.OperatingSystem.LINUX || (jre != null && jre.startsWith("1.6") && mac);
+		final boolean clear = Configuration.OS == Configuration.OperatingSystem.LINUX || (jre6 && mac);
 		final String s = System.getProperty("apple.laf.useScreenMenuBar");
 		offsetMenu = !(mac && s != null && s.equalsIgnoreCase("true"));
 

@@ -128,10 +128,8 @@ public final class Bot extends org.powerbot.script.Bot<ClientContext> {
 		applet.start();
 		new Thread(threadGroup, dispatcher, dispatcher.getClass().getName()).start();
 
-		final boolean safemode;
-		safemode = Configuration.OS == Configuration.OperatingSystem.MAC && !System.getProperty("java.version").startsWith("1.6");
-
-		if (safemode) {
+		final boolean jre6 = System.getProperty("java.version").startsWith("1.6");
+		if ((Configuration.OS == Configuration.OperatingSystem.MAC && !jre6) || (Configuration.OS != Configuration.OperatingSystem.MAC && jre6)) {
 			new Thread(threadGroup, new SafeMode()).start();
 		}
 
