@@ -118,7 +118,10 @@ public class Skills extends ClientAccessor {
 		if (info != null && (skills = info.getSkills()) != null) {
 			final int[] levels = new int[skills.length];
 			for (int i = 0; i < skills.length; i++) {
-				levels[i] = skills[i].getRealLevel();
+				try {
+					levels[i] = skills[i].getRealLevel();
+				} catch (final NullPointerException ignored) {
+				}
 			}
 			return levels;
 		}
@@ -135,7 +138,10 @@ public class Skills extends ClientAccessor {
 		if (info != null && (skills = info.getSkills()) != null) {
 			final int[] exps = new int[skills.length];
 			for (int i = 0; i < skills.length; i++) {
-				exps[i] = skills[i].getExperience();
+				try {
+					exps[i] = skills[i].getExperience();
+				} catch (final NullPointerException ignored) {
+				}
 			}
 			return exps;
 		}
