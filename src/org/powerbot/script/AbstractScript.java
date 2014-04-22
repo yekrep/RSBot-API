@@ -69,8 +69,8 @@ public abstract class AbstractScript<C extends ClientContext> implements Script 
 
 		final ClientContext x = ((ScriptClassLoader) Thread.currentThread().getContextClassLoader()).ctx;
 		final Class<?>[] o = {(Class<?>) ScriptList.getScriptTypeArg(getClass()), null};
-		o[1] = ScriptList.getPrimaryClientContext(o[0]);
-		if (o[0] != o[1]) {
+		o[1] = o[0] == null ? null : ScriptList.getPrimaryClientContext(o[0]);
+		if (o[0] != null && o[0] != o[1]) {
 			final Constructor<?> ctor;
 			try {
 				ctor = o[0].getConstructor(o[1]);
