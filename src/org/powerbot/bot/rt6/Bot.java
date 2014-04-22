@@ -99,10 +99,13 @@ public final class Bot extends org.powerbot.script.Bot<ClientContext> {
 			spec = null;
 		}
 
+		final TransformSpec spec_ = spec;
 		final AbstractBridge bridge = new AbstractBridge(spec) {
 			@Override
 			public void instance(final Object client) {
-				ctx.client((Client) client);
+				if (spec_ != null) {
+					ctx.client((Client) client);
+				}
 			}
 		};
 		((Application) applet).setBridge(bridge);
