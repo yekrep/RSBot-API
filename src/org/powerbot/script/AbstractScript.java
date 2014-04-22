@@ -71,11 +71,13 @@ public abstract class AbstractScript<C extends ClientContext> implements Script 
 		final Class<?>[] o = {(Class<?>) ScriptList.getScriptTypeArg(getClass()), null};
 		o[1] = o[0] == null ? null : ScriptList.getPrimaryClientContext(o[0]);
 		if (o[0] != null && o[0] != o[1]) {
-			final Constructor<?> ctor;
 			try {
-				ctor = o[0].getConstructor(o[1]);
+				final Constructor<?> ctor = o[0].getDeclaredConstructor(o[1]);
+				final boolean a = ctor.isAccessible();
+				ctor.setAccessible(true);
 				@SuppressWarnings("unchecked")
 				final C ctx = (C) ctor.newInstance(x);
+				ctor.setAccessible(a);
 				this.ctx = ctx;
 			} catch (final Exception e) {
 				throw new IllegalStateException(e);
