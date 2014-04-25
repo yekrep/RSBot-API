@@ -289,7 +289,7 @@ class RT4BotBoundingUtility extends JFrame implements PaintListener, MouseListen
 		Interactive r = null;
 		double d = Double.MAX_VALUE;
 		for (final Interactive interactive : list) {
-			final Point p = interactive.nextPoint();
+			final Point p = interactive.centerPoint();
 			final double d2 = p.distance(point);
 			if (d2 < d) {
 				d = d2;
