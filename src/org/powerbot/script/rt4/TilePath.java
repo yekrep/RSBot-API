@@ -97,7 +97,7 @@ public class TilePath extends Path {
 		/* Iterate over all tiles but the first tile (0) starting with the last (length - 1). */
 		for (int i = tiles.length - 1; i > 0; --i) {
 			/* The tiles not in view, go to the next. */
-			if (!new TileMatrix(ctx, tiles[i]).onMap()) {
+			if (!tiles[i].matrix(ctx).onMap()) {
 				continue;
 			}
 			/* If our destination is NIL, assume mid path and continue there. */
@@ -114,7 +114,7 @@ public class TilePath extends Path {
 				 * Explanation: Path wraps around something and must be followed.
 				 * We cannot suddenly click out of a "pathable" region (104x104).
 				 * In these cases, we can assume a better tile will become available. */
-				if (!new TileMatrix(ctx, tiles[a]).onMap()) {
+				if (!tiles[a].matrix(ctx).valid() || !tiles[a].matrix(ctx).onMap()) {
 					continue out;
 				}
 				/* If a tile (successor) is currently targeted, return the tile that was the "best"
@@ -133,12 +133,12 @@ public class TilePath extends Path {
 		final Player p = ctx.players.local();
 		if (p != null && !p.inMotion() && dest != Tile.NIL) {
 			for (int i = tiles.length - 1; i >= 0; --i) {
-				if (new TileMatrix(ctx, tiles[i]).onMap()) {
+				if (tiles[i].matrix(ctx).onMap()) {
 					return tiles[i];
 				}
 			}
 		}
-		if (tiles.length == 0 || !new TileMatrix(ctx, tiles[0]).onMap()) {
+		if (tiles.length == 0 || !tiles[0].matrix(ctx).onMap()) {
 			return null;
 		}
 		return tiles[0];
