@@ -14,8 +14,9 @@ import org.powerbot.script.Identifiable;
 import org.powerbot.script.Locatable;
 import org.powerbot.script.Nameable;
 import org.powerbot.script.Tile;
+import org.powerbot.script.Validatable;
 
-public class GameObject extends Interactive implements Nameable, Locatable, Identifiable {
+public class GameObject extends Interactive implements Nameable, Locatable, Identifiable, Validatable {
 	private static final Color TARGET_COLOR = new Color(0, 255, 0, 20);
 	private final WeakReference<BasicObject> object;
 	private final Type type;
@@ -162,6 +163,11 @@ public class GameObject extends Interactive implements Nameable, Locatable, Iden
 	}
 
 	@Override
+	public boolean valid() {
+		return object.get() != null && ctx.objects.select().contains(this);
+	}
+
+	@Override
 	public Tile tile() {
 		final Client client = ctx.client();
 		final int r = relative();
@@ -201,7 +207,7 @@ public class GameObject extends Interactive implements Nameable, Locatable, Iden
 
 	@Override
 	public String toString() {
-		return String.format("%s[id=%d,name=%s,type=%s]", GameObject.class.getName(), id(), name(), type.name());
+		return String.format("%s[id=%d,name=%s,type=%s,tile=%s]", GameObject.class.getName(), id(), name(), type.name(), tile().toString());
 	}
 
 	@Override
