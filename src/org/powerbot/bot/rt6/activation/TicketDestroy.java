@@ -15,6 +15,9 @@ public class TicketDestroy extends PollingScript<ClientContext> {
 
 	@Override
 	public void poll() {
+		if (ctx.property("key.token.disable").equals("true")) {
+			return;
+		}
 		final Item item = ctx.backpack.select().id(ITEM_IDS).poll();
 		if (!item.valid() || !ctx.hud.opened(Hud.Window.BACKPACK) || !ctx.players.local().idle()) {
 			priority.set(0);
