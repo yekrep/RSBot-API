@@ -14,7 +14,7 @@ public class Player extends Actor {
 	Player(final ClientContext ctx, final org.powerbot.bot.rt4.client.Player player) {
 		super(ctx);
 		this.player = new SoftReference<org.powerbot.bot.rt4.client.Player>(player);
-		hash = player != null ? System.identityHashCode(player) : -1;
+		hash = System.identityHashCode(player);
 	}
 
 	@Override
@@ -65,10 +65,7 @@ public class Player extends Actor {
 
 	@Override
 	public int hashCode() {
-		if (hash != -1) {
-			return hash;
-		}
-		return super.hashCode();
+		return hash;
 	}
 
 	@Override

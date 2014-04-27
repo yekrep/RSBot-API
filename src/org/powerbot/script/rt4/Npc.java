@@ -28,7 +28,7 @@ public class Npc extends Actor implements Identifiable {
 	Npc(final ClientContext ctx, final org.powerbot.bot.rt4.client.Npc npc) {
 		super(ctx);
 		this.npc = new SoftReference<org.powerbot.bot.rt4.client.Npc>(npc);
-		hash = npc != null ? System.identityHashCode(npc) : -1;
+		hash = System.identityHashCode(npc);
 	}
 
 	@Override
@@ -130,12 +130,8 @@ public class Npc extends Actor implements Identifiable {
 
 	@Override
 	public int hashCode() {
-		if (hash != -1) {
-			return hash;
-		}
-		return super.hashCode();
+		return hash;
 	}
-
 	@Override
 	public String toString() {
 		return String.format("%s[id=%d/name=%s/level=%d]",

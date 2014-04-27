@@ -23,7 +23,7 @@ public class GroundItem extends Interactive implements Nameable, Locatable, Iden
 		boundingModel = this.tile.boundingModel;
 		this.node = new WeakReference<ItemNode>(node);
 		bounds(-16, 16, -16, 0, -16, 16);
-		hash = node != null ? System.identityHashCode(node) : -1;
+		hash = System.identityHashCode(node);
 	}
 
 	@Override
@@ -69,9 +69,6 @@ public class GroundItem extends Interactive implements Nameable, Locatable, Iden
 
 	@Override
 	public int hashCode() {
-		if (hash != -1) {
-			return hash;
-		}
-		return super.hashCode();
+		return hash;
 	}
 }
