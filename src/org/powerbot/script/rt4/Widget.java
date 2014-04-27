@@ -51,5 +51,4 @@ public class Widget extends ClientAccessor {
 		component(len - 1);
 		return Arrays.copyOf(sparseCache, len);
 	}
-
 }

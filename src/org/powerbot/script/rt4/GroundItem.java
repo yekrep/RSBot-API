@@ -15,6 +15,7 @@ public class GroundItem extends Interactive implements Nameable, Locatable, Iden
 	public static final Color TARGET_COLOR = new Color(255, 255, 0, 75);
 	private final TileMatrix tile;
 	private final WeakReference<ItemNode> node;
+	private final int hash;
 
 	GroundItem(final ClientContext ctx, final Tile tile, final ItemNode node) {
 		super(ctx);
@@ -22,6 +23,7 @@ public class GroundItem extends Interactive implements Nameable, Locatable, Iden
 		boundingModel = this.tile.boundingModel;
 		this.node = new WeakReference<ItemNode>(node);
 		bounds(-16, 16, -16, 0, -16, 16);
+		hash = node != null ? System.identityHashCode(node) : -1;
 	}
 
 	@Override
@@ -63,5 +65,13 @@ public class GroundItem extends Interactive implements Nameable, Locatable, Iden
 	@Override
 	public Tile tile() {
 		return tile.tile();
+	}
+
+	@Override
+	public int hashCode() {
+		if (hash != -1) {
+			return hash;
+		}
+		return super.hashCode();
 	}
 }
