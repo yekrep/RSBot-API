@@ -83,12 +83,4 @@ public class ClientContext extends org.powerbot.script.ClientContext<Client> {
 		varpbits = ctx.varpbits;
 		widgets = ctx.widgets;
 	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public String rtv() {
-		return "4";
-	}
 }

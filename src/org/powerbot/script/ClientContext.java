@@ -65,7 +65,16 @@ public abstract class ClientContext<C extends Client> {
 	 *
 	 * @return the client version, which is {@code 6} for {@code rt6} and {@code} 4 for {@code rt4}
 	 */
-	public abstract String rtv();
+	public final String rtv() {
+		final Class<?> c = getClass();
+		if (org.powerbot.script.rt6.ClientContext.class.isAssignableFrom(c)) {
+			return "6";
+		}
+		if (org.powerbot.script.rt4.ClientContext.class.isAssignableFrom(c)) {
+			return "4";
+		}
+		return "";
+	}
 
 	/**
 	 * Returns the bot.

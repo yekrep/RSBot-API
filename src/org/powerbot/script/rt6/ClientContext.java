@@ -145,12 +145,4 @@ public class ClientContext extends org.powerbot.script.ClientContext<Client> {
 		items = ctx.items;
 		map = ctx.map;
 	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public String rtv() {
-		return "6";
-	}
 }
