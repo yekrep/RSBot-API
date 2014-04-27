@@ -76,4 +76,9 @@ public class GroundItem extends Interactive implements Nameable, Locatable, Iden
 	public boolean equals(final Object o) {
 		return o instanceof GroundItem && hashCode() == o.hashCode();
 	}
+
+	@Override
+	public String toString() {
+		return String.format("%s[id=%d,stack=%d,tile=%s]", GroundItem.class.getName(), id(), stackSize(), tile.tile().toString());
+	}
 }

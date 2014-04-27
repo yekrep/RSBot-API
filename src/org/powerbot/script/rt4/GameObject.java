@@ -200,6 +200,11 @@ public class GameObject extends Interactive implements Nameable, Locatable, Iden
 	}
 
 	@Override
+	public String toString() {
+		return String.format("%s[id=%d,name=%s,type=%s]", GameObject.class.getName(), id(), name(), type.name());
+	}
+
+	@Override
 	public int hashCode() {
 		return hash;
 	}
