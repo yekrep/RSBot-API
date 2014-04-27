@@ -206,10 +206,6 @@ public class GameObject extends Interactive implements Nameable, Locatable, Iden
 
 	@Override
 	public boolean equals(final Object o) {
-		if (!(o instanceof GameObject)) {
-			return false;
-		}
-		final BasicObject obj = object.get();
-		return obj != null && obj == ((GameObject) o).object.get();
+		return o instanceof GameObject && hashCode() == o.hashCode();
 	}
 }

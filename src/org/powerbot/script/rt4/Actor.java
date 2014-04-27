@@ -153,6 +153,6 @@ public abstract class Actor extends Interactive implements Locatable, Nameable, 
 			return false;
 		}
 		final Actor actor = Actor.class.cast(o);
-		return actor.getActor() == getActor();
+		return actor.hashCode() == hashCode();
 	}
 }

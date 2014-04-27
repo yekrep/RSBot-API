@@ -71,4 +71,9 @@ public class GroundItem extends Interactive implements Nameable, Locatable, Iden
 	public int hashCode() {
 		return hash;
 	}
+
+	@Override
+	public boolean equals(final Object o) {
+		return o instanceof GroundItem && hashCode() == o.hashCode();
+	}
 }
