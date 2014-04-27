@@ -8,7 +8,6 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import org.powerbot.bot.ScriptController;
 import org.powerbot.bot.ScriptEventDispatcher;
-import org.powerbot.misc.ScriptBundle;
 
 /**
  * A context class which interlinks all core classes for a {@link org.powerbot.script.Bot}.
@@ -120,18 +119,11 @@ public abstract class ClientContext<C extends Client> {
 	 *
 	 * @param <T> the type of script
 	 * @return the primary script, or {@code null} if one is not attached
+	 * @deprecated use {@link org.powerbot.script.Script.Controller#script()}
 	 */
 	@SuppressWarnings("unchecked")
 	public final <T extends AbstractScript<? extends ClientContext<C>>> T script() {
-		final ScriptBundle b = (ScriptBundle) ((ScriptController) controller).bundle.get();
-		if (b != null && b.instance.get() != null) {
-			try {
-				return (T) b.instance.get();
-			} catch (final ClassCastException ignored) {
-			}
-		}
-
-		return null;
+		return (T) controller.script();
 	}
 
 	/**

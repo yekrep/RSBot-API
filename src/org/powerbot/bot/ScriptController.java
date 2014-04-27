@@ -12,6 +12,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import org.powerbot.misc.ScriptBundle;
 import org.powerbot.misc.Tracker;
+import org.powerbot.script.AbstractScript;
 import org.powerbot.script.Client;
 import org.powerbot.script.ClientAccessor;
 import org.powerbot.script.ClientContext;
@@ -228,6 +229,11 @@ public final class ScriptController<C extends ClientContext<? extends Client>> e
 	@Override
 	public boolean offer(final Runnable r) {
 		return executor.get().getQueue().offer(r);
+	}
+
+	@Override
+	public AbstractScript script() {
+		return (AbstractScript) bundle.get().instance.get();
 	}
 
 	private void call(final Script.State state) {

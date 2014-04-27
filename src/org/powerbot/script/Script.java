@@ -40,6 +40,13 @@ public interface Script extends EventListener {
 		 * @return {@code true} if the runnable was added, otherwise {@code false}
 		 */
 		public <E extends Runnable> boolean offer(E e);
+
+		/**
+		 * Returns the primary {@link org.powerbot.script.AbstractScript} running with this {@link org.powerbot.script.Script.Controller}.
+		 *
+		 * @return the primary {@link org.powerbot.script.AbstractScript}
+		 */
+		public AbstractScript script();
 	}
 
 	/**
