@@ -36,10 +36,9 @@ public interface Script extends EventListener {
 		 * Adds a {@link java.lang.Runnable} to the executor.
 		 *
 		 * @param e a runnable to be executed
-		 * @param <E> a type that extends {@link java.lang.Runnable}
 		 * @return {@code true} if the runnable was added, otherwise {@code false}
 		 */
-		public <E extends Runnable> boolean offer(E e);
+		public boolean offer(Runnable e);
 
 		/**
 		 * Returns the primary {@link org.powerbot.script.AbstractScript} running with this {@link org.powerbot.script.Script.Controller}.
