@@ -34,7 +34,12 @@ public abstract class PollingScript<C extends ClientContext> extends AbstractScr
 		getExecQueue(State.START).add(new Runnable() {
 			@Override
 			public void run() {
-				start();
+				try {
+					start();
+				} catch (final Throwable e) {
+					ctx.controller.stop();
+					e.printStackTrace();
+				}
 			}
 		});
 		getExecQueue(State.STOP).add(new Runnable() {
