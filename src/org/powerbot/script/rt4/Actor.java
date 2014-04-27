@@ -148,12 +148,6 @@ public abstract class Actor extends Interactive implements Locatable, Nameable, 
 	}
 
 	@Override
-	public int hashCode() {
-		final org.powerbot.bot.rt4.client.Actor actor = getActor();
-		return actor != null ? System.identityHashCode(actor) : super.hashCode();
-	}
-
-	@Override
 	public boolean equals(final Object o) {
 		if (o == null || !Actor.class.isAssignableFrom(o.getClass())) {
 			return false;

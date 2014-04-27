@@ -14,6 +14,7 @@ public class Npc extends Actor implements Identifiable {
 	public static final Color TARGET_COLOR = new Color(255, 0, 255, 15);
 	private final SoftReference<org.powerbot.bot.rt4.client.Npc> npc;
 	private static final int[] lookup;
+	private final int hash;
 
 	static {
 		lookup = new int[32];
@@ -27,6 +28,7 @@ public class Npc extends Actor implements Identifiable {
 	Npc(final ClientContext ctx, final org.powerbot.bot.rt4.client.Npc npc) {
 		super(ctx);
 		this.npc = new SoftReference<org.powerbot.bot.rt4.client.Npc>(npc);
+		hash = npc != null ? System.identityHashCode(npc) : -1;
 	}
 
 	@Override
@@ -124,6 +126,14 @@ public class Npc extends Actor implements Identifiable {
 			}
 		}
 		return false;
+	}
+
+	@Override
+	public int hashCode() {
+		if (hash != -1) {
+			return hash;
+		}
+		return super.hashCode();
 	}
 
 	@Override
