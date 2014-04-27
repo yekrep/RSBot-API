@@ -97,14 +97,19 @@ public class TilePath extends Path {
 		/* Iterate over all tiles but the first tile (0) starting with the last (length - 1). */
 		for (int i = tiles.length - 1; i > 0; --i) {
 			/* The tiles not in view, go to the next. */
-			if (!tiles[i].matrix(ctx).onMap()) {
+			if (!tiles[i].matrix(ctx).valid() || !tiles[i].matrix(ctx).onMap()) {
 				continue;
 			}
 			/* If our destination is NIL, assume mid path and continue there. */
 			/* LARGELY SPACED PATH SUPPORT: If the current destination is the tile on the map, return that tile
 			 * as the next one will be coming soon (we hope/assume this, as short spaced paths should never experience
 			 * this condition as one will be on map before it reaches the current target). */
-			if (dest == Tile.NIL || tiles[i].distanceTo(dest) < 3d) {
+			if (dest == Tile.NIL) {
+				if (tiles[i].matrix(ctx).reachable()) {
+					return tiles[i];
+				}
+				continue;
+			} else if (tiles[i].distanceTo(dest) < 3d) {
 				return tiles[i];
 			}
 			/* Tile is on map and isn't currently "targeted" (dest), let's check it out.
