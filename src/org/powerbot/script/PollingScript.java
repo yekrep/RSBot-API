@@ -38,7 +38,12 @@ public abstract class PollingScript<C extends ClientContext> extends AbstractScr
 					start();
 				} catch (final Throwable e) {
 					ctx.controller.stop();
-					e.printStackTrace();
+					final Thread.UncaughtExceptionHandler x = Thread.getDefaultUncaughtExceptionHandler();
+					if (x != null) {
+						x.uncaughtException(Thread.currentThread(), e);
+					} else {
+						e.printStackTrace();
+					}
 				}
 			}
 		});
@@ -69,7 +74,12 @@ public abstract class PollingScript<C extends ClientContext> extends AbstractScr
 						poll();
 					} catch (final Throwable e) {
 						ctx.controller.stop();
-						e.printStackTrace();
+						final Thread.UncaughtExceptionHandler x = Thread.getDefaultUncaughtExceptionHandler();
+						if (x != null) {
+							x.uncaughtException(Thread.currentThread(), e);
+						} else {
+							e.printStackTrace();
+						}
 					}
 				}
 
