@@ -69,6 +69,9 @@ public class WidgetCloser extends PollingScript<ClientContext> {
 	}
 
 	private boolean isValid() {
+		if (ctx.property("widget.closer.disable").equals("true")) {
+			return false;
+		}
 		if (System.nanoTime() < time || ctx.bank.opened()) {
 			return false;
 		}
