@@ -41,7 +41,7 @@ public abstract class Bot<C extends ClientContext<? extends Client>> implements 
 
 	@Override
 	public void close() {
-		ctx.controller().stop();
+		ctx.controller.stop();
 		if (Thread.currentThread().getContextClassLoader() instanceof ScriptClassLoader) {
 			return;
 		}

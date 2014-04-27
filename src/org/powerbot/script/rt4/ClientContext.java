@@ -1,17 +1,14 @@
 package org.powerbot.script.rt4;
 
-import org.powerbot.bot.ScriptController;
 import org.powerbot.bot.rt4.Bot;
 import org.powerbot.bot.rt4.client.Client;
 import org.powerbot.script.Keyboard;
 import org.powerbot.script.Mouse;
-import org.powerbot.script.Script;
 
 /**
  * {@inheritDoc}
  */
 public class ClientContext extends org.powerbot.script.ClientContext<Client> {
-	public final Script.Controller controller;
 
 	public final Bank bank;
 	public final Camera camera;
@@ -32,8 +29,6 @@ public class ClientContext extends org.powerbot.script.ClientContext<Client> {
 
 	private ClientContext(final Bot bot) {
 		super(bot);
-
-		controller = new ScriptController<ClientContext>(this);
 
 		bank = new Bank(this);
 		camera = new Camera(this);
@@ -70,7 +65,6 @@ public class ClientContext extends org.powerbot.script.ClientContext<Client> {
 	 */
 	public ClientContext(final ClientContext ctx) {
 		super(ctx);
-		controller = ctx.controller;
 
 		bank = ctx.bank;
 		camera = ctx.camera;
@@ -96,13 +90,5 @@ public class ClientContext extends org.powerbot.script.ClientContext<Client> {
 	@Override
 	public String rtv() {
 		return "4";
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public Script.Controller controller() {
-		return controller;
 	}
 }

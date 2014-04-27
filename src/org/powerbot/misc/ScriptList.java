@@ -291,7 +291,7 @@ public class ScriptList {
 		}
 
 		properties.put(ScriptController.LOCAL_PROPERTY, Boolean.toString(def.local));
-		final ScriptController<? extends ClientContext> c = (ScriptController<? extends ClientContext>) ctx.controller();
+		final ScriptController<? extends ClientContext> c = (ScriptController<? extends ClientContext>) ctx.controller;
 		c.bundle.set(new ScriptBundle(def, script));
 		c.run();
 	}

@@ -94,13 +94,11 @@ public abstract class AbstractScript<C extends ClientContext> implements Script 
 		final String[] ids = {null, getName(), getClass().getName()};
 		String id = "-";
 
-		final Controller c = ctx.controller();
-		if (c instanceof ScriptController) {
-			final ScriptController sc = ((ScriptController) c);
-			final ScriptBundle bundle = sc.bundle != null ? (ScriptBundle) sc.bundle.get() : null;
-			if (bundle != null && bundle.definition != null) {
-				ids[0] = bundle.definition.getID().replace('/', '-');
-			}
+
+		final ScriptController c = (ScriptController) ctx.controller;
+		final ScriptBundle bundle = c.bundle != null ? (ScriptBundle) c.bundle.get() : null;
+		if (bundle != null && bundle.definition != null) {
+			ids[0] = bundle.definition.getID().replace('/', '-');
 		}
 
 		for (final String n : ids) {
@@ -156,7 +154,7 @@ public abstract class AbstractScript<C extends ClientContext> implements Script 
 	 * @return the total runtime so far in milliseconds (including pauses)
 	 */
 	public long getTotalRuntime() {
-		final AtomicLong[] times = ((ScriptController) ctx.controller()).times;
+		final AtomicLong[] times = ((ScriptController) ctx.controller).times;
 		final long s = times[State.STOP.ordinal()].get();
 		return TimeUnit.NANOSECONDS.toMillis((s == 0L ? System.nanoTime() : s) - times[State.START.ordinal()].get());
 	}
@@ -167,7 +165,7 @@ public abstract class AbstractScript<C extends ClientContext> implements Script 
 	 * @return the actual runtime so far in milliseconds
 	 */
 	public long getRuntime() {
-		final AtomicLong[] times = ((ScriptController) ctx.controller()).times;
+		final AtomicLong[] times = ((ScriptController) ctx.controller).times;
 		final long s = times[State.STOP.ordinal()].get();
 		return TimeUnit.NANOSECONDS.toMillis((s == 0L ? System.nanoTime() : s) - times[State.START.ordinal()].get() - times[State.RESUME.ordinal()].get());
 	}

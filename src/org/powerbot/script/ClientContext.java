@@ -20,6 +20,10 @@ public abstract class ClientContext<C extends Client> {
 	private final AtomicReference<C> client;
 
 	/**
+	 * The script controller.
+	 */
+	public final Script.Controller controller;
+	/**
 	 * A table of key/value pairs representing environmental properties.
 	 */
 	public final Map<String, String> properties;
@@ -36,6 +40,9 @@ public abstract class ClientContext<C extends Client> {
 	protected ClientContext(final Bot<? extends ClientContext<C>> bot) {
 		this.bot = new AtomicReference<Bot<? extends ClientContext<C>>>(bot);
 		client = new AtomicReference<C>(null);
+		@SuppressWarnings("unchecked")
+		final ScriptController c = new ScriptController(this);
+		controller = c;
 		properties = new ConcurrentHashMap<String, String>();
 		dispatcher = new ScriptEventDispatcher<C, EventListener>(this);
 	}
@@ -48,6 +55,7 @@ public abstract class ClientContext<C extends Client> {
 	protected ClientContext(final ClientContext<C> ctx) {
 		bot = ctx.bot;
 		client = ctx.client;
+		controller = ctx.controller;
 		properties = ctx.properties;
 		dispatcher = ctx.dispatcher;
 	}
@@ -91,8 +99,12 @@ public abstract class ClientContext<C extends Client> {
 	 * Returns the script controller.
 	 *
 	 * @return the script controller
+	 * @deprecated use {@link #controller}
 	 */
-	public abstract Script.Controller controller();
+	@Deprecated
+	public final Script.Controller controller() {
+		return controller;
+	}
 
 	/**
 	 * Returns the primary script.
@@ -102,14 +114,11 @@ public abstract class ClientContext<C extends Client> {
 	 */
 	@SuppressWarnings("unchecked")
 	public final <T extends AbstractScript<? extends ClientContext<C>>> T script() {
-		final Script.Controller c = controller();
-		if (c instanceof ScriptController) {
-			final ScriptBundle b = (ScriptBundle) ((ScriptController) c).bundle.get();
-			if (b != null && b.instance.get() != null) {
-				try {
-					return (T) b.instance.get();
-				} catch (final ClassCastException ignored) {
-				}
+		final ScriptBundle b = (ScriptBundle) ((ScriptController) controller).bundle.get();
+		if (b != null && b.instance.get() != null) {
+			try {
+				return (T) b.instance.get();
+			} catch (final ClassCastException ignored) {
 			}
 		}
 

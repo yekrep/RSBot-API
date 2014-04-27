@@ -1,5 +1,6 @@
 package org.powerbot.script.rt6;
 
+import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.powerbot.bot.ScriptController;
@@ -22,8 +23,6 @@ import org.powerbot.script.Script;
  */
 public class ClientContext extends org.powerbot.script.ClientContext<Client> {
 	public final AtomicReference<Constants> constants;
-
-	public final Script.Controller controller;
 
 	public final CombatBar combatBar;
 	public final Bank bank;
@@ -58,13 +57,15 @@ public class ClientContext extends org.powerbot.script.ClientContext<Client> {
 		super(bot);
 		constants = new AtomicReference<Constants>(null);
 
-		final ScriptController<ClientContext> controller = new ScriptController<ClientContext>(this);
-		this.controller = controller;
-		controller.daemons.add(Login.class);
-		controller.daemons.add(WidgetCloser.class);
-		controller.daemons.add(TicketDestroy.class);
-		controller.daemons.add(BankPin.class);
-		controller.daemons.add(Antipattern.class);
+		if (controller instanceof ScriptController) {
+			@SuppressWarnings("unchecked")
+			final List<Class<? extends Script>> d = ((ScriptController<ClientContext>) controller).daemons;
+			d.add(Login.class);
+			d.add(WidgetCloser.class);
+			d.add(TicketDestroy.class);
+			d.add(BankPin.class);
+			d.add(Antipattern.class);
+		}
 
 		combatBar = new CombatBar(this);
 		backpack = new Backpack(this);
@@ -115,8 +116,6 @@ public class ClientContext extends org.powerbot.script.ClientContext<Client> {
 		super(ctx);
 		constants = ctx.constants;
 
-		controller = ctx.controller;
-
 		combatBar = ctx.combatBar;
 		backpack = ctx.backpack;
 		bank = ctx.bank;
@@ -153,13 +152,5 @@ public class ClientContext extends org.powerbot.script.ClientContext<Client> {
 	@Override
 	public String rtv() {
 		return "6";
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public final Script.Controller controller() {
-		return controller;
 	}
 }

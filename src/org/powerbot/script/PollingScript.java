@@ -63,7 +63,7 @@ public abstract class PollingScript<C extends ClientContext> extends AbstractScr
 					try {
 						poll();
 					} catch (final Throwable e) {
-						ctx.controller().stop();
+						ctx.controller.stop();
 						e.printStackTrace();
 					}
 				}
@@ -74,8 +74,8 @@ public abstract class PollingScript<C extends ClientContext> extends AbstractScr
 					Thread.yield();
 				}
 
-				if (!Thread.interrupted() && !ctx.controller().isStopping()) {
-					ctx.controller().offer(this);
+				if (!Thread.interrupted() && !ctx.controller.isStopping()) {
+					ctx.controller.offer(this);
 				}
 			}
 		});
