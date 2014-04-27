@@ -143,4 +143,14 @@ public final class TileMatrix extends Interactive implements Locatable {
 	public boolean equals(final Object o) {
 		return o instanceof TileMatrix && ((TileMatrix) o).tile.equals(tile);
 	}
+
+	@Override
+	public int hashCode() {
+		return tile.hashCode();
+	}
+
+	@Override
+	public String toString() {
+		return tile.toString();
+	}
 }
