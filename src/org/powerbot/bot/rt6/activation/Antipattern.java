@@ -20,6 +20,9 @@ public class Antipattern extends PollingScript<ClientContext> {
 
 	@Override
 	public void poll() {
+		if (ctx.property("antipattern.disable").equals("true")) {
+			return;
+		}
 		for (final Module m : modules) {
 			if (m.isTick()) {
 				m.run();
