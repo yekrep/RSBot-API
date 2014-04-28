@@ -53,14 +53,14 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 		}
 	};
 	public static final int WIDGET = 762;
-	public static final int COMPONENT_BUTTON_CLOSE = 52;
-	public static final int COMPONENT_CONTAINER_ITEMS = 35;
-	public static final int COMPONENT_BUTTON_WITHDRAW_MODE = 172;
-	public static final int COMPONENT_BUTTON_DEPOSIT_INVENTORY = 187;
-	public static final int COMPONENT_BUTTON_DEPOSIT_MONEY = 193;
-	public static final int COMPONENT_BUTTON_DEPOSIT_EQUIPMENT = 189;
-	public static final int COMPONENT_BUTTON_DEPOSIT_FAMILIAR = 191;
-	public static final int COMPONENT_SCROLL_BAR = 31;
+	public static final int COMPONENT_BUTTON_CLOSE = 53;
+	public static final int COMPONENT_CONTAINER_ITEMS = 36;
+	public static final int COMPONENT_BUTTON_WITHDRAW_MODE = 173;
+	public static final int COMPONENT_BUTTON_DEPOSIT_INVENTORY = 188;
+	public static final int COMPONENT_BUTTON_DEPOSIT_MONEY = 194;
+	public static final int COMPONENT_BUTTON_DEPOSIT_EQUIPMENT = 190;
+	public static final int COMPONENT_BUTTON_DEPOSIT_FAMILIAR = 192;
+	public static final int COMPONENT_SCROLL_BAR = 32;
 	public static final int SETTING_BANK_STATE = 110;
 	public static final int SETTING_WITHDRAW_MODE = 160;
 
