@@ -13,7 +13,7 @@ import org.powerbot.script.Condition;
 public class Hud extends ClientAccessor {
 	public static final int WIDGET_HUD = 1477;
 	public static final int WIDGET_MENU = 1431;
-	public static final int WIDGET_MENU_BOUNDS = 32;
+	public static final int WIDGET_MENU_BOUNDS = 28;
 	public static final int WIDGET_MENU_WINDOWS = 1432;
 	public static final int COMPONENT_MENU_WINDOWS_LIST = 4;
 	private Rectangle[] boundsCache;
