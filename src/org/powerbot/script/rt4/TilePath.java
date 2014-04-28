@@ -3,12 +3,14 @@ package org.powerbot.script.rt4;
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.concurrent.Callable;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.powerbot.script.Condition;
 import org.powerbot.script.Random;
 import org.powerbot.script.Tile;
 
 public class TilePath extends Path {
+	private final AtomicInteger run_energy, spaced_action;
 	protected Tile[] tiles;
 	protected Tile[] orig;
 	private boolean end;
@@ -16,6 +18,8 @@ public class TilePath extends Path {
 
 	TilePath(final ClientContext ctx, final Tile[] tiles) {
 		super(ctx);
+		run_energy = new AtomicInteger(-1);
+		spaced_action = new AtomicInteger(-1);
 		orig = tiles;
 		this.tiles = Arrays.copyOf(tiles, tiles.length);
 	}
@@ -40,17 +44,32 @@ public class TilePath extends Path {
 			end = false;
 		}
 		if (options != null) {
-			if (options.contains(TraversalOption.HANDLE_RUN) && !ctx.movement.running() && ctx.movement.energyLevel() > Random.nextInt(45, 60)) {
-				ctx.movement.running(true);
+			if (options.contains(TraversalOption.HANDLE_RUN) && !ctx.movement.running()) {
+				final int e = ctx.movement.energyLevel();
+				run_energy.compareAndSet(-1, Random.nextInt(20, 90));
+				if (e >= run_energy.get() && ctx.movement.running(true)) {
+					run_energy.set(-1);
+				}
 			}
-			if (options.contains(TraversalOption.SPACE_ACTIONS) && local.inMotion() && dest.distanceTo(last) < 3d) {
-				if (dest.distanceTo(ctx.players.local()) > (double) Random.nextInt(5, 12)) {//TODO: revise this distance to not be detectable!!!
+
+			if (options.contains(TraversalOption.SPACE_ACTIONS) &&
+					local.inMotion() && dest.distanceTo(last) > 3d) {
+				spaced_action.compareAndSet(-1, Random.nextInt(5, 12));
+				final double d, d2 = dest.distanceTo(local);
+				if (d2 > spaced_action.get()) {
+					d = d2;
+				} else {
+					final double d3 = ctx.movement.distance(dest);
+					d = d3 != -1 ? d3 : d2;
+				}
+				if (d > (double) spaced_action.get()) {
 					return true;
 				}
 			}
 		}
 		last = next;
 		if (ctx.movement.step(next)) {
+			spaced_action.set(-1);
 			if (local.inMotion()) {
 				return Condition.wait(new Callable<Boolean>() {
 					@Override
