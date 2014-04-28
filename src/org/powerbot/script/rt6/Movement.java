@@ -198,6 +198,10 @@ public class Movement extends ClientAccessor {
 		return planes[plane];
 	}
 
+	public int distance(final Locatable end) {
+		return distance(ctx.players.local(), end);
+	}
+
 	/**
 	 * Gets the distance between two places in the loaded game region.
 	 *
