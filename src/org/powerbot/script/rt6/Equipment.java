@@ -7,9 +7,9 @@ import org.powerbot.bot.rt6.tools.Items;
 
 public class Equipment extends ItemQuery<Item> implements Displayable {
 	public static final int WIDGET = 1464;
-	public static final int COMPONENT_CONTAINER = 14;
+	public static final int COMPONENT_CONTAINER = 15;
 	public static final int WIDGET_GEAR = 1462;
-	public static final int COMPONENT_GEAR_CONTAINER = 13;
+	public static final int COMPONENT_GEAR_CONTAINER = 14;
 
 	public Equipment(final ClientContext factory) {
 		super(factory);
