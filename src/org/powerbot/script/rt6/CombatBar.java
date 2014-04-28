@@ -9,27 +9,27 @@ import org.powerbot.script.Condition;
 public class CombatBar extends IdQuery<Action> {
 	public static final int WIDGET = 1430;
 	public static final int SETTING_ADRENALINE = 679;
-	public static final int COMPONENT_BUTTON_HEAL = 103;
+	public static final int COMPONENT_BUTTON_HEAL = 17;
 	public static final int SETTING_RETALIATION = 462;
-	public static final int COMPONENT_BUTTON_RETALIATE = 113;
-	public static final int COMPONENT_BUTTON_PRAYER = 107;
-	public static final int COMPONENT_BUTTON_SUMMONING = 109;
-	public static final int COMPONENT_HEALTH = 104;
-	public static final int COMPONENT_ADRENALINE = 114;
-	public static final int COMPONENT_PRAYER = 110;
-	public static final int COMPONENT_SUMMONING = 116;
+	public static final int COMPONENT_BUTTON_RETALIATE = 27;
+	public static final int COMPONENT_BUTTON_PRAYER = 21;
+	public static final int COMPONENT_BUTTON_SUMMONING = 23;
+	public static final int COMPONENT_HEALTH = 18;
+	public static final int COMPONENT_ADRENALINE = 28;
+	public static final int COMPONENT_PRAYER = 24;
+	public static final int COMPONENT_SUMMONING = 30;
 	public static final int COMPONENT_TEXT = 7;
-	public static final int COMPONENT_BOUNDS = 93;
+	public static final int COMPONENT_BOUNDS = 9;
 
 	public static final int NUM_SLOTS = 12;
-	public static final int COMPONENT_BAR = 98;
-	public static final int COMPONENT_LOCK = 25;
+	public static final int COMPONENT_BAR = 11;
+	public static final int COMPONENT_LOCK = 4;
 	public static final int WIDGET_LAYOUT = 1477;
 	public static final int SETTING_ITEM = 811, SETTING_ABILITY = 727;
-	public static final int COMPONENT_SLOT_ACTION = 118;
-	public static final int COMPONENT_SLOT_COOL_DOWN = 119;
-	public static final int COMPONENT_SLOT_BIND = 121;
-	public static final int COMPONENT_SLOT_LENGTH = 6;
+	public static final int COMPONENT_SLOT_ACTION = 64;
+	public static final int COMPONENT_SLOT_COOL_DOWN = 65;
+	public static final int COMPONENT_SLOT_BIND = 67;
+	public static final int COMPONENT_SLOT_LENGTH = 13;
 
 	public CombatBar(final ClientContext factory) {
 		super(factory);
