@@ -86,11 +86,8 @@ public class GoogleAnalytics {
 			out.flush();
 			out.close();
 
-			System.out.println(data);
-			System.out.println(con.getResponseCode());
 			return con.getResponseCode();
 		} catch (final IOException ignored) {
-			ignored.printStackTrace();
 		}
 
 		return -1;
