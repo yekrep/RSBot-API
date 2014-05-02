@@ -31,7 +31,7 @@ import javax.swing.WindowConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import org.powerbot.misc.Tracker;
+import org.powerbot.misc.GoogleAnalytics;
 import org.powerbot.script.ClientContext;
 
 class BotSettingExplorer extends JFrame {
@@ -297,7 +297,7 @@ class BotSettingExplorer extends JFrame {
 		setLocationRelativeTo(getOwner());
 		setVisible(false);
 
-		Tracker.getInstance().trackPage("settingsexplorer/", getTitle());
+		GoogleAnalytics.getInstance().pageview("settingsexplorer/", getTitle());
 	}
 
 	private static class JNumberField extends JTextField {

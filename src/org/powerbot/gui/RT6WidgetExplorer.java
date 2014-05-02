@@ -34,8 +34,8 @@ import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
+import org.powerbot.misc.GoogleAnalytics;
 import org.powerbot.script.PaintListener;
-import org.powerbot.misc.Tracker;
 import org.powerbot.script.rt6.ClientContext;
 import org.powerbot.script.rt6.Component;
 import org.powerbot.script.rt6.Widget;
@@ -189,7 +189,7 @@ class RT6WidgetExplorer extends JFrame implements PaintListener {
 		setLocationRelativeTo(getOwner());
 		setVisible(false);
 
-		Tracker.getInstance().trackPage("widgetexplorer/", getTitle());
+		GoogleAnalytics.getInstance().pageview("widgetexplorer/", getTitle());
 	}
 
 	public static synchronized RT6WidgetExplorer getInstance(final BotChrome chrome) {

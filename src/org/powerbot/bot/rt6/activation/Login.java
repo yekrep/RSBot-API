@@ -3,14 +3,14 @@ package org.powerbot.bot.rt6.activation;
 import java.awt.Rectangle;
 
 import org.powerbot.misc.GameAccounts;
-import org.powerbot.misc.Tracker;
-import org.powerbot.script.PollingScript;
+import org.powerbot.misc.GoogleAnalytics;
 import org.powerbot.script.Filter;
+import org.powerbot.script.PollingScript;
+import org.powerbot.script.Random;
 import org.powerbot.script.rt6.ClientContext;
+import org.powerbot.script.rt6.Component;
 import org.powerbot.script.rt6.Game;
 import org.powerbot.script.rt6.Lobby;
-import org.powerbot.script.Random;
-import org.powerbot.script.rt6.Component;
 
 public class Login extends PollingScript<ClientContext> {
 	private static final int WIDGET = 596;
@@ -93,10 +93,10 @@ public class Login extends PollingScript<ClientContext> {
 				boolean stop = false;
 
 				if (txt.contains("your ban will be lifted in")) {
-					Tracker.getInstance().trackPage(pre + "ban", txt);
+					GoogleAnalytics.getInstance().pageview(pre + "ban", txt);
 					stop = true;
 				} else if (txt.contains("account has been disabled")) {
-					Tracker.getInstance().trackPage(pre + "disabled", txt);
+					GoogleAnalytics.getInstance().pageview(pre + "disabled", txt);
 					stop = true;
 				} else if (txt.contains("password") || txt.contains("ended")) {
 					stop = true;

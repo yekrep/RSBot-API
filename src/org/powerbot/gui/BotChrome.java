@@ -19,13 +19,14 @@ import java.util.logging.Logger;
 
 import javax.swing.JFrame;
 import javax.swing.JPopupMenu;
+import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 import org.powerbot.Configuration;
 import org.powerbot.bot.SelectiveEventQueue;
 import org.powerbot.misc.CryptFile;
+import org.powerbot.misc.GoogleAnalytics;
 import org.powerbot.misc.Resources;
-import org.powerbot.misc.Tracker;
 import org.powerbot.script.Bot;
 import org.powerbot.script.Filter;
 import org.powerbot.util.IOUtils;
@@ -84,8 +85,13 @@ public class BotChrome extends JFrame implements Closeable {
 
 		setVisible(true);
 		new OSXAdapt(this).run();
-		Tracker.getInstance().trackPage("", getTitle());
 		System.gc();
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				GoogleAnalytics.getInstance().pageview("", getTitle());
+			}
+		});
 	}
 
 	public static synchronized BotChrome getInstance() {

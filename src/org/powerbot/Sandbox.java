@@ -16,7 +16,6 @@ import org.powerbot.bot.loader.GameClassLoader;
 import org.powerbot.misc.CryptFile;
 import org.powerbot.misc.GameAccounts;
 import org.powerbot.misc.NetworkAccount;
-import org.powerbot.misc.Tracker;
 import org.powerbot.script.Keyboard;
 import org.powerbot.util.StringUtils;
 
@@ -159,7 +158,7 @@ class Sandbox extends SecurityManager {
 		}
 
 		if ((path + File.separator).startsWith(Configuration.HOME.getAbsolutePath()) &&
-				isCallingClass(NetworkAccount.class, GameAccounts.class, Tracker.class, CryptFile.class)) {
+				isCallingClass(NetworkAccount.class, GameAccounts.class, CryptFile.class)) {
 			return;
 		}
 

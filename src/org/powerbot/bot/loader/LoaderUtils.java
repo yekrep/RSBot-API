@@ -20,7 +20,7 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
 import org.powerbot.Configuration;
-import org.powerbot.misc.Tracker;
+import org.powerbot.misc.GoogleAnalytics;
 import org.powerbot.util.HttpUtils;
 import org.powerbot.util.StringUtils;
 
@@ -71,7 +71,7 @@ public class LoaderUtils {
 		con.setInstanceFollowRedirects(false);
 		con.connect();
 		r = con.getResponseCode();
-		Tracker.getInstance().trackPage(pre, Integer.toString(r));
+		GoogleAnalytics.getInstance().pageview(pre, Integer.toString(r));
 		if (r == HttpURLConnection.HTTP_OK) {
 			final Cipher c;
 			try {
@@ -122,7 +122,7 @@ public class LoaderUtils {
 		bucket.setInstanceFollowRedirects(false);
 		bucket.connect();
 		r = bucket.getResponseCode();
-		Tracker.getInstance().trackPage(pre + "/bucket", Integer.toString(r));
+		GoogleAnalytics.getInstance().pageview(pre + "/bucket", Integer.toString(r));
 		switch (bucket.getResponseCode()) {
 		case HttpURLConnection.HTTP_SEE_OTHER:
 			final String dest = bucket.getHeaderField("Location");
@@ -142,7 +142,7 @@ public class LoaderUtils {
 			out.close();
 			r = put.getResponseCode();
 			put.disconnect();
-			Tracker.getInstance().trackPage(pre + "/bucket/upload", Integer.toString(r));
+			GoogleAnalytics.getInstance().pageview(pre + "/bucket/upload", Integer.toString(r));
 			if (r == HttpURLConnection.HTTP_OK) {
 				final HttpURLConnection bucket_notify = getBucketConnection(gv, hash);
 				bucket_notify.setRequestMethod("PUT");
@@ -160,7 +160,7 @@ public class LoaderUtils {
 		case HttpURLConnection.HTTP_ACCEPTED:
 			throw new PendingException(delay);
 		case HttpURLConnection.HTTP_BAD_REQUEST:
-			Tracker.getInstance().trackPage(pre + "/bucket/failure", "");
+			GoogleAnalytics.getInstance().pageview(pre + "/bucket/failure", "");
 			throw new IOException("bad request");
 		}
 	}

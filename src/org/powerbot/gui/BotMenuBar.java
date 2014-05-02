@@ -24,8 +24,8 @@ import javax.swing.event.MenuListener;
 import org.powerbot.Boot;
 import org.powerbot.Configuration;
 import org.powerbot.bot.ScriptController;
+import org.powerbot.misc.GoogleAnalytics;
 import org.powerbot.misc.ScriptBundle;
-import org.powerbot.misc.Tracker;
 import org.powerbot.script.Bot;
 import org.powerbot.script.BotMenuListener;
 import org.powerbot.script.Script;
@@ -285,12 +285,12 @@ class BotMenuBar extends JMenuBar {
 		final Font f = text.getFont();
 		text.setFont(new Font(f.getName(), f.getStyle(), f.getSize() - 2));
 		JOptionPane.showMessageDialog(chrome, text, BotLocale.ABOUT, JOptionPane.PLAIN_MESSAGE);
-		Tracker.getInstance().trackPage("about/", BotLocale.ABOUT);
+		GoogleAnalytics.getInstance().pageview("about/", BotLocale.ABOUT);
 	}
 
 	public void showLicense() {
 		BotChrome.openURL(Configuration.URLs.LICENSE);
-		Tracker.getInstance().trackPage("license/", BotLocale.LICENSE);
+		GoogleAnalytics.getInstance().pageview("license/", BotLocale.LICENSE);
 	}
 
 	public synchronized void scriptPlayPause() {

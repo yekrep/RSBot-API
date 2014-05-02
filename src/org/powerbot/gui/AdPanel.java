@@ -24,8 +24,8 @@ import javax.swing.SwingUtilities;
 
 import org.powerbot.Configuration;
 import org.powerbot.misc.CryptFile;
+import org.powerbot.misc.GoogleAnalytics;
 import org.powerbot.misc.NetworkAccount;
-import org.powerbot.misc.Tracker;
 import org.powerbot.util.HttpUtils;
 import org.powerbot.util.Ini;
 
@@ -70,7 +70,7 @@ class AdPanel implements Runnable {
 
 			link = ini.get("link");
 			if (ini.getBool("popup", false)) {
-				Tracker.getInstance().trackPage("/ad/popup", "");
+				GoogleAnalytics.getInstance().pageview("ad/popup", "");
 				BotChrome.openURL(link);
 			}
 
@@ -105,7 +105,7 @@ class AdPanel implements Runnable {
 				label.addMouseListener(new MouseAdapter() {
 					@Override
 					public void mouseClicked(final MouseEvent e) {
-						Tracker.getInstance().trackPage("/ad/click", "");
+						GoogleAnalytics.getInstance().pageview("ad/click", "");
 						BotChrome.openURL(link);
 					}
 				});
@@ -114,7 +114,7 @@ class AdPanel implements Runnable {
 				c.gridy = 2;
 				panel.add(label, c);
 				panel.revalidate();
-				Tracker.getInstance().trackPage("/ad/display", "");
+				GoogleAnalytics.getInstance().pageview("ad/display", "");
 			}
 		});
 	}

@@ -24,10 +24,10 @@ import javax.swing.plaf.basic.BasicComboBoxRenderer;
 
 import org.powerbot.Configuration;
 import org.powerbot.misc.GameAccounts;
+import org.powerbot.misc.GoogleAnalytics;
 import org.powerbot.misc.NetworkAccount;
 import org.powerbot.misc.ScriptBundle;
 import org.powerbot.misc.ScriptList;
-import org.powerbot.misc.Tracker;
 import org.powerbot.script.ClientContext;
 
 /**
@@ -128,13 +128,13 @@ class BotPreferences extends JDialog implements Runnable {
 						if (n.isLoggedIn()) {
 							list.clear();
 							n.logout();
-							Tracker.getInstance().trackPage("signin/logout", getTitle());
+							GoogleAnalytics.getInstance().pageview("signin/logout", getTitle());
 						} else {
 							if (!n.login(username.getText(), new String(password.getPassword()), "") || !n.isLoggedIn()) {
 								final String msg = n.getResponse();
 								txt = msg == null || msg.isEmpty() ? BotLocale.INVALID_CREDENTIALS : msg;
 							}
-							Tracker.getInstance().trackPage("signin/login", getTitle());
+							GoogleAnalytics.getInstance().pageview("signin/login", getTitle());
 						}
 
 						BotPreferences.this.run();
@@ -287,7 +287,7 @@ class BotPreferences extends JDialog implements Runnable {
 					c.setVisible(a != null);
 				}
 
-				final Tracker t = Tracker.getInstance();
+				final GoogleAnalytics t = GoogleAnalytics.getInstance();
 
 				if (i == z - 1) {
 					final String s = JOptionPane.showInputDialog(BotPreferences.this, "Enter username:", "New Account", JOptionPane.PLAIN_MESSAGE);
@@ -302,7 +302,7 @@ class BotPreferences extends JDialog implements Runnable {
 					}
 					accountIndex.set(0);
 					actionPerformed(e);
-					t.trackPage("accounts/add/", BotLocale.ADD);
+					t.pageview("accounts/add/", BotLocale.ADD);
 				} else if (i == z - 2) {
 					final int j = accountIndex.get();
 					final GameAccounts.Account b = j > 0 && j < z - 2 ? g.get(j - 1) : null;
@@ -313,13 +313,13 @@ class BotPreferences extends JDialog implements Runnable {
 					account.setSelectedIndex(0);
 					accountIndex.set(0);
 					actionPerformed(e);
-					t.trackPage("accounts/remove/", BotLocale.REMOVE);
+					t.pageview("accounts/remove/", BotLocale.REMOVE);
 				} else {
 					accountIndex.set(i);
 					if (i == 0) {
-						t.trackPage("accounts/none/", BotLocale.NO_ACCOUNT);
+						t.pageview("accounts/none/", BotLocale.NO_ACCOUNT);
 					} else {
-						t.trackPage("accounts/", "");
+						t.pageview("accounts/", "");
 					}
 				}
 			}
@@ -377,7 +377,7 @@ class BotPreferences extends JDialog implements Runnable {
 						final GameAccounts.Account a = u < 1 ? null : GameAccounts.getInstance().get(u - 1);
 						final String n = a == null ? "" : a.toString();
 						ScriptList.load(chrome, d, n);
-						Tracker.getInstance().trackPage("launch/play/", play.getText());
+						GoogleAnalytics.getInstance().pageview("launch/play/", play.getText());
 						loading.set(false);
 					}
 				}).start();
@@ -547,7 +547,7 @@ class BotPreferences extends JDialog implements Runnable {
 			}
 		});
 
-		Tracker.getInstance().trackPage(l ? "launch/" : "signin/", getTitle());
+		GoogleAnalytics.getInstance().pageview(l ? "launch/" : "signin/", getTitle());
 	}
 
 	private void save() {

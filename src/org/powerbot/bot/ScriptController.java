@@ -10,8 +10,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 
+import org.powerbot.misc.GoogleAnalytics;
 import org.powerbot.misc.ScriptBundle;
-import org.powerbot.misc.Tracker;
 import org.powerbot.script.AbstractScript;
 import org.powerbot.script.Client;
 import org.powerbot.script.ClientAccessor;
@@ -290,6 +290,6 @@ public final class ScriptController<C extends ClientContext<? extends Client>> e
 		}
 
 		final String page = String.format("scripts/%s/%s", def.local ? ScriptBundle.Definition.LOCALID : def.getID(), action);
-		Tracker.getInstance().trackPage(page, def.getName());
+		GoogleAnalytics.getInstance().pageview(page, def.getName());
 	}
 }
