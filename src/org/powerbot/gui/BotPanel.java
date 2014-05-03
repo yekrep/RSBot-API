@@ -7,6 +7,7 @@ import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.concurrent.Callable;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
@@ -25,6 +26,7 @@ class BotPanel extends JPanel implements ActionListener {
 	private final Filter<Bot> callback;
 	private final JPanel mode;
 	private final JLabel logo;
+	private final AtomicBoolean logoVisible;
 	private final JButton rs3, os;
 
 	public BotPanel(final BotChrome chrome, final Callable<Boolean> pre, final Filter<Bot> callback) {
@@ -43,6 +45,7 @@ class BotPanel extends JPanel implements ActionListener {
 		panel.setBackground(getBackground());
 		logo = new JLabel(new ImageIcon(Resources.getImage(Resources.Paths.ARROWS)));
 		panel.add(logo, new GridBagConstraints());
+		logoVisible = new AtomicBoolean(true);
 
 		mode = new JPanel();
 		mode.setVisible(false);
@@ -86,6 +89,12 @@ class BotPanel extends JPanel implements ActionListener {
 		}
 	}
 
+	public void reset() {
+		mode.setVisible(true);
+		logo.setVisible(logoVisible.get());
+		setVisible(true);
+	}
+
 	@Override
 	public void actionPerformed(final ActionEvent e) {
 		if (!(e.getSource() instanceof JButton)) {
@@ -93,6 +102,7 @@ class BotPanel extends JPanel implements ActionListener {
 		}
 		final JButton b = (JButton) e.getSource();
 		mode.setVisible(false);
+		logoVisible.set(logo.isVisible());
 		logo.setVisible(true);
 		final Bot bot = b == os ? new org.powerbot.bot.rt4.Bot(chrome) : new org.powerbot.bot.rt6.Bot(chrome);
 		callback.accept(bot);

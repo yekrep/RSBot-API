@@ -49,6 +49,39 @@ class BotMenuBar extends JMenuBar {
 				Boot.fork();
 			}
 		});
+		final JMenuItem closeTab = new JMenuItem(BotLocale.CLOSE_WINDOW);
+		file.add(closeTab);
+		closeTab.setVisible(false);
+		closeTab.setEnabled(false);
+		closeTab.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				final Bot b = chrome.bot.get();
+				if (b != null) {
+					new Thread(new Runnable() {
+						@Override
+						public void run() {
+							b.close();
+						}
+					}).start();
+				}
+			}
+		});
+
+		file.addMenuListener(new MenuListener() {
+			@Override
+			public void menuSelected(final MenuEvent e) {
+				closeTab.setEnabled(chrome.bot.get() != null && !chrome.bot.get().pending.get());
+			}
+
+			@Override
+			public void menuDeselected(final MenuEvent e) {
+			}
+
+			@Override
+			public void menuCanceled(final MenuEvent e) {
+			}
+		});
 
 		if (Configuration.OS != Configuration.OperatingSystem.MAC) {
 			file.addSeparator();

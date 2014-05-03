@@ -7,6 +7,8 @@ import java.io.Closeable;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Logger;
 
+import javax.swing.SwingUtilities;
+
 import org.powerbot.bot.EventDispatcher;
 import org.powerbot.bot.ScriptClassLoader;
 import org.powerbot.gui.BotChrome;
@@ -31,7 +33,7 @@ public abstract class Bot<C extends ClientContext<? extends Client>> implements 
 	protected abstract C newContext();
 
 	protected void display() {
-		chrome.getContentPane().removeAll();
+		chrome.panel.setVisible(false);
 		chrome.add(applet);
 		final Dimension d = applet.getMinimumSize(), d2 = chrome.getJMenuBar().getSize();
 		final Insets s = chrome.getInsets();
@@ -49,6 +51,7 @@ public abstract class Bot<C extends ClientContext<? extends Client>> implements 
 		dispatcher.close();
 
 		if (applet != null) {
+			applet.setVisible(false);
 			new Thread(threadGroup, new Runnable() {
 				@Override
 				public void run() {
@@ -61,5 +64,13 @@ public abstract class Bot<C extends ClientContext<? extends Client>> implements 
 		} else {
 			threadGroup.interrupt();
 		}
+
+		chrome.bot.set(null);
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				chrome.reset();
+			}
+		});
 	}
 }

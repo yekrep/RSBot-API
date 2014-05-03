@@ -1,7 +1,9 @@
 package org.powerbot.gui;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Desktop;
+import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.Closeable;
@@ -40,6 +42,8 @@ public class BotChrome extends JFrame implements Closeable {
 	public final AtomicReference<Bot> bot;
 	public final BotMenuBar menuBar;
 	public final AtomicReference<BotOverlay> overlay;
+	public final Component panel;
+	private final Dimension size;
 
 	private BotChrome() {
 		setTitle(Configuration.NAME);
@@ -55,7 +59,7 @@ public class BotChrome extends JFrame implements Closeable {
 
 		bot = new AtomicReference<Bot>(null);
 		overlay = new AtomicReference<BotOverlay>(null);
-		add(new BotPanel(this, new Callable<Boolean>() {
+		add(panel = new BotPanel(this, new Callable<Boolean>() {
 			@Override
 			public Boolean call() throws Exception {
 				return isLatestVersion();
@@ -74,6 +78,7 @@ public class BotChrome extends JFrame implements Closeable {
 
 		pack();
 		setMinimumSize(getSize());
+		size = getMinimumSize();
 		setLocationRelativeTo(getParent());
 
 		addWindowListener(new WindowAdapter() {
@@ -99,6 +104,20 @@ public class BotChrome extends JFrame implements Closeable {
 			instance = new BotChrome();
 		}
 		return instance;
+	}
+
+	public void reset() {
+		setTitle(Configuration.NAME);
+		final BotOverlay o = overlay.get();
+		if (o != null) {
+			o.setVisible(false);
+		}
+		((BotPanel) panel).reset();
+		setResizable(true);
+		setMinimumSize(size);
+		pack();
+		log.info("Select a new game version");
+		SelectiveEventQueue.getInstance().setBlocking(false);
 	}
 
 	private boolean isLatestVersion() {
