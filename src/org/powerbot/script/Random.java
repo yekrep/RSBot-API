@@ -2,6 +2,9 @@ package org.powerbot.script;
 
 import java.security.SecureRandom;
 
+/**
+ * A thread safe secure RNG utility.
+ */
 public class Random {
 	private static final double[] pd;
 	private static final double ln2 = Math.log(2);
