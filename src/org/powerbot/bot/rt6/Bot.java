@@ -127,7 +127,8 @@ public final class Bot extends org.powerbot.script.Bot<ClientContext> {
 			return;
 		}
 
-		setClient(ctx.client(), spec);
+		ctx.client().setCallback(new AbstractCallback(this));
+		ctx.constants.set(new Constants(spec.constants));
 		applet.start();
 		new Thread(threadGroup, dispatcher, dispatcher.getClass().getName()).start();
 
@@ -142,12 +143,6 @@ public final class Bot extends org.powerbot.script.Bot<ClientContext> {
 				display();
 			}
 		});
-	}
-
-	private void setClient(final Client client, final TransformSpec spec) {
-		ctx.client(client);
-		client.setCallback(new AbstractCallback(this));
-		ctx.constants.set(new Constants(spec.constants));
 	}
 
 	private final class SafeMode implements Runnable {
