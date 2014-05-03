@@ -1,38 +1,32 @@
 package org.powerbot.script;
 
 import java.security.SecureRandom;
-import java.util.concurrent.atomic.AtomicLong;
 
 public class Random {
-	private static final java.util.Random random;
-	private static final AtomicLong seeded;
 	private static final double[] pd;
 	private static final double ln2 = Math.log(2);
 
-	static {
-		java.util.Random r;
-		try {
-			r = SecureRandom.getInstance("SHA1PRNG", "SUN");
-		} catch (final Exception ignored) {
-			r = new java.util.Random();
+	private static final ThreadLocal<java.util.Random> random = new ThreadLocal<java.util.Random>() {
+		@Override
+		protected java.util.Random initialValue() {
+			java.util.Random r;
+			try {
+				r = SecureRandom.getInstance("SHA1PRNG", "SUN");
+			} catch (final Exception ignored) {
+				r = new java.util.Random();
+			}
+			r.setSeed(r.nextLong());
+			return r;
 		}
-		r.setSeed(r.nextLong());
-		seeded = new AtomicLong(System.nanoTime());
-		random = r;
+	};
 
+	static {
 		pd = new double[2];
-		final double[] e = {3d, 45d + r.nextInt(11), 12d + r.nextGaussian()};
+		final double[] e = {3d, 45d + random.get().nextInt(11), 12d + random.get().nextGaussian()};
 		final double x[] = {Runtime.getRuntime().availableProcessors(), Runtime.getRuntime().maxMemory() >> 30};
 		pd[0] = 4 * Math.log(Math.sin(((Math.PI / x[0]) * Math.PI + 1) / 4)) / Math.PI + 2 * Math.PI * (Math.PI / x[0]) / 3 - 4 * Math.log(Math.sin(.25d)) / Math.PI;
 		pd[0] = e[0] * Math.exp(Math.pow(pd[0], 0.75d)) + e[1];
 		pd[1] = e[2] * Math.exp(1 / Math.cosh(x[1]));
-	}
-
-	private static void reseed() {
-		if (System.nanoTime() - seeded.get() > 35 * 60 * 1e+9) {
-			seeded.set(System.nanoTime());
-			random.setSeed(random.nextLong());
-		}
 	}
 
 	/**
@@ -60,7 +54,7 @@ public class Random {
 	 * @return returns true or false randomly
 	 */
 	public static boolean nextBoolean() {
-		return random.nextBoolean();
+		return random.get().nextBoolean();
 	}
 
 	/**
@@ -72,7 +66,7 @@ public class Random {
 	 */
 	public static int nextInt(final int min, final int max) {
 		final int a = min < max ? min : max, b = max > min ? max : min;
-		return a + (b == a ? 0 : random.nextInt(b - a));
+		return a + (b == a ? 0 : random.get().nextInt(b - a));
 	}
 
 	/**
@@ -84,7 +78,7 @@ public class Random {
 	 */
 	public static double nextDouble(final double min, final double max) {
 		final double a = min < max ? min : max, b = max > min ? max : min;
-		return a + random.nextDouble() * (b - a);
+		return a + random.get().nextDouble() * (b - a);
 	}
 
 	/**
@@ -93,7 +87,7 @@ public class Random {
 	 * @return the next pseudo-random, a value between {@code 0.0} and {@code 1.0}.
 	 */
 	public static double nextDouble() {
-		return random.nextDouble();
+		return random.get().nextDouble();
 	}
 
 	/**
@@ -103,8 +97,7 @@ public class Random {
 	 * @return a gaussian distributed number
 	 */
 	public static double nextGaussian() {
-		reseed();
-		return random.nextGaussian();
+		return random.get().nextGaussian();
 	}
 
 	/**
