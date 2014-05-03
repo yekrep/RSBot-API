@@ -109,6 +109,7 @@ public final class ScriptController<C extends ClientContext<? extends Client>> e
 						} catch (final InterruptedException ignored) {
 							return;
 						}
+						track("timeout");
 						stop();
 					}
 				});
@@ -249,7 +250,25 @@ public final class ScriptController<C extends ClientContext<? extends Client>> e
 			break;
 		}
 
-		track(state);
+		final String t;
+		switch (state) {
+		case SUSPEND:
+			t = "pause";
+			break;
+		case RESUME:
+			t = "resume";
+			break;
+		case STOP:
+			t = "stop";
+			break;
+		default:
+		case START:
+			t = "";
+			break;
+		}
+		track(t);
+
+
 		final BlockingQueue<Runnable> queue = executor.get().getQueue();
 
 		for (final Script s : scripts) {
@@ -267,29 +286,13 @@ public final class ScriptController<C extends ClientContext<? extends Client>> e
 		}
 	}
 
-	private void track(final Script.State state) {
+	private void track(final String state) {
 		final ScriptBundle.Definition def = bundle.get().definition;
 		if (def == null || def.getName() == null || (!def.local && (def.getID() == null || def.getID().isEmpty()))) {
 			return;
 		}
 
-		String action = "";
-
-		switch (state) {
-		case START:
-			break;
-		case SUSPEND:
-			action = "pause";
-			break;
-		case RESUME:
-			action = "resume";
-			break;
-		case STOP:
-			action = "stop";
-			break;
-		}
-
-		final String page = String.format("scripts/%s/%s", def.local ? ScriptBundle.Definition.LOCALID : def.getID(), action);
+		final String page = String.format("scripts/%s/%s", def.local ? ScriptBundle.Definition.LOCALID : def.getID(), state);
 		GoogleAnalytics.getInstance().pageview(page, def.getName());
 	}
 }
