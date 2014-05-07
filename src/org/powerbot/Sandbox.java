@@ -197,7 +197,7 @@ class Sandbox extends SecurityManager {
 	private boolean isCallingClass(final Class<?>... classes) {
 		for (final Class<?> context : getClassContext()) {
 			for (final Class<?> clazz : classes) {
-				if (clazz.isAssignableFrom(context)) {
+				if (clazz.equals(context)) {
 					return true;
 				}
 			}
