@@ -78,7 +78,14 @@ public abstract class Bot<C extends ClientContext<? extends Client>> implements 
 	}
 
 	protected void clearPreferences() {
-		final File path = new File(System.getProperty("user.home"), String.format("jagex_cl_%s_LIVE.dat", ctx.rtv().equals("4") ? "oldschool" : "runescape"));
+		final File root = new File(System.getProperty("user.home"));
+
+		final File random = new File(root, "random.dat");
+		if (random.isFile()) {
+			random.delete();
+		}
+
+		final File path = new File(root, String.format("jagex_cl_%s_LIVE.dat", ctx.rtv().equals("4") ? "oldschool" : "runescape"));
 		if (!path.isFile()) {
 			return;
 		}
