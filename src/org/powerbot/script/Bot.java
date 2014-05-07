@@ -4,6 +4,8 @@ import java.applet.Applet;
 import java.awt.Dimension;
 import java.awt.Insets;
 import java.io.Closeable;
+import java.io.File;
+import java.io.UnsupportedEncodingException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Logger;
 
@@ -12,6 +14,7 @@ import javax.swing.SwingUtilities;
 import org.powerbot.bot.EventDispatcher;
 import org.powerbot.bot.ScriptClassLoader;
 import org.powerbot.gui.BotChrome;
+import org.powerbot.util.IOUtils;
 
 public abstract class Bot<C extends ClientContext<? extends Client>> implements Runnable, Closeable {
 	protected final Logger log = Logger.getLogger(getClass().getName());
@@ -72,5 +75,45 @@ public abstract class Bot<C extends ClientContext<? extends Client>> implements 
 				chrome.reset();
 			}
 		});
+	}
+
+	protected void clearPreferences() {
+		final File path = new File(System.getProperty("user.home"), String.format("jagex_cl_%s_LIVE.dat", ctx.rtv().equals("4") ? "oldschool" : "runescape"));
+		if (!path.isFile()) {
+			return;
+		}
+
+		final byte[] b = IOUtils.read(path);
+		String s = "";
+		for (int i = 0; i < b.length; i++) {
+			if (b[i] == '&') {
+				try {
+					s = new String(b, ++i, b.length - i, "UTF-8");
+				} catch (final UnsupportedEncodingException ignored) {
+					return;
+				}
+				break;
+			}
+		}
+		if (s.isEmpty()) {
+			return;
+		}
+
+		final File live = new File(s);
+		if (!live.isDirectory()) {
+			return;
+		}
+
+		final File[] files = live.listFiles();
+		if (files == null) {
+			return;
+		}
+
+		for (final File f : files) {
+			final String n = f.getName();
+			if (n.startsWith("preferences") && n.endsWith(".dat")) {
+				f.delete();
+			}
+		}
 	}
 }

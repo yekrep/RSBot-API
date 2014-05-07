@@ -41,6 +41,7 @@ public final class Bot extends org.powerbot.script.Bot<ClientContext> {
 
 	@Override
 	public void run() {
+		clearPreferences();
 		log.info("Loading bot");
 		final GameCrawler gameCrawler = new GameCrawler();
 		if (!gameCrawler.call()) {
