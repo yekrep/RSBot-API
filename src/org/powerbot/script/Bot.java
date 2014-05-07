@@ -93,7 +93,7 @@ public abstract class Bot<C extends ClientContext<? extends Client>> implements 
 		final byte[] b = IOUtils.read(path);
 		String s = "";
 		for (int i = 0; i < b.length; i++) {
-			if (b[i] == '&') {
+			if (b[i] == '&' || b[i] == '(') {
 				try {
 					s = new String(b, ++i, b.length - i, "UTF-8");
 				} catch (final UnsupportedEncodingException ignored) {
