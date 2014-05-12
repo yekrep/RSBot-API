@@ -291,7 +291,7 @@ public class Component extends Interactive {
 	@Override
 	public Point nextPoint() {
 		final Point p = screenPoint();
-		p.translate(org.powerbot.script.Random.nextInt(0, width()), Random.nextInt(0, height()));
+		p.translate(org.powerbot.script.Random.nextInt(1, width() - 1), Random.nextInt(1, height() - 1));
 		return p;
 	}
 
