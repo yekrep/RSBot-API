@@ -1,7 +1,13 @@
 package org.powerbot.script.rt4;
 
-public class Magic {
+public class Magic extends ClientAccessor {
+	public Magic(final ClientContext ctx) {
+		super(ctx);
+	}
+
 	public enum Spell {
+		NIL(Book.NIL, -1, -1),
+
 		HOME_TELEPORT(Book.MODERN, 0, 0),
 		WIND_STRIKE(Book.MODERN, 1, 1),
 		CONFUSE(Book.MODERN, 3, 2),
@@ -82,14 +88,39 @@ public class Magic {
 			this.level = level;
 			this.component = component;
 		}
+
+		public Book book() {
+			return book;
+		}
+
+		public int level() {
+			return level;
+		}
+
+		public int component() {
+			return component;
+		}
 	}
 
 	public enum Book {
-		MODERN(192),;
+		MODERN(192), NIL(-1);
 		private final int widget;
 
 		Book(final int widget) {
 			this.widget = widget;
 		}
+
+		public int widget() {
+			return widget;
+		}
+	}
+
+	public Book book() {
+		for (final Book b : Book.values()) {
+			if (ctx.widgets.widget(b.widget).component(0).valid()) {
+				return b;
+			}
+		}
+		return Book.NIL;
 	}
 }
