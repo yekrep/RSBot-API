@@ -1,5 +1,6 @@
 package org.powerbot.gui;
 
+import java.awt.CheckboxMenuItem;
 import java.awt.Font;
 import java.awt.Menu;
 import java.awt.MenuBar;
@@ -14,7 +15,9 @@ import javax.swing.SwingUtilities;
 
 import org.powerbot.Boot;
 import org.powerbot.Configuration;
+import org.powerbot.bot.InputSimulator;
 import org.powerbot.bot.ScriptController;
+import org.powerbot.bot.SelectiveEventQueue;
 import org.powerbot.misc.GoogleAnalytics;
 import org.powerbot.misc.ScriptBundle;
 import org.powerbot.script.Bot;
@@ -25,6 +28,7 @@ class BotMenuBar extends MenuBar {
 	private static final long serialVersionUID = -4186554435386744949L;
 	private final BotLauncher launcher;
 	private final MenuItem play, stop;
+	private final CheckboxMenuItem inputAllow, inputBlock;
 
 	public BotMenuBar(final BotLauncher launcher) {
 		this.launcher = launcher;
@@ -121,26 +125,21 @@ class BotMenuBar extends MenuBar {
 			}
 		});
 
-		/*
-		input.addMenuListener(new MenuListener() {
+		input.setEnabled(false);
+		input.add(inputAllow = new CheckboxMenuItem(BotLocale.ALLOW));
+		inputAllow.addActionListener(new ActionListener() {
 			@Override
-			public void menuSelected(final MenuEvent e) {
-				final JMenu menu = (JMenu) e.getSource();
-				if (menu.getItemCount() != 0) {
-					menu.removeAll();
-				}
-				new BotMenuInput(menu);
-			}
-
-			@Override
-			public void menuDeselected(final MenuEvent e) {
-			}
-
-			@Override
-			public void menuCanceled(final MenuEvent e) {
+			public void actionPerformed(final ActionEvent e) {
+				setInputEnabled(true);
 			}
 		});
-		*/
+		input.add(inputBlock = new CheckboxMenuItem(BotLocale.BLOCK));
+		inputBlock.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				setInputEnabled(false);
+			}
+		});
 
 		if (Configuration.OS != Configuration.OperatingSystem.MAC) {
 			final MenuItem about = new MenuItem(BotLocale.ABOUT);
@@ -223,5 +222,17 @@ class BotMenuBar extends MenuBar {
 				launcher.bot.get().ctx.controller.stop();
 			}
 		}).start();
+	}
+
+	public void setInputEnabled(final boolean e) {
+		final SelectiveEventQueue eq = SelectiveEventQueue.getInstance();
+		eq.setBlocking(!e);
+		final InputSimulator s = eq.getEngine();
+		if (s != null) {
+			s.focus();
+		}
+
+		inputAllow.setState(!eq.isBlocking());
+		inputBlock.setState(!inputAllow.getState());
 	}
 }
