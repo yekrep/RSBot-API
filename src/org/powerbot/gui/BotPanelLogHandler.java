@@ -33,7 +33,7 @@ final class BotPanelLogHandler extends Handler {
 		if (x > 0) {
 			src = src.substring(0, x);
 		}
-		if (!(src.equals(BotChrome.class.getName()) || src.equals(org.powerbot.bot.rt6.Bot.class.getName()) || src.equals(org.powerbot.bot.rt4.Bot.class.getName()))) {
+		if (!(src.equals(BotLauncher.class.getName()) || src.equals(org.powerbot.bot.rt6.Bot.class.getName()) || src.equals(org.powerbot.bot.rt4.Bot.class.getName()))) {
 			return;
 		}
 

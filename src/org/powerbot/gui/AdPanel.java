@@ -71,7 +71,7 @@ class AdPanel implements Runnable {
 			link = ini.get("link");
 			if (ini.getBool("popup", false)) {
 				GoogleAnalytics.getInstance().pageview("ad/popup", "");
-				BotChrome.openURL(link);
+				BotLauncher.openURL(link);
 			}
 
 			final File f = new File(Configuration.TEMP, CryptFile.getHashedName("advert.1.png"));
@@ -106,7 +106,7 @@ class AdPanel implements Runnable {
 					@Override
 					public void mouseClicked(final MouseEvent e) {
 						GoogleAnalytics.getInstance().pageview("ad/click", "");
-						BotChrome.openURL(link);
+						BotLauncher.openURL(link);
 					}
 				});
 				logo.setBorder(label.getBorder());

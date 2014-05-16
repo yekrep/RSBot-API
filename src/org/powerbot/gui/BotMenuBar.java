@@ -323,7 +323,7 @@ class BotMenuBar extends MenuBar {
 	}
 
 	public void showLicense() {
-		BotChrome.openURL(Configuration.URLs.LICENSE);
+		BotLauncher.openURL(Configuration.URLs.LICENSE);
 		GoogleAnalytics.getInstance().pageview("license/", BotLocale.LICENSE);
 	}
 

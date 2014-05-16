@@ -31,7 +31,7 @@ import org.powerbot.script.Client;
 
 class BotOverlay extends JDialog {
 	private static final Logger log = Logger.getLogger(BotOverlay.class.getName());
-	private final BotChrome parent;
+	private final BotLauncher parent;
 	private final Component panel;
 	private final Thread repaint;
 	private volatile BufferedImage bi = null;
@@ -39,8 +39,8 @@ class BotOverlay extends JDialog {
 	private final PaintEvent paintEvent;
 	private final TextPaintEvent textPaintEvent;
 
-	public BotOverlay(final BotChrome parent) {
-		super(parent);
+	public BotOverlay(final BotLauncher parent) {
+		super(parent.window.get());
 		this.parent = parent;
 
 		final Color a = new Color(0, 0, 0, 0);
@@ -109,7 +109,7 @@ class BotOverlay extends JDialog {
 						break;
 					}
 
-					if (!parent.isVisible() || ((parent.getExtendedState() & Frame.ICONIFIED) == Frame.ICONIFIED)
+					if (!parent.window.get().isVisible() || ((parent.window.get().getExtendedState() & Frame.ICONIFIED) == Frame.ICONIFIED)
 							|| getWidth() == 0 || getHeight() == 0) {
 						continue;
 					}
@@ -154,7 +154,7 @@ class BotOverlay extends JDialog {
 			repaint.start();
 			setVisible(true);
 
-			parent.addComponentListener(new ComponentAdapter() {
+			parent.window.get().addComponentListener(new ComponentAdapter() {
 				@Override
 				public void componentResized(final ComponentEvent e) {
 					adjustSize();
@@ -166,7 +166,7 @@ class BotOverlay extends JDialog {
 				}
 			});
 
-			parent.addWindowListener(new WindowAdapter() {
+			parent.window.get().addWindowListener(new WindowAdapter() {
 				@Override
 				public void windowDeiconified(final WindowEvent e) {
 					if (isVisible()) {
@@ -179,14 +179,14 @@ class BotOverlay extends JDialog {
 	}
 
 	public void adjustSize() {
-		final Point p = parent.getLocation();
-		final Insets s = parent.getInsets();
+		final Point p = parent.window.get().getLocation();
+		final Insets s = parent.window.get().getInsets();
 		p.translate(s.left, s.top);
-		final Dimension d = parent.getSize();
+		final Dimension d = parent.window.get().getSize();
 		Dimension d2 = new Dimension(d.width - s.left - s.right, d.height - s.top - s.bottom);
 
 		if (offsetMenu) {
-			final int h = parent.getJMenuBar().getHeight();
+			final int h = 0; //parent.window.get().getMenuBar().getHeight();
 			p.translate(0, h);
 			d2 = new Dimension(d2.width, d2.height - h);
 		}

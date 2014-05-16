@@ -2,27 +2,39 @@ package org.powerbot.gui;
 
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.Closeable;
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Method;
+import java.net.SocketException;
+import java.net.SocketTimeoutException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.concurrent.Callable;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
 
 import org.powerbot.Configuration;
+import org.powerbot.misc.CryptFile;
 import org.powerbot.misc.Resources;
 import org.powerbot.script.Bot;
 import org.powerbot.util.HttpUtils;
+import org.powerbot.util.IOUtils;
 
 public class BotLauncher implements Callable<Boolean>, Closeable {
+	private static final Logger log = Logger.getLogger(BotLauncher.class.getName());
 	private static final BotLauncher instance = new BotLauncher();
 	public final AtomicReference<Bot> bot;
 	public final AtomicReference<Frame> window;
@@ -142,7 +154,84 @@ public class BotLauncher implements Callable<Boolean>, Closeable {
 		return true;
 	}
 
+	private boolean isLatestVersion() {
+		final CryptFile cache = new CryptFile("version.1.txt", getClass());
+		final int version;
+		try {
+			version = Integer.parseInt(IOUtils.readString(cache.download(new URL(Configuration.URLs.VERSION))).trim());
+		} catch (final Exception e) {
+			String msg = "Error reading server data";
+			if (SocketException.class.isAssignableFrom(e.getClass()) || SocketTimeoutException.class.isAssignableFrom(e.getClass())) {
+				msg = "Could not connect to " + Configuration.URLs.DOMAIN + " server";
+			}
+			log.log(Level.SEVERE, msg, BotLocale.ERROR);
+			return false;
+		}
+		if (version > Configuration.VERSION) {
+			log.log(Level.SEVERE, String.format("A newer version is available, please download from %s", BotLocale.WEBSITE), "Update");
+			return false;
+		}
+		log.info("Welcome to " + Configuration.NAME + ", please select your game version\r\n" +
+				"To play a script click " + BotLocale.EDIT + " > " + BotLocale.SCRIPT_PLAY +
+				(Configuration.OS == Configuration.OperatingSystem.MAC ? " (\u2318,)" : ""));
+		return true;
+	}
+
+	public static void openURL(final String url) {
+		if (!Desktop.isDesktopSupported() || !Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
+			return;
+		}
+		final URI uri;
+		try {
+			uri = new URI(url);
+		} catch (final URISyntaxException ignored) {
+			return;
+		}
+		try {
+			Desktop.getDesktop().browse(uri);
+		} catch (final IOException ignored) {
+		}
+	}
+
 	@Override
 	public void close() {
+		log.info("Shutting down");
+
+		boolean pending = false;
+		if (bot.get() != null) {
+			pending = bot.get().pending.get();
+			new Thread(new Runnable() {
+				@Override
+				public void run() {
+					bot.get().close();
+				}
+			}).start();
+		}
+
+		if (overlay.get() != null) {
+			overlay.getAndSet(null).dispose();
+		}
+		window.get().dispose();
+
+		if (Configuration.OS == Configuration.OperatingSystem.WINDOWS) {
+			System.exit(0);
+			return;
+		}
+
+		final long timeout = TimeUnit.SECONDS.toMillis(pending ? 120 : 6);
+		final Thread t = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					Thread.sleep(timeout);
+					log.info("Terminating process");
+					System.exit(1);
+				} catch (final InterruptedException ignored) {
+				}
+			}
+		});
+		t.setDaemon(true);
+		t.setPriority(Thread.MIN_PRIORITY);
+		t.start();
 	}
 }

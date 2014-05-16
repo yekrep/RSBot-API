@@ -24,7 +24,7 @@ import javax.imageio.ImageIO;
 import org.powerbot.Configuration;
 import org.powerbot.bot.ScriptClassLoader;
 import org.powerbot.bot.ScriptController;
-import org.powerbot.gui.BotChrome;
+import org.powerbot.gui.BotLauncher;
 import org.powerbot.misc.ScriptBundle;
 import org.powerbot.misc.ScriptList;
 import org.powerbot.util.HttpUtils;
@@ -326,7 +326,7 @@ public abstract class AbstractScript<C extends ClientContext> implements Script 
 
 		for (final String w : whitelist) {
 			if (host.endsWith("." + w)) {
-				BotChrome.openURL(url);
+				BotLauncher.openURL(url);
 				return;
 			}
 		}

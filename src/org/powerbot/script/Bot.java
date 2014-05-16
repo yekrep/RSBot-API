@@ -1,32 +1,28 @@
 package org.powerbot.script;
 
 import java.applet.Applet;
-import java.awt.Dimension;
-import java.awt.Insets;
 import java.io.Closeable;
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Logger;
 
-import javax.swing.SwingUtilities;
-
 import org.powerbot.bot.EventDispatcher;
 import org.powerbot.bot.ScriptClassLoader;
-import org.powerbot.gui.BotChrome;
+import org.powerbot.gui.BotLauncher;
 import org.powerbot.util.IOUtils;
 
 public abstract class Bot<C extends ClientContext<? extends Client>> implements Runnable, Closeable {
 	protected final Logger log = Logger.getLogger(getClass().getName());
 	public final C ctx;
-	protected final BotChrome chrome;
+	protected final BotLauncher launcher;
 	public final EventDispatcher dispatcher;
 	public final ThreadGroup threadGroup;
 	public Applet applet;
 	public final AtomicBoolean pending;
 
-	public Bot(final BotChrome chrome, final EventDispatcher dispatcher) {
-		this.chrome = chrome;
+	public Bot(final BotLauncher launcher, final EventDispatcher dispatcher) {
+		this.launcher = launcher;
 		this.dispatcher = dispatcher;
 		threadGroup = new ThreadGroup("game"); // TODO: mask in live mode
 		pending = new AtomicBoolean(false);
@@ -36,12 +32,6 @@ public abstract class Bot<C extends ClientContext<? extends Client>> implements 
 	protected abstract C newContext();
 
 	protected void display() {
-		chrome.panel.setVisible(false);
-		chrome.add(applet);
-		final Dimension d = applet.getMinimumSize(), d2 = chrome.getJMenuBar().getSize();
-		final Insets s = chrome.getInsets();
-		chrome.setMinimumSize(new Dimension(d.width + s.right + s.left, d.height + s.top + s.bottom + d2.height));
-		chrome.pack();
 	}
 
 	@Override
@@ -68,13 +58,7 @@ public abstract class Bot<C extends ClientContext<? extends Client>> implements 
 			threadGroup.interrupt();
 		}
 
-		chrome.bot.set(null);
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				chrome.reset();
-			}
-		});
+		launcher.bot.set(null);
 	}
 
 	protected void clearPreferences() {

@@ -541,7 +541,7 @@ class BotPreferences extends JDialog implements Runnable {
 									"Would you like to browse " + Configuration.URLs.DOMAIN + " for scripts?", "",
 							JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, null);
 					if (r == JOptionPane.YES_OPTION)  {
-						BotChrome.openURL(Configuration.URLs.SCRIPTS_BROWSE);
+						BotLauncher.openURL(Configuration.URLs.SCRIPTS_BROWSE);
 					}
 				}
 			}

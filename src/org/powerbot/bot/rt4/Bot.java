@@ -4,10 +4,8 @@ import java.applet.Applet;
 import java.awt.Dimension;
 import java.io.IOException;
 
-import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
-import org.powerbot.Configuration;
 import org.powerbot.bot.loader.GameAppletLoader;
 import org.powerbot.bot.loader.GameLoader;
 import org.powerbot.bot.loader.GameStub;
@@ -16,13 +14,13 @@ import org.powerbot.bot.loader.TransformSpec;
 import org.powerbot.bot.loader.Transformer;
 import org.powerbot.bot.rt4.activation.EventDispatcher;
 import org.powerbot.bot.rt4.client.Client;
-import org.powerbot.gui.BotChrome;
+import org.powerbot.gui.BotLauncher;
 import org.powerbot.script.rt4.ClientContext;
 import org.powerbot.util.Ini;
 
 public class Bot extends org.powerbot.script.Bot<ClientContext> {
-	public Bot(final BotChrome chrome) {
-		super(chrome, new EventDispatcher());
+	public Bot(final BotLauncher launcher) {
+		super(launcher, new EventDispatcher());
 	}
 
 	@Override
@@ -79,9 +77,6 @@ public class Bot extends org.powerbot.script.Bot<ClientContext> {
 			log.severe("Failed to load game");
 			return;
 		}
-		if (crawler.properties.containsKey("title")) {
-			chrome.setTitle(crawler.properties.get("title"));
-		}
 		final GameAppletLoader bootstrap = new GameAppletLoader(loader, crawler.clazz) {
 			@Override
 			protected void load(final Applet applet) {
@@ -111,21 +106,6 @@ public class Bot extends org.powerbot.script.Bot<ClientContext> {
 		};
 		Thread.currentThread().setContextClassLoader(loader);
 		bootstrap.getLoaderThread(threadGroup).start();
-	}
-
-	@Override
-	public void display() {
-		super.display();
-
-		final int s = chrome.getExtendedState(), x = s & ~JFrame.MAXIMIZED_BOTH;
-		if (s != x) {
-			chrome.setExtendedState(x);
-			chrome.setLocationRelativeTo(chrome.getParent());
-		}
-
-		if (Configuration.OS != Configuration.OperatingSystem.WINDOWS) {
-			chrome.setResizable(false);
-		}
 	}
 
 	private void initialize() {
