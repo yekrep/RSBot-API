@@ -24,17 +24,21 @@ import org.powerbot.script.Bot;
 import org.powerbot.script.BotMenuActionListener;
 import org.powerbot.script.Script;
 
-class BotMenuBar extends MenuBar {
+public class BotMenuBar extends MenuBar {
 	private static final long serialVersionUID = -4186554435386744949L;
 	private final BotLauncher launcher;
+	private final Menu view;
 	private final MenuItem play, stop;
 	private final CheckboxMenuItem inputAllow, inputBlock;
 
 	public BotMenuBar(final BotLauncher launcher) {
 		this.launcher = launcher;
 
-		final Menu file = new Menu(BotLocale.FILE), edit = new Menu(BotLocale.EDIT), view = new Menu(BotLocale.VIEW),
+		final Menu file = new Menu(BotLocale.FILE), edit = new Menu(BotLocale.EDIT),
 				input = new Menu(BotLocale.INPUT), help = new Menu(BotLocale.HELP);
+
+		view = new Menu(BotLocale.VIEW);
+		view.setEnabled(false);
 
 		final MenuItem newtab = new MenuItem(BotLocale.NEW_WINDOW);
 		file.add(newtab);
@@ -56,33 +60,6 @@ class BotMenuBar extends MenuBar {
 				}
 			});
 		}
-
-		/*
-		view.addMenuListener(new MenuListener() {
-			@Override
-			public void menuSelected(final MenuEvent e) {
-				final JMenu menu = (JMenu) e.getSource();
-				menu.removeAll();
-				final Bot bot = launcher.bot.get();
-				if (bot != null) {
-					final boolean os = bot instanceof org.powerbot.bot.rt4.Bot;
-					if (os) {
-						new RT4BotMenuView(launcher, menu);
-					} else {
-						new RT6BotMenuView(launcher, menu);
-					}
-				}
-			}
-
-			@Override
-			public void menuDeselected(final MenuEvent e) {
-			}
-
-			@Override
-			public void menuCanceled(final MenuEvent e) {
-			}
-		});
-		*/
 
 		edit.setEnabled(false);
 		play = new MenuItem(BotLocale.SCRIPT_PLAY);
@@ -166,6 +143,19 @@ class BotMenuBar extends MenuBar {
 		add(view);
 		add(input);
 		add(help);
+	}
+
+	public void update() {
+		view.removeAll();
+		final Bot bot = launcher.bot.get();
+		if (bot != null) {
+			final boolean os = bot instanceof org.powerbot.bot.rt4.Bot;
+			if (os) {
+				new RT4BotMenuView(launcher, view);
+			} else {
+				new RT6BotMenuView(launcher, view);
+			}
+		}
 	}
 
 	public void showAbout() {

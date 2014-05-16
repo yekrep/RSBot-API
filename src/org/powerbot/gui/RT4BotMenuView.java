@@ -1,5 +1,8 @@
 package org.powerbot.gui;
 
+import java.awt.CheckboxMenuItem;
+import java.awt.Menu;
+import java.awt.MenuItem;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -10,8 +13,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
 
 import org.powerbot.bot.EventDispatcher;
 import org.powerbot.bot.rt4.activation.DrawGroundItems;
@@ -37,18 +38,18 @@ final class RT4BotMenuView implements ActionListener {
 	private final Map<String, Class<? extends EventListener>> map;
 	private final BotLauncher launcher;
 
-	public RT4BotMenuView(final BotLauncher launcher, final JMenu menu) {
+	public RT4BotMenuView(final BotLauncher launcher, final Menu menu) {
 		this.launcher = launcher;
 		final Bot b = launcher.bot.get();
 
-		final JMenuItem widgetExplorer = new JMenuItem(BotLocale.UTIL_WIDGET);
+		final MenuItem widgetExplorer = new MenuItem(BotLocale.UTIL_WIDGET);
 		widgetExplorer.addActionListener(this);
 		menu.add(widgetExplorer);
-		final JMenuItem settingExplorer = new JMenuItem(BotLocale.UTIL_VARPBITS);
+		final MenuItem settingExplorer = new MenuItem(BotLocale.UTIL_VARPBITS);
 		settingExplorer.addActionListener(this);
 		menu.add(settingExplorer);
 
-		final JMenuItem boundingUtility = new JMenuItem(BotLocale.UTIL_MODELING);
+		final MenuItem boundingUtility = new MenuItem(BotLocale.UTIL_MODELING);
 		boundingUtility.addActionListener(this);
 		menu.add(boundingUtility);
 
@@ -108,7 +109,7 @@ final class RT4BotMenuView implements ActionListener {
 			}
 		}
 
-		final JCheckBoxMenuItem all = new JCheckBoxMenuItem(BotLocale.VIEW_ALL, selectedAll);
+		final CheckboxMenuItem all = new CheckboxMenuItem(BotLocale.VIEW_ALL, selectedAll);
 		all.addActionListener(this);
 		menu.add(all);
 		menu.addSeparator();
@@ -118,7 +119,7 @@ final class RT4BotMenuView implements ActionListener {
 				menu.addSeparator();
 				continue;
 			}
-			final JCheckBoxMenuItem item = new JCheckBoxMenuItem(key, d.contains(map.get(key)));
+			final CheckboxMenuItem item = new CheckboxMenuItem(key, d.contains(map.get(key)));
 			item.addActionListener(this);
 			menu.add(item);
 		}

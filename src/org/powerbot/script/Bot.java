@@ -32,6 +32,7 @@ public abstract class Bot<C extends ClientContext<? extends Client>> implements 
 	protected abstract C newContext();
 
 	protected void display() {
+		launcher.menu.get().update();
 	}
 
 	@Override
@@ -59,6 +60,7 @@ public abstract class Bot<C extends ClientContext<? extends Client>> implements 
 		}
 
 		launcher.bot.set(null);
+		launcher.menu.get().update();
 	}
 
 	protected void clearPreferences() {
