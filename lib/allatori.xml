@@ -6,6 +6,9 @@
 		<class template="class org.powerbot.Boot">
 			<method template="public main(java.lang.String[])" />
 		</class>
+		<class template="class org.powerbot.InterceptAgentProxy">
+			<field template="registered" />
+		</class>
 		<class template="class org.powerbot.bot.rt4.client.*">
 			<field access="protected+" />
 			<method access="protected+" />
