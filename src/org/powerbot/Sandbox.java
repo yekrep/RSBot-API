@@ -164,8 +164,8 @@ class Sandbox extends SecurityManager {
 			return;
 		}
 
-		// allow access for privileged thread groups
-		if (isGameThread() || isCallingClass(Bot.class)) {
+		// allow access for unrestricted thread groups
+		if (!isScriptThread()) {
 			return;
 		}
 
