@@ -35,12 +35,11 @@ import org.powerbot.script.Bot;
 
 final class RT4BotMenuView implements ActionListener {
 	private final Map<String, Class<? extends EventListener>> map;
+	private final BotLauncher launcher;
 
-	private final BotChrome chrome;
-
-	public RT4BotMenuView(final BotChrome chrome, final JMenu menu) {
-		this.chrome = chrome;
-		final Bot b = chrome.bot.get();
+	public RT4BotMenuView(final BotLauncher launcher, final JMenu menu) {
+		this.launcher = launcher;
+		final Bot b = launcher.bot.get();
 
 		final JMenuItem widgetExplorer = new JMenuItem(BotLocale.UTIL_WIDGET);
 		widgetExplorer.addActionListener(this);
@@ -128,11 +127,11 @@ final class RT4BotMenuView implements ActionListener {
 	public void actionPerformed(final ActionEvent e) {
 		final String s = e.getActionCommand();
 		if (s.equals(BotLocale.UTIL_WIDGET)) {
-			RT4WidgetExplorer.getInstance(chrome).display();
+			RT4WidgetExplorer.getInstance(launcher).display();
 		} else if (s.equals(BotLocale.UTIL_VARPBITS)) {
-			BotSettingExplorer.getInstance(chrome).display();
+			BotSettingExplorer.getInstance(launcher).display();
 		} else if (s.equals(BotLocale.UTIL_MODELING)) {
-			RT4BotBoundingUtility.getInstance(chrome).setVisible(true);
+			RT4BotBoundingUtility.getInstance(launcher).setVisible(true);
 		} else {
 			final JCheckBoxMenuItem item = (JCheckBoxMenuItem) e.getSource();
 			item.setSelected(!item.isSelected());
@@ -147,7 +146,7 @@ final class RT4BotMenuView implements ActionListener {
 	}
 
 	private void setView(final Class<? extends EventListener> e, final boolean s) {
-		final Bot b = chrome.bot.get();
+		final Bot b = launcher.bot.get();
 
 		if (b == null) {
 			return;

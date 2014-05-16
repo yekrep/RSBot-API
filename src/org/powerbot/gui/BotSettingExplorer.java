@@ -39,8 +39,8 @@ class BotSettingExplorer extends JFrame {
 	private static final int FRAME_HEIGHT = 335;
 	private static final long serialVersionUID = -2734139689268786064L;
 
-	private static final Map<BotChrome, BotSettingExplorer> instances = new HashMap<BotChrome, BotSettingExplorer>();
-	private final BotChrome chrome;
+	private static final Map<BotLauncher, BotSettingExplorer> instances = new HashMap<BotLauncher, BotSettingExplorer>();
+	private final BotLauncher launcher;
 	private final SimpleDateFormat FORMATTER = new SimpleDateFormat("HH:mm:ss");
 
 	private int current = -1;
@@ -54,16 +54,16 @@ class BotSettingExplorer extends JFrame {
 	private JScrollPane changesPane = null;
 	private JList settingsList = null;
 
-	private BotSettingExplorer(final BotChrome chrome) {
-		this.chrome = chrome;
+	private BotSettingExplorer(final BotLauncher launcher) {
+		this.launcher = launcher;
 		create();
 	}
 
-	public static synchronized BotSettingExplorer getInstance(final BotChrome chrome) {
-		if (!instances.containsKey(chrome)) {
-			instances.put(chrome, new BotSettingExplorer(chrome));
+	public static synchronized BotSettingExplorer getInstance(final BotLauncher launcher) {
+		if (!instances.containsKey(launcher)) {
+			instances.put(launcher, new BotSettingExplorer(launcher));
 		}
-		return instances.get(chrome);
+		return instances.get(launcher);
 	}
 
 	public void display() {
@@ -73,7 +73,7 @@ class BotSettingExplorer extends JFrame {
 		}
 		setVisible(true);
 		try {
-			final ClientContext<?> c = chrome.bot.get().ctx;
+			final ClientContext<?> c = launcher.bot.get().ctx;
 			if (c instanceof org.powerbot.script.rt4.ClientContext) {
 				settings_cache = ((org.powerbot.script.rt4.ClientContext) c).varpbits.array();
 			} else if (c instanceof org.powerbot.script.rt6.ClientContext) {
@@ -84,7 +84,7 @@ class BotSettingExplorer extends JFrame {
 		} catch (final NullPointerException ignored) {
 		}
 		if (!visible) {
-			new Thread(chrome.bot.get().threadGroup, new Runnable() {
+			new Thread(launcher.bot.get().threadGroup, new Runnable() {
 				@Override
 				public void run() {
 					while (isVisible()) {
@@ -105,7 +105,7 @@ class BotSettingExplorer extends JFrame {
 
 	private void update() {
 		final int[] settings_clone;
-		final ClientContext<?> c = chrome.bot.get().ctx;
+		final ClientContext<?> c = launcher.bot.get().ctx;
 		if (c instanceof org.powerbot.script.rt4.ClientContext) {
 			settings_clone = ((org.powerbot.script.rt4.ClientContext) c).varpbits.array();
 		} else if (c instanceof org.powerbot.script.rt6.ClientContext) {
@@ -166,7 +166,7 @@ class BotSettingExplorer extends JFrame {
 					dd.printStackTrace();
 				}
 				setVisible(false);
-				instances.remove(chrome);
+				instances.remove(launcher);
 				dispose();
 			}
 		});

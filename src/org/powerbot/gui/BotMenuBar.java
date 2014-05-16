@@ -4,6 +4,9 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Menu;
+import java.awt.MenuBar;
+import java.awt.MenuItem;
 import java.awt.Polygon;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
@@ -13,35 +16,27 @@ import java.util.Calendar;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
-import javax.swing.event.MenuEvent;
-import javax.swing.event.MenuListener;
 
 import org.powerbot.Boot;
 import org.powerbot.Configuration;
 import org.powerbot.bot.ScriptController;
 import org.powerbot.misc.GoogleAnalytics;
-import org.powerbot.misc.ScriptBundle;
 import org.powerbot.script.Bot;
-import org.powerbot.script.BotMenuListener;
-import org.powerbot.script.Script;
 
-class BotMenuBar extends JMenuBar {
+class BotMenuBar extends MenuBar {
 	private static final long serialVersionUID = -4186554435386744949L;
-	private final BotChrome chrome;
-	private final JMenuItem play, stop;
+	private final BotLauncher launcher;
+	private final MenuItem play, stop;
 
-	public BotMenuBar(final BotChrome chrome) {
-		this.chrome = chrome;
+	public BotMenuBar(final BotLauncher launcher) {
+		this.launcher = launcher;
 
-		final JMenu file = new JMenu(BotLocale.FILE), edit = new JMenu(BotLocale.EDIT), view = new JMenu(BotLocale.VIEW),
-				input = new JMenu(BotLocale.INPUT), help = new JMenu(BotLocale.HELP);
+		final Menu file = new Menu(BotLocale.FILE), edit = new Menu(BotLocale.EDIT), view = new Menu(BotLocale.VIEW),
+				input = new Menu(BotLocale.INPUT), help = new Menu(BotLocale.HELP);
 
-		final JMenuItem newtab = new JMenuItem(BotLocale.NEW_WINDOW);
+		final MenuItem newtab = new MenuItem(BotLocale.NEW_WINDOW);
 		file.add(newtab);
 		newtab.addActionListener(new ActionListener() {
 			@Override
@@ -49,14 +44,14 @@ class BotMenuBar extends JMenuBar {
 				Boot.fork();
 			}
 		});
-		final JMenuItem closeTab = new JMenuItem(BotLocale.CLOSE_WINDOW);
+		final MenuItem closeTab = new MenuItem(BotLocale.CLOSE_WINDOW);
 		file.add(closeTab);
-		closeTab.setVisible(false);
+		//closeTab.setVisible(false);
 		closeTab.setEnabled(false);
 		closeTab.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent e) {
-				final Bot b = chrome.bot.get();
+				final Bot b = launcher.bot.get();
 				if (b != null) {
 					new Thread(new Runnable() {
 						@Override
@@ -68,10 +63,11 @@ class BotMenuBar extends JMenuBar {
 			}
 		});
 
+		/*
 		file.addMenuListener(new MenuListener() {
 			@Override
 			public void menuSelected(final MenuEvent e) {
-				closeTab.setEnabled(chrome.bot.get() != null && !chrome.bot.get().pending.get());
+				closeTab.setEnabled(launcher.bot.get() != null && !launcher.bot.get().pending.get());
 			}
 
 			@Override
@@ -82,31 +78,33 @@ class BotMenuBar extends JMenuBar {
 			public void menuCanceled(final MenuEvent e) {
 			}
 		});
+		*/
 
 		if (Configuration.OS != Configuration.OperatingSystem.MAC) {
 			file.addSeparator();
-			final JMenuItem exit = new JMenuItem(BotLocale.EXIT);
+			final MenuItem exit = new MenuItem(BotLocale.EXIT);
 			file.add(exit);
 			exit.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(final ActionEvent e) {
-					chrome.close();
+					launcher.close();
 				}
 			});
 		}
 
+		/*
 		view.addMenuListener(new MenuListener() {
 			@Override
 			public void menuSelected(final MenuEvent e) {
 				final JMenu menu = (JMenu) e.getSource();
 				menu.removeAll();
-				final Bot bot = chrome.bot.get();
+				final Bot bot = launcher.bot.get();
 				if (bot != null) {
 					final boolean os = bot instanceof org.powerbot.bot.rt4.Bot;
 					if (os) {
-						new RT4BotMenuView(chrome, menu);
+						new RT4BotMenuView(launcher, menu);
 					} else {
-						new RT6BotMenuView(chrome, menu);
+						new RT6BotMenuView(launcher, menu);
 					}
 				}
 			}
@@ -119,10 +117,11 @@ class BotMenuBar extends JMenuBar {
 			public void menuCanceled(final MenuEvent e) {
 			}
 		});
+		*/
 
 		final ImageIcon[] playIcons = new ImageIcon[]{createControlIcon(1), createControlIcon(2)};
-		play = new JMenuItem(BotLocale.SCRIPT_PLAY);
-		play.setIcon(playIcons[0]);
+		play = new MenuItem(BotLocale.SCRIPT_PLAY);
+		//play.setIcon(playIcons[0]);
 		edit.add(play);
 		play.addActionListener(new ActionListener() {
 			@Override
@@ -130,8 +129,8 @@ class BotMenuBar extends JMenuBar {
 				scriptPlayPause();
 			}
 		});
-		stop = new JMenuItem(BotLocale.SCRIPT_STOP);
-		stop.setIcon(createControlIcon(0));
+		stop = new MenuItem(BotLocale.SCRIPT_STOP);
+		//stop.setIcon(createControlIcon(0));
 		edit.add(stop);
 		stop.addActionListener(new ActionListener() {
 			@Override
@@ -141,16 +140,17 @@ class BotMenuBar extends JMenuBar {
 		});
 
 		edit.addSeparator();
-		final JMenu options = new JMenu(BotLocale.OPTIONS);
+		final Menu options = new Menu(BotLocale.OPTIONS);
 		edit.add(options);
 
+		/*
 		options.addMenuListener(new MenuListener() {
 			@Override
 			public void menuSelected(final MenuEvent e) {
 				final JMenu m = (JMenu) e.getSource();
 				m.removeAll();
 
-				final ScriptController c = chrome.bot.get() == null ? null : (ScriptController) chrome.bot.get().ctx.controller;
+				final ScriptController c = launcher.bot.get() == null ? null : (ScriptController) launcher.bot.get().ctx.controller;
 				if (c == null || !c.valid()) {
 					return;
 				}
@@ -169,7 +169,7 @@ class BotMenuBar extends JMenuBar {
 
 			@Override
 			public void menuDeselected(final MenuEvent e) {
-				final ScriptController c = chrome.bot.get() == null ? null : (ScriptController) chrome.bot.get().ctx.controller;
+				final ScriptController c = launcher.bot.get() == null ? null : (ScriptController) launcher.bot.get().ctx.controller;
 				if (c == null || !c.valid()) {
 					return;
 				}
@@ -188,7 +188,7 @@ class BotMenuBar extends JMenuBar {
 
 			@Override
 			public void menuCanceled(final MenuEvent e) {
-				final ScriptController c = chrome.bot.get() == null ? null : (ScriptController) chrome.bot.get().ctx.controller;
+				final ScriptController c = launcher.bot.get() == null ? null : (ScriptController) launcher.bot.get().ctx.controller;
 				if (c == null || !c.valid()) {
 					return;
 				}
@@ -209,10 +209,10 @@ class BotMenuBar extends JMenuBar {
 		edit.addMenuListener(new MenuListener() {
 			@Override
 			public void menuSelected(final MenuEvent e) {
-				final ScriptController c = chrome.bot.get() == null ? null : (ScriptController) chrome.bot.get().ctx.controller;
+				final ScriptController c = launcher.bot.get() == null ? null : (ScriptController) launcher.bot.get().ctx.controller;
 				final boolean active = c != null && c.valid() && !c.isStopping(), running = active && !c.isSuspended();
 
-				play.setEnabled(chrome.bot.get() != null && chrome.bot.get().ctx.client() != null && !BotPreferences.loading.get());
+				play.setEnabled(launcher.bot.get() != null && launcher.bot.get().ctx.client() != null && !BotPreferences.loading.get());
 				play.setText(running ? BotLocale.SCRIPT_PAUSE : active ? BotLocale.SCRIPT_RESUME : BotLocale.SCRIPT_PLAY);
 				play.setIcon(playIcons[running ? 1 : 0]);
 				stop.setEnabled(active);
@@ -252,9 +252,10 @@ class BotMenuBar extends JMenuBar {
 			public void menuCanceled(final MenuEvent e) {
 			}
 		});
+		*/
 
 		if (Configuration.OS != Configuration.OperatingSystem.MAC) {
-			final JMenuItem about = new JMenuItem(BotLocale.ABOUT);
+			final MenuItem about = new MenuItem(BotLocale.ABOUT);
 			help.add(about);
 			about.addActionListener(new ActionListener() {
 				@Override
@@ -264,7 +265,7 @@ class BotMenuBar extends JMenuBar {
 			});
 		}
 
-		final JMenuItem license = new JMenuItem(BotLocale.LICENSE);
+		final MenuItem license = new MenuItem(BotLocale.LICENSE);
 		help.add(license);
 		license.addActionListener(new ActionListener() {
 			@Override
@@ -317,7 +318,7 @@ class BotMenuBar extends JMenuBar {
 		final JLabel text = new JLabel("<html>" + msg.replace("\n", "<br>") + "</html>");
 		final Font f = text.getFont();
 		text.setFont(new Font(f.getName(), f.getStyle(), f.getSize() - 2));
-		JOptionPane.showMessageDialog(chrome, text, BotLocale.ABOUT, JOptionPane.PLAIN_MESSAGE);
+		JOptionPane.showMessageDialog(launcher.window.get(), text, BotLocale.ABOUT, JOptionPane.PLAIN_MESSAGE);
 		GoogleAnalytics.getInstance().pageview("about/", BotLocale.ABOUT);
 	}
 
@@ -330,8 +331,8 @@ class BotMenuBar extends JMenuBar {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				final Bot bot = chrome.bot.get();
-				final ScriptController c = (ScriptController) chrome.bot.get().ctx.controller;
+				final Bot bot = launcher.bot.get();
+				final ScriptController c = (ScriptController) launcher.bot.get().ctx.controller;
 
 				if (c.valid()) {
 					if (c.isSuspended()) {
@@ -344,7 +345,7 @@ class BotMenuBar extends JMenuBar {
 						SwingUtilities.invokeLater(new Runnable() {
 							@Override
 							public void run() {
-								new BotPreferences(chrome);
+								new BotPreferences(launcher);
 							}
 						});
 					}
@@ -357,7 +358,7 @@ class BotMenuBar extends JMenuBar {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				chrome.bot.get().ctx.controller.stop();
+				launcher.bot.get().ctx.controller.stop();
 			}
 		}).start();
 	}

@@ -74,7 +74,8 @@ public class BotChrome extends JFrame implements Closeable {
 			}
 		}
 		));
-		setJMenuBar(menuBar = new BotMenuBar(this));
+		//setJMenuBar(menuBar = new BotMenuBar(this));
+		menuBar = null;
 
 		pack();
 		setMinimumSize(getSize());
@@ -89,7 +90,7 @@ public class BotChrome extends JFrame implements Closeable {
 		});
 
 		setVisible(true);
-		new OSXAdapt(this).run();
+		//new OSXAdapt(this).run();
 		System.gc();
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override

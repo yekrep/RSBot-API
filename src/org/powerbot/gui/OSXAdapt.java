@@ -16,10 +16,10 @@ import org.powerbot.Configuration;
 import org.powerbot.bot.ScriptController;
 
 class OSXAdapt implements Runnable {
-	private final BotChrome chrome;
+	private final BotLauncher launcher;
 
-	public OSXAdapt(final BotChrome chrome) {
-		this.chrome = chrome;
+	public OSXAdapt(final BotLauncher launcher) {
+		this.launcher = launcher;
 	}
 
 	@OSXAdapt.OSXAdapterInfo(mode = 1)
@@ -27,7 +27,7 @@ class OSXAdapt implements Runnable {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				chrome.menuBar.showAbout();
+				launcher.menu.get().showAbout();
 			}
 		});
 	}
@@ -37,7 +37,7 @@ class OSXAdapt implements Runnable {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				chrome.close();
+				launcher.close();
 			}
 		});
 	}
@@ -47,22 +47,22 @@ class OSXAdapt implements Runnable {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				if (BotPreferences.loading.get() || BotPreferences.visible.get() || chrome.bot.get().ctx.client() == null) {
+				if (BotPreferences.loading.get() || BotPreferences.visible.get() || launcher.bot.get().ctx.client() == null) {
 					return;
 				}
 
-				final ScriptController c = (ScriptController) chrome.bot.get().ctx.controller;
+				final ScriptController c = (ScriptController) launcher.bot.get().ctx.controller;
 				final boolean active = c.valid() && !c.isStopping();
 
 				if (active) {
-					if (JOptionPane.showConfirmDialog(chrome, "Would you like to stop the current script?", BotLocale.SCRIPTS, JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE) == JOptionPane.YES_OPTION) {
-						chrome.menuBar.scriptStop();
+					if (JOptionPane.showConfirmDialog(launcher.window.get(), "Would you like to stop the current script?", BotLocale.SCRIPTS, JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE) == JOptionPane.YES_OPTION) {
+						launcher.menu.get().scriptStop();
 					} else {
 						return;
 					}
 				}
 
-				new BotPreferences(chrome);
+				new BotPreferences(launcher);
 			}
 		});
 	}

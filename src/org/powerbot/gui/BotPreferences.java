@@ -34,7 +34,7 @@ import org.powerbot.script.ClientContext;
  */
 class BotPreferences extends JDialog implements Runnable {
 	private static final int PAD = 5;
-	private final BotChrome chrome;
+	private final BotLauncher launcher;
 	private final JPanel panel;
 	private final JComboBox account;
 	private final JPasswordField password, accountPassword;
@@ -51,9 +51,9 @@ class BotPreferences extends JDialog implements Runnable {
 
 	public static final AtomicBoolean loading = new AtomicBoolean(false), visible = new AtomicBoolean(false);
 
-	public BotPreferences(final BotChrome chrome) {
-		super(chrome, true);
-		this.chrome = chrome;
+	public BotPreferences(final BotLauncher launcher) {
+		super(launcher.window.get(), true);
+		this.launcher = launcher;
 		visible.set(true);
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		setResizable(false);
@@ -376,7 +376,7 @@ class BotPreferences extends JDialog implements Runnable {
 						final ScriptBundle.Definition d = s < 0 || s > list.size() ? null : list.get(s);
 						final GameAccounts.Account a = u < 1 ? null : GameAccounts.getInstance().get(u - 1);
 						final String n = a == null ? "" : a.toString();
-						ScriptList.load(chrome, d, n);
+						ScriptList.load(launcher, d, n);
 						GoogleAnalytics.getInstance().pageview("launch/play/", play.getText());
 						loading.set(false);
 					}
@@ -492,7 +492,7 @@ class BotPreferences extends JDialog implements Runnable {
 				ignored.printStackTrace();
 				return;
 			}
-			final Class<? extends ClientContext> c = chrome.bot.get().ctx.getClass();
+			final Class<? extends ClientContext> c = launcher.bot.get().ctx.getClass();
 			for (final ScriptBundle.Definition e : s) {
 				if (e.client != null && !c.isAssignableFrom((Class<?>) e.client)) {
 					continue;

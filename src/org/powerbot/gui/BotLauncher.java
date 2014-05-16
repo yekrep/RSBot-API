@@ -4,6 +4,7 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Frame;
+import java.io.Closeable;
 import java.io.File;
 import java.lang.reflect.Method;
 import java.net.URL;
@@ -15,12 +16,19 @@ import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
 
 import org.powerbot.Configuration;
+import org.powerbot.script.Bot;
 import org.powerbot.util.HttpUtils;
 
-public class BotLauncher implements Callable<Boolean> {
+public class BotLauncher implements Callable<Boolean>, Closeable {
 	private static final BotLauncher instance = new BotLauncher();
+	public final AtomicReference<Bot> bot;
+	public final AtomicReference<Frame> window;
+	public final AtomicReference<BotMenuBar> menu;
 
 	public BotLauncher() {
+		bot = new AtomicReference<Bot>(null);
+		window = new AtomicReference<Frame>(null);
+		menu = new AtomicReference<BotMenuBar>(null);
 	}
 
 	public static BotLauncher getInstance() {
@@ -45,7 +53,7 @@ public class BotLauncher implements Callable<Boolean> {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				final AtomicReference<Frame> window = new AtomicReference<Frame>(null);
+				window.set(null);
 				String t = Configuration.URLs.GAME;
 				t = t.substring(0, t.indexOf('.')).toLowerCase();
 
@@ -102,6 +110,12 @@ public class BotLauncher implements Callable<Boolean> {
 
 						JPopupMenu.setDefaultLightWeightPopupEnabled(false);
 						f.setMinimumSize(new Dimension(800, 600));
+
+						if (menu.get() == null) {
+							menu.set(new BotMenuBar(BotLauncher.this));
+						}
+						f.setMenuBar(menu.get());
+
 						f.setSize(f.getMinimumSize());
 						f.setLocationRelativeTo(f.getParent());
 					}
@@ -112,5 +126,9 @@ public class BotLauncher implements Callable<Boolean> {
 		final Object o = Class.forName(name.substring(0, name.indexOf('.'))).newInstance();
 		o.getClass().getMethod("main", new Class[]{String[].class}).invoke(o, new Object[]{new String[]{""}});
 		return true;
+	}
+
+	@Override
+	public void close() {
 	}
 }

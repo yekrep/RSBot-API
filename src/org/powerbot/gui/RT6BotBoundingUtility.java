@@ -58,15 +58,15 @@ class RT6BotBoundingUtility extends JFrame implements PaintListener, MouseListen
 	private TargetSelection<Interactive> selection;
 	private Interactive target;
 
-	public static synchronized RT6BotBoundingUtility getInstance(final BotChrome chrome) {
+	public static synchronized RT6BotBoundingUtility getInstance(final BotLauncher launcher) {
 		if (instance.get() == null) {
-			instance.set(new RT6BotBoundingUtility(chrome));
+			instance.set(new RT6BotBoundingUtility(launcher));
 		}
 		return instance.get();
 	}
 
 	@SuppressWarnings("unchecked")
-	private RT6BotBoundingUtility(final BotChrome chrome) {
+	private RT6BotBoundingUtility(final BotLauncher launcher) {
 		selecting = new AtomicBoolean(false);
 		point = new Point(-1, -1);
 		selection = null;
@@ -86,35 +86,35 @@ class RT6BotBoundingUtility extends JFrame implements PaintListener, MouseListen
 				new TargetSelection<Player>("Player", new Callable<Player>() {
 					@Override
 					public Player call() {
-						final ClientContext ctx = (ClientContext) chrome.bot.get().ctx;
+						final ClientContext ctx = (ClientContext) launcher.bot.get().ctx;
 						return (Player) nearest(ctx.players.select());
 					}
 				}),
 				new TargetSelection<Npc>("Npc", new Callable<Npc>() {
 					@Override
 					public Npc call() {
-						final ClientContext ctx = (ClientContext) chrome.bot.get().ctx;
+						final ClientContext ctx = (ClientContext) launcher.bot.get().ctx;
 						return (Npc) nearest(ctx.npcs.select());
 					}
 				}),
 				new TargetSelection<GameObject>("Object", new Callable<GameObject>() {
 					@Override
 					public GameObject call() {
-						final ClientContext ctx = (ClientContext) chrome.bot.get().ctx;
+						final ClientContext ctx = (ClientContext) launcher.bot.get().ctx;
 						return (GameObject) nearest(ctx.objects.select().within(10d));
 					}
 				}),
 				new TargetSelection<GroundItem>("Ground Item", new Callable<GroundItem>() {
 					@Override
 					public GroundItem call() {
-						final ClientContext ctx = (ClientContext) chrome.bot.get().ctx;
+						final ClientContext ctx = (ClientContext) launcher.bot.get().ctx;
 						return (GroundItem) nearest(ctx.groundItems.select());
 					}
 				}),
 				new TargetSelection<TileMatrix>("Tile", new Callable<TileMatrix>() {
 					@Override
 					public TileMatrix call() {
-						final ClientContext ctx = (ClientContext) chrome.bot.get().ctx;
+						final ClientContext ctx = (ClientContext) launcher.bot.get().ctx;
 						final List<TileMatrix> list = new ArrayList<TileMatrix>();
 						final Tile t = ctx.players.local().tile();
 						for (int x = -20; x <= 20; x++) {
@@ -191,13 +191,13 @@ class RT6BotBoundingUtility extends JFrame implements PaintListener, MouseListen
 			}
 		});
 
-		chrome.bot.get().dispatcher.add(this);
+		launcher.bot.get().dispatcher.add(this);
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(final WindowEvent e) {
 				setVisible(false);
-				chrome.bot.get().dispatcher.remove(RT6BotBoundingUtility.this);
+				launcher.bot.get().dispatcher.remove(RT6BotBoundingUtility.this);
 				dispose();
 				instance.set(null);
 			}
@@ -285,7 +285,7 @@ class RT6BotBoundingUtility extends JFrame implements PaintListener, MouseListen
 		);
 
 		pack();
-		setLocationRelativeTo(chrome);
+		setLocationRelativeTo(launcher.window.get());
 	}
 
 	private Interactive nearest(final Iterable<? extends Interactive> list) {
