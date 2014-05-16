@@ -44,41 +44,6 @@ class BotMenuBar extends MenuBar {
 				Boot.fork();
 			}
 		});
-		final MenuItem closeTab = new MenuItem(BotLocale.CLOSE_WINDOW);
-		file.add(closeTab);
-		//closeTab.setVisible(false);
-		closeTab.setEnabled(false);
-		closeTab.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(final ActionEvent e) {
-				final Bot b = launcher.bot.get();
-				if (b != null) {
-					new Thread(new Runnable() {
-						@Override
-						public void run() {
-							b.close();
-						}
-					}).start();
-				}
-			}
-		});
-
-		/*
-		file.addMenuListener(new MenuListener() {
-			@Override
-			public void menuSelected(final MenuEvent e) {
-				closeTab.setEnabled(launcher.bot.get() != null && !launcher.bot.get().pending.get());
-			}
-
-			@Override
-			public void menuDeselected(final MenuEvent e) {
-			}
-
-			@Override
-			public void menuCanceled(final MenuEvent e) {
-			}
-		});
-		*/
 
 		if (Configuration.OS != Configuration.OperatingSystem.MAC) {
 			file.addSeparator();
