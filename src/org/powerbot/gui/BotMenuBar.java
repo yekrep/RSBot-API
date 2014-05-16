@@ -41,9 +41,9 @@ class BotMenuBar extends JMenuBar {
 		final JMenu file = new JMenu(BotLocale.FILE), edit = new JMenu(BotLocale.EDIT), view = new JMenu(BotLocale.VIEW),
 				input = new JMenu(BotLocale.INPUT), help = new JMenu(BotLocale.HELP);
 
-		final JMenuItem newtab = new JMenuItem(BotLocale.NEW_WINDOW);
-		file.add(newtab);
-		newtab.addActionListener(new ActionListener() {
+		final JMenuItem newTab = new JMenuItem(BotLocale.NEW_WINDOW);
+		file.add(newTab);
+		newTab.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent e) {
 				Boot.fork();
