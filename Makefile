@@ -21,7 +21,7 @@ all: clean docs codesign
 bot:
 	@if [ -d "$(BINDIR)" ]; then mkdir "$(BINDIR)"; fi
 	@mkdir "$(BINDIR)"
-	$(CC) $(CFLAGS) -d "$(BINDIR)" `find "$(SRC)" -name \*.java`
+	$(CC) $(CFLAGS) -d "$(BINDIR)" `find "$(SRC)" -name \*.java`  `find Intercept/"$(SRC)" -name \*.java`
 
 bundle: bot
 	@if [ -e "$(DIST)" ]; then rm -f "$(DIST)"; fi

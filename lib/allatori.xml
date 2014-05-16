@@ -9,6 +9,9 @@
 		<class template="class org.powerbot.InterceptAgentProxy">
 			<field template="registered" />
 		</class>
+		<class template="class org.powerbot.InterceptAgent">
+			<method access="protected+" />
+		</class>
 		<class template="class org.powerbot.bot.rt4.client.*">
 			<field access="protected+" />
 			<method access="protected+" />
@@ -28,6 +31,8 @@
 			<method access="protected+" parameters="keep" />
 		</class>
 	</keep-names>
+	<property name="string-encryption" value="disable" apply2class="class org.powerbot.InterceptAgent"/>
+	<property name="control-flow-obfuscation" value="disable" apply2class="class org.powerbot.InterceptAgent"/>
 	<property name="log-file" value="allatori-log.xml" />
 	<property name="string-encryption" value="maximum" />
 	<property name="string-encryption-type" value="strong" />
