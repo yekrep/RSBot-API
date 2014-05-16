@@ -1,10 +1,9 @@
 package org.powerbot.bot.rt6;
 
 import java.applet.Applet;
+import java.awt.EventQueue;
 import java.io.IOException;
 import java.util.concurrent.Callable;
-
-import javax.swing.SwingUtilities;
 
 import org.powerbot.Configuration;
 import org.powerbot.bot.SelectiveEventQueue;
@@ -132,7 +131,7 @@ public final class Bot extends org.powerbot.script.Bot<ClientContext> {
 			new Thread(threadGroup, new SafeMode()).start();
 		}
 
-		SwingUtilities.invokeLater(new Runnable() {
+		EventQueue.invokeLater(new Runnable() {
 			@Override
 			public void run() {
 				display();

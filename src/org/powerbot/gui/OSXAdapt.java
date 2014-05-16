@@ -1,5 +1,6 @@
 package org.powerbot.gui;
 
+import java.awt.EventQueue;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -34,7 +35,7 @@ class OSXAdapt implements Runnable {
 
 	@OSXAdapt.OSXAdapterInfo(mode = 2)
 	public void quit() {
-		SwingUtilities.invokeLater(new Runnable() {
+		EventQueue.invokeLater(new Runnable() {
 			@Override
 			public void run() {
 				launcher.close();

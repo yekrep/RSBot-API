@@ -4,6 +4,7 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Desktop;
 import java.awt.Dimension;
+import java.awt.EventQueue;
 import java.awt.Frame;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -24,7 +25,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.JPopupMenu;
-import javax.swing.SwingUtilities;
 
 import org.powerbot.Configuration;
 import org.powerbot.misc.CryptFile;
@@ -104,7 +104,7 @@ public class BotLauncher implements Callable<Boolean>, Closeable {
 					return;
 				}
 
-				SwingUtilities.invokeLater(new Runnable() {
+				EventQueue.invokeLater(new Runnable() {
 					@Override
 					public void run() {
 						final Frame f = window.get();

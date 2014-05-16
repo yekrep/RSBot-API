@@ -2,9 +2,8 @@ package org.powerbot.bot.rt4;
 
 import java.applet.Applet;
 import java.awt.Dimension;
+import java.awt.EventQueue;
 import java.io.IOException;
-
-import javax.swing.SwingUtilities;
 
 import org.powerbot.bot.loader.GameAppletLoader;
 import org.powerbot.bot.loader.GameLoader;
@@ -96,7 +95,7 @@ public class Bot extends org.powerbot.script.Bot<ClientContext> {
 
 				applet.start();
 				initialize();
-				SwingUtilities.invokeLater(new Runnable() {
+				EventQueue.invokeLater(new Runnable() {
 					@Override
 					public void run() {
 						display();
