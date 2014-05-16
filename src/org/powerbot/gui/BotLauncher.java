@@ -27,11 +27,13 @@ public class BotLauncher implements Callable<Boolean>, Closeable {
 	public final AtomicReference<Bot> bot;
 	public final AtomicReference<Frame> window;
 	public final AtomicReference<BotMenuBar> menu;
+	public final AtomicReference<BotOverlay> overlay;
 
 	public BotLauncher() {
 		bot = new AtomicReference<Bot>(null);
 		window = new AtomicReference<Frame>(null);
 		menu = new AtomicReference<BotMenuBar>(null);
+		overlay = new AtomicReference<BotOverlay>(null);
 	}
 
 	public static BotLauncher getInstance() {

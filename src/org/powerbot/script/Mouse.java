@@ -8,7 +8,7 @@ import java.util.concurrent.TimeUnit;
 import org.powerbot.bot.InputSimulator;
 import org.powerbot.bot.MouseSpline;
 import org.powerbot.bot.SelectiveEventQueue;
-import org.powerbot.gui.BotChrome;
+import org.powerbot.gui.BotLauncher;
 
 public class Mouse<C extends ClientContext> extends ClientAccessor<C> {
 	private final SelectiveEventQueue queue;
@@ -28,7 +28,7 @@ public class Mouse<C extends ClientContext> extends ClientAccessor<C> {
 		final Component c = queue.getComponent();
 		Point p = c != null ? c.getMousePosition() : null;
 		if (p == null) {
-			final Component overlay = BotChrome.getInstance().overlay.get();
+			final Component overlay = BotLauncher.getInstance().overlay.get();
 			if (overlay != null) {
 				p = overlay.getMousePosition();//TODO: eek r we detected?!
 			}

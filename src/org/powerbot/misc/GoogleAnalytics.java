@@ -12,7 +12,7 @@ import java.util.UUID;
 
 import org.powerbot.Boot;
 import org.powerbot.Configuration;
-import org.powerbot.gui.BotChrome;
+import org.powerbot.gui.BotLauncher;
 import org.powerbot.util.HttpUtils;
 import org.powerbot.util.StringUtils;
 
@@ -29,7 +29,7 @@ public class GoogleAnalytics {
 		s.append("&cid=").append(new UUID(~uid, uid).toString());
 		final Dimension sr = Toolkit.getDefaultToolkit().getScreenSize();
 		s.append("&sr=").append((int) sr.getWidth()).append('x').append((int) sr.getHeight());
-		final Dimension vp = BotChrome.getInstance().getSize();
+		final Dimension vp = BotLauncher.getInstance().window.get().getSize();
 		s.append("&vp=").append((int) vp.getWidth()).append('x').append((int) vp.getHeight());
 		s.append("&de=UTF-8");
 		s.append("&sd=").append(GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration().getColorModel().getPixelSize()).append("-bits");

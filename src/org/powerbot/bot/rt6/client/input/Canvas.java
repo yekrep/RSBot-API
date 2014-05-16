@@ -10,7 +10,7 @@ import org.powerbot.bot.SelectiveEventQueue;
 import org.powerbot.bot.rt6.Bot;
 import org.powerbot.bot.rt6.activation.PaintEvent;
 import org.powerbot.bot.rt6.activation.TextPaintEvent;
-import org.powerbot.gui.BotChrome;
+import org.powerbot.gui.BotLauncher;
 
 public class Canvas extends java.awt.Canvas {
 	private static final long serialVersionUID = -2284879212465893870L;
@@ -20,8 +20,8 @@ public class Canvas extends java.awt.Canvas {
 	private final Bot bot;
 
 	public Canvas() {
-		final BotChrome chrome = BotChrome.getInstance();
-		bot = (Bot) chrome.bot.get();
+		final BotLauncher launcher = BotLauncher.getInstance();
+		bot = (Bot) launcher.bot.get();
 		paintEvent = new PaintEvent();
 		textPaintEvent = new TextPaintEvent();
 
@@ -30,7 +30,7 @@ public class Canvas extends java.awt.Canvas {
 		queue.target(this, new SelectiveEventQueue.EventCallback() {
 			@Override
 			public void execute(final AWTEvent event) {
-				chrome.requestFocusInWindow();
+				launcher.window.get().requestFocusInWindow();
 			}
 		});
 		final InputSimulator s = queue.getEngine();

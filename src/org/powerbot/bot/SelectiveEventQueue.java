@@ -12,6 +12,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.powerbot.gui.BotChrome;
+import org.powerbot.gui.BotLauncher;
 import org.powerbot.script.Bot;
 
 public class SelectiveEventQueue extends EventQueue {
@@ -85,11 +86,11 @@ public class SelectiveEventQueue extends EventQueue {
 		setBlocking(false);
 		this.component.set(component);
 		this.callback.set(callback);
-		final BotChrome chrome = BotChrome.getInstance();
+		final BotLauncher launcher = BotLauncher.getInstance();
 		if (b) {
 			this.engine.set(new InputSimulator(component));
 			setBlocking(true);
-			chrome.requestFocusInWindow();
+			launcher.window.get().requestFocusInWindow();
 		}
 	}
 
@@ -101,15 +102,15 @@ public class SelectiveEventQueue extends EventQueue {
 			return;
 		}
 
-		final BotChrome chrome = BotChrome.getInstance();
+		final BotLauncher launcher = BotLauncher.getInstance();
 		final Component component = this.component.get();
 		final Object t = event.getSource();
-		if (t == chrome.overlay.get()) {
+		if (t == launcher.overlay.get()) {
 			event.setSource(component);
 		}
 
 		if (event instanceof MouseEvent || event instanceof KeyEvent) {
-			final Bot<?> bot = chrome.bot.get();
+			final Bot<?> bot = launcher.bot.get();
 			if (bot != null && bot.dispatcher != null) {
 				bot.dispatcher.dispatch(event);
 			}
