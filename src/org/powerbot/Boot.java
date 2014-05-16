@@ -2,16 +2,24 @@ package org.powerbot;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.lang.management.ManagementFactory;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.jar.Attributes;
+import java.util.jar.JarEntry;
+import java.util.jar.JarOutputStream;
+import java.util.jar.Manifest;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
@@ -24,6 +32,7 @@ import org.powerbot.util.StringUtils;
 
 public class Boot implements Runnable {
 	private final static String SWITCH_RESTARTED = "-restarted", SWITCH_DEBUG = "-debug";
+	private final static File JAVAAGENT = new File(Configuration.HOME, InterceptAgent.class.getSimpleName() + ".jar");
 
 	public static void main(final String[] args) {
 		if (System.getProperty("os.name").contains("Mac")) {
@@ -38,6 +47,10 @@ public class Boot implements Runnable {
 			}
 		}
 
+		if (!InterceptAgentProxy.isRegistered()) {
+			fork = true;
+		}
+
 		if (fork) {
 			fork();
 		} else {
@@ -46,9 +59,10 @@ public class Boot implements Runnable {
 	}
 
 	public void run() {
+		final String javaagent = "-javaagent:";
 		if (Configuration.FROMJAR) {
 			for (final String arg : ManagementFactory.getRuntimeMXBean().getInputArguments()) {
-				if (arg.contains("-javaagent:")) {
+				if (arg.toLowerCase().contains(javaagent) && !arg.equalsIgnoreCase(javaagent + JAVAAGENT.getAbsolutePath())) {
 					return;
 				}
 			}
@@ -158,6 +172,42 @@ public class Boot implements Runnable {
 
 			args.add("-Xdock:icon=" + icon.getAbsolutePath());
 		}
+
+		if (JAVAAGENT.isFile()) {
+			JAVAAGENT.delete();
+		}
+		final Manifest m = new Manifest();
+		m.getMainAttributes().put(Attributes.Name.MANIFEST_VERSION, "1.0");
+		m.getMainAttributes().put(new Attributes.Name("Premain-Class"), InterceptAgent.class.getName());
+		m.getMainAttributes().put(new Attributes.Name("Agent-Class"), InterceptAgent.class.getName());
+		m.getMainAttributes().put(new Attributes.Name("Can-Redefine-Classes"), "true");
+		m.getMainAttributes().put(new Attributes.Name("Can-Retransform-Classes"), "true");
+		m.getMainAttributes().put(new Attributes.Name("Can-Set-Native-Method-Prefix"), "true");
+		try {
+			final JarOutputStream jar = new JarOutputStream(new FileOutputStream(JAVAAGENT), m);
+			final JarEntry e = new JarEntry(InterceptAgent.class.getName().replace('.', '/') + ".class");
+			e.setTime(System.currentTimeMillis());
+			jar.putNextEntry(e);
+			InputStream in = null;
+			if (Configuration.FROMJAR) {
+				in = Configuration.class.getResourceAsStream("/" + e.getName());
+			} else {
+				for (final String p : System.getProperty("java.class.path").split(Pattern.quote(File.pathSeparator))) {
+					File f = new File(p);
+					if (f.isDirectory()) {
+						f = new File(f, e.getName());
+						if (f.isFile()) {
+							in = new FileInputStream(f);
+						}
+					}
+				}
+			}
+			IOUtils.write(in, jar);
+			jar.close();
+		} catch (final IOException ignored) {
+			ignored.printStackTrace();
+		}
+		args.add("-javaagent:" + JAVAAGENT.getAbsolutePath());
 
 		args.add("-classpath");
 		final String location = Boot.class.getProtectionDomain().getCodeSource().getLocation().getPath();
