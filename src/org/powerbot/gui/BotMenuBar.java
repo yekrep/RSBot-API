@@ -1,20 +1,13 @@
 package org.powerbot.gui;
 
-import java.awt.Color;
 import java.awt.Font;
-import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.Menu;
 import java.awt.MenuBar;
 import java.awt.MenuItem;
-import java.awt.Polygon;
-import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
 import java.util.Calendar;
 
-import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
@@ -84,9 +77,7 @@ class BotMenuBar extends MenuBar {
 		});
 		*/
 
-		final ImageIcon[] playIcons = new ImageIcon[]{createControlIcon(1), createControlIcon(2)};
 		play = new MenuItem(BotLocale.SCRIPT_PLAY);
-		//play.setIcon(playIcons[0]);
 		edit.add(play);
 		play.addActionListener(new ActionListener() {
 			@Override
@@ -95,7 +86,6 @@ class BotMenuBar extends MenuBar {
 			}
 		});
 		stop = new MenuItem(BotLocale.SCRIPT_STOP);
-		//stop.setIcon(createControlIcon(0));
 		edit.add(stop);
 		stop.addActionListener(new ActionListener() {
 			@Override
@@ -179,7 +169,6 @@ class BotMenuBar extends MenuBar {
 
 				play.setEnabled(launcher.bot.get() != null && launcher.bot.get().ctx.client() != null && !BotPreferences.loading.get());
 				play.setText(running ? BotLocale.SCRIPT_PAUSE : active ? BotLocale.SCRIPT_RESUME : BotLocale.SCRIPT_PLAY);
-				play.setIcon(playIcons[running ? 1 : 0]);
 				stop.setEnabled(active);
 
 				if (active) {
@@ -244,32 +233,6 @@ class BotMenuBar extends MenuBar {
 		add(view);
 		add(input);
 		add(help);
-	}
-
-	private ImageIcon createControlIcon(final int s) {
-		final Image img = new BufferedImage(16, 16, BufferedImage.TYPE_4BYTE_ABGR);
-		final Graphics2D g2 = (Graphics2D) img.getGraphics();
-		g2.setColor(Color.BLACK);
-
-		switch (s) {
-		case 0:
-			g2.fillRect(1, 1, 14, 14);
-			break;
-		case 1:
-			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-			final Polygon p = new Polygon();
-			p.addPoint(1, 1);
-			p.addPoint(14, 8);
-			p.addPoint(1, 14);
-			g2.fillPolygon(p);
-			break;
-		case 2:
-			g2.fillRect(2, 1, 5, 14);
-			g2.fillRect(16 - 2 - 5, 1, 5, 14);
-			break;
-		}
-
-		return new ImageIcon(img);
 	}
 
 	public void showAbout() {
