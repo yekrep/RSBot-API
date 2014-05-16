@@ -63,7 +63,7 @@ public class BotLauncher implements Callable<Boolean>, Closeable {
 		final URL src = new URL("http://www." + Configuration.URLs.GAME + "/downloads/jagexappletviewer.jar");
 		final String name = src.getFile().substring(src.getFile().lastIndexOf('/') + 1);
 		final File jar = new File(Configuration.HOME, name);
-		if (!jar.exists()) {
+		if (!jar.exists() || jar.lastModified() < System.currentTimeMillis() - 7 * 24 * 60 * 60 * 1000) {
 			HttpUtils.download(src, jar);
 		}
 
