@@ -16,6 +16,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
 
 import org.powerbot.Configuration;
+import org.powerbot.misc.Resources;
 import org.powerbot.script.Bot;
 import org.powerbot.util.HttpUtils;
 
@@ -112,6 +113,7 @@ public class BotLauncher implements Callable<Boolean>, Closeable {
 
 						JPopupMenu.setDefaultLightWeightPopupEnabled(false);
 						f.setMinimumSize(new Dimension(800, 600));
+						f.setIconImage(Resources.getImage(Resources.Paths.ICON));
 
 						if (menu.get() == null) {
 							menu.set(new BotMenuBar(BotLauncher.this));
