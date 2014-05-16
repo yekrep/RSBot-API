@@ -3,6 +3,7 @@ package org.powerbot.gui;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Desktop;
+import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -126,7 +127,9 @@ public class BotLauncher implements Callable<Boolean>, Closeable {
 							if (!(s.equals("Rs2Applet") || s.equals("client"))) {
 								x.setVisible(false);
 							} else {
-								f.setMinimumSize(x.getSize());
+								final Dimension d = x.getSize();
+								d.setSize(Math.min(800, x.getWidth()), Math.min(600, x.getHeight()));
+								f.setMinimumSize(d);
 							}
 						}
 
