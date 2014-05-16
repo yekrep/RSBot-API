@@ -6,6 +6,7 @@ import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Frame;
+import java.awt.Insets;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.Closeable;
@@ -129,6 +130,8 @@ public class BotLauncher implements Callable<Boolean>, Closeable {
 							} else {
 								final Dimension d = x.getSize();
 								d.setSize(Math.min(800, x.getWidth()), Math.min(600, x.getHeight()));
+								final Insets t = f.getInsets();
+								d.setSize(d.getWidth() + t.right + t.left, d.getHeight() + t.top + t.bottom);
 								f.setMinimumSize(d);
 							}
 						}
