@@ -16,7 +16,7 @@ public class InterceptAgent implements ClassFileTransformer {
 	public static void premain(final String agentArgs, final Instrumentation instrumentation) {
 		try {
 			final Class<? extends ClassFileTransformer> c = Class.forName(InterceptAgent.class.getName() + "Proxy").asSubclass(ClassFileTransformer.class);
-			obj.set(c.newInstance());
+			obj.set(c.getDeclaredConstructor(Instrumentation.class).newInstance(instrumentation));
 
 			final Field f = c.getDeclaredField("registered");
 			final boolean a = f.isAccessible();
