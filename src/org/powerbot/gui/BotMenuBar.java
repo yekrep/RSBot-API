@@ -40,9 +40,9 @@ public class BotMenuBar extends MenuBar {
 		view = new Menu(BotLocale.VIEW);
 		view.setEnabled(false);
 
-		final MenuItem newtab = new MenuItem(BotLocale.NEW_WINDOW);
-		file.add(newtab);
-		newtab.addActionListener(new ActionListener() {
+		final MenuItem newTab = new MenuItem(BotLocale.NEW_WINDOW);
+		file.add(newTab);
+		newTab.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent e) {
 				Boot.fork();
