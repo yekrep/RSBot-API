@@ -178,7 +178,7 @@ public class BotMenuBar extends MenuBar {
 		GoogleAnalytics.getInstance().pageview("license/", BotLocale.LICENSE);
 	}
 
-	public synchronized void scriptPlayPause() {
+	public void scriptPlayPause() {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -205,7 +205,7 @@ public class BotMenuBar extends MenuBar {
 		}).start();
 	}
 
-	public synchronized void scriptStop() {
+	public void scriptStop() {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
