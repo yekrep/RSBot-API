@@ -40,14 +40,20 @@ public class BotMenuBar extends MenuBar {
 		view = new Menu(BotLocale.VIEW);
 		view.setEnabled(false);
 
-		final MenuItem newTab = new MenuItem(BotLocale.NEW_WINDOW);
-		file.add(newTab);
-		newTab.addActionListener(new ActionListener() {
+		final MenuItem newRS3 = new MenuItem(BotLocale.NEW + "RS3");
+		file.add(newRS3);
+		newRS3.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent e) {
+				System.setProperty(Configuration.URLs.GAME_VERSION_KEY,
+						((MenuItem) e.getSource()).getLabel().substring(BotLocale.NEW.length()).toLowerCase());
 				Boot.fork();
+				System.clearProperty(Configuration.URLs.GAME_VERSION_KEY);
 			}
 		});
+		final MenuItem newOS = new MenuItem(BotLocale.NEW + "OS");
+		file.add(newOS);
+		newOS.addActionListener(newRS3.getActionListeners()[0]);
 
 		if (Configuration.OS != Configuration.OperatingSystem.MAC) {
 			file.addSeparator();

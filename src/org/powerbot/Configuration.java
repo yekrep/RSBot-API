@@ -43,6 +43,7 @@ public class Configuration {
 
 		public static final String GAME = "runescape.com";
 		public static final String GAME_SERVICES_DOMAIN = "services." + GAME;
+		public static final String GAME_VERSION_KEY = "version." + GAME;
 	}
 
 	static {

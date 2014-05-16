@@ -143,6 +143,8 @@ public class Boot implements Runnable {
 			args.add("-Dsun.java2d.noddraw=true");
 		}
 
+		args.add("-D" + Configuration.URLs.GAME_VERSION_KEY + "=" + System.getProperty(Configuration.URLs.GAME_VERSION_KEY, ""));
+
 		if (Configuration.OS == OperatingSystem.MAC) {
 			args.add("-Xdock:name=" + Configuration.NAME);
 

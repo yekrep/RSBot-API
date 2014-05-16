@@ -3,8 +3,7 @@ package org.powerbot.gui;
 import org.powerbot.Configuration;
 
 final class BotLocale {
-	public static final String NEW_WINDOW = "New Window";
-	public static final String CLOSE_WINDOW = "Close Window";
+	public static final String NEW = "New ";
 	public static final String SCRIPT_PLAY = "Play";
 	public static final String SCRIPT_RESUME = "Resume";
 	public static final String SCRIPT_PAUSE = "Pause";

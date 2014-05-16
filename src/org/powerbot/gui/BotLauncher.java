@@ -54,7 +54,9 @@ public class BotLauncher implements Callable<Boolean>, Closeable {
 
 	@Override
 	public Boolean call() throws Exception {
-		final String mode = "www"; // also oldschool or world200 for beta
+		String mode = System.getProperty(Configuration.URLs.GAME_VERSION_KEY, "").toLowerCase();
+		mode = mode.equals("oldschool") || mode.equals("os") ? "oldschool" : "www";
+		System.clearProperty(Configuration.URLs.GAME_VERSION_KEY);
 		System.setProperty("com.jagex.config",
 				String.format("http://%s.%s/k=3/l=%s/jav_config.ws", mode, Configuration.URLs.GAME, System.getProperty("user.language", "en")));
 
