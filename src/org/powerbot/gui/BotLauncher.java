@@ -149,6 +149,10 @@ public class BotLauncher implements Callable<Boolean>, Closeable {
 			}
 		}).start();
 
+		if (Configuration.OS == Configuration.OperatingSystem.MAC) {
+			new OSXAdapt(this).run();
+		}
+
 		final Object o = Class.forName(name.substring(0, name.indexOf('.'))).newInstance();
 		o.getClass().getMethod("main", new Class[]{String[].class}).invoke(o, new Object[]{new String[]{""}});
 		return true;
