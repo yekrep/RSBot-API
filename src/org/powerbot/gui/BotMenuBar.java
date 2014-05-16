@@ -16,7 +16,10 @@ import org.powerbot.Boot;
 import org.powerbot.Configuration;
 import org.powerbot.bot.ScriptController;
 import org.powerbot.misc.GoogleAnalytics;
+import org.powerbot.misc.ScriptBundle;
 import org.powerbot.script.Bot;
+import org.powerbot.script.BotMenuActionListener;
+import org.powerbot.script.Script;
 
 class BotMenuBar extends MenuBar {
 	private static final long serialVersionUID = -4186554435386744949L;
@@ -93,74 +96,31 @@ class BotMenuBar extends MenuBar {
 				scriptStop();
 			}
 		});
-
 		edit.addSeparator();
-		final Menu options = new Menu(BotLocale.OPTIONS);
+		final MenuItem options = new MenuItem(BotLocale.OPTIONS);
 		edit.add(options);
-
-		/*
-		options.addMenuListener(new MenuListener() {
+		options.addActionListener(new ActionListener() {
 			@Override
-			public void menuSelected(final MenuEvent e) {
-				final JMenu m = (JMenu) e.getSource();
-				m.removeAll();
-
+			public void actionPerformed(final ActionEvent e) {
 				final ScriptController c = launcher.bot.get() == null ? null : (ScriptController) launcher.bot.get().ctx.controller;
 				if (c == null || !c.valid()) {
 					return;
 				}
 
 				final Script s = ((ScriptBundle) c.bundle.get()).instance.get();
-				if (s == null || !(s instanceof BotMenuListener)) {
+				if (s == null || !(s instanceof BotMenuActionListener)) {
 					return;
 				}
 
 				try {
-					((BotMenuListener) s).menuSelected(e);
-				} catch (final Throwable t) {
-					t.printStackTrace();
-				}
-			}
-
-			@Override
-			public void menuDeselected(final MenuEvent e) {
-				final ScriptController c = launcher.bot.get() == null ? null : (ScriptController) launcher.bot.get().ctx.controller;
-				if (c == null || !c.valid()) {
-					return;
-				}
-
-				final Script s = ((ScriptBundle) c.bundle.get()).instance.get();
-				if (s == null || !(s instanceof BotMenuListener)) {
-					return;
-				}
-
-				try {
-					((BotMenuListener) s).menuDeselected(e);
-				} catch (final Throwable t) {
-					t.printStackTrace();
-				}
-			}
-
-			@Override
-			public void menuCanceled(final MenuEvent e) {
-				final ScriptController c = launcher.bot.get() == null ? null : (ScriptController) launcher.bot.get().ctx.controller;
-				if (c == null || !c.valid()) {
-					return;
-				}
-
-				final Script s = ((ScriptBundle) c.bundle.get()).instance.get();
-				if (s == null || !(s instanceof BotMenuListener)) {
-					return;
-				}
-
-				try {
-					((BotMenuListener) s).menuCanceled(e);
+					((BotMenuActionListener) s).actionPerformed(e);
 				} catch (final Throwable t) {
 					t.printStackTrace();
 				}
 			}
 		});
 
+		/*
 		edit.addMenuListener(new MenuListener() {
 			@Override
 			public void menuSelected(final MenuEvent e) {
