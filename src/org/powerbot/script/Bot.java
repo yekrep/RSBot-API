@@ -15,7 +15,7 @@ import org.powerbot.util.IOUtils;
 public abstract class Bot<C extends ClientContext<? extends Client>> implements Runnable, Closeable {
 	protected final Logger log = Logger.getLogger(getClass().getName());
 	public final C ctx;
-	protected final BotLauncher launcher;
+	public final BotLauncher launcher;
 	public final EventDispatcher dispatcher;
 	public final ThreadGroup threadGroup;
 	public Applet applet;

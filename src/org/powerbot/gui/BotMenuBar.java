@@ -20,6 +20,7 @@ import org.powerbot.bot.ScriptController;
 import org.powerbot.bot.SelectiveEventQueue;
 import org.powerbot.misc.GoogleAnalytics;
 import org.powerbot.misc.ScriptBundle;
+import org.powerbot.script.AbstractScript;
 import org.powerbot.script.Bot;
 import org.powerbot.script.BotMenuActionListener;
 import org.powerbot.script.Script;
@@ -28,7 +29,7 @@ public class BotMenuBar extends MenuBar {
 	private static final long serialVersionUID = -4186554435386744949L;
 	private final BotLauncher launcher;
 	private final Menu view;
-	private final MenuItem play, stop;
+	private final MenuItem play, stop, options;
 	private final CheckboxMenuItem inputAllow, inputBlock;
 
 	public BotMenuBar(final BotLauncher launcher) {
@@ -85,7 +86,7 @@ public class BotMenuBar extends MenuBar {
 			}
 		});
 		edit.addSeparator();
-		final MenuItem options = new MenuItem(BotLocale.OPTIONS);
+		options = new MenuItem(BotLocale.OPTIONS);
 		edit.add(options);
 		options.addActionListener(new ActionListener() {
 			@Override
@@ -218,6 +219,22 @@ public class BotMenuBar extends MenuBar {
 				launcher.bot.get().ctx.controller.stop();
 			}
 		}).start();
+	}
+
+	public void scriptUpdate() {
+		final ScriptController c = launcher.bot.get() == null ? null : (ScriptController) launcher.bot.get().ctx.controller;
+		final boolean active = c != null && c.valid() && !c.isStopping(), running = active && !c.isSuspended();
+
+		play.setEnabled(launcher.bot.get() != null && launcher.bot.get().ctx.client() != null && !BotPreferences.loading.get());
+		play.setLabel(running ? BotLocale.SCRIPT_PAUSE : active ? BotLocale.SCRIPT_RESUME : BotLocale.SCRIPT_PLAY);
+		stop.setEnabled(active);
+
+		if (active) {
+			final AbstractScript s = c.script();
+			options.setEnabled(s != null && s instanceof BotMenuActionListener);
+		} else {
+			options.setEnabled(false);
+		}
 	}
 
 	public void setInputEnabled(final boolean e) {

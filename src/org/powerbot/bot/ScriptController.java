@@ -1,5 +1,6 @@
 package org.powerbot.bot;
 
+import java.awt.EventQueue;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
@@ -284,6 +285,13 @@ public final class ScriptController<C extends ClientContext<? extends Client>> e
 		if (!queue.isEmpty()) {
 			executor.get().submit(queue.poll());
 		}
+
+		EventQueue.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				ctx.bot().launcher.menu.get().scriptUpdate();
+			}
+		});
 	}
 
 	private void track(final String state) {
