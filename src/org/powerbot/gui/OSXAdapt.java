@@ -77,13 +77,13 @@ class OSXAdapt implements Runnable {
 			if (m.isAnnotationPresent(OSXAdapterInfo.class)) {
 				switch (m.getAnnotation(OSXAdapterInfo.class).mode()) {
 				case 1:
-					OSXReflecetionAdapter.setAboutHandler(this, m);
+					OSXReflectionAdapter.setAboutHandler(this, m);
 					break;
 				case 2:
-					OSXReflecetionAdapter.setQuitHandler(this, m);
+					OSXReflectionAdapter.setQuitHandler(this, m);
 					break;
 				case 3:
-					OSXReflecetionAdapter.setPreferencesHandler(this, m);
+					OSXReflectionAdapter.setPreferencesHandler(this, m);
 					break;
 				}
 			}
@@ -96,20 +96,20 @@ class OSXAdapt implements Runnable {
 		public int mode() default 0;
 	}
 
-	private static final class OSXReflecetionAdapter implements InvocationHandler {
+	private static final class OSXReflectionAdapter implements InvocationHandler {
 		final Object targetObject;
 		final Method targetMethod;
 		final String proxySignature;
 		static Object app;
 
 		public static void setQuitHandler(final Object target, final Method quitHandler) {
-			setHandler(new OSXReflecetionAdapter("handleQuit", target, quitHandler));
+			setHandler(new OSXReflectionAdapter("handleQuit", target, quitHandler));
 		}
 
 		public static void setAboutHandler(final Object target, final Method aboutHandler) {
 			final boolean e = (target != null && aboutHandler != null);
 			if (e) {
-				setHandler(new OSXReflecetionAdapter("handleAbout", target, aboutHandler));
+				setHandler(new OSXReflectionAdapter("handleAbout", target, aboutHandler));
 			}
 			try {
 				final Method m = app.getClass().getDeclaredMethod("setEnabledAboutMenu", new Class[]{boolean.class});
@@ -121,7 +121,7 @@ class OSXAdapt implements Runnable {
 		public static void setPreferencesHandler(final Object target, final Method prefsHandler) {
 			final boolean e = (target != null && prefsHandler != null);
 			if (e) {
-				setHandler(new OSXReflecetionAdapter("handlePreferences", target, prefsHandler));
+				setHandler(new OSXReflectionAdapter("handlePreferences", target, prefsHandler));
 			}
 			try {
 				final Method m = app.getClass().getDeclaredMethod("setEnabledPreferencesMenu", new Class[]{boolean.class});
@@ -130,7 +130,7 @@ class OSXAdapt implements Runnable {
 			}
 		}
 
-		public static void setHandler(final OSXReflecetionAdapter adapter) {
+		public static void setHandler(final OSXReflectionAdapter adapter) {
 			try {
 				final Class<?> c = Class.forName("com.apple.eawt.Application");
 				if (app == null) {
@@ -138,13 +138,13 @@ class OSXAdapt implements Runnable {
 				}
 				final Class<?> l = Class.forName("com.apple.eawt.ApplicationListener");
 				final Method m = c.getDeclaredMethod("addApplicationListener", new Class[]{l});
-				final Object p = Proxy.newProxyInstance(OSXReflecetionAdapter.class.getClassLoader(), new Class[]{l}, adapter);
+				final Object p = Proxy.newProxyInstance(OSXReflectionAdapter.class.getClassLoader(), new Class[]{l}, adapter);
 				m.invoke(app, p);
 			} catch (final Exception ignored) {
 			}
 		}
 
-		OSXReflecetionAdapter(final String proxySignature, final Object target, final Method handler) {
+		OSXReflectionAdapter(final String proxySignature, final Object target, final Method handler) {
 			this.proxySignature = proxySignature;
 			this.targetObject = target;
 			this.targetMethod = handler;
