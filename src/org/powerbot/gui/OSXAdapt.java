@@ -47,7 +47,7 @@ class OSXAdapt implements Runnable {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				if (BotPreferences.loading.get() || BotPreferences.visible.get() || launcher.bot.get().ctx.client() == null) {
+				if (BotPreferences.loading.get() || BotPreferences.visible.get() || launcher.bot.get() == null || launcher.bot.get().ctx.client() == null) {
 					return;
 				}
 
