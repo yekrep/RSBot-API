@@ -4,6 +4,8 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Frame;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.Closeable;
 import java.io.File;
 import java.lang.reflect.Method;
@@ -114,6 +116,12 @@ public class BotLauncher implements Callable<Boolean>, Closeable {
 						JPopupMenu.setDefaultLightWeightPopupEnabled(false);
 						f.setMinimumSize(new Dimension(800, 600));
 						f.setIconImage(Resources.getImage(Resources.Paths.ICON));
+						f.addWindowListener(new WindowAdapter() {
+							@Override
+							public void windowClosing(final WindowEvent e) {
+								close();
+							}
+						});
 
 						if (menu.get() == null) {
 							menu.set(new BotMenuBar(BotLauncher.this));
