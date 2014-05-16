@@ -80,6 +80,7 @@ class BotMenuBar extends MenuBar {
 		});
 		*/
 
+		edit.setEnabled(false);
 		play = new MenuItem(BotLocale.SCRIPT_PLAY);
 		edit.add(play);
 		play.addActionListener(new ActionListener() {
@@ -121,33 +122,6 @@ class BotMenuBar extends MenuBar {
 		});
 
 		/*
-		edit.addMenuListener(new MenuListener() {
-			@Override
-			public void menuSelected(final MenuEvent e) {
-				final ScriptController c = launcher.bot.get() == null ? null : (ScriptController) launcher.bot.get().ctx.controller;
-				final boolean active = c != null && c.valid() && !c.isStopping(), running = active && !c.isSuspended();
-
-				play.setEnabled(launcher.bot.get() != null && launcher.bot.get().ctx.client() != null && !BotPreferences.loading.get());
-				play.setText(running ? BotLocale.SCRIPT_PAUSE : active ? BotLocale.SCRIPT_RESUME : BotLocale.SCRIPT_PLAY);
-				stop.setEnabled(active);
-
-				if (active) {
-					final Script script = ((ScriptBundle) c.bundle.get()).instance.get();
-					options.setEnabled(script != null && script instanceof BotMenuListener);
-				} else {
-					options.setEnabled(false);
-				}
-			}
-
-			@Override
-			public void menuDeselected(final MenuEvent e) {
-			}
-
-			@Override
-			public void menuCanceled(final MenuEvent e) {
-			}
-		});
-
 		input.addMenuListener(new MenuListener() {
 			@Override
 			public void menuSelected(final MenuEvent e) {
