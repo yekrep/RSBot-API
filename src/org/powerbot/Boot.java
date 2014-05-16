@@ -17,7 +17,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 import org.powerbot.Configuration.OperatingSystem;
-import org.powerbot.gui.BotChrome;
+import org.powerbot.gui.BotLauncher;
 import org.powerbot.misc.Resources;
 import org.powerbot.util.IOUtils;
 import org.powerbot.util.StringUtils;
@@ -122,10 +122,13 @@ public class Boot implements Runnable {
 					UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 				} catch (final Exception ignored) {
 				}
-
-				BotChrome.getInstance();
 			}
 		});
+		try {
+			BotLauncher.getInstance().call();
+		} catch (final Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public static void fork() {
