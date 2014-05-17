@@ -45,6 +45,10 @@ class GameButtons implements Runnable {
 			return;
 		}
 
+		if (bi == null) {
+			return;
+		}
+
 		final int w = 185, h = 63, x0 = 0, y0 = 754, x1 = 0, y1 = y0 - h;
 		final BufferedImage[] ico = {bi.getSubimage(x0, y0, w, h), bi.getSubimage(x1, y1, w, h)};
 		final JButton[] b = {rs3, os};
