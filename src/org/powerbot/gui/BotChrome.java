@@ -7,12 +7,15 @@ import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.Closeable;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.channels.FileLock;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
@@ -44,6 +47,8 @@ public class BotChrome extends JFrame implements Closeable {
 	public final AtomicReference<BotOverlay> overlay;
 	public final Component panel;
 	private final Dimension size;
+	private final AtomicReference<FileOutputStream> lockstream;
+	private final AtomicReference<FileLock> lock;
 
 	private BotChrome() {
 		setTitle(Configuration.NAME);
@@ -53,6 +58,8 @@ public class BotChrome extends JFrame implements Closeable {
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		JPopupMenu.setDefaultLightWeightPopupEnabled(false);
 		setFocusTraversalKeysEnabled(false);
+		lockstream = new AtomicReference<FileOutputStream>(null);
+		lock = new AtomicReference<FileLock>(null);
 
 		SelectiveEventQueue.pushSelectiveQueue();
 		SelectiveEventQueue.getInstance().setBlocking(false);
@@ -62,7 +69,7 @@ public class BotChrome extends JFrame implements Closeable {
 		add(panel = new BotPanel(this, new Callable<Boolean>() {
 			@Override
 			public Boolean call() throws Exception {
-				return isLatestVersion();
+				return getMutex() && isLatestVersion();
 			}
 		}, new Filter<Bot>() {
 			@Override
@@ -120,6 +127,22 @@ public class BotChrome extends JFrame implements Closeable {
 		SelectiveEventQueue.getInstance().setBlocking(false);
 	}
 
+	private boolean getMutex() {
+		try {
+			lockstream.set(new FileOutputStream(new File(Configuration.HOME, "lock")));
+			lock.set(lockstream.get().getChannel().tryLock());
+			if (lock.get() == null) {
+				throw new IOException();
+			}
+		} catch (final IOException ignored) {
+			log.severe("Another instance is running on the same computer user account.\r\n"
+					+ "Multiple bots have been disabled for security reasons.");
+			return false;
+		}
+
+		return true;
+	}
+
 	private boolean isLatestVersion() {
 		final CryptFile cache = new CryptFile("version.1.txt", getClass());
 		final int version;
@@ -162,6 +185,19 @@ public class BotChrome extends JFrame implements Closeable {
 	@Override
 	public void close() {
 		log.info("Shutting down");
+
+		if (lock.get() != null) {
+			try {
+				lock.getAndSet(null).release();
+			} catch (final IOException ignored) {
+			}
+		}
+		if (lockstream.get() != null) {
+			try {
+				lockstream.getAndSet(null).close();
+			} catch (final IOException ignored) {
+			}
+		}
 
 		boolean pending = false;
 		if (bot.get() != null) {

@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 import org.powerbot.bot.ScriptClassLoader;
 import org.powerbot.bot.ScriptThreadFactory;
 import org.powerbot.bot.loader.GameClassLoader;
+import org.powerbot.gui.BotChrome;
 import org.powerbot.misc.CryptFile;
 import org.powerbot.misc.GameAccounts;
 import org.powerbot.misc.NetworkAccount;
@@ -159,7 +160,7 @@ class Sandbox extends SecurityManager {
 		}
 
 		if ((path + File.separator).startsWith(Configuration.HOME.getAbsolutePath()) &&
-				isCallingClass(NetworkAccount.class, GameAccounts.class, CryptFile.class)) {
+				isCallingClass(BotChrome.class, NetworkAccount.class, GameAccounts.class, CryptFile.class)) {
 			return;
 		}
 
