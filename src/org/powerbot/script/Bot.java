@@ -26,7 +26,7 @@ public abstract class Bot<C extends ClientContext<? extends Client>> implements 
 	public Bot(final BotChrome chrome, final EventDispatcher dispatcher) {
 		this.chrome = chrome;
 		this.dispatcher = dispatcher;
-		threadGroup = new ThreadGroup("game"); // TODO: mask in live mode
+		threadGroup = new ThreadGroup(Thread.currentThread().getThreadGroup().getName());
 		pending = new AtomicBoolean(false);
 		ctx = newContext();
 
