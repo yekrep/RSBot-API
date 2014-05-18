@@ -47,7 +47,7 @@ public class Boot implements Runnable {
 			}
 		}
 
-		if (!InterceptAgentProxy.isRegistered()) {
+		if (Instrument.get() == null) {
 			fork = true;
 		}
 

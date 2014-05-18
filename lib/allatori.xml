@@ -9,8 +9,8 @@
 		<class template="class org.powerbot.InterceptAgentProxy">
 			<field template="registered" />
 		</class>
-		<class template="class org.powerbot.InterceptAgent">
-			<method access="protected+" />
+		<class template="class org.powerbot.Instrument">
+			<field access="private+" />
 		</class>
 		<class template="class org.powerbot.bot.rt4.client.*">
 			<field access="protected+" />
