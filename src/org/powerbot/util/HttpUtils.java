@@ -93,7 +93,14 @@ public class HttpUtils {
 	}
 
 	public static InputStream openStream(final URLConnection con) throws IOException {
-		final InputStream in = con.getInputStream();
+		InputStream in = null;
+		try {
+			in = con.getInputStream();
+		} catch (final IOException e) {
+			if (con instanceof HttpURLConnection) {
+				in = ((HttpURLConnection) con).getErrorStream();
+			}
+		}
 		final String e = con.getHeaderField("Content-Encoding");
 		if (e == null || e.isEmpty()) {
 			return in;
