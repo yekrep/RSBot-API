@@ -195,7 +195,7 @@ public class ScriptList {
 				return;
 			}
 		} else {
-			if (!def.assigned) {
+			if (!def.assigned && !NetworkAccount.getInstance().hasPermission(NetworkAccount.VIP)) {
 				try {
 					final HttpURLConnection con = HttpUtils.openConnection(new URL(String.format(Configuration.URLs.SCRIPTS_SESSION, NetworkAccount.getInstance().getAuth(), def.getID())));
 					final String s = IOUtils.readString(HttpUtils.openStream(con));
