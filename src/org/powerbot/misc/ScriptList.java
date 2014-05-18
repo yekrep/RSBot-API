@@ -200,7 +200,7 @@ public class ScriptList {
 					final HttpURLConnection con = HttpUtils.openConnection(new URL(String.format(Configuration.URLs.SCRIPTS_SESSION, NetworkAccount.getInstance().getAuth(), def.getID())));
 					final String s = IOUtils.readString(HttpUtils.openStream(con));
 					if (s != null && !s.isEmpty()) {
-						JOptionPane.showMessageDialog(chrome, s.trim(), "", JOptionPane.PLAIN_MESSAGE);
+						JOptionPane.showMessageDialog(launcher.window.get(), s.trim(), "", JOptionPane.PLAIN_MESSAGE);
 					}
 					if (con.getResponseCode() != HttpURLConnection.HTTP_OK) {
 						return;

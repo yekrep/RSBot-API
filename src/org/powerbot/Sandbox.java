@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 
 import org.powerbot.bot.ScriptClassLoader;
 import org.powerbot.bot.ScriptThreadFactory;
-import org.powerbot.bot.loader.GameClassLoader;
+import org.powerbot.gui.BotLauncher;
 import org.powerbot.misc.CryptFile;
 import org.powerbot.misc.GameAccounts;
 import org.powerbot.misc.GoogleAnalytics;
