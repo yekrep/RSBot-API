@@ -13,7 +13,6 @@ import java.util.logging.Logger;
 import org.powerbot.bot.ScriptClassLoader;
 import org.powerbot.bot.ScriptThreadFactory;
 import org.powerbot.bot.loader.GameClassLoader;
-import org.powerbot.gui.BotLauncher;
 import org.powerbot.misc.CryptFile;
 import org.powerbot.misc.GameAccounts;
 import org.powerbot.misc.NetworkAccount;
@@ -22,23 +21,6 @@ import org.powerbot.util.StringUtils;
 
 class Sandbox extends SecurityManager {
 	private static final Logger log = Logger.getLogger("Sandbox");
-
-	@Override
-	public void checkConnect(final String host, final int port) {
-		checkConnect(host, port, null);
-	}
-
-	@Override
-	public void checkConnect(final String host, final int port, final Object context) {
-		if (isGameThread()) {
-			return;
-		}
-		if (context == null) {
-			super.checkConnect(host, port);
-		} else {
-			super.checkConnect(host, port, context);
-		}
-	}
 
 	@Override
 	public void checkCreateClassLoader() {
@@ -122,10 +104,9 @@ class Sandbox extends SecurityManager {
 
 	@Override
 	public void checkSystemClipboardAccess() {
-		if (isCallingClass(java.awt.event.InputEvent.class) || isGameThread()) {
-			return;
+		if (isScriptThread() && !isCallingClass(java.awt.event.InputEvent.class)) {
+			throw new SecurityException();
 		}
-		throw new SecurityException();
 	}
 
 	private void checkFilePath(final String pathRaw, final boolean readOnly) {
@@ -207,10 +188,5 @@ class Sandbox extends SecurityManager {
 
 	private static boolean isScriptThread() {
 		return Thread.currentThread().getContextClassLoader() instanceof ScriptClassLoader;
-	}
-
-	private static boolean isGameThread() {
-		final ClassLoader c = Thread.currentThread().getContextClassLoader();
-		return c instanceof GameClassLoader;
 	}
 }

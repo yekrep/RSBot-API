@@ -72,7 +72,6 @@ public final class Bot extends org.powerbot.script.Bot<ClientContext> {
 				Bot.this.sequence(game, gameCrawler, applet);
 			}
 		};
-		Thread.currentThread().setContextClassLoader(loader);
 		bootstrap.getLoaderThread(threadGroup).start();
 	}
 
