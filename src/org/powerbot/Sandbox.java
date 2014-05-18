@@ -23,20 +23,6 @@ class Sandbox extends SecurityManager {
 	private static final Logger log = Logger.getLogger("Sandbox");
 
 	@Override
-	public void checkConnect(final String host, final int port) {
-		checkConnect(host, port, null);
-	}
-
-	@Override
-	public void checkConnect(final String host, final int port, final Object context) {
-		if (context == null) {
-			super.checkConnect(host, port);
-		} else {
-			super.checkConnect(host, port, context);
-		}
-	}
-
-	@Override
 	public void checkCreateClassLoader() {
 		if (isScriptThread() && !isCallingClass(javax.swing.UIDefaults.class, java.io.ObjectOutputStream.class, java.io.ObjectInputStream.class,
 				java.lang.reflect.Proxy.class, Keyboard.class)) {
