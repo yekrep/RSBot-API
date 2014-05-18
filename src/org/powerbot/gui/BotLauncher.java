@@ -125,14 +125,14 @@ public class BotLauncher implements Callable<Boolean>, Closeable {
 
 						for (final Component x : c) {
 							final String s = x.getClass().getSimpleName();
-							if (!(s.equals("Rs2Applet") || s.equals("client"))) {
-								x.setVisible(false);
-							} else {
+							if (s.equals("Rs2Applet") || s.equals("client")) {
 								final Dimension d = x.getSize();
 								d.setSize(Math.min(800, x.getWidth()), Math.min(600, x.getHeight()));
 								final Insets t = f.getInsets();
 								d.setSize(d.getWidth() + t.right + t.left, d.getHeight() + t.top + t.bottom);
 								f.setMinimumSize(d);
+							} else {
+								x.setVisible(false);
 							}
 						}
 
