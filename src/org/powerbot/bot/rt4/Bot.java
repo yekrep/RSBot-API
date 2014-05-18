@@ -108,7 +108,6 @@ public class Bot extends org.powerbot.script.Bot<ClientContext> {
 				});
 			}
 		};
-		Thread.currentThread().setContextClassLoader(loader);
 		bootstrap.getLoaderThread(threadGroup).start();
 	}
 

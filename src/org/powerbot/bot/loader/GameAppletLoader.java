@@ -27,7 +27,7 @@ public abstract class GameAppletLoader implements Callable<Void> {
 	}
 
 	public Thread getLoaderThread(final ThreadGroup g) {
-		final Thread t = new Thread(g, new Runnable() {
+		return new Thread(g, new Runnable() {
 			@Override
 			public void run() {
 				try {
@@ -38,8 +38,6 @@ public abstract class GameAppletLoader implements Callable<Void> {
 				}
 			}
 		});
-		t.setContextClassLoader(loader);
-		return t;
 	}
 
 	protected abstract void load(final Applet applet);
