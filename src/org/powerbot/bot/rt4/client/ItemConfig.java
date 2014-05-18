@@ -1,11 +1,25 @@
 package org.powerbot.bot.rt4.client;
 
-public interface ItemConfig extends Node {
-	public String getName();
+import org.powerbot.bot.ReflectionEngine;
 
-	public boolean isMembers();
+public class ItemConfig extends Node {
+	public ItemConfig(final ReflectionEngine engine, final Object parent) {
+		super(engine, parent);
+	}
 
-	public String[] getActions1();
+	public String getName() {
+		return engine.access(this, String.class);
+	}
 
-	public String[] getActions2();
+	public boolean isMembers() {
+		return engine.accessBool(this);
+	}
+
+	public String[] getActions1() {
+		return engine.access(this, String[].class);
+	}
+
+	public String[] getActions2() {
+		return engine.access(this, String[].class);
+	}
 }

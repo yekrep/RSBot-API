@@ -1,121 +1,242 @@
 package org.powerbot.bot.rt4.client;
 
-public interface Client extends org.powerbot.script.Client {
-	public int getCameraX();
+import org.powerbot.bot.ContextAccessor;
+import org.powerbot.bot.ReflectionEngine;
 
-	public int getCameraY();
+public class Client extends ContextAccessor implements org.powerbot.script.Client {
+	public Client(final ReflectionEngine engine, final Object parent) {
+		super(engine, parent);
+	}
 
-	public int getCameraZ();
+	public int getCameraX() {
+		return engine.accessInt(this);
+	}
 
-	public int getCameraYaw();
+	public int getCameraY() {
+		return engine.accessInt(this);
+	}
 
-	public int getCameraPitch();
+	public int getCameraZ() {
+		return engine.accessInt(this);
+	}
 
-	public int getMinimapAngle();
+	public int getCameraYaw() {
+		return engine.accessInt(this);
+	}
 
-	public int getMinimapOffset();
+	public int getCameraPitch() {
+		return engine.accessInt(this);
+	}
 
-	public int getMinimapScale();
+	public int getMinimapAngle() {
+		return engine.accessInt(this);
+	}
 
-	public Player getPlayer();
+	public int getMinimapOffset() {
+		return engine.accessInt(this);
+	}
 
-	public Player[] getPlayers();
+	public int getMinimapScale() {
+		return engine.accessInt(this);
+	}
 
-	public int[] getPlayerIndices();
+	public Player getPlayer() {
+		return new Player(engine, engine.access(this));
+	}
 
-	public Npc[] getNpcs();
+	public Player[] getPlayers() {
+		return engine.access(this, Player[].class);
+	}
 
-	public int[] getNpcIndices();
+	public int[] getPlayerIndices() {
+		return engine.access(this, int[].class);
+	}
 
-	public int getOffsetX();
+	public Npc[] getNpcs() {
+		return engine.access(this, Npc[].class);
+	}
 
-	public int getOffsetY();
+	public int[] getNpcIndices() {
+		return engine.access(this, int[].class);
+	}
 
-	public int getFloor();
+	public int getOffsetX() {
+		return engine.accessInt(this);
+	}
 
-	public Landscape getLandscape();
+	public int getOffsetY() {
+		return engine.accessInt(this);
+	}
 
-	public byte[][][] getLandscapeMeta();
+	public int getFloor() {
+		return engine.accessInt(this);
+	}
 
-	public int[][][] getTileHeights();
+	public Landscape getLandscape() {
+		return new Landscape(engine, engine.access(this));
+	}
 
-	public boolean isMenuOpen();
+	public byte[][][] getLandscapeMeta() {
+		return engine.access(this, byte[][][].class);
+	}
 
-	public int getMenuX();
+	public int[][][] getTileHeights() {
+		return engine.access(this, int[][][].class);
+	}
 
-	public int getMenuY();
+	public boolean isMenuOpen() {
+		return engine.accessBool(this);
+	}
 
-	public int getMenuWidth();
+	public int getMenuX() {
+		return engine.accessInt(this);
+	}
 
-	public int getMenuHeight();
+	public int getMenuY() {
+		return engine.accessInt(this);
+	}
 
-	public int getMenuCount();
+	public int getMenuWidth() {
+		return engine.accessInt(this);
+	}
 
-	public String[] getMenuActions();
+	public int getMenuHeight() {
+		return engine.accessInt(this);
+	}
 
-	public String[] getMenuOptions();
+	public int getMenuCount() {
+		return engine.accessInt(this);
+	}
 
-	public int[] getWidgetBoundsX();
+	public String[] getMenuActions() {
+		return engine.access(this, String[].class);
+	}
 
-	public int[] getWidgetBoundsY();
+	public String[] getMenuOptions() {
+		return engine.access(this, String[].class);
+	}
 
-	public int[] getWidgetBoundsWidth();
+	public int[] getWidgetBoundsX() {
+		return engine.access(this, int[].class);
+	}
 
-	public int[] getWidgetBoundsHeight();
+	public int[] getWidgetBoundsY() {
+		return engine.access(this, int[].class);
+	}
 
-	public int getDestinationX();
+	public int[] getWidgetBoundsWidth() {
+		return engine.access(this, int[].class);
+	}
 
-	public int getDestinationY();
+	public int[] getWidgetBoundsHeight() {
+		return engine.access(this, int[].class);
+	}
 
-	public Widget[][] getWidgets();
+	public int getDestinationX() {
+		return engine.accessInt(this);
+	}
 
-	public HashTable getWidgetTable();
+	public int getDestinationY() {
+		return engine.accessInt(this);
+	}
 
-	public NodeDeque[][][] getGroundItems();
+	public Widget[][] getWidgets() {
+		return engine.access(this, Widget[][].class);
+	}
 
-	public CollisionMap[] getCollisionMaps();
+	public HashTable getWidgetTable() {
+		return new HashTable(engine, engine.access(this));
+	}
 
-	public int[] getVarpbits();
+	public NodeDeque[][][] getGroundItems() {
+		return engine.access(this, NodeDeque[][][].class);
+	}
 
-	public int getClientState();
+	public CollisionMap[] getCollisionMaps() {
+		return engine.access(this, CollisionMap[].class);
+	}
 
-	public int getCrosshairIndex();
+	public int[] getVarpbits() {
+		return engine.access(this, int[].class);
+	}
 
-	public Cache getVarbitCache();
+	public int getClientState() {
+		return engine.accessInt(this);
+	}
 
-	public Cache getNpcConfigCache();
+	public int getCrosshairIndex() {
+		return engine.accessInt(this);
+	}
 
-	public Cache getObjectConfigCache();
+	public Cache getVarbitCache() {
+		return new Cache(engine, engine.access(this));
+	}
 
-	public Cache getItemConfigCache();
+	public Cache getNpcConfigCache() {
+		return new Cache(engine, engine.access(this));
+	}
 
-	public int[] getSkillLevels1();
+	public Cache getObjectConfigCache() {
+		return new Cache(engine, engine.access(this));
+	}
 
-	public int[] getSkillLevels2();
+	public Cache getItemConfigCache() {
+		return new Cache(engine, engine.access(this));
+	}
 
-	public int[] getSkillExps();
+	public int[] getSkillLevels1() {
+		return engine.access(this, int[].class);
+	}
 
-	public int getCycle();
+	public int[] getSkillLevels2() {
+		return engine.access(this, int[].class);
+	}
 
-	public int getHintArrowNpcUid();
+	public int[] getSkillExps() {
+		return engine.access(this, int[].class);
+	}
 
-	public int getHintArrowPlayerUid();
+	public int getCycle() {
+		return engine.accessInt(this);
+	}
 
-	public int getHintArrowType();
+	public int getHintArrowNpcUid() {
+		return engine.accessInt(this);
+	}
 
-	public int getHintArrowX();
+	public int getHintArrowPlayerUid() {
+		return engine.accessInt(this);
+	}
 
-	public int getHintArrowY();
+	public int getHintArrowType() {
+		return engine.accessInt(this);
+	}
 
-	public void setCallback(Callback callback);
+	public int getHintArrowX() {
+		return engine.accessInt(this);
+	}
 
-	public int getSelectionType();
+	public int getHintArrowY() {
+		return engine.accessInt(this);
+	}
 
-	public int getSelectionIndex();
+	public int getSelectionType() {
+		return engine.accessInt(this);
+	}
 
-	public String getUsername();
+	public int getSelectionIndex() {
+		return engine.accessInt(this);
+	}
 
-	public String getPassword();
+	public String getUsername() {
+		return engine.access(this, String.class);
+	}
 
-	public int getPlayerIndex();
+	public String getPassword() {
+		return engine.access(this, String.class);
+	}
+
+	public int getPlayerIndex() {
+		return engine.accessInt(this);
+	}
 }

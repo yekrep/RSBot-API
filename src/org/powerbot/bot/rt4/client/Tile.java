@@ -1,15 +1,34 @@
 package org.powerbot.bot.rt4.client;
 
-public interface Tile {
-	public ItemPile getItemPile();
+import org.powerbot.bot.ContextAccessor;
+import org.powerbot.bot.ReflectionEngine;
 
-	public BoundaryObject getBoundaryObject();
+public class Tile extends ContextAccessor {
+	public Tile(final ReflectionEngine engine, final Object parent) {
+		super(engine, parent);
+	}
 
-	public WallObject getWallObject();
+	public ItemPile getItemPile() {
+		return new ItemPile(engine, engine.access(this));
+	}
 
-	public FloorObject getFloorObject();
+	public BoundaryObject getBoundaryObject() {
+		return new BoundaryObject(engine, engine.access(this));
+	}
 
-	public GameObject[] getGameObjects();
+	public WallObject getWallObject() {
+		return new WallObject(engine, engine.access(this));
+	}
 
-	public int getGameObjectLength();
+	public FloorObject getFloorObject() {
+		return new FloorObject(engine, engine.access(this));
+	}
+
+	public GameObject[] getGameObjects() {
+		return engine.access(this, GameObject[].class);
+	}
+
+	public int getGameObjectLength() {
+		return engine.accessInt(this);
+	}
 }

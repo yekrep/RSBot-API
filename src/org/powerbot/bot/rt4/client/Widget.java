@@ -1,65 +1,134 @@
 package org.powerbot.bot.rt4.client;
 
-public interface Widget {
-	public int getX();
+import org.powerbot.bot.ContextAccessor;
+import org.powerbot.bot.ReflectionEngine;
 
-	public int getY();
+public class Widget extends ContextAccessor {
+	public Widget(final ReflectionEngine engine, final Object parent) {
+		super(engine, parent);
+	}
 
-	public int getWidth();
+	public int getX() {
+		return engine.accessInt(this);
+	}
 
-	public int getHeight();
+	public int getY() {
+		return engine.accessInt(this);
+	}
 
-	public int getBorderThickness();
+	public int getWidth() {
+		return engine.accessInt(this);
+	}
 
-	public int getType();
+	public int getHeight() {
+		return engine.accessInt(this);
+	}
 
-	public int getId();
+	public int getBorderThickness() {
+		return engine.accessInt(this);
+	}
 
-	public int getParentId();
+	public int getType() {
+		return engine.accessInt(this);
+	}
 
-	public Widget[] getChildren();
+	public int getId() {
+		return engine.accessInt(this);
+	}
 
-	public int getContentType();
+	public int getParentId() {
+		return engine.accessInt(this);
+	}
 
-	public int getModelId();
+	public Widget[] getChildren() {
+		return engine.access(this, Widget[].class);
+	}
 
-	public int getModelType();
+	public int getContentType() {
+		return engine.accessInt(this);
+	}
 
-	public int getModelZoom();
+	public int getModelId() {
+		return engine.accessInt(this);
+	}
 
-	public String[] getActions();
+	public int getModelType() {
+		return engine.accessInt(this);
+	}
 
-	public int getAngleX();
+	public int getModelZoom() {
+		return engine.accessInt(this);
+	}
 
-	public int getAngleY();
+	public String[] getActions() {
+		return engine.access(this, String[].class);
+	}
 
-	public int getAngleZ();
+	public int getAngleX() {
+		return engine.accessInt(this);
+	}
 
-	public String getText();
+	public int getAngleY() {
+		return engine.accessInt(this);
+	}
 
-	public int getTextColor();
+	public int getAngleZ() {
+		return engine.accessInt(this);
+	}
 
-	public int getScrollX();
+	public String getText() {
+		return engine.access(this, String.class);
+	}
 
-	public int getScrollY();
+	public int getTextColor() {
+		return engine.accessInt(this);
+	}
 
-	public int getScrollWidth();
+	public int getScrollX() {
+		return engine.accessInt(this);
+	}
 
-	public int getScrollHeight();
+	public int getScrollY() {
+		return engine.accessInt(this);
+	}
 
-	public int getBoundsIndex();
+	public int getScrollWidth() {
+		return engine.accessInt(this);
+	}
 
-	public int getTextureId();
+	public int getScrollHeight() {
+		return engine.accessInt(this);
+	}
 
-	public int[] getItemIds();
+	public int getBoundsIndex() {
+		return engine.accessInt(this);
+	}
 
-	public int[] getItemStackSizes();
+	public int getTextureId() {
+		return engine.accessInt(this);
+	}
 
-	public boolean isHidden();
+	public int[] getItemIds() {
+		return engine.access(this, int[].class);
+	}
 
-	public String getTooltip();
+	public int[] getItemStackSizes() {
+		return engine.access(this, int[].class);
+	}
 
-	public int getItemId();
+	public boolean isHidden() {
+		return engine.accessBool(this);
+	}
 
-	public int getItemStackSize();
+	public String getTooltip() {
+		return engine.access(this, String.class);
+	}
+
+	public int getItemId() {
+		return engine.accessInt(this);
+	}
+
+	public int getItemStackSize() {
+		return engine.accessInt(this);
+	}
 }

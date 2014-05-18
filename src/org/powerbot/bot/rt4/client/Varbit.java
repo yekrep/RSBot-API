@@ -1,9 +1,21 @@
 package org.powerbot.bot.rt4.client;
 
-public interface Varbit extends Node {
-	public int getIndex();
+import org.powerbot.bot.ReflectionEngine;
 
-	public int getStartBit();
+public class Varbit extends Node {
+	public Varbit(final ReflectionEngine engine, final Object parent) {
+		super(engine, parent);
+	}
 
-	public int getEndBit();
+	public int getIndex() {
+		return engine.accessInt(this);
+	}
+
+	public int getStartBit() {
+		return engine.accessInt(this);
+	}
+
+	public int getEndBit() {
+		return engine.accessInt(this);
+	}
 }

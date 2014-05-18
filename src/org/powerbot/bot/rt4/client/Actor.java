@@ -1,25 +1,54 @@
 package org.powerbot.bot.rt4.client;
 
-public interface Actor {
-	public int getX();
+import org.powerbot.bot.ContextAccessor;
+import org.powerbot.bot.ReflectionEngine;
 
-	public int getZ();
+public class Actor extends ContextAccessor {
+	public Actor(final ReflectionEngine engine, final Object parent) {
+		super(engine, parent);
+	}
 
-	public int getHeight();
+	public int getX() {
+		return engine.accessInt(this);
+	}
 
-	public int getAnimation();
+	public int getZ() {
+		return engine.accessInt(this);
+	}
 
-	public int getSpeed();
+	public int getHeight() {
+		return engine.accessInt(this);
+	}
 
-	public int getCurrentHealth();
+	public int getAnimation() {
+		return engine.accessInt(this);
+	}
 
-	public int getMaxHealth();
+	public int getSpeed() {
+		return engine.accessInt(this);
+	}
 
-	public int getCycleEnd();
+	public int getCurrentHealth() {
+		return engine.accessInt(this);
+	}
 
-	public String getOverheadMessage();
+	public int getMaxHealth() {
+		return engine.accessInt(this);
+	}
 
-	public int getOrientation();
+	public int getCycleEnd() {
+		return engine.accessInt(this);
+	}
 
-	public int getInteractingIndex();
+	public String getOverheadMessage() {
+		return engine.access(this, String.class);
+	}
+
+	public int getOrientation() {
+		return engine.accessInt(this);
+	}
+
+	public int getInteractingIndex() {
+		return engine.accessInt(this);
+	}
 }

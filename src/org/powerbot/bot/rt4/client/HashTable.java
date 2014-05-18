@@ -1,7 +1,18 @@
 package org.powerbot.bot.rt4.client;
 
-public interface HashTable {
-	public Node[] getBuckets();
+import org.powerbot.bot.ContextAccessor;
+import org.powerbot.bot.ReflectionEngine;
 
-	public int getSize();
+public class HashTable extends ContextAccessor {
+	public HashTable(final ReflectionEngine engine, final Object parent) {
+		super(engine, parent);
+	}
+
+	public Node[] getBuckets() {
+		return engine.access(this, Node[].class);
+	}
+
+	public int getSize() {
+		return engine.accessInt(this);
+	}
 }

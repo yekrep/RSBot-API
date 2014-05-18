@@ -9,7 +9,6 @@ import org.powerbot.script.Mouse;
  * {@inheritDoc}
  */
 public class ClientContext extends org.powerbot.script.ClientContext<Client> {
-
 	public final Bank bank;
 	public final Camera camera;
 	public final Equipment equipment;

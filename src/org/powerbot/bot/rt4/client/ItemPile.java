@@ -1,11 +1,26 @@
 package org.powerbot.bot.rt4.client;
 
-public interface ItemPile {
-	public ItemNode getItem1();
+import org.powerbot.bot.ContextAccessor;
+import org.powerbot.bot.ReflectionEngine;
 
-	public ItemNode getItem2();
+public class ItemPile extends ContextAccessor {
+	public ItemPile(final ReflectionEngine engine, final Object parent) {
+		super(engine, parent);
+	}
 
-	public ItemNode getItem3();
+	public ItemNode getItem1() {
+		return new ItemNode(engine, engine.access(this));
+	}
 
-	public int getY();
+	public ItemNode getItem2() {
+		return new ItemNode(engine, engine.access(this));
+	}
+
+	public ItemNode getItem3() {
+		return new ItemNode(engine, engine.access(this));
+	}
+
+	public int getY() {
+		return engine.accessInt(this);
+	}
 }

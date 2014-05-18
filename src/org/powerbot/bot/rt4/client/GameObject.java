@@ -1,15 +1,33 @@
 package org.powerbot.bot.rt4.client;
 
-public interface GameObject extends BasicObject {
-	public int getX();
+import org.powerbot.bot.ReflectionEngine;
 
-	public int getZ();
+public class GameObject extends BasicObject {
+	public GameObject(final ReflectionEngine engine, final Object parent) {
+		super(engine, parent);
+	}
 
-	public int getX1();
+	public int getX() {
+		return engine.accessInt(this);
+	}
 
-	public int getY1();
+	public int getZ() {
+		return engine.accessInt(this);
+	}
 
-	public int getX2();
+	public int getX1() {
+		return engine.accessInt(this);
+	}
 
-	public int getY2();
+	public int getY1() {
+		return engine.accessInt(this);
+	}
+
+	public int getX2() {
+		return engine.accessInt(this);
+	}
+
+	public int getY2() {
+		return engine.accessInt(this);
+	}
 }

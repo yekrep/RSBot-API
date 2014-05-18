@@ -80,8 +80,7 @@ public class Bot extends org.powerbot.script.Bot<ClientContext> {
 			protected void load(final Applet applet) {
 				log.info("Loading game");
 				Bot.this.applet = applet;
-				ctx.client((Client) applet);
-				ctx.client().setCallback(new AbstractCallback(Bot.this));
+				//TODO: ctx.client
 				final GameStub stub = new GameStub(crawler.parameters, crawler.archive);
 				applet.setStub(stub);
 				applet.init();

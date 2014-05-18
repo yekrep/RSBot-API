@@ -1,17 +1,38 @@
 package org.powerbot.bot.rt4.client;
 
-public interface NpcConfig {
-	public int getId();
+import org.powerbot.bot.ContextAccessor;
+import org.powerbot.bot.ReflectionEngine;
 
-	public int getLevel();
+public class NpcConfig extends ContextAccessor {
+	public NpcConfig(final ReflectionEngine engine, final Object parent) {
+		super(engine, parent);
+	}
 
-	public String getName();
+	public int getId() {
+		return engine.accessInt(this);
+	}
 
-	public String[] getActions();
+	public int getLevel() {
+		return engine.accessInt(this);
+	}
 
-	public int[] getConfigs();
+	public String getName() {
+		return engine.access(this, String.class);
+	}
 
-	public int getVarpbitIndex();
+	public String[] getActions() {
+		return engine.access(this, String[].class);
+	}
 
-	public int getVarbit();
+	public int[] getConfigs() {
+		return engine.access(this, int[].class);
+	}
+
+	public int getVarpbitIndex() {
+		return engine.accessInt(this);
+	}
+
+	public int getVarbit() {
+		return engine.accessInt(this);
+	}
 }

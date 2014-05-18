@@ -1,7 +1,17 @@
 package org.powerbot.bot.rt4.client;
 
-public interface ItemNode extends Node {
-	public int getItemId();
+import org.powerbot.bot.ReflectionEngine;
 
-	public int getStackSize();
+public class ItemNode extends Node {
+	public ItemNode(final ReflectionEngine engine, final Object parent) {
+		super(engine, parent);
+	}
+
+	public int getItemId() {
+		return engine.accessInt(this);
+	}
+
+	public int getStackSize() {
+		return engine.accessInt(this);
+	}
 }
