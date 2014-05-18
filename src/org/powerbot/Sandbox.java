@@ -15,6 +15,7 @@ import org.powerbot.bot.ScriptThreadFactory;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.misc.CryptFile;
 import org.powerbot.misc.GameAccounts;
+import org.powerbot.misc.GoogleAnalytics;
 import org.powerbot.misc.NetworkAccount;
 import org.powerbot.script.Keyboard;
 import org.powerbot.util.StringUtils;
@@ -25,7 +26,7 @@ class Sandbox extends SecurityManager {
 	@Override
 	public void checkCreateClassLoader() {
 		if (isScriptThread() && !isCallingClass(javax.swing.UIDefaults.class, java.io.ObjectOutputStream.class, java.io.ObjectInputStream.class,
-				java.lang.reflect.Proxy.class, Keyboard.class)) {
+				java.lang.reflect.Proxy.class, Keyboard.class, GoogleAnalytics.class)) {
 			log.severe("Creating class loader denied");
 			throw new SecurityException();
 		}
