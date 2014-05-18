@@ -40,12 +40,14 @@ public class BotLauncher implements Callable<Boolean>, Closeable {
 	public final AtomicReference<Bot> bot;
 	public final AtomicReference<Frame> window;
 	public final AtomicReference<BotMenuBar> menu;
+	public final AtomicReference<Component> target;
 	public final AtomicReference<BotOverlay> overlay;
 
 	public BotLauncher() {
 		bot = new AtomicReference<Bot>(null);
 		window = new AtomicReference<Frame>(null);
 		menu = new AtomicReference<BotMenuBar>(null);
+		target = new AtomicReference<Component>(null);
 		overlay = new AtomicReference<BotOverlay>(null);
 	}
 
@@ -55,8 +57,10 @@ public class BotLauncher implements Callable<Boolean>, Closeable {
 
 	@Override
 	public Boolean call() throws Exception {
+		final String os = "oldschool";
 		String mode = System.getProperty(Configuration.URLs.GAME_VERSION_KEY, "").toLowerCase();
-		mode = mode.equals("oldschool") || mode.equals("os") ? "oldschool" : "www";
+		mode = mode.equals(os) || mode.equals("os") ? os : "www";
+		final boolean rt4 = mode.equals(os);
 		System.clearProperty(Configuration.URLs.GAME_VERSION_KEY);
 		System.setProperty("com.jagex.config",
 				String.format("http://%s.%s/k=3/l=%s/jav_config.ws", mode, Configuration.URLs.GAME, System.getProperty("user.language", "en")));
@@ -126,6 +130,9 @@ public class BotLauncher implements Callable<Boolean>, Closeable {
 						for (final Component x : c) {
 							final String s = x.getClass().getSimpleName();
 							if (s.equals("Rs2Applet") || s.equals("client")) {
+								target.set(x);
+								bot.set(rt4 ? new org.powerbot.bot.rt4.Bot(BotLauncher.this) : new org.powerbot.bot.rt6.Bot(BotLauncher.this));
+								new Thread(bot.get()).start();
 								final Dimension d = x.getSize();
 								d.setSize(Math.min(800, x.getWidth()), Math.min(600, x.getHeight()));
 								final Insets t = f.getInsets();
