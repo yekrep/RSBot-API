@@ -5,6 +5,7 @@ import java.awt.EventQueue;
 import java.lang.reflect.Field;
 import java.security.ProtectionDomain;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -30,9 +31,7 @@ public final class Bot extends org.powerbot.script.Bot<ClientContext> {
 
 	public List<Field> getFields(final Class<?> cls) {
 		final List<Field> f = new ArrayList<Field>();
-		for (final Field e : cls.getDeclaredFields()) {
-			f.add(e);
-		}
+		Collections.addAll(f, cls.getDeclaredFields());
 
 		final Class<?> p = cls.getSuperclass();
 		if (p != null && !p.equals(Object.class)) {
