@@ -1,23 +1,49 @@
 package org.powerbot.bot.rt6.client;
 
-public interface RSCharacter extends RSAnimable {
-	public AbstractModel getModel();
+import org.powerbot.bot.ReflectionEngine;
 
-	public int getInteracting();
+public class RSCharacter extends RSAnimable {
+	public RSCharacter(final ReflectionEngine engine, final Object parent) {
+		super(engine, parent);
+	}
 
-	public int isMoving();
+	public AbstractModel getModel() {
+		return new AbstractModel(engine, engine.access(this));
+	}
 
-	public int[] getAnimationQueue();
+	public int getInteracting() {
+		return engine.accessInt(this);
+	}
 
-	public RSAnimator getAnimation();
+	public int isMoving() {
+		return engine.accessInt(this);
+	}
 
-	public int getHeight();
+	public int[] getAnimationQueue() {
+		return engine.access(this, int[].class);
+	}
 
-	public LinkedList getCombatStatusList();
+	public RSAnimator getAnimation() {
+		return new RSAnimator(engine, engine.access(this));
+	}
 
-	public int getOrientation();
+	public int getHeight() {
+		return engine.accessInt(this);
+	}
 
-	public RSMessageData getMessageData();
+	public LinkedList getCombatStatusList() {
+		return new LinkedList(engine, engine.access(this));
+	}
 
-	public RSAnimator getPassiveAnimation();
+	public int getOrientation() {
+		return engine.accessInt(this);
+	}
+
+	public RSMessageData getMessageData() {
+		return new RSMessageData(engine, engine.access(this));
+	}
+
+	public RSAnimator getPassiveAnimation() {
+		return new RSAnimator(engine, engine.access(this));
+	}
 }

@@ -1,15 +1,34 @@
 package org.powerbot.bot.rt6.client;
 
-public interface RSItemDef {
-	public String[] getActions();
+import org.powerbot.bot.ContextAccessor;
+import org.powerbot.bot.ReflectionEngine;
 
-	public RSItemDefLoader getLoader();
+public class RSItemDef extends ContextAccessor {
+	public RSItemDef(final ReflectionEngine engine, final Object parent) {
+		super(engine, parent);
+	}
 
-	public int getID();
+	public String[] getActions() {
+		return engine.access(this, String[].class);
+	}
 
-	public String getName();
+	public RSItemDefLoader getLoader() {
+		return new RSItemDefLoader(engine, engine.access(this));
+	}
 
-	public boolean isMembersObject();
+	public int getID() {
+		return engine.accessInt(this);
+	}
 
-	public String[] getGroundActions();
+	public String getName() {
+		return engine.access(this, String.class);
+	}
+
+	public boolean isMembersObject() {
+		return engine.accessBool(this);
+	}
+
+	public String[] getGroundActions() {
+		return engine.access(this, String[].class);
+	}
 }

@@ -1,81 +1,166 @@
 package org.powerbot.bot.rt6.client;
 
-public interface RSInterface {
-	public String getTooltip();
+import org.powerbot.bot.ContextAccessor;
+import org.powerbot.bot.ReflectionEngine;
 
-	public int getComponentID();
+public class RSInterface extends ContextAccessor {
+	public RSInterface(final ReflectionEngine engine, final Object parent) {
+		super(engine, parent);
+	}
 
-	public int getZRotation();
+	public String getTooltip() {
+		return engine.access(this, String.class);
+	}
 
-	public int getWidth();
+	public int getComponentID() {
+		return engine.accessInt(this);
+	}
 
-	public int getXRotation();
+	public int getZRotation() {
+		return engine.accessInt(this);
+	}
 
-	public int getModelType();
+	public int getWidth() {
+		return engine.accessInt(this);
+	}
 
-	public int getTextureID();
+	public int getXRotation() {
+		return engine.accessInt(this);
+	}
 
-	public RSInterface[] getComponents();
+	public int getModelType() {
+		return engine.accessInt(this);
+	}
 
-	public String getComponentName();
+	public int getTextureID() {
+		return engine.accessInt(this);
+	}
 
-	public int getX();
+	public RSInterface[] getComponents() {
+		return engine.access(this, RSInterface[].class);
+	}
 
-	public int getHorizontalScrollbarPosition();
+	public String getComponentName() {
+		return engine.access(this, String.class);
+	}
 
-	public int getSpecialType();
+	public int getX() {
+		return engine.accessInt(this);
+	}
 
-	public int getY();
+	public int getHorizontalScrollbarPosition() {
+		return engine.accessInt(this);
+	}
 
-	public int getParentID();
+	public int getSpecialType() {
+		return engine.accessInt(this);
+	}
 
-	public String getText();
+	public int getY() {
+		return engine.accessInt(this);
+	}
 
-	public int getVerticalScrollbarThumbSize();
+	public int getParentID() {
+		return engine.accessInt(this);
+	}
 
-	public int getComponentStackSize();
+	public String getText() {
+		return engine.access(this, String.class);
+	}
 
-	public int getVerticalScrollbarPosition();
+	public int getVerticalScrollbarThumbSize() {
+		return engine.accessInt(this);
+	}
 
-	public String[] getActions();
+	public int getComponentStackSize() {
+		return engine.accessInt(this);
+	}
 
-	public int getVerticalScrollbarSize();
+	public int getVerticalScrollbarPosition() {
+		return engine.accessInt(this);
+	}
 
-	public int getComponentIndex();
+	public String[] getActions() {
+		return engine.access(this, String[].class);
+	}
 
-	public int getType();
+	public int getVerticalScrollbarSize() {
+		return engine.accessInt(this);
+	}
 
-	public int getModelID();
+	public int getComponentIndex() {
+		return engine.accessInt(this);
+	}
 
-	public int getModelZoom();
+	public int getType() {
+		return engine.accessInt(this);
+	}
 
-	public String getSelectedActionName();
+	public int getModelID() {
+		return engine.accessInt(this);
+	}
 
-	public int getHorizontalScrollbarSize();
+	public int getModelZoom() {
+		return engine.accessInt(this);
+	}
 
-	public int getHorizontalScrollbarThumbSize();
+	public String getSelectedActionName() {
+		return engine.access(this, String.class);
+	}
 
-	public boolean isVerticallyFlipped();
+	public int getHorizontalScrollbarSize() {
+		return engine.accessInt(this);
+	}
 
-	public int getTextColor();
+	public int getHorizontalScrollbarThumbSize() {
+		return engine.accessInt(this);
+	}
 
-	public int getYRotation();
+	public boolean isVerticallyFlipped() {
+		return engine.accessBool(this);
+	}
 
-	public int getBoundsArrayIndex();
+	public int getTextColor() {
+		return engine.accessInt(this);
+	}
 
-	public int getShadowColor();
+	public int getYRotation() {
+		return engine.accessInt(this);
+	}
 
-	public boolean isHorizontallyFlipped();
+	public int getBoundsArrayIndex() {
+		return engine.accessInt(this);
+	}
 
-	public boolean isHidden();
+	public int getShadowColor() {
+		return engine.accessInt(this);
+	}
 
-	public boolean isInventoryInterface();
+	public boolean isHorizontallyFlipped() {
+		return engine.accessBool(this);
+	}
 
-	public int getHeight();
+	public boolean isHidden() {
+		return engine.accessBool(this);
+	}
 
-	public int getID();
+	public boolean isInventoryInterface() {
+		return engine.accessBool(this);
+	}
 
-	public boolean isVisible();
+	public int getHeight() {
+		return engine.accessInt(this);
+	}
 
-	public int getBorderThinkness();
+	public int getID() {
+		return engine.accessInt(this);
+	}
+
+	public boolean isVisible() {
+		return engine.accessBool(this);
+	}
+
+	public int getBorderThinkness() {
+		return engine.accessInt(this);
+	}
 }

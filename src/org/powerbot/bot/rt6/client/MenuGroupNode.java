@@ -1,7 +1,17 @@
 package org.powerbot.bot.rt6.client;
 
-public interface MenuGroupNode extends NodeSub {
-	public NodeSubQueue getItems();
+import org.powerbot.bot.ReflectionEngine;
 
-	public int getSize();
+public class MenuGroupNode extends NodeSub {
+	public MenuGroupNode(final ReflectionEngine engine, final Object parent) {
+		super(engine, parent);
+	}
+
+	public NodeSubQueue getItems(){
+		return new NodeSubQueue(engine, engine.access(this));
+	}
+
+	public int getSize(){
+		return engine.accessInt(this);
+	}
 }

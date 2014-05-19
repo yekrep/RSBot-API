@@ -19,7 +19,6 @@ import org.powerbot.script.Condition;
 import org.powerbot.script.rt6.ClientContext;
 
 public final class Bot extends org.powerbot.script.Bot<ClientContext> {
-
 	public Bot(final BotLauncher launcher) {
 		super(launcher, new EventDispatcher());
 	}

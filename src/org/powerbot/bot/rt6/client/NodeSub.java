@@ -1,5 +1,13 @@
 package org.powerbot.bot.rt6.client;
 
-public interface NodeSub extends Node {
-	public NodeSub getNextSub();
+import org.powerbot.bot.ReflectionEngine;
+
+public class NodeSub extends Node {
+	public NodeSub(final ReflectionEngine engine, final Object parent) {
+		super(engine, parent);
+	}
+
+	public NodeSub getNextSub() {
+		return new NodeSub(engine, engine.access(this));
+	}
 }

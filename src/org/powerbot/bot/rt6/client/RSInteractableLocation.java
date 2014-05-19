@@ -1,9 +1,22 @@
 package org.powerbot.bot.rt6.client;
 
-public interface RSInteractableLocation {
-	public float getX();
+import org.powerbot.bot.ContextAccessor;
+import org.powerbot.bot.ReflectionEngine;
 
-	public float getY();
+public class RSInteractableLocation extends ContextAccessor {
+	public RSInteractableLocation(final ReflectionEngine engine, final Object parent) {
+		super(engine, parent);
+	}
 
-	public float getZ();
+	public float getX(){
+		return engine.accessFloat(this);
+	}
+
+	public float getY(){
+		return engine.accessFloat(this);
+	}
+
+	public float getZ(){
+		return engine.accessFloat(this);
+	}
 }

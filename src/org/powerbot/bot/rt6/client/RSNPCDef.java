@@ -1,15 +1,34 @@
 package org.powerbot.bot.rt6.client;
 
-public interface RSNPCDef {
-	public int getID();
+import org.powerbot.bot.ContextAccessor;
+import org.powerbot.bot.ReflectionEngine;
 
-	public String[] getActions();
+public class RSNPCDef extends ContextAccessor {
+	public RSNPCDef(final ReflectionEngine engine, final Object parent) {
+		super(engine, parent);
+	}
 
-	public String getName();
+	public int getID() {
+		return engine.accessInt(this);
+	}
 
-	public int getLevel();
+	public String[] getActions() {
+		return engine.access(this, String[].class);
+	}
 
-	public int[] getOverheadArray1();
+	public String getName() {
+		return engine.access(this, String.class);
+	}
 
-	public short[] getOverheadArray2();
+	public int getLevel() {
+		return engine.accessInt(this);
+	}
+
+	public int[] getOverheadArray1() {
+		return engine.access(this, int[].class);
+	}
+
+	public short[] getOverheadArray2() {
+		return engine.access(this, short[].class);
+	}
 }

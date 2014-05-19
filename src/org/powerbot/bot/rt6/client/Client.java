@@ -3,104 +3,203 @@ package org.powerbot.bot.rt6.client;
 import java.awt.Canvas;
 import java.awt.Rectangle;
 
-public interface Client extends org.powerbot.script.Client {
-	public Callback getCallback();
+import org.powerbot.bot.ContextAccessor;
+import org.powerbot.bot.ReflectionEngine;
 
-	public int getLoopCycle();
+public class Client extends ContextAccessor implements org.powerbot.script.Client {
+	public Client(final ReflectionEngine engine, final Object parent) {
+		super(engine, parent);
+	}
 
-	public int getPlane();
+	public int getLoopCycle() {
+		return engine.accessInt(this);
+	}
 
-	public int getDestX();
+	public int getPlane() {
+		return engine.accessInt(this);
+	}
 
-	public int getDestY();
+	public int getDestX() {
+		return engine.accessInt(this);
+	}
 
-	public int getCamPosX();
+	public int getDestY() {
+		return engine.accessInt(this);
+	}
 
-	public int getSubMenuY();
+	public int getCamPosX() {
+		return engine.accessInt(this);
+	}
 
-	public int getMinimapSettings();
+	public int getSubMenuY() {
+		return engine.accessInt(this);
+	}
 
-	public int getRSPlayerCount();
+	public int getMinimapSettings() {
+		return engine.accessInt(this);
+	}
 
-	public boolean isMenuCollapsed();
+	public int getRSPlayerCount() {
+		return engine.accessInt(this);
+	}
 
-	public int getMenuY();
+	public boolean isMenuCollapsed() {
+		return engine.accessBool(this);
+	}
 
-	public int getCamPosZ();
+	public int getMenuY() {
+		return engine.accessInt(this);
+	}
 
-	public int getCameraYaw();
+	public int getCamPosZ() {
+		return engine.accessInt(this);
+	}
 
-	public boolean isMenuOpen();
+	public int getCameraYaw() {
+		return engine.accessInt(this);
+	}
 
-	public float getMinimapAngle();
+	public boolean isMenuOpen() {
+		return engine.accessBool(this);
+	}
 
-	public int getLoginIndex();
+	public float getMinimapAngle() {
+		return engine.accessFloat(this);
+	}
 
-	public RSInfo getRSGroundInfo();
+	public int getLoginIndex() {
+		return engine.accessInt(this);
+	}
 
-	public NodeSubQueue getCollapsedMenuItems();
+	public RSInfo getRSGroundInfo() {
+		return new RSInfo(engine, engine.access(this));
+	}
 
-	public int getMinimapScale();
+	public NodeSubQueue getCollapsedMenuItems() {
+		return new NodeSubQueue(engine, engine.access(this));
+	}
 
-	public RSPlayer[] getRSPlayerArray();
+	public int getMinimapScale() {
+		return engine.accessInt(this);
+	}
 
-	public int[] getRSPlayerIndexArray();
+	public RSPlayer[] getRSPlayerArray() {
+		return engine.access(this, RSPlayer[].class);
+	}
 
-	public PlayerMetaInfo getPlayerMetaInfo();
+	public int[] getRSPlayerIndexArray() {
+		return engine.access(this, int[].class);
+	}
 
-	public int getMenuWidth();
+	public PlayerMetaInfo getPlayerMetaInfo() {
+		return new PlayerMetaInfo(engine, engine.access(this));
+	}
 
-	public int getSubMenuWidth();
+	public int getMenuWidth() {
+		return engine.accessInt(this);
+	}
 
-	public RSPlayer getMyRSPlayer();
+	public int getSubMenuWidth() {
+		return engine.accessInt(this);
+	}
 
-	public Rectangle[] getRSInterfaceBoundsArray();
+	public RSPlayer getMyRSPlayer() {
+		return new RSPlayer(engine, engine.access(this));
+	}
 
-	public NodeDeque getMenuItems();
+	public Rectangle[] getRSInterfaceBoundsArray() {
+		return engine.access(this, Rectangle[].class);
+	}
 
-	public String getCurrentUsername();
+	public NodeDeque getMenuItems() {
+		return new NodeDeque(engine, engine.access(this));
+	}
 
-	public HashTable getRSItemHashTable();
+	public String getCurrentUsername() {
+		return engine.access(this, String.class);
+	}
 
-	public HashTable getRSInterfaceNC();
+	public HashTable getRSItemHashTable() {
+		return new HashTable(engine, engine.access(this));
+	}
 
-	public int getRSNPCCount();
+	public HashTable getRSInterfaceNC() {
+		return new HashTable(engine, engine.access(this));
+	}
 
-	public int getMenuX();
+	public int getRSNPCCount() {
+		return engine.accessInt(this);
+	}
 
-	public int getGUIRSInterfaceIndex();
+	public int getMenuX() {
+		return engine.accessInt(this);
+	}
 
-	public String getSelectedItemName();
+	public int getGUIRSInterfaceIndex() {
+		return engine.accessInt(this);
+	}
 
-	public HashTable getRSNPCNC();
+	public String getSelectedItemName() {
+		return engine.access(this, String.class);
+	}
 
-	public int getSubMenuX();
+	public HashTable getRSNPCNC() {
+		return new HashTable(engine, engine.access(this));
+	}
 
-	public int getMenuHeight();
+	public int getSubMenuX() {
+		return engine.accessInt(this);
+	}
 
-	public int getCamPosY();
+	public int getMenuHeight() {
+		return engine.accessInt(this);
+	}
 
-	public int getCameraPitch();
+	public int getCamPosY() {
+		return engine.accessInt(this);
+	}
 
-	public boolean isSpellSelected();
+	public int getCameraPitch() {
+		return engine.accessInt(this);
+	}
 
-	public int[] getRSNPCIndexArray();
+	public boolean isSpellSelected() {
+		return engine.accessBool(this);
+	}
 
-	public RSItemDefLoader getRSItemDefLoader();
+	public int[] getRSNPCIndexArray() {
+		return engine.access(this, int[].class);
+	}
 
-	public int getMinimapOffset();
+	public RSItemDefLoader getRSItemDefLoader() {
+		return new RSItemDefLoader(engine, engine.access(this));
+	}
 
-	public RSInterfaceBase[] getRSInterfaceCache();
+	public int getMinimapOffset() {
+		return engine.accessInt(this);
+	}
 
-	public int getCrossHairType();
+	public RSInterfaceBase[] getRSInterfaceCache() {
+		return engine.access(this, RSInterfaceBase[].class);
+	}
 
-	public RSHintArrow[] getRSHintArrows();
+	public int getCrossHairType() {
+		return engine.accessInt(this);
+	}
 
-	public NodeDeque getProjectileDeque();
+	public RSHintArrow[] getRSHintArrows() {
+		return engine.access(this, RSHintArrow[].class);
+	}
 
-	public void setCallback(Callback callback);
+	public NodeDeque getProjectileDeque() {
+		return new NodeDeque(engine, engine.access(this));
+	}
 
-	public Canvas getCanvas();
+	public Canvas getCanvas() {
+		return engine.access(this, Canvas.class);
+	}
 
-	public HashTable getItemSlots();
+	public HashTable getItemSlots() {
+		return new HashTable(engine, engine.access(this));
+	}
 }

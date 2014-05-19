@@ -1,15 +1,34 @@
 package org.powerbot.bot.rt6.client;
 
-public interface Render {
-	public float getAbsoluteX();
+import org.powerbot.bot.ContextAccessor;
+import org.powerbot.bot.ReflectionEngine;
 
-	public float getAbsoluteY();
+public class Render  extends ContextAccessor{
+	public Render(final ReflectionEngine engine, final Object parent) {
+		super(engine, parent);
+	}
 
-	public float getXMultiplier();
+	public float getAbsoluteX(){
+		return engine.accessFloat(this);
+	}
 
-	public float getYMultiplier();
+	public float getAbsoluteY(){
+		return engine.accessFloat(this);
+	}
 
-	public int getGraphicsIndex();
+	public float getXMultiplier(){
+		return engine.accessFloat(this);
+	}
 
-	public RenderData getRenderData();
+	public float getYMultiplier(){
+		return engine.accessFloat(this);
+	}
+
+	public int getGraphicsIndex(){
+		return engine.accessInt(this);
+	}
+
+	public RenderData getRenderData(){
+		return new RenderData(engine, engine.access(this));
+	}
 }

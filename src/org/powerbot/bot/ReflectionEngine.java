@@ -49,6 +49,33 @@ public class ReflectionEngine {
 		return i != null ? i : d;
 	}
 
+	public float accessFloat(final ContextAccessor accessor) {
+		return accessFloat(accessor, -1f);
+	}
+
+	public float accessFloat(final ContextAccessor accessor, final float d) {
+		final Float i = access(accessor, Float.class);
+		return i != null ? i : d;
+	}
+
+	public byte accessByte(final ContextAccessor accessor) {
+		return accessByte(accessor, (byte) -1);
+	}
+
+	public byte accessByte(final ContextAccessor accessor, final byte d) {
+		final Byte i = access(accessor, Byte.class);
+		return i != null ? i : d;
+	}
+
+	public short accessShort(final ContextAccessor accessor) {
+		return accessShort(accessor, (short) -1);
+	}
+
+	public short accessShort(final ContextAccessor accessor, final short d) {
+		final Short i = access(accessor, Short.class);
+		return i != null ? i : d;
+	}
+
 	public Object access(final ContextAccessor accessor) {
 		return access(accessor, Object.class);
 	}
@@ -57,12 +84,11 @@ public class ReflectionEngine {
 		if (accessor.parent == null) {
 			return null;
 		}
+		//TODO if type is an array, correctly instantiate ContextAccessors
 		final StackTraceElement e = getCallingAPI();
 		final String c = e.getClassName(), m = e.getMethodName();
-		System.out.println(c + " " + m);
 		final Map<String, Field> map = fields.get(c);
 		if (map == null || !map.containsKey(m)) {
-			System.out.println("not in map");
 			return null;
 		}
 		final Field f = map.get(m);

@@ -1,7 +1,17 @@
 package org.powerbot.bot.rt6.client;
 
-public interface CombatStatusData extends LinkedListNode {
-	public int getLoopCycleStatus();
+import org.powerbot.bot.ReflectionEngine;
 
-	public int getHPRatio();
+public class CombatStatusData extends LinkedListNode {
+	public CombatStatusData(final ReflectionEngine engine, final Object parent) {
+		super(engine, parent);
+	}
+
+	public int getLoopCycleStatus() {
+		return engine.accessInt(this);
+	}
+
+	public int getHPRatio() {
+		return engine.accessInt(this);
+	}
 }

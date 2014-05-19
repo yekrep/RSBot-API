@@ -1,11 +1,25 @@
 package org.powerbot.bot.rt6.client;
 
-public interface RSItemPile extends RSInteractable {
-	public int getID_1();
+import org.powerbot.bot.ReflectionEngine;
 
-	public int getID_2();
+public class RSItemPile extends RSInteractable {
+	public RSItemPile(final ReflectionEngine engine, final Object parent) {
+		super(engine, parent);
+	}
 
-	public int getID_3();
+	public int getID_1() {
+		return engine.accessInt(this);
+	}
 
-	public int getHeight();
+	public int getID_2() {
+		return engine.accessInt(this);
+	}
+
+	public int getID_3() {
+		return engine.accessInt(this);
+	}
+
+	public int getHeight() {
+		return engine.accessInt(this);
+	}
 }

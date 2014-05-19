@@ -1,5 +1,13 @@
 package org.powerbot.bot.rt6.client;
 
-public interface RSInterfaceNode extends Node {
-	public int getMainID();
+import org.powerbot.bot.ReflectionEngine;
+
+public class RSInterfaceNode extends Node {
+	public RSInterfaceNode(final ReflectionEngine engine, final Object parent) {
+		super(engine, parent);
+	}
+
+	public int getMainID() {
+		return engine.accessInt(this);
+	}
 }

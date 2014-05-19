@@ -1,7 +1,18 @@
 package org.powerbot.bot.rt6.client;
 
-public interface BaseInfo {
-	public int getX();
+import org.powerbot.bot.ContextAccessor;
+import org.powerbot.bot.ReflectionEngine;
 
-	public int getY();
+public class BaseInfo extends ContextAccessor {
+	public BaseInfo(final ReflectionEngine engine, final Object parent) {
+		super(engine, parent);
+	}
+
+	public int getX() {
+		return engine.accessInt(this);
+	}
+
+	public int getY() {
+		return engine.accessInt(this);
+	}
 }

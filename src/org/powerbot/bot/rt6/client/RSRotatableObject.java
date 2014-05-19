@@ -1,7 +1,18 @@
 package org.powerbot.bot.rt6.client;
 
-public interface RSRotatableObject {
-	public int getOrientation();
+import org.powerbot.bot.ContextAccessor;
+import org.powerbot.bot.ReflectionEngine;
 
-	public int getType();
+public class RSRotatableObject extends ContextAccessor {
+	public RSRotatableObject(final ReflectionEngine engine, final Object parent) {
+		super(engine, parent);
+	}
+
+	public int getOrientation() {
+		return engine.accessInt(this);
+	}
+
+	public int getType() {
+		return engine.accessInt(this);
+	}
 }

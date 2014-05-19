@@ -1,5 +1,13 @@
 package org.powerbot.bot.rt6.client;
 
-public interface RSProjectileNode extends Node {
-	public RSProjectile getProjectile();
+import org.powerbot.bot.ReflectionEngine;
+
+public class RSProjectileNode extends Node {
+	public RSProjectileNode(final ReflectionEngine engine, final Object parent) {
+		super(engine, parent);
+	}
+
+	public RSProjectile getProjectile() {
+		return new RSProjectile(engine, engine.access(this));
+	}
 }

@@ -1,15 +1,33 @@
 package org.powerbot.bot.rt6.client;
 
-public interface RSPlayer extends RSCharacter {
-	public int getTeam();
+import org.powerbot.bot.ReflectionEngine;
 
-	public RSPlayerComposite getComposite();
+public class RSPlayer extends RSCharacter {
+	public RSPlayer(final ReflectionEngine engine, final Object parent) {
+		super(engine, parent);
+	}
 
-	public String getName();
+	public int getTeam() {
+		return engine.accessInt(this);
+	}
 
-	public int getLevel();
+	public RSPlayerComposite getComposite() {
+		return new RSPlayerComposite(engine, engine.access(this));
+	}
 
-	public int[] getOverheadArray1();
+	public String getName() {
+		return engine.access(this, String.class);
+	}
 
-	public int[] getOverheadArray2();
+	public int getLevel() {
+		return engine.accessInt(this);
+	}
+
+	public int[] getOverheadArray1() {
+		return engine.access(this, int[].class);
+	}
+
+	public int[] getOverheadArray2() {
+		return engine.access(this, int[].class);
+	}
 }

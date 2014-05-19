@@ -1,4 +1,4 @@
 package org.powerbot.bot.rt6.client;
 
-public interface JavaRender extends Render {
+public class JavaRender extends Render {
 }
