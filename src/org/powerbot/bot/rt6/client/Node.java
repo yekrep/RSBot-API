@@ -9,7 +9,7 @@ public class Node extends ContextAccessor {
 	}
 
 	public Node getNext() {
-		return engine.access(this, Node.class);
+		return new Node(engine, engine.access(this));
 	}
 
 	public long getId() {

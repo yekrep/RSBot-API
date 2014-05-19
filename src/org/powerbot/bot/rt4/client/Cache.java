@@ -9,6 +9,6 @@ public class Cache extends ContextAccessor {
 	}
 
 	public HashTable getTable() {
-		return engine.access(this, HashTable.class);
+		return new HashTable(engine, engine.access(this));
 	}
 }

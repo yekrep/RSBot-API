@@ -9,6 +9,6 @@ public class NodeDeque extends ContextAccessor {
 	}
 
 	public Node getSentinel() {
-		return engine.access(this, Node.class);
+		return new Node(engine, engine.access(this));
 	}
 }

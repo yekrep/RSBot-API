@@ -84,7 +84,7 @@ public class Client extends ContextAccessor implements org.powerbot.script.Clien
 	}
 
 	public RSPlayer[] getRSPlayerArray() {
-		return engine.access(this, RSPlayer[].class);
+		return engine.access(this, RSPlayer[].class);//TODO: fix
 	}
 
 	public int[] getRSPlayerIndexArray() {
@@ -180,7 +180,7 @@ public class Client extends ContextAccessor implements org.powerbot.script.Clien
 	}
 
 	public RSInterfaceBase[] getRSInterfaceCache() {
-		return engine.access(this, RSInterfaceBase[].class);
+		return engine.access(this, RSInterfaceBase[].class);//TODO: fix
 	}
 
 	public int getCrossHairType() {
@@ -188,7 +188,7 @@ public class Client extends ContextAccessor implements org.powerbot.script.Clien
 	}
 
 	public RSHintArrow[] getRSHintArrows() {
-		return engine.access(this, RSHintArrow[].class);
+		return engine.access(this, RSHintArrow[].class);//TODO: fix
 	}
 
 	public NodeDeque getProjectileDeque() {
