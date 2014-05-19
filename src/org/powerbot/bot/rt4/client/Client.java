@@ -45,7 +45,14 @@ public class Client extends ContextAccessor implements org.powerbot.script.Clien
 	}
 
 	public Player[] getPlayers() {
-		return engine.access(this, Player[].class);
+		final Object[] arr = engine.access(this, Object[].class);
+		final Player[] arr2 = arr != null ? new Player[arr.length] : null;
+		if (arr != null) {
+			for (int i = 0; i < arr.length; i++) {
+				arr2[i] = new Player(engine, arr[i]);
+			}
+		}
+		return arr2;
 	}
 
 	public int[] getPlayerIndices() {
@@ -53,7 +60,14 @@ public class Client extends ContextAccessor implements org.powerbot.script.Clien
 	}
 
 	public Npc[] getNpcs() {
-		return engine.access(this, Npc[].class);
+		final Object[] arr = engine.access(this, Object[].class);
+		final Npc[] arr2 = arr != null ? new Npc[arr.length] : null;
+		if (arr != null) {
+			for (int i = 0; i < arr.length; i++) {
+				arr2[i] = new Npc(engine, arr[i]);
+			}
+		}
+		return arr2;
 	}
 
 	public int[] getNpcIndices() {
@@ -141,7 +155,24 @@ public class Client extends ContextAccessor implements org.powerbot.script.Clien
 	}
 
 	public Widget[][] getWidgets() {
-		return engine.access(this, Widget[][].class);
+		final Object[][] arr = engine.access(this, Object[][].class);
+		if (arr == null) {
+			return null;
+		}
+		final Widget[][] arr2 = new Widget[arr.length][];
+		for (int i = 0; i < arr.length; i++) {
+			final Object[] sub = arr[i];
+			if (sub == null) {
+				arr2[i] = null;
+				continue;
+			}
+			final Widget[] sub2 = new Widget[sub.length];
+			arr2[i] = sub2;
+			for (int i2 = 0; i2 < sub.length; i2++) {
+				sub2[i2] = new Widget(engine, sub[i2]);
+			}
+		}
+		return arr2;
 	}
 
 	public HashTable getWidgetTable() {
@@ -149,11 +180,44 @@ public class Client extends ContextAccessor implements org.powerbot.script.Clien
 	}
 
 	public NodeDeque[][][] getGroundItems() {
-		return engine.access(this, NodeDeque[][][].class);
+		final Object[][][] arr = engine.access(this, Object[][][].class);
+		if (arr == null) {
+			return null;
+		}
+		final NodeDeque[][][] arr2 = new NodeDeque[arr.length][][];
+		for (int i = 0; i < arr.length; i++) {
+			final Object[][] sub = arr[i];
+			if (sub == null) {
+				arr2[i] = null;
+				continue;
+			}
+			final NodeDeque[][] sub2 = new NodeDeque[sub.length][];
+			arr2[i] = sub2;
+			for (int i2 = 0; i2 < sub.length; i2++) {
+				final Object[] sub2_1 = sub[i2];
+				if (sub2_1 == null) {
+					sub2[i] = null;
+					continue;
+				}
+				final NodeDeque[] sub2_2 = new NodeDeque[sub2_1.length];
+				sub2[i2] = sub2_2;
+				for (int i3 = 0; i3 < sub2_1.length; i3++) {
+					sub2_2[i3] = new NodeDeque(engine, sub2_1[i3]);
+				}
+			}
+		}
+		return arr2;
 	}
 
 	public CollisionMap[] getCollisionMaps() {
-		return engine.access(this, CollisionMap[].class);
+		final Object[] arr = engine.access(this, Object[].class);
+		final CollisionMap[] arr2 = arr != null ? new CollisionMap[arr.length] : null;
+		if (arr != null) {
+			for (int i = 0; i < arr.length; i++) {
+				arr2[i] = new CollisionMap(engine, arr[i]);
+			}
+		}
+		return arr2;
 	}
 
 	public int[] getVarpbits() {

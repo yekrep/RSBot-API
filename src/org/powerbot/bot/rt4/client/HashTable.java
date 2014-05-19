@@ -9,7 +9,14 @@ public class HashTable extends ContextAccessor {
 	}
 
 	public Node[] getBuckets() {
-		return engine.access(this, Node[].class);
+		final Object[] arr = engine.access(this, Object[].class);
+		final Node[] arr2 = arr != null ? new Node[arr.length] : null;
+		if (arr != null) {
+			for (int i = 0; i < arr.length; i++) {
+				arr2[i] = new Node(engine, arr[i]);
+			}
+		}
+		return arr2;
 	}
 
 	public int getSize() {

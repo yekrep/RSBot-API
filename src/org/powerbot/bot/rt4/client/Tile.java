@@ -25,7 +25,14 @@ public class Tile extends ContextAccessor {
 	}
 
 	public GameObject[] getGameObjects() {
-		return engine.access(this, GameObject[].class);
+		final Object[] arr = engine.access(this, Object[].class);
+		final GameObject[] arr2 = arr != null ? new GameObject[arr.length] : null;
+		if (arr != null) {
+			for (int i = 0; i < arr.length; i++) {
+				arr2[i] = new GameObject(engine, arr[i]);
+			}
+		}
+		return arr2;
 	}
 
 	public int getGameObjectLength() {

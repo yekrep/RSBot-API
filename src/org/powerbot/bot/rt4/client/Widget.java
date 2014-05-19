@@ -41,7 +41,14 @@ public class Widget extends ContextAccessor {
 	}
 
 	public Widget[] getChildren() {
-		return engine.access(this, Widget[].class);
+		final Object[] arr = engine.access(this, Object[].class);
+		final Widget[] arr2 = arr != null ? new Widget[arr.length] : null;
+		if (arr != null) {
+			for (int i = 0; i < arr.length; i++) {
+				arr2[i] = new Widget(engine, arr[i]);
+			}
+		}
+		return arr2;
 	}
 
 	public int getContentType() {
