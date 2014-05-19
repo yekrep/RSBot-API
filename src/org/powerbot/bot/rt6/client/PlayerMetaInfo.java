@@ -9,7 +9,14 @@ public class PlayerMetaInfo extends ContextAccessor {
 	}
 
 	public Skill[] getSkills() {
-		return engine.access(this, Skill[].class);
+		final Object[] arr = engine.access(this, Object[].class);
+		final Skill[] arr2 = arr != null ? new Skill[arr.length] : null;
+		if (arr != null) {
+			for (int i = 0; i < arr.length; i++) {
+				arr2[i] = new Skill(engine, arr[i]);
+			}
+		}
+		return arr2;
 	}
 
 	public Settings getSettings() {
