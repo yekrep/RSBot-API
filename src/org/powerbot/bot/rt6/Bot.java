@@ -45,21 +45,36 @@ public final class Bot extends org.powerbot.script.Bot<ClientContext> {
 	@Override
 	public void run() {
 		String hash = null;
-
 		final Component o0 = launcher.target.get();
-		try {
-			Thread.sleep(2500);
-		} catch (final InterruptedException ignored) {
+
+		for (final Field f1 : o0.getClass().getDeclaredFields()) {
+			final boolean a1 = f1.isAccessible();
+			f1.setAccessible(true);
+			if (Class.class.equals(f1.getType())) {
+				Object o1 = null;
+				while (o1 == null) {
+					try {
+						o1 = f1.get(o0);
+					} catch (final IllegalAccessException e) {
+						throw new RuntimeException(e);
+					}
+					Thread.yield();
+				}
+			}
+			f1.setAccessible(a1);
 		}
 
 		for (final Field f1 : o0.getClass().getDeclaredFields()) {
 			final boolean a1 = f1.isAccessible();
 			f1.setAccessible(true);
-			final Object o1;
-			try {
-				o1 = f1.get(o0);
-			} catch (final IllegalAccessException e) {
-				throw new RuntimeException(e);
+			Object o1 = null;
+			while (o1 == null) {
+				try {
+					o1 = f1.get(o0);
+				} catch (final IllegalAccessException e) {
+					throw new RuntimeException(e);
+				}
+				Thread.yield();
 			}
 			f1.setAccessible(a1);
 			final List<Field> f1x = getFields(o1.getClass());
@@ -75,16 +90,16 @@ public final class Bot extends org.powerbot.script.Bot<ClientContext> {
 
 				final boolean a2 = f2.isAccessible();
 				f2.setAccessible(true);
-				final Object o2;
-				try {
-					o2 = f2.get(o1);
-				} catch (final IllegalAccessException e) {
-					throw new RuntimeException(e);
+				Object o2 = null;
+				while (o2 == null) {
+					try {
+						o2 = f2.get(o1);
+					} catch (final IllegalAccessException e) {
+						throw new RuntimeException(e);
+					}
+					Thread.yield();
 				}
 				f2.setAccessible(a2);
-				if (o2 == null) {
-					continue;
-				}
 				final Class<?> c2 = o2.getClass();
 
 				if (c2.equals(Hashtable.class)) {
@@ -109,8 +124,8 @@ public final class Bot extends org.powerbot.script.Bot<ClientContext> {
 			if (v0 != null && v1 != null && v2 != null) {
 				synchronized (v0) {
 					hash = LoaderUtils.hash(v0);
+					log.info("Hash: " + hash + " size: " + v0.size());
 				}
-				log.info("Hash: " + hash);
 				break;
 			}
 		}
