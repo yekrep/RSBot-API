@@ -9,7 +9,7 @@ public class OverheadSprites extends ContextAccessor {
 	}
 
 	public int[] getArray1() {
-		return engine.access(this, int[].class);
+		return engine.accessInts(this);
 	}
 
 	public short[] getArray2() {

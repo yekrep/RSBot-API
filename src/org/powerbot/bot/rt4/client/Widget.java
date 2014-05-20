@@ -84,7 +84,7 @@ public class Widget extends ContextAccessor {
 	}
 
 	public String getText() {
-		return engine.access(this, String.class);
+		return engine.accessString(this);
 	}
 
 	public int getTextColor() {
@@ -116,11 +116,11 @@ public class Widget extends ContextAccessor {
 	}
 
 	public int[] getItemIds() {
-		return engine.access(this, int[].class);
+		return engine.accessInts(this);
 	}
 
 	public int[] getItemStackSizes() {
-		return engine.access(this, int[].class);
+		return engine.accessInts(this);
 	}
 
 	public boolean isHidden() {
@@ -128,7 +128,7 @@ public class Widget extends ContextAccessor {
 	}
 
 	public String getTooltip() {
-		return engine.access(this, String.class);
+		return engine.accessString(this);
 	}
 
 	public int getItemId() {

@@ -17,7 +17,7 @@ public class RSNPCDef extends ContextAccessor {
 	}
 
 	public String getName() {
-		return engine.access(this, String.class);
+		return engine.accessString(this);
 	}
 
 	public int getLevel() {
@@ -25,7 +25,7 @@ public class RSNPCDef extends ContextAccessor {
 	}
 
 	public int[] getOverheadArray1() {
-		return engine.access(this, int[].class);
+		return engine.accessInts(this);
 	}
 
 	public short[] getOverheadArray2() {

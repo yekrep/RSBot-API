@@ -41,7 +41,7 @@ public class Actor extends ContextAccessor {
 	}
 
 	public String getOverheadMessage() {
-		return engine.access(this, String.class);
+		return engine.accessString(this);
 	}
 
 	public int getOrientation() {

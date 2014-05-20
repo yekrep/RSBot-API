@@ -56,7 +56,7 @@ public class Client extends ContextAccessor implements org.powerbot.script.Clien
 	}
 
 	public int[] getPlayerIndices() {
-		return engine.access(this, int[].class);
+		return engine.accessInts(this);
 	}
 
 	public Npc[] getNpcs() {
@@ -71,7 +71,7 @@ public class Client extends ContextAccessor implements org.powerbot.script.Clien
 	}
 
 	public int[] getNpcIndices() {
-		return engine.access(this, int[].class);
+		return engine.accessInts(this);
 	}
 
 	public int getOffsetX() {
@@ -131,19 +131,19 @@ public class Client extends ContextAccessor implements org.powerbot.script.Clien
 	}
 
 	public int[] getWidgetBoundsX() {
-		return engine.access(this, int[].class);
+		return engine.accessInts(this);
 	}
 
 	public int[] getWidgetBoundsY() {
-		return engine.access(this, int[].class);
+		return engine.accessInts(this);
 	}
 
 	public int[] getWidgetBoundsWidth() {
-		return engine.access(this, int[].class);
+		return engine.accessInts(this);
 	}
 
 	public int[] getWidgetBoundsHeight() {
-		return engine.access(this, int[].class);
+		return engine.accessInts(this);
 	}
 
 	public int getDestinationX() {
@@ -221,7 +221,7 @@ public class Client extends ContextAccessor implements org.powerbot.script.Clien
 	}
 
 	public int[] getVarpbits() {
-		return engine.access(this, int[].class);
+		return engine.accessInts(this);
 	}
 
 	public int getClientState() {
@@ -249,15 +249,15 @@ public class Client extends ContextAccessor implements org.powerbot.script.Clien
 	}
 
 	public int[] getSkillLevels1() {
-		return engine.access(this, int[].class);
+		return engine.accessInts(this);
 	}
 
 	public int[] getSkillLevels2() {
-		return engine.access(this, int[].class);
+		return engine.accessInts(this);
 	}
 
 	public int[] getSkillExps() {
-		return engine.access(this, int[].class);
+		return engine.accessInts(this);
 	}
 
 	public int getCycle() {
@@ -293,11 +293,11 @@ public class Client extends ContextAccessor implements org.powerbot.script.Clien
 	}
 
 	public String getUsername() {
-		return engine.access(this, String.class);
+		return engine.accessString(this);
 	}
 
 	public String getPassword() {
-		return engine.access(this, String.class);
+		return engine.accessString(this);
 	}
 
 	public int getPlayerIndex() {

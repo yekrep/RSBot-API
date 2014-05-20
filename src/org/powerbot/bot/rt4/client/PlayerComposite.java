@@ -9,6 +9,6 @@ public class PlayerComposite extends ContextAccessor {
 	}
 
 	public int[] getAppearance() {
-		return engine.access(this, int[].class);
+		return engine.accessInts(this);
 	}
 }

@@ -21,7 +21,7 @@ public class RSItemDef extends ContextAccessor {
 	}
 
 	public String getName() {
-		return engine.access(this, String.class);
+		return engine.accessString(this);
 	}
 
 	public boolean isMembersObject() {

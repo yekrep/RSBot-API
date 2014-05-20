@@ -16,7 +16,7 @@ public class RSCharacter extends RSAnimable {
 	}
 
 	public int[] getAnimationQueue() {
-		return engine.access(this, int[].class);
+		return engine.accessInts(this);
 	}
 
 	public RSAnimator getAnimation() {

@@ -32,72 +32,42 @@ public class Reflector {
 	}
 
 	public boolean accessBool(final ContextAccessor accessor) {
-		return accessBool(accessor, false);
-	}
-
-	public boolean accessBool(final ContextAccessor accessor, final boolean d) {
-		final Boolean b = access(accessor, Boolean.class);
-		return b != null ? b : d;
+		return access(accessor, false);
 	}
 
 	public int accessInt(final ContextAccessor accessor) {
-		return accessInt(accessor, -1);
+		return access(accessor, -1);
 	}
 
-	public int accessInt(final ContextAccessor accessor, final int d) {
-		final Field f = getField();
-		if (f == null) {
-			return d;
-		}
-		final Integer i = access(accessor, Integer.class);
-		return i != null ? f.type == 1 ? i * (int) f.multiplier : i : d;
+	public int[] accessInts(final ContextAccessor accessor) {
+		return access(accessor, int[].class);
 	}
 
 	public long accessLong(final ContextAccessor accessor) {
-		return accessLong(accessor, -1l);
-	}
-
-	public long accessLong(final ContextAccessor accessor, final long d) {
-		final Field f = getField();
-		if (f == null) {
-			return d;
-		}
-		final Long i = access(accessor, Long.class);
-		return i != null ? f.type == 2 ? i * f.multiplier : i : d;
+		return access(accessor, -1L);
 	}
 
 	public float accessFloat(final ContextAccessor accessor) {
-		return accessFloat(accessor, -1f);
-	}
-
-	public float accessFloat(final ContextAccessor accessor, final float d) {
-		final Float i = access(accessor, Float.class);
-		return i != null ? i : d;
+		return access(accessor, -1f);
 	}
 
 	public byte accessByte(final ContextAccessor accessor) {
-		return accessByte(accessor, (byte) -1);
-	}
-
-	public byte accessByte(final ContextAccessor accessor, final byte d) {
-		final Byte i = access(accessor, Byte.class);
-		return i != null ? i : d;
+		return access(accessor, (byte) -1);
 	}
 
 	public short accessShort(final ContextAccessor accessor) {
-		return accessShort(accessor, (short) -1);
+		return access(accessor, (short) -1);
 	}
 
-	public short accessShort(final ContextAccessor accessor, final short d) {
-		final Short i = access(accessor, Short.class);
-		return i != null ? i : d;
+	public String accessString(final ContextAccessor accessor) {
+		return access(accessor, String.class);
 	}
 
 	public Object access(final ContextAccessor accessor) {
-		return access(accessor, Object.class);
+		return access(accessor, null);
 	}
 
-	public <T> T access(final ContextAccessor accessor, final Class<T> type) {
+	public   <T> T access(final ContextAccessor accessor, final Class<T> t) {
 		if (accessor.root == null) {
 			return null;
 		}
@@ -142,7 +112,13 @@ public class Reflector {
 		} catch (final IllegalAccessException ignored) {
 		}
 		f2.setAccessible(a2);
-		return type.cast(o);
+		return t.cast(o);
+	}
+
+	public <T> T access(final ContextAccessor accessor, final T d) {
+		@SuppressWarnings("unchecked")
+		final T v = (T) access(accessor, d.getClass());
+		return v == null ? d : v;
 	}
 
 	private StackTraceElement getCallingAPI() {

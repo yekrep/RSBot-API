@@ -9,7 +9,7 @@ public class ObjectConfig extends ContextAccessor {
 	}
 
 	public String getName() {
-		return engine.access(this, String.class);
+		return engine.accessString(this);
 	}
 
 	public String[] getActions() {
@@ -17,7 +17,7 @@ public class ObjectConfig extends ContextAccessor {
 	}
 
 	public int[] getConfigs() {
-		return engine.access(this, int[].class);
+		return engine.accessInts(this);
 	}
 
 	public int getVarpbitIndex() {

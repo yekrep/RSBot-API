@@ -88,7 +88,7 @@ public class Client extends ContextAccessor implements org.powerbot.script.Clien
 	}
 
 	public int[] getRSPlayerIndexArray() {
-		return engine.access(this, int[].class);
+		return engine.accessInts(this);
 	}
 
 	public PlayerMetaInfo getPlayerMetaInfo() {
@@ -116,7 +116,7 @@ public class Client extends ContextAccessor implements org.powerbot.script.Clien
 	}
 
 	public String getCurrentUsername() {
-		return engine.access(this, String.class);
+		return engine.accessString(this);
 	}
 
 	public HashTable getRSItemHashTable() {
@@ -140,7 +140,7 @@ public class Client extends ContextAccessor implements org.powerbot.script.Clien
 	}
 
 	public String getSelectedItemName() {
-		return engine.access(this, String.class);
+		return engine.accessString(this);
 	}
 
 	public HashTable getRSNPCNC() {
@@ -168,7 +168,7 @@ public class Client extends ContextAccessor implements org.powerbot.script.Clien
 	}
 
 	public int[] getRSNPCIndexArray() {
-		return engine.access(this, int[].class);
+		return engine.accessInts(this);
 	}
 
 	public RSItemDefLoader getRSItemDefLoader() {

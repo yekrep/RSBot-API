@@ -8,7 +8,7 @@ public class ItemConfig extends Node {
 	}
 
 	public String getName() {
-		return engine.access(this, String.class);
+		return engine.accessString(this);
 	}
 
 	public boolean isMembers() {

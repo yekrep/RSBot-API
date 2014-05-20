@@ -12,7 +12,7 @@ public class Player extends Actor {
 	}
 
 	public String getName() {
-		return engine.access(this, String.class);
+		return engine.accessString(this);
 	}
 
 	public int getTeam() {

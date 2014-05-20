@@ -9,6 +9,6 @@ public class Settings extends ContextAccessor {
 	}
 
 	public int[] getData() {
-		return engine.access(this, int[].class);
+		return engine.accessInts(this);
 	}
 }

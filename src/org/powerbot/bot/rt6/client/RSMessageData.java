@@ -9,6 +9,6 @@ public class RSMessageData extends ContextAccessor {
 	}
 
 	public String getMessage() {
-		return engine.access(this, String.class);
+		return engine.accessString(this);
 	}
 }

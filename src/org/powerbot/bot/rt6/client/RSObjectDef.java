@@ -9,7 +9,7 @@ public class RSObjectDef extends ContextAccessor {
 	}
 
 	public String getName() {
-		return engine.access(this, String.class);
+		return engine.accessString(this);
 	}
 
 	public String[] getActions() {

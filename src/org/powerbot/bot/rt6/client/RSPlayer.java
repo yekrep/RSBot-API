@@ -16,7 +16,7 @@ public class RSPlayer extends RSCharacter {
 	}
 
 	public String getName() {
-		return engine.access(this, String.class);
+		return engine.accessString(this);
 	}
 
 	public int getLevel() {
@@ -24,10 +24,10 @@ public class RSPlayer extends RSCharacter {
 	}
 
 	public int[] getOverheadArray1() {
-		return engine.access(this, int[].class);
+		return engine.accessInts(this);
 	}
 
 	public int[] getOverheadArray2() {
-		return engine.access(this, int[].class);
+		return engine.accessInts(this);
 	}
 }

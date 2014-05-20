@@ -9,7 +9,7 @@ public class RSInterface extends ContextAccessor {
 	}
 
 	public String getTooltip() {
-		return engine.access(this, String.class);
+		return engine.accessString(this);
 	}
 
 	public int getComponentID() {
@@ -48,7 +48,7 @@ public class RSInterface extends ContextAccessor {
 	}
 
 	public String getComponentName() {
-		return engine.access(this, String.class);
+		return engine.accessString(this);
 	}
 
 	public int getX() {
@@ -72,7 +72,7 @@ public class RSInterface extends ContextAccessor {
 	}
 
 	public String getText() {
-		return engine.access(this, String.class);
+		return engine.accessString(this);
 	}
 
 	public int getVerticalScrollbarThumbSize() {
@@ -112,7 +112,7 @@ public class RSInterface extends ContextAccessor {
 	}
 
 	public String getSelectedActionName() {
-		return engine.access(this, String.class);
+		return engine.accessString(this);
 	}
 
 	public int getHorizontalScrollbarSize() {

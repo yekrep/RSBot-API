@@ -13,6 +13,6 @@ public class RSPlayerComposite extends ContextAccessor {
 	}
 
 	public int[] getEquipment() {
-		return engine.access(this, int[].class);
+		return engine.accessInts(this);
 	}
 }
