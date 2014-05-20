@@ -31,6 +31,11 @@ public class Reflector {
 			this.type = type;
 			this.multiplier = multiplier;
 		}
+
+		@Override
+		public String toString() {
+			return String.format("%s.%s %s %d:%d", parent, name, Boolean.toString(virtual), type, multiplier);
+		}
 	}
 
 	public boolean accessBool(final ReflectProxy accessor) {
