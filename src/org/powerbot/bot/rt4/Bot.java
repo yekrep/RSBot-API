@@ -5,7 +5,7 @@ import java.util.Hashtable;
 import java.util.List;
 
 import org.powerbot.Instrument;
-import org.powerbot.bot.loader.LoaderUtils;
+import org.powerbot.bot.reflect.LoaderUtils;
 import org.powerbot.bot.rt4.activation.EventDispatcher;
 import org.powerbot.gui.BotLauncher;
 import org.powerbot.script.rt4.ClientContext;
