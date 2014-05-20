@@ -84,7 +84,14 @@ public class Client extends ReflectProxy implements org.powerbot.script.Client {
 	}
 
 	public RSPlayer[] getRSPlayerArray() {
-		return reflector.access(this, RSPlayer[].class);//TODO: fix
+		final Object[] arr = reflector.access(this, Object[].class);
+		final RSPlayer[] arr2 = arr != null ? new RSPlayer[arr.length] : null;
+		if (arr != null) {
+			for (int i = 0; i < arr.length; i++) {
+				arr2[i] = new RSPlayer(reflector, arr[i]);
+			}
+		}
+		return arr2;
 	}
 
 	public int[] getRSPlayerIndexArray() {
@@ -180,7 +187,14 @@ public class Client extends ReflectProxy implements org.powerbot.script.Client {
 	}
 
 	public RSInterfaceBase[] getRSInterfaceCache() {
-		return reflector.access(this, RSInterfaceBase[].class);//TODO: fix
+		final Object[] arr = reflector.access(this, Object[].class);
+		final RSInterfaceBase[] arr2 = arr != null ? new RSInterfaceBase[arr.length] : null;
+		if (arr != null) {
+			for (int i = 0; i < arr.length; i++) {
+				arr2[i] = new RSInterfaceBase(reflector, arr[i]);
+			}
+		}
+		return arr2;
 	}
 
 	public int getCrossHairType() {
@@ -188,7 +202,14 @@ public class Client extends ReflectProxy implements org.powerbot.script.Client {
 	}
 
 	public RSHintArrow[] getRSHintArrows() {
-		return reflector.access(this, RSHintArrow[].class);//TODO: fix
+		final Object[] arr = reflector.access(this, Object[].class);
+		final RSHintArrow[] arr2 = arr != null ? new RSHintArrow[arr.length] : null;
+		if (arr != null) {
+			for (int i = 0; i < arr.length; i++) {
+				arr2[i] = new RSHintArrow(reflector, arr[i]);
+			}
+		}
+		return arr2;
 	}
 
 	public NodeDeque getProjectileDeque() {

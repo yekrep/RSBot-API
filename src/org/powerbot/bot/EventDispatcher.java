@@ -30,7 +30,7 @@ public abstract class EventDispatcher extends AbstractCollection<EventListener> 
 		masks = new HashMap<Class<? extends EventListener>, Integer>();
 	}
 
-	private final long getMask(final EventListener e) {
+	private long getMask(final EventListener e) {
 		long m = 0;
 
 		for (final Map.Entry<Class<? extends EventListener>, Integer> entry : masks.entrySet()) {

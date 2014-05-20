@@ -10,10 +10,7 @@ import org.powerbot.script.rt4.Player;
 
 import static org.powerbot.bot.DebugHelper.drawLine;
 
-/**
- */
 public class TPlayer extends ClientAccessor implements TextPaintListener {
-
 	public TPlayer(final ClientContext ctx) {
 		super(ctx);
 	}

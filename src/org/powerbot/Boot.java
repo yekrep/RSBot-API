@@ -74,7 +74,7 @@ public class Boot implements Runnable {
 		}
 		logger.addHandler(new Handler() {
 			@Override
-			public void publish(LogRecord record) {
+			public void publish(final LogRecord record) {
 				if (record == null || record.getMessage() == null) {
 					return;
 				}
