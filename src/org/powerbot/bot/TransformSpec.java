@@ -9,6 +9,7 @@ import java.util.Map;
 
 public class TransformSpec {
 	public final Map<String, Map<String, Reflector.Field>> fields;
+	public final Map<String, String> interfaces;
 	public final Map<String, String> attributes;
 	public final Map<Integer, Integer> constants;
 	public final Map<Integer, Integer> multipliers;
@@ -21,6 +22,7 @@ public class TransformSpec {
 		this.name = name;
 		this.version = version;
 		fields = new HashMap<String, Map<String, Reflector.Field>>();
+		interfaces = new HashMap<String, String>();
 		attributes = new HashMap<String, String>();
 		constants = new HashMap<Integer, Integer>();
 		multipliers = new HashMap<Integer, Integer>();
@@ -101,6 +103,7 @@ public class TransformSpec {
 			}
 			case ADD_INTERFACE: {
 				final String c = scanner.readString(), s = scanner.readString();
+				t.interfaces.put(s, c);
 				break;
 			}
 			case SET_SUPER: {
