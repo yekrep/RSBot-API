@@ -1,9 +1,9 @@
 package org.powerbot.bot.rt6.client;
 
-import org.powerbot.bot.reflect.ReflectionEngine;
+import org.powerbot.bot.Reflector;
 
 public class RSCharacter extends RSAnimable {
-	public RSCharacter(final ReflectionEngine engine, final Object parent) {
+	public RSCharacter(final Reflector engine, final Object parent) {
 		super(engine, parent);
 	}
 

@@ -1,11 +1,14 @@
-package org.powerbot.bot.reflect;
+package org.powerbot.bot;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ReflectionSpec {
-	public final Map<String, Map<String, ReflectionEngine.Field>> fields;
+public class TransformSpec {
+	public final Map<String, Map<String, Reflector.Field>> fields;
 	public final Map<String, String> attributes;
 	public final Map<Integer, Integer> constants;
 	public final Map<Integer, Integer> multipliers;
@@ -31,9 +34,9 @@ public class ReflectionSpec {
 
 	private static final int MAGIC = 0xFADFAD;
 
-	public ReflectionSpec(final InputStream data) {
+	public TransformSpec(final InputStream data) {
 		scanner = new Scanner(data);
-		fields = new HashMap<String, Map<String, ReflectionEngine.Field>>();
+		fields = new HashMap<String, Map<String, Reflector.Field>>();
 		attributes = new HashMap<String, String>();
 		constants = new HashMap<Integer, Integer>();
 		multipliers = new HashMap<Integer, Integer>();
@@ -48,7 +51,7 @@ public class ReflectionSpec {
 	}
 
 	public void parse() {
-		if (scanner.readInt() != ReflectionSpec.MAGIC) {
+		if (scanner.readInt() != TransformSpec.MAGIC) {
 			throw new RuntimeException("invalid patch format");
 		}
 		name = scanner.readString();
@@ -65,11 +68,11 @@ public class ReflectionSpec {
 			case Headers.GET_STATIC:
 			case Headers.GET_FIELD: {
 				final String c = scanner.readString();
-				final Map<String, ReflectionEngine.Field> map;
+				final Map<String, Reflector.Field> map;
 				if (fields.containsKey(c)) {
 					map = fields.get(c);
 				} else {
-					fields.put(c, map = new HashMap<String, ReflectionEngine.Field>());
+					fields.put(c, map = new HashMap<String, Reflector.Field>());
 				}
 				int n = scanner.readShort();
 				while (n-- > 0) {
@@ -95,7 +98,7 @@ public class ReflectionSpec {
 					if (map.containsKey(gn)) {
 						throw new RuntimeException("we don't support overloading yet...");
 					}
-					map.put(gn, new ReflectionEngine.Field(o, f, op == Headers.GET_FIELD, overflow, value));
+					map.put(gn, new Reflector.Field(o, f, op == Headers.GET_FIELD, overflow, value));
 				}
 				break;
 			}
@@ -168,6 +171,63 @@ public class ReflectionSpec {
 				break read;
 			}
 			}
+		}
+	}
+
+	private static class Scanner {
+		private final static int EOL = 0xA;
+		private final InputStream in;
+
+		public Scanner(final byte[] data) {
+			this(new ByteArrayInputStream(data));
+		}
+
+		public Scanner(final InputStream in) {
+			this.in = in;
+		}
+
+		public int readByte() {
+			try {
+				return in.read();
+			} catch (final IOException ignored) {
+				return -1;
+			}
+		}
+
+		public int readShort() {
+			return readByte() << 8 | readByte();
+		}
+
+		public int readInt() {
+			return readShort() << 16 | readShort();
+		}
+
+		public long readLong() {
+			return ((long) readInt()) << 32 | readInt() & 0xFFFFFFFFl;
+		}
+
+		public String readString() {
+			return normalize(new String(readSegment()));
+		}
+
+		public byte[] readSegment() {
+			final ByteArrayOutputStream out = new ByteArrayOutputStream();
+			int b;
+			while ((b = readByte()) != EOL && b != -1) {
+				out.write(b);
+			}
+			return out.toByteArray();
+		}
+
+		public void readSegment(final byte[] data, final int len, final int off) {
+			for (int i = off; i < off + len; i++) {
+				data[i] = (byte) readByte();
+			}
+		}
+
+		private String normalize(final String s) {
+			return s.replace("org/powerbot/game/client", org.powerbot.bot.rt6.client.Client.class.getPackage().getName().replace('.', '/')).
+					replace("org/powerbot/os/client", org.powerbot.bot.rt4.client.Client.class.getPackage().getName().replace('.', '/'));
 		}
 	}
 }

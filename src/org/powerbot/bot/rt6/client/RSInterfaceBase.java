@@ -1,10 +1,10 @@
 package org.powerbot.bot.rt6.client;
 
-import org.powerbot.bot.reflect.ContextAccessor;
-import org.powerbot.bot.reflect.ReflectionEngine;
+import org.powerbot.bot.ContextAccessor;
+import org.powerbot.bot.Reflector;
 
 public class RSInterfaceBase extends ContextAccessor {
-	public RSInterfaceBase(final ReflectionEngine engine, final Object parent) {
+	public RSInterfaceBase(final Reflector engine, final Object parent) {
 		super(engine, parent);
 	}
 

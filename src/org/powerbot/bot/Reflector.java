@@ -1,17 +1,17 @@
-package org.powerbot.bot.reflect;
+package org.powerbot.bot;
 
 import java.util.Map;
 
-public class ReflectionEngine {
+public class Reflector {
 	private final ClassLoader loader;
 	private final Map<String, Map<String, Field>> fields;
 
-	public ReflectionEngine(final ClassLoader loader, final ReflectionSpec spec) {
+	public Reflector(final ClassLoader loader, final TransformSpec spec) {
 		this.loader = loader;
 		this.fields = spec.fields;
 	}
 
-	public ReflectionEngine(final ClassLoader loader, final Map<String, Map<String, Field>> fields) {
+	public Reflector(final ClassLoader loader, final Map<String, Map<String, Field>> fields) {
 		this.loader = loader;
 		this.fields = fields;
 	}
@@ -146,7 +146,7 @@ public class ReflectionEngine {
 	}
 
 	private StackTraceElement getCallingAPI() {
-		final String n = ReflectionEngine.class.getName();
+		final String n = Reflector.class.getName();
 		final StackTraceElement[] arr = Thread.currentThread().getStackTrace();
 		for (int i = 2; i < arr.length; i++) {
 			if (arr[i] == null || arr[i].getClassName().equals(n)) {

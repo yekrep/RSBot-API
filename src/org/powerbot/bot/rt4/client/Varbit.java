@@ -1,9 +1,9 @@
 package org.powerbot.bot.rt4.client;
 
-import org.powerbot.bot.reflect.ReflectionEngine;
+import org.powerbot.bot.Reflector;
 
 public class Varbit extends Node {
-	public Varbit(final ReflectionEngine engine, final Object parent) {
+	public Varbit(final Reflector engine, final Object parent) {
 		super(engine, parent);
 	}
 

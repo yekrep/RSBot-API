@@ -1,4 +1,4 @@
-package org.powerbot.bot.reflect;
+package org.powerbot.bot;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -24,7 +24,7 @@ import org.powerbot.misc.GoogleAnalytics;
 import org.powerbot.util.HttpUtils;
 import org.powerbot.util.StringUtils;
 
-public class LoaderUtils {
+public class ClientTransformUtils {
 	public static String hash(final Map<String, byte[]> map) {
 		final MessageDigest md;
 		try {
@@ -49,7 +49,7 @@ public class LoaderUtils {
 		}
 	}
 
-	public static ReflectionSpec get(final String gv, final String hash) throws IOException {
+	public static TransformSpec get(final String gv, final String hash) throws IOException {
 		final String pre = "loader/spec/" + hash;
 		final int r;
 
@@ -81,7 +81,7 @@ public class LoaderUtils {
 				throw new IOException(e);
 			}
 			try {
-				return new ReflectionSpec(new CipherInputStream(HttpUtils.openStream(con), c));
+				return new TransformSpec(new CipherInputStream(HttpUtils.openStream(con), c));
 			} catch (final NullPointerException e) {
 				throw new IOException(e);
 			}
@@ -169,10 +169,10 @@ public class LoaderUtils {
 		for (; ; ) {
 			log.warning("Downloading update \u2014 please wait");
 			try {
-				LoaderUtils.upload(gv, hash, classes);
+				ClientTransformUtils.upload(gv, hash, classes);
 				break;
 			} catch (final IOException ignored) {
-			} catch (final LoaderUtils.PendingException p) {
+			} catch (final ClientTransformUtils.PendingException p) {
 				final int d = p.getDelay() / 1000;
 				log.warning("Your update (" + hash.substring(0, 6) + ") is being processed, trying again in " + (d < 60 ? d + " seconds" : (int) Math.ceil(d / 60) + " minutes"));
 				try {

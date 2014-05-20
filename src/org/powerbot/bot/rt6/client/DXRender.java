@@ -1,9 +1,9 @@
 package org.powerbot.bot.rt6.client;
 
-import org.powerbot.bot.reflect.ReflectionEngine;
+import org.powerbot.bot.Reflector;
 
 public class DXRender extends Render {
-	public DXRender(final ReflectionEngine engine, final Object parent) {
+	public DXRender(final Reflector engine, final Object parent) {
 		super(engine, parent);
 	}
 }
