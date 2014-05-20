@@ -89,13 +89,13 @@ public final class Bot extends org.powerbot.script.Bot<ClientContext> {
 
 				if (c2.equals(Hashtable.class)) {
 					final Hashtable x = (Hashtable) o2;
-					if (!x.isEmpty()) {
-						final Object xk = x.keys().nextElement(), xv = x.get(xk);
-						if (xk.getClass().equals(String.class) && xv.getClass().equals(byte[].class)) {
+					if (x.keys().nextElement().getClass().equals(String.class)) {
+						final Class<?> c3 = x.elements().nextElement().getClass();
+						if (c3.equals(byte[].class)) {
 							@SuppressWarnings("unchecked")
-							final Hashtable<String, byte[]> xs = (Hashtable<String, byte[]>) x;
+							final Hashtable<String, byte[]> xs = x;
 							v0 = xs;
-						} else if (xk.getClass().equals(String.class) && xv.getClass().equals(Class.class)) {
+						} else if (c3.getClass().equals(Class.class)) {
 							@SuppressWarnings("unchecked")
 							final Hashtable<String, Class<?>> xs = (Hashtable<String, Class<?>>) x;
 							v1 = xs;

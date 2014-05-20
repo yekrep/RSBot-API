@@ -24,7 +24,7 @@ public class Bot extends org.powerbot.script.Bot<ClientContext> {
 	@Override
 	public void run() {
 		String hash = null;
-		final Object o0 = launcher.target.get().getClass().getClassLoader();
+		final ClassLoader o0 = launcher.target.get().getClass().getClassLoader();
 
 		for (final Field f1 : Instrument.getFields(o0.getClass())) {
 			final boolean a1 = f1.isAccessible();
@@ -57,9 +57,9 @@ public class Bot extends org.powerbot.script.Bot<ClientContext> {
 
 				if (c2.equals(Hashtable.class)) {
 					final Hashtable x = (Hashtable) o2;
-					if (!x.isEmpty() && x.elements().nextElement().getClass().equals(byte[].class)) {
+					if (x.elements().nextElement().getClass().equals(byte[].class)) {
 						@SuppressWarnings("unchecked")
-						final Hashtable<String, byte[]> xs = (Hashtable<String, byte[]>) x;
+						final Hashtable<String, byte[]> xs = x;
 						v0 = xs;
 					}
 				} else if (c2.equals(PKCS7.class)) {
