@@ -10,8 +10,7 @@ public class Reflector {
 	private final Map<String, Map<String, Field>> fields;
 
 	public Reflector(final ClassLoader loader, final TransformSpec spec) {
-		this.loader = loader;
-		this.fields = spec.fields;
+		this(loader, spec.fields);
 	}
 
 	public Reflector(final ClassLoader loader, final Map<String, Map<String, Field>> fields) {
@@ -80,7 +79,7 @@ public class Reflector {
 		return access(accessor, null);
 	}
 
-	public   <T> T access(final ReflectProxy accessor, final Class<T> t) {
+	public <T> T access(final ReflectProxy accessor, final Class<T> t) {
 		if (accessor.obj == null) {
 			return null;
 		}
