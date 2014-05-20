@@ -1,7 +1,7 @@
 package org.powerbot.bot.rt6.client;
 
-import org.powerbot.bot.ContextAccessor;
-import org.powerbot.bot.ReflectionEngine;
+import org.powerbot.bot.reflect.ContextAccessor;
+import org.powerbot.bot.reflect.ReflectionEngine;
 
 public class RSInteractableData extends ContextAccessor {
 	public RSInteractableData(final ReflectionEngine engine, final Object parent) {

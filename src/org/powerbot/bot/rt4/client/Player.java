@@ -1,6 +1,6 @@
 package org.powerbot.bot.rt4.client;
 
-import org.powerbot.bot.ReflectionEngine;
+import org.powerbot.bot.reflect.ReflectionEngine;
 
 public class Player extends Actor {
 	public Player(final ReflectionEngine engine, final Object parent) {

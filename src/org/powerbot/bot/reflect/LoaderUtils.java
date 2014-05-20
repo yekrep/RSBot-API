@@ -1,4 +1,4 @@
-package org.powerbot.bot.loader;
+package org.powerbot.bot.reflect;
 
 import java.io.IOException;
 import java.io.OutputStream;

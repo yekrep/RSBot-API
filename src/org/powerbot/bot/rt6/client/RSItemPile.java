@@ -1,6 +1,6 @@
 package org.powerbot.bot.rt6.client;
 
-import org.powerbot.bot.ReflectionEngine;
+import org.powerbot.bot.reflect.ReflectionEngine;
 
 public class RSItemPile extends RSInteractable {
 	public RSItemPile(final ReflectionEngine engine, final Object parent) {

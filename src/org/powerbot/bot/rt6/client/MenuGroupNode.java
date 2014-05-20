@@ -1,6 +1,6 @@
 package org.powerbot.bot.rt6.client;
 
-import org.powerbot.bot.ReflectionEngine;
+import org.powerbot.bot.reflect.ReflectionEngine;
 
 public class MenuGroupNode extends NodeSub {
 	public MenuGroupNode(final ReflectionEngine engine, final Object parent) {

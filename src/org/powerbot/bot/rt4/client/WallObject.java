@@ -1,6 +1,6 @@
 package org.powerbot.bot.rt4.client;
 
-import org.powerbot.bot.ReflectionEngine;
+import org.powerbot.bot.reflect.ReflectionEngine;
 
 public class WallObject extends BasicObject {
 	public WallObject(final ReflectionEngine engine, final Object parent) {

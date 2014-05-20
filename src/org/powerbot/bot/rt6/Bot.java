@@ -12,7 +12,7 @@ import java.util.concurrent.Callable;
 
 import org.powerbot.Configuration;
 import org.powerbot.bot.SelectiveEventQueue;
-import org.powerbot.bot.loader.LoaderUtils;
+import org.powerbot.bot.reflect.LoaderUtils;
 import org.powerbot.bot.rt6.activation.EventDispatcher;
 import org.powerbot.gui.BotLauncher;
 import org.powerbot.script.Condition;

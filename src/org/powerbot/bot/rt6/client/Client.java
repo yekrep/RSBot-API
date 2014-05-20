@@ -3,8 +3,8 @@ package org.powerbot.bot.rt6.client;
 import java.awt.Canvas;
 import java.awt.Rectangle;
 
-import org.powerbot.bot.ContextAccessor;
-import org.powerbot.bot.ReflectionEngine;
+import org.powerbot.bot.reflect.ContextAccessor;
+import org.powerbot.bot.reflect.ReflectionEngine;
 
 public class Client extends ContextAccessor implements org.powerbot.script.Client {
 	public Client(final ReflectionEngine engine, final Object parent) {

@@ -1,6 +1,6 @@
 package org.powerbot.bot.rt6.client;
 
-import org.powerbot.bot.ReflectionEngine;
+import org.powerbot.bot.reflect.ReflectionEngine;
 
 public class CombatStatus extends LinkedListNode {
 	public CombatStatus(final ReflectionEngine engine, final Object parent) {

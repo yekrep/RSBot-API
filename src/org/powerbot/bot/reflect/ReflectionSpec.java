@@ -1,10 +1,8 @@
-package org.powerbot.bot.loader;
+package org.powerbot.bot.reflect;
 
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.powerbot.bot.ReflectionEngine;
 
 public class ReflectionSpec {
 	public final Map<String, Map<String, ReflectionEngine.Field>> fields;

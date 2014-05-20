@@ -1,10 +1,15 @@
-package org.powerbot.bot;
+package org.powerbot.bot.reflect;
 
 import java.util.Map;
 
 public class ReflectionEngine {
 	private final ClassLoader loader;
 	private final Map<String, Map<String, Field>> fields;
+
+	public ReflectionEngine(final ClassLoader loader, final ReflectionSpec spec) {
+		this.loader = loader;
+		this.fields = spec.fields;
+	}
 
 	public ReflectionEngine(final ClassLoader loader, final Map<String, Map<String, Field>> fields) {
 		this.loader = loader;
@@ -41,6 +46,7 @@ public class ReflectionEngine {
 
 	public int accessInt(final ContextAccessor accessor, final int d) {
 		final Integer i = access(accessor, Integer.class);
+		//TODO: apply multiplier
 		return i != null ? i : d;
 	}
 
@@ -50,6 +56,7 @@ public class ReflectionEngine {
 
 	public long accessLong(final ContextAccessor accessor, final long d) {
 		final Long i = access(accessor, Long.class);
+		//TODO: apply multiplier
 		return i != null ? i : d;
 	}
 

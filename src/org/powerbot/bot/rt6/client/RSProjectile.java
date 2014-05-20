@@ -1,6 +1,6 @@
 package org.powerbot.bot.rt6.client;
 
-import org.powerbot.bot.ReflectionEngine;
+import org.powerbot.bot.reflect.ReflectionEngine;
 
 public class RSProjectile extends RSInteractable {
 	public RSProjectile(final ReflectionEngine engine, final Object parent) {

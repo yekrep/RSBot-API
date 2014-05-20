@@ -1,4 +1,4 @@
-package org.powerbot.bot;
+package org.powerbot.bot.reflect;
 
 public class ContextAccessor {
 	public final ReflectionEngine engine;
