@@ -39,7 +39,12 @@ public class Reflector {
 	}
 
 	public int accessInt(final ReflectProxy accessor) {
-		return access(accessor, -1);
+		final Field f = getField();
+		if (f == null) {
+			return -1;
+		}
+		final Integer i = access(accessor, Integer.class);
+		return i != null ? f.type == 1 ? i * (int) f.multiplier : i : -1;
 	}
 
 	public int[] accessInts(final ReflectProxy accessor) {
@@ -47,7 +52,12 @@ public class Reflector {
 	}
 
 	public long accessLong(final ReflectProxy accessor) {
-		return access(accessor, -1L);
+		final Field f = getField();
+		if (f == null) {
+			return -1L;
+		}
+		final Long i = access(accessor, Long.class);
+		return i != null ? f.type == 2 ? i * f.multiplier : i : -1L;
 	}
 
 	public float accessFloat(final ReflectProxy accessor) {
