@@ -31,18 +31,19 @@ public class HashTable<N> implements Iterator<N>, Iterable<N> {
 		if (next != null) {
 			return true;
 		}
-		final Node[] buckets = table.obj.get() != null ? table.getBuckets() : null;
+		final Object c = curr.obj.get();
+		final Node[] buckets = table.obj.get() != null && c != null ? table.getBuckets() : null;
 		if (buckets == null) {
 			return false;
 		}
-		if (bucket_index > 0 && bucket_index <= buckets.length && buckets[bucket_index - 1] != curr) {
+		if (bucket_index > 0 && bucket_index <= buckets.length && buckets[bucket_index - 1].obj.get() != c) {
 			next = curr;
 			curr = curr.getNext();
 			return true;
 		}
 		while (bucket_index < buckets.length) {
 			final Node n = buckets[bucket_index++].getNext();
-			if (buckets[bucket_index - 1] != n) {
+			if (buckets[bucket_index - 1].obj.get() != n.obj.get()) {
 				next = n;
 				curr = n.getNext();
 				return true;
@@ -76,7 +77,7 @@ public class HashTable<N> implements Iterator<N>, Iterable<N> {
 			return null;
 		}
 		final Node n = buckets[(int) (id & buckets.length - 1)];
-		for (Node node = n.getNext(); node != n && node != null; node = node.getNext()) {
+		for (Node node = n.getNext(); node.obj.get() != n.obj.get() && node.obj.get() != null; node = node.getNext()) {
 			if (node.getId() == id) {
 				return node;
 			}
