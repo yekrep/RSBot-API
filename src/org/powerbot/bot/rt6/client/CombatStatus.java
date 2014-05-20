@@ -8,6 +8,6 @@ public class CombatStatus extends LinkedListNode {
 	}
 
 	public LinkedList getData() {
-		return new LinkedList(engine, engine.access(this));
+		return new LinkedList(reflector, reflector.access(this));
 	}
 }

@@ -134,7 +134,7 @@ public class Map extends ClientAccessor {
 				if (object == null) {
 					continue;
 				}
-				final RSRotatableObject rot = new RSRotatableObject(object.engine, object.root);
+				final RSRotatableObject rot = new RSRotatableObject(object.reflector, object.obj);
 				collisionMap.markWall(localX, localY, rot.getType(), rot.getOrientation());
 				break;
 			case FLOOR_DECORATION:

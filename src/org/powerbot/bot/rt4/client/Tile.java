@@ -1,41 +1,41 @@
 package org.powerbot.bot.rt4.client;
 
-import org.powerbot.bot.ContextAccessor;
+import org.powerbot.bot.ReflectProxy;
 import org.powerbot.bot.Reflector;
 
-public class Tile extends ContextAccessor {
+public class Tile extends ReflectProxy {
 	public Tile(final Reflector engine, final Object parent) {
 		super(engine, parent);
 	}
 
 	public ItemPile getItemPile() {
-		return new ItemPile(engine, engine.access(this));
+		return new ItemPile(reflector, reflector.access(this));
 	}
 
 	public BoundaryObject getBoundaryObject() {
-		return new BoundaryObject(engine, engine.access(this));
+		return new BoundaryObject(reflector, reflector.access(this));
 	}
 
 	public WallObject getWallObject() {
-		return new WallObject(engine, engine.access(this));
+		return new WallObject(reflector, reflector.access(this));
 	}
 
 	public FloorObject getFloorObject() {
-		return new FloorObject(engine, engine.access(this));
+		return new FloorObject(reflector, reflector.access(this));
 	}
 
 	public GameObject[] getGameObjects() {
-		final Object[] arr = engine.access(this, Object[].class);
+		final Object[] arr = reflector.access(this, Object[].class);
 		final GameObject[] arr2 = arr != null ? new GameObject[arr.length] : null;
 		if (arr != null) {
 			for (int i = 0; i < arr.length; i++) {
-				arr2[i] = new GameObject(engine, arr[i]);
+				arr2[i] = new GameObject(reflector, arr[i]);
 			}
 		}
 		return arr2;
 	}
 
 	public int getGameObjectLength() {
-		return engine.accessInt(this);
+		return reflector.accessInt(this);
 	}
 }

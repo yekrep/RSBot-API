@@ -8,6 +8,6 @@ public class NodeSub extends Node {
 	}
 
 	public NodeSub getNextSub() {
-		return new NodeSub(engine, engine.access(this));
+		return new NodeSub(reflector, reflector.access(this));
 	}
 }

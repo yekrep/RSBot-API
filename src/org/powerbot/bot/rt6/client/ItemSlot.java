@@ -8,10 +8,10 @@ public class ItemSlot extends Node {
 	}
 
 	public int[] getIds() {
-		return engine.accessInts(this);
+		return reflector.accessInts(this);
 	}
 
 	public int[] getStackSizes() {
-		return engine.accessInts(this);
+		return reflector.accessInts(this);
 	}
 }

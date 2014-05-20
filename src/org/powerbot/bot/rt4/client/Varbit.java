@@ -8,14 +8,14 @@ public class Varbit extends Node {
 	}
 
 	public int getIndex() {
-		return engine.accessInt(this);
+		return reflector.accessInt(this);
 	}
 
 	public int getStartBit() {
-		return engine.accessInt(this);
+		return reflector.accessInt(this);
 	}
 
 	public int getEndBit() {
-		return engine.accessInt(this);
+		return reflector.accessInt(this);
 	}
 }

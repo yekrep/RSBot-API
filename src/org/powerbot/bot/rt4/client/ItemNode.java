@@ -8,10 +8,10 @@ public class ItemNode extends Node {
 	}
 
 	public int getItemId() {
-		return engine.accessInt(this);
+		return reflector.accessInt(this);
 	}
 
 	public int getStackSize() {
-		return engine.accessInt(this);
+		return reflector.accessInt(this);
 	}
 }

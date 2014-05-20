@@ -1,18 +1,18 @@
 package org.powerbot.bot.rt6.client;
 
-import org.powerbot.bot.ContextAccessor;
+import org.powerbot.bot.ReflectProxy;
 import org.powerbot.bot.Reflector;
 
-public class OverheadSprites extends ContextAccessor {
+public class OverheadSprites extends ReflectProxy {
 	public OverheadSprites(final Reflector engine, final Object parent) {
 		super(engine, parent);
 	}
 
 	public int[] getArray1() {
-		return engine.accessInts(this);
+		return reflector.accessInts(this);
 	}
 
 	public short[] getArray2() {
-		return engine.access(this, short[].class);
+		return reflector.access(this, short[].class);
 	}
 }

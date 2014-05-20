@@ -8,10 +8,10 @@ public class RSProjectile extends RSInteractable {
 	}
 
 	public int getID() {
-		return engine.accessInt(this);
+		return reflector.accessInt(this);
 	}
 
 	public int getTargetID() {
-		return engine.accessInt(this);
+		return reflector.accessInt(this);
 	}
 }

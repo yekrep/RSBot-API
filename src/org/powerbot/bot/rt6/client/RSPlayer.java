@@ -8,26 +8,26 @@ public class RSPlayer extends RSCharacter {
 	}
 
 	public int getTeam() {
-		return engine.accessInt(this);
+		return reflector.accessInt(this);
 	}
 
 	public RSPlayerComposite getComposite() {
-		return new RSPlayerComposite(engine, engine.access(this));
+		return new RSPlayerComposite(reflector, reflector.access(this));
 	}
 
 	public String getName() {
-		return engine.accessString(this);
+		return reflector.accessString(this);
 	}
 
 	public int getLevel() {
-		return engine.accessInt(this);
+		return reflector.accessInt(this);
 	}
 
 	public int[] getOverheadArray1() {
-		return engine.accessInts(this);
+		return reflector.accessInts(this);
 	}
 
 	public int[] getOverheadArray2() {
-		return engine.accessInts(this);
+		return reflector.accessInts(this);
 	}
 }

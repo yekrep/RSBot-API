@@ -31,50 +31,50 @@ public class Reflector {
 		}
 	}
 
-	public boolean accessBool(final ContextAccessor accessor) {
+	public boolean accessBool(final ReflectProxy accessor) {
 		return access(accessor, false);
 	}
 
-	public int accessInt(final ContextAccessor accessor) {
+	public int accessInt(final ReflectProxy accessor) {
 		return access(accessor, -1);
 	}
 
-	public int[] accessInts(final ContextAccessor accessor) {
+	public int[] accessInts(final ReflectProxy accessor) {
 		return access(accessor, int[].class);
 	}
 
-	public long accessLong(final ContextAccessor accessor) {
+	public long accessLong(final ReflectProxy accessor) {
 		return access(accessor, -1L);
 	}
 
-	public float accessFloat(final ContextAccessor accessor) {
+	public float accessFloat(final ReflectProxy accessor) {
 		return access(accessor, -1f);
 	}
 
-	public byte accessByte(final ContextAccessor accessor) {
+	public byte accessByte(final ReflectProxy accessor) {
 		return access(accessor, (byte) -1);
 	}
 
-	public short accessShort(final ContextAccessor accessor) {
+	public short accessShort(final ReflectProxy accessor) {
 		return access(accessor, (short) -1);
 	}
 
-	public String accessString(final ContextAccessor accessor) {
+	public String accessString(final ReflectProxy accessor) {
 		return access(accessor, String.class);
 	}
 
-	public Object access(final ContextAccessor accessor) {
+	public Object access(final ReflectProxy accessor) {
 		return access(accessor, null);
 	}
 
-	public   <T> T access(final ContextAccessor accessor, final Class<T> t) {
-		if (accessor.root == null) {
+	public   <T> T access(final ReflectProxy accessor, final Class<T> t) {
+		if (accessor.obj == null) {
 			return null;
 		}
 		final Field f = getField();
 		Class<?> c2;
 		if (f.virtual) {
-			c2 = accessor.root.getClass();
+			c2 = accessor.obj.getClass();
 		} else {
 			final String s = f.parent;
 			if (s == null || s.isEmpty()) {
@@ -108,14 +108,14 @@ public class Reflector {
 		f2.setAccessible(true);
 		Object o = null;
 		try {
-			o = f2.get(f.virtual ? accessor.root : null);
+			o = f2.get(f.virtual ? accessor.obj : null);
 		} catch (final IllegalAccessException ignored) {
 		}
 		f2.setAccessible(a2);
 		return t.cast(o);
 	}
 
-	public <T> T access(final ContextAccessor accessor, final T d) {
+	public <T> T access(final ReflectProxy accessor, final T d) {
 		@SuppressWarnings("unchecked")
 		final T v = (T) access(accessor, d.getClass());
 		return v == null ? d : v;

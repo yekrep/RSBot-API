@@ -8,6 +8,6 @@ public class Npc extends Actor {
 	}
 
 	public NpcConfig getConfig() {
-		return new NpcConfig(engine, engine.access(this));
+		return new NpcConfig(reflector, reflector.access(this));
 	}
 }

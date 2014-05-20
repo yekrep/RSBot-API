@@ -1,14 +1,14 @@
 package org.powerbot.bot.rt6.client;
 
-import org.powerbot.bot.ContextAccessor;
+import org.powerbot.bot.ReflectProxy;
 import org.powerbot.bot.Reflector;
 
-public class LinkedList extends ContextAccessor {
+public class LinkedList extends ReflectProxy {
 	public LinkedList(final Reflector engine, final Object parent) {
 		super(engine, parent);
 	}
 
 	public LinkedListNode getTail() {
-		return new LinkedListNode(engine, engine.access(this));
+		return new LinkedListNode(reflector, reflector.access(this));
 	}
 }

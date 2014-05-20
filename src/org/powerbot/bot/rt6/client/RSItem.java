@@ -1,18 +1,18 @@
 package org.powerbot.bot.rt6.client;
 
-import org.powerbot.bot.ContextAccessor;
+import org.powerbot.bot.ReflectProxy;
 import org.powerbot.bot.Reflector;
 
-public class RSItem extends ContextAccessor {
+public class RSItem extends ReflectProxy {
 	public RSItem(final Reflector engine, final Object parent) {
 		super(engine, parent);
 	}
 
 	public int getId() {
-		return engine.accessInt(this);
+		return reflector.accessInt(this);
 	}
 
 	public int getStackSize() {
-		return engine.accessInt(this);
+		return reflector.accessInt(this);
 	}
 }

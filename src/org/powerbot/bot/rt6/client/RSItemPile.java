@@ -8,18 +8,18 @@ public class RSItemPile extends RSInteractable {
 	}
 
 	public int getID_1() {
-		return engine.accessInt(this);
+		return reflector.accessInt(this);
 	}
 
 	public int getID_2() {
-		return engine.accessInt(this);
+		return reflector.accessInt(this);
 	}
 
 	public int getID_3() {
-		return engine.accessInt(this);
+		return reflector.accessInt(this);
 	}
 
 	public int getHeight() {
-		return engine.accessInt(this);
+		return reflector.accessInt(this);
 	}
 }

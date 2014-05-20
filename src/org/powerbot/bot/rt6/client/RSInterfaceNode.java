@@ -8,6 +8,6 @@ public class RSInterfaceNode extends Node {
 	}
 
 	public int getMainID() {
-		return engine.accessInt(this);
+		return reflector.accessInt(this);
 	}
 }

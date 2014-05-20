@@ -8,38 +8,38 @@ public class RSCharacter extends RSAnimable {
 	}
 
 	public int getInteracting() {
-		return engine.accessInt(this);
+		return reflector.accessInt(this);
 	}
 
 	public int isMoving() {
-		return engine.accessInt(this);
+		return reflector.accessInt(this);
 	}
 
 	public int[] getAnimationQueue() {
-		return engine.accessInts(this);
+		return reflector.accessInts(this);
 	}
 
 	public RSAnimator getAnimation() {
-		return new RSAnimator(engine, engine.access(this));
+		return new RSAnimator(reflector, reflector.access(this));
 	}
 
 	public int getHeight() {
-		return engine.accessInt(this);
+		return reflector.accessInt(this);
 	}
 
 	public LinkedList getCombatStatusList() {
-		return new LinkedList(engine, engine.access(this));
+		return new LinkedList(reflector, reflector.access(this));
 	}
 
 	public int getOrientation() {
-		return engine.accessInt(this);
+		return reflector.accessInt(this);
 	}
 
 	public RSMessageData getMessageData() {
-		return new RSMessageData(engine, engine.access(this));
+		return new RSMessageData(reflector, reflector.access(this));
 	}
 
 	public RSAnimator getPassiveAnimation() {
-		return new RSAnimator(engine, engine.access(this));
+		return new RSAnimator(reflector, reflector.access(this));
 	}
 }

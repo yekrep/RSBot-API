@@ -8,10 +8,10 @@ public class MenuItemNode extends NodeSub {
 	}
 
 	public String getAction() {
-		return engine.accessString(this);
+		return reflector.accessString(this);
 	}
 
 	public String getOption() {
-		return engine.accessString(this);
+		return reflector.accessString(this);
 	}
 }

@@ -8,10 +8,10 @@ public class MenuGroupNode extends NodeSub {
 	}
 
 	public NodeSubQueue getItems(){
-		return new NodeSubQueue(engine, engine.access(this));
+		return new NodeSubQueue(reflector, reflector.access(this));
 	}
 
 	public int getSize(){
-		return engine.accessInt(this);
+		return reflector.accessInt(this);
 	}
 }

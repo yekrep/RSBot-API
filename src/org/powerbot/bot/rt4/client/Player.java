@@ -8,18 +8,18 @@ public class Player extends Actor {
 	}
 
 	public int getCombatLevel() {
-		return engine.accessInt(this);
+		return reflector.accessInt(this);
 	}
 
 	public String getName() {
-		return engine.accessString(this);
+		return reflector.accessString(this);
 	}
 
 	public int getTeam() {
-		return engine.accessInt(this);
+		return reflector.accessInt(this);
 	}
 
 	public PlayerComposite getComposite() {
-		return new PlayerComposite(engine, engine.access(this));
+		return new PlayerComposite(reflector, reflector.access(this));
 	}
 }

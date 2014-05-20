@@ -8,6 +8,6 @@ public class RSProjectileNode extends Node {
 	}
 
 	public RSProjectile getProjectile() {
-		return new RSProjectile(engine, engine.access(this));
+		return new RSProjectile(reflector, reflector.access(this));
 	}
 }

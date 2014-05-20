@@ -8,6 +8,6 @@ public class RSObject extends RSInteractable {
 	}
 
 	public int getId() {
-		return engine.accessInt(this);
+		return reflector.accessInt(this);
 	}
 }

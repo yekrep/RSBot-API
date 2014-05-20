@@ -1,30 +1,30 @@
 package org.powerbot.bot.rt6.client;
 
-import org.powerbot.bot.ContextAccessor;
+import org.powerbot.bot.ReflectProxy;
 import org.powerbot.bot.Reflector;
 
-public class RSObjectDef extends ContextAccessor {
+public class RSObjectDef extends ReflectProxy {
 	public RSObjectDef(final Reflector engine, final Object parent) {
 		super(engine, parent);
 	}
 
 	public String getName() {
-		return engine.accessString(this);
+		return reflector.accessString(this);
 	}
 
 	public String[] getActions() {
-		return engine.access(this, String[].class);
+		return reflector.access(this, String[].class);
 	}
 
 	public RSObjectDefLoader getLoader() {
-		return new RSObjectDefLoader(engine, engine.access(this));
+		return new RSObjectDefLoader(reflector, reflector.access(this));
 	}
 
 	public int getID() {
-		return engine.accessInt(this);
+		return reflector.accessInt(this);
 	}
 
 	public int getClippingType() {
-		return engine.accessInt(this);
+		return reflector.accessInt(this);
 	}
 }

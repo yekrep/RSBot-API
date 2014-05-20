@@ -1,22 +1,22 @@
 package org.powerbot.bot.rt4.client;
 
-import org.powerbot.bot.ContextAccessor;
+import org.powerbot.bot.ReflectProxy;
 import org.powerbot.bot.Reflector;
 
-public class CollisionMap extends ContextAccessor {
+public class CollisionMap extends ReflectProxy {
 	public CollisionMap(final Reflector engine, final Object parent) {
 		super(engine, parent);
 	}
 
 	public int[][] getFlags() {
-		return engine.access(this, int[][].class);
+		return reflector.access(this, int[][].class);
 	}
 
 	public int getOffsetX() {
-		return engine.accessInt(this);
+		return reflector.accessInt(this);
 	}
 
 	public int getOffsetY() {
-		return engine.accessInt(this);
+		return reflector.accessInt(this);
 	}
 }

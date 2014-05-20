@@ -8,10 +8,10 @@ public class CombatStatusData extends LinkedListNode {
 	}
 
 	public int getLoopCycleStatus() {
-		return engine.accessInt(this);
+		return reflector.accessInt(this);
 	}
 
 	public int getHPRatio() {
-		return engine.accessInt(this);
+		return reflector.accessInt(this);
 	}
 }

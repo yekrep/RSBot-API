@@ -8,10 +8,10 @@ public class RSNPC extends RSCharacter {
 	}
 
 	public RSNPCDef getRSNPCDef() {
-		return new RSNPCDef(engine, engine.access(this));
+		return new RSNPCDef(reflector, reflector.access(this));
 	}
 
 	public OverheadSprites getOverhead() {
-		return new OverheadSprites(engine, engine.access(this));
+		return new OverheadSprites(reflector, reflector.access(this));
 	}
 }

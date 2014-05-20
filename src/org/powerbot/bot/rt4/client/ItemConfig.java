@@ -8,18 +8,18 @@ public class ItemConfig extends Node {
 	}
 
 	public String getName() {
-		return engine.accessString(this);
+		return reflector.accessString(this);
 	}
 
 	public boolean isMembers() {
-		return engine.accessBool(this);
+		return reflector.accessBool(this);
 	}
 
 	public String[] getActions1() {
-		return engine.access(this, String[].class);
+		return reflector.access(this, String[].class);
 	}
 
 	public String[] getActions2() {
-		return engine.access(this, String[].class);
+		return reflector.access(this, String[].class);
 	}
 }

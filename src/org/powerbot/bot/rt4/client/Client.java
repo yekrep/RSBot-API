@@ -1,161 +1,161 @@
 package org.powerbot.bot.rt4.client;
 
-import org.powerbot.bot.ContextAccessor;
+import org.powerbot.bot.ReflectProxy;
 import org.powerbot.bot.Reflector;
 
-public class Client extends ContextAccessor implements org.powerbot.script.Client {
+public class Client extends ReflectProxy implements org.powerbot.script.Client {
 	public Client(final Reflector engine, final Object parent) {
 		super(engine, parent);
 	}
 
 	public int getCameraX() {
-		return engine.accessInt(this);
+		return reflector.accessInt(this);
 	}
 
 	public int getCameraY() {
-		return engine.accessInt(this);
+		return reflector.accessInt(this);
 	}
 
 	public int getCameraZ() {
-		return engine.accessInt(this);
+		return reflector.accessInt(this);
 	}
 
 	public int getCameraYaw() {
-		return engine.accessInt(this);
+		return reflector.accessInt(this);
 	}
 
 	public int getCameraPitch() {
-		return engine.accessInt(this);
+		return reflector.accessInt(this);
 	}
 
 	public int getMinimapAngle() {
-		return engine.accessInt(this);
+		return reflector.accessInt(this);
 	}
 
 	public int getMinimapOffset() {
-		return engine.accessInt(this);
+		return reflector.accessInt(this);
 	}
 
 	public int getMinimapScale() {
-		return engine.accessInt(this);
+		return reflector.accessInt(this);
 	}
 
 	public Player getPlayer() {
-		return new Player(engine, engine.access(this));
+		return new Player(reflector, reflector.access(this));
 	}
 
 	public Player[] getPlayers() {
-		final Object[] arr = engine.access(this, Object[].class);
+		final Object[] arr = reflector.access(this, Object[].class);
 		final Player[] arr2 = arr != null ? new Player[arr.length] : null;
 		if (arr != null) {
 			for (int i = 0; i < arr.length; i++) {
-				arr2[i] = new Player(engine, arr[i]);
+				arr2[i] = new Player(reflector, arr[i]);
 			}
 		}
 		return arr2;
 	}
 
 	public int[] getPlayerIndices() {
-		return engine.accessInts(this);
+		return reflector.accessInts(this);
 	}
 
 	public Npc[] getNpcs() {
-		final Object[] arr = engine.access(this, Object[].class);
+		final Object[] arr = reflector.access(this, Object[].class);
 		final Npc[] arr2 = arr != null ? new Npc[arr.length] : null;
 		if (arr != null) {
 			for (int i = 0; i < arr.length; i++) {
-				arr2[i] = new Npc(engine, arr[i]);
+				arr2[i] = new Npc(reflector, arr[i]);
 			}
 		}
 		return arr2;
 	}
 
 	public int[] getNpcIndices() {
-		return engine.accessInts(this);
+		return reflector.accessInts(this);
 	}
 
 	public int getOffsetX() {
-		return engine.accessInt(this);
+		return reflector.accessInt(this);
 	}
 
 	public int getOffsetY() {
-		return engine.accessInt(this);
+		return reflector.accessInt(this);
 	}
 
 	public int getFloor() {
-		return engine.accessInt(this);
+		return reflector.accessInt(this);
 	}
 
 	public Landscape getLandscape() {
-		return new Landscape(engine, engine.access(this));
+		return new Landscape(reflector, reflector.access(this));
 	}
 
 	public byte[][][] getLandscapeMeta() {
-		return engine.access(this, byte[][][].class);
+		return reflector.access(this, byte[][][].class);
 	}
 
 	public int[][][] getTileHeights() {
-		return engine.access(this, int[][][].class);
+		return reflector.access(this, int[][][].class);
 	}
 
 	public boolean isMenuOpen() {
-		return engine.accessBool(this);
+		return reflector.accessBool(this);
 	}
 
 	public int getMenuX() {
-		return engine.accessInt(this);
+		return reflector.accessInt(this);
 	}
 
 	public int getMenuY() {
-		return engine.accessInt(this);
+		return reflector.accessInt(this);
 	}
 
 	public int getMenuWidth() {
-		return engine.accessInt(this);
+		return reflector.accessInt(this);
 	}
 
 	public int getMenuHeight() {
-		return engine.accessInt(this);
+		return reflector.accessInt(this);
 	}
 
 	public int getMenuCount() {
-		return engine.accessInt(this);
+		return reflector.accessInt(this);
 	}
 
 	public String[] getMenuActions() {
-		return engine.access(this, String[].class);
+		return reflector.access(this, String[].class);
 	}
 
 	public String[] getMenuOptions() {
-		return engine.access(this, String[].class);
+		return reflector.access(this, String[].class);
 	}
 
 	public int[] getWidgetBoundsX() {
-		return engine.accessInts(this);
+		return reflector.accessInts(this);
 	}
 
 	public int[] getWidgetBoundsY() {
-		return engine.accessInts(this);
+		return reflector.accessInts(this);
 	}
 
 	public int[] getWidgetBoundsWidth() {
-		return engine.accessInts(this);
+		return reflector.accessInts(this);
 	}
 
 	public int[] getWidgetBoundsHeight() {
-		return engine.accessInts(this);
+		return reflector.accessInts(this);
 	}
 
 	public int getDestinationX() {
-		return engine.accessInt(this);
+		return reflector.accessInt(this);
 	}
 
 	public int getDestinationY() {
-		return engine.accessInt(this);
+		return reflector.accessInt(this);
 	}
 
 	public Widget[][] getWidgets() {
-		final Object[][] arr = engine.access(this, Object[][].class);
+		final Object[][] arr = reflector.access(this, Object[][].class);
 		if (arr == null) {
 			return null;
 		}
@@ -169,18 +169,18 @@ public class Client extends ContextAccessor implements org.powerbot.script.Clien
 			final Widget[] sub2 = new Widget[sub.length];
 			arr2[i] = sub2;
 			for (int i2 = 0; i2 < sub.length; i2++) {
-				sub2[i2] = new Widget(engine, sub[i2]);
+				sub2[i2] = new Widget(reflector, sub[i2]);
 			}
 		}
 		return arr2;
 	}
 
 	public HashTable getWidgetTable() {
-		return new HashTable(engine, engine.access(this));
+		return new HashTable(reflector, reflector.access(this));
 	}
 
 	public NodeDeque[][][] getGroundItems() {
-		final Object[][][] arr = engine.access(this, Object[][][].class);
+		final Object[][][] arr = reflector.access(this, Object[][][].class);
 		if (arr == null) {
 			return null;
 		}
@@ -202,7 +202,7 @@ public class Client extends ContextAccessor implements org.powerbot.script.Clien
 				final NodeDeque[] sub2_2 = new NodeDeque[sub2_1.length];
 				sub2[i2] = sub2_2;
 				for (int i3 = 0; i3 < sub2_1.length; i3++) {
-					sub2_2[i3] = new NodeDeque(engine, sub2_1[i3]);
+					sub2_2[i3] = new NodeDeque(reflector, sub2_1[i3]);
 				}
 			}
 		}
@@ -210,97 +210,97 @@ public class Client extends ContextAccessor implements org.powerbot.script.Clien
 	}
 
 	public CollisionMap[] getCollisionMaps() {
-		final Object[] arr = engine.access(this, Object[].class);
+		final Object[] arr = reflector.access(this, Object[].class);
 		final CollisionMap[] arr2 = arr != null ? new CollisionMap[arr.length] : null;
 		if (arr != null) {
 			for (int i = 0; i < arr.length; i++) {
-				arr2[i] = new CollisionMap(engine, arr[i]);
+				arr2[i] = new CollisionMap(reflector, arr[i]);
 			}
 		}
 		return arr2;
 	}
 
 	public int[] getVarpbits() {
-		return engine.accessInts(this);
+		return reflector.accessInts(this);
 	}
 
 	public int getClientState() {
-		return engine.accessInt(this);
+		return reflector.accessInt(this);
 	}
 
 	public int getCrosshairIndex() {
-		return engine.accessInt(this);
+		return reflector.accessInt(this);
 	}
 
 	public Cache getVarbitCache() {
-		return new Cache(engine, engine.access(this));
+		return new Cache(reflector, reflector.access(this));
 	}
 
 	public Cache getNpcConfigCache() {
-		return new Cache(engine, engine.access(this));
+		return new Cache(reflector, reflector.access(this));
 	}
 
 	public Cache getObjectConfigCache() {
-		return new Cache(engine, engine.access(this));
+		return new Cache(reflector, reflector.access(this));
 	}
 
 	public Cache getItemConfigCache() {
-		return new Cache(engine, engine.access(this));
+		return new Cache(reflector, reflector.access(this));
 	}
 
 	public int[] getSkillLevels1() {
-		return engine.accessInts(this);
+		return reflector.accessInts(this);
 	}
 
 	public int[] getSkillLevels2() {
-		return engine.accessInts(this);
+		return reflector.accessInts(this);
 	}
 
 	public int[] getSkillExps() {
-		return engine.accessInts(this);
+		return reflector.accessInts(this);
 	}
 
 	public int getCycle() {
-		return engine.accessInt(this);
+		return reflector.accessInt(this);
 	}
 
 	public int getHintArrowNpcUid() {
-		return engine.accessInt(this);
+		return reflector.accessInt(this);
 	}
 
 	public int getHintArrowPlayerUid() {
-		return engine.accessInt(this);
+		return reflector.accessInt(this);
 	}
 
 	public int getHintArrowType() {
-		return engine.accessInt(this);
+		return reflector.accessInt(this);
 	}
 
 	public int getHintArrowX() {
-		return engine.accessInt(this);
+		return reflector.accessInt(this);
 	}
 
 	public int getHintArrowY() {
-		return engine.accessInt(this);
+		return reflector.accessInt(this);
 	}
 
 	public int getSelectionType() {
-		return engine.accessInt(this);
+		return reflector.accessInt(this);
 	}
 
 	public int getSelectionIndex() {
-		return engine.accessInt(this);
+		return reflector.accessInt(this);
 	}
 
 	public String getUsername() {
-		return engine.accessString(this);
+		return reflector.accessString(this);
 	}
 
 	public String getPassword() {
-		return engine.accessString(this);
+		return reflector.accessString(this);
 	}
 
 	public int getPlayerIndex() {
-		return engine.accessInt(this);
+		return reflector.accessInt(this);
 	}
 }

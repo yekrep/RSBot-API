@@ -8,6 +8,6 @@ public class WidgetNode extends Node {
 	}
 
 	public int getUid() {
-		return engine.accessInt(this);
+		return reflector.accessInt(this);
 	}
 }
