@@ -88,13 +88,14 @@ public class Reflector {
 	}
 
 	public <T> T access(final ReflectProxy accessor, final Class<T> t) {
-		if (accessor.obj == null) {
+		final Object obj = accessor.obj.get();
+		if (obj == null) {
 			return null;
 		}
 		final Field f = getField();
 		Class<?> c2;
 		if (f.virtual) {
-			c2 = accessor.obj.getClass();
+			c2 = obj.getClass();
 		} else {
 			final String s = f.parent;
 			if (s == null || s.isEmpty()) {
@@ -128,7 +129,7 @@ public class Reflector {
 		f2.setAccessible(true);
 		Object o = null;
 		try {
-			o = f2.get(f.virtual ? accessor.obj : null);
+			o = f2.get(f.virtual ? obj : null);
 		} catch (final IllegalAccessException ignored) {
 		}
 		f2.setAccessible(a2);
