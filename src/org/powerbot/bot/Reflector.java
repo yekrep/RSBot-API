@@ -76,7 +76,7 @@ public class Reflector {
 	}
 
 	public Object access(final ReflectProxy accessor) {
-		return access(accessor, null);
+		return access(accessor, Object.class);
 	}
 
 	public <T> T access(final ReflectProxy accessor, final Class<T> t) {
