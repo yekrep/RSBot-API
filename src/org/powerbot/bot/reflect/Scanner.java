@@ -34,7 +34,7 @@ class Scanner {
 	}
 
 	public long readLong() {
-		return ((long) readInt()) << 32 | readInt() & 0xFFFFFFFFL;
+		return ((long) readInt()) << 32 | readInt() & 0xFFFFFFFFl;
 	}
 
 	public String readString() {

@@ -20,14 +20,14 @@ public class ReflectionEngine {
 		private final String parent, name;
 		private final boolean virtual;
 		private final byte type;
-		private final long multipler;
+		private final long multiplier;
 
 		public Field(final String parent, final String name, final boolean virtual, final byte type, final long multiplier) {
 			this.parent = parent;
 			this.name = name;
 			this.virtual = virtual;
 			this.type = type;
-			this.multipler = multiplier;
+			this.multiplier = multiplier;
 		}
 	}
 
@@ -45,9 +45,12 @@ public class ReflectionEngine {
 	}
 
 	public int accessInt(final ContextAccessor accessor, final int d) {
+		final Field f = getField();
+		if (f == null) {
+			return d;
+		}
 		final Integer i = access(accessor, Integer.class);
-		//TODO: apply multiplier
-		return i != null ? i : d;
+		return i != null ? f.type == 1 ? i * (int) f.multiplier : i : d;
 	}
 
 	public long accessLong(final ContextAccessor accessor) {
@@ -55,9 +58,12 @@ public class ReflectionEngine {
 	}
 
 	public long accessLong(final ContextAccessor accessor, final long d) {
+		final Field f = getField();
+		if (f == null) {
+			return d;
+		}
 		final Long i = access(accessor, Long.class);
-		//TODO: apply multiplier
-		return i != null ? i : d;
+		return i != null ? f.type == 2 ? i * f.multiplier : i : d;
 	}
 
 	public float accessFloat(final ContextAccessor accessor) {
@@ -95,14 +101,7 @@ public class ReflectionEngine {
 		if (accessor.root == null) {
 			return null;
 		}
-		//TODO if type is an array, correctly instantiate ContextAccessors
-		final StackTraceElement e = getCallingAPI();
-		final String c = e.getClassName(), m = e.getMethodName();
-		final Map<String, Field> map = fields.get(c);
-		if (map == null || !map.containsKey(m)) {
-			return null;
-		}
-		final Field f = map.get(m);
+		final Field f = getField();
 		Class<?> c2;
 		if (f.virtual) {
 			c2 = accessor.root.getClass();
@@ -156,5 +155,15 @@ public class ReflectionEngine {
 			return arr[i];
 		}
 		return arr[arr.length - 1];
+	}
+
+	private Field getField() {
+		final StackTraceElement e = getCallingAPI();
+		final String c = e.getClassName(), m = e.getMethodName();
+		final Map<String, Field> map = fields.get(c);
+		if (map == null || !map.containsKey(m)) {
+			return null;
+		}
+		return map.get(m);
 	}
 }
