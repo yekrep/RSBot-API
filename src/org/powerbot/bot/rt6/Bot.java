@@ -41,7 +41,6 @@ public final class Bot extends org.powerbot.script.Bot<ClientContext> {
 					} catch (final IllegalAccessException e) {
 						throw new RuntimeException(e);
 					}
-					Thread.yield();
 				}
 			}
 			f1.setAccessible(a1);
@@ -50,16 +49,16 @@ public final class Bot extends org.powerbot.script.Bot<ClientContext> {
 		for (final Field f1 : o0.getClass().getDeclaredFields()) {
 			final boolean a1 = f1.isAccessible();
 			f1.setAccessible(true);
-			Object o1 = null;
-			while (o1 == null) {
-				try {
-					o1 = f1.get(o0);
-				} catch (final IllegalAccessException e) {
-					throw new RuntimeException(e);
-				}
-				Thread.yield();
+			final Object o1;
+			try {
+				o1 = f1.get(o0);
+			} catch (final IllegalAccessException e) {
+				throw new RuntimeException(e);
 			}
 			f1.setAccessible(a1);
+			if (o1 == null) {
+				continue;
+			}
 			final List<Field> f1x = Reflector.getFields(o1.getClass());
 			Hashtable<String, byte[]> v0 = null;
 			Hashtable<String, Class<?>> v1 = null;
@@ -80,7 +79,6 @@ public final class Bot extends org.powerbot.script.Bot<ClientContext> {
 					} catch (final IllegalAccessException e) {
 						throw new RuntimeException(e);
 					}
-					Thread.yield();
 				}
 				f2.setAccessible(a2);
 				final Class<?> c2 = o2.getClass();
