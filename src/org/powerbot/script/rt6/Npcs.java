@@ -23,7 +23,7 @@ public class Npcs extends MobileIdNameQuery<Npc> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected List<Npc> get() {
+	protected List<Npc> get() {//TODO: revise
 		final List<Npc> items = new ArrayList<Npc>();
 
 		final Client client = ctx.client();
