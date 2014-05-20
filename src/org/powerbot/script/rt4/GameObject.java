@@ -66,14 +66,14 @@ public class GameObject extends Interactive implements Nameable, Locatable, Iden
 			return -1;
 		}
 		final int id = object != null ? (object.getUid() >> 14) & 0xffff : -1;
-		final ObjectConfig config = (ObjectConfig) HashTable.lookup(client.getObjectConfigCache(), id);
-		if (config != null) {
+		final ObjectConfig config = new ObjectConfig(object.object.reflector, HashTable.lookup(client.getObjectConfigCache(), id));
+		if (config.obj.get() != null) {
 			int index = -1;
 			final int varbit = config.getVarbit(), si = config.getVarpbitIndex();
 			if (varbit != -1) {
 				final Cache cache = client.getVarbitCache();
-				final Varbit varBit = (Varbit) HashTable.lookup(cache, varbit);
-				if (varBit != null) {
+				final Varbit varBit = new Varbit(object.object.reflector, HashTable.lookup(cache, varbit));
+				if (varBit.obj.get() != null) {
 					final int mask = lookup[varBit.getEndBit() - varBit.getStartBit()];
 					index = ctx.varpbits.varpbit(varBit.getIndex()) >> varBit.getStartBit() & mask;
 				}
@@ -153,7 +153,7 @@ public class GameObject extends Interactive implements Nameable, Locatable, Iden
 				return alt;
 			}
 		}
-		return (ObjectConfig) HashTable.lookup(client.getObjectConfigCache(), id);
+		return new ObjectConfig(object.object.reflector, HashTable.lookup(client.getObjectConfigCache(), id));
 	}
 
 	@Override
