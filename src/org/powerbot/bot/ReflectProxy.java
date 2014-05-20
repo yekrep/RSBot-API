@@ -10,4 +10,13 @@ public class ReflectProxy {
 		this.reflector = reflector;
 		this.obj = new SoftReference<Object>(obj);
 	}
+
+	@Override
+	public boolean equals(final Object o) {
+		if (!(o instanceof ReflectProxy)) {
+			return false;
+		}
+		final Object obj = this.obj.get();
+		return obj != null && obj == ((ReflectProxy) o).obj.get();
+	}
 }
