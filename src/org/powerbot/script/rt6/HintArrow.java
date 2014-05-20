@@ -1,6 +1,5 @@
 package org.powerbot.script.rt6;
 
-import java.lang.ref.WeakReference;
 import java.util.Arrays;
 
 import org.powerbot.bot.rt6.client.Client;
@@ -13,33 +12,29 @@ import org.powerbot.script.Tile;
 import org.powerbot.script.Validatable;
 
 public class HintArrow extends ClientAccessor implements Locatable, Validatable {
-	private final WeakReference<RSHintArrow> arrow;
+	private final RSHintArrow arrow;
 
 	public HintArrow(final ClientContext ctx, final RSHintArrow arrow) {
 		super(ctx);
-		this.arrow = new WeakReference<RSHintArrow>(arrow);
+		this.arrow = arrow;
 	}
 
 	public int type() {
-		final RSHintArrow arrow = this.arrow.get();
-		return arrow != null ? arrow.getType() : -1;
+		return arrow.getType();
 	}
 
 	public int targetId() {
-		final RSHintArrow arrow = this.arrow.get();
-		return arrow != null ? arrow.getTargetID() : -1;
+		return arrow.getTargetID();
 	}
 
 	public int floor() {
-		final RSHintArrow arrow = this.arrow.get();
-		return arrow != null ? arrow.getPlane() : -1;
+		return arrow.getPlane();
 	}
 
 	@Override
 	public Tile tile() {
 		final Client client = ctx.client();
-		final RSHintArrow arrow = this.arrow.get();
-		if (client == null || arrow == null) {
+		if (client == null || arrow.obj.get() == null) {
 			return Tile.NIL;
 		}
 
@@ -74,8 +69,7 @@ public class HintArrow extends ClientAccessor implements Locatable, Validatable 
 	}
 
 	public RelativeLocation relative() {
-		final RSHintArrow arrow = this.arrow.get();
-		if (arrow != null) {
+		if (arrow.obj.get() != null) {
 			return new RelativeLocation(arrow.getX(), arrow.getY());
 		}
 		return RelativeLocation.NIL;
@@ -87,25 +81,18 @@ public class HintArrow extends ClientAccessor implements Locatable, Validatable 
 		if (client == null) {
 			return false;
 		}
-
-		final RSHintArrow arrow = this.arrow.get();
 		final RSHintArrow[] arr = client.getRSHintArrows();
-		return arrow != null && arr != null && Arrays.asList(arr).contains(arrow);
+		return arrow.obj.get() != null && arr != null && Arrays.asList(arr).contains(arrow);
 	}
 
 	@Override
 	public int hashCode() {
-		final RSHintArrow i;
-		return (i = this.arrow.get()) != null ? System.identityHashCode(i) : 0;
+		final Object i;
+		return (i = this.arrow.obj.get()) != null ? System.identityHashCode(i) : 0;
 	}
 
 	@Override
 	public boolean equals(final Object o) {
-		if (o == null || !(o instanceof HintArrow)) {
-			return false;
-		}
-		final HintArrow a = (HintArrow) o;
-		final RSHintArrow i;
-		return (i = this.arrow.get()) != null && i == a.arrow.get();
+		return o instanceof HintArrow && arrow.equals(((HintArrow) o).arrow);
 	}
 }

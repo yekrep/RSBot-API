@@ -62,6 +62,6 @@ public class GroundItems extends GroundItemQuery<GroundItem> {
 	 */
 	@Override
 	public GroundItem nil() {
-		return new GroundItem(ctx, Tile.NIL, null);
+		return new GroundItem(ctx, Tile.NIL, new RSItem(ctx.client().reflector, null));
 	}
 }

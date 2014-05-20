@@ -1,6 +1,5 @@
 package org.powerbot.bot.rt4.tools;
 
-import java.lang.ref.WeakReference;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -8,7 +7,7 @@ import org.powerbot.bot.rt4.client.Cache;
 import org.powerbot.bot.rt4.client.Node;
 
 public class HashTable<N> implements Iterator<N>, Iterable<N> {
-	private final WeakReference<org.powerbot.bot.rt4.client.HashTable> table;
+	private final org.powerbot.bot.rt4.client.HashTable table;
 	private final Class<N> type;
 	private int bucket_index = 0;
 	private Node curr;
@@ -18,7 +17,7 @@ public class HashTable<N> implements Iterator<N>, Iterable<N> {
 		if (type == null) {
 			throw new IllegalArgumentException();
 		}
-		this.table = new WeakReference<org.powerbot.bot.rt4.client.HashTable>(table);
+		this.table = table;
 		this.type = type;
 	}
 
@@ -32,8 +31,7 @@ public class HashTable<N> implements Iterator<N>, Iterable<N> {
 		if (next != null) {
 			return true;
 		}
-		final org.powerbot.bot.rt4.client.HashTable table = this.table.get();
-		final Node[] buckets = table != null ? table.getBuckets() : null;
+		final Node[] buckets = table.obj.get() != null ? table.getBuckets() : null;
 		if (buckets == null) {
 			return false;
 		}

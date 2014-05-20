@@ -1,15 +1,13 @@
 package org.powerbot.script.rt4;
 
-import java.lang.ref.WeakReference;
-
 import org.powerbot.bot.rt4.client.Client;
 import org.powerbot.bot.rt4.tools.HashTable;
 
 class ItemConfig {
-	private final WeakReference<org.powerbot.bot.rt4.client.ItemConfig> def;
+	private final org.powerbot.bot.rt4.client.ItemConfig def;
 
 	private ItemConfig(final org.powerbot.bot.rt4.client.ItemConfig def) {
-		this.def = new WeakReference<org.powerbot.bot.rt4.client.ItemConfig>(def);
+		this.def = def;
 	}
 
 	static ItemConfig getDef(final ClientContext ctx, final int id) {
@@ -22,7 +20,6 @@ class ItemConfig {
 	}
 
 	String getName() {
-		final org.powerbot.bot.rt4.client.ItemConfig def = this.def.get();
 		String name = "";
 		if (def != null && (name = def.getName()) == null) {
 			name = "";
@@ -31,12 +28,10 @@ class ItemConfig {
 	}
 
 	boolean isMembers() {
-		final org.powerbot.bot.rt4.client.ItemConfig def = this.def.get();
 		return def != null && def.isMembers();
 	}
 
 	String[] getActions() {
-		final org.powerbot.bot.rt4.client.ItemConfig def = this.def.get();
 		String[] actions = new String[0];
 		if (def != null && (actions = def.getActions1()) == null) {
 			actions = new String[0];
@@ -45,7 +40,6 @@ class ItemConfig {
 	}
 
 	String[] getGroundActions() {
-		final org.powerbot.bot.rt4.client.ItemConfig def = this.def.get();
 		String[] actions = new String[0];
 		if (def != null && (actions = def.getActions2()) == null) {
 			actions = new String[0];

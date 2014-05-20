@@ -2,7 +2,6 @@ package org.powerbot.script.rt6;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.lang.ref.WeakReference;
 
 import org.powerbot.bot.rt6.client.Client;
 import org.powerbot.bot.rt6.client.OverheadSprites;
@@ -13,16 +12,16 @@ import org.powerbot.script.Identifiable;
 
 public class Npc extends Actor implements Identifiable {
 	public static final Color TARGET_COLOR = new Color(255, 0, 255, 15);
-	private final WeakReference<RSNPC> npc;
+	private final RSNPC npc;
 
 	public Npc(final ClientContext ctx, final RSNPC npc) {
 		super(ctx);
-		this.npc = new WeakReference<RSNPC>(npc);
+		this.npc = npc;
 	}
 
 	@Override
 	protected RSNPC getAccessor() {
-		return npc.get();
+		return npc;
 	}
 
 	@Override

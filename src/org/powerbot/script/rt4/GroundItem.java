@@ -2,7 +2,6 @@ package org.powerbot.script.rt4;
 
 import java.awt.Color;
 import java.awt.Point;
-import java.lang.ref.WeakReference;
 
 import org.powerbot.bot.rt4.client.ItemNode;
 import org.powerbot.script.Identifiable;
@@ -14,14 +13,14 @@ import org.powerbot.script.Validatable;
 public class GroundItem extends Interactive implements Nameable, Locatable, Identifiable, Validatable {
 	public static final Color TARGET_COLOR = new Color(255, 255, 0, 75);
 	private final TileMatrix tile;
-	private final WeakReference<ItemNode> node;
+	private final ItemNode node;
 	private final int hash;
 
 	GroundItem(final ClientContext ctx, final Tile tile, final ItemNode node) {
 		super(ctx);
 		this.tile = tile.matrix(ctx);
 		boundingModel = this.tile.boundingModel;
-		this.node = new WeakReference<ItemNode>(node);
+		this.node = node;
 		bounds(-16, 16, -16, 0, -16, 16);
 		hash = System.identityHashCode(node);
 	}
@@ -33,13 +32,11 @@ public class GroundItem extends Interactive implements Nameable, Locatable, Iden
 
 	@Override
 	public int id() {
-		final ItemNode node = this.node.get();
-		return node != null ? node.getItemId() : -1;
+		return node.getItemId();
 	}
 
 	public int stackSize() {
-		final ItemNode node = this.node.get();
-		return node != null ? node.getStackSize() : -1;
+		return node.getStackSize();
 	}
 
 	@Override
@@ -74,7 +71,7 @@ public class GroundItem extends Interactive implements Nameable, Locatable, Iden
 
 	@Override
 	public boolean equals(final Object o) {
-		return o instanceof GroundItem && hashCode() == o.hashCode();
+		return o instanceof GroundItem && tile.equals(((GroundItem) o).tile) && node.equals(((GroundItem) o).node);
 	}
 
 	@Override

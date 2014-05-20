@@ -1,32 +1,27 @@
 package org.powerbot.script.rt6;
 
-import java.lang.ref.WeakReference;
-
 import org.powerbot.bot.rt6.client.RSObjectDef;
 
 class ObjectDefinition {
-	private final WeakReference<RSObjectDef> definition;
+	private final RSObjectDef def;
 
-	ObjectDefinition(final RSObjectDef definition) {
-		this.definition = new WeakReference<RSObjectDef>(definition);
+	ObjectDefinition(final RSObjectDef def) {
+		this.def = def;
 	}
 
 	int getId() {
-		final RSObjectDef def = this.definition.get();
 		return def != null ? def.getID() : -1;
 	}
 
 	String getName() {
-		final RSObjectDef def = this.definition.get();
-		String name = "";
-		if (def != null && (name = def.getName()) == null) {
+		String name;
+		if (def == null || (name = def.getName()) == null) {
 			name = "";
 		}
 		return name;
 	}
 
 	String[] getActions() {
-		final RSObjectDef def = this.definition.get();
 		String[] actions = new String[0];
 		if (def != null && (actions = def.getActions()) == null) {
 			actions = new String[0];

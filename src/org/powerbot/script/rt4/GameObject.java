@@ -2,7 +2,6 @@ package org.powerbot.script.rt4;
 
 import java.awt.Color;
 import java.awt.Point;
-import java.lang.ref.WeakReference;
 
 import org.powerbot.bot.rt4.client.BasicObject;
 import org.powerbot.bot.rt4.client.Cache;
@@ -18,7 +17,7 @@ import org.powerbot.script.Validatable;
 
 public class GameObject extends Interactive implements Nameable, Locatable, Identifiable, Validatable {
 	private static final Color TARGET_COLOR = new Color(0, 255, 0, 20);
-	private final WeakReference<BasicObject> object;
+	private final BasicObject object;
 	private final Type type;
 	private final int hash;
 	private static final int[] lookup;
@@ -38,7 +37,7 @@ public class GameObject extends Interactive implements Nameable, Locatable, Iden
 
 	GameObject(final ClientContext ctx, final BasicObject object, final Type type) {
 		super(ctx);
-		this.object = new WeakReference<BasicObject>(object);
+		this.object = object;
 		this.type = type;
 		hash = System.identityHashCode(object);
 		bounds(-32, 32, -64, 0, -32, 32);
@@ -67,7 +66,6 @@ public class GameObject extends Interactive implements Nameable, Locatable, Iden
 		if (client == null) {
 			return -1;
 		}
-		final BasicObject object = this.object.get();
 		final int id = object != null ? (object.getUid() >> 14) & 0xffff : -1;
 		final ObjectConfig config = (ObjectConfig) HashTable.lookup(client.getObjectConfigCache(), id);
 		if (config != null) {
@@ -115,7 +113,6 @@ public class GameObject extends Interactive implements Nameable, Locatable, Iden
 	}
 
 	public int orientation() {
-		final BasicObject object = this.object.get();
 		return object != null ? object.getMeta() >> 6 : 0;
 	}
 
@@ -128,7 +125,6 @@ public class GameObject extends Interactive implements Nameable, Locatable, Iden
 	}
 
 	public int relative() {
-		final BasicObject object = this.object.get();
 		final int x, z;
 		if (object != null) {
 			if (object instanceof org.powerbot.bot.rt4.client.GameObject) {
@@ -151,7 +147,6 @@ public class GameObject extends Interactive implements Nameable, Locatable, Iden
 		if (client == null) {
 			return null;
 		}
-		final BasicObject object = this.object.get();
 		final int id = object != null ? (object.getUid() >> 14) & 0xffff : -1, uid = id();
 		if (id != uid) {
 			final ObjectConfig alt = (ObjectConfig) HashTable.lookup(client.getObjectConfigCache(), uid);
@@ -164,7 +159,7 @@ public class GameObject extends Interactive implements Nameable, Locatable, Iden
 
 	@Override
 	public boolean valid() {
-		return object.get() != null && ctx.objects.select().contains(this);
+		return object.obj.get() != null && ctx.objects.select().contains(this);
 	}
 
 	@Override
@@ -180,29 +175,20 @@ public class GameObject extends Interactive implements Nameable, Locatable, Iden
 
 	@Override
 	public Point centerPoint() {
-		final BasicObject o = object.get();
 		final BoundingModel model = boundingModel.get();
-		if (o != null && model != null) {
-			return model.centerPoint();
-		}
-		return new Point(-1, -1);
+		return model != null ? model.centerPoint() : new Point(-1, -1);
 	}
 
 	@Override
 	public Point nextPoint() {
-		final BasicObject o = object.get();
 		final BoundingModel model = boundingModel.get();
-		if (o != null && model != null) {
-			return model.nextPoint();
-		}
-		return new Point(-1, -1);
+		return model != null ? model.nextPoint() : new Point(-1, -1);
 	}
 
 	@Override
 	public boolean contains(final Point point) {
-		final BasicObject o = object.get();
 		final BoundingModel model = boundingModel.get();
-		return o != null && model != null && model.contains(point);
+		return model != null && model.contains(point);
 	}
 
 	@Override

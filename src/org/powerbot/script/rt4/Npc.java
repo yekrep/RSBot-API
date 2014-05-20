@@ -1,7 +1,6 @@
 package org.powerbot.script.rt4;
 
 import java.awt.Color;
-import java.lang.ref.SoftReference;
 
 import org.powerbot.bot.rt4.client.Cache;
 import org.powerbot.bot.rt4.client.Client;
@@ -12,7 +11,7 @@ import org.powerbot.script.Identifiable;
 
 public class Npc extends Actor implements Identifiable {
 	public static final Color TARGET_COLOR = new Color(255, 0, 255, 15);
-	private final SoftReference<org.powerbot.bot.rt4.client.Npc> npc;
+	private final org.powerbot.bot.rt4.client.Npc npc;
 	private static final int[] lookup;
 	private final int hash;
 
@@ -27,13 +26,13 @@ public class Npc extends Actor implements Identifiable {
 
 	Npc(final ClientContext ctx, final org.powerbot.bot.rt4.client.Npc npc) {
 		super(ctx);
-		this.npc = new SoftReference<org.powerbot.bot.rt4.client.Npc>(npc);
+		this.npc = npc;
 		hash = System.identityHashCode(npc);
 	}
 
 	@Override
 	protected org.powerbot.bot.rt4.client.Actor getActor() {
-		return npc.get();
+		return npc;
 	}
 
 	@Override
@@ -55,7 +54,6 @@ public class Npc extends Actor implements Identifiable {
 		if (client == null) {
 			return -1;
 		}
-		final org.powerbot.bot.rt4.client.Npc npc = this.npc.get();
 		final NpcConfig config = npc != null ? npc.getConfig() : null;
 		if (config != null) {
 			final int varbit = config.getVarbit(), si = config.getVarpbitIndex();
@@ -97,7 +95,6 @@ public class Npc extends Actor implements Identifiable {
 
 	private NpcConfig getConfig() {
 		final Client client = ctx.client();
-		final org.powerbot.bot.rt4.client.Npc npc = this.npc.get();
 		final NpcConfig config = npc != null ? npc.getConfig() : null;
 		if (client == null || config == null) {
 			return null;
@@ -115,13 +112,12 @@ public class Npc extends Actor implements Identifiable {
 	@Override
 	public boolean valid() {
 		final Client client = ctx.client();
-		final org.powerbot.bot.rt4.client.Npc npc = this.npc.get();
-		if (client == null || npc == null) {
+		if (client == null || npc.obj.get() == null) {
 			return false;
 		}
 		final org.powerbot.bot.rt4.client.Npc[] arr = client.getNpcs();
 		for (final org.powerbot.bot.rt4.client.Npc a : arr) {
-			if (a == npc) {
+			if (npc.equals(a)) {
 				return true;
 			}
 		}
@@ -132,6 +128,7 @@ public class Npc extends Actor implements Identifiable {
 	public int hashCode() {
 		return hash;
 	}
+
 	@Override
 	public String toString() {
 		return String.format("%s[id=%d/name=%s/level=%d]",

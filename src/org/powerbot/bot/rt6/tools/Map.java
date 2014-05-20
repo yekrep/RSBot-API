@@ -97,7 +97,7 @@ public class Map extends ClientAccessor {
 
 		for (RSAnimableNode animable = ground.getRSAnimableList(); animable != null; animable = animable.getNext()) {
 			final Object node = animable.getRSAnimable();
-			if (node == null || !(node instanceof RSObject)) {
+			if (node == null) {
 				continue;
 			}
 			final RSObject obj = (RSObject) node;

@@ -3,7 +3,6 @@ package org.powerbot.script.rt6;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
-import java.lang.ref.WeakReference;
 
 import org.powerbot.bot.rt6.client.Cache;
 import org.powerbot.bot.rt6.client.Client;
@@ -23,12 +22,12 @@ import org.powerbot.script.Tile;
 
 public class GameObject extends Interactive implements Locatable, Nameable, Drawable, Identifiable {
 	private static final Color TARGET_COLOR = new Color(0, 255, 0, 20);
-	private final WeakReference<RSObject> object;
+	private final RSObject object;
 	private final Type type;
 
 	public GameObject(final ClientContext ctx, final RSObject object, final Type type) {
 		super(ctx);
-		this.object = new WeakReference<RSObject>(object);
+		this.object = object;
 		this.type = type;
 		bounds(-128, 128, -256, 0, -128, 128);
 	}
@@ -52,8 +51,7 @@ public class GameObject extends Interactive implements Locatable, Nameable, Draw
 
 	@Override
 	public int id() {
-		final RSObject object = this.object.get();
-		return object != null ? object.getId() : -1;
+		return object.getId();
 	}
 
 	public Type type() {
@@ -70,12 +68,7 @@ public class GameObject extends Interactive implements Locatable, Nameable, Draw
 	}
 
 	public int floor() {
-		final RSObject object = this.object.get();
-		return object != null ? object.getPlane() : -1;
-	}
-
-	public RSObject internal() {
-		return object.get();
+		return object.getPlane();
 	}
 
 	private ObjectDefinition getDefinition() {
@@ -104,17 +97,15 @@ public class GameObject extends Interactive implements Locatable, Nameable, Draw
 
 	@Override
 	public Tile tile() {
-		final RSObject object = this.object.get();
 		final RelativeLocation location = relative();
-		if (object != null && location != null) {
+		if (object.obj.get() != null && location != null) {
 			return ctx.game.mapOffset().derive((int) location.x() >> 9, (int) location.z() >> 9, object.getPlane());
 		}
 		return Tile.NIL;
 	}
 
 	public RelativeLocation relative() {
-		final RSObject object = this.object.get();
-		final RSInteractableData data = object != null ? object.getData() : null;
+		final RSInteractableData data = object.getData();
 		final RSInteractableLocation location = data != null ? data.getLocation() : null;
 		if (location != null) {
 			return new RelativeLocation(location.getX(), location.getY());
@@ -124,49 +115,34 @@ public class GameObject extends Interactive implements Locatable, Nameable, Draw
 
 	@Override
 	public Point nextPoint() {
-		final RSObject o = object.get();
-		final BoundingModel model2 = boundingModel.get();
-		if (o != null && model2 != null) {
-			return model2.nextPoint();
-		}
-		return new Point(-1, -1);
+		final BoundingModel model = boundingModel.get();
+		return model != null ? model.nextPoint() : new Point(-1, -1);
 	}
 
 	public Point centerPoint() {
-		final RSObject o = object.get();
-		final BoundingModel model2 = boundingModel.get();
-		if (o != null && model2 != null) {
-			return model2.centerPoint();
-		}
-		return new Point(-1, -1);
+		final BoundingModel model = boundingModel.get();
+		return model != null ? model.centerPoint() : new Point(-1, -1);
 	}
 
 	@Override
 	public boolean contains(final Point point) {
-		final RSObject o = object.get();
-		final BoundingModel model2 = boundingModel.get();
-		return o != null && model2 != null && model2.contains(point);
+		final BoundingModel model = boundingModel.get();
+		return model != null && model.contains(point);
 	}
 
 	@Override
 	public boolean valid() {
-		return object.get() != null && ctx.objects.select().contains(this);
+		return object.obj.get() != null && ctx.objects.select().contains(this);
 	}
 
 	@Override
 	public int hashCode() {
-		final RSObject i;
-		return (i = object.get()) != null ? System.identityHashCode(i) : 0;
+		return object.hashCode();
 	}
 
 	@Override
 	public boolean equals(final Object o) {
-		if (o == null || !(o instanceof GameObject)) {
-			return false;
-		}
-		final GameObject g = (GameObject) o;
-		final RSObject i;
-		return (i = object.get()) != null && i == g.object.get();
+		return o instanceof GameObject && object != null && object.equals(((GameObject) o).object);
 	}
 
 	@Override
@@ -191,6 +167,10 @@ public class GameObject extends Interactive implements Locatable, Nameable, Draw
 	@Override
 	public String toString() {
 		return GameObject.class.getSimpleName() + "[id=" + id() + ",name=" + name() + "]";
+	}
+
+	public RSObject internal() {
+		return object;
 	}
 
 	public static enum Type {

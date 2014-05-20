@@ -1,7 +1,5 @@
 package org.powerbot.script.rt6;
 
-import java.lang.ref.WeakReference;
-
 import org.powerbot.bot.rt6.client.Cache;
 import org.powerbot.bot.rt6.client.Client;
 import org.powerbot.bot.rt6.client.HashTable;
@@ -9,10 +7,10 @@ import org.powerbot.bot.rt6.client.RSItemDef;
 import org.powerbot.bot.rt6.client.RSItemDefLoader;
 
 class ItemDefinition {
-	private final WeakReference<RSItemDef> def;
+	private final RSItemDef def;
 
 	private ItemDefinition(final RSItemDef def) {
-		this.def = new WeakReference<RSItemDef>(def);
+		this.def = def;
 	}
 
 	static ItemDefinition getDef(final ClientContext ctx, final int id) {
@@ -32,12 +30,10 @@ class ItemDefinition {
 	}
 
 	int getId() {
-		final RSItemDef def = this.def.get();
-		return def != null ? def.getID() : -1;
+		return def.getID();
 	}
 
 	String getName() {
-		final RSItemDef def = this.def.get();
 		String name = "";
 		if (def != null && (name = def.getName()) == null) {
 			name = "";
@@ -46,12 +42,10 @@ class ItemDefinition {
 	}
 
 	boolean isMembers() {
-		final RSItemDef def = this.def.get();
 		return def != null && def.isMembersObject();
 	}
 
 	String[] getActions() {
-		final RSItemDef def = this.def.get();
 		String[] actions = new String[0];
 		if (def != null && (actions = def.getActions()) == null) {
 			actions = new String[0];
@@ -60,7 +54,6 @@ class ItemDefinition {
 	}
 
 	String[] getGroundActions() {
-		final RSItemDef def = this.def.get();
 		String[] actions = new String[0];
 		if (def != null && (actions = def.getGroundActions()) == null) {
 			actions = new String[0];

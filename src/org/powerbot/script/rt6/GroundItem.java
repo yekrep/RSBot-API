@@ -3,7 +3,6 @@ package org.powerbot.script.rt6;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
-import java.lang.ref.WeakReference;
 
 import org.powerbot.bot.rt6.client.RSItem;
 import org.powerbot.script.Drawable;
@@ -16,13 +15,13 @@ import org.powerbot.script.Tile;
 public class GroundItem extends Interactive implements Identifiable, Nameable, Stackable, Locatable, Drawable {
 	public static final Color TARGET_COLOR = new Color(255, 255, 0, 75);
 	private final TileMatrix tile;
-	private final WeakReference<RSItem> item;
+	private final RSItem item;
 
 	public GroundItem(final ClientContext ctx, final Tile tile, final RSItem item) {
 		super(ctx);
 		this.tile = tile.matrix(ctx);
 		boundingModel = this.tile.boundingModel;
-		this.item = new WeakReference<RSItem>(item);
+		this.item = item;
 		bounds(-64, 64, -64, 0, -64, 64);
 	}
 
@@ -33,14 +32,12 @@ public class GroundItem extends Interactive implements Identifiable, Nameable, S
 
 	@Override
 	public int id() {
-		final RSItem item = this.item.get();
-		return item != null ? item.getId() : -1;
+		return item.getId();
 	}
 
 	@Override
 	public int stackSize() {
-		final RSItem item = this.item.get();
-		return item != null ? item.getStackSize() : -1;
+		return item.getStackSize();
 	}
 
 	@Override
@@ -86,22 +83,12 @@ public class GroundItem extends Interactive implements Identifiable, Nameable, S
 
 	@Override
 	public int hashCode() {
-		final RSItem i;
-		return (i = item.get()) != null ? System.identityHashCode(i) : 0;
+		return item.hashCode();
 	}
 
 	@Override
 	public boolean equals(final Object o) {
-		if (o == null || !(o instanceof GroundItem)) {
-			return false;
-		}
-		final GroundItem g = (GroundItem) o;
-		if (!tile.equals(g.tile)) {
-			return false;
-		}
-		final RSItem item1 = item.get();
-		final RSItem item2 = g.item.get();
-		return item1 != null && item2 != null && item1 == item2;
+		return o instanceof GroundItem && tile.equals(((GroundItem) o).tile) && item.equals(((GroundItem) o).item);
 	}
 
 	@Override
