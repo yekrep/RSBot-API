@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
-import org.powerbot.Instrument;
+import org.powerbot.bot.Reflector;
 import org.powerbot.bot.SelectiveEventQueue;
 import org.powerbot.bot.rt6.activation.EventDispatcher;
 import org.powerbot.gui.BotLauncher;
@@ -60,7 +60,7 @@ public final class Bot extends org.powerbot.script.Bot<ClientContext> {
 				Thread.yield();
 			}
 			f1.setAccessible(a1);
-			final List<Field> f1x = Instrument.getFields(o1.getClass());
+			final List<Field> f1x = Reflector.getFields(o1.getClass());
 			Hashtable<String, byte[]> v0 = null;
 			Hashtable<String, Class<?>> v1 = null;
 			ProtectionDomain v2 = null;

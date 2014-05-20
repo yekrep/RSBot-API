@@ -6,7 +6,7 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
-import org.powerbot.Instrument;
+import org.powerbot.bot.Reflector;
 import org.powerbot.bot.rt4.activation.EventDispatcher;
 import org.powerbot.gui.BotLauncher;
 import org.powerbot.script.rt4.ClientContext;
@@ -26,7 +26,7 @@ public class Bot extends org.powerbot.script.Bot<ClientContext> {
 	protected Map<String, byte[]> getClasses() {
 		final ClassLoader o0 = launcher.target.get().getClass().getClassLoader();
 
-		for (final Field f1 : Instrument.getFields(o0.getClass())) {
+		for (final Field f1 : Reflector.getFields(o0.getClass())) {
 			final boolean a1 = f1.isAccessible();
 			f1.setAccessible(true);
 			final Object o1;
@@ -36,7 +36,7 @@ public class Bot extends org.powerbot.script.Bot<ClientContext> {
 				throw new RuntimeException(e);
 			}
 			f1.setAccessible(a1);
-			final List<Field> f1x = Instrument.getFields(o1.getClass());
+			final List<Field> f1x = Reflector.getFields(o1.getClass());
 			Hashtable<String, byte[]> v0 = null;
 			PKCS7 v1 = null;
 

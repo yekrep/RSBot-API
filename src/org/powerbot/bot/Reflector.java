@@ -1,5 +1,8 @@
 package org.powerbot.bot;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 public class Reflector {
@@ -141,5 +144,17 @@ public class Reflector {
 			return null;
 		}
 		return map.get(m);
+	}
+
+	public static List<java.lang.reflect.Field> getFields(final Class<?> cls) {
+		final List<java.lang.reflect.Field> f = new ArrayList<java.lang.reflect.Field>();
+		Collections.addAll(f, cls.getDeclaredFields());
+
+		final Class<?> p = cls.getSuperclass();
+		if (p != null && !p.equals(Object.class)) {
+			f.addAll(getFields(p));
+		}
+
+		return f;
 	}
 }
