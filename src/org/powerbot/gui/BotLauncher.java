@@ -113,35 +113,36 @@ public class BotLauncher implements Callable<Boolean>, Closeable {
 					@Override
 					public void run() {
 						final Frame f = window.get();
-						Component[] c = new Component[0];
-
-						while (c.length == 0) {
+						Component[] c;
+						do {
 							c = f.getComponents();
-							try {
-								Thread.sleep(60);
-							} catch (final InterruptedException ignored) {
-							}
-						}
+							Thread.yield();
+						} while (c.length == 0);
 
-						if (c.length == 1 && c[0] instanceof Container) {
-							c = ((Container) c[0]).getComponents();
-						}
+						final Container p = c.length == 1 && c[0] instanceof Container ? (Container) c[0] : f;
+						do {
+							c = p.getComponents();
 
-						for (final Component x : c) {
-							final String s = x.getClass().getSimpleName();
-							if (s.equals("Rs2Applet") || s.equals("client")) {
-								target.set(x);
-								bot.set(rt4 ? new org.powerbot.bot.rt4.Bot(BotLauncher.this) : new org.powerbot.bot.rt6.Bot(BotLauncher.this));
-								new Thread(bot.get()).start();
-								final Dimension d = x.getSize();
-								d.setSize(Math.min(800, x.getWidth()), Math.min(600, x.getHeight()));
-								final Insets t = f.getInsets();
-								d.setSize(d.getWidth() + t.right + t.left, d.getHeight() + t.top + t.bottom);
-								f.setMinimumSize(d);
-							} else {
-								x.setVisible(false);
+							for (final Component x : c) {
+								final String s = x.getClass().getSimpleName();
+								if (s.equals("Rs2Applet") || s.equals("client")) {
+									if (!target.compareAndSet(null, x)) {
+										continue;
+									}
+									bot.set(rt4 ? new org.powerbot.bot.rt4.Bot(BotLauncher.this) : new org.powerbot.bot.rt6.Bot(BotLauncher.this));
+									new Thread(bot.get()).start();
+									final Dimension d = x.getSize();
+									d.setSize(Math.min(800, x.getWidth()), Math.min(600, x.getHeight()));
+									final Insets t = f.getInsets();
+									d.setSize(d.getWidth() + t.right + t.left, d.getHeight() + t.top + t.bottom);
+									f.setMinimumSize(d);
+								} else {
+									x.setVisible(false);
+								}
 							}
-						}
+
+							Thread.yield();
+						} while (c.length < 3);
 
 						JPopupMenu.setDefaultLightWeightPopupEnabled(false);
 						f.setIconImage(Resources.getImage(Resources.Paths.ICON));
