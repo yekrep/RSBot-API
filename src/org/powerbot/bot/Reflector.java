@@ -93,6 +93,9 @@ public class Reflector {
 			return null;
 		}
 		final Field f = getField();
+		if (f == null) {
+			return null;
+		}
 		Class<?> c2;
 		if (f.virtual) {
 			c2 = obj.getClass();
