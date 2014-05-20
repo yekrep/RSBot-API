@@ -3,7 +3,6 @@ package org.powerbot.script.rt4;
 import java.awt.Color;
 import java.awt.Point;
 
-import org.powerbot.bot.rt4.client.BasicObject;
 import org.powerbot.bot.rt4.client.Cache;
 import org.powerbot.bot.rt4.client.Client;
 import org.powerbot.bot.rt4.client.ObjectConfig;
@@ -127,8 +126,8 @@ public class GameObject extends Interactive implements Nameable, Locatable, Iden
 	public int relative() {
 		final int x, z;
 		if (object != null) {
-			if (object instanceof org.powerbot.bot.rt4.client.GameObject) {
-				final org.powerbot.bot.rt4.client.GameObject o2 = (org.powerbot.bot.rt4.client.GameObject) object;
+			if (object instanceof ComplexObject) {
+				final org.powerbot.bot.rt4.client.GameObject o2 = ((ComplexObject) object).getGameObject();
 				x = o2.getX();
 				z = o2.getZ();
 			} else {
@@ -159,7 +158,7 @@ public class GameObject extends Interactive implements Nameable, Locatable, Iden
 
 	@Override
 	public boolean valid() {
-		return object.obj.get() != null && ctx.objects.select().contains(this);
+		return object.getObject() != null && ctx.objects.select().contains(this);
 	}
 
 	@Override
