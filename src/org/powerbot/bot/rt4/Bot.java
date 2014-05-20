@@ -1,11 +1,12 @@
 package org.powerbot.bot.rt4;
 
 import java.lang.reflect.Field;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 
 import org.powerbot.Instrument;
-import org.powerbot.bot.ClientTransform;
 import org.powerbot.bot.rt4.activation.EventDispatcher;
 import org.powerbot.gui.BotLauncher;
 import org.powerbot.script.rt4.ClientContext;
@@ -22,8 +23,7 @@ public class Bot extends org.powerbot.script.Bot<ClientContext> {
 	}
 
 	@Override
-	public void run() {
-		String hash = null;
+	protected Map<String, byte[]> getClasses() {
 		final ClassLoader o0 = launcher.target.get().getClass().getClassLoader();
 
 		for (final Field f1 : Instrument.getFields(o0.getClass())) {
@@ -68,16 +68,14 @@ public class Bot extends org.powerbot.script.Bot<ClientContext> {
 			}
 
 			if (v0 != null && v1 != null) {
+				final Map<String, byte[]> z;
 				synchronized (v0) {
-					hash = ClientTransform.hash(v0);
-					log.info("Hash: " + hash + " size: " + v0.size());
+					z = new HashMap<String, byte[]>(v0);
 				}
-				break;
+				return z;
 			}
 		}
 
-		if (hash == null || hash.isEmpty()) {
-			log.severe("Could not load client");
-		}
+		return null;
 	}
 }

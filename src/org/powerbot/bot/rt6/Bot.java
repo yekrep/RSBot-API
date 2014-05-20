@@ -1,16 +1,15 @@
 package org.powerbot.bot.rt6;
 
 import java.awt.Component;
-import java.awt.EventQueue;
 import java.lang.reflect.Field;
 import java.security.ProtectionDomain;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Callable;
 
-import org.powerbot.Configuration;
 import org.powerbot.Instrument;
-import org.powerbot.bot.ClientTransform;
 import org.powerbot.bot.SelectiveEventQueue;
 import org.powerbot.bot.rt6.activation.EventDispatcher;
 import org.powerbot.gui.BotLauncher;
@@ -28,8 +27,7 @@ public final class Bot extends org.powerbot.script.Bot<ClientContext> {
 	}
 
 	@Override
-	public void run() {
-		String hash = null;
+	protected Map<String, byte[]> getClasses() {
 		final Component o0 = launcher.target.get();
 
 		for (final Field f1 : o0.getClass().getDeclaredFields()) {
@@ -107,18 +105,17 @@ public final class Bot extends org.powerbot.script.Bot<ClientContext> {
 			}
 
 			if (v0 != null && v1 != null && v2 != null) {
+				final Map<String, byte[]> z;
 				synchronized (v0) {
-					hash = ClientTransform.hash(v0);
-					log.info("Hash: " + hash + " size: " + v0.size());
+					z = new HashMap<String, byte[]>(v0);
 				}
-				break;
+				return z;
 			}
 		}
 
-		if (hash == null || hash.isEmpty()) {
-			log.severe("Could not load client");
-		}
+		return null;
 
+		/*
 		final boolean jre6 = System.getProperty("java.version").startsWith("1.6");
 		if ((Configuration.OS == Configuration.OperatingSystem.MAC && !jre6) || (Configuration.OS != Configuration.OperatingSystem.MAC && jre6)) {
 			new Thread(threadGroup, new SafeMode()).start();
@@ -130,6 +127,7 @@ public final class Bot extends org.powerbot.script.Bot<ClientContext> {
 				display();
 			}
 		});
+		*/
 	}
 
 	private final class SafeMode implements Runnable {

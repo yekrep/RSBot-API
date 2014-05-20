@@ -3,9 +3,11 @@ package org.powerbot.script;
 import java.applet.Applet;
 import java.io.Closeable;
 import java.io.File;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Logger;
 
+import org.powerbot.bot.ClientTransform;
 import org.powerbot.bot.EventDispatcher;
 import org.powerbot.bot.ScriptClassLoader;
 import org.powerbot.gui.BotLauncher;
@@ -33,6 +35,15 @@ public abstract class Bot<C extends ClientContext<? extends Client>> implements 
 	}
 
 	protected abstract C newContext();
+
+	protected abstract Map<String, byte[]> getClasses();
+
+	@Override
+	public final void run() {
+		final Map<String, byte[]> c = getClasses();
+		final String hash = ClientTransform.hash(c);
+		log.info("Hash: " + hash + " size: " + c.size());
+	}
 
 	protected void display() {
 		launcher.menu.get().update();
