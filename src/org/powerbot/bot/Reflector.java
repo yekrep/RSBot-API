@@ -7,15 +7,18 @@ import java.util.Map;
 
 public class Reflector {
 	private final ClassLoader loader;
+	private final Map<String, String> interfaces;
 	private final Map<String, Map<String, Field>> fields;
 
 	public Reflector(final ClassLoader loader, final TransformSpec spec) {
-		this(loader, spec.fields);
+		this(loader, spec.interfaces, spec.fields);
 	}
 
-	public Reflector(final ClassLoader loader, final Map<String, Map<String, Field>> fields) {
+	public Reflector(final ClassLoader loader, final Map<String, String> interfaces, final Map<String, Map<String, Field>> fields) {
 		this.loader = loader;
+		this.interfaces = interfaces;
 		this.fields = fields;
+		System.out.println(fields);
 	}
 
 	public static class Field {
@@ -152,7 +155,10 @@ public class Reflector {
 
 	private Field getField() {
 		final StackTraceElement e = getCallingAPI();
-		final String c = e.getClassName(), m = e.getMethodName();
+		final String c = interfaces.get(e.getClassName().replace('.', '/')), m = e.getMethodName();
+		if (c == null) {
+			return null;
+		}
 		final Map<String, Field> map = fields.get(c);
 		if (map == null || !map.containsKey(m)) {
 			return null;
