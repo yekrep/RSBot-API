@@ -36,7 +36,7 @@ public class Objects extends BasicQuery<GameObject> {
 				continue;
 			}
 			for (final Tile tile : row) {
-				if (tile == null) {
+				if (tile.obj.get() == null) {
 					continue;
 				}
 				final int len = Math.max(0, tile.getGameObjectLength());
@@ -49,7 +49,7 @@ public class Objects extends BasicQuery<GameObject> {
 				}
 
 				for (final BasicObject o : arr) {
-					if (o != null) {
+					if (o.obj.get() != null) {
 						final int t = o.getMeta() & 0x3f;
 						final GameObject.Type type;
 						if (t == 0 || t == 1 || t == 9) {

@@ -23,9 +23,9 @@ public class Npcs extends BasicQuery<Npc> {
 			return r;
 		}
 		for (final int k : indices) {
-			final org.powerbot.bot.rt4.client.Npc p = npcs[k];
-			if (p != null) {
-				r.add(new Npc(ctx, p));
+			final org.powerbot.bot.rt4.client.Npc n = npcs[k];
+			if (n.obj.get() != null) {
+				r.add(new Npc(ctx, n));
 			}
 		}
 		return r;

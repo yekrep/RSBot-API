@@ -10,9 +10,8 @@ import org.powerbot.bot.rt6.client.RSPlayer;
 
 /**
  * {@link Players} is a utility which provides access to the {@link Player}s in the game.
- *
+ * <p/>
  * {@link Player}s are only accessible within mini-map's range.
- *
  */
 public class Players extends PlayerQuery<Player> {
 	public Players(final ClientContext factory) {
@@ -52,7 +51,7 @@ public class Players extends PlayerQuery<Player> {
 		final Set<RSPlayer> set = new HashSet<RSPlayer>(indices.length);
 		for (final int index : indices) {
 			final RSPlayer player = players[index];
-			if (player != null && !set.contains(player)) {
+			if (player.obj.get() != null && !set.contains(player)) {
 				items.add(new Player(ctx, player));
 				set.add(player);
 			}
