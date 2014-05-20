@@ -5,7 +5,7 @@ import java.util.Hashtable;
 import java.util.List;
 
 import org.powerbot.Instrument;
-import org.powerbot.bot.ClientTransformUtils;
+import org.powerbot.bot.ClientTransform;
 import org.powerbot.bot.rt4.activation.EventDispatcher;
 import org.powerbot.gui.BotLauncher;
 import org.powerbot.script.rt4.ClientContext;
@@ -69,7 +69,7 @@ public class Bot extends org.powerbot.script.Bot<ClientContext> {
 
 			if (v0 != null && v1 != null) {
 				synchronized (v0) {
-					hash = ClientTransformUtils.hash(v0);
+					hash = ClientTransform.hash(v0);
 					log.info("Hash: " + hash + " size: " + v0.size());
 				}
 				break;

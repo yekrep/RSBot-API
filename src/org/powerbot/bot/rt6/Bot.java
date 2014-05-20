@@ -10,7 +10,7 @@ import java.util.concurrent.Callable;
 
 import org.powerbot.Configuration;
 import org.powerbot.Instrument;
-import org.powerbot.bot.ClientTransformUtils;
+import org.powerbot.bot.ClientTransform;
 import org.powerbot.bot.SelectiveEventQueue;
 import org.powerbot.bot.rt6.activation.EventDispatcher;
 import org.powerbot.gui.BotLauncher;
@@ -108,7 +108,7 @@ public final class Bot extends org.powerbot.script.Bot<ClientContext> {
 
 			if (v0 != null && v1 != null && v2 != null) {
 				synchronized (v0) {
-					hash = ClientTransformUtils.hash(v0);
+					hash = ClientTransform.hash(v0);
 					log.info("Hash: " + hash + " size: " + v0.size());
 				}
 				break;

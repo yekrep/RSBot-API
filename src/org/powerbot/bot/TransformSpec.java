@@ -1,7 +1,7 @@
 package org.powerbot.bot;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -12,97 +12,73 @@ public class TransformSpec {
 	public final Map<String, String> attributes;
 	public final Map<Integer, Integer> constants;
 	public final Map<Integer, Integer> multipliers;
-	private final Scanner scanner;
-	private String name;
-	private int version;
+	public String name;
+	public int version;
 
-	public static interface Headers {
-		int ATTRIBUTE = 1;
-		int GET_STATIC = 2;
-		int GET_FIELD = 3;
-		int ADD_FIELD = 4;
-		int ADD_METHOD = 5;
-		int ADD_INTERFACE = 6;
-		int SET_SUPER = 7;
-		int SET_SIGNATURE = 8;
-		int INSERT_CODE = 9;
-		int OVERRIDE_CLASS = 10;
-		int CONSTANT = 11;
-		int MULTIPLIER = 12;
-		int END_OF_FILE = 13;
-	}
+	private static final int MAGIC = 0xFADFAD, ATTRIBUTE = 1, GET_STATIC = 2, GET_FIELD = 3, ADD_FIELD = 4, ADD_METHOD = 5, ADD_INTERFACE = 6, SET_SUPER = 7, SET_SIGNATURE = 8, INSERT_CODE = 9, OVERRIDE_CLASS = 10, CONSTANT = 11, MULTIPLIER = 12, END_OF_FILE = 13;
 
-	private static final int MAGIC = 0xFADFAD;
-
-	public TransformSpec(final InputStream data) {
-		scanner = new Scanner(data);
+	private TransformSpec(final String name, final int version) {
+		this.name = name;
+		this.version = version;
 		fields = new HashMap<String, Map<String, Reflector.Field>>();
 		attributes = new HashMap<String, String>();
 		constants = new HashMap<Integer, Integer>();
 		multipliers = new HashMap<Integer, Integer>();
 	}
 
-	public String getName() {
-		return name;
-	}
+	public static TransformSpec read(final InputStream in) throws IOException {
+		final ScannerInputStream scanner = new ScannerInputStream(in);
 
-	public int getVersion() {
-		return version;
-	}
-
-	public void parse() {
-		if (scanner.readInt() != TransformSpec.MAGIC) {
-			throw new RuntimeException("invalid patch format");
+		if (scanner.readInt() != MAGIC) {
+			scanner.close();
+			throw new IOException("invalid patch format");
 		}
-		name = scanner.readString();
-		version = scanner.readShort();
-		read:
-		while (true) {
+
+		final TransformSpec t = new TransformSpec(scanner.readString(), scanner.readShort());
+
+		while (scanner.available() > 0) {
 			final int op = scanner.readByte();
 			switch (op) {
-			case Headers.ATTRIBUTE: {
+			case ATTRIBUTE: {
 				final String k = scanner.readString(), v = new StringBuilder(scanner.readString()).reverse().toString();
-				attributes.put(k, v);
+				t.attributes.put(k, v);
 				break;
 			}
-			case Headers.GET_STATIC:
-			case Headers.GET_FIELD: {
+			case GET_STATIC:
+			case GET_FIELD: {
 				final String c = scanner.readString();
 				final Map<String, Reflector.Field> map;
-				if (fields.containsKey(c)) {
-					map = fields.get(c);
+				if (t.fields.containsKey(c)) {
+					map = t.fields.get(c);
 				} else {
-					fields.put(c, map = new HashMap<String, Reflector.Field>());
+					t.fields.put(c, map = new HashMap<String, Reflector.Field>());
 				}
 				int n = scanner.readShort();
 				while (n-- > 0) {
 					final int ga = scanner.readInt();
 					final String gn = scanner.readString(), gd = scanner.readString();
 					final String o = scanner.readString(), f = scanner.readString(), d = scanner.readString();
-					final byte overflow = (byte) scanner.readByte();//1 = int, 2 = long, default = 0
+					final byte overflow = scanner.readByte();//1 = int, 2 = long, default = 0
 					final long value;
 					switch (overflow) {
-					case 1: {
+					case 1:
 						value = scanner.readInt();
 						break;
-					}
-					case 2: {
+					case 2:
 						value = scanner.readLong();
 						break;
-					}
-					default: {
+					default:
 						value = 0;
 						break;
 					}
-					}
 					if (map.containsKey(gn)) {
-						throw new RuntimeException("we don't support overloading yet...");
+						throw new IOException("we don't support overloading yet...");
 					}
-					map.put(gn, new Reflector.Field(o, f, op == Headers.GET_FIELD, overflow, value));
+					map.put(gn, new Reflector.Field(o, f, op == GET_FIELD, overflow, value));
 				}
 				break;
 			}
-			case Headers.ADD_FIELD: {
+			case ADD_FIELD: {
 				final String c = scanner.readString();
 				int n = scanner.readShort();
 				while (n-- > 0) {
@@ -111,27 +87,27 @@ public class TransformSpec {
 				}
 				break;
 			}
-			case Headers.ADD_METHOD: {
+			case ADD_METHOD: {
 				final String c = scanner.readString();
 				int n = scanner.readShort();
 				while (n-- > 0) {
 					final int a = scanner.readInt();
 					final String m = scanner.readString(), d = scanner.readString();
 					final byte[] arr = new byte[scanner.readInt()];
-					scanner.readSegment(arr, arr.length, 0);
+					scanner.read(arr);
 					final int l = scanner.readByte(), s = scanner.readByte();
 				}
 				break;
 			}
-			case Headers.ADD_INTERFACE: {
+			case ADD_INTERFACE: {
 				final String c = scanner.readString(), s = scanner.readString();
 				break;
 			}
-			case Headers.SET_SUPER: {
+			case SET_SUPER: {
 				final String c = scanner.readString(), s = scanner.readString();
 				break;
 			}
-			case Headers.SET_SIGNATURE: {
+			case SET_SIGNATURE: {
 				final String c = scanner.readString();
 				int n = scanner.readShort();
 				while (n-- > 0) {
@@ -141,91 +117,66 @@ public class TransformSpec {
 				}
 				break;
 			}
-			case Headers.INSERT_CODE: {
+			case INSERT_CODE: {
 				final String c = scanner.readString();
 				final String m = scanner.readString(), d = scanner.readString();
 				int n = scanner.readByte();
 				while (n-- > 0) {
 					final int o = scanner.readShort();
 					final byte[] arr = new byte[scanner.readInt()];
-					scanner.readSegment(arr, arr.length, 0);
+					scanner.read(arr);
 				}
 				break;
 			}
-			case Headers.OVERRIDE_CLASS: {
+			case OVERRIDE_CLASS: {
 				final String c1 = scanner.readString(), c2 = scanner.readString();
 				int n = scanner.readByte();
 				while (n-- > 0) {
 					final String c = scanner.readString();
 				}
 			}
-			case Headers.CONSTANT: {
-				constants.put(scanner.readShort(), scanner.readShort());
+			case CONSTANT:
+				t.constants.put((int) scanner.readShort(), (int) scanner.readShort());
 				break;
-			}
-			case Headers.MULTIPLIER: {
-				multipliers.put(scanner.readShort(), scanner.readInt());
+			case MULTIPLIER:
+				t.multipliers.put((int) scanner.readShort(), scanner.readInt());
 				break;
-			}
-			case Headers.END_OF_FILE: {
-				break read;
-			}
+			case END_OF_FILE:
+				scanner.close();
+				break;
 			}
 		}
+
+		return t;
 	}
 
-	private static class Scanner {
+	@Override
+	public String toString() {
+		return name + "-" + Integer.toString(version);
+	}
+
+	private static final class ScannerInputStream extends DataInputStream {
 		private final static int EOL = 0xA;
-		private final InputStream in;
 
-		public Scanner(final byte[] data) {
-			this(new ByteArrayInputStream(data));
+		public ScannerInputStream(final InputStream in) {
+			super(in);
 		}
 
-		public Scanner(final InputStream in) {
-			this.in = in;
-		}
-
-		public int readByte() {
-			try {
-				return in.read();
-			} catch (final IOException ignored) {
-				return -1;
-			}
-		}
-
-		public int readShort() {
-			return readByte() << 8 | readByte();
-		}
-
-		public int readInt() {
-			return readShort() << 16 | readShort();
-		}
-
-		public long readLong() {
-			return ((long) readInt()) << 32 | readInt() & 0xFFFFFFFFl;
-		}
-
-		public String readString() {
-			return normalize(new String(readSegment()));
-		}
-
-		public byte[] readSegment() {
+		public byte[] readSegment() throws IOException {
 			final ByteArrayOutputStream out = new ByteArrayOutputStream();
-			int b;
-			while ((b = readByte()) != EOL && b != -1) {
-				out.write(b);
+			final byte[] b = new byte[1];
+			int l;
+			while ((l = in.read(b)) > 0 && b[0] != EOL) {
+				out.write(b, 0, l);
 			}
 			return out.toByteArray();
 		}
 
-		public void readSegment(final byte[] data, final int len, final int off) {
-			for (int i = off; i < off + len; i++) {
-				data[i] = (byte) readByte();
-			}
+		public String readString() throws IOException {
+			return normalize(new String(readSegment()));
 		}
 
-		private String normalize(final String s) {
+		private static String normalize(final String s) {
 			return s.replace("org/powerbot/game/client", org.powerbot.bot.rt6.client.Client.class.getPackage().getName().replace('.', '/')).
 					replace("org/powerbot/os/client", org.powerbot.bot.rt4.client.Client.class.getPackage().getName().replace('.', '/'));
 		}

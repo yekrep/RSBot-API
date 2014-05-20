@@ -24,11 +24,13 @@ import org.powerbot.misc.GoogleAnalytics;
 import org.powerbot.util.HttpUtils;
 import org.powerbot.util.StringUtils;
 
-public class ClientTransformUtils {
+public class ClientTransform {
+	private static final String KEY_ALGO = "ARCFOUR", CIPHER_ALGO = "RC4", HASH_ALGO = "SHA1";
+
 	public static String hash(final Map<String, byte[]> map) {
 		final MessageDigest md;
 		try {
-			md = MessageDigest.getInstance("SHA-1");
+			md = MessageDigest.getInstance(HASH_ALGO);
 		} catch (final NoSuchAlgorithmException e) {
 			throw new RuntimeException(e);
 		}
@@ -39,33 +41,22 @@ public class ClientTransformUtils {
 		return StringUtils.byteArrayToHexString(md.digest());
 	}
 
-	public static String hash(final byte[] bytes) {
-		final MessageDigest digest;
-		try {
-			digest = MessageDigest.getInstance("SHA-1");
-			return StringUtils.byteArrayToHexString(digest.digest(bytes));
-		} catch (final NoSuchAlgorithmException ignored) {
-			return null;
-		}
-	}
-
 	public static TransformSpec get(final String gv, final String hash) throws IOException {
 		final String pre = "loader/spec/" + hash;
 		final int r;
 
 		final byte[] b = new byte[16];
-		final String keyAlgo = "ARCFOUR", cipherAlgo = "RC4", hashAlgo = "SHA1";
 
 		final MessageDigest md;
 		try {
-			md = MessageDigest.getInstance(hashAlgo);
+			md = MessageDigest.getInstance(HASH_ALGO);
 		} catch (final NoSuchAlgorithmException e) {
 			throw new IOException(e);
 		}
 
 		md.update(StringUtils.getBytesUtf8(hash));
 		System.arraycopy(md.digest(), 0, b, 0, b.length);
-		final SecretKey key = new SecretKeySpec(b, 0, b.length, keyAlgo);
+		final SecretKey key = new SecretKeySpec(b, 0, b.length, KEY_ALGO);
 
 		final HttpURLConnection con = HttpUtils.openConnection(new URL(String.format(Configuration.URLs.TSPEC, gv, hash)));
 		con.setInstanceFollowRedirects(false);
@@ -75,13 +66,13 @@ public class ClientTransformUtils {
 		if (r == HttpURLConnection.HTTP_OK) {
 			final Cipher c;
 			try {
-				c = Cipher.getInstance(cipherAlgo);
+				c = Cipher.getInstance(CIPHER_ALGO);
 				c.init(Cipher.DECRYPT_MODE, key);
 			} catch (final GeneralSecurityException e) {
 				throw new IOException(e);
 			}
 			try {
-				return new TransformSpec(new CipherInputStream(HttpUtils.openStream(con), c));
+				return TransformSpec.read(new CipherInputStream(HttpUtils.openStream(con), c));
 			} catch (final NullPointerException e) {
 				throw new IOException(e);
 			}
@@ -105,18 +96,17 @@ public class ClientTransformUtils {
 		int r;
 
 		final byte[] b = new byte[16];
-		final String keyAlgo = "ARCFOUR", cipherAlgo = "RC4", hashAlgo = "SHA1";
 
 		final MessageDigest md;
 		try {
-			md = MessageDigest.getInstance(hashAlgo);
+			md = MessageDigest.getInstance(HASH_ALGO);
 		} catch (final NoSuchAlgorithmException ignored) {
 			return;
 		}
 
 		md.update(StringUtils.getBytesUtf8(hash));
 		System.arraycopy(md.digest(), 0, b, 0, b.length);
-		final SecretKey key = new SecretKeySpec(b, 0, b.length, keyAlgo);
+		final SecretKey key = new SecretKeySpec(b, 0, b.length, KEY_ALGO);
 
 		final HttpURLConnection bucket = getBucketConnection(gv, hash);
 		bucket.setInstanceFollowRedirects(false);
@@ -131,7 +121,7 @@ public class ClientTransformUtils {
 			put.setDoOutput(true);
 			final Cipher c;
 			try {
-				c = Cipher.getInstance(cipherAlgo);
+				c = Cipher.getInstance(CIPHER_ALGO);
 				c.init(Cipher.ENCRYPT_MODE, key);
 			} catch (final GeneralSecurityException e) {
 				throw new IOException(e);
@@ -169,10 +159,10 @@ public class ClientTransformUtils {
 		for (; ; ) {
 			log.warning("Downloading update \u2014 please wait");
 			try {
-				ClientTransformUtils.upload(gv, hash, classes);
+				ClientTransform.upload(gv, hash, classes);
 				break;
 			} catch (final IOException ignored) {
-			} catch (final ClientTransformUtils.PendingException p) {
+			} catch (final ClientTransform.PendingException p) {
 				final int d = p.getDelay() / 1000;
 				log.warning("Your update (" + hash.substring(0, 6) + ") is being processed, trying again in " + (d < 60 ? d + " seconds" : (int) Math.ceil(d / 60) + " minutes"));
 				try {
