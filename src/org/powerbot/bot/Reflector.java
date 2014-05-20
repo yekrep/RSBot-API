@@ -53,10 +53,10 @@ public class Reflector {
 	public long accessLong(final ReflectProxy accessor) {
 		final Field f = getField();
 		if (f == null) {
-			return -1L;
+			return -1l;
 		}
 		final Long i = access(accessor, Long.class);
-		return i != null ? f.type == 2 ? i * f.multiplier : i : -1L;
+		return i != null ? f.type == 2 ? i * f.multiplier : i : -1l;
 	}
 
 	public float accessFloat(final ReflectProxy accessor) {
@@ -124,7 +124,7 @@ public class Reflector {
 		} catch (final IllegalAccessException ignored) {
 		}
 		f2.setAccessible(a2);
-		return t.cast(o);
+		return o != null ? t.cast(o) : null;
 	}
 
 	public <T> T access(final ReflectProxy accessor, final T d) {
