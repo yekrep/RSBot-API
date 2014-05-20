@@ -9,18 +9,11 @@ import java.util.concurrent.Callable;
 import org.powerbot.bot.rt6.client.BaseInfo;
 import org.powerbot.bot.rt6.client.Client;
 import org.powerbot.bot.rt6.client.Constants;
-import org.powerbot.bot.rt6.client.DXRender;
-import org.powerbot.bot.rt6.client.GLRender;
-import org.powerbot.bot.rt6.client.HardReference;
 import org.powerbot.bot.rt6.client.HashTable;
-import org.powerbot.bot.rt6.client.JavaRender;
 import org.powerbot.bot.rt6.client.Node;
 import org.powerbot.bot.rt6.client.RSGroundBytes;
 import org.powerbot.bot.rt6.client.RSGroundInfo;
 import org.powerbot.bot.rt6.client.RSInfo;
-import org.powerbot.bot.rt6.client.Render;
-import org.powerbot.bot.rt6.client.RenderData;
-import org.powerbot.bot.rt6.client.SoftReference;
 import org.powerbot.bot.rt6.client.TileData;
 import org.powerbot.script.Condition;
 import org.powerbot.script.Locatable;
@@ -378,47 +371,6 @@ public class Game extends ClientAccessor {
 		return bad;
 	}
 
-	public void updateToolkit(final Render render) {
-		if (render == null) {
-			return;
-		}
-		toolkit.absoluteX = render.getAbsoluteX();
-		toolkit.absoluteY = render.getAbsoluteY();
-		toolkit.xMultiplier = render.getXMultiplier();
-		toolkit.yMultiplier = render.getYMultiplier();
-		toolkit.graphicsIndex = render.getGraphicsIndex();
-		if (render instanceof DXRender) {
-			toolkit.gameMode = 2;
-		} else if (render instanceof GLRender) {
-			toolkit.gameMode = 1;
-		} else if (render instanceof JavaRender) {
-			toolkit.gameMode = 0;
-		} else {
-			toolkit.gameMode = -1;
-		}
-
-		final Constants constants = ctx.constants.get();
-		final RenderData _viewport = render.getRenderData();
-		final float[] data;
-		if (viewport == null || constants == null || (data = _viewport.getFloats()) == null) {
-			return;
-		}
-		viewport.xOff = data[constants.VIEWPORT_XOFF];
-		viewport.xX = data[constants.VIEWPORT_XX];
-		viewport.xY = data[constants.VIEWPORT_XY];
-		viewport.xZ = data[constants.VIEWPORT_XZ];
-
-		viewport.yOff = data[constants.VIEWPORT_YOFF];
-		viewport.yX = data[constants.VIEWPORT_YX];
-		viewport.yY = data[constants.VIEWPORT_YY];
-		viewport.yZ = data[constants.VIEWPORT_YZ];
-
-		viewport.zOff = data[constants.VIEWPORT_ZOFF];
-		viewport.zX = data[constants.VIEWPORT_ZX];
-		viewport.zY = data[constants.VIEWPORT_ZY];
-		viewport.zZ = data[constants.VIEWPORT_ZZ];
-	}
-
 	/**
 	 * Looks up a reference in the provided hash table.
 	 *
@@ -435,13 +387,8 @@ public class Game extends ClientAccessor {
 		final Node n = buckets[(int) (id & buckets.length - 1)];
 		for (Node node = n.getNext(); node != n && node != null; node = node.getNext()) {
 			if (node.getId() == id) {
-				if (node instanceof SoftReference) {
-					return ((java.lang.ref.SoftReference<?>) ((SoftReference) node).get()).get();
-				} else if (node instanceof HardReference) {
-					return ((HardReference) node).get();
-				} else {
-					return node;
-				}
+				//TODO: check soft and hard references
+				return node;
 			}
 		}
 		return null;

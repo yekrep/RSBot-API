@@ -15,7 +15,25 @@ import java.util.Map.Entry;
 import javax.swing.JCheckBoxMenuItem;
 
 import org.powerbot.bot.EventDispatcher;
-import org.powerbot.bot.rt6.activation.*;
+import org.powerbot.bot.rt6.activation.DrawAbilities;
+import org.powerbot.bot.rt6.activation.DrawBoundaries;
+import org.powerbot.bot.rt6.activation.DrawGroundItems;
+import org.powerbot.bot.rt6.activation.DrawItems;
+import org.powerbot.bot.rt6.activation.DrawMobs;
+import org.powerbot.bot.rt6.activation.DrawObjects;
+import org.powerbot.bot.rt6.activation.DrawPlayers;
+import org.powerbot.bot.rt6.activation.DrawProjectiles;
+import org.powerbot.bot.rt6.activation.MessageLogger;
+import org.powerbot.bot.rt6.activation.TCamera;
+import org.powerbot.bot.rt6.activation.TClientState;
+import org.powerbot.bot.rt6.activation.TDestination;
+import org.powerbot.bot.rt6.activation.TLocation;
+import org.powerbot.bot.rt6.activation.TMapBase;
+import org.powerbot.bot.rt6.activation.TMenu;
+import org.powerbot.bot.rt6.activation.TMousePosition;
+import org.powerbot.bot.rt6.activation.TPlane;
+import org.powerbot.bot.rt6.activation.ViewMouse;
+import org.powerbot.bot.rt6.activation.ViewMouseTrails;
 import org.powerbot.script.Bot;
 
 final class RT6BotMenuView implements ActionListener {
@@ -33,16 +51,15 @@ final class RT6BotMenuView implements ActionListener {
 		settingExplorer.addActionListener(this);
 		menu.add(settingExplorer);
 
-			final MenuItem boundingUtility = new MenuItem(BotLocale.UTIL_MODELING);
-			boundingUtility.addActionListener(this);
-			menu.add(boundingUtility);
+		final MenuItem boundingUtility = new MenuItem(BotLocale.UTIL_MODELING);
+		boundingUtility.addActionListener(this);
+		menu.add(boundingUtility);
 
 		menu.addSeparator();
 
 		map = new LinkedHashMap<String, Class<? extends EventListener>>();
 		map.put(BotLocale.VIEW_LANDSCAPE, DrawBoundaries.class);
-		map.put(BotLocale.VIEW_MODELS, DrawModels.class);
-		map.put(BotLocale.VIEW_SCENE_ENTITIES, DrawObjects.class);
+		map.put(BotLocale.VIEW_OBJECTS, DrawObjects.class);
 		map.put(BotLocale.VIEW_PLAYERS, DrawPlayers.class);
 		map.put(BotLocale.VIEW_NPCS, DrawMobs.class);
 		map.put(BotLocale.VIEW_PROJECTILES, DrawProjectiles.class);
@@ -68,8 +85,7 @@ final class RT6BotMenuView implements ActionListener {
 		items.add(BotLocale.VIEW_NPCS);
 		items.add(BotLocale.VIEW_GROUND_ITEMS);
 		items.add(BotLocale.VIEW_PROJECTILES);
-		items.add(BotLocale.VIEW_SCENE_ENTITIES);
-		items.add(BotLocale.VIEW_MODELS);
+		items.add(BotLocale.VIEW_OBJECTS);
 		items.add(BotLocale.VIEW_LANDSCAPE);
 		items.add(BotLocale.VIEW_ITEMS);
 		items.add(BotLocale.VIEW_ABILITIES);

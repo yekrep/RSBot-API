@@ -2,10 +2,10 @@ package org.powerbot.bot;
 
 public class ContextAccessor {
 	public final ReflectionEngine engine;
-	protected final Object parent;
+	public final Object root;
 
-	public ContextAccessor(final ReflectionEngine engine, final Object parent) {
+	public ContextAccessor(final ReflectionEngine engine, final Object root) {
 		this.engine = engine;
-		this.parent = parent;
+		this.root = root;
 	}
 }

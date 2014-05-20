@@ -49,7 +49,7 @@ public class LoaderUtils {
 		}
 	}
 
-	public static TransformSpec get(final String gv, final String hash) throws IOException {
+	public static ReflectionSpec get(final String gv, final String hash) throws IOException {
 		final String pre = "loader/spec/" + hash;
 		final int r;
 
@@ -81,7 +81,7 @@ public class LoaderUtils {
 				throw new IOException(e);
 			}
 			try {
-				return new TransformSpec(new CipherInputStream(HttpUtils.openStream(con), c));
+				return new ReflectionSpec(new CipherInputStream(HttpUtils.openStream(con), c));
 			} catch (final NullPointerException e) {
 				throw new IOException(e);
 			}

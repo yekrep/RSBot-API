@@ -134,7 +134,7 @@ public class Map extends ClientAccessor {
 				if (object == null) {
 					continue;
 				}
-				final RSRotatableObject rot = (RSRotatableObject) object;
+				final RSRotatableObject rot = new RSRotatableObject(object.engine, object.root);
 				collisionMap.markWall(localX, localY, rot.getType(), rot.getOrientation());
 				break;
 			case FLOOR_DECORATION:
@@ -142,7 +142,6 @@ public class Map extends ClientAccessor {
 					continue;
 				}
 				collisionMap.markDecoration(localX, localY);
-
 				break;
 			case INTERACTIVE:
 				if (clippingType == 0) {

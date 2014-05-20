@@ -10,8 +10,4 @@ public class RSObject extends RSInteractable {
 	public int getId() {
 		return engine.accessInt(this);
 	}
-
-	public AbstractModel getModel() {
-		return new AbstractModel(engine, engine.access(this));
-	}
 }

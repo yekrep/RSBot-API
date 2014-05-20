@@ -145,11 +145,6 @@ public class Npc extends Actor implements Identifiable {
 		final BoundingModel m2 = boundingModel.get();
 		if (m2 != null) {
 			m2.drawWireFrame(render);
-		} else {
-			final Model m = model();
-			if (m != null) {
-				m.drawWireFrame(render);
-			}
 		}
 	}
 

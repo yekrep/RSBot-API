@@ -7,10 +7,6 @@ public class RSCharacter extends RSAnimable {
 		super(engine, parent);
 	}
 
-	public AbstractModel getModel() {
-		return new AbstractModel(engine, engine.access(this));
-	}
-
 	public int getInteracting() {
 		return engine.accessInt(this);
 	}

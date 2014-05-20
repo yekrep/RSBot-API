@@ -2,7 +2,6 @@ package org.powerbot.script.rt6;
 
 import java.awt.Point;
 
-import org.powerbot.bot.rt6.client.AbstractModel;
 import org.powerbot.bot.rt6.client.Client;
 import org.powerbot.bot.rt6.client.CombatStatus;
 import org.powerbot.bot.rt6.client.CombatStatusData;
@@ -22,7 +21,7 @@ import org.powerbot.script.Locatable;
 import org.powerbot.script.Nameable;
 import org.powerbot.script.Tile;
 
-public abstract class Actor extends Interactive implements Renderable, Nameable, Locatable, Drawable {
+public abstract class Actor extends Interactive implements Nameable, Locatable, Drawable {
 	public Actor(final ClientContext ctx) {
 		super(ctx);
 		bounds(-192, 192, -768, 0, -192, 192);
@@ -45,18 +44,6 @@ public abstract class Actor extends Interactive implements Renderable, Nameable,
 				return (int) r.z();
 			}
 		});
-	}
-
-	@Override
-	public Model model() {
-		final RSCharacter character = getAccessor();
-		if (character != null && ctx.game.toolkit.gameMode == 0) {
-			final AbstractModel model = character.getModel();
-			if (model != null) {
-				return new ActorModel(ctx, model, character);
-			}
-		}
-		return null;
 	}
 
 	public abstract int combatLevel();
@@ -263,10 +250,6 @@ public abstract class Actor extends Interactive implements Renderable, Nameable,
 			return new Point(-1, -1);
 		}
 
-		final Model model = model();
-		if (model != null) {
-			return model.nextPoint();
-		}
 		final BoundingModel model2 = boundingModel.get();
 		if (model2 != null) {
 			return model2.nextPoint();
@@ -280,10 +263,6 @@ public abstract class Actor extends Interactive implements Renderable, Nameable,
 			return new Point(-1, -1);
 		}
 
-		final Model model = model();
-		if (model != null) {
-			return model.centerPoint();
-		}
 		final BoundingModel model2 = boundingModel.get();
 		if (model2 != null) {
 			return model2.centerPoint();
@@ -298,10 +277,6 @@ public abstract class Actor extends Interactive implements Renderable, Nameable,
 			return false;
 		}
 
-		final Model model = model();
-		if (model != null) {
-			return model.contains(point);
-		}
 		final BoundingModel model2 = boundingModel.get();
 		return model2 != null && model2.contains(point);
 	}

@@ -5,11 +5,9 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.lang.ref.WeakReference;
 
-import org.powerbot.bot.rt6.client.AbstractModel;
 import org.powerbot.bot.rt6.client.Cache;
 import org.powerbot.bot.rt6.client.Client;
 import org.powerbot.bot.rt6.client.HashTable;
-import org.powerbot.bot.rt6.client.RSAnimable;
 import org.powerbot.bot.rt6.client.RSInfo;
 import org.powerbot.bot.rt6.client.RSInteractableData;
 import org.powerbot.bot.rt6.client.RSInteractableLocation;
@@ -23,7 +21,7 @@ import org.powerbot.script.Locatable;
 import org.powerbot.script.Nameable;
 import org.powerbot.script.Tile;
 
-public class GameObject extends Interactive implements Renderable, Locatable, Nameable, Drawable, Identifiable {
+public class GameObject extends Interactive implements Locatable, Nameable, Drawable, Identifiable {
 	private static final Color TARGET_COLOR = new Color(0, 255, 0, 20);
 	private final WeakReference<RSObject> object;
 	private final Type type;
@@ -50,18 +48,6 @@ public class GameObject extends Interactive implements Renderable, Locatable, Na
 				return (int) r.z();
 			}
 		});
-	}
-
-	@Override
-	public Model model() {
-		final RSObject object = this.object.get();
-		if (object != null && ctx.game.toolkit.gameMode == 0) {
-			final AbstractModel model = object.getModel();
-			if (model != null) {
-				return new RenderableModel(ctx, model, object);
-			}
-		}
-		return null;
 	}
 
 	@Override
@@ -111,14 +97,7 @@ public class GameObject extends Interactive implements Renderable, Locatable, Na
 	}
 
 	public Area area() {
-		if (object instanceof RSAnimable) {
-			final RSAnimable animable = (RSAnimable) object;
-			final Tile base = ctx.game.mapOffset();
-			return new Area(
-					base.derive(animable.getX1(), animable.getY1()),
-					base.derive(animable.getX2(), animable.getY2())
-			);
-		}
+		//TODO: special type
 		final Tile loc = tile();
 		return new Area(loc, loc);
 	}
@@ -145,10 +124,6 @@ public class GameObject extends Interactive implements Renderable, Locatable, Na
 
 	@Override
 	public Point nextPoint() {
-		final Model model = model();
-		if (model != null) {
-			return model.nextPoint();
-		}
 		final RSObject o = object.get();
 		final BoundingModel model2 = boundingModel.get();
 		if (o != null && model2 != null) {
@@ -158,10 +133,6 @@ public class GameObject extends Interactive implements Renderable, Locatable, Na
 	}
 
 	public Point centerPoint() {
-		final Model model = model();
-		if (model != null) {
-			return model.centerPoint();
-		}
 		final RSObject o = object.get();
 		final BoundingModel model2 = boundingModel.get();
 		if (o != null && model2 != null) {
@@ -172,10 +143,6 @@ public class GameObject extends Interactive implements Renderable, Locatable, Na
 
 	@Override
 	public boolean contains(final Point point) {
-		final Model model = model();
-		if (model != null) {
-			return model.contains(point);
-		}
 		final RSObject o = object.get();
 		final BoundingModel model2 = boundingModel.get();
 		return o != null && model2 != null && model2.contains(point);
@@ -218,11 +185,6 @@ public class GameObject extends Interactive implements Renderable, Locatable, Na
 		final BoundingModel m2 = boundingModel.get();
 		if (m2 != null) {
 			m2.drawWireFrame(render);
-		} else {
-			final Model m = model();
-			if (m != null) {
-				m.drawWireFrame(render);
-			}
 		}
 	}
 

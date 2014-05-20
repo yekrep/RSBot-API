@@ -56,7 +56,7 @@ final class RT4BotMenuView implements ActionListener {
 		menu.addSeparator();
 
 		map = new LinkedHashMap<String, Class<? extends EventListener>>();
-		map.put(BotLocale.VIEW_SCENE_ENTITIES, DrawObjects.class);
+		map.put(BotLocale.VIEW_OBJECTS, DrawObjects.class);
 		map.put(BotLocale.VIEW_PLAYERS, DrawPlayers.class);
 		map.put(BotLocale.VIEW_PLAYER, TPlayer.class);
 		map.put(BotLocale.VIEW_NPCS, DrawMobs.class);
@@ -82,7 +82,7 @@ final class RT4BotMenuView implements ActionListener {
 		items.add(BotLocale.VIEW_NPCS);
 		items.add(BotLocale.VIEW_ITEMS);
 		items.add(BotLocale.VIEW_GROUND_ITEMS);
-		items.add(BotLocale.VIEW_SCENE_ENTITIES);
+		items.add(BotLocale.VIEW_OBJECTS);
 		items.add(BotLocale.SEPARATOR);
 		items.add(BotLocale.VIEW_CLIENT_STATE);
 		items.add(BotLocale.VIEW_CAMERA);

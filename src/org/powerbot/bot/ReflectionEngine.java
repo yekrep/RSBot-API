@@ -14,11 +14,15 @@ public class ReflectionEngine {
 	public static class Field {
 		private final String parent, name;
 		private final boolean virtual;
+		private final byte type;
+		private final long multipler;
 
-		public Field(final String parent, final String name, final boolean virtual) {
+		public Field(final String parent, final String name, final boolean virtual, final byte type, final long multiplier) {
 			this.parent = parent;
 			this.name = name;
 			this.virtual = virtual;
+			this.type = type;
+			this.multipler = multiplier;
 		}
 	}
 
@@ -81,7 +85,7 @@ public class ReflectionEngine {
 	}
 
 	public <T> T access(final ContextAccessor accessor, final Class<T> type) {
-		if (accessor.parent == null) {
+		if (accessor.root == null) {
 			return null;
 		}
 		//TODO if type is an array, correctly instantiate ContextAccessors
@@ -94,7 +98,7 @@ public class ReflectionEngine {
 		final Field f = map.get(m);
 		Class<?> c2;
 		if (f.virtual) {
-			c2 = accessor.parent.getClass();
+			c2 = accessor.root.getClass();
 		} else {
 			final String s = f.parent;
 			if (s == null || s.isEmpty()) {
@@ -128,7 +132,7 @@ public class ReflectionEngine {
 		f2.setAccessible(true);
 		Object o = null;
 		try {
-			o = f2.get(f.virtual ? accessor.parent : null);
+			o = f2.get(f.virtual ? accessor.root : null);
 		} catch (final IllegalAccessException ignored) {
 		}
 		f2.setAccessible(a2);

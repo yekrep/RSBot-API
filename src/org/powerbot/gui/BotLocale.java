@@ -46,8 +46,7 @@ final class BotLocale {
 	public static final String VIEW_PLAYER = "Player";
 	public static final String VIEW_NPCS = "Npcs";
 	public static final String VIEW_GROUND_ITEMS = "Ground Items";
-	public static final String VIEW_SCENE_ENTITIES = "Objects";
-	public static final String VIEW_MODELS = "Models";
+	public static final String VIEW_OBJECTS = "Objects";
 	public static final String VIEW_ITEMS = "Items";
 	public static final String VIEW_ABILITIES = "Abilities";
 	public static final String VIEW_CLIENT_STATE = "Client State";

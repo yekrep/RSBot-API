@@ -36,10 +36,8 @@ import org.powerbot.script.rt6.ClientContext;
 import org.powerbot.script.rt6.GameObject;
 import org.powerbot.script.rt6.GroundItem;
 import org.powerbot.script.rt6.Interactive;
-import org.powerbot.script.rt6.Model;
 import org.powerbot.script.rt6.Npc;
 import org.powerbot.script.rt6.Player;
-import org.powerbot.script.rt6.Renderable;
 import org.powerbot.script.rt6.TileMatrix;
 
 class RT6BotBoundingUtility extends JFrame implements PaintListener, MouseListener, MouseMotionListener {
@@ -306,57 +304,34 @@ class RT6BotBoundingUtility extends JFrame implements PaintListener, MouseListen
 		if (interactive == null) {
 			return;
 		}
-		final Model m;
-		if (interactive instanceof Renderable && (m = ((Renderable) interactive).model()) != null) {
-			m.update();
-			int x1 = 0, y1 = 0, z1 = 0;
-			int x2 = 0, y2 = 0, z2 = 0;
-			for (int i = 0; i < m.numFaces; i++) {
-				final int a = m.faceA[i], b = m.faceB[i], c = m.faceC[i];
-				final int x = m.xPoints[a], y = m.yPoints[b], z = m.zPoints[c];
-				x1 = Math.min(x1, x);
-				x2 = Math.max(x2, x);
-				y1 = Math.min(y1, y);
-				y2 = Math.max(y2, y);
-				z1 = Math.min(z1, z);
-				z2 = Math.max(z2, z);
-			}
-			modelX1.setValue(x1);
-			modelX2.setValue(x2);
-			modelY1.setValue(y1);
-			modelY2.setValue(y2);
-			modelZ1.setValue(z1);
-			modelZ2.setValue(z2);
+		if (interactive instanceof Actor) {
+			modelX1.setValue(-192);
+			modelX2.setValue(192);
+			modelY1.setValue(-768);
+			modelY2.setValue(0);
+			modelZ1.setValue(-192);
+			modelZ2.setValue(192);
+		} else if (interactive instanceof GameObject) {
+			modelX1.setValue(-128);
+			modelX2.setValue(128);
+			modelY1.setValue(-256);
+			modelY2.setValue(0);
+			modelZ1.setValue(-128);
+			modelZ2.setValue(128);
+		} else if (interactive instanceof GroundItem) {
+			modelX1.setValue(-64);
+			modelX2.setValue(64);
+			modelY1.setValue(-64);
+			modelY2.setValue(0);
+			modelZ1.setValue(-64);
+			modelZ2.setValue(64);
 		} else {
-			if (interactive instanceof Actor) {
-				modelX1.setValue(-192);
-				modelX2.setValue(192);
-				modelY1.setValue(-768);
-				modelY2.setValue(0);
-				modelZ1.setValue(-192);
-				modelZ2.setValue(192);
-			} else if (interactive instanceof GameObject) {
-				modelX1.setValue(-128);
-				modelX2.setValue(128);
-				modelY1.setValue(-256);
-				modelY2.setValue(0);
-				modelZ1.setValue(-128);
-				modelZ2.setValue(128);
-			} else if (interactive instanceof GroundItem) {
-				modelX1.setValue(-64);
-				modelX2.setValue(64);
-				modelY1.setValue(-64);
-				modelY2.setValue(0);
-				modelZ1.setValue(-64);
-				modelZ2.setValue(64);
-			} else {
-				modelX1.setValue(-128);
-				modelX2.setValue(128);
-				modelY1.setValue(-256);
-				modelY2.setValue(0);
-				modelZ1.setValue(-128);
-				modelZ2.setValue(128);
-			}
+			modelX1.setValue(-128);
+			modelX2.setValue(128);
+			modelY1.setValue(-256);
+			modelY2.setValue(0);
+			modelZ1.setValue(-128);
+			modelZ2.setValue(128);
 		}
 		l.stateChanged(null);
 	}
