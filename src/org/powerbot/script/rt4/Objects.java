@@ -1,7 +1,6 @@
 package org.powerbot.script.rt4;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -38,7 +37,6 @@ public class Objects extends BasicQuery<GameObject> {
 			if (row == null) {
 				continue;
 			}
-			System.out.println(Arrays.toString(row));
 			for (final Tile tile : row) {
 				if (tile.obj.get() == null) {
 					continue;
@@ -61,7 +59,7 @@ public class Objects extends BasicQuery<GameObject> {
 				}
 
 				for (final BasicObject o : arr2) {
-					if (o.getObject() != null) {
+					if (o != null && o.getObject() != null) {
 						final int t = o.getMeta() & 0x3f;
 						final GameObject.Type type;
 						if (t == 0 || t == 1 || t == 9) {
