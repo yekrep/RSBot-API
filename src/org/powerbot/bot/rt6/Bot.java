@@ -93,7 +93,7 @@ public final class Bot extends org.powerbot.script.Bot<ClientContext> {
 							v0 = xs;
 						} else if (c3.getClass().equals(Class.class)) {
 							@SuppressWarnings("unchecked")
-							final Hashtable<String, Class<?>> xs = (Hashtable<String, Class<?>>) x;
+							final Hashtable<String, Class<?>> xs = x;
 							v1 = xs;
 						}
 					}
