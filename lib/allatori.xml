@@ -14,12 +14,6 @@
 			<field access="protected+" />
 			<method access="protected+" />
 		</class>
-		<class template="class org.powerbot.bot.rt6.loader.Application">
-				<method access="public" />
-		</class>
-		<class template="class org.powerbot.bot.rt6.loader.Bridge">
-				<method access="public" />
-		</class>
 		<class template="class org.powerbot.script.*">
 			<field access="protected+" />
 			<method access="protected+" parameters="keep" />
