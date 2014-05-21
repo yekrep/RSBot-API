@@ -104,29 +104,6 @@ public abstract class ClientContext<C extends Client> {
 	}
 
 	/**
-	 * Returns the script controller.
-	 *
-	 * @return the script controller
-	 * @deprecated use {@link #controller}
-	 */
-	@Deprecated
-	public final Script.Controller controller() {
-		return controller;
-	}
-
-	/**
-	 * Returns the primary script.
-	 *
-	 * @param <T> the type of script
-	 * @return the primary script, or {@code null} if one is not attached
-	 * @deprecated use {@link org.powerbot.script.Script.Controller#script()}
-	 */
-	@SuppressWarnings("unchecked")
-	public final <T extends AbstractScript<? extends ClientContext<C>>> T script() {
-		return (T) controller.script();
-	}
-
-	/**
 	 * Returns the property value for the specified key, or an empty string as the default value.
 	 *
 	 * @param k the key to lookup
