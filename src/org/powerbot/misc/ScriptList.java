@@ -301,11 +301,10 @@ public class ScriptList {
 		}
 
 		final NetworkAccount n = NetworkAccount.getInstance();
-		if (n.isLoggedIn()) {
-			properties.put("user.id", Integer.toString(n.getUID()));
-			properties.put("user.name", n.getDisplayName());
-			properties.put("user.vip", Boolean.toString(n.hasPermission(NetworkAccount.VIP)));
-		}
+		final boolean l = n.isLoggedIn();
+		properties.put("user.id", l ? Integer.toString(n.getUID()) : "0");
+		properties.put("user.name", l ? n.getDisplayName() : "");
+		properties.put("user.vip", Boolean.toString(l && n.hasPermission(NetworkAccount.VIP)));
 
 		properties.put(ScriptController.LOCAL_PROPERTY, Boolean.toString(def.local));
 		final ScriptController<? extends ClientContext> c = (ScriptController<? extends ClientContext>) ctx.controller;
