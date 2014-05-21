@@ -21,7 +21,7 @@ SET dist=%lib%\%name%.jar
 SET lstf=temp.txt
 SET imgdir=%res%\images
 SET manifest=%res%\Manifest.txt
-CALL "jdk.bat"
+CALL "%res%\jdk.bat"
 GOTO :eof
 
 :all
