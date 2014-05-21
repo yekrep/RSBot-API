@@ -20,7 +20,7 @@ public class Antipattern extends PollingScript<ClientContext> {
 
 	@Override
 	public void poll() {
-		if (ctx.property("antipattern.disable").equals("true")) {
+		if (ctx.properties.getProperty("antipattern.disable", "").equals("true")) {
 			return;
 		}
 		for (final Module m : modules) {

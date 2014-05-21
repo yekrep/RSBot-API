@@ -244,11 +244,8 @@ public class ScriptList {
 			return;
 		}
 
-		@SuppressWarnings("unchecked")
-		final Map<String, String> properties = ctx.properties;
-
 		if (username != null) {
-			properties.put(Login.LOGIN_USER_PROPERTY, username);
+			ctx.properties.put(Login.LOGIN_USER_PROPERTY, username);
 		}
 
 		log.info("Starting script: " + def.getName());
@@ -297,17 +294,17 @@ public class ScriptList {
 				}
 			}
 
-			properties.put(ScriptController.TIMEOUT_PROPERTY, Long.toString(TimeUnit.HOURS.toMillis(hours)));
+			ctx.properties.put(ScriptController.TIMEOUT_PROPERTY, Long.toString(TimeUnit.HOURS.toMillis(hours)));
 		}
 
 		final NetworkAccount n = NetworkAccount.getInstance();
 		if (n.isLoggedIn()) {
-			properties.put("user.id", Integer.toString(n.getUID()));
-			properties.put("user.name", n.getDisplayName());
-			properties.put("user.vip", Boolean.toString(n.hasPermission(NetworkAccount.VIP)));
+			ctx.properties.put("user.id", Integer.toString(n.getUID()));
+			ctx.properties.put("user.name", n.getDisplayName());
+			ctx.properties.put("user.vip", Boolean.toString(n.hasPermission(NetworkAccount.VIP)));
 		}
 
-		properties.put(ScriptController.LOCAL_PROPERTY, Boolean.toString(def.local));
+		ctx.properties.put(ScriptController.LOCAL_PROPERTY, Boolean.toString(def.local));
 		final ScriptController<? extends ClientContext> c = (ScriptController<? extends ClientContext>) ctx.controller;
 		c.bundle.set(new ScriptBundle(def, script));
 		c.run();

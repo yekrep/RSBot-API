@@ -15,7 +15,7 @@ public class TicketDestroy extends PollingScript<ClientContext> {
 
 	@Override
 	public void poll() {
-		if (ctx.property("key.token.disable").equals("true")) {
+		if (ctx.properties.getProperty("key.token.disable", "").equals("true")) {
 			return;
 		}
 		final Item item = ctx.backpack.select().id(ITEM_IDS).poll();

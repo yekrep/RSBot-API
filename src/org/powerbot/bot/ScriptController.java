@@ -91,7 +91,7 @@ public final class ScriptController<C extends ClientContext<? extends Client>> e
 		executor.set(new ThreadPoolExecutor(1, 1, 0L, TimeUnit.NANOSECONDS, new LinkedBlockingDeque<Runnable>(), new ScriptThreadFactory(group, cl)));
 
 
-		final String s = ctx.property(TIMEOUT_PROPERTY);
+		final String s = ctx.properties.getProperty(TIMEOUT_PROPERTY, "");
 		if (!s.isEmpty()) {
 			long l = 0;
 			try {

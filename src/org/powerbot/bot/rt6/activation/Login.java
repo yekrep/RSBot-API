@@ -26,7 +26,7 @@ public class Login extends PollingScript<ClientContext> {
 	}
 
 	private boolean isValid() {
-		if (ctx.property("login.disable").equals("true")) {
+		if (ctx.properties.getProperty("login.disable", "").equals("true")) {
 			return false;
 		}
 
@@ -48,12 +48,12 @@ public class Login extends PollingScript<ClientContext> {
 			threshold.add(this);
 		}
 
-		final GameAccounts.Account account = GameAccounts.getInstance().get(ctx.property(LOGIN_USER_PROPERTY));
+		final GameAccounts.Account account = GameAccounts.getInstance().get(ctx.properties.getProperty(LOGIN_USER_PROPERTY, ""));
 		final int state = ctx.game.clientState();
 
 		if (state == Game.INDEX_LOBBY_SCREEN) {
 			int world = -1;
-			final String w = ctx.property("login.world", "-1");
+			final String w = ctx.properties.getProperty("login.world", "-1");
 			try {
 				world = Integer.parseInt(w);
 			} catch (final NumberFormatException ignored) {
