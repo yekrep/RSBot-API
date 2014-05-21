@@ -298,11 +298,10 @@ public class ScriptList {
 		}
 
 		final NetworkAccount n = NetworkAccount.getInstance();
-		if (n.isLoggedIn()) {
-			ctx.properties.put("user.id", Integer.toString(n.getUID()));
-			ctx.properties.put("user.name", n.getDisplayName());
-			ctx.properties.put("user.vip", Boolean.toString(n.hasPermission(NetworkAccount.VIP)));
-		}
+		final boolean l = n.isLoggedIn();
+		ctx.properties.put("user.id", l ? Integer.toString(n.getUID()) : "0");
+		ctx.properties.put("user.name", l ? n.getDisplayName() : "");
+		ctx.properties.put("user.vip", Boolean.toString(l && n.hasPermission(NetworkAccount.VIP)));
 
 		ctx.properties.put(ScriptController.LOCAL_PROPERTY, Boolean.toString(def.local));
 		final ScriptController<? extends ClientContext> c = (ScriptController<? extends ClientContext>) ctx.controller;
