@@ -1,5 +1,6 @@
 package org.powerbot.bot;
 
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -18,26 +19,17 @@ public class Reflector {
 		this.loader = loader;
 		this.interfaces = interfaces;
 		this.fields = fields;
-		System.out.println(fields);
 	}
 
 	public static class Field {
-		private final String parent, name;
-		private final boolean virtual;
-		private final byte type;
+		private final String parent, name, type;
 		private final long multiplier;
 
-		public Field(final String parent, final String name, final boolean virtual, final byte type, final long multiplier) {
+		public Field(final String parent, final String name, final String type, final long multiplier) {
 			this.parent = parent;
 			this.name = name;
-			this.virtual = virtual;
 			this.type = type;
 			this.multiplier = multiplier;
-		}
-
-		@Override
-		public String toString() {
-			return String.format("%s.%s %s %d:%d", parent, name, Boolean.toString(virtual), type, multiplier);
 		}
 	}
 
@@ -51,7 +43,7 @@ public class Reflector {
 			return -1;
 		}
 		final Integer i = access(accessor, Integer.class);
-		return i != null ? f.type == 1 ? i * (int) f.multiplier : i : -1;
+		return i != null ? i * (int) f.multiplier : -1;
 	}
 
 	public int[] accessInts(final ReflectProxy accessor) {
@@ -63,8 +55,8 @@ public class Reflector {
 		if (f == null) {
 			return -1l;
 		}
-		final Long i = access(accessor, Long.class);
-		return i != null ? f.type == 2 ? i * f.multiplier : i : -1l;
+		final Long j = access(accessor, Long.class);
+		return j != null ? j * (int) f.multiplier : -1l;
 	}
 
 	public float accessFloat(final ReflectProxy accessor) {
@@ -88,54 +80,32 @@ public class Reflector {
 	}
 
 	public <T> T access(final ReflectProxy accessor, final Class<T> t) {
-		final Object obj = accessor.obj.get();
-		if (obj == null) {
+		final Object p = accessor.obj.get();
+		final Field r = getField();
+		if (p == null || r == null) {
 			return null;
 		}
-		final Field f = getField();
-		if (f == null) {
-			return null;
-		}
-		Class<?> c2;
-		if (f.virtual) {
-			c2 = obj.getClass();
-		} else {
-			final String s = f.parent;
-			if (s == null || s.isEmpty()) {
-				return null;
-			}
-			try {
-				c2 = loader.loadClass(s);
-			} catch (final ClassNotFoundException ignored) {
-				return null;
-			}
-		}
-		java.lang.reflect.Field f2 = null;
-		if (f.virtual) {
-			while (f2 == null && c2 != Object.class) {
-				try {
-					f2 = c2.getDeclaredField(f.name);
-				} catch (final NoSuchFieldException ignored) {
-					c2 = c2.getSuperclass();
-				}
-			}
-		} else {
-			try {
-				f2 = c2.getDeclaredField(f.name);
-			} catch (final NoSuchFieldException ignored) {
-			}
-		}
-		if (f2 == null) {
-			return null;
-		}
-		final boolean a2 = f2.isAccessible();
-		f2.setAccessible(true);
-		Object o = null;
+		final Class<?> c;//TODO
 		try {
-			o = f2.get(f.virtual ? obj : null);
-		} catch (final IllegalAccessException ignored) {
+			c = loader.loadClass(r.parent);
+		} catch (final ClassNotFoundException ignored) {
+			return null;
 		}
-		f2.setAccessible(a2);
+		final java.lang.reflect.Field f;
+		try {
+			f = c.getDeclaredField(r.name);
+		} catch (final NoSuchFieldException ignored) {
+			return null;
+		}
+		final boolean a = f.isAccessible(), s = Modifier.isStatic(f.getModifiers());
+		f.setAccessible(true);
+		final Object o;
+		try {
+			o = f.get(s ? null : p);
+		} catch (final IllegalAccessException ignored) {
+			return null;
+		}
+		f.setAccessible(a);
 		return o != null ? t.cast(o) : null;
 	}
 

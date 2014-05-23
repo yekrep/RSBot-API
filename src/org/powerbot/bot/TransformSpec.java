@@ -70,13 +70,13 @@ public class TransformSpec {
 						value = scanner.readLong();
 						break;
 					default:
-						value = 0;
+						value = 1;
 						break;
 					}
 					if (map.containsKey(gn)) {
 						throw new IOException("we don't support overloading yet...");
 					}
-					map.put(gn, new Reflector.Field(o, f, op == GET_FIELD, overflow, value));
+					map.put(gn, new Reflector.Field(o, f, d, value));
 				}
 				break;
 			}
