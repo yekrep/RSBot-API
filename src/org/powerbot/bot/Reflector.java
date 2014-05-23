@@ -9,17 +9,15 @@ import java.util.Map;
 
 public class Reflector {
 	private final ClassLoader loader;
-	private final Map<String, String> interfaces;
-	private final Map<String, Map<String, FieldConfig>> configs;
+	private final Map<String, FieldConfig> configs;
 	private final Map<FieldConfig, java.lang.reflect.Field> fields;
 
-	public Reflector(final ClassLoader loader, final TransformSpec spec) {
-		this(loader, spec.interfaces, spec.fields);
+	public Reflector(final ClassLoader loader, final ReflectorSpec spec) {
+		this(loader, spec.configs);
 	}
 
-	public Reflector(final ClassLoader loader, final Map<String, String> interfaces, final Map<String, Map<String, FieldConfig>> configs) {
+	public Reflector(final ClassLoader loader, final Map<String, FieldConfig> configs) {
 		this.loader = loader;
-		this.interfaces = interfaces;
 		this.configs = configs;
 		this.fields = new HashMap<FieldConfig, java.lang.reflect.Field>();
 	}
@@ -96,7 +94,7 @@ public class Reflector {
 				return null;
 			}
 		} else {
-			final Class<?> c;//TODO weak-cache fields
+			final Class<?> c;//TODO
 			try {
 				c = loader.loadClass(r.parent);
 			} catch (final ClassNotFoundException ignored) {
@@ -141,15 +139,8 @@ public class Reflector {
 
 	private FieldConfig getField() {
 		final StackTraceElement e = getCallingAPI();
-		final String c = interfaces.get(e.getClassName().replace('.', '/')), m = e.getMethodName();
-		if (c == null) {
-			return null;
-		}
-		final Map<String, FieldConfig> map = configs.get(c);
-		if (map == null || !map.containsKey(m)) {
-			return null;
-		}
-		return map.get(m);
+		final String c = e.getClassName().replace('.', '/'), m = e.getMethodName(), k = c + '.' + m;
+		return configs.get(k);
 	}
 
 	public static List<java.lang.reflect.Field> getFields(final Class<?> cls) {

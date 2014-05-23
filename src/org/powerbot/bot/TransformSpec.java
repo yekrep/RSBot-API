@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class TransformSpec {
-	public final Map<String, Map<String, Reflector.FieldConfig>> fields;
 	public final Map<String, String> interfaces;
 	public final Map<String, String> attributes;
 	public final Map<Integer, Integer> constants;
@@ -21,7 +20,6 @@ public class TransformSpec {
 	private TransformSpec(final String name, final int version) {
 		this.name = name;
 		this.version = version;
-		fields = new HashMap<String, Map<String, Reflector.FieldConfig>>();
 		interfaces = new HashMap<String, String>();
 		attributes = new HashMap<String, String>();
 		constants = new HashMap<Integer, Integer>();
@@ -50,11 +48,6 @@ public class TransformSpec {
 			case GET_FIELD: {
 				final String c = scanner.readString();
 				final Map<String, Reflector.FieldConfig> map;
-				if (t.fields.containsKey(c)) {
-					map = t.fields.get(c);
-				} else {
-					t.fields.put(c, map = new HashMap<String, Reflector.FieldConfig>());
-				}
 				int n = scanner.readShort();
 				while (n-- > 0) {
 					final int ga = scanner.readInt();
@@ -73,10 +66,6 @@ public class TransformSpec {
 						value = 1;
 						break;
 					}
-					if (map.containsKey(gn)) {
-						throw new IOException("we don't support overloading yet...");
-					}
-					map.put(gn, new Reflector.FieldConfig(o, f, d, value));
 				}
 				break;
 			}
