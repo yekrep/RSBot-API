@@ -3,29 +3,32 @@ package org.powerbot.bot;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class Reflector {
 	private final ClassLoader loader;
 	private final Map<String, String> interfaces;
-	private final Map<String, Map<String, Field>> fields;
+	private final Map<String, Map<String, FieldConfig>> configs;
+	private final Map<FieldConfig, java.lang.reflect.Field> fields;
 
 	public Reflector(final ClassLoader loader, final TransformSpec spec) {
 		this(loader, spec.interfaces, spec.fields);
 	}
 
-	public Reflector(final ClassLoader loader, final Map<String, String> interfaces, final Map<String, Map<String, Field>> fields) {
+	public Reflector(final ClassLoader loader, final Map<String, String> interfaces, final Map<String, Map<String, FieldConfig>> configs) {
 		this.loader = loader;
 		this.interfaces = interfaces;
-		this.fields = fields;
+		this.configs = configs;
+		this.fields = new HashMap<FieldConfig, java.lang.reflect.Field>();
 	}
 
-	public static class Field {
+	public static class FieldConfig {
 		private final String parent, name, type;
 		private final long multiplier;
 
-		public Field(final String parent, final String name, final String type, final long multiplier) {
+		public FieldConfig(final String parent, final String name, final String type, final long multiplier) {
 			this.parent = parent;
 			this.name = name;
 			this.type = type;
@@ -38,7 +41,7 @@ public class Reflector {
 	}
 
 	public int accessInt(final ReflectProxy accessor) {
-		final Field f = getField();
+		final FieldConfig f = getField();
 		if (f == null) {
 			return -1;
 		}
@@ -51,7 +54,7 @@ public class Reflector {
 	}
 
 	public long accessLong(final ReflectProxy accessor) {
-		final Field f = getField();
+		final FieldConfig f = getField();
 		if (f == null) {
 			return -1l;
 		}
@@ -81,31 +84,40 @@ public class Reflector {
 
 	public <T> T access(final ReflectProxy accessor, final Class<T> t) {
 		final Object p = accessor.obj.get();
-		final Field r = getField();
+		final FieldConfig r = getField();
 		if (p == null || r == null) {
 			return null;
 		}
-		final Class<?> c;//TODO
-		try {
-			c = loader.loadClass(r.parent);
-		} catch (final ClassNotFoundException ignored) {
-			return null;
-		}
+
 		final java.lang.reflect.Field f;
-		try {
-			f = c.getDeclaredField(r.name);
-		} catch (final NoSuchFieldException ignored) {
-			return null;
+		if (fields.containsKey(r)) {
+			f = fields.get(r);
+			if (f == null) {
+				return null;
+			}
+		} else {
+			final Class<?> c;//TODO weak-cache fields
+			try {
+				c = loader.loadClass(r.parent);
+			} catch (final ClassNotFoundException ignored) {
+				fields.put(r, null);
+				return null;
+			}
+			try {
+				f = c.getDeclaredField(r.name);
+			} catch (final NoSuchFieldException ignored) {
+				fields.put(r, null);
+				return null;
+			}
+			f.setAccessible(true);
 		}
-		final boolean a = f.isAccessible(), s = Modifier.isStatic(f.getModifiers());
-		f.setAccessible(true);
+
 		final Object o;
 		try {
-			o = f.get(s ? null : p);
+			o = f.get((f.getModifiers() & Modifier.STATIC) != 0 ? null : p);
 		} catch (final IllegalAccessException ignored) {
 			return null;
 		}
-		f.setAccessible(a);
 		return o != null ? t.cast(o) : null;
 	}
 
@@ -127,13 +139,13 @@ public class Reflector {
 		return arr[arr.length - 1];
 	}
 
-	private Field getField() {
+	private FieldConfig getField() {
 		final StackTraceElement e = getCallingAPI();
 		final String c = interfaces.get(e.getClassName().replace('.', '/')), m = e.getMethodName();
 		if (c == null) {
 			return null;
 		}
-		final Map<String, Field> map = fields.get(c);
+		final Map<String, FieldConfig> map = configs.get(c);
 		if (map == null || !map.containsKey(m)) {
 			return null;
 		}
