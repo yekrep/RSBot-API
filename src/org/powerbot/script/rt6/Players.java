@@ -59,6 +59,6 @@ public class Players extends PlayerQuery<Player> {
 
 	@Override
 	public Player nil() {
-		return new Player(ctx, null);
+		return new Player(ctx, new RSPlayer(ctx.client().reflector, null));
 	}
 }
