@@ -10,22 +10,16 @@ class ObjectDefinition {
 	}
 
 	int getId() {
-		return def != null ? def.getID() : -1;
+		return def.getID();
 	}
 
 	String getName() {
-		String name;
-		if (def == null || (name = def.getName()) == null) {
-			name = "";
-		}
-		return name;
+		final String n = def.getName();
+		return n != null ? n : "";
 	}
 
 	String[] getActions() {
-		String[] actions = new String[0];
-		if (def != null && (actions = def.getActions()) == null) {
-			actions = new String[0];
-		}
-		return actions;
+		final String[] arr = def.getActions();
+		return arr != null ? arr : new String[0];
 	}
 }
