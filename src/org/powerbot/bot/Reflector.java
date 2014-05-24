@@ -168,6 +168,15 @@ public class Reflector {
 		return c;
 	}
 
+	public boolean isTypeOf(final Object o,final Class<? extends ReflectProxy> c) {
+		final String s = getGroupClass(c.getName());
+		if (o == null || s == null) {
+			return false;
+		}
+		final Class<?> r = getClass(s);
+		return r != null && o.getClass().isAssignableFrom(r);
+	}
+
 	private FieldConfig getField() {
 		final StackTraceElement e = getCallingAPI();
 		final String c = e.getClassName().replace('.', '/'), m = e.getMethodName(), k = c + '.' + m;
