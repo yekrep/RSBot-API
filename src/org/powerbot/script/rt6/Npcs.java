@@ -32,7 +32,7 @@ public class Npcs extends MobileIdNameQuery<Npc> {
 
 		final int[] keys = client.getRSNPCIndexArray();
 		final org.powerbot.bot.rt6.client.HashTable table = client.getRSNPCNC();
-		if (keys == null || table == null) {
+		if (keys == null || table.isNull()) {
 			return npcs;
 		}
 

@@ -33,7 +33,7 @@ public class Projectiles extends IdQuery<Projectile> {
 
 		for (final RSProjectileNode n : NodeQueue.get(client.getProjectileDeque(), RSProjectileNode.class)) {
 			final RSProjectile p = n.getProjectile();
-			if (p != null) {
+			if (!p.isNull()) {
 				items.add(new Projectile(ctx, p));
 			}
 		}
