@@ -40,6 +40,6 @@ public class HintArrows extends HintArrowQuery<HintArrow> {
 	 */
 	@Override
 	public HintArrow nil() {
-		return new HintArrow(ctx, null);
+		return new HintArrow(ctx, new RSHintArrow(ctx.client().reflector, null));
 	}
 }
