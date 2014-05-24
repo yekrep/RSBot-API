@@ -87,7 +87,7 @@ public class GameObject extends Interactive implements Locatable, Nameable, Draw
 			return new ObjectDefinition(null);
 		}
 		final Reflector r = client.reflector;
-		final Object def = ctx.game.lookup(table, id());
+		final Object def = org.powerbot.bot.rt6.tools.HashTable.lookup(table, id());
 		return def != null && r.isTypeOf(def, RSObjectDef.class) ? new ObjectDefinition((RSObjectDef) def) : new ObjectDefinition(null);
 	}
 
