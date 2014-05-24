@@ -9,6 +9,7 @@ import org.powerbot.bot.rt6.client.OverheadSprites;
 import org.powerbot.bot.rt6.client.RSNPC;
 import org.powerbot.bot.rt6.client.RSNPCDef;
 import org.powerbot.bot.rt6.client.RSNPCNode;
+import org.powerbot.bot.rt6.tools.HashTable;
 import org.powerbot.script.Identifiable;
 
 public class Npc extends Actor implements Identifiable {
@@ -113,7 +114,7 @@ public class Npc extends Actor implements Identifiable {
 			final org.powerbot.bot.rt6.client.HashTable npcTable = client.getRSNPCNC();
 			final Reflector r = client.reflector;
 			for (final int index : indices) {
-				Object node = ctx.game.lookup(npcTable, index);
+				Object node = HashTable.lookup(npcTable, index);
 				if (node == null) {
 					continue;
 				}
