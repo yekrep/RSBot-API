@@ -12,7 +12,7 @@ import org.powerbot.script.Nameable;
 import org.powerbot.script.Stackable;
 import org.powerbot.script.Tile;
 
-public class GroundItem extends Interactive implements Identifiable, Nameable, Stackable, Locatable, Drawable {
+public class GroundItem extends Interactive implements Identifiable, Nameable, Stackable, Locatable {
 	public static final Color TARGET_COLOR = new Color(255, 255, 0, 75);
 	private final TileMatrix tile;
 	private final RSItem item;
@@ -89,25 +89,6 @@ public class GroundItem extends Interactive implements Identifiable, Nameable, S
 	@Override
 	public boolean equals(final Object o) {
 		return o instanceof GroundItem && tile.equals(((GroundItem) o).tile) && item.equals(((GroundItem) o).item);
-	}
-
-	@Override
-	public void draw(final Graphics render) {
-		draw(render, 75);
-	}
-
-	@Override
-	public void draw(final Graphics render, final int alpha) {
-		Color c = TARGET_COLOR;
-		final int rgb = c.getRGB();
-		if (((rgb >> 24) & 0xff) != alpha) {
-			c = new Color((rgb >> 16) & 0xff, (rgb >> 8) & 0xff, rgb & 0xff, alpha);
-		}
-		render.setColor(c);
-		final BoundingModel m2 = boundingModel.get();
-		if (m2 != null) {
-			m2.drawWireFrame(render);
-		}
 	}
 
 	@Override

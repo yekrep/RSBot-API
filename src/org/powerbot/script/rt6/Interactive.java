@@ -1,17 +1,21 @@
 package org.powerbot.script.rt6;
 
+import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.lang.reflect.Field;
 import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.powerbot.script.Condition;
+import org.powerbot.script.Drawable;
 import org.powerbot.script.Filter;
 import org.powerbot.script.Targetable;
 import org.powerbot.script.Validatable;
 import org.powerbot.script.Viewport;
 
-public abstract class Interactive extends ClientAccessor implements Targetable, Validatable, Viewport {
+public abstract class Interactive extends ClientAccessor implements Targetable, Validatable, Viewport, Drawable {
 	protected AtomicReference<BoundingModel> boundingModel;
 
 	public Interactive(final ClientContext ctx) {
@@ -183,5 +187,37 @@ public abstract class Interactive extends ClientAccessor implements Targetable, 
 	@Override
 	public boolean valid() {
 		return true;
+	}
+
+	@Override
+	public void draw(final Graphics render) {
+		draw(render, 15);
+	}
+
+	@Override
+	public void draw(final Graphics render, final int alpha) {
+		final Field f;
+		try {
+			f = getClass().getDeclaredField("TARGET_COLOR");
+		} catch (final NoSuchFieldException ignored) {
+			return;
+		}
+		f.setAccessible(true);
+		Color c;
+		try {
+			c = (Color) f.get(null);
+		} catch (final IllegalAccessException ignored) {
+			return;
+		}
+
+		final int rgb = c.getRGB();
+		if (((rgb >> 24) & 0xff) != alpha) {
+			c = new Color((rgb >> 16) & 0xff, (rgb >> 8) & 0xff, rgb & 0xff, alpha);
+		}
+		render.setColor(c);
+		final BoundingModel m = boundingModel.get();
+		if (m != null) {
+			m.drawWireFrame(render);
+		}
 	}
 }

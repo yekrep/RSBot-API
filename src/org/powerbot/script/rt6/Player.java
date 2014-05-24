@@ -1,7 +1,6 @@
 package org.powerbot.script.rt6;
 
 import java.awt.Color;
-import java.awt.Graphics;
 import java.util.Arrays;
 
 import org.powerbot.bot.rt6.client.Client;
@@ -95,25 +94,6 @@ public class Player extends Actor {
 		final RSPlayer character = getAccessor();
 		final RSPlayer[] players = client.getRSPlayerArray();
 		return character != null && players != null && Arrays.asList(players).contains(character);
-	}
-
-	@Override
-	public void draw(final Graphics render) {
-		draw(render, 15);
-	}
-
-	@Override
-	public void draw(final Graphics render, final int alpha) {
-		Color c = TARGET_COLOR;
-		final int rgb = c.getRGB();
-		if (((rgb >> 24) & 0xff) != alpha) {
-			c = new Color((rgb >> 16) & 0xff, (rgb >> 8) & 0xff, rgb & 0xff, alpha);
-		}
-		render.setColor(c);
-		final BoundingModel m2 = boundingModel.get();
-		if (m2 != null) {
-			m2.drawWireFrame(render);
-		}
 	}
 
 	@Override

@@ -13,7 +13,7 @@ import org.powerbot.script.Tile;
 /**
  * An interactive tile matrix.
  */
-public final class TileMatrix extends Interactive implements Locatable, Drawable {
+public final class TileMatrix extends Interactive implements Locatable {
 	private final Tile tile;
 
 	public TileMatrix(final ClientContext ctx, final Tile tile) {
@@ -141,34 +141,6 @@ public final class TileMatrix extends Interactive implements Locatable, Drawable
 		}
 		final int x = tile.x() - t.x(), y = tile.y() - t.y();
 		return x >= 0 && y >= 0 && x < 104 && y < 104;
-	}
-
-	@Override
-	public void draw(final Graphics render) {
-		draw(render, 75);
-	}
-
-	@Override
-	public void draw(final Graphics render, final int alpha) {
-		final Polygon p = bounds();
-		if (!isPolygonInViewport(p)) {
-			return;
-		}
-
-		Color c = Tile.TARGET_COLOR;
-		final int rgb = c.getRGB();
-		if (((rgb >> 24) & 0xff) != alpha) {
-			c = new Color((rgb >> 16) & 0xff, (rgb >> 8) & 0xff, rgb & 0xff, alpha);
-		}
-		render.setColor(c);
-		final BoundingModel m2 = boundingModel.get();
-		if (m2 != null) {
-			m2.drawWireFrame(render);
-			return;
-		}
-		render.drawPolygon(p);
-		render.setColor(new Color(0, 0, 0, 20));
-		render.fillPolygon(p);
 	}
 
 	@Override

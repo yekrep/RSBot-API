@@ -20,7 +20,7 @@ import org.powerbot.script.Locatable;
 import org.powerbot.script.Nameable;
 import org.powerbot.script.Tile;
 
-public abstract class Actor extends Interactive implements Nameable, Locatable, Drawable {
+public abstract class Actor extends Interactive implements Nameable, Locatable {
 	public Actor(final ClientContext ctx) {
 		super(ctx);
 		bounds(-192, 192, -768, 0, -192, 192);

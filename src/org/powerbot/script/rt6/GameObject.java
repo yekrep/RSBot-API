@@ -20,7 +20,7 @@ import org.powerbot.script.Locatable;
 import org.powerbot.script.Nameable;
 import org.powerbot.script.Tile;
 
-public class GameObject extends Interactive implements Locatable, Nameable, Drawable, Identifiable {
+public class GameObject extends Interactive implements Locatable, Nameable, Identifiable {
 	private static final Color TARGET_COLOR = new Color(0, 255, 0, 20);
 	private final RSObject object;
 	private final Type type;
@@ -143,25 +143,6 @@ public class GameObject extends Interactive implements Locatable, Nameable, Draw
 	@Override
 	public boolean equals(final Object o) {
 		return o instanceof GameObject && object != null && object.equals(((GameObject) o).object);
-	}
-
-	@Override
-	public void draw(final Graphics render) {
-		draw(render, 20);
-	}
-
-	@Override
-	public void draw(final Graphics render, final int alpha) {
-		Color c = TARGET_COLOR;
-		final int rgb = c.getRGB();
-		if (((rgb >> 24) & 0xff) != alpha) {
-			c = new Color((rgb >> 16) & 0xff, (rgb >> 8) & 0xff, rgb & 0xff, alpha);
-		}
-		render.setColor(c);
-		final BoundingModel m2 = boundingModel.get();
-		if (m2 != null) {
-			m2.drawWireFrame(render);
-		}
 	}
 
 	@Override

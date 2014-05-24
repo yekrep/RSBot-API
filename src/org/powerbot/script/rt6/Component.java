@@ -10,10 +10,9 @@ import org.powerbot.bot.rt6.client.RSInterface;
 import org.powerbot.bot.rt6.client.RSInterfaceNode;
 import org.powerbot.bot.rt6.tools.HashTable;
 import org.powerbot.script.Calculations;
-import org.powerbot.script.Drawable;
 import org.powerbot.util.StringUtils;
 
-public class Component extends Interactive implements Drawable, Displayable {
+public class Component extends Interactive implements Displayable {
 	public static final Color TARGET_FILL_COLOR = new Color(0, 0, 0, 50);
 	public static final Color TARGET_STROKE_COLOR = new Color(0, 255, 0, 150);
 	private final Widget widget;
