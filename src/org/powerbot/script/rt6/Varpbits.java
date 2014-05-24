@@ -1,11 +1,9 @@
 package org.powerbot.script.rt6;
 
 import org.powerbot.bot.rt6.client.Client;
-import org.powerbot.bot.rt6.client.PlayerMetaInfo;
 
 /**
  * {@link Varpbits} is a utility which provides raw access to the game's varpbits.
- *
  */
 public class Varpbits extends ClientAccessor {
 	public Varpbits(final ClientContext factory) {
@@ -19,16 +17,11 @@ public class Varpbits extends ClientAccessor {
 	 */
 	public int[] array() {
 		final Client client = ctx.client();
-		final PlayerMetaInfo info;
-		if (client == null || (info = client.getPlayerMetaInfo()) == null) {
-			return new int[0];
+		if (client == null) {
+			return null;
 		}
-		final org.powerbot.bot.rt6.client.Settings settings;
-		final int[] data;
-		if ((settings = info.getSettings()) == null || (data = settings.getData()) == null) {
-			return new int[0];
-		}
-		return data.clone();
+		final int[] arr = client.getPlayerMetaInfo().getSettings().getData();
+		return arr != null ? arr.clone() : new int[0];
 	}
 
 	/**
