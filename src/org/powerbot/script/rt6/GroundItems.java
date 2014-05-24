@@ -46,7 +46,7 @@ public class GroundItems extends GroundItemQuery<GroundItem> {
 			for (int y = by; y < by + 104; y++) {
 				id = x | y << 14 | plane << 28;
 				cache = new NodeListCache(client.reflector, org.powerbot.bot.rt6.tools.HashTable.lookup(table, id));
-				if (cache.obj.get() == null) {
+				if (cache.isNull()) {
 					continue;
 				}
 				for (final RSItem item : NodeQueue.get(cache.getNodeList(), RSItem.class)) {
