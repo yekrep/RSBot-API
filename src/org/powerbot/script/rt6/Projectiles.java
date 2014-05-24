@@ -46,6 +46,6 @@ public class Projectiles extends IdQuery<Projectile> {
 	 */
 	@Override
 	public Projectile nil() {
-		return new Projectile(ctx, null);
+		return new Projectile(ctx, new RSProjectile(ctx.client().reflector, null));
 	}
 }
