@@ -3,7 +3,6 @@ package org.powerbot.script.rt6;
 import java.awt.Color;
 import java.awt.Graphics;
 
-import org.powerbot.bot.rt6.client.OverheadSprites;
 import org.powerbot.bot.rt6.client.RSNPC;
 import org.powerbot.bot.rt6.client.RSNPCDef;
 import org.powerbot.script.Identifiable;
@@ -24,29 +23,25 @@ public class Npc extends Actor implements Identifiable {
 
 	@Override
 	public String name() {
-		final RSNPC npc = getAccessor();
-		final RSNPCDef def;
-		return npc != null && (def = npc.getRSNPCDef()) != null ? def.getName() : "";
+		final RSNPCDef d = npc.getRSNPCDef();
+		return d.isNull() ? "" : d.getName();
 	}
 
 	@Override
 	public int combatLevel() {
-		final RSNPC npc = getAccessor();
-		final RSNPCDef def;
-		return npc != null && (def = npc.getRSNPCDef()) != null ? def.getLevel() : -1;
+		final RSNPCDef d = npc.getRSNPCDef();
+		return d.isNull() ? -1 : d.getLevel();
 	}
 
 	@Override
 	public int id() {
-		final RSNPC npc = getAccessor();
-		final RSNPCDef def;
-		return npc != null && (def = npc.getRSNPCDef()) != null ? def.getID() : -1;
+		final RSNPCDef d = npc.getRSNPCDef();
+		return d.isNull() ? -1 : d.getID();
 	}
 
 	public String[] actions() {
-		final RSNPC npc = getAccessor();
-		final RSNPCDef def;
-		return npc != null && (def = npc.getRSNPCDef()) != null ? def.getActions() : new String[0];
+		final RSNPCDef d = npc.getRSNPCDef();
+		return d.isNull() ? new String[0] : d.getActions();
 	}
 
 	public int prayerIcon() {
