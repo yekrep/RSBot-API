@@ -10,7 +10,8 @@ import java.util.Map;
 public class Reflector {
 	private final ClassLoader loader;
 	private final Map<String, FieldConfig> configs;
-	private final Map<FieldConfig, java.lang.reflect.Field> fields;
+	private final Map<String, Class<?>> cache1;
+	private final Map<FieldConfig, java.lang.reflect.Field> cache2;
 
 	public Reflector(final ClassLoader loader, final ReflectorSpec spec) {
 		this(loader, spec.configs);
@@ -19,7 +20,8 @@ public class Reflector {
 	public Reflector(final ClassLoader loader, final Map<String, FieldConfig> configs) {
 		this.loader = loader;
 		this.configs = configs;
-		this.fields = new HashMap<FieldConfig, java.lang.reflect.Field>();
+		this.cache1 = new HashMap<String, Class<?>>();
+		this.cache2 = new HashMap<FieldConfig, java.lang.reflect.Field>();
 	}
 
 	public static class FieldConfig {
@@ -88,23 +90,21 @@ public class Reflector {
 		}
 
 		final java.lang.reflect.Field f;
-		if (fields.containsKey(r)) {
-			f = fields.get(r);
+		if (cache2.containsKey(r)) {
+			f = cache2.get(r);
 			if (f == null) {
 				return null;
 			}
 		} else {
-			final Class<?> c;//TODO
-			try {
-				c = loader.loadClass(r.parent);
-			} catch (final ClassNotFoundException ignored) {
-				fields.put(r, null);
+			final Class<?> c = getClass(r.parent);
+			if (c == null) {
+				cache2.put(r, null);
 				return null;
 			}
 			try {
 				f = c.getDeclaredField(r.name);
 			} catch (final NoSuchFieldException ignored) {
-				fields.put(r, null);
+				cache2.put(r, null);
 				return null;
 			}
 			f.setAccessible(true);
@@ -135,6 +135,21 @@ public class Reflector {
 			return arr[i];
 		}
 		return arr[arr.length - 1];
+	}
+
+	private Class<?> getClass(final String s) {
+		final Class<?> c;//TODO
+		if (cache1.containsKey(s)) {
+			c = cache1.get(s);
+		} else {
+			try {
+				cache1.put(s, c = loader.loadClass(s));
+			} catch (final ClassNotFoundException ignored) {
+				cache1.put(s, null);
+				return null;
+			}
+		}
+		return c;
 	}
 
 	private FieldConfig getField() {
