@@ -55,6 +55,6 @@ public class Npcs extends MobileIdNameQuery<Npc> {
 	 */
 	@Override
 	public Npc nil() {
-		return new Npc(ctx, null);
+		return new Npc(ctx, new RSNPC(ctx.client().reflector, null));
 	}
 }
