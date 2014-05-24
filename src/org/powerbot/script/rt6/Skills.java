@@ -42,8 +42,8 @@ public class Skills extends ClientAccessor {
 	public static final int DUNGEONEERING = 24;
 	public static final int DIVINATION = 25;
 
-	public Skills(final ClientContext factory) {
-		super(factory);
+	public Skills(final ClientContext context) {
+		super(context);
 	}
 
 	/**
@@ -95,17 +95,17 @@ public class Skills extends ClientAccessor {
 		}
 		final PlayerMetaInfo info = client.getPlayerMetaInfo();
 		final Skill[] skills;
-		if (info != null && (skills = info.getSkills()) != null) {
-			final int[] levels = new int[skills.length];
-			for (int i = 0; i < skills.length; i++) {
-				if (skills[i] == null) {
-					return new int[0];
-				}
-				levels[i] = skills[i].getLevel();
-			}
-			return levels;
+		if (info == null || (skills = info.getSkills()) == null) {
+			return new int[0];
 		}
-		return new int[0];
+		final int[] levels = new int[skills.length];
+		for (int i = 0; i < skills.length; i++) {
+			final Skill s = skills[i];
+			if (s != null) {
+				levels[i] = s.getLevel();
+			}
+		}
+		return levels;
 	}
 
 	public int[] realLevels() {
@@ -115,17 +115,17 @@ public class Skills extends ClientAccessor {
 		}
 		final PlayerMetaInfo info = client.getPlayerMetaInfo();
 		final Skill[] skills;
-		if (info != null && (skills = info.getSkills()) != null) {
-			final int[] levels = new int[skills.length];
-			for (int i = 0; i < skills.length; i++) {
-				try {
-					levels[i] = skills[i].getRealLevel();
-				} catch (final NullPointerException ignored) {
-				}
-			}
-			return levels;
+		if (info == null || (skills = info.getSkills()) == null) {
+			return new int[0];
 		}
-		return new int[0];
+		final int[] levels = new int[skills.length];
+		for (int i = 0; i < skills.length; i++) {
+			final Skill s = skills[i];
+			if (s != null) {
+				levels[i] = s.getRealLevel();
+			}
+		}
+		return levels;
 	}
 
 	public int[] experiences() {
@@ -135,17 +135,17 @@ public class Skills extends ClientAccessor {
 		}
 		final PlayerMetaInfo info = client.getPlayerMetaInfo();
 		final Skill[] skills;
-		if (info != null && (skills = info.getSkills()) != null) {
-			final int[] exps = new int[skills.length];
-			for (int i = 0; i < skills.length; i++) {
-				try {
-					exps[i] = skills[i].getExperience();
-				} catch (final NullPointerException ignored) {
-				}
-			}
-			return exps;
+		if (info == null || (skills = info.getSkills()) == null) {
+			return new int[0];
 		}
-		return new int[0];
+		final int[] levels = new int[skills.length];
+		for (int i = 0; i < skills.length; i++) {
+			final Skill s = skills[i];
+			if (s != null) {
+				levels[i] = s.getExperience();
+			}
+		}
+		return levels;
 	}
 
 	/**
