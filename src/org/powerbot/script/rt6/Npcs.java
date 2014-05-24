@@ -38,11 +38,10 @@ public class Npcs extends MobileIdNameQuery<Npc> {
 
 		final Reflector r = client.reflector;
 		for (final int key : keys) {
-			Object o = HashTable.lookup(table, key);
+			final Object o = HashTable.lookup(table, key);
 			if (r.isTypeOf(o, RSNPCNode.class)) {
-				o = new RSNPCNode(r, o).getRSNPC();
-			}
-			if (r.isTypeOf(o, RSNPC.class)) {
+				npcs.add(new Npc(ctx, new RSNPCNode(r, o).getRSNPC()));
+			} else if (r.isTypeOf(o, RSNPC.class)) {
 				npcs.add(new Npc(ctx, new RSNPC(r, o)));
 			}
 		}
