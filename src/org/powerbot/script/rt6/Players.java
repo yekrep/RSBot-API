@@ -49,7 +49,7 @@ public class Players extends PlayerQuery<Player> {
 		for (int i = 0; i < Math.min(keys.length, count); i++) {
 			final int key = keys[count];
 			final RSPlayer player = arr[key];
-			if (player.obj.get() == null) {
+			if (player.isNull()) {
 				continue;
 			}
 			players.add(new Player(ctx, player));
