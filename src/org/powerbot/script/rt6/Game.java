@@ -9,8 +9,6 @@ import java.util.concurrent.Callable;
 import org.powerbot.bot.rt6.client.BaseInfo;
 import org.powerbot.bot.rt6.client.Client;
 import org.powerbot.bot.rt6.client.Constants;
-import org.powerbot.bot.rt6.client.HashTable;
-import org.powerbot.bot.rt6.client.Node;
 import org.powerbot.bot.rt6.client.RSGroundBytes;
 import org.powerbot.bot.rt6.client.RSGroundInfo;
 import org.powerbot.bot.rt6.client.RSInfo;
@@ -369,29 +367,6 @@ public class Game extends ClientAccessor {
 		}
 
 		return bad;
-	}
-
-	/**
-	 * Looks up a reference in the provided hash table.
-	 *
-	 * @param nc the hash table
-	 * @param id the reference id
-	 * @return the found reference, or null.
-	 */
-	public Object lookup(final HashTable nc, final long id) {
-		final Node[] buckets;
-		if (nc == null || (buckets = nc.getBuckets()) == null || id < 0) {
-			return null;
-		}
-
-		final Node n = buckets[(int) (id & buckets.length - 1)];
-		for (Node node = n.getNext(); node != n && node != null; node = node.getNext()) {
-			if (node.getId() == id) {
-				//TODO: check soft and hard references
-				return node;
-			}
-		}
-		return null;
 	}
 
 	public class Toolkit {
