@@ -23,35 +23,31 @@ public class Npcs extends MobileIdNameQuery<Npc> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected List<Npc> get() {//TODO: revise
-		final List<Npc> items = new ArrayList<Npc>();
-
+	protected List<Npc> get() {
+		final List<Npc> npcs = new ArrayList<Npc>();
 		final Client client = ctx.client();
 		if (client == null) {
-			return items;
+			return npcs;
 		}
 
-		final int[] indices = client.getRSNPCIndexArray();
-		final HashTable npcTable = client.getRSNPCNC();
-		if (indices == null || npcTable == null) {
-			return items;
+		final int[] keys = client.getRSNPCIndexArray();
+		final org.powerbot.bot.rt6.client.HashTable table = client.getRSNPCNC();
+		if (keys == null || table == null) {
+			return npcs;
 		}
 
 		final Reflector r = client.reflector;
-		for (final int index : indices) {
-			if (npc == null) {
-				continue;
-			}
-			if (r.isTypeOf(npc, RSNPCNode.class)) {
-				npc = ((RSNPCNode) npc).getRSNPC();
+		for (final int key : keys) {
 			Object o = HashTable.lookup(table, key);
+			if (r.isTypeOf(o, RSNPCNode.class)) {
+				o = new RSNPCNode(r, o).getRSNPC();
 			}
-			if (r.isTypeOf(npc, RSNPC.class)) {
-				items.add(new Npc(ctx, (RSNPC) npc));
+			if (r.isTypeOf(o, RSNPC.class)) {
+				npcs.add(new Npc(ctx, new RSNPC(r, o)));
 			}
 		}
 
-		return items;
+		return npcs;
 	}
 
 	/**
