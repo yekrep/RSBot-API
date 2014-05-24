@@ -8,6 +8,7 @@ import org.powerbot.bot.rt6.client.RSHintArrow;
 import org.powerbot.bot.rt6.client.RSNPC;
 import org.powerbot.bot.rt6.client.RSNPCNode;
 import org.powerbot.bot.rt6.client.RSPlayer;
+import org.powerbot.bot.rt6.tools.HashTable;
 import org.powerbot.script.Locatable;
 import org.powerbot.script.Tile;
 import org.powerbot.script.Validatable;
@@ -46,7 +47,7 @@ public class HintArrow extends ClientAccessor implements Locatable, Validatable 
 		}
 		if (type == 1) {
 			Npc npc = null;
-			final Object node = ctx.game.lookup(client.getRSNPCNC(), target);
+			final Object node = HashTable.lookup(client.getRSNPCNC(), target);
 			if (node != null) {
 				final Reflector r = client.reflector;
 				if (r.isTypeOf(node, RSNPCNode.class)) {
