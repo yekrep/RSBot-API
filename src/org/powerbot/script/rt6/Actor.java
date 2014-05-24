@@ -132,8 +132,8 @@ public abstract class Actor extends Interactive implements Nameable, Locatable, 
 
 	public Actor interacting() {
 		final Actor nil = ctx.npcs.nil();
-		final RSCharacter character = getAccessor();
-		final int index = character != null ? character.getInteracting() : -1;
+		final RSCharacter actor = getAccessor();
+		final int index = actor != null ? actor.getInteracting() : -1;
 		if (index == -1) {
 			return nil;
 		}
@@ -142,21 +142,21 @@ public abstract class Actor extends Interactive implements Nameable, Locatable, 
 			return nil;
 		}
 		if (index < 32768) {
-			final Object npcNode = HashTable.lookup(client.getRSNPCNC(), index);
-			if (npcNode == null) {
+			final Object node = HashTable.lookup(client.getRSNPCNC(), index);
+			if (node == null) {
 				return nil;
 			}
 			final Reflector r = client.reflector;
-			if (r.isTypeOf(npcNode, RSNPCNode.class)) {
-				return new Npc(ctx, ((RSNPCNode) npcNode).getRSNPC());
-			} else if (r.isTypeOf(npcNode, RSNPC.class)) {
-				return new Npc(ctx, (RSNPC) npcNode);
+			if (r.isTypeOf(node, RSNPCNode.class)) {
+				return new Npc(ctx, new RSNPCNode(r, node).getRSNPC());
+			} else if (r.isTypeOf(node, RSNPC.class)) {
+				return new Npc(ctx, new RSNPC(r, node));
 			}
 			return nil;
 		} else {
 			final int pos = index - 32768;
-			final RSPlayer[] players = client.getRSPlayerArray();
-			return pos >= 0 && pos < players.length ? new Player(ctx, players[pos]) : nil;
+			final RSPlayer[] arr = client.getRSPlayerArray();
+			return pos >= 0 && pos < arr.length ? new Player(ctx, arr[pos]) : nil;
 		}
 	}
 
