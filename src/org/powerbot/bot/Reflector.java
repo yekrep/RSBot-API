@@ -9,16 +9,18 @@ import java.util.Map;
 
 public class Reflector {
 	private final ClassLoader loader;
+	private final Map<String, String> interfaces;
 	private final Map<String, FieldConfig> configs;
 	private final Map<String, Class<?>> cache1;
 	private final Map<FieldConfig, java.lang.reflect.Field> cache2;
 
 	public Reflector(final ClassLoader loader, final ReflectorSpec spec) {
-		this(loader, spec.configs);
+		this(loader, spec.interfaces, spec.configs);
 	}
 
-	public Reflector(final ClassLoader loader, final Map<String, FieldConfig> configs) {
+	public Reflector(final ClassLoader loader, final Map<String, String> interfaces, final Map<String, FieldConfig> configs) {
 		this.loader = loader;
+		this.interfaces = interfaces;
 		this.configs = configs;
 		this.cache1 = new HashMap<String, Class<?>>();
 		this.cache2 = new HashMap<FieldConfig, java.lang.reflect.Field>();
@@ -137,7 +139,11 @@ public class Reflector {
 		return arr[arr.length - 1];
 	}
 
-	private Class<?> getClass(final String s) {
+	String getGroup(final String c) {
+		return interfaces.get(c);
+	}
+
+	Class<?> getClass(final String s) {
 		final Class<?> c;//TODO
 		if (cache1.containsKey(s)) {
 			c = cache1.get(s);
