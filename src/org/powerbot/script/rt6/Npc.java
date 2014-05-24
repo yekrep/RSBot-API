@@ -3,13 +3,9 @@ package org.powerbot.script.rt6;
 import java.awt.Color;
 import java.awt.Graphics;
 
-import org.powerbot.bot.Reflector;
-import org.powerbot.bot.rt6.client.Client;
 import org.powerbot.bot.rt6.client.OverheadSprites;
 import org.powerbot.bot.rt6.client.RSNPC;
 import org.powerbot.bot.rt6.client.RSNPCDef;
-import org.powerbot.bot.rt6.client.RSNPCNode;
-import org.powerbot.bot.rt6.tools.HashTable;
 import org.powerbot.script.Identifiable;
 
 public class Npc extends Actor implements Identifiable {
@@ -104,31 +100,8 @@ public class Npc extends Actor implements Identifiable {
 
 	@Override
 	public boolean valid() {
-		final Client client = ctx.client();
-		if (client == null) {
-			return false;
-		}
 		final RSNPC npc = getAccessor();
-		if (npc != null) {//TODO: revise
-			final int[] indices = client.getRSNPCIndexArray();
-			final org.powerbot.bot.rt6.client.HashTable npcTable = client.getRSNPCNC();
-			final Reflector r = client.reflector;
-			for (final int index : indices) {
-				Object node = HashTable.lookup(npcTable, index);
-				if (node == null) {
-					continue;
-				}
-				if (r.isTypeOf(node, RSNPCNode.class)) {
-					node = new RSNPCNode(r, node).getRSNPC();
-				}
-				if (r.isTypeOf(node, RSNPC.class)) {
-					if (npc.equals(new RSNPC(r, node))) {
-						return true;
-					}
-				}
-			}
-		}
-		return false;
+		return !npc.isNull() && ctx.npcs.select().contains(this);
 	}
 
 	@Override
