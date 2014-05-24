@@ -15,6 +15,10 @@ public class ReflectProxy {
 		return reflector.isTypeOf(obj.get(), c);
 	}
 
+	public boolean isNull() {
+		return obj.get() == null;
+	}
+
 	@Override
 	public boolean equals(final Object o) {
 		if (!(o instanceof ReflectProxy)) {
