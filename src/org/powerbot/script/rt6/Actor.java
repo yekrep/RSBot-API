@@ -16,6 +16,7 @@ import org.powerbot.bot.rt6.client.RSNPC;
 import org.powerbot.bot.rt6.client.RSNPCNode;
 import org.powerbot.bot.rt6.client.RSPlayer;
 import org.powerbot.bot.rt6.client.Sequence;
+import org.powerbot.bot.rt6.tools.HashTable;
 import org.powerbot.script.Drawable;
 import org.powerbot.script.Filter;
 import org.powerbot.script.Locatable;
@@ -141,7 +142,7 @@ public abstract class Actor extends Interactive implements Nameable, Locatable, 
 			return nil;
 		}
 		if (index < 32768) {
-			final Object npcNode = ctx.game.lookup(client.getRSNPCNC(), index);
+			final Object npcNode = HashTable.lookup(client.getRSNPCNC(), index);
 			if (npcNode == null) {
 				return nil;
 			}
