@@ -10,7 +10,6 @@ import org.powerbot.bot.rt6.client.LinkedListNode;
 import org.powerbot.bot.rt6.client.RSCharacter;
 import org.powerbot.bot.rt6.client.RSInteractableData;
 import org.powerbot.bot.rt6.client.RSInteractableLocation;
-import org.powerbot.bot.rt6.client.RSMessageData;
 import org.powerbot.bot.rt6.client.RSNPC;
 import org.powerbot.bot.rt6.client.RSNPCNode;
 import org.powerbot.bot.rt6.client.RSPlayer;
@@ -88,17 +87,8 @@ public abstract class Actor extends Interactive implements Nameable, Locatable, 
 	}
 
 	public String overheadMessage() {
-		final RSCharacter character = getAccessor();
-		if (character == null) {
-			return "";
-		}
-
-		final RSMessageData headMessage = character.getMessageData();
-		String message = "";
-		if (headMessage != null && (message = headMessage.getMessage()) == null) {
-			message = "";
-		}
-		return message;
+		final String message = getAccessor().getMessageData().getMessage();
+		return message != null ? message : "";
 	}
 
 	public Actor interacting() {
