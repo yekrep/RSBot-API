@@ -7,7 +7,6 @@ import org.powerbot.bot.rt6.client.Client;
 import org.powerbot.bot.rt6.client.CombatStatus;
 import org.powerbot.bot.rt6.client.CombatStatusData;
 import org.powerbot.bot.rt6.client.LinkedListNode;
-import org.powerbot.bot.rt6.client.RSAnimator;
 import org.powerbot.bot.rt6.client.RSCharacter;
 import org.powerbot.bot.rt6.client.RSInteractableData;
 import org.powerbot.bot.rt6.client.RSInteractableLocation;
@@ -15,7 +14,6 @@ import org.powerbot.bot.rt6.client.RSMessageData;
 import org.powerbot.bot.rt6.client.RSNPC;
 import org.powerbot.bot.rt6.client.RSNPCNode;
 import org.powerbot.bot.rt6.client.RSPlayer;
-import org.powerbot.bot.rt6.client.Sequence;
 import org.powerbot.bot.rt6.tools.HashTable;
 import org.powerbot.script.Drawable;
 import org.powerbot.script.Filter;
@@ -56,55 +54,28 @@ public abstract class Actor extends Interactive implements Nameable, Locatable, 
 	}
 
 	public int height() {
-		final RSCharacter character = getAccessor();
-		return character != null ? character.getHeight() : 0;
+		return getAccessor().getHeight();
 	}
 
 	public int animation() {
-		final RSCharacter character = getAccessor();
-		if (character == null) {
-			return -1;
-		}
-
-		final RSAnimator animator = character.getAnimation();
-		final Sequence sequence;
-		if (animator == null || (sequence = animator.getSequence()) == null) {
-			return -1;
-		}
-		return sequence.getID();
+		return getAccessor().getAnimation().getSequence().getID();
 	}
 
 	public int stance() {
-		final RSCharacter character = getAccessor();
-		if (character == null) {
-			return -1;
-		}
-
-		final RSAnimator animator = character.getPassiveAnimation();
-		final Sequence sequence;
-		if (animator == null || (sequence = animator.getSequence()) == null) {
-			return -1;
-		}
-		return sequence.getID();
+		return getAccessor().getPassiveAnimation().getSequence().getID();
 	}
 
 	public int[] animationQueue() {
-		final RSCharacter character = getAccessor();
-		if (character == null) {
-			return new int[0];
-		}
-
-		final int[] arr = character.getAnimationQueue();
+		final int[] arr = getAccessor().getAnimationQueue();
 		return arr != null ? arr : new int[0];
 	}
 
 	public int speed() {
-		final RSCharacter character = getAccessor();
-		return character != null ? character.isMoving() : 0;
+		return getAccessor().isMoving();
 	}
 
 	public boolean inMotion() {
-		return speed() != 0;
+		return speed() > 0;
 	}
 
 	public static Filter<Actor> areInMotion() {
@@ -248,40 +219,19 @@ public abstract class Actor extends Interactive implements Nameable, Locatable, 
 
 	@Override
 	public Point nextPoint() {
-		final RSCharacter character = getAccessor();
-		if (character == null) {
-			return new Point(-1, -1);
-		}
-
-		final BoundingModel model2 = boundingModel.get();
-		if (model2 != null) {
-			return model2.nextPoint();
-		}
-		return new Point(-1, -1);
+		final BoundingModel model = boundingModel.get();
+		return model != null ? model.nextPoint() : new Point(-1, -1);
 	}
 
 	public Point centerPoint() {
-		final RSCharacter character = getAccessor();
-		if (character == null) {
-			return new Point(-1, -1);
-		}
-
-		final BoundingModel model2 = boundingModel.get();
-		if (model2 != null) {
-			return model2.centerPoint();
-		}
-		return new Point(-1, -1);
+		final BoundingModel model = boundingModel.get();
+		return model != null ? model.centerPoint() : new Point(-1, -1);
 	}
 
 	@Override
 	public boolean contains(final Point point) {
-		final RSCharacter character = getAccessor();
-		if (character == null) {
-			return false;
-		}
-
-		final BoundingModel model2 = boundingModel.get();
-		return model2 != null && model2.contains(point);
+		final BoundingModel model = boundingModel.get();
+		return model != null && model.contains(point);
 	}
 
 	private LinkedListNode[] getBarNodes() {
