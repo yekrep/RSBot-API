@@ -22,7 +22,7 @@ public class RSGroundInfo extends ReflectProxy {
 	public RSGround[][][] getRSGroundArray() {
 		final Object[][][] arr = reflector.access(this, Object[][][].class);
 		if (arr == null) {
-			return null;
+			return new RSGround[0][][];
 		}
 		final RSGround[][][] arr2 = new RSGround[arr.length][][];
 		for (int i = 0; i < arr.length; i++) {
