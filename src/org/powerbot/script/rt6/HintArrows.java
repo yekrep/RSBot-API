@@ -8,7 +8,6 @@ import org.powerbot.bot.rt6.client.RSHintArrow;
 
 /**
  * {@link HintArrows} is a utility which provides access to the game's hint (directional) arrows.
- *
  */
 public class HintArrows extends HintArrowQuery<HintArrow> {
 	public HintArrows(final ClientContext factory) {
@@ -29,7 +28,7 @@ public class HintArrows extends HintArrowQuery<HintArrow> {
 
 		final RSHintArrow[] arr = client.getRSHintArrows();
 		for (final RSHintArrow arrow : arr != null ? arr : new RSHintArrow[0]) {
-			if (arrow != null) {
+			if (arrow.isNull()) {
 				items.add(new HintArrow(ctx, arrow));
 			}
 		}
