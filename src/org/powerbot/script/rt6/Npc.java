@@ -109,7 +109,7 @@ public class Npc extends Actor implements Identifiable {
 			return false;
 		}
 		final RSNPC npc = getAccessor();
-		if (npc != null) {
+		if (npc != null) {//TODO: revise
 			final int[] indices = client.getRSNPCIndexArray();
 			final org.powerbot.bot.rt6.client.HashTable npcTable = client.getRSNPCNC();
 			final Reflector r = client.reflector;
@@ -119,10 +119,10 @@ public class Npc extends Actor implements Identifiable {
 					continue;
 				}
 				if (r.isTypeOf(node, RSNPCNode.class)) {
-					node = ((RSNPCNode) node).getRSNPC();
+					node = new RSNPCNode(r, node).getRSNPC();
 				}
 				if (r.isTypeOf(node, RSNPC.class)) {
-					if (node.equals(npc)) {
+					if (npc.equals(new RSNPC(r, node))) {
 						return true;
 					}
 				}
