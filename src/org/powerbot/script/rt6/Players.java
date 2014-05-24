@@ -1,9 +1,7 @@
 package org.powerbot.script.rt6;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.powerbot.bot.rt6.client.Client;
 import org.powerbot.bot.rt6.client.RSPlayer;
@@ -35,30 +33,28 @@ public class Players extends PlayerQuery<Player> {
 	 */
 	@Override
 	protected List<Player> get() {
-		final List<Player> items = new ArrayList<Player>();
-
+		final List<Player> players = new ArrayList<Player>();
 		final Client client = ctx.client();
 		if (client == null) {
-			return items;
+			return players;
 		}
 
-		final int[] indices = client.getRSPlayerIndexArray();
-		final RSPlayer[] players = client.getRSPlayerArray();
-		if (indices == null || players == null) {
-			return items;
+		final int count = client.getRSPlayerCount();
+		final int[] keys = client.getRSPlayerIndexArray();
+		final RSPlayer[] arr = client.getRSPlayerArray();
+		if (keys == null || arr == null) {
+			return players;
 		}
 
-		final Set<RSPlayer> set = new HashSet<RSPlayer>(indices.length);
-		for (final int index : indices) {
-			final RSPlayer player = players[index];
-			if (player.obj.get() != null && !set.contains(player)) {
-				items.add(new Player(ctx, player));
-				set.add(player);
+		for (int i = 0; i < Math.min(keys.length, count); i++) {
+			final int key = keys[count];
+			final RSPlayer player = arr[key];
+			if (player.obj.get() == null) {
+				continue;
 			}
+			players.add(new Player(ctx, player));
 		}
-		set.clear();//help gc
-
-		return items;
+		return players;
 	}
 
 	@Override
