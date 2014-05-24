@@ -51,9 +51,9 @@ public class HintArrow extends ClientAccessor implements Locatable, Validatable 
 			if (node != null) {
 				final Reflector r = client.reflector;
 				if (r.isTypeOf(node, RSNPCNode.class)) {
-					npc = new Npc(ctx, ((RSNPCNode) node).getRSNPC());
+					npc = new Npc(ctx, new RSNPCNode(r, node).getRSNPC());
 				} else if (r.isTypeOf(node, RSNPC.class)) {
-					npc = new Npc(ctx, (RSNPC) node);
+					npc = new Npc(ctx, new RSNPC(r, node));
 				}
 			}
 			return npc != null ? npc.tile() : Tile.NIL;
