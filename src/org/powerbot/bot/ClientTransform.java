@@ -41,7 +41,7 @@ public class ClientTransform {
 		return StringUtils.byteArrayToHexString(md.digest());
 	}
 
-	public static TransformSpec get(final String gv, final String hash) throws IOException {
+	public static ReflectorSpec get(final String gv, final String hash) throws IOException {
 		final String pre = "loader/spec/" + hash;
 		final int r;
 
@@ -72,7 +72,7 @@ public class ClientTransform {
 				throw new IOException(e);
 			}
 			try {
-				return TransformSpec.read(new CipherInputStream(HttpUtils.openStream(con), c));
+				return ReflectorSpec.parse(new CipherInputStream(HttpUtils.openStream(con), c));
 			} catch (final NullPointerException e) {
 				throw new IOException(e);
 			}
