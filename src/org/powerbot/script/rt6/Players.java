@@ -46,7 +46,7 @@ public class Players extends PlayerQuery<Player> {
 			return players;
 		}
 
-		for (int i = 0; i < Math.min(keys.length, count); i++) {
+		for (int i = 0; i < Math.min(Math.min(keys.length, arr.length), count); i++) {
 			final int key = keys[count];
 			final RSPlayer player = arr[key];
 			if (player.isNull()) {
