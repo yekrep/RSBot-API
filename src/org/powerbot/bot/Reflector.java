@@ -143,6 +143,16 @@ public class Reflector {
 		return interfaces.get(c);
 	}
 
+	String getGroupClass(final String g) {
+		final String g2 = g.replace('.', '/');
+		for (final Map.Entry<String, String> e : interfaces.entrySet()) {
+			if (e.getValue().equals(g2)) {
+				return e.getKey();
+			}
+		}
+		return null;
+	}
+
 	Class<?> getClass(final String s) {
 		final Class<?> c;//TODO
 		if (cache1.containsKey(s)) {
