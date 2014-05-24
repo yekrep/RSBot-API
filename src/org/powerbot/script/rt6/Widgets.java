@@ -19,7 +19,7 @@ import org.powerbot.script.Random;
  * {@link Widget}s must be validated before use.
  */
 public class Widgets extends ClientAccessor {
-	public Widget[] cache;
+	public Widget[] sparseCache;
 
 	public Widgets(final ClientContext factory) {
 		super(factory);
@@ -32,47 +32,34 @@ public class Widgets extends ClientAccessor {
 	 */
 	public Widget[] array() {
 		final Client client = ctx.client();
-		if (client == null) {
+		final RSInterfaceBase[] a = client != null ? client.getRSInterfaceCache() : null;
+		final int len = a != null ? a.length : 0;
+		if (len <= 0) {
 			return new Widget[0];
 		}
-		final RSInterfaceBase[] cache = client.getRSInterfaceCache();
-		if (cache == null || cache.length == 0) {
-			return new Widget[0];
-		}
-		final Widget[] w = new Widget[cache.length];
-		for (int i = 0; i < w.length; i++) {
-			w[i] = new Widget(ctx, i);
-		}
-		return w;
+		widget(len - 1);
+		return Arrays.copyOf(sparseCache, len);
 	}
 
 	/**
 	 * Retrieves the cached {@link Widget} for the given index.
 	 *
-	 * @param widget the index of the desired {@link Widget}
+	 * @param index the index of the desired {@link Widget}
 	 * @return the {@link Widget} respective to the given index
 	 */
-	public synchronized Widget widget(final int widget) {
-		final Client client = ctx.client();
-		if (widget < 0) {
-			throw new RuntimeException("bad widget");
+	public synchronized Widget widget(final int index) {
+		if (index < sparseCache.length && sparseCache[index] != null) {
+			return sparseCache[index];
 		}
-
-		if (cache == null) {
-			cache = new Widget[0];
+		final Widget c = new Widget(ctx, index);
+		final int l = sparseCache.length;
+		if (index >= l) {
+			sparseCache = Arrays.copyOf(sparseCache, index + 1);
+			for (int i = l; i < index + 1; i++) {
+				sparseCache[i] = new Widget(ctx, i);
+			}
 		}
-		if (widget < cache.length) {
-			return cache[widget];
-		}
-
-		final RSInterfaceBase[] containers = client != null ? client.getRSInterfaceCache() : new RSInterfaceBase[0];
-		final int mod = Math.max(containers != null ? containers.length : 0, widget + 1);
-		final int len = cache.length;
-		cache = Arrays.copyOf(cache, mod);
-		for (int i = len; i < mod; i++) {
-			cache[i] = new Widget(ctx, i);
-		}
-		return cache[widget];
+		return sparseCache[index] = c;
 	}
 
 	/**
