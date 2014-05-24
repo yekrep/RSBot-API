@@ -38,4 +38,7 @@ public class Widgets extends ClientAccessor {
 		return Arrays.copyOf(sparseCache, len);
 	}
 
+	public Component component(final int index, final int componentIndex) {
+		return widget(index).component(componentIndex);
+	}
 }
