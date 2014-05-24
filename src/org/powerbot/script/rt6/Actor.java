@@ -314,10 +314,9 @@ public abstract class Actor extends Interactive implements Nameable, Locatable, 
 		if (nodes == null || client == null) {
 			return null;
 		}
-		final Reflector r = client.reflector;
 		final CombatStatusData[] data = new CombatStatusData[nodes.length];
 		for (int i = 0; i < nodes.length; i++) {
-			if (nodes[i] == null || !r.isTypeOf(nodes[i], CombatStatus.class)) {
+			if (nodes[i] == null || !nodes[i].isTypeOf(CombatStatus.class)) {
 				data[i] = null;
 				continue;
 			}
@@ -329,7 +328,7 @@ public abstract class Actor extends Interactive implements Nameable, Locatable, 
 			}
 
 			final LinkedListNode node = statuses.getTail().getNext();
-			if (node == null || !r.isTypeOf(node, CombatStatusData.class)) {
+			if (node == null || !node.isTypeOf(CombatStatusData.class)) {
 				data[i] = null;
 				continue;
 			}
