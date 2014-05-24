@@ -3,6 +3,7 @@ package org.powerbot.script.rt6;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.powerbot.bot.Reflector;
 import org.powerbot.bot.rt6.client.Client;
 import org.powerbot.bot.rt6.client.HashTable;
 import org.powerbot.bot.rt6.client.RSNPC;
@@ -10,9 +11,8 @@ import org.powerbot.bot.rt6.client.RSNPCNode;
 
 /**
  * {@link Npcs} is a static utility which provides access to {@link Npc}s in the game.
- *
+ * <p/>
  * {@link Npc}s are only accessible within the mini-map's range.
- *
  */
 public class Npcs extends MobileIdNameQuery<Npc> {
 	public Npcs(final ClientContext factory) {
@@ -37,15 +37,16 @@ public class Npcs extends MobileIdNameQuery<Npc> {
 			return items;
 		}
 
+		final Reflector r = client.reflector;
 		for (final int index : indices) {
 			Object npc = ctx.game.lookup(npcTable, index);
 			if (npc == null) {
 				continue;
 			}
-			if (npc instanceof RSNPCNode) {
+			if (r.isTypeOf(npc, RSNPCNode.class)) {
 				npc = ((RSNPCNode) npc).getRSNPC();
 			}
-			if (npc instanceof RSNPC) {
+			if (r.isTypeOf(npc, RSNPC.class)) {
 				items.add(new Npc(ctx, (RSNPC) npc));
 			}
 		}

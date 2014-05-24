@@ -3,6 +3,7 @@ package org.powerbot.script.rt6;
 import java.awt.Color;
 import java.awt.Graphics;
 
+import org.powerbot.bot.Reflector;
 import org.powerbot.bot.rt6.client.Client;
 import org.powerbot.bot.rt6.client.OverheadSprites;
 import org.powerbot.bot.rt6.client.RSNPC;
@@ -110,15 +111,16 @@ public class Npc extends Actor implements Identifiable {
 		if (npc != null) {
 			final int[] indices = client.getRSNPCIndexArray();
 			final org.powerbot.bot.rt6.client.HashTable npcTable = client.getRSNPCNC();
+			final Reflector r = client.reflector;
 			for (final int index : indices) {
 				Object node = ctx.game.lookup(npcTable, index);
 				if (node == null) {
 					continue;
 				}
-				if (node instanceof RSNPCNode) {
+				if (r.isTypeOf(node, RSNPCNode.class)) {
 					node = ((RSNPCNode) node).getRSNPC();
 				}
-				if (node instanceof RSNPC) {
+				if (r.isTypeOf(node, RSNPC.class)) {
 					if (node.equals(npc)) {
 						return true;
 					}

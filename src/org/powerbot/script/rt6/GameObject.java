@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 
+import org.powerbot.bot.Reflector;
 import org.powerbot.bot.rt6.client.Cache;
 import org.powerbot.bot.rt6.client.Client;
 import org.powerbot.bot.rt6.client.HashTable;
@@ -85,8 +86,9 @@ public class GameObject extends Interactive implements Locatable, Nameable, Draw
 				(cache = loader.getCache()) == null || (table = cache.getTable()) == null) {
 			return new ObjectDefinition(null);
 		}
+		final Reflector r = client.reflector;
 		final Object def = ctx.game.lookup(table, id());
-		return def != null && def instanceof RSObjectDef ? new ObjectDefinition((RSObjectDef) def) : new ObjectDefinition(null);
+		return def != null && r.isTypeOf(def, RSObjectDef.class) ? new ObjectDefinition((RSObjectDef) def) : new ObjectDefinition(null);
 	}
 
 	public Area area() {

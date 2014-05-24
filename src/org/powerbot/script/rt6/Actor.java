@@ -2,6 +2,7 @@ package org.powerbot.script.rt6;
 
 import java.awt.Point;
 
+import org.powerbot.bot.Reflector;
 import org.powerbot.bot.rt6.client.Client;
 import org.powerbot.bot.rt6.client.CombatStatus;
 import org.powerbot.bot.rt6.client.CombatStatusData;
@@ -144,9 +145,10 @@ public abstract class Actor extends Interactive implements Nameable, Locatable, 
 			if (npcNode == null) {
 				return nil;
 			}
-			if (npcNode instanceof RSNPCNode) {
+			final Reflector r = client.reflector;
+			if (r.isTypeOf(npcNode, RSNPCNode.class)) {
 				return new Npc(ctx, ((RSNPCNode) npcNode).getRSNPC());
-			} else if (npcNode instanceof RSNPC) {
+			} else if (r.isTypeOf(npcNode, RSNPC.class)) {
 				return new Npc(ctx, (RSNPC) npcNode);
 			}
 			return nil;
@@ -308,12 +310,14 @@ public abstract class Actor extends Interactive implements Nameable, Locatable, 
 
 	private CombatStatusData[] getBarData() {
 		final LinkedListNode[] nodes = getBarNodes();
-		if (nodes == null) {
+		final Client client = ctx.client();
+		if (nodes == null || client == null) {
 			return null;
 		}
+		final Reflector r = client.reflector;
 		final CombatStatusData[] data = new CombatStatusData[nodes.length];
 		for (int i = 0; i < nodes.length; i++) {
-			if (nodes[i] == null || !(nodes[i] instanceof CombatStatus)) {
+			if (nodes[i] == null || !r.isTypeOf(nodes[i], CombatStatus.class)) {
 				data[i] = null;
 				continue;
 			}
@@ -325,7 +329,7 @@ public abstract class Actor extends Interactive implements Nameable, Locatable, 
 			}
 
 			final LinkedListNode node = statuses.getTail().getNext();
-			if (node == null || !(node instanceof CombatStatusData)) {
+			if (node == null || !r.isTypeOf(node, CombatStatusData.class)) {
 				data[i] = null;
 				continue;
 			}

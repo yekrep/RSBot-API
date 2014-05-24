@@ -16,7 +16,6 @@ import org.powerbot.bot.rt6.client.RSObject;
 
 /**
  * Utilities pertaining to in-game objects.
- *
  */
 public class Objects extends MobileIdNameQuery<GameObject> {
 	public final Map<Integer, Integer> typeCache = new ConcurrentHashMap<Integer, Integer>();
@@ -68,7 +67,7 @@ public class Objects extends MobileIdNameQuery<GameObject> {
 
 				for (RSAnimableNode animable = ground.getRSAnimableList(); animable != null; animable = animable.getNext()) {
 					final Object node = animable.getRSAnimable();
-					if (node == null || !(node instanceof RSObject)) {
+					if (node == null) {
 						continue;
 					}
 					final RSObject obj = (RSObject) node;
