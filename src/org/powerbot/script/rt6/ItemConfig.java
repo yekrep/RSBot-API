@@ -6,31 +6,31 @@ import org.powerbot.bot.rt6.client.HashTable;
 import org.powerbot.bot.rt6.client.RSItemDef;
 import org.powerbot.bot.rt6.client.RSItemDefLoader;
 
-class ItemDefinition {
+class ItemConfig {
 	private final RSItemDef def;
 
-	private ItemDefinition(final RSItemDef def) {
+	private ItemConfig(final RSItemDef def) {
 		this.def = def;
 	}
 
-	static ItemDefinition getDef(final ClientContext ctx, final int id) {
+	static ItemConfig getConfig(final ClientContext ctx, final int id) {
 		final Client client = ctx.client();
 		if (client == null || id <= 0) {
-			return new ItemDefinition(null);
+			return new ItemConfig(null);
 		}
 		final RSItemDefLoader loader;
 		final Cache cache;
 		final HashTable table;
 		if ((loader = client.getRSItemDefLoader()) == null ||
 				(cache = loader.getCache()) == null || (table = cache.getTable()) == null) {
-			return new ItemDefinition(null);
+			return new ItemConfig(new RSItemDef(client.reflector, null));
 		}
 		final Object o = org.powerbot.bot.rt6.tools.HashTable.lookup(table, id);
-		return o != null && o instanceof RSItemDef ? new ItemDefinition((RSItemDef) o) : new ItemDefinition(null);
+		return new ItemConfig(new RSItemDef(client.reflector, o));
 	}
 
 	int getId() {
-		return def.getID();
+		return def != null ? def.getID() : -1;
 	}
 
 	String getName() {

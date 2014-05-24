@@ -42,19 +42,19 @@ public class GroundItem extends Interactive implements Identifiable, Nameable, S
 
 	@Override
 	public String name() {
-		return ItemDefinition.getDef(ctx, id()).getName();
+		return ItemConfig.getConfig(ctx, id()).getName();
 	}
 
 	public boolean members() {
-		return ItemDefinition.getDef(ctx, id()).isMembers();
+		return ItemConfig.getConfig(ctx, id()).isMembers();
 	}
 
 	public String[] actions() {
-		return ItemDefinition.getDef(ctx, id()).getActions();
+		return ItemConfig.getConfig(ctx, id()).getActions();
 	}
 
 	public String[] groundActions() {
-		return ItemDefinition.getDef(ctx, id()).getGroundActions();
+		return ItemConfig.getConfig(ctx, id()).getGroundActions();
 	}
 
 	@Override

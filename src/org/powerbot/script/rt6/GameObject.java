@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 
-import org.powerbot.bot.Reflector;
 import org.powerbot.bot.rt6.client.Cache;
 import org.powerbot.bot.rt6.client.Client;
 import org.powerbot.bot.rt6.client.HashTable;
@@ -61,21 +60,21 @@ public class GameObject extends Interactive implements Locatable, Nameable, Draw
 
 	@Override
 	public String name() {
-		return getDefinition().getName();
+		return getConfig().getName();
 	}
 
 	public String[] actions() {
-		return getDefinition().getActions();
+		return getConfig().getActions();
 	}
 
 	public int floor() {
 		return object.getPlane();
 	}
 
-	private ObjectDefinition getDefinition() {
+	private ObjectConfig getConfig() {
 		final Client client = ctx.client();
 		if (client == null) {
-			return new ObjectDefinition(null);
+			return new ObjectConfig(null);
 		}
 
 		final RSInfo info;
@@ -84,11 +83,10 @@ public class GameObject extends Interactive implements Locatable, Nameable, Draw
 		final HashTable table;
 		if ((info = client.getRSGroundInfo()) == null || (loader = info.getRSObjectDefLoaders()) == null ||
 				(cache = loader.getCache()) == null || (table = cache.getTable()) == null) {
-			return new ObjectDefinition(null);
+			return new ObjectConfig(new RSObjectDef(client.reflector, null));
 		}
-		final Reflector r = client.reflector;
 		final Object def = org.powerbot.bot.rt6.tools.HashTable.lookup(table, id());
-		return def != null && r.isTypeOf(def, RSObjectDef.class) ? new ObjectDefinition((RSObjectDef) def) : new ObjectDefinition(null);
+		return new ObjectConfig(new RSObjectDef(client.reflector, def));
 	}
 
 	public Area area() {

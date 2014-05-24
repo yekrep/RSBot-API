@@ -50,21 +50,21 @@ public class Item extends Interactive implements Displayable, Identifiable, Name
 		if (component != null && component.itemId() == id) {
 			name = component.itemName();
 		} else {
-			name = ItemDefinition.getDef(ctx, id).getName();
+			name = ItemConfig.getConfig(ctx, id).getName();
 		}
 		return StringUtils.stripHtml(name);
 	}
 
 	public boolean members() {
-		return ItemDefinition.getDef(ctx, id()).isMembers();
+		return ItemConfig.getConfig(ctx, id()).isMembers();
 	}
 
 	public String[] actions() {
-		return ItemDefinition.getDef(ctx, id()).getActions();
+		return ItemConfig.getConfig(ctx, id()).getActions();
 	}
 
 	public String[] groundActions() {
-		return ItemDefinition.getDef(ctx, id()).getGroundActions();
+		return ItemConfig.getConfig(ctx, id()).getGroundActions();
 	}
 
 	/**
