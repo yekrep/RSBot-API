@@ -9,9 +9,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ReflectorSpec {
+	public final Map<String, String> interfaces;
 	public final Map<String, Reflector.FieldConfig> configs;
 
 	private ReflectorSpec() {
+		interfaces = new HashMap<String, String>();
 		configs = new HashMap<String, Reflector.FieldConfig>();
 	}
 
@@ -40,6 +42,8 @@ public class ReflectorSpec {
 				if (type.equals("field")) {
 					final long m = args.length > 1 ? Long.parseLong(args[2]) : 1L;
 					r.configs.put(name, new Reflector.FieldConfig(name, args[0], args[1], m));
+				} else if (type.equals("interface")) {
+					r.interfaces.put(name, args[0]);
 				}
 			}
 		} catch (final IOException ignored) {
