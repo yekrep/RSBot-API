@@ -25,7 +25,7 @@ class ItemDefinition {
 				(cache = loader.getCache()) == null || (table = cache.getTable()) == null) {
 			return new ItemDefinition(null);
 		}
-		final Object o = ctx.game.lookup(table, id);
+		final Object o = org.powerbot.bot.rt6.tools.HashTable.lookup(table, id);
 		return o != null && o instanceof RSItemDef ? new ItemDefinition((RSItemDef) o) : new ItemDefinition(null);
 	}
 
