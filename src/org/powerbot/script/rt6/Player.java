@@ -6,7 +6,6 @@ import java.util.Arrays;
 
 import org.powerbot.bot.rt6.client.Client;
 import org.powerbot.bot.rt6.client.RSPlayer;
-import org.powerbot.bot.rt6.client.RSPlayerComposite;
 
 public class Player extends Actor {
 	public static final Color TARGET_COLOR = new Color(255, 0, 0, 15);
@@ -24,19 +23,17 @@ public class Player extends Actor {
 
 	@Override
 	public String name() {
-		final RSPlayer player = getAccessor();
-		return player != null ? player.getName() : "";
+		final String n = player.getName();
+		return n != null ? n : "";
 	}
 
 	@Override
 	public int combatLevel() {
-		final RSPlayer player = getAccessor();
-		return player != null ? player.getLevel() : -1;
+		return player.getLevel();
 	}
 
 	public int team() {
-		final RSPlayer player = getAccessor();
-		return player != null ? player.getTeam() : -1;
+		return player.getTeam();
 	}
 
 	public int prayerIcon() {
@@ -59,48 +56,34 @@ public class Player extends Actor {
 	}
 
 	private int[] getOverheadArray1() {
-		final RSPlayer player = getAccessor();
-		if (player != null) {
-			final int[] arr = player.getOverheadArray1();
-			if (arr != null) {
-				return arr;
-			}
-		}
-		return new int[0];
+		final int[] arr = player.getOverheadArray1();
+		return arr != null ? arr : new int[0];
 	}
 
 	private int[] getOverheadArray2() {
-		final RSPlayer player = getAccessor();
-		if (player != null) {
-			final int[] arr = player.getOverheadArray2();
-			if (arr != null) {
-				return arr;
-			}
-		}
-		return new int[0];
+		final int[] arr = player.getOverheadArray2();
+		return arr != null ? arr : new int[0];
 	}
 
 	public int npcId() {
-		final RSPlayer player = getAccessor();
-		final RSPlayerComposite composite;
-		return player != null && (composite = player.getComposite()) != null ? composite.getNPCID() : -1;
+		return player.getComposite().getNPCID();
 	}
 
 	public int[] appearance() {
-		final RSPlayer player = getAccessor();
-		final RSPlayerComposite composite = player != null ? player.getComposite() : null;
-		if (composite != null) {
-			final int[] appearance = composite.getEquipment().clone();
-			for (int i = 0; i < appearance.length; i++) {
-				if ((appearance[i] & 0x40000000) > 0) {
-					appearance[i] &= 0x3fffffff;
-				} else {
-					appearance[i] = -1;
-				}
-			}
-			return appearance;
+		final int[] arr = player.getComposite().getEquipment();
+		if (arr == null) {
+			return new int[0];
 		}
-		return new int[0];
+
+		final int[] appearance = arr.clone();
+		for (int i = 0; i < appearance.length; i++) {
+			if ((appearance[i] & 0x40000000) > 0) {
+				appearance[i] &= 0x3fffffff;
+			} else {
+				appearance[i] = -1;
+			}
+		}
+		return appearance;
 	}
 
 	@Override
