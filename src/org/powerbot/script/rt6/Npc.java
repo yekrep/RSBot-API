@@ -66,36 +66,16 @@ public class Npc extends Actor implements Identifiable {
 	}
 
 	private int[] getOverheadArray1() {
-		final RSNPC npc = getAccessor();
-		if (npc != null) {
-			final OverheadSprites sprites = npc.getOverhead();
-			int[] arr;
-			if (sprites != null && (arr = sprites.getArray1()) != null) {
-				return arr;
-			}
-			final RSNPCDef def = npc.getRSNPCDef();
-			if (def != null && (arr = def.getOverheadArray1()) != null) {
-				return arr;
-			}
-		}
-		return new int[0];
+		final RSNPCDef d = npc.getRSNPCDef();
+		final int[] arr1 = npc.getOverhead().getArray1(), arr2 = d.getOverheadArray1();
+		return arr1 != null ? arr1 : arr2 != null ? arr2 : new int[0];
 	}
 
 
 	private short[] getOverheadArray2() {
-		final RSNPC npc = getAccessor();
-		if (npc != null) {
-			final OverheadSprites sprites = npc.getOverhead();
-			short[] arr;
-			if (sprites != null && (arr = sprites.getArray2()) != null) {
-				return arr;
-			}
-			final RSNPCDef def = npc.getRSNPCDef();
-			if (def != null && (arr = def.getOverheadArray2()) != null) {
-				return arr;
-			}
-		}
-		return new short[0];
+		final RSNPCDef d = npc.getRSNPCDef();
+		final short[] arr1 = npc.getOverhead().getArray2(), arr2 = d.getOverheadArray2();
+		return arr1 != null ? arr1 : arr2 != null ? arr2 : new short[0];
 	}
 
 	@Override
