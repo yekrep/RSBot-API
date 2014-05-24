@@ -10,7 +10,7 @@ public class PlayerMetaInfo extends ReflectProxy {
 
 	public Skill[] getSkills() {
 		final Object[] arr = reflector.access(this, Object[].class);
-		final Skill[] arr2 = arr != null ? new Skill[arr.length] : null;
+		final Skill[] arr2 = arr != null ? new Skill[arr.length] : new Skill[0];
 		if (arr != null) {
 			for (int i = 0; i < arr.length; i++) {
 				arr2[i] = new Skill(reflector, arr[i]);

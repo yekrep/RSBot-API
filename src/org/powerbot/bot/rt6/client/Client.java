@@ -85,7 +85,7 @@ public class Client extends ReflectProxy implements org.powerbot.script.Client {
 
 	public RSPlayer[] getRSPlayerArray() {
 		final Object[] arr = reflector.access(this, Object[].class);
-		final RSPlayer[] arr2 = arr != null ? new RSPlayer[arr.length] : null;
+		final RSPlayer[] arr2 = arr != null ? new RSPlayer[arr.length] : new RSPlayer[0];
 		if (arr != null) {
 			for (int i = 0; i < arr.length; i++) {
 				arr2[i] = new RSPlayer(reflector, arr[i]);
@@ -188,7 +188,7 @@ public class Client extends ReflectProxy implements org.powerbot.script.Client {
 
 	public RSInterfaceBase[] getRSInterfaceCache() {
 		final Object[] arr = reflector.access(this, Object[].class);
-		final RSInterfaceBase[] arr2 = arr != null ? new RSInterfaceBase[arr.length] : null;
+		final RSInterfaceBase[] arr2 = arr != null ? new RSInterfaceBase[arr.length] : new RSInterfaceBase[0];
 		if (arr != null) {
 			for (int i = 0; i < arr.length; i++) {
 				arr2[i] = new RSInterfaceBase(reflector, arr[i]);
@@ -203,7 +203,7 @@ public class Client extends ReflectProxy implements org.powerbot.script.Client {
 
 	public RSHintArrow[] getRSHintArrows() {
 		final Object[] arr = reflector.access(this, Object[].class);
-		final RSHintArrow[] arr2 = arr != null ? new RSHintArrow[arr.length] : null;
+		final RSHintArrow[] arr2 = arr != null ? new RSHintArrow[arr.length] : new RSHintArrow[0];
 		if (arr != null) {
 			for (int i = 0; i < arr.length; i++) {
 				arr2[i] = new RSHintArrow(reflector, arr[i]);

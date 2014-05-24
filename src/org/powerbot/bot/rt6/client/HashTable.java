@@ -10,7 +10,7 @@ public class HashTable extends ReflectProxy {
 
 	public Node[] getBuckets() {
 		final Object[] arr = reflector.access(this, Object[].class);
-		final Node[] arr2 = arr != null ? new Node[arr.length] : null;
+		final Node[] arr2 = arr != null ? new Node[arr.length] : new Node[0];
 		if (arr != null) {
 			for (int i = 0; i < arr.length; i++) {
 				arr2[i] = new Node(reflector, arr[i]);

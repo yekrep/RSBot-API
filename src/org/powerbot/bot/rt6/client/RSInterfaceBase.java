@@ -10,7 +10,7 @@ public class RSInterfaceBase extends ReflectProxy {
 
 	public RSInterface[] getComponents() {
 		final Object[] arr = reflector.access(this, Object[].class);
-		final RSInterface[] arr2 = arr != null ? new RSInterface[arr.length] : null;
+		final RSInterface[] arr2 = arr != null ? new RSInterface[arr.length] : new RSInterface[0];
 		if (arr != null) {
 			for (int i = 0; i < arr.length; i++) {
 				arr2[i] = new RSInterface(reflector, arr[i]);

@@ -10,7 +10,7 @@ public class RSGroundInfo extends ReflectProxy {
 
 	public TileData[] getTileData() {
 		final Object[] arr = reflector.access(this, Object[].class);
-		final TileData[] arr2 = arr != null ? new TileData[arr.length] : null;
+		final TileData[] arr2 = arr != null ? new TileData[arr.length] : new TileData[0];
 		if (arr != null) {
 			for (int i = 0; i < arr.length; i++) {
 				arr2[i] = new TileData(reflector, arr[i]);
