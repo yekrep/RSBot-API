@@ -13,18 +13,12 @@ public class ReflectProxy {
 
 	public boolean isTypeOf(final Class<? extends ReflectProxy> c) {
 		final Object o = obj.get();
-		if (o == null) {
+		final String s = reflector.getGroupClass(c.getName());
+		if (o == null || s == null) {
 			return false;
 		}
-		Class<?> m = o.getClass();
-
-		final String s = c.getName().replace('.', '/');
-		String i;
-		do {
-			i = reflector.getGroup(m.getName());
-			m = m.getSuperclass();
-		} while (m != Object.class && !s.equals(i));
-		return s.equals(i);
+		final Class<?> r = reflector.getClass(s);
+		return r != null && o.getClass().isAssignableFrom(r);
 	}
 
 	@Override
