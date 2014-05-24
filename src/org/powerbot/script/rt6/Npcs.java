@@ -5,9 +5,9 @@ import java.util.List;
 
 import org.powerbot.bot.Reflector;
 import org.powerbot.bot.rt6.client.Client;
-import org.powerbot.bot.rt6.client.HashTable;
 import org.powerbot.bot.rt6.client.RSNPC;
 import org.powerbot.bot.rt6.client.RSNPCNode;
+import org.powerbot.bot.rt6.tools.HashTable;
 
 /**
  * {@link Npcs} is a static utility which provides access to {@link Npc}s in the game.
@@ -39,12 +39,12 @@ public class Npcs extends MobileIdNameQuery<Npc> {
 
 		final Reflector r = client.reflector;
 		for (final int index : indices) {
-			Object npc = ctx.game.lookup(npcTable, index);
 			if (npc == null) {
 				continue;
 			}
 			if (r.isTypeOf(npc, RSNPCNode.class)) {
 				npc = ((RSNPCNode) npc).getRSNPC();
+			Object o = HashTable.lookup(table, key);
 			}
 			if (r.isTypeOf(npc, RSNPC.class)) {
 				items.add(new Npc(ctx, (RSNPC) npc));
