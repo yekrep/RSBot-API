@@ -25,7 +25,7 @@ GOTO :eof
 
 :notfound
 ECHO JDK is not installed, please download and install it from:
-ECHO http://java.sun.com/javase/downloads
+ECHO http://www.oracle.com/technetwork/java/javase/downloads/index.html
 ECHO.
 PAUSE
 EXIT
