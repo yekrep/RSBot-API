@@ -2,6 +2,7 @@ package org.powerbot.bot;
 
 import java.awt.Component;
 import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.event.FocusEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
@@ -27,6 +28,8 @@ public class InputSimulator {//TODO: Track click count [same mouse button].
 	private final AtomicInteger mouseX, mouseY;
 	private final AtomicInteger pressX, pressY;
 	private final AtomicLong pressWhen;
+	private final AtomicLong multiClickInterval;
+	private final AtomicInteger clickCount;
 	private final Point[] mousePressPoints;
 	private Component component;
 
@@ -44,6 +47,13 @@ public class InputSimulator {//TODO: Track click count [same mouse button].
 		pressX = new AtomicInteger(0);
 		pressY = new AtomicInteger(0);
 		pressWhen = new AtomicLong(-1);
+		final Object o = Toolkit.getDefaultToolkit().getDesktopProperty("awt.multiClickInterval");
+		if (o instanceof Integer) {
+			multiClickInterval = new AtomicLong((Integer) o);
+		} else {
+			multiClickInterval = new AtomicLong(500);
+		}
+		clickCount = new AtomicInteger(0);
 		mousePressPoints = new Point[]{null, new Point(-1, -1), new Point(-1, -1), new Point(-1, -1)};
 
 		Method getVK = null;
@@ -156,12 +166,18 @@ public class InputSimulator {//TODO: Track click count [same mouse button].
 		}
 		final int m = getMouseMask(button, true);
 		final int x = mouseX.get(), y = mouseY.get();
-		final MouseEvent e = new MouseEvent(component, MouseEvent.MOUSE_PRESSED, System.currentTimeMillis(), m, x, y, 1, false, button);
+		final long w = System.currentTimeMillis();
+		if (clickCount.get() == 0) {
+			clickCount.set(1);
+		} else if (w - pressWhen.get() <= multiClickInterval.get()) {
+			clickCount.getAndIncrement();
+		}
+		final MouseEvent e = new MouseEvent(component, MouseEvent.MOUSE_PRESSED, w, m, x, y, clickCount.get(), false, button);
 		mousePressed[button].set(true);
 		mousePressPoints[button].move(x, y);
 		pressX.set(x);
 		pressY.set(y);
-		pressWhen.set(e.getWhen());
+		pressWhen.set(w);
 		SelectiveEventQueue.getInstance().postEvent(new SelectiveEventQueue.RawAWTEvent(e));
 		if (!focused.get()) {
 			try {
@@ -183,13 +199,16 @@ public class InputSimulator {//TODO: Track click count [same mouse button].
 		}
 		final int m = getMouseMask(button, false);
 		final int x = mouseX.get(), y = mouseY.get();
-		final long t = System.currentTimeMillis();
-		final MouseEvent e = new MouseEvent(component, MouseEvent.MOUSE_RELEASED, t, m, x, y, 1, false, button);
+		final long w = System.currentTimeMillis();
+		if (w - pressWhen.get() > multiClickInterval.get()) {
+			clickCount.set(0);
+		}
+		final MouseEvent e = new MouseEvent(component, MouseEvent.MOUSE_RELEASED, w, m, x, y, clickCount.get(), false, button);
 		mousePressed[button].set(false);
 		SelectiveEventQueue.getInstance().postEvent(new SelectiveEventQueue.RawAWTEvent(e));
 		final Point p = mousePressPoints[button].getLocation();
 		if (p.x == x && p.y == y) {
-			final MouseEvent e2 = new MouseEvent(component, MouseEvent.MOUSE_CLICKED, t, m, x, y, 1, false, button);
+			final MouseEvent e2 = new MouseEvent(component, MouseEvent.MOUSE_CLICKED, w, m, x, y, clickCount.get(), false, button);
 			SelectiveEventQueue.getInstance().postEvent(new SelectiveEventQueue.RawAWTEvent(e2));
 		}
 	}
@@ -200,17 +219,18 @@ public class InputSimulator {//TODO: Track click count [same mouse button].
 		}
 		final boolean in = x >= 0 && y >= 0 && x < component.getWidth() && y < component.getHeight();
 		final int m = getMouseMask();
+		clickCount.set(0);//TODO: inspect this operation
 		if (in) {
 			if (mousePresent.get()) {
 				if (!isDragging()) {
-					final MouseEvent e = new MouseEvent(component, MouseEvent.MOUSE_MOVED, System.currentTimeMillis(), m, x, y, 0, false);
+					final MouseEvent e = new MouseEvent(component, MouseEvent.MOUSE_MOVED, System.currentTimeMillis(), m, x, y, clickCount.get(), false);
 					mouseX.set(x);
 					mouseY.set(y);
 					SelectiveEventQueue.getInstance().postEvent(new SelectiveEventQueue.RawAWTEvent(e));
 				}
 				postDrag(x, y);
 			} else {
-				final MouseEvent e = new MouseEvent(component, MouseEvent.MOUSE_ENTERED, System.currentTimeMillis(), m, x, y, 0, false);
+				final MouseEvent e = new MouseEvent(component, MouseEvent.MOUSE_ENTERED, System.currentTimeMillis(), m, x, y, clickCount.get(), false);
 				mousePresent.set(true);
 				mouseX.set(x);
 				mouseY.set(y);
@@ -218,7 +238,7 @@ public class InputSimulator {//TODO: Track click count [same mouse button].
 				postDrag(x, y);
 			}
 		} else if (mousePresent.get()) {
-			final MouseEvent e = new MouseEvent(component, MouseEvent.MOUSE_EXITED, System.currentTimeMillis(), m, x, y, 0, false);
+			final MouseEvent e = new MouseEvent(component, MouseEvent.MOUSE_EXITED, System.currentTimeMillis(), m, x, y, clickCount.get(), false);
 			mousePresent.set(false);
 			mouseX.set(x);
 			mouseY.set(y);
@@ -282,8 +302,9 @@ public class InputSimulator {//TODO: Track click count [same mouse button].
 		if (component == null || !isDragging()) {
 			return;
 		}
+		clickCount.set(0);//TODO: inspect this operation
 		final int m = getMouseMask();
-		final MouseEvent e = new MouseEvent(component, MouseEvent.MOUSE_DRAGGED, System.currentTimeMillis(), m, x, y, 0, false);
+		final MouseEvent e = new MouseEvent(component, MouseEvent.MOUSE_DRAGGED, System.currentTimeMillis(), m, x, y, clickCount.get(), false);
 		mouseX.set(x);
 		mouseY.set(y);
 		SelectiveEventQueue.getInstance().postEvent(new SelectiveEventQueue.RawAWTEvent(e));
