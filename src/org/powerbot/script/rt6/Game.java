@@ -145,10 +145,11 @@ public class Game extends ClientAccessor {
 		if (client == null) {
 			return Tile.NIL;
 		}
-
-		final RSInfo info = client.getRSGroundInfo();
-		final BaseInfo baseInfo = info != null ? info.getBaseInfo() : null;
-		return baseInfo != null ? new Tile(baseInfo.getX(), baseInfo.getY(), client.getPlane()) : Tile.NIL;
+		final BaseInfo b = client.getRSGroundInfo().getBaseInfo();
+		if (b.isNull()) {
+			return Tile.NIL;
+		}
+		return new Tile(b.getX(), b.getY(), client.getPlane());
 	}
 
 	/**
