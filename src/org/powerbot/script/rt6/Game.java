@@ -372,7 +372,6 @@ public class Game extends ClientAccessor {
 	public class Toolkit {
 		public float absoluteX, absoluteY;
 		public float xMultiplier, yMultiplier;
-		public int gameMode, graphicsIndex;
 	}
 
 	public class Viewport {
