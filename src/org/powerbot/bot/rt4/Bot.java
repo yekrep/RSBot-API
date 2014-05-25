@@ -10,7 +10,6 @@ import org.powerbot.bot.Reflector;
 import org.powerbot.bot.rt4.activation.EventDispatcher;
 import org.powerbot.gui.BotLauncher;
 import org.powerbot.script.rt4.ClientContext;
-import sun.security.pkcs.PKCS7;
 
 public class Bot extends org.powerbot.script.Bot<ClientContext> {
 	public Bot(final BotLauncher launcher) {
@@ -38,7 +37,7 @@ public class Bot extends org.powerbot.script.Bot<ClientContext> {
 			f1.setAccessible(a1);
 			final List<Field> f1x = Reflector.getFields(o1.getClass());
 			Hashtable<String, byte[]> v0 = null;
-			PKCS7 v1 = null;
+			Object v1 = null;
 
 			for (final Field f2 : f1x) {
 				final boolean a2 = f2.isAccessible();
@@ -62,8 +61,8 @@ public class Bot extends org.powerbot.script.Bot<ClientContext> {
 						final Hashtable<String, byte[]> xs = x;
 						v0 = xs;
 					}
-				} else if (c2.equals(PKCS7.class)) {
-					v1 = (PKCS7) o2;
+				} else if (c2.getSimpleName().equals("PKCS7")) {
+					v1 = o2;
 				}
 			}
 
