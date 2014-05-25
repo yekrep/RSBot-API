@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.powerbot.bot.Reflector;
 import org.powerbot.bot.rt6.client.Client;
+import org.powerbot.bot.rt6.client.Node;
 import org.powerbot.bot.rt6.client.RSNPC;
 import org.powerbot.bot.rt6.client.RSNPCNode;
 import org.powerbot.bot.rt6.tools.HashTable;
@@ -38,7 +39,7 @@ public class Npcs extends MobileIdNameQuery<Npc> {
 
 		final Reflector r = client.reflector;
 		for (final int key : keys) {
-			final Object o = HashTable.lookup(table, key);
+			final Object o = HashTable.lookup(table, key, Node.class);
 			if (r.isTypeOf(o, RSNPCNode.class)) {
 				npcs.add(new Npc(ctx, new RSNPCNode(r, o).getRSNPC()));
 			} else if (r.isTypeOf(o, RSNPC.class)) {

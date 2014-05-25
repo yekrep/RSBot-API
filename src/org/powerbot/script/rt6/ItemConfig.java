@@ -25,8 +25,7 @@ class ItemConfig {
 				(cache = loader.getCache()) == null || (table = cache.getTable()) == null) {
 			return new ItemConfig(new RSItemDef(client.reflector, null));
 		}
-		final Object o = org.powerbot.bot.rt6.tools.HashTable.lookup(table, id);
-		return new ItemConfig(new RSItemDef(client.reflector, o));
+		return new ItemConfig(org.powerbot.bot.rt6.tools.HashTable.lookup(table, id, RSItemDef.class));
 	}
 
 	int getId() {

@@ -7,6 +7,7 @@ import org.powerbot.bot.rt6.client.Client;
 import org.powerbot.bot.rt6.client.CombatStatus;
 import org.powerbot.bot.rt6.client.CombatStatusData;
 import org.powerbot.bot.rt6.client.LinkedListNode;
+import org.powerbot.bot.rt6.client.Node;
 import org.powerbot.bot.rt6.client.RSCharacter;
 import org.powerbot.bot.rt6.client.RSInteractableData;
 import org.powerbot.bot.rt6.client.RSInteractableLocation;
@@ -103,7 +104,7 @@ public abstract class Actor extends Interactive implements Nameable, Locatable {
 			return nil;
 		}
 		if (index < 32768) {
-			final Object node = HashTable.lookup(client.getRSNPCNC(), index);
+			final Object node = HashTable.lookup(client.getRSNPCNC(), index,Node.class);
 			if (node == null) {
 				return nil;
 			}

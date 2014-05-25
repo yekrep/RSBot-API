@@ -1,7 +1,6 @@
 package org.powerbot.script.rt6;
 
 import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.Point;
 
 import org.powerbot.bot.rt6.client.Cache;
@@ -14,7 +13,6 @@ import org.powerbot.bot.rt6.client.RSObject;
 import org.powerbot.bot.rt6.client.RSObjectDef;
 import org.powerbot.bot.rt6.client.RSObjectDefLoader;
 import org.powerbot.script.Area;
-import org.powerbot.script.Drawable;
 import org.powerbot.script.Identifiable;
 import org.powerbot.script.Locatable;
 import org.powerbot.script.Nameable;
@@ -85,8 +83,8 @@ public class GameObject extends Interactive implements Locatable, Nameable, Iden
 				(cache = loader.getCache()) == null || (table = cache.getTable()) == null) {
 			return new ObjectConfig(new RSObjectDef(client.reflector, null));
 		}
-		final Object def = org.powerbot.bot.rt6.tools.HashTable.lookup(table, id());
-		return new ObjectConfig(new RSObjectDef(client.reflector, def));
+		final RSObjectDef def = org.powerbot.bot.rt6.tools.HashTable.lookup(table, id(), RSObjectDef.class);
+		return new ObjectConfig(def);
 	}
 
 	public Area area() {

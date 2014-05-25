@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 import org.powerbot.bot.Reflector;
 import org.powerbot.bot.rt6.client.Client;
+import org.powerbot.bot.rt6.client.Node;
 import org.powerbot.bot.rt6.client.RSHintArrow;
 import org.powerbot.bot.rt6.client.RSNPC;
 import org.powerbot.bot.rt6.client.RSNPCNode;
@@ -47,7 +48,7 @@ public class HintArrow extends ClientAccessor implements Locatable, Validatable 
 		}
 		if (type == 1) {
 			Npc npc = null;
-			final Object node = HashTable.lookup(client.getRSNPCNC(), target);
+			final Object node = HashTable.lookup(client.getRSNPCNC(), target, Node.class);
 			if (node != null) {
 				final Reflector r = client.reflector;
 				if (r.isTypeOf(node, RSNPCNode.class)) {

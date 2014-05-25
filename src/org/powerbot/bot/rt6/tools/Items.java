@@ -20,7 +20,7 @@ public class Items extends ClientAccessor {
 		if (client == null) {
 			return new int[0][];
 		}
-		final ItemSlot slot = new ItemSlot(client.reflector, HashTable.lookup(client.getItemSlots(), index));
+		final ItemSlot slot = HashTable.lookup(client.getItemSlots(), index, ItemSlot.class);
 		final int[] ids = slot.getIds();
 		final int[] stacks = slot.getStackSizes();
 		if (ids == null || stacks == null ||

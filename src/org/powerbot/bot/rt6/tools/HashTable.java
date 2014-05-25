@@ -1,8 +1,12 @@
 package org.powerbot.bot.rt6.tools;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+import org.powerbot.bot.ReflectProxy;
+import org.powerbot.bot.Reflector;
 import org.powerbot.bot.rt6.client.Node;
 
 public class HashTable<N> implements Iterator<N>, Iterable<N> {
@@ -66,15 +70,26 @@ public class HashTable<N> implements Iterator<N>, Iterable<N> {
 		throw new UnsupportedOperationException();
 	}
 
-	public static Object lookup(final org.powerbot.bot.rt6.client.HashTable table, final long id) {
-		final Node[] buckets;
-		if (table == null || (buckets = table.getBuckets()) == null || id < 0) {
+	public static <E extends ReflectProxy> E lookup(final org.powerbot.bot.rt6.client.HashTable table, final long id, final Class<E> type) {
+		if (table == null) {
 			return null;
 		}
+		final Constructor<E> c;
+		try {
+			c = type.getDeclaredConstructor(Reflector.class, Object.class);
+		} catch (final NoSuchMethodException e) {
+			return null;
+		}
+		final Node[] buckets = table.getBuckets();
 		final Node n = buckets[(int) (id & buckets.length - 1)];
-		for (Node node = n.getNext(); node.obj.get() != n.obj.get() && node.obj.get() != null; node = node.getNext()) {
-			if (node.getId() == id) {
-				return node;
+		for (Node o = n.getNext(); !o.equals(n) && !o.isNull(); o = o.getNext()) {
+			if (o.getId() == id && o.isTypeOf(type)) {
+				try {
+					return c.newInstance(table.reflector, o);
+				} catch (final InstantiationException ignored) {
+				} catch (final IllegalAccessException ignored) {
+				} catch (final InvocationTargetException ignored) {
+				}
 			}
 		}
 		return null;
