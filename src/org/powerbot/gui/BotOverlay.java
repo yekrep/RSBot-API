@@ -55,7 +55,6 @@ class BotOverlay extends Dialog {
 				supported = false;
 			}
 		}
-		System.setProperty("swing.transparency", Boolean.toString(supported));
 
 		setFocusableWindowState(false);
 		setVisible(false);
@@ -65,10 +64,6 @@ class BotOverlay extends Dialog {
 		final boolean clear = Configuration.OS == Configuration.OperatingSystem.LINUX || (jre6 && mac);
 		final String s = System.getProperty("apple.laf.useScreenMenuBar");
 		offsetMenu = !(mac && s != null && s.equalsIgnoreCase("true"));
-
-		if (mac) {
-			getRootPane().putClientProperty("apple.awt.draggableWindowBackground", Boolean.FALSE);
-		}
 
 		panel = new Component() {
 			@Override
