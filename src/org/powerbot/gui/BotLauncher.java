@@ -83,31 +83,15 @@ public class BotLauncher implements Callable<Boolean>, Closeable {
 				String t = Configuration.URLs.GAME;
 				t = t.substring(0, t.indexOf('.')).toLowerCase();
 
-				for (; ; ) {
-					try {
-						Thread.sleep(60);
-					} catch (final InterruptedException ignored) {
-						break;
-					}
-					final Frame[] f = Frame.getFrames();
-					if (f == null || f.length == 0) {
-						continue;
-					}
-					for (final Frame x : f) {
+				do {
+					Thread.yield();
+					for (final Frame x : Frame.getFrames()) {
 						final String s = x.getTitle();
 						if (s != null && s.toLowerCase().endsWith(t)) {
 							window.set(x);
-							break;
 						}
 					}
-					if (window.get() != null) {
-						break;
-					}
-				}
-
-				if (window.get() == null) {
-					return;
-				}
+				} while (window.get() == null);
 
 				EventQueue.invokeLater(new Runnable() {
 					@Override
