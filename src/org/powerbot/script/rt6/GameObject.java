@@ -194,7 +194,7 @@ public class GameObject extends Interactive implements Renderable, Locatable, Na
 
 	@Override
 	public boolean equals(final Object o) {
-		if (o == null || !(o instanceof GameObject)) {
+		if (!(o instanceof GameObject)) {
 			return false;
 		}
 		final GameObject g = (GameObject) o;
