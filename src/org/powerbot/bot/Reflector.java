@@ -47,7 +47,7 @@ public class Reflector {
 		if (f == null) {
 			return -1;
 		}
-		final Integer i = access(accessor, Integer.class);
+		final Integer i = access(accessor, f, Integer.class);
 		return i != null ? i * (int) f.multiplier : -1;
 	}
 
@@ -60,7 +60,7 @@ public class Reflector {
 		if (f == null) {
 			return -1l;
 		}
-		final Long j = access(accessor, Long.class);
+		final Long j = access(accessor, f, Long.class);
 		return j != null ? j * (int) f.multiplier : -1l;
 	}
 
