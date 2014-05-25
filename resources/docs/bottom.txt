@@ -1,1 +1,1 @@
-<script type='text/javascript' src='//cdn.powerbot.org/assets/js/ga.js'></script>
+<script type='text/javascript' src='//powerbot-dequeue.netdna-ssl.com/assets/js/ga.js'></script>
