@@ -43,7 +43,7 @@ public class Reflector {
 	}
 
 	public int accessInt(final ReflectProxy accessor) {
-		final FieldConfig f = getField();
+		final FieldConfig f = getFieldConfig();
 		if (f == null) {
 			return -1;
 		}
@@ -56,7 +56,7 @@ public class Reflector {
 	}
 
 	public long accessLong(final ReflectProxy accessor) {
-		final FieldConfig f = getField();
+		final FieldConfig f = getFieldConfig();
 		if (f == null) {
 			return -1l;
 		}
@@ -85,8 +85,11 @@ public class Reflector {
 	}
 
 	public <T> T access(final ReflectProxy accessor, final Class<T> t) {
+		return access(accessor, getFieldConfig(), t);
+	}
+
+	private <T> T access(final ReflectProxy accessor, final FieldConfig r, final Class<T> t) {
 		final Object p = accessor.obj.get();
-		final FieldConfig r = getField();
 		if (p == null || r == null) {
 			return null;
 		}
@@ -168,7 +171,7 @@ public class Reflector {
 		return c;
 	}
 
-	public boolean isTypeOf(final Object o,final Class<? extends ReflectProxy> c) {
+	public boolean isTypeOf(final Object o, final Class<? extends ReflectProxy> c) {
 		final String s = getGroupClass(c.getName());
 		if (o == null || s == null) {
 			return false;
@@ -177,7 +180,7 @@ public class Reflector {
 		return r != null && o.getClass().isAssignableFrom(r);
 	}
 
-	private FieldConfig getField() {
+	private FieldConfig getFieldConfig() {
 		final StackTraceElement e = getCallingAPI();
 		final String c = e.getClassName().replace('.', '/'), m = e.getMethodName(), k = c + '.' + m;
 		return configs.get(k);
