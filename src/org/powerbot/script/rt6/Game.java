@@ -9,9 +9,6 @@ import java.util.concurrent.Callable;
 import org.powerbot.bot.rt6.client.BaseInfo;
 import org.powerbot.bot.rt6.client.Client;
 import org.powerbot.bot.rt6.client.Constants;
-import org.powerbot.bot.rt6.client.RSGroundBytes;
-import org.powerbot.bot.rt6.client.RSGroundInfo;
-import org.powerbot.bot.rt6.client.RSInfo;
 import org.powerbot.bot.rt6.client.TileData;
 import org.powerbot.script.Condition;
 import org.powerbot.script.Locatable;
@@ -228,28 +225,21 @@ public class Game extends ClientAccessor {
 		if (plane == -1) {
 			plane = client.getPlane();
 		}
-		final RSInfo world = client.getRSGroundInfo();
-		final RSGroundBytes ground = world != null ? world.getGroundBytes() : null;
-		final byte[][][] settings = ground != null ? ground.getBytes() : null;
-		if (settings != null) {
+		final byte[][][] configs = client.getRSGroundInfo().getGroundBytes().getBytes();
+		if (configs != null) {
 			final int x = rX >> 9;
 			final int y = rY >> 9;
 			if (x < 0 || x > 103 || y < 0 || y > 103) {
 				return 0;
 			}
-			if (plane < 3 && (settings[1][x][y] & 2) != 0) {
+			if (plane < 3 && (configs[1][x][y] & 2) != 0) {
 				++plane;
 			}
-			final RSGroundInfo worldGround = world.getRSGroundInfo();
-			final TileData[] groundPlanes = worldGround != null ? worldGround.getTileData() : null;
-			if (groundPlanes == null || plane < 0 || plane >= groundPlanes.length) {
+			final TileData[] landscape = client.getRSGroundInfo().getRSGroundInfo().getTileData();
+			if (plane < 0 || plane >= landscape.length) {
 				return 0;
 			}
-			final TileData groundData = groundPlanes[plane];
-			if (groundData == null) {
-				return 0;
-			}
-			final int[][] heights = groundData.getHeights();
+			final int[][] heights = landscape[plane].getHeights();
 			if (heights != null) {
 				final int aX = rX & 0x1ff;
 				final int aY = rY & 0x1ff;
