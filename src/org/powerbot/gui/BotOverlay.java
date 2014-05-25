@@ -4,7 +4,9 @@ import java.awt.BorderLayout;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dialog;
 import java.awt.Dimension;
+import java.awt.EventQueue;
 import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -19,9 +21,6 @@ import java.awt.image.BufferedImage;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
 
-import javax.swing.JDialog;
-import javax.swing.SwingUtilities;
-
 import org.powerbot.Configuration;
 import org.powerbot.bot.EventDispatcher;
 import org.powerbot.bot.rt6.activation.PaintEvent;
@@ -29,7 +28,7 @@ import org.powerbot.bot.rt6.activation.TextPaintEvent;
 import org.powerbot.script.Bot;
 import org.powerbot.script.Client;
 
-class BotOverlay extends JDialog {
+class BotOverlay extends Dialog {
 	private static final Logger log = Logger.getLogger(BotOverlay.class.getName());
 	private final BotChrome parent;
 	private final Component panel;
@@ -45,16 +44,9 @@ class BotOverlay extends JDialog {
 
 		final Color a = new Color(0, 0, 0, 0);
 		setUndecorated(true);
-		getRootPane().setOpaque(false);
-		getContentPane().setBackground(a);
+		setBackground(a);
 
-		final boolean jre6 = System.getProperty("java.version").startsWith("1.6");
-		boolean supported = true;
-
-		if (Configuration.OS != Configuration.OperatingSystem.MAC && jre6) {
-			supported = false;
-		}
-
+		boolean supported = !isOpaque();
 		if (supported) {
 			try {
 				setBackground(a);
@@ -68,6 +60,7 @@ class BotOverlay extends JDialog {
 		setFocusableWindowState(false);
 		setVisible(false);
 
+		final boolean jre6 = System.getProperty("java.version").startsWith("1.6");
 		final boolean mac = Configuration.OS == Configuration.OperatingSystem.MAC;
 		final boolean clear = Configuration.OS == Configuration.OperatingSystem.LINUX || (jre6 && mac);
 		final String s = System.getProperty("apple.laf.useScreenMenuBar");
@@ -115,7 +108,7 @@ class BotOverlay extends JDialog {
 					}
 
 					if (c.getAndIncrement() % 5 == 0) {
-						SwingUtilities.invokeLater(new Runnable() {
+						EventQueue.invokeLater(new Runnable() {
 							@Override
 							public void run() {
 								adjustSize();
