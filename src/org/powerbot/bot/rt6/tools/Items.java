@@ -1,7 +1,6 @@
 package org.powerbot.bot.rt6.tools;
 
 import org.powerbot.bot.rt6.client.Client;
-import org.powerbot.bot.rt6.client.HashTable;
 import org.powerbot.bot.rt6.client.ItemSlot;
 import org.powerbot.script.rt6.ClientAccessor;
 import org.powerbot.script.rt6.ClientContext;
@@ -18,18 +17,14 @@ public class Items extends ClientAccessor {
 
 	public int[][] getItems(final int index) {
 		final Client client = ctx.client();
-		final HashTable table;
-		if (client == null || (table = client.getItemSlots()) == null) {
+		if (client == null) {
 			return new int[0][];
 		}
-		final Object n = ctx.game.lookup(table, index);
-		if (n == null || !(n instanceof ItemSlot)) {
-			return new int[0][];
-		}
-		final ItemSlot slot = (ItemSlot) n;
+		final ItemSlot slot = new ItemSlot(client.reflector, HashTable.lookup(client.getItemSlots(), index));
 		final int[] ids = slot.getIds();
 		final int[] stacks = slot.getStackSizes();
-		if (ids.length != stacks.length) {
+		if (ids == null || stacks == null ||
+				ids.length != stacks.length) {
 			return new int[0][];
 		}
 		final int[][] data = new int[ids.length][2];
