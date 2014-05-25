@@ -15,7 +15,7 @@ public class Keyboard<C extends ClientContext> extends ClientAccessor<C> {
 		return send(str, false);
 	}
 
-	public boolean send(String str, final boolean newLine) {
+	public boolean send(final String str, final boolean newLine) {
 		final InputSimulator engine = queue.getEngine();
 		if (engine != null) {
 			engine.send(str + (newLine ? '\n' : ""));
