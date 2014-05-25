@@ -8,7 +8,11 @@ public class ReflectProxy {
 
 	public ReflectProxy(final Reflector reflector, final Object obj) {
 		this.reflector = reflector;
-		this.obj = new WeakReference<Object>(obj);
+		if (obj instanceof ReflectProxy) {
+			this.obj = ((ReflectProxy) obj).obj;
+		} else {
+			this.obj = new WeakReference<Object>(obj);
+		}
 	}
 
 	public boolean isTypeOf(final Class<? extends ReflectProxy> c) {
