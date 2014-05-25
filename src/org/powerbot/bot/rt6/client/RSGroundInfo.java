@@ -28,7 +28,7 @@ public class RSGroundInfo extends ReflectProxy {
 		for (int i = 0; i < arr.length; i++) {
 			final Object[][] sub = arr[i];
 			if (sub == null) {
-				arr2[i] = null;
+				arr2[i] = new RSGround[0][];
 				continue;
 			}
 			final RSGround[][] sub2 = new RSGround[sub.length][];
@@ -36,7 +36,7 @@ public class RSGroundInfo extends ReflectProxy {
 			for (int i2 = 0; i2 < sub.length; i2++) {
 				final Object[] sub2_1 = sub[i2];
 				if (sub2_1 == null) {
-					sub2[i] = null;
+					sub2[i] = new RSGround[0];
 					continue;
 				}
 				final RSGround[] sub2_2 = new RSGround[sub2_1.length];
