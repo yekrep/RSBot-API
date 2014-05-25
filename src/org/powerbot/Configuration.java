@@ -40,7 +40,6 @@ public class Configuration {
 		public static final String SCRIPTS_BROWSE = Configuration.PROTO + DOMAIN_SITE + "/go/scripts";
 		public static final String LOGIN = Configuration.PROTO + DOMAIN_SITE + "/rsbot/login/?u=%s&p=%s&a=%s";
 		public static final String LICENSE = "http://" + DOMAIN_SITE_LIVE + "/terms/license/";
-		public static final String ADS = "http://" + DOMAIN_SITE_CDN + "/rsbot/ads.txt";
 
 		public static final String GAME = "runescape.com";
 		public static final String GAME_SERVICES_DOMAIN = "services." + GAME;
