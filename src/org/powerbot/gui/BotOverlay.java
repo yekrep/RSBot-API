@@ -34,7 +34,6 @@ class BotOverlay extends Dialog {
 	private final Component panel;
 	private final Thread repaint;
 	private volatile BufferedImage bi = null;
-	private final boolean offsetMenu;
 	private final PaintEvent paintEvent;
 	private final TextPaintEvent textPaintEvent;
 
@@ -62,8 +61,6 @@ class BotOverlay extends Dialog {
 		final boolean jre6 = System.getProperty("java.version").startsWith("1.6");
 		final boolean mac = Configuration.OS == Configuration.OperatingSystem.MAC;
 		final boolean clear = Configuration.OS == Configuration.OperatingSystem.LINUX || (jre6 && mac);
-		final String s = System.getProperty("apple.laf.useScreenMenuBar");
-		offsetMenu = !(mac && s != null && s.equalsIgnoreCase("true"));
 
 		panel = new Component() {
 			@Override
@@ -172,12 +169,6 @@ class BotOverlay extends Dialog {
 		p.translate(s.left, s.top);
 		final Dimension d = parent.window.get().getSize();
 		Dimension d2 = new Dimension(d.width - s.left - s.right, d.height - s.top - s.bottom);
-
-		if (offsetMenu) {
-			final int h = 0; //parent.window.get().getMenuBar().getHeight();
-			p.translate(0, h);
-			d2 = new Dimension(d2.width, d2.height - h);
-		}
 
 		final Bot bot;
 		final Client client;
