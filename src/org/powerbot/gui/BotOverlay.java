@@ -1,6 +1,5 @@
 package org.powerbot.gui;
 
-import java.awt.BorderLayout;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Component;
@@ -77,9 +76,8 @@ class BotOverlay extends Dialog {
 				g.drawImage(bi, 0, 0, null);
 			}
 		};
-		setLayout(new BorderLayout());
-		panel.setBackground(getBackground());
-		add(panel, BorderLayout.CENTER);
+		setLayout(null);
+		add(panel);
 
 		adjustSize();
 
