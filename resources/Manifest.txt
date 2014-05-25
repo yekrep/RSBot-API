@@ -6,10 +6,3 @@ Specification-Title: RSBot
 Specification-Vendor: Dequeue Ltd t/a powerbot
 Implementation-Title: RSBot
 Implementation-Vendor: Dequeue Ltd t/a powerbot
-
-Name: org/objectweb/asm/
-Sealed: true
-Specification-Title: ASM
-Specification-Vendor: INRIA, France Telecom
-Implementation-Title: ASM
-Implementation-Vendor: INRIA, France Telecom
