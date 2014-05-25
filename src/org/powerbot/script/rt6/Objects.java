@@ -10,8 +10,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.powerbot.bot.rt6.client.Client;
 import org.powerbot.bot.rt6.client.RSAnimableNode;
 import org.powerbot.bot.rt6.client.RSGround;
-import org.powerbot.bot.rt6.client.RSGroundInfo;
-import org.powerbot.bot.rt6.client.RSInfo;
 import org.powerbot.bot.rt6.client.RSObject;
 
 /**
@@ -30,17 +28,13 @@ public class Objects extends MobileIdNameQuery<GameObject> {
 	@Override
 	protected List<GameObject> get() {
 		final List<GameObject> items = new ArrayList<GameObject>();
-
 		final Client client = ctx.client();
 		if (client == null) {
 			return items;
 		}
-
-		final RSInfo info;
-		final RSGroundInfo groundInfo;
-		final RSGround[][][] grounds;
-		if ((info = client.getRSGroundInfo()) == null || (groundInfo = info.getRSGroundInfo()) == null ||
-				(grounds = groundInfo.getRSGroundArray()) == null) {
+		final RSGround[][][] grounds = client.getRSGroundInfo().getRSGroundInfo().getRSGroundArray();
+		final int floor = ctx.game.floor();
+		if (floor < 0 || floor >= grounds.length) {
 			return items;
 		}
 
@@ -49,49 +43,40 @@ public class Objects extends MobileIdNameQuery<GameObject> {
 				GameObject.Type.FLOOR_DECORATION,
 				GameObject.Type.WALL_DECORATION, GameObject.Type.WALL_DECORATION
 		};
-
-		final int plane = client.getPlane();
-
-		final RSGround[][] objArr = plane > -1 && plane < grounds.length ? grounds[plane] : null;
-		if (objArr == null) {
-			return items;
-		}
-
-		final Set<RSObject> refs = new HashSet<RSObject>();
-		for (int x = 0; x <= objArr.length - 1; x++) {
-			for (int y = 0; y <= objArr[x].length - 1; y++) {
-				final RSGround ground = objArr[x][y];
-				if (ground == null) {
+		final Set<GameObject> set = new HashSet<GameObject>();
+		final RSGround[][] map = grounds[floor];
+		for (int x = 0; x < map.length; x++) {
+			for (int y = 0; y < map[x].length; y++) {
+				final RSGround g = map[x][y];
+				if (g.isNull()) {
 					continue;
 				}
-
-				for (RSAnimableNode animable = ground.getRSAnimableList(); animable != null; animable = animable.getNext()) {
-					final Object node = animable.getRSAnimable();
-					if (node == null) {
+				for (RSAnimableNode node = g.getRSAnimableList(); !node.isNull(); node = node.getNext()) {
+					final RSObject r = node.getRSAnimable();
+					if (r.isNull()) {
 						continue;
 					}
-					final RSObject obj = (RSObject) node;
-					if (obj.getId() != -1 && !refs.contains(obj)) {
-						refs.add(obj);
-						items.add(new GameObject(ctx, obj, GameObject.Type.INTERACTIVE));
+
+					if (r.getId() != -1) {
+						set.add(new GameObject(ctx, r, GameObject.Type.INTERACTIVE));
 					}
 				}
 
-
 				final RSObject[] objs = {
-						ground.getBoundary1(), ground.getBoundary2(),
-						ground.getFloorDecoration(),
-						ground.getWallDecoration1(), ground.getWallDecoration2()
+						g.getBoundary1(), g.getBoundary2(),
+						g.getFloorDecoration(),
+						g.getWallDecoration1(), g.getWallDecoration2()
 				};
-
 				for (int i = 0; i < objs.length; i++) {
-					if (objs[i] != null && objs[i].getId() != -1) {
-						items.add(new GameObject(ctx, objs[i], types[i]));
+					if (objs[i].isNull() || objs[i].getId() == -1) {
+						continue;
 					}
+					items.add(new GameObject(ctx, objs[i], types[i]));
 				}
 			}
 		}
-		refs.clear();//help gc
+		items.addAll(set);
+		set.clear();
 		return items;
 	}
 
