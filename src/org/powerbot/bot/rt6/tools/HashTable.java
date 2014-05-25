@@ -7,7 +7,9 @@ import java.util.NoSuchElementException;
 
 import org.powerbot.bot.ReflectProxy;
 import org.powerbot.bot.Reflector;
+import org.powerbot.bot.rt6.client.HardReference;
 import org.powerbot.bot.rt6.client.Node;
+import org.powerbot.bot.rt6.client.SoftReference;
 
 public class HashTable<N> implements Iterator<N>, Iterable<N> {
 	private final org.powerbot.bot.rt6.client.HashTable table;
@@ -83,9 +85,15 @@ public class HashTable<N> implements Iterator<N>, Iterable<N> {
 		final Node[] buckets = table.getBuckets();
 		final Node n = buckets[(int) (id & buckets.length - 1)];
 		for (Node o = n.getNext(); !o.equals(n) && !o.isNull(); o = o.getNext()) {
-			if (o.getId() == id && o.isTypeOf(type)) {
+			if (o.getId() == id) {
+				Object e = o;
+				if (o.isTypeOf(SoftReference.class)) {
+					e = ((java.lang.ref.SoftReference<?>) new SoftReference(o.reflector, o).get()).get();
+				} else if (o.isTypeOf(HardReference.class)) {
+					e = new HardReference(o.reflector, o).get();
+				}
 				try {
-					return c.newInstance(table.reflector, o);
+					return c.newInstance(table.reflector, e);
 				} catch (final InstantiationException ignored) {
 				} catch (final IllegalAccessException ignored) {
 				} catch (final InvocationTargetException ignored) {
