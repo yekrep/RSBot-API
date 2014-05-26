@@ -88,7 +88,7 @@ public class Game extends ClientAccessor {
 	}
 
 	public Dimension dimensions() {
-		final Applet applet = ctx.bot().applet;
+		final Applet applet = (Applet) ctx.bot().launcher.target.get();
 		return applet != null ? new Dimension(applet.getWidth(), applet.getHeight()) : new Dimension(-1, -1);
 	}
 

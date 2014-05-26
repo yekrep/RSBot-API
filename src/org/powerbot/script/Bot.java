@@ -18,7 +18,6 @@ public abstract class Bot<C extends ClientContext<? extends Client>> implements 
 	public final C ctx;
 	public final BotLauncher launcher;
 	public final EventDispatcher dispatcher;
-	public Applet applet;
 	public final AtomicBoolean pending;
 
 	public Bot(final BotLauncher launcher, final EventDispatcher dispatcher) {
@@ -64,6 +63,7 @@ public abstract class Bot<C extends ClientContext<? extends Client>> implements 
 
 		dispatcher.close();
 
+		final Applet applet = (Applet) launcher.target.get();
 		if (applet != null) {
 			applet.setVisible(false);
 			new Thread(new Runnable() {
