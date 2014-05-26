@@ -26,8 +26,8 @@ public abstract class GameAppletLoader implements Callable<Void> {
 		return null;
 	}
 
-	public Thread getLoaderThread(final ThreadGroup g) {
-		return new Thread(g, new Runnable() {
+	public Thread getLoaderThread() {
+		return new Thread(new Runnable() {
 			@Override
 			public void run() {
 				try {

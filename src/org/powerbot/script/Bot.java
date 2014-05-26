@@ -19,14 +19,12 @@ public abstract class Bot<C extends ClientContext<? extends Client>> implements 
 	public final C ctx;
 	protected final BotChrome chrome;
 	public final EventDispatcher dispatcher;
-	public final ThreadGroup threadGroup;
 	public Applet applet;
 	public final AtomicBoolean pending;
 
 	public Bot(final BotChrome chrome, final EventDispatcher dispatcher) {
 		this.chrome = chrome;
 		this.dispatcher = dispatcher;
-		threadGroup = new ThreadGroup(Thread.currentThread().getThreadGroup().getName());
 		pending = new AtomicBoolean(false);
 		ctx = newContext();
 
@@ -58,17 +56,14 @@ public abstract class Bot<C extends ClientContext<? extends Client>> implements 
 
 		if (applet != null) {
 			applet.setVisible(false);
-			new Thread(threadGroup, new Runnable() {
+			new Thread(new Runnable() {
 				@Override
 				public void run() {
 					applet.stop();
 					applet.destroy();
-					threadGroup.interrupt();
 				}
 			}).start();
 			ctx.client(null);
-		} else {
-			threadGroup.interrupt();
 		}
 
 		chrome.bot.set(null);

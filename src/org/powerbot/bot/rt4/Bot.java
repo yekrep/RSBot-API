@@ -108,7 +108,7 @@ public class Bot extends org.powerbot.script.Bot<ClientContext> {
 				});
 			}
 		};
-		bootstrap.getLoaderThread(threadGroup).start();
+		bootstrap.getLoaderThread().start();
 	}
 
 	@Override
@@ -128,6 +128,6 @@ public class Bot extends org.powerbot.script.Bot<ClientContext> {
 
 	private void initialize() {
 		ctx.menu.register();
-		new Thread(threadGroup, dispatcher, dispatcher.getClass().getName()).start();
+		new Thread(dispatcher, dispatcher.getClass().getName()).start();
 	}
 }

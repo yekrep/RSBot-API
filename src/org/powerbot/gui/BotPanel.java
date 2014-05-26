@@ -107,6 +107,6 @@ class BotPanel extends JPanel implements ActionListener {
 		final Bot bot = b == os ? new org.powerbot.bot.rt4.Bot(chrome) : new org.powerbot.bot.rt6.Bot(chrome);
 		callback.accept(bot);
 		Logger.getLogger(BotChrome.class.getName()).info("Starting...");
-		new Thread(bot.threadGroup, bot).start();
+		new Thread(bot).start();
 	}
 }

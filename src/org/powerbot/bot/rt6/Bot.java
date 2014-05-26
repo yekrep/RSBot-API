@@ -77,7 +77,7 @@ public final class Bot extends org.powerbot.script.Bot<ClientContext> {
 				Bot.this.sequence(game, gameCrawler, applet);
 			}
 		};
-		bootstrap.getLoaderThread(threadGroup).start();
+		bootstrap.getLoaderThread().start();
 	}
 
 	private void sequence(final GameLoader game, final GameCrawler gameCrawler, final Applet applet) {
@@ -129,11 +129,11 @@ public final class Bot extends org.powerbot.script.Bot<ClientContext> {
 		ctx.client().setCallback(new AbstractCallback(this));
 		ctx.constants.set(new Constants(spec.constants));
 		applet.start();
-		new Thread(threadGroup, dispatcher, dispatcher.getClass().getName()).start();
+		new Thread(dispatcher, dispatcher.getClass().getName()).start();
 
 		final boolean jre6 = System.getProperty("java.version").startsWith("1.6");
 		if ((Configuration.OS == Configuration.OperatingSystem.MAC && !jre6) || (Configuration.OS != Configuration.OperatingSystem.MAC && jre6)) {
-			new Thread(threadGroup, new SafeMode()).start();
+			new Thread(new SafeMode()).start();
 		}
 
 		SwingUtilities.invokeLater(new Runnable() {
