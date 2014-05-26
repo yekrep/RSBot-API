@@ -144,6 +144,13 @@ public class BotLauncher implements Callable<Boolean>, Closeable {
 
 						f.setSize(f.getMinimumSize());
 						f.setLocationRelativeTo(f.getParent());
+
+						if (overlay.get() != null) {
+							overlay.getAndSet(null).dispose();
+						}
+						if (bot.get().overlay()) {
+							overlay.set(new BotOverlay(BotLauncher.this));
+						}
 					}
 				});
 			}

@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
+import org.powerbot.Configuration;
 import org.powerbot.bot.Reflector;
 import org.powerbot.bot.SelectiveEventQueue;
 import org.powerbot.bot.rt6.activation.EventDispatcher;
@@ -112,20 +113,16 @@ public final class Bot extends org.powerbot.script.Bot<ClientContext> {
 		}
 
 		return null;
+	}
 
-		/*
+	@Override
+	public boolean overlay() {
 		final boolean jre6 = System.getProperty("java.version").startsWith("1.6");
-		if ((Configuration.OS == Configuration.OperatingSystem.MAC && !jre6) || (Configuration.OS != Configuration.OperatingSystem.MAC && jre6)) {
-			new Thread(threadGroup, new SafeMode()).start();
+		final boolean safe = (Configuration.OS == Configuration.OperatingSystem.MAC && !jre6) || (Configuration.OS != Configuration.OperatingSystem.MAC && jre6);
+		if (safe) {
+			new Thread(new SafeMode()).start();
 		}
-
-		EventQueue.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				display();
-			}
-		});
-		*/
+		return !safe;
 	}
 
 	private final class SafeMode implements Runnable {
